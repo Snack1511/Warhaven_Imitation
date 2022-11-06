@@ -4,6 +4,8 @@ namespace Client
 	enum ANIM_TYPE
 	{
 		ANIM_BASE,
+		ANIM_ATTACK,
+		ANIM_BEATEN,
 		ANIM_END,
 	};
 
@@ -16,8 +18,10 @@ namespace Client
 
 	enum MODEL_PART_TYPE
 	{
-		MODEL_PART_HEAD,
+		MODEL_PART_SKEL,
 		MODEL_PART_BODY,
+		MODEL_PART_FACE,
+		MODEL_PART_HEAD,
 		MODEL_PART_WEAPON,
 		MODEL_PART_END,
 	};

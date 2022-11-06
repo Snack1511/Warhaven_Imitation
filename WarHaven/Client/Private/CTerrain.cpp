@@ -108,7 +108,8 @@ HRESULT CTerrain::Initialize_Prototype()
     Add_Component(pShader);
 
     Add_Component(CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN));
-    //Add_Component(CComponent_Factory::Clone_Component<CTexture>(this));
+    CTexture* pTexture = CTexture::Create(0, L"../bin/resources/Textures/Terrain/Tile0.dds", 1);
+    Add_Component(pTexture);
 
 
     return S_OK;
@@ -171,7 +172,6 @@ HRESULT CTerrain::Start()
 
     __super::Start();
 
-    DISABLE_COMPONENT(GET_COMPONENT(CRenderer));
     return S_OK;
 }
 

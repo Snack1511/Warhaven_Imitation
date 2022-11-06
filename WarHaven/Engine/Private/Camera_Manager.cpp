@@ -166,11 +166,12 @@ CCamera * CCamera_Manager::Change_Camera(wstring strKey)
 		DISABLE_GAMEOBJECT(m_pCurCam);
 	}
 
-	
 
 	ENABLE_GAMEOBJECT(iter->second);
-	m_pCurCam = iter->second;
-	Make_ViewProj();
+	m_pNextCamera = iter->second;
+
+	//m_pCurCam = iter->second;
+	//Make_ViewProj();
 
 	return m_pCurCam;
 }

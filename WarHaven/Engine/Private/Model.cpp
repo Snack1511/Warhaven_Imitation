@@ -275,9 +275,6 @@ HRESULT CModel::Add_Model(wstring wstrModelFilePath, _uint iMeshPartType)
 	/* 매칭시켜주기 */
 	if (FAILED(SetUp_MeshContainersPtr()))
 		return E_FAIL;
-
-
-
 	
 
 	return S_OK;

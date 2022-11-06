@@ -110,7 +110,7 @@ protected:
 
 
 protected:
-	virtual	HRESULT	SetUp_Model(UNIT_MODEL_DATA tData);
+	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);
 	virtual	HRESULT	SetUp_Navigation(CCell* pStartCell);
 
 protected:

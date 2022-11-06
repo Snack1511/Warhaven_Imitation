@@ -9,7 +9,10 @@
 
 #include "Transform.h"
 #include "CSkyBox.h"
+#include "CTerrain.h"
+#include "CUnit_Warrior.h"
 
+#include "CCamera_Free.h"
 
 CLevel_Test::CLevel_Test()
 {
@@ -43,6 +46,9 @@ HRESULT CLevel_Test::Initialize()
 
 HRESULT CLevel_Test::SetUp_Prototypes()
 {
+    //여기다가 치는 코드는 로딩중에 수행됨 (멀티쓰레드로)
+    //여기서 객체 생성한 후 Ready_GameObject 함수로 넣어놓으면 로딩 넘어가고 (멀티쓰레드 끝나고) 오브젝트 매니저에 추가됨.
+
     CSkyBox* pSkyBox = CSkyBox::Create();
 
     if (FAILED(pSkyBox->Initialize()))
@@ -50,13 +56,35 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
     Ready_GameObject(pSkyBox, GROUP_DEFAULT);
 
-    m_fLoadingFinish = 0.25f;
+    m_fLoadingFinish = 0.1f;
+    CTerrain* pTerrain = CTerrain::Create(100, 100);
+    Ready_GameObject(pTerrain, GROUP_DECORATION);
+
+    m_fLoadingFinish = 0.2f;
 
 
+    CUnit::UNIT_MODEL_DATA  tModelData;
 
+    tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/warrior/Warrior.fbx";
 
-    m_fLoadingFinish = 1.f;
+    tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/warrior/body/SK_Warrior0001_Body_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/warrior/Head/SK_Warrior0001_Face_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
 
+    tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
+    tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_L_WP1";
+
+    CUnit_Warrior* pTestUnit = CUnit_Warrior::Create(tModelData);
+    if (!pTestUnit)
+        return E_FAIL;
+    pTestUnit->Initialize();
+    Ready_GameObject(pTestUnit, GROUP_PLAYER);
+
+    //로딩 Finish 수동으로 해야댐 ㅠ
+    m_fLoadingFinish = 0.5f;
+
+    CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"Free");
+    DISABLE_GAMEOBJECT(pFreeCam);
 
     LIGHTDESC			LightDesc;
 
@@ -70,6 +98,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
     if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
         return E_FAIL;
 
+    m_fLoadingFinish = 1.f;
+
     return S_OK;
 }
 
@@ -77,8 +107,7 @@ HRESULT CLevel_Test::Enter()
 {
     __super::Enter();
 
-    CGameInstance::Get_Instance()->Change_Camera(L"Free");
-    
+    CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"Free");
 
     return S_OK;
 }
@@ -99,9 +128,15 @@ void CLevel_Test::Late_Tick()
 
 HRESULT CLevel_Test::Render()
 {
+    
+
+#ifdef _DEBUG
+    if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Test Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
+        return E_FAIL;
 
     if (FAILED(CImGui_Manager::Get_Instance()->Render()))
         return E_FAIL;
+#endif
 
     return S_OK;
 }

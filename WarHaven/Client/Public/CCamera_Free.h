@@ -21,6 +21,7 @@ public:
 	virtual HRESULT Initialize() override;
 
 private:
+	virtual void My_Tick() override;
 
 };
 

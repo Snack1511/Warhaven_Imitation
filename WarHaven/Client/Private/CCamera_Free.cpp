@@ -31,3 +31,8 @@ HRESULT CCamera_Free::Initialize()
 
 	return S_OK;
 }
+
+void CCamera_Free::My_Tick()
+{
+	int i = 0;
+}

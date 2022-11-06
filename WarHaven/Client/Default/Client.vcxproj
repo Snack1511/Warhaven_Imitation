@@ -200,6 +200,7 @@
     <ClInclude Include="..\public\CTrailBuffer.h" />
     <ClInclude Include="..\Public\CTrailEffect.h" />
     <ClInclude Include="..\public\CUnit.h" />
+    <ClInclude Include="..\public\CUnit_Warrior.h" />
     <ClInclude Include="..\public\CUser.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="..\private\CTrailBuffer.cpp" />
     <ClCompile Include="..\Private\CTrailEffect.cpp" />
     <ClCompile Include="..\private\CUnit.cpp" />
+    <ClCompile Include="..\private\CUnit_Warrior.cpp" />
     <ClCompile Include="..\private\CUser.cpp" />
     <ClCompile Include="..\private\CUtility_Transform.cpp" />
     <ClCompile Include="..\Private\CWindow_Default.cpp" />

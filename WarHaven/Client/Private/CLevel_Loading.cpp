@@ -71,6 +71,16 @@ void CLevel_Loading::Late_Tick()
 HRESULT CLevel_Loading::Render()
 {
 
+#ifdef _DEBUG
+	_tchar	szTemp[MIN_STR] = L"";
+	_float fLoadingFinish = CLoading_Manager::Get_Instance()->Get_Level(m_eNextLevel)->Get_LoadingFinish();
+	swprintf_s(szTemp, L"·ÎµùÁß : %f", fLoadingFinish);
+
+	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", szTemp, _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+
+#endif
+
 	return S_OK;
 }
 

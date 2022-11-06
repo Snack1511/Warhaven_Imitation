@@ -93,9 +93,6 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component<CRenderer>(pRenderer);
 
-	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/Custom_Base.fbx");
-
-	Add_Component(pAnimator);
 
 	Add_Component(CPhysics::Create(0));
 
@@ -157,13 +154,13 @@ void CUnit::OnDisable()
 
 }
 
-HRESULT CUnit::SetUp_Model(UNIT_MODEL_DATA tData)
+HRESULT CUnit::SetUp_Model(const UNIT_MODEL_DATA& tData)
 {
 	m_tModelData = tData;
 	_float4x4			TransformMatrix;
-	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixRotationZ(XMConvertToRadians(180.0f));
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) *XMMatrixRotationX(XMConvertToRadians(90.0f))* XMMatrixRotationZ(XMConvertToRadians(180.0f));
 
-	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, tData.strModelPaths[MODEL_PART_BODY], TransformMatrix);
+	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, tData.strModelPaths[MODEL_PART_SKEL], TransformMatrix);
 
 
 	if (!pModel)
@@ -186,12 +183,11 @@ HRESULT CUnit::SetUp_Model(UNIT_MODEL_DATA tData)
 		}
 	}
 
+	pModel->Enable_ModelParts(0, false);
+
 
 	pModel->Initialize();
-
 	Add_Component(pModel);
-
-	m_eCurState = STATE_IDLE_PLAYER;
 
 	return S_OK;
 }

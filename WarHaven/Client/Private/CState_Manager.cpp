@@ -24,7 +24,11 @@ HRESULT CState_Manager::Initialize()
 	for (_uint i = 0; i < STATE_END; ++i)
 	{
 		if (!m_arrStates[i])
+		{
+			Call_MsgBox(L"태호야 상태추가하랬지");
 			return E_FAIL;
+
+		}
 	}
 
 	return S_OK;

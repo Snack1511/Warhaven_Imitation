@@ -86,8 +86,9 @@ HRESULT CLoading_Manager::Load_Level()
 	//CGameInstance::Get_Instance()->Delete_GameObject_Prototypes();
 
 	m_bFinish = false;
-	//static_cast<CLevel_Loading*>(m_arrLevels[LEVEL_LOADING])->Set_NextLevel(eLevelID);
+	static_cast<CLevel_Loading*>(m_arrLevels[LEVEL_LOADING])->Set_NextLevel(m_eLoadID);
 	CHANGE_LEVEL(m_arrLevels[LEVEL_LOADING]);
+
 
 
 	InitializeCriticalSection(&m_CriticalSection);

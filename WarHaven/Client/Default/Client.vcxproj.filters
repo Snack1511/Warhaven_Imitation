@@ -139,6 +139,9 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect\01. TrailEffect">
       <UniqueIdentifier>{2c1c6df1-abd8-4c61-88d2-0c9d2c52c299}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
+      <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -267,6 +270,9 @@
     <ClInclude Include="..\Public\CTrailEffect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\01. TrailEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CUnit_Warrior.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -378,6 +384,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CTrailEffect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\01. TrailEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CUnit_Warrior.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -30,9 +30,11 @@ CIdle_Player* CIdle_Player::Create()
 }
 HRESULT CIdle_Player::Initialize()
 {
-    m_iAnimIndex = 36;
+    m_eAnimType = ANIM_BASE;
+    m_iAnimIndex = 0;
     m_eStateType = STATE_IDLE_PLAYER;
-    m_fInterPolationTime = 0.2f;
+
+    m_fInterPolationTime = 0.1f;
 
 
     //m_vecAdjState.push_back(STATE_WALK_PLAYER);

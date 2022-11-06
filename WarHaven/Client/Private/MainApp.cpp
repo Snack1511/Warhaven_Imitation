@@ -31,7 +31,6 @@ CMainApp::~CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
-
 	m_pGameInstance = CGameInstance::Get_Instance();
 
 	if (nullptr == m_pGameInstance)
@@ -171,6 +170,9 @@ HRESULT CMainApp::SetUp_Statics()
 	CREATE_STATIC(pFreeCam, HASHCODE(CCamera_Free));
 	DISABLE_GAMEOBJECT(pFreeCam);
 	CGameInstance::Get_Instance()->Add_Camera(L"Free", pFreeCam);
+
+	if (FAILED(m_pGameInstance->Add_Font(L"DefaultFont", L"../bin/resources/fonts/128.spritefont")))
+		return E_FAIL;
 
 	
 
