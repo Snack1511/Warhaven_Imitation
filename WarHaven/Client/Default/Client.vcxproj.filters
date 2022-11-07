@@ -142,6 +142,9 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
       <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03.Window_MapTool">
+      <UniqueIdentifier>{bf927561-f572-4c65-946d-6c75c148b802}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -273,6 +276,9 @@
     <ClInclude Include="..\public\CUnit_Warrior.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CWindow_Map.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03.Window_MapTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -387,6 +393,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CUnit_Warrior.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWindow_Map.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03.Window_MapTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

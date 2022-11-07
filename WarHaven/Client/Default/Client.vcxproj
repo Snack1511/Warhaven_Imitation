@@ -209,6 +209,7 @@
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CUtility_Transform.h" />
     <ClInclude Include="..\public\CWindow_Default.h" />
+    <ClInclude Include="..\Public\CWindow_Map.h" />
     <ClInclude Include="..\public\CWindow_Select.h" />
     <ClInclude Include="..\public\Functor.h" />
     <ClInclude Include="..\Public\ImGui_Manager.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="..\private\CUser.cpp" />
     <ClCompile Include="..\private\CUtility_Transform.cpp" />
     <ClCompile Include="..\Private\CWindow_Default.cpp" />
+    <ClCompile Include="..\Private\CWindow_Map.cpp" />
     <ClCompile Include="..\private\CWindow_Select.cpp" />
     <ClCompile Include="..\private\Functor.cpp" />
     <ClCompile Include="..\Private\ImGui_Manager.cpp" />

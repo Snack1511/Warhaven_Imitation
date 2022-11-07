@@ -9,6 +9,7 @@
 
 #include "CWindow_Default.h"
 #include "CWindow_Select.h"
+#include "CWindow_Map.h"
 
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
@@ -54,8 +55,11 @@ HRESULT CImGui_Manager::Initialize()
 	ImGui_ImplDX11_Init(DEVICE, DEVICE_CONTEXT);
 
 
+#pragma region 윈도우 등록
 	m_arrWindows[IMGUI_DEFAULT] = CWindow_Default::Create();
 	m_arrWindows[IMGUI_SELECT] = CWindow_Select::Create();
+	m_arrWindows[IMGUI_MAPTOOL] = CWindow_Map::Create();
+#pragma endregion 윈도우 등록
 
 	return S_OK;
 }
