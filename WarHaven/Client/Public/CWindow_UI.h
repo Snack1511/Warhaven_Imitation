@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CUI_Object;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -32,6 +33,8 @@ public:
 
 private:
 	TREE_DATA	m_TextureRootNode;
+
+	CTexture* m_pTexture;
 
 private:
 	void Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree);

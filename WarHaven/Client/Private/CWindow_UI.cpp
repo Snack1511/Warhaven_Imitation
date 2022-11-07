@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CWindow_UI.h"
 
+#include "Texture.h"
+
 #include "ImGui_Manager.h"
 
 CWindow_UI* CWindow_UI::Create()
@@ -56,6 +58,17 @@ HRESULT CWindow_UI::Render()
 	// 트랜스폼 (위치, 크기, 회전??)
 
 	// 텍스처 변경
+	
+	const char* str = m_TextureRootNode.strFullPath.c_str();
+	_tchar* pStr;
+	int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
+	pStr = new WCHAR[strSize];
+	MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, pStr, strSize);
+
+	m_pTexture = CTexture::Create(GROUP_UI, pStr, 1);
+
+	// ImGui::Image((void*)m_pTexture, ImVec2(m_pTexture->()))
+
 	// 색상 변경
 	// 마테리얼 변경
 
