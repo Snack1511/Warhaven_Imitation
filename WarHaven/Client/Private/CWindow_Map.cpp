@@ -141,7 +141,15 @@ void CWindow_Map::Ready_FileArray()
     }
 }
 
-void CWindow_Map::Ready_ObjectGroupArray()
+void CWindow_Map::Ready_ObjectGroupID()
+{
+
+    //char* pFileName = new char[260];
+    //memcpy_s(pFileName, sizeof(char) * 260, FileData.cFileName, sizeof(char) * 260);
+    //m_arrSaveFilesCombo.push_back(make_tuple(pFileName, false));
+}
+
+void CWindow_Map::Ready_MeshGroupName()
 {
 }
 
@@ -241,10 +249,17 @@ void CWindow_Map::Func_DataControl()
 {
     ImGui::Text("Data_Control");
 
-    //3. 오브젝트 그룹 콤보박스
+    //3. 오브젝트 프로토타입 그룹 콤보박스
     if (ImGui::CollapsingHeader("Object Info", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
-        ImGui::Text("Group");
+        ImGui::Text("Object Group");
+        if (Make_Combo("##ObjectGroupID", m_arrObjectGroupId, &SelectObjectGroupIDIndex, bind(&CWindow_Map::EmptyFunction, this)))
+        {
+            strcpy_s(szObjectGroupBuf, get<Tuple_CharPtr>(m_arrObjectGroupId[SelectObjectGroupIDIndex]));
+        }
+        ImGui::Spacing();
+
+        ImGui::Text("Mesh Group");
         if (Make_Combo("##ObjectGroupID", m_arrObjectGroupId, &SelectObjectGroupIDIndex, bind(&CWindow_Map::EmptyFunction, this)))
         {
             strcpy_s(szObjectGroupBuf, get<Tuple_CharPtr>(m_arrObjectGroupId[SelectObjectGroupIDIndex]));

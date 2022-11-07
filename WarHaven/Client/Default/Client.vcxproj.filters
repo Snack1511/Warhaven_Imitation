@@ -288,7 +288,9 @@
     <ClInclude Include="..\Public\CStructure_TestStructure.h">
       <Filter>03. Instances\02. GameObject\06. Map\Structure\TestStructure</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CStructure.h" />
+    <ClInclude Include="..\Public\CStructure.h">
+      <Filter>03. Instances\02. GameObject\06. Map\Structure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -410,7 +412,9 @@
     <ClCompile Include="..\Private\CStructure_TestStructure.cpp">
       <Filter>03. Instances\02. GameObject\06. Map\Structure\TestStructure</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CStructure.cpp" />
+    <ClCompile Include="..\Private\CStructure.cpp">
+      <Filter>03. Instances\02. GameObject\06. Map\Structure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

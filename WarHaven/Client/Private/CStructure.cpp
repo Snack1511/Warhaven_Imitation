@@ -58,7 +58,8 @@ HRESULT CStructure::Initialize_Prototype()
 
 	//_matrix Mat = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	//XMStoreFloat4x4(&matTrans, Mat);
-	CModel* pModel = CModel::Create(0, TYPE_NONANIM, TEXT("C:/Users/jusin/Desktop/meshtest/FBX/SM_Module_Gate_CastleGate01a.fbx"), matTrans);
+	//D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Meshes\Map\Structure\Gate
+	CModel* pModel = CModel::Create(0, TYPE_NONANIM, TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.fbx"), matTrans);
 	Add_Component(pModel);
 
 
