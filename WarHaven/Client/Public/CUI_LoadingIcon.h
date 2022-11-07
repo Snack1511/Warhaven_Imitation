@@ -30,6 +30,8 @@ private:
 
 	_float m_fCurValue = 0.f;
 	_float m_fMaxValue = 1.f;
+
+	bool m_bIsPositive = false;
 };
 
 END

@@ -67,7 +67,6 @@ HRESULT CUI_Logo::Start()
 	GET_COMPONENT(CFader)->Set_FadeMessage();
 	CallBack_FadeOutEvent += bind(&CUI_Logo::LoadScene, this, placeholders::_1);
 
-
 	return S_OK;
 }
 

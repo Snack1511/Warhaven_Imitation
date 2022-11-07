@@ -101,7 +101,6 @@ struct PS_IN
 struct PS_OUT
 {	
 	vector		vColor : SV_TARGET0;	
-    vector		vMask : SV_TARGET1;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -121,16 +120,28 @@ PS_OUT PS_LOADINGICON(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
 	
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-    Out.vMask = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector MaskDesc = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
 	
-    Out.vColor.a = Out.vMask.r;
-	
-    if (Out.vColor.a <= 0.1f)
+    if (MaskDesc.r < 0.1f)
         discard;
 	
-    if (Out.vColor.a <= g_fValue)
-        discard;
+    Out.vColor.a = MaskDesc.r;
 	
+    if (Out.vColor.b >= 0.99f)
+    {
+        Out.vColor = 1.f;
+        return Out;
+    }
+	
+    if (Out.vColor.r <= g_fValue)
+    {		
+        discard;
+    }
+	else
+    {
+        Out.vColor.rgb = 1.f;
+    }
+
     return Out;
 }
 
