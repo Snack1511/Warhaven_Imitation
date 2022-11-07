@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "Loading_Manager.h"
 
+#include "CLevel_Logo.h"
 #include "CLevel_Loading.h"
+#include "CLevel_Main.h"
 #include "CLevel_Test.h"
 #include "GameInstance.h"
 
@@ -39,15 +41,15 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 
 HRESULT CLoading_Manager::Initialize()
 {
-	for (_uint i = LEVEL_LOADING; i < LEVEL_END; ++i)
+	for (_uint i = LEVEL_LOGO; i < LEVEL_END; ++i)
 	{
 		m_arrLevels[i] = nullptr;
 	}
 
+	m_arrLevels[LEVEL_LOGO] = CLevel_Logo::Create();
 	m_arrLevels[LEVEL_LOADING] = CLevel_Loading::Create();
-	m_arrLevels[LEVEL_TEST] = CLevel_Test::Create();
-	
-
+	m_arrLevels[LEVEL_MAINMENU] = CLevel_Main::Create();
+	m_arrLevels[LEVEL_TEST] = CLevel_Test::Create();	
 
 	return S_OK;
 }

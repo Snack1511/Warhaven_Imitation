@@ -34,8 +34,6 @@ public:
 private:
 	LEVEL_TYPE_CLIENT			m_eNextLevel = LEVEL_END;
 	CShader* m_pLoadingBarShader = nullptr;
-	
-
 };
 
 END

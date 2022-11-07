@@ -3,7 +3,9 @@
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
-texture2D	g_DiffuseTexture, g_NoiseTexture;
+texture2D g_DiffuseTexture;
+texture2D g_NoiseTexture;
+texture2D g_NormalTexture;
 
 float	g_fAlpha = 1.f;
 float	g_fProgress = 1.0f;
@@ -11,9 +13,9 @@ float	g_fProgressY = 0.4f;
 
 vector	g_vColor;
 vector	g_vFlag;
-vector		g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
+vector	g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
-
+float g_fValue;
 
 
 struct VS_IN
@@ -99,6 +101,7 @@ struct PS_IN
 struct PS_OUT
 {	
 	vector		vColor : SV_TARGET0;	
+    vector		vMask : SV_TARGET1;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -111,6 +114,24 @@ PS_OUT PS_MAIN(PS_IN In)
 		discard;
 
 	return Out;	
+}
+
+PS_OUT PS_LOADINGICON(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+	
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vMask = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+	
+    Out.vColor.a = Out.vMask.r;
+	
+    if (Out.vColor.a <= 0.1f)
+        discard;
+	
+    if (Out.vColor.a <= g_fValue)
+        discard;
+	
+    return Out;
 }
 
 PS_OUT PS_UIColor_MAIN(PS_IN In)
@@ -377,7 +398,6 @@ PS_EFFECT_OUT PS_TRAIL_MAIN(VS_TRAIL_OUT In)
 	return Out;
 }
 
-
 PS_EFFECT_OUT PS_FOOTTRAIL_MAIN(VS_TRAIL_OUT In)
 {
 	PS_EFFECT_OUT		Out = (PS_EFFECT_OUT)0;
@@ -456,6 +476,17 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
+
+    pass UI_LoadingIcon
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_LOADINGICON();
+    }
 
 	pass UIColor
 	{

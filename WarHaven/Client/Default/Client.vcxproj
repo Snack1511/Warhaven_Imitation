@@ -191,6 +191,8 @@
     <ClInclude Include="..\public\CFader.h" />
     <ClInclude Include="..\public\CImGui_Window.h" />
     <ClInclude Include="..\public\CLevel_Loading.h" />
+    <ClInclude Include="..\Public\CLevel_Logo.h" />
+    <ClInclude Include="..\Public\CLevel_Main.h" />
     <ClInclude Include="..\public\CLevel_Test.h" />
     <ClInclude Include="..\public\CScript_Freecam.h" />
     <ClInclude Include="..\public\CSkyBox.h" />
@@ -199,6 +201,14 @@
     <ClInclude Include="..\public\CTerrain.h" />
     <ClInclude Include="..\public\CTrailBuffer.h" />
     <ClInclude Include="..\Public\CTrailEffect.h" />
+    <ClInclude Include="..\Public\CUI.h" />
+    <ClInclude Include="..\Public\CUI_Black.h" />
+    <ClInclude Include="..\Public\CUI_Component.h" />
+    <ClInclude Include="..\Public\CUI_LoadingBG.h" />
+    <ClInclude Include="..\Public\CUI_LoadingIcon.h" />
+    <ClInclude Include="..\Public\CUI_LobbyBG.h" />
+    <ClInclude Include="..\Public\CUI_Logo.h" />
+    <ClInclude Include="..\Public\CUI_Object.h" />
     <ClInclude Include="..\public\CUnit.h" />
     <ClInclude Include="..\public\CUnit_Warrior.h" />
     <ClInclude Include="..\public\CUser.h" />
@@ -235,6 +245,8 @@
     <ClCompile Include="..\Private\CFader.cpp" />
     <ClCompile Include="..\Private\CImGui_Window.cpp" />
     <ClCompile Include="..\private\CLevel_Loading.cpp" />
+    <ClCompile Include="..\Private\CLevel_Logo.cpp" />
+    <ClCompile Include="..\Private\CLevel_Main.cpp" />
     <ClCompile Include="..\Private\CLevel_Test.cpp" />
     <ClCompile Include="..\Private\Client_Defines.cpp" />
     <ClCompile Include="..\private\CScript_Freecam.cpp" />
@@ -244,6 +256,14 @@
     <ClCompile Include="..\private\CTerrain.cpp" />
     <ClCompile Include="..\private\CTrailBuffer.cpp" />
     <ClCompile Include="..\Private\CTrailEffect.cpp" />
+    <ClCompile Include="..\Private\CUI.cpp" />
+    <ClCompile Include="..\Private\CUI_Black.cpp" />
+    <ClCompile Include="..\Private\CUI_Component.cpp" />
+    <ClCompile Include="..\Private\CUI_LoadingBG.cpp" />
+    <ClCompile Include="..\Private\CUI_LoadingIcon.cpp" />
+    <ClCompile Include="..\Private\CUI_LobbyBG.cpp" />
+    <ClCompile Include="..\Private\CUI_Logo.cpp" />
+    <ClCompile Include="..\Private\CUI_Object.cpp" />
     <ClCompile Include="..\private\CUnit.cpp" />
     <ClCompile Include="..\private\CUnit_Warrior.cpp" />
     <ClCompile Include="..\private\CUser.cpp" />

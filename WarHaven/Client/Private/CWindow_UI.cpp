@@ -48,13 +48,11 @@ HRESULT CWindow_UI::Render()
 	// UI 객체가 생성될 때마다 UI 자료 구조에 추가
 	// 해당 자료구조에서 타입이 UI인 객체들을 가져와서 뿌린다.
 
-	CGameObject* pObject;
-	if (!pObject)
-		return E_FAIL;
-
 	// 트랜스폼 (위치, 크기, 회전??)
 
 	// 텍스처 변경
+	// 색상 변경
+	// 마테리얼 변경
 
 	// 셰이더 변경
 
