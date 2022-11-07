@@ -63,6 +63,7 @@ HRESULT CUnit_Warrior::Initialize()
 HRESULT CUnit_Warrior::Start()
 {
 	__super::Start();
+	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	Enter_State(STATE_IDLE_PLAYER);
 	return S_OK;
 }
