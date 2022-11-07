@@ -3,7 +3,7 @@
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix, g_ViewMatrixInv, g_ProjMatrixInv, g_WorldMatrixInv;
 
-texture2D	g_DiffuseTexture, g_BlendTexture, g_FilterTexture, g_NormalTexture, g_NoiseTexture, g_StaticShadowTexture;
+texture2D	g_DiffuseTexture, g_BlendTexture, g_FilterTexture, g_NormalTexture, g_NoiseTexture, g_StaticShadowTexture, g_MaskTexture;
 texture2D	g_DepthTexture;
 
 float		g_fRange = 1.f;
@@ -94,32 +94,26 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 	Out.vEffectFlag = g_vFlag;
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
 
-	//Noise : Color
-	//Diffuse : AlphaMap
-	vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+	//Diffuse : Color
+	//g_MaskTexture : AlphaMap
+	vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
 	In.vTexUV.x += g_fUVPlusX;
 	In.vTexUV.y += g_fUVPlusY;
-	vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	vector vMtrlDiffuse = g_MaskTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vDiffuse = vMtrlDiffuse;
-
-	Out.vDiffuse.a = Out.vDiffuse.r;
-
-
-
+	Out.vDiffuse.a = vMtrlDiffuse.r;
 	Out.vDiffuse.a *= g_fAlpha;
 
+	if (Out.vDiffuse.a <= 0.05f)
+		discard;
+
 	Out.vDiffuse.xyz = vColor.xyz;
-
-
-
-
 	Out.vEffectDiffuse = Out.vDiffuse;
 	Out.vGlowFlag = g_vGlowFlag;
 
 
-	if (Out.vDiffuse.a <= 0.05f)
-		discard;
+	
 
 	return Out;
 }
