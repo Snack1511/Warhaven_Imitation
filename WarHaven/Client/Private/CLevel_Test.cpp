@@ -62,6 +62,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
     m_fLoadingFinish = 0.2f;
 
+    
 
     CUnit::UNIT_MODEL_DATA  tModelData;
 

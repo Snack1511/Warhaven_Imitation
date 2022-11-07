@@ -60,10 +60,15 @@ ComPtr<ID3D11ShaderResourceView> CResource_Manager::Get_Texture(wstring wstrFile
 		else if (!lstrcmp(szExt, TEXT(".png")))
 			hr = DirectX::CreateWICTextureFromFile(PDEVICE, wstrFilePath.c_str(), nullptr, pSRV.GetAddressOf());
 		else
-			hr = DirectX::CreateWICTextureFromFile(PDEVICE, L"../bin/resources/textures/white.png", nullptr, pSRV.GetAddressOf());
+		{
+			return Get_Texture(L"../bin/resources/textures/white.png");
+		}
+
+
 
 		if (FAILED(hr))
 		{
+			return Get_Texture(L"../bin/resources/textures/white.png");
 			hr = DirectX::CreateWICTextureFromFile(PDEVICE, L"../bin/resources/textures/white.png", nullptr, pSRV.GetAddressOf());
 			//Call_MsgBox(L"Cant Find Texture");
 		}

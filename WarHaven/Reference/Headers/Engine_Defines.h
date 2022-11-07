@@ -51,6 +51,12 @@ using namespace DirectX;
 #include <typeinfo>
 #include <functional>
 
+
+/* For.PhysX*/
+#include "PhysX/PxPhysics.h"
+#include "PhysX/PxPhysicsAPI.h"
+using namespace physx;
+
 #include "Json/json.hpp"
 #include <fstream>
 

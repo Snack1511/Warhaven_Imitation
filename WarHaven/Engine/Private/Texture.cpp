@@ -135,8 +135,6 @@ HRESULT CTexture::SetUp_Textures(const _tchar* pTextureFilePath, const _uint& iN
 
 	m_SRVs.reserve(iNumTextures);
 
-	
-
 	for (_uint i = 0; i < iNumTextures; ++i)
 	{
 		TEXTUREDESC	tDesc;
