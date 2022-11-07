@@ -52,6 +52,9 @@ void CUI_LoadingIcon::My_Tick()
 {
 	__super::My_Tick();
 
+	// 원본은 나타나고 사라지고 정방향
+	// 현재는 왕복으로 진행 중
+
 	float fSpeed = fDT(0) * 0.5f;
 	m_bIsPositive ? m_fCurValue += fSpeed : m_fCurValue -= fSpeed;
 

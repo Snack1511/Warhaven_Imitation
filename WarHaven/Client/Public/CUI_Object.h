@@ -17,8 +17,6 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
-
-private:
 };
 
 END

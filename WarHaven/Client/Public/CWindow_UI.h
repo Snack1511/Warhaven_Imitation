@@ -2,7 +2,7 @@
 #include "CImGui_Window.h"
 
 BEGIN(Engine)
-class CGameObject;
+class CUI_Object;
 END
 
 BEGIN(Client)
@@ -23,10 +23,7 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	void SetPosition(CGameObject* pObject);
-	void SetScale(CGameObject* pObject);
-
-	void SetTexture(CGameObject* pObject);
+	void Read_Folder(const char* pFilePath);
 };
 
 END
