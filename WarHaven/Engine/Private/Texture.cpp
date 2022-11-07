@@ -154,13 +154,13 @@ HRESULT CTexture::SetUp_Textures(const _tchar* pTextureFilePath, const _uint& iN
 
 HRESULT CTexture::CreateTGATextureFromFile(const _tchar* pTextureFilePath, ID3D11ShaderResourceView** ppOutSRV)
 {
-	ScratchImage	tScImage;
+	/*ScratchImage	tScImage;
 	TexMetadata	tMetaData;
 	if (FAILED(DirectX::LoadFromTGAFile(pTextureFilePath, &tMetaData, tScImage)))
 		return E_FAIL;
 
 	if (FAILED(CreateShaderResourceView(PDEVICE, tScImage.GetImages(), tScImage.GetImageCount(), tMetaData, ppOutSRV)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	return S_OK;
 }

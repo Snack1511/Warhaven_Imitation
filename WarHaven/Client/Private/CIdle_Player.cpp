@@ -70,37 +70,6 @@ void CIdle_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CIdle_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (KEY(LEFT, TAP))
-    {
-        --m_iAnimIndex;
-        __super::Enter(pOwner, pAnimator);
-
-    }
-
-    if (KEY(RIGHT, TAP))
-    {
-        ++m_iAnimIndex;
-        __super::Enter(pOwner, pAnimator);
-    }
-
-
-    if (KEY(UP, TAP))
-    {
-        _int iType = m_eAnimType;
-        ++iType;
-
-        m_eAnimType = (ANIM_TYPE)iType;
-        __super::Enter(pOwner, pAnimator);
-    }
-    if (KEY(DOWN, TAP))
-    {
-        _int iType = m_eAnimType;
-        --iType;
-
-        m_eAnimType = (ANIM_TYPE)iType;
-        __super::Enter(pOwner, pAnimator);
-    }
-
     return __super::Tick(pOwner, pAnimator);
 }
 

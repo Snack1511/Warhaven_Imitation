@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CEffects_Factory.h"
-
+//
 //#include "GameInstance.h"
 //
 //
@@ -23,7 +23,7 @@
 //
 //HRESULT CEffects_Factory::Initialize()
 //{
-//	이펙트 만들어놓기
+//	//이펙트 만들어놓기
 //
 //
 //	if (FAILED(SetUp_MultiEffects()))
@@ -265,7 +265,7 @@
 //	if (m_Effects[_hcCode].empty())
 //	{
 //		pGameObject = GAMEINSTANCE->Clone_GameObject(_hcCode);
-//		없으면 새로 집어넣음
+//		//없으면 새로 집어넣음
 //		pGameObject->Initialize();
 //		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
 //		static_cast<CEffect*>(pGameObject)->Reset(pFollowTarget);
@@ -289,7 +289,7 @@
 //	if (m_Effects[_hcCode].empty())
 //	{
 //		pGameObject = GAMEINSTANCE->Clone_GameObject(_hcCode);
-//		없으면 새로 집어넣음
+//		//없으면 새로 집어넣음
 //		pGameObject->Initialize();
 //		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
 //	}
@@ -314,7 +314,7 @@
 //	if (m_Effects[HASHCODE(CWindmill)].empty())
 //	{
 //		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CWindmill));
-//		없으면 새로 집어넣음
+//		//없으면 새로 집어넣음
 //		pGameObject->Initialize();
 //		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
 //	}
@@ -433,9 +433,9 @@
 //
 //HRESULT CEffects_Factory::Combine_EffectsGroup(list<string>& listTemp, _hashcode MultiEffectsName, string strKey)
 //{
-//	폴더 뒤져서 이름 다 가져오기
+//	//폴더 뒤져서 이름 다 가져오기
 //
-//	strKey가 있으면 넣어
+//	//strKey가 있으면 넣어
 //
 //	for (auto& elem : listTemp)
 //	{

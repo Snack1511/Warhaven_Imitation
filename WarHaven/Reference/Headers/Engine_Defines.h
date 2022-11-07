@@ -23,7 +23,7 @@
 #include <filesystem>
 
 
-#include <DirectXTex/DirectXTex.h>
+//#include <DirectXTex/DirectXTex.h> 
 
 #include <DirectXCollision.h>
 
