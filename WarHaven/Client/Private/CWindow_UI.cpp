@@ -27,6 +27,11 @@ HRESULT CWindow_UI::Initialize()
 	m_bEnable = true;
 	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(200.f, 300.f), window_flags);
 
+	m_TextureRootNode.strFolderPath = "../bin/resources/textures";
+	m_TextureRootNode.strFileName = "UI";
+	m_TextureRootNode.strFullPath = "../bin/resources/textures/UI";
+	Read_Folder("../bin/resources/textures/UI", m_TextureRootNode);
+
 	return S_OK;
 }
 
@@ -56,10 +61,44 @@ HRESULT CWindow_UI::Render()
 
 	// ºŒ¿Ã¥ı ∫Ø∞Ê
 
-
 	ImGui::Spacing();
 
 	__super::End();
 
 	return S_OK;
+}
+
+void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
+{
+	for (filesystem::directory_iterator FileIter(pFolderPath);
+		FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("\\") + 1;
+		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+		TREE_DATA	tTreeData;
+		tTreeData.strFullPath = strFullPath;
+		tTreeData.strFileName = strFileName;
+		tTreeData.strFolderPath = pFolderPath;
+		if (entry.is_directory())
+		{
+			Read_Folder(strFullPath.c_str(), tTreeData);
+		}
+		else
+		{
+			_int iFindExt = (int)strFileName.rfind(".") + 1;
+			string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+
+			if (strExtName == "dat")
+				continue;
+		}
+
+		tRootTree.vecChildren.push_back(tTreeData);
+	}
 }
