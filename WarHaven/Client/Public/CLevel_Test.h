@@ -25,6 +25,9 @@ public:
 	virtual HRESULT Exit() override;
 
 private:
+	HRESULT SetUp_Prototypes_TH();
+
+private:
 	CGameObject* m_pTestObj = nullptr;
 };
 
