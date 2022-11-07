@@ -1,7 +1,7 @@
 #pragma once
 
-#define MOUSE_DPI_X		0.015f
-#define MOUSE_DPI_Y		0.015f
+#define MOUSE_DPI_X		0.03f
+#define MOUSE_DPI_Y		0.03f
 
 #define PI				3.141592f
 #define PLAYER			CUser::Get_Instance()->Get_Player()

@@ -299,8 +299,8 @@ PS_OUT PS_NORMAL_MAIN(PS_IN_NORMAL In)
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	Out.vDiffuse *= g_vColor;
-	Out.vDiffuse *= g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fNoiseScale);
-	Out.vDiffuse *= 2.f;
+	//Out.vDiffuse *= g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fNoiseScale);
+	//Out.vDiffuse *= 2.f;
 	Out.vDiffuse.a = 1.f;
 
 	float fDistance = length(In.vWorldPos - g_vCamPosition);
