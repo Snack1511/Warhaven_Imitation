@@ -24,7 +24,6 @@ HRESULT CUI_LoadingIcon::Initialize_Prototype()
 
 	// 텍스처를 추가하면 0 ~ 2번까지 각각 셰이더 텍스처에 할당됨
 	SetTexture(TEXT("../Bin/Resources/Textures/UI/Loading/T_HPLoading.dds"));
-	SetTexture(TEXT("../Bin/Resources/Textures/UI/Loading/T_HPLoadingMask.dds"));
 
 	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_UI_LoadingIcon);
 
@@ -44,6 +43,9 @@ HRESULT CUI_LoadingIcon::Start()
 	__super::Start();
 
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource, this, placeholders::_1, "g_bAppear");
+
+	m_fCurValue = 1.f;
 
 	return S_OK;
 }
@@ -52,23 +54,17 @@ void CUI_LoadingIcon::My_Tick()
 {
 	__super::My_Tick();
 
-	// 원본은 나타나고 사라지고 정방향
-	// 현재는 왕복으로 진행 중
-
 	float fSpeed = fDT(0) * 0.5f;
-	m_bIsPositive ? m_fCurValue += fSpeed : m_fCurValue -= fSpeed;
-
-	if (m_fCurValue >= m_fMaxValue)
+	m_fCurValue += fSpeed;
+	if (m_fCurValue >= 1.f)
 	{
-		m_bIsPositive = false;
-	}
-	else if (m_fCurValue <= 0.f)
-	{
-		m_bIsPositive = true;
+		m_bIsAppear = !m_bIsAppear;
+		m_fCurValue = 0.f;
 	}
 }
 
 void CUI_LoadingIcon::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fCurValue, sizeof(_float));
+	pShader->Set_RawValue("g_bAppear", &m_bIsAppear, sizeof(_bool));
 }

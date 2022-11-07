@@ -29,9 +29,8 @@ private:
 	CTexture* m_pIconDissolveTexture = nullptr;
 
 	_float m_fCurValue = 0.f;
-	_float m_fMaxValue = 1.f;
 
-	bool m_bIsPositive = false;
+	bool m_bIsAppear = true;
 };
 
 END

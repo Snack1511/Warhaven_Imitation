@@ -16,6 +16,7 @@ vector	g_vFlag;
 vector	g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 float g_fValue;
+bool g_bAppear;
 
 
 struct VS_IN
@@ -120,12 +121,9 @@ PS_OUT PS_LOADINGICON(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
 	
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-    vector MaskDesc = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
 	
-    if (MaskDesc.r < 0.1f)
+    if (Out.vColor.a < 0.1f)
         discard;
-	
-    Out.vColor.a = MaskDesc.r;
 	
     if (Out.vColor.b >= 0.99f)
     {
@@ -133,15 +131,19 @@ PS_OUT PS_LOADINGICON(PS_IN In)
         return Out;
     }
 	
-    if (Out.vColor.r <= g_fValue)
-    {		
-        discard;
-    }
-	else
+	if (g_bAppear)
     {
-        Out.vColor.rgb = 1.f;
+        if (Out.vColor.r >= g_fValue)
+            discard;
     }
-
+    else
+    {
+        if (Out.vColor.r <= g_fValue)
+            discard;
+    }
+	
+    Out.vColor.rgb = 1.f;
+	
     return Out;
 }
 
