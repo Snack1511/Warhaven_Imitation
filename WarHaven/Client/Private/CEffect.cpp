@@ -55,6 +55,7 @@ HRESULT CEffect::Initialize()
 {
 	m_pModelCom = GET_COMPONENT(CModel);
 	GET_COMPONENT(CModel)->Set_ShaderFlag(m_vEffectShaderFlag);
+
 	GET_COMPONENT(CModel)->Set_ShaderPassToAll(m_eEffectPassType);
 
 	return S_OK;

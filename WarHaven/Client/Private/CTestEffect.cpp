@@ -42,7 +42,7 @@ CTestEffect* CTestEffect::Create(wstring wstrModelPath, wstring wstrMaskPath, ws
 
 HRESULT CTestEffect::Initialize_Prototype()
 {
-	m_eEffectPassType = VTXEFFECT_PASS_DISTORTION;
+	m_eEffectPassType = VTXEFFECT_PASS_DECAL;
 
 
 	__super::Initialize_Prototype();

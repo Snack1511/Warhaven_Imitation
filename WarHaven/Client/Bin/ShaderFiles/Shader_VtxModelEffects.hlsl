@@ -253,6 +253,40 @@ PS_DISTORTION_OUT PS_MAIN_DISTORTION(PS_IN In)
 	return Out;
 }
 
+struct PS_DISOLVE_OUT
+{
+	vector		vDisolveFlag : SV_TARGET0;
+};
+
+PS_OUT PS_MAIN_DISOLVE(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vEffectFlag = g_vFlag;
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
+
+	//Noise : Color
+	//Diffuse : AlphaMap
+	vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+	In.vTexUV.x += g_fUVPlusX;
+	In.vTexUV.y += g_fUVPlusY;
+	vColor -= g_fUVPlusX * 0.1f;
+	vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vDiffuse.xyz = vColor.xyz;
+	Out.vDiffuse *= vMtrlDiffuse.r;
+	Out.vDiffuse *= g_vColor;
+
+	Out.vDiffuse.a = vColor.r;
+	Out.vEffectDiffuse = Out.vDiffuse;
+	Out.vGlowFlag = g_vGlowFlag;
+
+
+	if (Out.vDiffuse.a <= 0.05f)
+		discard;
+
+	return Out;
+}
+
 
 
 technique11 DefaultTechnique
@@ -332,6 +366,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_NOISEMAPPING();
+	}
+	pass DISOLVE
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_None);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_DISOLVE();
 	}
 
 }
