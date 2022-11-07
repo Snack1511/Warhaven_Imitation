@@ -145,6 +145,12 @@
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03.Window_MapTool">
       <UniqueIdentifier>{bf927561-f572-4c65-946d-6c75c148b802}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\06. Map\Structure">
+      <UniqueIdentifier>{fc549796-059c-4e5e-b47d-221c1aea9508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\06. Map\Structure\TestStructure">
+      <UniqueIdentifier>{4df18e13-e0e4-487b-972d-e064a90dd089}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -279,6 +285,10 @@
     <ClInclude Include="..\Public\CWindow_Map.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03.Window_MapTool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CStructure_TestStructure.h">
+      <Filter>03. Instances\02. GameObject\06. Map\Structure\TestStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStructure.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -397,6 +407,10 @@
     <ClCompile Include="..\Private\CWindow_Map.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03.Window_MapTool</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CStructure_TestStructure.cpp">
+      <Filter>03. Instances\02. GameObject\06. Map\Structure\TestStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStructure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

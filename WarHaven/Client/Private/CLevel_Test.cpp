@@ -12,6 +12,8 @@
 #include "CTerrain.h"
 #include "CUnit_Warrior.h"
 
+#include "CStructure.h"
+
 #include "CCamera_Free.h"
 
 CLevel_Test::CLevel_Test()
@@ -63,22 +65,29 @@ HRESULT CLevel_Test::SetUp_Prototypes()
     m_fLoadingFinish = 0.2f;
 
 
-    CUnit::UNIT_MODEL_DATA  tModelData;
+    //CUnit::UNIT_MODEL_DATA  tModelData;
 
-    tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/warrior/Warrior.fbx";
+    //tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/warrior/Warrior.fbx";
 
-    tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/warrior/body/SK_Warrior0001_Body_A00.fbx";
-    tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/warrior/Head/SK_Warrior0001_Face_A00.fbx";
-    tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
+    //tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/warrior/body/SK_Warrior0001_Body_A00.fbx";
+    //tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/warrior/Head/SK_Warrior0001_Face_A00.fbx";
+    //tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
 
-    tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
-    tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_L_WP1";
+    //tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
+    //tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_L_WP1";
 
-    CUnit_Warrior* pTestUnit = CUnit_Warrior::Create(tModelData);
-    if (!pTestUnit)
+    //CUnit_Warrior* pTestUnit = CUnit_Warrior::Create(tModelData);
+    //if (!pTestUnit)
+    //    return E_FAIL;
+    //pTestUnit->Initialize();
+    //Ready_GameObject(pTestUnit, GROUP_PLAYER);
+
+    CStructure* pStruct = CStructure::Create();
+    if (!pStruct)
         return E_FAIL;
-    pTestUnit->Initialize();
-    Ready_GameObject(pTestUnit, GROUP_PLAYER);
+    pStruct->Initialize();
+    Ready_GameObject(pStruct, GROUP_DECORATION);
+
 
     //로딩 Finish 수동으로 해야댐 ㅠ
     m_fLoadingFinish = 0.5f;

@@ -1,0 +1,47 @@
+#pragma once
+#include "GameObject.h"
+#include "Client_Defines.h"
+BEGIN(Engine)
+class CModel;
+class CCollider;
+class CCollider_Sphere;
+class CShader;
+END
+BEGIN(Client)
+class CStructure :
+    public CGameObject
+{
+	//테스트
+	DECLARE_PROTOTYPE(CStructure)//Clone
+	DECLARE_GAMEOBJECT(CStructure)//Create
+protected:
+    CStructure();
+    virtual ~CStructure();
+public:
+	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos);
+	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType);
+	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType) {};
+
+public:
+	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
+	void	Set_Passes(VTXMODEL_PASS_TYPE ePassType);
+
+public:
+	// CGameObject을(를) 통해 상속됨
+
+	virtual HRESULT Initialize_Prototype() override;
+	virtual HRESULT Initialize() override;
+	virtual HRESULT Start() override;
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
+protected:
+	CModel* m_pModelCom = nullptr;
+
+protected:
+	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);
+
+protected:
+	virtual void My_Tick() override;
+	virtual void My_LateTick() override;
+};
+END
