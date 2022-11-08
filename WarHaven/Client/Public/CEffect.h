@@ -30,7 +30,7 @@ public:
 		ANIMPARTICLE,
 		EFFECT_END,
 	};
-	enum DISABLE_TYPE { FADE, UV, WALL, DISSOLVE, NONE, DISABLE_END };
+	enum DISABLE_TYPE { FADE, NONE, DISABLE_END };
 
 protected:
 	CEffect();
@@ -60,9 +60,6 @@ public:
 	virtual	void	ReBind_Texture();
 	virtual void	OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos);
 	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
-	virtual void	Set_ShaderResourceAlpha(CShader* pShader, const char* pConstantName);
-	virtual void	Set_ShaderResourceFlag(CShader* pShader, const char* pConstantName);
-	virtual void	Set_ShaderResourceGlowFlag(CShader* pShader, const char* pConstantName);
 
 public:
 	void		Set_ColliderOn(_float fRadius, COL_GROUP_CLIENT eColType);
@@ -98,7 +95,7 @@ protected:
 
 	_float4	m_vEffectFlag = SH_EFFECT_DEFAULT;
 	_float4	m_vGlowFlag = GLOW_CHAKRA(1.f);
-
+	
 	_float	m_fAlpha = 1.f;
 	_float	m_fCurUVPlusX = 0.f;
 	_float	m_fCurUVPlusY = 0.f;
@@ -116,22 +113,15 @@ protected:
 
 	_float4x4 m_matTrans;
 
-	DISABLE_TYPE		m_eDisableType = NONE;
+	DISABLE_TYPE		m_eDisableType = DISABLE_END;
 	_uint				m_iPassType = 0;
 
 	_hashcode	m_hcMyCode;
 
 	_byte		m_bEffectFlag = 0;
 
-
-	_float4x4	m_matRotZ;
-
 public:
 	void	Set_DisableType(DISABLE_TYPE eType) { m_eDisableType = eType; }
-
-protected:
-	_float4		m_vTurnDir = _float4(0.f, 0.f, 0.f, 0.f);
-	_float		m_fTurnSpeed = 0.f;
 
 protected:
 	CGameObject* m_pFollowTarget = nullptr;
@@ -168,7 +158,11 @@ protected:
 	_float4	m_vFadeInTargetScale = _float4(1.f, 1.f, 1.f, 1.f);
 	_float4	m_vFadeOutTargetScale = _float4(1.f, 1.f, 1.f, 1.f);
 	_float	m_fTargetAlpha = 1.f;
+
 	_float4	m_vColor;
+	_float4 m_vPlusColor = _float4{ 0.f, 0.f, 0.f, 0.f };
+	_float	m_fColorPower = 1.f;
+	_float  m_fDissolvePower = 1.f;
 
 public:
 	void	Set_FadeOut() { m_eCurFadeType = FADEOUTREADY; m_fFadeTimeAcc = 999999.f; }
@@ -180,7 +174,6 @@ protected:
 
 protected:
 	void		Update_Disable();
-	void		Update_Turn();
 	void		Update_Fade();
 };
 

@@ -56,7 +56,7 @@ CDefault_Effect* CDefault_Effect::Create(ifstream* pReadFile)
 
 HRESULT CDefault_Effect::Initialize_Prototype()
 {
-	m_eDisableType = NONE;
+	m_eDisableType = FADE;
 	m_wstrPath = L"../bin/resources/meshes/effects/naruto/common/SM_EFF_HemiSphere_A_01.fbx";
 	m_matTrans = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	m_hcMyCode = HASHCODE(CDefault_Effect);
@@ -92,8 +92,6 @@ HRESULT CDefault_Effect::SetUp_DefaultEffect(ifstream* pReadFile)
 	pReadFile->read((char*)&m_eDisableType, sizeof(_uint));
 	pReadFile->read((char*)&m_iPassType, sizeof(_uint));
 	pReadFile->read((char*)&m_bEffectFlag, sizeof(_byte));
-	pReadFile->read((char*)&m_vTurnDir, sizeof(_float4));
-	pReadFile->read((char*)&m_fTurnSpeed, sizeof(_float));
 	pReadFile->read((char*)&m_vOffsetPos, sizeof(_float4));
 	pReadFile->read((char*)&m_fMoveSpeed, sizeof(_float));
 	pReadFile->read((char*)&m_fFadeInStartTime, sizeof(_float));
@@ -104,6 +102,8 @@ HRESULT CDefault_Effect::SetUp_DefaultEffect(ifstream* pReadFile)
 	pReadFile->read((char*)&m_vFadeInTargetScale, sizeof(_float4));
 	pReadFile->read((char*)&m_vFadeOutTargetScale, sizeof(_float4));
 	pReadFile->read((char*)&m_fTargetAlpha, sizeof(_float));
+	pReadFile->read((char*)&m_vPlusColor, sizeof(_float4));
+	pReadFile->read((char*)&m_fColorPower, sizeof(_float));
 
 	m_eShaderType = SHADER_VTXEFFECTS;
 

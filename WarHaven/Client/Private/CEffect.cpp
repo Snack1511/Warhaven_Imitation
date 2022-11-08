@@ -178,23 +178,29 @@ void CEffect::OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _f
 
 void CEffect::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
+	if ("g_fAlpha" == pConstantName)
+	{
+		pShader->Set_RawValue(pConstantName, &m_fAlpha, sizeof(_float));
+		return;
+	}
+
+	if ("g_vFlag" == pConstantName)
+	{
+		pShader->Set_RawValue(pConstantName, &m_vEffectFlag, sizeof(_float4));
+		return;
+	}
+
+	if ("g_vGlowFlag" == pConstantName)
+	{
+		pShader->Set_RawValue(pConstantName, &m_vGlowFlag, sizeof(_float4));
+		return;
+	}
+
 	pShader->Set_RawValue("g_fUVPlusX", &m_fCurUVPlusX, sizeof(_float));
 	pShader->Set_RawValue("g_fUVPlusY", &m_fCurUVPlusY, sizeof(_float));
-}
-
-void CEffect::Set_ShaderResourceAlpha(CShader* pShader, const char* pConstantName)
-{
-	pShader->Set_RawValue(pConstantName, &m_fAlpha, sizeof(_float));
-}
-
-void CEffect::Set_ShaderResourceFlag(CShader* pShader, const char* pConstantName)
-{
-	pShader->Set_RawValue(pConstantName, &m_vEffectFlag, sizeof(_float4));
-}
-
-void CEffect::Set_ShaderResourceGlowFlag(CShader* pShader, const char* pConstantName)
-{
-	pShader->Set_RawValue(pConstantName, &m_vGlowFlag, sizeof(_float4));
+	pShader->Set_RawValue("g_fColorPower", &m_fColorPower, sizeof(_float));
+	pShader->Set_RawValue("g_vPlusColor", &m_vPlusColor, sizeof(_float4));
+	pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
 }
 
 void CEffect::Set_ColliderOn(_float fRadius, COL_GROUP_CLIENT eColType)
@@ -224,8 +230,8 @@ HRESULT CEffect::Start()
 	SHADER_BINDING(CEffect, "g_fUVPlus");
 
 	GET_COMPONENT(CModel)->Set_ShaderFlag(m_vEffectFlag);
-	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResourceAlpha, this, placeholders::_1, "g_fAlpha");
-	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResourceGlowFlag, this, placeholders::_1, "g_vGlowFlag");
+	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, "g_fAlpha");
+	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, "g_vGlowFlag");
 
 
 	CallBack_CollisionEnter += bind(&CEffect::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3);
@@ -367,9 +373,6 @@ void CEffect::My_LateTick()
 		Update_FollowTarget();
 	}
 
-	if (m_fTurnSpeed > 0.f)
-		Update_Turn();
-
 	//UV
 	m_fCurUVPlusY += m_fUVSpeedY * fDT(0);
 	m_fCurUVPlusX += m_fUVSpeedX * fDT(0);
@@ -412,40 +415,12 @@ void CEffect::Update_Disable()
 {
 	switch (m_eDisableType)
 	{
-	case Client::CEffect::UV:
-		if (fabs(m_fCurUVPlusX) >= 1.f || fabs(m_fCurUVPlusY) >= 1.f)
-			DISABLE_GAMEOBJECT(this);
-
-		break;
-	case Client::CEffect::WALL:
-		if (GET_COMPONENT(CNavigation)->Is_OnWall())
-			DISABLE_GAMEOBJECT(this);
-
-
-		break;
 	case Client::CEffect::NONE:
-		break;
-	case Client::CEffect::DISABLE_END:
+		m_fAlpha = 1.f;
 		break;
 	default:
 		break;
 	}
-}
-
-void CEffect::Update_Turn()
-{
-	m_fTurnAngle += m_fTurnSpeed * fDT(0);
-
-	//내 회전각에 타겟의 월드 곱하던가 머하던가
-	_float4 vTurnDir = m_vTurnDir;
-
-	if (m_bEffectFlag & EFFECT_FOLLOWTARGET)
-		vTurnDir = m_vTurnDir.MultiplyNormal(m_pFollowTarget->Get_Transform()->Get_WorldMatrix());
-
-
-	CUtility_Transform::Turn_ByAngle(m_pTransform, vTurnDir.Normalize(), m_fTurnAngle);
-
-	m_pTransform->Make_WorldMatrix();
 }
 
 void CEffect::Update_Fade()

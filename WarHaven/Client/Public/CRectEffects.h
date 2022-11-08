@@ -26,7 +26,7 @@ public:
 public:
 	virtual void		Self_Reset(CGameObject* pGameObject, _float4 vStartPos);
 
-	virtual void	Set_ShaderResourceFlag(CShader* pShader, const char* pConstantName) override;
+	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName) override;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

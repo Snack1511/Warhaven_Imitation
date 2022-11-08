@@ -364,7 +364,7 @@ void CWindow_Effect::Show_EffectTab()
 				{
 					pCurEffect->m_wstrColorMapPath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
 					CModel* pModelCom = GET_COMPONENT_FROM(pCurEffect, CModel);
-					pModelCom->Change_Texture(0, 1, CFunctor::To_Wstring(m_CurSelectedTextureFilePath));
+					pModelCom->Change_Texture(0, aiTextureType_DIFFUSE, CFunctor::To_Wstring(m_CurSelectedTextureFilePath));
 				}
 			}
 
@@ -397,22 +397,14 @@ void CWindow_Effect::Show_EffectTab()
 
 			if (ImGui::Selectable("DEFAULT", &bSelect[VTXEFFECT_PASS_DEFAULT]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DEFAULT;
-			if (ImGui::Selectable("LINEX", &bSelect[VTXEFFECT_PASS_LINEX]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_LINEX;
-			if (ImGui::Selectable("LINEY", &bSelect[VTXEFFECT_PASS_LINEY]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_LINEY;
-			if (ImGui::Selectable("TEXT", &bSelect[VTXEFFECT_PASS_TEXT]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_TEXT;
-			if (ImGui::Selectable("CARTOON", &bSelect[VTXEFFECT_PASS_CARTOON]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_CARTOON;
 			if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
 			{
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISTORTION;
-				GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
+				//GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
 
 			}
-			if (ImGui::Selectable("NOISE", &bSelect[VTXEFFECT_PASS_NOISE]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_NOISE;
+			if (ImGui::Selectable("DISSOLVE", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISSOLVE;
 
 			pModelCom->Set_ShaderPassToAll(pCurEffect->m_iPassType);
 
@@ -503,22 +495,11 @@ void CWindow_Effect::Show_EffectTab()
 			{
 				pCurEffect->m_eDisableType = CEffect::FADE;
 			}
-			if (ImGui::Selectable("UV", &bSelect[CEffect::UV]))
-			{
-				pCurEffect->m_eDisableType = CEffect::UV;
-			}
-			if (ImGui::Selectable("WALL", &bSelect[CEffect::WALL]))
-			{
-				pCurEffect->m_eDisableType = CEffect::WALL;
-			}
-			if (ImGui::Selectable("DISSOLVE", &bSelect[CEffect::DISSOLVE]))
-			{
-				pCurEffect->m_eDisableType = CEffect::DISSOLVE;
-			}
 			if (ImGui::Selectable("NONE", &bSelect[CEffect::NONE]))
 			{
 				pCurEffect->m_eDisableType = CEffect::NONE;
 			}
+
 
 			memset(bSelect, 0, sizeof(_bool) * CEffect::DISABLE_END);
 			bSelect[pCurEffect->m_eDisableType] = true;
@@ -644,21 +625,21 @@ void CWindow_Effect::Show_EffectTab()
 				pCurEffect->m_fUVSpeedY = vUVSpeed[1];
 			}
 
-			if (ImGui::InputFloat("TURN_SPEED", &pCurEffect->m_fTurnSpeed, 0.1f))
-			{
-			}
-
 			_float	vOffsetPos[3] = { pCurEffect->m_vOffsetPos.x, pCurEffect->m_vOffsetPos.y, pCurEffect->m_vOffsetPos.z };
 			if (ImGui::InputFloat3("OFFSET POS", vOffsetPos, "%.2f"))
 			{
 				pCurEffect->m_vOffsetPos = _float4(vOffsetPos[0], vOffsetPos[1], vOffsetPos[2], 1.f);
 			}
 
-			_float	fTurnDir[3] = { pCurEffect->m_vTurnDir.x, pCurEffect->m_vTurnDir.y, pCurEffect->m_vTurnDir.z };
-			if (ImGui::InputFloat3("Turn Direction", fTurnDir, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue))
+			_float vPlusColor[4] = { pCurEffect->m_vPlusColor.x, pCurEffect->m_vPlusColor.y, pCurEffect->m_vPlusColor.z, pCurEffect->m_vPlusColor.w };
+			memcpy(vPlusColor, &pCurEffect->m_vPlusColor, sizeof(_float4));
+			if (ImGui::InputFloat4("PlusColor", vPlusColor, "%.2f"))
 			{
-				pCurEffect->m_vTurnDir = _float4(fTurnDir[0], fTurnDir[1], fTurnDir[2], 0.f);
-				pCurEffect->m_vTurnDir.Normalize();
+				memcpy(&pCurEffect->m_vPlusColor, vPlusColor, sizeof(_float4));
+			}
+
+			if (ImGui::InputFloat("ColorPower", &pCurEffect->m_fColorPower, 0.1f))
+			{
 			}
 
 			/* FADE */
@@ -675,6 +656,9 @@ void CWindow_Effect::Show_EffectTab()
 			{
 			}
 			if (ImGui::InputFloat("Target Alpha", &pCurEffect->m_fTargetAlpha, 0.1f))
+			{
+			}
+			if (ImGui::InputFloat("DissolvePower", &pCurEffect->m_fDissolvePower, 0.1f))
 			{
 			}
 
@@ -1187,8 +1171,6 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&pCurEffect->m_eDisableType, sizeof(_uint));
 		writeFile.write((char*)&pCurEffect->m_iPassType, sizeof(_uint));
 		writeFile.write((char*)&pCurEffect->m_bEffectFlag, sizeof(_byte));
-		writeFile.write((char*)&pCurEffect->m_vTurnDir, sizeof(_float4));
-		writeFile.write((char*)&pCurEffect->m_fTurnSpeed, sizeof(_float));
 		writeFile.write((char*)&pCurEffect->m_vOffsetPos, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_fMoveSpeed, sizeof(_float));
 		writeFile.write((char*)&pCurEffect->m_fFadeInStartTime, sizeof(_float));

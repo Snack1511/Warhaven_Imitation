@@ -133,7 +133,7 @@ void CRectEffects::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 
 }
 
-void CRectEffects::Set_ShaderResourceFlag(CShader* pShader, const char* pConstantName)
+void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
 	{
@@ -142,7 +142,7 @@ void CRectEffects::Set_ShaderResourceFlag(CShader* pShader, const char* pConstan
 		pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
 	}
 
-	__super::Set_ShaderResourceFlag(pShader, pConstantName);
+	__super::Set_ShaderResource(pShader, pConstantName);
 }
 
 
@@ -370,8 +370,8 @@ HRESULT CRectEffects::Re_Initialize()
 HRESULT CRectEffects::Start()
 {
 	CGameObject::Start();
-	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResourceFlag, this, placeholders::_1, "g_vFlag");
-	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResourceGlowFlag, this, placeholders::_1, "g_vGlowFlag");
+	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, "g_vFlag");
+	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, "g_vGlowFlag");
 
 	return S_OK;
 }
