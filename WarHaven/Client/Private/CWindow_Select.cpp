@@ -54,7 +54,12 @@ HRESULT CWindow_Select::Render()
 	{
 		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_DEFAULT);
 	}
+	ImGui::Spacing();
 
+	if (ImGui::Button("Map Tool"))
+	{
+		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_MAPTOOL);
+	}
 	ImGui::Spacing();
 
 	__super::End();

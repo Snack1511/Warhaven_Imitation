@@ -12,6 +12,8 @@
 #include "CTerrain.h"
 #include "CUnit_Warrior.h"
 
+#include "CStructure.h"
+
 #include "CCamera_Free.h"
 
 CLevel_Test::CLevel_Test()
@@ -80,6 +82,12 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 		return E_FAIL;
 	pTestUnit->Initialize();
 	Ready_GameObject(pTestUnit, GROUP_PLAYER);
+    CStructure* pStruct = CStructure::Create();
+    if (!pStruct)
+        return E_FAIL;
+    pStruct->Initialize();
+    Ready_GameObject(pStruct, GROUP_DECORATION);
+
 
 	//로딩 Finish 수동으로 해야댐 ㅠ
 	m_fLoadingFinish = 0.5f;

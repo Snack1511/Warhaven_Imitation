@@ -198,6 +198,7 @@
     <ClInclude Include="..\public\CSkyBox.h" />
     <ClInclude Include="..\public\CState.h" />
     <ClInclude Include="..\public\CState_Manager.h" />
+    <ClInclude Include="..\Public\CStructure.h" />
     <ClInclude Include="..\public\CTerrain.h" />
     <ClInclude Include="..\public\CTrailBuffer.h" />
     <ClInclude Include="..\Public\CTrailEffect.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="..\Public\CUI_Logo.h" />
     <ClInclude Include="..\Public\CUI_Object.h" />
     <ClInclude Include="..\public\CUnit.h" />
+    <ClInclude Include="..\Public\CStructure_TestStructure.h" />
     <ClInclude Include="..\public\CUnit_Warrior.h" />
     <ClInclude Include="..\public\CUser.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -219,6 +221,7 @@
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CUtility_Transform.h" />
     <ClInclude Include="..\public\CWindow_Default.h" />
+    <ClInclude Include="..\Public\CWindow_Map.h" />
     <ClInclude Include="..\public\CWindow_Select.h" />
     <ClInclude Include="..\Public\CWindow_UI.h" />
     <ClInclude Include="..\public\Functor.h" />
@@ -253,6 +256,7 @@
     <ClCompile Include="..\private\CSkyBox.cpp" />
     <ClCompile Include="..\private\CState.cpp" />
     <ClCompile Include="..\private\CState_Manager.cpp" />
+    <ClCompile Include="..\Private\CStructure.cpp" />
     <ClCompile Include="..\private\CTerrain.cpp" />
     <ClCompile Include="..\private\CTrailBuffer.cpp" />
     <ClCompile Include="..\Private\CTrailEffect.cpp" />
@@ -265,10 +269,12 @@
     <ClCompile Include="..\Private\CUI_Logo.cpp" />
     <ClCompile Include="..\Private\CUI_Object.cpp" />
     <ClCompile Include="..\private\CUnit.cpp" />
+    <ClCompile Include="..\Private\CStructure_TestStructure.cpp" />
     <ClCompile Include="..\private\CUnit_Warrior.cpp" />
     <ClCompile Include="..\private\CUser.cpp" />
     <ClCompile Include="..\private\CUtility_Transform.cpp" />
     <ClCompile Include="..\Private\CWindow_Default.cpp" />
+    <ClCompile Include="..\Private\CWindow_Map.cpp" />
     <ClCompile Include="..\private\CWindow_Select.cpp" />
     <ClCompile Include="..\Private\CWindow_UI.cpp" />
     <ClCompile Include="..\private\Functor.cpp" />

@@ -17,6 +17,7 @@ public:
 		IMGUI_DEFAULT,
 		IMGUI_SELECT,
 		IMGUI_UI,
+		IMGUI_MAPTOOL,
 		IMGUI_END
 	};
 
