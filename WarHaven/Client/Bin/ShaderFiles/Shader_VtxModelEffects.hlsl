@@ -14,7 +14,7 @@ float		g_fUVPlusY = 0.f;
 float		g_fAlpha = 0.f;
 float		g_fNoiseScale = 0.1f;
 
-
+float		g_fColorPower = 1.f;
 vector		g_vColor = vector(1.f, 1.f, 1.f, 1.f);
 vector		g_vFlag = vector(0.f, 0.f, 0.f, 0.f);
 vector		g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
@@ -112,6 +112,9 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 		discard;
 
 	Out.vDiffuse.xyz = vColor.xyz;
+	Out.vDiffuse.xyz += g_vColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
+
 	Out.vEffectDiffuse = Out.vDiffuse;
 	Out.vGlowFlag = g_vGlowFlag;
 

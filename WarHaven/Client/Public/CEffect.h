@@ -30,7 +30,7 @@ public:
 		ANIMPARTICLE,
 		EFFECT_END,
 	};
-	enum DISABLE_TYPE { FADE, UV, WALL, NONE, DISABLE_END };
+	enum DISABLE_TYPE { FADE, UV, WALL, DISSOLVE, NONE, DISABLE_END };
 
 protected:
 	CEffect();
@@ -57,6 +57,7 @@ public:
 	void		Set_FollowTarget(CGameObject* pTarget) { m_pFollowTarget = pTarget; }
 
 public:
+	virtual	void	ReBind_Texture();
 	virtual void	OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos);
 	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
 	virtual void	Set_ShaderResourceAlpha(CShader* pShader, const char* pConstantName);
@@ -66,6 +67,15 @@ public:
 public:
 	void		Set_ColliderOn(_float fRadius, COL_GROUP_CLIENT eColType);
 	void		Set_FadeInStartTime(_float fTime) { m_fFadeInStartTime = fTime; }
+
+
+	//회전하는건 버리고
+	//노이즈 텍스쳐 사용하는 패스도 만들고 (사라질때 디솔브)
+	//컬러값 변수 넣고 (+로 더해지는거)
+	//컬러값 곱하는거 (강도) (float하나)
+
+	
+
 
 
 public:

@@ -163,6 +163,13 @@ void CEffect::Reset(_float4x4 matWorld)
 
 }
 
+void CEffect::ReBind_Texture()
+{
+	GET_COMPONENT(CModel)->Change_Texture(0, aiTextureType_REFLECTION, m_wstrMaskMapPath);
+	GET_COMPONENT(CModel)->Change_Texture(0, aiTextureType_DIFFUSE, m_wstrColorMapPath);
+	GET_COMPONENT(CModel)->Change_Texture(0, aiTextureType_DIFFUSE_ROUGHNESS, m_wstrNoiseMapPath);
+}
+
 void CEffect::OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos)
 {
 	if (!(m_bEffectFlag & EFFECT_COLLIDER))

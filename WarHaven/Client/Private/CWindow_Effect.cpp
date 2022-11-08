@@ -511,6 +511,10 @@ void CWindow_Effect::Show_EffectTab()
 			{
 				pCurEffect->m_eDisableType = CEffect::WALL;
 			}
+			if (ImGui::Selectable("DISSOLVE", &bSelect[CEffect::DISSOLVE]))
+			{
+				pCurEffect->m_eDisableType = CEffect::DISSOLVE;
+			}
 			if (ImGui::Selectable("NONE", &bSelect[CEffect::NONE]))
 			{
 				pCurEffect->m_eDisableType = CEffect::NONE;
@@ -709,6 +713,8 @@ void CWindow_Effect::Show_EffectTab()
 
 }
 
+
+/* Particle */
 void CWindow_Effect::Show_ParticleTab()
 {
 	/* Effect Info */
@@ -1306,8 +1312,8 @@ void CWindow_Effect::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
 			_int iFindExt = (int)strFileName.rfind(".") + 1;
 			string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
 
-			if (strExtName == "dat")
-				continue;
+			/*if (strExtName == "fbx" || strExtName == "FBX")
+				continue;*/
 		}
 
 		tRootTree.vecChildren.push_back(tTreeData);
@@ -1415,14 +1421,8 @@ void CWindow_Effect::Show_TreeData_Effect(TREE_DATA& tTree)
 void CWindow_Effect::Change_Model(CModel* pModelCom)
 {
 	pModelCom->Set_NewModel(CFunctor::To_Wstring(m_CurSelectedMeshFilePath));
-
-	CTexture* pTextureCom = pModelCom->Get_Materials().front().second.pTextures[aiTextureType_DIFFUSE_ROUGHNESS];
-	pTextureCom->Add_Texture(m_vecEffects[m_iCurrentIdx].pEffect->m_wstrColorMapPath.c_str());
-	pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
-
-	pTextureCom = pModelCom->Get_Materials().front().second.pTextures[1];
-	pTextureCom->Add_Texture(m_vecEffects[m_iCurrentIdx].pEffect->m_wstrMaskMapPath.c_str());
-	pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
+	
+	m_vecEffects[m_iCurrentIdx].pEffect->ReBind_Texture();
 
 	pModelCom->Set_ShaderFlag(m_vecEffects[m_iCurrentIdx].pEffect->m_vEffectFlag);
 }
@@ -1431,13 +1431,8 @@ void CWindow_Effect::Change_Model(CModel* pModelCom, _float4x4 transformMatrix)
 {
 	pModelCom->Set_NewTransformMatrix(transformMatrix);
 
-	CTexture* pTextureCom = pModelCom->Get_Materials().front().second.pTextures[aiTextureType_DIFFUSE_ROUGHNESS];
-	pTextureCom->Add_Texture(m_vecEffects[m_iCurrentIdx].pEffect->m_wstrColorMapPath.c_str());
-	pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
+	m_vecEffects[m_iCurrentIdx].pEffect->ReBind_Texture();
 
-	pTextureCom = pModelCom->Get_Materials().front().second.pTextures[1];
-	pTextureCom->Add_Texture(m_vecEffects[m_iCurrentIdx].pEffect->m_wstrMaskMapPath.c_str());
-	pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
 
 	pModelCom->Set_ShaderFlag(m_vecEffects[m_iCurrentIdx].pEffect->m_vEffectFlag);
 
