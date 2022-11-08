@@ -170,6 +170,26 @@ void CModel::Set_NewTransformMatrix(_float4x4 TransformMatrix)
 	SetUp_Model(m_eMODEL_TYPE, m_wstrModelFilePath, m_TransformMatrix, 0);
 }
 
+void CModel::Change_Texture(_uint iModelPart, _uint iTextureIndex, wstring wstrFilePath)
+{
+	for (auto& elem : m_Materials)
+	{
+		if (elem.first == iModelPart)
+		{
+			if (nullptr == elem.second.pTextures[iTextureIndex])
+			{
+				elem.second.pTextures[iTextureIndex] = CTexture::Create(0, wstrFilePath.c_str(), 1);
+				continue;
+			}
+
+			
+			elem.second.pTextures[iTextureIndex]->Add_Texture(wstrFilePath.c_str());
+			elem.second.pTextures[iTextureIndex]->Set_CurTextureIndex(elem.second.pTextures[iTextureIndex]->Get_TextureSize() - 1);
+
+		}
+	}
+}
+
 void CModel::Set_ShaderPass(_uint iModelPart, _uint iShaderPass)
 {
 	for (auto& elem : m_MeshContainers)

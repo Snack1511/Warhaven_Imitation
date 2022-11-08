@@ -28,7 +28,7 @@ public:
 
 	void	Set_NewModel(wstring wstrModelFilePath);
 	void	Set_NewTransformMatrix(_float4x4 TransformMatrix);
-
+	void	Change_Texture(_uint iModelPart, _uint iTextureIndex, wstring wstrFilePath);
 	void	Set_ShaderPass(_uint iModelPart, _uint iShaderPass);
 	void	Set_ShaderPassToAll(_uint iShaderPass);
 	virtual void Set_Owner(CGameObject* pOwner) override;

@@ -208,6 +208,9 @@
     <Filter Include="03. Instances\02. GameObject\06. Map\Structure\TestStructure">
       <UniqueIdentifier>{4df18e13-e0e4-487b-972d-e064a90dd089}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\08. Effect\00. TestEffect">
+      <UniqueIdentifier>{e1d3c056-0ef4-469d-8da2-b08bc529b452}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -381,6 +384,12 @@
     <ClInclude Include="..\Public\CStructure.h">
       <Filter>03. Instances\02. GameObject\06. Map\Structure</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CEffect.h">
+      <Filter>03. Instances\02. GameObject\08. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTestEffect.h">
+      <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -537,6 +546,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CStructure.cpp">
       <Filter>03. Instances\02. GameObject\06. Map\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CEffect.cpp">
+      <Filter>03. Instances\02. GameObject\08. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTestEffect.cpp">
+      <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

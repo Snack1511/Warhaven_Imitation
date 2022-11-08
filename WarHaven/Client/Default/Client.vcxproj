@@ -186,6 +186,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CCamera_Default.h" />
     <ClInclude Include="..\public\CCamera_Free.h" />
+    <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\public\CEffects_Factory.h" />
     <ClInclude Include="..\public\CIdle_Player.h" />
     <ClInclude Include="..\public\CFader.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="..\public\CState_Manager.h" />
     <ClInclude Include="..\Public\CStructure.h" />
     <ClInclude Include="..\public\CTerrain.h" />
+    <ClInclude Include="..\Public\CTestEffect.h" />
     <ClInclude Include="..\public\CTrailBuffer.h" />
     <ClInclude Include="..\Public\CTrailEffect.h" />
     <ClInclude Include="..\Public\CUI.h" />
@@ -243,6 +245,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\private\CCamera_Default.cpp" />
     <ClCompile Include="..\private\CCamera_Free.cpp" />
+    <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\private\CEffects_Factory.cpp" />
     <ClCompile Include="..\private\CIdle_Player.cpp" />
     <ClCompile Include="..\Private\CFader.cpp" />
@@ -258,6 +261,7 @@
     <ClCompile Include="..\private\CState_Manager.cpp" />
     <ClCompile Include="..\Private\CStructure.cpp" />
     <ClCompile Include="..\private\CTerrain.cpp" />
+    <ClCompile Include="..\Private\CTestEffect.cpp" />
     <ClCompile Include="..\private\CTrailBuffer.cpp" />
     <ClCompile Include="..\Private\CTrailEffect.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />
