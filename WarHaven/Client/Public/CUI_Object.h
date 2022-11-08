@@ -23,8 +23,6 @@ public:
 
 public:
 	void Set_Texture(const _tchar* pFilePath);
-
-public:
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
 public:
@@ -44,7 +42,6 @@ private:
 	CUI_Button* m_pButton = nullptr;
 
 	_bool m_bIsMultiTex = false;
-
 	_bool m_bIsMouseTarget = false;
 	_bool m_bIsOnMouse = false;
 

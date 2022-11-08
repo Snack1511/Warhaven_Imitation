@@ -5,6 +5,7 @@
 #include "Transform.h"
 #include "Functor.h"
 #include "Renderer.h"
+#include "CShader.h"
 
 CUI_Object::CUI_Object()
 {
@@ -104,8 +105,8 @@ void CUI_Object::MouseEvent()
 		{
 			if (KEY(LBUTTON, HOLD))
 			{
-				_float4 vPos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
-				Set_Pos(vPos.x, -vPos.y);
+				_float4 vMousePos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
+				Set_Pos(vMousePos.x, -vMousePos.y);
 			}
 		}
 

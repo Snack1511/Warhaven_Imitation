@@ -58,22 +58,20 @@ private:
 
 	void Show_UIList();
 
-	void Show_Inspector(CUI_Object* pUI);
+	void Show_Inspector();
 
-	void Set_Object_Info(CUI_Object* pUI);
-
-	void Show_Shader(_uint iIndex);
+	void Set_Object_Info();
 
 	void Show_Texture();
-	void Show_Color();
+	void Show_Texture_Preview();
 
 	void UI_IO();
 
+	void Save_UI_Info(_uint iSelectIndex);
 	void Save_UI_List();
-	void Save_UI_Info(CUI_Object* pUI);
 
+	void Load_UI_Info(string pFileName);
 	void Load_UI_List();
-	void Load_UI_Info(CUI_Object* pUI);
 
 	void Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree);
 	void Show_TreeTexture(TREE_DATA& tTree, _uint iIndex);

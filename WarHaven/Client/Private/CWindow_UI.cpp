@@ -73,13 +73,9 @@ HRESULT CWindow_UI::Render()
 
 	if (m_iSelectIndex < 9999)
 	{
-		CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
 
-		// 객체를 선택할 때 객체의 원래 크기 값을 받아옴??
 
-		// 원래 크기값과 현재 적용된 배수를 받아옴
-
-		Show_Inspector(pUI);
+		Show_Inspector();
 	}
 
 	ImGui::Spacing();
@@ -158,11 +154,11 @@ void CWindow_UI::Show_UIList()
 	}
 }
 
-void CWindow_UI::Show_Inspector(CUI_Object* pUI)
+void CWindow_UI::Show_Inspector()
 {
 	ImGui::Begin("Inspector");
 
-	Set_Object_Info(pUI);
+	Set_Object_Info();
 
 	// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
 	Show_Texture();
@@ -170,9 +166,10 @@ void CWindow_UI::Show_Inspector(CUI_Object* pUI)
 	ImGui::End();
 }
 
-void CWindow_UI::Set_Object_Info(CUI_Object* pUI)
+void CWindow_UI::Set_Object_Info()
 {
-	// 객체 이름 설정
+	CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
+
 	if (ImGui::CollapsingHeader("Name"))
 	{
 		static char strName[128] = "UI_Object";
@@ -185,7 +182,6 @@ void CWindow_UI::Set_Object_Info(CUI_Object* pUI)
 
 	if (ImGui::CollapsingHeader("Transform"))
 	{
-
 		if (ImGui::TreeNode("Position"))
 		{
 			_float4 fUI_Pos = pUI->Get_Transform()->Get_World(WORLD_POS);
@@ -196,6 +192,7 @@ void CWindow_UI::Set_Object_Info(CUI_Object* pUI)
 			ImGui::TreePop();
 		}
 
+		// 토글버튼으로 토글이 활성화 되어 있으면 스케일 배수 아닐 경우 하나씩 증가
 		if (ImGui::TreeNode("Scale"))
 		{
 			_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
@@ -255,8 +252,8 @@ void CWindow_UI::UI_IO()
 
 		ImGui::SameLine();
 
-		//if (ImGui::Button("Select Save"))
-		//	Save_UI_Info();
+		if (ImGui::Button("Select Save"))
+			Save_UI_Info(m_iSelectIndex);
 
 		ImGui::NewLine();
 
@@ -266,16 +263,63 @@ void CWindow_UI::UI_IO()
 		ImGui::SameLine();
 
 		//if (ImGui::Button("Select Load"))
-		//	Load_UI_Info();
+			//Load_UI_Info();
 	}
 
 	ImGui::NewLine();
 }
 
+void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
+{
+	CUI_Object* pUI = m_vecUI[iSelectIndex].pUI;
+
+	string savePath = "../Bin/Data/UIData/";
+	savePath += CFunctor::To_String(pUI->Get_UIName()).c_str();
+	savePath += ".bin";
+
+	ofstream	writeFile(savePath, ios::binary);
+
+	if (!writeFile.is_open())
+	{
+		Call_MsgBox(L"UI Save Failed");
+		return;
+	}
+
+	string strName = CFunctor::To_String(pUI->Get_UIName());
+	CUtility_File::Write_Text(&writeFile, strName.c_str());
+
+	_float4 vPos = pUI->Get_Transform()->Get_World(WORLD_POS);
+	writeFile.write((char*)&vPos, sizeof(_float4));
+
+	_float4 vScale = pUI->Get_Transform()->Get_Scale();
+	writeFile.write((char*)&vScale, sizeof(_float4));
+
+	_bool bTarget = pUI->Get_MouseTarget();
+	writeFile.write((char*)&bTarget, sizeof(_bool));
+
+	_bool bMulti = pUI->Get_MultiTexture();
+	writeFile.write((char*)&bMulti, sizeof(_bool));
+
+	CTexture* pTexture = GET_COMPONENT_FROM(pUI, CTexture);
+
+	_uint iMaxSize = pTexture->Get_vecTexture().size();
+	writeFile.write((char*)&iMaxSize, sizeof(_uint));
+
+	for (size_t i = 0; i < iMaxSize; ++i)
+	{
+		string strFilePath = CFunctor::To_String(pTexture->Get_vecTexture()[i].strFilePath);
+		CUtility_File::Write_Text(&writeFile, strFilePath.c_str());
+	}
+
+	writeFile.close();
+
+	Call_MsgBox(L"UI_Object Save Succes");
+}
+
 void CWindow_UI::Save_UI_List()
 {
-	string savePath = "../Bin/Data/UIData/UIListInfo";
-	savePath += ".bin";
+	string savePath = "../Bin/Data/UIData/UIListInfo.bin";
+
 	ofstream	writeFile(savePath, ios::binary);
 
 	if (!writeFile.is_open())
@@ -288,42 +332,19 @@ void CWindow_UI::Save_UI_List()
 	writeFile.write((char*)&iSize, sizeof(_uint));
 
 	for (_uint i = 0; i < m_vecUI.size(); ++i)
-	{
-		string strName = CFunctor::To_String(m_vecUI[i].pUI->Get_UIName());
-		CUtility_File::Write_Text(&writeFile, strName.c_str());
-
-		_float4 vPos = m_vecUI[i].pUI->Get_Transform()->Get_World(WORLD_POS);
-		writeFile.write((char*)&vPos, sizeof(_float4));
-
-		_float4 vScale = m_vecUI[i].pUI->Get_Transform()->Get_Scale();
-		writeFile.write((char*)&vScale, sizeof(_float4));
-
-		_bool bTarget = m_vecUI[i].pUI->Get_MouseTarget();
-		writeFile.write((char*)&bTarget, sizeof(_bool));
-
-		_bool bMulti = m_vecUI[i].pUI->Get_MultiTexture();
-		writeFile.write((char*)&bMulti, sizeof(_bool));
-
-		CTexture* pTexture = GET_COMPONENT_FROM(m_vecUI[i].pUI, CTexture);
-
-		_uint iMaxSize = pTexture->Get_vecTexture().size();
-		writeFile.write((char*)&iMaxSize, sizeof(_uint));
-
-		for (size_t i = 0; i < iMaxSize; ++i)
-		{
-			string strFilePath = CFunctor::To_String(pTexture->Get_vecTexture()[i].strFilePath);
-			CUtility_File::Write_Text(&writeFile, strFilePath.c_str());
-		}
-	}
+		Save_UI_Info(i);
 
 	writeFile.close();
 
-	Call_MsgBox(L"UI_Object Save Succes");
+	Call_MsgBox(L"UI_List Save Succes");
 }
 
-void CWindow_UI::Load_UI_List()
+void Load_UI_Info(string pFileName)
 {
-	string strLoadPath = "../Bin/Data/UIData/UIListInfo.bin";
+	/*string strLoadPath = "../Bin/Data/UIData/";
+	strLoadPath += pFileName;
+	strLoadPath += ".bin";
+
 	ifstream readFile(strLoadPath, ios::binary);
 
 	if (!readFile.is_open())
@@ -332,45 +353,106 @@ void CWindow_UI::Load_UI_List()
 		return;
 	}
 
-	_uint iSize = 0;
-	readFile.read((char*)&iSize, sizeof(_uint));
+	CUI_Object* pUI = Add_UI();
 
-	for (_uint i = 0; i < iSize; ++i)
+	string strName = CUtility_File::Read_Text(&readFile);
+	pUI->Set_UIName(CFunctor::To_Wstring(strName));
+
+	_float4 vPos;
+	readFile.read((char*)&vPos, sizeof(_float4));
+	pUI->Set_Pos(vPos.x, vPos.y);
+
+	_float4 vScale;
+	readFile.read((char*)&vScale, sizeof(_float4));
+	pUI->Set_Scale(vScale.x, vScale.y);
+
+	_bool bTarget = false;
+	readFile.read((char*)&bTarget, sizeof(_bool));
+	pUI->Set_MouseTarget(bTarget);
+
+	_bool bMulti = false;
+	readFile.read((char*)&bMulti, sizeof(_bool));
+	pUI->Set_MultiTexture(bMulti);
+
+	_uint iMaxSize = 0;
+	readFile.read((char*)&iMaxSize, sizeof(_uint));
+
+	for (_uint i = 0; i < iMaxSize; ++i)
 	{
-		CUI_Object* pUI = Add_UI();
-
-		string strName = CUtility_File::Read_Text(&readFile);
-		pUI->Set_UIName(CFunctor::To_Wstring(strName));
-
-		_float4 vPos;
-		readFile.read((char*)&vPos, sizeof(_float4));
-		pUI->Set_Pos(vPos.x, vPos.y);
-
-		_float4 vScale;
-		readFile.read((char*)&vScale, sizeof(_float4));
-		pUI->Set_Scale(vScale.x, vScale.y);
-
-		_bool bTarget = false;
-		readFile.read((char*)&bTarget, sizeof(_bool));
-		pUI->Set_MouseTarget(bTarget);
-
-		_bool bMulti = false;
-		readFile.read((char*)&bMulti, sizeof(_bool));
-		pUI->Set_MultiTexture(bMulti);
-
-		_uint iMaxSize = 0;
-		readFile.read((char*)&iMaxSize, sizeof(_uint));
-
-		for (_uint i = 0; i < iMaxSize; ++i)
-		{
-			string strPath = CUtility_File::Read_Text(&readFile);
-			pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
-		}
+		string strPath = CUtility_File::Read_Text(&readFile);
+		pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
 	}
 
 	readFile.close();
 
-	Call_MsgBox(L"UI_Object Save Succes");
+	Call_MsgBox(L"UI_Object Save Succes");*/
+}
+
+void CWindow_UI::Load_UI_List()
+{
+	string strLoadPath = "../Bin/Data/UIData/";
+
+	for (filesystem::directory_iterator FileIter(strLoadPath); FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("/") + 1;
+		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+		strLoadPath += strFileName;
+
+		ifstream readFile(strLoadPath, ios::binary);
+
+		if (!readFile.is_open())
+		{
+			Call_MsgBox(L"UI Load Failed");
+			return;
+		}
+
+		_uint iSize = 0;
+		readFile.read((char*)&iSize, sizeof(_uint));
+
+		for (_uint i = 0; i < iSize; ++i)
+		{
+			CUI_Object* pUI = Add_UI();
+
+			string strName = CUtility_File::Read_Text(&readFile);
+			pUI->Set_UIName(CFunctor::To_Wstring(strName));
+
+			_float4 vPos;
+			readFile.read((char*)&vPos, sizeof(_float4));
+			pUI->Set_Pos(vPos.x, vPos.y);
+
+			_float4 vScale;
+			readFile.read((char*)&vScale, sizeof(_float4));
+			pUI->Set_Scale(vScale.x, vScale.y);
+
+			_bool bTarget = false;
+			readFile.read((char*)&bTarget, sizeof(_bool));
+			pUI->Set_MouseTarget(bTarget);
+
+			_bool bMulti = false;
+			readFile.read((char*)&bMulti, sizeof(_bool));
+			pUI->Set_MultiTexture(bMulti);
+
+			_uint iMaxSize = 0;
+			readFile.read((char*)&iMaxSize, sizeof(_uint));
+
+			for (_uint i = 0; i < iMaxSize; ++i)
+			{
+				string strPath = CUtility_File::Read_Text(&readFile);
+				pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
+			}
+		}
+
+		readFile.close();
+
+		Call_MsgBox(L"UI_Object Load Succes");
+	}	
 }
 
 void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)

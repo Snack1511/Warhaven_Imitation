@@ -21,21 +21,14 @@ CUI::~CUI()
 
 HRESULT CUI::Initialize_Prototype()
 {
-	// 이미지를 출력할 메쉬 렉트 생성
 	Add_Component<CMesh>(CMesh_Rect::Create(0));
 
-	// 셰이더 생성
-	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXTEX,
-		VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
+	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXTEX, VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 	pShader->Initialize();
 	Add_Component(pShader);
 
-	// 렌더러 생성 및 패스 설정
-	CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT
-		, _float4(0.f, 0.f, 0.f, 1.f));
+	CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT, _float4(0.f, 0.f, 0.f, 1.f));
 	Add_Component<CRenderer>(pRenderer);
-
-	// 원본 객체가 생성될 때마다 UI 자료구조에 할당하여 IMGUI에서 불러옴
 
 	return S_OK;
 }
@@ -43,9 +36,6 @@ HRESULT CUI::Initialize_Prototype()
 HRESULT CUI::Start()
 {
 	__super::Start();
-
-	// 이미지 컴포넌트가 있을 경우에만 Texture를 출력
-	// 이미지 컴포넌트는 멤버변수로 해당 이미지의 주소와 불러올 이미지 개수를 받아옴
 
 	return S_OK;
 }
