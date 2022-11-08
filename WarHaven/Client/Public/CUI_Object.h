@@ -28,9 +28,13 @@ public:
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
 public:
-	void SetMouseTarget(_bool value) { m_bIsMouseTarget = value; }
+	wstring Get_UIName() { return m_wstrUIName; }
+	void Set_UIName(wstring str) { m_wstrUIName = str; }
+	void Set_MouseTarget(_bool value) { m_bIsMouseTarget = value; }
 
 private:
+	wstring m_wstrUIName;
+
 	CUI_Text* m_pText = nullptr;
 	CUI_Button* m_pButton = nullptr;
 

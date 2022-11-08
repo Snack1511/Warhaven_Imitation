@@ -59,35 +59,74 @@ HRESULT CWindow_UI::Render()
 		return E_FAIL;
 
 	// 위젯 확인용 데모창
-	// ImGui::ShowDemoWindow();
+	ImGui::ShowDemoWindow();
 
 	ImGui::Text("= UI =");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
-	// 기본 유아이 객체 생성
-	if (ImGui::Button("Add New UI"))
+	// 유아이 리스트
+
+	const char pUIName[MAX_PATH] = {};
+	size_t iMaxIndex = m_vecUI.size();
+	_uint iIndex = 0;
+
+	static int iSelectUIIndex = 0;
+
+
+	if (ImGui::BeginListBox("UI_List"))
 	{
-		CUI_Object* pUI = CUI_Object::Create();
-		CREATE_GAMEOBJECT(pUI, GROUP_UI);
+		for (_uint i = 0; i < m_vecUI.size(); ++i)
+		{
+			if (ImGui::Selectable(CFunctor::To_String(m_vecUI[i].pUI->Get_UIName()).c_str(), m_vecUI[i].bSelected))
+			{
+				m_iSelectIndex = i;
+				m_vecUI[i].bSelected = true;
+				for (_uint j = 0; j < m_vecUI.size(); ++j)
+				{
+					if (j == i)
+						continue;
 
-		UI_Object tItem;
-		tItem.pUI = pUI;
-		tItem.bSelected = false;
-		ZeroMemory(tItem.szBuf, sizeof(tItem.szBuf));
+					m_vecUI[j].bSelected = false;
+				}
+			}
 
-		m_vecUI.push_back(tItem);
+			if (m_vecUI[i].bSelected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+
+		ImGui::EndListBox();
 	}
 
+	// 기본 유아이 객체 생성
+	if (ImGui::Button("Add New UI"))
+		Add_UI();
+
+	// 선택한 객체가 있으면 인스펙터
 	if (!m_vecUI.empty())
 	{
-		CUI_Object* pUI = m_vecUI[0].pUI;
+		if (m_iSelectIndex < 9999)
+		{
+			CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
 
-		// 트랜스폼 (위치, 크기, 회전??)
-		Show_Transform(0);
+			// 이름 정하기
+			static char strName[128] = "UI_Object";
+			if (ImGui::InputText("UI Name", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				wstring wstr(strName, &strName[128]);
+				pUI->Set_UIName(wstr);
+			}
 
-		// UI 이미지 창
-		// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
-		Show_TextureWindow(0);
+			// 트랜스폼 (위치, 크기, 회전??)
+			Show_Transform(pUI);
+
+			Show_Etc(pUI);
+
+			// UI 이미지 창
+			// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
+			Show_TextureWindow(m_iSelectIndex);
+		}		
 	}
 
 	// 셰이더 변경
@@ -101,40 +140,56 @@ HRESULT CWindow_UI::Render()
 	return S_OK;
 }
 
-void CWindow_UI::Show_Transform(_uint iIndex)
+void CWindow_UI::Add_UI()
 {
-	CUI_Object* pUI = m_vecUI[iIndex].pUI;
+	CUI_Object* pUI = CUI_Object::Create();
+	CREATE_GAMEOBJECT(pUI, GROUP_UI);
+
+	UI_Object tItem;
+	tItem.pUI = pUI;
+	tItem.bSelected = false;
+
+	m_vecUI.push_back(tItem);
+}
+
+void CWindow_UI::Show_Transform(CUI_Object* pUI)
+{
 	if (!pUI)
 		return;
 
 	if (ImGui::CollapsingHeader("Transform"))
 	{
-		if (ImGui::TreeNode("Position"))
-		{
-			_float4 fUI_Pos = pUI->Get_Transform()->Get_World(WORLD_POS);
-			float fPos[2] = { fUI_Pos.x, fUI_Pos.y};
-			ImGui::DragFloat2("Position", fPos, 1.f, -999.f, 999.f);
-			pUI->Set_Pos(fPos[0], fPos[1]);
+		// Position
+		_float4 fUI_Pos = pUI->Get_Transform()->Get_World(WORLD_POS);
+		float fPos[2] = { fUI_Pos.x, fUI_Pos.y };
+		ImGui::DragFloat2("Position", fPos, 1.f, -9999.f, 9999.f);
+		pUI->Set_Pos(fPos[0], fPos[1]);
 
-			ImGui::TreePop();
+		// Scale
+		_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
+		float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
+		ImGui::DragFloat2("Scale", fScale, 1.f, -9999.f, 9999.f);
+
+		for (int i = 0; i < 2; ++i)
+		{
+			if (fScale[i] <= 1.f)
+				fScale[i] = 1.f;
 		}
 
-		if (ImGui::TreeNode("Scale"))
-		{
-			_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
-			float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
-			ImGui::DragFloat2("Scale", fScale, 1.f, -999.f, 999.f);
+		pUI->Set_Scale(fScale[0], fScale[1]);
+	}
+}
 
-			for (int i = 0; i < 2; ++i)
-			{
-				if (fScale[i] <= 1.f)
-					fScale[i] = 1.f;
-			}
+void CWindow_UI::Show_Etc(CUI_Object* pUI)
+{
+	if (!pUI)
+		return;
 
-			pUI->Set_Scale(fScale[0], fScale[1]);
-
-			ImGui::TreePop();
-		}
+	if (ImGui::CollapsingHeader("Etc"))
+	{
+		static bool bIsTarget = false;
+		ImGui::Checkbox("Mouse Interact", &bIsTarget);
+		pUI->Set_MouseTarget(bIsTarget);
 	}
 }
 

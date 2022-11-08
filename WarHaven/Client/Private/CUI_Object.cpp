@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Texture.h"
 #include "Loading_Manager.h"
+#include "Transform.h"
 
 CUI_Object::CUI_Object()
 {
@@ -24,6 +25,8 @@ HRESULT CUI_Object::Initialize_Prototype()
 
 	Set_Pos(0.f, 0.f);
 	Set_Scale(100.f);
+
+	m_wstrUIName = TEXT("UI_Object");
 
 	return S_OK;
 }
@@ -67,16 +70,8 @@ void CUI_Object::My_Tick()
 {
 	__super::My_Tick();
 
-	// 마우스가 영역 안에 있을 경우
 	if (m_bIsMouseTarget)
-	{
-		CheckInRect();
 		MouseEvent();
-	}
-
-	// 버튼이 있을 경우
-
-	// 글자가 있을 경우	
 }
 
 void CUI_Object::My_LateTick()
@@ -86,20 +81,25 @@ void CUI_Object::My_LateTick()
 
 void CUI_Object::CheckInRect()
 {
-	int left = int(m_vPosition.x - m_vScale.x * 0.5f);
-	int top = int(m_vPosition.y - m_vScale.y * 0.5f);
-	int right = int(m_vPosition.x + m_vScale.x * 0.5f);
-	int bottom = int(m_vPosition.y + m_vScale.y * 0.5f);
+	_float4 newPos = XMVectorSet((m_vPosition.x + 640.f), -m_vPosition.y + 360.f, 0.f, 1.f);
+
+	int left = int(newPos.x - m_vScale.x * 0.5f);
+	int top = int(newPos.y - m_vScale.y * 0.5f);
+	int right = int(newPos.x + m_vScale.x * 0.5f);
+	int bottom = int(newPos.y + m_vScale.y * 0.5f);
 	SetRect(&m_tRect, left, top, right, bottom);
 
 	GetCursorPos(&m_ptMouse);
 
-	ScreenToClient(g_hWnd, &m_ptMouse);
+	//ScreenToClient(g_hWnd, &m_ptMouse);
+	//ClientToScreen(g_hWnd, &m_ptMouse);
+
+	m_bIsOnMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
 }
 
 void CUI_Object::MouseEvent()
 {
-	m_bIsOnMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
+	CheckInRect();
 
 	if (m_bIsOnMouse)
 	{

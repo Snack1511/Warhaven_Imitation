@@ -22,7 +22,6 @@ class CWindow_UI : public CImGui_Window
 public:
 	struct UI_Object
 	{
-		char szBuf[MIN_STR];
 		CUI_Object* pUI = nullptr;
 		_bool bSelected = false;
 	};
@@ -44,16 +43,17 @@ private:
 	TREE_DATA	m_TextureRootNode;
 
 	vector<UI_Object> m_vecUI;
+	_uint m_iSelectIndex = 9999;
 
-	_uint m_iSelectIndex = 999;
 	wstring m_iSelectPath;
 
 
 private:
+	void Add_UI();
 
-	void Show_Transform(_uint iIndex);
+	void Show_Transform(CUI_Object* pUI);
 	void Show_Shader(_uint iIndex);
-
+	void Show_Etc(CUI_Object* pUI);
 	void Show_TextureWindow(_uint iIndex);
 
 private:
