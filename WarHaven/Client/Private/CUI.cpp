@@ -37,11 +37,14 @@ HRESULT CUI::Start()
 {
 	__super::Start();
 
+	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource, this, placeholders::_1, "g_vColor");
+
 	return S_OK;
 }
 
 void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
+	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
 }
 
 void CUI::Set_Pos(_float fX, _float fY)

@@ -70,7 +70,7 @@ wstring CFunctor::To_Wstring(string wstrText)
 
 string	CFunctor::Remove_String(string str)
 {
-	_int iFind = (_int)str.rfind("\\") + 1;
+	_int iFind = (_int)str.rfind("/") + 1;
 	string strFileName = str.substr(iFind, str.length() - iFind);
 	
 	return str;

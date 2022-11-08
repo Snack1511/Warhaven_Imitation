@@ -68,6 +68,7 @@ void CUI_Object::Set_Texture(const _tchar* pFilePath)
 
 void CUI_Object::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
+	__super::SetUp_ShaderResource(pShader, pConstName);
 }
 
 void CUI_Object::OnEnable()

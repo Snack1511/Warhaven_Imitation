@@ -229,6 +229,21 @@ void CWindow_UI::Set_Object_Info()
 	}
 
 	ImGui::NewLine();
+
+	Set_Color();
+}
+
+void CWindow_UI::Set_Color()
+{
+	if (ImGui::CollapsingHeader("Color"))
+	{
+		CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
+
+		static _float4 vColor(1.0f, 1.0f, 1.0f, 1.0f);
+		ImGui::ColorEdit4("Color", (_float*)&vColor);
+
+		pUI->Set_Color(vColor);
+	}
 }
 
 void CWindow_UI::Show_Texture()
@@ -451,8 +466,10 @@ void CWindow_UI::Load_UI_List()
 
 		readFile.close();
 
-		Call_MsgBox(L"UI_Object Load Succes");
-	}	
+		strLoadPath = CFunctor::Remove_String(strLoadPath);
+	}
+
+	Call_MsgBox(L"UI_Object Load Succes");
 }
 
 void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
@@ -521,8 +538,6 @@ void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree, _uint iIndex)
 
 		ImGui::SameLine();
 
-		_int iFind = (_int)tTree.strFullPath.rfind("\\") + 1;
-		string strFileName = tTree.strFullPath.substr(iFind, tTree.strFullPath.length() - iFind);
 		ImGui::Text(CFunctor::Remove_String(tTree.strFileName).c_str());
 	}
 }

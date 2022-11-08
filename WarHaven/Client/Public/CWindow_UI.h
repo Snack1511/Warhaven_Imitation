@@ -62,6 +62,8 @@ private:
 
 	void Set_Object_Info();
 
+	void Set_Color();
+
 	void Show_Texture();
 	void Show_Texture_Preview();
 
