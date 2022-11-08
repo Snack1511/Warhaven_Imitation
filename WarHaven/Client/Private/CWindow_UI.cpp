@@ -83,7 +83,7 @@ HRESULT CWindow_UI::Render()
 	return S_OK;
 }
 
-void CWindow_UI::Add_UI()
+CUI_Object* CWindow_UI::Add_UI()
 {
 	CUI_Object* pUI = CUI_Object::Create();
 	CREATE_GAMEOBJECT(pUI, GROUP_UI);
@@ -93,6 +93,8 @@ void CWindow_UI::Add_UI()
 	tItem.bSelected = false;
 
 	m_vecUI.push_back(tItem);
+
+	return pUI;
 }
 
 void CWindow_UI::Show_UIList()
@@ -146,6 +148,9 @@ void CWindow_UI::Show_Inspector(CUI_Object* pUI)
 
 	if (ImGui::Button("Save"))
 		Save_UI_Info(pUI);
+
+	if (ImGui::Button("Load"))
+		Load_UI_Info();
 
 	ImGui::End();
 }
@@ -221,21 +226,26 @@ void CWindow_UI::Save_UI_Info(CUI_Object* pUI)
 
 	CTexture* pTexture = GET_COMPONENT_FROM(pUI, CTexture);
 
-	size_t iMaxSize = pTexture->Get_vecTexture().size();
+	_bool bMulti = pUI->Get_MultiTexture();
+	writeFile.write((char*)&bMulti, sizeof(_bool));
+
+	_uint iMaxSize = pTexture->Get_vecTexture().size();
+	writeFile.write((char*)&iMaxSize, sizeof(_uint));
+
 	for (size_t i = 0; i < iMaxSize; ++i)
 	{
 		string strFilePath = CFunctor::To_String(pTexture->Get_vecTexture()[i].strFilePath);
 		CUtility_File::Write_Text(&writeFile, strFilePath.c_str());
 	}
 
-	string strName = CFunctor::To_String(pUI->Get_UIName()); 
+	string strName = CFunctor::To_String(pUI->Get_UIName());
 	CUtility_File::Write_Text(&writeFile, strName.c_str());
 
-	writeFile.write((char*)&pUI->Get_Transform()->Get_World(WORLD_POS), sizeof(_float4));
-	writeFile.write((char*)pUI->Get_MouseTarget(), sizeof(_bool));
+	_float4 vPos = pUI->Get_Transform()->Get_World(WORLD_POS);
+	writeFile.write((char*)&vPos, sizeof(_float4));
 
-	writeFile.write((char*)&iMaxSize, sizeof(size_t));
-
+	_bool bTarget = pUI->Get_MouseTarget();
+	writeFile.write((char*)&bTarget, sizeof(_bool));
 
 	writeFile.close();
 
@@ -244,7 +254,9 @@ void CWindow_UI::Save_UI_Info(CUI_Object* pUI)
 
 void CWindow_UI::Load_UI_Info()
 {
-	/*ifstream readFile("../Bin/Data/UIData/", ios::binary);
+	string strLoadPath = "../Bin/Data/UIData/";
+
+	ifstream readFile(strLoadPath, ios::binary);
 
 	if (!readFile.is_open())
 	{
@@ -252,28 +264,36 @@ void CWindow_UI::Load_UI_Info()
 		return;
 	}
 
-	DWORD dwByte = 0;
+	CUI_Object* pCurUI = Add_UI();
 
-	while (true)
-	{
-		ReadFile(hFile, &dwByte);
+	_bool bMulti = false;
+	readFile.read((char*)&bMulti, sizeof(_bool));
+	pCurUI->Set_MultiTexture(bMulti);
 
-		if (dwByte == 0)
-			break;
-	}
+	_uint iMaxSize = 0;
+	readFile.read((char*)&iMaxSize, sizeof(_uint));
 
-
-	size_t iMaxSize = pTexture->Get_vecTexture().size();
 	for (size_t i = 0; i < iMaxSize; ++i)
 	{
-		CUtility_File::Read_Text(&readFile);
+		string strPath = CUtility_File::Read_Text(&readFile);
+
+		pCurUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
 	}
 
-	readFile.read((char*)&, sizeof(_float4));
+	string strName = CUtility_File::Read_Text(&readFile);
+	pCurUI->Set_UIName(CFunctor::To_Wstring(strName));
+
+	_float4 vPos;
+	readFile.read((char*)&vPos, sizeof(_float4));
+	pCurUI->Set_Pos(vPos.x, vPos.y);
+
+	_bool bTarget = false;
+	readFile.read((char*)&bTarget, sizeof(_bool));
+	pCurUI->Set_MouseTarget(bTarget);
 
 	readFile.close();
 
-	Call_MsgBox(L"UI_Object Save Succes");*/
+	Call_MsgBox(L"UI_Object Save Succes");
 }
 
 void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)

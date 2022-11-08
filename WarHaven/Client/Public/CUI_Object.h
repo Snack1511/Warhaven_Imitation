@@ -22,7 +22,6 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	void Set_MultiTexture(_bool value) { m_bIsMultiTex = value; }
 	void Set_Texture(const _tchar* pFilePath);
 
 public:
@@ -35,6 +34,9 @@ public:
 	_bool Get_MouseTarget() { return m_bIsMouseTarget; }
 	void Set_MouseTarget(_bool value) { m_bIsMouseTarget = value; }
 
+	_bool Get_MultiTexture() { return m_bIsMultiTex; }
+	void Set_MultiTexture(_bool value) { m_bIsMultiTex = value; }
+
 private:
 	wstring m_wstrUIName;
 
@@ -46,8 +48,6 @@ private:
 	_bool m_bIsMouseTarget = false;
 	_bool m_bIsOnMouse = false;
 
-	RECT m_tRect;
-	POINT m_ptMouse;
 
 private:
 	// These will be called by Set_Enable Func.
@@ -57,7 +57,6 @@ private:
 	virtual void	My_LateTick();
 
 private:
-	void CheckInRect();
 	void MouseEvent();
 
 private:

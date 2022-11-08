@@ -56,7 +56,9 @@ void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 
 void CUI::Set_Pos(_float fX, _float fY)
 {
-	Get_Transform()->Set_World(WORLD_POS, _float4(fX, fY, 0.f));
+	m_vPosition.x = fX;
+	m_vPosition.y = fY;
+	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, 0.f));
 }
 
 void CUI::Set_Scale(_float value)
@@ -104,4 +106,19 @@ HRESULT CUI::SetTexture(const _tchar* pFilePath, _uint iIndex)
 	Add_Component(pTexture);
 
 	return S_OK;
+}
+
+void CUI::CheckInRect()
+{
+	_float4 newPos = XMVectorSet((m_vPosition.x + 640.f), -m_vPosition.y + 360.f, 0.f, 1.f);
+
+	int left = int(newPos.x - m_vScale.x * 0.5f);
+	int top = int(newPos.y - m_vScale.y * 0.5f);
+	int right = int(newPos.x + m_vScale.x * 0.5f);
+	int bottom = int(newPos.y + m_vScale.y * 0.5f);
+	SetRect(&m_tRect, left, top, right, bottom);
+
+	GetCursorPos(&m_ptMouse);
+
+	ScreenToClient(g_hWnd, &m_ptMouse);
 }

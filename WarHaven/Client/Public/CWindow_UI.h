@@ -49,7 +49,7 @@ private:
 
 
 private:
-	void Add_UI();
+	CUI_Object* Add_UI();
 
 	void Show_UIList();
 

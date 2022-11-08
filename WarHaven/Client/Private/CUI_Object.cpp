@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "Loading_Manager.h"
 #include "Transform.h"
+#include "Functor.h"
 
 CUI_Object::CUI_Object()
 {
@@ -88,34 +89,21 @@ void CUI_Object::My_LateTick()
 	__super::My_LateTick();
 }
 
-void CUI_Object::CheckInRect()
-{
-	_float4 newPos = XMVectorSet((m_vPosition.x + 640.f), -m_vPosition.y + 360.f, 0.f, 1.f);
-
-	int left = int(newPos.x - m_vScale.x * 0.5f);
-	int top = int(newPos.y - m_vScale.y * 0.5f);
-	int right = int(newPos.x + m_vScale.x * 0.5f);
-	int bottom = int(newPos.y + m_vScale.y * 0.5f);
-	SetRect(&m_tRect, left, top, right, bottom);
-
-	GetCursorPos(&m_ptMouse);
-
-	//ScreenToClient(g_hWnd, &m_ptMouse);
-	//ClientToScreen(g_hWnd, &m_ptMouse);
-
-	m_bIsOnMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
-}
-
 void CUI_Object::MouseEvent()
 {
 	CheckInRect();
+
+	m_bIsOnMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
 
 	if (m_bIsOnMouse)
 	{
 		if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_TEST)
 		{
 			if (KEY(LBUTTON, HOLD))
-				Set_Pos(m_ptMouse.x, m_ptMouse.y);
+			{
+				_float4 vPos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
+				Set_Pos(vPos.x, -vPos.y);
+			}
 		}
 
 		OnMouseEnter();

@@ -157,10 +157,14 @@ HRESULT CLevel_Test::Exit()
 }
 
 #include "CUI_Object.h"
+#include "CUI_Cursor.h"
 HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 {
 	// CUI_Object* pUI_Object = CUI_Object::Create();
 	// Ready_GameObject(pUI_Object, GROUP_UI);
+
+	CUI_Cursor* pCursor = CUI_Cursor::Create();
+	Ready_GameObject(pCursor, GROUP_UI);
 
 	return S_OK;
 }

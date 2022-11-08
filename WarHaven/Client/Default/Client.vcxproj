@@ -208,6 +208,7 @@
     <ClInclude Include="..\Public\CUI_Black.h" />
     <ClInclude Include="..\Public\CUI_Button.h" />
     <ClInclude Include="..\Public\CUI_Component.h" />
+    <ClInclude Include="..\Public\CUI_Cursor.h" />
     <ClInclude Include="..\Public\CUI_LoadingBG.h" />
     <ClInclude Include="..\Public\CUI_LoadingIcon.h" />
     <ClInclude Include="..\Public\CUI_LobbyBG.h" />
@@ -270,6 +271,7 @@
     <ClCompile Include="..\Private\CUI_Black.cpp" />
     <ClCompile Include="..\Private\CUI_Button.cpp" />
     <ClCompile Include="..\Private\CUI_Component.cpp" />
+    <ClCompile Include="..\Private\CUI_Cursor.cpp" />
     <ClCompile Include="..\Private\CUI_LoadingBG.cpp" />
     <ClCompile Include="..\Private\CUI_LoadingIcon.cpp" />
     <ClCompile Include="..\Private\CUI_LobbyBG.cpp" />

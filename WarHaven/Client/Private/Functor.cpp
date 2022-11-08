@@ -73,6 +73,22 @@ _float CFunctor::Lerp_Float(const _float& fSour, const _float& fDest, const _flo
 	return (fSour * (1.f - fRatio)) + (fDest * fRatio);
 }
 
+_float4 CFunctor::To_Descartes(_float4 vPos)
+{
+	vPos.x += 640.f;
+	vPos.y += 360.f;
+
+	return _float4(vPos.x, vPos.y, vPos.z);
+}
+
+_float4 CFunctor::To_Window(_float4 vPos)
+{
+	vPos.x -= 640.f;
+	vPos.y -= 360.f;
+
+	return _float4(vPos.x, vPos.y, vPos.z);
+}
+
 //void	CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume)
 //{
 //#define SOUND_MAX_RANGE	30.f

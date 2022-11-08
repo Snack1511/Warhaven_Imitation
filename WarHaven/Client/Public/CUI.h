@@ -38,6 +38,9 @@ protected:
 	_float4 m_vPosition = {};
 	_float4 m_vScale = {};
 
+	RECT m_tRect;
+	POINT m_ptMouse;
+
 	CTexture* m_pTexture = nullptr;
 
 protected:
@@ -50,6 +53,7 @@ protected:
 protected:
 	HRESULT SetTexture(const _tchar* pFilePath, _uint iIndex = 1);
 
+	void CheckInRect();
 };
 
 END
