@@ -24,6 +24,10 @@ public:
 	virtual HRESULT Render() override;
 	virtual HRESULT Exit() override;
 
+public:
+	virtual HRESULT SetUp_Prototypes_JJ();
+
+
 private:
 	CGameObject* m_pTestObj = nullptr;
 };

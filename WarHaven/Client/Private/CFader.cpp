@@ -316,10 +316,7 @@ void CFader::Change_State(FADE_STATE eState)
 void CFader::OnFadeOut_Finish()
 {
 
-	if (m_bFadeMessage)
-	{
-		m_pOwner->CallBack_FadeOutEvent(m_tFadeDesc.eFadeOutType);
-	}
+	
 
 
 	switch (m_tFadeDesc.eFadeOutType)
@@ -342,9 +339,16 @@ void CFader::OnFadeOut_Finish()
 			Change_State(FADEINREADY);
 		}
 		else
+		{
 			DISABLE_GAMEOBJECT(m_pOwner);
+
+			if (m_bFadeMessage)
+			{
+				m_pOwner->CallBack_FadeOutEvent(m_tFadeDesc.eFadeOutType);
+			}
+		}
 	}
-	break;
+	return;
 
 	case FADEDESC::FADEOUT_RANDOMTEXTURE:
 	{
@@ -360,5 +364,10 @@ void CFader::OnFadeOut_Finish()
 
 	default:
 		break;
+	}
+
+	if (m_bFadeMessage)
+	{
+		m_pOwner->CallBack_FadeOutEvent(m_tFadeDesc.eFadeOutType);
 	}
 }

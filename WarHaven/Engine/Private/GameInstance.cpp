@@ -293,6 +293,11 @@ HRESULT CGameInstance::Check_Group(const _uint& _eLeft, const _uint& _eRight)
 	return m_pCollisionManager->Check_Group(_eLeft, _eRight);
 }
 
+ComPtr<ID3D11ShaderResourceView> CGameInstance::Get_Texture(wstring wstrFilePath)
+{
+	return m_pResourceManager->Get_Texture(wstrFilePath);
+}
+
 void CGameInstance::Bake_StaticShadow(vector<CGameObject*>& MapList, _float fDistance)
 {
 	m_pRenderManager->Bake_StaticShadow(MapList, fDistance);

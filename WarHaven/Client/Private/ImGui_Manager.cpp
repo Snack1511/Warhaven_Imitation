@@ -9,6 +9,7 @@
 
 #include "CWindow_Default.h"
 #include "CWindow_Select.h"
+#include "CWindow_UI.h"
 
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
@@ -56,6 +57,7 @@ HRESULT CImGui_Manager::Initialize()
 
 	m_arrWindows[IMGUI_DEFAULT] = CWindow_Default::Create();
 	m_arrWindows[IMGUI_SELECT] = CWindow_Select::Create();
+	m_arrWindows[IMGUI_UI] = CWindow_UI::Create();
 
 	return S_OK;
 }

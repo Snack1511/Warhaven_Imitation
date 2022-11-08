@@ -142,6 +142,63 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
       <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\05.Window_UI">
+      <UniqueIdentifier>{b7a0241c-0411-4166-b814-0f62d1377255}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component">
+      <UniqueIdentifier>{89cfec7a-e14b-4cdf-82c0-eeab976eb3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\01.Visual">
+      <UniqueIdentifier>{57ef776b-1fb6-43c8-b59e-64572ce0931f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\02.Interaction">
+      <UniqueIdentifier>{0e7626ea-1a96-49fb-9e2a-e195facaa542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\01.Visual\Image">
+      <UniqueIdentifier>{f9653262-f3c1-415f-a011-6ab9d08f349b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\01.Visual\Text">
+      <UniqueIdentifier>{38fe1128-ebee-4fb0-a7f0-13d768ed14b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\02.Interaction\Button">
+      <UniqueIdentifier>{05bd9d01-1766-466a-ae07-d75941b0ba76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object">
+      <UniqueIdentifier>{c5067414-7568-4150-bbe4-b1cf625ee711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\03.Play">
+      <UniqueIdentifier>{8505f12e-d113-4e5b-b7ea-c052cd4abb3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\03.Play\HUD">
+      <UniqueIdentifier>{36dd6ad8-7f0c-4498-bf31-2dd2926ec2c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\02.Level_Logo">
+      <UniqueIdentifier>{8d56d1ae-6203-49bf-8e2b-b4dfe22c1f78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading">
+      <UniqueIdentifier>{2bd10a4d-ad71-4463-9c19-af55646d4b8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\BG">
+      <UniqueIdentifier>{18f43bf2-a938-4b4d-8911-0b877f340bff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\Icon">
+      <UniqueIdentifier>{08a2ffa7-5a48-4af9-8e51-2be888a8669a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\02.Lobby">
+      <UniqueIdentifier>{3971a91c-b0f4-4a24-961f-1e81ced819bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default">
+      <UniqueIdentifier>{eae3d0de-0e2b-4293-a4a1-10a5c49e90b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\00.Logo">
+      <UniqueIdentifier>{e2e62525-c7a1-40f2-a5d1-92444378f3cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default\Black">
+      <UniqueIdentifier>{ce60bc22-043f-42d6-822d-36717ae53d82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\03.Level_Main">
+      <UniqueIdentifier>{fd28c482-61c9-4553-9fba-4b645532e423}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -273,6 +330,39 @@
     <ClInclude Include="..\public\CUnit_Warrior.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CWindow_UI.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\05.Window_UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI.h">
+      <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Component.h">
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_LobbyBG.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\02.Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_LoadingBG.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\BG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_LoadingIcon.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Object.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Logo.h">
+      <Filter>03. Instances\01. Level\02.Level_Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Logo.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\00.Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Main.h">
+      <Filter>03. Instances\01. Level\03.Level_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Black.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default\Black</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -387,6 +477,39 @@
     </ClCompile>
     <ClCompile Include="..\private\CUnit_Warrior.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWindow_UI.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\05.Window_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Component.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_LobbyBG.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\02.Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_LoadingBG.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\BG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_LoadingIcon.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Object.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Logo.cpp">
+      <Filter>03. Instances\01. Level\02.Level_Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Logo.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\00.Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Main.cpp">
+      <Filter>03. Instances\01. Level\03.Level_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Black.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default\Black</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

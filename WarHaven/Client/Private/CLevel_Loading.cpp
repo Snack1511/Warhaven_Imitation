@@ -12,6 +12,9 @@
 
 #include "Functor.h"
 
+#include "CUI_LoadingBG.h"
+#include "CUI_LoadingIcon.h"
+
 CLevel_Loading::CLevel_Loading()
 {
 }
@@ -45,10 +48,18 @@ HRESULT CLevel_Loading::Enter()
 {
 	//GAMEINSTANCE->Stop_Sound((CHANNEL_GROUP)CHANNEL_BGM);
 
-	//로딩 화면 객체 생성
+	//로딩 화면 객체 생성	
+
+	CUI_LoadingBG* pUI_LoadingBG = CUI_LoadingBG::Create();
+	CUI_LoadingIcon* pUI_LoadingIcon = CUI_LoadingIcon::Create();
+
+	Ready_GameObject(pUI_LoadingBG, GROUP_UI);
+	Ready_GameObject(pUI_LoadingIcon, GROUP_UI);
+
+	pUI_LoadingBG->SetLoadingBG(0);
+	ENABLE_GAMEOBJECT(pUI_LoadingBG);
 
 	__super::Enter();
-
 
 	return S_OK;
 }
