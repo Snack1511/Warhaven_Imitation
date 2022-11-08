@@ -216,8 +216,6 @@ void CUnit::My_Tick()
 		return;
 	}
 
-	Key_Input();
-
 	STATE_TYPE eNewState = STATE_END;
 	eNewState = m_pCurState->Tick(this, m_pAnimator);
 
@@ -232,12 +230,3 @@ void CUnit::My_LateTick()
 
 }
 
-void CUnit::Key_Input()
-{
-	// 현재 Select 된 객체는 Key_Input 을 사용할 수 있습니다.
-	if (true == m_bChoice)
-	{
-	
-	}
-
-}

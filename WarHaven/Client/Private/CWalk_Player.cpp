@@ -35,6 +35,8 @@ HRESULT CWalk_Player::Initialize()
     m_eStateType = STATE_WALK_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
+    m_iStateChangeKeyFrame = 0;
+
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
 
@@ -60,7 +62,7 @@ void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* Owner의 Animator Set Idle로 */
 
-
+    
 
 
     __super::Enter(pOwner, pAnimator);
@@ -77,7 +79,6 @@ STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         return STATE_IDLE_PLAYER;
 
 
-
     return __super::Tick(pOwner, pAnimator);
 }
 
@@ -91,11 +92,126 @@ STATE_TYPE CWalk_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     /* Player가 Walk로 오는 조건
     1. 
     */
+
+    // 만약 WASD 를 눌렀다면
     if (KEY(W, HOLD) ||
         KEY(A, HOLD) ||
         KEY(S, HOLD) ||
         KEY(D, HOLD))
+    {
+     
+        // 만약 CTRL 를 눌렀다면
+        if (KEY(Z, HOLD))
+        {
+            // 만약 W 를 눌렀다면(정면)
+            if (KEY(W, HOLD))
+            {
+                // A 를 눌렀다면(정면왼쪽)
+                if (KEY(A, HOLD))
+                {
+                    m_eAnimType = ANIM_BASE_L;
+                    m_iAnimIndex = 33;
+                }
+
+                // A 를 눌렀다면(정면오른쪽)
+                if (KEY(D, HOLD))
+                {
+                    m_eAnimType = ANIM_BASE_R;
+                    m_iAnimIndex = 44;
+                }
+            }
+
+            // 만약 S 를 눌렀다면(후방)
+            else if (KEY(S, HOLD))
+            {
+                // 만약 A 를 눌렀다면(후방왼쪽)
+                if (KEY(A, HOLD))
+                {
+                    m_eAnimType = ANIM_BASE_L;
+                    m_iAnimIndex = 33;
+                }
+
+                // 만약 A 를 눌렀다면(후방오른쪽)
+                if (KEY(D, HOLD))
+                {
+                    m_eAnimType = ANIM_BASE_R;
+                    m_iAnimIndex = 44;
+                }
+            }
+
+            
+            // A를 눌렀다면(왼쪽)
+            else if(KEY(A, HOLD))
+            {
+                m_eAnimType = ANIM_BASE_R;
+                m_iAnimIndex = 30;
+            }
+
+            // D를 눌렀다면(오른쪽)
+            else if (KEY(D, HOLD))
+            {
+                m_eAnimType = ANIM_BASE_R;
+                m_iAnimIndex = 30;
+            }
+        }
+        else
+        {
+            // 만약 W 를 눌렀다면(정면)
+            if (KEY(W, HOLD))
+            {
+                // A 를 눌렀다면(정면왼쪽)
+                if (KEY(A, HOLD))
+                {
+                    m_eAnimType = ANIM_BASE_L;
+                    m_iAnimIndex = 22;
+                }
+
+                // A 를 눌렀다면(정면오른쪽)
+                if (KEY(D, HOLD))
+                {
+                    m_eAnimType = ANIM_BASE_R;
+                    m_iAnimIndex = 26;
+                }
+            }
+
+            // 만약 S 를 눌렀다면(후방)
+            else if (KEY(S, HOLD))
+            {
+                // 만약 A 를 눌렀다면(후방왼쪽)
+                if (KEY(A, HOLD))
+                {
+                    m_eAnimType = ANIM_BASE_L;
+                    m_iAnimIndex = 33;
+                }
+
+                // 만약 A 를 눌렀다면(후방오른쪽)
+                if (KEY(D, HOLD))
+                {
+                    m_eAnimType = ANIM_BASE_R;
+                    m_iAnimIndex = 44;
+                }
+            }
+
+
+            // A를 눌렀다면(왼쪽)
+            else if (KEY(A, HOLD))
+            {
+                m_eAnimType = ANIM_BASE_R;
+                m_iAnimIndex = 30;
+            }
+
+            // D를 눌렀다면(오른쪽)
+            else if (KEY(D, HOLD))
+            {
+                m_eAnimType = ANIM_BASE_R;
+                m_iAnimIndex = 30;
+            }
+        }
+
         return m_eStateType;
+    }
+
+
 
 
     return STATE_END;
