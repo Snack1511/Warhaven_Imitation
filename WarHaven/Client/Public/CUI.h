@@ -24,6 +24,7 @@ public:
 	virtual	HRESULT	Initialize() PURE;
 	virtual HRESULT	Start();
 
+
 public:
 	void Set_Pos(_float fX, _float fY);
 

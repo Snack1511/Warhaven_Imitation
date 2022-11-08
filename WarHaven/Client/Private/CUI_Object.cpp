@@ -4,6 +4,7 @@
 #include "Loading_Manager.h"
 #include "Transform.h"
 #include "Functor.h"
+#include "Renderer.h"
 
 CUI_Object::CUI_Object()
 {
@@ -23,6 +24,8 @@ HRESULT CUI_Object::Initialize_Prototype()
 	__super::Initialize_Prototype();
 
 	SetTexture(TEXT("../Bin/Resources/Textures/White.png"));
+
+	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_ALPHA);
 
 	Set_Pos(0.f, 0.f);
 	Set_Scale(100.f);

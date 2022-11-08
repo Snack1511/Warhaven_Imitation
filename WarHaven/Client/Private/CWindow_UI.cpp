@@ -40,7 +40,7 @@ HRESULT CWindow_UI::Initialize()
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 
 	m_bEnable = false;
-	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(300.f, 200.f), window_flags);
+	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(300.f, 250.f), window_flags);
 
 	m_TextureRootNode.strFolderPath = "../bin/resources/textures";
 	m_TextureRootNode.strFileName = "UI";
@@ -60,7 +60,7 @@ HRESULT CWindow_UI::Render()
 		return E_FAIL;
 
 	// 위젯 확인용 데모창
-	// ImGui::ShowDemoWindow();
+	ImGui::ShowDemoWindow();
 
 	ImGui::Text("= UI =");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
@@ -68,8 +68,13 @@ HRESULT CWindow_UI::Render()
 	if (ImGui::Button("Load"))
 		Load_UI_Info();
 
-	if (ImGui::Button("Add New UI"))
+	if (ImGui::Button("Creat UI"))
 		Add_UI();
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Clone UI"))
+		Clone_UI();
 
 	Show_UIList();
 
@@ -98,6 +103,21 @@ CUI_Object* CWindow_UI::Add_UI()
 	m_vecUI.push_back(tItem);
 
 	return pUI;
+}
+
+CUI_Object* CWindow_UI::Clone_UI()
+{
+	CUI_Object* pUI_Clone = m_vecUI[m_iSelectIndex].pUI->Clone();
+
+	CREATE_GAMEOBJECT(pUI_Clone, GROUP_UI);
+
+	UI_Object tItem;
+	tItem.pUI = pUI_Clone;
+	tItem.bSelected = false;
+
+	m_vecUI.push_back(tItem);
+
+	return pUI_Clone;
 }
 
 void CWindow_UI::Show_UIList()
@@ -139,7 +159,6 @@ void CWindow_UI::Show_Inspector(CUI_Object* pUI)
 
 	// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
 	Show_Texture();
-	// Show_Image();
 
 	Show_File_IO();
 
@@ -203,28 +222,12 @@ void CWindow_UI::Show_Etc(CUI_Object* pUI)
 
 void CWindow_UI::Show_Texture()
 {
-	ImGuiWindowFlags WindowFlags = 0;
-	WindowFlags |= ImGuiWindowFlags_NoResize;
-	//WindowFlags |= ImGuiWindowFlags_NoTitleBar;
-	WindowFlags |= ImGuiWindowFlags_NoMove;
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
 
-	ImGui::Begin("Image", 0, WindowFlags);
-	ImGui::SetWindowPos(ImVec2(0.f, 520.f));
-	ImGui::SetWindowSize(ImVec2(1280.f, 200.f));
+	ImGui::Begin("Image", 0, window_flags);
 
 	Show_TreeTexture(m_TextureRootNode, m_iSelectIndex);
-
-	ImGui::End();
-}
-
-void CWindow_UI::Show_Image(ID3D11ShaderResourceView* pSRV)
-{
-	ImGui::Begin("Image");
-
-	ImGui::SetWindowPos(ImVec2(0.f, 520.f));
-	ImGui::SetWindowSize(ImVec2(280.f, 200.f));
-
-	ImGui::Image(pSRV, ImVec2(100.f, 100.f));
 
 	ImGui::End();
 }
@@ -257,6 +260,9 @@ void CWindow_UI::Save_UI_Info()
 
 		_float4 vPos = m_vecUI[i].pUI->Get_Transform()->Get_World(WORLD_POS);
 		writeFile.write((char*)&vPos, sizeof(_float4));
+
+		_float4 vScale = m_vecUI[i].pUI->Get_Transform()->Get_Scale();
+		writeFile.write((char*)&vScale, sizeof(_float4));
 
 		_bool bTarget = m_vecUI[i].pUI->Get_MouseTarget();
 		writeFile.write((char*)&bTarget, sizeof(_bool));
@@ -305,6 +311,10 @@ void CWindow_UI::Load_UI_Info()
 		_float4 vPos;
 		readFile.read((char*)&vPos, sizeof(_float4));
 		pUI->Set_Pos(vPos.x, vPos.y);
+
+		_float4 vScale;
+		readFile.read((char*)&vScale, sizeof(_float4));
+		pUI->Set_Scale(vScale.x, vScale.y);
 
 		_bool bTarget = false;
 		readFile.read((char*)&bTarget, sizeof(_bool));
@@ -384,6 +394,7 @@ void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree, _uint iIndex)
 	{
 		m_iSelectPath = CFunctor::To_Wstring(tTree.strFullPath);
 		ID3D11ShaderResourceView* pSRV = GAMEINSTANCE->Get_Texture(m_iSelectPath).Get();
+
 		if (ImGui::ImageButton(pSRV, ImVec2(50, 50)))
 		{
 			if (iIndex == 9999)
@@ -392,8 +403,11 @@ void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree, _uint iIndex)
 			m_vecUI[iIndex].pUI->Set_Texture(m_iSelectPath.c_str());
 		}
 
-		// Show_Image(pSRV);
-
 		ImGui::SameLine();
+
+		// CFunctor에 함수로 빼기
+		_int iFind = (_int)tTree.strFullPath.rfind("\\") + 1;
+		string strFileName = tTree.strFullPath.substr(iFind, tTree.strFullPath.length() - iFind);
+		ImGui::Text(tTree.strFileName.c_str());
 	}
 }

@@ -47,9 +47,11 @@ private:
 	_uint m_iSelectIndex = 9999;
 	wstring m_iSelectPath;
 
+	_float m_fScale = 1.f;
 
 private:
 	CUI_Object* Add_UI();
+	CUI_Object* Clone_UI();
 
 	void Show_UIList();
 	void Show_Inspector(CUI_Object* pUI);
@@ -58,11 +60,14 @@ private:
 	void Show_Transform(CUI_Object* pUI);
 	void Show_Shader(_uint iIndex);
 	void Show_Etc(CUI_Object* pUI);
-	void Show_Texture();
-	void Show_Image(ID3D11ShaderResourceView* pSRV);
-	void Show_File_IO();
 
 private:
+	void Show_Texture();
+	void Show_Color();
+
+
+private:
+	void Show_File_IO();
 	void Save_UI_Info();
 	void Load_UI_Info();
 
