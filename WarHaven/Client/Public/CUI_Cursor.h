@@ -20,6 +20,9 @@ public:
 
 public:
 	virtual void My_Tick();
+
+private:
+	_bool m_bIsClick = false;
 };
 
 END

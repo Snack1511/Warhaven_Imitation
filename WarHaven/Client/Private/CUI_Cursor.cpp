@@ -1,6 +1,9 @@
 #include "CUI_Cursor.h"
 #include "Texture.h"
 #include "Functor.h"
+#include "GameInstance.h"
+#include "Renderer.h"
+
 CUI_Cursor::CUI_Cursor()
 {
 }
@@ -25,6 +28,8 @@ HRESULT CUI_Cursor::Initialize_Prototype()
 	GET_COMPONENT(CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Cursors/T_CursorDisabled.dds"));
 
 	Set_Scale(32.f);
+
+	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_ALPHA);
 
 	return S_OK;
 }
@@ -59,4 +64,13 @@ void CUI_Cursor::My_Tick()
 
 	_float4 vPos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
 	Set_Pos(vPos.x, -vPos.y);
+
+	if (KEY(LBUTTON, HOLD))
+	{
+		GET_COMPONENT(CTexture)->Set_CurTextureIndex(1);
+	}
+	else
+	{
+		GET_COMPONENT(CTexture)->Set_CurTextureIndex(0);
+	}
 }
