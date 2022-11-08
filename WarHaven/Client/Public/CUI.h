@@ -31,13 +31,17 @@ public:
 public:
 	void Set_Scale(_float value);
 	void Set_Scale(_float fX, _float fY);
+	void Set_ScaleMultiple(_float value);
 
 public:
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
 protected:
 	_float4 m_vPosition = {};
-	_float4 m_vScale = {};
+
+	_float4 m_vOriginScale;
+	_float m_fScaleMulitple = 1.f;
+	_float4 m_vResultScale;
 
 	RECT m_tRect;
 	POINT m_ptMouse;

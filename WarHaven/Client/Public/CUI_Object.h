@@ -48,7 +48,6 @@ private:
 	_bool m_bIsMouseTarget = false;
 	_bool m_bIsOnMouse = false;
 
-
 private:
 	// These will be called by Set_Enable Func.
 	virtual	void	OnEnable();

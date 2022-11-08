@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CUser.h"
+#include "CGame_Manager_JJ.h"
 #include "MainApp.h"
 #include "GameInstance.h"
 
@@ -20,17 +20,17 @@
 #include "CCell.h"
 
 
-IMPLEMENT_SINGLETON(CUser);
+IMPLEMENT_SINGLETON(CGame_Manager_JJ);
 
-CUser::CUser()
+CGame_Manager_JJ::CGame_Manager_JJ()
 {
 }
-CUser::~CUser()
+CGame_Manager_JJ::~CGame_Manager_JJ()
 {
 }
 
 
-HRESULT CUser::Initialize()
+HRESULT CGame_Manager_JJ::Initialize()
 {
 	POINT ptMouse;
 
@@ -43,12 +43,12 @@ HRESULT CUser::Initialize()
 	return S_OK;
 }
 
-void CUser::Tick()
+void CGame_Manager_JJ::Tick()
 {
 	Fix_CursorPosToCenter();
 }
 
-void CUser::Fix_CursorPosToCenter()
+void CGame_Manager_JJ::Fix_CursorPosToCenter()
 {
 	if (GetFocus() != g_hWnd || !m_bFixCursor)
 		return;
@@ -60,7 +60,7 @@ void CUser::Fix_CursorPosToCenter()
 	::SetCursorPos(ptMouse.x, ptMouse.y);
 }
 
-void CUser::KeyInput_FPSSetter()
+void CGame_Manager_JJ::KeyInput_FPSSetter()
 {
 	_double dCurFPSLimit = CGameInstance::Get_Instance()->Get_FPSLimitTime();
 
@@ -81,7 +81,7 @@ void CUser::KeyInput_FPSSetter()
 
 }
 
-void CUser::Update_KeyCommands()
+void CGame_Manager_JJ::Update_KeyCommands()
 {
 	vector<CKey_Manager::tKeyInfo>& vecKeys = CGameInstance::Get_Instance()->Get_KeyList();
 

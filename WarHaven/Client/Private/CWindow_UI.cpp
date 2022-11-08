@@ -65,21 +65,9 @@ HRESULT CWindow_UI::Render()
 	ImGui::Text("= UI =");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
-	if (ImGui::Button("Save"))
-		Save_UI_Info();
+	UI_IO();
 
-	ImGui::SameLine();
-
-	if (ImGui::Button("Load"))
-		Load_UI_Info();
-
-	if (ImGui::Button("Creat UI"))
-		Add_UI();
-
-	ImGui::SameLine();
-
-	if (ImGui::Button("Clone UI"))
-		Clone_UI();
+	Create_UI();
 
 	Show_UIList();
 
@@ -99,6 +87,19 @@ HRESULT CWindow_UI::Render()
 	__super::End();
 
 	return S_OK;
+}
+
+void CWindow_UI::Create_UI()
+{
+	if (ImGui::Button("Creat UI"))
+		Add_UI();
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Clone UI"))
+		Clone_UI();
+
+	ImGui::NewLine();
 }
 
 CUI_Object* CWindow_UI::Add_UI()
@@ -169,20 +170,19 @@ void CWindow_UI::Show_Inspector(CUI_Object* pUI)
 	ImGui::End();
 }
 
-
 void CWindow_UI::Set_Object_Info(CUI_Object* pUI)
 {
 	// 객체 이름 설정
 	if (ImGui::CollapsingHeader("Name"))
 	{
 		static char strName[128] = "UI_Object";
-		if (ImGui::InputText("", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
+		if (ImGui::InputText("UI_Object", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
 		{
 			wstring wstr(strName, &strName[128]);
 			pUI->Set_UIName(wstr);
 		}
 	}
-	
+
 	if (ImGui::CollapsingHeader("Transform"))
 	{
 
@@ -200,30 +200,14 @@ void CWindow_UI::Set_Object_Info(CUI_Object* pUI)
 		{
 			_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
 			float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
-			ImGui::DragFloat2("XY", fScale, 1.f, -9999.f, 9999.f);
+			if (ImGui::DragFloat2("XY", fScale, 1.f, 1.f, 9999.f))
+				pUI->Set_Scale(fScale[0], fScale[1]);
 
-			for (int i = 0; i < 2; ++i)
-			{
-				if (fScale[i] <= 1.f)
-					fScale[i] = 1.f;
-			}
-
-			pUI->Set_Scale(fScale[0], fScale[1]);
-
-			if (ImGui::DragFloat("Multiple", &m_fScale, 0.1f, -999.f, 999.f))
-			{
-				// 값을 변경할 때마다 처음 크기에서 값을 곱한 만큼 반환
-				_float4 vOriginScale = pUI->Get_Transform()->Get_Scale();
-
-				if (m_fScale <= 0.1f)
-					m_fScale = 0.1f;
-
-				_float4 vResultScale = vOriginScale * m_fScale;
-				pUI->Get_Transform()->Set_Scale(vResultScale);
-			}
+			if (ImGui::DragFloat("Multiple", &m_fScale, 0.1f, 0.1f, 999.f))
+				pUI->Set_ScaleMultiple(m_fScale);
 
 			ImGui::TreePop();
-		}		
+		}
 	}
 
 	if (ImGui::CollapsingHeader("Etc"))
@@ -244,7 +228,7 @@ void CWindow_UI::Set_Object_Info(CUI_Object* pUI)
 			pUI->Set_MultiTexture(bIsMulti);
 
 			ImGui::TreePop();
-		}		
+		}
 	}
 
 	ImGui::NewLine();
@@ -262,7 +246,33 @@ void CWindow_UI::Show_Texture()
 	ImGui::End();
 }
 
-void CWindow_UI::Save_UI_Info()
+void CWindow_UI::UI_IO()
+{
+	if (ImGui::CollapsingHeader("I/O"))
+	{
+		if (ImGui::Button("All Save"))
+			Save_UI_List();
+
+		ImGui::SameLine();
+
+		//if (ImGui::Button("Select Save"))
+		//	Save_UI_Info();
+
+		ImGui::NewLine();
+
+		if (ImGui::Button("All Load"))
+			Load_UI_List();
+
+		ImGui::SameLine();
+
+		//if (ImGui::Button("Select Load"))
+		//	Load_UI_Info();
+	}
+
+	ImGui::NewLine();
+}
+
+void CWindow_UI::Save_UI_List()
 {
 	string savePath = "../Bin/Data/UIData/UIListInfo";
 	savePath += ".bin";
@@ -311,7 +321,7 @@ void CWindow_UI::Save_UI_Info()
 	Call_MsgBox(L"UI_Object Save Succes");
 }
 
-void CWindow_UI::Load_UI_Info()
+void CWindow_UI::Load_UI_List()
 {
 	string strLoadPath = "../Bin/Data/UIData/UIListInfo.bin";
 	ifstream readFile(strLoadPath, ios::binary);
@@ -429,9 +439,8 @@ void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree, _uint iIndex)
 
 		ImGui::SameLine();
 
-		// CFunctor에 함수로 빼기
 		_int iFind = (_int)tTree.strFullPath.rfind("\\") + 1;
 		string strFileName = tTree.strFullPath.substr(iFind, tTree.strFullPath.length() - iFind);
-		ImGui::Text(tTree.strFileName.c_str());
+		ImGui::Text(CFunctor::Remove_String(tTree.strFileName).c_str());
 	}
 }

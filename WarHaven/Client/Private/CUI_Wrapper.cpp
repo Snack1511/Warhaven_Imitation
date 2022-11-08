@@ -79,23 +79,28 @@ HRESULT CUI_Wrapper::Start()
 
 void CUI_Wrapper::My_Tick()
 {
+    __super::My_Tick();
+
     //Áñ°Ü
-    GET_COMPONENT_FROM(m_pUI, CTexture);
+    //GET_COMPONENT_FROM(m_pUI, CTexture);
 }
 
 void CUI_Wrapper::My_LateTick()
 {
+    __super::My_LateTick();
     //³î¾Æ
 }
 
 void CUI_Wrapper::OnEnable()
 {
     __super::OnEnable();
+
     ENABLE_GAMEOBJECT(m_pUI);
 }
 
 void CUI_Wrapper::OnDisable()
 {
-    DISABLE_GAMEOBJECT(m_pUI);
+    __super::OnDisable();
 
+    DISABLE_GAMEOBJECT(m_pUI);
 }

@@ -2,7 +2,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 
-BEGIN(Client)
+BEGIN(Engine)
 class CShader;
 END
 

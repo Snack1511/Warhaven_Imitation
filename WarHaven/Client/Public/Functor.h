@@ -14,10 +14,12 @@ public:
 	static string	To_String(wstring wstrText);
 	static wstring	To_Wstring(string wstrText);
 
+	static string	Remove_String(string str);
+
 	static _float	Lerp_Float(const _float& fSour, const _float& fDest, const _float& fRatio);
 
-	static _float4 To_Descartes(_float4 vPos);
-	static _float4 To_Window(_float4 vPos);
+	static _float4	To_Descartes(_float4 vPos);
+	static _float4	To_Window(_float4 vPos);
 
 	//static void		Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume = 1.f);
 };

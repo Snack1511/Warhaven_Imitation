@@ -49,28 +49,32 @@ private:
 
 	_float m_fScale = 1.f;
 
+
 private:
+	void Create_UI();
+
 	CUI_Object* Add_UI();
 	CUI_Object* Clone_UI();
 
 	void Show_UIList();
+
 	void Show_Inspector(CUI_Object* pUI);
 
 	void Set_Object_Info(CUI_Object* pUI);
 
 	void Show_Shader(_uint iIndex);
 
-private:
 	void Show_Texture();
 	void Show_Color();
 
-private:
-	// 현재 리스트로 저장 중
-	// 객체마다 하나씩 저장할 수 있게 함수로 빼놓기
-	void Save_UI_Info();
-	void Load_UI_Info();
+	void UI_IO();
 
-private:
+	void Save_UI_List();
+	void Save_UI_Info(CUI_Object* pUI);
+
+	void Load_UI_List();
+	void Load_UI_Info(CUI_Object* pUI);
+
 	void Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree);
 	void Show_TreeTexture(TREE_DATA& tTree, _uint iIndex);
 };

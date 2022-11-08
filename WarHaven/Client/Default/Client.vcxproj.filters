@@ -208,6 +208,12 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\03.Play\HUD\CUI_HeroGauge">
       <UniqueIdentifier>{df70e0fd-717d-4898-9003-9ee5dff3f0a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\04. Game_Manager">
+      <UniqueIdentifier>{82df25a1-5ffa-472c-a30b-7edc0addc4aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\04. Game_Manager\JJ">
+      <UniqueIdentifier>{b9aadbf8-1156-4bce-b7ef-116b6e52ecab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -396,8 +402,11 @@
     <ClInclude Include="..\Public\CUI_Cursor.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\98.Cursor</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_HeroGauge.h">
+    <ClInclude Include="..\Public\CUI_Wrapper.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\03.Play\HUD\CUI_HeroGauge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGame_Manager_JJ.h">
+      <Filter>02. Design\04. Game_Manager\JJ</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -571,8 +580,11 @@
     <ClCompile Include="..\Private\CUI_Cursor.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\98.Cursor</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_HeroGauge.cpp">
+    <ClCompile Include="..\Private\CUI_Wrapper.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\03.Play\HUD\CUI_HeroGauge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGame_Manager_JJ.cpp">
+      <Filter>02. Design\04. Game_Manager\JJ</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

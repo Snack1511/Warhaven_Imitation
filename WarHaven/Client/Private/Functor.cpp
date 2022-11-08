@@ -68,6 +68,14 @@ wstring CFunctor::To_Wstring(string wstrText)
 	return wstring(wstrText.begin(), wstrText.end());
 }
 
+string	CFunctor::Remove_String(string str)
+{
+	_int iFind = (_int)str.rfind("\\") + 1;
+	string strFileName = str.substr(iFind, str.length() - iFind);
+	
+	return str;
+}
+
 _float CFunctor::Lerp_Float(const _float& fSour, const _float& fDest, const _float& fRatio)
 {
 	return (fSour * (1.f - fRatio)) + (fDest * fRatio);

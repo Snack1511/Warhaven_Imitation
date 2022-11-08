@@ -6,13 +6,13 @@ class CGameObject;
 END
 
 BEGIN(Client)
-class CUser
+class CGame_Manager_JJ
 {
-	DECLARE_SINGLETON(CUser);
+	DECLARE_SINGLETON(CGame_Manager_JJ);
 
 private:
-	CUser();
-	~CUser();
+	CGame_Manager_JJ();
+	~CGame_Manager_JJ();
 
 public:
 	HRESULT	Initialize();

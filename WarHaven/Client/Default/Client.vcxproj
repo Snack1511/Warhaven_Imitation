@@ -188,6 +188,7 @@
     <ClInclude Include="..\public\CCamera_Free.h" />
     <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\public\CEffects_Factory.h" />
+    <ClInclude Include="..\Public\CGame_Manager_JJ.h" />
     <ClInclude Include="..\public\CIdle_Player.h" />
     <ClInclude Include="..\public\CFader.h" />
     <ClInclude Include="..\public\CImGui_Window.h" />
@@ -209,13 +210,13 @@
     <ClInclude Include="..\Public\CUI_Button.h" />
     <ClInclude Include="..\Public\CUI_Component.h" />
     <ClInclude Include="..\Public\CUI_Cursor.h" />
-    <ClInclude Include="..\Public\CUI_HeroGauge.h" />
     <ClInclude Include="..\Public\CUI_LoadingBG.h" />
     <ClInclude Include="..\Public\CUI_LoadingIcon.h" />
     <ClInclude Include="..\Public\CUI_LobbyBG.h" />
     <ClInclude Include="..\Public\CUI_Logo.h" />
     <ClInclude Include="..\Public\CUI_Object.h" />
     <ClInclude Include="..\Public\CUI_Text.h" />
+    <ClInclude Include="..\Public\CUI_Wrapper.h" />
     <ClInclude Include="..\public\CUnit.h" />
     <ClInclude Include="..\Public\CStructure_TestStructure.h" />
     <ClInclude Include="..\public\CUnit_Warrior.h" />
@@ -251,6 +252,7 @@
     <ClCompile Include="..\private\CCamera_Free.cpp" />
     <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\private\CEffects_Factory.cpp" />
+    <ClCompile Include="..\Private\CGame_Manager_JJ.cpp" />
     <ClCompile Include="..\private\CIdle_Player.cpp" />
     <ClCompile Include="..\Private\CFader.cpp" />
     <ClCompile Include="..\Private\CImGui_Window.cpp" />
@@ -273,13 +275,13 @@
     <ClCompile Include="..\Private\CUI_Button.cpp" />
     <ClCompile Include="..\Private\CUI_Component.cpp" />
     <ClCompile Include="..\Private\CUI_Cursor.cpp" />
-    <ClCompile Include="..\Private\CUI_HeroGauge.cpp" />
     <ClCompile Include="..\Private\CUI_LoadingBG.cpp" />
     <ClCompile Include="..\Private\CUI_LoadingIcon.cpp" />
     <ClCompile Include="..\Private\CUI_LobbyBG.cpp" />
     <ClCompile Include="..\Private\CUI_Logo.cpp" />
     <ClCompile Include="..\Private\CUI_Object.cpp" />
     <ClCompile Include="..\Private\CUI_Text.cpp" />
+    <ClCompile Include="..\Private\CUI_Wrapper.cpp" />
     <ClCompile Include="..\private\CUnit.cpp" />
     <ClCompile Include="..\Private\CStructure_TestStructure.cpp" />
     <ClCompile Include="..\private\CUnit_Warrior.cpp" />
