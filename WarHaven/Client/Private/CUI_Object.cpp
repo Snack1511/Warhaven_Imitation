@@ -82,18 +82,6 @@ void CUI_Object::My_Tick()
 
 	if (m_bIsMouseTarget)
 		MouseEvent();
-
-	if (m_bIsOnMouse)
-	{
-		if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_TEST)
-		{
-			if (KEY(LBUTTON, HOLD))
-			{
-				_float4 vPos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
-				Set_Pos(vPos.x, -vPos.y);
-			}
-		}
-	}
 }
 
 void CUI_Object::My_LateTick()
@@ -109,6 +97,15 @@ void CUI_Object::MouseEvent()
 
 	if (m_bIsOnMouse)
 	{
+		if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_TEST)
+		{
+			if (KEY(LBUTTON, HOLD))
+			{
+				_float4 vPos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
+				Set_Pos(vPos.x, -vPos.y);
+			}
+		}
+
 		OnMouseEnter();
 
 		if (m_pButton)

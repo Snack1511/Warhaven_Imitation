@@ -59,6 +59,7 @@ private:
 	void Show_Shader(_uint iIndex);
 	void Show_Etc(CUI_Object* pUI);
 	void Show_Texture();
+	void Show_Image(ID3D11ShaderResourceView* pSRV);
 	void Show_File_IO();
 
 private:
