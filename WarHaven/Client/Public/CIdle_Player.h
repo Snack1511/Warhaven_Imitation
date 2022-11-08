@@ -26,6 +26,9 @@ private:
 	_float m_fCreateTimeAcc = 0.f;
 
 private:
+
+
+private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 };
 

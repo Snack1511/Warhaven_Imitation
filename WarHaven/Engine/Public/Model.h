@@ -49,6 +49,7 @@ public:
 	void	No_Culling() { m_bCulling = false; }
 	void	Set_ShaderFlag(_float4 vFlag);
 	void	Set_ShaderFlag(_uint iMeshPartType, _float4 vFlag);
+	void	Set_ShaderColor(_uint iMeshPartType, _float4 vColor);
 	void	Set_OutlinePower(_float fOutline);
 	void	Set_OutlinePower(_uint iMeshPartType, _float fOutline);
 

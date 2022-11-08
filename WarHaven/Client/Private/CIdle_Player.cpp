@@ -9,6 +9,9 @@
 #include "CUser.h"
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
+#include "Animation.h"
+#include "Model.h"
+#include "CColorController.h"
 
 CIdle_Player::CIdle_Player()
 {
@@ -63,9 +66,7 @@ HRESULT CIdle_Player::Initialize()
 void CIdle_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* OwnerÀÇ Animator Set Idle·Î */
-
-  
-
+    //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
 
     __super::Enter(pOwner, pAnimator);
 }
@@ -79,6 +80,13 @@ STATE_TYPE CIdle_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         CEffects_Factory::Get_Instance()->Create_Effects(HASHCODE(CSword_Effect), pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
         m_fCreateTimeAcc = 0.f;
     }
+
+    if (40 < pAnimator->Get_CurAnimFrame())
+    {
+       GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 1, 1, 0));
+    }
+    else
+        GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
 
     return __super::Tick(pOwner, pAnimator);
 }

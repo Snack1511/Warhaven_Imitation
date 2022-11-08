@@ -229,6 +229,9 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect\04. Sword_Effect">
       <UniqueIdentifier>{e2bc60ec-aebe-463d-b842-1b125c554e21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\03. Component\04. ColorController">
+      <UniqueIdentifier>{52202c2e-e784-4acd-978e-0b515adaf11d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -429,6 +432,9 @@
     <ClInclude Include="..\Public\CSword_Effect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CColorController.h">
+      <Filter>03. Instances\03. Component\04. ColorController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -612,6 +618,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CSword_Effect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CColorController.cpp">
+      <Filter>03. Instances\03. Component\04. ColorController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

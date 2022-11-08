@@ -18,6 +18,7 @@
 #include "CUtility_Transform.h"
 #include "CUtility_File.h"
 #include "Functor.h"
+#include "CColorController.h"
 
 CSword_Effect::CSword_Effect()
 {
@@ -54,17 +55,16 @@ HRESULT CSword_Effect::Initialize_Prototype()
 	m_vFadeInTargetScale  = _float4{ 0.01f, 0.01f, 0.01f, 0.f };
 	m_vFadeOutTargetScale = _float4{ 0.01f, 0.01f, 0.01f, 0.f };
 	m_eCurFadeType = FADEOUTREADY;
-	m_fFadeOutStartTime = 0.5f;
+	m_fFadeOutStartTime = 0.f;
 	m_fFadeOutTime = 0.016f;
-	m_fTargetAlpha = 1.f;
-
+	m_fTargetAlpha = 0.3f;
+	
 
 	__super::Initialize_Prototype();
 
 	GET_COMPONENT(CModel)->Change_Texture(0, aiTextureType_REFLECTION, L"../bin/resources/Textures/effects/Warhaven/weapon/T_WP_LongSword0006_A00_MRH.dds");
 	GET_COMPONENT(CModel)->Change_Texture(0, aiTextureType_DIFFUSE, L"../bin/resources/Textures/effects/Warhaven/weapon/T_WP_LongSword0006_A00_B.dds");
 	GET_COMPONENT(CModel)->Change_Texture(0, aiTextureType_NORMALS, L"../bin/resources/Textures/effects/Warhaven/weapon/T_WP_LongSword0006_A00_N.dds");
-	
 
 	return S_OK;
 }

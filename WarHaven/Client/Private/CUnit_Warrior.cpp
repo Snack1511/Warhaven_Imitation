@@ -79,6 +79,11 @@ HRESULT CUnit_Warrior::Initialize()
 {
 	__super::Initialize();
 
+	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_WEAPON, SH_LIGHT_DEFAULT);
+	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_BODY, _float4(1, 0, 0, 0));
+	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_HEAD, SH_LIGHT_DEFAULT);
+	
+
 	return S_OK;
 }
 

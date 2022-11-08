@@ -249,6 +249,15 @@ void CModel::Set_ShaderFlag(_uint iMeshPartType, _float4 vFlag)
 	}
 }
 
+void CModel::Set_ShaderColor(_uint iMeshPartType, _float4 vColor)
+{
+	for (auto& elem : m_MeshContainers)
+	{
+		if (elem.first == iMeshPartType)
+			elem.second->Set_Color(vColor);
+	}
+}
+
 void CModel::Set_OutlinePower(_float fOutline)
 {
 	for (auto& elem : m_MeshContainers)
