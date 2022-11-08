@@ -77,6 +77,31 @@ CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFileP
 	return pInstance;
 }
 
+CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _float4x4 TransformMatrix, string strBodyUpperRootBone, string strBodyLowerRootBone)
+{
+	CModel* pInstance = new CModel(iGroupIdx);
+
+	pInstance->m_wstrModelFilePath = wstrModelFilePath;
+	pInstance->m_strBodyUpperRootBone = strBodyUpperRootBone;
+	pInstance->m_strBodyLowerRootBone = strBodyLowerRootBone;
+
+
+	if (FAILED(pInstance->SetUp_Model(eType, wstrModelFilePath, TransformMatrix, 0)))
+	{
+		Call_MsgBox(L"Failed to SetUp_Model : CModel");
+		SAFE_DELETE(pInstance);
+		return nullptr;
+	}
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		Call_MsgBox(L"Failed to Initialize_Prototype : CModel");
+		SAFE_DELETE(pInstance);
+	}
+
+	return pInstance;
+}
+
 CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, wstring wstrInstanceFilePath, _float4x4 TransformMatrix)
 {
 	CModel* pInstance = new CModel(iGroupIdx);
@@ -593,6 +618,7 @@ HRESULT CModel::SetUp_Model(MODEL_TYPE eType, wstring wstrModelFilePath, _float4
 	return S_OK;
 }
 
+
 HRESULT CModel::SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, wstring wstrInstanceFilePath, _float4x4 TransformMatrix, _uint iMeshPartType)
 {
 	m_eMODEL_TYPE = eType;
@@ -704,7 +730,7 @@ HRESULT CModel::Create_ModelData(CResource* pResource, _uint iResType, _uint iMe
 		if (!pResource_Bone)
 			return E_FAIL;
 
-		if (FAILED(Create_HierarchyNode(pResource_Bone, nullptr, 0, iMeshPartType)))
+		if (FAILED(Create_HierarchyNode(pResource_Bone, nullptr, 0, iMeshPartType, m_strBodyUpperRootBone, m_strBodyLowerRootBone, 0)))
 			return E_FAIL;
 	}
 	break;
@@ -857,10 +883,10 @@ HRESULT CModel::Create_InstancingMesh(CResource_Mesh* pResource, _uint iNumInsta
 	return S_OK;
 }
 
-HRESULT CModel::Create_HierarchyNode(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, _uint iMeshPartType)
+HRESULT CModel::Create_HierarchyNode(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, _uint iMeshPartType, string strBodyUpperRootBone, string strBodyLowerRootBone, _uint iAnimBoneType)
 {
 	//1. 일단 모두 만듬
-	CHierarchyNode* pHierarchyNode = CHierarchyNode::Create(pResource, pParent, iDepth);
+	CHierarchyNode* pHierarchyNode = CHierarchyNode::Create(pResource, pParent, iDepth, strBodyUpperRootBone, strBodyLowerRootBone, iAnimBoneType);
 
 	if (nullptr == pHierarchyNode)
 		return E_FAIL;

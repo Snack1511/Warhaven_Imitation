@@ -26,16 +26,20 @@ public:
 	
 	_uint		Get_CurAnimFrame();
 
-	_uint		Get_CurAnimTypeIndex() { return m_iCurrentAnimationTypeIndex; }
-	_uint		Get_CurAnimIndex() { return m_iCurrentAnimationIndex; }
+	_uint		Get_CurAnimTypeIndex() { return m_iCurrentBobyUpperAnimationTypeIndex; }
+	_uint		Get_CurAnimIndex() { return m_iCurrentBobyUpperAnimationIndex; }
 
+
+	
 	void		Set_CurFrame(_uint iFrame);
-	void		Set_CurAnimIndex(_uint iTypeIndex, _uint iAnimIndex);
+	void		Set_CurAnimIndex(_uint iTypeIndex, _uint iAnimIndex, _uint iAnimBoneType = 0);
 	void		Set_AnimSpeed(_uint iTypeIndex, _uint iAnimIndex, _float fSpeed);
 	
 
 	void		Set_InterpolationTime(_uint iTypeIndex, _uint iIdx, _float fTime);
 	_bool		Is_CurAnimFinished();
+
+	void		Set_BodyBones(CHierarchyNode* pUpperBone, CHierarchyNode* pBone);
 
 
 public:
@@ -50,11 +54,20 @@ public:
 
 private:
 	wstring					m_wstrModelFilePath;
-	_uint					m_iCurrentAnimationTypeIndex = 0;
-	_uint					m_iCurrentAnimationIndex = 0;
+
+	_uint					m_iCurrentDefaultAnimationTypeIndex = 0;
+	_uint					m_iCurrentDefaultAnimationIndex = 0;
+
+	_uint					m_iCurrentBobyUpperAnimationTypeIndex = 0;
+	_uint					m_iCurrentBobyUpperAnimationIndex = 0;
+
+	_uint					m_iCurrentBobyLowerAnimationTypeIndex = 0;
+	_uint					m_iCurrentBobyLowerAnimationIndex = 0;
 
 	vector<vector<CAnimation*>>		m_vecAnimations;
-	CHierarchyNode* m_pFootNode = nullptr;
+	
+	CHierarchyNode* m_pBodyUpperNode = nullptr;
+	CHierarchyNode* m_pBodyLowerNode = nullptr;
 	
 
 private:

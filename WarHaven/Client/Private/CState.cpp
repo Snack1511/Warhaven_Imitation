@@ -21,7 +21,7 @@ void CState::Enter(CUnit* pOwner, CAnimator* pAnimator)
 {
     CUser::Get_Instance()->Clear_KeyCommands();
     m_fTimeAcc = 0.f;
-    pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
+    pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex, 0);
     pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, m_fInterPolationTime);
     pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, m_fAnimSpeed);
     m_bExecuted = false;

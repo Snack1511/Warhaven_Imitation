@@ -190,6 +190,7 @@
     <ClInclude Include="..\public\CEffects_Factory.h" />
     <ClInclude Include="..\public\CIdle_Player.h" />
     <ClInclude Include="..\public\CFader.h" />
+    <ClInclude Include="..\Public\CIdle_Warrior.h" />
     <ClInclude Include="..\public\CImGui_Window.h" />
     <ClInclude Include="..\public\CLevel_Loading.h" />
     <ClInclude Include="..\Public\CLevel_Logo.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="..\private\CEffects_Factory.cpp" />
     <ClCompile Include="..\private\CIdle_Player.cpp" />
     <ClCompile Include="..\Private\CFader.cpp" />
+    <ClCompile Include="..\Private\CIdle_Warrior.cpp" />
     <ClCompile Include="..\Private\CImGui_Window.cpp" />
     <ClCompile Include="..\private\CLevel_Loading.cpp" />
     <ClCompile Include="..\Private\CLevel_Logo.cpp" />

@@ -8,6 +8,11 @@ class CResource_Bone;
 
 class ENGINE_DLL CHierarchyNode final
 {
+
+public:
+	enum ANIM_BONE_TYPE { ANIM_BONE_TYPE_DEFAULT, ANIM_BONE_TYPE_BODYUPPER, ANIM_BONE_TYPE_BODYLOWER, ANIM_BONE_TYPE_END };
+
+
 private:
 	CHierarchyNode();
 	virtual ~CHierarchyNode();
@@ -19,9 +24,35 @@ public:
 
 
 public:
-	static CHierarchyNode* Create(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth);
+	static CHierarchyNode* Create(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, string strBodyUpperRootBone, string strBodyLowerRootBone, _uint iAnimBoneType = 0);
 
 public:
+	void	Set_MyAnimBoneType(_uint iAnimBoneType) {
+		if (ANIM_BONE_TYPE_END <= iAnimBoneType)
+		{
+			m_eMyAnimBoneType = ANIM_BONE_TYPE_DEFAULT;
+			return;
+		}
+
+		m_eMyAnimBoneType = (ANIM_BONE_TYPE)iAnimBoneType;
+	} 
+
+	void	Set_CurAnimBoneType(_uint iAnimBoneType) {
+		if (ANIM_BONE_TYPE_END <= iAnimBoneType)
+		{
+			m_eCurAnimBoneType = ANIM_BONE_TYPE_DEFAULT;
+			return;
+		}
+
+		m_eCurAnimBoneType = (ANIM_BONE_TYPE)iAnimBoneType;
+	}
+
+	_uint	Get_MyAnimBoneType() {
+		return (_uint)m_eMyAnimBoneType;
+	}
+	_uint	Get_CurAnimBoneType() {
+		return (_uint)m_eCurAnimBoneType;
+	}
 	void	Set_Parent(CHierarchyNode* pNode) { m_pParent = pNode; }
 
 	_uint Get_Depth() const {
@@ -63,12 +94,16 @@ public:
 	void	Get_AllNodes(vector<CHierarchyNode*>& vecNodes);
 
 public:
-	HRESULT Initialize(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth);
+	HRESULT Initialize(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, string strBodyUpperRootBone, string strBodyLowerRootBone, _uint iAnimBoneType);
 	void Update_CombinedTransformationMatrix();
 
 	void	Release();
 
-private:
+private: 
+	ANIM_BONE_TYPE m_eMyAnimBoneType = ANIM_BONE_TYPE_DEFAULT; // 내 우선순위 애니메이션 타입
+	ANIM_BONE_TYPE m_eCurAnimBoneType = ANIM_BONE_TYPE_DEFAULT; // 현재 재생중인 애니메이션 타입
+
+
 	_uint			m_iDepth = 0;
 	char			m_szName[MAX_PATH] = "";
 
@@ -77,7 +112,10 @@ private:
 	_float4x4		m_CombinedTransformationMatrix;
 
 	CHierarchyNode*	m_pParent = nullptr;
+
 	vector<CHierarchyNode*>	m_pChildrenNodes;
+	vector<CHierarchyNode*>	m_pCurChildrenNodes;
+
 
 	KEYFRAME		m_tPrevKeyFrame;
 	KEYFRAME		m_tCurKeyFrame;

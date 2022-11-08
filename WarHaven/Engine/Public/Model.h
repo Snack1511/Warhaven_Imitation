@@ -17,6 +17,7 @@ private:
 
 public:
 	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _float4x4 TransformMatrix);
+	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _float4x4 TransformMatrix, string strBodyUpperRootBone, string strBodyLowerRootBone);
 	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, wstring wstrInstanceFilePath, _float4x4 TransformMatrix);
 	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, _float4x4 TransformMatrix);
 
@@ -78,6 +79,10 @@ public:
 	HRESULT Bind_SRV(class CShader* pShader, const char* pContantName, _uint iMeshContainerIndex, aiTextureType eType);
 
 private:
+	string						m_strBodyUpperRootBone;
+	string						m_strBodyLowerRootBone;
+
+private:
 	wstring						m_wstrModelFilePath;
 	MODEL_TYPE					m_eMODEL_TYPE = TYPE_END;
 	_float4x4					m_TransformMatrix;
@@ -107,7 +112,7 @@ private:
 	HRESULT Create_MeshContainer(class CResource_Mesh* pResource, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT Create_InstancingMesh(class CResource_Mesh* pResource, wstring wstrInstanceFilePath, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT Create_InstancingMesh(class CResource_Mesh* pResource, _uint iNumInstance, _float4x4 TransformMatrix, _uint iMeshPartType);
-	HRESULT Create_HierarchyNode(class CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, _uint iMeshPartType);
+	HRESULT Create_HierarchyNode(class CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, _uint iMeshPartType, string strBodyUpperRootBone, string strBodyLowerRootBone, _uint iAnimBoneType);
 
 
 

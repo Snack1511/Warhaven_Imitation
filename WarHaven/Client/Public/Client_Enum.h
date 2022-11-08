@@ -237,7 +237,6 @@ namespace Client
 	{
 		STATE_IDLE_PLAYER,
 
-
 		STATE_END,
 	};
 }

@@ -18,7 +18,7 @@ CAnimator::CAnimator(_uint iGroupIdx)
 
 CAnimator::CAnimator(const CAnimator& rhs)
 	: CComponent(rhs)
-	, m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex)
+	, m_iCurrentDefaultAnimationIndex(rhs.m_iCurrentDefaultAnimationIndex)
 	, m_wstrModelFilePath(rhs.m_wstrModelFilePath)
 {
 
@@ -91,18 +91,18 @@ _float CAnimator::Calculate_Duration(_uint iTypeIndex, _uint iAnimIndex, _uint i
 
 _uint CAnimator::Get_CurAnimFrame()
 {
-	return m_vecAnimations[m_iCurrentAnimationTypeIndex][m_iCurrentAnimationIndex]->m_Channels.front()->Get_CurKeyFrame();
+	return m_vecAnimations[m_iCurrentDefaultAnimationTypeIndex][m_iCurrentDefaultAnimationIndex]->m_Channels.front()->Get_CurKeyFrame();
 }
 
 void CAnimator::Set_CurFrame(_uint iFrame)
 {
-	for (auto& elem : m_vecAnimations[m_iCurrentAnimationTypeIndex][m_iCurrentAnimationIndex]->m_Channels)
+	for (auto& elem : m_vecAnimations[m_iCurrentDefaultAnimationTypeIndex][m_iCurrentDefaultAnimationIndex]->m_Channels)
 	{
 		elem->m_iCurrentKeyFrame = iFrame;
 	}
 }
 
-void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx)
+void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx, _uint iAnimBoneType)
 {
 	if (iTypeIndex >= m_vecAnimations.size())
 		return;
@@ -110,14 +110,41 @@ void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx)
 	if (iNewIdx >= m_vecAnimations[iTypeIndex].size())
 		return;
 
-	//다음녀석ㄱ한테 보간하라고 시켜
-	m_vecAnimations[iTypeIndex][iNewIdx]->OnInterpolate(m_vecAnimations[iTypeIndex][iNewIdx]);
+	m_iCurrentAnimBoneType = iAnimBoneType;
+	//다음녀석한테 보간하라고 시켜
+	m_vecAnimations[iTypeIndex][iNewIdx]->OnInterpolate(m_vecAnimations[iTypeIndex][iNewIdx], iAnimBoneType);
 
 	//이전껀 리셋해놓고
-	m_vecAnimations[m_iCurrentAnimationTypeIndex][m_iCurrentAnimationIndex]->Reset();
 
-	m_iCurrentAnimationTypeIndex = iTypeIndex;
-	m_iCurrentAnimationIndex = iNewIdx;
+	switch (iAnimBoneType)
+	{
+	case 0 :
+		m_vecAnimations[m_iCurrentDefaultAnimationTypeIndex][m_iCurrentDefaultAnimationIndex]->Reset();
+
+		m_iCurrentDefaultAnimationTypeIndex = iTypeIndex;
+		m_iCurrentDefaultAnimationIndex = iNewIdx;
+
+
+		break;
+
+	case 1:
+		m_iCurrentBobyUpperAnimationTypeIndex = iTypeIndex;
+		m_iCurrentBobyUpperAnimationIndex = iNewIdx;
+
+		m_vecAnimations[m_iCurrentBobyUpperAnimationTypeIndex][m_iCurrentBobyUpperAnimationIndex]->Reset();
+
+		break;
+
+	case 2:
+		m_iCurrentBobyLowerAnimationTypeIndex = iTypeIndex;
+		m_iCurrentBobyLowerAnimationIndex = iNewIdx;
+		m_vecAnimations[m_iCurrentBobyLowerAnimationTypeIndex][m_iCurrentBobyLowerAnimationIndex]->Reset();
+		break;
+	default:
+		break;
+	}
+
+	
 
 
 }
@@ -147,7 +174,7 @@ void CAnimator::Set_InterpolationTime(_uint iTypeIndex, _uint iIdx, _float fTime
 
 _bool CAnimator::Is_CurAnimFinished()
 {
-	return m_vecAnimations[m_iCurrentAnimationTypeIndex][m_iCurrentAnimationIndex]->m_isFinished;
+	return m_vecAnimations[m_iCurrentDefaultAnimationTypeIndex][m_iCurrentDefaultAnimationIndex]->m_isFinished;
 }
 
 HRESULT CAnimator::Initialize_Prototype()
@@ -185,21 +212,20 @@ void CAnimator::Start()
 		}
 		
 	}
-
-	vector<pair<_uint, CHierarchyNode*>>& vecHierarchyNodes = pModelCom->Get_Hierarchynodes();
-	for (auto& elem : vecHierarchyNodes)
-	{
-		if (!strcmp(elem.second->Get_Name(), "CharacterRoot"))
-		{
-			m_pFootNode = elem.second;
-			break;
-		}
-	}
 }
 
 void CAnimator::Tick()
 {
-	m_vecAnimations[m_iCurrentAnimationTypeIndex][m_iCurrentAnimationIndex]->Update_Matrices();
+	if(m_iCurrentAnimBoneType == 0)
+		m_vecAnimations[m_iCurrentDefaultAnimationTypeIndex][m_iCurrentDefaultAnimationIndex]->Update_Matrices(0);
+	
+	else 
+	{
+		m_vecAnimations[m_iCurrentBobyUpperAnimationTypeIndex][m_iCurrentBobyUpperAnimationIndex]->Update_Matrices(1);
+		m_vecAnimations[m_iCurrentBobyLowerAnimationTypeIndex][m_iCurrentBobyLowerAnimationIndex]->Update_Matrices(2);
+	}
+
+	
 }
 
 void CAnimator::Late_Tick()
