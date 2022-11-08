@@ -8,9 +8,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Default\Client.vcxproj", "{276465AF-DFCB-4FE0-828D-29130DE50564}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. Client", "00. Client", "{874D9D1B-E3A2-4ED3-8682-D091B7C32D28}"
-	ProjectSection(SolutionItems) = preProject
-		Client\Default\imgui.ini = Client\Default\imgui.ini
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Engine", "01. Engine", "{0055CE7A-760C-4B01-B3D5-7011310B52EA}"
 EndProject
