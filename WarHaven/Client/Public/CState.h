@@ -22,10 +22,6 @@ public:
 	virtual CState* Clone() PURE;
 
 public:
-	_bool	Is_CoolTimeOn() { return m_bCoolTime; }
-	void	ReSet_CoolTime() {
-		m_bCoolTime = true;
-	};
 	void	Set_AnimType(ANIM_TYPE eAnimType) { m_eAnimType = eAnimType; }
 	void	Set_AnimIndex(_uint iAnimIndex) { m_iAnimIndex = iAnimIndex; }
 
@@ -44,12 +40,12 @@ protected:
 
 	_float				m_fAnimSpeed = 1.f;
 	_float				m_fInterPolationTime = 0.1f;
+
 	_float				m_fTimeAcc = 0.f;
-	_float				m_fStateChangableTime = 0.f;
-	_float				m_fDelayTime = 0.f;
 
 	_bool				m_bExecuted = false;
-	_bool				m_bCoolTime = true;
+
+	_uint				m_iStateChangeKeyFrame = 0;
 
 protected:
 	CHANNEL_CLIENT	m_eChannel = CHANNEL_EFFECTS;

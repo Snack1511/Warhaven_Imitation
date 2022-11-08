@@ -44,10 +44,11 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
    
 
 
-
-    m_fTimeAcc += fDT(0);
-
     STATE_TYPE eType = STATE_END;
+
+
+   /* m_fTimeAcc += fDT(0);
+
 
     if (m_fTimeAcc >= m_fDelayTime)
     {
@@ -61,13 +62,14 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
     }
 
     if (m_fTimeAcc <= m_fStateChangableTime)
+        return eType;*/
+
+
+    if (pAnimator->Get_CurAnimFrame() < m_iStateChangeKeyFrame)
         return eType;
 
     for (auto& elem : m_vecAdjState)
     {
-        if (!CState_Manager::Get_Instance()->Get_State(elem)->Is_CoolTimeOn())
-            continue;
-
         eType = CState_Manager::Get_Instance()->Get_State(elem)->Check_Condition(pOwner, pAnimator);
 
         if (eType != STATE_END)

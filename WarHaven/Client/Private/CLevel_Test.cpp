@@ -130,6 +130,8 @@ void CLevel_Test::Tick()
 #endif
 
 	CUser::Get_Instance()->KeyInput_FPSSetter();
+	CUser::Get_Instance()->Update_KeyCommands();
+
 }
 
 void CLevel_Test::Late_Tick()
@@ -190,7 +192,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 
 	//1. Ã¢¸Ç
-	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Spearman/Spearman.fbx";
+	/*tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Spearman/Spearman.fbx";
 
 	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Spearman/body/SK_Spearman0001_Body_A00.fbx";
 	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Face_A00.fbx";
@@ -204,7 +206,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 		return E_FAIL;
 
 	pTestSpearmanUnit->Initialize();
-	Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);
+	Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);*/
 
     return S_OK;
 }

@@ -236,6 +236,20 @@ namespace Client
 	enum STATE_TYPE
 	{
 		STATE_IDLE_PLAYER,
+		STATE_WALK_PLAYER,
+
+
+
+
+
+
+
+
+
+
+		/* ATtack */
+
+		STATE_ATTACK_WARRIOR,
 
 
 		STATE_END,

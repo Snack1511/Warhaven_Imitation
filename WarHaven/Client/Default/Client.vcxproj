@@ -223,6 +223,8 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CUtility_Transform.h" />
+    <ClInclude Include="..\public\CWalk_Player.h" />
+    <ClInclude Include="..\public\CWarrior_Attack_01.h" />
     <ClInclude Include="..\public\CWindow_Default.h" />
     <ClInclude Include="..\Public\CWindow_Map.h" />
     <ClInclude Include="..\public\CWindow_Select.h" />
@@ -279,6 +281,8 @@
     <ClCompile Include="..\private\CUnit_Warrior.cpp" />
     <ClCompile Include="..\private\CUser.cpp" />
     <ClCompile Include="..\private\CUtility_Transform.cpp" />
+    <ClCompile Include="..\private\CWalk_Player.cpp" />
+    <ClCompile Include="..\private\CWarrior_Attack_01.cpp" />
     <ClCompile Include="..\Private\CWindow_Default.cpp" />
     <ClCompile Include="..\Private\CWindow_Map.cpp" />
     <ClCompile Include="..\private\CWindow_Select.cpp" />
