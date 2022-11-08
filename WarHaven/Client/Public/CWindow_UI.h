@@ -62,6 +62,7 @@ private:
 	void Show_Texture(_uint iIndex);
 
 	void Save_UI_Info(CUI_Object* pUI);
+	void Load_UI_Info();
 
 private:
 	void Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree);

@@ -11,13 +11,6 @@ class CUI_Object : public CUI
 	DECLARE_PROTOTYPE(CUI_Object);
 	DECLARE_GAMEOBJECT(CUI_Object);
 
-public:
-	typedef struct tag_UI_DESC
-	{
-		_float4 vPos;
-
-	}UI_Desc;
-
 private:
 	CUI_Object();
 	CUI_Object(const CUI_Object& Prototype);
@@ -38,6 +31,8 @@ public:
 public:
 	wstring Get_UIName() { return m_wstrUIName; }
 	void Set_UIName(wstring str) { m_wstrUIName = str; }
+
+	_bool Get_MouseTarget() { return m_bIsMouseTarget; }
 	void Set_MouseTarget(_bool value) { m_bIsMouseTarget = value; }
 
 private:
@@ -53,7 +48,6 @@ private:
 
 	RECT m_tRect;
 	POINT m_ptMouse;
-
 
 private:
 	// These will be called by Set_Enable Func.

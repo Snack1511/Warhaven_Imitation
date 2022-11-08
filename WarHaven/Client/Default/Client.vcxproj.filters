@@ -202,6 +202,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\Text">
       <UniqueIdentifier>{38fe1128-ebee-4fb0-a7f0-13d768ed14b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\98.Cursor">
+      <UniqueIdentifier>{423fdc2c-7038-4a91-92eb-1df1541bf3b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
