@@ -65,6 +65,11 @@ HRESULT CWindow_UI::Render()
 	ImGui::Text("= UI =");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
+	if (ImGui::Button("Save"))
+		Save_UI_Info();
+
+	ImGui::SameLine();
+
 	if (ImGui::Button("Load"))
 		Load_UI_Info();
 
@@ -81,6 +86,11 @@ HRESULT CWindow_UI::Render()
 	if (m_iSelectIndex < 9999)
 	{
 		CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
+
+		// 객체를 선택할 때 객체의 원래 크기 값을 받아옴??
+
+		// 원래 크기값과 현재 적용된 배수를 받아옴
+
 		Show_Inspector(pUI);
 	}
 
@@ -151,70 +161,90 @@ void CWindow_UI::Show_Inspector(CUI_Object* pUI)
 {
 	ImGui::Begin("Inspector");
 
-	Set_Name(pUI);
-
-	Show_Transform(pUI);
-
-	Show_Etc(pUI);
+	Set_Object_Info(pUI);
 
 	// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
 	Show_Texture();
 
-	Show_File_IO();
-
 	ImGui::End();
 }
 
-void CWindow_UI::Set_Name(CUI_Object* pUI)
+
+void CWindow_UI::Set_Object_Info(CUI_Object* pUI)
 {
-	static char strName[128] = "UI_Object";
-	if (ImGui::InputText("UI Name", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
+	// 객체 이름 설정
+	if (ImGui::CollapsingHeader("Name"))
 	{
-		wstring wstr(strName, &strName[128]);
-		pUI->Set_UIName(wstr);
+		static char strName[128] = "UI_Object";
+		if (ImGui::InputText("", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			wstring wstr(strName, &strName[128]);
+			pUI->Set_UIName(wstr);
+		}
 	}
-
-	ImGui::NewLine();
-}
-
-void CWindow_UI::Show_Transform(CUI_Object* pUI)
-{
+	
 	if (ImGui::CollapsingHeader("Transform"))
 	{
-		// Position
-		_float4 fUI_Pos = pUI->Get_Transform()->Get_World(WORLD_POS);
-		float fPos[2] = { fUI_Pos.x, fUI_Pos.y };
-		ImGui::DragFloat2("Position", fPos, 1.f, -9999.f, 9999.f);
-		pUI->Set_Pos(fPos[0], fPos[1]);
 
-		// Scale
-		_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
-		float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
-		ImGui::DragFloat2("Scale", fScale, 1.f, -9999.f, 9999.f);
-
-		for (int i = 0; i < 2; ++i)
+		if (ImGui::TreeNode("Position"))
 		{
-			if (fScale[i] <= 1.f)
-				fScale[i] = 1.f;
+			_float4 fUI_Pos = pUI->Get_Transform()->Get_World(WORLD_POS);
+			float fPos[2] = { fUI_Pos.x, fUI_Pos.y };
+			ImGui::DragFloat2("XY", fPos, 1.f, -9999.f, 9999.f);
+			pUI->Set_Pos(fPos[0], fPos[1]);
+
+			ImGui::TreePop();
 		}
 
-		pUI->Set_Scale(fScale[0], fScale[1]);
+		if (ImGui::TreeNode("Scale"))
+		{
+			_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
+			float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
+			ImGui::DragFloat2("XY", fScale, 1.f, -9999.f, 9999.f);
+
+			for (int i = 0; i < 2; ++i)
+			{
+				if (fScale[i] <= 1.f)
+					fScale[i] = 1.f;
+			}
+
+			pUI->Set_Scale(fScale[0], fScale[1]);
+
+			if (ImGui::DragFloat("Multiple", &m_fScale, 0.1f, -999.f, 999.f))
+			{
+				// 값을 변경할 때마다 처음 크기에서 값을 곱한 만큼 반환
+				_float4 vOriginScale = pUI->Get_Transform()->Get_Scale();
+
+				if (m_fScale <= 0.1f)
+					m_fScale = 0.1f;
+
+				_float4 vResultScale = vOriginScale * m_fScale;
+				pUI->Get_Transform()->Set_Scale(vResultScale);
+			}
+
+			ImGui::TreePop();
+		}		
 	}
 
-	ImGui::NewLine();
-}
-
-void CWindow_UI::Show_Etc(CUI_Object* pUI)
-{
 	if (ImGui::CollapsingHeader("Etc"))
 	{
-		static bool bIsTarget = pUI->Get_MouseTarget();
-		ImGui::Checkbox("Mouse Interact", &bIsTarget);
-		pUI->Set_MouseTarget(bIsTarget);
+		if (ImGui::TreeNode("Mouse Interact"))
+		{
+			static bool bIsTarget = pUI->Get_MouseTarget();
+			ImGui::Checkbox("True", &bIsTarget);
+			pUI->Set_MouseTarget(bIsTarget);
 
-		static bool bIsMulti = pUI->Get_MultiTexture();
-		ImGui::Checkbox("Multi Texture", &bIsMulti);
-		pUI->Set_MultiTexture(bIsMulti);
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Multi Texture"))
+		{
+			static bool bIsMulti = pUI->Get_MultiTexture();
+			ImGui::Checkbox("True", &bIsMulti);
+			pUI->Set_MultiTexture(bIsMulti);
+
+			ImGui::TreePop();
+		}		
 	}
 
 	ImGui::NewLine();
@@ -230,12 +260,6 @@ void CWindow_UI::Show_Texture()
 	Show_TreeTexture(m_TextureRootNode, m_iSelectIndex);
 
 	ImGui::End();
-}
-
-void CWindow_UI::Show_File_IO()
-{
-	if (ImGui::Button("Save"))
-		Save_UI_Info();
 }
 
 void CWindow_UI::Save_UI_Info()

@@ -51,7 +51,7 @@ HRESULT CUI_Cursor::Start()
 	ClientToScreen(g_hWnd, (LPPOINT)&tScreen);
 	ClientToScreen(g_hWnd, (LPPOINT)&tScreen.right);
 
-	ClipCursor(&tScreen);
+	// ClipCursor(&tScreen);
 
 	return S_OK;
 }

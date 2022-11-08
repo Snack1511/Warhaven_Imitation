@@ -56,18 +56,17 @@ private:
 	void Show_UIList();
 	void Show_Inspector(CUI_Object* pUI);
 
-	void Set_Name(CUI_Object* pUI);
-	void Show_Transform(CUI_Object* pUI);
+	void Set_Object_Info(CUI_Object* pUI);
+
 	void Show_Shader(_uint iIndex);
-	void Show_Etc(CUI_Object* pUI);
 
 private:
 	void Show_Texture();
 	void Show_Color();
 
-
 private:
-	void Show_File_IO();
+	// 현재 리스트로 저장 중
+	// 객체마다 하나씩 저장할 수 있게 함수로 빼놓기
 	void Save_UI_Info();
 	void Load_UI_Info();
 
