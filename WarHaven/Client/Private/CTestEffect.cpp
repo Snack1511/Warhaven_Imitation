@@ -42,7 +42,7 @@ CTestEffect* CTestEffect::Create(wstring wstrModelPath, wstring wstrMaskPath, ws
 
 HRESULT CTestEffect::Initialize_Prototype()
 {
-	m_eEffectPassType = VTXEFFECT_PASS_DECAL;
+	m_eEffectPassType = VTXEFFECT_PASS_DEFAULT;
 
 
 	__super::Initialize_Prototype();
@@ -55,7 +55,7 @@ HRESULT CTestEffect::Initialize_Prototype()
 
 HRESULT CTestEffect::Initialize()
 {
-	m_vEffectShaderFlag = SH_EFFECT_NOBLOOM;
+	m_vEffectShaderFlag = SH_EFFECT_DEFAULT;
 
 	__super::Initialize();
 

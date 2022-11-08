@@ -201,17 +201,17 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_HR()
 {
-	wstring wstrModel = L"../bin/resources/Meshes/Effects/FBX/SM_Charge_Mesh_01.fbx";
-	wstring wstrMask = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_10_M.dds";
+	/*wstring wstrModel = L"../bin/resources/Meshes/Effects/FBX/SM_Charge_Mesh_01.fbx";
+	wstring wstrMask = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_12_M.dds";
 	wstring wstrColor = L"../bin/resources/Textures/Effects/GradationColor/T_EFF_GMS_AmeVillage_Sea_01_M.png";
-	wstring wstrNoise = L"../bin/resources/Textures/Effects/Noise/T_EFF_Noise_16_M.dds";
+	wstring wstrNoise = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_12_M.dds";
 
 	CTestEffect* pTest = CTestEffect::Create(wstrModel, wstrMask, wstrColor, wstrNoise);
 	if (!pTest)
 		return E_FAIL;
 
 	pTest->Initialize();
-	Ready_GameObject(pTest, GROUP_EFFECT);
+	Ready_GameObject(pTest, GROUP_EFFECT);*/
 
 	return S_OK;
 }

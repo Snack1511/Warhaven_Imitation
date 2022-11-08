@@ -211,6 +211,12 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect\00. TestEffect">
       <UniqueIdentifier>{e1d3c056-0ef4-469d-8da2-b08bc529b452}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect">
+      <UniqueIdentifier>{e5b6a7f5-5ba7-474b-8276-ed8a4383f686}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\08. Effect\00. Default_Effect">
+      <UniqueIdentifier>{1a8f52dc-1865-4115-8ec9-5747a3346a35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -390,6 +396,12 @@
     <ClInclude Include="..\Public\CTestEffect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CWindow_Effect.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CDefault_Effect.h">
+      <Filter>03. Instances\02. GameObject\08. Effect\00. Default_Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -552,6 +564,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CTestEffect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWindow_Effect.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CDefault_Effect.cpp">
+      <Filter>03. Instances\02. GameObject\08. Effect\00. Default_Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

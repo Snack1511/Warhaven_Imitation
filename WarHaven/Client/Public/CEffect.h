@@ -14,7 +14,9 @@ BEGIN(Client)
 class CEffect abstract
 	: public CGameObject
 {
-	
+	friend class CWindow_Effect;
+	friend class CWindow_Test;
+
 protected:
 	CEffect();
 	virtual ~CEffect();

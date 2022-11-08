@@ -269,8 +269,8 @@ PS_OUT PS_MAIN_DISOLVE(PS_IN In)
 	//Diffuse : AlphaMap
 	vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
 	In.vTexUV.x += g_fUVPlusX;
-	In.vTexUV.y += g_fUVPlusY;
-	vColor -= g_fUVPlusX * 0.1f;
+	vColor.a = 1.f;
+	vColor.rgb -= g_fUVPlusX * 0.05f;
 	vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	Out.vDiffuse.xyz = vColor.xyz;
 	Out.vDiffuse *= vMtrlDiffuse.r;

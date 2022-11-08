@@ -186,6 +186,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CCamera_Default.h" />
     <ClInclude Include="..\public\CCamera_Free.h" />
+    <ClInclude Include="..\Public\CDefault_Effect.h" />
     <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\public\CEffects_Factory.h" />
     <ClInclude Include="..\public\CIdle_Player.h" />
@@ -223,6 +224,7 @@
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CUtility_Transform.h" />
     <ClInclude Include="..\public\CWindow_Default.h" />
+    <ClInclude Include="..\Public\CWindow_Effect.h" />
     <ClInclude Include="..\Public\CWindow_Map.h" />
     <ClInclude Include="..\public\CWindow_Select.h" />
     <ClInclude Include="..\Public\CWindow_UI.h" />
@@ -245,6 +247,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\private\CCamera_Default.cpp" />
     <ClCompile Include="..\private\CCamera_Free.cpp" />
+    <ClCompile Include="..\Private\CDefault_Effect.cpp" />
     <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\private\CEffects_Factory.cpp" />
     <ClCompile Include="..\private\CIdle_Player.cpp" />
@@ -278,6 +281,7 @@
     <ClCompile Include="..\private\CUser.cpp" />
     <ClCompile Include="..\private\CUtility_Transform.cpp" />
     <ClCompile Include="..\Private\CWindow_Default.cpp" />
+    <ClCompile Include="..\Private\CWindow_Effect.cpp" />
     <ClCompile Include="..\Private\CWindow_Map.cpp" />
     <ClCompile Include="..\private\CWindow_Select.cpp" />
     <ClCompile Include="..\Private\CWindow_UI.cpp" />
