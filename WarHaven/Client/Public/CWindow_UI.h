@@ -54,7 +54,9 @@ private:
 	void Show_Transform(CUI_Object* pUI);
 	void Show_Shader(_uint iIndex);
 	void Show_Etc(CUI_Object* pUI);
-	void Show_TextureWindow(_uint iIndex);
+	void Show_Texture(_uint iIndex);
+
+	void Save_UI_Info(CUI_Object* pUI);
 
 private:
 	void Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree);

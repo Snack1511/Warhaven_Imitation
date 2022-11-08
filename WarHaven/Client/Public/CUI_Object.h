@@ -11,6 +11,13 @@ class CUI_Object : public CUI
 	DECLARE_PROTOTYPE(CUI_Object);
 	DECLARE_GAMEOBJECT(CUI_Object);
 
+public:
+	typedef struct tag_UI_DESC
+	{
+		_float4 vPos;
+
+	}UI_Desc;
+
 private:
 	CUI_Object();
 	CUI_Object(const CUI_Object& Prototype);

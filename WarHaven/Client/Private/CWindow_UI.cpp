@@ -125,7 +125,10 @@ HRESULT CWindow_UI::Render()
 
 			// UI 이미지 창
 			// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
-			Show_TextureWindow(m_iSelectIndex);
+			Show_Texture(m_iSelectIndex);
+
+			if (ImGui::Button("Save"))
+				Save_UI_Info(pUI);
 		}		
 	}
 
@@ -193,7 +196,7 @@ void CWindow_UI::Show_Etc(CUI_Object* pUI)
 	}
 }
 
-void CWindow_UI::Show_TextureWindow(_uint iIndex)
+void CWindow_UI::Show_Texture(_uint iIndex)
 {
 	ImGuiWindowFlags WindowFlags = 0;
 	WindowFlags |= ImGuiWindowFlags_NoResize;
@@ -207,6 +210,45 @@ void CWindow_UI::Show_TextureWindow(_uint iIndex)
 	Show_TreeTexture(m_TextureRootNode, iIndex);
 
 	ImGui::End();
+}
+
+void CWindow_UI::Save_UI_Info(CUI_Object* pUI)
+{
+	CUI_Object::UI_Desc tUI_Desc;
+	ZeroMemory(&tUI_Desc, sizeof(CUI_Object::UI_Desc));
+
+	// 오브젝트의 트랜스폼을 
+	tUI_Desc.vPos = pUI->Get_Transform()->Get_World(WORLD_POS);
+
+	_tchar szFileFullPath[MAX_PATH] = L"";
+	const _tchar* szFilePath = TEXT("../Bin//Data/UIData/");
+
+	wcscat_s(szFileFullPath, szFilePath);
+	wcscat_s(szFileFullPath, pUI->Get_UIName().c_str());
+	wcscat_s(szFileFullPath, L".dat");
+
+	HANDLE	hFile = CreateFile
+	(
+		szFileFullPath,			// 파일의 경로와 이름을 명시
+		GENERIC_WRITE,			// 파일 접근 모드 (출력 : WRITE, 입력 : READ)
+		NULL,					// 공유 방식, 파일이 열려있는 상태에서 다른 프로세스가 오픈할 때 허용하는가에 대한 설정, NULL 지정 시 공유안함
+		NULL,					// 보안 속성 모드, NULL인 경우 기본값 설정
+		CREATE_ALWAYS,			// 파일이 없으면 생성, 있으면 덮어 쓰기, OPEN_EXISTING - 파일이 있는 경우에만 로드
+		FILE_ATTRIBUTE_NORMAL,	// 파일 속성(읽기 전용, 숨김 파일 등등을 설정), 아무런 속성이 없는 파일 모드 생성
+		NULL					// 생성될 파일의 속성을 제공할 템플릿 파일, 우린 안 쓸것이기 때문에 NULL
+	);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		Call_MsgBox(TEXT("UI_Object Save failed"));
+		return;
+	}
+
+	DWORD dwByte = 0;
+
+	WriteFile(hFile, &tUI_Desc, sizeof(CUI_Object::UI_Desc), &dwByte, nullptr);
+
+	CloseHandle(hFile);
 }
 
 void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
