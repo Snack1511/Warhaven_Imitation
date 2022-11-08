@@ -4,6 +4,8 @@
 #include "Texture.h"
 
 #include "ImGui_Manager.h"
+#include "Functor.h"
+#include "GameInstance.h"
 
 CWindow_UI* CWindow_UI::Create()
 {
@@ -52,22 +54,14 @@ HRESULT CWindow_UI::Render()
 	ImGui::Text("= UI =");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
+	Show_TreeTexture(m_TextureRootNode);
+
 	// UI 객체가 생성될 때마다 UI 자료 구조에 추가
 	// 해당 자료구조에서 타입이 UI인 객체들을 가져와서 뿌린다.
 
 	// 트랜스폼 (위치, 크기, 회전??)
 
 	// 텍스처 변경
-	
-	const char* str = m_TextureRootNode.strFullPath.c_str();
-	_tchar* pStr;
-	int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
-	pStr = new WCHAR[strSize];
-	MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, pStr, strSize);
-
-	m_pTexture = CTexture::Create(GROUP_UI, pStr, 1);
-
-	// ImGui::Image((void*)m_pTexture, ImVec2(m_pTexture->()))
 
 	// 색상 변경
 	// 마테리얼 변경
@@ -114,4 +108,61 @@ void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
 
 		tRootTree.vecChildren.push_back(tTreeData);
 	}
+}
+
+void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree)
+{
+	if (!tTree.vecChildren.empty())
+	{
+		ImGui::NewLine();
+
+		if (ImGui::TreeNode(tTree.strFileName.c_str()))
+		{
+			for (auto& tTreeData : tTree.vecChildren)
+			{
+				Show_TreeTexture(tTreeData);
+			}
+
+			ImGui::TreePop();
+		}
+	}
+	else
+	{
+
+
+		ComPtr<ID3D11ShaderResourceView> pSRV = GAMEINSTANCE->Get_Texture(CFunctor::To_Wstring(tTree.strFullPath));
+
+		// 메모리 누수
+		if (ImGui::ImageButton(pSRV.Get(), ImVec2(50, 50)))
+		{
+
+		}
+
+		ImGui::SameLine();
+
+
+		/*_bool bSelected = false;
+
+		if (m_CurSelectedTextureFilePath == tTree.strFullPath)
+		{
+			bSelected = true;
+		}
+
+
+		if (ImGui::Selectable(tTree.strFileName.c_str(), bSelected))
+		{
+			m_CurSelectedTextureFilePath = tTree.strFullPath;
+		}*/
+	}
+}
+
+const _tchar* CWindow_UI::StringToChar(string string)
+{
+	const char* str = string.c_str();
+	_tchar* pStr;
+	int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
+	pStr = new WCHAR[strSize];
+	MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, pStr, strSize);
+
+	return pStr;
 }

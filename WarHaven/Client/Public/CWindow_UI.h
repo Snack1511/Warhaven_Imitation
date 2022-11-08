@@ -38,6 +38,10 @@ private:
 
 private:
 	void Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree);
+
+	void Show_TreeTexture(TREE_DATA& tTree);
+
+	const _tchar* StringToChar(string string);
 };
 
 END

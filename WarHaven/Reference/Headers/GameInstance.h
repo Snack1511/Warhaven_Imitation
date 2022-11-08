@@ -87,6 +87,10 @@ public: /* For. Key_Manager */
 public: /* For. Collision_Manager */
 	HRESULT Check_Group(const _uint& _eLeft, const _uint& _eRight);
 
+public:
+	ComPtr<ID3D11ShaderResourceView>	Get_Texture(wstring wstrFilePath);
+
+
 
 public:	/* For. Render_Manager */
 	void	Bake_StaticShadow(vector <CGameObject*>& MapList, _float fDistance);
