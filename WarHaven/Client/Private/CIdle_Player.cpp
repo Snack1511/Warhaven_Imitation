@@ -34,8 +34,8 @@ HRESULT CIdle_Player::Initialize()
     // 
 
 
-    m_eAnimType = ANIM_BASE_R;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_eAnimType = ANIM_ETC;            // 애니메이션의 메쉬타입
+    m_iAnimIndex = 41;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_IDLE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     

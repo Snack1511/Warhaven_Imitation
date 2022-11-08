@@ -10,7 +10,9 @@
 #include "Transform.h"
 #include "CSkyBox.h"
 #include "CTerrain.h"
+
 #include "CUnit_Warrior.h"
+#include "CUnit_Spearman.h"
 
 #include "CStructure.h"
 
@@ -169,21 +171,40 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
     CUnit::UNIT_MODEL_DATA  tModelData;
 
-    tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Spearman/Spearman.fbx";
+	//0. 검맨
+    tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Warrior/Warrior.fbx";
 
-    tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Spearman/body/SK_Spearman0001_Body_A00.fbx";
-    tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Face_A00.fbx";
-    tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Helmet_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
 
-    tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSpear/SM_WP_LongSpear0002_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx";
     tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
 
-    CUnit_Warrior* pTestUnit = CUnit_Warrior::Create(tModelData);
-    if (!pTestUnit)
+    CUnit_Warrior* pTestWarriorUnit = CUnit_Warrior::Create(tModelData);
+    if (!pTestWarriorUnit)
         return E_FAIL;
 
-    pTestUnit->Initialize();
-    Ready_GameObject(pTestUnit, GROUP_PLAYER);
+	pTestWarriorUnit->Initialize();
+	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
+
+
+	//1. 창맨
+	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Spearman/Spearman.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Spearman/body/SK_Spearman0001_Body_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Face_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Helmet_A00.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSpear/SM_WP_LongSpear0002_A00.fbx";
+	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
+
+	CUnit_Spearman* pTestSpearmanUnit = CUnit_Spearman::Create(tModelData);
+	if (!pTestSpearmanUnit)
+		return E_FAIL;
+
+	pTestSpearmanUnit->Initialize();
+	Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);
 
     return S_OK;
 }

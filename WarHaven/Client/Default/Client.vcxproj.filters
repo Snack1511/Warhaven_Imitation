@@ -211,6 +211,9 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect\00. TestEffect">
       <UniqueIdentifier>{e1d3c056-0ef4-469d-8da2-b08bc529b452}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Spearman">
+      <UniqueIdentifier>{587217d8-7c7c-428a-90b4-4e365c31490e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -390,6 +393,9 @@
     <ClInclude Include="..\Public\CTestEffect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Spearman.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -552,6 +558,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CTestEffect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Spearman.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

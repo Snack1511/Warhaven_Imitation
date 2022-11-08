@@ -214,6 +214,7 @@
     <ClInclude Include="..\Public\CUI_Object.h" />
     <ClInclude Include="..\public\CUnit.h" />
     <ClInclude Include="..\Public\CStructure_TestStructure.h" />
+    <ClInclude Include="..\Public\CUnit_Spearman.h" />
     <ClInclude Include="..\public\CUnit_Warrior.h" />
     <ClInclude Include="..\public\CUser.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="..\Private\CUI_Object.cpp" />
     <ClCompile Include="..\private\CUnit.cpp" />
     <ClCompile Include="..\Private\CStructure_TestStructure.cpp" />
+    <ClCompile Include="..\Private\CUnit_Spearman.cpp" />
     <ClCompile Include="..\private\CUnit_Warrior.cpp" />
     <ClCompile Include="..\private\CUser.cpp" />
     <ClCompile Include="..\private\CUtility_Transform.cpp" />
