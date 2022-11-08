@@ -325,7 +325,7 @@ void CWindow_Effect::Show_EffectTab()
 			{
 				if (!m_CurSelectedTextureFilePath.empty())
 				{
-					pCurEffect->m_wstrColorMapPath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
+					pCurEffect->m_wstrColorMapFilePath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
 					CModel* pModelCom = GET_COMPONENT_FROM(pCurEffect, CModel);
 					CTexture* pTexture = pModelCom->Get_Materials().front().second.pTextures[aiTextureType_DIFFUSE_ROUGHNESS];
 
@@ -347,29 +347,29 @@ void CWindow_Effect::Show_EffectTab()
 		{
 			static _bool	bSelect[VTXEFFECT_PASS_END] = {};
 			memset(bSelect, 0, sizeof(_bool) * VTXEFFECT_PASS_END);
-			bSelect[pCurEffect->m_iPassType] = true;
+			bSelect[pCurEffect->m_eEffectPassType] = true;
 			CModel* pModelCom = GET_COMPONENT_FROM(pCurEffect, CModel);
 
 			if (ImGui::Selectable("DEFAULT", &bSelect[VTXEFFECT_PASS_DEFAULT]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_DEFAULT;
+				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_DEFAULT;
 			if (ImGui::Selectable("LINEX", &bSelect[VTXEFFECT_PASS_LINEX]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_LINEX;
+				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_LINEX;
 			if (ImGui::Selectable("LINEY", &bSelect[VTXEFFECT_PASS_LINEY]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_LINEY;
+				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_LINEY;
 			if (ImGui::Selectable("TEXT", &bSelect[VTXEFFECT_PASS_TEXT]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_TEXT;
+				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_TEXT;
 			if (ImGui::Selectable("CARTOON", &bSelect[VTXEFFECT_PASS_CARTOON]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_CARTOON;
+				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_CARTOON;
 			if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
 			{
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISTORTION;
+				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_DISTORTION;
 				GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
 
 			}
 			if (ImGui::Selectable("NOISE", &bSelect[VTXEFFECT_PASS_NOISE]))
-				pCurEffect->m_iPassType = VTXEFFECT_PASS_NOISE;
+				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_NOISE;
 
-			pModelCom->Set_ShaderPassToAll(pCurEffect->m_iPassType);
+			pModelCom->Set_ShaderPassToAll(pCurEffect->m_eEffectPassType);
 
 		}
 		if (ImGui::CollapsingHeader(" - TRANSLATION MATRIX - "))

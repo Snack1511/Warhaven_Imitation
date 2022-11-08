@@ -17,7 +17,7 @@ private:
 	virtual ~CDefault_Effect();
 
 public:
-	static CDefault_Effect* Create();
+	static CDefault_Effect* Create(string strFileKey);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

@@ -11,7 +11,7 @@ CDefault_Effect::~CDefault_Effect()
 {
 }
 
-CDefault_Effect* CDefault_Effect::Create()
+CDefault_Effect* CDefault_Effect::Create(string strFileKey)
 {
 	wstring wstrModel = L"../bin/resources/Meshes/Effects/FBX/SM_Charge_Mesh_01.fbx";
 	wstring wstrMask = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_12_M.dds";
