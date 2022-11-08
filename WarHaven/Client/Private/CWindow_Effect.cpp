@@ -14,7 +14,20 @@
 
 #include "Functor.h"
 
+
+#include "CUtility_File.h"
+#include "CUtility_Transform.h"
+#include "Camera.h"
+
+#include "CUnit.h"
+#include "CEffect.h"
 #include "CDefault_Effect.h"
+#include "CScript_FollowCam.h"
+
+#include "CState_Manager.h"
+#include "CUser.h"
+
+#include "CRectEffects.h"
 
 CWindow_Effect::CWindow_Effect()
 {
@@ -48,7 +61,7 @@ HRESULT CWindow_Effect::Initialize()
 	m_MeshRootNode.strFolderPath = "../bin/resources/meshes";
 	m_MeshRootNode.strFileName = "Effects";
 	m_MeshRootNode.strFullPath = "../bin/resources/meshes/effects";
-	Read_Folder("../bin/resources/meshes/effects/FBX", m_MeshRootNode);
+	Read_Folder("../bin/resources/meshes/effects", m_MeshRootNode);
 
 	m_TextureRootNode.strFolderPath = "../bin/resources/textures";
 	m_TextureRootNode.strFileName = "Effects";
@@ -72,15 +85,43 @@ HRESULT CWindow_Effect::Render()
 	if (FAILED(__super::Begin()))
 		return E_FAIL;
 
+	if (ImGui::CollapsingHeader("CONTROL SCENE"))
+	{
+		if (ImGui::Button("DISABLE_ENEMIES(8)") || (KEY(NUM8, TAP)))
+		{
+			for (auto& elem : GAMEINSTANCE->Get_ObjGroup(GROUP_ENEMY))
+			{
+				if (elem->Is_Disable())
+					ENABLE_GAMEOBJECT(elem);
+				else
+					DISABLE_GAMEOBJECT(elem);
+			}
+		}
+
+#ifdef _DEBUG
+		ImGui::SameLine();
+
+		if (ImGui::Button("STOP_PLAYER(9)") || (KEY(NUM9, TAP)))
+		{
+			//PLAYER->Switch_Controlable();
+		}
+
+#endif // _DEBUG
+	}
+
 	Show_MainList();
 
 	if (m_iCurrentIdx != 9999)
 	{
 		if (m_vecEffects[m_iCurrentIdx].iEffectType == 0)
 			Show_EffectTab();
-		/*else
-			Show_ParticleTab();*/
+		else
+			Show_ParticleTab();
 	}
+
+
+
+
 
 	__super::End();
 
@@ -113,7 +154,7 @@ void CWindow_Effect::Show_MainList()
 
 	ImGui::SameLine();
 
-	/*if (ImGui::Button("Create Particle Effect"))
+	if (ImGui::Button("Create Particle Effect"))
 	{
 		CRectEffects* pEffect = CRectEffects::Create(PLAYER->Get_Transform()->Get_World(WORLD_POS));
 
@@ -126,18 +167,18 @@ void CWindow_Effect::Show_MainList()
 		m_vecEffects.push_back(tItem);
 
 		CREATE_GAMEOBJECT(pEffect, GROUP_EFFECT);
-	}*/
+	}
 
-	/*static _bool	g_bCamMatrix = false;
+	static _bool	g_bCamMatrix = false;
 	if (ImGui::RadioButton("CameraMatrix", g_bCamMatrix))
-		g_bCamMatrix = !g_bCamMatrix;*/
+		g_bCamMatrix = !g_bCamMatrix;
 
 	ImGui::SameLine();
 
-	//if (ImGui::RadioButton("PlayerMatrix", !g_bCamMatrix))
-	//	g_bCamMatrix = !g_bCamMatrix;
+	if (ImGui::RadioButton("PlayerMatrix", !g_bCamMatrix))
+		g_bCamMatrix = !g_bCamMatrix;
 
-	/*ImGui::SameLine();
+	ImGui::SameLine();
 	static _bool g_bEnableAll = false;
 	if (ImGui::RadioButton("ENABLE_ALL", g_bEnableAll))
 		g_bEnableAll = !g_bEnableAll;
@@ -197,7 +238,7 @@ void CWindow_Effect::Show_MainList()
 		}
 
 
-	}*/
+	}
 
 	if (ImGui::Button("DELETE_ALL"))
 	{
@@ -207,13 +248,13 @@ void CWindow_Effect::Show_MainList()
 
 	ImGui::SameLine();
 
-	//if (ImGui::Button("RE-Initialize"))
-	//{
-	//	if (m_iCurrentIdx != 9999)
-	//	{
-	//		m_vecEffects[m_iCurrentIdx].pEffect->Re_Initialize();
-	//	}
-	//}
+	if (ImGui::Button("RE-Initialize"))
+	{
+		if (m_iCurrentIdx != 9999)
+		{
+			m_vecEffects[m_iCurrentIdx].pEffect->Re_Initialize();
+		}
+	}
 
 
 	if (ImGui::BeginListBox("CurrentEffects_List", ImVec2(360.f, 300.f)))
@@ -308,14 +349,10 @@ void CWindow_Effect::Show_EffectTab()
 			{
 				if (!m_CurSelectedTextureFilePath.empty())
 				{
-					pCurEffect->m_wstrMaskMapFilePath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
+					pCurEffect->m_wstrMaskMapPath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
 					CModel* pModelCom = GET_COMPONENT_FROM(pCurEffect, CModel);
-					pModelCom->Get_Materials().front().second.pTextures[1]->Add_Texture(
-						CFunctor::To_Wstring(m_CurSelectedTextureFilePath).c_str());
-					pModelCom->Get_Materials().front().second.pTextures[1]->Set_CurTextureIndex(
+					pModelCom->Change_Texture(0, aiTextureType_REFLECTION, CFunctor::To_Wstring(m_CurSelectedTextureFilePath));
 
-						pModelCom->Get_Materials().front().second.pTextures[1]->Get_TextureSize() - 1
-					);
 				}
 			}
 
@@ -325,13 +362,21 @@ void CWindow_Effect::Show_EffectTab()
 			{
 				if (!m_CurSelectedTextureFilePath.empty())
 				{
-					pCurEffect->m_wstrColorMapFilePath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
+					pCurEffect->m_wstrColorMapPath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
 					CModel* pModelCom = GET_COMPONENT_FROM(pCurEffect, CModel);
-					CTexture* pTexture = pModelCom->Get_Materials().front().second.pTextures[aiTextureType_DIFFUSE_ROUGHNESS];
+					pModelCom->Change_Texture(0, 1, CFunctor::To_Wstring(m_CurSelectedTextureFilePath));
+				}
+			}
 
-					pTexture->Add_Texture(CFunctor::To_Wstring(m_CurSelectedTextureFilePath).c_str());
+			ImGui::SameLine();
 
-					pTexture->Set_CurTextureIndex(pTexture->Get_TextureSize() - 1);
+			if (ImGui::Button("Bind_NoiseMap(N)") || KEY(N, TAP))
+			{
+				if (!m_CurSelectedTextureFilePath.empty())
+				{
+					pCurEffect->m_wstrNoiseMapPath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
+					CModel* pModelCom = GET_COMPONENT_FROM(pCurEffect, CModel);
+					pModelCom->Change_Texture(0, aiTextureType_DIFFUSE_ROUGHNESS, CFunctor::To_Wstring(m_CurSelectedTextureFilePath));
 				}
 			}
 
@@ -347,29 +392,29 @@ void CWindow_Effect::Show_EffectTab()
 		{
 			static _bool	bSelect[VTXEFFECT_PASS_END] = {};
 			memset(bSelect, 0, sizeof(_bool) * VTXEFFECT_PASS_END);
-			bSelect[pCurEffect->m_eEffectPassType] = true;
+			bSelect[pCurEffect->m_iPassType] = true;
 			CModel* pModelCom = GET_COMPONENT_FROM(pCurEffect, CModel);
 
 			if (ImGui::Selectable("DEFAULT", &bSelect[VTXEFFECT_PASS_DEFAULT]))
-				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_DEFAULT;
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_DEFAULT;
 			if (ImGui::Selectable("LINEX", &bSelect[VTXEFFECT_PASS_LINEX]))
-				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_LINEX;
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_LINEX;
 			if (ImGui::Selectable("LINEY", &bSelect[VTXEFFECT_PASS_LINEY]))
-				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_LINEY;
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_LINEY;
 			if (ImGui::Selectable("TEXT", &bSelect[VTXEFFECT_PASS_TEXT]))
-				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_TEXT;
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_TEXT;
 			if (ImGui::Selectable("CARTOON", &bSelect[VTXEFFECT_PASS_CARTOON]))
-				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_CARTOON;
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_CARTOON;
 			if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
 			{
-				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_DISTORTION;
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISTORTION;
 				GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
 
 			}
 			if (ImGui::Selectable("NOISE", &bSelect[VTXEFFECT_PASS_NOISE]))
-				pCurEffect->m_eEffectPassType = VTXEFFECT_PASS_NOISE;
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_NOISE;
 
-			pModelCom->Set_ShaderPassToAll(pCurEffect->m_eEffectPassType);
+			pModelCom->Set_ShaderPassToAll(pCurEffect->m_iPassType);
 
 		}
 		if (ImGui::CollapsingHeader(" - TRANSLATION MATRIX - "))
@@ -661,5 +706,739 @@ void CWindow_Effect::Show_EffectTab()
 
 	}
 
+
+}
+
+void CWindow_Effect::Show_ParticleTab()
+{
+	/* Effect Info */
+	if (m_iCurrentIdx != 9999)
+	{
+		CEffect* pCurEffect = m_vecEffects[m_iCurrentIdx].pEffect;
+		ImGui::Text("Selected Effect Name : ");
+		ImGui::SameLine();
+		if (ImGui::InputText("EFFECT_NAME", m_szCurEffectName, sizeof(m_szCurEffectName), ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			m_vecEffects[m_iCurrentIdx].strName = m_szCurEffectName;
+		}
+
+		if (ImGui::CollapsingHeader(" - TEXTURES - "))
+		{
+			if (ImGui::Button("-Bind_MaskMap"))
+			{
+				if (!m_CurSelectedTextureFilePath.empty())
+				{
+					pCurEffect->m_wstrMaskMapPath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
+
+
+					if (pCurEffect->Get_Component<CTexture>().empty())
+					{
+						CTexture* pTexture = CTexture::Create(0, CFunctor::To_Wstring(m_CurSelectedTextureFilePath).c_str(), 1);
+					}
+					else
+					{
+						CTexture* pTexture = GET_COMPONENT_FROM(pCurEffect, CTexture);
+						pTexture->Add_Texture(CFunctor::To_Wstring(m_CurSelectedTextureFilePath).c_str());
+						pTexture->Set_CurTextureIndex(pTexture->Get_TextureSize() - 1);
+					}
+
+				}
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("-Bind_ColorMap"))
+			{
+				if (!m_CurSelectedTextureFilePath.empty())
+				{
+					pCurEffect->m_wstrColorMapPath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
+
+					if (pCurEffect->Get_Component<CTexture>().empty())
+					{
+						CTexture* pTexture = CTexture::Create(0, CFunctor::To_Wstring(m_CurSelectedTextureFilePath).c_str(), 1);
+					}
+					else
+					{
+						list<CComponent*> pList = pCurEffect->Get_Component<CTexture>();
+						auto iter = pList.begin();
+						++iter;
+
+						CTexture* pTexture = static_cast<CTexture*>(*iter);
+						pTexture->Add_Texture(CFunctor::To_Wstring(m_CurSelectedTextureFilePath).c_str());
+						pTexture->Set_CurTextureIndex(pTexture->Get_TextureSize() - 1);
+					}
+				}
+
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("-Bind_DissolveMap"))
+			{
+				if (!m_CurSelectedTextureFilePath.empty())
+				{
+					pCurEffect->m_wstrNoiseMapPath = CFunctor::To_Wstring(m_CurSelectedTextureFilePath);
+
+					if (pCurEffect->Get_Component<CTexture>().empty())
+					{
+						CTexture* pTexture = CTexture::Create(0, CFunctor::To_Wstring(m_CurSelectedTextureFilePath).c_str(), 1);
+					}
+					else
+					{
+						CTexture* pTexture = static_cast<CTexture*>(pCurEffect->Get_Component<CTexture>().back());
+						pTexture->Add_Texture(CFunctor::To_Wstring(m_CurSelectedTextureFilePath).c_str());
+						pTexture->Set_CurTextureIndex(pTexture->Get_TextureSize() - 1);
+					}
+				}
+
+			}
+
+			if (ImGui::BeginListBox("-Texture_Files_List", ImVec2(360.f, 300.f)))
+			{
+				Show_TreeData_Texture(m_TextureRootNode);
+
+				ImGui::EndListBox();
+			}
+		}
+
+		if (ImGui::CollapsingHeader("- SHADER PASS -"))
+		{
+			static _bool	bSelect[VTXRECTINSTANCE_PASS_END] = {};
+			memset(bSelect, 0, sizeof(_bool) * VTXRECTINSTANCE_PASS_END);
+			bSelect[pCurEffect->m_iPassType] = true;
+
+			CRenderer* pRenderer = GET_COMPONENT_FROM(pCurEffect, CRenderer);
+
+			if (ImGui::Selectable("DEFAULT", &bSelect[VTXRECTINSTANCE_PASS_DEFAULT]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_DEFAULT;
+			if (ImGui::Selectable("COLORMAP", &bSelect[VTXRECTINSTANCE_PASS_COLORMAP]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_COLORMAP;
+			if (ImGui::Selectable("DEBUG_TEST", &bSelect[VTXRECTINSTANCE_PASS_DEBUG]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_DEBUG;
+			if (ImGui::Selectable("ANIMATION", &bSelect[VTXRECTINSTANCE_PASS_ANIMATION]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATION;
+			if (ImGui::Selectable("ANIMATION_ALPHA", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONALPHA]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONALPHA;
+
+			pRenderer->Set_Pass(pCurEffect->m_iPassType);
+
+		}
+		if (ImGui::CollapsingHeader("- EFFECT SHADER FLAG -"))
+		{
+			const static _uint iShFlagCnt = 3;
+			_bool	bShFlagSelect[iShFlagCnt] = {};
+
+			if (pCurEffect->m_vEffectFlag.x > 0.99f)
+			{
+				bShFlagSelect[0] = true;
+			}
+			else
+			{
+				bShFlagSelect[0] = false;
+			}
+
+			if (pCurEffect->m_vEffectFlag.y > 0.99f)
+			{
+				bShFlagSelect[1] = true;
+			}
+			else
+			{
+				bShFlagSelect[1] = false;
+			}
+			if (pCurEffect->m_vEffectFlag.w < 1.f)
+			{
+				bShFlagSelect[2] = true;
+			}
+			else
+			{
+				bShFlagSelect[2] = false;
+			}
+
+			if (ImGui::Selectable("GLOW", &bShFlagSelect[0]))
+			{
+				if (pCurEffect->m_vEffectFlag.x > 0.99f)
+				{
+					pCurEffect->m_vEffectFlag.x = 0.95f;
+				}
+				else
+				{
+					pCurEffect->m_vEffectFlag.x = 1.f;
+				}
+
+			}
+
+			if (ImGui::Selectable("BLOOM", &bShFlagSelect[1]))
+			{
+				if (pCurEffect->m_vEffectFlag.y > 0.99f)
+				{
+					pCurEffect->m_vEffectFlag.y = 0.95f;
+				}
+				else
+				{
+					pCurEffect->m_vEffectFlag.y = 1.f;
+				}
+
+
+			}
+
+			if (ImGui::Selectable("BLUR", &bShFlagSelect[2]))
+			{
+				if (pCurEffect->m_vEffectFlag.w > 0.99f)
+				{
+					pCurEffect->m_vEffectFlag.w = 0.95f;
+				}
+				else
+				{
+					pCurEffect->m_vEffectFlag.w = 1.f;
+				}
+
+
+			}
+
+		}
+		if (ImGui::CollapsingHeader("- GLOW VECTOR -"))
+		{
+			_float vGlowFlags[4] = { pCurEffect->m_vGlowFlag.x, pCurEffect->m_vGlowFlag.y, pCurEffect->m_vGlowFlag.z, pCurEffect->m_vGlowFlag.w };
+			memcpy(vGlowFlags, &pCurEffect->m_vGlowFlag, sizeof(_float4));
+
+			if (ImGui::InputFloat4("vGlowFlag", vGlowFlags, "%.2f"))
+			{
+				memcpy(&pCurEffect->m_vGlowFlag, vGlowFlags, sizeof(_float4));
+			}
+		}
+		if (ImGui::CollapsingHeader("- OFFSET POSITIONS "))
+		{
+			CInstancingEffects::INSTANCING_CREATE_DATA& tCurData = static_cast<CInstancingEffects*>(pCurEffect)->Get_CreateData();
+
+			_int iTemp = tCurData.iOffsetPositionCount;
+			if (ImGui::InputInt("iNumOffsets", &iTemp, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				static_cast<CInstancingEffects*>(pCurEffect)->ReMake_OffsetPositions(iTemp);
+			}
+
+			for (_uint i = 0; i < tCurData.iOffsetPositionCount; ++i)
+			{
+				string strName = "OffsetPosition_";
+				strName += to_string(i);
+
+				_float	vOffset[3] = { tCurData.pOffsetPositions[i].x, tCurData.pOffsetPositions[i].y, tCurData.pOffsetPositions[i].z };
+
+				if (ImGui::InputFloat3(strName.c_str(), vOffset, "%.2f"))
+				{
+					tCurData.pOffsetPositions[i].x = vOffset[0];
+					tCurData.pOffsetPositions[i].y = vOffset[1];
+					tCurData.pOffsetPositions[i].z = vOffset[2];
+				}
+
+
+			}
+
+
+		}
+		if (ImGui::CollapsingHeader("- VARIALBLES - "))
+		{
+			CInstancingEffects::INSTANCING_CREATE_DATA& tCurData = static_cast<CInstancingEffects*>(pCurEffect)->Get_CreateData();
+
+			_int	iNumInstance = tCurData.iNumInstance;
+			if (ImGui::InputInt("NumInstance", &iNumInstance, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				tCurData.iNumInstance = (_uint)iNumInstance;
+				pCurEffect->Re_Initialize();
+			}
+
+			if (ImGui::RadioButton("bBillBoard", static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard = !static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard;
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::RadioButton("bSoftLerp", static_cast<CRectEffects*>(pCurEffect)->m_bSoft))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_bSoft = !static_cast<CRectEffects*>(pCurEffect)->m_bSoft;
+			}
+
+			_float	vStartDir[3] = { tCurData.vStartDir.x, tCurData.vStartDir.y, tCurData.vStartDir.z };
+			if (ImGui::InputFloat3("vStartDir", vStartDir, "%.3f"))
+			{
+				tCurData.vStartDir.x = vStartDir[0];
+				tCurData.vStartDir.y = vStartDir[1];
+				tCurData.vStartDir.z = vStartDir[2];
+			}
+
+			_float	vStartDirRange[3] = { tCurData.vStartDirRange.x, tCurData.vStartDirRange.y, tCurData.vStartDirRange.z };
+			if (ImGui::InputFloat3("vStartDirRange", vStartDirRange, "%.3f"))
+			{
+				tCurData.vStartDirRange.x = vStartDirRange[0];
+				tCurData.vStartDirRange.y = vStartDirRange[1];
+				tCurData.vStartDirRange.z = vStartDirRange[2];
+			}
+
+			_float	fStartDistance[2] = { tCurData.fStartDistance , tCurData.fStartDistanceRange };
+			if (ImGui::InputFloat2("fStartDistance, Range", fStartDistance, "%.2f"))
+			{
+				tCurData.fStartDistance = fStartDistance[0];
+				tCurData.fStartDistanceRange = fStartDistance[1];
+			}
+
+			_float	fJumpPowers[2] = { tCurData.fJumpPower , tCurData.fJumpPowerRange };
+			if (ImGui::InputFloat2("fJumpPower, Range", fJumpPowers, "%.2f"))
+			{
+				tCurData.fJumpPower = fJumpPowers[0];
+				tCurData.fJumpPowerRange = fJumpPowers[1];
+			}
+
+			_float	fGravityRanges[2] = { tCurData.fGravity , tCurData.fGravityRange };
+			if (ImGui::InputFloat2("fGravity, Range", fGravityRanges, "%.2f"))
+			{
+				tCurData.fGravity = fGravityRanges[0];
+				tCurData.fGravityRange = fGravityRanges[1];
+			}
+
+			_float	fSpeeds[2] = { tCurData.fSpeed , tCurData.fSpeedRange };
+			if (ImGui::InputFloat2("fSpeed, Range", fSpeeds, "%.2f"))
+			{
+				tCurData.fSpeed = fSpeeds[0];
+				tCurData.fSpeedRange = fSpeeds[1];
+			}
+
+			_float	fSpeedChanges[2] = { tCurData.fSpeedChangeSpeed , tCurData.fSpeedChangeSpeedRange };
+			if (ImGui::InputFloat2("fSpeedChange, Range", fSpeedChanges, "%.2f"))
+			{
+				tCurData.fSpeedChangeSpeed = fSpeedChanges[0];
+				tCurData.fSpeedChangeSpeedRange = fSpeedChanges[1];
+			}
+
+			_float	fTurnSpeeds[2] = { tCurData.fTurnSpeed, tCurData.fTurnSpeedRange };
+			if (ImGui::InputFloat2("fTurnSpeed, Range", fTurnSpeeds, "%.2f"))
+			{
+				tCurData.fTurnSpeed = fTurnSpeeds[0];
+				tCurData.fTurnSpeedRange = fTurnSpeeds[1];
+			}
+
+			if (ImGui::InputFloat("fTargetAlpha", &tCurData.fTargetAlpha))
+			{
+			}
+
+			if (ImGui::InputFloat("fDissolvePower(Anim)", &((CRectEffects*)pCurEffect)->m_fDissolvePower))
+			{
+			}
+
+			if (ImGui::InputFloat("fDuration(Animation)", &((CRectEffects*)pCurEffect)->m_fDuration))
+			{
+			}
+
+
+			_int	iSizes[2] = { ((CRectEffects*)pCurEffect)->m_iWidthSize, ((CRectEffects*)pCurEffect)->m_iHeightSize };
+			if (ImGui::InputInt2("iAnimSizes(Animation)", iSizes))
+			{
+				((CRectEffects*)pCurEffect)->m_iWidthSize = iSizes[0];
+				((CRectEffects*)pCurEffect)->m_iHeightSize = iSizes[1];
+			}
+
+
+			_float	vColors[3] = { tCurData.vColor.x , tCurData.vColor.y, tCurData.vColor.z };
+			if (ImGui::InputFloat3("vColor", vColors, "%.2f"))
+			{
+				tCurData.vColor.x = vColors[0];
+				tCurData.vColor.y = vColors[1];
+				tCurData.vColor.z = vColors[2];
+			}
+
+			_float	vScales[3] = { tCurData.vScale.x, tCurData.vScale.y, tCurData.vScale.z };
+			if (ImGui::InputFloat3("vStartScale", vScales, "%.3f"))
+			{
+				tCurData.vScale.x = vScales[0];
+				tCurData.vScale.y = vScales[1];
+				tCurData.vScale.z = vScales[2];
+			}
+
+			_float	vTargetScales[3] = { tCurData.vFadeInTargetScale.x, tCurData.vFadeInTargetScale.y, tCurData.vFadeInTargetScale.z };
+			if (ImGui::InputFloat3("vTargetScale", vTargetScales, "%.3f"))
+			{
+				tCurData.vFadeInTargetScale.x = vTargetScales[0];
+				tCurData.vFadeInTargetScale.y = vTargetScales[1];
+				tCurData.vFadeInTargetScale.z = vTargetScales[2];
+			}
+
+			_float	vTargetScalesRange[3] = { tCurData.vFadeInTargetScaleRange.x, tCurData.vFadeInTargetScaleRange.y, tCurData.vFadeInTargetScaleRange.z };
+			if (ImGui::InputFloat3("vTargetScaleRange", vTargetScalesRange, "%.3f"))
+			{
+				tCurData.vFadeInTargetScaleRange.x = vTargetScalesRange[0];
+				tCurData.vFadeInTargetScaleRange.y = vTargetScalesRange[1];
+				tCurData.vFadeInTargetScaleRange.z = vTargetScalesRange[2];
+			}
+
+			_float	vFadeOutScales[3] = { tCurData.vFadeOutTargetScale.x, tCurData.vFadeOutTargetScale.y, tCurData.vFadeOutTargetScale.z };
+			if (ImGui::InputFloat3("vFadeOutScale", vFadeOutScales, "%.3f"))
+			{
+				tCurData.vFadeOutTargetScale.x = vFadeOutScales[0];
+				tCurData.vFadeOutTargetScale.y = vFadeOutScales[1];
+				tCurData.vFadeOutTargetScale.z = vFadeOutScales[2];
+			}
+
+			_float	vFadeOutScalesRange[3] = { tCurData.vFadeOutTargetScaleRange.x , 	tCurData.vFadeOutTargetScaleRange.y, 	tCurData.vFadeOutTargetScaleRange.z };
+			if (ImGui::InputFloat3("vFadeOutScaleRange", vFadeOutScalesRange, "%.3f"))
+			{
+				tCurData.vFadeOutTargetScaleRange.x = vFadeOutScalesRange[0];
+				tCurData.vFadeOutTargetScaleRange.y = vFadeOutScalesRange[1];
+				tCurData.vFadeOutTargetScaleRange.z = vFadeOutScalesRange[2];
+			}
+
+
+			/* FADE */
+			_float	fFIST[2] = { tCurData.fFadeInStartTime, tCurData.fFadeInStartTimeRange };
+			if (ImGui::InputFloat2("FadeIn StartTime, Range", fFIST, "%.2f"))
+			{
+				tCurData.fFadeInStartTime = fFIST[0];
+				tCurData.fFadeInStartTimeRange = fFIST[1];
+			}
+
+			_float	fFIST2[2] = { tCurData.fFadeInTime, tCurData.fFadeInTimeRange };
+			if (ImGui::InputFloat2("FadeIn Time, Range", fFIST2, "%.2f"))
+			{
+				tCurData.fFadeInTime = fFIST2[0];
+				tCurData.fFadeInTimeRange = fFIST2[1];
+			}
+
+			_float	fFIST3[2] = { tCurData.fFadeOutStartTime, tCurData.fFadeOutStartTimeRange };
+			if (ImGui::InputFloat2("FadeOut StartTime, Range", fFIST3, "%.2f"))
+			{
+				tCurData.fFadeOutStartTime = fFIST3[0];
+				tCurData.fFadeOutStartTimeRange = fFIST3[1];
+			}
+
+			_float	fFIST4[2] = { tCurData.fFadeOutTime, tCurData.fFadeOutTimeRange };
+			if (ImGui::InputFloat2("FadeOut Time, Range", fFIST4, "%.2f"))
+			{
+				tCurData.fFadeOutTime = fFIST4[0];
+				tCurData.fFadeOutTimeRange = fFIST4[1];
+			}
+
+		}
+
+
+	}
+}
+
+void CWindow_Effect::Save_CurEffect()
+{
+	if (m_iCurrentIdx == 9999)
+		return;
+
+	string savePath = "../bin/effects/";
+	savePath += m_vecEffects[m_iCurrentIdx].strName;
+	savePath += ".bin";
+	ofstream	writeFile(savePath, ios::binary);
+
+
+	if (!writeFile.is_open())
+	{
+		Call_MsgBox(L"SSave 실패 ??!?!");
+		return;
+	}
+
+	CEffect* pCurEffect = m_vecEffects[m_iCurrentIdx].pEffect;
+
+	if (m_vecEffects[m_iCurrentIdx].iEffectType == 1)
+	{
+		if (pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+			m_vecEffects[m_iCurrentIdx].iEffectType = 2;
+		else
+			m_vecEffects[m_iCurrentIdx].iEffectType = 1;
+
+	}
+
+	//1. 타입
+	writeFile.write((char*)&m_vecEffects[m_iCurrentIdx].iEffectType, sizeof(_uint));
+
+	switch (m_vecEffects[m_iCurrentIdx].iEffectType)
+	{
+	case 0:
+	{
+
+		//메쉬랑 텍스쳐 먼저
+		CModel* pModelCom = GET_COMPONENT_FROM(pCurEffect, CModel);
+
+		string	strModelFilePath = CFunctor::To_String(pModelCom->Get_ModelFilePath());
+		CUtility_File::Write_Text(&writeFile, strModelFilePath.c_str());
+
+		string	strMaskMapPath = CFunctor::To_String(pModelCom->Get_TextureFilePath(aiTextureType_REFLECTION));
+		CUtility_File::Write_Text(&writeFile, strMaskMapPath.c_str());
+
+		string	strColorMapPath = CFunctor::To_String(pModelCom->Get_TextureFilePath(1));
+		CUtility_File::Write_Text(&writeFile, strColorMapPath.c_str());
+
+		string	strNoiseMapPath = CFunctor::To_String(pModelCom->Get_TextureFilePath(aiTextureType_DIFFUSE_ROUGHNESS));
+		CUtility_File::Write_Text(&writeFile, strNoiseMapPath.c_str());
+
+		writeFile.write((char*)&pCurEffect->m_eShaderType, sizeof(_uint));
+		writeFile.write((char*)&pCurEffect->m_vEffectFlag, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_vGlowFlag, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_fUVSpeedX, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_fUVSpeedY, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_matTrans, sizeof(_float4x4));
+		writeFile.write((char*)&pCurEffect->m_eDisableType, sizeof(_uint));
+		writeFile.write((char*)&pCurEffect->m_iPassType, sizeof(_uint));
+		writeFile.write((char*)&pCurEffect->m_bEffectFlag, sizeof(_byte));
+		writeFile.write((char*)&pCurEffect->m_vTurnDir, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_fTurnSpeed, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_vOffsetPos, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_fMoveSpeed, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_fFadeInStartTime, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_fFadeInTime, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_fFadeOutStartTime, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_fFadeOutTime, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_vStartScale, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_vFadeInTargetScale, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_vFadeOutTargetScale, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_fTargetAlpha, sizeof(_float));
+
+		writeFile.close();
+		break;
+	}
+
+	case 1:
+		//텍스쳐부텅
+	{
+		CUtility_File::Write_Text(&writeFile, CFunctor::To_String(pCurEffect->m_wstrMaskMapPath).c_str());
+		CUtility_File::Write_Text(&writeFile, CFunctor::To_String(pCurEffect->m_wstrColorMapPath).c_str());
+
+
+		writeFile.write((char*)&pCurEffect->m_vEffectFlag, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_vGlowFlag, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_iPassType, sizeof(_uint));
+
+
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSoft, sizeof(_bool));
+
+		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
+		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
+
+		writeFile.write((char*)tData->pOffsetPositions, sizeof(_float4) * tData->iOffsetPositionCount);
+		break;
+	}
+	case 2: //Anim Particle
+	{
+		CUtility_File::Write_Text(&writeFile, CFunctor::To_String(pCurEffect->m_wstrMaskMapPath).c_str());
+		CUtility_File::Write_Text(&writeFile, CFunctor::To_String(pCurEffect->m_wstrColorMapPath).c_str());
+		CUtility_File::Write_Text(&writeFile, CFunctor::To_String(pCurEffect->m_wstrNoiseMapPath).c_str());
+
+		writeFile.write((char*)&pCurEffect->m_vEffectFlag, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_vGlowFlag, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_iPassType, sizeof(_uint));
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSoft, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iWidthSize, sizeof(_uint));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iHeightSize, sizeof(_uint));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDuration, sizeof(_float));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDissolvePower, sizeof(_float));
+
+		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
+		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
+
+		writeFile.write((char*)tData->pOffsetPositions, sizeof(_float4) * tData->iOffsetPositionCount);
+
+		break;
+	}
+	default:
+		break;
+	}
+
+	Call_MsgBox(L"Save 성공");
+
+}
+
+void CWindow_Effect::Load_SelectedEffect()
+{
+	if (m_CurSelectedEffectFileKey.empty())
+		return;
+
+	_int iFind2 = (_int)m_CurSelectedEffectFileKey.find(".");
+	string strFileKey = m_CurSelectedEffectFileKey.substr(0, iFind2);
+
+	CEffect* pNewEffect = CEffect::Create_Effect_FromBinFile(strFileKey);
+
+	if (!pNewEffect)
+		return;
+
+	if (FAILED(pNewEffect->Initialize()))
+		Call_MsgBox(L"Failed to Initialize Effect");
+
+	EFFECT_ITEM tItem;
+	tItem.bSelected = false;
+	tItem.iEffectType = pNewEffect->m_eEffectType;
+	tItem.pEffect = pNewEffect;
+	tItem.strName = strFileKey;
+
+	CREATE_GAMEOBJECT(pNewEffect, GROUP_EFFECT);
+	pNewEffect->m_pFollowTarget = PLAYER;
+	m_vecEffects.push_back(tItem);
+}
+
+void CWindow_Effect::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
+{
+	for (filesystem::directory_iterator FileIter(pFolderPath);
+		FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("\\") + 1;
+		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+		TREE_DATA	tTreeData;
+		tTreeData.strFullPath = strFullPath;
+		tTreeData.strFileName = strFileName;
+		tTreeData.strFolderPath = pFolderPath;
+		if (entry.is_directory())
+		{
+			Read_Folder(strFullPath.c_str(), tTreeData);
+		}
+		else
+		{
+			_int iFindExt = (int)strFileName.rfind(".") + 1;
+			string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+
+			if (strExtName == "dat")
+				continue;
+		}
+
+		tRootTree.vecChildren.push_back(tTreeData);
+
+	}
+}
+
+void CWindow_Effect::Show_TreeData(TREE_DATA& tTree)
+{
+	if (!tTree.vecChildren.empty())
+	{
+		if (ImGui::TreeNode(tTree.strFileName.c_str()))
+		{
+			for (auto& tTreeData : tTree.vecChildren)
+			{
+				Show_TreeData(tTreeData);
+			}
+
+			ImGui::TreePop();
+		}
+
+	}
+	else
+	{
+		_bool bSelected = false;
+
+		if (m_CurSelectedMeshFilePath == tTree.strFullPath)
+		{
+			bSelected = true;
+		}
+
+
+		if (ImGui::Selectable(tTree.strFileName.c_str(), bSelected))
+		{
+			m_CurSelectedMeshFilePath = tTree.strFullPath;
+		}
+	}
+}
+
+
+void CWindow_Effect::Show_TreeData_Texture(TREE_DATA& tTree)
+{
+	if (!tTree.vecChildren.empty())
+	{
+		if (ImGui::TreeNode(tTree.strFileName.c_str()))
+		{
+			for (auto& tTreeData : tTree.vecChildren)
+			{
+				Show_TreeData_Texture(tTreeData);
+			}
+
+			ImGui::TreePop();
+		}
+
+	}
+	else
+	{
+		_bool bSelected = false;
+
+		if (m_CurSelectedTextureFilePath == tTree.strFullPath)
+		{
+			bSelected = true;
+		}
+
+
+		if (ImGui::Selectable(tTree.strFileName.c_str(), bSelected))
+		{
+			m_CurSelectedTextureFilePath = tTree.strFullPath;
+		}
+	}
+}
+
+void CWindow_Effect::Show_TreeData_Effect(TREE_DATA& tTree)
+{
+	if (!tTree.vecChildren.empty())
+	{
+		if (ImGui::TreeNode(tTree.strFileName.c_str()))
+		{
+			for (auto& tTreeData : tTree.vecChildren)
+			{
+				Show_TreeData_Effect(tTreeData);
+			}
+
+			ImGui::TreePop();
+		}
+
+	}
+	else
+	{
+		_bool bSelected = false;
+
+		if (m_CurSelectedEffectFileKey == tTree.strFileName)
+		{
+			bSelected = true;
+		}
+
+
+		if (ImGui::Selectable(tTree.strFileName.c_str(), bSelected))
+		{
+			m_CurSelectedEffectFileKey = tTree.strFileName;
+		}
+	}
+}
+
+void CWindow_Effect::Change_Model(CModel* pModelCom)
+{
+	pModelCom->Set_NewModel(CFunctor::To_Wstring(m_CurSelectedMeshFilePath));
+
+	CTexture* pTextureCom = pModelCom->Get_Materials().front().second.pTextures[aiTextureType_DIFFUSE_ROUGHNESS];
+	pTextureCom->Add_Texture(m_vecEffects[m_iCurrentIdx].pEffect->m_wstrColorMapPath.c_str());
+	pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
+
+	pTextureCom = pModelCom->Get_Materials().front().second.pTextures[1];
+	pTextureCom->Add_Texture(m_vecEffects[m_iCurrentIdx].pEffect->m_wstrMaskMapPath.c_str());
+	pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
+
+	pModelCom->Set_ShaderFlag(m_vecEffects[m_iCurrentIdx].pEffect->m_vEffectFlag);
+}
+
+void CWindow_Effect::Change_Model(CModel* pModelCom, _float4x4 transformMatrix)
+{
+	pModelCom->Set_NewTransformMatrix(transformMatrix);
+
+	CTexture* pTextureCom = pModelCom->Get_Materials().front().second.pTextures[aiTextureType_DIFFUSE_ROUGHNESS];
+	pTextureCom->Add_Texture(m_vecEffects[m_iCurrentIdx].pEffect->m_wstrColorMapPath.c_str());
+	pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
+
+	pTextureCom = pModelCom->Get_Materials().front().second.pTextures[1];
+	pTextureCom->Add_Texture(m_vecEffects[m_iCurrentIdx].pEffect->m_wstrMaskMapPath.c_str());
+	pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
+
+	pModelCom->Set_ShaderFlag(m_vecEffects[m_iCurrentIdx].pEffect->m_vEffectFlag);
 
 }

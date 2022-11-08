@@ -18,6 +18,8 @@
 
 #include "CTestEffect.h"
 
+#include "CCamera_Follow.h"
+
 CLevel_Test::CLevel_Test()
 {
 }
@@ -90,7 +92,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
 
 
-	CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"Free");
+	CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"FreeCam");
 	DISABLE_GAMEOBJECT(pFreeCam);
 
 
@@ -115,7 +117,7 @@ HRESULT CLevel_Test::Enter()
 {
 	__super::Enter();
 
-	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"Free");
+	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 
 	return S_OK;
 }
@@ -126,7 +128,7 @@ void CLevel_Test::Tick()
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Tick();
 #endif
-
+	CUser::Get_Instance()->Fix_CursorPosToCenter();
 	CUser::Get_Instance()->KeyInput_FPSSetter();
 }
 
@@ -184,6 +186,15 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
     pTestUnit->Initialize();
     Ready_GameObject(pTestUnit, GROUP_PLAYER);
+
+	CUser::Get_Instance()->Set_Player(pTestUnit);
+
+	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestUnit, nullptr);
+	pFollowCam->Initialize();
+	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	DISABLE_GAMEOBJECT(pFollowCam);
+	
 
     return S_OK;
 }

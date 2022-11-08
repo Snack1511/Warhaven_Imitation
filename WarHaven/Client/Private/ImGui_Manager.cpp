@@ -11,6 +11,7 @@
 #include "CWindow_Select.h"
 #include "CWindow_UI.h"
 #include "CWindow_Map.h"
+#include "CWindow_Effect.h"
 
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
@@ -61,6 +62,7 @@ HRESULT CImGui_Manager::Initialize()
 	m_arrWindows[IMGUI_SELECT] = CWindow_Select::Create();
 	m_arrWindows[IMGUI_UI] = CWindow_UI::Create();
 	m_arrWindows[IMGUI_MAPTOOL] = CWindow_Map::Create();
+	m_arrWindows[IMGUI_EFFECT] = CWindow_Effect::Create();
 #pragma endregion 윈도우 등록
 
 	return S_OK;

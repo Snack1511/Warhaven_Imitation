@@ -11,10 +11,8 @@
 #include "CModel_Renderer.h"
 #include "CShader.h"
 #include "CUser.h"
-#include "CUnit_Player.h"
 
 #include "Transform.h"
-#include "CComponent_Factory.h"
 
 #include "CCamera_Follow.h"
 #include "CEffects_Factory.h"
@@ -59,15 +57,14 @@ CDefault_Effect* CDefault_Effect::Create(ifstream* pReadFile)
 HRESULT CDefault_Effect::Initialize_Prototype()
 {
 	m_eDisableType = NONE;
-	m_wstrPath = L"../bin/resources/meshes/effects/common/SM_EFF_HemiSphere_A_01.fbx";
+	m_wstrPath = L"../bin/resources/meshes/effects/naruto/common/SM_EFF_HemiSphere_A_01.fbx";
 	m_matTrans = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	m_hcMyCode = HASHCODE(CDefault_Effect);
 	m_bEffectFlag |= EFFECT_FOLLOWTARGET;
 	m_pFollowTarget = PLAYER;
 	m_vOffsetPos = _float4(0.f, 0.f, 0.f);
 
-	CPhysics* pPhysicsCom = CComponent_Factory::Clone_Component<CPhysics>(this);
-	pPhysicsCom->Set_NaviOn();
+	CPhysics* pPhysicsCom = CPhysics::Create(0);
 	Add_Component(pPhysicsCom);
 
 	return __super::Initialize_Prototype();

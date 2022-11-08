@@ -19,6 +19,8 @@
 #include "CTerrain.h"
 #include "CCell.h"
 
+#include "CCamera_Free.h"
+
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -50,6 +52,19 @@ void CUser::Tick()
 
 void CUser::Fix_CursorPosToCenter()
 {
+	if (KEY(F4, TAP))
+	{
+		//ÇÁ¸®Ä·ÀÌ¸é
+		if (dynamic_cast<CCamera_Free*>(GAMEINSTANCE->Get_CurCam()))
+		{
+			GAMEINSTANCE->Change_Camera(L"PlayerCam");
+		}
+		else
+			GAMEINSTANCE->Change_Camera(L"FreeCam");
+
+	}
+
+
 	if (GetFocus() != g_hWnd || !m_bFixCursor)
 		return;
 
@@ -58,6 +73,11 @@ void CUser::Fix_CursorPosToCenter()
 	ptMouse = m_ptCenter;
 	::ClientToScreen(g_hWnd, &ptMouse);
 	::SetCursorPos(ptMouse.x, ptMouse.y);
+
+
+
+
+	
 }
 
 void CUser::KeyInput_FPSSetter()

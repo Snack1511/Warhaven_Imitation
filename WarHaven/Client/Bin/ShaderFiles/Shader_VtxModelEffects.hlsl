@@ -94,8 +94,11 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 	Out.vEffectFlag = g_vFlag;
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
 
-	//Diffuse : Color
+	//DiffuseTexture : Color
 	//g_MaskTexture : AlphaMap
+	//
+
+	//
 	vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	In.vTexUV.x += g_fUVPlusX;

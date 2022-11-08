@@ -102,7 +102,7 @@ protected:
 	wstring	m_wstrPath;
 	wstring	m_wstrMaskMapPath;
 	wstring	m_wstrColorMapPath;
-	wstring	m_wstrNormalMapPath;
+	wstring	m_wstrNoiseMapPath;
 
 	_float4x4 m_matTrans;
 

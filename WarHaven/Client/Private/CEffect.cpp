@@ -15,7 +15,7 @@
 #include "Transform.h"
 //#include "CComponent_Factory.h"
 
-//#include "CCamera_Follow.h"
+#include "CCamera_Follow.h"
 #include "CEffects_Factory.h"
 #include "CUtility_Transform.h"
 
@@ -23,6 +23,8 @@
 #include "Functor.h"
 #include "CCollider_Sphere.h"
 #include "CRectEffects.h"
+
+
 
 CEffect::CEffect()
 {
@@ -70,13 +72,10 @@ CEffect* CEffect::Create_Effect_FromBinFile(string strFileKey)
 			}
 
 			CModel* pModelCom = GET_COMPONENT_FROM(pNewEffect, CModel);
-			CTexture* pTextureCom = pModelCom->Get_Materials().front().second.pTextures[aiTextureType_DIFFUSE_ROUGHNESS];
-			pTextureCom->Add_Texture(pNewEffect->m_wstrColorMapPath.c_str());
-			pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
-
-			pTextureCom = pModelCom->Get_Materials().front().second.pTextures[1];
-			pTextureCom->Add_Texture(pNewEffect->m_wstrMaskMapPath.c_str());
-			pTextureCom->Set_CurTextureIndex(pTextureCom->Get_TextureSize() - 1);
+			//Roughness : 노이즈
+			pModelCom->Change_Texture(0, aiTextureType_REFLECTION, pNewEffect->m_wstrMaskMapPath);
+			pModelCom->Change_Texture(0, 1, pNewEffect->m_wstrColorMapPath);
+			pModelCom->Change_Texture(0, aiTextureType_DIFFUSE_ROUGHNESS, pNewEffect->m_wstrNoiseMapPath);
 		}
 
 		break;
@@ -243,12 +242,12 @@ HRESULT CEffect::Initialize_Prototype()
 	Add_Component<CRenderer>(pRenderer);
 	Add_Component(CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, m_wstrPath.c_str(), m_matTrans));
 
-	if (m_bEffectFlag & EFFECT_COLLIDER)
+	/*if (m_bEffectFlag & EFFECT_COLLIDER)
 	{
 		CCollider_Sphere* pCollider = CComponent_Factory::Clone_Component<CCollider_Sphere>(this);
 		pCollider->Get_ColInfo().fRadius = m_vFadeInTargetScale.x;
 		Add_Component(pCollider);
-	}
+	}*/
 
 	//pCollider->Initialize();
 
@@ -330,7 +329,7 @@ void CEffect::My_Tick()
 {
 	if (m_bColliderOn)
 	{
-		m_fColliderAcc += fDT;
+		m_fColliderAcc += fDT(0);
 		if (m_fColliderAcc > m_fColliderMaxTime)
 		{
 			m_bColliderOn = false;
@@ -365,8 +364,8 @@ void CEffect::My_LateTick()
 		Update_Turn();
 
 	//UV
-	m_fCurUVPlusX += m_fUVSpeedX * fDT;
-	m_fCurUVPlusY += m_fUVSpeedY * fDT;
+	m_fCurUVPlusY += m_fUVSpeedY * fDT(0);
+	m_fCurUVPlusX += m_fUVSpeedX * fDT(0);
 
 	Update_Disable();
 
@@ -428,7 +427,7 @@ void CEffect::Update_Disable()
 
 void CEffect::Update_Turn()
 {
-	m_fTurnAngle += m_fTurnSpeed * fDT;
+	m_fTurnAngle += m_fTurnSpeed * fDT(0);
 
 	//내 회전각에 타겟의 월드 곱하던가 머하던가
 	_float4 vTurnDir = m_vTurnDir;
@@ -447,7 +446,7 @@ void CEffect::Update_Fade()
 	if (m_eDisableType != FADE)
 		return;
 
-	m_fFadeTimeAcc += fDT;
+	m_fFadeTimeAcc += fDT(0);
 
 	switch (m_eCurFadeType)
 	{

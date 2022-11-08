@@ -185,6 +185,7 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CCamera_Default.h" />
+    <ClInclude Include="..\Public\CCamera_Follow.h" />
     <ClInclude Include="..\public\CCamera_Free.h" />
     <ClInclude Include="..\Public\CDefault_Effect.h" />
     <ClInclude Include="..\Public\CEffect.h" />
@@ -192,17 +193,23 @@
     <ClInclude Include="..\public\CIdle_Player.h" />
     <ClInclude Include="..\public\CFader.h" />
     <ClInclude Include="..\public\CImGui_Window.h" />
+    <ClInclude Include="..\Public\CInstancingEffects.h" />
     <ClInclude Include="..\public\CLevel_Loading.h" />
     <ClInclude Include="..\Public\CLevel_Logo.h" />
     <ClInclude Include="..\Public\CLevel_Main.h" />
     <ClInclude Include="..\public\CLevel_Test.h" />
+    <ClInclude Include="..\Public\CRectEffects.h" />
+    <ClInclude Include="..\Public\CScript_FollowCam.h" />
     <ClInclude Include="..\public\CScript_Freecam.h" />
     <ClInclude Include="..\public\CSkyBox.h" />
     <ClInclude Include="..\public\CState.h" />
     <ClInclude Include="..\public\CState_Manager.h" />
     <ClInclude Include="..\Public\CStructure.h" />
     <ClInclude Include="..\public\CTerrain.h" />
-    <ClInclude Include="..\Public\CTestEffect.h" />
+    <ClInclude Include="..\Public\CTestEffect.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\public\CTrailBuffer.h" />
     <ClInclude Include="..\Public\CTrailEffect.h" />
     <ClInclude Include="..\Public\CUI.h" />
@@ -246,6 +253,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\private\CCamera_Default.cpp" />
+    <ClCompile Include="..\Private\CCamera_Follow.cpp" />
     <ClCompile Include="..\private\CCamera_Free.cpp" />
     <ClCompile Include="..\Private\CDefault_Effect.cpp" />
     <ClCompile Include="..\Private\CEffect.cpp" />
@@ -253,18 +261,24 @@
     <ClCompile Include="..\private\CIdle_Player.cpp" />
     <ClCompile Include="..\Private\CFader.cpp" />
     <ClCompile Include="..\Private\CImGui_Window.cpp" />
+    <ClCompile Include="..\Private\CInstancingEffects.cpp" />
     <ClCompile Include="..\private\CLevel_Loading.cpp" />
     <ClCompile Include="..\Private\CLevel_Logo.cpp" />
     <ClCompile Include="..\Private\CLevel_Main.cpp" />
     <ClCompile Include="..\Private\CLevel_Test.cpp" />
     <ClCompile Include="..\Private\Client_Defines.cpp" />
+    <ClCompile Include="..\Private\CRectEffects.cpp" />
+    <ClCompile Include="..\Private\CScript_FollowCam.cpp" />
     <ClCompile Include="..\private\CScript_Freecam.cpp" />
     <ClCompile Include="..\private\CSkyBox.cpp" />
     <ClCompile Include="..\private\CState.cpp" />
     <ClCompile Include="..\private\CState_Manager.cpp" />
     <ClCompile Include="..\Private\CStructure.cpp" />
     <ClCompile Include="..\private\CTerrain.cpp" />
-    <ClCompile Include="..\Private\CTestEffect.cpp" />
+    <ClCompile Include="..\Private\CTestEffect.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\private\CTrailBuffer.cpp" />
     <ClCompile Include="..\Private\CTrailEffect.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />

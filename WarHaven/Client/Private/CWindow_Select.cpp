@@ -60,7 +60,10 @@ HRESULT CWindow_Select::Render()
 	{
 		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_MAPTOOL);
 	}
-	ImGui::Spacing();
+	if (ImGui::Button("Effect Tool"))
+	{
+		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_EFFECT);
+	}
 
 	__super::End();
 
