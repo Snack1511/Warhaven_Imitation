@@ -59,7 +59,8 @@ HRESULT CStructure::Initialize_Prototype()
 	//_matrix Mat = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	//XMStoreFloat4x4(&matTrans, Mat);
 	//D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Meshes\Map\Structure\Gate
-	CModel* pModel = CModel::Create(0, TYPE_NONANIM, TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.fbx"), matTrans);
+
+	CModel* pModel = CModel::Create(0, TYPE_NONANIM, TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.fbx"), DEFAULT_TRANS_MATRIX);
 	Add_Component(pModel);
 
 
@@ -80,7 +81,7 @@ HRESULT CStructure::Start()
 {
 	__super::Start();
 
-	m_pTransform->Set_Scale(_float4(0.01f, 0.01f, 0.01f, 0.f));
+	//m_pTransform->Set_Scale(_float4(0.01f, 0.01f, 0.01f, 0.f));
 	//m_pModelCom->Set_ShaderPassToAll(VTXMODEL_PASS_NORMALMAPPING);
     return S_OK;
 }
