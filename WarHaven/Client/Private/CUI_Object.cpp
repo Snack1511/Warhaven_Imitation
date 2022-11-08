@@ -45,11 +45,20 @@ HRESULT CUI_Object::Start()
 
 void CUI_Object::Set_Texture(const _tchar* pFilePath)
 {
-	CTexture* pTexture = GET_COMPONENT(CTexture);
-	pTexture->Add_Texture(pFilePath);
-	pTexture->Next_Texture();
-	pTexture->Remove_Texture(0);
-	pTexture->Set_CurTextureIndex(0);
+	if (m_bIsMultiTex)
+	{
+		CTexture* pTexture = GET_COMPONENT(CTexture);
+		pTexture->Add_Texture(pFilePath);
+		pTexture->Next_Texture();
+	}
+	else
+	{
+		CTexture* pTexture = GET_COMPONENT(CTexture);
+		pTexture->Add_Texture(pFilePath);
+		pTexture->Next_Texture();
+		pTexture->Remove_Texture(0);
+		pTexture->Set_CurTextureIndex(0);
+	}
 }
 
 void CUI_Object::SetUp_ShaderResource(CShader* pShader, const char* pConstName)

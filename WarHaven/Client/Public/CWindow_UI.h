@@ -51,6 +51,11 @@ private:
 private:
 	void Add_UI();
 
+	void Show_UIList();
+
+	void Show_Inspector(CUI_Object* pUI);
+
+	void Set_Name();
 	void Show_Transform(CUI_Object* pUI);
 	void Show_Shader(_uint iIndex);
 	void Show_Etc(CUI_Object* pUI);

@@ -8,6 +8,7 @@
 #include "ImGui_Manager.h"
 #include "Functor.h"
 #include "GameInstance.h"
+#include "CUtility_File.h"
 
 CWindow_UI::CWindow_UI()
 {
@@ -34,12 +35,12 @@ HRESULT CWindow_UI::Initialize()
 {
 	ImGuiWindowFlags window_flags = 0;
 	//window_flags |= ImGuiWindowFlags_MenuBar;
-	window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
-	window_flags |= ImGuiWindowFlags_NoTitleBar;
+	// window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
 	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoTitleBar;
 
 	m_bEnable = false;
-	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(350.f, 350.f), window_flags);
+	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(300.f, 200.f), window_flags);
 
 	m_TextureRootNode.strFolderPath = "../bin/resources/textures";
 	m_TextureRootNode.strFileName = "UI";
@@ -59,82 +60,21 @@ HRESULT CWindow_UI::Render()
 		return E_FAIL;
 
 	// 위젯 확인용 데모창
-	ImGui::ShowDemoWindow();
+	// ImGui::ShowDemoWindow();
 
 	ImGui::Text("= UI =");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
-	// 유아이 리스트
-
-	const char pUIName[MAX_PATH] = {};
-	size_t iMaxIndex = m_vecUI.size();
-	_uint iIndex = 0;
-
-	static int iSelectUIIndex = 0;
-
-
-	if (ImGui::BeginListBox("UI_List"))
-	{
-		for (_uint i = 0; i < m_vecUI.size(); ++i)
-		{
-			if (ImGui::Selectable(CFunctor::To_String(m_vecUI[i].pUI->Get_UIName()).c_str(), m_vecUI[i].bSelected))
-			{
-				m_iSelectIndex = i;
-				m_vecUI[i].bSelected = true;
-				for (_uint j = 0; j < m_vecUI.size(); ++j)
-				{
-					if (j == i)
-						continue;
-
-					m_vecUI[j].bSelected = false;
-				}
-			}
-
-			if (m_vecUI[i].bSelected)
-			{
-				ImGui::SetItemDefaultFocus();
-			}
-		}
-
-		ImGui::EndListBox();
-	}
-
-	// 기본 유아이 객체 생성
 	if (ImGui::Button("Add New UI"))
 		Add_UI();
 
-	// 선택한 객체가 있으면 인스펙터
-	if (!m_vecUI.empty())
+	Show_UIList();
+
+	if (m_iSelectIndex < 9999)
 	{
-		if (m_iSelectIndex < 9999)
-		{
-			CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
-
-			// 이름 정하기
-			static char strName[128] = "UI_Object";
-			if (ImGui::InputText("UI Name", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
-			{
-				wstring wstr(strName, &strName[128]);
-				pUI->Set_UIName(wstr);
-			}
-
-			// 트랜스폼 (위치, 크기, 회전??)
-			Show_Transform(pUI);
-
-			Show_Etc(pUI);
-
-			// UI 이미지 창
-			// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
-			Show_Texture(m_iSelectIndex);
-
-			if (ImGui::Button("Save"))
-				Save_UI_Info(pUI);
-		}		
+		CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
+		Show_Inspector(pUI);
 	}
-
-	// 셰이더 변경
-
-	// 텍스처 변경
 
 	ImGui::Spacing();
 
@@ -155,11 +95,63 @@ void CWindow_UI::Add_UI()
 	m_vecUI.push_back(tItem);
 }
 
+void CWindow_UI::Show_UIList()
+{
+	if (ImGui::BeginListBox("UI_List"))
+	{
+		for (_uint i = 0; i < m_vecUI.size(); ++i)
+		{
+			if (ImGui::Selectable(CFunctor::To_String(m_vecUI[i].pUI->Get_UIName()).c_str(), m_vecUI[i].bSelected))
+			{
+				m_iSelectIndex = i;
+				m_vecUI[i].bSelected = true;
+
+				for (_uint j = 0; j < m_vecUI.size(); ++j)
+				{
+					if (j == i)
+						continue;
+
+					m_vecUI[j].bSelected = false;
+				}
+			}
+
+			if (m_vecUI[i].bSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndListBox();
+	}
+}
+
+void CWindow_UI::Show_Inspector(CUI_Object* pUI)
+{
+	ImGui::Begin("Inspector");
+
+	static char strName[128] = "UI_Object";
+	if (ImGui::InputText("UI Name", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		wstring wstr(strName, &strName[128]);
+		pUI->Set_UIName(wstr);
+	}
+
+	ImGui::NewLine();
+
+	Show_Transform(pUI);
+
+	Show_Etc(pUI);
+
+	// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
+	Show_Texture(m_iSelectIndex);
+
+	ImGui::NewLine();
+
+	if (ImGui::Button("Save"))
+		Save_UI_Info(pUI);
+
+	ImGui::End();
+}
+
 void CWindow_UI::Show_Transform(CUI_Object* pUI)
 {
-	if (!pUI)
-		return;
-
 	if (ImGui::CollapsingHeader("Transform"))
 	{
 		// Position
@@ -185,14 +177,15 @@ void CWindow_UI::Show_Transform(CUI_Object* pUI)
 
 void CWindow_UI::Show_Etc(CUI_Object* pUI)
 {
-	if (!pUI)
-		return;
-
 	if (ImGui::CollapsingHeader("Etc"))
 	{
 		static bool bIsTarget = false;
 		ImGui::Checkbox("Mouse Interact", &bIsTarget);
 		pUI->Set_MouseTarget(bIsTarget);
+
+		static bool bIsMulti = false;
+		ImGui::Checkbox("Multi Texture", &bIsMulti);
+		pUI->Set_MultiTexture(bIsMulti);
 	}
 }
 
@@ -217,38 +210,33 @@ void CWindow_UI::Save_UI_Info(CUI_Object* pUI)
 	CUI_Object::UI_Desc tUI_Desc;
 	ZeroMemory(&tUI_Desc, sizeof(CUI_Object::UI_Desc));
 
-	// 오브젝트의 트랜스폼을 
 	tUI_Desc.vPos = pUI->Get_Transform()->Get_World(WORLD_POS);
 
-	_tchar szFileFullPath[MAX_PATH] = L"";
-	const _tchar* szFilePath = TEXT("../Bin//Data/UIData/");
+	string savePath = "../Bin//Data/UIData/";
+	savePath += CFunctor::To_String(pUI->Get_UIName());
+	savePath += ".bin";
+	ofstream	writeFile(savePath, ios::binary);
 
-	wcscat_s(szFileFullPath, szFilePath);
-	wcscat_s(szFileFullPath, pUI->Get_UIName().c_str());
-	wcscat_s(szFileFullPath, L".dat");
-
-	HANDLE	hFile = CreateFile
-	(
-		szFileFullPath,			// 파일의 경로와 이름을 명시
-		GENERIC_WRITE,			// 파일 접근 모드 (출력 : WRITE, 입력 : READ)
-		NULL,					// 공유 방식, 파일이 열려있는 상태에서 다른 프로세스가 오픈할 때 허용하는가에 대한 설정, NULL 지정 시 공유안함
-		NULL,					// 보안 속성 모드, NULL인 경우 기본값 설정
-		CREATE_ALWAYS,			// 파일이 없으면 생성, 있으면 덮어 쓰기, OPEN_EXISTING - 파일이 있는 경우에만 로드
-		FILE_ATTRIBUTE_NORMAL,	// 파일 속성(읽기 전용, 숨김 파일 등등을 설정), 아무런 속성이 없는 파일 모드 생성
-		NULL					// 생성될 파일의 속성을 제공할 템플릿 파일, 우린 안 쓸것이기 때문에 NULL
-	);
-
-	if (INVALID_HANDLE_VALUE == hFile)
+	if (!writeFile.is_open())
 	{
-		Call_MsgBox(TEXT("UI_Object Save failed"));
+		Call_MsgBox(L"UI Save Failed");
 		return;
 	}
 
-	DWORD dwByte = 0;
+	CTexture* pTexture = GET_COMPONENT_FROM(pUI, CTexture);
 
-	WriteFile(hFile, &tUI_Desc, sizeof(CUI_Object::UI_Desc), &dwByte, nullptr);
+	size_t iMaxSize = pTexture->Get_vecTexture().size();
+	for (size_t i = 0; i < iMaxSize; ++i)
+	{
+		string strFilePath = CFunctor::To_String(pTexture->Get_vecTexture()[i].strFilePath);
+		CUtility_File::Write_Text(&writeFile, strFilePath.c_str());
+	}
 
-	CloseHandle(hFile);
+	writeFile.write((char*)&pUI, sizeof(_uint));
+
+	writeFile.close();
+
+	Call_MsgBox(L"UI_Object Save Succes");
 }
 
 void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)

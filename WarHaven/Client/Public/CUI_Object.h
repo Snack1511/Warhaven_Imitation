@@ -29,6 +29,7 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	void Set_MultiTexture(_bool value) { m_bIsMultiTex = value; }
 	void Set_Texture(const _tchar* pFilePath);
 
 public:
@@ -45,12 +46,14 @@ private:
 	CUI_Text* m_pText = nullptr;
 	CUI_Button* m_pButton = nullptr;
 
+	_bool m_bIsMultiTex = false;
+
 	_bool m_bIsMouseTarget = false;
+	_bool m_bIsOnMouse = false;
 
 	RECT m_tRect;
 	POINT m_ptMouse;
 
-	_bool m_bIsOnMouse = false;
 
 private:
 	// These will be called by Set_Enable Func.
