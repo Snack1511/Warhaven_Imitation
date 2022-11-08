@@ -13,11 +13,11 @@ CHierarchyNode::~CHierarchyNode()
 	Release();
 }
 
-CHierarchyNode* CHierarchyNode::Create(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, string strBodyUpperRootBone, string strBodyLowerRootBone, _uint iAnimBoneType)
+CHierarchyNode* CHierarchyNode::Create(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth)
 {
 	CHierarchyNode* pInstance = new CHierarchyNode();
 
-	if (FAILED(pInstance->Initialize(pResource, pParent, iDepth, strBodyUpperRootBone, strBodyLowerRootBone, iAnimBoneType)))
+	if (FAILED(pInstance->Initialize(pResource, pParent, iDepth)))
 	{
 		Call_MsgBox(L"Failed to Created : CHierarchyNode");
 		SAFE_DELETE(pInstance);
@@ -64,29 +64,12 @@ void CHierarchyNode::Get_AllNodes(vector<CHierarchyNode*>& vecNodes)
 }
 
 
-HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, string strBodyUpperRootBone, string strBodyLowerRootBone, _uint iAnimBoneType)
+HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth)
 {
 	m_iDepth = iDepth;
 	m_pParent = pParent;
 
 	strcpy_s(m_szName, pResource->Get_Name().c_str());
-	string strName = m_szName;
-	
-	if (0 < iAnimBoneType)
-	{
-		m_eMyAnimBoneType = (ANIM_BONE_TYPE)iAnimBoneType;
-	}
-	else
-	{
-		if (strName == strBodyUpperRootBone)
-			m_eMyAnimBoneType = ANIM_BONE_TYPE_BODYUPPER;
-
-		else if (strName == strBodyLowerRootBone)
-			m_eMyAnimBoneType = ANIM_BONE_TYPE_BODYLOWER;
-
-		else
-			m_eMyAnimBoneType = ANIM_BONE_TYPE_DEFAULT;
-	}
 
 	m_TransformationMatrix = pResource->Get_TransformationMatrix();
 
@@ -101,7 +84,7 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 
 	for (_uint i = 0; i < pResource->Get_NumChildren(); ++i)
 	{
-		CHierarchyNode* pNode = CHierarchyNode::Create(vecChildrenBones[i], this, m_iDepth + 1, strBodyUpperRootBone, strBodyLowerRootBone, m_eMyAnimBoneType);
+		CHierarchyNode* pNode = CHierarchyNode::Create(vecChildrenBones[i], this, m_iDepth + 1);
 
 		if (!pNode)
 			return E_FAIL;

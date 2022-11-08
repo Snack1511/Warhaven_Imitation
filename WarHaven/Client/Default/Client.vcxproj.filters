@@ -214,15 +214,6 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\Spearman">
       <UniqueIdentifier>{587217d8-7c7c-428a-90b4-4e365c31490e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\00. Warrior">
-      <UniqueIdentifier>{d74406fa-1df5-45b5-902e-f53557bd632e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\00. Warrior\00. Base">
-      <UniqueIdentifier>{f7bde9b4-5711-4237-a558-c0c1088f35f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\00. Warrior\00. Base\00. Idle">
-      <UniqueIdentifier>{52ad6180-7247-43ba-9a6d-15e43893b5f0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -405,9 +396,6 @@
     <ClInclude Include="..\Public\CUnit_Spearman.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CIdle_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\00. Warrior\00. Base\00. Idle</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -573,9 +561,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_Spearman.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CIdle_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\00. Warrior\00. Base\00. Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

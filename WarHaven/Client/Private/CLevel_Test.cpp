@@ -181,12 +181,12 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
     tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx";
     tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
 
- //   CUnit_Warrior* pTestWarriorUnit = CUnit_Warrior::Create(tModelData);
- //   if (!pTestWarriorUnit)
- //       return E_FAIL;
+    CUnit_Warrior* pTestWarriorUnit = CUnit_Warrior::Create(tModelData);
+    if (!pTestWarriorUnit)
+        return E_FAIL;
 
-	//pTestWarriorUnit->Initialize();
-	//Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
+	pTestWarriorUnit->Initialize();
+	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
 
 
 	//1. Ã¢¸Ç

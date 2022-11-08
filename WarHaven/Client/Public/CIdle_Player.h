@@ -23,10 +23,6 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
-private:
-	void	Test_Animation_Loop(CUnit* pOwner, CAnimator* pAnimator);
-
 };
 
 END

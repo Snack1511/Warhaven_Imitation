@@ -40,11 +40,10 @@ HRESULT CAnimation::Set_HierarchyNodes(CModel* pModel)
 	return S_OK;
 }
 
-void CAnimation::OnInterpolate(CAnimation* pPrevAnimation, _uint iAnimBoneType)
+void CAnimation::OnInterpolate(CAnimation* pPrevAnimation)
 {
 	m_bInterpolation = true;
 	m_fInterpolationTimeAcc = 0.f;
-	m_iAnimBoneType = iAnimBoneType;
 }
 
 void CAnimation::OnSwitchAnim()
@@ -102,13 +101,8 @@ HRESULT CAnimation::Initialize(CResource_Animation* pAnimResource)
 	return S_OK;
 }
 
-void CAnimation::Update_Matrices(_uint iAnimBoneType)
+void CAnimation::Update_Matrices()
 {
-	// Animator 에서 Default, Upper, Lower 를 Update 를 돌리자.
-	// Update_Matrices 에 iAnimBoneType 에 관한 것을 변수를 선언해서 
-	// 만약 m_iAnimBoneType 와 iAnimBoneType 이 같다면 Update 를 돌릴 수 있도록 하자. (생각중)
-
-
 	if (m_isFinished)
 		Reset();
 
@@ -125,9 +119,8 @@ void CAnimation::Update_Matrices(_uint iAnimBoneType)
 		}
 
 		for (_uint i = 0; i < m_iNumChannels; ++i)
-		{	
-			// m_iAnimBoneType : 현재 애니메이션의 종류
-			m_Channels[i]->Interpolate_Matrix(m_fInterpolationTimeAcc, m_fInterpolationTime, m_iAnimBoneType);
+		{
+			m_Channels[i]->Interpolate_Matrix(m_fInterpolationTimeAcc, m_fInterpolationTime);
 		}
 
 		return;
@@ -143,7 +136,7 @@ void CAnimation::Update_Matrices(_uint iAnimBoneType)
 
 	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
-		m_Channels[i]->Update_TransformationMatrices(m_fTimeAcc, m_iAnimBoneType);
+		m_Channels[i]->Update_TransformationMatrices(m_fTimeAcc);
 	}
 }
 

@@ -8,8 +8,6 @@
 
 #include "CUser.h"
 
-#include "CState_Manager.h"
-
 CIdle_Warrior::CIdle_Warrior()
 {
 }
@@ -34,9 +32,9 @@ CIdle_Warrior* CIdle_Warrior::Create()
 HRESULT CIdle_Warrior::Initialize()
 {
     // 상하체 분리.
-
+   
     m_eAnimType = ANIM_ETC;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 40;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 41;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_IDLE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
@@ -55,8 +53,6 @@ HRESULT CIdle_Warrior::Initialize()
     //m_vecAdjState.push_back(STATE_DASH);
     //m_vecAdjState.push_back(STATE_WALK);
 
-    // m_vecAdjState.push_back(STATE_IDLE_PLAYER);
-
 	return S_OK;
 }
 
@@ -67,11 +63,6 @@ void CIdle_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CIdle_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (KEY(LEFT, TAP))
-    {
-        Enter(pOwner, pAnimator);
-    }
-
 	return __super::Tick(pOwner, pAnimator);
 }
 

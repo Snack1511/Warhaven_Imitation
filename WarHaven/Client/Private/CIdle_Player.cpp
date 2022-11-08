@@ -8,10 +8,6 @@
 
 #include "CUser.h"
 
-#include "CIdle_Warrior.h"
-
-#include "CState_Manager.h"
-
 CIdle_Player::CIdle_Player()
 {
 }
@@ -36,14 +32,11 @@ HRESULT CIdle_Player::Initialize()
 {
     // 상하체 분리.
     // 
-    m_eAnimType = ANIM_BASE_R;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+
+
+    m_eAnimType = ANIM_ETC;            // 애니메이션의 메쉬타입
+    m_iAnimIndex = 41;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_IDLE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
-
-
-    //m_eAnimType = ANIM_ETC;            // 애니메이션의 메쉬타입
-    //m_iAnimIndex = 41;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    //m_eStateType = STATE_IDLE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     
     // 선형 보간 시간
@@ -62,8 +55,6 @@ HRESULT CIdle_Player::Initialize()
     //m_vecAdjState.push_back(STATE_WALK);
 
 
-    // m_vecAdjState.push_back(STATE_END);
-
     return S_OK;
 }
 
@@ -71,14 +62,14 @@ void CIdle_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* Owner의 Animator Set Idle로 */
 
+  
+
 
     __super::Enter(pOwner, pAnimator);
 }
 
 STATE_TYPE CIdle_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    Test_Animation_Loop(pOwner, pAnimator);
-
     return __super::Tick(pOwner, pAnimator);
 }
 
@@ -97,71 +88,4 @@ STATE_TYPE CIdle_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 
     return STATE_END;
-}
-
-void CIdle_Player::Test_Animation_Loop(CUnit* pOwner, CAnimator* pAnimator)
-{
-    if (KEY(LEFT, TAP))
-    {
-        if(0 < m_iAnimIndex)
-            --m_iAnimIndex;
-        Enter(pOwner, pAnimator);
-    }
-
-    if (KEY(RIGHT, TAP))
-    {
-        ++m_iAnimIndex;
-        Enter(pOwner, pAnimator);
-    }
-
-    if (KEY(UP, TAP))
-    {
-        if (m_eAnimType == ANIM_END)
-            return;
-
-        _uint iType = m_eAnimType;
-
-        ++iType;
-
-        m_eAnimType = (ANIM_TYPE)iType;
-
-        m_iAnimIndex = 0;
-
-        Enter(pOwner, pAnimator);
-    }
-
-    if (KEY(DOWN, TAP))
-    {
-        if (m_eAnimType == ANIM_BASE_R)
-            return;
-
-        _uint iType = m_eAnimType;
-
-        --iType;
-
-        m_eAnimType = (ANIM_TYPE)iType;
-
-        m_iAnimIndex = 0;
-
-        Enter(pOwner, pAnimator);
-    }
-
-    if (KEY(Q, TAP))
-    {
-        _uint iType = m_eStateType;
-        
-        --iType;
-
-        m_eStateType = (STATE_TYPE)iType;
-    }
-
-    if (KEY(E, TAP))
-    {
-        _uint iType = m_eStateType;
-
-        ++iType;
-
-        m_eStateType = (STATE_TYPE)iType;
-    }
-
 }

@@ -22,10 +22,6 @@ public:
 	virtual HRESULT Start() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
-
-private:
-	HRESULT		Add_Animator();
-
 };
 
 END
