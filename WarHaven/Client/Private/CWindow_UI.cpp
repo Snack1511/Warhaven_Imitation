@@ -29,7 +29,7 @@ HRESULT CWindow_UI::Initialize()
 	window_flags |= ImGuiWindowFlags_NoResize;
 
 	m_bEnable = true;
-	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(200.f, 300.f), window_flags);
+	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(600.f, 350.f), window_flags);
 
 	m_TextureRootNode.strFolderPath = "../bin/resources/textures";
 	m_TextureRootNode.strFileName = "UI";

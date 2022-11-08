@@ -52,6 +52,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 {
 	//여기다가 치는 코드는 로딩중에 수행됨 (멀티쓰레드로)
 	//여기서 객체 생성한 후 Ready_GameObject 함수로 넣어놓으면 로딩 넘어가고 (멀티쓰레드 끝나고) 오브젝트 매니저에 추가됨.
+	// 
+	//로딩 Finish 수동으로 해야댐 ㅠ
 
 	CSkyBox* pSkyBox = CSkyBox::Create();
 
@@ -66,52 +68,30 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
 	m_fLoadingFinish = 0.2f;
 
-    
 
-	
-    CStructure* pStruct = CStructure::Create();
-    if (!pStruct)
-        return E_FAIL;
-    pStruct->Initialize();
-    Ready_GameObject(pStruct, GROUP_DECORATION);
+	/* 각자 이름 함수에서 놀으셈*/
 
-
-	//로딩 Finish 수동으로 해야댐 ㅠ
-	m_fLoadingFinish = 0.5f;
     if (FAILED(SetUp_Prototypes_TH()))
         return E_FAIL;
-    
-
     m_fLoadingFinish = 0.3f;
+	if (FAILED(SetUp_Prototypes_HR()))
+		return E_FAIL;
+	m_fLoadingFinish = 0.4f;
+	if (FAILED(SetUp_Prototypes_MJ()))
+		return E_FAIL;
+	m_fLoadingFinish = 0.5f;
+	if (FAILED(SetUp_Prototypes_JJ()))
+		return E_FAIL;
+	m_fLoadingFinish = 0.6f;
+	if (FAILED(SetUp_Prototypes_YJ()))
+		return E_FAIL;
+	m_fLoadingFinish = 0.7f;
 
-    wstring wstrModel = L"../bin/resources/Meshes/Effects/FBX/SM_Charge_Mesh_01.fbx";
-    wstring wstrMask = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_10_M.dds";
-    wstring wstrColor = L"../bin/resources/Textures/Effects/GradationColor/T_EFF_GMS_AmeVillage_Sea_01_M.png";
-    wstring wstrNoise = L"../bin/resources/Textures/Effects/Noise/T_EFF_Noise_16_M.dds";
-
-    CTestEffect* pTest = CTestEffect::Create(wstrModel, wstrMask, wstrColor, wstrNoise);
-    if (!pTest)
-        return E_FAIL;
-
-    pTest->Initialize();
-    Ready_GameObject(pTest, GROUP_EFFECT);
 
 
-    //로딩 Finish 수동으로 해야댐 ㅠ
-    m_fLoadingFinish = 0.5f;
 
 	CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"Free");
 	DISABLE_GAMEOBJECT(pFreeCam);
-
-
-
-	SetUp_Prototypes_JJ();
-
-
-
-
-
-
 
 
 	LIGHTDESC			LightDesc;
@@ -206,6 +186,39 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
     Ready_GameObject(pTestUnit, GROUP_PLAYER);
 
     return S_OK;
+}
+
+HRESULT CLevel_Test::SetUp_Prototypes_MJ()
+{
+	CStructure* pStruct = CStructure::Create();
+	if (!pStruct)
+		return E_FAIL;
+	pStruct->Initialize();
+	Ready_GameObject(pStruct, GROUP_DECORATION);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Test::SetUp_Prototypes_HR()
+{
+	wstring wstrModel = L"../bin/resources/Meshes/Effects/FBX/SM_Charge_Mesh_01.fbx";
+	wstring wstrMask = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_10_M.dds";
+	wstring wstrColor = L"../bin/resources/Textures/Effects/GradationColor/T_EFF_GMS_AmeVillage_Sea_01_M.png";
+	wstring wstrNoise = L"../bin/resources/Textures/Effects/Noise/T_EFF_Noise_16_M.dds";
+
+	CTestEffect* pTest = CTestEffect::Create(wstrModel, wstrMask, wstrColor, wstrNoise);
+	if (!pTest)
+		return E_FAIL;
+
+	pTest->Initialize();
+	Ready_GameObject(pTest, GROUP_EFFECT);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Test::SetUp_Prototypes_YJ()
+{
+	return S_OK;
 }
 
 
