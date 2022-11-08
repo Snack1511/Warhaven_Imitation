@@ -241,6 +241,9 @@
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool">
       <UniqueIdentifier>{bf927561-f572-4c65-946d-6c75c148b802}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base\03. Run">
+      <UniqueIdentifier>{c051afa2-9df0-4e4c-b4a1-bff093e1935e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -447,6 +450,9 @@
     <ClInclude Include="..\Public\CInstancingEffects.h">
       <Filter>03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CRun_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base\03. Run</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -636,6 +642,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CRectEffects.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base\03. Run</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -199,6 +199,7 @@
     <ClInclude Include="..\Public\CLevel_Main.h" />
     <ClInclude Include="..\public\CLevel_Test.h" />
     <ClInclude Include="..\Public\CRectEffects.h" />
+    <ClInclude Include="..\Public\CRun_Player.h" />
     <ClInclude Include="..\Public\CScript_FollowCam.h" />
     <ClInclude Include="..\public\CScript_Freecam.h" />
     <ClInclude Include="..\public\CSkyBox.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="..\Private\CLevel_Test.cpp" />
     <ClCompile Include="..\Private\Client_Defines.cpp" />
     <ClCompile Include="..\Private\CRectEffects.cpp" />
+    <ClCompile Include="..\Private\CRun_Player.cpp" />
     <ClCompile Include="..\Private\CScript_FollowCam.cpp" />
     <ClCompile Include="..\private\CScript_Freecam.cpp" />
     <ClCompile Include="..\private\CSkyBox.cpp" />

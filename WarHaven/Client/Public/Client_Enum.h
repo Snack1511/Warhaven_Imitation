@@ -231,8 +231,9 @@ namespace Client
 	enum STATE_TYPE
 	{
 		STATE_IDLE_PLAYER,
-		STATE_WALK_PLAYER,
 
+		STATE_WALK_PLAYER,
+		STATE_RUN_PLAYER,
 
 
 

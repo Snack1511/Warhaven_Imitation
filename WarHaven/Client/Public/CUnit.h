@@ -76,7 +76,7 @@ public:
 	CState*	Get_CurStateP() { return m_pCurState; }
 
 public:
-	void	Enter_State(STATE_TYPE eType);
+	void	Enter_State(STATE_TYPE eType, ANIM_TYPE eAnimType);
 
 
 public:
@@ -116,6 +116,9 @@ protected:
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+
+private:
+	ANIM_TYPE		m_eAnimType = ANIM_END;
 	
 };
 END

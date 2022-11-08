@@ -1,18 +1,22 @@
 #pragma once
 #include "CState.h"
 
+BEGIN(Engine)
+class CAnimator;
+END
+
 BEGIN(Client)
-class CWalk_Player
+class CRun_Player
 	: public CState
 {
-	DECLARE_STATE(CWalk_Player);
+	DECLARE_STATE(CRun_Player);
 
 private:
-	CWalk_Player();
-	virtual ~CWalk_Player();
+	CRun_Player();
+	virtual ~CRun_Player();
 
 public:
-	static CWalk_Player* Create();
+	static CRun_Player* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -24,17 +28,11 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
+//private:
+//	_bool	Change_Animation_Run(_uint iBeginAttackAnim, _uint iAttackAnim, _uint iAttackAnim, CAnimator* pAnimator);
+
 private:
-	_bool	Change_Walk_Position(_uint iAnimIndex, ANIM_TYPE eAnimType)
-	{
-		if (m_iAnimIndex == iAnimIndex && m_eAnimType == eAnimType)
-			return false;
-
-		m_iAnimIndex = iAnimIndex;
-		m_eAnimType = eAnimType;
-
-		return true;
-	}
+	_bool	m_bPlayRun = false;
 
 };
 

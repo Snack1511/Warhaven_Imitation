@@ -44,9 +44,10 @@ HRESULT CWarrior_Attack_01::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 30;
+    m_iStateChangeKeyFrame = 50;
     m_vecAdjState.push_back(STATE_IDLE_PLAYER);
     m_vecAdjState.push_back(STATE_WALK_PLAYER);
+    m_vecAdjState.push_back(STATE_RUN_PLAYER);
     //m_vecAdjState.push_back(STATE_SILDING);
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
@@ -59,11 +60,9 @@ HRESULT CWarrior_Attack_01::Initialize()
 void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* Owner의 Animator Set Idle로 */
-
-
-
-
     __super::Enter(pOwner, pAnimator);
+
+    pAnimator->Set_CurAnimIndex(m_eAnimType, 0);
 }
 
 STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -79,8 +78,9 @@ void CWarrior_Attack_01::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CWarrior_Attack_01::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Walk로 오는 조건
-    1.
+    /* Player가 Attack 으로 오는 조건
+    1.  LBuutton 을 이용해 공격한다.
+    2.  CTRL LButton 을 이용해 내려찍는다.
     */
     if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
     {

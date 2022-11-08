@@ -1,6 +1,11 @@
 #pragma once
 #include "CState.h"
 
+BEGIN(Engine)
+class CAnimator;
+END
+
+
 BEGIN(Client)
 class CIdle_Player
 	: public CState
@@ -23,6 +28,9 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+
+private:
+	void	Switch_Right_And_Left(_uint iAnimType, _uint iAnimIndex, _uint iChangeAnimIndex, CAnimator* pAnimator);
 };
 
 END
