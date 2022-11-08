@@ -16,9 +16,10 @@
 
 #include "CCamera_Free.h"
 
-#include "CTestEffect.h"
-
+#include "CSword_Effect.h"
+#include "CEffects_Factory.h"
 #include "CCamera_Follow.h"
+
 
 CLevel_Test::CLevel_Test()
 {
@@ -56,6 +57,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	//여기서 객체 생성한 후 Ready_GameObject 함수로 넣어놓으면 로딩 넘어가고 (멀티쓰레드 끝나고) 오브젝트 매니저에 추가됨.
 	// 
 	//로딩 Finish 수동으로 해야댐 ㅠ
+	
+
 
 	CSkyBox* pSkyBox = CSkyBox::Create();
 
@@ -89,7 +92,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 		return E_FAIL;
 	m_fLoadingFinish = 0.7f;
 
-
+	CEffects_Factory::Get_Instance()->Initialize();
 
 
 	CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"FreeCam");
@@ -171,13 +174,13 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
     CUnit::UNIT_MODEL_DATA  tModelData;
 
-    tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Spearman/Spearman.fbx";
+    tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/warrior/Warrior.fbx";
 
-    tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Spearman/body/SK_Spearman0001_Body_A00.fbx";
-    tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Face_A00.fbx";
-    tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Helmet_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
 
-    tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSpear/SM_WP_LongSpear0002_A00.fbx";
+    tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx";
     tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
 
     CUnit_Warrior* pTestUnit = CUnit_Warrior::Create(tModelData);
@@ -223,6 +226,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_HR()
 
 	pTest->Initialize();
 	Ready_GameObject(pTest, GROUP_EFFECT);*/
+
+
 
 	return S_OK;
 }

@@ -25,6 +25,7 @@ public:
 	wstring	Get_TextureFilePath(_uint iIndex);
 	wstring	Get_TextureFilePathFromParts(_uint iMeshPartType);
 	class CTexture* Get_TextureFromParts(_uint iMeshPartType, _uint iMeshPartType2);
+	_float4x4 Get_BoneMatrix(const char* pBonename);
 
 	void	Set_NewModel(wstring wstrModelFilePath);
 	void	Set_NewTransformMatrix(_float4x4 TransformMatrix);

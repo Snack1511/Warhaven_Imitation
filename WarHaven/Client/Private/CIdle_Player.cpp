@@ -2,11 +2,13 @@
 #include "CIdle_Player.h"
 
 #include "GameInstance.h"
-
+#include "Functor.h"
 #include "CAnimator.h"
 #include "CUnit.h"
-
+#include "Transform.h"
 #include "CUser.h"
+#include "CEffects_Factory.h"
+#include "CSword_Effect.h"
 
 CIdle_Player::CIdle_Player()
 {
@@ -34,7 +36,7 @@ HRESULT CIdle_Player::Initialize()
     // 
 
 
-    m_eAnimType = ANIM_BASE_R;            // 애니메이션의 메쉬타입
+    m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_IDLE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
@@ -70,6 +72,14 @@ void CIdle_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CIdle_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    m_fCreateTimeAcc += fDT(0);
+
+    if (m_fCreateTime <= m_fCreateTimeAcc)
+    {
+        CEffects_Factory::Get_Instance()->Create_Effects(HASHCODE(CSword_Effect), pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        m_fCreateTimeAcc = 0.f;
+    }
+
     return __super::Tick(pOwner, pAnimator);
 }
 

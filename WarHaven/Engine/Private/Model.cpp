@@ -154,6 +154,21 @@ CTexture* CModel::Get_TextureFromParts(_uint iMeshPartType, _uint iMeshPartType2
 	return nullptr;
 }
 
+_float4x4 CModel::Get_BoneMatrix(const char* pBonename)
+{
+	_float4x4 BoneMatrix;
+	CHierarchyNode* pNode = Find_HierarchyNode(pBonename);
+	if (!pNode)
+		return BoneMatrix.Identity();
+
+	BoneMatrix = pNode->Get_CombinedMatrix();
+
+	BoneMatrix *= m_TransformMatrix;
+	BoneMatrix *= m_pOwner->Get_Transform()->Get_WorldMatrix();
+
+	return BoneMatrix;
+}
+
 void CModel::Set_NewModel(wstring wstrModelFilePath)
 {
 	m_wstrModelFilePath = wstrModelFilePath;

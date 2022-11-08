@@ -205,6 +205,7 @@
     <ClInclude Include="..\public\CState.h" />
     <ClInclude Include="..\public\CState_Manager.h" />
     <ClInclude Include="..\Public\CStructure.h" />
+    <ClInclude Include="..\Public\CSword_Effect.h" />
     <ClInclude Include="..\public\CTerrain.h" />
     <ClInclude Include="..\Public\CTestEffect.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -274,6 +275,7 @@
     <ClCompile Include="..\private\CState.cpp" />
     <ClCompile Include="..\private\CState_Manager.cpp" />
     <ClCompile Include="..\Private\CStructure.cpp" />
+    <ClCompile Include="..\Private\CSword_Effect.cpp" />
     <ClCompile Include="..\private\CTerrain.cpp" />
     <ClCompile Include="..\Private\CTestEffect.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

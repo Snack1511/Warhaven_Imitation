@@ -226,6 +226,9 @@
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool">
       <UniqueIdentifier>{bf927561-f572-4c65-946d-6c75c148b802}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\08. Effect\04. Sword_Effect">
+      <UniqueIdentifier>{e2bc60ec-aebe-463d-b842-1b125c554e21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -423,6 +426,9 @@
     <ClInclude Include="..\Public\CInstancingEffects.h">
       <Filter>03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CSword_Effect.h">
+      <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -603,6 +609,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CRectEffects.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSword_Effect.cpp">
+      <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
