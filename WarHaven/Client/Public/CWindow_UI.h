@@ -43,8 +43,8 @@ private:
 	TREE_DATA	m_TextureRootNode;
 
 	vector<UI_Object> m_vecUI;
-	_uint m_iSelectIndex = 9999;
 
+	_uint m_iSelectIndex = 9999;
 	wstring m_iSelectPath;
 
 
@@ -52,16 +52,17 @@ private:
 	CUI_Object* Add_UI();
 
 	void Show_UIList();
-
 	void Show_Inspector(CUI_Object* pUI);
 
-	void Set_Name();
+	void Set_Name(CUI_Object* pUI);
 	void Show_Transform(CUI_Object* pUI);
 	void Show_Shader(_uint iIndex);
 	void Show_Etc(CUI_Object* pUI);
-	void Show_Texture(_uint iIndex);
+	void Show_Texture();
+	void Show_File_IO();
 
-	void Save_UI_Info(CUI_Object* pUI);
+private:
+	void Save_UI_Info();
 	void Load_UI_Info();
 
 private:

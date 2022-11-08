@@ -128,6 +128,22 @@ void CWindow_UI::Show_Inspector(CUI_Object* pUI)
 {
 	ImGui::Begin("Inspector");
 
+	Set_Name(pUI);
+
+	Show_Transform(pUI);
+
+	Show_Etc(pUI);
+
+	// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
+	Show_Texture();
+
+	Show_File_IO();
+
+	ImGui::End();
+}
+
+void CWindow_UI::Set_Name(CUI_Object* pUI)
+{
 	static char strName[128] = "UI_Object";
 	if (ImGui::InputText("UI Name", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
 	{
@@ -136,23 +152,6 @@ void CWindow_UI::Show_Inspector(CUI_Object* pUI)
 	}
 
 	ImGui::NewLine();
-
-	Show_Transform(pUI);
-
-	Show_Etc(pUI);
-
-	// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
-	Show_Texture(m_iSelectIndex);
-
-	ImGui::NewLine();
-
-	if (ImGui::Button("Save"))
-		Save_UI_Info(pUI);
-
-	if (ImGui::Button("Load"))
-		Load_UI_Info();
-
-	ImGui::End();
 }
 
 void CWindow_UI::Show_Transform(CUI_Object* pUI)
@@ -178,6 +177,8 @@ void CWindow_UI::Show_Transform(CUI_Object* pUI)
 
 		pUI->Set_Scale(fScale[0], fScale[1]);
 	}
+
+	ImGui::NewLine();
 }
 
 void CWindow_UI::Show_Etc(CUI_Object* pUI)
@@ -192,9 +193,11 @@ void CWindow_UI::Show_Etc(CUI_Object* pUI)
 		ImGui::Checkbox("Multi Texture", &bIsMulti);
 		pUI->Set_MultiTexture(bIsMulti);
 	}
+
+	ImGui::NewLine();
 }
 
-void CWindow_UI::Show_Texture(_uint iIndex)
+void CWindow_UI::Show_Texture()
 {
 	ImGuiWindowFlags WindowFlags = 0;
 	WindowFlags |= ImGuiWindowFlags_NoResize;
@@ -205,16 +208,25 @@ void CWindow_UI::Show_Texture(_uint iIndex)
 	ImGui::SetWindowPos(ImVec2(0.f, 520.f));
 	ImGui::SetWindowSize(ImVec2(1280.f, 200.f));
 
-	Show_TreeTexture(m_TextureRootNode, iIndex);
+	Show_TreeTexture(m_TextureRootNode, m_iSelectIndex);
 
 	ImGui::End();
 }
 
-void CWindow_UI::Save_UI_Info(CUI_Object* pUI)
+void CWindow_UI::Show_File_IO()
 {
+	if (ImGui::Button("Save"))
+		Save_UI_Info();
 
-	string savePath = "../Bin/Data/UIData/";
-	savePath += CFunctor::To_String(pUI->Get_UIName());
+	ImGui::SameLine();
+
+	if (ImGui::Button("Load"))
+		Load_UI_Info();
+}
+
+void CWindow_UI::Save_UI_Info()
+{
+	string savePath = "../Bin/Data/UIData/UIListInfo";
 	savePath += ".bin";
 	ofstream	writeFile(savePath, ios::binary);
 
@@ -224,28 +236,39 @@ void CWindow_UI::Save_UI_Info(CUI_Object* pUI)
 		return;
 	}
 
-	CTexture* pTexture = GET_COMPONENT_FROM(pUI, CTexture);
+	_uint iSize = m_vecUI.size();
+	writeFile.write((char*)&iSize, sizeof(_uint));
 
-	_bool bMulti = pUI->Get_MultiTexture();
-	writeFile.write((char*)&bMulti, sizeof(_bool));
-
-	_uint iMaxSize = pTexture->Get_vecTexture().size();
-	writeFile.write((char*)&iMaxSize, sizeof(_uint));
-
-	for (size_t i = 0; i < iMaxSize; ++i)
+	for (_uint i = 0; i < m_vecUI.size(); ++i)
 	{
-		string strFilePath = CFunctor::To_String(pTexture->Get_vecTexture()[i].strFilePath);
-		CUtility_File::Write_Text(&writeFile, strFilePath.c_str());
+		// 이름
+		// 위치
+		// 기타
+		// 텍스처
+
+		string strName = CFunctor::To_String(m_vecUI[i].pUI->Get_UIName());
+		CUtility_File::Write_Text(&writeFile, strName.c_str());
+
+		_float4 vPos = m_vecUI[i].pUI->Get_Transform()->Get_World(WORLD_POS);
+		writeFile.write((char*)&vPos, sizeof(_float4));
+
+		_bool bTarget = m_vecUI[i].pUI->Get_MouseTarget();
+		writeFile.write((char*)&bTarget, sizeof(_bool));
+
+		_bool bMulti = m_vecUI[i].pUI->Get_MultiTexture();
+		writeFile.write((char*)&bMulti, sizeof(_bool));
+
+		CTexture* pTexture = GET_COMPONENT_FROM(m_vecUI[i].pUI, CTexture);
+
+		_uint iMaxSize = pTexture->Get_vecTexture().size();
+		writeFile.write((char*)&iMaxSize, sizeof(_uint));
+
+		for (size_t i = 0; i < iMaxSize; ++i)
+		{
+			string strFilePath = CFunctor::To_String(pTexture->Get_vecTexture()[i].strFilePath);
+			CUtility_File::Write_Text(&writeFile, strFilePath.c_str());
+		}
 	}
-
-	string strName = CFunctor::To_String(pUI->Get_UIName());
-	CUtility_File::Write_Text(&writeFile, strName.c_str());
-
-	_float4 vPos = pUI->Get_Transform()->Get_World(WORLD_POS);
-	writeFile.write((char*)&vPos, sizeof(_float4));
-
-	_bool bTarget = pUI->Get_MouseTarget();
-	writeFile.write((char*)&bTarget, sizeof(_bool));
 
 	writeFile.close();
 
@@ -254,7 +277,7 @@ void CWindow_UI::Save_UI_Info(CUI_Object* pUI)
 
 void CWindow_UI::Load_UI_Info()
 {
-	string strLoadPath = "../Bin/Data/UIData/";
+	string strLoadPath = "../Bin/Data/UIData/UIListInfo.bin";
 
 	ifstream readFile(strLoadPath, ios::binary);
 
@@ -264,32 +287,40 @@ void CWindow_UI::Load_UI_Info()
 		return;
 	}
 
-	CUI_Object* pCurUI = Add_UI();
+	_uint iSize =0;
+	readFile.read((char*)&iSize, sizeof(_uint));
 
-	_bool bMulti = false;
-	readFile.read((char*)&bMulti, sizeof(_bool));
-	pCurUI->Set_MultiTexture(bMulti);
-
-	_uint iMaxSize = 0;
-	readFile.read((char*)&iMaxSize, sizeof(_uint));
-
-	for (size_t i = 0; i < iMaxSize; ++i)
+	for (_uint i = 0; i < iSize; ++i)
 	{
-		string strPath = CUtility_File::Read_Text(&readFile);
+		// 이름
+		// 위치
+		// 기타
+		// 텍스처
 
-		pCurUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
-	}
+		string strName = CUtility_File::Read_Text(&readFile);
+		m_vecUI[i].pUI->Set_UIName(CFunctor::To_Wstring(strName));
 
-	string strName = CUtility_File::Read_Text(&readFile);
-	pCurUI->Set_UIName(CFunctor::To_Wstring(strName));
+		_float4 vPos;
+		readFile.read((char*)&vPos, sizeof(_float4));
+		m_vecUI[i].pUI->Set_Pos(vPos.x, vPos.y);
 
-	_float4 vPos;
-	readFile.read((char*)&vPos, sizeof(_float4));
-	pCurUI->Set_Pos(vPos.x, vPos.y);
+		_bool bTarget = false;
+		readFile.read((char*)&bTarget, sizeof(_bool));
+		m_vecUI[i].pUI->Set_MouseTarget(bTarget);
 
-	_bool bTarget = false;
-	readFile.read((char*)&bTarget, sizeof(_bool));
-	pCurUI->Set_MouseTarget(bTarget);
+		_bool bMulti = false;
+		readFile.read((char*)&bMulti, sizeof(_bool));
+		m_vecUI[i].pUI->Set_MultiTexture(bMulti);
+
+		_uint iMaxSize = 0;
+		readFile.read((char*)&iMaxSize, sizeof(_uint));
+
+		for (_uint i = 0; i < iMaxSize; ++i)
+		{
+			string strPath = CUtility_File::Read_Text(&readFile);
+			m_vecUI[i].pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
+		}
+	}	
 
 	readFile.close();
 
