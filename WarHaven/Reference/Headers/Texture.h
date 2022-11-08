@@ -44,6 +44,7 @@ public:
 public:
 	HRESULT	Add_Texture(const _tchar* pTextureFilePath, _bool bFront = false);
 	void	Pop_Texture();
+	void	Remove_Texture(_uint iIndex);
 
 public:
 	_bool	Next_Texture();

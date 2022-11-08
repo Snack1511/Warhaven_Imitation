@@ -87,6 +87,14 @@ void CTexture::Pop_Texture()
 	m_SRVs.pop_back();
 }
 
+void CTexture::Remove_Texture(_uint iIndex)
+{
+	if (m_SRVs.size() == 1)
+		return;
+
+	m_SRVs.erase(m_SRVs.begin() + iIndex);
+}
+
 _bool CTexture::Next_Texture()
 {
 	if (++m_iCurTextureIndex >= m_SRVs.size())

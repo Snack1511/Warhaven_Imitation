@@ -62,6 +62,12 @@ HRESULT CWindow_Select::Render()
 	}
 	ImGui::Spacing();
 
+	if (ImGui::Button("UI Tool"))
+	{
+		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_UI);
+	}
+	ImGui::Spacing();
+
 	__super::End();
 
 	return S_OK;

@@ -1,11 +1,21 @@
 #include "stdafx.h"
 #include "CWindow_UI.h"
 
+#include "CUI_Object.h"
+#include "Transform.h"
 #include "Texture.h"
 
 #include "ImGui_Manager.h"
 #include "Functor.h"
 #include "GameInstance.h"
+
+CWindow_UI::CWindow_UI()
+{
+}
+
+CWindow_UI::~CWindow_UI()
+{
+}
 
 CWindow_UI* CWindow_UI::Create()
 {
@@ -28,8 +38,8 @@ HRESULT CWindow_UI::Initialize()
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoResize;
 
-	m_bEnable = true;
-	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(600.f, 350.f), window_flags);
+	m_bEnable = false;
+	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(350.f, 350.f), window_flags);
 
 	m_TextureRootNode.strFolderPath = "../bin/resources/textures";
 	m_TextureRootNode.strFileName = "UI";
@@ -49,30 +59,99 @@ HRESULT CWindow_UI::Render()
 		return E_FAIL;
 
 	// 위젯 확인용 데모창
-	ImGui::ShowDemoWindow();
+	// ImGui::ShowDemoWindow();
 
 	ImGui::Text("= UI =");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
-	Show_TreeTexture(m_TextureRootNode);
+	// 기본 유아이 객체 생성
+	if (ImGui::Button("Add New UI"))
+	{
+		CUI_Object* pUI = CUI_Object::Create();
+		CREATE_GAMEOBJECT(pUI, GROUP_UI);
 
-	// UI 객체가 생성될 때마다 UI 자료 구조에 추가
-	// 해당 자료구조에서 타입이 UI인 객체들을 가져와서 뿌린다.
+		UI_Object tItem;
+		tItem.pUI = pUI;
+		tItem.bSelected = false;
+		ZeroMemory(tItem.szBuf, sizeof(tItem.szBuf));
 
-	// 트랜스폼 (위치, 크기, 회전??)
+		m_vecUI.push_back(tItem);
+	}
 
-	// 텍스처 변경
+	if (!m_vecUI.empty())
+	{
+		CUI_Object* pUI = m_vecUI[0].pUI;
 
-	// 색상 변경
-	// 마테리얼 변경
+		// 트랜스폼 (위치, 크기, 회전??)
+		Show_Transform(0);
+
+		// UI 이미지 창
+		// 선택한 이미지 확대해서 오른쪽 하단에 보이게 하기
+		Show_TextureWindow(0);
+	}
 
 	// 셰이더 변경
+
+	// 텍스처 변경
 
 	ImGui::Spacing();
 
 	__super::End();
 
 	return S_OK;
+}
+
+void CWindow_UI::Show_Transform(_uint iIndex)
+{
+	CUI_Object* pUI = m_vecUI[iIndex].pUI;
+	if (!pUI)
+		return;
+
+	if (ImGui::CollapsingHeader("Transform"))
+	{
+		if (ImGui::TreeNode("Position"))
+		{
+			_float4 fUI_Pos = pUI->Get_Transform()->Get_World(WORLD_POS);
+			float fPos[2] = { fUI_Pos.x, fUI_Pos.y};
+			ImGui::DragFloat2("Position", fPos, 1.f, -999.f, 999.f);
+			pUI->Set_Pos(fPos[0], fPos[1]);
+
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Scale"))
+		{
+			_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
+			float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
+			ImGui::DragFloat2("Scale", fScale, 1.f, -999.f, 999.f);
+
+			for (int i = 0; i < 2; ++i)
+			{
+				if (fScale[i] <= 1.f)
+					fScale[i] = 1.f;
+			}
+
+			pUI->Set_Scale(fScale[0], fScale[1]);
+
+			ImGui::TreePop();
+		}
+	}
+}
+
+void CWindow_UI::Show_TextureWindow(_uint iIndex)
+{
+	ImGuiWindowFlags WindowFlags = 0;
+	WindowFlags |= ImGuiWindowFlags_NoResize;
+	WindowFlags |= ImGuiWindowFlags_NoTitleBar;
+	WindowFlags |= ImGuiWindowFlags_NoMove;
+
+	ImGui::Begin("Image", 0, WindowFlags);
+	ImGui::SetWindowPos(ImVec2(0.f, 520.f));
+	ImGui::SetWindowSize(ImVec2(1280.f, 200.f));
+
+	Show_TreeTexture(m_TextureRootNode, iIndex);
+
+	ImGui::End();
 }
 
 void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
@@ -110,7 +189,7 @@ void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
 	}
 }
 
-void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree)
+void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree, _uint iIndex)
 {
 	if (!tTree.vecChildren.empty())
 	{
@@ -120,7 +199,7 @@ void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree)
 		{
 			for (auto& tTreeData : tTree.vecChildren)
 			{
-				Show_TreeTexture(tTreeData);
+				Show_TreeTexture(tTreeData, iIndex);
 			}
 
 			ImGui::TreePop();
@@ -128,25 +207,16 @@ void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree)
 	}
 	else
 	{
-		ID3D11ShaderResourceView* pSRV = GAMEINSTANCE->Get_Texture(CFunctor::To_Wstring(tTree.strFullPath)).Get();
-
-		// 메모리 누수
+		m_iSelectPath = CFunctor::To_Wstring(tTree.strFullPath);
+		ID3D11ShaderResourceView* pSRV = GAMEINSTANCE->Get_Texture(m_iSelectPath).Get();
 		if (ImGui::ImageButton(pSRV, ImVec2(50, 50)))
 		{
+			if (iIndex == 9999)
+				return;
 
+			m_vecUI[iIndex].pUI->Set_Texture(m_iSelectPath.c_str());
 		}
 
 		ImGui::SameLine();
 	}
-}
-
-const _tchar* CWindow_UI::StringToChar(string string)
-{
-	const char* str = string.c_str();
-	_tchar* pStr;
-	int strSize = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, NULL);
-	pStr = new WCHAR[strSize];
-	MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, pStr, strSize);
-
-	return pStr;
 }

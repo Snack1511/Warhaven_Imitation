@@ -84,10 +84,12 @@ void CUI::OnDisable()
 
 void CUI::My_Tick()
 {
+	__super::My_Tick();
 }
 
 void CUI::My_LateTick()
 {
+	__super::My_LateTick();
 }
 
 HRESULT CUI::SetTexture(const _tchar* pFilePath, _uint iIndex)
@@ -102,8 +104,4 @@ HRESULT CUI::SetTexture(const _tchar* pFilePath, _uint iIndex)
 	Add_Component(pTexture);
 
 	return S_OK;
-}
-
-void CUI::OnMouse()
-{
 }

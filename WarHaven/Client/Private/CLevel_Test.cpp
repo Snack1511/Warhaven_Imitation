@@ -156,11 +156,11 @@ HRESULT CLevel_Test::Exit()
 	return S_OK;
 }
 
+#include "CUI_Object.h"
 HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 {
-	// 메인메뉴 BG
-	//CUI_LobbyBG* pUI = CUI_LobbyBG::Create();
-	//Ready_GameObject(pUI, GROUP_UI);
+	// CUI_Object* pUI_Object = CUI_Object::Create();
+	// Ready_GameObject(pUI_Object, GROUP_UI);
 
 	return S_OK;
 }

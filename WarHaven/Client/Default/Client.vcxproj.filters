@@ -148,21 +148,6 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component">
       <UniqueIdentifier>{89cfec7a-e14b-4cdf-82c0-eeab976eb3cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\01.Visual">
-      <UniqueIdentifier>{57ef776b-1fb6-43c8-b59e-64572ce0931f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\02.Interaction">
-      <UniqueIdentifier>{0e7626ea-1a96-49fb-9e2a-e195facaa542}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\01.Visual\Image">
-      <UniqueIdentifier>{f9653262-f3c1-415f-a011-6ab9d08f349b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\01.Visual\Text">
-      <UniqueIdentifier>{38fe1128-ebee-4fb0-a7f0-13d768ed14b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\02.Interaction\Button">
-      <UniqueIdentifier>{05bd9d01-1766-466a-ae07-d75941b0ba76}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object">
       <UniqueIdentifier>{c5067414-7568-4150-bbe4-b1cf625ee711}</UniqueIdentifier>
     </Filter>
@@ -210,6 +195,12 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\08. Effect\00. TestEffect">
       <UniqueIdentifier>{e1d3c056-0ef4-469d-8da2-b08bc529b452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\Button">
+      <UniqueIdentifier>{05bd9d01-1766-466a-ae07-d75941b0ba76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\Text">
+      <UniqueIdentifier>{38fe1128-ebee-4fb0-a7f0-13d768ed14b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -348,9 +339,6 @@
     <ClInclude Include="..\Public\CUI.h">
       <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_Component.h">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CUI_LobbyBG.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\02.Lobby</Filter>
     </ClInclude>
@@ -389,6 +377,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\CTestEffect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Text.h">
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Component.h">
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Button.h">
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component\Button</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -511,9 +508,6 @@
     <ClCompile Include="..\Private\CUI.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_Component.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CUI_LobbyBG.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\02.Lobby</Filter>
     </ClCompile>
@@ -552,6 +546,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CTestEffect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Text.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Component.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Button.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
