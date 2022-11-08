@@ -558,8 +558,8 @@ HRESULT CRender_Manager::Render()
 		return E_FAIL;
 
 	/* Shadow Baking */
-	if (FAILED(Bake_Shadow()))
-		return E_FAIL;
+	//if (FAILED(Bake_Shadow()))
+	//	return E_FAIL;
 
 	/* Deferred MRT */
 	if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources()))

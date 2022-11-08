@@ -195,6 +195,7 @@
     <ClInclude Include="..\Public\CLevel_Logo.h" />
     <ClInclude Include="..\Public\CLevel_Main.h" />
     <ClInclude Include="..\public\CLevel_Test.h" />
+    <ClInclude Include="..\Public\CPickingStructure.h" />
     <ClInclude Include="..\public\CScript_Freecam.h" />
     <ClInclude Include="..\public\CSkyBox.h" />
     <ClInclude Include="..\public\CState.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="..\Private\CLevel_Main.cpp" />
     <ClCompile Include="..\Private\CLevel_Test.cpp" />
     <ClCompile Include="..\Private\Client_Defines.cpp" />
+    <ClCompile Include="..\Private\CPickingStructure.cpp" />
     <ClCompile Include="..\private\CScript_Freecam.cpp" />
     <ClCompile Include="..\private\CSkyBox.cpp" />
     <ClCompile Include="..\private\CState.cpp" />

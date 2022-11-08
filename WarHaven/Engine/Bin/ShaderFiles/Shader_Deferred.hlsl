@@ -253,9 +253,9 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 		Out.vColor += vSpecular;
 
 	//Shadow
-	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
+	//vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor *= vShadowDesc;
+	//Out.vColor *= vShadowDesc;
 
 
 	//DOF

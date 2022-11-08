@@ -59,7 +59,7 @@ HRESULT CImGui_Manager::Initialize()
 #pragma region 윈도우 등록
 	m_arrWindows[IMGUI_DEFAULT] = CWindow_Default::Create();
 	m_arrWindows[IMGUI_SELECT] = CWindow_Select::Create();
-	m_arrWindows[IMGUI_UI] = CWindow_UI::Create();
+	m_arrWindows[IMGUI_UI] = nullptr;//CWindow_UI::Create();
 	m_arrWindows[IMGUI_MAPTOOL] = CWindow_Map::Create();
 #pragma endregion 윈도우 등록
 
@@ -70,6 +70,8 @@ void CImGui_Manager::Tick()
 {
 	for (_uint i = 0; i < IMGUI_END; ++i)
 	{
+		if (nullptr == m_arrWindows[i])
+			continue;
 		if (m_arrWindows[i]->Is_Enable())
 		{
 			m_arrWindows[i]->Tick();
@@ -88,6 +90,8 @@ HRESULT CImGui_Manager::Render(void)
 
 	for (_uint i = 0; i < IMGUI_END; ++i)
 	{
+		if (nullptr == m_arrWindows[i])
+			continue;
 		if (m_arrWindows[i]->Is_Enable())
 		{
 			if (FAILED(m_arrWindows[i]->Render()))

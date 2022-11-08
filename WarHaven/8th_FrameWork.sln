@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Default\Engine.vcxproj", "{9324E66F-3E8A-48F9-89D6-781FE4873024}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Default\Client.vcxproj", "{276465AF-DFCB-4FE0-828D-29130DE50564}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9324E66F-3E8A-48F9-89D6-781FE4873024} = {9324E66F-3E8A-48F9-89D6-781FE4873024}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. Client", "00. Client", "{874D9D1B-E3A2-4ED3-8682-D091B7C32D28}"
 EndProject

@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 BEGIN(Engine)
 class CModel;
+class CModel_Renderer;
 class CCollider;
 class CCollider_Sphere;
 class CShader;
@@ -11,12 +12,17 @@ BEGIN(Client)
 class CStructure :
     public CGameObject
 {
-	//테스트
+	////테스트
 	DECLARE_PROTOTYPE(CStructure)//Clone
-	DECLARE_GAMEOBJECT(CStructure)//Create
+	//DECLARE_GAMEOBJECT(CStructure)//Create
 protected:
     CStructure();
     virtual ~CStructure();
+
+public:
+	static CStructure* Create(wstring MeshPath);
+	static CStructure* Create(wstring MeshPath, _float4x4 ObjectWorldMatrix);
+
 public:
 	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos);
 	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType);
@@ -36,10 +42,10 @@ public:
 	virtual void OnDisable() override;
 protected:
 	CModel* m_pModelCom = nullptr;
-
+	wstring m_DebugPath = TEXT("");
 protected:
-	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);
-
+	virtual	HRESULT	SetUp_Model(wstring strMeshPath);
+	virtual HRESULT SetUp_World(_float4x4 worldMat);
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;

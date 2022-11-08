@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CWindow_Map.h"
-
+#include "GameInstance.h"
+#include "GameObject.h"
+#include "Functor.h"
+#include "CStructure.h"
 CWindow_Map::CWindow_Map()
 {
 }
@@ -8,6 +11,8 @@ CWindow_Map::CWindow_Map()
 CWindow_Map::~CWindow_Map()
 {
     Clear_TupleData(m_arrSaveFilesCombo);
+    Clear_TupleData(m_arrObjectGroupId);
+    Clear_TupleData(m_arrMeshGroupName);
     Clear_TupleData(m_arrLightTypeCombo);
     Clear_TupleData(m_arrLightGroupCombo);
 }
@@ -31,6 +36,13 @@ HRESULT CWindow_Map::Initialize()
 	SetUp_ImGuiDESC(typeid(CWindow_Map).name(), ImVec2(400.f, 600.f), ImGuiWindowFlags_AlwaysAutoResize);
     
     //파일 위치 설정
+
+
+    m_MeshRootNode.strFolderPath = "../bin/resources/meshes";
+    m_MeshRootNode.strFileName = "Map";
+    m_MeshRootNode.strFullPath = "../bin/resources/meshes/Map";
+    Read_Folder("../bin/resources/meshes/Map", m_MeshRootNode);
+
     m_strPath = "../Bin/Data/MapData/";
     //콤보어레이 생성
     Ready_FileArray();
@@ -38,6 +50,7 @@ HRESULT CWindow_Map::Initialize()
     {
         get<Tuple_Bool>(m_arrSaveFilesCombo[SaveFileIndex]) = true;
     }
+    Ready_ObjectGroupID();
 
     Ready_LightGroup();
 
@@ -47,6 +60,7 @@ HRESULT CWindow_Map::Initialize()
 
 void CWindow_Map::Tick()
 {
+
 }
 
 static char szSaveNameBuf[MAXCHAR] = "";
@@ -77,6 +91,8 @@ HRESULT CWindow_Map::Render()
 
 	return S_OK;
 }
+
+static char szMeshGroupNameBuf[MAXCHAR] = "";
 
 void CWindow_Map::Func_FileControl()
 {
@@ -110,6 +126,144 @@ void CWindow_Map::Func_FileControl()
         //LoadFilePath
         //로드 버튼
     }
+    ImGui::Spacing();
+    ImGui::Text("Select PickingGroupID");
+    SetUp_CurObjectlist();
+    if (Make_Combo("##ObjectGroupID", m_arrObjectGroupId, &m_SelectObjectGroupIDIndex, bind(&CWindow_Map::EmptyFunction, this)))
+    {
+    }
+    ImGui::Spacing();
+    if (ImGui::CollapsingHeader("Object Grouping", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        //그룹 이름
+        string DebugMeshGroupName = szMeshGroupNameBuf;
+        DebugData("MeshGroupName", DebugMeshGroupName);
+        if (ImGui::InputText("##GroupNameInput", szMeshGroupNameBuf, sizeof(char) * MAXCHAR))
+        {
+
+        }
+        if (ImGui::Button("Add MeshGroup"))
+        {
+            Add_MeshGroup(szMeshGroupNameBuf);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Delete MeshGroup"))
+        {
+            Delete_MeshGroup(szMeshGroupNameBuf);
+        }
+    }
+    ImGui::Spacing();
+    if (ImGui::CollapsingHeader("FBX Files List", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        ////4. 오브젝트 프로토타입 리스트
+    //ImGui::Text("Objects");
+    //if (Make_Combo("##ObjectPrototypeList", m_arrObjectPrototypeName, &SelectObjectPrototypeIndex, bind(&CWindow_Map::EmptyFunction, this)))
+    //{
+    //    //strcpy_s(szObjectGroupBuf, get<Tuple_CharPtr>(m_arrObjectPrototypeName[SelectObjectPrototypeIndex]));
+    //}
+    //ImGui::Spacing();
+
+    //파일 탐색 트리노드
+        if (ImGui::BeginListBox("##FBX_Files_List", ImVec2(360.f, 200.f)))
+        {
+            Show_TreeData(m_MeshRootNode);
+            ImGui::EndListBox();
+        }
+        DebugData("CurSelectedMeshFilePath", m_CurSelectedMeshFilePath);
+        DebugData("SelectedMeshName", m_CurSelectedMeshName);
+        ImGui::Spacing();
+
+        if (ImGui::Button("Add Object"))
+        {
+
+            //Add_Object(m_CurSelectedMeshFilePath);
+            _int NameIndex = 0;
+            for (vector<string>::value_type& Value : m_vecSelectedMeshFilePath)
+            {
+                if (!m_arrMeshGroupName.empty())
+                {
+                    Add_Object(get<Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex]),
+                        Value, m_vecSelectedMeshName[NameIndex]);
+                }
+                NameIndex++;
+            }
+
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Delete Object"))
+        {
+            size_t HashNum = HASHING(string, string(get<Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex])));
+
+            OBJGROUPING::iterator ObjectMapIter = m_ObjectGroupMap.find(HashNum);
+            DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
+
+            if (ObjectMapIter != m_ObjectGroupMap.end() && DataMapIter != m_ObjectDataGroupMap.end())
+            {
+                Delete_Object(m_strCurSelectObjectName, ObjectMapIter->second, DataMapIter->second);
+            }
+        }
+    }
+    ImGui::Spacing();
+    if (ImGui::CollapsingHeader("Add Object List", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        //해당 이름을 가진 탭
+        if (ImGui::BeginTabBar("##AddObject TabBar"))
+        {
+            for (_int i = 0; i < _int(m_arrMeshGroupName.size()); ++i)
+            {
+                if (ImGui::BeginTabItem(get<Tuple_CharPtr>(m_arrMeshGroupName[i])))
+                {
+                    //리스트 업데이트
+                    if (ImGui::BeginListBox("##TabList", ImVec2(360.f, 200.f)))
+                    {
+                        m_SelectMeshGroupIndex = i;
+                        size_t Hashnum = HASHING(string, string(get<Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex])));
+                        list<MTO_DATA>& CurGroupData = m_ObjectDataGroupMap[Hashnum];
+                        _int Index = 0;
+                        for (MTO_DATA& Data : CurGroupData)
+                        {
+                            _bool bSelected = false;
+                            string MeshName = CFunctor::To_String(Data.strMeshName);
+
+                            if (m_strCurSelectObjectName == MeshName)
+                            {
+                                bSelected = true;
+                            }
+                            if (m_iCurSelectObjectIndex == Index)
+                            {
+                                bSelected = true;
+                            }
+                            if (ImGui::Selectable(MeshName.c_str(), bSelected))
+                            {
+                                m_strCurSelectObjectName = MeshName;
+                                m_iCurSelectObjectIndex = Index;
+                                //선택 
+                            }
+
+                            Index++;
+                        }
+                        ImGui::EndListBox();
+                    }
+                    ImGui::EndTabItem();
+                }
+
+            }
+
+            ImGui::EndTabBar();
+        }
+        if (ImGui::Button("Clear MeshGroup"))
+        {
+            Clear_MeshGroup(szMeshGroupNameBuf);
+        }
+        if (!m_arrMeshGroupName.empty())
+        {
+            string DebugTab = get<Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex]);
+            DebugData("SelectTab", DebugTab);
+        }
+        DebugData("SelectedName", m_strCurSelectObjectName);
+    }
+    ImGui::Spacing();
+    //5. 선택된 오브젝트 이름 텍스트
 }
 
 void CWindow_Map::Ready_FileArray()
@@ -143,14 +297,221 @@ void CWindow_Map::Ready_FileArray()
 
 void CWindow_Map::Ready_ObjectGroupID()
 {
-
-    //char* pFileName = new char[260];
-    //memcpy_s(pFileName, sizeof(char) * 260, FileData.cFileName, sizeof(char) * 260);
-    //m_arrSaveFilesCombo.push_back(make_tuple(pFileName, false));
+    for (_uint i = 0; i < _uint(GROUP_END); ++i)
+    {
+        if (nullptr == ArrObjectGroup[i])
+            continue;
+        else
+        {
+            char* pFileName = new char[260];
+            memcpy_s(pFileName, sizeof(char) * 260, ArrObjectGroup[i], sizeof(char) * 260);
+            m_arrObjectGroupId.push_back(make_tuple(pFileName, false));
+        }
+    }
 }
 
 void CWindow_Map::Ready_MeshGroupName()
 {
+}
+
+void CWindow_Map::Add_MeshGroup(char* pMeshGroupName)
+{
+    DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](DataComboArr::value_type& Value)
+        {
+            if (0 == strcmp(pMeshGroupName, get<Tuple_CharPtr>(Value)))
+                return true;
+            else
+                return false;
+        });
+
+    if (MeshGroupIter == m_arrMeshGroupName.end())
+    {
+        char* pGroupName = new char[260];
+        ZeroMemory(pGroupName, sizeof(char) * 260);
+        memcpy_s(pGroupName, sizeof(char) * 260, pMeshGroupName, sizeof(char) * 260);
+        m_arrMeshGroupName.push_back(make_tuple(pGroupName, false));
+
+        string strObjectGroup = pMeshGroupName;
+        size_t HashNum = HASHING(string, strObjectGroup);
+
+        OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
+        if (ObjMapIter == m_ObjectGroupMap.end())
+        {
+            m_ObjectGroupMap.emplace(HashNum, vector<CGameObject*>());
+        }
+
+        DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
+        if (DataMapIter == m_ObjectDataGroupMap.end())
+        {
+            m_ObjectDataGroupMap.emplace(HashNum, list<MTO_DATA>());
+        }
+    }
+
+
+}
+
+void CWindow_Map::Delete_MeshGroup(char* pMeshGroupName)
+{
+    DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](DataComboArr::value_type& Value)
+        {
+            if (0 == strcmp(pMeshGroupName, get<Tuple_CharPtr>(Value)))
+                return true;
+            else
+                return false;
+        });
+
+    if (MeshGroupIter != m_arrMeshGroupName.end())
+    {
+        char* pGroupName = get<Tuple_CharPtr>((*MeshGroupIter));
+
+        string strObjectGroup = pGroupName;
+        size_t HashNum = HASHING(string, strObjectGroup);
+        OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
+        DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
+        if (ObjMapIter != m_ObjectGroupMap.end())
+        {
+            for (list<CGameObject*>::value_type& Value : ObjMapIter->second)
+            {
+                DELETE_GAMEOBJECT(Value);
+            }
+            ObjMapIter->second.clear();
+            m_ObjectGroupMap.erase(ObjMapIter);
+        }
+        if (DataMapIter != m_ObjectDataGroupMap.end())
+        {
+            DataMapIter->second.clear();
+            m_ObjectDataGroupMap.erase(DataMapIter);
+        }
+
+        m_arrMeshGroupName.erase(MeshGroupIter);
+        Safe_Delete_Array(pGroupName);
+    }
+}
+
+void CWindow_Map::Clear_MeshGroup(char* pMeshGroupName)
+{
+    DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](DataComboArr::value_type& Value)
+        {
+            if (0 == strcmp(pMeshGroupName, get<Tuple_CharPtr>(Value)))
+                return true;
+            else
+                return false;
+        });
+
+    if (MeshGroupIter != m_arrMeshGroupName.end())
+    {
+        string strObjectGroup = get<Tuple_CharPtr>((*MeshGroupIter));
+        size_t HashNum = HASHING(string, strObjectGroup);
+        OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
+        DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
+        if (ObjMapIter != m_ObjectGroupMap.end())
+        {
+            for (list<CGameObject*>::value_type& Value : ObjMapIter->second)
+            {
+                DELETE_GAMEOBJECT(Value);
+            }
+            ObjMapIter->second.clear();
+            m_ObjectGroupMap.erase(ObjMapIter);
+        }
+        if (DataMapIter != m_ObjectDataGroupMap.end())
+        {
+            DataMapIter->second.clear();
+            m_ObjectDataGroupMap.erase(DataMapIter);
+        }
+    }
+}
+
+void CWindow_Map::Add_Object(string MeshGroup, string Meshpath, string MeshName)
+{
+    vector<CGameObject*>* pObjectList = nullptr;
+    list<MTO_DATA>* pDataList = nullptr;
+    wstring strObjectGroupName;
+
+    size_t HashNum = HASHING(string, MeshGroup);
+    OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
+    DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
+    if (ObjMapIter == m_ObjectGroupMap.end())
+    {
+        m_ObjectGroupMap.emplace(HashNum, vector<CGameObject*>());
+        pObjectList = &(m_ObjectGroupMap[HashNum]);
+    }
+    else
+    {
+        pObjectList = &ObjMapIter->second;
+    }
+    if (DataMapIter == m_ObjectDataGroupMap.end())
+    {
+        m_ObjectDataGroupMap.emplace(HashNum, list<MTO_DATA>());
+        pDataList = &(m_ObjectDataGroupMap[HashNum]);
+    }
+    else
+    {
+        pDataList = &DataMapIter->second;
+    }
+
+    if (nullptr == pObjectList)
+        assert(0);
+    if (nullptr == pDataList)
+        assert(0);
+    //Meshpath
+    wstring strName = CFunctor::To_Wstring(MeshName);
+    size_t NameHashNum = HASHING(wstring, strName);
+    map<size_t, _int>::iterator CallStackIter = m_ObjNameCallStack.find(NameHashNum);
+    if (CallStackIter == m_ObjNameCallStack.end())
+    {
+        m_ObjNameCallStack.emplace(NameHashNum, 0);
+    }
+
+    MTO_DATA tData;
+    tData.Initialize();
+    tData.strMeshName = strName +wstring(TEXT("_")) + to_wstring(m_ObjNameCallStack[NameHashNum]++);
+    tData.strGroupName = CFunctor::To_Wstring(MeshGroup);
+    tData.strMeshPath = CFunctor::To_Wstring(Meshpath);
+    tData.ObjectStateMatrix.Identity();
+
+    CStructure* pGameObject = CStructure::Create(tData.strMeshPath);
+    if (nullptr == pGameObject)
+        assert(0);
+    pGameObject->Initialize();
+    CREATE_GAMEOBJECT(pGameObject, GROUP_DECORATION);
+
+    pObjectList->push_back(pGameObject);
+    pDataList->push_back(tData);
+
+}
+
+void CWindow_Map::Delete_Object(string MeshName, vector<CGameObject*>& ObjList, list<MTO_DATA>& DataList)
+{
+    if (ObjList.size() != DataList.size())
+        assert(0);
+    if (ObjList.empty())
+        return;
+    wstring CmpMeshName = CFunctor::To_Wstring(MeshName);
+    _int ObjectIndex = 0;
+    list<MTO_DATA>::iterator DataListIter = DataList.begin();
+    for (;DataListIter != DataList.end(); ++DataListIter)
+    {
+        if ((*DataListIter).strMeshName == CmpMeshName)
+            break;
+        ObjectIndex++;
+    }
+    if (DataListIter == DataList.end())
+        return;
+    DataList.erase(DataListIter);
+
+    if (ObjectIndex >= _int(ObjList.size()))
+        assert(0);
+
+
+    CGameObject* pDelete = ObjList[ObjectIndex];
+    vector<CGameObject*>::iterator ObjListIter = ObjList.begin();
+
+    for (_int CompIndex = 0; CompIndex < ObjectIndex; ++CompIndex)
+    {
+        ObjListIter++;
+    }
+    ObjList.erase(ObjListIter);
+    DELETE_GAMEOBJECT(pDelete);
 }
 
 void CWindow_Map::Update_FileArray()
@@ -235,54 +596,25 @@ void CWindow_Map::SetUp_FilePath(string& strFilePath,char* szData)
     strFilePath += szData;
 }
 
-static _int SelectObjectGroupIDIndex = 0;
-static _int SelectObjectPrototypeIndex = 0;
-static char szObjectGroupBuf[MAXCHAR] = "";
-static char szCurSelectObjectNameBuf[MAXCHAR] = "Test.....";
+//static 
+//static _int SelectMeshGroupIndex = 0;
+//static _int SelectObjectPrototypeIndex = 0;
+
+
+
 
 static float ObjectScale[3] = { 0.f };
 static float ObjectRotate[3] = { 0.f };
 static float ObjectPosition[3] = { 0.f };
 
 static bool ObjectLightFlagOpt[4] = { false };
+void CWindow_Map::SetUp_CurObjectlist()
+{
+    m_CurObjectList = GAMEINSTANCE->Get_ObjGroup(m_SelectObjectGroupIDIndex);
+}
 void CWindow_Map::Func_DataControl()
 {
     ImGui::Text("Data_Control");
-
-    //3. 오브젝트 프로토타입 그룹 콤보박스
-    if (ImGui::CollapsingHeader("Object Info", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
-    {
-        ImGui::Text("Object Group");
-        if (Make_Combo("##ObjectGroupID", m_arrObjectGroupId, &SelectObjectGroupIDIndex, bind(&CWindow_Map::EmptyFunction, this)))
-        {
-            strcpy_s(szObjectGroupBuf, get<Tuple_CharPtr>(m_arrObjectGroupId[SelectObjectGroupIDIndex]));
-        }
-        ImGui::Spacing();
-
-        ImGui::Text("Mesh Group");
-        if (Make_Combo("##ObjectGroupID", m_arrObjectGroupId, &SelectObjectGroupIDIndex, bind(&CWindow_Map::EmptyFunction, this)))
-        {
-            strcpy_s(szObjectGroupBuf, get<Tuple_CharPtr>(m_arrObjectGroupId[SelectObjectGroupIDIndex]));
-        }
-        ImGui::Spacing();
-
-        //4. 오브젝트 프로토타입 리스트
-        ImGui::Text("Objects");
-        if (Make_Combo("##ObjectPrototypeList", m_arrObjectPrototypeName, &SelectObjectPrototypeIndex, bind(&CWindow_Map::EmptyFunction, this)))
-        {
-            //strcpy_s(szObjectGroupBuf, get<Tuple_CharPtr>(m_arrObjectPrototypeName[SelectObjectPrototypeIndex]));
-        }
-        ImGui::Spacing();
-
-
-        ImGui::Text("Add Object List");
-        ImGui::Spacing();
-
-        //5. 선택된 오브젝트 이름 텍스트
-        ImGui::Text("Name");
-        ImGui::Text(szCurSelectObjectNameBuf);
-        ImGui::Spacing();
-    }
 
     if (ImGui::CollapsingHeader("Object Value", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
@@ -540,10 +872,15 @@ void CWindow_Map::Create_SubWindow(const char* szWindowName, const ImVec2& Pos, 
     ImVec2 ViewPos(main_viewport->WorkPos);
     ImVec2 ViewSize(main_viewport->WorkSize);
     bool Open = true;
-    ImGuiWindowFlags WindowFlags = ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysHorizontalScrollbar | ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysHorizontalScrollbar;
+    ImGuiWindowFlags WindowFlags
+        = ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysHorizontalScrollbar 
+        | ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysVerticalScrollbar 
+        | ImGuiWindowFlags_AlwaysAutoResize;
+    //ImGui::SetNextWindowPos(ImVec2(ViewSize.x - Pos.x, ViewPos.y + Pos.y));
+    //ImGui::SetNextWindowSize(Size);
+
     ImGui::Begin(szWindowName, &Open, WindowFlags);
-    ImGui::SetWindowPos(ImVec2(ViewSize.x - Pos.x, ViewPos.y + Pos.y));
-    ImGui::SetWindowSize(Size);
+
     func(*this);
     ImGui::End();
 }
@@ -559,4 +896,139 @@ void CWindow_Map::DebugData(const char* szTitleName, string& strData)
     strcpy_s(szSaveFilePath, strData.c_str());
     strcat_s(szSaveFilePath, "\0");
     ImGui::Text(szSaveFilePath);
+}
+
+void CWindow_Map::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
+{
+    for (filesystem::directory_iterator FileIter(pFolderPath);
+        FileIter != filesystem::end(FileIter); ++FileIter)
+    {
+        const filesystem::directory_entry& entry = *FileIter;
+
+        wstring wstrPath = entry.path().relative_path();
+        string strFullPath;
+        strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+        _int iFind = (_int)strFullPath.rfind("\\") + 1;
+        string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+        TREE_DATA	tTreeData;
+        tTreeData.strFullPath = strFullPath;
+        tTreeData.strFileName = strFileName;
+        tTreeData.strFolderPath = pFolderPath;
+        if (entry.is_directory())
+        {
+            Read_Folder(strFullPath.c_str(), tTreeData);
+        }
+        else
+        {
+            _int iFindExt = (int)strFileName.rfind(".") + 1;
+            string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+
+            if (strExtName == "dat")
+                continue;
+        }
+
+        tRootTree.vecChildren.push_back(tTreeData);
+
+    }
+}
+
+void CWindow_Map::Show_TreeData(TREE_DATA& tTree)
+{
+    if (!tTree.vecChildren.empty())
+    {
+        if (ImGui::TreeNode(tTree.strFileName.c_str()))
+        {
+            for (auto& tTreeData : tTree.vecChildren)
+            {
+                Show_TreeData(tTreeData);
+            }
+
+            ImGui::TreePop();
+        }
+
+    }
+    else
+    {
+        _bool bSelected = false;
+
+        if (m_CurSelectedMeshFilePath == tTree.strFullPath)
+        {
+            bSelected = true;
+        }
+        for (auto& strPath : m_vecSelectedMeshFilePath)
+        {
+            if (strPath == tTree.strFullPath)
+                bSelected = true;
+        }
+
+        if (ImGui::Selectable(tTree.strFileName.c_str(), bSelected))
+        {
+            m_vecSelectedMeshFilePath.clear();
+            m_vecSelectedMeshName.clear();
+
+            string prevFilePath = m_CurSelectedMeshFilePath;
+            m_CurSelectedMeshFilePath = tTree.strFullPath;
+            m_CurSelectedMeshName = CutOut_Ext(tTree.strFileName);
+            if (KEY(LSHIFT, HOLD))
+            {
+                // 1. 새로운 이터레이터로 prevPath 위치로 가야함
+                filesystem::directory_iterator shiftFileIter(tTree.strFolderPath);
+                string strshiftFullPath;
+
+                wstring wstrPath = shiftFileIter->path().relative_path();
+                strshiftFullPath = CFunctor::To_String(wstrPath);
+
+                while (strshiftFullPath != prevFilePath)
+                {
+                    shiftFileIter++;
+                    wstrPath = shiftFileIter->path().relative_path();
+                    strshiftFullPath = CFunctor::To_String(wstrPath);
+                }
+
+                // 2. prevPath부터 curPath까지 모두 선택
+
+                for (; strshiftFullPath != m_CurSelectedMeshFilePath; ++shiftFileIter)
+                {
+                    if (shiftFileIter == filesystem::end(shiftFileIter))
+                        break;
+
+
+
+                    const filesystem::directory_entry& shiftentry = *shiftFileIter;
+
+                    wstring wstrshiftPath = shiftentry.path().relative_path();
+                    strshiftFullPath = strshiftFullPath.assign(wstrshiftPath.begin(), wstrshiftPath.end());
+
+                    _int iFind = (_int)strshiftFullPath.rfind("\\") + 1;
+                    string strFileName = strshiftFullPath.substr(iFind, strshiftFullPath.length() - iFind);
+
+                    _int iFindExt = (int)strshiftFullPath.rfind(".") + 1;
+                    string strExtName = strshiftFullPath.substr(iFindExt, strshiftFullPath.length() - iFindExt);
+
+                    if (strExtName == "dat")
+                        continue;
+
+                    m_vecSelectedMeshFilePath.push_back(strshiftFullPath);
+                    m_vecSelectedMeshName.push_back(strFileName);
+                }
+
+            }
+            else
+            {
+                m_vecSelectedMeshFilePath.push_back(m_CurSelectedMeshFilePath);
+                m_vecSelectedMeshName.push_back(m_CurSelectedMeshName);
+            }
+
+
+        }
+    }
+}
+
+string CWindow_Map::CutOut_Ext(string& Origin)
+{
+    string strReturn = Origin;
+    strReturn = strReturn.substr(0, strReturn.size() - size_t(4));
+    return strReturn;
 }
