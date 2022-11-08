@@ -3,9 +3,11 @@ namespace Client
 {
 	enum ANIM_TYPE
 	{
-		ANIM_BASE,
+		ANIM_BASE_R,
+		ANIM_BASE_L,
 		ANIM_ATTACK,
-		ANIM_BEATEN,
+		ANIM_HIT,
+		ANIM_ETC,
 		ANIM_END,
 	};
 

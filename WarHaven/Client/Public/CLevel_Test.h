@@ -29,6 +29,9 @@ public:
 
 
 private:
+	HRESULT SetUp_Prototypes_TH();
+
+private:
 	CGameObject* m_pTestObj = nullptr;
 };
 

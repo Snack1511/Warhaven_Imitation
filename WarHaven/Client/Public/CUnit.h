@@ -116,6 +116,12 @@ protected:
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+	
+private:
+	_bool	m_bChoice = false;
+
+private:
+	void	Key_Input();
 
 };
 END
