@@ -210,9 +210,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	pTestSpearmanUnit->Initialize();
 	Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);*/
 
-	CUser::Get_Instance()->Set_Player(pTestUnit);
+	CUser::Get_Instance()->Set_Player(pTestWarriorUnit);
 
-	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestUnit, nullptr);
+	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarriorUnit, nullptr);
 	pFollowCam->Initialize();
 	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
 	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
