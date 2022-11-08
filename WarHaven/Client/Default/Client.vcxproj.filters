@@ -142,9 +142,6 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
       <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\05.Window_UI">
-      <UniqueIdentifier>{b7a0241c-0411-4166-b814-0f62d1377255}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component">
       <UniqueIdentifier>{89cfec7a-e14b-4cdf-82c0-eeab976eb3cf}</UniqueIdentifier>
     </Filter>
@@ -199,9 +196,6 @@
     <Filter Include="03. Instances\01. Level\03.Level_Main">
       <UniqueIdentifier>{fd28c482-61c9-4553-9fba-4b645532e423}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03.Window_MapTool">
-      <UniqueIdentifier>{bf927561-f572-4c65-946d-6c75c148b802}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\06. Map\Structure">
       <UniqueIdentifier>{fc549796-059c-4e5e-b47d-221c1aea9508}</UniqueIdentifier>
     </Filter>
@@ -225,6 +219,27 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior\01">
       <UniqueIdentifier>{c1e332bd-4ae5-47ec-8648-0b8a26ef86ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect">
+      <UniqueIdentifier>{e5b6a7f5-5ba7-474b-8276-ed8a4383f686}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\08. Effect\00. Default_Effect">
+      <UniqueIdentifier>{1a8f52dc-1865-4115-8ec9-5747a3346a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\03. Camera\Camera_Follow">
+      <UniqueIdentifier>{760c678a-a9eb-4217-bf2e-bfdcfba89849}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\08. Effect\02. InstancEffect">
+      <UniqueIdentifier>{f01bc36a-524c-4edf-b843-dc846112584b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\08. Effect\03. Particle">
+      <UniqueIdentifier>{77b80bfe-439f-437d-b45a-7ce59fb8e33e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\05. Window_UI">
+      <UniqueIdentifier>{b7a0241c-0411-4166-b814-0f62d1377255}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool">
+      <UniqueIdentifier>{bf927561-f572-4c65-946d-6c75c148b802}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -358,7 +373,7 @@
       <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWindow_UI.h">
-      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\05.Window_UI</Filter>
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\05. Window_UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI.h">
       <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
@@ -391,7 +406,7 @@
       <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default\Black</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWindow_Map.h">
-      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03.Window_MapTool</Filter>
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CStructure_TestStructure.h">
       <Filter>03. Instances\02. GameObject\06. Map\Structure\TestStructure</Filter>
@@ -413,6 +428,24 @@
     </ClInclude>
     <ClInclude Include="..\public\CWarrior_Attack_01.h">
       <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWindow_Effect.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CDefault_Effect.h">
+      <Filter>03. Instances\02. GameObject\08. Effect\00. Default_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CScript_FollowCam.h">
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCamera_Follow.h">
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRectEffects.h">
+      <Filter>03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInstancingEffects.h">
+      <Filter>03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -530,7 +563,7 @@
       <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWindow_UI.cpp">
-      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\05.Window_UI</Filter>
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\05. Window_UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
@@ -563,7 +596,7 @@
       <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default\Black</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWindow_Map.cpp">
-      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03.Window_MapTool</Filter>
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CStructure_TestStructure.cpp">
       <Filter>03. Instances\02. GameObject\06. Map\Structure\TestStructure</Filter>
@@ -585,6 +618,24 @@
     </ClCompile>
     <ClCompile Include="..\private\CWarrior_Attack_01.cpp">
       <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWindow_Effect.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CDefault_Effect.cpp">
+      <Filter>03. Instances\02. GameObject\08. Effect\00. Default_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCamera_Follow.cpp">
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CScript_FollowCam.cpp">
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInstancingEffects.cpp">
+      <Filter>03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRectEffects.cpp">
+      <Filter>03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

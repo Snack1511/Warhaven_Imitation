@@ -20,6 +20,8 @@
 
 #include "CTestEffect.h"
 
+#include "CCamera_Follow.h"
+
 CLevel_Test::CLevel_Test()
 {
 }
@@ -92,7 +94,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
 
 
-	CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"Free");
+	CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"FreeCam");
 	DISABLE_GAMEOBJECT(pFreeCam);
 
 
@@ -117,7 +119,7 @@ HRESULT CLevel_Test::Enter()
 {
 	__super::Enter();
 
-	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"Free");
+	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 
 	return S_OK;
 }
@@ -128,7 +130,7 @@ void CLevel_Test::Tick()
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Tick();
 #endif
-
+	CUser::Get_Instance()->Fix_CursorPosToCenter();
 	CUser::Get_Instance()->KeyInput_FPSSetter();
 	CUser::Get_Instance()->Update_KeyCommands();
 
@@ -208,6 +210,15 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	pTestSpearmanUnit->Initialize();
 	Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);*/
 
+	CUser::Get_Instance()->Set_Player(pTestUnit);
+
+	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestUnit, nullptr);
+	pFollowCam->Initialize();
+	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	DISABLE_GAMEOBJECT(pFollowCam);
+	
+
     return S_OK;
 }
 
@@ -224,17 +235,17 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_HR()
 {
-	wstring wstrModel = L"../bin/resources/Meshes/Effects/FBX/SM_Charge_Mesh_01.fbx";
-	wstring wstrMask = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_10_M.dds";
+	/*wstring wstrModel = L"../bin/resources/Meshes/Effects/FBX/SM_Charge_Mesh_01.fbx";
+	wstring wstrMask = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_12_M.dds";
 	wstring wstrColor = L"../bin/resources/Textures/Effects/GradationColor/T_EFF_GMS_AmeVillage_Sea_01_M.png";
-	wstring wstrNoise = L"../bin/resources/Textures/Effects/Noise/T_EFF_Noise_16_M.dds";
+	wstring wstrNoise = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_12_M.dds";
 
 	CTestEffect* pTest = CTestEffect::Create(wstrModel, wstrMask, wstrColor, wstrNoise);
 	if (!pTest)
 		return E_FAIL;
 
 	pTest->Initialize();
-	Ready_GameObject(pTest, GROUP_EFFECT);
+	Ready_GameObject(pTest, GROUP_EFFECT);*/
 
 	return S_OK;
 }

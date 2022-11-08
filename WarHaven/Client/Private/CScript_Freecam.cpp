@@ -7,6 +7,7 @@
 #include "Transform.h"
 
 #include "CUtility_Transform.h"
+#include "CUser.h"
 
 CScript_Freecam::CScript_Freecam(_uint iGroupIdx)
 	: CScriptable(iGroupIdx)
@@ -43,6 +44,14 @@ HRESULT CScript_Freecam::Initialize()
 
 void CScript_Freecam::Tick()
 {
+	if (KEY(TAB, TAP))
+	{
+		ShowCursor(true);
+		CUser::Get_Instance()->Set_FixCursor(false);
+
+	}
+
+
 	if (KEY(RBUTTON, HOLD))
 		OnMouseMove();
 

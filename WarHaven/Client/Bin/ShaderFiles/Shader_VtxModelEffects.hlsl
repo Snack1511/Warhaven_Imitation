@@ -14,10 +14,14 @@ float		g_fUVPlusY = 0.f;
 float		g_fAlpha = 0.f;
 float		g_fNoiseScale = 0.1f;
 
-
 vector		g_vColor = vector(1.f, 1.f, 1.f, 1.f);
 vector		g_vFlag = vector(0.f, 0.f, 0.f, 0.f);
 vector		g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
+
+vector		g_vPlusColor = vector(0.f, 0.f, 0.f, 1.f);
+float		g_fColorPower = 1.f;
+
+float		g_fDissolvePower = 1.f;
 
 vector		g_vCamPosition;
 float		g_fOutlinePower = 1.f;
@@ -94,8 +98,11 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 	Out.vEffectFlag = g_vFlag;
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
 
-	//Diffuse : Color
+	//DiffuseTexture : Color
 	//g_MaskTexture : AlphaMap
+	//
+
+	//
 	vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	In.vTexUV.x += g_fUVPlusX;
@@ -109,114 +116,14 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 		discard;
 
 	Out.vDiffuse.xyz = vColor.xyz;
+	Out.vDiffuse.xyz += g_vPlusColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
+
 	Out.vEffectDiffuse = Out.vDiffuse;
 	Out.vGlowFlag = g_vGlowFlag;
 
 
 	
-
-	return Out;
-}
-
-PS_OUT PS_MAIN_NOISEMAPPING(PS_IN In)
-{
-	PS_OUT		Out = (PS_OUT)0;
-
-	Out.vEffectFlag = g_vFlag;
-	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
-
-	//Noise : Color
-	//Diffuse : AlphaMap
-	vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
-	In.vTexUV.x += g_fUVPlusX;
-	In.vTexUV.y += g_fUVPlusY;
-	vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vDiffuse.xyz = vColor.xyz;
-	Out.vDiffuse *= vMtrlDiffuse.r;
-	Out.vDiffuse *= g_vColor;
-
-	Out.vDiffuse.a = g_fAlpha;
-	Out.vEffectDiffuse = Out.vDiffuse;
-	Out.vGlowFlag = g_vGlowFlag;
-
-
-	if (Out.vDiffuse.a <= 0.05f)
-		discard;
-
-	return Out;
-}
-PS_OUT PS_MAIN_LINEX(PS_IN In)
-{
-	if (In.vTexUV.x < g_fUVPlusX)
-		discard;
-
-	PS_OUT		Out = PS_MAIN_DEFAULT(In);
-
-	return Out;
-}
-
-PS_OUT PS_MAIN_LINEY(PS_IN In)
-{
-	if (In.vTexUV.y < g_fUVPlusY)
-		discard;
-
-	PS_OUT		Out = PS_MAIN_DEFAULT(In);
-
-	return Out;
-}
-
-PS_OUT PS_MAIN_TEXT(PS_IN In)
-{
-	PS_OUT		Out = (PS_OUT)0;
-
-	Out.vEffectFlag = g_vFlag;
-	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
-	vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
-	Out.vDiffuse = vMtrlDiffuse;
-	Out.vDiffuse.a *= g_fAlpha;
-
-	Out.vEffectDiffuse = Out.vDiffuse;
-	Out.vGlowFlag = g_vGlowFlag;
-
-	if (Out.vDiffuse.a <= 0.05f)
-		discard;
-
-	return Out;
-}
-
-PS_OUT PS_MAIN_CARTOON(PS_IN In)
-{
-	PS_OUT		Out = (PS_OUT)0;
-
-
-	//Noise : Color
-	//Diffuse : AlphaMap
-	vector vColor = g_NoiseTexture.Sample(DefaultSampler, float2(In.vTexUV.x, In.vTexUV.y * 2.f));
-
-	In.vTexUV.x += g_fUVPlusX;
-	In.vTexUV.y += g_fUVPlusY;
-
-	vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
-	Out.vDiffuse = vMtrlDiffuse;
-	Out.vDiffuse.a = Out.vDiffuse.r;
-	Out.vDiffuse.a *= g_fAlpha;
-
-	Out.vDiffuse.xyz = vColor.xyz;
-
-	if (Out.vDiffuse.a <= 0.2f)
-		discard;
-
-	Out.vDiffuse.a = 1.f;
-
-	Out.vEffectDiffuse = Out.vDiffuse;
-	Out.vGlowFlag = g_vGlowFlag;
-	Out.vEffectFlag = g_vFlag;
-	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
-
-
-
 
 	return Out;
 }
@@ -253,11 +160,6 @@ PS_DISTORTION_OUT PS_MAIN_DISTORTION(PS_IN In)
 	return Out;
 }
 
-struct PS_DISOLVE_OUT
-{
-	vector		vDisolveFlag : SV_TARGET0;
-};
-
 PS_OUT PS_MAIN_DISOLVE(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
@@ -265,24 +167,36 @@ PS_OUT PS_MAIN_DISOLVE(PS_IN In)
 	Out.vEffectFlag = g_vFlag;
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
 
-	//Noise : Color
-	//Diffuse : AlphaMap
-	vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
-	In.vTexUV.x += g_fUVPlusX;
-	In.vTexUV.y += g_fUVPlusY;
-	vColor -= g_fUVPlusX * 0.1f;
-	vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vDiffuse.xyz = vColor.xyz;
-	Out.vDiffuse *= vMtrlDiffuse.r;
-	Out.vDiffuse *= g_vColor;
+	//DiffuseTexture : Color
+	//g_MaskTexture : AlphaMap
 
-	Out.vDiffuse.a = vColor.r;
+	vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	/*In.vTexUV.x += g_fUVPlusX;
+	In.vTexUV.y += g_fUVPlusY;*/
+
+	vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vDiffuse.a = vMask.r;
+
+	if (Out.vDiffuse.a <= 0.01f)
+		discard;
+
+	vector vDissolve = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fDissolvePower);
+
+
+	if (vDissolve.r - (1.f - g_fAlpha) < 0.01f)
+		discard;
+
+	
+
+	Out.vDiffuse.xyz = vColor.xyz;
+	Out.vDiffuse.xyz += g_vPlusColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
+
 	Out.vEffectDiffuse = Out.vDiffuse;
 	Out.vGlowFlag = g_vGlowFlag;
 
-
-	if (Out.vDiffuse.a <= 0.05f)
-		discard;
 
 	return Out;
 }
@@ -301,51 +215,6 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
 	}
-
-	pass LINEX
-	{
-		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_None);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_LINEX();
-	}
-
-	pass LINEY
-	{
-		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_None);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_LINEY();
-	}
-
-	pass TEXT
-	{
-		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_None);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_TEXT();
-	}
-
-	pass CARTOON
-	{
-		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_None);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_CARTOON();
-	}
-
 	pass DISTORTION
 	{
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -355,17 +224,6 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_DISTORTION();
-	}
-
-	pass NOISEMAPPING
-	{
-		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_None);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_NOISEMAPPING();
 	}
 	pass DISOLVE
 	{

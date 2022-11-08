@@ -1,49 +1,101 @@
 #pragma once
-#include "GameObject.h"
 #include "Client_Defines.h"
+#include "GameObject.h"
+
+#define		EFFECT_FOLLOWTARGET 0x001
+#define		EFFECT_TARGETPOS 0x002
+#define		EFFECT_REFBONE 0x004
+#define		EFFECT_COLLIDER 0x008
+#define		EFFECT_BILLBOARD 0x010
+#define		EFFECT_TEMP 0x020
 
 BEGIN(Engine)
-class CGameObject;
-class CTransform;
 class CShader;
-class CModel;
 class CHierarchyNode;
 END
 
 BEGIN(Client)
+
 class CEffect abstract
 	: public CGameObject
 {
-	
+	friend class CWindow_Effect;
+	friend class CWindow_Test;
+
+public:
+	enum EFFECT_TYPE
+	{
+		MESH,
+		PARTICLE,
+		ANIMPARTICLE,
+		EFFECT_END,
+	};
+	enum DISABLE_TYPE { FADE, NONE, DISABLE_END };
+
 protected:
 	CEffect();
 	virtual ~CEffect();
 
 public:
-	void		Set_ShaderResource(CShader* pShader, const char* pConstantName);
-	void		Set_EffectFlag(_float4 vEffectFlag);
+	static	CEffect* Create_Effect_FromBinFile(string strFileKey);
+
+public:
+	void	Set_EffectFlag(_byte bFlag) { m_bEffectFlag = bFlag; }
+	void	Set_GlowFlag(_float4 vGlowFlag) { m_vGlowFlag = vGlowFlag; }
+
+public:
+	void		Set_OffsetPos(_float4 vPos) { m_vOffsetPos = vPos; }
+	virtual void		Self_Reset(CGameObject* pGameObject, _float4 vStartPos);
+	virtual void		Self_Reset_Turn(CGameObject* pGameObject, _float4 vStartPos);
+	virtual void		Reset(_float4 vStartPos);
+	void		Reset(CGameObject* pGameObject);
+	void		Reset(_float4 vStartPos, _float4 vTargetPosition);
+	void		Reset(_float4 vStartPos, _float4x4 matTrans);
+	virtual void		Reset(_float4x4 matWorld);
+
+	void		Set_RefBone(CHierarchyNode* pNode) { m_pRefBone = pNode; m_fTimeAcc = 0.f; m_bEffectFlag |= EFFECT_REFBONE; }
+	void		Set_FollowTarget(CGameObject* pTarget) { m_pFollowTarget = pTarget; }
+
+public:
+	virtual	void	ReBind_Texture();
+	virtual void	OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos);
+	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
+
+public:
+	void		Set_ColliderOn(_float fRadius, COL_GROUP_CLIENT eColType);
+	void		Set_FadeInStartTime(_float fTime) { m_fFadeInStartTime = fTime; }
+
+
+	//회전하는건 버리고
+	//노이즈 텍스쳐 사용하는 패스도 만들고 (사라질때 디솔브)
+	//컬러값 변수 넣고 (+로 더해지는거)
+	//컬러값 곱하는거 (강도) (float하나)
+
+	
+
+
 
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
+	virtual HRESULT Re_Initialize() { return S_OK; };
 	virtual HRESULT Start() override;
 
 protected:
-	wstring m_wstrModelFilePath;
-	wstring m_wstrMaskMapFilePath;	//마스크맵 텍스쳐 경로
-	wstring m_wstrColorMapFilePath;	//컬러맵 텍스쳐 경로
-	wstring m_wstrNoiseMapFilePath;	//노이즈맵 텍스쳐 경로
+	_float	m_fColliderAcc = 0.f;
+	_float	m_fColliderMaxTime = 0.1f;
+	_bool	m_bColliderOn = false;
 
 protected:
+	_float	m_fTurnAngle = 0.f;
+
+	EFFECT_TYPE	m_eEffectType = MESH;
 	SHADER_FILE_ID	m_eShaderType = SHADER_VTXEFFECTS;
-	VTXEFFECT_PASS_TYPE m_eEffectPassType = VTXEFFECT_PASS_DEFAULT;
-	_float4		m_vEffectShaderFlag = SH_EFFECT_DEFAULT;
-	_float4		m_vGlowFlag = _float4(1.f, 1.f, 1.f, 1.f);
 
+	_float4	m_vEffectFlag = SH_EFFECT_DEFAULT;
+	_float4	m_vGlowFlag = GLOW_CHAKRA(1.f);
 	
-
-protected:
 	_float	m_fAlpha = 1.f;
 	_float	m_fCurUVPlusX = 0.f;
 	_float	m_fCurUVPlusY = 0.f;
@@ -52,26 +104,39 @@ protected:
 
 	_float	m_fUVSpeedX = 0.f;
 	_float	m_fUVSpeedY = 0.f;
-	void Push_UV();
 
-protected:
-	_float4		m_vTurnDir = _float4(0.f, 0.f, 0.f, 0.f);
-	_float		m_fTurnSpeed = 0.f;
+
+	wstring	m_wstrPath;
+	wstring	m_wstrMaskMapPath;
+	wstring	m_wstrColorMapPath;
+	wstring	m_wstrNoiseMapPath;
+
+	_float4x4 m_matTrans;
+
+	DISABLE_TYPE		m_eDisableType = DISABLE_END;
+	_uint				m_iPassType = 0;
+
+	_hashcode	m_hcMyCode;
+
+	_byte		m_bEffectFlag = 0;
+
+public:
+	void	Set_DisableType(DISABLE_TYPE eType) { m_eDisableType = eType; }
 
 protected:
 	CGameObject* m_pFollowTarget = nullptr;
 	_float4		m_vOffsetPos;
-	//void	Update_FollowTarget();
+	void	Update_FollowTarget();
 
 protected:
 	_float		m_fMoveSpeed = 0.f;
 	_float4		m_vTargetPosition;
-	//void	Update_TargetPos();
-	//virtual void	On_Target();
+	void	Update_TargetPos();
+	virtual void	On_Target();
 
 protected:
 	CHierarchyNode* m_pRefBone = nullptr;
-	//virtual void	Stick_RefBone();
+	virtual void	Stick_RefBone();
 
 protected:
 	enum FADETYPE
@@ -94,21 +159,22 @@ protected:
 	_float4	m_vFadeOutTargetScale = _float4(1.f, 1.f, 1.f, 1.f);
 	_float	m_fTargetAlpha = 1.f;
 
+	_float4	m_vColor;
+	_float4 m_vPlusColor = _float4{ 0.f, 0.f, 0.f, 0.f };
+	_float	m_fColorPower = 1.f;
+	_float  m_fDissolvePower = 1.f;
 
-
-protected:
-	CModel* m_pModelCom = nullptr;
-
-
-protected:
-	HRESULT SetUp_Model(wstring pFilePath);
+public:
+	void	Set_FadeOut() { m_eCurFadeType = FADEOUTREADY; m_fFadeTimeAcc = 999999.f; }
 
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+	virtual	void	OnDisable() override;
 
 protected:
-	void Update_Fade();
-
+	void		Update_Disable();
+	void		Update_Fade();
 };
+
 END

@@ -169,7 +169,7 @@ HRESULT CMainApp::SetUp_Statics()
 	pFreeCam->Initialize();
 	CREATE_STATIC(pFreeCam, HASHCODE(CCamera_Free));
 	DISABLE_GAMEOBJECT(pFreeCam);
-	CGameInstance::Get_Instance()->Add_Camera(L"Free", pFreeCam);
+	CGameInstance::Get_Instance()->Add_Camera(L"FreeCam", pFreeCam);
 
 	if (FAILED(m_pGameInstance->Add_Font(L"DefaultFont", L"../bin/resources/fonts/128.spritefont")))
 		return E_FAIL;
