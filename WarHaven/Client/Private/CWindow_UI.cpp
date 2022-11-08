@@ -128,31 +128,15 @@ void CWindow_UI::Show_TreeTexture(TREE_DATA& tTree)
 	}
 	else
 	{
-
-
-		ComPtr<ID3D11ShaderResourceView> pSRV = GAMEINSTANCE->Get_Texture(CFunctor::To_Wstring(tTree.strFullPath));
+		ID3D11ShaderResourceView* pSRV = GAMEINSTANCE->Get_Texture(CFunctor::To_Wstring(tTree.strFullPath)).Get();
 
 		// 메모리 누수
-		if (ImGui::ImageButton(pSRV.Get(), ImVec2(50, 50)))
+		if (ImGui::ImageButton(pSRV, ImVec2(50, 50)))
 		{
 
 		}
 
 		ImGui::SameLine();
-
-
-		/*_bool bSelected = false;
-
-		if (m_CurSelectedTextureFilePath == tTree.strFullPath)
-		{
-			bSelected = true;
-		}
-
-
-		if (ImGui::Selectable(tTree.strFileName.c_str(), bSelected))
-		{
-			m_CurSelectedTextureFilePath = tTree.strFullPath;
-		}*/
 	}
 }
 
