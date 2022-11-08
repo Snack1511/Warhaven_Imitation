@@ -56,8 +56,8 @@ HRESULT CSword_Effect::Initialize_Prototype()
 	m_vFadeOutTargetScale = _float4{ 0.01f, 0.01f, 0.01f, 0.f };
 	m_eCurFadeType = FADEOUTREADY;
 	m_fFadeOutStartTime = 0.f;
-	m_fFadeOutTime = 0.016f;
-	m_fTargetAlpha = 0.3f;
+	m_fFadeOutTime = 0.05f;
+	m_fTargetAlpha = 0.2f;
 	
 
 	__super::Initialize_Prototype();
