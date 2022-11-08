@@ -558,8 +558,8 @@ HRESULT CRender_Manager::Render()
 		return E_FAIL;
 
 	/* Shadow Baking */
-	if (FAILED(Bake_Shadow()))
-		return E_FAIL;
+	/*if (FAILED(Bake_Shadow()))
+		return E_FAIL;*/
 
 	/* Deferred MRT */
 	if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources()))
@@ -605,8 +605,8 @@ HRESULT CRender_Manager::Render()
 
 	//포워드에다가 전부 합친 후 거따 이펙트를 그린다
 
-	if (FAILED(Render_SSD()))
-		return E_FAIL;
+	/*if (FAILED(Render_SSD()))
+		return E_FAIL;*/
 
 	if (FAILED(Render_AlphaGroup()))
 		return E_FAIL;

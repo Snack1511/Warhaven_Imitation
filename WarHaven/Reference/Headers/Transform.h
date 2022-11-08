@@ -25,6 +25,8 @@ public:
 	_float4				Get_World(WORLD eType);
 	_float4				Get_MyWorld(WORLD eType);
 	_float4				Get_Scale() { return m_tTransform.vScale; }
+	
+
 
 	void				Set_World(WORLD eType, const _float4& vCol);
 	void				Set_RealWorld(WORLD eType, const _float4& vCol);
@@ -37,6 +39,12 @@ public:
 	void				Set_Scale(const _float4& vScale);
 	void				Set_Y(const _float& fY);
 	void				Set_ParentFlag(_byte parentFlag)			{ m_cParentFlag = parentFlag; }
+
+
+
+	_float4				Get_Quaternion();
+	void				MatrixTurnQuaternion(_float4 vQuaternion);
+	void				MatrixRotationQuaternion(_float4 vQuaternion);
 
 public:
 	virtual void		Set_ShaderResource(CShader* pShader, const char* pConstantName) override;

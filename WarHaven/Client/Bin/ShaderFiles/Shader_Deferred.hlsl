@@ -252,12 +252,6 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	if (vSpecular.r < 1.f)
 		Out.vColor += vSpecular;
 
-	//Shadow
-	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
-
-	Out.vColor *= vShadowDesc;
-
-
 	//DOF
 	if (Out.vColor.a > 0.f && vDepthDesc.y > 0.01f)
 	{
@@ -276,31 +270,41 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 
 	}
 
-	//white
-	Out.vColor.xyz += vFlagDesc.g;
-
 	if (Out.vColor.a <= 0.f)
 	{
 		vector			vSkyDesc = g_SkyTexture.Sample(DefaultSampler, In.vTexUV);
 		Out.vColor = vSkyDesc;
 	}
 
-	//Forward Fog
-	In.vTexUV.x += g_fUVPlusX;
-	In.vTexUV.y += g_fUVPlusY;
+	//Shadow
+	//vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
 
-	vector			vFogColor = g_FogTexture.Sample(DefaultSampler, In.vTexUV * 0.3f);
+	//Out.vColor *= vShadowDesc;
 
-	if (vFogColor.x < 0.2f)
-		return Out;
 
-	vFogColor.xyz = float3(1.1f, 0.f, 0.f) * (vFogColor.x);
+	//
 
-	float fDepthRatio = saturate(vDepthDesc.y / 0.01f);
+	////white
+	//Out.vColor.xyz += vFlagDesc.g;
 
-	//0~1을 0.5~1로 바꿔야함
-	fDepthRatio = (fDepthRatio + 1.f) * 0.5f * g_fFogAlpha;
-	Out.vColor.xyz = Out.vColor.xyz * (1.f - fDepthRatio) + vFogColor * fDepthRatio;
+	
+
+	////Forward Fog
+	//In.vTexUV.x += g_fUVPlusX;
+	//In.vTexUV.y += g_fUVPlusY;
+
+	//vector			vFogColor = g_FogTexture.Sample(DefaultSampler, In.vTexUV * 0.3f);
+
+	//if (vFogColor.x < 0.2f)
+	//	return Out;
+
+	//vFogColor.xyz = float3(1.1f, 0.f, 0.f) * (vFogColor.x);
+
+	//float fDepthRatio = saturate(vDepthDesc.y / 0.01f);
+
+	////0~1을 0.5~1로 바꿔야함
+	//fDepthRatio = (fDepthRatio + 1.f) * 0.5f * g_fFogAlpha;
+	//Out.vColor.xyz = Out.vColor.xyz * (1.f - fDepthRatio) + vFogColor * fDepthRatio;
 
 	
 
@@ -439,29 +443,29 @@ PS_OUT PS_MAIN_FINALBLEND(PS_IN In)
 	//이펙트나 OutLine 그려진 곳만 안개 추가로 씌우기
 
 
-	if (bFog == true)
-	{
+	//if (bFog == true)
+	//{
 
-		if (vFogColor.x < 0.2f)
-			return Out;
+	//	if (vFogColor.x < 0.2f)
+	//		return Out;
 
-		vFogColor.xyz = float3(1.1f, 0.f, 0.f) * (vFogColor.x);
+	//	vFogColor.xyz = float3(1.1f, 0.f, 0.f) * (vFogColor.x);
 
-		float fDepthRatio = saturate(vDepthDesc.y / 0.01f);
+	//	float fDepthRatio = saturate(vDepthDesc.y / 0.01f);
 
 
-		//0~1을 0.5~1로 바꿔야함
-		fDepthRatio = (fDepthRatio + 1.f) * 0.5f * g_fFogAlpha;
+	//	//0~1을 0.5~1로 바꿔야함
+	//	fDepthRatio = (fDepthRatio + 1.f) * 0.5f * g_fFogAlpha;
 
-		if (fDepthRatio >= 1.f)
-			Out.vColor.xyz = vFogColor;
-		else
-		{
-			fDepthRatio *= vEffectDiffuseDesc.a;
-			Out.vColor.xyz = Out.vColor.xyz * (1.f - fDepthRatio) + vFogColor * fDepthRatio;
+	//	if (fDepthRatio >= 1.f)
+	//		Out.vColor.xyz = vFogColor;
+	//	else
+	//	{
+	//		fDepthRatio *= vEffectDiffuseDesc.a;
+	//		Out.vColor.xyz = Out.vColor.xyz * (1.f - fDepthRatio) + vFogColor * fDepthRatio;
 
-		}
-	}
+	//	}
+	//}
 
 	
 

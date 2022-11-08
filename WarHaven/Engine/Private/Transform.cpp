@@ -77,6 +77,55 @@ _float4 CTransform::Get_MyWorld(WORLD eType)
 	return vResult;
 }
 
+_float4 CTransform::Get_Quaternion()
+{
+	_vector		vRight = XMVector3Normalize(Get_World(WORLD_RIGHT).XMLoad());
+	_vector		vUp = XMVector3Normalize(Get_World(WORLD_UP).XMLoad());
+	_vector		vLook = XMVector3Normalize(Get_World(WORLD_LOOK).XMLoad());
+
+	_float4x4 WorldMatrix;
+	ZeroMemory(&WorldMatrix, sizeof(_float4x4));
+	_float4		vData;
+
+	XMStoreFloat4(&vData, vRight);
+	memcpy(&WorldMatrix.m[WORLD_RIGHT], &vData, sizeof(_float4));
+
+	XMStoreFloat4(&vData, vUp);
+	memcpy(&WorldMatrix.m[WORLD_UP], &vData, sizeof(_float4));
+
+	XMStoreFloat4(&vData, vLook);
+	memcpy(&WorldMatrix.m[WORLD_LOOK], &vData, sizeof(_float4));
+
+	return XMQuaternionRotationMatrix(XMLoadFloat4x4(&WorldMatrix));
+}
+
+void CTransform::MatrixTurnQuaternion(_float4 vQuaternion)
+{
+	XMMATRIX	QuaternionMatrix;
+	QuaternionMatrix = XMMatrixRotationQuaternion(vQuaternion.XMLoad());
+	XMMATRIX	WorldMatrix = XMLoadFloat4x4(&m_tTransform.matMyWorld);
+	WorldMatrix *= QuaternionMatrix;
+	XMStoreFloat4x4(&m_tTransform.matMyWorld, WorldMatrix);
+}
+
+void CTransform::MatrixRotationQuaternion(_float4 vQuaternion)
+{
+	XMMATRIX	QuaternionMatrix;
+	QuaternionMatrix = XMMatrixRotationQuaternion(vQuaternion.XMLoad());
+
+	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * m_tTransform.vScale.x;
+	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * m_tTransform.vScale.y;
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * m_tTransform.vScale.z;
+
+	vRight = XMVector3TransformNormal(vRight, QuaternionMatrix);
+	vUp = XMVector3TransformNormal(vUp, QuaternionMatrix);
+	vLook = XMVector3TransformNormal(vLook, QuaternionMatrix);
+
+	Set_World(WORLD_RIGHT, vRight);
+	Set_World(WORLD_UP, vUp);
+	Set_World(WORLD_LOOK, vLook);
+}
+
 void CTransform::Set_World(WORLD eType, const _float4 & vCol)
 {
 	*((_float4*)&m_tTransform.matMyWorld.m[eType]) = vCol;

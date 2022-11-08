@@ -220,6 +220,9 @@
     <Filter Include="04. Module\Utility_Easing">
       <UniqueIdentifier>{5daf819f-da78-4cd2-9a57-5e1a59a5f860}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Singleton\02. Design\19. PhysX_Manager">
+      <UniqueIdentifier>{737b1200-a635-4fae-b316-2927dccb3384}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
@@ -419,6 +422,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Easing_Utillity.cpp">
       <Filter>04. Module\Utility_Easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysX_Manager.cpp">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysXCollider.cpp">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -640,6 +649,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Easing_Utillity.h">
       <Filter>04. Module\Utility_Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX_Manager.h">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysXCollider.h">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
