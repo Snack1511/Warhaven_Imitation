@@ -1,7 +1,26 @@
 #include "stdafx.h"
 #include "CDefault_Effect.h"
-#include "Model.h"
+
+
+#include "HIerarchyNode.h"
 #include "GameInstance.h"
+
+#include "Model.h"
+#include "Physics.h"
+#include "CUnit.h"
+#include "CModel_Renderer.h"
+#include "CShader.h"
+#include "CUser.h"
+#include "CUnit_Player.h"
+
+#include "Transform.h"
+#include "CComponent_Factory.h"
+
+#include "CCamera_Follow.h"
+#include "CEffects_Factory.h"
+#include "CUtility_Transform.h"
+#include "CUtility_File.h"
+#include "Functor.h"
 
 CDefault_Effect::CDefault_Effect()
 {
@@ -11,32 +30,27 @@ CDefault_Effect::~CDefault_Effect()
 {
 }
 
-CDefault_Effect* CDefault_Effect::Create(string strFileKey)
+CDefault_Effect* CDefault_Effect::Create()
 {
-	wstring wstrModel = L"../bin/resources/Meshes/Effects/FBX/SM_Charge_Mesh_01.fbx";
-	wstring wstrMask = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_12_M.dds";
-	wstring wstrColor = L"../bin/resources/Textures/Effects/GradationColor/T_EFF_GMS_AmeVillage_Sea_01_M.png";
-	wstring wstrNoise = L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_12_M.dds";
-
 	CDefault_Effect* pInstance = new CDefault_Effect;
-
-	pInstance->m_wstrModelFilePath = wstrModel;
-	pInstance->m_wstrMaskMapFilePath = wstrMask;
-	pInstance->m_wstrColorMapFilePath = wstrColor;
-	pInstance->m_wstrNoiseMapFilePath = wstrNoise;
-
-	if (FAILED(pInstance->SetUp_Model(wstrModel)))
-	{
-		SAFE_DELETE(pInstance);
-		Call_MsgBox(L"Failed to SetUp_Model : CDefault_Effect");
-		return nullptr;
-	}
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		SAFE_DELETE(pInstance);
 		Call_MsgBox(L"Failed to Initialize_Prototype : CDefault_Effect");
-		return nullptr;
+		SAFE_DELETE(pInstance);
+	}
+
+	return pInstance;
+}
+
+CDefault_Effect* CDefault_Effect::Create(ifstream* pReadFile)
+{
+	CDefault_Effect* pInstance = new CDefault_Effect;
+
+	if (FAILED(pInstance->SetUp_DefaultEffect(pReadFile)))
+	{
+		Call_MsgBox(L"Failed to Initialize_Prototype : CDefault_Effect");
+		SAFE_DELETE(pInstance);
 	}
 
 	return pInstance;
@@ -44,31 +58,57 @@ CDefault_Effect* CDefault_Effect::Create(string strFileKey)
 
 HRESULT CDefault_Effect::Initialize_Prototype()
 {
-	m_eEffectPassType = VTXEFFECT_PASS_DEFAULT;
+	m_eDisableType = NONE;
+	m_wstrPath = L"../bin/resources/meshes/effects/common/SM_EFF_HemiSphere_A_01.fbx";
+	m_matTrans = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	m_hcMyCode = HASHCODE(CDefault_Effect);
+	m_bEffectFlag |= EFFECT_FOLLOWTARGET;
+	m_pFollowTarget = PLAYER;
+	m_vOffsetPos = _float4(0.f, 0.f, 0.f);
 
+	CPhysics* pPhysicsCom = CComponent_Factory::Clone_Component<CPhysics>(this);
+	pPhysicsCom->Set_NaviOn();
+	Add_Component(pPhysicsCom);
 
-	__super::Initialize_Prototype();
-
-	GET_COMPONENT(CModel)->Change_Texture(0, 11, m_wstrMaskMapFilePath);
-	GET_COMPONENT(CModel)->Change_Texture(0, 1, m_wstrColorMapFilePath);
-	GET_COMPONENT(CModel)->Change_Texture(0, 16, m_wstrNoiseMapFilePath);
-	return S_OK;
+	return __super::Initialize_Prototype();
 }
 
-HRESULT CDefault_Effect::Initialize()
+HRESULT CDefault_Effect::SetUp_DefaultEffect(ifstream* pReadFile)
 {
-	m_vEffectShaderFlag = SH_EFFECT_DEFAULT;
+	string	strModelPath;
+	strModelPath = CUtility_File::Read_Text(pReadFile);
 
-	__super::Initialize();
+	m_wstrPath = CFunctor::To_Wstring(strModelPath);
 
-	m_fUVSpeedX = 2.f;
+	string	strMaskMapPath = CUtility_File::Read_Text(pReadFile);
+	string	strColorMapPath = CUtility_File::Read_Text(pReadFile);
 
-	return S_OK;
-}
+	m_wstrMaskMapPath = CFunctor::To_Wstring(strMaskMapPath);
+	m_wstrColorMapPath = CFunctor::To_Wstring(strColorMapPath);
 
-HRESULT CDefault_Effect::Start()
-{
-	__super::Start();
+	pReadFile->read((char*)&m_eShaderType, sizeof(_uint));
+	pReadFile->read((char*)&m_vEffectFlag, sizeof(_float4));
+	pReadFile->read((char*)&m_vGlowFlag, sizeof(_float4));
+	pReadFile->read((char*)&m_fUVSpeedX, sizeof(_float));
+	pReadFile->read((char*)&m_fUVSpeedY, sizeof(_float));
+	pReadFile->read((char*)&m_matTrans, sizeof(_float4x4));
+	pReadFile->read((char*)&m_eDisableType, sizeof(_uint));
+	pReadFile->read((char*)&m_iPassType, sizeof(_uint));
+	pReadFile->read((char*)&m_bEffectFlag, sizeof(_byte));
+	pReadFile->read((char*)&m_vTurnDir, sizeof(_float4));
+	pReadFile->read((char*)&m_fTurnSpeed, sizeof(_float));
+	pReadFile->read((char*)&m_vOffsetPos, sizeof(_float4));
+	pReadFile->read((char*)&m_fMoveSpeed, sizeof(_float));
+	pReadFile->read((char*)&m_fFadeInStartTime, sizeof(_float));
+	pReadFile->read((char*)&m_fFadeInTime, sizeof(_float));
+	pReadFile->read((char*)&m_fFadeOutStartTime, sizeof(_float));
+	pReadFile->read((char*)&m_fFadeOutTime, sizeof(_float));
+	pReadFile->read((char*)&m_vStartScale, sizeof(_float4));
+	pReadFile->read((char*)&m_vFadeInTargetScale, sizeof(_float4));
+	pReadFile->read((char*)&m_vFadeOutTargetScale, sizeof(_float4));
+	pReadFile->read((char*)&m_fTargetAlpha, sizeof(_float));
+
+	m_eShaderType = SHADER_VTXEFFECTS;
 
 	return S_OK;
 }
