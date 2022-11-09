@@ -426,6 +426,12 @@
     <ClCompile Include="..\Private\Easing_Utillity.cpp">
       <Filter>04. Module\Utility_Easing</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PhysX_Manager.cpp">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysXCollider.cpp">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -646,6 +652,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Easing_Utillity.h">
       <Filter>04. Module\Utility_Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX_Manager.h">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysXCollider.h">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

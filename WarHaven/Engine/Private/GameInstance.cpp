@@ -41,8 +41,8 @@ HRESULT CGameInstance::Initialize_Engine(const GRAPHICDESC& GraphicDesc, const S
 		return E_FAIL;
 
 	/* Initalize PhysX_Manager*/
-	/*if (FAILED(m_pPhysXManager->Initialize()))
-		return E_FAIL;*/
+	if (FAILED(m_pPhysXManager->Initialize()))
+		return E_FAIL;
 
 	/* Time Manager */
 	if (FAILED(m_pTimeManager->Initialize(GraphicDesc.hWnd, TimeDesc)))
@@ -96,7 +96,7 @@ HRESULT CGameInstance::Tick_Engine( )
 
 
 	m_pRenderManager->Update();
-	//m_pPhysXManager->Tick();
+	m_pPhysXManager->Tick();
 
 
 	m_pLevelManager->Late_Tick();
@@ -166,15 +166,14 @@ HRESULT CGameInstance::Initialize()
 	SAFE_GET_INSTANCE(m_pFrustumManager, CFrustum_Manager);
 	SAFE_GET_INSTANCE(m_pLightManager, CLight_Manager);
 	SAFE_GET_INSTANCE(m_pTargetManager, CTarget_Manager);
-	//SAFE_GET_INSTANCE(m_pPhysXManager, CPhysX_Manager);
+	SAFE_GET_INSTANCE(m_pPhysXManager, CPhysX_Manager);
 
 	return S_OK;
 }
 
 void CGameInstance::Release()
 {
-	
-	//m_pPhysXManager->Destroy_Instance();
+	m_pPhysXManager->Destroy_Instance();
 	m_pKeyManager->Destroy_Instance();
 	m_pObjectManager->Destroy_Instance();
 	m_pLevelManager->Destroy_Instance();

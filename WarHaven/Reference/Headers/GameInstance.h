@@ -21,7 +21,7 @@
 #include "CFrustum_Manager.h"
 #include "CTarget_Manager.h"
 #include "CLight_Manager.h"
-//#include "PhysX_Manager.h"
+#include "PhysX_Manager.h"
 
 //매니져 매니저..
 
@@ -92,17 +92,17 @@ public:/* For.Resource_Manager*/
 	ComPtr<ID3D11ShaderResourceView>	Get_Texture(wstring wstrFilePath);
 
 public: /* For.PhysX_Manager*/
-	//HRESULT	Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
-	//HRESULT	Delete_Scene(CPhysX_Manager::Scene eScene);
-	//HRESULT	Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
-	//void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
-	//void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
-	//void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
-	//void			Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut);
-	//PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, const PxReal& Density, const PxVec3& velocity = PxVec3(0), PxMaterial* pMaterial = nullptr);
-	//PxRigidStatic* Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, PxMaterial* pMaterial = nullptr);
-	//void			Begin_PhysScene();
-	//void			End_PhysScene();
+	HRESULT	Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
+	HRESULT	Delete_Scene(CPhysX_Manager::Scene eScene);
+	HRESULT	Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
+	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
+	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
+	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
+	void			Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut);
+	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, const PxReal& Density, const PxVec3& velocity = PxVec3(0), PxMaterial* pMaterial = nullptr);
+	PxRigidStatic* Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, PxMaterial* pMaterial = nullptr);
+	void			Begin_PhysScene();
+	void			End_PhysScene();
 
 public:	/* For. Render_Manager */
 	void	Bake_StaticShadow(vector <CGameObject*>& MapList, _float fDistance);
@@ -254,7 +254,7 @@ private:
 	CFrustum_Manager* m_pFrustumManager = nullptr;
 	CTarget_Manager* m_pTargetManager = nullptr;
 	CLight_Manager* m_pLightManager = nullptr;
-	//CPhysX_Manager* m_pPhysXManager = nullptr;
+	CPhysX_Manager* m_pPhysXManager = nullptr;
 
 private:
 	HRESULT	Initialize();

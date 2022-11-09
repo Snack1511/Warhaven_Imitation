@@ -42,14 +42,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -129,7 +129,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../../Reference/Librarys/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Effects11d.lib;%(AdditionalDependencies);fmodex64_vc.lib;d3d11.lib;dinput8.lib;dxguid.lib;DirectXTKd.lib;assimp-vc143-mtd.lib;DirectXTexd.lib</AdditionalDependencies>
+      <AdditionalDependencies>Effects11d.lib;%(AdditionalDependencies);fmodex64_vc.lib;d3d11.lib;dinput8.lib;dxguid.lib;DirectXTKd.lib;assimp-vc143-mtd.lib;PhysX_64d.lib;PhysXFoundation_64d.lib;PhysXPvdSDK_static_64d.lib;PhysXCharacterKinematic_static_64d.lib;PhysXCommon_64d.lib;PhysXCooking_64d.lib;PhysXExtensions_static_64d.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>call ../../UpdateLib.bat</Command>
@@ -229,6 +229,8 @@
     <ClCompile Include="..\Private\Particle.cpp" />
     <ClCompile Include="..\Private\ParticleSystem.cpp" />
     <ClCompile Include="..\Private\Physics.cpp" />
+    <ClCompile Include="..\Private\PhysXCollider.cpp" />
+    <ClCompile Include="..\Private\PhysX_Manager.cpp" />
     <ClCompile Include="..\Private\Picking_Manager.cpp" />
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
@@ -304,6 +306,8 @@
     <ClInclude Include="..\Public\Particle.h" />
     <ClInclude Include="..\Public\ParticleSystem.h" />
     <ClInclude Include="..\Public\Physics.h" />
+    <ClInclude Include="..\Public\PhysXCollider.h" />
+    <ClInclude Include="..\Public\PhysX_Manager.h" />
     <ClInclude Include="..\Public\Picking_Manager.h" />
     <ClInclude Include="..\Public\Prototype_Manager.h" />
     <ClInclude Include="..\Public\Renderer.h" />
