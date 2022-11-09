@@ -223,6 +223,9 @@
     <Filter Include="02. Singleton\02. Design\19. PhysX_Manager">
       <UniqueIdentifier>{737b1200-a635-4fae-b316-2927dccb3384}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99. Default\PhysX">
+      <UniqueIdentifier>{5845ba72-0bd0-4a88-82d4-72d62866a1fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
@@ -424,9 +427,6 @@
       <Filter>04. Module\Utility_Easing</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PhysX_Manager.cpp">
-      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PhysXCollider.cpp">
       <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
     </ClCompile>
   </ItemGroup>
@@ -650,10 +650,136 @@
     <ClInclude Include="..\Public\Easing_Utillity.h">
       <Filter>04. Module\Utility_Easing</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PhysX_Manager.h">
-      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
+    <ClInclude Include="..\Public\PhysX\PxVisualizationParameter.h">
+      <Filter>99. Default\PhysX</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PhysXCollider.h">
+    <ClInclude Include="..\Public\PhysX\PxActor.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxAggregate.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxArticulation.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxArticulationBase.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxArticulationJoint.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxArticulationJointReducedCoordinate.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxArticulationLink.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxArticulationReducedCoordinate.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxBatchQuery.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxBatchQueryDesc.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxBroadPhase.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxClient.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxConfig.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxConstraint.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxConstraintDesc.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxContact.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxContactModifyCallback.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxDeletionListener.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxFiltering.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxForceMode.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxFoundation.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxImmediateMode.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxLockedData.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxMaterial.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxPhysics.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxPhysicsAPI.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxPhysicsSerialization.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxPhysicsVersion.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxPhysXConfig.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxPruningStructure.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxQueryFiltering.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxQueryReport.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxRigidActor.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxRigidBody.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxRigidDynamic.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxRigidStatic.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxScene.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxSceneDesc.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxSceneLock.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxShape.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxSimulationEventCallback.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxSimulationStatistics.h">
+      <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX_Manager.h">
       <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
     </ClInclude>
   </ItemGroup>

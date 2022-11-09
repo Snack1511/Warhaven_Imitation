@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_CONSOLE;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Public/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public/;../Public/PhysX/</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -228,12 +228,7 @@
     <ClCompile Include="..\Private\Particle.cpp" />
     <ClCompile Include="..\Private\ParticleSystem.cpp" />
     <ClCompile Include="..\Private\Physics.cpp" />
-    <ClCompile Include="..\Private\PhysXCollider.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\Private\PhysX_Manager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\Private\PhysX_Manager.cpp" />
     <ClCompile Include="..\Private\Picking_Manager.cpp" />
     <ClCompile Include="..\Private\Prototype_Manager.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
@@ -309,12 +304,50 @@
     <ClInclude Include="..\Public\Particle.h" />
     <ClInclude Include="..\Public\ParticleSystem.h" />
     <ClInclude Include="..\Public\Physics.h" />
-    <ClInclude Include="..\Public\PhysXCollider.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\Public\PhysX_Manager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\Public\PhysX\PxActor.h" />
+    <ClInclude Include="..\Public\PhysX\PxAggregate.h" />
+    <ClInclude Include="..\Public\PhysX\PxArticulation.h" />
+    <ClInclude Include="..\Public\PhysX\PxArticulationBase.h" />
+    <ClInclude Include="..\Public\PhysX\PxArticulationJoint.h" />
+    <ClInclude Include="..\Public\PhysX\PxArticulationJointReducedCoordinate.h" />
+    <ClInclude Include="..\Public\PhysX\PxArticulationLink.h" />
+    <ClInclude Include="..\Public\PhysX\PxArticulationReducedCoordinate.h" />
+    <ClInclude Include="..\Public\PhysX\PxBatchQuery.h" />
+    <ClInclude Include="..\Public\PhysX\PxBatchQueryDesc.h" />
+    <ClInclude Include="..\Public\PhysX\PxBroadPhase.h" />
+    <ClInclude Include="..\Public\PhysX\PxClient.h" />
+    <ClInclude Include="..\Public\PhysX\PxConfig.h" />
+    <ClInclude Include="..\Public\PhysX\PxConstraint.h" />
+    <ClInclude Include="..\Public\PhysX\PxConstraintDesc.h" />
+    <ClInclude Include="..\Public\PhysX\PxContact.h" />
+    <ClInclude Include="..\Public\PhysX\PxContactModifyCallback.h" />
+    <ClInclude Include="..\Public\PhysX\PxDeletionListener.h" />
+    <ClInclude Include="..\Public\PhysX\PxFiltering.h" />
+    <ClInclude Include="..\Public\PhysX\PxForceMode.h" />
+    <ClInclude Include="..\Public\PhysX\PxFoundation.h" />
+    <ClInclude Include="..\Public\PhysX\PxImmediateMode.h" />
+    <ClInclude Include="..\Public\PhysX\PxLockedData.h" />
+    <ClInclude Include="..\Public\PhysX\PxMaterial.h" />
+    <ClInclude Include="..\Public\PhysX\PxPhysics.h" />
+    <ClInclude Include="..\Public\PhysX\PxPhysicsAPI.h" />
+    <ClInclude Include="..\Public\PhysX\PxPhysicsSerialization.h" />
+    <ClInclude Include="..\Public\PhysX\PxPhysicsVersion.h" />
+    <ClInclude Include="..\Public\PhysX\PxPhysXConfig.h" />
+    <ClInclude Include="..\Public\PhysX\PxPruningStructure.h" />
+    <ClInclude Include="..\Public\PhysX\PxQueryFiltering.h" />
+    <ClInclude Include="..\Public\PhysX\PxQueryReport.h" />
+    <ClInclude Include="..\Public\PhysX\PxRigidActor.h" />
+    <ClInclude Include="..\Public\PhysX\PxRigidBody.h" />
+    <ClInclude Include="..\Public\PhysX\PxRigidDynamic.h" />
+    <ClInclude Include="..\Public\PhysX\PxRigidStatic.h" />
+    <ClInclude Include="..\Public\PhysX\PxScene.h" />
+    <ClInclude Include="..\Public\PhysX\PxSceneDesc.h" />
+    <ClInclude Include="..\Public\PhysX\PxSceneLock.h" />
+    <ClInclude Include="..\Public\PhysX\PxShape.h" />
+    <ClInclude Include="..\Public\PhysX\PxSimulationEventCallback.h" />
+    <ClInclude Include="..\Public\PhysX\PxSimulationStatistics.h" />
+    <ClInclude Include="..\Public\PhysX\PxVisualizationParameter.h" />
+    <ClInclude Include="..\Public\PhysX_Manager.h" />
     <ClInclude Include="..\Public\Picking_Manager.h" />
     <ClInclude Include="..\Public\Prototype_Manager.h" />
     <ClInclude Include="..\Public\Renderer.h" />
