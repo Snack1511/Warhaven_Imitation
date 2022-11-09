@@ -4,6 +4,8 @@
 
 BEGIN(Engine)
 class CMeshContainer;
+class CGameObject;
+class CModel;
 END
 
 BEGIN(Client)
@@ -21,7 +23,7 @@ public:
 	static CColorController* Create(_uint iGroupIdx);
 
 public:
-	void Set_ColorControll(_float4 vStartColor, _float4 vEndColor, _float EndTime);
+	HRESULT Set_ColorControll(CGameObject* pOwner, _uint iMeshPartType, _float4 vStartColor, _float4 vEndColor, _float EndTime);
 
 public:
 	// CComponent을(를) 통해 상속
@@ -36,6 +38,7 @@ public:
 	virtual void OnDead()	override;
 
 private:
+	CModel* pTargetModel = nullptr;
 	_float4 m_vStartColor = {};
 	_float4 m_vEndColor = {};
 	_float4 m_vFadeInColor = {};

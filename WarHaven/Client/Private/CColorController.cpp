@@ -6,6 +6,7 @@
 
 #include "GameInstance.h"
 #include "GameObject.h"
+#include "Model.h"
 
 CColorController::CColorController(_uint iGroupIdx)
 	:CComponent(iGroupIdx)
@@ -29,11 +30,18 @@ CColorController* CColorController::Create(_uint iGroupIdx)
 	return pInstance;
 }
 
-void CColorController::Set_ColorControll(_float4 vStartColor, _float4 vEndColor, _float EndTime)
+HRESULT CColorController::Set_ColorControll(CGameObject* pOwner, _uint iMeshPartType, _float4 vStartColor, _float4 vEndColor, _float EndTime)
 {
+	pTargetModel = GET_COMPONENT_FROM(pOwner, CModel);
+
+	if (!pTargetModel)
+		return E_FAIL;
+
 	m_vStartColor = vStartColor;
 	m_vEndColor = vEndColor;
 	m_fEndTime = EndTime;
+
+	return S_OK;
 }
 
 HRESULT CColorController::Initialize_Prototype()

@@ -5,7 +5,7 @@
 
 #include "Model.h"
 #include "CAnimator.h"
-
+#include "CColorController.h"
 CUnit_Warrior::CUnit_Warrior()
 {
 }
@@ -67,8 +67,12 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_ETC.fbx");
 
 
+	CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
 
+	if (!pCController)
+		return E_FAIL;
 
+	Add_Component(pCController);
 
 	Add_Component(pAnimator);
 
@@ -83,7 +87,7 @@ HRESULT CUnit_Warrior::Initialize()
 	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_BODY, _float4(1, 0, 0, 0));
 	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_HEAD, SH_LIGHT_DEFAULT);
 	
-
+	GET_COMPONENT(CColorController)->Set_ColorControll(this, MODEL_PART_WEAPON, _float4(1, 1, 1, 1), _float4(0, 0, 0, 0), 2.f);
 	return S_OK;
 }
 
