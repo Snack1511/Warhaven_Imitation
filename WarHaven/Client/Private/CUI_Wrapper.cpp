@@ -86,6 +86,34 @@ void CUI_Wrapper::OnDisable()
     DISABLE_GAMEOBJECT(m_pUI);
 }
 
+void CUI_Wrapper::Read_File(string key)
+{
+    const char* pFilePath = "../Bin/Data/UIData";
+
+    for (filesystem::directory_iterator FileIter(pFilePath); FileIter != filesystem::end(FileIter); ++FileIter)
+    {
+        const filesystem::directory_entry& entry = *FileIter;
+
+        wstring wstrPath = entry.path().relative_path();
+        string strFullPath;
+        strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+        _int iFind0 = (_int)strFullPath.rfind("\\") + 1;
+        string strFileName = strFullPath.substr(iFind0);
+
+        _int iFind2 = (_int)strFileName.rfind(".");
+        string strKey = strFileName.substr(0, iFind2);
+
+        string strPathTemp = CFunctor::To_String(wstrPath);
+
+        if (strPathTemp.find(key) != string::npos)
+        {
+            CUI_Object* pUI = Load_UI(strFullPath);;
+            m_pUIMap.emplace(CFunctor::To_Wstring(strKey), pUI);
+        }
+    }
+}
+
 void CUI_Wrapper::Load_UI(wstring m_wstrName)
 {
     string savePath = "../Bin/Data/UIData/";

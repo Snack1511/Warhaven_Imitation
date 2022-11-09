@@ -25,6 +25,7 @@ public:
 protected:
 	wstring	m_wstrName;
 	CUI_Object* m_pUI = nullptr;
+	map<wstring, CUI_Object*> m_pUIMap;
 
 protected:
 	virtual void My_Tick() override;
@@ -34,6 +35,7 @@ protected:
 	virtual void OnDisable() override;
 
 protected:
+	void Read_File(string key);
 	CUI_Object* Load_UI(string m_wstrName);
 
 private:
