@@ -166,6 +166,7 @@ protected:
 
 	_float4 m_vTurnDir = _float4( 1.f, 0.f, 0.f, 0.f );
 	_float m_fTurnSpeed = 0.f;
+	_bool m_bRotation = false;
 	_float4 m_vRotationDir = _float4(1.f, 0.f, 0.f, 0.f);
 	_float m_fAngle = 0.f;
 

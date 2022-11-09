@@ -726,8 +726,15 @@ void CWindow_Effect::Show_EffectTab()
 			{
 			}
 
-
-
+			static _bool	g_bRotable = false;
+			if (ImGui::RadioButton("Rotable", g_bRotable))
+			{
+				g_bRotable = !g_bRotable; 
+				if(g_bRotable)
+					pCurEffect->m_bRotation = true;
+				else
+					pCurEffect->m_bRotation = false;
+			}
 
 			static _bool	g_bRotDirX = true;
 			static _bool	g_bRotDirY = false;
@@ -1266,6 +1273,7 @@ void CWindow_Effect::Save_CurEffect()
 
 		writeFile.write((char*)&pCurEffect->m_vTurnDir, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_fTurnSpeed, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_bRotation, sizeof(_bool));
 		writeFile.write((char*)&pCurEffect->m_vRotationDir, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_fAngle, sizeof(_float));
 	

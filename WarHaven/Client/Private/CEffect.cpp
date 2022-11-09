@@ -514,8 +514,8 @@ void CEffect::Update_Fade()
 
 void CEffect::UPdate_Turn()
 {
-
-	//CUtility_Transform::Rotation(m_pTransform, m_vRotationDir.Normalize(), m_fAngle);
+	if(m_bRotation)
+		CUtility_Transform::Rotation(m_pTransform, m_vRotationDir.Normalize(), m_fAngle);
 
 	CUtility_Transform::Turn(m_pTransform, m_vTurnDir.Normalize(), m_fTurnSpeed);
 
