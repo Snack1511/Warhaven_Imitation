@@ -22,6 +22,7 @@ private:
 	map<wstring, CUI_Object*> m_pUIMap;
 
 private:
+	// 여기에 불러올 유아이 종류 받아와서 부모에 넣자
 	void Read_File();
 };
 
