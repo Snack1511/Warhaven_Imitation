@@ -36,11 +36,11 @@ HRESULT CColorController::Set_ColorControll(CGameObject* pOwner, _uint iMeshPart
 
 	if (!pTargetModel)
 		return E_FAIL;
-
+	m_iMeshPartType = iMeshPartType;
 	m_vStartColor = vStartColor;
 	m_vEndColor = vEndColor;
 	m_fEndTime = EndTime;
-
+	m_fTimeAcc = 0.f;
 	return S_OK;
 }
 
@@ -57,13 +57,12 @@ HRESULT CColorController::Initialize()
 void CColorController::Start()
 {
 	__super::Start();
-
-	
 }
 
 void CColorController::Tick()
 {
-	m_fTimeAcc += fDT(0);
+	if (!pTargetModel)	
+		return;
 
 	LerpColor();
 }
@@ -78,21 +77,34 @@ void CColorController::Release()
 
 void CColorController::OnEnable()
 {
-
+	__super::OnEnable();
 }
 
 void CColorController::OnDisable()
 {
+	__super::OnDisable();
 }
 
 void CColorController::OnDead()
 {
+	__super::OnDead();
 }
 
 void CColorController::LerpColor()
 {
+	m_fTimeAcc += fDT(0);
+
 	_float fRatio = m_fTimeAcc / m_fEndTime;
 
 	m_vStartColor = XMVectorLerp(m_vStartColor.XMLoad(), m_vEndColor.XMLoad(), fRatio);
+
+	pTargetModel->Set_ShaderColor(m_iMeshPartType, m_vStartColor);
+
+	if (m_fTimeAcc >= m_fEndTime)
+	{
+		m_fTimeAcc = 0.f;
+
+		pTargetModel = nullptr;
+	}
 
 }

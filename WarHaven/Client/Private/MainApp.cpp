@@ -110,7 +110,7 @@ HRESULT CMainApp::Render()
 
 void CMainApp::Release()
 {
-	//CEffects_Factory::Get_Instance()->Destroy_Instance();
+	CEffects_Factory::Get_Instance()->Destroy_Instance();
 
 	CLoading_Manager::Get_Instance()->Destroy_Instance();
 	CUser::Get_Instance()->Destroy_Instance();
