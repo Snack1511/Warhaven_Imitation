@@ -36,6 +36,7 @@ public:
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
 public:
+	_float4 Get_Color() { return m_vColor; }
 	void Set_Color(_float4 vColor) { m_vColor = vColor; }
 
 protected:

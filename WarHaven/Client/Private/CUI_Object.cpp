@@ -31,7 +31,7 @@ HRESULT CUI_Object::Initialize_Prototype()
 	Set_Pos(0.f, 0.f);
 	Set_Scale(100.f);
 
-	m_wstrUIName = TEXT("UI_Object");
+	m_wstrName = TEXT("UI_Object");
 
 	return S_OK;
 }

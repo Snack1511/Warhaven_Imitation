@@ -26,8 +26,8 @@ public:
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
 public:
-	wstring Get_UIName() { return m_wstrUIName; }
-	void Set_UIName(wstring str) { m_wstrUIName = str; }
+	wstring Get_Name() { return m_wstrName; }
+	void Set_Name(wstring str) { m_wstrName = str; }
 
 	_bool Get_MouseTarget() { return m_bIsMouseTarget; }
 	void Set_MouseTarget(_bool value) { m_bIsMouseTarget = value; }
@@ -36,7 +36,7 @@ public:
 	void Set_MultiTexture(_bool value) { m_bIsMultiTex = value; }
 
 private:
-	wstring m_wstrUIName;
+	wstring m_wstrName;
 
 	CUI_Text* m_pText = nullptr;
 	CUI_Button* m_pButton = nullptr;

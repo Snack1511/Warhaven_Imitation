@@ -138,7 +138,7 @@ void CWindow_UI::Show_UIList()
 	{
 		for (_uint i = 0; i < m_vecUI.size(); ++i)
 		{
-			if (ImGui::Selectable(CFunctor::To_String(m_vecUI[i].pUI->Get_UIName()).c_str(), m_vecUI[i].bSelected))
+			if (ImGui::Selectable(CFunctor::To_String(m_vecUI[i].pUI->Get_Name()).c_str(), m_vecUI[i].bSelected))
 			{
 				m_iSelectIndex = i;
 				m_vecUI[i].bSelected = true;
@@ -181,7 +181,7 @@ void CWindow_UI::Set_Object_Info()
 		if (ImGui::InputText("UI_Object", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
 		{
 			wstring wstr(strName, &strName[128]);
-			pUI->Set_UIName(wstr);
+			pUI->Set_Name(wstr);
 		}
 	}
 
@@ -275,8 +275,6 @@ void CWindow_UI::UI_IO()
 		if (ImGui::Button("Select Save"))
 			Save_UI_Info(m_iSelectIndex);
 
-		ImGui::NewLine();
-
 		if (ImGui::Button("All Load"))
 			Load_UI_List();
 
@@ -294,7 +292,7 @@ void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
 	CUI_Object* pUI = m_vecUI[iSelectIndex].pUI;
 
 	string savePath = "../Bin/Data/UIData/";
-	savePath += CFunctor::To_String(pUI->Get_UIName()).c_str();
+	savePath += CFunctor::To_String(pUI->Get_Name()).c_str();
 	savePath += ".bin";
 
 	ofstream	writeFile(savePath, ios::binary);
@@ -305,7 +303,7 @@ void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
 		return;
 	}
 
-	string strName = CFunctor::To_String(pUI->Get_UIName());
+	string strName = CFunctor::To_String(pUI->Get_Name());
 	CUtility_File::Write_Text(&writeFile, strName.c_str());
 
 	_float4 vPos = pUI->Get_Transform()->Get_World(WORLD_POS);
@@ -319,6 +317,9 @@ void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
 
 	_bool bMulti = pUI->Get_MultiTexture();
 	writeFile.write((char*)&bMulti, sizeof(_bool));
+
+	_float4 vColor = pUI->Get_Color();
+	writeFile.write((char*)&vColor, sizeof(_float4));
 
 	CTexture* pTexture = GET_COMPONENT_FROM(pUI, CTexture);
 
@@ -362,7 +363,7 @@ void CWindow_UI::Load_UI_List()
 			CUI_Object* pUI = Add_UI();
 
 			string strName = CUtility_File::Read_Text(&readFile);
-			pUI->Set_UIName(CFunctor::To_Wstring(strName));
+			pUI->Set_Name(CFunctor::To_Wstring(strName));
 
 			_float4 vPos;
 			readFile.read((char*)&vPos, sizeof(_float4));
@@ -379,6 +380,10 @@ void CWindow_UI::Load_UI_List()
 			_bool bMulti = false;
 			readFile.read((char*)&bMulti, sizeof(_bool));
 			pUI->Set_MultiTexture(bMulti);
+
+			_float4 vColor;
+			readFile.read((char*)&vColor, sizeof(_float4));
+			pUI->Set_Color(vColor);
 
 			_uint iMaxSize = 0;
 			readFile.read((char*)&iMaxSize, sizeof(_uint));
