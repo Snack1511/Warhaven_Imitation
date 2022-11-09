@@ -69,7 +69,7 @@ void CUI::Set_Scale(_float fX, _float fY)
 	m_pTransform->Set_Scale(m_vResultScale);
 }
 
-void CUI::Set_ScaleMultiple(_float value)
+void CUI::Set_ScaleRatio(_float value)
 {
 	m_fScaleMulitple = value;
 	m_vResultScale = m_vOriginScale * m_fScaleMulitple;

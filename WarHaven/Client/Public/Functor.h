@@ -14,7 +14,8 @@ public:
 	static string	To_String(wstring wstrText);
 	static wstring	To_Wstring(string wstrText);
 
-	static string	Remove_String(string str);
+	// value : 뒤에서부터 ? 앞에서부터
+	static string	Remove_String(string str, _bool value = true);
 
 	static _float	Lerp_Float(const _float& fSour, const _float& fDest, const _float& fRatio);
 

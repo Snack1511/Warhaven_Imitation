@@ -200,8 +200,8 @@ void CWindow_UI::Set_Object_Info()
 			if (ImGui::DragFloat2("XY", fScale, 1.f, 1.f, 9999.f))
 				pUI->Set_Scale(fScale[0], fScale[1]);
 
-			if (ImGui::DragFloat("Multiple", &m_fScale, 0.1f, 0.1f, 999.f))
-				pUI->Set_ScaleMultiple(m_fScale);
+			if (ImGui::DragFloat("Ratio", &m_fScale, 0.1f, 0.1f, 999.f))
+				pUI->Set_ScaleRatio(m_fScale);
 
 			ImGui::TreePop();
 		}
@@ -419,6 +419,8 @@ void CWindow_UI::Load_UI_List()
 		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
 
 		strLoadPath += strFileName;
+
+		// 뒤에를 잘라야 하는데 앞에를 자름
 
 		ifstream readFile(strLoadPath, ios::binary);
 

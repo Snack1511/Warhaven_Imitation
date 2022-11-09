@@ -30,7 +30,7 @@ public:
 public:
 	void Set_Scale(_float value);
 	void Set_Scale(_float fX, _float fY);
-	void Set_ScaleMultiple(_float value);
+	void Set_ScaleRatio(_float value);
 
 public:
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
