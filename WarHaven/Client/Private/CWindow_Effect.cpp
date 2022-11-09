@@ -405,6 +405,8 @@ void CWindow_Effect::Show_EffectTab()
 			}
 			if (ImGui::Selectable("DISSOLVE", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISSOLVE;
+			if (ImGui::Selectable("CLAMP", &bSelect[VTXEFFECT_PASS_CLAMP]))
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_CLAMP;
 
 			pModelCom->Set_ShaderPassToAll(pCurEffect->m_iPassType);
 
@@ -688,6 +690,79 @@ void CWindow_Effect::Show_EffectTab()
 				pCurEffect->m_vFadeOutTargetScale.z = vFadeOutTargetScale[2];
 			}
 
+			static _bool	g_bDirX = true;
+			static _bool	g_bDirY = false;
+			static _bool	g_bDirZ = false;
+			if (ImGui::RadioButton("Dir X", g_bDirX))
+			{
+				g_bDirX = true;
+				g_bDirY = false;
+				g_bDirZ = false;
+				pCurEffect->Get_Transform()->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
+				pCurEffect->m_vTurnDir = _float4(g_bDirX, g_bDirY, g_bDirZ, 0.f);
+			}
+			ImGui::SameLine();
+
+			if (ImGui::RadioButton("Dir Y", g_bDirY))
+			{
+				g_bDirX = false;
+				g_bDirY = true;
+				g_bDirZ = false;
+				pCurEffect->Get_Transform()->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
+				pCurEffect->m_vTurnDir = _float4(g_bDirX, g_bDirY, g_bDirZ, 0.f);
+			}
+			ImGui::SameLine();
+
+			if (ImGui::RadioButton("Dir Z", g_bDirZ))
+			{
+				g_bDirX = false;
+				g_bDirY = false;
+				g_bDirZ = true;
+				pCurEffect->Get_Transform()->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
+				pCurEffect->m_vTurnDir = _float4(g_bDirX, g_bDirY, g_bDirZ, 0.f);
+			}
+
+			if (ImGui::InputFloat("Turn Speed", &pCurEffect->m_fTurnSpeed, 0.1f))
+			{
+			}
+
+
+
+
+			static _bool	g_bRotDirX = true;
+			static _bool	g_bRotDirY = false;
+			static _bool	g_bRotDirZ = false;
+			if (ImGui::RadioButton("Rot X", g_bRotDirX))
+			{
+				g_bRotDirX = true;
+				g_bRotDirY = false;
+				g_bRotDirZ = false;
+				pCurEffect->m_vRotationDir = _float4(g_bRotDirX, g_bRotDirY, g_bRotDirZ, 0.f);
+			}
+			ImGui::SameLine();
+
+			if (ImGui::RadioButton("Rot Y", g_bRotDirY))
+			{
+				g_bRotDirX = false;
+				g_bRotDirY = true;
+				g_bRotDirZ = false;
+				pCurEffect->m_vRotationDir = _float4(g_bRotDirX, g_bRotDirY, g_bRotDirZ, 0.f);
+
+			}
+			ImGui::SameLine();
+
+			if (ImGui::RadioButton("Rot Z", g_bRotDirZ))
+			{
+				g_bRotDirX = false;
+				g_bRotDirY = false;
+				g_bRotDirZ = true;
+				pCurEffect->m_vRotationDir = _float4(g_bRotDirX, g_bRotDirY, g_bRotDirZ, 0.f);
+
+			}
+
+			if (ImGui::InputFloat("Rot Angle", &pCurEffect->m_fAngle, 0.1f))
+			{
+			}
 
 		}
 
@@ -1105,6 +1180,8 @@ void CWindow_Effect::Show_ParticleTab()
 				tCurData.fFadeOutTimeRange = fFIST4[1];
 			}
 
+
+
 		}
 
 
@@ -1186,6 +1263,11 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&pCurEffect->m_vPlusColor, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_fColorPower, sizeof(_float));
 		writeFile.write((char*)&pCurEffect->m_fDissolvePower, sizeof(_float));
+
+		writeFile.write((char*)&pCurEffect->m_vTurnDir, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_fTurnSpeed, sizeof(_float));
+		writeFile.write((char*)&pCurEffect->m_vRotationDir, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_fAngle, sizeof(_float));
 	
 		writeFile.close();
 		break;

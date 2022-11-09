@@ -23,6 +23,7 @@
 #include "Functor.h"
 #include "CCollider_Sphere.h"
 #include "CRectEffects.h"
+#include "CUtility_Transform.h"
 
 
 
@@ -76,6 +77,7 @@ CEffect* CEffect::Create_Effect_FromBinFile(string strFileKey)
 			pModelCom->Change_Texture(0, aiTextureType_REFLECTION, pNewEffect->m_wstrMaskMapPath);
 			pModelCom->Change_Texture(0, 1, pNewEffect->m_wstrColorMapPath);
 			pModelCom->Change_Texture(0, aiTextureType_DIFFUSE_ROUGHNESS, pNewEffect->m_wstrNoiseMapPath);
+
 		}
 
 		break;
@@ -255,6 +257,7 @@ HRESULT CEffect::Initialize_Prototype()
 	Add_Component<CRenderer>(pRenderer);
 	Add_Component(CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, m_wstrPath.c_str(), m_matTrans));
 
+	Add_Component(CPhysics::Create(CP_BEFORE_RENDERER));
 	/*if (m_bEffectFlag & EFFECT_COLLIDER)
 	{
 		CCollider_Sphere* pCollider = CComponent_Factory::Clone_Component<CCollider_Sphere>(this);
@@ -359,6 +362,7 @@ void CEffect::My_Tick()
 
 void CEffect::My_LateTick()
 {
+	UPdate_Turn();
 
 	if (m_bEffectFlag & EFFECT_REFBONE)
 	{
@@ -506,4 +510,15 @@ void CEffect::Update_Fade()
 	m_pTransform->Make_WorldMatrix();
 
 
+}
+
+void CEffect::UPdate_Turn()
+{
+
+	//CUtility_Transform::Rotation(m_pTransform, m_vRotationDir.Normalize(), m_fAngle);
+
+	CUtility_Transform::Turn(m_pTransform, m_vTurnDir.Normalize(), m_fTurnSpeed);
+
+	m_pTransform->Make_WorldMatrix();
+	
 }
