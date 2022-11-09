@@ -30,20 +30,27 @@ public:
 public:
 	void Set_Scale(_float value);
 	void Set_Scale(_float fX, _float fY);
-
-public:
-	void SetMouseTarget(_bool value) { m_bIsMouseTarget = value; }
+	void Set_ScaleRatio(_float value);
 
 public:
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
+public:
+	void Set_Color(_float4 vColor) { m_vColor = vColor; }
+
 protected:
-	map<_hashcode, CUI_Component*> m_pUIComponentMap;
+	_float4 m_vPosition = {};
+
+	_float4 m_vOriginScale;
+	_float m_fScaleMulitple = 1.f;
+	_float4 m_vResultScale;
+
+	RECT m_tRect;
+	POINT m_ptMouse;
 
 	CTexture* m_pTexture = nullptr;
 
-	VTXTEX_PASS_TYPE m_ePass;
-	_bool m_bIsOnMouse = false;
+	_float4 m_vColor = { 1.f, 1.f, 1.f, 1.f };
 
 protected:
 	// These will be called by Set_Enable Func.
@@ -55,16 +62,7 @@ protected:
 protected:
 	HRESULT SetTexture(const _tchar* pFilePath, _uint iIndex = 1);
 
-protected:
-	virtual void OnMouse();
-
-private:
-	_float4 m_vPosition = {};
-	_float4 m_vScale = {};
-
-private:
-	_bool m_bIsMouseTarget = false;
-
+	void CheckInRect();
 };
 
 END

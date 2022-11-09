@@ -17,7 +17,7 @@ public:
 public:
 	virtual	HRESULT	Initialize_Prototype() PURE;
 	virtual	HRESULT	Initialize() PURE;
-	virtual void	Start() { OnEnable(); }
+	virtual void	Start() PURE;
 	virtual void	Tick() PURE;
 	virtual void	Late_Tick() PURE;
 
@@ -28,9 +28,6 @@ protected:
 	CUI* m_pSubject = nullptr;
 
 protected:
-	virtual	void	OnEnable();
-	virtual	void	OnDisable();
-
 	virtual	void	Release() PURE;
 
 private:

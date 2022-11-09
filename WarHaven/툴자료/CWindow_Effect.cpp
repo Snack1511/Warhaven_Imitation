@@ -1201,6 +1201,7 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&pCurEffect->m_vFadeOutTargetScale, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_fTargetAlpha, sizeof(_float));
 
+
 		writeFile.close();
 		break;
 	}

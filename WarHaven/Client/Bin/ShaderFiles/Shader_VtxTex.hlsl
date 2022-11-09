@@ -11,7 +11,8 @@ float	g_fAlpha = 1.f;
 float	g_fProgress = 1.0f;
 float	g_fProgressY = 0.4f;
 
-vector	g_vColor;
+float4	g_vColor;
+
 vector	g_vFlag;
 vector	g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
@@ -152,8 +153,8 @@ PS_OUT PS_UIColor_MAIN(PS_IN In)
 	PS_OUT		Out = (PS_OUT)0;
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
-	Out.vColor.w *= g_fAlpha;
+		
+	Out.vColor *= g_vColor;
 
 	if (Out.vColor.w < 0.01f)
 		discard;

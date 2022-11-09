@@ -21,21 +21,14 @@ CUI::~CUI()
 
 HRESULT CUI::Initialize_Prototype()
 {
-	// 이미지를 출력할 메쉬 렉트 생성
 	Add_Component<CMesh>(CMesh_Rect::Create(0));
 
-	// 셰이더 생성
-	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXTEX,
-		VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
+	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXTEX, VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 	pShader->Initialize();
 	Add_Component(pShader);
 
-	// 렌더러 생성 및 패스 설정
-	CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT
-		, _float4(0.f, 0.f, 0.f, 1.f));
+	CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT, _float4(0.f, 0.f, 0.f, 1.f));
 	Add_Component<CRenderer>(pRenderer);
-
-	// 원본 객체가 생성될 때마다 UI 자료구조에 할당하여 IMGUI에서 불러옴
 
 	return S_OK;
 }
@@ -44,32 +37,43 @@ HRESULT CUI::Start()
 {
 	__super::Start();
 
-	// 이미지 컴포넌트가 있을 경우에만 Texture를 출력
-	// 이미지 컴포넌트는 멤버변수로 해당 이미지의 주소와 불러올 이미지 개수를 받아옴
+	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource, this, placeholders::_1, "g_vColor");
 
 	return S_OK;
 }
 
 void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
+	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
 }
 
 void CUI::Set_Pos(_float fX, _float fY)
 {
-	Get_Transform()->Set_World(WORLD_POS, _float4(fX, fY, 0.f));
+	m_vPosition.x = fX;
+	m_vPosition.y = fY;
+	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, 0.f));
 }
 
 void CUI::Set_Scale(_float value)
 {
-	m_vScale = value;
-	m_pTransform->Set_Scale(m_vScale);
+	m_vOriginScale = value;
+	m_vResultScale = m_vOriginScale * m_fScaleMulitple;
+	m_pTransform->Set_Scale(m_vResultScale);
 }
 
 void CUI::Set_Scale(_float fX, _float fY)
 {
-	m_vScale.x = fX;
-	m_vScale.y = fY;
-	m_pTransform->Set_Scale(m_vScale);
+	m_vOriginScale.x = fX;
+	m_vOriginScale.y = fY;
+	m_vResultScale = m_vOriginScale * m_fScaleMulitple;
+	m_pTransform->Set_Scale(m_vResultScale);
+}
+
+void CUI::Set_ScaleRatio(_float value)
+{
+	m_fScaleMulitple = value;
+	m_vResultScale = m_vOriginScale * m_fScaleMulitple;
+	m_pTransform->Set_Scale(m_vResultScale);
 }
 
 void CUI::OnEnable()
@@ -84,10 +88,12 @@ void CUI::OnDisable()
 
 void CUI::My_Tick()
 {
+	__super::My_Tick();
 }
 
 void CUI::My_LateTick()
 {
+	__super::My_LateTick();
 }
 
 HRESULT CUI::SetTexture(const _tchar* pFilePath, _uint iIndex)
@@ -104,6 +110,17 @@ HRESULT CUI::SetTexture(const _tchar* pFilePath, _uint iIndex)
 	return S_OK;
 }
 
-void CUI::OnMouse()
+void CUI::CheckInRect()
 {
+	_float4 newPos = XMVectorSet((m_vPosition.x + 640.f), -m_vPosition.y + 360.f, 0.f, 1.f);
+
+	int left = int(newPos.x - m_vResultScale.x * 0.5f);
+	int top = int(newPos.y - m_vResultScale.y * 0.5f);
+	int right = int(newPos.x + m_vResultScale.x * 0.5f);
+	int bottom = int(newPos.y + m_vResultScale.y * 0.5f);
+	SetRect(&m_tRect, left, top, right, bottom);
+
+	GetCursorPos(&m_ptMouse);
+
+	ScreenToClient(g_hWnd, &m_ptMouse);
 }
