@@ -17,15 +17,12 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
-public:
-	void Set_Portrait(_uint iIndex);
-
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;;
 
 private:
-	void Get_Texture();
+	CLASS_TYPE m_eType = CLASS_END;
 };
 
 END

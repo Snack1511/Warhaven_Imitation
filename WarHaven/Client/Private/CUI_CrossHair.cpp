@@ -17,7 +17,7 @@ CUI_Crosshair::~CUI_Crosshair()
 
 HRESULT CUI_Crosshair::Initialize_Prototype()
 {
-	Read_File("Crosshair");
+	Read_UI("Crosshair");
 
 	return S_OK;
 }
