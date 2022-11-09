@@ -59,7 +59,6 @@ HRESULT CWarrior_Attack_01::Initialize()
 
 void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
 {
-
     // 황소 베기
     if (m_iAnimIndex == 24)
     {
@@ -144,7 +143,7 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
         return STATE_WALK_PLAYER;
     
 
-    if (m_iAnimIndex == 24 && pAnimator->Is_CurAnimFinished())
+    if (m_iAnimIndex == 24)
     {
         if (KEY(Q, NONE))
         {
@@ -153,7 +152,7 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
             pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
             pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.f);
         }
-        else
+        else if(pAnimator->Is_CurAnimFinished())
         {
             m_iAnimIndex = 25;
 
@@ -187,6 +186,8 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
             pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
             pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.f);
         }
+
+        
     }
 
     // 황소 베기와 오른쪽 공격 같은 것들을 넣어줘야함.

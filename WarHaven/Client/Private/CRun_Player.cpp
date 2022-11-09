@@ -374,7 +374,7 @@ STATE_TYPE CRun_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         // Key(A)
         else if (KEY(A, HOLD))
         {
-            // RunBegin 
+           
             if (m_eAnimType == ANIM_BASE_R)
             {
                 if (m_iAnimIndex != 30)
