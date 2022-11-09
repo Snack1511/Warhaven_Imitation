@@ -371,7 +371,6 @@ HRESULT CWindow_Navi::Render()
 
 			writeFile.close();
 			Call_MsgBox(L"Save ¼º°ø");
-
 		}
 
 

@@ -1,3 +1,4 @@
+#define MJDEVELOP
 #include "stdafx.h"
 #include "CLevel_Test.h"
 
@@ -12,7 +13,7 @@
 #include "CTerrain.h"
 #include "CUnit_Warrior.h"
 
-#include "CStructure.h"
+#include "CPickingStructure.h"
 
 #include "CCamera_Free.h"
 
@@ -69,7 +70,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
 	m_fLoadingFinish = 0.1f;
 	CTerrain* pTerrain = CTerrain::Create(100, 100);
-	Ready_GameObject(pTerrain, GROUP_DECORATION);
+	Ready_GameObject(pTerrain, GROUP_DEFAULT);
 
 	m_fLoadingFinish = 0.2f;
 
@@ -208,11 +209,19 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
-	CStructure* pStruct = CStructure::Create();
-	if (!pStruct)
-		return E_FAIL;
-	pStruct->Initialize();
-	Ready_GameObject(pStruct, GROUP_DECORATION);
+	//CPickingStructure* pStruct = CPickingStructure::Create();
+	//if (!pStruct)
+	//	return E_FAIL;
+	//pStruct->Initialize();
+	//Ready_GameObject(pStruct, GROUP_DECORATION);
+
+	//_float4x4 mat;
+	//mat.Identity();
+	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
+	//if (nullptr == pTestStruct)
+	//	return E_FAIL;
+	//pTestStruct->Initialize();
+	//Ready_GameObject(pTestStruct, GROUP_DECORATION);
 
 	return S_OK;
 }

@@ -145,6 +145,50 @@ _bool CPicking_Manager::Is_Picked(CMesh* pMesh, _float4* pOut, _float4* pOutNorm
 	return false;
 }
 
+_bool CPicking_Manager::Is_Picked(CGameObject* pGameObject, _float4* pOut, _float4* pOutNormal)
+{
+	Compute_WorldRay();
+
+	//
+	_float4 vViewPos = CGameInstance::Get_Instance()->Get_ViewPos();
+	_float4 vPickedPos, vPickedNormal;
+	_float fDist, fMin = 9999.f;
+	_float4 vFinalPickedPos, vFinalPickedNormal;
+
+	vector<pair<_uint, CMeshContainer*>>& vecMeshContainers = GET_COMPONENT_FROM(pGameObject, CModel)->Get_MeshContainers();
+
+	for (auto& pMesh : vecMeshContainers)
+	{
+		if (Is_Picked(pMesh.second, &vPickedPos, &vPickedNormal))
+		{
+			fDist = (vPickedPos - vViewPos).Length();
+			if (fMin > fDist)
+			{
+				fMin = fDist;
+				vFinalPickedPos = vPickedPos;
+				vFinalPickedNormal = vPickedNormal;
+			}
+		}
+	}
+
+
+
+	if (fMin != 9999.f)
+	{
+		*pOut = vFinalPickedPos;
+
+		if (pOutNormal)
+			*pOutNormal = vPickedNormal;
+
+		return true;
+	}
+
+
+
+	return false;
+
+}
+
 HRESULT CPicking_Manager::Initialize(const GRAPHICDESC& tGraphicDesc)
 {
 	m_GraphicDesc = tGraphicDesc;

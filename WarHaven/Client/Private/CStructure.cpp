@@ -25,6 +25,55 @@ CStructure::~CStructure()
 {
 }
 
+CStructure* CStructure::Create(wstring MeshPath)
+{
+	CStructure* pInstance = new CStructure;
+
+	if (FAILED(pInstance->SetUp_Model(MeshPath)))
+	{
+		SAFE_DELETE(pInstance);
+		Call_MsgBox(L"Failed to SetUp_Model : CStructure");
+		return nullptr;
+	}
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		SAFE_DELETE(pInstance);
+		Call_MsgBox(L"Failed to Initialize_Prototype : CStructure");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CStructure* CStructure::Create(wstring MeshPath, _float4x4 ObjectWorldMatrix)
+{
+	CStructure* pInstance = new CStructure;
+
+	if (FAILED(pInstance->SetUp_Model(MeshPath)))
+	{
+		SAFE_DELETE(pInstance);
+		Call_MsgBox(L"Failed to SetUp_Model : CStructure");
+		return nullptr;
+	}
+
+	if (FAILED(pInstance->SetUp_World(ObjectWorldMatrix)))
+	{
+		SAFE_DELETE(pInstance);
+		Call_MsgBox(L"Failed to SetUp_World : CStructure");
+		return nullptr;
+	}
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		SAFE_DELETE(pInstance);
+		Call_MsgBox(L"Failed to Initialize_Prototype : CStructure");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
 void CStructure::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos)
 {
 }
@@ -51,18 +100,7 @@ HRESULT CStructure::Initialize_Prototype()
 	CModel_Renderer* pRenderer = CModel_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXMODEL_PASS_DEFAULT
 		, _float4(0.f, 0.f, 0.f, 1.f));
 	pRenderer->Initialize();
-
 	Add_Component<CRenderer>(pRenderer);
-	_float4x4 matTrans;
-	matTrans.Identity();
-
-	//_matrix Mat = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	//XMStoreFloat4x4(&matTrans, Mat);
-	//D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Meshes\Map\Structure\Gate
-
-	CModel* pModel = CModel::Create(0, TYPE_NONANIM, TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.fbx"), DEFAULT_TRANS_MATRIX);
-	Add_Component(pModel);
-
 
 
 	return S_OK;
@@ -97,13 +135,39 @@ void CStructure::OnDisable()
 }
 
 
-HRESULT CStructure::SetUp_Model(const UNIT_MODEL_DATA& tData)
+HRESULT CStructure::SetUp_Model(wstring strModelPath)
 {
-    return S_OK;
+	_float4x4
+		TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f)
+		* XMMatrixRotationY(XMConvertToRadians(270.0f));
+	m_DebugPath = strModelPath;
+	CModel* pModel = CModel::Create(0, TYPE_NONANIM, strModelPath, TransformMatrix);
+
+	Add_Component(pModel);
+	return S_OK;
+}
+
+HRESULT CStructure::SetUp_World(_float4x4 worldMat)
+{
+	m_pTransform->Get_Transform().matMyWorld = worldMat;
+	m_pTransform->Make_WorldMatrix();
+	return S_OK;
 }
 
 void CStructure::My_Tick()
 {
+	//_float4 PickOutPos = _float4(0.f, 0.f, 0.f, 1.f);
+	//_float4 PickOutNorm = _float4(0.f, 0.f, 0.f, 1.f);
+	//if (KEY(LBUTTON, HOLD))
+	//{
+	//	if (GAMEINSTANCE->Is_Picked(
+	//		this,
+	//		&PickOutPos, &PickOutNorm))
+	//	{
+	//		//m_pTransform->Set_World();
+	//		//int a = 0;
+	//	}
+	//}
 }
 
 void CStructure::My_LateTick()

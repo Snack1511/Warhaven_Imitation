@@ -235,6 +235,9 @@
     <Filter Include="02. Design\04. Game_Manager\JJ">
       <UniqueIdentifier>{b9aadbf8-1156-4bce-b7ef-116b6e52ecab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\06. Map\Structure\PickingStructure">
+      <UniqueIdentifier>{eb2ef916-8197-4fc9-9b42-17b4211c8414}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -453,6 +456,9 @@
     <ClInclude Include="..\Public\CGame_Manager_JJ.h">
       <Filter>02. Design\04. Game_Manager\JJ</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CPickingStructure.h">
+      <Filter>03. Instances\02. GameObject\06. Map\Structure\PickingStructure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -654,6 +660,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGame_Manager_JJ.cpp">
       <Filter>02. Design\04. Game_Manager\JJ</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPickingStructure.cpp">
+      <Filter>03. Instances\02. GameObject\06. Map\Structure\PickingStructure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

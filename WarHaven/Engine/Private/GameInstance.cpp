@@ -336,6 +336,11 @@ _bool CGameInstance::Is_Picked(list<CGameObject*>& GameObjectList, _float4* pOut
 	return m_pPickingManager->Is_Picked(GameObjectList, pOut, pOutNormal);
 }
 
+_bool CGameInstance::Is_Picked(CGameObject* pGameObject, _float4* pOut, _float4* pOutNormal)
+{
+	return m_pPickingManager->Is_Picked(pGameObject, pOut, pOutNormal);
+}
+
 _bool CGameInstance::Is_Picked(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal)
 {
 	return m_pPickingManager->Is_Picked(pRenderer, pOut, pOutNormal);
