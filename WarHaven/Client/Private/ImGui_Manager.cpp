@@ -60,7 +60,7 @@ HRESULT CImGui_Manager::Initialize()
 #pragma region 윈도우 등록
 	m_arrWindows[IMGUI_DEFAULT] = CWindow_Default::Create();
 	m_arrWindows[IMGUI_SELECT] = CWindow_Select::Create();
-	m_arrWindows[IMGUI_UI] = nullptr;//CWindow_UI::Create();
+	m_arrWindows[IMGUI_UI] = CWindow_UI::Create();
 	m_arrWindows[IMGUI_MAPTOOL] = CWindow_Map::Create();
 	m_arrWindows[IMGUI_EFFECT] = CWindow_Effect::Create();
 #pragma endregion 윈도우 등록

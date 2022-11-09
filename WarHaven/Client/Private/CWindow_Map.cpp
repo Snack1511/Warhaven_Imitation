@@ -1239,8 +1239,8 @@ void CWindow_Map::Show_TreeData(TREE_DATA& tTree)
                     _int iFindExt = (int)strshiftFullPath.rfind(".") + 1;
                     string strExtName = strshiftFullPath.substr(iFindExt, strshiftFullPath.length() - iFindExt);
 
-                    if (strExtName == "dat")
-                        continue;
+                    //if (strExtName == "dat")
+                        //continue;
 
                     m_vecSelectedMeshFilePath.push_back(strshiftFullPath);
                     m_vecSelectedMeshName.push_back(strFileName);
