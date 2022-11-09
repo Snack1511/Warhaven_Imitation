@@ -169,6 +169,8 @@ HRESULT CLevel_Test::Exit()
 #include "CUI_Cursor.h"
 #include "CUI_HeroGauge.h"
 #include "CUI_HpBar.h"
+#include "CUI_Portrait.h"
+#include "CUI_Crosshair.h"
 
 HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 {
@@ -180,6 +182,12 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 	CUI_HpBar* pHpBar = CUI_HpBar::Create();
 	Ready_GameObject(pHpBar, GROUP_UI);
+
+	CUI_Portrait* pPort = CUI_Portrait::Create();
+	Ready_GameObject(pPort, GROUP_UI);
+
+	CUI_Crosshair* pCrosshair = CUI_Crosshair::Create();
+	Ready_GameObject(pCrosshair, GROUP_UI);
 
 	return S_OK;
 }

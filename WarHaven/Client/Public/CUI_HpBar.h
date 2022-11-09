@@ -27,6 +27,8 @@ public:
 
 private:
 	_float m_fValue = 0.f;
+
+	_float m_fHPValue = 1.f;
 };
 
 END

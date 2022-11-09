@@ -136,3 +136,52 @@ void CUI_Wrapper::Load_UI(wstring m_wstrName)
 
     readFile.close();
 }
+
+CUI_Object* CUI_Wrapper::Load_UI(string m_wstrName)
+{
+    ifstream	readFile(m_wstrName, ios::binary);
+
+    if (!readFile.is_open())
+    {
+        Call_MsgBox(L"UI Load Failed");
+        return nullptr;
+    }
+
+    CUI_Object* pUI = CUI_Object::Create();
+
+    string strName = CUtility_File::Read_Text(&readFile);
+    pUI->Set_Name(CFunctor::To_Wstring(strName));
+
+    _float4 vPos;
+    readFile.read((char*)&vPos, sizeof(_float4));
+    pUI->Set_Pos(vPos.x, vPos.y);
+
+    _float4 vScale;
+    readFile.read((char*)&vScale, sizeof(_float4));
+    pUI->Set_Scale(vScale.x, vScale.y);
+
+    _bool bTarget = false;
+    readFile.read((char*)&bTarget, sizeof(_bool));
+    pUI->Set_MouseTarget(bTarget);
+
+    _bool bMulti = false;
+    readFile.read((char*)&bMulti, sizeof(_bool));
+    pUI->Set_MultiTexture(bMulti);
+
+    _float4 vColor;
+    readFile.read((char*)&vColor, sizeof(_float4));
+    pUI->Set_Color(vColor);
+
+    _uint iMaxSize = 0;
+    readFile.read((char*)&iMaxSize, sizeof(_uint));
+
+    for (_uint i = 0; i < iMaxSize; ++i)
+    {
+        string strPath = CUtility_File::Read_Text(&readFile);
+        pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
+    }
+
+    readFile.close();
+
+    return pUI;
+}

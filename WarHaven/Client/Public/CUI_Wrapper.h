@@ -33,6 +33,9 @@ protected:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
+protected:
+	CUI_Object* Load_UI(string m_wstrName);
+
 private:
 	void Load_UI(wstring m_wstrName);
 };

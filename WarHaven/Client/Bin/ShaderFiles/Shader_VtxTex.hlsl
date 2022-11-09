@@ -17,6 +17,8 @@ vector g_vFlag;
 vector g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 float g_fValue;
+float g_fHpValue;
+
 bool g_bAppear;
 
 
@@ -172,9 +174,12 @@ PS_OUT PS_HPBAR(PS_IN In)
     In.vTexUV.x -= g_fValue;
       
     vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
-        
+    
     Out.vColor.xyz *= saturate(vNoise.r + 0.95f);
     Out.vColor.xyz *= saturate(vNormal.r + 0.95f);
+    
+    if (In.vTexUV.x >= g_fHpValue)
+        discard;
     
     if (Out.vColor.w < 0.01f)
         discard;

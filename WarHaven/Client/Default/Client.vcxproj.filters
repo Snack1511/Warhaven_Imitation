@@ -265,6 +265,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Hp">
       <UniqueIdentifier>{7d943caf-c5b6-40db-ac10-fc78b426c290}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Portrait">
+      <UniqueIdentifier>{e04cf9a6-f562-4abd-b27c-c1d1b034a13c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -501,11 +504,14 @@
     <ClInclude Include="..\Public\CUI_HeroGauge.h">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_CrossHair.h">
+    <ClInclude Include="..\Public\CUI_Crosshair.h">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\CrossHair</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HpBar.h">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Hp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Portrait.h">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Portrait</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -727,11 +733,14 @@
     <ClCompile Include="..\Private\CUI_HeroGauge.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_CrossHair.cpp">
+    <ClCompile Include="..\Private\CUI_Crosshair.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\CrossHair</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HpBar.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Hp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Portrait.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Portrait</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

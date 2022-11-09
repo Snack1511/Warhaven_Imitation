@@ -3,13 +3,14 @@
 #include "Renderer.h"
 #include "CUI_Object.h"
 #include "GameInstance.h"
+#include "Texture.h"
 
 CUI_HpBar::CUI_HpBar()
 {
 }
 
 CUI_HpBar::CUI_HpBar(const CUI_HpBar& Prototype)
-    : CUI_Wrapper(Prototype)
+	: CUI_Wrapper(Prototype)
 {
 }
 
@@ -39,6 +40,7 @@ HRESULT CUI_HpBar::Initialize()
 HRESULT CUI_HpBar::Start()
 {
 	GET_COMPONENT_FROM(m_pUI, CShader)->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResources, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pUI, CShader)->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResources, this, placeholders::_1, "g_fHpValue");
 
 	__super::Start();
 
@@ -50,6 +52,7 @@ void CUI_HpBar::My_Tick()
 	__super::My_Tick();
 
 	m_fValue += fDT(0) * 0.1f;
+	m_fHPValue -= fDT(0) * 0.5f;
 }
 
 void CUI_HpBar::My_LateTick()
@@ -60,5 +63,5 @@ void CUI_HpBar::My_LateTick()
 void CUI_HpBar::Set_ShaderResources(CShader* pShader, const char* pConstName)
 {
 	GET_COMPONENT_FROM(m_pUI, CShader)->Set_RawValue("g_fValue", &m_fValue, sizeof(_float));
-
+	GET_COMPONENT_FROM(m_pUI, CShader)->Set_RawValue("g_fHpValue", &m_fHPValue, sizeof(_float));
 }
