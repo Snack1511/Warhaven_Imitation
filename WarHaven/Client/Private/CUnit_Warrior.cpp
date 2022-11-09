@@ -5,7 +5,7 @@
 
 #include "Model.h"
 #include "CAnimator.h"
-
+#include "CColorController.h"
 CUnit_Warrior::CUnit_Warrior()
 {
 }
@@ -45,30 +45,34 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	//  기본적으로 L_Base 가 없는 Unit Mesh 가 있으면 L_Base 를 제거하고 Add_Animation 을 수행하자.
 	
 	//0. R_Base
-	//CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/warrior/SKEL_Warrior_Base_R.fbx");
-	//if (!pAnimator)
-	//	return E_FAIL;
-	
-	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/Spearman/A_AttackStab_Spearman_01.fbx");
+	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/warrior/SKEL_Warrior_Base_R.fbx");
 	if (!pAnimator)
 		return E_FAIL;
+	
+	//CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/Spearman/A_AttackStab_Spearman_01.fbx");
+	//if (!pAnimator)
+	//	return E_FAIL;
 
 	
-	////1. L_Base
-	//pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Base_L.fbx");
+	//1. L_Base
+	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Base_L.fbx");
 
-	////2. Attack
-	//pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Attack.fbx");
+	//2. Attack
+	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Attack.fbx");
 
-	////3. hit
-	//pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Hit.fbx");
+	//3. hit
+	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Hit.fbx");
 
-	////4. ETCK
-	//pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_ETC.fbx");
-
-
+	//4. ETCK
+	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_ETC.fbx");
 
 
+	CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
+
+	if (!pCController)
+		return E_FAIL;
+
+	Add_Component(pCController);
 
 	Add_Component(pAnimator);
 
@@ -79,6 +83,11 @@ HRESULT CUnit_Warrior::Initialize()
 {
 	__super::Initialize();
 
+	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_WEAPON, SH_LIGHT_DEFAULT);
+	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_BODY, _float4(1, 0, 0, 0));
+	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_HEAD, SH_LIGHT_DEFAULT);
+	
+	GET_COMPONENT(CColorController)->Set_ColorControll(this, MODEL_PART_WEAPON, _float4(1, 1, 1, 1), _float4(0, 0, 0, 0), 2.f);
 	return S_OK;
 }
 

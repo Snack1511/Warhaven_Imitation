@@ -154,6 +154,21 @@ CTexture* CModel::Get_TextureFromParts(_uint iMeshPartType, _uint iMeshPartType2
 	return nullptr;
 }
 
+_float4x4 CModel::Get_BoneMatrix(const char* pBonename)
+{
+	_float4x4 BoneMatrix;
+	CHierarchyNode* pNode = Find_HierarchyNode(pBonename);
+	if (!pNode)
+		return BoneMatrix.Identity();
+
+	BoneMatrix = pNode->Get_CombinedMatrix();
+
+	BoneMatrix *= m_TransformMatrix;
+	BoneMatrix *= m_pOwner->Get_Transform()->Get_WorldMatrix();
+
+	return BoneMatrix;
+}
+
 void CModel::Set_NewModel(wstring wstrModelFilePath)
 {
 	m_wstrModelFilePath = wstrModelFilePath;
@@ -231,6 +246,15 @@ void CModel::Set_ShaderFlag(_uint iMeshPartType, _float4 vFlag)
 	{
 		if (elem.first == iMeshPartType)
 			elem.second->Set_ShaderFlag(vFlag);
+	}
+}
+
+void CModel::Set_ShaderColor(_uint iMeshPartType, _float4 vColor)
+{
+	for (auto& elem : m_MeshContainers)
+	{
+		if (elem.first == iMeshPartType)
+			elem.second->Set_Color(vColor);
 	}
 }
 

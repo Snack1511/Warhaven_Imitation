@@ -69,8 +69,6 @@ ComPtr<ID3D11ShaderResourceView> CResource_Manager::Get_Texture(wstring wstrFile
 		if (FAILED(hr))
 		{
 			return Get_Texture(L"../bin/resources/textures/white.png");
-			hr = DirectX::CreateWICTextureFromFile(PDEVICE, L"../bin/resources/textures/white.png", nullptr, pSRV.GetAddressOf());
-			//Call_MsgBox(L"Cant Find Texture");
 		}
 
 		m_mapTextures.emplace(make_pair(Convert_ToHash(wstrFilePath), pSRV));

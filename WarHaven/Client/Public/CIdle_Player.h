@@ -22,6 +22,13 @@ public:
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
+	_float m_fCreateTime = 0.016f; //аж╠Б
+	_float m_fCreateTimeAcc = 0.f;
+
+private:
+
+
+private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 };
 
