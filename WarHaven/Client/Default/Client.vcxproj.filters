@@ -148,12 +148,6 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object">
       <UniqueIdentifier>{c5067414-7568-4150-bbe4-b1cf625ee711}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\03.Play">
-      <UniqueIdentifier>{8505f12e-d113-4e5b-b7ea-c052cd4abb3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\03.Play\HUD">
-      <UniqueIdentifier>{36dd6ad8-7f0c-4498-bf31-2dd2926ec2c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\01. Level\02.Level_Logo">
       <UniqueIdentifier>{8d56d1ae-6203-49bf-8e2b-b4dfe22c1f78}</UniqueIdentifier>
     </Filter>
@@ -255,6 +249,18 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper">
       <UniqueIdentifier>{df70e0fd-717d-4898-9003-9ee5dff3f0a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play">
+      <UniqueIdentifier>{dd6f1321-fc66-4e02-b5b2-eb90124295ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD">
+      <UniqueIdentifier>{cf100bac-50b2-400a-83a4-b47fbfbf0520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge">
+      <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\CrossHair">
+      <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -489,6 +495,12 @@
     <ClInclude Include="..\Public\CPickingStructure.h">
       <Filter>03. Instances\02. GameObject\06. Map\Structure\PickingStructure</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_HeroGauge.h">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_CrossHair.h">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\CrossHair</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -705,6 +717,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPickingStructure.cpp">
       <Filter>03. Instances\02. GameObject\06. Map\Structure\PickingStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_HeroGauge.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_CrossHair.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\CrossHair</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

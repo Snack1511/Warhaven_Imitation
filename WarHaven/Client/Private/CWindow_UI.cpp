@@ -197,16 +197,28 @@ void CWindow_UI::Set_Object_Info()
 			ImGui::TreePop();
 		}
 
-		// 토글버튼으로 토글이 활성화 되어 있으면 스케일 배수 아닐 경우 하나씩 증가
 		if (ImGui::TreeNode("Scale"))
 		{
 			_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
 			float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
 			if (ImGui::DragFloat2("XY", fScale, 1.f, 1.f, 9999.f))
+			{
+				for (int i = 0; i < 2; ++i)
+				{
+					if (fScale[i] <= 1.f)
+						fScale[i] = 1.f;
+				}
+
 				pUI->Set_Scale(fScale[0], fScale[1]);
+			}
 
 			if (ImGui::DragFloat("Ratio", &m_fScale, 0.1f, 0.1f, 999.f))
+			{
+				if (m_fScale <= 0.1f)
+					m_fScale = 0.1f;
+
 				pUI->Set_ScaleRatio(m_fScale);
+			}
 
 			ImGui::TreePop();
 		}
@@ -333,8 +345,6 @@ void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
 	}
 
 	writeFile.close();
-
-	Call_MsgBox(L"UI_Object Save Succes");
 }
 
 void CWindow_UI::Save_UI_List()
@@ -397,7 +407,7 @@ void CWindow_UI::Load_UI_List()
 			readFile.close();
 
 			Call_MsgBox(L"UI_Object Load Succes");
-		}		
+		}
 	}
 }
 

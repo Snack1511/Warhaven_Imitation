@@ -3,7 +3,7 @@
 
 BEGIN(Client)
 
-class CUI_LoadingBG : public CUI
+class CUI_LoadingBG final : public CUI
 {
 	DECLARE_PROTOTYPE(CUI_LoadingBG);
 	DECLARE_GAMEOBJECT(CUI_LoadingBG);

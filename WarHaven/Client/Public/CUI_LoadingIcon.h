@@ -5,7 +5,7 @@
 
 BEGIN(Client)
 
-class CUI_LoadingIcon : public CUI
+class CUI_LoadingIcon final : public CUI
 {
 	DECLARE_PROTOTYPE(CUI_LoadingIcon);
 	DECLARE_GAMEOBJECT(CUI_LoadingIcon);
@@ -25,6 +25,7 @@ public:
 
 public:
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
+
 private:
 	CTexture* m_pIconDissolveTexture = nullptr;
 

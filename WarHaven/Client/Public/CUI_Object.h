@@ -6,7 +6,7 @@ BEGIN(Client)
 class CUI_Button;
 class CUI_Text;
 
-class CUI_Object : public CUI
+class CUI_Object final : public CUI
 {
 	DECLARE_PROTOTYPE(CUI_Object);
 	DECLARE_GAMEOBJECT(CUI_Object);

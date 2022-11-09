@@ -3,7 +3,7 @@
 
 BEGIN(Client)
 
-class CUI_Logo : public CUI
+class CUI_Logo final : public CUI
 {
 	DECLARE_PROTOTYPE(CUI_Logo);
 	DECLARE_GAMEOBJECT(CUI_Logo);
