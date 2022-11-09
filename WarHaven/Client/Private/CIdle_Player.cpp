@@ -60,6 +60,8 @@ HRESULT CIdle_Player::Initialize()
     m_vecAdjState.push_back(STATE_WALK_PLAYER);
     m_vecAdjState.push_back(STATE_RUN_PLAYER);
     m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
+    m_vecAdjState.push_back(STATE_JUMP_PLAYER);
+    m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
 
 
     return S_OK;
@@ -88,33 +90,12 @@ STATE_TYPE CIdle_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
     {
-        // 만약 R to RF 상태라면(오른쪽 -> 오른쪽 정면)
-        if(m_iAnimIndex == 35)
-        {
-            // RF_Idle 상태로 바꾼다.
-            m_iAnimIndex = 48;
-
-            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-        }
-
         // 만약 RF to L 상태라면(오른쪽 정면 -> 왼쪽)
         if (m_iAnimIndex == 53)
         {
             // RF_Idle 상태로 바꾼다.
             m_eAnimType = ANIM_BASE_L;
             m_iAnimIndex = 3;
-
-            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-        }
-
-        // 만약 RF to LF 상태라면(오른쪽 정면 -> 왼쪽 정면)
-        if (m_iAnimIndex == 54)
-        {
-            // LF_Idle 상태로 바꾼다.
-            m_eAnimType = ANIM_BASE_L;
-            m_iAnimIndex = 40;
 
             pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
             pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
@@ -128,38 +109,8 @@ STATE_TYPE CIdle_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
             m_iAnimIndex = 11;
 
             pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
+            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.2f);
         }
-
-        // 만약 LF to L 상태라면(왼쪽 정면 -> 오른쪽)
-        if (m_iAnimIndex == 27)
-        {
-            // LF_Idle 상태로 바꾼다.
-            m_eAnimType = ANIM_BASE_L;
-            m_iAnimIndex = 3;
-
-            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-        }
-
-        if (m_iAnimIndex == 46)
-        {
-            // LF_Idle 상태로 바꾼다.
-            m_eAnimType = ANIM_BASE_L;
-            m_iAnimIndex = 11;
-
-            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-        }
-
-        
-
-        //Switch_Right_And_Left(ANIM_BASE_R, 35, 48, pAnimator);
-        //Switch_Right_And_Left(ANIM_BASE_R, 54, 40, pAnimator);
-        //Switch_Right_And_Left(ANIM_BASE_R, 53, 3, pAnimator);
-        //Switch_Right_And_Left(ANIM_BASE_L, 27, 11, pAnimator);
-        //Switch_Right_And_Left(ANIM_BASE_L, 45, 3, pAnimator);
-        //Switch_Right_And_Left(ANIM_BASE_L, 46, 11, pAnimator);
     }
         
     if (KEY(R, TAP))
@@ -167,18 +118,20 @@ STATE_TYPE CIdle_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         // 만약 오른쪽으로 들고있으면
         if (m_eAnimType == ANIM_BASE_R)
         {
-            // Idle 상태이며 && // 만약 R to RF 상태가 들어오지 않았다면
-            if (m_iAnimIndex == 11 && m_iAnimIndex != 35)
+            // Idle 상태이며 && R to L 상태가 들어오지 않았다면
+            if (m_iAnimIndex == 11 && m_iAnimIndex != 53)
             {
-                m_iAnimIndex = 35;
+                m_iAnimIndex = 53;
 
                 pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
+                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.2f);
             }
         }
+    }
 
-        // 만약 왼쪽으로 들고있으면
-        else if (m_eAnimType == ANIM_BASE_L)
+    else if (KEY(E, TAP))
+    {
+        if (m_eAnimType == ANIM_BASE_L)
         {
             // Idle 상태이며 && // 만약 L to R 상태가 들어오지 않았다면
             if (m_iAnimIndex == 3 && m_iAnimIndex != 27)
@@ -186,69 +139,10 @@ STATE_TYPE CIdle_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
                 m_iAnimIndex = 27;
 
                 pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-            }
-        }
-    }
-
-    else if (KEY(E, TAP))
-    {
-        // 만약 오른쪽 정면으로 들고있으면
-        if (m_eAnimType == ANIM_BASE_R)
-        {
-            // Idle 상태이며 && RF to L 상태가 들어오지 않았다면
-            if (m_iAnimIndex == 48 && m_iAnimIndex != 53)
-            {
-                m_iAnimIndex = 53;
-
-                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
+                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.f);
             }
         }
 
-        // 만약 왼쪽 정면으로 들고있으면
-        else if (m_eAnimType == ANIM_BASE_L)
-        {
-            // Idle 상태이며 && // 만약 LF to L 상태가 들어오지 않았다면
-            if (m_iAnimIndex == 40 && m_iAnimIndex != 45)
-            {
-                m_iAnimIndex = 45;
-
-                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-            }
-        }
-
-       
-    }
-
-    else  if (KEY(Q, TAP))
-    {
-        // 만약 오른쪽 정면으로 들고있으면
-        if (m_eAnimType == ANIM_BASE_R)
-        {
-            // Idle 상태이며 && RF to LF 상태가 들어오지 않았다면
-            if (m_iAnimIndex == 48 && m_iAnimIndex != 54)
-            {
-                m_iAnimIndex = 54;
-
-                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-            }
-        }
-
-        // 만약 왼쪽 정면으로 들고있으면
-        else if (m_eAnimType == ANIM_BASE_L)
-        {
-            // Idle 상태이며 && // 만약 LF to R 상태가 들어오지 않았다면
-            if (m_iAnimIndex == 40 && m_iAnimIndex != 46)
-            {
-                m_iAnimIndex = 46;
-
-                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-            }
-        }
     }
 
     return __super::Tick(pOwner, pAnimator);
@@ -266,9 +160,12 @@ STATE_TYPE CIdle_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     */
 
 
-
-    if (pAnimator->Is_CurAnimFinished())
-        return m_eStateType;
+    if (KEY(SPACE, NONE))
+    {
+        if (pAnimator->Is_CurAnimFinished())
+            return m_eStateType;
+    }
+  
 
 
     return STATE_END;

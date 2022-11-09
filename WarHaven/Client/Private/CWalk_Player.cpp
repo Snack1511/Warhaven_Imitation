@@ -51,6 +51,7 @@ HRESULT CWalk_Player::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
     m_vecAdjState.push_back(STATE_RUN_PLAYER);
+    m_vecAdjState.push_back(STATE_JUMP_PLAYER);
 
     //m_vecAdjState.push_back(STATE_SILDING);
     //m_vecAdjState.push_back(STATE_RUN);
@@ -359,17 +360,24 @@ STATE_TYPE CWalk_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     // W 랑 D 를 누르면 왼쪽 옆으로 이동한다.
 
     // 만약 WASD 를 눌렀다면
-    if (KEY(CTRL, HOLD))
+
+    // 점프를 하지 않고
+    if (KEY(SPACE, NONE))
     {
-        if (KEY(W, HOLD) ||
-            KEY(A, HOLD) ||
-            KEY(S, HOLD) ||
-            KEY(D, HOLD))
+        // 천천히 
+        if (KEY(CTRL, HOLD))
         {
+            // 걸어간다.
+            if (KEY(W, HOLD) ||
+                KEY(A, HOLD) ||
+                KEY(S, HOLD) ||
+                KEY(D, HOLD))
+            {
 
-            return m_eStateType;
+                return m_eStateType;
+            }
+
         }
-
     }
    
         //CTRL 로 바꾸셈.

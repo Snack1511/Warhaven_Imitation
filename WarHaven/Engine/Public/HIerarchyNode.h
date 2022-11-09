@@ -69,12 +69,20 @@ public:
 	void	Release();
 
 private:
+	_bool			m_bMoveNode = false;
+
 	_uint			m_iDepth = 0;
 	char			m_szName[MAX_PATH] = "";
 
 	_float4x4		m_OffsetMatrix;
 	_float4x4		m_TransformationMatrix;
 	_float4x4		m_CombinedTransformationMatrix;
+
+	_float4x4		m_CurCombinedTransformationMatrix;
+	_float4x4		m_PrevCombinedTransformationMatrix;
+	_float4x4		m_SendCombinedTransformationMatrix;
+
+	_float4x4		m_StoreCombinedTransformationMatrix;
 
 	CHierarchyNode*	m_pParent = nullptr;
 	vector<CHierarchyNode*>	m_pChildrenNodes;
