@@ -33,6 +33,7 @@ public:
 	void Set_ScaleRatio(_float value);
 
 public:
+	HRESULT SetTexture(const _tchar* pFilePath, _uint iIndex = 1);
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
 public:
@@ -61,8 +62,6 @@ protected:
 	virtual void	My_LateTick();
 
 protected:
-	HRESULT SetTexture(const _tchar* pFilePath, _uint iIndex = 1);
-
 	void CheckInRect();
 };
 

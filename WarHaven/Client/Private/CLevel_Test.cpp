@@ -168,11 +168,18 @@ HRESULT CLevel_Test::Exit()
 
 #include "CUI_Cursor.h"
 #include "CUI_HeroGauge.h"
+#include "CUI_HpBar.h"
 
 HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 {
+	CUI_Cursor* pCursor = CUI_Cursor::Create();
+	Ready_GameObject(pCursor, GROUP_UI);
+
 	CUI_HeroGauge* pHeroGauge = CUI_HeroGauge::Create();
 	Ready_GameObject(pHeroGauge, GROUP_UI);
+
+	CUI_HpBar* pHpBar = CUI_HpBar::Create();
+	Ready_GameObject(pHpBar, GROUP_UI);
 
 	return S_OK;
 }

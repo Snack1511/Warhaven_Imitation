@@ -405,9 +405,9 @@ void CWindow_UI::Load_UI_List()
 			}
 
 			readFile.close();
-
-			Call_MsgBox(L"UI_Object Load Succes");
 		}
+
+		Call_MsgBox(L"UI_Object Load Succes");
 	}
 }
 
