@@ -41,6 +41,7 @@ public:
 
 private:
 	TREE_DATA	m_TextureRootNode;
+	TREE_DATA	m_BinRootNode;
 
 	vector<UI_Object> m_vecUI;
 
@@ -72,7 +73,6 @@ private:
 	void Save_UI_Info(_uint iSelectIndex);
 	void Save_UI_List();
 
-	void Load_UI_Info(string pFileName);
 	void Load_UI_List();
 
 	void Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree);

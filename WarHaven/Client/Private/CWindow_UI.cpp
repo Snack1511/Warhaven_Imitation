@@ -42,10 +42,17 @@ HRESULT CWindow_UI::Initialize()
 	m_bEnable = false;
 	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(300.f, 250.f), window_flags);
 
+	// 유아이 리소스
 	m_TextureRootNode.strFolderPath = "../bin/resources/textures";
 	m_TextureRootNode.strFileName = "UI";
 	m_TextureRootNode.strFullPath = "../bin/resources/textures/UI";
 	Read_Folder("../bin/resources/textures/UI", m_TextureRootNode);
+
+	// 유아이 객체 정보
+	m_BinRootNode.strFolderPath = "../Bin/Data";
+	m_BinRootNode.strFileName = "UIData";
+	m_BinRootNode.strFullPath = "../Bin/Data/UIData";
+	Read_Folder("../Bin/Data/UIData", m_BinRootNode);
 
 	return S_OK;
 }
@@ -73,8 +80,6 @@ HRESULT CWindow_UI::Render()
 
 	if (m_iSelectIndex < 9999)
 	{
-
-
 		Show_Inspector();
 	}
 
@@ -333,108 +338,27 @@ void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
 
 void CWindow_UI::Save_UI_List()
 {
-	string savePath = "../Bin/Data/UIData/UIListInfo.bin";
-
-	ofstream	writeFile(savePath, ios::binary);
-
-	if (!writeFile.is_open())
-	{
-		Call_MsgBox(L"UI Save Failed");
-		return;
-	}
-
-	_uint iSize = m_vecUI.size();
-	writeFile.write((char*)&iSize, sizeof(_uint));
-
 	for (_uint i = 0; i < m_vecUI.size(); ++i)
 		Save_UI_Info(i);
-
-	writeFile.close();
 
 	Call_MsgBox(L"UI_List Save Succes");
 }
 
-void Load_UI_Info(string pFileName)
-{
-	/*string strLoadPath = "../Bin/Data/UIData/";
-	strLoadPath += pFileName;
-	strLoadPath += ".bin";
-
-	ifstream readFile(strLoadPath, ios::binary);
-
-	if (!readFile.is_open())
-	{
-		Call_MsgBox(L"UI Load Failed");
-		return;
-	}
-
-	CUI_Object* pUI = Add_UI();
-
-	string strName = CUtility_File::Read_Text(&readFile);
-	pUI->Set_UIName(CFunctor::To_Wstring(strName));
-
-	_float4 vPos;
-	readFile.read((char*)&vPos, sizeof(_float4));
-	pUI->Set_Pos(vPos.x, vPos.y);
-
-	_float4 vScale;
-	readFile.read((char*)&vScale, sizeof(_float4));
-	pUI->Set_Scale(vScale.x, vScale.y);
-
-	_bool bTarget = false;
-	readFile.read((char*)&bTarget, sizeof(_bool));
-	pUI->Set_MouseTarget(bTarget);
-
-	_bool bMulti = false;
-	readFile.read((char*)&bMulti, sizeof(_bool));
-	pUI->Set_MultiTexture(bMulti);
-
-	_uint iMaxSize = 0;
-	readFile.read((char*)&iMaxSize, sizeof(_uint));
-
-	for (_uint i = 0; i < iMaxSize; ++i)
-	{
-		string strPath = CUtility_File::Read_Text(&readFile);
-		pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
-	}
-
-	readFile.close();
-
-	Call_MsgBox(L"UI_Object Save Succes");*/
-}
-
 void CWindow_UI::Load_UI_List()
 {
-	string strLoadPath = "../Bin/Data/UIData/";
-
-	for (filesystem::directory_iterator FileIter(strLoadPath); FileIter != filesystem::end(FileIter); ++FileIter)
+	if (!m_BinRootNode.vecChildren.empty())
 	{
-		const filesystem::directory_entry& entry = *FileIter;
-
-		wstring wstrPath = entry.path().relative_path();
-		string strFullPath;
-		strFullPath.assign(wstrPath.begin(), wstrPath.end());
-
-		_int iFind = (_int)strFullPath.rfind("/") + 1;
-		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
-
-		strLoadPath += strFileName;
-
-		// 뒤에를 잘라야 하는데 앞에를 자름
-
-		ifstream readFile(strLoadPath, ios::binary);
-
-		if (!readFile.is_open())
-		{
-			Call_MsgBox(L"UI Load Failed");
-			return;
-		}
-
-		_uint iSize = 0;
-		readFile.read((char*)&iSize, sizeof(_uint));
-
+		_uint iSize = m_BinRootNode.vecChildren.size();
 		for (_uint i = 0; i < iSize; ++i)
 		{
+			ifstream readFile(m_BinRootNode.vecChildren[i].strFullPath, ios::binary);
+
+			if (!readFile.is_open())
+			{
+				Call_MsgBox(L"UI Load Failed");
+				return;
+			}
+
 			CUI_Object* pUI = Add_UI();
 
 			string strName = CUtility_File::Read_Text(&readFile);
@@ -464,14 +388,12 @@ void CWindow_UI::Load_UI_List()
 				string strPath = CUtility_File::Read_Text(&readFile);
 				pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
 			}
-		}
 
-		readFile.close();
+			readFile.close();
 
-		strLoadPath = CFunctor::Remove_String(strLoadPath);
+			Call_MsgBox(L"UI_Object Load Succes");
+		}		
 	}
-
-	Call_MsgBox(L"UI_Object Load Succes");
 }
 
 void CWindow_UI::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
