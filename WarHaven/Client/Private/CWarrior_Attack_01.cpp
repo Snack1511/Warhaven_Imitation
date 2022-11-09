@@ -64,6 +64,10 @@ HRESULT CWarrior_Attack_01::Initialize()
 
 void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
 {
+    
+
+
+
     // 황소 베기
     if (m_iAnimIndex == 24)
     {
@@ -229,7 +233,19 @@ STATE_TYPE CWarrior_Attack_01::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
     if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
     {
         m_iAnimIndex = 0;
-        GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(pOwner, MODEL_PART_WEAPON, _float4(1, 0.5, 0, 1), _float4(1, 1, 1, 0), 10.f);
+        CColorController::COLORDESC tColorDesc;
+        ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+        tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+        tColorDesc.fFadeInStartTime = 1.f;
+        tColorDesc.fFadeInTime = 1.f;
+        tColorDesc.fFadeOutStartTime = 1.f;
+        tColorDesc.fFadeOutTime = 1.f;
+        tColorDesc.vTargetColor = _float4(1.f, 0.f, 0.f, 1.f);
+        tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+        tColorDesc.iStartKeyFrame = 10;
+        tColorDesc.iEndKeyFrame = 30;
+        GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
         pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
 

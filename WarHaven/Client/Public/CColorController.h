@@ -6,12 +6,44 @@ BEGIN(Engine)
 class CMeshContainer;
 class CGameObject;
 class CModel;
+class CAnimator;
 END
 
 BEGIN(Client)
 class CColorController 
 	: public CComponent
 {
+public:
+	enum FADE_STYLE{TIME, KEYFRAME, FADESTYLE_END};
+
+	struct COLORDESC
+	{
+		enum FADETYPE
+		{
+			FADEINREADY,
+			FADEIN,
+			FADEOUTREADY,
+			FADEOUT,
+			FADE_END,
+		};
+		FADE_STYLE	eFadeStyle = FADESTYLE_END;
+
+		_float		fFadeInStartTime = 0.f;
+		_float		fFadeInTime = 0.f;
+		_float		fFadeOutStartTime = 9999.f;
+		_float		fFadeOutTime = 0.f;
+
+		
+
+		_float4 vCurColor = {};
+		_float4 vTargetColor = {};
+
+
+		_uint iMeshPartType = 0;
+		_uint iStartKeyFrame = 0;
+		_uint iEndKeyFrame = 0;
+	};
+
 public:
 	DECLARE_PROTOTYPE(CColorController);
 
@@ -22,8 +54,8 @@ private:
 public:
 	static CColorController* Create(_uint iGroupIdx);
 
-public:
-	HRESULT Set_ColorControll(CGameObject* pOwner, _uint iMeshPartType, _float4 vStartColor, _float4 vEndColor, _float EndTime);
+public: //starttime > 몇초부터 변할지 endtime > starttime으로부터 걸리는 시간
+	HRESULT Set_ColorControll(const COLORDESC& tColorDesc);
 
 public:
 	// CComponent을(를) 통해 상속
@@ -38,19 +70,22 @@ public:
 	virtual void OnDead()	override;
 
 private:
-	CModel* pTargetModel = nullptr;
-	_float4 m_vStartColor = {};
-	_float4 m_vEndColor = {};
-	_float4 m_vFadeInColor = {};
-	_float4 m_vFadeOutColor = {};
-	_float m_fEndTime = 0.f;
-	_float m_fTimeAcc = 0.f;
-	_float m_fFadeinTime = 0.f;
-	_float m_fFadeOutTime = 0.f;
-	_uint m_iMeshPartType = 0;
+	CModel* m_pTargetModel = nullptr;
+	CAnimator* m_pTargetAnimator = nullptr;
+
+	_float		m_fFadeTimeAcc = 0.f;
+	COLORDESC::FADETYPE	m_eCurFadeType = COLORDESC::FADEINREADY;
+
+
+	_float4 m_vOriginColor[MODEL_PART_END];
+	_uint	m_iCurModelPart = 0;
 
 private:
+	COLORDESC m_tColorDesc;
 
+private:
 	void LerpColor();
+	void Fade_Time();
+	void Fade_KeyFrame();
 };
 END

@@ -169,6 +169,16 @@ _float4x4 CModel::Get_BoneMatrix(const char* pBonename)
 	return BoneMatrix;
 }
 
+_float4 CModel::Get_Color(_uint iMeshPartType)
+{
+	for (auto& elem : m_MeshContainers)
+	{
+		if (elem.first == iMeshPartType)
+			return elem.second->m_vColor;
+	}
+
+	return ZERO_VECTOR;
+}
 void CModel::Set_NewModel(wstring wstrModelFilePath)
 {
 	m_wstrModelFilePath = wstrModelFilePath;
