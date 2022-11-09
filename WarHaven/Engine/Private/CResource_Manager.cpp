@@ -537,6 +537,11 @@ void CResource_Manager::Release()
 	{
 		SAFE_DELETE(elem.second);
 	}
+
+	for (auto& elem : m_mapTextures)
+	{
+		elem.second.Reset();
+	}
 }
 
 CResource* CResource_Manager::Find_Resource(wstring strResourceKey)

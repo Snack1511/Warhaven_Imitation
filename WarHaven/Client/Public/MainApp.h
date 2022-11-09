@@ -21,6 +21,7 @@ public:
 
 private:
 	CGameInstance*			m_pGameInstance = nullptr;
+	//PxPvd* m_pPVD;
 
 private:
 	HRESULT Render();

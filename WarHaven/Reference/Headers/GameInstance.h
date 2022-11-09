@@ -92,8 +92,6 @@ public:/* For.Resource_Manager*/
 	ComPtr<ID3D11ShaderResourceView>	Get_Texture(wstring wstrFilePath);
 
 public: /* For.PhysX_Manager*/
-<<<<<<< HEAD
-=======
 	//HRESULT	Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
 	//HRESULT	Delete_Scene(CPhysX_Manager::Scene eScene);
 	//HRESULT	Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
@@ -105,7 +103,6 @@ public: /* For.PhysX_Manager*/
 	//PxRigidStatic* Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, PxMaterial* pMaterial = nullptr);
 	//void			Begin_PhysScene();
 	//void			End_PhysScene();
->>>>>>> 221108testing
 
 public:	/* For. Render_Manager */
 	void	Bake_StaticShadow(vector <CGameObject*>& MapList, _float fDistance);

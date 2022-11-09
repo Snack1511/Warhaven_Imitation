@@ -14,6 +14,8 @@
 #include "CDefault_Effect.h"
 #include "CSword_Effect.h"
 
+#include "CCamera_Default.h"
+
 IMPLEMENT_SINGLETON(CEffects_Factory);
 
 CEffects_Factory::CEffects_Factory()
@@ -29,6 +31,7 @@ HRESULT CEffects_Factory::Initialize()
 	//이펙트 만들어놓기
 	if(FAILED(Add_Effect(HASHCODE(CSword_Effect), CSword_Effect::Create())))
 		return E_FAIL;
+
 
 	if (FAILED(SetUp_MultiEffects()))
 		return E_FAIL;
@@ -303,7 +306,7 @@ HRESULT CEffects_Factory::Add_Effect(_hashcode _hcCode, CEffect* pEffect)
 	if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(pEffect, _hcCode)))
 		return E_FAIL;
 
-	m_Effects.emplace(_hcCode, list<CEffect*>());
+	//m_Effects.emplace(_hcCode, list<CEffect*>());
 
 
 	return S_OK;
@@ -413,9 +416,6 @@ HRESULT CEffects_Factory::Combine_EffectsGroup(list<string>& listTemp, _hashcode
 HRESULT CEffects_Factory::SetUp_MultiEffects()
 {
 	list<string>	listTemp = Read_AllEffectsFile("../bin/effects");
-
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"CJ_Start"), "CJ_Start")))
-		return E_FAIL;
 
 	
 

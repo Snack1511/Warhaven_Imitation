@@ -29,32 +29,32 @@ private:
 	virtual ~CPhysX_Manager();
 
 public:
-	/*PxConvexMesh*	Get_ShapeTemplate(COLSHAPE eShape) { return m_ShapeTemplate[eShape]; }
+	PxConvexMesh*	Get_ShapeTemplate(COLSHAPE eShape) { return m_ShapeTemplate[eShape]; }
 	void			Set_ShapeSphere(PxSphereGeometry* pGeometry) { m_pSphere = pGeometry; }
 	void			Set_ShapeBox(PxBoxGeometry* pGeometry) { m_pBox = pGeometry; }
 
 	void			Begin_PhysScene() { m_bSceneStart = true; }
-	void			End_PhysScene() { m_bSceneStart = false; }*/
+	void			End_PhysScene() { m_bSceneStart = false; }
 
 public:
 	HRESULT	Initialize();
 	void	Tick();
 	void	Release();
 
-//public:
-//	// Transform 에는 (float3)위치와 (float4)쿼터니온이 들어간다.
-//	HRESULT			Create_Scene(Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
-//	HRESULT			Delete_Scene(Scene eScene);
-//	HRESULT			Change_Scene(Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
-//
-//	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, const PxReal& Density, const PxVec3& velocity = PxVec3(0), PxMaterial* pMaterial = nullptr);
-//	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, PxMaterial* pMaterial = nullptr);
-//	
-//	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
-//	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
-//	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
-//	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, PxShape ** ppOut);
-//
+public:
+	// Transform 에는 (float3)위치와 (float4)쿼터니온이 들어간다.
+	HRESULT			Create_Scene(Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
+	HRESULT			Delete_Scene(Scene eScene);
+	HRESULT			Change_Scene(Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
+
+	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, const PxReal& Density, const PxVec3& velocity = PxVec3(0), PxMaterial* pMaterial = nullptr);
+	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, PxMaterial* pMaterial = nullptr);
+	
+	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
+	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
+	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
+	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, PxShape ** ppOut);
+
 private:
 	// Foundation을 생성하는데 필요한 변수
 	PxDefaultAllocator		m_Allocator;

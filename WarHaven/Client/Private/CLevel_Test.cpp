@@ -95,7 +95,9 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 		return E_FAIL;
 	m_fLoadingFinish = 0.7f;
 
-	CEffects_Factory::Get_Instance()->Initialize();
+
+	if (FAILED(CEffects_Factory::Get_Instance()->Initialize()))
+		return E_FAIL;
 
 
 	CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"FreeCam");
