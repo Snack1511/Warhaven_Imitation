@@ -223,6 +223,9 @@
     <Filter Include="02. Singleton\02. Design\19. PhysX_Manager">
       <UniqueIdentifier>{737b1200-a635-4fae-b316-2927dccb3384}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99. Default\PhysX">
+      <UniqueIdentifier>{5845ba72-0bd0-4a88-82d4-72d62866a1fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
