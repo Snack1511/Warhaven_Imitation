@@ -201,6 +201,7 @@
     <ClInclude Include="..\Public\CLevel_Main.h" />
     <ClInclude Include="..\public\CLevel_Test.h" />
     <ClInclude Include="..\Public\CRectEffects.h" />
+    <ClInclude Include="..\Public\CRun_Player.h" />
     <ClInclude Include="..\Public\CScript_FollowCam.h" />
     <ClInclude Include="..\Public\CPickingStructure.h" />
     <ClInclude Include="..\public\CScript_Freecam.h" />
@@ -230,6 +231,7 @@
     <ClInclude Include="..\Public\CUI_Wrapper.h" />
     <ClInclude Include="..\public\CUnit.h" />
     <ClInclude Include="..\Public\CStructure_TestStructure.h" />
+    <ClInclude Include="..\Public\CUnit_Spearman.h" />
     <ClInclude Include="..\public\CUnit_Warrior.h" />
     <ClInclude Include="..\public\CUser.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -238,6 +240,8 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CUtility_Transform.h" />
+    <ClInclude Include="..\public\CWalk_Player.h" />
+    <ClInclude Include="..\public\CWarrior_Attack_01.h" />
     <ClInclude Include="..\public\CWindow_Default.h" />
     <ClInclude Include="..\Public\CWindow_Effect.h" />
     <ClInclude Include="..\Public\CWindow_Map.h" />
@@ -278,6 +282,7 @@
     <ClCompile Include="..\Private\CLevel_Test.cpp" />
     <ClCompile Include="..\Private\Client_Defines.cpp" />
     <ClCompile Include="..\Private\CRectEffects.cpp" />
+    <ClCompile Include="..\Private\CRun_Player.cpp" />
     <ClCompile Include="..\Private\CScript_FollowCam.cpp" />
     <ClCompile Include="..\Private\CPickingStructure.cpp" />
     <ClCompile Include="..\private\CScript_Freecam.cpp" />
@@ -307,9 +312,12 @@
     <ClCompile Include="..\Private\CUI_Wrapper.cpp" />
     <ClCompile Include="..\private\CUnit.cpp" />
     <ClCompile Include="..\Private\CStructure_TestStructure.cpp" />
+    <ClCompile Include="..\Private\CUnit_Spearman.cpp" />
     <ClCompile Include="..\private\CUnit_Warrior.cpp" />
     <ClCompile Include="..\private\CUser.cpp" />
     <ClCompile Include="..\private\CUtility_Transform.cpp" />
+    <ClCompile Include="..\private\CWalk_Player.cpp" />
+    <ClCompile Include="..\private\CWarrior_Attack_01.cpp" />
     <ClCompile Include="..\Private\CWindow_Default.cpp" />
     <ClCompile Include="..\Private\CWindow_Effect.cpp" />
     <ClCompile Include="..\Private\CWindow_Map.cpp" />

@@ -190,6 +190,21 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect\00. TestEffect">
       <UniqueIdentifier>{e1d3c056-0ef4-469d-8da2-b08bc529b452}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Spearman">
+      <UniqueIdentifier>{587217d8-7c7c-428a-90b4-4e365c31490e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base\02. Walk">
+      <UniqueIdentifier>{cb832d74-dbab-4e98-8fee-52fb44a03b60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Attack">
+      <UniqueIdentifier>{bd17e47c-1a88-4e2d-8cac-7a9d6dac22dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior">
+      <UniqueIdentifier>{13311606-46d8-449f-b97f-1d822a16819b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior\01">
+      <UniqueIdentifier>{c1e332bd-4ae5-47ec-8648-0b8a26ef86ac}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect">
       <UniqueIdentifier>{e5b6a7f5-5ba7-474b-8276-ed8a4383f686}</UniqueIdentifier>
     </Filter>
@@ -210,6 +225,9 @@
     </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool">
       <UniqueIdentifier>{bf927561-f572-4c65-946d-6c75c148b802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base\03. Run">
+      <UniqueIdentifier>{c051afa2-9df0-4e4c-b4a1-bff093e1935e}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\08. Effect\04. Sword_Effect">
       <UniqueIdentifier>{e2bc60ec-aebe-463d-b842-1b125c554e21}</UniqueIdentifier>
@@ -414,6 +432,15 @@
     <ClInclude Include="..\Public\CTestEffect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Spearman.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CWalk_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base\02. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CWarrior_Attack_01.h">
+      <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CWindow_Effect.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
     </ClInclude>
@@ -431,6 +458,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CInstancingEffects.h">
       <Filter>03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base\03. Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CSword_Effect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
@@ -619,6 +649,15 @@
     <ClCompile Include="..\Private\CTestEffect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Spearman.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CWalk_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base\02. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CWarrior_Attack_01.cpp">
+      <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\CWindow_Effect.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
     </ClCompile>
@@ -636,6 +675,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CRectEffects.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base\03. Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CSword_Effect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>

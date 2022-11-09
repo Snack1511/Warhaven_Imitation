@@ -69,14 +69,24 @@ void CUnit::On_PlusHp(_float fHp)
 	}
 }
 
-void CUnit::Enter_State(STATE_TYPE eType)
+void CUnit::Enter_State(STATE_TYPE eType, ANIM_TYPE eAnimType)
 {
 	if (m_pCurState)
+	{
 		m_pCurState->Exit(this, m_pAnimator);
+		m_eAnimType = m_pCurState->m_eAnimType;
+	}
 
 	SAFE_DELETE(m_pCurState);
 	m_eCurState = eType;
 	m_pCurState = CState_Manager::Get_Instance()->Get_State(eType)->Clone();
+
+	if(m_eAnimType == ANIM_BASE_L)
+		m_pCurState->Set_AnimType(ANIM_BASE_L);
+
+	if (m_eAnimType == ANIM_BASE_R)
+		m_pCurState->Set_AnimType(ANIM_BASE_R);
+
 	m_pCurState->Enter(this, m_pAnimator);
 }
 
@@ -216,14 +226,12 @@ void CUnit::My_Tick()
 		return;
 	}
 
-	Key_Input();
-
 	STATE_TYPE eNewState = STATE_END;
 	eNewState = m_pCurState->Tick(this, m_pAnimator);
 
 	if (STATE_END != eNewState)
 	{
-		Enter_State(eNewState);
+		Enter_State(eNewState, m_pCurState->m_eAnimType);
 	}
 }
 
@@ -232,12 +240,3 @@ void CUnit::My_LateTick()
 
 }
 
-void CUnit::Key_Input()
-{
-	// 현재 Select 된 객체는 Key_Input 을 사용할 수 있습니다.
-	if (true == m_bChoice)
-	{
-	
-	}
-
-}

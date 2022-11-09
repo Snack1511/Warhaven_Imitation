@@ -232,6 +232,21 @@ namespace Client
 	{
 		STATE_IDLE_PLAYER,
 
+		STATE_WALK_PLAYER,
+		STATE_RUN_PLAYER,
+
+
+
+
+
+
+
+
+
+		/* ATtack */
+
+		STATE_ATTACK_WARRIOR,
+
 
 		STATE_END,
 	};

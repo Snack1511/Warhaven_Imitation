@@ -28,6 +28,11 @@ public:
 	void	Fix_CursorPosToCenter();
 	void	KeyInput_FPSSetter();
 
+	KEY		Get_LastKey() { 
+		if (m_KeyCommands.empty())
+			return KEY::LAST;
+		return m_KeyCommands.back();
+	}
 	void	Clear_KeyCommands() { m_KeyCommands.clear(); }
 	void	Update_KeyCommands();
 

@@ -2,6 +2,9 @@
 #include "CState_Manager.h"
 
 #include "CIdle_Player.h"
+#include "CWalk_Player.h"
+#include "CWarrior_Attack_01.h"
+#include "CRun_Player.h"
 
 IMPLEMENT_SINGLETON(CState_Manager);
 
@@ -20,6 +23,9 @@ CState_Manager::~CState_Manager()
 HRESULT CState_Manager::Initialize()
 {
 	m_arrStates[STATE_IDLE_PLAYER] = CIdle_Player::Create();
+	m_arrStates[STATE_WALK_PLAYER] = CWalk_Player::Create();
+	m_arrStates[STATE_ATTACK_WARRIOR] = CWarrior_Attack_01::Create();
+	m_arrStates[STATE_RUN_PLAYER] = CRun_Player::Create();
 
 	for (_uint i = 0; i < STATE_END; ++i)
 	{
