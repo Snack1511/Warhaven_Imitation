@@ -83,13 +83,26 @@ void CUnit::Enter_State(STATE_TYPE eType, ANIM_TYPE eAnimType)
 	m_eCurState = eType;
 	m_pCurState = CState_Manager::Get_Instance()->Get_State(eType)->Clone();
 
+	if(m_eAnimType == ANIM_BASE_L)
+		m_pCurState->Set_AnimType(ANIM_BASE_L);
+
+	if (m_eAnimType == ANIM_BASE_R)
+		m_pCurState->Set_AnimType(ANIM_BASE_R);
+
+
 	if (CState_Manager::Get_Instance()->Get_State(eType)->m_eAnimType == ANIM_BASE_R ||
 		CState_Manager::Get_Instance()->Get_State(eType)->m_eAnimType == ANIM_BASE_L)
 	{
-		if(m_eAnimType != ANIM_ATTACK &&
+		/*if (m_eAnimType != ANIM_ATTACK &&
 			m_eAnimType != ANIM_HIT &&
 			m_eAnimType != ANIM_ETC)
-		m_pCurState->Set_AnimType(eAnimType);
+		
+		{
+			m_pCurState->m_bRight = true;
+			m_pCurState->Set_AnimType(eAnimType);
+	
+		}
+		*/
 	}
 
 	

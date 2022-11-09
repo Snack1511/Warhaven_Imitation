@@ -53,6 +53,8 @@ protected:
 	_float	m_fLoopSoundAcc = 0.f;
 	_float	m_fSoundLoopTime = 0.1f;
 
+	_bool	m_bRight = true;
+
 
 public:
 	virtual STATE_TYPE		Check_Condition(CUnit* pOwner, CAnimator* pAnimator) PURE;
