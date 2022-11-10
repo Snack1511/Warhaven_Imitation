@@ -31,7 +31,7 @@ HRESULT CUI_Object::Initialize_Prototype()
 	Set_Pos(0.f, 0.f);
 	Set_Scale(100.f);
 
-	m_wstrUIName = TEXT("UI_Object");
+	m_wstrName = TEXT("UI_Object");
 
 	return S_OK;
 }
@@ -85,8 +85,7 @@ void CUI_Object::My_Tick()
 {
 	__super::My_Tick();
 
-	if (m_bIsMouseTarget)
-		MouseEvent();
+	MouseEvent();
 }
 
 void CUI_Object::My_LateTick()
@@ -98,33 +97,27 @@ void CUI_Object::MouseEvent()
 {
 	CheckInRect();
 
-	m_bIsOnMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
+	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
 
-	if (m_bIsOnMouse)
+	if (m_bIsMouseTarget)
 	{
-		if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_TEST)
+		if (m_bIsInMouse)
 		{
-			if (KEY(LBUTTON, HOLD))
+			OnMouseEnter();
+
+			if (m_pButton)
 			{
-				_float4 vMousePos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
-				Set_Pos(vMousePos.x, -vMousePos.y);
+				// 버튼 이벤트 함수 호출
+
+				/*if (KEY(LBUTTON, TAP))
+				{
+					OnMouseClick();
+				}*/
 			}
 		}
-
-		OnMouseEnter();
-
-		if (m_pButton)
+		else
 		{
-			// 버튼 이벤트 함수 호출
-
-			/*if (KEY(LBUTTON, TAP))
-			{
-				OnMouseClick();
-			}*/
+			OnMouseExit();
 		}
-	}
-	else
-	{
-		OnMouseExit();
 	}
 }

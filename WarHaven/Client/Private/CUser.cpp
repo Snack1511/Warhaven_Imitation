@@ -71,13 +71,9 @@ void CUser::Fix_CursorPosToCenter()
 	/* Set Mouse Cursor on Center of Screen */
 	POINT ptMouse;
 	ptMouse = m_ptCenter;
+
 	::ClientToScreen(g_hWnd, &ptMouse);
-	::SetCursorPos(ptMouse.x, ptMouse.y);
-
-
-
-
-	
+	::SetCursorPos(ptMouse.x, ptMouse.y);	
 }
 
 void CUser::KeyInput_FPSSetter()

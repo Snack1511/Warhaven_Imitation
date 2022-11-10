@@ -168,15 +168,28 @@ HRESULT CLevel_Test::Exit()
 	return S_OK;
 }
 
-#include "CUI_Object.h"
 #include "CUI_Cursor.h"
+#include "CUI_HeroGauge.h"
+#include "CUI_HpBar.h"
+#include "CUI_Portrait.h"
+#include "CUI_Crosshair.h"
+
 HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 {
-	// CUI_Object* pUI_Object = CUI_Object::Create();
-	// Ready_GameObject(pUI_Object, GROUP_UI);
-
 	CUI_Cursor* pCursor = CUI_Cursor::Create();
 	Ready_GameObject(pCursor, GROUP_UI);
+
+	CUI_HeroGauge* pHeroGauge = CUI_HeroGauge::Create();
+	Ready_GameObject(pHeroGauge, GROUP_UI);
+
+	CUI_HpBar* pHpBar = CUI_HpBar::Create();
+	Ready_GameObject(pHpBar, GROUP_UI);
+
+	CUI_Portrait* pPort = CUI_Portrait::Create();
+	Ready_GameObject(pPort, GROUP_UI);
+
+	CUI_Crosshair* pCrosshair = CUI_Crosshair::Create();
+	Ready_GameObject(pCrosshair, GROUP_UI);
 
 	return S_OK;
 }

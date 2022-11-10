@@ -41,14 +41,16 @@ public:
 
 private:
 	TREE_DATA	m_TextureRootNode;
+	TREE_DATA	m_BinRootNode;
 
 	vector<UI_Object> m_vecUI;
+
+	CUI_Object* m_pSelectUI = nullptr;
 
 	_uint m_iSelectIndex = 9999;
 	wstring m_iSelectPath;
 
-	_float m_fScale = 1.f;
-
+	_float4 m_vDisPos;
 
 private:
 	void Create_UI();
@@ -57,6 +59,8 @@ private:
 	CUI_Object* Clone_UI();
 
 	void Show_UIList();
+
+	void Drag_Object();
 
 	void Show_Inspector();
 
@@ -67,14 +71,14 @@ private:
 	void Show_Texture();
 	void Show_Texture_Preview();
 
+private:
 	void UI_IO();
 
 	void Save_UI_Info(_uint iSelectIndex);
 	void Save_UI_List();
-
-	void Load_UI_Info(string pFileName);
 	void Load_UI_List();
 
+private:
 	void Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree);
 	void Show_TreeTexture(TREE_DATA& tTree, _uint iIndex);
 };

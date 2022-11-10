@@ -56,24 +56,15 @@ void CUI::Set_Pos(_float fX, _float fY)
 
 void CUI::Set_Scale(_float value)
 {
-	m_vOriginScale = value;
-	m_vResultScale = m_vOriginScale * m_fScaleMulitple;
-	m_pTransform->Set_Scale(m_vResultScale);
+	m_vScale = value;
+	m_pTransform->Set_Scale(m_vScale);
 }
 
 void CUI::Set_Scale(_float fX, _float fY)
 {
-	m_vOriginScale.x = fX;
-	m_vOriginScale.y = fY;
-	m_vResultScale = m_vOriginScale * m_fScaleMulitple;
-	m_pTransform->Set_Scale(m_vResultScale);
-}
-
-void CUI::Set_ScaleRatio(_float value)
-{
-	m_fScaleMulitple = value;
-	m_vResultScale = m_vOriginScale * m_fScaleMulitple;
-	m_pTransform->Set_Scale(m_vResultScale);
+	m_vScale.x = fX;
+	m_vScale.y = fY;
+	m_pTransform->Set_Scale(m_vScale);
 }
 
 void CUI::OnEnable()
@@ -114,10 +105,10 @@ void CUI::CheckInRect()
 {
 	_float4 newPos = XMVectorSet((m_vPosition.x + 640.f), -m_vPosition.y + 360.f, 0.f, 1.f);
 
-	int left = int(newPos.x - m_vResultScale.x * 0.5f);
-	int top = int(newPos.y - m_vResultScale.y * 0.5f);
-	int right = int(newPos.x + m_vResultScale.x * 0.5f);
-	int bottom = int(newPos.y + m_vResultScale.y * 0.5f);
+	int left = int(newPos.x - m_vScale.x * 0.5f);
+	int top = int(newPos.y - m_vScale.y * 0.5f);
+	int right = int(newPos.x + m_vScale.x * 0.5f);
+	int bottom = int(newPos.y + m_vScale.y * 0.5f);
 	SetRect(&m_tRect, left, top, right, bottom);
 
 	GetCursorPos(&m_ptMouse);
