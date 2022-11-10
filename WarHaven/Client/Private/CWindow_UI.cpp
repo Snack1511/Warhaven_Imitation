@@ -242,14 +242,12 @@ void CWindow_UI::Set_Object_Info()
 			_float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
 			_float fOriginScale[2] = { fScale[0], fScale[1] };
 			_float fRatio = fScale[1] / fScale[0];
+			ImGui::DragFloat2("Scale", fScale, 1.f, 1.f, 9999.f);
 
-			if (ImGui::DragFloat2("Scale", fScale, 1.f, 1.f, 9999.f))
+			for (int i = 0; i < 2; ++i)
 			{
-				for (int i = 0; i < 2; ++i)
-				{
-					if (fScale[i] <= 1.f)
-						fScale[i] = 1.f;
-				}
+				if (fScale[i] <= 1.f)
+					fScale[i] = 1.f;
 			}
 
 			ImGui::SameLine();
