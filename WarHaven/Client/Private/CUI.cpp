@@ -56,11 +56,14 @@ void CUI::Set_Pos(_float fX, _float fY)
 
 void CUI::Set_Scale(_float value)
 {
+	m_vScale = value;
 	m_pTransform->Set_Scale(m_vScale);
 }
 
 void CUI::Set_Scale(_float fX, _float fY)
 {
+	m_vScale.x = fX;
+	m_vScale.y = fY;
 	m_pTransform->Set_Scale(m_vScale);
 }
 

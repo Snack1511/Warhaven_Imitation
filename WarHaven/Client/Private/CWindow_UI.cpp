@@ -78,10 +78,7 @@ HRESULT CWindow_UI::Render()
 
 	Show_UIList();
 
-	if (m_iSelectIndex < 9999)
-	{
-		Show_Inspector();
-	}
+	Show_Inspector();
 
 	Drag_Object();
 
@@ -148,7 +145,7 @@ void CWindow_UI::Show_UIList()
 				// 리스트에서 선택된 객체를 드래그할 유아이에 집어넣어
 				// 리스트 선택이 아니라 좀 더 효율적으로
 				if (m_vecUI[i].bSelected)
-					m_pVecUI.push_back(m_vecUI[i].pUI);
+					m_pSelectUI = m_vecUI[i].pUI;
 
 				for (_uint j = 0; j < m_vecUI.size(); ++j)
 				{
@@ -156,7 +153,6 @@ void CWindow_UI::Show_UIList()
 						continue;
 
 					m_vecUI[j].bSelected = false;
-					// 여기서 셀렉트가 아니면 뺴기
 				}
 			}
 
@@ -186,42 +182,45 @@ void CWindow_UI::Drag_Object()
 	ScreenToClient(g_hWnd, &tMouse);
 	_float4 vMousePos = CFunctor::To_Window(_float4(tMouse.x, tMouse.y, 0.f));
 
-	for (_uint i = 0; i < m_pVecUI.size(); ++i)
+	CUI_Object* pUI = m_pSelectUI;
+	if (!pUI)
+		return;
+
+	_float4 vUIPos = pUI->Get_Transform()->Get_World(WORLD_POS);
+
+	_bool bIsInMouse = pUI->Get_IsInMouse();
+	if (bIsInMouse)
 	{
-		CUI_Object* pUI = m_pVecUI[i];
-		_float4 vUIPos = pUI->Get_Transform()->Get_World(WORLD_POS);
-
-		_bool bIsInMouse = pUI->Get_IsInMouse();
-		if (bIsInMouse)
+		if (KEY(LBUTTON, TAP))
 		{
-			if (KEY(LBUTTON, TAP))
-			{
-				m_vDisPos[i].x = vUIPos.x - vMousePos.x;
-				m_vDisPos[i].y = vUIPos.y + vMousePos.y;
-			}
-
-			if (KEY(LBUTTON, HOLD))
-			{
-				_float4 vResultPos;
-				vResultPos.x = vMousePos.x + m_vDisPos[i].x;
-				vResultPos.y = vMousePos.y - m_vDisPos[i].y;
-
-				pUI->Set_Pos(vResultPos.x, -vResultPos.y);
-			}
+			m_vDisPos.x = vUIPos.x - vMousePos.x;
+			m_vDisPos.y = vUIPos.y + vMousePos.y;
 		}
 
-		if (KEY(LBUTTON, AWAY))
-			m_vDisPos[i] = 0;
+		if (KEY(LBUTTON, HOLD))
+		{
+			_float4 vResultPos;
+			vResultPos.x = vMousePos.x + m_vDisPos.x;
+			vResultPos.y = vMousePos.y - m_vDisPos.y;
+
+			pUI->Set_Pos(vResultPos.x, -vResultPos.y);
+		}
 	}
+
+	if (KEY(LBUTTON, AWAY))
+		m_vDisPos = 0;
 }
 
 void CWindow_UI::Set_Object_Info()
 {
-	CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
+	CUI_Object* pUI = m_pSelectUI;
+	if (!pUI)
+		return;
 
 	if (ImGui::CollapsingHeader("Name"))
 	{
 		static char strName[128] = "UI_Object";
+
 		if (ImGui::InputText("UI_Object", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
 		{
 			wstring wstr(strName, &strName[128]);
@@ -244,14 +243,9 @@ void CWindow_UI::Set_Object_Info()
 		if (ImGui::TreeNode("Scale"))
 		{
 			_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
-
 			_float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
 			_float fOriginScale[2] = { fScale[0], fScale[1] };
-
 			_float fRatio = fScale[1] / fScale[0];
-
-			static _bool bScaleRatio = false;
-			ImGui::Checkbox("Ratio", &bScaleRatio);
 
 			if (ImGui::DragFloat2("Scale", fScale, 1.f, 1.f, 9999.f))
 			{
@@ -262,6 +256,10 @@ void CWindow_UI::Set_Object_Info()
 				}
 			}
 
+			ImGui::SameLine();
+
+			static _bool bScaleRatio = false;
+			ImGui::Checkbox("Ratio", &bScaleRatio);
 			if (bScaleRatio)
 			{
 				_float2 vDelta;
@@ -287,7 +285,7 @@ void CWindow_UI::Set_Object_Info()
 	{
 		if (ImGui::TreeNode("Mouse Interact"))
 		{
-			static bool bIsTarget = pUI->Get_MouseTarget();
+			bool bIsTarget = pUI->Get_MouseTarget();
 			ImGui::Checkbox("True", &bIsTarget);
 			pUI->Set_MouseTarget(bIsTarget);
 
@@ -296,7 +294,7 @@ void CWindow_UI::Set_Object_Info()
 
 		if (ImGui::TreeNode("Multi Texture"))
 		{
-			static bool bIsMulti = pUI->Get_MultiTexture();
+			bool bIsMulti = pUI->Get_MultiTexture();
 			ImGui::Checkbox("True", &bIsMulti);
 			pUI->Set_MultiTexture(bIsMulti);
 
@@ -350,9 +348,6 @@ void CWindow_UI::UI_IO()
 			Load_UI_List();
 
 		ImGui::SameLine();
-
-		//if (ImGui::Button("Select Load"))
-			//Load_UI_Info();
 	}
 
 	ImGui::NewLine();
