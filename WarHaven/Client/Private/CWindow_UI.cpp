@@ -215,12 +215,15 @@ void CWindow_UI::Set_Object_Info()
 
 	if (ImGui::CollapsingHeader("Name"))
 	{
-		static char strName[128] = "UI_Object";
+		static char szBuf[MIN_STR] = "Name";
+		string strName = CFunctor::To_String(pUI->Get_Name());
+		
+		strcpy_s(szBuf, strName.c_str());
 
-		if (ImGui::InputText("UI_Object", strName, IM_ARRAYSIZE(strName), ImGuiInputTextFlags_EnterReturnsTrue))
+		if (ImGui::InputText("UI_Object", szBuf, IM_ARRAYSIZE(szBuf), ImGuiInputTextFlags_EnterReturnsTrue))
 		{
-			wstring wstr(strName, &strName[128]);
-			pUI->Set_Name(wstr);
+			strName = szBuf;
+			pUI->Set_Name(CFunctor::To_Wstring(strName));
 		}
 	}
 
@@ -228,9 +231,11 @@ void CWindow_UI::Set_Object_Info()
 	{
 		if (ImGui::TreeNode("Position"))
 		{
+			ImGui::PushItemWidth(150);
+
 			_float4 fUI_Pos = pUI->Get_Transform()->Get_World(WORLD_POS);
 			float fPos[2] = { fUI_Pos.x, fUI_Pos.y };
-			ImGui::DragFloat2("Position", fPos, 1.f, -9999.f, 9999.f);
+			ImGui::DragFloat2("Position", fPos, 1.f, -9999.f, 9999.f, "%.f");
 			pUI->Set_Pos(fPos[0], fPos[1]);
 
 			ImGui::TreePop();
@@ -238,11 +243,18 @@ void CWindow_UI::Set_Object_Info()
 
 		if (ImGui::TreeNode("Scale"))
 		{
+			static _bool bScaleRatio = false;
+			ImGui::Checkbox("Ratio", &bScaleRatio);
+
+			ImGui::SameLine();
+
 			_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
 			_float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
 			_float fOriginScale[2] = { fScale[0], fScale[1] };
 			_float fRatio = fScale[1] / fScale[0];
-			ImGui::DragFloat2("Scale", fScale, 1.f, 1.f, 9999.f);
+
+			ImGui::PushItemWidth(150);
+			ImGui::DragFloat2("Scale", fScale, 1.f, 1.f, 1280.f, "%.f");
 
 			for (int i = 0; i < 2; ++i)
 			{
@@ -250,10 +262,6 @@ void CWindow_UI::Set_Object_Info()
 					fScale[i] = 1.f;
 			}
 
-			ImGui::SameLine();
-
-			static _bool bScaleRatio = false;
-			ImGui::Checkbox("Ratio", &bScaleRatio);
 			if (bScaleRatio)
 			{
 				_float2 vDelta;
