@@ -198,6 +198,7 @@
     <ClInclude Include="..\public\CFader.h" />
     <ClInclude Include="..\public\CImGui_Window.h" />
     <ClInclude Include="..\Public\CInstancingEffects.h" />
+    <ClInclude Include="..\Public\CJump_Player.h" />
     <ClInclude Include="..\public\CLevel_Loading.h" />
     <ClInclude Include="..\Public\CLevel_Logo.h" />
     <ClInclude Include="..\Public\CLevel_Main.h" />
@@ -208,6 +209,8 @@
     <ClInclude Include="..\Public\CPickingStructure.h" />
     <ClInclude Include="..\public\CScript_Freecam.h" />
     <ClInclude Include="..\public\CSkyBox.h" />
+    <ClInclude Include="..\Public\CSlide_Player.h" />
+    <ClInclude Include="..\Public\CSprint_Player.h" />
     <ClInclude Include="..\public\CState.h" />
     <ClInclude Include="..\public\CState_Manager.h" />
     <ClInclude Include="..\Public\CStructure.h" />
@@ -285,6 +288,7 @@
     <ClCompile Include="..\Private\CFader.cpp" />
     <ClCompile Include="..\Private\CImGui_Window.cpp" />
     <ClCompile Include="..\Private\CInstancingEffects.cpp" />
+    <ClCompile Include="..\Private\CJump_Player.cpp" />
     <ClCompile Include="..\private\CLevel_Loading.cpp" />
     <ClCompile Include="..\Private\CLevel_Logo.cpp" />
     <ClCompile Include="..\Private\CLevel_Main.cpp" />
@@ -296,6 +300,8 @@
     <ClCompile Include="..\Private\CPickingStructure.cpp" />
     <ClCompile Include="..\private\CScript_Freecam.cpp" />
     <ClCompile Include="..\private\CSkyBox.cpp" />
+    <ClCompile Include="..\Private\CSlide_Player.cpp" />
+    <ClCompile Include="..\Private\CSprint_Player.cpp" />
     <ClCompile Include="..\private\CState.cpp" />
     <ClCompile Include="..\private\CState_Manager.cpp" />
     <ClCompile Include="..\Private\CStructure.cpp" />
@@ -338,7 +344,7 @@
     <ClCompile Include="..\private\CWindow_PhysX.cpp" />
     <ClCompile Include="..\private\CWindow_Select.cpp" />
     <ClCompile Include="..\Private\CWindow_UI.cpp" />
-    <ClCompile Include="..\private\Functor.cpp" />
+    <ClCompile Include="..\Private\Functor.cpp" />
     <ClCompile Include="..\Private\ImGui_Manager.cpp" />
     <ClCompile Include="..\Private\Loading_Manager.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />

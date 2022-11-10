@@ -75,6 +75,10 @@ public:
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState*	Get_CurStateP() { return m_pCurState; }
 
+	ANIM_TYPE Get_AnimType() {
+		return m_eAnimType;
+	}
+
 public:
 	void	Enter_State(STATE_TYPE eType, ANIM_TYPE eAnimType);
 

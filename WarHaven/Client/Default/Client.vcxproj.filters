@@ -196,9 +196,6 @@
     <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior">
       <UniqueIdentifier>{13311606-46d8-449f-b97f-1d822a16819b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior\01">
-      <UniqueIdentifier>{c1e332bd-4ae5-47ec-8648-0b8a26ef86ac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect">
       <UniqueIdentifier>{e5b6a7f5-5ba7-474b-8276-ed8a4383f686}</UniqueIdentifier>
     </Filter>
@@ -246,6 +243,39 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\06. Map\Structure\PickingStructure">
       <UniqueIdentifier>{eb2ef916-8197-4fc9-9b42-17b4211c8414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base\07. Sprint">
+      <UniqueIdentifier>{ef632a3b-dd2a-4901-bb45-eaff462e5a0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base\08. Emotion">
+      <UniqueIdentifier>{1ebf352a-6fff-4ead-8f3c-f7526ac9c783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior\SKill">
+      <UniqueIdentifier>{eab5dc35-1315-423f-916c-f8d30dac485e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior\01. Attack">
+      <UniqueIdentifier>{c1e332bd-4ae5-47ec-8648-0b8a26ef86ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base\05. Jump">
+      <UniqueIdentifier>{6b0ca867-5898-4a63-923e-4147348c86a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\04. ETC">
+      <UniqueIdentifier>{5b3bed68-3670-47f5-89cc-9b1f6b1b6881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\04. ETC\04. Slide">
+      <UniqueIdentifier>{1770798e-4a79-442f-b9a6-e13a524060e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\04. ETC\06. Interaction">
+      <UniqueIdentifier>{3be55e5a-5346-42c4-be86-d7a66efcd1e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\04. ETC\06. Interaction\01. Interaction_Direction">
+      <UniqueIdentifier>{758f2c01-2af0-4434-87fa-dbb3df85c054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\04. ETC\06. Interaction\02. Interaction_ETC">
+      <UniqueIdentifier>{639bafd5-db36-413e-9de3-bc595fe102cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\03. Hit">
+      <UniqueIdentifier>{02705b02-3175-478d-9f4a-b473ea5bec51}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper">
       <UniqueIdentifier>{df70e0fd-717d-4898-9003-9ee5dff3f0a1}</UniqueIdentifier>
@@ -454,7 +484,7 @@
       <Filter>02. Design\06. State_Manager\States\01. Base\02. Walk</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CWarrior_Attack_01.h">
-      <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01</Filter>
+      <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01. Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWindow_Effect.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
@@ -504,6 +534,15 @@
     <ClInclude Include="..\Public\CPickingStructure.h">
       <Filter>03. Instances\02. GameObject\06. Map\Structure\PickingStructure</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CSlide_Player.h">
+      <Filter>02. Design\06. State_Manager\States\04. ETC\04. Slide</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base\05. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base\07. Sprint</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CUI_HeroGauge.h">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>
     </ClInclude>
@@ -540,9 +579,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\MainApp.cpp">
       <Filter>01. MainApp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Functor.cpp">
-      <Filter>04. Module\00. Functor</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Loading_Manager.cpp">
       <Filter>02. Design\01. Loading_Manager</Filter>
@@ -692,7 +728,7 @@
       <Filter>02. Design\06. State_Manager\States\01. Base\02. Walk</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CWarrior_Attack_01.cpp">
-      <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01</Filter>
+      <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01. Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWindow_Effect.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
@@ -741,6 +777,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPickingStructure.cpp">
       <Filter>03. Instances\02. GameObject\06. Map\Structure\PickingStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSlide_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\04. ETC\04. Slide</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Functor.cpp">
+      <Filter>04. Module\00. Functor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base\05. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base\07. Sprint</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HeroGauge.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>

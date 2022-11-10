@@ -233,22 +233,21 @@ namespace Client
 
 	enum STATE_TYPE
 	{
+		/* BASE */
 		STATE_IDLE_PLAYER,
 
 		STATE_WALK_PLAYER,
 		STATE_RUN_PLAYER,
 
-
-
-
-
-
-
+		STATE_SPRINT_PLAYER,
 
 
 		/* ATtack */
-
 		STATE_ATTACK_WARRIOR,
+
+		/* ETC */
+		STATE_SLIDE_PLAYER,
+		STATE_JUMP_PLAYER,
 
 
 		STATE_END,

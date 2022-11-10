@@ -10,7 +10,7 @@
 #include "CWindow_Default.h"
 #include "CWindow_Select.h"
 #include "CWindow_UI.h"
-#include "CWindow_Map.h"
+//#include "CWindow_Map.h"
 #include "CWindow_Effect.h"
 #include "CWindow_PhysX.h"
 
@@ -72,40 +72,40 @@ HRESULT CImGui_Manager::Initialize()
 
 void CImGui_Manager::Tick()
 {
-	for (_uint i = 0; i < IMGUI_END; ++i)
-	{
-		if (nullptr == m_arrWindows[i])
-			continue;
-		if (m_arrWindows[i]->Is_Enable())
-		{
-			m_arrWindows[i]->Tick();
-		}
-	}
+	//for (_uint i = 0; i < IMGUI_END; ++i)
+	//{
+	//	if (nullptr == m_arrWindows[i])
+	//		continue;
+	//	if (m_arrWindows[i]->Is_Enable())
+	//	{
+	//		m_arrWindows[i]->Tick();
+	//	}
+	//}
 }
 
 HRESULT CImGui_Manager::Render(void)
 {
-	// Start the Dear ImGui frame
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
+	//// Start the Dear ImGui frame
+	//ImGui_ImplDX11_NewFrame();
+	//ImGui_ImplWin32_NewFrame();
 
 
-	ImGui::NewFrame();
+	//ImGui::NewFrame();
 
-	for (_uint i = 0; i < IMGUI_END; ++i)
-	{
-		if (nullptr == m_arrWindows[i])
-			continue;
-		if (m_arrWindows[i]->Is_Enable())
-		{
-			if (FAILED(m_arrWindows[i]->Render()))
-				return E_FAIL;
-		}
-	}
+	//for (_uint i = 0; i < IMGUI_END; ++i)
+	//{
+	//	if (nullptr == m_arrWindows[i])
+	//		continue;
+	//	if (m_arrWindows[i]->Is_Enable())
+	//	{
+	//		if (FAILED(m_arrWindows[i]->Render()))
+	//			return E_FAIL;
+	//	}
+	//}
 
-	ImGui::Render();
+	//ImGui::Render();
 
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 
 

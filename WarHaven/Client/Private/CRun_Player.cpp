@@ -48,6 +48,9 @@ HRESULT CRun_Player::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
     m_vecAdjState.push_back(STATE_WALK_PLAYER);
+    m_vecAdjState.push_back(STATE_SLIDE_PLAYER);
+    m_vecAdjState.push_back(STATE_JUMP_PLAYER);
+    m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
     //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
 
     //m_vecAdjState.push_back(STATE_SILDING);
@@ -440,71 +443,71 @@ STATE_TYPE CRun_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
            
         }
 
-        // Key(D)
+// Key(D)
         else if (KEY(D, HOLD))
         {
-            if (m_eAnimType == ANIM_BASE_R)
+        if (m_eAnimType == ANIM_BASE_R)
+        {
+            // RunBegin 
+            if (m_iAnimIndex != 26)
             {
-                // RunBegin 
-                if (m_iAnimIndex != 26)
+                if (m_iAnimIndex != 18)
                 {
-                    if (m_iAnimIndex != 18)
+                    m_iAnimIndex = 18;
+
+                    pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
+                    pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.f);
+                    pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.1f);
+                }
+
+                // RunBegin -> Run
+                else
+                {
+                    if (m_iAnimIndex == 18 && pAnimator->Is_CurAnimFinished())
+                    {
+
+                        m_iAnimIndex = 26;
+
+                        pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
+                        pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
+                        pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.1f);
+
+                    }
+                }
+
+            }
+        }
+
+        else if (m_eAnimType == ANIM_BASE_L)
+        {
+            // RunBegin 
+            if (m_iAnimIndex != 18)
+            {
+                if (m_iAnimIndex != 10)
+                {
+                    m_iAnimIndex = 10;
+
+                    pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
+                    pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.f);
+                    pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.1f);
+                }
+
+                // RunBegin -> Run
+                else
+                {
+                    if (m_iAnimIndex == 10 && pAnimator->Is_CurAnimFinished())
                     {
                         m_iAnimIndex = 18;
 
                         pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                        pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.f);
+                        pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
                         pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.1f);
                     }
-
-                    // RunBegin -> Run
-                    else
-                    {
-                        if (m_iAnimIndex == 18 && pAnimator->Is_CurAnimFinished())
-                        {
-
-                            m_iAnimIndex = 26;
-
-                            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-                            pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.1f);
-
-                        }
-                    }
-
                 }
+
             }
+        }
 
-            else if (m_eAnimType == ANIM_BASE_L)
-            {
-                // RunBegin 
-                if (m_iAnimIndex != 18)
-                {
-                    if (m_iAnimIndex != 10)
-                    {
-                        m_iAnimIndex = 10;
-
-                        pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                        pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.f);
-                        pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.1f);
-                    }
-
-                    // RunBegin -> Run
-                    else
-                    {
-                        if (m_iAnimIndex == 10 && pAnimator->Is_CurAnimFinished())
-                        {
-                            m_iAnimIndex = 18;
-
-                            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-                            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-                            pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.1f);
-                        }
-                    }
-
-                }
-            }
-           
         }
     }
 
@@ -532,15 +535,29 @@ STATE_TYPE CRun_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
     // 만약 WASD 를 눌렀다면
 
+    // 걷기를 하지 않고
     if (KEY(CTRL, NONE))
     {
-        if (KEY(W, HOLD) ||
-            KEY(A, HOLD) ||
-            KEY(S, HOLD) ||
-            KEY(D, HOLD))
+        // 황소 베기를 쓰지 않고
+        if (KEY(Q, NONE))
         {
-            return m_eStateType;
+            // 점프를 하지 않고
+            if (KEY(SPACE, NONE))
+            {
+                // 슬라이딩을 하지 않는다면? (나중에 깃발올리기, 소생 등으로 변경)
+                if (KEY(J, NONE))
+                {
+                    if (KEY(W, HOLD) ||
+                        KEY(A, HOLD) ||
+                        KEY(S, HOLD) ||
+                        KEY(D, HOLD))
+                    {
+                        return m_eStateType;
+                    }
+                }
+            }
         }
+
     }
     
 

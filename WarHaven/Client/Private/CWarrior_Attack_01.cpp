@@ -44,7 +44,7 @@ HRESULT CWarrior_Attack_01::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 50;
+    m_iStateChangeKeyFrame = 84;
     m_vecAdjState.push_back(STATE_IDLE_PLAYER);
     m_vecAdjState.push_back(STATE_WALK_PLAYER);
     m_vecAdjState.push_back(STATE_RUN_PLAYER);
@@ -74,29 +74,69 @@ void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
         __super::Enter(pOwner, pAnimator);
         return;
     }
+
+  
+    if (m_eAnimType == ANIM_BASE_R)
+    {
+        // 찌르기
+        if (m_iAnimIndex == 13)
+        {
+            m_eAnimType = ANIM_ATTACK;
+            __super::Enter(pOwner, pAnimator);
+            return;
+        }
+    }
+
     
+    if (m_eAnimType == ANIM_BASE_L)
+    {
+        // 찌르기
+        if (m_iAnimIndex == 12)
+        {
+            m_eAnimType = ANIM_ATTACK;
+            __super::Enter(pOwner, pAnimator);
+            return;
+        }
+    }
+   
+    
+
+
     MOUSEMOVE eMouseMove = MMS_X;
     _long iX = MOUSE_MOVE(eMouseMove);
 
     eMouseMove = MMS_Y;
     _long iY = MOUSE_MOVE(eMouseMove);
 
-    // R_Idle L_Idle Setting
-    if (m_eAnimType == ANIM_BASE_R)
-    {
-        if (KEY(CTRL, HOLD))
-            m_iAnimIndex = 13;
-        else
-            m_iAnimIndex = 9;
-    }
-        else if (m_eAnimType == ANIM_BASE_L)
-    {
-        if (KEY(CTRL, HOLD))
-            m_iAnimIndex = 12;
-        else
-            m_iAnimIndex = 8;
-    }
+    eMouseMove = MMS_WHEEL;
+    _long iWheel = MOUSE_MOVE(eMouseMove);
 
+    if (0 < iWheel)
+    {
+        if (m_eAnimType == ANIM_BASE_R)
+            m_iAnimIndex = 13;
+
+        if(m_eAnimType == ANIM_BASE_L)
+            m_iAnimIndex = 12;
+
+        m_iStateChangeKeyFrame = 87;
+
+    }
+    else if (0 > iWheel)
+    {
+        m_iAnimIndex = 14;
+        m_iStateChangeKeyFrame = 70;
+    }
+    else
+    {
+        if (m_eAnimType == ANIM_BASE_R)
+            m_iAnimIndex = 9;
+
+        else if (m_eAnimType == ANIM_BASE_L)
+            m_iAnimIndex = 8;
+
+        m_iStateChangeKeyFrame = 85;
+    }
 
     //MouseMoe 테스트용
    
@@ -104,28 +144,30 @@ void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
     // 왼쪽 상단 -> 오른쪽 하단
     if (iX > 0 && iY > 0)
     {
+        m_iStateChangeKeyFrame = 84;
         m_iAnimIndex = 0;
     }
 
     // 오른쪽 하단 -> 왼쪽 상단
     if (iX < 0 && iY < 0)
     {
+        m_iStateChangeKeyFrame = 84;
         m_iAnimIndex = 5;
     }
 
     // 오른쪽 상단 -> 왼쪽 하단
     if (iX < 0 && iY > 0)
     {
+        m_iStateChangeKeyFrame = 84;
         m_iAnimIndex = 3;
     }
 
     // 왼쪽 하단 - > 오른쪽 상단
     if (iX > 0 && iY < 0)
     {
+        m_iStateChangeKeyFrame = 84;
         m_iAnimIndex = 6;
     }
-
-    //
 
     // 상태를 바꿔줘야함.. 아니면 Base_R or Base_L 이 들어감
     m_eAnimType = ANIM_ATTACK;
@@ -139,10 +181,21 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
     // 9 : 상단 베기(R Attack)
     // 23 : 황소 베기(SKill)
 
+    // 황소 베기 캔슬
     if (m_iAnimIndex == 22 && pAnimator->Is_CurAnimFinished())
         return STATE_WALK_PLAYER;
     
+    // 내려찍기 애니메이션 조정
+    if (m_iAnimIndex == 14)
+        pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.f);
 
+
+    if (m_iAnimIndex == 15 && pAnimator->Is_CurAnimFinished())
+    {
+        return STATE_WALK_PLAYER;
+    }
+
+    // 황소 베기
     if (m_iAnimIndex == 24)
     {
         if (KEY(Q, NONE))
@@ -151,6 +204,7 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
             pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
             pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.f);
+            pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.1f);
         }
         else if(pAnimator->Is_CurAnimFinished())
         {
@@ -158,9 +212,11 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
             pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
             pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.f);
+            pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.f);
         }
     }
 
+    // 황소 베기 Loop
     if (m_iAnimIndex == 25)
     {
         if (KEY(Q, NONE))
@@ -169,6 +225,7 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
             pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
             pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.f);
+            pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.f);
         }
         
 
@@ -185,6 +242,7 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
             pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
             pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.f);
+            pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, 0.f);
         }
 
         
@@ -197,7 +255,8 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
         m_iAnimIndex == 23 ||
         m_iAnimIndex == 3 ||
         m_iAnimIndex == 5 ||
-        m_iAnimIndex == 12)
+        m_iAnimIndex == 12 ||
+        m_iAnimIndex == 14)
     {
         m_eAnimType = ANIM_BASE_L;
         m_iAnimIndex = 8;
@@ -242,6 +301,26 @@ STATE_TYPE CWarrior_Attack_01::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
         m_iAnimIndex = 15;
 
         pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
+
+        return m_eStateType;
+    }
+
+    MOUSEMOVE eMouseMove = MMS_WHEEL;
+    _long iMouseMove = MOUSE_MOVE(eMouseMove);
+
+
+
+    if (0 > iMouseMove || 0 < iMouseMove)
+    {
+        m_iAnimIndex = 0;
+
+        return m_eStateType;
+    }
+
+    // 찌르기
+    if (0 < iMouseMove)
+    {
+       
 
         return m_eStateType;
     }
