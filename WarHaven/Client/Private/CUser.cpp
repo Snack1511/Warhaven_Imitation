@@ -21,6 +21,8 @@
 
 #include "CCamera_Free.h"
 
+#include "CBloodOverlay.h"
+
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -48,6 +50,12 @@ HRESULT CUser::Initialize()
 void CUser::Tick()
 {
 	Fix_CursorPosToCenter();
+}
+
+void CUser::On_ExitLevel()
+{
+	m_pBloodOverlay = nullptr;
+
 }
 
 void CUser::Fix_CursorPosToCenter()
@@ -108,5 +116,27 @@ void CUser::Update_KeyCommands()
 			m_KeyCommands.push_back((KEY)i);
 		}
 	}
+}
+
+void CUser::SetUp_BloodOverlay()
+{
+	if (m_pBloodOverlay)
+		return;
+
+	m_pBloodOverlay = CBloodOverlay::Create();
+
+	CREATE_GAMEOBJECT(m_pBloodOverlay, GROUP_UI);
+}
+
+void CUser::Turn_BloodOverLay(_float fHpRatio)
+{
+	if (!m_pBloodOverlay)
+		return;
+
+	m_pBloodOverlay->Trun_BloodOverlay(fHpRatio);
+
+
+	ENABLE_GAMEOBJECT(m_pBloodOverlay);
+
 }
 

@@ -301,6 +301,9 @@
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX">
       <UniqueIdentifier>{5d2dd80a-bbe4-470b-b7e3-bceb53af6041}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay">
+      <UniqueIdentifier>{1fc27a28-399a-464b-8f29-f80d90014dcf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -564,6 +567,9 @@
     <ClInclude Include="..\Public\UsefulHeaders.h">
       <Filter>00. Header</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CBloodOverlay.h">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -807,6 +813,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CTestObject.cpp">
       <Filter>03. Instances\02. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBloodOverlay.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

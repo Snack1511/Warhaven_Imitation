@@ -186,6 +186,7 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_textedit.h" />
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
+    <ClInclude Include="..\Public\CBloodOverlay.h" />
     <ClInclude Include="..\public\CCamera_Default.h" />
     <ClInclude Include="..\Public\CCamera_Follow.h" />
     <ClInclude Include="..\public\CCamera_Free.h" />
@@ -276,6 +277,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\CBloodOverlay.cpp" />
     <ClCompile Include="..\private\CCamera_Default.cpp" />
     <ClCompile Include="..\Private\CCamera_Follow.cpp" />
     <ClCompile Include="..\private\CCamera_Free.cpp" />

@@ -84,8 +84,6 @@ void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
 
     GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);
 
-
-
     __super::Enter(pOwner, pAnimator);
 }
 
