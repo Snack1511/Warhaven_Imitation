@@ -9,7 +9,20 @@ CTransform::CTransform(_uint iGroupID)
 	: CComponent(iGroupID)
 {
 	ZeroMemory(&m_tTransform, sizeof(TRANSFORM));
-	
+
+}
+
+CTransform::CTransform(const CTransform& rhs)
+	: CComponent(rhs)
+	, m_tTransform(rhs.m_tTransform)
+	, m_cParentFlag(rhs.m_cParentFlag)
+	, m_bLerp(rhs.m_bLerp)
+	, m_fTimeAcc(rhs.m_fTimeAcc)
+	, m_fLerpTime(rhs.m_fLerpTime)
+	, m_vOriginLook(rhs.m_vOriginLook)
+	, m_vTargetLook(rhs.m_vTargetLook)
+{
+	Make_WorldMatrix();
 }
 
 
@@ -126,12 +139,12 @@ void CTransform::MatrixRotationQuaternion(_float4 vQuaternion)
 	Set_World(WORLD_LOOK, vLook);
 }
 
-void CTransform::Set_World(WORLD eType, const _float4 & vCol)
+void CTransform::Set_World(WORLD eType, const _float4& vCol)
 {
 	*((_float4*)&m_tTransform.matMyWorld.m[eType]) = vCol;
 }
 
-void CTransform::Set_RealWorld(WORLD eType, const _float4 & vCol)
+void CTransform::Set_RealWorld(WORLD eType, const _float4& vCol)
 {
 	*((_float4*)&m_tTransform.matWorld.m[eType]) = vCol;
 
@@ -156,7 +169,7 @@ void CTransform::Set_Look(const _float4& vLook)
 	vUp.Normalize();
 	_float4 vRight = vUp.Cross(vLook);
 	Set_World(WORLD_RIGHT, vRight.Normalize());
-	
+
 	vUp = _vLook.Cross(vRight);
 	Set_World(WORLD_UP, vUp.Normalize());
 }
@@ -208,12 +221,12 @@ void CTransform::Set_Rect()
 	_float4	vLook;
 
 	vRight = Get_World(WORLD_RIGHT);
-	vUp =	Get_World(WORLD_UP);
+	vUp = Get_World(WORLD_UP);
 	vLook = Get_World(WORLD_LOOK);
 
-	Set_World(WORLD_RIGHT,	vRight  * -1);
-	Set_World(WORLD_UP,		vUp);
-	Set_World(WORLD_LOOK,	vLook * -1);
+	Set_World(WORLD_RIGHT, vRight * -1);
+	Set_World(WORLD_UP, vUp);
+	Set_World(WORLD_LOOK, vLook * -1);
 }
 
 void	CTransform::Set_Scale(const _float4& vScale)
@@ -319,7 +332,7 @@ void CTransform::Late_Tick()
 			Set_Look(vLook);
 		}
 	}
-	
+
 
 
 	Make_WorldMatrix();

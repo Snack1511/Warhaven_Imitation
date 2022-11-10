@@ -237,6 +237,7 @@
     <ClInclude Include="..\Public\CUI_Logo.h" />
     <ClInclude Include="..\Public\CUI_Object.h" />
     <ClInclude Include="..\Public\CUI_Portrait.h" />
+    <ClInclude Include="..\Public\CUI_Skill.h" />
     <ClInclude Include="..\Public\CUI_Text.h" />
     <ClInclude Include="..\Public\CUI_Wrapper.h" />
     <ClInclude Include="..\public\CUnit.h" />
@@ -328,6 +329,7 @@
     <ClCompile Include="..\Private\CUI_Logo.cpp" />
     <ClCompile Include="..\Private\CUI_Object.cpp" />
     <ClCompile Include="..\Private\CUI_Portrait.cpp" />
+    <ClCompile Include="..\Private\CUI_Skill.cpp" />
     <ClCompile Include="..\Private\CUI_Text.cpp" />
     <ClCompile Include="..\Private\CUI_Wrapper.cpp" />
     <ClCompile Include="..\private\CUnit.cpp" />

@@ -139,6 +139,31 @@ void CUI_Wrapper::Read_Texture(string strFolderPath, string key)
 	}
 }
 
+void CUI_Wrapper::Read_Texture(CUI_Object* pUI, string strFolderPath, string key)
+{
+	string strBasePath = "../Bin/Resources/Textures/UI";;
+	strBasePath += strFolderPath;
+
+	const char* pFilePath = strBasePath.c_str();
+
+	for (filesystem::directory_iterator FileIter(pFilePath); FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		string strPathTemp = CFunctor::To_String(wstrPath);
+
+		if (strPathTemp.find(key) != string::npos)
+		{
+			const _tchar* pFullFilePath = wstrPath.c_str();
+			GET_COMPONENT_FROM(pUI, CTexture)->Add_Texture(pFullFilePath);
+		}
+	}
+}
+
 CUI_Object* CUI_Wrapper::Load_UI(string m_wstrName)
 {
 	ifstream	readFile(m_wstrName, ios::binary);
@@ -235,6 +260,10 @@ void CUI_Wrapper::Load_UI(wstring m_wstrName)
 		string strPath = CUtility_File::Read_Text(&readFile);
 		m_pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
 	}
+
+	_float fSort = m_pUI->Get_Sort();
+	readFile.read((char*)&fSort, sizeof(_float));
+	m_pUI->Set_Sort(fSort);
 
 	readFile.close();
 }

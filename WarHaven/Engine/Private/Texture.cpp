@@ -89,9 +89,6 @@ void CTexture::Pop_Texture()
 
 void CTexture::Remove_Texture(_uint iIndex)
 {
-	if (m_SRVs.size() == 1)
-		return;
-
 	m_SRVs.erase(m_SRVs.begin() + iIndex);
 }
 

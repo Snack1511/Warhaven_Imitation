@@ -47,11 +47,17 @@ void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
 }
 
+void CUI::Set_Sort(_float value)
+{
+	m_vPosition.z = value;
+	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
+}
+
 void CUI::Set_Pos(_float fX, _float fY)
 {
 	m_vPosition.x = fX;
 	m_vPosition.y = fY;
-	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, 0.f));
+	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
 }
 
 void CUI::Set_Scale(_float value)

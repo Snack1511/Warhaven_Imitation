@@ -1,5 +1,6 @@
 #pragma once
 #include "CUI_Wrapper.h"
+
 BEGIN(Client)
 
 class CUI_Portrait final : public CUI_Wrapper
@@ -17,12 +18,13 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
+public:
+
+	void Set_Portrait(_uint iIndex);
+
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;;
-
-private:
-	CLASS_TYPE m_eType = CLASS_END;
 };
 
 END
