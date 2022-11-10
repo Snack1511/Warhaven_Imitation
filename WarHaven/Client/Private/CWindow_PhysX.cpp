@@ -45,7 +45,16 @@ HRESULT CWindow_PhysX::Initialize()
 
 void CWindow_PhysX::Tick()
 {
-
+	if (KEY(SPACE, TAP))
+	{
+		if (m_pCurGameObject)
+		{
+			if (m_pCurGameObject->Is_Disable())
+				ENABLE_GAMEOBJECT(m_pCurGameObject);
+			else
+				DISABLE_GAMEOBJECT(m_pCurGameObject);
+		}
+	}
 }
 
 HRESULT CWindow_PhysX::Render()

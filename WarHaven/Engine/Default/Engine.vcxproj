@@ -129,7 +129,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../../Reference/Librarys/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Effects11d.lib;%(AdditionalDependencies);fmodex64_vc.lib;d3d11.lib;dinput8.lib;dxguid.lib;DirectXTKd.lib;assimp-vc143-mtd.lib;PhysX_64d.lib;PhysXFoundation_64d.lib;PhysXPvdSDK_static_64d.lib;PhysXCharacterKinematic_static_64d.lib;PhysXCommon_64d.lib;PhysXCooking_64d.lib;PhysXExtensions_static_64d.lib</AdditionalDependencies>
+      <AdditionalDependencies>Effects11d.lib;%(AdditionalDependencies);fmodex64_vc.lib;d3d11.lib;dinput8.lib;dxguid.lib;DirectXTKd.lib;assimp-vc143-mtd.lib;LowLevel_static_64d.lib;LowLevelAABB_static_64d.lib;LowLevelDynamics_static_64d.lib;PhysX_64d.lib;PhysXFoundation_64d.lib;PhysXPvdSDK_static_64d.lib;PhysXCharacterKinematic_static_64d.lib;PhysXCommon_64d.lib;PhysXCooking_64d.lib;PhysXExtensions_static_64d.lib;PhysXTask_static_64d.lib;PhysXVehicle_static_64d.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>call ../../UpdateLib.bat</Command>
@@ -159,7 +159,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../../Reference/Librarys/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Effects11.lib;%(AdditionalDependencies);fmodex64_vc.lib;d3d11.lib;dinput8.lib;dxguid.lib;DirectXTK.lib;DirectXTex.lib;assimp-vc143-mt.lib;PhysX_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib</AdditionalDependencies>
+      <AdditionalDependencies>Effects11.lib;%(AdditionalDependencies);fmodex64_vc.lib;d3d11.lib;dinput8.lib;dxguid.lib;DirectXTK.lib;DirectXTex.lib;assimp-vc143-mt.lib;LowLevel_static_64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;PhysX_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>call ../../UpdateLib.bat</Command>
@@ -194,6 +194,7 @@
     <ClCompile Include="..\Private\Collider.cpp" />
     <ClCompile Include="..\Private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
+    <ClCompile Include="..\private\CPhysXCharacter.cpp" />
     <ClCompile Include="..\private\CRect_Instance.cpp" />
     <ClCompile Include="..\private\CRenderTarget.cpp" />
     <ClCompile Include="..\private\CResource.cpp" />
@@ -264,6 +265,7 @@
     <ClInclude Include="..\Public\Collider.h" />
     <ClInclude Include="..\Public\Collision_Manager.h" />
     <ClInclude Include="..\Public\Component.h" />
+    <ClInclude Include="..\public\CPhysXCharacter.h" />
     <ClInclude Include="..\public\CRect_Instance.h" />
     <ClInclude Include="..\public\CRenderTarget.h" />
     <ClInclude Include="..\public\CResource.h" />

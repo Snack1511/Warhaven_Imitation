@@ -226,6 +226,12 @@
     <Filter Include="99. Default\PhysX">
       <UniqueIdentifier>{5845ba72-0bd0-4a88-82d4-72d62866a1fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Singleton\02. Design\19. PhysX_Manager\PhysXCollider">
+      <UniqueIdentifier>{45cad06b-99b7-475e-a225-01f0a15c9922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Singleton\02. Design\19. PhysX_Manager\PhysXCharacter">
+      <UniqueIdentifier>{a6f840f8-e9eb-43dd-917c-6a4876103ea8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
@@ -430,7 +436,10 @@
       <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PhysXCollider.cpp">
-      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager\PhysXCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CPhysXCharacter.cpp">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager\PhysXCharacter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -657,7 +666,10 @@
       <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PhysXCollider.h">
-      <Filter>02. Singleton\02. Design\19. PhysX_Manager</Filter>
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager\PhysXCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CPhysXCharacter.h">
+      <Filter>02. Singleton\02. Design\19. PhysX_Manager\PhysXCharacter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

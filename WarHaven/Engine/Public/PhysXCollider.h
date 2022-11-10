@@ -4,7 +4,7 @@
 BEGIN(Engine)
 class CTransform;
 
-class ENGINE_DLL CPhysXCollider final : public CComponent
+class ENGINE_DLL CPhysXCollider : public CComponent
 {
 	DECLARE_PROTOTYPE(CPhysXCollider);
 
@@ -96,11 +96,11 @@ public:
 	HRESULT Clear_Velocity();
 	HRESULT Add_LinearVelocityResistance(_vector fResistanceRate);
 
-private:
+protected:
 	// 최대 속도는 XZ,Y 로 나뉘어 진다. XZ에 들어가있는 값은 X에 있는 값을 사용한다.
 	_vector					m_vMaxVelocity;
 
-private:
+protected:
 	PHYSXCOLLIDERDESC		m_ColliderDesc;
 	PxRigidDynamic*			m_pRigidDynamic = nullptr;
 	PxRigidStatic*			m_pRigidStatic = nullptr;
@@ -111,7 +111,7 @@ private:
 	_bool					m_bPickable = true;
 	_bool					m_bYFixed = false;
 
-private:
+protected:
 	void		CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc);
 	void		Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh = nullptr);
 	void		Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh = nullptr);

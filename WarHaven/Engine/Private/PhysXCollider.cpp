@@ -91,9 +91,13 @@ void CPhysXCollider::Release()
 void CPhysXCollider::OnEnable()
 {
 	__super::OnEnable();
-
+	
 	if (m_pRigidDynamic)
+	{
+		m_pRigidDynamic->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
 		m_pRigidDynamic->wakeUp();
+
+	}
 }
 
 void CPhysXCollider::OnDisable()
@@ -101,7 +105,11 @@ void CPhysXCollider::OnDisable()
 	__super::OnDisable();
 
 	if (m_pRigidDynamic)
+	{
 		m_pRigidDynamic->putToSleep();
+		m_pRigidDynamic->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
+
+	}
 }
 
 
