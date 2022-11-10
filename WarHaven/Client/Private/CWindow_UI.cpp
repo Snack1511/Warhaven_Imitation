@@ -83,6 +83,8 @@ HRESULT CWindow_UI::Render()
 		Show_Inspector();
 	}
 
+	Drag_Object();
+
 	ImGui::Spacing();
 
 	__super::End();
@@ -143,12 +145,18 @@ void CWindow_UI::Show_UIList()
 				m_iSelectIndex = i;
 				m_vecUI[i].bSelected = true;
 
+				// 리스트에서 선택된 객체를 드래그할 유아이에 집어넣어
+				// 리스트 선택이 아니라 좀 더 효율적으로
+				if (m_vecUI[i].bSelected)
+					m_pVecUI.push_back(m_vecUI[i].pUI);
+
 				for (_uint j = 0; j < m_vecUI.size(); ++j)
 				{
 					if (j == i)
 						continue;
 
 					m_vecUI[j].bSelected = false;
+					// 여기서 셀렉트가 아니면 뺴기
 				}
 			}
 
@@ -171,6 +179,42 @@ void CWindow_UI::Show_Inspector()
 	ImGui::End();
 }
 
+void CWindow_UI::Drag_Object()
+{
+	POINT tMouse;
+	GetCursorPos(&tMouse);
+	ScreenToClient(g_hWnd, &tMouse);
+	_float4 vMousePos = CFunctor::To_Window(_float4(tMouse.x, tMouse.y, 0.f));
+
+	for (_uint i = 0; i < m_pVecUI.size(); ++i)
+	{
+		CUI_Object* pUI = m_pVecUI[i];
+		_float4 vUIPos = pUI->Get_Transform()->Get_World(WORLD_POS);
+
+		_bool bIsInMouse = pUI->Get_IsInMouse();
+		if (bIsInMouse)
+		{
+			if (KEY(LBUTTON, TAP))
+			{
+				m_vDisPos[i].x = vUIPos.x - vMousePos.x;
+				m_vDisPos[i].y = vUIPos.y + vMousePos.y;
+			}
+
+			if (KEY(LBUTTON, HOLD))
+			{
+				_float4 vResultPos;
+				vResultPos.x = vMousePos.x + m_vDisPos[i].x;
+				vResultPos.y = vMousePos.y - m_vDisPos[i].y;
+
+				pUI->Set_Pos(vResultPos.x, -vResultPos.y);
+			}
+		}
+
+		if (KEY(LBUTTON, AWAY))
+			m_vDisPos[i] = 0;
+	}
+}
+
 void CWindow_UI::Set_Object_Info()
 {
 	CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
@@ -191,7 +235,7 @@ void CWindow_UI::Set_Object_Info()
 		{
 			_float4 fUI_Pos = pUI->Get_Transform()->Get_World(WORLD_POS);
 			float fPos[2] = { fUI_Pos.x, fUI_Pos.y };
-			ImGui::DragFloat2("XY", fPos, 1.f, -9999.f, 9999.f);
+			ImGui::DragFloat2("Position", fPos, 1.f, -9999.f, 9999.f);
 			pUI->Set_Pos(fPos[0], fPos[1]);
 
 			ImGui::TreePop();
@@ -200,24 +244,39 @@ void CWindow_UI::Set_Object_Info()
 		if (ImGui::TreeNode("Scale"))
 		{
 			_float4 fUI_Scale = pUI->Get_Transform()->Get_Scale();
-			float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
-			if (ImGui::DragFloat2("XY", fScale, 1.f, 1.f, 9999.f))
+
+			_float fScale[2] = { fUI_Scale.x, fUI_Scale.y };
+			_float fOriginScale[2] = { fScale[0], fScale[1] };
+
+			_float fRatio = fScale[1] / fScale[0];
+
+			static _bool bScaleRatio = false;
+			ImGui::Checkbox("Ratio", &bScaleRatio);
+
+			if (ImGui::DragFloat2("Scale", fScale, 1.f, 1.f, 9999.f))
 			{
 				for (int i = 0; i < 2; ++i)
 				{
 					if (fScale[i] <= 1.f)
 						fScale[i] = 1.f;
 				}
-
-				pUI->Set_Scale(fScale[0], fScale[1]);
 			}
 
-			if (ImGui::DragFloat("Ratio", &m_fScale, 0.1f, 0.1f, 999.f))
+			if (bScaleRatio)
 			{
-				if (m_fScale <= 0.1f)
-					m_fScale = 0.1f;
+				_float2 vDelta;
+				vDelta.x = (fOriginScale[1] - fScale[1]) / fRatio;
+				vDelta.y = (fOriginScale[0] - fScale[0]) * fRatio;
 
-				pUI->Set_ScaleRatio(m_fScale);
+				_float2 vResultScale;
+				vResultScale.x = fScale[0] - vDelta.x;
+				vResultScale.y = fScale[1] - vDelta.y;
+
+				pUI->Set_Scale(vResultScale.x, vResultScale.y);
+			}
+			else
+			{
+				pUI->Set_Scale(fScale[0], fScale[1]);
 			}
 
 			ImGui::TreePop();

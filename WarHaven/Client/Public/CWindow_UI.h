@@ -44,12 +44,14 @@ private:
 	TREE_DATA	m_BinRootNode;
 
 	vector<UI_Object> m_vecUI;
+	vector<CUI_Object*> m_pVecUI;
 
 	_uint m_iSelectIndex = 9999;
 	wstring m_iSelectPath;
 
 	_float m_fScale = 1.f;
 
+	_float4 m_vDisPos[MAX_PATH];
 
 private:
 	void Create_UI();
@@ -58,6 +60,8 @@ private:
 	CUI_Object* Clone_UI();
 
 	void Show_UIList();
+
+	void Drag_Object();
 
 	void Show_Inspector();
 

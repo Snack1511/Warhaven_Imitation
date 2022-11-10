@@ -30,7 +30,6 @@ public:
 public:
 	void Set_Scale(_float value);
 	void Set_Scale(_float fX, _float fY);
-	void Set_ScaleRatio(_float value);
 
 public:
 	HRESULT SetTexture(const _tchar* pFilePath, _uint iIndex = 1);
@@ -40,12 +39,13 @@ public:
 	_float4 Get_Color() { return m_vColor; }
 	void Set_Color(_float4 vColor) { m_vColor = vColor; }
 
-protected:
-	_float4 m_vPosition = {};
+	POINT Get_MousePos() { return m_ptMouse; }
 
-	_float4 m_vOriginScale;
-	_float m_fScaleMulitple = 1.f;
-	_float4 m_vResultScale;
+	RECT  GET_Rect() { return m_tRect; }
+
+protected:
+	_float4 m_vPosition;
+	_float4 m_vScale;
 
 	RECT m_tRect;
 	POINT m_ptMouse;

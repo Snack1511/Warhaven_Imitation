@@ -35,6 +35,8 @@ public:
 	_bool Get_MultiTexture() { return m_bIsMultiTex; }
 	void Set_MultiTexture(_bool value) { m_bIsMultiTex = value; }
 
+	_bool Get_IsInMouse() { return m_bIsInMouse; }
+
 private:
 	wstring m_wstrName;
 
@@ -43,7 +45,7 @@ private:
 
 	_bool m_bIsMultiTex = false;
 	_bool m_bIsMouseTarget = false;
-	_bool m_bIsOnMouse = false;
+	_bool m_bIsInMouse = false;
 
 private:
 	// These will be called by Set_Enable Func.
