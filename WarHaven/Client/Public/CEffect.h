@@ -160,9 +160,15 @@ protected:
 	_float	m_fTargetAlpha = 1.f;
 
 	_float4	m_vColor;
-	_float4 m_vPlusColor = _float4{ 0.f, 0.f, 0.f, 0.f };
+	_float4 m_vPlusColor = _float4( 0.f, 0.f, 0.f, 0.f );
 	_float	m_fColorPower = 1.f;
 	_float  m_fDissolvePower = 1.f;
+
+	_float4 m_vTurnDir = _float4( 1.f, 0.f, 0.f, 0.f );
+	_float m_fTurnSpeed = 0.f;
+	_bool m_bRotation = false;
+	_float4 m_vRotationDir = _float4(1.f, 0.f, 0.f, 0.f);
+	_float m_fAngle = 0.f;
 
 public:
 	void	Set_FadeOut() { m_eCurFadeType = FADEOUTREADY; m_fFadeTimeAcc = 999999.f; }
@@ -175,6 +181,7 @@ protected:
 protected:
 	void		Update_Disable();
 	void		Update_Fade();
+	void		UPdate_Turn();
 };
 
 END

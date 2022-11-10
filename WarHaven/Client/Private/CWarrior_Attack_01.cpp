@@ -7,6 +7,12 @@
 #include "CUnit.h"
 
 #include "CUser.h"
+#include "CEffects_Factory.h"
+#include "CSword_Effect.h"
+#include "Transform.h"
+#include "CColorController.h"
+
+CColorController::COLORDESC tColorDesc;
 
 CWarrior_Attack_01::CWarrior_Attack_01()
 {
@@ -30,6 +36,7 @@ CWarrior_Attack_01* CWarrior_Attack_01::Create()
 }
 HRESULT CWarrior_Attack_01::Initialize()
 {
+
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_ATTACK_WARRIOR;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -52,16 +59,32 @@ HRESULT CWarrior_Attack_01::Initialize()
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
     //m_vecAdjState.push_back(STATE_WALK);
+    ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
+    tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+    tColorDesc.fFadeInStartTime = 1.f;
+    tColorDesc.fFadeInTime = 1.f;
+    tColorDesc.fFadeOutStartTime = 1.f;
+    tColorDesc.fFadeOutTime = 1.f;
+    tColorDesc.vTargetColor = _float4(1.f, 0.f, 0.f, 1.f);
+    tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+    tColorDesc.iStartKeyFrame = 10;
+    tColorDesc.iEndKeyFrame = 30;
 
     return S_OK;
 }
 
 void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
 {
+    
+
+
+
     // 황소 베기
     if (m_iAnimIndex == 24)
     {
+        GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
+
         m_eAnimType = ANIM_ATTACK;
         __super::Enter(pOwner, pAnimator);
         return;
@@ -180,6 +203,8 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     // 9 : 상단 베기(R Attack)
     // 23 : 황소 베기(SKill)
+    Create_SwordEffect(pOwner);
+
 
     // 황소 베기 캔슬
     if (m_iAnimIndex == 22 && pAnimator->Is_CurAnimFinished())
@@ -282,6 +307,8 @@ STATE_TYPE CWarrior_Attack_01::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
     {
         m_iAnimIndex = 0;
 
+        GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
+
         pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
 
         return m_eStateType;
@@ -327,4 +354,16 @@ STATE_TYPE CWarrior_Attack_01::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 
 
     return STATE_END;
+}
+}
+
+void CWarrior_Attack_01::Create_SwordEffect(CUnit* pOwner)
+{
+    m_fCreateTimeAcc += fDT(0);
+
+    if (m_fCreateTime <= m_fCreateTimeAcc)
+    {
+        CEffects_Factory::Get_Instance()->Create_Effects(HASHCODE(CSword_Effect), pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        m_fCreateTimeAcc = 0.f;
+    }
 }

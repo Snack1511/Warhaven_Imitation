@@ -8,6 +8,13 @@ sampler DefaultSampler = sampler_state
 	AddressV = wrap;
 };
 
+sampler ClampSampler = sampler_state
+{
+	filter = min_mag_mip_linear;
+	AddressU = clamp;
+	AddressV = clamp;
+};
+
 sampler ShadowSampler = sampler_state
 {
 	filter = MIN_MAG_LINEAR_MIP_POINT;

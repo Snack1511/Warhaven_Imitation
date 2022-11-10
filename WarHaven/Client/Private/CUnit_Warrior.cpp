@@ -87,7 +87,7 @@ HRESULT CUnit_Warrior::Initialize()
 	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_BODY, _float4(1, 0, 0, 0));
 	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_HEAD, SH_LIGHT_DEFAULT);
 	
-	GET_COMPONENT(CColorController)->Set_ColorControll(this, MODEL_PART_WEAPON, _float4(1, 1, 1, 1), _float4(0, 0, 0, 0), 2.f);
+
 	return S_OK;
 }
 

@@ -79,9 +79,11 @@ HRESULT CDefault_Effect::SetUp_DefaultEffect(ifstream* pReadFile)
 
 	string	strMaskMapPath = CUtility_File::Read_Text(pReadFile);
 	string	strColorMapPath = CUtility_File::Read_Text(pReadFile);
+	string	strNoiseMpaPath = CUtility_File::Read_Text(pReadFile);
 
 	m_wstrMaskMapPath = CFunctor::To_Wstring(strMaskMapPath);
 	m_wstrColorMapPath = CFunctor::To_Wstring(strColorMapPath);
+	m_wstrNoiseMapPath = CFunctor::To_Wstring(strNoiseMpaPath);
 
 	pReadFile->read((char*)&m_eShaderType, sizeof(_uint));
 	pReadFile->read((char*)&m_vEffectFlag, sizeof(_float4));
@@ -102,8 +104,17 @@ HRESULT CDefault_Effect::SetUp_DefaultEffect(ifstream* pReadFile)
 	pReadFile->read((char*)&m_vFadeInTargetScale, sizeof(_float4));
 	pReadFile->read((char*)&m_vFadeOutTargetScale, sizeof(_float4));
 	pReadFile->read((char*)&m_fTargetAlpha, sizeof(_float));
+
+	pReadFile->read((char*)&m_vColor, sizeof(_float4));
 	pReadFile->read((char*)&m_vPlusColor, sizeof(_float4));
 	pReadFile->read((char*)&m_fColorPower, sizeof(_float));
+	pReadFile->read((char*)&m_fDissolvePower, sizeof(_float));
+
+	pReadFile->read((char*)&m_vTurnDir, sizeof(_float4));
+	pReadFile->read((char*)&m_fTurnSpeed, sizeof(_float));
+	pReadFile->read((char*)&m_bRotation, sizeof(_bool));
+	pReadFile->read((char*)&m_vRotationDir, sizeof(_float4));
+	pReadFile->read((char*)&m_fAngle, sizeof(_float));
 
 	m_eShaderType = SHADER_VTXEFFECTS;
 

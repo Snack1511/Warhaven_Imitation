@@ -2,6 +2,8 @@
 #include "CState.h"
 
 BEGIN(Client)
+class CColorController;
+
 class CWarrior_Attack_01
 	: public CState
 {
@@ -23,9 +25,13 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+	void Create_SwordEffect(CUnit* pOwner);
 
 private:
 	_int	m_iFinishedFrame = 0; // Finished 가 3번 호출되면 황소베기가 취소된다.
+	_float  m_fCreateTime = 0.016f;
+	_float  m_fCreateTimeAcc = 0.f;
+	
 };
 
 END

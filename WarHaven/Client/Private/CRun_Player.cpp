@@ -7,6 +7,7 @@
 #include "CUnit.h"
 
 #include "CUser.h"
+#include "CColorController.h"
 
 CRun_Player::CRun_Player()
 {
@@ -65,8 +66,24 @@ HRESULT CRun_Player::Initialize()
 void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* OwnerÀÇ Animator Set Idle·Î */
+    CColorController::COLORDESC m_tColorDesc;
+    ZeroMemory(&m_tColorDesc, sizeof(CColorController::COLORDESC));
 
-    
+    m_tColorDesc.eFadeStyle = CColorController::TIME;
+    m_tColorDesc.fFadeInStartTime = 1.f;
+    m_tColorDesc.fFadeInTime = 1.f;
+    m_tColorDesc.fFadeOutStartTime = 1.f;
+    m_tColorDesc.fFadeOutTime = 1.f;
+
+    m_tColorDesc.vTargetColor = _float4(1.f, 0.f, 0.f, 0.f);
+
+    m_tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+    m_tColorDesc.iStartKeyFrame = 3;
+    m_tColorDesc.iEndKeyFrame = 6;
+
+
+    GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);
+
 
 
     __super::Enter(pOwner, pAnimator);
