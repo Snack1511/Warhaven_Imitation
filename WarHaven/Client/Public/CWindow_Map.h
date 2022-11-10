@@ -2,6 +2,7 @@
 #define HASHING(Type, Value) hash<Type>()(Value)
 #include "CImGui_Window.h"
 #include "Functor.h"
+
 BEGIN(Engine)
 class CGameObject;
 END

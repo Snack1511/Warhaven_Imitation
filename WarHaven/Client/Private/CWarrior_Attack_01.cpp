@@ -355,7 +355,7 @@ STATE_TYPE CWarrior_Attack_01::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 
     return STATE_END;
 }
-}
+
 
 void CWarrior_Attack_01::Create_SwordEffect(CUnit* pOwner)
 {
