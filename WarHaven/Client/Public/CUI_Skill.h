@@ -1,6 +1,10 @@
 #pragma once
 #include "CUI_Wrapper.h"
 
+BEGIN(Engine)
+class CShader;
+END
+
 BEGIN(Client)
 
 class CUnit;
@@ -29,6 +33,10 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	virtual void Set_ShaderResources(CShader* pShader, const char* pConstName);
+	virtual void Set_ShaderResources_Relic(CShader* pShader, const char* pConstName);
+
+public:
 	void Set_SkillUI(_uint iIndex);
 
 private:
@@ -44,6 +52,9 @@ private:
 	virtual void My_LateTick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
+
+private:
+	_float m_fRelicValue = 0.f;
 };
 
 END

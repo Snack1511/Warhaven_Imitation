@@ -141,7 +141,7 @@ void CUI_Wrapper::Read_Texture(string strFolderPath, string key)
 
 void CUI_Wrapper::Read_Texture(CUI_Object* pUI, string strFolderPath, string key)
 {
-	string strBasePath = "../Bin/Resources/Textures/UI";;
+	string strBasePath = "../Bin/Resources/Textures/UI";
 	strBasePath += strFolderPath;
 
 	const char* pFilePath = strBasePath.c_str();

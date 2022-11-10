@@ -187,6 +187,25 @@ PS_OUT PS_HPBAR(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_RELIC(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    
+    In.vTexUV += g_fValue;
+      
+    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+        
+    Out.vColor.xyz *= vNoise.r;
+    
+    if (Out.vColor.w < 0.01f)
+        discard;
+	
+    return Out;
+}
+
 PS_OUT PS_UIColor_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -560,6 +579,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_HPBAR();
+    }
+
+    pass UI_RELIC
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_RELIC();
     }
 
     pass UIColor

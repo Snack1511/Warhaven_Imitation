@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include "Functor.h"
 #include "CUnit.h"
+#include "CShader.h"
+#include "Renderer.h"
 
 CUI_Skill::CUI_Skill()
 {
@@ -21,8 +23,6 @@ CUI_Skill::~CUI_Skill()
 
 HRESULT CUI_Skill::Initialize_Prototype()
 {
-	//로딩중에 호출
-
 	Read_UI("Skill");
 
 	tSkillHud.m_pUIInstance[SkillHud::OUTLINE] = m_pUIMap[TEXT("Skill_Outline")];
@@ -34,6 +34,10 @@ HRESULT CUI_Skill::Initialize_Prototype()
 
 	Read_Texture(tSkillHud.m_pUIInstance[SkillHud::ICON], "/HUD/Skill", "_");
 	Read_Texture(tSkillHud.m_pUIInstance[SkillHud::ICON], "/HUD/Relic", "Relic");
+
+	GET_COMPONENT_FROM(tSkillHud.m_pUIInstance[SkillHud::ICON], CTexture)
+		->Add_Texture(TEXT("../Bin/Resources/Textures/UI/T_RelicIconMask.dds"));
+
 	Read_Texture(tSkillHud.m_pUIInstance[SkillHud::KEY], "/KeyIcon/Keyboard", "Key");
 
 	for (int i = 0; i < 4; ++i)
@@ -71,7 +75,35 @@ HRESULT CUI_Skill::Start()
 
 	__super::Start();
 
+	for (int i = 0; i < 4; ++i)
+	{
+		GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CShader)
+			->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
+		
+	}
+
 	return S_OK;
+}
+
+void CUI_Skill::Set_ShaderResources(CShader* pShader, const char* pConstName)
+{
+	int iRelic = 0;
+	for (int i = 0; i < 4; ++i)
+	{
+		CTexture* pTexture = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture);
+		iRelic = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture)->Get_CurTextureIndex();
+
+		if (iRelic == 29)
+		{
+			CShader* pShader = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CShader);
+			pShader->SetUp_ShaderResources(pTexture, "g_NoiseTexture");
+		}
+	}
+}
+
+void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fRelicValue, sizeof(_float));
 }
 
 void CUI_Skill::Set_SkillUI(_uint iIndex)
@@ -200,6 +232,9 @@ void CUI_Skill::ActiveSkillBtn(_uint iIndex)
 
 		for (_uint j = 0; j < SkillHud::NAME_END; ++j)
 		{
+			CRenderer* pRenderer = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CRenderer);
+			pRenderer->Set_Pass(VTXTEX_PASS_UI_RELIC);
+
 			_float4 vPos = m_arrSkillHud[i].m_pUIInstance[j]->Get_Transform()->Get_World(WORLD_POS);
 			m_arrSkillHud[i].m_pUIInstance[j]->Set_Pos(fPosX, vPos.y);
 
@@ -267,6 +302,8 @@ void CUI_Skill::My_Tick()
 	}
 
 	Set_SkillUI(iIndex);
+
+	m_fRelicValue += fDT(0);
 }
 
 void CUI_Skill::My_LateTick()
