@@ -56,7 +56,6 @@ private:
 	void Create_UI();
 
 	CUI_Object* Add_UI();
-	CUI_Object* Clone_UI();
 
 	void Show_UIList();
 
@@ -76,6 +75,7 @@ private:
 
 	void Save_UI_Info(_uint iSelectIndex);
 	void Save_UI_List();
+	void Load_UI_Info(string key);
 	void Load_UI_List();
 
 private:

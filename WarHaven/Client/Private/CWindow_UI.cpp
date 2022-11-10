@@ -97,7 +97,10 @@ void CWindow_UI::Create_UI()
 	ImGui::SameLine();
 
 	if (ImGui::Button("Clone UI"))
-		Clone_UI();
+	{
+		string key = CFunctor::To_String(m_pSelectUI->Get_Name());
+		Load_UI_Info(key);
+	}
 }
 
 CUI_Object* CWindow_UI::Add_UI()
@@ -112,21 +115,6 @@ CUI_Object* CWindow_UI::Add_UI()
 	m_vecUI.push_back(tItem);
 
 	return pUI;
-}
-
-CUI_Object* CWindow_UI::Clone_UI()
-{
-	CUI_Object* pUI_Clone = m_vecUI[m_iSelectIndex].pUI->Clone();
-
-	CREATE_GAMEOBJECT(pUI_Clone, GROUP_UI);
-
-	UI_Object tItem;
-	tItem.pUI = pUI_Clone;
-	tItem.bSelected = false;
-
-	m_vecUI.push_back(tItem);
-
-	return pUI_Clone;
 }
 
 void CWindow_UI::Show_UIList()
@@ -217,7 +205,7 @@ void CWindow_UI::Set_Object_Info()
 	{
 		static char szBuf[MIN_STR] = "Name";
 		string strName = CFunctor::To_String(pUI->Get_Name());
-		
+
 		strcpy_s(szBuf, strName.c_str());
 
 		if (ImGui::InputText("UI_Object", szBuf, IM_ARRAYSIZE(szBuf), ImGuiInputTextFlags_EnterReturnsTrue))
@@ -406,6 +394,57 @@ void CWindow_UI::Save_UI_List()
 		Save_UI_Info(i);
 
 	Call_MsgBox(L"UI_List Save Succes");
+}
+
+void CWindow_UI::Load_UI_Info(string key)
+{
+	string savePath = "../Bin/Data/UIData/";
+	savePath += key;
+	savePath += ".bin";
+
+	ifstream	readFile(savePath, ios::binary);
+
+	if (!readFile.is_open())
+	{
+		Call_MsgBox(L"UI Save Failed");
+		return;
+	}
+
+	CUI_Object* pUI = Add_UI();
+
+	string strName = CUtility_File::Read_Text(&readFile);
+	pUI->Set_Name(CFunctor::To_Wstring(strName));
+
+	_float4 vPos;
+	readFile.read((char*)&vPos, sizeof(_float4));
+	pUI->Set_Pos(vPos.x, vPos.y);
+
+	_float4 vScale;
+	readFile.read((char*)&vScale, sizeof(_float4));
+	pUI->Set_Scale(vScale.x, vScale.y);
+
+	_bool bTarget = false;
+	readFile.read((char*)&bTarget, sizeof(_bool));
+	pUI->Set_MouseTarget(bTarget);
+
+	_bool bMulti = false;
+	readFile.read((char*)&bMulti, sizeof(_bool));
+	pUI->Set_MultiTexture(bMulti);
+
+	_float4 vColor;
+	readFile.read((char*)&vColor, sizeof(_float4));
+	pUI->Set_Color(vColor);
+
+	_uint iMaxSize = 0;
+	readFile.read((char*)&iMaxSize, sizeof(_uint));
+
+	for (_uint i = 0; i < iMaxSize; ++i)
+	{
+		string strPath = CUtility_File::Read_Text(&readFile);
+		pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
+	}
+
+	readFile.close();
 }
 
 void CWindow_UI::Load_UI_List()
