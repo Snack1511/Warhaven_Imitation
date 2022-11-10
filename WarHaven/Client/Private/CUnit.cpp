@@ -145,6 +145,8 @@ HRESULT CUnit::Start()
 	CallBack_CollisionStay += bind(&CUnit::Unit_CollisionStay, this, placeholders::_1, placeholders::_2);
 	CallBack_CollisionExit += bind(&CUnit::Unit_CollisionExit, this, placeholders::_1, placeholders::_2);
 
+	
+	SetUp_TrailEffect(m_tUnitStatus.eWeapon);
 
 	return S_OK;
 }
@@ -166,12 +168,35 @@ void CUnit::OnDisable()
 
 }
 
-void CUnit::SetUp_TrailEffect()
+void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
 {
-	m_pTrailEffect = CTrailEffect::Create(0, 10, _float4(0.f, 0.f, -168.f, 1.f), _float4(0.f, 0.f, -171.f, 1.f),
-		m_pModelCom->Find_HierarchyNode("0B_R_WP1"), m_pTransform, _float4(1.f, 0.f, 0.f, 0.05f), _float4(1.f, 0.1f, 0.1f, 0.25f),
-		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds",
-		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds");
+	const char* pBoneName = "0B_R_WP1";
+	_float4 vWeaponLow;
+	_float4 vWeaponHigh;
+	_float4 vGlowFlag;
+	_float4 vColor;
+	wstring wstrMaskMapPath;
+	wstring wstrColorMapPath;
+
+
+	switch (eWeapon)
+	{
+	case Client::WEAPON_LONGSWORD:
+		pBoneName = "0B_R_WP1";
+		vWeaponLow = _float4(0.f, 0.f, -168.f, 1.f);
+		vWeaponHigh = _float4(0.f, 0.f, -171.f, 1.f);
+		vGlowFlag = _float4(1.f, 0.f, 0.f, 0.05f);
+		vColor = _float4(1.f, 0.1f, 0.1f, 0.25f);
+		wstrMaskMapPath = L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds";
+		wstrColorMapPath = L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds";
+		break;
+	default:
+		break;
+	}
+
+	m_pTrailEffect = CTrailEffect::Create(0, 10, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(pBoneName), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
 
 	if (!m_pTrailEffect)
 		return;

@@ -87,6 +87,7 @@ HRESULT CUnit_Warrior::Initialize()
 	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_BODY, _float4(1, 0, 0, 0));
 	GET_COMPONENT(CModel)->Set_ShaderFlag(MODEL_PART_HEAD, SH_LIGHT_DEFAULT);
 	
+	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
 	return S_OK;
 }
@@ -96,8 +97,6 @@ HRESULT CUnit_Warrior::Start()
 	__super::Start();
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	Enter_State(STATE_IDLE_PLAYER, ANIM_BASE_R);
-
-	SetUp_TrailEffect();
 
 	return S_OK;
 }

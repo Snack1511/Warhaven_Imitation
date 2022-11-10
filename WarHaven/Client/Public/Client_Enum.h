@@ -254,5 +254,11 @@ namespace Client
 
 		STATE_END,
 	};
+
+	enum WEAPON_TYPE
+	{
+		WEAPON_LONGSWORD,
+		WEAPON_END,
+	};
 }
 

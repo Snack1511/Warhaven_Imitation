@@ -22,6 +22,7 @@ class CUnit abstract
 public:
 	struct UNIT_STATUS
 	{
+		WEAPON_TYPE eWeapon;
 		_float fHP = 100.f;
 		_float fMaxHP = 100.f;
 		_float fRunSpeed = 7.5f;
@@ -80,7 +81,7 @@ public:
 	}
 
 public:
-	void SetUp_TrailEffect();
+	void SetUp_TrailEffect(WEAPON_TYPE eWeapon);
 	void TurnOn_TrailEffect(_bool bOn);
 
 
