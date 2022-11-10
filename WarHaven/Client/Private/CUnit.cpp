@@ -16,6 +16,8 @@
 #include "CAnimator.h"
 #include "CNavigation.h"
 #include "CCell.h"
+#include "CTrailEffect.h"
+#include "CTrailBuffer.h"
 
 #include "MeshContainer.h"
 
@@ -163,6 +165,33 @@ void CUnit::OnDisable()
 	__super::OnDisable();
 
 }
+
+void CUnit::SetUp_TrailEffect()
+{
+	m_pTrailEffect = CTrailEffect::Create(0, 10, _float4(0.f, 0.f, -168.f, 1.f), _float4(0.f, 0.f, -171.f, 1.f),
+		m_pModelCom->Find_HierarchyNode("0B_R_WP1"), m_pTransform, _float4(1.f, 0.f, 0.f, 0.05f), _float4(1.f, 0.1f, 0.1f, 0.25f),
+		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds",
+		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds");
+
+	if (!m_pTrailEffect)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrailEffect, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrailEffect, CMesh))->Set_NoCurve();
+
+	m_pTrailEffect->TurnOn_TrailEffect(false);
+}
+
+void CUnit::TurnOn_TrailEffect(_bool bOn)
+{
+	if (!m_pTrailEffect)
+		return;
+
+	m_pTrailEffect->TurnOn_TrailEffect(bOn);
+
+}
+
+
 
 HRESULT CUnit::SetUp_Model(const UNIT_MODEL_DATA& tData)
 {

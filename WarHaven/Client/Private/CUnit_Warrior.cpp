@@ -96,6 +96,9 @@ HRESULT CUnit_Warrior::Start()
 	__super::Start();
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	Enter_State(STATE_IDLE_PLAYER, ANIM_BASE_R);
+
+	SetUp_TrailEffect();
+
 	return S_OK;
 }
 

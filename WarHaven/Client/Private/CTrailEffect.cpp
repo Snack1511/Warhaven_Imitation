@@ -52,6 +52,18 @@ void CTrailEffect::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
 }
 
+void CTrailEffect::TurnOn_TrailEffect(_bool bTrunOn)
+{
+	if (!m_pTrailBuffer)
+		return;
+
+	if (bTrunOn)
+		m_pTrailBuffer->Set_TrailOn();
+	else
+		m_pTrailBuffer->Set_TrailOff();
+
+}
+
 HRESULT CTrailEffect::Initialize_Prototype()
 {
 	Add_Component(CRenderer::Create(CP_RENDERER, RENDER_ALPHA, VTXTEX_PASS_TRAIL));
@@ -80,8 +92,9 @@ HRESULT CTrailEffect::SetUp_TrailEffect(_uint iGroupIdx, _uint iTriCnt, _float4 
 {
 	m_vGlowFlag = vGlowFlag;
 	m_pUnitTransform = pUnitTransform;
+	m_pTrailBuffer = CTrailBuffer::Create(iGroupIdx, iTriCnt, vLocalSwordLow, vLocalSwordHigh, pSwordBone, pUnitTransform);
 
-	Add_Component<CMesh>(CTrailBuffer::Create(iGroupIdx, iTriCnt, vLocalSwordLow, vLocalSwordHigh, pSwordBone, pUnitTransform));
+	Add_Component<CMesh>(m_pTrailBuffer);
 	Add_Component(CTexture::Create(0, wstrMaskMapPath.c_str(), 1));
 	Add_Component(CTexture::Create(0, wstrColorMapPath.c_str(), 1));
 

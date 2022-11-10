@@ -15,7 +15,7 @@ END
 BEGIN(Client)
 
 class CState;
-
+class CTrailEffect;
 class CUnit abstract
 	: public CGameObject
 {
@@ -80,6 +80,11 @@ public:
 	}
 
 public:
+	void SetUp_TrailEffect();
+	void TurnOn_TrailEffect(_bool bOn);
+
+
+public:
 	void	Enter_State(STATE_TYPE eType, ANIM_TYPE eAnimType);
 
 
@@ -112,6 +117,8 @@ protected:
 	CState* m_pCurState = nullptr;
 	CUnit* m_pTargetUnit = nullptr;
 
+protected:
+	CTrailEffect* m_pTrailEffect = nullptr;
 
 protected:
 	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);

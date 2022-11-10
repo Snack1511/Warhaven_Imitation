@@ -433,15 +433,15 @@ PS_EFFECT_OUT PS_TRAIL_MAIN(VS_TRAIL_OUT In)
 
 
     In.vTexUV.x = 1.f - In.vTexUV.x;
-    In.vTexUV.y *= 5.f;
+    //In.vTexUV.y *= 5.f;
     Out.vDiffuse.xyz = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
     Out.vDiffuse *= g_vColor;
 
-    if (Out.vDiffuse.a < 0.7f)
+    if (Out.vDiffuse.a < 0.05f)
         discard;
 
-    Out.vDiffuse.a = 1.f;
+    //Out.vDiffuse.a = 1.f;
 
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
     Out.vFlag = g_vFlag;
