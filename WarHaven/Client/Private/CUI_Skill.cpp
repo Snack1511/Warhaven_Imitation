@@ -35,8 +35,7 @@ HRESULT CUI_Skill::Initialize_Prototype()
 	Read_Texture(tSkillHud.m_pUIInstance[SkillHud::ICON], "/HUD/Skill", "_");
 	Read_Texture(tSkillHud.m_pUIInstance[SkillHud::ICON], "/HUD/Relic", "Relic");
 
-	GET_COMPONENT_FROM(tSkillHud.m_pUIInstance[SkillHud::ICON], CTexture)
-		->Add_Texture(TEXT("../Bin/Resources/Textures/UI/T_RelicIconMask.dds"));
+	tSkillHud.m_pUIInstance[SkillHud::ICON]->SetTexture(TEXT("../Bin/Resources/Textures/UI/T_RelicIconMask.dds"));
 
 	Read_Texture(tSkillHud.m_pUIInstance[SkillHud::KEY], "/KeyIcon/Keyboard", "Key");
 
@@ -77,9 +76,7 @@ HRESULT CUI_Skill::Start()
 
 	for (int i = 0; i < 4; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CShader)
-			->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
-		
+		GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
 	}
 
 	return S_OK;
@@ -87,22 +84,22 @@ HRESULT CUI_Skill::Start()
 
 void CUI_Skill::Set_ShaderResources(CShader* pShader, const char* pConstName)
 {
-	int iRelic = 0;
+}
+
+void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstName)
+{
 	for (int i = 0; i < 4; ++i)
 	{
 		CTexture* pTexture = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture);
-		iRelic = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture)->Get_CurTextureIndex();
+		m_iRelicIndex = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture)->Get_CurTextureIndex();
 
-		if (iRelic == 29)
+		if (m_iRelicIndex == 29)
 		{
 			CShader* pShader = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CShader);
 			pShader->SetUp_ShaderResources(pTexture, "g_NoiseTexture");
 		}
 	}
-}
 
-void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstName)
-{
 	pShader->Set_RawValue("g_fValue", &m_fRelicValue, sizeof(_float));
 }
 
@@ -143,6 +140,8 @@ void CUI_Skill::Set_SkillUI(_uint iIndex)
 		break;
 
 	case CUnit::CLASS_PALADIN:
+
+		ActiveSkillBtn(4);
 
 		Set_SkillIcon(3);
 		Set_SkillIcon(2, 44, 15, false);

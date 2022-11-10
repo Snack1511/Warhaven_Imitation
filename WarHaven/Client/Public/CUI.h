@@ -32,6 +32,7 @@ public:
 	void Set_Scale(_float fX, _float fY);
 
 public:
+	// ÄÄÆ÷³ÍÆ®
 	HRESULT SetTexture(const _tchar* pFilePath, _uint iIndex = 1);
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 

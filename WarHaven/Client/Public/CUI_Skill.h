@@ -43,6 +43,9 @@ private:
 	SkillHud tSkillHud;
 	SkillHud m_arrSkillHud[4];
 
+	_uint m_iRelicIndex = 0;
+	_float m_fRelicValue = 0.f;
+
 private:
 	void ActiveSkillBtn(_uint iIndex);
 	void Set_SkillIcon(_uint iIndex, _uint iKeyIdx = 52, _uint iIconIdx = 29, bool bRelic = true);
@@ -52,9 +55,6 @@ private:
 	virtual void My_LateTick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
-
-private:
-	_float m_fRelicValue = 0.f;
 };
 
 END
