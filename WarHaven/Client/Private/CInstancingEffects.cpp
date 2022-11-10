@@ -55,8 +55,9 @@ CInstancingEffects::~CInstancingEffects()
 {
 	SAFE_DELETE_ARRAY(m_pInstanceMatrices);
 	SAFE_DELETE_ARRAY(m_pInstancingDatas);
-	if (m_tCreateData.iOffsetPositionCount >0)
 	SAFE_DELETE_ARRAY(m_tCreateData.pOffsetPositions);
+
+	
 }
 
 CInstancingEffects* CInstancingEffects::Create(wstring wstrFbxPath, _uint iNumInstance, const INSTANCING_CREATE_DATA& tCreateData, _hashcode _hcCode)
@@ -481,7 +482,9 @@ _bool CInstancingEffects::Fade_Lerp(_uint iIndex)
 			m_pInstancingDatas[iIndex].vScale =
 				XMVectorLerp(m_pInstancingDatas[iIndex].vOriginScale.XMLoad(), m_pInstancingDatas[iIndex].vFadeOutTargetScale.XMLoad(), fRatio);
 
-			m_pInstancingDatas[iIndex].vColor.w = (1.f - fRatio);
+			
+
+			m_pInstancingDatas[iIndex].vColor.w = m_pInstancingDatas[iIndex].fTargetAlpha * (1.f - fRatio);
 		}
 
 		break;
@@ -506,31 +509,47 @@ void CInstancingEffects::Dead_Instance(_uint iIndex)
 
 void CInstancingEffects::ReMake_OffsetPositions(_int iSize)
 {
+	//새값 들어오기 이전의 오프셋포지션 갯수
 	_int iPrevCnt = m_tCreateData.iOffsetPositionCount;
+
+	//새로 들어온 값임
 	m_tCreateData.iOffsetPositionCount = iSize;
 
-	_float4* pNewOffsets = new _float4[iSize];
-	ZeroMemory(pNewOffsets, sizeof(_float4) * iSize);
-
-	//갱신 갯수가 이전 갯수보다 작을 때.
-	if (iPrevCnt > iSize)
+	//새로운 오프셋
+	if (iSize > 0)
 	{
-		for (_int i = 0; i < iSize; ++i)
+		_float4* pNewOffsets = new _float4[iSize];
+		ZeroMemory(pNewOffsets, sizeof(_float4) * iSize);
+
+
+		//갱신 갯수가 이전 갯수보다 작을 때. (빼기를 누른거임)
+		if (iPrevCnt > iSize)
 		{
-			pNewOffsets[i] = m_tCreateData.pOffsetPositions[i];
+			for (_int i = 0; i < iSize; ++i)
+			{
+				pNewOffsets[i] = m_tCreateData.pOffsetPositions[i];
+			}
+
+		}
+		else
+		{
+			for (_int i = 0; i < iPrevCnt; ++i)
+			{
+				pNewOffsets[i] = m_tCreateData.pOffsetPositions[i];
+			}
 		}
 
+		if (iPrevCnt > 0)
+			SAFE_DELETE_ARRAY(m_tCreateData.pOffsetPositions);
+
+		m_tCreateData.pOffsetPositions = pNewOffsets;
 	}
 	else
 	{
-		for (_int i = 0; i < iPrevCnt; ++i)
-		{
-			pNewOffsets[i] = m_tCreateData.pOffsetPositions[i];
-		}
+		if (iPrevCnt > 0)
+			SAFE_DELETE_ARRAY(m_tCreateData.pOffsetPositions);
 	}
 	
-	if (iPrevCnt > 0)
-		SAFE_DELETE_ARRAY(m_tCreateData.pOffsetPositions);
 
-	m_tCreateData.pOffsetPositions = pNewOffsets;
+	
 }

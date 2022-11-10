@@ -574,45 +574,18 @@ void CRectEffects::OnEnable()
 	//시작위치
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
-		m_pRectInstances[i].vRight = *((_float4*)(&(m_pInstancingDatas[i].StartMatrix.m[0])));
-		m_pRectInstances[i].vUp = *((_float4*)(&(m_pInstancingDatas[i].StartMatrix.m[1])));
-		m_pRectInstances[i].vLook = *((_float4*)(&(m_pInstancingDatas[i].StartMatrix.m[2])));
-
-		Set_NewStartPos(i);
-
-		m_pInstancingDatas[i].vScale = m_pInstancingDatas[i].vStartScale;
-		m_pInstancingDatas[i].vColor.w = 0.f;
-		m_pRectInstances[i].vColor.w = 0.f;
-		m_pInstancingDatas[i].eCurFadeType = INSTANCING_DATA::FADEINREADY;
-		m_pInstancingDatas[i].fTimeAcc = 0.f;
-
-		
-		m_pInstancingDatas[i].vTurnDir.x = 0.f;
-		m_pInstancingDatas[i].vTurnDir.y = 0.f;
-		m_pInstancingDatas[i].vTurnDir.z = 0.f;
-
-		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
-		{
-			m_pRectInstances[i].vColor.x = 0.f;
-			m_pRectInstances[i].vColor.y = 0.f;
-		}
-
-		//Jump
-		m_pInstancingDatas[i].fPrevY = m_pRectInstances[i].vTranslation.y;
-		m_pInstancingDatas[i].fOriginY = m_pRectInstances[i].vTranslation.y;
-		m_pInstancingDatas[i].fAcc = 0.f;
-
-		m_pInstancingDatas[i].bAlive = true;
+		Reset_Instance(i);
 	}
 
 }
 
 void CRectEffects::Dead_Instance(_uint iIndex)
 {
-	m_pInstancingDatas[iIndex].bAlive = false;
-	m_iNumDead++;
-	m_pRectInstances[iIndex].vColor.w = 0.f;
-	m_pInstancingDatas[iIndex].fSpeed = m_pInstancingDatas[iIndex].fOriginSpeed;
+	Reset_Instance(iIndex);
+	//m_pInstancingDatas[iIndex].bAlive = true;
+	//m_iNumDead++;
+	//m_pRectInstances[iIndex].vColor.w = 0.f;
+	//m_pInstancingDatas[iIndex].fSpeed = m_pInstancingDatas[iIndex].fOriginSpeed;
 	//작아지게해서 안보이게
 }
 
@@ -628,6 +601,11 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 			_uint iCurIndex = iIndex / (m_tCreateData.iNumInstance / m_tCreateData.iOffsetPositionCount);
 			vStartPos += m_tCreateData.pOffsetPositions[iCurIndex];
 		}
+
+	/*	if (m_bFollowParticle)
+		{
+			m_pFollowTarget->
+		}*/
 
 		vStartPos = vStartPos.MultiplyCoord(m_matTrans);
 		vStartDir = vStartDir.MultiplyNormal(m_matTrans).Normalize();
@@ -746,6 +724,7 @@ void CRectEffects::Update_Animation(_uint iIndex)
 {
 	m_pInstancingDatas[iIndex].vTurnDir.y += fDT(0);
 
+	//UV넘기는 코드
 
 	if (m_pInstancingDatas[iIndex].vTurnDir.y > m_pInstancingDatas[iIndex].fDuration)
 	{
@@ -758,6 +737,7 @@ void CRectEffects::Update_Animation(_uint iIndex)
 			m_pRectInstances[iIndex].vColor.y += 1.f;
 			if (m_pRectInstances[iIndex].vColor.y >= m_iHeightSize)
 			{
+				//여기 들어왔다 : 한바퀴돌아서 1순한거임
 				m_pRectInstances[iIndex].vColor.y = 0.f;
 
 				if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
@@ -767,4 +747,37 @@ void CRectEffects::Update_Animation(_uint iIndex)
 			}
 		}
 	}
+}
+
+void CRectEffects::Reset_Instance(_uint iIndex)
+{
+	m_pRectInstances[iIndex].vRight = *((_float4*)(&(m_pInstancingDatas[iIndex].StartMatrix.m[0])));
+	m_pRectInstances[iIndex].vUp = *((_float4*)(&(m_pInstancingDatas[iIndex].StartMatrix.m[1])));
+	m_pRectInstances[iIndex].vLook = *((_float4*)(&(m_pInstancingDatas[iIndex].StartMatrix.m[2])));
+
+	Set_NewStartPos(iIndex);
+
+	m_pInstancingDatas[iIndex].vScale = m_pInstancingDatas[iIndex].vStartScale;
+	m_pInstancingDatas[iIndex].vColor.w = 0.f;
+	m_pRectInstances[iIndex].vColor.w = 0.f;
+	m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+	m_pInstancingDatas[iIndex].fTimeAcc = 0.f;
+
+
+	m_pInstancingDatas[iIndex].vTurnDir.x = 0.f;
+	m_pInstancingDatas[iIndex].vTurnDir.y = 0.f;
+	m_pInstancingDatas[iIndex].vTurnDir.z = 0.f;
+
+	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+	{
+		m_pRectInstances[iIndex].vColor.x = 0.f;
+		m_pRectInstances[iIndex].vColor.y = 0.f;
+	}
+
+	//Jump
+	m_pInstancingDatas[iIndex].fPrevY = m_pRectInstances[iIndex].vTranslation.y;
+	m_pInstancingDatas[iIndex].fOriginY = m_pRectInstances[iIndex].vTranslation.y;
+	m_pInstancingDatas[iIndex].fAcc = 0.f;
+
+	m_pInstancingDatas[iIndex].bAlive = true;
 }

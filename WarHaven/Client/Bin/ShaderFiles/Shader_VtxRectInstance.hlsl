@@ -123,7 +123,10 @@ PS_OUT PS_COLORMAP_MAIN(PS_IN In)
 
 	vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
 
+
 	Out.vDiffuse.xyz = vColor.xyz;
+	Out.vDiffuse.xyz += In.vColor.xyz;
+
 	Out.vDiffuse.a *= In.vColor.a;
 
 	if (Out.vDiffuse.a < 0.05f)

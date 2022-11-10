@@ -3,7 +3,7 @@
 
 #include "UsefulHeaders.h"
 
-
+#include "CMesh_Cube.h"
 
 CTestObject::CTestObject()
 {
@@ -15,19 +15,16 @@ CTestObject::~CTestObject()
 
 HRESULT CTestObject::Initialize_Prototype()
 {
-	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXMODEL,
-		VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements);
+	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXCUBETEX,
+		VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements);
+
 	pShader->Initialize();
 	Add_Component(pShader);
 
-	CModel_Renderer* pRenderer = CModel_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXMODEL_PASS_DEFAULT
+	CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXCUBETEX_PASS_DEBUG
 		, _float4(0.f, 0.f, 0.f, 1.f));
 	Add_Component<CRenderer>(pRenderer);
-
-
-	_float4x4 TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixRotationZ(XMConvertToRadians(180.0f));
-	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, L"../bin/resources/meshes/map/structure/building/SM_Architecture_Building_ShipBase01a.fbx", TransformMatrix);
-	Add_Component(pModel);
+	Add_Component<CMesh>(CMesh_Cube::Create(0));
 
 
 	CPhysXCollider::PHYSXCOLLIDERDESC		tPhysXColliderDesc;
@@ -36,8 +33,8 @@ HRESULT CTestObject::Initialize_Prototype()
 	tPhysXColliderDesc.eShape = CPhysXCollider::COLLIDERSHAPE::BOX;
 	tPhysXColliderDesc.eType = CPhysXCollider::COLLIDERTYPE::DYNAMIC;
 	tPhysXColliderDesc.fDensity = 1.f;
-	tPhysXColliderDesc.vAngles = ZERO_VECTOR;
-	tPhysXColliderDesc.vPosition = ZERO_VECTOR;
+	tPhysXColliderDesc.vAngles = _float4(frandom(0, 360.f), frandom(0, 360.f), frandom(0, 360.f));
+	tPhysXColliderDesc.vPosition = _float4(frandom(-10.f, 10.f), 10.f, frandom(-10.f, 10.f));
 	tPhysXColliderDesc.vScale = _float4(1.f, 1.f, 1.f, 1.f);
 
 	Add_Component(CPhysXCollider::Create(CP_BEFORE_TRANSFORM, tPhysXColliderDesc));
@@ -52,5 +49,7 @@ HRESULT CTestObject::Initialize()
 
 HRESULT CTestObject::Start()
 {
+	__super::Start();
+
 	return S_OK;
 }

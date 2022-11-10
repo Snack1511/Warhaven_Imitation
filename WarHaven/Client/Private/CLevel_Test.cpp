@@ -61,6 +61,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	// 
 	//로딩 Finish 수동으로 해야댐 ㅠ
 	
+	GAMEINSTANCE->Create_Scene(CPhysX_Manager::Scene::SCENE_CURRENT);
 
 
 	CSkyBox* pSkyBox = CSkyBox::Create();
@@ -166,6 +167,7 @@ HRESULT CLevel_Test::Render()
 HRESULT CLevel_Test::Exit()
 {
 	__super::Exit();
+	GAMEINSTANCE->Delete_Scene(CPhysX_Manager::Scene::SCENE_CURRENT);
 
 	CUser::Get_Instance()->On_ExitLevel();
 

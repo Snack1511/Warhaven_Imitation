@@ -22,6 +22,7 @@ CPhysXCollider::CPhysXCollider(const CPhysXCollider& rhs)
 
 CPhysXCollider::~CPhysXCollider()
 {
+	Release();
 }
 
 CPhysXCollider* CPhysXCollider::Create(_uint iGroupID, const PHYSXCOLLIDERDESC& tPhysXColliderDesc)
@@ -65,14 +66,26 @@ void CPhysXCollider::Late_Tick()
 	//여기서 갱신시키기
 	_float4	vPos = Get_Position();
 	m_pOwner->Get_Transform()->Set_World(WORLD_POS, vPos);
+
+	
+
+	PxTransform	Transform;
+	if (m_pRigidDynamic)
+		Transform = m_pRigidDynamic->getGlobalPose();
+
+	if (m_ColliderDesc.eType == COLLIDERTYPE::DYNAMIC)
+	{
+		_float4 vQuaternion = _float4(Transform.q.x, Transform.q.y, Transform.q.z, Transform.q.w);
+		m_pOwner->Get_Transform()->MatrixRotationQuaternion(vQuaternion);
+	}
+	
+
 }
 
 void CPhysXCollider::Release()
 {
-	if (m_pRigidDynamic)
-		m_pRigidDynamic->release();
-	if (m_pRigidStatic)
-		m_pRigidStatic->release();
+	Safe_release(m_pRigidDynamic);
+	Safe_release(m_pRigidStatic);
 }
 
 void CPhysXCollider::OnEnable()

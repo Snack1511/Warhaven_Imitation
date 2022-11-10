@@ -12,8 +12,10 @@ class CInstancingEffects
 public:
 	struct INSTANCING_CREATE_DATA
 	{
+		//인스턴스 갯수
 		_uint		iNumInstance = 1;
 
+		//오프셋 포지션
 		_int	iOffsetPositionCount = 0;
 		_float4* pOffsetPositions = nullptr;
 

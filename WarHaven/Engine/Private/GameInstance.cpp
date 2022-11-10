@@ -173,7 +173,6 @@ HRESULT CGameInstance::Initialize()
 
 void CGameInstance::Release()
 {
-	m_pPhysXManager->Destroy_Instance();
 	m_pKeyManager->Destroy_Instance();
 	m_pObjectManager->Destroy_Instance();
 	m_pLevelManager->Destroy_Instance();
@@ -194,6 +193,8 @@ void CGameInstance::Release()
 	m_pTargetManager->Destroy_Instance();
 	m_pLightManager->Destroy_Instance();
 	m_pGraphicDevice->Destroy_Instance();
+	m_pPhysXManager->Destroy_Instance();
+
 
 }
 

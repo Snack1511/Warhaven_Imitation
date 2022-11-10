@@ -20,5 +20,7 @@ public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize() override;
 	virtual HRESULT	Start() override;
+
+
 };
 END

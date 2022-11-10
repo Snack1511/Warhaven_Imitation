@@ -8,6 +8,8 @@ textureCUBE	g_DiffuseTexture;
 vector	g_vFlag;
 vector	g_vGlowFlag;
 
+vector	g_vColor;
+
 
 
 
@@ -38,7 +40,7 @@ VS_OUT VS_MAIN_SKY(VS_IN In)
 	return Out;	
 }
 
-struct VS_WIRE_OUT
+struct VS_DEBUG_OUT
 {
 	float4		vPosition : SV_POSITION;
 	float3		vTexUV : TEXCOORD0;
@@ -46,9 +48,9 @@ struct VS_WIRE_OUT
 
 };
 
-VS_WIRE_OUT VS_WIRE_MAIN(VS_IN In)
+VS_DEBUG_OUT VS_DEBUG_MAIN(VS_IN In)
 {
-	VS_WIRE_OUT		Out = (VS_WIRE_OUT)0;
+	VS_DEBUG_OUT		Out = (VS_DEBUG_OUT)0;
 
 	matrix			matWV, matWVP;
 
@@ -86,7 +88,7 @@ PS_OUT PS_MAIN_SKY(PS_IN In)
 	return Out;	
 }
 
-struct PS_WIRE_IN
+struct PS_DEBUG_IN
 {
 	float4		vPosition : SV_POSITION;
 	float3		vTexUV : TEXCOORD0;
@@ -94,25 +96,29 @@ struct PS_WIRE_IN
 
 };
 
-struct PS_WIRE_OUT
+struct PS_DEBUG_OUT
 {
 	vector		vDiffuse : SV_TARGET0;
-	vector		vDepth : SV_TARGET1;
-	vector		vFlag : SV_TARGET2;
-	vector		vEffectDiffuse : SV_TARGET3;
-	vector		vGlowFlag : SV_TARGET4;
+	vector		vNormal : SV_TARGET1;
+	vector		vDepth : SV_TARGET2;
+	vector		vFlag : SV_TARGET3;
 };
 
-PS_WIRE_OUT PS_WIRE_MAIN(PS_WIRE_IN In)
+PS_DEBUG_OUT PS_DEBUG_MAIN(PS_DEBUG_IN In)
 {
-	PS_WIRE_OUT		Out = (PS_WIRE_OUT)0;
+	PS_DEBUG_OUT		Out = (PS_DEBUG_OUT)0;
 
-	//Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vDiffuse = vector(0.8f, 0.9f, 1.f, 0.8f);
+	//0 ~ 1À»
+	//0.5 ~ 1·Î
+	In.vTexUV.x += 1;
+	In.vTexUV.x *= 0.5;
+
+	Out.vDiffuse = g_vColor * (In.vTexUV.x);
+	Out.vDiffuse.a = 1.f;
+
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
-	Out.vFlag = g_vFlag;
-	Out.vGlowFlag = g_vGlowFlag;
-	Out.vEffectDiffuse = Out.vDiffuse;
+
+
 
 	return Out;
 }
@@ -131,15 +137,15 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN_SKY();
 	}
 
-	pass Wire
+	pass Debug
 	{
-		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_Default);
 
-		VertexShader = compile vs_5_0 VS_WIRE_MAIN();
+		VertexShader = compile vs_5_0 VS_DEBUG_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_WIRE_MAIN();
+		PixelShader = compile ps_5_0 PS_DEBUG_MAIN();
 	}
 
 }

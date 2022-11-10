@@ -72,6 +72,21 @@ namespace Engine
 	}
 
 	template<typename T>
+	unsigned long Safe_release(T& Temp)
+	{
+		unsigned long dwRefCnt = 0;
+
+		if (Temp)
+		{
+			Temp->release();
+		}
+		Temp = nullptr;
+
+
+		return dwRefCnt;
+	}
+
+	template<typename T>
 	unsigned long Safe_AddRef(T& Temp)
 	{
 		unsigned long dwRefCnt = 0;
