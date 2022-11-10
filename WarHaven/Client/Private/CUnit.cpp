@@ -170,7 +170,7 @@ void CUnit::OnDisable()
 
 void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
 {
-	const char* pBoneName = "0B_R_WP1";
+	const char* pBoneName = "empty";
 	_float4 vWeaponLow;
 	_float4 vWeaponHigh;
 	_float4 vGlowFlag;

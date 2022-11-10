@@ -258,6 +258,7 @@ namespace Client
 	enum WEAPON_TYPE
 	{
 		WEAPON_LONGSWORD,
+		WEAPON_SPEAR,
 		WEAPON_END,
 	};
 }
