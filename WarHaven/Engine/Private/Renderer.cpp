@@ -81,14 +81,7 @@ HRESULT CRenderer::Render()
 
 			iIndex++;
 		}
-
-		
 	}
-	else
-	{
-		int i = 0;
-	}
-	
 	
 	m_pShaderCom->CallBack_SetRawValues(m_pShaderCom, "");
 

@@ -28,5 +28,6 @@ private:
 
 private:
 	void	Create_TestObject();
+	void	Create_DebugObject(_float4 vPos, _float4 vScale, _float4 vAngle);
 };
 END

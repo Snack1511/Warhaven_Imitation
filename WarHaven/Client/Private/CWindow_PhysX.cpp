@@ -8,6 +8,8 @@
 
 #include "CTestObject.h"
 
+#include "CDebugObject.h"
+
 CWindow_PhysX::CWindow_PhysX()
 {
 }
@@ -51,16 +53,39 @@ HRESULT CWindow_PhysX::Render()
 	if (FAILED(__super::Begin()))
 		return E_FAIL;
 
-	if (ImGui::Button("Create Scene"))
-	{
-		GAMEINSTANCE->Create_Scene(CPhysX_Manager::Scene::SCENE_CURRENT);
-	}
+	//벽 설치하는 툴임
+
 
 	if (ImGui::Button("Create TestObject"))
 	{
 		Create_TestObject();
 	}
 
+	if (ImGui::CollapsingHeader("STATIC CUBE"))
+	{
+		static _float4	vScale = _float4(1.f, 1.f, 1.f, 1.f);
+
+		if (ImGui::Button("Create Ground"))
+		{
+			Create_DebugObject(ZERO_VECTOR, vScale, ZERO_VECTOR);
+		}
+
+
+		static _float vScaleInput[3] = {};
+
+
+		if (ImGui::InputFloat3("vScale", vScaleInput))
+		{
+			vScale.x = vScaleInput[0];
+			vScale.y = vScaleInput[1];
+			vScale.z = vScaleInput[2];
+		}
+
+
+
+	}
+
+	
 
 	__super::End();
 
@@ -74,4 +99,11 @@ void CWindow_PhysX::Create_TestObject()
 	CREATE_GAMEOBJECT(pTestObject, GROUP_PROP);
 	m_GameObjects.push_back(pTestObject);
 	m_pCurGameObject = pTestObject;
+}
+
+void CWindow_PhysX::Create_DebugObject(_float4 vPos, _float4 vScale, _float4 vAngle)
+{
+	CDebugObject* pDebugObject = CDebugObject::Create(vPos, vScale, vAngle);
+	pDebugObject->Initialize();
+	CREATE_GAMEOBJECT(pDebugObject, GROUP_PROP);
 }

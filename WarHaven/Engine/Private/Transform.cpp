@@ -111,11 +111,12 @@ void CTransform::MatrixTurnQuaternion(_float4 vQuaternion)
 void CTransform::MatrixRotationQuaternion(_float4 vQuaternion)
 {
 	XMMATRIX	QuaternionMatrix;
+	
 	QuaternionMatrix = XMMatrixRotationQuaternion(vQuaternion.XMLoad());
 
-	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * m_tTransform.vScale.x;
-	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * m_tTransform.vScale.y;
-	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * m_tTransform.vScale.z;
+	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f);
 
 	vRight = XMVector3TransformNormal(vRight, QuaternionMatrix);
 	vUp = XMVector3TransformNormal(vUp, QuaternionMatrix);

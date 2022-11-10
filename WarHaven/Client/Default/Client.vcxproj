@@ -190,6 +190,7 @@
     <ClInclude Include="..\Public\CCamera_Follow.h" />
     <ClInclude Include="..\public\CCamera_Free.h" />
     <ClInclude Include="..\Public\CColorController.h" />
+    <ClInclude Include="..\public\CDebugObject.h" />
     <ClInclude Include="..\Public\CDefault_Effect.h" />
     <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\public\CEffects_Factory.h" />
@@ -280,6 +281,7 @@
     <ClCompile Include="..\Private\CCamera_Follow.cpp" />
     <ClCompile Include="..\private\CCamera_Free.cpp" />
     <ClCompile Include="..\Private\CColorController.cpp" />
+    <ClCompile Include="..\private\CDebugObject.cpp" />
     <ClCompile Include="..\Private\CDefault_Effect.cpp" />
     <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\private\CEffects_Factory.cpp" />

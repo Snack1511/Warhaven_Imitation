@@ -38,6 +38,11 @@ HRESULT CPhysX_Manager::Initialize()
 	// 충돌체 정지 마찰계수, 운동 마찰 계수, 탄성력
 	m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, -10.f);
 
+	for (_uint i = 0; i < SCENE_END; ++i)
+	{
+		m_pScenes[i] = nullptr;
+	}
+
 
 
 	return S_OK;
@@ -48,7 +53,7 @@ void CPhysX_Manager::Tick()
 {
 	_float fTimeDelta = fDT(0);
 
-	if (m_bSceneStart)
+	if (m_pCurScene)
 	{
 		if (1 == m_pCurScene->getTimestamp() ||
 			2 == m_pCurScene->getTimestamp())
@@ -209,21 +214,30 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 
 void CPhysX_Manager::Release()
 {
+
+
+	for (_uint i = 0; i < SCENE_END; ++i)
+	{
+		Safe_release(m_pScenes[i]);
+	}
+
+
+	Safe_release(m_pDispatcher);
+
 	PX_UNUSED(true);
 
-	if (m_pPhysics)
-		m_pPhysics->release();
+	Safe_release(m_pPhysics);
+	Safe_release(m_pCooking);
 
-	if (m_pCooking)
-		m_pCooking->release();
+
+
 
 	if (m_pPVD)
 	{
 		PxPvdTransport* transport = m_pPVD->getTransport();
-		m_pPVD->release();
-		m_pPVD = nullptr;
+		Safe_release(m_pPVD);
 		transport->release();
 	}
-	m_pFoundation->release();
+	Safe_release(m_pFoundation);
 }
 

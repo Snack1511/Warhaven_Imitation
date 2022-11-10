@@ -62,6 +62,9 @@ private:
 
 	void		Update_Animation(_uint iIndex);
 
+private:
+	void		Reset_Instance(_uint iIndex);
+
 };
 
 END
