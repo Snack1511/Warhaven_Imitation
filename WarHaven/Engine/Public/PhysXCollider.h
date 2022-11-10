@@ -4,9 +4,9 @@
 BEGIN(Engine)
 class CTransform;
 
-class ENGINE_DLL CPhyXCollider final : public CComponent
+class ENGINE_DLL CPhysXCollider final : public CComponent
 {
-	DECLARE_PROTOTYPE(CPhyXCollider);
+	DECLARE_PROTOTYPE(CPhysXCollider);
 
 public:
 	enum class COLLIDERTYPE { DYNAMIC, STATIC, DECORATION, ZONE, YFIXED_DYNAMIC, TYPE_END };
@@ -22,22 +22,22 @@ public:
 		PxConvexMesh*		pConvecMesh;
 		PxMaterial*			pMaterial;
 		COLLIDERTYPE		eType;
-		XMVECTOR			vPosition;
-		XMVECTOR			vAngles;
+		_float4				vPosition;
+		_float4				vAngles;
 		COLLIDERSHAPE		eShape;
-		XMVECTOR			vScale;
+		_float4				vScale;
 		float				fDensity;
 
 	}PHYSXCOLLIDERDESC;
 
 public:
-	CPhyXCollider(_uint iGroupID);
-	CPhyXCollider(const CPhyXCollider& rhs);
-	virtual ~CPhyXCollider();
+	CPhysXCollider(_uint iGroupID);
+	CPhysXCollider(const CPhysXCollider& rhs);
+	virtual ~CPhysXCollider();
 
 
 public:
-	static CPhyXCollider* Create(_uint iGroupID, const PHYSXCOLLIDERDESC& tPhysXColliderDesc);
+	static CPhysXCollider* Create(_uint iGroupID, const PHYSXCOLLIDERDESC& tPhysXColliderDesc);
 
 public:
 	_vector	Get_Position();
@@ -72,6 +72,9 @@ public:
 	virtual void	Tick() override;
 	virtual void	Late_Tick() override;
 	virtual void	Release() override;
+
+	virtual void	OnEnable() override;
+	virtual void	OnDisable() override;
 
 public:
 	void	Synchronize_Transform(CTransform* pTransform);

@@ -305,60 +305,60 @@ ComPtr<ID3D11ShaderResourceView> CGameInstance::Get_Texture(wstring wstrFilePath
 	return m_pResourceManager->Get_Texture(wstrFilePath);
 }
 
-//HRESULT CGameInstance::Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity)
-//{
-//	return m_pPhysXManager->Create_Scene(eScene, Gravity);
-//}
-//
-//HRESULT CGameInstance::Delete_Scene(CPhysX_Manager::Scene eScene)
-//{
-//	return m_pPhysXManager->Delete_Scene(eScene);
-//}
-//
-//HRESULT CGameInstance::Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity)
-//{
-//	return m_pPhysXManager->Change_Scene(eNextScene, Gravity);
-//}
-//
-//void CGameInstance::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut)
-//{
-//	m_pPhysXManager->Create_CylinderMesh(fRadiusBelow, fRadiusUpper, fHight, ppOut);
-//}
-//
-//void CGameInstance::Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut)
-//{
-//	m_pPhysXManager->Create_ConvexMesh(pVertices, iNumVertice, ppOut);
-//}
-//
-//void CGameInstance::Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut)
-//{
-//	m_pPhysXManager->Create_Material(fStaticFriction, fDynamicFriction, fRestitution, ppOut);
-//}
-//
-//void CGameInstance::Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut)
-//{
-//	return m_pPhysXManager->Create_Shape(Geometry, pMaterial, ppOut);
-//}
-//
-//PxRigidDynamic* CGameInstance::Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, const PxReal& Density, const PxVec3& velocity, PxMaterial* pMaterial)
-//{
-//	return m_pPhysXManager->Create_DynamicActor(t, geometry, eScene, Density, velocity, pMaterial);
-//}
-//
-//PxRigidStatic* CGameInstance::Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, PxMaterial* pMaterial)
-//{
-//	return m_pPhysXManager->Create_StaticActor(t, geometry, eScene, pMaterial);
-//}
-//
-//void CGameInstance::Begin_PhysScene()
-//{
-//	return m_pPhysXManager->Begin_PhysScene();
-//}
-//
-//void CGameInstance::End_PhysScene()
-//{
-//	return m_pPhysXManager->End_PhysScene();
-//}
+HRESULT CGameInstance::Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity)
+{
+	return m_pPhysXManager->Create_Scene(eScene, Gravity);
+}
+
+HRESULT CGameInstance::Delete_Scene(CPhysX_Manager::Scene eScene)
+{
+	return m_pPhysXManager->Delete_Scene(eScene);
+}
+
+HRESULT CGameInstance::Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity)
+{
+	return m_pPhysXManager->Change_Scene(eNextScene, Gravity);
+}
+
+void CGameInstance::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut)
+{
+	m_pPhysXManager->Create_CylinderMesh(fRadiusBelow, fRadiusUpper, fHight, ppOut);
+}
+
+void CGameInstance::Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut)
+{
+	m_pPhysXManager->Create_ConvexMesh(pVertices, iNumVertice, ppOut);
+}
+
+void CGameInstance::Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut)
+{
+	m_pPhysXManager->Create_Material(fStaticFriction, fDynamicFriction, fRestitution, ppOut);
+}
+
+void CGameInstance::Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut)
+{
+	return m_pPhysXManager->Create_Shape(Geometry, pMaterial, ppOut);
+}
+
+PxRigidDynamic* CGameInstance::Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, const PxReal& Density, const PxVec3& velocity, PxMaterial* pMaterial)
+{
+	return m_pPhysXManager->Create_DynamicActor(t, geometry, eScene, Density, velocity, pMaterial);
+}
+
+PxRigidStatic* CGameInstance::Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, PxMaterial* pMaterial)
+{
+	return m_pPhysXManager->Create_StaticActor(t, geometry, eScene, pMaterial);
+}
+
+void CGameInstance::Begin_PhysScene()
+{
+	return m_pPhysXManager->Begin_PhysScene();
+}
+
+void CGameInstance::End_PhysScene()
+{
+	return m_pPhysXManager->End_PhysScene();
+}
 
 void CGameInstance::Bake_StaticShadow(vector<CGameObject*>& MapList, _float fDistance)
 {

@@ -27,11 +27,6 @@ HRESULT CPhysX_Manager::Initialize()
 	{
 		Call_MsgBox(L"Faiied to connect to PVD!");
 	}
-	else
-	{
-		Call_MsgBox(L"sex!");
-
-	}
 
 	// Create PhysX
 	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, PxTolerancesScale(), true, m_pPVD);
@@ -41,32 +36,7 @@ HRESULT CPhysX_Manager::Initialize()
 
 	// Crate Material
 	// 충돌체 정지 마찰계수, 운동 마찰 계수, 탄성력
-	//m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 	m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, -10.f);
-
-
-	/*if (nullptr != m_pScenes)
-		__debugbreak();*/
-
-	//m_iNumScenes = iNumLevels;
-	//m_pScenes = new LPSCENE[iNumLevels];
-
-	 //Crate Scene
-	Create_Scene(SCENE_CURRENT);
-	m_pCurScene = m_pScenes[SCENE_CURRENT];
-
-
-
-	// Create Plane
-	PxRigidStatic* groundPlane = PxCreatePlane(*m_pPhysics, PxPlane(0, 1, 0, 0), *m_pMaterial);
-	m_pScenes[SCENE_CURRENT]->addActor(*groundPlane);
-
-	/*PxReal stackZ = 0.f;
-	for (PxU32 i = 0; i<3; i++)
-		Create_Stack(PxTransform(PxVec3(0, 0, stackZ -= 10.0f)), 10, 2.0f);*/
-
-	Create_StaticActor(PxTransform(PxVec3(0.f, 10.f, 0.f)), PxBoxGeometry(5.f, 5.f, 5.f), SCENE_CURRENT);
-	Create_DynamicActor(PxTransform(PxVec3(0.f, 0.f, 0.f)), PxBoxGeometry(5.f, 5.f, 5.f), SCENE_CURRENT, 10.f, PxVec3(0.f,0.f,0.f));
 
 
 
@@ -87,35 +57,6 @@ void CPhysX_Manager::Tick()
 		m_pCurScene->simulate(fTimeDelta);
 		m_pCurScene->fetchResults(true);
 	}
-
-	//PxTransform camera = {0.f, 0.f, 0.f};
-
-	//USEGAMEINSTANCE;
-	//if (KEY_DOWN('K'))
-	//{
-	//	//m_pTemp = CreateDynamicActor(camera, PxSphereGeometry(3.0f), SCENE_FIRST, 10.f, camera.rotate(PxVec3(0, 0, -1)) * 200);
-
-
-
-	//	PxConvexMesh* pConvexMesh = nullptr;
-	//	Create_CylinderMesh(3.f, 1.f, 4.f, &pConvexMesh);
-
-	//	m_pTemp = Create_DynamicActor(camera, PxConvexMeshGeometry(pConvexMesh), SCENE_CURRENT, 10.f, camera.rotate(PxVec3(0, 0, -1)) * 200);
-	//}
-
-	//if (KEY_DOWN('L') && m_pTemp)
-	//{
-	//	m_pTemp->setGlobalPose(PxTransform(0.f, 0.f, 0.f));
-	//	m_pTemp->getGlobalPose();
-	//}
-
-	//if (m_pTemp)
-	//{
-	//	PxVec3 TempPos = m_pTemp->getGlobalPose().p;
-	//	_float3 vTempPos = { TempPos.x, TempPos.y ,TempPos.z };
-	//}
-
-
 }
 
 
@@ -141,44 +82,6 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 	}
 
 	m_pCurScene = m_pScenes[eScene];
-
-	//PxSceneDesc	SceneDesc(m_pPhysics->getTolerancesScale());
-
-	//// 중력
-	//SceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
-	//SceneDesc.cpuDispatcher = m_pDispatcher;
-
-	//// 시뮬레이션 중 출돌 관련 이벤트 함수가 정의된 클래스를 주면 된다
-	////SceneDesc.simulationEventCallback = this;
-
-	//// 시뮬레이션 중 사용할 필터 함수를 주면 된다.
-	////SceneDesc.filterShader = FilterShader;
-
-	//m_pScene = m_pPhysics->createScene(SceneDesc);
-
-	//// 해당 Flag를 켜주면 Kineamtic Actor 의 충돌 검사가 가능하다
-	//// 기본으로는 이벤트가 날라오지 않는다.
-
-	////m_pScene->setFlag(PxSceneFlag::eENABLE_KINEMATIC_PAIRS, true);
-	////m_pScene->setFlag(PxSceneFlag::eENABLE_KINEMATIC_STATIC_PAIRS, true);
-
-	//// PVD
-	//PxPvdSceneClient* pPvdClient = m_pScene->getScenePvdClient();
-	//if (pPvdClient)
-	//{
-	//	pPvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
-	//	pPvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
-	//	pPvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
-	//}
-
-	//// 바닥 만들기
-	//// 충돌 재질을 생성한다.
-	//// 각 파라미터는 마찰력과 탄성에 관여한다.
-	//// 정지마찰, 운동 마찰
-	//PxMaterial*	pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, 0.5f);
-	//PxRigidStatic*	pGroundPlane = PxCreatePlane(*m_pPhysics, PxPlane(0, 1, 0, 0), *pMaterial);
-
-	//m_pScene->addActor(*pGroundPlane);
 
 	return S_OK;
 }
@@ -231,29 +134,10 @@ PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform
 		pStatic = PxCreateStatic(*m_pPhysics, Transform, Geometry, *m_pMaterial);
 
 	m_pCurScene->addActor(*pStatic);
-	//m_pScenes[eScene]->addActor(*pStatic);
+
 	return pStatic;
 }
 
-//void CPhysX_Manager::Create_Stack(const PxTransform & t, PxU32 size, PxReal halfExtent)
-//{
-//	PxShape* shape = m_pPhysics->createShape(PxBoxGeometry(halfExtent, halfExtent, halfExtent), *m_pMaterial);
-//	for (PxU32 i = 0; i<size; i++)
-//
-//	{
-//		for (PxU32 j = 0; j<size - i; j++)
-//		{
-//			PxTransform localTm(PxVec3(PxReal(j * 2) - PxReal(size - i), PxReal(i * 2 + 1), 0) * halfExtent);
-//			PxRigidDynamic* body = m_pPhysics->createRigidDynamic(t.transform(localTm));
-//			//PxRigidStatic* body = m_pPhysics->createRigidStatic(t.transform(localTm));
-//			body->attachShape(*shape);
-//			// 해당 메시의 관성을 넣어줌
-//			PxRigidBodyExt::updateMassAndInertia(*body, 10.0f);
-//			m_pCurScene->addActor(*body);
-//		}
-//	}
-//	shape->release();
-//}
 
 void CPhysX_Manager::Create_ConvexMesh(PxVec3 ** pVertices, _uint iNumVertice, PxConvexMesh ** ppOut)
 {
@@ -301,8 +185,6 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 	// Below
 	for (PxU32 i = 0; i < 16; i++)
 	{
-		//pVertices[i] = PxVec3(fRandom(-2.0f, 2.0f), fRandom(-2.0f, 2.0f), fRandom(-2.0f, 2.0f));
-
 		_vector vPostion = { fRadiusBelow, 0.f, 0.f, 1.f };
 
 		_matrix RotateMatrix = XMMatrixRotationAxis(_vector{ 0.f, 1.f, 0.f, 0.f }, XMConvertToRadians(360.f / 16 * i));
@@ -325,21 +207,9 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 }
 
 
-//void CPhysX_Manager::Create_CheeseShape()
-//{
-//
-//}
-
 void CPhysX_Manager::Release()
 {
 	PX_UNUSED(true);
-	//for (auto& elem : m_pScenes)
-	//{
-	//	elem->release();
-	//}
-
-	//m_pCurScene->release();
-	//m_pDispatcher->release();
 
 	if (m_pPhysics)
 		m_pPhysics->release();
@@ -357,38 +227,3 @@ void CPhysX_Manager::Release()
 	m_pFoundation->release();
 }
 
-
-//const PxU32 numVerts = 64;
-//PxVec3* vertices = new PxVec3[numVerts];
-//
-//// Prepare random verts
-//for (PxU32 i = 0; i < numVerts; i++)
-//{
-//	vertices[i] = PxVec3(fRandom(-2.0f, 2.0f), fRandom(-2.0f, 2.0f), fRandom(-2.0f, 2.0f));
-//}
-//
-//PxCookingParams params = m_pCooking->getParams();
-//
-//// Use the new (default) PxConvexMeshCookingType::eQUICKHULL
-//params.convexMeshCookingType = PxConvexMeshCookingType::eQUICKHULL;
-//
-//// If the gaussMapLimit is chosen higher than the number of output vertices, no gauss map is added to the convex mesh data (here 256).
-//// If the gaussMapLimit is chosen lower than the number of output vertices, a gauss map is added to the convex mesh data (here 16).
-//params.gaussMapLimit = 16;
-//m_pCooking->setParams(params);
-//
-//// Setup the convex mesh descriptor
-//PxConvexMeshDesc Desc;
-//
-//// We provide points only, therefore the PxConvexFlag::eCOMPUTE_CONVEX flag must be specified
-//Desc.points.data = vertices;
-//Desc.points.count = numVerts;
-//Desc.points.stride = sizeof(PxVec3);
-//Desc.flags = PxConvexFlag::eCOMPUTE_CONVEX;
-//
-//PxU32 meshSize = 0;
-//PxConvexMesh* convex = NULL;
-//
-//convex = m_pCooking->createConvexMesh(Desc, m_pPhysics->getPhysicsInsertionCallback());
-//
-//delete[] vertices;

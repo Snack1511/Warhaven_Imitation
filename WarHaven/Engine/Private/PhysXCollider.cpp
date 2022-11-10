@@ -2,25 +2,32 @@
 #include "PhysX_Manager.h"
 #include "Transform.h"
 
-CPhyXCollider::CPhyXCollider(_uint iGroupID)
+#include "GameObject.h"
+
+CPhysXCollider::CPhysXCollider(_uint iGroupID)
 	: CComponent(iGroupID)
 {
 }
 
-CPhyXCollider::CPhyXCollider(const CPhyXCollider & rhs)
+CPhysXCollider::CPhysXCollider(const CPhysXCollider& rhs)
 	: CComponent(rhs)
+	, m_vMaxVelocity(rhs.m_vMaxVelocity)
+	, m_ColliderDesc(rhs.m_ColliderDesc)
 {
 	//복사생성자만들기
+	CreatePhysActor(m_ColliderDesc);
+
+
 }
 
-CPhyXCollider::~CPhyXCollider()
+CPhysXCollider::~CPhysXCollider()
 {
 }
 
-CPhyXCollider* CPhyXCollider::Create(_uint iGroupID, const PHYSXCOLLIDERDESC& tPhysXColliderDesc)
+CPhysXCollider* CPhysXCollider::Create(_uint iGroupID, const PHYSXCOLLIDERDESC& tPhysXColliderDesc)
 {
 
-	CPhyXCollider* pInstance = new CPhyXCollider(iGroupID);
+	CPhysXCollider* pInstance = new CPhysXCollider(iGroupID);
 
 	pInstance->m_ColliderDesc = tPhysXColliderDesc;
 
@@ -33,7 +40,7 @@ CPhyXCollider* CPhyXCollider::Create(_uint iGroupID, const PHYSXCOLLIDERDESC& tP
 	return pInstance;
 }
 
-HRESULT CPhyXCollider::Initialize_Prototype()
+HRESULT CPhysXCollider::Initialize_Prototype()
 {
 
 	CreatePhysActor(m_ColliderDesc);
@@ -43,29 +50,49 @@ HRESULT CPhyXCollider::Initialize_Prototype()
 
 
 
-HRESULT CPhyXCollider::Initialize()
+HRESULT CPhysXCollider::Initialize()
 {
 	return S_OK;
 }
 
-void CPhyXCollider::Tick()
+void CPhysXCollider::Tick()
 {
 	//여기서 transform을 피직스에넣고 피직스 연산후
 }
 
-void CPhyXCollider::Late_Tick()
+void CPhysXCollider::Late_Tick()
 {
 	//여기서 갱신시키기
+	_float4	vPos = Get_Position();
+	m_pOwner->Get_Transform()->Set_World(WORLD_POS, vPos);
 }
 
-void CPhyXCollider::Release()
+void CPhysXCollider::Release()
 {
 	if (m_pRigidDynamic)
 		m_pRigidDynamic->release();
 	if (m_pRigidStatic)
 		m_pRigidStatic->release();
 }
-void CPhyXCollider::Synchronize_Transform(CTransform * pTransform)
+
+void CPhysXCollider::OnEnable()
+{
+	__super::OnEnable();
+
+	if (m_pRigidDynamic)
+		m_pRigidDynamic->wakeUp();
+}
+
+void CPhysXCollider::OnDisable()
+{
+	__super::OnDisable();
+
+	if (m_pRigidDynamic)
+		m_pRigidDynamic->putToSleep();
+}
+
+
+void CPhysXCollider::Synchronize_Transform(CTransform * pTransform)
 {
 	PxTransform	Transform;
 	if (m_pRigidDynamic)
@@ -80,7 +107,7 @@ void CPhyXCollider::Synchronize_Transform(CTransform * pTransform)
 	pTransform->MatrixRotationQuaternion(vQuaternion);
 }
 
-void CPhyXCollider::Synchronize_Transform_Position(CTransform * pTransform)
+void CPhysXCollider::Synchronize_Transform_Position(CTransform * pTransform)
 {
 	PxTransform	Transform;
 	if (m_pRigidDynamic)
@@ -93,7 +120,7 @@ void CPhyXCollider::Synchronize_Transform_Position(CTransform * pTransform)
 	pTransform->Set_World(WORLD_POS, vPos);
 }
 
-void CPhyXCollider::Synchronize_Transform_Rotation(CTransform * pTransform)
+void CPhysXCollider::Synchronize_Transform_Rotation(CTransform * pTransform)
 {
 	PxTransform	Transform;
 	if (m_pRigidDynamic)
@@ -106,38 +133,38 @@ void CPhyXCollider::Synchronize_Transform_Rotation(CTransform * pTransform)
 	pTransform->MatrixRotationQuaternion(vQuaternion);
 }
 
-void CPhyXCollider::Synchronize_Collider(CTransform * pTransform)
+void CPhysXCollider::Synchronize_Collider(CTransform * pTransform)
 {
 	_vector vPos = pTransform->Get_World(WORLD_POS).XMLoad();
 	_vector vQuaternion = pTransform->Get_Quaternion().XMLoad();
 	Set_Position(vPos, vQuaternion);
 }
 
-void CPhyXCollider::PutToSleep()
+void CPhysXCollider::PutToSleep()
 {
 	if (m_pRigidDynamic)
 		m_pRigidDynamic->putToSleep();
 }
 
-void CPhyXCollider::WakeUp()
+void CPhysXCollider::WakeUp()
 {
 	if (m_pRigidDynamic)
 		m_pRigidDynamic->wakeUp();
 }
 
-void CPhyXCollider::Attach_Shape(PxShape * pShape)
+void CPhysXCollider::Attach_Shape(PxShape * pShape)
 {
 	if (m_pRigidDynamic)
 		m_pRigidDynamic->attachShape(*pShape);
 }
 
-void CPhyXCollider::Detach_Shape(PxShape * pShape)
+void CPhysXCollider::Detach_Shape(PxShape * pShape)
 {
 	if (m_pRigidDynamic)
 		m_pRigidDynamic->detachShape(*pShape);
 }
 
-HRESULT CPhyXCollider::Add_Force(_vector _vForce)
+HRESULT CPhysXCollider::Add_Force(_vector _vForce)
 {
 	PxVec3	vForce;
 	vForce = { XMVectorGetX(_vForce), XMVectorGetY(_vForce), XMVectorGetZ(_vForce) };
@@ -175,7 +202,7 @@ HRESULT CPhyXCollider::Add_Force(_vector _vForce)
 	return S_OK;
 }
 
-HRESULT CPhyXCollider::Clear_Force()
+HRESULT CPhysXCollider::Clear_Force()
 {
 	if (m_pRigidDynamic)
 	{
@@ -190,13 +217,13 @@ HRESULT CPhyXCollider::Clear_Force()
 	return S_OK;
 }
 
-HRESULT CPhyXCollider::Clear_Velocity()
+HRESULT CPhysXCollider::Clear_Velocity()
 {
 	m_pRigidDynamic->setLinearVelocity(PxVec3(0.f));
 	return S_OK;
 }
 
-HRESULT CPhyXCollider::Add_LinearVelocityResistance(_vector vResistanceRate)
+HRESULT CPhysXCollider::Add_LinearVelocityResistance(_vector vResistanceRate)
 {
 	PxVec3	vResistRate = {XMVectorGetX(vResistanceRate), XMVectorGetY(vResistanceRate), XMVectorGetZ(vResistanceRate) };
 	PxVec3	vVelocity = m_pRigidDynamic->getLinearVelocity();
@@ -209,7 +236,7 @@ HRESULT CPhyXCollider::Add_LinearVelocityResistance(_vector vResistanceRate)
 	return S_OK;
 }
 
-_vector CPhyXCollider::Get_Position()
+_vector CPhysXCollider::Get_Position()
 {
 	PxTransform	Transform;
 	if (m_pRigidDynamic)
@@ -221,7 +248,7 @@ _vector CPhyXCollider::Get_Position()
 	return XMVectorSet(Transform.p.x, Transform.p.y, Transform.p.z, 1.f);
 }
 
-_vector CPhyXCollider::Get_Velocity()
+_vector CPhysXCollider::Get_Velocity()
 {
 	if (m_pRigidDynamic)
 	{
@@ -232,7 +259,7 @@ _vector CPhyXCollider::Get_Velocity()
 	return _vector{ 0.f, 0.f, 0.f, 0.f };
 }
 
-_float CPhyXCollider::Get_Mess()
+_float CPhysXCollider::Get_Mess()
 {
 	assert(m_pRigidDynamic);
 
@@ -240,7 +267,7 @@ _float CPhyXCollider::Get_Mess()
 	return fMess;
 }
 
-_vector CPhyXCollider::Get_AngularVelocity()
+_vector CPhysXCollider::Get_AngularVelocity()
 {
 	assert(m_pRigidDynamic);
 
@@ -248,7 +275,7 @@ _vector CPhyXCollider::Get_AngularVelocity()
 	return XMVectorSet(vVelocity.x, vVelocity.y, vVelocity.z, 0.f);
 }
 
-_vector CPhyXCollider::Get_LinearVelocity()
+_vector CPhysXCollider::Get_LinearVelocity()
 {
 	assert(m_pRigidDynamic);
 
@@ -256,7 +283,7 @@ _vector CPhyXCollider::Get_LinearVelocity()
 	return XMVectorSet(vVelocity.x, vVelocity.y, vVelocity.z, 0.f);
 }
 
-HRESULT CPhyXCollider::Set_Position(_vector _vPos, _vector _vQuaternion)
+HRESULT CPhysXCollider::Set_Position(_vector _vPos, _vector _vQuaternion)
 {
 	PxTransform	Transform;
 	PxVec3	vPos(XMVectorGetX(_vPos), XMVectorGetY(_vPos), XMVectorGetZ(_vPos));
@@ -274,7 +301,7 @@ HRESULT CPhyXCollider::Set_Position(_vector _vPos, _vector _vQuaternion)
 	return S_OK;
 }
 
-HRESULT CPhyXCollider::Set_Position(_vector _vPos)
+HRESULT CPhysXCollider::Set_Position(_vector _vPos)
 {
 	PxTransform	Transform;
 	PxVec3	vPos(XMVectorGetX(_vPos), XMVectorGetY(_vPos), XMVectorGetZ(_vPos));
@@ -296,7 +323,7 @@ HRESULT CPhyXCollider::Set_Position(_vector _vPos)
 	return S_OK;
 }
 
-void CPhyXCollider::Set_Scale(_vector vScale)
+void CPhysXCollider::Set_Scale(_vector vScale)
 {
 	//PxShape* pShape[1];
 	//ZeroMemory(pShape, sizeof(PxShape) * 16);
@@ -364,7 +391,7 @@ void CPhyXCollider::Set_Scale(_vector vScale)
 	}
 }
 
-void CPhyXCollider::Set_ActorFlag(PxActorFlag::Enum eFlag, _bool bState)
+void CPhysXCollider::Set_ActorFlag(PxActorFlag::Enum eFlag, _bool bState)
 {
 	if (m_pRigidDynamic)
 	{
@@ -373,7 +400,7 @@ void CPhyXCollider::Set_ActorFlag(PxActorFlag::Enum eFlag, _bool bState)
 }
 
 
-void CPhyXCollider::Delete_Collider()
+void CPhysXCollider::Delete_Collider()
 {
 	if (m_pRigidDynamic)
 	{
@@ -388,7 +415,7 @@ void CPhyXCollider::Delete_Collider()
 	}
 }
 
-void CPhyXCollider::Create_Collider()
+void CPhysXCollider::Create_Collider()
 {
 	if (!m_pRigidDynamic && !m_pRigidStatic)
 	{
@@ -396,16 +423,16 @@ void CPhyXCollider::Create_Collider()
 	}
 }
 
-void CPhyXCollider::CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc)
+void CPhysXCollider::CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc)
 {
 	PxTransform	Transform;
 	Transform.p = PxVec3(
-		XMVectorGetX(PhysXColliderDesc.vPosition),
-		XMVectorGetY(PhysXColliderDesc.vPosition),
-		XMVectorGetZ(PhysXColliderDesc.vPosition));
+		PhysXColliderDesc.vPosition.x,
+		PhysXColliderDesc.vPosition.y,
+		PhysXColliderDesc.vPosition.z);
 
 	_float4 vQuaternion;
-	XMStoreFloat4(&vQuaternion, XMQuaternionRotationRollPitchYawFromVector(PhysXColliderDesc.vAngles));
+	XMStoreFloat4(&vQuaternion, XMQuaternionRotationRollPitchYawFromVector(PhysXColliderDesc.vAngles.XMLoad()));
 	Transform.q = PxQuat(
 		vQuaternion.x,
 		vQuaternion.y,
@@ -430,17 +457,17 @@ void CPhyXCollider::CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc)
 	}
 }
 
-void CPhyXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh)
+void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh)
 {
 	switch (PhysXColliderDesc.eShape)
 	{
 	case COLLIDERSHAPE::SPHERE:
 		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
-			PxSphereGeometry(XMVectorGetX(PhysXColliderDesc.vScale)), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
+			PxSphereGeometry(PhysXColliderDesc.vScale.x), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
 		break;
 	case COLLIDERSHAPE::BOX:
 		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
-			PxBoxGeometry(XMVectorGetX(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetY(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetZ(PhysXColliderDesc.vScale) * 0.5f),
+			PxBoxGeometry(PhysXColliderDesc.vScale.x * 0.5f, PhysXColliderDesc.vScale.y * 0.5f, PhysXColliderDesc.vScale.z * 0.5f),
 			CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
 		break;
 	case COLLIDERSHAPE::CYLINDER:
@@ -449,9 +476,9 @@ void CPhyXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxT
 		PxConvexMeshGeometry PxGeometry; (PhysXColliderDesc.pConvecMesh);
 		PxGeometry.convexMesh = PhysXColliderDesc.pConvecMesh;
 		PxMeshScale	vScale;
-		vScale.scale.x = XMVectorGetX(PhysXColliderDesc.vScale);
-		vScale.scale.y = XMVectorGetY(PhysXColliderDesc.vScale);
-		vScale.scale.z = XMVectorGetZ(PhysXColliderDesc.vScale);
+		vScale.scale.x = PhysXColliderDesc.vScale.x;
+		vScale.scale.y = PhysXColliderDesc.vScale.y;
+		vScale.scale.z = PhysXColliderDesc.vScale.z;
 		PxGeometry.scale = vScale;
 		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
 			PxGeometry, CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
@@ -467,17 +494,17 @@ void CPhyXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxT
 	}
 }
 
-void CPhyXCollider::Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh)
+void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh)
 {
 	switch (PhysXColliderDesc.eShape)
 	{
 	case COLLIDERSHAPE::SPHERE:
 		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
-			PxSphereGeometry(XMVectorGetX(PhysXColliderDesc.vScale)), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
+			PxSphereGeometry(PhysXColliderDesc.vScale.x), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
 		break;
 	case COLLIDERSHAPE::BOX:
 		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
-			PxBoxGeometry(XMVectorGetX(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetY(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetZ(PhysXColliderDesc.vScale) * 0.5f),
+			PxBoxGeometry(PhysXColliderDesc.vScale.x * 0.5f, PhysXColliderDesc.vScale.y * 0.5f, PhysXColliderDesc.vScale.z * 0.5f),
 			CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
 		break;
 	case COLLIDERSHAPE::CYLINDER:
