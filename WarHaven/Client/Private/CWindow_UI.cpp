@@ -98,8 +98,6 @@ void CWindow_UI::Create_UI()
 
 	if (ImGui::Button("Clone UI"))
 		Clone_UI();
-
-	ImGui::NewLine();
 }
 
 CUI_Object* CWindow_UI::Add_UI()
@@ -133,7 +131,7 @@ CUI_Object* CWindow_UI::Clone_UI()
 
 void CWindow_UI::Show_UIList()
 {
-	if (ImGui::BeginListBox("UI_List"))
+	if (ImGui::BeginListBox("UI_List", ImVec2(-FLT_MIN, 7 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		for (_uint i = 0; i < m_vecUI.size(); ++i)
 		{
@@ -142,8 +140,6 @@ void CWindow_UI::Show_UIList()
 				m_iSelectIndex = i;
 				m_vecUI[i].bSelected = true;
 
-				// 리스트에서 선택된 객체를 드래그할 유아이에 집어넣어
-				// 리스트 선택이 아니라 좀 더 효율적으로
 				if (m_vecUI[i].bSelected)
 					m_pSelectUI = m_vecUI[i].pUI;
 
@@ -336,18 +332,15 @@ void CWindow_UI::UI_IO()
 {
 	if (ImGui::CollapsingHeader("I/O"))
 	{
+		if (ImGui::Button("Select Save"))
+			Save_UI_Info(m_iSelectIndex);
+
 		if (ImGui::Button("All Save"))
 			Save_UI_List();
 
 		ImGui::SameLine();
-
-		if (ImGui::Button("Select Save"))
-			Save_UI_Info(m_iSelectIndex);
-
 		if (ImGui::Button("All Load"))
 			Load_UI_List();
-
-		ImGui::SameLine();
 	}
 
 	ImGui::NewLine();
