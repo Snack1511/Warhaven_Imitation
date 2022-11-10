@@ -186,6 +186,14 @@ void CUI_Skill::Set_SkillUI(_uint iIndex)
 
 void CUI_Skill::ActiveSkillBtn(_uint iIndex)
 {
+	for (_uint i = 0; i < 4; ++i)
+	{
+		for (_uint j = 0; j < SkillHud::NAME_END; ++j)
+		{
+			DISABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
+		}
+	}
+
 	for (_uint i = 0; i < iIndex; ++i)
 	{
 		float fPosX = 480.f - 55.f * i;
@@ -195,8 +203,8 @@ void CUI_Skill::ActiveSkillBtn(_uint iIndex)
 			_float4 vPos = m_arrSkillHud[i].m_pUIInstance[j]->Get_Transform()->Get_World(WORLD_POS);
 			m_arrSkillHud[i].m_pUIInstance[j]->Set_Pos(fPosX, vPos.y);
 
-			_float fSort = m_arrSkillHud[i].m_pUIInstance[j]->Get_Sort();
-			m_arrSkillHud[i].m_pUIInstance[j]->Set_Sort(fSort);
+			if (j == 1)
+				m_arrSkillHud[i].m_pUIInstance[j]->Set_Sort(0.1f);
 
 			ENABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
 		}
@@ -234,7 +242,7 @@ void CUI_Skill::Set_SkillIcon(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool 
 
 		GET_COMPONENT_FROM(m_arrSkillHud[iIndex].m_pUIInstance[SkillHud::KEY], CTexture)->Set_CurTextureIndex(iKeyIdx);
 	}
-		
+
 	GET_COMPONENT_FROM(m_arrSkillHud[iIndex].m_pUIInstance[SkillHud::ICON], CTexture)->Set_CurTextureIndex(iIconIdx);
 }
 
