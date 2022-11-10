@@ -73,7 +73,7 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 
 	strcpy_s(m_szName, pResource->Get_Name().c_str());
 
-	if (pResource->Get_Name() == "0B_Pelvis")
+	if (pResource->Get_Name() == "Root")
 		m_bMoveNode = true;
 
 	m_TransformationMatrix = pResource->Get_TransformationMatrix();
