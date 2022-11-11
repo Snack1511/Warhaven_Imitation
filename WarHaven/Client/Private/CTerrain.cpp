@@ -106,8 +106,11 @@ HRESULT CTerrain::Initialize_Prototype()
         VTXNORTEX_DECLARATION::Element, VTXNORTEX_DECLARATION::iNumElements);
     pShader->Initialize();
     Add_Component(pShader);
-
-    Add_Component(CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN));
+    
+    CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
+    Add_Component(pRenderer);
+    m_pRenderer = pRenderer;
+    
     CTexture* pTexture = CTexture::Create(0, L"../bin/resources/Textures/Terrain/Tile0.dds", 1);
     Add_Component(pTexture);
 
@@ -157,6 +160,13 @@ void CTerrain::My_LateTick()
     //Á¤Á¡¸¶´Ù ¹ØÀ¸·Î ray½î±â
 
 
+}
+
+void CTerrain::Change_ShaderPass(_int PassIndex)
+{
+    if (nullptr == m_pRenderer)
+        assert(0);
+    m_pRenderer->Set_Pass(PassIndex);
 }
 
 CMesh_Terrain* CTerrain::Get_MeshTerrain()

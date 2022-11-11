@@ -391,6 +391,15 @@
     <Filter Include="03. Instances\02. GameObject\07. Terrain\Drawable_Terrain">
       <UniqueIdentifier>{0eb99d93-a6d8-4287-aab9-aacedc234d92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\04. Game_Manager\MJ">
+      <UniqueIdentifier>{f44ce9df-4c6f-4a33-93e6-e5e270645e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\04. Game_Manager\MJ\Wrapped_Util">
+      <UniqueIdentifier>{828a5e56-425c-4a0a-8e34-9112fc81a329}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\04. Game_Manager\MJ\Wrapped_Util\Easing_Util">
+      <UniqueIdentifier>{685e325a-91af-4956-9544-93abcba20a92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -684,6 +693,12 @@
     <ClInclude Include="..\Public\CDrawable_Terrain.h">
       <Filter>03. Instances\02. GameObject\07. Terrain\Drawable_Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CWrapping_Easing_Util.h">
+      <Filter>02. Design\04. Game_Manager\MJ\Wrapped_Util\Easing_Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGame_Manager_MJ.h">
+      <Filter>02. Design\04. Game_Manager\MJ</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -957,6 +972,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CDrawable_Terrain.cpp">
       <Filter>03. Instances\02. GameObject\07. Terrain\Drawable_Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWrapping_Easing_Util.cpp">
+      <Filter>02. Design\04. Game_Manager\MJ\Wrapped_Util\Easing_Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGame_Manager_MJ.cpp">
+      <Filter>02. Design\04. Game_Manager\MJ</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

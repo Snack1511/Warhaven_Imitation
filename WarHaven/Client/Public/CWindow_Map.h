@@ -137,12 +137,13 @@ private:
 	void Set_ObjectSpeed();
 
 	void Select_DataControlFlag();
-	void Object_Control();
+	void Control_Object();
 
-	void Object_Scale();
-	void Object_Rotate();
-	void Object_Position();
-	void Object_Place();
+	void Scaling_Object();
+	void Rotate_Object();
+	void Position_Object();
+	void Place_Object();
+	void Change_Object_UpDir();
 
 	void Update_Data();
 #pragma endregion
@@ -181,11 +182,17 @@ private:
 
 #pragma region Private 터레인 컨트롤
 private:
+	void Ready_TerrainBrushType();
 	HRESULT Disable_DefaultTerrain();
 	void Func_TerrainControl();
 	void Generate_Terrain();
 
 	void Increase_Height();
+
+	void Add_Brush(const char* BrushName);
+	list<_float3*> Select_Vertices();
+	_bool Check_InBrush(_float3* CompVert);
+	_float3 Easing_Vertices(_float3* pArrVertPos);
 #pragma endregion
 
 private:
@@ -225,7 +232,9 @@ private:
 	CTerrain* m_pDefaultTerrain = nullptr;
 	CDrawable_Terrain* m_pCurTerrain = nullptr;
 	MTT_DATA m_CurTerrainData;
+	vector<tuple<char*, bool>> m_arrBrushType;
 	vector<tuple<char*, bool>> m_arrTileTextureName;
+	_int m_iCurSelectTerrainBrush = 0;
 	_uint3 m_i3PickedIndex = _uint3(0, 0, 0);
 	_float4 m_OutPos = _float4(0.f, 0.f, 0.f, 1.f);
 	_float4 m_OutNorm = _float4(0.f, 0.f, 0.f, 0.f);
@@ -262,8 +271,9 @@ private:
 	list<CGameObject*>* m_pCurObjectList = nullptr;
 
 	_bool m_bObjectPick = false;
+	_bool m_bTerrainPick = false;
 	_bool m_bHoverWindow = false;
-
+	_bool m_TerrainWireFrame = false;
 #pragma endregion
 
 

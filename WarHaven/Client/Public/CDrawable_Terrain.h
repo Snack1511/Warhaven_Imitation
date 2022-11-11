@@ -22,9 +22,12 @@ public:
 	virtual void My_LateTick() override;
 public:
 	_uint Get_TerrainVerticesCount();
+	_uint& Get_TerrainVerticesX() {return m_iTerrainVertX;};
+	_uint& Get_TerrainVerticesZ() {return m_iTerrainVertZ;};
 	_float3* Get_TerrainVerticesPos();
 	Terrain_TUPLE Get_TerrainData();
 	void Update_Vertices();
+	void Update_Normal();
 protected:
 	virtual HRESULT	SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ);
 	virtual HRESULT	SetUp_TerrainMesh(const _tchar* pFilePath);
