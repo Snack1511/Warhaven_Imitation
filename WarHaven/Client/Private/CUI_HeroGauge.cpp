@@ -8,11 +8,6 @@ CUI_HeroGauge::CUI_HeroGauge()
 {
 }
 
-CUI_HeroGauge::CUI_HeroGauge(const CUI_HeroGauge& Prototype)
-	: CUI_Wrapper(Prototype)
-{
-}
-
 CUI_HeroGauge::~CUI_HeroGauge()
 {
 }
@@ -21,8 +16,8 @@ HRESULT CUI_HeroGauge::Initialize_Prototype()
 {
 	Read_UI("HeroGauge");
 
-	m_tHeroGauge.m_pUIInstance[HeroGauge::BG] = m_pUIMap[TEXT("HeroGaugeBG")];
-	m_tHeroGauge.m_pUIInstance[HeroGauge::Gauge] = m_pUIMap[TEXT("HeroGauge")];
+	m_Prototypes[BG] = m_pUIMap[TEXT("HeroGaugeBG")];
+	m_Prototypes[Gauge] = m_pUIMap[TEXT("HeroGauge")];
 
 	return S_OK;
 }
@@ -34,19 +29,22 @@ HRESULT CUI_HeroGauge::Initialize()
 
 HRESULT CUI_HeroGauge::Start()
 {
-	for (_uint i = 0; i < HeroGauge::NAME_END; ++i)
+	for (_uint i = 0; i < Type_End; ++i)
 	{
-		CREATE_GAMEOBJECT(m_tHeroGauge.m_pUIInstance[i], GROUP_UI);
+		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
 	}
-	CRenderer* pRenderer = GET_COMPONENT_FROM(m_tHeroGauge.m_pUIInstance[HeroGauge::Gauge], CRenderer);
-	pRenderer->Set_Pass(VTXTEX_PASS_UI_HeroGauge);
+
+	Set_Pass();
+	Bind_Shader();
 
 	__super::Start();
 
-	GET_COMPONENT_FROM(m_tHeroGauge.m_pUIInstance[HeroGauge::Gauge], CShader)
-		->CallBack_SetRawValues += bind(&CUI_HeroGauge::Set_ShaderResources, this, placeholders::_1, "g_fValue");
-
 	return S_OK;
+}
+
+void CUI_HeroGauge::Set_ShaderResources(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fGaugeValue, sizeof(_float));
 }
 
 void CUI_HeroGauge::My_Tick()
@@ -103,8 +101,13 @@ void CUI_HeroGauge::My_LateTick()
 	__super::My_LateTick();
 }
 
-void CUI_HeroGauge::Set_ShaderResources(CShader* pShader, const char* pConstName)
+void CUI_HeroGauge::Set_Pass()
 {
-	GET_COMPONENT_FROM(m_tHeroGauge.m_pUIInstance[HeroGauge::Gauge], CShader)
-		->Set_RawValue("g_fValue", &m_fGaugeValue, sizeof(_float));
+	GET_COMPONENT_FROM(m_Prototypes[Gauge], CRenderer)->Set_Pass(VTXTEX_PASS_UI_HeroGauge);
+}
+
+void CUI_HeroGauge::Bind_Shader()
+{
+	GET_COMPONENT_FROM(m_Prototypes[Gauge], CShader)
+		->CallBack_SetRawValues += bind(&CUI_HeroGauge::Set_ShaderResources, this, placeholders::_1, "g_fValue");
 }

@@ -12,7 +12,6 @@ class CUI_Portrait final : public CUI_Wrapper
 
 private:
 	CUI_Portrait();
-	CUI_Portrait(const CUI_Portrait& Prototype);
 	virtual ~CUI_Portrait();
 
 public:

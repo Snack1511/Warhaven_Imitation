@@ -14,7 +14,6 @@ class CUI_Wrapper abstract : public CGameObject
 {
 protected:
 	CUI_Wrapper();
-	CUI_Wrapper(const CUI_Wrapper& Prototype);
 	virtual ~CUI_Wrapper();
 
 public:

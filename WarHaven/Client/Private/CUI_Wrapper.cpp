@@ -17,11 +17,6 @@ CUI_Wrapper::CUI_Wrapper()
 {
 }
 
-CUI_Wrapper::CUI_Wrapper(const CUI_Wrapper& Prototype)
-	: CGameObject(Prototype)
-{
-}
-
 CUI_Wrapper::~CUI_Wrapper()
 {
 }

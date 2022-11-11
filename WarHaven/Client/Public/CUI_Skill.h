@@ -14,7 +14,6 @@ class CUI_Skill : public CUI_Wrapper
 
 private:
 	CUI_Skill();
-	CUI_Skill(const CUI_Skill& Prototype);
 	virtual ~CUI_Skill();
 
 public:

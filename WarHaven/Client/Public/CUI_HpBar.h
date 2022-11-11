@@ -12,7 +12,6 @@ class CUI_HpBar : public CUI_Wrapper
 
 private:
 	CUI_HpBar();
-	CUI_HpBar(const CUI_HpBar& Prototype);
 	virtual ~CUI_HpBar();
 
 public:
@@ -25,7 +24,8 @@ protected:
 	virtual void My_LateTick() override;;
 
 public:
-	void Set_ShaderResources(CShader* pShader, const char* pConstName);
+	void Set_ShaderResourcesBar(CShader* pShader, const char* pConstName);
+	void Set_ShaderResourcesBG(CShader* pShader, const char* pConstName);
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};

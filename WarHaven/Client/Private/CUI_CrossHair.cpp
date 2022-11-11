@@ -11,10 +11,6 @@ CUI_Crosshair::CUI_Crosshair()
 {
 }
 
-CUI_Crosshair::CUI_Crosshair(const CUI_Crosshair& Prototype)
-{
-}
-
 CUI_Crosshair::~CUI_Crosshair()
 {
 }
@@ -204,9 +200,9 @@ void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 
 		if (iIndex == 2)
 		{
-			_float fRotZ = -90.f;
+			_float fRotZ = -90.f - (i * 180.f);
 			m_arrSkillUI[i][Arrow]->Set_RotationZ(fRotZ);
-			m_arrSkillUI[i][ArrowBG]->Set_RotationZ(-fRotZ);
+			m_arrSkillUI[i][ArrowBG]->Set_RotationZ(fRotZ);
 		}
 
 		if (iIndex == 3)

@@ -12,11 +12,6 @@ CUI_Skill::CUI_Skill()
 {
 }
 
-CUI_Skill::CUI_Skill(const CUI_Skill& Prototype)
-	: CUI_Wrapper(Prototype)
-{
-}
-
 CUI_Skill::~CUI_Skill()
 {
 }

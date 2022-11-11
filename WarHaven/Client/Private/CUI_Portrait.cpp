@@ -12,11 +12,6 @@ CUI_Portrait::CUI_Portrait()
 {
 }
 
-CUI_Portrait::CUI_Portrait(const CUI_Portrait& Prototype)
-	: CUI_Wrapper(Prototype)
-{
-}
-
 CUI_Portrait::~CUI_Portrait()
 {
 }

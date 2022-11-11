@@ -13,6 +13,7 @@ CUI::CUI()
 
 CUI::CUI(const CUI& Prototype)
 	: CGameObject(Prototype)
+	, m_vColor(Prototype.m_vColor)
 {
 }
 
