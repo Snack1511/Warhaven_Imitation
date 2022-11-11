@@ -4,6 +4,14 @@
 #include "GameObject.h"
 #include "Functor.h"
 #include "CStructure.h"
+
+#include "CUtility_Transform.h"
+
+#include "CDrawable_Terrain.h"
+
+#include "Transform.h"
+
+#include "CMesh_Terrain.h"
 CWindow_Map::CWindow_Map()
 {
 }
@@ -19,29 +27,28 @@ CWindow_Map::~CWindow_Map()
 
 CWindow_Map* CWindow_Map::Create()
 {
-	CWindow_Map* pInstance = new CWindow_Map;
+    CWindow_Map* pInstance = new CWindow_Map;
 
-	if (FAILED(pInstance->Initialize()))
-	{
-		Call_MsgBox(L"Failed to Initialize : CWindow_Map");
-		SAFE_DELETE(pInstance);
-	}
+    if (FAILED(pInstance->Initialize()))
+    {
+        Call_MsgBox(L"Failed to Initialize : CWindow_Map");
+        SAFE_DELETE(pInstance);
+    }
 
-	return pInstance;
+    return pInstance;
 }
 static _int SaveFileIndex = 0;
 HRESULT CWindow_Map::Initialize()
 {
-	m_bEnable = false;
-	SetUp_ImGuiDESC(typeid(CWindow_Map).name(), ImVec2(400.f, 600.f), ImGuiWindowFlags_AlwaysAutoResize);
-    
+    m_bEnable = false;
+    SetUp_ImGuiDESC(typeid(CWindow_Map).name(), ImVec2(400.f, 600.f), ImGuiWindowFlags_AlwaysAutoResize);
+
+
     //파일 위치 설정
-
-
     m_MeshRootNode.strFolderPath = "../bin/resources/meshes";
     m_MeshRootNode.strFileName = "Map";
     m_MeshRootNode.strFullPath = "../bin/resources/meshes/Map";
-    Read_Folder("../bin/resources/meshes/Map", m_MeshRootNode);
+    Read_Folder_ForTree("../bin/resources/meshes/Map", m_MeshRootNode);
 
     m_strPath = "../Bin/Data/MapData/";
     //콤보어레이 생성
@@ -55,12 +62,21 @@ HRESULT CWindow_Map::Initialize()
     Ready_LightGroup();
 
     Ready_LightType();
-	return S_OK;
+    return S_OK;
 }
 
 void CWindow_Map::Tick()
 {
+    _bool bPicked = false;
+    Select_DataControlFlag();
 
+    if (Object_Place())
+        bPicked = true;
+
+    if (false == bPicked)
+        Object_Control();
+
+    Update_Data();
 }
 
 HRESULT CWindow_Map::Render()
@@ -70,22 +86,30 @@ HRESULT CWindow_Map::Render()
     ImVec2 vLightControlPos = ImVec2(vPannelSize.x, vPannelSize.y);
 
     if (FAILED(__super::Begin()))
-		return E_FAIL;
+        return E_FAIL;
 
-	ImGui::Text("MapTool");
+    ImGui::Text("MapTool");
 
     //파일 컨트롤
     Func_FileControl();
 
     //데이타 컨트롤
-    Create_SubWindow("Data_Controller", vDataControlPos, vPannelSize, bind(&CWindow_Map::Func_DataControl, this));
+    if (nullptr != m_pCurSelectGameObject)
+    {
+        Create_SubWindow("Data_Controller", vDataControlPos, vPannelSize, bind(&CWindow_Map::Func_DataControl, this));
+    }
 
     //라이트 컨트롤
-    Create_SubWindow("Light_Controller", vLightControlPos, vPannelSize, bind(&CWindow_Map::Func_LightControl, this));
+    // 
+    //__DevNeed : 조건 필요.. 
+    if (false)
+    {
+        Create_SubWindow("Light_Controller", vLightControlPos, vPannelSize, bind(&CWindow_Map::Func_LightControl, this));
+    }
     __super::End();
 
 
-	return S_OK;
+    return S_OK;
 }
 
 #pragma region static value 파일컨트롤러
@@ -93,18 +117,21 @@ static char szSaveNameBuf[MAXCHAR] = "";
 static char szMeshGroupNameBuf[MAXCHAR] = "";
 static string SaveFilePath = "";
 static string LoadFilePath = "";
+
+static int iCurSelectTileIndex = 0;
 #pragma endregion
 
 #pragma region 파일 컨트롤러 함수
 void CWindow_Map::Func_FileControl()
 {
     ImVec2 ButtonSize(60.f, 20.f);
-
     //1. 선택 파일 콤보박스
-    SetUp_FilePath(LoadFilePath, get<Tuple_CharPtr>(m_arrSaveFilesCombo[SaveFileIndex]));
-    Make_Combo("##Save_Files", m_arrSaveFilesCombo, &SaveFileIndex, bind(&CWindow_Map::EmptyFunction, this));
-    DebugData("Debug_LoadPath", LoadFilePath);
-
+    if (!m_arrSaveFilesCombo.empty()) 
+    {
+        SetUp_FilePath(LoadFilePath, get<Tuple_CharPtr>(m_arrSaveFilesCombo[SaveFileIndex]), ".MapData");
+        Make_Combo("##Save_Files", m_arrSaveFilesCombo, &SaveFileIndex, bind(&CWindow_Map::EmptyFunction, this));
+        DebugData("Debug_LoadPath", LoadFilePath);
+    }
 
     //2. 파일명 입력 창
     SetUp_FilePath(SaveFilePath, szSaveNameBuf);
@@ -117,6 +144,7 @@ void CWindow_Map::Func_FileControl()
     {
         string SaveFileName = szSaveNameBuf;
         Save_MapData(m_strPath, SaveFileName);
+        Update_FileArray();
         //SaveFilePath
         //세이브
     }
@@ -126,15 +154,47 @@ void CWindow_Map::Func_FileControl()
         string strLoadPath = LoadFilePath;
         //"../bin/Data/MapData/Test.MapData"
         Load_MapData(LoadFilePath);
+        strcpy_s(szSaveNameBuf, sizeof(char) * MAXCHAR, get<Tuple_CharPtr>(m_arrSaveFilesCombo[SaveFileIndex]));
+        Confirm_Data();
         //LoadFilePath
         //로드 버튼
     }
     ImGui::Spacing();
     ImGui::Text("Select PickingGroupID");
-
     SetUp_CurPickingGroup();
     if (Make_Combo("##PickingGroupID", m_arrObjectGroupId, &m_SelectObjectGroupIDIndex, bind(&CWindow_Map::EmptyFunction, this)))
     {
+    }
+    ImGui::Spacing();
+    if (ImGui::CollapsingHeader("SetUp Terrain", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        ImGui::Text("VertX : ");
+        ImGui::SameLine();
+        _int iTerrainVerticalX = m_CurTerrainData.iNumVerticesX;
+        if (ImGui::InputInt("##InputVerticesX", &iTerrainVerticalX))
+        {
+            iTerrainVerticalX = (iTerrainVerticalX < 0) ? 0 : iTerrainVerticalX;
+            m_CurTerrainData.iNumVerticesX = iTerrainVerticalX;
+        }
+        ImGui::SameLine();
+        ImGui::Text("VertZ : ");
+        ImGui::SameLine();
+        _int iTerrainVerticalZ = m_CurTerrainData.iNumVerticesZ;
+        if (ImGui::InputInt("##InputVerticesZ", &iTerrainVerticalZ))
+        {
+            iTerrainVerticalZ = (iTerrainVerticalZ < 0) ? 0 : iTerrainVerticalZ;
+            m_CurTerrainData.iNumVerticesZ = iTerrainVerticalZ;
+        }
+        ImGui::Text("SelectTileTexture");
+        //Make_Combo("##TileTextureCombo", m_arrTileTextureName, &iCurSelectTileIndex, bind(&CWindow_Map::EmptyFunction, this));
+        if (ImGui::Button("Generate!"))
+        {
+            Generate_Terrain();
+        }
+    }
+    if (nullptr != m_pCurTerrain)
+    {
+        //터레인 수정..
     }
     ImGui::Spacing();
     if (ImGui::CollapsingHeader("Object Grouping", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
@@ -241,6 +301,7 @@ void CWindow_Map::Func_FileControl()
                             {
                                 m_strCurSelectObjectName = MeshName;
                                 m_iCurSelectObjectIndex = Index;
+                                SetUp_CurSelectObject();
                                 //선택 
                             }
 
@@ -272,30 +333,16 @@ void CWindow_Map::Func_FileControl()
 
 void CWindow_Map::Ready_FileArray()
 {
-    string Path = m_strPath;
-    Path += "*";
-    if (m_arrSaveFilesCombo.empty())
-    {
-        WIN32_FIND_DATAA FileData;
-        HANDLE hFind = FindFirstFileA(Path.c_str(), &FileData);
-        if (INVALID_HANDLE_VALUE == hFind)
-        {
-            DWORD ERR = GetLastError();
-            Call_MsgBox(TEXT("안읽힘;;"));
-            assert(ERR);
+    list<string> FileNameList = Read_Folder_ToStringList(m_strPath.c_str());
 
-        }
-        while (FindNextFileA(hFind, &FileData))
-        {
-            //. .. 는 시스템폴더라 읽을 필요가 없음
-            if (!strcmp(FileData.cFileName, ".")
-                || !strcmp(FileData.cFileName, ".."))
-                continue;
-            char* pFileName = new char[260];
-            memcpy_s(pFileName, sizeof(char) * 260, FileData.cFileName, sizeof(char) * 260);
-            m_arrSaveFilesCombo.push_back(make_tuple(pFileName, false));
-        }
-        FindClose(hFind);
+    for (list<string>::value_type& Value : FileNameList)
+    {
+        string FileName = Value;
+        FileName += "\0";
+        _int FileNameLength = _int(FileName.size()) + 1;
+        char* pFileName = new char[260];
+        memcpy_s(pFileName, sizeof(char) * 260, FileName.c_str(), sizeof(char) * FileNameLength);
+        m_arrSaveFilesCombo.push_back(make_tuple(pFileName, false));
     }
 }
 void CWindow_Map::Ready_ObjectGroupID()
@@ -315,50 +362,31 @@ void CWindow_Map::Ready_ObjectGroupID()
 
 void CWindow_Map::Update_FileArray()
 {
-    string Path = m_strPath;
-    Path += "*";
-    WIN32_FIND_DATAA FileData;
-    HANDLE hFind = FindFirstFileA(Path.c_str(), &FileData);
-    if (INVALID_HANDLE_VALUE == hFind)
-    {
-        DWORD ERR = GetLastError();
-        Call_MsgBox(TEXT("안읽힘;;"));
-        assert(ERR);
+    Clear_TupleData(m_arrSaveFilesCombo);
 
-    }
-    while (FindNextFileA(hFind, &FileData))
+    list<string> FileNameList = Read_Folder_ToStringList(m_strPath.c_str());
+
+    for (list<string>::value_type& Value : FileNameList)
     {
-        //. .. 는 시스템폴더라 읽을 필요가 없음
-        if (!strcmp(FileData.cFileName, ".")
-            || !strcmp(FileData.cFileName, ".."))
-            continue;
+        string FileName = Value;
+        FileName += "\0";
+        _int FileNameLength = _int(FileName.size()) + 1;
         char* pFileName = new char[260];
-        memcpy_s(pFileName, sizeof(char) * 260, FileData.cFileName, sizeof(char) * 260);
-        DataComboArr::iterator VectorIter = find_if(m_arrSaveFilesCombo.begin(), m_arrSaveFilesCombo.end(), [&pFileName](DataComboArr::value_type Value)
-            {
-                if (0 == strcmp(get<Tuple_CharPtr>(Value), pFileName))
-                    return true;
-                else
-                    return false;
-            });
-
-        if (m_arrSaveFilesCombo.end() == VectorIter)
-            m_arrSaveFilesCombo.push_back(make_tuple(pFileName, false));
-        else
-            continue;
+        memcpy_s(pFileName, sizeof(char) * 260, FileName.c_str(), sizeof(char) * FileNameLength);
+        m_arrSaveFilesCombo.push_back(make_tuple(pFileName, false));
     }
-    FindClose(hFind);
 
 }
-void CWindow_Map::SetUp_FilePath(string& strFilePath, char* szData)
+void CWindow_Map::SetUp_FilePath(string& strFilePath, char* szData, string strExt)
 {
     strFilePath = "";
     strFilePath += m_strPath;
     strFilePath += szData;
+    strFilePath += strExt;
 }
 void CWindow_Map::SetUp_CurPickingGroup()
 {
-    m_CurObjectList = GAMEINSTANCE->Get_ObjGroup(m_SelectObjectGroupIDIndex);
+    m_pCurObjectList = &(GAMEINSTANCE->Get_ObjGroup(m_SelectObjectGroupIDIndex));
 }
 
 void CWindow_Map::Add_MeshGroup(char* pMeshGroupName)
@@ -392,6 +420,7 @@ void CWindow_Map::Add_MeshGroup(char* pMeshGroupName)
         {
             m_ObjectDataGroupMap.emplace(HashNum, vector<MTO_DATA>());
         }
+        Confirm_Data();
     }
 
 
@@ -432,6 +461,7 @@ void CWindow_Map::Delete_MeshGroup(char* pMeshGroupName)
         m_arrMeshGroupName.erase(MeshGroupIter);
         Safe_Delete_Array(pGroupName);
         m_SelectMeshGroupIndex = (m_SelectMeshGroupIndex <= 1) ? 0 : m_SelectMeshGroupIndex - 1;
+        Confirm_Data();
     }
 }
 
@@ -491,7 +521,7 @@ void CWindow_Map::Add_Object(string MeshGroup, string Meshpath, string MeshName)
 
     pObjectList->push_back(pGameObject);
     pDataList->push_back(tData);
-
+    Confirm_Data();
 
 }
 void CWindow_Map::Add_Object(string MeshGroup, MTO_DATA& tData)
@@ -529,14 +559,17 @@ void CWindow_Map::Add_Object(string MeshGroup, MTO_DATA& tData)
         assert(0);
     //Meshpath
     wstring strName = tData.strMeshName;
+    _int iIndexLength = strName.rfind(TEXT("_"), strName.length() + 1);
+    strName = strName.substr(0, iIndexLength);
     size_t NameHashNum = HASHING(wstring, strName);
     map<size_t, _int>::iterator CallStackIter = m_ObjNameCallStack.find(NameHashNum);
     if (CallStackIter == m_ObjNameCallStack.end())
     {
         m_ObjNameCallStack.emplace(NameHashNum, 0);
     }
+    m_ObjNameCallStack[NameHashNum]++;
 
-    CStructure* pGameObject = CStructure::Create(tData.strMeshPath);
+    CStructure* pGameObject = CStructure::Create(tData.strMeshPath, tData.vScale, tData.ObjectStateMatrix);
     if (nullptr == pGameObject)
         assert(0);
     pGameObject->Initialize();
@@ -544,6 +577,9 @@ void CWindow_Map::Add_Object(string MeshGroup, MTO_DATA& tData)
 
     pObjectList->push_back(pGameObject);
     pDataList->push_back(tData);
+
+    Confirm_Data();
+
 }
 void CWindow_Map::Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<MTO_DATA>& DataList)
 {
@@ -562,6 +598,19 @@ void CWindow_Map::Delete_Object(string MeshName, vector<CGameObject*>& ObjList, 
     }
     if (DataListIter == DataList.end())
         return;
+
+    wstring strName = (*DataListIter).strMeshName;
+    _int iIndexLength = strName.rfind(TEXT("_"), strName.length() + 1);
+    strName = strName.substr(0, iIndexLength);
+    size_t NameHashNum = HASHING(wstring, strName);
+    map<size_t, _int>::iterator CallStackIter = m_ObjNameCallStack.find(NameHashNum);
+    if (--(CallStackIter->second) == 0)
+    {
+        m_ObjNameCallStack.erase(CallStackIter);
+    }
+
+
+
     DataList.erase(DataListIter);
 
     if (ObjectIndex >= _int(ObjList.size()))
@@ -577,6 +626,8 @@ void CWindow_Map::Delete_Object(string MeshName, vector<CGameObject*>& ObjList, 
     }
     ObjList.erase(ObjListIter);
     DELETE_GAMEOBJECT(pDelete);
+    Confirm_Data();
+
 }
 
 void CWindow_Map::Clear_MeshGroup(char* pMeshGroupName)
@@ -609,59 +660,72 @@ void CWindow_Map::Clear_MeshGroup(char* pMeshGroupName)
             DataMapIter->second.clear();
             m_ObjectDataGroupMap.erase(DataMapIter);
         }
+        Confirm_Data();
+
     }
 }
 #pragma endregion
 
-
 #pragma region static value 데이터 컨트롤러
-static float ObjectScale[3] = { 0.f };
-static float ObjectRotate[3] = { 0.f };
-static float ObjectPosition[3] = { 0.f };
+//static 
 static bool ObjectLightFlagOpt[4] = { false };
 #pragma endregion
 
 void CWindow_Map::Func_DataControl()
 {
-    ImGui::Text("Data_Control");
+    //ImGui::Text("Data_Control");
 
-    if (ImGui::CollapsingHeader("Object Value", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    //z : Scale
+    //x : Rotate
+    //c : Position
+
+    if (m_bPickable)
     {
-        ImGui::Text("Scale");
-        if (ImGui::DragFloat3("##Object Scale", ObjectScale, 0.1f, 0.f, 0.f, "%.1f"))
+        ImGui::Text("Use_Picking");
+    }
+    else
+    {
+        ImGui::Text("Unuse_Picking");
+    }
+    ImGui::Spacing();
+
+    switch (m_eControlType)
+    {
+    case CONTROL_SCALING:
+        ImGui::Text("MODE : SCALING");
+        break;
+    case CONTROL_ROTATE:
+        ImGui::Text("MODE : ROTATE");
+        break;
+    case CONTROL_MOVE:
+        ImGui::Text("MODE : MOVE");
+        break;
+    }
+    ImGui::Spacing();
+
+    if (false == m_bPickable)
+    {
+        if (ImGui::Button("Confirm"))
         {
-        }
-        ImGui::Spacing();
-
-        ImGui::Text("Rotate");
-        if (360.1 <= ObjectRotate[0])
-            ObjectRotate[0] = 0.0f;
-        if (-0.1f >= ObjectRotate[0])
-            ObjectRotate[0] = 360.0f;
-
-        if (360.1 <= ObjectRotate[1])
-            ObjectRotate[1] = 0.0f;
-        if (-0.1f >= ObjectRotate[1])
-            ObjectRotate[1] = 360.0f;
-
-        if (360.1 <= ObjectRotate[2])
-            ObjectRotate[2] = 0.0f;
-        if (-0.1f >= ObjectRotate[2])
-            ObjectRotate[2] = 360.0f;
-
-        if (ImGui::DragFloat3("##Object Rotate", ObjectRotate, 0.1f, -0.1f, 360.1f, "%.1f"))
-        {
-
-        }
-        ImGui::Spacing();
-
-        ImGui::Text("Position");
-        if (ImGui::DragFloat3("##Object Position", ObjectPosition, 0.1f, 0.f, 0.f, "%.1f"))
-        {
+            Confirm_Data();
         }
         ImGui::Spacing();
     }
 
+    if (ImGui::CollapsingHeader("Object Matrix(Read-Only)", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        Show_ObjectData();
+    }
+    ImGui::Spacing();
+
+    if (m_bPickable)
+        return;
+
+    if (ImGui::CollapsingHeader("Object Speed", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        Set_ObjectSpeed();
+    }
+    ImGui::Spacing();
 
     if (ImGui::CollapsingHeader("Light Option", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
@@ -680,10 +744,279 @@ void CWindow_Map::Func_DataControl()
     }
 }
 
-//static 
-//static _int SelectMeshGroupIndex = 0;
-//static _int SelectObjectPrototypeIndex = 0;
+void CWindow_Map::SetUp_CurSelectObject()
+{
+    string CurSelectMeshGroup = get<Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex]);
+    size_t HashNum = HASHING(string, CurSelectMeshGroup);
 
+    OBJGROUPING::iterator ObjGroupIter = m_ObjectGroupMap.find(HashNum);
+    DATAGROUPING::iterator DataGroupIter = m_ObjectDataGroupMap.find(HashNum);
+
+    OBJVECTOR* pObjGroupArr = nullptr;
+    DATAVECTOR* pDataGroupArr = nullptr;
+
+    if (m_ObjectGroupMap.end() != ObjGroupIter)
+    {
+        pObjGroupArr = &(ObjGroupIter->second);
+    }
+
+    if (m_ObjectDataGroupMap.end() != DataGroupIter)
+    {
+        pDataGroupArr = &(DataGroupIter->second);
+    }
+
+    if (nullptr == pObjGroupArr)
+        return;
+    else
+        m_pCurSelectGameObject = (*pObjGroupArr)[m_iCurSelectObjectIndex];
+
+    if (nullptr == pDataGroupArr)
+        return;
+    else
+        m_pCurSelectData = &((*pDataGroupArr)[m_iCurSelectObjectIndex]);
+
+    if (nullptr != m_pCurSelectGameObject)
+        m_pObjTransform = m_pCurSelectGameObject->Get_Transform();
+    else
+    {
+        m_pObjTransform = nullptr;
+    }
+}
+
+void CWindow_Map::Confirm_Data()
+{
+    m_pCurSelectGameObject = nullptr;
+    m_pObjTransform = nullptr;
+    m_pCurSelectData = nullptr;
+    m_eControlType = CONTROL_MOVE;
+    m_fTickPerScalingSpeed = 1.f;
+    m_fTickPerRotSpeed = 1.f;
+    m_fTickPerMoveSpeed = 1.f;
+}
+
+void CWindow_Map::Show_ObjectData()
+{
+    if (nullptr == m_pCurSelectData)
+        return;
+    else
+    {
+        _float* pRight = (_float*)(&m_pCurSelectData->ObjectStateMatrix._11);
+        _float* pUp = (_float*)(&m_pCurSelectData->ObjectStateMatrix._21);
+        _float* pLook = (_float*)(&m_pCurSelectData->ObjectStateMatrix._31);
+        _float* pPosition = (_float*)(&m_pCurSelectData->ObjectStateMatrix._41);
+        ImGui::InputFloat4("##ObjectRight", pRight, "%.2f", ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputFloat4("##ObjectUp", pUp, "%.2f", ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputFloat4("##ObjectLook", pLook, "%.2f", ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputFloat4("##ObjectPosition", pPosition, "%.2f", ImGuiInputTextFlags_ReadOnly);
+    }
+}
+
+void CWindow_Map::Set_ObjectSpeed()
+{
+    ImGui::Text("Scale : ");
+    ImGui::SameLine();
+    ImGui::SliderFloat("##Scaling Speed", &m_fTickPerScalingSpeed, 0.1f, 10.f, "%.1f");
+    ImGui::Text("Rotate : ");
+    ImGui::SameLine();
+    ImGui::SliderFloat("##Rotate Speed", &m_fTickPerRotSpeed, 0.1f, 90.f, "%.1f");
+    ImGui::Text("Move : ");
+    ImGui::SameLine();
+    ImGui::SliderFloat("##Move Speed", &m_fTickPerMoveSpeed, 0.1f, 50.f, "%.1f");
+}
+
+void CWindow_Map::Select_DataControlFlag()
+{
+    if (KEY(Z, TAP))
+    {
+        m_eControlType = CONTROL_MOVE;
+    }
+    if (KEY(X, TAP))
+    {
+        m_eControlType = CONTROL_ROTATE;
+    }
+    if (KEY(C, TAP))
+    {
+        m_eControlType = CONTROL_SCALING;
+    }
+    if (KEY(V, TAP))
+    {
+        m_bPickable = !m_bPickable;
+    }
+}
+
+void CWindow_Map::Object_Control()
+{
+    switch (m_eControlType)
+    {
+    case CONTROL_SCALING:
+        Object_Scale();
+        break;
+    case CONTROL_ROTATE:
+        Object_Rotate();
+        break;
+    case CONTROL_MOVE:
+        Object_Position();
+        break;
+    }
+}
+
+
+void CWindow_Map::Object_Scale()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+    _float4 ScaleValue = m_pObjTransform->Get_Scale();
+    //RightDir
+    if (KEY(INSERTKEY, HOLD))
+    {
+        ScaleValue.x += m_fTickPerScalingSpeed * fDT(0);
+    }
+    if (KEY(DELETEKEY, HOLD))
+    {
+        ScaleValue.x -= m_fTickPerScalingSpeed * fDT(0);
+    }
+
+    //UpDir
+    if (KEY(HOMEKEY, HOLD))
+    {
+        ScaleValue.y += m_fTickPerScalingSpeed * fDT(0);
+    }
+    if (KEY(ENDKEY, HOLD))
+    {
+        ScaleValue.y -= m_fTickPerScalingSpeed * fDT(0);
+    }
+
+    //LookDir
+    if (KEY(PAGEUP, HOLD))
+    {
+        ScaleValue.z += m_fTickPerScalingSpeed * fDT(0);
+    }
+    if (KEY(PAGEDOWN, HOLD))
+    {
+        ScaleValue.z -= m_fTickPerScalingSpeed * fDT(0);
+    }
+
+    m_pCurSelectGameObject->Get_Transform()->Set_Scale(ScaleValue);
+}
+
+void CWindow_Map::Object_Rotate()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+    //RightAxis
+    if (KEY(HOMEKEY, HOLD))
+    {
+        _float4 Right = m_pObjTransform->Get_World(WORLD_RIGHT);
+
+        CUtility_Transform::Turn_ByAngle(m_pObjTransform, Right, m_fTickPerRotSpeed * fDT(0));
+    }
+    if (KEY(ENDKEY, HOLD))
+    {
+        _float4 Right = m_pObjTransform->Get_World(WORLD_RIGHT);
+
+        CUtility_Transform::Turn_ByAngle(m_pObjTransform, Right, -m_fTickPerRotSpeed * fDT(0));
+    }
+
+    //UpAxis
+    if (KEY(DELETEKEY, HOLD))
+    {
+        _float4 Up = m_pObjTransform->Get_World(WORLD_UP);
+
+        CUtility_Transform::Turn_ByAngle(m_pObjTransform, Up, -m_fTickPerRotSpeed * fDT(0));
+    }
+    if (KEY(PAGEDOWN, HOLD))
+    {
+        _float4 Up = m_pObjTransform->Get_World(WORLD_UP);
+
+        CUtility_Transform::Turn_ByAngle(m_pObjTransform, Up, m_fTickPerRotSpeed * fDT(0));
+    }
+
+    //LookAxis
+    if (KEY(INSERTKEY, HOLD))
+    {
+        _float4 Look = m_pObjTransform->Get_World(WORLD_LOOK);
+
+        CUtility_Transform::Turn_ByAngle(m_pObjTransform, Look, -m_fTickPerRotSpeed * fDT(0));
+    }
+    if (KEY(PAGEUP, HOLD))
+    {
+        _float4 Look = m_pObjTransform->Get_World(WORLD_LOOK);
+
+        CUtility_Transform::Turn_ByAngle(m_pObjTransform, Look, m_fTickPerRotSpeed * fDT(0));
+    }
+
+
+}
+
+void CWindow_Map::Object_Position()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+    _float4 PosValue = m_pObjTransform->Get_World(WORLD_POS);
+    //RightDir
+    if (KEY(INSERTKEY, HOLD))
+    {
+        PosValue.x += m_fTickPerMoveSpeed * fDT(0);
+    }
+    if (KEY(DELETEKEY, HOLD))
+    {
+        PosValue.x -= m_fTickPerMoveSpeed * fDT(0);
+    }
+
+    //UpDir
+    if (KEY(HOMEKEY, HOLD))
+    {
+        PosValue.y -= m_fTickPerMoveSpeed * fDT(0);
+    }
+    if (KEY(ENDKEY, HOLD))
+    {
+        PosValue.y += m_fTickPerMoveSpeed * fDT(0);
+    }
+
+    //LookDir
+    if (KEY(PAGEUP, HOLD))
+    {
+        PosValue.z += m_fTickPerMoveSpeed * fDT(0);
+    }
+    if (KEY(PAGEDOWN, HOLD))
+    {
+        PosValue.z -= m_fTickPerMoveSpeed * fDT(0);
+    }
+
+    m_pCurSelectGameObject->Get_Transform()->Set_World(WORLD_POS, PosValue);
+}
+
+_bool CWindow_Map::Object_Place()
+{
+    _bool bPicked = false;
+    if (m_bPickable)
+    {
+        if (nullptr == m_pCurTerrain || nullptr == m_pObjTransform)
+            return bPicked;
+        if (KEY(LBUTTON, HOLD))
+        {
+            _float4 OutPos;
+            _float4 OutNorm;
+            if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &OutPos, &OutNorm))
+            {
+                m_pObjTransform->Set_World(WORLD_POS, OutPos);
+                bPicked = true;
+            }
+        }
+    }
+    return bPicked;
+}
+
+void CWindow_Map::Update_Data()
+{
+    if (nullptr == m_pCurSelectData)
+        return;
+    if (m_pCurSelectGameObject)
+    {
+        m_pCurSelectData->vScale = m_pCurSelectGameObject->Get_Transform()->Get_Scale();
+        m_pCurSelectData->ObjectStateMatrix = m_pCurSelectGameObject->Get_Transform()->Get_WorldMatrix();
+    }
+}
 
 
 
@@ -715,8 +1048,8 @@ void CWindow_Map::Func_LightControl()
     }
     Make_Combo("##Light_GroupList", m_arrLightGroupCombo, &LightGroupIndex, bind(&CWindow_Map::EmptyFunction, this));
     DebugData("Debug_SelectLightGroup", SaveFilePath);
-    
-    if (ImGui::InputText("##Light_GroupName", szLightGroupName, sizeof(char)* MAXCHAR))
+
+    if (ImGui::InputText("##Light_GroupName", szLightGroupName, sizeof(char) * MAXCHAR))
     {
 
     }
@@ -822,7 +1155,7 @@ void CWindow_Map::Func_LightControl()
 
 void CWindow_Map::Ready_LightGroup()
 {
-    
+
 }
 void CWindow_Map::Ready_LightType()
 {
@@ -830,7 +1163,7 @@ void CWindow_Map::Ready_LightType()
     ZeroMemory(pLightType, sizeof(char) * 260);
     memcpy_s(pLightType, sizeof(char) * 260, "DIR", sizeof(char) * 260);
     m_arrLightTypeCombo.push_back(make_tuple(pLightType, false));
-   
+
     pLightType = new char[260];
     ZeroMemory(pLightType, sizeof(char) * 260);
     memcpy_s(pLightType, sizeof(char) * 260, "POINT", sizeof(char) * 260);
@@ -888,7 +1221,16 @@ void CWindow_Map::Save_MapData(string BasePath, string SaveName)
 {
     MAPDATA tMapData;
     ofstream	writeFile;
-    tMapData.SaveData(writeFile, BasePath, SaveName);
+    if (FAILED(tMapData.SaveData(writeFile, BasePath, SaveName)))
+    {
+        Call_MsgBox(L"SSave 실패 ??!?!");
+        return;
+    }
+
+    //터레인 데이터 저장
+    string TerrainPath = BasePath;
+    TerrainPath += "TerrainData/";
+    Save_TerrainData(TerrainPath, SaveName);
 
     //오브젝트 데이터 저장
     string GroupPath = BasePath;
@@ -910,12 +1252,82 @@ void CWindow_Map::Load_MapData(string FilePath)
 {
     MAPDATA tMapData;
     ifstream	readFile;
-    tMapData.LoadData(readFile, FilePath);
+    if (FAILED(tMapData.LoadData(readFile, FilePath)))
+    {
+        Call_MsgBox(L"Load 실패 ??!?!");
+        return;
+    }
 
+    Load_TerrainData(CFunctor::To_String(tMapData.TerrainDataPath));
     Load_ObjectGroup(CFunctor::To_String(tMapData.ObjectDataPath));
     Load_NavGroup(CFunctor::To_String(tMapData.NavDataPath));
     Load_LightGroup(CFunctor::To_String(tMapData.LightDataPath));
 }
+
+void CWindow_Map::Save_TerrainData(string BasePath, string SaveName)
+{
+    if (nullptr == m_pCurTerrain)
+    {
+        Call_MsgBox(TEXT("현재 저장할 터레인 없음"));
+        return;
+    }
+    //지형의 정점 정보들 저장
+    string SaveFullPath = BasePath;
+    SaveFullPath += SaveName;
+    SaveFullPath += "_Terrain.dat";
+    ofstream	writeFile(SaveFullPath, ios::binary);
+
+    if (!writeFile.is_open())
+    {
+        Call_MsgBox(L"SSave 실패 ??!?!");
+        assert(0);
+    }
+
+
+    char* szTexturePath = new char[MAX_PATH];
+    strcpy_s(szTexturePath, sizeof(char) * MAX_PATH, CFunctor::To_String(m_CurTerrainData.strTileTexturePath).c_str());
+    _uint iTilePathPathLength = strlen(szTexturePath) + 1;
+
+
+    writeFile.write((char*)&iTilePathPathLength, sizeof(_uint));
+    writeFile.write((char*)szTexturePath, sizeof(char) * iTilePathPathLength);
+
+
+    _uint VerticesX = m_CurTerrainData.iNumVerticesX;
+    _uint VerticesZ = m_CurTerrainData.iNumVerticesZ;
+    writeFile.write((char*)&VerticesX, sizeof(_uint));
+    writeFile.write((char*)&VerticesZ, sizeof(_uint));
+
+    _uint iNumVertices = VerticesX * VerticesZ;
+
+    _float3* Vertices = m_CurTerrainData.pCurTerrainVertPos;
+    writeFile.write((char*)Vertices, sizeof(_float3) * iNumVertices);
+
+    writeFile.close();
+
+    Safe_Delete_Array(szTexturePath);
+}
+
+void CWindow_Map::Load_TerrainData(string FilePath)
+{
+    Disable_DefaultTerrain();
+    if (nullptr != m_pCurTerrain)
+    {
+        DELETE_GAMEOBJECT(m_pCurTerrain);
+        m_pCurTerrain = nullptr;
+    }
+    CDrawable_Terrain* pTerrain = nullptr;
+    wstring strPath = CFunctor::To_Wstring(FilePath);
+    pTerrain = CDrawable_Terrain::Create(strPath.c_str());
+    if (nullptr == pTerrain)
+        assert(0);
+    CREATE_GAMEOBJECT(pTerrain, GROUP_DEFAULT);
+    m_pCurTerrain = pTerrain;
+    MTT_DATA::Terrain_TUPLE tupleData = m_pCurTerrain->Get_TerrainData();
+    m_CurTerrainData.Make_Data(tupleData);
+    //지형의 정점을 통한 터레인 수정
+}
+
 void CWindow_Map::Save_ObjectGroup(string BasePath, string SaveName)
 {
     string SaveFullPath = BasePath;
@@ -933,7 +1345,7 @@ void CWindow_Map::Save_ObjectGroup(string BasePath, string SaveName)
     //그룹 개수 저장
     _int GroupSize = _int(m_arrMeshGroupName.size());
     writeFile.write((char*)&GroupSize, sizeof(_int));
-    
+
     _int i = 0;
     for (_int i = 0; i < GroupSize; ++i)
     {
@@ -957,6 +1369,7 @@ void CWindow_Map::Save_ObjectGroup(string BasePath, string SaveName)
             char* pPath = new char[MAX_PATH];
             strcpy_s(pPath, sizeof(char) * MAX_PATH, CFunctor::To_String((*pDataList)[j].strMeshPath).c_str());
             _float4x4 StateMatrix = (*pDataList)[j].ObjectStateMatrix;
+            _float4 vScale = (*pDataList)[j].vScale;
             _byte LightFlag = (*pDataList)[j].byteLightFlag;
 
             //이름 저장
@@ -972,6 +1385,9 @@ void CWindow_Map::Save_ObjectGroup(string BasePath, string SaveName)
             //행렬 저장
             writeFile.write((char*)&StateMatrix, sizeof(_float4x4));
 
+            //스케일 저장
+            writeFile.write((char*)&vScale, sizeof(_float4));
+
             //라이트플래그 저장
             writeFile.write((char*)&LightFlag, sizeof(_byte));
 
@@ -980,16 +1396,39 @@ void CWindow_Map::Save_ObjectGroup(string BasePath, string SaveName)
         }
     }
     writeFile.close();
-    Call_MsgBox(L"Save 성공");
+    //Call_MsgBox(L"Save 성공");
 }
 void CWindow_Map::Load_ObjectGroup(string FilePath)
 {
+    Clear_TupleData(m_arrMeshGroupName);
+    for (DATAGROUPING::value_type& Value : m_ObjectDataGroupMap)
+    {
+        Value.second.clear();
+    }
+    m_ObjectDataGroupMap.clear();
+
+    for (OBJGROUPING::value_type& MapValue : m_ObjectGroupMap)
+    {
+        for (OBJVECTOR::value_type& Value : MapValue.second)
+        {
+            DELETE_GAMEOBJECT(Value);
+        }
+        MapValue.second.clear();
+    }
+    m_ObjectGroupMap.clear();
+
+    for (map<size_t, _int>::value_type& Value : m_ObjNameCallStack)
+    {
+        Value.second = 0;
+    }
+
+
     string LoadFullPath = FilePath;
     ifstream	readFile(LoadFullPath, ios::binary);
 
     if (!readFile.is_open())
     {
-        Call_MsgBox(L"SSave 실패 ??!?!");
+        Call_MsgBox(L"Load 실패 ??!?!");
         assert(0);
     }
 
@@ -1034,6 +1473,11 @@ void CWindow_Map::Load_ObjectGroup(string FilePath)
             readFile.read((char*)&StateMatrix, sizeof(_float4x4));
             tData.ObjectStateMatrix = StateMatrix;
 
+            //스케일 저장
+            _float4 vScale;
+            readFile.read((char*)&vScale, sizeof(_float4));
+            tData.vScale = vScale;
+
             //라이트플래그 저장
             _byte LightFlag = 0;
             readFile.read((char*)&LightFlag, sizeof(_byte));
@@ -1065,6 +1509,37 @@ void CWindow_Map::Load_LightGroup(string FilePath)
 
 
 #pragma region 기타 기능 함수
+HRESULT CWindow_Map::Disable_DefaultTerrain()
+{
+    if (nullptr == m_pDefaultTerrain)
+    {
+        m_pCurObjectList = &(GAMEINSTANCE->Get_ObjGroup(GROUP_DEFAULT));
+        CTerrain* pDefaultTerrain = nullptr;
+        for (list<CGameObject*>::value_type& Value : (*m_pCurObjectList))
+        {
+            m_pDefaultTerrain = dynamic_cast<CTerrain*>(Value);
+            if (nullptr != m_pDefaultTerrain)
+                break;
+        }
+        m_pCurObjectList = nullptr;
+    }
+    m_pDefaultTerrain->Set_Enable(false);
+    return S_OK;
+}
+void CWindow_Map::Generate_Terrain()
+{
+    Disable_DefaultTerrain();
+    if (nullptr != m_pCurTerrain)
+    {
+        DELETE_GAMEOBJECT(m_pCurTerrain);
+        m_pCurTerrain = nullptr;
+    }
+    CDrawable_Terrain* pTerrain = CDrawable_Terrain::Create(m_CurTerrainData.iNumVerticesX, m_CurTerrainData.iNumVerticesZ);
+    CREATE_GAMEOBJECT(pTerrain, GROUP_DEFAULT);
+    m_pCurTerrain = pTerrain;
+    MTT_DATA::Terrain_TUPLE TupleData = m_pCurTerrain->Get_TerrainData();
+    m_CurTerrainData.Make_Data(TupleData);
+}
 void CWindow_Map::Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Map&)> func)
 {
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
@@ -1131,7 +1606,35 @@ void CWindow_Map::DebugData(const char* szTitleName, string& strData)
     strcat_s(szSaveFilePath, "\0");
     ImGui::Text(szSaveFilePath);
 }
-void CWindow_Map::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
+list<string> CWindow_Map::Read_Folder_ToStringList(const char* pFolderPath)
+{
+    list<string> PathList;
+    for (filesystem::directory_iterator FileIter(pFolderPath);
+        FileIter != filesystem::end(FileIter); ++FileIter)
+    {
+        const filesystem::directory_entry& entry = *FileIter;
+
+        wstring wstrPath = entry.path().relative_path();
+        string strFullPath;
+        strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+        _int iFind = (_int)strFullPath.rfind("\\") + 1;
+        string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+        if (!entry.is_directory())
+        {
+            _int iFindExt = (int)strFileName.rfind(".") + 1;
+            string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+            if (strExtName == "MapData")
+            {
+                _int iSlash = strFileName.rfind("/") + 1;
+                string strOutputName = strFileName.substr(iSlash, strFileName.length() + 1);
+                PathList.push_back(CutOut_Ext(strOutputName, strExtName));
+            }
+        }
+    }
+    return PathList;
+}
+void CWindow_Map::Read_Folder_ForTree(const char* pFolderPath, TREE_DATA& tRootTree)
 {
     for (filesystem::directory_iterator FileIter(pFolderPath);
         FileIter != filesystem::end(FileIter); ++FileIter)
@@ -1151,7 +1654,7 @@ void CWindow_Map::Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree)
         tTreeData.strFolderPath = pFolderPath;
         if (entry.is_directory())
         {
-            Read_Folder(strFullPath.c_str(), tTreeData);
+            Read_Folder_ForTree(strFullPath.c_str(), tTreeData);
         }
         else
         {
@@ -1202,7 +1705,8 @@ void CWindow_Map::Show_TreeData(TREE_DATA& tTree)
 
             string prevFilePath = m_CurSelectedMeshFilePath;
             m_CurSelectedMeshFilePath = tTree.strFullPath;
-            m_CurSelectedMeshName = CutOut_Ext(tTree.strFileName);
+            string Ext(".fbx");
+            m_CurSelectedMeshName = CutOut_Ext(tTree.strFileName, Ext);
             if (KEY(LSHIFT, HOLD))
             {
                 // 1. 새로운 이터레이터로 prevPath 위치로 가야함
@@ -1257,11 +1761,176 @@ void CWindow_Map::Show_TreeData(TREE_DATA& tTree)
         }
     }
 }
-string CWindow_Map::CutOut_Ext(string& Origin)
+string CWindow_Map::CutOut_Ext(string& Origin, string& Ext)
 {
     string strReturn = Origin;
-    strReturn = strReturn.substr(0, strReturn.size() - size_t(4));
+    size_t ExtLength = Ext.size() + 1;
+    strReturn = strReturn.substr(0, strReturn.size() - ExtLength);
     return strReturn;
+}
+
+#pragma endregion
+
+#pragma region MAPDATA 멤버함수
+void CWindow_Map::MAPDATA::Initialize()
+{
+    TerrainDataPath = wstring();
+    ObjectDataPath = wstring();
+    NavDataPath = wstring();
+    LightDataPath = wstring();
+}
+void CWindow_Map::MAPDATA::Make_Path(string BasePath, string DataName)
+{
+    Initialize();
+    TerrainDataPath = CFunctor::To_Wstring(BasePath);
+    TerrainDataPath += TEXT("TerrainData/");
+    TerrainDataPath += CFunctor::To_Wstring(DataName);
+    TerrainDataPath += TEXT("_Terrain.dat");
+
+    ObjectDataPath = CFunctor::To_Wstring(BasePath);
+    ObjectDataPath += TEXT("ObjectData/");
+    ObjectDataPath += CFunctor::To_Wstring(DataName);
+    ObjectDataPath += TEXT(".GroupData");
+
+    NavDataPath = CFunctor::To_Wstring(BasePath);
+    NavDataPath += TEXT("NavData/");
+    NavDataPath += CFunctor::To_Wstring(DataName);
+    NavDataPath += TEXT(".NavData");
+
+    LightDataPath = CFunctor::To_Wstring(BasePath);
+    LightDataPath += TEXT("LightData/");
+    LightDataPath += CFunctor::To_Wstring(DataName);
+    LightDataPath += TEXT(".LightData");
+}
+HRESULT CWindow_Map::MAPDATA::SaveData(ofstream& rhsWriteFile, string BasePath, string DataName)
+{
+    Initialize();
+    Make_Path(BasePath, DataName);
+
+    string SaveFullPath = BasePath;
+    SaveFullPath += DataName;
+    SaveFullPath += ".MapData";
+    rhsWriteFile.open(SaveFullPath, ios::binary);
+    if (!rhsWriteFile.is_open())
+    {
+        //Call_MsgBox(L"SSave 실패 ??!?!");
+        return E_FAIL;
+    }
+
+    try {
+        if (FAILED(SavePath(rhsWriteFile, TerrainDataPath)))
+            throw TerrainDataPath;
+        if (FAILED(SavePath(rhsWriteFile, ObjectDataPath)))
+            throw ObjectDataPath;
+        if (FAILED(SavePath(rhsWriteFile, NavDataPath)))
+            throw NavDataPath;
+        if (FAILED(SavePath(rhsWriteFile, LightDataPath)))
+            throw LightDataPath;
+    }
+    catch (wstring ErrPath)
+    {
+        wstring strErrMsg = TEXT("Fail to Save : ") + ErrPath;
+        Call_MsgBox(strErrMsg.c_str());
+        rhsWriteFile.close();
+        return E_FAIL;
+    }
+
+    rhsWriteFile.close();
+    return S_OK;
+}
+HRESULT CWindow_Map::MAPDATA::LoadData(ifstream& rhsReadFile, string FilePath)
+{
+    Initialize();
+
+    string LoadFullPath = FilePath;
+    rhsReadFile.open(LoadFullPath, ios::binary);
+    if (!rhsReadFile.is_open())
+    {
+        return E_FAIL;
+    }
+    try {
+        if (FAILED(LoadPath(rhsReadFile, TerrainDataPath)))
+            throw TerrainDataPath;
+        if (FAILED(LoadPath(rhsReadFile, ObjectDataPath)))
+            throw ObjectDataPath;
+        if (FAILED(LoadPath(rhsReadFile, NavDataPath)))
+            throw NavDataPath;
+        if (FAILED(LoadPath(rhsReadFile, LightDataPath)))
+            throw LightDataPath;
+    }
+    catch (wstring ErrPath)
+    {
+        wstring strErrMsg = TEXT("Fail to Load : ") + ErrPath;
+        Call_MsgBox(strErrMsg.c_str());
+        rhsReadFile.close();
+        return E_FAIL;
+    }
+
+    return S_OK;
+}
+HRESULT CWindow_Map::MAPDATA::SavePath(ofstream& rhsWriteFile, wstring strPath)
+{
+    string strDataPath = CFunctor::To_String(strPath);
+    _int DataPathLength = _int(strDataPath.size()) + 1;
+    rhsWriteFile.write((char*)&DataPathLength, sizeof(_int));
+    char* szDataPath = new char[DataPathLength];
+    strcpy_s(szDataPath, sizeof(char) * DataPathLength, strDataPath.c_str());
+    rhsWriteFile.write(szDataPath, sizeof(char) * DataPathLength);
+
+    Safe_Delete_Array(szDataPath);
+    if (nullptr != szDataPath)
+        return E_FAIL;
+
+    return S_OK;
+}
+HRESULT CWindow_Map::MAPDATA::LoadPath(ifstream& rhsReadFile, wstring& strPath)
+{
+    _int DataPathLength = 0;
+    rhsReadFile.read((char*)&DataPathLength, sizeof(_int));
+
+    if (0 > DataPathLength)
+        return E_FAIL;
+
+    char* szDataPath = new char[DataPathLength];
+    rhsReadFile.read(szDataPath, sizeof(char) * DataPathLength);
+
+    string strDataPath = szDataPath;
+    Safe_Delete_Array(szDataPath);
+
+    if (nullptr != szDataPath)
+        return E_FAIL;
+
+    strPath = CFunctor::To_Wstring(strDataPath);
+
+    return S_OK;
 }
 #pragma endregion
 
+#pragma region MTO_DATA 멤버함수
+void CWindow_Map::tagMapToolObjectData::Initialize()
+{
+    strMeshName = wstring();
+    //strGroupName = wstring();
+    strMeshPath = wstring();
+    ObjectStateMatrix.Identity();
+    vScale = _float4(1.f, 1.f, 1.f, 0.f);
+    byteLightFlag = 0;
+}
+#pragma endregion
+
+void CWindow_Map::tagMapToolTerrainData::Initialize()
+{
+    strTileTexturePath = wstring();
+    iNumVerticesX = 0;
+    iNumVerticesZ = 0;
+    pCurTerrainVertPos = nullptr;
+}
+
+void CWindow_Map::tagMapToolTerrainData::Make_Data(tagMapToolTerrainData::Terrain_TUPLE& tTerrainData)
+{
+    Initialize();
+    strTileTexturePath = get<Tuple_TileTexture>(tTerrainData);
+    iNumVerticesX = get<Tuple_VerticesX>(tTerrainData);
+    iNumVerticesZ = get<Tuple_VerticesZ>(tTerrainData);
+    pCurTerrainVertPos = get<Tuple_TerrainPosPtr>(tTerrainData);
+}

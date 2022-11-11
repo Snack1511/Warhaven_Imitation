@@ -39,13 +39,13 @@ CTerrain* CTerrain::Create(_uint iNumVerticesX, _uint iNumVerticesZ)
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        Call_MsgBox(L"Failed to SetUp_TerrainMesh : CTerrain");
+        Call_MsgBox(L"Failed to Initialize_Prototype : CTerrain");
         SAFE_DELETE(pInstance);
     }
 
     if (FAILED(pInstance->Initialize()))
     {
-        Call_MsgBox(L"Failed to SetUp_TerrainMesh : CTerrain");
+        Call_MsgBox(L"Failed to Initialize : CTerrain");
         SAFE_DELETE(pInstance);
     }
 
@@ -64,14 +64,14 @@ CTerrain* CTerrain::Create(const _tchar* pFilePath)
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        Call_MsgBox(L"Failed to SetUp_TerrainMesh : CTerrain");
+        Call_MsgBox(L"Failed to Initialize_Prototype : CTerrain");
         SAFE_DELETE(pInstance);
         return nullptr;
     }
 
     if (FAILED(pInstance->Initialize()))
     {
-        Call_MsgBox(L"Failed to SetUp_TerrainMesh : CTerrain");
+        Call_MsgBox(L"Failed to Initialize : CTerrain");
         SAFE_DELETE(pInstance);
     }
 
@@ -82,10 +82,10 @@ CCell* CTerrain::Get_CenterCell()
 {
     _uint iNumFaces = m_pTerrainMesh->Get_NumPrimitive();
     _float fNumVerticesX = sqrtf(iNumFaces * 0.5f);
-    
+
     _float fCenterVertex = fNumVerticesX * 0.5f;
 
-    _uint iIndex = (fNumVerticesX * fCenterVertex) + fCenterVertex;
+    _uint iIndex = _uint((fNumVerticesX * fCenterVertex) + fCenterVertex);
 
     return m_vecCells[iIndex];
 }
@@ -122,49 +122,15 @@ HRESULT CTerrain::Initialize()
     if (!m_pTerrainMesh)
         return E_FAIL;
 
-    _uint iNumCells = (_uint)m_vecCells.size();
-    _int iNumLineX = m_iNumCellsX;
-
-    for (_int i = 0; i < iNumCells; ++i)
-    {
-        //È¦¼ö : ¾Æ·¡ »ï°¢Çü
-        if (i % 2 == 1)
-        {
-            //¿À¸¥ÂÊ
-            if (i-1 >= 0)
-                m_vecCells[i]->Set_Neighbor(CCell::LINE_AB, m_vecCells[i-1]);
-
-            //¾Æ·¡
-            if ((i - iNumLineX) - 1 >= 0)
-                m_vecCells[i]->Set_Neighbor(CCell::LINE_BC, m_vecCells[i - iNumLineX - 1]);
-
-            //¿ÞÂÊ
-            if (i - 3 >= 0)
-                m_vecCells[i]->Set_Neighbor(CCell::LINE_CA, m_vecCells[i - 3]);
-
-        }
-        else // Â¦¼ö°¡ À§»ï°¢Çü
-        {
-            //À§
-            if (i + iNumLineX + 1 < iNumCells)
-                m_vecCells[i]->Set_Neighbor(CCell::LINE_AB, m_vecCells[i + iNumLineX + 1]);
-
-            //¿À¸¥ÂÊ
-            if (i + 3 < iNumCells)
-                m_vecCells[i]->Set_Neighbor(CCell::LINE_BC, m_vecCells[i + 3]);
-
-            //¿ÞÂÊ
-            if (i + 1 < iNumCells)
-                m_vecCells[i]->Set_Neighbor(CCell::LINE_CA, m_vecCells[i + 1]);
-        }
-    }
+    if (FAILED(SetUp_NeighborNaviCells()))
+        return E_FAIL;
 
     return S_OK;
 }
 
 HRESULT CTerrain::Start()
 {
-    
+
     if (!m_vecCells.empty())
         m_pTerrainMesh->ReMap_Vertices();
 
@@ -193,46 +159,15 @@ void CTerrain::My_LateTick()
 
 }
 
-HRESULT CTerrain::SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ)
+CMesh_Terrain* CTerrain::Get_MeshTerrain()
 {
-    CMesh_Terrain* pTerrain = CMesh_Terrain::Create(CP_BEFORE_RENDERER, iNumVerticesX, iNumVerticesZ);
-
-    if (!pTerrain)
-        return E_FAIL;
-
-    pTerrain->Initialize();
-    Add_Component<CMesh>(pTerrain);
-
-    return S_OK;
+    return m_pTerrainMesh;
 }
 
-HRESULT CTerrain::SetUp_TerrainMesh(const _tchar* pFilePath)
+HRESULT CTerrain::Ready_NaviCells(ifstream& readFile, CMesh_Terrain* pTerrain)
 {
-    wstring wstrFilePath = L"../bin/terrain/";
-    wstrFilePath += pFilePath;
-    wstrFilePath += L".dat";
-
-    ifstream	readFile(wstrFilePath, ios::binary);
-
-    if (!readFile.is_open())
-    {
-        return E_FAIL;
-    }
-
-
-    _uint       iNumVerticesX, iNumVerticesZ;
-
-    readFile.read((char*)&iNumVerticesX, sizeof(_uint));
-    readFile.read((char*)&iNumVerticesZ, sizeof(_uint));
-
-    CMesh_Terrain* pTerrain = CMesh_Terrain::Create(CP_BEFORE_RENDERER, iNumVerticesX, iNumVerticesZ);
-
-    if (!pTerrain)
-        return E_FAIL;
-
-    pTerrain->Initialize();
-    Add_Component<CMesh>(pTerrain);
-
+    if (nullptr == pTerrain)
+        assert(0);
     _uint iNumVertices = pTerrain->Get_NumVertices();
     _float3* pVerticesPos = pTerrain->Get_VerticesPos();
     _float4* pVerticesColor = pTerrain->Get_VerticesColor();
@@ -311,12 +246,101 @@ HRESULT CTerrain::SetUp_TerrainMesh(const _tchar* pFilePath)
     delete[] pPoints;
 
     readFile.read((char*)&m_iStartIndex, sizeof(_uint));
+    return S_OK;
+}
 
+HRESULT CTerrain::SetUp_NeighborNaviCells()
+{
+    _uint iNumCells = (_uint)m_vecCells.size();
+    _uint iNumLineX = m_iNumCellsX;
+
+    for (_uint i = 0; i < iNumCells; ++i)
+    {
+        //È¦¼ö : ¾Æ·¡ »ï°¢Çü
+        if (i % 2 == 1)
+        {
+            //¿À¸¥ÂÊ
+            if (i - 1 >= 0)
+                m_vecCells[i]->Set_Neighbor(CCell::LINE_AB, m_vecCells[i - 1]);
+
+            //¾Æ·¡
+            if ((i - iNumLineX) - 1 >= 0)
+                m_vecCells[i]->Set_Neighbor(CCell::LINE_BC, m_vecCells[i - iNumLineX - 1]);
+
+            //¿ÞÂÊ
+            if (i - 3 >= 0)
+                m_vecCells[i]->Set_Neighbor(CCell::LINE_CA, m_vecCells[i - 3]);
+
+        }
+        else // Â¦¼ö°¡ À§»ï°¢Çü
+        {
+            //À§
+            if (i + iNumLineX + 1 < iNumCells)
+                m_vecCells[i]->Set_Neighbor(CCell::LINE_AB, m_vecCells[i + iNumLineX + 1]);
+
+            //¿À¸¥ÂÊ
+            if (i + 3 < iNumCells)
+                m_vecCells[i]->Set_Neighbor(CCell::LINE_BC, m_vecCells[i + 3]);
+
+            //¿ÞÂÊ
+            if (i + 1 < iNumCells)
+                m_vecCells[i]->Set_Neighbor(CCell::LINE_CA, m_vecCells[i + 1]);
+        }
+    }
+
+    return S_OK;
+}
+
+HRESULT CTerrain::SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ)
+{
+    CMesh_Terrain* pTerrain = CMesh_Terrain::Create(CP_BEFORE_RENDERER, iNumVerticesX, iNumVerticesZ);
+
+    if (!pTerrain)
+        return E_FAIL;
+
+    pTerrain->Initialize();
+    Add_Component<CMesh>(pTerrain);
+
+    return S_OK;
+}
+
+HRESULT CTerrain::SetUp_TerrainMesh(const _tchar* pFilePath)
+{
+    wstring wstrFilePath = L"../bin/terrain/";
+    wstrFilePath += pFilePath;
+    wstrFilePath += L".dat";
+
+    ifstream	readFile(wstrFilePath, ios::binary);
+
+    if (!readFile.is_open())
+    {
+        return E_FAIL;
+    }
+
+
+    _uint       iNumVerticesX, iNumVerticesZ;
+
+    readFile.read((char*)&iNumVerticesX, sizeof(_uint));
+    readFile.read((char*)&iNumVerticesZ, sizeof(_uint));
+
+    CMesh_Terrain* pTerrain = CMesh_Terrain::Create(CP_BEFORE_RENDERER, iNumVerticesX, iNumVerticesZ);
+
+    if (!pTerrain)
+        return E_FAIL;
+
+    pTerrain->Initialize();
+    Add_Component<CMesh>(pTerrain);
+
+
+    if (FAILED(Ready_NaviCells(readFile, pTerrain)))
+    {
+        readFile.close();
+        return E_FAIL;
+    }
     readFile.close();
 
     m_iNumCellsX = (iNumVerticesX - 1) * 2;
     m_iNumCellsZ = (iNumVerticesZ - 1) * 2;
-
 
     return S_OK;
 }

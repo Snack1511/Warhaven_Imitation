@@ -130,7 +130,6 @@ PS_OUT PS_MAIN(PS_IN In)
 	//Out.vDiffuse *= 2.f;
 
 	Out.vDiffuse.a = 1.f;
-	Out.vDiffuse = 1;
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
 	Out.vFlag = g_vFlag;

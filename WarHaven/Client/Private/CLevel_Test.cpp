@@ -15,14 +15,15 @@
 #include "CUnit_Warrior.h"
 #include "CUnit_Spearman.h"
 
-#include "CPickingStructure.h"
-
 #include "CCamera_Free.h"
 #include "CCamera_Follow.h"
 
 #include "CSword_Effect.h"
 #include "CEffects_Factory.h"
 #include "CBloodOverlay.h"
+
+// MJ_INCLUDE
+#include "CDrawable_Terrain.h"
 
 CLevel_Test::CLevel_Test()
 {
@@ -261,12 +262,6 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
-	//CPickingStructure* pStruct = CPickingStructure::Create();
-	//if (!pStruct)
-	//	return E_FAIL;
-	//pStruct->Initialize();
-	//Ready_GameObject(pStruct, GROUP_DECORATION);
-
 	//_float4x4 mat;
 	//mat.Identity();
 	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
@@ -274,6 +269,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//	return E_FAIL;
 	//pTestStruct->Initialize();
 	//Ready_GameObject(pTestStruct, GROUP_DECORATION);
+
+	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
+	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	return S_OK;
 }

@@ -125,7 +125,7 @@ public: /* For Picking_Manager */
 	_bool	Is_Picked(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked(CGameObject* pGameObject, _float4* pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal = nullptr);
-
+	_bool	Is_Picked_Mesh(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal = nullptr);
 
 
 public: /* For. Camera_Manager */

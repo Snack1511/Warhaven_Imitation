@@ -1,143 +1,33 @@
 #pragma once
 #define HASHING(Type, Value) hash<Type>()(Value)
 #include "CImGui_Window.h"
-#include "Functor.h"
-
 BEGIN(Engine)
 class CGameObject;
+class CTransform;
 END
 
 BEGIN(Client)
+class CTerrain;
+class CDrawable_Terrain;
 class CWindow_Map final
 	: public CImGui_Window
 {
 public:
-	enum TUPLEDATA { Tuple_CharPtr , Tuple_Bool, Tuple_Index};
-
+	enum TUPLEDATA { Tuple_CharPtr, Tuple_Bool, Tuple_Index };
+	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
 	typedef struct MAPDATA
 	{
+		wstring TerrainDataPath;
 		wstring ObjectDataPath;
 		wstring NavDataPath;
 		wstring LightDataPath;
-		void Initialize()
-		{
-			ObjectDataPath = wstring();
-			NavDataPath = wstring();
-			LightDataPath = wstring();
-		}
-		void Make_Path(string BasePath, string DataName) 
-		{
-			Initialize();
-			ObjectDataPath = CFunctor::To_Wstring(BasePath);
-			ObjectDataPath += TEXT("ObjectData/");
-			ObjectDataPath += CFunctor::To_Wstring(DataName);
-			ObjectDataPath += TEXT(".GroupData");
-
-			NavDataPath = CFunctor::To_Wstring(BasePath);
-			NavDataPath += TEXT("NavData/");
-			NavDataPath += CFunctor::To_Wstring(DataName);
-			NavDataPath += TEXT(".NavData");
-
-			LightDataPath = CFunctor::To_Wstring(BasePath);
-			LightDataPath += TEXT("LightData/");
-			LightDataPath += CFunctor::To_Wstring(DataName);
-			LightDataPath += TEXT(".LightData");
-		}
-		void SaveData(ofstream& rhsWriteFile, string BasePath, string DataName)
-		{
-			Initialize();
-			ObjectDataPath = CFunctor::To_Wstring(BasePath);
-			ObjectDataPath += TEXT("ObjectData/");
-			ObjectDataPath += CFunctor::To_Wstring(DataName);
-			ObjectDataPath += TEXT(".GroupData");
-
-			NavDataPath = CFunctor::To_Wstring(BasePath);
-			NavDataPath += TEXT("NavData/");
-			NavDataPath += CFunctor::To_Wstring(DataName);
-			NavDataPath += TEXT(".NavData");
-
-			LightDataPath = CFunctor::To_Wstring(BasePath);
-			LightDataPath += TEXT("LightData/");
-			LightDataPath += CFunctor::To_Wstring(DataName);
-			LightDataPath += TEXT(".LightData");
-
-			string SaveFullPath = BasePath;
-			SaveFullPath += DataName;
-			SaveFullPath += ".MapData";
-			rhsWriteFile.open(SaveFullPath, ios::binary);
-			if (!rhsWriteFile.is_open())
-			{
-				Call_MsgBox(L"SSave 실패 ??!?!");
-				assert(0);
-			}
-			string strObjectDataPath = CFunctor::To_String(ObjectDataPath);
-			string strNavDataPath = CFunctor::To_String(NavDataPath);
-			string strLightDataPath = CFunctor::To_String(LightDataPath);
-
-			_int ObjDataPathLength = _int(strObjectDataPath.size()) + 1;
-			rhsWriteFile.write((char*)&ObjDataPathLength, sizeof(_int));
-			char* szObjDataPath = new char[ObjDataPathLength];
-			strcpy_s(szObjDataPath, sizeof(char) * ObjDataPathLength, strObjectDataPath.c_str());
-			rhsWriteFile.write(szObjDataPath, sizeof(char) * ObjDataPathLength);
-
-			_int NavPathLength = _int(strNavDataPath.size()) + 1;
-			rhsWriteFile.write((char*)&NavPathLength, sizeof(_int));
-			char* szNavDataPath = new char[NavPathLength];
-			strcpy_s(szNavDataPath, sizeof(char) * NavPathLength, strNavDataPath.c_str());
-			rhsWriteFile.write(szNavDataPath, sizeof(char) * NavPathLength);
-
-			_int LightPathLength = _int(strLightDataPath.size()) + 1;
-			rhsWriteFile.write((char*)&LightPathLength, sizeof(_int));
-			char* szLightDataPath = new char[LightPathLength];
-			strcpy_s(szLightDataPath, sizeof(char) * LightPathLength, strLightDataPath.c_str());
-			rhsWriteFile.write(szLightDataPath, sizeof(char) * LightPathLength);
-
-			Safe_Delete_Array(szObjDataPath);
-			Safe_Delete_Array(szNavDataPath);
-			Safe_Delete_Array(szLightDataPath);
-
-			rhsWriteFile.close();
-		}
-		void LoadData(ifstream& rhhReadFile, string FilePath)
-		{
-			Initialize();
-
-			string LoadFullPath = FilePath;
-			rhhReadFile.open(LoadFullPath, ios::binary);
-			if (!rhhReadFile.is_open())
-			{
-				Call_MsgBox(L"Load 실패 ??!?!");
-				assert(0);
-			}
-
-			_int ObjPathLength = 0;
-			rhhReadFile.read((char*)&ObjPathLength, sizeof(_int));
-			char* szObjDataPath = new char[ObjPathLength];
-			rhhReadFile.read(szObjDataPath, sizeof(char)* ObjPathLength);
-
-			_int NavPathLength = 0;
-			rhhReadFile.read((char*)&NavPathLength, sizeof(_int));
-			char* szNavDataPath = new char[NavPathLength];
-			rhhReadFile.read(szNavDataPath, sizeof(char) * NavPathLength);
-
-			_int LightPathLength = 0;
-			rhhReadFile.read((char*)&LightPathLength, sizeof(_int));
-			char* szLightDataPath = new char[LightPathLength];
-			rhhReadFile.read(szLightDataPath, sizeof(char) * LightPathLength);
-			rhhReadFile.close();
-
-			string strObjPath = szObjDataPath;
-			string strNavPath = szNavDataPath;
-			string strLightPath = szLightDataPath;
-
-			ObjectDataPath = CFunctor::To_Wstring(strObjPath);
-			NavDataPath = CFunctor::To_Wstring(strNavPath);
-			LightDataPath = CFunctor::To_Wstring(strLightPath);
-
-			Safe_Delete_Array(szObjDataPath);
-			Safe_Delete_Array(szNavDataPath);
-			Safe_Delete_Array(szLightDataPath);
-		}
+	public:
+		void Initialize();
+		void Make_Path(string BasePath, string DataName);
+		HRESULT SaveData(ofstream& rhsWriteFile, string BasePath, string DataName);
+		HRESULT LoadData(ifstream& rhsReadFile, string FilePath);
+		HRESULT SavePath(ofstream& rhsWriteFile, wstring strPath);
+		HRESULT LoadPath(ifstream& rhsReadFile, wstring& strPath);
 	};
 
 
@@ -150,25 +40,38 @@ public:
 		vector<TREE_DATA>	vecChildren;
 	};
 
-	struct MTO_DATA
+	typedef struct tagMapToolTerrainData
+	{
+		wstring strTileTexturePath;
+		_uint iNumVerticesX;
+		_uint iNumVerticesZ;
+		_float3* pCurTerrainVertPos;
+	public:
+		typedef tuple<wstring, _uint, _uint, _float3*> Terrain_TUPLE;
+		enum TupleType
+		{
+			Tuple_TileTexture,
+			Tuple_VerticesX,
+			Tuple_VerticesZ,
+			Tuple_TerrainPosPtr,
+		};
+	public:
+		void Initialize();
+		void Make_Data(Terrain_TUPLE& tTerrainData);
+	}MTT_DATA;
+
+	typedef struct tagMapToolObjectData
 	{
 		wstring strMeshName;
 		//wstring strGroupName;
 		wstring strMeshPath;
 		_float4x4 ObjectStateMatrix;
+		_float4 vScale;
 		_byte byteLightFlag;
 
 	public:
-		void Initialize()
-		{
-			strMeshName = wstring();
-			//strGroupName = wstring();
-			strMeshPath = wstring();
-			ObjectStateMatrix.Identity();
-			byteLightFlag = 0;
-		}
-
-	};
+		void Initialize();
+	}MTO_DATA;
 
 	const char* ArrObjectGroup[GROUP_END] =
 	{
@@ -201,6 +104,8 @@ protected:
 private:
 	typedef vector<tuple<char*, bool>> DataComboArr;
 	typedef tuple<char*, bool> SelectComboData;
+	typedef vector<CGameObject*> OBJVECTOR;
+	typedef vector<MTO_DATA> DATAVECTOR;
 	typedef map<size_t, vector<CGameObject*>> OBJGROUPING;
 	typedef map<size_t, vector<MTO_DATA>> DATAGROUPING;
 private:
@@ -210,21 +115,38 @@ private:
 	void Ready_ObjectGroupID();
 
 	void Update_FileArray();
-	void SetUp_FilePath(string& strFilePath, char* szData);
+	void SetUp_FilePath(string& strFilePath, char* szData, string strExt = "");
 	void SetUp_CurPickingGroup();
 
 	void Add_MeshGroup(char* pMeshGroupName);
 	void Delete_MeshGroup(char* pMeshGroupName);
-	
+
 	void Add_Object(string MeshGroup, string Meshpath, string MeshName);
 	void Add_Object(string MeshGroup, MTO_DATA& tData);
 	void Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<MTO_DATA>& DataList);
-	
+
 	void Clear_MeshGroup(char* pMeshGroupName);
 #pragma endregion
 
 
+#pragma region Private 데이타컨트롤
 	void Func_DataControl();
+	void SetUp_CurSelectObject();
+	void Confirm_Data();
+	void Show_ObjectData();
+	void Set_ObjectSpeed();
+
+	void Select_DataControlFlag();
+	void Object_Control();
+
+	void Object_Scale();
+	void Object_Rotate();
+	void Object_Position();
+	_bool Object_Place();
+
+	void Update_Data();
+#pragma endregion
+
 
 #pragma region Private 라이트컨트롤
 	void Func_LightControl();
@@ -243,6 +165,9 @@ private:
 	void Save_MapData(string BasePath, string SaveName);
 	void Load_MapData(string FilePath);
 
+	void Save_TerrainData(string BasePath, string SaveName);
+	void Load_TerrainData(string FilePath);
+
 	void Save_ObjectGroup(string BasePath, string SaveName);
 	void Load_ObjectGroup(string FilePath);
 
@@ -253,14 +178,19 @@ private:
 	void Load_LightGroup(string FilePath);
 #pragma endregion
 
+private:
+	HRESULT Disable_DefaultTerrain();
+	void Generate_Terrain();
+
 #pragma region Private 기타 함수
 	void		Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Map&)> func);
 	_bool		Make_Combo(const char* szLabel, vector<tuple<char*, bool>>& szDataArr, int* pCurIndex, function<void()> SelectFunction);
 	void		Clear_TupleData(vector<tuple<char*, bool>>& ArrData);
 	void		DebugData(const char* szTitleName, string& strData);
-	void		Read_Folder(const char* pFolderPath, TREE_DATA& tRootTree);
+	list<string>Read_Folder_ToStringList(const char* pFolderPath);
+	void		Read_Folder_ForTree(const char* pFolderPath, TREE_DATA& tRootTree);
 	void		Show_TreeData(TREE_DATA& tTree);
-	string		CutOut_Ext(string& Origin);
+	string		CutOut_Ext(string& Origin, string& Ext);
 	void		EmptyFunction() {}
 #pragma endregion
 
@@ -279,9 +209,20 @@ private:
 	map<size_t, vector<MTO_DATA>> m_ObjectDataGroupMap;
 	map<size_t, _int> m_ObjNameCallStack;
 #pragma endregion
+	CTerrain* m_pDefaultTerrain = nullptr;
+	CDrawable_Terrain* m_pCurTerrain = nullptr;
+	MTT_DATA m_CurTerrainData;
+	vector<tuple<char*, bool>> m_arrTileTextureName;
 
 #pragma region Value 오브젝트 컨트롤
 	CGameObject* m_pCurSelectGameObject = nullptr;
+	CTransform* m_pObjTransform = nullptr;
+	MTO_DATA* m_pCurSelectData;
+	CONTROLTYPE m_eControlType = CONTROL_MOVE;
+
+	_float m_fTickPerScalingSpeed = 1.f;
+	_float m_fTickPerRotSpeed = 1.f;
+	_float m_fTickPerMoveSpeed = 1.f;
 #pragma endregion
 
 #pragma region Value 라이트컨트롤
@@ -295,7 +236,9 @@ private:
 	vector<string>		m_vecSelectedMeshFilePath;
 	vector<string>		m_vecSelectedMeshName;
 
-	list<CGameObject*> m_CurObjectList;
+	list<CGameObject*>* m_pCurObjectList = nullptr;
+
+	_bool m_bPickable = false;
 
 };
 END

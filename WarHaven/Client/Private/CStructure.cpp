@@ -74,6 +74,34 @@ CStructure* CStructure::Create(wstring MeshPath, _float4x4 ObjectWorldMatrix)
 	return pInstance;
 }
 
+CStructure* CStructure::Create(wstring MeshPath, _float4 vScale, _float4x4 ObjectWorldMatrix)
+{
+	CStructure* pInstance = new CStructure;
+
+	if (FAILED(pInstance->SetUp_Model(MeshPath)))
+	{
+		SAFE_DELETE(pInstance);
+		Call_MsgBox(L"Failed to SetUp_Model : CStructure");
+		return nullptr;
+	}
+
+	if (FAILED(pInstance->SetUp_World(vScale, ObjectWorldMatrix)))
+	{
+		SAFE_DELETE(pInstance);
+		Call_MsgBox(L"Failed to SetUp_World : CStructure");
+		return nullptr;
+	}
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		SAFE_DELETE(pInstance);
+		Call_MsgBox(L"Failed to Initialize_Prototype : CStructure");
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
 void CStructure::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos)
 {
 }
@@ -137,8 +165,8 @@ void CStructure::OnDisable()
 
 HRESULT CStructure::SetUp_Model(wstring strModelPath)
 {
-	_float4x4
-		TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f)
+	_float4x4 TransformMatrix = 
+		XMMatrixScaling(0.005f, 0.005f, 0.005f)
 		* XMMatrixRotationY(XMConvertToRadians(270.0f));
 	m_DebugPath = strModelPath;
 	CModel* pModel = CModel::Create(0, TYPE_NONANIM, strModelPath, TransformMatrix);
@@ -149,6 +177,14 @@ HRESULT CStructure::SetUp_Model(wstring strModelPath)
 
 HRESULT CStructure::SetUp_World(_float4x4 worldMat)
 {
+	m_pTransform->Get_Transform().matMyWorld = worldMat;
+	m_pTransform->Make_WorldMatrix();
+	return S_OK;
+}
+
+HRESULT CStructure::SetUp_World(_float4 vScale, _float4x4 worldMat)
+{
+	m_pTransform->Get_Transform().vScale = vScale;
 	m_pTransform->Get_Transform().matMyWorld = worldMat;
 	m_pTransform->Make_WorldMatrix();
 	return S_OK;

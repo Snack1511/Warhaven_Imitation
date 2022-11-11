@@ -194,6 +194,7 @@
     <ClInclude Include="..\Public\CColorController.h" />
     <ClInclude Include="..\public\CDebugObject.h" />
     <ClInclude Include="..\Public\CDefault_Effect.h" />
+    <ClInclude Include="..\Public\CDrawable_Terrain.h" />
     <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\public\CEffects_Factory.h" />
     <ClInclude Include="..\Public\CGame_Manager_JJ.h" />
@@ -212,7 +213,6 @@
     <ClInclude Include="..\Public\CRun_Player_L.h" />
     <ClInclude Include="..\Public\CRun_Player_R.h" />
     <ClInclude Include="..\Public\CScript_FollowCam.h" />
-    <ClInclude Include="..\Public\CPickingStructure.h" />
     <ClInclude Include="..\public\CScript_Freecam.h" />
     <ClInclude Include="..\public\CSkyBox.h" />
     <ClInclude Include="..\Public\CSlide_Player.h" />
@@ -247,7 +247,6 @@
     <ClInclude Include="..\Public\CUI_Text.h" />
     <ClInclude Include="..\Public\CUI_Wrapper.h" />
     <ClInclude Include="..\public\CUnit.h" />
-    <ClInclude Include="..\Public\CStructure_TestStructure.h" />
     <ClInclude Include="..\Public\CUnit_Spearman.h" />
     <ClInclude Include="..\public\CUnit_Warrior.h" />
     <ClInclude Include="..\public\CUser.h" />
@@ -295,6 +294,7 @@
     <ClCompile Include="..\Private\CColorController.cpp" />
     <ClCompile Include="..\private\CDebugObject.cpp" />
     <ClCompile Include="..\Private\CDefault_Effect.cpp" />
+    <ClCompile Include="..\Private\CDrawable_Terrain.cpp" />
     <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\private\CEffects_Factory.cpp" />
     <ClCompile Include="..\Private\CGame_Manager_JJ.cpp" />
@@ -314,7 +314,6 @@
     <ClCompile Include="..\Private\CRun_Player_L.cpp" />
     <ClCompile Include="..\Private\CRun_Player_R.cpp" />
     <ClCompile Include="..\Private\CScript_FollowCam.cpp" />
-    <ClCompile Include="..\Private\CPickingStructure.cpp" />
     <ClCompile Include="..\private\CScript_Freecam.cpp" />
     <ClCompile Include="..\private\CSkyBox.cpp" />
     <ClCompile Include="..\Private\CSlide_Player.cpp" />
@@ -349,7 +348,6 @@
     <ClCompile Include="..\Private\CUI_Text.cpp" />
     <ClCompile Include="..\Private\CUI_Wrapper.cpp" />
     <ClCompile Include="..\private\CUnit.cpp" />
-    <ClCompile Include="..\Private\CStructure_TestStructure.cpp" />
     <ClCompile Include="..\Private\CUnit_Spearman.cpp" />
     <ClCompile Include="..\private\CUnit_Warrior.cpp" />
     <ClCompile Include="..\private\CUser.cpp" />

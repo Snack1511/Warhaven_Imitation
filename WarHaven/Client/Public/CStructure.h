@@ -22,6 +22,7 @@ protected:
 public:
 	static CStructure* Create(wstring MeshPath);
 	static CStructure* Create(wstring MeshPath, _float4x4 ObjectWorldMatrix);
+	static CStructure* Create(wstring MeshPath, _float4 vScale, _float4x4 ObjectWorldMatrix);
 
 public:
 	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos);
@@ -46,6 +47,7 @@ protected:
 protected:
 	virtual	HRESULT	SetUp_Model(wstring strMeshPath);
 	virtual HRESULT SetUp_World(_float4x4 worldMat);
+	virtual HRESULT SetUp_World(_float4 vScale, _float4x4 worldMat);
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
