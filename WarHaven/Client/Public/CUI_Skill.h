@@ -1,26 +1,16 @@
 #pragma once
 #include "CUI_Wrapper.h"
 
-BEGIN(Engine)
-class CShader;
-END
-
 BEGIN(Client)
 
 class CUnit;
 
 class CUI_Skill : public CUI_Wrapper
 {
+	enum UI_TYPE { Outline, BG, Icon, Key, Type_End };
+
 	DECLARE_PROTOTYPE(CUI_Skill);
 	DECLARE_GAMEOBJECT(CUI_Skill);
-
-
-	typedef struct tagSkillHud
-	{
-		enum SKILLHUDNAME { OUTLINE, BG, ICON, KEY, NAME_END };
-		CUI_Object* m_pUIInstance[NAME_END] = {};
-	}SkillHud;
-
 
 private:
 	CUI_Skill();
@@ -39,8 +29,8 @@ public:
 	void Set_SkillUI(_uint iIndex);
 
 private:
-	SkillHud tSkillHud;
-	SkillHud m_arrSkillHud[4];
+	CUI_Object* m_Prototypes[Type_End] = {};
+	CUI_Object* m_arrSkillUI[4][Type_End] = {};
 
 	_uint m_iRelicIndex = 0;
 	_bool m_bIsRelic = false;

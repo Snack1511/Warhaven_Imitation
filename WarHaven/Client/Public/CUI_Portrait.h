@@ -5,14 +5,10 @@ BEGIN(Client)
 
 class CUI_Portrait final : public CUI_Wrapper
 {
+	enum UI_TYPE { BG, Port, Key, Effect, Type_End };
+
 	DECLARE_PROTOTYPE(CUI_Portrait);
 	DECLARE_GAMEOBJECT(CUI_Portrait);
-
-	typedef struct tagPortraitHud
-	{
-		enum SKILLHUDNAME { BG, Port, Key, Effect, NAME_END };
-		CUI_Object* m_pUIInstance[NAME_END] = {};
-	}Portrait;
 
 private:
 	CUI_Portrait();
@@ -35,8 +31,8 @@ protected:
 	virtual void My_LateTick() override;
 
 private:
-	Portrait m_tPort;
-	Portrait m_arrtPort[5];
+	CUI_Object* m_Prototypes[Type_End] = {};
+	CUI_Object* m_arrPortraitUI[5][Type_End] = {};
 
 	_float m_fEffectValue = 0.f;
 

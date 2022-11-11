@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "CUI_Portrait.h"
 #include "GameInstance.h"
-
-
-
-
 #include "CUI_Object.h"
 #include "Texture.h"
 #include "CUnit.h"
@@ -29,27 +25,27 @@ HRESULT CUI_Portrait::Initialize_Prototype()
 {
 	Read_UI("Port");
 
-	m_tPort.m_pUIInstance[Portrait::BG] = m_pUIMap[TEXT("PortBG")];
-	m_tPort.m_pUIInstance[Portrait::Port] = m_pUIMap[TEXT("Port")];
-	m_tPort.m_pUIInstance[Portrait::Key] = m_pUIMap[TEXT("PortKey")];
-	m_tPort.m_pUIInstance[Portrait::Effect] = m_pUIMap[TEXT("Port_Effect")];
+	m_Prototypes[BG] = m_pUIMap[TEXT("PortBG")];
+	m_Prototypes[Port] = m_pUIMap[TEXT("Port")];
+	m_Prototypes[Key] = m_pUIMap[TEXT("PortKey")];
+	m_Prototypes[Effect] = m_pUIMap[TEXT("Port_Effect")];
 
-	GET_COMPONENT_FROM(m_tPort.m_pUIInstance[Portrait::Port], CTexture)->Remove_Texture(0);
+	GET_COMPONENT_FROM(m_Prototypes[Port], CTexture)->Remove_Texture(0);
 
-	m_tPort.m_pUIInstance[Portrait::Effect]->SetTexture(TEXT("../Bin/R\esources/Textures/UI/Effect/T_Pattern_06.dds"));
-	m_tPort.m_pUIInstance[Portrait::Effect]->SetTexture(TEXT("../Bin/R\esources/Textures/UI/Effect/T_Pattern_13.dds"));
+	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/R\esources/Textures/UI/Effect/T_Pattern_06.dds"));
+	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/R\esources/Textures/UI/Effect/T_Pattern_13.dds"));
 
-	GET_COMPONENT_FROM(m_tPort.m_pUIInstance[Portrait::BG], CTexture)
+	GET_COMPONENT_FROM(m_Prototypes[BG], CTexture)
 		->Add_Texture(TEXT("../Bin/R\esources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
 
-	Read_Texture(m_tPort.m_pUIInstance[Portrait::Port], "/HUD/Portrait", "Class");
-	Read_Texture(m_tPort.m_pUIInstance[Portrait::Key], "/KeyIcon/Keyboard", "Key");
+	Read_Texture(m_Prototypes[Port], "/HUD/Portrait", "Class");
+	Read_Texture(m_Prototypes[Key], "/KeyIcon/Keyboard", "Key");
 
 	for (int i = 0; i < 5; ++i)
 	{
-		for (int j = 0; j < Portrait::NAME_END; ++j)
+		for (int j = 0; j < Type_End; ++j)
 		{
-			m_arrtPort[i].m_pUIInstance[j] = m_tPort.m_pUIInstance[j]->Clone();
+			m_arrPortraitUI[i][j] = m_Prototypes[j]->Clone();
 		}
 	}
 
@@ -81,7 +77,7 @@ void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 
 void CUI_Portrait::Set_Portrait(_uint iIndex)
 {
-	CTexture* pTexture = GET_COMPONENT_FROM(m_arrtPort[0].m_pUIInstance[Portrait::Port], CTexture);
+	CTexture* pTexture = GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture);
 
 	switch (iIndex)
 	{
@@ -143,16 +139,16 @@ void CUI_Portrait::My_LateTick()
 
 void CUI_Portrait::Enable_Portrait()
 {
-	for (_uint i = 0; i < Portrait::NAME_END; ++i)
+	for (_uint i = 0; i < Type_End; ++i)
 	{
-		CREATE_GAMEOBJECT(m_tPort.m_pUIInstance[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_tPort.m_pUIInstance[i]);
+		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_Prototypes[i]);
 
-		CREATE_GAMEOBJECT(m_arrtPort[0].m_pUIInstance[i], GROUP_UI);
+		CREATE_GAMEOBJECT(m_arrPortraitUI[0][i], GROUP_UI);
 	}
 
-	DELETE_GAMEOBJECT(m_arrtPort[0].m_pUIInstance[Portrait::Key]);
-	DELETE_GAMEOBJECT(m_arrtPort[0].m_pUIInstance[Portrait::Effect]);
+	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Key]);
+	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Effect]);
 
 	for (int i = 1; i < 5; ++i)
 	{
@@ -160,30 +156,30 @@ void CUI_Portrait::Enable_Portrait()
 		_uint iPortIndex = 5 + i;
 		_uint iKeyIndex = 32 + i;
 
-		GET_COMPONENT_FROM(m_arrtPort[i].m_pUIInstance[Portrait::BG], CTexture)->Set_CurTextureIndex(1);
-		GET_COMPONENT_FROM(m_arrtPort[i].m_pUIInstance[Portrait::Port], CTexture)->Set_CurTextureIndex(iPortIndex);
-		GET_COMPONENT_FROM(m_arrtPort[i].m_pUIInstance[Portrait::Key], CTexture)->Set_CurTextureIndex(iKeyIndex);
+		GET_COMPONENT_FROM(m_arrPortraitUI[i][BG], CTexture)->Set_CurTextureIndex(1);
+		GET_COMPONENT_FROM(m_arrPortraitUI[i][Port], CTexture)->Set_CurTextureIndex(iPortIndex);
+		GET_COMPONENT_FROM(m_arrPortraitUI[i][Key], CTexture)->Set_CurTextureIndex(iKeyIndex);
 
-		m_arrtPort[i].m_pUIInstance[Portrait::BG]->Set_Sort(0.1f);
-		m_arrtPort[i].m_pUIInstance[Portrait::Effect]->Set_Sort(0.2f);
+		m_arrPortraitUI[i][BG]->Set_Sort(0.1f);
+		m_arrPortraitUI[i][Effect]->Set_Sort(0.2f);
 
-		for (int j = 0; j < Portrait::NAME_END; ++j)
+		for (int j = 0; j < Type_End; ++j)
 		{
-			m_arrtPort[i].m_pUIInstance[j]->Set_Pos(fPosX, -230.f);
-			m_arrtPort[i].m_pUIInstance[j]->Set_Scale(43.f);
+			m_arrPortraitUI[i][j]->Set_Pos(fPosX, -230.f);
+			m_arrPortraitUI[i][j]->Set_Scale(43.f);
 
-			if (j == Portrait::Key)
+			if (j == Key)
 			{
-				m_arrtPort[i].m_pUIInstance[j]->Set_Pos(fPosX, -195.f);
-				m_arrtPort[i].m_pUIInstance[j]->Set_Scale(15.f);
+				m_arrPortraitUI[i][j]->Set_Pos(fPosX, -195.f);
+				m_arrPortraitUI[i][j]->Set_Scale(15.f);
 			}
 
-			if (j == Portrait::Effect)
+			if (j == Effect)
 			{
-				m_arrtPort[i].m_pUIInstance[j]->Set_Scale(55.f);
+				m_arrPortraitUI[i][j]->Set_Scale(55.f);
 			}
 
-			CREATE_GAMEOBJECT(m_arrtPort[i].m_pUIInstance[j], GROUP_UI);
+			CREATE_GAMEOBJECT(m_arrPortraitUI[i][j], GROUP_UI);
 		}
 	}
 }
@@ -192,13 +188,13 @@ void CUI_Portrait::Set_Pass()
 {
 	for (int i = 0; i < 5; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrtPort[i].m_pUIInstance[Portrait::Effect], CRenderer)
+		GET_COMPONENT_FROM(m_arrPortraitUI[i][Effect], CRenderer)
 			->Set_Pass(VTXTEX_PASS_UI_PortEffect);
 	}
 }
 
 void CUI_Portrait::Bind_Sahder()
 {
-	GET_COMPONENT_FROM(m_arrtPort[0].m_pUIInstance[Portrait::Effect], CShader)
+	GET_COMPONENT_FROM(m_arrPortraitUI[0][Effect], CShader)
 		->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
 }

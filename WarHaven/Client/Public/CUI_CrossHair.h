@@ -5,17 +5,10 @@ BEGIN(Client)
 
 class CUI_Crosshair final : public CUI_Wrapper
 {
-	enum CROSSHAIRTYPE {CROSSHAIR_DEFAULT, CROSSHAIR_END = 4};
 	enum UI_TYPE { Point, Outline, ArrowBG, Arrow, GaugeBG, Gauge, Type_End };
 
 	DECLARE_PROTOTYPE(CUI_Crosshair);
 	DECLARE_GAMEOBJECT(CUI_Crosshair);
-
-	typedef struct tagCrosshairHUD
-	{
-		// 워리어, 스파이크, 아처
-		CUI_Object* m_pUI[TYPE_END] = {};
-	}Crosshair;
 
 private:
 	CUI_Crosshair();
@@ -29,7 +22,7 @@ public:
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
-	CUI_Object* m_arrCrosshairUI[CROSSHAIR_END][Type_End] = {};
+	CUI_Object* m_arrSkillUI[4][Type_End] = {};
 
 private:
 	virtual void My_Tick() override;
