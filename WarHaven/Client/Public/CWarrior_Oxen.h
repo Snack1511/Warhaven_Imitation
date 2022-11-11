@@ -19,7 +19,7 @@ public:
 public:
 	// CState을(를) 통해 상속됨
 	virtual HRESULT Initialize()	override;
-	virtual void Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex) override;
+	virtual void Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType) override;
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
@@ -37,6 +37,11 @@ private:
 	_float  m_fCreateTimeAcc = 0.f;
 
 	_int	m_iCancelAnimIndex = 0;
+
+private:
+	virtual STATE_TYPE		Update_Begin(CUnit* pOwner, CAnimator* pAnimator);
+	virtual STATE_TYPE		Update_Loop(CUnit* pOwner, CAnimator* pAnimator);
+	virtual STATE_TYPE		Update_End(CUnit* pOwner, CAnimator* pAnimator);
 
 };
 

@@ -62,7 +62,7 @@ HRESULT CWarrior_Attack_UpperMiddle_L::Initialize()
     return S_OK;
 }
 
-void CWarrior_Attack_UpperMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CWarrior_Attack_UpperMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, iPreAnimIndex);

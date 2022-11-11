@@ -61,7 +61,7 @@ HRESULT CJump_Player::Initialize()
     return S_OK;
 }
 
-void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner¿« Animator Set Idle∑Œ */
 

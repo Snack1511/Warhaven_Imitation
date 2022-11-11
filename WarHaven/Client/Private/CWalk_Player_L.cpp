@@ -73,7 +73,7 @@ HRESULT CWalk_Player_L::Initialize()
     return S_OK;
 }
 
-void CWalk_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CWalk_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner¿« Animator Set Idle∑Œ */
 

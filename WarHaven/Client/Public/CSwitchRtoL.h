@@ -1,22 +1,23 @@
 #pragma once
-#include "CRun_Player.h"
+#include "CState.h"
 
 BEGIN(Engine)
 class CAnimator;
 END
 
+
 BEGIN(Client)
-class CRun_Player_L
-	: public CRun_Player
+class CSwitchRtoL
+	: public CState
 {
-	DECLARE_STATE(CRun_Player_L);
+	DECLARE_STATE(CSwitchRtoL);
 
 private:
-	CRun_Player_L();
-	virtual ~CRun_Player_L();
+	CSwitchRtoL();
+	virtual ~CSwitchRtoL();
 
 public:
-	static CRun_Player_L* Create();
+	static CSwitchRtoL* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -27,8 +28,6 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
-
 };
 
 END

@@ -264,6 +264,7 @@ namespace Client
 //#pragma region Base_L_Player
 //
 //		/* Idle */
+		STATE_SWITCH_R_TO_L,
 		STATE_IDLE_PLAYER_L,
 //
 //		/* Walk */

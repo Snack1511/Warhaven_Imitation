@@ -69,7 +69,7 @@ HRESULT CWarrior_Oxen::Initialize()
     return S_OK;
 }
 
-void CWarrior_Oxen::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CWarrior_Oxen::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     pOwner->TurnOn_TrailEffect(true);
 
@@ -84,7 +84,13 @@ STATE_TYPE CWarrior_Oxen::Tick(CUnit* pOwner, CAnimator* pAnimator)
     //Create_SwordEffect(pOwner);
     
 
+
+
+    
+
+
     // 황소베기 실행중
+
     if (m_iAnimIndex == m_iPlayAnimIndex)
     {
         m_iStateChangeKeyFrame = 87;
@@ -94,7 +100,7 @@ STATE_TYPE CWarrior_Oxen::Tick(CUnit* pOwner, CAnimator* pAnimator)
     }
 
     // 황소 베기 캔슬
-    if (m_iAnimIndex == m_iCancelAnimIndex)
+    else if (m_iAnimIndex == m_iCancelAnimIndex)
     {
         m_iStateChangeKeyFrame = 20;
 
@@ -103,23 +109,24 @@ STATE_TYPE CWarrior_Oxen::Tick(CUnit* pOwner, CAnimator* pAnimator)
     }
 
     // 황소 베기 전
-    if (m_iAnimIndex == m_iBeginAnimIndex)
-    {
-        if (KEY(Q, NONE))
+    else 
+        if (m_iAnimIndex == m_iBeginAnimIndex)
         {
-            Play_Skill(m_iPlayAnimIndex, 0.1f, pOwner, pAnimator);
-        }
+            if (KEY(Q, NONE))
+            {
+                Play_Skill(m_iPlayAnimIndex, 0.1f, pOwner, pAnimator);
+            }
 
-        else if(pAnimator->Is_CurAnimFinished())
-        {
-            m_fInterPolationTime = 0.f;
+            else if (pAnimator->Is_CurAnimFinished())
+            {
+                m_fInterPolationTime = 0.f;
 
-            Change_Animation(m_iAnimIndex, m_iLoopAnimIndex, pOwner, pAnimator);
+                Change_Animation(m_iAnimIndex, m_iLoopAnimIndex, pOwner, pAnimator);
+            }
         }
-    }
 
     // 황소 베기 Loop
-    if (m_iAnimIndex == m_iLoopAnimIndex)
+    else if (m_iAnimIndex == m_iLoopAnimIndex)
     {
         if (KEY(Q, NONE))
         {
@@ -178,6 +185,38 @@ void CWarrior_Oxen::Play_Skill(_uint iChangeIndex, _float fInterPolationTime, CU
     m_fInterPolationTime = fInterPolationTime;
 
     Change_Animation(m_iAnimIndex, m_iPlayAnimIndex, pOwner, pAnimator);
+}
+
+STATE_TYPE CWarrior_Oxen::Update_Begin(CUnit* pOwner, CAnimator* pAnimator)
+{
+    STATE_TYPE  eType = STATE_END;
+
+    //Q떼면 스킬 재생
+    if (KEY(Q, NONE))
+    {
+        Play_Skill(m_iPlayAnimIndex, 0.1f, pOwner, pAnimator);
+    }
+    //애니메이션 끝나면 Loop로
+    else if (pAnimator->Is_CurAnimFinished())
+    {
+        m_fInterPolationTime = 0.f;
+
+        Change_Animation(m_iAnimIndex, m_iLoopAnimIndex, pOwner, pAnimator);
+    }
+
+
+
+    return eType;
+}
+
+STATE_TYPE CWarrior_Oxen::Update_Loop(CUnit* pOwner, CAnimator* pAnimator)
+{
+    return STATE_TYPE();
+}
+
+STATE_TYPE CWarrior_Oxen::Update_End(CUnit* pOwner, CAnimator* pAnimator)
+{
+    return STATE_TYPE();
 }
 
 

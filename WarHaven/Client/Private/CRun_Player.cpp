@@ -27,7 +27,7 @@ HRESULT CRun_Player::Initialize()
     return S_OK;
 }
 
-void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner¿« Animator Set Idle∑Œ */
 

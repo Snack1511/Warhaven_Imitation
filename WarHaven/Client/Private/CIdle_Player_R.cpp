@@ -58,6 +58,8 @@ HRESULT CIdle_Player_R::Initialize()
     m_vecAdjState.push_back(STATE_PLAYER_SKILL2);
     m_vecAdjState.push_back(STATE_PLAYER_SKILL1);
 
+    m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
+
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     //m_vecAdjState.push_back(STATE_JUMP);
@@ -80,7 +82,7 @@ HRESULT CIdle_Player_R::Initialize()
     return S_OK;
 }
 
-void CIdle_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CIdle_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner의 Animator Set Idle로 */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
@@ -131,7 +133,7 @@ STATE_TYPE CIdle_Player_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     1. 현재 진행중인 애니메이션이 끝났을 때
     */
 
-    if (KEY(SPACE, NONE))
+    if (KEY(R, NONE))
     {
         if (pAnimator->Is_CurAnimFinished())
             return m_eStateType;

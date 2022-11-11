@@ -59,7 +59,7 @@ HRESULT CSlide_Player::Initialize()
     return S_OK;
 }
 
-void CSlide_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CSlide_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     // Enter 전에 내가 정하고 싶은 State 추가.
 

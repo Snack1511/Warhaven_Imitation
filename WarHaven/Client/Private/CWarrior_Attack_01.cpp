@@ -74,7 +74,7 @@ HRESULT CWarrior_Attack_01::Initialize()
     return S_OK;
 }
 
-void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
  
     pOwner->TurnOn_TrailEffect(true);

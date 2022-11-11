@@ -74,7 +74,7 @@ HRESULT CWarrior_GuardBreak::Initialize()
     return S_OK;
 }
 
-void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, iPreAnimIndex);

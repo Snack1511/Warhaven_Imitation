@@ -77,7 +77,7 @@ HRESULT CIdle_Player_L::Initialize()
     return S_OK;
 }
 
-void CIdle_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CIdle_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner의 Animator Set Idle로 */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
@@ -94,31 +94,6 @@ void CIdle_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIn
 
 STATE_TYPE CIdle_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    //// 칼 위치 변경
-    //if (KEY(R, TAP))
-    //    Late_Initialize(27, ANIM_BASE_L, STATE_IDLE_PLAYER_L);
-
-    //return __super::Tick(pOwner, pAnimator);
-
-
-    if (m_iChangeHandIndex == m_iAnimIndex)
-    {
-        STATE_TYPE eStateType = STATE_END;
-
-        eStateType = End_Animation(m_iChangeHandIndex, ANIM_BASE_R, STATE_IDLE_PLAYER_R, false, pOwner, pAnimator);
-
-        if (STATE_END != eStateType)
-            return eStateType;
-    }
-
-
-
-    // 칼 위치 변경
-    if (KEY(R, TAP))
-    {
-        Change_Animation(m_iAnimIndex, m_iChangeHandIndex, pOwner, pAnimator);
-    }
-
     return __super::Tick(pOwner, pAnimator);
 
 }

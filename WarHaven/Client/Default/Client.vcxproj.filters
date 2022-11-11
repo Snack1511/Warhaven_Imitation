@@ -394,6 +394,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Skill">
       <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\03. SwitchRL">
+      <UniqueIdentifier>{ee79bde1-c9e4-42cb-b27e-2c24a98457fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -690,6 +693,9 @@
     <ClInclude Include="..\Public\CUI_Skill.h">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Skill</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CSwitchRtoL.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\03. SwitchRL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -966,6 +972,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Skill.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CSwitchRtoL.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\03. SwitchRL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

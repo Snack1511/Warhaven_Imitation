@@ -54,7 +54,7 @@ HRESULT CSprint_Player::Initialize()
     return S_OK;
 }
 
-void CSprint_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CSprint_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     m_eAnimType = ANIM_BASE_R;
     m_iAnimIndex = 55;
