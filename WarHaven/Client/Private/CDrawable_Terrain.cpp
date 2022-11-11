@@ -140,6 +140,11 @@ CDrawable_Terrain::Terrain_TUPLE CDrawable_Terrain::Get_TerrainData()
     return make_tuple(m_strTileTexturePath, m_iTerrainVertX, m_iTerrainVertZ, m_pTerrainVertPos);
 }
 
+void CDrawable_Terrain::Update_Vertices()
+{
+    m_pTerrainMesh->ReMap_Vertices();
+}
+
 HRESULT CDrawable_Terrain::SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ)
 {
     CMesh_Terrain* pTerrain = CMesh_Terrain::Create(CP_BEFORE_RENDERER, iNumVerticesX, iNumVerticesZ);

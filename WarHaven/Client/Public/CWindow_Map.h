@@ -108,8 +108,8 @@ private:
 	typedef vector<MTO_DATA> DATAVECTOR;
 	typedef map<size_t, vector<CGameObject*>> OBJGROUPING;
 	typedef map<size_t, vector<MTO_DATA>> DATAGROUPING;
-private:
 #pragma region Private 파일컨트롤
+private:
 	void Func_FileControl();
 	void Ready_FileArray();
 	void Ready_ObjectGroupID();
@@ -128,8 +128,8 @@ private:
 	void Clear_MeshGroup(char* pMeshGroupName);
 #pragma endregion
 
-
 #pragma region Private 데이타컨트롤
+private:
 	void Func_DataControl();
 	void SetUp_CurSelectObject();
 	void Confirm_Data();
@@ -142,13 +142,13 @@ private:
 	void Object_Scale();
 	void Object_Rotate();
 	void Object_Position();
-	_bool Object_Place();
+	void Object_Place();
 
 	void Update_Data();
 #pragma endregion
 
-
 #pragma region Private 라이트컨트롤
+private:
 	void Func_LightControl();
 
 	void Ready_LightGroup();
@@ -162,6 +162,7 @@ private:
 #pragma endregion
 
 #pragma region Priavate 파일 입출력 함수
+private:
 	void Save_MapData(string BasePath, string SaveName);
 	void Load_MapData(string FilePath);
 
@@ -178,9 +179,18 @@ private:
 	void Load_LightGroup(string FilePath);
 #pragma endregion
 
+#pragma region Private 터레인 컨트롤
 private:
 	HRESULT Disable_DefaultTerrain();
+	void Func_TerrainControl();
 	void Generate_Terrain();
+
+	void Increase_Height();
+#pragma endregion
+
+private:
+	_bool Calculate_Pick();
+
 
 #pragma region Private 기타 함수
 	void		Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Map&)> func);
@@ -194,10 +204,10 @@ private:
 	void		EmptyFunction() {}
 #pragma endregion
 
-private:
 #pragma region Value 파일컨트롤
+private:
 	vector<tuple<char*, bool>> m_arrSaveFilesCombo;
-	string m_strPath;
+	string m_strPath = string("");
 
 	_int m_SelectObjectGroupIDIndex = 0;
 	_int m_SelectMeshGroupIndex = 0;
@@ -209,15 +219,26 @@ private:
 	map<size_t, vector<MTO_DATA>> m_ObjectDataGroupMap;
 	map<size_t, _int> m_ObjNameCallStack;
 #pragma endregion
+
+#pragma region Value 터레인컨트롤
+private:
 	CTerrain* m_pDefaultTerrain = nullptr;
 	CDrawable_Terrain* m_pCurTerrain = nullptr;
 	MTT_DATA m_CurTerrainData;
 	vector<tuple<char*, bool>> m_arrTileTextureName;
+	_uint3 m_i3PickedIndex = _uint3(0, 0, 0);
+	_float4 m_OutPos = _float4(0.f, 0.f, 0.f, 1.f);
+	_float4 m_OutNorm = _float4(0.f, 0.f, 0.f, 0.f);
+	_float m_fBrushSize = 1.f;
+	_float m_fHeightRatio = 1.f;
+
+#pragma endregion
 
 #pragma region Value 오브젝트 컨트롤
+private:
 	CGameObject* m_pCurSelectGameObject = nullptr;
 	CTransform* m_pObjTransform = nullptr;
-	MTO_DATA* m_pCurSelectData;
+	MTO_DATA* m_pCurSelectData = nullptr;
 	CONTROLTYPE m_eControlType = CONTROL_MOVE;
 
 	_float m_fTickPerScalingSpeed = 1.f;
@@ -226,19 +247,25 @@ private:
 #pragma endregion
 
 #pragma region Value 라이트컨트롤
+private:
 	vector<tuple<char*, bool>> m_arrLightGroupCombo;
 	vector<tuple<char*, bool>> m_arrLightTypeCombo;
 #pragma endregion
 
+#pragma region 기타 필요변수
 	TREE_DATA			m_MeshRootNode;
-	string				m_CurSelectedMeshFilePath;
-	string				m_CurSelectedMeshName;
+	string				m_CurSelectedMeshFilePath = string("");
+	string				m_CurSelectedMeshName = string("");
 	vector<string>		m_vecSelectedMeshFilePath;
 	vector<string>		m_vecSelectedMeshName;
 
 	list<CGameObject*>* m_pCurObjectList = nullptr;
 
-	_bool m_bPickable = false;
+	_bool m_bObjectPick = false;
+	_bool m_bHoverWindow = false;
+
+#pragma endregion
+
 
 };
 END

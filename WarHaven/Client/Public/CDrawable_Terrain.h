@@ -24,6 +24,7 @@ public:
 	_uint Get_TerrainVerticesCount();
 	_float3* Get_TerrainVerticesPos();
 	Terrain_TUPLE Get_TerrainData();
+	void Update_Vertices();
 protected:
 	virtual HRESULT	SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ);
 	virtual HRESULT	SetUp_TerrainMesh(const _tchar* pFilePath);
