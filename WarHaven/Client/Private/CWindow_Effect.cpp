@@ -985,7 +985,12 @@ void CWindow_Effect::Show_ParticleTab()
 			_int iTemp = tCurData.iOffsetPositionCount;
 			if (ImGui::InputInt("iNumOffsets", &iTemp, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
 			{
-				static_cast<CInstancingEffects*>(pCurEffect)->ReMake_OffsetPositions(iTemp);
+
+				if (iTemp >= 0)
+				{
+					static_cast<CInstancingEffects*>(pCurEffect)->ReMake_OffsetPositions(iTemp);
+
+				}
 			}
 
 			for (_uint i = 0; i < tCurData.iOffsetPositionCount; ++i)
@@ -1046,6 +1051,22 @@ void CWindow_Effect::Show_ParticleTab()
 				tCurData.vStartDirRange.z = vStartDirRange[2];
 			}
 
+			_float	vMoveDir[3] = { tCurData.vMoveDir.x, tCurData.vMoveDir.y, tCurData.vMoveDir.z };
+			if (ImGui::InputFloat3("vMoveDir", vMoveDir, "%.3f"))
+			{
+				tCurData.vMoveDir.x = vMoveDir[0];
+				tCurData.vMoveDir.y = vMoveDir[1];
+				tCurData.vMoveDir.z = vMoveDir[2];
+			}
+
+			_float	vMoveDirRange[3] = { tCurData.vMoveDirRange.x, tCurData.vMoveDirRange.y, tCurData.vMoveDirRange.z };
+			if (ImGui::InputFloat3("vMoveDirRange", vMoveDirRange, "%.3f"))
+			{
+				tCurData.vMoveDirRange.x = vMoveDirRange[0];
+				tCurData.vMoveDirRange.y = vMoveDirRange[1];
+				tCurData.vMoveDirRange.z = vMoveDirRange[2];
+			}
+
 			_float	fStartDistance[2] = { tCurData.fStartDistance , tCurData.fStartDistanceRange };
 			if (ImGui::InputFloat2("fStartDistance, Range", fStartDistance, "%.2f"))
 			{
@@ -1067,6 +1088,10 @@ void CWindow_Effect::Show_ParticleTab()
 				tCurData.fGravityRange = fGravityRanges[1];
 			}
 
+			if (ImGui::RadioButton("bZeroSpeedDisable", static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable = !static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable;
+			}
 			_float	fSpeeds[2] = { tCurData.fSpeed , tCurData.fSpeedRange };
 			if (ImGui::InputFloat2("fSpeed, Range", fSpeeds, "%.2f"))
 			{
@@ -1296,6 +1321,7 @@ void CWindow_Effect::Save_CurEffect()
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSoft, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
@@ -1315,6 +1341,8 @@ void CWindow_Effect::Save_CurEffect()
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSoft, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));
+
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iWidthSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iHeightSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDuration, sizeof(_float));

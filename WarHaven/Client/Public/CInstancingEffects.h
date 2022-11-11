@@ -35,6 +35,8 @@ public:
 
 		_float4	vStartDir = _float4(0.f, 0.f, 0.f, 0.f);
 		_float4	vStartDirRange = _float4(1.f, 1.f, 1.f, 0.f);
+		_float4	vMoveDir = _float4(0.f, 0.f, 0.f, 0.f);
+		_float4	vMoveDirRange = _float4(1.f, 1.f, 1.f, 0.f);
 		_float	fStartDistance = 0.5f;
 		_float	fStartDistanceRange = 0.5f;
 
@@ -141,7 +143,6 @@ public:
 
 protected:
 	_bool		m_bSoft = false;
-
 	_uint		m_iNumDead = 0;
 
 	_float4x4* m_pInstanceMatrices = nullptr;

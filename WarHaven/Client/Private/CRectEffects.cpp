@@ -34,6 +34,7 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	: CInstancingEffects(_origin)
 	, m_bBillBoard(_origin.m_bBillBoard)
 	, m_bSorting(_origin.m_bSorting)
+	, m_bZeroSpeedDisable(_origin.m_bZeroSpeedDisable)
 	, m_fDuration(_origin.m_fDuration)
 	, m_iWidthSize(_origin.m_iWidthSize)
 	, m_iHeightSize(_origin.m_iHeightSize)
@@ -52,7 +53,7 @@ CRectEffects::~CRectEffects()
 }
 
 CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_DATA& tCreateData, wstring wstrTexturePath,
-	_hashcode _hcCode, _bool bBillBoard, _bool bSorting)
+	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable)
 {
 	CRectEffects* pInstance = new CRectEffects();
 
@@ -62,6 +63,7 @@ CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_D
 	pInstance->m_hcMyCode = _hcCode;
 	pInstance->m_bBillBoard = bBillBoard;
 	pInstance->m_bSorting = bSorting;
+	pInstance->m_bZeroSpeedDisable = bZeroSpeedDisable;
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -215,12 +217,21 @@ HRESULT CRectEffects::Initialize()
 		vStartDir += m_tCreateData.vStartDir;
 		vStartDir.Normalize();
 
+		_float4 vMoveDir = _float4(
+			frandom(-m_tCreateData.vMoveDirRange.x, m_tCreateData.vMoveDirRange.x),
+			frandom(-m_tCreateData.vMoveDirRange.y, m_tCreateData.vMoveDirRange.y),
+			frandom(-m_tCreateData.vMoveDirRange.z, m_tCreateData.vMoveDirRange.z),
+			0.f);
+
+		vMoveDir += m_tCreateData.vMoveDir;
+		vMoveDir.Normalize();
+
 		_float	fStartDistance = m_tCreateData.fStartDistance + frandom(-m_tCreateData.fStartDistanceRange, m_tCreateData.fStartDistanceRange);
 
 		vStartPos = vStartDir * fStartDistance;
 
 		m_pInstancingDatas[i].vStartPureLocalPos = vStartPos;
-		m_pInstancingDatas[i].vStartPureLocalDir = vStartDir;
+		m_pInstancingDatas[i].vStartPureLocalDir = vMoveDir;
 
 		Set_NewStartPos(i);
 
@@ -425,20 +436,23 @@ void CRectEffects::My_Tick()
 			//1. 속도 변화.
 			m_pInstancingDatas[i].fSpeed += m_pInstancingDatas[i].fSpeedChangeSpeed * fTimeDelta;
 
-			if (m_pInstancingDatas[i].fOriginSpeed < 0.f)
+			if (m_bZeroSpeedDisable)
 			{
-				if (m_pInstancingDatas[i].fSpeed >= 0.f)
+				if (m_pInstancingDatas[i].fOriginSpeed < 0.f)
+				{
+					if (m_pInstancingDatas[i].fSpeed >= 0.f)
+					{
+
+						Dead_Instance(i);
+						continue;
+					}
+				}
+				else if (m_pInstancingDatas[i].fSpeed <= 0.f)
 				{
 
 					Dead_Instance(i);
 					continue;
 				}
-			}
-			else if (m_pInstancingDatas[i].fSpeed <= 0.f)
-			{
-				
-				Dead_Instance(i);
-				continue;
 			}
 
 			vOriginPos += m_pInstancingDatas[i].vDir * m_pInstancingDatas[i].fSpeed * fTimeDelta;
@@ -667,6 +681,7 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 
 	pReadFile->read((char*)&m_bBillBoard, sizeof(_bool));
 	pReadFile->read((char*)&m_bSoft, sizeof(_bool));
+	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
 	{
@@ -697,6 +712,7 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 
 	pReadFile->read((char*)&m_bBillBoard, sizeof(_bool));
 	pReadFile->read((char*)&m_bSoft, sizeof(_bool));
+	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
 	pReadFile->read((char*)&m_iWidthSize, sizeof(_uint));
 	pReadFile->read((char*)&m_iHeightSize, sizeof(_uint));
 	pReadFile->read((char*)&m_fDuration, sizeof(_float));

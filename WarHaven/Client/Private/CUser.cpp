@@ -126,6 +126,8 @@ void CUser::SetUp_BloodOverlay()
 	m_pBloodOverlay = CBloodOverlay::Create();
 
 	CREATE_GAMEOBJECT(m_pBloodOverlay, GROUP_UI);
+
+	DISABLE_GAMEOBJECT(m_pBloodOverlay);
 }
 
 void CUser::Turn_BloodOverLay(_float fHpRatio)
