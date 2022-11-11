@@ -35,7 +35,9 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	, m_bBillBoard(_origin.m_bBillBoard)
 	, m_bSorting(_origin.m_bSorting)
 	, m_bZeroSpeedDisable(_origin.m_bZeroSpeedDisable)
+	, m_bLoop(_origin.m_bLoop)
 	, m_fDuration(_origin.m_fDuration)
+	, m_fLoopTime(_origin.m_fLoopTime)
 	, m_iWidthSize(_origin.m_iWidthSize)
 	, m_iHeightSize(_origin.m_iHeightSize)
 {
@@ -53,7 +55,7 @@ CRectEffects::~CRectEffects()
 }
 
 CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_DATA& tCreateData, wstring wstrTexturePath,
-	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable)
+	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable, _bool bLoop)
 {
 	CRectEffects* pInstance = new CRectEffects();
 
@@ -64,6 +66,7 @@ CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_D
 	pInstance->m_bBillBoard = bBillBoard;
 	pInstance->m_bSorting = bSorting;
 	pInstance->m_bZeroSpeedDisable = bZeroSpeedDisable;
+	pInstance->m_bLoop = bLoop;
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -393,6 +396,8 @@ void CRectEffects::My_Tick()
 	_float4	vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	_float4 vLook;
 
+	m_fLoopTimeAcc += fDT(0);
+
 	vLook = vCamLook * -1.f;
 
 	_float4 vUp = { 0.f, 1.f, 0.f };
@@ -584,8 +589,9 @@ void CRectEffects::OnEnable()
 
 	m_iNumDead = 0;
 	m_fTimeAcc = 0.f;
-
+	m_fLoopTimeAcc = 0.f;
 	//시작위치
+
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
 		Reset_Instance(i);
@@ -595,7 +601,28 @@ void CRectEffects::OnEnable()
 
 void CRectEffects::Dead_Instance(_uint iIndex)
 {
-	Reset_Instance(iIndex);
+	if (m_bLoop)
+	{
+		if(m_fLoopTime == 0)
+			Reset_Instance(iIndex);
+		else if(m_fLoopTimeAcc <= m_fLoopTime)
+			Reset_Instance(iIndex);
+		else if(m_fLoopTimeAcc > m_fLoopTime)
+		{
+			//m_fLoopTimeAcc = 0.f;
+			m_pInstancingDatas[iIndex].bAlive = false;
+			m_iNumDead++;
+			m_pRectInstances[iIndex].vColor.w = 0.f;
+			m_pInstancingDatas[iIndex].fSpeed = m_pInstancingDatas[iIndex].fOriginSpeed;
+		}
+	}
+	else
+	{
+		m_pInstancingDatas[iIndex].bAlive = false;
+		m_iNumDead++;
+		m_pRectInstances[iIndex].vColor.w = 0.f;
+		m_pInstancingDatas[iIndex].fSpeed = m_pInstancingDatas[iIndex].fOriginSpeed;
+	}
 	//m_pInstancingDatas[iIndex].bAlive = true;
 	//m_iNumDead++;
 	//m_pRectInstances[iIndex].vColor.w = 0.f;
@@ -682,6 +709,8 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bBillBoard, sizeof(_bool));
 	pReadFile->read((char*)&m_bSoft, sizeof(_bool));
 	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
+	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
+	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
 	{
@@ -713,6 +742,9 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bBillBoard, sizeof(_bool));
 	pReadFile->read((char*)&m_bSoft, sizeof(_bool));
 	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
+	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
+	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
+
 	pReadFile->read((char*)&m_iWidthSize, sizeof(_uint));
 	pReadFile->read((char*)&m_iHeightSize, sizeof(_uint));
 	pReadFile->read((char*)&m_fDuration, sizeof(_float));

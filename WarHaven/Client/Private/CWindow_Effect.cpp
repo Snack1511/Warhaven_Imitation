@@ -1035,6 +1035,23 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_bSoft = !static_cast<CRectEffects*>(pCurEffect)->m_bSoft;
 			}
 
+		
+			ImGui::LabelText(" ", "LoopTime 0 is Infinite");
+
+
+			if (ImGui::RadioButton("bLoop", static_cast<CRectEffects*>(pCurEffect)->m_bLoop))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_bLoop = !static_cast<CRectEffects*>(pCurEffect)->m_bLoop;
+			}
+
+			ImGui::SameLine();
+
+			_float fLoopTime = static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime;
+			if (ImGui::InputFloat("Loop Time", &fLoopTime, 0, 0, "%.2f" ))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime = fLoopTime;
+			}
+
 			_float	vStartDir[3] = { tCurData.vStartDir.x, tCurData.vStartDir.y, tCurData.vStartDir.z };
 			if (ImGui::InputFloat3("vStartDir", vStartDir, "%.3f"))
 			{
@@ -1322,6 +1339,8 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSoft, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
@@ -1342,6 +1361,8 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSoft, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iWidthSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iHeightSize, sizeof(_uint));
