@@ -18,8 +18,8 @@ CWalk_Player::~CWalk_Player()
 
 HRESULT CWalk_Player::Initialize()
 {
-    m_vecAdjState.push_back(STATE_PLAYER_SKILL2);
-    m_vecAdjState.push_back(STATE_PLAYER_SKILL1);
+    m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+    m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 
     return S_OK;
 }
@@ -31,7 +31,7 @@ void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
     
 
 
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)

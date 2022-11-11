@@ -51,14 +51,23 @@ HRESULT CIdle_Player_R::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
-    // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
-    m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-    m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
-
-    m_vecAdjState.push_back(STATE_PLAYER_SKILL2);
-    m_vecAdjState.push_back(STATE_PLAYER_SKILL1);
-
     m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
+    
+    m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
+    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
+
+    m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICAL_CUT);
+
+
+
+    m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
+    m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+    
+
+    
 
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
@@ -76,9 +85,6 @@ HRESULT CIdle_Player_R::Initialize()
     //m_vecAdjState.push_back(STATE_JUMP_PLAYER);
     //m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
 
-
-    m_iChangeHandIndex = 53;
-
     return S_OK;
 }
 
@@ -91,33 +97,11 @@ void CIdle_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
     
 
 
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CIdle_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-    if (m_iChangeHandIndex == m_iAnimIndex)
-    {
-        STATE_TYPE eStateType = STATE_END;
-
-        eStateType = End_Animation(53, ANIM_BASE_L, STATE_IDLE_PLAYER_L, false, pOwner, pAnimator);
-
-        if (STATE_END != eStateType)
-            return eStateType;
-    }
-
-    // 칼 위치 변경
-    if (KEY(R, TAP))
-    {
-        Change_Animation(m_iAnimIndex, m_iChangeHandIndex, pOwner, pAnimator);
-    }
-
-    //// 칼 위치 변경
-    //if (KEY(R, TAP))
-    //{
-    //    Change_Animation(11, 53, pOwner, pAnimator);
-    //}
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -133,24 +117,9 @@ STATE_TYPE CIdle_Player_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     1. 현재 진행중인 애니메이션이 끝났을 때
     */
 
-    if (KEY(R, NONE))
-    {
-        if (pAnimator->Is_CurAnimFinished())
-            return m_eStateType;
-    }
-  
-
+    if (pAnimator->Is_CurAnimFinished())
+        return m_eStateType;
+ 
 
     return STATE_END;
-}
-
-void CIdle_Player_R::Switch_Right_And_Left(_uint iAnimType, _uint iAnimIndex, _uint iChangeAnimIndex, CAnimator* pAnimator)
-{
-    if (m_eAnimType == iAnimType == m_iAnimIndex == iAnimIndex)
-    {
-        m_iAnimIndex = iChangeAnimIndex;
-
-        pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-        pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    }
 }

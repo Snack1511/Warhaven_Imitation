@@ -57,11 +57,18 @@ HRESULT CIdle_Player_L::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     //m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
 
-    m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
-    m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+    m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
 
-    m_vecAdjState.push_back(STATE_PLAYER_SKILL2);
-    m_vecAdjState.push_back(STATE_PLAYER_SKILL1);
+    m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
+    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
+
+    m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICAL_CUT);
+
+    m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
+    m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     //m_vecAdjState.push_back(STATE_SILDING);
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
@@ -71,25 +78,12 @@ HRESULT CIdle_Player_L::Initialize()
     //m_vecAdjState.push_back(STATE_JUMP_PLAYER);
     //m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
 
-
-    m_iChangeHandIndex = 27;
-
     return S_OK;
 }
 
 void CIdle_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
-    /* Owner의 Animator Set Idle로 */
-    //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
-
-    // 이전 프레임의 타입이 27이면?
-    if (iPreAnimIndex == 27)
-    {
-        m_iAnimIndex = iPreAnimIndex; 
-    }
-
-
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CIdle_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -114,15 +108,4 @@ STATE_TYPE CIdle_Player_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
   
 
     return STATE_END;
-}
-
-void CIdle_Player_L::Switch_Right_And_Left(_uint iAnimType, _uint iAnimIndex, _uint iChangeAnimIndex, CAnimator* pAnimator)
-{
-    if (m_eAnimType == iAnimType == m_iAnimIndex == iAnimIndex)
-    {
-        m_iAnimIndex = iChangeAnimIndex;
-
-        pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-        pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    }
 }

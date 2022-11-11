@@ -40,25 +40,36 @@ HRESULT CSwitchRtoL::Initialize()
     m_eStateType = STATE_SWITCH_R_TO_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
+    m_iStateChangeKeyFrame = 31;
+
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.f;
+    m_fAnimSpeed = 4.f;
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
+    m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
 
     return S_OK;
 }
 
 void CSwitchRtoL::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+ 
+
+    if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
+        Re_Enter(pOwner, pAnimator, -1.f, 7.f);
+
+    else
+        m_fAnimSpeed = 4.2f;
+
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CSwitchRtoL::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return __super::Tick(pOwner, pAnimator);
 
+    return __super::Tick(pOwner, pAnimator);
 }
 
 void CSwitchRtoL::Exit(CUnit* pOwner, CAnimator* pAnimator)
@@ -74,7 +85,6 @@ STATE_TYPE CSwitchRtoL::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
     if (CUser::Get_Instance()->Get_LastKey() == KEY::R)
         return m_eStateType;
-
 
     return STATE_END;
 }

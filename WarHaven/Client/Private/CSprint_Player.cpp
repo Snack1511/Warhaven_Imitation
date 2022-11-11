@@ -59,7 +59,7 @@ void CSprint_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
     m_eAnimType = ANIM_BASE_R;
     m_iAnimIndex = 55;
 
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CSprint_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)

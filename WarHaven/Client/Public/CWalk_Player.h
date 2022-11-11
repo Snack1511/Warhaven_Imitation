@@ -20,8 +20,6 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-protected:
-	_int	m_VecDirectionAnimIndex[STATE_DIRECTION_END];
 
 };
 

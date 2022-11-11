@@ -59,6 +59,8 @@ protected:
 
 	_uint				m_iStateChangeKeyFrame = 0;
 
+	_int				m_VecDirectionAnimIndex[STATE_DIRECTION_END];
+
 protected:
 	CHANNEL_CLIENT	m_eChannel = CHANNEL_EFFECTS;
 	wstring	m_wstrSoundKey;

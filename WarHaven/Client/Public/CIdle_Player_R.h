@@ -27,17 +27,8 @@ public:
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
-	_float m_fCreateTime = 0.016f; //аж╠Б
-	_float m_fCreateTimeAcc = 0.f;
-
-private:
-	_uint	m_iChangeHandIndex = 0;
-
-private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-private:
-	void	Switch_Right_And_Left(_uint iAnimType, _uint iAnimIndex, _uint iChangeAnimIndex, CAnimator* pAnimator);
 };
 
 END

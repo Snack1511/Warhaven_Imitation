@@ -67,7 +67,7 @@ void CSlide_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
    // m_eStateType = STATE_SLIDE_PLAYER;
     m_eAnimType = ANIM_ETC;
 
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 
 }
 
