@@ -5,14 +5,10 @@ BEGIN(Client)
 
 class CUI_HpBar : public CUI_Wrapper
 {
+	enum UI_TYPE { BG, Bar, Type_End };
+
 	DECLARE_PROTOTYPE(CUI_HpBar);
 	DECLARE_GAMEOBJECT(CUI_HpBar);
-
-	typedef struct tagHpBarHud
-	{
-		enum SKILLHUDNAME { BG, Bar, NAME_END };
-		CUI_Object* m_pUIInstance[NAME_END] = {};
-	}HpBar;
 
 private:
 	CUI_HpBar();
@@ -32,9 +28,13 @@ public:
 	void Set_ShaderResources(CShader* pShader, const char* pConstName);
 
 private:
-	HpBar m_tHpBar;
+	CUI_Object* m_Prototypes[Type_End] = {};
 
 	_float m_fValue = 0.f;
+
+private:
+	void Set_Pass();
+	void Bind_Shader();
 };
 
 END

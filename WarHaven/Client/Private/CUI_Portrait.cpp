@@ -63,7 +63,7 @@ HRESULT CUI_Portrait::Start()
 	Enable_Portrait();
 
 	Set_Pass();
-	Bind_Sahder();
+	Bind_Shader();
 
 	__super::Start();
 
@@ -77,41 +77,7 @@ void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 
 void CUI_Portrait::Set_Portrait(_uint iIndex)
 {
-	CTexture* pTexture = GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture);
-
-	switch (iIndex)
-	{
-	case CUnit::CLASS_WARRIOR:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	case CUnit::CLASS_SPEAR:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	case CUnit::CLASS_ARCHER:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	case CUnit::CLASS_PALADIN:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	case CUnit::CLASS_PRIEST:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	case CUnit::CLASS_ENGINEER:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	case CUnit::CLASS_FIONA:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	case CUnit::CLASS_QANDA:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	case CUnit::CLASS_HOEDT:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	case CUnit::CLASS_LANCER:
-		pTexture->Set_CurTextureIndex(iIndex);
-		break;
-	}
+	GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture)->Set_CurTextureIndex(iIndex);
 }
 
 void CUI_Portrait::My_Tick()
@@ -193,7 +159,7 @@ void CUI_Portrait::Set_Pass()
 	}
 }
 
-void CUI_Portrait::Bind_Sahder()
+void CUI_Portrait::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_arrPortraitUI[0][Effect], CShader)
 		->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");

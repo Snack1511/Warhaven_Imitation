@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "CUnit.h"
 #include "Renderer.h"
+#include "CShader.h"
 
 CUI_Crosshair::CUI_Crosshair()
 {
@@ -33,6 +34,7 @@ HRESULT CUI_Crosshair::Initialize_Prototype()
 	}
 
 	Set_Pass();
+	Bind_Shader();
 
 	return S_OK;
 }
@@ -60,6 +62,17 @@ HRESULT CUI_Crosshair::Start()
 	__super::Start();
 
 	return S_OK;
+}
+
+void CUI_Crosshair::Set_ShaderResources_Arrow(CShader* pShader, const char* pConstName)
+{
+	_float4 vColor;
+	for (int i = 0; i < 3; ++i)
+	{
+		vColor = m_arrSkillUI[i][Arrow]->Get_Color();
+	}
+
+	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
 }
 
 void CUI_Crosshair::Ready_Texture()
@@ -160,7 +173,6 @@ void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Gauge]);
 
 	_float fRotZ = 180.f;
-
 	m_arrSkillUI[0][GaugeBG]->Set_RotationZ(fRotZ);
 	m_arrSkillUI[0][Gauge]->Set_RotationZ(fRotZ);
 
@@ -168,6 +180,15 @@ void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 	{
 		ENABLE_GAMEOBJECT(m_arrSkillUI[i][ArrowBG]);
 		ENABLE_GAMEOBJECT(m_arrSkillUI[i][Arrow]);
+
+		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CTexture)->Set_CurTextureIndex(0);
+		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CTexture)->Set_CurTextureIndex(0);
+
+		m_arrSkillUI[i][Arrow]->Set_Pos(0.f, 0.f);
+		m_arrSkillUI[i][ArrowBG]->Set_Pos(0.f, 0.f);
+
+		m_arrSkillUI[i][Arrow]->Set_Scale(100.f);
+		m_arrSkillUI[i][ArrowBG]->Set_Scale(100.f);
 
 		if (iIndex == 2)
 		{
@@ -237,7 +258,16 @@ void CUI_Crosshair::Set_Pass()
 {
 	for (int i = 0; i < 3; ++i)
 	{
+		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CRenderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+	}
+}
 
+void CUI_Crosshair::Bind_Shader()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CShader)
+			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_Arrow, this, placeholders::_1, "g_vColor");
 	}
 }
 

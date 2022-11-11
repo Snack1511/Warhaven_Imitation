@@ -20,6 +20,9 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
+public:
+	void Set_ShaderResources_Arrow(CShader* pShader, const char* pConstName);
+
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 	CUI_Object* m_arrSkillUI[4][Type_End] = {};
@@ -39,6 +42,7 @@ private:
 	void ArrowCrosshair();
 
 	void Set_Pass();
+	void Bind_Shader();
 };
 
 END

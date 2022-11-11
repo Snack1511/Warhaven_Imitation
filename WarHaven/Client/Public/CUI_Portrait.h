@@ -40,7 +40,7 @@ private:
 	void Enable_Portrait();
 
 	void Set_Pass();
-	void Bind_Sahder();
+	void Bind_Shader();
 
 	// 히어로 포트는 돌면서 들어감, 나타남
 

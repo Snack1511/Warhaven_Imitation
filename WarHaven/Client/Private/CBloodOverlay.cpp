@@ -41,8 +41,7 @@ HRESULT CBloodOverlay::Initialize_Prototype()
 
 	// 텍스처를 추가하면 0 ~ 2번까지 각각 셰이더 텍스처에 할당됨
 	SetTexture(TEXT("../Bin/Resources/Textures/Effects/WarHaven/Texture/T_BloodOverlay_%d.dds"),3);
-
-	
+		
 	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_BLOODOVERLAY);
 
 	Set_Pos(0.f, 0.f);
@@ -75,7 +74,6 @@ HRESULT CBloodOverlay::Initialize()
 HRESULT CBloodOverlay::Start()
 {
 	__super::Start();
-
 
 
 	return S_OK;
