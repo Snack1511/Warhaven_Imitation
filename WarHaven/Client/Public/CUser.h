@@ -7,6 +7,7 @@ END
 
 BEGIN(Client)
 class CUnit;
+class CBloodOverlay;
 class CUser
 {
 	DECLARE_SINGLETON(CUser);
@@ -18,6 +19,10 @@ private:
 public:
 	HRESULT	Initialize();
 	void	Tick();
+
+public:
+	void	On_ExitLevel();
+
 
 public:
 	void	Set_Player(CUnit* pPlayer) { m_pPlayer = pPlayer; }
@@ -43,5 +48,16 @@ private:
 	_bool	m_bFixCursor = false;
 	POINT	m_ptCenter;
 	list<KEY>		m_KeyCommands;
+
+public:
+	void SetUp_BloodOverlay();
+	void Turn_BloodOverLay(_float fHpRatio);
+
+private:
+	CBloodOverlay* m_pBloodOverlay = nullptr;
+
+
+
+
 };
 END

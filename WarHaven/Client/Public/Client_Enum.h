@@ -209,6 +209,7 @@ namespace Client
 		VTXTEX_PASS_TRAIL,
 		VTXTEX_PASS_KOTO,
 		VTXTEX_PASS_FOOTTRAIL,
+		VTXTEX_PASS_BLOODOVERLAY,
 		VTXTEX_PASS_END,
 	};
 
@@ -349,6 +350,13 @@ namespace Client
 
 
 		STATE_END,
+	};
+
+	enum WEAPON_TYPE
+	{
+		WEAPON_LONGSWORD,
+		WEAPON_SPEAR,
+		WEAPON_END,
 	};
 }
 

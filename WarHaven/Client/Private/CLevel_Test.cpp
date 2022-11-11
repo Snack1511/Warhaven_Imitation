@@ -18,11 +18,11 @@
 #include "CPickingStructure.h"
 
 #include "CCamera_Free.h"
+#include "CCamera_Follow.h"
 
 #include "CSword_Effect.h"
 #include "CEffects_Factory.h"
-#include "CCamera_Follow.h"
-
+#include "CBloodOverlay.h"
 
 CLevel_Test::CLevel_Test()
 {
@@ -128,6 +128,8 @@ HRESULT CLevel_Test::Enter()
 
 	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 
+	CUser::Get_Instance()->SetUp_BloodOverlay();
+
 	return S_OK;
 }
 
@@ -166,6 +168,8 @@ HRESULT CLevel_Test::Exit()
 {
 	__super::Exit();
 	GAMEINSTANCE->Delete_Scene(CPhysX_Manager::Scene::SCENE_CURRENT);
+
+	CUser::Get_Instance()->On_ExitLevel();
 
 	return S_OK;
 }
@@ -280,7 +284,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_HR()
 	pTest->Initialize();
 	Ready_GameObject(pTest, GROUP_EFFECT);*/
 
-
+	
 
 	return S_OK;
 }

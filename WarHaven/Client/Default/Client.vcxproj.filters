@@ -388,6 +388,9 @@
     <Filter Include="03. Instances\02. GameObject\09. Debug">
       <UniqueIdentifier>{422b2b63-31f8-4cb6-a18b-f640eae27b24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay">
+      <UniqueIdentifier>{1fc27a28-399a-464b-8f29-f80d90014dcf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -681,6 +684,9 @@
     <ClInclude Include="..\public\CDebugObject.h">
       <Filter>03. Instances\02. GameObject\09. Debug</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CBloodOverlay.h">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -954,6 +960,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CDebugObject.cpp">
       <Filter>03. Instances\02. GameObject\09. Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBloodOverlay.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -15,13 +15,14 @@ END
 BEGIN(Client)
 
 class CState;
-
+class CTrailEffect;
 class CUnit abstract
 	: public CGameObject
 {
 public:
 	struct UNIT_STATUS
 	{
+		WEAPON_TYPE eWeapon;
 		_float fHP = 100.f;
 		_float fMaxHP = 100.f;
 		_float fRunSpeed = 7.5f;
@@ -76,7 +77,12 @@ public:
 	CState*	Get_CurStateP() { return m_pCurState; }
 
 public:
-	void	Enter_State(STATE_TYPE eType);
+	void SetUp_TrailEffect(WEAPON_TYPE eWeapon);
+	void TurnOn_TrailEffect(_bool bOn);
+
+
+public:
+	void	Enter_State(STATE_TYPE eType, ANIM_TYPE eAnimType);
 
 
 public:
@@ -108,6 +114,8 @@ protected:
 	CState* m_pCurState = nullptr;
 	CUnit* m_pTargetUnit = nullptr;
 
+protected:
+	CTrailEffect* m_pTrailEffect = nullptr;
 
 protected:
 	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);

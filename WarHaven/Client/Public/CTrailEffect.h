@@ -10,6 +10,8 @@ class CShader;
 END
 
 BEGIN(Client)
+class CTrailBuffer;
+
 class CTrailEffect
 	: public CGameObject
 {
@@ -30,6 +32,9 @@ public:
 	void	Set_EffectFlag(_float4 vEffectFlag) { m_vShaderFlag = vEffectFlag; }
 
 public:
+	void TurnOn_TrailEffect(_bool bTrunOn);
+
+public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
@@ -43,6 +48,7 @@ protected:
 	virtual void	My_LateTick() override;
 
 private:
+	CTrailBuffer* m_pTrailBuffer = nullptr;
 	CTransform* m_pUnitTransform = nullptr;
 	_float4		m_vShaderFlag = SH_EFFECT_NOBLOOM;
 	_float4		m_vGlowFlag = GLOW_CHAKRA(1.f);

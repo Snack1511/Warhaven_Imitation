@@ -76,9 +76,8 @@ HRESULT CWarrior_Attack_01::Initialize()
 
 void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
 {
-    
-
-
+ 
+    pOwner->TurnOn_TrailEffect(true);
 
     // 황소 베기
     if (m_iAnimIndex == 24)
@@ -294,6 +293,7 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarrior_Attack_01::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+    pOwner->TurnOn_TrailEffect(false);
     /* 할거없음 */
 }
 

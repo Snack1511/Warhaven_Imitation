@@ -433,15 +433,15 @@ PS_EFFECT_OUT PS_TRAIL_MAIN(VS_TRAIL_OUT In)
 
 
     In.vTexUV.x = 1.f - In.vTexUV.x;
-    In.vTexUV.y *= 5.f;
+    //In.vTexUV.y *= 5.f;
     Out.vDiffuse.xyz = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
     Out.vDiffuse *= g_vColor;
 
-    if (Out.vDiffuse.a < 0.7f)
+    if (Out.vDiffuse.a < 0.05f)
         discard;
 
-    Out.vDiffuse.a = 1.f;
+    //Out.vDiffuse.a = 1.f;
 
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
     Out.vFlag = g_vFlag;
@@ -512,6 +512,19 @@ PS_OUT PS_BOSSHP_MAIN(PS_IN In)
         Out.vColor.xyz += 0.7f * (1.f - fRatio);
     }
 
+
+    return Out;
+}
+
+PS_OUT PS_BLOODOVERLAY(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+    Out.vColor.a = Out.vColor.a * g_fAlpha;
+    if (Out.vColor.a < 0.01f)
+        discard;
 
     return Out;
 }
@@ -725,5 +738,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_TRAIL_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_FOOTTRAIL_MAIN();
+    }
+
+    pass BLOODOVERLAY
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_None);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_BLOODOVERLAY();
     }
 }
