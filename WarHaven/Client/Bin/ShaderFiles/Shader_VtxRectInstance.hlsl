@@ -173,10 +173,6 @@ PS_OUT PS_ANIMATION_MAIN(PS_IN In)
 	//masking
 	vector vMaskDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	//검은색 제거
-	if (vMaskDesc.r < 0.2f)
-		discard;
-
 	Out.vDiffuse.xyz = vMaskDesc.xyz; //마스크의 색상까지 가져옴
 
 	//알파는 마스크맵 검은곳에다가 기본 칼라까지
@@ -221,7 +217,7 @@ PS_OUT PS_ANIMATION_MAIN(PS_IN In)
 PS_OUT PS_ANIMATION_ALPHA_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
-
+	
 	vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	float fStepX = 1.f / g_iWidthSize;
@@ -243,15 +239,13 @@ PS_OUT PS_ANIMATION_ALPHA_MAIN(PS_IN In)
 	//masking
 	vector vMaskDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	//검은색 제거
-	if (vMaskDesc.r < 0.2f)
+	Out.vDiffuse = vMaskDesc; //마스크의 색상까지 가져옴
+
+	if (Out.vDiffuse.a < 0.01f)
 		discard;
 
-	Out.vDiffuse.xyz = vColor.xyz * vMaskDesc.r;
-
-	//알파는 마스크맵 검은곳에다가 기본 칼라까지
-	Out.vDiffuse.a = vMaskDesc.r * In.vColor.a;
-
+	Out.vDiffuse.a *= In.vColor.a;
+	
 	if (Out.vDiffuse.a < 0.01f)
 		discard;
 
