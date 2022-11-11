@@ -22,6 +22,7 @@ public:
 
 public:
 	void Set_ShaderResources_Arrow(CShader* pShader, const char* pConstName);
+	void Set_ShaderResources_ArrowBG(CShader* pShader, const char* pConstName);
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};

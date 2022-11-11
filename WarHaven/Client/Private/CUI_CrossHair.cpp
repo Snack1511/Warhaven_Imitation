@@ -33,8 +33,6 @@ HRESULT CUI_Crosshair::Initialize_Prototype()
 		}
 	}
 
-	Set_Pass();
-	Bind_Shader();
 
 	return S_OK;
 }
@@ -57,6 +55,9 @@ HRESULT CUI_Crosshair::Start()
 		}
 	}
 
+	Set_Pass();
+	Bind_Shader();
+
 	DefaultCrosshair();
 
 	__super::Start();
@@ -70,6 +71,17 @@ void CUI_Crosshair::Set_ShaderResources_Arrow(CShader* pShader, const char* pCon
 	for (int i = 0; i < 3; ++i)
 	{
 		vColor = m_arrSkillUI[i][Arrow]->Get_Color();
+	}
+
+	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+}
+
+void CUI_Crosshair::Set_ShaderResources_ArrowBG(CShader* pShader, const char* pConstName)
+{
+	_float4 vColor;
+	for (int i = 0; i < 3; ++i)
+	{
+		vColor = m_arrSkillUI[i][ArrowBG]->Get_Color();
 	}
 
 	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
@@ -259,6 +271,7 @@ void CUI_Crosshair::Set_Pass()
 	for (int i = 0; i < 3; ++i)
 	{
 		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CRenderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CRenderer)->Set_Pass(VTXTEX_PASS_UI_Color);
 	}
 }
 
@@ -268,6 +281,9 @@ void CUI_Crosshair::Bind_Shader()
 	{
 		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CShader)
 			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_Arrow, this, placeholders::_1, "g_vColor");
+
+		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CShader)
+			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_ArrowBG, this, placeholders::_1, "g_vColor");
 	}
 }
 
