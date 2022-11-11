@@ -26,6 +26,20 @@ public:
 private:
 	CState* m_arrStates[STATE_END] = {};
 
+private:
+	/*For Warrior*/
+	//void Warrior_Base_R();
+	//void Warrior_Base_L();
+
+	//void Warrior_Base_Attack_R();
+	//void Warrior_Base_Attack_L();
+	//void Warrior_Base_Attack_Default();
+
+	//void Warrior_Base_Hit();
+	//void Warrior_Base_ETC();
+
+	//void Warrior_Others();
+
 };
 END
 

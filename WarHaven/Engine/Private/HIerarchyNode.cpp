@@ -4,6 +4,9 @@
 #include "CResource_Bone.h"
 #include "Model.h"
 
+#include "GameObject.h"
+#include "Transform.h"
+
 CHierarchyNode::CHierarchyNode()
 {
 }
@@ -106,12 +109,6 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 
 void CHierarchyNode::Update_CombinedTransformationMatrix()
 {
-	/*if (nullptr == m_pParent)
-		m_CombinedTransformationMatrix = m_TransformationMatrix;
-
-	else
-		XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix) * XMLoadFloat4x4(&m_pParent->m_CombinedTransformationMatrix));*/
-
 	if (m_bMoveNode) {
 		//루트노드일 떄 해야대는거
 		//1. 현재 컴바인드매트릭스 받아서 저장함
@@ -121,13 +118,17 @@ void CHierarchyNode::Update_CombinedTransformationMatrix()
 
 		//2. 이전 컴바인드매트릭스랑 현재꺼 비교해서 이동값 구함
 
-		_matrix CurMat = XMLoadFloat4x4(&m_CombinedTransformationMatrix);
-		_matrix PreMat = XMLoadFloat4x4(&m_PrevCombinedTransformationMatrix);
-		CurMat.r[3] -= PreMat.r[3];
+		//_matrix CurMat = XMLoadFloat4x4(&m_CombinedTransformationMatrix);
+		//_matrix PreMat = XMLoadFloat4x4(&m_PrevCombinedTransformationMatrix);
+		//_float4 vMove = CurMat.r[3] - PreMat.r[3];
+		//_float fMoveLength = vMove.Length() * 0.01f;
 
-		/*	이동값따로 저장해놔
-		나중에 트랜스폼한테 넘겨줄거야*/
-		XMStoreFloat4x4(&m_StoreCombinedTransformationMatrix, CurMat);
+		//if (fMoveLength < 0.5f)
+		//{
+
+		//	_float4 vPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
+		//	m_pOwner->Get_Transform()->Set_World(WORLD_POS, vPos + (m_pOwner->Get_Transform()->Get_World(WORLD_LOOK) * fMoveLength ));
+		//}
 
 
 
@@ -145,29 +146,37 @@ void CHierarchyNode::Update_CombinedTransformationMatrix()
 
 		m_PrevCombinedTransformationMatrix = m_CombinedTransformationMatrix;
 	}
-
-
-	if (nullptr == m_pParent)
-	{
-		m_CombinedTransformationMatrix = m_TransformationMatrix;
-		m_SendCombinedTransformationMatrix = m_CombinedTransformationMatrix;
-
-
-	}
-		
 	else
 	{
-		//얘는 루트노ㅓ드가 아니라니까?
+		if (nullptr == m_pParent)
+		{
+			m_CombinedTransformationMatrix = m_TransformationMatrix;
+			m_SendCombinedTransformationMatrix = m_CombinedTransformationMatrix;
 
+		}
 
-		XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix)
-			// 부모의 CombinedMatrix 를 가져와 내 Transform 이랑 곱해서 나의 Combined 를 만듦.
-			* XMLoadFloat4x4(&m_pParent->m_SendCombinedTransformationMatrix));
-
-		m_SendCombinedTransformationMatrix = m_CombinedTransformationMatrix;
-
+		else
+		{
 			
+			//얘는 루트노ㅓ드가 아니라니까?
+			if (m_pParent->m_bMoveNode)
+			{
+				int a = 0;
+			
+
+			}
+				
+			XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix)
+				// 부모의 CombinedMatrix 를 가져와 내 Transform 이랑 곱해서 나의 Combined 를 만듦.
+				* XMLoadFloat4x4(&m_pParent->m_SendCombinedTransformationMatrix));
+
+			m_SendCombinedTransformationMatrix = m_CombinedTransformationMatrix;
+
+
+		}
 	}
+
+	
 
 	//if (nullptr == m_pParent)
 	//m_CombinedTransformationMatrix = m_TransformationMatrix;

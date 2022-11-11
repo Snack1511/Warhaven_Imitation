@@ -32,7 +32,7 @@ HRESULT CSprint_Player::Initialize()
 {
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 55;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_SPRINT_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+//    m_eStateType = STATE_SPRINT_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     m_iStateChangeKeyFrame = 0;
 
@@ -54,12 +54,12 @@ HRESULT CSprint_Player::Initialize()
     return S_OK;
 }
 
-void CSprint_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
+void CSprint_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
 {
     m_eAnimType = ANIM_BASE_R;
     m_iAnimIndex = 55;
 
-    __super::Enter(pOwner, pAnimator);
+    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
 }
 
 STATE_TYPE CSprint_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -81,14 +81,14 @@ STATE_TYPE CSprint_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         if (m_iAnimIndex == 56 && pAnimator->Is_CurAnimFinished())
         {
 
-            return STATE_IDLE_PLAYER;
+          //  return STATE_IDLE_PLAYER;
         }
     }
 
     // Sprint_End가 프레임이 끝났을 시 
     if (m_iAnimIndex == 56 && pAnimator->Is_CurAnimFinished())
     {
-        return STATE_IDLE_PLAYER;
+        //return STATE_IDLE_PLAYER;
     }
 
 
@@ -164,10 +164,15 @@ STATE_TYPE CSprint_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     else if (m_iAnimIndex == 21 && pAnimator->Is_CurAnimFinished())
     {
-        return STATE_IDLE_PLAYER;
+       // return STATE_IDLE_PLAYER;
     }
 
-  
+    if (m_iAnimIndex == 21 && pAnimator->Get_CurAnimFrame() > 20)
+    {
+        int a = 0;
+    }
+
+
     return __super::Tick(pOwner, pAnimator);
 
 }

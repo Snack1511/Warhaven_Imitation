@@ -232,23 +232,120 @@ namespace Client
 		MESH_END,
 	};
 
+
 	enum STATE_TYPE
 	{
-		/* BASE */
-		STATE_IDLE_PLAYER,
-
-		STATE_WALK_PLAYER,
-		STATE_RUN_PLAYER,
-
-		STATE_SPRINT_PLAYER,
 
 
-		/* ATtack */
-		STATE_ATTACK_WARRIOR,
-
-		/* ETC */
-		STATE_SLIDE_PLAYER,
-		STATE_JUMP_PLAYER,
+//#pragma region Base_R
+//
+//		/* Idle */
+		STATE_IDLE_PLAYER_R,
+//
+//		/* Walk */
+		STATE_WALK_PLAYER_R,
+//
+//		/* Run */
+		STATE_RUN_PLAYER_R,
+//
+//		/* Jump */
+//		STATE_JUMP_PLAYER_R,
+//		STATE_JUMPFALL_PLAYER_R,
+//		STATE_JUMP_RAND_PLAYER_R,
+//
+//		/* Bounece */
+//		STATE_BOUNCE_PLAYER_R,
+//
+//
+//#pragma endregion
+//
+//#pragma region Base_L_Player
+//
+//		/* Idle */
+		STATE_IDLE_PLAYER_L,
+//
+//		/* Walk */
+		STATE_WALK_PLAYER_L,
+//
+//		/* Run */
+		STATE_RUN_PLAYER_L,
+//
+//		/* Jump */
+//		STATE_JUMP_PLAYER_L,
+//		STATE_JUMP_FALL_PLAYER_L,
+//		STATE_JUMP_RAND_PLAYER_L,
+//
+//		/* Bounece */
+//		STATE_BOUNCE_PLAYER_L,
+//
+//#pragma endregion
+//
+//#pragma region Default
+//		/* Slide */
+//		STATE_SLIDE_PLAYER,
+//
+//		/* Sprint */
+//		STATE_SPRINT_RUN_PLAYER,
+//
+//		STATE_SPRINT_JUMP_PLAYER,
+//
+//		STATE_SPRINT_JUMPFALL_PLAYER,
+//		STATE_SPRINT_LAND_PLAYER,
+//
+//#pragma endregion
+//
+//#pragma region Attack_Player
+//
+//		/* L */
+		STATE_ATTACK_UPPER_MIDDLE_PLAYER_L, // 중상단 공격
+//		STATE_ATTACK_BOTTOM_DIAGONAL_PLAYER_L, // 하단 -> 상단 대각선
+//		STATE_ATTACK_TOP_DIAGONAL_PLAYER_L, // 상단 -> 하단 대각선
+//
+//		/* R */
+//		STATE_ATTACK_UPPER_MIDDLE_PLAYER_R, // 중상단 공격
+//		STATE_ATTACK_BOTTOM_DIAGONAL_PLAYER_R, // 하단 -> 상단 대각선
+//		STATE_ATTACK_TOP_DIAGONAL_PLAYER_R, // 상단 -> 하단 대각선
+//
+//
+//		/*Sprint*/
+//		STATE_SPRINTATTACK_PLAYER,
+//
+//		/* Sting */
+//		STATE_ATTACK_STING_PLAYER_L,
+//		STATE_ATTACK_STING_PLAYER_R,
+//
+//		/* Take_Down */
+//		STATE_ATTACK_TAKEDOWN,
+//
+//#pragma endregion
+//
+//
+//#pragma region SKill
+//
+//		/*Skill*/
+		STATE_PLAYER_SKILL1, // 황소베기
+		STATE_PLAYER_SKILL2, // 가드 파괴
+//		// STATE_ATTACK_SKILL3, 
+//
+//
+//#pragma endregion
+//
+//
+//		// TEST
+//		STATE_IDLE_PLAYER,
+//
+//		STATE_WALK_PLAYER,
+//		STATE_RUN_PLAYER,
+//
+//		STATE_SPRINT_PLAYER,
+//
+//
+//		/* ATtack */
+//		STATE_ATTACK_WARRIOR,
+//
+//		/* ETC */
+//		//STATE_SLIDE_PLAYER,
+//		STATE_JUMP_PLAYER,
 
 
 		STATE_END,

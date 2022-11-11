@@ -5,6 +5,7 @@ BEGIN(Engine)
 
 class CModel;
 class CResource_Bone;
+class CGameObject;
 
 class ENGINE_DLL CHierarchyNode final
 {
@@ -69,6 +70,8 @@ public:
 	void	Release();
 
 private:
+	CGameObject* m_pOwner = nullptr;
+
 	_bool			m_bMoveNode = false;
 
 	_uint			m_iDepth = 0;

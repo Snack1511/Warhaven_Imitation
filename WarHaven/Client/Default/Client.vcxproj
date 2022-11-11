@@ -129,6 +129,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <MaxFilesInUnityFile>10</MaxFilesInUnityFile>
+      <AdditionalOptions>/Zc:twoPhase-  /Zm100 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,7 +158,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:twoPhase-  /Zm100 %(AdditionalOptions)</AdditionalOptions>
       <MaxFilesInUnityFile>10</MaxFilesInUnityFile>
       <UnityFilesDirectory>.</UnityFilesDirectory>
     </ClCompile>
@@ -194,8 +195,10 @@
     <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\public\CEffects_Factory.h" />
     <ClInclude Include="..\Public\CGame_Manager_JJ.h" />
-    <ClInclude Include="..\public\CIdle_Player.h" />
+    <ClInclude Include="..\Public\CIdle_Player.h" />
+    <ClInclude Include="..\public\CIdle_Player_L.h" />
     <ClInclude Include="..\public\CFader.h" />
+    <ClInclude Include="..\Public\CIdle_Player_R.h" />
     <ClInclude Include="..\public\CImGui_Window.h" />
     <ClInclude Include="..\Public\CInstancingEffects.h" />
     <ClInclude Include="..\Public\CJump_Player.h" />
@@ -205,6 +208,8 @@
     <ClInclude Include="..\public\CLevel_Test.h" />
     <ClInclude Include="..\Public\CRectEffects.h" />
     <ClInclude Include="..\Public\CRun_Player.h" />
+    <ClInclude Include="..\Public\CRun_Player_L.h" />
+    <ClInclude Include="..\Public\CRun_Player_R.h" />
     <ClInclude Include="..\Public\CScript_FollowCam.h" />
     <ClInclude Include="..\Public\CPickingStructure.h" />
     <ClInclude Include="..\public\CScript_Freecam.h" />
@@ -251,7 +256,12 @@
     <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\CUtility_Transform.h" />
     <ClInclude Include="..\public\CWalk_Player.h" />
+    <ClInclude Include="..\Public\CWalk_Player_L.h" />
+    <ClInclude Include="..\Public\CWalk_Player_R.h" />
     <ClInclude Include="..\public\CWarrior_Attack_01.h" />
+    <ClInclude Include="..\Public\CWarrior_Attack_UpperMiddle_L.h" />
+    <ClInclude Include="..\Public\CWarrior_GuardBreak.h" />
+    <ClInclude Include="..\Public\CWarrior_Oxen.h" />
     <ClInclude Include="..\public\CWindow_Default.h" />
     <ClInclude Include="..\Public\CWindow_Effect.h" />
     <ClInclude Include="..\Public\CWindow_Map.h" />
@@ -284,8 +294,9 @@
     <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\private\CEffects_Factory.cpp" />
     <ClCompile Include="..\Private\CGame_Manager_JJ.cpp" />
-    <ClCompile Include="..\private\CIdle_Player.cpp" />
+    <ClCompile Include="..\private\CIdle_Player_L.cpp" />
     <ClCompile Include="..\Private\CFader.cpp" />
+    <ClCompile Include="..\Private\CIdle_Player_R.cpp" />
     <ClCompile Include="..\Private\CImGui_Window.cpp" />
     <ClCompile Include="..\Private\CInstancingEffects.cpp" />
     <ClCompile Include="..\Private\CJump_Player.cpp" />
@@ -296,6 +307,8 @@
     <ClCompile Include="..\Private\Client_Defines.cpp" />
     <ClCompile Include="..\Private\CRectEffects.cpp" />
     <ClCompile Include="..\Private\CRun_Player.cpp" />
+    <ClCompile Include="..\Private\CRun_Player_L.cpp" />
+    <ClCompile Include="..\Private\CRun_Player_R.cpp" />
     <ClCompile Include="..\Private\CScript_FollowCam.cpp" />
     <ClCompile Include="..\Private\CPickingStructure.cpp" />
     <ClCompile Include="..\private\CScript_Freecam.cpp" />
@@ -337,7 +350,12 @@
     <ClCompile Include="..\private\CUser.cpp" />
     <ClCompile Include="..\private\CUtility_Transform.cpp" />
     <ClCompile Include="..\private\CWalk_Player.cpp" />
+    <ClCompile Include="..\Private\CWalk_Player_L.cpp" />
+    <ClCompile Include="..\Private\CWalk_Player_R.cpp" />
     <ClCompile Include="..\private\CWarrior_Attack_01.cpp" />
+    <ClCompile Include="..\Private\CWarrior_Attack_UpperMiddle_L.cpp" />
+    <ClCompile Include="..\Private\CWarrior_GuardBreak.cpp" />
+    <ClCompile Include="..\Private\CWarrior_Oxen.cpp" />
     <ClCompile Include="..\Private\CWindow_Default.cpp" />
     <ClCompile Include="..\Private\CWindow_Effect.cpp" />
     <ClCompile Include="..\Private\CWindow_Map.cpp" />
@@ -348,6 +366,7 @@
     <ClCompile Include="..\Private\ImGui_Manager.cpp" />
     <ClCompile Include="..\Private\Loading_Manager.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
+    <ClCompile Include="C:\StudyFiles\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CIdle_Player.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

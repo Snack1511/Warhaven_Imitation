@@ -17,7 +17,7 @@ CState::~CState()
 {
 }
 
-void CState::Enter(CUnit* pOwner, CAnimator* pAnimator)
+void CState::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
 {
     CUser::Get_Instance()->Clear_KeyCommands();
     m_fTimeAcc = 0.f;
@@ -25,7 +25,6 @@ void CState::Enter(CUnit* pOwner, CAnimator* pAnimator)
     pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, m_fInterPolationTime);
     pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, m_fAnimSpeed);
     m_bExecuted = false;
-    
 }
 
 STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -78,4 +77,37 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 
     return eType;
+}
+
+void CState::Change_Animation(_uint iCurAnimIndex, _uint iChangeIndex, CUnit* pOwner, CAnimator* pAnimator)
+{
+    if (m_iAnimIndex == iCurAnimIndex)
+    {
+        m_iAnimIndex = iChangeIndex;
+
+        Enter(pOwner, pAnimator, iCurAnimIndex);
+    }
+}
+
+/* bChange 가 true 이면 Change_Animation 호출 */
+STATE_TYPE CState::End_Animation(_uint iChangeIndex, ANIM_TYPE eAnimType, STATE_TYPE eStateType, _bool bStateChange, CUnit* pOwner, CAnimator* pAnimator)
+{
+
+    if (m_iAnimIndex == iChangeIndex)
+    {
+        if (pAnimator->Is_CurAnimFinished())
+        {
+            if (bStateChange)
+            {
+                m_eAnimType = eAnimType;
+                Change_Animation(m_iAnimIndex, iChangeIndex, pOwner, pAnimator);
+            }
+            else
+                return eStateType;
+
+        }
+    }
+
+
+    return STATE_END;
 }

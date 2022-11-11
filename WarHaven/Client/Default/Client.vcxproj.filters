@@ -115,15 +115,6 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect">
       <UniqueIdentifier>{394425bb-c3e9-44b4-a0b1-6780ecfb8107}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Base">
-      <UniqueIdentifier>{974c3454-2fa5-4cb7-b211-724ec8776417}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Base\01. Idle">
-      <UniqueIdentifier>{55da9af3-4a32-4e5f-8d7e-d33016b948e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Base\01. Idle\Idle_Player">
-      <UniqueIdentifier>{ecacf648-1230-410e-b07a-102c9b08b1b1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\02. Abstract_Factory\Effects_Factory">
       <UniqueIdentifier>{436171af-21e9-47fa-a99b-dda41cc50f62}</UniqueIdentifier>
     </Filter>
@@ -187,15 +178,6 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\Spearman">
       <UniqueIdentifier>{587217d8-7c7c-428a-90b4-4e365c31490e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Base\02. Walk">
-      <UniqueIdentifier>{cb832d74-dbab-4e98-8fee-52fb44a03b60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\02. Attack">
-      <UniqueIdentifier>{bd17e47c-1a88-4e2d-8cac-7a9d6dac22dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior">
-      <UniqueIdentifier>{13311606-46d8-449f-b97f-1d822a16819b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect">
       <UniqueIdentifier>{e5b6a7f5-5ba7-474b-8276-ed8a4383f686}</UniqueIdentifier>
     </Filter>
@@ -216,9 +198,6 @@
     </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool">
       <UniqueIdentifier>{bf927561-f572-4c65-946d-6c75c148b802}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Base\03. Run">
-      <UniqueIdentifier>{c051afa2-9df0-4e4c-b4a1-bff093e1935e}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\08. Effect\04. Sword_Effect">
       <UniqueIdentifier>{e2bc60ec-aebe-463d-b842-1b125c554e21}</UniqueIdentifier>
@@ -244,39 +223,6 @@
     <Filter Include="03. Instances\02. GameObject\06. Map\Structure\PickingStructure">
       <UniqueIdentifier>{eb2ef916-8197-4fc9-9b42-17b4211c8414}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Base\07. Sprint">
-      <UniqueIdentifier>{ef632a3b-dd2a-4901-bb45-eaff462e5a0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Base\08. Emotion">
-      <UniqueIdentifier>{1ebf352a-6fff-4ead-8f3c-f7526ac9c783}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior\SKill">
-      <UniqueIdentifier>{eab5dc35-1315-423f-916c-f8d30dac485e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\02. Attack\01. Warrior\01. Attack">
-      <UniqueIdentifier>{c1e332bd-4ae5-47ec-8648-0b8a26ef86ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Base\05. Jump">
-      <UniqueIdentifier>{6b0ca867-5898-4a63-923e-4147348c86a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\04. ETC">
-      <UniqueIdentifier>{5b3bed68-3670-47f5-89cc-9b1f6b1b6881}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\04. ETC\04. Slide">
-      <UniqueIdentifier>{1770798e-4a79-442f-b9a6-e13a524060e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\04. ETC\06. Interaction">
-      <UniqueIdentifier>{3be55e5a-5346-42c4-be86-d7a66efcd1e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\04. ETC\06. Interaction\01. Interaction_Direction">
-      <UniqueIdentifier>{758f2c01-2af0-4434-87fa-dbb3df85c054}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\04. ETC\06. Interaction\02. Interaction_ETC">
-      <UniqueIdentifier>{639bafd5-db36-413e-9de3-bc595fe102cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\03. Hit">
-      <UniqueIdentifier>{02705b02-3175-478d-9f4a-b473ea5bec51}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper">
       <UniqueIdentifier>{df70e0fd-717d-4898-9003-9ee5dff3f0a1}</UniqueIdentifier>
     </Filter>
@@ -300,6 +246,144 @@
     </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX">
       <UniqueIdentifier>{5d2dd80a-bbe4-470b-b7e3-bceb53af6041}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\03. Attack">
+      <UniqueIdentifier>{7c056dd3-2296-45f2-8b4d-aa196d54d8dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\04. Hit">
+      <UniqueIdentifier>{fb93562e-eee0-4b30-93a4-55510fb9f293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L">
+      <UniqueIdentifier>{974c3454-2fa5-4cb7-b211-724ec8776417}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior">
+      <UniqueIdentifier>{b38ed988-7cb2-4c8b-85fd-951d70d11eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Base_R">
+      <UniqueIdentifier>{8c89f331-8b61-47b8-82ad-15be666e2fa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Base_R\01. Warrior">
+      <UniqueIdentifier>{25b1a2f7-bdee-43ea-8727-de518f548c23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\02. AI">
+      <UniqueIdentifier>{823dec42-dfff-4be0-81b0-cc8f31266605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Base_R\01. Warrior\01. Player">
+      <UniqueIdentifier>{fef245a5-d921-4c61-8396-7ddaa491645f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Base_R\01. Warrior\02. AI">
+      <UniqueIdentifier>{597c582c-91e7-449b-9aec-7ca38c5665e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Base_R\01. Warrior\01. Player\04. Slide">
+      <UniqueIdentifier>{1770798e-4a79-442f-b9a6-e13a524060e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC">
+      <UniqueIdentifier>{5b3bed68-3670-47f5-89cc-9b1f6b1b6881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\01. Warrior">
+      <UniqueIdentifier>{896026d8-2b86-4012-bc46-166741bd3b4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\01. Warrior\01. Player">
+      <UniqueIdentifier>{3eb15cd5-3977-4a09-ac0d-5aa7b8180c0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\01. Warrior\01. Player\06. Interaction">
+      <UniqueIdentifier>{3be55e5a-5346-42c4-be86-d7a66efcd1e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\01. Warrior\02. AI">
+      <UniqueIdentifier>{247fc986-b9fe-4aa4-809b-d78a254ef261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\04. Hit\01. Warrior">
+      <UniqueIdentifier>{fa28dc1f-dd63-47f0-9f32-cb0c201ffa9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\04. Hit\01. Warrior\01. Player">
+      <UniqueIdentifier>{c7d2342a-3572-4d7d-861d-e64ec9682307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\04. Hit\01. Warrior\02. AI">
+      <UniqueIdentifier>{4bb077ce-5819-4f3f-a489-b3b4dc259354}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\03. Attack\01. Warrior">
+      <UniqueIdentifier>{40a31fed-ae9d-4fae-ae06-9119e5897511}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\03. Attack\01. Warrior\01. Player">
+      <UniqueIdentifier>{ed3b9f12-42f4-48ad-acc2-eb46b3f6c774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\03. Attack\01. Warrior\02. AI">
+      <UniqueIdentifier>{b219b096-f9f6-485a-a455-eaf86c249928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\01. Warrior\01. Player\06. Interaction\02. POTG">
+      <UniqueIdentifier>{4691d691-def6-40ee-94b5-2db70292735b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\01. Warrior\01. Player\06. Interaction\01. Emotion">
+      <UniqueIdentifier>{758f2c01-2af0-4434-87fa-dbb3df85c054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\02. Base_R\01. Warrior\01. Player\03. Dominate">
+      <UniqueIdentifier>{642085e6-07e2-4589-8e4b-14e793566133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player">
+      <UniqueIdentifier>{e738b401-bf01-47de-ad82-6f319b9b4824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle">
+      <UniqueIdentifier>{55da9af3-4a32-4e5f-8d7e-d33016b948e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\01. Right">
+      <UniqueIdentifier>{452f8399-99da-4e84-a138-968dff75ad5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\02. Left">
+      <UniqueIdentifier>{ecacf648-1230-410e-b07a-102c9b08b1b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk">
+      <UniqueIdentifier>{cb832d74-dbab-4e98-8fee-52fb44a03b60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run">
+      <UniqueIdentifier>{c051afa2-9df0-4e4c-b4a1-bff093e1935e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Sprint">
+      <UniqueIdentifier>{02705b02-3175-478d-9f4a-b473ea5bec51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\05. Jump">
+      <UniqueIdentifier>{6b0ca867-5898-4a63-923e-4147348c86a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\07. Sprint">
+      <UniqueIdentifier>{ef632a3b-dd2a-4901-bb45-eaff462e5a0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk\01. Right">
+      <UniqueIdentifier>{702b0bed-ad01-40dc-9f6e-f460ff954df7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk\02. Left">
+      <UniqueIdentifier>{2d4da9a1-5dc9-4654-ba05-1d98293430a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack">
+      <UniqueIdentifier>{bd17e47c-1a88-4e2d-8cac-7a9d6dac22dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior">
+      <UniqueIdentifier>{13311606-46d8-449f-b97f-1d822a16819b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\01. Attack">
+      <UniqueIdentifier>{c1e332bd-4ae5-47ec-8648-0b8a26ef86ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\01. Right">
+      <UniqueIdentifier>{df958dc2-3c53-4165-b872-2fd3176b262f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\02. Left">
+      <UniqueIdentifier>{155f8fa5-9e00-4402-97a9-af70cf6eedfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run\01. Right">
+      <UniqueIdentifier>{847febe7-9620-4176-ab6e-b7ba7adcc136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run\02. Left">
+      <UniqueIdentifier>{96dce53e-d829-4d37-97f6-351d8d312001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\Skill">
+      <UniqueIdentifier>{1d582826-447f-4f3a-8dbe-742450e475c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\Skill\Oxen">
+      <UniqueIdentifier>{0d976fff-ff17-4f30-ae20-b1f36815e446}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\Skill\GuardBreak">
+      <UniqueIdentifier>{e05f6615-479c-42bb-a505-9141ba740a68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\01. Attack\UpperMiddle">
+      <UniqueIdentifier>{daea0553-b79c-406c-9a1e-8fa51bdc6e7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -417,8 +501,8 @@
     <ClInclude Include="..\public\CState_Manager.h">
       <Filter>02. Design\06. State_Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CIdle_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Base\01. Idle\Idle_Player</Filter>
+    <ClInclude Include="..\public\CIdle_Player_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\02. Left</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CEffects_Factory.h">
       <Filter>02. Design\02. Abstract_Factory\Effects_Factory</Filter>
@@ -481,10 +565,10 @@
       <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CWalk_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Base\02. Walk</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CWarrior_Attack_01.h">
-      <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01. Attack</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\01. Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWindow_Effect.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
@@ -503,9 +587,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\CInstancingEffects.h">
       <Filter>03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CRun_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Base\03. Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CSword_Effect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
@@ -535,13 +616,13 @@
       <Filter>03. Instances\02. GameObject\06. Map\Structure\PickingStructure</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CSlide_Player.h">
-      <Filter>02. Design\06. State_Manager\States\04. ETC\04. Slide</Filter>
+      <Filter>02. Design\06. State_Manager\States\02. Base_R\01. Warrior\01. Player\04. Slide</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CJump_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Base\05. Jump</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\05. Jump</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CSprint_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Base\07. Sprint</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\07. Sprint</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HeroGauge.h">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>
@@ -563,6 +644,36 @@
     </ClInclude>
     <ClInclude Include="..\Public\UsefulHeaders.h">
       <Filter>00. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Player_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Player_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Player_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Player_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Player_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarrior_Oxen.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\Skill\Oxen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarrior_GuardBreak.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\Skill\GuardBreak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarrior_Attack_UpperMiddle_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\01. Attack\UpperMiddle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -661,8 +772,8 @@
     <ClCompile Include="..\private\CState_Manager.cpp">
       <Filter>02. Design\06. State_Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CIdle_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Base\01. Idle\Idle_Player</Filter>
+    <ClCompile Include="..\private\CIdle_Player_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\02. Left</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CEffects_Factory.cpp">
       <Filter>02. Design\02. Abstract_Factory\Effects_Factory</Filter>
@@ -725,10 +836,10 @@
       <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CWalk_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Base\02. Walk</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CWarrior_Attack_01.cpp">
-      <Filter>02. Design\06. State_Manager\States\02. Attack\01. Warrior\01. Attack</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\01. Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWindow_Effect.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
@@ -747,9 +858,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CRectEffects.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CRun_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Base\03. Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CSword_Effect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
@@ -779,16 +887,16 @@
       <Filter>03. Instances\02. GameObject\06. Map\Structure\PickingStructure</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CSlide_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\04. ETC\04. Slide</Filter>
+      <Filter>02. Design\06. State_Manager\States\02. Base_R\01. Warrior\01. Player\04. Slide</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Functor.cpp">
       <Filter>04. Module\00. Functor</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CJump_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Base\05. Jump</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\05. Jump</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CSprint_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Base\07. Sprint</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\07. Sprint</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HeroGauge.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>
@@ -807,6 +915,36 @@
     </ClCompile>
     <ClCompile Include="..\private\CTestObject.cpp">
       <Filter>03. Instances\02. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Player_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\StudyFiles\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CIdle_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Player_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Player_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Player_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Player_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarrior_Oxen.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\Skill\Oxen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarrior_GuardBreak.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\Skill\GuardBreak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarrior_Attack_UpperMiddle_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Attack\01. Warrior\01. Attack\UpperMiddle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

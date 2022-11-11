@@ -69,25 +69,20 @@ void CUnit::On_PlusHp(_float fHp)
 	}
 }
 
-void CUnit::Enter_State(STATE_TYPE eType, ANIM_TYPE eAnimType)
+void CUnit::Enter_State(STATE_TYPE eType)
 {
 	if (m_pCurState)
 	{
 		m_pCurState->Exit(this, m_pAnimator);
-		m_eAnimType = m_pCurState->m_eAnimType;
 	}
 
 	SAFE_DELETE(m_pCurState);
-	m_eCurState = eType;
+
 	m_pCurState = CState_Manager::Get_Instance()->Get_State(eType)->Clone();
 
-	if(m_eAnimType == ANIM_BASE_L)
-		m_pCurState->Set_AnimType(ANIM_BASE_L);
+	m_pCurState->Enter(this, m_pAnimator, m_eCurState);
+	m_eCurState = eType;
 
-	if (m_eAnimType == ANIM_BASE_R)
-		m_pCurState->Set_AnimType(ANIM_BASE_R);
-
-	m_pCurState->Enter(this, m_pAnimator);
 }
 
 
@@ -231,7 +226,7 @@ void CUnit::My_Tick()
 
 	if (STATE_END != eNewState)
 	{
-		Enter_State(eNewState, m_pCurState->m_eAnimType);
+		Enter_State(eNewState);
 	}
 }
 

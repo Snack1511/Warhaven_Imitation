@@ -1,43 +1,30 @@
-#pragma once
 #include "CState.h"
 
-BEGIN(Engine)
-class CAnimator;
-END
-
-
-BEGIN(Client)
-class CIdle_Player
-	: public CState
+class CIdle_Player abstract :
+    public CState
 {
-	DECLARE_STATE(CIdle_Player);
 
-private:
-	CIdle_Player();
-	virtual ~CIdle_Player();
+protected:
+    CIdle_Player();
+    virtual ~CIdle_Player();
+
 
 public:
-	static CIdle_Player* Create();
+    // CState을(를) 통해 상속됨
+    virtual HRESULT Initialize()	override;
+    virtual void Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex) override;
+    virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
+    virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
-public:
-	// CState을(를) 통해 상속됨
-	virtual HRESULT Initialize()	override;
-	virtual void Enter(CUnit* pOwner, CAnimator* pAnimator) override;
-	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
-	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
+protected:
+    void        Late_Initialize(_uint iChangeAnimIndex, ANIM_TYPE eChangeAnimType, STATE_TYPE eChangeAnimState);
 
-private:
-	_float m_fCreateTime = 0.016f; //주기
-	_float m_fCreateTimeAcc = 0.f;
-
-private:
+protected:
+    _uint       m_iChangeAnimIndex = 0;
+    ANIM_TYPE   m_eChangeAnimType = ANIM_END;
+    STATE_TYPE  m_eChangeAnimState = STATE_END;
 
 
-private:
-	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
-private:
-	void	Switch_Right_And_Left(_uint iAnimType, _uint iAnimIndex, _uint iChangeAnimIndex, CAnimator* pAnimator);
+protected:
+    virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 };
-
-END

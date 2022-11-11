@@ -75,12 +75,8 @@ public:
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState*	Get_CurStateP() { return m_pCurState; }
 
-	ANIM_TYPE Get_AnimType() {
-		return m_eAnimType;
-	}
-
 public:
-	void	Enter_State(STATE_TYPE eType, ANIM_TYPE eAnimType);
+	void	Enter_State(STATE_TYPE eType);
 
 
 public:
@@ -120,9 +116,6 @@ protected:
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
-
-private:
-	ANIM_TYPE		m_eAnimType = ANIM_END;
 	
 };
 END
