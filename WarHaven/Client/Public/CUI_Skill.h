@@ -26,7 +26,7 @@ public:
 	virtual void Set_ShaderResources_Relic(CShader* pShader, const char* pConstName);
 
 public:
-	void Set_SkillUI(_uint iIndex);
+	void Set_SkillHUD(_uint iIndex);
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
@@ -37,8 +37,12 @@ private:
 	_float m_fRelicValue = 0.f;
 
 private:
-	void ActiveSkillBtn(_uint iIndex);
-	void Set_SkillIcon(_uint iIndex, _uint iKeyIdx = 52, _uint iIconIdx = 29, bool bRelic = true);
+	void Enable_SkillHUD();
+
+	void Active_SkillHUD(_uint iIndex);
+	void Set_SkillBtn(_uint iIndex, _uint iKeyIdx = 52, _uint iIconIdx = 29, bool bRelic = true);
+
+	void Bind_Shader();
 
 private:
 	virtual void My_Tick() override;

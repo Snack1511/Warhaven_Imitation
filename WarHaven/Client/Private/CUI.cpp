@@ -5,6 +5,7 @@
 #include "CMesh_Rect.h" 
 #include "CShader.h"
 #include "Texture.h"
+#include "CUtility_Transform.h"
 
 CUI::CUI()
 {
@@ -71,6 +72,14 @@ void CUI::Set_Scale(_float fX, _float fY)
 	m_vScale.x = fX;
 	m_vScale.y = fY;
 	m_pTransform->Set_Scale(m_vScale);
+}
+
+void CUI::Set_RotationZ(_float fAngle)
+{
+	_float4 vAxisZ = { 0.f,0.f,1.f };
+	m_fRotValue = fAngle;
+
+	CUtility_Transform::Rotation(m_pTransform, vAxisZ, m_fRotValue);
 }
 
 void CUI::OnEnable()

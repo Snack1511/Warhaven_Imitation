@@ -128,8 +128,8 @@ void CUI_Portrait::My_Tick()
 		Set_Portrait(iIndex);
 	}
 
-
-	m_fEffectValue -= fDT(0);
+	_float fEffectSpeed = fDT(0) * 5.f;
+	m_fEffectValue -= fEffectSpeed;
 }
 
 void CUI_Portrait::My_LateTick()

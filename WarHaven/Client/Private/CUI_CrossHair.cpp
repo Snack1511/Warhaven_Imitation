@@ -4,6 +4,7 @@
 #include "CUI_Object.h"
 #include "Texture.h"
 #include "CUnit.h"
+#include "Renderer.h"
 
 CUI_Crosshair::CUI_Crosshair()
 {
@@ -31,6 +32,8 @@ HRESULT CUI_Crosshair::Initialize_Prototype()
 		}
 	}
 
+	Set_Pass();
+
 	return S_OK;
 }
 
@@ -51,6 +54,8 @@ HRESULT CUI_Crosshair::Start()
 			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
 		}
 	}
+
+	DefaultCrosshair();
 
 	__super::Start();
 
@@ -105,11 +110,11 @@ void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 		break;
 
 	case CUnit::CLASS_SPEAR:
-		DefaultCrosshair();
+		DefaultCrosshair(3);
 		break;
 
 	case CUnit::CLASS_ARCHER:
-		DefaultCrosshair();
+		ArrowCrosshair();
 		break;
 
 	case CUnit::CLASS_PALADIN:
@@ -117,11 +122,11 @@ void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 		break;
 
 	case CUnit::CLASS_PRIEST:
-		DefaultCrosshair();
+		DefaultCrosshair(2);
 		break;
 
 	case CUnit::CLASS_ENGINEER:
-		DefaultCrosshair();
+		DefaultCrosshair(2);
 		break;
 
 	case CUnit::CLASS_FIONA:
@@ -129,7 +134,7 @@ void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 		break;
 
 	case CUnit::CLASS_QANDA:
-		DefaultCrosshair();
+		DefaultCrosshair(3);
 		break;
 
 	case CUnit::CLASS_HOEDT:
@@ -137,22 +142,102 @@ void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 		break;
 
 	case CUnit::CLASS_LANCER:
-		DefaultCrosshair();
+		DefaultCrosshair(4);
 		break;
 	}
 }
 
-void CUI_Crosshair::DefaultCrosshair()
+void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 {
 	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Point]);
 	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Outline]);
+
+	GET_COMPONENT_FROM(m_arrSkillUI[0][Point], CTexture)->Set_CurTextureIndex(1);
+	GET_COMPONENT_FROM(m_arrSkillUI[0][Outline], CTexture)->Set_CurTextureIndex(1);
+
+	// 기본 비활성화
 	ENABLE_GAMEOBJECT(m_arrSkillUI[0][GaugeBG]);
 	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Gauge]);
 
+	_float fRotZ = 180.f;
+
+	m_arrSkillUI[0][GaugeBG]->Set_RotationZ(fRotZ);
+	m_arrSkillUI[0][Gauge]->Set_RotationZ(fRotZ);
+
+	for (int i = 0; i < iIndex; ++i)
+	{
+		ENABLE_GAMEOBJECT(m_arrSkillUI[i][ArrowBG]);
+		ENABLE_GAMEOBJECT(m_arrSkillUI[i][Arrow]);
+
+		if (iIndex == 2)
+		{
+			_float fRotZ = -90.f;
+			m_arrSkillUI[i][Arrow]->Set_RotationZ(fRotZ);
+			m_arrSkillUI[i][ArrowBG]->Set_RotationZ(-fRotZ);
+		}
+
+		if (iIndex == 3)
+		{
+			_float fRotZ = -120.f * i;
+			m_arrSkillUI[i][Arrow]->Set_RotationZ(fRotZ);
+			m_arrSkillUI[i][ArrowBG]->Set_RotationZ(fRotZ);
+		}
+
+		if (iIndex == 4)
+		{
+			_float fPosX = -50.f + (i * 30.f);
+			_float fPosY = -70.f;
+
+			_float fScaleX = 35.f;
+			_float fScaleY = 85.f;
+
+			m_arrSkillUI[i][Arrow]->Set_Pos(fPosX, fPosY);
+			m_arrSkillUI[i][ArrowBG]->Set_Pos(fPosX, fPosY);
+
+			m_arrSkillUI[i][Arrow]->Set_Scale(fScaleX, fScaleY);
+			m_arrSkillUI[i][ArrowBG]->Set_Scale(fScaleX, fScaleY);
+
+			m_arrSkillUI[i][Arrow]->Set_RotationZ(0.f);
+			m_arrSkillUI[i][ArrowBG]->Set_RotationZ(0.f);
+
+			GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CTexture)->Set_CurTextureIndex(1);
+			GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CTexture)->Set_CurTextureIndex(2);
+		}
+	}
+}
+
+void CUI_Crosshair::ArrowCrosshair()
+{
+	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Point]);
+	GET_COMPONENT_FROM(m_arrSkillUI[0][Point], CTexture)->Set_CurTextureIndex(1);
+
+	// 타겟팅 중이면 포인터 변경
+	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Point]);
+	GET_COMPONENT_FROM(m_arrSkillUI[0][Point], CTexture)->Set_CurTextureIndex(0);
+
+	// 기본 비활성화
+	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Outline]);
+	GET_COMPONENT_FROM(m_arrSkillUI[0][Outline], CTexture)->Set_CurTextureIndex(0);
+
+	ENABLE_GAMEOBJECT(m_arrSkillUI[0][GaugeBG]);
+	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Gauge]);
 	for (int i = 0; i < 3; ++i)
 	{
 		ENABLE_GAMEOBJECT(m_arrSkillUI[i][ArrowBG]);
 		ENABLE_GAMEOBJECT(m_arrSkillUI[i][Arrow]);
+
+		_float fRotZ = -120.f * i;
+
+		m_arrSkillUI[i][Arrow]->Set_RotationZ(fRotZ);
+		m_arrSkillUI[i][ArrowBG]->Set_RotationZ(fRotZ);
+	}
+}
+
+void CUI_Crosshair::Set_Pass()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+
 	}
 }
 

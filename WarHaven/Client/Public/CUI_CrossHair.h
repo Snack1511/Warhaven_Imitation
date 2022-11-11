@@ -34,7 +34,11 @@ private:
 	void Ready_Texture();
 	void Prototype_Disable();
 	void Set_Crosshair(_uint iIndex);
-	void DefaultCrosshair();
+
+	void DefaultCrosshair(_uint iIndex = 0);
+	void ArrowCrosshair();
+
+	void Set_Pass();
 };
 
 END

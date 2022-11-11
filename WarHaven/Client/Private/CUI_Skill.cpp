@@ -57,6 +57,134 @@ HRESULT CUI_Skill::Initialize()
 
 HRESULT CUI_Skill::Start()
 {
+	Enable_SkillHUD();
+
+	Bind_Shader();
+
+	__super::Start();
+
+	return S_OK;
+}
+
+void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fRelicValue, sizeof(_float));
+}
+
+void CUI_Skill::Set_SkillHUD(_uint iIndex)
+{
+	switch (iIndex)
+	{
+	case CUnit::CLASS_WARRIOR:
+
+		Active_SkillHUD(3);
+
+		Set_SkillBtn(2);
+		Set_SkillBtn(1, 44, 25, false);
+		Set_SkillBtn(0, 9, 24, false);
+
+		break;
+
+	case CUnit::CLASS_SPEAR:
+
+		Active_SkillHUD(4);
+
+		Set_SkillBtn(3);
+		Set_SkillBtn(2, 44, 23, false);
+		Set_SkillBtn(1, 9, 22, false);
+		Set_SkillBtn(0, 99, 21, false);
+
+		break;
+
+	case CUnit::CLASS_ARCHER:
+
+		Active_SkillHUD(4);
+
+		Set_SkillBtn(3);
+		Set_SkillBtn(2, 44, 2, false);
+		Set_SkillBtn(1, 9, 1, false);
+		Set_SkillBtn(0, 74, 0, false);
+
+		break;
+
+	case CUnit::CLASS_PALADIN:
+
+		Active_SkillHUD(4);
+
+		Set_SkillBtn(3);
+		Set_SkillBtn(2, 44, 15, false);
+		Set_SkillBtn(1, 9, 14, false);
+		Set_SkillBtn(0, 76, 13, false);
+
+		break;
+
+	case CUnit::CLASS_PRIEST:
+
+		Active_SkillHUD(4);
+
+		Set_SkillBtn(3);
+		Set_SkillBtn(2, 44, 18, false);
+		Set_SkillBtn(1, 9, 17, false);
+		Set_SkillBtn(0, 46, 16, false);
+
+		break;
+
+	case CUnit::CLASS_ENGINEER:
+
+		Active_SkillHUD(4);
+
+		Set_SkillBtn(3);
+		Set_SkillBtn(2, 44, 5, false);
+		Set_SkillBtn(1, 9, 4, false);
+		Set_SkillBtn(0, 45, 3, false);
+
+		break;
+
+	case CUnit::CLASS_FIONA:
+
+		Active_SkillHUD(4);
+
+		Set_SkillBtn(3);
+		Set_SkillBtn(2, 44, 8, false);
+		Set_SkillBtn(1, 9, 7, false);
+		Set_SkillBtn(0, 99, 6, false);
+
+		break;
+
+	case CUnit::CLASS_QANDA:
+
+		Active_SkillHUD(3);
+
+		Set_SkillBtn(2);
+		Set_SkillBtn(1, 44, 20, false);
+		Set_SkillBtn(0, 9, 19, false);
+
+		break;
+
+	case CUnit::CLASS_HOEDT:
+
+		Active_SkillHUD(4);
+
+		Set_SkillBtn(3);
+		Set_SkillBtn(2, 44, 11, false);
+		Set_SkillBtn(1, 68, 10, false);
+		Set_SkillBtn(0, 9, 9, false);
+
+		break;
+
+	case CUnit::CLASS_LANCER:
+
+		Active_SkillHUD(2);
+
+		Set_SkillBtn(1);
+		Set_SkillBtn(0, 68, 12, false);
+
+		break;
+	}
+}
+
+void CUI_Skill::Enable_SkillHUD()
+{
 	for (_uint i = 0; i < UI_TYPE::Type_End; ++i)
 	{
 		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
@@ -71,133 +199,9 @@ HRESULT CUI_Skill::Start()
 			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
 		}
 	}
-
-	GET_COMPONENT_FROM(m_arrSkillUI[0][UI_TYPE::Icon], CShader)
-		->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
-
-	__super::Start();
-
-	return S_OK;
 }
 
-void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstName)
-{
-	pShader->Set_RawValue("g_fValue", &m_fRelicValue, sizeof(_float));
-}
-
-void CUI_Skill::Set_SkillUI(_uint iIndex)
-{
-	switch (iIndex)
-	{
-	case CUnit::CLASS_WARRIOR:
-
-		ActiveSkillBtn(3);
-
-		Set_SkillIcon(2);
-		Set_SkillIcon(1, 44, 25, false);
-		Set_SkillIcon(0, 9, 24, false);
-
-		break;
-
-	case CUnit::CLASS_SPEAR:
-
-		ActiveSkillBtn(4);
-
-		Set_SkillIcon(3);
-		Set_SkillIcon(2, 44, 23, false);
-		Set_SkillIcon(1, 9, 22, false);
-		Set_SkillIcon(0, 99, 21, false);
-
-		break;
-
-	case CUnit::CLASS_ARCHER:
-
-		ActiveSkillBtn(4);
-
-		Set_SkillIcon(3);
-		Set_SkillIcon(2, 44, 2, false);
-		Set_SkillIcon(1, 9, 1, false);
-		Set_SkillIcon(0, 74, 0, false);
-
-		break;
-
-	case CUnit::CLASS_PALADIN:
-
-		ActiveSkillBtn(4);
-
-		Set_SkillIcon(3);
-		Set_SkillIcon(2, 44, 15, false);
-		Set_SkillIcon(1, 9, 14, false);
-		Set_SkillIcon(0, 76, 13, false);
-
-		break;
-
-	case CUnit::CLASS_PRIEST:
-
-		ActiveSkillBtn(4);
-
-		Set_SkillIcon(3);
-		Set_SkillIcon(2, 44, 18, false);
-		Set_SkillIcon(1, 9, 17, false);
-		Set_SkillIcon(0, 46, 16, false);
-
-		break;
-
-	case CUnit::CLASS_ENGINEER:
-
-		ActiveSkillBtn(4);
-
-		Set_SkillIcon(3);
-		Set_SkillIcon(2, 44, 5, false);
-		Set_SkillIcon(1, 9, 4, false);
-		Set_SkillIcon(0, 45, 3, false);
-
-		break;
-
-	case CUnit::CLASS_FIONA:
-
-		ActiveSkillBtn(4);
-
-		Set_SkillIcon(3);
-		Set_SkillIcon(2, 44, 8, false);
-		Set_SkillIcon(1, 9, 7, false);
-		Set_SkillIcon(0, 99, 6, false);
-
-		break;
-
-	case CUnit::CLASS_QANDA:
-
-		ActiveSkillBtn(3);
-
-		Set_SkillIcon(2);
-		Set_SkillIcon(1, 44, 20, false);
-		Set_SkillIcon(0, 9, 19, false);
-
-		break;
-
-	case CUnit::CLASS_HOEDT:
-
-		ActiveSkillBtn(4);
-
-		Set_SkillIcon(3);
-		Set_SkillIcon(2, 44, 11, false);
-		Set_SkillIcon(1, 68, 10, false);
-		Set_SkillIcon(0, 9, 9, false);
-
-		break;
-
-	case CUnit::CLASS_LANCER:
-
-		ActiveSkillBtn(2);
-
-		Set_SkillIcon(1);
-		Set_SkillIcon(0, 68, 12, false);
-
-		break;
-	}
-}
-
-void CUI_Skill::ActiveSkillBtn(_uint iIndex)
+void CUI_Skill::Active_SkillHUD(_uint iIndex)
 {
 	for (_uint i = 0; i < 4; ++i)
 	{
@@ -226,7 +230,7 @@ void CUI_Skill::ActiveSkillBtn(_uint iIndex)
 	}
 }
 
-void CUI_Skill::Set_SkillIcon(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool bRelic)
+void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool bRelic)
 {
 	if (bRelic == true)
 	{
@@ -261,6 +265,12 @@ void CUI_Skill::Set_SkillIcon(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool 
 	GET_COMPONENT_FROM(m_arrSkillUI[iIndex][UI_TYPE::Icon], CTexture)->Set_CurTextureIndex(iIconIdx);
 }
 
+void CUI_Skill::Bind_Shader()
+{
+	GET_COMPONENT_FROM(m_arrSkillUI[0][UI_TYPE::Icon], CShader)
+		->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
+}
+
 void CUI_Skill::My_Tick()
 {
 	__super::My_Tick();
@@ -272,7 +282,7 @@ void CUI_Skill::My_Tick()
 		if (iIndex >= 10)
 			iIndex = 0;
 
-		Set_SkillUI(iIndex);
+		Set_SkillHUD(iIndex);
 	}
 
 	m_fRelicValue += fDT(0);

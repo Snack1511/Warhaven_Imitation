@@ -224,7 +224,7 @@ aiMatrix3x3t<TReal>& aiMatrix3x3t<TReal>::Inverse() {
 // ------------------------------------------------------------------------------------------------
 template <typename TReal>
 AI_FORCE_INLINE
-aiMatrix3x3t<TReal>& aiMatrix3x3t<TReal>::RotationZ(TReal a, aiMatrix3x3t<TReal>& out) {
+aiMatrix3x3t<TReal>& aiMatrix3x3t<TReal>::Set_RotationZ(TReal a, aiMatrix3x3t<TReal>& out) {
     out.a1 = out.b2 = std::cos(a);
     out.b1 = std::sin(a);
     out.a2 = - out.b1;
