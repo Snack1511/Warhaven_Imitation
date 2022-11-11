@@ -786,7 +786,9 @@ void CRectEffects::Update_Animation(_uint iIndex)
 			if (m_pRectInstances[iIndex].vColor.y >= m_iHeightSize)
 			{
 				//여기 들어왔다 : 한바퀴돌아서 1순한거임
-				m_pRectInstances[iIndex].vColor.y = 0.f;
+				m_pRectInstances[iIndex].vColor.x = m_iWidthSize - 1;
+				m_pRectInstances[iIndex].vColor.y = m_iHeightSize - 1;
+				Dead_Instance(iIndex);
 
 				if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
 					Dead_Instance(iIndex);

@@ -145,6 +145,7 @@ PS_OUT PS_ANIMATION_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
+	
 	vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	//알파가 줄어들면
@@ -176,15 +177,17 @@ PS_OUT PS_ANIMATION_MAIN(PS_IN In)
 	if (vMaskDesc.r < 0.2f)
 		discard;
 
-	Out.vDiffuse.xyz = vColor.xyz * vMaskDesc.r;
+	Out.vDiffuse.xyz = vMaskDesc.xyz; //마스크의 색상까지 가져옴
 
 	//알파는 마스크맵 검은곳에다가 기본 칼라까지
-	Out.vDiffuse.a = vMaskDesc.r * In.vColor.a;
+	Out.vDiffuse.a = vMaskDesc.a;
+
+	if (Out.vDiffuse.a < 0.01f)
+		discard;
+
 
 	//내 알파가 이녀석 r보다 더 크면
-	if (vDissolveDesc.r <= Out.vDiffuse.a)
-		Out.vDiffuse.a = 1.f;
-	else
+	if (vDissolveDesc.r > Out.vDiffuse.a)
 		Out.vDiffuse.a = 0;
 
 	//if (vDissolveDesc.r >= Out.vDiffuse.a - 0.05 && vDissolveDesc.r <= Out.vDiffuse.a + 0.05)
