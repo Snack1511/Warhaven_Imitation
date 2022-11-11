@@ -95,8 +95,17 @@ void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstNa
 
 		if (m_iRelicIndex == 29)
 		{
+			m_bIsRelic = true;
+
+			CTexture* pTexture = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture);
+			m_iRelicIndex = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture)->Get_CurTextureIndex();
+
 			CShader* pShader = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CShader);
 			pShader->SetUp_ShaderResources(pTexture, "g_NoiseTexture");
+		}
+		else
+		{
+			m_bIsRelic = false;
 		}
 	}
 

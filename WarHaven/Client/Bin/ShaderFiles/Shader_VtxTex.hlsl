@@ -198,10 +198,10 @@ PS_OUT PS_RELIC(PS_IN In)
       
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
         
-    Out.vColor *= vNoise;
+    // Out.vColor *= vNoise;
     
     if (Out.vColor.a < 0.01f)
-        Out.vColor = 1.f;
+        discard;   
 	
     return Out;
 }

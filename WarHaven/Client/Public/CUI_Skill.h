@@ -44,6 +44,7 @@ private:
 	SkillHud m_arrSkillHud[4];
 
 	_uint m_iRelicIndex = 0;
+	_bool m_bIsRelic = false;
 	_float m_fRelicValue = 0.f;
 
 private:
