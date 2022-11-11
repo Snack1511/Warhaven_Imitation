@@ -2,17 +2,19 @@
 #include "CState.h"
 
 BEGIN(Client)
-class CSprint_Player
+class CColorController;
+
+class CWarrior_Attack_UpperMiddle_L
 	: public CState
 {
-	DECLARE_STATE(CSprint_Player);
+	DECLARE_STATE(CWarrior_Attack_UpperMiddle_L);
 
 private:
-	CSprint_Player();
-	virtual ~CSprint_Player();
+	CWarrior_Attack_UpperMiddle_L();
+	virtual ~CWarrior_Attack_UpperMiddle_L();
 
 public:
-	static CSprint_Player* Create();
+	static CWarrior_Attack_UpperMiddle_L* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -24,7 +26,11 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-
+private:
+	_int	m_iFinishedFrame = 0; // Finished 가 3번 호출되면 황소베기가 취소된다.
+	_float  m_fCreateTime = 0.016f;
+	_float  m_fCreateTimeAcc = 0.f;
+	
 };
 
 END

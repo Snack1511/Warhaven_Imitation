@@ -35,7 +35,7 @@ HRESULT CJump_Player::Initialize()
 
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_JUMP_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+//    m_eStateType = STATE_JUMP_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     m_iStateChangeKeyFrame = 0;
@@ -49,7 +49,7 @@ HRESULT CJump_Player::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_vecAdjState.push_back(STATE_IDLE_PLAYER);
+    //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
 
 
     //m_vecAdjState.push_back(STATE_SILDING);
@@ -61,7 +61,7 @@ HRESULT CJump_Player::Initialize()
     return S_OK;
 }
 
-void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
+void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
 {
     /* Owner의 Animator Set Idle로 */
 
@@ -103,7 +103,7 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
     }
 
 
-    __super::Enter(pOwner, pAnimator);
+    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
 }
 
 STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -136,7 +136,7 @@ STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
             //착지가 끝날 시
             else
             {
-                return STATE_IDLE_PLAYER;
+                //return STATE_IDLE_PLAYER;
             }
         }
 
@@ -164,7 +164,7 @@ STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
             //착지가 끝날 시
             else
             {
-                return STATE_IDLE_PLAYER;
+                //return STATE_IDLE_PLAYER;
             }
         }
         

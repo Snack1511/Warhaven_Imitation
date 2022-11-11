@@ -545,6 +545,11 @@ void CModel::Start()
 	{
 		elem.second->Set_Owner(m_pOwner);
 	}
+
+	for (auto& elem : m_vecHierarchyNodes)
+	{
+		elem.second->m_pOwner = m_pOwner;
+	}
 }
 
 CHierarchyNode* CModel::Find_HierarchyNode(const char* pBoneName)

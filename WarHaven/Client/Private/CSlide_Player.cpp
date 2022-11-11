@@ -32,7 +32,7 @@ HRESULT CSlide_Player::Initialize()
 {
     m_eAnimType = ANIM_ETC;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 32;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_SLIDE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+   // m_eStateType = STATE_SLIDE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     m_iStateChangeKeyFrame = 0;
@@ -46,8 +46,8 @@ HRESULT CSlide_Player::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_vecAdjState.push_back(STATE_WALK_PLAYER);
-    m_vecAdjState.push_back(STATE_RUN_PLAYER);
+    //m_vecAdjState.push_back(STATE_WALK_PLAYER);
+    //m_vecAdjState.push_back(STATE_RUN_PLAYER);
     //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
 
     //m_vecAdjState.push_back(STATE_SILDING);
@@ -59,15 +59,15 @@ HRESULT CSlide_Player::Initialize()
     return S_OK;
 }
 
-void CSlide_Player::Enter(CUnit* pOwner, CAnimator* pAnimator)
+void CSlide_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
 {
     // Enter 전에 내가 정하고 싶은 State 추가.
 
 
-    m_eStateType = STATE_SLIDE_PLAYER;
+   // m_eStateType = STATE_SLIDE_PLAYER;
     m_eAnimType = ANIM_ETC;
 
-    __super::Enter(pOwner, pAnimator);
+    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
 
 }
 
@@ -88,7 +88,7 @@ STATE_TYPE CSlide_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     if (m_iAnimIndex == 34 && pAnimator->Is_CurAnimFinished())
     {
-        return STATE_WALK_PLAYER;
+   //     return STATE_WALK_PLAYER;
     }
         
 

@@ -78,7 +78,7 @@ HRESULT CUnit_Spearman::Start()
 {
 	__super::Start();
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
-	Enter_State(STATE_IDLE_PLAYER, ANIM_BASE_R);
+	Enter_State(STATE_IDLE_PLAYER_R);
 	return S_OK;
 }
 

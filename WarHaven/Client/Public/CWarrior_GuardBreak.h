@@ -2,17 +2,19 @@
 #include "CState.h"
 
 BEGIN(Client)
-class CSprint_Player
+class CColorController;
+
+class CWarrior_GuardBreak
 	: public CState
 {
-	DECLARE_STATE(CSprint_Player);
+	DECLARE_STATE(CWarrior_GuardBreak);
 
 private:
-	CSprint_Player();
-	virtual ~CSprint_Player();
+	CWarrior_GuardBreak();
+	virtual ~CWarrior_GuardBreak();
 
 public:
-	static CSprint_Player* Create();
+	static CWarrior_GuardBreak* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -24,7 +26,10 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-
+private:
+	_float  m_fCreateTime = 0.016f;
+	_float  m_fCreateTimeAcc = 0.f;
+	
 };
 
 END

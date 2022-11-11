@@ -1,18 +1,22 @@
 #pragma once
-#include "CState.h"
+#include "CRun_Player.h"
+
+BEGIN(Engine)
+class CAnimator;
+END
 
 BEGIN(Client)
-class CSprint_Player
-	: public CState
+class CRun_Player_R
+	: public CRun_Player
 {
-	DECLARE_STATE(CSprint_Player);
+	DECLARE_STATE(CRun_Player_R);
 
 private:
-	CSprint_Player();
-	virtual ~CSprint_Player();
+	CRun_Player_R();
+	virtual ~CRun_Player_R();
 
 public:
-	static CSprint_Player* Create();
+	static CRun_Player_R* Create();
 
 public:
 	// CState을(를) 통해 상속됨

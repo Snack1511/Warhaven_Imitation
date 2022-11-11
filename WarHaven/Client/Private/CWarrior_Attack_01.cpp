@@ -39,7 +39,7 @@ HRESULT CWarrior_Attack_01::Initialize()
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_ATTACK_WARRIOR;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    //m_eStateType = STATE_ATTACK_WARRIOR;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     // 선형 보간 시간
@@ -52,9 +52,9 @@ HRESULT CWarrior_Attack_01::Initialize()
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 84;
-    m_vecAdjState.push_back(STATE_IDLE_PLAYER);
-    m_vecAdjState.push_back(STATE_WALK_PLAYER);
-    m_vecAdjState.push_back(STATE_RUN_PLAYER);
+    //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
+    //m_vecAdjState.push_back(STATE_WALK_PLAYER);
+    //m_vecAdjState.push_back(STATE_RUN_PLAYER);
     //m_vecAdjState.push_back(STATE_SILDING);
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
@@ -74,7 +74,7 @@ HRESULT CWarrior_Attack_01::Initialize()
     return S_OK;
 }
 
-void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
+void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
 {
     
 
@@ -86,7 +86,7 @@ void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
         GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
         m_eAnimType = ANIM_ATTACK;
-        __super::Enter(pOwner, pAnimator);
+        __super::Enter(pOwner, pAnimator, iPreAnimIndex);
         return;
     }
 
@@ -94,7 +94,7 @@ void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
     if(m_iAnimIndex == 15)
     {
         m_eAnimType = ANIM_ATTACK;
-        __super::Enter(pOwner, pAnimator);
+        __super::Enter(pOwner, pAnimator, iPreAnimIndex);
         return;
     }
 
@@ -105,7 +105,7 @@ void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
         if (m_iAnimIndex == 13)
         {
             m_eAnimType = ANIM_ATTACK;
-            __super::Enter(pOwner, pAnimator);
+            __super::Enter(pOwner, pAnimator, iPreAnimIndex);
             return;
         }
     }
@@ -117,7 +117,7 @@ void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
         if (m_iAnimIndex == 12)
         {
             m_eAnimType = ANIM_ATTACK;
-            __super::Enter(pOwner, pAnimator);
+            __super::Enter(pOwner, pAnimator, iPreAnimIndex);
             return;
         }
     }
@@ -196,7 +196,7 @@ void CWarrior_Attack_01::Enter(CUnit* pOwner, CAnimator* pAnimator)
     m_eAnimType = ANIM_ATTACK;
 
     /* Owner의 Animator Set Idle로 */
-    __super::Enter(pOwner, pAnimator);
+    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
 }
 
 STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -208,7 +208,7 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     // 황소 베기 캔슬
     if (m_iAnimIndex == 22 && pAnimator->Is_CurAnimFinished())
-        return STATE_WALK_PLAYER;
+    { } //return STATE_WALK_PLAYER;
     
     // 내려찍기 애니메이션 조정
     if (m_iAnimIndex == 14)
@@ -217,7 +217,7 @@ STATE_TYPE CWarrior_Attack_01::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     if (m_iAnimIndex == 15 && pAnimator->Is_CurAnimFinished())
     {
-        return STATE_WALK_PLAYER;
+        //return STATE_WALK_PLAYER;
     }
 
     // 황소 베기

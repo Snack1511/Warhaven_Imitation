@@ -1,20 +1,23 @@
 #pragma once
 #include "CState.h"
 
-BEGIN(Client)
-class CColorController;
+BEGIN(Engine)
+class CAnimator;
+END
 
-class CWarrior_Attack_01
+
+BEGIN(Client)
+class CIdle_Player_R
 	: public CState
 {
-	DECLARE_STATE(CWarrior_Attack_01);
+	DECLARE_STATE(CIdle_Player_R);
 
 private:
-	CWarrior_Attack_01();
-	virtual ~CWarrior_Attack_01();
+	CIdle_Player_R();
+	virtual ~CIdle_Player_R();
 
 public:
-	static CWarrior_Attack_01* Create();
+	static CIdle_Player_R* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -24,14 +27,17 @@ public:
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
-	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	void Create_SwordEffect(CUnit* pOwner);
+	_float m_fCreateTime = 0.016f; //주기
+	_float m_fCreateTimeAcc = 0.f;
 
 private:
-	_int	m_iFinishedFrame = 0; // Finished 가 3번 호출되면 황소베기가 취소된다.
-	_float  m_fCreateTime = 0.016f;
-	_float  m_fCreateTimeAcc = 0.f;
-	
+	_uint	m_iChangeHandIndex = 0;
+
+private:
+	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+
+private:
+	void	Switch_Right_And_Left(_uint iAnimType, _uint iAnimIndex, _uint iChangeAnimIndex, CAnimator* pAnimator);
 };
 
 END
