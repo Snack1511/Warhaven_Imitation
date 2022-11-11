@@ -20,14 +20,16 @@ CUI_HpBar::~CUI_HpBar()
 
 HRESULT CUI_HpBar::Initialize_Prototype()
 {
-	m_wstrName = TEXT("HpBar");
+	Read_UI("Hp");
 
-	__super::Initialize_Prototype();
+	m_tHpBar.m_pUIInstance[HpBar::BG] = m_pUIMap[TEXT("HpBarBG")];
+	m_tHpBar.m_pUIInstance[HpBar::Bar] = m_pUIMap[TEXT("HpBar")];
 
-	m_pUI->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_Pattern_16.dds"));
-	m_pUI->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_Pattern_36.png"));
+	m_tHpBar.m_pUIInstance[HpBar::Bar]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_16.dds"));
+	m_tHpBar.m_pUIInstance[HpBar::Bar]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_36.png"));
 
-	GET_COMPONENT_FROM(m_pUI, CRenderer)->Set_Pass(VTXTEX_PASS_UI_HpBar);
+	GET_COMPONENT_FROM(m_tHpBar.m_pUIInstance[HpBar::Bar], CRenderer)
+		->Set_Pass(VTXTEX_PASS_UI_HpBar);
 
 	return S_OK;
 }
@@ -39,10 +41,15 @@ HRESULT CUI_HpBar::Initialize()
 
 HRESULT CUI_HpBar::Start()
 {
-	GET_COMPONENT_FROM(m_pUI, CShader)->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResources, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_pUI, CShader)->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResources, this, placeholders::_1, "g_fHpValue");
+	for (_uint i = 0; i < HpBar::NAME_END; ++i)
+	{
+		CREATE_GAMEOBJECT(m_tHpBar.m_pUIInstance[i], GROUP_UI);
+	}
 
-	__super::Start();
+	GET_COMPONENT_FROM(m_tHpBar.m_pUIInstance[HpBar::Bar], CShader)
+		->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResources, this, placeholders::_1, "g_fValue");
+
+	__super::Start();	
 
 	return S_OK;
 }
@@ -52,7 +59,6 @@ void CUI_HpBar::My_Tick()
 	__super::My_Tick();
 
 	m_fValue += fDT(0) * 0.1f;
-	m_fHPValue -= fDT(0) * 0.5f;
 }
 
 void CUI_HpBar::My_LateTick()
@@ -62,6 +68,6 @@ void CUI_HpBar::My_LateTick()
 
 void CUI_HpBar::Set_ShaderResources(CShader* pShader, const char* pConstName)
 {
-	GET_COMPONENT_FROM(m_pUI, CShader)->Set_RawValue("g_fValue", &m_fValue, sizeof(_float));
-	GET_COMPONENT_FROM(m_pUI, CShader)->Set_RawValue("g_fHpValue", &m_fHPValue, sizeof(_float));
+	GET_COMPONENT_FROM(m_tHpBar.m_pUIInstance[HpBar::Bar], CShader)
+		->Set_RawValue("g_fValue", &m_fValue, sizeof(_float));
 }

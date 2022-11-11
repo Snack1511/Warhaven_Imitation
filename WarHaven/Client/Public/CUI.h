@@ -52,8 +52,6 @@ protected:
 	RECT m_tRect;
 	POINT m_ptMouse;
 
-	CTexture* m_pTexture = nullptr;
-
 	_float4 m_vColor = { 1.f, 1.f, 1.f, 1.f };
 
 protected:

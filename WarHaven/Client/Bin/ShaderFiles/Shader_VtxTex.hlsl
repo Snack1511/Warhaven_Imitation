@@ -171,15 +171,13 @@ PS_OUT PS_HPBAR(PS_IN In)
     
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    
     In.vTexUV.x -= g_fValue;
       
     vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vColor.xyz *= saturate(vNoise.r + 0.95f);
     Out.vColor.xyz *= saturate(vNormal.r + 0.95f);
-    
-    if (In.vTexUV.x >= g_fHpValue)
-        discard;
     
     if (Out.vColor.w < 0.01f)
         discard;
@@ -192,16 +190,36 @@ PS_OUT PS_RELIC(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-    
-    
+        
     In.vTexUV += g_fValue;
       
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
-        
-    // Out.vColor *= vNoise;
+            
+    if (Out.vColor.a < 0.01f)
+        discard;
+	
+    return Out;
+}
+
+PS_OUT PS_PORTEFFECT(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    In.vTexUV.y += g_fValue;
+    
+    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor.a = vNoise.r;
+    // Out.vColor.a *= vNormal;
+      
+    if (Out.vColor.r <= 0.01f)
+        discard;
     
     if (Out.vColor.a < 0.01f)
-        discard;   
+        discard;
 	
     return Out;
 }
@@ -537,7 +555,7 @@ PS_OUT PS_BOSSHP_MAIN(PS_IN In)
 
 PS_OUT PS_BLOODOVERLAY(PS_IN In)
 {
-    PS_OUT Out = (PS_OUT)0;
+    PS_OUT Out = (PS_OUT) 0;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -603,6 +621,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_RELIC();
+    }
+
+    pass UI_PortEffect
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PORTEFFECT();
     }
 
     pass UIColor

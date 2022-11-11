@@ -75,6 +75,8 @@ void CWarrior_Oxen::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimInd
 
     /* OwnerÀÇ Animator Set Idle·Î */
     __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+
+    // CUser::Get_Instance()->Turn_BloodOverLay();
 }
 
 STATE_TYPE CWarrior_Oxen::Tick(CUnit* pOwner, CAnimator* pAnimator)

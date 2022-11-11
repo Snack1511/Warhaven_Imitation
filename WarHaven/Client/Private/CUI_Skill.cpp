@@ -35,7 +35,7 @@ HRESULT CUI_Skill::Initialize_Prototype()
 	Read_Texture(tSkillHud.m_pUIInstance[SkillHud::ICON], "/HUD/Skill", "_");
 	Read_Texture(tSkillHud.m_pUIInstance[SkillHud::ICON], "/HUD/Relic", "Relic");
 
-	tSkillHud.m_pUIInstance[SkillHud::ICON]->SetTexture(TEXT("../Bin/Resources/Textures/UI/T_RelicIconMask.dds"));
+	tSkillHud.m_pUIInstance[SkillHud::ICON]->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/Relic/T_RelicIconMask.dds"));
 
 	Read_Texture(tSkillHud.m_pUIInstance[SkillHud::KEY], "/KeyIcon/Keyboard", "Key");
 
@@ -60,7 +60,7 @@ HRESULT CUI_Skill::Start()
 	for (_uint i = 0; i < SkillHud::NAME_END; ++i)
 	{
 		CREATE_GAMEOBJECT(tSkillHud.m_pUIInstance[i], GROUP_UI);
-		DISABLE_GAMEOBJECT(tSkillHud.m_pUIInstance[i]);
+		DELETE_GAMEOBJECT(tSkillHud.m_pUIInstance[i]);
 	}
 
 	for (int i = 0; i < 4; ++i)
@@ -68,47 +68,20 @@ HRESULT CUI_Skill::Start()
 		for (int j = 0; j < SkillHud::NAME_END; ++j)
 		{
 			CREATE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j]);
 		}
 	}
 
-	__super::Start();
+	GET_COMPONENT_FROM(m_arrSkillHud[0].m_pUIInstance[SkillHud::ICON], CShader)
+		->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
 
-	for (int i = 0; i < 4; ++i)
-	{
-		GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
-	}
+	__super::Start();
 
 	return S_OK;
 }
 
-void CUI_Skill::Set_ShaderResources(CShader* pShader, const char* pConstName)
-{
-}
-
 void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstName)
 {
-	for (int i = 0; i < 4; ++i)
-	{
-		CTexture* pTexture = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture);
-		m_iRelicIndex = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture)->Get_CurTextureIndex();
-
-		if (m_iRelicIndex == 29)
-		{
-			m_bIsRelic = true;
-
-			CTexture* pTexture = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture);
-			m_iRelicIndex = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CTexture)->Get_CurTextureIndex();
-
-			CShader* pShader = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CShader);
-			pShader->SetUp_ShaderResources(pTexture, "g_NoiseTexture");
-		}
-		else
-		{
-			m_bIsRelic = false;
-		}
-	}
-
 	pShader->Set_RawValue("g_fValue", &m_fRelicValue, sizeof(_float));
 }
 
@@ -230,26 +203,25 @@ void CUI_Skill::ActiveSkillBtn(_uint iIndex)
 	{
 		for (_uint j = 0; j < SkillHud::NAME_END; ++j)
 		{
-			DISABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j]);
 		}
 	}
 
 	for (_uint i = 0; i < iIndex; ++i)
 	{
-		float fPosX = 480.f - 55.f * i;
+		float fPosX = 480.f - (55.f * i);
+
+		CRenderer* pRenderer = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CRenderer);
+		pRenderer->Set_Pass(VTXTEX_PASS_UI_RELIC);
+
+		m_arrSkillHud[i].m_pUIInstance[SkillHud::BG]->Set_Sort(0.1f);
 
 		for (_uint j = 0; j < SkillHud::NAME_END; ++j)
 		{
-			CRenderer* pRenderer = GET_COMPONENT_FROM(m_arrSkillHud[i].m_pUIInstance[SkillHud::ICON], CRenderer);
-			pRenderer->Set_Pass(VTXTEX_PASS_UI_RELIC);
-
 			_float4 vPos = m_arrSkillHud[i].m_pUIInstance[j]->Get_Transform()->Get_World(WORLD_POS);
 			m_arrSkillHud[i].m_pUIInstance[j]->Set_Pos(fPosX, vPos.y);
 
-			if (j == 1)
-				m_arrSkillHud[i].m_pUIInstance[j]->Set_Sort(0.1f);
-
-			ENABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
+			ENABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j]);
 		}
 	}
 }
@@ -281,7 +253,7 @@ void CUI_Skill::Set_SkillIcon(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool 
 	else
 	{
 		_float4 vScale = m_arrSkillHud[iIndex].m_pUIInstance[SkillHud::KEY]->Get_Transform()->Get_Scale();
-		m_arrSkillHud[iIndex].m_pUIInstance[SkillHud::KEY]->Set_Scale(21.f, vScale.y);
+		m_arrSkillHud[iIndex].m_pUIInstance[SkillHud::KEY]->Set_Scale(20.f);
 
 		GET_COMPONENT_FROM(m_arrSkillHud[iIndex].m_pUIInstance[SkillHud::KEY], CTexture)->Set_CurTextureIndex(iKeyIdx);
 	}
@@ -293,23 +265,15 @@ void CUI_Skill::My_Tick()
 {
 	__super::My_Tick();
 
-	static int iIndex = 0;
-
-	if (KEY(E, TAP))
+	if (KEY(T, TAP))
 	{
+		static int iIndex = 0;
 		iIndex++;
 		if (iIndex >= 10)
 			iIndex = 0;
-	}
 
-	if (KEY(Q, TAP))
-	{
-		iIndex--;
-		if (iIndex < 0)
-			iIndex = 9;
+		Set_SkillUI(iIndex);
 	}
-
-	Set_SkillUI(iIndex);
 
 	m_fRelicValue += fDT(0);
 }

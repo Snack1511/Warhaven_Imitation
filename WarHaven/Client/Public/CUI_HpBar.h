@@ -8,6 +8,12 @@ class CUI_HpBar : public CUI_Wrapper
 	DECLARE_PROTOTYPE(CUI_HpBar);
 	DECLARE_GAMEOBJECT(CUI_HpBar);
 
+	typedef struct tagHpBarHud
+	{
+		enum SKILLHUDNAME { BG, Bar, NAME_END };
+		CUI_Object* m_pUIInstance[NAME_END] = {};
+	}HpBar;
+
 private:
 	CUI_HpBar();
 	CUI_HpBar(const CUI_HpBar& Prototype);
@@ -26,9 +32,9 @@ public:
 	void Set_ShaderResources(CShader* pShader, const char* pConstName);
 
 private:
-	_float m_fValue = 0.f;
+	HpBar m_tHpBar;
 
-	_float m_fHPValue = 1.f;
+	_float m_fValue = 0.f;
 };
 
 END

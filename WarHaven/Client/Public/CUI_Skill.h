@@ -33,7 +33,6 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	virtual void Set_ShaderResources(CShader* pShader, const char* pConstName);
 	virtual void Set_ShaderResources_Relic(CShader* pShader, const char* pConstName);
 
 public:

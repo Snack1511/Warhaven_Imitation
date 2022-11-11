@@ -19,11 +19,10 @@ CUI_HeroGauge::~CUI_HeroGauge()
 
 HRESULT CUI_HeroGauge::Initialize_Prototype()
 {
-	m_wstrName = TEXT("HeroGauge");
+	Read_UI("HeroGauge");
 
-	__super::Initialize_Prototype();
-
-	GET_COMPONENT_FROM(m_pUI, CRenderer)->Set_Pass(VTXTEX_PASS_UI_HeroGauge);
+	m_tHeroGauge.m_pUIInstance[HeroGauge::BG] = m_pUIMap[TEXT("HeroGaugeBG")];
+	m_tHeroGauge.m_pUIInstance[HeroGauge::Gauge] = m_pUIMap[TEXT("HeroGauge")];
 
 	return S_OK;
 }
@@ -35,9 +34,17 @@ HRESULT CUI_HeroGauge::Initialize()
 
 HRESULT CUI_HeroGauge::Start()
 {
+	for (_uint i = 0; i < HeroGauge::NAME_END; ++i)
+	{
+		CREATE_GAMEOBJECT(m_tHeroGauge.m_pUIInstance[i], GROUP_UI);
+	}
+	CRenderer* pRenderer = GET_COMPONENT_FROM(m_tHeroGauge.m_pUIInstance[HeroGauge::Gauge], CRenderer);
+	pRenderer->Set_Pass(VTXTEX_PASS_UI_HeroGauge);
+
 	__super::Start();
 
-	GET_COMPONENT_FROM(m_pUI, CShader)->CallBack_SetRawValues += bind(&CUI_HeroGauge::Set_ShaderResources, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_tHeroGauge.m_pUIInstance[HeroGauge::Gauge], CShader)
+		->CallBack_SetRawValues += bind(&CUI_HeroGauge::Set_ShaderResources, this, placeholders::_1, "g_fValue");
 
 	return S_OK;
 }
@@ -45,7 +52,6 @@ HRESULT CUI_HeroGauge::Start()
 void CUI_HeroGauge::My_Tick()
 {
 	__super::My_Tick();
-
 
 	// 게이지가 점점 증가하며 최대값이 됐을 경우 불 이펙트
 
@@ -99,5 +105,6 @@ void CUI_HeroGauge::My_LateTick()
 
 void CUI_HeroGauge::Set_ShaderResources(CShader* pShader, const char* pConstName)
 {
-	GET_COMPONENT_FROM(m_pUI, CShader)->Set_RawValue("g_fValue", &m_fGaugeValue, sizeof(_float));
+	GET_COMPONENT_FROM(m_tHeroGauge.m_pUIInstance[HeroGauge::Gauge], CShader)
+		->Set_RawValue("g_fValue", &m_fGaugeValue, sizeof(_float));
 }

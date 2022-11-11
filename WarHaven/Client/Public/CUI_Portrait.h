@@ -10,7 +10,7 @@ class CUI_Portrait final : public CUI_Wrapper
 
 	typedef struct tagPortraitHud
 	{
-		enum SKILLHUDNAME { BG, Port, NAME_END };
+		enum SKILLHUDNAME { BG, Port, Key, Effect, NAME_END };
 		CUI_Object* m_pUIInstance[NAME_END] = {};
 	}Portrait;
 
@@ -25,6 +25,9 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	void Set_ShaderEffect(CShader* pShader, const char* constName);
+
+public:
 	void Set_Portrait(_uint iIndex);
 
 protected:
@@ -35,11 +38,13 @@ private:
 	Portrait m_tPort;
 	Portrait m_arrtPort[5];
 
-	// 스몰이랑 빅 배경
-	// 스몰 오끝 480 -230
-	// 빅 -580 -280
+	_float m_fEffectValue = 0.f;
 
-	// 포트는 알지?
+private:
+	void Enable_Portrait();
+
+	void Set_Pass();
+	void Bind_Sahder();
 
 	// 히어로 포트는 돌면서 들어감, 나타남
 
