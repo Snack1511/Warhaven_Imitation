@@ -391,6 +391,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay">
       <UniqueIdentifier>{1fc27a28-399a-464b-8f29-f80d90014dcf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Skill">
+      <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -687,6 +690,9 @@
     <ClInclude Include="..\Public\CBloodOverlay.h">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Skill.h">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Skill</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -963,6 +969,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CBloodOverlay.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Skill.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

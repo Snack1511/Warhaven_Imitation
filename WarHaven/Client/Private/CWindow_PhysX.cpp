@@ -37,7 +37,7 @@ HRESULT CWindow_PhysX::Initialize()
 	//window_flags |= ImGuiWindowFlags_MenuBar;
 	window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
 
-	m_bEnable = true;
+	m_bEnable = false;
 	SetUp_ImGuiDESC(typeid(CWindow_PhysX).name(), ImVec2(400.f, 600.f), window_flags);
 
 	return S_OK;

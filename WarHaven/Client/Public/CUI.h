@@ -32,6 +32,7 @@ public:
 	void Set_Scale(_float fX, _float fY);
 
 public:
+	// ÄÄÆ÷³ÍÆ®
 	HRESULT SetTexture(const _tchar* pFilePath, _uint iIndex = 1);
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
@@ -39,9 +40,10 @@ public:
 	_float4 Get_Color() { return m_vColor; }
 	void Set_Color(_float4 vColor) { m_vColor = vColor; }
 
-	POINT Get_MousePos() { return m_ptMouse; }
-
-	RECT  GET_Rect() { return m_tRect; }
+public:
+	_float Get_Sort() { return m_vPosition.z; }
+	void Set_Sort(_float value);
+	
 
 protected:
 	_float4 m_vPosition;

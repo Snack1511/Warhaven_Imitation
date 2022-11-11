@@ -14,6 +14,7 @@ class ENGINE_DLL CTransform final
 
 private:
 	CTransform(_uint iGroupID);
+	CTransform(const CTransform& rhs);
 	virtual ~CTransform();
 
 public:

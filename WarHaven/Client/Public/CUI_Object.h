@@ -22,6 +22,7 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	// 멀티 텍스쳐
 	void Set_Texture(const _tchar* pFilePath);
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 

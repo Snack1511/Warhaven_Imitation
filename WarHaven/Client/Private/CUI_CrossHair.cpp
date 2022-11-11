@@ -39,4 +39,3 @@ HRESULT CUI_Crosshair::Start()
 
 	return S_OK;
 }
-

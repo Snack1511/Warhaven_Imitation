@@ -1,6 +1,8 @@
 #include "CUI_Portrait.h"
 #include "CUI_Object.h"
 #include "Texture.h"
+#include "CUnit.h"
+#include "GameInstance.h"
 
 CUI_Portrait::CUI_Portrait()
 {
@@ -25,8 +27,6 @@ HRESULT CUI_Portrait::Initialize_Prototype()
 
 	GET_COMPONENT_FROM(m_pUI, CTexture)->Remove_Texture(0);
 
-	m_eType = CLASS_FIONA;
-
 	return S_OK;
 }
 
@@ -37,50 +37,69 @@ HRESULT CUI_Portrait::Initialize()
 
 HRESULT CUI_Portrait::Start()
 {
-	// 함수로 뺴ㅃ시다
-
-	switch (m_eType)
-	{
-	case CLASS_WARRIOR:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_WARRIOR);
-		break;
-	case CLASS_SPEAR:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_SPEAR);
-		break;
-	case CLASS_ARCHER:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_ARCHER);
-		break;
-	case CLASS_PALADIN:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_PALADIN);
-		break;
-	case CLASS_PRIEST:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_PRIEST);
-		break;
-	case CLASS_ENGINEER:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_ENGINEER);
-		break;
-	case CLASS_FIONA:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_FIONA);
-		break;
-	case CLASS_QANDA:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_QANDA);
-		break;
-	case CLASS_HOEDT:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_HOEDT);
-		break;
-	case CLASS_LANCER:
-		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(CLASS_LANCER);
-		break;
-	}
-
 	__super::Start();
 
 	return S_OK;
 }
 
+void CUI_Portrait::Set_Portrait(_uint iIndex)
+{
+	switch (iIndex)
+	{
+	case CUnit::CLASS_WARRIOR:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	case CUnit::CLASS_SPEAR:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	case CUnit::CLASS_ARCHER:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	case CUnit::CLASS_PALADIN:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	case CUnit::CLASS_PRIEST:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	case CUnit::CLASS_ENGINEER:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	case CUnit::CLASS_FIONA:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	case CUnit::CLASS_QANDA:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	case CUnit::CLASS_HOEDT:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	case CUnit::CLASS_LANCER:
+		GET_COMPONENT_FROM(m_pUI, CTexture)->Set_CurTextureIndex(iIndex);
+		break;
+	}
+}
+
 void CUI_Portrait::My_Tick()
 {
 	__super::My_Tick();
+
+	static int iIndex = 0;
+
+	if (KEY(E, TAP))
+	{
+		iIndex++;
+		if (iIndex >= 10)
+			iIndex = 0;
+	}
+
+	if (KEY(Q, TAP))
+	{
+		iIndex--;
+		if (iIndex < 0)
+			iIndex = 9;
+	}
+
+	Set_Portrait(iIndex);
 }
 
 void CUI_Portrait::My_LateTick()

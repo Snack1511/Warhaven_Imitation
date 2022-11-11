@@ -62,8 +62,12 @@ void CUI_Cursor::My_Tick()
 
 	CheckInRect();
 
-	_float4 vPos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
-	Set_Pos(vPos.x, -vPos.y);
+	_float fFixPosX = 11.f;
+	_float fFixPosY = 13.f;
+
+	_float4 vPos = CFunctor::To_Window(_float4(m_ptMouse.x + fFixPosX, m_ptMouse.y + fFixPosY, 0.f));
+
+	Set_Pos(vPos.x , -vPos.y);
 
 	if (KEY(LBUTTON, HOLD))
 	{

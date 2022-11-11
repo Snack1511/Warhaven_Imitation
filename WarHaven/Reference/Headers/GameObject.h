@@ -129,7 +129,8 @@ private:
 	/* Only Event_Manager can set this dead. */
 	friend class CEvent_Manager;
 	void	Set_Dead() { m_bAlive = false; Call_Dead(); }
-	void	Destroy_Instance() { delete this; }
+
+ 	void	Destroy_Instance() { delete this; }
 };
 
 END

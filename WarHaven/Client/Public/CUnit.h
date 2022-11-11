@@ -20,6 +20,22 @@ class CUnit abstract
 	: public CGameObject
 {
 public:
+	enum CLASS_TYPE
+	{
+		CLASS_WARRIOR,
+		CLASS_SPEAR,
+		CLASS_ARCHER,
+		CLASS_PALADIN,
+		CLASS_PRIEST,
+		CLASS_ENGINEER,
+		CLASS_FIONA,
+		CLASS_QANDA,
+		CLASS_HOEDT,
+		CLASS_LANCER,
+		CLASS_END
+	};
+
+public:
 	struct UNIT_STATUS
 	{
 		WEAPON_TYPE eWeapon;

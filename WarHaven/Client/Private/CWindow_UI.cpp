@@ -36,11 +36,11 @@ HRESULT CWindow_UI::Initialize()
 	ImGuiWindowFlags window_flags = 0;
 	//window_flags |= ImGuiWindowFlags_MenuBar;
 	// window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
-	window_flags |= ImGuiWindowFlags_NoResize;
+	// window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 
 	m_bEnable = false;
-	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(300.f, 250.f), window_flags);
+	SetUp_ImGuiDESC(typeid(CWindow_UI).name(), ImVec2(300.f, 350.f), window_flags);
 
 	// 유아이 리소스
 	m_TextureRootNode.strFolderPath = "../bin/resources/textures";
@@ -97,7 +97,10 @@ void CWindow_UI::Create_UI()
 	ImGui::SameLine();
 
 	if (ImGui::Button("Clone UI"))
-		Clone_UI();
+	{
+		string key = CFunctor::To_String(m_pSelectUI->Get_Name());
+		Load_UI_Info(key);
+	}
 }
 
 CUI_Object* CWindow_UI::Add_UI()
@@ -112,21 +115,6 @@ CUI_Object* CWindow_UI::Add_UI()
 	m_vecUI.push_back(tItem);
 
 	return pUI;
-}
-
-CUI_Object* CWindow_UI::Clone_UI()
-{
-	CUI_Object* pUI_Clone = m_vecUI[m_iSelectIndex].pUI->Clone();
-
-	CREATE_GAMEOBJECT(pUI_Clone, GROUP_UI);
-
-	UI_Object tItem;
-	tItem.pUI = pUI_Clone;
-	tItem.bSelected = false;
-
-	m_vecUI.push_back(tItem);
-
-	return pUI_Clone;
 }
 
 void CWindow_UI::Show_UIList()
@@ -213,18 +201,14 @@ void CWindow_UI::Set_Object_Info()
 	if (!pUI)
 		return;
 
-	if (ImGui::CollapsingHeader("Name"))
-	{
-		static char szBuf[MIN_STR] = "Name";
-		string strName = CFunctor::To_String(pUI->Get_Name());
-		
-		strcpy_s(szBuf, strName.c_str());
+	static char szBuf[MIN_STR] = "Name";
+	string strName = CFunctor::To_String(pUI->Get_Name());
 
-		if (ImGui::InputText("UI_Object", szBuf, IM_ARRAYSIZE(szBuf), ImGuiInputTextFlags_EnterReturnsTrue))
-		{
-			strName = szBuf;
-			pUI->Set_Name(CFunctor::To_Wstring(strName));
-		}
+	strcpy_s(szBuf, strName.c_str());
+
+	if (ImGui::InputText("UI_Object", szBuf, IM_ARRAYSIZE(szBuf), ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		pUI->Set_Name(CFunctor::To_Wstring(szBuf));
 	}
 
 	if (ImGui::CollapsingHeader("Transform"))
@@ -285,39 +269,20 @@ void CWindow_UI::Set_Object_Info()
 
 	if (ImGui::CollapsingHeader("Etc"))
 	{
-		if (ImGui::TreeNode("Mouse Interact"))
-		{
-			bool bIsTarget = pUI->Get_MouseTarget();
-			ImGui::Checkbox("True", &bIsTarget);
-			pUI->Set_MouseTarget(bIsTarget);
+		_float fSort = pUI->Get_Sort();
+		ImGui::DragFloat("Sort", &fSort, 0.1f, 0.f, 1.f, "%.1f");
+		pUI->Set_Sort(fSort);
 
-			ImGui::TreePop();
-		}
+		bool bIsTarget = pUI->Get_MouseTarget();
+		ImGui::Checkbox("Mouse Target", &bIsTarget);
+		pUI->Set_MouseTarget(bIsTarget);
 
-		if (ImGui::TreeNode("Multi Texture"))
-		{
-			bool bIsMulti = pUI->Get_MultiTexture();
-			ImGui::Checkbox("True", &bIsMulti);
-			pUI->Set_MultiTexture(bIsMulti);
+		bool bIsMulti = pUI->Get_MultiTexture();
+		ImGui::Checkbox("Multi Texture", &bIsMulti);
+		pUI->Set_MultiTexture(bIsMulti);
 
-			ImGui::TreePop();
-		}
-	}
-
-	ImGui::NewLine();
-
-	Set_Color();
-}
-
-void CWindow_UI::Set_Color()
-{
-	if (ImGui::CollapsingHeader("Color"))
-	{
-		CUI_Object* pUI = m_vecUI[m_iSelectIndex].pUI;
-
-		static _float4 vColor(1.0f, 1.0f, 1.0f, 1.0f);
+		_float4 vColor = pUI->Get_Color();
 		ImGui::ColorEdit4("Color", (_float*)&vColor);
-
 		pUI->Set_Color(vColor);
 	}
 }
@@ -336,18 +301,24 @@ void CWindow_UI::Show_Texture()
 
 void CWindow_UI::UI_IO()
 {
-	if (ImGui::CollapsingHeader("I/O"))
-	{
-		if (ImGui::Button("Select Save"))
-			Save_UI_Info(m_iSelectIndex);
+	ImGui::Text("= I/O =");
 
-		if (ImGui::Button("All Save"))
-			Save_UI_List();
+	static char szKey[MIN_STR] = "Bin";
+	ImGui::InputText("Input Bin File", szKey, IM_ARRAYSIZE(szKey));
+	string strName = szKey;
 
-		ImGui::SameLine();
-		if (ImGui::Button("All Load"))
-			Load_UI_List();
-	}
+	if (ImGui::Button("UI Load"))
+		Load_UI_Info(strName);
+
+	if (ImGui::Button("Select Save"))
+		Save_UI_Info(m_iSelectIndex);
+
+	if (ImGui::Button("All Save"))
+		Save_UI_List();
+
+	ImGui::SameLine();
+	if (ImGui::Button("All Load"))
+		Load_UI_List();
 
 	ImGui::NewLine();
 }
@@ -397,6 +368,9 @@ void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
 		CUtility_File::Write_Text(&writeFile, strFilePath.c_str());
 	}
 
+	_float fSort = pUI->Get_Sort();
+	writeFile.write((char*)&fSort, sizeof(_float));
+
 	writeFile.close();
 }
 
@@ -406,6 +380,61 @@ void CWindow_UI::Save_UI_List()
 		Save_UI_Info(i);
 
 	Call_MsgBox(L"UI_List Save Succes");
+}
+
+void CWindow_UI::Load_UI_Info(string key)
+{
+	string readPath = "../Bin/Data/UIData/";
+	readPath += key;
+	readPath += ".bin";
+
+	ifstream readFile(readPath, ios::binary);
+
+	if (!readFile.is_open())
+	{
+		Call_MsgBox(L"UI Load Failed");
+		return;
+	}
+
+	CUI_Object* pUI = Add_UI();
+
+	string strName = CUtility_File::Read_Text(&readFile);
+	pUI->Set_Name(CFunctor::To_Wstring(strName));
+
+	_float4 vPos;
+	readFile.read((char*)&vPos, sizeof(_float4));
+	pUI->Set_Pos(vPos.x, vPos.y);
+
+	_float4 vScale;
+	readFile.read((char*)&vScale, sizeof(_float4));
+	pUI->Set_Scale(vScale.x, vScale.y);
+
+	_bool bTarget = false;
+	readFile.read((char*)&bTarget, sizeof(_bool));
+	pUI->Set_MouseTarget(bTarget);
+
+	_bool bMulti = false;
+	readFile.read((char*)&bMulti, sizeof(_bool));
+	pUI->Set_MultiTexture(bMulti);
+
+	_float4 vColor;
+	readFile.read((char*)&vColor, sizeof(_float4));
+	pUI->Set_Color(vColor);
+
+	_uint iMaxSize = 0;
+	readFile.read((char*)&iMaxSize, sizeof(_uint));
+
+	for (_uint i = 0; i < iMaxSize; ++i)
+	{
+		string strPath = CUtility_File::Read_Text(&readFile);
+		pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
+	}
+
+	_float fSort = pUI->Get_Sort();
+	readFile.read((char*)&fSort, sizeof(_float));
+	pUI->Set_Sort(fSort);
+
+	readFile.close();
 }
 
 void CWindow_UI::Load_UI_List()
@@ -456,6 +485,10 @@ void CWindow_UI::Load_UI_List()
 				string strPath = CUtility_File::Read_Text(&readFile);
 				pUI->Set_Texture(CFunctor::To_Wstring(strPath).c_str());
 			}
+
+			_float fSort = pUI->Get_Sort();
+			readFile.read((char*)&fSort, sizeof(_float));
+			pUI->Set_Sort(fSort);
 
 			readFile.close();
 		}
