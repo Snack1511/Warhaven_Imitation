@@ -663,9 +663,6 @@
     <ClInclude Include="..\Public\CWalk_Player_L.h">
       <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk\02. Left</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CIdle_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CRun_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\03. Run</Filter>
     </ClInclude>
@@ -936,9 +933,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CIdle_Player_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle\01. Right</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\StudyFiles\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CIdle_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\01. Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWalk_Player_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Base_L\01. Warrior\01. Player\02. Walk\01. Right</Filter>

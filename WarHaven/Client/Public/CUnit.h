@@ -98,7 +98,7 @@ public:
 
 
 public:
-	void	Enter_State(STATE_TYPE eType, ANIM_TYPE eAnimType);
+	void	Enter_State(STATE_TYPE eType);
 
 
 public:

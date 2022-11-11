@@ -71,6 +71,7 @@ HRESULT CWarrior_Oxen::Initialize()
 
 void CWarrior_Oxen::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
 {
+    pOwner->TurnOn_TrailEffect(true);
 
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, iPreAnimIndex);
@@ -156,6 +157,8 @@ STATE_TYPE CWarrior_Oxen::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CWarrior_Oxen::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+    pOwner->TurnOn_TrailEffect(false);
+
 }
 
 STATE_TYPE CWarrior_Oxen::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

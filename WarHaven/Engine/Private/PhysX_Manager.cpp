@@ -3,6 +3,7 @@
 
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
+//#define	YJ_DEBUG
 
 CPhysX_Manager::CPhysX_Manager()
 {
@@ -19,14 +20,19 @@ HRESULT CPhysX_Manager::Initialize()
 	m_pFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_Allocator, m_ErrorCallback);
 
 	// Create PVD
+#ifdef YJ_DEBUG
 	char	strTransport[MIN_STR] = "127.0.0.1";
 	m_pPVD = PxCreatePvd(*m_pFoundation);
-	PxPvdTransport*	Transport = PxDefaultPvdSocketTransportCreate(strTransport, 5425, 10);
+	PxPvdTransport* Transport = PxDefaultPvdSocketTransportCreate(strTransport, 5425, 10);
 	_bool	bPVDConnectionResult = m_pPVD->connect(*Transport, PxPvdInstrumentationFlag::eALL);
+
 	if (!bPVDConnectionResult)
 	{
 		Call_MsgBox(L"Faiied to connect to PVD!");
 	}
+#endif // YJ_EDEBUG
+
+	
 
 	// Create PhysX
 	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, PxTolerancesScale(), true, m_pPVD);

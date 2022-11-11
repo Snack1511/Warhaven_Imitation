@@ -197,7 +197,6 @@
     <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\public\CEffects_Factory.h" />
     <ClInclude Include="..\Public\CGame_Manager_JJ.h" />
-    <ClInclude Include="..\Public\CIdle_Player.h" />
     <ClInclude Include="..\public\CIdle_Player_L.h" />
     <ClInclude Include="..\public\CFader.h" />
     <ClInclude Include="..\Public\CIdle_Player_R.h" />
@@ -372,7 +371,6 @@
     <ClCompile Include="..\Private\ImGui_Manager.cpp" />
     <ClCompile Include="..\Private\Loading_Manager.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
-    <ClCompile Include="C:\StudyFiles\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CIdle_Player.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
