@@ -40,6 +40,8 @@ HRESULT CPhysX_Manager::Initialize()
 	// Create Cooking
 	m_pCooking = PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, PxCookingParams(PxTolerancesScale()));
 
+
+
 	// Crate Material
 	// 충돌체 정지 마찰계수, 운동 마찰 계수, 탄성력
 	m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, -10.f);
@@ -188,6 +190,27 @@ void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMate
 
 }
 
+void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, PxController** ppOut)
+{
+	PxCapsuleControllerDesc	tCCD;
+	tCCD.radius = fRadius;
+	tCCD.height = fHeight;
+	tCCD.material = m_pMaterial;
+
+	*ppOut = m_pPxControllerManager->createController(tCCD);
+}
+
+void CPhysX_Manager::Create_PxControllerManager(Scene eScene)
+{
+	if (!m_pScenes[eScene])
+		return;
+
+	if (m_pPxControllerManager)
+		return;
+
+	m_pPxControllerManager = PxCreateControllerManager(*m_pScenes[eScene]);
+}
+
 void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh ** ppOut)
 {
 	_uint	iNumVerts = 32;
@@ -220,7 +243,7 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 
 void CPhysX_Manager::Release()
 {
-
+	Safe_release(m_pPxControllerManager);
 
 	for (_uint i = 0; i < SCENE_END; ++i)
 	{

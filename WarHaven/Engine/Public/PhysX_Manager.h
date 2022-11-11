@@ -55,6 +55,14 @@ public:
 	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
 	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, PxShape ** ppOut);
 
+	void			Create_CapsuleController(_float fRadius, _float fHeight, PxController** ppOut);
+
+	void			Create_PxControllerManager(Scene eScene);
+	
+
+private:
+	PxControllerManager* m_pPxControllerManager = nullptr;
+
 private:
 	// Foundation을 생성하는데 필요한 변수
 	PxDefaultAllocator		m_Allocator;
