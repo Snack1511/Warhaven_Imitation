@@ -476,16 +476,29 @@ _bool CInstancingEffects::Fade_Lerp(_uint iIndex)
 		}
 		else
 		{
-			_float fRatio = m_pInstancingDatas[iIndex].fTimeAcc / m_pInstancingDatas[iIndex].fFadeOutTime;
+			_float fRatio = 0.f;
+			if (0 < m_pInstancingDatas[iIndex].fDissolveEndTime) //animation dissolve ÀÎ °æ¿ì
+			{
+				fRatio = m_pInstancingDatas[iIndex].fTimeAcc / (m_pInstancingDatas[iIndex].fDissolveEndTime - m_pInstancingDatas[iIndex].fFadeOutStartTime);
+				fRatio = fabs(fRatio);
+			}
+			else
+			{
+				fRatio = m_pInstancingDatas[iIndex].fTimeAcc / m_pInstancingDatas[iIndex].fFadeOutTime;
+			}
+
 			if (m_bSoft)
 				fRatio = sqrtf(fRatio);
 
 			m_pInstancingDatas[iIndex].vScale =
 				XMVectorLerp(m_pInstancingDatas[iIndex].vOriginScale.XMLoad(), m_pInstancingDatas[iIndex].vFadeOutTargetScale.XMLoad(), fRatio);
 
-			
+
 
 			m_pInstancingDatas[iIndex].vColor.w = m_pInstancingDatas[iIndex].fTargetAlpha * (1.f - fRatio);
+
+			if (0.01f > (1.f - fRatio))
+				int i = 1;
 		}
 
 		break;

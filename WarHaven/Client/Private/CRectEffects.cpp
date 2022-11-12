@@ -307,19 +307,18 @@ HRESULT CRectEffects::Initialize()
 		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
-
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
 		{
-
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
-		{
-
+		{		
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
+
+			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration;
 		}
 		//
 
@@ -620,6 +619,7 @@ void CRectEffects::Dead_Instance(_uint iIndex)
 		else if(m_fLoopTimeAcc > m_fLoopTime)
 		{
 			//m_fLoopTimeAcc = 0.f;
+			//m_pInstancingDatas[iIndex].fTimeAcc = 0.f;
 			m_pInstancingDatas[iIndex].bAlive = false;
 			m_iNumDead++;
 			m_pRectInstances[iIndex].vColor.w = 0.f;
@@ -780,6 +780,15 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 
 void CRectEffects::Update_Animation(_uint iIndex)
 {
+	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+	{
+		m_pInstancingDatas[iIndex].fDissolveAcc += fDT(0);
+	}
+	m_pInstancingDatas[iIndex].fDissolveEndTime;
+
+
+
+
 	m_pInstancingDatas[iIndex].vTurnDir.y += fDT(0);
 
 	//UV넘기는 코드
@@ -795,6 +804,7 @@ void CRectEffects::Update_Animation(_uint iIndex)
 			m_pRectInstances[iIndex].vColor.y += 1.f;
 			if (m_pRectInstances[iIndex].vColor.y >= m_iHeightSize)
 			{
+				m_pInstancingDatas[iIndex].fDissolveAcc = 0.f;
 				//여기 들어왔다 : 한바퀴돌아서 1순한거임
 				m_pRectInstances[iIndex].vColor.x = m_iWidthSize - 1;
 				m_pRectInstances[iIndex].vColor.y = m_iHeightSize - 1;

@@ -295,6 +295,11 @@ PS_OUT PS_ANIMATION_DISSOLVE_MAIN(PS_IN In)
 		discard;
 
 
+	Out.vDiffuse.a *= In.vColor.a;
+
+	if (Out.vDiffuse.a < 0.01f)
+		discard;
+
 	//내 알파가 이녀석 r보다 더 크면
 	if (vDissolveDesc.r > Out.vDiffuse.a)
 		Out.vDiffuse.a = 0;

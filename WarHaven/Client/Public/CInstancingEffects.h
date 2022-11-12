@@ -110,6 +110,9 @@ public:
 		_float	fScaleLerpTime;
 		_float	fFadeOutScaleLerpStartTime;
 
+		_float	fDissolveAcc = 0.f;
+		_float	fDissolveStartTime;
+		_float	fDissolveEndTime;
 
 		_float4x4 StartMatrix;
 		_float4	vStartScale;
