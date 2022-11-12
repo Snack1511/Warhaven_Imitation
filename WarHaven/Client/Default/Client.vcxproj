@@ -197,6 +197,7 @@
     <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\public\CEffects_Factory.h" />
     <ClInclude Include="..\Public\CGame_Manager_JJ.h" />
+    <ClInclude Include="..\Public\CGuard_Begin_Player.h" />
     <ClInclude Include="..\Public\CGuard_End_Player.h" />
     <ClInclude Include="..\Public\CGuard_Cancel_Player.h" />
     <ClInclude Include="..\Public\CGuard_Loop_Player.h" />
@@ -231,7 +232,6 @@
     <ClInclude Include="..\Public\CSlide_Loop_Player.h" />
     <ClInclude Include="..\Public\CSlide_Begin_Player.h" />
     <ClInclude Include="..\Public\CSlide_Player.h" />
-    <ClInclude Include="..\Public\CGuard_Player_Begin.h" />
     <ClInclude Include="..\Public\CSprintAttack_Player_Begin.h" />
     <ClInclude Include="..\Public\CSprintAttack_Player.h" />
     <ClInclude Include="..\Public\CSprint_Jump_Fall_Player.h" />
@@ -330,6 +330,7 @@
     <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\private\CEffects_Factory.cpp" />
     <ClCompile Include="..\Private\CGame_Manager_JJ.cpp" />
+    <ClCompile Include="..\Private\CGuard_Begin_Player.cpp" />
     <ClCompile Include="..\Private\CGuard_End_Player.cpp" />
     <ClCompile Include="..\Private\CGuard_Cancel_Player.cpp" />
     <ClCompile Include="..\Private\CGuard_Loop_Player.cpp" />
@@ -365,7 +366,6 @@
     <ClCompile Include="..\Private\CSlide_End_Player.cpp" />
     <ClCompile Include="..\Private\CSlide_Begin_Player.cpp" />
     <ClCompile Include="..\Private\CSlide_Player.cpp" />
-    <ClCompile Include="..\Private\CGuard_Player_Begin.cpp" />
     <ClCompile Include="..\Private\CSprintAttack_Player_Begin.cpp" />
     <ClCompile Include="..\Private\CSprint_End.cpp" />
     <ClCompile Include="..\Private\CSprint_Begin.cpp" />

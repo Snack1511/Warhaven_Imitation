@@ -137,10 +137,10 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_SPRINTATTACK_PLAYER] = CSprintAttack_Player::Create();
 
 	
-	m_arrStates[STATE_GUARD_BEGIN_PLAYER] = CSprintAttack_Player::Create();
-	m_arrStates[STATE_GUARD_LOOP_PLAYER] = CSprintAttack_Player::Create();
-	m_arrStates[STATE_GUARD_END_PLAYER] = CSprintAttack_Player::Create();
-	m_arrStates[STATE_GUARD_CANCEL_PLAYER] = CSprintAttack_Player::Create();
+	m_arrStates[STATE_GUARD_BEGIN_PLAYER] = CGuard_Begin_Player::Create();
+	m_arrStates[STATE_GUARD_LOOP_PLAYER] = CGuard_Loop_Player::Create();
+	m_arrStates[STATE_GUARD_END_PLAYER] = CGuard_End_Player::Create();
+	m_arrStates[STATE_GUARD_CANCEL_PLAYER] = CGuard_Cancel_Player::Create();
 
 
 	

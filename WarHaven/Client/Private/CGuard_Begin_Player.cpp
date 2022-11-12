@@ -73,6 +73,8 @@ STATE_TYPE CGuard_Begin_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 	1. 스프린트 공격 준비가 끝나면
     */
 
+
+
 	if (KEY(RBUTTON, TAP))
 		return m_eStateType;
    
