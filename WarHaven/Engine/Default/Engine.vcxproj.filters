@@ -235,6 +235,9 @@
     <Filter Include="04. Module\Utility_PhysX">
       <UniqueIdentifier>{9cbe3caa-909a-4656-9e4c-b1be611b87f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\03. Component\03. Renderer\TerrainRenderer">
+      <UniqueIdentifier>{06bdda19-c2ba-43e1-bc92-13b8e2c21d32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
@@ -446,6 +449,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CUtility_PhysX.cpp">
       <Filter>04. Module\Utility_PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrain_Renderer.cpp">
+      <Filter>03. Instances\03. Component\03. Renderer\TerrainRenderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -679,6 +685,9 @@
     </ClInclude>
     <ClInclude Include="..\public\CUtility_PhysX.h">
       <Filter>04. Module\Utility_PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTerrain_Renderer.h">
+      <Filter>03. Instances\03. Component\03. Renderer\TerrainRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

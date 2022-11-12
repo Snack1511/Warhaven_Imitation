@@ -52,6 +52,14 @@ void CTexture::Set_ShaderResource(CShader* pShader, const char* pConstantName, _
 	pShader->Set_ShaderResourceView(pConstantName, m_SRVs[iIdx].pSRV);
 }
 
+void CTexture::Set_ShaderResourceArray(CShader* pShader, const char* pConstantName)
+{
+	vector<ComPtr<ID3D11ShaderResourceView>> ArrSRV;
+	for (vector<TEXTUREDESC>::value_type& Value : m_SRVs)
+		ArrSRV.push_back(Value.pSRV);
+	pShader->Set_ShaderResourceViewArray(pConstantName, ArrSRV);
+}
+
 HRESULT CTexture::Add_Texture(const _tchar* pTextureFilePath, _bool bFront)
 {
 	TEXTUREDESC	tDesc;
