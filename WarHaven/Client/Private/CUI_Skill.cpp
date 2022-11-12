@@ -301,11 +301,11 @@ void CUI_Skill::Enable_Outline()
 		{
 			if (i != m_iBtnCount - 1)
 			{
-				m_arrSkillUI[i][Outline1]->Lerp_Scale(75.f, 50.f, m_fLeprSpeed);
+				m_arrSkillUI[i][Outline1]->Lerp_Scale(95.f, 50.f, m_fLeprSpeed);
 				ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
 
 				ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
-				m_arrSkillUI[i][Outline2]->Lerp_Scale(125.f, 50.f, m_fLeprSpeed);
+				m_arrSkillUI[i][Outline2]->Lerp_Scale(150.f, 50.f, m_fLeprSpeed);
 			}
 		}
 

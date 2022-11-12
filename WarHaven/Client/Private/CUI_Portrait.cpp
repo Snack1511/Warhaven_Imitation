@@ -244,6 +244,27 @@ void CUI_Portrait::PortSizeDown()
 {
 	_float fDuration = 0.1f * (m_iRotationCount * 0.5f);
 
+
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+	// 페이드가 완료된 후에
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	// 페이드가 어떻게 될지
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+	// 페이드를 어떻게 시작할지
+	tFadeDesc.bFadeInFlag = 0.f;
+	tFadeDesc.bFadeOutFlag = 0.f;
+
+	// 페이드가 시작되는 시간
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.f;
+
+	// 페이드인이 끝나고 얼마 뒤에 아웃
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = fDuration;
+
+	m_arrPortraitUI[0][Port]->Active_Fade(tFadeDesc);
+
 	m_arrPortraitUI[0][BG]->Lerp_ScaleX(64.f, 0.f, fDuration);
 	m_arrPortraitUI[0][Port]->Lerp_ScaleX(63.f, 0.f, fDuration);
 }
