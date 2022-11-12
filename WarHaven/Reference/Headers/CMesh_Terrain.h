@@ -27,6 +27,7 @@ public:
 public:
 	void	Map_Vertex(_uint  iIndex, _float4 vPosition, _float4 vColor);
 	void	ReMap_Vertices();
+	void	Update_VertsNormal();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

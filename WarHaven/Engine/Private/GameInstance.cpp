@@ -408,9 +408,9 @@ _bool CGameInstance::Is_Picked(CMesh* pRenderer, _float4* pOut, _float4* pOutNor
 	return m_pPickingManager->Is_Picked(pRenderer, pOut, pOutNormal);
 }
 
-_bool CGameInstance::Is_Picked_Mesh(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal)
+_bool CGameInstance::Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4* pOut,_float4* pOutNormal)
 {
-	return m_pPickingManager->Is_Picked_Mesh(pRenderer, pOut, pOutNormal);
+	return m_pPickingManager->Is_Picked_Mesh(pRenderer, pOutPickedIndex, pOut, pOutNormal);
 }
 
 void CGameInstance::Add_Camera(wstring strKey, CCamera * pCamera)

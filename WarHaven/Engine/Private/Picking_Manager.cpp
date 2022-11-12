@@ -132,6 +132,69 @@ _bool CPicking_Manager::Is_Picked(CMesh* pMesh, _float4* pOut, _float4* pOutNorm
 			{
 				*pOutNormal = vOutNormal;
 				*pOut = vPickedPos;
+
+				fMin = fDistance;
+			}
+		}
+	}
+
+	if (fMin != 9999.f)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+_bool CPicking_Manager::Is_Picked(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4* pOut, _float4* pOutNormal)
+{
+	CTransform* pTransform = pRenderer->Get_Owner()->Get_Transform();
+	_float4x4	matWorld = pTransform->Get_WorldMatrix();
+	_matrix		WorldMatrixInv = matWorld.Inverse().XMLoad();
+	matWorld.Inverse();
+
+	_vector			vRayPos, vRayDir;
+
+	vRayPos = XMVector3TransformCoord(XMLoadFloat3(&m_vRayPos), WorldMatrixInv);
+	vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&m_vRayDir), WorldMatrixInv));
+
+	_uint			iNumFaces = pRenderer->Get_NumPrimitive();
+	const _float3* pVerticesPos = pRenderer->Get_VerticesPos();
+	_uint			iIndexSize = pRenderer->Get_IndexSize();
+
+	_float		fDist, fMin = 9999.f;
+
+	for (_uint i = 0; i < iNumFaces; ++i)
+	{
+		_uint3		iIndices = pRenderer->Get_Indices(i);
+
+		_vector		vVec0 = XMLoadFloat3(&pVerticesPos[iIndices._1]);
+		GXMVECTOR	vVec1 = XMLoadFloat3(&pVerticesPos[iIndices._2]);
+		HXMVECTOR	vVec2 = XMLoadFloat3(&pVerticesPos[iIndices._3]);
+
+		if (true == TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
+		{
+			_float4 V1, V2;
+			_float4 vOutNormal, vPickedPos;
+			_float4x4 worldMat = matWorld;
+
+			V1 = (vVec0 - vVec1);
+			V2 = (vVec2 - vVec1);
+
+			vOutNormal = XMVector3Cross(V1.XMLoad(), V2.XMLoad());
+			vOutNormal = vOutNormal.MultiplyNormal(worldMat);
+			vOutNormal.Normalize();
+			vPickedPos = vRayPos + XMVector3Normalize(vRayDir) * fDist;
+
+			_float4 vRayPos = _float4(m_vRayPos.x, m_vRayPos.y, m_vRayPos.z, 1.f);
+
+			_float fDistance = (vRayPos - vPickedPos).Length();
+
+			if (fMin > fDistance)
+			{
+				*pOutNormal = vOutNormal;
+				*pOut = vPickedPos;
+				memcpy_s(pOutPickedIndex, sizeof(_uint3), &iIndices, sizeof(_uint3));
 				fMin = fDistance;
 			}
 		}
@@ -189,17 +252,18 @@ _bool CPicking_Manager::Is_Picked(CGameObject* pGameObject, _float4* pOut, _floa
 
 }
 
-_bool CPicking_Manager::Is_Picked_Mesh(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal)
+_bool CPicking_Manager::Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4* pOut, _float4* pOutNormal)
 {
 	Compute_WorldRay();
 
 	//
 	_float4 vViewPos = CGameInstance::Get_Instance()->Get_ViewPos();
 	_float4 vPickedPos, vPickedNormal;
+	_uint3 i3PickIndex = _uint3(0, 0, 0);
 	_float fDist, fMin = 9999.f;
 	_float4 vFinalPickedPos, vFinalPickedNormal;
 
-	if (Is_Picked(pRenderer, &vPickedPos, &vPickedNormal))
+	if (Is_Picked(pRenderer,  &i3PickIndex, &vPickedPos, &vPickedNormal))
 	{
 		fDist = (vPickedPos - vViewPos).Length();
 		if (fMin > fDist)
@@ -214,10 +278,14 @@ _bool CPicking_Manager::Is_Picked_Mesh(CMesh* pRenderer, _float4* pOut, _float4*
 
 	if (fMin != 9999.f)
 	{
-		*pOut = vFinalPickedPos;
+		//*pOut = vFinalPickedPos;
+
+		memcpy_s(pOut, sizeof(_float4), &vFinalPickedPos, sizeof(_float4));
+		memcpy_s(pOutPickedIndex, sizeof(_uint3), &i3PickIndex, sizeof(_uint3));
 
 		if (pOutNormal)
-			*pOutNormal = vPickedNormal;
+			memcpy_s(pOutNormal, sizeof(_float4), &vPickedNormal, sizeof(_float4));
+			//*pOutNormal = vPickedNormal;
 
 		return true;
 	}

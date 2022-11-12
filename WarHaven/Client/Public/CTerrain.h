@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CMesh_Terrain;
 class CCell;
+class CRenderer;
 END
 
 BEGIN(Client)
@@ -39,6 +40,9 @@ public:
 
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+
+public:
+	void Change_ShaderPass(_int PassIndex = 0);
 public:
 	CMesh_Terrain* Get_MeshTerrain();
 
@@ -50,6 +54,7 @@ protected:
 
 protected:
 	CMesh_Terrain* m_pTerrainMesh = nullptr;
+	CRenderer* m_pRenderer = nullptr;
 #pragma region 내비관련
 protected:
 	vector<CCell*>	m_vecCells;

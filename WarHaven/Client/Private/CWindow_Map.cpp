@@ -12,8 +12,11 @@
 #include "Transform.h"
 
 #include "CMesh_Terrain.h"
+#include "Easing_Utillity.h"
+#include "CGame_Manager_MJ.h"
 CWindow_Map::CWindow_Map()
 {
+    m_CurTerrainData.Initialize();
 }
 
 CWindow_Map::~CWindow_Map()
@@ -23,6 +26,8 @@ CWindow_Map::~CWindow_Map()
     Clear_TupleData(m_arrMeshGroupName);
     Clear_TupleData(m_arrLightTypeCombo);
     Clear_TupleData(m_arrLightGroupCombo);
+    Clear_TupleData(m_arrBrushType);
+    CGame_Manager_MJ::Destroy_Instance();
 }
 
 CWindow_Map* CWindow_Map::Create()
@@ -62,6 +67,8 @@ HRESULT CWindow_Map::Initialize()
     Ready_LightGroup();
 
     Ready_LightType();
+
+    Ready_TerrainBrushType();
     return S_OK;
 }
 
@@ -70,11 +77,11 @@ void CWindow_Map::Tick()
     _bool bPicked = false;
     Select_DataControlFlag();
 
-    if (Object_Place())
+    if (Calculate_Pick())
         bPicked = true;
 
     if (false == bPicked)
-        Object_Control();
+        Control_Object();
 
     Update_Data();
 }
@@ -82,8 +89,9 @@ void CWindow_Map::Tick()
 HRESULT CWindow_Map::Render()
 {
     ImVec2 vPannelSize = ImVec2(300.f, 300.f);
-    ImVec2 vDataControlPos = ImVec2(vPannelSize.x, 0.f);
-    ImVec2 vLightControlPos = ImVec2(vPannelSize.x, vPannelSize.y);
+    ImVec2 vTerrainControlPos = ImVec2(vPannelSize.x, 0.f);
+    ImVec2 vDataControlPos = ImVec2(vPannelSize.x, vPannelSize.y);
+    ImVec2 vLightControlPos = ImVec2(vPannelSize.x, vPannelSize.y * 2);
 
     if (FAILED(__super::Begin()))
         return E_FAIL;
@@ -93,6 +101,11 @@ HRESULT CWindow_Map::Render()
     //파일 컨트롤
     Func_FileControl();
 
+    if (nullptr != m_pCurTerrain)
+    {
+        Create_SubWindow("Terrain_Controller", vTerrainControlPos, vPannelSize, bind(&CWindow_Map::Func_TerrainControl, this));
+    }
+
     //데이타 컨트롤
     if (nullptr != m_pCurSelectGameObject)
     {
@@ -101,7 +114,7 @@ HRESULT CWindow_Map::Render()
 
     //라이트 컨트롤
     // 
-    //__DevNeed : 조건 필요.. 
+    //조건 필요.. 
     if (false)
     {
         Create_SubWindow("Light_Controller", vLightControlPos, vPannelSize, bind(&CWindow_Map::Func_LightControl, this));
@@ -124,6 +137,11 @@ static int iCurSelectTileIndex = 0;
 #pragma region 파일 컨트롤러 함수
 void CWindow_Map::Func_FileControl()
 {
+    if(m_bHoverWindow)
+        ImGui::Text("Hover");
+    else
+        ImGui::Text("No_Hover");
+
     ImVec2 ButtonSize(60.f, 20.f);
     //1. 선택 파일 콤보박스
     if (!m_arrSaveFilesCombo.empty()) 
@@ -192,10 +210,6 @@ void CWindow_Map::Func_FileControl()
             Generate_Terrain();
         }
     }
-    if (nullptr != m_pCurTerrain)
-    {
-        //터레인 수정..
-    }
     ImGui::Spacing();
     if (ImGui::CollapsingHeader("Object Grouping", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
@@ -219,15 +233,7 @@ void CWindow_Map::Func_FileControl()
     ImGui::Spacing();
     if (ImGui::CollapsingHeader("FBX Files List", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
-        ////4. 오브젝트 프로토타입 리스트
-    //ImGui::Text("Objects");
-    //if (Make_Combo("##ObjectPrototypeList", m_arrObjectPrototypeName, &SelectObjectPrototypeIndex, bind(&CWindow_Map::EmptyFunction, this)))
-    //{
-    //    //strcpy_s(szObjectGroupBuf, get<Tuple_CharPtr>(m_arrObjectPrototypeName[SelectObjectPrototypeIndex]));
-    //}
-    //ImGui::Spacing();
-
-    //파일 탐색 트리노드
+        //파일 탐색 트리노드
         if (ImGui::BeginListBox("##FBX_Files_List", ImVec2(360.f, 200.f)))
         {
             Show_TreeData(m_MeshRootNode);
@@ -678,8 +684,8 @@ void CWindow_Map::Func_DataControl()
     //z : Scale
     //x : Rotate
     //c : Position
-
-    if (m_bPickable)
+    _bool bPicked = (!m_bHoverWindow && m_bObjectPick);
+    if (bPicked)
     {
         ImGui::Text("Use_Picking");
     }
@@ -703,7 +709,7 @@ void CWindow_Map::Func_DataControl()
     }
     ImGui::Spacing();
 
-    if (false == m_bPickable)
+    if (false == bPicked)
     {
         if (ImGui::Button("Confirm"))
         {
@@ -718,7 +724,7 @@ void CWindow_Map::Func_DataControl()
     }
     ImGui::Spacing();
 
-    if (m_bPickable)
+    if (bPicked)
         return;
 
     if (ImGui::CollapsingHeader("Object Speed", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
@@ -840,28 +846,28 @@ void CWindow_Map::Select_DataControlFlag()
     }
     if (KEY(V, TAP))
     {
-        m_bPickable = !m_bPickable;
+        m_bObjectPick = !m_bObjectPick;
     }
 }
 
-void CWindow_Map::Object_Control()
+void CWindow_Map::Control_Object()
 {
     switch (m_eControlType)
     {
     case CONTROL_SCALING:
-        Object_Scale();
+        Scaling_Object();
         break;
     case CONTROL_ROTATE:
-        Object_Rotate();
+        Rotate_Object();
         break;
     case CONTROL_MOVE:
-        Object_Position();
+        Position_Object();
         break;
     }
 }
 
 
-void CWindow_Map::Object_Scale()
+void CWindow_Map::Scaling_Object()
 {
     if (nullptr == m_pObjTransform)
         return;
@@ -899,7 +905,7 @@ void CWindow_Map::Object_Scale()
     m_pCurSelectGameObject->Get_Transform()->Set_Scale(ScaleValue);
 }
 
-void CWindow_Map::Object_Rotate()
+void CWindow_Map::Rotate_Object()
 {
     if (nullptr == m_pObjTransform)
         return;
@@ -948,7 +954,7 @@ void CWindow_Map::Object_Rotate()
 
 }
 
-void CWindow_Map::Object_Position()
+void CWindow_Map::Position_Object()
 {
     if (nullptr == m_pObjTransform)
         return;
@@ -986,25 +992,34 @@ void CWindow_Map::Object_Position()
     m_pCurSelectGameObject->Get_Transform()->Set_World(WORLD_POS, PosValue);
 }
 
-_bool CWindow_Map::Object_Place()
+void CWindow_Map::Place_Object()
 {
-    _bool bPicked = false;
-    if (m_bPickable)
-    {
-        if (nullptr == m_pCurTerrain || nullptr == m_pObjTransform)
-            return bPicked;
-        if (KEY(LBUTTON, HOLD))
-        {
-            _float4 OutPos;
-            _float4 OutNorm;
-            if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &OutPos, &OutNorm))
-            {
-                m_pObjTransform->Set_World(WORLD_POS, OutPos);
-                bPicked = true;
-            }
-        }
-    }
-    return bPicked;
+    if (nullptr == m_pObjTransform)
+        return;
+    m_pObjTransform->Set_World(WORLD_POS, m_OutPos);
+}
+
+void CWindow_Map::Change_Object_UpDir()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+    
+    _vector xNormal = -m_OutNorm.XMLoad();
+    _vector xRight = XMVector3Cross( xNormal, XMVectorSet(0.f, 0.f, 1.f, 0.f));
+    _vector xLook = XMVector3Cross(xRight, xNormal);
+    _float4 Scale = m_pObjTransform->Get_Scale();
+
+    _float4 vRight;
+    _float4 vUp;
+    _float4 vLook;
+    XMStoreFloat4(&vRight, xRight);
+    XMStoreFloat4(&vUp, xNormal);
+    XMStoreFloat4(&vLook, xLook);
+
+    m_pObjTransform->Set_World(WORLD_RIGHT, vRight);
+    m_pObjTransform->Set_World(WORLD_UP, vUp);
+    m_pObjTransform->Set_World(WORLD_LOOK, vLook);
+    m_pObjTransform->Set_Scale(Scale);
 }
 
 void CWindow_Map::Update_Data()
@@ -1508,7 +1523,47 @@ void CWindow_Map::Load_LightGroup(string FilePath)
 #pragma endregion
 
 
-#pragma region 기타 기능 함수
+#pragma region 터레인 컨트롤 함수
+void CWindow_Map::Ready_TerrainBrushType()
+{
+    Add_Brush("Linear");
+    
+    Add_Brush("QuadIn");
+    Add_Brush("QuadOut");
+    Add_Brush("QuadInOut");
+    
+    Add_Brush("CubicIn");
+    Add_Brush("CubicOut");
+    Add_Brush("CubicInOut");
+    
+    Add_Brush("QuarticIn");
+    Add_Brush("QuarticOut");
+    Add_Brush("QuarticInOut");
+    
+    Add_Brush("QuinticIn");
+    Add_Brush("QuinticOut");
+    Add_Brush("QuinticInOut");
+
+    Add_Brush("SinIn");
+    Add_Brush("sinfOut");
+    Add_Brush("sinfInOut");
+
+    Add_Brush("ExpoIn");
+    Add_Brush("ExpoOut");
+    Add_Brush("ExpoInOut");
+
+    Add_Brush("CircularIn");
+    Add_Brush("CircularOut");
+    Add_Brush("CircularInOut");
+
+    Add_Brush("ElasticEaseIn");
+    Add_Brush("ElasticEaseOut");
+    Add_Brush("ElasticEaseInOut");
+
+    Add_Brush("BounceEaseIn");
+    Add_Brush("BounceEaseOut");
+
+}
 HRESULT CWindow_Map::Disable_DefaultTerrain()
 {
     if (nullptr == m_pDefaultTerrain)
@@ -1526,6 +1581,59 @@ HRESULT CWindow_Map::Disable_DefaultTerrain()
     m_pDefaultTerrain->Set_Enable(false);
     return S_OK;
 }
+
+void CWindow_Map::Func_TerrainControl()
+{
+    string strBrushOnOffText;
+    if (!m_bTerrainPick)
+    {
+        strBrushOnOffText = "On Brush";
+    }
+    else
+        strBrushOnOffText = "Off Brush";
+
+
+    if (ImGui::Button(strBrushOnOffText.c_str()))
+    {
+        m_bObjectPick = false;
+        m_bTerrainPick = !m_bTerrainPick;
+    }
+    ImGui::Spacing();
+
+    _bool bPicked = (!m_bObjectPick);
+    ImGui::Text("CurPickedIndex(Ready - Only)");
+    ImGui::InputInt3("##CurPickedIndex", (int*)&m_i3PickedIndex, ImGuiInputTextFlags_ReadOnly);
+    ImGui::Spacing();
+
+    if (!bPicked)
+        return;
+
+    if (ImGui::Checkbox("Activate WireMode", &m_TerrainWireFrame))
+    {
+        if(m_TerrainWireFrame)
+            m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_NAVIGATION);
+        else
+            m_pCurTerrain->Change_ShaderPass();
+
+    }
+
+    if (ImGui::Button("Activate VertsNormal"))
+    {
+        m_pCurTerrain->Update_Normal();
+    }
+    ImGui::Text("Brush Type");
+    Make_Combo("##Brush Combo", m_arrBrushType, &m_iCurSelectTerrainBrush, bind(&CWindow_Map::EmptyFunction, this));
+    ImGui::Spacing();
+
+    ImGui::Text("Brush Size");
+    ImGui::DragFloat("##BrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.3f");
+    ImGui::Spacing();
+
+    ImGui::Text("Height Increase Value");
+    ImGui::DragFloat("##HeightIncrease", &m_fHeightRatio, 0.1f, 0.f, 10.f, "%.3f");
+    ImGui::Spacing();
+
+}
 void CWindow_Map::Generate_Terrain()
 {
     Disable_DefaultTerrain();
@@ -1540,6 +1648,136 @@ void CWindow_Map::Generate_Terrain()
     MTT_DATA::Terrain_TUPLE TupleData = m_pCurTerrain->Get_TerrainData();
     m_CurTerrainData.Make_Data(TupleData);
 }
+void CWindow_Map::Increase_Height()
+{
+    _float4(*func)(_float);
+    if (!m_bTerrainPick)
+        return;
+    if (nullptr != m_pCurTerrain)
+    {
+        _float3* Verts = m_pCurTerrain->Get_TerrainVerticesPos();
+        list<_float3*> VertsList = Select_Vertices();
+        for (list<_float3*>::value_type& Value : VertsList)
+        {
+            (*Value) = Easing_Vertices(Value);
+        }
+        VertsList.clear();
+        //Verts[m_i3PickedIndex._1] = Easing_Vertices(&Verts[m_i3PickedIndex._1]);
+        //Verts[m_i3PickedIndex._2] = Easing_Vertices(&Verts[m_i3PickedIndex._2]);
+        //Verts[m_i3PickedIndex._3] = Easing_Vertices(&Verts[m_i3PickedIndex._3]);
+        m_pCurTerrain->Update_Vertices();
+    }
+}
+void CWindow_Map::Add_Brush(const char* BrushName)
+{
+    char* szTypeName = new char[MAXCHAR];
+    memcpy_s(szTypeName, sizeof(char) * MAXCHAR, BrushName, sizeof(char) * (_int(strlen(BrushName)) + 1));
+    m_arrBrushType.push_back(make_tuple(szTypeName, false));
+
+}
+list<_float3*> CWindow_Map::Select_Vertices()
+{
+    _float3* Verts = m_pCurTerrain->Get_TerrainVerticesPos();
+    _float fRount = m_fBrushSize * 0.5f;
+    _float4 Center = m_OutPos;
+    _int VertXNums = m_pCurTerrain->Get_TerrainVerticesX();
+    _int VertZNums = m_pCurTerrain->Get_TerrainVerticesZ();
+
+    list<_float3*> VertsList;
+    _int IndexWidStart = _int((m_OutPos.x /*+ TerrainPos*/) - fRount);
+    IndexWidStart = (0 > IndexWidStart) ? 0 : IndexWidStart;
+    IndexWidStart = (VertXNums - 1 < IndexWidStart) ? VertXNums - 1 : IndexWidStart;
+
+    _int IndexWidEnd = _int((m_OutPos.x /*+ TerrainPos*/) + fRount);
+    IndexWidEnd = (0 > IndexWidEnd) ? 0 : IndexWidEnd;
+    IndexWidEnd = (VertXNums - 1 < IndexWidEnd) ? VertXNums - 1 : IndexWidEnd;
+
+    _int IndexHeightStart = _int((m_OutPos.z /*+ TerrainPos*/) - fRount);
+    IndexHeightStart = (0 > IndexHeightStart) ? 0 : IndexHeightStart;
+    IndexHeightStart = (VertZNums - 1 < IndexHeightStart) ? VertZNums - 1 : IndexHeightStart;
+    
+    _int IndexHeightEnd = _int((m_OutPos.z /*+ TerrainPos*/) + fRount);
+    IndexHeightEnd = (0 > IndexHeightEnd) ? 0 : IndexHeightEnd;
+    IndexHeightEnd = (VertZNums - 1 < IndexHeightEnd) ? VertZNums - 1 : IndexHeightEnd;
+
+
+    for (_int i = IndexHeightStart; i <= IndexHeightEnd; ++i)
+    {
+        for (_int j = IndexWidStart; j <= IndexWidEnd; ++j)
+        {
+            _int Index = i * VertXNums + j;
+            if(Check_InBrush(&Verts[Index]))
+                VertsList.push_back(&Verts[Index]);
+        }
+    }
+
+
+    return VertsList;
+}
+_bool CWindow_Map::Check_InBrush(_float3* CompVert)
+{
+    _float fRount = m_fBrushSize * 0.5f;
+    _float4 Center = m_OutPos;
+    _float XPos = (*CompVert).x;
+    _float ZPos = (*CompVert).z;
+
+    //x - a
+    _float XDiff = XPos - m_OutPos.x;
+    //z - b
+    _float ZDiff = ZPos - m_OutPos.z;
+
+    //(x - a)^2 + (z - b)^2  <= r^2 --> 원 내부에 점이 존재
+    if (XDiff * XDiff + ZDiff * ZDiff <= fRount * fRount)
+        return true;
+    else
+        return false;
+}
+_float3 CWindow_Map::Easing_Vertices(_float3* pVertPos)
+{
+    _float4 vVertPos 
+        = _float4(
+            pVertPos->x, 
+            pVertPos->y, 
+            pVertPos->z, 
+            1.f);
+
+    _float VertLength = XMVectorGetX(XMVector3Length(vVertPos.XMLoad() - m_OutPos.XMLoad()));
+    _float fVertRatio = VertLength / (m_fBrushSize*0.5f);
+    _float4 vStartPos = vVertPos;
+    _float4 vTargetPos = _float4(vVertPos.x, vVertPos.y + m_fHeightRatio, vVertPos.z, vVertPos.w);
+    _float4 vOut;
+    CGame_Manager_MJ::Get_Instance()->Easing_Vert(0, &vOut, vStartPos, vTargetPos, 1- fVertRatio);
+    _float3 vReturn = _float3(vOut.x, vOut.y, vOut.z);
+    return vReturn;
+}
+_bool CWindow_Map::Calculate_Pick()
+{
+    _bool bPicked = false;
+    if (m_bHoverWindow)
+        return bPicked;
+    if (nullptr == m_pCurTerrain)
+        return bPicked;
+
+    if (KEY(LBUTTON, HOLD))
+    {
+        if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &m_i3PickedIndex, &m_OutPos, &m_OutNorm))
+        {
+            if (m_bObjectPick)
+            {
+                Place_Object();
+                Change_Object_UpDir();
+            }
+            else
+                Increase_Height();
+            bPicked = true;
+        }
+    }
+    return bPicked;
+}
+#pragma endregion
+
+
+#pragma region 기타 기능 함수
 void CWindow_Map::Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Map&)> func)
 {
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
@@ -1551,10 +1789,12 @@ void CWindow_Map::Create_SubWindow(const char* szWindowName, const ImVec2& Pos, 
         = ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysHorizontalScrollbar
         | ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysVerticalScrollbar
         | ImGuiWindowFlags_AlwaysAutoResize;
+
     //ImGui::SetNextWindowPos(ImVec2(ViewSize.x - Pos.x, ViewPos.y + Pos.y));
     //ImGui::SetNextWindowSize(Size);
 
     ImGui::Begin(szWindowName, &Open, WindowFlags);
+    m_bHoverWindow = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow);
 
     func(*this);
     ImGui::End();

@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\public\CEffects_Factory.h" />
     <ClInclude Include="..\Public\CGame_Manager_JJ.h" />
+    <ClInclude Include="..\Public\CGame_Manager_MJ.h" />
     <ClInclude Include="..\Public\CGuard_Begin_Player.h" />
     <ClInclude Include="..\Public\CGuard_End_Player.h" />
     <ClInclude Include="..\Public\CGuard_Cancel_Player.h" />
@@ -301,6 +302,7 @@
     <ClInclude Include="..\public\CWindow_PhysX.h" />
     <ClInclude Include="..\public\CWindow_Select.h" />
     <ClInclude Include="..\Public\CWindow_UI.h" />
+    <ClInclude Include="..\Public\CWrapping_Easing_Util.h" />
     <ClInclude Include="..\public\Functor.h" />
     <ClInclude Include="..\Public\ImGui_Manager.h" />
     <ClInclude Include="..\Public\Loading_Manager.h" />
@@ -330,6 +332,7 @@
     <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\private\CEffects_Factory.cpp" />
     <ClCompile Include="..\Private\CGame_Manager_JJ.cpp" />
+    <ClCompile Include="..\Private\CGame_Manager_MJ.cpp" />
     <ClCompile Include="..\Private\CGuard_Begin_Player.cpp" />
     <ClCompile Include="..\Private\CGuard_End_Player.cpp" />
     <ClCompile Include="..\Private\CGuard_Cancel_Player.cpp" />
@@ -429,6 +432,7 @@
     <ClCompile Include="..\private\CWindow_PhysX.cpp" />
     <ClCompile Include="..\private\CWindow_Select.cpp" />
     <ClCompile Include="..\Private\CWindow_UI.cpp" />
+    <ClCompile Include="..\Private\CWrapping_Easing_Util.cpp" />
     <ClCompile Include="..\Private\Functor.cpp" />
     <ClCompile Include="..\Private\ImGui_Manager.cpp" />
     <ClCompile Include="..\Private\Loading_Manager.cpp" />

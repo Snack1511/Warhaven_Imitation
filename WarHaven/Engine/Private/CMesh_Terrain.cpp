@@ -87,6 +87,60 @@ void CMesh_Terrain::ReMap_Vertices()
 
 }
 
+void CMesh_Terrain::Update_VertsNormal()
+{
+	_float3* ArrNorm = new _float3[m_iNumPrimitive];
+	ZeroMemory(ArrNorm, sizeof(_float3) * m_iNumPrimitive);
+
+	//_ulong		dwNumFaces = 0;
+	for (_uint i = 0; i < m_iNumPrimitive; i += 2)
+	{
+		_vector		vSour, vDest, vNormal;
+		_uint3* pIndices = &((_uint3*)m_pIndices)[i];
+
+		//한 면당 정점끼리의 방향 계산 및 이를 토대로 면의 법선벡터 계산
+		vSour = XMLoadFloat3(&m_pVerticesPos[(*pIndices)._2]) - XMLoadFloat3(&m_pVerticesPos[(*pIndices)._1]);
+		vDest = XMLoadFloat3(&m_pVerticesPos[(*pIndices)._3]) - XMLoadFloat3(&m_pVerticesPos[(*pIndices)._2]);
+		vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
+
+		//기존 정점의 노멀에다가 덧샘
+		XMStoreFloat3(&ArrNorm[(*pIndices)._1],
+			XMLoadFloat3(&ArrNorm[(*pIndices)._1]) + vNormal);
+		XMStoreFloat3(&ArrNorm[(*pIndices)._2],
+			XMLoadFloat3(&ArrNorm[(*pIndices)._2]) + vNormal);
+		XMStoreFloat3(&ArrNorm[(*pIndices)._3],
+			XMLoadFloat3(&ArrNorm[(*pIndices)._3]) + vNormal);
+
+		vSour = XMLoadFloat3(&m_pVerticesPos[(*(pIndices + 1))._2]) - XMLoadFloat3(&m_pVerticesPos[(*(pIndices + 1))._1]);
+		vDest = XMLoadFloat3(&m_pVerticesPos[(*(pIndices + 1))._3]) - XMLoadFloat3(&m_pVerticesPos[(*(pIndices + 1))._2]);
+		vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
+
+		XMStoreFloat3(&ArrNorm[(*(pIndices + 1))._1],
+			XMLoadFloat3(&ArrNorm[(*(pIndices + 1))._1]) + vNormal);
+		XMStoreFloat3(&ArrNorm[(*(pIndices + 1))._2],
+			XMLoadFloat3(&ArrNorm[(*(pIndices + 1))._2]) + vNormal);
+		XMStoreFloat3(&ArrNorm[(*(pIndices + 1))._3],
+			XMLoadFloat3(&ArrNorm[(*(pIndices + 1))._3]) + vNormal);
+	}
+
+	for (_uint i = 0; i < m_iNumPrimitive; ++i)
+		XMStoreFloat3(&ArrNorm[i], XMVector3Normalize(XMLoadFloat3(&ArrNorm[i])));
+
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	DEVICE_CONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	for (_uint i = 0; i < m_iNumVertices; ++i)
+	{
+		((VTXNORTEX*)SubResource.pData)[i].vNormal = ArrNorm[i];
+	}
+
+	DEVICE_CONTEXT->Unmap(m_pVB.Get(), 0);
+
+	Safe_Delete_Array(ArrNorm);
+}
+
 HRESULT CMesh_Terrain::Initialize_Prototype()
 {
 	return S_OK;
@@ -377,7 +431,6 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumVerticesX, _uint iNumVerticesZ)
 
 	if (FAILED(__super::Create_VertexBuffer()))
 		return E_FAIL;
-
 	Safe_Delete_Array(pIndices);
 	Safe_Delete_Array(pVertices);
 	return S_OK;

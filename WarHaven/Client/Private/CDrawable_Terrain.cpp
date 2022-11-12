@@ -81,7 +81,10 @@ HRESULT CDrawable_Terrain::Initialize_Prototype()
     pShader->Initialize();
     Add_Component(pShader);
 
-    Add_Component(CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN));
+    CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
+    Add_Component(pRenderer);
+    m_pRenderer = pRenderer;
+
     CTexture* pTexture = CTexture::Create(0, m_strTileTexturePath.c_str(), 1);
     Add_Component(pTexture);
 
@@ -107,7 +110,7 @@ HRESULT CDrawable_Terrain::Start()
     if (FAILED(__super::Start()))
         return E_FAIL;
     m_pTerrainMesh->ReMap_Vertices();
-
+    m_pTerrainMesh->Update_VertsNormal();
     return S_OK;
 }
 
@@ -139,6 +142,18 @@ CDrawable_Terrain::Terrain_TUPLE CDrawable_Terrain::Get_TerrainData()
 {
     return make_tuple(m_strTileTexturePath, m_iTerrainVertX, m_iTerrainVertZ, m_pTerrainVertPos);
 }
+
+void CDrawable_Terrain::Update_Vertices()
+{
+    m_pTerrainMesh->ReMap_Vertices();
+}
+
+void CDrawable_Terrain::Update_Normal()
+{
+    m_pTerrainMesh->Update_VertsNormal();
+    //int a = 0;
+}
+
 
 HRESULT CDrawable_Terrain::SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ)
 {
