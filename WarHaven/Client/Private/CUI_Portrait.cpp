@@ -244,7 +244,6 @@ void CUI_Portrait::PortSizeDown()
 {
 	_float fDuration = 0.1f * (m_iRotationCount * 0.5f);
 
-
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
 	// 페이드가 완료된 후에
@@ -252,8 +251,8 @@ void CUI_Portrait::PortSizeDown()
 	// 페이드가 어떻게 될지
 	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
 	// 페이드를 어떻게 시작할지
-	tFadeDesc.bFadeInFlag = 0.f;
-	tFadeDesc.bFadeOutFlag = 0.f;
+	tFadeDesc.bFadeInFlag = 0x01;
+	tFadeDesc.bFadeOutFlag = 0x01;
 
 	// 페이드가 시작되는 시간
 	tFadeDesc.fFadeInStartTime = 0.f;
