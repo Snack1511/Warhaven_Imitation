@@ -93,6 +93,11 @@ StyleCopReport.xml
 *.svclog
 *.scc
 *.fbx
+*.dll
+*.exp
+*.lib
+*.exe
+*.cso
 
 
 # Chutzpah Test files
