@@ -1260,7 +1260,8 @@ void CWindow_Effect::Save_CurEffect()
 
 	if (m_vecEffects[m_iCurrentIdx].iEffectType == 1)
 	{
-		if (pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+		if (pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 			m_vecEffects[m_iCurrentIdx].iEffectType = 2;
 		else
 			m_vecEffects[m_iCurrentIdx].iEffectType = 1;
