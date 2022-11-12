@@ -304,6 +304,7 @@ void CInstancingEffects::My_Tick()
 
 		//1. 속도 변화.
 		m_pInstancingDatas[i].fSpeed += m_pInstancingDatas[i].fSpeedChangeSpeed * fTimeDelta;
+
 		if (m_pInstancingDatas[i].fSpeed <= 0.f)
 		{
 			Dead_Instance(i);

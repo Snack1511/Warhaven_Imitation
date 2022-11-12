@@ -34,7 +34,10 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	: CInstancingEffects(_origin)
 	, m_bBillBoard(_origin.m_bBillBoard)
 	, m_bSorting(_origin.m_bSorting)
+	, m_bZeroSpeedDisable(_origin.m_bZeroSpeedDisable)
+	, m_bLoop(_origin.m_bLoop)
 	, m_fDuration(_origin.m_fDuration)
+	, m_fLoopTime(_origin.m_fLoopTime)
 	, m_iWidthSize(_origin.m_iWidthSize)
 	, m_iHeightSize(_origin.m_iHeightSize)
 {
@@ -52,7 +55,7 @@ CRectEffects::~CRectEffects()
 }
 
 CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_DATA& tCreateData, wstring wstrTexturePath,
-	_hashcode _hcCode, _bool bBillBoard, _bool bSorting)
+	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable, _bool bLoop)
 {
 	CRectEffects* pInstance = new CRectEffects();
 
@@ -62,6 +65,8 @@ CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_D
 	pInstance->m_hcMyCode = _hcCode;
 	pInstance->m_bBillBoard = bBillBoard;
 	pInstance->m_bSorting = bSorting;
+	pInstance->m_bZeroSpeedDisable = bZeroSpeedDisable;
+	pInstance->m_bLoop = bLoop;
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -135,7 +140,8 @@ void CRectEffects::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 
 void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
-	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
+		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 	{
 		pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
@@ -215,12 +221,21 @@ HRESULT CRectEffects::Initialize()
 		vStartDir += m_tCreateData.vStartDir;
 		vStartDir.Normalize();
 
+		_float4 vMoveDir = _float4(
+			frandom(-m_tCreateData.vMoveDirRange.x, m_tCreateData.vMoveDirRange.x),
+			frandom(-m_tCreateData.vMoveDirRange.y, m_tCreateData.vMoveDirRange.y),
+			frandom(-m_tCreateData.vMoveDirRange.z, m_tCreateData.vMoveDirRange.z),
+			0.f);
+
+		vMoveDir += m_tCreateData.vMoveDir;
+		vMoveDir.Normalize();
+
 		_float	fStartDistance = m_tCreateData.fStartDistance + frandom(-m_tCreateData.fStartDistanceRange, m_tCreateData.fStartDistanceRange);
 
 		vStartPos = vStartDir * fStartDistance;
 
 		m_pInstancingDatas[i].vStartPureLocalPos = vStartPos;
-		m_pInstancingDatas[i].vStartPureLocalDir = vStartDir;
+		m_pInstancingDatas[i].vStartPureLocalDir = vMoveDir;
 
 		Set_NewStartPos(i);
 
@@ -257,7 +272,8 @@ HRESULT CRectEffects::Initialize()
 			frandom(-m_tCreateData.vScaleRange.z, m_tCreateData.vScaleRange.z),
 			0.f);
 
-		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
+			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 		{
 			m_pInstancingDatas[i].vScale.y = m_pInstancingDatas[i].vScale.x;
 		}
@@ -299,7 +315,13 @@ HRESULT CRectEffects::Initialize()
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
 		}
+		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+		{
 
+			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
+		}
+		//
 
 		m_pInstancingDatas[i].vFadeOutTargetScale = _float4(
 			frandom(-m_tCreateData.vFadeOutTargetScaleRange.x, m_tCreateData.vFadeOutTargetScaleRange.x),
@@ -382,6 +404,8 @@ void CRectEffects::My_Tick()
 	_float4	vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	_float4 vLook;
 
+	m_fLoopTimeAcc += fDT(0);
+
 	vLook = vCamLook * -1.f;
 
 	_float4 vUp = { 0.f, 1.f, 0.f };
@@ -408,7 +432,8 @@ void CRectEffects::My_Tick()
 		if (!Fade_Lerp(i))
 			continue;
 
-		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA &&
+			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 			m_pRectInstances[i].vColor = m_pInstancingDatas[i].vColor;
 		else
 			m_pRectInstances[i].vColor.w = m_pInstancingDatas[i].vColor.w;
@@ -425,20 +450,23 @@ void CRectEffects::My_Tick()
 			//1. 속도 변화.
 			m_pInstancingDatas[i].fSpeed += m_pInstancingDatas[i].fSpeedChangeSpeed * fTimeDelta;
 
-			if (m_pInstancingDatas[i].fOriginSpeed < 0.f)
+			if (m_bZeroSpeedDisable)
 			{
-				if (m_pInstancingDatas[i].fSpeed >= 0.f)
+				if (m_pInstancingDatas[i].fOriginSpeed < 0.f)
+				{
+					if (m_pInstancingDatas[i].fSpeed >= 0.f)
+					{
+
+						Dead_Instance(i);
+						continue;
+					}
+				}
+				else if (m_pInstancingDatas[i].fSpeed <= 0.f)
 				{
 
 					Dead_Instance(i);
 					continue;
 				}
-			}
-			else if (m_pInstancingDatas[i].fSpeed <= 0.f)
-			{
-				
-				Dead_Instance(i);
-				continue;
 			}
 
 			vOriginPos += m_pInstancingDatas[i].vDir * m_pInstancingDatas[i].fSpeed * fTimeDelta;
@@ -520,7 +548,8 @@ void CRectEffects::My_Tick()
 		}
 		m_pRectInstances[i].vTranslation = vOriginPos;
 
-		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
+			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 			Update_Animation(i);
 		
 	}
@@ -570,8 +599,9 @@ void CRectEffects::OnEnable()
 
 	m_iNumDead = 0;
 	m_fTimeAcc = 0.f;
-
+	m_fLoopTimeAcc = 0.f;
 	//시작위치
+
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
 		Reset_Instance(i);
@@ -581,7 +611,28 @@ void CRectEffects::OnEnable()
 
 void CRectEffects::Dead_Instance(_uint iIndex)
 {
-	Reset_Instance(iIndex);
+	if (m_bLoop)
+	{
+		if(m_fLoopTime == 0)
+			Reset_Instance(iIndex);
+		else if(m_fLoopTimeAcc <= m_fLoopTime)
+			Reset_Instance(iIndex);
+		else if(m_fLoopTimeAcc > m_fLoopTime)
+		{
+			//m_fLoopTimeAcc = 0.f;
+			m_pInstancingDatas[iIndex].bAlive = false;
+			m_iNumDead++;
+			m_pRectInstances[iIndex].vColor.w = 0.f;
+			m_pInstancingDatas[iIndex].fSpeed = m_pInstancingDatas[iIndex].fOriginSpeed;
+		}
+	}
+	else
+	{
+		m_pInstancingDatas[iIndex].bAlive = false;
+		m_iNumDead++;
+		m_pRectInstances[iIndex].vColor.w = 0.f;
+		m_pInstancingDatas[iIndex].fSpeed = m_pInstancingDatas[iIndex].fOriginSpeed;
+	}
 	//m_pInstancingDatas[iIndex].bAlive = true;
 	//m_iNumDead++;
 	//m_pRectInstances[iIndex].vColor.w = 0.f;
@@ -667,6 +718,9 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 
 	pReadFile->read((char*)&m_bBillBoard, sizeof(_bool));
 	pReadFile->read((char*)&m_bSoft, sizeof(_bool));
+	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
+	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
+	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
 	{
@@ -697,6 +751,10 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 
 	pReadFile->read((char*)&m_bBillBoard, sizeof(_bool));
 	pReadFile->read((char*)&m_bSoft, sizeof(_bool));
+	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
+	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
+	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
+
 	pReadFile->read((char*)&m_iWidthSize, sizeof(_uint));
 	pReadFile->read((char*)&m_iHeightSize, sizeof(_uint));
 	pReadFile->read((char*)&m_fDuration, sizeof(_float));
@@ -738,10 +796,12 @@ void CRectEffects::Update_Animation(_uint iIndex)
 			if (m_pRectInstances[iIndex].vColor.y >= m_iHeightSize)
 			{
 				//여기 들어왔다 : 한바퀴돌아서 1순한거임
-				m_pRectInstances[iIndex].vColor.y = 0.f;
+				m_pRectInstances[iIndex].vColor.x = m_iWidthSize - 1;
+				m_pRectInstances[iIndex].vColor.y = m_iHeightSize - 1;
+				Dead_Instance(iIndex);
 
-				if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
-					Dead_Instance(iIndex);
+				/*if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+					Dead_Instance(iIndex);*/
 
 
 			}
@@ -768,7 +828,8 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pInstancingDatas[iIndex].vTurnDir.y = 0.f;
 	m_pInstancingDatas[iIndex].vTurnDir.z = 0.f;
 
-	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
+		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 	{
 		m_pRectInstances[iIndex].vColor.x = 0.f;
 		m_pRectInstances[iIndex].vColor.y = 0.f;

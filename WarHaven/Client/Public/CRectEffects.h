@@ -16,7 +16,7 @@ protected:
 
 public:
 	static CRectEffects* Create(_uint iNumInstance, const INSTANCING_CREATE_DATA& tCreateData, wstring wstrTexturePath,
-		_hashcode _hcCode, _bool bBillBoard = true, _bool bSorting = true);
+		_hashcode _hcCode, _bool bBillBoard = true, _bool bSorting = true, _bool bZeroSpeedDisable = true, _bool bLoop = true);
 
 	static CRectEffects* Create(_float4 vStartPos);
 
@@ -44,12 +44,16 @@ private:
 
 	_bool		m_bBillBoard = false;
 	_bool		m_bSorting = false;
-
+	_bool		m_bZeroSpeedDisable = true;
+	_bool		m_bLoop = false;
 	_uint		m_iWidthSize = 1;
 	_uint		m_iHeightSize = 1;
 
 	_float		m_fDissolvePower = 2.f;
 	_float		m_fDuration = 0.1f;
+	_float		m_fLoopTime = 0.f;
+
+	_float		m_fLoopTimeAcc = 0.f;
 
 
 private:

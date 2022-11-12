@@ -891,6 +891,8 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATION;
 			if (ImGui::Selectable("ANIMATION_ALPHA", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONALPHA]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONALPHA;
+			if (ImGui::Selectable("ANIMATION_DISSOLVE", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE;
 
 			pRenderer->Set_Pass(pCurEffect->m_iPassType);
 
@@ -985,7 +987,12 @@ void CWindow_Effect::Show_ParticleTab()
 			_int iTemp = tCurData.iOffsetPositionCount;
 			if (ImGui::InputInt("iNumOffsets", &iTemp, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
 			{
-				static_cast<CInstancingEffects*>(pCurEffect)->ReMake_OffsetPositions(iTemp);
+
+				if (iTemp >= 0)
+				{
+					static_cast<CInstancingEffects*>(pCurEffect)->ReMake_OffsetPositions(iTemp);
+
+				}
 			}
 
 			for (_uint i = 0; i < tCurData.iOffsetPositionCount; ++i)
@@ -1030,6 +1037,23 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_bSoft = !static_cast<CRectEffects*>(pCurEffect)->m_bSoft;
 			}
 
+		
+			ImGui::LabelText(" ", "LoopTime 0 is Infinite");
+
+
+			if (ImGui::RadioButton("bLoop", static_cast<CRectEffects*>(pCurEffect)->m_bLoop))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_bLoop = !static_cast<CRectEffects*>(pCurEffect)->m_bLoop;
+			}
+
+			ImGui::SameLine();
+
+			_float fLoopTime = static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime;
+			if (ImGui::InputFloat("Loop Time", &fLoopTime, 0, 0, "%.2f" ))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime = fLoopTime;
+			}
+
 			_float	vStartDir[3] = { tCurData.vStartDir.x, tCurData.vStartDir.y, tCurData.vStartDir.z };
 			if (ImGui::InputFloat3("vStartDir", vStartDir, "%.3f"))
 			{
@@ -1044,6 +1068,22 @@ void CWindow_Effect::Show_ParticleTab()
 				tCurData.vStartDirRange.x = vStartDirRange[0];
 				tCurData.vStartDirRange.y = vStartDirRange[1];
 				tCurData.vStartDirRange.z = vStartDirRange[2];
+			}
+
+			_float	vMoveDir[3] = { tCurData.vMoveDir.x, tCurData.vMoveDir.y, tCurData.vMoveDir.z };
+			if (ImGui::InputFloat3("vMoveDir", vMoveDir, "%.3f"))
+			{
+				tCurData.vMoveDir.x = vMoveDir[0];
+				tCurData.vMoveDir.y = vMoveDir[1];
+				tCurData.vMoveDir.z = vMoveDir[2];
+			}
+
+			_float	vMoveDirRange[3] = { tCurData.vMoveDirRange.x, tCurData.vMoveDirRange.y, tCurData.vMoveDirRange.z };
+			if (ImGui::InputFloat3("vMoveDirRange", vMoveDirRange, "%.3f"))
+			{
+				tCurData.vMoveDirRange.x = vMoveDirRange[0];
+				tCurData.vMoveDirRange.y = vMoveDirRange[1];
+				tCurData.vMoveDirRange.z = vMoveDirRange[2];
 			}
 
 			_float	fStartDistance[2] = { tCurData.fStartDistance , tCurData.fStartDistanceRange };
@@ -1067,6 +1107,10 @@ void CWindow_Effect::Show_ParticleTab()
 				tCurData.fGravityRange = fGravityRanges[1];
 			}
 
+			if (ImGui::RadioButton("bZeroSpeedDisable", static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable = !static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable;
+			}
 			_float	fSpeeds[2] = { tCurData.fSpeed , tCurData.fSpeedRange };
 			if (ImGui::InputFloat2("fSpeed, Range", fSpeeds, "%.2f"))
 			{
@@ -1216,7 +1260,8 @@ void CWindow_Effect::Save_CurEffect()
 
 	if (m_vecEffects[m_iCurrentIdx].iEffectType == 1)
 	{
-		if (pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+		if (pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 			m_vecEffects[m_iCurrentIdx].iEffectType = 2;
 		else
 			m_vecEffects[m_iCurrentIdx].iEffectType = 1;
@@ -1296,6 +1341,9 @@ void CWindow_Effect::Save_CurEffect()
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSoft, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
@@ -1315,6 +1363,10 @@ void CWindow_Effect::Save_CurEffect()
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSoft, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
+
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iWidthSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iHeightSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDuration, sizeof(_float));
