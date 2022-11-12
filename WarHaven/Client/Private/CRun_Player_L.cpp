@@ -34,11 +34,11 @@ HRESULT CRun_Player_L::Initialize()
     __super::Initialize();
 
     m_eAnimType = ANIM_BASE_L;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 22;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_RUN_PLAYER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-    m_iStateChangeKeyFrame = 9999;
+    m_iStateChangeKeyFrame = 0;
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
@@ -51,6 +51,8 @@ HRESULT CRun_Player_L::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
 //    m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
+    m_vecAdjState.push_back(STATE_JUMP_PLAYER_L);
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 //    m_vecAdjState.push_back(STATE_SLIDE_PLAYER);
  //   m_vecAdjState.push_back(STATE_JUMP_PLAYER);
  //   m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
@@ -72,35 +74,13 @@ HRESULT CRun_Player_L::Initialize()
     m_VecDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
     m_VecDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
 
-
-
     m_VecDirectionAnimIndex[STATE_DIRECTION_W] = 22;
-    
-
-    // ------------------------------------------------------
-
-    // 234
-    m_VecDirectionBeginAnimIndex[STATE_DIRECTION_E] = 10;
-    
-    m_VecDirectionBeginAnimIndex[STATE_DIRECTION_N] = 11;
-    m_VecDirectionBeginAnimIndex[STATE_DIRECTION_NE] = 12;
-    m_VecDirectionBeginAnimIndex[STATE_DIRECTION_NW] = 13;
-   
-    m_VecDirectionBeginAnimIndex[STATE_DIRECTION_S] = 14;
-    m_VecDirectionBeginAnimIndex[STATE_DIRECTION_SE] = 15;
-    m_VecDirectionBeginAnimIndex[STATE_DIRECTION_SW] = 16;
-   
-    m_VecDirectionBeginAnimIndex[STATE_DIRECTION_W] = 17;
-   
-
-
-    
 
 
     return S_OK;
 }
 
-void CRun_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CRun_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner의 Animator Set Idle로 */
     CColorController::COLORDESC m_tColorDesc;
@@ -123,7 +103,7 @@ void CRun_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimInd
 
 
 
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CRun_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -150,74 +130,19 @@ void CRun_Player_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CRun_Player_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* Player가 Walk로 오는 조건
-    1. CTRL 을 누르지 않은 상태
     2. WASD 를 누른 상태
     */
-
-    // m_eStateType 이 End 에 가지 않으면 Enter 를 호출한다.
-
-    // W 랑 A 를 누르면 왼쪽 앞으로 이동한다.
-    // W 랑 D 를 누르면 왼쪽 옆으로 이동한다.
-
-    // 만약 WASD 를 눌렀다면
-
-    // 걷기를 하지 않고
-    if (KEY(CTRL, NONE))
-    {
-        // 황소 베기를 쓰지 않고
-        if (KEY(Q, NONE))
-        {
-            // 점프를 하지 않고
-            if (KEY(SPACE, NONE))
-            {
-                // 슬라이딩을 하지 않는다면? (나중에 깃발올리기, 소생 등으로 변경)
-                if (KEY(J, NONE))
-                {
-                    if (KEY(W, HOLD) ||
-                        KEY(A, HOLD) ||
-                        KEY(S, HOLD) ||
-                        KEY(D, HOLD))
-                    {
-                        return m_eStateType;
-                    }
-                }
-            }
-        }
-
-    }
-    
-
-   
+	if (KEY(CTRL, NONE))
+	{
+		if (KEY(W, HOLD) ||
+			KEY(A, HOLD) ||
+			KEY(S, HOLD) ||
+			KEY(D, HOLD))
+		{
+			return m_eStateType;
+		}
+	}
 
 
     return STATE_END;
 }
-
-//_bool CRun_Player_L::Change_Animation_Run(_uint iBeginAttackAnim, _uint iAttackAnim, CAnimator* pAnimator)
-//{
-//    // RunBegin 
-//    if (m_iAnimIndex != iBeginAttackAnim)
-//    {
-//        if (m_iAnimIndex == 21)
-//        {
-//            if (m_iAnimIndex == iAttackAnim && pAnimator->Is_CurAnimFinished())
-//            {
-//                m_eAnimType = ANIM_BASE_R;
-//                m_iAnimIndex = iBeginAttackAnim;
-//
-//                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-//                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.f);
-//            }
-//        }
-//        else
-//        {
-//            m_eAnimType = ANIM_BASE_R;
-//            m_iAnimIndex = iAttackAnim;
-//
-//            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-//            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.7f);
-//
-//        }
-//
-//    return false;
-//}

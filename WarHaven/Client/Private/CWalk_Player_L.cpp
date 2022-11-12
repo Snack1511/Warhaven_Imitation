@@ -73,14 +73,14 @@ HRESULT CWalk_Player_L::Initialize()
     return S_OK;
 }
 
-void CWalk_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CWalk_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner의 Animator Set Idle로 */
 
     
 
 
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CWalk_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -95,136 +95,6 @@ STATE_TYPE CWalk_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
         return STATE_IDLE_PLAYER_L;
     }
 
-    //if (
-    //    KEY(W, NONE) &&
-    //    KEY(A, NONE) &&
-    //    KEY(S, NONE) &&
-    //    KEY(D, NONE)
-    //    )
-    //{
-    //    return STATE_IDLE_PLAYER_L;
-    //}  
-    //else
-    //{
-
-    //    if (KEY(W, HOLD))
-    //    {
-    //        // Key(CTRL + W + A)
-    //        if (KEY(A, HOLD))
-    //        {
-    //            //Base_L
-    //            if (m_eAnimType == ANIM_BASE_L)
-    //            {
-    //                // 예외처리
-    //                if (m_iAnimIndex != m_VecDirectionAnimIndex[0])
-    //                {
-    //                    m_iAnimIndex = m_VecDirectionAnimIndex[0];
-
-    //                    pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                    pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //                }
-    //            }
-
-    //        }
-
-    //        // Key(CTRL + W + D)
-    //        else if (KEY(D, HOLD))
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != m_VecDirectionAnimIndex[1])
-    //            {
-    //                m_iAnimIndex = m_VecDirectionAnimIndex[1];
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //            }
-    //        }
-
-    //        // Key(CTRL + W)
-    //        else
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != m_VecDirectionAnimIndex[2])
-    //            {
-    //                m_iAnimIndex = m_VecDirectionAnimIndex[2];
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.5f);
-    //            }
-    //        }
-
-
-    //    }
-
-    //    // Key(CTRL + S)
-    //    else if (KEY(S, HOLD))
-    //    {
-    //        // Key(CTRL + S + A)
-    //        if (KEY(A, HOLD))
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != m_VecDirectionAnimIndex[3])
-    //            {
-    //                m_iAnimIndex = m_VecDirectionAnimIndex[3];
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //            }
-    //        }
-
-    //        // Key(CTRL + S + D)
-    //        else if (KEY(D, HOLD))
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != m_VecDirectionAnimIndex[4])
-    //            {
-    //                m_iAnimIndex = m_VecDirectionAnimIndex[4];
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //            }
-    //        }
-
-    //        // Key(CTRL + S)
-    //        else
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != m_VecDirectionAnimIndex[5])
-    //            {
-    //                m_iAnimIndex = m_VecDirectionAnimIndex[5];
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //            }
-    //        }
-    //    }
-
-    //    // Key(CTRL + A)
-    //    else if (KEY(A, HOLD))
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != m_VecDirectionAnimIndex[6])
-    //        {
-    //            m_iAnimIndex = m_VecDirectionAnimIndex[6];
-
-    //            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //        }
-    //    }
-
-    //    // Key(CTRL + D)
-    //    else if (KEY(D, HOLD))
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != m_VecDirectionAnimIndex[7])
-    //        {
-    //            m_iAnimIndex = m_VecDirectionAnimIndex[7];
-
-    //            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.5f);
-    //        }
-    //    }
-    //}
 
     return __super::Tick(pOwner, pAnimator);
 }

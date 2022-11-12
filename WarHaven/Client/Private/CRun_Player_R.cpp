@@ -34,7 +34,7 @@ HRESULT CRun_Player_R::Initialize()
     __super::Initialize();
 
     m_eAnimType = ANIM_BASE_R;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 30;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_RUN_PLAYER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
@@ -51,46 +51,15 @@ HRESULT CRun_Player_R::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
 //    m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
+    m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 //    m_vecAdjState.push_back(STATE_SLIDE_PLAYER);
- //   m_vecAdjState.push_back(STATE_JUMP_PLAYER);
+
  //   m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
-    //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
 
     //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
 
 
-
-
-        // 15
-
-    m_VecDirectionAnimIndex[STATE_DIRECTION_NW] = 29;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_NE] = 28;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_N] = 27;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
-
-    m_VecDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_S] = 34;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_W] = 37;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_E] = 30;
-
-    // 234
-
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_NW] = 21;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_NE] = 20;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_N] = 19;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_SW] = 36;
-   
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_SE] = 35;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_S] = 34;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_W] = 37;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_E] = 25;
-
-
-
-   // 15
    m_VecDirectionAnimIndex[STATE_DIRECTION_E] = 26;
 
    m_VecDirectionAnimIndex[STATE_DIRECTION_N] = 27;
@@ -106,27 +75,10 @@ HRESULT CRun_Player_R::Initialize()
    m_VecDirectionAnimIndex[STATE_DIRECTION_W] = 30;
 
 
-   // ------------------------------------------------------
-
-   // 234
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_E] = 18;
-
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_N] = 19;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_NE] = 20;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_NW] = 21;
-
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_S] = 22;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_SE] = 23;
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_SW] = 24;
-
-   m_VecDirectionBeginAnimIndex[STATE_DIRECTION_W] = 25;
-    
-
-
     return S_OK;
 }
 
-void CRun_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CRun_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner의 Animator Set Idle로 */
     CColorController::COLORDESC m_tColorDesc;
@@ -149,23 +101,21 @@ void CRun_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimInd
 
 
 
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CRun_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (
-        KEY(W, NONE) &&
-        KEY(A, NONE) &&
-        KEY(S, NONE) &&
-        KEY(D, NONE)
-        )
-    { 
-        return STATE_IDLE_PLAYER_R;
-    }
+
+	if (KEY(W, NONE) &&
+		KEY(A, NONE) &&
+		KEY(S, NONE) &&
+		KEY(D, NONE))
+	{
+		return STATE_IDLE_PLAYER_R;
+	}
+
     
-
-
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -182,38 +132,16 @@ STATE_TYPE CRun_Player_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     2. WASD 를 누른 상태
     */
 
-    // m_eStateType 이 End 에 가지 않으면 Enter 를 호출한다.
-
-    // W 랑 A 를 누르면 왼쪽 앞으로 이동한다.
-    // W 랑 D 를 누르면 왼쪽 옆으로 이동한다.
-
-    // 만약 WASD 를 눌렀다면
-
-    // 걷기를 하지 않고
-    if (KEY(CTRL, NONE))
-    {
-        // 황소 베기를 쓰지 않고
-        if (KEY(Q, NONE))
-        {
-            // 점프를 하지 않고
-            if (KEY(SPACE, NONE))
-            {
-                // 슬라이딩을 하지 않는다면? (나중에 깃발올리기, 소생 등으로 변경)
-                if (KEY(J, NONE))
-                {
-                    if (KEY(W, HOLD) ||
-                        KEY(A, HOLD) ||
-                        KEY(S, HOLD) ||
-                        KEY(D, HOLD))
-                    {
-                        return m_eStateType;
-                    }
-                }
-            }
-        }
-
-    }
-    
+	if (KEY(CTRL, NONE))
+	{
+		if (KEY(W, HOLD) ||
+			KEY(A, HOLD) ||
+			KEY(S, HOLD) ||
+			KEY(D, HOLD))
+		{
+			return m_eStateType;
+		}
+	}
 
    
 

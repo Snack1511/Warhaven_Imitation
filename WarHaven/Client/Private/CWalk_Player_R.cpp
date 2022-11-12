@@ -76,14 +76,14 @@ HRESULT CWalk_Player_R::Initialize()
     return S_OK;
 }
 
-void CWalk_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CWalk_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner의 Animator Set Idle로 */
 
     
 
 
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CWalk_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -98,133 +98,6 @@ STATE_TYPE CWalk_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
         return STATE_IDLE_PLAYER_R;
     }
 
-    //if (
-    //    KEY(W, NONE) &&
-    //    KEY(A, NONE) &&
-    //    KEY(S, NONE) &&
-    //    KEY(D, NONE)
-    //    )
-    //{
-    //    return STATE_IDLE_PLAYER_R;
-    //}
-
-    //else
-    //{
-
-    //    if (KEY(W, HOLD))
-    //    {
-    //        // Key(CTRL + W + A)
-    //        if (KEY(A, HOLD))
-    //        {
-    //            // 예외처리r
-    //            if (m_iAnimIndex != 41)
-    //            {
-    //                m_iAnimIndex = 41;
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //            }
-    //        }
-
-    //        // Key(CTRL + W + D)
-    //        else if (KEY(D, HOLD))
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != 40)
-    //            {
-    //                    
-    //                m_iAnimIndex = 40;
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //            }
-    //        }
-
-    //        // Key(CTRL + W)
-    //        else
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != 39)
-    //            {
-    //                m_iAnimIndex = 39;
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.5f);
-    //            }
-    //        }
-
-
-    //    }
-
-    //    // Key(CTRL + S)
-    //    else if (KEY(S, HOLD))
-    //    {
-    //        // Key(CTRL + S + A)
-    //        if (KEY(A, HOLD))
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != 44)
-    //            {
-    //                m_iAnimIndex = 44;
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //            }
-    //        }
-
-    //        // Key(CTRL + S + D)
-    //        else if (KEY(D, HOLD))
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != 43)
-    //            {
-    //                m_iAnimIndex = 43;
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
-    //            }
-    //        }
-
-    //        // Key(CTRL + S)
-    //        else
-    //        {
-    //            // 예외처리
-    //            if (m_iAnimIndex != 42)
-    //            {
-    //                m_iAnimIndex = 42;
-
-    //                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.5f);
-    //            }
-    //        }
-    //    }
-
-    //    // Key(CTRL + A)
-    //    else if (KEY(A, HOLD))
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != 45)
-    //        {
-    //            m_iAnimIndex = 45;
-
-    //            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.5f);
-    //        }
-    //    }
-
-    //    // Key(CTRL + D)
-    //    else if (KEY(D, HOLD))
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != 38)
-    //        {
-    //            m_iAnimIndex = 38;
-
-    //            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-    //            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.5f);
-    //        }
-    //    }
-    //}
 
     return __super::Tick(pOwner, pAnimator);
 }

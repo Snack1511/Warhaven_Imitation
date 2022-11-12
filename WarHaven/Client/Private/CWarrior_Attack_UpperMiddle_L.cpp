@@ -38,19 +38,23 @@ HRESULT CWarrior_Attack_UpperMiddle_L::Initialize()
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 8;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    //m_eStateType = STATE_ATTACK_WARRIOR;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = STATE_ATTACK_UPPER_MIDDLE_PLAYER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.f;
+    m_fAnimSpeed = 2.8f;
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 80;
+    
+    m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
+    m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
+    m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
     //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
     //m_vecAdjState.push_back(STATE_WALK_PLAYER);
     //m_vecAdjState.push_back(STATE_RUN_PLAYER);
@@ -62,18 +66,14 @@ HRESULT CWarrior_Attack_UpperMiddle_L::Initialize()
     return S_OK;
 }
 
-void CWarrior_Attack_UpperMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimator, _uint iPreAnimIndex)
+void CWarrior_Attack_UpperMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* Owner의 Animator Set Idle로 */
-    __super::Enter(pOwner, pAnimator, iPreAnimIndex);
+    __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CWarrior_Attack_UpperMiddle_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pAnimator->Is_CurAnimFinished())
-        return STATE_IDLE_PLAYER_R;
-
-
     return __super::Tick(pOwner, pAnimator);
 }
 
@@ -86,8 +86,8 @@ STATE_TYPE CWarrior_Attack_UpperMiddle_L::Check_Condition(CUnit* pOwner, CAnimat
 {
     /* Player가 Attack 으로 오는 조건
     1.  LBuutton 을 이용해 공격한다.
-    2.  CTRL LButton 을 이용해 내려찍는다.
     */
+
     if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
     {
         return m_eStateType;
