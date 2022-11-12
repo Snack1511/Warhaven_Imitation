@@ -117,7 +117,7 @@ void CUnit_Warrior::My_LateTick()
 	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	vCamLook.y = 0.f;
 
-	if (KEY(W, HOLD))
+	/*if (KEY(W, HOLD))
 	{
 		_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 		vDir.y = 0.f;
@@ -163,5 +163,5 @@ void CUnit_Warrior::My_LateTick()
 	if (KEY(SPACE, TAP))
 	{
 		m_pPhysics->Set_Jump(6.f);
-	}
+	}*/
 }
