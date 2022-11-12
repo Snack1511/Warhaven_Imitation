@@ -102,7 +102,7 @@ CStructure* CStructure::Create(wstring MeshPath, _float4 vScale, _float4x4 Objec
 	return pInstance;
 }
 
-void CStructure::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos)
+void CStructure::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, const _uint& eMyColType)
 {
 }
 

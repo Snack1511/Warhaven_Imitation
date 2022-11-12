@@ -41,6 +41,9 @@ public:
 	void	Clear_KeyCommands() { m_KeyCommands.clear(); }
 	void	Update_KeyCommands();
 
+public:
+	void	Time_Slow();
+
 private:
 	CUnit* m_pPlayer = nullptr;
 

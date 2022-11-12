@@ -101,6 +101,9 @@ void CUser::KeyInput_FPSSetter()
 		dCurFPSLimit = 0.;
 	}
 
+	if (KEY(NUM0, TAP))
+		Time_Slow();
+
 	CGameInstance::Get_Instance()->Set_FPSLimitTIme(dCurFPSLimit);
 
 }
@@ -116,6 +119,16 @@ void CUser::Update_KeyCommands()
 			m_KeyCommands.push_back((KEY)i);
 		}
 	}
+}
+
+void CUser::Time_Slow()
+{
+	static _bool	bSlow = false;
+
+	if (bSlow = !bSlow)
+		GAMEINSTANCE->Set_TimeSpeed(0, 0.1f);
+	else
+		GAMEINSTANCE->Set_TimeSpeed(0, 1.f);
 }
 
 void CUser::SetUp_BloodOverlay()

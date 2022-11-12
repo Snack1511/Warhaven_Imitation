@@ -232,6 +232,9 @@
     <Filter Include="02. Singleton\02. Design\19. PhysX_Manager\PhysXCharacter">
       <UniqueIdentifier>{a6f840f8-e9eb-43dd-917c-6a4876103ea8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Module\Utility_PhysX">
+      <UniqueIdentifier>{9cbe3caa-909a-4656-9e4c-b1be611b87f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
@@ -440,6 +443,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CPhysXCharacter.cpp">
       <Filter>02. Singleton\02. Design\19. PhysX_Manager\PhysXCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CUtility_PhysX.cpp">
+      <Filter>04. Module\Utility_PhysX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -670,6 +676,9 @@
     </ClInclude>
     <ClInclude Include="..\public\CPhysXCharacter.h">
       <Filter>02. Singleton\02. Design\19. PhysX_Manager\PhysXCharacter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CUtility_PhysX.h">
+      <Filter>04. Module\Utility_PhysX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

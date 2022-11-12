@@ -1,9 +1,57 @@
 #include "..\Public\PhysX_Manager.h"
 #include "GameInstance.h"
 
+#include "GameObject.h"
+
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
 //#define	YJ_DEBUG
+
+
+class TriggersFilterCallback : public PxSimulationFilterCallback
+{
+	virtual		PxFilterFlags	pairFound(PxU32 /*pairID*/,
+		PxFilterObjectAttributes /*attributes0*/, PxFilterData /*filterData0*/, const PxActor* /*a0*/, const PxShape* s0,
+		PxFilterObjectAttributes /*attributes1*/, PxFilterData /*filterData1*/, const PxActor* /*a1*/, const PxShape* s1,
+		PxPairFlags& pairFlags)
+	{
+		//		printf("pairFound\n");
+
+		if (s0->userData || s1->userData)	// See createTriggerShape() function
+		{
+			pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+		}
+		else
+			pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+
+		return PxFilterFlags();
+	}
+
+	virtual		void			pairLost(PxU32 /*pairID*/,
+		PxFilterObjectAttributes /*attributes0*/,
+		PxFilterData /*filterData0*/,
+		PxFilterObjectAttributes /*attributes1*/,
+		PxFilterData /*filterData1*/,
+		bool /*objectRemoved*/)
+	{
+		//		printf("pairLost\n");
+	}
+
+	virtual		bool			statusChange(PxU32& /*pairID*/, PxPairFlags& /*pairFlags*/, PxFilterFlags& /*filterFlags*/)
+	{
+		//		printf("statusChange\n");
+		return false;
+	}
+}gTriggersFilterCallback;
+
+static PxFilterFlags triggersUsingFilterCallback(PxFilterObjectAttributes, PxFilterData, PxFilterObjectAttributes, PxFilterData, PxPairFlags& pairFlags, const void*, PxU32)
+{
+	pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+
+	return PxFilterFlag::eCALLBACK;
+}
+
+
 
 CPhysX_Manager::CPhysX_Manager()
 {
@@ -13,6 +61,49 @@ CPhysX_Manager::~CPhysX_Manager()
 {
 	Release();
 }
+
+void CPhysX_Manager::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 count)
+{
+	while (count--)
+	{
+		const PxContactPair& CurrentPair = *pairs++;
+
+		//둘다 트리거일 때만 진행하게
+		if (!(isTriggerShape(CurrentPair.shapes[0]) && isTriggerShape(CurrentPair.shapes[1])))
+			continue;
+
+		string strfirstName = CurrentPair.shapes[0]->getName();
+		string strSecondName = CurrentPair.shapes[1]->getName();
+
+		const TRIGGERDESC& tFirst = Find_Trigger(strfirstName);
+		if (!tFirst.pGameObject)
+			continue;
+		const TRIGGERDESC& tSecond = Find_Trigger(strSecondName);
+		if (!tSecond.pGameObject)
+			continue;
+
+		//Collision Enter
+		if (CurrentPair.events & (PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_CCD))
+		{
+			tFirst.pGameObject->CallBack_CollisionEnter(tSecond.pGameObject,	tFirst.iColType, tSecond.iColType);
+			tSecond.pGameObject->CallBack_CollisionEnter(tFirst.pGameObject,		tSecond.iColType, tFirst.iColType);
+		}
+		//Collision Exit
+		else if (CurrentPair.events & PxPairFlag::eNOTIFY_TOUCH_LOST)
+		{
+			tFirst.pGameObject->CallBack_CollisionExit(tSecond.pGameObject, tSecond.iColType);
+			tSecond.pGameObject->CallBack_CollisionExit(tFirst.pGameObject, tFirst.iColType);
+		}
+		else
+		{
+			tFirst.pGameObject->CallBack_CollisionStay(tSecond.pGameObject, tSecond.iColType);
+			tSecond.pGameObject->CallBack_CollisionStay(tFirst.pGameObject, tFirst.iColType);
+		}
+	}
+
+
+}
+
 
 HRESULT CPhysX_Manager::Initialize()
 {
@@ -61,7 +152,7 @@ void CPhysX_Manager::Tick()
 {
 	_float fTimeDelta = fDT(0);
 
-	if (m_pCurScene)
+	if (m_bSceneStart && m_pCurScene)
 	{
 		if (1 == m_pCurScene->getTimestamp() ||
 			2 == m_pCurScene->getTimestamp())
@@ -78,13 +169,18 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 	// Set Scene
 	PxSceneDesc sceneDesc(m_pPhysics->getTolerancesScale());
 	sceneDesc.gravity = Gravity;
-
+	//sceneDesc.flags = PxSceneFlag::eENABLE_GPU_DYNAMICS;
 	// Set Dispatcher
 	m_pDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = m_pDispatcher;
-	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+	sceneDesc.filterShader = triggersUsingFilterCallback;
+	sceneDesc.filterCallback = &gTriggersFilterCallback;
+
+	sceneDesc.simulationEventCallback = this;
+
 
 	m_pScenes[eScene] = m_pPhysics->createScene(sceneDesc);
+	//m_pScenes[eScene]->setFlag(PxSceneFlag::eENABLE_GPU_DYNAMICS, true);
 
 	PxPvdSceneClient* pvdClient = m_pScenes[eScene]->getScenePvdClient();
 	if (pvdClient)
@@ -95,6 +191,8 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 	}
 
 	m_pCurScene = m_pScenes[eScene];
+
+	Create_PxControllerManager(eScene);
 
 	return S_OK;
 }
@@ -117,7 +215,9 @@ HRESULT CPhysX_Manager::Change_Scene(Scene eNextScene, PxVec3 Gravity)
 	return S_OK;
 }
 
-PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, const PxReal& Density, const PxVec3 & velocity, PxMaterial* pMaterial)
+PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, const PxReal& Density
+	, _bool bTrigger, TRIGGERDESC tTriggerDesc
+	,const PxVec3 & velocity, PxMaterial* pMaterial)
 {
 	PxRigidDynamic* pDynamic = nullptr;
 	if (pMaterial)
@@ -131,6 +231,14 @@ PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transfo
 	pDynamic->setLinearVelocity(velocity);
 
 	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+	//PxShapeFlag::eSCENE_QUERY_SHAPE;
+
+	/* Trigger */
+	if (bTrigger)
+	{
+		Create_Trigger(tTriggerDesc, Geometry, pDynamic);
+	}
+
 
 	PxRigidBodyExt::updateMassAndInertia(*pDynamic, Density);
 	m_pCurScene->addActor(*pDynamic);
@@ -138,13 +246,21 @@ PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transfo
 	return pDynamic;
 }
 
-PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, PxMaterial* pMaterial)
+PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene
+	, _bool bTrigger, TRIGGERDESC tTriggerDesc
+	, PxMaterial* pMaterial)
 {
 	PxRigidStatic* pStatic = nullptr;
 	if (pMaterial)
 		pStatic = PxCreateStatic(*m_pPhysics, Transform, Geometry, *pMaterial);
 	else
 		pStatic = PxCreateStatic(*m_pPhysics, Transform, Geometry, *m_pMaterial);
+
+	if (bTrigger)
+	{
+		Create_Trigger(tTriggerDesc, Geometry, pStatic);
+	}
+
 
 	m_pCurScene->addActor(*pStatic);
 
@@ -187,7 +303,6 @@ void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMate
 		*ppOut = m_pPhysics->createShape(Geometry, *pMaterial);
 	else
 		*ppOut = m_pPhysics->createShape(Geometry, *m_pMaterial);
-
 }
 
 void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, PxController** ppOut)
@@ -196,8 +311,60 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 	tCCD.radius = fRadius;
 	tCCD.height = fHeight;
 	tCCD.material = m_pMaterial;
+	tCCD.position = PxExtendedVec3(0.f, 10.f, 0.f);
+
+	//어느 높이까지 올라갈 수 있는지
+	tCCD.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
+	tCCD.stepOffset = 0.2f;
+	tCCD.contactOffset = 0.02f;
+
+	//경사진 슬로프만나면 어떻게 할 지
+	tCCD.nonWalkableMode = PxControllerNonWalkableMode::ePREVENT_CLIMBING_AND_FORCE_SLIDING;
+	tCCD.slopeLimit = cosf(ToRadian(45.f));\
+	//tCCD.maxJumpHeight = 20.f; // default JumpHeight
 
 	*ppOut = m_pPxControllerManager->createController(tCCD);
+
+}
+
+void CPhysX_Manager::Create_Trigger(const TRIGGERDESC& tTriggerDesc, const PxGeometry& eGeometry, PxRigidActor* pActor)
+{
+	if (Find_Trigger(tTriggerDesc.strName).pGameObject)
+	{
+		Call_MsgBox(L"GameObject is already exist on CPhysX_Manager / (이름 겹침)");
+		return;
+	}
+
+	PxShape* TriggerShape = nullptr;
+
+	//PxShapeFlags shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eTRIGGER_SHAPE;
+
+	TriggerShape = m_pPhysics->createShape(eGeometry, *m_pMaterial, true);
+	TriggerShape->userData = TriggerShape;	// Arbitrary rule: it's a trigger if non null
+	TriggerShape->setName(tTriggerDesc.strName.c_str());
+
+	PxTransform tTransform;
+	ZeroMemory(&tTransform, sizeof(PxTransform));
+	tTransform.p.x = tTriggerDesc.vOffsetPos.x;
+	tTransform.p.y = tTriggerDesc.vOffsetPos.y;
+	tTransform.p.z = tTriggerDesc.vOffsetPos.z;
+
+	TriggerShape->setLocalPose(tTransform);
+
+	if (!(pActor->attachShape(*TriggerShape)))
+	{
+		Call_MsgBox(L"Failed to AttachShape : Create_Trigger");
+	}
+
+	m_mapTrigger.emplace(make_pair(Convert_ToHash(tTriggerDesc.strName), tTriggerDesc));
+}
+
+bool CPhysX_Manager::isTriggerShape(PxShape* shape)
+{
+	if (shape->userData)
+		return true;
+
+	return false;
 }
 
 void CPhysX_Manager::Create_PxControllerManager(Scene eScene)
@@ -210,6 +377,21 @@ void CPhysX_Manager::Create_PxControllerManager(Scene eScene)
 
 	m_pPxControllerManager = PxCreateControllerManager(*m_pScenes[eScene]);
 }
+
+TRIGGERDESC CPhysX_Manager::Find_Trigger(string strName)
+{
+	auto iter = m_mapTrigger.find(Convert_ToHash(strName));
+
+	if (m_mapTrigger.end() == iter)
+		return TRIGGERDESC();
+
+	return iter->second;
+}
+
+
+
+
+
 
 void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh ** ppOut)
 {

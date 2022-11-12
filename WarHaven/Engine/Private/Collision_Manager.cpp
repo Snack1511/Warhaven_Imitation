@@ -249,8 +249,8 @@ void CCollision_Manager::Collider_GroupUpdate(const _uint& _eLeft, const _uint& 
 					{
 						_float4 vColPosition = Compute_ColPosition((*LeftIter), (*RightIter));
 
-						pLeftOwner->CallBack_CollisionEnter(pRightOwner, _eRight, vColPosition);
-						pRightOwner->CallBack_CollisionEnter(pLeftOwner, _eLeft, vColPosition);
+						pLeftOwner->CallBack_CollisionEnter(pRightOwner, _eRight, _eLeft);
+						pRightOwner->CallBack_CollisionEnter(pLeftOwner, _eLeft, _eRight);
 						(*LeftIter)->Set_Col(true);
 						(*RightIter)->Set_Col(true);
 

@@ -24,6 +24,9 @@
 #include "CState.h"
 #include "CState_Manager.h"
 
+#include "CPhysXCharacter.h"
+
+
 
 CUnit::CUnit()
 {
@@ -34,12 +37,18 @@ CUnit::~CUnit()
 	SAFE_DELETE(m_pCurState);
 }
 
-void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos)
+void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, const _uint& eMyColType)
 {
+	int i = 0;
 }
 
 void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType)
 {
+}
+
+void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType)
+{
+	int i = 0;
 }
 
 void CUnit::Set_ShaderResource(CShader* pShader, const char* pConstantName)
@@ -103,6 +112,14 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component(CPhysics::Create(0));
 
+	CPhysXCharacter::PHYSXCCDDESC tDesc;
+	tDesc.fHeight = 0.5f;
+	CPhysXCharacter* pPhysXCharacter = CPhysXCharacter::Create(CP_BEFORE_TRANSFORM, tDesc);
+	Add_Component(pPhysXCharacter);
+
+	
+	//pPhysXCharacter->Add_Trigger(TRIGGERDESC("PlayerBody", COL_BODY, this, ZERO_VECTOR));
+
 
 	return S_OK;
 }
@@ -123,6 +140,7 @@ HRESULT CUnit::Initialize()
 		return E_FAIL;
 
 
+
 	return S_OK;
 }
 
@@ -133,7 +151,7 @@ HRESULT CUnit::Start()
 	m_pPhysics->Get_PhysicsDetail().fCurGroundY = m_pTransform->Get_MyWorld(WORLD_POS).y;
 
 	//m_pAnimator->Set_CurAnimIndex(ANIM_BASE, 22);
-	DISABLE_COMPONENT(m_pPhysics);
+	//DISABLE_COMPONENT(m_pPhysics);
 	m_pPhysics->Set_NaviOn();
 
 	CallBack_CollisionEnter += bind(&CUnit::Unit_CollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3);
@@ -142,6 +160,8 @@ HRESULT CUnit::Start()
 
 	
 	SetUp_TrailEffect(m_tUnitStatus.eWeapon);
+
+	m_pPhysics->Set_Jump(0.f);
 
 	return S_OK;
 }

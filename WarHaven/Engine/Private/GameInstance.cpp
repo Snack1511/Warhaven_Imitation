@@ -343,7 +343,7 @@ void CGameInstance::Create_Shape(const PxGeometry& Geometry, PxMaterial* pMateri
 
 PxRigidDynamic* CGameInstance::Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, const PxReal& Density, const PxVec3& velocity, PxMaterial* pMaterial)
 {
-	return m_pPhysXManager->Create_DynamicActor(t, geometry, eScene, Density, velocity, pMaterial);
+	return m_pPhysXManager->Create_DynamicActor(t, geometry, eScene, Density);
 }
 
 PxRigidStatic* CGameInstance::Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, CPhysX_Manager::Scene eScene, PxMaterial* pMaterial)

@@ -107,7 +107,7 @@ HRESULT CTerrain::Initialize_Prototype()
     pShader->Initialize();
     Add_Component(pShader);
 
-    Add_Component(CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN));
+    Add_Component<CRenderer>(CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN));
     CTexture* pTexture = CTexture::Create(0, L"../bin/resources/Textures/Terrain/Tile0.dds", 1);
     Add_Component(pTexture);
 

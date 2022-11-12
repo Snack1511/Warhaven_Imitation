@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "Model.h"
 #include "MeshContainer.h"
+#include "Physics.h"
 
 
 #include "Functor.h"

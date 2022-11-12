@@ -3,11 +3,17 @@
 
 BEGIN(Engine)
 
+class CGameObject;
+
+
 class CPhysX_Manager
+	: public PxSimulationEventCallback
 {
 	DECLARE_SINGLETON(CPhysX_Manager)
 
 public:
+	
+
 	enum Scene
 	{
 		SCENE_CURRENT,
@@ -24,6 +30,8 @@ public:
 		SHAPE_END
 	}COLSHAPE;
 
+	
+
 private:
 	CPhysX_Manager();
 	virtual ~CPhysX_Manager();
@@ -36,10 +44,34 @@ public:
 	void			Begin_PhysScene() { m_bSceneStart = true; }
 	void			End_PhysScene() { m_bSceneStart = false; }
 
+	/* Simulation Callback*/
+public:
+	void onConstraintBreak(PxConstraintInfo* /*constraints*/, PxU32 /*count*/)
+	{
+		//printf("onConstraintBreak\n");
+	}
+	void onWake(PxActor** /*actors*/, PxU32 /*count*/)
+	{
+		//printf("onWake\n");
+	}
+	void onSleep(PxActor** /*actors*/, PxU32 /*count*/)
+	{
+		//printf("onSleep\n");
+	}
+	void onTrigger(PxTriggerPair* pairs, PxU32 count) {}
+	void onAdvance(const PxRigidBody* const*, const PxTransform*, const PxU32)
+	{
+		//printf("onAdvance\n");
+	}
+	void onContact(const PxContactPairHeader& /*pairHeader*/, const PxContactPair* pairs, PxU32 count);
+
+	
+	
 public:
 	HRESULT	Initialize();
 	void	Tick();
 	void	Release();
+
 
 public:
 	// Transform 에는 (float3)위치와 (float4)쿼터니온이 들어간다.
@@ -47,18 +79,34 @@ public:
 	HRESULT			Delete_Scene(Scene eScene);
 	HRESULT			Change_Scene(Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
 
-	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, const PxReal& Density, const PxVec3& velocity = PxVec3(0), PxMaterial* pMaterial = nullptr);
-	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, PxMaterial* pMaterial = nullptr);
+	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, const PxReal& Density
+		, _bool bTrigger = false, TRIGGERDESC	tTriggerDesc = TRIGGERDESC()
+		, const PxVec3& velocity = PxVec3(0)
+		, PxMaterial* pMaterial = nullptr);
+
+	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene
+		, _bool bTrigger = false, TRIGGERDESC	tTriggerDesc = TRIGGERDESC()
+		, PxMaterial* pMaterial = nullptr);
 	
 	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
 	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
 	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
 	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, PxShape ** ppOut);
 
+public:
+	void			Create_PxControllerManager(Scene eScene);
 	void			Create_CapsuleController(_float fRadius, _float fHeight, PxController** ppOut);
 
-	void			Create_PxControllerManager(Scene eScene);
+public: /* Trigger */
+	void			Create_Trigger(const TRIGGERDESC& tTriggerDesc, const PxGeometry& eGeometry, PxRigidActor* pActor);
+	bool			isTriggerShape(PxShape* shape);
+
+public:
+	TRIGGERDESC Find_Trigger(string strName);
+
 	
+private:
+	map<_hashcode, TRIGGERDESC>	m_mapTrigger;
 
 private:
 	PxControllerManager* m_pPxControllerManager = nullptr;

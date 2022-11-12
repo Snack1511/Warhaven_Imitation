@@ -68,7 +68,7 @@ HRESULT CUI_Skill::Start()
 		for (int j = 0; j < SkillHud::NAME_END; ++j)
 		{
 			CREATE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j]);
 		}
 	}
 
@@ -230,7 +230,7 @@ void CUI_Skill::ActiveSkillBtn(_uint iIndex)
 	{
 		for (_uint j = 0; j < SkillHud::NAME_END; ++j)
 		{
-			DISABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j]);
 		}
 	}
 
@@ -249,7 +249,7 @@ void CUI_Skill::ActiveSkillBtn(_uint iIndex)
 			if (j == 1)
 				m_arrSkillHud[i].m_pUIInstance[j]->Set_Sort(0.1f);
 
-			ENABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j], GROUP_UI);
+			ENABLE_GAMEOBJECT(m_arrSkillHud[i].m_pUIInstance[j]);
 		}
 	}
 }

@@ -37,6 +37,12 @@ namespace Engine
 		return strHash(strTemp);
 	}
 
+	static	size_t	Convert_ToHash(string strTemp)
+	{
+		hash<string>	strHash;
+		return strHash(strTemp);
+	}
+
 	static	size_t	Convert_ToHash(const _tchar* strTemp)
 	{
 		hash<wstring>	strHash;

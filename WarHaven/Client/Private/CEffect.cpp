@@ -172,7 +172,7 @@ void CEffect::ReBind_Texture()
 	GET_COMPONENT(CModel)->Change_Texture(0, aiTextureType_DIFFUSE_ROUGHNESS, m_wstrNoiseMapPath);
 }
 
-void CEffect::OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos)
+void CEffect::OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType, const _uint& eMyColType)
 {
 	if (!(m_bEffectFlag & EFFECT_COLLIDER))
 		DISABLE_GAMEOBJECT(this);

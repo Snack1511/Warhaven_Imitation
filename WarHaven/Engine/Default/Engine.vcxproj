@@ -211,6 +211,7 @@
     <ClCompile Include="..\private\CTri_Instance.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\private\CUtility_File.cpp" />
+    <ClCompile Include="..\private\CUtility_PhysX.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Easing_Utillity.cpp" />
     <ClCompile Include="..\Private\Engine_Struct.cpp" />
@@ -282,6 +283,7 @@
     <ClInclude Include="..\public\CTri_Instance.h" />
     <ClInclude Include="..\Public\CustomFont.h" />
     <ClInclude Include="..\public\CUtility_File.h" />
+    <ClInclude Include="..\public\CUtility_PhysX.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Delegate\Delegate.h" />
     <ClInclude Include="..\Public\Easing_Utillity.h" />

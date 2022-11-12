@@ -4,7 +4,8 @@
 BEGIN(Engine)
 class CTransform;
 
-class ENGINE_DLL CPhysXCollider : public CComponent
+class ENGINE_DLL CPhysXCollider 
+	: public CComponent
 {
 	DECLARE_PROTOTYPE(CPhysXCollider);
 
@@ -39,6 +40,9 @@ public:
 public:
 	static CPhysXCollider* Create(_uint iGroupID, const PHYSXCOLLIDERDESC& tPhysXColliderDesc);
 
+
+
+
 public:
 	_vector	Get_Position();
 	_vector	Get_Velocity();
@@ -65,6 +69,10 @@ public:
 
 	void	Delete_Collider();
 	void	Create_Collider();
+
+public:
+	virtual void	Add_Trigger(const TRIGGERDESC& tTriggerDesc);
+
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

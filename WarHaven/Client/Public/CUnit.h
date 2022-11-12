@@ -41,9 +41,9 @@ public:
 		WEAPON_TYPE eWeapon;
 		_float fHP = 100.f;
 		_float fMaxHP = 100.f;
-		_float fRunSpeed = 7.5f;
+		_float fRunSpeed = 4.f;
 		_float fShortDashSpeed = 11.f;
-		_float fWalkSpeed = 2.f;
+		_float fWalkSpeed = 1.5f;
 		_float fDashSpeed = 16.f;
 		_float fWallJumpSpeed = 15.f;
 		_float fWireSpeed = 25.f;
@@ -64,9 +64,9 @@ protected:
 	virtual ~CUnit();
 
 public:
-	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, _float4 vColPos);
+	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, const _uint& eMyColType);
 	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType);
-	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType) {};
+	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType);
 
 public:
 	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);

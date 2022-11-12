@@ -25,6 +25,9 @@
 // MJ_INCLUDE
 #include "CDrawable_Terrain.h"
 
+// YJ
+#include "CDebugObject.h"
+
 CLevel_Test::CLevel_Test()
 {
 }
@@ -131,6 +134,8 @@ HRESULT CLevel_Test::Enter()
 
 	CUser::Get_Instance()->SetUp_BloodOverlay();
 
+	GAMEINSTANCE->Begin_PhysScene();
+
 	return S_OK;
 }
 
@@ -171,6 +176,7 @@ HRESULT CLevel_Test::Exit()
 	GAMEINSTANCE->Delete_Scene(CPhysX_Manager::Scene::SCENE_CURRENT);
 
 	CUser::Get_Instance()->On_ExitLevel();
+	GAMEINSTANCE->End_PhysScene();
 
 	return S_OK;
 }
@@ -297,6 +303,12 @@ HRESULT CLevel_Test::SetUp_Prototypes_HR()
 
 HRESULT CLevel_Test::SetUp_Prototypes_YJ()
 {
+	CDebugObject* pDebugObject = CDebugObject::Create(ZERO_VECTOR, _float4(40.f, 1.f, 40.f), ZERO_VECTOR);
+	pDebugObject->Initialize();
+	Ready_GameObject(pDebugObject, GROUP_PROP);
+
+
+
 	return S_OK;
 }
 

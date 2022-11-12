@@ -374,7 +374,6 @@ void CPhysXCollider::Set_Scale(_vector vScale)
 				PxMaterial*	pMaterial = m_ColliderDesc.pMaterial;
 
 				CPhysX_Manager::Get_Instance()->Create_Shape(PxGeometry, pMaterial, &pShape);
-
 				m_pRigidDynamic->attachShape(*pShape);
 			}
 		}
@@ -444,6 +443,53 @@ void CPhysXCollider::Create_Collider()
 	}
 }
 
+void CPhysXCollider::Add_Trigger(const TRIGGERDESC& tTriggerDesc)
+{
+	PxGeometry* pGeo = nullptr;
+
+	switch (m_ColliderDesc.eShape)		
+	{
+	case Engine::CPhysXCollider::COLLIDERSHAPE::SPHERE:
+		pGeo = new PxSphereGeometry(m_ColliderDesc.vScale.x * 0.5f);
+
+		break;
+	case Engine::CPhysXCollider::COLLIDERSHAPE::BOX:
+		//pGeo = new PxBoxGeometry(m_ColliderDesc.vScale.x * 0.5f, m_ColliderDesc.vScale.y * 0.5f, m_ColliderDesc.vScale.z * 0.5f);
+		pGeo = new PxBoxGeometry(m_ColliderDesc.vScale.x * 1.f, m_ColliderDesc.vScale.y * 1.f, m_ColliderDesc.vScale.z * 1.f);
+
+
+		break;
+	case Engine::CPhysXCollider::COLLIDERSHAPE::CYLINDER:
+	case Engine::CPhysXCollider::COLLIDERSHAPE::CONVECMESH:
+
+	{
+		pGeo = new PxConvexMeshGeometry(m_ColliderDesc.pConvecMesh);
+
+		static_cast<PxConvexMeshGeometry*>(pGeo)->convexMesh = m_ColliderDesc.pConvecMesh;
+
+		PxMeshScale	vScale;
+		vScale.scale.x = m_ColliderDesc.vScale.x;
+		vScale.scale.y = m_ColliderDesc.vScale.y;
+		vScale.scale.z = m_ColliderDesc.vScale.z;
+		static_cast<PxConvexMeshGeometry*>(pGeo)->scale = vScale;
+
+	}
+		
+		break;
+	case Engine::CPhysXCollider::COLLIDERSHAPE::SHAPE_END:
+		break;
+	default:
+		break;
+	}
+
+	if (m_pRigidDynamic)
+		CPhysX_Manager::Get_Instance()->Create_Trigger(tTriggerDesc, *pGeo, m_pRigidDynamic);
+	else
+		CPhysX_Manager::Get_Instance()->Create_Trigger(tTriggerDesc, *pGeo, m_pRigidStatic);
+
+	SAFE_DELETE(pGeo);
+}
+
 void CPhysXCollider::CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc)
 {
 	PxTransform	Transform;
@@ -484,13 +530,15 @@ void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, Px
 	{
 	case COLLIDERSHAPE::SPHERE:
 		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
-			PxSphereGeometry(PhysXColliderDesc.vScale.x), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
+			PxSphereGeometry(PhysXColliderDesc.vScale.x), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity);
 		break;
+
 	case COLLIDERSHAPE::BOX:
 		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
 			PxBoxGeometry(PhysXColliderDesc.vScale.x * 0.5f, PhysXColliderDesc.vScale.y * 0.5f, PhysXColliderDesc.vScale.z * 0.5f),
-			CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
+			CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity);
 		break;
+
 	case COLLIDERSHAPE::CYLINDER:
 	case COLLIDERSHAPE::CONVECMESH:
 	{
@@ -502,7 +550,7 @@ void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, Px
 		vScale.scale.z = PhysXColliderDesc.vScale.z;
 		PxGeometry.scale = vScale;
 		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
-			PxGeometry, CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
+			PxGeometry, CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity);
 		//m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
 		//	PxConvexMeshGeometry(PhysXColliderDesc.pConvecMesh), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
 		break;
@@ -513,6 +561,8 @@ void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, Px
 	default:
 		break;
 	}
+
+	
 }
 
 void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh)

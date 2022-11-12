@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "CUnit_Warrior.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
-#include "Model.h"
 #include "CAnimator.h"
 #include "CColorController.h"
+
+#include "Camera.h"
+
 CUnit_Warrior::CUnit_Warrior()
 {
 }
@@ -108,4 +110,58 @@ void CUnit_Warrior::OnEnable()
 void CUnit_Warrior::OnDisable()
 {
 	__super::OnDisable();
+}
+
+void CUnit_Warrior::My_LateTick()
+{
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	vCamLook.y = 0.f;
+
+	if (KEY(W, HOLD))
+	{
+		_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+		vDir.y = 0.f;
+		m_pTransform->Set_LerpLook(vCamLook, 0.4f);
+		m_pPhysics->Set_Dir(vDir);
+		m_pPhysics->Set_MaxSpeed(m_tUnitStatus.fRunSpeed);
+		m_pPhysics->Set_Accel(100.f);
+	}
+	else if (KEY(A, HOLD))
+	{
+		_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+		vDir *= -1.f;
+		vDir.y = 0.f;
+		m_pTransform->Set_LerpLook(vCamLook, 0.4f);
+		m_pPhysics->Set_Dir(vDir);
+		m_pPhysics->Set_MaxSpeed(m_tUnitStatus.fRunSpeed);
+		m_pPhysics->Set_Accel(100.f);
+	}
+	else if (KEY(S, HOLD))
+	{
+		_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+		vDir *= -1.f;
+		vDir.y = 0.f;
+		m_pTransform->Set_LerpLook(vCamLook, 0.4f);
+		m_pPhysics->Set_Dir(vDir);
+		m_pPhysics->Set_MaxSpeed(m_tUnitStatus.fWalkSpeed);
+		m_pPhysics->Set_Accel(100.f);
+	}
+	else if (KEY(D, HOLD))
+	{
+		_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+		vDir.y = 0.f;
+		m_pTransform->Set_LerpLook(vCamLook, 0.4f);
+		m_pPhysics->Set_Dir(vDir);
+		m_pPhysics->Set_MaxSpeed(m_tUnitStatus.fRunSpeed);
+		m_pPhysics->Set_Accel(100.f);
+	}
+	else
+	{
+		m_pPhysics->Set_Speed(0.f);
+	}
+
+	if (KEY(SPACE, TAP))
+	{
+		m_pPhysics->Set_Jump(6.f);
+	}
 }

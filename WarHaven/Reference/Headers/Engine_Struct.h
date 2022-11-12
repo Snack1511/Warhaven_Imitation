@@ -381,4 +381,23 @@ namespace Engine
 		XMFLOAT4		vOffset = { 0.f, 0.f, 0.f, 1.f };
 
 	}LIGHTDESC;
+
+	struct TRIGGERDESC
+	{
+		TRIGGERDESC()
+		{}
+
+		TRIGGERDESC(string		_strName, _uint _iColType, CGameObject* _pGameObject, _float4 _vOffsetPos)
+			: strName(_strName)
+			, iColType(_iColType)
+			, pGameObject(_pGameObject)
+			, vOffsetPos(_vOffsetPos)
+		{}
+
+		string			strName;
+		CGameObject* pGameObject = nullptr;
+		_float4			vOffsetPos = ZERO_VECTOR;
+		_uint			iColType = 0;
+
+	};
 }
