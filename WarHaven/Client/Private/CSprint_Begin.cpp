@@ -50,9 +50,9 @@ HRESULT CSprint_Begin::Initialize()
 
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_PLAYER);
 
-    m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
     m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
     m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
+	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_PLAYER);
     //m_vecAdjState.push_back(STATE_SILDING);
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);

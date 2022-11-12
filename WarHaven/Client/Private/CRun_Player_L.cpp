@@ -132,14 +132,17 @@ STATE_TYPE CRun_Player_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     /* Player가 Walk로 오는 조건
     2. WASD 를 누른 상태
     */
+	if (KEY(CTRL, NONE))
+	{
+		if (KEY(W, HOLD) ||
+			KEY(A, HOLD) ||
+			KEY(S, HOLD) ||
+			KEY(D, HOLD))
+		{
+			return m_eStateType;
+		}
+	}
 
-    if (KEY(W, HOLD) ||
-        KEY(A, HOLD) ||
-        KEY(S, HOLD) ||
-        KEY(D, HOLD))
-    {
-        return m_eStateType;
-    }
 
     return STATE_END;
 }

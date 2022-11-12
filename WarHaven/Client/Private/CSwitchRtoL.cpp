@@ -55,19 +55,14 @@ HRESULT CSwitchRtoL::Initialize()
 
 void CSwitchRtoL::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
- 
-
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
-        Re_Enter(pOwner, pAnimator, -1.f, 7.f);
-
-    else
-        m_fAnimSpeed = 4.2f;
 
     __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CSwitchRtoL::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
+		return STATE_ATTACK_UPPER_MIDDLE_PLAYER_L;
 
     return __super::Tick(pOwner, pAnimator);
 }

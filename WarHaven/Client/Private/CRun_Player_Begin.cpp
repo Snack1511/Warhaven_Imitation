@@ -193,10 +193,14 @@ STATE_TYPE CRun_Player_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimato
 
 void CRun_Player_Begin::Changing_Location(_uint iDirection, CAnimator* pAnimator)
 {
+	_int iFrame = pAnimator->Get_CurAnimFrame();
+
     m_iAnimIndex = m_VecDirectionAnimIndex[iDirection];
 
     pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
     pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
+
+	pAnimator->Set_CurFrame(iFrame);
 
     bBeginChange = true;
 }

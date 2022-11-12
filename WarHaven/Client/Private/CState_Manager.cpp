@@ -29,8 +29,8 @@
 #include "CJump_Player_Fall_L.h"
 #include "CJump_Player_Fall_R.h"
 
-#include "CJump_Player_Rand_L.h"
-#include "CJump_Player_Rand_R.h"
+#include "CJump_Player_Land_L.h"
+#include "CJump_Player_Land_R.h"
 
 
 #include "CWarrior_Attack_01.h"
@@ -47,6 +47,9 @@
 #include "CSprint_Loop.h"
 #include "CSprint_End.h"
 
+#include "CSprintAttack_Player_Begin.h"
+#include "CSprintAttack_Player.h"
+
 #include "CSlide_Begin_Player.h"
 #include "CSlide_Loop_Player.h"
 #include "CSlide_End_Player.h"
@@ -61,6 +64,10 @@
 #include  "CWarrior_Oxen_Loop.h"
 #include  "CWarrior_Oxen_Cancel.h"
 
+#include "CGuard_Cancel_Player.h"
+#include "CGuard_Begin_Player.h"
+#include "CGuard_Loop_Player.h"
+#include "CGuard_End_Player.h"
 
 
 IMPLEMENT_SINGLETON(CState_Manager);
@@ -98,11 +105,11 @@ HRESULT CState_Manager::Initialize()
 
 	m_arrStates[STATE_JUMP_PLAYER_L] = CJump_Player_L::Create();
 	m_arrStates[STATE_JUMPFALL_PLAYER_L] = CJump_Player_Fall_L::Create();
-	m_arrStates[STATE_JUMP_LAND_PLAYER_L] = CJump_Player_Rand_L::Create();
+	m_arrStates[STATE_JUMP_LAND_PLAYER_L] = CJump_Player_Land_L::Create();
 
 	m_arrStates[STATE_JUMP_PLAYER_R] = CJump_Player_R::Create();
 	m_arrStates[STATE_JUMPFALL_PLAYER_R] = CJump_Player_Fall_R::Create();
-	m_arrStates[STATE_JUMP_LAND_PLAYER_R] = CJump_Player_Rand_R::Create();
+	m_arrStates[STATE_JUMP_LAND_PLAYER_R] = CJump_Player_Land_R::Create();
 
 
 	m_arrStates[STATE_ATTACK_UPPER_MIDDLE_PLAYER_L] = CWarrior_Attack_UpperMiddle_L::Create();
@@ -125,6 +132,16 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_SPRINT_JUMPFALL_PLAYER] = CSprint_Jump_Fall_Player::Create();
 
 	m_arrStates[STATE_SPRINT_JUMP_PLAYER] = CSprint_Jump_Player::Create();
+
+	m_arrStates[STATE_SPRINTATTACK_BEGIN_PLAYER] = CSprintAttack_Player_Begin::Create();
+	m_arrStates[STATE_SPRINTATTACK_PLAYER] = CSprintAttack_Player::Create();
+
+	
+	m_arrStates[STATE_GUARD_BEGIN_PLAYER] = CSprintAttack_Player::Create();
+	m_arrStates[STATE_GUARD_LOOP_PLAYER] = CSprintAttack_Player::Create();
+	m_arrStates[STATE_GUARD_END_PLAYER] = CSprintAttack_Player::Create();
+	m_arrStates[STATE_GUARD_CANCEL_PLAYER] = CSprintAttack_Player::Create();
+
 
 	
 	

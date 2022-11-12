@@ -68,6 +68,15 @@ HRESULT CWarrior_Attack_UpperMiddle_R::Initialize()
 
 void CWarrior_Attack_UpperMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
+	if (ePrevType == STATE_SWITCH_L_TO_R)
+	{
+		m_fAnimSpeed = 2.3f;
+	}
+	else
+		m_fAnimSpeed = 2.5f;
+
+
+
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType);
 }

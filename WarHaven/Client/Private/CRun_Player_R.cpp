@@ -106,18 +106,16 @@ void CRun_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 STATE_TYPE CRun_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (
-        KEY(W, NONE) &&
-        KEY(A, NONE) &&
-        KEY(S, NONE) &&
-        KEY(D, NONE)
-        )
-    { 
-        return STATE_IDLE_PLAYER_R;
-    }
+
+	if (KEY(W, NONE) &&
+		KEY(A, NONE) &&
+		KEY(S, NONE) &&
+		KEY(D, NONE))
+	{
+		return STATE_IDLE_PLAYER_R;
+	}
+
     
-
-
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -134,22 +132,16 @@ STATE_TYPE CRun_Player_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     2. WASD 를 누른 상태
     */
 
-    // m_eStateType 이 End 에 가지 않으면 Enter 를 호출한다.
-
-    // W 랑 A 를 누르면 왼쪽 앞으로 이동한다.
-    // W 랑 D 를 누르면 왼쪽 옆으로 이동한다.
-
-    // 만약 WASD 를 눌렀다면
-
-
-    if (KEY(W, HOLD) ||
-        KEY(A, HOLD) ||
-        KEY(S, HOLD) ||
-        KEY(D, HOLD))
-    {
-        return m_eStateType;
-    }
-
+	if (KEY(CTRL, NONE))
+	{
+		if (KEY(W, HOLD) ||
+			KEY(A, HOLD) ||
+			KEY(S, HOLD) ||
+			KEY(D, HOLD))
+		{
+			return m_eStateType;
+		}
+	}
 
    
 

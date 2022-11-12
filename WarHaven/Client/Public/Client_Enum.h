@@ -321,7 +321,8 @@ namespace Client
 //
 //
 //		/*Sprint*/
-//		STATE_SPRINTATTACK_PLAYER,
+		STATE_SPRINTATTACK_BEGIN_PLAYER,
+		STATE_SPRINTATTACK_PLAYER,
 //
 //		/* Sting */
 		STATE_ATTACK_STING_PLAYER_L,
@@ -366,6 +367,15 @@ namespace Client
 //		/* ETC */
 //		//STATE_SLIDE_PLAYER,
 //		STATE_JUMP_PLAYER,
+
+#pragma region Guard
+		STATE_GUARD_BEGIN_PLAYER,
+		STATE_GUARD_END_PLAYER,
+		STATE_GUARD_LOOP_PLAYER,
+		STATE_GUARD_CANCEL_PLAYER,
+
+
+#pragma endregion
 
 
 		STATE_END,

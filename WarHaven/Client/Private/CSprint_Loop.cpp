@@ -47,6 +47,7 @@ HRESULT CSprint_Loop::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_vecAdjState.push_back(STATE_SPRINT_END_PLAYER);
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_PLAYER);
+	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_PLAYER);
     //m_vecAdjState.push_back(STATE_SILDING);
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
