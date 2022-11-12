@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "CWalk_Player.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
+
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -39,6 +40,66 @@ void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    //_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    //vCamLook.y = 0.f;
+
+    ////Dir : 실제 이동방향
+    //_float4 vDir;
+    //_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
+    //_float4 vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+
+    //if (KEY(W, HOLD))
+    //{
+    //    _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    //    vDir.y = 0.f;
+    //    m_pTransform->Set_LerpLook(vCamLook, 0.4f);
+    //    m_pPhysics->Set_Dir(vDir);
+    //    m_pPhysics->Set_MaxSpeed(m_tUnitStatus.fRunSpeed);
+    //    m_pPhysics->Set_Accel(100.f);
+    //}
+    //else if (KEY(A, HOLD))
+    //{
+    //    _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+    //    vDir *= -1.f;
+    //    vDir.y = 0.f;
+    //    m_pTransform->Set_LerpLook(vCamLook, 0.4f);
+    //    m_pPhysics->Set_Dir(vDir);
+    //    m_pPhysics->Set_MaxSpeed(m_tUnitStatus.fRunSpeed);
+    //    m_pPhysics->Set_Accel(100.f);
+    //}
+    //else if (KEY(S, HOLD))
+    //{
+    //    _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    //    vDir *= -1.f;
+    //    vDir.y = 0.f;
+    //    m_pTransform->Set_LerpLook(vCamLook, 0.4f);
+    //    m_pPhysics->Set_Dir(vDir);
+    //    m_pPhysics->Set_MaxSpeed(m_tUnitStatus.fWalkSpeed);
+    //    m_pPhysics->Set_Accel(100.f);
+    //}
+    //else if (KEY(D, HOLD))
+    //{
+    //    _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+    //    vDir.y = 0.f;
+    //    m_pTransform->Set_LerpLook(vCamLook, 0.4f);
+    //    m_pPhysics->Set_Dir(vDir);
+    //    m_pPhysics->Set_MaxSpeed(m_tUnitStatus.fRunSpeed);
+    //    m_pPhysics->Set_Accel(100.f);
+    //}
+    //else
+    //{
+    //    m_pPhysics->Set_Speed(0.f);
+    //}
+
+    //if (KEY(SPACE, TAP))
+    //{
+    //    m_pPhysics->Set_Jump(6.f);
+    //}
+
+
+
+
+
 
     if (KEY(W, HOLD))
     {
@@ -46,6 +107,8 @@ STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         if (KEY(A, HOLD))
         {
             // 예외처리
+            //vDir = vLook - vRight;
+
             if (m_iAnimIndex != m_VecDirectionAnimIndex[STATE_DIRECTION_NW])
             {
                 m_iAnimIndex = m_VecDirectionAnimIndex[STATE_DIRECTION_NW];
@@ -58,6 +121,8 @@ STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         // Key(CTRL + W + D)
         else if (KEY(D, HOLD))
         {
+            //vDir = vLook + vRight;
+
             // 예외처리
             if (m_iAnimIndex != m_VecDirectionAnimIndex[STATE_DIRECTION_NE])
             {
@@ -175,9 +240,6 @@ STATE_TYPE CWalk_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
     // 만약 WASD 를 눌렀다면
 
-    // 점프를 하지 않고
-    if (KEY(SPACE, NONE))
-    {
         // 천천히 
         if (KEY(CTRL, HOLD))
         {
@@ -192,8 +254,6 @@ STATE_TYPE CWalk_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
             }
 
         }
-    }
-   
         //CTRL 로 바꾸셈.
       
       

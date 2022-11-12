@@ -11,9 +11,11 @@
 #include "Model.h"
 #include "MeshContainer.h"
 #include "Physics.h"
+#include "CNavigation.h"
+#include "CCell.h"
 
 
 #include "Functor.h"
 #include "CUtility_Transform.h"
-#include "CNavigation.h"
-#include "CCell.h"
+
+#include "Camera.h"

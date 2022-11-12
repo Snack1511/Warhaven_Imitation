@@ -11,6 +11,16 @@ class CUnit;
 
 class CState
 {
+public:
+	struct KEYFRAME_EVENT
+	{
+		enum EVENT_TYPE {EVENT_MOVE, EVENT_ATTACK, EVENT_END};
+		_uint	iKeyFrame = 0;
+		EVENT_TYPE	eEventType = EVENT_END;
+		_bool	bExecuted = false;
+
+	};
+
 protected:
 	enum State_Direction { 
 		STATE_DIRECTION_NW, STATE_DIRECTION_NE, STATE_DIRECTION_N, 
@@ -60,6 +70,14 @@ protected:
 	_uint				m_iStateChangeKeyFrame = 0;
 
 	_int				m_VecDirectionAnimIndex[STATE_DIRECTION_END];
+
+protected:
+	vector<KEYFRAME_EVENT>	m_vecKeyFrameEvent;
+
+protected:
+	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iEventType);
+	void					Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator);
+	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence) {};
 
 protected:
 	CHANNEL_CLIENT	m_eChannel = CHANNEL_EFFECTS;

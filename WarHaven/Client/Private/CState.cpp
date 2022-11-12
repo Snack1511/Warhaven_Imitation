@@ -41,6 +41,7 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
     //    }
     //}
 
+    Check_KeyFrameEvent(pOwner, pAnimator);
 
     STATE_TYPE eType = STATE_END;
 
@@ -69,4 +70,36 @@ void CState::Re_Enter(CUnit* pOwner, CAnimator* pAnimator, _float fInterpolation
         m_fAnimSpeed = fAnimSpeed;
 
     Enter(pOwner, pAnimator, m_eStateType);
+}
+
+
+void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
+{
+    _uint iCurKeyFrame = pAnimator->Get_CurAnimFrame();
+    
+    _uint iSize = (_uint)m_vecKeyFrameEvent.size();
+    for (_uint i = 0; i < iSize; ++i)
+    {
+        if (iCurKeyFrame >= m_vecKeyFrameEvent[i].iKeyFrame)
+        {
+            if (m_vecKeyFrameEvent[i].bExecuted)
+                continue;
+
+            On_KeyFrameEvent(pOwner, pAnimator, m_vecKeyFrameEvent[i], i);
+            m_vecKeyFrameEvent[i].bExecuted = true;
+        }
+    }
+}
+
+void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint eEventType)
+{
+    if (eEventType >= KEYFRAME_EVENT::EVENT_END)
+        return;
+
+    KEYFRAME_EVENT  tEvent;
+    tEvent.iKeyFrame = iKeyFrameIndex;
+    tEvent.eEventType = (KEYFRAME_EVENT::EVENT_TYPE)eEventType;
+    
+    m_vecKeyFrameEvent.push_back(tEvent);
+    
 }
