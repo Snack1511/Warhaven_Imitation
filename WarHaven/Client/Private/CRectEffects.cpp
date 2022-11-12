@@ -146,6 +146,7 @@ void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 		pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
 		pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
+		pShader->Set_RawValue("g_bBlackBG", &m_bBlackBackGround, sizeof(_float));
 	}
 
 	__super::Set_ShaderResource(pShader, pConstantName);
@@ -754,6 +755,7 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
 	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
 	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
+	//pReadFile->read((char*)&m_bBlackBackGround, sizeof(_bool)); 추가전 이펙트 삭제
 
 	pReadFile->read((char*)&m_iWidthSize, sizeof(_uint));
 	pReadFile->read((char*)&m_iHeightSize, sizeof(_uint));
@@ -780,15 +782,6 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 
 void CRectEffects::Update_Animation(_uint iIndex)
 {
-	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
-	{
-		m_pInstancingDatas[iIndex].fDissolveAcc += fDT(0);
-	}
-	m_pInstancingDatas[iIndex].fDissolveEndTime;
-
-
-
-
 	m_pInstancingDatas[iIndex].vTurnDir.y += fDT(0);
 
 	//UV넘기는 코드
@@ -804,16 +797,10 @@ void CRectEffects::Update_Animation(_uint iIndex)
 			m_pRectInstances[iIndex].vColor.y += 1.f;
 			if (m_pRectInstances[iIndex].vColor.y >= m_iHeightSize)
 			{
-				m_pInstancingDatas[iIndex].fDissolveAcc = 0.f;
 				//여기 들어왔다 : 한바퀴돌아서 1순한거임
 				m_pRectInstances[iIndex].vColor.x = m_iWidthSize - 1;
 				m_pRectInstances[iIndex].vColor.y = m_iHeightSize - 1;
 				Dead_Instance(iIndex);
-
-				/*if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
-					Dead_Instance(iIndex);*/
-
-
 			}
 		}
 	}

@@ -18,6 +18,7 @@ int			g_iHeightSize;
 float			g_iCurWidthIndex;
 float			g_iCurHeightIndex;
 
+bool			g_bBlackBG;
 float			g_fDissolvePower = 5.f;
 
 
