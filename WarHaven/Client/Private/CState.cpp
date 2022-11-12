@@ -1,14 +1,18 @@
 #include "stdafx.h"
 #include "CState.h"
 
+#include "UsefulHeaders.h"
+
 #include "CAnimator.h"
 #include "CState_Manager.h"
 
-#include "GameInstance.h"
 #include "CUser.h"
 #include "Functor.h"
 #include "Transform.h"
 #include "CUnit.h"
+
+
+
 CState::CState()
 {
 }
@@ -19,12 +23,14 @@ CState::~CState()
 
 void CState::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType)
 {
+    m_pOwner = pOwner;
     CUser::Get_Instance()->Clear_KeyCommands();
     m_fTimeAcc = 0.f;
     pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
     pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, m_fInterPolationTime);
     pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, m_fAnimSpeed);
     m_bExecuted = false;
+
 }
 
 STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -58,6 +64,7 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     return eType;
 }
+
 
 void CState::Re_Enter(CUnit* pOwner, CAnimator* pAnimator, _float fInterpolationTime, _float fAnimSpeed)
 {

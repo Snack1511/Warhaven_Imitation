@@ -69,6 +69,8 @@
 #include "CGuard_Loop_Player.h"
 #include "CGuard_End_Player.h"
 
+#include "CAI_SandBack.h"
+
 
 IMPLEMENT_SINGLETON(CState_Manager);
 
@@ -161,7 +163,7 @@ HRESULT CState_Manager::Initialize()
 
 	
 
-	
+	m_arrStates[STATE_IDLE_WARRIOR_R_AI_ENEMY] = CAI_SandBack::Create();
 
 
 

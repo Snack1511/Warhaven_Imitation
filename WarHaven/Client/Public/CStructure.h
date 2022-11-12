@@ -25,7 +25,7 @@ public:
 	static CStructure* Create(wstring MeshPath, _float4 vScale, _float4x4 ObjectWorldMatrix);
 
 public:
-	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, const _uint& eMyColType);
+	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType);
 	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType);
 	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType) {};
 

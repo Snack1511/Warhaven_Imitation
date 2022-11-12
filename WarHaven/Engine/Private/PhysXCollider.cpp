@@ -443,52 +443,6 @@ void CPhysXCollider::Create_Collider()
 	}
 }
 
-void CPhysXCollider::Add_Trigger(const TRIGGERDESC& tTriggerDesc)
-{
-	PxGeometry* pGeo = nullptr;
-
-	switch (m_ColliderDesc.eShape)		
-	{
-	case Engine::CPhysXCollider::COLLIDERSHAPE::SPHERE:
-		pGeo = new PxSphereGeometry(m_ColliderDesc.vScale.x * 0.5f);
-
-		break;
-	case Engine::CPhysXCollider::COLLIDERSHAPE::BOX:
-		//pGeo = new PxBoxGeometry(m_ColliderDesc.vScale.x * 0.5f, m_ColliderDesc.vScale.y * 0.5f, m_ColliderDesc.vScale.z * 0.5f);
-		pGeo = new PxBoxGeometry(m_ColliderDesc.vScale.x * 1.f, m_ColliderDesc.vScale.y * 1.f, m_ColliderDesc.vScale.z * 1.f);
-
-
-		break;
-	case Engine::CPhysXCollider::COLLIDERSHAPE::CYLINDER:
-	case Engine::CPhysXCollider::COLLIDERSHAPE::CONVECMESH:
-
-	{
-		pGeo = new PxConvexMeshGeometry(m_ColliderDesc.pConvecMesh);
-
-		static_cast<PxConvexMeshGeometry*>(pGeo)->convexMesh = m_ColliderDesc.pConvecMesh;
-
-		PxMeshScale	vScale;
-		vScale.scale.x = m_ColliderDesc.vScale.x;
-		vScale.scale.y = m_ColliderDesc.vScale.y;
-		vScale.scale.z = m_ColliderDesc.vScale.z;
-		static_cast<PxConvexMeshGeometry*>(pGeo)->scale = vScale;
-
-	}
-		
-		break;
-	case Engine::CPhysXCollider::COLLIDERSHAPE::SHAPE_END:
-		break;
-	default:
-		break;
-	}
-
-	if (m_pRigidDynamic)
-		CPhysX_Manager::Get_Instance()->Create_Trigger(tTriggerDesc, *pGeo, m_pRigidDynamic);
-	else
-		CPhysX_Manager::Get_Instance()->Create_Trigger(tTriggerDesc, *pGeo, m_pRigidStatic);
-
-	SAFE_DELETE(pGeo);
-}
 
 void CPhysXCollider::CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc)
 {

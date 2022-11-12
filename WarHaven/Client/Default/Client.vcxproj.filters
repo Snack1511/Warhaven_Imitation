@@ -526,6 +526,18 @@
     <Filter Include="02. Design\04. Game_Manager\MJ\Wrapped_Util\Easing_Util">
       <UniqueIdentifier>{685e325a-91af-4956-9544-93abcba20a92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI">
+      <UniqueIdentifier>{f0abac1b-2a2c-4183-aed5-f12ec1cac4c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY">
+      <UniqueIdentifier>{d5cfaa72-49ec-4028-a145-4bca00467100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior">
+      <UniqueIdentifier>{8ec62479-198b-449a-8efa-03be67f4c5b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test">
+      <UniqueIdentifier>{b6d5aaab-a069-43cb-8835-ea350d37d2b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -921,6 +933,9 @@
     <ClInclude Include="..\Public\CGame_Manager_MJ.h">
       <Filter>02. Design\04. Game_Manager\MJ</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CAI_SandBack.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1296,6 +1311,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGame_Manager_MJ.cpp">
       <Filter>02. Design\04. Game_Manager\MJ</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CAI_SandBack.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

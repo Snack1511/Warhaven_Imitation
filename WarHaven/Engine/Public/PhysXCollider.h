@@ -70,8 +70,6 @@ public:
 	void	Delete_Collider();
 	void	Create_Collider();
 
-public:
-	virtual void	Add_Trigger(const TRIGGERDESC& tTriggerDesc);
 
 
 public:

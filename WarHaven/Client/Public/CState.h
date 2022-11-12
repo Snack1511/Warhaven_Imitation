@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CAnimator;
+class CGameObject;
 END
 
 BEGIN(Client)
@@ -30,6 +31,9 @@ public:
 	virtual CState* Clone() PURE;
 
 public:
+	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType) {}
+
+public:
 	void	Set_AnimType(ANIM_TYPE eAnimType) { m_eAnimType = eAnimType; }
 	void	Set_AnimIndex(_uint iAnimIndex) { m_iAnimIndex = iAnimIndex; }
 
@@ -41,6 +45,9 @@ public:
 
 protected:
 	void Re_Enter(CUnit* pOwner, CAnimator* pAnimator, _float fInterpolationTime = -1.f, _float fAnimSpeed = -1.f);
+
+protected:
+	CUnit* m_pOwner = nullptr;
 
 protected:
 	vector<STATE_TYPE>		m_vecAdjState;

@@ -29,6 +29,18 @@ CHierarchyNode* CHierarchyNode::Create(CResource_Bone* pResource, CHierarchyNode
 	return pInstance;
 }
 
+_float4x4 CHierarchyNode::Get_BoneMatrix()
+{
+	_float4x4 BoneMatrix;
+
+	BoneMatrix = m_CombinedTransformationMatrix;
+
+	BoneMatrix *= GET_COMPONENT_FROM(m_pOwner, CModel)->Get_TransformationMatrix();
+	BoneMatrix *= m_pOwner->Get_Transform()->Get_WorldMatrix();
+
+	return BoneMatrix;
+}
+
 HRESULT CHierarchyNode::Add_NewChild(CHierarchyNode* pNode)
 {
 	if (!pNode->m_pParent)

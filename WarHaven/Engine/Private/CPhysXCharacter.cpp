@@ -19,11 +19,11 @@ CPhysXCharacter::~CPhysXCharacter()
 {
 }
 
-CPhysXCharacter* CPhysXCharacter::Create(_uint iGroupID, const PHYSXCCDDESC& tPhysXCCDDesc)
+CPhysXCharacter* CPhysXCharacter::Create(_uint iGroupID, const PHYSXCCTDESC& tPhysXCCTDESC)
 {
 	CPhysXCharacter* pInstance = new CPhysXCharacter(iGroupID);
 
-	pInstance->m_tPhysXCCDDesc = tPhysXCCDDesc;
+	pInstance->m_tPhysXCCTDESC = tPhysXCCTDESC;
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -35,20 +35,38 @@ CPhysXCharacter* CPhysXCharacter::Create(_uint iGroupID, const PHYSXCCDDESC& tPh
 }
 
 
+
 void CPhysXCharacter::Set_Position(_float4 vPos)
 {
 	m_pPxController->setFootPosition(CUtility_PhysX::To_PxExtendedVec3(vPos));
 }
 
-void CPhysXCharacter::Add_Trigger(const TRIGGERDESC& tTriggerDesc)
+void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 {
-	CPhysX_Manager::Get_Instance()->Create_Trigger(tTriggerDesc, PxCapsuleGeometry(m_tPhysXCCDDesc.fRadius, m_tPhysXCCDDesc.fHeight), m_pPxController->getActor());
+	
+		//닿은 곳이 만약
+		hit.worldPos.y;
+		//내 발 위치의 y랑 비슷하면 땅이랑 닿은거구
+		//닿은곳이 머 발 위치의 y보다 높다면 아닌거제
+
+		_float fContactY = hit.worldPos.y;
+		_float	fMyFootY = hit.controller->getFootPosition().y;
+
+		//닿은곳이 발 위치보다 아래면 (땅에 착지)
+		if (fMyFootY + 0.1f > fContactY)
+		{
+			m_bAir = false;
+
+		}
+
 
 }
 
+
 HRESULT CPhysXCharacter::Initialize_Prototype()
 {
-	CPhysX_Manager::Get_Instance()->Create_CapsuleController(m_tPhysXCCDDesc.fRadius, m_tPhysXCCDDesc.fHeight, &m_pPxController);
+
+	CPhysX_Manager::Get_Instance()->Create_CapsuleController(m_tPhysXCCTDESC.fRadius, m_tPhysXCCTDESC.fHeight, &m_pPxController, this);
 
 	if (!m_pPxController)
 		return E_FAIL;
@@ -81,7 +99,39 @@ void CPhysXCharacter::Tick()
 
 	vMove += vFall;
 
+	m_bAir = true;
 	m_pPxController->move(PxVec3(vMove.x, vMove.y, vMove.z), 0.f, fDT(0), m_tControllerFilters);
+
+
+	//m_pPxController->setUpDirection(PxVec3(1.f, 1.f, 0.f));
+	//원래 움직였어야했을 y보다 적게 움직이믄 air는 false이고
+	// 
+	//move 호출되고 나면 contact호출댐 move에서 air false 됨
+
+	//air 는 항상 true로 바꿔나
+
+	//만약 move에서 air false가 안댔다면
+	//
+
+	//땅에서 떨어진 상황
+	if (!m_bAir)
+	{
+		m_pPhysicsCom->Get_Physics().bAir = false;
+	}
+	else
+	{
+		if (!m_pPhysicsCom->Get_Physics().bAir)
+		{
+			m_pPhysicsCom->Set_Jump(0.f);
+		}
+
+	}
+
+
+	//move하고, 
+
+	
+
 
 }
 
@@ -89,6 +139,7 @@ void CPhysXCharacter::Late_Tick()
 {
 	PxExtendedVec3 vec3 = m_pPxController->getFootPosition();
 	m_pOwner->Get_Transform()->Set_World(WORLD_POS, _float4(vec3.x, vec3.y, vec3.z));
+	Update_Colliders();
 }
 
 void CPhysXCharacter::Release()
@@ -105,4 +156,14 @@ void CPhysXCharacter::OnEnable()
 void CPhysXCharacter::OnDisable()
 {
 	__super::OnEnable();
+}
+
+void CPhysXCharacter::Update_Colliders()
+{
+	//충돌체들 뼈위치에 오프셋 더해서 부착
+	/*for (auto& tCollider : m_ColliderList)
+	{
+		tCollider.pController->setPosition();
+		tCollider.pController->setUpDirection();
+	}*/
 }

@@ -70,26 +70,16 @@ void CCollider_Sphere::Late_Tick()
 	vFinalMatrix.Identity();
 
 	_float4 vFinalPos = _float4(0.f, 0.f, 0.f);
-	_float4x4 matWorld = m_pOwner->Get_Transform()->Get_WorldMatrix();
 
-	_float4x4 matWorldNoTrans = m_pOwner->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS);
-	_float4 vOffsetPos = m_tColInfo.vOffsetPos.MultiplyCoord(matWorldNoTrans);
 
 	//참조 뼈가 있을 경우엔 뼈 행렬 * 트랜스폼 * 월드행렬
 	if (m_pRefBone)
 	{
-		_float4x4 matBone = m_pRefBone->Get_CombinedMatrix();
-		matBone *= m_matTransformation;
-
-
-		//콤바인 위치 * 월드매트릭스
-		vFinalPos = (*((_float4*)&matBone.m[WORLD_POS]));
-		vFinalPos = vFinalPos.MultiplyCoord(matWorld);
-		vFinalPos += vOffsetPos;
+		vFinalPos = m_tColInfo.vOffsetPos.MultiplyCoord(m_pRefBone->Get_BoneMatrix());
 	}
 	else // 아닌경우 그냥 월드포스 _ 오프세솦스
 	{
-		vFinalPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS) + vOffsetPos;
+		vFinalPos = m_tColInfo.vOffsetPos.MultiplyCoord(m_pOwner->Get_Transform()->Get_WorldMatrix());
 	}
 
 	m_tColInfo.vFinalPos = vFinalPos;

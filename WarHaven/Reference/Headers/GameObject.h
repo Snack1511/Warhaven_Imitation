@@ -87,7 +87,7 @@ public:
 #pragma region Message_Event
 
 public:
-	CDelegate<CGameObject*, const _uint&, const _uint&>			CallBack_CollisionEnter;
+	CDelegate<CGameObject*, const _uint&>			CallBack_CollisionEnter;
 	CDelegate<CGameObject*, const _uint&>			CallBack_CollisionStay;
 	CDelegate<CGameObject*, const _uint&>			CallBack_CollisionExit;
 	CDelegate<const _float4&, const _float4&>		CallBack_PickingEvent;

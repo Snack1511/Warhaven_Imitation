@@ -2,7 +2,7 @@
 #include "CJump_Player.h"
 
 #include "GameInstance.h"
-
+#include "Physics.h"
 #include "CAnimator.h"
 #include "CUnit.h"
 
@@ -32,7 +32,8 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    if (!pOwner->Get_PhysicsCom()->Get_Physics().bAir)
+        return STATE_JUMP_LAND_PLAYER_R;
 
     
         

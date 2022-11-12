@@ -17,5 +17,7 @@ public:
 
 	static _float4	Get_ProjPos(CTransform* pTransform);
 
+	static _float4 Get_Dir_2D(CTransform* pFrom, CTransform* pTo);
+
 };
 END

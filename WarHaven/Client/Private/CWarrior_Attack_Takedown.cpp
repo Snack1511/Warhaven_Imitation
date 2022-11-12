@@ -62,16 +62,22 @@ void CWarrior_Attack_Takedown::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 {
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType);
+    pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 }
 
 STATE_TYPE CWarrior_Attack_Takedown::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Is_Weapon_R_Collision())
+        return STATE_IDLE_PLAYER_L;
+
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CWarrior_Attack_Takedown::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+    pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+
 }
 
 STATE_TYPE CWarrior_Attack_Takedown::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

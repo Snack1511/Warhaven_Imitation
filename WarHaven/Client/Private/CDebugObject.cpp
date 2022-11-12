@@ -91,7 +91,6 @@ HRESULT CDebugObject::SetUp_PhysXCollider(_float4 vPos, _float4 vScale, _float4 
 	if (!pPhysXCollider)
 		return E_FAIL;
 
-	pPhysXCollider->Add_Trigger(TRIGGERDESC("Ground", COL_WALL, this, ZERO_VECTOR));
 
 	Add_Component(pPhysXCollider);
 

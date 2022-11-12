@@ -10,6 +10,8 @@ class CCell;
 class CCollider;
 class CCollider_Sphere;
 class CShader;
+class CBoneCollider;
+class CHierarchyNode;
 END
 
 BEGIN(Client)
@@ -57,6 +59,7 @@ public:
 	};
 
 public:
+	enum UNITCOLLIDER{BODY, HEAD, WEAPON_L, WEAPON_R, UNITCOLLIDER_END};
 	enum COOL_TYPE {SKILL1, COOL_END};
 
 protected:
@@ -64,7 +67,7 @@ protected:
 	virtual ~CUnit();
 
 public:
-	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, const _uint& eMyColType);
+	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType);
 	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType);
 	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType);
 
@@ -80,6 +83,7 @@ public:
 	_bool		Can_Use(COOL_TYPE eType) { if (m_fCoolAcc[eType] <= 0.f) return true; return false; }
 	void		On_Use(COOL_TYPE eType) { m_fCoolAcc[eType] = m_fCoolTime[eType]; }
 
+	_bool		Is_Weapon_R_Collision();
 
 
 public:
@@ -92,6 +96,7 @@ public:
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState*	Get_CurStateP() { return m_pCurState; }
 
+
 public:
 	void SetUp_TrailEffect(WEAPON_TYPE eWeapon);
 	void TurnOn_TrailEffect(_bool bOn);
@@ -99,6 +104,7 @@ public:
 
 public:
 	void	Enter_State(STATE_TYPE eType);
+	void	Reserve_State(STATE_TYPE eType);
 
 
 public:
@@ -111,8 +117,18 @@ public:
 	virtual void OnDisable() override;
 
 protected:
+	CBoneCollider* m_pWeaponCollider_R = nullptr;
+	CCollider_Sphere* m_pUnitCollider[UNITCOLLIDER_END] = {};
+
+public:
+	void	Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable);
+	void	SetUp_UnitCollider(UNITCOLLIDER ePartType, _float fRadius, COL_GROUP_CLIENT eColType, _float4 vOffsetPos,
+		_float4x4 matModelTransformation, CHierarchyNode* pRefBone = nullptr);
+
+protected:
 	_float	m_fCoolTime[COOL_END] = {};
 	_float	m_fCoolAcc[COOL_END] = {};
+
 
 protected:
 	UNIT_MODEL_DATA	m_tModelData;

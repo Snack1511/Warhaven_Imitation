@@ -89,3 +89,10 @@ _float4 CUtility_Transform::Get_ProjPos(CTransform* pTransform)
 
 	return vPos;
 }
+
+_float4 CUtility_Transform::Get_Dir_2D(CTransform* pFrom, CTransform* pTo)
+{
+	_float4 vDir = (pTo->Get_World(WORLD_POS) - pFrom->Get_World(WORLD_POS));
+	vDir.y = 0.f;
+	return vDir.Normalize();
+}

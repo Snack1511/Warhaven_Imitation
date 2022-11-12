@@ -8,6 +8,8 @@
 
 #include "Camera.h"
 
+#include "CBoneCollider.h"
+
 CUnit_Warrior::CUnit_Warrior()
 {
 }
@@ -69,6 +71,9 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_ETC.fbx");
 
 
+
+	/* PhysX Collider */
+
 	CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
 
 	if (!pCController)
@@ -77,6 +82,24 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	Add_Component(pCController);
 
 	Add_Component(pAnimator);
+
+	CBoneCollider::BONECOLLIDERDESC tDesc;
+	// Ä® ±æÀÌ
+	tDesc.fHeight = 1.3f;
+	// Ä® µÎ²²
+	tDesc.fRadius = 0.1f;
+	// Ä® ºÙÀÏ »À
+	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
+
+	//Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
+	tDesc.vOffset = _float4(0.f, 0.f, -80.f);
+
+	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
+	Add_Component(m_pWeaponCollider_R);
+
+
+
+	
 
 	return S_OK;
 }
@@ -98,7 +121,8 @@ HRESULT CUnit_Warrior::Start()
 {
 	__super::Start();
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
-	Enter_State(STATE_IDLE_PLAYER_R);
+
+
 	return S_OK;
 }
 
@@ -114,10 +138,14 @@ void CUnit_Warrior::OnDisable()
 
 void CUnit_Warrior::My_LateTick()
 {
+	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
+		return;
+
+
 	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	vCamLook.y = 0.f;
 
-	/*if (KEY(W, HOLD))
+	if (KEY(W, HOLD))
 	{
 		_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 		vDir.y = 0.f;
@@ -163,5 +191,6 @@ void CUnit_Warrior::My_LateTick()
 	if (KEY(SPACE, TAP))
 	{
 		m_pPhysics->Set_Jump(6.f);
-	}*/
+	}
+
 }

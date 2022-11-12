@@ -43,6 +43,8 @@ public:
 		return XMLoadFloat4x4(&m_CombinedTransformationMatrix);
 	}
 
+	_float4x4	Get_BoneMatrix();
+
 	void Set_OffsetMatrix(_float4x4 OffsetMatrix) {
 		m_OffsetMatrix = OffsetMatrix;
 	}

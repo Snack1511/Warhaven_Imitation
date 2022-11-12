@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 
+#include "CCollider_Sphere.h"
 #include "Texture.h"
 #include "CShader.h"
 #include "CModel_Renderer.h"
@@ -26,7 +27,7 @@
 
 #include "CPhysXCharacter.h"
 
-
+#include "CBoneCollider.h"
 
 CUnit::CUnit()
 {
@@ -37,7 +38,7 @@ CUnit::~CUnit()
 	SAFE_DELETE(m_pCurState);
 }
 
-void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType, const _uint& eMyColType)
+void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType)
 {
 	int i = 0;
 }
@@ -80,6 +81,14 @@ void CUnit::On_PlusHp(_float fHp)
 	}
 }
 
+_bool CUnit::Is_Weapon_R_Collision()
+{
+	if (!m_pWeaponCollider_R)
+		return false;
+
+	return m_pWeaponCollider_R->Is_Collision();
+}
+
 void CUnit::Enter_State(STATE_TYPE eType)
 {
 	if (m_pCurState)
@@ -92,6 +101,13 @@ void CUnit::Enter_State(STATE_TYPE eType)
 	m_pCurState = CState_Manager::Get_Instance()->Get_State(eType)->Clone();
 
 	m_pCurState->Enter(this, m_pAnimator, m_eCurState);
+	m_eCurState = eType;
+
+}
+
+void CUnit::Reserve_State(STATE_TYPE eType)
+{
+	m_pCurState = CState_Manager::Get_Instance()->Get_State(eType)->Clone();
 	m_eCurState = eType;
 
 }
@@ -112,13 +128,13 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component(CPhysics::Create(0));
 
-	CPhysXCharacter::PHYSXCCDDESC tDesc;
+	CPhysXCharacter::PHYSXCCTDESC tDesc;
 	tDesc.fHeight = 0.5f;
 	CPhysXCharacter* pPhysXCharacter = CPhysXCharacter::Create(CP_BEFORE_TRANSFORM, tDesc);
 	Add_Component(pPhysXCharacter);
 
 	
-	//pPhysXCharacter->Add_Trigger(TRIGGERDESC("PlayerBody", COL_BODY, this, ZERO_VECTOR));
+	
 
 
 	return S_OK;
@@ -154,7 +170,7 @@ HRESULT CUnit::Start()
 	//DISABLE_COMPONENT(m_pPhysics);
 	m_pPhysics->Set_NaviOn();
 
-	CallBack_CollisionEnter += bind(&CUnit::Unit_CollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3);
+	CallBack_CollisionEnter += bind(&CUnit::Unit_CollisionEnter, this, placeholders::_1, placeholders::_2);
 	CallBack_CollisionStay += bind(&CUnit::Unit_CollisionStay, this, placeholders::_1, placeholders::_2);
 	CallBack_CollisionExit += bind(&CUnit::Unit_CollisionExit, this, placeholders::_1, placeholders::_2);
 
@@ -162,6 +178,13 @@ HRESULT CUnit::Start()
 	SetUp_TrailEffect(m_tUnitStatus.eWeapon);
 
 	m_pPhysics->Set_Jump(0.f);
+
+	m_pCurState->Enter(this, m_pAnimator, m_eCurState);
+
+	if (m_pUnitCollider[BODY])
+		ENABLE_COMPONENT(m_pUnitCollider[BODY]);
+	if (m_pUnitCollider[HEAD])
+		ENABLE_COMPONENT(m_pUnitCollider[HEAD]);
 
 	return S_OK;
 }
@@ -180,6 +203,30 @@ void CUnit::OnEnable()
 void CUnit::OnDisable()
 {
 	__super::OnDisable();
+
+}
+
+void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
+{
+	if (!m_pUnitCollider[ePartType])
+		return;
+
+	if (bEnable)
+		ENABLE_COMPONENT(m_pUnitCollider[ePartType]);
+	else
+		DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
+}
+
+void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, _float fRadius, COL_GROUP_CLIENT eColType, _float4 vOffsetPos,
+	_float4x4 matModelTransformation, CHierarchyNode* pRefBone)
+{
+	m_pUnitCollider[ePartType] = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, eColType, vOffsetPos, matModelTransformation, pRefBone);
+	if (!m_pUnitCollider[ePartType])
+		return;
+
+	m_pUnitCollider[ePartType]->Initialize();
+	Add_Component(m_pUnitCollider[ePartType]);
+	DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
 
 }
 
@@ -306,6 +353,5 @@ void CUnit::My_Tick()
 
 void CUnit::My_LateTick()
 {
-
 }
 

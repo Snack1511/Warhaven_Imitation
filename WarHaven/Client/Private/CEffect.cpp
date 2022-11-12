@@ -172,7 +172,7 @@ void CEffect::ReBind_Texture()
 	GET_COMPONENT(CModel)->Change_Texture(0, aiTextureType_DIFFUSE_ROUGHNESS, m_wstrNoiseMapPath);
 }
 
-void CEffect::OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType, const _uint& eMyColType)
+void CEffect::OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType)
 {
 	if (!(m_bEffectFlag & EFFECT_COLLIDER))
 		DISABLE_GAMEOBJECT(this);
@@ -236,7 +236,7 @@ HRESULT CEffect::Start()
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, "g_vGlowFlag");
 
 
-	CallBack_CollisionEnter += bind(&CEffect::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3);
+	CallBack_CollisionEnter += bind(&CEffect::OnCollisionEnter, this, placeholders::_1, placeholders::_2);
 
 
 

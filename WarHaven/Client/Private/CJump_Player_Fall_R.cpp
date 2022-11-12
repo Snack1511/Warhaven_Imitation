@@ -7,7 +7,7 @@
 #include "CUnit.h"
 
 #include "CUser.h"
-
+#include "Physics.h"
 CJump_Player_Fall_R::CJump_Player_Fall_R()
 {
 }
@@ -69,7 +69,8 @@ void CJump_Player_Fall_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 STATE_TYPE CJump_Player_Fall_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     // ¶¥¿¡ ´ê¾ÒÀ» ½Ã 
-
+    if (!pOwner->Get_PhysicsCom()->Get_Physics().bAir)
+        return STATE_JUMP_LAND_PLAYER_R;
 
     return __super::Tick(pOwner, pAnimator);
 }

@@ -37,10 +37,8 @@ HRESULT CTestObject::Initialize_Prototype()
 	tPhysXColliderDesc.vPosition = _float4(frandom(-10.f, 10.f), 10.f, frandom(-10.f, 10.f));
 	tPhysXColliderDesc.vScale = _float4(1.f, 1.f, 1.f, 1.f);
 	CPhysXCollider* pPhysXCollider = CPhysXCollider::Create(CP_BEFORE_TRANSFORM, tPhysXColliderDesc);
-	static _int i = 0;
-	string strTest = "Test";
-	strTest += to_string(i++);
-	pPhysXCollider->Add_Trigger(TRIGGERDESC(strTest.c_str(), COL_WALL, this, ZERO_VECTOR));
+
+
 
 
 	Add_Component(pPhysXCollider);

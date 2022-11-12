@@ -32,6 +32,8 @@ private:
 	HRESULT SetUp_Prototypes_HR();
 	HRESULT SetUp_Prototypes_YJ();
 
+	void	Col_Check();
+
 private:
 	CGameObject* m_pTestObj = nullptr;
 };

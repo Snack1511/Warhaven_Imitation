@@ -22,11 +22,15 @@
 #include "CEffects_Factory.h"
 #include "CBloodOverlay.h"
 
+#include "Model.h"
+
 // MJ_INCLUDE
 #include "CDrawable_Terrain.h"
 
 // YJ
 #include "CDebugObject.h"
+
+#include "CPhysXCharacter.h"
 
 CLevel_Test::CLevel_Test()
 {
@@ -129,7 +133,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 HRESULT CLevel_Test::Enter()
 {
 	__super::Enter();
-
+	/* Check for Collision */
+	Col_Check();
 	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 
 	CUser::Get_Instance()->SetUp_BloodOverlay();
@@ -232,7 +237,43 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
         return E_FAIL;
 
 	pTestWarriorUnit->Initialize();
+	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
+	pTestWarriorUnit->Reserve_State(STATE_IDLE_PLAYER_R);
+
+	/* Game Collider */
+	_float fColRadius = 1.f;
+	pTestWarriorUnit->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_PLAYERHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
+	fColRadius = 0.3f;
+	pTestWarriorUnit->SetUp_UnitCollider(CUnit::HEAD, fColRadius, COL_PLAYERHITBOX_HEAD, _float4(0.f, 1.5f, 0.f), DEFAULT_TRANS_MATRIX);
+	fColRadius = 0.6f;
+	pTestWarriorUnit->SetUp_UnitCollider(CUnit::WEAPON_R, fColRadius, COL_PLAYERATTACK, _float4(0.f, 0.f, -100.f), DEFAULT_TRANS_MATRIX,
+		GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
+
 	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
+
+	/* Test Enemy */
+	CUnit_Warrior* pTestEnemyWarrior = CUnit_Warrior::Create(tModelData);
+	if (!pTestEnemyWarrior)
+		return E_FAIL;
+
+	pTestEnemyWarrior->Initialize();
+	pTestEnemyWarrior->Set_TargetUnit(pTestWarriorUnit);
+	pTestEnemyWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
+
+	_float4 vStartPos = _float4(-10.f, 10.f, 10.f);
+	pTestEnemyWarrior->Get_Transform()->Set_World(WORLD_POS, vStartPos);
+	pTestEnemyWarrior->Get_Transform()->Make_WorldMatrix();
+	GET_COMPONENT_FROM(pTestEnemyWarrior, CPhysXCharacter)->Set_Position(vStartPos);
+
+	fColRadius = 1.f;
+	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_ENEMYHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
+	fColRadius = 0.3f;
+	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, fColRadius, COL_ENEMYHITBOX_HEAD, _float4(0.f, 1.5f, 0.f), DEFAULT_TRANS_MATRIX);
+	fColRadius = 0.5f;
+	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::WEAPON_R, fColRadius, COL_ENEMYATTACK, _float4(0.f, 0.f, 50.f), DEFAULT_TRANS_MATRIX,
+		GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_R_WP1"));
+
+	Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
 
 
 	//1. 창맨
@@ -301,13 +342,21 @@ HRESULT CLevel_Test::SetUp_Prototypes_HR()
 
 HRESULT CLevel_Test::SetUp_Prototypes_YJ()
 {
-	CDebugObject* pDebugObject = CDebugObject::Create(ZERO_VECTOR, _float4(40.f, 1.f, 40.f), ZERO_VECTOR);
+	CDebugObject* pDebugObject = CDebugObject::Create(_float4(0.f, -2.f, 0.f), _float4(40.f, 1.f, 40.f), ZERO_VECTOR);
 	pDebugObject->Initialize();
 	Ready_GameObject(pDebugObject, GROUP_PROP);
 
 
 
 	return S_OK;
+}
+
+void CLevel_Test::Col_Check()
+{
+	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERHITBOX_HEAD);
+	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_HEAD);
 }
 
 
