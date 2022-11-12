@@ -175,9 +175,14 @@ PS_OUT PS_ANIMATION_MAIN(PS_IN In)
 	vector vMaskDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	Out.vDiffuse.xyz = vMaskDesc.xyz; //마스크의 색상까지 가져옴
-
+	if (g_bBlackBG)
+	{
+		Out.vDiffuse.a = vMaskDesc.r;
+	}
+	else
+		Out.vDiffuse.a = vMaskDesc.a;
 	//알파는 마스크맵 검은곳에다가 기본 칼라까지
-	Out.vDiffuse.a = vMaskDesc.a;
+	
 
 	if (Out.vDiffuse.a < 0.01f)
 		discard;

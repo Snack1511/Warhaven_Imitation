@@ -865,12 +865,12 @@ void CWindow_Effect::Show_ParticleTab()
 
 			}
 
-			/*ImGui::SameLine();
+			ImGui::SameLine();
 
 			if (ImGui::RadioButton("-Black BG Img", static_cast<CRectEffects*>(pCurEffect)->m_bBlackBackGround))
 			{
 				static_cast<CRectEffects*>(pCurEffect)->m_bBlackBackGround = !static_cast<CRectEffects*>(pCurEffect)->m_bBlackBackGround;
-			}*/
+			}
 
 			if (ImGui::BeginListBox("-Texture_Files_List", ImVec2(360.f, 300.f)))
 			{
@@ -1059,6 +1059,12 @@ void CWindow_Effect::Show_ParticleTab()
 			if (ImGui::InputFloat("Loop Time", &fLoopTime, 0, 0, "%.2f" ))
 			{
 				static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime = fLoopTime;
+			}
+
+			_float fStartAlpha = tCurData.fStartAlpha;
+			if (ImGui::SliderFloat("fStartAlpha", &fStartAlpha, 0.f, 1.f, "%.2f"))
+			{
+				tCurData.fStartAlpha = fStartAlpha;
 			}
 
 			_float	vStartDir[3] = { tCurData.vStartDir.x, tCurData.vStartDir.y, tCurData.vStartDir.z };
@@ -1373,7 +1379,7 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
-		//writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBlackBackGround, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBlackBackGround, sizeof(_bool));
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iWidthSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iHeightSize, sizeof(_uint));

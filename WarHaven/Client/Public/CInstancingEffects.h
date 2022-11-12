@@ -55,6 +55,7 @@ public:
 		_float	fFadeOutTime;
 		_float	fFadeOutTimeRange;
 
+		_float	fStartAlpha = 0.f;
 		_float	fTargetAlpha = 1.f;
 
 		_float4	vFadeInTargetScale = _float4(0.1f, 0.1f, 0.3f, 0.f);
