@@ -11,7 +11,7 @@
 #include "CFader.h"
 #include "CMesh_Rect.h"
 #include "CMesh_Terrain.h"
-
+#include "CTerrain_Renderer.h"
 
 #include "CCell.h"
 
@@ -110,9 +110,14 @@ HRESULT CTerrain::Initialize_Prototype()
     CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
     Add_Component(pRenderer);
     m_pRenderer = pRenderer;
-    
+
+    //CTerrain_Renderer* pRenderer = CTerrain_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
+    //Add_Component<CRenderer>(pRenderer);
+    //m_pRenderer = pRenderer;
+
     CTexture* pTexture = CTexture::Create(0, L"../bin/resources/Textures/Terrain/Tile0.dds", 1);
     Add_Component(pTexture);
+
 
 
     return S_OK;
@@ -174,6 +179,11 @@ CMesh_Terrain* CTerrain::Get_MeshTerrain()
     return m_pTerrainMesh;
 }
 
+void CTerrain::Update_TextureList(list<tuple<wstring, _int>>& PathList)
+{
+    
+    //m_pRenderer->Update_TextureList();
+}
 HRESULT CTerrain::Ready_NaviCells(ifstream& readFile, CMesh_Terrain* pTerrain)
 {
     if (nullptr == pTerrain)

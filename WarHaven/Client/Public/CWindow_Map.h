@@ -15,6 +15,7 @@ class CWindow_Map final
 public:
 	enum TUPLEDATA { Tuple_CharPtr, Tuple_Bool, Tuple_Index };
 	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
+	enum PICKINGTYPE {PICK_OBJECT, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_NONE};
 	typedef struct MAPDATA
 	{
 		wstring TerrainDataPath;
@@ -187,12 +188,16 @@ private:
 	void Func_TerrainControl();
 	void Generate_Terrain();
 
+	void Change_TileTexture();
 	void Increase_Height();
 
+	void Edit_TerrainVert();
+	void Edit_TerrainTex();
 	void Add_Brush(const char* BrushName);
-	list<_float3*> Select_Vertices();
+	list<_uint> Select_Vertices();
 	_bool Check_InBrush(_float3* CompVert);
 	_float3 Easing_Vertices(_float3* pArrVertPos);
+
 #pragma endregion
 
 private:
@@ -203,11 +208,13 @@ private:
 	void		Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Map&)> func);
 	_bool		Make_Combo(const char* szLabel, vector<tuple<char*, bool>>& szDataArr, int* pCurIndex, function<void()> SelectFunction);
 	void		Clear_TupleData(vector<tuple<char*, bool>>& ArrData);
-	void		DebugData(const char* szTitleName, string& strData);
+	void		DebugData(const char* szTitleName, string& strData, ImVec4 Color = ImVec4(1.f, 1.f, 1.f, 1.f));
 	list<string>Read_Folder_ToStringList(const char* pFolderPath);
 	void		Read_Folder_ForTree(const char* pFolderPath, TREE_DATA& tRootTree);
-	void		Show_TreeData(TREE_DATA& tTree);
+	void		Show_TreeData(TREE_DATA& tTree, function<void(TREE_DATA&)> SelectFunction);
 	string		CutOut_Ext(string& Origin, string& Ext);
+	void		Routine_MeshSelect(TREE_DATA& tTreeNode);
+	void		Routine_TileSelect(TREE_DATA& tTreeNode);
 	void		EmptyFunction() {}
 #pragma endregion
 
@@ -239,7 +246,10 @@ private:
 	_float4 m_OutPos = _float4(0.f, 0.f, 0.f, 1.f);
 	_float4 m_OutNorm = _float4(0.f, 0.f, 0.f, 0.f);
 	_float m_fBrushSize = 1.f;
-	_float m_fHeightRatio = 1.f;
+	_float m_fBrushWeight = 1.f;
+
+	//Diffuse, Normal
+	_float4 m_vTileTypeFlag = _float4(1.f, 0.f, 0.f, 0.f);
 
 #pragma endregion
 
@@ -268,12 +278,21 @@ private:
 	vector<string>		m_vecSelectedMeshFilePath;
 	vector<string>		m_vecSelectedMeshName;
 
+	TREE_DATA			m_TileRootNode;
+	string m_CurSelectTileTexturePath = string("");
+	string m_CurSelectedTexFileName = string("");
+	string m_CurSelectedTileBaseTexName = string("");
+	string m_CurSelectedTileNormalTexName = string("");
+
 	list<CGameObject*>* m_pCurObjectList = nullptr;
 
-	_bool m_bObjectPick = false;
-	_bool m_bTerrainPick = false;
 	_bool m_bHoverWindow = false;
 	_bool m_TerrainWireFrame = false;
+
+	PICKINGTYPE m_ePickingType = PICK_NONE;
+
+	_int m_iSourIndex = 0;
+	_int m_iDestIndex = 0;
 #pragma endregion
 
 

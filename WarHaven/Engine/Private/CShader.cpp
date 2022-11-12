@@ -81,14 +81,6 @@ HRESULT CShader::SetUp_ShaderResources(CTexture* pTextureCom, const char* pConst
 	return S_OK;
 }
 
-HRESULT CShader::SetUp_ShaderResourcesArray(CTexture* pTextureCom, const char* pConstantName)
-{
-	pTextureCom->Set_ShaderResourceArray(this, pConstantName);
-
-
-	return S_OK;
-}
-
 HRESULT CShader::Initialize_Prototype()
 {
 	CShader_Manager::Get_Instance()->Add_Effect(m_pEffect);
@@ -136,7 +128,7 @@ HRESULT CShader::Set_ShaderResourceView(const char* pConstantName, ComPtr<ID3D11
 	return pVariable_SRV->SetResource(pSRV.Get());
 }
 
-HRESULT CShader::Set_ShaderResourceViewArray(const char* pConstantName, vector<ComPtr<ID3D11ShaderResourceView>> ArrpSVR)
+HRESULT CShader::Set_ShaderResourceViewArray(const char* pConstantName, ID3D11ShaderResourceView** ppSRVs, _int SRVsCount)
 {
 	if (nullptr == m_pEffect)
 		return E_FAIL;
@@ -145,9 +137,7 @@ HRESULT CShader::Set_ShaderResourceViewArray(const char* pConstantName, vector<C
 	if (nullptr == pVariable)
 		return E_FAIL;
 	ID3DX11EffectShaderResourceVariable* pVariable_SRV = pVariable->AsShaderResource();
-
-	_int ArrCount = ArrpSVR.size();
-	return pVariable_SRV->SetResourceArray(&ArrpSVR[0], 0, ArrCount);
+	return pVariable_SRV->SetResourceArray(ppSRVs, 0, SRVsCount);
 }
 
 HRESULT CShader::Begin(_uint iPassIndex)

@@ -39,26 +39,21 @@ CTerrain_Renderer* CTerrain_Renderer::Create(_uint iGroupID, const RENDER_GROUP&
 
 HRESULT CTerrain_Renderer::Render()
 {
+	_int TextureNums = _int(m_pTextureList.size());
+	ID3D11ShaderResourceView** pArrSRVs = new ID3D11ShaderResourceView* [TextureNums];
+	ZeroMemory(pArrSRVs, sizeof(ID3D11ShaderResourceView*) * TextureNums);
+	_int Index = 0;
 	if (!m_pTextureList.empty())
 	{
-		_uint iIndex = 0;
 		for (auto& elem : m_pTextureList)
 		{
-			string strConstantName;
-			if (iIndex == 0)
-				strConstantName = "g_DiffuseTexture";
-			else if (iIndex == 1)
-				strConstantName = "g_NoiseTexture";
-			else if (iIndex == 2)
-				strConstantName = "g_NormalTexture";
-
-			if (FAILED(m_pShaderCom->SetUp_ShaderResourcesArray(elem, strConstantName.c_str())))
-				return E_FAIL;
-
-			iIndex++;
+			//for(auto& elemvec : elem->Get_vecTexture())
+			pArrSRVs[Index++] = elem->Get_vecTexture()[0].pSRV.Get();
 		}
 	}
 
+	m_pShaderCom->Set_ShaderResourceViewArray("g_DiffArray", pArrSRVs, TextureNums);
+	m_pShaderCom->Set_RawValue("g_iNumTexture", &TextureNums, sizeof(_int));
 	m_pShaderCom->CallBack_SetRawValues(m_pShaderCom, "");
 
 	if (FAILED(m_pShaderCom->Begin(m_iCurPass)))
@@ -67,5 +62,18 @@ HRESULT CTerrain_Renderer::Render()
 	if (FAILED(m_pMeshCom->Render()))
 		return E_FAIL;
 
+	ZeroMemory(pArrSRVs, sizeof(ID3D11ShaderResourceView*) * TextureNums);
+	Safe_Delete_Array(pArrSRVs);
+	
 	return S_OK;
+}
+
+void CTerrain_Renderer::Clear_TextureList()
+{
+	m_pTextureList.clear();
+}
+
+void CTerrain_Renderer::Add_Texture(CTexture* pTexture)
+{
+	m_pTextureList.push_back(pTexture);
 }
