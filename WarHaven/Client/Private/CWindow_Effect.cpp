@@ -891,6 +891,8 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATION;
 			if (ImGui::Selectable("ANIMATION_ALPHA", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONALPHA]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONALPHA;
+			if (ImGui::Selectable("ANIMATION_DISSOLVE", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE;
 
 			pRenderer->Set_Pass(pCurEffect->m_iPassType);
 

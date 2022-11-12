@@ -140,7 +140,8 @@ void CRectEffects::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 
 void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
-	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
+		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 	{
 		pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
@@ -271,7 +272,8 @@ HRESULT CRectEffects::Initialize()
 			frandom(-m_tCreateData.vScaleRange.z, m_tCreateData.vScaleRange.z),
 			0.f);
 
-		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
+			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 		{
 			m_pInstancingDatas[i].vScale.y = m_pInstancingDatas[i].vScale.x;
 		}
@@ -313,7 +315,13 @@ HRESULT CRectEffects::Initialize()
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
 		}
+		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+		{
 
+			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
+		}
+		//
 
 		m_pInstancingDatas[i].vFadeOutTargetScale = _float4(
 			frandom(-m_tCreateData.vFadeOutTargetScaleRange.x, m_tCreateData.vFadeOutTargetScaleRange.x),
@@ -424,7 +432,8 @@ void CRectEffects::My_Tick()
 		if (!Fade_Lerp(i))
 			continue;
 
-		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA &&
+			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 			m_pRectInstances[i].vColor = m_pInstancingDatas[i].vColor;
 		else
 			m_pRectInstances[i].vColor.w = m_pInstancingDatas[i].vColor.w;
@@ -539,7 +548,8 @@ void CRectEffects::My_Tick()
 		}
 		m_pRectInstances[i].vTranslation = vOriginPos;
 
-		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
+			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 			Update_Animation(i);
 		
 	}
@@ -790,8 +800,8 @@ void CRectEffects::Update_Animation(_uint iIndex)
 				m_pRectInstances[iIndex].vColor.y = m_iHeightSize - 1;
 				Dead_Instance(iIndex);
 
-				if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
-					Dead_Instance(iIndex);
+				/*if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+					Dead_Instance(iIndex);*/
 
 
 			}
@@ -818,7 +828,8 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pInstancingDatas[iIndex].vTurnDir.y = 0.f;
 	m_pInstancingDatas[iIndex].vTurnDir.z = 0.f;
 
-	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
+	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
+		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 	{
 		m_pRectInstances[iIndex].vColor.x = 0.f;
 		m_pRectInstances[iIndex].vColor.y = 0.f;
