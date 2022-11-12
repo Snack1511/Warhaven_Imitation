@@ -35,11 +35,17 @@ private:
 
 	_float m_fEffectValue = 0.f;
 
+	_bool m_bAbleRotationPort = false;
+	_uint m_iRotationCount = 0.f;
+
 private:
-	void Enable_Portrait();
+	void Enable_UserPortrait();
+	void Enable_HeroPortrait();
 
 	void Set_Pass();
 	void Bind_Shader();
+
+	void Rotation_UserPort();
 
 	// 히어로 포트는 돌면서 들어감, 나타남
 

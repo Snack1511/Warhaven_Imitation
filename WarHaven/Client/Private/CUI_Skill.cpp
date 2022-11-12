@@ -7,6 +7,7 @@
 #include "CUnit.h"
 #include "CShader.h"
 #include "Renderer.h"
+#include "Easing_Utillity.h"
 
 CUI_Skill::CUI_Skill()
 {
@@ -20,23 +21,27 @@ HRESULT CUI_Skill::Initialize_Prototype()
 {
 	Read_UI("Skill");
 
-	m_Prototypes[UI_TYPE::Outline] = m_pUIMap[TEXT("Skill_Outline")];
-	m_Prototypes[UI_TYPE::BG] = m_pUIMap[TEXT("Skill_BG")];
-	m_Prototypes[UI_TYPE::Icon] = m_pUIMap[TEXT("Skill_Icon")];
-	m_Prototypes[UI_TYPE::Key] = m_pUIMap[TEXT("Skill_Key")];
+	for (int i = 0; i < 3; ++i)
+	{
+		m_Prototypes[i] = m_pUIMap[TEXT("Skill_Outline")];
+	}
 
-	GET_COMPONENT_FROM(m_Prototypes[UI_TYPE::Icon], CTexture)->Remove_Texture(0);
+	m_Prototypes[BG] = m_pUIMap[TEXT("Skill_BG")];
+	m_Prototypes[Icon] = m_pUIMap[TEXT("Skill_Icon")];
+	m_Prototypes[Key] = m_pUIMap[TEXT("Skill_Key")];
 
-	Read_Texture(m_Prototypes[UI_TYPE::Icon], "/HUD/Skill", "_");
-	Read_Texture(m_Prototypes[UI_TYPE::Icon], "/HUD/Relic", "Relic");
+	GET_COMPONENT_FROM(m_Prototypes[Icon], CTexture)->Remove_Texture(0);
 
-	m_Prototypes[UI_TYPE::Icon]->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/Relic/T_RelicIconMask.dds"));
+	Read_Texture(m_Prototypes[Icon], "/HUD/Skill", "_");
+	Read_Texture(m_Prototypes[Icon], "/HUD/Relic", "Relic");
 
-	Read_Texture(m_Prototypes[UI_TYPE::Key], "/KeyIcon/Keyboard", "Key");
+	m_Prototypes[Icon]->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/Relic/T_RelicIconMask.dds"));
+
+	Read_Texture(m_Prototypes[Key], "/KeyIcon/Keyboard", "Key");
 
 	for (int i = 0; i < 4; ++i)
 	{
-		for (int j = 0; j < UI_TYPE::Type_End; ++j)
+		for (int j = 0; j < Type_End; ++j)
 		{
 			m_arrSkillUI[i][j] = m_Prototypes[j]->Clone();
 		}
@@ -54,7 +59,9 @@ HRESULT CUI_Skill::Start()
 {
 	Enable_SkillHUD();
 
-	Bind_Shader();
+	// Bind_Shader();
+
+	Set_SkillHUD(0);
 
 	__super::Start();
 
@@ -180,7 +187,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 void CUI_Skill::Enable_SkillHUD()
 {
-	for (_uint i = 0; i < UI_TYPE::Type_End; ++i)
+	for (_uint i = 0; i < Type_End; ++i)
 	{
 		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
 		DELETE_GAMEOBJECT(m_Prototypes[i]);
@@ -188,7 +195,7 @@ void CUI_Skill::Enable_SkillHUD()
 
 	for (int i = 0; i < 4; ++i)
 	{
-		for (int j = 0; j < UI_TYPE::Type_End; ++j)
+		for (int j = 0; j < Type_End; ++j)
 		{
 			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
@@ -198,27 +205,43 @@ void CUI_Skill::Enable_SkillHUD()
 
 void CUI_Skill::Active_SkillHUD(_uint iIndex)
 {
+	m_iBtnCount = iIndex;
+
 	for (_uint i = 0; i < 4; ++i)
 	{
-		for (_uint j = 0; j < UI_TYPE::Type_End; ++j)
+		for (_uint j = 0; j < Type_End; ++j)
 		{
 			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
 		}
 	}
 
+	_float m_fLerpSpeed = 0.3f;
+	m_bAbleOutline = true;
+
 	for (_uint i = 0; i < iIndex; ++i)
 	{
 		float fPosX = 480.f - (55.f * i);
 
-		CRenderer* pRenderer = GET_COMPONENT_FROM(m_arrSkillUI[i][UI_TYPE::Icon], CRenderer);
-		pRenderer->Set_Pass(VTXTEX_PASS_UI_RELIC);
+		m_arrSkillUI[i][BG]->Set_Sort(0.1f);
 
-		m_arrSkillUI[i][UI_TYPE::BG]->Set_Sort(0.1f);
-
-		for (_uint j = 0; j < UI_TYPE::Type_End; ++j)
+		for (_uint j = 0; j < Type_End; ++j)
 		{
-			_float4 vPos = m_arrSkillUI[i][j]->Get_Transform()->Get_World(WORLD_POS);
-			m_arrSkillUI[i][j]->Set_Pos(fPosX, vPos.y);
+			m_arrSkillUI[i][j]->Set_PosX(fPosX);
+
+			if (i < iIndex - 1)
+			{
+				m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
+
+				if (j == Outline0)
+				{
+					m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
+				}
+
+				if (j == Icon)
+				{
+					m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
+				}
+			}
 
 			ENABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
 		}
@@ -229,40 +252,107 @@ void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool b
 {
 	if (bRelic == true)
 	{
-		DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][UI_TYPE::BG]);
-		DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][UI_TYPE::Outline]);
+		DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][BG]);
+
+		for (int i = 0; i < 3; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][i]);
+		}
 	}
 	else
 	{
-		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][UI_TYPE::BG], CTexture)->Set_CurTextureIndex(iIconIdx);
-		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][UI_TYPE::Outline], CTexture)->Set_CurTextureIndex(iIconIdx);
+		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][BG], CTexture)->Set_CurTextureIndex(iIconIdx);
+		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Outline0], CTexture)->Set_CurTextureIndex(iIconIdx);
 	}
 
 	if (iKeyIdx == 99)
 	{
-		DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][UI_TYPE::Key]);
+		DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][Key]);
 	}
 	else if (iKeyIdx == 46)
 	{
-		_float4 vScale = m_arrSkillUI[iIndex][UI_TYPE::Key]->Get_Transform()->Get_Scale();
-		m_arrSkillUI[iIndex][UI_TYPE::Key]->Set_Scale(31.5f, vScale.y);
+		_float4 vScale = m_arrSkillUI[iIndex][Key]->Get_Transform()->Get_Scale();
+		m_arrSkillUI[iIndex][Key]->Set_Scale(31.5f, 20.f);
 
-		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][UI_TYPE::Key], CTexture)->Set_CurTextureIndex(iKeyIdx);
+		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Key], CTexture)->Set_CurTextureIndex(iKeyIdx);
 	}
 	else
 	{
-		_float4 vScale = m_arrSkillUI[iIndex][UI_TYPE::Key]->Get_Transform()->Get_Scale();
-		m_arrSkillUI[iIndex][UI_TYPE::Key]->Set_Scale(20.f);
+		_float4 vScale = m_arrSkillUI[iIndex][Key]->Get_Transform()->Get_Scale();
+		m_arrSkillUI[iIndex][Key]->Set_Scale(20.f);
 
-		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][UI_TYPE::Key], CTexture)->Set_CurTextureIndex(iKeyIdx);
+		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Key], CTexture)->Set_CurTextureIndex(iKeyIdx);
 	}
 
-	GET_COMPONENT_FROM(m_arrSkillUI[iIndex][UI_TYPE::Icon], CTexture)->Set_CurTextureIndex(iIconIdx);
+	GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Icon], CTexture)->Set_CurTextureIndex(iIconIdx);
+}
+
+void CUI_Skill::Enable_Outline(_uint iIndex)
+{
+	if (m_bAbleOutline)
+	{
+		m_fAccTime += fDT(0);
+
+		_float4 vScale = m_arrSkillUI[1][BG]->Get_Transform()->Get_Scale();
+		_float m_fLeprSpeed = 0.5f;
+
+		for (int i = 0; i < iIndex; ++i)
+		{
+			if (vScale.x <= 95.f)
+			{
+				if (!m_bFirstOutline)
+				{
+					ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
+					m_arrSkillUI[i][Outline1]->Lerp_Scale(95.f, 50.f, m_fLeprSpeed);
+
+					m_bFirstOutline = true;
+				}
+			}
+
+			if (vScale.x <= 85.f)
+			{
+				if (!m_bSecondOutline)
+				{
+					ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
+					m_arrSkillUI[i][Outline2]->Lerp_Scale(125.f, 50.f, 0.5f);
+
+					_float4 vScale = m_arrSkillUI[i][Outline2]->Get_Transform()->Get_Scale();
+
+					m_bSecondOutline = true;
+				}
+			}
+		}
+
+		if (m_bSecondOutline)
+		{
+			//DISABLE_GAMEOBJECT(m_arrSkillUI[0][Outline1]);
+			//DISABLE_GAMEOBJECT(m_arrSkillUI[0][Outline2]);
+
+			m_bFirstOutline = false;
+			m_bSecondOutline = false;
+			m_bAbleOutline = false;
+		}
+	}
+}
+
+void CUI_Skill::Set_Pass()
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		// 버튼들을 돌면서 현재 버튼의 텍스처가 29번이면 패스 활성화
+		_uint m_iRelic = GET_COMPONENT_FROM(m_arrSkillUI[i][Icon], CTexture)->Get_CurTextureIndex();
+
+		if (m_iRelic)
+		{
+			CRenderer* pRenderer = GET_COMPONENT_FROM(m_arrSkillUI[i][Icon], CRenderer);
+			pRenderer->Set_Pass(VTXTEX_PASS_UI_RELIC);
+		}
+	}
 }
 
 void CUI_Skill::Bind_Shader()
 {
-	GET_COMPONENT_FROM(m_arrSkillUI[0][UI_TYPE::Icon], CShader)
+	GET_COMPONENT_FROM(m_arrSkillUI[0][Icon], CShader)
 		->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
 }
 
@@ -281,6 +371,8 @@ void CUI_Skill::My_Tick()
 	}
 
 	m_fRelicValue += fDT(0);
+
+	Enable_Outline(m_iBtnCount);
 }
 
 void CUI_Skill::My_LateTick()

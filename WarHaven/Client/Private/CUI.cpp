@@ -14,6 +14,7 @@ CUI::CUI()
 CUI::CUI(const CUI& Prototype)
 	: CGameObject(Prototype)
 	, m_vColor(Prototype.m_vColor)
+	, m_vPosition(Prototype.m_vPosition)
 {
 }
 
@@ -62,6 +63,13 @@ void CUI::Set_Pos(_float fX, _float fY)
 	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
 }
 
+void CUI::Set_PosX(_float fX)
+{
+	m_vPosition.x = fX;
+	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
+
+}
+
 void CUI::Set_Scale(_float value)
 {
 	m_vScale = value;
@@ -72,6 +80,13 @@ void CUI::Set_Scale(_float fX, _float fY)
 {
 	m_vScale.x = fX;
 	m_vScale.y = fY;
+	m_pTransform->Set_Scale(m_vScale);
+}
+
+void CUI::Set_ScaleX(_float fX)
+{
+	m_vScale.x = fX;
+	m_vScale.y = m_pTransform->Get_Scale().y;
 	m_pTransform->Set_Scale(m_vScale);
 }
 

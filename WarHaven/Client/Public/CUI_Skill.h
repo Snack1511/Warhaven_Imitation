@@ -7,7 +7,7 @@ class CUnit;
 
 class CUI_Skill : public CUI_Wrapper
 {
-	enum UI_TYPE { Outline, BG, Icon, Key, Type_End };
+	enum UI_TYPE { Outline0, Outline1, Outline2, BG, Icon, Key, Type_End };
 
 	DECLARE_PROTOTYPE(CUI_Skill);
 	DECLARE_GAMEOBJECT(CUI_Skill);
@@ -35,13 +35,22 @@ private:
 	_bool m_bIsRelic = false;
 	_float m_fRelicValue = 0.f;
 
-private:
-	void Enable_SkillHUD();
+	_bool m_bAbleOutline = false;
 
+	_uint m_iBtnCount = 0;
+
+	_bool m_bFirstOutline = false;
+	_bool m_bSecondOutline = false;
+
+private:
+	void Set_Pass();
+	void Bind_Shader();
+
+	void Enable_SkillHUD();
 	void Active_SkillHUD(_uint iIndex);
 	void Set_SkillBtn(_uint iIndex, _uint iKeyIdx = 52, _uint iIconIdx = 29, bool bRelic = true);
 
-	void Bind_Shader();
+	void Enable_Outline(_uint iIndex);
 
 private:
 	virtual void My_Tick() override;

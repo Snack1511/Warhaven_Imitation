@@ -10,7 +10,7 @@ END
 
 BEGIN(Client)
 
-class CUI_Component;
+class CFader;
 
 class CUI abstract : public CGameObject
 {
@@ -26,10 +26,12 @@ public:
 
 public:
 	void Set_Pos(_float fX, _float fY);
+	void Set_PosX(_float fX);
 
 public:
 	void Set_Scale(_float value);
 	void Set_Scale(_float fX, _float fY);
+	void Set_ScaleX(_float fX);
 
 public:
 	_float Get_RotationValue() { return m_fRotValue; }

@@ -71,6 +71,28 @@ void CUI_Object::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 	__super::SetUp_ShaderResource(pShader, pConstName);
 }
 
+void CUI_Object::Lerp_Scale(_float fStart, _float fEnd, _float fDuration)
+{
+	m_bLerpScale = true;
+
+	m_fStart = fStart;
+	m_fEnd = fEnd;
+	m_fDuration = fDuration;
+
+	Set_Scale(m_fStart);
+}
+
+void CUI_Object::Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration)
+{
+	m_bLerpScaleX = true;
+
+	m_fStart = fStart;
+	m_fEnd = fEnd;
+	m_fDuration = fDuration;
+
+	Set_Scale(m_fStart);
+}
+
 void CUI_Object::OnEnable()
 {
 	__super::OnEnable();
@@ -86,6 +108,40 @@ void CUI_Object::My_Tick()
 	__super::My_Tick();
 
 	MouseEvent();
+
+	if (m_bLerpScale)
+	{
+		m_fAccTime += fDT(0);
+
+		_float4 vScale = m_pTransform->Get_Scale();
+		_float fSpeed = (m_fStart - m_fEnd) / m_fDuration;
+
+		vScale -= fSpeed * fDT(0);
+
+		Set_Scale(vScale.x, vScale.y);
+
+		if (vScale.x <= m_fEnd)
+		{
+			m_bLerpScale = false;
+		}
+	}
+
+	if (m_bLerpScaleX)
+	{
+		m_fAccTime += fDT(0);
+
+		_float4 vScale = m_pTransform->Get_Scale();
+		_float fSpeed = (m_fStart - m_fEnd) / m_fDuration;
+
+		vScale -= fSpeed * fDT(0);
+
+		Set_ScaleX(vScale.x);
+
+		if (vScale.x <= m_fEnd)
+		{
+			m_bLerpScaleX = false;
+		}
+	}
 }
 
 void CUI_Object::My_LateTick()

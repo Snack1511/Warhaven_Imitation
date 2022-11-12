@@ -55,7 +55,8 @@ HRESULT CUI_Portrait::Initialize()
 
 HRESULT CUI_Portrait::Start()
 {
-	Enable_Portrait();
+	Enable_UserPortrait();
+	Enable_HeroPortrait();
 
 	Set_Pass();
 	Bind_Shader();
@@ -72,6 +73,8 @@ void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 
 void CUI_Portrait::Set_Portrait(_uint iIndex)
 {
+	m_bAbleRotationPort = true;
+
 	GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture)->Set_CurTextureIndex(iIndex);
 }
 
@@ -91,6 +94,8 @@ void CUI_Portrait::My_Tick()
 
 	_float fEffectSpeed = fDT(0) * 5.f;
 	m_fEffectValue -= fEffectSpeed;
+	
+	Rotation_UserPort();
 }
 
 void CUI_Portrait::My_LateTick()
@@ -98,7 +103,7 @@ void CUI_Portrait::My_LateTick()
 	__super::My_LateTick();
 }
 
-void CUI_Portrait::Enable_Portrait()
+void CUI_Portrait::Enable_UserPortrait()
 {
 	for (_uint i = 0; i < Type_End; ++i)
 	{
@@ -109,8 +114,11 @@ void CUI_Portrait::Enable_Portrait()
 	}
 
 	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Key]);
-	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Effect]);
+	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Effect]);	
+}
 
+void CUI_Portrait::Enable_HeroPortrait()
+{
 	for (int i = 1; i < 5; ++i)
 	{
 		float fPosX = 260.f + (i * 55.f);
@@ -158,4 +166,40 @@ void CUI_Portrait::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_arrPortraitUI[0][Effect], CShader)
 		->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
+}
+
+void CUI_Portrait::Rotation_UserPort()
+{
+	_float fStartBG = 64.f;
+	_float fStartPort = 63.f;
+	_float fEndPoint = 0.f;
+	_float fDuration = 0.3f;
+
+	// 4¹ø È¸Àü
+	// ³ª ¿©¿õ ³ª ¿©¿õ
+	if (m_bAbleRotationPort)
+	{
+		_float4 vPos = m_arrPortraitUI[0][BG]->Get_Transform()->Get_Scale();
+
+		if (m_iRotationCount < 5)
+		{
+			if (vPos.x >= fStartBG)
+			{
+				m_arrPortraitUI[0][BG]->Lerp_ScaleX(fStartBG, fEndPoint, fDuration);
+				m_arrPortraitUI[0][Port]->Lerp_ScaleX(fStartPort, fEndPoint, fDuration);
+			}
+
+			if (vPos.x <= fEndPoint)
+			{
+				m_arrPortraitUI[0][BG]->Lerp_ScaleX(fEndPoint, fStartBG, fDuration);
+				m_arrPortraitUI[0][Port]->Lerp_ScaleX(fEndPoint, fStartPort, fDuration);
+			}
+		}
+		else
+		{
+			m_iRotationCount = 0;
+			m_bAbleRotationPort = false;
+		}
+	}
+	
 }

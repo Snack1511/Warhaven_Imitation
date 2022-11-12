@@ -26,6 +26,8 @@ protected:
 	CUI_Object* m_pUI = nullptr;
 	map<wstring, CUI_Object*> m_pUIMap;
 
+	_float m_fAccTime = 0.f;
+
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
