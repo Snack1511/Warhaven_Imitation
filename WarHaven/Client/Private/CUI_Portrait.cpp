@@ -73,9 +73,10 @@ void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 
 void CUI_Portrait::Set_Portrait(_uint iIndex)
 {
-	m_bAbleRotationPort = true;
+	m_iPrvPort = m_iCurPort;
+	m_iCurPort = iIndex;
 
-	GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture)->Set_CurTextureIndex(iIndex);
+	m_bAbleRotationPort = true;
 }
 
 void CUI_Portrait::My_Tick()
@@ -94,8 +95,8 @@ void CUI_Portrait::My_Tick()
 
 	_float fEffectSpeed = fDT(0) * 5.f;
 	m_fEffectValue -= fEffectSpeed;
-	
-	Rotation_UserPort();
+
+	Change_Port();
 }
 
 void CUI_Portrait::My_LateTick()
@@ -114,7 +115,7 @@ void CUI_Portrait::Enable_UserPortrait()
 	}
 
 	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Key]);
-	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Effect]);	
+	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Effect]);
 }
 
 void CUI_Portrait::Enable_HeroPortrait()
@@ -168,38 +169,81 @@ void CUI_Portrait::Bind_Shader()
 		->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
 }
 
-void CUI_Portrait::Rotation_UserPort()
+void CUI_Portrait::Change_Port()
 {
-	_float fStartBG = 64.f;
-	_float fStartPort = 63.f;
-	_float fEndPoint = 0.f;
-	_float fDuration = 0.3f;
-
-	// 4¹ø È¸Àü
-	// ³ª ¿©¿õ ³ª ¿©¿õ
 	if (m_bAbleRotationPort)
 	{
-		_float4 vPos = m_arrPortraitUI[0][BG]->Get_Transform()->Get_Scale();
+		_float4 vScale = m_arrPortraitUI[0][BG]->Get_Transform()->Get_Scale();
+		CTexture* pTexture = GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture);
 
-		if (m_iRotationCount < 5)
+		if (!m_bIsRot)
 		{
-			if (vPos.x >= fStartBG)
-			{
-				m_arrPortraitUI[0][BG]->Lerp_ScaleX(fStartBG, fEndPoint, fDuration);
-				m_arrPortraitUI[0][Port]->Lerp_ScaleX(fStartPort, fEndPoint, fDuration);
-			}
+			m_bIsRot = true;
 
-			if (vPos.x <= fEndPoint)
+			if (m_iRotationCount == 1)
 			{
-				m_arrPortraitUI[0][BG]->Lerp_ScaleX(fEndPoint, fStartBG, fDuration);
-				m_arrPortraitUI[0][Port]->Lerp_ScaleX(fEndPoint, fStartPort, fDuration);
+				PortSizeDown();
+			}
+			else if (m_iRotationCount == 2)
+			{
+				pTexture->Set_CurTextureIndex(m_iCurPort);
+				PortSizeUP();
+			}
+			else if (m_iRotationCount == 3)
+			{
+				PortSizeDown();
+			}
+			else if (m_iRotationCount == 4)
+			{
+				pTexture->Set_CurTextureIndex(m_iPrvPort);
+				PortSizeUP();
+			}
+			else if (m_iRotationCount == 5)
+			{
+				PortSizeDown();
+			}
+			else if (m_iRotationCount == 6)
+			{
+				pTexture->Set_CurTextureIndex(m_iCurPort);
+				PortSizeUP();
 			}
 		}
 		else
 		{
+			if (vScale.x <= m_fMinValue)
+			{
+				m_bIsRot = false;
+				m_iRotationCount++;
+				m_iPortCount++;
+			}
+			else if (vScale.x >= 64.f)
+			{
+				m_bIsRot = false;
+				m_iRotationCount++;
+			}
+		}
+
+		if (m_iRotationCount > 6)
+		{
 			m_iRotationCount = 0;
+			m_iPortCount = 0;
 			m_bAbleRotationPort = false;
 		}
 	}
-	
+}
+
+void CUI_Portrait::PortSizeUP()
+{
+	_float fDuration = 0.1f * (m_iRotationCount * 0.5f);
+
+	m_arrPortraitUI[0][BG]->Lerp_ScaleX(0.f, 64.f, fDuration);
+	m_arrPortraitUI[0][Port]->Lerp_ScaleX(0.f, 63.f, fDuration);
+}
+
+void CUI_Portrait::PortSizeDown()
+{
+	_float fDuration = 0.1f * (m_iRotationCount * 0.5f);
+
+	m_arrPortraitUI[0][BG]->Lerp_ScaleX(64.f, 0.f, fDuration);
+	m_arrPortraitUI[0][Port]->Lerp_ScaleX(63.f, 0.f, fDuration);
 }

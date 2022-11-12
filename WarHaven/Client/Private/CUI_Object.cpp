@@ -75,8 +75,18 @@ void CUI_Object::Lerp_Scale(_float fStart, _float fEnd, _float fDuration)
 {
 	m_bLerpScale = true;
 
-	m_fStart = fStart;
-	m_fEnd = fEnd;
+	m_fStart = Min(fStart);
+	m_fEnd = Min(fEnd);
+
+	if (m_fEnd > m_fStart)
+	{
+		m_fAccScale = true;
+	}
+	else
+	{
+		m_fAccScale = false;
+	}
+
 	m_fDuration = fDuration;
 
 	Set_Scale(m_fStart);
@@ -86,11 +96,21 @@ void CUI_Object::Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration)
 {
 	m_bLerpScaleX = true;
 
-	m_fStart = fStart;
-	m_fEnd = fEnd;
+	m_fStart = Min(fStart);
+	m_fEnd = Min(fEnd);
+
+	if (m_fEnd > m_fStart)
+	{
+		m_fAccScale = true;
+	}
+	else
+	{
+		m_fAccScale = false;
+	}
+
 	m_fDuration = fDuration;
 
-	Set_Scale(m_fStart);
+	Set_ScaleX(m_fStart);
 }
 
 void CUI_Object::OnEnable()
@@ -114,15 +134,29 @@ void CUI_Object::My_Tick()
 		m_fAccTime += fDT(0);
 
 		_float4 vScale = m_pTransform->Get_Scale();
-		_float fSpeed = (m_fStart - m_fEnd) / m_fDuration;
+		_float fSpeed = ((m_fStart - m_fEnd) / m_fDuration) * fDT(0);
 
-		vScale -= fSpeed * fDT(0);
-
-		Set_Scale(vScale.x, vScale.y);
-
-		if (vScale.x <= m_fEnd)
+		if (!m_fAccScale)
 		{
-			m_bLerpScale = false;
+			vScale -= fabs(fSpeed);
+			Set_Scale(vScale.x, vScale.y);
+
+			if (vScale.x <= m_fEnd)
+			{
+				Set_Scale(vScale.x, vScale.y);
+				m_bLerpScale = false;
+			}
+		}
+		else
+		{
+			vScale += fabs(fSpeed);
+			Set_Scale(vScale.x, vScale.y);
+
+			if (vScale.x >= m_fEnd)
+			{
+				Set_Scale(vScale.x, vScale.y);
+				m_bLerpScale = false;
+			}
 		}
 	}
 
@@ -131,15 +165,32 @@ void CUI_Object::My_Tick()
 		m_fAccTime += fDT(0);
 
 		_float4 vScale = m_pTransform->Get_Scale();
-		_float fSpeed = (m_fStart - m_fEnd) / m_fDuration;
+		_float fSpeed = ((m_fStart - m_fEnd) / m_fDuration) * fDT(0);
 
-		vScale -= fSpeed * fDT(0);
-
-		Set_ScaleX(vScale.x);
-
-		if (vScale.x <= m_fEnd)
+		if (!m_fAccScale)
 		{
-			m_bLerpScaleX = false;
+			vScale -= fabs(fSpeed);
+			vScale.x = max(vScale.x, m_fEnd);
+
+			Set_ScaleX(vScale.x);
+
+			if (vScale.x <= m_fEnd)
+			{
+				Set_ScaleX(m_fEnd);
+				m_bLerpScaleX = false;
+			}
+		}
+		else
+		{
+			vScale += fabs(fSpeed);
+			 
+			Set_ScaleX(vScale.x);
+
+			if (vScale.x >= m_fEnd)
+			{
+				Set_ScaleX(m_fEnd);
+				m_bLerpScaleX = false;
+			}
 		}
 	}
 }
@@ -175,5 +226,17 @@ void CUI_Object::MouseEvent()
 		{
 			OnMouseExit();
 		}
+	}
+}
+
+_float CUI_Object::Min(_float fValue)
+{
+	if (fValue <= m_fMinValue)
+	{
+		return m_fMinValue;
+	}
+	else
+	{
+		return fValue;
 	}
 }

@@ -75,6 +75,8 @@ void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstNa
 
 void CUI_Skill::Set_SkillHUD(_uint iIndex)
 {
+	m_bAbleOutline = true;
+
 	switch (iIndex)
 	{
 	case CUnit::CLASS_WARRIOR:
@@ -216,7 +218,6 @@ void CUI_Skill::Active_SkillHUD(_uint iIndex)
 	}
 
 	_float m_fLerpSpeed = 0.3f;
-	m_bAbleOutline = true;
 
 	for (_uint i = 0; i < iIndex; ++i)
 	{
@@ -287,7 +288,7 @@ void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool b
 	GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Icon], CTexture)->Set_CurTextureIndex(iIconIdx);
 }
 
-void CUI_Skill::Enable_Outline(_uint iIndex)
+void CUI_Skill::Enable_Outline()
 {
 	if (m_bAbleOutline)
 	{
@@ -296,42 +297,19 @@ void CUI_Skill::Enable_Outline(_uint iIndex)
 		_float4 vScale = m_arrSkillUI[1][BG]->Get_Transform()->Get_Scale();
 		_float m_fLeprSpeed = 0.5f;
 
-		for (int i = 0; i < iIndex; ++i)
+		for (int i = 0; i < m_iBtnCount; ++i)
 		{
-			if (vScale.x <= 95.f)
+			if (i != m_iBtnCount - 1)
 			{
-				if (!m_bFirstOutline)
-				{
-					ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
-					m_arrSkillUI[i][Outline1]->Lerp_Scale(95.f, 50.f, m_fLeprSpeed);
+				m_arrSkillUI[i][Outline1]->Lerp_Scale(75.f, 50.f, m_fLeprSpeed);
+				ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
 
-					m_bFirstOutline = true;
-				}
-			}
-
-			if (vScale.x <= 85.f)
-			{
-				if (!m_bSecondOutline)
-				{
-					ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
-					m_arrSkillUI[i][Outline2]->Lerp_Scale(125.f, 50.f, 0.5f);
-
-					_float4 vScale = m_arrSkillUI[i][Outline2]->Get_Transform()->Get_Scale();
-
-					m_bSecondOutline = true;
-				}
+				ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
+				m_arrSkillUI[i][Outline2]->Lerp_Scale(125.f, 50.f, m_fLeprSpeed);
 			}
 		}
 
-		if (m_bSecondOutline)
-		{
-			//DISABLE_GAMEOBJECT(m_arrSkillUI[0][Outline1]);
-			//DISABLE_GAMEOBJECT(m_arrSkillUI[0][Outline2]);
-
-			m_bFirstOutline = false;
-			m_bSecondOutline = false;
-			m_bAbleOutline = false;
-		}
+		m_bAbleOutline = false;
 	}
 }
 
@@ -372,7 +350,7 @@ void CUI_Skill::My_Tick()
 
 	m_fRelicValue += fDT(0);
 
-	Enable_Outline(m_iBtnCount);
+	Enable_Outline();
 }
 
 void CUI_Skill::My_LateTick()

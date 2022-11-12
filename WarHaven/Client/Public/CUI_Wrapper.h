@@ -27,6 +27,7 @@ protected:
 	map<wstring, CUI_Object*> m_pUIMap;
 
 	_float m_fAccTime = 0.f;
+	_float m_fMinValue = 0.01f;
 
 protected:
 	virtual void My_Tick() override;

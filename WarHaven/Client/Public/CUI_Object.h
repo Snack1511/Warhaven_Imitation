@@ -52,12 +52,18 @@ private:
 	_bool m_bIsMouseTarget = false;
 	_bool m_bIsInMouse = false;	
 
-	_float m_fAccTime = 0.f;
+
 	_bool m_bLerpScale = false;
 	_bool m_bLerpScaleX = false;
+
+	_bool m_fAccScale = false;
+
+	_float m_fAccTime = 0.f;
 	_float m_fStart = 0.f;
 	_float m_fEnd = 0.f;
 	_float m_fDuration = 0.f;
+
+	_float m_fMinValue = 0.01f;
 
 private:
 	// These will be called by Set_Enable Func.
@@ -76,6 +82,8 @@ private:
 	void OnMouseClick() {};
 	//void OnMouseDown();
 	//void OnMouseUp();
+
+	_float Min(_float fValue);
 };
 
 END

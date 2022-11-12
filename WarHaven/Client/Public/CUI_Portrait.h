@@ -35,8 +35,14 @@ private:
 
 	_float m_fEffectValue = 0.f;
 
+	_uint m_iPrvPort = 0;
+	_uint m_iCurPort = 0;
+
 	_bool m_bAbleRotationPort = false;
 	_uint m_iRotationCount = 0.f;
+	_uint m_iPortCount = 0;
+
+	_bool m_bIsRot = false;
 
 private:
 	void Enable_UserPortrait();
@@ -45,7 +51,9 @@ private:
 	void Set_Pass();
 	void Bind_Shader();
 
-	void Rotation_UserPort();
+	void Change_Port();
+	void PortSizeUP();
+	void PortSizeDown();
 
 	// 히어로 포트는 돌면서 들어감, 나타남
 
