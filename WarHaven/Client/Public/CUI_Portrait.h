@@ -5,24 +5,22 @@ BEGIN(Client)
 
 class CUI_Portrait final : public CUI_Wrapper
 {
+	enum UI_TYPE { BG, Port, Key, Effect, Type_End };
+
 	DECLARE_PROTOTYPE(CUI_Portrait);
 	DECLARE_GAMEOBJECT(CUI_Portrait);
 
-	typedef struct tagPortraitHud
-	{
-		enum SKILLHUDNAME { BG, Port, NAME_END };
-		CUI_Object* m_pUIInstance[NAME_END] = {};
-	}Portrait;
-
 private:
 	CUI_Portrait();
-	CUI_Portrait(const CUI_Portrait& Prototype);
 	virtual ~CUI_Portrait();
 
 public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
+
+public:
+	void Set_ShaderEffect(CShader* pShader, const char* constName);
 
 public:
 	void Set_Portrait(_uint iIndex);
@@ -32,14 +30,22 @@ protected:
 	virtual void My_LateTick() override;
 
 private:
-	Portrait m_tPort;
-	Portrait m_arrtPort[5];
+	CUI_Object* m_Prototypes[Type_End] = {};
+	CUI_Object* m_arrPortraitUI[5][Type_End] = {};
 
-	// 스몰이랑 빅 배경
-	// 스몰 오끝 480 -230
-	// 빅 -580 -280
+	_float m_fEffectValue = 0.f;
 
-	// 포트는 알지?
+	_bool m_bAbleRotationPort = false;
+	_uint m_iRotationCount = 0.f;
+
+private:
+	void Enable_UserPortrait();
+	void Enable_HeroPortrait();
+
+	void Set_Pass();
+	void Bind_Shader();
+
+	void Rotation_UserPort();
 
 	// 히어로 포트는 돌면서 들어감, 나타남
 

@@ -260,8 +260,17 @@ void CWindow_UI::Set_Object_Info()
 			}
 			else
 			{
+
 				pUI->Set_Scale(fScale[0], fScale[1]);
 			}
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Rotation"))
+		{
+			_float fRotZ = pUI->Get_RotationValue();
+			ImGui::DragFloat("Rotation", &fRotZ, 1.f, -360.f, 360.f);
+			pUI->Set_RotationZ(fRotZ);
 
 			ImGui::TreePop();
 		}

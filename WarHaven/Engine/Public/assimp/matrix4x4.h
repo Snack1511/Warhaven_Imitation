@@ -212,7 +212,7 @@ public:
      *  @param out Receives the output matrix
      *  @return Reference to the output matrix
      */
-    static aiMatrix4x4t& RotationZ(TReal a, aiMatrix4x4t& out);
+    static aiMatrix4x4t& Set_RotationZ(TReal a, aiMatrix4x4t& out);
 
     // -------------------------------------------------------------------
     /** Returns a rotation matrix for a rotation around an arbitrary axis.

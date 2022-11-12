@@ -38,6 +38,10 @@ public:
 
 	_bool Get_IsInMouse() { return m_bIsInMouse; }
 
+public:
+	void Lerp_Scale(_float fStart, _float fEnd, _float fDuration);
+	void Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration);
+
 private:
 	wstring m_wstrName;
 
@@ -46,7 +50,14 @@ private:
 
 	_bool m_bIsMultiTex = false;
 	_bool m_bIsMouseTarget = false;
-	_bool m_bIsInMouse = false;
+	_bool m_bIsInMouse = false;	
+
+	_float m_fAccTime = 0.f;
+	_bool m_bLerpScale = false;
+	_bool m_bLerpScaleX = false;
+	_float m_fStart = 0.f;
+	_float m_fEnd = 0.f;
+	_float m_fDuration = 0.f;
 
 private:
 	// These will be called by Set_Enable Func.

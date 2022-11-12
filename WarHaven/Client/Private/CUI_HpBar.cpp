@@ -9,25 +9,19 @@ CUI_HpBar::CUI_HpBar()
 {
 }
 
-CUI_HpBar::CUI_HpBar(const CUI_HpBar& Prototype)
-	: CUI_Wrapper(Prototype)
-{
-}
-
 CUI_HpBar::~CUI_HpBar()
 {
 }
 
 HRESULT CUI_HpBar::Initialize_Prototype()
 {
-	m_wstrName = TEXT("HpBar");
+	Read_UI("Hp");
 
-	__super::Initialize_Prototype();
+	m_Prototypes[BG] = m_pUIMap[TEXT("HpBarBG")];
 
-	m_pUI->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_Pattern_16.dds"));
-	m_pUI->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_Pattern_36.png"));
-
-	GET_COMPONENT_FROM(m_pUI, CRenderer)->Set_Pass(VTXTEX_PASS_UI_HpBar);
+	m_Prototypes[Bar] = m_pUIMap[TEXT("HpBar")];
+	m_Prototypes[Bar]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_16.dds"));
+	m_Prototypes[Bar]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_36.png"));
 
 	return S_OK;
 }
@@ -39,8 +33,13 @@ HRESULT CUI_HpBar::Initialize()
 
 HRESULT CUI_HpBar::Start()
 {
-	GET_COMPONENT_FROM(m_pUI, CShader)->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResources, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_pUI, CShader)->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResources, this, placeholders::_1, "g_fHpValue");
+	for (_uint i = 0; i < Type_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
+	}
+
+	Set_Pass();
+	Bind_Shader();
 
 	__super::Start();
 
@@ -51,8 +50,7 @@ void CUI_HpBar::My_Tick()
 {
 	__super::My_Tick();
 
-	m_fValue += fDT(0) * 0.1f;
-	m_fHPValue -= fDT(0) * 0.5f;
+	m_fValue += fDT(0);
 }
 
 void CUI_HpBar::My_LateTick()
@@ -60,8 +58,28 @@ void CUI_HpBar::My_LateTick()
 	__super::My_LateTick();
 }
 
-void CUI_HpBar::Set_ShaderResources(CShader* pShader, const char* pConstName)
+void CUI_HpBar::Set_ShaderResourcesBG(CShader* pShader, const char* pConstName)
 {
-	GET_COMPONENT_FROM(m_pUI, CShader)->Set_RawValue("g_fValue", &m_fValue, sizeof(_float));
-	GET_COMPONENT_FROM(m_pUI, CShader)->Set_RawValue("g_fHpValue", &m_fHPValue, sizeof(_float));
+	_float4 vColor = m_Prototypes[BG]->Get_Color();
+	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+}
+
+void CUI_HpBar::Set_ShaderResourcesBar(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fValue, sizeof(_float));
+}
+
+void CUI_HpBar::Set_Pass()
+{
+	GET_COMPONENT_FROM(m_Prototypes[BG], CRenderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+	GET_COMPONENT_FROM(m_Prototypes[Bar], CRenderer)->Set_Pass(VTXTEX_PASS_UI_HpBar);
+}
+
+void CUI_HpBar::Bind_Shader()
+{
+	GET_COMPONENT_FROM(m_Prototypes[BG], CShader)
+		->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResourcesBG, this, placeholders::_1, "g_vColor");
+
+	GET_COMPONENT_FROM(m_Prototypes[Bar], CShader)
+		->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResourcesBar, this, placeholders::_1, "g_fValue");
 }

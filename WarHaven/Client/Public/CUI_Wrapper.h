@@ -14,7 +14,6 @@ class CUI_Wrapper abstract : public CGameObject
 {
 protected:
 	CUI_Wrapper();
-	CUI_Wrapper(const CUI_Wrapper& Prototype);
 	virtual ~CUI_Wrapper();
 
 public:
@@ -26,6 +25,8 @@ protected:
 	wstring	m_wstrName;
 	CUI_Object* m_pUI = nullptr;
 	map<wstring, CUI_Object*> m_pUIMap;
+
+	_float m_fAccTime = 0.f;
 
 protected:
 	virtual void My_Tick() override;

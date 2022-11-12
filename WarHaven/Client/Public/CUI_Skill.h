@@ -1,30 +1,19 @@
 #pragma once
 #include "CUI_Wrapper.h"
 
-BEGIN(Engine)
-class CShader;
-END
-
 BEGIN(Client)
 
 class CUnit;
 
 class CUI_Skill : public CUI_Wrapper
 {
+	enum UI_TYPE { Outline0, Outline1, Outline2, BG, Icon, Key, Type_End };
+
 	DECLARE_PROTOTYPE(CUI_Skill);
 	DECLARE_GAMEOBJECT(CUI_Skill);
 
-
-	typedef struct tagSkillHud
-	{
-		enum SKILLHUDNAME { OUTLINE, BG, ICON, KEY, NAME_END };
-		CUI_Object* m_pUIInstance[NAME_END] = {};
-	}SkillHud;
-
-
 private:
 	CUI_Skill();
-	CUI_Skill(const CUI_Skill& Prototype);
 	virtual ~CUI_Skill();
 
 public:
@@ -33,23 +22,35 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	virtual void Set_ShaderResources(CShader* pShader, const char* pConstName);
 	virtual void Set_ShaderResources_Relic(CShader* pShader, const char* pConstName);
 
 public:
-	void Set_SkillUI(_uint iIndex);
+	void Set_SkillHUD(_uint iIndex);
 
 private:
-	SkillHud tSkillHud;
-	SkillHud m_arrSkillHud[4];
+	CUI_Object* m_Prototypes[Type_End] = {};
+	CUI_Object* m_arrSkillUI[4][Type_End] = {};
 
 	_uint m_iRelicIndex = 0;
 	_bool m_bIsRelic = false;
 	_float m_fRelicValue = 0.f;
 
+	_bool m_bAbleOutline = false;
+
+	_uint m_iBtnCount = 0;
+
+	_bool m_bFirstOutline = false;
+	_bool m_bSecondOutline = false;
+
 private:
-	void ActiveSkillBtn(_uint iIndex);
-	void Set_SkillIcon(_uint iIndex, _uint iKeyIdx = 52, _uint iIconIdx = 29, bool bRelic = true);
+	void Set_Pass();
+	void Bind_Shader();
+
+	void Enable_SkillHUD();
+	void Active_SkillHUD(_uint iIndex);
+	void Set_SkillBtn(_uint iIndex, _uint iKeyIdx = 52, _uint iIconIdx = 29, bool bRelic = true);
+
+	void Enable_Outline(_uint iIndex);
 
 private:
 	virtual void My_Tick() override;

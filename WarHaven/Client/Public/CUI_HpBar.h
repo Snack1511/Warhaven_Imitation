@@ -5,12 +5,13 @@ BEGIN(Client)
 
 class CUI_HpBar : public CUI_Wrapper
 {
+	enum UI_TYPE { BG, Bar, Type_End };
+
 	DECLARE_PROTOTYPE(CUI_HpBar);
 	DECLARE_GAMEOBJECT(CUI_HpBar);
 
 private:
 	CUI_HpBar();
-	CUI_HpBar(const CUI_HpBar& Prototype);
 	virtual ~CUI_HpBar();
 
 public:
@@ -23,12 +24,17 @@ protected:
 	virtual void My_LateTick() override;;
 
 public:
-	void Set_ShaderResources(CShader* pShader, const char* pConstName);
+	void Set_ShaderResourcesBar(CShader* pShader, const char* pConstName);
+	void Set_ShaderResourcesBG(CShader* pShader, const char* pConstName);
 
 private:
+	CUI_Object* m_Prototypes[Type_End] = {};
+
 	_float m_fValue = 0.f;
 
-	_float m_fHPValue = 1.f;
+private:
+	void Set_Pass();
+	void Bind_Shader();
 };
 
 END

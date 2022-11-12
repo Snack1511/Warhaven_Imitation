@@ -601,7 +601,7 @@ aiMatrix4x4t<TReal>& aiMatrix4x4t<TReal>::RotationY(TReal a, aiMatrix4x4t<TReal>
 // ----------------------------------------------------------------------------------------
 template <typename TReal>
 AI_FORCE_INLINE
-aiMatrix4x4t<TReal>& aiMatrix4x4t<TReal>::RotationZ(TReal a, aiMatrix4x4t<TReal>& out) {
+aiMatrix4x4t<TReal>& aiMatrix4x4t<TReal>::Set_RotationZ(TReal a, aiMatrix4x4t<TReal>& out) {
     /*
          |  cos(A)  -sin(A)   0   0 |
      M = |  sin(A)   cos(A)   0   0 |

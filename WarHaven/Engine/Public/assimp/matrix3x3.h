@@ -125,7 +125,7 @@ public:
      *  @param out Receives the output matrix
      *  @return Reference to the output matrix
      */
-    static aiMatrix3x3t& RotationZ(TReal a, aiMatrix3x3t& out);
+    static aiMatrix3x3t& Set_RotationZ(TReal a, aiMatrix3x3t& out);
 
     // -------------------------------------------------------------------
     /** @brief Returns a rotation matrix for a rotation around
