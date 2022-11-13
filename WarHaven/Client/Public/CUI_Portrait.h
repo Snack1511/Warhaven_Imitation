@@ -45,8 +45,9 @@ private:
 	_uint m_iRotationCount = 0.f;
 
 	_bool m_bIsHeroLerp = false;
-	_uint m_iHeroLerpStartCount = Hero1;
-	_uint m_iHeroLerpEndCount = Hero4;
+	_uint m_iHeroStartIdx = Hero1;
+	_uint m_iHeroEndIdx = Hero4;
+	_uint m_iHeroActiveCount = 0;
 
 	_float m_fMinValue = 0.01f;
 
@@ -61,6 +62,8 @@ private:
 
 	void Enable_HeroPort();
 	void Disable_HeroPort();
+
+	void Enable_HeroLerp(_bool value, _float fDuration);
 
 	void PortSizeUP();
 	void PortSizeDown();

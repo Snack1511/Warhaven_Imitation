@@ -74,6 +74,7 @@ void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 void CUI_Portrait::Set_Portrait(_uint iIndex)
 {
 	m_bIsHeroLerp = true;
+	m_iHeroActiveCount = 0;
 
 	m_iPrvPort = m_iCurPort;
 	m_iCurPort = iIndex;
@@ -273,56 +274,13 @@ void CUI_Portrait::Change_UserPort()
 
 void CUI_Portrait::Enable_HeroPort()
 {
-	if (!m_bIsHero)
+	if (m_iPrvPort >= 6)
 	{
-		if (m_iPrvPort >= 6)
-		{
-			if (m_bIsHeroLerp)
-			{
-				for (m_iHeroLerpEndCount; m_iHeroLerpEndCount >= Hero1;)
-				{
-					for (int j = 0; j < Type_End; ++j)
-					{
-						if (j == Key)
-						{
-							// 페이드아웃만
-							continue;
-						}
+		_float fDuration = 0.3f;
 
-						if (j == Effect)
-						{
-							// 페이드아웃만
-							continue;
-						}
-
-						m_arrPortraitUI[m_iHeroLerpEndCount][j]->Lerp_ScaleX(0.f, 43.f, 0.5f);
-					}
-
-					m_bIsHeroLerp = false;
-					break;
-				}
-			}
-			else
-			{
-				m_fAccTime += fDT(0);
-				if (m_fAccTime > 0.5f)
-				{
-					m_iHeroLerpEndCount--;
-					m_bIsHeroLerp = true;
-					m_fAccTime = 0.f;
-				}
-			}
-		}
-	}
-}
-
-void CUI_Portrait::Disable_HeroPort()
-{
-	if (m_bIsHero)
-	{
 		if (m_bIsHeroLerp)
 		{
-			for (m_iHeroLerpStartCount; m_iHeroLerpStartCount < PortEnd;)
+			for (m_iHeroEndIdx; m_iHeroEndIdx >= Hero1;)
 			{
 				for (int j = 0; j < Type_End; ++j)
 				{
@@ -338,7 +296,7 @@ void CUI_Portrait::Disable_HeroPort()
 						continue;
 					}
 
-					m_arrPortraitUI[m_iHeroLerpStartCount][j]->Lerp_ScaleX(43.f, 0.f, 0.5f);
+					m_arrPortraitUI[m_iHeroEndIdx][j]->Lerp_ScaleX(0.f, 43.f, fDuration);
 				}
 
 				m_bIsHeroLerp = false;
@@ -347,12 +305,80 @@ void CUI_Portrait::Disable_HeroPort()
 		}
 		else
 		{
-			m_fAccTime += fDT(0);
-			if (m_fAccTime > 0.5f)
+			Enable_HeroLerp(true, fDuration);
+		}
+	}
+}
+
+void CUI_Portrait::Disable_HeroPort()
+{
+	if (m_bIsHero)
+	{
+		if (m_iPrvPort < 6)
+		{
+			_float fDuration = 0.3f;
+
+			if (m_bIsHeroLerp)
 			{
-				m_iHeroLerpStartCount++;
+				for (m_iHeroStartIdx; m_iHeroStartIdx < PortEnd;)
+				{
+					for (int j = 0; j < Type_End; ++j)
+					{
+						if (j == Key)
+						{
+							// 페이드아웃만
+							continue;
+						}
+
+						if (j == Effect)
+						{
+							// 페이드아웃만
+							continue;
+						}
+
+						m_arrPortraitUI[m_iHeroStartIdx][j]->Lerp_ScaleX(43.f, 0.f, fDuration);
+					}
+
+					m_bIsHeroLerp = false;
+					break;
+				}
+			}
+			else
+			{
+				Enable_HeroLerp(false, fDuration);
+			}
+		}
+	}
+}
+
+void CUI_Portrait::Enable_HeroLerp(_bool value, _float fDuration)
+{
+	if (m_iHeroActiveCount < 3)
+	{
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > fDuration)
+		{
+			if (value == false)
+			{
+				m_iHeroStartIdx++;
+				if (m_iHeroStartIdx > Hero4)
+					m_iHeroStartIdx = Hero1;
+
 				m_bIsHeroLerp = true;
 				m_fAccTime = 0.f;
+
+				m_iHeroActiveCount++;
+			}
+			else
+			{
+				m_iHeroEndIdx--;
+				if (m_iHeroEndIdx < Hero1)
+					m_iHeroEndIdx = Hero4;
+
+				m_bIsHeroLerp = true;
+				m_fAccTime = 0.f;
+
+				m_iHeroActiveCount++;
 			}
 		}
 	}
