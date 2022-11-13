@@ -22,6 +22,8 @@ HRESULT CUI_LobbyBG::Initialize_Prototype()
     Set_Pos(0.f, 0.f);
     Set_Scale(1280.f, 720.f);
 
+    Set_Sort(1.f);
+
     return S_OK;
 }
 

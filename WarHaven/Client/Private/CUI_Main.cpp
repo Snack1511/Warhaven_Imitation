@@ -23,6 +23,11 @@ HRESULT CUI_Main::Initialize_Prototype()
 	m_pPrototypeUI[Key] = m_pUIMap[TEXT("Lobby_Key")];
 	m_pPrototypeUI[Goods] = m_pUIMap[TEXT("Lobby_Goods")];
 
+	for (int i = 0; i < MainEnd; ++i)
+	{
+		m_pPrototypeUI[i]->Set_Sort(0.9f);
+	}
+
 	GET_COMPONENT_FROM(m_pPrototypeUI[Btn], CTexture)->Remove_Texture(0);
 	
 	Read_Texture(m_pPrototypeUI[Btn], "/Lobby/LobbyText", "Text");

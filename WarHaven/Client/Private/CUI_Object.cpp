@@ -13,6 +13,7 @@ CUI_Object::CUI_Object()
 
 CUI_Object::CUI_Object(const CUI_Object& Prototype)
 	: CUI(Prototype)
+	, m_bIsMouseTarget(Prototype.m_bIsMouseTarget)
 {
 }
 
@@ -142,15 +143,10 @@ void CUI_Object::MouseEvent()
 		{
 			OnMouseEnter();
 
-			//if (m_pButton)
-			//{
-			//	// 버튼 이벤트 함수 호출
-
-			//	/*if (KEY(LBUTTON, TAP))
-			//	{
-			//		OnMouseClick();
-			//	}*/
-			//}
+			if(KEY(LBUTTON, TAP))
+			{
+				OnMouseClick();
+			}
 		}
 		else
 		{
@@ -234,6 +230,11 @@ void CUI_Object::Lerp_Scale()
 			}
 		}
 	}
+}
+
+void CUI_Object::OnMouseEnter()
+{
+
 }
 
 _float CUI_Object::Min(_float fValue)

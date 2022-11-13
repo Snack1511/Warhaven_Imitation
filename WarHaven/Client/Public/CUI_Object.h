@@ -73,12 +73,12 @@ private:	// Font
 	_float m_fFontScale = 1.f;
 
 private:	// Button
+	_bool m_bIsMouseTarget = false;
 
 private:	// Etc
 	_float m_fMinValue = 0.01f;
 	_float m_fAccTime = 0.f;
 	_bool m_bIsMultiTex = false;
-	_bool m_bIsMouseTarget = false;
 	_bool m_bIsInMouse = false;
 
 private:	// Lerp
@@ -89,7 +89,6 @@ private:	// Lerp
 	_float m_fEnd = 0.f;
 	_float m_fDuration = 0.f;
 
-
 private:
 	// These will be called by Set_Enable Func.
 	virtual	void	OnEnable();
@@ -99,19 +98,13 @@ private:
 
 private:
 	void MouseEvent();
-
-	void Create_Text(_bool value, wstring wstrText, _float4 vOffset, _float4 vColor, _float fScale);
 	void RenderText();
-
 	void Lerp_Scale();
 
 private:
-	virtual void OnMouseEnter() {};
+	virtual void OnMouseEnter();
 	virtual void OnMouseExit() {};
-
-	void OnMouseClick() {};
-	//void OnMouseDown();
-	//void OnMouseUp();
+	virtual void OnMouseClick() {};
 
 	_float Min(_float fValue);
 };

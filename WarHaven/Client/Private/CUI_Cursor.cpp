@@ -43,7 +43,7 @@ HRESULT CUI_Cursor::Start()
 {
 	__super::Start();
 
-	ShowCursor(true);
+	ShowCursor(false);
 
 	RECT tScreen;
 	GetClientRect(g_hWnd, &tScreen);
@@ -59,8 +59,6 @@ HRESULT CUI_Cursor::Start()
 void CUI_Cursor::My_Tick()
 {
 	__super::My_Tick();
-
-	CheckInRect();
 
 	_float fFixPosX = 11.f;
 	_float fFixPosY = 13.f;
