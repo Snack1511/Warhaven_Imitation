@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CSprint_End.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -54,6 +54,8 @@ HRESULT CSprint_End::Initialize()
     //m_vecAdjState.push_back(STATE_WALK);
 
 
+
+
     return S_OK;
 }
 
@@ -65,11 +67,34 @@ void CSprint_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
     else
         m_fInterPolationTime = 0.1f;
 
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	//임시
+	pMyPhysicsCom->Get_Physics().bAir = false;
+
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	vCamLook.y = 0.f;
+
+	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+
+	//실제 움직이는 방향
+	pMyPhysicsCom->Set_Dir(vCamLook);
+
+	//최대속도 설정
+	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
+	pMyPhysicsCom->Set_SpeedasMax();
+
+
     __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CSprint_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 
+
 
     return __super::Tick(pOwner, pAnimator);
 

@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "CWarrior_Oxen_Loop_Attack.h"
 
-#include "GameInstance.h"
-
+#include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
 
@@ -53,6 +52,10 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
     m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
+
+    Add_KeyFrame(5, 0);
+
+
     return S_OK;
 }
 
@@ -68,6 +71,9 @@ void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
     {
         m_fInterPolationTime = 0.1f;
     }
+
+
+
 
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType);
@@ -85,6 +91,9 @@ void CWarrior_Oxen_Loop_Attack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
     pOwner->TurnOn_TrailEffect(false);
+    CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+    pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
+
 
 }
 
@@ -98,6 +107,48 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Check_Condition(CUnit* pOwner, CAnimator* 
         return m_eStateType;
 
     return STATE_END;
+}
+
+void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+    {
+        CTransform* pMyTransform = pOwner->Get_Transform();
+        CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+
+
+        //임시
+        pMyPhysicsCom->Get_Physics().bAir = false;
+
+        _float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+        vCamLook.y = 0.f;
+
+        //1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+        pMyTransform->Set_LerpLook(vCamLook, 0.4f);
+
+        //실제 움직이는 방향
+        pMyPhysicsCom->Set_Dir(vCamLook);
+
+        //최대속도 설정
+        pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fDashSpeed);
+        pMyPhysicsCom->Set_SpeedasMax();
+
+
+        //마찰 조절하기
+        //*주의 : 사용하고나면 Exit에서 반드시 1로 되돌려주기
+        pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.55f;
+
+    }
+       
+
+    default:
+        break;
+    }
+
+
 }
 
 

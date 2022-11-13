@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CSprint_Loop.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -42,6 +42,9 @@ HRESULT CSprint_Loop::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
+	m_fMyMaxLerp = 0.4f;
+	m_fMyAccel = 200.f;
+
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
@@ -59,17 +62,59 @@ HRESULT CSprint_Loop::Initialize()
 
 void CSprint_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
-    if (ePrevType == STATE_SPRINT_BEGIN_PLAYER)
+    if (ePrevType == STATE_SPRINT_BEGIN_PLAYER || ePrevType == STATE_SPRINT_LOOP_PLAYER)
         m_fInterPolationTime = 0.f;
 
     else
         m_fInterPolationTime = 0.1f;
+
+
+
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	//임시
+	pMyPhysicsCom->Get_Physics().bAir = false;
+
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	vCamLook.y = 0.f;
+
+	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+
+	//실제 움직이는 방향
+	pMyPhysicsCom->Set_Dir(vCamLook);
+
+	//최대속도 설정
+	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
+	pMyPhysicsCom->Set_SpeedasMax();
+
+	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.3f;
 
     __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CSprint_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+
+	_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+
+
+	_uint iFrame = pAnimator->Get_CurAnimFrame();
+
+		
+
+	vDir.y = 0.f;
+
+	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+	pMyPhysicsCom->Set_Dir(vDir);
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+
 
     return __super::Tick(pOwner, pAnimator);
 
@@ -77,6 +122,8 @@ STATE_TYPE CSprint_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CSprint_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
     /* 할거없음 */
 }
 

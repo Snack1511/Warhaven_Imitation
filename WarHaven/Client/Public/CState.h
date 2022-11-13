@@ -12,8 +12,18 @@ class CUnit;
 
 class CState
 {
-protected:
-	enum State_Direction { 
+public:
+	struct KEYFRAME_EVENT
+	{
+		enum EVENT_TYPE {EVENT_MOVE, EVENT_ATTACK, EVENT_END};
+		_uint	iKeyFrame = 0;
+		EVENT_TYPE	eEventType = EVENT_END;
+		_bool	bExecuted = false;
+
+	};
+
+public:
+	enum STATE_DIRECTION {
 		STATE_DIRECTION_NW, STATE_DIRECTION_NE, STATE_DIRECTION_N, 
 		STATE_DIRECTION_SW, STATE_DIRECTION_SE, STATE_DIRECTION_S, 
 		STATE_DIRECTION_W, 
@@ -66,7 +76,36 @@ protected:
 
 	_uint				m_iStateChangeKeyFrame = 0;
 
-	_int				m_VecDirectionAnimIndex[STATE_DIRECTION_END];
+	_float				m_fMyMaxLerp = 0.f; 
+	_float				m_fMyAccel = 0.f;
+
+	_int				m_iDirectionAnimIndex[STATE_DIRECTION_END];
+	_float				m_iDirectionAnimSpeed[STATE_DIRECTION_END];
+
+protected:
+	vector<KEYFRAME_EVENT>	m_vecKeyFrameEvent;
+
+
+
+protected:
+	_uint	Get_Direction();
+	
+	void	Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime);
+	void	Move_Direction_Begin(CUnit* pOwner, CAnimator* pAnimator, _bool bAnimTrigger = true);
+
+	void	Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float fInterPolationTime);
+	void	Change_Location_Begin(_uint iDirection, CAnimator* pAnimator);
+
+	void	Move(_uint iDirection, CUnit* pOwner);
+
+
+	void	Physics_Setting(_float fSpeed, CUnit* pOwner);
+	
+
+protected:
+	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iEventType);
+	void					Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator);
+	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence) {};
 
 protected:
 	CHANNEL_CLIENT	m_eChannel = CHANNEL_EFFECTS;
@@ -76,10 +115,14 @@ protected:
 
 	_bool	m_bRight = true;
 
+
+
+
 protected:
 	virtual STATE_TYPE		Check_Condition(CUnit* pOwner, CAnimator* pAnimator) PURE;
 	virtual void		OnExecute(CUnit* pOwner, CAnimator* pAnimator) {};
 	virtual void		TickExecute(CUnit* pOwner, CAnimator* pAnimator) {};
+
 
 	
 };

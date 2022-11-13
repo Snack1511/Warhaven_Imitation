@@ -41,7 +41,7 @@ namespace Client
 		_float fHP = 100.f;
 		_float fMaxHP = 100.f;
 		_float fRunSpeed = 7.5f;
-		_float fShortDashSpeed = 11.f;
+		_float fRunBeginSpeed = 11.f;
 		_float fWalkSpeed = 2.f;
 		_float fDashSpeed = 16.f;
 		_float fWallJumpSpeed = 15.f;

@@ -53,6 +53,13 @@ HRESULT CRun_Player_R::Initialize()
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
     m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
+
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+
+	m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
+
+
 //    m_vecAdjState.push_back(STATE_SLIDE_PLAYER);
 
  //   m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
@@ -60,19 +67,19 @@ HRESULT CRun_Player_R::Initialize()
     //m_vecAdjState.push_back(STATE_SILDING);
 
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_E] = 26;
+   m_iDirectionAnimIndex[STATE_DIRECTION_E] = 26;
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_N] = 27;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_NE] = 28;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_NW] = 29;
+   m_iDirectionAnimIndex[STATE_DIRECTION_N] = 27;
+   m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 28;
+   m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 29;
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_S] = 42;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_SE] = 43;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
+   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 42;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 43;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
 
 
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_W] = 30;
+   m_iDirectionAnimIndex[STATE_DIRECTION_W] = 30;
 
 
     return S_OK;

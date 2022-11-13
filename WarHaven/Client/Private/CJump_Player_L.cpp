@@ -62,10 +62,10 @@ HRESULT CJump_Player_L::Initialize()
     m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_L);
 
 
-    m_VecDirectionAnimIndex[STATE_DIRECTION_N] = 6;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_S] = 7;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_W] = 8;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_E] = 5;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 6;
+    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 7;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 8;
+    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 5;
 
 
     return S_OK;

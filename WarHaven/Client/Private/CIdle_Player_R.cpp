@@ -1,17 +1,18 @@
 #include "stdafx.h"
 #include "CIdle_Player_R.h"
 
-#include "GameInstance.h"
-#include "Functor.h"
+
 #include "CAnimator.h"
 #include "CUnit.h"
-#include "Transform.h"
+
 #include "CUser.h"
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "Animation.h"
-#include "Model.h"
+
 #include "CColorController.h"
+
+#include "UsefulHeaders.h"
 
 CIdle_Player_R::CIdle_Player_R()
 {
@@ -118,10 +119,15 @@ STATE_TYPE CIdle_Player_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     /* Player가 Idle로 오는 조건 
     1. 현재 진행중인 애니메이션이 끝났을 때
     */
-
-    if (pAnimator->Is_CurAnimFinished())
-        return m_eStateType;
- 
+	if (
+		KEY(W, NONE) &&
+		KEY(A, NONE) &&
+		KEY(S, NONE) &&
+		KEY(D, NONE))
+	{
+		if (pAnimator->Is_CurAnimFinished())
+			return m_eStateType;
+	}
 
     return STATE_END;
 }

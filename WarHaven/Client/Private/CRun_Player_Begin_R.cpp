@@ -38,33 +38,31 @@ HRESULT CRun_Player_Begin_R::Initialize()
     m_eStateType = STATE_RUN_BEGIN_PLAYER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
+	m_fAnimSpeed = 10.f;
+
     m_iStateChangeKeyFrame = 21;
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
-
-    // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.5f;
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_E] = 18;
+   m_iDirectionAnimIndex[STATE_DIRECTION_E] = 18;
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_N] = 19;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_NE] = 20;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_NW] = 21;
+   m_iDirectionAnimIndex[STATE_DIRECTION_N] = 19;
+   m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 20;
+   m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 21;
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_S] = 22;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_SE] = 23;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_SW] = 24;
+   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 22;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 23;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 24;
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_W] = 25;
+   m_iDirectionAnimIndex[STATE_DIRECTION_W] = 25;
     
 
 
@@ -99,6 +97,9 @@ void CRun_Player_Begin_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CRun_Player_Begin_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_RUN_PLAYER_R;
+
 
     return __super::Tick(pOwner, pAnimator);
 

@@ -53,6 +53,10 @@ HRESULT CWalk_Player_R::Initialize()
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
 //    m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+	m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
+
 //    m_vecAdjState.push_back(STATE_JUMP_PLAYER);
 
     //m_vecAdjState.push_back(STATE_SILDING);
@@ -61,15 +65,15 @@ HRESULT CWalk_Player_R::Initialize()
     //m_vecAdjState.push_back(STATE_WALK);
 
 
-    m_VecDirectionAnimIndex[STATE_DIRECTION_NW] = 41;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_NE] = 40;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_N] = 39;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 41;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 40;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 39;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
                             
-    m_VecDirectionAnimIndex[STATE_DIRECTION_SE] = 43;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_S] = 42;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_W] = 45;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_E] = 38;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 43;
+    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 42;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 45;
+	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 38;
 
 
 

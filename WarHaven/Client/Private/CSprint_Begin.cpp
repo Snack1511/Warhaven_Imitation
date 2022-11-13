@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CSprint_Begin.h"
 
-#include "GameInstance.h"
+#include  "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -34,10 +34,13 @@ HRESULT CSprint_Begin::Initialize()
     m_iAnimIndex = 55;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_SPRINT_BEGIN_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
+	m_fMyMaxLerp = 0.4f;
+	m_fMyAccel = 10.F;
+
     m_iStateChangeKeyFrame = 20;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.1f;
+    m_fInterPolationTime = 0.15f;
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
@@ -49,21 +52,35 @@ HRESULT CSprint_Begin::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_END_PLAYER);
 
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_PLAYER);
-
-    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
-    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
 	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_PLAYER);
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
 
+
+	Add_KeyFrame(25, 0);
 
     return S_OK;
 }
 
 void CSprint_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.4f;
+	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
+
+
+	if (ePrevType == STATE_RUN_BEGIN_PLAYER_L || ePrevType == STATE_RUN_BEGIN_PLAYER_R)
+	{
+		m_fInterPolationTime = 0.f;
+	}
+	else
+	{
+		m_fInterPolationTime = 0.1f;
+	}
+
+
+	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.1F;
+
+
+
 
     __super::Enter(pOwner, pAnimator, ePrevType);
 
@@ -71,12 +88,29 @@ void CSprint_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 STATE_TYPE CSprint_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+
+	_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+
+	vDir.y = 0.f;
+
+	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+	pMyPhysicsCom->Set_Dir(vDir);
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+
+
     return __super::Tick(pOwner, pAnimator);
 
 }
 
 void CSprint_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
     /* 할거없음 */
 }
 
@@ -93,4 +127,33 @@ STATE_TYPE CSprint_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 
     return STATE_END;
+}
+
+void CSprint_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	switch (iSequence)
+	{
+	case 0:
+	{
+
+
+
+		CTransform* pMyTransform = pOwner->Get_Transform();
+		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+
+		//최대속도 설정
+		pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
+
+		m_fMyAccel = 10.f;
+
+
+	}
+
+
+	default:
+		break;
+	}
+
+
 }
