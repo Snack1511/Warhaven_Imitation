@@ -45,15 +45,17 @@ private:
 	_bool		m_bBillBoard = false;
 	_bool		m_bSorting = false;
 	_bool		m_bZeroSpeedDisable = true;
-	_bool		m_bLoop = false;
 	_uint		m_iWidthSize = 1;
 	_uint		m_iHeightSize = 1;
 
 	_float		m_fDuration = 0.1f;
+	_float		m_fDurationRange = 0.f;
+
+private:
+	_bool		m_bLoop = false;
 	_float		m_fLoopTime = 0.f;
 	_float		m_fLoopTimeAcc = 0.f;
 
-private:
 	_bool		m_bBlackBackGround = false;
 
 

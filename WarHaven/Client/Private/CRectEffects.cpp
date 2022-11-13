@@ -307,21 +307,21 @@ HRESULT CRectEffects::Initialize()
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION)
 		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
-			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
 		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
-			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
-
-			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
+			
+			m_pInstancingDatas[i].fDissolveEndTime =  m_iWidthSize * m_iHeightSize * m_fDuration; // 
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 		{		
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
-			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 
-			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration;
+			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_pInstancingDatas[i].fDuration; // 
 		}
 		//
 
@@ -406,7 +406,7 @@ void CRectEffects::My_Tick()
 	_float4	vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	_float4 vLook;
 
-	m_fLoopTimeAcc += fDT(0);
+	m_fLoopTimeAcc += fTimeDelta;
 
 	vLook = vCamLook * -1.f;
 
@@ -431,8 +431,34 @@ void CRectEffects::My_Tick()
 		m_pInstancingDatas[i].fTimeAcc += fTimeDelta;
 
 		//3. FADE
-		if (!Fade_Lerp(i))
-			continue;
+		if (m_bLoop)
+		{
+			if (INSTANCING_DATA::FADEOUTREADY <= m_pInstancingDatas[i].eCurFadeType)
+			{
+				if (0.f != m_fLoopTime)
+				{
+					if (m_fLoopTimeAcc > m_fLoopTime)
+					{
+						if (!Fade_Lerp(i))
+							continue;
+					}
+				}
+			}
+			else
+			{
+				if (!Fade_Lerp(i))
+					continue;
+			}
+
+
+		}
+		else
+		{
+			if (!Fade_Lerp(i))
+				continue;
+		}
+
+		
 
 		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA &&
 			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
@@ -606,6 +632,9 @@ void CRectEffects::OnEnable()
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
+		m_pInstancingDatas[i].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+		m_pInstancingDatas[i].vColor.w = 0.f;
+		m_pRectInstances[i].vColor.w = 0.f;
 		Reset_Instance(i);
 	}
 
@@ -762,6 +791,7 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	pReadFile->read((char*)&m_iWidthSize, sizeof(_uint));
 	pReadFile->read((char*)&m_iHeightSize, sizeof(_uint));
 	pReadFile->read((char*)&m_fDuration, sizeof(_float));
+	pReadFile->read((char*)&m_fDurationRange, sizeof(_float));
 	pReadFile->read((char*)&m_fDissolvePower, sizeof(_float));
 
 
@@ -817,9 +847,21 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	Set_NewStartPos(iIndex);
 
 	m_pInstancingDatas[iIndex].vScale = m_pInstancingDatas[iIndex].vStartScale;
-	m_pInstancingDatas[iIndex].vColor.w = 0.f;
-	m_pRectInstances[iIndex].vColor.w = 0.f;
-	m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+
+	//if (0 < m_fLoopTimeAcc)
+	//{
+	//	m_pInstancingDatas[iIndex].vColor.w = m_pInstancingDatas[iIndex].fTargetAlpha;
+	//	m_pRectInstances[iIndex].vColor.w = m_pInstancingDatas[iIndex].fTargetAlpha;
+	//}
+	//else
+	//{
+	//	m_pInstancingDatas[iIndex].vColor.w = 0.f;
+	//	m_pRectInstances[iIndex].vColor.w = 0.f;
+	//}
+
+	if(!m_bLoop)
+		m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+
 	m_pInstancingDatas[iIndex].fTimeAcc = 0.f;
 
 

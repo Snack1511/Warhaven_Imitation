@@ -220,12 +220,20 @@ void CWindow_Effect::Show_MainList()
 					else
 					{
 						_float4x4 matTrans;
+						_float4 vPos;
 						if (g_bCamMatrix)
+						{
 							matTrans = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+							vPos = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_POS);
+						}
 						else
+						{
 							matTrans = PLAYER->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+							vPos = PLAYER->Get_Transform()->Get_World(WORLD_POS);
 
-						m_vecEffects[m_iCurrentIdx].pEffect->Reset(PLAYER->Get_Transform()->Get_World(WORLD_POS), matTrans);
+						}
+
+						m_vecEffects[m_iCurrentIdx].pEffect->Reset(vPos, matTrans);
 					}
 
 
@@ -1045,7 +1053,7 @@ void CWindow_Effect::Show_ParticleTab()
 			}
 
 		
-			ImGui::LabelText(" ", "LoopTime 0 is Infinite");
+			ImGui::Text("LoopTime 0 is Infinite");
 
 
 			if (ImGui::RadioButton("bLoop", static_cast<CRectEffects*>(pCurEffect)->m_bLoop))
@@ -1152,11 +1160,17 @@ void CWindow_Effect::Show_ParticleTab()
 			if (ImGui::InputFloat("fDissolvePower(Anim)", &((CRectEffects*)pCurEffect)->m_fDissolvePower))
 			{
 			}
+			
+			_float fAnimTime = ((CRectEffects*)pCurEffect)->m_iWidthSize * ((CRectEffects*)pCurEffect)->m_iHeightSize * ((CRectEffects*)pCurEffect)->m_fDuration;
+			ImGui::Text("Animation Endtime : %f", fAnimTime);
 
 			if (ImGui::InputFloat("fDuration(Animation)", &((CRectEffects*)pCurEffect)->m_fDuration))
 			{
 			}
 
+			if (ImGui::InputFloat("fDurationRange(Animation)", &((CRectEffects*)pCurEffect)->m_fDurationRange))
+			{
+			}
 
 			_int	iSizes[2] = { ((CRectEffects*)pCurEffect)->m_iWidthSize, ((CRectEffects*)pCurEffect)->m_iHeightSize };
 			if (ImGui::InputInt2("iAnimSizes(Animation)", iSizes))
@@ -1384,6 +1398,7 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iWidthSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iHeightSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDuration, sizeof(_float));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDurationRange, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDissolvePower, sizeof(_float));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
