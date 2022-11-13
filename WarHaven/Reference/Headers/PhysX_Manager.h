@@ -71,6 +71,9 @@ public:
 	void			Create_PxControllerManager(Scene eScene);
 	void			Create_CapsuleController(_float fRadius, _float fHeight, PxController** ppOut, PxUserControllerHitReport* pUserData);
 
+public:
+	void			Create_TriangleMesh(_float3* pVerticesPos, _uint iNumVertices);
+
 private:
 	PxControllerManager* m_pPxControllerManager = nullptr;
 
