@@ -1285,6 +1285,12 @@ void CWindow_Effect::Show_ParticleTab()
 			if (ImGui::InputFloat("fCurvePowerRange", &tCurData.fCurvePowerRange))
 			{
 			}
+			if (ImGui::InputFloat("fCurveFrequency", &tCurData.fCurveFrequency))
+			{
+			}
+			if (ImGui::InputFloat("fCurveFrequencyRange", &tCurData.fCurveFrequencyRange))
+			{
+			}
 			if (ImGui::InputFloat("fCurveAngle", &tCurData.fCurveAngle))
 			{
 			}

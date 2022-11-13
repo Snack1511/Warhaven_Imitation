@@ -37,6 +37,8 @@ public:
 		_float fCurvePowerRange = 0.f;
 		_float fCurveAngle = 0.f;
 		_float fCurveAngleRange = 0.f;
+		_float fCurveFrequency = 0.f;
+		_float fCurveFrequencyRange = 0.f;
 
 		_float4	vStartDir = _float4(0.f, 0.f, 0.f, 0.f);
 		_float4	vStartDirRange = _float4(1.f, 1.f, 1.f, 0.f);
@@ -97,6 +99,7 @@ public:
 
 		_float	fMovingAcc = 0.f;
 		_float	fCurvePower = 0.f;
+		_float	fCurveFrequency = 0.f;
 		_float	fFadeInStartTime;
 		_float	fFadeInTime;
 		_float	fFadeOutStartTime;

@@ -262,6 +262,8 @@ HRESULT CRectEffects::Initialize()
 
 		m_pInstancingDatas[i].fCurvePower = m_tCreateData.fCurvePower + frandom(-m_tCreateData.fCurvePowerRange, m_tCreateData.fCurvePowerRange);
 
+		m_pInstancingDatas[i].fCurveFrequency = m_tCreateData.fCurveFrequency + frandom(-m_tCreateData.fCurveFrequencyRange, m_tCreateData.fCurveFrequencyRange);
+
 
 		Set_NewStartPos(i);
 
@@ -936,7 +938,7 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 	case Client::CURVE_LINEAR:
 		break;
 	case Client::CURVE_SIN:
-		fy = sinf(m_pInstancingDatas[iIdx].fMovingAcc) * m_pInstancingDatas[iIdx].fCurvePower;
+		fy = sinf(m_pInstancingDatas[iIdx].fCurveFrequency * m_pInstancingDatas[iIdx].fMovingAcc) * m_pInstancingDatas[iIdx].fCurvePower;
 
 		vPos.x += fy * m_pInstancingDatas[iIdx].vRight.x;
 		vPos.y += fy * m_pInstancingDatas[iIdx].vRight.y;
