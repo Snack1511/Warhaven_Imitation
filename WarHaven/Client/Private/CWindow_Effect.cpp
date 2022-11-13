@@ -1052,6 +1052,13 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_bSoft = !static_cast<CRectEffects*>(pCurEffect)->m_bSoft;
 			}
 
+			ImGui::SameLine();
+
+			if (ImGui::RadioButton("bFixed", static_cast<CRectEffects*>(pCurEffect)->m_bFixed))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_bFixed = !static_cast<CRectEffects*>(pCurEffect)->m_bFixed;
+			}
+
 		
 			ImGui::Text("LoopTime 0 is Infinite");
 
@@ -1394,6 +1401,7 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBlackBackGround, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bFixed, sizeof(_bool));
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iWidthSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iHeightSize, sizeof(_uint));

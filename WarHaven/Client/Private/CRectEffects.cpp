@@ -40,6 +40,7 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	, m_fLoopTime(_origin.m_fLoopTime)
 	, m_iWidthSize(_origin.m_iWidthSize)
 	, m_iHeightSize(_origin.m_iHeightSize)
+	, m_bFixed(_origin.m_bFixed)
 {
 	if (_origin.m_pRectInstances)
 	{
@@ -55,7 +56,7 @@ CRectEffects::~CRectEffects()
 }
 
 CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_DATA& tCreateData, wstring wstrTexturePath,
-	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable, _bool bLoop)
+	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable, _bool bLoop, _bool bFixed)
 {
 	CRectEffects* pInstance = new CRectEffects();
 
@@ -67,6 +68,7 @@ CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_D
 	pInstance->m_bSorting = bSorting;
 	pInstance->m_bZeroSpeedDisable = bZeroSpeedDisable;
 	pInstance->m_bLoop = bLoop;
+	pInstance->m_bFixed = bFixed;
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -433,15 +435,23 @@ void CRectEffects::My_Tick()
 		//3. FADE
 		if (m_bLoop)
 		{
-			if (INSTANCING_DATA::FADEOUTREADY <= m_pInstancingDatas[i].eCurFadeType)
+			if (m_bFixed) //고정된 파티클일경우
 			{
-				if (0.f != m_fLoopTime)
+				if (INSTANCING_DATA::FADEOUTREADY <= m_pInstancingDatas[i].eCurFadeType)
 				{
-					if (m_fLoopTimeAcc > m_fLoopTime)
+					if (0.f != m_fLoopTime)
 					{
-						if (!Fade_Lerp(i))
-							continue;
+						if (m_fLoopTimeAcc > m_fLoopTime)
+						{
+							if (!Fade_Lerp(i)) //loop time 동안 fadeout 막음
+								continue;
+						}
 					}
+				}
+				else
+				{
+					if (!Fade_Lerp(i))
+						continue;
 				}
 			}
 			else
@@ -450,9 +460,8 @@ void CRectEffects::My_Tick()
 					continue;
 			}
 
-
 		}
-		else
+		else //루프가 아닌경우 그대로 fade
 		{
 			if (!Fade_Lerp(i))
 				continue;
@@ -786,7 +795,8 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
 	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
 	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
-	pReadFile->read((char*)&m_bBlackBackGround, sizeof(_bool)); //추가전 이펙트 삭제
+	pReadFile->read((char*)&m_bBlackBackGround, sizeof(_bool));
+	pReadFile->read((char*)&m_bFixed, sizeof(_bool));
 
 	pReadFile->read((char*)&m_iWidthSize, sizeof(_uint));
 	pReadFile->read((char*)&m_iHeightSize, sizeof(_uint));
@@ -848,16 +858,16 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 	m_pInstancingDatas[iIndex].vScale = m_pInstancingDatas[iIndex].vStartScale;
 
-	//if (0 < m_fLoopTimeAcc)
-	//{
-	//	m_pInstancingDatas[iIndex].vColor.w = m_pInstancingDatas[iIndex].fTargetAlpha;
-	//	m_pRectInstances[iIndex].vColor.w = m_pInstancingDatas[iIndex].fTargetAlpha;
-	//}
-	//else
-	//{
-	//	m_pInstancingDatas[iIndex].vColor.w = 0.f;
-	//	m_pRectInstances[iIndex].vColor.w = 0.f;
-	//}
+	if (!m_bFixed)
+	{
+		if (0 < m_fLoopTimeAcc)
+		{
+			m_pInstancingDatas[iIndex].vColor.w = 0.f;
+			m_pRectInstances[iIndex].vColor.w = 0.f;
+			m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+
+		}
+	}
 
 	if(!m_bLoop)
 		m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
