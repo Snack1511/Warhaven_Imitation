@@ -240,6 +240,28 @@ HRESULT CRectEffects::Initialize()
 		m_pInstancingDatas[i].vStartPureLocalPos = vStartPos;
 		m_pInstancingDatas[i].vStartPureLocalDir = vMoveDir;
 
+
+
+		_float4 vUpDir = { 0.f, 1.f, 0.f };
+		if ((vMoveDir.y < 1.1f && vMoveDir.y > 0.9f) ||
+			(vMoveDir.y > -1.1f && vMoveDir.y < -0.9f)
+			)
+			vUpDir = _float4(0.f, 0.f, 1.f, 0.f);
+
+		vUpDir.Normalize();
+		m_pInstancingDatas[i].vStartPureLocalRight = vUpDir.Cross(vMoveDir);
+
+		_float4x4 matCurveRot;
+
+		_float fStartCurveAngle = m_tCreateData.fCurveAngle + frandom(-m_tCreateData.fCurveAngleRange, m_tCreateData.fCurveAngleRange);
+
+		matCurveRot = XMMatrixRotationAxis(m_pInstancingDatas[i].vStartPureLocalDir.XMLoad(), ToRadian(fStartCurveAngle));
+		
+		m_pInstancingDatas[i].vStartPureLocalRight = m_pInstancingDatas[i].vStartPureLocalRight.MultiplyNormal(matCurveRot);
+
+		m_pInstancingDatas[i].fCurvePower = m_tCreateData.fCurvePower + frandom(-m_tCreateData.fCurvePowerRange, m_tCreateData.fCurvePowerRange);
+
+
 		Set_NewStartPos(i);
 
 		m_pInstancingDatas[i].fSpeed = m_pInstancingDatas[i].fOriginSpeed = m_tCreateData.fSpeed + frandom(-m_tCreateData.fSpeedRange, m_tCreateData.fSpeedRange);
@@ -431,6 +453,7 @@ void CRectEffects::My_Tick()
 			continue;
 
 		m_pInstancingDatas[i].fTimeAcc += fTimeDelta;
+		m_pInstancingDatas[i].fMovingAcc += fTimeDelta;
 
 		//3. FADE
 		if (m_bLoop)
@@ -505,8 +528,15 @@ void CRectEffects::My_Tick()
 					continue;
 				}
 			}
-
+			
 			vOriginPos += m_pInstancingDatas[i].vDir * m_pInstancingDatas[i].fSpeed * fTimeDelta;
+
+			_float fy = sinf(m_pInstancingDatas[i].fMovingAcc) * m_pInstancingDatas[i].fCurvePower;
+
+			vOriginPos.x += fy * m_pInstancingDatas[i].vRight.x;
+			vOriginPos.y += fy * m_pInstancingDatas[i].vRight.y;
+			vOriginPos.z += fy * m_pInstancingDatas[i].vRight.z;
+
 
 			//2. 자유낙하
 			_float fFreeFallY = 0.f;
@@ -687,6 +717,7 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 
 		_float4 vStartPos = m_pInstancingDatas[iIndex].vStartPureLocalPos;
 		_float4 vStartDir = m_pInstancingDatas[iIndex].vStartPureLocalDir;
+		_float4 vStartRight = m_pInstancingDatas[iIndex].vStartPureLocalRight;
 
 		if (m_tCreateData.iOffsetPositionCount > 0)
 		{
@@ -701,8 +732,10 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 
 		vStartPos = vStartPos.MultiplyCoord(m_matTrans);
 		vStartDir = vStartDir.MultiplyNormal(m_matTrans).Normalize();
+		vStartRight = vStartRight.MultiplyNormal(m_matTrans).Normalize();
 		m_pRectInstances[iIndex].vTranslation = vStartPos;
 		m_pInstancingDatas[iIndex].vDir = vStartDir;
+		m_pInstancingDatas[iIndex].vRight = vStartRight;
 
 		//회전시켜놓기
 		

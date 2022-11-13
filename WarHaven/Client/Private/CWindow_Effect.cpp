@@ -1265,6 +1265,21 @@ void CWindow_Effect::Show_ParticleTab()
 				tCurData.fFadeOutTimeRange = fFIST4[1];
 			}
 
+			ImGui::Text("Curve Option");
+			if (ImGui::InputFloat("fCurvePower", &tCurData.fCurvePower))
+			{
+			}
+			if (ImGui::InputFloat("fCurvePowerRange", &tCurData.fCurvePowerRange))
+			{
+			}
+			if (ImGui::InputFloat("fCurveAngle", &tCurData.fCurveAngle))
+			{
+			}
+			if (ImGui::InputFloat("fCurveAngleRange", &tCurData.fCurveAngleRange))
+			{
+			}
+
+
 
 
 		}
