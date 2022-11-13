@@ -42,11 +42,13 @@ public:
 		_float fHP = 100.f;
 		_float fMaxHP = 100.f;
 		_float fRunSpeed = 4.f;
-		_float fShortDashSpeed = 11.f;
-		_float fWalkSpeed = 1.5f;
+		_float fRunBeginSpeed = 4.f;
+		_float fWalkSpeed = 1.2f;
 		_float fDashSpeed = 16.f;
 		_float fWallJumpSpeed = 15.f;
-		_float fWireSpeed = 25.f;
+		_float fSprintAttackSpeed = 11.F;
+		_float fSprintJumpSpeed = 10.F;
+		_float fSprintSpeed = 8.f;
 		_float fJumpPower = 6.5f;
 	};
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CSprint_Jump_Player.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -34,6 +34,9 @@ HRESULT CSprint_Jump_Player::Initialize()
     m_iAnimIndex = 58;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_SPRINT_JUMP_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
+	m_fMyMaxLerp = 0.4f;
+	m_fMyAccel = 100.f;
+
     m_iStateChangeKeyFrame = 0;
 
     // 선형 보간 시간
@@ -57,6 +60,10 @@ HRESULT CSprint_Jump_Player::Initialize()
 
 void CSprint_Jump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
+	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner);
+
+
+
 
     __super::Enter(pOwner, pAnimator, ePrevType);
 
@@ -64,6 +71,12 @@ void CSprint_Jump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CSprint_Jump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+
 
     return __super::Tick(pOwner, pAnimator);
 

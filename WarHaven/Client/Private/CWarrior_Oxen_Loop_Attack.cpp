@@ -53,7 +53,7 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
 
-    Add_KeyFrame(10, 0);
+    Add_KeyFrame(5, 0);
 
 
     return S_OK;
@@ -139,7 +139,7 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
 
         //마찰 조절하기
         //*주의 : 사용하고나면 Exit에서 반드시 1로 되돌려주기
-        pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.5f;
+        pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.55f;
 
     }
        

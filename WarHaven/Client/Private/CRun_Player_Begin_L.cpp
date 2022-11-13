@@ -38,13 +38,12 @@ HRESULT CRun_Player_Begin_L::Initialize()
     m_eStateType = STATE_RUN_BEGIN_PLAYER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-    m_iStateChangeKeyFrame = 0;
+	m_fAnimSpeed = 10.f;
+
+    m_iStateChangeKeyFrame = 21;
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
-
-    // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.5f;
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
@@ -53,17 +52,17 @@ HRESULT CRun_Player_Begin_L::Initialize()
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_E] = 10;
+   m_iDirectionAnimIndex[STATE_DIRECTION_E] = 10;
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_N] = 11;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_NE] = 12;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_NW] = 13;
+   m_iDirectionAnimIndex[STATE_DIRECTION_N] = 11;
+   m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 12;
+   m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 13;
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_S] = 14;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_SE] = 15;
-   m_VecDirectionAnimIndex[STATE_DIRECTION_SW] = 16;
+   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 14;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 15;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 16;
 
-   m_VecDirectionAnimIndex[STATE_DIRECTION_W] = 17;
+   m_iDirectionAnimIndex[STATE_DIRECTION_W] = 17;
     
 
 
@@ -83,7 +82,7 @@ void CRun_Player_Begin_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
     m_tColorDesc.fFadeOutTime = 1.f;
 
     m_tColorDesc.vTargetColor = _float4(1.f, 0.f, 0.f, 0.f);
-
+		
     m_tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
     m_tColorDesc.iStartKeyFrame = 3;
     m_tColorDesc.iEndKeyFrame = 6;
@@ -98,6 +97,8 @@ void CRun_Player_Begin_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CRun_Player_Begin_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_RUN_PLAYER_L;
 
 
     return __super::Tick(pOwner, pAnimator);

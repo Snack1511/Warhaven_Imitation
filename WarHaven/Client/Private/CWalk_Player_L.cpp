@@ -50,25 +50,24 @@ HRESULT CWalk_Player_L::Initialize()
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
-//    m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
+
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
-//    m_vecAdjState.push_back(STATE_JUMP_PLAYER);
 
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
+	m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
 
 
-    m_VecDirectionAnimIndex[STATE_DIRECTION_NW] = 33;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_NE] = 32;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_N] = 31;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
 
-    m_VecDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_S] = 34;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_W] = 37;
-    m_VecDirectionAnimIndex[STATE_DIRECTION_E] = 30;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 33;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 32;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 31;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
+
+    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
+    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 34;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 37;
+    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 30;
 
     return S_OK;
 }

@@ -244,9 +244,6 @@
     <Filter Include="02. Design\06. State_Manager\States\03. Attack">
       <UniqueIdentifier>{7c056dd3-2296-45f2-8b4d-aa196d54d8dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\04. Hit">
-      <UniqueIdentifier>{fb93562e-eee0-4b30-93a4-55510fb9f293}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\02. Base_R">
       <UniqueIdentifier>{8c89f331-8b61-47b8-82ad-15be666e2fa9}</UniqueIdentifier>
     </Filter>
@@ -276,15 +273,6 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\05. ETC\01. Warrior\02. AI">
       <UniqueIdentifier>{247fc986-b9fe-4aa4-809b-d78a254ef261}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\04. Hit\01. Warrior">
-      <UniqueIdentifier>{fa28dc1f-dd63-47f0-9f32-cb0c201ffa9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\04. Hit\01. Warrior\01. Player">
-      <UniqueIdentifier>{c7d2342a-3572-4d7d-861d-e64ec9682307}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\04. Hit\01. Warrior\02. AI">
-      <UniqueIdentifier>{4bb077ce-5819-4f3f-a489-b3b4dc259354}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\03. Attack\01. Warrior">
       <UniqueIdentifier>{40a31fed-ae9d-4fae-ae06-9119e5897511}</UniqueIdentifier>
@@ -525,6 +513,21 @@
     </Filter>
     <Filter Include="02. Design\04. Game_Manager\MJ\Wrapped_Util\Easing_Util">
       <UniqueIdentifier>{685e325a-91af-4956-9544-93abcba20a92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Warrior\03. Hit">
+      <UniqueIdentifier>{fb93562e-eee0-4b30-93a4-55510fb9f293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Warrior\03. Hit\01. Warrior">
+      <UniqueIdentifier>{fa28dc1f-dd63-47f0-9f32-cb0c201ffa9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Warrior\03. Hit\01. Warrior\01. Player">
+      <UniqueIdentifier>{c7d2342a-3572-4d7d-861d-e64ec9682307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Warrior\03. Hit\01. Warrior\02. AI">
+      <UniqueIdentifier>{4bb077ce-5819-4f3f-a489-b3b4dc259354}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Warrior\01. Player\09. Hit">
+      <UniqueIdentifier>{4e6afbc9-e7ee-45e2-b18c-64a2f1f0481b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

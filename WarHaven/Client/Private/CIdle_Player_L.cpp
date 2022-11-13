@@ -102,13 +102,20 @@ void CIdle_Player_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CIdle_Player_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Idle로 오는 조건 
-    1. 현재 진행중인 애니메이션이 끝났을 때
-    */
+	/* Player가 Idle로 오는 조건
+	1. 현재 진행중인 애니메이션이 끝났을 때
+	*/
 
-    if (pAnimator->Is_CurAnimFinished())
-        return m_eStateType;
-  
+	if (
+		KEY(W, NONE) &&
+		KEY(A, NONE) &&
+		KEY(S, NONE) &&
+		KEY(D, NONE))
+	{
+	
+		if (pAnimator->Is_CurAnimFinished())
+			return m_eStateType;
+	}
 
     return STATE_END;
 }

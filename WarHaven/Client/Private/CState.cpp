@@ -4,10 +4,10 @@
 #include "CAnimator.h"
 #include "CState_Manager.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
+
 #include "CUser.h"
-#include "Functor.h"
-#include "Transform.h"
+
 #include "CUnit.h"
 CState::CState()
 {
@@ -89,6 +89,204 @@ void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
             m_vecKeyFrameEvent[i].bExecuted = true;
         }
     }
+}
+
+_uint CState::Get_Direction()
+{
+	if (KEY(W, HOLD))
+	{
+		// Key(CTRL + W + A)
+		if (KEY(A, HOLD))
+		{
+			return STATE_DIRECTION_NW;
+		}
+
+		// Key(CTRL + W + D)
+		else if (KEY(D, HOLD))
+		{
+			return STATE_DIRECTION_NE;
+		}
+
+		// Key(CTRL + W)
+		else
+		{
+			return STATE_DIRECTION_N;
+		}
+
+
+	}
+
+	// Key(CTRL + S)
+	else if (KEY(S, HOLD))
+	{
+
+		// Key(CTRL + S + A)
+		if (KEY(A, HOLD))
+		{
+			return STATE_DIRECTION_SW;
+		}
+
+		// Key(CTRL + S + D)
+		else if (KEY(D, HOLD))
+		{
+			return STATE_DIRECTION_SE;
+		}
+
+		// Key(CTRL + S)
+		else
+		{
+			return STATE_DIRECTION_S;
+		}
+	}
+
+	// Key(CTRL + A)
+	else if (KEY(A, HOLD))
+	{
+		return STATE_DIRECTION_W;
+	}
+
+	// Key(CTRL + D)
+	else if (KEY(D, HOLD))
+	{
+		return STATE_DIRECTION_E;
+	}
+
+	return STATE_DIRECTION_END;
+}
+
+void CState::Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime)
+{
+	_uint iDirection = Get_Direction();
+
+	Change_Location_Loop(iDirection, pAnimator, fInterPolationTime);
+
+	Move(iDirection, pOwner);
+
+}
+
+
+
+void CState::Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float fInterPolationTime)
+{
+	if (iDirection == STATE_DIRECTION_END)
+		return;
+
+	if (m_iAnimIndex != m_iDirectionAnimIndex[iDirection])
+	{
+		m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
+
+		pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
+		pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, m_iDirectionAnimSpeed[iDirection]);
+		pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, fInterPolationTime);
+	}
+
+}
+
+
+
+void CState::Move(_uint iDirection, CUnit* pOwner)
+{
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+	_float4 vRightDir;
+	_float4 vLookDir;
+
+	_float4 vCamLook, vCamRight;
+
+	vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+
+
+	vCamLook.y = 0.f;
+
+	//Dir : 실제 이동방향
+	_float4 vDir;
+	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
+	_float4 vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+
+	switch (iDirection)
+	{
+	case STATE_DIRECTION_NW:
+		vDir = vCamRight * -1.f + vCamLook;
+
+		break;
+
+	case STATE_DIRECTION_NE:
+		vDir = vCamRight * 1.f + vCamLook * 1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_SW:
+		vDir = vCamRight * -1.f + vCamLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_SE:
+
+		vDir = vCamRight * 1.f + vCamLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_N:
+		vDir = vCamLook;
+
+
+		break;
+
+	case STATE_DIRECTION_S:
+		vDir = vCamLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_W:
+		vDir = vCamRight * -1.f;
+
+		break;
+
+	case STATE_DIRECTION_E:
+		vDir = vCamRight * 1.f;
+
+
+
+
+		break;
+
+	default:
+		break;
+	}
+
+	vDir.y = 0.f;
+
+	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+	pMyPhysicsCom->Set_Dir(vDir);
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+}
+
+void CState::Physics_Setting(_float fSpeed, CUnit* pOwner)
+{
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	//임시
+	pMyPhysicsCom->Get_Physics().bAir = false;
+
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	vCamLook.y = 0.f;
+
+	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+
+	//실제 움직이는 방향
+	pMyPhysicsCom->Set_Dir(vCamLook);
+
+	//최대속도 설정
+	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
+	pMyPhysicsCom->Set_SpeedasMax();
+	
 }
 
 void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint eEventType)

@@ -63,16 +63,16 @@ STATE_TYPE CJump_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     if (CUser::Get_Instance()->Get_LastKey() == KEY::SPACE)
     {
         if (Jump_W())
-            m_iAnimIndex = m_VecDirectionAnimIndex[STATE_DIRECTION_N];
+            m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_N];
 
         else if (Jump_A())
-            m_iAnimIndex = m_VecDirectionAnimIndex[STATE_DIRECTION_W];
+            m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_W];
 
         else if (Jump_S())
-            m_iAnimIndex = m_VecDirectionAnimIndex[STATE_DIRECTION_S];
+            m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_S];
 
         else if (Jump_D())
-            m_iAnimIndex = m_VecDirectionAnimIndex[STATE_DIRECTION_E];
+            m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_E];
 
 
         return m_eStateType;
