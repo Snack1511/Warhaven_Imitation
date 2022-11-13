@@ -236,6 +236,21 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 
 }
 
+void CPhysX_Manager::Create_TriangleMesh(_float3* pVerticesPos, _uint iNumVertices, _uint iNumPrimitive)
+{
+	PxVec3* pPxVerticesPos = new PxVec3[iNumVertices];
+	memcpy(pPxVerticesPos, pVerticesPos, sizeof(PxVec3) * iNumVertices);
+
+
+	PxTriangleMeshDesc	tMeshDesc;
+	tMeshDesc.points.count = iNumVertices;
+	tMeshDesc.points.stride = sizeof(PxVec3);
+	tMeshDesc.points.data = pPxVerticesPos;
+
+	tMeshDesc.triangles.count = iNumPrimitive;
+	tMeshDesc.triangles.stride = 3 * sizeof(PxU32);
+}
+
 
 
 void CPhysX_Manager::Create_PxControllerManager(Scene eScene)
