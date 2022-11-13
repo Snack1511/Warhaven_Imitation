@@ -49,11 +49,12 @@ private:
 	_uint		m_iWidthSize = 1;
 	_uint		m_iHeightSize = 1;
 
-	_float		m_fDissolvePower = 2.f;
 	_float		m_fDuration = 0.1f;
 	_float		m_fLoopTime = 0.f;
-
 	_float		m_fLoopTimeAcc = 0.f;
+
+private:
+	_bool		m_bBlackBackGround = false;
 
 
 private:

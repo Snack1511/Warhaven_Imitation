@@ -146,6 +146,7 @@ void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 		pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
 		pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
+		pShader->Set_RawValue("g_bBlackBG", &m_bBlackBackGround, sizeof(_float));
 	}
 
 	__super::Set_ShaderResource(pShader, pConstantName);
@@ -307,19 +308,20 @@ HRESULT CRectEffects::Initialize()
 		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
-
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
 		{
-
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
+
+			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
-		{
-
+		{		
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
+
+			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration;
 		}
 		//
 
@@ -620,6 +622,7 @@ void CRectEffects::Dead_Instance(_uint iIndex)
 		else if(m_fLoopTimeAcc > m_fLoopTime)
 		{
 			//m_fLoopTimeAcc = 0.f;
+			//m_pInstancingDatas[iIndex].fTimeAcc = 0.f;
 			m_pInstancingDatas[iIndex].bAlive = false;
 			m_iNumDead++;
 			m_pRectInstances[iIndex].vColor.w = 0.f;
@@ -679,25 +682,25 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 		m_pRectInstances[iIndex].vRight = vRight.MultiplyNormal(m_matTrans).Normalize();
 		m_pRectInstances[iIndex].vUp = vUp.MultiplyNormal(m_matTrans).Normalize();
 		m_pRectInstances[iIndex].vLook = vLook.MultiplyNormal(m_matTrans).Normalize();*/
+		if (!m_bLoop)
+		{
+			_float4 vLook = m_pInstancingDatas[iIndex].vDir;
+	
+			m_pRectInstances[iIndex].vUp = vLook.Normalize();
 
+			_float4 vUp = { 0.f, 1.f, 0.f };
+			if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
+				(vLook.y > -1.1f && vLook.y < -0.9f)
+				)
+				vUp = _float4(0.f, 0.f, 1.f, 0.f);
 
-		_float4 vLook = m_pInstancingDatas[iIndex].vDir;
-		m_pRectInstances[iIndex].vUp = vLook;
+			vUp.Normalize();
+			_float4 vRight = vUp.Cross(vLook);
+			m_pRectInstances[iIndex].vRight = vRight.Normalize();
 
-		_float4 vUp = { 0.f, 1.f, 0.f };
-		if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
-			(vLook.y > -1.1f && vLook.y < -0.9f)
-			)
-			vUp = _float4(0.f, 0.f, 1.f, 0.f);
-
-		vUp.Normalize();
-		_float4 vRight = vUp.Cross(vLook);
-		m_pRectInstances[iIndex].vRight = vRight.Normalize();
-
-		vUp = vLook.Cross(vRight);
-		m_pRectInstances[iIndex].vLook = vUp.Normalize() ;
-
-
+			vUp = vLook.Cross(vRight);
+			m_pRectInstances[iIndex].vLook = vUp.Normalize();
+		}
 	
 }
 
@@ -754,6 +757,7 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
 	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
 	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
+	pReadFile->read((char*)&m_bBlackBackGround, sizeof(_bool)); //추가전 이펙트 삭제
 
 	pReadFile->read((char*)&m_iWidthSize, sizeof(_uint));
 	pReadFile->read((char*)&m_iHeightSize, sizeof(_uint));
@@ -799,11 +803,6 @@ void CRectEffects::Update_Animation(_uint iIndex)
 				m_pRectInstances[iIndex].vColor.x = m_iWidthSize - 1;
 				m_pRectInstances[iIndex].vColor.y = m_iHeightSize - 1;
 				Dead_Instance(iIndex);
-
-				/*if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
-					Dead_Instance(iIndex);*/
-
-
 			}
 		}
 	}
@@ -811,9 +810,9 @@ void CRectEffects::Update_Animation(_uint iIndex)
 
 void CRectEffects::Reset_Instance(_uint iIndex)
 {
-	m_pRectInstances[iIndex].vRight = *((_float4*)(&(m_pInstancingDatas[iIndex].StartMatrix.m[0])));
+	/*m_pRectInstances[iIndex].vRight = *((_float4*)(&(m_pInstancingDatas[iIndex].StartMatrix.m[0])));
 	m_pRectInstances[iIndex].vUp = *((_float4*)(&(m_pInstancingDatas[iIndex].StartMatrix.m[1])));
-	m_pRectInstances[iIndex].vLook = *((_float4*)(&(m_pInstancingDatas[iIndex].StartMatrix.m[2])));
+	m_pRectInstances[iIndex].vLook = *((_float4*)(&(m_pInstancingDatas[iIndex].StartMatrix.m[2])));*/
 
 	Set_NewStartPos(iIndex);
 
