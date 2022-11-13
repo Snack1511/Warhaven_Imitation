@@ -92,9 +92,9 @@ _float4 CTransform::Get_MyWorld(WORLD eType)
 
 _float4 CTransform::Get_Quaternion()
 {
-	_vector		vRight = XMVector3Normalize(Get_World(WORLD_RIGHT).XMLoad());
-	_vector		vUp = XMVector3Normalize(Get_World(WORLD_UP).XMLoad());
-	_vector		vLook = XMVector3Normalize(Get_World(WORLD_LOOK).XMLoad());
+	_vector		vRight = (Get_World(WORLD_RIGHT).XMLoad());
+	_vector		vUp = (Get_World(WORLD_UP).XMLoad());
+	_vector		vLook = (Get_World(WORLD_LOOK).XMLoad());
 
 	_float4x4 WorldMatrix;
 	ZeroMemory(&WorldMatrix, sizeof(_float4x4));

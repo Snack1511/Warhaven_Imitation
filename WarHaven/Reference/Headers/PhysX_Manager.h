@@ -72,10 +72,13 @@ public:
 	void			Create_CapsuleController(_float fRadius, _float fHeight, PxController** ppOut, PxUserControllerHitReport* pUserData);
 
 public:
-	void			Create_TriangleMesh(_float3* pVerticesPos, _uint iNumVertices);
+	void			Create_TriangleMesh(_float3* pVerticesPos, _uint iNumVertices, _uint iNumPrimitive, PxTriangleMesh** ppOut);
 
 private:
 	PxControllerManager* m_pPxControllerManager = nullptr;
+	PxCudaContextManager* m_pPxCudaContextManager = nullptr;
+
+	HRESULT	SetUp_PxCudaContextManager();
 
 private:
 	// Foundation을 생성하는데 필요한 변수

@@ -70,6 +70,14 @@ HRESULT CWindow_PhysX::Render()
 		Create_TestObject();
 	}
 
+	ImGui::SameLine();
+
+	if (ImGui::Button("Create TestObject * 100"))
+	{
+		for (_uint i = 0; i < 100; ++i)
+			Create_TestObject();
+	}
+
 	if (ImGui::CollapsingHeader("STATIC CUBE"))
 	{
 		static _float4	vScale = _float4(1.f, 1.f, 1.f, 1.f);

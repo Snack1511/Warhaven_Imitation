@@ -1,4 +1,5 @@
 #define MJDEVELOP
+
 #include "stdafx.h"
 #include "CLevel_Test.h"
 
@@ -31,6 +32,7 @@
 #include "CDebugObject.h"
 
 #include "CPhysXCharacter.h"
+#include "CStructure.h"
 
 CLevel_Test::CLevel_Test()
 {
@@ -45,7 +47,19 @@ CLevel_Test* CLevel_Test::Create()
 #ifdef _DEBUG
 	if (FAILED(CImGui_Manager::Get_Instance()->Initialize()))
 		return nullptr;
+
 #endif
+
+#ifdef RELEASE_IMGUI
+
+#ifndef _DEBUG
+	if (FAILED(CImGui_Manager::Get_Instance()->Initialize()))
+		return nullptr;
+#endif // !_DEBUG
+
+
+#endif
+
 
 	CLevel_Test* pLevel = new CLevel_Test();
 
@@ -80,8 +94,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
 
 	m_fLoadingFinish = 0.1f;
-	CTerrain* pTerrain = CTerrain::Create(100, 100);
-	Ready_GameObject(pTerrain, GROUP_DEFAULT);
+	//CTerrain* pTerrain = CTerrain::Create(100, 100);
+	//Ready_GameObject(pTerrain, GROUP_DEFAULT);
 
 	m_fLoadingFinish = 0.2f;
 
@@ -146,10 +160,20 @@ HRESULT CLevel_Test::Enter()
 
 void CLevel_Test::Tick()
 {
-
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Tick();
+
+
 #endif
+
+#ifdef RELEASE_IMGUI
+
+#ifndef _DEBUG
+	CImGui_Manager::Get_Instance()->Tick();
+
+#endif // !_DEBUG
+#endif
+
 	CUser::Get_Instance()->Fix_CursorPosToCenter();
 	CUser::Get_Instance()->KeyInput_FPSSetter();
 	CUser::Get_Instance()->Update_KeyCommands();
@@ -163,13 +187,23 @@ void CLevel_Test::Late_Tick()
 HRESULT CLevel_Test::Render()
 {
 
-
 #ifdef _DEBUG
 	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Test Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
-
 	if (FAILED(CImGui_Manager::Get_Instance()->Render()))
 		return E_FAIL;
+
+#endif
+
+#ifdef RELEASE_IMGUI
+
+#ifndef _DEBUG
+	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Test Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+	if (FAILED(CImGui_Manager::Get_Instance()->Render()))
+		return E_FAIL;
+
+#endif // !_DEBUG
 #endif
 
 	return S_OK;
@@ -260,7 +294,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	pTestEnemyWarrior->Set_TargetUnit(pTestWarriorUnit);
 	pTestEnemyWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
 
-	_float4 vStartPos = _float4(-10.f, 10.f, 10.f);
+	_float4 vStartPos = _float4(5.f, 10.f, 0.f);
 	pTestEnemyWarrior->Get_Transform()->Set_World(WORLD_POS, vStartPos);
 	pTestEnemyWarrior->Get_Transform()->Make_WorldMatrix();
 	GET_COMPONENT_FROM(pTestEnemyWarrior, CPhysXCharacter)->Set_Position(vStartPos);
@@ -307,16 +341,21 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
-	//_float4x4 mat;
-	//mat.Identity();
+	_float4x4 mat;
+	mat.Identity();
 	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
-	//if (nullptr == pTestStruct)
-	//	return E_FAIL;
-	//pTestStruct->Initialize();
-	//Ready_GameObject(pTestStruct, GROUP_DECORATION);
+	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);
+	if (nullptr == pTestStruct)
+		return E_FAIL;
+	pTestStruct->Get_Transform()->Set_Scale(_float4(40.f, 2.f, 40.f));
+	pTestStruct->Get_Transform()->Set_World(WORLD_POS, _float4(10.f, -2.f, 10.f));
+	pTestStruct->Get_Transform()->Make_WorldMatrix();
+	pTestStruct->Initialize();
+	Ready_GameObject(pTestStruct, GROUP_DECORATION);*/
 
-	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
-	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
+	pDrawableTerrain->Initialize();
+	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	return S_OK;
 }
@@ -342,7 +381,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_HR()
 
 HRESULT CLevel_Test::SetUp_Prototypes_YJ()
 {
-	CDebugObject* pDebugObject = CDebugObject::Create(_float4(0.f, -2.f, 0.f), _float4(40.f, 1.f, 40.f), ZERO_VECTOR);
+	CDebugObject* pDebugObject = CDebugObject::Create(_float4(0.f, -2.f, 0.f), _float4(10.f, 1.f, 10.f), ZERO_VECTOR);
 	pDebugObject->Initialize();
 	Ready_GameObject(pDebugObject, GROUP_PROP);
 

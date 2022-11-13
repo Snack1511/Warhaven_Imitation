@@ -15,6 +15,8 @@
 
 #include "CCell.h"
 
+#include "PhysXCollider.h"
+
 CDrawable_Terrain::CDrawable_Terrain()
 {
 }
@@ -108,6 +110,7 @@ HRESULT CDrawable_Terrain::Initialize_Prototype()
 HRESULT CDrawable_Terrain::Initialize()
 {
     m_pTerrainMesh = static_cast<CMesh_Terrain*>(GET_COMPONENT(CMesh));
+   
 
     if (!m_pTerrainMesh)
         return E_FAIL;
@@ -124,6 +127,11 @@ HRESULT CDrawable_Terrain::Start()
         return E_FAIL;
     m_pTerrainMesh->ReMap_Vertices();
     m_pTerrainMesh->Update_VertsNormal();
+
+    m_pTerrainMesh->ReadyforPhysX();
+    CPhysXCollider* pCol = CPhysXCollider::Create(0, m_pTerrainMesh, m_pTransform);
+    pCol->Initialize();
+    Add_Component(pCol);
     return S_OK;
 }
 

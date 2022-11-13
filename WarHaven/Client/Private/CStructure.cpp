@@ -17,6 +17,8 @@
 #include "CNavigation.h"
 #include "CCell.h"
 #include "MeshContainer.h"
+
+#include "PhysXCollider.h"
 CStructure::CStructure()
 {
 }
@@ -138,6 +140,14 @@ HRESULT CStructure::Initialize()
 {
 	m_pModelCom = GET_COMPONENT(CModel);
 	//__super::Initialize();
+
+	/* PhysX 메쉬충돌체 굽기 */
+	/*for (auto& elem : m_pModelCom->Get_MeshContainers())
+	{
+		CPhysXCollider* pCol = CPhysXCollider::Create(0, elem.second, m_pTransform);
+		Add_Component(pCol);
+	}*/
+	
 
 
 	return S_OK;

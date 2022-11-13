@@ -129,7 +129,8 @@ HRESULT CUnit::Initialize_Prototype()
 	Add_Component(CPhysics::Create(0));
 
 	CPhysXCharacter::PHYSXCCTDESC tDesc;
-	tDesc.fHeight = 0.5f;
+	tDesc.fRadius = 0.25f;
+	tDesc.fHeight = 1.0f;
 	CPhysXCharacter* pPhysXCharacter = CPhysXCharacter::Create(CP_BEFORE_TRANSFORM, tDesc);
 	Add_Component(pPhysXCharacter);
 

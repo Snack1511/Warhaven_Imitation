@@ -17,6 +17,7 @@ CPhysXCharacter::CPhysXCharacter(_uint iGroupID)
 
 CPhysXCharacter::~CPhysXCharacter()
 {
+	Release();
 }
 
 CPhysXCharacter* CPhysXCharacter::Create(_uint iGroupID, const PHYSXCCTDESC& tPhysXCCTDESC)
@@ -116,10 +117,12 @@ void CPhysXCharacter::Tick()
 	//땅에서 떨어진 상황
 	if (!m_bAir)
 	{
+		//땅에 붙음
 		m_pPhysicsCom->Get_Physics().bAir = false;
 	}
 	else
 	{
+		//땅에서 떨어져있는데 air가 false면 점프시키기
 		if (!m_pPhysicsCom->Get_Physics().bAir)
 		{
 			m_pPhysicsCom->Set_Jump(0.f);
@@ -138,7 +141,7 @@ void CPhysXCharacter::Tick()
 void CPhysXCharacter::Late_Tick()
 {
 	PxExtendedVec3 vec3 = m_pPxController->getFootPosition();
-	m_pOwner->Get_Transform()->Set_World(WORLD_POS, _float4(vec3.x, vec3.y, vec3.z));
+	m_pOwner->Get_Transform()->Set_World(WORLD_POS, _float4(vec3.x, vec3.y+0.f, vec3.z));
 	Update_Colliders();
 }
 

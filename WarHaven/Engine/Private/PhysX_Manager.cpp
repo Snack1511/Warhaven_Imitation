@@ -5,8 +5,8 @@
 
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
-#define	YJ_DEBUG
-
+//#define	YJ_DEBUG
+//#define USE_GPU
 
 
 CPhysX_Manager::CPhysX_Manager()
@@ -17,9 +17,6 @@ CPhysX_Manager::~CPhysX_Manager()
 {
 	Release();
 }
-
-
-
 
 HRESULT CPhysX_Manager::Initialize()
 {
@@ -39,15 +36,16 @@ HRESULT CPhysX_Manager::Initialize()
 	}
 #endif // YJ_EDEBUG
 
-	
-
+#ifdef USE_GPU
+	/* GPU */
+	if (FAILED(SetUp_PxCudaContextManager()))
+		return E_FAIL;
+#endif
 	// Create PhysX
 	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, PxTolerancesScale(), true, m_pPVD);
 
-	// Create Cooking
 	m_pCooking = PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, PxCookingParams(PxTolerancesScale()));
-
-
+	
 
 	// Crate Material
 	// 충돌체 정지 마찰계수, 운동 마찰 계수, 탄성력
@@ -84,14 +82,30 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 	// Set Scene
 	PxSceneDesc sceneDesc(m_pPhysics->getTolerancesScale());
 	sceneDesc.gravity = Gravity;
-	//sceneDesc.flags &= ~PxSceneFlag::eENABLE_PCM;
 
-	//sceneDesc.flags = PxSceneFlag::eENABLE_GPU_DYNAMICS;
-	// Set Dispatcher
 
+	/* GPU SETTING */
+
+#ifdef USE_GPU
+	m_pDispatcher = PxDefaultCpuDispatcherCreate(4);
+#else
 	m_pDispatcher = PxDefaultCpuDispatcherCreate(2);
+#endif
+
 	sceneDesc.cpuDispatcher = m_pDispatcher;
 	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+#ifdef USE_GPU
+
+	sceneDesc.flags |= PxSceneFlag::eENABLE_GPU_DYNAMICS;
+	sceneDesc.flags |= PxSceneFlag::eENABLE_PCM;
+	sceneDesc.flags |= PxSceneFlag::eENABLE_STABILIZATION;
+	sceneDesc.broadPhaseType = PxBroadPhaseType::eGPU;
+	sceneDesc.cudaContextManager = m_pPxCudaContextManager;
+	sceneDesc.gpuMaxNumPartitions = 16;
+
+#else
+#endif
+
 
 	//sceneDesc.filterShader = triggersUsingFilterShader;
 	//sceneDesc.filterShader = triggersUsingFilterCallback;
@@ -99,7 +113,6 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 
 	m_pScenes[eScene] = m_pPhysics->createScene(sceneDesc);
 
-	//m_pScenes[eScene]->setFlag(PxSceneFlag::eENABLE_GPU_DYNAMICS, true);
 
 	PxPvdSceneClient* pvdClient = m_pScenes[eScene]->getScenePvdClient();
 	if (pvdClient)
@@ -213,6 +226,15 @@ void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMate
 
 void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, PxController** ppOut, PxUserControllerHitReport* pUserData)
 {
+	/*PxBoxControllerDesc		tBCT;
+	tBCT.halfForwardExtent = fRadius;
+	tBCT.halfSideExtent = fRadius;
+	tBCT.halfHeight = fHeight;
+	tBCT.material = m_pMaterial;
+	tBCT.reportCallback = pUserData;
+
+	*ppOut = m_pPxControllerManager->createController(tBCT);*/
+
 	PxCapsuleControllerDesc	tCCT;
 	tCCT.radius = fRadius;
 	tCCT.height = fHeight;
@@ -221,8 +243,8 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 
 	//어느 높이까지 올라갈 수 있는지
 	tCCT.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
-	tCCT.stepOffset = 0.2f;
-	tCCT.contactOffset = 0.02f;
+	tCCT.stepOffset = 0.5f;
+	tCCT.contactOffset = 0.1f;
 
 	//경사진 슬로프만나면 어떻게 할 지
 	tCCT.nonWalkableMode = PxControllerNonWalkableMode::ePREVENT_CLIMBING_AND_FORCE_SLIDING;
@@ -236,11 +258,12 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 
 }
 
-void CPhysX_Manager::Create_TriangleMesh(_float3* pVerticesPos, _uint iNumVertices, _uint iNumPrimitive)
+void CPhysX_Manager::Create_TriangleMesh(_float3* pVerticesPos, _uint iNumVertices, _uint iNumPrimitive, PxTriangleMesh** ppOut)
 {
 	PxVec3* pPxVerticesPos = new PxVec3[iNumVertices];
 	memcpy(pPxVerticesPos, pVerticesPos, sizeof(PxVec3) * iNumVertices);
 
+	//터레인의 경우 position을
 
 	PxTriangleMeshDesc	tMeshDesc;
 	tMeshDesc.points.count = iNumVertices;
@@ -248,7 +271,46 @@ void CPhysX_Manager::Create_TriangleMesh(_float3* pVerticesPos, _uint iNumVertic
 	tMeshDesc.points.data = pPxVerticesPos;
 
 	tMeshDesc.triangles.count = iNumPrimitive;
-	tMeshDesc.triangles.stride = 3 * sizeof(PxU32);
+	tMeshDesc.triangles.stride = sizeof(FACEINDICES32);
+
+
+#ifdef USE_GPU
+	PxCookingParams cookingParam = m_pCooking->getParams();
+	cookingParam.buildGPUData = true;
+	m_pCooking->setParams(cookingParam);
+#endif
+	PxDefaultMemoryOutputStream	writeBuffer;
+	PxTriangleMeshCookingResult::Enum result;
+	_bool	bStatus = m_pCooking->cookTriangleMesh(tMeshDesc, writeBuffer, &result);
+
+	if (!bStatus)
+		return;
+
+	PxDefaultMemoryInputData	readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+
+	*ppOut = m_pPhysics->createTriangleMesh(readBuffer);
+
+	SAFE_DELETE_ARRAY(pPxVerticesPos);
+}
+
+HRESULT CPhysX_Manager::SetUp_PxCudaContextManager()
+{
+	PxCudaContextManagerDesc cudaContextManagerDesc;
+	cudaContextManagerDesc.interopMode = PxCudaInteropMode::D3D11_INTEROP;
+	cudaContextManagerDesc.graphicsDevice = PDEVICE;
+	m_pPxCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, cudaContextManagerDesc, PxGetProfilerCallback());
+
+	if (!m_pPxCudaContextManager)
+		return E_FAIL;
+
+	if (!m_pPxCudaContextManager->contextIsValid())
+	{
+		m_pPxCudaContextManager->release();
+		m_pPxCudaContextManager = nullptr;
+		return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 
@@ -298,22 +360,20 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 
 void CPhysX_Manager::Release()
 {
+	PX_UNUSED(true);
+
 	Safe_release(m_pPxControllerManager);
+	Safe_release(m_pPxCudaContextManager);
+
+	Safe_release(m_pDispatcher);
 
 	for (_uint i = 0; i < SCENE_END; ++i)
 	{
 		Safe_release(m_pScenes[i]);
 	}
 
-
-	Safe_release(m_pDispatcher);
-
-	PX_UNUSED(true);
-
 	Safe_release(m_pPhysics);
 	Safe_release(m_pCooking);
-
-
 
 
 	if (m_pPVD)
@@ -322,6 +382,10 @@ void CPhysX_Manager::Release()
 		Safe_release(m_pPVD);
 		transport->release();
 	}
+
+
+	
+	
 	Safe_release(m_pFoundation);
 
 }

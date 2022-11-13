@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CTransform;
+class CMesh;
 
 class ENGINE_DLL CPhysXCollider 
 	: public CComponent
@@ -10,8 +11,8 @@ class ENGINE_DLL CPhysXCollider
 	DECLARE_PROTOTYPE(CPhysXCollider);
 
 public:
-	enum class COLLIDERTYPE { DYNAMIC, STATIC, DECORATION, ZONE, YFIXED_DYNAMIC, CHARACTER, TYPE_END };
-	enum class COLLIDERSHAPE { SPHERE, BOX, CYLINDER, CONVECMESH, SHAPE_END };
+	enum class COLLIDERTYPE { DYNAMIC, STATIC, DECORATION, ZONE, YFIXED_DYNAMIC, CHARACTER, TYPE_END};
+	enum class COLLIDERSHAPE { SPHERE, BOX, CYLINDER, CONVECMESH, TRIANGLEMESH, SHAPE_END };
 
 	typedef struct PhysXColliderDesc
 	{
@@ -20,9 +21,10 @@ public:
 			ZeroMemory(this, sizeof(PhysXColliderDesc));
 		}
 
-		PxConvexMesh*		pConvecMesh;
-		PxMaterial*			pMaterial;
-		COLLIDERTYPE		eType;
+		PxTriangleMesh* pTriangleMesh = nullptr;
+		PxConvexMesh*		pConvecMesh = nullptr;
+		PxMaterial*			pMaterial = nullptr;
+		COLLIDERTYPE		eType = COLLIDERTYPE::TYPE_END;
 		_float4				vPosition;
 		_float4				vAngles;
 		COLLIDERSHAPE		eShape;
@@ -39,6 +41,7 @@ public:
 
 public:
 	static CPhysXCollider* Create(_uint iGroupID, const PHYSXCOLLIDERDESC& tPhysXColliderDesc);
+	static CPhysXCollider* Create(_uint iGroupID, CMesh*	pMesh, CTransform* pWorldTransform);
 
 
 
@@ -121,6 +124,8 @@ protected:
 	void		CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc);
 	void		Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh = nullptr);
 	void		Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh = nullptr);
+
+	HRESULT		SetUp_StaticMeshActor(CMesh* pMesh, CTransform* pWorldTransform);
 
 };
 

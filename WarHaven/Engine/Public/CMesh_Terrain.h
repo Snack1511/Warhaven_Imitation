@@ -30,6 +30,9 @@ public:
 	void	Update_VertsNormal();
 
 public:
+	void	ReadyforPhysX(); // PhysX 메쉬 충돌체 생성 전에 호출해야함
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
 

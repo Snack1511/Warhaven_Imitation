@@ -3,6 +3,7 @@
 #include "Transform.h"
 
 #include "GameObject.h"
+#include "CMesh.h"
 
 CPhysXCollider::CPhysXCollider(_uint iGroupID)
 	: CComponent(iGroupID)
@@ -34,7 +35,20 @@ CPhysXCollider* CPhysXCollider::Create(_uint iGroupID, const PHYSXCOLLIDERDESC& 
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		Call_MsgBox(L"Failed to Created : CModel");
+		Call_MsgBox(L"Failed to Initialize_Prototype : CModel");
+		Safe_Delete(pInstance);
+	}
+
+	return pInstance;
+}
+
+CPhysXCollider* CPhysXCollider::Create(_uint iGroupID, CMesh* pMesh, CTransform* pWorldTransform)
+{
+	CPhysXCollider* pInstance = new CPhysXCollider(iGroupID);
+
+	if (FAILED(pInstance->SetUp_StaticMeshActor(pMesh, pWorldTransform)))
+	{
+		Call_MsgBox(L"Failed to SetUp_StaticMeshActor : CModel");
 		Safe_Delete(pInstance);
 	}
 
@@ -64,8 +78,12 @@ void CPhysXCollider::Tick()
 void CPhysXCollider::Late_Tick()
 {
 	//여기서 갱신시키기
-	_float4	vPos = Get_Position();
-	m_pOwner->Get_Transform()->Set_World(WORLD_POS, vPos);
+	if (m_pRigidDynamic)
+	{
+		_float4	vPos = Get_Position();
+		m_pOwner->Get_Transform()->Set_World(WORLD_POS, vPos);
+	}
+	
 
 	
 
@@ -84,6 +102,9 @@ void CPhysXCollider::Late_Tick()
 
 void CPhysXCollider::Release()
 {
+	Safe_release(m_ColliderDesc.pConvecMesh);
+	Safe_release(m_ColliderDesc.pMaterial);
+	Safe_release(m_ColliderDesc.pTriangleMesh);
 	Safe_release(m_pRigidDynamic);
 	Safe_release(m_pRigidStatic);
 }
@@ -537,11 +558,47 @@ void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxT
 		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
 			PxConvexMeshGeometry(PhysXColliderDesc.pConvecMesh), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
 		break;
+	case COLLIDERSHAPE::TRIANGLEMESH:
+		break;
+
 	case COLLIDERSHAPE::SHAPE_END:
 		Call_MsgBox(L"Failed to create StaticActor : eShape is wrong");
 		break;
 	default:
 		break;
 	}
+}
+
+HRESULT CPhysXCollider::SetUp_StaticMeshActor(CMesh* pMesh, CTransform* pWorldTransform)
+{
+	
+	CPhysX_Manager::Get_Instance()->Create_TriangleMesh(
+		pMesh->Get_VerticesPos(),
+		pMesh->Get_NumVertices(),
+		pMesh->Get_NumPrimitive(),
+		&m_ColliderDesc.pTriangleMesh
+	);
+
+	if (!m_ColliderDesc.pTriangleMesh)
+		return E_FAIL;
+
+	_float4 vQuat = pWorldTransform->Get_Quaternion();
+	_float4 vPos = pWorldTransform->Get_World(WORLD_POS);
+	_float4 vScale = pWorldTransform->Get_Scale();
+	PxTransform	tTransform;
+	tTransform.p = PxVec3(vPos.x, vPos.y, vPos.z);
+	tTransform.q = PxQuat(vQuat.x, vQuat.y, vQuat.z, vQuat.w);
+
+	PxMeshScale	pXScale = PxMeshScale(PxVec3(vScale.x, vScale.y, vScale.z));
+	
+	m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(tTransform,
+		PxTriangleMeshGeometry(m_ColliderDesc.pTriangleMesh, pXScale), CPhysX_Manager::SCENE_CURRENT);
+
+	m_ColliderDesc.eType = COLLIDERTYPE::STATIC;
+
+	if (!m_pRigidStatic)
+		return E_FAIL;
+
+	return S_OK;
 }
 

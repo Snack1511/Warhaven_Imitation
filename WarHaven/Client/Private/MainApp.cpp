@@ -118,9 +118,24 @@ void CMainApp::Release()
 
 	CLoading_Manager::Get_Instance()->Destroy_Instance();
 	CUser::Get_Instance()->Destroy_Instance();
+
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Destroy_Instance();
+
+
 #endif
+
+#ifdef RELEASE_IMGUI
+#ifndef _DEBUG
+
+	CImGui_Manager::Get_Instance()->Destroy_Instance();
+
+
+#endif
+#endif
+
+
+
 	CState_Manager::Get_Instance()->Destroy_Instance();
 	SAFE_DESTROY(m_pGameInstance);
 
