@@ -37,6 +37,13 @@ CTerrain* CTerrain::Create(_uint iNumVerticesX, _uint iNumVerticesZ)
         return nullptr;
     }
 
+    if (FAILED(pInstance->SetUp_TerrainTextures()))
+    {
+        Call_MsgBox(L"Failed to SetUp_TerrainTextures : CTerrain");
+        SAFE_DELETE(pInstance);
+        return nullptr;
+    }
+
     if (FAILED(pInstance->Initialize_Prototype()))
     {
         Call_MsgBox(L"Failed to Initialize_Prototype : CTerrain");
@@ -115,8 +122,6 @@ HRESULT CTerrain::Initialize_Prototype()
     //Add_Component<CRenderer>(pRenderer);
     //m_pRenderer = pRenderer;
 
-    CTexture* pTexture = CTexture::Create(0, L"../bin/resources/Textures/Terrain/Tile0.dds", 1);
-    Add_Component(pTexture);
 
 
 
@@ -179,11 +184,6 @@ CMesh_Terrain* CTerrain::Get_MeshTerrain()
     return m_pTerrainMesh;
 }
 
-void CTerrain::Update_TextureList(list<tuple<wstring, _int>>& PathList)
-{
-    
-    //m_pRenderer->Update_TextureList();
-}
 HRESULT CTerrain::Ready_NaviCells(ifstream& readFile, CMesh_Terrain* pTerrain)
 {
     if (nullptr == pTerrain)
@@ -361,6 +361,19 @@ HRESULT CTerrain::SetUp_TerrainMesh(const _tchar* pFilePath)
 
     m_iNumCellsX = (iNumVerticesX - 1) * 2;
     m_iNumCellsZ = (iNumVerticesZ - 1) * 2;
+
+    return S_OK;
+}
+
+HRESULT CTerrain::SetUp_TerrainTextures()
+{
+
+
+    CTexture* pTexture = CTexture::Create(0, L"../bin/resources/Textures/Terrain/Tile0.dds", 1);
+    Add_Component(pTexture);
+
+    pTexture = CTexture::Create(0, L"../bin/resources/Textures/Terrain/Tile0.dds", 1);
+    Add_Component(pTexture);
 
     return S_OK;
 }
