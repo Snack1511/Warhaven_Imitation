@@ -6,6 +6,7 @@
 #include "CShader.h"
 #include "Texture.h"
 #include "CUtility_Transform.h"
+#include "CFader.h"
 
 CUI::CUI()
 {
@@ -48,6 +49,12 @@ HRESULT CUI::Start()
 void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
+}
+
+void CUI::Active_Fade(FADEDESC tFadeDesc)
+{
+	m_pFader = CFader::Create(CP_BEFORE_RENDERER, tFadeDesc);
+	Add_Component(m_pFader);
 }
 
 void CUI::Set_Sort(_float value)

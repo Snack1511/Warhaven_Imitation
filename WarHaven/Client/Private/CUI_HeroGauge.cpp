@@ -70,7 +70,7 @@ void CUI_HeroGauge::My_Tick()
 	}
 	else
 	{
-		if (KEY(Q, TAP))
+		if (KEY(NUM1, TAP) || KEY(NUM2, TAP) || KEY(NUM3, TAP) || KEY(NUM4, TAP))
 		{
 			if (m_bIsHero)
 			{

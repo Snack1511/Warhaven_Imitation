@@ -40,7 +40,10 @@ private:
 	_uint m_iBtnCount = 0;
 
 	_bool m_bFirstOutline = false;
-	_bool m_bSecondOutline = false;
+
+	_bool m_bIsHero = false;
+	_uint m_iPrvSkill = 0;
+	_uint m_iCurSkill = 0;
 
 private:
 	void Set_Pass();
@@ -50,7 +53,7 @@ private:
 	void Active_SkillHUD(_uint iIndex);
 	void Set_SkillBtn(_uint iIndex, _uint iKeyIdx = 52, _uint iIconIdx = 29, bool bRelic = true);
 
-	void Enable_Outline(_uint iIndex);
+	void Enable_Outline();
 
 private:
 	virtual void My_Tick() override;

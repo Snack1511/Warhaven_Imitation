@@ -42,6 +42,8 @@ public:
 	HRESULT SetTexture(const _tchar* pFilePath, _uint iIndex = 1);
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
+	void Active_Fade(FADEDESC tFadeDesc);
+
 public:
 	_float4 Get_Color() { return m_vColor; }
 	void Set_Color(_float4 vColor) { m_vColor = vColor; }
@@ -69,6 +71,9 @@ protected:
 
 protected:
 	void CheckInRect();
+
+private:
+	CFader* m_pFader = nullptr;
 };
 
 END
