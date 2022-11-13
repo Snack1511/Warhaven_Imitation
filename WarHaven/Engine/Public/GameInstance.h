@@ -206,7 +206,7 @@ public: /* For. Prototype_Manager */
 
 public: /* For. Font_Manager */
 	HRESULT Add_Font(const _tchar* pFontTag, const _tchar* pFontFilePath);
-	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, const _float4& vColor);
+	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale = 1.f);
 
 public: /* For. Shader_Manager */
 	HRESULT		Load_EffectFile(const _tchar* pFilePath);

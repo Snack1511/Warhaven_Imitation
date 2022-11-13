@@ -37,7 +37,7 @@ HRESULT CCustomFont::Initialize(const _tchar * pFontFilePath)
 
 
 
-HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, const _float4& vColor)
+HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale)
 {
 	if (nullptr == m_pBatch ||
 		nullptr == m_pFont)

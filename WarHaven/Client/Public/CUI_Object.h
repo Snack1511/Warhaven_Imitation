@@ -38,6 +38,25 @@ public:
 
 	_bool Get_IsInMouse() { return m_bIsInMouse; }
 
+public:	// Font
+	_bool Get_FontRender() { return m_bIsRenderText; }
+	void Set_FontRender(_bool value) { m_bIsRenderText = value; }
+
+	_bool Get_FontStyle() { return m_bIsBold; }
+	void Set_FontStyle(_bool value) { m_bIsBold = value; }
+
+	wstring Get_FontText() { return m_wstrText; }
+	void Set_FontText(wstring szText) { m_wstrText = szText; }
+
+	_float4 Get_FontOffset() { return m_vOffset; }
+	void Set_FontOffset(_float fX, _float fY);
+
+	_float4 Get_FontColor() { return m_vColor; }
+	void Set_FontColor(_float4 vColor) { vColor = vColor; }
+
+	_float Get_FontScale() { return m_fFontScale; }
+	void Set_FontScale(_float fValue) { m_fFontScale = fValue; }
+
 public:
 	void Lerp_Scale(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration);
@@ -45,17 +64,24 @@ public:
 private:
 	wstring m_wstrName;
 
-	CUI_Text* m_pText = nullptr;
+private:	// Font
 	_bool m_bIsRenderText = false;
+	_bool m_bIsBold = false;
+	wstring m_wstrText;
+	_float4 m_vOffset;
+	_float4 m_vColor = { 1.f, 1.f, 1.f, 1.f };
+	_float m_fFontScale = 1.f;
 
-	CUI_Button* m_pButton = nullptr;
+private:	// Button
 
+private:	// Etc
+	_float m_fMinValue = 0.01f;
+	_float m_fAccTime = 0.f;
 	_bool m_bIsMultiTex = false;
 	_bool m_bIsMouseTarget = false;
-	_bool m_bIsInMouse = false;	
+	_bool m_bIsInMouse = false;
 
-	_float m_fAccTime = 0.f;
-
+private:	// Lerp
 	_bool m_bLerpScale = false;
 	_bool m_bLerpScaleX = false;
 	_bool m_fAccScale = false;
@@ -63,7 +89,6 @@ private:
 	_float m_fEnd = 0.f;
 	_float m_fDuration = 0.f;
 
-	_float m_fMinValue = 0.01f;
 
 private:
 	// These will be called by Set_Enable Func.
@@ -74,6 +99,8 @@ private:
 
 private:
 	void MouseEvent();
+
+	void Create_Text(_bool value, wstring wstrText, _float4 vOffset, _float4 vColor, _float fScale);
 	void RenderText();
 
 	void Lerp_Scale();

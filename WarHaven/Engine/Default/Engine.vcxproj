@@ -176,6 +176,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Client\Private\CUI_Renderer.cpp" />
     <ClCompile Include="..\Private\Animation.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
@@ -250,6 +251,7 @@
     <ClCompile Include="..\Private\ZFrustum.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Client\Public\CUI_Renderer.h" />
     <ClInclude Include="..\Public\Animation.h" />
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />

@@ -15,7 +15,7 @@ public:
 
 public:
 	HRESULT Initialize(const _tchar* pFontFilePath);
-	HRESULT Render(const _tchar* pString, const _float2& vPosition, const _float4& vColor);
+	HRESULT Render(const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale);
 
 private:
 	SpriteBatch*				m_pBatch = nullptr;

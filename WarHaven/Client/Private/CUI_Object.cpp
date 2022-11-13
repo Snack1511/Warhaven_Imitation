@@ -71,6 +71,13 @@ void CUI_Object::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 	__super::SetUp_ShaderResource(pShader, pConstName);
 }
 
+void CUI_Object::Set_FontOffset(_float fX, _float fY)
+{
+	m_vOffset.x = fX;
+	m_vOffset.y = fY;
+	m_vOffset.z = 0.f;
+}
+
 void CUI_Object::Lerp_Scale(_float fStart, _float fEnd, _float fDuration)
 {
 	m_bLerpScale = true;
@@ -115,7 +122,7 @@ void CUI_Object::My_Tick()
 
 	RenderText();
 
-	Lerp_Scale();	
+	Lerp_Scale();
 }
 
 void CUI_Object::My_LateTick()
@@ -135,15 +142,15 @@ void CUI_Object::MouseEvent()
 		{
 			OnMouseEnter();
 
-			if (m_pButton)
-			{
-				// 버튼 이벤트 함수 호출
+			//if (m_pButton)
+			//{
+			//	// 버튼 이벤트 함수 호출
 
-				/*if (KEY(LBUTTON, TAP))
-				{
-					OnMouseClick();
-				}*/
-			}
+			//	/*if (KEY(LBUTTON, TAP))
+			//	{
+			//		OnMouseClick();
+			//	}*/
+			//}
 		}
 		else
 		{
@@ -152,11 +159,32 @@ void CUI_Object::MouseEvent()
 	}
 }
 
+void CUI_Object::Create_Text(_bool value, wstring wstrText, _float4 vOffset, _float4 vColor, _float fScale)
+{
+	m_bIsBold = value;
+	m_wstrName = wstrText;
+	m_vOffset = vOffset;
+	m_vColor = vColor;
+	m_fFontScale = fScale;
+}
+
 void CUI_Object::RenderText()
 {
 	if (m_bIsRenderText)
 	{
+		_float4 vUIPos = m_pTransform->Get_World(WORLD_POS);
+		_float2 vFontPos = { vUIPos.x + m_vOffset.x, vUIPos.y + m_vOffset.y };
 
+		const _tchar* wszText = m_wstrText.c_str();
+
+		if (m_bIsBold)
+		{
+			CGameInstance::Get_Instance()->Render_Font(TEXT("War_Bold"), wszText, vFontPos, m_vColor, m_fFontScale);
+		}
+		else
+		{
+			CGameInstance::Get_Instance()->Render_Font(TEXT("War_Regular"), wszText, vFontPos, m_vColor, m_fFontScale);
+		}
 	}
 }
 
