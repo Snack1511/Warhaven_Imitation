@@ -46,6 +46,8 @@ private:
 	wstring m_wstrName;
 
 	CUI_Text* m_pText = nullptr;
+	_bool m_bIsRenderText = false;
+
 	CUI_Button* m_pButton = nullptr;
 
 	_bool m_bIsMultiTex = false;
@@ -72,6 +74,9 @@ private:
 
 private:
 	void MouseEvent();
+	void RenderText();
+
+	void Lerp_Scale();
 
 private:
 	virtual void OnMouseEnter() {};

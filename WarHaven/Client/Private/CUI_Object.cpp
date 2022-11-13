@@ -113,6 +113,55 @@ void CUI_Object::My_Tick()
 
 	MouseEvent();
 
+	RenderText();
+
+	Lerp_Scale();	
+}
+
+void CUI_Object::My_LateTick()
+{
+	__super::My_LateTick();
+}
+
+void CUI_Object::MouseEvent()
+{
+	CheckInRect();
+
+	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
+
+	if (m_bIsMouseTarget)
+	{
+		if (m_bIsInMouse)
+		{
+			OnMouseEnter();
+
+			if (m_pButton)
+			{
+				// 버튼 이벤트 함수 호출
+
+				/*if (KEY(LBUTTON, TAP))
+				{
+					OnMouseClick();
+				}*/
+			}
+		}
+		else
+		{
+			OnMouseExit();
+		}
+	}
+}
+
+void CUI_Object::RenderText()
+{
+	if (m_bIsRenderText)
+	{
+
+	}
+}
+
+void CUI_Object::Lerp_Scale()
+{
 	if (m_bLerpScale)
 	{
 		m_fAccTime += fDT(0);
@@ -174,40 +223,6 @@ void CUI_Object::My_Tick()
 				Set_ScaleX(m_fEnd);
 				m_bLerpScaleX = false;
 			}
-		}
-	}
-}
-
-void CUI_Object::My_LateTick()
-{
-	__super::My_LateTick();
-}
-
-void CUI_Object::MouseEvent()
-{
-	CheckInRect();
-
-	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
-
-	if (m_bIsMouseTarget)
-	{
-		if (m_bIsInMouse)
-		{
-			OnMouseEnter();
-
-			if (m_pButton)
-			{
-				// 버튼 이벤트 함수 호출
-
-				/*if (KEY(LBUTTON, TAP))
-				{
-					OnMouseClick();
-				}*/
-			}
-		}
-		else
-		{
-			OnMouseExit();
 		}
 	}
 }

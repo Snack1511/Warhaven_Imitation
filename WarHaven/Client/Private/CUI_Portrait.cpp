@@ -74,6 +74,8 @@ void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 void CUI_Portrait::Set_Portrait(_uint iIndex)
 {
 	m_bIsHeroLerp = true;
+	m_iHeroStartIdx = Hero1;
+	m_iHeroEndIdx = Hero4;
 	m_iHeroActiveCount = 0;
 
 	m_iPrvPort = m_iCurPort;
@@ -361,8 +363,6 @@ void CUI_Portrait::Enable_HeroLerp(_bool value, _float fDuration)
 			if (value == false)
 			{
 				m_iHeroStartIdx++;
-				if (m_iHeroStartIdx > Hero4)
-					m_iHeroStartIdx = Hero1;
 
 				m_bIsHeroLerp = true;
 				m_fAccTime = 0.f;
@@ -372,8 +372,6 @@ void CUI_Portrait::Enable_HeroLerp(_bool value, _float fDuration)
 			else
 			{
 				m_iHeroEndIdx--;
-				if (m_iHeroEndIdx < Hero1)
-					m_iHeroEndIdx = Hero4;
 
 				m_bIsHeroLerp = true;
 				m_fAccTime = 0.f;
