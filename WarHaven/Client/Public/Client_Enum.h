@@ -397,11 +397,18 @@ namespace Client
 		STATE_END,
 	};
 
+	//// HR
 	enum WEAPON_TYPE
 	{
 		WEAPON_LONGSWORD,
 		WEAPON_SPEAR,
 		WEAPON_END,
+	};
+	enum CURVE_TYPE
+	{
+		CURVE_LINEAR,
+		CURVE_SIN,
+		CURVE_END,
 	};
 }
 

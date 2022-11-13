@@ -59,6 +59,7 @@ private:
 
 	_bool		m_bBlackBackGround = false;
 	_bool		m_bFixed = false;
+	CURVE_TYPE		m_eCurveType = CURVE_LINEAR;
 
 
 private:
@@ -73,6 +74,9 @@ private:
 
 private:
 	void		Reset_Instance(_uint iIndex);
+
+private:
+	_float4		Switch_CurveType(_float4 vPos, _uint iIdx);
 
 };
 

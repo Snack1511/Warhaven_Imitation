@@ -1266,6 +1266,19 @@ void CWindow_Effect::Show_ParticleTab()
 			}
 
 			ImGui::Text("Curve Option");
+
+
+			static _bool	bCurveSelect[CURVE_END] = {};
+			memset(bCurveSelect, 0, sizeof(_bool) * CURVE_END);
+			bCurveSelect[static_cast<CRectEffects*>(pCurEffect)->m_eCurveType] = true;
+
+			if (ImGui::Selectable("LINEAR", &bCurveSelect[CURVE_LINEAR]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_LINEAR;
+			if (ImGui::Selectable("SINE", &bCurveSelect[CURVE_SIN]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SIN;
+
+
+			
 			if (ImGui::InputFloat("fCurvePower", &tCurData.fCurvePower))
 			{
 			}
@@ -1393,7 +1406,7 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
-
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_eCurveType, sizeof(CURVE_TYPE));
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -1423,6 +1436,8 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDuration, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDurationRange, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDissolvePower, sizeof(_float));
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_eCurveType, sizeof(CURVE_TYPE));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));

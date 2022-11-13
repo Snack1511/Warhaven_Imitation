@@ -41,6 +41,7 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	, m_iWidthSize(_origin.m_iWidthSize)
 	, m_iHeightSize(_origin.m_iHeightSize)
 	, m_bFixed(_origin.m_bFixed)
+	, m_eCurveType(_origin.m_eCurveType)
 {
 	if (_origin.m_pRectInstances)
 	{
@@ -531,12 +532,10 @@ void CRectEffects::My_Tick()
 			
 			vOriginPos += m_pInstancingDatas[i].vDir * m_pInstancingDatas[i].fSpeed * fTimeDelta;
 
-			_float fy = sinf(m_pInstancingDatas[i].fMovingAcc) * m_pInstancingDatas[i].fCurvePower;
+			vOriginPos = Switch_CurveType(vOriginPos, i);
 
-			vOriginPos.x += fy * m_pInstancingDatas[i].vRight.x;
-			vOriginPos.y += fy * m_pInstancingDatas[i].vRight.y;
-			vOriginPos.z += fy * m_pInstancingDatas[i].vRight.z;
 
+			
 
 			//2. ÀÚÀ¯³«ÇÏ
 			_float fFreeFallY = 0.f;
@@ -795,6 +794,7 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
 	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
 	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
+	pReadFile->read((char*)&m_eCurveType, sizeof(CURVE_TYPE));
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
 	{
@@ -837,7 +837,7 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	pReadFile->read((char*)&m_fDurationRange, sizeof(_float));
 	pReadFile->read((char*)&m_fDissolvePower, sizeof(_float));
 
-
+	pReadFile->read((char*)&m_eCurveType, sizeof(CURVE_TYPE));
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -925,4 +925,29 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pInstancingDatas[iIndex].fAcc = 0.f;
 
 	m_pInstancingDatas[iIndex].bAlive = true;
+}
+
+_float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
+{
+	_float fy;
+
+	switch (m_eCurveType)
+	{
+	case Client::CURVE_LINEAR:
+		break;
+	case Client::CURVE_SIN:
+		fy = sinf(m_pInstancingDatas[iIdx].fMovingAcc) * m_pInstancingDatas[iIdx].fCurvePower;
+
+		vPos.x += fy * m_pInstancingDatas[iIdx].vRight.x;
+		vPos.y += fy * m_pInstancingDatas[iIdx].vRight.y;
+		vPos.z += fy * m_pInstancingDatas[iIdx].vRight.z;
+		break;
+	case Client::CURVE_END:
+		break;
+	default:
+		break;
+	}
+	
+
+	return vPos;
 }
