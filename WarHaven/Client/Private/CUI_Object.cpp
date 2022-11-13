@@ -77,17 +77,9 @@ void CUI_Object::Lerp_Scale(_float fStart, _float fEnd, _float fDuration)
 
 	m_fStart = Min(fStart);
 	m_fEnd = Min(fEnd);
-
-	if (m_fEnd > m_fStart)
-	{
-		m_fAccScale = true;
-	}
-	else
-	{
-		m_fAccScale = false;
-	}
-
 	m_fDuration = fDuration;
+
+	m_fAccScale = m_fEnd > m_fStart ? true : false;
 
 	Set_Scale(m_fStart);
 }
@@ -98,17 +90,9 @@ void CUI_Object::Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration)
 
 	m_fStart = Min(fStart);
 	m_fEnd = Min(fEnd);
-
-	if (m_fEnd > m_fStart)
-	{
-		m_fAccScale = true;
-	}
-	else
-	{
-		m_fAccScale = false;
-	}
-
 	m_fDuration = fDuration;
+
+	m_fAccScale = m_fEnd > m_fStart ? true : false;
 
 	Set_ScaleX(m_fStart);
 }
@@ -170,7 +154,7 @@ void CUI_Object::My_Tick()
 		if (!m_fAccScale)
 		{
 			vScale -= fabs(fSpeed);
-			vScale.x = max(vScale.x, m_fEnd);
+			vScale.x = Min(vScale.x);
 
 			Set_ScaleX(vScale.x);
 
@@ -183,7 +167,6 @@ void CUI_Object::My_Tick()
 		else
 		{
 			vScale += fabs(fSpeed);
-			 
 			Set_ScaleX(vScale.x);
 
 			if (vScale.x >= m_fEnd)

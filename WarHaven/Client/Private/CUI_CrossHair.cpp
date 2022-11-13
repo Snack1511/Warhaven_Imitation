@@ -116,6 +116,9 @@ void CUI_Crosshair::Prototype_Disable()
 
 void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 {
+	m_iPrvCrosshair = m_iCurCrosshair;
+	m_iCurCrosshair = iIndex;
+
 	for (int i = 0; i < 4; ++i)
 	{
 		for (int j = 0; j < Type_End; ++j)
@@ -215,7 +218,7 @@ void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 		if (iIndex == 4)
 		{
 			_float fPosX = -50.f + (i * 30.f);
-			_float fPosY = -70.f;
+			_float fPosY = -100.f;
 
 			_float fScaleX = 35.f;
 			_float fScaleY = 85.f;
@@ -286,6 +289,53 @@ void CUI_Crosshair::Bind_Shader()
 void CUI_Crosshair::My_Tick()
 {
 	__super::My_Tick();
+
+	if (!m_bIsHero)
+	{
+		if (KEY(T, TAP))
+		{
+			static int iIndex = 0;
+			iIndex++;
+			if (iIndex >= 6)
+				iIndex = 0;
+
+			Set_Crosshair(iIndex);
+		}
+
+		if (KEY(NUM1, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_Crosshair(6);
+		}
+		else if (KEY(NUM2, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_Crosshair(7);
+		}
+		else if (KEY(NUM3, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_Crosshair(8);
+		}
+		else if (KEY(NUM4, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_Crosshair(9);
+		}
+	}
+	else
+	{
+		if (KEY(NUM1, TAP))
+		{
+			m_bIsHero = false;
+
+			Set_Crosshair(m_iPrvCrosshair);
+		}
+	}
 
 	if (KEY(T, TAP))
 	{

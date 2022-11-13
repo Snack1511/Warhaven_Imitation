@@ -75,7 +75,16 @@ void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstNa
 
 void CUI_Skill::Set_SkillHUD(_uint iIndex)
 {
+	m_iPrvSkill = m_iCurSkill;
+	m_iCurSkill = iIndex;
+
 	m_bAbleOutline = true;
+
+	if (!m_bIsHero)
+	{
+		if (iIndex >= 6)
+			iIndex = 0;
+	}
 
 	switch (iIndex)
 	{
@@ -338,14 +347,51 @@ void CUI_Skill::My_Tick()
 {
 	__super::My_Tick();
 
-	if (KEY(T, TAP))
+	if (!m_bIsHero)
 	{
-		static int iIndex = 0;
-		iIndex++;
-		if (iIndex >= 10)
-			iIndex = 0;
+		if (KEY(T, TAP))
+		{
+			static int iIndex = 0;
+			iIndex++;
+			if (iIndex >= 6)
+				iIndex = 0;
 
-		Set_SkillHUD(iIndex);
+			Set_SkillHUD(iIndex);
+		}
+
+		if (KEY(NUM1, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_SkillHUD(6);
+		}
+		else if (KEY(NUM2, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_SkillHUD(7);
+		}
+		else if (KEY(NUM3, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_SkillHUD(8);
+		}
+		else if (KEY(NUM4, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_SkillHUD(9);
+		}
+	}
+	else
+	{
+		if (KEY(NUM1, TAP))
+		{
+			m_bIsHero = false;
+
+			Set_SkillHUD(m_iPrvSkill);
+		}
 	}
 
 	m_fRelicValue += fDT(0);

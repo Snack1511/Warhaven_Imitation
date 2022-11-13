@@ -27,6 +27,10 @@ private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 	CUI_Object* m_arrSkillUI[4][Type_End] = {};
 
+	_bool m_bIsHero = false;
+	_uint m_iPrvCrosshair = 0;
+	_uint m_iCurCrosshair = 0;
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;

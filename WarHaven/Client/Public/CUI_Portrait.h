@@ -5,6 +5,7 @@ BEGIN(Client)
 
 class CUI_Portrait final : public CUI_Wrapper
 {
+	enum PortIndex { User, Hero1, PortEnd = 5};
 	enum UI_TYPE { BG, Port, Key, Effect, Type_End };
 
 	DECLARE_PROTOTYPE(CUI_Portrait);
@@ -35,14 +36,18 @@ private:
 
 	_float m_fEffectValue = 0.f;
 
+	_bool m_bIsHero = false;
 	_uint m_iPrvPort = 0;
 	_uint m_iCurPort = 0;
 
+	_bool m_bIsUserLerp = false;
 	_bool m_bAbleRotationPort = false;
 	_uint m_iRotationCount = 0.f;
-	_uint m_iPortCount = 0;
 
-	_bool m_bIsRot = false;
+	_bool m_bIsHerosLerp = false;
+	_uint m_iHeroLerpCount = Hero1;
+
+	_float m_fMinValue = 0.01f;
 
 private:
 	void Enable_UserPortrait();
@@ -51,13 +56,13 @@ private:
 	void Set_Pass();
 	void Bind_Shader();
 
-	void Change_Port();
+	void Change_UserPort();
+
+	void Enable_HeroPort();
+	void Disable_HeroPort();
+
 	void PortSizeUP();
 	void PortSizeDown();
-
-	// 히어로 포트는 돌면서 들어감, 나타남
-
-	// 변신할 때 돌면서 자기와 변신할 사진 페이드하며 늘줄늘줄
 };
 
 END

@@ -41,6 +41,10 @@ private:
 
 	_bool m_bFirstOutline = false;
 
+	_bool m_bIsHero = false;
+	_uint m_iPrvSkill = 0;
+	_uint m_iCurSkill = 0;
+
 private:
 	void Set_Pass();
 	void Bind_Shader();

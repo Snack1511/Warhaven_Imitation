@@ -73,6 +73,9 @@ void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 
 void CUI_Portrait::Set_Portrait(_uint iIndex)
 {
+	if (m_bIsHero)
+		m_bIsHerosLerp = true;
+
 	m_iPrvPort = m_iCurPort;
 	m_iCurPort = iIndex;
 
@@ -83,20 +86,58 @@ void CUI_Portrait::My_Tick()
 {
 	__super::My_Tick();
 
-	if (KEY(T, TAP))
+	if (!m_bIsHero)
 	{
-		static int iIndex = 0;
-		iIndex++;
-		if (iIndex >= 10)
-			iIndex = 0;
+		if (KEY(T, TAP))
+		{
+			static int iIndex = 0;
+			iIndex++;
+			if (iIndex >= 6)
+				iIndex = 0;
 
-		Set_Portrait(iIndex);
+			Set_Portrait(iIndex);
+		}
+
+		if (KEY(NUM1, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_Portrait(6);
+		}
+		else if (KEY(NUM2, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_Portrait(7);
+		}
+		else if (KEY(NUM3, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_Portrait(8);
+		}
+		else if (KEY(NUM4, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_Portrait(9);
+		}
+	}
+	else
+	{
+		if (KEY(NUM1, TAP))
+		{
+			m_bIsHero = false;
+
+			Set_Portrait(m_iPrvPort);
+		}
 	}
 
 	_float fEffectSpeed = fDT(0) * 5.f;
 	m_fEffectValue -= fEffectSpeed;
 
-	Change_Port();
+	Change_UserPort();
+	Disable_HeroPort();
 }
 
 void CUI_Portrait::My_LateTick()
@@ -169,16 +210,16 @@ void CUI_Portrait::Bind_Shader()
 		->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
 }
 
-void CUI_Portrait::Change_Port()
+void CUI_Portrait::Change_UserPort()
 {
 	if (m_bAbleRotationPort)
 	{
 		_float4 vScale = m_arrPortraitUI[0][BG]->Get_Transform()->Get_Scale();
 		CTexture* pTexture = GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture);
 
-		if (!m_bIsRot)
+		if (!m_bIsUserLerp)
 		{
-			m_bIsRot = true;
+			m_bIsUserLerp = true;
 
 			if (m_iRotationCount == 1)
 			{
@@ -212,13 +253,12 @@ void CUI_Portrait::Change_Port()
 		{
 			if (vScale.x <= m_fMinValue)
 			{
-				m_bIsRot = false;
+				m_bIsUserLerp = false;
 				m_iRotationCount++;
-				m_iPortCount++;
 			}
 			else if (vScale.x >= 64.f)
 			{
-				m_bIsRot = false;
+				m_bIsUserLerp = false;
 				m_iRotationCount++;
 			}
 		}
@@ -226,8 +266,47 @@ void CUI_Portrait::Change_Port()
 		if (m_iRotationCount > 6)
 		{
 			m_iRotationCount = 0;
-			m_iPortCount = 0;
 			m_bAbleRotationPort = false;
+		}
+	}
+}
+
+void CUI_Portrait::Enable_HeroPort()
+{
+}
+
+void CUI_Portrait::Disable_HeroPort()
+{
+	if (m_bIsHero)
+	{
+		if (m_bIsHerosLerp)
+		{
+			for (m_iHeroLerpCount; m_iHeroLerpCount < PortEnd;)
+			{
+				for (int j = 0; j < Type_End; ++j)
+				{
+					if (j == Key)
+					{
+						// 페이드아웃만
+						continue;
+					}
+
+					m_arrPortraitUI[m_iHeroLerpCount][j]->Lerp_ScaleX(43.f, 0.f, 0.5f);
+				}
+
+				m_bIsHerosLerp = false;
+				break;
+			}
+		}
+		else
+		{
+			m_fAccTime += fDT(0);
+			if (m_fAccTime > 0.5f)
+			{
+				m_iHeroLerpCount++;
+				m_bIsHerosLerp = true;
+				m_fAccTime = 0.f;
+			}
 		}
 	}
 }
@@ -243,26 +322,6 @@ void CUI_Portrait::PortSizeUP()
 void CUI_Portrait::PortSizeDown()
 {
 	_float fDuration = 0.1f * (m_iRotationCount * 0.5f);
-
-	FADEDESC tFadeDesc;
-	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-	// 페이드가 완료된 후에
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
-	// 페이드가 어떻게 될지
-	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-	// 페이드를 어떻게 시작할지
-	tFadeDesc.bFadeInFlag = 0x01;
-	tFadeDesc.bFadeOutFlag = 0x01;
-
-	// 페이드가 시작되는 시간
-	tFadeDesc.fFadeInStartTime = 0.f;
-	tFadeDesc.fFadeInTime = 0.f;
-
-	// 페이드인이 끝나고 얼마 뒤에 아웃
-	tFadeDesc.fFadeOutStartTime = 0.f;
-	tFadeDesc.fFadeOutTime = fDuration;
-
-	m_arrPortraitUI[0][Port]->Active_Fade(tFadeDesc);
 
 	m_arrPortraitUI[0][BG]->Lerp_ScaleX(64.f, 0.f, fDuration);
 	m_arrPortraitUI[0][Port]->Lerp_ScaleX(63.f, 0.f, fDuration);
