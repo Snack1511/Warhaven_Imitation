@@ -6,7 +6,7 @@
 #include "Functor.h"
 #include "CUnit.h"
 #include "CShader.h"
-#include "Renderer.h"
+#include "CUI_Renderer.h"
 #include "Easing_Utillity.h"
 
 CUI_Skill::CUI_Skill()

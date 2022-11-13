@@ -2,6 +2,7 @@
 #include "CBloodOverlay.h"
 #include "GameInstance.h"
 #include "Texture.h"
+#include "CUI_Renderer.h"
 #include "Renderer.h"
 
 #include "CFader.h"
@@ -42,7 +43,7 @@ HRESULT CBloodOverlay::Initialize_Prototype()
 	// 텍스처를 추가하면 0 ~ 2번까지 각각 셰이더 텍스처에 할당됨
 	SetTexture(TEXT("../Bin/Resources/Textures/Effects/WarHaven/Texture/T_BloodOverlay_%d.dds"),3);
 		
-	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_BLOODOVERLAY);
+	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_BLOODOVERLAY);
 
 	Set_Pos(0.f, 0.f);
 	Set_Scale(g_iWinCX, g_iWinCY);

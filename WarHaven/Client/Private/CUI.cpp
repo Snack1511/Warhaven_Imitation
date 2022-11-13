@@ -7,6 +7,8 @@
 #include "Texture.h"
 #include "CUtility_Transform.h"
 #include "CFader.h"
+#include "CUI_Renderer.h"
+#include "Renderer.h"
 
 CUI::CUI()
 {
@@ -30,9 +32,10 @@ HRESULT CUI::Initialize_Prototype()
 	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXTEX, VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 	pShader->Initialize();
 	Add_Component(pShader);
-
-	CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT, _float4(0.f, 0.f, 0.f, 1.f));
-	Add_Component<CRenderer>(pRenderer);
+		
+	CUI_Renderer* pRenderer = CUI_Renderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT, _float4(0.f, 0.f, 0.f, 1.f));
+	Add_Component<CUI_Renderer>(pRenderer);
+	GET_COMPONENT(CUI_Renderer)->Set_UI(this);
 
 	return S_OK;
 }

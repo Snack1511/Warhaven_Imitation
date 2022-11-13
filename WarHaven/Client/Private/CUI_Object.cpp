@@ -4,7 +4,7 @@
 #include "Loading_Manager.h"
 #include "Transform.h"
 #include "Functor.h"
-#include "Renderer.h"
+#include "CUI_Renderer.h"
 #include "CShader.h"
 
 CUI_Object::CUI_Object()
@@ -26,7 +26,7 @@ HRESULT CUI_Object::Initialize_Prototype()
 
 	SetTexture(TEXT("../Bin/Resources/Textures/White.png"));
 
-	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_ALPHA);
+	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_ALPHA);
 
 	Set_Pos(0.f, 0.f);
 	Set_Scale(100.f);
@@ -159,32 +159,13 @@ void CUI_Object::MouseEvent()
 	}
 }
 
-void CUI_Object::Create_Text(_bool value, wstring wstrText, _float4 vOffset, _float4 vColor, _float fScale)
-{
-	m_bIsBold = value;
-	m_wstrName = wstrText;
-	m_vOffset = vOffset;
-	m_vColor = vColor;
-	m_fFontScale = fScale;
-}
-
 void CUI_Object::RenderText()
 {
+	GET_COMPONENT(CUI_Renderer)->Set_RenderText(m_bIsRenderText);
+
 	if (m_bIsRenderText)
 	{
-		_float4 vUIPos = m_pTransform->Get_World(WORLD_POS);
-		_float2 vFontPos = { vUIPos.x + m_vOffset.x, vUIPos.y + m_vOffset.y };
-
-		const _tchar* wszText = m_wstrText.c_str();
-
-		if (m_bIsBold)
-		{
-			CGameInstance::Get_Instance()->Render_Font(TEXT("War_Bold"), wszText, vFontPos, m_vColor, m_fFontScale);
-		}
-		else
-		{
-			CGameInstance::Get_Instance()->Render_Font(TEXT("War_Regular"), wszText, vFontPos, m_vColor, m_fFontScale);
-		}
+		GET_COMPONENT(CUI_Renderer)->Set_Text(m_bIsBold, m_wstrText, m_vOffset, m_vColor, m_fFontScale);
 	}
 }
 

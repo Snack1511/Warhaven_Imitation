@@ -176,7 +176,6 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Client\Private\CUI_Renderer.cpp" />
     <ClCompile Include="..\Private\Animation.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
@@ -216,6 +215,7 @@
     <ClCompile Include="..\Private\CTerrain_Renderer.cpp" />
     <ClCompile Include="..\private\CTimer.cpp" />
     <ClCompile Include="..\private\CTri_Instance.cpp" />
+    <ClCompile Include="..\Private\CUI_Renderer.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\private\CUtility_File.cpp" />
     <ClCompile Include="..\private\CUtility_PhysX.cpp" />
@@ -251,7 +251,6 @@
     <ClCompile Include="..\Private\ZFrustum.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Client\Public\CUI_Renderer.h" />
     <ClInclude Include="..\Public\Animation.h" />
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
@@ -291,6 +290,7 @@
     <ClInclude Include="..\Public\CTerrain_Renderer.h" />
     <ClInclude Include="..\public\CTimer.h" />
     <ClInclude Include="..\public\CTri_Instance.h" />
+    <ClInclude Include="..\Public\CUI_Renderer.h" />
     <ClInclude Include="..\Public\CustomFont.h" />
     <ClInclude Include="..\public\CUtility_File.h" />
     <ClInclude Include="..\public\CUtility_PhysX.h" />

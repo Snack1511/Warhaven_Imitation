@@ -46,6 +46,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(SetUp_ShaderFiles()))
 		return E_FAIL;
 
+	if (FAILED(SetUp_Font()))
+		return E_FAIL;
+
 	if (FAILED(CLoading_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
@@ -55,7 +58,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU)))
 		return E_FAIL;
 
 	//Sound

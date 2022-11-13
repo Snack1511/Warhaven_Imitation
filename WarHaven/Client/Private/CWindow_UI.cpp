@@ -59,6 +59,7 @@ HRESULT CWindow_UI::Initialize()
 
 void CWindow_UI::Tick()
 {
+	Drag_Object();
 }
 
 HRESULT CWindow_UI::Render()
@@ -79,8 +80,6 @@ HRESULT CWindow_UI::Render()
 	Show_UIList();
 
 	Show_Inspector();
-
-	Drag_Object();
 
 	ImGui::Spacing();
 
@@ -313,7 +312,7 @@ void CWindow_UI::Show_Font()
 		if (bIsRenderText)
 		{
 			bool bIsBold = pUI->Get_FontStyle();
-			ImGui::Checkbox("Text Type", &bIsBold);
+			ImGui::Checkbox("Bold", &bIsBold);
 			pUI->Set_FontStyle(bIsBold);
 
 			if (ImGui::TreeNode("Text"))

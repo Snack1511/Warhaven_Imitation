@@ -220,24 +220,6 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper">
       <UniqueIdentifier>{df70e0fd-717d-4898-9003-9ee5dff3f0a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play">
-      <UniqueIdentifier>{dd6f1321-fc66-4e02-b5b2-eb90124295ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD">
-      <UniqueIdentifier>{cf100bac-50b2-400a-83a4-b47fbfbf0520}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge">
-      <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\CrossHair">
-      <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Hp">
-      <UniqueIdentifier>{7d943caf-c5b6-40db-ac10-fc78b426c290}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Portrait">
-      <UniqueIdentifier>{e04cf9a6-f562-4abd-b27c-c1d1b034a13c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX">
       <UniqueIdentifier>{5d2dd80a-bbe4-470b-b7e3-bceb53af6041}</UniqueIdentifier>
     </Filter>
@@ -294,12 +276,6 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\09. Debug">
       <UniqueIdentifier>{422b2b63-31f8-4cb6-a18b-f640eae27b24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay">
-      <UniqueIdentifier>{1fc27a28-399a-464b-8f29-f80d90014dcf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Skill">
-      <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Warrior">
       <UniqueIdentifier>{b38ed988-7cb2-4c8b-85fd-951d70d11eca}</UniqueIdentifier>
@@ -541,6 +517,36 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test">
       <UniqueIdentifier>{b6d5aaab-a069-43cb-8835-ea350d37d2b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play">
+      <UniqueIdentifier>{dd6f1321-fc66-4e02-b5b2-eb90124295ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD">
+      <UniqueIdentifier>{cf100bac-50b2-400a-83a4-b47fbfbf0520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge">
+      <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\CrossHair">
+      <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp">
+      <UniqueIdentifier>{7d943caf-c5b6-40db-ac10-fc78b426c290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Portrait">
+      <UniqueIdentifier>{e04cf9a6-f562-4abd-b27c-c1d1b034a13c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\BloodOverlay">
+      <UniqueIdentifier>{1fc27a28-399a-464b-8f29-f80d90014dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Skill">
+      <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Main">
+      <UniqueIdentifier>{67ba239e-a0f3-48cc-8d58-dcb36d4c9e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play">
+      <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -772,16 +778,16 @@
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\07. Sprint</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HeroGauge.h">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Crosshair.h">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\CrossHair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\CrossHair</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HpBar.h">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Hp</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Portrait.h">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Portrait</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Portrait</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CWindow_PhysX.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX</Filter>
@@ -808,10 +814,10 @@
       <Filter>03. Instances\02. GameObject\09. Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBloodOverlay.h">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\BloodOverlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Skill.h">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Skill</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Skill</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CSwitchRtoL.h">
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\01. Idle\03. SwitchRL</Filter>
@@ -938,6 +944,12 @@
     </ClInclude>
     <ClInclude Include="..\public\CAI_SandBack.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Main.h">
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_MainPlay.h">
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1154,16 +1166,16 @@
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\07. Sprint</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HeroGauge.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\HeroGauge</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Crosshair.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\CrossHair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\CrossHair</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HpBar.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Hp</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Portrait.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Portrait</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Portrait</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CWindow_PhysX.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX</Filter>
@@ -1187,10 +1199,10 @@
       <Filter>03. Instances\02. GameObject\09. Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBloodOverlay.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\BloodOverlay</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\BloodOverlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Skill.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\04.Play\03.HUD\Skill</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Skill</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CSwitchRtoL.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\01. Idle\03. SwitchRL</Filter>
@@ -1317,6 +1329,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CAI_SandBack.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Main.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_MainPlay.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

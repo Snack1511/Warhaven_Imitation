@@ -45,7 +45,16 @@ HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, con
 
 	m_pBatch->Begin();
 
-	m_pFont->DrawString(m_pBatch, pString, vPosition, XMLoadFloat4(&vColor));
+	m_pFont->DrawString
+	(
+		m_pBatch, 
+		pString, 
+		vPosition, 
+		XMLoadFloat4(&vColor), 
+		0,						
+		XMFLOAT2(0.f, 0.f),		
+		fScale
+	);
 
 	m_pBatch->End();
 

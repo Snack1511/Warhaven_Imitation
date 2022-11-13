@@ -1,8 +1,9 @@
 #include "CUI_HeroGauge.h"
 #include "GameInstance.h"
 #include "CShader.h"
-#include "Renderer.h"
+#include "CUI_Renderer.h"
 #include "CUI_Object.h"
+#include "Renderer.h"
 
 CUI_HeroGauge::CUI_HeroGauge()
 {
@@ -103,7 +104,7 @@ void CUI_HeroGauge::My_LateTick()
 
 void CUI_HeroGauge::Set_Pass()
 {
-	GET_COMPONENT_FROM(m_Prototypes[Gauge], CRenderer)->Set_Pass(VTXTEX_PASS_UI_HeroGauge);
+	GET_COMPONENT_FROM(m_Prototypes[Gauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HeroGauge);
 }
 
 void CUI_HeroGauge::Bind_Shader()

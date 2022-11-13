@@ -462,7 +462,7 @@
     <ClCompile Include="..\Private\CTerrain_Renderer.cpp">
       <Filter>03. Instances\03. Component\03. Renderer\TerrainRenderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Client\Private\CUI_Renderer.cpp">
+    <ClCompile Include="..\Private\CUI_Renderer.cpp">
       <Filter>03. Instances\03. Component\03. Renderer\UIRenderer</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1268,7 +1268,7 @@
     <ClInclude Include="..\Public\CTerrain_Renderer.h">
       <Filter>03. Instances\03. Component\03. Renderer\TerrainRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Client\Public\CUI_Renderer.h">
+    <ClInclude Include="..\Public\CUI_Renderer.h">
       <Filter>03. Instances\03. Component\03. Renderer\UIRenderer</Filter>
     </ClInclude>
   </ItemGroup>
