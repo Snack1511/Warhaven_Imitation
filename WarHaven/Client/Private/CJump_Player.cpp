@@ -26,13 +26,14 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 {
     /* OwnerÀÇ Animator Set Idle·Î */
 
+    pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
 
     __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (!pOwner->Get_PhysicsCom()->Get_Physics().bAir)
+    if (!pOwner->Is_Air())
         return STATE_JUMP_LAND_PLAYER_R;
 
     

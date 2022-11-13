@@ -90,7 +90,7 @@ HRESULT CCollision_Manager::Render()
 _bool CCollision_Manager::Is_OBBtoSphereCollision(CCollider* _pOBB, CCollider* _pSphere)
 {
 	COL_INFO_BOX LeftInfo = ((CCollider_Box*)_pOBB)->Get_ColInfo();
-	COL_INFO_SPHERE RightInfo = ((CCollider_Sphere*)_pSphere)->Get_ColInfo();
+	COL_INFO_SPHERE RightInfo = ((CCollider_Sphere*)_pSphere)->Get_ColInfo().front();
 
 	_float4 CenterDiff = RightInfo.vFinalPos - LeftInfo.vFinalPos;
 	_float Dist = fabsf(CenterDiff.Length());
@@ -126,13 +126,6 @@ HRESULT CCollision_Manager::Is_InIndex(const _uint& iIdx)
 
 	return S_OK;
 
-}
-
-_float4 CCollision_Manager::Compute_ColPosition(CCollider* _pLeft, CCollider* _pRight)
-{
-	return (static_cast<CCollider_Sphere*>(_pLeft)->Get_ColInfo().vFinalPos +
-		static_cast<CCollider_Sphere*>(_pRight)->Get_ColInfo().vFinalPos)
-		* 0.5f;
 }
 
 map<_ulonglong, bool>::iterator CCollision_Manager::Find_PrevColInfo(const _uint& _iLeftID, const _uint& _iRightID)
@@ -247,7 +240,6 @@ void CCollision_Manager::Collider_GroupUpdate(const _uint& _eLeft, const _uint& 
 				{
 					if (Is_Collision((*LeftIter), (*RightIter))) // true¸é Enter
 					{
-						_float4 vColPosition = Compute_ColPosition((*LeftIter), (*RightIter));
 
 						pLeftOwner->CallBack_CollisionEnter(pRightOwner, _eRight);
 						pRightOwner->CallBack_CollisionEnter(pLeftOwner, _eLeft);
@@ -444,21 +436,28 @@ bool CCollision_Manager::Is_OBBCollision(CCollider* _pLeft, CCollider* _pRight)
 
 bool CCollision_Manager::Is_SphereCollision(CCollider* _pLeft, CCollider* _pRight)
 {
-	COL_INFO_SPHERE LeftInfo = ((CCollider_Sphere*)_pLeft)->Get_ColInfo();
-	COL_INFO_SPHERE RightInfo = ((CCollider_Sphere*)_pRight)->Get_ColInfo();
+	list<COL_INFO_SPHERE> LeftInfo = ((CCollider_Sphere*)_pLeft)->Get_ColInfo();
+	list<COL_INFO_SPHERE> RightInfo = ((CCollider_Sphere*)_pRight)->Get_ColInfo();
+	
 
-	_float4 CenterDiff = RightInfo.vFinalPos - LeftInfo.vFinalPos;
-	_float Dist = fabsf(CenterDiff.Length());
-
-	_float LeftRadius = LeftInfo.fRadius;
-	_float RightRadius = RightInfo.fRadius;
-
-	if (Dist > LeftRadius + RightRadius)
+	for (auto& Leftelem : LeftInfo)
 	{
-		return false;
+		for (auto& Rightelem : RightInfo)
+		{
+			_float4 CenterDiff = Rightelem.vFinalPos - Leftelem.vFinalPos;
+			_float Dist = fabsf(CenterDiff.Length());
+
+			_float LeftRadius = Leftelem.fRadius;
+			_float RightRadius = Rightelem.fRadius;
+
+			if (Dist <= LeftRadius + RightRadius)
+			{
+				return true;
+			}
+
+		}
 	}
-	else
-	{
-		return true;
-	}
+
+
+	return false;
 }

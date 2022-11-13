@@ -56,7 +56,7 @@ CLevel_Test* CLevel_Test::Create()
 
 HRESULT CLevel_Test::Initialize()
 {
-
+	CUser::Get_Instance()->Initialize();
 
 
 	return S_OK;
@@ -237,17 +237,24 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
         return E_FAIL;
 
 	pTestWarriorUnit->Initialize();
+
+
 	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
 	pTestWarriorUnit->Reserve_State(STATE_IDLE_PLAYER_R);
 
 	/* Game Collider */
-	_float fColRadius = 1.f;
+
+	//함수로 묶기
+	//유닛 생성되는 루틴
+	//충돌체 어케만들지, 시작상태 뭐로할지
+
+	/*_float fColRadius = 1.f;
 	pTestWarriorUnit->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_PLAYERHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
 	fColRadius = 0.3f;
 	pTestWarriorUnit->SetUp_UnitCollider(CUnit::HEAD, fColRadius, COL_PLAYERHITBOX_HEAD, _float4(0.f, 1.5f, 0.f), DEFAULT_TRANS_MATRIX);
-	fColRadius = 0.6f;
-	pTestWarriorUnit->SetUp_UnitCollider(CUnit::WEAPON_R, fColRadius, COL_PLAYERATTACK, _float4(0.f, 0.f, -100.f), DEFAULT_TRANS_MATRIX,
-		GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
+	fColRadius = 0.6f;*/
+	/*pTestWarriorUnit->SetUp_UnitCollider(CUnit::WEAPON_R, fColRadius, COL_PLAYERATTACK, _float4(0.f, 0.f, -100.f), DEFAULT_TRANS_MATRIX,
+		GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));*/
 
 	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
 
@@ -261,17 +268,16 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	pTestEnemyWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
 
 	_float4 vStartPos = _float4(-10.f, 10.f, 10.f);
-	pTestEnemyWarrior->Get_Transform()->Set_World(WORLD_POS, vStartPos);
-	pTestEnemyWarrior->Get_Transform()->Make_WorldMatrix();
+	//꼭 해야댐
 	GET_COMPONENT_FROM(pTestEnemyWarrior, CPhysXCharacter)->Set_Position(vStartPos);
 
-	fColRadius = 1.f;
+	/*fColRadius = 1.f;
 	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_ENEMYHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
 	fColRadius = 0.3f;
-	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, fColRadius, COL_ENEMYHITBOX_HEAD, _float4(0.f, 1.5f, 0.f), DEFAULT_TRANS_MATRIX);
-	fColRadius = 0.5f;
-	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::WEAPON_R, fColRadius, COL_ENEMYATTACK, _float4(0.f, 0.f, 50.f), DEFAULT_TRANS_MATRIX,
-		GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_R_WP1"));
+	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, fColRadius, COL_ENEMYHITBOX_HEAD, _float4(0.f, 1.75f, 0.f), DEFAULT_TRANS_MATRIX, GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_Head"));
+	fColRadius = 0.5f;*/
+	/*pTestEnemyWarrior->SetUp_UnitCollider(CUnit::WEAPON_R, fColRadius, COL_ENEMYATTACK, _float4(0.f, 0.f, 50.f), DEFAULT_TRANS_MATRIX,
+		GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_R_WP1"));*/
 
 	Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
 

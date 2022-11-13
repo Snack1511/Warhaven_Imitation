@@ -22,9 +22,12 @@ private:
 
 public:
 	static	CCollider_Sphere* Create(_uint iGroupID, _float fRadius, const _uint& iColIndex, _float4 vOffsetPos, _float4x4 matTransformation, CHierarchyNode* pRefBone = nullptr);
+	
+public:
+	list<COL_INFO_SPHERE>& Get_ColInfo() { return m_ColInfoList; }
 
 public:
-	COL_INFO_SPHERE& Get_ColInfo() { return m_tColInfo; }
+	void	Add_Collider(_float fRadius, _float4 vOffsetPos);
 
 public:
 	virtual HRESULT Initialize() override;
@@ -35,10 +38,10 @@ public:
 #endif
 
 private:
-	BoundingSphere* m_pSphere = nullptr;
-	BoundingSphere* m_pSphere_Original = nullptr;
+	vector<BoundingSphere*> m_pSphere;
+	vector<BoundingSphere*> m_pSphere_Original;
 
-	COL_INFO_SPHERE	m_tColInfo;
+	list<COL_INFO_SPHERE>	m_ColInfoList;
 
 
 };

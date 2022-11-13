@@ -15,16 +15,26 @@ CCollider_Sphere::CCollider_Sphere(_uint iGroupID)
 
 CCollider_Sphere::CCollider_Sphere(const CCollider_Sphere& origin)
 	: CCollider(origin)
-	, m_tColInfo(origin.m_tColInfo)
+	, m_ColInfoList(origin.m_ColInfoList)
 {
-	m_pSphere_Original = new BoundingSphere(_float3(0.f, 0.f, 0.f), m_tColInfo.fRadius);
-	m_pSphere = new BoundingSphere(*m_pSphere_Original);
+	_uint iIndex = 0;
+	for (auto& elem : m_ColInfoList)
+	{
+		m_pSphere_Original.push_back(new BoundingSphere(_float3(0.f, 0.f, 0.f), elem.fRadius));
+		m_pSphere.push_back(new BoundingSphere(*m_pSphere_Original.back()));
+	}
+	
+
+
 }
 
 CCollider_Sphere::~CCollider_Sphere()
 {
-	Safe_Delete(m_pSphere_Original);
-	Safe_Delete(m_pSphere);
+	for (auto& elem : m_pSphere_Original)
+		Safe_Delete(elem);
+
+	for (auto& elem : m_pSphere)
+		Safe_Delete(elem);
 
 }
 
@@ -36,13 +46,18 @@ CCollider_Sphere* CCollider_Sphere::Create(_uint iGroupID, _float fRadius, const
 		return nullptr;
 
 	pCollider->Set_ColIndex(iColIndex);
-	pCollider->m_tColInfo.vOffsetPos = vOffsetPos;
-	pCollider->m_tColInfo.fRadius = fRadius;
+
+	COL_INFO_SPHERE tInfo;
+	tInfo.fRadius = fRadius;
+	tInfo.vOffsetPos = vOffsetPos;
+	
+	pCollider->m_ColInfoList.push_back(tInfo);
+
 	pCollider->m_eColType = CT_SPHERE;
 	pCollider->m_matTransformation = matTransformation;
 	pCollider->m_pRefBone = pRefBone;
-	pCollider->m_pSphere_Original = new BoundingSphere(_float3(0.f, 0.f, 0.f), pCollider->m_tColInfo.fRadius);
-	pCollider->m_pSphere = new BoundingSphere(*pCollider->m_pSphere_Original);
+	pCollider->m_pSphere_Original.push_back(new BoundingSphere(_float3(0.f, 0.f, 0.f), fRadius));
+	pCollider->m_pSphere.push_back(new BoundingSphere(*(pCollider->m_pSphere_Original.back())));
 	if (FAILED(pCollider->Initialize_Prototype()))
 	{
 		SAFE_DELETE(pCollider);
@@ -51,6 +66,15 @@ CCollider_Sphere* CCollider_Sphere::Create(_uint iGroupID, _float fRadius, const
 	}
 
 	return pCollider;
+}
+
+void CCollider_Sphere::Add_Collider(_float fRadius, _float4 vOffsetPos)
+{
+	COL_INFO_SPHERE tInfo;
+	tInfo.fRadius = fRadius;
+	tInfo.vOffsetPos = vOffsetPos;
+
+	m_ColInfoList.push_back(tInfo);
 }
 
 HRESULT CCollider_Sphere::Initialize()
@@ -70,26 +94,44 @@ void CCollider_Sphere::Late_Tick()
 	vFinalMatrix.Identity();
 
 	_float4 vFinalPos = _float4(0.f, 0.f, 0.f);
-
+	_uint iIndex = 0;
 
 	//참조 뼈가 있을 경우엔 뼈 행렬 * 트랜스폼 * 월드행렬
 	if (m_pRefBone)
 	{
-		vFinalPos = m_tColInfo.vOffsetPos.MultiplyCoord(m_pRefBone->Get_BoneMatrix());
+		_float4x4 BoneMatrix = m_pRefBone->Get_BoneMatrix();
+
+		for (auto& elem : m_ColInfoList)
+		{
+			elem.vFinalPos = elem.vOffsetPos.MultiplyCoord(BoneMatrix);
+
+			(*((_float4*)&vFinalMatrix.m[WORLD_RIGHT])) *= elem.fRadius;
+			(*((_float4*)&vFinalMatrix.m[WORLD_UP])) *= elem.fRadius;
+			(*((_float4*)&vFinalMatrix.m[WORLD_LOOK])) *= elem.fRadius;
+			(*((_float4*)&vFinalMatrix.m[WORLD_POS])) = elem.vFinalPos;
+			m_pSphere_Original[iIndex]->Transform(*m_pSphere[iIndex++], vFinalMatrix.XMLoad());
+		}
 	}
 	else // 아닌경우 그냥 월드포스 _ 오프세솦스
 	{
-		vFinalPos = m_tColInfo.vOffsetPos.MultiplyCoord(m_pOwner->Get_Transform()->Get_WorldMatrix());
+		_float4x4 WorldMatrix = m_pRefBone->Get_BoneMatrix();
+
+		for (auto& elem : m_ColInfoList)
+		{
+			elem.vFinalPos = elem.vOffsetPos.MultiplyCoord(WorldMatrix);
+
+
+			(*((_float4*)&vFinalMatrix.m[WORLD_RIGHT])) *= elem.fRadius;
+			(*((_float4*)&vFinalMatrix.m[WORLD_UP])) *= elem.fRadius;
+			(*((_float4*)&vFinalMatrix.m[WORLD_LOOK])) *= elem.fRadius;
+			(*((_float4*)&vFinalMatrix.m[WORLD_POS])) = elem.vFinalPos;
+			m_pSphere_Original[iIndex]->Transform(*m_pSphere[iIndex++], vFinalMatrix.XMLoad());
+		}
+
 	}
 
-	m_tColInfo.vFinalPos = vFinalPos;
-
-
-	(*((_float4*)&vFinalMatrix.m[WORLD_RIGHT])) *= m_tColInfo.fRadius;
-	(*((_float4*)&vFinalMatrix.m[WORLD_UP])) *= m_tColInfo.fRadius;
-	(*((_float4*)&vFinalMatrix.m[WORLD_LOOK])) *= m_tColInfo.fRadius;
-	(*((_float4*)&vFinalMatrix.m[WORLD_POS])) = m_tColInfo.vFinalPos;
-	m_pSphere_Original->Transform(*m_pSphere, vFinalMatrix.XMLoad());
+	
+	
 
 }
 
@@ -111,7 +153,10 @@ HRESULT CCollider_Sphere::Render()
 
 	m_pBatch->Begin();
 
-	DX::Draw(m_pBatch, *m_pSphere, vColor);
+	for (auto& elem : m_pSphere)
+	{
+		DX::Draw(m_pBatch, *elem, vColor);
+	}
 
 	m_pBatch->End();
 

@@ -55,7 +55,7 @@ void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 		//닿은곳이 발 위치보다 아래면 (땅에 착지)
 		if (fMyFootY + 0.1f > fContactY)
 		{
-			m_bAir = false;
+			m_bAirTemp = false;
 
 		}
 
@@ -90,16 +90,21 @@ void CPhysXCharacter::Tick()
 	_float fSpeed = m_pPhysicsCom->Calculate_Speed();
 	_float fFallPower = m_pPhysicsCom->Calculate_FreeFall();
 
+	if (fFallPower == 0.f)
+		fFallPower = -0.1f;
+
 	_float4 vNewPos, vOutPlanePos, vFinalPos, vDir;
 
 	vDir = m_pPhysicsCom->Get_Physics().vDir;
 
 	_float4 vFall = _float4(0.f, 1.f, 0.f, 0.f) * fFallPower;
+
+
 	_float4 vMove = vDir * fSpeed * fDT(0);
 
 	vMove += vFall;
 
-	m_bAir = true;
+	m_bAirTemp = true;
 	m_pPxController->move(PxVec3(vMove.x, vMove.y, vMove.z), 0.f, fDT(0), m_tControllerFilters);
 
 
@@ -114,21 +119,29 @@ void CPhysXCharacter::Tick()
 	//
 
 	//땅에서 떨어진 상황
-	if (!m_bAir)
+
+
+
+	//공중에 있다는 판정
+	if (m_bAirTemp)
 	{
-		m_pPhysicsCom->Get_Physics().bAir = false;
-	}
-	else
-	{
+		//만약 땅에있었는데 공중에 있따는 판정이 나오면
 		if (!m_pPhysicsCom->Get_Physics().bAir)
 		{
 			m_pPhysicsCom->Set_Jump(0.f);
 		}
 
+
+
+	}
+	else // 땅에 닿음
+	{
+		//땅에 닿았으면 air false로
+		m_pPhysicsCom->Get_Physics().bAir = false;
+
+
 	}
 
-
-	//move하고, 
 
 	
 

@@ -57,7 +57,7 @@ protected:
 
 	PxControllerFilters		m_tControllerFilters;
 
-	_bool				m_bAir = false;
+	_bool				m_bAirTemp = false;
 
 protected:
 	void			Update_Colliders();

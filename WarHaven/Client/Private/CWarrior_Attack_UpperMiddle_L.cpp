@@ -50,11 +50,13 @@ HRESULT CWarrior_Attack_UpperMiddle_L::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 80;
+    m_iStateChangeKeyFrame = 60;
     
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+    m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+
     //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
     //m_vecAdjState.push_back(STATE_WALK_PLAYER);
     //m_vecAdjState.push_back(STATE_RUN_PLAYER);
@@ -62,7 +64,9 @@ HRESULT CWarrior_Attack_UpperMiddle_L::Initialize()
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
     //m_vecAdjState.push_back(STATE_WALK);
-
+    m_fMyAccel = 10.f;
+    m_fMyMaxLerp = 10.f;
+    m_fMaxSpeed = 1.f;
     return S_OK;
 }
 
@@ -74,6 +78,8 @@ void CWarrior_Attack_UpperMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimator, S
 
 STATE_TYPE CWarrior_Attack_UpperMiddle_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    Move(Get_Direction(), pOwner);
+
     return __super::Tick(pOwner, pAnimator);
 }
 

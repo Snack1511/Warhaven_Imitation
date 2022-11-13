@@ -56,7 +56,6 @@ private:
 
 private:
 	HRESULT	Is_InIndex(const _uint& iIdx);
-	_float4	Compute_ColPosition(CCollider* _pLeft, CCollider* _pRight);
 
 	map<_ulonglong, _bool>::iterator	Find_PrevColInfo(const _uint& _iLeftID, const _uint& _iRightID);
 

@@ -1,15 +1,13 @@
 #include "stdafx.h"
 #include "CWarrior_Attack_UpperMiddle_R.h"
 
-#include "GameInstance.h"
-
+#include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
-#include "Transform.h"
 #include "CColorController.h"
 
 
@@ -50,11 +48,12 @@ HRESULT CWarrior_Attack_UpperMiddle_R::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 80;
+    m_iStateChangeKeyFrame = 60;
     
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+    m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
     //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
     //m_vecAdjState.push_back(STATE_WALK_PLAYER);
     //m_vecAdjState.push_back(STATE_RUN_PLAYER);
@@ -62,6 +61,11 @@ HRESULT CWarrior_Attack_UpperMiddle_R::Initialize()
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
     //m_vecAdjState.push_back(STATE_WALK);
+
+    m_fMyAccel = 10.f;
+    m_fMyMaxLerp = 10.f;
+    m_fMaxSpeed = 2.f;
+    Add_KeyFrame(30, 0);
 
     return S_OK;
 }
@@ -76,13 +80,15 @@ void CWarrior_Attack_UpperMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimator, S
 		m_fAnimSpeed = 2.5f;
 
 
-
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CWarrior_Attack_UpperMiddle_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_bCanMove)
+    Move(Get_Direction(), pOwner);
+
     return __super::Tick(pOwner, pAnimator);
 }
 
@@ -105,4 +111,20 @@ STATE_TYPE CWarrior_Attack_UpperMiddle_R::Check_Condition(CUnit* pOwner, CAnimat
     }
    
     return STATE_END;
+}
+
+void CWarrior_Attack_UpperMiddle_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+        m_bCanMove = false;
+        pOwner->Get_PhysicsCom()->Set_MaxSpeed(10.f);
+        pOwner->Get_PhysicsCom()->Set_SpeedasMax();
+        pOwner->Set_DirAsLook();
+        break;
+
+    default:
+        break;
+    }
 }

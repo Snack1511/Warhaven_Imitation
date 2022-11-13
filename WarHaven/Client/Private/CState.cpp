@@ -270,8 +270,14 @@ void CState::Move(_uint iDirection, CUnit* pOwner)
 	vDir.y = 0.f;
 
 	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
 	pMyPhysicsCom->Set_Dir(vDir);
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+
+	
+
+
 }
 
 void CState::Physics_Setting(_float fSpeed, CUnit* pOwner)

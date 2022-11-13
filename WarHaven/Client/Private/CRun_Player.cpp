@@ -39,7 +39,7 @@ HRESULT CRun_Player::Initialize()
     m_iStateChangeKeyFrame = 0;
 
 	m_fInterPolationTime = 0.1f;
-
+	m_fMaxSpeed = 4.f;
 
     return S_OK;
 }
@@ -53,7 +53,6 @@ void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 	
-	pMyPhysicsCom->Get_Physics().bAir = false;
 
 	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	vCamLook.y = 0.f;
@@ -85,6 +84,8 @@ STATE_TYPE CRun_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	Move_Direction_Loop(pOwner, pAnimator, 0.1f);
 
+	if (pOwner->Is_Air())
+		return STATE_JUMPFALL_PLAYER_L;
 
     return __super::Tick(pOwner, pAnimator);
 

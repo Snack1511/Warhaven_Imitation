@@ -78,6 +78,7 @@ protected:
 
 	_float				m_fMyMaxLerp = 0.f; 
 	_float				m_fMyAccel = 0.f;
+	_float				m_fMaxSpeed = 0.f;
 
 	_int				m_iDirectionAnimIndex[STATE_DIRECTION_END];
 	_float				m_iDirectionAnimSpeed[STATE_DIRECTION_END];
@@ -91,10 +92,8 @@ protected:
 	_uint	Get_Direction();
 	
 	void	Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime);
-	void	Move_Direction_Begin(CUnit* pOwner, CAnimator* pAnimator, _bool bAnimTrigger = true);
 
 	void	Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float fInterPolationTime);
-	void	Change_Location_Begin(_uint iDirection, CAnimator* pAnimator);
 
 	void	Move(_uint iDirection, CUnit* pOwner);
 
