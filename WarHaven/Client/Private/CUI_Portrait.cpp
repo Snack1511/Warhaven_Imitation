@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "stdafx.h"
 #include "CUI_Portrait.h"
 #include "GameInstance.h"
 #include "CUI_Object.h"
@@ -49,7 +50,6 @@ HRESULT CUI_Portrait::Initialize_Prototype()
 
 HRESULT CUI_Portrait::Initialize()
 {
-
 	return S_OK;
 }
 
@@ -73,8 +73,7 @@ void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 
 void CUI_Portrait::Set_Portrait(_uint iIndex)
 {
-	if (m_bIsHero)
-		m_bIsHerosLerp = true;
+	m_bIsHeroLerp = true;
 
 	m_iPrvPort = m_iCurPort;
 	m_iCurPort = iIndex;
@@ -137,6 +136,7 @@ void CUI_Portrait::My_Tick()
 	m_fEffectValue -= fEffectSpeed;
 
 	Change_UserPort();
+	Enable_HeroPort();
 	Disable_HeroPort();
 }
 
@@ -273,15 +273,56 @@ void CUI_Portrait::Change_UserPort()
 
 void CUI_Portrait::Enable_HeroPort()
 {
+	if (!m_bIsHero)
+	{
+		if (m_iPrvPort >= 6)
+		{
+			if (m_bIsHeroLerp)
+			{
+				for (m_iHeroLerpEndCount; m_iHeroLerpEndCount >= Hero1;)
+				{
+					for (int j = 0; j < Type_End; ++j)
+					{
+						if (j == Key)
+						{
+							// 페이드아웃만
+							continue;
+						}
+
+						if (j == Effect)
+						{
+							// 페이드아웃만
+							continue;
+						}
+
+						m_arrPortraitUI[m_iHeroLerpEndCount][j]->Lerp_ScaleX(0.f, 43.f, 0.5f);
+					}
+
+					m_bIsHeroLerp = false;
+					break;
+				}
+			}
+			else
+			{
+				m_fAccTime += fDT(0);
+				if (m_fAccTime > 0.5f)
+				{
+					m_iHeroLerpEndCount--;
+					m_bIsHeroLerp = true;
+					m_fAccTime = 0.f;
+				}
+			}
+		}
+	}
 }
 
 void CUI_Portrait::Disable_HeroPort()
 {
 	if (m_bIsHero)
 	{
-		if (m_bIsHerosLerp)
+		if (m_bIsHeroLerp)
 		{
-			for (m_iHeroLerpCount; m_iHeroLerpCount < PortEnd;)
+			for (m_iHeroLerpStartCount; m_iHeroLerpStartCount < PortEnd;)
 			{
 				for (int j = 0; j < Type_End; ++j)
 				{
@@ -291,10 +332,16 @@ void CUI_Portrait::Disable_HeroPort()
 						continue;
 					}
 
-					m_arrPortraitUI[m_iHeroLerpCount][j]->Lerp_ScaleX(43.f, 0.f, 0.5f);
+					if (j == Effect)
+					{
+						// 페이드아웃만
+						continue;
+					}
+
+					m_arrPortraitUI[m_iHeroLerpStartCount][j]->Lerp_ScaleX(43.f, 0.f, 0.5f);
 				}
 
-				m_bIsHerosLerp = false;
+				m_bIsHeroLerp = false;
 				break;
 			}
 		}
@@ -303,8 +350,8 @@ void CUI_Portrait::Disable_HeroPort()
 			m_fAccTime += fDT(0);
 			if (m_fAccTime > 0.5f)
 			{
-				m_iHeroLerpCount++;
-				m_bIsHerosLerp = true;
+				m_iHeroLerpStartCount++;
+				m_bIsHeroLerp = true;
 				m_fAccTime = 0.f;
 			}
 		}

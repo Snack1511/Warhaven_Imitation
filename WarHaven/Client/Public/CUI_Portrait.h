@@ -5,7 +5,7 @@ BEGIN(Client)
 
 class CUI_Portrait final : public CUI_Wrapper
 {
-	enum PortIndex { User, Hero1, PortEnd = 5};
+	enum PortIndex { User, Hero1, Hero4 = 4, PortEnd = 5 };
 	enum UI_TYPE { BG, Port, Key, Effect, Type_End };
 
 	DECLARE_PROTOTYPE(CUI_Portrait);
@@ -44,8 +44,9 @@ private:
 	_bool m_bAbleRotationPort = false;
 	_uint m_iRotationCount = 0.f;
 
-	_bool m_bIsHerosLerp = false;
-	_uint m_iHeroLerpCount = Hero1;
+	_bool m_bIsHeroLerp = false;
+	_uint m_iHeroLerpStartCount = Hero1;
+	_uint m_iHeroLerpEndCount = Hero4;
 
 	_float m_fMinValue = 0.01f;
 
