@@ -212,6 +212,7 @@
     <ClCompile Include="..\private\CShader.cpp" />
     <ClCompile Include="..\private\CShader_Manager.cpp" />
     <ClCompile Include="..\private\CTarget_Manager.cpp" />
+    <ClCompile Include="..\Private\CTerrain_Renderer.cpp" />
     <ClCompile Include="..\private\CTimer.cpp" />
     <ClCompile Include="..\private\CTri_Instance.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
@@ -285,6 +286,7 @@
     <ClInclude Include="..\public\CShader.h" />
     <ClInclude Include="..\public\CShader_Manager.h" />
     <ClInclude Include="..\public\CTarget_Manager.h" />
+    <ClInclude Include="..\Public\CTerrain_Renderer.h" />
     <ClInclude Include="..\public\CTimer.h" />
     <ClInclude Include="..\public\CTri_Instance.h" />
     <ClInclude Include="..\Public\CustomFont.h" />

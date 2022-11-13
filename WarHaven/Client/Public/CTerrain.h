@@ -6,6 +6,8 @@ BEGIN(Engine)
 class CMesh_Terrain;
 class CCell;
 class CRenderer;
+class CTerrain_Renderer;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -45,7 +47,8 @@ public:
 	void Change_ShaderPass(_int PassIndex = 0);
 public:
 	CMesh_Terrain* Get_MeshTerrain();
-
+public:
+	void Update_TextureList(list<tuple<wstring, _int>>& PathList);
 #pragma region 내비관련
 protected:
 	HRESULT Ready_NaviCells(ifstream& readFile, CMesh_Terrain* pTerrain);
@@ -55,6 +58,7 @@ protected:
 protected:
 	CMesh_Terrain* m_pTerrainMesh = nullptr;
 	CRenderer* m_pRenderer = nullptr;
+	//CTerrain_Renderer* m_pRenderer = nullptr;
 #pragma region 내비관련
 protected:
 	vector<CCell*>	m_vecCells;

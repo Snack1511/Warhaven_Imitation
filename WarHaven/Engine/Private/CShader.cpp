@@ -77,7 +77,7 @@ HRESULT CShader::SetUp_ShaderResources(CTexture* pTextureCom, const char* pConst
 	if (FAILED(pTextureCom->Set_ShaderResourceView(this, pConstantName)))
 		return E_FAIL;
 
-
+	
 	return S_OK;
 }
 
@@ -123,10 +123,21 @@ HRESULT CShader::Set_ShaderResourceView(const char* pConstantName, ComPtr<ID3D11
 	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
 	if (nullptr == pVariable)
 		return E_FAIL;
-
 	ID3DX11EffectShaderResourceVariable* pVariable_SRV = pVariable->AsShaderResource();
-
+	
 	return pVariable_SRV->SetResource(pSRV.Get());
+}
+
+HRESULT CShader::Set_ShaderResourceViewArray(const char* pConstantName, ID3D11ShaderResourceView** ppSRVs, _int SRVsCount)
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+	if (nullptr == pVariable)
+		return E_FAIL;
+	ID3DX11EffectShaderResourceVariable* pVariable_SRV = pVariable->AsShaderResource();
+	return pVariable_SRV->SetResourceArray(ppSRVs, 0, SRVsCount);
 }
 
 HRESULT CShader::Begin(_uint iPassIndex)

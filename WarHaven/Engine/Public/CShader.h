@@ -37,7 +37,6 @@ public:
 
 public:
 	virtual HRESULT SetUp_ShaderResources(CTexture* pTextureCom, const char* pConstantName);
-
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
@@ -47,6 +46,7 @@ public:
 public:
 	HRESULT Set_RawValue(const char* pConstantName, void* pData, _uint iDataSize);
 	HRESULT Set_ShaderResourceView(const char* pConstantName, ComPtr<ID3D11ShaderResourceView> pSRV);
+	HRESULT Set_ShaderResourceViewArray(const char* pConstantName, ID3D11ShaderResourceView** ppSRVs, _int SRVsCount);
 	HRESULT Begin(_uint iPassIndex);
 
 public:

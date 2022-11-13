@@ -55,6 +55,11 @@ HRESULT CWindow_Map::Initialize()
     m_MeshRootNode.strFullPath = "../bin/resources/meshes/Map";
     Read_Folder_ForTree("../bin/resources/meshes/Map", m_MeshRootNode);
 
+    m_TileRootNode.strFolderPath = "../bin/resources/Textures";
+    m_TileRootNode.strFileName = "Terrain";
+    m_TileRootNode.strFullPath = "../bin/resources/Textures/Terrain";
+    Read_Folder_ForTree("../bin/resources/Textures/Terrain", m_TileRootNode);
+
     m_strPath = "../Bin/Data/MapData/";
     //콤보어레이 생성
     Ready_FileArray();
@@ -236,7 +241,7 @@ void CWindow_Map::Func_FileControl()
         //파일 탐색 트리노드
         if (ImGui::BeginListBox("##FBX_Files_List", ImVec2(360.f, 200.f)))
         {
-            Show_TreeData(m_MeshRootNode);
+            Show_TreeData(m_MeshRootNode, bind(&CWindow_Map::Routine_MeshSelect, this, placeholders::_1));
             ImGui::EndListBox();
         }
         DebugData("CurSelectedMeshFilePath", m_CurSelectedMeshFilePath);
@@ -684,14 +689,26 @@ void CWindow_Map::Func_DataControl()
     //z : Scale
     //x : Rotate
     //c : Position
-    _bool bPicked = (!m_bHoverWindow && m_bObjectPick);
-    if (bPicked)
+    //_bool bPicked = (!m_bHoverWindow && m_bObjectPick);
+    string strPickInfo = "";
+    if (PICK_OBJECT != m_ePickingType)
     {
-        ImGui::Text("Use_Picking");
+        strPickInfo = "Use_Picking";
     }
     else
     {
-        ImGui::Text("Unuse_Picking");
+        strPickInfo = "Unuse_Picking";
+    }
+    if (ImGui::Button(strPickInfo.c_str()))
+    {
+        if (PICK_OBJECT == m_ePickingType)
+        {
+            m_ePickingType = PICK_NONE;
+        }
+        else
+        {
+            m_ePickingType = PICK_OBJECT;
+        }
     }
     ImGui::Spacing();
 
@@ -709,23 +726,18 @@ void CWindow_Map::Func_DataControl()
     }
     ImGui::Spacing();
 
-    if (false == bPicked)
+    if (ImGui::Button("Confirm"))
     {
-        if (ImGui::Button("Confirm"))
-        {
-            Confirm_Data();
-        }
-        ImGui::Spacing();
+        m_ePickingType = PICK_NONE;
+        Confirm_Data();
     }
+    ImGui::Spacing();
 
     if (ImGui::CollapsingHeader("Object Matrix(Read-Only)", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         Show_ObjectData();
     }
     ImGui::Spacing();
-
-    if (bPicked)
-        return;
 
     if (ImGui::CollapsingHeader("Object Speed", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
@@ -843,10 +855,6 @@ void CWindow_Map::Select_DataControlFlag()
     if (KEY(C, TAP))
     {
         m_eControlType = CONTROL_SCALING;
-    }
-    if (KEY(V, TAP))
-    {
-        m_bObjectPick = !m_bObjectPick;
     }
 }
 
@@ -1585,53 +1593,57 @@ HRESULT CWindow_Map::Disable_DefaultTerrain()
 void CWindow_Map::Func_TerrainControl()
 {
     string strBrushOnOffText;
-    if (!m_bTerrainPick)
+    if (PICK_TERRAINVERT != m_ePickingType)
     {
-        strBrushOnOffText = "On Brush";
+        strBrushOnOffText = "On TerrainControl";
     }
     else
-        strBrushOnOffText = "Off Brush";
-
+        strBrushOnOffText = "Off TerrainControl";
 
     if (ImGui::Button(strBrushOnOffText.c_str()))
     {
-        m_bObjectPick = false;
-        m_bTerrainPick = !m_bTerrainPick;
+        if (PICK_TERRAINVERT == m_ePickingType)
+        {
+            m_ePickingType = PICK_NONE;
+        }
+        else
+            m_ePickingType = PICK_TERRAINVERT;
     }
     ImGui::Spacing();
 
-    _bool bPicked = (!m_bObjectPick);
+    if (PICK_TERRAINTEX != m_ePickingType)
+    {
+        strBrushOnOffText = "On ChangeTileTex";
+    }
+    else
+        strBrushOnOffText = "Off TerrainControl";
+
+    if (ImGui::Button(strBrushOnOffText.c_str()))
+    {
+        if (PICK_TERRAINTEX == m_ePickingType)
+        {
+            m_ePickingType = PICK_NONE;
+        }
+        else
+            m_ePickingType = PICK_TERRAINTEX;
+    }
+    ImGui::Spacing();
+
     ImGui::Text("CurPickedIndex(Ready - Only)");
     ImGui::InputInt3("##CurPickedIndex", (int*)&m_i3PickedIndex, ImGuiInputTextFlags_ReadOnly);
     ImGui::Spacing();
 
-    if (!bPicked)
-        return;
-
-    if (ImGui::Checkbox("Activate WireMode", &m_TerrainWireFrame))
+    switch(m_ePickingType)
     {
-        if(m_TerrainWireFrame)
-            m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_NAVIGATION);
-        else
-            m_pCurTerrain->Change_ShaderPass();
+    case PICK_TERRAINVERT:
+        Edit_TerrainVert();
+        break;
 
+    case PICK_TERRAINTEX:
+        Edit_TerrainTex();
+        break;
     }
-
-    if (ImGui::Button("Activate VertsNormal"))
-    {
-        m_pCurTerrain->Update_Normal();
-    }
-    ImGui::Text("Brush Type");
-    Make_Combo("##Brush Combo", m_arrBrushType, &m_iCurSelectTerrainBrush, bind(&CWindow_Map::EmptyFunction, this));
-    ImGui::Spacing();
-
-    ImGui::Text("Brush Size");
-    ImGui::DragFloat("##BrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.3f");
-    ImGui::Spacing();
-
-    ImGui::Text("Height Increase Value");
-    ImGui::DragFloat("##HeightIncrease", &m_fHeightRatio, 0.1f, 0.f, 10.f, "%.3f");
-    ImGui::Spacing();
+        
 
 }
 void CWindow_Map::Generate_Terrain()
@@ -1648,25 +1660,134 @@ void CWindow_Map::Generate_Terrain()
     MTT_DATA::Terrain_TUPLE TupleData = m_pCurTerrain->Get_TerrainData();
     m_CurTerrainData.Make_Data(TupleData);
 }
+void CWindow_Map::Change_TileTexture()
+{
+    if (PICK_TERRAINTEX!= m_ePickingType)
+        return;
+    if (nullptr != m_pCurTerrain)
+    {
+        m_vTileTypeFlag.x = _float(m_iSourIndex) / 100.f;
+        m_vTileTypeFlag.y = _float(m_iDestIndex) / 100.f;
+        _float4* TileFlags = m_pCurTerrain->Get_TerrainTileFlag();
+        _float3* pVertPos = m_pCurTerrain->Get_TerrainVerticesPos();
+        list<_uint> VertsList = Select_Vertices();
+        for (list<_uint>::value_type& Value : VertsList)
+        {
+            _float4 vVertPos
+                = _float4(
+                    (pVertPos+ Value)->x,
+                    m_OutPos.y,
+                    (pVertPos+ Value)->z,
+                    1.f);
+
+            _float VertLength = XMVectorGetX(XMVector3Length(vVertPos.XMLoad() - m_OutPos.XMLoad()));
+            _float fVertRatio = VertLength / (m_fBrushSize*0.5f);
+            fVertRatio += 1;
+            fVertRatio *= 0.5f;
+
+            TileFlags[Value] = m_vTileTypeFlag;
+            TileFlags[Value].z = (1.f - fVertRatio);
+            //클릭한 정점으로부터의 거리를 알아야댐
+
+
+            //Verts[Value] = Easing_Vertices(&Verts[Value]);
+        }
+        VertsList.clear();
+        m_pCurTerrain->Update_Vertices();
+    }
+
+}
 void CWindow_Map::Increase_Height()
 {
-    _float4(*func)(_float);
-    if (!m_bTerrainPick)
+    if (PICK_TERRAINVERT != m_ePickingType)
         return;
     if (nullptr != m_pCurTerrain)
     {
         _float3* Verts = m_pCurTerrain->Get_TerrainVerticesPos();
-        list<_float3*> VertsList = Select_Vertices();
-        for (list<_float3*>::value_type& Value : VertsList)
+        list<_uint> VertsList = Select_Vertices();
+        for (list<_uint>::value_type& Value : VertsList)
         {
-            (*Value) = Easing_Vertices(Value);
+            Verts[Value] = Easing_Vertices(&Verts[Value]);
         }
         VertsList.clear();
-        //Verts[m_i3PickedIndex._1] = Easing_Vertices(&Verts[m_i3PickedIndex._1]);
-        //Verts[m_i3PickedIndex._2] = Easing_Vertices(&Verts[m_i3PickedIndex._2]);
-        //Verts[m_i3PickedIndex._3] = Easing_Vertices(&Verts[m_i3PickedIndex._3]);
         m_pCurTerrain->Update_Vertices();
     }
+}
+void CWindow_Map::Edit_TerrainVert()
+{
+    if (ImGui::CollapsingHeader("Modify Vertex"))
+    {
+        if (ImGui::Checkbox("Activate WireMode", &m_TerrainWireFrame))
+        {
+            if (m_TerrainWireFrame)
+                m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_NAVIGATION);
+            else
+                m_pCurTerrain->Change_ShaderPass(2);
+
+        }
+        if (ImGui::Button("Activate VertsNormal"))
+        {
+            m_pCurTerrain->Update_Normal();
+        }
+    }
+    if (ImGui::CollapsingHeader("Brush Setting"))
+    {
+        ImGui::Text("Brush Type");
+        Make_Combo("##Brush Combo", m_arrBrushType, &m_iCurSelectTerrainBrush, bind(&CWindow_Map::EmptyFunction, this));
+        ImGui::Spacing();
+
+        ImGui::Text("Brush Size");
+        ImGui::DragFloat("##BrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.3f");
+        ImGui::Spacing();
+
+        ImGui::Text("Height Increase Value");
+        ImGui::DragFloat("##HeightIncrease", &m_fBrushWeight, 0.1f, 0.f, 10.f, "%.3f");
+        ImGui::Spacing();
+    }
+}
+void CWindow_Map::Edit_TerrainTex()
+{
+    if (ImGui::CollapsingHeader("Added TileTexture"))
+    {
+        DebugData("Debug_TextureName", m_CurSelectedTexFileName, ImVec4(0.f, 1.f, 0.f, 1.f));
+        DebugData("Debug_BaseTexPath", m_CurSelectedTileBaseTexName, ImVec4(0.f, 1.f, 0.f, 1.f));
+        DebugData("Debug_BaseTexPath", m_CurSelectedTileNormalTexName, ImVec4(0.f, 1.f, 0.f, 1.f));
+
+
+        ImGui::TextColored(ImVec4(1.f, 1.f, 1.f, 1.f), "Tile Texture");
+        if (ImGui::BeginListBox("##Tile_Texture_List", ImVec2(250.f, 100.f)))
+        {
+            Show_TreeData(m_TileRootNode, bind(&CWindow_Map::Routine_TileSelect, this, placeholders::_1));
+            ImGui::EndListBox();
+        }
+        ImGui::Spacing();
+    }
+    if (ImGui::CollapsingHeader("Brush Setting"))
+    {
+        ImGui::Text("Brush Type");
+        Make_Combo("##Brush Combo", m_arrBrushType, &m_iCurSelectTerrainBrush, bind(&CWindow_Map::EmptyFunction, this));
+        ImGui::Spacing();
+
+        ImGui::Text("Brush Size");
+        ImGui::DragFloat("##BrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.3f");
+        ImGui::Spacing();
+
+
+        ImGui::Text("Height Increase Value");
+        ImGui::DragFloat("##HeightIncrease", &m_fBrushWeight, 0.1f, 0.f, 100.f, "%.3f");
+        ImGui::Spacing();
+    }
+
+    if (ImGui::CollapsingHeader("Index Setting"))
+    {
+        string strSourDebug = to_string(m_iSourIndex);
+        string strDestDebug = to_string(m_iDestIndex);
+        ImGui::InputInt("##SourInput", &m_iSourIndex);
+        ImGui::InputInt("##DestInput", &m_iDestIndex);
+        DebugData("Debug_Sour", strSourDebug, ImVec4(1.f, 0.f, 0.f, 1.f));
+        DebugData("Debug_Dest", strDestDebug, ImVec4(0.f, 1.f, 0.f, 1.f));
+    }
+
 }
 void CWindow_Map::Add_Brush(const char* BrushName)
 {
@@ -1675,7 +1796,7 @@ void CWindow_Map::Add_Brush(const char* BrushName)
     m_arrBrushType.push_back(make_tuple(szTypeName, false));
 
 }
-list<_float3*> CWindow_Map::Select_Vertices()
+list<_uint> CWindow_Map::Select_Vertices()
 {
     _float3* Verts = m_pCurTerrain->Get_TerrainVerticesPos();
     _float fRount = m_fBrushSize * 0.5f;
@@ -1683,7 +1804,7 @@ list<_float3*> CWindow_Map::Select_Vertices()
     _int VertXNums = m_pCurTerrain->Get_TerrainVerticesX();
     _int VertZNums = m_pCurTerrain->Get_TerrainVerticesZ();
 
-    list<_float3*> VertsList;
+    list<_uint> VertsList;
     _int IndexWidStart = _int((m_OutPos.x /*+ TerrainPos*/) - fRount);
     IndexWidStart = (0 > IndexWidStart) ? 0 : IndexWidStart;
     IndexWidStart = (VertXNums - 1 < IndexWidStart) ? VertXNums - 1 : IndexWidStart;
@@ -1705,9 +1826,9 @@ list<_float3*> CWindow_Map::Select_Vertices()
     {
         for (_int j = IndexWidStart; j <= IndexWidEnd; ++j)
         {
-            _int Index = i * VertXNums + j;
+            _uint Index = i * VertXNums + j;
             if(Check_InBrush(&Verts[Index]))
-                VertsList.push_back(&Verts[Index]);
+                VertsList.push_back(Index);
         }
     }
 
@@ -1737,16 +1858,16 @@ _float3 CWindow_Map::Easing_Vertices(_float3* pVertPos)
     _float4 vVertPos 
         = _float4(
             pVertPos->x, 
-            pVertPos->y, 
+            m_OutPos.y, 
             pVertPos->z, 
             1.f);
 
     _float VertLength = XMVectorGetX(XMVector3Length(vVertPos.XMLoad() - m_OutPos.XMLoad()));
     _float fVertRatio = VertLength / (m_fBrushSize*0.5f);
     _float4 vStartPos = vVertPos;
-    _float4 vTargetPos = _float4(vVertPos.x, vVertPos.y + m_fHeightRatio, vVertPos.z, vVertPos.w);
+    _float4 vTargetPos = _float4(vVertPos.x, vVertPos.y + m_fBrushWeight, vVertPos.z, vVertPos.w);
     _float4 vOut;
-    CGame_Manager_MJ::Get_Instance()->Easing_Vert(0, &vOut, vStartPos, vTargetPos, 1- fVertRatio);
+    CGame_Manager_MJ::Get_Instance()->Easing_Vert(m_iCurSelectTerrainBrush, &vOut, vStartPos, vTargetPos, 1- fVertRatio);
     _float3 vReturn = _float3(vOut.x, vOut.y, vOut.z);
     return vReturn;
 }
@@ -1760,15 +1881,24 @@ _bool CWindow_Map::Calculate_Pick()
 
     if (KEY(LBUTTON, HOLD))
     {
+        if (PICK_NONE == m_ePickingType)
+            return bPicked;
         if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &m_i3PickedIndex, &m_OutPos, &m_OutNorm))
         {
-            if (m_bObjectPick)
+            switch (m_ePickingType)
             {
+            case PICK_OBJECT:
                 Place_Object();
                 Change_Object_UpDir();
-            }
-            else
+                break;
+            case PICK_TERRAINVERT:
                 Increase_Height();
+                break;
+            case PICK_TERRAINTEX:
+                Change_TileTexture();
+                break;
+            }
+
             bPicked = true;
         }
     }
@@ -1794,7 +1924,9 @@ void CWindow_Map::Create_SubWindow(const char* szWindowName, const ImVec2& Pos, 
     //ImGui::SetNextWindowSize(Size);
 
     ImGui::Begin(szWindowName, &Open, WindowFlags);
-    m_bHoverWindow = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow);
+    m_bHoverWindow = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)
+        || ImGui::IsAnyItemHovered();
+        //&& ImGui::IsMouseClicked(ImGuiMouseButton_Left);
 
     func(*this);
     ImGui::End();
@@ -1834,17 +1966,14 @@ void CWindow_Map::Clear_TupleData(vector<tuple<char*, bool>>& ArrData)
     }
     ArrData.clear();
 }
-void CWindow_Map::DebugData(const char* szTitleName, string& strData)
+void CWindow_Map::DebugData(const char* szTitleName, string& strData, ImVec4 Color)
 {
     char szTitle[MAXCHAR] = "";
     strcat_s(szTitle, szTitleName);
     strcat_s(szTitle, " : ");
-    ImGui::Text(szTitle);
+    ImGui::TextColored(Color, szTitle);
     ImGui::SameLine();
-    char szSaveFilePath[MAX_PATH] = "";
-    strcpy_s(szSaveFilePath, strData.c_str());
-    strcat_s(szSaveFilePath, "\0");
-    ImGui::Text(szSaveFilePath);
+    ImGui::TextColored(Color, strData.c_str());
 }
 list<string> CWindow_Map::Read_Folder_ToStringList(const char* pFolderPath)
 {
@@ -1909,7 +2038,7 @@ void CWindow_Map::Read_Folder_ForTree(const char* pFolderPath, TREE_DATA& tRootT
 
     }
 }
-void CWindow_Map::Show_TreeData(TREE_DATA& tTree)
+void CWindow_Map::Show_TreeData(TREE_DATA& tTree, function<void(TREE_DATA&)> SelectFunction)
 {
     if (!tTree.vecChildren.empty())
     {
@@ -1917,7 +2046,7 @@ void CWindow_Map::Show_TreeData(TREE_DATA& tTree)
         {
             for (auto& tTreeData : tTree.vecChildren)
             {
-                Show_TreeData(tTreeData);
+                Show_TreeData(tTreeData, SelectFunction);
             }
 
             ImGui::TreePop();
@@ -1926,79 +2055,7 @@ void CWindow_Map::Show_TreeData(TREE_DATA& tTree)
     }
     else
     {
-        _bool bSelected = false;
-
-        if (m_CurSelectedMeshFilePath == tTree.strFullPath)
-        {
-            bSelected = true;
-        }
-        for (auto& strPath : m_vecSelectedMeshFilePath)
-        {
-            if (strPath == tTree.strFullPath)
-                bSelected = true;
-        }
-
-        if (ImGui::Selectable(tTree.strFileName.c_str(), bSelected))
-        {
-            m_vecSelectedMeshFilePath.clear();
-            m_vecSelectedMeshName.clear();
-
-            string prevFilePath = m_CurSelectedMeshFilePath;
-            m_CurSelectedMeshFilePath = tTree.strFullPath;
-            string Ext(".fbx");
-            m_CurSelectedMeshName = CutOut_Ext(tTree.strFileName, Ext);
-            if (KEY(LSHIFT, HOLD))
-            {
-                // 1. 새로운 이터레이터로 prevPath 위치로 가야함
-                filesystem::directory_iterator shiftFileIter(tTree.strFolderPath);
-                string strshiftFullPath;
-
-                wstring wstrPath = shiftFileIter->path().relative_path();
-                strshiftFullPath = CFunctor::To_String(wstrPath);
-
-                while (strshiftFullPath != prevFilePath)
-                {
-                    shiftFileIter++;
-                    wstrPath = shiftFileIter->path().relative_path();
-                    strshiftFullPath = CFunctor::To_String(wstrPath);
-                }
-
-                // 2. prevPath부터 curPath까지 모두 선택
-
-                for (; strshiftFullPath != m_CurSelectedMeshFilePath; ++shiftFileIter)
-                {
-                    if (shiftFileIter == filesystem::end(shiftFileIter))
-                        break;
-
-
-
-                    const filesystem::directory_entry& shiftentry = *shiftFileIter;
-
-                    wstring wstrshiftPath = shiftentry.path().relative_path();
-                    strshiftFullPath = strshiftFullPath.assign(wstrshiftPath.begin(), wstrshiftPath.end());
-
-                    _int iFind = (_int)strshiftFullPath.rfind("\\") + 1;
-                    string strFileName = strshiftFullPath.substr(iFind, strshiftFullPath.length() - iFind);
-
-                    _int iFindExt = (int)strshiftFullPath.rfind(".") + 1;
-                    string strExtName = strshiftFullPath.substr(iFindExt, strshiftFullPath.length() - iFindExt);
-
-                    //if (strExtName == "dat")
-                        //continue;
-
-                    m_vecSelectedMeshFilePath.push_back(strshiftFullPath);
-                    m_vecSelectedMeshName.push_back(strFileName);
-                }
-
-            }
-            else
-            {
-                m_vecSelectedMeshFilePath.push_back(m_CurSelectedMeshFilePath);
-                m_vecSelectedMeshName.push_back(m_CurSelectedMeshName);
-            }
-
-
-        }
+        SelectFunction(tTree);
     }
 }
 string CWindow_Map::CutOut_Ext(string& Origin, string& Ext)
@@ -2007,6 +2064,105 @@ string CWindow_Map::CutOut_Ext(string& Origin, string& Ext)
     size_t ExtLength = Ext.size() + 1;
     strReturn = strReturn.substr(0, strReturn.size() - ExtLength);
     return strReturn;
+}
+
+void CWindow_Map::Routine_MeshSelect(TREE_DATA& tTreeNode)
+{
+    _bool bSelected = false;
+
+    if (m_CurSelectedMeshFilePath == tTreeNode.strFullPath)
+    {
+        bSelected = true;
+    }
+    for (auto& strPath : m_vecSelectedMeshFilePath)
+    {
+        if (strPath == tTreeNode.strFullPath)
+            bSelected = true;
+    }
+
+    if (ImGui::Selectable(tTreeNode.strFileName.c_str(), bSelected))
+    {
+        m_vecSelectedMeshFilePath.clear();
+        m_vecSelectedMeshName.clear();
+
+        string prevFilePath = m_CurSelectedMeshFilePath;
+        m_CurSelectedMeshFilePath = tTreeNode.strFullPath;
+        string Ext(".fbx");
+        m_CurSelectedMeshName = CutOut_Ext(tTreeNode.strFileName, Ext);
+        if (KEY(LSHIFT, HOLD))
+        {
+            // 1. 새로운 이터레이터로 prevPath 위치로 가야함
+            filesystem::directory_iterator shiftFileIter(tTreeNode.strFolderPath);
+            string strshiftFullPath;
+
+            wstring wstrPath = shiftFileIter->path().relative_path();
+            strshiftFullPath = CFunctor::To_String(wstrPath);
+
+            while (strshiftFullPath != prevFilePath)
+            {
+                shiftFileIter++;
+                wstrPath = shiftFileIter->path().relative_path();
+                strshiftFullPath = CFunctor::To_String(wstrPath);
+            }
+
+            // 2. prevPath부터 curPath까지 모두 선택
+
+            for (; strshiftFullPath != m_CurSelectedMeshFilePath; ++shiftFileIter)
+            {
+                if (shiftFileIter == filesystem::end(shiftFileIter))
+                    break;
+
+
+
+                const filesystem::directory_entry& shiftentry = *shiftFileIter;
+
+                wstring wstrshiftPath = shiftentry.path().relative_path();
+                strshiftFullPath = strshiftFullPath.assign(wstrshiftPath.begin(), wstrshiftPath.end());
+
+                _int iFind = (_int)strshiftFullPath.rfind("\\") + 1;
+                string strFileName = strshiftFullPath.substr(iFind, strshiftFullPath.length() - iFind);
+
+                _int iFindExt = (int)strshiftFullPath.rfind(".") + 1;
+                string strExtName = strshiftFullPath.substr(iFindExt, strshiftFullPath.length() - iFindExt);
+
+                //if (strExtName == "dat")
+                    //continue;
+
+                m_vecSelectedMeshFilePath.push_back(strshiftFullPath);
+                m_vecSelectedMeshName.push_back(strFileName);
+            }
+
+        }
+        else
+        {
+            m_vecSelectedMeshFilePath.push_back(m_CurSelectedMeshFilePath);
+            m_vecSelectedMeshName.push_back(m_CurSelectedMeshName);
+        }
+
+
+    }
+}
+
+void CWindow_Map::Routine_TileSelect(TREE_DATA& tTreeNode)
+{
+    _bool bSelected = false;
+
+    if (m_CurSelectTileTexturePath == tTreeNode.strFullPath)
+    {
+        bSelected = true;
+    }
+    if (ImGui::Selectable(tTreeNode.strFileName.c_str(), bSelected))
+    {
+        //m_vecSelectedMeshFilePath.clear();
+        //m_vecSelectedMeshName.clear();
+        m_CurSelectTileTexturePath = tTreeNode.strFullPath;
+        m_CurSelectedTexFileName = tTreeNode.strFileName;
+        _int CutLength = m_CurSelectedTexFileName.rfind("_") - 1;
+        m_CurSelectedTexFileName = m_CurSelectedTexFileName.substr(0, CutLength);
+        m_CurSelectedTileBaseTexName = m_CurSelectedTexFileName + string("_B.dds");
+        m_CurSelectedTileNormalTexName = m_CurSelectedTexFileName + string("_N.dds");
+
+    }
 }
 
 #pragma endregion

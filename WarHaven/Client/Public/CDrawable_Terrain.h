@@ -25,6 +25,7 @@ public:
 	_uint& Get_TerrainVerticesX() {return m_iTerrainVertX;};
 	_uint& Get_TerrainVerticesZ() {return m_iTerrainVertZ;};
 	_float3* Get_TerrainVerticesPos();
+	_float4* Get_TerrainTileFlag();
 	Terrain_TUPLE Get_TerrainData();
 	void Update_Vertices();
 	void Update_Normal();

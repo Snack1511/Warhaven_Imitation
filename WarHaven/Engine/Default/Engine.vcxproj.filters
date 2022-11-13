@@ -238,6 +238,9 @@
     <Filter Include="02. Singleton\02. Design\19. PhysX_Manager\BoneCollider">
       <UniqueIdentifier>{29176b55-122f-467f-bb3d-fd7465e6e5b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\03. Component\03. Renderer\TerrainRenderer">
+      <UniqueIdentifier>{06bdda19-c2ba-43e1-bc92-13b8e2c21d32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
@@ -452,6 +455,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CBoneCollider.cpp">
       <Filter>02. Singleton\02. Design\19. PhysX_Manager\BoneCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrain_Renderer.cpp">
+      <Filter>03. Instances\03. Component\03. Renderer\TerrainRenderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1252,6 +1258,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\PhysX\PxVisualizationParameter.h">
       <Filter>99. Default\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTerrain_Renderer.h">
+      <Filter>03. Instances\03. Component\03. Renderer\TerrainRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

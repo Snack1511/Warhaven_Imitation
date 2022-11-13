@@ -11,7 +11,7 @@
 #include "CFader.h"
 #include "CMesh_Rect.h"
 #include "CMesh_Terrain.h"
-
+#include "CTerrain_Renderer.h"
 
 #include "CCell.h"
 
@@ -81,14 +81,27 @@ HRESULT CDrawable_Terrain::Initialize_Prototype()
     pShader->Initialize();
     Add_Component(pShader);
 
-    CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
-    Add_Component(pRenderer);
+    //CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
+    //Add_Component(pRenderer);
+    //m_pRenderer = pRenderer;
+
+    CTerrain_Renderer* pRenderer = CTerrain_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
+    Add_Component<CRenderer>(pRenderer);
     m_pRenderer = pRenderer;
 
-    CTexture* pTexture = CTexture::Create(0, m_strTileTexturePath.c_str(), 1);
+    //CTexture* pTexture = CTexture::Create(0, m_strTileTexturePath.c_str(), 1);
+    //Add_Component(pTexture);
+    //D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Textures\Terrain\LandScape\Ash
+    wstring strTestBasePath = L"../bin/resources/Textures/Terrain/LandScape/";
+    wstring strTestFirstTexturePath = strTestBasePath + L"Ash/T_Landscape_Ash_Ash01a_01a_B.dds";
+    wstring strTestSecondTexturePath = strTestBasePath + L"Grass/T_Landscape_Grass_Grass03a_01b_B.dds";
+    CTexture* pTexture = CTexture::Create(0, strTestFirstTexturePath.c_str(), 1);
     Add_Component(pTexture);
 
+    pTexture = CTexture::Create(0, strTestSecondTexturePath.c_str(), 1);
+    Add_Component(pTexture);
 
+    Change_ShaderPass(2);
     return S_OK;
 }
 
@@ -136,6 +149,13 @@ _float3* CDrawable_Terrain::Get_TerrainVerticesPos()
     if (nullptr == m_pTerrainMesh)
         return nullptr;
     return m_pTerrainMesh->Get_VerticesPos();
+}
+
+_float4* CDrawable_Terrain::Get_TerrainTileFlag()
+{
+    if (nullptr == m_pTerrainMesh)
+        return nullptr;
+    return m_pTerrainMesh->Get_VerticesColor();
 }
 
 CDrawable_Terrain::Terrain_TUPLE CDrawable_Terrain::Get_TerrainData()

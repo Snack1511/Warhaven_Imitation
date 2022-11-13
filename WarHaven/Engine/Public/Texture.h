@@ -40,7 +40,6 @@ public:
 	vector<TEXTUREDESC>& Get_vecTexture() { return m_SRVs; }
 	HRESULT Set_ShaderResourceView(class CShader* pShader, const char* pConstantName);
 	void	Set_ShaderResource(class CShader* pShader, const char* pConstantName, _uint iIdx);
-
 public:
 	HRESULT	Add_Texture(const _tchar* pTextureFilePath, _bool bFront = false);
 	void	Pop_Texture();
