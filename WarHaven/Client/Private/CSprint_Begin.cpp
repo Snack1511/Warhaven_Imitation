@@ -55,16 +55,14 @@ HRESULT CSprint_Begin::Initialize()
 	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_PLAYER);
 
 
-	Add_KeyFrame(25, 0);
+	Add_KeyFrame(10, 0);
 
     return S_OK;
 }
 
 void CSprint_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
-	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.4f;
-	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
+	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, false);
 
 
 	if (ePrevType == STATE_RUN_BEGIN_PLAYER_L || ePrevType == STATE_RUN_BEGIN_PLAYER_R)
@@ -77,7 +75,6 @@ void CSprint_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 	}
 
 
-	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.1F;
 
 
 
@@ -100,6 +97,7 @@ STATE_TYPE CSprint_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
 	pMyPhysicsCom->Set_Dir(vDir);
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
 
 
 
@@ -110,7 +108,7 @@ STATE_TYPE CSprint_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CSprint_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
+	//pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
     /* 할거없음 */
 }
 
@@ -136,17 +134,12 @@ void CSprint_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const 
 	case 0:
 	{
 
+		//CTransform* pMyTransform = pOwner->Get_Transform();
+		//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
 
-		CTransform* pMyTransform = pOwner->Get_Transform();
-		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-
-
-		//최대속도 설정
-		pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
-
-		m_fMyAccel = 10.f;
-
+		//m_fMyAccel = 10.f;
+		//pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
 	}
 

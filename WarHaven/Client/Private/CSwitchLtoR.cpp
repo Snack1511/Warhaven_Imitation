@@ -39,7 +39,7 @@ HRESULT CSwitchLtoR::Initialize()
     m_iAnimIndex = 27;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_SWITCH_L_TO_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_iStateChangeKeyFrame = 31;
+    m_iStateChangeKeyFrame = 10;
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.2f;
@@ -47,8 +47,13 @@ HRESULT CSwitchLtoR::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 4.2f;
 
-    m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-    m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+	m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
+	m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
+	m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+
 
     return S_OK;
 }

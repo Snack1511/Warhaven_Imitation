@@ -41,7 +41,7 @@
 #include "CWarrior_Attack_Sting_L.h"
 #include "CWarrior_Attack_Sting_R.h"
 
-#include "CWarrior_Attack_Takedown.h"
+#include "CWarrior_Attack_VerticalCut.h"
 
 #include "CSprint_Begin.h"
 #include "CSprint_Loop.h"
@@ -68,6 +68,9 @@
 #include "CGuard_Begin_Player.h"
 #include "CGuard_Loop_Player.h"
 #include "CGuard_End_Player.h"
+
+#include "CBounce_Player_L.h"
+#include "CBounce_Player_R.h"
 
 #include "CAI_SandBack.h"
 
@@ -120,7 +123,7 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_ATTACK_STING_PLAYER_L] = CWarrior_Attack_Sting_L::Create();
 	m_arrStates[STATE_ATTACK_STING_PLAYER_R] = CWarrior_Attack_Sting_R::Create();
 
-	m_arrStates[STATE_ATTACK_VERTICAL_CUT] = CWarrior_Attack_Takedown::Create();
+	m_arrStates[STATE_ATTACK_VERTICALCUT] = CWarrior_Attack_VerticalCut::Create();
 	
 
 	m_arrStates[STATE_SPRINT_BEGIN_PLAYER] = CSprint_Begin::Create();
@@ -144,13 +147,9 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_GUARD_END_PLAYER] = CGuard_End_Player::Create();
 	m_arrStates[STATE_GUARD_CANCEL_PLAYER] = CGuard_Cancel_Player::Create();
 
-
+	m_arrStates[STATE_BOUNCE_PLAYER_L] = CBounce_Player_L::Create();
+	m_arrStates[STATE_BOUNCE_PLAYER_R] = CBounce_Player_R::Create();
 	
-	
-	
-	
-
-
 //	m_arrStates[STATE_WARRIOR_OXEN] = CWarrior_Oxen::Create();
 	m_arrStates[STATE_WARRIOR_GUARDBREAK] = CWarrior_GuardBreak::Create();
 

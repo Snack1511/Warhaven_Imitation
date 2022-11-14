@@ -50,14 +50,12 @@ HRESULT CWalk_Player_L::Initialize()
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
-
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+	m_vecAdjState.push_back(STATE_JUMP_PLAYER_L);
 
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
 	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
 	m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
-
-
 
     m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 33;
     m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 32;

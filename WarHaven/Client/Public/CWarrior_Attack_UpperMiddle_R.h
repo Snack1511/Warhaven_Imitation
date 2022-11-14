@@ -27,12 +27,6 @@ private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
-private:
-	_bool	m_bCanMove = true;
-
-	_int	m_iFinishedFrame = 0; // Finished 가 3번 호출되면 황소베기가 취소된다.
-	_float  m_fCreateTime = 0.016f;
-	_float  m_fCreateTimeAcc = 0.f;
 	
 };
 

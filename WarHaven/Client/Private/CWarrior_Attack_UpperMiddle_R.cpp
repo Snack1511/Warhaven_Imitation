@@ -48,12 +48,19 @@ HRESULT CWarrior_Attack_UpperMiddle_R::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 60;
+    m_iStateChangeKeyFrame = 50;
     
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
     m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+
+	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_L);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_L);
+
     //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
     //m_vecAdjState.push_back(STATE_WALK_PLAYER);
     //m_vecAdjState.push_back(STATE_RUN_PLAYER);
@@ -64,8 +71,10 @@ HRESULT CWarrior_Attack_UpperMiddle_R::Initialize()
 
     m_fMyAccel = 10.f;
     m_fMyMaxLerp = 10.f;
-    m_fMaxSpeed = 2.f;
+    m_fMaxSpeed = 0.8f;
+
     Add_KeyFrame(30, 0);
+	Add_KeyFrame(34, 1);
 
     return S_OK;
 }
@@ -86,15 +95,26 @@ void CWarrior_Attack_UpperMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimator, S
 
 STATE_TYPE CWarrior_Attack_UpperMiddle_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (m_bCanMove)
-    Move(Get_Direction(), pOwner);
+	
+	
+    if (m_bMoveTrigger)
+		Move(Get_Direction(), pOwner);
+
+	if (m_bAttackTrigger)
+	{
+		// 공격 진입
+		if (pOwner->Is_Weapon_R_Collision())
+			return STATE_BOUNCE_PLAYER_R;
+
+	}
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CWarrior_Attack_UpperMiddle_R::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+
 }
 
 STATE_TYPE CWarrior_Attack_UpperMiddle_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -118,11 +138,17 @@ void CWarrior_Attack_UpperMiddle_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* p
     switch (iSequence)
     {
     case 0:
-        m_bCanMove = false;
+		m_bMoveTrigger = false;
         pOwner->Get_PhysicsCom()->Set_MaxSpeed(10.f);
         pOwner->Get_PhysicsCom()->Set_SpeedasMax();
         pOwner->Set_DirAsLook();
         break;
+
+	case 1:
+		m_bAttackTrigger = true;
+
+		//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		break;
 
     default:
         break;

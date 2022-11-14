@@ -65,21 +65,15 @@ HRESULT CIdle_Player_L::Initialize()
     m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
     m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
 
-    m_vecAdjState.push_back(STATE_ATTACK_VERTICAL_CUT);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+
+	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_L);
 
 
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK_PLAYER);
-    //m_vecAdjState.push_back(STATE_RUN_PLAYER);
-    //m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
-    //m_vecAdjState.push_back(STATE_JUMP_PLAYER);
-    //m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
 
     return S_OK;
 }

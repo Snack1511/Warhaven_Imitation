@@ -118,11 +118,6 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
         CTransform* pMyTransform = pOwner->Get_Transform();
         CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-
-
-        //юс╫ц
-        pMyPhysicsCom->Get_Physics().bAir = false;
-
         _float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
         vCamLook.y = 0.f;
 

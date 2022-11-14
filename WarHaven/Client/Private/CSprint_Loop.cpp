@@ -73,9 +73,6 @@ void CSprint_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	//юс╫ц
-	pMyPhysicsCom->Get_Physics().bAir = false;
-
 	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	vCamLook.y = 0.f;
 

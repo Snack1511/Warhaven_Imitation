@@ -162,13 +162,41 @@ _uint CState::Get_Direction()
 	return STATE_DIRECTION_END;
 }
 
-void CState::Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime)
+_uint CState::Get_Direction_Four()
+{
+	if (KEY(W, HOLD))
+	{
+		return STATE_DIRECTION_N;
+	}
+
+	// Key(CTRL + S)
+	else if (KEY(S, HOLD))
+	{
+		return STATE_DIRECTION_S;
+	}
+
+	// Key(CTRL + A)
+	else if (KEY(A, HOLD))
+	{
+		return STATE_DIRECTION_W;
+	}
+
+	// Key(CTRL + D)
+	else if (KEY(D, HOLD))
+	{
+		return STATE_DIRECTION_E;
+	}
+
+	return STATE_DIRECTION_END;
+}
+
+_uint CState::Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime)
 {
 	_uint iDirection = Get_Direction();
 
 	Change_Location_Loop(iDirection, pAnimator, fInterPolationTime);
 
-	Move(iDirection, pOwner);
+	return Move(iDirection, pOwner);
 
 }
 
@@ -192,7 +220,7 @@ void CState::Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float
 
 
 
-void CState::Move(_uint iDirection, CUnit* pOwner)
+_uint CState::Move(_uint iDirection, CUnit* pOwner)
 {
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -275,18 +303,17 @@ void CState::Move(_uint iDirection, CUnit* pOwner)
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
 
-	
+	return iDirection;
 
 
 }
 
-void CState::Physics_Setting(_float fSpeed, CUnit* pOwner)
+void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax)
 {
+
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	//임시
-	pMyPhysicsCom->Get_Physics().bAir = false;
 
 	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	vCamLook.y = 0.f;
@@ -298,10 +325,14 @@ void CState::Physics_Setting(_float fSpeed, CUnit* pOwner)
 	pMyPhysicsCom->Set_Dir(vCamLook);
 
 	//최대속도 설정
-	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
-	pMyPhysicsCom->Set_SpeedasMax();
-	
+
+	pMyPhysicsCom->Set_MaxSpeed(fSpeed);
+
+	if(bSpeedasMax)
+		pMyPhysicsCom->Set_SpeedasMax();
+
 }
+
 
 void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint eEventType)
 {

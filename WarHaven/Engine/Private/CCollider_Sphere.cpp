@@ -75,6 +75,8 @@ void CCollider_Sphere::Add_Collider(_float fRadius, _float4 vOffsetPos)
 	tInfo.vOffsetPos = vOffsetPos;
 
 	m_ColInfoList.push_back(tInfo);
+	m_pSphere_Original.push_back(new BoundingSphere(_float3(0.f, 0.f, 0.f), fRadius));
+	m_pSphere.push_back(new BoundingSphere(*(m_pSphere_Original.back())));
 }
 
 HRESULT CCollider_Sphere::Initialize()
@@ -103,6 +105,7 @@ void CCollider_Sphere::Late_Tick()
 
 		for (auto& elem : m_ColInfoList)
 		{
+			vFinalMatrix.Identity();
 			elem.vFinalPos = elem.vOffsetPos.MultiplyCoord(BoneMatrix);
 
 			(*((_float4*)&vFinalMatrix.m[WORLD_RIGHT])) *= elem.fRadius;
@@ -114,10 +117,12 @@ void CCollider_Sphere::Late_Tick()
 	}
 	else // 아닌경우 그냥 월드포스 _ 오프세솦스
 	{
-		_float4x4 WorldMatrix = m_pRefBone->Get_BoneMatrix();
+		_float4x4 WorldMatrix = m_pOwner->Get_Transform()->Get_WorldMatrix();
 
 		for (auto& elem : m_ColInfoList)
 		{
+			vFinalMatrix.Identity();
+
 			elem.vFinalPos = elem.vOffsetPos.MultiplyCoord(WorldMatrix);
 
 
@@ -138,6 +143,10 @@ void CCollider_Sphere::Late_Tick()
 #ifdef _DEBUG
 HRESULT CCollider_Sphere::Render()
 {
+	for (auto& elem : m_pSphere)
+	{
+
+	
 	DEVICE_CONTEXT->GSSetShader(nullptr, nullptr, 0);
 
 	DEVICE_CONTEXT->IASetInputLayout(m_pInputLayout.Get());
@@ -151,14 +160,11 @@ HRESULT CCollider_Sphere::Render()
 
 	_vector		vColor = m_bCol == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f);
 
-	m_pBatch->Begin();
-
-	for (auto& elem : m_pSphere)
-	{
+		m_pBatch->Begin();
 		DX::Draw(m_pBatch, *elem, vColor);
+		m_pBatch->End();
 	}
 
-	m_pBatch->End();
 
 	return S_OK;
 }

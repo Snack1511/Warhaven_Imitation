@@ -243,6 +243,17 @@ void CUnit::OnDisable()
 
 }
 
+//void CUnit::Set_Enable_WeaponCol(_bool bEnable)
+//{
+//	for (int i = 0; i < WEAPONCOLLIDER_END; ++i)
+//	{
+//		if (bEnable)
+//			ENABLE_COMPONENT(m_pUnitCollider[i]);
+//		else
+//			DISABLE_COMPONENT(m_pUnitCollider[i]);
+//	}
+//}
+
 void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 {
 	if (!m_pUnitCollider[ePartType])
@@ -254,24 +265,23 @@ void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 		DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
 }
 
-void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, _uint iNumCollider, _float4x4 matModelTransformation, _bool bEnable, CHierarchyNode* pRefBone)
+void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, _uint iNumCollider, _float4x4 matTransformation, _bool bEnable, CHierarchyNode* pRefBone)
 {
+	if (m_pUnitCollider[ePartType])
+		return;
+
+	m_pUnitCollider[ePartType] = m_pUnitCollider[ePartType] = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, arrColliderDesc[0].fRadius, arrColliderDesc[0].eColType, arrColliderDesc[0].vOffsetPos,
+		matTransformation, pRefBone);
+
+	Add_Component(m_pUnitCollider[ePartType]);
+
+	Enable_UnitCollider(ePartType, bEnable);
+
+	for (int i = 1; i < iNumCollider; ++i)
+	{
+		m_pUnitCollider[ePartType]->Add_Collider(arrColliderDesc[i].fRadius, arrColliderDesc[i].vOffsetPos);
+	}
 }
-
-
-//void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, _float fRadius, COL_GROUP_CLIENT eColType, _float4 vOffsetPos,
-//	_float4x4 matModelTransformation, CHierarchyNode* pRefBone)
-//{
-//	m_pUnitCollider[ePartType] = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, eColType, vOffsetPos, matModelTransformation, pRefBone);
-//	if (!m_pUnitCollider[ePartType])
-//		return;
-//
-//	m_pUnitCollider[ePartType]->Initialize();
-//	Add_Component(m_pUnitCollider[ePartType]);
-//	DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
-//
-//}
-
 
 void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
 {

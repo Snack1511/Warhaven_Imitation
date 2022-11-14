@@ -25,7 +25,16 @@ HRESULT CRun_Player_Begin::Initialize()
     m_iStateChangeKeyFrame = 0;
 
     m_fInterPolationTime = 0.f;
+
+
 	m_fMyAccel = 10.f;
+	m_fAnimSpeed = 10.f;
+
+	m_fAnimSpeed = 10.f;
+	m_iStateChangeKeyFrame = 21;
+
+	// 선형 보간 시간
+	m_fInterPolationTime = 0.1f;
 
 	// 애니메이션의 전체 속도를 올려준다.
 	

@@ -47,7 +47,7 @@ HRESULT CPhysics::Initialize_Prototype()
 	m_tPhysicsDetail.fMaxSpeed = 15.f;
 
 	m_tPhysics.fGravity = 9.8f;
-	m_tPhysics.fPlusAcc = 1.5f;
+	m_tPhysics.fPlusAcc = 1.f;
 
 	return S_OK;
 }

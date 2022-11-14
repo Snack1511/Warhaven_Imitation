@@ -40,14 +40,19 @@ HRESULT CSwitchRtoL::Initialize()
     m_eStateType = STATE_SWITCH_R_TO_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-    m_iStateChangeKeyFrame = 31;
+    m_iStateChangeKeyFrame = 10;
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 4.f;
+
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
+	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
+	m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
     m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
 
     return S_OK;

@@ -52,9 +52,8 @@ public:
 		_float fSprintAttackSpeed = 11.F;
 		_float fSprintJumpSpeed = 10.F;
 		_float fSprintSpeed = 8.f;
-		_float fJumpPower = 6.5f;
+		_float fJumpPower = 2.5f;
 	};
-
 	struct UNIT_MODEL_DATA
 	{
 		wstring	strModelPaths[MODEL_PART_END];
@@ -120,7 +119,7 @@ public:
 public:
 	struct UNIT_DESC
 	{
-
+		_bool bRight = false;
 	};
 	//기준 : 같은 유닛이어도 각기 다른 설정이 필요한 건 다 여기서
 	//ex) 1. 모델 파츠별 조명 여부, 2. 충돌체 설정, 3. 시작 상태
@@ -143,18 +142,30 @@ protected:
 
 	//우리가 알던 그 충돌체
 	CCollider_Sphere* m_pUnitCollider[UNITCOLLIDER_END] = {};
+	//CCollider_Sphere* m_pUnitWeaponCollider[WEAPONCOLLIDER_END] = {};
 
 public:
 	void	Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable);
-
 
 	struct UNIT_COLLIDERDESC
 	{
 		_float fRadius = 0.f;
 		_float4 vOffsetPos = ZERO_VECTOR;
+		_uint	eColType;
+		
+	};
+	
+	struct UNIT_COLLIDREINFODESC
+	{
+		_float4x4 matModelTransformation = DEFAULT_TRANS_MATRIX;
+		_float4 vStartPos = ZERO_VECTOR;
+		_uint	iNumCollider = 1;
+		_bool	bEnable = true;
 	};
 
-	void	SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, _uint iNumCollider, _float4x4 matModelTransformation, _bool bEnable, CHierarchyNode* pRefBone = nullptr);
+
+	void	SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, 
+		_uint iNumCollider = 1, _float4x4 matTransformation = DEFAULT_TRANS_MATRIX, _bool bEnable = true, CHierarchyNode* pRefBone = nullptr);
 
 
 protected:

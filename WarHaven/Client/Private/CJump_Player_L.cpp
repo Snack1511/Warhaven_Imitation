@@ -30,7 +30,7 @@ CJump_Player_L* CJump_Player_L::Create()
 }
 HRESULT CJump_Player_L::Initialize()
 {
-
+	__super::Initialize();
 
 
     m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
@@ -48,17 +48,6 @@ HRESULT CJump_Player_L::Initialize()
 
 
 
-    // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
-
-    //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
-
-
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
-
     m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_L);
 
 
@@ -66,6 +55,8 @@ HRESULT CJump_Player_L::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_S] = 7;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 8;
     m_iDirectionAnimIndex[STATE_DIRECTION_E] = 5;
+
+	iPlaceJumpAnimIndex = 4;
 
 
     return S_OK;
