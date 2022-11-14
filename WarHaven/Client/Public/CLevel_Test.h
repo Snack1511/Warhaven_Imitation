@@ -4,6 +4,8 @@
 
 BEGIN(Client)
 
+class CUI_HUD;
+
 class CLevel_Test final
 	: public CLevel
 {
@@ -36,6 +38,8 @@ private:
 
 private:
 	CGameObject* m_pTestObj = nullptr;
+
+	CUI_HUD* m_pHUD = nullptr;
 };
 
 END
