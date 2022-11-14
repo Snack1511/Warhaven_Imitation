@@ -30,7 +30,7 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	m_eCurClass = m_tStatus.eClass;
+	m_eCurClass = CUnit::CLASS_PRIEST;
 
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
 	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
@@ -121,5 +121,23 @@ void CUI_HUD::Set_Portrait(CUnit::CLASS_TYPE eClass)
 
 void CUI_HUD::Set_Crosshair(CUnit::CLASS_TYPE eClass)
 {
+	m_ePrvClass = m_eCurClass;
+	m_eCurClass = eClass;
+
+	if (!m_tStatus.m_bIsHero)
+	{
+		if (eClass > CUnit::CLASS_ENGINEER)
+		{
+			m_tStatus.m_bIsHero = true;
+		}
+	}
+	else
+	{
+		if (eClass < CUnit::CLASS_FIONA)
+		{
+			m_tStatus.m_bIsHero = false;
+		}
+	}
+
 	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
 }

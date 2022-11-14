@@ -85,7 +85,7 @@ void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 		}
 	}
 
-	switch (iIndex)
+	switch (m_iCurCrosshair)
 	{
 	case CUnit::CLASS_WARRIOR:
 		DefaultCrosshair();
@@ -253,7 +253,7 @@ void CUI_Crosshair::My_Tick()
 {
 	__super::My_Tick();
 
-	if (!m_bIsHero)
+	/*if (!m_bIsHero)
 	{
 		if (KEY(T, TAP))
 		{
@@ -298,9 +298,9 @@ void CUI_Crosshair::My_Tick()
 
 			Set_Crosshair(m_iPrvCrosshair);
 		}
-	}
+	}*/
 
-	if (KEY(T, TAP))
+	/*if (KEY(T, TAP))
 	{
 		static int iIndex = 0;
 		iIndex++;
@@ -308,7 +308,7 @@ void CUI_Crosshair::My_Tick()
 			iIndex = 0;
 
 		Set_Crosshair(iIndex);
-	}
+	}*/
 }
 
 void CUI_Crosshair::Ready_Texture()
