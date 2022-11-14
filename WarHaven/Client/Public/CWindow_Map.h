@@ -245,6 +245,7 @@ private:
 	void Make_InstanceObject();
 	void Delete_InstanceObject();
 	void Clear_InstanceGroup();
+	void Merge_Instance();
 	//_bool Search_NearInstanceObject();
 private:
 	_bool Calculate_Pick();
@@ -318,6 +319,7 @@ private:
 	CGameObject* m_pCurSelectInstanceObject = nullptr;
 	vector<string> m_strArrInstanceMeshName;
 	map<size_t, vector<tuple<MTINSTANCE_DATA, CGameObject*>>> m_InstanceMap;
+	map<size_t, CGameObject*> m_MergeObjects;
 	_int m_iCurSelectInstanceNameIndex = 0;
 	_int m_iCurSelectInstanceObjectIndex = 0;
 #pragma region Value 오브젝트 컨트롤

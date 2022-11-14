@@ -15,8 +15,8 @@ public:
 	void		Set_MeshType(_uint iMeshType) { m_iMeshType = iMeshType; }
 
 	_uint		Get_NumPrimitive() { return m_iNumPrimitive; }
-	_uint		Get_NumVertices() { return m_iNumVertices; }
-	_float3*	Get_VerticesPos() { return m_pVerticesPos; }
+	 _uint		Get_NumVertices() { return m_iNumVertices; }
+	 _float3*	Get_VerticesPos() { return m_pVerticesPos; }
 	_uint		Get_IndexSize() { return m_eIndexFormat == DXGI_FORMAT_R16_UINT ? 2 : 4; }
 	virtual _uint3 Get_Indices(_uint iIndex) const PURE;
 

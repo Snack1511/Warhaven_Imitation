@@ -23,11 +23,14 @@ public:
 	}
 
 	_float4* Get_VerticesColor() { return m_pVerticesColor; }
-
+	 _uint		Get_PhysXNumVertices() { return m_iPhysXNumVertices; }
+	 _float3* Get_PhysXVerticesPos() { return m_pPhysXVerticesPos; }
 public:
 	void	Map_Vertex(_uint  iIndex, _float4 vPosition, _float4 vColor);
 	void	ReMap_Vertices();
 	void	Update_VertsNormal();
+
+	
 
 public:
 	void	ReadyforPhysX(); // PhysX 메쉬 충돌체 생성 전에 호출해야함
@@ -39,6 +42,9 @@ public:
 private:
 	_ulong					m_iNumVerticesX, m_iNumVerticesZ;
 	_float4*				m_pVerticesColor = nullptr;
+
+	_float3* m_pPhysXVerticesPos = nullptr;
+	_uint m_iPhysXNumVertices = 0;
 
 private:
 	HRESULT		SetUp_HeightMap(const _tchar* pHeightMapFilePath);
