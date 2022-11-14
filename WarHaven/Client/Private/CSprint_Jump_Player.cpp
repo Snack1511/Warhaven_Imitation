@@ -62,8 +62,7 @@ HRESULT CSprint_Jump_Player::Initialize()
 void CSprint_Jump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, true);
-	pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower + 1.f);
-	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 3.f;
+	pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower + 0.5f);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 

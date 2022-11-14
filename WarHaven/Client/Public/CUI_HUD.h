@@ -1,5 +1,6 @@
 #pragma once
 #include "CUI_Wrapper.h"
+#include "CUnit.h"
 
 BEGIN(Client)
 

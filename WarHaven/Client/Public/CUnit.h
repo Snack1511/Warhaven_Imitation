@@ -54,7 +54,7 @@ public:
 		_float fWallJumpSpeed = 15.f;
 		_float fSprintAttackSpeed = 11.F;
 		_float fSprintJumpSpeed = 10.F;
-		_float fSprintSpeed = 8.f;
+		_float fSprintSpeed = 7.f;
 		_float fJumpPower = 4.5f;
 	};
 	struct UNIT_MODEL_DATA
