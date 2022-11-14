@@ -25,6 +25,8 @@ public:
     void Add_Texture(CTexture* pTexture);
 private:
     //SHADOW_TYPE	m_eShadowType = NOSHADOW;
+    ID3D11ShaderResourceView** m_pArrSRVs = nullptr;
+    _int m_TextureNums = 0;
 };
 
 END
