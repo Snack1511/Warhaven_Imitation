@@ -29,7 +29,6 @@ public:
 
 protected:
 	virtual void My_Tick() override;
-	virtual void My_LateTick() override;
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};

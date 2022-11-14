@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "CUnit.h"
+#include "CUI_CrossHair.h"
 #include "CUI_Portrait.h"
 
 CUI_HUD::CUI_HUD()
@@ -14,6 +15,7 @@ CUI_HUD::~CUI_HUD()
 
 HRESULT CUI_HUD::Initialize_Prototype()
 {
+	m_pWrap[Crosshair] = CUI_Crosshair::Create();
 	m_pWrap[Port] = CUI_Portrait::Create();
 
 	CREATE_GAMEOBJECT(m_pWrap[Port], GROUP_UI);
@@ -28,9 +30,10 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(0);
-
 	m_eCurClass = m_tStatus.eClass;
+
+	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
+	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
 
 	return S_OK;
 }
@@ -39,10 +42,10 @@ void CUI_HUD::My_Tick()
 {
 	__super::My_Tick();
 
-	Change_UserPort();
+	Change_HUD();
 }
 
-void CUI_HUD::Change_UserPort()
+void CUI_HUD::Change_HUD()
 {
 	if (!m_tStatus.m_bIsHero)
 	{
@@ -60,22 +63,27 @@ void CUI_HUD::Change_UserPort()
 
 			m_eCurClass = (CUnit::CLASS_TYPE)iIndex;
 			Set_Portrait(m_eCurClass);
+			Set_Crosshair(m_eCurClass);
 		}
 		else if (KEY(NUM1, TAP))
 		{
 			Set_Portrait(CUnit::CLASS_FIONA);
+			Set_Crosshair(CUnit::CLASS_FIONA);
 		}
 		else if (KEY(NUM2, TAP))
 		{
 			Set_Portrait(CUnit::CLASS_QANDA);
+			Set_Crosshair(CUnit::CLASS_QANDA);
 		}
 		else if (KEY(NUM3, TAP))
 		{
 			Set_Portrait(CUnit::CLASS_HOEDT);
+			Set_Crosshair(CUnit::CLASS_HOEDT);
 		}
 		else if (KEY(NUM4, TAP))
 		{
 			Set_Portrait(CUnit::CLASS_LANCER);
+			Set_Crosshair(CUnit::CLASS_LANCER);
 		}
 	}
 	else
@@ -83,6 +91,7 @@ void CUI_HUD::Change_UserPort()
 		if (KEY(NUM1, TAP))
 		{
 			Set_Portrait(m_ePrvClass);
+			Set_Crosshair(m_ePrvClass);
 		}
 	}
 }
@@ -108,4 +117,9 @@ void CUI_HUD::Set_Portrait(CUnit::CLASS_TYPE eClass)
 	}
 
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);
+}
+
+void CUI_HUD::Set_Crosshair(CUnit::CLASS_TYPE eClass)
+{
+	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
 }

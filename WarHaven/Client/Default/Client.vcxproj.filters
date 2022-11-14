@@ -541,9 +541,6 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge">
       <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\CrossHair">
-      <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp">
       <UniqueIdentifier>{7d943caf-c5b6-40db-ac10-fc78b426c290}</UniqueIdentifier>
     </Filter>
@@ -561,6 +558,9 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play">
       <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair">
+      <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -793,7 +793,7 @@
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Crosshair.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\CrossHair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HpBar.h">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp</Filter>
@@ -1204,7 +1204,7 @@
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Crosshair.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\CrossHair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HpBar.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp</Filter>

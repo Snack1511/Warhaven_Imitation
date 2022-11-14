@@ -129,11 +129,6 @@ void CUI_Portrait::My_Tick()
 	Disable_HeroPort();
 }
 
-void CUI_Portrait::My_LateTick()
-{
-	__super::My_LateTick();
-}
-
 void CUI_Portrait::Set_Pass()
 {
 	for (int i = 1; i < 5; ++i)

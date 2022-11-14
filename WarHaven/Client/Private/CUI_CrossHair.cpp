@@ -30,6 +30,7 @@ HRESULT CUI_Crosshair::Initialize_Prototype()
 		}
 	}
 
+	Ready_Crosshair();
 
 	return S_OK;
 }
@@ -41,21 +42,8 @@ HRESULT CUI_Crosshair::Initialize()
 
 HRESULT CUI_Crosshair::Start()
 {
-	Prototype_Disable();
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-		}
-	}
-
 	Set_Pass();
 	Bind_Shader();
-
-	DefaultCrosshair();
 
 	__super::Start();
 
@@ -82,37 +70,6 @@ void CUI_Crosshair::Set_ShaderResources_ArrowBG(CShader* pShader, const char* pC
 	}
 
 	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
-}
-
-void CUI_Crosshair::Ready_Texture()
-{
-	m_Prototypes[Point] = m_pUIMap[TEXT("Crosshair_Point")];
-	m_Prototypes[Outline] = m_pUIMap[TEXT("Crosshair_Outline")];
-	m_Prototypes[ArrowBG] = m_pUIMap[TEXT("Crosshair_ArrowBG")];
-	m_Prototypes[Arrow] = m_pUIMap[TEXT("Crosshair_Arrow")];
-	m_Prototypes[GaugeBG] = m_pUIMap[TEXT("Crosshair_GaugeBG")];
-	m_Prototypes[Gauge] = m_pUIMap[TEXT("Crosshair_Gauge")];
-
-	for (int i = 0; i < Type_End; ++i)
-	{
-		GET_COMPONENT_FROM(m_Prototypes[i], CTexture)->Remove_Texture(0);
-	}
-
-	Read_Texture(m_Prototypes[Point], "/HUD/Crosshair", "Point");
-	Read_Texture(m_Prototypes[Outline], "/HUD/Crosshair", "Outline");
-	Read_Texture(m_Prototypes[ArrowBG], "/HUD/Crosshair", "Arrow");
-	Read_Texture(m_Prototypes[Arrow], "/HUD/Crosshair", "Arrow");
-	Read_Texture(m_Prototypes[GaugeBG], "/HUD/Crosshair", "Gauge");
-	Read_Texture(m_Prototypes[Gauge], "/HUD/Crosshair", "Gauge");
-}
-
-void CUI_Crosshair::Prototype_Disable()
-{
-	for (_uint i = 0; i < Type_End; ++i)
-	{
-		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_Prototypes[i]);
-	}
 }
 
 void CUI_Crosshair::Set_Crosshair(_uint iIndex)
@@ -169,6 +126,27 @@ void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 	case CUnit::CLASS_LANCER:
 		DefaultCrosshair(4);
 		break;
+	}
+}
+
+void CUI_Crosshair::Set_Pass()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+	}
+}
+
+void CUI_Crosshair::Bind_Shader()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CShader)
+			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_Arrow, this, placeholders::_1, "g_vColor");
+
+		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CShader)
+			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_ArrowBG, this, placeholders::_1, "g_vColor");
 	}
 }
 
@@ -254,6 +232,11 @@ void CUI_Crosshair::ArrowCrosshair()
 
 	ENABLE_GAMEOBJECT(m_arrSkillUI[0][GaugeBG]);
 	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Gauge]);
+
+	_float fRotZ = 180.f;
+	m_arrSkillUI[0][GaugeBG]->Set_RotationZ(fRotZ);
+	m_arrSkillUI[0][Gauge]->Set_RotationZ(fRotZ);
+
 	for (int i = 0; i < 3; ++i)
 	{
 		ENABLE_GAMEOBJECT(m_arrSkillUI[i][ArrowBG]);
@@ -263,27 +246,6 @@ void CUI_Crosshair::ArrowCrosshair()
 
 		m_arrSkillUI[i][Arrow]->Set_RotationZ(fRotZ);
 		m_arrSkillUI[i][ArrowBG]->Set_RotationZ(fRotZ);
-	}
-}
-
-void CUI_Crosshair::Set_Pass()
-{
-	for (int i = 0; i < 3; ++i)
-	{
-		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
-		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
-	}
-}
-
-void CUI_Crosshair::Bind_Shader()
-{
-	for (int i = 0; i < 3; ++i)
-	{
-		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CShader)
-			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_Arrow, this, placeholders::_1, "g_vColor");
-
-		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CShader)
-			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_ArrowBG, this, placeholders::_1, "g_vColor");
 	}
 }
 
@@ -349,17 +311,42 @@ void CUI_Crosshair::My_Tick()
 	}
 }
 
-void CUI_Crosshair::My_LateTick()
+void CUI_Crosshair::Ready_Texture()
 {
-	__super::My_LateTick();
+	m_Prototypes[Point] = m_pUIMap[TEXT("Crosshair_Point")];
+	m_Prototypes[Outline] = m_pUIMap[TEXT("Crosshair_Outline")];
+	m_Prototypes[ArrowBG] = m_pUIMap[TEXT("Crosshair_ArrowBG")];
+	m_Prototypes[Arrow] = m_pUIMap[TEXT("Crosshair_Arrow")];
+	m_Prototypes[GaugeBG] = m_pUIMap[TEXT("Crosshair_GaugeBG")];
+	m_Prototypes[Gauge] = m_pUIMap[TEXT("Crosshair_Gauge")];
+
+	for (int i = 0; i < Type_End; ++i)
+	{
+		GET_COMPONENT_FROM(m_Prototypes[i], CTexture)->Remove_Texture(0);
+	}
+
+	Read_Texture(m_Prototypes[Point], "/HUD/Crosshair", "Point");
+	Read_Texture(m_Prototypes[Outline], "/HUD/Crosshair", "Outline");
+	Read_Texture(m_Prototypes[ArrowBG], "/HUD/Crosshair", "Arrow");
+	Read_Texture(m_Prototypes[Arrow], "/HUD/Crosshair", "Arrow");
+	Read_Texture(m_Prototypes[GaugeBG], "/HUD/Crosshair", "Gauge");
+	Read_Texture(m_Prototypes[Gauge], "/HUD/Crosshair", "Gauge");
 }
 
-void CUI_Crosshair::OnEnable()
+void CUI_Crosshair::Ready_Crosshair()
 {
-	__super::OnEnable();
-}
+	for (_uint i = 0; i < Type_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_Prototypes[i]);
+	}
 
-void CUI_Crosshair::OnDisable()
-{
-	__super::OnDisable();
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < Type_End; ++j)
+		{
+			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+		}
+	}
 }

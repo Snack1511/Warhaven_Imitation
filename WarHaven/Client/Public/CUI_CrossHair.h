@@ -23,6 +23,9 @@ public:
 	void Set_ShaderResources_Arrow(CShader* pShader, const char* pConstName);
 	void Set_ShaderResources_ArrowBG(CShader* pShader, const char* pConstName);
 
+public:
+	void Set_Crosshair(_uint iIndex);
+
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 	CUI_Object* m_arrSkillUI[4][Type_End] = {};
@@ -33,20 +36,17 @@ private:
 
 private:
 	virtual void My_Tick() override;
-	virtual void My_LateTick() override;
-	virtual void OnEnable() override;
-	virtual void OnDisable() override;
 
 private:
-	void Ready_Texture();
-	void Prototype_Disable();
-	void Set_Crosshair(_uint iIndex);
+	void Set_Pass();
+	void Bind_Shader();
 
 	void DefaultCrosshair(_uint iIndex = 0);
 	void ArrowCrosshair();
 
-	void Set_Pass();
-	void Bind_Shader();
+private:
+	void Ready_Texture();
+	void Ready_Crosshair();
 };
 
 END
