@@ -984,14 +984,14 @@
     <ClInclude Include="..\Public\CUI_MainPlay.h">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CWindow_Select.h">
-      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CStructure_Instance.h">
       <Filter>03. Instances\02. GameObject\06. Map\InstanceStucture</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMap_Loader.h">
       <Filter>03. Instances\02. GameObject\06. Map\MapLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CWindow_Select.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\02. Window_Select</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
