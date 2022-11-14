@@ -353,6 +353,8 @@ namespace Client
 //		STATE_WARRIOR_OXEN, // 황소베기
 		STATE_WARRIOR_GUARDBREAK, // 가드 파괴
 //		// STATE_ATTACK_SKILL3, 
+
+		STATE_HIT,
 //
 //
 //#pragma endregion

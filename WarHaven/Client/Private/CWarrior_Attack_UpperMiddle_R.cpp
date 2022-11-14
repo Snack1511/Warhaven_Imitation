@@ -73,8 +73,9 @@ HRESULT CWarrior_Attack_UpperMiddle_R::Initialize()
     m_fMyMaxLerp = 10.f;
     m_fMaxSpeed = 0.8f;
 
-    Add_KeyFrame(30, 0);
+	Add_KeyFrame(30, 0);
 	Add_KeyFrame(34, 1);
+	Add_KeyFrame(47, 2);
 
     return S_OK;
 }
@@ -113,7 +114,8 @@ STATE_TYPE CWarrior_Attack_UpperMiddle_R::Tick(CUnit* pOwner, CAnimator* pAnimat
 
 void CWarrior_Attack_UpperMiddle_R::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
+	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 
 }
 
@@ -122,12 +124,9 @@ STATE_TYPE CWarrior_Attack_UpperMiddle_R::Check_Condition(CUnit* pOwner, CAnimat
     /* Player가 Attack 으로 오는 조건
     1.  LBuutton 을 이용해 공격한다.
     */
-    if (KEY(CTRL, NONE))
+    if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
     {
-        if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
-        {
-            return m_eStateType;
-        }
+        return m_eStateType;
     }
    
     return STATE_END;
@@ -135,22 +134,28 @@ STATE_TYPE CWarrior_Attack_UpperMiddle_R::Check_Condition(CUnit* pOwner, CAnimat
 
 void CWarrior_Attack_UpperMiddle_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
-    switch (iSequence)
-    {
-    case 0:
+	switch (iSequence)
+	{
+	case 0:
 		m_bMoveTrigger = false;
-        pOwner->Get_PhysicsCom()->Set_MaxSpeed(10.f);
-        pOwner->Get_PhysicsCom()->Set_SpeedasMax();
-        pOwner->Set_DirAsLook();
-        break;
+		pOwner->Get_PhysicsCom()->Set_MaxSpeed(10.f);
+		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
+		pOwner->Set_DirAsLook();
+		break;
 
 	case 1:
 		m_bAttackTrigger = true;
-
-		//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 3.f;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 
-    default:
-        break;
-    }
+	case 2:
+		m_bAttackTrigger = false;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		break;
+
+	default:
+		break;
+	}
+
 }

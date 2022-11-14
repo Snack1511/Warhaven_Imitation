@@ -547,12 +547,6 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\03. Bounce\02. Left">
       <UniqueIdentifier>{aa53883f-7255-43b0-9c75-d5191b128e70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\03. Bounce\01. Right\RF">
-      <UniqueIdentifier>{671f429d-65ca-492e-9e64-c60228380869}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\03. Bounce\02. Left\LF">
-      <UniqueIdentifier>{b60af4b1-01e1-4626-8bfa-6db3cc7e6d20}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -960,6 +954,9 @@
     <ClInclude Include="..\Public\CWarrior_Attack_VerticalCut.h">
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\01. Attack\TakeDown</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CHit_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\09. Hit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1347,6 +1344,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CWarrior_Attack_VerticalCut.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\01. Attack\TakeDown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\09. Hit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

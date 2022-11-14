@@ -15,7 +15,7 @@ class CState
 public:
 	struct KEYFRAME_EVENT
 	{
-		enum EVENT_TYPE {EVENT_MOVE, EVENT_ATTACK, EVENT_END};
+		enum EVENT_TYPE {EVENT_MOVE, EVENT_ATTACK, EVENT_ATTACKEND, EVENT_END};
 		_uint	iKeyFrame = 0;
 		EVENT_TYPE	eEventType = EVENT_END;
 		_bool	bExecuted = false;

@@ -41,9 +41,9 @@ HRESULT CGuard_End_Player::Initialize()
 	m_fAnimSpeed = 2.5f;
 
 
-	m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-	m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
-	m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
+	m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
+	m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
 
 
     return S_OK;

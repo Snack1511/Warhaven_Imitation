@@ -22,22 +22,19 @@ HRESULT CRun_Player_Begin::Initialize()
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
-    m_iStateChangeKeyFrame = 0;
+    m_iStateChangeKeyFrame = 21;
 
     m_fInterPolationTime = 0.f;
 
 
 	m_fMyAccel = 10.f;
-	m_fAnimSpeed = 10.f;
+	m_fAnimSpeed = 4.f;
 
-	m_fAnimSpeed = 10.f;
 	m_iStateChangeKeyFrame = 21;
 
-	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
 
-	// 애니메이션의 전체 속도를 올려준다.
-	
+	m_fMaxSpeed = 4.f;
 
 
     return S_OK;
@@ -46,30 +43,30 @@ HRESULT CRun_Player_Begin::Initialize()
 void CRun_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
 	m_fMyMaxLerp = 0.4f;
+	m_fMyAccel = 20.f;
 
-	CTransform* pMyTransform = pOwner->Get_Transform();
-	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+	Physics_Setting(m_fMaxSpeed, pOwner, false);
 
 
-	pMyPhysicsCom->Get_Physics().bAir = false;
+	//CTransform* pMyTransform = pOwner->Get_Transform();
+	//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	vCamLook.y = 0.f;
+	//_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	//vCamLook.y = 0.f;
 
-	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
-	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+	////1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+	//pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
 
-	//실제 움직이는 방향
-	pMyPhysicsCom->Set_Dir(vCamLook);
+	////실제 움직이는 방향
+	//pMyPhysicsCom->Set_Dir(vCamLook);
 
-	//최대속도 설정
-	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunBeginSpeed);
+	////최대속도 설정
+	//pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunBeginSpeed);
 
-	bAnimTrigger = false;
+	//bAnimTrigger = false;
 
 	Add_KeyFrame(5, 0);
 
-	m_fAnimSpeed = 10.f;
     __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
@@ -78,112 +75,21 @@ STATE_TYPE CRun_Player_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
     if (CUser::Get_Instance()->Get_LastKey() == KEY::LSHIFT)
         return STATE_SPRINT_BEGIN_PLAYER;
 
-	_uint iCurAnimIndex = m_iAnimIndex;
-
 	_uint iDirection = Get_Direction();
 
-	Changing_Location(iDirection, pAnimator);
+	Change_Location_Begin(iDirection, pAnimator);
 
 
 	Move(iDirection, pOwner);
 
-    //if (KEY(W, HOLD))
-    //{
-    //    // Key(CTRL + W + A)
-    //    if (KEY(A, HOLD))
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != m_iDirectionAnimIndex[STATE_DIRECTION_NW])
-    //        {
-    //            ;
-    //        }
-    //    }
 
-    //    // Key(CTRL + W + D)
-    //    else if (KEY(D, HOLD))
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != m_iDirectionAnimIndex[STATE_DIRECTION_NE])
-    //        {
-    //            Changing_Location(STATE_DIRECTION_NE, pAnimator);
-    //        }
-    //    }
-
-    //    // Key(CTRL + W)
-    //    else
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != m_iDirectionAnimIndex[STATE_DIRECTION_N])
-    //        {
-    //            Changing_Location(STATE_DIRECTION_N, pAnimator);
-    //        }
-    //    }
-
-
-    //}
-
-    //// Key(CTRL + S)
-    //else if (KEY(S, HOLD))
-    //{
-
-    //    // Key(CTRL + S + A)
-    //    if (KEY(A, HOLD))
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != m_iDirectionAnimIndex[STATE_DIRECTION_SW])
-    //        {
-    //            Changing_Location(STATE_DIRECTION_SW, pAnimator);
-    //        }
-    //    }
-
-    //    // Key(CTRL + S + D)
-    //    else if (KEY(D, HOLD))
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != m_iDirectionAnimIndex[STATE_DIRECTION_SE])
-    //        {
-    //            Changing_Location(STATE_DIRECTION_SE, pAnimator);
-    //        }
-    //    }
-
-    //    // Key(CTRL + S)
-    //    else
-    //    {
-    //        // 예외처리
-    //        if (m_iAnimIndex != m_iDirectionAnimIndex[STATE_DIRECTION_S])
-    //        {
-    //            Changing_Location(STATE_DIRECTION_S, pAnimator);
-    //        }
-    //    }
-    //}
-
-    //// Key(CTRL + A)
-    //else if (KEY(A, HOLD))
-    //{
-    //    // 예외처리
-    //    if (m_iAnimIndex != m_iDirectionAnimIndex[STATE_DIRECTION_W])
-    //    {
-    //        Changing_Location(STATE_DIRECTION_W, pAnimator);
-    //    }
-    //}
-
-    //// Key(CTRL + D)
-    //else if (KEY(D, HOLD))
-    //{
-    //    // 예외처리
-    //    if (m_iAnimIndex != m_iDirectionAnimIndex[STATE_DIRECTION_E])
-    //    {
-    //        Changing_Location(STATE_DIRECTION_E, pAnimator);
-    //    }
-    //}
-    //
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CRun_Player_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	bAnimTrigger = false;
+
 }
 
 STATE_TYPE CRun_Player_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -204,22 +110,22 @@ STATE_TYPE CRun_Player_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimato
 }
 
 
-void CRun_Player_Begin::Changing_Location(_uint iDirection, CAnimator* pAnimator)
+void CRun_Player_Begin::Change_Location_Begin(_uint iDirection, CAnimator* pAnimator)
 {
-	if (!bAnimTrigger)
+	if (!m_bMoveTrigger)
 	{
 		_int iFrame = pAnimator->Get_CurAnimFrame();
 
 		m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
 
 		pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-		pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.2f);
+		pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, m_fAnimSpeed);
 
 		pAnimator->Set_CurFrame(iFrame);
 	}
 
 
-	bAnimTrigger = true;
+	m_bMoveTrigger = true;
 }
 
 void CRun_Player_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)

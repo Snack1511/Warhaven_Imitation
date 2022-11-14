@@ -72,6 +72,8 @@
 #include "CBounce_Player_L.h"
 #include "CBounce_Player_R.h"
 
+#include "CHit_Player.h"
+
 #include "CAI_SandBack.h"
 
 
@@ -150,6 +152,8 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_BOUNCE_PLAYER_L] = CBounce_Player_L::Create();
 	m_arrStates[STATE_BOUNCE_PLAYER_R] = CBounce_Player_R::Create();
 	
+	m_arrStates[STATE_HIT] = CHit_Player::Create();
+
 //	m_arrStates[STATE_WARRIOR_OXEN] = CWarrior_Oxen::Create();
 	m_arrStates[STATE_WARRIOR_GUARDBREAK] = CWarrior_GuardBreak::Create();
 
@@ -163,6 +167,8 @@ HRESULT CState_Manager::Initialize()
 	
 
 	m_arrStates[STATE_IDLE_WARRIOR_R_AI_ENEMY] = CAI_SandBack::Create();
+
+	//STATE_HIT
 
 
 

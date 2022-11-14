@@ -45,8 +45,6 @@ HRESULT CBounce_Player_R::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 
-	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_R);
-
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);

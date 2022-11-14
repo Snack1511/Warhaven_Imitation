@@ -290,6 +290,7 @@
     <ClInclude Include="..\Public\CWalk_Player_R.h" />
     <ClInclude Include="..\public\CWarrior_Attack_01.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_Sting_R.h" />
+    <ClInclude Include="..\Public\CHit_Player.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_VerticalCut.h" />
     <ClInclude Include="..\Public\CBounce_Player_L.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_UpperMiddle_L.h" />
@@ -425,6 +426,7 @@
     <ClCompile Include="..\private\CWarrior_Attack_01.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_Sting_R.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_Sting_L.cpp" />
+    <ClCompile Include="..\Private\CHit_Player.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_VerticalCut.cpp" />
     <ClCompile Include="..\Private\CBounce_Player_L.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_UpperMiddle_R.cpp" />

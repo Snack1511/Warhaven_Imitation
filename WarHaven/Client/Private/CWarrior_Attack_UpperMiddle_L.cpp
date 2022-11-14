@@ -96,6 +96,7 @@ STATE_TYPE CWarrior_Attack_UpperMiddle_L::Tick(CUnit* pOwner, CAnimator* pAnimat
 
 void CWarrior_Attack_UpperMiddle_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 }
 
@@ -129,6 +130,7 @@ void CWarrior_Attack_UpperMiddle_L::On_KeyFrameEvent(CUnit* pOwner, CAnimator* p
 
 	case 1:
 		m_bAttackTrigger = true;
+		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 3.f;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 
