@@ -481,9 +481,6 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge">
       <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\CrossHair">
-      <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp">
       <UniqueIdentifier>{7d943caf-c5b6-40db-ac10-fc78b426c290}</UniqueIdentifier>
     </Filter>
@@ -501,6 +498,9 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play">
       <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair">
+      <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\01. Attack\HorizontalUp">
       <UniqueIdentifier>{79d75630-0661-4e61-83c0-7ec67e7d0feb}</UniqueIdentifier>
@@ -841,7 +841,7 @@
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Crosshair.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\CrossHair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HpBar.h">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp</Filter>
@@ -1026,6 +1026,7 @@
     <ClInclude Include="..\Public\CUI_MainPlay.h">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_HUD.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalUp_L.h">
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\01. Attack\HorizontalUp\02. Left</Filter>
     </ClInclude>
@@ -1286,7 +1287,7 @@
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Crosshair.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\CrossHair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HpBar.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp</Filter>
@@ -1465,6 +1466,7 @@
     <ClCompile Include="..\Private\CUI_MainPlay.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CUI_HUD.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalUp_L.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\01. Attack\HorizontalUp\02. Left</Filter>
     </ClCompile>

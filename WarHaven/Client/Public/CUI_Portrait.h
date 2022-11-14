@@ -24,11 +24,11 @@ public:
 	void Set_ShaderEffect(CShader* pShader, const char* constName);
 
 public:
+	void Start_Portrait(_uint iIndex);
 	void Set_Portrait(_uint iIndex);
 
 protected:
 	virtual void My_Tick() override;
-	virtual void My_LateTick() override;
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
@@ -51,22 +51,22 @@ private:
 
 	_float m_fMinValue = 0.01f;
 
-private:
-	void Enable_UserPortrait();
-	void Enable_HeroPortrait();
-
+private:	// Shader
 	void Set_Pass();
 	void Bind_Shader();
 
+private:
 	void Change_UserPort();
+	void PortSizeUP(_float fDuration);
+	void PortSizeDown(_float fDuration);
 
 	void Enable_HeroPort();
 	void Disable_HeroPort();
 
 	void Enable_HeroLerp(_bool value, _float fDuration);
 
-	void PortSizeUP();
-	void PortSizeDown();
+private:
+	void Ready_Portrait();
 };
 
 END
