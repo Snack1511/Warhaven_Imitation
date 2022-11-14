@@ -76,14 +76,14 @@ void CSprint_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	vCamLook.y = 0.f;
+	//_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	//vCamLook.y = 0.f;
 
 	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
-	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+	//pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
 
 	//실제 움직이는 방향
-	pMyPhysicsCom->Set_Dir(vCamLook);
+	//pMyPhysicsCom->Set_Dir(vCamLook);
 
 	//최대속도 설정
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
@@ -114,7 +114,8 @@ STATE_TYPE CSprint_End::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     1. 쉬프트를 누른 상태에서 움직인다.
     */
     // 만약 쉬프트키 나 W 를 해제했을 시
-    if (KEY(LSHIFT, NONE) || KEY(W, NONE))
+    if (KEY(LSHIFT, NONE) ||
+        (KEY(W, NONE) && KEY(A, NONE) && KEY(S, NONE) && KEY(D, NONE)))
         return STATE_SPRINT_END_PLAYER;
 
     return STATE_END;

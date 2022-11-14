@@ -97,18 +97,47 @@ STATE_TYPE CSprint_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
 	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    vCamLook.y = 0.f;
+	_float4 vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+    vCamRight.y = 0.f;
 
 	_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 
 
 	_uint iFrame = pAnimator->Get_CurAnimFrame();
 
-		
+    _float4 vFinalDir = ZERO_VECTOR;
 
+    if (KEY(W, HOLD))
+    {
+        vFinalDir += vCamLook;
+    }
+    if (KEY(A, HOLD))
+    {
+        vFinalDir -= vCamRight;
+    }
+    if (KEY(S, HOLD))
+    {
+        vFinalDir -= vCamLook;
+    }
+    if (KEY(D, HOLD))
+    {
+        vFinalDir += vCamRight;
+    }
+
+    if (vFinalDir.Is_Zero())
+    {
+        vFinalDir = pMyTransform->Get_World(WORLD_LOOK);
+    }
+
+    
+
+    vFinalDir.Normalize();
 	vDir.y = 0.f;
 
-	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
-	pMyPhysicsCom->Set_Dir(vDir);
+	pMyTransform->Set_LerpLook(vFinalDir, m_fMyMaxLerp);
+    _float4 vUnitLook = pMyTransform->Get_MyWorld(WORLD_LOOK);
+	pMyPhysicsCom->Set_Dir(vUnitLook);
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
 

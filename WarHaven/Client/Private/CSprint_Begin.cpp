@@ -85,19 +85,52 @@ void CSprint_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 STATE_TYPE CSprint_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	CTransform* pMyTransform = pOwner->Get_Transform();
-	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+    CTransform* pMyTransform = pOwner->Get_Transform();
+    CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    _float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    vCamLook.y = 0.f;
+    _float4 vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+    vCamRight.y = 0.f;
 
-	_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 
-	vDir.y = 0.f;
 
-	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
-	pMyPhysicsCom->Set_Dir(vDir);
-	pMyPhysicsCom->Set_Accel(m_fMyAccel);
-	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
+    _uint iFrame = pAnimator->Get_CurAnimFrame();
+
+    _float4 vFinalDir = ZERO_VECTOR;
+
+    if (KEY(W, HOLD))
+    {
+        vFinalDir += vCamLook;
+    }
+    if (KEY(A, HOLD))
+    {
+        vFinalDir -= vCamRight;
+    }
+    if (KEY(S, HOLD))
+    {
+        vFinalDir -= vCamLook;
+    }
+    if (KEY(D, HOLD))
+    {
+        vFinalDir += vCamRight;
+    }
+
+    if (vFinalDir.Is_Zero())
+    {
+        vFinalDir = pMyTransform->Get_World(WORLD_LOOK);
+    }
+
+
+
+    vFinalDir.Normalize();
+    vDir.y = 0.f;
+
+    pMyTransform->Set_LerpLook(vFinalDir, m_fMyMaxLerp);
+    _float4 vUnitLook = pMyTransform->Get_MyWorld(WORLD_LOOK);
+    pMyPhysicsCom->Set_Dir(vUnitLook);
+    pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
 
 
