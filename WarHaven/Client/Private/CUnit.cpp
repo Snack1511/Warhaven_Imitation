@@ -139,6 +139,16 @@ void CUnit::Teleport_Unit(_float4 vPosition)
 #endif
 }
 
+_float4 CUnit::Get_HitPos()
+{
+	return  m_pWeaponCollider_R->Get_HitPos();
+}
+
+_float4x4 CUnit::Get_HitMatrix()
+{
+	return  m_pWeaponCollider_R->Get_HitMatrix();
+}
+
 
 HRESULT CUnit::MakeUp_Unit(const UNIT_DESC& tUnitDesc)
 {

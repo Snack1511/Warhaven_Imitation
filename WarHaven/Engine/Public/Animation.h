@@ -20,14 +20,19 @@ public:
 
 public:
 	HRESULT	Set_HierarchyNodes(CModel* pModel);
-	void	OnInterpolate(CAnimation* pPrevAnimation);
+	void	OnInterpolate();
 	void	OnSwitchAnim();
 	void	Reset();
 	_float	Calculate_Duration(_uint iKeyFrame);
+	ANIM_DIVIDE	Get_AnimDivideType() { return m_eAnimDivide; };
+
 public:
 	HRESULT Initialize(CResource_Animation* pAIAnimation);
-	void	Update_Matrices();
+	void	Update_Matrices(_bool bDivide);
 	void	Release();
+
+private:
+	ANIM_DIVIDE		m_eAnimDivide = ANIM_DIVIDE::eDEFAULT;
 
 private:
 	char			m_szName[MAX_PATH] = "";

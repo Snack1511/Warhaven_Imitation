@@ -8,6 +8,7 @@ class CHierarchyNode;
 class ENGINE_DLL CAnimator
 	: public CComponent
 {
+	
 	DECLARE_PROTOTYPE(CAnimator)
 
 private:
@@ -30,7 +31,8 @@ public:
 	_uint		Get_CurAnimIndex() { return m_iCurrentAnimationIndex; }
 
 	void		Set_CurFrame(_uint iFrame);
-	void		Set_CurAnimIndex(_uint iTypeIndex, _uint iAnimIndex);
+	void		Set_CurAnimIndex(_uint iTypeIndex, _uint iAnimIndex, ANIM_DIVIDE	eDivideType = ANIM_DIVIDE::eDEFAULT);
+	void		Stop_ActionAnim();
 	void		Set_AnimSpeed(_uint iTypeIndex, _uint iAnimIndex, _float fSpeed);
 	
 
@@ -55,7 +57,11 @@ private:
 
 	vector<vector<CAnimation*>>		m_vecAnimations;
 	CHierarchyNode* m_pFootNode = nullptr;
-	
+
+
+	CAnimation* m_pActionAnimation = nullptr;
+	CAnimation* m_pCycleAnimation = nullptr;
+
 
 private:
 	HRESULT		SetUp_Animations(wstring wstrModelFilePath);

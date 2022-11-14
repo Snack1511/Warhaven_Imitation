@@ -62,11 +62,9 @@ protected:
 protected:
 	vector<STATE_TYPE>		m_vecAdjState;
 	STATE_TYPE			m_eStateType = STATE_END;
-
+	ANIM_DIVIDE			m_eAnimDivide = ANIM_DIVIDE::eDEFAULT;
 	ANIM_TYPE			m_eAnimType = ANIM_BASE_R;
-
 	_uint				m_iAnimIndex = 0;
-
 	_float				m_fAnimSpeed = 1.f;
 	_float				m_fInterPolationTime = 0.1f;
 

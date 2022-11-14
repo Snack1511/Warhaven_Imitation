@@ -16,11 +16,11 @@ CHierarchyNode::~CHierarchyNode()
 	Release();
 }
 
-CHierarchyNode* CHierarchyNode::Create(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth)
+CHierarchyNode* CHierarchyNode::Create(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, ANIM_DIVIDE eBoneType)
 {
 	CHierarchyNode* pInstance = new CHierarchyNode();
 
-	if (FAILED(pInstance->Initialize(pResource, pParent, iDepth)))
+	if (FAILED(pInstance->Initialize(pResource, pParent, iDepth, eBoneType)))
 	{
 		Call_MsgBox(L"Failed to Created : CHierarchyNode");
 		SAFE_DELETE(pInstance);
@@ -79,9 +79,10 @@ void CHierarchyNode::Get_AllNodes(vector<CHierarchyNode*>& vecNodes)
 }
 
 
-HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth)
+HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, ANIM_DIVIDE eBoneType)
 {
 	
+	m_eBoneType = eBoneType;
 
 	m_iDepth = iDepth;
 	m_pParent = pParent;
@@ -91,6 +92,14 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 	if (pResource->Get_Name() == "Root")
 		m_bMoveNode = true;
 
+	if (pResource->Get_Name() == "0B_R_Thigh" || pResource->Get_Name() == "0B_L_Thigh")
+	{
+		m_eBoneType = ANIM_DIVIDE::eBODYLOWER;
+	}
+	else if (pResource->Get_Name() == "0B_Spine")
+	{
+		m_eBoneType = ANIM_DIVIDE::eBODYUPPER;
+	}
 	m_TransformationMatrix = pResource->Get_TransformationMatrix();
 
 	XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());
@@ -108,7 +117,7 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 
 	for (_uint i = 0; i < pResource->Get_NumChildren(); ++i)
 	{
-		CHierarchyNode* pNode = CHierarchyNode::Create(vecChildrenBones[i], this, m_iDepth + 1);
+		CHierarchyNode* pNode = CHierarchyNode::Create(vecChildrenBones[i], this, m_iDepth + 1, m_eBoneType);
 
 		if (!pNode)
 			return E_FAIL;
@@ -183,7 +192,6 @@ void CHierarchyNode::Update_CombinedTransformationMatrix()
 				* XMLoadFloat4x4(&m_pParent->m_SendCombinedTransformationMatrix));
 
 			m_SendCombinedTransformationMatrix = m_CombinedTransformationMatrix;
-
 
 		}
 	}

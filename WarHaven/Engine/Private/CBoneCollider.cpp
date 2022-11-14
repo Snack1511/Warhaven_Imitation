@@ -37,6 +37,36 @@ CBoneCollider* CBoneCollider::Create(_uint iGroupID, const BONECOLLIDERDESC& tBo
 void CBoneCollider::onShapeHit(const PxControllerShapeHit& hit)
 {
 	m_bCollisionTemp = true;
+
+	
+	m_vHitPos = _float4(hit.worldPos.x, hit.worldPos.y, hit.worldPos.z);
+	
+
+
+	_matrix matHit;
+
+
+	_float4 vLook = _float4(hit.worldNormal.x, hit.worldNormal.y, hit.worldNormal.z, 0.f).Normalize();
+	vLook *= -1.f;
+
+
+	matHit.r[2] = vLook.XMLoad();
+
+	_float4 vUp = { 0.f, 1.f, 0.f };
+	if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
+		(vLook.y > -1.1f && vLook.y < -0.9f)
+		)
+		vUp = _float4(0.f, 0.f, 1.f, 0.f);
+
+	vUp.Normalize();
+	_float4 vRight = vUp.Cross(vLook);
+	matHit.r[0] = vRight.Normalize().XMLoad();
+
+	vUp = vLook.Cross(vRight);
+	matHit.r[1] = vUp.Normalize().XMLoad();
+
+	m_HitMatrix = matHit;
+
 }
 
 HRESULT CBoneCollider::Initialize_Prototype()

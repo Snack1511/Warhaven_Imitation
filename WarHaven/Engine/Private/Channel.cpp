@@ -46,11 +46,20 @@ HRESULT CChannel::Initialize(CHANNEL_DESC tChannelDesc)
 	return S_OK;
 }
 
-void CChannel::Update_TransformationMatrices(_float fCurrentTime)
+void CChannel::Update_TransformationMatrices(_float fCurrentTime, _bool bDivide, ANIM_DIVIDE eAnimDivide)
 {
+
+	if (bDivide)
+	{
+		if (m_pHierarchyNode->Get_BoneType() != eAnimDivide && m_pHierarchyNode->Get_BoneType() != ANIM_DIVIDE::eDEFAULT)
+			return;
+	}
+
 	_vector			vScale, vRotation, vPosition;
 	KEYFRAME& tPrevFrame = m_pHierarchyNode->Get_PrevKeyFrame();
 	KEYFRAME& tCurFrame = m_pHierarchyNode->Get_CurKeyFrame();
+
+	m_pHierarchyNode->Set_PrevKeyFrame(tCurFrame);
 
 	if (fCurrentTime > m_pKeyFrames[m_iNumKeyframes-1].fTime)
 	{
@@ -92,6 +101,7 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime)
 	XMStoreFloat3(&tCurFrame.vPosition, vPosition);
 
 
+
 	_matrix		TransformationMatrix = XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vPosition);
 	_float4x4 TransMat;
 	XMStoreFloat4x4(&TransMat, TransformationMatrix);
@@ -106,8 +116,16 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime)
 	}
 }
 
-void CChannel::Interpolate_Matrix(_float fCurrentTime, _float fMaxTime)
+void CChannel::Interpolate_Matrix(_float fCurrentTime, _float fMaxTime, _bool bDivide, ANIM_DIVIDE eAnimDivide)
 {
+	//Divide가 true면 나랑 같은 타입의 뼈만 쓰까주야함
+	if (bDivide)
+	{
+		if (m_pHierarchyNode->Get_BoneType() != eAnimDivide && m_pHierarchyNode->Get_BoneType() != ANIM_DIVIDE::eDEFAULT)
+			return;
+	}
+
+
 	//전 키프레임
 	KEYFRAME& tPrevFrame = m_pHierarchyNode->Get_PrevKeyFrame();
 

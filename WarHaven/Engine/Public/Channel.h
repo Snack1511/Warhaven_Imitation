@@ -32,8 +32,8 @@ public:
 
 public:
 	HRESULT Initialize(CHANNEL_DESC pAIChannel);
-	void Update_TransformationMatrices(_float fCurrentTime);
-	void Interpolate_Matrix(_float fCurrentTime, _float fMaxTime);
+	void Update_TransformationMatrices(_float fCurrentTime, _bool bDivide, ANIM_DIVIDE eAnimDivide);
+	void Interpolate_Matrix(_float fCurrentTime, _float fMaxTime, _bool bDivide, ANIM_DIVIDE eAnimDivide);
 	void Release();
 
 private:

@@ -19,6 +19,7 @@ CWalk_Player::~CWalk_Player()
 
 HRESULT CWalk_Player::Initialize()
 {
+	m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 
@@ -74,6 +75,14 @@ void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (KEY(RBUTTON, TAP))
+	{
+		pAnimator->Set_CurAnimIndex(ANIM_BASE_R, 5, ANIM_DIVIDE::eBODYUPPER);
+	}
+
+	if (KEY(RBUTTON, NONE))
+		pAnimator->Stop_ActionAnim();
+
 	Move_Direction_Loop(pOwner, pAnimator, 0.05f);
 
     return __super::Tick(pOwner, pAnimator);

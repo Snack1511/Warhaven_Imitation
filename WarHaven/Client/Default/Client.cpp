@@ -32,6 +32,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 {
 #ifdef _DEBUG
+    FILE* ConsoleStream;
+
+    AllocConsole();
+    AttachConsole(GetCurrentProcessId());
+    freopen_s(&ConsoleStream, "CON", "w", stdout);
+
+    printf("HELLO!!! I AM THE CONSOLE!\n");
+#endif
+
+
+
+#ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif // _DEBUG
 
@@ -93,6 +105,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     D3D11LeakFinder();
 #endif
 
+#ifdef _DEBUG
+    fclose(ConsoleStream);
+#endif
     return (int)msg.wParam;
 }
 

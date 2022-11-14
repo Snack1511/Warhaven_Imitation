@@ -18,11 +18,13 @@ CRun_Player::~CRun_Player()
 
 HRESULT CRun_Player::Initialize()
 {
+	m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
+
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 
     m_vecAdjState.push_back(STATE_SLIDE_BEGIN_PLAYER);
-	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+	//m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
@@ -40,7 +42,6 @@ HRESULT CRun_Player::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 	m_fMaxSpeed = 4.f;
-
     return S_OK;
 }
 
@@ -77,12 +78,16 @@ void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 		pAnimator->Set_CurFrame(22);
 	}
 
+	m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
 
     __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
 STATE_TYPE CRun_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	
+
+
 
 	Move_Direction_Loop(pOwner, pAnimator, 0.1f);
 

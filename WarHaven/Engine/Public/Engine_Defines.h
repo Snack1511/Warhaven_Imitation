@@ -50,6 +50,7 @@ using namespace DirectX;
 #include <random>
 #include <typeinfo>
 #include <functional>
+#include <iostream>
 
 
 

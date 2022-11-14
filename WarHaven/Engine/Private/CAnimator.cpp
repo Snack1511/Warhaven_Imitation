@@ -20,6 +20,7 @@ CAnimator::CAnimator(const CAnimator& rhs)
 	: CComponent(rhs)
 	, m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex)
 	, m_wstrModelFilePath(rhs.m_wstrModelFilePath)
+	
 {
 
 	SetUp_Animations(m_wstrModelFilePath);
@@ -102,7 +103,7 @@ void CAnimator::Set_CurFrame(_uint iFrame)
 	}
 }
 
-void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx)
+void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx, ANIM_DIVIDE	eDivideType)
 {
 	if (iTypeIndex >= m_vecAnimations.size())
 		return;
@@ -110,16 +111,41 @@ void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx)
 	if (iNewIdx >= m_vecAnimations[iTypeIndex].size())
 		return;
 
-	//다음녀석ㄱ한테 보간하라고 시켜
-	m_vecAnimations[iTypeIndex][iNewIdx]->OnInterpolate(m_vecAnimations[iTypeIndex][iNewIdx]);
+	CAnimation* pCurAnim = m_vecAnimations[iTypeIndex][iNewIdx];
+	pCurAnim->m_eAnimDivide = eDivideType;
+	//만약 들어온게 Action이믄
+	if (eDivideType == ANIM_DIVIDE::eBODYUPPER)
+	{
+		if (m_pActionAnimation)
+			m_pActionAnimation->Reset();
 
-	//이전껀 리셋해놓고
-	m_vecAnimations[m_iCurrentAnimationTypeIndex][m_iCurrentAnimationIndex]->Reset();
+		m_pActionAnimation = pCurAnim;
+		m_pActionAnimation->OnInterpolate();
+	}
+	else
+	{
+		//이전껀 리셋해놓고
+		if (m_pCycleAnimation)
+			m_pCycleAnimation->Reset();
+
+
+		m_pCycleAnimation = pCurAnim;
+		m_pCycleAnimation->OnInterpolate();
+
+		
+	}
+	
 
 	m_iCurrentAnimationTypeIndex = iTypeIndex;
 	m_iCurrentAnimationIndex = iNewIdx;
+}
 
+void CAnimator::Stop_ActionAnim()
+{
+	if (m_pActionAnimation)
+		m_pActionAnimation->Reset();
 
+	m_pActionAnimation = nullptr;
 }
 
 void CAnimator::Set_AnimSpeed(_uint iTypeIndex, _uint iAnimIndex, _float fSpeed)
@@ -199,7 +225,29 @@ void CAnimator::Start()
 
 void CAnimator::Tick()
 {
-	m_vecAnimations[m_iCurrentAnimationTypeIndex][m_iCurrentAnimationIndex]->Update_Matrices();
+	//Action이 있고 Cycle이 BodyLower면 Blend On
+	//Action이 있고 Cycle이 Default면 Action만 Update
+	//Action없으면 Cycle만 업뎃
+	_bool bBlend = false;
+	if (m_pActionAnimation)
+	{
+		if (m_pCycleAnimation->Get_AnimDivideType() == ANIM_DIVIDE::eBODYLOWER)
+		{
+			bBlend = true;
+			m_pActionAnimation->Update_Matrices(bBlend);
+			m_pCycleAnimation->Update_Matrices(bBlend);
+		}
+		else
+		{
+			m_pActionAnimation->Update_Matrices(bBlend);
+		}
+	}
+	else
+	{
+		m_pCycleAnimation->Update_Matrices(bBlend);
+	}
+
+
 }
 
 void CAnimator::Late_Tick()

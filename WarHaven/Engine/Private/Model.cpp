@@ -989,7 +989,7 @@ HRESULT CModel::Create_InstancingMesh(CResource_Mesh* pResource, _uint iNumInsta
 HRESULT CModel::Create_HierarchyNode(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, _uint iMeshPartType)
 {
 	//1. 일단 모두 만듬
-	CHierarchyNode* pHierarchyNode = CHierarchyNode::Create(pResource, pParent, iDepth);
+	CHierarchyNode* pHierarchyNode = CHierarchyNode::Create(pResource, pParent, iDepth, ANIM_DIVIDE::eDEFAULT);
 
 	if (nullptr == pHierarchyNode)
 		return E_FAIL;

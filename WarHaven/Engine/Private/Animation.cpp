@@ -40,7 +40,7 @@ HRESULT CAnimation::Set_HierarchyNodes(CModel* pModel)
 	return S_OK;
 }
 
-void CAnimation::OnInterpolate(CAnimation* pPrevAnimation)
+void CAnimation::OnInterpolate()
 {
 	m_bInterpolation = true;
 	m_fInterpolationTimeAcc = 0.f;
@@ -101,14 +101,18 @@ HRESULT CAnimation::Initialize(CResource_Animation* pAnimResource)
 	return S_OK;
 }
 
-void CAnimation::Update_Matrices()
+void CAnimation::Update_Matrices(_bool bDivide)
 {
 	if (m_isFinished)
+	{
 		Reset();
 
+	}
 
+	
 	if (m_bInterpolation)
 	{
+
 		m_fInterpolationTimeAcc += fDT(0);
 
 		if (m_fInterpolationTimeAcc >= m_fInterpolationTime)
@@ -120,7 +124,7 @@ void CAnimation::Update_Matrices()
 
 		for (_uint i = 0; i < m_iNumChannels; ++i)
 		{
-			m_Channels[i]->Interpolate_Matrix(m_fInterpolationTimeAcc, m_fInterpolationTime);
+			m_Channels[i]->Interpolate_Matrix(m_fInterpolationTimeAcc, m_fInterpolationTime, bDivide, m_eAnimDivide);
 		}
 
 		return;
@@ -136,7 +140,8 @@ void CAnimation::Update_Matrices()
 
 	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
-		m_Channels[i]->Update_TransformationMatrices(m_fTimeAcc);
+		
+		m_Channels[i]->Update_TransformationMatrices(m_fTimeAcc, bDivide, m_eAnimDivide);
 	}
 }
 

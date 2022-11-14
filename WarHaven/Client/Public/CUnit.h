@@ -115,6 +115,8 @@ public:
 
 public:
 	void	Teleport_Unit(_float4 vPosition);
+	_float4		Get_HitPos();
+	_float4x4	Get_HitMatrix();
 
 public:
 	struct UNIT_DESC
