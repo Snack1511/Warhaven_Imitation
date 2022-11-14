@@ -1,6 +1,6 @@
 #include "CUI_HpBar.h"
 #include "CShader.h"
-#include "Renderer.h"
+#include "CUI_Renderer.h"
 #include "CUI_Object.h"
 #include "GameInstance.h"
 #include "Texture.h"
@@ -71,8 +71,8 @@ void CUI_HpBar::Set_ShaderResourcesBar(CShader* pShader, const char* pConstName)
 
 void CUI_HpBar::Set_Pass()
 {
-	GET_COMPONENT_FROM(m_Prototypes[BG], CRenderer)->Set_Pass(VTXTEX_PASS_UI_Color);
-	GET_COMPONENT_FROM(m_Prototypes[Bar], CRenderer)->Set_Pass(VTXTEX_PASS_UI_HpBar);
+	GET_COMPONENT_FROM(m_Prototypes[BG], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+	GET_COMPONENT_FROM(m_Prototypes[Bar], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HpBar);
 }
 
 void CUI_HpBar::Bind_Shader()

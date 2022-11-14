@@ -273,6 +273,8 @@
     <ClInclude Include="..\Public\CUI_LoadingIcon.h" />
     <ClInclude Include="..\Public\CUI_LobbyBG.h" />
     <ClInclude Include="..\Public\CUI_Logo.h" />
+    <ClInclude Include="..\Public\CUI_Main.h" />
+    <ClInclude Include="..\Public\CUI_MainPlay.h" />
     <ClInclude Include="..\Public\CUI_Object.h" />
     <ClInclude Include="..\Public\CUI_Portrait.h" />
     <ClInclude Include="..\Public\CUI_Skill.h" />
@@ -416,6 +418,8 @@
     <ClCompile Include="..\Private\CUI_LoadingIcon.cpp" />
     <ClCompile Include="..\Private\CUI_LobbyBG.cpp" />
     <ClCompile Include="..\Private\CUI_Logo.cpp" />
+    <ClCompile Include="..\Private\CUI_Main.cpp" />
+    <ClCompile Include="..\Private\CUI_MainPlay.cpp" />
     <ClCompile Include="..\Private\CUI_Object.cpp" />
     <ClCompile Include="..\Private\CUI_Portrait.cpp" />
     <ClCompile Include="..\Private\CUI_Skill.cpp" />

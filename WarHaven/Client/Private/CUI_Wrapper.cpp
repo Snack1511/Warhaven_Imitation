@@ -3,12 +3,9 @@
 
 #include "GameInstance.h"
 #include "Transform.h"
-#include "Renderer.h"
-#include "CFader.h"
 #include "CUI_Object.h"
 
 #include "Texture.h"
-#include "CShader.h"
 
 #include "Functor.h"
 #include "CUtility_File.h"

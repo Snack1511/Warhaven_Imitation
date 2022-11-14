@@ -59,6 +59,7 @@ HRESULT CWindow_UI::Initialize()
 
 void CWindow_UI::Tick()
 {
+	Drag_Object();
 }
 
 HRESULT CWindow_UI::Render()
@@ -79,8 +80,6 @@ HRESULT CWindow_UI::Render()
 	Show_UIList();
 
 	Show_Inspector();
-
-	Drag_Object();
 
 	ImGui::Spacing();
 
@@ -276,6 +275,8 @@ void CWindow_UI::Set_Object_Info()
 		}
 	}
 
+	Show_Font();
+
 	if (ImGui::CollapsingHeader("Etc"))
 	{
 		_float fSort = pUI->Get_Sort();
@@ -293,6 +294,72 @@ void CWindow_UI::Set_Object_Info()
 		_float4 vColor = pUI->Get_Color();
 		ImGui::ColorEdit4("Color", (_float*)&vColor);
 		pUI->Set_Color(vColor);
+	}
+}
+
+void CWindow_UI::Show_Font()
+{
+	CUI_Object* pUI = m_pSelectUI;
+	if (!pUI)
+		return;
+
+	if (ImGui::CollapsingHeader("Text"))
+	{
+		bool bIsRenderText = pUI->Get_FontRender();
+		ImGui::Checkbox("Text Active", &bIsRenderText);
+		pUI->Set_FontRender(bIsRenderText);
+
+		if (bIsRenderText)
+		{
+			bool bIsBold = pUI->Get_FontStyle();
+			ImGui::Checkbox("Bold", &bIsBold);
+			pUI->Set_FontStyle(bIsBold);
+
+			if (ImGui::TreeNode("Text"))
+			{
+				static char szBuf[MIN_STR] = "Input Text";
+				string strText = CFunctor::To_String(pUI->Get_FontText());
+
+				strcpy_s(szBuf, strText.c_str());
+
+				if (ImGui::InputText("Input Text", szBuf, IM_ARRAYSIZE(szBuf), ImGuiInputTextFlags_EnterReturnsTrue))
+				{
+					pUI->Set_FontText(CFunctor::To_Wstring(szBuf));
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Offset"))
+			{
+				ImGui::PushItemWidth(150);
+
+				_float4 vOffset = pUI->Get_FontOffset();
+				float fOffset[2] = { vOffset.x, vOffset.y };
+				ImGui::DragFloat2("Offset", fOffset, 1.f, -9999.f, 9999.f, "%.f");
+				pUI->Set_FontOffset(fOffset[0], fOffset[1]);
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Scale"))
+			{
+				_float fScale = pUI->Get_FontScale();
+				ImGui::DragFloat("Scale", &fScale, 1.f, 0.1f, 9999.f, "%.f");
+				pUI->Set_FontScale(fScale);
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Color"))
+			{
+				_float4 vColor = pUI->Get_FontColor();
+				ImGui::ColorEdit4("Color", (_float*)&vColor);
+				pUI->Set_FontColor(vColor);
+
+				ImGui::TreePop();
+			}
+		}
 	}
 }
 

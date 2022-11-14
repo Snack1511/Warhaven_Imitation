@@ -4,8 +4,9 @@
 #include "CUI_Object.h"
 #include "Texture.h"
 #include "CUnit.h"
-#include "Renderer.h"
+#include "CUI_Renderer.h"
 #include "CShader.h"
+#include "Renderer.h"
 
 CUI_Crosshair::CUI_Crosshair()
 {
@@ -269,8 +270,8 @@ void CUI_Crosshair::Set_Pass()
 {
 	for (int i = 0; i < 3; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CRenderer)->Set_Pass(VTXTEX_PASS_UI_Color);
-		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CRenderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
 	}
 }
 

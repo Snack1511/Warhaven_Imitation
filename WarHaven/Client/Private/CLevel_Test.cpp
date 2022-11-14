@@ -221,7 +221,6 @@ HRESULT CLevel_Test::Exit()
 	return S_OK;
 }
 
-#include "CUI_Cursor.h"
 #include "CUI_HeroGauge.h"
 #include "CUI_HpBar.h"
 #include "CUI_Portrait.h"
@@ -247,8 +246,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 	CUI_Crosshair* pCrosshair = CUI_Crosshair::Create();
 	Ready_GameObject(pCrosshair, GROUP_UI);
 
-	CUI_Cursor* pCursor = CUI_Cursor::Create();
-	Ready_GameObject(pCursor, GROUP_UI);
+	
 
 	return S_OK;
 }

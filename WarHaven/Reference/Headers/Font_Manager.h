@@ -13,7 +13,7 @@ private:
 
 public:
 	HRESULT Add_Font(const _tchar* pFontTag, const _tchar* pFontFilePath);
-	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, const _float4& vColor);
+	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale);
 
 private:
 	map<_hashcode, class CCustomFont*>			m_Fonts;

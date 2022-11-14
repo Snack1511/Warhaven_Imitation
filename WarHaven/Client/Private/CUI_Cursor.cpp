@@ -2,7 +2,7 @@
 #include "Texture.h"
 #include "Functor.h"
 #include "GameInstance.h"
-#include "Renderer.h"
+#include "CUI_Renderer.h"
 
 CUI_Cursor::CUI_Cursor()
 {
@@ -29,7 +29,7 @@ HRESULT CUI_Cursor::Initialize_Prototype()
 
 	Set_Scale(32.f);
 
-	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_ALPHA);
+	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_ALPHA);
 
 	return S_OK;
 }
@@ -43,7 +43,7 @@ HRESULT CUI_Cursor::Start()
 {
 	__super::Start();
 
-	ShowCursor(true);
+	ShowCursor(false);
 
 	RECT tScreen;
 	GetClientRect(g_hWnd, &tScreen);
@@ -59,8 +59,6 @@ HRESULT CUI_Cursor::Start()
 void CUI_Cursor::My_Tick()
 {
 	__super::My_Tick();
-
-	CheckInRect();
 
 	_float fFixPosX = 11.f;
 	_float fFixPosY = 13.f;

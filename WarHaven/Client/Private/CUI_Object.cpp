@@ -4,7 +4,7 @@
 #include "Loading_Manager.h"
 #include "Transform.h"
 #include "Functor.h"
-#include "Renderer.h"
+#include "CUI_Renderer.h"
 #include "CShader.h"
 
 CUI_Object::CUI_Object()
@@ -13,6 +13,7 @@ CUI_Object::CUI_Object()
 
 CUI_Object::CUI_Object(const CUI_Object& Prototype)
 	: CUI(Prototype)
+	, m_bIsMouseTarget(Prototype.m_bIsMouseTarget)
 {
 }
 
@@ -26,7 +27,7 @@ HRESULT CUI_Object::Initialize_Prototype()
 
 	SetTexture(TEXT("../Bin/Resources/Textures/White.png"));
 
-	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_ALPHA);
+	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_ALPHA);
 
 	Set_Pos(0.f, 0.f);
 	Set_Scale(100.f);
@@ -69,6 +70,13 @@ void CUI_Object::Set_Texture(const _tchar* pFilePath)
 void CUI_Object::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
 	__super::SetUp_ShaderResource(pShader, pConstName);
+}
+
+void CUI_Object::Set_FontOffset(_float fX, _float fY)
+{
+	m_vOffset.x = fX;
+	m_vOffset.y = fY;
+	m_vOffset.z = 0.f;
 }
 
 void CUI_Object::Lerp_Scale(_float fStart, _float fEnd, _float fDuration)
@@ -115,7 +123,7 @@ void CUI_Object::My_Tick()
 
 	RenderText();
 
-	Lerp_Scale();	
+	Lerp_Scale();
 }
 
 void CUI_Object::My_LateTick()
@@ -135,14 +143,9 @@ void CUI_Object::MouseEvent()
 		{
 			OnMouseEnter();
 
-			if (m_pButton)
+			if(KEY(LBUTTON, TAP))
 			{
-				// 버튼 이벤트 함수 호출
-
-				/*if (KEY(LBUTTON, TAP))
-				{
-					OnMouseClick();
-				}*/
+				OnMouseClick();
 			}
 		}
 		else
@@ -154,9 +157,11 @@ void CUI_Object::MouseEvent()
 
 void CUI_Object::RenderText()
 {
+	GET_COMPONENT(CUI_Renderer)->Set_RenderText(m_bIsRenderText);
+
 	if (m_bIsRenderText)
 	{
-
+		GET_COMPONENT(CUI_Renderer)->Set_Text(m_bIsBold, m_wstrText, m_vOffset, m_vColor, m_fFontScale);
 	}
 }
 
@@ -225,6 +230,11 @@ void CUI_Object::Lerp_Scale()
 			}
 		}
 	}
+}
+
+void CUI_Object::OnMouseEnter()
+{
+
 }
 
 _float CUI_Object::Min(_float fValue)

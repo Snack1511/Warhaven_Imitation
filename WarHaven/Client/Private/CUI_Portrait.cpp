@@ -7,7 +7,7 @@
 #include "CUnit.h"
 #include "Transform.h"
 #include "CShader.h"
-#include "Renderer.h"
+#include "CUI_Renderer.h"
 
 CUI_Portrait::CUI_Portrait()
 {
@@ -202,8 +202,7 @@ void CUI_Portrait::Set_Pass()
 {
 	for (int i = 0; i < 5; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrPortraitUI[i][Effect], CRenderer)
-			->Set_Pass(VTXTEX_PASS_UI_PortEffect);
+		GET_COMPONENT_FROM(m_arrPortraitUI[i][Effect], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_PortEffect);
 	}
 }
 

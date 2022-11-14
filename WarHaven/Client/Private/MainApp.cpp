@@ -33,7 +33,7 @@ CMainApp::~CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
-	
+
 
 	m_pGameInstance = CGameInstance::Get_Instance();
 
@@ -46,6 +46,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(SetUp_ShaderFiles()))
 		return E_FAIL;
 
+	if (FAILED(SetUp_Font()))
+		return E_FAIL;
+
 	if (FAILED(CLoading_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
@@ -55,7 +58,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU)))
 		return E_FAIL;
 
 	//Sound
@@ -193,7 +196,7 @@ HRESULT CMainApp::SetUp_Statics()
 	if (FAILED(m_pGameInstance->Add_Font(L"DefaultFont", L"../bin/resources/fonts/128.spritefont")))
 		return E_FAIL;
 
-	
+
 
 	return S_OK;
 }
@@ -228,6 +231,17 @@ HRESULT CMainApp::SetUp_ShaderFiles()
 		return E_FAIL;
 
 	if (FAILED(CGameInstance::Get_Instance()->Load_EffectFile(L"../bin/shaderfiles/Shader_VtxDecalCube.hlsl")))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMainApp::SetUp_Font()
+{
+	if (FAILED(CGameInstance::Get_Instance()->Add_Font(TEXT("War_Regular"), TEXT("../Bin/Resources/Fonts/WarHavenRegular.spritefont"))))
+		return E_FAIL;
+
+	if (FAILED(CGameInstance::Get_Instance()->Add_Font(TEXT("War_Bold"), TEXT("../Bin/Resources/Fonts/WarHavenBold.spritefont"))))
 		return E_FAIL;
 
 	return S_OK;

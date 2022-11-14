@@ -30,6 +30,7 @@ private:
 	HRESULT	SetUp_Levels();
 	HRESULT	SetUp_Statics();
 	HRESULT	SetUp_ShaderFiles();
+	HRESULT SetUp_Font();
 };
 
 END

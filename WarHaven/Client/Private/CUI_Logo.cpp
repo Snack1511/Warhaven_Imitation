@@ -1,7 +1,7 @@
 #include "CUI_Logo.h"
 #include "Texture.h"
 #include "Renderer.h"
-#include "CShader.h"
+#include "CUI_Renderer.h"
 #include "Loading_Manager.h"
 
 CUI_Logo::CUI_Logo()
@@ -47,7 +47,7 @@ HRESULT CUI_Logo::Initialize_Prototype()
 	SetTexture(TEXT("../Bin/Resources/Textures/UI/Logo/Nexon.png"));
 
 	GET_COMPONENT(CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Logo/Logo.png"));
-	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_ALPHA);
+	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_ALPHA);
 
 	Set_Pos(0.f, 0.f);
 	Set_Scale(1280.f, 720.f);

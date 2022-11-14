@@ -40,8 +40,6 @@ CModel_Renderer* CModel_Renderer::Create(_uint iGroupID, const RENDER_GROUP& eRe
 
 HRESULT CModel_Renderer::Initialize_Prototype()
 {
-
-
 	return S_OK;
 }
 
