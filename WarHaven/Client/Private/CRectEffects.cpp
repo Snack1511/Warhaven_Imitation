@@ -931,18 +931,18 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 {
-	_float fy;
+	_float fY;
 
 	switch (m_eCurveType)
 	{
 	case Client::CURVE_LINEAR:
 		break;
 	case Client::CURVE_SIN:
-		fy = sinf(m_pInstancingDatas[iIdx].fCurveFrequency * m_pInstancingDatas[iIdx].fMovingAcc) * m_pInstancingDatas[iIdx].fCurvePower;
+		fY = m_pInstancingDatas[iIdx].fCurvePower * sinf(m_pInstancingDatas[iIdx].fCurveFrequency * m_pInstancingDatas[iIdx].fMovingAcc); // a sin(bx)
 
-		vPos.x += fy * m_pInstancingDatas[iIdx].vRight.x;
-		vPos.y += fy * m_pInstancingDatas[iIdx].vRight.y;
-		vPos.z += fy * m_pInstancingDatas[iIdx].vRight.z;
+		vPos.x += fY * m_pInstancingDatas[iIdx].vRight.x;
+		vPos.y += fY * m_pInstancingDatas[iIdx].vRight.y;
+		vPos.z += fY * m_pInstancingDatas[iIdx].vRight.z;
 		break;
 	case Client::CURVE_END:
 		break;
