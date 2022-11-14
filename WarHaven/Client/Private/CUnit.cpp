@@ -110,6 +110,9 @@ _bool CUnit::Is_Weapon_R_Collision()
 
 void CUnit::Enter_State(STATE_TYPE eType)
 {
+	if (!m_bControlable)
+		return;
+
 	if (m_pCurState)
 	{
 		m_pCurState->Exit(this, m_pAnimator);

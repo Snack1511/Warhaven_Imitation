@@ -8,6 +8,8 @@
 
 #include "CUser.h"
 
+#include "CEffects_Factory.h"
+
 CBounce_Player::CBounce_Player()
 {
 }
@@ -39,6 +41,8 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
     /* OwnerÀÇ Animator Set Idle·Î */
 
   //  pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
+
+	//CEffects_Factory::Get_Instance()
 
 	switch (ePrevType)
 	{

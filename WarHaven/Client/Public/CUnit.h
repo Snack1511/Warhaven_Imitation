@@ -118,6 +118,8 @@ public:
 	_float4		Get_HitPos();
 	_float4x4	Get_HitMatrix();
 
+	void	Set_Controlable() { m_bControlable = !m_bControlable; }
+
 public:
 	struct UNIT_DESC
 	{
@@ -190,6 +192,9 @@ protected:
 
 	CState* m_pCurState = nullptr;
 	CUnit* m_pTargetUnit = nullptr;
+
+protected:
+	_bool m_bControlable = true;
 
 protected:
 	CTrailEffect* m_pTrailEffect = nullptr;

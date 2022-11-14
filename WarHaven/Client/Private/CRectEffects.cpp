@@ -40,7 +40,7 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	, m_fLoopTime(_origin.m_fLoopTime)
 	, m_iWidthSize(_origin.m_iWidthSize)
 	, m_iHeightSize(_origin.m_iHeightSize)
-	, m_bFixed(_origin.m_bFixed)
+	, m_bPlayOnce(_origin.m_bPlayOnce)
 	, m_eCurveType(_origin.m_eCurveType)
 {
 	if (_origin.m_pRectInstances)
@@ -57,7 +57,7 @@ CRectEffects::~CRectEffects()
 }
 
 CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_DATA& tCreateData, wstring wstrTexturePath,
-	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable, _bool bLoop, _bool bFixed)
+	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable, _bool bLoop, _bool bPlayOnce)
 {
 	CRectEffects* pInstance = new CRectEffects();
 
@@ -69,7 +69,7 @@ CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_D
 	pInstance->m_bSorting = bSorting;
 	pInstance->m_bZeroSpeedDisable = bZeroSpeedDisable;
 	pInstance->m_bLoop = bLoop;
-	pInstance->m_bFixed = bFixed;
+	pInstance->m_bPlayOnce = bPlayOnce;
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -257,7 +257,7 @@ HRESULT CRectEffects::Initialize()
 		_float fStartCurveAngle = m_tCreateData.fCurveAngle + frandom(-m_tCreateData.fCurveAngleRange, m_tCreateData.fCurveAngleRange);
 
 		matCurveRot = XMMatrixRotationAxis(m_pInstancingDatas[i].vStartPureLocalDir.XMLoad(), ToRadian(fStartCurveAngle));
-		
+
 		m_pInstancingDatas[i].vStartPureLocalRight = m_pInstancingDatas[i].vStartPureLocalRight.MultiplyNormal(matCurveRot);
 
 		m_pInstancingDatas[i].fCurvePower = m_tCreateData.fCurvePower + frandom(-m_tCreateData.fCurvePowerRange, m_tCreateData.fCurvePowerRange);
@@ -340,15 +340,15 @@ HRESULT CRectEffects::Initialize()
 		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
-			
-			m_pInstancingDatas[i].fDissolveEndTime =  m_iWidthSize * m_iHeightSize * m_fDuration; // 
+
+			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
-		{		
+		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 
-			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_pInstancingDatas[i].fDuration; // 
+			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
 		}
 		//
 
@@ -373,17 +373,17 @@ HRESULT CRectEffects::Initialize()
 			0.f,
 			0.f);
 
-		
+
 		/*m_pRectInstances[i].vRight = _float4(1.f, 0.f, 0.f, 0.f);
 		m_pRectInstances[i].vUp = _float4(0.f, 1.f, 0.f, 0.f);
 		m_pRectInstances[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);*/
 
 
-		
+
 
 
 		//초기화용 매트릭스 저장
-		*((_float4*)(&(m_pInstancingDatas[i].StartMatrix.m[0]))) = m_pRectInstances[i].vRight;
+		* ((_float4*)(&(m_pInstancingDatas[i].StartMatrix.m[0]))) = m_pRectInstances[i].vRight;
 		*((_float4*)(&(m_pInstancingDatas[i].StartMatrix.m[1]))) = m_pRectInstances[i].vUp;
 		*((_float4*)(&(m_pInstancingDatas[i].StartMatrix.m[2]))) = m_pRectInstances[i].vLook;
 		*((_float4*)(&(m_pInstancingDatas[i].StartMatrix.m[3]))) = m_pRectInstances[i].vTranslation;
@@ -459,41 +459,13 @@ void CRectEffects::My_Tick()
 		m_pInstancingDatas[i].fMovingAcc += fTimeDelta;
 
 		//3. FADE
-		if (m_bLoop)
-		{
-			if (m_bFixed) //고정된 파티클일경우
-			{
-				if (INSTANCING_DATA::FADEOUTREADY <= m_pInstancingDatas[i].eCurFadeType)
-				{
-					if (0.f != m_fLoopTime)
-					{
-						if (m_fLoopTimeAcc > m_fLoopTime)
-						{
-							if (!Fade_Lerp(i)) //loop time 동안 fadeout 막음
-								continue;
-						}
-					}
-				}
-				else
-				{
-					if (!Fade_Lerp(i))
-						continue;
-				}
-			}
-			else
-			{
-				if (!Fade_Lerp(i))
-					continue;
-			}
 
-		}
-		else //루프가 아닌경우 그대로 fade
-		{
-			if (!Fade_Lerp(i))
-				continue;
-		}
 
-		
+		if (!Fade_Lerp(i))
+			continue;
+
+
+
 
 		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA &&
 			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
@@ -531,13 +503,13 @@ void CRectEffects::My_Tick()
 					continue;
 				}
 			}
-			
+
 			vOriginPos += m_pInstancingDatas[i].vDir * m_pInstancingDatas[i].fSpeed * fTimeDelta;
 
 			vOriginPos = Switch_CurveType(vOriginPos, i);
 
 
-			
+
 
 			//2. 자유낙하
 			_float fFreeFallY = 0.f;
@@ -584,14 +556,14 @@ void CRectEffects::My_Tick()
 				vRotRight = vRight.MultiplyNormal(matRot);
 				vRotUp = vUp.MultiplyNormal(matRot);
 			}
-			
+
 
 			//m_pInstancingDatas[i].vScale = _float4(0.1f, 0.1f, 0.1f, 1.f);
 			m_pRectInstances[i].vRight = vRotRight.Normalize() * m_pInstancingDatas[i].vScale.x;
 			m_pRectInstances[i].vUp = vRotUp.Normalize() * m_pInstancingDatas[i].vScale.y;
 			m_pRectInstances[i].vLook = vRotLook.Normalize() * m_pInstancingDatas[i].vScale.z;
 		}
-		else 
+		else
 		{
 			_float4 vRotRight, vRotUp, vRotLook;
 
@@ -619,7 +591,7 @@ void CRectEffects::My_Tick()
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
 			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 			Update_Animation(i);
-		
+
 	}
 
 
@@ -629,7 +601,7 @@ void CRectEffects::My_Tick()
 	}
 
 
-	
+
 
 }
 
@@ -647,9 +619,9 @@ void CRectEffects::My_LateTick()
 				return fDist1 > fDist2;
 			});*/
 
-		//sorting해도 InstancingData를 어케 해야하지
+			//sorting해도 InstancingData를 어케 해야하지
 	}
-	
+
 
 	static_cast<CRect_Instance*>(GET_COMPONENT(CMesh))->ReMap_Instances(m_pRectInstances);
 
@@ -672,7 +644,6 @@ void CRectEffects::OnEnable()
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
-		m_pInstancingDatas[i].eCurFadeType = INSTANCING_DATA::FADEINREADY;
 		m_pInstancingDatas[i].vColor.w = 0.f;
 		m_pRectInstances[i].vColor.w = 0.f;
 		Reset_Instance(i);
@@ -684,11 +655,11 @@ void CRectEffects::Dead_Instance(_uint iIndex)
 {
 	if (m_bLoop)
 	{
-		if(m_fLoopTime == 0)
+		if (m_fLoopTime == 0)
 			Reset_Instance(iIndex);
-		else if(m_fLoopTimeAcc <= m_fLoopTime)
+		else if (m_fLoopTimeAcc <= m_fLoopTime)
 			Reset_Instance(iIndex);
-		else if(m_fLoopTimeAcc > m_fLoopTime)
+		else if (m_fLoopTimeAcc > m_fLoopTime)
 		{
 			//m_fLoopTimeAcc = 0.f;
 			//m_pInstancingDatas[iIndex].fTimeAcc = 0.f;
@@ -700,6 +671,8 @@ void CRectEffects::Dead_Instance(_uint iIndex)
 	}
 	else
 	{
+
+
 		m_pInstancingDatas[iIndex].bAlive = false;
 		m_iNumDead++;
 		m_pRectInstances[iIndex].vColor.w = 0.f;
@@ -716,64 +689,66 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 {
 	//offset 잡기
 
-		_float4 vStartPos = m_pInstancingDatas[iIndex].vStartPureLocalPos;
-		_float4 vStartDir = m_pInstancingDatas[iIndex].vStartPureLocalDir;
-		_float4 vStartRight = m_pInstancingDatas[iIndex].vStartPureLocalRight;
+	_float4 vStartPos = m_pInstancingDatas[iIndex].vStartPureLocalPos;
+	_float4 vStartDir = m_pInstancingDatas[iIndex].vStartPureLocalDir;
+	_float4 vStartRight = m_pInstancingDatas[iIndex].vStartPureLocalRight;
 
-		if (m_tCreateData.iOffsetPositionCount > 0)
-		{
-			_uint iCurIndex = iIndex / (m_tCreateData.iNumInstance / m_tCreateData.iOffsetPositionCount);
-			vStartPos += m_tCreateData.pOffsetPositions[iCurIndex];
-		}
+	if (m_tCreateData.iOffsetPositionCount > 0)
+	{
+		_uint iCurIndex = iIndex / (m_tCreateData.iNumInstance / m_tCreateData.iOffsetPositionCount);
+		vStartPos += m_tCreateData.pOffsetPositions[iCurIndex];
+	}
 
 	/*	if (m_bFollowParticle)
 		{
 			m_pFollowTarget->
 		}*/
 
-		vStartPos = vStartPos.MultiplyCoord(m_matTrans);
-		vStartDir = vStartDir.MultiplyNormal(m_matTrans).Normalize();
-		vStartRight = vStartRight.MultiplyNormal(m_matTrans).Normalize();
-		m_pRectInstances[iIndex].vTranslation = vStartPos;
-		m_pInstancingDatas[iIndex].vDir = vStartDir;
-		m_pInstancingDatas[iIndex].vRight = vStartRight;
+	vStartPos = vStartPos.MultiplyCoord(m_matTrans);
+	vStartDir = vStartDir.MultiplyNormal(m_matTrans).Normalize();
+	vStartRight = vStartRight.MultiplyNormal(m_matTrans).Normalize();
+	m_pRectInstances[iIndex].vTranslation = vStartPos;
+	m_pInstancingDatas[iIndex].vDir = vStartDir;
+	m_pInstancingDatas[iIndex].vRight = vStartRight;
 
-		//회전시켜놓기
-		
-		//Up은 dir이고
-		//Right는 0 1 0 임
-		//
+	//회전시켜놓기
 
-	/*	_float4 vUp = m_pInstancingDatas[iIndex].vDir;
-		vUp.z = 0.f;
+	//Up은 dir이고
+	//Right는 0 1 0 임
+	//
+
+/*	_float4 vUp = m_pInstancingDatas[iIndex].vDir;
+	vUp.z = 0.f;
+	vUp.Normalize();
+	_float4 vRight = { 0.f, 1.f, 0.f, 0.f };
+	_float4 vLook = vRight.Cross(vUp).Normalize();
+	vRight = vUp.Cross(vLook).Normalize();
+
+	m_pRectInstances[iIndex].vRight = vRight.MultiplyNormal(m_matTrans).Normalize();
+	m_pRectInstances[iIndex].vUp = vUp.MultiplyNormal(m_matTrans).Normalize();
+	m_pRectInstances[iIndex].vLook = vLook.MultiplyNormal(m_matTrans).Normalize();*/
+	if (!m_bLoop)
+	{
+		_float4 vLook = m_pInstancingDatas[iIndex].vDir;
+
+		m_pRectInstances[iIndex].vUp = vLook.Normalize();
+
+		_float4 vUp = { 0.f, 1.f, 0.f };
+		if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
+			(vLook.y > -1.1f && vLook.y < -0.9f)
+			)
+			vUp = _float4(0.f, 0.f, 1.f, 0.f);
+
 		vUp.Normalize();
-		_float4 vRight = { 0.f, 1.f, 0.f, 0.f };
-		_float4 vLook = vRight.Cross(vUp).Normalize();
-		vRight = vUp.Cross(vLook).Normalize();
+		_float4 vRight = vUp.Cross(vLook);
+		m_pRectInstances[iIndex].vRight = vRight.Normalize();
 
-		m_pRectInstances[iIndex].vRight = vRight.MultiplyNormal(m_matTrans).Normalize();
-		m_pRectInstances[iIndex].vUp = vUp.MultiplyNormal(m_matTrans).Normalize();
-		m_pRectInstances[iIndex].vLook = vLook.MultiplyNormal(m_matTrans).Normalize();*/
-		if (!m_bLoop)
-		{
-			_float4 vLook = m_pInstancingDatas[iIndex].vDir;
-	
-			m_pRectInstances[iIndex].vUp = vLook.Normalize();
+		vUp = vLook.Cross(vRight);
+		m_pRectInstances[iIndex].vLook = vUp.Normalize();
+	}
 
-			_float4 vUp = { 0.f, 1.f, 0.f };
-			if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
-				(vLook.y > -1.1f && vLook.y < -0.9f)
-				)
-				vUp = _float4(0.f, 0.f, 1.f, 0.f);
 
-			vUp.Normalize();
-			_float4 vRight = vUp.Cross(vLook);
-			m_pRectInstances[iIndex].vRight = vRight.Normalize();
 
-			vUp = vLook.Cross(vRight);
-			m_pRectInstances[iIndex].vLook = vUp.Normalize();
-		}
-	
 }
 
 HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
@@ -784,7 +759,7 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 
 	m_wstrMaskMapPath = CFunctor::To_Wstring(strMaskMapPath);
 	m_wstrColorMapPath = CFunctor::To_Wstring(strColorMapPath);
-	
+
 
 	pReadFile->read((char*)&m_vEffectFlag, sizeof(_float4));
 	pReadFile->read((char*)&m_vGlowFlag, sizeof(_float4));
@@ -831,7 +806,7 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
 	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
 	pReadFile->read((char*)&m_bBlackBackGround, sizeof(_bool));
-	pReadFile->read((char*)&m_bFixed, sizeof(_bool));
+	pReadFile->read((char*)&m_bPlayOnce, sizeof(_bool));
 
 	pReadFile->read((char*)&m_iWidthSize, sizeof(_uint));
 	pReadFile->read((char*)&m_iHeightSize, sizeof(_uint));
@@ -877,7 +852,14 @@ void CRectEffects::Update_Animation(_uint iIndex)
 				//여기 들어왔다 : 한바퀴돌아서 1순한거임
 				m_pRectInstances[iIndex].vColor.x = m_iWidthSize - 1;
 				m_pRectInstances[iIndex].vColor.y = m_iHeightSize - 1;
-				Dead_Instance(iIndex);
+
+				if (m_bPlayOnce)
+					Dead_Instance(iIndex);
+				else
+				{
+					m_pRectInstances[iIndex].vColor.x = 0.f;
+					m_pRectInstances[iIndex].vColor.y = 0.f;
+				}
 			}
 		}
 	}
@@ -891,21 +873,10 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 	Set_NewStartPos(iIndex);
 
+
 	m_pInstancingDatas[iIndex].vScale = m_pInstancingDatas[iIndex].vStartScale;
 
-	if (!m_bFixed)
-	{
-		if (0 < m_fLoopTimeAcc)
-		{
-			m_pInstancingDatas[iIndex].vColor.w = 0.f;
-			m_pRectInstances[iIndex].vColor.w = 0.f;
-			m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
-
-		}
-	}
-
-	if(!m_bLoop)
-		m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+	m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
 
 	m_pInstancingDatas[iIndex].fTimeAcc = 0.f;
 
@@ -949,7 +920,7 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 	default:
 		break;
 	}
-	
+
 
 	return vPos;
 }
