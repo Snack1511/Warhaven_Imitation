@@ -11,6 +11,8 @@ class CUtility_Transform
 {
 public:
 	static	void	Turn_ByAngle(CTransform* pTransform, _float4 vAxis, _float fAngle);
+	static	void	Turn_ByAngle(_float4x4& Matrix, _float4 vAxis, _float fAngle);
+	static	void	Turn_ByAngle_Up(_float4x4& Matrix, _float fAngle);
 	static  void	Turn(CTransform* pTransform, _float4 vAxis, _float fSpeed);
 	static	void	Rotation(CTransform* pTransform, _float4 vAxis, _float fAngle);
 	static _float4  LookAt(CTransform* pTransform, _float4 vPos, _bool bNoY = false);
@@ -18,6 +20,7 @@ public:
 	static _float4	Get_ProjPos(CTransform* pTransform);
 
 	static _float4 Get_Dir_2D(CTransform* pFrom, CTransform* pTo);
+	//static _float4x4 Matrix_ByLook(_float4 vLook);
 
 };
 END

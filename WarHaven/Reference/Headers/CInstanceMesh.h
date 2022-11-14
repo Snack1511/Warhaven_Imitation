@@ -15,6 +15,7 @@ private:
 public:
 	static CInstanceMesh* Create(wstring wstrInstanceDataPath, CResource_Mesh* pMeshResource, _float4x4 TransformMatrix);
 	static CInstanceMesh* Create(_uint iNumInstance, CResource_Mesh* pMeshResource, _float4x4 TransformMatrix);
+	static CInstanceMesh* Create(_uint iNumInstance, VTXINSTANCE* pInstanceData, CResource_Mesh* pMeshResource, _float4x4 TransformMatrix);
 
 public:
 	void	ReMap_Instances(_float4x4* pInstancesMatrices);
@@ -33,6 +34,7 @@ private:
 private:
 	HRESULT	SetUp_InstanceMesh(wstring wstrInstanceDataPath, CResource_Mesh* pResource, _float4x4 TransformMatrix);
 	HRESULT	SetUp_InstanceMesh(_uint iNumInstance);
+	HRESULT	SetUp_InstanceMesh(_uint iNumInstance, VTXINSTANCE* pInstanceData);
 
 
 };

@@ -82,5 +82,7 @@ void CGame_Manager_MJ::Add_Wrapping_Easing(EASINGFUNCS func)
 
 void CGame_Manager_MJ::Easing_Vert(_int Index, _float4* pOutPos, _float4& StartPos, _float4& TargetPos, _float Ratio)
 {
+	if (Index >= m_ArrEasingWrapped.size() || Index < 0)
+		assert(0);
 	(*pOutPos) = m_ArrEasingWrapped[Index](m_pWrappedEasing, StartPos, TargetPos, Ratio, 1.f);
 }

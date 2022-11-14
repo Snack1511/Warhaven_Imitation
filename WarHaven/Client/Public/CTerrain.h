@@ -47,14 +47,13 @@ public:
 	void Change_ShaderPass(_int PassIndex = 0);
 public:
 	CMesh_Terrain* Get_MeshTerrain();
-public:
-	void Update_TextureList(list<tuple<wstring, _int>>& PathList);
 #pragma region 내비관련
 protected:
 	HRESULT Ready_NaviCells(ifstream& readFile, CMesh_Terrain* pTerrain);
 	HRESULT SetUp_NeighborNaviCells();
 #pragma endregion
-
+protected:
+	void Read_TerrainTexture(wstring wStrPath, list<wstring>& listPath);
 protected:
 	CMesh_Terrain* m_pTerrainMesh = nullptr;
 	CRenderer* m_pRenderer = nullptr;
@@ -73,6 +72,6 @@ protected:
 private:
 	HRESULT	SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ);
 	HRESULT	SetUp_TerrainMesh(const _tchar* pFilePath);
-
+	HRESULT SetUp_TerrainTextures();
 };
 END

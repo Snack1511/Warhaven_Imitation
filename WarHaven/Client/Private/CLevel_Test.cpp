@@ -27,7 +27,8 @@
 
 // MJ_INCLUDE
 #include "CDrawable_Terrain.h"
-
+#include "CStructure_Instance.h"
+#include "CUtility_Transform.h"
 // YJ
 #include "CDebugObject.h"
 
@@ -357,6 +358,31 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	pDrawableTerrain->Initialize();
 	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
+	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
+	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	//SM_Grass_Weed_Weed02a.FBX
+	
+	//_int iNumInstance = 10000;
+	//VTXINSTANCE* pVtxInstance = new VTXINSTANCE[iNumInstance];
+	//for (_int i = 0; i < iNumInstance; ++i)
+	//{
+	//	_float4x4 mat;
+	//	mat.Identity();
+	//	CUtility_Transform::Turn_ByAngle_Up(mat, frandom(0.f, 360.f));
+	//	_float4 vRight = mat.XMLoad().r[0];
+	//	_float4 vUp = mat.XMLoad().r[1];
+	//	_float4 vLook = mat.XMLoad().r[2];
+	//	pVtxInstance[i].vRight = vRight;
+	//	pVtxInstance[i].vUp = vUp;
+	//	pVtxInstance[i].vLook = vLook;
+	//	pVtxInstance[i].vTranslation = _float4(frandom(0.f, 100.f), 0.f, frandom(0.f, 100.f), 1.f);
+	//}
+	//CStructure_Instance* pInstanceStructure = CStructure_Instance::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Grass/Weed/SM_Grass_Weed_Weed02a.FBX")), iNumInstance, pVtxInstance);
+	//if (nullptr == pInstanceStructure)
+	//	return E_FAIL;
+	//pInstanceStructure->Initialize();
+	//Ready_GameObject(pInstanceStructure, GROUP_DECORATION);
+	//Safe_Delete_Array(pVtxInstance);
 	return S_OK;
 }
 

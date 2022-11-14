@@ -190,6 +190,7 @@
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CBloodOverlay.h" />
     <ClInclude Include="..\public\CCamera_Default.h" />
+    <ClInclude Include="..\Public\CCamera_FixedAngle.h" />
     <ClInclude Include="..\Public\CCamera_Follow.h" />
     <ClInclude Include="..\public\CCamera_Free.h" />
     <ClInclude Include="..\Public\CColorController.h" />
@@ -227,6 +228,7 @@
     <ClInclude Include="..\Public\CRun_Player_Begin_R.h" />
     <ClInclude Include="..\Public\CRun_Player_L.h" />
     <ClInclude Include="..\Public\CRun_Player_R.h" />
+    <ClInclude Include="..\Public\CScript_FixedCam.h" />
     <ClInclude Include="..\Public\CScript_FollowCam.h" />
     <ClInclude Include="..\public\CScript_Freecam.h" />
     <ClInclude Include="..\public\CSkyBox.h" />
@@ -245,6 +247,7 @@
     <ClInclude Include="..\public\CState.h" />
     <ClInclude Include="..\public\CState_Manager.h" />
     <ClInclude Include="..\Public\CStructure.h" />
+    <ClInclude Include="..\Public\CStructure_Instance.h" />
     <ClInclude Include="..\Public\CSwitchLtoR.h" />
     <ClInclude Include="..\public\CSwitchRtoL.h" />
     <ClInclude Include="..\Public\CSword_Effect.h" />
@@ -325,6 +328,7 @@
     <ClCompile Include="..\private\CAI_SandBack.cpp" />
     <ClCompile Include="..\Private\CBloodOverlay.cpp" />
     <ClCompile Include="..\private\CCamera_Default.cpp" />
+    <ClCompile Include="..\Private\CCamera_FixedAngle.cpp" />
     <ClCompile Include="..\Private\CCamera_Follow.cpp" />
     <ClCompile Include="..\private\CCamera_Free.cpp" />
     <ClCompile Include="..\Private\CColorController.cpp" />
@@ -363,6 +367,7 @@
     <ClCompile Include="..\Private\CRun_Player_Begin_R.cpp" />
     <ClCompile Include="..\Private\CRun_Player_L.cpp" />
     <ClCompile Include="..\Private\CRun_Player_R.cpp" />
+    <ClCompile Include="..\Private\CScript_FixedCam.cpp" />
     <ClCompile Include="..\Private\CScript_FollowCam.cpp" />
     <ClCompile Include="..\private\CScript_Freecam.cpp" />
     <ClCompile Include="..\private\CSkyBox.cpp" />
@@ -381,6 +386,7 @@
     <ClCompile Include="..\private\CState.cpp" />
     <ClCompile Include="..\private\CState_Manager.cpp" />
     <ClCompile Include="..\Private\CStructure.cpp" />
+    <ClCompile Include="..\Private\CStructure_Instance.cpp" />
     <ClCompile Include="..\Private\CSwitchLtoR.cpp" />
     <ClCompile Include="..\private\CSwitchRtoL.cpp" />
     <ClCompile Include="..\Private\CSword_Effect.cpp" />

@@ -22,6 +22,50 @@ void CUtility_Transform::Turn_ByAngle(CTransform* pTransform, _float4 vAxis, _fl
 	pTransform->Set_World(WORLD_UP, vUp.Normalize());
 }
 
+void CUtility_Transform::Turn_ByAngle(_float4x4& Matrix, _float4 vAxis, _float fAngle)
+{
+	_matrix Mat = Matrix.XMLoad();
+	_float4 vRight = Mat.r[0];
+	_float4 vUp = Mat.r[1];
+	_float4 vLook = Mat.r[2];
+
+	_float4x4 matRot;
+
+	matRot = XMMatrixRotationAxis(vAxis.Normalize().XMLoad(), ToRadian(fAngle));
+
+	vLook = vLook.MultiplyNormal(matRot);
+	vRight = vRight.MultiplyNormal(matRot);
+	vUp = vUp.MultiplyNormal(matRot);
+
+	Mat.r[0] = vRight.XMLoad();
+	Mat.r[1] = vUp.XMLoad();
+	Mat.r[2] = vLook.XMLoad();
+
+	Matrix = Mat;
+}
+
+void CUtility_Transform::Turn_ByAngle_Up(_float4x4& Matrix, _float fAngle)
+{
+	_matrix Mat = Matrix.XMLoad();
+	_float4 vRight = Mat.r[0];
+	_float4 vUp = Mat.r[1];
+	_float4 vLook = Mat.r[2];
+
+	_float4x4 matRot;
+
+	matRot = XMMatrixRotationAxis(vUp.Normalize().XMLoad(), ToRadian(fAngle));
+
+	vLook = vLook.MultiplyNormal(matRot);
+	vRight = vRight.MultiplyNormal(matRot);
+	vUp = vUp.MultiplyNormal(matRot);
+
+	Mat.r[0] = vRight.XMLoad();
+	Mat.r[1] = vUp.XMLoad();
+	Mat.r[2] = vLook.XMLoad();
+
+	Matrix = Mat;
+}
+
 void CUtility_Transform::Turn(CTransform* pTransform, _float4 vAxis, _float fSpeed)
 {
 	_float4 vRight = pTransform->Get_MyWorld(WORLD_RIGHT);

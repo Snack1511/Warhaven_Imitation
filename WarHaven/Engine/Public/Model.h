@@ -19,7 +19,7 @@ public:
 	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _float4x4 TransformMatrix);
 	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, wstring wstrInstanceFilePath, _float4x4 TransformMatrix);
 	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, _float4x4 TransformMatrix);
-
+	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix);
 public:
 	wstring	Get_ModelFilePath() { return m_wstrModelFilePath; }
 	wstring	Get_TextureFilePath(_uint iIndex);
@@ -104,6 +104,7 @@ private:
 	HRESULT	SetUp_Model(MODEL_TYPE eType, wstring wstrModelFilePath, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, wstring wstrInstanceFilePath, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, _float4x4 TransformMatrix, _uint iMeshPartType);
+	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_MeshContainersPtr();
 
 	HRESULT Create_ModelData(class CResource* pResource, _uint iResType, _uint iMeshPartType);
@@ -111,6 +112,7 @@ private:
 	HRESULT Create_MeshContainer(class CResource_Mesh* pResource, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT Create_InstancingMesh(class CResource_Mesh* pResource, wstring wstrInstanceFilePath, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT Create_InstancingMesh(class CResource_Mesh* pResource, _uint iNumInstance, _float4x4 TransformMatrix, _uint iMeshPartType);
+	HRESULT Create_InstancingMesh(class CResource_Mesh* pResource, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT Create_HierarchyNode(class CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, _uint iMeshPartType);
 
 

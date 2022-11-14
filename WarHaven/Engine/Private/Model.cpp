@@ -119,6 +119,27 @@ CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFileP
 	return pInstance;
 }
 
+CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix)
+{
+	CModel* pInstance = new CModel(iGroupIdx);
+	pInstance->m_wstrModelFilePath = wstrModelFilePath;
+
+	if (FAILED(pInstance->SetUp_InstancingModel(eType, wstrModelFilePath, iNumInstance, pInstanceData, TransformMatrix, 0)))
+	{
+		Call_MsgBox(L"Failed to SetUp_Model : CModel");
+		SAFE_DELETE(pInstance);
+		return nullptr;
+	}
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		Call_MsgBox(L"Failed to Initialize_Prototype : CModel");
+		SAFE_DELETE(pInstance);
+	}
+
+	return pInstance;
+}
+
 
 wstring CModel::Get_TextureFilePath(_uint iIndex)
 {
@@ -705,6 +726,41 @@ HRESULT CModel::SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePat
 	return S_OK;
 }
 
+HRESULT CModel::SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix, _uint iMeshPartType)
+{
+	m_eMODEL_TYPE = eType;
+	m_bCulling = false;
+	XMStoreFloat4x4(&m_TransformMatrix, TransformMatrix.XMLoad());
+
+	MODEL_DATA* pModel_Data = CGameInstance::Get_Instance()->Get_ModelData(wstrModelFilePath, eType);
+
+	if (!pModel_Data)
+		return E_FAIL;
+
+	_uint iSize = (_uint)pModel_Data->m_vecResourceKeys.size();
+
+	for (_uint i = 0; i < iSize; ++i)
+	{
+		CResource* pResource = CGameInstance::Get_Instance()->Get_Resource(pModel_Data->m_vecResourceKeys[i]);
+		if (!pResource)
+			return E_FAIL;
+
+		if (pModel_Data->m_vecResType[i] == RES_MESH)
+		{
+			Create_InstancingMesh(static_cast<CResource_Mesh*>(pResource), iNumInstance, pInstanceData, TransformMatrix, iMeshPartType);
+		}
+		else
+		{
+			Create_ModelData(pResource, pModel_Data->m_vecResType[i], iMeshPartType);
+		}
+
+	}
+
+	if (FAILED(SetUp_MeshContainersPtr()))
+		return E_FAIL;
+	return S_OK;
+}
+
 HRESULT CModel::SetUp_MeshContainersPtr()
 {
 	for (auto& elem : m_MeshContainers)
@@ -867,6 +923,40 @@ HRESULT CModel::Create_InstancingMesh(CResource_Mesh* pResource, _uint iNumInsta
 	MESH_DESC& tMeshDesc = pResource->Get_MeshDesc();
 
 	CInstanceMesh* pMeshContainer = CInstanceMesh::Create(iNumInstance, pResource, TransformMatrix);
+
+	if (nullptr == pMeshContainer)
+		return E_FAIL;
+
+	//여기서 받은 인덱스... 흐음..
+	// 내 파트타입이랑 같은 인덱스를 찾으면 댈듯? 그럼 안댐.
+
+	_uint iMatFind = 0;
+	for (_uint i = 0; i < m_Materials.size(); ++i)
+	{
+		if (m_Materials[i].first != iMeshPartType)
+			continue;
+
+		if (iMatFind == pMeshContainer->m_iMaterialIndex)
+		{
+			pMeshContainer->m_MaterialName = m_Materials[i].second.strName;
+			break;
+		}
+
+		iMatFind++;
+
+	}
+
+	m_MeshContainers.push_back(make_pair(iMeshPartType, pMeshContainer));
+	pMeshContainer->Set_Owner(m_pOwner);
+
+	return S_OK;
+}
+
+HRESULT CModel::Create_InstancingMesh(CResource_Mesh* pResource, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix, _uint iMeshPartType)
+{
+	MESH_DESC& tMeshDesc = pResource->Get_MeshDesc();
+
+	CInstanceMesh* pMeshContainer = CInstanceMesh::Create(iNumInstance, pInstanceData, pResource, TransformMatrix);
 
 	if (nullptr == pMeshContainer)
 		return E_FAIL;

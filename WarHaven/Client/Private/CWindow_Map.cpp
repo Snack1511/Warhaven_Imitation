@@ -14,6 +14,10 @@
 #include "CMesh_Terrain.h"
 #include "Easing_Utillity.h"
 #include "CGame_Manager_MJ.h"
+
+#include "CCamera_FixedAngle.h"
+
+#include "CStructure_Instance.h"
 CWindow_Map::CWindow_Map()
 {
     m_CurTerrainData.Initialize();
@@ -27,6 +31,18 @@ CWindow_Map::~CWindow_Map()
     Clear_TupleData(m_arrLightTypeCombo);
     Clear_TupleData(m_arrLightGroupCombo);
     Clear_TupleData(m_arrBrushType);
+    Clear_TupleData(m_arrTileTextureName);
+
+    for (INSTANCEGROUPING::value_type& Value : m_InstanceMap)
+    {
+        for (INSTANCEVECTOR::value_type& VectorValue : Value.second)
+        {
+            Safe_Delete_Array(get<0>(VectorValue).ArrInstanceVTX);
+        }
+        Value.second.clear();
+    }
+    m_InstanceMap.clear();
+
     CGame_Manager_MJ::Destroy_Instance();
 }
 
@@ -55,10 +71,11 @@ HRESULT CWindow_Map::Initialize()
     m_MeshRootNode.strFullPath = "../bin/resources/meshes/Map";
     Read_Folder_ForTree("../bin/resources/meshes/Map", m_MeshRootNode);
 
-    m_TileRootNode.strFolderPath = "../bin/resources/Textures";
-    m_TileRootNode.strFileName = "Terrain";
-    m_TileRootNode.strFullPath = "../bin/resources/Textures/Terrain";
-    Read_Folder_ForTree("../bin/resources/Textures/Terrain", m_TileRootNode);
+    //D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Meshes\Map
+    m_tInstanceMeshDataRoot.strFolderPath = "../bin/resources/Meshes/Map";
+    m_tInstanceMeshDataRoot.strFileName = "InstancingObjects";
+    m_tInstanceMeshDataRoot.strFullPath = "../bin/resources/Meshes/Map/InstancingObjects";
+    Read_Folder_ForTree("../bin/resources/Meshes/Map/InstancingObjects", m_tInstanceMeshDataRoot);
 
     m_strPath = "../Bin/Data/MapData/";
     //콤보어레이 생성
@@ -74,12 +91,16 @@ HRESULT CWindow_Map::Initialize()
     Ready_LightType();
 
     Ready_TerrainBrushType();
+
+    if(FAILED(SetUp_Cameras()))
+        return E_FAIL;
     return S_OK;
 }
 
 void CWindow_Map::Tick()
 {
     _bool bPicked = false;
+    Select_Camera();
     Select_DataControlFlag();
 
     if (Calculate_Pick())
@@ -95,8 +116,10 @@ HRESULT CWindow_Map::Render()
 {
     ImVec2 vPannelSize = ImVec2(300.f, 300.f);
     ImVec2 vTerrainControlPos = ImVec2(vPannelSize.x, 0.f);
-    ImVec2 vDataControlPos = ImVec2(vPannelSize.x, vPannelSize.y);
-    ImVec2 vLightControlPos = ImVec2(vPannelSize.x, vPannelSize.y * 2);
+    ImVec2 vInstnaceObjectControlPos = ImVec2(vPannelSize.x, vPannelSize.y);
+    ImVec2 vBrushSettingWindowPos = ImVec2(vPannelSize.x, vPannelSize.y * 2);
+    ImVec2 vDataControlPos = ImVec2(vPannelSize.x, vPannelSize.y * 3);
+    ImVec2 vLightControlPos = ImVec2(vPannelSize.x, vPannelSize.y * 4);
 
     if (FAILED(__super::Begin()))
         return E_FAIL;
@@ -109,7 +132,12 @@ HRESULT CWindow_Map::Render()
     if (nullptr != m_pCurTerrain)
     {
         Create_SubWindow("Terrain_Controller", vTerrainControlPos, vPannelSize, bind(&CWindow_Map::Func_TerrainControl, this));
+        Create_SubWindow("InstanceStucture_Controller", vInstnaceObjectControlPos, vPannelSize, bind(&CWindow_Map::Func_InstanceObjectControl, this));
+        Create_SubWindow("Brush Setting", vBrushSettingWindowPos, vPannelSize, bind(&CWindow_Map::Set_BrushInform, this));
+
     }
+
+
 
     //데이타 컨트롤
     if (nullptr != m_pCurSelectGameObject)
@@ -185,9 +213,7 @@ void CWindow_Map::Func_FileControl()
     ImGui::Spacing();
     ImGui::Text("Select PickingGroupID");
     SetUp_CurPickingGroup();
-    if (Make_Combo("##PickingGroupID", m_arrObjectGroupId, &m_SelectObjectGroupIDIndex, bind(&CWindow_Map::EmptyFunction, this)))
-    {
-    }
+    Make_Combo("##PickingGroupID", m_arrObjectGroupId, &m_SelectObjectGroupIDIndex, bind(&CWindow_Map::EmptyFunction, this));
     ImGui::Spacing();
     if (ImGui::CollapsingHeader("SetUp Terrain", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
@@ -1042,9 +1068,6 @@ void CWindow_Map::Update_Data()
 }
 
 
-
-
-
 #pragma region static value 라이트 컨트롤러 
 static int LightGroupIndex = 0;
 static string SelectLightGroup = "";
@@ -1260,6 +1283,10 @@ void CWindow_Map::Save_MapData(string BasePath, string SaveName)
     GroupPath += "ObjectData/";
     Save_ObjectGroup(GroupPath, SaveName);
 
+    string InstancePath = BasePath;
+    InstancePath += "InstanceData/";
+    Save_InstanceData(InstancePath, SaveName);
+
     //내비 데이터 저장
     string NavPath = BasePath;
     NavPath += "NavData/";
@@ -1283,6 +1310,7 @@ void CWindow_Map::Load_MapData(string FilePath)
 
     Load_TerrainData(CFunctor::To_String(tMapData.TerrainDataPath));
     Load_ObjectGroup(CFunctor::To_String(tMapData.ObjectDataPath));
+    Load_InstanceData(CFunctor::To_String(tMapData.InstanceDataPath));
     Load_NavGroup(CFunctor::To_String(tMapData.NavDataPath));
     Load_LightGroup(CFunctor::To_String(tMapData.LightDataPath));
 }
@@ -1325,6 +1353,9 @@ void CWindow_Map::Save_TerrainData(string BasePath, string SaveName)
 
     _float3* Vertices = m_CurTerrainData.pCurTerrainVertPos;
     writeFile.write((char*)Vertices, sizeof(_float3) * iNumVertices);
+
+    _float4* Colors = m_CurTerrainData.pCurTerrainColor;
+    writeFile.write((char*)Colors, sizeof(_float4) * iNumVertices);
 
     writeFile.close();
 
@@ -1516,6 +1547,90 @@ void CWindow_Map::Load_ObjectGroup(string FilePath)
     }
     readFile.close();
 }
+void CWindow_Map::Save_InstanceData(string BasePath, string SaveName)
+{
+    string SaveFullPath = BasePath;
+    SaveFullPath += SaveName;
+    SaveFullPath += ".InstanceData";
+    ofstream	writeFile(SaveFullPath, ios::binary);
+
+    if (!writeFile.is_open())
+    {
+        Call_MsgBox(L"SSave 실패 ??!?!");
+        assert(0);
+    }
+
+    //그룹 개수 저장
+    _int GroupSize = _int(m_strArrInstanceMeshName.size());
+    writeFile.write((char*)&GroupSize, sizeof(_int));
+    for (_int i = 0; i < GroupSize; ++i)
+    {
+        INSTANCEVECTOR& InstanceVector = m_InstanceMap[HASHING(string, m_strArrInstanceMeshName[i])];
+        _int InstanceSize = _int(InstanceVector.size());
+        writeFile.write((char*)&InstanceSize, sizeof(_int));
+        for (_int j = 0; j < InstanceSize; ++j)
+        {
+            MTINSTANCE_DATA& Data = get<0>(InstanceVector[j]);
+            Data.Save(writeFile);
+        }
+    }
+    writeFile.close();
+    //Call_MsgBox(L"Save 성공");
+}
+void CWindow_Map::Load_InstanceData(string FilePath)
+{
+    for (INSTANCEGROUPING::value_type& Value : m_InstanceMap)
+    {
+        for (INSTANCEVECTOR::value_type& VectorValue : Value.second)
+        {
+            Safe_Delete_Array(get<0>(VectorValue).ArrInstanceVTX);
+            DELETE_GAMEOBJECT(get<1>(VectorValue));
+        }
+        Value.second.clear();
+    }
+    m_InstanceMap.clear();
+    m_strArrInstanceMeshName.clear();
+    m_iCurSelectInstanceNameIndex = 0;
+    m_iCurSelectInstanceObjectIndex = 0;
+
+    string LoadFullPath = FilePath;
+    ifstream	readFile(LoadFullPath, ios::binary);
+
+    if (!readFile.is_open())
+    {
+        Call_MsgBox(L"Load 실패 ??!?!");
+        assert(0);
+    }
+
+    _int GroupSize = 0;
+    //그룹 개수 저장
+    readFile.read((char*)&GroupSize, sizeof(_int));
+    for (_int i = 0; i < GroupSize; ++i)
+    {
+        _int InstanceSize = 0;
+        readFile.read((char*)&InstanceSize, sizeof(_int));
+        for (_int j = 0; j < InstanceSize; ++j)
+        {
+            MTINSTANCE_DATA Data;
+            Data.Load(readFile);
+            string strGroupName = CFunctor::To_String(Data.strInstanceGorupName);
+            size_t HashNums = HASHING(string, strGroupName);
+            INSTANCEGROUPING::iterator GroupIter = m_InstanceMap.find(HashNums);
+            if (m_InstanceMap.end() == GroupIter)
+            {
+                m_InstanceMap.emplace(HashNums, INSTANCEVECTOR());
+                m_strArrInstanceMeshName.push_back(strGroupName);
+            }
+
+            CStructure_Instance* pInstance = CStructure_Instance::Create(Data.strMeshPath, Data.iInstanceNums, Data.ArrInstanceVTX);
+            pInstance->Initialize();
+            CREATE_GAMEOBJECT(pInstance, GROUP_DECORATION);
+            pInstance->Get_Transform()->Set_World(WORLD_POS, Data.InstancePosition);
+            m_InstanceMap[HashNums].push_back(make_tuple(Data, pInstance));
+        }
+    }
+    readFile.close();
+}
 void CWindow_Map::Save_NavGroup(string BasePath, string SaveName)
 {
 }
@@ -1592,6 +1707,15 @@ HRESULT CWindow_Map::Disable_DefaultTerrain()
 
 void CWindow_Map::Func_TerrainControl()
 {
+    if (ImGui::Checkbox("Activate WireMode", &m_TerrainWireFrame))
+    {
+        if (m_TerrainWireFrame)
+            m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_NAVIGATION);
+        else
+            m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_TEXTUREARRAY);
+
+    }
+
     string strBrushOnOffText;
     if (PICK_TERRAINVERT != m_ePickingType)
     {
@@ -1717,73 +1841,69 @@ void CWindow_Map::Edit_TerrainVert()
 {
     if (ImGui::CollapsingHeader("Modify Vertex"))
     {
-        if (ImGui::Checkbox("Activate WireMode", &m_TerrainWireFrame))
-        {
-            if (m_TerrainWireFrame)
-                m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_NAVIGATION);
-            else
-                m_pCurTerrain->Change_ShaderPass(2);
 
-        }
         if (ImGui::Button("Activate VertsNormal"))
         {
             m_pCurTerrain->Update_Normal();
         }
     }
-    if (ImGui::CollapsingHeader("Brush Setting"))
-    {
-        ImGui::Text("Brush Type");
-        Make_Combo("##Brush Combo", m_arrBrushType, &m_iCurSelectTerrainBrush, bind(&CWindow_Map::EmptyFunction, this));
-        ImGui::Spacing();
-
-        ImGui::Text("Brush Size");
-        ImGui::DragFloat("##BrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.3f");
-        ImGui::Spacing();
-
-        ImGui::Text("Height Increase Value");
-        ImGui::DragFloat("##HeightIncrease", &m_fBrushWeight, 0.1f, 0.f, 10.f, "%.3f");
-        ImGui::Spacing();
-    }
 }
 void CWindow_Map::Edit_TerrainTex()
 {
-    if (ImGui::CollapsingHeader("Added TileTexture"))
+    if (ImGui::Checkbox("Activate WireMode", &m_TerrainWireFrame))
     {
-        DebugData("Debug_TextureName", m_CurSelectedTexFileName, ImVec4(0.f, 1.f, 0.f, 1.f));
-        DebugData("Debug_BaseTexPath", m_CurSelectedTileBaseTexName, ImVec4(0.f, 1.f, 0.f, 1.f));
-        DebugData("Debug_BaseTexPath", m_CurSelectedTileNormalTexName, ImVec4(0.f, 1.f, 0.f, 1.f));
+        if (m_TerrainWireFrame)
+            m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_NAVIGATION);
+        else
+            m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_TEXTUREARRAY);
 
-
-        ImGui::TextColored(ImVec4(1.f, 1.f, 1.f, 1.f), "Tile Texture");
-        if (ImGui::BeginListBox("##Tile_Texture_List", ImVec2(250.f, 100.f)))
-        {
-            Show_TreeData(m_TileRootNode, bind(&CWindow_Map::Routine_TileSelect, this, placeholders::_1));
-            ImGui::EndListBox();
-        }
-        ImGui::Spacing();
     }
-    if (ImGui::CollapsingHeader("Brush Setting"))
-    {
-        ImGui::Text("Brush Type");
-        Make_Combo("##Brush Combo", m_arrBrushType, &m_iCurSelectTerrainBrush, bind(&CWindow_Map::EmptyFunction, this));
-        ImGui::Spacing();
-
-        ImGui::Text("Brush Size");
-        ImGui::DragFloat("##BrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.3f");
-        ImGui::Spacing();
-
-
-        ImGui::Text("Height Increase Value");
-        ImGui::DragFloat("##HeightIncrease", &m_fBrushWeight, 0.1f, 0.f, 100.f, "%.3f");
-        ImGui::Spacing();
-    }
-
+    ImGui::Spacing();
     if (ImGui::CollapsingHeader("Index Setting"))
     {
-        string strSourDebug = to_string(m_iSourIndex);
-        string strDestDebug = to_string(m_iDestIndex);
-        ImGui::InputInt("##SourInput", &m_iSourIndex);
-        ImGui::InputInt("##DestInput", &m_iDestIndex);
+        string strSourDebug = m_curSelectSourTextureName;//to_string(m_iSourIndex);
+        string strDestDebug = m_curSelectDestTextureName;//to_string(m_iDestIndex);
+
+        ImGui::Text("Select SourTex");
+        if (ImGui::BeginCombo("##SourCombo", m_curSelectSourTextureName.c_str()))
+        {
+            list<tuple<string, _int>>& TupleList = m_pCurTerrain->Get_TextureList();
+            for (list<tuple<string, _int>>::value_type& Value : TupleList)
+            {
+                _bool bSelect = false;
+                if (m_curSelectSourTextureName == get<0>(Value))
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(get<0>(Value).c_str(), bSelect))
+                {
+                    m_curSelectSourTextureName = get<0>(Value);
+                    m_iSourIndex = get<1>(Value);
+                }
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::Spacing();
+        ImGui::Text("Select DestTex");
+        if (ImGui::BeginCombo("##DestCombo", m_curSelectDestTextureName.c_str()))
+        {
+            list<tuple<string, _int>>& TupleList = m_pCurTerrain->Get_TextureList();
+            for (list<tuple<string, _int>>::value_type& Value : TupleList)
+            {
+                _bool bSelect = false;
+                if (m_curSelectDestTextureName == get<0>(Value))
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(get<0>(Value).c_str(), bSelect))
+                {
+                    m_curSelectDestTextureName = get<0>(Value);
+                    m_iDestIndex = get<1>(Value);
+                }
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::Spacing();
         DebugData("Debug_Sour", strSourDebug, ImVec4(1.f, 0.f, 0.f, 1.f));
         DebugData("Debug_Dest", strDestDebug, ImVec4(0.f, 1.f, 0.f, 1.f));
     }
@@ -1871,6 +1991,264 @@ _float3 CWindow_Map::Easing_Vertices(_float3* pVertPos)
     _float3 vReturn = _float3(vOut.x, vOut.y, vOut.z);
     return vReturn;
 }
+void CWindow_Map::Func_InstanceObjectControl()
+{
+
+    //PICK_INSTANCEOBJECT
+    string strBrushOnOffText;
+    if (PICK_INSTANCEOBJECT != m_ePickingType)
+    {
+        strBrushOnOffText = "On InstancingObjectControl";
+    }
+    else
+        strBrushOnOffText = "Off InstancingObjectControl";
+
+    if (ImGui::Button(strBrushOnOffText.c_str()))
+    {
+        if (PICK_INSTANCEOBJECT == m_ePickingType)
+        {
+            m_ePickingType = PICK_NONE;
+        }
+        else
+            m_ePickingType = PICK_INSTANCEOBJECT;
+    }
+    ImGui::Spacing();
+
+    if (ImGui::Button("Confirm"))
+    {
+        m_pCurSelectInstanceObject = nullptr;
+    }
+
+    ImGui::Text("Draw InstanceNums");
+    ImGui::InputInt("##InputInstanceNums", &m_iDrawInstanceObjectNums);
+
+    ImGui::Text("Rotation RadomAngle");
+    ImGui::InputFloat("##RandomAngle", &m_fRandomRatio);
+
+    Show_TreeData(m_tInstanceMeshDataRoot, bind(&CWindow_Map::Routine_InstanceMeshSelect, this, placeholders::_1));
+
+    if (!m_strArrInstanceMeshName.empty()) 
+    {
+        if (ImGui::BeginCombo("##InstanceGroupName", m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex].c_str()))
+        {
+            for (_int i = 0; i < _int(m_strArrInstanceMeshName.size()); ++i)
+            {
+                _bool bSelected = false;
+                if (i == m_iCurSelectInstanceNameIndex)
+                {
+                    bSelected = true;
+                }
+                if (ImGui::Selectable(m_strArrInstanceMeshName[i].c_str(), bSelected))
+                {
+                    m_iCurSelectInstanceNameIndex = i;
+                }
+            }
+
+            ImGui::EndCombo();
+        }
+    }
+    INSTANCEGROUPING::iterator pTupleList = m_InstanceMap.find(HASHING(string, m_strCurSelectInstanceMeshName));
+    ImGui::Text("Instancing List");
+    if (ImGui::BeginListBox("##Instance List", ImVec2(360.f, 200.f)))
+    {
+        if (m_InstanceMap.end() != pTupleList)
+        {
+            _int Index = 0;
+            for (INSTANCEVECTOR::value_type& Value : pTupleList->second)
+            {
+                _bool bSelected = false;
+                if (get<1>(Value) == m_pCurSelectInstanceObject)
+                {
+                    bSelected = true;
+                }
+                if (ImGui::Selectable(to_string(Index).c_str(), bSelected))
+                {
+                    m_pCurSelectInstanceObject = get<1>(Value);
+                    m_iCurSelectInstanceObjectIndex = Index;
+                }
+                Index++;
+            }
+        }
+        ImGui::EndListBox();
+    }
+    if (ImGui::Button("Delete InstanceObject"))
+    {
+        Delete_InstanceObject();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Clear InstanceGroup"))
+    {
+        Clear_InstanceGroup();
+    }
+    ImGui::SameLine();
+}
+void CWindow_Map::Make_InstanceObject()
+{
+    if (nullptr == m_pCurTerrain)
+        return;
+
+
+    size_t HashNum = HASHING(string, m_strCurSelectInstanceMeshName);
+    INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
+
+
+
+    //if (Search_NearInstanceObject())
+    //{
+    //    return;
+    //}//마우스 브러시 영역 내 인스턴스 오브젝트 탐색
+    //else    
+    //{
+    //    
+    //}//영역 내 존재하지 않을 경우 인스턴스 오브젝트 생성
+
+    if (InstanceIter == m_InstanceMap.end())
+    {
+        m_InstanceMap.emplace(HashNum, INSTANCEVECTOR());
+        m_strArrInstanceMeshName.push_back(m_strCurSelectInstanceMeshName);
+    }
+
+
+    MTINSTANCE_DATA tInstanceData;
+    tInstanceData.strInstanceGorupName = CFunctor::To_Wstring(m_strCurSelectInstanceMeshName);
+    tInstanceData.strMeshPath = CFunctor::To_Wstring(m_strCurSelectInstanceMeshPath);
+    tInstanceData.iInstanceNums = m_iDrawInstanceObjectNums;
+    tInstanceData.InstancePosition = m_OutPos;
+    tInstanceData.ArrInstanceVTX = new VTXINSTANCE[m_iDrawInstanceObjectNums];
+    //생성 전 피킹된 위치 근처의 지형의 정점 가져오기
+    list<_uint> VertsList = Select_Vertices();
+    for (_int i = 0; i < m_iDrawInstanceObjectNums; ++i)
+    {
+
+        _float fRatio = frandom(0.f, m_fBrushSize * 0.5f);
+        _float4 vInstancePosition
+            = _float4(
+                cosf(frandom(0.f, 360.f)) * fRatio
+                , 0.f
+                , sinf(frandom(0.f, 360.f)) * fRatio
+                , 1.f);
+
+        _float4 TerrainPickPos = vInstancePosition.XMLoad() + m_OutPos.XMLoad();
+        TerrainPickPos.y += 10000.f;
+        TerrainPickPos.w = 1.f;
+        _float4 vPickOutPos;
+        _float4 vPickOutNormal;
+        //해당 정점 리스트의 피킹 --> 인스턴스 어레이로..
+        if (Picked_VertList(VertsList, TerrainPickPos, vPickOutPos, vPickOutNormal))//터레인 정점리스트 피킹
+        {
+            // 위치와 노멀 받아서 적용
+            vInstancePosition.y += (vPickOutPos.y - m_OutPos.y);
+
+            _matrix Mat = XMMatrixIdentity();
+            _float4 IntiMatUp = -vPickOutNormal.XMLoad();
+            _float4 IntiMatRight = XMVector3Cross(IntiMatUp.XMLoad(), XMVectorSet(0.f, 0.f, 1.f, 0.f));
+            _float4 IntiMatLook = XMVector3Cross(IntiMatRight.XMLoad(), IntiMatUp.XMLoad());
+
+            Mat.r[0] = IntiMatRight.XMLoad();
+            Mat.r[1] = IntiMatUp.XMLoad();
+            Mat.r[2] = IntiMatLook.XMLoad();
+
+            _float4x4 mat = Mat;
+            CUtility_Transform::Turn_ByAngle_Up(mat, frandom(0.f, 360.f));
+
+            _float4 vRight = mat.XMLoad().r[0];
+            _float4 vUp = mat.XMLoad().r[1];
+            _float4 vLook = mat.XMLoad().r[2];
+
+            tInstanceData.ArrInstanceVTX[i].vRight = vRight;
+            tInstanceData.ArrInstanceVTX[i].vUp = vUp;
+            tInstanceData.ArrInstanceVTX[i].vLook = vLook;
+            tInstanceData.ArrInstanceVTX[i].vTranslation = vInstancePosition;
+
+        }//성공
+        else
+        {
+            i--;
+            continue;
+        }//실패
+
+    }
+
+
+    // 인스턴스 오브젝트 생성
+    CStructure_Instance* pInstanceStructure = CStructure_Instance::Create(
+        tInstanceData.strMeshPath.c_str(),
+        m_iDrawInstanceObjectNums,
+        tInstanceData.ArrInstanceVTX);
+    if (nullptr == pInstanceStructure)
+        assert(0);
+    pInstanceStructure->Initialize();
+    CREATE_GAMEOBJECT(pInstanceStructure, GROUP_DECORATION);
+    pInstanceStructure->Get_Transform()->Set_World(WORLD_POS, m_OutPos);
+    m_pCurSelectInstanceObject = pInstanceStructure;
+    m_InstanceMap[HashNum].push_back(make_tuple(tInstanceData, pInstanceStructure));
+}
+void CWindow_Map::Delete_InstanceObject()
+{
+    size_t HashNum = HASHING(string, m_strCurSelectInstanceMeshName);
+    INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
+    if (m_InstanceMap.end() != InstanceIter)
+    {
+        INSTANCEVECTOR& InstanceGroup = InstanceIter->second;
+        VTXINSTANCE* pInstanceVtx = get<0>(InstanceGroup[m_iCurSelectInstanceObjectIndex]).ArrInstanceVTX;
+        CGameObject* pSelectObject = get<1>(InstanceGroup[m_iCurSelectInstanceObjectIndex]);
+
+        Safe_Delete_Array(pInstanceVtx);
+        DELETE_GAMEOBJECT(pSelectObject);
+
+        INSTANCEVECTOR::iterator VectorIter = InstanceGroup.begin();
+
+        for (_int i = 0; i < m_iCurSelectInstanceObjectIndex; ++i)
+            VectorIter++;
+        InstanceGroup.erase(VectorIter);
+        m_pCurSelectInstanceObject = nullptr;
+        m_iCurSelectInstanceObjectIndex--;
+        if (InstanceGroup.empty())
+        {
+            m_iCurSelectInstanceObjectIndex = 0;
+            m_InstanceMap.erase(InstanceIter);
+            vector<string>::iterator ObjNameIter = m_strArrInstanceMeshName.begin();
+            for (_int i = 0; i < m_iCurSelectInstanceNameIndex; ++i)
+                ObjNameIter++;
+            m_strArrInstanceMeshName.erase(ObjNameIter);
+            m_iCurSelectInstanceNameIndex--;
+            if (0 > m_iCurSelectInstanceNameIndex)
+                m_iCurSelectInstanceNameIndex = 0;
+        }
+    }
+
+}
+void CWindow_Map::Clear_InstanceGroup()
+{
+    size_t HashNum = HASHING(string, m_strCurSelectInstanceMeshName);
+    INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
+    if (m_InstanceMap.end() != InstanceIter)
+    {
+        for (INSTANCEVECTOR::value_type& Value : InstanceIter->second)
+        {
+            Safe_Delete_Array(get<0>(Value).ArrInstanceVTX);
+            DELETE_GAMEOBJECT(get<1>(Value));
+        }
+        InstanceIter->second.clear();
+        if (InstanceIter->second.empty())
+        {
+            m_pCurSelectInstanceObject = nullptr;
+            m_iCurSelectInstanceObjectIndex = 0;
+            m_InstanceMap.erase(InstanceIter);
+            vector<string>::iterator ObjNameIter = m_strArrInstanceMeshName.begin();
+            for (_int i = 0; i < m_iCurSelectInstanceNameIndex; ++i)
+                ObjNameIter++;
+            m_strArrInstanceMeshName.erase(ObjNameIter);
+            m_iCurSelectInstanceNameIndex--;
+            if (0 > m_iCurSelectInstanceNameIndex)
+                m_iCurSelectInstanceNameIndex = 0;
+        }
+    }
+}
+//_bool CWindow_Map::Search_NearInstanceObject()
+//{
+//    return false;
+//}
 _bool CWindow_Map::Calculate_Pick()
 {
     _bool bPicked = false;
@@ -1896,6 +2274,9 @@ _bool CWindow_Map::Calculate_Pick()
                 break;
             case PICK_TERRAINTEX:
                 Change_TileTexture();
+                break;  
+            case PICK_INSTANCEOBJECT:
+                Make_InstanceObject();
                 break;
             }
 
@@ -2143,27 +2524,209 @@ void CWindow_Map::Routine_MeshSelect(TREE_DATA& tTreeNode)
     }
 }
 
-void CWindow_Map::Routine_TileSelect(TREE_DATA& tTreeNode)
+void CWindow_Map::Routine_InstanceMeshSelect(TREE_DATA& tTreeNode)
 {
     _bool bSelected = false;
 
-    if (m_CurSelectTileTexturePath == tTreeNode.strFullPath)
+    if (m_strCurSelectInstanceMeshPath == tTreeNode.strFullPath)
     {
         bSelected = true;
     }
     if (ImGui::Selectable(tTreeNode.strFileName.c_str(), bSelected))
     {
-        //m_vecSelectedMeshFilePath.clear();
-        //m_vecSelectedMeshName.clear();
-        m_CurSelectTileTexturePath = tTreeNode.strFullPath;
-        m_CurSelectedTexFileName = tTreeNode.strFileName;
-        _int CutLength = m_CurSelectedTexFileName.rfind("_") - 1;
-        m_CurSelectedTexFileName = m_CurSelectedTexFileName.substr(0, CutLength);
-        m_CurSelectedTileBaseTexName = m_CurSelectedTexFileName + string("_B.dds");
-        m_CurSelectedTileNormalTexName = m_CurSelectedTexFileName + string("_N.dds");
-
+        m_strCurSelectInstanceMeshPath = tTreeNode.strFullPath;
+        m_strCurSelectInstanceMeshName = tTreeNode.strFileName;
+        _int CutLength = m_strCurSelectInstanceMeshName.rfind("_") - 1;
+        m_strCurSelectInstanceMeshName = m_strCurSelectInstanceMeshName.substr(0, CutLength);
     }
 }
+
+
+HRESULT CWindow_Map::SetUp_Cameras()
+{
+    CCamera_FixedAngle* pRightCamera = CCamera_FixedAngle::Create(_float4(-1.f, 0.f, 0.f, 0.f));
+    CREATE_GAMEOBJECT(pRightCamera, GROUP_DEFAULT);
+    DISABLE_GAMEOBJECT(pRightCamera);
+    CGameInstance::Get_Instance()->Add_Camera(L"RightCam", pRightCamera);
+    m_ArrCams.push_back(make_tuple(L"RightCam", pRightCamera, _float4(2.f, 0.f, 1.f, 1.f)));
+
+    CCamera_FixedAngle* pUpCamera = CCamera_FixedAngle::Create(_float4(0.f, -1.f, 0.f, 0.f), _float4(0.f, 0.f, 1.f, 0.f));
+    CREATE_GAMEOBJECT(pUpCamera, GROUP_DEFAULT);
+    DISABLE_GAMEOBJECT(pUpCamera);
+    CGameInstance::Get_Instance()->Add_Camera(L"UpCam", pUpCamera);
+    m_ArrCams.push_back(make_tuple(L"UpCam", pUpCamera, _float4(1.f, 100.f, 1.f, 1.f)));
+
+    CCamera_FixedAngle* pLookCamera = CCamera_FixedAngle::Create(_float4(0.f, 0.f, -1.f, 0.f));
+    CREATE_GAMEOBJECT(pLookCamera, GROUP_DEFAULT);
+    DISABLE_GAMEOBJECT(pLookCamera);
+    CGameInstance::Get_Instance()->Add_Camera(L"LookCam", pLookCamera);
+    m_ArrCams.push_back(make_tuple(L"LookCam", pLookCamera, _float4(1.f, 0.f, 2.f, 1.f)));
+
+    return S_OK;
+}
+
+void CWindow_Map::Select_Camera()
+{
+    if (KEY(NUM1, TAP))
+    {
+        Change_Camera(CAM_RIGHT);
+    }
+    if (KEY(NUM2, TAP))
+    {
+        Change_Camera(CAM_UP);
+    }
+    if (KEY(NUM3, TAP))
+    {
+        Change_Camera(CAM_LOOK);
+    }
+    if (KEY(NUM4, TAP))
+    {
+        Change_Camera(CAM_FREE);
+    }
+}
+
+void CWindow_Map::Change_Camera(_int Index)
+{
+    if (nullptr == m_pCurTerrain || CAM_FREE == Index || m_ArrCams.size() <= Index)
+    {
+        GAMEINSTANCE->Change_Camera(L"FreeCam");
+        return;
+    }
+    CCamera* pCamera = nullptr;
+    GAMEINSTANCE->Change_Camera(get<0>(m_ArrCams[Index]));
+    pCamera = (get<1>(m_ArrCams[Index]));
+    _float TerrainVertX = m_pCurTerrain->Get_TerrainVerticesX();
+    _float TerrainVertZ = m_pCurTerrain->Get_TerrainVerticesZ();
+
+    _float4 SetUpPosition = get<2>(m_ArrCams[Index]);
+    SetUpPosition.x *= (TerrainVertX * 0.5f);
+    SetUpPosition.z *= (TerrainVertZ * 0.5f);
+
+    pCamera->Get_Transform()->Set_World(WORLD_POS, SetUpPosition);
+}
+
+void CWindow_Map::Set_BrushInform()
+{
+    if (ImGui::CollapsingHeader("Brush Setting"))
+    {
+        ImGui::Text("Brush Type");
+        Make_Combo("##Brush Combo", m_arrBrushType, &m_iCurSelectTerrainBrush, bind(&CWindow_Map::EmptyFunction, this));
+        ImGui::Spacing();
+
+        ImGui::Text("Brush Size");
+        ImGui::DragFloat("##BrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.3f");
+        ImGui::Spacing();
+
+
+        ImGui::Text("Increase Value");
+        ImGui::DragFloat("##IncreaseValue", &m_fBrushWeight, 0.1f, 0.f, 100.f, "%.3f");
+        ImGui::Spacing();
+    }
+}
+
+_bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _float4& OutPos, _float4& OutNormal)
+{
+    _float4x4	matWorld = m_pCurTerrain->Get_Transform()->Get_WorldMatrix();
+    _matrix		WorldMatrixInv = matWorld.Inverse().XMLoad();
+    matWorld.Inverse();
+    _float3     f3Position = _float3(vPosition.x, vPosition.y, vPosition.z);
+    _vector			xRayPos, xRayDir;
+    xRayPos = XMVector3TransformCoord(XMLoadFloat3(&f3Position), WorldMatrixInv);
+    xRayDir = XMVector3Normalize(XMVector3TransformNormal(XMVectorSet(0.f, -1.f, 0.f, 0.f), WorldMatrixInv));
+
+    _uint VertXNum = m_pCurTerrain->Get_TerrainVerticesX();
+    _uint VertZNum = m_pCurTerrain->Get_TerrainVerticesZ();
+    _float3* vTerrainVertPos = m_pCurTerrain->Get_TerrainVerticesPos();
+    _float		fDist, fMin = 999999.f;
+
+    for (list<_uint>::value_type& Value : VertsList)
+    {
+        if (Value / VertXNum >= VertZNum - 1)
+            continue;
+        if (Value % VertZNum >= VertXNum - 1)
+            continue;
+
+        _uint Index[] =
+        {
+            Value + VertXNum,
+            Value + VertXNum + 1,
+            Value + 1,
+            Value
+        };
+
+        _vector		vVecA = XMLoadFloat3(&vTerrainVertPos[Index[0]]);
+        _vector 	vVecB = XMLoadFloat3(&vTerrainVertPos[Index[1]]);
+        _vector 	vVecC = XMLoadFloat3(&vTerrainVertPos[Index[2]]);
+        _vector 	vVecD = XMLoadFloat3(&vTerrainVertPos[Index[3]]);
+
+
+        //Cross AB, AT && Cross AT
+
+        if (true == TriangleTests::Intersects(xRayPos, xRayDir, vVecA, vVecB, vVecC, fDist))
+        {
+            _float4 V1, V2;
+            _float4 vOutNormal, vPickedPos;
+            _float4x4 worldMat = matWorld;
+
+            V1 = (vVecA - vVecB);
+            V2 = (vVecC - vVecB);
+
+            vOutNormal = XMVector3Cross(V1.XMLoad(), V2.XMLoad());
+            vOutNormal = vOutNormal.MultiplyNormal(worldMat);
+            vOutNormal.Normalize();
+            vPickedPos = xRayPos + XMVector3Normalize(xRayDir) * fDist;
+
+            _float4 vRayPos = _float4(vPosition.x, vPosition.y, vPosition.z, 1.f);
+
+            _float fDistance = (vRayPos - vPickedPos).Length();
+
+            if (fMin > fDistance)
+            {
+                OutNormal = vOutNormal;
+                OutPos = vPickedPos;
+
+                fMin = fDistance;
+            }
+        }
+        else
+        {
+            if (true == TriangleTests::Intersects(xRayPos, xRayDir, vVecA, vVecC, vVecD, fDist))
+            {
+                _float4 V1, V2;
+                _float4 vOutNormal, vPickedPos;
+                _float4x4 worldMat = matWorld;
+
+                V1 = (vVecA - vVecC);
+                V2 = (vVecD - vVecC);
+
+                vOutNormal = XMVector3Cross(V1.XMLoad(), V2.XMLoad());
+                vOutNormal = vOutNormal.MultiplyNormal(worldMat);
+                vOutNormal.Normalize();
+                vPickedPos = xRayPos + XMVector3Normalize(xRayDir) * fDist;
+
+                _float4 vRayPos = _float4(vPosition.x, vPosition.y, vPosition.z, 1.f);
+
+                _float fDistance = (vRayPos - vPickedPos).Length();
+
+                if (fMin > fDistance)
+                {
+                    OutNormal = vOutNormal;
+                    OutPos = vPickedPos;
+
+                    fMin = fDistance;
+                }
+            }
+        }
+    }
+
+    if (fMin != 999999.f)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 
 #pragma endregion
 
@@ -2172,6 +2735,7 @@ void CWindow_Map::MAPDATA::Initialize()
 {
     TerrainDataPath = wstring();
     ObjectDataPath = wstring();
+    InstanceDataPath = wstring();
     NavDataPath = wstring();
     LightDataPath = wstring();
 }
@@ -2187,6 +2751,11 @@ void CWindow_Map::MAPDATA::Make_Path(string BasePath, string DataName)
     ObjectDataPath += TEXT("ObjectData/");
     ObjectDataPath += CFunctor::To_Wstring(DataName);
     ObjectDataPath += TEXT(".GroupData");
+
+    InstanceDataPath = CFunctor::To_Wstring(BasePath);
+    InstanceDataPath += TEXT("InstanceData/");
+    InstanceDataPath += CFunctor::To_Wstring(DataName);
+    InstanceDataPath += TEXT(".InstanceData");
 
     NavDataPath = CFunctor::To_Wstring(BasePath);
     NavDataPath += TEXT("NavData/");
@@ -2218,6 +2787,8 @@ HRESULT CWindow_Map::MAPDATA::SaveData(ofstream& rhsWriteFile, string BasePath, 
             throw TerrainDataPath;
         if (FAILED(SavePath(rhsWriteFile, ObjectDataPath)))
             throw ObjectDataPath;
+        if (FAILED(SavePath(rhsWriteFile, InstanceDataPath)))
+            throw InstanceDataPath;
         if (FAILED(SavePath(rhsWriteFile, NavDataPath)))
             throw NavDataPath;
         if (FAILED(SavePath(rhsWriteFile, LightDataPath)))
@@ -2249,6 +2820,8 @@ HRESULT CWindow_Map::MAPDATA::LoadData(ifstream& rhsReadFile, string FilePath)
             throw TerrainDataPath;
         if (FAILED(LoadPath(rhsReadFile, ObjectDataPath)))
             throw ObjectDataPath;
+        if (FAILED(LoadPath(rhsReadFile, InstanceDataPath)))
+            throw InstanceDataPath;
         if (FAILED(LoadPath(rhsReadFile, NavDataPath)))
             throw NavDataPath;
         if (FAILED(LoadPath(rhsReadFile, LightDataPath)))
@@ -2320,6 +2893,7 @@ void CWindow_Map::tagMapToolTerrainData::Initialize()
     iNumVerticesX = 0;
     iNumVerticesZ = 0;
     pCurTerrainVertPos = nullptr;
+    pCurTerrainColor = nullptr;
 }
 
 void CWindow_Map::tagMapToolTerrainData::Make_Data(tagMapToolTerrainData::Terrain_TUPLE& tTerrainData)
@@ -2329,4 +2903,72 @@ void CWindow_Map::tagMapToolTerrainData::Make_Data(tagMapToolTerrainData::Terrai
     iNumVerticesX = get<Tuple_VerticesX>(tTerrainData);
     iNumVerticesZ = get<Tuple_VerticesZ>(tTerrainData);
     pCurTerrainVertPos = get<Tuple_TerrainPosPtr>(tTerrainData);
+    pCurTerrainColor = get<Tuple_TerrainColorPtr>(tTerrainData);
+}
+
+void CWindow_Map::tagMapToolInstanceObjData::Initialize()
+{
+    strInstanceGorupName = wstring(TEXT(""));
+    strMeshPath = wstring(TEXT(""));
+    iInstanceNums = 0;
+    InstancePosition = _float4(0.f, 0.f, 0.f, 1.f);
+    ArrInstanceVTX = nullptr;
+}
+
+void CWindow_Map::tagMapToolInstanceObjData::Make_Data(InstancingTuple& tInstancingData)
+{
+    Initialize();
+    strInstanceGorupName = get<Tuple_GroupName>(tInstancingData);
+    strMeshPath = get<Tuple_MeshPath>(tInstancingData);
+    iInstanceNums = get<Tuple_InstanceNums>(tInstancingData);
+    InstancePosition = get<Tuple_Positon>(tInstancingData);
+    ArrInstanceVTX = get<Tuple_VTXArrayPtr>(tInstancingData);
+}
+
+void CWindow_Map::tagMapToolInstanceObjData::Save(ofstream& wirteFile)
+{
+    _int GroupNameLength = strInstanceGorupName.length() + 1;
+    wirteFile.write((char*)&GroupNameLength, sizeof(_int));
+    char* pGroupName = new char[GroupNameLength];
+    strcpy_s(pGroupName, sizeof(char) * GroupNameLength,CFunctor::To_String(strInstanceGorupName).c_str());
+    wirteFile.write(pGroupName, sizeof(char)* GroupNameLength);
+    Safe_Delete_Array(pGroupName);
+
+    _int PathLength = strMeshPath.length() + 1;
+    wirteFile.write((char*)&PathLength, sizeof(_int));
+    char* pPathName = new char[PathLength];
+    strcpy_s(pPathName, sizeof(char) * PathLength, CFunctor::To_String(strMeshPath).c_str());
+    wirteFile.write(pPathName, sizeof(char) * PathLength);
+    Safe_Delete_Array(pPathName);
+
+    wirteFile.write((char*)&iInstanceNums, sizeof(_int));
+    wirteFile.write((char*)&InstancePosition, sizeof(_float4));
+    wirteFile.write((char*)ArrInstanceVTX, sizeof(VTXINSTANCE)* iInstanceNums);
+
+}
+
+void CWindow_Map::tagMapToolInstanceObjData::Load(ifstream& readFile)
+{
+    _int GroupNameLength = 0;
+    readFile.read((char*)&GroupNameLength, sizeof(_int));
+    char* pGroupName = new char[GroupNameLength];
+    readFile.read(pGroupName, sizeof(char)* GroupNameLength);
+    string strGroupName = pGroupName;
+    Safe_Delete_Array(pGroupName);
+    strInstanceGorupName = CFunctor::To_Wstring(strGroupName);
+
+    _int PathLength = 0;
+    readFile.read((char*)&PathLength, sizeof(_int));
+    char* pPath = new char[PathLength];
+    readFile.read(pPath, sizeof(char) * PathLength);
+    string strPath = pPath;
+    Safe_Delete_Array(pPath);
+    strMeshPath = CFunctor::To_Wstring(strPath);
+
+    readFile.read((char*)&iInstanceNums, sizeof(_int));
+    readFile.read((char*)&InstancePosition, sizeof(_float4));
+
+    ArrInstanceVTX = new VTXINSTANCE[iInstanceNums];
+    readFile.read((char*)ArrInstanceVTX, sizeof(VTXINSTANCE) * iInstanceNums);
+
 }
