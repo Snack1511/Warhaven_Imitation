@@ -1549,9 +1549,55 @@ void CWindow_Map::Load_ObjectGroup(string FilePath)
 }
 void CWindow_Map::Save_InstanceData(string BasePath, string SaveName)
 {
+    string SplitBasePath = BasePath;
+    SplitBasePath += "SplitData/";
+    Save_SpliteData(SplitBasePath, SaveName);
+
+
+    string MergeBasePath = BasePath;
+    MergeBasePath += "MergeData/";
+    Save_MergeData(MergeBasePath, SaveName);
+
+
+
     string SaveFullPath = BasePath;
     SaveFullPath += SaveName;
     SaveFullPath += ".InstanceData";
+    ofstream	writeFile(SaveFullPath, ios::binary);
+
+    if (!writeFile.is_open())
+    {
+        Call_MsgBox(L"SSave 실패 ??!?!");
+        assert(0);
+    }
+    string strSplitFullPath = SplitBasePath;
+    strSplitFullPath += SaveName;
+    strSplitFullPath += ".InstanceSplitData";
+
+    string strMergeFullPath = MergeBasePath;
+    strMergeFullPath += SaveName;
+    strMergeFullPath += ".InstanceMergeData";
+
+    _int SplitPathLength = strSplitFullPath.length() + 1;
+    writeFile.write((char*)&SplitPathLength, sizeof(_int));
+    char strPath[MAXCHAR];
+    strcpy_s(strPath, sizeof(char) * MAXCHAR, strSplitFullPath.c_str());
+    writeFile.write(strPath, sizeof(char)* SplitPathLength);
+
+    _int MergePathLength = strMergeFullPath.length() + 1;
+    writeFile.write((char*)&MergePathLength, sizeof(_int));
+    strcpy_s(strPath, sizeof(char) * MAXCHAR, strMergeFullPath.c_str());
+    writeFile.write(strPath, sizeof(char) * MergePathLength);
+
+    //Call_MsgBox(L"Save 성공");
+}
+void CWindow_Map::Save_SpliteData(string BasePath, string SaveName)
+{
+    //.InstanceSplitData
+
+    string SaveFullPath = BasePath;
+    SaveFullPath += SaveName;
+    SaveFullPath += ".InstanceSplitData";
     ofstream	writeFile(SaveFullPath, ios::binary);
 
     if (!writeFile.is_open())
@@ -1575,7 +1621,68 @@ void CWindow_Map::Save_InstanceData(string BasePath, string SaveName)
         }
     }
     writeFile.close();
-    //Call_MsgBox(L"Save 성공");
+}
+void CWindow_Map::Save_MergeData(string BasePath, string SaveName)
+{
+    string SaveFullPath = BasePath;
+    SaveFullPath += SaveName;
+    SaveFullPath += ".InstanceMergeData";
+    ofstream	writeFile(SaveFullPath, ios::binary);
+
+    if (!writeFile.is_open())
+    {
+        Call_MsgBox(L"SSave 실패 ??!?!");
+        assert(0);
+    }
+    _int GroupSize = m_InstanceMap.size();
+    writeFile.write((char*) & GroupSize, sizeof(_int));
+
+    for (INSTANCEGROUPING::value_type& InstanceGroupValue : m_InstanceMap)
+    {
+        wstring strGroupname = get<0>(InstanceGroupValue.second.front()).strInstanceGorupName;
+        wstring strPath = get<0>(InstanceGroupValue.second.front()).strMeshPath;
+        _float4 IsntancePos = get<0>(InstanceGroupValue.second.front()).InstancePosition;
+        _int TotalInstanceNums = 0;
+        for (INSTANCEVECTOR::value_type& Value : InstanceGroupValue.second)
+        {
+            TotalInstanceNums += get<0>(Value).iInstanceNums;
+            DISABLE_GAMEOBJECT(get<1>(Value));
+        }
+
+        _int PrevNumInstance = 0;
+        VTXINSTANCE* pInstanceVtx = new VTXINSTANCE[TotalInstanceNums];
+        for (INSTANCEVECTOR::value_type& Value : InstanceGroupValue.second)
+        {
+            memcpy(pInstanceVtx + PrevNumInstance
+                , get<0>(Value).ArrInstanceVTX
+                , sizeof(VTXINSTANCE) * get<0>(Value).iInstanceNums);
+            PrevNumInstance += get<0>(Value).iInstanceNums;
+        }
+
+        PrevNumInstance = 0;
+        for (INSTANCEVECTOR::value_type& Value : InstanceGroupValue.second)
+        {
+            for (_int i = 0; i < get<0>(Value).iInstanceNums; ++i)
+            {
+                pInstanceVtx[i + PrevNumInstance].vTranslation.x += get<0>(Value).InstancePosition.x;
+                pInstanceVtx[i + PrevNumInstance].vTranslation.y += get<0>(Value).InstancePosition.y;
+                pInstanceVtx[i + PrevNumInstance].vTranslation.z += get<0>(Value).InstancePosition.z;
+            }
+            PrevNumInstance += get<0>(Value).iInstanceNums;
+        }
+
+        _int PathLength = strPath.length() + 1;
+        char Path[MAX_PATH];
+        strcpy_s(Path, sizeof(char) * MAX_PATH, CFunctor::To_String(strPath).c_str());
+        
+        writeFile.write((char*)&PathLength, sizeof(_int));
+        writeFile.write(Path, sizeof(char)*PathLength);
+        writeFile.write((char*)&TotalInstanceNums, sizeof(_int));
+        writeFile.write((char*)pInstanceVtx, sizeof(VTXINSTANCE) * TotalInstanceNums);
+
+        Safe_Delete_Array(pInstanceVtx);
+    }
+    writeFile.close();
 }
 void CWindow_Map::Load_InstanceData(string FilePath)
 {
@@ -1601,7 +1708,19 @@ void CWindow_Map::Load_InstanceData(string FilePath)
         Call_MsgBox(L"Load 실패 ??!?!");
         assert(0);
     }
+    char strPath[MAXCHAR];
+    _int SplitLength = 0;
+    readFile.read((char*)&SplitLength, sizeof(_int));
+    readFile.read(strPath, sizeof(char) * SplitLength);
+    readFile.close();
 
+    LoadFullPath = strPath;
+    readFile.open(LoadFullPath, ios::binary);
+    if (!readFile.is_open())
+    {
+        Call_MsgBox(L"Load 실패 ??!?!");
+        assert(0);
+    }
     _int GroupSize = 0;
     //그룹 개수 저장
     readFile.read((char*)&GroupSize, sizeof(_int));
@@ -1701,7 +1820,8 @@ HRESULT CWindow_Map::Disable_DefaultTerrain()
         }
         m_pCurObjectList = nullptr;
     }
-    m_pDefaultTerrain->Set_Enable(false);
+    if(nullptr != m_pDefaultTerrain)
+        m_pDefaultTerrain->Set_Enable(false);
     return S_OK;
 }
 
@@ -2041,13 +2161,23 @@ void CWindow_Map::Func_InstanceObjectControl()
                 if (ImGui::Selectable(m_strArrInstanceMeshName[i].c_str(), bSelected))
                 {
                     m_iCurSelectInstanceNameIndex = i;
+                    m_strCurSelectInstanceMeshName = m_strArrInstanceMeshName[i];
                 }
             }
 
             ImGui::EndCombo();
         }
     }
-    INSTANCEGROUPING::iterator pTupleList = m_InstanceMap.find(HASHING(string, m_strCurSelectInstanceMeshName));
+    INSTANCEGROUPING::iterator pTupleList;
+    if (!m_strArrInstanceMeshName.empty())
+    {
+        pTupleList = m_InstanceMap.find(HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]));
+    }
+    else
+    {
+        pTupleList = m_InstanceMap.end();
+    }
+
     ImGui::Text("Instancing List");
     if (ImGui::BeginListBox("##Instance List", ImVec2(360.f, 200.f)))
     {
@@ -2056,21 +2186,36 @@ void CWindow_Map::Func_InstanceObjectControl()
             _int Index = 0;
             for (INSTANCEVECTOR::value_type& Value : pTupleList->second)
             {
-                _bool bSelected = false;
-                if (get<1>(Value) == m_pCurSelectInstanceObject)
+                if (get<1>(Value)->Is_Valid()) 
                 {
-                    bSelected = true;
+                    _bool bSelected = false;
+                    if (get<1>(Value) == m_pCurSelectInstanceObject)
+                    {
+                        bSelected = true;
+                    }
+                    if (ImGui::Selectable(to_string(Index).c_str(), bSelected))
+                    {
+                        m_pCurSelectInstanceObject = get<1>(Value);
+                        m_iCurSelectInstanceObjectIndex = Index;
+                    }
+                    Index++;
                 }
-                if (ImGui::Selectable(to_string(Index).c_str(), bSelected))
-                {
-                    m_pCurSelectInstanceObject = get<1>(Value);
-                    m_iCurSelectInstanceObjectIndex = Index;
-                }
-                Index++;
             }
         }
         ImGui::EndListBox();
     }
+
+    if (ImGui::Button("Merge InstanceObject"))
+    {
+        Merge_Instance();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Split InstanceObject"))
+    {
+        Split_Instance();
+    }
+    ImGui::Spacing();
+
     if (ImGui::Button("Delete InstanceObject"))
     {
         Delete_InstanceObject();
@@ -2080,7 +2225,7 @@ void CWindow_Map::Func_InstanceObjectControl()
     {
         Clear_InstanceGroup();
     }
-    ImGui::SameLine();
+    ImGui::Spacing();
 }
 void CWindow_Map::Make_InstanceObject()
 {
@@ -2090,17 +2235,6 @@ void CWindow_Map::Make_InstanceObject()
 
     size_t HashNum = HASHING(string, m_strCurSelectInstanceMeshName);
     INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
-
-
-
-    //if (Search_NearInstanceObject())
-    //{
-    //    return;
-    //}//마우스 브러시 영역 내 인스턴스 오브젝트 탐색
-    //else    
-    //{
-    //    
-    //}//영역 내 존재하지 않을 경우 인스턴스 오브젝트 생성
 
     if (InstanceIter == m_InstanceMap.end())
     {
@@ -2185,7 +2319,9 @@ void CWindow_Map::Make_InstanceObject()
 }
 void CWindow_Map::Delete_InstanceObject()
 {
-    size_t HashNum = HASHING(string, m_strCurSelectInstanceMeshName);
+    if (m_iCurSelectInstanceNameIndex >= _int(m_strArrInstanceMeshName.size()))
+        return;
+    size_t HashNum = HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
     INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
     if (m_InstanceMap.end() != InstanceIter)
     {
@@ -2220,7 +2356,9 @@ void CWindow_Map::Delete_InstanceObject()
 }
 void CWindow_Map::Clear_InstanceGroup()
 {
-    size_t HashNum = HASHING(string, m_strCurSelectInstanceMeshName);
+    if (m_iCurSelectInstanceNameIndex >= _int(m_strArrInstanceMeshName.size()))
+        return;
+    size_t HashNum = HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
     INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
     if (m_InstanceMap.end() != InstanceIter)
     {
@@ -2242,6 +2380,85 @@ void CWindow_Map::Clear_InstanceGroup()
             m_iCurSelectInstanceNameIndex--;
             if (0 > m_iCurSelectInstanceNameIndex)
                 m_iCurSelectInstanceNameIndex = 0;
+        }
+    }
+}
+void CWindow_Map::Merge_Instance()
+{
+    if (m_iCurSelectInstanceNameIndex >= _int(m_strArrInstanceMeshName.size()))
+        return;
+    size_t HashNum = HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
+    INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
+
+    if (m_InstanceMap.end() != InstanceIter)
+    {
+        wstring strGroupname = get<0>(InstanceIter->second.front()).strInstanceGorupName;
+        wstring strPath = get<0>(InstanceIter->second.front()).strMeshPath;
+        _float4 IsntancePos = get<0>(InstanceIter->second.front()).InstancePosition;
+        _int TotalInstanceNums = 0;
+        for (INSTANCEVECTOR::value_type& Value : InstanceIter->second)
+        {
+            TotalInstanceNums += get<0>(Value).iInstanceNums;
+            DISABLE_GAMEOBJECT(get<1>(Value));
+        }
+
+        _int PrevNumInstance = 0;
+        VTXINSTANCE* pInstanceVtx = new VTXINSTANCE[TotalInstanceNums];
+        for (INSTANCEVECTOR::value_type& Value : InstanceIter->second)
+        {
+            memcpy(pInstanceVtx + PrevNumInstance
+                , get<0>(Value).ArrInstanceVTX
+                , sizeof(VTXINSTANCE) * get<0>(Value).iInstanceNums);
+            PrevNumInstance += get<0>(Value).iInstanceNums;
+        }
+
+        PrevNumInstance = 0;
+        for (INSTANCEVECTOR::value_type& Value : InstanceIter->second)
+        {
+            for (_int i = 0; i < get<0>(Value).iInstanceNums; ++i)
+            {
+                pInstanceVtx[i + PrevNumInstance].vTranslation.x += get<0>(Value).InstancePosition.x;
+                pInstanceVtx[i + PrevNumInstance].vTranslation.y += get<0>(Value).InstancePosition.y;
+                pInstanceVtx[i + PrevNumInstance].vTranslation.z += get<0>(Value).InstancePosition.z;
+            }
+            PrevNumInstance += get<0>(Value).iInstanceNums;
+        }
+
+        size_t HashNum = HASHING(string, CFunctor::To_String(strGroupname));
+        map<size_t, CGameObject*>::iterator MergeInstanceIter = m_MergeObjects.find(HashNum);
+        if (MergeInstanceIter != m_MergeObjects.end()) 
+        {
+            DELETE_GAMEOBJECT(MergeInstanceIter->second);
+            m_MergeObjects.erase(MergeInstanceIter);
+        }
+        CStructure_Instance* pInstanceObject = CStructure_Instance::Create(strPath, TotalInstanceNums, pInstanceVtx);
+        pInstanceObject->Initialize();
+        CREATE_GAMEOBJECT(pInstanceObject, GROUP_DECORATION);
+        //pInstanceObject->Get_Transform()->Set_World(WORLD_POS, IsntancePos);
+        m_MergeObjects.emplace(HashNum, pInstanceObject);
+        Safe_Delete_Array(pInstanceVtx);
+    }
+
+}
+void CWindow_Map::Split_Instance()
+{
+    if (m_iCurSelectInstanceNameIndex >= _int(m_strArrInstanceMeshName.size()))
+        return;
+    size_t HashNum = HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
+    map<size_t, CGameObject*>::iterator MergeInstanceIter = m_MergeObjects.find(HashNum);
+
+    if (m_MergeObjects.end() != MergeInstanceIter)
+    {
+        DELETE_GAMEOBJECT(MergeInstanceIter->second);
+        m_MergeObjects.erase(MergeInstanceIter);
+    }
+
+    INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
+    if (m_InstanceMap.end() != InstanceIter)
+    {
+        for (INSTANCEVECTOR::value_type& Value : InstanceIter->second)
+        {
+            ENABLE_GAMEOBJECT(get<1>(Value));
         }
     }
 }
@@ -2536,7 +2753,7 @@ void CWindow_Map::Routine_InstanceMeshSelect(TREE_DATA& tTreeNode)
     {
         m_strCurSelectInstanceMeshPath = tTreeNode.strFullPath;
         m_strCurSelectInstanceMeshName = tTreeNode.strFileName;
-        _int CutLength = m_strCurSelectInstanceMeshName.rfind("_") - 1;
+        _int CutLength = m_strCurSelectInstanceMeshName.rfind(".") - 1;
         m_strCurSelectInstanceMeshName = m_strCurSelectInstanceMeshName.substr(0, CutLength);
     }
 }
@@ -2545,19 +2762,19 @@ void CWindow_Map::Routine_InstanceMeshSelect(TREE_DATA& tTreeNode)
 HRESULT CWindow_Map::SetUp_Cameras()
 {
     CCamera_FixedAngle* pRightCamera = CCamera_FixedAngle::Create(_float4(-1.f, 0.f, 0.f, 0.f));
-    CREATE_GAMEOBJECT(pRightCamera, GROUP_DEFAULT);
+    CREATE_STATIC(pRightCamera, Convert_ToHash(wstring(TEXT("RightCamera"))));
     DISABLE_GAMEOBJECT(pRightCamera);
     CGameInstance::Get_Instance()->Add_Camera(L"RightCam", pRightCamera);
     m_ArrCams.push_back(make_tuple(L"RightCam", pRightCamera, _float4(2.f, 0.f, 1.f, 1.f)));
 
     CCamera_FixedAngle* pUpCamera = CCamera_FixedAngle::Create(_float4(0.f, -1.f, 0.f, 0.f), _float4(0.f, 0.f, 1.f, 0.f));
-    CREATE_GAMEOBJECT(pUpCamera, GROUP_DEFAULT);
+    CREATE_STATIC(pUpCamera, Convert_ToHash(wstring(TEXT("UpCamera"))));
     DISABLE_GAMEOBJECT(pUpCamera);
     CGameInstance::Get_Instance()->Add_Camera(L"UpCam", pUpCamera);
     m_ArrCams.push_back(make_tuple(L"UpCam", pUpCamera, _float4(1.f, 100.f, 1.f, 1.f)));
 
     CCamera_FixedAngle* pLookCamera = CCamera_FixedAngle::Create(_float4(0.f, 0.f, -1.f, 0.f));
-    CREATE_GAMEOBJECT(pLookCamera, GROUP_DEFAULT);
+    CREATE_STATIC(pLookCamera, Convert_ToHash(wstring(TEXT("LookCamera"))));
     DISABLE_GAMEOBJECT(pLookCamera);
     CGameInstance::Get_Instance()->Add_Camera(L"LookCam", pLookCamera);
     m_ArrCams.push_back(make_tuple(L"LookCam", pLookCamera, _float4(1.f, 0.f, 2.f, 1.f)));

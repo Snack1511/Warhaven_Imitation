@@ -232,6 +232,7 @@
     <ClInclude Include="..\Public\CLevel_Logo.h" />
     <ClInclude Include="..\Public\CLevel_Main.h" />
     <ClInclude Include="..\public\CLevel_Test.h" />
+    <ClInclude Include="..\Public\CMap_Loader.h" />
     <ClInclude Include="..\Public\CRectEffects.h" />
     <ClInclude Include="..\Public\CRun_Player.h" />
     <ClInclude Include="..\Public\CRun_Player_Begin.h" />
@@ -391,6 +392,7 @@
     <ClCompile Include="..\Private\CLevel_Main.cpp" />
     <ClCompile Include="..\Private\CLevel_Test.cpp" />
     <ClCompile Include="..\Private\Client_Defines.cpp" />
+    <ClCompile Include="..\Private\CMap_Loader.cpp" />
     <ClCompile Include="..\Private\CRectEffects.cpp" />
     <ClCompile Include="..\Private\CRun_Player.cpp" />
     <ClCompile Include="..\Private\CRun_Player_Begin.cpp" />

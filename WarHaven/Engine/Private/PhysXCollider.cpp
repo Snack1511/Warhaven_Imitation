@@ -2,6 +2,7 @@
 #include "PhysX_Manager.h"
 #include "Transform.h"
 
+#include "CMesh_Terrain.h"
 #include "GameObject.h"
 #include "CMesh.h"
 
@@ -571,10 +572,23 @@ void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxT
 
 HRESULT CPhysXCollider::SetUp_StaticMeshActor(CMesh* pMesh, CTransform* pWorldTransform)
 {
+	_uint iNumVertices = 0;
+	_float3* pVerticesPos = nullptr;
+	CMesh_Terrain* pTerrain = dynamic_cast<CMesh_Terrain*>(pMesh);
+	if (pTerrain)
+	{
+		iNumVertices = pTerrain->Get_PhysXNumVertices();
+		pVerticesPos = pTerrain->Get_PhysXVerticesPos();
+	}
+	else
+	{
+		iNumVertices = pMesh->Get_NumVertices();
+		pVerticesPos = pMesh->Get_VerticesPos();
+	}
 	
 	CPhysX_Manager::Get_Instance()->Create_TriangleMesh(
-		pMesh->Get_VerticesPos(),
-		pMesh->Get_NumVertices(),
+		pVerticesPos,
+		iNumVertices,
 		pMesh->Get_NumPrimitive(),
 		&m_ColliderDesc.pTriangleMesh
 	);

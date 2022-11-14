@@ -17,6 +17,7 @@ CTerrain_Renderer::CTerrain_Renderer(_uint iGroupID)
 
 CTerrain_Renderer::~CTerrain_Renderer()
 {
+	Safe_Delete_Array(m_pArrSRVs);
 }
 
 CTerrain_Renderer* CTerrain_Renderer::Create(_uint iGroupID, const RENDER_GROUP& eRenderGroup, const _uint& iCurPass, const _float4& vOffsetPos)
@@ -39,32 +40,33 @@ CTerrain_Renderer* CTerrain_Renderer::Create(_uint iGroupID, const RENDER_GROUP&
 
 HRESULT CTerrain_Renderer::Render()
 {
-	_int TextureNums = _int(m_pTextureList.size());
-	ID3D11ShaderResourceView** pArrSRVs = new ID3D11ShaderResourceView* [TextureNums];
-	ZeroMemory(pArrSRVs, sizeof(ID3D11ShaderResourceView*) * TextureNums);
-	_int Index = 0;
-	if (!m_pTextureList.empty())
+	if (nullptr == m_pArrSRVs || m_TextureNums < m_pTextureList.size())
 	{
+		m_TextureNums = _int(m_pTextureList.size());
+		Safe_Delete_Array(m_pArrSRVs);
+		m_pArrSRVs = nullptr;
+
+		m_pArrSRVs = new ID3D11ShaderResourceView* [m_TextureNums];
+		ZeroMemory(m_pArrSRVs, sizeof(ID3D11ShaderResourceView*) * m_TextureNums);
+		_int Index = 0;
 		for (auto& elem : m_pTextureList)
 		{
 			//for(auto& elemvec : elem->Get_vecTexture())
-			pArrSRVs[Index++] = elem->Get_vecTexture()[0].pSRV.Get();
+			m_pArrSRVs[Index++] = elem->Get_vecTexture()[0].pSRV.Get();
 		}
 	}
+	if (nullptr != m_pArrSRVs)
+	{
+		m_pShaderCom->Set_ShaderResourceViewArray("g_DiffArray", m_pArrSRVs, m_TextureNums);
+		m_pShaderCom->Set_RawValue("g_iNumTexture", &m_TextureNums, sizeof(_int));
+		m_pShaderCom->CallBack_SetRawValues(m_pShaderCom, "");
 
-	m_pShaderCom->Set_ShaderResourceViewArray("g_DiffArray", pArrSRVs, TextureNums);
-	m_pShaderCom->Set_RawValue("g_iNumTexture", &TextureNums, sizeof(_int));
-	m_pShaderCom->CallBack_SetRawValues(m_pShaderCom, "");
+		if (FAILED(m_pShaderCom->Begin(m_iCurPass)))
+			return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(m_iCurPass)))
-		return E_FAIL;
-
-	if (FAILED(m_pMeshCom->Render()))
-		return E_FAIL;
-
-	ZeroMemory(pArrSRVs, sizeof(ID3D11ShaderResourceView*) * TextureNums);
-	Safe_Delete_Array(pArrSRVs);
-	
+		if (FAILED(m_pMeshCom->Render()))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 

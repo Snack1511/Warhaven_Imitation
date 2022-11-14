@@ -10,6 +10,7 @@ CMesh_Terrain::CMesh_Terrain(_uint iGroupIdx)
 CMesh_Terrain::~CMesh_Terrain()
 {
 	SAFE_DELETE_ARRAY(m_pVerticesColor);
+	SAFE_DELETE_ARRAY(m_pPhysXVerticesPos);
 }
 
 CMesh_Terrain* CMesh_Terrain::Create(_uint iGroupIdx, const _tchar* pHeightMapFilePath)
@@ -144,23 +145,19 @@ void CMesh_Terrain::Update_VertsNormal()
 void CMesh_Terrain::ReadyforPhysX()
 {
 	//VerticesPos 를 다시 세팅해주야함
-	m_iNumVertices = m_iNumPrimitive * 3;
+	m_iPhysXNumVertices = m_iNumPrimitive * 3;
 
-	_float3* pNewVerticesPos = new _float3[m_iNumVertices];
+	m_pPhysXVerticesPos = new _float3[m_iPhysXNumVertices];
 
 	for (_uint i = 0; i < m_iNumPrimitive; ++i)
 	{
 		_uint3 Indices = Get_Indices(i);
 
-		pNewVerticesPos[i*3] = m_pVerticesPos[Indices._1];
-		pNewVerticesPos[i * 3 +1] = m_pVerticesPos[Indices._2];
-		pNewVerticesPos[i * 3 +2] = m_pVerticesPos[Indices._3];
+		m_pPhysXVerticesPos[i*3] = m_pVerticesPos[Indices._1];
+		m_pPhysXVerticesPos[i * 3 +1] = m_pVerticesPos[Indices._2];
+		m_pPhysXVerticesPos[i * 3 +2] = m_pVerticesPos[Indices._3];
 	}
 
-
-
-	SAFE_DELETE_ARRAY(m_pVerticesPos);
-	m_pVerticesPos = pNewVerticesPos;
 	
 }
 
