@@ -96,7 +96,7 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 	{
 		m_eBoneType = ANIM_DIVIDE::eBODYLOWER;
 	}
-	else if (pResource->Get_Name() == "0B_Spine")
+	else if (pResource->Get_Name() == "0B_COM")
 	{
 		m_eBoneType = ANIM_DIVIDE::eBODYUPPER;
 	}

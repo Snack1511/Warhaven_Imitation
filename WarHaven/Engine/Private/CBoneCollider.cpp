@@ -47,7 +47,7 @@ void CBoneCollider::onShapeHit(const PxControllerShapeHit& hit)
 
 
 	_float4 vLook = _float4(hit.worldNormal.x, hit.worldNormal.y, hit.worldNormal.z, 0.f).Normalize();
-	vLook *= -1.f;
+	//vLook *= -1.f;
 
 
 	matHit.r[2] = vLook.XMLoad();
@@ -64,8 +64,11 @@ void CBoneCollider::onShapeHit(const PxControllerShapeHit& hit)
 
 	vUp = vLook.Cross(vRight);
 	matHit.r[1] = vUp.Normalize().XMLoad();
+	matHit.r[3] = m_vHitPos.XMLoad();
+
 
 	m_HitMatrix = matHit;
+
 
 }
 

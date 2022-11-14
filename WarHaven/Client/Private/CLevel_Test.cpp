@@ -156,6 +156,8 @@ HRESULT CLevel_Test::Enter()
 
 	GAMEINSTANCE->Begin_PhysScene();
 
+	CEffects_Factory::Get_Instance()->On_EnterLevel();
+
 	return S_OK;
 }
 

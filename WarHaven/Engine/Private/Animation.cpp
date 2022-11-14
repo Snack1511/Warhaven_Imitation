@@ -50,14 +50,14 @@ void CAnimation::OnSwitchAnim()
 {
 }
 
-void CAnimation::Reset()
+void CAnimation::Reset(_bool bDivide, ANIM_DIVIDE eDivideType)
 {
 	m_isFinished = false;
 	m_fTimeAcc = 0.f;
 	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
-		m_Channels[i]->Reset_KeyFrame();
-		m_Channels[i]->m_pHierarchyNode->Set_PrevKeyFrame(m_Channels[i]->m_pHierarchyNode->Get_CurKeyFrame());
+		m_Channels[i]->Reset_KeyFrame(bDivide, m_eAnimDivide);
+		//m_Channels[i]->m_pHierarchyNode->Set_PrevKeyFrame(m_Channels[i]->m_pHierarchyNode->Get_CurKeyFrame());
 
 	}
 }
@@ -101,12 +101,14 @@ HRESULT CAnimation::Initialize(CResource_Animation* pAnimResource)
 	return S_OK;
 }
 
-void CAnimation::Update_Matrices(_bool bDivide)
+_bool CAnimation::Update_Matrices(_bool bDivide)
 {
 	if (m_isFinished)
 	{
-		Reset();
+		Reset(bDivide, m_eAnimDivide);
 
+		if (m_eAnimDivide == ANIM_DIVIDE::eBODYUPPER)
+			return false;
 	}
 
 	
@@ -119,7 +121,7 @@ void CAnimation::Update_Matrices(_bool bDivide)
 		{
 			m_bInterpolation = false;
 			m_fInterpolationTimeAcc = 0.f;
-			return;
+			return true;
 		}
 
 		for (_uint i = 0; i < m_iNumChannels; ++i)
@@ -127,7 +129,7 @@ void CAnimation::Update_Matrices(_bool bDivide)
 			m_Channels[i]->Interpolate_Matrix(m_fInterpolationTimeAcc, m_fInterpolationTime, bDivide, m_eAnimDivide);
 		}
 
-		return;
+		return true;
 	}
 
 	m_fTimeAcc += m_fTickPerSecond * m_fAnimSpeed * fDT(0);
@@ -135,7 +137,7 @@ void CAnimation::Update_Matrices(_bool bDivide)
 	if (m_fTimeAcc >= m_fDuration)
 	{
 		m_isFinished = true;
-		return;
+		return true;
 	}
 
 	for (_uint i = 0; i < m_iNumChannels; ++i)
@@ -143,6 +145,8 @@ void CAnimation::Update_Matrices(_bool bDivide)
 		
 		m_Channels[i]->Update_TransformationMatrices(m_fTimeAcc, bDivide, m_eAnimDivide);
 	}
+
+	return true;
 }
 
 void CAnimation::Release()

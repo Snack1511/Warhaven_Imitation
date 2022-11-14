@@ -42,6 +42,8 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	, m_iHeightSize(_origin.m_iHeightSize)
 	, m_bPlayOnce(_origin.m_bPlayOnce)
 	, m_eCurveType(_origin.m_eCurveType)
+	, m_bBlackBackGround(_origin.m_bBlackBackGround)
+	, m_fDurationRange(_origin.m_fDurationRange)
 {
 	if (_origin.m_pRectInstances)
 	{
@@ -126,7 +128,7 @@ CRectEffects* CRectEffects::Create_Anim(ifstream* pReadFile)
 void CRectEffects::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 {
 	//__super::Self_Reset(pGameObject, vStartPos);
-	Reset(vStartPos);
+	CEffect::Reset(vStartPos);
 	m_pFollowTarget = pGameObject;
 	//이거 파티클 빌보드 잘 안대는거 확인중
 	m_matTrans = pGameObject->Get_Transform()->Get_WorldMatrix(MATRIX_NOSCALE | MARTIX_NOTRANS);
@@ -141,6 +143,18 @@ void CRectEffects::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 
 }
 
+void CRectEffects::Reset(_float4x4 matWorld)
+{
+	m_matTrans = matWorld;
+
+	CEffect::Reset(_float4(m_matTrans.m[3][0], m_matTrans.m[3][1], m_matTrans.m[3][2]));
+
+	m_matTrans.m[3][0] = 0.f;
+	m_matTrans.m[3][1] = 0.f;
+	m_matTrans.m[3][2] = 0.f;
+}
+
+
 void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
@@ -149,7 +163,7 @@ void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 		pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
 		pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
-		pShader->Set_RawValue("g_bBlackBG", &m_bBlackBackGround, sizeof(_float));
+		pShader->Set_RawValue("g_bBlackBG", &m_bBlackBackGround, sizeof(_bool));
 	}
 
 	__super::Set_ShaderResource(pShader, pConstantName);

@@ -117,7 +117,7 @@ void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx, ANIM_DIVIDE	eD
 	if (eDivideType == ANIM_DIVIDE::eBODYUPPER)
 	{
 		if (m_pActionAnimation)
-			m_pActionAnimation->Reset();
+			m_pActionAnimation->Reset(false, eDivideType);
 
 		m_pActionAnimation = pCurAnim;
 		m_pActionAnimation->OnInterpolate();
@@ -126,7 +126,7 @@ void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx, ANIM_DIVIDE	eD
 	{
 		//이전껀 리셋해놓고
 		if (m_pCycleAnimation)
-			m_pCycleAnimation->Reset();
+			m_pCycleAnimation->Reset(false, eDivideType);
 
 
 		m_pCycleAnimation = pCurAnim;
@@ -143,7 +143,7 @@ void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx, ANIM_DIVIDE	eD
 void CAnimator::Stop_ActionAnim()
 {
 	if (m_pActionAnimation)
-		m_pActionAnimation->Reset();
+		m_pActionAnimation->Reset(true, ANIM_DIVIDE::eBODYUPPER);
 
 	m_pActionAnimation = nullptr;
 }
@@ -234,12 +234,17 @@ void CAnimator::Tick()
 		if (m_pCycleAnimation->Get_AnimDivideType() == ANIM_DIVIDE::eBODYLOWER)
 		{
 			bBlend = true;
-			m_pActionAnimation->Update_Matrices(bBlend);
+
+			if (!m_pActionAnimation->Update_Matrices(bBlend))
+				m_pActionAnimation = nullptr;
+
 			m_pCycleAnimation->Update_Matrices(bBlend);
+
 		}
 		else
 		{
-			m_pActionAnimation->Update_Matrices(bBlend);
+			if (!m_pActionAnimation->Update_Matrices(bBlend))
+				m_pActionAnimation = nullptr;
 		}
 	}
 	else

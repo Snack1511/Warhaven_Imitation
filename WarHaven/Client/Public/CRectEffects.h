@@ -26,6 +26,8 @@ public:
 
 public:
 	virtual void		Self_Reset(CGameObject* pGameObject, _float4 vStartPos);
+	virtual void		Reset(_float4x4 matWorld);
+
 
 	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName) override;
 

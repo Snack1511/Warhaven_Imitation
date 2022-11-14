@@ -26,7 +26,7 @@ public:
 	HRESULT	Set_HierarchyNode(CModel* pModel);
 
 public:
-	void Reset_KeyFrame() { m_iCurrentKeyFrame = 0; }
+	void Reset_KeyFrame(_bool bDivide, ANIM_DIVIDE eDivideType);
 	_uint	Get_CurKeyFrame() { return m_iCurrentKeyFrame; }
 
 

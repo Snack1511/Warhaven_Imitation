@@ -42,7 +42,9 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
   //  pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
 
-	//CEffects_Factory::Get_Instance()
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitPos());
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 
 	switch (ePrevType)
 	{

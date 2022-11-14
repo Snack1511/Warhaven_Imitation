@@ -22,13 +22,13 @@ public:
 	HRESULT	Set_HierarchyNodes(CModel* pModel);
 	void	OnInterpolate();
 	void	OnSwitchAnim();
-	void	Reset();
+	void	Reset(_bool bDivide, ANIM_DIVIDE eDivideType);
 	_float	Calculate_Duration(_uint iKeyFrame);
 	ANIM_DIVIDE	Get_AnimDivideType() { return m_eAnimDivide; };
 
 public:
 	HRESULT Initialize(CResource_Animation* pAIAnimation);
-	void	Update_Matrices(_bool bDivide);
+	_bool	Update_Matrices(_bool bDivide);
 	void	Release();
 
 private:

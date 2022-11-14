@@ -79,6 +79,46 @@ list<CGameObject*> CEffects_Factory::Create_MultiEffects(wstring wstrKey, CGameO
 	return EffectsList;
 }
 
+list<CGameObject*> CEffects_Factory::Create_MultiEffects(wstring wstrKey, _float4 vPos)
+{
+	list<CGameObject*> EffectsList;
+
+	if (m_MultiEffects.find(Convert_ToHash(wstrKey)) == m_MultiEffects.end())
+	{
+		Call_MsgBox(L"Cant Find MultiEffects");
+		return EffectsList;
+	}
+
+	list<_hashcode> hcEffects = m_MultiEffects.find(Convert_ToHash(wstrKey))->second;
+
+	for (auto& hcCode : hcEffects)
+	{
+		EffectsList.push_back(Create_Effects(hcCode, vPos));
+	}
+
+	return EffectsList;
+}
+
+list<CGameObject*> CEffects_Factory::Create_MultiEffects(wstring wstrKey, _float4x4 matWorld)
+{
+	list<CGameObject*> EffectsList;
+
+	if (m_MultiEffects.find(Convert_ToHash(wstrKey)) == m_MultiEffects.end())
+	{
+		Call_MsgBox(L"Cant Find MultiEffects");
+		return EffectsList;
+	}
+
+	list<_hashcode> hcEffects = m_MultiEffects.find(Convert_ToHash(wstrKey))->second;
+
+	for (auto& hcCode : hcEffects)
+	{
+		EffectsList.push_back(Create_Effects(hcCode, matWorld));
+	}
+
+	return EffectsList;
+}
+
 CGameObject* CEffects_Factory::Create_Effects(_hashcode _hcCode, CGameObject* pFollowTarget, _float4 vPos)
 {
 	CGameObject* pGameObject = nullptr;
@@ -417,10 +457,21 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 {
 	list<string>	listTemp = Read_AllEffectsFile("../bin/effects");
 
-	if(FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash("SmallSparkParticle"), "SmallSparkParticle")))
+	if(FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SmallSparkParticle"), "SmallSparkParticle")))
 		return E_FAIL;
 
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash("BigSparkParticle"), "BigSparkParticle")))
+
+	/* BigSpark */
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BigSparkParticle"), "BigSparkParticle")))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"BigSparkParticle"), Convert_ToHash(L"SparkMesh_0"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"BigSparkParticle"), Convert_ToHash(L"SparkMesh_1"))))
+		return E_FAIL;
+
+
+
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SparkMesh"), "SparkMesh")))
 		return E_FAIL;
 
 	return S_OK;

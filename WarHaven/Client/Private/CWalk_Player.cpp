@@ -23,7 +23,7 @@ HRESULT CWalk_Player::Initialize()
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 
-	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+	//m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
@@ -41,6 +41,7 @@ HRESULT CWalk_Player::Initialize()
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
+	
 
     return S_OK;
 }
@@ -48,6 +49,7 @@ HRESULT CWalk_Player::Initialize()
 void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
     /* OwnerÀÇ Animator Set Idle·Î */
+	m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -68,8 +70,6 @@ void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
 	pMyPhysicsCom->Set_SpeedasMax();
 
-
-
     __super::Enter(pOwner, pAnimator, ePrevType);
 }
 
@@ -77,13 +77,15 @@ STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (KEY(RBUTTON, TAP))
 	{
-		pAnimator->Set_CurAnimIndex(ANIM_BASE_R, 5, ANIM_DIVIDE::eBODYUPPER);
+		pAnimator->Set_CurAnimIndex(ANIM_ATTACK, 9, ANIM_DIVIDE::eBODYUPPER);
 	}
 
-	if (KEY(RBUTTON, NONE))
-		pAnimator->Stop_ActionAnim();
-
 	Move_Direction_Loop(pOwner, pAnimator, 0.05f);
+
+	//Move(Get_Direction(), pOwner);
+
+	if (pOwner->Is_Air())
+		return STATE_JUMPFALL_PLAYER_L;
 
     return __super::Tick(pOwner, pAnimator);
 }

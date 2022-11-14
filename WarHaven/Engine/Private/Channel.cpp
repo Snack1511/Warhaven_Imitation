@@ -36,6 +36,22 @@ HRESULT CChannel::Set_HierarchyNode(CModel* pModel)
 	return S_OK;
 }
 
+void CChannel::Reset_KeyFrame(_bool bDivide, ANIM_DIVIDE eDivideType)
+{
+	//한번 쭉 재생되고나서 다시 키프레임 0으로 돌려야함
+
+	//근데 블렌드되고 있는 중이면 내꺼만 0으로 돌려야함
+	if (bDivide)
+	{
+		if (eDivideType == m_pHierarchyNode->Get_BoneType() || m_pHierarchyNode->Get_BoneType() == ANIM_DIVIDE::eDEFAULT)
+			m_iCurrentKeyFrame = 0;
+
+	}
+	else
+		m_iCurrentKeyFrame = 0;
+
+}
+
 HRESULT CChannel::Initialize(CHANNEL_DESC tChannelDesc)
 {
 	strcpy_s(m_szName, tChannelDesc.strName.c_str());

@@ -48,8 +48,10 @@ public:
 	virtual void		Self_Reset(CGameObject* pGameObject, _float4 vStartPos);
 	virtual void		Self_Reset_Turn(CGameObject* pGameObject, _float4 vStartPos);
 	virtual void		Reset(_float4 vStartPos);
+
 	void		Reset(CGameObject* pGameObject);
 	void		Reset(_float4 vStartPos, _float4 vTargetPosition);
+
 	void		Reset(_float4 vStartPos, _float4x4 matTrans);
 	virtual void		Reset(_float4x4 matWorld);
 
