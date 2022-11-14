@@ -31,7 +31,7 @@ CJump_Player_R* CJump_Player_R::Create()
 
 HRESULT CJump_Player_R::Initialize()
 {
-
+	__super::Initialize();
 
 
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
@@ -67,6 +67,8 @@ HRESULT CJump_Player_R::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_S] = 15;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 16;
     m_iDirectionAnimIndex[STATE_DIRECTION_E] = 13;
+
+	iPlaceJumpAnimIndex = 12;
 
 
     return S_OK;

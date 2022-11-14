@@ -18,13 +18,41 @@ CJump_Player::~CJump_Player()
 
 HRESULT CJump_Player::Initialize()
 {
+	m_fMyMaxLerp = 0.4f;
+	m_fMyAccel = 20.f;
 
     return S_OK;
 }
 
 void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
 {
+	m_fMyMaxLerp = 0.4f;
+	m_fMyAccel = 20.f;
+
+
     /* Owner의 Animator Set Idle로 */
+
+    pOwner->Get_PhysicsCom()->Set_Jump(4.5f);
+
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+
+	//_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	//vCamLook.y = 0.f;
+
+	////1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+	//pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+
+	////실제 움직이는 방향
+	//pMyPhysicsCom->Set_Dir(vCamLook);
+
+	////최대속도 설정
+
+	//pMyPhysicsCom->Set_MaxSpeed(fSpeed);
+
+	//if (bSpeedasMax)
+	//	pMyPhysicsCom->Set_SpeedasMax();
 
 
     __super::Enter(pOwner, pAnimator, ePrevType);
@@ -32,7 +60,7 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (!pOwner->Get_PhysicsCom()->Get_Physics().bAir)
+    if (!pOwner->Is_Air())
         return STATE_JUMP_LAND_PLAYER_R;
 
     
@@ -46,6 +74,7 @@ STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CJump_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 1.f;
     /* 할거없음 */
 }
 
@@ -63,20 +92,39 @@ STATE_TYPE CJump_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     // 만약 WASD 를 눌렀다면
     if (CUser::Get_Instance()->Get_LastKey() == KEY::SPACE)
     {
-        if (Jump_W())
-            m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_N];
 
-        else if (Jump_A())
-            m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_W];
+		switch (Get_Direction_Four())
+		{
+		case STATE_DIRECTION_N:
 
-        else if (Jump_S())
-            m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_S];
+			m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_N];
 
-        else if (Jump_D())
-            m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_E];
+			break;
 
+		case STATE_DIRECTION_W:
 
-        return m_eStateType;
+			m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_W];
+
+			break;
+
+		case STATE_DIRECTION_S:
+
+			m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_S];
+
+			break;
+
+		case STATE_DIRECTION_E:
+
+			m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_E];
+
+			break;
+
+		default:
+			m_iAnimIndex = iPlaceJumpAnimIndex;
+			break;
+		}
+
+		return m_eStateType;
     }
 
   

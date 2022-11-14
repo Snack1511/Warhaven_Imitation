@@ -27,10 +27,7 @@ private:
 	virtual void	On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
 private:
-	void	Changing_Location(_uint iDirection, CAnimator* pAnimator);
-
-private:
-	_bool	bAnimTrigger = false;
+	void	Change_Location_Begin(_uint iDirection, CAnimator* pAnimator);
 
 
 };

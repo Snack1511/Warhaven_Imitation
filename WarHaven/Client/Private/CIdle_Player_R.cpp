@@ -60,11 +60,13 @@ HRESULT CIdle_Player_R::Initialize()
     m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
     m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 
-    m_vecAdjState.push_back(STATE_ATTACK_VERTICAL_CUT);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+
 
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
 
+	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_R);
 
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);

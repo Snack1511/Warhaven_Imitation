@@ -189,6 +189,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CBloodOverlay.h" />
+    <ClInclude Include="..\Public\CBounce_Player_R.h" />
     <ClInclude Include="..\public\CCamera_Default.h" />
     <ClInclude Include="..\Public\CCamera_FixedAngle.h" />
     <ClInclude Include="..\Public\CCamera_Follow.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="..\Public\CIdle_Player_R.h" />
     <ClInclude Include="..\public\CImGui_Window.h" />
     <ClInclude Include="..\Public\CInstancingEffects.h" />
+    <ClInclude Include="..\Public\CBounce_Player.h" />
     <ClInclude Include="..\Public\CJump_Player_Fall_R.h" />
     <ClInclude Include="..\Public\CJump_Player_R.h" />
     <ClInclude Include="..\Public\CJump_Player_Fall_L.h" />
@@ -291,7 +293,9 @@
     <ClInclude Include="..\Public\CWalk_Player_R.h" />
     <ClInclude Include="..\public\CWarrior_Attack_01.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_Sting_R.h" />
-    <ClInclude Include="..\Public\CWarrior_Attack_Takedown.h" />
+    <ClInclude Include="..\Public\CHit_Player.h" />
+    <ClInclude Include="..\Public\CWarrior_Attack_VerticalCut.h" />
+    <ClInclude Include="..\Public\CBounce_Player_L.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_UpperMiddle_L.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_Sting_L.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_UpperMiddle_R.h" />
@@ -327,6 +331,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\private\CAI_SandBack.cpp" />
     <ClCompile Include="..\Private\CBloodOverlay.cpp" />
+    <ClCompile Include="..\Private\CBounce_Player_R.cpp" />
     <ClCompile Include="..\private\CCamera_Default.cpp" />
     <ClCompile Include="..\Private\CCamera_FixedAngle.cpp" />
     <ClCompile Include="..\Private\CCamera_Follow.cpp" />
@@ -348,6 +353,7 @@
     <ClCompile Include="..\Private\CIdle_Player_R.cpp" />
     <ClCompile Include="..\Private\CImGui_Window.cpp" />
     <ClCompile Include="..\Private\CInstancingEffects.cpp" />
+    <ClCompile Include="..\Private\CBounce_Player.cpp" />
     <ClCompile Include="..\Private\CJump_Player_Fall_R.cpp" />
     <ClCompile Include="..\Private\CJump_Player_Land_L.cpp" />
     <ClCompile Include="..\Private\CJump_Player_Land_R.cpp" />
@@ -426,7 +432,9 @@
     <ClCompile Include="..\private\CWarrior_Attack_01.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_Sting_R.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_Sting_L.cpp" />
-    <ClCompile Include="..\Private\CWarrior_Attack_Takedown.cpp" />
+    <ClCompile Include="..\Private\CHit_Player.cpp" />
+    <ClCompile Include="..\Private\CWarrior_Attack_VerticalCut.cpp" />
+    <ClCompile Include="..\Private\CBounce_Player_L.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_UpperMiddle_R.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_UpperMiddle_L.cpp" />
     <ClCompile Include="..\Private\CWarrior_GuardBreak.cpp" />

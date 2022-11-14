@@ -35,7 +35,7 @@ HRESULT CJump_Player_Land_R::Initialize()
     m_iAnimIndex = 17;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_JUMP_LAND_PLAYER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_iStateChangeKeyFrame = 40;
+    m_iStateChangeKeyFrame = 5;
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.f;
@@ -44,9 +44,26 @@ HRESULT CJump_Player_Land_R::Initialize()
     m_fAnimSpeed = 2.5f;
 
     
-    m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-    m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-    m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+	m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
+
+	m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
+	m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
+
+	m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+
+	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+
+	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_R);
+
+	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
+	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+
+
 
     return S_OK;
 }
@@ -72,9 +89,8 @@ STATE_TYPE CJump_Player_Land_R::Check_Condition(CUnit* pOwner, CAnimator* pAnima
     1. 땅에 닿았을 시 . 
     */
 
-    // 테스트용. 땅에 닿을 때 사용해야함.
-    if (pAnimator->Is_CurAnimFinished())
-        return m_eStateType;
+	if (!pOwner->Is_Air())
+		return m_eStateType;
 
     return STATE_END;
 }

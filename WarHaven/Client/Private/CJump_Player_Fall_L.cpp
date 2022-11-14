@@ -63,7 +63,8 @@ void CJump_Player_Fall_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CJump_Player_Fall_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    if (!pOwner->Is_Air())
+        return STATE_JUMP_LAND_PLAYER_L;
 
    return __super::Tick(pOwner, pAnimator);
 }

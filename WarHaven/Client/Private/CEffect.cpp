@@ -208,7 +208,7 @@ void CEffect::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 void CEffect::Set_ColliderOn(_float fRadius, COL_GROUP_CLIENT eColType)
 {
 	ENABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
-	GET_COMPONENT(CCollider_Sphere)->Get_ColInfo().fRadius = fRadius;
+	GET_COMPONENT(CCollider_Sphere)->Get_ColInfo().front().fRadius = fRadius;
 	GET_COMPONENT(CCollider_Sphere)->Set_ColIndex(eColType);
 	m_bColliderOn = true;
 	m_fColliderAcc = 0.f;

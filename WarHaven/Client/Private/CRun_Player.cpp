@@ -24,7 +24,7 @@ HRESULT CRun_Player::Initialize()
     m_vecAdjState.push_back(STATE_SLIDE_BEGIN_PLAYER);
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
-	m_vecAdjState.push_back(STATE_ATTACK_VERTICAL_CUT);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 
 	m_iDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
@@ -39,7 +39,7 @@ HRESULT CRun_Player::Initialize()
     m_iStateChangeKeyFrame = 0;
 
 	m_fInterPolationTime = 0.1f;
-
+	m_fMaxSpeed = 4.f;
 
     return S_OK;
 }
@@ -49,24 +49,25 @@ void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
 
+	Physics_Setting(pOwner->Get_Status().fRunSpeed, pOwner, true);
 
-	CTransform* pMyTransform = pOwner->Get_Transform();
-	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-	
-	pMyPhysicsCom->Get_Physics().bAir = false;
 
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	vCamLook.y = 0.f;
+	//CTransform* pMyTransform = pOwner->Get_Transform();
+	//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+	//
 
-	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
-	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+	//_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	//vCamLook.y = 0.f;
 
-	//실제 움직이는 방향
-	pMyPhysicsCom->Set_Dir(vCamLook);
+	////1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+	//pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
 
-	//최대속도 설정
-	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
-	pMyPhysicsCom->Set_SpeedasMax();
+	////실제 움직이는 방향
+	//pMyPhysicsCom->Set_Dir(vCamLook);
+
+	////최대속도 설정
+	//pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
+	//pMyPhysicsCom->Set_SpeedasMax();
 
     
 	if (ePrevType == STATE_RUN_PLAYER_R || ePrevType == STATE_RUN_PLAYER_L)
@@ -85,6 +86,8 @@ STATE_TYPE CRun_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	Move_Direction_Loop(pOwner, pAnimator, 0.1f);
 
+	if (pOwner->Is_Air())
+		return STATE_JUMPFALL_PLAYER_L;
 
     return __super::Tick(pOwner, pAnimator);
 

@@ -73,8 +73,12 @@ STATE_TYPE CGuard_Loop_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 	1. 스프린트 공격 준비가 끝나면
     */
 
-	if (KEY(RBUTTON, HOLD))
-		return m_eStateType;
+	if (pAnimator->Is_CurAnimFinished())
+	{
+		if (KEY(RBUTTON, HOLD))
+			return m_eStateType;
+	}
+
    
     return STATE_END;
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CWarrior_Attack_Sting_R.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -54,6 +54,9 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
 
+	Add_KeyFrame(40, 0);
+	Add_KeyFrame(42, 1);
+
 
     return S_OK;
 }
@@ -85,4 +88,28 @@ STATE_TYPE CWarrior_Attack_Sting_R::Check_Condition(CUnit* pOwner, CAnimator* pA
         return m_eStateType;
 
     return STATE_END;
+}
+
+
+void CWarrior_Attack_Sting_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	switch (iSequence)
+	{
+	case 0:
+
+		m_bMoveTrigger = false;
+		pOwner->Get_PhysicsCom()->Set_MaxSpeed(3.f);
+		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
+		pOwner->Set_DirAsLook();
+		break;
+
+	case 1:
+		m_bAttackTrigger = true;
+
+		//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		break;
+
+	default:
+		break;
+	}
 }

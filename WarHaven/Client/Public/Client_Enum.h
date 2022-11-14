@@ -264,7 +264,7 @@ namespace Client
 		STATE_JUMP_LAND_PLAYER_R,
 //
 //		/* Bounece */
-//		STATE_BOUNCE_PLAYER_R,
+		STATE_BOUNCE_PLAYER_R,
 //
 //
 //#pragma endregion
@@ -290,7 +290,7 @@ namespace Client
 		STATE_JUMP_LAND_PLAYER_L,
 //
 //		/* Bounece */
-//		STATE_BOUNCE_PLAYER_L,
+		STATE_BOUNCE_PLAYER_L,
 //
 //#pragma endregion
 //
@@ -336,7 +336,7 @@ namespace Client
 		STATE_ATTACK_STING_PLAYER_R,
 //
 //		/* Take_Down */
-		STATE_ATTACK_VERTICAL_CUT,
+		STATE_ATTACK_VERTICALCUT,
 //
 //#pragma endregion
 //
@@ -354,6 +354,8 @@ namespace Client
 //		STATE_WARRIOR_OXEN, // 황소베기
 		STATE_WARRIOR_GUARDBREAK, // 가드 파괴
 //		// STATE_ATTACK_SKILL3, 
+
+		STATE_HIT,
 //
 //
 //#pragma endregion

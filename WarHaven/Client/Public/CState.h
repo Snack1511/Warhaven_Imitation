@@ -15,7 +15,7 @@ class CState
 public:
 	struct KEYFRAME_EVENT
 	{
-		enum EVENT_TYPE {EVENT_MOVE, EVENT_ATTACK, EVENT_END};
+		enum EVENT_TYPE {EVENT_MOVE, EVENT_ATTACK, EVENT_ATTACKEND, EVENT_END};
 		_uint	iKeyFrame = 0;
 		EVENT_TYPE	eEventType = EVENT_END;
 		_bool	bExecuted = false;
@@ -78,6 +78,12 @@ protected:
 
 	_float				m_fMyMaxLerp = 0.f; 
 	_float				m_fMyAccel = 0.f;
+	_float				m_fMaxSpeed = 0.f;
+
+	_bool				m_bMoveTrigger = false;
+	_bool				m_bAttackTrigger = false;
+
+	_int				m_iFinishedFrame = 0;
 
 	_int				m_iDirectionAnimIndex[STATE_DIRECTION_END];
 	_float				m_iDirectionAnimSpeed[STATE_DIRECTION_END];
@@ -88,18 +94,17 @@ protected:
 
 
 protected:
-	_uint	Get_Direction();
+	_uint	Get_Direction(); // 8방향
+	_uint	Get_Direction_Four(); // 4방향
 	
-	void	Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime);
-	void	Move_Direction_Begin(CUnit* pOwner, CAnimator* pAnimator, _bool bAnimTrigger = true);
+	_uint	Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime);
 
 	void	Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float fInterPolationTime);
-	void	Change_Location_Begin(_uint iDirection, CAnimator* pAnimator);
 
-	void	Move(_uint iDirection, CUnit* pOwner);
+	_uint	Move(_uint iDirection, CUnit* pOwner);
 
 
-	void	Physics_Setting(_float fSpeed, CUnit* pOwner);
+	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax);
 	
 
 protected:
@@ -114,8 +119,6 @@ protected:
 	_float	m_fSoundLoopTime = 0.1f;
 
 	_bool	m_bRight = true;
-
-
 
 
 protected:

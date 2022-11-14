@@ -2,19 +2,14 @@
 #include "CState.h"
 
 BEGIN(Client)
-class CColorController;
-
-class CWarrior_Attack_Takedown
+class CBounce_Player abstract
 	: public CState
 {
-	DECLARE_STATE(CWarrior_Attack_Takedown);
 
-private:
-	CWarrior_Attack_Takedown();
-	virtual ~CWarrior_Attack_Takedown();
+protected:
+	CBounce_Player();
+	virtual ~CBounce_Player();
 
-public:
-	static CWarrior_Attack_Takedown* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -23,9 +18,12 @@ public:
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
-private:
+
+protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	
+
+
+
 };
 
 END

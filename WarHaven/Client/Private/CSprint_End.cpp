@@ -34,7 +34,7 @@ HRESULT CSprint_End::Initialize()
     m_iAnimIndex = 56;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_SPRINT_END_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_iStateChangeKeyFrame = 70;
+    m_iStateChangeKeyFrame = 10;
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.f;
@@ -48,12 +48,18 @@ HRESULT CSprint_End::Initialize()
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
+
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+
+	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 
 
+	m_fMyMaxLerp = 0.4f;
+	m_fMaxSpeed = 10.f;
+	m_fMyAccel = 10.f;
 
 
     return S_OK;
@@ -69,9 +75,6 @@ void CSprint_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-
-	//임시
-	pMyPhysicsCom->Get_Physics().bAir = false;
 
 	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	vCamLook.y = 0.f;

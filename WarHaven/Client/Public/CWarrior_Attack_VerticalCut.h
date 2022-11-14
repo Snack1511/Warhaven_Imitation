@@ -4,17 +4,17 @@
 BEGIN(Client)
 class CColorController;
 
-class CWarrior_Attack_UpperMiddle_R
+class CWarrior_Attack_VerticalCut
 	: public CState
 {
-	DECLARE_STATE(CWarrior_Attack_UpperMiddle_R);
+	DECLARE_STATE(CWarrior_Attack_VerticalCut);
 
 private:
-	CWarrior_Attack_UpperMiddle_R();
-	virtual ~CWarrior_Attack_UpperMiddle_R();
+	CWarrior_Attack_VerticalCut();
+	virtual ~CWarrior_Attack_VerticalCut();
 
 public:
-	static CWarrior_Attack_UpperMiddle_R* Create();
+	static CWarrior_Attack_VerticalCut* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -27,7 +27,6 @@ private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
-	
 };
 
 END

@@ -1,23 +1,25 @@
 #pragma once
-#include "CState.h"
+#include "CBounce_Player.h"
+
+BEGIN(Engine)
+class CColorController;
+END
 
 BEGIN(Client)
-class CColorController;
-
-class CWarrior_Attack_UpperMiddle_R
-	: public CState
+class CBounce_Player_L
+	: public CBounce_Player
 {
-	DECLARE_STATE(CWarrior_Attack_UpperMiddle_R);
+	DECLARE_STATE(CBounce_Player_L);
 
 private:
-	CWarrior_Attack_UpperMiddle_R();
-	virtual ~CWarrior_Attack_UpperMiddle_R();
+	CBounce_Player_L();
+	virtual ~CBounce_Player_L();
 
 public:
-	static CWarrior_Attack_UpperMiddle_R* Create();
+	static CBounce_Player_L* Create();
 
 public:
-	// CState을(를) 통해 상속됨
+	// CPlayer_Bounce을(를) 통해 상속됨
 	virtual HRESULT Initialize()	override;
 	virtual void Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType) override;
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
@@ -25,8 +27,6 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
-
 	
 };
 

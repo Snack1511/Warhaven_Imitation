@@ -37,6 +37,8 @@ HRESULT CGuard_Begin_Player::Initialize()
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
 
+	m_iStateChangeKeyFrame = 20;
+
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 3.f;
 

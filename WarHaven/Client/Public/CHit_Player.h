@@ -4,17 +4,17 @@
 BEGIN(Client)
 class CColorController;
 
-class CWarrior_Attack_UpperMiddle_R
+class CHit_Player
 	: public CState
 {
-	DECLARE_STATE(CWarrior_Attack_UpperMiddle_R);
+	DECLARE_STATE(CHit_Player);
 
 private:
-	CWarrior_Attack_UpperMiddle_R();
-	virtual ~CWarrior_Attack_UpperMiddle_R();
+	CHit_Player();
+	virtual ~CHit_Player();
 
 public:
-	static CWarrior_Attack_UpperMiddle_R* Create();
+	static CHit_Player* Create();
 
 public:
 	// CState을(를) 통해 상속됨

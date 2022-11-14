@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 
+#include "CCamera_Default.h"
 #include "CCollider_Sphere.h"
 #include "Texture.h"
 #include "CShader.h"
@@ -50,6 +51,20 @@ void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType)
 void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType)
 {
 	int i = 0;
+}
+
+_bool CUnit::Is_Air()
+{
+	return m_pPhysics->Get_Physics().bAir;
+}
+
+void CUnit::Set_DirAsLook()
+{
+	_float4 vLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	vLook.y = 0.f;
+
+	m_pTransform->Set_LerpLook(vLook, 0.3f);
+	m_pPhysics->Set_Dir(vLook);
 }
 
 void CUnit::Set_ShaderResource(CShader* pShader, const char* pConstantName)
@@ -112,6 +127,18 @@ void CUnit::Reserve_State(STATE_TYPE eType)
 
 }
 
+void CUnit::Teleport_Unit(_float4 vPosition)
+{
+	GET_COMPONENT(CPhysXCharacter)->Set_Position(vPosition);
+}
+
+
+HRESULT CUnit::MakeUp_Unit(const UNIT_DESC& tUnitDesc)
+{
+
+
+	return S_OK;
+}
 
 HRESULT CUnit::Initialize_Prototype()
 {
@@ -128,6 +155,7 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component(CPhysics::Create(0));
 
+	//PhysX캐릭터 : 캐릭터 본체
 	CPhysXCharacter::PHYSXCCTDESC tDesc;
 	tDesc.fRadius = 0.25f;
 	tDesc.fHeight = 1.0f;
@@ -146,6 +174,7 @@ HRESULT CUnit::Initialize()
 	m_pModelCom = GET_COMPONENT(CModel);
 	m_pAnimator = GET_COMPONENT(CAnimator);
 	m_pPhysics = GET_COMPONENT(CPhysics);
+	m_pPhysXCharacter = GET_COMPONENT(CPhysXCharacter);
 
 	if (!m_pModelCom)
 		return E_FAIL;
@@ -156,6 +185,8 @@ HRESULT CUnit::Initialize()
 	if (!m_pPhysics)
 		return E_FAIL;
 
+	if (!m_pPhysXCharacter)
+		return E_FAIL;
 
 
 	return S_OK;
@@ -179,6 +210,12 @@ HRESULT CUnit::Start()
 	SetUp_TrailEffect(m_tUnitStatus.eWeapon);
 
 	m_pPhysics->Set_Jump(0.f);
+	
+	if (!m_pCurState)
+	{
+		Call_MsgBox(L"상태 세팅 안댔음");
+		return E_FAIL;
+	}
 
 	m_pCurState->Enter(this, m_pAnimator, m_eCurState);
 
@@ -207,6 +244,17 @@ void CUnit::OnDisable()
 
 }
 
+//void CUnit::Set_Enable_WeaponCol(_bool bEnable)
+//{
+//	for (int i = 0; i < WEAPONCOLLIDER_END; ++i)
+//	{
+//		if (bEnable)
+//			ENABLE_COMPONENT(m_pUnitCollider[i]);
+//		else
+//			DISABLE_COMPONENT(m_pUnitCollider[i]);
+//	}
+//}
+
 void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 {
 	if (!m_pUnitCollider[ePartType])
@@ -218,17 +266,22 @@ void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 		DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
 }
 
-void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, _float fRadius, COL_GROUP_CLIENT eColType, _float4 vOffsetPos,
-	_float4x4 matModelTransformation, CHierarchyNode* pRefBone)
+void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, _uint iNumCollider, _float4x4 matTransformation, _bool bEnable, CHierarchyNode* pRefBone)
 {
-	m_pUnitCollider[ePartType] = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, eColType, vOffsetPos, matModelTransformation, pRefBone);
-	if (!m_pUnitCollider[ePartType])
+	if (m_pUnitCollider[ePartType])
 		return;
 
-	m_pUnitCollider[ePartType]->Initialize();
-	Add_Component(m_pUnitCollider[ePartType]);
-	DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
+	m_pUnitCollider[ePartType] = m_pUnitCollider[ePartType] = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, arrColliderDesc[0].fRadius, arrColliderDesc[0].eColType, arrColliderDesc[0].vOffsetPos,
+		matTransformation, pRefBone);
 
+	Add_Component(m_pUnitCollider[ePartType]);
+
+	Enable_UnitCollider(ePartType, bEnable);
+
+	for (int i = 1; i < iNumCollider; ++i)
+	{
+		m_pUnitCollider[ePartType]->Add_Collider(arrColliderDesc[i].fRadius, arrColliderDesc[i].vOffsetPos);
+	}
 }
 
 void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)

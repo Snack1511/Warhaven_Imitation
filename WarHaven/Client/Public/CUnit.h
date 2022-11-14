@@ -12,6 +12,7 @@ class CCollider_Sphere;
 class CShader;
 class CBoneCollider;
 class CHierarchyNode;
+class CPhysXCharacter;
 END
 
 BEGIN(Client)
@@ -51,9 +52,8 @@ public:
 		_float fSprintAttackSpeed = 11.F;
 		_float fSprintJumpSpeed = 10.F;
 		_float fSprintSpeed = 8.f;
-		_float fJumpPower = 6.5f;
+		_float fJumpPower = 2.5f;
 	};
-
 	struct UNIT_MODEL_DATA
 	{
 		wstring	strModelPaths[MODEL_PART_END];
@@ -62,6 +62,7 @@ public:
 
 public:
 	enum UNITCOLLIDER{BODY, HEAD, WEAPON_L, WEAPON_R, UNITCOLLIDER_END};
+	enum WEAPONCOLLIDER{ WEAPONCOLLIDER_END = 3};
 	enum COOL_TYPE {SKILL1, COOL_END};
 
 protected:
@@ -72,6 +73,10 @@ public:
 	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType);
 	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType);
 	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType);
+
+public: /* Physics */
+	_bool		Is_Air();
+	void		Set_DirAsLook();
 
 public:
 	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
@@ -108,6 +113,18 @@ public:
 	void	Enter_State(STATE_TYPE eType);
 	void	Reserve_State(STATE_TYPE eType);
 
+public:
+	void	Teleport_Unit(_float4 vPosition);
+
+public:
+	struct UNIT_DESC
+	{
+		_bool bRight = false;
+	};
+	//기준 : 같은 유닛이어도 각기 다른 설정이 필요한 건 다 여기서
+	//ex) 1. 모델 파츠별 조명 여부, 2. 충돌체 설정, 3. 시작 상태
+	HRESULT	MakeUp_Unit(const UNIT_DESC& tUnitDesc);
+
 
 public:
 	// CGameObject을(를) 통해 상속됨
@@ -119,13 +136,37 @@ public:
 	virtual void OnDisable() override;
 
 protected:
+	//PhysX 용 충돌체
+	CPhysXCharacter* m_pPhysXCharacter = nullptr;
 	CBoneCollider* m_pWeaponCollider_R = nullptr;
+
+	//우리가 알던 그 충돌체
 	CCollider_Sphere* m_pUnitCollider[UNITCOLLIDER_END] = {};
+	//CCollider_Sphere* m_pUnitWeaponCollider[WEAPONCOLLIDER_END] = {};
 
 public:
 	void	Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable);
-	void	SetUp_UnitCollider(UNITCOLLIDER ePartType, _float fRadius, COL_GROUP_CLIENT eColType, _float4 vOffsetPos,
-		_float4x4 matModelTransformation, CHierarchyNode* pRefBone = nullptr);
+
+	struct UNIT_COLLIDERDESC
+	{
+		_float fRadius = 0.f;
+		_float4 vOffsetPos = ZERO_VECTOR;
+		_uint	eColType;
+		
+	};
+	
+	struct UNIT_COLLIDREINFODESC
+	{
+		_float4x4 matModelTransformation = DEFAULT_TRANS_MATRIX;
+		_float4 vStartPos = ZERO_VECTOR;
+		_uint	iNumCollider = 1;
+		_bool	bEnable = true;
+	};
+
+
+	void	SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, 
+		_uint iNumCollider = 1, _float4x4 matTransformation = DEFAULT_TRANS_MATRIX, _bool bEnable = true, CHierarchyNode* pRefBone = nullptr);
+
 
 protected:
 	_float	m_fCoolTime[COOL_END] = {};
