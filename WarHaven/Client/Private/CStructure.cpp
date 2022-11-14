@@ -192,6 +192,7 @@ HRESULT CStructure::SetUp_World(_float4 vScale, _float4x4 worldMat)
 
 void CStructure::My_Tick()
 {
+	__super::My_Tick();
 	//_float4 PickOutPos = _float4(0.f, 0.f, 0.f, 1.f);
 	//_float4 PickOutNorm = _float4(0.f, 0.f, 0.f, 1.f);
 	//if (KEY(LBUTTON, HOLD))
@@ -208,4 +209,5 @@ void CStructure::My_Tick()
 
 void CStructure::My_LateTick()
 {
+	__super::My_LateTick();
 }

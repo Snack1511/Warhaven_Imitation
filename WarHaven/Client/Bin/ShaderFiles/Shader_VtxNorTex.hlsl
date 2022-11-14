@@ -88,6 +88,7 @@ PS_OUT PS_NAVIGATION_MAIN(VS_DEFAULT_OUT In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 	Out.vColor = In.vColor;
+	Out.vColor.a = 1;
 
 
 	return Out;

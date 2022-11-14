@@ -69,6 +69,13 @@ CTerrain* CTerrain::Create(const _tchar* pFilePath)
         return nullptr;
     }
 
+    if (FAILED(pInstance->SetUp_TerrainTextures()))
+    {
+        Call_MsgBox(L"Failed to SetUp_TerrainTextures : CTerrain");
+        SAFE_DELETE(pInstance);
+        return nullptr;
+    }
+
     if (FAILED(pInstance->Initialize_Prototype()))
     {
         Call_MsgBox(L"Failed to Initialize_Prototype : CTerrain");
@@ -114,13 +121,13 @@ HRESULT CTerrain::Initialize_Prototype()
     pShader->Initialize();
     Add_Component(pShader);
     
-    CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
-    Add_Component(pRenderer);
-    m_pRenderer = pRenderer;
-
-    //CTerrain_Renderer* pRenderer = CTerrain_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
-    //Add_Component<CRenderer>(pRenderer);
+    //CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
+    //Add_Component(pRenderer);
     //m_pRenderer = pRenderer;
+
+    CTerrain_Renderer* pRenderer = CTerrain_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TEXTUREARRAY);
+    Add_Component<CRenderer>(pRenderer);
+    m_pRenderer = pRenderer;
 
 
 
@@ -311,6 +318,28 @@ HRESULT CTerrain::SetUp_NeighborNaviCells()
     return S_OK;
 }
 
+void CTerrain::Read_TerrainTexture(wstring wStrPath, list<wstring>& listPath)
+{
+
+    for (filesystem::directory_iterator FileIter(wStrPath);
+        FileIter != filesystem::end(FileIter); ++FileIter)
+    {
+        const filesystem::directory_entry& entry = *FileIter;
+        wstring wstrPath = entry.path().relative_path();
+
+        if (entry.is_directory())
+        {
+            Read_TerrainTexture(wstrPath, listPath);
+        }
+        else
+        {
+            listPath.push_back(wstrPath);
+        }
+
+    }
+    return ;
+}
+
 HRESULT CTerrain::SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ)
 {
     CMesh_Terrain* pTerrain = CMesh_Terrain::Create(CP_BEFORE_RENDERER, iNumVerticesX, iNumVerticesZ);
@@ -367,13 +396,23 @@ HRESULT CTerrain::SetUp_TerrainMesh(const _tchar* pFilePath)
 
 HRESULT CTerrain::SetUp_TerrainTextures()
 {
+    wstring strTerrainTexturePath = L"../bin/resources/Textures/Terrain/";
+    list<wstring> listTerrainTexturePath;
+    Read_TerrainTexture(strTerrainTexturePath, listTerrainTexturePath);
 
 
-    CTexture* pTexture = CTexture::Create(0, L"../bin/resources/Textures/Terrain/Tile0.dds", 1);
-    Add_Component(pTexture);
+    //이름만 자르는 구문..
+    //_int iFind = (_int)wstrPath.rfind(L"\\") + 1;
+    //wstring wStrName = wstrPath.substr(iFind, wstrPath.length() - iFind);
+    //string strName = "";
+    //strName.assign(wStrName.begin(), wStrName.end());
+    CTexture* pTexture = nullptr;
+    for (list<wstring>::value_type& Value : listTerrainTexturePath)
+    {
+        pTexture = CTexture::Create(0, Value.c_str(), 1);
+        Add_Component(pTexture);
+    }
 
-    pTexture = CTexture::Create(0, L"../bin/resources/Textures/Terrain/Tile0.dds", 1);
-    Add_Component(pTexture);
 
     return S_OK;
 }

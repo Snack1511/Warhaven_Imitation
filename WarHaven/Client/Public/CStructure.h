@@ -30,8 +30,8 @@ public:
 	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType) {};
 
 public:
-	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
-	void	Set_Passes(VTXMODEL_PASS_TYPE ePassType);
+	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
+	virtual void	Set_Passes(VTXMODEL_PASS_TYPE ePassType);
 
 public:
 	// CGameObject을(를) 통해 상속됨

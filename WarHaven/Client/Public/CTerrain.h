@@ -52,7 +52,8 @@ protected:
 	HRESULT Ready_NaviCells(ifstream& readFile, CMesh_Terrain* pTerrain);
 	HRESULT SetUp_NeighborNaviCells();
 #pragma endregion
-
+protected:
+	void Read_TerrainTexture(wstring wStrPath, list<wstring>& listPath);
 protected:
 	CMesh_Terrain* m_pTerrainMesh = nullptr;
 	CRenderer* m_pRenderer = nullptr;

@@ -79,6 +79,33 @@ CInstanceMesh* CInstanceMesh::Create(_uint iNumInstance, CResource_Mesh* pMeshRe
 	return pInstance;
 }
 
+CInstanceMesh* CInstanceMesh::Create(_uint iNumInstance, VTXINSTANCE* pInstanceData, CResource_Mesh* pMeshResource, _float4x4 TransformMatrix)
+{
+	CInstanceMesh* pInstance = new CInstanceMesh(0);
+
+	if (FAILED(pInstance->SetUp_MeshContainer(pMeshResource, TransformMatrix)))
+	{
+		Call_MsgBox(L"Failed to SetUp_MeshContainer : CInstanceMesh");
+		SAFE_DELETE(pInstance);
+		return nullptr;
+	}
+
+	if (FAILED(pInstance->SetUp_InstanceMesh(iNumInstance, pInstanceData)))
+	{
+		Call_MsgBox(L"Failed to SetUp_MeshContainer : CInstanceMesh");
+		SAFE_DELETE(pInstance);
+		return nullptr;
+	}
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		Call_MsgBox(L"Failed to Initialize_Prototype : CInstanceMesh");
+		SAFE_DELETE(pInstance);
+	}
+
+	return pInstance;
+}
+
 void CInstanceMesh::ReMap_Instances(_float4x4* pInstancesMatrices)
 {
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
@@ -216,6 +243,34 @@ HRESULT CInstanceMesh::SetUp_InstanceMesh(_uint iNumInstance)
 		return E_FAIL;
 
 	Safe_Delete_Array(pInstance);
+
+	return S_OK;
+}
+
+HRESULT CInstanceMesh::SetUp_InstanceMesh(_uint iNumInstance, VTXINSTANCE* pInstanceData)
+{
+	m_iNumVertexBuffers = 2;
+
+	m_iInstanceStride = sizeof(VTXINSTANCE);
+	m_iNumInstance = iNumInstance;
+
+
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_BufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstance;
+	m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride = m_iInstanceStride;
+	m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	m_BufferDesc.MiscFlags = 0;
+
+	VTXINSTANCE* pInstance = pInstanceData;
+
+
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pInstance;
+
+	if (FAILED(DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, m_pVBInstance.GetAddressOf())))
+		return E_FAIL;
 
 	return S_OK;
 }

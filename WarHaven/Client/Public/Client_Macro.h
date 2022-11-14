@@ -7,6 +7,7 @@
 #define PLAYER			CUser::Get_Instance()->Get_Player()
 
 #define	DEFAULT_TRANS_MATRIX			XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.0f))* XMMatrixRotationZ(XMConvertToRadians(180.0f))
+#define	DEFAULT_MODEL_MATRIX			XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.0f))
 
 #define GET_STATE(enumname, classname) static_cast<classname*>(CState_Manager::Get_Instance()->Get_State(enumname))
 

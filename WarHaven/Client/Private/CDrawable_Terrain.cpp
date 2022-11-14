@@ -32,6 +32,13 @@ CDrawable_Terrain* CDrawable_Terrain::Create(_uint iNumVerticesX, _uint iNumVert
         SAFE_DELETE(pInstance);
         return nullptr;
     }
+    if (FAILED(pInstance->SetUp_TerrainTextures()))
+    {
+        Call_MsgBox(L"Failed to SetUp_TerrainTextures : CDrawable_Terrain");
+        SAFE_DELETE(pInstance);
+        return nullptr;
+    }
+
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
@@ -54,6 +61,13 @@ CDrawable_Terrain* CDrawable_Terrain::Create(const _tchar* pFilePath)
     if (FAILED(pInstance->SetUp_TerrainMesh(pFilePath)))
     {
         Call_MsgBox(L"Failed to SetUp_TerrainMesh : CDrawable_Terrain");
+        SAFE_DELETE(pInstance);
+        return nullptr;
+    }
+
+    if (FAILED(pInstance->SetUp_TerrainTextures()))
+    {
+        Call_MsgBox(L"Failed to SetUp_TerrainTextures : CDrawable_Terrain");
         SAFE_DELETE(pInstance);
         return nullptr;
     }
@@ -160,7 +174,7 @@ _float4* CDrawable_Terrain::Get_TerrainTileFlag()
 
 CDrawable_Terrain::Terrain_TUPLE CDrawable_Terrain::Get_TerrainData()
 {
-    return make_tuple(m_strTileTexturePath, m_iTerrainVertX, m_iTerrainVertZ, m_pTerrainVertPos);
+    return make_tuple(m_strTileTexturePath, m_iTerrainVertX, m_iTerrainVertZ, m_pTerrainVertPos, m_pTerrainColor);
 }
 
 void CDrawable_Terrain::Update_Vertices()
@@ -188,7 +202,7 @@ HRESULT CDrawable_Terrain::SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVert
     m_iTerrainVertX = iNumVerticesX;
     m_iTerrainVertZ = iNumVerticesZ;
     m_pTerrainVertPos = pTerrain->Get_VerticesPos();
-
+    m_pTerrainColor = pTerrain->Get_VerticesColor();
     return S_OK;
 }
 
@@ -235,6 +249,7 @@ HRESULT CDrawable_Terrain::SetUp_TerrainMesh(const _tchar* pFilePath)
     m_iTerrainVertX = iNumVerticesX;
     m_iTerrainVertZ = iNumVerticesZ;
     m_pTerrainVertPos = pTerrain->Get_VerticesPos();
+    m_pTerrainColor = pTerrain->Get_VerticesColor();
 
     return S_OK;
 }
@@ -245,8 +260,36 @@ HRESULT CDrawable_Terrain::SetUp_TerrainInfo(ifstream& readFile, CMesh_Terrain* 
         assert(0);
     _uint iNumVertices = pTerrain->Get_NumVertices();
     _float3* pVerticesPos = pTerrain->Get_VerticesPos();
+    _float4* pVerticesColor = pTerrain->Get_VerticesColor();
 
     readFile.read((char*)pVerticesPos, sizeof(_float3) * iNumVertices);
+    readFile.read((char*)pVerticesColor, sizeof(_float4) * iNumVertices);
+
+    return S_OK;
+}
+
+HRESULT CDrawable_Terrain::SetUp_TerrainTextures()
+{
+    wstring strTerrainTexturePath = L"../bin/resources/Textures/Terrain/";
+    list<wstring> listTerrainTexturePath;
+    Read_TerrainTexture(strTerrainTexturePath, listTerrainTexturePath);
+
+    //이름만 자르는 구문..
+    CTexture* pTexture = nullptr;
+    _int Index = 0;
+    for (list<wstring>::value_type& Value : listTerrainTexturePath)
+    {
+        pTexture = CTexture::Create(0, Value.c_str(), 1);
+        Add_Component(pTexture);
+
+        _int iFind = (_int)Value.rfind(L"\\") + 1;
+        wstring wStrName = Value.substr(iFind, Value.length() - iFind);
+        string strName = "";
+        strName.assign(wStrName.begin(), wStrName.end());
+        m_TextureIndex.push_back(make_tuple(strName.c_str(), Index++));
+        strName.assign(wStrName.begin(), wStrName.end());
+    }
+
 
     return S_OK;
 }

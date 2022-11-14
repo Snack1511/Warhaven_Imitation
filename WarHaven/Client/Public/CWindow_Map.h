@@ -4,6 +4,7 @@
 BEGIN(Engine)
 class CGameObject;
 class CTransform;
+class CCamera;
 END
 
 BEGIN(Client)
@@ -15,11 +16,13 @@ class CWindow_Map final
 public:
 	enum TUPLEDATA { Tuple_CharPtr, Tuple_Bool, Tuple_Index };
 	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
-	enum PICKINGTYPE {PICK_OBJECT, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_NONE};
+	enum PICKINGTYPE {PICK_OBJECT, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_INSTANCEOBJECT, PICK_NONE};
+	enum CAMERATYPE {CAM_RIGHT, CAM_UP, CAM_LOOK, CAM_FREE};
 	typedef struct MAPDATA
 	{
 		wstring TerrainDataPath;
 		wstring ObjectDataPath;
+		wstring InstanceDataPath;
 		wstring NavDataPath;
 		wstring LightDataPath;
 	public:
@@ -47,19 +50,45 @@ public:
 		_uint iNumVerticesX;
 		_uint iNumVerticesZ;
 		_float3* pCurTerrainVertPos;
+		_float4* pCurTerrainColor;
 	public:
-		typedef tuple<wstring, _uint, _uint, _float3*> Terrain_TUPLE;
+		typedef tuple<wstring, _uint, _uint, _float3*, _float4*> Terrain_TUPLE;
 		enum TupleType
 		{
 			Tuple_TileTexture,
 			Tuple_VerticesX,
 			Tuple_VerticesZ,
 			Tuple_TerrainPosPtr,
+			Tuple_TerrainColorPtr,
 		};
 	public:
 		void Initialize();
 		void Make_Data(Terrain_TUPLE& tTerrainData);
 	}MTT_DATA;
+
+	typedef struct tagMapToolInstanceObjData
+	{
+		wstring strInstanceGorupName;
+		wstring strMeshPath;
+		_uint iInstanceNums;
+		_float4 InstancePosition;
+		VTXINSTANCE* ArrInstanceVTX;
+	public:
+		typedef tuple<wstring, wstring, _uint, _float4, VTXINSTANCE*> InstancingTuple;
+		enum TupleType
+		{
+			Tuple_GroupName,
+			Tuple_MeshPath,
+			Tuple_InstanceNums,
+			Tuple_Positon,
+			Tuple_VTXArrayPtr,
+		};
+	public:
+		void Initialize();
+		void Make_Data(InstancingTuple& tTerrainData);
+		void Save(ofstream& wirteFile);
+		void Load(ifstream& readFile);
+	}MTINSTANCE_DATA;
 
 	typedef struct tagMapToolObjectData
 	{
@@ -174,6 +203,9 @@ private:
 	void Save_ObjectGroup(string BasePath, string SaveName);
 	void Load_ObjectGroup(string FilePath);
 
+	void Save_InstanceData(string BasePath, string SaveName);
+	void Load_InstanceData(string FilePath);
+
 	void Save_NavGroup(string BasePath, string SaveName);
 	void Load_NavGroup(string FilePath);
 
@@ -201,6 +233,12 @@ private:
 #pragma endregion
 
 private:
+	void Func_InstanceObjectControl();
+	void Make_InstanceObject();
+	void Delete_InstanceObject();
+	void Clear_InstanceGroup();
+	//_bool Search_NearInstanceObject();
+private:
 	_bool Calculate_Pick();
 
 
@@ -214,7 +252,14 @@ private:
 	void		Show_TreeData(TREE_DATA& tTree, function<void(TREE_DATA&)> SelectFunction);
 	string		CutOut_Ext(string& Origin, string& Ext);
 	void		Routine_MeshSelect(TREE_DATA& tTreeNode);
-	void		Routine_TileSelect(TREE_DATA& tTreeNode);
+	void		Routine_InstanceMeshSelect(TREE_DATA& tTreeNode);
+
+	HRESULT		SetUp_Cameras();
+	void		Select_Camera();
+	void		Change_Camera(_int Index);
+
+	void		Set_BrushInform();
+	_bool		Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _float4& OutPos, _float4& OutNormal);
 	void		EmptyFunction() {}
 #pragma endregion
 
@@ -253,6 +298,20 @@ private:
 
 #pragma endregion
 
+private:
+	typedef map<size_t, vector<tuple<MTINSTANCE_DATA, CGameObject*>>> INSTANCEGROUPING;
+	typedef vector<tuple<MTINSTANCE_DATA, CGameObject*>> INSTANCEVECTOR;
+	typedef tuple<MTINSTANCE_DATA, CGameObject*> INSTANCETUPLE;
+	_int m_iDrawInstanceObjectNums = 0;
+	_float m_fRandomRatio = 0.f;
+	string m_strCurSelectInstanceMeshPath = "";
+	string m_strCurSelectInstanceMeshName = "";
+	TREE_DATA m_tInstanceMeshDataRoot;
+	CGameObject* m_pCurSelectInstanceObject = nullptr;
+	vector<string> m_strArrInstanceMeshName;
+	map<size_t, vector<tuple<MTINSTANCE_DATA, CGameObject*>>> m_InstanceMap;
+	_int m_iCurSelectInstanceNameIndex = 0;
+	_int m_iCurSelectInstanceObjectIndex = 0;
 #pragma region Value 오브젝트 컨트롤
 private:
 	CGameObject* m_pCurSelectGameObject = nullptr;
@@ -278,12 +337,6 @@ private:
 	vector<string>		m_vecSelectedMeshFilePath;
 	vector<string>		m_vecSelectedMeshName;
 
-	TREE_DATA			m_TileRootNode;
-	string m_CurSelectTileTexturePath = string("");
-	string m_CurSelectedTexFileName = string("");
-	string m_CurSelectedTileBaseTexName = string("");
-	string m_CurSelectedTileNormalTexName = string("");
-
 	list<CGameObject*>* m_pCurObjectList = nullptr;
 
 	_bool m_bHoverWindow = false;
@@ -291,8 +344,12 @@ private:
 
 	PICKINGTYPE m_ePickingType = PICK_NONE;
 
+	string m_curSelectSourTextureName;
+	string m_curSelectDestTextureName;
 	_int m_iSourIndex = 0;
 	_int m_iDestIndex = 0;
+
+	vector<tuple<wstring, CCamera*, _float4>> m_ArrCams;
 #pragma endregion
 
 
