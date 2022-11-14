@@ -29,6 +29,7 @@
 #include "CDrawable_Terrain.h"
 #include "CStructure_Instance.h"
 #include "CUtility_Transform.h"
+#include "CMap_Loader.h"
 // YJ
 #include "CDebugObject.h"
 
@@ -380,8 +381,25 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
-	_float4x4 mat;
-	mat.Identity();
+	//맵 데이타 불러오기
+	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	CMap_Loader::Load_Data(wstring(TEXT("TestMap")), Ready_Object);
+
+
+
+	//터레인 불러오기
+	//오브젝트 불러오기
+	//인스턴스오브젝트 불러오기
+	//네비
+	//라이트
+
+
+	//_float4x4 mat;
+	//mat.Identity();
+	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
+	//pDrawableTerrain->Initialize();
+	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	
 	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);
 	if (nullptr == pTestStruct)
@@ -392,9 +410,6 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	pTestStruct->Initialize();
 	Ready_GameObject(pTestStruct, GROUP_DECORATION);*/
 
-	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
-	pDrawableTerrain->Initialize();
-	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
 	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);

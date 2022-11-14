@@ -212,7 +212,10 @@ private:
 	void Load_ObjectGroup(string FilePath);
 
 	void Save_InstanceData(string BasePath, string SaveName);
+	void Save_SpliteData(string BasePath, string SaveName);
+	void Save_MergeData(string BasePath, string SaveName);
 	void Load_InstanceData(string FilePath);
+
 
 	void Save_NavGroup(string BasePath, string SaveName);
 	void Load_NavGroup(string FilePath);
@@ -246,6 +249,7 @@ private:
 	void Delete_InstanceObject();
 	void Clear_InstanceGroup();
 	void Merge_Instance();
+	void Split_Instance();
 	//_bool Search_NearInstanceObject();
 private:
 	_bool Calculate_Pick();

@@ -562,6 +562,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play">
       <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\06. Map\MapLoader">
+      <UniqueIdentifier>{c5230a57-5ae4-4768-b878-9b72ab197a34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -656,9 +659,6 @@
     </ClInclude>
     <ClInclude Include="..\public\CImGui_Window.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\00. base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\CWindow_Select.h">
-      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\02. Window_Select</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CSkyBox.h">
       <Filter>03. Instances\02. GameObject\04. SkyBox</Filter>
@@ -975,7 +975,6 @@
     <ClInclude Include="..\Public\CScript_FixedCam.h">
       <Filter>03. Instances\03. Component\01. Scriptable\Script_FixedAngleCam</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CStructure_Instance.h" />
     <ClInclude Include="..\public\CLevel_Test.h">
       <Filter>03. Instances\01. Level\01. Level_Test</Filter>
     </ClInclude>
@@ -984,6 +983,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\CUI_MainPlay.h">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CWindow_Select.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStructure_Instance.h">
+      <Filter>03. Instances\02. GameObject\06. Map\InstanceStucture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMap_Loader.h">
+      <Filter>03. Instances\02. GameObject\06. Map\MapLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1382,12 +1390,17 @@
     <ClCompile Include="..\Private\CScript_FixedCam.cpp">
       <Filter>03. Instances\03. Component\01. Scriptable\Script_FixedAngleCam</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CStructure_Instance.cpp" />
     <ClCompile Include="..\Private\CUI_Main.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_MainPlay.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStructure_Instance.cpp">
+      <Filter>03. Instances\02. GameObject\06. Map\InstanceStucture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMap_Loader.cpp">
+      <Filter>03. Instances\02. GameObject\06. Map\MapLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
