@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CWarrior_GuardBreak.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -52,24 +52,31 @@ HRESULT CWarrior_GuardBreak::Initialize()
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 77;
-    //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
-    //m_vecAdjState.push_back(STATE_WALK_PLAYER);
-    //m_vecAdjState.push_back(STATE_RUN_PLAYER);
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
-    //ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
-    //tColorDesc.eFadeStyle = CColorController::KEYFRAME;
-    //tColorDesc.fFadeInStartTime = 1.f;
-    //tColorDesc.fFadeInTime = 1.f;
-    //tColorDesc.fFadeOutStartTime = 1.f;
-    //tColorDesc.fFadeOutTime = 1.f;
-    //tColorDesc.vTargetColor = _float4(1.f, 0.f, 0.f, 1.f);
-    //tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
-    //tColorDesc.iStartKeyFrame = 10;
-    //tColorDesc.iEndKeyFrame = 30;
+    m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
+    m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
+    m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
+
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+
+	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
+	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
+
+
+	Add_KeyFrame(26, 0);
+	Add_KeyFrame(26, 1);
+	Add_KeyFrame(54, 2);
+
 
     return S_OK;
 }
@@ -95,7 +102,9 @@ STATE_TYPE CWarrior_GuardBreak::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarrior_GuardBreak::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 3.f;
 }
 
 STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -104,9 +113,45 @@ STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnima
     1.  스킬버튼 을 이용해 공격한다.
     */
 
-    if (KEY(T, TAP))
+    if (KEY(E, TAP))
         return m_eStateType;
 
 
     return STATE_END;
+}
+
+
+void CWarrior_GuardBreak::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	switch (iSequence)
+	{
+	case 0:
+	{
+		Physics_Setting(pOwner->Get_Status().fDashSpeed, pOwner, true);
+
+		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+
+		//마찰 조절하기
+		//*주의 : 사용하고나면 Exit에서 반드시 1로 되돌려주기
+		pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 3.f;
+
+	}
+
+	break;
+
+	case 1:
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		break;
+
+
+	case 2:
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		break;
+
+	default:
+		break;
+	}
+
+
 }

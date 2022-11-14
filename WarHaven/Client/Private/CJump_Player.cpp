@@ -74,109 +74,32 @@ void CJump_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CJump_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Walk로 오는 조건
-    1. 
+    /* Player가 Jump로 오는 조건
+    1. SpaceBar 를 누른다.
     */
 
-    // m_eStateType 이 End 에 가지 않으면 Enter 를 호출한다.
 
-    // W 랑 A 를 누르면 왼쪽 앞으로 이동한다.
-    // W 랑 D 를 누르면 왼쪽 옆으로 이동한다.
 
     // 만약 WASD 를 눌렀다면
     if (CUser::Get_Instance()->Get_LastKey() == KEY::SPACE)
     {
+		_uint iDirection = Get_Direction_Four();
 
-		switch (Get_Direction_Four())
+		if (iDirection == STATE_DIRECTION_END)
 		{
-		case STATE_DIRECTION_N:
-
-			m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_N];
-
-			break;
-
-		case STATE_DIRECTION_W:
-
-			m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_W];
-
-			break;
-
-		case STATE_DIRECTION_S:
-
-			m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_S];
-
-			break;
-
-		case STATE_DIRECTION_E:
-
-			m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_E];
-
-			break;
-
-		default:
 			m_iAnimIndex = iPlaceJumpAnimIndex;
-			break;
+			m_fAnimSpeed = 1.5f;		
 		}
-
+		else
+		{
+			m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
+			m_fAnimSpeed = 1.f;
+		}
+	
 		return m_eStateType;
     }
-
   
-      
-      
-
-   
 
 
     return STATE_END;
 }
-
-_bool	CJump_Player::Jump_W()
-{
-    // Key(W)
-    if (KEY(W, HOLD))
-    {
-        return true;
-    }
-
-
-    return false;
-
-}
-
-_bool	CJump_Player::Jump_A()
-{
-    if (KEY(A, HOLD))
-    {
-        return true;
-    }
-
-    return false;
-
-}
-
-_bool	CJump_Player::Jump_S()
-{
-    // Key(S)
-    if (KEY(S, HOLD))
-    {
-        return true;
-    }
-
-    return false;
-
-}
-
-_bool	CJump_Player::Jump_D()
-{
-    // Key(D)
-    if (KEY(D, HOLD))
-    {
-        return true;
-    }
-
-    return false;
-
-}
-
-

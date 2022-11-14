@@ -23,14 +23,7 @@ protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
 protected:
-	_int	iPlaceJumpAnimIndex = 0;
-
-private:
-	_bool	Jump_W();
-	_bool	Jump_A();
-	_bool	Jump_S();
-	_bool	Jump_D();
-
+	_int	iPlaceJumpAnimIndex = 0; // 제자리 점프 AnimIndex;
 
 };
 

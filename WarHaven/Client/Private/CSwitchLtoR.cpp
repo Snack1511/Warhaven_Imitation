@@ -52,7 +52,7 @@ HRESULT CSwitchLtoR::Initialize()
 	m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 
@@ -72,7 +72,7 @@ void CSwitchLtoR::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 STATE_TYPE CSwitchLtoR::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
-		return STATE_ATTACK_UPPER_MIDDLE_PLAYER_R;
+		return STATE_ATTACK_HORIZONTALMIDDLE_R;
 
     return __super::Tick(pOwner, pAnimator);
 }

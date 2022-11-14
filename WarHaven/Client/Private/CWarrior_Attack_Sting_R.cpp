@@ -55,7 +55,8 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
 
 	Add_KeyFrame(40, 0);
-	Add_KeyFrame(42, 1);
+	Add_KeyFrame(38, 1);
+	Add_KeyFrame(50, 2);
 
 
     return S_OK;
@@ -69,6 +70,16 @@ void CWarrior_Attack_Sting_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 
 STATE_TYPE CWarrior_Attack_Sting_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pOwner->Is_Air())
+		return STATE_JUMPFALL_PLAYER_R;
+
+	if (m_bAttackTrigger)
+	{
+		if (pOwner->Is_Weapon_R_Collision())
+			return STATE_BOUNCE_PLAYER_L;
+	}
+
+
     return __super::Tick(pOwner, pAnimator);
 }
 
@@ -105,8 +116,12 @@ void CWarrior_Attack_Sting_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 
 	case 1:
 		m_bAttackTrigger = true;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		break;
 
-		//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+	case 2:
+		m_bAttackTrigger = false;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 		break;
 
 	default:

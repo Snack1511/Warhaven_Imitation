@@ -48,24 +48,26 @@ void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 {
     /* Owner의 Animator Set Idle로 */
 
-	CTransform* pMyTransform = pOwner->Get_Transform();
-	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+	Physics_Setting(pOwner->Get_Status().fRunSpeed, pOwner, true);
 
-	//임시
-	pMyPhysicsCom->Get_Physics().bAir = false;
+	//CTransform* pMyTransform = pOwner->Get_Transform();
+	//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	vCamLook.y = 0.f;
+	////임시
+	//pMyPhysicsCom->Get_Physics().bAir = false;
 
-	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
-	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+	//_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	//vCamLook.y = 0.f;
 
-	//실제 움직이는 방향
-	pMyPhysicsCom->Set_Dir(vCamLook);
+	////1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+	//pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
 
-	//최대속도 설정
-	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
-	pMyPhysicsCom->Set_SpeedasMax();
+	////실제 움직이는 방향
+	//pMyPhysicsCom->Set_Dir(vCamLook);
+
+	////최대속도 설정
+	//pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
+	//pMyPhysicsCom->Set_SpeedasMax();
 
 
 
@@ -74,7 +76,7 @@ void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	Move_Direction_Loop(pOwner, pAnimator, 0.05f);
+	Move(Get_Direction(), pOwner);
 
     return __super::Tick(pOwner, pAnimator);
 }

@@ -55,7 +55,8 @@ HRESULT CWarrior_Attack_VerticalCut::Initialize()
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
 	Add_KeyFrame(36, 0);
-	Add_KeyFrame(34, 1);
+	Add_KeyFrame(31, 1);
+	Add_KeyFrame(50, 2);
 
     return S_OK;
 }
@@ -72,7 +73,7 @@ STATE_TYPE CWarrior_Attack_VerticalCut::Tick(CUnit* pOwner, CAnimator* pAnimator
 	if (m_bAttackTrigger)
 	{
 		if (pOwner->Is_Weapon_R_Collision())
-			return STATE_BOUNCE_PLAYER_L;
+			return STATE_BOUNCE_PLAYER_R;
 	}
 
 
@@ -115,8 +116,12 @@ void CWarrior_Attack_VerticalCut::On_KeyFrameEvent(CUnit * pOwner, CAnimator * p
 
 	case 1:
 		m_bAttackTrigger = true;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
+		break;
 
-		//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+	case 2:
+		m_bAttackTrigger = false;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
 		break;
 
 	default:

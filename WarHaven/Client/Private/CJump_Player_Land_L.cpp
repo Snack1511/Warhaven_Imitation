@@ -49,7 +49,7 @@ HRESULT CJump_Player_Land_L::Initialize()
 	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
 	m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
-	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
