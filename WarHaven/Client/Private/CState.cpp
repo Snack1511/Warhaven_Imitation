@@ -22,10 +22,10 @@ CState::~CState()
 {
 }
 
-void CState::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType)
+void CState::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
+	CUser::Get_Instance()->Clear_KeyCommands();
     m_pOwner = pOwner;
-    CUser::Get_Instance()->Clear_KeyCommands();
     m_fTimeAcc = 0.f;
     pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex, m_eAnimDivide);
     pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, m_fInterPolationTime);
@@ -307,6 +307,8 @@ _uint CState::Move(_uint iDirection, CUnit* pOwner)
 
 
 }
+
+
 
 void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax)
 {

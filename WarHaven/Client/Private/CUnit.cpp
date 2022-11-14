@@ -108,7 +108,7 @@ _bool CUnit::Is_Weapon_R_Collision()
 	return m_pWeaponCollider_R->Is_Collision();
 }
 
-void CUnit::Enter_State(STATE_TYPE eType)
+void CUnit::Enter_State(STATE_TYPE eType, void* pData)
 {
 	if (!m_bControlable)
 		return;
@@ -122,7 +122,7 @@ void CUnit::Enter_State(STATE_TYPE eType)
 
 	m_pCurState = CState_Manager::Get_Instance()->Get_State(eType)->Clone();
 
-	m_pCurState->Enter(this, m_pAnimator, m_eCurState);
+	m_pCurState->Enter(this, m_pAnimator, m_eCurState, pData);
 	m_eCurState = eType;
 
 }
@@ -223,7 +223,9 @@ HRESULT CUnit::Initialize()
 HRESULT CUnit::Start()
 {
 	__super::Start();
-	
+	if (m_pWeaponCollider_R)
+	DISABLE_COMPONENT(m_pWeaponCollider_R);
+
 	m_pPhysics->Get_PhysicsDetail().fCurGroundY = m_pTransform->Get_MyWorld(WORLD_POS).y;
 
 	//m_pAnimator->Set_CurAnimIndex(ANIM_BASE, 22);
@@ -295,6 +297,15 @@ void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 		ENABLE_COMPONENT(m_pUnitCollider[ePartType]);
 	else
 		DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
+
+	if (ePartType == WEAPON_R)
+	{
+		if (bEnable)
+			ENABLE_COMPONENT(m_pWeaponCollider_R);
+		else
+			DISABLE_COMPONENT(m_pWeaponCollider_R);
+
+	}
 }
 
 void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, _uint iNumCollider, _float4x4 matTransformation, _bool bEnable, CHierarchyNode* pRefBone)

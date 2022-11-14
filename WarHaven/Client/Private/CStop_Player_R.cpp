@@ -60,12 +60,12 @@ HRESULT CStop_Player_R::Initialize()
 	return S_OK;
 }
 
-void CStop_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CStop_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 
 
 	/* Owner¿« Animator Set Idle∑Œ */
-	__super::Enter(pOwner, pAnimator, ePrevType);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CStop_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)

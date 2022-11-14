@@ -50,9 +50,9 @@ HRESULT CGuard_Begin_Player::Initialize()
     return S_OK;
 }
 
-void CGuard_Begin_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CGuard_Begin_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CGuard_Begin_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)

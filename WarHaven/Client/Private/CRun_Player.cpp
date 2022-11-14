@@ -24,7 +24,7 @@ HRESULT CRun_Player::Initialize()
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 
     m_vecAdjState.push_back(STATE_SLIDE_BEGIN_PLAYER);
-	//m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
@@ -45,7 +45,7 @@ HRESULT CRun_Player::Initialize()
     return S_OK;
 }
 
-void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
@@ -78,21 +78,15 @@ void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 		pAnimator->Set_CurFrame(22);
 	}
 
-	m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CRun_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	
-
-
-
-	Move_Direction_Loop(pOwner, pAnimator, 0.1f);
-
-	if (pOwner->Is_Air())
-		return STATE_JUMPFALL_PLAYER_L;
+	_uint iDirection = Move_Direction_Loop(pOwner, pAnimator, 0.1f);;
+	if (iDirection < 8)
+		m_iCurDirection = iDirection;
 
     return __super::Tick(pOwner, pAnimator);
 

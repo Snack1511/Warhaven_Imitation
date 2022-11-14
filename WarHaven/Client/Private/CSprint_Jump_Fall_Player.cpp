@@ -42,16 +42,18 @@ HRESULT CSprint_Jump_Fall_Player::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
+
+    m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_R);
     m_vecAdjState.push_back(STATE_SPRINT_END_PLAYER);
 
 
     return S_OK;
 }
 
-void CSprint_Jump_Fall_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CSprint_Jump_Fall_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
 }
 

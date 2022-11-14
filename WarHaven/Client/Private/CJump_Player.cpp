@@ -25,7 +25,7 @@ HRESULT CJump_Player::Initialize()
     return S_OK;
 }
 
-void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
@@ -38,25 +38,21 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
+	_uint iDirection = Get_Direction_Four();
 
-	//_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	//vCamLook.y = 0.f;
-
-	////1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
-	//pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
-
-	////실제 움직이는 방향
-	//pMyPhysicsCom->Set_Dir(vCamLook);
-
-	////최대속도 설정
-
-	//pMyPhysicsCom->Set_MaxSpeed(fSpeed);
-
-	//if (bSpeedasMax)
-	//	pMyPhysicsCom->Set_SpeedasMax();
+	if (iDirection == STATE_DIRECTION_END)
+	{
+		m_iAnimIndex = iPlaceJumpAnimIndex;
+		m_fAnimSpeed = 1.5f;
+	}
+	else
+	{
+		m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
+		m_fAnimSpeed = 1.f;
+	}
 
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -83,18 +79,7 @@ STATE_TYPE CJump_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     // 만약 WASD 를 눌렀다면
     if (CUser::Get_Instance()->Get_LastKey() == KEY::SPACE)
     {
-		_uint iDirection = Get_Direction_Four();
-
-		if (iDirection == STATE_DIRECTION_END)
-		{
-			m_iAnimIndex = iPlaceJumpAnimIndex;
-			m_fAnimSpeed = 1.5f;		
-		}
-		else
-		{
-			m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
-			m_fAnimSpeed = 1.f;
-		}
+		
 	
 		return m_eStateType;
     }

@@ -36,7 +36,7 @@ HRESULT CBounce_Player::Initialize()
     return S_OK;
 }
 
-void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     /* Owner¿« Animator Set Idle∑Œ */
 
@@ -74,7 +74,7 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 		break;
 	}
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CBounce_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)

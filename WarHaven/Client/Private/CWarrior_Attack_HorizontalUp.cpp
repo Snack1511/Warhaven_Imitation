@@ -36,20 +36,20 @@ HRESULT CWarrior_Attack_HorizontalUp::Initialize()
 	m_fMaxSpeed = 0.8f;
 
 	Add_KeyFrame(40, 0);
-	Add_KeyFrame(38, 1);
+	Add_KeyFrame(43, 1);
 	Add_KeyFrame(60, 2);
 
     return S_OK;
 }
 
-void CWarrior_Attack_HorizontalUp::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CWarrior_Attack_HorizontalUp::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     /* Owner의 Animator Set Idle로 */
 
   //  pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
 
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWarrior_Attack_HorizontalUp::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -80,16 +80,16 @@ STATE_TYPE CWarrior_Attack_HorizontalUp::Check_Condition(CUnit* pOwner, CAnimato
     /* Player가 Walk로 오는 조건
     1. 위로 공격할 시 
 	*/
-	_float fDot = CUtility_Transform::Get_LookRotateAngle(GAMEINSTANCE->Get_CurCamLook());
-
-	if (fDot > 0.f && fDot < 0.994f)
+	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 	{
-		if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
-		{
+		_float fDot = CUtility_Transform::Get_LookRotateAngle(GAMEINSTANCE->Get_CurCamLook());
 
-			return m_eStateType;
+		if (fDot > 0.f && fDot < 0.994f)
+		{
+				return m_eStateType;
 		}
 	}
+	
 
 
     return STATE_END;

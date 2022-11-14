@@ -90,7 +90,7 @@ HRESULT CRun_Player_L::Initialize()
     return S_OK;
 }
 
-void CRun_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CRun_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     /* OwnerÀÇ Animator Set Idle·Î */
     CColorController::COLORDESC m_tColorDesc;
@@ -113,11 +113,16 @@ void CRun_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CRun_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+
+    if (pOwner->Is_Air())
+        return STATE_JUMPFALL_PLAYER_L;
+
     if (
         KEY(W, NONE) &&
         KEY(A, NONE) &&
@@ -125,7 +130,10 @@ STATE_TYPE CRun_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
         KEY(D, NONE)
         )
     { 
-        return STATE_STOP_PLAYER_L;
+        _uint*   pInt = new _uint;
+        *pInt = m_iCurDirection;
+        pOwner->Enter_State(STATE_STOP_PLAYER_L, (void*)pInt);
+        return STATE_END;
 
     }
 

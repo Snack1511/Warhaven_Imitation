@@ -57,6 +57,7 @@ public:
 	void Set_PrevKeyFrame(KEYFRAME& tKeyFrame) { m_tPrevKeyFrame = tKeyFrame; }
 	KEYFRAME& Get_CurKeyFrame() { return m_tCurKeyFrame; }
 	KEYFRAME& Get_PrevKeyFrame() { return m_tPrevKeyFrame; }
+	KEYFRAME& Get_BlendKeyFrame() { return m_tBlendKeyFrame; }
 
 	HRESULT	Add_NewChild(CHierarchyNode* pNode);
 
@@ -101,6 +102,7 @@ private:
 
 	KEYFRAME		m_tPrevKeyFrame;
 	KEYFRAME		m_tCurKeyFrame;
+	KEYFRAME		m_tBlendKeyFrame;
 
 };
 

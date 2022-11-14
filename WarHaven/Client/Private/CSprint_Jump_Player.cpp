@@ -53,18 +53,19 @@ HRESULT CSprint_Jump_Player::Initialize()
     //m_vecAdjState.push_back(STATE_DASH);
     //m_vecAdjState.push_back(STATE_WALK);
     m_vecAdjState.push_back(STATE_SPRINT_JUMPFALL_PLAYER);
+    m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_R);
 
 
     return S_OK;
 }
 
-void CSprint_Jump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CSprint_Jump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, true);
-	pOwner->Get_PhysicsCom()->Set_Jump(3.5f);
+	pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower + 1.f);
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 3.f;
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
 }
 

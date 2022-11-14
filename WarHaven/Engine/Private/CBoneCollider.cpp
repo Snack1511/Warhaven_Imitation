@@ -79,6 +79,8 @@ HRESULT CBoneCollider::Initialize_Prototype()
 	if (!m_pPxController)
 		return E_FAIL;
 
+
+
 	return S_OK;
 }
 
@@ -94,8 +96,6 @@ void CBoneCollider::Late_Tick()
 	//그때만 move를 살짝 호출해서 가져오기?
 
 	//일단 그냥 붙여보자
-
-	m_tColliderDesc.pRefBone;
 
 	_float4x4 BoneMatrix;
 
@@ -113,17 +113,14 @@ void CBoneCollider::Late_Tick()
 	//_float4 vPos = (*((_float4*)&BoneMatrix.m[WORLD_POS]));
 
 	_float4 vMove = vPos - m_vPrevPos;
-	m_vPrevPos = vPos;
 
 	m_bCollisionTemp = false;
-	m_pPxController->setUpDirection(CUtility_PhysX::To_PxVec3(m_vPrevUp.Normalize()));
-	m_vPrevUp = vUp;
-
+	m_pPxController->setUpDirection(CUtility_PhysX::To_PxVec3(vUp.Normalize()));
 
 	m_pPxController->setPosition(CUtility_PhysX::To_PxExtendedVec3(m_vPrevPos));
+	m_vPrevPos = vPos;
 
 	m_pPxController->move(CUtility_PhysX::To_PxVec3(vMove), 0.f, fDT(0), m_tControllerFilters);
-
 
 	if (m_bCollisionTemp)
 	{
@@ -131,4 +128,28 @@ void CBoneCollider::Late_Tick()
 	}
 	else
 		m_bCollision = false;
+}
+
+void CBoneCollider::OnEnable()
+{
+	__super::OnEnable();
+
+
+	if (m_bStart)
+	{
+		_float4x4 BoneMatrix;
+		BoneMatrix = m_tColliderDesc.pRefBone->Get_BoneMatrix();
+		_float4 vPos = m_tColliderDesc.vOffset.MultiplyCoord(BoneMatrix);
+		m_pPxController->setPosition(CUtility_PhysX::To_PxExtendedVec3(vPos));
+		m_vPrevPos = vPos;
+	}
+	m_bCollision = false;
+	m_bStart = true;
+
+}
+
+void CBoneCollider::OnDisable()
+{
+	__super::OnDisable();
+	m_pPxController->setPosition(PxExtendedVec3(-999.f, - 999.f, -999.f ));
 }

@@ -41,11 +41,11 @@ HRESULT CWarrior_Attack_HorizontalDown::Initialize()
     return S_OK;
 }
 
-void CWarrior_Attack_HorizontalDown::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CWarrior_Attack_HorizontalDown::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWarrior_Attack_HorizontalDown::Tick(CUnit* pOwner, CAnimator* pAnimator)

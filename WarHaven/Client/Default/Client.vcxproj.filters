@@ -610,6 +610,9 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Warrior\11. Slide">
       <UniqueIdentifier>{1770798e-4a79-442f-b9a6-e13a524060e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\BlendableBase">
+      <UniqueIdentifier>{8195c3b2-5e3b-43cd-9799-601b3803c4f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1060,6 +1063,9 @@
     <ClInclude Include="..\Public\CStop_Player_L.h">
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\10. Stop\02. Left</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CState_Blendable.h">
+      <Filter>02. Design\06. State_Manager\States\BlendableBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1490,6 +1496,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CUnit.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CState_Blendable.cpp">
+      <Filter>02. Design\06. State_Manager\States\BlendableBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

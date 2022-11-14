@@ -34,10 +34,10 @@ HRESULT CSprint_End::Initialize()
     m_iAnimIndex = 56;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_SPRINT_END_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_iStateChangeKeyFrame = 10;
+    m_iStateChangeKeyFrame = 30;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.f;
+    m_fInterPolationTime = 0.05f;
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
@@ -65,13 +65,12 @@ HRESULT CSprint_End::Initialize()
     return S_OK;
 }
 
-void CSprint_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CSprint_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     if (ePrevType == STATE_SPRINT_LOOP_PLAYER)
         m_fInterPolationTime = 0.f;
-
     else
-        m_fInterPolationTime = 0.1f;
+        m_fInterPolationTime = 0.05f;
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -88,13 +87,15 @@ void CSprint_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	//최대속도 설정
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
 	pMyPhysicsCom->Set_SpeedasMax();
+    pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.7f;
 
-
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CSprint_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Is_Air())
+        return STATE_JUMPFALL_PLAYER_R;
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 
 
@@ -105,6 +106,8 @@ STATE_TYPE CSprint_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CSprint_End::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+    CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+    pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
     /* 할거없음 */
 }
 

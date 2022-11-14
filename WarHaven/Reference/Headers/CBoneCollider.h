@@ -44,6 +44,8 @@ public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual void	Tick() override;
 	virtual void	Late_Tick() override;
+	virtual void	OnEnable() override;
+	virtual void	OnDisable() override;
 
 private:
 	BONECOLLIDERDESC	m_tColliderDesc;
@@ -58,6 +60,8 @@ private:
 
 	//충돌 체크용도
 	_bool				m_bCollisionTemp = false;
+
+	_bool				m_bStart = false;
 
 
 

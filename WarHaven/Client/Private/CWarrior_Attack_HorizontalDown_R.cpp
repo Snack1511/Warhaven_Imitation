@@ -66,7 +66,7 @@ HRESULT CWarrior_Attack_HorizontalDown_R::Initialize()
 	return S_OK;
 }
 
-void CWarrior_Attack_HorizontalDown_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CWarrior_Attack_HorizontalDown_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	if (ePrevType == STATE_SWITCH_L_TO_R)
 	{
@@ -77,7 +77,7 @@ void CWarrior_Attack_HorizontalDown_R::Enter(CUnit* pOwner, CAnimator* pAnimator
 
 
 	/* Owner¿« Animator Set Idle∑Œ */
-	__super::Enter(pOwner, pAnimator, ePrevType);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWarrior_Attack_HorizontalDown_R::Tick(CUnit* pOwner, CAnimator* pAnimator)

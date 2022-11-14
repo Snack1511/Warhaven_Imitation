@@ -307,21 +307,24 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
 
-	CUnit::UNIT_COLLIDERDESC tUnitColDesc[1];
+
+	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
+		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
+	};
 
 
-	tUnitColDesc[0].fRadius = 1.f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, tUnitColDesc->fRadius * 0.5f, 0.f);
-	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_BODY;
 
-	pTestWarriorUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc);
+	pTestWarriorUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
 
-	tUnitColDesc[0].fRadius = 0.3f;
+	tUnitColDesc[0].fRadius = 0.4f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
 	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
 
 
-	pTestWarriorUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc);
+	pTestWarriorUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("ob_Head"));
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[3] =
 	{
@@ -365,6 +368,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 	pTestEnemyWarrior->Teleport_Unit(_float4(0.f, 0.f, 2.f));
 	Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
+	DISABLE_GAMEOBJECT(pTestEnemyWarrior);
 
 	/*fColRadius = 1.f;
 	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_ENEMYHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);

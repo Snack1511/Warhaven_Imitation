@@ -92,6 +92,9 @@ _float CAnimator::Calculate_Duration(_uint iTypeIndex, _uint iAnimIndex, _uint i
 
 _uint CAnimator::Get_CurAnimFrame()
 {
+	if (m_pActionAnimation)
+		return m_pActionAnimation->m_Channels.front()->Get_CurKeyFrame();
+
 	return m_vecAnimations[m_iCurrentAnimationTypeIndex][m_iCurrentAnimationIndex]->m_Channels.front()->Get_CurKeyFrame();
 }
 
@@ -116,20 +119,35 @@ void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx, ANIM_DIVIDE	eD
 	//만약 들어온게 Action이믄
 	if (eDivideType == ANIM_DIVIDE::eBODYUPPER)
 	{
+
 		if (m_pActionAnimation)
 			m_pActionAnimation->Reset(false, eDivideType);
 
 		m_pActionAnimation = pCurAnim;
+		m_pActionAnimation->Reset(false, eDivideType);
 		m_pActionAnimation->OnInterpolate();
 	}
 	else
 	{
+
+
 		//이전껀 리셋해놓고
 		if (m_pCycleAnimation)
-			m_pCycleAnimation->Reset(false, eDivideType);
+		{
+			if (m_pActionAnimation)
+				m_pCycleAnimation->Reset(true, eDivideType);
+			else
+				m_pCycleAnimation->Reset(false, eDivideType);
+
+
+		}
 
 
 		m_pCycleAnimation = pCurAnim;
+
+		if (m_pActionAnimation)
+			m_pCycleAnimation->Reset(false, eDivideType);
+
 		m_pCycleAnimation->OnInterpolate();
 
 		
@@ -142,8 +160,11 @@ void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx, ANIM_DIVIDE	eD
 
 void CAnimator::Stop_ActionAnim()
 {
+	//중간에 끊긴거면 내가 쓰던거만 reset하는거고
 	if (m_pActionAnimation)
 		m_pActionAnimation->Reset(true, ANIM_DIVIDE::eBODYUPPER);
+
+	//
 
 	m_pActionAnimation = nullptr;
 }
@@ -173,7 +194,19 @@ void CAnimator::Set_InterpolationTime(_uint iTypeIndex, _uint iIdx, _float fTime
 
 _bool CAnimator::Is_CurAnimFinished()
 {
+	if (m_pActionAnimation)
+		return m_pActionAnimation->m_isFinished;
+
+
 	return m_vecAnimations[m_iCurrentAnimationTypeIndex][m_iCurrentAnimationIndex]->m_isFinished;
+}
+
+_bool CAnimator::Is_ActionFinished()
+{
+	if (!m_pActionAnimation)
+		return true;
+
+	return m_pActionAnimation->m_isFinished;
 }
 
 HRESULT CAnimator::Initialize_Prototype()
@@ -228,28 +261,42 @@ void CAnimator::Tick()
 	//Action이 있고 Cycle이 BodyLower면 Blend On
 	//Action이 있고 Cycle이 Default면 Action만 Update
 	//Action없으면 Cycle만 업뎃
+
+
+
 	_bool bBlend = false;
 	if (m_pActionAnimation)
 	{
 		if (m_pCycleAnimation->Get_AnimDivideType() == ANIM_DIVIDE::eBODYLOWER)
 		{
-			bBlend = true;
+			bBlend = m_bOnBlend = true;
 
 			if (!m_pActionAnimation->Update_Matrices(bBlend))
 				m_pActionAnimation = nullptr;
 
 			m_pCycleAnimation->Update_Matrices(bBlend);
 
+
 		}
 		else
 		{
 			if (!m_pActionAnimation->Update_Matrices(bBlend))
 				m_pActionAnimation = nullptr;
+
+			if (m_bOnBlend)
+			{
+				m_bOnBlend = false;
+				m_pActionAnimation->OnStartBlending();
+
+			}
 		}
+
+		
 	}
 	else
 	{
 		m_pCycleAnimation->Update_Matrices(bBlend);
+
 	}
 
 

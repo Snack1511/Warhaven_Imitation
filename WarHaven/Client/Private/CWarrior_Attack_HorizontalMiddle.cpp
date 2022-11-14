@@ -19,69 +19,46 @@ CWarrior_Attack_HorizontalMiddle::~CWarrior_Attack_HorizontalMiddle()
 
 HRESULT CWarrior_Attack_HorizontalMiddle::Initialize()
 {
+	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
+
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
 
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 50;
+	m_iStateChangeKeyFrame = 75;
 
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 	m_fMyAccel = 10.f;
-	m_fMyMaxLerp = 10.f;
-	m_fMaxSpeed = 0.8f;
+	m_fMyMaxLerp = 0.5f;
 
 	Add_KeyFrame(30, 0);
-	Add_KeyFrame(30, 1);
-	Add_KeyFrame(47, 2);
+	Add_KeyFrame(47, 1);
 
-    return S_OK;
+	m_iDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_iDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_iDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
+	m_iDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_iDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
+	m_iDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
+	m_iDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
+	m_iDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+
+
+	return __super::Initialize();
+
 }
 
-void CWarrior_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CWarrior_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    /* Owner의 Animator Set Idle로 */
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
-  //  pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
-
-	//switch (ePrevType)
-	//{
-
-
-
-	//case Client::STATE_ATTACK_HORIZONTALMIDDLE_L:
-
-	//	m_eAnimType = ANIM_ATTACK;     
-	//	m_iAnimIndex = 16;    
-
-	//	break;
-	//case Client::STATE_ATTACK_HORIZONTALMIDDLE_R:
-
-	//	m_eAnimType = ANIM_ATTACK;
-	//	m_iAnimIndex = 18;
-
-	//	break;
-	//case Client::STATE_ATTACK_VERTICALCUT:
-
-	//	m_eAnimType = ANIM_ATTACK;
-	//	m_iAnimIndex = 19;
-
-	//	break;
-
-	//default:
-	//	break;
-	//}
-
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWarrior_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-	if (m_bMoveTrigger)
-		Move(Get_Direction(), pOwner);
-
 	if (m_bAttackTrigger)
 	{
 		// 공격 진입
@@ -90,13 +67,15 @@ STATE_TYPE CWarrior_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAni
 
 	}
 
+	
+
 	return __super::Tick(pOwner, pAnimator);
 }
 
 void CWarrior_Attack_HorizontalMiddle::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+	//pAnimator->Stop_ActionAnim();
 }
 
 STATE_TYPE CWarrior_Attack_HorizontalMiddle::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -119,18 +98,12 @@ STATE_TYPE CWarrior_Attack_HorizontalMiddle::Check_Condition(CUnit* pOwner, CAni
 
 void CWarrior_Attack_HorizontalMiddle::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
 	switch (iSequence)
 	{
-	case 0:
-		m_bMoveTrigger = false;
-		pOwner->Get_PhysicsCom()->Set_MaxSpeed(10.f);
-		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
-		pOwner->Set_DirAsLook();
-		break;
-
 	case 1:
 		m_bAttackTrigger = true;
-		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 3.f;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 

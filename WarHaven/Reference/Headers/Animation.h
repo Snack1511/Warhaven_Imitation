@@ -26,6 +26,8 @@ public:
 	_float	Calculate_Duration(_uint iKeyFrame);
 	ANIM_DIVIDE	Get_AnimDivideType() { return m_eAnimDivide; };
 
+	void	OnStartBlending();
+
 public:
 	HRESULT Initialize(CResource_Animation* pAIAnimation);
 	_bool	Update_Matrices(_bool bDivide);

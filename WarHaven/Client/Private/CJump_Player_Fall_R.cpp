@@ -60,10 +60,14 @@ CJump_Player_Fall_R* CJump_Player_Fall_R::Create()
     return pInstance;
 }
 
-void CJump_Player_Fall_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CJump_Player_Fall_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
- 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    if (ePrevType == STATE_SPRINT_BEGIN_PLAYER ||
+        ePrevType == STATE_SPRINT_LOOP_PLAYER ||
+        ePrevType == STATE_SPRINT_END_PLAYER
+        )
+        m_fInterPolationTime = 0.2f;
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CJump_Player_Fall_R::Tick(CUnit* pOwner, CAnimator* pAnimator)

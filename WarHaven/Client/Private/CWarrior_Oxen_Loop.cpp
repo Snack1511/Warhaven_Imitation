@@ -63,12 +63,12 @@ HRESULT CWarrior_Oxen_Loop::Initialize()
     return S_OK;
 }
 
-void CWarrior_Oxen_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CWarrior_Oxen_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     pOwner->TurnOn_TrailEffect(true);
 
     /* Owner¿« Animator Set Idle∑Œ */
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWarrior_Oxen_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)

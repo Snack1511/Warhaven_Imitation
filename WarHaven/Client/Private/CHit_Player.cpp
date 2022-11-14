@@ -71,7 +71,7 @@ HRESULT CHit_Player::Initialize()
     return S_OK;
 }
 
-void CHit_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CHit_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	switch (ePrevType)
 	{
@@ -124,7 +124,7 @@ void CHit_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	}
 
     /* Owner¿« Animator Set Idle∑Œ */
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CHit_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -81,7 +81,6 @@ void CHierarchyNode::Get_AllNodes(vector<CHierarchyNode*>& vecNodes)
 
 HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, ANIM_DIVIDE eBoneType)
 {
-	
 	m_eBoneType = eBoneType;
 
 	m_iDepth = iDepth;
@@ -100,6 +99,32 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 	{
 		m_eBoneType = ANIM_DIVIDE::eBODYUPPER;
 	}
+
+#ifdef _DEBUG
+	string strTemp;
+	switch (m_eBoneType)
+	{
+	case Engine::ANIM_DIVIDE::eDEFAULT:
+		strTemp = "DEFAULT";
+		break;
+	case Engine::ANIM_DIVIDE::eBODYUPPER:
+		strTemp = "BODYUPPER";
+		break;
+	case Engine::ANIM_DIVIDE::eBODYLOWER:
+		strTemp = "BODYLOWER";
+		break;
+	case Engine::ANIM_DIVIDE::eCount:
+		break;
+	default:
+		break;
+	}
+	cout << pResource->Get_Name() << " : " << strTemp << endl;
+#endif // _DEBUG
+
+	
+
+
+
 	m_TransformationMatrix = pResource->Get_TransformationMatrix();
 
 	XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());

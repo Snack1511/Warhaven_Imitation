@@ -46,7 +46,7 @@ HRESULT CWalk_Player::Initialize()
     return S_OK;
 }
 
-void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     /* OwnerÀÇ Animator Set Idle·Î */
 	m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
@@ -72,7 +72,7 @@ void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	//pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
 	//pMyPhysicsCom->Set_SpeedasMax();
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)

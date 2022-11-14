@@ -33,28 +33,17 @@ CWarrior_Attack_HorizontalMiddle_R* CWarrior_Attack_HorizontalMiddle_R::Create()
 }
 HRESULT CWarrior_Attack_HorizontalMiddle_R::Initialize()
 {
-
-	__super::Initialize();
-
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
 	m_iAnimIndex = 9;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_ATTACK_HORIZONTALMIDDLE_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-
-	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
-
-	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 2.5f;
 
-	// Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
+	m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
 
-	//enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-	m_iStateChangeKeyFrame = 50;
-
-	m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
-	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
-	m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+	//m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
+	//m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
@@ -65,10 +54,57 @@ HRESULT CWarrior_Attack_HorizontalMiddle_R::Initialize()
 	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_R);
 
 
-	return S_OK;
+	/* Setting for Blendable */
+	m_eAnimLeftorRight = ANIM_BASE_R;
+	m_iStopIndex = 30;
+	m_iIdle_Index = 11;
+	m_iLandIndex = 17;
+	m_iJumpFallIndex = 10;
+
+	m_iRunAnimIndex[STATE_DIRECTION_E] = 26;
+	m_iRunAnimIndex[STATE_DIRECTION_N] = 27;
+	m_iRunAnimIndex[STATE_DIRECTION_NE] = 28;
+	m_iRunAnimIndex[STATE_DIRECTION_NW] = 29;
+	m_iRunAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iRunAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iRunAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iRunAnimIndex[STATE_DIRECTION_W] = 30;
+
+	m_iWalkAnimIndex[STATE_DIRECTION_NW] = 41;
+	m_iWalkAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iWalkAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iWalkAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iWalkAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iWalkAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iWalkAnimIndex[STATE_DIRECTION_W] = 45;
+	m_iWalkAnimIndex[STATE_DIRECTION_E] = 38;
+
+	m_iJumpAnimIndex[STATE_DIRECTION_N] = 14;
+	m_iJumpAnimIndex[STATE_DIRECTION_S] = 15;
+	m_iJumpAnimIndex[STATE_DIRECTION_W] = 16;
+	m_iJumpAnimIndex[STATE_DIRECTION_E] = 13;
+	m_iJumpAnimIndex[STATE_DIRECTION_NW] = 12; // 제자리
+
+	m_iJumpAnimIndex[STATE_DIRECTION_NE] = 99; // 의미없는값 채우기 (0이면 터지게 해놔서)
+	m_iJumpAnimIndex[STATE_DIRECTION_SW] = 99; 
+	m_iJumpAnimIndex[STATE_DIRECTION_SE] = 99; 
+
+	m_eWalkState = STATE_WALK_PLAYER_L;
+	m_eJumpState = STATE_JUMP_PLAYER_L;
+	m_eLandState = STATE_JUMP_LAND_PLAYER_L;
+	m_eFallState = STATE_JUMPFALL_PLAYER_L;
+	m_eRunState = STATE_RUN_PLAYER_L;
+	m_eIdleState = STATE_IDLE_PLAYER_L;
+	
+	
+
+	
+
+
+	return __super::Initialize();
 }
 
-void CWarrior_Attack_HorizontalMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CWarrior_Attack_HorizontalMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	if (ePrevType == STATE_SWITCH_L_TO_R)
 	{
@@ -78,27 +114,12 @@ void CWarrior_Attack_HorizontalMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimat
 		m_fAnimSpeed = 2.5f;
 
 
-	/* Owner의 Animator Set Idle로 */
-	__super::Enter(pOwner, pAnimator, ePrevType);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWarrior_Attack_HorizontalMiddle_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (m_bMoveTrigger)
-		Move(Get_Direction(), pOwner);
-
-
-	//if (m_bMoveTrigger)
-	//	Move(Get_Direction(), pOwner);
-
-	//if (m_bAttackTrigger)
-	//{
-	//	// 공격 진입
-	//	if (pOwner->Is_Weapon_R_Collision())
-	//		return STATE_BOUNCE_PLAYER_R;
-
-	//}
-
+	
 	return __super::Tick(pOwner, pAnimator);
 }
 
@@ -106,8 +127,7 @@ void CWarrior_Attack_HorizontalMiddle_R::Exit(CUnit* pOwner, CAnimator* pAnimato
 {
 	__super::Exit(pOwner, pAnimator);
 
-	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+	
 
 }
 

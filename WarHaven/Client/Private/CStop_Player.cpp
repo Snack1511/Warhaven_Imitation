@@ -21,7 +21,7 @@ HRESULT CStop_Player::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
 	m_fInterPolationTime = 0.05f;
-	m_fAnimSpeed = 4.f;
+	m_fAnimSpeed = 2.f;
 
 	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
 	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
@@ -32,59 +32,34 @@ HRESULT CStop_Player::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 
-	m_iStateChangeKeyFrame = 28;
+	m_iStateChangeKeyFrame = 15;
 	
-	m_fMaxSpeed = 4.f;
+	//m_fMaxSpeed = 4.f;
 
 
     return S_OK;
 }
 
-void CStop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CStop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 3.f;
+	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
-	switch (CUser::Get_Instance()->Get_LastKey())
-	{
-	case KEY::W:
+	_uint* pDirection = (_uint*)(pData);
+	if (*pDirection >= STATE_DIRECTION_END)
+		*pDirection = STATE_DIRECTION_N;
 
-		m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_N];
-
-		break;
-
-	case KEY::A:
+	m_iAnimIndex = m_iDirectionAnimIndex[*pDirection];
 
 
-		m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_W];
 
-		break;
-
-	case KEY::S:
-
-
-		m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_S];
-
-		break;
-
-	case KEY::D:
-
-
-		m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_E];
-
-		break;
-
-	default:
-
-		break;
-	}
-
+	delete pDirection;
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
 
 
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CStop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -96,7 +71,7 @@ STATE_TYPE CStop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CStop_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 1.f;
+	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
     /* 할거없음 */
 }
 

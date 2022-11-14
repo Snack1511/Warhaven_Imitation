@@ -43,6 +43,8 @@ private:
 	class CHierarchyNode*		m_pHierarchyNode = nullptr;
 	_uint						m_iCurrentKeyFrame = 0;
 
+	_bool						m_bBlend = false;
+
 
 
 };

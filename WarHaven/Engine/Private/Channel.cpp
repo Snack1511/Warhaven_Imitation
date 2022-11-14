@@ -50,6 +50,8 @@ void CChannel::Reset_KeyFrame(_bool bDivide, ANIM_DIVIDE eDivideType)
 	else
 		m_iCurrentKeyFrame = 0;
 
+	m_bBlend = false;
+
 }
 
 HRESULT CChannel::Initialize(CHANNEL_DESC tChannelDesc)
@@ -64,18 +66,36 @@ HRESULT CChannel::Initialize(CHANNEL_DESC tChannelDesc)
 
 void CChannel::Update_TransformationMatrices(_float fCurrentTime, _bool bDivide, ANIM_DIVIDE eAnimDivide)
 {
-
+	KEYFRAME& tPrevFrame = m_pHierarchyNode->Get_PrevKeyFrame();
+	KEYFRAME& tCurFrame = m_pHierarchyNode->Get_CurKeyFrame();
+	KEYFRAME& tBlendFrame = m_pHierarchyNode->Get_BlendKeyFrame();
 	if (bDivide)
 	{
 		if (m_pHierarchyNode->Get_BoneType() != eAnimDivide && m_pHierarchyNode->Get_BoneType() != ANIM_DIVIDE::eDEFAULT)
+		{
+			//내뼈가 아니면 시간만 조용히 갱신해놓고 튀기
+			while (fCurrentTime > m_pKeyFrames[m_iCurrentKeyFrame + 1].fTime)
+			{
+				++m_iCurrentKeyFrame;
+			}
+
 			return;
+		}
+
+		
+	}
+	else
+	{
+		tBlendFrame = tCurFrame;
 	}
 
-	_vector			vScale, vRotation, vPosition;
-	KEYFRAME& tPrevFrame = m_pHierarchyNode->Get_PrevKeyFrame();
-	KEYFRAME& tCurFrame = m_pHierarchyNode->Get_CurKeyFrame();
+	//만약 블렌드 중이면 중간에 끼어들어야 함
 
-	m_pHierarchyNode->Set_PrevKeyFrame(tCurFrame);
+	
+
+
+	_vector			vScale, vRotation, vPosition;
+	
 
 	if (fCurrentTime > m_pKeyFrames[m_iNumKeyframes-1].fTime)
 	{
@@ -83,6 +103,15 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime, _bool bDivide,
 		vRotation = XMLoadFloat4(&m_pKeyFrames[m_iCurrentKeyFrame].vRotation);
 		vPosition = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame].vPosition);
 		vPosition = XMVectorSetW(vPosition, 1.f);
+
+		/*if (bDivide)
+		{
+			if (m_pHierarchyNode->Get_BoneType() == ANIM_DIVIDE::eBODYLOWER)
+			{
+
+				cout << fCurrentTime << " 목표 시간 : " << m_pKeyFrames[m_iNumKeyframes - 1].fTime << endl;
+			}
+		}*/
 	}
 
 	else
@@ -90,7 +119,10 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime, _bool bDivide,
 		while (fCurrentTime > m_pKeyFrames[m_iCurrentKeyFrame + 1].fTime)
 		{
 			++m_iCurrentKeyFrame;
+			if (m_bBlend)
+				m_bBlend = false;
 		}
+
 
 		_float fRatio = (fCurrentTime - m_pKeyFrames[m_iCurrentKeyFrame].fTime)
 			/ (m_pKeyFrames[m_iCurrentKeyFrame + 1].fTime - m_pKeyFrames[m_iCurrentKeyFrame].fTime);
@@ -98,9 +130,20 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime, _bool bDivide,
 		_vector			vSourScale, vSourRotation, vSourPosition;
 		_vector			vDestScale, vDestRotation, vDestPosition;
 
-		vSourScale = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame].vScale);
-		vSourRotation = XMLoadFloat4(&m_pKeyFrames[m_iCurrentKeyFrame].vRotation);
-		vSourPosition = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame].vPosition);
+		if (m_bBlend)
+		{
+			vSourScale = XMLoadFloat3(&tBlendFrame.vScale);
+			vSourRotation = XMLoadFloat4(&tBlendFrame.vRotation);
+			vSourPosition = XMLoadFloat3(&tBlendFrame.vPosition);
+		}
+		else
+		{
+			vSourScale = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame].vScale);
+			vSourRotation = XMLoadFloat4(&m_pKeyFrames[m_iCurrentKeyFrame].vRotation);
+			vSourPosition = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame].vPosition);
+		}
+
+		
 
 		vDestScale = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame + 1].vScale);
 		vDestRotation = XMLoadFloat4(&m_pKeyFrames[m_iCurrentKeyFrame + 1].vRotation);
@@ -160,9 +203,9 @@ void CChannel::Interpolate_Matrix(_float fCurrentTime, _float fMaxTime, _bool bD
 	vSourRotation = XMLoadFloat4(&tPrevFrame.vRotation);
 	vSourPosition = XMLoadFloat3(&tPrevFrame.vPosition);
 
-	vDestScale = XMLoadFloat3(&m_pKeyFrames[0].vScale);
-	vDestRotation = XMLoadFloat4(&m_pKeyFrames[0].vRotation);
-	vDestPosition = XMLoadFloat3(&m_pKeyFrames[0].vPosition);
+	vDestScale = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame].vScale);
+	vDestRotation = XMLoadFloat4(&m_pKeyFrames[m_iCurrentKeyFrame].vRotation);
+	vDestPosition = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame].vPosition);
 
 	vScale = XMVectorLerp(vSourScale, vDestScale, fRatio);
 	vRotation = XMQuaternionSlerp(vSourRotation, vDestRotation, fRatio);

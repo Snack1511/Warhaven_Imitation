@@ -41,7 +41,7 @@ HRESULT CRun_Player_Begin::Initialize()
     return S_OK;
 }
 
-void CRun_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CRun_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
@@ -68,7 +68,7 @@ void CRun_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 	Add_KeyFrame(5, 0);
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CRun_Player_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)

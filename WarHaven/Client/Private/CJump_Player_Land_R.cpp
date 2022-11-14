@@ -35,13 +35,13 @@ HRESULT CJump_Player_Land_R::Initialize()
     m_iAnimIndex = 17;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_JUMP_LAND_PLAYER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_iStateChangeKeyFrame = 30;
+    m_iStateChangeKeyFrame = 20;
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.05f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.f;
+    m_fAnimSpeed = 2.5f;
 
     
 	m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
@@ -68,9 +68,22 @@ HRESULT CJump_Player_Land_R::Initialize()
     return S_OK;
 }
 
-void CJump_Player_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CJump_Player_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    switch (ePrevType)
+    {
+    case Client::STATE_SPRINT_JUMP_PLAYER:
+    case Client::STATE_SPRINT_JUMPFALL_PLAYER:
+        pOwner->Enter_State(STATE_SPRINT_END_PLAYER);
+        return;
+
+        break;
+    default:
+        break;
+    }
+
+
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CJump_Player_Land_R::Tick(CUnit* pOwner, CAnimator* pAnimator)

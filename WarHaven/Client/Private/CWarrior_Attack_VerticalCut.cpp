@@ -61,11 +61,11 @@ HRESULT CWarrior_Attack_VerticalCut::Initialize()
     return S_OK;
 }
 
-void CWarrior_Attack_VerticalCut::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CWarrior_Attack_VerticalCut::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	m_bMoveTrigger = true;
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWarrior_Attack_VerticalCut::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -49,7 +49,7 @@ public:
 
 public:
 	virtual HRESULT		Initialize()	PURE;
-	virtual void		Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType);
+	virtual void		Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData = nullptr);
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void		Exit(CUnit* pOwner, CAnimator* pAnimator) PURE;
 
@@ -78,7 +78,7 @@ protected:
 	_float				m_fMyAccel = 0.f;
 	_float				m_fMaxSpeed = 0.f;
 
-	_bool				m_bMoveTrigger = false;
+	_bool				m_bMoveTrigger = true;
 	_bool				m_bAttackTrigger = false;
 
 	_int				m_iFinishedFrame = 0;

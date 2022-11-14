@@ -55,10 +55,10 @@ HRESULT CJump_Player_Fall_L::Initialize()
     return S_OK;
 }
 
-void CJump_Player_Fall_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CJump_Player_Fall_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CJump_Player_Fall_L::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -48,9 +48,9 @@ HRESULT CGuard_Loop_Player::Initialize()
     return S_OK;
 }
 
-void CGuard_Loop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CGuard_Loop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CGuard_Loop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)

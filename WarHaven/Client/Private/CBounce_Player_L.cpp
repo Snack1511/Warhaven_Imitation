@@ -56,7 +56,7 @@ HRESULT CBounce_Player_L::Initialize()
     return S_OK;
 }
 
-void CBounce_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CBounce_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	if (ePrevType == STATE_SWITCH_L_TO_R)
 	{
@@ -67,7 +67,7 @@ void CBounce_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 
     /* Owner¿« Animator Set Idle∑Œ */
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CBounce_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)

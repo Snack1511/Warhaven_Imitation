@@ -110,7 +110,7 @@ public:
 
 
 public:
-	void	Enter_State(STATE_TYPE eType);
+	void	Enter_State(STATE_TYPE eType, void* pData = nullptr);
 	void	Reserve_State(STATE_TYPE eType);
 
 public:
@@ -167,7 +167,6 @@ public:
 		_bool	bEnable = true;
 	};
 
-
 	void	SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, 
 		_uint iNumCollider = 1, _float4x4 matTransformation = DEFAULT_TRANS_MATRIX, _bool bEnable = true, CHierarchyNode* pRefBone = nullptr);
 
@@ -180,7 +179,6 @@ protected:
 protected:
 	UNIT_MODEL_DATA	m_tModelData;
 
-
 protected:
 	CModel*			m_pModelCom = nullptr;
 	CAnimator*		m_pAnimator = nullptr;
@@ -188,7 +186,6 @@ protected:
 
 	UNIT_STATUS		m_tUnitStatus;
 	STATE_TYPE		m_eCurState = STATE_END;
-
 
 	CState* m_pCurState = nullptr;
 	CUnit* m_pTargetUnit = nullptr;

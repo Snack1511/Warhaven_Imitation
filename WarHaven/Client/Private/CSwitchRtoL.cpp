@@ -61,10 +61,10 @@ HRESULT CSwitchRtoL::Initialize()
     return S_OK;
 }
 
-void CSwitchRtoL::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CSwitchRtoL::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CSwitchRtoL::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -50,6 +50,7 @@ HRESULT CJump_Player_L::Initialize()
 
     m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_L);
     m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
 
 
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 6;
@@ -63,10 +64,10 @@ HRESULT CJump_Player_L::Initialize()
     return S_OK;
 }
 
-void CJump_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CJump_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CJump_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)

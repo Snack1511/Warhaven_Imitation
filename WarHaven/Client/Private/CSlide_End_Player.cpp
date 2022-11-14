@@ -52,7 +52,7 @@ HRESULT CSlide_End_Player::Initialize()
     return S_OK;
 }
 
-void CSlide_End_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CSlide_End_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     if (ePrevType == STATE_SLIDE_LOOP_PLAYER)
         m_fInterPolationTime = 0.f;
@@ -61,7 +61,7 @@ void CSlide_End_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
         m_fInterPolationTime = 0.1f;
 
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
 }
 

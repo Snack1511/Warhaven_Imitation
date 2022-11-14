@@ -50,7 +50,7 @@ HRESULT CSprintAttack_Player_Begin::Initialize()
     return S_OK;
 }
 
-void CSprintAttack_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CSprintAttack_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -71,7 +71,7 @@ void CSprintAttack_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
 	pMyPhysicsCom->Set_SpeedasMax();
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CSprintAttack_Player_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -38,6 +38,7 @@ public:
 
 	void		Set_InterpolationTime(_uint iTypeIndex, _uint iIdx, _float fTime);
 	_bool		Is_CurAnimFinished();
+	_bool		Is_ActionFinished();
 
 
 public:
@@ -61,6 +62,8 @@ private:
 
 	CAnimation* m_pActionAnimation = nullptr;
 	CAnimation* m_pCycleAnimation = nullptr;
+
+	_bool		m_bOnBlend = false;
 
 
 private:

@@ -60,7 +60,7 @@ HRESULT CSprint_Begin::Initialize()
     return S_OK;
 }
 
-void CSprint_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
+void CSprint_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, false);
 
@@ -79,12 +79,15 @@ void CSprint_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 
 
-    __super::Enter(pOwner, pAnimator, ePrevType);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
 }
 
 STATE_TYPE CSprint_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Is_Air())
+        return STATE_JUMPFALL_PLAYER_R;
+
     CTransform* pMyTransform = pOwner->Get_Transform();
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
