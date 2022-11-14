@@ -1073,9 +1073,6 @@
     <ClCompile Include="..\private\CTerrain.cpp">
       <Filter>03. Instances\02. GameObject\07. Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CUnit.cpp">
-      <Filter>03. Instances\02. GameObject\02. Unit</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\CState.cpp">
       <Filter>02. Design\06. State_Manager\States</Filter>
     </ClCompile>
@@ -1388,6 +1385,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_MainPlay.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CUnit.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

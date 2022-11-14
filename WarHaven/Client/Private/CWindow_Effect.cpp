@@ -103,7 +103,7 @@ HRESULT CWindow_Effect::Render()
 
 		if (ImGui::Button("STOP_PLAYER(9)") || (KEY(NUM9, TAP)))
 		{
-			//PLAYER->Switch_Controlable();
+			PLAYER->Set_Controlable();
 		}
 
 #endif // _DEBUG
@@ -220,20 +220,12 @@ void CWindow_Effect::Show_MainList()
 					else
 					{
 						_float4x4 matTrans;
-						_float4 vPos;
 						if (g_bCamMatrix)
-						{
 							matTrans = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
-							vPos = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_POS);
-						}
 						else
-						{
 							matTrans = PLAYER->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
-							vPos = PLAYER->Get_Transform()->Get_World(WORLD_POS);
 
-						}
-
-						m_vecEffects[m_iCurrentIdx].pEffect->Reset(vPos, matTrans);
+						m_vecEffects[m_iCurrentIdx].pEffect->Reset(PLAYER->Get_Transform()->Get_World(WORLD_POS), matTrans);
 					}
 
 
@@ -256,7 +248,7 @@ void CWindow_Effect::Show_MainList()
 
 	ImGui::SameLine();
 
-	if (ImGui::Button("RE-Initialize"))
+	if (ImGui::Button("RE-Initialize (F5)") || KEY(F5, TAP))
 	{
 		if (m_iCurrentIdx != 9999)
 		{
@@ -1054,9 +1046,9 @@ void CWindow_Effect::Show_ParticleTab()
 
 			ImGui::SameLine();
 
-			if (ImGui::RadioButton("bFixed", static_cast<CRectEffects*>(pCurEffect)->m_bFixed))
+			if (ImGui::RadioButton("bPlayOnce", static_cast<CRectEffects*>(pCurEffect)->m_bPlayOnce))
 			{
-				static_cast<CRectEffects*>(pCurEffect)->m_bFixed = !static_cast<CRectEffects*>(pCurEffect)->m_bFixed;
+				static_cast<CRectEffects*>(pCurEffect)->m_bPlayOnce = !static_cast<CRectEffects*>(pCurEffect)->m_bPlayOnce;
 			}
 
 		
@@ -1435,7 +1427,7 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBlackBackGround, sizeof(_bool));
-		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bFixed, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bPlayOnce, sizeof(_bool));
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iWidthSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iHeightSize, sizeof(_uint));

@@ -139,11 +139,11 @@ void CUnit_Warrior::My_LateTick()
 	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
 		return;
 
-	if (KEY(NUM8, TAP))
+	/*if (KEY(NUM8, TAP))
 		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 10.f, 50.f));
 
 	if (KEY(SPACE, TAP))
 	{
 		m_pPhysics->Set_Jump(7.f);
-	}
+	}*/
 }
