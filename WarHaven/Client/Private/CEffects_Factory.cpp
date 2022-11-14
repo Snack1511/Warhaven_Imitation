@@ -417,7 +417,11 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 {
 	list<string>	listTemp = Read_AllEffectsFile("../bin/effects");
 
-	
+	if(FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash("SmallSparkParticle"), "SmallSparkParticle")))
+		return E_FAIL;
+
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash("BigSparkParticle"), "BigSparkParticle")))
+		return E_FAIL;
 
 	return S_OK;
 }
