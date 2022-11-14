@@ -9,6 +9,15 @@ class CGameObject;
 
 class ENGINE_DLL CHierarchyNode final
 {
+public:
+	enum BONE_TYPE
+	{
+		eDEFAULT,
+		eBODYUPPER,
+		eBODYLOWER,
+		eCount
+	};
+
 private:
 	CHierarchyNode();
 	virtual ~CHierarchyNode();
@@ -64,12 +73,18 @@ public:
 
 public:
 	void	Get_AllNodes(vector<CHierarchyNode*>& vecNodes);
+	_bool	Is_Locked() { return m_bLocked; }
 
 public:
 	HRESULT Initialize(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth);
 	void Update_CombinedTransformationMatrix();
 
 	void	Release();
+
+private:
+	//애니메이션 분리용
+	_bool		m_bLocked = false;
+	BONE_TYPE	m_eBoneType = eDEFAULT;
 
 private:
 	CGameObject* m_pOwner = nullptr;

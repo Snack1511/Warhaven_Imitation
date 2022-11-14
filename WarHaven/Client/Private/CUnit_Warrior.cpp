@@ -85,14 +85,14 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 0.7f;
+	tDesc.fHeight = 0.9f;
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.1f;
 	// Ä® ºÙÀÏ »À
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 
 	//Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
-	tDesc.vOffset = _float4(0.f, 0.f, -110.f);
+	tDesc.vOffset = _float4(0.f, 0.f, -100.f);
 
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
