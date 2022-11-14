@@ -51,9 +51,12 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
 
     m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+    m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
 
 
     Add_KeyFrame(5, 0);
+	Add_KeyFrame(46, 1);
+	Add_KeyFrame(62, 2);
 
 
     return S_OK;
@@ -81,8 +84,11 @@ void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pAnimator->Is_CurAnimFinished())
-        return STATE_IDLE_PLAYER_L;
+	//현재프레임이 상태전환 프레임보다 이상이면
+	//공중에 있으면
+	//Fall로
+    if (pAnimator->Get_CurAnimFrame() < m_iStateChangeKeyFrame && pOwner->Is_Air())
+        return STATE_JUMPFALL_PLAYER_L;
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -91,6 +97,7 @@ void CWarrior_Oxen_Loop_Attack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
     pOwner->TurnOn_TrailEffect(false);
+	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
     pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
 
@@ -115,21 +122,9 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
     {
     case 0:
     {
-        CTransform* pMyTransform = pOwner->Get_Transform();
+		Physics_Setting(pOwner->Get_Status().fDashSpeed, pOwner, true);
+
         CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-
-        _float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-        vCamLook.y = 0.f;
-
-        //1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
-        pMyTransform->Set_LerpLook(vCamLook, 0.4f);
-
-        //실제 움직이는 방향
-        pMyPhysicsCom->Set_Dir(vCamLook);
-
-        //최대속도 설정
-        pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fDashSpeed);
-        pMyPhysicsCom->Set_SpeedasMax();
 
 
         //마찰 조절하기
@@ -137,7 +132,17 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
         pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.55f;
 
     }
+
+	break;
        
+	case 1:
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		break;
+
+
+	case 2:
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		break;
 
     default:
         break;

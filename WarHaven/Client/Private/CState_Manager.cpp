@@ -5,7 +5,6 @@
 #include "CIdle_Player_L.h"
 
 #include "CWalk_Player.h"
-#include "CWarrior_Attack_01.h"
 #include "CRun_Player.h"
 #include "CSlide_Player.h"
 #include "CJump_Player.h"
@@ -33,10 +32,14 @@
 #include "CJump_Player_Land_R.h"
 
 
-#include "CWarrior_Attack_01.h"
+#include "CWarrior_Attack_HorizontalDown_R.h"
+#include "CWarrior_Attack_HorizontalDown_L.h"
 
-#include "CWarrior_Attack_UpperMiddle_L.h"
-#include "CWarrior_Attack_UpperMiddle_R.h"
+#include "CWarrior_Attack_HorizontalUp_R.h"
+#include "CWarrior_Attack_HorizontalUp_L.h"
+
+#include "CWarrior_Attack_HorizontalMiddle_R.h"
+#include "CWarrior_Attack_HorizontalMiddle_L.h"
 
 #include "CWarrior_Attack_Sting_L.h"
 #include "CWarrior_Attack_Sting_R.h"
@@ -71,6 +74,9 @@
 
 #include "CBounce_Player_L.h"
 #include "CBounce_Player_R.h"
+
+#include "CStop_Player_L.h"
+#include "CStop_Player_R.h"
 
 #include "CHit_Player.h"
 
@@ -119,14 +125,19 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_JUMP_LAND_PLAYER_R] = CJump_Player_Land_R::Create();
 
 
-	m_arrStates[STATE_ATTACK_UPPER_MIDDLE_PLAYER_L] = CWarrior_Attack_UpperMiddle_L::Create();
-	m_arrStates[STATE_ATTACK_UPPER_MIDDLE_PLAYER_R] = CWarrior_Attack_UpperMiddle_R::Create();
+	m_arrStates[STATE_ATTACK_HORIZONTALUP_L] = CWarrior_Attack_HorizontalUp_L::Create();
+	m_arrStates[STATE_ATTACK_HORIZONTALUP_R] = CWarrior_Attack_HorizontalUp_R::Create();
+
+	m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_L] = CWarrior_Attack_HorizontalMiddle_L::Create();
+	m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_R] = CWarrior_Attack_HorizontalMiddle_R::Create();
+
+	m_arrStates[STATE_ATTACK_HORIZONTALDOWN_L] = CWarrior_Attack_HorizontalDown_L::Create();
+	m_arrStates[STATE_ATTACK_HORIZONTALDOWN_R] = CWarrior_Attack_HorizontalDown_R::Create();
 
 	m_arrStates[STATE_ATTACK_STING_PLAYER_L] = CWarrior_Attack_Sting_L::Create();
 	m_arrStates[STATE_ATTACK_STING_PLAYER_R] = CWarrior_Attack_Sting_R::Create();
 
 	m_arrStates[STATE_ATTACK_VERTICALCUT] = CWarrior_Attack_VerticalCut::Create();
-	
 
 	m_arrStates[STATE_SPRINT_BEGIN_PLAYER] = CSprint_Begin::Create();
 	m_arrStates[STATE_SPRINT_LOOP_PLAYER] = CSprint_Loop::Create();
@@ -152,6 +163,10 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_BOUNCE_PLAYER_L] = CBounce_Player_L::Create();
 	m_arrStates[STATE_BOUNCE_PLAYER_R] = CBounce_Player_R::Create();
 	
+	m_arrStates[STATE_STOP_PLAYER_L] = CStop_Player_L::Create();
+	m_arrStates[STATE_STOP_PLAYER_R] = CStop_Player_R::Create();
+
+
 	m_arrStates[STATE_HIT] = CHit_Player::Create();
 
 //	m_arrStates[STATE_WARRIOR_OXEN] = CWarrior_Oxen::Create();

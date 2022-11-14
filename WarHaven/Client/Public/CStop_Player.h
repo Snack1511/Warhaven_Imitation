@@ -2,13 +2,13 @@
 #include "CState.h"
 
 BEGIN(Client)
-class CJump_Player abstract
+class CStop_Player abstract
 	: public CState
 {
 
 protected:
-	CJump_Player();
-	virtual ~CJump_Player();
+	CStop_Player();
+	virtual ~CStop_Player();
 
 
 public:
@@ -22,8 +22,6 @@ public:
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-protected:
-	_int	iPlaceJumpAnimIndex = 0; // 제자리 점프 AnimIndex;
 
 };
 

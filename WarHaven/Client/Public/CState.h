@@ -102,8 +102,11 @@ protected:
 	_uint	Move(_uint iDirection, CUnit* pOwner);
 
 
+protected:
 	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax);
 	
+
+
 
 protected:
 	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iEventType);

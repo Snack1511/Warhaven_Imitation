@@ -291,6 +291,9 @@ namespace Client
 //
 //		/* Bounece */
 		STATE_BOUNCE_PLAYER_L,
+
+		/*Stop*/
+		STATE_STOP_PLAYER_L,
 //
 //#pragma endregion
 //
@@ -317,15 +320,20 @@ namespace Client
 //#pragma region Attack_Player
 //
 //		/* L */
-		STATE_ATTACK_UPPER_MIDDLE_PLAYER_L, // 중상단 공격
-//		STATE_ATTACK_BOTTOM_DIAGONAL_PLAYER_L, // 하단 -> 상단 대각선
-//		STATE_ATTACK_TOP_DIAGONAL_PLAYER_L, // 상단 -> 하단 대각선
+		STATE_ATTACK_HORIZONTALUP_L,
+		STATE_ATTACK_HORIZONTALMIDDLE_L, // 중상단 공격
+		STATE_ATTACK_HORIZONTALDOWN_L,
+
 //
 //		/* R */
-		STATE_ATTACK_UPPER_MIDDLE_PLAYER_R, // 중상단 공격
-//		STATE_ATTACK_BOTTOM_DIAGONAL_PLAYER_R, // 하단 -> 상단 대각선
-//		STATE_ATTACK_TOP_DIAGONAL_PLAYER_R, // 상단 -> 하단 대각선
+		STATE_ATTACK_HORIZONTALUP_R,
+		STATE_ATTACK_HORIZONTALMIDDLE_R, // 중상단 공격
+		STATE_ATTACK_HORIZONTALDOWN_R,
+
 //
+
+
+
 //
 //		/*Sprint*/
 		STATE_SPRINTATTACK_BEGIN_PLAYER,
@@ -337,6 +345,9 @@ namespace Client
 //
 //		/* Take_Down */
 		STATE_ATTACK_VERTICALCUT,
+
+		/* Stop */
+		STATE_STOP_PLAYER_R,
 //
 //#pragma endregion
 //
@@ -351,9 +362,8 @@ namespace Client
 		STATE_WARRIOR_OXEN_END,
 
 
-//		STATE_WARRIOR_OXEN, // 황소베기
+
 		STATE_WARRIOR_GUARDBREAK, // 가드 파괴
-//		// STATE_ATTACK_SKILL3, 
 
 		STATE_HIT,
 //

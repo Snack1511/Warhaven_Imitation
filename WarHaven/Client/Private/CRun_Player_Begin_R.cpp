@@ -42,6 +42,10 @@ HRESULT CRun_Player_Begin_R::Initialize()
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
 
 
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
+
    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 18;
 
    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 19;

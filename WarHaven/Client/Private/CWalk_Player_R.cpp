@@ -54,7 +54,11 @@ HRESULT CWalk_Player_R::Initialize()
 	m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_R);
+
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
+
 	m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
 
 
@@ -93,6 +97,10 @@ void CWalk_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 STATE_TYPE CWalk_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+	if (pOwner->Is_Air())
+		return STATE_JUMPFALL_PLAYER_R;
+
     if (
         KEY(W, NONE) &&
         KEY(A, NONE) &&
@@ -102,7 +110,6 @@ STATE_TYPE CWalk_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
     {
         return STATE_IDLE_PLAYER_R;
     }
-
 
     return __super::Tick(pOwner, pAnimator);
 }

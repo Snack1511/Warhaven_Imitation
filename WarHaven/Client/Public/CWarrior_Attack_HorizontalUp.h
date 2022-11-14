@@ -2,13 +2,13 @@
 #include "CState.h"
 
 BEGIN(Client)
-class CJump_Player abstract
+class CWarrior_Attack_HorizontalUp abstract
 	: public CState
 {
 
 protected:
-	CJump_Player();
-	virtual ~CJump_Player();
+	CWarrior_Attack_HorizontalUp();
+	virtual ~CWarrior_Attack_HorizontalUp();
 
 
 public:
@@ -21,9 +21,8 @@ public:
 
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
-protected:
-	_int	iPlaceJumpAnimIndex = 0; // 제자리 점프 AnimIndex;
 
 };
 

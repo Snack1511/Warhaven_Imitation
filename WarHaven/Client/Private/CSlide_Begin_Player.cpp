@@ -69,25 +69,11 @@ void CSlide_Begin_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CSlide_Begin_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Walk로 오는 조건
-    1. CTRL 을 누르지 않은 상태
-    2. WASD 를 누른 상태
-    */
-
-    // m_eStateType 이 End 에 가지 않으면 Enter 를 호출한다.
-
-    // W 랑 A 를 누르면 왼쪽 앞으로 이동한다.
-    // W 랑 D 를 누르면 왼쪽 옆으로 이동한다.
-
-    // 만약 WASD 를 눌렀다면
-
 
     if (KEY(J, TAP))
     {
         return m_eStateType;
     }
-
-
 
     return STATE_END;
 }

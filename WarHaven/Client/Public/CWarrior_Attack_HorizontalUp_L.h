@@ -1,20 +1,20 @@
 #pragma once
-#include "CState.h"
+#include "CWarrior_Attack_HorizontalUp.h"
 
 BEGIN(Client)
 class CColorController;
 
-class CWarrior_GuardBreak
-	: public CState
+class CWarrior_Attack_HorizontalUp_L
+	: public CWarrior_Attack_HorizontalUp
 {
-	DECLARE_STATE(CWarrior_GuardBreak);
+	DECLARE_STATE(CWarrior_Attack_HorizontalUp_L);
 
 private:
-	CWarrior_GuardBreak();
-	virtual ~CWarrior_GuardBreak();
+	CWarrior_Attack_HorizontalUp_L();
+	virtual ~CWarrior_Attack_HorizontalUp_L();
 
 public:
-	static CWarrior_GuardBreak* Create();
+	static CWarrior_Attack_HorizontalUp_L* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -25,8 +25,7 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
-
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 	
 };
 

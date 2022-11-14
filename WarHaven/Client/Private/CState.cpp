@@ -189,6 +189,7 @@ _uint CState::Get_Direction_Four()
 	return STATE_DIRECTION_END;
 }
 
+
 _uint CState::Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fInterPolationTime)
 {
 	_uint iDirection = Get_Direction();

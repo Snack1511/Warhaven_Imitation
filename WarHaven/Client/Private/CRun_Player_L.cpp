@@ -55,7 +55,11 @@ HRESULT CRun_Player_L::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
-	m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
+
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
+
 
 	m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
 
@@ -121,7 +125,7 @@ STATE_TYPE CRun_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
         KEY(D, NONE)
         )
     { 
-        return STATE_IDLE_PLAYER_L;
+        return STATE_STOP_PLAYER_L;
 
     }
 

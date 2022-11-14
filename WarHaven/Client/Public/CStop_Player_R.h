@@ -1,20 +1,20 @@
 #pragma once
-#include "CState.h"
+#include "CStop_Player.h"
 
 BEGIN(Client)
 class CColorController;
 
-class CWarrior_Attack_UpperMiddle_L
-	: public CState
+class CStop_Player_R
+	: public CStop_Player
 {
-	DECLARE_STATE(CWarrior_Attack_UpperMiddle_L);
+	DECLARE_STATE(CStop_Player_R);
 
 private:
-	CWarrior_Attack_UpperMiddle_L();
-	virtual ~CWarrior_Attack_UpperMiddle_L();
+	CStop_Player_R();
+	virtual ~CStop_Player_R();
 
 public:
-	static CWarrior_Attack_UpperMiddle_L* Create();
+	static CStop_Player_R* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -24,7 +24,7 @@ public:
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
-	virtual STATE_TYPE	Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 };
 
