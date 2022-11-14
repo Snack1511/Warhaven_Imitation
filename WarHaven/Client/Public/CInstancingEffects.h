@@ -33,6 +33,13 @@ public:
 		_float	fTurnSpeed = 0.f;
 		_float	fTurnSpeedRange = 0.f;
 
+		_float fCurvePower = 0.01f;
+		_float fCurvePowerRange = 0.f;
+		_float fCurveAngle = 0.f;
+		_float fCurveAngleRange = 0.f;
+		_float fCurveFrequency = 0.f;
+		_float fCurveFrequencyRange = 0.f;
+
 		_float4	vStartDir = _float4(0.f, 0.f, 0.f, 0.f);
 		_float4	vStartDirRange = _float4(1.f, 1.f, 1.f, 0.f);
 		_float4	vMoveDir = _float4(0.f, 0.f, 0.f, 0.f);
@@ -90,6 +97,9 @@ public:
 		_float	fSpeedChangeSpeed = 0.f;
 		_float	fTurnSpeed = 0.f;
 
+		_float	fMovingAcc = 0.f;
+		_float	fCurvePower = 0.f;
+		_float	fCurveFrequency = 0.f;
 		_float	fFadeInStartTime;
 		_float	fFadeInTime;
 		_float	fFadeOutStartTime;
@@ -102,6 +112,7 @@ public:
 		_float4	vOriginScale;
 		_float4	vScale = _float4(1.f, 1.f, 1.f, 1.f);
 		_float4	vDir = _float4(0.f, 0.f, 1.f, 0.f);
+		_float4 vRight = _float4(0.f, 0.f, 0.f, 0.f);
 		_float4	vTurnDir = _float4(0.f, 0.f, 1.f, 0.f);
 
 
@@ -119,6 +130,7 @@ public:
 
 		_float4	vStartPureLocalPos;
 		_float4	vStartPureLocalDir;
+		_float4	vStartPureLocalRight;
 
 		_float	fOriginY = 0.f;
 		_float	fPrevY = 0.f;

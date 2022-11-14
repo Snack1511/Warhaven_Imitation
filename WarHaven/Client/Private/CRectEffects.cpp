@@ -40,6 +40,8 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	, m_fLoopTime(_origin.m_fLoopTime)
 	, m_iWidthSize(_origin.m_iWidthSize)
 	, m_iHeightSize(_origin.m_iHeightSize)
+	, m_bFixed(_origin.m_bFixed)
+	, m_eCurveType(_origin.m_eCurveType)
 {
 	if (_origin.m_pRectInstances)
 	{
@@ -55,7 +57,7 @@ CRectEffects::~CRectEffects()
 }
 
 CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_DATA& tCreateData, wstring wstrTexturePath,
-	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable, _bool bLoop)
+	_hashcode _hcCode, _bool bBillBoard, _bool bSorting, _bool bZeroSpeedDisable, _bool bLoop, _bool bFixed)
 {
 	CRectEffects* pInstance = new CRectEffects();
 
@@ -67,6 +69,7 @@ CRectEffects* CRectEffects::Create(_uint iNumInstance, const INSTANCING_CREATE_D
 	pInstance->m_bSorting = bSorting;
 	pInstance->m_bZeroSpeedDisable = bZeroSpeedDisable;
 	pInstance->m_bLoop = bLoop;
+	pInstance->m_bFixed = bFixed;
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -238,6 +241,30 @@ HRESULT CRectEffects::Initialize()
 		m_pInstancingDatas[i].vStartPureLocalPos = vStartPos;
 		m_pInstancingDatas[i].vStartPureLocalDir = vMoveDir;
 
+
+
+		_float4 vUpDir = { 0.f, 1.f, 0.f };
+		if ((vMoveDir.y < 1.1f && vMoveDir.y > 0.9f) ||
+			(vMoveDir.y > -1.1f && vMoveDir.y < -0.9f)
+			)
+			vUpDir = _float4(0.f, 0.f, 1.f, 0.f);
+
+		vUpDir.Normalize();
+		m_pInstancingDatas[i].vStartPureLocalRight = vUpDir.Cross(vMoveDir);
+
+		_float4x4 matCurveRot;
+
+		_float fStartCurveAngle = m_tCreateData.fCurveAngle + frandom(-m_tCreateData.fCurveAngleRange, m_tCreateData.fCurveAngleRange);
+
+		matCurveRot = XMMatrixRotationAxis(m_pInstancingDatas[i].vStartPureLocalDir.XMLoad(), ToRadian(fStartCurveAngle));
+		
+		m_pInstancingDatas[i].vStartPureLocalRight = m_pInstancingDatas[i].vStartPureLocalRight.MultiplyNormal(matCurveRot);
+
+		m_pInstancingDatas[i].fCurvePower = m_tCreateData.fCurvePower + frandom(-m_tCreateData.fCurvePowerRange, m_tCreateData.fCurvePowerRange);
+
+		m_pInstancingDatas[i].fCurveFrequency = m_tCreateData.fCurveFrequency + frandom(-m_tCreateData.fCurveFrequencyRange, m_tCreateData.fCurveFrequencyRange);
+
+
 		Set_NewStartPos(i);
 
 		m_pInstancingDatas[i].fSpeed = m_pInstancingDatas[i].fOriginSpeed = m_tCreateData.fSpeed + frandom(-m_tCreateData.fSpeedRange, m_tCreateData.fSpeedRange);
@@ -307,21 +334,21 @@ HRESULT CRectEffects::Initialize()
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION)
 		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
-			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
 		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
-			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
-
-			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
+			
+			m_pInstancingDatas[i].fDissolveEndTime =  m_iWidthSize * m_iHeightSize * m_fDuration; // 
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 		{		
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
-			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(m_fDuration * -0.25f, m_fDuration * 0.25f);
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 
-			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration;
+			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_pInstancingDatas[i].fDuration; // 
 		}
 		//
 
@@ -406,7 +433,7 @@ void CRectEffects::My_Tick()
 	_float4	vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 	_float4 vLook;
 
-	m_fLoopTimeAcc += fDT(0);
+	m_fLoopTimeAcc += fTimeDelta;
 
 	vLook = vCamLook * -1.f;
 
@@ -429,10 +456,44 @@ void CRectEffects::My_Tick()
 			continue;
 
 		m_pInstancingDatas[i].fTimeAcc += fTimeDelta;
+		m_pInstancingDatas[i].fMovingAcc += fTimeDelta;
 
 		//3. FADE
-		if (!Fade_Lerp(i))
-			continue;
+		if (m_bLoop)
+		{
+			if (m_bFixed) //고정된 파티클일경우
+			{
+				if (INSTANCING_DATA::FADEOUTREADY <= m_pInstancingDatas[i].eCurFadeType)
+				{
+					if (0.f != m_fLoopTime)
+					{
+						if (m_fLoopTimeAcc > m_fLoopTime)
+						{
+							if (!Fade_Lerp(i)) //loop time 동안 fadeout 막음
+								continue;
+						}
+					}
+				}
+				else
+				{
+					if (!Fade_Lerp(i))
+						continue;
+				}
+			}
+			else
+			{
+				if (!Fade_Lerp(i))
+					continue;
+			}
+
+		}
+		else //루프가 아닌경우 그대로 fade
+		{
+			if (!Fade_Lerp(i))
+				continue;
+		}
+
+		
 
 		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA &&
 			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
@@ -470,8 +531,13 @@ void CRectEffects::My_Tick()
 					continue;
 				}
 			}
-
+			
 			vOriginPos += m_pInstancingDatas[i].vDir * m_pInstancingDatas[i].fSpeed * fTimeDelta;
+
+			vOriginPos = Switch_CurveType(vOriginPos, i);
+
+
+			
 
 			//2. 자유낙하
 			_float fFreeFallY = 0.f;
@@ -606,6 +672,9 @@ void CRectEffects::OnEnable()
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
+		m_pInstancingDatas[i].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+		m_pInstancingDatas[i].vColor.w = 0.f;
+		m_pRectInstances[i].vColor.w = 0.f;
 		Reset_Instance(i);
 	}
 
@@ -649,6 +718,7 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 
 		_float4 vStartPos = m_pInstancingDatas[iIndex].vStartPureLocalPos;
 		_float4 vStartDir = m_pInstancingDatas[iIndex].vStartPureLocalDir;
+		_float4 vStartRight = m_pInstancingDatas[iIndex].vStartPureLocalRight;
 
 		if (m_tCreateData.iOffsetPositionCount > 0)
 		{
@@ -663,8 +733,10 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 
 		vStartPos = vStartPos.MultiplyCoord(m_matTrans);
 		vStartDir = vStartDir.MultiplyNormal(m_matTrans).Normalize();
+		vStartRight = vStartRight.MultiplyNormal(m_matTrans).Normalize();
 		m_pRectInstances[iIndex].vTranslation = vStartPos;
 		m_pInstancingDatas[iIndex].vDir = vStartDir;
+		m_pInstancingDatas[iIndex].vRight = vStartRight;
 
 		//회전시켜놓기
 		
@@ -724,6 +796,7 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
 	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
 	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
+	pReadFile->read((char*)&m_eCurveType, sizeof(CURVE_TYPE));
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
 	{
@@ -757,14 +830,16 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bZeroSpeedDisable, sizeof(_bool));
 	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
 	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
-	pReadFile->read((char*)&m_bBlackBackGround, sizeof(_bool)); //추가전 이펙트 삭제
+	pReadFile->read((char*)&m_bBlackBackGround, sizeof(_bool));
+	pReadFile->read((char*)&m_bFixed, sizeof(_bool));
 
 	pReadFile->read((char*)&m_iWidthSize, sizeof(_uint));
 	pReadFile->read((char*)&m_iHeightSize, sizeof(_uint));
 	pReadFile->read((char*)&m_fDuration, sizeof(_float));
+	pReadFile->read((char*)&m_fDurationRange, sizeof(_float));
 	pReadFile->read((char*)&m_fDissolvePower, sizeof(_float));
 
-
+	pReadFile->read((char*)&m_eCurveType, sizeof(CURVE_TYPE));
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -817,9 +892,21 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	Set_NewStartPos(iIndex);
 
 	m_pInstancingDatas[iIndex].vScale = m_pInstancingDatas[iIndex].vStartScale;
-	m_pInstancingDatas[iIndex].vColor.w = 0.f;
-	m_pRectInstances[iIndex].vColor.w = 0.f;
-	m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+
+	if (!m_bFixed)
+	{
+		if (0 < m_fLoopTimeAcc)
+		{
+			m_pInstancingDatas[iIndex].vColor.w = 0.f;
+			m_pRectInstances[iIndex].vColor.w = 0.f;
+			m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+
+		}
+	}
+
+	if(!m_bLoop)
+		m_pInstancingDatas[iIndex].eCurFadeType = INSTANCING_DATA::FADEINREADY;
+
 	m_pInstancingDatas[iIndex].fTimeAcc = 0.f;
 
 
@@ -840,4 +927,29 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pInstancingDatas[iIndex].fAcc = 0.f;
 
 	m_pInstancingDatas[iIndex].bAlive = true;
+}
+
+_float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
+{
+	_float fY;
+
+	switch (m_eCurveType)
+	{
+	case Client::CURVE_LINEAR:
+		break;
+	case Client::CURVE_SIN:
+		fY = m_pInstancingDatas[iIdx].fCurvePower * sinf(m_pInstancingDatas[iIdx].fCurveFrequency * m_pInstancingDatas[iIdx].fMovingAcc); // a sin(bx)
+
+		vPos.x += fY * m_pInstancingDatas[iIdx].vRight.x;
+		vPos.y += fY * m_pInstancingDatas[iIdx].vRight.y;
+		vPos.z += fY * m_pInstancingDatas[iIdx].vRight.z;
+		break;
+	case Client::CURVE_END:
+		break;
+	default:
+		break;
+	}
+	
+
+	return vPos;
 }

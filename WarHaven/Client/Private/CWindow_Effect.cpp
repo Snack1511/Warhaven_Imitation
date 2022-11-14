@@ -220,12 +220,20 @@ void CWindow_Effect::Show_MainList()
 					else
 					{
 						_float4x4 matTrans;
+						_float4 vPos;
 						if (g_bCamMatrix)
+						{
 							matTrans = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+							vPos = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_POS);
+						}
 						else
+						{
 							matTrans = PLAYER->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+							vPos = PLAYER->Get_Transform()->Get_World(WORLD_POS);
 
-						m_vecEffects[m_iCurrentIdx].pEffect->Reset(PLAYER->Get_Transform()->Get_World(WORLD_POS), matTrans);
+						}
+
+						m_vecEffects[m_iCurrentIdx].pEffect->Reset(vPos, matTrans);
 					}
 
 
@@ -1044,8 +1052,15 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_bSoft = !static_cast<CRectEffects*>(pCurEffect)->m_bSoft;
 			}
 
+			ImGui::SameLine();
+
+			if (ImGui::RadioButton("bFixed", static_cast<CRectEffects*>(pCurEffect)->m_bFixed))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_bFixed = !static_cast<CRectEffects*>(pCurEffect)->m_bFixed;
+			}
+
 		
-			ImGui::LabelText(" ", "LoopTime 0 is Infinite");
+			ImGui::Text("LoopTime 0 is Infinite");
 
 
 			if (ImGui::RadioButton("bLoop", static_cast<CRectEffects*>(pCurEffect)->m_bLoop))
@@ -1152,11 +1167,17 @@ void CWindow_Effect::Show_ParticleTab()
 			if (ImGui::InputFloat("fDissolvePower(Anim)", &((CRectEffects*)pCurEffect)->m_fDissolvePower))
 			{
 			}
+			
+			_float fAnimTime = ((CRectEffects*)pCurEffect)->m_iWidthSize * ((CRectEffects*)pCurEffect)->m_iHeightSize * ((CRectEffects*)pCurEffect)->m_fDuration;
+			ImGui::Text("Animation Endtime : %f", fAnimTime);
 
 			if (ImGui::InputFloat("fDuration(Animation)", &((CRectEffects*)pCurEffect)->m_fDuration))
 			{
 			}
 
+			if (ImGui::InputFloat("fDurationRange(Animation)", &((CRectEffects*)pCurEffect)->m_fDurationRange))
+			{
+			}
 
 			_int	iSizes[2] = { ((CRectEffects*)pCurEffect)->m_iWidthSize, ((CRectEffects*)pCurEffect)->m_iHeightSize };
 			if (ImGui::InputInt2("iAnimSizes(Animation)", iSizes))
@@ -1243,6 +1264,40 @@ void CWindow_Effect::Show_ParticleTab()
 				tCurData.fFadeOutTime = fFIST4[0];
 				tCurData.fFadeOutTimeRange = fFIST4[1];
 			}
+
+			ImGui::Text("Curve Option");
+
+
+			static _bool	bCurveSelect[CURVE_END] = {};
+			memset(bCurveSelect, 0, sizeof(_bool) * CURVE_END);
+			bCurveSelect[static_cast<CRectEffects*>(pCurEffect)->m_eCurveType] = true;
+
+			if (ImGui::Selectable("LINEAR", &bCurveSelect[CURVE_LINEAR]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_LINEAR;
+			if (ImGui::Selectable("SINE", &bCurveSelect[CURVE_SIN]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SIN;
+
+
+			
+			if (ImGui::InputFloat("fCurvePower", &tCurData.fCurvePower))
+			{
+			}
+			if (ImGui::InputFloat("fCurvePowerRange", &tCurData.fCurvePowerRange))
+			{
+			}
+			if (ImGui::InputFloat("fCurveFrequency", &tCurData.fCurveFrequency))
+			{
+			}
+			if (ImGui::InputFloat("fCurveFrequencyRange", &tCurData.fCurveFrequencyRange))
+			{
+			}
+			if (ImGui::InputFloat("fCurveAngle", &tCurData.fCurveAngle))
+			{
+			}
+			if (ImGui::InputFloat("fCurveAngleRange", &tCurData.fCurveAngleRange))
+			{
+			}
+
 
 
 
@@ -1357,7 +1412,7 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
-
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_eCurveType, sizeof(CURVE_TYPE));
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -1380,11 +1435,15 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBlackBackGround, sizeof(_bool));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bFixed, sizeof(_bool));
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iWidthSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_iHeightSize, sizeof(_uint));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDuration, sizeof(_float));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDurationRange, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDissolvePower, sizeof(_float));
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_eCurveType, sizeof(CURVE_TYPE));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));

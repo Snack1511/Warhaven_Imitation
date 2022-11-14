@@ -355,6 +355,9 @@ void CInstancingEffects::My_Tick()
 		*((_float4*)(&(m_pInstanceMatrices[i].m[1]))) = vUp.Normalize() * m_pInstancingDatas[i].vScale.y;
 		*((_float4*)(&(m_pInstanceMatrices[i].m[2]))) = vLook.Normalize() * m_pInstancingDatas[i].vScale.z;
 		*((_float4*)(&(m_pInstanceMatrices[i].m[3]))) = vOriginPos;
+
+
+
 	}
 
 
@@ -481,7 +484,7 @@ _bool CInstancingEffects::Fade_Lerp(_uint iIndex)
 			_float fRatio = 0.f;
 			if (0 < m_pInstancingDatas[iIndex].fDissolveEndTime) //animation dissolve ÀÎ °æ¿ì
 			{
-				fRatio = m_pInstancingDatas[iIndex].fTimeAcc / (m_pInstancingDatas[iIndex].fDissolveEndTime - m_pInstancingDatas[iIndex].fFadeOutStartTime);
+				fRatio = m_pInstancingDatas[iIndex].fTimeAcc / (m_pInstancingDatas[iIndex].fDissolveEndTime - (m_pInstancingDatas[iIndex].fFadeInTime + m_pInstancingDatas[iIndex].fFadeOutStartTime));
 				fRatio = fabs(fRatio);
 			}
 			else

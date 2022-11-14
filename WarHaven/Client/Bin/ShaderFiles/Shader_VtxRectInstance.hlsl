@@ -223,6 +223,13 @@ PS_OUT PS_ANIMATION_ALPHA_MAIN(PS_IN In)
 
 	Out.vDiffuse = vMaskDesc; //마스크의 색상까지 가져옴
 
+	if (g_bBlackBG)
+	{
+		Out.vDiffuse.a = vMaskDesc.r;
+	}
+	else
+		Out.vDiffuse.a = vMaskDesc.a;
+
 	if (Out.vDiffuse.a < 0.01f)
 		discard;
 
@@ -293,6 +300,13 @@ PS_OUT PS_ANIMATION_DISSOLVE_MAIN(PS_IN In)
 	vector vMaskDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	Out.vDiffuse = vMaskDesc; //마스크의 색상까지 가져옴
+
+	if (g_bBlackBG)
+	{
+		Out.vDiffuse.a = vMaskDesc.r;
+	}
+	else
+		Out.vDiffuse.a = vMaskDesc.a;
 
 	if (Out.vDiffuse.a < 0.01f)
 		discard;
