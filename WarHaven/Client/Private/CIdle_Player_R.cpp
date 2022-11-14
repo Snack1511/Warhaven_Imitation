@@ -50,7 +50,7 @@ HRESULT CIdle_Player_R::Initialize()
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.f;
+    m_fAnimSpeed = 1.f;
 
     m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
     
@@ -66,10 +66,12 @@ HRESULT CIdle_Player_R::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
 
-	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_R);
 
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+
+
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
     
 
     

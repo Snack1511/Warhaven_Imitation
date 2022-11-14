@@ -133,6 +133,7 @@ public: /* For. Camera_Manager */
 	void		Add_Camera(wstring strKey, CCamera* pCamera);
 	CCamera* Change_Camera(wstring strKey);
 	CCamera* Get_CurCam();
+	_float4		Get_CurCamLook();
 	_float4		Get_ViewPos();
 	_float4x4	Get_CurProjMatrix();
 	_float4x4	Get_CurViewMatrix();

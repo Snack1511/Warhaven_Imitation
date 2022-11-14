@@ -42,6 +42,7 @@ public:
 
 private:
 	BONECOLLIDERDESC	m_tColliderDesc;
+	_float4				m_vPrevUp = _float4(0.f, 1.f, 0.f, 0.f);
 	_float4				m_vPrevPos = ZERO_VECTOR;
 
 	//실제 현재 충돌중 여부

@@ -30,6 +30,10 @@
 
 #include "CBoneCollider.h"
 
+
+#define PHYSX_ON
+
+
 CUnit::CUnit()
 {
 }
@@ -129,7 +133,10 @@ void CUnit::Reserve_State(STATE_TYPE eType)
 
 void CUnit::Teleport_Unit(_float4 vPosition)
 {
+#ifdef PHYSX_ON
 	GET_COMPONENT(CPhysXCharacter)->Set_Position(vPosition);
+
+#endif
 }
 
 
@@ -155,12 +162,15 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component(CPhysics::Create(0));
 
+#ifdef PHYSX_ON
+
 	//PhysX캐릭터 : 캐릭터 본체
 	CPhysXCharacter::PHYSXCCTDESC tDesc;
 	tDesc.fRadius = 0.25f;
 	tDesc.fHeight = 1.0f;
 	CPhysXCharacter* pPhysXCharacter = CPhysXCharacter::Create(CP_BEFORE_TRANSFORM, tDesc);
 	Add_Component(pPhysXCharacter);
+#endif // PHYSX_OFF
 
 	
 	
@@ -174,7 +184,13 @@ HRESULT CUnit::Initialize()
 	m_pModelCom = GET_COMPONENT(CModel);
 	m_pAnimator = GET_COMPONENT(CAnimator);
 	m_pPhysics = GET_COMPONENT(CPhysics);
+
+#ifdef PHYSX_ON
 	m_pPhysXCharacter = GET_COMPONENT(CPhysXCharacter);
+	if (!m_pPhysXCharacter)
+		return E_FAIL;
+#endif // PHYSX_OFF
+
 
 	if (!m_pModelCom)
 		return E_FAIL;
@@ -185,8 +201,7 @@ HRESULT CUnit::Initialize()
 	if (!m_pPhysics)
 		return E_FAIL;
 
-	if (!m_pPhysXCharacter)
-		return E_FAIL;
+	
 
 
 	return S_OK;
@@ -200,7 +215,10 @@ HRESULT CUnit::Start()
 
 	//m_pAnimator->Set_CurAnimIndex(ANIM_BASE, 22);
 	//DISABLE_COMPONENT(m_pPhysics);
+
+#ifdef PHYSX_ON
 	m_pPhysics->Set_NaviOn();
+#endif
 
 	CallBack_CollisionEnter += bind(&CUnit::Unit_CollisionEnter, this, placeholders::_1, placeholders::_2);
 	CallBack_CollisionStay += bind(&CUnit::Unit_CollisionStay, this, placeholders::_1, placeholders::_2);

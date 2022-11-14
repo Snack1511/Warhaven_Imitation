@@ -24,9 +24,6 @@ CShader::CShader(const CShader& rhs)
 
 CShader::~CShader()
 {
-	_long dwCnt = 0;
-
-	dwCnt = m_pEffect.Reset();
 }
 
 CShader* CShader::Create(_uint iGroupIdx, const _uint& iShaderFileIdx, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElement)

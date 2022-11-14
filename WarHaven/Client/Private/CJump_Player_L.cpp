@@ -41,14 +41,15 @@ HRESULT CJump_Player_L::Initialize()
     m_iStateChangeKeyFrame = 0;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.f;
+    m_fInterPolationTime = 0.05f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.5f;
+    m_fAnimSpeed = 1.f;
 
 
 
     m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_L);
+    m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_L);
 
 
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 6;

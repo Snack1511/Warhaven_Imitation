@@ -14,8 +14,8 @@ struct DEFAULTFOLLOWDESC
 	//_float	fDefaultFOV = 1.22173f;
 	_float	fDefaultFOV = 0.785398f;
 	//_float	fDefaultDistance = 2.5f;
-	_float	fDefaultDistance = 4.5f;
-	_float4 vDefaultOffset = _float4(0.5f, 1.5f, 0.f, 1.f);
+	_float	fDefaultDistance = 3.1f;
+	_float4 vDefaultOffset = _float4(0.65f, 1.5f, 0.f, 1.f);
 	_float	fDefaultLerpTime = 1.5f;
 	_float	fMaxDistance = 1.5f;
 };

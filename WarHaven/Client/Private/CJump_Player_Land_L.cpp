@@ -35,13 +35,13 @@ HRESULT CJump_Player_Land_L::Initialize()
     m_iAnimIndex = 9;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_JUMP_LAND_PLAYER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_iStateChangeKeyFrame = 5;
+    m_iStateChangeKeyFrame = 30;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.f;
+    m_fInterPolationTime = 0.05f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.5f;
+    m_fAnimSpeed = 2.f;
 
 	m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
 
@@ -55,8 +55,7 @@ HRESULT CJump_Player_Land_L::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
-
-	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_L);
+    
 
 
 	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);

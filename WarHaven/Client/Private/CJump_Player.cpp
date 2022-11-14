@@ -21,6 +21,7 @@ HRESULT CJump_Player::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
 
+
     return S_OK;
 }
 
@@ -32,7 +33,7 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
     /* OwnerÀÇ Animator Set Idle·Î */
 
-    pOwner->Get_PhysicsCom()->Set_Jump(4.5f);
+    pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -60,16 +61,9 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (!pOwner->Is_Air())
-        return STATE_JUMP_LAND_PLAYER_R;
-
-    
         
    
     return __super::Tick(pOwner, pAnimator);
-
-
-    
 }
 
 void CJump_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)

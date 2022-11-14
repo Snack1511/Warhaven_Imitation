@@ -106,9 +106,15 @@ void CPhysXCharacter::Tick()
 	vMove += vFall;
 
 	m_bColGround = false;
+
+	//칼에 자꾸 막힘
+	//Move가 아니라 set posi로 가자 안댐
+	//
+
 	m_pPxController->move(PxVec3(vMove.x, vMove.y, vMove.z), 0.f, fDT(0), m_tControllerFilters);
 
-
+	
+	
 	//만약 move에서 m_bColGround가 true가 안댔다면
 	//땅에 붙은상황
 	if (m_bColGround)

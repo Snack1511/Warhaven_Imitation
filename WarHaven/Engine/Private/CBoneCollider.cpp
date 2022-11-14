@@ -83,7 +83,10 @@ void CBoneCollider::Late_Tick()
 	m_vPrevPos = vPos;
 
 	m_bCollisionTemp = false;
-	m_pPxController->setUpDirection(CUtility_PhysX::To_PxVec3(vUp.Normalize()));
+	m_pPxController->setUpDirection(CUtility_PhysX::To_PxVec3(m_vPrevUp.Normalize()));
+	m_vPrevUp = vUp;
+
+
 	m_pPxController->setPosition(CUtility_PhysX::To_PxExtendedVec3(m_vPrevPos));
 
 	m_pPxController->move(CUtility_PhysX::To_PxVec3(vMove), 0.f, fDT(0), m_tControllerFilters);

@@ -140,3 +140,21 @@ _float4 CUtility_Transform::Get_Dir_2D(CTransform* pFrom, CTransform* pTo)
 	vDir.y = 0.f;
 	return vDir.Normalize();
 }
+
+_float CUtility_Transform::Get_LookRotateAngle(_float4 vLook)
+{
+	_float4 vOriginLook = vLook;
+	vOriginLook.y = 0.f;
+	vOriginLook.Normalize();
+
+	_float4 vRealLook = vLook;
+	vRealLook.Normalize();
+
+	
+	_float fCosTheta = vOriginLook.Dot(vRealLook);
+	
+	if (vRealLook.y < 0.f)
+		fCosTheta *= -1.f;
+
+	return fCosTheta;
+}

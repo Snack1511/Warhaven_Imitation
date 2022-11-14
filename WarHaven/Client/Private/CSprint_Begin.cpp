@@ -120,7 +120,15 @@ STATE_TYPE CSprint_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
     if (KEY(LSHIFT, HOLD))
     {
-        return m_eStateType;
+        if (
+            KEY(W, HOLD) ||
+            KEY(A, HOLD) ||
+            KEY(S, HOLD) ||
+            KEY(D, HOLD)
+            )
+        {
+            return m_eStateType;
+        }
     }
 
 

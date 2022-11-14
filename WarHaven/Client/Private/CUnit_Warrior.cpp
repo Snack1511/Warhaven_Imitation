@@ -85,14 +85,14 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 1.3f;
+	tDesc.fHeight = 0.7f;
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.1f;
 	// Ä® ºÙÀÏ »À
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 
 	//Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
-	tDesc.vOffset = _float4(0.f, 0.f, -80.f);
+	tDesc.vOffset = _float4(0.f, 0.f, -110.f);
 
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
@@ -140,10 +140,10 @@ void CUnit_Warrior::My_LateTick()
 		return;
 
 	if (KEY(NUM8, TAP))
-		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 10.f, 50.f));
+		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
 
-	if (KEY(SPACE, TAP))
+	/*if (KEY(SPACE, TAP))
 	{
 		m_pPhysics->Set_Jump(7.f);
-	}
+	}*/
 }

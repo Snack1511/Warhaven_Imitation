@@ -253,6 +253,31 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
+	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
+		2. 뒤로가는 키는 Walk로 가게해라 뒤로가는 RUn은 없다
+		3. Run 끝날때 모션
+		4. Walk
+		5. 공격 마우스 시야에 따라
+
+		-
+		절댓값이
+		0.9~1 중단
+
+		- 양수인지 음수인지 확인
+
+		양수일때 0.9보다 작으면 올려베기
+		음수일때
+		0보다 작으면 내려베기
+
+
+		6. 가드브레이크 E키로 변경*/
+
+
+
+
+
+
+
     CUnit::UNIT_MODEL_DATA  tModelData;
 
 	//0. Warrior
@@ -336,7 +361,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, tEnemyUnitColDesc);
 
-
+	pTestEnemyWarrior->Teleport_Unit(_float4(0.f, 0.f, 2.f));
 	Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
 
 	/*fColRadius = 1.f;
@@ -394,6 +419,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 
 	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
 	pDrawableTerrain->Initialize();
+	pDrawableTerrain->Get_Transform()->Set_World(WORLD_POS, _float4(0.f, 0.f, 5.f));
+	pDrawableTerrain->Get_Transform()->Make_WorldMatrix();
 	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
@@ -445,7 +472,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_HR()
 
 HRESULT CLevel_Test::SetUp_Prototypes_YJ()
 {
-	CDebugObject* pDebugObject = CDebugObject::Create(_float4(0.f, -2.f, 0.f), _float4(10.f, 1.f, 10.f), ZERO_VECTOR);
+	CDebugObject* pDebugObject = CDebugObject::Create(_float4(0.f, -2.f, 0.f), _float4(20.f, 1.f, 20.f), ZERO_VECTOR);
 	pDebugObject->Initialize();
 	Ready_GameObject(pDebugObject, GROUP_PROP);
 

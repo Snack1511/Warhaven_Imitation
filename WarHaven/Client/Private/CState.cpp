@@ -98,7 +98,6 @@ void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
         }
     }
 }
-
 _uint CState::Get_Direction()
 {
 	if (KEY(W, HOLD))

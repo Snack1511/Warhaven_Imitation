@@ -5,8 +5,8 @@
 
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
-//#define	YJ_DEBUG
-//] #define USE_GPU
+#define	YJ_DEBUG
+// #define USE_GPU
 
 
 CPhysX_Manager::CPhysX_Manager()
@@ -243,8 +243,8 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 
 	//어느 높이까지 올라갈 수 있는지
 	tCCT.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
-	tCCT.stepOffset = 0.5f;
-	tCCT.contactOffset = 0.1f;
+	tCCT.stepOffset = 0.2f;
+	tCCT.contactOffset = 0.05f;
 
 	//경사진 슬로프만나면 어떻게 할 지
 	tCCT.nonWalkableMode = PxControllerNonWalkableMode::ePREVENT_CLIMBING_AND_FORCE_SLIDING;

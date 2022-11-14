@@ -55,6 +55,9 @@ HRESULT CSwitchRtoL::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
     m_vecAdjState.push_back(STATE_ATTACK_UPPER_MIDDLE_PLAYER_L);
 
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
+
+
     return S_OK;
 }
 

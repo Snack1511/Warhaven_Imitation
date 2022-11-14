@@ -50,7 +50,7 @@ HRESULT CIdle_Player_L::Initialize()
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.f;
+    m_fAnimSpeed = 1.f;
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
@@ -69,11 +69,12 @@ HRESULT CIdle_Player_L::Initialize()
 
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
-	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_L);
-
 
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
+
 
     return S_OK;
 }

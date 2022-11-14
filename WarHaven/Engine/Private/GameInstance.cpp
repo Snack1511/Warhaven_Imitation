@@ -1,5 +1,8 @@
 #include "..\Public\GameInstance.h"
 
+#include "Transform.h"
+#include "Camera.h"
+
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
@@ -426,6 +429,11 @@ CCamera * CGameInstance::Change_Camera(wstring strKey)
 CCamera* CGameInstance::Get_CurCam()
 {
 	return m_pCameraManager->Get_CurCam();
+}
+
+_float4 CGameInstance::Get_CurCamLook()
+{
+	return m_pCameraManager->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
 }
 
 _float4 CGameInstance::Get_ViewPos()
