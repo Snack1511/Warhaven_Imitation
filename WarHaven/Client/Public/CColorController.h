@@ -1,6 +1,6 @@
 #pragma once
-#include "Component.h"
 #include "Client_Defines.h"
+#include "Component.h"
 
 BEGIN(Engine)
 class CMeshContainer;
@@ -10,6 +10,7 @@ class CAnimator;
 END
 
 BEGIN(Client)
+
 class CColorController 
 	: public CComponent
 {

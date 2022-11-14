@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "CColorController.h"
 
 #include "CShader.h"

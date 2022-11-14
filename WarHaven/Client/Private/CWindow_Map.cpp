@@ -1265,7 +1265,7 @@ void CWindow_Map::Delete_Light(char* pLightName)
 #pragma region 파일입출력 함수
 void CWindow_Map::Save_MapData(string BasePath, string SaveName)
 {
-    MAPDATA tMapData;
+    MAPDATA     tMapData;
     ofstream	writeFile;
     if (FAILED(tMapData.SaveData(writeFile, BasePath, SaveName)))
     {
@@ -2731,6 +2731,7 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
 #pragma endregion
 
 #pragma region MAPDATA 멤버함수
+
 void CWindow_Map::MAPDATA::Initialize()
 {
     TerrainDataPath = wstring();
@@ -2739,6 +2740,8 @@ void CWindow_Map::MAPDATA::Initialize()
     NavDataPath = wstring();
     LightDataPath = wstring();
 }
+
+
 void CWindow_Map::MAPDATA::Make_Path(string BasePath, string DataName)
 {
     Initialize();
@@ -2972,3 +2975,4 @@ void CWindow_Map::tagMapToolInstanceObjData::Load(ifstream& readFile)
     readFile.read((char*)ArrInstanceVTX, sizeof(VTXINSTANCE) * iInstanceNums);
 
 }
+

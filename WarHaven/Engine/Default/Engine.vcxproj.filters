@@ -241,13 +241,13 @@
     <Filter Include="03. Instances\03. Component\03. Renderer\TerrainRenderer">
       <UniqueIdentifier>{06bdda19-c2ba-43e1-bc92-13b8e2c21d32}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
+
     <Filter Include="03. Instances\03. Component\02. Collider\Collider_Sphere\MultiSphere">
       <UniqueIdentifier>{320eb840-ca3e-46ba-8c87-11c3f8719236}</UniqueIdentifier>
-=======
+</Filter>
     <Filter Include="03. Instances\03. Component\03. Renderer\UIRenderer">
       <UniqueIdentifier>{192dc032-c856-4bcf-8be9-1b3caf6413f0}</UniqueIdentifier>
->>>>>>> origin/1113_정진
+
     </Filter>
   </ItemGroup>
   <ItemGroup>

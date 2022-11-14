@@ -2,10 +2,12 @@
 #include "CBounce_Player.h"
 
 BEGIN(Engine)
-class CColorController;
 END
 
 BEGIN(Client)
+
+class CColorController;
+
 class CBounce_Player_L
 	: public CBounce_Player
 {

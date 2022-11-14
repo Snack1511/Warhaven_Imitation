@@ -1,6 +1,6 @@
 #include "..\Public\Easing_Utillity.h"
 
-#define PI 3.141592
+#define PI 3.141592f
 
 CEasing_Utillity::CEasing_Utillity()
 {

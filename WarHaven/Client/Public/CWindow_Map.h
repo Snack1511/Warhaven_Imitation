@@ -1,6 +1,9 @@
 #pragma once
+
 #define HASHING(Type, Value) hash<Type>()(Value)
+
 #include "CImGui_Window.h"
+
 BEGIN(Engine)
 class CGameObject;
 class CTransform;
@@ -8,8 +11,10 @@ class CCamera;
 END
 
 BEGIN(Client)
+
 class CTerrain;
 class CDrawable_Terrain;
+
 class CWindow_Map final
 	: public CImGui_Window
 {
@@ -18,13 +23,15 @@ public:
 	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
 	enum PICKINGTYPE {PICK_OBJECT, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_INSTANCEOBJECT, PICK_NONE};
 	enum CAMERATYPE {CAM_RIGHT, CAM_UP, CAM_LOOK, CAM_FREE};
-	typedef struct MAPDATA
+
+	struct MAPDATA
 	{
 		wstring TerrainDataPath;
 		wstring ObjectDataPath;
 		wstring InstanceDataPath;
 		wstring NavDataPath;
 		wstring LightDataPath;
+
 	public:
 		void Initialize();
 		void Make_Path(string BasePath, string DataName);
@@ -32,6 +39,7 @@ public:
 		HRESULT LoadData(ifstream& rhsReadFile, string FilePath);
 		HRESULT SavePath(ofstream& rhsWriteFile, wstring strPath);
 		HRESULT LoadPath(ifstream& rhsReadFile, wstring& strPath);
+
 	};
 
 

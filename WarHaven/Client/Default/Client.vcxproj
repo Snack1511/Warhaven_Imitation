@@ -128,7 +128,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <MaxFilesInUnityFile>10</MaxFilesInUnityFile>
+      <MaxFilesInUnityFile>20</MaxFilesInUnityFile>
       <AdditionalOptions>/Zc:twoPhase-  /Zm100 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -159,7 +159,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:twoPhase-  /Zm100 %(AdditionalOptions)</AdditionalOptions>
-      <MaxFilesInUnityFile>10</MaxFilesInUnityFile>
+      <MaxFilesInUnityFile>20</MaxFilesInUnityFile>
       <UnityFilesDirectory>.</UnityFilesDirectory>
     </ClCompile>
     <Link>
