@@ -6,7 +6,7 @@
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
 #define	YJ_DEBUG
-// #define USE_GPU
+ //#define USE_GPU
 
 
 CPhysX_Manager::CPhysX_Manager()

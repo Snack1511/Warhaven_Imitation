@@ -86,6 +86,7 @@ void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
     _uint iCurKeyFrame = pAnimator->Get_CurAnimFrame();
     
     _uint iSize = (_uint)m_vecKeyFrameEvent.size();
+
     for (_uint i = 0; i < iSize; ++i)
     {
         if (iCurKeyFrame >= m_vecKeyFrameEvent[i].iKeyFrame)
@@ -93,7 +94,7 @@ void CState::Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator)
             if (m_vecKeyFrameEvent[i].bExecuted)
                 continue;
 
-            On_KeyFrameEvent(pOwner, pAnimator, m_vecKeyFrameEvent[i], i);
+            On_KeyFrameEvent(pOwner, pAnimator, m_vecKeyFrameEvent[i], m_vecKeyFrameEvent[i].iSequence);
             m_vecKeyFrameEvent[i].bExecuted = true;
         }
     }
@@ -298,13 +299,32 @@ _uint CState::Move(_uint iDirection, CUnit* pOwner)
 	vDir.y = 0.f;
 
 	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
-	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
-	pMyPhysicsCom->Set_Dir(vDir);
+
+	if (iDirection == STATE_DIRECTION_S || 
+		iDirection == STATE_DIRECTION_SW ||
+		iDirection == STATE_DIRECTION_SE 
+		)
+		pMyPhysicsCom->Set_MaxSpeed(2.f);
+	else
+		pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+
+	if (!vDir.Is_Zero())
+		pMyPhysicsCom->Set_Dir(vDir);
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
 
 	return iDirection;
 
+
+}
+
+void CState::Follow_MouseLook(CUnit* pOwner)
+{
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCamLook();
+	vCamLook.y = 0.f;
+	vCamLook.Normalize();
+
+	pOwner->Get_Transform()->Set_LerpLook(vCamLook, 0.1f);
 
 }
 
@@ -336,15 +356,18 @@ void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax)
 }
 
 
-void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint eEventType)
+void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence)
 {
-    if (eEventType >= KEYFRAME_EVENT::EVENT_END)
-        return;
-
     KEYFRAME_EVENT  tEvent;
     tEvent.iKeyFrame = iKeyFrameIndex;
-    tEvent.eEventType = (KEYFRAME_EVENT::EVENT_TYPE)eEventType;
-    
+	tEvent.iSequence = iSequence;
     m_vecKeyFrameEvent.push_back(tEvent);
+
+	_uint iSize = (_uint)m_vecKeyFrameEvent.size();
+
+	if (iSize > 5)
+	{
+		int i = 0;
+	}
     
 }

@@ -66,6 +66,8 @@ HRESULT CChannel::Initialize(CHANNEL_DESC tChannelDesc)
 
 void CChannel::Update_TransformationMatrices(_float fCurrentTime, _bool bDivide, ANIM_DIVIDE eAnimDivide)
 {
+	//CenterNode는 위치는 하체에서 받아와야함
+
 	KEYFRAME& tPrevFrame = m_pHierarchyNode->Get_PrevKeyFrame();
 	KEYFRAME& tCurFrame = m_pHierarchyNode->Get_CurKeyFrame();
 	KEYFRAME& tBlendFrame = m_pHierarchyNode->Get_BlendKeyFrame();
@@ -73,11 +75,65 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime, _bool bDivide,
 	{
 		if (m_pHierarchyNode->Get_BoneType() != eAnimDivide && m_pHierarchyNode->Get_BoneType() != ANIM_DIVIDE::eDEFAULT)
 		{
-			//내뼈가 아니면 시간만 조용히 갱신해놓고 튀기
-			while (fCurrentTime > m_pKeyFrames[m_iCurrentKeyFrame + 1].fTime)
+			//if (m_pHierarchyNode->Is_CenterNode())
+			//{
+			//	//내가 CenterNode면 위치는 하체꺼 가져오기
+			//	_vector			vScale, vRotation, vPosition;
+
+
+			//	if (fCurrentTime > m_pKeyFrames[m_iNumKeyframes - 1].fTime)
+			//	{
+			//		vPosition = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame].vPosition);
+			//		vPosition = XMVectorSetW(vPosition, 1.f);
+			//	}
+
+			//	else
+			//	{
+			//		while (fCurrentTime > m_pKeyFrames[m_iCurrentKeyFrame + 1].fTime)
+			//		{
+			//			++m_iCurrentKeyFrame;
+			//			if (m_bBlend)
+			//				m_bBlend = false;
+			//		}
+
+
+			//		_float fRatio = (fCurrentTime - m_pKeyFrames[m_iCurrentKeyFrame].fTime)
+			//			/ (m_pKeyFrames[m_iCurrentKeyFrame + 1].fTime - m_pKeyFrames[m_iCurrentKeyFrame].fTime);
+
+			//		_vector			vSourPosition;
+			//		_vector			vDestPosition;
+			//		vSourPosition = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame].vPosition);
+
+
+
+			//		vDestPosition = XMLoadFloat3(&m_pKeyFrames[m_iCurrentKeyFrame + 1].vPosition);
+			//		vPosition = XMVectorLerp(vSourPosition, vDestPosition, fRatio);
+			//		vPosition = XMVectorSetW(vPosition, 1.f);
+			//	}
+
+			//	XMStoreFloat3(&tCurFrame.vPosition, vPosition);
+
+
+			//	if (nullptr != m_pHierarchyNode)
+			//	{
+			//		m_pHierarchyNode->Set_Position(vPosition);
+			//	}
+			//}
+			//else
 			{
-				++m_iCurrentKeyFrame;
+				//내뼈가 아니면 시간만 조용히 갱신해놓고 튀기
+				while (fCurrentTime > m_pKeyFrames[m_iCurrentKeyFrame + 1].fTime)
+				{
+					++m_iCurrentKeyFrame;
+				}
 			}
+			
+
+			
+
+
+
+
 
 			return;
 		}
@@ -157,7 +213,10 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime, _bool bDivide,
 
 	XMStoreFloat3(&tCurFrame.vScale, vScale);
 	XMStoreFloat4(&tCurFrame.vRotation, vRotation);
-	XMStoreFloat3(&tCurFrame.vPosition, vPosition);
+
+	//상하체분리중에 센터노드는 포지션 갱신하면 안댐
+	//if (!(bDivide && m_pHierarchyNode->Is_CenterNode()))
+		XMStoreFloat3(&tCurFrame.vPosition, vPosition);
 
 
 
@@ -167,7 +226,10 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime, _bool bDivide,
 
 	if (nullptr != m_pHierarchyNode)
 	{
-		m_pHierarchyNode->Set_TransformationMatrix(TransMat);
+		/*if (bDivide && m_pHierarchyNode->Is_CenterNode())
+			m_pHierarchyNode->Set_Translation_NoPos(TransMat);
+		else*/
+			m_pHierarchyNode->Set_TransformationMatrix(TransMat);
 	}
 	else
 	{

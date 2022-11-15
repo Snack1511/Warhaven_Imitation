@@ -87,7 +87,7 @@ void CSprint_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	//최대속도 설정
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
 	pMyPhysicsCom->Set_SpeedasMax();
-    pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.7f;
+    pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -95,7 +95,7 @@ void CSprint_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 STATE_TYPE CSprint_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pOwner->Is_Air())
-        return STATE_JUMPFALL_PLAYER_R;
+        return STATE_SPRINT_JUMPFALL_PLAYER;
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 
 

@@ -30,26 +30,39 @@ public:
 	STATE_TYPE	Update_Land(CUnit* pOwner, CAnimator* pAnimator);
 	STATE_TYPE	Update_Idle(CUnit* pOwner, CAnimator* pAnimator);
 
+protected:
+	_float		m_fCreateTimeAcc = 0.f;
+	_float		m_fCreateTime = 0.16f;
+	void		Create_SwordAfterEffect();
 
 protected:
 	//L, R 여부
 	ANIM_TYPE	m_eAnimLeftorRight = ANIM_BASE_R;
 	//몇프레임까지 블렌드 할 지 (공격 실행 프레임)
 	_uint		m_iStopIndex = 9999;
+
+	//공격 끝나는 프레임
+	_uint		m_iAttackEndIndex = 9999;
+
 	//Idle 인덱스
 	_uint		m_iIdle_Index = 9999;
 
 	//Run, Walk 인덱스
-	_uint				m_iRunAnimIndex[STATE_DIRECTION_END] = {};
-	_uint				m_iWalkAnimIndex[STATE_DIRECTION_END] = {};
+	_uint				m_iRunLeftAnimIndex[STATE_DIRECTION_END] = {};
+	_uint				m_iRunRightAnimIndex[STATE_DIRECTION_END] = {};
+	_uint				m_iWalkLeftAnimIndex[STATE_DIRECTION_END] = {};
+	_uint				m_iWalkRightAnimIndex[STATE_DIRECTION_END] = {};
 
 	//Jump 인덱스
-	_uint				m_iJumpAnimIndex[STATE_DIRECTION_END] = {};
+	_uint				m_iJumpLeftAnimIndex[STATE_DIRECTION_END] = {};
+	_uint				m_iJumpRightAnimIndex[STATE_DIRECTION_END] = {};
 
 	//Jump Fall 인덱스
-	_uint				m_iJumpFallIndex = 9999;
+	_uint				m_iJumpFallLeftIndex = 9999;
+	_uint				m_iJumpFallRightIndex = 9999;
 	//Land 인덱스
-	_uint				m_iLandIndex = 9999;
+	_uint				m_iLandLeftIndex = 9999;
+	_uint				m_iLandRightIndex = 9999;
 
 	STATE_TYPE			m_eWalkState = STATE_END;
 	STATE_TYPE			m_eRunState = STATE_END;

@@ -15,9 +15,10 @@ class CState
 public:
 	struct KEYFRAME_EVENT
 	{
-		enum EVENT_TYPE {EVENT_MOVE, EVENT_ATTACK, EVENT_ATTACKEND, EVENT_END};
+		//enum EVENT_TYPE {EVENT_MOVE, EVENT_ATTACK, EVENT_ATTACKEND, EVENT_END};
 		_uint	iKeyFrame = 0;
-		EVENT_TYPE	eEventType = EVENT_END;
+		//EVENT_TYPE	eEventType = EVENT_END;
+		_uint	iSequence = 0;
 		_bool	bExecuted = false;
 
 	};
@@ -100,6 +101,7 @@ protected:
 	void	Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float fInterPolationTime);
 
 	_uint	Move(_uint iDirection, CUnit* pOwner);
+	void	Follow_MouseLook(CUnit* pOwner);
 
 
 protected:
@@ -109,7 +111,7 @@ protected:
 
 
 protected:
-	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iEventType);
+	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence);
 	void					Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator);
 	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence) {};
 

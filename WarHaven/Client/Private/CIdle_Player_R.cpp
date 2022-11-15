@@ -105,7 +105,10 @@ void CIdle_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
     /* OwnerÀÇ Animator Set Idle·Î */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
 
-
+    if (ePrevType == STATE_SWITCH_L_TO_R    ||
+        ePrevType == STATE_SPRINT_END_PLAYER
+        )
+        m_fInterPolationTime = 0.f;
     
 
 

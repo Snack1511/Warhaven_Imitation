@@ -3,6 +3,8 @@
 
 #include "UsefulHeaders.h"
 
+#include "CSword_Effect.h"
+
 CState_Blendable::CState_Blendable()
 {
 }
@@ -16,9 +18,14 @@ HRESULT CState_Blendable::Initialize()
 #define INDEXCHECK(index) if (index >= 9999) return E_FAIL;
 
 	INDEXCHECK(m_iIdle_Index);
-	INDEXCHECK(m_iJumpFallIndex);
+	INDEXCHECK(m_iJumpFallLeftIndex);
+	INDEXCHECK(m_iJumpFallRightIndex);
+
+	INDEXCHECK(m_iLandLeftIndex);
+	INDEXCHECK(m_iLandRightIndex);
+
 	INDEXCHECK(m_iFinishedFrame);
-	INDEXCHECK(m_iLandIndex);
+	INDEXCHECK(m_iAttackEndIndex);
 
 #define STATECHECK(state) if (state >= STATE_END) return E_FAIL;
 
@@ -31,16 +38,20 @@ HRESULT CState_Blendable::Initialize()
 
 	for (_uint i = 0; i < STATE_DIRECTION_END; ++i)
 	{
-		if (m_iRunAnimIndex[i] <= 0 ||
-			m_iWalkAnimIndex[i] <= 0 ||
-			m_iJumpAnimIndex[i] <= 0
+		if (m_iRunLeftAnimIndex[i] <= 0 ||
+			m_iRunRightAnimIndex[i] <= 0 ||
+			m_iWalkLeftAnimIndex[i] <= 0 ||
+			m_iWalkRightAnimIndex[i] <= 0 ||
+			m_iJumpLeftAnimIndex[i] <= 0 ||
+			m_iJumpRightAnimIndex[i] <= 0
 			)
 			return E_FAIL;
 	}
 
 
 	/* Blend Stop Event*/
-	Add_KeyFrame(m_iStopIndex, 0);
+	Add_KeyFrame(m_iStopIndex, 998);
+	Add_KeyFrame(m_iAttackEndIndex, 999);
 
 	m_fMyAccel = 20.f;
 	m_fMyMaxLerp = 0.1f;
@@ -50,13 +61,6 @@ HRESULT CState_Blendable::Initialize()
 
 void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData )
 {
-#ifdef _DEBUG
-	if (FAILED(Initialize()))
-	{
-		Call_MsgBox(L"Index 누락 : CState_Blendable");
-	}
-
-#endif // _DEBUG
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 
@@ -65,11 +69,15 @@ void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 {
 	pAnimator->Stop_ActionAnim();
+	pOwner->TurnOn_TrailEffect(false);
+
 }
 
 STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	STATE_TYPE	eStateType = STATE_END;
+
+	Create_SwordAfterEffect();
 
 	switch (m_eEnum)
 	{
@@ -100,6 +108,9 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	default:
 		break;
 	}
+	Follow_MouseLook(pOwner);
+
+	
 
 	return __super::Tick(pOwner, pAnimator);
 }
@@ -112,7 +123,15 @@ STATE_TYPE CState_Blendable::Update_Walk(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
 		{
-			Move_Cycle(pAnimator, m_iWalkAnimIndex, m_eAnimLeftorRight);
+			if (m_eAnimLeftorRight == ANIM_BASE_L)
+			{
+				Move_Cycle(pAnimator, m_iWalkLeftAnimIndex, m_eAnimLeftorRight);
+			}
+			else
+			{
+				Move_Cycle(pAnimator, m_iWalkRightAnimIndex, m_eAnimLeftorRight);
+			}
+
 		}
 		else
 		{
@@ -124,9 +143,11 @@ STATE_TYPE CState_Blendable::Update_Walk(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		Move(Get_Direction(), pOwner);
 
-		if (pAnimator->Is_ActionFinished())
-			return m_eWalkState;
+		
 	}
+
+	if (pAnimator->Is_ActionFinished())
+		return m_eWalkState;
 
 	if (pOwner->Is_Air())
 	{
@@ -149,7 +170,16 @@ STATE_TYPE CState_Blendable::Update_Run(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
 		{
-			Move_Cycle(pAnimator, m_iRunAnimIndex, m_eAnimLeftorRight);
+			if (m_eAnimLeftorRight == ANIM_BASE_L)
+			{
+				Move_Cycle(pAnimator, m_iRunLeftAnimIndex, m_eAnimLeftorRight);
+			}
+			else
+			{
+				Move_Cycle(pAnimator, m_iRunRightAnimIndex, m_eAnimLeftorRight);
+			}
+
+
 		}
 		else
 		{
@@ -160,9 +190,11 @@ STATE_TYPE CState_Blendable::Update_Run(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		Move(Get_Direction(), pOwner);
 
-		if (pAnimator->Is_ActionFinished())
-			return m_eRunState;
+		
 	}
+
+	if (pAnimator->Is_ActionFinished())
+		return m_eRunState;
 
 	if (pOwner->Is_Air())
 	{
@@ -179,12 +211,6 @@ STATE_TYPE CState_Blendable::Update_Run(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Blendable::Update_Jump(CUnit* pOwner, CAnimator* pAnimator)
 {
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	vCamLook.y = 0.f;
-	vCamLook.Normalize();
-
-	pOwner->Get_Transform()->Set_LerpLook(vCamLook, m_fMyMaxLerp);
-
 	if (!pOwner->Is_Air())
 		On_EnumChange(Enum::eLAND, pAnimator);
 	else if (pAnimator->Is_CurAnimFinished())
@@ -198,12 +224,6 @@ STATE_TYPE CState_Blendable::Update_Jump(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Blendable::Update_Fall(CUnit* pOwner, CAnimator* pAnimator)
 {
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	vCamLook.y = 0.f;
-	vCamLook.Normalize();
-
-	pOwner->Get_Transform()->Set_LerpLook(vCamLook, m_fMyMaxLerp);
-
 	if (!pOwner->Is_Air())
 		On_EnumChange(Enum::eLAND, pAnimator);
 
@@ -215,13 +235,13 @@ STATE_TYPE CState_Blendable::Update_Fall(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Blendable::Update_Land(CUnit* pOwner, CAnimator* pAnimator)
 {
-	Move(Get_Direction(), pOwner);
+	//Move(Get_Direction(), pOwner);
 
 	if (pAnimator->Is_CurAnimFinished())
 		On_EnumChange(Enum::eIDLE, pAnimator);
 
 	if (pAnimator->Is_ActionFinished())
-		return m_eLandState;
+		return m_eIdleState;
 
 
 
@@ -256,6 +276,17 @@ STATE_TYPE CState_Blendable::Update_Idle(CUnit* pOwner, CAnimator* pAnimator)
 	return STATE_END;
 }
 
+void CState_Blendable::Create_SwordAfterEffect()
+{
+	m_fCreateTimeAcc += fDT(0);
+	if (m_fCreateTimeAcc >= m_fCreateTime)
+	{
+		m_fCreateTimeAcc = 0.f;
+		CEffects_Factory::Get_Instance()->Create_Effects(HASHCODE(CSword_Effect), m_pOwner,
+			m_pOwner->Get_Transform()->Get_World(WORLD_POS));
+	}
+}
+
 void CState_Blendable::Move_Cycle(CAnimator* pAnimator, _uint* arrDirectionAnimIndices, ANIM_TYPE eAnimType)
 {
 	_uint iDirection = Get_Direction();
@@ -280,12 +311,27 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 {
 	switch (iSequence)
 	{
-	case 0:
+	case 998:
+		pOwner->TurnOn_TrailEffect(true);
+
 		m_bBlendable = false;
+		if (m_eEnum == Enum::eWALK || m_eEnum == Enum::eRUN)
 		pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
+		cout << "Blendable Off" << endl;
 
 		break;
 
+	case 999:
+		pOwner->TurnOn_TrailEffect(false);
+
+		m_bBlendable = true;
+		if (m_eAnimLeftorRight == ANIM_BASE_L)
+			m_eAnimLeftorRight = ANIM_BASE_R;
+		else
+			m_eAnimLeftorRight = ANIM_BASE_L;
+
+		cout << "Blendable On" << endl;
+		break;
 
 	default:
 		break;
@@ -311,18 +357,29 @@ void CState_Blendable::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 			if (iDirection == STATE_DIRECTION_END)
 				iDirection = STATE_DIRECTION_NW; // 제자리 점프
 
-			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iJumpAnimIndex[iDirection], ANIM_DIVIDE::eBODYLOWER);
-			pAnimator->Set_AnimSpeed(m_eAnimLeftorRight, m_iJumpAnimIndex[iDirection], 2.f);
+			if (m_eAnimLeftorRight == ANIM_BASE_L)
+				pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iJumpLeftAnimIndex[iDirection], ANIM_DIVIDE::eBODYLOWER);
+			else
+				pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iJumpRightAnimIndex[iDirection], ANIM_DIVIDE::eBODYLOWER);
 		}
 		
 
 		break;
 	case Client::CState_Blendable::Enum::eFALL:
-		pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iJumpFallIndex, ANIM_DIVIDE::eBODYLOWER);
+		if (m_eAnimLeftorRight == ANIM_BASE_L)
+			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iJumpFallLeftIndex, ANIM_DIVIDE::eBODYLOWER);
+		else
+			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iJumpFallRightIndex, ANIM_DIVIDE::eBODYLOWER);
+
 		break;
 	case Client::CState_Blendable::Enum::eLAND:
 		m_fMaxSpeed = m_pOwner->Get_Status().fWalkSpeed;
-		pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iLandIndex, ANIM_DIVIDE::eBODYLOWER);
+
+		if (m_eAnimLeftorRight == ANIM_BASE_L)
+			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iLandLeftIndex, ANIM_DIVIDE::eDEFAULT);
+		else
+			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iLandRightIndex, ANIM_DIVIDE::eDEFAULT);
+
 		break;
 
 	case Client::CState_Blendable::Enum::eIDLE:

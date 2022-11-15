@@ -306,9 +306,22 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 
 	_float4x4 mat;
 	mat.Identity();
-	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
+	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(50, 50);
 	pDrawableTerrain->Initialize();
 	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	pDrawableTerrain->Get_Transform()->Set_World(WORLD_POS, _float4(3.f, -5.f, 3.f));
+	pDrawableTerrain->Get_Transform()->Make_WorldMatrix();
+
+	/*for (_uint i = 0; i < 99; ++i)
+	{
+		pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
+		pDrawableTerrain->Initialize();
+		Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+		pDrawableTerrain->Get_Transform()->Set_World(WORLD_POS, _float4(3.f, 0.f, 3.f));
+		pDrawableTerrain->Get_Transform()->Make_WorldMatrix();
+
+	}*/
+	
 	
 	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);

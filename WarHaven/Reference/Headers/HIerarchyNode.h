@@ -23,6 +23,10 @@ public:
 	static CHierarchyNode* Create(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, ANIM_DIVIDE eBoneType);
 
 public:
+	_bool	Is_CenterNode() { return m_bCenterNode; }
+	void	Set_Position(_float4 vPos);
+	void	Set_Translation_NoPos(_float4x4 TransformationMatrix);
+
 	void	Set_Parent(CHierarchyNode* pNode) { m_pParent = pNode; }
 
 	_uint Get_Depth() const {
@@ -83,6 +87,7 @@ private:
 	CGameObject* m_pOwner = nullptr;
 
 	_bool			m_bMoveNode = false;
+	_bool			m_bCenterNode = false;
 
 	_uint			m_iDepth = 0;
 	char			m_szName[MAX_PATH] = "";

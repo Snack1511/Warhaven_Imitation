@@ -35,6 +35,7 @@ CWarrior_Attack_Sting_R* CWarrior_Attack_Sting_R::Create()
 }
 HRESULT CWarrior_Attack_Sting_R::Initialize()
 {
+	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 13;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
@@ -49,17 +50,102 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 80;
-    
-    m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-    m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-    m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
 
-	Add_KeyFrame(40, 0);
+	m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
+
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
+
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+    
+
+	m_iStopIndex = 38;
+	m_iAttackEndIndex = 50;
+
 	Add_KeyFrame(38, 1);
 	Add_KeyFrame(50, 2);
 
 
-    return S_OK;
+	/* Setting for Blendable */
+	m_eAnimLeftorRight = ANIM_BASE_R;
+
+	m_iIdle_Index = 11;
+	m_iLandRightIndex = 17;
+	m_iLandLeftIndex = 9;
+	m_iJumpFallRightIndex = 10;
+	m_iJumpFallLeftIndex = 1;
+
+
+	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 18;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 19;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 20;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 21;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 34;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 35;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 36;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 22;
+
+	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 26;
+	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 27;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 28;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 29;
+	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 30;
+
+
+	m_iWalkRightAnimIndex[STATE_DIRECTION_NW] = 41;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_W] = 45;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 38;
+
+
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NW] = 33;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NE] = 32;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_N] = 31;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SW] = 36;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SE] = 35;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_S] = 34;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_W] = 37;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_E] = 30;
+
+
+
+	m_iJumpRightAnimIndex[STATE_DIRECTION_N] = 14;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_S] = 15;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_W] = 16;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_E] = 13;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_NW] = 12; // 제자리
+	m_iJumpRightAnimIndex[STATE_DIRECTION_NE] = 99; // 의미없는값 채우기 (0이면 터지게 해놔서)
+	m_iJumpRightAnimIndex[STATE_DIRECTION_SW] = 99;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_SE] = 99;
+
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_N] = 6;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_S] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_W] = 8;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_E] = 5;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NE] = 6;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NW] = 6;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 7;
+
+
+	m_eWalkState = STATE_WALK_PLAYER_L;
+	m_eJumpState = STATE_JUMP_PLAYER_L;
+	m_eLandState = STATE_JUMP_LAND_PLAYER_L;
+	m_eFallState = STATE_JUMPFALL_PLAYER_L;
+	m_eRunState = STATE_RUN_PLAYER_L;
+	m_eIdleState = STATE_IDLE_PLAYER_L;
+
+
+	return __super::Initialize();
 }
 
 void CWarrior_Attack_Sting_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -70,8 +156,6 @@ void CWarrior_Attack_Sting_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 
 STATE_TYPE CWarrior_Attack_Sting_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (pOwner->Is_Air())
-		return STATE_JUMPFALL_PLAYER_R;
 
 	if (m_bAttackTrigger)
 	{
@@ -86,6 +170,8 @@ STATE_TYPE CWarrior_Attack_Sting_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CWarrior_Attack_Sting_R::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+	__super::Exit(pOwner, pAnimator);
+
 }
 
 STATE_TYPE CWarrior_Attack_Sting_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -104,15 +190,10 @@ STATE_TYPE CWarrior_Attack_Sting_R::Check_Condition(CUnit* pOwner, CAnimator* pA
 
 void CWarrior_Attack_Sting_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
 	switch (iSequence)
 	{
-	case 0:
-
-		m_bMoveTrigger = false;
-		pOwner->Get_PhysicsCom()->Set_MaxSpeed(3.f);
-		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
-		pOwner->Set_DirAsLook();
-		break;
 
 	case 1:
 		m_bAttackTrigger = true;

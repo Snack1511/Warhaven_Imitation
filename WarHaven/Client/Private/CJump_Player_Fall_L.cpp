@@ -41,7 +41,7 @@ HRESULT CJump_Player_Fall_L::Initialize()
     m_iStateChangeKeyFrame = 0;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.f;
+    m_fInterPolationTime = 0.15f;
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
@@ -49,7 +49,11 @@ HRESULT CJump_Player_Fall_L::Initialize()
 
     m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_L);
 
-
+    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 
     return S_OK;
@@ -57,6 +61,8 @@ HRESULT CJump_Player_Fall_L::Initialize()
 
 void CJump_Player_Fall_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    if (ePrevType == STATE_JUMP_PLAYER_L)
+        m_fInterPolationTime = 0.05f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

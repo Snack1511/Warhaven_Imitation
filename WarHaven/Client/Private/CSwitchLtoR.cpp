@@ -42,14 +42,13 @@ HRESULT CSwitchLtoR::Initialize()
     m_iStateChangeKeyFrame = 10;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.2f;
+    m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 4.2f;
+    m_fAnimSpeed = 3.f;
 
 	m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-	m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-	m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);

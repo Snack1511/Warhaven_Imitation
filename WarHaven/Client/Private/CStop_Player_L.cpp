@@ -42,7 +42,7 @@ HRESULT CStop_Player_L::Initialize()
 
 	m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
 	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
-	m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+	m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
 
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
@@ -52,10 +52,15 @@ HRESULT CStop_Player_L::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
-	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 23;
+
+	m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 24;
+	m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 24;
+	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 25;
+	m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 25;
 	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 24;
 	m_iDirectionAnimIndex[STATE_DIRECTION_S] = 25;
 	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 26;
+	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 23;
 
 
 
@@ -72,7 +77,8 @@ void CStop_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 STATE_TYPE CStop_Player_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+	//if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
+		//return STATE_RUN_BEGIN_PLAYER_L;
 	return __super::Tick(pOwner, pAnimator);
 }
 

@@ -62,13 +62,23 @@ HRESULT CJump_Player_R::Initialize()
 
     m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_R);
     m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_R);
+
+    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 13;
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 14;
     m_iDirectionAnimIndex[STATE_DIRECTION_S] = 15;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 16;
+
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 14;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 14;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 15;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 15;
 
 
 	iPlaceJumpAnimIndex = 12;

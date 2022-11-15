@@ -1,12 +1,9 @@
 #include "stdafx.h"
 #include "CJump_Player_Land_R.h"
 
-#include "GameInstance.h"
 
-#include "CAnimator.h"
-#include "CUnit.h"
+#include "UsefulHeaders.h"
 
-#include "CUser.h"
 
 CJump_Player_Land_R::CJump_Player_Land_R()
 {
@@ -70,6 +67,9 @@ HRESULT CJump_Player_Land_R::Initialize()
 
 void CJump_Player_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
+
+
     switch (ePrevType)
     {
     case Client::STATE_SPRINT_JUMP_PLAYER:
@@ -94,6 +94,7 @@ STATE_TYPE CJump_Player_Land_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CJump_Player_Land_R::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+    pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
 
 STATE_TYPE CJump_Player_Land_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

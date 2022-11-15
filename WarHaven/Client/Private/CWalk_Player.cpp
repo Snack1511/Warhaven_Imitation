@@ -19,11 +19,11 @@ CWalk_Player::~CWalk_Player()
 
 HRESULT CWalk_Player::Initialize()
 {
-	m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
+	//m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 
-	//m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
@@ -51,43 +51,14 @@ void CWalk_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
     /* Owner의 Animator Set Idle로 */
 	m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
 
-	Physics_Setting(pOwner->Get_Status().fRunSpeed, pOwner, true);
-
-	//CTransform* pMyTransform = pOwner->Get_Transform();
-	//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-
-	////임시
-	//pMyPhysicsCom->Get_Physics().bAir = false;
-
-	//_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	//vCamLook.y = 0.f;
-
-	////1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
-	//pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
-
-	////실제 움직이는 방향
-	//pMyPhysicsCom->Set_Dir(vCamLook);
-
-	////최대속도 설정
-	//pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
-	//pMyPhysicsCom->Set_SpeedasMax();
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWalk_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (KEY(RBUTTON, TAP))
-	{
-		pAnimator->Set_CurAnimIndex(ANIM_ATTACK, 9, ANIM_DIVIDE::eBODYUPPER);
-	}
-
 	Move_Direction_Loop(pOwner, pAnimator, 0.05f);
 
-	//Move(Get_Direction(), pOwner);
 
-	if (pOwner->Is_Air())
-		return STATE_JUMPFALL_PLAYER_L;
 
     return __super::Tick(pOwner, pAnimator);
 }

@@ -59,32 +59,21 @@ HRESULT CRun_Player_L::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 
 	m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
 
-//    m_vecAdjState.push_back(STATE_SLIDE_PLAYER);
- //   m_vecAdjState.push_back(STATE_JUMP_PLAYER);
- //   m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
-    //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
-
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
-
     // 15
-    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 17;
 
-    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 18;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 19;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 20;
-
-    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 34;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
-
-    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 21;
+   m_iDirectionAnimIndex[STATE_DIRECTION_E] = 18;
+   m_iDirectionAnimIndex[STATE_DIRECTION_N] = 19;
+   m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 20;
+   m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 21;
+   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 34;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
+   m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
 
 
     return S_OK;
@@ -93,7 +82,7 @@ HRESULT CRun_Player_L::Initialize()
 void CRun_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     /* OwnerÀÇ Animator Set Idle·Î */
-    CColorController::COLORDESC m_tColorDesc;
+  /*  CColorController::COLORDESC m_tColorDesc;
     ZeroMemory(&m_tColorDesc, sizeof(CColorController::COLORDESC));
 
     m_tColorDesc.eFadeStyle = CColorController::TIME;
@@ -109,7 +98,7 @@ void CRun_Player_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
     m_tColorDesc.iEndKeyFrame = 6;
 
 
-    GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);
+    GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);*/
 
 
 

@@ -145,8 +145,10 @@ void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx, ANIM_DIVIDE	eD
 
 		m_pCycleAnimation = pCurAnim;
 
-		if (m_pActionAnimation)
+		if (!m_pActionAnimation)
 			m_pCycleAnimation->Reset(false, eDivideType);
+		else
+			m_pCycleAnimation->Reset(true, eDivideType);
 
 		m_pCycleAnimation->OnInterpolate();
 

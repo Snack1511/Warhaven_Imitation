@@ -42,7 +42,7 @@ HRESULT CStop_Player_R::Initialize()
 
 	m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
 	m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-	m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+	m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
 
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
@@ -51,10 +51,14 @@ HRESULT CStop_Player_R::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
-	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 31;
+	m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 32;
+	m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 32;
+	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 33;
+	m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 33;
 	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 32;
 	m_iDirectionAnimIndex[STATE_DIRECTION_S] = 33;
 	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 34;
+	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 31;
 
 
 
@@ -64,7 +68,7 @@ HRESULT CStop_Player_R::Initialize()
 
 void CStop_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-
+	
 
 	/* Owner의 Animator Set Idle로 */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -72,18 +76,9 @@ void CStop_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 STATE_TYPE CStop_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	//if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
+		//return STATE_RUN_BEGIN_PLAYER_R;
 
-
-	//if (m_bMoveTrigger)
-	//	Move(Get_Direction(), pOwner);
-
-	//if (m_bAttackTrigger)
-	//{
-	//	// 공격 진입
-	//	if (pOwner->Is_Weapon_R_Collision())
-	//		return STATE_BOUNCE_PLAYER_R;
-
-	//}
 
 	return __super::Tick(pOwner, pAnimator);
 }

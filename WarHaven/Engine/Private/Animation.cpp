@@ -121,11 +121,16 @@ _bool CAnimation::Update_Matrices(_bool bDivide)
 	
 	if (m_bInterpolation)
 	{
+	
+		if (bDivide && m_eAnimDivide == ANIM_DIVIDE::eBODYLOWER)
+			cout << " 보간중 ㅣ " << m_fInterpolationTimeAcc << endl;
 
 		m_fInterpolationTimeAcc += fDT(0);
 
 		if (m_fInterpolationTimeAcc >= m_fInterpolationTime)
 		{
+			if (bDivide && m_eAnimDivide == ANIM_DIVIDE::eBODYLOWER)
+				cout << " 보간끝" << endl;
 			m_bInterpolation = false;
 			m_fInterpolationTimeAcc = 0.f;
 			return true;
@@ -146,11 +151,14 @@ _bool CAnimation::Update_Matrices(_bool bDivide)
 	if (m_fTimeAcc >= m_fDuration)
 	{
 		m_isFinished = true;
+		if (bDivide && m_eAnimDivide == ANIM_DIVIDE::eBODYLOWER)
+			cout << " 리셋 " << endl;
 
 	}
 	else
 	{
-
+		if (bDivide && m_eAnimDivide == ANIM_DIVIDE::eBODYLOWER)
+			cout << " 정상업뎃중 " << endl;
 		for (_uint i = 0; i < m_iNumChannels; ++i)
 		{
 

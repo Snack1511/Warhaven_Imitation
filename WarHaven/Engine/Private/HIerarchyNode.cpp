@@ -29,6 +29,21 @@ CHierarchyNode* CHierarchyNode::Create(CResource_Bone* pResource, CHierarchyNode
 	return pInstance;
 }
 
+void CHierarchyNode::Set_Position(_float4 vPos)
+{
+	m_TransformationMatrix.m[3][0] = vPos.x;
+	m_TransformationMatrix.m[3][1] = vPos.y;
+	m_TransformationMatrix.m[3][2] = vPos.z;
+}
+
+void CHierarchyNode::Set_Translation_NoPos(_float4x4 TransformationMatrix)
+{
+
+	*(_float4*)(m_TransformationMatrix.m[0]) = *(_float4*)(TransformationMatrix.m[0]);
+	*(_float4*)(m_TransformationMatrix.m[1]) = *(_float4*)(TransformationMatrix.m[1]);
+	*(_float4*)(m_TransformationMatrix.m[2]) = *(_float4*)(TransformationMatrix.m[2]);
+}
+
 _float4x4 CHierarchyNode::Get_BoneMatrix()
 {
 	_float4x4 BoneMatrix;
@@ -91,14 +106,16 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 	if (pResource->Get_Name() == "Root")
 		m_bMoveNode = true;
 
-	if (pResource->Get_Name() == "0B_R_Thigh" || pResource->Get_Name() == "0B_L_Thigh")
+	if (pResource->Get_Name() == "0B_L_Thigh" || pResource->Get_Name() == "0B_R_Thigh")
 	{
 		m_eBoneType = ANIM_DIVIDE::eBODYLOWER;
 	}
 	else if (pResource->Get_Name() == "0B_COM")
 	{
 		m_eBoneType = ANIM_DIVIDE::eBODYUPPER;
+		m_bCenterNode = true;
 	}
+	
 
 #ifdef _DEBUG
 	string strTemp;

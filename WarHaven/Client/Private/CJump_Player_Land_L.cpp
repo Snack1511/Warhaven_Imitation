@@ -1,12 +1,7 @@
 #include "CJump_Player_Land_L.h"
 #include "CState.h"
 
-#include "GameInstance.h"
-
-#include "CAnimator.h"
-#include "CUnit.h"
-
-#include "CUser.h"
+#include "UsefulHeaders.h"
 
 CJump_Player_Land_L::CJump_Player_Land_L()
 {
@@ -68,6 +63,8 @@ HRESULT CJump_Player_Land_L::Initialize()
 
 void CJump_Player_Land_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -78,6 +75,7 @@ STATE_TYPE CJump_Player_Land_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CJump_Player_Land_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+    pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
     /* 할거없음 */
 }
 

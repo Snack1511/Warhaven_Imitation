@@ -33,9 +33,6 @@ CWarrior_Attack_HorizontalDown_R* CWarrior_Attack_HorizontalDown_R::Create()
 }
 HRESULT CWarrior_Attack_HorizontalDown_R::Initialize()
 {
-	__super::Initialize();
-
-
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
 	m_iAnimIndex = 3;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_ATTACK_HORIZONTALDOWN_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -51,42 +48,74 @@ HRESULT CWarrior_Attack_HorizontalDown_R::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_L);
 
 	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
-	m_iStopIndex = 30;
 	m_iIdle_Index = 11;
-	m_iLandIndex = 17;
-	m_iJumpFallIndex = 10;
+	m_iLandRightIndex = 17;
+	m_iLandLeftIndex = 9;
+	m_iJumpFallRightIndex = 10;
+	m_iJumpFallLeftIndex = 1;
 
-	m_iRunAnimIndex[STATE_DIRECTION_E] = 26;
-	m_iRunAnimIndex[STATE_DIRECTION_N] = 27;
-	m_iRunAnimIndex[STATE_DIRECTION_NE] = 28;
-	m_iRunAnimIndex[STATE_DIRECTION_NW] = 29;
-	m_iRunAnimIndex[STATE_DIRECTION_S] = 42;
-	m_iRunAnimIndex[STATE_DIRECTION_SE] = 43;
-	m_iRunAnimIndex[STATE_DIRECTION_SW] = 44;
-	m_iRunAnimIndex[STATE_DIRECTION_W] = 30;
 
-	m_iWalkAnimIndex[STATE_DIRECTION_NW] = 41;
-	m_iWalkAnimIndex[STATE_DIRECTION_NE] = 40;
-	m_iWalkAnimIndex[STATE_DIRECTION_N] = 39;
-	m_iWalkAnimIndex[STATE_DIRECTION_SW] = 44;
-	m_iWalkAnimIndex[STATE_DIRECTION_SE] = 43;
-	m_iWalkAnimIndex[STATE_DIRECTION_S] = 42;
-	m_iWalkAnimIndex[STATE_DIRECTION_W] = 45;
-	m_iWalkAnimIndex[STATE_DIRECTION_E] = 38;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 18;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 19;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 20;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 21;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 34;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 35;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 36;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 22;
 
-	m_iJumpAnimIndex[STATE_DIRECTION_N] = 14;
-	m_iJumpAnimIndex[STATE_DIRECTION_S] = 15;
-	m_iJumpAnimIndex[STATE_DIRECTION_W] = 16;
-	m_iJumpAnimIndex[STATE_DIRECTION_E] = 13;
-	m_iJumpAnimIndex[STATE_DIRECTION_NW] = 12; // 제자리
+	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 26;
+	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 27;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 28;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 29;
+	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 30;
 
-	m_iJumpAnimIndex[STATE_DIRECTION_NE] = 99; // 의미없는값 채우기 (0이면 터지게 해놔서)
-	m_iJumpAnimIndex[STATE_DIRECTION_SW] = 99;
-	m_iJumpAnimIndex[STATE_DIRECTION_SE] = 99;
+
+	m_iWalkRightAnimIndex[STATE_DIRECTION_NW] = 41;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_W] = 45;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 38;
+
+
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NW] = 33;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NE] = 32;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_N] = 31;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SW] = 36;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SE] = 35;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_S] = 34;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_W] = 37;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_E] = 30;
+
+
+
+	m_iJumpRightAnimIndex[STATE_DIRECTION_N] = 14;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_S] = 15;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_W] = 16;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_E] = 13;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_NW] = 12; // 제자리
+	m_iJumpRightAnimIndex[STATE_DIRECTION_NE] = 99; // 의미없는값 채우기 (0이면 터지게 해놔서)
+	m_iJumpRightAnimIndex[STATE_DIRECTION_SW] = 99;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_SE] = 99;
+
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_N] = 6;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_S] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_W] = 8;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_E] = 5;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NE] = 6;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NW] = 6;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 7;
+
 
 	m_eWalkState = STATE_WALK_PLAYER_L;
 	m_eJumpState = STATE_JUMP_PLAYER_L;
@@ -95,17 +124,10 @@ HRESULT CWarrior_Attack_HorizontalDown_R::Initialize()
 	m_eRunState = STATE_RUN_PLAYER_L;
 	m_eIdleState = STATE_IDLE_PLAYER_L;
 
-	//m_vecAdjState.push_back(STATE_IDLE_PLAYER);
-	//m_vecAdjState.push_back(STATE_WALK_PLAYER);
-	//m_vecAdjState.push_back(STATE_RUN_PLAYER);
-	//m_vecAdjState.push_back(STATE_SILDING);
-	//m_vecAdjState.push_back(STATE_RUN);
-	//m_vecAdjState.push_back(STATE_DASH);
-	//m_vecAdjState.push_back(STATE_WALK);
 
 
 
-	return S_OK;
+	return __super::Initialize();
 }
 
 void CWarrior_Attack_HorizontalDown_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

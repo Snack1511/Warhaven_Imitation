@@ -94,7 +94,7 @@ void CSprint_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 STATE_TYPE CSprint_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pOwner->Is_Air())
-        return STATE_JUMPFALL_PLAYER_R;
+        return STATE_SPRINT_JUMPFALL_PLAYER;
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();

@@ -21,14 +21,12 @@ HRESULT CJump_Player::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
 
-
     return S_OK;
 }
 
 void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	m_fMyMaxLerp = 0.4f;
-	m_fMyAccel = 20.f;
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
 
     /* OwnerÀÇ Animator Set Idle·Î */
@@ -38,7 +36,7 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	_uint iDirection = Get_Direction_Four();
+	_uint iDirection = Get_Direction();
 
 	if (iDirection == STATE_DIRECTION_END)
 	{
@@ -48,7 +46,11 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	else
 	{
 		m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
-		m_fAnimSpeed = 1.f;
+		m_fAnimSpeed = 1.5f;
+
+		Move(iDirection, pOwner);
+
+
 	}
 
 
@@ -57,7 +59,7 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 STATE_TYPE CJump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-        
+	Follow_MouseLook(pOwner);
    
     return __super::Tick(pOwner, pAnimator);
 }

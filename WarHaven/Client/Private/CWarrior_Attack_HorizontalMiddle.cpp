@@ -33,8 +33,12 @@ HRESULT CWarrior_Attack_HorizontalMiddle::Initialize()
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 0.5f;
 
-	Add_KeyFrame(30, 1);
-	Add_KeyFrame(47, 2);
+
+	m_iStopIndex = 30;
+	m_iAttackEndIndex = 55;
+
+	Add_KeyFrame(m_iStopIndex, 1);
+	Add_KeyFrame(50, 2);
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
@@ -77,7 +81,7 @@ STATE_TYPE CWarrior_Attack_HorizontalMiddle::Check_Condition(CUnit* pOwner, CAni
 	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 	{
 		_float fDot = CUtility_Transform::Get_LookRotateAngle(GAMEINSTANCE->Get_CurCamLook());
-		if (fabs(fDot) > 0.994f)
+		if (fabs(fDot) > 0.96f)
 		{
 
 			return m_eStateType;

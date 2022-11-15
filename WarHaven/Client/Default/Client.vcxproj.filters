@@ -448,9 +448,6 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle">
       <UniqueIdentifier>{55da9af3-4a32-4e5f-8d7e-d33016b948e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\01. Right">
-      <UniqueIdentifier>{452f8399-99da-4e84-a138-968dff75ad5c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\02. Left">
       <UniqueIdentifier>{ecacf648-1230-410e-b07a-102c9b08b1b1}</UniqueIdentifier>
     </Filter>
@@ -675,6 +672,9 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\10. Stop\02. Left">
       <UniqueIdentifier>{101e84b2-4707-4dc5-baac-2eafb57eec2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Right">
+      <UniqueIdentifier>{452f8399-99da-4e84-a138-968dff75ad5c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -919,7 +919,7 @@
       <Filter>00. Header</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CIdle_Player_R.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Right</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWalk_Player_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\02. Walk\01. Right</Filter>
@@ -1416,7 +1416,7 @@
       <Filter>03. Instances\02. GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CIdle_Player_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Right</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWalk_Player_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\02. Walk\01. Right</Filter>

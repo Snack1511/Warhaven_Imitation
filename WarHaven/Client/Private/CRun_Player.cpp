@@ -18,7 +18,7 @@ CRun_Player::~CRun_Player()
 
 HRESULT CRun_Player::Initialize()
 {
-	m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
+	//m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
 
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
@@ -37,20 +37,20 @@ HRESULT CRun_Player::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
     m_iStateChangeKeyFrame = 0;
 
 	m_fInterPolationTime = 0.1f;
-	m_fMaxSpeed = 4.f;
     return S_OK;
 }
 
 void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 	m_fMyMaxLerp = 0.4f;
-	m_fMyAccel = 20.f;
+	m_fMyAccel = 10.f;
 
-	Physics_Setting(pOwner->Get_Status().fRunSpeed, pOwner, true);
 
 
 	//CTransform* pMyTransform = pOwner->Get_Transform();
@@ -84,7 +84,8 @@ void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 
 STATE_TYPE CRun_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	_uint iDirection = Move_Direction_Loop(pOwner, pAnimator, 0.1f);;
+	_uint iDirection = Move_Direction_Loop(pOwner, pAnimator, 0.1f);
+
 	if (iDirection < 8)
 		m_iCurDirection = iDirection;
 

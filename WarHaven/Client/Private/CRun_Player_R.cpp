@@ -71,17 +71,12 @@ HRESULT CRun_Player_R::Initialize()
 
 
    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 26;
-
    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 27;
    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 28;
    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 29;
-
    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 42;
    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 43;
    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
-
-
-
    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 30;
 
 
@@ -91,7 +86,7 @@ HRESULT CRun_Player_R::Initialize()
 void CRun_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     /* OwnerÀÇ Animator Set Idle·Î */
-    CColorController::COLORDESC m_tColorDesc;
+   /* CColorController::COLORDESC m_tColorDesc;
     ZeroMemory(&m_tColorDesc, sizeof(CColorController::COLORDESC));
 
     m_tColorDesc.eFadeStyle = CColorController::TIME;
@@ -107,7 +102,7 @@ void CRun_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
     m_tColorDesc.iEndKeyFrame = 6;
 
 
-    GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);
+    GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);*/
 
 
 
@@ -130,7 +125,7 @@ STATE_TYPE CRun_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
     {
         _uint* pInt = new _uint;
         *pInt = m_iCurDirection;
-        pOwner->Enter_State(STATE_STOP_PLAYER_L, (void*)pInt);
+        pOwner->Enter_State(STATE_STOP_PLAYER_R, (void*)pInt);
         return STATE_END;
 
     }

@@ -59,6 +59,7 @@ void CSprint_Jump_Fall_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 
 STATE_TYPE CSprint_Jump_Fall_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    Follow_MouseLook(pOwner);
 
     return __super::Tick(pOwner, pAnimator);
 

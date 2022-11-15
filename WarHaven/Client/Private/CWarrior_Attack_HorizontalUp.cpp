@@ -24,24 +24,33 @@ HRESULT CWarrior_Attack_HorizontalUp::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 
-
 	m_fAnimSpeed = 2.5f;
+	m_iStateChangeKeyFrame = 75;
 
-
-	m_iStateChangeKeyFrame = 65;
-
-	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 10.f;
 	m_fMaxSpeed = 0.8f;
 
-	//Add_KeyFrame(40, 0);
-	Add_KeyFrame(43, 1);
-	Add_KeyFrame(60, 2);
+	m_iStopIndex = 38;
+	m_iAttackEndIndex = 58;
 
-    return S_OK;
+	Add_KeyFrame(43, 1);
+	Add_KeyFrame(m_iAttackEndIndex, 2);
+
+
+
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+
+    return __super::Initialize();
 }
 
 void CWarrior_Attack_HorizontalUp::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
@@ -56,15 +65,11 @@ void CWarrior_Attack_HorizontalUp::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CWarrior_Attack_HorizontalUp::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (m_bMoveTrigger)
-		Move(Get_Direction(), pOwner);
-
 	return __super::Tick(pOwner, pAnimator);
 }
 
 void CWarrior_Attack_HorizontalUp::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 
@@ -92,6 +97,9 @@ STATE_TYPE CWarrior_Attack_HorizontalUp::Check_Condition(CUnit* pOwner, CAnimato
 
 void CWarrior_Attack_HorizontalUp::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+
 	switch (iSequence)
 	{
 	case 1:

@@ -84,11 +84,11 @@ void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//현재프레임이 상태전환 프레임보다 이상이면
-	//공중에 있으면
-	//Fall로
     if (pAnimator->Get_CurAnimFrame() < m_iStateChangeKeyFrame && pOwner->Is_Air())
         return STATE_JUMPFALL_PLAYER_L;
+
+    Follow_MouseLook(pOwner);
+    pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
 
     return __super::Tick(pOwner, pAnimator);
 }

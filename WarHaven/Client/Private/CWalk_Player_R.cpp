@@ -53,6 +53,7 @@ HRESULT CWalk_Player_R::Initialize()
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
 	m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
@@ -71,14 +72,14 @@ HRESULT CWalk_Player_R::Initialize()
 
 
 	// 알파벳 순 애니메이션 정렬
-	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 37;
-	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 38;
-	m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 39;
-	m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 40;
-	m_iDirectionAnimIndex[STATE_DIRECTION_S] = 41;
-	m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 42;
-	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 43;
-	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 44;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 41;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 40;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 39;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 43;
+    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 42;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 45;
+    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 38;
 
                             
 

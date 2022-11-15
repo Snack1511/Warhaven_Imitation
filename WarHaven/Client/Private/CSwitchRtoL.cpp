@@ -46,11 +46,10 @@ HRESULT CSwitchRtoL::Initialize()
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 4.f;
+    m_fAnimSpeed = 3.f;
 
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
-	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
-	m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);

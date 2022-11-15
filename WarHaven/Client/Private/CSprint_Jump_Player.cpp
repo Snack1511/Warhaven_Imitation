@@ -55,14 +55,63 @@ HRESULT CSprint_Jump_Player::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_JUMPFALL_PLAYER);
     m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_R);
 
+    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+
 
     return S_OK;
 }
 
 void CSprint_Jump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, true);
 	pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower + 0.5f);
+
+    CTransform* pMyTransform = pOwner->Get_Transform();
+    CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+    _float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    vCamLook.y = 0.f;
+    _float4 vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+    vCamRight.y = 0.f;
+
+    _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+
+
+
+    _float4 vFinalDir = ZERO_VECTOR;
+
+    if (KEY(W, HOLD))
+    {
+        vFinalDir += vCamLook;
+    }
+    if (KEY(A, HOLD))
+    {
+        vFinalDir -= vCamRight;
+    }
+    if (KEY(S, HOLD))
+    {
+        vFinalDir -= vCamLook;
+    }
+    if (KEY(D, HOLD))
+    {
+        vFinalDir += vCamRight;
+    }
+
+    if (vFinalDir.Is_Zero())
+    {
+        vFinalDir = pMyTransform->Get_World(WORLD_LOOK);
+    }
+
+
+
+    vFinalDir.Normalize();
+    vDir.y = 0.f;
+
+    pMyTransform->Set_LerpLook(vFinalDir, m_fMyMaxLerp);
+    pMyPhysicsCom->Set_Dir(vFinalDir);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
@@ -73,8 +122,9 @@ STATE_TYPE CSprint_Jump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+	//pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
+    Follow_MouseLook(pOwner);
 
 
     return __super::Tick(pOwner, pAnimator);

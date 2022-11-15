@@ -148,7 +148,7 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 
 	vector TextureDesc[TEXTURESIZE];
 
-	for (uint i = 0; i < g_iNumTexture; ++i)
+	for (uint i = 0; i < 2; ++i)
 	{
 		TextureDesc[i] = g_DiffArray[i].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 	}

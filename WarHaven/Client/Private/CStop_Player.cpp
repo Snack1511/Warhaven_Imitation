@@ -44,15 +44,19 @@ void CStop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 {
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
-	_uint* pDirection = (_uint*)(pData);
-	if (*pDirection >= STATE_DIRECTION_END)
-		*pDirection = STATE_DIRECTION_N;
+	if (pData)
+	{
+		_uint* pDirection = (_uint*)(pData);
+		if (*pDirection >= STATE_DIRECTION_END)
+			*pDirection = STATE_DIRECTION_N;
 
-	m_iAnimIndex = m_iDirectionAnimIndex[*pDirection];
+		m_iAnimIndex = m_iDirectionAnimIndex[*pDirection];
 
 
 
-	delete pDirection;
+		delete pDirection;
+	}
+	
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
@@ -64,7 +68,7 @@ void CStop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 STATE_TYPE CStop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-        
+	
    
     return __super::Tick(pOwner, pAnimator);
 }

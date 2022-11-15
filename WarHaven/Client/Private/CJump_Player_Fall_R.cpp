@@ -27,7 +27,7 @@ HRESULT CJump_Player_Fall_R::Initialize()
     m_iStateChangeKeyFrame = 0;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.f;
+    m_fInterPolationTime = 0.15f;
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
@@ -38,6 +38,12 @@ HRESULT CJump_Player_Fall_R::Initialize()
     //m_vecAdjState.push_back(STATE_IDLE_PLAYER);
 
     m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_R);
+
+    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
     //m_vecAdjState.push_back(STATE_SILDING);
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
@@ -62,11 +68,9 @@ CJump_Player_Fall_R* CJump_Player_Fall_R::Create()
 
 void CJump_Player_Fall_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    if (ePrevType == STATE_SPRINT_BEGIN_PLAYER ||
-        ePrevType == STATE_SPRINT_LOOP_PLAYER ||
-        ePrevType == STATE_SPRINT_END_PLAYER
-        )
-        m_fInterPolationTime = 0.2f;
+    if (ePrevType == STATE_JUMP_PLAYER_R)
+        m_fInterPolationTime = 0.05f;
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
