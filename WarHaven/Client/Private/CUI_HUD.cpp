@@ -137,5 +137,12 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 
 void CUI_HUD::Set_ActiveHeroPort(_bool value)
 {
-	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(value);
+	if (value == true)
+	{
+		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(CUI_Portrait::Enable);
+	}
+	else
+	{
+		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(CUI_Portrait::Disable);
+	}
 }

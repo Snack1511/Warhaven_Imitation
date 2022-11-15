@@ -70,9 +70,10 @@ void CUI_Portrait::Set_Portrait(_uint iIndex)
 	m_bAbleRotationPort = true;
 }
 
-void CUI_Portrait::Set_HeroPort(_bool value)
+void CUI_Portrait::Set_HeroPort(HeroPortAnimType eState)
 {
-	m_bAbleHero = value;
+	m_bAbleHero = true;
+	m_eHeroPortAnimType = eState;
 	m_bIsHeroLerp = true;
 }
 
@@ -134,81 +135,95 @@ void CUI_Portrait::My_Tick()
 
 	if (m_bAbleHero)
 	{
-		if (m_bIsHeroLerp)
+		if (m_eHeroPortAnimType == Enable)
 		{
-			_float fDuration = 0.3f;
-
-			if (m_iHeroEndIdx > User)
+			if (m_bIsHeroLerp)
 			{
-				for (int i = 0; i < Type_End; ++i)
+				_float fDuration = 0.3f;
+
+				if (m_iHeroEndIdx > User)
 				{
-					ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][i]);
-
-					if (i == Key)
+					for (int i = 0; i < Type_End; ++i)
 					{
-						continue;
+						ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][i]);
+
+						if (i == Key)
+						{
+							continue;
+						}
+
+						if (i == Effect)
+						{
+							continue;
+						}
+
+						m_arrPortraitUI[m_iHeroEndIdx][i]->Lerp_ScaleX(0.f, 43.f, fDuration);
 					}
 
-					if (i == Effect)
-					{
-						continue;
-					}
-
-					m_arrPortraitUI[m_iHeroEndIdx][i]->Lerp_ScaleX(0.f, 43.f, fDuration);
+					m_bIsHeroLerp = false;
 				}
-
-				m_bIsHeroLerp = false;
+				else
+				{
+					m_eHeroPortAnimType = AnimEnd;
+				}
+			}
+			else
+			{
+				_float4 vScale = m_arrPortraitUI[m_iHeroEndIdx][BG]->Get_Transform()->Get_Scale();
+				if (vScale.x >= 43.f)
+				{
+					m_iHeroEndIdx--;
+					m_bIsHeroLerp = true;
+				}
 			}
 		}
-		else
+		else if (m_eHeroPortAnimType == Disable)
 		{
-			_float4 vScale = m_arrPortraitUI[m_iHeroEndIdx][BG]->Get_Transform()->Get_Scale();
-			if (vScale.x >= 43.f)
+			if (m_bIsHeroLerp)
 			{
-				m_iHeroEndIdx--;
-				m_bIsHeroLerp = true;
+				_float fDuration = 0.3f;
+
+				if (m_iHeroStartIdx < PortEnd)
+				{
+					for (int i = 0; i < Type_End; ++i)
+					{
+						if (i == Key)
+						{
+							continue;
+						}
+
+						if (i == Effect)
+						{
+							continue;
+						}
+
+						m_arrPortraitUI[m_iHeroStartIdx][i]->Lerp_ScaleX(43.f, 0.f, fDuration);
+					}
+
+					m_bIsHeroLerp = false;
+				}
+				else
+				{
+					m_eHeroPortAnimType = AnimEnd;
+				}
+			}
+			else
+			{
+				_float4 vScale = m_arrPortraitUI[m_iHeroStartIdx][BG]->Get_Transform()->Get_Scale();
+				if (vScale.x <= m_fMinValue)
+				{
+					DISABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroStartIdx][Key]);
+					DISABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroStartIdx][Effect]);
+
+					m_iHeroStartIdx++;
+					m_bIsHeroLerp = true;
+				}
 			}
 		}
 	}
 	else
 	{
-		Call_MsgBox(TEXT("변신 해제 하는데 이 메세지 뜨면 버그"));
-		if (m_bIsHeroLerp)
-		{
-			_float fDuration = 0.3f;
-
-			if (m_iHeroStartIdx < PortEnd)
-			{
-				for (int i = 0; i < Type_End; ++i)
-				{
-					if (i == Key)
-					{
-						continue;
-					}
-
-					if (i == Effect)
-					{
-						continue;
-					}
-
-					m_arrPortraitUI[m_iHeroStartIdx][i]->Lerp_ScaleX(43.f, 0.f, fDuration);
-				}
-
-				m_bIsHeroLerp = false;
-			}
-		}
-		else
-		{
-			_float4 vScale = m_arrPortraitUI[m_iHeroStartIdx][BG]->Get_Transform()->Get_Scale();
-			if (vScale.x <= m_fMinValue)
-			{
-				DISABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroStartIdx][Key]);
-				DISABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroStartIdx][Effect]);
-
-				m_iHeroStartIdx++;
-				m_bIsHeroLerp = true;
-			}
-		}
+		m_eHeroPortAnimType = AnimEnd;
 	}
 }
 

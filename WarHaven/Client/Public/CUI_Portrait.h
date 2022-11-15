@@ -8,6 +8,9 @@ class CUI_Portrait final : public CUI_Wrapper
 	enum PortIndex { User, Hero1, Hero4 = 4, PortEnd = 5 };
 	enum UI_TYPE { BG, Port, Key, Effect, Type_End };
 
+public:
+	enum HeroPortAnimType { Enable, Disable, AnimEnd };
+
 	DECLARE_PROTOTYPE(CUI_Portrait);
 	DECLARE_GAMEOBJECT(CUI_Portrait);
 
@@ -27,7 +30,7 @@ public:
 	void Start_Portrait(_uint iIndex);
 	void Set_Portrait(_uint iIndex);
 
-	void Set_HeroPort(_bool value);
+	void Set_HeroPort(HeroPortAnimType eState);
 
 protected:
 	virtual void My_Tick() override;
@@ -45,6 +48,7 @@ private:
 	_bool m_bAbleRotationPort = false;
 	_uint m_iRotationCount = 0.f;
 
+	HeroPortAnimType m_eHeroPortAnimType = HeroPortAnimType::AnimEnd;
 	_bool m_bAbleHero = false;
 	_bool bIsHero = false;
 
