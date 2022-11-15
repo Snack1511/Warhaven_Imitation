@@ -99,11 +99,11 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	Out.vDiffuse.a = (Out.vDiffuse.r);
-	Out.vDiffuse.xyz = In.vColor.xyz;
+	Out.vDiffuse.xyz += In.vColor.xyz;
 	
 	Out.vDiffuse.a *= In.vColor.a;
 
-	if (Out.vDiffuse.a < 0.05f)
+	if (Out.vDiffuse.a < 0.01f)
 		discard;
 
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);

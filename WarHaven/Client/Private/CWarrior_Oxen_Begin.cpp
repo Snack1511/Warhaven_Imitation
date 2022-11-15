@@ -35,6 +35,7 @@ CWarrior_Oxen_Begin* CWarrior_Oxen_Begin::Create()
 HRESULT CWarrior_Oxen_Begin::Initialize()
 {
 
+
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 24;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_WARRIOR_OXEN_BEGIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -63,6 +64,8 @@ HRESULT CWarrior_Oxen_Begin::Initialize()
 void CWarrior_Oxen_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     pOwner->TurnOn_TrailEffect(true);
+
+    //CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SkillLightParticle", );
 
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
