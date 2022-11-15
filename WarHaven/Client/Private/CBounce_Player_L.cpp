@@ -37,16 +37,18 @@ HRESULT CBounce_Player_L::Initialize()
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 16;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_ATTACK_HORIZONTALMIDDLE_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = STATE_BOUNCE_PLAYER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-	m_vecAdjState.push_back(STATE_JUMP_PLAYER_L);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
+
+
 
 	//m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_L);
-
 
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
@@ -86,10 +88,6 @@ STATE_TYPE CBounce_Player_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator
     1.  공격하다 땅에 튕기면
     */
 
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
-    {
-        return m_eStateType;
-    }
-   
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
+ 
 }

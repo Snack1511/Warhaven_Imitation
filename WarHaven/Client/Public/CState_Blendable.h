@@ -18,6 +18,9 @@ protected:
 public:
 	virtual HRESULT		Initialize();
 	virtual void		Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData = nullptr);
+	virtual void		Exit(CUnit* pOwner, CAnimator* pAnimator) override;
+
+
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 
 	STATE_TYPE	Update_Walk(CUnit* pOwner, CAnimator* pAnimator);

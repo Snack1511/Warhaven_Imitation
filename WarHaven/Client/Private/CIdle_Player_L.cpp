@@ -111,7 +111,7 @@ STATE_TYPE CIdle_Player_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 		KEY(A, NONE) &&
 		KEY(S, NONE) &&
 		KEY(D, NONE))
-	{
+	{		
 	
 		if (pAnimator->Is_CurAnimFinished())
 			return m_eStateType;

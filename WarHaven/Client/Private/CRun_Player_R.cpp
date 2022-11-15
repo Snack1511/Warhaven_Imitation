@@ -152,48 +152,6 @@ STATE_TYPE CRun_Player_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     2. WASD 를 누른 상태
     */
 
-	if (KEY(CTRL, NONE))
-	{
-		if (KEY(W, HOLD) ||
-			KEY(A, HOLD) ||
-			KEY(S, HOLD) ||
-			KEY(D, HOLD))
-		{
-			return m_eStateType;
-		}
-	}
-
+	return __super::Check_Condition(pOwner, pAnimator);
    
-
-
-    return STATE_END;
 }
-
-//_bool CRun_Player_R::Change_Animation_Run(_uint iBeginAttackAnim, _uint iAttackAnim, CAnimator* pAnimator)
-//{
-//    // RunBegin 
-//    if (m_iAnimIndex != iBeginAttackAnim)
-//    {
-//        if (m_iAnimIndex == 21)
-//        {
-//            if (m_iAnimIndex == iAttackAnim && pAnimator->Is_CurAnimFinished())
-//            {
-//                m_eAnimType = ANIM_BASE_R;
-//                m_iAnimIndex = iBeginAttackAnim;
-//
-//                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-//                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.f);
-//            }
-//        }
-//        else
-//        {
-//            m_eAnimType = ANIM_BASE_R;
-//            m_iAnimIndex = iAttackAnim;
-//
-//            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-//            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.7f);
-//
-//        }
-//
-//    return false;
-//}

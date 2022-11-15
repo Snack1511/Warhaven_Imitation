@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "CUnit_Spearman.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
+
+#include "CColorController.h"
 
 #include "Model.h"
 #include "CAnimator.h"
+
+#include "CBoneCollider.h"
 
 CUnit_Spearman::CUnit_Spearman()
 {
@@ -63,6 +67,31 @@ HRESULT CUnit_Spearman::Initialize_Prototype()
 
 
 	Add_Component(pAnimator);
+
+	/* PhysX Collider */
+
+	CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
+
+	if (!pCController)
+		return E_FAIL;
+
+	Add_Component(pCController);
+
+	Add_Component(pAnimator);
+
+	CBoneCollider::BONECOLLIDERDESC tDesc;
+	// Ä® ±æÀÌ
+	tDesc.fHeight = 0.9f;
+	// Ä® µÎ²²
+	tDesc.fRadius = 0.1f;
+	// Ä® ºÙÀÏ »À
+	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
+
+	//Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
+	tDesc.vOffset = _float4(0.f, 0.f, -100.f);
+
+	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
+	Add_Component(m_pWeaponCollider_R);
 
 	return S_OK;
 }

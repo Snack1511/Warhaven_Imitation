@@ -33,17 +33,17 @@ HRESULT CWarrior_Attack_HorizontalMiddle::Initialize()
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 0.5f;
 
-	Add_KeyFrame(30, 0);
-	Add_KeyFrame(47, 1);
+	Add_KeyFrame(30, 1);
+	Add_KeyFrame(47, 2);
 
-	m_iDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
 
 	return __super::Initialize();
@@ -59,15 +59,6 @@ void CWarrior_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator
 
 STATE_TYPE CWarrior_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (m_bAttackTrigger)
-	{
-		// 공격 진입
-		if (pOwner->Is_Weapon_R_Collision())
-			return STATE_BOUNCE_PLAYER_R;
-
-	}
-
-	
 
 	return __super::Tick(pOwner, pAnimator);
 }
@@ -75,7 +66,7 @@ STATE_TYPE CWarrior_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAni
 void CWarrior_Attack_HorizontalMiddle::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
-	//pAnimator->Stop_ActionAnim();
+	__super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CWarrior_Attack_HorizontalMiddle::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

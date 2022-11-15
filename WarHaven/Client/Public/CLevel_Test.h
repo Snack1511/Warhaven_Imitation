@@ -36,6 +36,11 @@ private:
 
 	void	Col_Check();
 
+
+private:
+	HRESULT SetUp_Warrior_TH();
+	HRESULT SetUp_SpearMan_TH();
+
 private:
 	CGameObject* m_pTestObj = nullptr;
 

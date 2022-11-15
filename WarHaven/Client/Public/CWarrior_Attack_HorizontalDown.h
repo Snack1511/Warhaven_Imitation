@@ -1,9 +1,9 @@
 #pragma once
-#include "CState.h"
+#include "CState_Blendable.h"
 
 BEGIN(Client)
 class CWarrior_Attack_HorizontalDown abstract
-	: public CState
+	: public CState_Blendable
 {
 
 protected:

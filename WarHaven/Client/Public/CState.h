@@ -84,7 +84,7 @@ protected:
 	_int				m_iFinishedFrame = 0;
 
 	_int				m_iDirectionAnimIndex[STATE_DIRECTION_END];
-	_float				m_iDirectionAnimSpeed[STATE_DIRECTION_END];
+	_float				m_fDirectionAnimSpeed[STATE_DIRECTION_END];
 
 protected:
 	vector<KEYFRAME_EVENT>	m_vecKeyFrameEvent;

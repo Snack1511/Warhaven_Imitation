@@ -53,6 +53,48 @@ HRESULT CWarrior_Attack_HorizontalDown_R::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_L);
 
+	/* Setting for Blendable */
+	m_eAnimLeftorRight = ANIM_BASE_R;
+	m_iStopIndex = 30;
+	m_iIdle_Index = 11;
+	m_iLandIndex = 17;
+	m_iJumpFallIndex = 10;
+
+	m_iRunAnimIndex[STATE_DIRECTION_E] = 26;
+	m_iRunAnimIndex[STATE_DIRECTION_N] = 27;
+	m_iRunAnimIndex[STATE_DIRECTION_NE] = 28;
+	m_iRunAnimIndex[STATE_DIRECTION_NW] = 29;
+	m_iRunAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iRunAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iRunAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iRunAnimIndex[STATE_DIRECTION_W] = 30;
+
+	m_iWalkAnimIndex[STATE_DIRECTION_NW] = 41;
+	m_iWalkAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iWalkAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iWalkAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iWalkAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iWalkAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iWalkAnimIndex[STATE_DIRECTION_W] = 45;
+	m_iWalkAnimIndex[STATE_DIRECTION_E] = 38;
+
+	m_iJumpAnimIndex[STATE_DIRECTION_N] = 14;
+	m_iJumpAnimIndex[STATE_DIRECTION_S] = 15;
+	m_iJumpAnimIndex[STATE_DIRECTION_W] = 16;
+	m_iJumpAnimIndex[STATE_DIRECTION_E] = 13;
+	m_iJumpAnimIndex[STATE_DIRECTION_NW] = 12; // 제자리
+
+	m_iJumpAnimIndex[STATE_DIRECTION_NE] = 99; // 의미없는값 채우기 (0이면 터지게 해놔서)
+	m_iJumpAnimIndex[STATE_DIRECTION_SW] = 99;
+	m_iJumpAnimIndex[STATE_DIRECTION_SE] = 99;
+
+	m_eWalkState = STATE_WALK_PLAYER_L;
+	m_eJumpState = STATE_JUMP_PLAYER_L;
+	m_eLandState = STATE_JUMP_LAND_PLAYER_L;
+	m_eFallState = STATE_JUMPFALL_PLAYER_L;
+	m_eRunState = STATE_RUN_PLAYER_L;
+	m_eIdleState = STATE_IDLE_PLAYER_L;
+
 	//m_vecAdjState.push_back(STATE_IDLE_PLAYER);
 	//m_vecAdjState.push_back(STATE_WALK_PLAYER);
 	//m_vecAdjState.push_back(STATE_RUN_PLAYER);
@@ -83,6 +125,13 @@ void CWarrior_Attack_HorizontalDown_R::Enter(CUnit* pOwner, CAnimator* pAnimator
 STATE_TYPE CWarrior_Attack_HorizontalDown_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
+	if (m_bAttackTrigger)
+	{
+		// 공격 진입
+		if (pOwner->Is_Weapon_R_Collision())
+			return STATE_BOUNCE_PLAYER_R;
+
+	}
 
 	return __super::Tick(pOwner, pAnimator);
 }

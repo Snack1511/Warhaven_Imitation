@@ -212,7 +212,7 @@ void CState::Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float
 		m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
 
 		pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex, m_eAnimDivide);
-		pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, m_iDirectionAnimSpeed[iDirection]);
+		pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, m_fDirectionAnimSpeed[iDirection]);
 		pAnimator->Set_InterpolationTime(m_eAnimType, m_iAnimIndex, fInterPolationTime);
 	}
 

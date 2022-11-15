@@ -245,7 +245,7 @@ namespace Client
 	enum STATE_TYPE
 	{
 
-
+#pragma region Warrior
 //#pragma region Base_R
 //
 //		/* Idle */
@@ -366,6 +366,7 @@ namespace Client
 		STATE_WARRIOR_GUARDBREAK, // °¡µå ÆÄ±«
 
 		STATE_HIT,
+
 //
 //
 //#pragma endregion
@@ -396,9 +397,39 @@ namespace Client
 
 #pragma endregion
 
+#pragma endregion
 
 
+#pragma region SpearMan
 
+			
+		
+		/* Base_R */
+		STATE_WALK_SPEARMAN_R,
+		STATE_IDLE_SPEARMAN_R,
+		STATE_RUNBEGIN_SPEARMAN_R,
+		STATE_RUN_SPEARMAN_R,
+
+		STATE_JUMP_SPEARMAN_R,
+		STATE_JUMPFALL_SPEARMAN_R,
+		STATE_JUMP_LAND_SPEARMAN_R,
+
+		STATE_STOP_SPEARMAN_R,
+
+		/* Base_L */
+		STATE_WALK_SPEARMAN_L,
+		STATE_IDLE_SPEARMAN_L,
+		STATE_RUNBEGIN_SPEARMAN_L,
+		STATE_RUN_SPEARMAN_L,
+
+		STATE_JUMP_SPEARMAN_L,
+		STATE_JUMPFALL_SPEARMAN_L,
+		STATE_JUMP_LAND_SPEARMAN_L,
+
+		STATE_STOP_SPEARMAN_L,
+
+
+#pragma endregion
 
 
 

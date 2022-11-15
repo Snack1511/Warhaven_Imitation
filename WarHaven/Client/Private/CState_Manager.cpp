@@ -4,6 +4,8 @@
 #include "CIdle_Player_R.h"
 #include "CIdle_Player_L.h"
 
+#pragma region Warrior
+
 #include "CWalk_Player.h"
 #include "CRun_Player.h"
 #include "CSlide_Player.h"
@@ -78,6 +80,37 @@
 #include "CStop_Player_L.h"
 #include "CStop_Player_R.h"
 
+#pragma endregion
+
+#pragma region Spearman
+
+#include "CIdle_SpearMan_L.h"
+#include "CIdle_SpearMan_R.h"
+
+#include "CWalk_SpearMan_L.h"
+#include "CWalk_SpearMan_R.h"
+
+#include "CRun_SpearmMan_Begin_L.h"
+#include "CRun_SpearmMan_Begin_R.h"
+
+#include "CRun_SpearMan_L.h"
+#include "CRun_SpearMan_R.h"
+
+#include "CJump_SpearMan_L.h"
+#include "CJump_SpearMan_R.h"
+
+#include "CJump_SpearMan_Fall_L.h"
+#include "CJump_SpearMan_Fall_R.h"
+
+#include "CJump_SpearMan_Land_L.h"
+#include "CJump_SpearMan_Land_R.h"
+
+#include "CStop_SpearMan_L.h"
+#include "CStop_SpearMan_R.h"
+
+
+#pragma endregion
+
 #include "CHit_Player.h"
 
 #include "CAI_SandBack.h"
@@ -98,6 +131,54 @@ CState_Manager::~CState_Manager()
 }
 
 HRESULT CState_Manager::Initialize()
+{
+	Warrior_State();
+
+	m_arrStates[STATE_IDLE_SPEARMAN_L] = CIdle_SpearMan_L::Create();
+	m_arrStates[STATE_IDLE_SPEARMAN_R] = CIdle_SpearMan_R::Create();
+
+	m_arrStates[STATE_WALK_SPEARMAN_L] = CWalk_SpearMan_L::Create();
+	m_arrStates[STATE_WALK_SPEARMAN_R] = CWalk_SpearMan_R::Create();
+
+	m_arrStates[STATE_RUNBEGIN_SPEARMAN_L] = CRun_SpearmMan_Begin_L::Create();
+	m_arrStates[STATE_RUNBEGIN_SPEARMAN_R] = CRun_SpearmMan_Begin_R::Create();
+
+	m_arrStates[STATE_RUN_SPEARMAN_L] = CRun_SpearMan_L::Create();
+	m_arrStates[STATE_RUN_SPEARMAN_R] = CRun_SpearMan_R::Create();
+
+
+
+	m_arrStates[STATE_JUMP_SPEARMAN_L] = CJump_SpearMan_L::Create();
+	m_arrStates[STATE_JUMP_SPEARMAN_R] = CJump_SpearMan_R::Create();
+
+	m_arrStates[STATE_JUMPFALL_SPEARMAN_L] = CJump_SpearMan_Fall_L::Create();
+	m_arrStates[STATE_JUMPFALL_SPEARMAN_R] = CJump_SpearMan_Fall_R::Create();
+
+	m_arrStates[STATE_JUMP_LAND_SPEARMAN_L] = CJump_SpearMan_Land_L::Create();
+	m_arrStates[STATE_JUMP_LAND_SPEARMAN_R] = CJump_SpearMan_Land_R::Create();
+
+
+	m_arrStates[STATE_STOP_SPEARMAN_L] = CStop_SpearMan_L::Create();
+	m_arrStates[STATE_STOP_SPEARMAN_R] = CStop_SpearMan_R::Create();
+
+
+	
+
+	for (_uint i = 0; i < STATE_END; ++i)
+	{
+		if (!m_arrStates[i])
+		{
+			STATE_TYPE iType = (STATE_TYPE)i;
+			Call_MsgBox(L"태호야 상태추가하랬지");
+			return E_FAIL;
+
+		}
+	}
+
+	return S_OK;
+}
+
+void CState_Manager::Warrior_State()
 {
 #pragma region Warrior State pattern
 
@@ -154,7 +235,7 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_SPRINTATTACK_BEGIN_PLAYER] = CSprintAttack_Player_Begin::Create();
 	m_arrStates[STATE_SPRINTATTACK_PLAYER] = CSprintAttack_Player::Create();
 
-	
+
 	m_arrStates[STATE_GUARD_BEGIN_PLAYER] = CGuard_Begin_Player::Create();
 	m_arrStates[STATE_GUARD_LOOP_PLAYER] = CGuard_Loop_Player::Create();
 	m_arrStates[STATE_GUARD_END_PLAYER] = CGuard_End_Player::Create();
@@ -162,24 +243,24 @@ HRESULT CState_Manager::Initialize()
 
 	m_arrStates[STATE_BOUNCE_PLAYER_L] = CBounce_Player_L::Create();
 	m_arrStates[STATE_BOUNCE_PLAYER_R] = CBounce_Player_R::Create();
-	
+
 	m_arrStates[STATE_STOP_PLAYER_L] = CStop_Player_L::Create();
 	m_arrStates[STATE_STOP_PLAYER_R] = CStop_Player_R::Create();
 
 
 	m_arrStates[STATE_HIT] = CHit_Player::Create();
 
-//	m_arrStates[STATE_WARRIOR_OXEN] = CWarrior_Oxen::Create();
+	//	m_arrStates[STATE_WARRIOR_OXEN] = CWarrior_Oxen::Create();
 	m_arrStates[STATE_WARRIOR_GUARDBREAK] = CWarrior_GuardBreak::Create();
 
-//	m_arrStates[STATE_ATTACK_UPPER_MIDDLE_PLAYER_L] = CWarrior_Attack_01::Create();
+	//	m_arrStates[STATE_ATTACK_UPPER_MIDDLE_PLAYER_L] = CWarrior_Attack_01::Create();
 
 	m_arrStates[STATE_WARRIOR_OXEN_BEGIN] = CWarrior_Oxen_Begin::Create();
 	m_arrStates[STATE_WARRIOR_OXEN_LOOP] = CWarrior_Oxen_Loop::Create();
 	m_arrStates[STATE_WARRIOR_OXEN_LOOPATTACK] = CWarrior_Oxen_Loop_Attack::Create();
 	m_arrStates[STATE_WARRIOR_OXEN_END] = CWarrior_Oxen_Cancel::Create();
 
-	
+
 
 	m_arrStates[STATE_IDLE_WARRIOR_R_AI_ENEMY] = CAI_SandBack::Create();
 
@@ -187,37 +268,22 @@ HRESULT CState_Manager::Initialize()
 
 
 
-	//Warrior_Base_R();
-	//Warrior_Base_L();
 
-	//Warrior_Base_Attack_R();
-	//Warrior_Base_Attack_L();
-	//Warrior_Base_Attack_Default();
-	//
-	//Warrior_Base_Hit();
-	//Warrior_Base_ETC();
 
-	//Warrior_Others();
+		//Warrior_Base_R();
+		//Warrior_Base_L();
+
+		//Warrior_Base_Attack_R();
+		//Warrior_Base_Attack_L();
+		//Warrior_Base_Attack_Default();
+		//
+		//Warrior_Base_Hit();
+		//Warrior_Base_ETC();
+
+		//Warrior_Others();
 
 
 #pragma endregion
-
-
-	
-	
-
-	for (_uint i = 0; i < STATE_END; ++i)
-	{
-		if (!m_arrStates[i])
-		{
-			STATE_TYPE iType = (STATE_TYPE)i;
-			Call_MsgBox(L"태호야 상태추가하랬지");
-			return E_FAIL;
-
-		}
-	}
-
-	return S_OK;
 }
 
 //void CState_Manager::Warrior_Base_R()

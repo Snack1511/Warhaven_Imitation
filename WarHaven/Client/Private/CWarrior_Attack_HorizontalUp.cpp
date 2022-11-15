@@ -20,6 +20,8 @@ CWarrior_Attack_HorizontalUp::~CWarrior_Attack_HorizontalUp()
 
 HRESULT CWarrior_Attack_HorizontalUp::Initialize()
 {
+	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
+
 	m_fInterPolationTime = 0.1f;
 
 
@@ -35,7 +37,7 @@ HRESULT CWarrior_Attack_HorizontalUp::Initialize()
 	m_fMyMaxLerp = 10.f;
 	m_fMaxSpeed = 0.8f;
 
-	Add_KeyFrame(40, 0);
+	//Add_KeyFrame(40, 0);
 	Add_KeyFrame(43, 1);
 	Add_KeyFrame(60, 2);
 
@@ -57,21 +59,14 @@ STATE_TYPE CWarrior_Attack_HorizontalUp::Tick(CUnit* pOwner, CAnimator* pAnimato
 	if (m_bMoveTrigger)
 		Move(Get_Direction(), pOwner);
 
-	if (m_bAttackTrigger)
-	{
-		// 공격 진입
-		if (pOwner->Is_Weapon_R_Collision())
-			return STATE_BOUNCE_PLAYER_R;
-
-	}
-
-		return __super::Tick(pOwner, pAnimator);
+	return __super::Tick(pOwner, pAnimator);
 }
 
 void CWarrior_Attack_HorizontalUp::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+	__super::Exit(pOwner, pAnimator);
 
 }
 
@@ -99,16 +94,8 @@ void CWarrior_Attack_HorizontalUp::On_KeyFrameEvent(CUnit * pOwner, CAnimator * 
 {
 	switch (iSequence)
 	{
-	case 0:
-		m_bMoveTrigger = false;
-		pOwner->Get_PhysicsCom()->Set_MaxSpeed(10.f);
-		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
-		pOwner->Set_DirAsLook();
-		break;
-
 	case 1:
 		m_bAttackTrigger = true;
-		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 3.f;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 

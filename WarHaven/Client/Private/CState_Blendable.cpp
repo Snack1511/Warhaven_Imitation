@@ -62,6 +62,11 @@ void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 }
 
+void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
+{
+	pAnimator->Stop_ActionAnim();
+}
+
 STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	STATE_TYPE	eStateType = STATE_END;
@@ -263,7 +268,7 @@ void CState_Blendable::Move_Cycle(CAnimator* pAnimator, _uint* arrDirectionAnimI
 		m_iAnimIndex = arrDirectionAnimIndices[iDirection];
 
 		pAnimator->Set_CurAnimIndex(eAnimType, m_iAnimIndex, ANIM_DIVIDE::eBODYLOWER);
-		pAnimator->Set_AnimSpeed(eAnimType, m_iAnimIndex, m_iDirectionAnimSpeed[iDirection]);
+		pAnimator->Set_AnimSpeed(eAnimType, m_iAnimIndex, m_fDirectionAnimSpeed[iDirection]);
 		pAnimator->Set_InterpolationTime(eAnimType, m_iAnimIndex, m_fInterPolationTime);
 	}
 

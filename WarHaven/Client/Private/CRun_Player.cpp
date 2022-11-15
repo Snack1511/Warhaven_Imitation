@@ -29,14 +29,14 @@ HRESULT CRun_Player::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 
-	m_iDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
-	m_iDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
     m_iStateChangeKeyFrame = 0;
 
@@ -75,7 +75,7 @@ void CRun_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	{
 
 		m_fInterPolationTime = 0.f;
-		pAnimator->Set_CurFrame(22);
+		//pAnimator->Set_CurFrame(22);
 	}
 
 
@@ -99,33 +99,22 @@ void CRun_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CRun_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Walk로 오는 조건
-    1. 
+    /* Player가 Run로 오는 조건
+    1. 뛰어간다.
     */
 
-    if (KEY(SPACE, NONE))
-    {
-        // 천천히 
-        if (KEY(CTRL, NONE))
-        {
-            // 걸어간다.
-            if (KEY(W, HOLD) ||
-                KEY(A, HOLD) ||
-                KEY(S, HOLD) ||
-                KEY(D, HOLD))
-            {
+	if (KEY(CTRL, NONE))
+	{
+		// 걸어간다.
+		if (KEY(W, HOLD) ||
+			KEY(A, HOLD) ||
+			KEY(D, HOLD))
+		{
 
-                return m_eStateType;
-            }
-
-        }
-    }
-   
-        //CTRL 로 바꾸셈.
-      
-      
-
-   
+			return m_eStateType;
+		}
+		
+	}
 
 
     return STATE_END;

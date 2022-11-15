@@ -41,7 +41,7 @@ HRESULT CRun_Player_Begin::Initialize()
     return S_OK;
 }
 
-void CRun_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CRun_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
@@ -96,10 +96,9 @@ void CRun_Player_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CRun_Player_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    // 걸어간다.
+    // 뛰어갈 준비를 한다.
     if (KEY(W, HOLD) ||
         KEY(A, HOLD) ||
-        KEY(S, HOLD) ||
         KEY(D, HOLD))
     {
 

@@ -56,6 +56,47 @@ HRESULT CWarrior_Attack_HorizontalUp_L::Initialize()
 	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_L);
 
 
+	m_eAnimLeftorRight = ANIM_BASE_L;
+	m_iStopIndex = 30;
+	m_iIdle_Index = 3;
+	m_iLandIndex = 9;
+	m_iJumpFallIndex = 1;
+
+	m_iRunAnimIndex[STATE_DIRECTION_E] = 18;
+	m_iRunAnimIndex[STATE_DIRECTION_N] = 19;
+	m_iRunAnimIndex[STATE_DIRECTION_NE] = 20;
+	m_iRunAnimIndex[STATE_DIRECTION_NW] = 21;
+	m_iRunAnimIndex[STATE_DIRECTION_S] = 34;
+	m_iRunAnimIndex[STATE_DIRECTION_SE] = 35;
+	m_iRunAnimIndex[STATE_DIRECTION_SW] = 36;
+	m_iRunAnimIndex[STATE_DIRECTION_W] = 22;
+
+	m_iWalkAnimIndex[STATE_DIRECTION_NW] = 33;
+	m_iWalkAnimIndex[STATE_DIRECTION_NE] = 32;
+	m_iWalkAnimIndex[STATE_DIRECTION_N] = 31;
+	m_iWalkAnimIndex[STATE_DIRECTION_SW] = 36;
+	m_iWalkAnimIndex[STATE_DIRECTION_SE] = 35;
+	m_iWalkAnimIndex[STATE_DIRECTION_S] = 34;
+	m_iWalkAnimIndex[STATE_DIRECTION_W] = 37;
+	m_iWalkAnimIndex[STATE_DIRECTION_E] = 30;
+
+	m_iJumpAnimIndex[STATE_DIRECTION_N] = 6;
+	m_iJumpAnimIndex[STATE_DIRECTION_S] = 7;
+	m_iJumpAnimIndex[STATE_DIRECTION_W] = 8;
+	m_iJumpAnimIndex[STATE_DIRECTION_E] = 5;
+	m_iJumpAnimIndex[STATE_DIRECTION_NW] = 4; // 제자리
+
+	m_iJumpAnimIndex[STATE_DIRECTION_NE] = 99; // 의미없는값 채우기 (0이면 터지게 해놔서)
+	m_iJumpAnimIndex[STATE_DIRECTION_SW] = 99;
+	m_iJumpAnimIndex[STATE_DIRECTION_SE] = 99;
+
+	m_eWalkState = STATE_WALK_PLAYER_R;
+	m_eJumpState = STATE_JUMP_PLAYER_R;
+	m_eLandState = STATE_JUMP_LAND_PLAYER_R;
+	m_eFallState = STATE_JUMPFALL_PLAYER_R;
+	m_eRunState = STATE_RUN_PLAYER_R;
+	m_eIdleState = STATE_IDLE_PLAYER_R;
+
 
 
 	return S_OK;
@@ -86,7 +127,7 @@ STATE_TYPE CWarrior_Attack_HorizontalUp_L::Tick(CUnit* pOwner, CAnimator* pAnima
 	{
 		// 공격 진입
 		if (pOwner->Is_Weapon_R_Collision())
-			return STATE_BOUNCE_PLAYER_R;
+			return STATE_BOUNCE_PLAYER_L;
 
 	}
 

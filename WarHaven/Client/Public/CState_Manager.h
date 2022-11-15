@@ -24,6 +24,9 @@ public:
 	HRESULT	Initialize();
 
 private:
+	void Warrior_State();
+
+private:
 	CState* m_arrStates[STATE_END] = {};
 
 private:

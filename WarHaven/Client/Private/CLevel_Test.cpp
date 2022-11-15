@@ -236,6 +236,15 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
+	// 테스트할 객체 띄우기
+
+	if (FAILED(SetUp_Warrior_TH()))
+		return E_FAIL;
+
+	//if (FAILED(SetUp_SpearMan_TH()))
+	//	return E_FAIL;
+
+
 	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
 		2. 뒤로가는 키는 Walk로 가게해라 뒤로가는 RUn은 없다
 		3. Run 끝날때 모션
@@ -261,95 +270,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 
 
-    CUnit::UNIT_MODEL_DATA  tModelData;
 
-	//0. Warrior
-    tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Warrior/Warrior.fbx";
-
-    tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx";
-    tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx";
-    tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
-
-    tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx";
-    tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-
-    CUnit_Warrior* pTestWarriorUnit = CUnit_Warrior::Create(tModelData);
-    if (!pTestWarriorUnit)
-        return E_FAIL;
-
-
-
-	pTestWarriorUnit->Initialize();
-
-	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
-	pTestWarriorUnit->Reserve_State(STATE_IDLE_PLAYER_R);
-
-
-
-	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
-
-
-	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
-		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
-	};
-
-
-
-	pTestWarriorUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
-
-	tUnitColDesc[0].fRadius = 0.4f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
-
-
-	pTestWarriorUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("ob_Head"));
-
-	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[3] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.5f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -160.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
-	};
-
-	pTestWarriorUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
-
-	
-	/* Game Collider */
-
-	/* Test Enemy */
-	CUnit_Warrior* pTestEnemyWarrior = CUnit_Warrior::Create(tModelData);
-	if (!pTestEnemyWarrior)
-		return E_FAIL;
-
-	pTestEnemyWarrior->Initialize();
-	pTestEnemyWarrior->Set_TargetUnit(pTestWarriorUnit);
-	pTestEnemyWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
-	
-	CUnit::UNIT_COLLIDREINFODESC tEnemyUnitInfoDesc;
-	CUnit::UNIT_COLLIDERDESC tEnemyUnitColDesc[1];
-
-	tEnemyUnitColDesc[0].fRadius = 1.f;
-	tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, tEnemyUnitColDesc->fRadius * 0.5f, 0.f);
-	tEnemyUnitColDesc[0].eColType = COL_ENEMYHITBOX_BODY;
-
-	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, tEnemyUnitColDesc);
-
-	tEnemyUnitColDesc[0].fRadius = 0.3f;
-	tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tEnemyUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
-
-
-	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, tEnemyUnitColDesc);
-
-	pTestEnemyWarrior->Teleport_Unit(_float4(0.f, 0.f, 2.f));
-	Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
-	DISABLE_GAMEOBJECT(pTestEnemyWarrior);
 
 	/*fColRadius = 1.f;
 	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_ENEMYHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
@@ -362,29 +283,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 
 	//1. SpearMan
-	/*tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Spearman/Spearman.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Spearman/body/SK_Spearman0001_Body_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Face_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Helmet_A00.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSpear/SM_WP_LongSpear0002_A00.fbx";
-	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-
-	CUnit_Spearman* pTestSpearmanUnit = CUnit_Spearman::Create(tModelData);
-	if (!pTestSpearmanUnit)
-		return E_FAIL;
-
-	pTestSpearmanUnit->Initialize();
-	Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);*/
-
-	CUser::Get_Instance()->Set_Player(pTestWarriorUnit);
-
-	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarriorUnit, nullptr);
-	pFollowCam->Initialize();
-	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
-	DISABLE_GAMEOBJECT(pFollowCam);
+	
 	
 
     return S_OK;
@@ -488,4 +387,230 @@ void CLevel_Test::Col_Check()
 	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_HEAD);
 }
 
+HRESULT CLevel_Test::SetUp_Warrior_TH()
+{
+	CUnit::UNIT_MODEL_DATA  tModelData;
 
+	//0. Warrior
+	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Warrior/Warrior.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx";
+	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
+
+	CUnit_Warrior* pTestWarriorUnit = CUnit_Warrior::Create(tModelData);
+	if (!pTestWarriorUnit)
+		return E_FAIL;
+
+
+
+	pTestWarriorUnit->Initialize();
+
+	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
+	pTestWarriorUnit->Reserve_State(STATE_IDLE_PLAYER_R);
+
+
+
+	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
+
+
+	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
+		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
+	};
+
+
+
+	pTestWarriorUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
+
+	tUnitColDesc[0].fRadius = 0.4f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
+
+
+	pTestWarriorUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("ob_Head"));
+
+	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[3] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.5f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -160.f),COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
+	};
+
+	pTestWarriorUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
+
+	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
+
+
+	/* Game Collider */
+
+	/* Test Enemy */
+	CUnit_Warrior* pTestEnemyWarrior = CUnit_Warrior::Create(tModelData);
+	if (!pTestEnemyWarrior)
+		return E_FAIL;
+
+	pTestEnemyWarrior->Initialize();
+	pTestEnemyWarrior->Set_TargetUnit(pTestWarriorUnit);
+	pTestEnemyWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
+
+	CUnit::UNIT_COLLIDREINFODESC tEnemyUnitInfoDesc;
+	CUnit::UNIT_COLLIDERDESC tEnemyUnitColDesc[1];
+
+	tEnemyUnitColDesc[0].fRadius = 1.f;
+	tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, tEnemyUnitColDesc->fRadius * 0.5f, 0.f);
+	tEnemyUnitColDesc[0].eColType = COL_ENEMYHITBOX_BODY;
+
+	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, tEnemyUnitColDesc);
+
+	tEnemyUnitColDesc[0].fRadius = 0.3f;
+	tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	tEnemyUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
+
+
+	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, tEnemyUnitColDesc);
+
+	pTestEnemyWarrior->Teleport_Unit(_float4(0.f, 0.f, 2.f));
+	Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
+	DISABLE_GAMEOBJECT(pTestEnemyWarrior);
+
+	CUser::Get_Instance()->Set_Player(pTestWarriorUnit);
+
+	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarriorUnit, nullptr);
+	pFollowCam->Initialize();
+	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	DISABLE_GAMEOBJECT(pFollowCam);
+
+	return S_OK;
+}
+
+
+HRESULT CLevel_Test::SetUp_SpearMan_TH()
+{
+
+	CUnit::UNIT_MODEL_DATA  tModelData;
+
+	//0. Warrior
+	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Spearman/Spearman.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Spearman/body/SK_Spearman0001_Body_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Face_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Helmet_A00.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSpear/SM_WP_LongSpear0002_A00.fbx";
+	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
+
+	CUnit_Spearman* pTestSpearmanUnit = CUnit_Spearman::Create(tModelData);
+	if (!pTestSpearmanUnit)
+		return E_FAIL;
+
+
+
+	pTestSpearmanUnit->Initialize();
+
+	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
+	pTestSpearmanUnit->Reserve_State(STATE_IDLE_PLAYER_R);
+
+
+
+	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
+
+
+	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
+		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
+	};
+
+
+
+	pTestSpearmanUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
+
+	tUnitColDesc[0].fRadius = 0.4f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
+
+
+	pTestSpearmanUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestSpearmanUnit, CModel)->Find_HierarchyNode("ob_Head"));
+
+	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[3] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.5f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -160.f),COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
+	};
+
+	pTestSpearmanUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestSpearmanUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
+
+	Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);
+
+	//CUnit::UNIT_MODEL_DATA  tModelData;
+
+
+
+
+	//CUnit_Spearman* pTestSpearmanUnit = CUnit_Spearman::Create(tModelData);
+	//if (!pTestSpearmanUnit)
+	//	return E_FAIL;
+
+
+
+	//pTestSpearmanUnit->Initialize();
+	//pTestSpearmanUnit->Reserve_State(STATE_IDLE_PLAYER_L);
+	//
+
+	//CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
+
+
+	//CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	//{
+	//	//Radius,	vOffsetPos.		eColType
+	//	{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
+	//	{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
+	//};
+
+
+
+	//pTestSpearmanUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
+
+	//tUnitColDesc[0].fRadius = 0.4f;
+	//tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	//tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
+
+
+	//pTestSpearmanUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestSpearmanUnit, CModel)->Find_HierarchyNode("ob_Head"));
+
+	//CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[2] =
+	//{
+	//	//Radius,	vOffsetPos.		eColType
+	//	{0.5f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
+	//	{0.5f, _float4(0.f, 0.f, -160.f),COL_PLAYERATTACK }//,
+	//	//{0.5f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
+	//};
+
+	//pTestSpearmanUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 2, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestSpearmanUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
+
+
+	//Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);
+	//
+
+	CUser::Get_Instance()->Set_Player(pTestSpearmanUnit);
+
+	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestSpearmanUnit, nullptr);
+	pFollowCam->Initialize();
+	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	DISABLE_GAMEOBJECT(pFollowCam);
+
+	
+
+	return S_OK;
+}

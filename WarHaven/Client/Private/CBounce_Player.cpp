@@ -26,9 +26,6 @@ HRESULT CBounce_Player::Initialize()
 
 	m_iStateChangeKeyFrame = 50;
 
-	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
-
-
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 5.f;
 	m_fMaxSpeed = 2.f;
@@ -51,16 +48,24 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 
 
+	case Client::STATE_ATTACK_HORIZONTALUP_L:
 	case Client::STATE_ATTACK_HORIZONTALMIDDLE_L:
+	case Client::STATE_ATTACK_HORIZONTALDOWN_L:
+
 
 		m_eAnimType = ANIM_ATTACK;     
 		m_iAnimIndex = 16;    
+		m_eStateType = STATE_BOUNCE_PLAYER_L;
 
 		break;
+
+	case Client::STATE_ATTACK_HORIZONTALUP_R:
 	case Client::STATE_ATTACK_HORIZONTALMIDDLE_R:
+	case Client::STATE_ATTACK_HORIZONTALDOWN_R:
 
 		m_eAnimType = ANIM_ATTACK;
 		m_iAnimIndex = 18;
+		m_eStateType = STATE_BOUNCE_PLAYER_R;
 
 		break;
 	case Client::STATE_ATTACK_VERTICALCUT:

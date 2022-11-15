@@ -65,10 +65,11 @@ HRESULT CJump_Player_R::Initialize()
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
 
 
+	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 13;
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 14;
     m_iDirectionAnimIndex[STATE_DIRECTION_S] = 15;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 16;
-    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 13;
+
 
 	iPlaceJumpAnimIndex = 12;
 

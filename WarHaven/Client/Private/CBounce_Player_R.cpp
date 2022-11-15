@@ -42,8 +42,10 @@ HRESULT CBounce_Player_R::Initialize()
 
 	m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
 
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
@@ -83,6 +85,6 @@ STATE_TYPE CBounce_Player_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator
     1.  °ø°ÝÇÏ´Ù ¶¥¿¡ Æ¨±â¸é
     */
 
-   
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
+
 }

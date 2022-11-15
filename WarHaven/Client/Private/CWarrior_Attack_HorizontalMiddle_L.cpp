@@ -118,6 +118,13 @@ void CWarrior_Attack_HorizontalMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimat
 
 STATE_TYPE CWarrior_Attack_HorizontalMiddle_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (m_bAttackTrigger)
+	{
+		// 공격 진입
+		if (pOwner->Is_Weapon_R_Collision())
+			return STATE_BOUNCE_PLAYER_L;
+
+	}
 
 	return __super::Tick(pOwner, pAnimator);
 }

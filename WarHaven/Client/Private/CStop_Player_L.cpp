@@ -52,10 +52,12 @@ HRESULT CStop_Player_L::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
-	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 24;
-	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 26;
-	m_iDirectionAnimIndex[STATE_DIRECTION_S] = 25;
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 23;
+	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 24;
+	m_iDirectionAnimIndex[STATE_DIRECTION_S] = 25;
+	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 26;
+
+
 
 	return S_OK;
 }

@@ -74,17 +74,17 @@ HRESULT CRun_Player_L::Initialize()
     //m_vecAdjState.push_back(STATE_WALK);
 
     // 15
-    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 18;
+    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 17;
 
-    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 19;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 20;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 21;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 18;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 19;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 20;
 
     m_iDirectionAnimIndex[STATE_DIRECTION_S] = 34;
     m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
 
-    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 21;
 
 
     return S_OK;
@@ -150,16 +150,19 @@ STATE_TYPE CRun_Player_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     /* Player가 Walk로 오는 조건
     2. WASD 를 누른 상태
     */
-	if (KEY(CTRL, NONE))
-	{
-		if (KEY(W, HOLD) ||
-			KEY(A, HOLD) ||
-			KEY(S, HOLD) ||
-			KEY(D, HOLD))
-		{
-			return m_eStateType;
-		}
-	}
+
+	return __super::Check_Condition(pOwner, pAnimator);
+
+	//if (KEY(CTRL, NONE))
+	//{
+	//	if (KEY(W, HOLD) ||
+	//		KEY(A, HOLD) ||
+	//		KEY(S, HOLD) ||
+	//		KEY(D, HOLD))
+	//	{
+	//		return m_eStateType;
+	//	}
+	//}
 
 
     return STATE_END;
