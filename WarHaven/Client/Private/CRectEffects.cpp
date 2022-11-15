@@ -23,6 +23,8 @@
 #include "CUtility_File.h"
 #include "Functor.h"
 
+#include "HIerarchyNode.h"
+
 
 
 
@@ -44,6 +46,8 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	, m_eCurveType(_origin.m_eCurveType)
 	, m_bBlackBackGround(_origin.m_bBlackBackGround)
 	, m_fDurationRange(_origin.m_fDurationRange)
+	, m_strBoneName(_origin.m_strBoneName)
+	, m_fDiscardPower(_origin.m_fDiscardPower)
 {
 	if (_origin.m_pRectInstances)
 	{
@@ -133,6 +137,13 @@ void CRectEffects::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 	//이거 파티클 빌보드 잘 안대는거 확인중
 	m_matTrans = pGameObject->Get_Transform()->Get_WorldMatrix(MATRIX_NOSCALE | MARTIX_NOTRANS);
 
+	if (m_bEffectFlag & EFFECT_REFBONE)
+	{
+		if (m_pFollowTarget)
+		{
+			m_pRefBone = GET_COMPONENT_FROM(m_pFollowTarget, CModel)->Find_HierarchyNode(m_strBoneName.c_str());
+		}
+	}
 
 	//if (m_bBillBoard)
 	//{
@@ -165,6 +176,8 @@ void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 		pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
 		pShader->Set_RawValue("g_bBlackBG", &m_bBlackBackGround, sizeof(_bool));
 	}
+
+	pShader->Set_RawValue("g_fDiscardPower", &m_fDiscardPower, sizeof(_float));
 
 	__super::Set_ShaderResource(pShader, pConstantName);
 }
@@ -211,7 +224,7 @@ HRESULT CRectEffects::Initialize_Prototype()
 	m_matTrans.Identity();
 	//m_bBillBoard = true;
 
-	m_bEffectFlag = 0;
+	//m_bEffectFlag = 0;
 
 	return S_OK;
 }
@@ -413,6 +426,15 @@ HRESULT CRectEffects::Initialize()
 
 		m_pInstancingDatas[i].bAlive = true;
 	}
+
+	if (m_bEffectFlag & EFFECT_REFBONE)
+	{
+		if (m_pFollowTarget)
+		{
+			m_pRefBone = GET_COMPONENT_FROM(m_pFollowTarget, CModel)->Find_HierarchyNode(m_strBoneName.c_str());
+		}
+	}
+	
 
 
 	return S_OK;
@@ -636,6 +658,12 @@ void CRectEffects::My_LateTick()
 			//sorting해도 InstancingData를 어케 해야하지
 	}
 
+	if (m_bEffectFlag & EFFECT_REFBONE)
+	{
+		if (m_pRefBone)
+			Stick_RefBone();
+	}
+
 
 	static_cast<CRect_Instance*>(GET_COMPONENT(CMesh))->ReMap_Instances(m_pRectInstances);
 
@@ -786,6 +814,13 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 	pReadFile->read((char*)&m_bLoop, sizeof(_bool));
 	pReadFile->read((char*)&m_fLoopTime, sizeof(_float));
 	pReadFile->read((char*)&m_eCurveType, sizeof(CURVE_TYPE));
+
+	pReadFile->read((char*)&m_bEffectFlag, sizeof(_byte));
+	pReadFile->read((char*)&m_vOffsetPos, sizeof(_float4));
+	m_strBoneName = CUtility_File::Read_Text(pReadFile);
+
+	pReadFile->read((char*)&m_fDiscardPower, sizeof(_float));
+
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
 	{
@@ -829,10 +864,14 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	pReadFile->read((char*)&m_fDissolvePower, sizeof(_float));
 
 	pReadFile->read((char*)&m_eCurveType, sizeof(CURVE_TYPE));
+	
+	pReadFile->read((char*)&m_bEffectFlag, sizeof(_byte));
+	pReadFile->read((char*)&m_vOffsetPos, sizeof(_float4));
+	m_strBoneName = CUtility_File::Read_Text(pReadFile);
+
+	pReadFile->read((char*)&m_fDiscardPower, sizeof(_float));
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
-
-
 
 	if (m_tCreateData.iOffsetPositionCount > 0)
 	{
@@ -878,6 +917,20 @@ void CRectEffects::Update_Animation(_uint iIndex)
 		}
 	}
 }
+
+void CRectEffects::Stick_RefBone()
+{
+	_float4 vPos = m_vOffsetPos;
+	_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
+
+
+	vPos = vPos.MultiplyCoord(matBone);
+	m_pTransform->Set_World(WORLD_POS, vPos);
+
+	m_pTransform->Make_WorldMatrix();
+}
+
+
 
 void CRectEffects::Reset_Instance(_uint iIndex)
 {

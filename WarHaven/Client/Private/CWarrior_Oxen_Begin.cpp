@@ -5,12 +5,14 @@
 
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "Model.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "Transform.h"
 #include "CColorController.h"
+#include "HIerarchyNode.h"
 
 CWarrior_Oxen_Begin::CWarrior_Oxen_Begin()
 {
@@ -65,8 +67,7 @@ void CWarrior_Oxen_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 {
     pOwner->TurnOn_TrailEffect(true);
 
-    //CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SkillLightParticle", );
-
+ 
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

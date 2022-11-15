@@ -75,6 +75,23 @@ void CWarrior_Attack_HorizontalDown_R::Enter(CUnit* pOwner, CAnimator* pAnimator
 	else
 		m_fAnimSpeed = 2.5f;
 
+	CColorController::COLORDESC m_tColorDesc;
+	ZeroMemory(&m_tColorDesc, sizeof(CColorController::COLORDESC));
+
+	m_tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+	m_tColorDesc.fFadeInStartTime = 0.f;
+	m_tColorDesc.fFadeInTime = 0.5f;
+	m_tColorDesc.fFadeOutStartTime = 0.5f;
+	m_tColorDesc.fFadeOutTime = 0.02f;
+
+	m_tColorDesc.vTargetColor = _float4((224.f / 255.f), (143.f / 255.f), (54.f / 255.f), 0.f);
+
+	m_tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+	m_tColorDesc.iStartKeyFrame = 3;
+	m_tColorDesc.iEndKeyFrame = 4;
+
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);
 
 	/* Owner¿« Animator Set Idle∑Œ */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

@@ -199,8 +199,7 @@ void CColorController::Fade_Time()
 void CColorController::Fade_KeyFrame()
 {
 	_uint iCurFrame = m_pTargetAnimator->Get_CurAnimFrame();
-
-
+	
 	m_fFadeTimeAcc += fDT(0);
 
 	switch (m_eCurFadeType)

@@ -900,7 +900,10 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONALPHA;
 			if (ImGui::Selectable("ANIMATION_DISSOLVE", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE;
+			if (ImGui::Selectable("BLACKBACKGROUND_TEXTURE", &bSelect[VTXRECTINSTANCE_PASS_BLACKBACKGROUNDTEXTURE]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_BLACKBACKGROUNDTEXTURE;
 
+			
 			pRenderer->Set_Pass(pCurEffect->m_iPassType);
 
 		}
@@ -1068,10 +1071,10 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime = fLoopTime;
 			}
 
-			_float fStartAlpha = tCurData.fStartAlpha;
-			if (ImGui::SliderFloat("fStartAlpha", &fStartAlpha, 0.f, 1.f, "%.2f"))
+			_float fDiscardPower = static_cast<CRectEffects*>(pCurEffect)->m_fDiscardPower;
+			if (ImGui::SliderFloat("fDiscardPower", &fDiscardPower, 0.f, 1.f, "%.2f"))
 			{
-				tCurData.fStartAlpha = fStartAlpha;
+				static_cast<CRectEffects*>(pCurEffect)->m_fDiscardPower = fDiscardPower;
 			}
 
 			_float	vStartDir[3] = { tCurData.vStartDir.x, tCurData.vStartDir.y, tCurData.vStartDir.z };
@@ -1290,8 +1293,53 @@ void CWindow_Effect::Show_ParticleTab()
 			{
 			}
 
+			_bool bStickBone = false;
+			if (static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag & EFFECT_REFBONE)
+				bStickBone = true;
+			if (ImGui::RadioButton("Stick Bone", bStickBone))
+			{
+				if (static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag & EFFECT_REFBONE)
+				{
+					static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag &= ~EFFECT_REFBONE;
+					bStickBone = false;
+				}
+				else
+				{
+					static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag |= EFFECT_REFBONE;
+					bStickBone = true;
+				}
+			}
 
+			if (bStickBone)
+			{
+				strcpy_s(m_szRefBoneName, static_cast<CRectEffects*>(pCurEffect)->m_strBoneName.c_str());
 
+				if (ImGui::InputText("BONE_NAME", m_szRefBoneName, sizeof(m_szRefBoneName), ImGuiInputTextFlags_EnterReturnsTrue))
+				{
+					static_cast<CRectEffects*>(pCurEffect)->m_strBoneName = m_szRefBoneName;
+					static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget = PLAYER;
+
+					CHierarchyNode* pNode = GET_COMPONENT_FROM(static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget,
+						CModel)->Find_HierarchyNode(m_szRefBoneName);
+					
+					if (!pNode)
+						return;
+
+					static_cast<CRectEffects*>(pCurEffect)->m_pRefBone = pNode;
+
+				}
+				_float	vOffset[3] = { static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.x,
+					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.y, static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.z };
+
+				if (ImGui::InputFloat3("vOffSetPos", vOffset, "%.2f"))
+				{
+					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.x = vOffset[0];
+					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.y = vOffset[1];
+					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.z = vOffset[2];
+					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.w = 1.f;
+				}
+
+			}
 
 		}
 
@@ -1392,7 +1440,6 @@ void CWindow_Effect::Save_CurEffect()
 		CUtility_File::Write_Text(&writeFile, CFunctor::To_String(pCurEffect->m_wstrMaskMapPath).c_str());
 		CUtility_File::Write_Text(&writeFile, CFunctor::To_String(pCurEffect->m_wstrColorMapPath).c_str());
 
-
 		writeFile.write((char*)&pCurEffect->m_vEffectFlag, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_vGlowFlag, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_iPassType, sizeof(_uint));
@@ -1405,6 +1452,14 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bLoop, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fLoopTime, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_eCurveType, sizeof(CURVE_TYPE));
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag, sizeof(_byte));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos, sizeof(_float4));
+		string strBoneName = static_cast<CRectEffects*>(pCurEffect)->m_strBoneName;
+		CUtility_File::Write_Text(&writeFile, strBoneName.c_str());
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDiscardPower, sizeof(_float));
+
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -1434,8 +1489,14 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDuration, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDurationRange, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDissolvePower, sizeof(_float));
-
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_eCurveType, sizeof(CURVE_TYPE));
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag, sizeof(_byte));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos, sizeof(_float4));
+		string strBoneName = static_cast<CRectEffects*>(pCurEffect)->m_strBoneName;
+		CUtility_File::Write_Text(&writeFile, strBoneName.c_str());
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDiscardPower, sizeof(_float));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));

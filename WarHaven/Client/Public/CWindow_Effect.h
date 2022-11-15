@@ -44,6 +44,7 @@ public:
 
 private:
 	char				m_szCurEffectName[MIN_STR];
+	char				m_szRefBoneName[MIN_STR];
 	vector<EFFECT_ITEM>	m_vecEffects;
 	_uint				m_iCurrentIdx = 9999;
 
@@ -55,6 +56,7 @@ private:
 	string				m_CurSelectedMeshFilePath;
 	string				m_CurSelectedTextureFilePath;
 	string				m_CurSelectedEffectFileKey;
+
 
 private:
 	void	Show_MainList();

@@ -475,5 +475,9 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SparkMesh"), "SparkMesh")))
 		return E_FAIL;
 
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HItSmokeParticle"), "HItSmokeParticle")))
+		return E_FAIL;
+
+	
 	return S_OK;
 }
