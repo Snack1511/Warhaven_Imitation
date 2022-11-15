@@ -1241,7 +1241,7 @@ void CWindow_Map::Save_TerrainData(string BasePath, string SaveName)
 
     char* szTexturePath = new char[MAX_PATH];
     strcpy_s(szTexturePath, sizeof(char) * MAX_PATH, CFunctor::To_String(m_CurTerrainData.strTileTexturePath).c_str());
-    _uint iTilePathPathLength = strlen(szTexturePath) + 1;
+    _uint iTilePathPathLength = _uint(strlen(szTexturePath))+ 1;
 
 
     writeFile.write((char*)&iTilePathPathLength, sizeof(_uint));
@@ -1260,6 +1260,13 @@ void CWindow_Map::Save_TerrainData(string BasePath, string SaveName)
 
     _float4* Colors = m_CurTerrainData.pCurTerrainColor;
     writeFile.write((char*)Colors, sizeof(_float4) * iNumVertices);
+
+    _int IndexBG = m_iBGIndex;
+    _int IndexSour = m_iSourIndex;
+    _int IndexDest = m_iDestIndex;
+    writeFile.write((char*)&IndexBG, sizeof(_int));
+    writeFile.write((char*)&IndexSour, sizeof(_int));
+    writeFile.write((char*)&IndexDest, sizeof(_int));
 
     writeFile.close();
 
@@ -1483,13 +1490,13 @@ void CWindow_Map::Save_InstanceData(string BasePath, string SaveName)
     strMergeFullPath += SaveName;
     strMergeFullPath += ".InstanceMergeData";
 
-    _int SplitPathLength = strSplitFullPath.length() + 1;
+    _int SplitPathLength = _int(strSplitFullPath.length()) + 1;
     writeFile.write((char*)&SplitPathLength, sizeof(_int));
     char strPath[MAXCHAR];
     strcpy_s(strPath, sizeof(char) * MAXCHAR, strSplitFullPath.c_str());
     writeFile.write(strPath, sizeof(char)* SplitPathLength);
 
-    _int MergePathLength = strMergeFullPath.length() + 1;
+    _int MergePathLength = _int(strMergeFullPath.length()) + 1;
     writeFile.write((char*)&MergePathLength, sizeof(_int));
     strcpy_s(strPath, sizeof(char) * MAXCHAR, strMergeFullPath.c_str());
     writeFile.write(strPath, sizeof(char) * MergePathLength);
@@ -1539,7 +1546,7 @@ void CWindow_Map::Save_MergeData(string BasePath, string SaveName)
         Call_MsgBox(L"SSave 실패 ??!?!");
         assert(0);
     }
-    _int GroupSize = m_InstanceMap.size();
+    _int GroupSize = _int(m_InstanceMap.size());
     writeFile.write((char*) & GroupSize, sizeof(_int));
 
     for (INSTANCEGROUPING::value_type& InstanceGroupValue : m_InstanceMap)
@@ -1567,7 +1574,7 @@ void CWindow_Map::Save_MergeData(string BasePath, string SaveName)
         PrevNumInstance = 0;
         for (INSTANCEVECTOR::value_type& Value : InstanceGroupValue.second)
         {
-            for (_int i = 0; i < get<0>(Value).iInstanceNums; ++i)
+            for (_int i = 0; i < _int(get<0>(Value).iInstanceNums); ++i)
             {
                 pInstanceVtx[i + PrevNumInstance].vTranslation.x += get<0>(Value).InstancePosition.x;
                 pInstanceVtx[i + PrevNumInstance].vTranslation.y += get<0>(Value).InstancePosition.y;
@@ -1576,7 +1583,7 @@ void CWindow_Map::Save_MergeData(string BasePath, string SaveName)
             PrevNumInstance += get<0>(Value).iInstanceNums;
         }
 
-        _int PathLength = strPath.length() + 1;
+        _int PathLength = _int(strPath.length()) + 1;
         char Path[MAX_PATH];
         strcpy_s(Path, sizeof(char) * MAX_PATH, CFunctor::To_String(strPath).c_str());
         
@@ -1815,14 +1822,13 @@ void CWindow_Map::Change_TileTexture()
         return;
     if (nullptr != m_pCurTerrain)
     {
-        m_vTileTypeFlag.x = _float(m_iSourIndex) / 100.f;
-        m_vTileTypeFlag.y = _float(m_iDestIndex) / 100.f;
         _float4* TileFlags = m_pCurTerrain->Get_TerrainTileFlag();
         _float3* pVertPos = m_pCurTerrain->Get_TerrainVerticesPos();
         _float4 OutPos = get<PICK_OUTPOS>(m_OutDatas);
         list<_uint> VertsList = Select_Vertices();
         for (list<_uint>::value_type& Value : VertsList)
         {
+
             _float4 vVertPos
                 = _float4(
                     (pVertPos+ Value)->x,
@@ -1831,19 +1837,20 @@ void CWindow_Map::Change_TileTexture()
                     1.f);
 
             _float VertLength = XMVectorGetX(XMVector3Length(vVertPos.XMLoad() - OutPos.XMLoad()));
-            _float fVertRatio = VertLength / (m_fBrushSize*0.5f);
-            fVertRatio += 1;
-            fVertRatio *= 0.5f;
-
-            TileFlags[Value] = m_vTileTypeFlag;
-            TileFlags[Value].z = (1.f - fVertRatio);
-            //클릭한 정점으로부터의 거리를 알아야댐
-
-
-            //Verts[Value] = Easing_Vertices(&Verts[Value]);
+            _float fVertRatio = VertLength / (m_fBrushSize * 0.5f);
+            _float4 vStartValue = TileFlags[Value];
+            _float4 vTargetValue = m_vTileTypeFlag;
+            _float4 vOut;
+            CGame_Manager_MJ::Get_Instance()->Easing_Vert(m_iCurSelectTerrainBrush, &vOut, vStartValue, vTargetValue, 1 - fVertRatio);
+            
+            TileFlags[Value] = vOut.Normalize();
+            TileFlags[Value].w = 1.f;
         }
         VertsList.clear();
         m_pCurTerrain->Update_Vertices();
+        m_pCurTerrain->Update_Texture(m_iSourIndex, m_iDestIndex, m_iBGIndex);
+        //m_pCurTerrain->Update_Texture(m_iDestIndex);
+
     }
 
 }
@@ -1876,20 +1883,35 @@ void CWindow_Map::Edit_TerrainVert()
 }
 void CWindow_Map::Edit_TerrainTex()
 {
-    if (ImGui::Checkbox("Activate WireMode", &m_TerrainWireFrame))
-    {
-        if (m_TerrainWireFrame)
-            m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_NAVIGATION);
-        else
-            m_pCurTerrain->Change_ShaderPass(VTXNOR_PASS_TEXTUREARRAY);
-
-    }
-    ImGui::Spacing();
     if (ImGui::CollapsingHeader("Index Setting"))
     {
         string strSourDebug = m_curSelectSourTextureName;//to_string(m_iSourIndex);
         string strDestDebug = m_curSelectDestTextureName;//to_string(m_iDestIndex);
-
+        string strBGDebug = m_curSelectBGTextureName;//to_string(m_iDestIndex);
+        ImGui::Text("Select BGTex");
+        if (ImGui::BeginCombo("##BGCombo", m_curSelectBGTextureName.c_str()))
+        {
+            list<tuple<string, _int>>& TupleList = m_pCurTerrain->Get_TextureList();
+            for (list<tuple<string, _int>>::value_type& Value : TupleList)
+            {
+                _bool bSelect = false;
+                if (m_curSelectBGTextureName == get<0>(Value))
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(get<0>(Value).c_str(), bSelect))
+                {
+                    m_curSelectBGTextureName = get<0>(Value);
+                    m_iBGIndex = get<1>(Value);
+                }
+            }
+            ImGui::EndCombo();
+        }
+        if (ImGui::SliderFloat("##BGRate", &m_vTileTypeFlag.x, 0.f, 1.f, "%.4f"))
+        {
+            m_vTileTypeFlag.Normalize();
+        }
+        ImGui::Spacing();
         ImGui::Text("Select SourTex");
         if (ImGui::BeginCombo("##SourCombo", m_curSelectSourTextureName.c_str()))
         {
@@ -1908,6 +1930,10 @@ void CWindow_Map::Edit_TerrainTex()
                 }
             }
             ImGui::EndCombo();
+        }
+        if (ImGui::SliderFloat("##SourRate", &m_vTileTypeFlag.y, 0.f, 1.f, "%.4f"))
+        {
+            m_vTileTypeFlag.Normalize();
         }
         ImGui::Spacing();
         ImGui::Text("Select DestTex");
@@ -1929,9 +1955,14 @@ void CWindow_Map::Edit_TerrainTex()
             }
             ImGui::EndCombo();
         }
+        if (ImGui::SliderFloat("##DestRate", &m_vTileTypeFlag.z, 0.f, 1.f, "%.4f"))
+        {
+            m_vTileTypeFlag.Normalize();
+        }
         ImGui::Spacing();
-        DebugData("Debug_Sour", strSourDebug, ImVec4(1.f, 0.f, 0.f, 1.f));
-        DebugData("Debug_Dest", strDestDebug, ImVec4(0.f, 1.f, 0.f, 1.f));
+        DebugData("Debug_Sour", strBGDebug, ImVec4(1.f, 0.f, 0.f, 1.f));
+        DebugData("Debug_Sour", strSourDebug, ImVec4(0.f, 1.f, 0.f, 1.f));
+        DebugData("Debug_Dest", strDestDebug, ImVec4(0.f, 0.f, 1.f, 1.f));
     }
 
 }
@@ -2322,7 +2353,7 @@ void CWindow_Map::Merge_Instance()
         PrevNumInstance = 0;
         for (INSTANCEVECTOR::value_type& Value : InstanceIter->second)
         {
-            for (_int i = 0; i < get<0>(Value).iInstanceNums; ++i)
+            for (_int i = 0; i < _int(get<0>(Value).iInstanceNums); ++i)
             {
                 pInstanceVtx[i + PrevNumInstance].vTranslation.x += get<0>(Value).InstancePosition.x;
                 pInstanceVtx[i + PrevNumInstance].vTranslation.y += get<0>(Value).InstancePosition.y;
@@ -2503,7 +2534,7 @@ list<string> CWindow_Map::Read_Folder_ToStringList(const char* pFolderPath)
             string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
             if (strExtName == "MapData")
             {
-                _int iSlash = strFileName.rfind("/") + 1;
+                _int iSlash = _int(strFileName.rfind("/")) + 1;
                 string strOutputName = strFileName.substr(iSlash, strFileName.length() + 1);
                 PathList.push_back(CutOut_Ext(strOutputName, strExtName));
             }
@@ -2590,7 +2621,7 @@ void CWindow_Map::Routine_InstanceMeshSelect(void* tTreeNode)
     {
         m_strCurSelectInstanceMeshPath = (*pTreeNode).strFullPath;
         m_strCurSelectInstanceMeshName = (*pTreeNode).strFileName;
-        _int CutLength = m_strCurSelectInstanceMeshName.rfind(".") - 1;
+        _int CutLength = _int(m_strCurSelectInstanceMeshName.rfind(".")) - 1;
         m_strCurSelectInstanceMeshName = m_strCurSelectInstanceMeshName.substr(0, CutLength);
     }
 }
@@ -2649,8 +2680,8 @@ void CWindow_Map::Change_Camera(_int Index)
     CCamera* pCamera = nullptr;
     GAMEINSTANCE->Change_Camera(get<0>(m_ArrCams[Index]));
     pCamera = (get<1>(m_ArrCams[Index]));
-    _float TerrainVertX = m_pCurTerrain->Get_TerrainVerticesX();
-    _float TerrainVertZ = m_pCurTerrain->Get_TerrainVerticesZ();
+    _float TerrainVertX = _float(m_pCurTerrain->Get_TerrainVerticesX());
+    _float TerrainVertZ = _float(m_pCurTerrain->Get_TerrainVerticesZ());
 
     _float4 SetUpPosition = get<2>(m_ArrCams[Index]);
     SetUpPosition.x *= (TerrainVertX * 0.5f);
@@ -2974,14 +3005,14 @@ void CWindow_Map::tagMapToolInstanceObjData::Make_Data(InstancingTuple& tInstanc
 
 void CWindow_Map::tagMapToolInstanceObjData::Save(ofstream& wirteFile)
 {
-    _int GroupNameLength = strInstanceGorupName.length() + 1;
+    _int GroupNameLength = _int(strInstanceGorupName.length()) + 1;
     wirteFile.write((char*)&GroupNameLength, sizeof(_int));
     char* pGroupName = new char[GroupNameLength];
     strcpy_s(pGroupName, sizeof(char) * GroupNameLength,CFunctor::To_String(strInstanceGorupName).c_str());
     wirteFile.write(pGroupName, sizeof(char)* GroupNameLength);
     Safe_Delete_Array(pGroupName);
 
-    _int PathLength = strMeshPath.length() + 1;
+    _int PathLength = _int(strMeshPath.length()) + 1;
     wirteFile.write((char*)&PathLength, sizeof(_int));
     char* pPathName = new char[PathLength];
     strcpy_s(pPathName, sizeof(char) * PathLength, CFunctor::To_String(strMeshPath).c_str());

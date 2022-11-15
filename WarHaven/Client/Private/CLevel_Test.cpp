@@ -393,8 +393,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	//function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	//CMap_Loader::Load_Data(wstring(TEXT("TestMap")), Ready_Object);
+	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	CMap_Loader::Load_Data(wstring(TEXT("TestMap")), Ready_Object);
 
 
 
@@ -405,11 +405,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//라이트
 
 
-	_float4x4 mat;
-	mat.Identity();
-	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
-	pDrawableTerrain->Initialize();
-	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	//_float4x4 mat;
+	//mat.Identity();
+	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
+	//pDrawableTerrain->Initialize();
+	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 	
 	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);

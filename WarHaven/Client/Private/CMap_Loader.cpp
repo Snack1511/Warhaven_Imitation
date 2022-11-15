@@ -94,7 +94,7 @@ HRESULT CMap_Loader::SetUp_TerrainData(ifstream& rhsReadFile, string& strPath)
     if (nullptr == pTerrain)
         assert(0);
     
-    Ready_Object(pTerrain, GROUP_DEFAULT);
+    Ready_Object(pTerrain, GROUP_DECORATION);
 
     return S_OK;
 }

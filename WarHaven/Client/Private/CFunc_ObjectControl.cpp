@@ -531,7 +531,7 @@ void CFunc_ObjectControl::Delete_Object(string MeshName, vector<CGameObject*>& O
     {
         ObjListIter++;
     }
-    ObjList.erase(ObjListIter);
+    ObjListIter = ObjList.erase(ObjListIter);
     DELETE_GAMEOBJECT(pDelete);
     Confirm_Data();
 }
@@ -903,6 +903,11 @@ void CFunc_ObjectControl::Update_Data()
     {
         m_pCurSelectData->vScale = m_pCurSelectGameObject->Get_Transform()->Get_Scale();
         m_pCurSelectData->ObjectStateMatrix = m_pCurSelectGameObject->Get_Transform()->Get_WorldMatrix();
+    }
+
+    if (KEY(L, TAP))
+    {
+        Func_DeleteOBject();
     }
 }
 

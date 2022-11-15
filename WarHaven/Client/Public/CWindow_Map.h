@@ -369,10 +369,12 @@ private:
 
 	PICKINGTYPE m_ePickingType = PICK_NONE;
 
+	string m_curSelectBGTextureName;
 	string m_curSelectSourTextureName;
 	string m_curSelectDestTextureName;
 	_int m_iSourIndex = 0;
 	_int m_iDestIndex = 0;
+	_int m_iBGIndex = 0;
 
 	vector<tuple<wstring, CCamera*, _float4>> m_ArrCams;
 

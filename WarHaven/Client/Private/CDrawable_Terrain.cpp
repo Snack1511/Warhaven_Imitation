@@ -34,13 +34,13 @@ CDrawable_Terrain* CDrawable_Terrain::Create(_uint iNumVerticesX, _uint iNumVert
         SAFE_DELETE(pInstance);
         return nullptr;
     }
+
     if (FAILED(pInstance->SetUp_TerrainTextures()))
     {
         Call_MsgBox(L"Failed to SetUp_TerrainTextures : CDrawable_Terrain");
         SAFE_DELETE(pInstance);
         return nullptr;
     }
-
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
@@ -60,6 +60,7 @@ CDrawable_Terrain* CDrawable_Terrain::Create(_uint iNumVerticesX, _uint iNumVert
 CDrawable_Terrain* CDrawable_Terrain::Create(const _tchar* pFilePath)
 {
     CDrawable_Terrain* pInstance = new CDrawable_Terrain;
+
     if (FAILED(pInstance->SetUp_TerrainMesh(pFilePath)))
     {
         Call_MsgBox(L"Failed to SetUp_TerrainMesh : CDrawable_Terrain");
@@ -80,7 +81,6 @@ CDrawable_Terrain* CDrawable_Terrain::Create(const _tchar* pFilePath)
         SAFE_DELETE(pInstance);
         return nullptr;
     }
-
     if (FAILED(pInstance->Initialize()))
     {
         Call_MsgBox(L"Failed to Initialize : CDrawable_Terrain");
@@ -108,14 +108,14 @@ HRESULT CDrawable_Terrain::Initialize_Prototype()
     //CTexture* pTexture = CTexture::Create(0, m_strTileTexturePath.c_str(), 1);
     //Add_Component(pTexture);
     //D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Textures\Terrain\LandScape\Ash
-    wstring strTestBasePath = L"../bin/resources/Textures/Terrain/LandScape/";
-    wstring strTestFirstTexturePath = strTestBasePath + L"Ash/T_Landscape_Ash_Ash01a_01a_B.dds";
-    wstring strTestSecondTexturePath = strTestBasePath + L"Grass/T_Landscape_Grass_Grass03a_01b_B.dds";
-    CTexture* pTexture = CTexture::Create(0, strTestFirstTexturePath.c_str(), 1);
-    Add_Component(pTexture);
+    //wstring strTestBasePath = L"../bin/resources/Textures/Terrain/LandScape/";
+    //wstring strTestFirstTexturePath = strTestBasePath + L"Ash/T_Landscape_Ash_Ash01a_01a_B.dds";
+    //wstring strTestSecondTexturePath = strTestBasePath + L"Grass/T_Landscape_Grass_Grass03a_01b_B.dds";
+    //CTexture* pTexture = CTexture::Create(0, strTestFirstTexturePath.c_str(), 1);
+    //Add_Component(pTexture);
 
-    pTexture = CTexture::Create(0, strTestSecondTexturePath.c_str(), 1);
-    Add_Component(pTexture);
+    //pTexture = CTexture::Create(0, strTestSecondTexturePath.c_str(), 1);
+    //Add_Component(pTexture);
 
     Change_ShaderPass(2);
     return S_OK;
@@ -141,6 +141,12 @@ HRESULT CDrawable_Terrain::Start()
         return E_FAIL;
     m_pTerrainMesh->ReMap_Vertices();
     m_pTerrainMesh->Update_VertsNormal();
+
+
+    if (nullptr == m_pRenderer)
+        assert(0);//호출 순서문제
+    m_pRenderer->Update_BackGround(m_iBGIndex);
+    m_pRenderer->Update_TextureIndex(m_iSourIndex, m_iDestIndex);
 
     m_pTerrainMesh->ReadyforPhysX();
     CPhysXCollider* pCol = CPhysXCollider::Create(0, m_pTerrainMesh, m_pTransform);
@@ -188,6 +194,7 @@ CDrawable_Terrain::Terrain_TUPLE CDrawable_Terrain::Get_TerrainData()
 void CDrawable_Terrain::Update_Vertices()
 {
     m_pTerrainMesh->ReMap_Vertices();
+
 }
 
 void CDrawable_Terrain::Update_Normal()
@@ -196,6 +203,11 @@ void CDrawable_Terrain::Update_Normal()
     //int a = 0;
 }
 
+void CDrawable_Terrain::Update_Texture(_int Sour, _int Dest, _int BG)
+{
+    m_pRenderer->Update_TextureIndex(Sour, Dest);
+    m_pRenderer->Update_BackGround(BG);
+}
 
 HRESULT CDrawable_Terrain::SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ)
 {
@@ -272,6 +284,16 @@ HRESULT CDrawable_Terrain::SetUp_TerrainInfo(ifstream& readFile, CMesh_Terrain* 
 
     readFile.read((char*)pVerticesPos, sizeof(_float3) * iNumVertices);
     readFile.read((char*)pVerticesColor, sizeof(_float4) * iNumVertices);
+    
+    if (readFile.eof())
+    {
+        Call_MsgBox(TEXT("이전버전"));
+        return S_OK;
+    }
+    readFile.read((char*)&m_iBGIndex, sizeof(_int));
+    readFile.read((char*)&m_iSourIndex, sizeof(_int));
+    readFile.read((char*)&m_iDestIndex, sizeof(_int));
+
 
     return S_OK;
 }
@@ -297,6 +319,7 @@ HRESULT CDrawable_Terrain::SetUp_TerrainTextures()
         m_TextureIndex.push_back(make_tuple(strName.c_str(), Index++));
         strName.assign(wStrName.begin(), wStrName.end());
     }
+
 
 
     return S_OK;

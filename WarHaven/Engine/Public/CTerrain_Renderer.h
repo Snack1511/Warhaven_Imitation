@@ -23,10 +23,17 @@ public:
 public:
     void Clear_TextureList();
     void Add_Texture(CTexture* pTexture);
+    void Update_TextureIndex(_int Sour, _int Dest);
+    void Update_BackGround(_int BGIndex);
 private:
     //SHADOW_TYPE	m_eShadowType = NOSHADOW;
     ID3D11ShaderResourceView** m_pArrSRVs = nullptr;
+    list<ID3D11ShaderResourceView*> m_SRVList;
+
     _int m_TextureNums = 0;
+    _bool m_bSRVUpdateFlag = true;
+    _float4* m_pMeshColorFlag = nullptr;
+    _int m_iVertNums = 0;
 };
 
 END

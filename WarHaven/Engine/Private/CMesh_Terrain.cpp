@@ -348,7 +348,7 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumVerticesX, _uint iNumVerticesZ)
 			pVertices[iIndex].vPosition = m_pVerticesPos[iIndex] = _float3((_float)j, 0.f, (_float)i);
 			pVertices[iIndex].vNormal = _float3(0.0f, 0.0f, 0.f);
 			pVertices[iIndex].vTexUV = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
-			pVertices[iIndex].vColor = m_pVerticesColor[iIndex] = _float4(0.f, 1.f, 0.f, 1.f);
+			pVertices[iIndex].vColor = m_pVerticesColor[iIndex] = _float4(1.f, 0.f, 0.f, 1.f);
 		}
 	}
 

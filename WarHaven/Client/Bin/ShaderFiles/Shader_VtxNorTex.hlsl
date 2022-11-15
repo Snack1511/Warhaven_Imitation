@@ -30,8 +30,9 @@ float		g_fPower = 30.f;
 vector		g_vFlag = vector(0.95f, 0.f, 0.f, 0.f);
 
 int g_iNumTexture = 0;
-#define TEXTURESIZE 100
+#define TEXTURESIZE 3
 texture2D g_DiffArray[TEXTURESIZE];
+//Texture2DArray g_DiffArray;//[TEXTURESIZE];
 
 
 struct VS_DEFAULT_IN
@@ -146,21 +147,55 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 {
 	PS_LIGHTOUT		Out = (PS_LIGHTOUT)0;
 
-	vector TextureDesc[TEXTURESIZE];
+	//vector TextureDesc[TEXTURESIZE];
 
-	for (uint i = 0; i < g_iNumTexture; ++i)
+	/*for (uint i = 0; i < TEXTURESIZE; ++i)
 	{
 		TextureDesc[i] = g_DiffArray[i].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 	}
 
-	In.vTileFlag;
 
 
-	int SourIndex = round(In.vTileFlag.r * (float)TEXTURESIZE);
-	int DestIndex = round(In.vTileFlag.g * (float)TEXTURESIZE);
+	int SourIndex = round(In.vTileFlag.r * (float)g_iNumTexture);
+	int DestIndex = round(In.vTileFlag.g * (float)g_iNumTexture);*/
+	
+	vector TextureDesc[TEXTURESIZE];
+	//vector BGDiff = g_DiffArray[0].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
+	//vector SourDiff = g_DiffArray[1].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
+	//vector DestDiff = g_DiffArray[2].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
+	//In.vTileFlag --> Normalize되어야 함..
 
-	Out.vDiffuse = TextureDesc[SourIndex] * In.vTileFlag.b +
-		TextureDesc[DestIndex] * (1.f - In.vTileFlag.b);
+	TextureDesc[0] = g_DiffArray[0].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
+	TextureDesc[1] = g_DiffArray[1].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
+	TextureDesc[2] = g_DiffArray[2].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
+
+
+
+
+
+
+	float fmax = In.vTileFlag.r;
+	int index = 0;
+	if (fmax < In.vTileFlag.g)
+	{
+		fmax = In.vTileFlag.g;
+		index = 1;
+	}
+	if (fmax < In.vTileFlag.b)
+	{
+		fmax = In.vTileFlag.b;
+		index = 2;
+	}
+
+	Out.vDiffuse = TextureDesc[index];//g_DiffArray[index].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
+		//BGDiff * In.vTileFlag.r +
+		//DestDiff * (In.vTileFlag.g) +
+		//SourDiff * (In.vTileFlag.b);
+	
+	//vector SourDiff = g_DiffArray.Sample(DefaultSampler, float3(In.vTexUV * g_fTileRatio, SourIndex));
+	//vector DestDiff = g_DiffArray.Sample(DefaultSampler, float3(In.vTexUV * g_fTileRatio, DestIndex));
+	//Out.vDiffuse = SourDiff * In.vTileFlag.b +
+	//	DestDiff * (1.f - In.vTileFlag.b);
 
 	Out.vDiffuse.a = 1.f;
 
