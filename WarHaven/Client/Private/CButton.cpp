@@ -19,7 +19,6 @@ CButton* CButton::Create(COMPONENT_PIPELINE ePipeLine)
 {
 	CButton* pInstance = new CButton(ePipeLine);
 
-
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
 		Call_MsgBox(L"Failed to Initialize_Prototype : CButton");
@@ -70,23 +69,21 @@ void CButton::Tick()
 void CButton::Late_Tick()
 {
 	//마우스 올려진거 체크
-
-
-
-	//마우스 올려지면
-	if (1)
+	// m_bIsInMouse = PtInRect();
+	if (m_bIsInMouse)
 	{
-		m_pMyUI->CallBack_MouseIn(0);
-	}
-	else if (1)
-	{
-		m_pMyUI->CallBack_MouseExit(0);
-
-	}
-	else
-	{
-		m_pMyUI->CallBack_ButtonClick(0);
-
+		if (1)
+		{
+			m_pMyUI->CallBack_MouseIn(0);
+		}
+		else if (1)
+		{
+			m_pMyUI->CallBack_MouseExit(0);
+		}
+		else
+		{
+			m_pMyUI->CallBack_ButtonClick(0);
+		}
 	}
 }
 
@@ -97,19 +94,13 @@ void CButton::Release()
 void CButton::OnEnable()
 {
 	__super::OnEnable();
-	//m_vTargetPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
-	//m_vOriginScale = m_pOwner->Get_Transform()->Get_Scale();
-	BIND_SHADERRESOURCES(CButton, "g_fAlpha");
 }
 
 void CButton::OnDisable()
 {
 	__super::OnDisable();
-
-	//REMOVE_SHADERRESOURCES(CButton, "g_fAlpha");
 }
 
 void CButton::OnDead()
 {
-	REMOVE_SHADERRESOURCES(CButton, "g_fAlpha");
 }

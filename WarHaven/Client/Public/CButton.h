@@ -53,12 +53,10 @@ public:
 	virtual void OnDead()	override;
 
 private:
-	//ptinRect 하기 위한 Rect
-	RECT	m_tRect;
+	RECT m_tRect;
+
+	_bool m_bIsInMouse = false;
 
 	CUI* m_pMyUI = nullptr;
-
-
-
 };
 END
