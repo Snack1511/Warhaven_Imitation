@@ -37,7 +37,7 @@ HRESULT CUI_Portrait::Start()
 	Bind_Shader();
 
 	__super::Start();
-		
+
 	return S_OK;
 }
 
@@ -68,6 +68,12 @@ void CUI_Portrait::Set_Portrait(_uint iIndex)
 	m_iCurPort = iIndex;
 
 	m_bAbleRotationPort = true;
+}
+
+void CUI_Portrait::Set_HeroPort(_bool value)
+{
+	m_bAbleHero = value;
+	m_bIsHeroLerp = true;
 }
 
 void CUI_Portrait::My_Tick()
@@ -125,8 +131,84 @@ void CUI_Portrait::My_Tick()
 	m_fEffectValue -= fEffectSpeed;
 
 	Change_UserPort();
-	Enable_HeroPort();
-	Disable_HeroPort();
+
+	if (m_bAbleHero)
+	{
+		if (m_bIsHeroLerp)
+		{
+			_float fDuration = 0.3f;
+
+			if (m_iHeroEndIdx > User)
+			{
+				for (int i = 0; i < Type_End; ++i)
+				{
+					ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][i]);
+
+					if (i == Key)
+					{
+						continue;
+					}
+
+					if (i == Effect)
+					{
+						continue;
+					}
+
+					m_arrPortraitUI[m_iHeroEndIdx][i]->Lerp_ScaleX(0.f, 43.f, fDuration);
+				}
+
+				m_bIsHeroLerp = false;
+			}
+		}
+		else
+		{
+			_float4 vScale = m_arrPortraitUI[m_iHeroEndIdx][BG]->Get_Transform()->Get_Scale();
+			if (vScale.x >= 43.f)
+			{
+				m_iHeroEndIdx--;
+				m_bIsHeroLerp = true;
+			}
+		}
+	}
+	else
+	{
+		if (m_bIsHeroLerp)
+		{
+			_float fDuration = 0.3f;
+
+			if (m_iHeroStartIdx < PortEnd)
+			{
+				for (int i = 0; i < Type_End; ++i)
+				{
+					if (i == Key)
+					{
+						continue;
+					}
+
+					if (i == Effect)
+					{
+						continue;
+					}
+
+					m_arrPortraitUI[m_iHeroStartIdx][i]->Lerp_ScaleX(43.f, 0.f, fDuration);
+				}
+
+				m_bIsHeroLerp = false;
+			}
+		}
+		else
+		{
+			_float4 vScale = m_arrPortraitUI[m_iHeroStartIdx][BG]->Get_Transform()->Get_Scale();
+			if (vScale.x <= m_fMinValue)
+			{
+				DISABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroStartIdx][Key]);
+				DISABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroStartIdx][Effect]);
+
+				m_iHeroStartIdx++;
+				m_bIsHeroLerp = true;
+			}
+		}
+	}
 }
 
 void CUI_Portrait::Set_Pass()
@@ -223,7 +305,7 @@ void CUI_Portrait::PortSizeDown(_float fDuration)
 
 void CUI_Portrait::Enable_HeroPort()
 {
-	if (m_iPrvPort >= 6)
+	if (m_iPrvPort > 5)
 	{
 		_float fDuration = 0.3f;
 
@@ -245,6 +327,7 @@ void CUI_Portrait::Enable_HeroPort()
 						continue;
 					}
 
+					ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][j]);
 					m_arrPortraitUI[m_iHeroEndIdx][j]->Lerp_ScaleX(0.f, 43.f, fDuration);
 				}
 
@@ -261,7 +344,7 @@ void CUI_Portrait::Enable_HeroPort()
 
 void CUI_Portrait::Disable_HeroPort()
 {
-	if (m_bIsHero)
+	if (bIsHero)
 	{
 		if (m_iPrvPort < 6)
 		{
@@ -302,28 +385,31 @@ void CUI_Portrait::Disable_HeroPort()
 
 void CUI_Portrait::Enable_HeroLerp(_bool value, _float fDuration)
 {
-	if (m_iHeroActiveCount < 3)
+	if (m_bAbleHero)
 	{
-		m_fAccTime += fDT(0);
-		if (m_fAccTime > fDuration)
+		if (m_iHeroActiveCount < 3)
 		{
-			if (value == false)
+			m_fAccTime += fDT(0);
+			if (m_fAccTime > fDuration)
 			{
-				m_iHeroStartIdx++;
+				if (value == false)
+				{
+					m_iHeroStartIdx++;
 
-				m_bIsHeroLerp = true;
-				m_fAccTime = 0.f;
+					m_bIsHeroLerp = true;
+					m_fAccTime = 0.f;
 
-				m_iHeroActiveCount++;
-			}
-			else
-			{
-				m_iHeroEndIdx--;
+					m_iHeroActiveCount++;
+				}
+				else
+				{
+					m_iHeroEndIdx--;
 
-				m_bIsHeroLerp = true;
-				m_fAccTime = 0.f;
+					m_bIsHeroLerp = true;
+					m_fAccTime = 0.f;
 
-				m_iHeroActiveCount++;
+					m_iHeroActiveCount++;
+				}
 			}
 		}
 	}

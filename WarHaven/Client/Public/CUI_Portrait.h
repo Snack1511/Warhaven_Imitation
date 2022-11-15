@@ -27,6 +27,8 @@ public:
 	void Start_Portrait(_uint iIndex);
 	void Set_Portrait(_uint iIndex);
 
+	void Set_HeroPort(_bool value);
+
 protected:
 	virtual void My_Tick() override;
 
@@ -36,13 +38,15 @@ private:
 
 	_float m_fEffectValue = 0.f;
 
-	_bool m_bIsHero = false;
 	_uint m_iPrvPort = 0;
 	_uint m_iCurPort = 0;
 
 	_bool m_bIsUserLerp = false;
 	_bool m_bAbleRotationPort = false;
 	_uint m_iRotationCount = 0.f;
+
+	_bool m_bAbleHero = false;
+	_bool bIsHero = false;
 
 	_bool m_bIsHeroLerp = false;
 	_uint m_iHeroStartIdx = Hero1;

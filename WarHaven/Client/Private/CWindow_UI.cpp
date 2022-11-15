@@ -447,6 +447,24 @@ void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
 	_float fSort = pUI->Get_Sort();
 	writeFile.write((char*)&fSort, sizeof(_float));
 
+	_bool bRenderFont = pUI->Get_FontRender();
+	writeFile.write((char*)&bRenderFont, sizeof(_bool));
+
+	_bool bBold = pUI->Get_FontStyle();
+	writeFile.write((char*)&bBold, sizeof(_bool));
+
+	string strText = CFunctor::To_String(pUI->Get_FontText());
+	CUtility_File::Write_Text(&writeFile, strText.c_str());
+
+	_float4 vOffset = pUI->Get_FontOffset();
+	writeFile.write((char*)&vOffset, sizeof(_float4));
+
+	_float4 vFontColor = pUI->Get_FontColor();
+	writeFile.write((char*)&vFontColor, sizeof(_float4));
+
+	_float fFontScale = pUI->Get_FontScale();
+	writeFile.write((char*)&fFontScale, sizeof(_float));
+
 	writeFile.close();
 }
 
@@ -510,6 +528,29 @@ void CWindow_UI::Load_UI_Info(string key)
 	readFile.read((char*)&fSort, sizeof(_float));
 	pUI->Set_Sort(fSort);
 
+	_bool bRenderFont = pUI->Get_FontRender();
+	readFile.read((char*)&bRenderFont, sizeof(_bool));
+	pUI->Set_FontRender(bRenderFont);
+
+	_bool bBold = pUI->Get_FontStyle();
+	readFile.read((char*)&bBold, sizeof(_bool));
+	pUI->Set_FontStyle(bBold);
+
+	string strText = CUtility_File::Read_Text(&readFile);
+	pUI->Set_FontText(CFunctor::To_Wstring(strText));
+
+	_float4 vOffset = pUI->Get_FontOffset();
+	readFile.read((char*)&vOffset, sizeof(_float4));
+	pUI->Set_FontOffset(vOffset.x, vOffset.y);
+
+	_float4 vFontColor = pUI->Get_FontColor();
+	readFile.read((char*)&vFontColor, sizeof(_float4));
+	pUI->Set_FontColor(vFontColor);
+
+	_float fFontScale = pUI->Get_FontScale();
+	readFile.read((char*)&fFontScale, sizeof(_float));
+	pUI->Set_FontStyle(fFontScale);
+
 	readFile.close();
 }
 
@@ -565,6 +606,29 @@ void CWindow_UI::Load_UI_List()
 			_float fSort = pUI->Get_Sort();
 			readFile.read((char*)&fSort, sizeof(_float));
 			pUI->Set_Sort(fSort);
+
+			_bool bRenderFont = pUI->Get_FontRender();
+			readFile.read((char*)&bRenderFont, sizeof(_bool));
+			pUI->Set_FontRender(bRenderFont);
+
+			_bool bBold = pUI->Get_FontStyle();
+			readFile.read((char*)&bBold, sizeof(_bool));
+			pUI->Set_FontStyle(bBold);
+
+			string strText = CUtility_File::Read_Text(&readFile);
+			pUI->Set_FontText(CFunctor::To_Wstring(strText));
+
+			_float4 vOffset = pUI->Get_FontOffset();
+			readFile.read((char*)&vOffset, sizeof(_float4));
+			pUI->Set_FontOffset(vOffset.x, vOffset.y);
+
+			_float4 vFontColor = pUI->Get_FontColor();
+			readFile.read((char*)&vFontColor, sizeof(_float4));
+			pUI->Set_FontColor(vFontColor);
+
+			_float fFontScale = pUI->Get_FontScale();
+			readFile.read((char*)&fFontScale, sizeof(_float));
+			pUI->Set_FontStyle(fFontScale);
 
 			readFile.close();
 		}

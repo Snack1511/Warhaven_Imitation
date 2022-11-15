@@ -39,27 +39,23 @@ private:
 
 	_uint m_iBtnCount = 0;
 
-	_bool m_bFirstOutline = false;
-
-	_bool m_bIsHero = false;
 	_uint m_iPrvSkill = 0;
 	_uint m_iCurSkill = 0;
+
+private:
+	virtual void My_Tick() override;
 
 private:
 	void Set_Pass();
 	void Bind_Shader();
 
-	void Enable_SkillHUD();
 	void Active_SkillHUD(_uint iIndex);
 	void Set_SkillBtn(_uint iIndex, _uint iKeyIdx = 52, _uint iIconIdx = 29, bool bRelic = true);
 
 	void Enable_Outline();
 
 private:
-	virtual void My_Tick() override;
-	virtual void My_LateTick() override;
-	virtual void OnEnable() override;
-	virtual void OnDisable() override;
+	void Ready_SkillHUD();
 };
 
 END

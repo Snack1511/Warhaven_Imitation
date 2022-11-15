@@ -14,6 +14,12 @@ CUI_Object::CUI_Object()
 CUI_Object::CUI_Object(const CUI_Object& Prototype)
 	: CUI(Prototype)
 	, m_bIsMouseTarget(Prototype.m_bIsMouseTarget)
+	, m_bIsRenderText(Prototype.m_bIsRenderText)
+	, m_bIsBold(Prototype.m_bIsBold)
+	, m_wstrText(Prototype.m_wstrText)
+	, m_vOffset(Prototype.m_vOffset)
+	, m_vColor(Prototype.m_vColor)
+	, m_fFontScale(Prototype.m_fFontScale)
 {
 }
 

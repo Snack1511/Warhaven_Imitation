@@ -20,6 +20,15 @@ HRESULT CUI_HeroGauge::Initialize_Prototype()
 	m_Prototypes[BG] = m_pUIMap[TEXT("HeroGaugeBG")];
 	m_Prototypes[Gauge] = m_pUIMap[TEXT("HeroGauge")];
 
+	m_Prototypes[Gauge]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_06.dds"));
+	m_Prototypes[Gauge]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_13.dds"));
+
+	for (_uint i = 0; i < Type_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_Prototypes[i]);
+	}
+
 	return S_OK;
 }
 
@@ -30,22 +39,31 @@ HRESULT CUI_HeroGauge::Initialize()
 
 HRESULT CUI_HeroGauge::Start()
 {
-	for (_uint i = 0; i < Type_End; ++i)
-	{
-		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
-	}
-
 	Set_Pass();
 	Bind_Shader();
+
+	// m_Prototypes[Gauge]->Set_FontRender(true);
+	// m_Prototypes[Gauge]->Set_FontOffset(-23.f, -90.f);
+	// m_Prototypes[Gauge]->Set_FontScale(0.25f);
+	// m_Prototypes[Gauge]->Set_FontStyle(true);
 
 	__super::Start();
 
 	return S_OK;
 }
 
+void CUI_HeroGauge::Start_HeroGauge()
+{
+	for (_uint i = 0; i < Type_End; ++i)
+	{
+		ENABLE_GAMEOBJECT(m_Prototypes[i]);
+	}
+}
+
 void CUI_HeroGauge::Set_ShaderResources(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fGaugeValue, sizeof(_float));
+	pShader->Set_RawValue("g_fHeroValue", &m_fGaugeValue, sizeof(_float));
+	pShader->Set_RawValue("g_fValue", &m_fUVSpeed, sizeof(_float));
 }
 
 void CUI_HeroGauge::My_Tick()
@@ -58,43 +76,45 @@ void CUI_HeroGauge::My_Tick()
 
 	// 게이지 최상단에 이미지 좌우 크기만큼 효과 하나
 
-	_float fSpeed = fDT(0) * 0.5f;
+	// 유닛에서 히어로 게이지 최대와 현재를 받아와서 그 비율을 넘겨야함
 
-	if (!m_bHeroAble)
-	{
-		m_fGaugeValue -= fSpeed;
-		if (m_fGaugeValue <= 0.f)
-		{
-			m_fGaugeValue = 0.f;
-			m_bHeroAble = true;
-		}
-	}
-	else
-	{
-		if (KEY(NUM1, TAP) || KEY(NUM2, TAP) || KEY(NUM3, TAP) || KEY(NUM4, TAP))
-		{
-			if (m_bIsHero)
-			{
-				m_bIsHero = false;
-				m_bHeroAble = false;
-			}
-			else
-			{
-				m_bIsHero = true;
-			}
-		}
-	}
+	m_fUVSpeed += fDT(0) * 0.1f;
 
-	if (m_bIsHero)
-	{
-		m_fGaugeValue += fSpeed;
-		if (m_fGaugeValue >= 1.f)
-		{
-			m_fGaugeValue = 1.f;
-			m_bIsHero = false;
-			m_bHeroAble = false;
-		}
-	}
+	//if (!m_bHeroAble)
+	//{
+	//	//m_fGaugeValue -= fSpeed;
+	//	if (m_fGaugeValue <= 0.f)
+	//	{
+	//		m_fGaugeValue = 0.f;
+	//		m_bHeroAble = true;
+	//	}
+	//}
+	//else
+	//{
+	//	if (KEY(NUM1, TAP) || KEY(NUM2, TAP) || KEY(NUM3, TAP) || KEY(NUM4, TAP))
+	//	{
+	//		if (m_bIsHero)
+	//		{
+	//			m_bIsHero = false;
+	//			m_bHeroAble = false;
+	//		}
+	//		else
+	//		{
+	//			m_bIsHero = true;
+	//		}
+	//	}
+	//}
+
+	//if (m_bIsHero)
+	//{
+	//	//m_fGaugeValue += fSpeed;
+	//	if (m_fGaugeValue >= 1.f)
+	//	{
+	//		m_fGaugeValue = 1.f;
+	//		m_bIsHero = false;
+	//		m_bHeroAble = false;
+	//	}
+	//}
 }
 
 void CUI_HeroGauge::My_LateTick()

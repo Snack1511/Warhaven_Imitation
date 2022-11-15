@@ -21,31 +21,7 @@ HRESULT CUI_Skill::Initialize_Prototype()
 {
 	Read_UI("Skill");
 
-	for (int i = 0; i < 3; ++i)
-	{
-		m_Prototypes[i] = m_pUIMap[TEXT("Skill_Outline")];
-	}
-
-	m_Prototypes[BG] = m_pUIMap[TEXT("Skill_BG")];
-	m_Prototypes[Icon] = m_pUIMap[TEXT("Skill_Icon")];
-	m_Prototypes[Key] = m_pUIMap[TEXT("Skill_Key")];
-
-	GET_COMPONENT_FROM(m_Prototypes[Icon], CTexture)->Remove_Texture(0);
-
-	Read_Texture(m_Prototypes[Icon], "/HUD/Skill", "_");
-	Read_Texture(m_Prototypes[Icon], "/HUD/Relic", "Relic");
-
-	m_Prototypes[Icon]->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/Relic/T_RelicIconMask.dds"));
-
-	Read_Texture(m_Prototypes[Key], "/KeyIcon/Keyboard", "Key");
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			m_arrSkillUI[i][j] = m_Prototypes[j]->Clone();
-		}
-	}
+	Ready_SkillHUD();
 
 	return S_OK;
 }
@@ -57,15 +33,67 @@ HRESULT CUI_Skill::Initialize()
 
 HRESULT CUI_Skill::Start()
 {
-	Enable_SkillHUD();
-
 	// Bind_Shader();
-
-	Set_SkillHUD(0);
 
 	__super::Start();
 
 	return S_OK;
+}
+
+void CUI_Skill::My_Tick()
+{
+	__super::My_Tick();
+
+	/*if (!m_bIsHero)
+	{
+		if (KEY(T, TAP))
+		{
+			static int iIndex = 0;
+			iIndex++;
+			if (iIndex >= 6)
+				iIndex = 0;
+
+			Set_SkillHUD(iIndex);
+		}
+
+		if (KEY(NUM1, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_SkillHUD(6);
+		}
+		else if (KEY(NUM2, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_SkillHUD(7);
+		}
+		else if (KEY(NUM3, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_SkillHUD(8);
+		}
+		else if (KEY(NUM4, TAP))
+		{
+			m_bIsHero = true;
+
+			Set_SkillHUD(9);
+		}
+	}
+	else
+	{
+		if (KEY(NUM1, TAP))
+		{
+			m_bIsHero = false;
+
+			Set_SkillHUD(m_iPrvSkill);
+		}
+	}*/
+
+	m_fRelicValue += fDT(0);
+
+	Enable_Outline();
 }
 
 void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstName)
@@ -80,11 +108,11 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	m_bAbleOutline = true;
 
-	if (!m_bIsHero)
+	/*if (!m_bIsHero)
 	{
 		if (iIndex >= 6)
 			iIndex = 0;
-	}
+	}*/
 
 	switch (iIndex)
 	{
@@ -196,24 +224,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 	}
 }
 
-void CUI_Skill::Enable_SkillHUD()
-{
-	for (_uint i = 0; i < Type_End; ++i)
-	{
-		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_Prototypes[i]);
-	}
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-		}
-	}
-}
-
 void CUI_Skill::Active_SkillHUD(_uint iIndex)
 {
 	m_iBtnCount = iIndex;
@@ -240,16 +250,16 @@ void CUI_Skill::Active_SkillHUD(_uint iIndex)
 
 			if (i < iIndex - 1)
 			{
-				m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
+				// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
 
 				if (j == Outline0)
 				{
-					m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
+					// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
 				}
 
 				if (j == Icon)
 				{
-					m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
+					// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
 				}
 			}
 
@@ -262,34 +272,29 @@ void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool b
 {
 	if (bRelic == true)
 	{
-		DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][BG]);
-
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 4; ++i)
 		{
 			DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][i]);
 		}
 	}
-	else
-	{
-		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][BG], CTexture)->Set_CurTextureIndex(iIconIdx);
-		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Outline0], CTexture)->Set_CurTextureIndex(iIconIdx);
-	}
 
+	// 키 버튼 비활성화
 	if (iKeyIdx == 99)
 	{
 		DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][Key]);
 	}
-	else if (iKeyIdx == 46)
-	{
-		_float4 vScale = m_arrSkillUI[iIndex][Key]->Get_Transform()->Get_Scale();
-		m_arrSkillUI[iIndex][Key]->Set_Scale(31.5f, 20.f);
-
-		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Key], CTexture)->Set_CurTextureIndex(iKeyIdx);
-	}
 	else
 	{
 		_float4 vScale = m_arrSkillUI[iIndex][Key]->Get_Transform()->Get_Scale();
-		m_arrSkillUI[iIndex][Key]->Set_Scale(20.f);
+
+		if (iKeyIdx == 46)
+		{
+			m_arrSkillUI[iIndex][Key]->Set_Scale(31.f, 18.f);
+		}
+		else
+		{
+			m_arrSkillUI[iIndex][Key]->Set_Scale(18.f);
+		}
 
 		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Key], CTexture)->Set_CurTextureIndex(iKeyIdx);
 	}
@@ -322,6 +327,52 @@ void CUI_Skill::Enable_Outline()
 	}
 }
 
+void CUI_Skill::Ready_SkillHUD()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		m_Prototypes[i] = m_pUIMap[TEXT("Skill_Outline")];
+	}
+
+	m_Prototypes[BG] = m_pUIMap[TEXT("Skill_BG")];
+	m_Prototypes[Icon] = m_pUIMap[TEXT("Skill_Icon")];
+	m_Prototypes[Key] = m_pUIMap[TEXT("Skill_Key")];
+
+	GET_COMPONENT_FROM(m_Prototypes[Icon], CTexture)->Remove_Texture(0);
+
+	Read_Texture(m_Prototypes[Icon], "/HUD/Skill", "_");
+	Read_Texture(m_Prototypes[Icon], "/HUD/Relic", "Relic");
+
+	m_Prototypes[Icon]->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/Relic/T_RelicIconMask.dds"));
+
+	Read_Texture(m_Prototypes[Key], "/KeyIcon/Keyboard", "Key");
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < Type_End; ++j)
+		{
+			m_arrSkillUI[i][j] = m_Prototypes[j]->Clone();
+		}
+	}
+
+	// 원본 객체 생성 후 삭제
+	for (_uint i = 0; i < Type_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_Prototypes[i]);
+	}
+
+	// 사용할 클론 생성 후 비활성화
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < Type_End; ++j)
+		{
+			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+		}
+	}
+}
+
 void CUI_Skill::Set_Pass()
 {
 	for (int i = 0; i < 4; ++i)
@@ -341,75 +392,4 @@ void CUI_Skill::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_arrSkillUI[0][Icon], CShader)
 		->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
-}
-
-void CUI_Skill::My_Tick()
-{
-	__super::My_Tick();
-
-	if (!m_bIsHero)
-	{
-		if (KEY(T, TAP))
-		{
-			static int iIndex = 0;
-			iIndex++;
-			if (iIndex >= 6)
-				iIndex = 0;
-
-			Set_SkillHUD(iIndex);
-		}
-
-		if (KEY(NUM1, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_SkillHUD(6);
-		}
-		else if (KEY(NUM2, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_SkillHUD(7);
-		}
-		else if (KEY(NUM3, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_SkillHUD(8);
-		}
-		else if (KEY(NUM4, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_SkillHUD(9);
-		}
-	}
-	else
-	{
-		if (KEY(NUM1, TAP))
-		{
-			m_bIsHero = false;
-
-			Set_SkillHUD(m_iPrvSkill);
-		}
-	}
-
-	m_fRelicValue += fDT(0);
-
-	Enable_Outline();
-}
-
-void CUI_Skill::My_LateTick()
-{
-	__super::My_LateTick();
-}
-
-void CUI_Skill::OnEnable()
-{
-	__super::OnEnable();
-}
-
-void CUI_Skill::OnDisable()
-{
-	__super::OnDisable();
 }

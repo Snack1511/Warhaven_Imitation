@@ -41,8 +41,11 @@ public:
 public:
 	struct UNIT_STATUS
 	{
-		CLASS_TYPE eClass;
-		_bool m_bIsHero = false;
+		CLASS_TYPE	eClass = CLASS_SPEAR;
+		_bool		bAbleHero = false;
+		_bool		bIsHero = false;
+		_float		fMaxHeroGauge = 100.f;
+		_float		fHeroGague = 50.f;
 
 		WEAPON_TYPE eWeapon;
 		_float fHP = 100.f;
