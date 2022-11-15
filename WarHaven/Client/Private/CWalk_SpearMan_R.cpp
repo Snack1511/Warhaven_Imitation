@@ -40,36 +40,18 @@ HRESULT CWalk_SpearMan_R::Initialize()
 
     m_iStateChangeKeyFrame = 0;
 
-    // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
 
-    // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
 
-    // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
-    //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-
+	/*Base*/
     m_vecAdjState.push_back(STATE_IDLE_SPEARMAN_R);
 	m_vecAdjState.push_back(STATE_JUMP_SPEARMAN_R);
     m_vecAdjState.push_back(STATE_RUN_SPEARMAN_R);
 
 
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_SPEARMAN_R);
 
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
-
-	// m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
-
-
-//    m_vecAdjState.push_back(STATE_JUMP_SPEARMAN);
-
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
 
 	// 알파벳 순 애니메이션 정렬
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 37;
@@ -131,34 +113,5 @@ STATE_TYPE CWalk_SpearMan_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator
     1. 
     */
 
-    // m_eStateType 이 End 에 가지 않으면 Enter 를 호출한다.
-
-    // W 랑 A 를 누르면 왼쪽 앞으로 이동한다.
-    // W 랑 D 를 누르면 왼쪽 옆으로 이동한다.
-
-    // 만약 WASD 를 눌렀다면
-
-    // 점프를 하지 않고
-    if (KEY(SPACE, NONE))
-    {
-        // 천천히 
-        if (KEY(CTRL, HOLD))
-        {
-            // 걸어간다.
-            if (KEY(W, HOLD) ||
-                KEY(A, HOLD) ||
-                KEY(S, HOLD) ||
-                KEY(D, HOLD))
-            {
-
-                return m_eStateType;
-            }
-
-        }
-    }
-
-   
-
-
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CRun_SpearmMan_Begin_R.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -100,25 +100,17 @@ STATE_TYPE CRun_SpearmMan_Begin_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CRun_SpearmMan_Begin_R::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+
 }
 
 STATE_TYPE CRun_SpearmMan_Begin_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    if (KEY(LSHIFT, NONE))
-    {
-        if (
-            KEY(W, HOLD) ||
-            KEY(A, HOLD) ||
-            KEY(S, HOLD) ||
-            KEY(D, HOLD)
-            )
-        {
-            return m_eStateType;
-        }
-    }
+	return __super::Check_Condition(pOwner, pAnimator);
 
-   
-    return STATE_END;
+}
+
+void CRun_SpearmMan_Begin_R::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
+{
+	return __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }

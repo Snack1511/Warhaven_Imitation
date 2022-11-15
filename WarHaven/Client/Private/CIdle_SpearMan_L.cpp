@@ -52,39 +52,16 @@ HRESULT CIdle_SpearMan_L::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.f;
 
-    // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
-
-    //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     
 	m_vecAdjState.push_back(STATE_WALK_SPEARMAN_L);
 	m_vecAdjState.push_back(STATE_RUNBEGIN_SPEARMAN_L);
 
 	m_vecAdjState.push_back(STATE_JUMP_SPEARMAN_L);
+
+	m_vecAdjState.push_back(STATE_SPEARMAN_GUARDBREAK);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_SPEARMAN);
+	m_vecAdjState.push_back(STATE_SPEARMAN_SPECIALGUARD);
 	
-	//m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-
-  /*  m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
-
-    m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
-    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
-
-	m_vecAdjState.push_back(STATE_JUMP_PLAYER_L);
-
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
-
-    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
-
-    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
-	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
-
-
-    m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
-    m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
-
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);*/
 
 
     return S_OK;

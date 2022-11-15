@@ -54,11 +54,8 @@ HRESULT CWarrior_Attack_VerticalCut::Initialize()
     m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
-	Add_KeyFrame(36, 0);
 	Add_KeyFrame(31, 1);
 	Add_KeyFrame(50, 2);
-
-
 
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
@@ -151,13 +148,6 @@ void CWarrior_Attack_VerticalCut::On_KeyFrameEvent(CUnit * pOwner, CAnimator * p
 {
 	switch (iSequence)
 	{
-	case 0:
-		m_bMoveTrigger = false;
-		pOwner->Get_PhysicsCom()->Set_MaxSpeed(3.f);
-		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
-		pOwner->Set_DirAsLook();
-		break;
-
 
 	case 1:
 		m_bAttackTrigger = true;

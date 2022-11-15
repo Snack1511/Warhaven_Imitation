@@ -18,15 +18,10 @@ CRun_SpearMan::~CRun_SpearMan()
 
 HRESULT CRun_SpearMan::Initialize()
 {
-	// m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
+	m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
 
- //   m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
- //   m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
-
- //   m_vecAdjState.push_back(STATE_SLIDE_BEGIN_PLAYER);
-	//m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+	m_vecAdjState.push_back(STATE_SPEARMAN_GUARDBREAK);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_SPEARMAN);
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
@@ -53,9 +48,8 @@ void CRun_SpearMan::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 	Physics_Setting(pOwner->Get_Status().fRunSpeed, pOwner, true);
 
     
-	if (ePrevType == STATE_RUN_PLAYER_R || ePrevType == STATE_RUN_PLAYER_L)
+	if (ePrevType == STATE_RUN_SPEARMAN_R || ePrevType == STATE_RUN_SPEARMAN_L)
 	{
-
 		m_fInterPolationTime = 0.f;
 		pAnimator->Set_CurFrame(22);
 	}
@@ -66,7 +60,7 @@ void CRun_SpearMan::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 STATE_TYPE CRun_SpearMan::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	_uint iDirection = Move_Direction_Loop(pOwner, pAnimator, 0.1f);
+	Move_Direction_Loop(pOwner, pAnimator, 0.1f);
 
     return __super::Tick(pOwner, pAnimator);
 
@@ -74,14 +68,15 @@ STATE_TYPE CRun_SpearMan::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CRun_SpearMan::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+
 }
 
 STATE_TYPE CRun_SpearMan::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Run로 오는 조건
-    1. 뛰어간다.
-    */
+	/* SPEARMAN가 Walk로 오는 조건
+	1. CTRL 을 누르지 않은 상태
+	2. WAD 를 누른 상태
+	*/
 
 	if (KEY(CTRL, NONE))
 	{
@@ -93,9 +88,7 @@ STATE_TYPE CRun_SpearMan::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 			return m_eStateType;
 		}
-		
 	}
-
 
     return STATE_END;
 }

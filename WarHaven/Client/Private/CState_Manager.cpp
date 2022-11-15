@@ -108,6 +108,12 @@
 #include "CStop_SpearMan_L.h"
 #include "CStop_SpearMan_R.h"
 
+#include "CSpearMan_Attack_Sting.h"
+#include "CBounce_SpearMan.h"
+
+#include "CSpearMan_GuardBreak.h"
+#include "CSpearMan_SpecialGuard.h"
+#include "CSpearMan_BackStep.h"
 
 #pragma endregion
 
@@ -162,7 +168,13 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_STOP_SPEARMAN_R] = CStop_SpearMan_R::Create();
 
 
+	m_arrStates[STATE_ATTACK_STING_SPEARMAN] = CSpearMan_Attack_Sting::Create();
+	m_arrStates[STATE_BOUNCE_SPEARMAN] = CBounce_SpearMan::Create();
 	
+	m_arrStates[STATE_SPEARMAN_GUARDBREAK] = CSpearMan_GuardBreak::Create();
+	m_arrStates[STATE_SPEARMAN_SPECIALGUARD] = CSpearMan_SpecialGuard::Create();
+	m_arrStates[STATE_SPEARMAN_BACKSTEP] = CSpearMan_BackStep::Create();
+
 
 	for (_uint i = 0; i < STATE_END; ++i)
 	{

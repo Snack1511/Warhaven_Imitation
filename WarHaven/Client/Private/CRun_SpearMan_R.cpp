@@ -40,38 +40,13 @@ HRESULT CRun_SpearMan_R::Initialize()
 
     m_iStateChangeKeyFrame = 0;
 
-    // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
 
-    // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
-
-    // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
 	m_vecAdjState.push_back(STATE_JUMP_SPEARMAN_R);
 	m_vecAdjState.push_back(STATE_WALK_SPEARMAN_R);
 	
-	//enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-//    m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
- //   m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
- //   m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
- //   m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
-
-	//m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
-
-
-//    m_vecAdjState.push_back(STATE_SLIDE_PLAYER);
-
- //   m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
-
-    //m_vecAdjState.push_back(STATE_SILDING);
-
 
    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 26;
 
@@ -79,11 +54,9 @@ HRESULT CRun_SpearMan_R::Initialize()
    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 28;
    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 29;
 
-   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 42;
-   m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 43;
-   m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
-
-
+   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 41;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 42;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 43;
 
    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 30;
 
@@ -125,7 +98,7 @@ STATE_TYPE CRun_SpearMan_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		KEY(S, NONE) &&
 		KEY(D, NONE))
 	{
-		return STATE_STOP_PLAYER_R;
+		return STATE_STOP_SPEARMAN_R;
 	}
 
     
@@ -145,48 +118,6 @@ STATE_TYPE CRun_SpearMan_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     2. WASD 를 누른 상태
     */
 
-	if (KEY(CTRL, NONE))
-	{
-		if (KEY(W, HOLD) ||
-			KEY(A, HOLD) ||
-			KEY(S, HOLD) ||
-			KEY(D, HOLD))
-		{
-			return m_eStateType;
-		}
-	}
-
-   
-
-
-    return STATE_END;
+	return __super::Check_Condition(pOwner, pAnimator);
 }
 
-//_bool CRun_SpearMan_R::Change_Animation_Run(_uint iBeginAttackAnim, _uint iAttackAnim, CAnimator* pAnimator)
-//{
-//    // RunBegin 
-//    if (m_iAnimIndex != iBeginAttackAnim)
-//    {
-//        if (m_iAnimIndex == 21)
-//        {
-//            if (m_iAnimIndex == iAttackAnim && pAnimator->Is_CurAnimFinished())
-//            {
-//                m_eAnimType = ANIM_BASE_R;
-//                m_iAnimIndex = iBeginAttackAnim;
-//
-//                pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-//                pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 3.f);
-//            }
-//        }
-//        else
-//        {
-//            m_eAnimType = ANIM_BASE_R;
-//            m_iAnimIndex = iAttackAnim;
-//
-//            pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex);
-//            pAnimator->Set_AnimSpeed(m_eAnimType, m_iAnimIndex, 2.7f);
-//
-//        }
-//
-//    return false;
-//}

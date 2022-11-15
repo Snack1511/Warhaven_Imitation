@@ -310,7 +310,7 @@ _uint CState::Move(_uint iDirection, CUnit* pOwner)
 
 
 
-void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax)
+void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _bool bBackStep)
 {
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
@@ -318,10 +318,15 @@ void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax)
 
 
 	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	
 	vCamLook.y = 0.f;
+
 
 	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
 	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+
+	if (bBackStep)
+		vCamLook *= -1.f;
 
 	//실제 움직이는 방향
 	pMyPhysicsCom->Set_Dir(vCamLook);

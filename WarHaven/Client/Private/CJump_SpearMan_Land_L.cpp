@@ -45,22 +45,12 @@ HRESULT CJump_SpearMan_Land_L::Initialize()
 
 	//m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
 
-	m_vecAdjState.push_back(STATE_IDLE_SPEARMAN_L);
 	m_vecAdjState.push_back(STATE_WALK_SPEARMAN_L);
 	m_vecAdjState.push_back(STATE_RUN_SPEARMAN_L);
 
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_SPEARMAN_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
-	//m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
- //   
-
-
-	//m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
-	//m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
- //   
+	m_vecAdjState.push_back(STATE_SPEARMAN_GUARDBREAK);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_SPEARMAN);
+	m_vecAdjState.push_back(STATE_SPEARMAN_SPECIALGUARD);
 
 
     return S_OK;
@@ -73,6 +63,9 @@ void CJump_SpearMan_Land_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CJump_SpearMan_Land_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_IDLE_SPEARMAN_L;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

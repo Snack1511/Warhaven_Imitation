@@ -1,5 +1,5 @@
 #pragma once
-#include "CRun_Player_Begin.h"
+#include "CRun_SpearmMan_Begin.h"
 
 BEGIN(Engine)
 class CAnimator;
@@ -7,7 +7,7 @@ END
 
 BEGIN(Client)
 class CRun_SpearmMan_Begin_R
-	: public CRun_Player_Begin
+	: public CRun_SpearmMan_Begin
 {
 	DECLARE_STATE(CRun_SpearmMan_Begin_R);
 
@@ -27,6 +27,7 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+	virtual void	On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
 
 };

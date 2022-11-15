@@ -41,28 +41,13 @@ HRESULT CJump_SpearMan_R::Initialize()
 
     m_iStateChangeKeyFrame = 0;
 
-    // 선형 보간 시간
     m_fInterPolationTime = 0.05f;
 
-    // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.f;
 
 
-
-    // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
-
-    //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    //m_vecAdjState.push_back(STATE_IDLE_SPEARMAN);
-
-
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
-
     m_vecAdjState.push_back(STATE_JUMPFALL_SPEARMAN_R);
     m_vecAdjState.push_back(STATE_JUMP_LAND_SPEARMAN_R);
-
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 13;
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 14;

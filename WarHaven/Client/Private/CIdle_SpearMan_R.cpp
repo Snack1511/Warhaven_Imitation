@@ -51,52 +51,18 @@ HRESULT CIdle_SpearMan_R::Initialize()
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.f;
-
-    // m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
     
 
+	/*Base*/
 	m_vecAdjState.push_back(STATE_WALK_SPEARMAN_R);
 	m_vecAdjState.push_back(STATE_RUNBEGIN_SPEARMAN_R);
 	
 	m_vecAdjState.push_back(STATE_JUMP_SPEARMAN_R);
 
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
- //   m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
-
- //   m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-
- //   m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
-
-	//m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
-
-
-
-    //m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
-    //m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
-
-
-    //m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
-    
-
-    
-
-
-    //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    //m_vecAdjState.push_back(STATE_JUMP);
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-
-    //m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
-
-
-    //m_vecAdjState.push_back(STATE_WALK_PLAYER);
-    //m_vecAdjState.push_back(STATE_RUN_PLAYER);
-    //m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
-    //m_vecAdjState.push_back(STATE_JUMP_PLAYER);
-    //m_vecAdjState.push_back(STATE_SPRINT_PLAYER);
+	/*Attack*/
+	m_vecAdjState.push_back(STATE_SPEARMAN_GUARDBREAK);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_SPEARMAN);
+	m_vecAdjState.push_back(STATE_SPEARMAN_SPECIALGUARD);
 
     return S_OK;
 }

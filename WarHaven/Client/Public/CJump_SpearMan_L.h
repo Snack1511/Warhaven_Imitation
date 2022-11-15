@@ -1,6 +1,9 @@
 #pragma once
 #include "CJump_Player.h"
 
+BEGIN(Engine)
+class CAnimator;
+END
 
 BEGIN(Client)
 class CJump_SpearMan_L

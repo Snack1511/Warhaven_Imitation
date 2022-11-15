@@ -77,10 +77,10 @@ HRESULT CUnit_Spearman::Initialize_Prototype()
 
 	Add_Component(pCController);
 
-	Add_Component(pAnimator);
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
+
 	tDesc.fHeight = 0.9f;
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.1f;
@@ -107,7 +107,7 @@ HRESULT CUnit_Spearman::Start()
 {
 	__super::Start();
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
-	Enter_State(STATE_IDLE_PLAYER_R);
+	Enter_State(m_eCurState);
 	return S_OK;
 }
 

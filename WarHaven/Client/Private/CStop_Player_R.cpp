@@ -74,17 +74,6 @@ STATE_TYPE CStop_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
 
-	//if (m_bMoveTrigger)
-	//	Move(Get_Direction(), pOwner);
-
-	//if (m_bAttackTrigger)
-	//{
-	//	// 공격 진입
-	//	if (pOwner->Is_Weapon_R_Collision())
-	//		return STATE_BOUNCE_PLAYER_R;
-
-	//}
-
 	return __super::Tick(pOwner, pAnimator);
 }
 

@@ -379,15 +379,6 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack">
       <UniqueIdentifier>{a3cc5fbe-fac8-4871-b1dc-d22bea00312e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\01. Right">
-      <UniqueIdentifier>{09cfb74b-76cf-433d-9cbc-a552495e7c10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Left">
-      <UniqueIdentifier>{a5d457b4-b63f-4ff7-80f1-1e0352ed2d29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\Sting">
-      <UniqueIdentifier>{98444a86-fb9d-466a-9470-407dc88a1cf6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump">
       <UniqueIdentifier>{cefb9d4e-55b4-4f02-9aae-a9a280e114df}</UniqueIdentifier>
     </Filter>
@@ -675,6 +666,30 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\10. Stop\02. Left">
       <UniqueIdentifier>{101e84b2-4707-4dc5-baac-2eafb57eec2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\01. Default">
+      <UniqueIdentifier>{09cfb74b-76cf-433d-9cbc-a552495e7c10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill">
+      <UniqueIdentifier>{a5d457b4-b63f-4ff7-80f1-1e0352ed2d29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\01. Charge">
+      <UniqueIdentifier>{f3191d1d-4735-442d-a5c6-2eabb8859a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\02. GuardBreak">
+      <UniqueIdentifier>{a6147375-b8de-45a6-b119-ce6a6ec7222c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\03. Bounce">
+      <UniqueIdentifier>{e0ae0a38-d769-4e9b-8dcb-67cf4377609a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard">
+      <UniqueIdentifier>{86257f82-1854-4c2c-8868-fdf28040d19d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\01. Guard">
+      <UniqueIdentifier>{31b1bf05-fcec-4e50-b35b-1e888cd32184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\02. BackStep">
+      <UniqueIdentifier>{1b07f7ee-4d12-4f94-9bd8-f5e77fb1d8fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1189,6 +1204,30 @@
     <ClInclude Include="..\Public\CStop_SpearMan.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\10. Stop</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CWalk_SpearMan.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\02. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_SpearmMan_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSpearMan_Attack_Sting.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\01. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_SpearMan.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\03. Bounce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSpearMan_GuardBreak.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\02. GuardBreak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSpearMan_SpecialGuard.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\01. Guard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSpearMan_BackStep.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\02. BackStep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_SpearMan.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1682,6 +1721,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\CStop_SpearMan.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\10. Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_SpearMan.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\02. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_SpearmMan_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSpearMan_Attack_Sting.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\01. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_SpearMan.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\03. Bounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSpearMan_GuardBreak.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\02. GuardBreak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSpearMan_SpecialGuard.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\01. Guard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSpearMan_BackStep.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\02. BackStep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_SpearMan.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

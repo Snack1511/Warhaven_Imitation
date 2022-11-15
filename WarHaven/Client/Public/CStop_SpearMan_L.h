@@ -1,11 +1,15 @@
 #pragma once
-#include "CStop_Player.h"
+#include "CStop_SpearMan.h"
+
+BEGIN(Engine)
+class CAnimator;
+END
 
 BEGIN(Client)
 class CColorController;
 
 class CStop_SpearMan_L
-	: public CStop_Player
+	: public CStop_SpearMan
 {
 	DECLARE_STATE(CStop_SpearMan_L);
 
