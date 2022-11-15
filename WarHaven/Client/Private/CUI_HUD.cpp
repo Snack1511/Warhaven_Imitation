@@ -69,17 +69,25 @@ void CUI_HUD::My_Tick()
 			if (m_fHeroGauge >= 1.f)
 			{
 				m_fHeroGauge = 1.f;
+
 				// 영웅 상태 해제
 				m_tStatus.bIsHero = false;
 			}
 			else if (KEY(NUM1, TAP))
 			{
-				m_tStatus.bIsHero = false;
+				// 원래 캐릭터 포트레이트로 변경
+				Set_HUD(m_ePrvClass);
 			}
 		}
 		// 영웅 상태가 아니면
 		else
 		{
+			// 영웅 변경 키를 누르면 영웅 변경
+			if (KEY(T, TAP))
+			{
+				// 영웅 변경 창 활성화
+			}
+
 			// 게이지 증가
 			m_tStatus.fHeroGague -= fDT(0) * 20.f;
 			// 게이지가 최대가 되면
@@ -95,37 +103,8 @@ void CUI_HUD::My_Tick()
 	else
 	{
 		// 영웅 변신 키를 누르면 변신 가능
-		if (KEY(NUM1, TAP) || KEY(NUM2, TAP) || KEY(NUM3, TAP) || KEY(NUM4, TAP))
-		{
-			// 영웅 변신 가능 비활성화
-			m_tStatus.bAbleHero = false;
-
-			// 영웅 상태 활성화
-			m_tStatus.bIsHero = true;
-		}
-	}
-}
-
-void CUI_HUD::Change_HUD()
-{
-	if (!m_tStatus.bIsHero)
-	{
-		if (KEY(T, TAP))
-		{
-			// 영웅 변경을 유아이로 하고 싶다
-			// 값이 하나씩 증가하는게 아니라
-
-			_uint iIndex = m_eCurClass;
-			iIndex++;
-			if (iIndex > CUnit::CLASS_ENGINEER)
-			{
-				iIndex = CUnit::CLASS_WARRIOR;
-			}
-
-			m_eCurClass = (CUnit::CLASS_TYPE)iIndex;
-			Set_HUD(m_eCurClass);
-		}
-		else if (KEY(NUM1, TAP))
+		// 해당하는 영웅의 포트레이트로 변경
+		if (KEY(NUM1, TAP))
 		{
 			Set_HUD(CUnit::CLASS_FIONA);
 		}
@@ -142,13 +121,6 @@ void CUI_HUD::Change_HUD()
 			Set_HUD(CUnit::CLASS_LANCER);
 		}
 	}
-	else
-	{
-		if (KEY(NUM1, TAP))
-		{
-			Set_HUD(m_ePrvClass);
-		}
-	}
 }
 
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
@@ -156,40 +128,24 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 	m_ePrvClass = m_eCurClass;
 	m_eCurClass = eClass;
 
-	if (!m_tStatus.bIsHero)
+	// 받아온 클래스가 영웅이면
+	if (eClass > CUnit::CLASS_ENGINEER)
 	{
-		if (eClass > CUnit::CLASS_ENGINEER)
-		{
-			m_tStatus.bIsHero = true;
+		// 영웅 변신 가능 비활성화
+		m_tStatus.bAbleHero = false;
 
-			dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(false);
-		}
-	}
+		// 영웅 상태 활성화
+		m_tStatus.bIsHero = true;
+	}	
+	// 영웅 이 아니면
 	else
 	{
-		if (eClass < CUnit::CLASS_FIONA)
-		{
-			m_tStatus.bIsHero = false;
-		}
+		// 영웅 상태 비활성화
+		m_tStatus.bIsHero = false;
 	}
 
-	Set_Portrait(eClass);
-	Set_Crosshair(eClass);
-	Set_SkillHUD(eClass);
-}
-
-void CUI_HUD::Set_Portrait(CUnit::CLASS_TYPE eClass)
-{
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);
-}
-
-void CUI_HUD::Set_Crosshair(CUnit::CLASS_TYPE eClass)
-{
 	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
-}
-
-void CUI_HUD::Set_SkillHUD(CUnit::CLASS_TYPE eClass)
-{
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(eClass);
 }
 

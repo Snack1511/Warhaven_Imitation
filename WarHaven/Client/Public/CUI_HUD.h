@@ -37,8 +37,6 @@ private:
 	_bool m_bIsEnableHeroPort = false;
 
 private:	
-	void Change_HUD();
-
 	void Set_HUD(CUnit::CLASS_TYPE eClass);
 	void Set_Portrait(CUnit::CLASS_TYPE eClass);
 	void Set_Crosshair(CUnit::CLASS_TYPE eClass);
