@@ -53,33 +53,24 @@ void CUI_HUD::My_Tick()
 {
 	__super::My_Tick();
 
-	// 히어로 게이지 
 	m_fHeroGauge = m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge;
 	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Set_HeroValue(m_fHeroGauge);
 
-	// 영웅 변신 가능 상태가 아닐 때
 	if (!m_tStatus.bAbleHero)
 	{
-		// 영웅 상태이면
 		if(m_tStatus.bIsHero)
 		{
-			// 게이지 감소
 			m_tStatus.fHeroGague += fDT(0) * 20.f;
-			// 게이지가 0이되면
 			if (m_fHeroGauge >= 1.f)
 			{
 				m_fHeroGauge = 1.f;
-
-				// 영웅 상태 해제
 				m_tStatus.bIsHero = false;
 			}
 			else if (KEY(NUM1, TAP))
 			{
-				// 원래 캐릭터 포트레이트로 변경
 				Set_HUD(m_ePrvClass);
 			}
 		}
-		// 영웅 상태가 아니면
 		else
 		{
 			// 영웅 변경 키를 누르면 영웅 변경
@@ -88,37 +79,33 @@ void CUI_HUD::My_Tick()
 				// 영웅 변경 창 활성화
 			}
 
-			// 게이지 증가
 			m_tStatus.fHeroGague -= fDT(0) * 20.f;
-			// 게이지가 최대가 되면
 			if (m_fHeroGauge <= 0.f)
 			{
 				m_fHeroGauge = 0.f;
-				// 영웅 변신 가능 상태
 				m_tStatus.bAbleHero = true;
+
+				Set_ActiveHeroPort(true);
 			}
 		}
 	}
-	// 영웅 변신 가능 상태일 때
 	else
 	{
-		// 영웅 변신 키를 누르면 변신 가능
-		// 해당하는 영웅의 포트레이트로 변경
 		if (KEY(NUM1, TAP))
 		{
-			Set_HUD(CUnit::CLASS_FIONA);
+			Set_HUD(CUnit::FIONA);
 		}
 		else if (KEY(NUM2, TAP))
 		{
-			Set_HUD(CUnit::CLASS_QANDA);
+			Set_HUD(CUnit::QANDA);
 		}
 		else if (KEY(NUM3, TAP))
 		{
-			Set_HUD(CUnit::CLASS_HOEDT);
+			Set_HUD(CUnit::HOEDT);
 		}
 		else if (KEY(NUM4, TAP))
 		{
-			Set_HUD(CUnit::CLASS_LANCER);
+			Set_HUD(CUnit::LANCER);
 		}
 	}
 }
@@ -128,19 +115,13 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 	m_ePrvClass = m_eCurClass;
 	m_eCurClass = eClass;
 
-	// 받아온 클래스가 영웅이면
-	if (eClass > CUnit::CLASS_ENGINEER)
+	if (eClass > CUnit::ENGINEER)
 	{
-		// 영웅 변신 가능 비활성화
 		m_tStatus.bAbleHero = false;
-
-		// 영웅 상태 활성화
 		m_tStatus.bIsHero = true;
 	}	
-	// 영웅 이 아니면
 	else
 	{
-		// 영웅 상태 비활성화
 		m_tStatus.bIsHero = false;
 	}
 

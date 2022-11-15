@@ -108,15 +108,9 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	m_bAbleOutline = true;
 
-	/*if (!m_bIsHero)
-	{
-		if (iIndex >= 6)
-			iIndex = 0;
-	}*/
-
 	switch (iIndex)
 	{
-	case CUnit::CLASS_WARRIOR:
+	case CUnit::WARRIOR:
 
 		Active_SkillHUD(3);
 
@@ -126,7 +120,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::CLASS_SPEAR:
+	case CUnit::SPEAR:
 
 		Active_SkillHUD(4);
 
@@ -137,7 +131,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::CLASS_ARCHER:
+	case CUnit::ARCHER:
 
 		Active_SkillHUD(4);
 
@@ -148,7 +142,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::CLASS_PALADIN:
+	case CUnit::PALADIN:
 
 		Active_SkillHUD(4);
 
@@ -159,7 +153,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::CLASS_PRIEST:
+	case CUnit::PRIEST:
 
 		Active_SkillHUD(4);
 
@@ -170,7 +164,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::CLASS_ENGINEER:
+	case CUnit::ENGINEER:
 
 		Active_SkillHUD(4);
 
@@ -181,7 +175,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::CLASS_FIONA:
+	case CUnit::FIONA:
 
 		Active_SkillHUD(4);
 
@@ -192,7 +186,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::CLASS_QANDA:
+	case CUnit::QANDA:
 
 		Active_SkillHUD(3);
 
@@ -202,7 +196,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::CLASS_HOEDT:
+	case CUnit::HOEDT:
 
 		Active_SkillHUD(4);
 
@@ -213,7 +207,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::CLASS_LANCER:
+	case CUnit::LANCER:
 
 		Active_SkillHUD(2);
 
