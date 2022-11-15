@@ -549,7 +549,7 @@ void CWindow_UI::Load_UI_Info(string key)
 
 	_float fFontScale = pUI->Get_FontScale();
 	readFile.read((char*)&fFontScale, sizeof(_float));
-	pUI->Set_FontStyle(fFontScale);
+	pUI->Set_FontScale(fFontScale);
 
 	readFile.close();
 }

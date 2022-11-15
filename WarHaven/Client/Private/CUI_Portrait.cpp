@@ -145,8 +145,8 @@ void CUI_Portrait::My_Tick()
 				{
 					for (int i = 0; i < Type_End; ++i)
 					{
-						//ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][i]);
-						ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][Effect]);
+						ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][i]);
+						// ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][Effect]);
 
 						if (i == Key)
 						{
