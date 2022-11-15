@@ -145,7 +145,8 @@ void CUI_Portrait::My_Tick()
 				{
 					for (int i = 0; i < Type_End; ++i)
 					{
-						ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][i]);
+						//ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][i]);
+						ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][Effect]);
 
 						if (i == Key)
 						{
@@ -169,7 +170,7 @@ void CUI_Portrait::My_Tick()
 			}
 			else
 			{
-				_float4 vScale = m_arrPortraitUI[m_iHeroEndIdx][BG]->Get_Transform()->Get_Scale();
+				_float4 vScale = m_arrPortraitUI[m_iHeroEndIdx][Effect]->Get_Transform()->Get_Scale();
 				if (vScale.x >= 43.f)
 				{
 					m_iHeroEndIdx--;

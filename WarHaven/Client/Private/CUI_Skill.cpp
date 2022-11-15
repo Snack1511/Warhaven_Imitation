@@ -33,7 +33,8 @@ HRESULT CUI_Skill::Initialize()
 
 HRESULT CUI_Skill::Start()
 {
-	// Bind_Shader();
+	Set_Pass();
+	Bind_Shader();
 
 	__super::Start();
 
@@ -91,14 +92,16 @@ void CUI_Skill::My_Tick()
 		}
 	}*/
 
-	m_fRelicValue += fDT(0);
-
 	Enable_Outline();
 }
 
-void CUI_Skill::Set_ShaderResources_Relic(CShader* pShader, const char* pConstName)
+void CUI_Skill::Set_ShaderResources_HeroKeySkill(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fRelicValue, sizeof(_float));
+	for (int i = 0; i < 4; ++i)
+	{
+		_float4 vColor = m_arrSkillUI[i][HeroKey]->Get_Color();
+		pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+	}
 }
 
 void CUI_Skill::Set_SkillHUD(_uint iIndex)
@@ -184,6 +187,8 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		Set_SkillBtn(1, 9, 7, false);
 		Set_SkillBtn(0, 99, 6, false);
 
+		ENABLE_GAMEOBJECT(m_arrSkillUI[1][HeroKey]);
+
 		break;
 
 	case CUnit::QANDA:
@@ -193,6 +198,8 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		Set_SkillBtn(2);
 		Set_SkillBtn(1, 44, 20, false);
 		Set_SkillBtn(0, 9, 19, false);
+
+		ENABLE_GAMEOBJECT(m_arrSkillUI[0][HeroKey]);
 
 		break;
 
@@ -204,6 +211,8 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		Set_SkillBtn(2, 44, 11, false);
 		Set_SkillBtn(1, 68, 10, false);
 		Set_SkillBtn(0, 9, 9, false);
+
+		ENABLE_GAMEOBJECT(m_arrSkillUI[1][HeroKey]);
 
 		break;
 
@@ -236,7 +245,10 @@ void CUI_Skill::Active_SkillHUD(_uint iIndex)
 	{
 		float fPosX = 480.f - (55.f * i);
 
-		m_arrSkillUI[i][BG]->Set_Sort(0.1f);
+		m_arrSkillUI[i][BG]->Set_Sort(0.3f);
+		m_arrSkillUI[i][Outline0]->Set_Sort(0.2f);
+		m_arrSkillUI[i][Outline1]->Set_Sort(0.2f);
+		m_arrSkillUI[i][Outline2]->Set_Sort(0.2f);
 
 		for (_uint j = 0; j < Type_End; ++j)
 		{
@@ -246,6 +258,13 @@ void CUI_Skill::Active_SkillHUD(_uint iIndex)
 			{
 				if (i < iIndex - 1)
 				{
+					if (j == HeroKey)
+					{
+						m_arrSkillUI[i][j]->Set_Pos(fPosX - 15.f, -295.f);
+
+						continue;
+					}
+
 					m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
 
 					if (j == Outline0)
@@ -260,12 +279,15 @@ void CUI_Skill::Active_SkillHUD(_uint iIndex)
 				}
 			}
 
-			ENABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-
-			if (m_iLerpCount < 1)
+			if (j < HeroKey)
 			{
-				DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
-				DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
+				ENABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+
+				if (m_iLerpCount < 1)
+				{
+					DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
+					DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
+				}
 			}
 		}
 	}
@@ -345,6 +367,7 @@ void CUI_Skill::Ready_SkillHUD()
 	m_Prototypes[BG] = m_pUIMap[TEXT("Skill_BG")];
 	m_Prototypes[Icon] = m_pUIMap[TEXT("Skill_Icon")];
 	m_Prototypes[Key] = m_pUIMap[TEXT("Skill_Key")];
+	m_Prototypes[HeroKey] = m_pUIMap[TEXT("Skill_HeroKeySkill")];
 
 	GET_COMPONENT_FROM(m_Prototypes[Icon], CTexture)->Remove_Texture(0);
 
@@ -385,19 +408,15 @@ void CUI_Skill::Set_Pass()
 {
 	for (int i = 0; i < 4; ++i)
 	{
-		// 버튼들을 돌면서 현재 버튼의 텍스처가 29번이면 패스 활성화
-		_uint m_iRelic = GET_COMPONENT_FROM(m_arrSkillUI[i][Icon], CTexture)->Get_CurTextureIndex();
-
-		if (m_iRelic)
-		{
-			CRenderer* pRenderer = GET_COMPONENT_FROM(m_arrSkillUI[i][Icon], CRenderer);
-			pRenderer->Set_Pass(VTXTEX_PASS_UI_RELIC);
-		}
+		GET_COMPONENT_FROM(m_arrSkillUI[i][HeroKey], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
 	}
 }
 
 void CUI_Skill::Bind_Shader()
 {
-	GET_COMPONENT_FROM(m_arrSkillUI[0][Icon], CShader)
-		->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_Relic, this, placeholders::_1, "g_fValue");
+	for (int i = 0; i < 4; ++i)
+	{
+		GET_COMPONENT_FROM(m_arrSkillUI[i][HeroKey], CShader)
+			->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_HeroKeySkill, this, placeholders::_1, "g_vColor");
+	}
 }
