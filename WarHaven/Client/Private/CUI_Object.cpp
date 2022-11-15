@@ -196,7 +196,7 @@ void CUI_Object::Lerp_Scale()
 			vScale += fabs(fSpeed);
 			Set_Scale(vScale.x, vScale.y);
 
-			if (vScale.x >= m_fEnd)
+			if (m_fAccTime >= m_fDuration)
 			{
 				Set_Scale(vScale.x, vScale.y);
 				m_bLerpScale = false;
@@ -221,6 +221,7 @@ void CUI_Object::Lerp_Scale()
 			if (vScale.x <= m_fEnd)
 			{
 				Set_ScaleX(m_fEnd);
+				m_fAccTime = 0.f;
 				m_bLerpScaleX = false;
 			}
 		}
@@ -229,9 +230,10 @@ void CUI_Object::Lerp_Scale()
 			vScale += fabs(fSpeed);
 			Set_ScaleX(vScale.x);
 
-			if (vScale.x >= m_fEnd)
+			if (m_fAccTime >= m_fDuration)
 			{
 				Set_ScaleX(m_fEnd);
+				m_fAccTime = 0.f;
 				m_bLerpScaleX = false;
 			}
 		}

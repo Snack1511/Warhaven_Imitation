@@ -616,6 +616,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge\Crosshair">
       <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\03. Component\05. Button">
+      <UniqueIdentifier>{13c9e04c-abf4-4339-a894-abeec00a6f76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1026,7 +1029,6 @@
     <ClInclude Include="..\Public\CUI_MainPlay.h">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_HUD.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalUp_L.h">
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\01. Attack\HorizontalUp\02. Left</Filter>
     </ClInclude>
@@ -1074,6 +1076,12 @@
     </ClInclude>
     <ClInclude Include="..\public\CWindow_Select.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\02. Window_Select</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CButton.h">
+      <Filter>03. Instances\03. Component\05. Button</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_HUD.h">
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1466,7 +1474,6 @@
     <ClCompile Include="..\Private\CUI_MainPlay.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_HUD.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalUp_L.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Warrior\01. Player\04. Attack\01. Warrior\01. Attack\HorizontalUp\02. Left</Filter>
     </ClCompile>
@@ -1514,6 +1521,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMap_Loader.cpp">
       <Filter>03. Instances\02. GameObject\06. Map\MapLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CButton.cpp">
+      <Filter>03. Instances\03. Component\05. Button</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_HUD.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

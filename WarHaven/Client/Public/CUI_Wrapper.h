@@ -21,6 +21,12 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
+public:
+	virtual void	On_MouseInEvent(const _uint& iEventNum);
+	virtual void	On_MouseExitEvent(const _uint& iEventNum);
+	virtual void	On_ButtonClickEvent(const _uint& iEventNum);
+
+
 protected:
 	wstring	m_wstrName;
 	CUI_Object* m_pUI = nullptr;

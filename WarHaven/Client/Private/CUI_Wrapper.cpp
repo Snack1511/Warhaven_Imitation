@@ -10,6 +10,8 @@
 #include "Functor.h"
 #include "CUtility_File.h"
 
+#include "CButton.h"
+
 CUI_Wrapper::CUI_Wrapper()
 {
 }
@@ -46,8 +48,45 @@ HRESULT CUI_Wrapper::Start()
 
 	//쉐이더리소스 바인딩도해주고
 
+	//버튼사용예시
+
+	//들고이쓴ㄴ UI중 진짜 버튼으로 만든 애 한테만 이거 넣어주기
+	/*ADD_MOUSE_IN_EVENT(m_pUI, 0);
+	ADD_MOUSE_EXIT_EVENT(m_pUI, 0);
+	ADD_BUTTONCLICK_EVENT(m_pUI, 0);
+
+	ADD_MOUSE_IN_EVENT(m_pUI[2], 1);
+	ADD_MOUSE_EXIT_EVENT(m_pUI[2], 1);
+	ADD_BUTTONCLICK_EVENT(m_pUI[2], 1);*/
+
 
 	return S_OK;
+}
+
+void CUI_Wrapper::On_MouseInEvent(const _uint& iEventNum)
+{
+	//위에서 넣은 객체한테 발생하는 상호작용이
+	//이 함수로 들어옴
+	switch (iEventNum)
+	{
+	case 0:
+
+		break;
+
+	case 1:
+
+	default:
+		break;
+	}
+
+}
+
+void CUI_Wrapper::On_MouseExitEvent(const _uint& iEventNum)
+{
+}
+
+void CUI_Wrapper::On_ButtonClickEvent(const _uint& iEventNum)
+{
 }
 
 void CUI_Wrapper::My_Tick()

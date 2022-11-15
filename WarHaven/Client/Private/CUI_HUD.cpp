@@ -65,6 +65,8 @@ void CUI_HUD::My_Tick()
 			{
 				m_fHeroGauge = 1.f;
 				m_tStatus.bIsHero = false;
+
+				Set_HUD(m_ePrvClass);
 			}
 			else if (KEY(NUM1, TAP))
 			{
@@ -137,12 +139,16 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 
 void CUI_HUD::Set_ActiveHeroPort(_bool value)
 {
+	CUI_Portrait::HeroPortAnimType eType;
+
 	if (value == true)
 	{
-		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(CUI_Portrait::Enable);
+		eType = CUI_Portrait::Enable;
 	}
 	else
 	{
-		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(CUI_Portrait::Disable);
+		eType = CUI_Portrait::Disable;
 	}
+
+	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(eType);
 }

@@ -52,6 +52,12 @@ public:
 	_float Get_Sort() { return m_vPosition.z; }
 	void Set_Sort(_float value);
 	
+public:
+	CDelegate<const _uint&>		CallBack_MouseIn;
+	CDelegate<const _uint&>		CallBack_MouseExit;
+	CDelegate<const _uint&>		CallBack_ButtonClick;
+
+
 protected:
 	_float4 m_vPosition;
 	_float4 m_vScale;

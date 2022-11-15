@@ -242,24 +242,35 @@ void CUI_Skill::Active_SkillHUD(_uint iIndex)
 		{
 			m_arrSkillUI[i][j]->Set_PosX(fPosX);
 
-			if (i < iIndex - 1)
+			if (m_iLerpCount > 0)
 			{
-				// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
-
-				if (j == Outline0)
+				if (i < iIndex - 1)
 				{
-					// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
-				}
+					m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
 
-				if (j == Icon)
-				{
-					// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
+					if (j == Outline0)
+					{
+						m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
+					}
+
+					if (j == Icon)
+					{
+						m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
+					}
 				}
 			}
 
 			ENABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+
+			if (m_iLerpCount < 1)
+			{
+				DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
+				DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
+			}
 		}
 	}
+
+	m_iLerpCount++;
 }
 
 void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool bRelic)
@@ -310,10 +321,13 @@ void CUI_Skill::Enable_Outline()
 			if (i != m_iBtnCount - 1)
 			{
 				m_arrSkillUI[i][Outline1]->Lerp_Scale(95.f, 50.f, m_fLeprSpeed);
-				ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
-
-				ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
 				m_arrSkillUI[i][Outline2]->Lerp_Scale(150.f, 50.f, m_fLeprSpeed);
+
+				if (m_iLerpCount > 1)
+				{
+					ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
+					ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
+				}
 			}
 		}
 

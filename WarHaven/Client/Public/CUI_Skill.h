@@ -31,6 +31,7 @@ private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 	CUI_Object* m_arrSkillUI[4][Type_End] = {};
 
+	_uint m_iLerpCount = 0;
 	_uint m_iRelicIndex = 0;
 	_bool m_bIsRelic = false;
 	_float m_fRelicValue = 0.f;
