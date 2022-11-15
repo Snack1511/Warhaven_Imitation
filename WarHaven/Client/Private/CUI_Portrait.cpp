@@ -172,6 +172,7 @@ void CUI_Portrait::My_Tick()
 	}
 	else
 	{
+		Call_MsgBox(TEXT("변신 해제 하는데 이 메세지 뜨면 버그"));
 		if (m_bIsHeroLerp)
 		{
 			_float fDuration = 0.3f;

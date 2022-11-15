@@ -58,7 +58,7 @@ void CUI_HUD::My_Tick()
 
 	if (!m_tStatus.bAbleHero)
 	{
-		if(m_tStatus.bIsHero)
+		if (m_tStatus.bIsHero)
 		{
 			m_tStatus.fHeroGague += fDT(0) * 20.f;
 			if (m_fHeroGauge >= 1.f)
@@ -117,9 +117,14 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 
 	if (eClass > CUnit::ENGINEER)
 	{
+		if (m_tStatus.bAbleHero)
+		{
+			Set_ActiveHeroPort(false);
+		}
+
 		m_tStatus.bAbleHero = false;
 		m_tStatus.bIsHero = true;
-	}	
+	}
 	else
 	{
 		m_tStatus.bIsHero = false;
