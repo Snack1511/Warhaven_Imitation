@@ -68,9 +68,6 @@ private:
 	void PortSizeUP(_float fDuration);
 	void PortSizeDown(_float fDuration);
 
-	void Enable_HeroPort();
-	void Disable_HeroPort();
-
 	void Enable_HeroLerp(_bool value, _float fDuration);
 
 private:

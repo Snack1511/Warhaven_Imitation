@@ -133,14 +133,14 @@ void CUI_Portrait::My_Tick()
 
 	Change_UserPort();
 
+	// 영웅 변신 상태일 때
 	if (m_bAbleHero)
 	{
+		_float fDuration = 0.3f;
 		if (m_eHeroPortAnimType == Enable)
 		{
 			if (m_bIsHeroLerp)
 			{
-				_float fDuration = 0.3f;
-
 				if (m_iHeroEndIdx > User)
 				{
 					for (int i = 0; i < Type_End; ++i)
@@ -181,8 +181,6 @@ void CUI_Portrait::My_Tick()
 		{
 			if (m_bIsHeroLerp)
 			{
-				_float fDuration = 0.3f;
-
 				if (m_iHeroStartIdx < PortEnd)
 				{
 					for (int i = 0; i < Type_End; ++i)
@@ -317,86 +315,6 @@ void CUI_Portrait::PortSizeDown(_float fDuration)
 
 	m_arrPortraitUI[0][BG]->Lerp_ScaleX(64.f, 0.f, fRotSpeed);
 	m_arrPortraitUI[0][Port]->Lerp_ScaleX(63.f, 0.f, fRotSpeed);
-}
-
-void CUI_Portrait::Enable_HeroPort()
-{
-	if (m_iPrvPort > 5)
-	{
-		_float fDuration = 0.3f;
-
-		if (m_bIsHeroLerp)
-		{
-			for (m_iHeroEndIdx; m_iHeroEndIdx >= Hero1;)
-			{
-				for (int j = 0; j < Type_End; ++j)
-				{
-					if (j == Key)
-					{
-						// 페이드아웃만
-						continue;
-					}
-
-					if (j == Effect)
-					{
-						// 페이드아웃만
-						continue;
-					}
-
-					ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][j]);
-					m_arrPortraitUI[m_iHeroEndIdx][j]->Lerp_ScaleX(0.f, 43.f, fDuration);
-				}
-
-				m_bIsHeroLerp = false;
-				break;
-			}
-		}
-		else
-		{
-			Enable_HeroLerp(true, fDuration);
-		}
-	}
-}
-
-void CUI_Portrait::Disable_HeroPort()
-{
-	if (bIsHero)
-	{
-		if (m_iPrvPort < 6)
-		{
-			_float fDuration = 0.3f;
-
-			if (m_bIsHeroLerp)
-			{
-				for (m_iHeroStartIdx; m_iHeroStartIdx < PortEnd;)
-				{
-					for (int j = 0; j < Type_End; ++j)
-					{
-						if (j == Key)
-						{
-							// 페이드아웃만
-							continue;
-						}
-
-						if (j == Effect)
-						{
-							// 페이드아웃만
-							continue;
-						}
-
-						m_arrPortraitUI[m_iHeroStartIdx][j]->Lerp_ScaleX(43.f, 0.f, fDuration);
-					}
-
-					m_bIsHeroLerp = false;
-					break;
-				}
-			}
-			else
-			{
-				Enable_HeroLerp(false, fDuration);
-			}
-		}
-	}
 }
 
 void CUI_Portrait::Enable_HeroLerp(_bool value, _float fDuration)
