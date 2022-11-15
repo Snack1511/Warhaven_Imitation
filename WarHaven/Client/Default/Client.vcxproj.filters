@@ -616,6 +616,9 @@
     <Filter Include="03. Instances\02. GameObject\06. Map\MapLoader">
       <UniqueIdentifier>{c5230a57-5ae4-4768-b878-9b72ab197a34}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl">
+      <UniqueIdentifier>{f49447ee-e92a-446c-8597-ea69953aaa75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1075,6 +1078,9 @@
     <ClInclude Include="..\public\CWindow_Select.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\02. Window_Select</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CFunc_ObjectControl.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1514,6 +1520,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMap_Loader.cpp">
       <Filter>03. Instances\02. GameObject\06. Map\MapLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CFunc_ObjectControl.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

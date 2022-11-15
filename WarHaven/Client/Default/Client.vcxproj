@@ -189,6 +189,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CBloodOverlay.h" />
+    <ClInclude Include="..\Public\CFunc_ObjectControl.h" />
     <ClInclude Include="..\public\CState_Blendable.h" />
     <ClInclude Include="..\Public\CStop_Player.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalDown.h" />
@@ -345,6 +346,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\private\CAI_SandBack.cpp" />
     <ClCompile Include="..\Private\CBloodOverlay.cpp" />
+    <ClCompile Include="..\Private\CFunc_ObjectControl.cpp" />
     <ClCompile Include="..\private\CState_Blendable.cpp" />
     <ClCompile Include="..\Private\CStop_Player.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalDown.cpp" />
