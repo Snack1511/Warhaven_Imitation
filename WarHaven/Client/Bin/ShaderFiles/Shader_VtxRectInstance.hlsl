@@ -20,6 +20,7 @@ float			g_iCurHeightIndex;
 
 bool			g_bBlackBG;
 float			g_fDissolvePower = 5.f;
+float			g_fDiscardPower = 0.01f;
 
 
 struct VS_IN
@@ -348,6 +349,29 @@ PS_OUT PS_ANIMATION_DISSOLVE_MAIN(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_BLACKBACKGROUND_TEXTURE(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	//Only masking
+	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vDiffuse.a = (Out.vDiffuse.r);
+	Out.vDiffuse.xyz += In.vColor.xyz;
+
+	Out.vDiffuse.a *= In.vColor.a;
+
+	if (Out.vDiffuse.a < g_fDiscardPower)
+		discard;
+
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
+	Out.vFlag = g_vFlag;
+	Out.vGlowFlag = g_vGlowFlag;
+	Out.vEffectDiffuse = Out.vDiffuse;
+
+	return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -415,5 +439,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_ANIMATION_DISSOLVE_MAIN();
+	}
+
+	pass BLACKBACKGROUND_TEXTURE
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_None);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BLACKBACKGROUND_TEXTURE();
 	}
 }

@@ -64,7 +64,24 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
 
 void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    /*effect*/
     pOwner->TurnOn_TrailEffect(true);
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SkillLightParticle", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+
+    CColorController::COLORDESC tColorDesc;
+    ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+    tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+    tColorDesc.fFadeInStartTime = 0.f;
+    tColorDesc.fFadeInTime = 0.1f;
+    tColorDesc.fFadeOutStartTime = 1.f;
+    tColorDesc.fFadeOutTime = 0.1f;
+    tColorDesc.vTargetColor = _float4((230.f / 255.f), (150.f / 255.f), (40.f / 255.f), 0.f);
+    tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+    tColorDesc.iStartKeyFrame = 2;
+    tColorDesc.iEndKeyFrame = 45; // 프레임 맞춰놓음
+
+    GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
     if (ePrevType == STATE_WARRIOR_OXEN_LOOPATTACK)
     {

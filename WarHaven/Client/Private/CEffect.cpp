@@ -317,27 +317,16 @@ void CEffect::On_Target()
 void CEffect::Stick_RefBone()
 {
 	_float4 vBonePos = m_vOffsetPos;
-	_matrix matBone = m_pRefBone->Get_CombinedMatrix();
 
-	matBone = XMMatrixMultiply(matBone, DEFAULT_TRANS_MATRIX);
-
-	_float4x4 BoneMatrix;
-	XMStoreFloat4x4(&BoneMatrix, matBone);
-
-	_float4x4 matWorld = m_pFollowTarget->Get_Transform()->Get_WorldMatrix();
+	_float4x4 BoneMatrix = m_pRefBone->Get_BoneMatrix();
 
 	//콤바인 위치 * 월드매트릭스
 	vBonePos = vBonePos.MultiplyCoord(BoneMatrix);
-	vBonePos = vBonePos.MultiplyCoord(matWorld);
-
-
-	_float4 vBoneLook = (*((_float4*)&BoneMatrix.m[WORLD_LOOK]));
-	vBoneLook = vBoneLook.MultiplyNormal(matWorld);
 
 	//vBonePos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
 
+	m_pTransform->Get_Transform().matMyWorld = BoneMatrix;
 	m_pTransform->Set_World(WORLD_POS, vBonePos);
-	m_pTransform->Set_Look(vBoneLook);
 	m_pTransform->Make_WorldMatrix();
 }
 

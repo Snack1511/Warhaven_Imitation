@@ -61,6 +61,9 @@ private:
 
 	_bool		m_bBlackBackGround = false;
 	_bool		m_bPlayOnce = false;
+	_float		m_fDiscardPower = 0.01f;
+
+	string		m_strBoneName = "";
 
 
 	CURVE_TYPE		m_eCurveType = CURVE_LINEAR;
@@ -77,7 +80,8 @@ private:
 	void		Update_Animation(_uint iIndex);
 
 private:
-	void		Reset_Instance(_uint iIndex);
+	void			Reset_Instance(_uint iIndex);
+	virtual void	Stick_RefBone() override;
 
 private:
 	_float4		Switch_CurveType(_float4 vPos, _uint iIdx);

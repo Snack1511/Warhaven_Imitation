@@ -5,12 +5,14 @@
 
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "Model.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "Transform.h"
 #include "CColorController.h"
+#include "HIerarchyNode.h"
 
 CWarrior_Oxen_Begin::CWarrior_Oxen_Begin()
 {
@@ -34,6 +36,7 @@ CWarrior_Oxen_Begin* CWarrior_Oxen_Begin::Create()
 }
 HRESULT CWarrior_Oxen_Begin::Initialize()
 {
+
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 24;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
@@ -64,6 +67,7 @@ void CWarrior_Oxen_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 {
     pOwner->TurnOn_TrailEffect(true);
 
+ 
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

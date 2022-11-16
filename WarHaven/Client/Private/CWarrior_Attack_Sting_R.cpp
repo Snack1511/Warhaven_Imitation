@@ -150,6 +150,24 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
 
 void CWarrior_Attack_Sting_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	CColorController::COLORDESC m_tColorDesc;
+	ZeroMemory(&m_tColorDesc, sizeof(CColorController::COLORDESC));
+
+	m_tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+	m_tColorDesc.fFadeInStartTime = 0.f;
+	m_tColorDesc.fFadeInTime = 0.1f;
+	m_tColorDesc.fFadeOutStartTime = 0.8f;
+	m_tColorDesc.fFadeOutTime = 0.1f;
+
+	m_tColorDesc.vTargetColor = _float4((230.f / 255.f), (150.f / 255.f), (40.f / 255.f), 0.f);
+
+	m_tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+	m_tColorDesc.iStartKeyFrame = 20;
+	m_tColorDesc.iEndKeyFrame = 50; // 프레임 맞춰놓음
+
+	
+	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);
+
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
