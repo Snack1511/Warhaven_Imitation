@@ -15,9 +15,7 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	virtual void On_MouseInEvent(const _uint& iEventNum);
-	virtual void On_MouseExitEvent(const _uint& iEventNum);
-	virtual void On_ButtonClickEvent(const _uint& iEventNum);
+	virtual void On_PointUpEvent(const _uint& iEventNum);
 
 private:
 	CUI_Object* m_pStartBtn = nullptr;

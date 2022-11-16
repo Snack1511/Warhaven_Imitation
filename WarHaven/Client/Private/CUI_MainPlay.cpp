@@ -31,20 +31,12 @@ HRESULT CUI_MainPlay::Start()
 {
 	__super::Start();
 
-	m_pUI->CallBack_ButtonClick += bind(&CUI_MainPlay::On_ButtonClickEvent, this, placeholders::_1);
+	m_pUI->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent, this, placeholders::_1);
 
 	return S_OK;
 }
 
-void CUI_MainPlay::On_MouseInEvent(const _uint& iEventNum)
-{
-}
-
-void CUI_MainPlay::On_MouseExitEvent(const _uint& iEventNum)
-{
-}
-
-void CUI_MainPlay::On_ButtonClickEvent(const _uint& iEventNum)
+void CUI_MainPlay::On_PointUpEvent(const _uint& iEventNum)
 {
 	CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
 }

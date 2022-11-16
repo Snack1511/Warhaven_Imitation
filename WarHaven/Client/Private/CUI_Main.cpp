@@ -60,26 +60,9 @@ HRESULT CUI_Main::Start()
 	Enable_MainUI();
 	Enable_MainWindow();
 
-	for (int i = 0; i < 3; ++i)
-	{
-		m_pTopBtn[i]->CallBack_MouseIn += bind(&CUI_Main::On_MouseInEvent, this, placeholders::_1);
-	}
-
 	__super::Start();
 
 	return S_OK;
-}
-
-void CUI_Main::On_MouseInEvent(const _uint& iEventNum)
-{
-}
-
-void CUI_Main::On_MouseExitEvent(const _uint& iEventNum)
-{
-}
-
-void CUI_Main::On_ButtonClickEvent(const _uint& iEventNum)
-{
 }
 
 void CUI_Main::Enable_MainUI()

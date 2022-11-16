@@ -8,6 +8,9 @@ class CUI_Cursor final : public CUI
 	DECLARE_PROTOTYPE(CUI_Cursor);
 	DECLARE_GAMEOBJECT(CUI_Cursor);
 
+public:
+	enum MouseType { Default, Down, Over, Disable, TYPE_END };
+
 private:
 	CUI_Cursor();
 	CUI_Cursor(const CUI_Cursor& Prototype);
@@ -18,8 +21,10 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
-public:
 	virtual void My_Tick();
+
+public:
+	void Set_Mouse(MouseType eType);
 
 private:
 	RECT m_tScreen;

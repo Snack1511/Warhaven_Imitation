@@ -56,10 +56,13 @@ public:
 	void Set_Sort(_float value);
 	
 public:
-	CDelegate<const _uint&>		CallBack_MouseIn;
-	CDelegate<const _uint&>		CallBack_MouseExit;
-	CDelegate<const _uint&>		CallBack_ButtonClick;
+	CDelegate<const _uint&>		CallBack_PointEnter;
+	CDelegate<const _uint&>		CallBack_PointStay;
+	CDelegate<const _uint&>		CallBack_PointExit;
 
+	CDelegate<const _uint&>		CallBack_PointDown;
+	CDelegate<const _uint&>		CallBack_PointPress;
+	CDelegate<const _uint&>		CallBack_PointUp;
 
 protected:
 	_float4 m_vPosition;

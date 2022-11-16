@@ -4,6 +4,8 @@
 #include "UsefulHeaders.h"
 
 #include "CUI_Object.h"
+#include "CUI_Cursor.h"
+#include "CUser.h"
 
 CButton::CButton(_uint iIdx)
 	: CComponent(iIdx)
@@ -32,15 +34,27 @@ void CButton::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
 }
 
-void CButton::On_MouseInEvent(const _uint& iEventNum)
+void CButton::On_PointEnterEvent(const _uint& iEventNum)
 {
 }
 
-void CButton::On_MouseExitEvent(const _uint& iEventNum)
+void CButton::On_PointStayEvent(const _uint& iEventNum)
 {
 }
 
-void CButton::On_ButtonClickEvent(const _uint& iEventNum)
+void CButton::On_PointExitEvent(const _uint& iEventNum)
+{
+}
+
+void CButton::On_PointDownEvent(const _uint& iEventNum)
+{
+}
+
+void CButton::On_PointPressEvent(const _uint& iEventNum)
+{
+}
+
+void CButton::On_PointUpEvent(const _uint& iEventNum)
 {
 }
 
@@ -61,6 +75,8 @@ void CButton::Start()
 	m_pOwnerUI = static_cast<CUI_Object*>(m_pOwner);
 
 	Set_Rect();
+
+	m_pMouse = CUser::Get_Instance()->Get_Cursor();
 }
 
 void CButton::Tick()
@@ -71,25 +87,44 @@ void CButton::Tick()
 
 void CButton::Late_Tick()
 {
-	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
-
 	m_bPrvState = m_bCurState;
 	m_bCurState = m_bIsInMouse;
 
-	if (m_bCurState == true)
-	{
-		m_pOwnerUI->CallBack_MouseIn(0);
+	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
 
-		if (KEY(LBUTTON, TAP))
+	if (m_bIsInMouse)
+	{
+		m_pMouse->Set_Mouse(CUI_Cursor::Over);
+
+		if (!m_bPrvState)
 		{
-			m_pOwnerUI->CallBack_ButtonClick(0);
+			m_pOwnerUI->CallBack_PointEnter(0);
+		}
+		else
+		{
+			m_pOwnerUI->CallBack_PointStay(0);
+
+			if (KEY(LBUTTON, TAP))
+			{
+				m_pOwnerUI->CallBack_PointDown(0);
+			}
+			else if (KEY(LBUTTON, HOLD))
+			{
+				m_pMouse->Set_Mouse(CUI_Cursor::Down);
+
+				m_pOwnerUI->CallBack_PointPress(0);
+			}
+			else if (KEY(LBUTTON, AWAY))
+			{
+				m_pOwnerUI->CallBack_PointUp(0);
+			}
 		}
 	}
 	else
 	{
-		if(m_bPrvState == true);
+		if (m_bPrvState)
 		{
-			m_pOwnerUI->CallBack_MouseExit(0);
+			m_pOwnerUI->CallBack_PointExit(0);
 		}
 	}
 }
