@@ -1,0 +1,13 @@
+Diffuse=T_Bush_Honeysuckle_Bush01a_01a_B
+Normal=T_Bush_Honeysuckle_Bush01a_01a_N
+Other[0]=T_Bush_Honeysuckle_Bush01a_01a_ORH
+Other[1]=T_PPInteraction_Index
+Other[2]=T_Bush_Honeysuckle_Bush01a_01a_Vector
+Other[3]=Good64x64TilingNoiseHighFreq
+Other[4]=DefaultTexture
+Other[5]=test2_rgb_PivotPos_a_ParentIndexInt_UV_2
+Other[6]=WindTurblenceVectorAndGustMagnitude
+Other[7]=T_TextureSample_B
+Other[8]=T_TextureSample_N
+Other[9]=T_TextureSample_ORH
+Other[10]=T_PPInteraction_XVector

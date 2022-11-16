@@ -70,22 +70,22 @@ void CButton::Tick()
 
 void CButton::Late_Tick()
 {
-	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
-	if (m_bIsInMouse)
-	{
-		if (1)
-		{
-			m_pOwnerUI->CallBack_MouseIn(0);
-		}
-		else if (1)
-		{
-			m_pOwnerUI->CallBack_MouseExit(0);
-		}
-		else
-		{
-			m_pOwnerUI->CallBack_ButtonClick(0);
-		}
-	}
+	//m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
+	//if (m_bIsInMouse)
+	//{
+	//	if (1)
+	//	{
+	//		m_pOwnerUI->CallBack_MouseIn(0);
+	//	}
+	//	else if (1)
+	//	{
+	//		m_pOwnerUI->CallBack_MouseExit(0);
+	//	}
+	//	else
+	//	{
+	//		m_pOwnerUI->CallBack_ButtonClick(0);
+	//	}
+	//}
 }
 
 void CButton::Release()

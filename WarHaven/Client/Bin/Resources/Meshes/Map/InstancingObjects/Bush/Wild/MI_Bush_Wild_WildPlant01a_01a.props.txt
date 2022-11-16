@@ -1,0 +1,112 @@
+Parent = MaterialInstanceConstant'/Game/Heroes/Environments/Common/Material/FoliageTemplate/MI_Plant_Base.MI_Plant_Base'
+ScalarParameterValues[2] =
+{
+    ScalarParameterValues[0] =
+    {
+        ParameterInfo = { Name=Translucency_Power }
+        ParameterValue = 1
+        ParameterName = None
+    }
+    ScalarParameterValues[1] =
+    {
+        ParameterInfo = { Name=RefractionDepthBias }
+        ParameterValue = 0
+        ParameterName = None
+    }
+}
+TextureParameterValues[5] =
+{
+    TextureParameterValues[0] =
+    {
+        ParameterInfo = { Name=BaseColor }
+        ParameterValue = Texture2D'/Game/Heroes/Environments/Nature/Bush/Wild/T_Bush_Wild_WildPlant01a_01a_B.T_Bush_Wild_WildPlant01a_01a_B'
+        ParameterName = None
+    }
+    TextureParameterValues[1] =
+    {
+        ParameterInfo = { Name=Normal }
+        ParameterValue = Texture2D'/Game/Heroes/Environments/Nature/Bush/Wild/T_Bush_Wild_WildPlant01a_01a_N.T_Bush_Wild_WildPlant01a_01a_N'
+        ParameterName = None
+    }
+    TextureParameterValues[2] =
+    {
+        ParameterInfo = { Name=ORH }
+        ParameterValue = Texture2D'/Game/Heroes/Environments/Nature/Bush/Wild/T_Bush_Wild_WildPlant01a_01a_ORH.T_Bush_Wild_WildPlant01a_01a_ORH'
+        ParameterName = None
+    }
+    TextureParameterValues[3] =
+    {
+        ParameterInfo = { Name=PivotPainter_Index }
+        ParameterValue = Texture2D'/Game/Heroes/Environments/Nature/Bush/Wild/T_Bush_Wild_WildPlant01a_01a_pivot.T_Bush_Wild_WildPlant01a_01a_pivot'
+        ParameterName = None
+    }
+    TextureParameterValues[4] =
+    {
+        ParameterInfo = { Name=PivotPainter_XVector }
+        ParameterValue = Texture2D'/Game/Heroes/Environments/Nature/Bush/Wild/T_Bush_Wild_WildPlant01a_01a_vector.T_Bush_Wild_WildPlant01a_01a_vector'
+        ParameterName = None
+    }
+}
+VectorParameterValues[2] =
+{
+    VectorParameterValues[0] =
+    {
+        ParameterInfo = { Name=Color }
+        ParameterValue = { R=1, G=1, B=1, A=1 }
+        ParameterName = None
+    }
+    VectorParameterValues[1] =
+    {
+        ParameterInfo = { Name=Translucency_Color }
+        ParameterValue = { R=1, G=1, B=1, A=1 }
+        ParameterName = None
+    }
+}
+BasePropertyOverrides =
+{
+    bOverride_BlendMode = false
+    BlendMode = BLEND_Masked (1)
+    bOverride_TwoSided = true
+    TwoSided = true
+    bOverride_OpacityMaskClipValue = false
+    OpacityMaskClipValue = 0.3333
+}
+StaticParameters =
+{
+    StaticSwitchParameters[2] =
+    {
+        StaticSwitchParameters[0] =
+        {
+            Value = false
+            ParameterInfo = { Name=Normal_Adjustment }
+            bOverride = true
+        }
+        StaticSwitchParameters[1] =
+        {
+            Value = true
+            ParameterInfo = { Name=Animate Level 1 }
+            bOverride = true
+        }
+    }
+    StaticComponentMaskParameters[0] = {}
+    TerrainLayerWeightParameters[0] = {}
+    MaterialLayersParameters[0] = {}
+}
+RuntimeVirtualTextureParameterValues[0] = {}
+FontParameterValues[0] = {}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[1] =
+{
+    TextureStreamingData[0] =
+    {
+        SamplingScale = 1
+        UVChannelIndex = 0
+        TextureName = T_Bush_Wild_WildPlant01a_01a_N
+    }
+}

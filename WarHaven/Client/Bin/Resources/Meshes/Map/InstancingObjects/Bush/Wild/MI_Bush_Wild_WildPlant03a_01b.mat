@@ -1,0 +1,16 @@
+Diffuse=T_Bush_Wild_WildPlant03a_01a_B
+Normal=T_Bush_Wild_WildPlant03a_01a_N
+Other[0]=T_Bush_Wild_WildPlant03a_01a_ORH
+Other[1]=T_Bush_Wild_WildPlant01a_01a_pivot
+Other[2]=T_Bush_Wild_WildPlant01a_01a_vector
+Other[3]=T_Bush_Wild_WildPlant03a_01a_pivot
+Other[4]=T_Bush_Wild_WildPlant03a_01a_vector
+Other[5]=Good64x64TilingNoiseHighFreq
+Other[6]=DefaultTexture
+Other[7]=test2_rgb_PivotPos_a_ParentIndexInt_UV_2
+Other[8]=WindTurblenceVectorAndGustMagnitude
+Other[9]=T_TextureSample_B
+Other[10]=T_TextureSample_N
+Other[11]=T_TextureSample_ORH
+Other[12]=T_PPInteraction_Index
+Other[13]=T_PPInteraction_XVector
