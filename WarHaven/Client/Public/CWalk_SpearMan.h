@@ -1,22 +1,18 @@
 #pragma once
-#include "CRun_SpearmMan_Begin.h"
+#include "CState.h"
 
 BEGIN(Engine)
 class CAnimator;
 END
 
 BEGIN(Client)
-class CRun_SpearmMan_Begin_R
-	: public CRun_SpearmMan_Begin
+class CWalk_SpearMan abstract
+	: public CState
 {
-	DECLARE_STATE(CRun_SpearmMan_Begin_R);
 
-private:
-	CRun_SpearmMan_Begin_R();
-	virtual ~CRun_SpearmMan_Begin_R();
-
-public:
-	static CRun_SpearmMan_Begin_R* Create();
+protected:
+	CWalk_SpearMan();
+	virtual ~CWalk_SpearMan();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -25,10 +21,8 @@ public:
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
-private:
+protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	virtual void	On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
-
 
 };
 

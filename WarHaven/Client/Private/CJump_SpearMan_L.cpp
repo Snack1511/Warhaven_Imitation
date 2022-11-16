@@ -47,10 +47,8 @@ HRESULT CJump_SpearMan_L::Initialize()
     m_fAnimSpeed = 1.f;
 
 
-
     m_vecAdjState.push_back(STATE_JUMPFALL_SPEARMAN_L);
     m_vecAdjState.push_back(STATE_JUMP_LAND_SPEARMAN_L);
-
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 4;
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 5;

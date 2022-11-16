@@ -40,17 +40,8 @@ HRESULT CStop_SpearMan_L::Initialize()
 	m_iAnimIndex = 24;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_STOP_SPEARMAN_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-	m_vecAdjState.push_back(STATE_IDLE_SPEARMAN_L);
 	m_vecAdjState.push_back(STATE_WALK_SPEARMAN_L);
 	m_vecAdjState.push_back(STATE_RUN_SPEARMAN_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 22;
 	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 23;
@@ -70,6 +61,8 @@ void CStop_SpearMan_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 STATE_TYPE CStop_SpearMan_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_IDLE_SPEARMAN_L;
 
 	return __super::Tick(pOwner, pAnimator);
 }

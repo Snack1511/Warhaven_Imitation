@@ -105,7 +105,7 @@ protected:
 
 
 protected:
-	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax);
+	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bBackStep = false);
 	
 
 

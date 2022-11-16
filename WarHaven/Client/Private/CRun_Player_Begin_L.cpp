@@ -106,7 +106,6 @@ STATE_TYPE CRun_Player_Begin_L::Check_Condition(CUnit* pOwner, CAnimator* pAnima
         if (
             KEY(W, HOLD) ||
             KEY(A, HOLD) ||
-            KEY(S, HOLD) ||
             KEY(D, HOLD)
             )
         {

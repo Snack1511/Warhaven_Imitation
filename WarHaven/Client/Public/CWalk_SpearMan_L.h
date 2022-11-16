@@ -1,9 +1,13 @@
 #pragma once
-#include "CWalk_Player.h"
+#include "CWalk_SpearMan.h"
+
+BEGIN(Engine)
+class CAnimator;
+END
 
 BEGIN(Client)
 class CWalk_SpearMan_L
-	: public CWalk_Player
+	: public CWalk_SpearMan
 {
 	DECLARE_STATE(CWalk_SpearMan_L);
 

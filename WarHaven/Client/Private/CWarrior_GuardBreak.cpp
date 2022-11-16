@@ -73,10 +73,8 @@ HRESULT CWarrior_GuardBreak::Initialize()
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 
-	Add_KeyFrame(26, 0);
 	Add_KeyFrame(26, 1);
 	Add_KeyFrame(54, 2);
-
 
     return S_OK;
 }
@@ -102,9 +100,7 @@ STATE_TYPE CWarrior_GuardBreak::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarrior_GuardBreak::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 3.f;
 }
 
 STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -125,20 +121,6 @@ void CWarrior_GuardBreak::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 {
 	switch (iSequence)
 	{
-	case 0:
-	{
-		Physics_Setting(pOwner->Get_Status().fDashSpeed, pOwner, true);
-
-		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-
-
-		//마찰 조절하기
-		//*주의 : 사용하고나면 Exit에서 반드시 1로 되돌려주기
-		pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 3.f;
-
-	}
-
-	break;
 
 	case 1:
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);

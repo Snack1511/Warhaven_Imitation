@@ -1,25 +1,26 @@
 #pragma once
-#include "CRun_SpearmMan_Begin.h"
+#include "CState.h"
 
 BEGIN(Engine)
-class CAnimator;
 END
 
 BEGIN(Client)
-class CRun_SpearmMan_Begin_R
-	: public CRun_SpearmMan_Begin
+class CColorController;
+
+class CBounce_SpearMan
+	: public CState
 {
-	DECLARE_STATE(CRun_SpearmMan_Begin_R);
+	DECLARE_STATE(CBounce_SpearMan);
 
 private:
-	CRun_SpearmMan_Begin_R();
-	virtual ~CRun_SpearmMan_Begin_R();
+	CBounce_SpearMan();
+	virtual ~CBounce_SpearMan();
 
 public:
-	static CRun_SpearmMan_Begin_R* Create();
+	static CBounce_SpearMan* Create();
 
 public:
-	// CState을(를) 통해 상속됨
+	// CPlayer_Bounce을(를) 통해 상속됨
 	virtual HRESULT Initialize()	override;
 	virtual void Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData = nullptr) override;
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
@@ -27,9 +28,7 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	virtual void	On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
-
-
+	
 };
 
 END

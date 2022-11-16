@@ -1,6 +1,10 @@
 #pragma once
 #include "CState.h"
 
+BEGIN(Engine)
+class CAnimator;
+END
+
 BEGIN(Client)
 class CRun_SpearMan abstract
 	: public CState

@@ -43,26 +43,17 @@ HRESULT CJump_SpearMan_Land_R::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
-    
-//	m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
 
-	m_vecAdjState.push_back(STATE_IDLE_SPEARMAN_R);
+
 	m_vecAdjState.push_back(STATE_WALK_SPEARMAN_R);
 
 	m_vecAdjState.push_back(STATE_RUN_SPEARMAN_R);
 
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_SPEARMAN_R);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
-	//m_vecAdjState.push_back(STATE_GUARD_BEGIN_SPEARMAN);
+	m_vecAdjState.push_back(STATE_SPEARMAN_GUARDBREAK);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_SPEARMAN);
+	m_vecAdjState.push_back(STATE_SPEARMAN_SPECIALGUARD);
 
 
-	//m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
-	//m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
-
- //   m_vecAdjState.push_back(STATE_SPRINT_BEGIN_SPEARMAN);
 
 
     return S_OK;
@@ -75,6 +66,9 @@ void CJump_SpearMan_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CJump_SpearMan_Land_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_IDLE_SPEARMAN_R;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

@@ -1,22 +1,20 @@
 #pragma once
-#include "CRun_SpearmMan_Begin.h"
-
-BEGIN(Engine)
-class CAnimator;
-END
+#include "CState.h"
 
 BEGIN(Client)
-class CRun_SpearmMan_Begin_R
-	: public CRun_SpearmMan_Begin
+class CColorController;
+
+class CSpearMan_Attack_Sting
+	: public CState
 {
-	DECLARE_STATE(CRun_SpearmMan_Begin_R);
+	DECLARE_STATE(CSpearMan_Attack_Sting);
 
 private:
-	CRun_SpearmMan_Begin_R();
-	virtual ~CRun_SpearmMan_Begin_R();
+	CSpearMan_Attack_Sting();
+	virtual ~CSpearMan_Attack_Sting();
 
 public:
-	static CRun_SpearmMan_Begin_R* Create();
+	static CSpearMan_Attack_Sting* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -27,9 +25,7 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	virtual void	On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
-
-
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 };
 
 END

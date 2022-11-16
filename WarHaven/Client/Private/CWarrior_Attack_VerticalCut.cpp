@@ -62,8 +62,6 @@ HRESULT CWarrior_Attack_VerticalCut::Initialize()
 	Add_KeyFrame(31, 1);
 	Add_KeyFrame(50, 2);
 
-
-
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
 	/* Setting for Blendable */
