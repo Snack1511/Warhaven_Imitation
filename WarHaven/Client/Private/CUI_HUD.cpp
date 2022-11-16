@@ -23,8 +23,8 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	m_pWrap[Skill] = CUI_Skill::Create();
 	m_pWrap[HeroGauge] = CUI_HeroGauge::Create();
 
-	CREATE_GAMEOBJECT(m_pWrap[Port], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[Crosshair], GROUP_UI);
+	CREATE_GAMEOBJECT(m_pWrap[Port], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[Skill], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[HeroGauge], GROUP_UI);
 
@@ -40,8 +40,8 @@ HRESULT CUI_HUD::Start()
 {
 	m_eCurClass = m_tStatus.eClass;
 
-	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
 	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
 
 	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();

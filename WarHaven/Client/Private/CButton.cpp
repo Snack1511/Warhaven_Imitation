@@ -15,9 +15,9 @@ CButton::~CButton()
 	Release();
 }
 
-CButton* CButton::Create(COMPONENT_PIPELINE ePipeLine)
+CButton* CButton::Create(_uint iGroupID)
 {
-	CButton* pInstance = new CButton(ePipeLine);
+	CButton* pInstance = new CButton(iGroupID);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -58,49 +58,51 @@ void CButton::Start()
 {
 	__super::Start();
 
-	//RECT 만드셈
+	Set_Rect();
 }
 
 void CButton::Tick()
 {
-	
+	GetCursorPos(&m_ptMouse);
+	ScreenToClient(g_hWnd, &m_ptMouse);
+	_float4 vMousePos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
 }
 
 void CButton::Late_Tick()
 {
-	//마우스 올려진거 체크
-	// m_bIsInMouse = PtInRect();
+	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
 	if (m_bIsInMouse)
 	{
 		if (1)
 		{
-			m_pMyUI->CallBack_MouseIn(0);
+			m_pOwnerUI->CallBack_MouseIn(0);
 		}
 		else if (1)
 		{
-			m_pMyUI->CallBack_MouseExit(0);
+			m_pOwnerUI->CallBack_MouseExit(0);
 		}
 		else
 		{
-			m_pMyUI->CallBack_ButtonClick(0);
+			m_pOwnerUI->CallBack_ButtonClick(0);
 		}
 	}
 }
 
 void CButton::Release()
 {
+	
 }
 
-void CButton::OnEnable()
+void CButton::Set_Rect()
 {
-	__super::OnEnable();
-}
+	_float4 vUIPos = m_pOwnerUI->Get_Pos();
+	_float4 vPos = CFunctor::To_Descartes(vUIPos);
+	_float4 vScale = m_pOwnerUI->Get_Scale();
 
-void CButton::OnDisable()
-{
-	__super::OnDisable();
-}
+	int iLeft = int(vUIPos.x - vScale.x * 0.5f);
+	int iTop = int(vUIPos.y - vScale.y * 0.5f);
+	int iRight = int(vUIPos.x + vScale.x * 0.5f);
+	int iBottom = int(vUIPos.y + vScale.y * 0.5f);
 
-void CButton::OnDead()
-{
+	SetRect(&m_tRect, iLeft, iTop, iRight, iBottom);
 }

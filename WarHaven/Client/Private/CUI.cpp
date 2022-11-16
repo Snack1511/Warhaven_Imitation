@@ -9,6 +9,7 @@
 #include "CFader.h"
 #include "CUI_Renderer.h"
 #include "Renderer.h"
+#include "CButton.h"
 
 CUI::CUI()
 {
@@ -35,7 +36,11 @@ HRESULT CUI::Initialize_Prototype()
 		
 	CUI_Renderer* pRenderer = CUI_Renderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT, _float4(0.f, 0.f, 0.f, 1.f));
 	Add_Component<CUI_Renderer>(pRenderer);
-	GET_COMPONENT(CUI_Renderer)->Set_UI(this);
+	pRenderer->Set_UI(this);
+	
+	CButton* pButton = CButton::Create(0);
+	Add_Component<CButton>(pButton);
+	pButton->Set_OwnerUI(this);	
 
 	return S_OK;
 }
@@ -77,7 +82,6 @@ void CUI::Set_PosX(_float fX)
 {
 	m_vPosition.x = fX;
 	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
-
 }
 
 void CUI::Set_Scale(_float value)
@@ -136,7 +140,6 @@ HRESULT CUI::SetTexture(const _tchar* pFilePath, _uint iIndex)
 		Call_MsgBox(TEXT("Create failed Texture"));
 		return E_FAIL;
 	}
-
 	Add_Component(pTexture);
 
 	return S_OK;

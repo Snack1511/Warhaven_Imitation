@@ -13,13 +13,16 @@
 #define DELETE_BUTTONCLICK_EVENT(UIinstance, iEventNum) static_cast<CUI*>(UIinstance)->CallBack_ButtonClick -= bind(&On_ButtonClickEvent, this, iEventNum);
 
 BEGIN(Engine)
+
 class CShader;
+
 END
 
 BEGIN(Client)
+
 class CUI;
-class CButton
-	: public CComponent
+
+class CButton : public CComponent
 {
 public:
 	DECLARE_PROTOTYPE(CButton);
@@ -29,10 +32,12 @@ private:
 	~CButton();
 
 public:
-	static CButton* Create(COMPONENT_PIPELINE	ePipeLine);
+	static CButton* Create(_uint iGroupID);
 
 public:
 	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName) override;
+
+public:
 	virtual void	On_MouseInEvent(const _uint& iEventNum);
 	virtual void	On_MouseExitEvent(const _uint& iEventNum);
 	virtual void	On_ButtonClickEvent(const _uint& iEventNum);
@@ -42,21 +47,26 @@ public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
 
-	//START에서 RECT만들어놓음
 	virtual void Start() override;
 	virtual void Tick() override;
-	
 	virtual void Late_Tick() override;
-	virtual void Release() override;
-	virtual void OnEnable() override;
-	virtual void OnDisable() override;
-	virtual void OnDead()	override;
+
+public:
+	void Set_OwnerUI(CUI* pUI) { m_pOwnerUI = pUI; }
 
 private:
+	CUI* m_pOwnerUI = nullptr;
+
 	RECT m_tRect;
+	POINT m_ptMouse;
 
 	_bool m_bIsInMouse = false;
 
-	CUI* m_pMyUI = nullptr;
+private:
+	virtual void Release() override;
+
+private:
+	void Set_Rect();
 };
+
 END

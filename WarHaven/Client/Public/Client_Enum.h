@@ -96,6 +96,7 @@ namespace Client
 		CP_RIGHTBEFORE_RENDERER,
 		CP_RENDERER,
 		CP_AFTER_RENDERER,
+
 		CP_END,
 	};
 

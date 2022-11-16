@@ -45,63 +45,13 @@ void CUI_Skill::My_Tick()
 {
 	__super::My_Tick();
 
-	/*if (!m_bIsHero)
-	{
-		if (KEY(T, TAP))
-		{
-			static int iIndex = 0;
-			iIndex++;
-			if (iIndex >= 6)
-				iIndex = 0;
-
-			Set_SkillHUD(iIndex);
-		}
-
-		if (KEY(NUM1, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_SkillHUD(6);
-		}
-		else if (KEY(NUM2, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_SkillHUD(7);
-		}
-		else if (KEY(NUM3, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_SkillHUD(8);
-		}
-		else if (KEY(NUM4, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_SkillHUD(9);
-		}
-	}
-	else
-	{
-		if (KEY(NUM1, TAP))
-		{
-			m_bIsHero = false;
-
-			Set_SkillHUD(m_iPrvSkill);
-		}
-	}*/
-
 	Enable_Outline();
 }
 
 void CUI_Skill::Set_ShaderResources_HeroKeySkill(CShader* pShader, const char* pConstName)
 {
-	for (int i = 0; i < 4; ++i)
-	{
-		_float4 vColor = m_arrSkillUI[i][HeroKey]->Get_Color();
-		pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
-	}
+	_float4 vColor = m_arrSkillUI[0][HeroKey]->Get_Color();
+	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
 }
 
 void CUI_Skill::Set_SkillHUD(_uint iIndex)
@@ -391,6 +341,7 @@ void CUI_Skill::Ready_SkillHUD()
 	{
 		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
 		DELETE_GAMEOBJECT(m_Prototypes[i]);
+		m_Prototypes[i] = nullptr;
 	}
 
 	// 사용할 클론 생성 후 비활성화

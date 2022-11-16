@@ -79,54 +79,7 @@ void CUI_Portrait::Set_HeroPort(HeroPortAnimType eState)
 
 void CUI_Portrait::My_Tick()
 {
-	__super::My_Tick();
-
-	/*if (!m_bIsHero)
-	{
-		if (KEY(T, TAP))
-		{
-			static int iIndex = 0;
-			iIndex++;
-			if (iIndex >= 6)
-				iIndex = 0;
-
-			Set_Portrait(iIndex);
-		}
-
-		if (KEY(NUM1, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_Portrait(6);
-		}
-		else if (KEY(NUM2, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_Portrait(7);
-		}
-		else if (KEY(NUM3, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_Portrait(8);
-		}
-		else if (KEY(NUM4, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_Portrait(9);
-		}
-	}
-	else
-	{
-		if (KEY(NUM1, TAP))
-		{
-			m_bIsHero = false;
-
-			Set_Portrait(m_iPrvPort);
-		}
-	}*/
+	__super::My_Tick();	
 
 	_float fEffectSpeed = fDT(0) * 5.f;
 	m_fEffectValue -= fEffectSpeed;
@@ -146,7 +99,6 @@ void CUI_Portrait::My_Tick()
 					for (int i = 0; i < Type_End; ++i)
 					{
 						ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][i]);
-						// ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][Effect]);
 
 						if (i == Key)
 						{

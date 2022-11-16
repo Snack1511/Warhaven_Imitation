@@ -30,7 +30,6 @@ public:
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 	CUI_Object* m_arrSkillUI[4][Type_End] = {};
-	CUI_Object* m_pHeroKeySkill = nullptr;
 
 	_bool m_bAbleOutline = false;
 
