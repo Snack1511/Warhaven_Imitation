@@ -73,7 +73,10 @@ void CButton::Late_Tick()
 {
 	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
 
-	if (m_bIsInMouse)
+	m_bPrvState = m_bCurState;
+	m_bCurState = m_bIsInMouse;
+
+	if (m_bCurState == true)
 	{
 		m_pOwnerUI->CallBack_MouseIn(0);
 
@@ -84,7 +87,10 @@ void CButton::Late_Tick()
 	}
 	else
 	{
-		// m_pOwnerUI->CallBack_MouseExit(0);
+		if(m_bPrvState == true);
+		{
+			m_pOwnerUI->CallBack_MouseExit(0);
+		}
 	}
 }
 

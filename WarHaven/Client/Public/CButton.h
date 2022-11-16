@@ -61,6 +61,8 @@ private:
 	POINT m_ptMouse;
 
 	_bool m_bIsInMouse = false;
+	_bool m_bCurState = false;
+	_bool m_bPrvState = false;
 
 private:
 	virtual void Release() override;
