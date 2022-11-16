@@ -34,7 +34,6 @@ HRESULT CUI_Object::Initialize_Prototype()
 {
 	CButton* pButton = CButton::Create(0);
 	Add_Component<CButton>(pButton);
-	DISABLE_COMPONENT(pButton);
 
 	__super::Initialize_Prototype();
 

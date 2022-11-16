@@ -75,18 +75,16 @@ void CButton::Late_Tick()
 
 	if (m_bIsInMouse)
 	{
-		if (1)
-		{
-			m_pOwnerUI->CallBack_MouseIn(0);
-		}
-		else if (1)
-		{
-			m_pOwnerUI->CallBack_MouseExit(0);
-		}
-		else
+		m_pOwnerUI->CallBack_MouseIn(0);
+
+		if (KEY(LBUTTON, TAP))
 		{
 			m_pOwnerUI->CallBack_ButtonClick(0);
 		}
+	}
+	else
+	{
+		// m_pOwnerUI->CallBack_MouseExit(0);
 	}
 }
 
@@ -107,16 +105,4 @@ void CButton::Set_Rect()
 	int iBottom = int(vUIPos.y + vScale.y * 0.5f);
 
 	SetRect(&m_tRect, iLeft, iTop, iRight, iBottom);
-
-	wcout << m_pOwnerUI->Get_Name() << endl;
-
-	cout << "위치 : " << vUIPos.x << ", " << vUIPos.y << endl;
-	cout << "크기 : " << vScale.x << ", " << vScale.y << endl;
-
-	cout << "렉트 : " << m_tRect.left << ", ";
-	cout << m_tRect.top << ", ";
-	cout << m_tRect.right << ", ";
-	cout << m_tRect.bottom << endl;
-
-	cout << endl;
 }

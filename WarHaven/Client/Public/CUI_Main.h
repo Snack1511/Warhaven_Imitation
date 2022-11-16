@@ -32,7 +32,6 @@ private:
 
 private:
 	void Enable_MainUI();
-
 	void Enable_MainWindow();
 };
 

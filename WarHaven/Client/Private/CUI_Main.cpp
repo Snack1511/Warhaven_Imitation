@@ -63,8 +63,6 @@ HRESULT CUI_Main::Start()
 	for (int i = 0; i < 3; ++i)
 	{
 		m_pTopBtn[i]->CallBack_MouseIn += bind(&CUI_Main::On_MouseInEvent, this, placeholders::_1);
-
-		ENABLE_COMPONENT(GET_COMPONENT_FROM(m_pTopBtn[i], CButton));
 	}
 
 	__super::Start();
@@ -74,7 +72,6 @@ HRESULT CUI_Main::Start()
 
 void CUI_Main::On_MouseInEvent(const _uint& iEventNum)
 {
-	Call_MsgBox(TEXT("클릭 테스트"));
 }
 
 void CUI_Main::On_MouseExitEvent(const _uint& iEventNum)
