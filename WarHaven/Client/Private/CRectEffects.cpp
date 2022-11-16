@@ -109,7 +109,7 @@ CRectEffects* CRectEffects::Create(ifstream* pReadFile)
 
 	if (FAILED(pInstance->SetUp_RectEffects(pReadFile)))
 	{
-		Call_MsgBox(L"Failed to Initialize_Prototype : CRectEffects");
+		Call_MsgBox(L"Failed to SetUp_RectEffects : CRectEffects");
 		SAFE_DELETE(pInstance);
 	}
 
@@ -122,7 +122,7 @@ CRectEffects* CRectEffects::Create_Anim(ifstream* pReadFile)
 
 	if (FAILED(pInstance->SetUp_RectEffects_Anim(pReadFile)))
 	{
-		Call_MsgBox(L"Failed to Initialize_Prototype : CRectEffects");
+		Call_MsgBox(L"Failed to SetUp_RectEffects_Anim : CRectEffects");
 		SAFE_DELETE(pInstance);
 	}
 

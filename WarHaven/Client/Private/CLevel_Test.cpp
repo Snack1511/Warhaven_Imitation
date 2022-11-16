@@ -238,11 +238,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// 테스트할 객체 띄우기
 
-	/*if (FAILED(SetUp_Warrior_TH()))
-		return E_FAIL;*/
-
-	if (FAILED(SetUp_SpearMan_TH()))
+	if (FAILED(SetUp_Warrior_TH()))
 		return E_FAIL;
+
+	/*if (FAILED(SetUp_SpearMan_TH()))
+		return E_FAIL;*/
 
 
 	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
