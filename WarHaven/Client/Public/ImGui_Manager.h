@@ -41,6 +41,8 @@ public:
 private:
 	CImGui_Window* m_arrWindows[IMGUI_END];
 
+	_bool m_bIsInit = false;
+
 private:
 	void Release();
 };

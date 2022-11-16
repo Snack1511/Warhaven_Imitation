@@ -42,6 +42,13 @@ void CImGui_Manager::Turn_Window(IMGUI_WINDOW_TYPE eType)
 
 HRESULT CImGui_Manager::Initialize()
 {
+	if (m_bIsInit)
+	{
+		return S_OK;
+	}
+
+	m_bIsInit = true;
+
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -56,7 +63,6 @@ HRESULT CImGui_Manager::Initialize()
 	// Setup Platform/Renderer backends
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(DEVICE, DEVICE_CONTEXT);
-
 
 #pragma region 윈도우 등록
 	m_arrWindows[IMGUI_DEFAULT] = CWindow_Default::Create();

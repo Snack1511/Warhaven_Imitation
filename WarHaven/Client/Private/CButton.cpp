@@ -87,46 +87,49 @@ void CButton::Tick()
 
 void CButton::Late_Tick()
 {
-	m_bPrvState = m_bCurState;
-	m_bCurState = m_bIsInMouse;
-
-	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
-
-	if (m_bIsInMouse)
+	if (m_pOwnerUI->Get_MouseTarget())
 	{
-		m_pMouse->Set_Mouse(CUI_Cursor::Over);
+		m_bPrvState = m_bCurState;
+		m_bCurState = m_bIsInMouse;
 
-		if (!m_bPrvState)
+		m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
+
+		if (m_bIsInMouse)
 		{
-			m_pOwnerUI->CallBack_PointEnter(0);
+			m_pMouse->Set_Mouse(CUI_Cursor::Over);
+
+			if (!m_bPrvState)
+			{
+				m_pOwnerUI->CallBack_PointEnter(0);
+			}
+			else
+			{
+				m_pOwnerUI->CallBack_PointStay(0);
+
+				if (KEY(LBUTTON, TAP))
+				{
+					m_pOwnerUI->CallBack_PointDown(0);
+				}
+				else if (KEY(LBUTTON, HOLD))
+				{
+					m_pMouse->Set_Mouse(CUI_Cursor::Down);
+
+					m_pOwnerUI->CallBack_PointPress(0);
+				}
+				else if (KEY(LBUTTON, AWAY))
+				{
+					m_pOwnerUI->CallBack_PointUp(0);
+				}
+			}
 		}
 		else
 		{
-			m_pOwnerUI->CallBack_PointStay(0);
-
-			if (KEY(LBUTTON, TAP))
+			if (m_bPrvState)
 			{
-				m_pOwnerUI->CallBack_PointDown(0);
-			}
-			else if (KEY(LBUTTON, HOLD))
-			{
-				m_pMouse->Set_Mouse(CUI_Cursor::Down);
-
-				m_pOwnerUI->CallBack_PointPress(0);
-			}
-			else if (KEY(LBUTTON, AWAY))
-			{
-				m_pOwnerUI->CallBack_PointUp(0);
+				m_pOwnerUI->CallBack_PointExit(0);
 			}
 		}
-	}
-	else
-	{
-		if (m_bPrvState)
-		{
-			m_pOwnerUI->CallBack_PointExit(0);
-		}
-	}
+	}	
 }
 
 void CButton::Release()

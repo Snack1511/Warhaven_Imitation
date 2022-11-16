@@ -15,9 +15,14 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	virtual void On_PointUpEvent(const _uint& iEventNum);
+	virtual void On_PointUpEvent_Start(const _uint& iEventNum);
+	virtual void On_PointUpEvent_Mode(const _uint& iEventNum);
 
 private:
-	CUI_Object* m_pStartBtn = nullptr;
+	CUI_Object* m_pPlayBtnUI[2];
+
+private:
+	void Set_StartBtn();
+	void Set_ModeBtn();
 };
 

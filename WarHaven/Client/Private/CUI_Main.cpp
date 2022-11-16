@@ -90,7 +90,7 @@ void CUI_Main::Enable_MainUI()
 
 		GET_COMPONENT_FROM(m_pKeyUI[i], CTexture)->Set_CurTextureIndex(i);
 
-		_float fPosX = -580.f + (i * 360.f);
+		_float fPosX = -600.f + (i * 360.f);
 		m_pKeyUI[i]->Set_PosX(fPosX);
 	}
 }
