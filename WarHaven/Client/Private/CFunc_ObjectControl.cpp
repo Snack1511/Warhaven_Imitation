@@ -53,6 +53,10 @@ void CFunc_ObjectControl::Func_Grouping()
         {
             Delete_MeshGroup(szMeshGroupNameBuf);
         }
+        if (ImGui::Checkbox("GroupControl", &m_bGroupControl))
+        {
+
+        }
     }
     ImGui::Spacing();
 }
@@ -149,6 +153,64 @@ void CFunc_ObjectControl::Func_ObjectList()
     ImGui::Spacing();
 }
 
+void CFunc_ObjectControl::Func_GroupControl()
+{
+    string strPickInfo = "";
+    if (!m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_GROUP))
+    {
+        strPickInfo = "Use_Picking";
+    }
+    else
+    {
+        strPickInfo = "Unuse_Picking";
+    }
+    if (ImGui::Button(strPickInfo.c_str()))
+    {
+        if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_GROUP))
+        {
+            m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_NONE);
+        }
+        else
+        {
+            m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_GROUP);
+        }
+    }
+    ImGui::Spacing();
+
+
+    switch (m_eControlType)
+    {
+    case CONTROL_SCALING:
+        ImGui::Text("MODE : SCALING");
+        break;
+    case CONTROL_ROTATE:
+        ImGui::Text("MODE : ROTATE");
+        break;
+    case CONTROL_MOVE:
+        ImGui::Text("MODE : MOVE");
+        break;
+    }
+    ImGui::Spacing();
+
+    if (ImGui::Button("Confirm"))
+    {
+        m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_NONE);
+        Confirm_Group();
+    }
+
+    if (ImGui::CollapsingHeader("Group Matrix(Read-Only)", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        Show_GroupMatrix();
+    }
+    ImGui::Spacing();
+
+    if (ImGui::CollapsingHeader("Group Speed", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        Set_ObjectSpeed();
+    }
+    ImGui::Spacing();
+}
+
 void CFunc_ObjectControl::Func_ObjectControl()
 {
     string strPickInfo = "";
@@ -225,14 +287,24 @@ void CFunc_ObjectControl::Func_ObjectControl()
 
 void CFunc_ObjectControl::Func_Picking()
 {
-    Place_Object();
-    Change_Object_UpDir();
+    if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_OBJECT))
+    {
+        Place_Object();
+        Change_Object_UpDir();
+    }
+    else if(m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_GROUP))
+    {
+        Place_Group();
+    }
 }
 
 void CFunc_ObjectControl::Tick_Function()
 {
     Select_DataControlFlag();
-    Control_Object();
+    if (m_bGroupControl)
+        Control_Group();
+    else
+        Control_Object();
     Update_Data();
 }
 
@@ -241,6 +313,12 @@ _bool CFunc_ObjectControl::Is_CurSelectObject()
     if (nullptr == m_pCurSelectGameObject)
         return false;
     return true;
+}
+
+void CFunc_ObjectControl::Confirm_Group()
+{
+    m_pObjGroup = nullptr;
+    m_pDataGroup = nullptr;
 }
 
 void CFunc_ObjectControl::SetUp_CurSelectObject()
@@ -279,6 +357,23 @@ void CFunc_ObjectControl::SetUp_CurSelectObject()
     else
     {
         m_pObjTransform = nullptr;
+    }
+}
+
+void CFunc_ObjectControl::Show_GroupMatrix()
+{
+    if (nullptr == m_pCurSelectData)
+        return;
+    else
+    {
+        _float* pRight = (_float*)(&m_matGroup._11);
+        _float* pUp = (_float*)(&m_matGroup._21);
+        _float* pLook = (_float*)(&m_matGroup._31);
+        _float* pPosition = (_float*)(&m_matGroup._41);
+        ImGui::InputFloat4("##GroupRight", pRight, "%.2f", ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputFloat4("##GroupUp", pUp, "%.2f", ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputFloat4("##GroupLook", pLook, "%.2f", ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputFloat4("##GroupPosition", pPosition, "%.2f", ImGuiInputTextFlags_ReadOnly);
     }
 }
 
@@ -699,13 +794,29 @@ void CFunc_ObjectControl::Set_ObjectSpeed()
 {
     ImGui::Text("Scale : ");
     ImGui::SameLine();
-    ImGui::SliderFloat("##Scaling Speed", &m_fTickPerScalingSpeed, 0.1f, 10.f, "%.1f");
+    ImGui::SliderFloat("##Group Scaling Speed", &m_fTickPerGroupScalingSpeed, 0.1f, 10.f, "%.1f");
     ImGui::Text("Rotate : ");
     ImGui::SameLine();
-    ImGui::SliderFloat("##Rotate Speed", &m_fTickPerRotSpeed, 0.1f, 90.f, "%.1f");
+    ImGui::SliderFloat("##Group Rotate Speed", &m_fTickPerGroupRotSpeed, 0.1f, 90.f, "%.1f");
     ImGui::Text("Move : ");
     ImGui::SameLine();
-    ImGui::SliderFloat("##Move Speed", &m_fTickPerMoveSpeed, 0.1f, 50.f, "%.1f");
+    ImGui::SliderFloat("##Group Move Speed", &m_fTickPerGroupMoveSpeed, 0.1f, 50.f, "%.1f");
+}
+
+void CFunc_ObjectControl::Control_Group()
+{
+    switch (m_eControlType)
+    {
+    case CONTROL_SCALING:
+        Scaling_Group();
+        break;
+    case CONTROL_ROTATE:
+        Rotate_Group();
+        break;
+    case CONTROL_MOVE:
+        Position_Group();
+        break;
+    }
 }
 
 void CFunc_ObjectControl::Select_DataControlFlag()
@@ -738,6 +849,132 @@ void CFunc_ObjectControl::Control_Object()
         Position_Object();
         break;
     }
+}
+
+void CFunc_ObjectControl::Scaling_Group()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+    _float XScale = XMVectorGetX(XMVector3Length(m_matGroup.XMLoad().r[0]));
+    _float YScale = XMVectorGetX(XMVector3Length(m_matGroup.XMLoad().r[1]));
+    _float ZScale = XMVectorGetX(XMVector3Length(m_matGroup.XMLoad().r[2]));
+    _float4 ScaleValue = _float4(XScale, YScale, ZScale, 0.f);
+    //RightDir
+    if (KEY(INSERTKEY, HOLD))
+    {
+        ScaleValue.x += m_fTickPerGroupScalingSpeed * fDT(0);
+    }
+    if (KEY(DELETEKEY, HOLD))
+    {
+        ScaleValue.x -= m_fTickPerGroupScalingSpeed * fDT(0);
+    }
+
+    //UpDir
+    if (KEY(HOMEKEY, HOLD))
+    {
+        ScaleValue.y += m_fTickPerGroupScalingSpeed * fDT(0);
+    }
+    if (KEY(ENDKEY, HOLD))
+    {
+        ScaleValue.y -= m_fTickPerGroupScalingSpeed * fDT(0);
+    }
+
+    //LookDir
+    if (KEY(PAGEUP, HOLD))
+    {
+        ScaleValue.z += m_fTickPerGroupScalingSpeed * fDT(0);
+    }
+    if (KEY(PAGEDOWN, HOLD))
+    {
+        ScaleValue.z -= m_fTickPerGroupScalingSpeed * fDT(0);
+    }
+    m_matGroup.XMLoad().r[0] = XMVector3Normalize(m_matGroup.XMLoad().r[0]) * ScaleValue.x;
+    m_matGroup.XMLoad().r[1] = XMVector3Normalize(m_matGroup.XMLoad().r[1]) * ScaleValue.y;
+    m_matGroup.XMLoad().r[2] = XMVector3Normalize(m_matGroup.XMLoad().r[2]) * ScaleValue.z;
+}
+
+void CFunc_ObjectControl::Rotate_Group()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+    //RightAxis
+    _float4 Right = m_matGroup.XMLoad().r[0];
+    if (KEY(HOMEKEY, HOLD))
+    {
+        CUtility_Transform::Turn_ByAngle(m_matGroup, Right, m_fTickPerGroupRotSpeed * fDT(0));
+    }
+    if (KEY(ENDKEY, HOLD))
+    {
+        CUtility_Transform::Turn_ByAngle(m_matGroup, Right, -m_fTickPerGroupRotSpeed * fDT(0));
+    }
+
+    //UpAxis    
+    _float4 Up = m_matGroup.XMLoad().r[1];
+    if (KEY(DELETEKEY, HOLD))
+    {
+        CUtility_Transform::Turn_ByAngle(m_matGroup, Up, -m_fTickPerGroupRotSpeed * fDT(0));
+    }
+    if (KEY(PAGEDOWN, HOLD))
+    {
+        CUtility_Transform::Turn_ByAngle(m_matGroup, Up, m_fTickPerGroupRotSpeed * fDT(0));
+    }
+
+    //LookAxis
+    _float4 Look = m_matGroup.XMLoad().r[2];
+    if (KEY(INSERTKEY, HOLD))
+    {
+        CUtility_Transform::Turn_ByAngle(m_matGroup, Look, -m_fTickPerGroupRotSpeed * fDT(0));
+    }
+    if (KEY(PAGEUP, HOLD))
+    {
+        CUtility_Transform::Turn_ByAngle(m_matGroup, Look, m_fTickPerGroupRotSpeed * fDT(0));
+    }
+}
+
+void CFunc_ObjectControl::Position_Group()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+    _float4 PosValue = m_matGroup.XMLoad().r[3];
+    //RightDir
+    if (KEY(INSERTKEY, HOLD))
+    {
+        PosValue.x += m_fTickPerGroupMoveSpeed * fDT(0);
+    }
+    if (KEY(DELETEKEY, HOLD))
+    {
+        PosValue.x -= m_fTickPerGroupMoveSpeed * fDT(0);
+    }
+
+    //UpDir
+    if (KEY(HOMEKEY, HOLD))
+    {
+        PosValue.y -= m_fTickPerGroupMoveSpeed * fDT(0);
+    }
+    if (KEY(ENDKEY, HOLD))
+    {
+        PosValue.y += m_fTickPerGroupMoveSpeed * fDT(0);
+    }
+
+    //LookDir
+    if (KEY(PAGEUP, HOLD))
+    {
+        PosValue.z += m_fTickPerGroupMoveSpeed * fDT(0);
+    }
+    if (KEY(PAGEDOWN, HOLD))
+    {
+        PosValue.z -= m_fTickPerGroupMoveSpeed * fDT(0);
+    }
+
+    m_matGroup.XMLoad().r[3] = PosValue.XMLoad();
+}
+
+void CFunc_ObjectControl::Place_Group()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+    _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
+    m_matGroup.XMLoad().r[3] = OutPos.XMLoad();
 }
 
 void CFunc_ObjectControl::Scaling_Object()
@@ -909,6 +1146,16 @@ void CFunc_ObjectControl::Update_Data()
     {
         Func_DeleteOBject();
     }
+
+    if (m_bGroupControl)
+    {
+        Update_Group();
+    }
+}
+
+void CFunc_ObjectControl::Update_Group()
+{
+
 }
 
 void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)

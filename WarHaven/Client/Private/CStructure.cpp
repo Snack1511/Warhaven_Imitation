@@ -175,11 +175,13 @@ void CStructure::OnDisable()
 
 HRESULT CStructure::SetUp_Model(wstring strModelPath)
 {
-	_float4x4 TransformMatrix = 
-		XMMatrixScaling(0.005f, 0.005f, 0.005f)
-		* XMMatrixRotationY(XMConvertToRadians(270.0f));
+	//_float4x4 TransformMatrix = 
+	//	XMMatrixScaling(0.00f, 0.005f, 0.005f)
+	//	* XMMatrixRotationY(XMConvertToRadians(270.0f));
 	m_DebugPath = strModelPath;
-	CModel* pModel = CModel::Create(0, TYPE_NONANIM, strModelPath, TransformMatrix);
+	//DEFAULT_TRANS_MATRIX
+	//DEFAULT_ST
+	CModel* pModel = CModel::Create(0, TYPE_NONANIM, strModelPath, DEFAULT_MODEL_MATRIX);
 
 	Add_Component(pModel);
 	return S_OK;

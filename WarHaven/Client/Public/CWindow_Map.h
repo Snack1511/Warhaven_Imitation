@@ -21,7 +21,7 @@ class CWindow_Map final
 public:
 	enum TUPLEDATA { Tuple_CharPtr, Tuple_Bool, Tuple_Index };
 //	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
-	enum PICKINGTYPE {PICK_OBJECT, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_INSTANCEOBJECT, PICK_NONE};
+	enum PICKINGTYPE {PICK_GROUP, PICK_OBJECT, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_INSTANCEOBJECT, PICK_NONE};
 	enum CAMERATYPE {CAM_RIGHT, CAM_UP, CAM_LOOK, CAM_FREE};
 	enum PICKOUTTYPE {PICK_OUTPOS, PICK_OUTNORM};
 	struct MAPDATA
@@ -246,7 +246,9 @@ private:
 
 	void Edit_TerrainVert();
 	void Edit_TerrainTex();
+	void Edit_TerrainData();
 	void Add_Brush(const char* BrushName);
+
 	list<_uint> Select_Vertices();
 	_bool Check_InBrush(_float3* CompVert);
 	_float3 Easing_Vertices(_float3* pArrVertPos);

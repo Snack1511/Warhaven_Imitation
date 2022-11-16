@@ -1799,6 +1799,11 @@ void CWindow_Map::Func_TerrainControl()
         Edit_TerrainTex();
         break;
     }
+    if (ImGui::CollapsingHeader("Terrain PositionControl"))
+    {
+        
+        Edit_TerrainData();
+    }
         
 
 }
@@ -1963,6 +1968,20 @@ void CWindow_Map::Edit_TerrainTex()
         DebugData("Debug_Sour", strBGDebug, ImVec4(1.f, 0.f, 0.f, 1.f));
         DebugData("Debug_Sour", strSourDebug, ImVec4(0.f, 1.f, 0.f, 1.f));
         DebugData("Debug_Dest", strDestDebug, ImVec4(0.f, 0.f, 1.f, 1.f));
+    }
+
+}
+static float terrainPos[3] = {0};
+void CWindow_Map::Edit_TerrainData()
+{
+    ImGui::Text("Terrain Position");
+    if (ImGui::InputFloat3("##PosInput", terrainPos))
+    {
+        if (nullptr != m_pCurTerrain)
+        {
+            _float4 vPosition = _float4(terrainPos[0], terrainPos[1], terrainPos[2], 1);
+            m_pCurTerrain->Get_Transform()->Set_World(WORLD_POS, vPosition);
+        }
     }
 
 }
