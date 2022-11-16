@@ -29,6 +29,7 @@ public:
 	Terrain_TUPLE Get_TerrainData();
 	void Update_Vertices();
 	void Update_Normal();
+	void Update_Texture(_int Sour, _int Dest, _int BG);
 	list<tuple<string, _int>>& Get_TextureList() { return m_TextureIndex; }
 protected:
 	virtual HRESULT	SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ);
@@ -43,6 +44,9 @@ private:
 	_float3* m_pTerrainVertPos = nullptr;
 	_float4* m_pTerrainColor = nullptr;
 	list<tuple<string, _int>> m_TextureIndex;
+	_int m_iBGIndex = 0;
+	_int m_iSourIndex = 0;
+	_int m_iDestIndex = 0;
 };
 
 END

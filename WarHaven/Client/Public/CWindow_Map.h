@@ -14,16 +14,16 @@ BEGIN(Client)
 
 class CTerrain;
 class CDrawable_Terrain;
-
+class CFunc_ObjectControl;
 class CWindow_Map final
 	: public CImGui_Window
 {
 public:
 	enum TUPLEDATA { Tuple_CharPtr, Tuple_Bool, Tuple_Index };
-	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
+//	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
 	enum PICKINGTYPE {PICK_OBJECT, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_INSTANCEOBJECT, PICK_NONE};
 	enum CAMERATYPE {CAM_RIGHT, CAM_UP, CAM_LOOK, CAM_FREE};
-
+	enum PICKOUTTYPE {PICK_OUTPOS, PICK_OUTNORM};
 	struct MAPDATA
 	{
 		wstring TerrainDataPath;
@@ -98,18 +98,21 @@ public:
 		void Load(ifstream& readFile);
 	}MTINSTANCE_DATA;
 
-	typedef struct tagMapToolObjectData
-	{
-		wstring strMeshName;
-		//wstring strGroupName;
-		wstring strMeshPath;
-		_float4x4 ObjectStateMatrix;
-		_float4 vScale;
-		_byte byteLightFlag;
+	typedef tuple<_float4, _float4> PICKDATA;
+	typedef vector<tuple<char*, bool>> DataComboArr;
 
-	public:
-		void Initialize();
-	}MTO_DATA;
+	//typedef struct tagMapToolObjectData
+	//{
+	//	wstring strMeshName;
+	//	//wstring strGroupName;
+	//	wstring strMeshPath;
+	//	_float4x4 ObjectStateMatrix;
+	//	_float4 vScale;
+	//	_byte byteLightFlag;
+
+	//public:
+	//	void Initialize();
+	//}MTO_DATA;
 
 	const char* ArrObjectGroup[GROUP_END] =
 	{
@@ -135,17 +138,24 @@ public:
 	virtual HRESULT Initialize() override;
 	virtual void Tick() override;
 	virtual HRESULT Render() override;
+public:
+	void Change_CurPickMode(PICKINGTYPE eType);
+	_bool Is_CurPickMode(PICKINGTYPE eType);
+	PICKDATA Get_PickData();
 protected:
 
 protected:
 
 private:
-	typedef vector<tuple<char*, bool>> DataComboArr;
+	typedef struct tagMapToolObjectData MTO_DATA;
+
 	typedef tuple<char*, bool> SelectComboData;
-	typedef vector<CGameObject*> OBJVECTOR;
-	typedef vector<MTO_DATA> DATAVECTOR;
-	typedef map<size_t, vector<CGameObject*>> OBJGROUPING;
-	typedef map<size_t, vector<MTO_DATA>> DATAGROUPING;
+	//typedef vector<CGameObject*> OBJVECTOR;
+	//typedef vector<MTO_DATA> DATAVECTOR;
+	//typedef map<size_t, vector<CGameObject*>> OBJGROUPING;
+	//typedef map<size_t, vector<MTO_DATA>> DATAGROUPING;
+private:
+	HRESULT Functions_Maptool();
 #pragma region Private 파일컨트롤
 private:
 	void Func_FileControl();
@@ -156,34 +166,34 @@ private:
 	void SetUp_FilePath(string& strFilePath, char* szData, string strExt = "");
 	void SetUp_CurPickingGroup();
 
-	void Add_MeshGroup(char* pMeshGroupName);
-	void Delete_MeshGroup(char* pMeshGroupName);
+	//void Add_MeshGroup(char* pMeshGroupName);
+	//void Delete_MeshGroup(char* pMeshGroupName);
 
-	void Add_Object(string MeshGroup, string Meshpath, string MeshName);
-	void Add_Object(string MeshGroup, MTO_DATA& tData);
-	void Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<MTO_DATA>& DataList);
+	//void Add_Object(string MeshGroup, string Meshpath, string MeshName);
+	//void Add_Object(string MeshGroup, MTO_DATA& tData);
+	//void Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<MTO_DATA>& DataList);
 
-	void Clear_MeshGroup(char* pMeshGroupName);
+	//void Clear_MeshGroup(char* pMeshGroupName);
 #pragma endregion
 
 #pragma region Private 데이타컨트롤
-private:
-	void Func_DataControl();
-	void SetUp_CurSelectObject();
-	void Confirm_Data();
-	void Show_ObjectData();
-	void Set_ObjectSpeed();
-
-	void Select_DataControlFlag();
-	void Control_Object();
-
-	void Scaling_Object();
-	void Rotate_Object();
-	void Position_Object();
-	void Place_Object();
-	void Change_Object_UpDir();
-
-	void Update_Data();
+//private:
+//	void Func_DataControl();
+//	void SetUp_CurSelectObject();
+//	void Confirm_Data();
+//	void Show_ObjectData();
+//	void Set_ObjectSpeed();
+//
+//	void Select_DataControlFlag();
+//	void Control_Object();
+//
+//	void Scaling_Object();
+//	void Rotate_Object();
+//	void Position_Object();
+//	void Place_Object();
+//	void Change_Object_UpDir();
+//
+//	void Update_Data();
 #pragma endregion
 
 #pragma region Private 라이트컨트롤
@@ -208,8 +218,8 @@ private:
 	void Save_TerrainData(string BasePath, string SaveName);
 	void Load_TerrainData(string FilePath);
 
-	void Save_ObjectGroup(string BasePath, string SaveName);
-	void Load_ObjectGroup(string FilePath);
+	//void Save_ObjectGroup(string BasePath, string SaveName);
+	//void Load_ObjectGroup(string FilePath);
 
 	void Save_InstanceData(string BasePath, string SaveName);
 	void Save_SpliteData(string BasePath, string SaveName);
@@ -259,13 +269,14 @@ private:
 	void		Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Map&)> func);
 	_bool		Make_Combo(const char* szLabel, vector<tuple<char*, bool>>& szDataArr, int* pCurIndex, function<void()> SelectFunction);
 	void		Clear_TupleData(vector<tuple<char*, bool>>& ArrData);
+public:
 	void		DebugData(const char* szTitleName, string& strData, ImVec4 Color = ImVec4(1.f, 1.f, 1.f, 1.f));
-	list<string>Read_Folder_ToStringList(const char* pFolderPath);
-	void		Read_Folder_ForTree(const char* pFolderPath, TREE_DATA& tRootTree);
-	void		Show_TreeData(TREE_DATA& tTree, function<void(TREE_DATA&)> SelectFunction);
 	string		CutOut_Ext(string& Origin, string& Ext);
-	void		Routine_MeshSelect(TREE_DATA& tTreeNode);
-	void		Routine_InstanceMeshSelect(TREE_DATA& tTreeNode);
+	void		Show_TreeData(void* tTree, function<void(void*)> SelectFunction);
+	void		Read_Folder_ForTree(const char* pFolderPath, TREE_DATA& tRootTree);
+private:
+	list<string>Read_Folder_ToStringList(const char* pFolderPath);
+	void		Routine_InstanceMeshSelect(void* tTreeNode);
 
 	HRESULT		SetUp_Cameras();
 	void		Select_Camera();
@@ -282,14 +293,14 @@ private:
 	string m_strPath = string("");
 
 	_int m_SelectObjectGroupIDIndex = 0;
-	_int m_SelectMeshGroupIndex = 0;
-	string m_strCurSelectObjectName = "Test....";
-	_int m_iCurSelectObjectIndex = 0;
+//	_int m_SelectMeshGroupIndex = 0;
+	//string m_strCurSelectObjectName = "Test....";
+//	_int m_iCurSelectObjectIndex = 0;
 	vector<tuple<char*, bool>> m_arrObjectGroupId;
-	vector<tuple<char*, bool>> m_arrMeshGroupName;
-	map<size_t, vector<CGameObject*>> m_ObjectGroupMap;
-	map<size_t, vector<MTO_DATA>> m_ObjectDataGroupMap;
-	map<size_t, _int> m_ObjNameCallStack;
+	//vector<tuple<char*, bool>> m_arrMeshGroupName;
+	//map<size_t, vector<CGameObject*>> m_ObjectGroupMap;
+//	map<size_t, vector<MTO_DATA>> m_ObjectDataGroupMap;
+	//map<size_t, _int> m_ObjNameCallStack;
 #pragma endregion
 
 #pragma region Value 터레인컨트롤
@@ -301,8 +312,9 @@ private:
 	vector<tuple<char*, bool>> m_arrTileTextureName;
 	_int m_iCurSelectTerrainBrush = 0;
 	_uint3 m_i3PickedIndex = _uint3(0, 0, 0);
-	_float4 m_OutPos = _float4(0.f, 0.f, 0.f, 1.f);
-	_float4 m_OutNorm = _float4(0.f, 0.f, 0.f, 0.f);
+	PICKDATA m_OutDatas;
+	//_float4 m_OutPos = _float4(0.f, 0.f, 0.f, 1.f);
+	//_float4 m_OutNorm = _float4(0.f, 0.f, 0.f, 0.f);
 	_float m_fBrushSize = 1.f;
 	_float m_fBrushWeight = 1.f;
 
@@ -327,15 +339,15 @@ private:
 	_int m_iCurSelectInstanceNameIndex = 0;
 	_int m_iCurSelectInstanceObjectIndex = 0;
 #pragma region Value 오브젝트 컨트롤
-private:
-	CGameObject* m_pCurSelectGameObject = nullptr;
-	CTransform* m_pObjTransform = nullptr;
-	MTO_DATA* m_pCurSelectData = nullptr;
-	CONTROLTYPE m_eControlType = CONTROL_MOVE;
-
-	_float m_fTickPerScalingSpeed = 1.f;
-	_float m_fTickPerRotSpeed = 1.f;
-	_float m_fTickPerMoveSpeed = 1.f;
+//private:
+//	CGameObject* m_pCurSelectGameObject = nullptr;
+//	CTransform* m_pObjTransform = nullptr;
+//	MTO_DATA* m_pCurSelectData = nullptr;
+//	CONTROLTYPE m_eControlType = CONTROL_MOVE;
+//
+//	_float m_fTickPerScalingSpeed = 1.f;
+//	_float m_fTickPerRotSpeed = 1.f;
+//	_float m_fTickPerMoveSpeed = 1.f;
 #pragma endregion
 
 #pragma region Value 라이트컨트롤
@@ -343,13 +355,12 @@ private:
 	vector<tuple<char*, bool>> m_arrLightGroupCombo;
 	vector<tuple<char*, bool>> m_arrLightTypeCombo;
 #pragma endregion
-
+	public:
+		TREE_DATA* Get_MeshRoot() {
+			return &m_MeshRootNode;
+		}
 #pragma region 기타 필요변수
 	TREE_DATA			m_MeshRootNode;
-	string				m_CurSelectedMeshFilePath = string("");
-	string				m_CurSelectedMeshName = string("");
-	vector<string>		m_vecSelectedMeshFilePath;
-	vector<string>		m_vecSelectedMeshName;
 
 	list<CGameObject*>* m_pCurObjectList = nullptr;
 
@@ -358,12 +369,17 @@ private:
 
 	PICKINGTYPE m_ePickingType = PICK_NONE;
 
+	string m_curSelectBGTextureName;
 	string m_curSelectSourTextureName;
 	string m_curSelectDestTextureName;
 	_int m_iSourIndex = 0;
 	_int m_iDestIndex = 0;
+	_int m_iBGIndex = 0;
 
 	vector<tuple<wstring, CCamera*, _float4>> m_ArrCams;
+
+private:
+	CFunc_ObjectControl* m_pObjectController = nullptr;
 #pragma endregion
 
 

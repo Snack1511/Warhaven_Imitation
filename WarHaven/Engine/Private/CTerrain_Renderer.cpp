@@ -17,7 +17,7 @@ CTerrain_Renderer::CTerrain_Renderer(_uint iGroupID)
 
 CTerrain_Renderer::~CTerrain_Renderer()
 {
-	Safe_Delete_Array(m_pArrSRVs);
+
 }
 
 CTerrain_Renderer* CTerrain_Renderer::Create(_uint iGroupID, const RENDER_GROUP& eRenderGroup, const _uint& iCurPass, const _float4& vOffsetPos)
@@ -40,20 +40,20 @@ CTerrain_Renderer* CTerrain_Renderer::Create(_uint iGroupID, const RENDER_GROUP&
 
 HRESULT CTerrain_Renderer::Render()
 {
-	if (nullptr == m_pArrSRVs || m_TextureNums < m_pTextureList.size())
+	m_TextureNums = m_SRVList.size();
+	if (nullptr == m_pArrSRVs)
 	{
-		m_TextureNums = _int(m_pTextureList.size());
 		Safe_Delete_Array(m_pArrSRVs);
-		m_pArrSRVs = nullptr;
-
 		m_pArrSRVs = new ID3D11ShaderResourceView* [m_TextureNums];
 		ZeroMemory(m_pArrSRVs, sizeof(ID3D11ShaderResourceView*) * m_TextureNums);
-		_int Index = 0;
-		for (auto& elem : m_pTextureList)
-		{
-			//for(auto& elemvec : elem->Get_vecTexture())
-			m_pArrSRVs[Index++] = elem->Get_vecTexture()[0].pSRV.Get();
-		}
+	}
+	_int Index = 0;
+	for (auto& elem : m_SRVList)
+	{
+		if (m_TextureNums < m_SRVList.size())
+			assert(0);
+		//for(auto& elemvec : elem->Get_vecTexture())
+		m_pArrSRVs[Index++] = elem;
 	}
 	if (nullptr != m_pArrSRVs)
 	{
@@ -67,6 +67,7 @@ HRESULT CTerrain_Renderer::Render()
 		if (FAILED(m_pMeshCom->Render()))
 			return E_FAIL;
 	}
+	Safe_Delete_Array(m_pArrSRVs);
 	return S_OK;
 }
 
@@ -78,4 +79,66 @@ void CTerrain_Renderer::Clear_TextureList()
 void CTerrain_Renderer::Add_Texture(CTexture* pTexture)
 {
 	m_pTextureList.push_back(pTexture);
+}
+
+void CTerrain_Renderer::Update_TextureIndex(_int Sour, _int Dest)
+{
+	_int Index = 0;
+	ID3D11ShaderResourceView* pSourSRV = nullptr;
+	ID3D11ShaderResourceView* pDestSRV = nullptr;
+
+	for (auto& elem : m_pTextureList)
+	{
+		if (nullptr != pSourSRV && nullptr != pDestSRV)
+		{
+			break;
+		}
+
+		if (Sour == Index)
+		{
+			pSourSRV = elem->Get_vecTexture()[0].pSRV.Get();
+		}
+		if (Dest == Index)
+		{
+			pDestSRV = elem->Get_vecTexture()[0].pSRV.Get();
+		}
+
+		else
+		{
+			Index++;
+		}
+		//for(auto& elemvec : elem->Get_vecTexture())
+	}
+	while (m_SRVList.size() > 1)
+	{
+		m_SRVList.pop_back();
+	}
+
+	m_SRVList.push_back(pSourSRV);
+	m_SRVList.push_back(pDestSRV);
+	m_bSRVUpdateFlag = true;
+}
+
+void CTerrain_Renderer::Update_BackGround(_int BGIndex)
+{
+	_int Index = 0;
+	ID3D11ShaderResourceView* pSRV = nullptr;
+	if (m_SRVList.empty())
+		m_SRVList.push_back(pSRV);
+	for (auto& elem : m_pTextureList)
+	{
+		if (BGIndex == Index)
+		{
+			pSRV = elem->Get_vecTexture()[0].pSRV.Get();
+			break;
+		}
+
+		else
+		{
+			Index++;
+		}
+		//for(auto& elemvec : elem->Get_vecTexture())
+	}
+
+	m_SRVList.front() = pSRV;
 }

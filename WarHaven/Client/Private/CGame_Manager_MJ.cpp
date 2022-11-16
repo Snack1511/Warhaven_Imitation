@@ -62,6 +62,7 @@ void CGame_Manager_MJ::SetUp_Wrapping_Easing()
 	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::QuinticInOut));
 	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::SinIn));
 	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::sinfOut));
+	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::sinfInOut));
 	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::ExpoIn));
 	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::ExpoOut));
 	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::ExpoInOut));

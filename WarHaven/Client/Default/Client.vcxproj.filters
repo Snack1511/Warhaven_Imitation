@@ -691,6 +691,9 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Right">
       <UniqueIdentifier>{452f8399-99da-4e84-a138-968dff75ad5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl">
+      <UniqueIdentifier>{f49447ee-e92a-446c-8597-ea69953aaa75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1228,6 +1231,9 @@
     <ClInclude Include="..\Public\CJump_SpearMan.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CFunc_ObjectControl.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1745,6 +1751,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CJump_SpearMan.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\05. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CFunc_ObjectControl.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

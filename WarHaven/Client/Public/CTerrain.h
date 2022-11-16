@@ -56,8 +56,9 @@ protected:
 	void Read_TerrainTexture(wstring wStrPath, list<wstring>& listPath);
 protected:
 	CMesh_Terrain* m_pTerrainMesh = nullptr;
-	CRenderer* m_pRenderer = nullptr;
-	//CTerrain_Renderer* m_pRenderer = nullptr;
+	//CRenderer* m_pRenderer = nullptr;
+	list<_int> m_listTerrainTexIndex;
+	CTerrain_Renderer* m_pRenderer = nullptr;
 #pragma region 내비관련
 protected:
 	vector<CCell*>	m_vecCells;

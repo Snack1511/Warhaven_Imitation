@@ -208,6 +208,7 @@
     <ClInclude Include="..\Public\CSpearMan_Attack_Sting.h" />
     <ClInclude Include="..\Public\CSpearMan_BackStep.h" />
     <ClInclude Include="..\Public\CSpearMan_SpecialGuard.h" />
+    <ClInclude Include="..\Public\CFunc_ObjectControl.h" />
     <ClInclude Include="..\public\CState_Blendable.h" />
     <ClInclude Include="..\Public\CStop_Player.h" />
     <ClInclude Include="..\Public\CStop_SpearMan.h" />
@@ -389,6 +390,7 @@
     <ClCompile Include="..\Private\CRun_SpearMan_R.cpp" />
     <ClCompile Include="..\Private\CSpearMan_BackStep.cpp" />
     <ClCompile Include="..\Private\CSpearMan_SpecialGuard.cpp" />
+    <ClCompile Include="..\Private\CFunc_ObjectControl.cpp" />
     <ClCompile Include="..\private\CState_Blendable.cpp" />
     <ClCompile Include="..\Private\CStop_SpearMan.cpp" />
     <ClCompile Include="..\Private\CStop_Player.cpp" />
