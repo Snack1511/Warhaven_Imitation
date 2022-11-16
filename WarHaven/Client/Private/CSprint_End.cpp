@@ -45,7 +45,7 @@ HRESULT CSprint_End::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
 
@@ -55,6 +55,8 @@ HRESULT CSprint_End::Initialize()
 
 	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
 	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
+
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 
 	m_fMyMaxLerp = 0.4f;

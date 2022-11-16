@@ -54,6 +54,12 @@ HRESULT CSprint_Begin::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_PLAYER);
 	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_PLAYER);
 
+    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+
+    m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
+    m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+
 
 	Add_KeyFrame(10, 0);
 
@@ -91,12 +97,12 @@ STATE_TYPE CSprint_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
     CTransform* pMyTransform = pOwner->Get_Transform();
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-    _float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    _float4 vCamLook = pOwner->Get_FollowCamLook();
     vCamLook.y = 0.f;
-    _float4 vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+    _float4 vCamRight = pOwner->Get_FollowCamRight();
     vCamRight.y = 0.f;
 
-    _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    _float4 vDir = pOwner->Get_FollowCamLook();
 
 
     _uint iFrame = pAnimator->Get_CurAnimFrame();

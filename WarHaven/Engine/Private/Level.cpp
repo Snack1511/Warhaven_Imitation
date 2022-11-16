@@ -33,6 +33,8 @@ HRESULT CLevel::Enter()
 HRESULT CLevel::Exit()
 {
     m_vecGameObjects.clear();
+    m_StaticShadowObjects.clear();
+
     return S_OK;
 }
 

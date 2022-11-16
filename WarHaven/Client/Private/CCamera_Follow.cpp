@@ -40,6 +40,11 @@ CCamera_Follow* CCamera_Follow::Create(CGameObject* pTarget, CCell* pStartCell)
 	return pInstance;
 }
 
+void CCamera_Follow::Start_ShakingCamera(_float fPower, _float fTime)
+{
+	m_pFollowScript->Start_ShakingCamera(fPower, fTime);
+}
+
 HRESULT CCamera_Follow::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();

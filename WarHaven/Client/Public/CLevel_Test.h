@@ -45,6 +45,11 @@ private:
 	CGameObject* m_pTestObj = nullptr;
 
 	CUI_HUD* m_pHUD = nullptr;
+
+private:
+	_bool	m_bStaticShadowBake = false;
+	_float	m_fDealyAcc = 0.f;
+	_float	m_fDelayTime = 0.1f;
 };
 
 END

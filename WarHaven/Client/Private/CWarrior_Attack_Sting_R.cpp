@@ -49,19 +49,21 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
     m_fAnimSpeed = 2.4f;
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 80;
+    m_iStateChangeKeyFrame = 70;
 
-	m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
+	m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
+	m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
 
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
 
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-    
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
-	m_iStopIndex = 38;
+
+	m_iStopIndex = 40;
 	m_iAttackEndIndex = 50;
 
 	Add_KeyFrame(38, 1);
@@ -73,19 +75,19 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
 
 	m_iIdle_Index = 11;
 	m_iLandRightIndex = 17;
-	m_iLandLeftIndex = 9;
+	m_iLandLeftIndex = 17;
 	m_iJumpFallRightIndex = 10;
-	m_iJumpFallLeftIndex = 1;
+	m_iJumpFallLeftIndex = 10;
 
 
-	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 18;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 19;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 20;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 21;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 34;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 35;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 36;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 22;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 26;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 27;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 28;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 29;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 30;
 
 	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 26;
 	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 27;
@@ -107,14 +109,14 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
 	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 38;
 
 
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_NW] = 33;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_NE] = 32;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_N] = 31;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_SW] = 36;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_SE] = 35;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_S] = 34;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_W] = 37;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_E] = 30;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NW] = 41;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_W] = 45;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_E] = 38;
 
 
 
@@ -127,22 +129,34 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
 	m_iJumpRightAnimIndex[STATE_DIRECTION_SW] = 99;
 	m_iJumpRightAnimIndex[STATE_DIRECTION_SE] = 99;
 
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_N] = 6;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_S] = 7;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_W] = 8;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_E] = 5;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_NE] = 6;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_NW] = 6;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 7;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_N] = 14;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_S] = 15;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_W] = 16;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_E] = 13;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NE] = 12;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NW] = 99;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 
 
-	m_eWalkState = STATE_WALK_PLAYER_L;
-	m_eJumpState = STATE_JUMP_PLAYER_L;
-	m_eLandState = STATE_JUMP_LAND_PLAYER_L;
-	m_eFallState = STATE_JUMPFALL_PLAYER_L;
-	m_eRunState = STATE_RUN_PLAYER_L;
-	m_eIdleState = STATE_IDLE_PLAYER_L;
+	
+
+	m_eWalkState = STATE_WALK_PLAYER_R;
+	m_eJumpState = STATE_JUMP_PLAYER_R;
+	m_eLandState = STATE_JUMP_LAND_PLAYER_R;
+	m_eFallState = STATE_JUMPFALL_PLAYER_R;
+	m_eRunState = STATE_RUN_PLAYER_R;
+	m_eIdleState = STATE_IDLE_PLAYER_R;
+	m_eBounceState = STATE_BOUNCE_PLAYER_R;
+
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
 
 	return __super::Initialize();
@@ -150,23 +164,6 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
 
 void CWarrior_Attack_Sting_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	CColorController::COLORDESC m_tColorDesc;
-	ZeroMemory(&m_tColorDesc, sizeof(CColorController::COLORDESC));
-
-	m_tColorDesc.eFadeStyle = CColorController::KEYFRAME;
-	m_tColorDesc.fFadeInStartTime = 0.f;
-	m_tColorDesc.fFadeInTime = 0.1f;
-	m_tColorDesc.fFadeOutStartTime = 0.8f;
-	m_tColorDesc.fFadeOutTime = 0.1f;
-
-	m_tColorDesc.vTargetColor = _float4((230.f / 255.f), (150.f / 255.f), (40.f / 255.f), 0.f);
-
-	m_tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
-	m_tColorDesc.iStartKeyFrame = 20;
-	m_tColorDesc.iEndKeyFrame = 50; // 프레임 맞춰놓음
-
-	
-	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);
 
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -174,13 +171,6 @@ void CWarrior_Attack_Sting_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 
 STATE_TYPE CWarrior_Attack_Sting_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-	if (m_bAttackTrigger)
-	{
-		if (pOwner->Is_Weapon_R_Collision())
-			return STATE_BOUNCE_PLAYER_L;
-	}
-
 
     return __super::Tick(pOwner, pAnimator);
 }

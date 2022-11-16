@@ -72,12 +72,12 @@ void CSprint_Jump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
     CTransform* pMyTransform = pOwner->Get_Transform();
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-    _float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    _float4 vCamLook = pOwner->Get_FollowCamLook();
     vCamLook.y = 0.f;
     _float4 vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
     vCamRight.y = 0.f;
 
-    _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    _float4 vDir = pOwner->Get_FollowCamLook();
 
 
 
@@ -124,7 +124,13 @@ STATE_TYPE CSprint_Jump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	//pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
-    Follow_MouseLook(pOwner);
+    //Follow_MouseLook(pOwner);
+
+    _float4 vCamLook = pOwner->Get_FollowCamLook();
+    vCamLook.y = 0.f;
+    vCamLook.Normalize();
+
+    pOwner->Get_Transform()->Set_LerpLook(vCamLook, 0.4f);
 
 
     return __super::Tick(pOwner, pAnimator);

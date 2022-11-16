@@ -30,6 +30,8 @@
 
 #include "CBoneCollider.h"
 
+#include "CCamera_Follow.h"
+
 
 #define PHYSX_ON
 
@@ -64,7 +66,7 @@ _bool CUnit::Is_Air()
 
 void CUnit::Set_DirAsLook()
 {
-	_float4 vLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vLook = Get_FollowCamLook();
 	vLook.y = 0.f;
 
 	m_pTransform->Set_LerpLook(vLook, 0.3f);
@@ -83,6 +85,11 @@ void CUnit::Set_Passes(VTXANIM_PASS_TYPE ePassType)
 	{
 		pMC.second->Set_CurPass(ePassType);
 	}
+}
+
+void CUnit::Shake_Camera(_float fPower, _float fTime)
+{
+	m_pFollowCam->Start_ShakingCamera(fPower, fTime);
 }
 
 void CUnit::On_PlusHp(_float fHp)
@@ -326,16 +333,29 @@ void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrCol
 	}
 }
 
+_float4 CUnit::Get_FollowCamLook()
+{
+	return m_pFollowCam->Get_Transform()->Get_World(WORLD_LOOK);
+}
+
+_float4 CUnit::Get_FollowCamRight()
+{
+	return m_pFollowCam->Get_Transform()->Get_World(WORLD_RIGHT);
+}
+
 void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
 {
 	const char* pBoneName = "empty";
 	_float4 vWeaponLow;
 	_float4 vWeaponHigh;
+	_float4 vWeaponLeft;
+	_float4 vWeaponRight;
 	_float4 vGlowFlag;
 	_float4 vColor;
+
+	_float fWeaponCenter;
 	wstring wstrMaskMapPath;
 	wstring wstrColorMapPath;
-
 
 	switch (eWeapon)
 	{
@@ -343,6 +363,14 @@ void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
 		pBoneName = "0B_R_WP1";
 		vWeaponLow = _float4(0.f, 0.f, -168.f, 1.f);
 		vWeaponHigh = _float4(0.f, 0.f, -171.f, 1.f);
+
+		fWeaponCenter = (vWeaponLow.z + vWeaponHigh.z) * 0.5f;
+
+		vWeaponLeft = _float4(0.f, -1.5f, fWeaponCenter, 1.f);
+		vWeaponRight = _float4(0.f, 1.5f, fWeaponCenter, 1.f);
+
+
+
 		vGlowFlag = _float4(1.f, 0.f, 0.f, 0.05f);
 		vColor = _float4(1.f, 0.1f, 0.1f, 0.25f);
 		wstrMaskMapPath = L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds";
@@ -356,13 +384,21 @@ void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
 		m_pModelCom->Find_HierarchyNode(pBoneName), m_pTransform, vGlowFlag, vColor,
 		wstrMaskMapPath, wstrColorMapPath);
 
+	m_pTrailEffect2 = CTrailEffect::Create(0, 10, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(pBoneName), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
 	if (!m_pTrailEffect)
 		return;
 
 	CREATE_GAMEOBJECT(m_pTrailEffect, GROUP_EFFECT);
 	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrailEffect, CMesh))->Set_NoCurve();
 
+	CREATE_GAMEOBJECT(m_pTrailEffect2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrailEffect2, CMesh))->Set_NoCurve();
+
 	m_pTrailEffect->TurnOn_TrailEffect(false);
+	m_pTrailEffect2->TurnOn_TrailEffect(false);
 }
 
 void CUnit::TurnOn_TrailEffect(_bool bOn)
@@ -371,6 +407,7 @@ void CUnit::TurnOn_TrailEffect(_bool bOn)
 		return;
 
 	m_pTrailEffect->TurnOn_TrailEffect(bOn);
+	m_pTrailEffect2->TurnOn_TrailEffect(bOn);
 
 }
 

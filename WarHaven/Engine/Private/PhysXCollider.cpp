@@ -36,7 +36,7 @@ CPhysXCollider* CPhysXCollider::Create(_uint iGroupID, const PHYSXCOLLIDERDESC& 
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		Call_MsgBox(L"Failed to Initialize_Prototype : CModel");
+		Call_MsgBox(L"Failed to Initialize_Prototype : CPhysXCollider");
 		Safe_Delete(pInstance);
 	}
 
@@ -49,8 +49,22 @@ CPhysXCollider* CPhysXCollider::Create(_uint iGroupID, CMesh* pMesh, CTransform*
 
 	if (FAILED(pInstance->SetUp_StaticMeshActor(pMesh, pWorldTransform)))
 	{
-		Call_MsgBox(L"Failed to SetUp_StaticMeshActor : CModel");
+		Call_MsgBox(L"Failed to SetUp_StaticMeshActor : CPhysXCollider");
 		Safe_Delete(pInstance);
+	}
+
+	return pInstance;
+}
+
+CPhysXCollider* CPhysXCollider::Create_Convex(_uint iGroupID, CMesh* pMesh, CTransform* pWorldTransform)
+{
+	CPhysXCollider* pInstance = new CPhysXCollider(iGroupID);
+
+	if (FAILED(pInstance->SetUp_StaticConvexActor(pMesh, pWorldTransform)))
+	{
+		Safe_Delete(pInstance);
+		return nullptr;
+		Call_MsgBox(L"Failed to SetUp_StaticMeshActor : CPhysXCollider");
 	}
 
 	return pInstance;
@@ -607,6 +621,53 @@ HRESULT CPhysXCollider::SetUp_StaticMeshActor(CMesh* pMesh, CTransform* pWorldTr
 	
 	m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(tTransform,
 		PxTriangleMeshGeometry(m_ColliderDesc.pTriangleMesh, pXScale), CPhysX_Manager::SCENE_CURRENT);
+
+	m_ColliderDesc.eType = COLLIDERTYPE::STATIC;
+
+	if (!m_pRigidStatic)
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPhysXCollider::SetUp_StaticConvexActor(CMesh* pMesh, CTransform* pWorldTransform)
+{
+	_uint iNumVertices = 0;
+	_float3* pVerticesPos = nullptr;
+	CMesh_Terrain* pTerrain = dynamic_cast<CMesh_Terrain*>(pMesh);
+
+	if (pTerrain)
+		return E_FAIL;
+
+	FACEINDICES32* pIndices = pMesh->Get_Indices();
+	_uint iNumPrimitive = pMesh->Get_NumPrimitive();
+
+	iNumVertices = pMesh->Get_NumVertices();
+	pVerticesPos = pMesh->Get_VerticesPos();
+	
+	CPhysX_Manager::Get_Instance()->Create_ConvexMesh(
+		pVerticesPos,
+		iNumVertices,
+		pIndices,
+		iNumPrimitive,
+		&m_ColliderDesc.pConvecMesh);
+
+	if (!m_ColliderDesc.pConvecMesh)
+	{
+		return E_FAIL;
+	}
+
+	_float4 vQuat = pWorldTransform->Get_Quaternion();
+	_float4 vPos = pWorldTransform->Get_World(WORLD_POS);
+	_float4 vScale = pWorldTransform->Get_Scale();
+	PxTransform	tTransform;
+	tTransform.p = PxVec3(vPos.x, vPos.y, vPos.z);
+	tTransform.q = PxQuat(vQuat.x, vQuat.y, vQuat.z, vQuat.w);
+
+	PxMeshScale	pXScale = PxMeshScale(PxVec3(vScale.x, vScale.y, vScale.z));
+
+	m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(tTransform,
+		PxConvexMeshGeometry(m_ColliderDesc.pConvecMesh, pXScale), CPhysX_Manager::SCENE_CURRENT);
 
 	m_ColliderDesc.eType = COLLIDERTYPE::STATIC;
 

@@ -71,7 +71,7 @@ void CButton::Tick()
 void CButton::Late_Tick()
 {
 	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
-	if (m_bIsInMouse)
+	/*if (m_bIsInMouse)
 	{
 		if (1)
 		{
@@ -85,7 +85,7 @@ void CButton::Late_Tick()
 		{
 			m_pOwnerUI->CallBack_ButtonClick(0);
 		}
-	}
+	}*/
 }
 
 void CButton::Release()

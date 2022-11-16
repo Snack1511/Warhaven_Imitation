@@ -51,11 +51,11 @@ HRESULT CWarrior_GuardBreak::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 77;
+    m_iStateChangeKeyFrame = 65;
 
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-    m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
 
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
@@ -82,18 +82,15 @@ HRESULT CWarrior_GuardBreak::Initialize()
 void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     /* Owner의 Animator Set Idle로 */
+    m_fMaxSpeed = pOwner->Get_Status().fSprintAttackSpeed;
+    pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWarrior_GuardBreak::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    // 9 : 상단 베기(R Attack)
-    // 23 : 황소 베기(SKill)
-    //Create_SwordEffect(pOwner);
-
-    if (pAnimator->Is_CurAnimFinished())
-        return STATE_IDLE_PLAYER_R;
-
+    Follow_MouseLook(pOwner);
+    pOwner->Set_DirAsLook();
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -109,7 +106,7 @@ STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnima
     1.  스킬버튼 을 이용해 공격한다.
     */
 
-    if (KEY(E, TAP))
+    if (CUser::Get_Instance()->Get_LastKey() == KEY::E)
         return m_eStateType;
 
 
@@ -123,6 +120,7 @@ void CWarrior_GuardBreak::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 	{
 
 	case 1:
+        pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 

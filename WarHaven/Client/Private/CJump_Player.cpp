@@ -50,6 +50,13 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 		Move(iDirection, pOwner);
 
+		if (pOwner->Get_PhysicsCom()->Get_Physics().fSpeed <= 1.f)
+		{
+			pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
+			pOwner->Get_PhysicsCom()->Set_SpeedasMax();
+
+		}
+
 
 	}
 

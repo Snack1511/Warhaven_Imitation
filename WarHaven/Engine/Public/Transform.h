@@ -77,9 +77,17 @@ private:
 	_byte		m_cParentFlag = 0;
 
 	_bool		m_bLerp = false;
+
+private:
 	_float		m_fTimeAcc = 0.f;
 	_float		m_fLerpTime = 0.f;
 	_float4		m_vOriginLook;
 	_float4		m_vTargetLook;
+
+
+	_float		m_fOriginAngle = 0.f;
+	_float		m_fTargetAngle = 0.f;
+
+	_float		Calculate_LooktoAngle(_float4 vLook);
 };
 END

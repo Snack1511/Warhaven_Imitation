@@ -230,7 +230,8 @@ _uint CState::Move(_uint iDirection, CUnit* pOwner)
 
 	_float4 vCamLook, vCamRight;
 
-	vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	pOwner->Get_FollowCamLook();
+	vCamLook = pOwner->Get_FollowCamLook();
 	vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
 
 
@@ -320,7 +321,7 @@ _uint CState::Move(_uint iDirection, CUnit* pOwner)
 
 void CState::Follow_MouseLook(CUnit* pOwner)
 {
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCamLook();
+	_float4 vCamLook = pOwner->Get_FollowCamLook();
 	vCamLook.y = 0.f;
 	vCamLook.Normalize();
 
@@ -337,7 +338,7 @@ void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _b
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
 
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vCamLook = pOwner->Get_FollowCamLook();
 	
 	vCamLook.y = 0.f;
 

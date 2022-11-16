@@ -152,6 +152,9 @@ void CAnimator::Set_CurAnimIndex(_uint iTypeIndex, _uint iNewIdx, ANIM_DIVIDE	eD
 
 		m_pCycleAnimation->OnInterpolate();
 
+		m_iCurrentCycleAnimationTypeIndex = iTypeIndex;
+		m_iCurrentCycleAnimationIndex = iNewIdx;
+
 		
 	}
 	

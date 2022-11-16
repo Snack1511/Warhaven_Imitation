@@ -79,7 +79,7 @@ STATE_TYPE CWarrior_Attack_HorizontalDown::Check_Condition(CUnit* pOwner, CAnima
 	*/
 	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 	{
-		_float fDot = CUtility_Transform::Get_LookRotateAngle(GAMEINSTANCE->Get_CurCamLook());
+		_float fDot = CUtility_Transform::Get_LookRotateAngle(pOwner->Get_FollowCamLook());
 
 		if (fDot < 0.f && fDot > -0.96f)
 		{

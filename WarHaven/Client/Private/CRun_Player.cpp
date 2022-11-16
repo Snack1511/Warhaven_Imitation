@@ -109,6 +109,7 @@ STATE_TYPE CRun_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 		// 걸어간다.
 		if (KEY(W, HOLD) ||
 			KEY(A, HOLD) ||
+			KEY(S, HOLD) ||
 			KEY(D, HOLD))
 		{
 

@@ -123,6 +123,7 @@ HRESULT CWarrior_Attack_HorizontalDown_R::Initialize()
 	m_eFallState = STATE_JUMPFALL_PLAYER_L;
 	m_eRunState = STATE_RUN_PLAYER_L;
 	m_eIdleState = STATE_IDLE_PLAYER_L;
+	m_eBounceState = STATE_BOUNCE_PLAYER_R;
 
 
 
@@ -164,13 +165,7 @@ void CWarrior_Attack_HorizontalDown_R::Enter(CUnit* pOwner, CAnimator* pAnimator
 STATE_TYPE CWarrior_Attack_HorizontalDown_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-	if (m_bAttackTrigger)
-	{
-		// 공격 진입
-		if (pOwner->Is_Weapon_R_Collision())
-			return STATE_BOUNCE_PLAYER_R;
-
-	}
+	
 
 	return __super::Tick(pOwner, pAnimator);
 }

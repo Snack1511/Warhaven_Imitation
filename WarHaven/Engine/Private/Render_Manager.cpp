@@ -58,7 +58,7 @@ CShader* CRender_Manager::Get_DeferredShader()
 void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fDistance)
 {
 	m_ShadowViewMatrix.Identity();
-	_float4 vLook = _float4(-1.f, -2.f, 1.f, 0.f).Normalize();
+	_float4 vLook = _float4(-1.f, -2.f, -1.f, 0.f).Normalize();
 
 	*((_float4*)&m_ShadowViewMatrix.m[2]) = vLook;
 
@@ -152,7 +152,7 @@ HRESULT CRender_Manager::Initialize()
 
 
 	m_ShadowViewMatrix.Identity();
-	_float4 vLook = _float4(-1.f, -2.f, 1.f, 0.f).Normalize();
+	_float4 vLook = _float4(-1.f, -2.f, -1.f, 0.f).Normalize();
 
 	*((_float4*)&m_ShadowViewMatrix.m[2]) = vLook;
 
@@ -163,7 +163,7 @@ HRESULT CRender_Manager::Initialize()
 	*((_float4*)&m_ShadowViewMatrix.m[1]) = vUp;
 
 
-	*((_float4*)&m_ShadowViewMatrix.m[3]) = _float4(200.f, 400.f, -200.f, 1.f);
+	*((_float4*)&m_ShadowViewMatrix.m[3]) = _float4(100.f, 200.f, 100.f, 1.f);
 	m_ShadowViewMatrix.Inverse();
 	m_ShadowViewMatrix.Transpose();
 
@@ -558,8 +558,8 @@ HRESULT CRender_Manager::Render()
 		return E_FAIL;
 
 	/* Shadow Baking */
-	/*if (FAILED(Bake_Shadow()))
-		return E_FAIL;*/
+	if (FAILED(Bake_Shadow()))
+		return E_FAIL;
 
 	/* Deferred MRT */
 	if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources()))
@@ -859,8 +859,14 @@ HRESULT CRender_Manager::Render_AlphaGroup()
 			return E_FAIL;
 	}
 
-	m_pAlphaRenderers.clear();
+	for (auto& elem : m_Renderers[RENDER_TRAIL])
+	{
+		if (FAILED(elem->Render()))
+			return E_FAIL;
+	}
 
+	m_pAlphaRenderers.clear();
+	m_Renderers[RENDER_TRAIL].clear();
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
 
@@ -987,10 +993,6 @@ HRESULT CRender_Manager::Bake_Shadow()
 	m_vecShader[SHADER_SHADOW]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_vecShader[SHADER_SHADOW]->Begin(0);
 	m_pMeshRect->Render();
-	
-
-
-
 
 
 	//조명 위치에서 뷰,투영 매트릭스

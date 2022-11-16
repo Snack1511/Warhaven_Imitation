@@ -331,7 +331,7 @@ void CGameInstance::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper
 
 void CGameInstance::Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut)
 {
-	m_pPhysXManager->Create_ConvexMesh(pVertices, iNumVertice, ppOut);
+	//m_pPhysXManager->Create_ConvexMesh(pVertices, iNumVertice, ppOut);
 }
 
 void CGameInstance::Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut)

@@ -6,7 +6,7 @@
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
 #define	YJ_DEBUG
- //#define USE_GPU
+//#define USE_GPU
 
 
 CPhysX_Manager::CPhysX_Manager()
@@ -187,12 +187,19 @@ PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform
 }
 
 
-void CPhysX_Manager::Create_ConvexMesh(PxVec3 ** pVertices, _uint iNumVertice, PxConvexMesh ** ppOut)
+void CPhysX_Manager::Create_ConvexMesh(_float3* pVerticesPos, _uint iNumVertices, void* pIndices, _uint iNumPrimitive, PxConvexMesh ** ppOut)
 {
+	PxVec3* pPxVerticesPos = new PxVec3[iNumVertices];
+	memcpy(pPxVerticesPos, pVerticesPos, sizeof(PxVec3) * iNumVertices);
+
 	PxCookingParams params = m_pCooking->getParams();
 
 	// Use the new (default) PxConvexMeshCookingType::eQUICKHULL
 	params.convexMeshCookingType = PxConvexMeshCookingType::eQUICKHULL;
+
+#ifdef USE_GPU
+	params.buildGPUData = true;
+#endif
 
 	// If the gaussMapLimit is chosen higher than the number of output vertices, no gauss map is added to the convex mesh data (here 256).
 	// If the gaussMapLimit is chosen lower than the number of output vertices, a gauss map is added to the convex mesh data (here 16).
@@ -203,12 +210,48 @@ void CPhysX_Manager::Create_ConvexMesh(PxVec3 ** pVertices, _uint iNumVertice, P
 	PxConvexMeshDesc Desc;
 
 	// We provide points only, therefore the PxConvexFlag::eCOMPUTE_CONVEX flag must be specified
-	Desc.points.data = *pVertices;
-	Desc.points.count = iNumVertice;
+	Desc.points.data = pPxVerticesPos;
+	Desc.points.count = iNumVertices;
 	Desc.points.stride = sizeof(PxVec3);
-	Desc.flags = PxConvexFlag::eCOMPUTE_CONVEX;
+	Desc.vertexLimit = 10;
 
-	*ppOut = m_pCooking->createConvexMesh(Desc, m_pPhysics->getPhysicsInsertionCallback());
+	/*Desc.indices.count = iNumPrimitive;
+	Desc.indices.data = pIndices;
+	Desc.indices.stride = sizeof(FACEINDICES32);
+
+	Desc.*/
+
+	Desc.flags |= PxConvexFlag::eCOMPUTE_CONVEX;
+	if (iNumVertices < 10)
+	{
+		SAFE_DELETE_ARRAY(pPxVerticesPos);
+		return;
+		Desc.flags |= PxConvexFlag::ePLANE_SHIFTING;
+
+		Desc.vertexLimit = 4;
+
+	}
+
+	if (iNumVertices > 2000)
+	{
+		Desc.quantizedCount = 1000;
+		Desc.flags |= PxConvexFlag::eQUANTIZE_INPUT;
+	}
+
+	
+
+	if (!Desc.isValid())
+	{
+		assert(0);
+	}
+	PxConvexMeshCookingResult::Enum eResult;
+	*ppOut = m_pCooking->createConvexMesh(Desc, m_pPhysics->getPhysicsInsertionCallback(), &eResult);
+
+	if (eResult != PxConvexMeshCookingResult::Enum::eSUCCESS)
+		assert(0);
+
+	SAFE_DELETE_ARRAY(pPxVerticesPos);
+
 }
 
 void CPhysX_Manager::Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial ** ppOut)
@@ -243,12 +286,17 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 
 	//어느 높이까지 올라갈 수 있는지
 	tCCT.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
-	tCCT.stepOffset = 0.2f;
-	tCCT.contactOffset = 0.03f;
+	tCCT.stepOffset = 0.1f;
+	tCCT.contactOffset = 0.1f;
 
 	//경사진 슬로프만나면 어떻게 할 지
-	tCCT.nonWalkableMode = PxControllerNonWalkableMode::ePREVENT_CLIMBING_AND_FORCE_SLIDING;
+	tCCT.nonWalkableMode = PxControllerNonWalkableMode::ePREVENT_CLIMBING;
 	tCCT.slopeLimit = cosf(ToRadian(45.f));
+	//tCCT.invisibleWallHeight = 0.6f;
+	if (!tCCT.isValid())
+	{
+		Call_MsgBox(L"Failed to Create_CapsuleController");
+	}
 	//tCCT.maxJumpHeight = 20.f; // default JumpHeight
 
 	tCCT.reportCallback = pUserData;
@@ -353,7 +401,7 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 		pVertices[i] = PxVec3(XMVectorGetX(vPostion), fHight * 0.5f, XMVectorGetZ(vPostion));
 	}
 
-	Create_ConvexMesh(&pVertices, iNumVerts, ppOut);
+	//Create_ConvexMesh(&pVertices, iNumVerts, ppOut);
 	Safe_Delete_Array(pVertices);
 }
 

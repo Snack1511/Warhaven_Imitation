@@ -42,9 +42,14 @@ HRESULT CRun_Player_Begin_L::Initialize()
     m_vecAdjState.push_back(STATE_JUMP_PLAYER_L);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
+    m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
+
+
+
 
    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 10;
 
@@ -71,6 +76,11 @@ void CRun_Player_Begin_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CRun_Player_Begin_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (KEY(SPACE, TAP))
+    {
+        return STATE_JUMP_PLAYER_L;
+    }
+
 	if (pAnimator->Is_CurAnimFinished())
 		return STATE_RUN_PLAYER_L;
 
@@ -106,6 +116,7 @@ STATE_TYPE CRun_Player_Begin_L::Check_Condition(CUnit* pOwner, CAnimator* pAnima
         if (
             KEY(W, HOLD) ||
             KEY(A, HOLD) ||
+            KEY(S, HOLD) ||
             KEY(D, HOLD)
             )
         {

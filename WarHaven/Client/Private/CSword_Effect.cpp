@@ -56,8 +56,15 @@ HRESULT CSword_Effect::Initialize_Prototype()
 	m_vFadeOutTargetScale = _float4{ 0.01f, 0.01f, 0.01f, 0.f };
 	m_eCurFadeType = FADEOUTREADY;
 	m_fFadeOutStartTime = 0.f;
-	m_fFadeOutTime = 0.1f;
-	m_fTargetAlpha = 0.5f;
+	m_fFadeOutTime = 0.07f;
+	m_fTargetAlpha = 0.3f;
+
+	m_fColorPower = 0.5f;
+	//m_vPlusColor = _float4(0.f, -0.2f, -0.6f);
+	m_vEffectFlag = _float4(0.f, 0.f, 1.f, 0.f);
+
+
+	//m_iPassType = VTXEFFECT_PASS_DISTORTION;
 	
 
 	__super::Initialize_Prototype();

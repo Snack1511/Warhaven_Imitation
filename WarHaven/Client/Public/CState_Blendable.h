@@ -31,8 +31,10 @@ public:
 	STATE_TYPE	Update_Idle(CUnit* pOwner, CAnimator* pAnimator);
 
 protected:
+	_bool		m_bAfterEffect = false;
 	_float		m_fCreateTimeAcc = 0.f;
-	_float		m_fCreateTime = 0.16f;
+	_float		m_fCreateTime = 0.02f;
+	_float		m_fCreateTimeSlow = 0.07f;
 	void		Create_SwordAfterEffect();
 
 protected:
@@ -70,6 +72,7 @@ protected:
 	STATE_TYPE			m_eFallState = STATE_END;
 	STATE_TYPE			m_eLandState = STATE_END;
 	STATE_TYPE			m_eIdleState = STATE_END;
+	STATE_TYPE			m_eBounceState = STATE_END;
 
 protected:
 	Enum				m_eEnum = Enum::eIDLE;

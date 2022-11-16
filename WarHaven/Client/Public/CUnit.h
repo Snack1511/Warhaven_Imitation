@@ -19,6 +19,9 @@ BEGIN(Client)
 
 class CState;
 class CTrailEffect;
+class CScript_FollowCam;
+class CCamera_Follow;
+
 class CUnit abstract
 	: public CGameObject
 {
@@ -54,6 +57,7 @@ public:
 		_float fRunSpeed = 4.f;
 		_float fRunBeginSpeed = 4.f;
 		_float fWalkSpeed = 1.8f;
+		_float fShortDashSpeed = 8.f;
 		_float fDashSpeed = 16.f;
 		_float fWallJumpSpeed = 15.f;
 		_float fBackStepSpeed = 30.f;
@@ -89,6 +93,8 @@ public: /* Physics */
 public:
 	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
 	void	Set_Passes(VTXANIM_PASS_TYPE ePassType);
+	void	Set_FollowCam(CCamera_Follow* pFollowCam) { m_pFollowCam = pFollowCam; }
+	void	Shake_Camera(_float fPower, _float fTime);
 
 public:
 	virtual void	On_PlusHp(_float fHp);
@@ -110,6 +116,9 @@ public:
 
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState*	Get_CurStateP() { return m_pCurState; }
+
+	_float4	Get_FollowCamLook();
+	_float4	Get_FollowCamRight();
 
 
 public:
@@ -203,6 +212,10 @@ protected:
 
 protected:
 	CTrailEffect* m_pTrailEffect = nullptr;
+	CTrailEffect* m_pTrailEffect2 = nullptr;
+
+protected:
+	CCamera_Follow* m_pFollowCam = nullptr;
 
 protected:
 	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);

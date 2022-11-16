@@ -54,7 +54,7 @@ void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 		_float	fMyFootY = hit.controller->getFootPosition().y;
 
 		//닿은곳이 발 위치보다 아래면 (땅에 착지)
-		if (fMyFootY + 0.1f > fContactY)
+		if (fMyFootY + 0.2f > fContactY)
 		{
 			m_bColGround = true;
 
@@ -121,15 +121,25 @@ void CPhysXCharacter::Tick()
 	{
 		//땅에 붙음
 		m_pPhysicsCom->Get_Physics().bAir = false;
+		m_fTimeAcc = 0.f;
 	}
 	else
 	{
 		//만약 땅에서 떨어졌는데 air가 false면
-		if (!m_pPhysicsCom->Get_Physics().bAir)
+		//0.1초 정도 시간을 재기
+
+		m_fTimeAcc += fDT(0);
+		//if (m_fTimeAcc >= m_fColTime)
 		{
-			//떨구기
-			m_pPhysicsCom->Set_Jump(0.f);
+			if (!m_pPhysicsCom->Get_Physics().bAir)
+			{
+				//떨구기
+				m_pPhysicsCom->Set_Jump(0.f);
+				m_fTimeAcc = 0.f;
+			}
 		}
+
+		
 
 	}
 	

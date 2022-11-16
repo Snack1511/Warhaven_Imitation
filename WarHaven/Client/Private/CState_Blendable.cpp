@@ -4,6 +4,7 @@
 #include "UsefulHeaders.h"
 
 #include "CSword_Effect.h"
+#include "CColorController.h"
 
 CState_Blendable::CState_Blendable()
 {
@@ -35,6 +36,7 @@ HRESULT CState_Blendable::Initialize()
 	STATECHECK(m_eFallState);
 	STATECHECK(m_eLandState);
 	STATECHECK(m_eIdleState);
+	STATECHECK(m_eBounceState);
 
 	for (_uint i = 0; i < STATE_DIRECTION_END; ++i)
 	{
@@ -61,6 +63,21 @@ HRESULT CState_Blendable::Initialize()
 
 void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData )
 {
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 1.f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = _float4((230.f / 255.f), (150.f / 255.f), (40.f / 255.f), 0.f);
+	tColorDesc.vTargetColor *= 1.1f;
+	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+	tColorDesc.iStartKeyFrame = 2;
+	tColorDesc.iEndKeyFrame = m_iStopIndex; // 프레임 맞춰놓음
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 
@@ -69,6 +86,7 @@ void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 {
 	pAnimator->Stop_ActionAnim();
+	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	pOwner->TurnOn_TrailEffect(false);
 
 }
@@ -76,6 +94,33 @@ void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	STATE_TYPE	eStateType = STATE_END;
+
+	if (m_bAttackTrigger)
+	{
+		// 공격 진입
+		if (pOwner->Is_Weapon_R_Collision())
+		{
+			_float4 vHitPos = pOwner->Get_HitPos();
+			_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+			//발쪽이면
+			if (vHitPos.y <= vPos.y + 0.1f)
+			{
+				pOwner->Shake_Camera(0.25f, 0.25f);
+
+				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+			}
+
+
+			else
+				return m_eBounceState;
+
+			m_bAttackTrigger = false;
+		}
+
+	}
 
 	Create_SwordAfterEffect();
 
@@ -141,7 +186,7 @@ STATE_TYPE CState_Blendable::Update_Walk(CUnit* pOwner, CAnimator* pAnimator)
 	}
 	else
 	{
-		Move(Get_Direction(), pOwner);
+		//Move(Get_Direction(), pOwner);
 
 		
 	}
@@ -188,7 +233,7 @@ STATE_TYPE CState_Blendable::Update_Run(CUnit* pOwner, CAnimator* pAnimator)
 	}
 	else
 	{
-		Move(Get_Direction(), pOwner);
+		//Move(Get_Direction(), pOwner);
 
 		
 	}
@@ -250,7 +295,11 @@ STATE_TYPE CState_Blendable::Update_Land(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Blendable::Update_Idle(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
+	if (pOwner->Is_Air())
+	{
+		On_EnumChange(Enum::eFALL, pAnimator);
+	}
+	else if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
 	{
 		if (KEY(CTRL, HOLD))
 		{
@@ -263,11 +312,7 @@ STATE_TYPE CState_Blendable::Update_Idle(CUnit* pOwner, CAnimator* pAnimator)
 	}
 	else if (KEY(SPACE, TAP))
 		On_EnumChange(Enum::eJUMP, pAnimator);
-	else
-	if (pOwner->Is_Air())
-	{
-		On_EnumChange(Enum::eFALL, pAnimator);
-	}
+	
 	else
 		if (pAnimator->Is_ActionFinished())
 			return m_eIdleState;
@@ -279,12 +324,22 @@ STATE_TYPE CState_Blendable::Update_Idle(CUnit* pOwner, CAnimator* pAnimator)
 void CState_Blendable::Create_SwordAfterEffect()
 {
 	m_fCreateTimeAcc += fDT(0);
-	if (m_fCreateTimeAcc >= m_fCreateTime)
-	{
-		m_fCreateTimeAcc = 0.f;
-		CEffects_Factory::Get_Instance()->Create_Effects(HASHCODE(CSword_Effect), m_pOwner,
-			m_pOwner->Get_Transform()->Get_World(WORLD_POS));
-	}
+
+	_float fTargetTime = m_fCreateTimeSlow;
+
+	if (m_bAfterEffect)
+		fTargetTime = m_fCreateTime;
+	
+
+		if (m_fCreateTimeAcc >= fTargetTime)
+		{
+			m_fCreateTimeAcc = 0.f;
+			CEffects_Factory::Get_Instance()->Create_Effects(HASHCODE(CSword_Effect), m_pOwner,
+				m_pOwner->Get_Transform()->Get_World(WORLD_POS));
+		}
+	
+
+	
 }
 
 void CState_Blendable::Move_Cycle(CAnimator* pAnimator, _uint* arrDirectionAnimIndices, ANIM_TYPE eAnimType)
@@ -294,7 +349,9 @@ void CState_Blendable::Move_Cycle(CAnimator* pAnimator, _uint* arrDirectionAnimI
 	if (iDirection == STATE_DIRECTION_END)
 		return;
 
-	if (m_iAnimIndex != arrDirectionAnimIndices[iDirection])
+	//현재실행중인애만 다르면 댐
+
+	if (m_iAnimIndex != arrDirectionAnimIndices[iDirection] )//|| pAnimator->Get_CurCycleAnimIndex() != arrDirectionAnimIndices[iDirection])
 	{
 		m_iAnimIndex = arrDirectionAnimIndices[iDirection];
 
@@ -312,7 +369,19 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 	switch (iSequence)
 	{
 	case 998:
+		m_bAfterEffect = true;
 		pOwner->TurnOn_TrailEffect(true);
+
+		/* dash Front */
+		if (!pOwner->Is_Air())
+		{
+			pOwner->Set_DirAsLook();
+			pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed);
+			pOwner->Get_PhysicsCom()->Set_SpeedasMax();
+			pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
+		}
+
+		
 
 		m_bBlendable = false;
 		if (m_eEnum == Enum::eWALK || m_eEnum == Enum::eRUN)
@@ -322,15 +391,18 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 		break;
 
 	case 999:
+		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
+
+		m_bAfterEffect = false;
 		pOwner->TurnOn_TrailEffect(false);
 
-		m_bBlendable = true;
+		//m_bBlendable = true;
 		if (m_eAnimLeftorRight == ANIM_BASE_L)
 			m_eAnimLeftorRight = ANIM_BASE_R;
 		else
 			m_eAnimLeftorRight = ANIM_BASE_L;
 
-		cout << "Blendable On" << endl;
+		//cout << "Blendable On" << endl;
 		break;
 
 	default:

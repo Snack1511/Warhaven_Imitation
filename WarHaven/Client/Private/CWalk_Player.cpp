@@ -19,6 +19,9 @@ CWalk_Player::~CWalk_Player()
 
 HRESULT CWalk_Player::Initialize()
 {
+    m_fInterPolationTime = 0.2f;
+
+
 	//m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);

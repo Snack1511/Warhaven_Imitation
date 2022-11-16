@@ -29,26 +29,27 @@ HRESULT CBounce_Player::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 5.f;
 	m_fMaxSpeed = 2.f;
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
     return S_OK;
 }
 
 void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	/* Shake */
+	pOwner->Shake_Camera(0.4f, 0.25f);
+
     /* OwnerÀÇ Animator Set Idle·Î */
 
   //  pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
 
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitPos());
-	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
 
 	switch (ePrevType)
 	{
-
-
-
 	case Client::STATE_ATTACK_HORIZONTALUP_L:
 	case Client::STATE_ATTACK_HORIZONTALMIDDLE_L:
 	case Client::STATE_ATTACK_HORIZONTALDOWN_L:
@@ -70,6 +71,7 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 		break;
 	case Client::STATE_ATTACK_VERTICALCUT:
+	case Client::STATE_SPRINTATTACK_PLAYER:
 
 		m_eAnimType = ANIM_ATTACK;
 		m_iAnimIndex = 19;
@@ -85,10 +87,6 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 STATE_TYPE CBounce_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	_uint iDirection = Get_Direction();  
-	
-	if(iDirection == STATE_DIRECTION_N || iDirection == STATE_DIRECTION_S)
-		Move(iDirection, pOwner);
             
     return __super::Tick(pOwner, pAnimator);
 }

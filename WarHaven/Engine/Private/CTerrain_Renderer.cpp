@@ -35,6 +35,9 @@ CTerrain_Renderer* CTerrain_Renderer::Create(_uint iGroupID, const RENDER_GROUP&
 		return nullptr;
 	}
 
+	/*Terrain Shadow Pass*/
+	pRenderer->m_iShadowPass = 3;
+
 	return pRenderer;
 }
 
@@ -141,4 +144,19 @@ void CTerrain_Renderer::Update_BackGround(_int BGIndex)
 	}
 
 	m_SRVList.front() = pSRV;
+}
+
+HRESULT CTerrain_Renderer::Bake_Shadow(_float4x4 ViewMatrix)
+{
+	m_pOwner->Get_Transform()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
+
+	m_pShaderCom->Set_RawValue("g_ViewMatrix", &ViewMatrix, sizeof(_float4x4));
+
+	if (FAILED(m_pShaderCom->Begin(m_iShadowPass)))
+		return E_FAIL;
+
+	if (FAILED(m_pMeshCom->Render()))
+		return E_FAIL;
+
+	return S_OK;
 }

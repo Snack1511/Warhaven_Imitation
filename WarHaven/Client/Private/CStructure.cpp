@@ -144,7 +144,9 @@ HRESULT CStructure::Initialize()
 	/* PhysX 메쉬충돌체 굽기 */
 	/*for (auto& elem : m_pModelCom->Get_MeshContainers())
 	{
-		CPhysXCollider* pCol = CPhysXCollider::Create(0, elem.second, m_pTransform);
+		CPhysXCollider* pCol = CPhysXCollider::Create_Convex(0, elem.second, m_pTransform);
+		if (!pCol)
+			continue;
 		Add_Component(pCol);
 	}*/
 	
@@ -176,7 +178,7 @@ void CStructure::OnDisable()
 HRESULT CStructure::SetUp_Model(wstring strModelPath)
 {
 	_float4x4 TransformMatrix = 
-		XMMatrixScaling(0.005f, 0.005f, 0.005f)
+		XMMatrixScaling(0.01f, 0.01f, 0.01f)
 		* XMMatrixRotationY(XMConvertToRadians(270.0f));
 	m_DebugPath = strModelPath;
 	CModel* pModel = CModel::Create(0, TYPE_NONANIM, strModelPath, TransformMatrix);

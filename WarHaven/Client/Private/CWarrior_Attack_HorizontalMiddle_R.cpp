@@ -41,13 +41,10 @@ HRESULT CWarrior_Attack_HorizontalMiddle_R::Initialize()
 	m_fAnimSpeed = 2.5f;
 
 	m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
-
-	//m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
-	//m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+	m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
 
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
 
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
@@ -126,8 +123,9 @@ HRESULT CWarrior_Attack_HorizontalMiddle_R::Initialize()
 	m_eJumpState = STATE_JUMP_PLAYER_L;
 	m_eLandState = STATE_JUMP_LAND_PLAYER_L;
 	m_eFallState = STATE_JUMPFALL_PLAYER_L;
-	m_eRunState = STATE_RUN_PLAYER_L;
+	m_eRunState = STATE_RUN_BEGIN_PLAYER_L;
 	m_eIdleState = STATE_IDLE_PLAYER_L;
+	m_eBounceState = STATE_BOUNCE_PLAYER_R;
 
 
 	return __super::Initialize();
@@ -148,14 +146,6 @@ void CWarrior_Attack_HorizontalMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimat
 
 STATE_TYPE CWarrior_Attack_HorizontalMiddle_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (m_bAttackTrigger)
-	{
-		// 공격 진입
-		if (pOwner->Is_Weapon_R_Collision())
-			return STATE_BOUNCE_PLAYER_R;
-
-	}
-
 	return __super::Tick(pOwner, pAnimator);
 }
 

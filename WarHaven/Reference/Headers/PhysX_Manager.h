@@ -63,7 +63,8 @@ public:
 		, PxMaterial* pMaterial = nullptr);
 	
 	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
-	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
+	void			Create_ConvexMesh(_float3* pVertices, _uint iNumVertices,
+		void* pIndices, _uint iNumPrimitive, PxConvexMesh** ppOut);
 	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
 	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, PxShape ** ppOut);
 

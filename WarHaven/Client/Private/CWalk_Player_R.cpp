@@ -41,7 +41,6 @@ HRESULT CWalk_Player_R::Initialize()
     m_iStateChangeKeyFrame = 0;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;

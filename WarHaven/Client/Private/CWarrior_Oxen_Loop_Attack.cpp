@@ -50,8 +50,11 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
     m_iStateChangeKeyFrame = 87;
 
     m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
-    m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
+
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
+
 
 
     Add_KeyFrame(5, 0);
@@ -101,7 +104,7 @@ void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pAnimator->Get_CurAnimFrame() < m_iStateChangeKeyFrame && pOwner->Is_Air())
+    if (pAnimator->Get_CurAnimFrame() >= m_iStateChangeKeyFrame && pOwner->Is_Air())
         return STATE_JUMPFALL_PLAYER_L;
 
     Follow_MouseLook(pOwner);

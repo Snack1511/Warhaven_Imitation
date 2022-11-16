@@ -58,7 +58,7 @@ void CSprintAttack_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 	//임시
 	pMyPhysicsCom->Get_Physics().bAir = false;
 
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vCamLook = pOwner->Get_FollowCamLook();
 	vCamLook.y = 0.f;
 
 	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
@@ -81,6 +81,8 @@ STATE_TYPE CSprintAttack_Player_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
+    Follow_MouseLook(pOwner);
+    pMyPhysicsCom->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
 
     return __super::Tick(pOwner, pAnimator);
 

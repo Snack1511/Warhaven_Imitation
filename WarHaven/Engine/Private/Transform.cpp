@@ -274,9 +274,8 @@ void CTransform::Set_LerpLook(_float4 vLook, _float fMaxLerpTime)
 
 	m_fLerpTime *= fRatio;
 
-	//-1에서 1사이로 값이 나옴
-	//-1일 때 1이 되어야함
-	//1일 때 0이 되어야함
+	//m_fOriginAngle = Calculate_LooktoAngle(m_vOriginLook);
+	//m_fTargetAngle = Calculate_LooktoAngle(m_vTargetLook);
 
 
 }
@@ -334,6 +333,34 @@ void CTransform::Late_Tick()
 		}
 	}
 
+	//if (m_bLerp)
+	//{
+	//	m_fTimeAcc += fDT(0);
+
+	//	if (m_fTimeAcc >= m_fLerpTime)
+	//	{
+	//		m_bLerp = false;
+	//		Set_Look(m_vTargetLook);
+	//	}
+	//	else
+	//	{
+	//		//Up축 기준으로 얼마나 돌아야하는지 구하는 식으로 해야함
+	//		_float fRatio = m_fTimeAcc / m_fLerpTime;
+	//		_float fAngle = (m_fOriginAngle * (1.f - fRatio)) + (m_fTargetAngle * fRatio);
+
+	//		_float4x4 matRot = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), fAngle);
+
+	//		_float4 vDefaultLook = _float4(0.f, 0.f, 1.f, 0.f);
+
+	//		_float4 vFinalLook = vDefaultLook.MultiplyNormal(matRot);
+
+	//		Set_Look(vFinalLook);
+
+	//	}
+
+	//}
+
+	//그리고 각도 구해서 룩을 up을 축으로 각도맨키 돌려야함
 
 
 	Make_WorldMatrix();
@@ -372,4 +399,19 @@ void CTransform::Rescale_WorldMatrix()
 	(*((_float4*)&m_tTransform.matMyWorld.m[WORLD_RIGHT])).Normalize() *= m_tTransform.vScale.x;
 	(*((_float4*)&m_tTransform.matMyWorld.m[WORLD_UP])).Normalize() *= m_tTransform.vScale.y;
 	(*((_float4*)&m_tTransform.matMyWorld.m[WORLD_LOOK])).Normalize() *= m_tTransform.vScale.z;
+}
+
+_float CTransform::Calculate_LooktoAngle(_float4 vLook)
+{
+	vLook.y = 0.f;
+	vLook.Normalize();
+	_float fCosTheta = vLook.Dot(_float4(0.f, 0.f, 1.f));
+	
+	if (vLook.x < 0.f)
+		fCosTheta *= -1.f;
+	
+
+
+
+	return acosf(fCosTheta);
 }

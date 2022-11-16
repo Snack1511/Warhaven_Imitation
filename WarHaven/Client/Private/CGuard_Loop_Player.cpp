@@ -40,7 +40,7 @@ HRESULT CGuard_Loop_Player::Initialize()
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 2.f;
 
-	m_vecAdjState.push_back(STATE_GUARD_CANCEL_PLAYER);
+	//m_vecAdjState.push_back(STATE_GUARD_CANCEL_PLAYER);
 	m_vecAdjState.push_back(STATE_GUARD_END_PLAYER);
 
 
@@ -56,6 +56,7 @@ void CGuard_Loop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 STATE_TYPE CGuard_Loop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	// 가드 상태에서도 움직일 수 있도록 설정한다.
+	Follow_MouseLook(pOwner);
 
 
     return __super::Tick(pOwner, pAnimator);

@@ -8,6 +8,8 @@
 
 #include "CUser.h"
 
+#include "CColorController.h"
+
 CSprintAttack_Player::CSprintAttack_Player()
 {
 }
@@ -43,11 +45,15 @@ HRESULT CSprintAttack_Player::Initialize()
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 80;
+	m_iStateChangeKeyFrame = 70;
 
 	m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
-	m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
+	m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
 	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
+
+	Add_KeyFrame(23, 0);
+	Add_KeyFrame(32, 1);
 
 
     return S_OK;
@@ -55,32 +61,35 @@ HRESULT CSprintAttack_Player::Initialize()
 
 void CSprintAttack_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->TurnOn_TrailEffect(true);
+
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	//임시
-	pMyPhysicsCom->Get_Physics().bAir = false;
-
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	vCamLook.y = 0.f;
-
-	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
-	pMyTransform->Set_LerpLook(vCamLook, 0.4f);
-
-	//실제 움직이는 방향
-	pMyPhysicsCom->Set_Dir(vCamLook);
 
 	//최대속도 설정
-	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintAttackSpeed);
+	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
 	pMyPhysicsCom->Set_SpeedasMax();
 
 
-	//마찰 조절하기
-	//*주의 : 사용하고나면 Exit에서 반드시 1로 되돌려주기
-	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.65f;
-	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
-	Add_KeyFrame(33, 1);
+	tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 1.f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = _float4((230.f / 255.f), (150.f / 255.f), (40.f / 255.f), 0.f);
+	tColorDesc.vTargetColor *= 1.1f;
+	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+	tColorDesc.iStartKeyFrame = 2;
+	tColorDesc.iEndKeyFrame = 24; // 프레임 맞춰놓음
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
+
+
+
 
 	//마찰 조절하기
 	//*주의 : 사용하고나면 Exit에서 반드시 1로 되돌려주기
@@ -91,12 +100,41 @@ void CSprintAttack_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CSprintAttack_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (33 > pAnimator->Get_CurAnimFrame())
+	if (m_bTrigger)
 	{
 		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 		pMyPhysicsCom->Set_Accel(m_fMyAccel);
 	}
+
+	if (m_bAttackTrigger)
+	{
+		// 공격 진입
+		if (pOwner->Is_Weapon_R_Collision())
+		{
+			_float4 vHitPos = pOwner->Get_HitPos();
+			_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+			//발쪽이면
+			if (vHitPos.y <= vPos.y + 0.1f)
+			{
+				pOwner->Shake_Camera(0.25f, 0.25f);
+				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+			}
+
+
+			else
+				return STATE_BOUNCE_PLAYER_R;
+
+			m_bAttackTrigger = false;
+		}
+
+	}
 	
+	Follow_MouseLook(pOwner);
+	pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
+
 
     return __super::Tick(pOwner, pAnimator);
 
@@ -104,8 +142,12 @@ STATE_TYPE CSprintAttack_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CSprintAttack_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->TurnOn_TrailEffect(false);
+
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
+	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+
     /* 할거없음 */
 }
 
@@ -125,11 +167,25 @@ void	CSprintAttack_Player::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 {
 	switch (iSequence)
 	{
+		//Attack Begin
+	case 0:
+	{
+		cout << "Attack Begin " << endl;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		m_bAttackTrigger = true;
+	}
+
+	//Attack Done
+	break;
 	case 1:
 	{
+		cout << "Attack End " << endl;
+		m_bAttackTrigger = false;
+		m_bTrigger = false;
 		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 		pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.7f;
-
+		pOwner->TurnOn_TrailEffect(false);
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	}
 
 

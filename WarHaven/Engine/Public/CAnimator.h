@@ -24,6 +24,7 @@ public:
 	_float	Calculate_Duration(_uint iTypeIndex, _uint iAnimIndex, _uint iKeyFrame);
 
 public:
+	_uint		Get_CurCycleAnimIndex() { return m_iCurrentCycleAnimationIndex; }
 	
 	_uint		Get_CurAnimFrame();
 
@@ -55,6 +56,9 @@ private:
 	wstring					m_wstrModelFilePath;
 	_uint					m_iCurrentAnimationTypeIndex = 0;
 	_uint					m_iCurrentAnimationIndex = 0;
+
+	_uint					m_iCurrentCycleAnimationTypeIndex = 0;
+	_uint					m_iCurrentCycleAnimationIndex = 0;
 
 	vector<vector<CAnimation*>>		m_vecAnimations;
 	CHierarchyNode* m_pFootNode = nullptr;

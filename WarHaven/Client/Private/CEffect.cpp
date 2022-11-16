@@ -180,24 +180,9 @@ void CEffect::OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType)
 
 void CEffect::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
-	if ("g_fAlpha" == pConstantName)
-	{
-		pShader->Set_RawValue(pConstantName, &m_fAlpha, sizeof(_float));
-		return;
-	}
-
-	if ("g_vFlag" == pConstantName)
-	{
-		pShader->Set_RawValue(pConstantName, &m_vEffectFlag, sizeof(_float4));
-		return;
-	}
-
-	if ("g_vGlowFlag" == pConstantName)
-	{
-		pShader->Set_RawValue(pConstantName, &m_vGlowFlag, sizeof(_float4));
-		return;
-	}
-
+	pShader->Set_RawValue("g_fAlpha", &m_fAlpha, sizeof(_float));
+	pShader->Set_RawValue("g_vFlag", &m_vEffectFlag, sizeof(_float4));
+	pShader->Set_RawValue("g_vGlowFlag", &m_vGlowFlag, sizeof(_float4));
 	pShader->Set_RawValue("g_fUVPlusX", &m_fCurUVPlusX, sizeof(_float));
 	pShader->Set_RawValue("g_fUVPlusY", &m_fCurUVPlusY, sizeof(_float));
 	pShader->Set_RawValue("g_fColorPower", &m_fColorPower, sizeof(_float));
@@ -232,8 +217,8 @@ HRESULT CEffect::Start()
 	SHADER_BINDING(CEffect, "g_fUVPlus");
 
 	GET_COMPONENT(CModel)->Set_ShaderFlag(m_vEffectFlag);
-	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, "g_fAlpha");
-	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, "g_vGlowFlag");
+
+	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, placeholders::_2);
 
 
 	CallBack_CollisionEnter += bind(&CEffect::OnCollisionEnter, this, placeholders::_1, placeholders::_2);
@@ -251,8 +236,19 @@ HRESULT CEffect::Initialize_Prototype()
 	pShader->Initialize();
 	Add_Component(pShader);
 
-	CModel_Renderer* pRenderer = CModel_Renderer::Create(CP_RENDERER, RENDER_ALPHA, m_iPassType
-		, _float4(0.f, 0.f, 0.f, 1.f));
+	CModel_Renderer* pRenderer = nullptr;
+	if (m_iPassType == VTXEFFECT_PASS_DISTORTION && m_eShaderType == SHADER_VTXEFFECTS)
+	{
+		pRenderer = CModel_Renderer::Create(CP_RENDERER, RENDER_DISTORTION, m_iPassType
+			, _float4(0.f, 0.f, 0.f, 1.f));
+	}
+	else
+	{
+		pRenderer = CModel_Renderer::Create(CP_RENDERER, RENDER_ALPHA, m_iPassType
+			, _float4(0.f, 0.f, 0.f, 1.f));
+	}
+
+	
 
 	Add_Component<CRenderer>(pRenderer);
 	Add_Component(CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, m_wstrPath.c_str(), m_matTrans));
@@ -503,11 +499,11 @@ void CEffect::Update_Fade()
 
 void CEffect::UPdate_Turn()
 {
-	if(m_bRotation)
+	if (m_bRotation)
 		CUtility_Transform::Rotation(m_pTransform, m_vRotationDir.Normalize(), m_fAngle);
 
 	CUtility_Transform::Turn(m_pTransform, m_vTurnDir.Normalize(), m_fTurnSpeed);
 
 	m_pTransform->Make_WorldMatrix();
-	
+
 }

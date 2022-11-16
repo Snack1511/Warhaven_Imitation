@@ -51,6 +51,9 @@ HRESULT CSprint_Loop::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_END_PLAYER);
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_PLAYER);
 	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_PLAYER);
+
+    m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
+    m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     //m_vecAdjState.push_back(STATE_SILDING);
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
@@ -73,7 +76,7 @@ void CSprint_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vCamLook = pOwner->Get_FollowCamLook();
 	vCamLook.y = 0.f;
 
 	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
@@ -99,12 +102,12 @@ STATE_TYPE CSprint_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vCamLook = pOwner->Get_FollowCamLook();
     vCamLook.y = 0.f;
 	_float4 vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
     vCamRight.y = 0.f;
 
-	_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vDir = pOwner->Get_FollowCamLook();
 
 
 	_uint iFrame = pAnimator->Get_CurAnimFrame();
@@ -163,7 +166,7 @@ STATE_TYPE CSprint_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     */
    
 
-    if (pAnimator->Is_CurAnimFinished() && KEY(LSHIFT, HOLD))
+    if (pAnimator->Is_CurAnimFinished())
         return m_eStateType;
 
    

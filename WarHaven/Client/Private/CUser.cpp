@@ -88,7 +88,7 @@ void CUser::KeyInput_FPSSetter()
 {
 	_double dCurFPSLimit = CGameInstance::Get_Instance()->Get_FPSLimitTime();
 
-	if (KEY(F3, TAP))
+	/*if (KEY(F3, TAP))
 	{
 		dCurFPSLimit = 1. / 30.;
 	}
@@ -99,10 +99,13 @@ void CUser::KeyInput_FPSSetter()
 	else if (KEY(F1, TAP))
 	{
 		dCurFPSLimit = 0.;
-	}
+	}*/
 
-	if (KEY(NUM0, TAP))
+	if (KEY(F1, TAP))
 		Time_Slow();
+
+	if (KEY(F2, TAP))
+		Turn_BloodOverLay(random(0.f, 1.f));
 
 	CGameInstance::Get_Instance()->Set_FPSLimitTIme(dCurFPSLimit);
 

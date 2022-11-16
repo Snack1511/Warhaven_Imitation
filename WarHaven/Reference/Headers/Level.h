@@ -32,6 +32,7 @@ public:
 protected:
 	_float	m_fLoadingFinish = 0.f;
 	vector<pair<CGameObject*, _uint>>	m_vecGameObjects;
+	vector<CGameObject*>		m_StaticShadowObjects;
 
 protected:
 	void	Ready_GameObject(CGameObject* pGameObject, _uint iGroupIndex);

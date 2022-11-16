@@ -666,7 +666,18 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_PORTEFFECT();
     }
 
-    pass UIColor
+    pass UI_HeroKeySill
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PORTEFFECT();
+    }
+
+    pass ALPHA
     {
         SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
@@ -677,126 +688,6 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_UIColor_MAIN();
     }
 
-    pass LoadingBar
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_LoadingBar_MAIN();
-    }
-
-    pass NoBlack
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_None);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_NOBLACK_MAIN();
-    }
-
-    pass Crosshair
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_CROSSHAIR_MAIN();
-    }
-
-    pass ColorNoBlack
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_COLORNOBLACK_MAIN();
-    }
-
-    pass SkillIcon
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_SKILLICON_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_SKILLICON_MAIN();
-    }
-
-    pass HPBAR
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_HPBAR_MAIN();
-    }
-
-    pass HPBAREffect
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_HPBAREFFECT_MAIN();
-    }
-
-    pass ENEMYHPBAR
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_ENEMYHPBAR_MAIN();
-    }
-
-    pass ENEMYHPBARLINE
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_ENEMYHPBARLINE_MAIN();
-    }
-
-    pass DIALOG
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_DIALOG_MAIN();
-    }
-
-    pass BOSSHP
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_BOSSHP_MAIN();
-    }
 
     pass TRAIL
     {
@@ -807,28 +698,6 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_TRAIL_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_TRAIL_MAIN();
-    }
-
-    pass KOTO
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_None);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_KOTO_MAIN();
-    }
-
-    pass FOOTTRAIL
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_None);
-
-        VertexShader = compile vs_5_0 VS_TRAIL_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_FOOTTRAIL_MAIN();
     }
 
     pass BLOODOVERLAY

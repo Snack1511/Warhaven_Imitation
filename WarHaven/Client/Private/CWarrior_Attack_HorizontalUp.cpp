@@ -36,7 +36,7 @@ HRESULT CWarrior_Attack_HorizontalUp::Initialize()
 	m_iStopIndex = 38;
 	m_iAttackEndIndex = 58;
 
-	Add_KeyFrame(43, 1);
+	Add_KeyFrame(38, 1);
 	Add_KeyFrame(m_iAttackEndIndex, 2);
 
 
@@ -82,7 +82,7 @@ STATE_TYPE CWarrior_Attack_HorizontalUp::Check_Condition(CUnit* pOwner, CAnimato
 	*/
 	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 	{
-		_float fDot = CUtility_Transform::Get_LookRotateAngle(GAMEINSTANCE->Get_CurCamLook());
+		_float fDot = CUtility_Transform::Get_LookRotateAngle(pOwner->Get_FollowCamLook());
 
 		if (fDot > 0.f && fDot < 0.994f)
 		{

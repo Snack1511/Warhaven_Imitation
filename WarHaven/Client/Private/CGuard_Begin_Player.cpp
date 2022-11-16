@@ -58,7 +58,7 @@ void CGuard_Begin_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 STATE_TYPE CGuard_Begin_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	// 가드 상태에서도 움직일 수 있도록 설정한다.
-
+	Follow_MouseLook(pOwner);
 
     return __super::Tick(pOwner, pAnimator);
 

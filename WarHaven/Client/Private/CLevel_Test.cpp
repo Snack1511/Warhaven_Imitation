@@ -93,7 +93,6 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	if (FAILED(pSkyBox->Initialize()))
 		return E_FAIL;
 
-	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
 
 	m_fLoadingFinish = 0.1f;
 	//CTerrain* pTerrain = CTerrain::Create(100, 100);
@@ -103,14 +102,18 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
 
 	/* 각자 이름 함수에서 놀으셈*/
-
-    if (FAILED(SetUp_Prototypes_TH()))
-        return E_FAIL;
+	if (FAILED(SetUp_Prototypes_MJ()))
+		return E_FAIL;
     m_fLoadingFinish = 0.3f;
+
+	/*사연이 있어서 이쪽으로 내려놓음*/
+	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
+
+
 	if (FAILED(SetUp_Prototypes_HR()))
 		return E_FAIL;
 	m_fLoadingFinish = 0.4f;
-	if (FAILED(SetUp_Prototypes_MJ()))
+	if (FAILED(SetUp_Prototypes_TH()))
 		return E_FAIL;
 	m_fLoadingFinish = 0.5f;
 	if (FAILED(SetUp_Prototypes_JJ()))
@@ -132,10 +135,10 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = _float4(200.f, 400.f, -200.f, 1.f);
+	LightDesc.vPosition = _float4(100.f, 200.f, 100.f, 1.f);
 	LightDesc.fRange = 1000.f;
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
+	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
@@ -148,7 +151,13 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
 HRESULT CLevel_Test::Enter()
 {
+
+
 	__super::Enter();
+	/*Static Shadow*/
+
+
+
 	/* Check for Collision */
 	Col_Check();
 	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
@@ -164,6 +173,17 @@ HRESULT CLevel_Test::Enter()
 
 void CLevel_Test::Tick()
 {
+	if (!m_bStaticShadowBake)
+	{
+		m_fDealyAcc += fDT(0);
+		if (m_fDealyAcc >= m_fDelayTime)
+		{
+			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, 200.f);
+			m_bStaticShadowBake = true;
+		}
+	}
+	
+
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Tick();
 
@@ -295,7 +315,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	CMap_Loader::Load_Data(wstring(TEXT("TestMap")), Ready_Object);
 
-
+	
+	m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
 
 	//터레인 불러오기
 	//오브젝트 불러오기
@@ -370,9 +391,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_HR()
 
 HRESULT CLevel_Test::SetUp_Prototypes_YJ()
 {
-	CDebugObject* pDebugObject = CDebugObject::Create(_float4(0.f, -2.f, 0.f), _float4(20.f, 1.f, 20.f), ZERO_VECTOR);
-	pDebugObject->Initialize();
-	Ready_GameObject(pDebugObject, GROUP_PROP);
+	//CDebugObject* pDebugObject = CDebugObject::Create(_float4(0.f, -2.f, 0.f), _float4(20.f, 1.f, 20.f), ZERO_VECTOR);
+	//pDebugObject->Initialize();
+	//Ready_GameObject(pDebugObject, GROUP_PROP);
 
 
 
@@ -424,8 +445,6 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
 	};
 
-
-
 	pTestWarriorUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
 
 	tUnitColDesc[0].fRadius = 0.4f;
@@ -446,46 +465,54 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 	pTestWarriorUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
-
-
+	_float4 vPlayerPos = _float4(20.f, 2.f, 20.f);
+	pTestWarriorUnit->Teleport_Unit(vPlayerPos);
 	/* Game Collider */
 
-	///* Test Enemy */
-	//CUnit_Warrior* pTestEnemyWarrior = CUnit_Warrior::Create(tModelData);
-	//if (!pTestEnemyWarrior)
-	//	return E_FAIL;
+	/* Test Enemy */
+	CUnit_Warrior* pTestEnemyWarrior = CUnit_Warrior::Create(tModelData);
+	if (!pTestEnemyWarrior)
+		return E_FAIL;
 
-	//pTestEnemyWarrior->Initialize();
-	//pTestEnemyWarrior->Set_TargetUnit(pTestWarriorUnit);
-	//pTestEnemyWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
+	pTestEnemyWarrior->Initialize();
+	pTestEnemyWarrior->Set_TargetUnit(pTestWarriorUnit);
+	pTestEnemyWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
 
-	//CUnit::UNIT_COLLIDREINFODESC tEnemyUnitInfoDesc;
-	//CUnit::UNIT_COLLIDERDESC tEnemyUnitColDesc[1];
+	CUnit::UNIT_COLLIDREINFODESC tEnemyUnitInfoDesc;
+	CUnit::UNIT_COLLIDERDESC tEnemyUnitColDesc[1];
 
-	//tEnemyUnitColDesc[0].fRadius = 1.f;
-	//tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, tEnemyUnitColDesc->fRadius * 0.5f, 0.f);
-	//tEnemyUnitColDesc[0].eColType = COL_ENEMYHITBOX_BODY;
+	tEnemyUnitColDesc[0].fRadius = 1.f;
+	tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, tEnemyUnitColDesc->fRadius * 0.5f, 0.f);
+	tEnemyUnitColDesc[0].eColType = COL_ENEMYHITBOX_BODY;
 
-	//pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, tEnemyUnitColDesc);
+	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, tEnemyUnitColDesc);
 
-	//tEnemyUnitColDesc[0].fRadius = 0.3f;
-	//tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	//tEnemyUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
+	tEnemyUnitColDesc[0].fRadius = 0.3f;
+	tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	tEnemyUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
 
 
-	//pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, tEnemyUnitColDesc);
+	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, tEnemyUnitColDesc);
 
-	//pTestEnemyWarrior->Teleport_Unit(_float4(0.f, 0.f, 2.f));
-	//Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
-	//DISABLE_GAMEOBJECT(pTestEnemyWarrior);
+	Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
+
+	_float4 vEnemyPos = vPlayerPos;
+	vEnemyPos.z += 4.f;
+	pTestEnemyWarrior->Teleport_Unit(vEnemyPos);
+
+
+
 
 	CUser::Get_Instance()->Set_Player(pTestWarriorUnit);
 
 	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarriorUnit, nullptr);
 	pFollowCam->Initialize();
+	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
+	pFollowCam->Get_Transform()->Make_WorldMatrix();
 	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
 	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
 	DISABLE_GAMEOBJECT(pFollowCam);
+	pTestWarriorUnit->Set_FollowCam(pFollowCam);
 
 	return S_OK;
 }

@@ -2569,8 +2569,8 @@ void CWindow_Map::Read_Folder_ForTree(const char* pFolderPath, TREE_DATA& tRootT
             _int iFindExt = (int)strFileName.rfind(".") + 1;
             string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
 
-            if (strExtName == "dat")
-                continue;
+           /* if (strExtName == "dat")
+                continue;*/
         }
 
         tRootTree.vecChildren.push_back(tTreeData);

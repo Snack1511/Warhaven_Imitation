@@ -26,7 +26,8 @@ private:
 	virtual void	On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
 private:
-	_bool m_bTrigger = false;
+	_bool m_bTrigger = true;
+
 
 
 };

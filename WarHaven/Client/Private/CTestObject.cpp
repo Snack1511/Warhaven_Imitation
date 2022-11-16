@@ -34,7 +34,9 @@ HRESULT CTestObject::Initialize_Prototype()
 	tPhysXColliderDesc.eType = CPhysXCollider::COLLIDERTYPE::DYNAMIC;
 	tPhysXColliderDesc.fDensity = 1.f;
 	tPhysXColliderDesc.vAngles = _float4(frandom(0, 360.f), frandom(0, 360.f), frandom(0, 360.f));
-	tPhysXColliderDesc.vPosition = _float4(frandom(-10.f, 10.f), 10.f, frandom(-10.f, 10.f));
+
+	tPhysXColliderDesc.vPosition = PLAYER->Get_Transform()->Get_World(WORLD_POS);
+	tPhysXColliderDesc.vPosition += _float4(frandom(-10.f, 10.f), 10.f, frandom(-10.f, 10.f));
 	tPhysXColliderDesc.vScale = _float4(1.f, 1.f, 1.f, 1.f);
 	CPhysXCollider* pPhysXCollider = CPhysXCollider::Create(CP_BEFORE_TRANSFORM, tPhysXColliderDesc);
 

@@ -20,15 +20,15 @@ CWarrior_Attack_HorizontalMiddle::~CWarrior_Attack_HorizontalMiddle()
 HRESULT CWarrior_Attack_HorizontalMiddle::Initialize()
 {
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
 
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 75;
+	m_iStateChangeKeyFrame = 70;
 
-	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 0.5f;
@@ -80,7 +80,7 @@ STATE_TYPE CWarrior_Attack_HorizontalMiddle::Check_Condition(CUnit* pOwner, CAni
 	*/
 	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 	{
-		_float fDot = CUtility_Transform::Get_LookRotateAngle(GAMEINSTANCE->Get_CurCamLook());
+		_float fDot = CUtility_Transform::Get_LookRotateAngle(pOwner->Get_FollowCamLook());
 		if (fabs(fDot) > 0.96f)
 		{
 

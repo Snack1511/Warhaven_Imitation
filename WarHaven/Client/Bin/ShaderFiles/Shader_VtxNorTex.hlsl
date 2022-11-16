@@ -23,6 +23,8 @@ texture2D	g_DestDiffTexture;
 texture2D	g_FilterTexture;
 texture2D	g_BrushTexture;
 
+texture2D	g_StaticShadowTexture;
+
 vector		g_vMtrlAmbient = vector(1.f, 1.f, 1.f, 1.f);
 vector		g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 float		g_fPower = 30.f;
@@ -215,6 +217,46 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 }
 
 
+struct PS_SHADOW_OUT
+{
+	vector		vLightDepth : SV_TARGET0;
+};
+
+PS_SHADOW_OUT PS_SHADOW_MAIN(VS_OUT_LIGHT In)
+{
+	PS_SHADOW_OUT		Out = (PS_SHADOW_OUT)0;
+
+	float2 staticUV = float2(
+		(In.vProjPos.x / In.vProjPos.w) * 0.5f + 0.5f,
+		(In.vProjPos.y / In.vProjPos.w) * -0.5f + 0.5f
+		);
+
+	Out.vLightDepth.rgb = In.vProjPos.w / 1500.f;
+
+	vector vStaticDesc = g_StaticShadowTexture.Sample(ShadowSampler, staticUV);
+
+	if (vStaticDesc.r < Out.vLightDepth.r)
+		discard;
+
+
+	Out.vLightDepth.a = 1.f;
+
+	return Out;
+}
+
+
+PS_SHADOW_OUT PS_STATICSHADOW_MAIN(VS_OUT_LIGHT In)
+{
+	PS_SHADOW_OUT		Out = (PS_SHADOW_OUT)0;
+
+	Out.vLightDepth.rgb = In.vProjPos.w / 1500.f;
+
+	Out.vLightDepth.a = 1.f;
+
+	return Out;
+}
+
+
 technique11 DefaultTechnique
 {
 	pass Default
@@ -251,6 +293,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
+	}
+
+	pass StaticShadow
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_STATICSHADOW_MAIN();
 	}
 
 }

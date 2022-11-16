@@ -42,6 +42,7 @@ public:
 public:
 	static CPhysXCollider* Create(_uint iGroupID, const PHYSXCOLLIDERDESC& tPhysXColliderDesc);
 	static CPhysXCollider* Create(_uint iGroupID, CMesh*	pMesh, CTransform* pWorldTransform);
+	static CPhysXCollider* Create_Convex(_uint iGroupID, CMesh*	pMesh, CTransform* pWorldTransform);
 
 
 
@@ -126,6 +127,7 @@ protected:
 	void		Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh = nullptr);
 
 	HRESULT		SetUp_StaticMeshActor(CMesh* pMesh, CTransform* pWorldTransform);
+	HRESULT		SetUp_StaticConvexActor(CMesh* pMesh, CTransform* pWorldTransform);
 
 };
 

@@ -470,17 +470,6 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_NORMAL_MAIN();
 	}
 
-	pass Dragon
-	{
-		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_Default);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_DRAGON_MAIN();
-	}
-
 	pass CASCADECASTER
 	{
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);

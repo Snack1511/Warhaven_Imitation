@@ -253,22 +253,22 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 		Out.vColor += vSpecular;
 
 	//DOF
-	if (Out.vColor.a > 0.f && vDepthDesc.y > 0.01f)
-	{
-		//멀수록 강해짐
-		float fRatio = min((vDepthDesc.y - 0.01f) / 0.15f, 1.f);
+	//if (Out.vColor.a > 0.f && vDepthDesc.y > 0.01f)
+	//{
+	//	//멀수록 강해짐
+	//	float fRatio = min((vDepthDesc.y - 0.01f) / 0.15f, 1.f);
 
-		vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
+	//	vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
 
-		fRatio *= 0.6f;
-		fRatio = pow(fRatio, 1.5f);
+	//	fRatio *= 0.6f;
+	//	fRatio = pow(fRatio, 1.5f);
 
-		Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
-		Out.vColor.r -= 0.3f * fRatio;
-		Out.vColor.g += (0.2f * fRatio);
-		Out.vColor.b += (0.8f * fRatio);
+	//	Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
+	//	Out.vColor.r -= 0.3f * fRatio;
+	//	Out.vColor.g += (0.2f * fRatio);
+	//	Out.vColor.b += (0.8f * fRatio);
 
-	}
+	//}
 
 	if (Out.vColor.a <= 0.f)
 	{
@@ -277,9 +277,8 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	}
 
 	//Shadow
-	//vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
-
-	//Out.vColor *= vShadowDesc;
+	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vColor *= vShadowDesc;
 
 
 	//
@@ -379,6 +378,11 @@ PS_OUT PS_MAIN_FINALBLEND(PS_IN In)
 				Out.vColor.xyz = Out.vColor.xyz * (1.f - vGlowDesc.a) + vGlowDesc.xyz * (vGlowDesc.a);
 			}
 
+		}
+		else
+		{
+			//이펙트 그려진 부분엔 이펙트의 알파 기준으로
+			Out.vColor.xyz = Out.vColor.xyz * (vEffectFlagDesc.a) + vGlowDesc.xyz * (1.f - vEffectFlagDesc.a);
 		}
 		bFog = true;
 	}

@@ -61,25 +61,28 @@ void CModel_Renderer::Start()
 			if (m_iCurPass <= 8)
 				m_eShadowType = DEFAULTSHADOW;
 
+			m_iShadowPass = 4;
+
+
 		}
 	}
 
-	if (m_pShaderCom->Get_ShaderFileIndex() - CUR_ENGINESHADER == 3)
-	{
-		if (m_eShadowType == DEFAULTSHADOW)
-			m_iShadowPass = 8;
-		else
-			m_iShadowPass = 10;
-	}
-	else if (m_pShaderCom->Get_ShaderFileIndex() - CUR_ENGINESHADER == 4)
-		m_iShadowPass = 7;
-	else if (m_pShaderCom->Get_ShaderFileIndex() - CUR_ENGINESHADER == 5)
-	{
-		if (m_eShadowType == DEFAULTSHADOW)
-			m_iShadowPass = 2;
-		else if (m_eShadowType == STATICSHADOW)
-			m_iShadowPass = 3;
-	}
+	//if (m_pShaderCom->Get_ShaderFileIndex() - CUR_ENGINESHADER == 3)
+	//{
+	//	if (m_eShadowType == DEFAULTSHADOW)
+	//		m_iShadowPass = 8;
+	//	else
+	//		m_iShadowPass = 10;
+	//}
+	//else if (m_pShaderCom->Get_ShaderFileIndex() - CUR_ENGINESHADER == 4) //ANIM
+	//	m_iShadowPass = 4;
+	//else if (m_pShaderCom->Get_ShaderFileIndex() - CUR_ENGINESHADER == 5)
+	//{
+	//	if (m_eShadowType == DEFAULTSHADOW)
+	//		m_iShadowPass = 2;
+	//	else if (m_eShadowType == STATICSHADOW)
+	//		m_iShadowPass = 3;
+	//}
 }
 
 void CModel_Renderer::Tick()
@@ -125,20 +128,6 @@ HRESULT CModel_Renderer::Bake_Shadow(_float4x4 ViewMatrix)
 	m_pOwner->Get_Transform()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
-
-	//카메라 위치 여기서 만들어주기
-	//_float fDistance = 100.f;
-	//_float4x4 vLightVewMatrix = ViewMatrix;
-	//_float4	vPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
-	//_float4 vLook = (*((_float4*)&vLightVewMatrix.m[WORLD_LOOK]));
-	//vPos -= vLook * fDistance;
-
-	///*Point */
-	////vPos = _float4(500.f, 500.f, -500.f)
-
-	//(*((_float4*)&vLightVewMatrix.m[WORLD_POS])) = vPos;
-	//vLightVewMatrix.Inverse();
-	//vLightVewMatrix.Transpose(); 
 
 	m_pShaderCom->Set_RawValue("g_ViewMatrix", &ViewMatrix, sizeof(_float4x4));
 

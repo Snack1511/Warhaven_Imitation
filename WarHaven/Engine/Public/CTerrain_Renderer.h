@@ -20,11 +20,16 @@ public:
         const _uint& iCurPass, const _float4& vOffsetPos = _float4(0.f, 0.f, 0.f, 1.f));
 public:
     virtual HRESULT		Render();
+
 public:
     void Clear_TextureList();
     void Add_Texture(CTexture* pTexture);
     void Update_TextureIndex(_int Sour, _int Dest);
     void Update_BackGround(_int BGIndex);
+
+public:
+    virtual HRESULT		Bake_Shadow(_float4x4 ViewMatrix) override;
+
 private:
     //SHADOW_TYPE	m_eShadowType = NOSHADOW;
     ID3D11ShaderResourceView** m_pArrSRVs = nullptr;
