@@ -25,24 +25,27 @@ class CUnit abstract
 public:
 	enum CLASS_TYPE
 	{
-		CLASS_WARRIOR,
-		CLASS_SPEAR,
-		CLASS_ARCHER,
-		CLASS_PALADIN,
-		CLASS_PRIEST,
-		CLASS_ENGINEER,
-		CLASS_FIONA,
-		CLASS_QANDA,
-		CLASS_HOEDT,
-		CLASS_LANCER,
+		WARRIOR,
+		SPEAR,
+		ARCHER,
+		PALADIN,
+		PRIEST,
+		ENGINEER,
+		FIONA,
+		QANDA,
+		HOEDT,
+		LANCER,
 		CLASS_END
 	};
 
 public:
 	struct UNIT_STATUS
 	{
-		CLASS_TYPE eClass;
-		_bool m_bIsHero = false;
+		CLASS_TYPE	eClass = ENGINEER;
+		_bool		bAbleHero = false;
+		_bool		bIsHero = false;
+		_float		fMaxHeroGauge = 100.f;
+		_float		fHeroGague = 50.f;
 
 		WEAPON_TYPE eWeapon;
 		_float fHP = 100.f;

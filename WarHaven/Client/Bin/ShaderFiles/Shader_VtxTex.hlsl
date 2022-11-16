@@ -18,6 +18,7 @@ vector g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 float g_fValue;
 float g_fHpValue;
+float g_fHeroValue;
 
 bool g_bAppear;
 
@@ -189,11 +190,17 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    In.vTexUV.x -= g_fValue;
+    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 
-    if (In.vTexUV.y <= g_fValue)
+    Out.vColor *= (vNoise + vNoise);
+    
+    if (In.vTexUV.y < g_fHeroValue)
         discard;
 	
-    if (Out.vColor.w < 0.01f)
+    if (Out.vColor.a < 0.01f)
         discard;
 	
     return Out;
@@ -226,8 +233,8 @@ PS_OUT PS_PORTEFFECT(PS_IN In)
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
     
-    Out.vColor.a = vNoise.r;
-    // Out.vColor.a *= vNormal;
+    Out.vColor.a *= vNoise.r;
+    // Out.vColor *= vNormal;
       
     if (Out.vColor.r <= 0.01f)
         discard;

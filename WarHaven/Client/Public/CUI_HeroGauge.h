@@ -19,6 +19,9 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
+public:
+	void Start_HeroGauge();
+
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;;
@@ -26,12 +29,18 @@ protected:
 public:
 	void Set_ShaderResources(CShader* pShader, const char* pConstName);
 
+public:
+	void Set_HeroValue(_float fValue) { m_fGaugeValue = fValue; }
+
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 
+	_float m_fUVSpeed = 0.f;
+
 	_float m_fGaugeValue = 1.f;
+
 	_bool m_bHeroAble = false;
-	_bool m_bIsHero = false;
+	_bool bIsHero = false;
 
 private:
 	void Set_Pass();

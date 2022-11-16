@@ -25,10 +25,13 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	_float4 Get_Pos() { return m_vPosition; }
 	void Set_Pos(_float fX, _float fY);
 	void Set_PosX(_float fX);
 
 public:
+	_float4 Get_Scale() { return m_vScale; }
+
 	void Set_Scale(_float value);
 	void Set_Scale(_float fX, _float fY);
 	void Set_ScaleX(_float fX);
@@ -52,6 +55,12 @@ public:
 	_float Get_Sort() { return m_vPosition.z; }
 	void Set_Sort(_float value);
 	
+public:
+	CDelegate<const _uint&>		CallBack_MouseIn;
+	CDelegate<const _uint&>		CallBack_MouseExit;
+	CDelegate<const _uint&>		CallBack_ButtonClick;
+
+
 protected:
 	_float4 m_vPosition;
 	_float4 m_vScale;

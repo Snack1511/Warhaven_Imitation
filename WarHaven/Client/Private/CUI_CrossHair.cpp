@@ -87,43 +87,43 @@ void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 
 	switch (m_iCurCrosshair)
 	{
-	case CUnit::CLASS_WARRIOR:
+	case CUnit::WARRIOR:
 		DefaultCrosshair();
 		break;
 
-	case CUnit::CLASS_SPEAR:
+	case CUnit::SPEAR:
 		DefaultCrosshair(3);
 		break;
 
-	case CUnit::CLASS_ARCHER:
+	case CUnit::ARCHER:
 		ArrowCrosshair();
 		break;
 
-	case CUnit::CLASS_PALADIN:
+	case CUnit::PALADIN:
 		DefaultCrosshair();
 		break;
 
-	case CUnit::CLASS_PRIEST:
+	case CUnit::PRIEST:
 		DefaultCrosshair(2);
 		break;
 
-	case CUnit::CLASS_ENGINEER:
+	case CUnit::ENGINEER:
 		DefaultCrosshair(2);
 		break;
 
-	case CUnit::CLASS_FIONA:
+	case CUnit::FIONA:
 		DefaultCrosshair();
 		break;
 
-	case CUnit::CLASS_QANDA:
+	case CUnit::QANDA:
 		DefaultCrosshair(3);
 		break;
 
-	case CUnit::CLASS_HOEDT:
+	case CUnit::HOEDT:
 		DefaultCrosshair();
 		break;
 
-	case CUnit::CLASS_LANCER:
+	case CUnit::LANCER:
 		DefaultCrosshair(4);
 		break;
 	}

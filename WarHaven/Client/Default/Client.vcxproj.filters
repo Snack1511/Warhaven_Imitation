@@ -133,35 +133,8 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
       <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component">
-      <UniqueIdentifier>{89cfec7a-e14b-4cdf-82c0-eeab976eb3cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object">
-      <UniqueIdentifier>{c5067414-7568-4150-bbe4-b1cf625ee711}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\01. Level\02.Level_Logo">
       <UniqueIdentifier>{8d56d1ae-6203-49bf-8e2b-b4dfe22c1f78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading">
-      <UniqueIdentifier>{2bd10a4d-ad71-4463-9c19-af55646d4b8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\BG">
-      <UniqueIdentifier>{18f43bf2-a938-4b4d-8911-0b877f340bff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\Icon">
-      <UniqueIdentifier>{08a2ffa7-5a48-4af9-8e51-2be888a8669a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\02.Lobby">
-      <UniqueIdentifier>{3971a91c-b0f4-4a24-961f-1e81ced819bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default">
-      <UniqueIdentifier>{eae3d0de-0e2b-4293-a4a1-10a5c49e90b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\00.Logo">
-      <UniqueIdentifier>{e2e62525-c7a1-40f2-a5d1-92444378f3cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default\Black">
-      <UniqueIdentifier>{ce60bc22-043f-42d6-822d-36717ae53d82}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\01. Level\03.Level_Main">
       <UniqueIdentifier>{fd28c482-61c9-4553-9fba-4b645532e423}</UniqueIdentifier>
@@ -202,23 +175,11 @@
     <Filter Include="03. Instances\03. Component\04. ColorController">
       <UniqueIdentifier>{52202c2e-e784-4acd-978e-0b515adaf11d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\Button">
-      <UniqueIdentifier>{05bd9d01-1766-466a-ae07-d75941b0ba76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Component\Text">
-      <UniqueIdentifier>{38fe1128-ebee-4fb0-a7f0-13d768ed14b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.UI_Object\98.Cursor">
-      <UniqueIdentifier>{423fdc2c-7038-4a91-92eb-1df1541bf3b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\04. Game_Manager">
       <UniqueIdentifier>{82df25a1-5ffa-472c-a30b-7edc0addc4aa}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\04. Game_Manager\JJ">
       <UniqueIdentifier>{b9aadbf8-1156-4bce-b7ef-116b6e52ecab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper">
-      <UniqueIdentifier>{df70e0fd-717d-4898-9003-9ee5dff3f0a1}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX">
       <UniqueIdentifier>{5d2dd80a-bbe4-470b-b7e3-bceb53af6041}</UniqueIdentifier>
@@ -694,6 +655,69 @@
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl">
       <UniqueIdentifier>{f49447ee-e92a-446c-8597-ea69953aaa75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\03. Component\05. Button">
+      <UniqueIdentifier>{13c9e04c-abf4-4339-a894-abeec00a6f76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object">
+      <UniqueIdentifier>{c5067414-7568-4150-bbe4-b1cf625ee711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading">
+      <UniqueIdentifier>{2bd10a4d-ad71-4463-9c19-af55646d4b8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG">
+      <UniqueIdentifier>{18f43bf2-a938-4b4d-8911-0b877f340bff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\Icon">
+      <UniqueIdentifier>{08a2ffa7-5a48-4af9-8e51-2be888a8669a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby">
+      <UniqueIdentifier>{3971a91c-b0f4-4a24-961f-1e81ced819bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default">
+      <UniqueIdentifier>{eae3d0de-0e2b-4293-a4a1-10a5c49e90b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default\Black">
+      <UniqueIdentifier>{ce60bc22-043f-42d6-822d-36717ae53d82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\00.Logo">
+      <UniqueIdentifier>{e2e62525-c7a1-40f2-a5d1-92444378f3cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\98.Cursor">
+      <UniqueIdentifier>{423fdc2c-7038-4a91-92eb-1df1541bf3b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper">
+      <UniqueIdentifier>{df70e0fd-717d-4898-9003-9ee5dff3f0a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play">
+      <UniqueIdentifier>{dd6f1321-fc66-4e02-b5b2-eb90124295ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD">
+      <UniqueIdentifier>{cf100bac-50b2-400a-83a4-b47fbfbf0520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge">
+      <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge\Crosshair">
+      <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Hp">
+      <UniqueIdentifier>{7d943caf-c5b6-40db-ac10-fc78b426c290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Portrait">
+      <UniqueIdentifier>{e04cf9a6-f562-4abd-b27c-c1d1b034a13c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\BloodOverlay">
+      <UniqueIdentifier>{1fc27a28-399a-464b-8f29-f80d90014dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Skill">
+      <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Main">
+      <UniqueIdentifier>{67ba239e-a0f3-48cc-8d58-dcb36d4c9e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play">
+      <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -826,28 +850,28 @@
       <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_LobbyBG.h">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\02.Lobby</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_LoadingBG.h">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\BG</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_LoadingIcon.h">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\Icon</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\Icon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Object.h">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_Logo.h">
       <Filter>03. Instances\01. Level\02.Level_Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Logo.h">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\00.Logo</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\00.Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_Main.h">
       <Filter>03. Instances\01. Level\03.Level_Main</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Black.h">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default\Black</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default\Black</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWindow_Map.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool</Filter>
@@ -891,20 +915,11 @@
     <ClInclude Include="..\Public\CColorController.h">
       <Filter>03. Instances\03. Component\04. ColorController</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_Text.h">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CUI_Component.h">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CUI_Button.h">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component\Button</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CUI_Cursor.h">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\98.Cursor</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\98.Cursor</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Wrapper.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGame_Manager_JJ.h">
       <Filter>02. Design\04. Game_Manager\JJ</Filter>
@@ -916,16 +931,16 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\07. Sprint</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HeroGauge.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Crosshair.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge\Crosshair</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HpBar.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Hp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Portrait.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Portrait</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Portrait</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CWindow_PhysX.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX</Filter>
@@ -952,10 +967,10 @@
       <Filter>03. Instances\02. GameObject\09. Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBloodOverlay.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\BloodOverlay</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\BloodOverlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Skill.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Skill</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Skill</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CSwitchRtoL.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\03. SwitchRL</Filter>
@@ -1099,12 +1114,11 @@
       <Filter>03. Instances\01. Level\01. Level_Test</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Main.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_MainPlay.h">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_HUD.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalUp_L.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\01. Attack\HorizontalUp\02. Left</Filter>
     </ClInclude>
@@ -1234,6 +1248,12 @@
     <ClInclude Include="..\Public\CFunc_ObjectControl.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CButton.h">
+      <Filter>03. Instances\03. Component\05. Button</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_HUD.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1350,28 +1370,28 @@
       <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_LobbyBG.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\02.Lobby</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_LoadingBG.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\BG</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_LoadingIcon.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\01.Loading\Icon</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\Icon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Object.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Logo.cpp">
       <Filter>03. Instances\01. Level\02.Level_Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Logo.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\00.Logo</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\00.Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Main.cpp">
       <Filter>03. Instances\01. Level\03.Level_Main</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Black.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\99.Default\Black</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default\Black</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWindow_Map.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool</Filter>
@@ -1415,20 +1435,11 @@
     <ClCompile Include="..\Private\CColorController.cpp">
       <Filter>03. Instances\03. Component\04. ColorController</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_Text.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component\Text</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CUI_Component.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CUI_Button.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Component\Button</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CUI_Cursor.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\02.UI_Object\98.Cursor</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\98.Cursor</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Wrapper.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGame_Manager_JJ.cpp">
       <Filter>02. Design\04. Game_Manager\JJ</Filter>
@@ -1443,16 +1454,16 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\07. Sprint</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HeroGauge.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Crosshair.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge\Crosshair</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HpBar.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Hp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Portrait.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Portrait</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Portrait</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CWindow_PhysX.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX</Filter>
@@ -1476,10 +1487,10 @@
       <Filter>03. Instances\02. GameObject\09. Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBloodOverlay.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\BloodOverlay</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\BloodOverlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Skill.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Skill</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Skill</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CSwitchRtoL.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\03. SwitchRL</Filter>
@@ -1620,12 +1631,11 @@
       <Filter>03. Instances\03. Component\01. Scriptable\Script_FixedAngleCam</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Main.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_MainPlay.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_HUD.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalUp_L.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\01. Attack\HorizontalUp\02. Left</Filter>
     </ClCompile>
@@ -1754,6 +1764,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CFunc_ObjectControl.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CButton.cpp">
+      <Filter>03. Instances\03. Component\05. Button</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_HUD.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

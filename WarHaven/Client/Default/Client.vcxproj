@@ -209,6 +209,7 @@
     <ClInclude Include="..\Public\CSpearMan_BackStep.h" />
     <ClInclude Include="..\Public\CSpearMan_SpecialGuard.h" />
     <ClInclude Include="..\Public\CFunc_ObjectControl.h" />
+    <ClInclude Include="..\public\CButton.h" />
     <ClInclude Include="..\public\CState_Blendable.h" />
     <ClInclude Include="..\Public\CStop_Player.h" />
     <ClInclude Include="..\Public\CStop_SpearMan.h" />
@@ -299,8 +300,6 @@
     <ClInclude Include="..\Public\CTrailEffect.h" />
     <ClInclude Include="..\Public\CUI.h" />
     <ClInclude Include="..\Public\CUI_Black.h" />
-    <ClInclude Include="..\Public\CUI_Button.h" />
-    <ClInclude Include="..\Public\CUI_Component.h" />
     <ClInclude Include="..\Public\CUI_Crosshair.h" />
     <ClInclude Include="..\Public\CUI_Cursor.h" />
     <ClInclude Include="..\Public\CUI_HeroGauge.h" />
@@ -315,7 +314,6 @@
     <ClInclude Include="..\Public\CUI_Object.h" />
     <ClInclude Include="..\Public\CUI_Portrait.h" />
     <ClInclude Include="..\Public\CUI_Skill.h" />
-    <ClInclude Include="..\Public\CUI_Text.h" />
     <ClInclude Include="..\Public\CUI_Wrapper.h" />
     <ClInclude Include="..\public\CUnit.h" />
     <ClInclude Include="..\Public\CUnit_Spearman.h" />
@@ -391,6 +389,7 @@
     <ClCompile Include="..\Private\CSpearMan_BackStep.cpp" />
     <ClCompile Include="..\Private\CSpearMan_SpecialGuard.cpp" />
     <ClCompile Include="..\Private\CFunc_ObjectControl.cpp" />
+    <ClCompile Include="..\private\CButton.cpp" />
     <ClCompile Include="..\private\CState_Blendable.cpp" />
     <ClCompile Include="..\Private\CStop_SpearMan.cpp" />
     <ClCompile Include="..\Private\CStop_Player.cpp" />
@@ -486,8 +485,6 @@
     <ClCompile Include="..\Private\CTrailEffect.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />
     <ClCompile Include="..\Private\CUI_Black.cpp" />
-    <ClCompile Include="..\Private\CUI_Button.cpp" />
-    <ClCompile Include="..\Private\CUI_Component.cpp" />
     <ClCompile Include="..\Private\CUI_Crosshair.cpp" />
     <ClCompile Include="..\Private\CUI_Cursor.cpp" />
     <ClCompile Include="..\Private\CUI_HeroGauge.cpp" />
@@ -502,7 +499,6 @@
     <ClCompile Include="..\Private\CUI_Object.cpp" />
     <ClCompile Include="..\Private\CUI_Portrait.cpp" />
     <ClCompile Include="..\Private\CUI_Skill.cpp" />
-    <ClCompile Include="..\Private\CUI_Text.cpp" />
     <ClCompile Include="..\Private\CUI_Wrapper.cpp" />
     <ClCompile Include="..\private\CUnit.cpp" />
     <ClCompile Include="..\Private\CUnit_Spearman.cpp" />

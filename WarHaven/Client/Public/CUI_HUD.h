@@ -8,7 +8,7 @@ class CUnit;
 
 class CUI_HUD : public CUI_Wrapper
 {
-	enum HUD_Type{Crosshair, Port, HUD_END};
+	enum HUD_Type{Crosshair, Port, Skill, HeroGauge, HUD_END};
 
 	DECLARE_PROTOTYPE(CUI_HUD);
 	DECLARE_GAMEOBJECT(CUI_HUD);
@@ -32,12 +32,17 @@ private:
 	CUnit::CLASS_TYPE m_eCurClass;
 	CUnit::CLASS_TYPE m_ePrvClass;
 
-private:	
-	void Change_HUD();
+	_float m_fHeroGauge = 0.f;
 
+	_bool m_bIsEnableHeroPort = false;
+
+private:	
 	void Set_HUD(CUnit::CLASS_TYPE eClass);
 	void Set_Portrait(CUnit::CLASS_TYPE eClass);
 	void Set_Crosshair(CUnit::CLASS_TYPE eClass);
+	void Set_SkillHUD(CUnit::CLASS_TYPE eClass);
+
+	void Set_ActiveHeroPort(_bool value);
 };
 
 END
