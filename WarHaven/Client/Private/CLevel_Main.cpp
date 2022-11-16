@@ -30,15 +30,12 @@ HRESULT CLevel_Main::Initialize()
 
 HRESULT CLevel_Main::SetUp_Prototypes()
 {
-	
-
 	m_fLoadingFinish = 1.f;
 	return S_OK;
 }
 
 HRESULT CLevel_Main::Enter()
 {
-	
 	CUI_LobbyBG* pUI_Lobby = CUI_LobbyBG::Create();
 	Ready_GameObject(pUI_Lobby, GROUP_UI);
 
@@ -47,6 +44,7 @@ HRESULT CLevel_Main::Enter()
 
 	CUI_Cursor* pCursor = CUI_Cursor::Create();
 	Ready_GameObject(pCursor, GROUP_UI);
+
 	__super::Enter();
 
 	return S_OK;

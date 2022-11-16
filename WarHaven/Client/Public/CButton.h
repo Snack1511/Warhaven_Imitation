@@ -20,7 +20,7 @@ END
 
 BEGIN(Client)
 
-class CUI;
+class CUI_Object;
 
 class CButton : public CComponent
 {
@@ -52,10 +52,10 @@ public:
 	virtual void Late_Tick() override;
 
 public:
-	void Set_OwnerUI(CUI* pUI) { m_pOwnerUI = pUI; }
+	void Set_OwnerUI(CUI_Object* pUI) { m_pOwnerUI = pUI; }
 
 private:
-	CUI* m_pOwnerUI = nullptr;
+	CUI_Object* m_pOwnerUI = nullptr;
 
 	RECT m_tRect;
 	POINT m_ptMouse;

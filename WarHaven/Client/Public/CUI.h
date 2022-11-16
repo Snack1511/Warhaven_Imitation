@@ -70,6 +70,7 @@ protected:
 	POINT m_ptMouse;
 
 	_float4 m_vColor = { 1.f, 1.f, 1.f, 1.f };
+	CFader* m_pFader = nullptr;
 
 protected:
 	// These will be called by Set_Enable Func.
@@ -80,9 +81,6 @@ protected:
 
 protected:
 	void CheckInRect();
-
-private:
-	CFader* m_pFader = nullptr;
 };
 
 END

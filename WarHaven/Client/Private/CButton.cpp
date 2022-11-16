@@ -3,7 +3,7 @@
 
 #include "UsefulHeaders.h"
 
-#include "CUI.h"
+#include "CUI_Object.h"
 
 CButton::CButton(_uint iIdx)
 	: CComponent(iIdx)
@@ -58,6 +58,8 @@ void CButton::Start()
 {
 	__super::Start();
 
+	m_pOwnerUI = static_cast<CUI_Object*>(m_pOwner);
+
 	Set_Rect();
 }
 
@@ -65,12 +67,12 @@ void CButton::Tick()
 {
 	GetCursorPos(&m_ptMouse);
 	ScreenToClient(g_hWnd, &m_ptMouse);
-	_float4 vMousePos = CFunctor::To_Window(_float4(m_ptMouse.x, m_ptMouse.y, 0.f));
 }
 
 void CButton::Late_Tick()
 {
 	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
+
 	if (m_bIsInMouse)
 	{
 		if (1)
@@ -90,14 +92,14 @@ void CButton::Late_Tick()
 
 void CButton::Release()
 {
-	
 }
 
 void CButton::Set_Rect()
 {
-	_float4 vUIPos = m_pOwnerUI->Get_Pos();
-	_float4 vPos = CFunctor::To_Descartes(vUIPos);
+	_float4 vUIPos = m_pOwnerUI->Get_Transform()->Get_MyWorld(WORLD_POS);
 	_float4 vScale = m_pOwnerUI->Get_Scale();
+
+	vUIPos = CFunctor::To_Window(_float4(vUIPos.x, -vUIPos.y, 0.f));
 
 	int iLeft = int(vUIPos.x - vScale.x * 0.5f);
 	int iTop = int(vUIPos.y - vScale.y * 0.5f);
@@ -105,4 +107,16 @@ void CButton::Set_Rect()
 	int iBottom = int(vUIPos.y + vScale.y * 0.5f);
 
 	SetRect(&m_tRect, iLeft, iTop, iRight, iBottom);
+
+	wcout << m_pOwnerUI->Get_Name() << endl;
+
+	cout << "위치 : " << vUIPos.x << ", " << vUIPos.y << endl;
+	cout << "크기 : " << vScale.x << ", " << vScale.y << endl;
+
+	cout << "렉트 : " << m_tRect.left << ", ";
+	cout << m_tRect.top << ", ";
+	cout << m_tRect.right << ", ";
+	cout << m_tRect.bottom << endl;
+
+	cout << endl;
 }

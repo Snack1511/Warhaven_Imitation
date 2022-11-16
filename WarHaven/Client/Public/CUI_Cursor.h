@@ -22,6 +22,8 @@ public:
 	virtual void My_Tick();
 
 private:
+	RECT m_tScreen;
+	POINT m_ptMouse;
 	_bool m_bIsClick = false;
 };
 

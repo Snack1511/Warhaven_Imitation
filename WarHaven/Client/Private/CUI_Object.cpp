@@ -6,6 +6,7 @@
 #include "Functor.h"
 #include "CUI_Renderer.h"
 #include "CShader.h"
+#include "CButton.h"
 
 CUI_Object::CUI_Object()
 {
@@ -13,6 +14,7 @@ CUI_Object::CUI_Object()
 
 CUI_Object::CUI_Object(const CUI_Object& Prototype)
 	: CUI(Prototype)
+	, m_wstrName(Prototype.m_wstrName)
 	, m_bIsMouseTarget(Prototype.m_bIsMouseTarget)
 	, m_bIsRenderText(Prototype.m_bIsRenderText)
 	, m_bIsBold(Prototype.m_bIsBold)
@@ -20,6 +22,7 @@ CUI_Object::CUI_Object(const CUI_Object& Prototype)
 	, m_vOffset(Prototype.m_vOffset)
 	, m_vColor(Prototype.m_vColor)
 	, m_fFontScale(Prototype.m_fFontScale)
+
 {
 }
 
@@ -29,6 +32,10 @@ CUI_Object::~CUI_Object()
 
 HRESULT CUI_Object::Initialize_Prototype()
 {
+	CButton* pButton = CButton::Create(0);
+	Add_Component<CButton>(pButton);
+	DISABLE_COMPONENT(pButton);
+
 	__super::Initialize_Prototype();
 
 	SetTexture(TEXT("../Bin/Resources/Textures/White.png"));
@@ -149,7 +156,7 @@ void CUI_Object::MouseEvent()
 		{
 			OnMouseEnter();
 
-			if(KEY(LBUTTON, TAP))
+			if (KEY(LBUTTON, TAP))
 			{
 				OnMouseClick();
 			}

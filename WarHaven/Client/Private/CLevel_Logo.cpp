@@ -6,6 +6,8 @@
 #include "CUI_Black.h"
 #include "CUI_Logo.h"
 
+#include "Loading_Manager.h"
+
 CLevel_Logo::CLevel_Logo()
 {
 }
@@ -40,6 +42,9 @@ HRESULT CLevel_Logo::Enter()
 
 	Ready_GameObject(pUI_Black, GROUP_UI);
 	Ready_GameObject(pUI_Logo, GROUP_UI);
+
+
+	// CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU);
 
 	__super::Enter();
 

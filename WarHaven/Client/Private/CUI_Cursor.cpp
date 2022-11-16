@@ -43,15 +43,7 @@ HRESULT CUI_Cursor::Start()
 {
 	__super::Start();
 
-	ShowCursor(false);
-
-	RECT tScreen;
-	GetClientRect(g_hWnd, &tScreen);
-
-	ClientToScreen(g_hWnd, (LPPOINT)&tScreen);
-	ClientToScreen(g_hWnd, (LPPOINT)&tScreen.right);
-
-	// ClipCursor(&tScreen);
+	// ShowCursor(false);
 
 	return S_OK;
 }
@@ -60,12 +52,27 @@ void CUI_Cursor::My_Tick()
 {
 	__super::My_Tick();
 
+	GetCursorPos(&m_ptMouse);
+	ScreenToClient(g_hWnd, &m_ptMouse);
+
+	if (KEY(SPACE, TAP))
+	{
+		cout << "마우스 윈도우 : " << m_ptMouse.x << ", " << m_ptMouse.y << endl;
+	}
+
 	_float fFixPosX = 11.f;
 	_float fFixPosY = 13.f;
 
 	_float4 vPos = CFunctor::To_Window(_float4(m_ptMouse.x + fFixPosX, m_ptMouse.y + fFixPosY, 0.f));
 
-	Set_Pos(vPos.x , -vPos.y);
+	Set_Pos(vPos.x, -vPos.y);
+
+	if (KEY(SPACE, TAP))
+	{
+		cout << "마우스 데카르트 : " << vPos.x << ", " << vPos.y << endl;
+
+		cout<<endl;
+	}
 
 	if (KEY(LBUTTON, HOLD))
 	{
