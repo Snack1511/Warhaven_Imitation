@@ -22,6 +22,8 @@ public:
 
 public:
 	virtual void On_PointEnter_TopBtn(const _uint& iEventNum);
+	virtual void On_PointExit_TopBtn(const _uint& iEventNum);
+
 	virtual void On_PointDown_TopBtn(const _uint& iEventNum);
 
 private:

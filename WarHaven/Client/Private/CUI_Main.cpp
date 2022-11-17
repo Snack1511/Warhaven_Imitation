@@ -46,6 +46,8 @@ HRESULT CUI_Main::Start()
 	for (int i = 0; i < 3; ++i)
 	{
 		m_pTopBtn[i]->CallBack_PointEnter += bind(&CUI_Main::On_PointEnter_TopBtn, this, placeholders::_1);
+		m_pTopBtn[i]->CallBack_PointExit += bind(&CUI_Main::On_PointExit_TopBtn, this, placeholders::_1);
+
 		m_pTopBtn[i]->CallBack_PointDown += bind(&CUI_Main::On_PointDown_TopBtn, this, placeholders::_1);
 	}
 
@@ -65,6 +67,27 @@ void CUI_Main::Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName)
 
 void CUI_Main::On_PointEnter_TopBtn(const _uint& iEventNum)
 {
+	for (int i = 0; i < 3; ++i)
+	{
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pTopBtn[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			pTarget->Set_FontColor(_float4(1.f, 1.f, 1.f, 1.f));
+		}
+	}
+}
+
+void CUI_Main::On_PointExit_TopBtn(const _uint& iEventNum)
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		// 왜 비워져있지???????
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pTopBtn[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			pTarget->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+		}
+	}
 }
 
 void CUI_Main::On_PointDown_TopBtn(const _uint& iEventNum)
@@ -144,7 +167,7 @@ void CUI_Main::Enable_MainUI()
 
 		_float fPosX = -530.f + (i * 95.f);
 		m_pTopBtn[i]->Set_PosX(fPosX);
-		m_pTopBtn[i]->Set_Sort(0.95f);
+		m_pTopBtn[i]->Set_Sort(0.9f);
 
 		m_pTopBtn[i]->Set_FontRender(true);
 		m_pTopBtn[i]->Set_FontStyle(true);

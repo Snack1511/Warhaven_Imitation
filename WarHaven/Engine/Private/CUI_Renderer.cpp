@@ -92,7 +92,6 @@ void CUI_Renderer::Set_Text(_bool value, wstring wstrText, _float4 vOffset, _flo
 	vOffset.x += 640.f;
 	vOffset.y += 360.f;
 
-
 	m_bIsBold = value;
 	m_wstrText = wstrText;
 	m_vOffset = vOffset;
