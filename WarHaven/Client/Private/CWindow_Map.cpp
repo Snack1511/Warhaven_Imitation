@@ -671,7 +671,7 @@ void CWindow_Map::SetUp_CurPickingGroup()
 
     //if (ImGui::CollapsingHeader("Object Speed", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     //{
-    //    Set_ObjectSpeed();
+    //    Set_ControlSpeed();
     //}
     //ImGui::Spacing();
 
@@ -759,7 +759,7 @@ void CWindow_Map::SetUp_CurPickingGroup()
     //}
 //}
 
-//void CWindow_Map::Set_ObjectSpeed()
+//void CWindow_Map::Set_ControlSpeed()
 //{
     //ImGui::Text("Scale : ");
     //ImGui::SameLine();
@@ -2308,6 +2308,7 @@ _bool CWindow_Map::Calculate_Pick()
                 Make_InstanceObject();
                 break;
             }
+            OutPos= XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
             m_OutDatas = make_tuple(OutPos, OutNorm);
             bPicked = true;
         }

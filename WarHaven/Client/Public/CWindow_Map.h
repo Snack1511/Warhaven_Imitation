@@ -278,8 +278,6 @@ private:
 	_int m_iCurSelectTerrainBrush = 0;
 	_uint3 m_i3PickedIndex = _uint3(0, 0, 0);
 	PICKDATA m_OutDatas;
-	//_float4 m_OutPos = _float4(0.f, 0.f, 0.f, 1.f);
-	//_float4 m_OutNorm = _float4(0.f, 0.f, 0.f, 0.f);
 	_float m_fBrushSize = 1.f;
 	_float m_fBrushWeight = 1.f;
 

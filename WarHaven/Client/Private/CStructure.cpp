@@ -160,7 +160,7 @@ HRESULT CStructure::Start()
 	__super::Start();
 
 	//m_pTransform->Set_Scale(_float4(0.01f, 0.01f, 0.01f, 0.f));
-	//m_pModelCom->Set_ShaderPassToAll(VTXMODEL_PASS_NORMALMAPPING);
+	m_pModelCom->Set_ShaderPassToAll(VTXMODEL_PASS_NORMALMAPPING);
     return S_OK;
 }
 

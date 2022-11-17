@@ -60,7 +60,7 @@ private:
 	void SetUp_CurSelectObject();
 	void Show_GroupMatrix();
 	void Show_ObjectData();
-	void Set_ObjectSpeed();
+	void Set_ControlSpeed(_float* fMoveSpeed, _float* fRotateSpeed, _float* fScaleSpeed);
 
 	void Control_Group();
 

@@ -206,7 +206,7 @@ void CFunc_ObjectControl::Func_GroupControl()
 
     if (ImGui::CollapsingHeader("Group Speed", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
-        Set_ObjectSpeed();
+        Set_ControlSpeed(&m_fTickPerGroupMoveSpeed,&m_fTickPerGroupRotSpeed, &m_fTickPerGroupScalingSpeed);
     }
     ImGui::Spacing();
 }
@@ -264,7 +264,7 @@ void CFunc_ObjectControl::Func_ObjectControl()
 
     if (ImGui::CollapsingHeader("Object Speed", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
-        Set_ObjectSpeed();
+        Set_ControlSpeed(&m_fTickPerMoveSpeed, &m_fTickPerRotSpeed, &m_fTickPerScalingSpeed);
     }
     ImGui::Spacing();
 
@@ -790,17 +790,17 @@ void CFunc_ObjectControl::Show_ObjectData()
     }
 }
 
-void CFunc_ObjectControl::Set_ObjectSpeed()
+void CFunc_ObjectControl::Set_ControlSpeed(_float* fMoveSpeed, _float* fRotateSpeed, _float* fScaleSpeed)
 {
     ImGui::Text("Scale : ");
     ImGui::SameLine();
-    ImGui::SliderFloat("##Group Scaling Speed", &m_fTickPerGroupScalingSpeed, 0.1f, 10.f, "%.1f");
+    ImGui::SliderFloat("##Group Scaling Speed", fScaleSpeed, 0.1f, 10.f, "%.1f");
     ImGui::Text("Rotate : ");
     ImGui::SameLine();
-    ImGui::SliderFloat("##Group Rotate Speed", &m_fTickPerGroupRotSpeed, 0.1f, 90.f, "%.1f");
+    ImGui::SliderFloat("##Group Rotate Speed", fRotateSpeed, 0.1f, 90.f, "%.1f");
     ImGui::Text("Move : ");
     ImGui::SameLine();
-    ImGui::SliderFloat("##Group Move Speed", &m_fTickPerGroupMoveSpeed, 0.1f, 50.f, "%.1f");
+    ImGui::SliderFloat("##Group Move Speed", fMoveSpeed, 0.1f, 50.f, "%.1f");
 }
 
 void CFunc_ObjectControl::Control_Group()
