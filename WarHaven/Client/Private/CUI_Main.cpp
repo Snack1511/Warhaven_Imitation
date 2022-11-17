@@ -86,10 +86,12 @@ void CUI_Main::Enable_MainUI()
 
 		GET_COMPONENT_FROM(m_pTopBtn[i], CTexture)->Set_CurTextureIndex(i);
 
-		_float fPosX = -500.f + (i * 100.f);
+		_float fPosX = -535.f + (i * 100.f);
 		m_pTopBtn[i]->Set_PosX(fPosX);
 
-		m_pTopBtn[i]->Set_Sort(0.3f);
+		m_pTopBtn[i]->Set_Sort(0.95f);
+
+		m_pGoodsUI[i]->Set_Sort(0.8f);
 	}
 
 	for (int i = 0; i < 2; ++i)
@@ -100,6 +102,8 @@ void CUI_Main::Enable_MainUI()
 
 		_float fPosX = -600.f + (i * 360.f);
 		m_pKeyUI[i]->Set_PosX(fPosX);
+
+		m_pKeyUI[i]->Set_Sort(0.95f);
 	}
 }
 

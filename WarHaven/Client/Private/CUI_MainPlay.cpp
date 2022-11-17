@@ -64,6 +64,8 @@ void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 		DISABLE_GAMEOBJECT(m_pPlayBtnUI[i]);
 	}
 
+	ENABLE_GAMEOBJECT(m_pBG);
+
 	for (int i = 0; i < 4; ++i)
 	{
 		ENABLE_GAMEOBJECT(m_pStageSelectBtn[i]);
@@ -89,9 +91,9 @@ void CUI_MainPlay::Create_ModeBG()
 	m_pBG = CUI_Object::Create();
 
 	m_pBG->Set_Scale(1280.f, 720.f);
-	m_pBG->Set_Sort(0.5f);
+	m_pBG->Set_Sort(0.9f);
 
-	m_pBG->SetTexture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_LobbyBG2.dds"));
+	m_pBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_LobbyBG2.dds"));
 
 	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pBG);
@@ -105,12 +107,16 @@ void CUI_MainPlay::Create_StageBtn()
 	m_pPrototypeStageBtn->Set_Sort(0.4f);
 
 	m_pPrototypeStageBtn->Set_MouseTarget(true);
-
+	
 	m_pPrototypeStageBtn->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Enable_Stage1.dds"));
 
 	GET_COMPONENT_FROM(m_pPrototypeStageBtn, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Enable_Stage2.dds"));
 	GET_COMPONENT_FROM(m_pPrototypeStageBtn, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Enable_Stage3.dds"));
 	GET_COMPONENT_FROM(m_pPrototypeStageBtn, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Enable_Stage4.dds"));
+	GET_COMPONENT_FROM(m_pPrototypeStageBtn, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Disable_Stage1.dds"));
+	GET_COMPONENT_FROM(m_pPrototypeStageBtn, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Disable_Stage2.dds"));
+	GET_COMPONENT_FROM(m_pPrototypeStageBtn, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Disable_Stage3.dds"));
+	GET_COMPONENT_FROM(m_pPrototypeStageBtn, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Disable_Stage4.dds"));
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -125,7 +131,14 @@ void CUI_MainPlay::Create_StageBtn()
 		_float fPosX = -360.f + (i * 240.f);
 		m_pStageSelectBtn[i]->Set_Pos(fPosX, 0.f);
 
-		GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i);
+		// 훈련장 제외 모든 버튼 비활성화
+		GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i + (1 * 4));
+
+		// 훈련장 활성화
+		if (i == 3)
+		{
+			GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i);
+		}
 
 		CREATE_GAMEOBJECT(m_pStageSelectBtn[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pStageSelectBtn[i]);

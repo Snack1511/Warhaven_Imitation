@@ -24,6 +24,7 @@ private:
 	CUI_Object* m_pBG = nullptr;
 	CUI_Object* m_pPrototypeStageBtn = nullptr;
 	CUI_Object* m_pStageSelectBtn[4];
+	CUI_Object* m_pLock = nullptr;
 
 private:
 	void Bind_Btn();

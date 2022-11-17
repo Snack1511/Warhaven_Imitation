@@ -45,16 +45,15 @@ VS_OUT VS_MAIN(VS_IN In)
 
     matrix matWV, matWVP;
     
-   // float3 vSize = (vector) 1;
+    // float3 vSize = (vector) 1;
+    // Out.vSize = vSize.xy;
+    // vSize = mul(vector(vSize, 0.f), g_WorldMatrix);
     
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
-    matWVP = mul(matWV, g_ProjMatrix);
-    
-    //vSize = mul(vector(vSize, 0.f), g_WorldMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);    
 
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vTexUV = In.vTexUV;
-    //Out.vSize = vSize.xy;
 
     return Out;
 }
@@ -134,67 +133,81 @@ PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    float2 vRectSize = In.vSize;
-
-    float WidPixelNum = In.vTexUV.x * vRectSize.x;
-    float HeightPixelNum = In.vTexUV.y * vRectSize.y;
-
-    float LeftAnchor = g_SliceRatio.x;
-    float TopAnchor = g_SliceRatio.y;
-    float RightAnchor = g_SliceRatio.z;
-    float BottomAnchor = g_SliceRatio.w;
-
-    float PaddleLeft = g_TextureSize.x * LeftAnchor;
-    float PaddleRight = (vRectSize.x - (g_TextureSize.x * (1 - RightAnchor)));
-    float PaddleTop = g_TextureSize.y * TopAnchor;
-    float PaddleBottom = (vRectSize.y - (g_TextureSize.y * (1 - BottomAnchor)));
-	
-    float2 TexUV = In.vTexUV;
-
-    float HorizonLinear = (RightAnchor - LeftAnchor) / (PaddleRight - PaddleLeft);
-    float VertiLinear = (BottomAnchor - TopAnchor) / (PaddleBottom - PaddleTop);
-	
-    if (vRectSize.x > g_TextureSize.x)
-    {
-        if (WidPixelNum > PaddleLeft && WidPixelNum < PaddleRight)
-        {
-            TexUV.x = HorizonLinear * WidPixelNum + LeftAnchor;
-        }
-        else if (WidPixelNum <= PaddleLeft)
-        {
-            TexUV.x = WidPixelNum / g_TextureSize.x; //찾아야될 픽셀 / 이미지 크기
-        }
-        else if (WidPixelNum >= PaddleRight)
-        {
-            TexUV.x = (vRectSize.x - WidPixelNum) / g_TextureSize.x; //찾아야될 픽셀 / 이미지 크기
-        }
-    }
-    else
-    {
-        TexUV.x = In.vTexUV.x;
-    }
-
-    if (vRectSize.y > g_TextureSize.y)
-    {
-        if (HeightPixelNum > PaddleTop && HeightPixelNum < PaddleBottom)
-        {
-            TexUV.y = VertiLinear * HeightPixelNum + TopAnchor;
-        }
-        else if (HeightPixelNum <= PaddleTop)
-        {
-            TexUV.y = HeightPixelNum / g_TextureSize.y; //찾아야될 픽셀 / 이미지 크기
-        }
-        else if (HeightPixelNum >= PaddleBottom)
-        {
-            TexUV.y = (vRectSize.y - HeightPixelNum) / g_TextureSize.y; //찾아야될 픽셀 / 이미지 크기
-        }
-    }
-    else
-    {
-        TexUV.y = In.vTexUV.y;
-    }
+    // 버텍스 셰이더에서 사이즈를 1을 사이즈로 나눠서
+   // float2 vSize = 1.f;
+   // float fX = vSize.x / g_TextureSize.x;
+   // float fX = vSize.y / g_TextureSize.y;    
+   //
+   // // 전체 그려져야 할 이미지의 픽셀 개수를 확인
+   // float fPixelWidth = In.vTexUV.x * fX;
+   // float fPixelHeight = In.vTexUV.y * fY;
+   //
+   // // float WidPixelNum = In.vTexUV.x * vRectSize.x;
+   // // float HeightPixelNum = In.vTexUV.y * vRectSize.y;
+   // 
+   // // 픽셀 개수를 가지고 UV 좌표를 구하고
+   // // 일정 범위 이전에 있으면 픽셀을 그리고 아니면 wrap모드로 걍 보간해서 그린다
+   // 
+   // // 월드 매트릭스를 곱하지 말고 넘겨라
+   // 
+   // float2 vRectSize = In.vSize;    
+   //
+   // float LeftAnchor = g_SliceRatio.x;
+   // float TopAnchor = g_SliceRatio.y;
+   // float RightAnchor = g_SliceRatio.z;
+   // float BottomAnchor = g_SliceRatio.w;
+   //
+   // float PaddleLeft = g_TextureSize.x * LeftAnchor;
+   // float PaddleRight = (vRectSize.x - (g_TextureSize.x * (1 - RightAnchor)));
+   // float PaddleTop = g_TextureSize.y * TopAnchor;
+   // float PaddleBottom = (vRectSize.y - (g_TextureSize.y * (1 - BottomAnchor)));
+	//
+   // float2 TexUV = In.vTexUV;
+   //
+   // float HorizonLinear = (RightAnchor - LeftAnchor) / (PaddleRight - PaddleLeft);
+   // float VertiLinear = (BottomAnchor - TopAnchor) / (PaddleBottom - PaddleTop);
+	//
+   // if (vRectSize.x > g_TextureSize.x)
+   // {
+   //     if (WidPixelNum > PaddleLeft && WidPixelNum < PaddleRight)
+   //     {
+   //         TexUV.x = HorizonLinear * WidPixelNum + LeftAnchor;
+   //     }
+   //     else if (WidPixelNum <= PaddleLeft)
+   //     {
+   //         TexUV.x = WidPixelNum / g_TextureSize.x; //찾아야될 픽셀 / 이미지 크기
+   //     }
+   //     else if (WidPixelNum >= PaddleRight)
+   //     {
+   //         TexUV.x = (vRectSize.x - WidPixelNum) / g_TextureSize.x; //찾아야될 픽셀 / 이미지 크기
+   //     }
+   // }
+   // else
+   // {
+   //     TexUV.x = In.vTexUV.x;
+   // }
+   //
+   // if (vRectSize.y > g_TextureSize.y)
+   // {
+   //     if (HeightPixelNum > PaddleTop && HeightPixelNum < PaddleBottom)
+   //     {
+   //         TexUV.y = VertiLinear * HeightPixelNum + TopAnchor;
+   //     }
+   //     else if (HeightPixelNum <= PaddleTop)
+   //     {
+   //         TexUV.y = HeightPixelNum / g_TextureSize.y; //찾아야될 픽셀 / 이미지 크기
+   //     }
+   //     else if (HeightPixelNum >= PaddleBottom)
+   //     {
+   //         TexUV.y = (vRectSize.y - HeightPixelNum) / g_TextureSize.y; //찾아야될 픽셀 / 이미지 크기
+   //     }
+   // }
+   // else
+   // {
+   //     TexUV.y = In.vTexUV.y;
+   // }
     
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, TexUV);
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vColor *= g_vColor;
     
