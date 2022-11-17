@@ -49,6 +49,28 @@ namespace Engine
 		return strHash(strTemp);
 	}
 
+	static string	CutPath_R(string strPath, string strKey)
+	{
+		int iFind;
+		string strFileName;
+
+		iFind = (int)strPath.rfind(strKey);
+		strFileName = strPath.substr(0, iFind);
+
+		return strFileName;
+	}
+
+	static wstring	CutPath_R(wstring strPath, wstring strKey)
+	{
+		int iFind;
+		wstring strFileName;
+
+		iFind = (int)strPath.rfind(strKey);
+		strFileName = strPath.substr(0, iFind);
+
+		return strFileName;
+	}
+
 
 
 	template<typename T>

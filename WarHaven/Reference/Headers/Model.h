@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 
+
 BEGIN(Engine)
 
 class CShader;
@@ -89,6 +90,17 @@ private:
 	_bool						m_bCulling = false;
 
 private:
+	_bool						m_bLOD = false;
+
+	enum class eLOD_LEVEL {eDefault, eLOD1, eLOD2, eLOD3, eLOD_END};
+
+	eLOD_LEVEL					m_eLOD_Level = eLOD_LEVEL::eLOD_END;
+
+	_float						m_fLODDistance = 15.f;
+	_float4						m_vLODCenterPos = ZERO_VECTOR;
+	_float						m_fLODMaxRange = 0.f;
+
+private:
 	vector<pair<_uint, class CMeshContainer*>>			m_MeshContainers;
 	_uint			m_iNumMeshContainers = 0;
 
@@ -106,6 +118,8 @@ private:
 	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_MeshContainersPtr();
+	HRESULT	SetUp_Model_LOD();
+	HRESULT	Load_LOD(eLOD_LEVEL eLevel);
 
 	HRESULT Create_ModelData(class CResource* pResource, _uint iResType, _uint iMeshPartType);
 	HRESULT Create_Material(class CResource_Material* pResource, _uint iMeshPartType);

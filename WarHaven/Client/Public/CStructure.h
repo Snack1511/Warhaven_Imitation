@@ -35,8 +35,15 @@ public:
 	virtual void	Set_Passes(VTXMODEL_PASS_TYPE ePassType);
 
 public:
-	enum class ePhysXEnum {eCONVEX, eTRIANGLE, eBOX};
-	void			Make_PhysXCollider(ePhysXEnum eShapeType);
+	enum class ePhysXEnum {eCONVEX, eTRIANGLE, eBOX, eEND};
+
+	void			Make_PhysXCollider(ePhysXEnum eShapeType, _uint iLODLevel = 3);
+
+	CPhysXCollider* Make_PhysXCollier_Box();
+
+	void			RePosition_Box(_uint iIndex, _float4 vOffsetPosition = ZERO_VECTOR);
+	void			ReScale_Box(_uint iIndex, _float4 vScale);
+	void			Rotate_Box(_uint iIndex, _float4 vAngles);
 	
 public:
 	// CGameObject을(를) 통해 상속됨
@@ -49,11 +56,15 @@ public:
 
 protected:
 	CModel* m_pModelCom = nullptr;
+	CModel* m_pLODModelCom = nullptr;
 	wstring m_DebugPath = TEXT("");
 
 protected:
 	/* PhysX Collider */
-	list<CPhysXCollider*>	m_PhysXColliders;
+	ePhysXEnum				m_eCurType = ePhysXEnum::eEND;
+
+	vector<CPhysXCollider*>	m_vecPhysXColliders;
+	_uint		m_iCurrentIndex = 0;
 
 protected:
 	virtual	HRESULT	SetUp_Model(wstring strMeshPath);

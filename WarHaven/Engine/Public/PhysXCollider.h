@@ -31,6 +31,9 @@ public:
 		_float4				vScale;
 		float				fDensity;
 
+		/*Quaternion ÀúÀå¿ë*/
+		_float4				vQuat = ZERO_VECTOR;
+
 	}PHYSXCOLLIDERDESC;
 
 public:
@@ -57,7 +60,10 @@ public:
 
 	HRESULT Set_Position(_vector _vPos, _vector _vQuaternion);
 	HRESULT Set_Position(_vector _vPos);
+	HRESULT Rotate(_vector _vQuaternion);
+
 	void	Set_MaxLinearVelocity(_vector vMaxVelocity) { m_vMaxVelocity = vMaxVelocity; }
+	void	Set_Scale(_float4 vScale);
 	void	Set_Scale(_vector vScale);
 	void	Set_ActorFlag(PxActorFlag::Enum eFlag, _bool bState);
 
@@ -73,8 +79,6 @@ public:
 
 	void	Delete_Collider();
 	void	Create_Collider();
-
-
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

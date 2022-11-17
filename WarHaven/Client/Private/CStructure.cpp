@@ -18,6 +18,7 @@
 #include "CCell.h"
 #include "MeshContainer.h"
 
+#include "CUtility_Transform.h"
 #include "PhysXCollider.h"
 CStructure::CStructure()
 {
@@ -120,16 +121,21 @@ void CStructure::Set_Passes(VTXMODEL_PASS_TYPE ePassType)
 {
 }
 
-void CStructure::Make_PhysXCollider(ePhysXEnum eShapeType)
+void CStructure::Make_PhysXCollider(ePhysXEnum eShapeType, _uint iLODLevel)
 {
 	//기존 피직스부터 다 꺼야함
+	if (eShapeType >= ePhysXEnum::eBOX)
+		return;
 
-	for (auto& elem : m_PhysXColliders)
+	m_eCurType = eShapeType;
+
+	for (auto& elem : m_vecPhysXColliders)
 	{
 		DELETE_COMPONENT(elem, this);
 	}
 
-	m_PhysXColliders.clear();
+	m_vecPhysXColliders.clear();
+	m_mapComponents[HASHCODE(CPhysXCollider)].clear();
 	
 	
 	switch (eShapeType)
@@ -138,52 +144,130 @@ void CStructure::Make_PhysXCollider(ePhysXEnum eShapeType)
 
 		for (auto& elem : m_pModelCom->Get_MeshContainers())
 		{
+			if (elem.first != iLODLevel)
+				continue;
+
 			CPhysXCollider* pCol = CPhysXCollider::Create_Convex(0, elem.second, m_pTransform);
 			if (!pCol)
 				continue;
 			Add_Component(pCol);
+			m_vecPhysXColliders.push_back(pCol);
+
 		}
 
 		break;
 	case Client::CStructure::ePhysXEnum::eTRIANGLE:
+		
 
 		for (auto& elem : m_pModelCom->Get_MeshContainers())
 		{
+			if (elem.first != iLODLevel)
+				continue;
 			CPhysXCollider* pCol = CPhysXCollider::Create(0, elem.second, m_pTransform);
 			if (!pCol)
 				continue;
 			Add_Component(pCol);
+			m_vecPhysXColliders.push_back(pCol);
 		}
 
 		break;
 	case Client::CStructure::ePhysXEnum::eBOX:
-
-	{
-		CPhysXCollider::PHYSXCOLLIDERDESC		tPhysXColliderDesc;
-		ZeroMemory(&tPhysXColliderDesc, sizeof(CPhysXCollider::PHYSXCOLLIDERDESC));
-
-		tPhysXColliderDesc.eShape = CPhysXCollider::COLLIDERSHAPE::BOX;
-		tPhysXColliderDesc.eType = CPhysXCollider::COLLIDERTYPE::STATIC;
-		tPhysXColliderDesc.fDensity = 1.f;
-
-		//위치는 현재 객체 가운데로?
-
-		tPhysXColliderDesc.vPosition = m_pTransform->Get_World(WORLD_POS);
-
-		tPhysXColliderDesc.vAngles = vAngle;
-		tPhysXColliderDesc.vPosition = m_pTransform->Get_World(WORLD_POS);
-		tPhysXColliderDesc.vScale = vScale;
-
-		CPhysXCollider* pPhysXCollider = CPhysXCollider::Create(CP_BEFORE_TRANSFORM, tPhysXColliderDesc);
-		Add_Component(pPhysXCollider);
-	}
-		
-
 		break;
 	default:
 		break;
 	}
+
+	if (m_vecPhysXColliders.empty())
+		Call_MsgBox(L"LOD없어서 충돌체 굽기 실패!");
 }
+
+CPhysXCollider* CStructure::Make_PhysXCollier_Box()
+{
+	/* 박스가 아니었으면 기존 꺼 다지우고 박스 하나 생성*/
+	if (m_eCurType != ePhysXEnum::eBOX)
+	{
+		m_eCurType = ePhysXEnum::eBOX;
+
+		for (auto& elem : m_vecPhysXColliders)
+		{
+			DELETE_COMPONENT(elem, this);
+		}
+
+		m_vecPhysXColliders.clear();
+		m_mapComponents[HASHCODE(CPhysXCollider)].clear();
+	}
+
+
+	CPhysXCollider::PHYSXCOLLIDERDESC		tPhysXColliderDesc;
+	ZeroMemory(&tPhysXColliderDesc, sizeof(CPhysXCollider::PHYSXCOLLIDERDESC));
+
+	tPhysXColliderDesc.eShape = CPhysXCollider::COLLIDERSHAPE::BOX;
+	tPhysXColliderDesc.eType = CPhysXCollider::COLLIDERTYPE::STATIC;
+	tPhysXColliderDesc.fDensity = 1.f;
+
+	//위치는 현재 객체 가운데로?
+
+	tPhysXColliderDesc.vPosition = m_pTransform->Get_World(WORLD_POS);
+
+	tPhysXColliderDesc.vQuat = m_pTransform->Get_Quaternion();
+	tPhysXColliderDesc.vPosition = m_pTransform->Get_World(WORLD_POS);
+	tPhysXColliderDesc.vScale = _float4(1.f, 1.f, 1.f);
+
+	CPhysXCollider* pPhysXCollider = CPhysXCollider::Create(CP_BEFORE_TRANSFORM, tPhysXColliderDesc);
+	Add_Component(pPhysXCollider);
+	m_vecPhysXColliders.push_back(pPhysXCollider);
+
+	return pPhysXCollider;
+}
+
+
+void CStructure::RePosition_Box(_uint iIndex, _float4 vOffsetPosition)
+{
+	if (m_eCurType != ePhysXEnum::eBOX)
+		return;
+
+	if (iIndex >= m_vecPhysXColliders.size())
+	{
+		Call_MsgBox(L"PhysX충돌체 갯수보다 높은 수의 인덱스로 접근 : CStructure");
+		return;
+	}
+
+	_float4 vWorldPos = m_pTransform->Get_World(WORLD_POS);
+	vWorldPos += vOffsetPosition;
+
+	m_vecPhysXColliders[iIndex]->Set_Position(vWorldPos.XMLoad());
+}
+
+void CStructure::ReScale_Box(_uint iIndex, _float4 vScale)
+{
+	if (m_eCurType != ePhysXEnum::eBOX)
+		return;
+
+	if (iIndex >= m_vecPhysXColliders.size())
+	{
+		Call_MsgBox(L"PhysX충돌체 갯수보다 높은 수의 인덱스로 접근 : CStructure");
+		return;
+	}
+
+	m_vecPhysXColliders[iIndex]->Set_Scale(vScale.XMLoad());
+}
+
+void CStructure::Rotate_Box(_uint iIndex, _float4 vAngles)
+{
+	if (m_eCurType != ePhysXEnum::eBOX)
+		return;
+
+	if (iIndex >= m_vecPhysXColliders.size())
+	{
+		Call_MsgBox(L"PhysX충돌체 갯수보다 높은 수의 인덱스로 접근 : CStructure");
+		return;
+	}
+
+	_float4 vQuat = XMQuaternionRotationRollPitchYawFromVector(vAngles.XMLoad());
+
+	m_vecPhysXColliders[iIndex]->Rotate(vQuat.XMLoad());
+}
+
 
 HRESULT CStructure::Initialize_Prototype()
 {
@@ -205,6 +289,7 @@ HRESULT CStructure::Initialize()
 {
 	m_pModelCom = GET_COMPONENT(CModel);
 	
+	//Make_PhysXCollider(ePhysXEnum::eCONVEX);
 
 
 	return S_OK;
@@ -238,6 +323,8 @@ HRESULT CStructure::SetUp_Model(wstring strModelPath)
 	m_DebugPath = strModelPath;
 	//DEFAULT_TRANS_MATRIX
 	//DEFAULT_ST
+
+
 	CModel* pModel = CModel::Create(0, TYPE_NONANIM, strModelPath, DEFAULT_MODEL_MATRIX);
 
 	Add_Component(pModel);
@@ -262,18 +349,7 @@ HRESULT CStructure::SetUp_World(_float4 vScale, _float4x4 worldMat)
 void CStructure::My_Tick()
 {
 	__super::My_Tick();
-	//_float4 PickOutPos = _float4(0.f, 0.f, 0.f, 1.f);
-	//_float4 PickOutNorm = _float4(0.f, 0.f, 0.f, 1.f);
-	//if (KEY(LBUTTON, HOLD))
-	//{
-	//	if (GAMEINSTANCE->Is_Picked(
-	//		this,
-	//		&PickOutPos, &PickOutNorm))
-	//	{
-	//		//m_pTransform->Set_World();
-	//		//int a = 0;
-	//	}
-	//}
+
 }
 
 void CStructure::My_LateTick()

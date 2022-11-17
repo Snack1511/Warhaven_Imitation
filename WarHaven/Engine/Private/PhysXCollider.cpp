@@ -355,6 +355,9 @@ HRESULT CPhysXCollider::Set_Position(_vector _vPos, _vector _vQuaternion)
 	if (m_pRigidStatic)
 		m_pRigidStatic->setGlobalPose(Transform);
 
+	m_ColliderDesc.vPosition = _vPos;
+	m_ColliderDesc.vQuat = _vQuaternion;
+
 	return S_OK;
 }
 
@@ -377,7 +380,50 @@ HRESULT CPhysXCollider::Set_Position(_vector _vPos)
 	if (m_pRigidStatic)
 		m_pRigidStatic->setGlobalPose(Transform);
 
+	m_ColliderDesc.vPosition = _vPos;
+
+
 	return S_OK;
+}
+
+HRESULT CPhysXCollider::Rotate(_vector _vQuaternion)
+{
+	PxTransform	Transform;
+	PxQuat	vQuaternion(XMVectorGetX(_vQuaternion), XMVectorGetY(_vQuaternion), XMVectorGetZ(_vQuaternion), XMVectorGetW(_vQuaternion));
+
+
+	if (m_pRigidDynamic)
+		Transform = m_pRigidDynamic->getGlobalPose();
+
+	if (m_pRigidStatic)
+		Transform = m_pRigidStatic->getGlobalPose();
+
+	Transform.q = vQuaternion;
+
+	if (m_pRigidDynamic)
+		m_pRigidDynamic->setGlobalPose(Transform);
+
+	if (m_pRigidStatic)
+		m_pRigidStatic->setGlobalPose(Transform);
+
+
+	m_ColliderDesc.vQuat = _vQuaternion;
+
+
+	return S_OK;
+}
+
+void CPhysXCollider::Set_Scale(_float4 vScale)
+{
+	if (!m_pRigidStatic)
+		return;
+
+	Safe_release(m_pRigidStatic);
+
+	m_ColliderDesc.vScale = vScale;
+	CreatePhysActor(m_ColliderDesc);
+
+
 }
 
 void CPhysXCollider::Set_Scale(_vector vScale)
@@ -488,13 +534,15 @@ void CPhysXCollider::CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc)
 		PhysXColliderDesc.vPosition.y,
 		PhysXColliderDesc.vPosition.z);
 
-	_float4 vQuaternion;
+	/*_float4 vQuaternion;
 	XMStoreFloat4(&vQuaternion, XMQuaternionRotationRollPitchYawFromVector(PhysXColliderDesc.vAngles.XMLoad()));
 	Transform.q = PxQuat(
 		vQuaternion.x,
 		vQuaternion.y,
 		vQuaternion.z,
-		vQuaternion.w);
+		vQuaternion.w);*/
+
+	Transform.q = PxQuat(PhysXColliderDesc.vQuat.x, PhysXColliderDesc.vQuat.y, PhysXColliderDesc.vQuat.z, PhysXColliderDesc.vQuat.w);
 
 	switch (PhysXColliderDesc.eType)
 	{
