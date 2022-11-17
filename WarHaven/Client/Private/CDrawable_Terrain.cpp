@@ -209,6 +209,11 @@ void CDrawable_Terrain::Update_Texture(_int Sour, _int Dest, _int BG)
     m_pRenderer->Update_BackGround(BG);
 }
 
+_uint3 CDrawable_Terrain::Get_TerrainTexIndex()
+{
+    return _uint3(m_iBGIndex, m_iSourIndex, m_iDestIndex);
+}
+
 HRESULT CDrawable_Terrain::SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ)
 {
     CMesh_Terrain* pTerrain = CMesh_Terrain::Create(CP_BEFORE_RENDERER, iNumVerticesX, iNumVerticesZ);
@@ -287,14 +292,22 @@ HRESULT CDrawable_Terrain::SetUp_TerrainInfo(ifstream& readFile, CMesh_Terrain* 
     
     if (readFile.eof())
     {
-        Call_MsgBox(TEXT("이전버전"));
+        Call_MsgBox(TEXT("인덱스 저장 이전"));
         return S_OK;
     }
     readFile.read((char*)&m_iBGIndex, sizeof(_int));
     readFile.read((char*)&m_iSourIndex, sizeof(_int));
     readFile.read((char*)&m_iDestIndex, sizeof(_int));
+    if (readFile.eof())
+    {
+        Call_MsgBox(TEXT("월드 매트릭스 저장 이전버전"));
+        return S_OK;
+    }
+    _float4x4 mat_Terrain;
+    readFile.read((char*)&mat_Terrain, sizeof(_float4x4));
 
-
+    m_pTransform->Set_MyMatrix(mat_Terrain);
+    m_pTransform->Make_WorldMatrix();
     return S_OK;
 }
 

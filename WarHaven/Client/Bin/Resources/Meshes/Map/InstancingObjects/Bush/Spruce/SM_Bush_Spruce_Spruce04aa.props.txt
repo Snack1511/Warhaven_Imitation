@@ -1,0 +1,38 @@
+Materials[2] =
+{
+    Materials[0] = MaterialInstanceConstant'/Game/Heroes/Environments/Nature/Bush/Spruce/MI_Bush_Spruce_Spruce04a_02a.MI_Bush_Spruce_Spruce04a_02a'
+    Materials[1] = MaterialInstanceConstant'/Game/Heroes/Environments/Nature/Bush/Spruce/MI_Bush_Spruce_Spruce04a_01a.MI_Bush_Spruce_Spruce04a_01a'
+}
+SourceModels[0] = {}
+StaticMaterials[2] =
+{
+    StaticMaterials[0] =
+    {
+        MaterialInterface = MaterialInstanceConstant'/Game/Heroes/Environments/Nature/Bush/Spruce/MI_Bush_Spruce_Spruce04a_02a.MI_Bush_Spruce_Spruce04a_02a'
+        MaterialSlotName = Default_01
+        UVChannelData =
+        {
+            bInitialized = true
+            bOverrideDensities = false
+            LocalUVDensities[4] = { 83.6552, 0, 0, 0 }
+        }
+    }
+    StaticMaterials[1] =
+    {
+        MaterialInterface = MaterialInstanceConstant'/Game/Heroes/Environments/Nature/Bush/Spruce/MI_Bush_Spruce_Spruce04a_01a.MI_Bush_Spruce_Spruce04a_01a'
+        MaterialSlotName = Default_02
+        UVChannelData =
+        {
+            bInitialized = true
+            bOverrideDensities = false
+            LocalUVDensities[4] = { 112.377, 0, 0, 0 }
+        }
+    }
+}
+Sockets[0] = {}
+ExtendedBounds =
+{
+    Origin = { X=-8.41642, Y=-4.93245, Z=51.3135 }
+    BoxExtent = { X=104.9, Y=109.828, Z=57.392 }
+    SphereRadius = 114.761
+}

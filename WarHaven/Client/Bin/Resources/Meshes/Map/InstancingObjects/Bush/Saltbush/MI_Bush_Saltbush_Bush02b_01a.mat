@@ -1,0 +1,12 @@
+Diffuse=T_Bush_Saltbush_Bush02a_01a_B
+Normal=T_Bush_Saltbush_Bush02a_01a_N
+Other[0]=T_Bush_Saltbush_Bush02a_01a_ORH
+Other[1]=Good64x64TilingNoiseHighFreq
+Other[2]=DefaultTexture
+Other[3]=test2_rgb_PivotPos_a_ParentIndexInt_UV_2
+Other[4]=WindTurblenceVectorAndGustMagnitude
+Other[5]=T_TextureSample_B
+Other[6]=T_TextureSample_N
+Other[7]=T_TextureSample_ORH
+Other[8]=T_PPInteraction_Index
+Other[9]=T_PPInteraction_XVector

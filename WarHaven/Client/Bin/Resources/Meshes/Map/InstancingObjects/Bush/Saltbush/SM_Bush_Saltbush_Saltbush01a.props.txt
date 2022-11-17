@@ -1,0 +1,26 @@
+Materials[1] =
+{
+    Materials[0] = MaterialInstanceConstant'/Game/Heroes/Environments/Nature/Bush/Saltbush/MI_Bush_Saltbush_Saltbush01a_01a.MI_Bush_Saltbush_Saltbush01a_01a'
+}
+SourceModels[0] = {}
+StaticMaterials[1] =
+{
+    StaticMaterials[0] =
+    {
+        MaterialInterface = MaterialInstanceConstant'/Game/Heroes/Environments/Nature/Bush/Saltbush/MI_Bush_Saltbush_Saltbush01a_01a.MI_Bush_Saltbush_Saltbush01a_01a'
+        MaterialSlotName = Material #2
+        UVChannelData =
+        {
+            bInitialized = true
+            bOverrideDensities = false
+            LocalUVDensities[4] = { 89.001, 0, 0, 0 }
+        }
+    }
+}
+Sockets[0] = {}
+ExtendedBounds =
+{
+    Origin = { X=-2.49575, Y=0.936409, Z=38.854 }
+    BoxExtent = { X=73.81, Y=72.7448, Z=44.4087 }
+    SphereRadius = 84.9419
+}

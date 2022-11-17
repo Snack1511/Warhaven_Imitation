@@ -31,6 +31,7 @@ public:
 	void Update_Normal();
 	void Update_Texture(_int Sour, _int Dest, _int BG);
 	list<tuple<string, _int>>& Get_TextureList() { return m_TextureIndex; }
+	_uint3 Get_TerrainTexIndex();
 protected:
 	virtual HRESULT	SetUp_TerrainMesh(_uint iNumVerticesX, _uint iNumVerticesZ);
 	virtual HRESULT	SetUp_TerrainMesh(const _tchar* pFilePath);

@@ -1,0 +1,26 @@
+Materials[1] =
+{
+    Materials[0] = MaterialInstanceConstant'/Game/Heroes/Environments/Nature/Bush/Wild/MI_Bush_Wild_RabbitBush01a_01a.MI_Bush_Wild_RabbitBush01a_01a'
+}
+SourceModels[0] = {}
+StaticMaterials[1] =
+{
+    StaticMaterials[0] =
+    {
+        MaterialInterface = MaterialInstanceConstant'/Game/Heroes/Environments/Nature/Bush/Wild/MI_Bush_Wild_RabbitBush01a_01a.MI_Bush_Wild_RabbitBush01a_01a'
+        MaterialSlotName = Default
+        UVChannelData =
+        {
+            bInitialized = true
+            bOverrideDensities = false
+            LocalUVDensities[4] = { 99.3887, 0, 517.197, 0 }
+        }
+    }
+}
+Sockets[0] = {}
+ExtendedBounds =
+{
+    Origin = { X=-1.67283, Y=-2.62135, Z=50.1645 }
+    BoxExtent = { X=64.3391, Y=70.0086, Z=59.2018 }
+    SphereRadius = 74.0101
+}
