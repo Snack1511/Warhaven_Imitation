@@ -1,6 +1,8 @@
 #include "CUI_Main.h"
 #include "GameInstance.h"
+#include "CUI_Renderer.h"
 #include "Texture.h"
+#include "CShader.h"
 
 #include "CUI_MainPlay.h"
 #include "CUI_MainMode.h"
@@ -23,6 +25,8 @@ HRESULT CUI_Main::Initialize_Prototype()
 
 	Ready_MainUI();
 
+	Create_BtnHighlight();
+
 	return S_OK;
 }
 
@@ -36,9 +40,48 @@ HRESULT CUI_Main::Start()
 	Enable_MainUI();
 	Enable_MainWindow();
 
+	GET_COMPONENT_FROM(m_pBtnHighlight, CShader)
+		->CallBack_SetRawValues += bind(&CUI_Main::Set_Shader_BtnHighlight, this, placeholders::_1, "g_fValue");
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pTopBtn[i]->CallBack_PointEnter += bind(&CUI_Main::On_PointEnter_TopBtn, this, placeholders::_1);
+		m_pTopBtn[i]->CallBack_PointDown += bind(&CUI_Main::On_PointDown_TopBtn, this, placeholders::_1);
+	}
+
 	__super::Start();
 
 	return S_OK;
+}
+
+void CUI_Main::Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName)
+{
+	if (m_pBtnHighlight->Is_Valid())
+	{
+		m_fAccTime += fDT(0) * 0.25f;
+		pShader->Set_RawValue("g_fValue", &m_fAccTime, sizeof(_float));
+	}
+}
+
+void CUI_Main::On_PointEnter_TopBtn(const _uint& iEventNum)
+{
+}
+
+void CUI_Main::On_PointDown_TopBtn(const _uint& iEventNum)
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pTopBtn[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			_float4 vPos = pTarget->Get_Pos();
+
+			m_pBtnHighlight->Set_Pos(vPos.x, vPos.y);
+			m_pBtnHighlight->Set_Scale(90.f, 120.f);
+
+			ENABLE_GAMEOBJECT(m_pBtnHighlight);
+		}
+	}
 }
 
 void CUI_Main::Ready_MainUI()
@@ -56,8 +99,6 @@ void CUI_Main::Ready_MainUI()
 
 	GET_COMPONENT_FROM(m_pPrototypeUI[Btn], CTexture)->Remove_Texture(0);
 
-	Read_Texture(m_pPrototypeUI[Btn], "/Lobby/LobbyText", "Text");
-
 	GET_COMPONENT_FROM(m_pPrototypeUI[Key], CTexture)
 		->Add_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_BlackEKeyIcon.dds"));
 
@@ -73,6 +114,23 @@ void CUI_Main::Ready_MainUI()
 	}
 }
 
+void CUI_Main::Create_BtnHighlight()
+{
+	m_pBtnHighlight = CUI_Object::Create();
+
+	m_pBtnHighlight->Set_Scale(180.f, 220.f);
+	m_pBtnHighlight->Set_Sort(0.95f);
+
+	m_pBtnHighlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_BGMainTab.dds"));
+	m_pBtnHighlight->SetTexture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_SelectPT3.png"));
+	m_pBtnHighlight->SetTexture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_soft_smoke.dds"));
+
+	GET_COMPONENT_FROM(m_pBtnHighlight, CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_LobbyEffect);
+
+	CREATE_GAMEOBJECT(m_pBtnHighlight, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pBtnHighlight);
+}
+
 void CUI_Main::Enable_MainUI()
 {
 	for (int i = 0; i < 3; ++i)
@@ -84,15 +142,24 @@ void CUI_Main::Enable_MainUI()
 		CREATE_GAMEOBJECT(m_pTopBtn[i], GROUP_UI);
 		CREATE_GAMEOBJECT(m_pGoodsUI[i], GROUP_UI);
 
-		GET_COMPONENT_FROM(m_pTopBtn[i], CTexture)->Set_CurTextureIndex(i);
-
-		_float fPosX = -535.f + (i * 100.f);
+		_float fPosX = -530.f + (i * 95.f);
 		m_pTopBtn[i]->Set_PosX(fPosX);
-
 		m_pTopBtn[i]->Set_Sort(0.95f);
+
+		m_pTopBtn[i]->Set_FontRender(true);
+		m_pTopBtn[i]->Set_FontStyle(true);
+		m_pTopBtn[i]->Set_FontScale(0.4f);
+		m_pTopBtn[i]->Set_FontOffset(-40.f, -22.f);
+		m_pTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
 		m_pGoodsUI[i]->Set_Sort(0.8f);
 	}
+
+	m_pTopBtn[1]->Set_FontOffset(-28.5f, -22.f);
+
+	m_pTopBtn[0]->Set_FontText(TEXT("플레이"));
+	m_pTopBtn[1]->Set_FontText(TEXT("병영"));
+	m_pTopBtn[2]->Set_FontText(TEXT("프로필"));
 
 	for (int i = 0; i < 2; ++i)
 	{
@@ -100,7 +167,7 @@ void CUI_Main::Enable_MainUI()
 
 		GET_COMPONENT_FROM(m_pKeyUI[i], CTexture)->Set_CurTextureIndex(i);
 
-		_float fPosX = -600.f + (i * 330.f);
+		_float fPosX = -600.f + (i * 340.f);
 		m_pKeyUI[i]->Set_PosX(fPosX);
 
 		m_pKeyUI[i]->Set_Sort(0.95f);

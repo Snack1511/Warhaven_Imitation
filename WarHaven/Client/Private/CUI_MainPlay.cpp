@@ -78,18 +78,22 @@ void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
 		{
 			_float4 vPos = pTarget->Get_Pos();
 			_float4 vScale = pTarget->Get_Scale();
-
 			_float fPosX = vPos.x + vScale.x;
-
-			m_pBtnHightlight->Set_Pos(fPosX, vPos.y);
-
 			_float fScaleX = vScale.x * 3.f;
 
+			m_pBtnHightlight->Set_Pos(fPosX - 20.f, vPos.y);
 			m_pBtnHightlight->Set_Scale(fScaleX, 500.f);
+
+			// 글자 위치 이동 러프
 
 			ENABLE_GAMEOBJECT(m_pBtnHightlight);
 		}
 	}
+}
+
+void CUI_MainPlay::On_PointExit_PlayBtn(const _uint& iEventNum)
+{
+	DISABLE_GAMEOBJECT(m_pBtnHightlight);
 }
 
 void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
@@ -196,6 +200,7 @@ void CUI_MainPlay::Bind_Btn()
 	for (int i = 0; i < 2; ++i)
 	{
 		m_pPlayBtnUI[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_PlayBtn, this, placeholders::_1);
+		m_pPlayBtnUI[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_PlayBtn, this, placeholders::_1);
 	}
 
 	m_pPlayBtnUI[0]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Start, this, placeholders::_1);
@@ -319,18 +324,17 @@ void CUI_MainPlay::Create_PlayBtn()
 		m_pPlayBtnUI[i]->Set_FontStyle(true);
 
 		GET_COMPONENT_FROM(m_pPlayBtnUI[i], CTexture)->Remove_Texture(0);
-		//m_pPlayBtnUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha50.png"));
 
 		CREATE_GAMEOBJECT(m_pPlayBtnUI[i], GROUP_UI);
 	}
 
-	m_pPlayBtnUI[0]->Set_Pos(-500.f, 150.f);
+	m_pPlayBtnUI[0]->Set_Pos(-500.f, 180.f);
 	m_pPlayBtnUI[0]->Set_Scale(200.f, 64.f);
 	m_pPlayBtnUI[0]->Set_FontText(TEXT("게임 시작"));
 	m_pPlayBtnUI[0]->Set_FontScale(0.7f);
 	m_pPlayBtnUI[0]->Set_FontOffset(-100.f, -35.f);
 
-	m_pPlayBtnUI[1]->Set_Pos(-535.f, 75.f);
+	m_pPlayBtnUI[1]->Set_Pos(-535.f, 100.f);
 	m_pPlayBtnUI[1]->Set_Scale(128.f, 40.f);
 	m_pPlayBtnUI[1]->Set_FontText(TEXT("모드 변경"));
 	m_pPlayBtnUI[1]->Set_FontScale(0.4f);

@@ -346,8 +346,30 @@ PS_OUT PS_MAINEFFECT(PS_IN In)
     if (Out.vColor.a < 0.02f)
         discard;
     
-    Out.vColor.a = vMask.a;    
+    Out.vColor.a = vMask.a;
 	
+    return Out;
+}
+
+PS_OUT PS_LOBBYEFFECT(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;    
+    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    In.vTexUV.y += 0.44f;
+    vector vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV);
+    
+    In.vTexUV.y -= g_fValue;
+    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor = vColor;
+    
+    Out.vColor.a += vNoise.r;
+    
+    Out.vColor.a *= vColor.r;
+    Out.vColor.a *= vNormal.r;
+    
     return Out;
 }
 
@@ -792,6 +814,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAINEFFECT();
+    }
+
+    pass UI_LobbyEffect
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_LOBBYEFFECT();
     }
 
     pass ALPHA
