@@ -334,6 +334,8 @@ namespace Client
 //
 //		/* Take_Down */
 		STATE_ATTACK_VERTICALCUT,
+			/*Test*/
+		STATE_CHARGETEST,
 
 		/* Stop */
 		STATE_STOP_PLAYER_R,

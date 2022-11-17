@@ -113,7 +113,7 @@ MODEL_DATA* CResource_Manager::Make_ModelData(wstring wstrFilePath, MODEL_TYPE e
 		if (!pModelData)
 		{
 			wstrFilePath += L" : Error on Path";
-			Call_MsgBox(wstrFilePath.c_str());
+			//Call_MsgBox(wstrFilePath.c_str());
 		}
 	}
 

@@ -220,9 +220,6 @@
     <Filter Include="03. Instances\02. GameObject\06. Map\InstanceStucture">
       <UniqueIdentifier>{d6635c26-ab3b-44a9-97ed-3af5b9bfc64b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD">
-      <UniqueIdentifier>{cf100bac-50b2-400a-83a4-b47fbfbf0520}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge">
       <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
     </Filter>
@@ -237,9 +234,6 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Skill">
       <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play">
-      <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair">
       <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
@@ -711,6 +705,9 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play">
       <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\ChargeTest">
+      <UniqueIdentifier>{d6ce14bb-2f0e-4d4b-a719-d26e5088be75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1248,6 +1245,12 @@
     <ClInclude Include="..\Public\CUI_HUD.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CState_BlendableCharge.h">
+      <Filter>02. Design\06. State_Manager\States\BlendableBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CChargeTest.h">
+      <Filter>02. Design\06. State_Manager\ChargeTest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1764,6 +1767,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HUD.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CState_BlendableCharge.cpp">
+      <Filter>02. Design\06. State_Manager\States\BlendableBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CChargeTest.cpp">
+      <Filter>02. Design\06. State_Manager\ChargeTest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

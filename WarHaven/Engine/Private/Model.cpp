@@ -33,6 +33,7 @@ CModel::CModel(const CModel& rhs)
 	, m_bCulling(rhs.m_bCulling)
 	, m_TransformMatrix(rhs.m_TransformMatrix)
 	, m_eMODEL_TYPE(rhs.m_eMODEL_TYPE)
+	, m_bLOD(rhs.m_bLOD)
 {
 	for (auto& elem : rhs.m_MeshContainers)
 	{
@@ -446,6 +447,14 @@ HRESULT CModel::Initialize_Prototype()
 {
 	m_iNumMaterials = (_uint)m_Materials.size();
 	m_iNumMeshContainers = (_uint)m_MeshContainers.size();
+
+
+	/* NonAnim이면 LOD도 읽기 */
+	if (m_eMODEL_TYPE == TYPE_NONANIM)
+	{
+		SetUp_Model_LOD();
+	}
+
 	return S_OK;
 }
 
@@ -469,9 +478,37 @@ void CModel::Late_Tick()
 	if (!m_bCulling)
 		return;
 
+	if (m_eMODEL_TYPE == TYPE_ANIM)
+	{
+		_float4 vWorldPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
+		vWorldPos.y += 0.6f;
+		_float fRange = 2.f;
+
+		//통과면은 절두체까지해서 처리
+		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vWorldPos.XMLoad(), fRange))
+		{
+			for (_uint i = 0; i < m_iNumMeshContainers; ++i)
+			{
+				m_MeshContainers[i].second->Set_Enable(true);
+			}
+		}
+		else
+		{
+			for (_uint i = 0; i < m_iNumMeshContainers; ++i)
+			{
+				m_MeshContainers[i].second->Set_Enable(false);
+			}
+		}
+
+		return;
+
+	}
+	
+
 	_float4x4 matWorld = m_pOwner->Get_Transform()->Get_WorldMatrix();
 	_float4 vScale = m_pOwner->Get_Transform()->Get_Scale();
 	_float fScaleLength = vScale.x;
+	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
 
 	if (vScale.y > fScaleLength)
 		fScaleLength = vScale.y;
@@ -479,21 +516,65 @@ void CModel::Late_Tick()
 	if (vScale.z > fScaleLength)
 		fScaleLength = vScale.z;
 
-	for (auto& pMeshContainer : m_MeshContainers)
-	{
-		_float4 vWorldPos = pMeshContainer.second->Get_CenterPos().MultiplyCoord(matWorld);
-		_float fRange = pMeshContainer.second->Get_MaxRange();
 
+	_uint iNumMeshContainers = m_iNumMeshContainers / 2;
+
+
+	if (m_bLOD)
+	{
+		_float4 vWorldPos = m_vLODCenterPos.MultiplyCoord(matWorld);
+
+		_float fCurDistance = (vCamPos - vWorldPos).Length();
+
+		//거리가 멀면 LOD true
+		m_eLOD_Level = eLOD_LEVEL::eDefault;
+
+		for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+		{
+			_float fLODDistance = m_fLODDistance;
+			//i만큼 곱해서 단계를 나눔
+			fLODDistance *= (_float)i;
+
+			fLODDistance += m_fLODMaxRange;
+
+			//현재 거리가 단계보다 크면
+			if (fCurDistance > fLODDistance)
+				m_eLOD_Level = (eLOD_LEVEL)i;
+		}
+
+		cout << (_int)m_eLOD_Level << endl;
+
+	}
+
+
+	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
+	{
+		if (m_bLOD) // LOD 있는 객체면 일단 거르고 시작
+		{
+			//현재 단계 아닌 애들은 일단 컷
+			if (m_MeshContainers[i].first != (_uint)m_eLOD_Level)
+			{
+				m_MeshContainers[i].second->Set_Enable(false);
+				continue;
+			}
+		}
+
+		_float4 vWorldPos = m_MeshContainers[i].second->Get_CenterPos().MultiplyCoord(matWorld);
+		_float fRange = m_MeshContainers[i].second->Get_MaxRange();
 		fRange *= fScaleLength;
 
+
+		//통과면은 절두체까지해서 처리
 		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vWorldPos.XMLoad(), fRange))
 		{
-			pMeshContainer.second->Set_Enable(true);
+			m_MeshContainers[i].second->Set_Enable(true);
 		}
 		else
 		{
-			pMeshContainer.second->Set_Enable(false);
+			m_MeshContainers[i].second->Set_Enable(false);
 		}
+			
+		
 	}
 }
 
@@ -626,10 +707,23 @@ HRESULT CModel::Bind_SRV(CShader* pShader, const char* pConstantName, _uint iMes
 
 HRESULT CModel::SetUp_Model(MODEL_TYPE eType, wstring wstrModelFilePath, _float4x4 TransformMatrix, _uint iMeshPartType)
 {
-	m_wstrModelFilePath = wstrModelFilePath;
+	if (m_eMODEL_TYPE == TYPE_NONANIM)
+	{
+		if (iMeshPartType == 0)
+			m_wstrModelFilePath = wstrModelFilePath;
+	}
+	else
+	{
+		m_wstrModelFilePath = wstrModelFilePath;
+	}
+
 	m_eMODEL_TYPE = eType;
 	if (m_eMODEL_TYPE == TYPE_NONANIM)
 		m_bCulling = true;
+
+	if (m_eMODEL_TYPE == TYPE_ANIM)
+		m_bCulling = true;
+
 	XMStoreFloat4x4(&m_TransformMatrix, TransformMatrix.XMLoad());
 
 	MODEL_DATA* pModel_Data = CGameInstance::Get_Instance()->Get_ModelData(wstrModelFilePath, eType);
@@ -771,6 +865,65 @@ HRESULT CModel::SetUp_MeshContainersPtr()
 
 	return S_OK;
 }
+
+HRESULT CModel::SetUp_Model_LOD()
+{	
+	for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+	{
+		if (FAILED(Load_LOD((eLOD_LEVEL)i)))
+		{
+			m_bLOD = false;
+			return S_OK;
+		}
+	}
+
+
+	m_iNumMeshContainers = m_MeshContainers.size();
+	m_iNumMaterials = m_Materials.size();
+	m_bLOD = true;
+
+	for (auto& elem : m_MeshContainers)
+	{
+		m_vLODCenterPos += elem.second->Get_CenterPos();
+		_float fRange = elem.second->Get_MaxRange();
+		if (fRange >= m_fLODMaxRange)
+			m_fLODMaxRange = fRange;
+	}
+
+	m_vLODCenterPos /= m_iNumMeshContainers;
+
+	return S_OK;
+}
+
+HRESULT CModel::Load_LOD(eLOD_LEVEL eLevel)
+{
+	_int iLevelNum = (_int)eLevel;
+
+
+	/* LOD 찾기 */
+	m_wstrModelFilePath;
+
+	wstring wstrNewPath;
+	//1. 확장자까지 잘라보기
+	wstrNewPath = CutPath_R(m_wstrModelFilePath, L".");
+
+	//4. _LOD3 더하기
+	wstrNewPath += L"_Lod";
+	wstrNewPath += to_wstring(iLevelNum);
+	wstrNewPath += L".FBX";
+
+	//5. 일단 함 찾아보기
+	if (FAILED(SetUp_Model(m_eMODEL_TYPE, wstrNewPath, m_TransformMatrix, iLevelNum)))
+	{
+		//실패시 LOD는 false인걸루
+		m_bLOD = false;
+		return E_FAIL;
+	}
+
+
+	return S_OK;
+}
+
 
 HRESULT CModel::Create_ModelData(CResource* pResource, _uint iResType, _uint iMeshPartType)
 {

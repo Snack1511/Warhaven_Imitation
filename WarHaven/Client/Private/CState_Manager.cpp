@@ -33,6 +33,7 @@
 #include "CJump_Player_Land_L.h"
 #include "CJump_Player_Land_R.h"
 
+#include "CChargeTest.h"
 
 #include "CWarrior_Attack_HorizontalDown_R.h"
 #include "CWarrior_Attack_HorizontalDown_L.h"
@@ -272,9 +273,9 @@ void CState_Manager::Warrior_State()
 	m_arrStates[STATE_WARRIOR_OXEN_LOOPATTACK] = CWarrior_Oxen_Loop_Attack::Create();
 	m_arrStates[STATE_WARRIOR_OXEN_END] = CWarrior_Oxen_Cancel::Create();
 
-
-
 	m_arrStates[STATE_IDLE_WARRIOR_R_AI_ENEMY] = CAI_SandBack::Create();
+
+	m_arrStates[STATE_CHARGETEST] = CChargeTest::Create();
 
 	//STATE_HIT
 

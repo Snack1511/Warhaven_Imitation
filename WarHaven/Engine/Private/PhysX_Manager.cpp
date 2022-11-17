@@ -5,7 +5,7 @@
 
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
-//#define	YJ_DEBUG
+#define	YJ_DEBUG
 //#define USE_GPU
 
 
@@ -234,7 +234,15 @@ void CPhysX_Manager::Create_ConvexMesh(_float3* pVerticesPos, _uint iNumVertices
 
 	if (iNumVertices > 2000)
 	{
-		Desc.quantizedCount = 1000;
+		if (iNumVertices > 12000)
+		{
+			Call_MsgBox(L"정점 너무 많아서 Convex 못만듬, 건너 뛰겠음.");
+			SAFE_DELETE_ARRAY(pPxVerticesPos);
+			return;
+		}
+
+
+		Desc.quantizedCount = iNumVertices / 4;
 		Desc.flags |= PxConvexFlag::eQUANTIZE_INPUT;
 	}
 
@@ -286,12 +294,12 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 
 	//어느 높이까지 올라갈 수 있는지
 	tCCT.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
-	tCCT.stepOffset = 0.1f;
+	tCCT.stepOffset = 0.2f;
 	tCCT.contactOffset = 0.1f;
 
 	//경사진 슬로프만나면 어떻게 할 지
 	tCCT.nonWalkableMode = PxControllerNonWalkableMode::ePREVENT_CLIMBING;
-	tCCT.slopeLimit = cosf(ToRadian(45.f));
+	tCCT.slopeLimit = cosf(ToRadian(50.f));
 	//tCCT.invisibleWallHeight = 0.6f;
 	if (!tCCT.isValid())
 	{
