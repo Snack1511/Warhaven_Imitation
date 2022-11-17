@@ -56,34 +56,78 @@ HRESULT CUI_MainPlay::Start()
 	return S_OK;
 }
 
-void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
+void CUI_MainPlay::My_Tick()
 {
-	CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
+	__super::My_Tick();
+
+	if (m_pBG->Is_Valid())
+	{
+		if (KEY(ESC, TAP))
+		{
+			SetActive_ModeWindow();
+		}
+	}
 }
 
-void CUI_MainPlay::On_PointEnterStay_Stage(const _uint& iEventNum)
+void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
+{
+	switch (m_eStage)
+	{
+	case CUI_MainPlay::Test:
+		CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
+		break;
+
+	case CUI_MainPlay::Training:
+		Call_MsgBox(TEXT("훈련소"));
+		// CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
+		break;
+	}
+}
+
+void CUI_MainPlay::On_PointStay_Stage(const _uint& iEventNum)
 {
 	CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
 }
 
+void CUI_MainPlay::On_PointDown_Stage0(const _uint& iEnventNum)
+{
+	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[0], CTexture)->Get_CurTextureIndex();
+	if (iTextureNum <= 3)
+	{
+		m_eStage = Select_Stage::Test;
+	}
+}
+
+void CUI_MainPlay::On_PointDown_Stage1(const _uint& iEnventNum)
+{
+	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[1], CTexture)->Get_CurTextureIndex();
+	if (iTextureNum <= 3)
+	{
+		Call_MsgBox(TEXT("테스트 레벨1"));
+	}
+}
+
+void CUI_MainPlay::On_PointDown_Stage2(const _uint& iEnventNum)
+{
+	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[2], CTexture)->Get_CurTextureIndex();
+	if (iTextureNum <= 3)
+	{
+		Call_MsgBox(TEXT("테스트 레벨2"));
+	}
+}
+
+void CUI_MainPlay::On_PointDown_Stage3(const _uint& iEnventNum)
+{
+	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[3], CTexture)->Get_CurTextureIndex();
+	if (iTextureNum <= 3)
+	{
+		m_eStage = Select_Stage::Training;
+	}
+}
+
 void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 {
-	for (int i = 0; i < 2; ++i)
-	{
-		DISABLE_GAMEOBJECT(m_pPlayBtnUI[i]);
-	}
-
-	ENABLE_GAMEOBJECT(m_pBG);
-	ENABLE_GAMEOBJECT(m_pTextModeSelect);
-	ENABLE_GAMEOBJECT(m_pEscKey);
-	ENABLE_GAMEOBJECT(m_pLine);
-
-	for (int i = 0; i < 4; ++i)
-	{
-		ENABLE_GAMEOBJECT(m_pStageSelectBtn[i]);
-	}
-
-	Set_LockImg();
+	SetActive_ModeWindow();
 }
 
 void CUI_MainPlay::Bind_Btn()
@@ -91,13 +135,63 @@ void CUI_MainPlay::Bind_Btn()
 	m_pPlayBtnUI[0]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Start, this, placeholders::_1);
 	m_pPlayBtnUI[1]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Mode, this, placeholders::_1);
 
-	for (int i = 0; i < 3; ++i)
+	// 스테이지 버튼 전부 접근
+	for (int i = 0; i < 4; ++i)
 	{
-		_uint itextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Get_CurTextureIndex();
-
-		if (itextureNum > 3)
+		_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Get_CurTextureIndex();
+		if (iTextureNum > 3)
 		{
-			m_pStageSelectBtn[i]->CallBack_PointStay += bind(&CUI_MainPlay::On_PointEnterStay_Stage, this, placeholders::_1);
+			m_pStageSelectBtn[i]->CallBack_PointStay += bind(&CUI_MainPlay::On_PointStay_Stage, this, placeholders::_1);
+		}
+	}
+
+	m_pStageSelectBtn[0]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage0, this, placeholders::_1);
+	m_pStageSelectBtn[1]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage1, this, placeholders::_1);
+	m_pStageSelectBtn[2]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage2, this, placeholders::_1);
+	m_pStageSelectBtn[3]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage3, this, placeholders::_1);
+}
+
+void CUI_MainPlay::SetActive_ModeWindow()
+{
+	if (!m_pBG->Is_Valid())
+	{
+		for (int i = 0; i < 2; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_pPlayBtnUI[i]);
+		}
+
+		ENABLE_GAMEOBJECT(m_pBG);
+		ENABLE_GAMEOBJECT(m_pTextModeSelect);
+		ENABLE_GAMEOBJECT(m_pEscKey);
+		ENABLE_GAMEOBJECT(m_pLine);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			ENABLE_GAMEOBJECT(m_pStageSelectBtn[i]);
+		}
+
+		Set_LockImg();
+	}
+	else
+	{
+		for (int i = 0; i < 2; ++i)
+		{
+			ENABLE_GAMEOBJECT(m_pPlayBtnUI[i]);
+		}
+
+		DISABLE_GAMEOBJECT(m_pBG);
+		DISABLE_GAMEOBJECT(m_pTextModeSelect);
+		DISABLE_GAMEOBJECT(m_pEscKey);
+		DISABLE_GAMEOBJECT(m_pLine);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_pStageSelectBtn[i]);
+		}
+
+		for (int i = 0; i < 3; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_pLockBtn[i]);
 		}
 	}
 }
@@ -242,6 +336,8 @@ void CUI_MainPlay::Create_StageBtn()
 			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
 			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
 			m_pStageSelectBtn[i]->Set_FontText(TEXT("일반전"));
+
+			GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i);
 		}
 
 		if (i == 1)
