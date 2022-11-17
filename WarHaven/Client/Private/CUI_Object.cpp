@@ -6,6 +6,7 @@
 #include "Functor.h"
 #include "CUI_Renderer.h"
 #include "CShader.h"
+#include "CButton.h"
 
 CUI_Object::CUI_Object()
 {
@@ -13,6 +14,7 @@ CUI_Object::CUI_Object()
 
 CUI_Object::CUI_Object(const CUI_Object& Prototype)
 	: CUI(Prototype)
+	, m_wstrName(Prototype.m_wstrName)
 	, m_bIsMouseTarget(Prototype.m_bIsMouseTarget)
 	, m_bIsRenderText(Prototype.m_bIsRenderText)
 	, m_bIsBold(Prototype.m_bIsBold)
@@ -20,6 +22,7 @@ CUI_Object::CUI_Object(const CUI_Object& Prototype)
 	, m_vOffset(Prototype.m_vOffset)
 	, m_vColor(Prototype.m_vColor)
 	, m_fFontScale(Prototype.m_fFontScale)
+
 {
 }
 
@@ -29,11 +32,14 @@ CUI_Object::~CUI_Object()
 
 HRESULT CUI_Object::Initialize_Prototype()
 {
+	CButton* pButton = CButton::Create(0);
+	Add_Component<CButton>(pButton);
+
 	__super::Initialize_Prototype();
 
 	SetTexture(TEXT("../Bin/Resources/Textures/White.png"));
 
-	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_ALPHA);
+	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
 
 	Set_Pos(0.f, 0.f);
 	Set_Scale(100.f);
@@ -125,8 +131,6 @@ void CUI_Object::My_Tick()
 {
 	__super::My_Tick();
 
-	MouseEvent();
-
 	RenderText();
 
 	Lerp_Scale();
@@ -135,30 +139,6 @@ void CUI_Object::My_Tick()
 void CUI_Object::My_LateTick()
 {
 	__super::My_LateTick();
-}
-
-void CUI_Object::MouseEvent()
-{
-	CheckInRect();
-
-	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
-
-	if (m_bIsMouseTarget)
-	{
-		if (m_bIsInMouse)
-		{
-			OnMouseEnter();
-
-			if(KEY(LBUTTON, TAP))
-			{
-				OnMouseClick();
-			}
-		}
-		else
-		{
-			OnMouseExit();
-		}
-	}
 }
 
 void CUI_Object::RenderText()
@@ -196,7 +176,7 @@ void CUI_Object::Lerp_Scale()
 			vScale += fabs(fSpeed);
 			Set_Scale(vScale.x, vScale.y);
 
-			if (m_fAccTime >= m_fDuration)
+			if (vScale.x >= m_fEnd)
 			{
 				Set_Scale(vScale.x, vScale.y);
 				m_bLerpScale = false;
@@ -230,7 +210,7 @@ void CUI_Object::Lerp_Scale()
 			vScale += fabs(fSpeed);
 			Set_ScaleX(vScale.x);
 
-			if (m_fAccTime >= m_fDuration)
+			if (vScale.x >= m_fEnd)
 			{
 				Set_ScaleX(m_fEnd);
 				m_fAccTime = 0.f;
@@ -238,11 +218,6 @@ void CUI_Object::Lerp_Scale()
 			}
 		}
 	}
-}
-
-void CUI_Object::OnMouseEnter()
-{
-
 }
 
 _float CUI_Object::Min(_float fValue)

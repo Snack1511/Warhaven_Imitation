@@ -220,9 +220,6 @@
     <Filter Include="03. Instances\02. GameObject\06. Map\InstanceStucture">
       <UniqueIdentifier>{d6635c26-ab3b-44a9-97ed-3af5b9bfc64b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play">
-      <UniqueIdentifier>{dd6f1321-fc66-4e02-b5b2-eb90124295ce}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD">
       <UniqueIdentifier>{cf100bac-50b2-400a-83a4-b47fbfbf0520}</UniqueIdentifier>
     </Filter>
@@ -240,9 +237,6 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Skill">
       <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Main">
-      <UniqueIdentifier>{67ba239e-a0f3-48cc-8d58-dcb36d4c9e41}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play">
       <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>

@@ -11,10 +11,27 @@ private:
 
 public:
 	virtual	HRESULT	Initialize_Prototype();
-	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
-private:
-	CUI_Object* m_pStartBtn = nullptr;
-};
+public:
+	virtual void On_PointUpEvent_Start(const _uint& iEventNum);
+	virtual void On_PointUpEvent_Mode(const _uint& iEventNum);
 
+private:
+	CUI_Object* m_pPlayBtnUI[2];
+
+	// Mode Select
+	CUI_Object* m_pBG = nullptr;
+	CUI_Object* m_pPrototypeStageBtn = nullptr;
+	CUI_Object* m_pStageSelectBtn[4];
+
+private:
+	void Bind_Btn();
+
+private:
+	void Set_ModeBtn();
+
+private:
+	void Create_ModeBG();
+	void Create_StageBtn();
+};

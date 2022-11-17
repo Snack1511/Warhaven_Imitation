@@ -3,6 +3,7 @@
 #include "Functor.h"
 #include "GameInstance.h"
 #include "CUI_Renderer.h"
+#include "CUser.h"
 
 CUI_Cursor::CUI_Cursor()
 {
@@ -45,13 +46,7 @@ HRESULT CUI_Cursor::Start()
 
 	ShowCursor(false);
 
-	RECT tScreen;
-	GetClientRect(g_hWnd, &tScreen);
-
-	ClientToScreen(g_hWnd, (LPPOINT)&tScreen);
-	ClientToScreen(g_hWnd, (LPPOINT)&tScreen.right);
-
-	// ClipCursor(&tScreen);
+	CUser::Get_Instance()->Set_Cursor(this);
 
 	return S_OK;
 }
@@ -60,12 +55,15 @@ void CUI_Cursor::My_Tick()
 {
 	__super::My_Tick();
 
+	GetCursorPos(&m_ptMouse);
+	ScreenToClient(g_hWnd, &m_ptMouse);
+
 	_float fFixPosX = 11.f;
 	_float fFixPosY = 13.f;
 
-	_float4 vPos = CFunctor::To_Window(_float4(m_ptMouse.x + fFixPosX, m_ptMouse.y + fFixPosY, 0.f));
+	_float4 vPos = CFunctor::To_Descartes(_float4(m_ptMouse.x + fFixPosX, m_ptMouse.y + fFixPosY, 0.f));
 
-	Set_Pos(vPos.x , -vPos.y);
+	Set_Pos(vPos.x, -vPos.y);
 
 	if (KEY(LBUTTON, HOLD))
 	{
@@ -75,4 +73,9 @@ void CUI_Cursor::My_Tick()
 	{
 		GET_COMPONENT(CTexture)->Set_CurTextureIndex(0);
 	}
+}
+
+void CUI_Cursor::Set_Mouse(MouseType eType)
+{
+	GET_COMPONENT(CTexture)->Set_CurTextureIndex(eType);
 }

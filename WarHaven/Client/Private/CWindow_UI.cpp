@@ -280,7 +280,7 @@ void CWindow_UI::Set_Object_Info()
 	if (ImGui::CollapsingHeader("Etc"))
 	{
 		_float fSort = pUI->Get_Sort();
-		ImGui::DragFloat("Sort", &fSort, 0.1f, 0.f, 1.f, "%.1f");
+		ImGui::DragFloat("Sort", &fSort, 0.001f, 0.f, 1.f, "%.3f");
 		pUI->Set_Sort(fSort);
 
 		bool bIsTarget = pUI->Get_MouseTarget();
@@ -294,6 +294,16 @@ void CWindow_UI::Set_Object_Info()
 		_float4 vColor = pUI->Get_Color();
 		ImGui::ColorEdit4("Color", (_float*)&vColor);
 		pUI->Set_Color(vColor);
+
+		_float4 vRatio = pUI->Get_SliceRatio();
+		float fRatio[4] = { vRatio.x, vRatio.y, vRatio.z, vRatio.w };
+		ImGui::DragFloat4("Ratio", fRatio, 0.1f, -9999.f, 9999.f, "%.1f");
+		pUI->Set_SliceRatio(_float4(fRatio[0], fRatio[1], fRatio[2], fRatio[3]));
+
+		_float2 vSize = pUI->Get_TextureSize();
+		float fSize[2] = { vSize.x, vSize.y };
+		ImGui::DragFloat2("Size", fSize, 0.1f, -9999.f, 9999.f, "%.1f");
+		pUI->Set_TextureSzie(_float2(fSize[0], fSize[1]));
 	}
 }
 

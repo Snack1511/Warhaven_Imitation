@@ -63,7 +63,7 @@ HRESULT CUI_Wrapper::Start()
 	return S_OK;
 }
 
-void CUI_Wrapper::On_MouseInEvent(const _uint& iEventNum)
+void CUI_Wrapper::On_PointEnterEvent(const _uint& iEventNum)
 {
 	//위에서 넣은 객체한테 발생하는 상호작용이
 	//이 함수로 들어옴
@@ -81,7 +81,7 @@ void CUI_Wrapper::On_MouseInEvent(const _uint& iEventNum)
 
 }
 
-void CUI_Wrapper::On_MouseExitEvent(const _uint& iEventNum)
+void CUI_Wrapper::On_PointExitEvent(const _uint& iEventNum)
 {
 }
 

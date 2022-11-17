@@ -20,6 +20,9 @@ float g_fValue;
 float g_fHpValue;
 float g_fHeroValue;
 
+float4 g_SliceRatio;
+float2 g_TextureSize;
+
 bool g_bAppear;
 
 
@@ -33,6 +36,7 @@ struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
     float2 vTexUV : TEXCOORD0;
+    float2 vSize : TEXCOORD1;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -40,12 +44,17 @@ VS_OUT VS_MAIN(VS_IN In)
     VS_OUT Out = (VS_OUT) 0;
 
     matrix matWV, matWVP;
-
+    
+   // float3 vSize = (vector) 1;
+    
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
+    
+    //vSize = mul(vector(vSize, 0.f), g_WorldMatrix);
 
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vTexUV = In.vTexUV;
+    //Out.vSize = vSize.xy;
 
     return Out;
 }
@@ -101,6 +110,7 @@ struct PS_IN
 {
     float4 vPosition : SV_POSITION;
     float2 vTexUV : TEXCOORD0;
+    float2 vSize : TEXCOORD1;
 };
 
 struct PS_OUT
@@ -124,7 +134,67 @@ PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    float2 vRectSize = In.vSize;
+
+    float WidPixelNum = In.vTexUV.x * vRectSize.x;
+    float HeightPixelNum = In.vTexUV.y * vRectSize.y;
+
+    float LeftAnchor = g_SliceRatio.x;
+    float TopAnchor = g_SliceRatio.y;
+    float RightAnchor = g_SliceRatio.z;
+    float BottomAnchor = g_SliceRatio.w;
+
+    float PaddleLeft = g_TextureSize.x * LeftAnchor;
+    float PaddleRight = (vRectSize.x - (g_TextureSize.x * (1 - RightAnchor)));
+    float PaddleTop = g_TextureSize.y * TopAnchor;
+    float PaddleBottom = (vRectSize.y - (g_TextureSize.y * (1 - BottomAnchor)));
+	
+    float2 TexUV = In.vTexUV;
+
+    float HorizonLinear = (RightAnchor - LeftAnchor) / (PaddleRight - PaddleLeft);
+    float VertiLinear = (BottomAnchor - TopAnchor) / (PaddleBottom - PaddleTop);
+	
+    if (vRectSize.x > g_TextureSize.x)
+    {
+        if (WidPixelNum > PaddleLeft && WidPixelNum < PaddleRight)
+        {
+            TexUV.x = HorizonLinear * WidPixelNum + LeftAnchor;
+        }
+        else if (WidPixelNum <= PaddleLeft)
+        {
+            TexUV.x = WidPixelNum / g_TextureSize.x; //찾아야될 픽셀 / 이미지 크기
+        }
+        else if (WidPixelNum >= PaddleRight)
+        {
+            TexUV.x = (vRectSize.x - WidPixelNum) / g_TextureSize.x; //찾아야될 픽셀 / 이미지 크기
+        }
+    }
+    else
+    {
+        TexUV.x = In.vTexUV.x;
+    }
+
+    if (vRectSize.y > g_TextureSize.y)
+    {
+        if (HeightPixelNum > PaddleTop && HeightPixelNum < PaddleBottom)
+        {
+            TexUV.y = VertiLinear * HeightPixelNum + TopAnchor;
+        }
+        else if (HeightPixelNum <= PaddleTop)
+        {
+            TexUV.y = HeightPixelNum / g_TextureSize.y; //찾아야될 픽셀 / 이미지 크기
+        }
+        else if (HeightPixelNum >= PaddleBottom)
+        {
+            TexUV.y = (vRectSize.y - HeightPixelNum) / g_TextureSize.y; //찾아야될 픽셀 / 이미지 크기
+        }
+    }
+    else
+    {
+        TexUV.y = In.vTexUV.y;
+    }
+    
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, TexUV);
     
     Out.vColor *= g_vColor;
     

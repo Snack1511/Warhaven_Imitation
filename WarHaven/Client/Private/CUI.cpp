@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "CUI.h"
+
+#include "GameInstance.h"
 #include "Transform.h"
 #include "Renderer.h"
 #include "CMesh_Rect.h" 
@@ -19,6 +21,10 @@ CUI::CUI(const CUI& Prototype)
 	: CGameObject(Prototype)
 	, m_vColor(Prototype.m_vColor)
 	, m_vPosition(Prototype.m_vPosition)
+	, m_vScale(Prototype.m_vScale)
+	, m_pFader(Prototype.m_pFader)
+	, m_vSliceRatio(Prototype.m_vSliceRatio)
+	, m_vTextureSize(Prototype.m_vTextureSize)
 {
 }
 
@@ -37,17 +43,37 @@ HRESULT CUI::Initialize_Prototype()
 	CUI_Renderer* pRenderer = CUI_Renderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT, _float4(0.f, 0.f, 0.f, 1.f));
 	Add_Component<CUI_Renderer>(pRenderer);
 	pRenderer->Set_UI(this);
-	
-	CButton* pButton = CButton::Create(0);
-	Add_Component<CButton>(pButton);
-	pButton->Set_OwnerUI(this);	
+
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+	// 페이드가 완료된 후에
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	// 페이드가 어떻게 될지
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+	// 페이드를 어떻게 시작할지
+	tFadeDesc.bFadeInFlag = FADE_TIME;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	// 페이드가 시작되는 시간
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.5f;
+
+	// 페이드인이 끝나고 얼마 뒤에 아웃
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.f;
+
+	m_pFader = CFader::Create(CP_BEFORE_RENDERER, tFadeDesc);
+	Add_Component(m_pFader);
 
 	return S_OK;
 }
 
 HRESULT CUI::Start()
 {
+	// ,멤버 변수 무조건 스탙
 	__super::Start();
+
+	m_pFader = GET_COMPONENT(CFader);
 
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource, this, placeholders::_1, "g_vColor");
 
@@ -57,6 +83,8 @@ HRESULT CUI::Start()
 void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
+	pShader->Set_RawValue("g_SliceRatio", &m_vSliceRatio, sizeof(_float4));
+	pShader->Set_RawValue("g_TextureSize", &m_vTextureSize, sizeof(_float2));
 }
 
 void CUI::Active_Fade(FADEDESC tFadeDesc)
