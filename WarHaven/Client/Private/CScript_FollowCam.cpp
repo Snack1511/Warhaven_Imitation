@@ -380,6 +380,8 @@ void CScript_FollowCam::Update_CameraByMouse()
 	CUtility_Transform::Turn_ByAngle(pTransform, _float4(0.f, 1.f, 0.f, 0.f), fTurnSpeedX);
 
 
+	//CUtility_Transform::Turn_ByAngle(pTransform, )
+
 	/*_long lWheelmMove = MOUSE_MOVE(MMS_WHEEL);
 	m_fDistance -= (_float)lWheelmMove * fDT * 0.1f;*/
 

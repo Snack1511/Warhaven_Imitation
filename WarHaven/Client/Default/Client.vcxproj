@@ -190,6 +190,7 @@
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CBloodOverlay.h" />
     <ClInclude Include="..\Public\CBounce_SpearMan.h" />
+    <ClInclude Include="..\public\CChargeTest.h" />
     <ClInclude Include="..\Public\CIdle_SpearMan_L.h" />
     <ClInclude Include="..\Public\CIdle_SpearMan_R.h" />
     <ClInclude Include="..\Public\CJump_SpearMan.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="..\Public\CFunc_ObjectControl.h" />
     <ClInclude Include="..\public\CButton.h" />
     <ClInclude Include="..\public\CState_Blendable.h" />
+    <ClInclude Include="..\public\CState_BlendableCharge.h" />
     <ClInclude Include="..\Public\CStop_Player.h" />
     <ClInclude Include="..\Public\CStop_SpearMan.h" />
     <ClInclude Include="..\Public\CStop_SpearMan_L.h" />
@@ -371,6 +373,7 @@
     <ClCompile Include="..\private\CAI_SandBack.cpp" />
     <ClCompile Include="..\Private\CBloodOverlay.cpp" />
     <ClCompile Include="..\Private\CBounce_SpearMan.cpp" />
+    <ClCompile Include="..\private\CChargeTest.cpp" />
     <ClCompile Include="..\Private\CIdle_SpearMan_L.cpp" />
     <ClCompile Include="..\Private\CIdle_SpearMan_R.cpp" />
     <ClCompile Include="..\Private\CJump_SpearMan.cpp" />
@@ -391,6 +394,7 @@
     <ClCompile Include="..\Private\CFunc_ObjectControl.cpp" />
     <ClCompile Include="..\private\CButton.cpp" />
     <ClCompile Include="..\private\CState_Blendable.cpp" />
+    <ClCompile Include="..\private\CState_BlendableCharge.cpp" />
     <ClCompile Include="..\Private\CStop_SpearMan.cpp" />
     <ClCompile Include="..\Private\CStop_Player.cpp" />
     <ClCompile Include="..\Private\CStop_SpearMan_L.cpp" />

@@ -37,12 +37,17 @@ public:
 public:
 	enum class ePhysXEnum {eCONVEX, eTRIANGLE, eBOX, eEND};
 
+	/* iLODLevel 에 맞춰 충돌체 생성, 실패시 걍 안만들어짐 */
 	void			Make_PhysXCollider(ePhysXEnum eShapeType, _uint iLODLevel = 3);
 
+	/* 박스 추가함. 해당 컴포넌트 반환.*/
 	CPhysXCollider* Make_PhysXCollier_Box();
 
+	/* 박스 위치 옮김*/
 	void			RePosition_Box(_uint iIndex, _float4 vOffsetPosition = ZERO_VECTOR);
+	/* 박스 크기 바꿈*/
 	void			ReScale_Box(_uint iIndex, _float4 vScale);
+	/* 박스 회전 (x = right축, y = up축, z = look을 축으로 회전 )*/
 	void			Rotate_Box(_uint iIndex, _float4 vAngles);
 	
 public:
@@ -64,7 +69,6 @@ protected:
 	ePhysXEnum				m_eCurType = ePhysXEnum::eEND;
 
 	vector<CPhysXCollider*>	m_vecPhysXColliders;
-	_uint		m_iCurrentIndex = 0;
 
 protected:
 	virtual	HRESULT	SetUp_Model(wstring strMeshPath);
