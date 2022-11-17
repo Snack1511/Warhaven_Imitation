@@ -5,7 +5,7 @@ BEGIN(Client)
 
 class CUI_HeroGauge final : public CUI_Wrapper
 {
-	enum UI_TYPE { BG, Gauge, Type_End };
+	enum WindowType { BG, Gauge, Type_End };
 
 	DECLARE_PROTOTYPE(CUI_HeroGauge);
 	DECLARE_GAMEOBJECT(CUI_HeroGauge);

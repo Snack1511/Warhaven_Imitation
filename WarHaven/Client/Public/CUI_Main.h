@@ -3,7 +3,7 @@
 class CUI_Main : public CUI_Wrapper
 {
 	enum MainUI { Btn, Key, Goods, MainEnd };
-	enum UI_TYPE { Play, Barracks, Profile, TypeEnd };
+	enum WindowType { Play, Barracks, Profile, TypeEnd };
 
 	DECLARE_PROTOTYPE(CUI_Main);
 	DECLARE_GAMEOBJECT(CUI_Main);
@@ -16,6 +16,8 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
+
+	virtual void My_Tick();
 
 public:
 	virtual void Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName);
@@ -35,6 +37,11 @@ private:
 	CUI_Object* m_pGoodsUI[3] = {};
 
 	CUI_Object* m_pBtnHighlight = nullptr;
+
+	WindowType m_eWindow = WindowType::Play;
+
+private:
+	void SetActive_Window(WindowType eWindow);
 
 private:
 	void Ready_MainUI();

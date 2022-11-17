@@ -51,9 +51,15 @@ HRESULT CUI_Main::Start()
 		m_pTopBtn[i]->CallBack_PointDown += bind(&CUI_Main::On_PointDown_TopBtn, this, placeholders::_1);
 	}
 
+	SetActive_Window(m_eWindow);
+
 	__super::Start();
 
 	return S_OK;
+}
+
+void CUI_Main::My_Tick()
+{
 }
 
 void CUI_Main::Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName)
@@ -105,6 +111,18 @@ void CUI_Main::On_PointDown_TopBtn(const _uint& iEventNum)
 			ENABLE_GAMEOBJECT(m_pBtnHighlight);
 		}
 	}
+}
+
+void CUI_Main::SetActive_Window(WindowType eWindow)
+{
+	m_eWindow = eWindow;
+
+	for (int i = 0; i < WindowType::TypeEnd; ++i)
+	{
+		//DISABLE_GAMEOBJECT(m_Prototypes[i]);
+	}
+
+	ENABLE_GAMEOBJECT(m_Prototypes[eWindow]);
 }
 
 void CUI_Main::Ready_MainUI()

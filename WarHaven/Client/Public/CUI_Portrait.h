@@ -6,7 +6,7 @@ BEGIN(Client)
 class CUI_Portrait final : public CUI_Wrapper
 {
 	enum PortIndex { User, Hero1, Hero4 = 4, PortEnd = 5 };
-	enum UI_TYPE { BG, Port, Key, Effect, Type_End };
+	enum WindowType { BG, Port, Key, Effect, Type_End };
 
 public:
 	enum HeroPortAnimType { Enable, Disable, AnimEnd };
