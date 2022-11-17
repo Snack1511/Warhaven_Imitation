@@ -95,7 +95,6 @@ StyleCopReport.xml
 *.fbx
 
 *.exp
-*.lib
 *.exe
 *.cso
 

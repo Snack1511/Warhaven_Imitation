@@ -7,6 +7,7 @@ class CModel_Renderer;
 class CCollider;
 class CCollider_Sphere;
 class CShader;
+class CPhysXCollider;
 END
 BEGIN(Client)
 class CStructure :
@@ -34,6 +35,10 @@ public:
 	virtual void	Set_Passes(VTXMODEL_PASS_TYPE ePassType);
 
 public:
+	enum class ePhysXEnum {eCONVEX, eTRIANGLE, eBOX};
+	void			Make_PhysXCollider(ePhysXEnum eShapeType);
+	
+public:
 	// CGameObject을(를) 통해 상속됨
 
 	virtual HRESULT Initialize_Prototype() override;
@@ -41,9 +46,15 @@ public:
 	virtual HRESULT Start() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
+
 protected:
 	CModel* m_pModelCom = nullptr;
 	wstring m_DebugPath = TEXT("");
+
+protected:
+	/* PhysX Collider */
+	list<CPhysXCollider*>	m_PhysXColliders;
+
 protected:
 	virtual	HRESULT	SetUp_Model(wstring strMeshPath);
 	virtual HRESULT SetUp_World(_float4x4 worldMat);

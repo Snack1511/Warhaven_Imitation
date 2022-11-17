@@ -120,6 +120,71 @@ void CStructure::Set_Passes(VTXMODEL_PASS_TYPE ePassType)
 {
 }
 
+void CStructure::Make_PhysXCollider(ePhysXEnum eShapeType)
+{
+	//기존 피직스부터 다 꺼야함
+
+	for (auto& elem : m_PhysXColliders)
+	{
+		DELETE_COMPONENT(elem, this);
+	}
+
+	m_PhysXColliders.clear();
+	
+	
+	switch (eShapeType)
+	{
+	case Client::CStructure::ePhysXEnum::eCONVEX:
+
+		for (auto& elem : m_pModelCom->Get_MeshContainers())
+		{
+			CPhysXCollider* pCol = CPhysXCollider::Create_Convex(0, elem.second, m_pTransform);
+			if (!pCol)
+				continue;
+			Add_Component(pCol);
+		}
+
+		break;
+	case Client::CStructure::ePhysXEnum::eTRIANGLE:
+
+		for (auto& elem : m_pModelCom->Get_MeshContainers())
+		{
+			CPhysXCollider* pCol = CPhysXCollider::Create(0, elem.second, m_pTransform);
+			if (!pCol)
+				continue;
+			Add_Component(pCol);
+		}
+
+		break;
+	case Client::CStructure::ePhysXEnum::eBOX:
+
+	{
+		CPhysXCollider::PHYSXCOLLIDERDESC		tPhysXColliderDesc;
+		ZeroMemory(&tPhysXColliderDesc, sizeof(CPhysXCollider::PHYSXCOLLIDERDESC));
+
+		tPhysXColliderDesc.eShape = CPhysXCollider::COLLIDERSHAPE::BOX;
+		tPhysXColliderDesc.eType = CPhysXCollider::COLLIDERTYPE::STATIC;
+		tPhysXColliderDesc.fDensity = 1.f;
+
+		//위치는 현재 객체 가운데로?
+
+		tPhysXColliderDesc.vPosition = m_pTransform->Get_World(WORLD_POS);
+
+		tPhysXColliderDesc.vAngles = vAngle;
+		tPhysXColliderDesc.vPosition = m_pTransform->Get_World(WORLD_POS);
+		tPhysXColliderDesc.vScale = vScale;
+
+		CPhysXCollider* pPhysXCollider = CPhysXCollider::Create(CP_BEFORE_TRANSFORM, tPhysXColliderDesc);
+		Add_Component(pPhysXCollider);
+	}
+		
+
+		break;
+	default:
+		break;
+	}
+}
+
 HRESULT CStructure::Initialize_Prototype()
 {
 	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXMODEL,
@@ -139,16 +204,6 @@ HRESULT CStructure::Initialize_Prototype()
 HRESULT CStructure::Initialize()
 {
 	m_pModelCom = GET_COMPONENT(CModel);
-	//__super::Initialize();
-
-	/* PhysX 메쉬충돌체 굽기 */
-	/*for (auto& elem : m_pModelCom->Get_MeshContainers())
-	{
-		CPhysXCollider* pCol = CPhysXCollider::Create_Convex(0, elem.second, m_pTransform);
-		if (!pCol)
-			continue;
-		Add_Component(pCol);
-	}*/
 	
 
 
