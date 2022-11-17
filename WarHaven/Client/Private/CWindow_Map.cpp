@@ -1268,6 +1268,9 @@ void CWindow_Map::Save_TerrainData(string BasePath, string SaveName)
     writeFile.write((char*)&IndexSour, sizeof(_int));
     writeFile.write((char*)&IndexDest, sizeof(_int));
 
+    _float4x4 mat_Terrain = m_pCurTerrain->Get_Transform()->Get_WorldMatrix();
+    writeFile.write((char*)&mat_Terrain, sizeof(_float4x4));
+
     writeFile.close();
 
     Safe_Delete_Array(szTexturePath);
@@ -1290,175 +1293,15 @@ void CWindow_Map::Load_TerrainData(string FilePath)
     m_pCurTerrain = pTerrain;
     MTT_DATA::Terrain_TUPLE tupleData = m_pCurTerrain->Get_TerrainData();
     m_CurTerrainData.Make_Data(tupleData);
+
+    _uint3 Indices = _uint3(0, 0, 0);
+    Indices = m_pCurTerrain->Get_TerrainTexIndex();
+    m_iBGIndex = Indices._1;
+    m_iSourIndex = Indices._2;
+    m_iDestIndex = Indices._3;
     //지형의 정점을 통한 터레인 수정
 }
 
-//void CWindow_Map::Save_ObjectGroup(string BasePath, string SaveName)
-//{
-//    string SaveFullPath = BasePath;
-//    SaveFullPath += SaveName;
-//    SaveFullPath += ".GroupData";
-//    ofstream	writeFile(SaveFullPath, ios::binary);
-//
-//    if (!writeFile.is_open())
-//    {
-//        Call_MsgBox(L"SSave 실패 ??!?!");
-//        assert(0);
-//    }
-//
-//
-//    //그룹 개수 저장
-//    _int GroupSize = _int(m_arrMeshGroupName.size());
-//    writeFile.write((char*)&GroupSize, sizeof(_int));
-//
-//    _int i = 0;
-//    for (_int i = 0; i < GroupSize; ++i)
-//    {
-//        //Loop~ 그룹 이름 저장
-//        char* pGroupName = get<Tuple_CharPtr>(m_arrMeshGroupName[i]);
-//        _int GroupNameLength = strlen(pGroupName) + 1;
-//        writeFile.write((char*)&GroupNameLength, sizeof(_int));
-//        writeFile.write(pGroupName, sizeof(char) * GroupNameLength);
-//
-//        //오브젝트 개수 저장
-//        string strGroupName = pGroupName;
-//        size_t GroupNameHash = HASHING(string, strGroupName);
-//        vector<MTO_DATA>* pDataList = &(m_ObjectDataGroupMap.find(GroupNameHash)->second);
-//        _int DataSize = _int(pDataList->size());
-//        writeFile.write((char*)&DataSize, sizeof(_int));
-//        //Loop~ MTO데이터 저장
-//        for (_int j = 0; j < DataSize; ++j)
-//        {
-//            char* pName = new char[MAX_PATH];
-//            strcpy_s(pName, sizeof(char) * MAX_PATH, CFunctor::To_String((*pDataList)[j].strMeshName).c_str());
-//            char* pPath = new char[MAX_PATH];
-//            strcpy_s(pPath, sizeof(char) * MAX_PATH, CFunctor::To_String((*pDataList)[j].strMeshPath).c_str());
-//            _float4x4 StateMatrix = (*pDataList)[j].ObjectStateMatrix;
-//            _float4 vScale = (*pDataList)[j].vScale;
-//            _byte LightFlag = (*pDataList)[j].byteLightFlag;
-//
-//            //이름 저장
-//            _int NameLength = strlen(pName) + 1;
-//            writeFile.write((char*)&NameLength, sizeof(_int));
-//            writeFile.write(pName, sizeof(char) * NameLength);
-//
-//            //경로 저장
-//            _int PathLength = strlen(pPath) + 1;
-//            writeFile.write((char*)&PathLength, sizeof(_int));
-//            writeFile.write(pPath, sizeof(char) * PathLength);
-//
-//            //행렬 저장
-//            writeFile.write((char*)&StateMatrix, sizeof(_float4x4));
-//
-//            //스케일 저장
-//            writeFile.write((char*)&vScale, sizeof(_float4));
-//
-//            //라이트플래그 저장
-//            writeFile.write((char*)&LightFlag, sizeof(_byte));
-//
-//            Safe_Delete_Array(pName);
-//            Safe_Delete_Array(pPath);
-//        }
-//    }
-//    writeFile.close();
-//    //Call_MsgBox(L"Save 성공");
-//}
-
-//void CWindow_Map::Load_ObjectGroup(string FilePath)
-//{
-//    Clear_TupleData(m_arrMeshGroupName);
-//    for (DATAGROUPING::value_type& Value : m_ObjectDataGroupMap)
-//    {
-//        Value.second.clear();
-//    }
-//    m_ObjectDataGroupMap.clear();
-//
-//    for (OBJGROUPING::value_type& MapValue : m_ObjectGroupMap)
-//    {
-//        for (OBJVECTOR::value_type& Value : MapValue.second)
-//        {
-//            DELETE_GAMEOBJECT(Value);
-//        }
-//        MapValue.second.clear();
-//    }
-//    m_ObjectGroupMap.clear();
-//
-//    for (map<size_t, _int>::value_type& Value : m_ObjNameCallStack)
-//    {
-//        Value.second = 0;
-//    }
-//
-//
-//    string LoadFullPath = FilePath;
-//    ifstream	readFile(LoadFullPath, ios::binary);
-//
-//    if (!readFile.is_open())
-//    {
-//        Call_MsgBox(L"Load 실패 ??!?!");
-//        assert(0);
-//    }
-//
-//    _int GroupSize = 0;
-//    //그룹 개수 저장
-//    readFile.read((char*)&GroupSize, sizeof(_int));
-//    for (_int i = 0; i < GroupSize; ++i)
-//    {
-//        //Loop~ 그룹 이름 저장
-//        _int ObjectGroupNameLength = 0;
-//        readFile.read((char*)&ObjectGroupNameLength, sizeof(_int));
-//
-//        char* pGroupName = new char[ObjectGroupNameLength];
-//        readFile.read(pGroupName, sizeof(char) * ObjectGroupNameLength);
-//        m_arrMeshGroupName.push_back(make_tuple(pGroupName, false));
-//        string strGroupName = pGroupName;
-//        //오브젝트 개수 저장
-//        _int ObjectCount = 0;
-//        readFile.read((char*)&ObjectCount, sizeof(_int));
-//        for (_int j = 0; j < ObjectCount; ++j)
-//        {
-//            MTO_DATA tData;
-//            //Loop~ MTO데이터 저장
-//            //이름 저장
-//            _int ObjectNameLength = 0;
-//            readFile.read((char*)&ObjectNameLength, sizeof(_int));
-//            char* pObjectName = new char[ObjectNameLength];
-//            readFile.read(pObjectName, sizeof(char) * ObjectNameLength);
-//            string strObjName = pObjectName;
-//            tData.strMeshName = CFunctor::To_Wstring(strObjName);
-//
-//            //경로 저장
-//            _int ObjectPathLength = 0;
-//            readFile.read((char*)&ObjectPathLength, sizeof(_int));
-//            char* pObjectPath = new char[ObjectPathLength];
-//            readFile.read(pObjectPath, sizeof(char) * ObjectPathLength);
-//            string strObjPath = pObjectPath;
-//            tData.strMeshPath = CFunctor::To_Wstring(strObjPath);
-//
-//            //행렬 저장
-//            _float4x4 StateMatrix;
-//            readFile.read((char*)&StateMatrix, sizeof(_float4x4));
-//            tData.ObjectStateMatrix = StateMatrix;
-//
-//            //스케일 저장
-//            _float4 vScale;
-//            readFile.read((char*)&vScale, sizeof(_float4));
-//            tData.vScale = vScale;
-//
-//            //라이트플래그 저장
-//            _byte LightFlag = 0;
-//            readFile.read((char*)&LightFlag, sizeof(_byte));
-//            tData.byteLightFlag = LightFlag;
-//
-//            Add_Object(strGroupName, tData);
-//
-//            Safe_Delete_Array(pObjectName);
-//            Safe_Delete_Array(pObjectPath);
-//        }
-//
-//
-//    }
-//    readFile.close();
-//}
 void CWindow_Map::Save_InstanceData(string BasePath, string SaveName)
 {
     string SplitBasePath = BasePath;
@@ -1732,8 +1575,11 @@ HRESULT CWindow_Map::Disable_DefaultTerrain()
         }
         m_pCurObjectList = nullptr;
     }
-    if(nullptr != m_pDefaultTerrain)
+    if (nullptr != m_pDefaultTerrain)
+    {
         m_pDefaultTerrain->Set_Enable(false);
+        m_pDefaultTerrain = nullptr;
+    }
     return S_OK;
 }
 
@@ -1971,9 +1817,15 @@ void CWindow_Map::Edit_TerrainTex()
     }
 
 }
-static float terrainPos[3] = {0};
 void CWindow_Map::Edit_TerrainData()
 {
+    float terrainPos[3] =
+    {
+        m_pCurTerrain->Get_Transform()->Get_World(WORLD_POS).x,
+        m_pCurTerrain->Get_Transform()->Get_World(WORLD_POS).y,
+        m_pCurTerrain->Get_Transform()->Get_World(WORLD_POS).z
+    };
+
     ImGui::Text("Terrain Position");
     if (ImGui::InputFloat3("##PosInput", terrainPos))
     {

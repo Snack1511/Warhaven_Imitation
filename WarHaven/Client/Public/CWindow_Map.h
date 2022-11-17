@@ -166,35 +166,8 @@ private:
 	void SetUp_FilePath(string& strFilePath, char* szData, string strExt = "");
 	void SetUp_CurPickingGroup();
 
-	//void Add_MeshGroup(char* pMeshGroupName);
-	//void Delete_MeshGroup(char* pMeshGroupName);
-
-	//void Add_Object(string MeshGroup, string Meshpath, string MeshName);
-	//void Add_Object(string MeshGroup, MTO_DATA& tData);
-	//void Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<MTO_DATA>& DataList);
-
-	//void Clear_MeshGroup(char* pMeshGroupName);
 #pragma endregion
 
-#pragma region Private 데이타컨트롤
-//private:
-//	void Func_DataControl();
-//	void SetUp_CurSelectObject();
-//	void Confirm_Data();
-//	void Show_ObjectData();
-//	void Set_ObjectSpeed();
-//
-//	void Select_DataControlFlag();
-//	void Control_Object();
-//
-//	void Scaling_Object();
-//	void Rotate_Object();
-//	void Position_Object();
-//	void Place_Object();
-//	void Change_Object_UpDir();
-//
-//	void Update_Data();
-#pragma endregion
 
 #pragma region Private 라이트컨트롤
 private:
@@ -217,9 +190,6 @@ private:
 
 	void Save_TerrainData(string BasePath, string SaveName);
 	void Load_TerrainData(string FilePath);
-
-	//void Save_ObjectGroup(string BasePath, string SaveName);
-	//void Load_ObjectGroup(string FilePath);
 
 	void Save_InstanceData(string BasePath, string SaveName);
 	void Save_SpliteData(string BasePath, string SaveName);
@@ -295,14 +265,7 @@ private:
 	string m_strPath = string("");
 
 	_int m_SelectObjectGroupIDIndex = 0;
-//	_int m_SelectMeshGroupIndex = 0;
-	//string m_strCurSelectObjectName = "Test....";
-//	_int m_iCurSelectObjectIndex = 0;
 	vector<tuple<char*, bool>> m_arrObjectGroupId;
-	//vector<tuple<char*, bool>> m_arrMeshGroupName;
-	//map<size_t, vector<CGameObject*>> m_ObjectGroupMap;
-//	map<size_t, vector<MTO_DATA>> m_ObjectDataGroupMap;
-	//map<size_t, _int> m_ObjNameCallStack;
 #pragma endregion
 
 #pragma region Value 터레인컨트롤
@@ -379,7 +342,7 @@ private:
 	_int m_iBGIndex = 0;
 
 	vector<tuple<wstring, CCamera*, _float4>> m_ArrCams;
-
+	_float4x4 m_matTerrain;
 private:
 	CFunc_ObjectControl* m_pObjectController = nullptr;
 #pragma endregion
