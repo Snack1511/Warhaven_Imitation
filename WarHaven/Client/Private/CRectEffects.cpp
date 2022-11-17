@@ -170,7 +170,7 @@ void CRectEffects::Reset(_float4x4 matWorld)
 void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 	{
 		pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
@@ -329,7 +329,7 @@ HRESULT CRectEffects::Initialize()
 			0.f);
 
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 		{
 			m_pInstancingDatas[i].vScale.y = m_pInstancingDatas[i].vScale.x;
 		}
@@ -372,6 +372,13 @@ HRESULT CRectEffects::Initialize()
 			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+		{
+			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
+
+			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
+		}
+		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
@@ -505,7 +512,7 @@ void CRectEffects::My_Tick()
 
 
 		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA &&
-			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 			m_pRectInstances[i].vColor = m_pInstancingDatas[i].vColor;
 		else
 			m_pRectInstances[i].vColor.w = m_pInstancingDatas[i].vColor.w;
@@ -626,7 +633,7 @@ void CRectEffects::My_Tick()
 		m_pRectInstances[i].vTranslation = vOriginPos;
 
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 			Update_Animation(i);
 
 	}
@@ -826,6 +833,8 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 	pReadFile->read((char*)&m_fDiscardPower, sizeof(_float));
 	pReadFile->read((char*)&m_bKeepSticked, sizeof(_bool));
 
+	pReadFile->read((char*)&m_vPlusColor, sizeof(_float4));
+	pReadFile->read((char*)&m_fColorPower, sizeof(_float));
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
@@ -877,6 +886,9 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 
 	pReadFile->read((char*)&m_fDiscardPower, sizeof(_float));
 	pReadFile->read((char*)&m_bKeepSticked, sizeof(_bool));
+
+	pReadFile->read((char*)&m_vPlusColor, sizeof(_float4));
+	pReadFile->read((char*)&m_fColorPower, sizeof(_float));
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -965,7 +977,7 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pInstancingDatas[iIndex].vTurnDir.z = 0.f;
 
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 	{
 		m_pRectInstances[iIndex].vColor.x = 0.f;
 		m_pRectInstances[iIndex].vColor.y = 0.f;

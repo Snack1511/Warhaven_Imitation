@@ -902,6 +902,8 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE;
 			if (ImGui::Selectable("BLACKBACKGROUND_TEXTURE", &bSelect[VTXRECTINSTANCE_PASS_BLACKBACKGROUNDTEXTURE]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_BLACKBACKGROUNDTEXTURE;
+			if (ImGui::Selectable("ANIMATION_ALPHACOLOR", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR;
 
 			
 			pRenderer->Set_Pass(pCurEffect->m_iPassType);
@@ -1190,6 +1192,21 @@ void CWindow_Effect::Show_ParticleTab()
 				tCurData.vColor.z = vColors[2];
 			}
 
+			_float	vPlusColors[3] = { ((CRectEffects*)pCurEffect)->m_vPlusColor.x, ((CRectEffects*)pCurEffect)->m_vPlusColor.y,
+									   ((CRectEffects*)pCurEffect)->m_vPlusColor.z };
+			if (ImGui::InputFloat3("vPlusColor", vPlusColors, "%.2f"))
+			{
+				((CRectEffects*)pCurEffect)->m_vPlusColor.x = vPlusColors[0];
+				((CRectEffects*)pCurEffect)->m_vPlusColor.y = vPlusColors[1];
+				((CRectEffects*)pCurEffect)->m_vPlusColor.z = vPlusColors[2];
+			}
+
+			_float fColorPower = static_cast<CRectEffects*>(pCurEffect)->m_fColorPower;
+			if (ImGui::SliderFloat("fColorPower", &fColorPower, 0.f, 1.f, "%.2f"))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_fColorPower = fColorPower;
+			}
+
 			_float	vScales[3] = { tCurData.vScale.x, tCurData.vScale.y, tCurData.vScale.z };
 			if (ImGui::InputFloat3("vStartScale", vScales, "%.3f"))
 			{
@@ -1376,7 +1393,8 @@ void CWindow_Effect::Save_CurEffect()
 	if (m_vecEffects[m_iCurrentIdx].iEffectType == 1)
 	{
 		if (pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA
-			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE 
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 			m_vecEffects[m_iCurrentIdx].iEffectType = 2;
 		else
 			m_vecEffects[m_iCurrentIdx].iEffectType = 1;
@@ -1468,6 +1486,9 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDiscardPower, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bKeepSticked, sizeof(_bool));
 
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_vPlusColor, sizeof(_float4));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fColorPower, sizeof(_float));
+
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -1506,6 +1527,9 @@ void CWindow_Effect::Save_CurEffect()
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDiscardPower, sizeof(_float));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bKeepSticked, sizeof(_bool));
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_vPlusColor, sizeof(_float4));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fColorPower, sizeof(_float));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));

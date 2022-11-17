@@ -58,7 +58,7 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
 
 
     Add_KeyFrame(5, 0);
-	Add_KeyFrame(46, 1);
+	Add_KeyFrame(47, 1);
 	Add_KeyFrame(62, 2);
 
 
@@ -110,6 +110,29 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
     Follow_MouseLook(pOwner);
     pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
 
+    /*dust*/
+    if (m_bAttackTrigger)
+    {
+        // 공격 진입
+        if (pOwner->Is_Weapon_R_Collision())
+        {
+            _float4 vHitPos = pOwner->Get_HitPos();
+            _float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+            //HitPos가 발 보다 아래, 즉 땅을 때린 경우에는 튕겨나는게 아니라 작은 파티클과 진동만.
+            if (vHitPos.y <= vPos.y + 0.1f)
+            {
+                //CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+                CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+                CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+                CEffects_Factory::Get_Instance()->Create_MultiEffects(L"GroundHitParticle", pOwner->Get_HitMatrix());
+            }
+
+            m_bAttackTrigger = false;
+        }
+
+    }
+
     return __super::Tick(pOwner, pAnimator);
 }
 
@@ -156,11 +179,13 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
 	break;
        
 	case 1:
+        m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 
 
 	case 2:
+        m_bAttackTrigger = false;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 		break;
 
