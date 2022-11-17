@@ -3,7 +3,7 @@
 class CUI_Main : public CUI_Wrapper
 {
 	enum MainUI { Btn, Key, Goods, MainEnd };
-	enum UI_TYPE { Play, Barracks, World, Challenge, Profile, Shop, TypeEnd };
+	enum UI_TYPE { Play, Barracks, Profile, TypeEnd };
 
 	DECLARE_PROTOTYPE(CUI_Main);
 	DECLARE_GAMEOBJECT(CUI_Main);
@@ -26,6 +26,8 @@ private:
 	CUI_Object* m_pGoodsUI[3] = {};
 
 private:
+	void Ready_MainUI();
+
 	void Enable_MainUI();
 	void Enable_MainWindow();
 };

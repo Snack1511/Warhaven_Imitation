@@ -75,8 +75,6 @@ void CButton::Start()
 	m_pOwnerUI = static_cast<CUI_Object*>(m_pOwner);
 
 	Set_Rect();
-
-	m_pMouse = CUser::Get_Instance()->Get_Cursor();
 }
 
 void CButton::Tick()
@@ -96,6 +94,7 @@ void CButton::Late_Tick()
 
 		if (m_bIsInMouse)
 		{
+			m_pMouse = CUser::Get_Instance()->Get_Cursor();
 			m_pMouse->Set_Mouse(CUI_Cursor::Over);
 
 			if (!m_bPrvState)

@@ -3,6 +3,8 @@
 #include "Texture.h"
 
 #include "CUI_MainPlay.h"
+#include "CUI_MainMode.h"
+
 #include "CUI_Object.h"
 #include "CButton.h"
 
@@ -16,8 +18,31 @@ CUI_Main::~CUI_Main()
 
 HRESULT CUI_Main::Initialize_Prototype()
 {
+	// 윈도우 준비
 	m_Prototypes[Play] = CUI_MainPlay::Create();
 
+	Ready_MainUI();
+
+	return S_OK;
+}
+
+HRESULT CUI_Main::Initialize()
+{
+	return S_OK;
+}
+
+HRESULT CUI_Main::Start()
+{
+	Enable_MainUI();
+	Enable_MainWindow();
+
+	__super::Start();
+
+	return S_OK;
+}
+
+void CUI_Main::Ready_MainUI()
+{
 	Read_UI("Lobby");
 
 	m_pPrototypeUI[Btn] = m_pUIMap[TEXT("Lobby_Btn")];
@@ -46,23 +71,6 @@ HRESULT CUI_Main::Initialize_Prototype()
 	{
 		m_pKeyUI[i] = m_pPrototypeUI[Key]->Clone();
 	}
-
-	return S_OK;
-}
-
-HRESULT CUI_Main::Initialize()
-{
-	return S_OK;
-}
-
-HRESULT CUI_Main::Start()
-{
-	Enable_MainUI();
-	Enable_MainWindow();
-
-	__super::Start();
-
-	return S_OK;
 }
 
 void CUI_Main::Enable_MainUI()

@@ -97,15 +97,10 @@ private:
 	virtual void	My_LateTick();
 
 private:
-	void MouseEvent();
 	void RenderText();
 	void Lerp_Scale();
 
 private:
-	virtual void OnMouseEnter();
-	virtual void OnMouseExit() {};
-	virtual void OnMouseClick() {};
-
 	_float Min(_float fValue);
 };
 

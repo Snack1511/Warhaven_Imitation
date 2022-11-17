@@ -39,7 +39,7 @@ HRESULT CUI_Object::Initialize_Prototype()
 
 	SetTexture(TEXT("../Bin/Resources/Textures/White.png"));
 
-	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_ALPHA);
+	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
 
 	Set_Pos(0.f, 0.f);
 	Set_Scale(100.f);
@@ -131,8 +131,6 @@ void CUI_Object::My_Tick()
 {
 	__super::My_Tick();
 
-	MouseEvent();
-
 	RenderText();
 
 	Lerp_Scale();
@@ -141,30 +139,6 @@ void CUI_Object::My_Tick()
 void CUI_Object::My_LateTick()
 {
 	__super::My_LateTick();
-}
-
-void CUI_Object::MouseEvent()
-{
-	CheckInRect();
-
-	m_bIsInMouse = PtInRect(&m_tRect, m_ptMouse) ? true : false;
-
-	if (m_bIsMouseTarget)
-	{
-		if (m_bIsInMouse)
-		{
-			OnMouseEnter();
-
-			if (KEY(LBUTTON, TAP))
-			{
-				OnMouseClick();
-			}
-		}
-		else
-		{
-			OnMouseExit();
-		}
-	}
 }
 
 void CUI_Object::RenderText()
@@ -244,11 +218,6 @@ void CUI_Object::Lerp_Scale()
 			}
 		}
 	}
-}
-
-void CUI_Object::OnMouseEnter()
-{
-
 }
 
 _float CUI_Object::Min(_float fValue)

@@ -23,6 +23,8 @@ CUI::CUI(const CUI& Prototype)
 	, m_vPosition(Prototype.m_vPosition)
 	, m_vScale(Prototype.m_vScale)
 	, m_pFader(Prototype.m_pFader)
+	, m_vSliceRatio(Prototype.m_vSliceRatio)
+	, m_vTextureSize(Prototype.m_vTextureSize)
 {
 }
 
@@ -81,6 +83,8 @@ HRESULT CUI::Start()
 void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
+	pShader->Set_RawValue("g_SliceRatio", &m_vSliceRatio, sizeof(_float4));
+	pShader->Set_RawValue("g_TextureSize", &m_vTextureSize, sizeof(_float2));
 }
 
 void CUI::Active_Fade(FADEDESC tFadeDesc)

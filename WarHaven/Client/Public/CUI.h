@@ -51,6 +51,12 @@ public:
 	_float4 Get_Color() { return m_vColor; }
 	void Set_Color(_float4 vColor) { m_vColor = vColor; }
 
+	_float4 Get_SliceRatio() { return m_vSliceRatio; }
+	void Set_SliceRatio(_float4 vRatio) { m_vSliceRatio = vRatio; }
+
+	_float2 Get_TextureSize() { return m_vTextureSize; }
+	void Set_TextureSzie(_float2 vTextureSize) { m_vTextureSize = vTextureSize; }
+
 public:
 	_float Get_Sort() { return m_vPosition.z; }
 	void Set_Sort(_float value);
@@ -71,6 +77,9 @@ protected:
 
 	RECT m_tRect;
 	POINT m_ptMouse;
+
+	_float4 m_vSliceRatio;
+	_float2 m_vTextureSize;
 
 	_float4 m_vColor = { 1.f, 1.f, 1.f, 1.f };
 	CFader* m_pFader = nullptr;
