@@ -6,6 +6,8 @@
 #include "CUser.h"
 #include "CUI_Cursor.h"
 #include "CShader.h"
+#include "CFader.h"
+#include "CButton.h"
 
 #include "Loading_Manager.h"
 
@@ -19,21 +21,12 @@ CUI_MainPlay::~CUI_MainPlay()
 
 HRESULT CUI_MainPlay::Initialize_Prototype()
 {
-	m_wstrName = TEXT("MainPlay_Btn");
-
-	__super::Initialize_Prototype();
-
-	GET_COMPONENT_FROM(m_pUI, CTexture)
-		->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/PlayText/Text_Mode.png"));
-
-	for (int i = 0; i < 2; ++i)
-	{
-		m_pPlayBtnUI[i] = m_pUI->Clone();
-	}
-
+	Create_PlayBtn();
 	Create_ModeBG();
 	Create_StageBtn();
 	Create_LockImg();
+	Create_StageHighlight();
+	Create_BtnHighlight();
 
 	return S_OK;
 }
@@ -42,15 +35,7 @@ HRESULT CUI_MainPlay::Start()
 {
 	__super::Start();
 
-	DELETE_GAMEOBJECT(m_pUI);
-
-	for (int i = 0; i < 2; ++i)
-	{
-		CREATE_GAMEOBJECT(m_pPlayBtnUI[i], GROUP_UI);
-	}
-
-	Set_ModeBtn();
-
+	Bind_Shader();
 	Bind_Btn();
 
 	return S_OK;
@@ -69,6 +54,44 @@ void CUI_MainPlay::My_Tick()
 	}
 }
 
+void CUI_MainPlay::Set_Shader_StageHighlight(CShader* pShader, const char* pConstName)
+{
+	_float4 vColor = _float4(1.f, 1.f, 1.f, 0.05f);
+	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+}
+
+void CUI_MainPlay::Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName)
+{
+	if (m_pBtnHightlight->Is_Valid())
+	{
+		m_fAccTime += fDT(0) * 0.25f;
+		pShader->Set_RawValue("g_fValue", &m_fAccTime, sizeof(_float));
+	}
+}
+
+void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPlayBtnUI[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			_float4 vPos = pTarget->Get_Pos();
+			_float4 vScale = pTarget->Get_Scale();
+
+			_float fPosX = vPos.x + vScale.x;
+
+			m_pBtnHightlight->Set_Pos(fPosX, vPos.y);
+
+			_float fScaleX = vScale.x * 3.f;
+
+			m_pBtnHightlight->Set_Scale(fScaleX, 500.f);
+
+			ENABLE_GAMEOBJECT(m_pBtnHightlight);
+		}
+	}
+}
+
 void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 {
 	switch (m_eStage)
@@ -79,49 +102,78 @@ void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 
 	case CUI_MainPlay::Training:
 		Call_MsgBox(TEXT("훈련소"));
-		// CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
 		break;
+	}
+}
+
+void CUI_MainPlay::On_PointEnter_Stage(const _uint& iEventNum)
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pStageSelectBtn[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
+			if (iTextureNum <= 3)
+			{
+				_float4 vPos = pTarget->Get_Pos();
+				m_pStageHighlight->Set_Pos(vPos.x, vPos.y);
+
+				ENABLE_GAMEOBJECT(m_pStageHighlight);
+			}
+		}
 	}
 }
 
 void CUI_MainPlay::On_PointStay_Stage(const _uint& iEventNum)
 {
-	CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
-}
-
-void CUI_MainPlay::On_PointDown_Stage0(const _uint& iEnventNum)
-{
-	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[0], CTexture)->Get_CurTextureIndex();
-	if (iTextureNum <= 3)
+	for (int i = 0; i < 4; ++i)
 	{
-		m_eStage = Select_Stage::Test;
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pStageSelectBtn[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
+			if (iTextureNum > 3)
+			{
+				CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+			}
+		}
 	}
 }
 
-void CUI_MainPlay::On_PointDown_Stage1(const _uint& iEnventNum)
+void CUI_MainPlay::On_PointExit_Stage(const _uint& iEventNum)
 {
-	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[1], CTexture)->Get_CurTextureIndex();
-	if (iTextureNum <= 3)
-	{
-		Call_MsgBox(TEXT("테스트 레벨1"));
-	}
+	DISABLE_GAMEOBJECT(m_pStageHighlight);
 }
 
-void CUI_MainPlay::On_PointDown_Stage2(const _uint& iEnventNum)
+void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 {
-	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[2], CTexture)->Get_CurTextureIndex();
-	if (iTextureNum <= 3)
+	for (int i = 0; i < 4; ++i)
 	{
-		Call_MsgBox(TEXT("테스트 레벨2"));
-	}
-}
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pStageSelectBtn[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
+			if (iTextureNum <= 3)
+			{
+				if (iTextureNum == 0)
+				{
+					m_eStage = Select_Stage::Test;
+				}
+				else if (iTextureNum == 1)
+				{
 
-void CUI_MainPlay::On_PointDown_Stage3(const _uint& iEnventNum)
-{
-	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[3], CTexture)->Get_CurTextureIndex();
-	if (iTextureNum <= 3)
-	{
-		m_eStage = Select_Stage::Training;
+				}
+				else if (iTextureNum == 2)
+				{
+
+				}
+				else if (iTextureNum == 3)
+				{
+					m_eStage = Select_Stage::Training;
+				}
+			}
+		}
 	}
 }
 
@@ -130,25 +182,32 @@ void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 	SetActive_ModeWindow();
 }
 
+void CUI_MainPlay::Bind_Shader()
+{
+	GET_COMPONENT_FROM(m_pStageHighlight, CShader)
+		->CallBack_SetRawValues += bind(&CUI_MainPlay::Set_Shader_StageHighlight, this, placeholders::_1, "g_vColor");
+
+	GET_COMPONENT_FROM(m_pBtnHightlight, CShader)
+		->CallBack_SetRawValues += bind(&CUI_MainPlay::Set_Shader_BtnHighlight, this, placeholders::_1, "g_fValue");
+}
+
 void CUI_MainPlay::Bind_Btn()
 {
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pPlayBtnUI[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_PlayBtn, this, placeholders::_1);
+	}
+
 	m_pPlayBtnUI[0]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Start, this, placeholders::_1);
 	m_pPlayBtnUI[1]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Mode, this, placeholders::_1);
 
-	// 스테이지 버튼 전부 접근
 	for (int i = 0; i < 4; ++i)
 	{
-		_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Get_CurTextureIndex();
-		if (iTextureNum > 3)
-		{
-			m_pStageSelectBtn[i]->CallBack_PointStay += bind(&CUI_MainPlay::On_PointStay_Stage, this, placeholders::_1);
-		}
+		m_pStageSelectBtn[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_Stage, this, placeholders::_1);
+		m_pStageSelectBtn[i]->CallBack_PointStay += bind(&CUI_MainPlay::On_PointStay_Stage, this, placeholders::_1);
+		m_pStageSelectBtn[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_Stage, this, placeholders::_1);
+		m_pStageSelectBtn[i]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage, this, placeholders::_1);
 	}
-
-	m_pStageSelectBtn[0]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage0, this, placeholders::_1);
-	m_pStageSelectBtn[1]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage1, this, placeholders::_1);
-	m_pStageSelectBtn[2]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage2, this, placeholders::_1);
-	m_pStageSelectBtn[3]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage3, this, placeholders::_1);
 }
 
 void CUI_MainPlay::SetActive_ModeWindow()
@@ -183,6 +242,7 @@ void CUI_MainPlay::SetActive_ModeWindow()
 		DISABLE_GAMEOBJECT(m_pTextModeSelect);
 		DISABLE_GAMEOBJECT(m_pEscKey);
 		DISABLE_GAMEOBJECT(m_pLine);
+		DISABLE_GAMEOBJECT(m_pStageHighlight);
 
 		for (int i = 0; i < 4; ++i)
 		{
@@ -196,12 +256,11 @@ void CUI_MainPlay::SetActive_ModeWindow()
 	}
 }
 
-void CUI_MainPlay::Set_ModeBtn()
+void CUI_MainPlay::Enable_StageHighlight(_float4 vPos)
 {
-	m_pPlayBtnUI[1]->Set_Scale(120.f, 60.f);
-	m_pPlayBtnUI[1]->Set_Pos(-560.f, 78.f);
+	m_pStageHighlight->Set_Pos(vPos.x, vPos.y);
 
-	GET_COMPONENT_FROM(m_pPlayBtnUI[1], CTexture)->Set_CurTextureIndex(1);
+	ENABLE_GAMEOBJECT(m_pStageHighlight);
 }
 
 void CUI_MainPlay::Set_LockImg()
@@ -245,6 +304,37 @@ void CUI_MainPlay::Set_LockImg()
 			}
 		}
 	}
+}
+
+void CUI_MainPlay::Create_PlayBtn()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pPlayBtnUI[i] = CUI_Object::Create();
+
+		m_pPlayBtnUI[i]->Set_Sort(0.91f);
+		m_pPlayBtnUI[i]->Set_MouseTarget(true);
+
+		m_pPlayBtnUI[i]->Set_FontRender(true);
+		m_pPlayBtnUI[i]->Set_FontStyle(true);
+
+		GET_COMPONENT_FROM(m_pPlayBtnUI[i], CTexture)->Remove_Texture(0);
+		//m_pPlayBtnUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha50.png"));
+
+		CREATE_GAMEOBJECT(m_pPlayBtnUI[i], GROUP_UI);
+	}
+
+	m_pPlayBtnUI[0]->Set_Pos(-500.f, 150.f);
+	m_pPlayBtnUI[0]->Set_Scale(200.f, 64.f);
+	m_pPlayBtnUI[0]->Set_FontText(TEXT("게임 시작"));
+	m_pPlayBtnUI[0]->Set_FontScale(0.7f);
+	m_pPlayBtnUI[0]->Set_FontOffset(-100.f, -35.f);
+
+	m_pPlayBtnUI[1]->Set_Pos(-535.f, 75.f);
+	m_pPlayBtnUI[1]->Set_Scale(128.f, 40.f);
+	m_pPlayBtnUI[1]->Set_FontText(TEXT("모드 변경"));
+	m_pPlayBtnUI[1]->Set_FontScale(0.4f);
+	m_pPlayBtnUI[1]->Set_FontOffset(-60.f, -17.f);
 }
 
 void CUI_MainPlay::Create_ModeBG()
@@ -296,12 +386,9 @@ void CUI_MainPlay::Create_ModeBG()
 void CUI_MainPlay::Create_StageBtn()
 {
 	m_pPrototypeStageBtn = CUI_Object::Create();
-
 	m_pPrototypeStageBtn->Set_Scale(216.f, 340.f);
 	m_pPrototypeStageBtn->Set_Sort(0.85f);
-
 	m_pPrototypeStageBtn->Set_MouseTarget(true);
-
 	m_pPrototypeStageBtn->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Enable_Stage1.dds"));
 
 	GET_COMPONENT_FROM(m_pPrototypeStageBtn, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Enable_Stage2.dds"));
@@ -373,7 +460,6 @@ void CUI_MainPlay::Create_LockImg()
 {
 	m_pPrototypeLock = CUI_Object::Create();
 	m_pPrototypeLock->Set_Scale(64.f);
-
 	m_pPrototypeLock->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_Lock.dds"));
 
 	for (int i = 0; i < 3; ++i)
@@ -391,4 +477,30 @@ void CUI_MainPlay::Create_LockImg()
 
 		m_pLockBtn[i]->Set_Sort(0.8f);
 	}
+}
+
+void CUI_MainPlay::Create_StageHighlight()
+{
+	m_pStageHighlight = CUI_Object::Create();
+	m_pStageHighlight->Set_Scale(216.f, 340.f);
+	m_pStageHighlight->Set_Sort(0.8f);
+	m_pStageHighlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_GradientSmall2.dds"));
+
+	CREATE_GAMEOBJECT(m_pStageHighlight, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pStageHighlight);
+}
+
+void CUI_MainPlay::Create_BtnHighlight()
+{
+	m_pBtnHightlight = CUI_Object::Create();
+	m_pBtnHightlight->Set_Scale(600.f, 400.f);
+	m_pBtnHightlight->Set_Sort(0.92f);
+
+	m_pBtnHightlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/LobbyEffect/T_AdditiveGlow3.dds"));
+	m_pBtnHightlight->SetTexture(TEXT("../Bin/Resources/Textures/UI/Lobby/LobbyEffect/T_Trail_01.dds"));
+
+	GET_COMPONENT_FROM(m_pBtnHightlight, CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_MainEffect);
+
+	CREATE_GAMEOBJECT(m_pBtnHightlight, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pBtnHightlight);
 }

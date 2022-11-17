@@ -94,6 +94,8 @@ void CButton::Late_Tick()
 
 		if (m_bIsInMouse)
 		{
+			m_pTargetUI = m_pOwnerUI;
+
 			m_pMouse = CUser::Get_Instance()->Get_Cursor();
 			m_pMouse->Set_Mouse(CUI_Cursor::Over);
 
@@ -127,6 +129,8 @@ void CButton::Late_Tick()
 		{
 			if (m_bPrvState)
 			{
+				m_pTargetUI = nullptr;
+
 				m_pMouse->Set_Mouse(CUI_Cursor::Default);
 
 				m_pOwnerUI->CallBack_PointExit(0);

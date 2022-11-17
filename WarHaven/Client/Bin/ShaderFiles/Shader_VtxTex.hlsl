@@ -50,7 +50,7 @@ VS_OUT VS_MAIN(VS_IN In)
     // vSize = mul(vector(vSize, 0.f), g_WorldMatrix);
     
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
-    matWVP = mul(matWV, g_ProjMatrix);    
+    matWVP = mul(matWV, g_ProjMatrix);
 
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vTexUV = In.vTexUV;
@@ -324,6 +324,29 @@ PS_OUT PS_PORTEFFECT(PS_IN In)
     
     if (Out.vColor.a < 0.01f)
         discard;
+	
+    return Out;
+}
+
+PS_OUT PS_MAINEFFECT(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    In.vTexUV.x -= g_fValue;
+    
+    vector vMask = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor = vMask;
+    
+    Out.vColor.xyz = vColor.xyz;
+    Out.vColor.a *= vColor.r;
+    
+    if (Out.vColor.a < 0.02f)
+        discard;
+    
+    Out.vColor.a = vMask.a;    
 	
     return Out;
 }
@@ -758,6 +781,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_PORTEFFECT();
+    }
+
+    pass UI_MainEffect
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAINEFFECT();
     }
 
     pass ALPHA

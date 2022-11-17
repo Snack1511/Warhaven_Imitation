@@ -19,15 +19,20 @@ public:
 	virtual void My_Tick() override;
 
 public:
+	virtual void Set_Shader_StageHighlight(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName);
+
+public:
+	virtual void On_PointEnter_PlayBtn(const _uint& iEventNum);
+
 	virtual void On_PointUpEvent_Start(const _uint& iEventNum);
 	virtual void On_PointUpEvent_Mode(const _uint& iEventNum);
 
+	virtual void On_PointEnter_Stage(const _uint& iEventNum);
 	virtual void On_PointStay_Stage(const _uint& iEventNum);
+	virtual void On_PointExit_Stage(const _uint& iEventNum);
 
-	virtual void On_PointDown_Stage0(const _uint& iEnventNum);
-	virtual void On_PointDown_Stage1(const _uint& iEnventNum);
-	virtual void On_PointDown_Stage2(const _uint& iEnventNum);
-	virtual void On_PointDown_Stage3(const _uint& iEnventNum);
+	virtual void On_PointDown_Stage(const _uint& iEventNum);
 
 private:
 	CUI_Object* m_pPlayBtnUI[2];
@@ -37,6 +42,8 @@ private:
 	CUI_Object* m_pTextModeSelect = nullptr;
 	CUI_Object* m_pEscKey = nullptr;
 	CUI_Object* m_pLine = nullptr;
+	CUI_Object* m_pStageHighlight = nullptr;
+	CUI_Object* m_pBtnHightlight = nullptr;
 
 	CUI_Object* m_pPrototypeStageBtn = nullptr;
 	CUI_Object* m_pStageSelectBtn[4];
@@ -44,24 +51,28 @@ private:
 	CUI_Object* m_pPrototypeLock = nullptr;
 	CUI_Object* m_pLockBtn[3];
 
-	Select_Stage m_eStage = Select_Stage::Stage_End;
+	Select_Stage m_eStage = Select_Stage::Test;
 
 private:	// 폰트 설정
 	_float2 vFontOffset = { -100.f, 120.f };
 	_float m_fFontSize = 0.33f;
 
 private:
+	void Bind_Shader();
 	void Bind_Btn();
 
 private:
 	void SetActive_ModeWindow();
+	void Enable_StageHighlight(_float4 vPos);
 
 private:
-	void Set_ModeBtn();
 	void Set_LockImg();
 
 private:
+	void Create_PlayBtn();
 	void Create_ModeBG();
 	void Create_StageBtn();
 	void Create_LockImg();
+	void Create_StageHighlight();
+	void Create_BtnHighlight();
 };
