@@ -48,6 +48,7 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	, m_fDurationRange(_origin.m_fDurationRange)
 	, m_strBoneName(_origin.m_strBoneName)
 	, m_fDiscardPower(_origin.m_fDiscardPower)
+	, m_bKeepSticked(_origin.m_bKeepSticked)
 {
 	if (_origin.m_pRectInstances)
 	{
@@ -661,7 +662,10 @@ void CRectEffects::My_LateTick()
 	if (m_bEffectFlag & EFFECT_REFBONE)
 	{
 		if (m_pRefBone)
-			Stick_RefBone();
+		{
+			if(m_bKeepSticked)
+				Stick_RefBone();
+		}
 	}
 
 
@@ -686,11 +690,11 @@ void CRectEffects::OnEnable()
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
-		m_pInstancingDatas[i].vColor.w = 0.f;
-		m_pRectInstances[i].vColor.w = 0.f;
+		
 		Reset_Instance(i);
 	}
 
+	Stick_RefBone();
 }
 
 void CRectEffects::Dead_Instance(_uint iIndex)
@@ -820,6 +824,8 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 	m_strBoneName = CUtility_File::Read_Text(pReadFile);
 
 	pReadFile->read((char*)&m_fDiscardPower, sizeof(_float));
+	pReadFile->read((char*)&m_bKeepSticked, sizeof(_bool));
+
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
@@ -870,6 +876,7 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	m_strBoneName = CUtility_File::Read_Text(pReadFile);
 
 	pReadFile->read((char*)&m_fDiscardPower, sizeof(_float));
+	pReadFile->read((char*)&m_bKeepSticked, sizeof(_bool));
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -920,6 +927,9 @@ void CRectEffects::Update_Animation(_uint iIndex)
 
 void CRectEffects::Stick_RefBone()
 {
+	if (!m_pRefBone)
+		return;
+
 	_float4 vPos = m_vOffsetPos;
 	_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
 
@@ -940,6 +950,8 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 	Set_NewStartPos(iIndex);
 
+	m_pInstancingDatas[iIndex].vColor.w = 0.f;
+	m_pRectInstances[iIndex].vColor.w = 0.f;
 
 	m_pInstancingDatas[iIndex].vScale = m_pInstancingDatas[iIndex].vStartScale;
 

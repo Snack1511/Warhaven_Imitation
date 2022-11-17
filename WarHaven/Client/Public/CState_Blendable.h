@@ -98,6 +98,7 @@ private:
 	_float		m_fCreateTime = 0.02f;
 	_float		m_fCreateTimeSlow = 0.07f;
 	void		Create_SwordAfterEffect();
+	void		Create_SoilEffect(); 
 
 private:
 	void				Move_Cycle(CAnimator* pAnimator, _uint* arrDirectionAnimIndices, ANIM_TYPE eAnimType);

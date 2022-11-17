@@ -1312,6 +1312,12 @@ void CWindow_Effect::Show_ParticleTab()
 
 			if (bStickBone)
 			{
+
+				if (ImGui::RadioButton("bKeepSticked", static_cast<CRectEffects*>(pCurEffect)->m_bKeepSticked))
+				{
+					static_cast<CRectEffects*>(pCurEffect)->m_bKeepSticked = !static_cast<CRectEffects*>(pCurEffect)->m_bKeepSticked;
+				}
+
 				strcpy_s(m_szRefBoneName, static_cast<CRectEffects*>(pCurEffect)->m_strBoneName.c_str());
 
 				if (ImGui::InputText("BONE_NAME", m_szRefBoneName, sizeof(m_szRefBoneName), ImGuiInputTextFlags_EnterReturnsTrue))
@@ -1338,6 +1344,7 @@ void CWindow_Effect::Show_ParticleTab()
 					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.z = vOffset[2];
 					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.w = 1.f;
 				}
+
 
 			}
 
@@ -1459,6 +1466,7 @@ void CWindow_Effect::Save_CurEffect()
 		CUtility_File::Write_Text(&writeFile, strBoneName.c_str());
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDiscardPower, sizeof(_float));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bKeepSticked, sizeof(_bool));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
@@ -1497,6 +1505,7 @@ void CWindow_Effect::Save_CurEffect()
 		CUtility_File::Write_Text(&writeFile, strBoneName.c_str());
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fDiscardPower, sizeof(_float));
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bKeepSticked, sizeof(_bool));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));

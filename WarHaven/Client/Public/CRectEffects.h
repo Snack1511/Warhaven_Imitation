@@ -64,7 +64,7 @@ private:
 	_float		m_fDiscardPower = 0.01f;
 
 	string		m_strBoneName = "";
-
+	_bool		m_bKeepSticked = false;
 
 	CURVE_TYPE		m_eCurveType = CURVE_LINEAR;
 
