@@ -57,6 +57,7 @@ public:
 		_float fRunSpeed = 4.f;
 		_float fRunBeginSpeed = 4.f;
 		_float fWalkSpeed = 1.8f;
+		/* 공격할 때 살짝 앞으로 가는 속도 */
 		_float fShortDashSpeed = 8.f;
 		_float fDashSpeed = 16.f;
 		_float fWallJumpSpeed = 15.f;
@@ -94,6 +95,7 @@ public:
 	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
 	void	Set_Passes(VTXANIM_PASS_TYPE ePassType);
 	void	Set_FollowCam(CCamera_Follow* pFollowCam) { m_pFollowCam = pFollowCam; }
+	/* 들고있는 FollowCam에 Shake 넣기. 1인자 : 강도, 2인자 : 시간 (시간이 짧을 수록 강도를 조금만 줘도 세게 흔들림)*/
 	void	Shake_Camera(_float fPower, _float fTime);
 
 public:
@@ -133,6 +135,7 @@ public:
 public:
 	void	Teleport_Unit(_float4 vPosition);
 	_float4		Get_HitPos();
+	/* hit 지점의 법선벡터를 Look으로 한 행렬을 반환 */
 	_float4x4	Get_HitMatrix();
 
 	void	Set_Controlable() { m_bControlable = !m_bControlable; }

@@ -103,7 +103,7 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			_float4 vHitPos = pOwner->Get_HitPos();
 			_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
 
-			//발쪽이면
+			//HitPos가 발 보다 아래, 즉 땅을 때린 경우에는 튕겨나는게 아니라 작은 파티클과 진동만.
 			if (vHitPos.y <= vPos.y + 0.1f)
 			{
 				pOwner->Shake_Camera(0.25f, 0.25f);

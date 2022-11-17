@@ -356,10 +356,13 @@ void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
 	_float fWeaponCenter;
 	wstring wstrMaskMapPath;
 	wstring wstrColorMapPath;
+	_uint	m_iTrailCount;
 
 	switch (eWeapon)
 	{
 	case Client::WEAPON_LONGSWORD:
+		/* Trail 길이 */
+		m_iTrailCount = 10;
 		pBoneName = "0B_R_WP1";
 		vWeaponLow = _float4(0.f, 0.f, -168.f, 1.f);
 		vWeaponHigh = _float4(0.f, 0.f, -171.f, 1.f);
@@ -380,11 +383,13 @@ void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
 		break;
 	}
 
-	m_pTrailEffect = CTrailEffect::Create(0, 10, vWeaponLow, vWeaponHigh,
+	/* 3D느낌 주려고 Trail 십자가 모양으로 2개 쓰는 중*/
+
+	m_pTrailEffect = CTrailEffect::Create(0, m_iTrailCount, vWeaponLow, vWeaponHigh,
 		m_pModelCom->Find_HierarchyNode(pBoneName), m_pTransform, vGlowFlag, vColor,
 		wstrMaskMapPath, wstrColorMapPath);
 
-	m_pTrailEffect2 = CTrailEffect::Create(0, 10, vWeaponLeft, vWeaponRight,
+	m_pTrailEffect2 = CTrailEffect::Create(0, m_iTrailCount, vWeaponLeft, vWeaponRight,
 		m_pModelCom->Find_HierarchyNode(pBoneName), m_pTransform, vGlowFlag, vColor,
 		wstrMaskMapPath, wstrColorMapPath);
 
