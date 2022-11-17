@@ -40,7 +40,7 @@ HRESULT CSprint_Loop::Initialize()
     m_fInterPolationTime = 0.f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.f;
+    m_fAnimSpeed = 1.5f;
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 200.f;
@@ -89,7 +89,7 @@ void CSprint_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
 	pMyPhysicsCom->Set_SpeedasMax();
 
-	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.3f;
+	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

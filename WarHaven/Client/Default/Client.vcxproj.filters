@@ -220,9 +220,6 @@
     <Filter Include="03. Instances\02. GameObject\06. Map\InstanceStucture">
       <UniqueIdentifier>{d6635c26-ab3b-44a9-97ed-3af5b9bfc64b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD">
-      <UniqueIdentifier>{cf100bac-50b2-400a-83a4-b47fbfbf0520}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge">
       <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
     </Filter>
@@ -237,9 +234,6 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Skill">
       <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Main\Main_Play">
-      <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair">
       <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
@@ -273,21 +267,6 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player">
       <UniqueIdentifier>{b38ed988-7cb2-4c8b-85fd-951d70d11eca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\02. AI">
-      <UniqueIdentifier>{823dec42-dfff-4be0-81b0-cc8f31266605}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. Hit">
-      <UniqueIdentifier>{fb93562e-eee0-4b30-93a4-55510fb9f293}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. Hit\01. Warrior">
-      <UniqueIdentifier>{fa28dc1f-dd63-47f0-9f32-cb0c201ffa9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. Hit\01. Warrior\01. Player">
-      <UniqueIdentifier>{c7d2342a-3572-4d7d-861d-e64ec9682307}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. Hit\01. Warrior\02. AI">
-      <UniqueIdentifier>{4bb077ce-5819-4f3f-a489-b3b4dc259354}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan">
       <UniqueIdentifier>{05675d31-ece8-4e0a-a81b-123f62cc5d21}</UniqueIdentifier>
@@ -643,9 +622,6 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\02. SpearMan\04. Attack\02. Skill\03. SpecialGuard\02. BackStep">
       <UniqueIdentifier>{1b07f7ee-4d12-4f94-9bd8-f5e77fb1d8fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Right">
-      <UniqueIdentifier>{452f8399-99da-4e84-a138-968dff75ad5c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl">
       <UniqueIdentifier>{f49447ee-e92a-446c-8597-ea69953aaa75}</UniqueIdentifier>
     </Filter>
@@ -711,6 +687,228 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play">
       <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\01. Right">
+      <UniqueIdentifier>{452f8399-99da-4e84-a138-968dff75ad5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\99. Hit">
+      <UniqueIdentifier>{fb93562e-eee0-4b30-93a4-55510fb9f293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\99. Hit\01. Warrior">
+      <UniqueIdentifier>{fa28dc1f-dd63-47f0-9f32-cb0c201ffa9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\99. Hit\01. Warrior\01. Player">
+      <UniqueIdentifier>{c7d2342a-3572-4d7d-861d-e64ec9682307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\99. Hit\01. Warrior\02. AI">
+      <UniqueIdentifier>{4bb077ce-5819-4f3f-a489-b3b4dc259354}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer">
+      <UniqueIdentifier>{bcfc24eb-62c6-4f68-ae0c-2c15321c8b49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle">
+      <UniqueIdentifier>{3ca5ee95-2c6a-411d-990d-8a9ea7a43808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\01. Right">
+      <UniqueIdentifier>{5d785ba9-0271-4c53-b772-cf90ce488f27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\WarHammer">
+      <UniqueIdentifier>{6777bf75-76b8-40cc-ac13-4d7d43b49b62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\02. Walk">
+      <UniqueIdentifier>{625bddaf-946c-41c9-bd73-ffb5d51fac25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run">
+      <UniqueIdentifier>{e3bdad19-f356-4919-8fcc-558f5be6c15e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack">
+      <UniqueIdentifier>{472ca90b-9386-4cb8-b9be-85414f7adae2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump">
+      <UniqueIdentifier>{f1007e22-2da2-4767-a593-0493ae57acab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\06. Sliding">
+      <UniqueIdentifier>{a34ee1c5-c586-4286-8794-a3578c32c5dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint">
+      <UniqueIdentifier>{dba14ccf-9320-4892-9c7c-5194cfe52886}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard">
+      <UniqueIdentifier>{70317bba-44b7-436f-9dcd-ac6ccd856477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\09. Hit">
+      <UniqueIdentifier>{4a8b2f2e-a21e-421c-9d68-cd415ad0aa35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\10. Stop">
+      <UniqueIdentifier>{e62f3054-e670-4e10-b403-cfc2f265c6f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\02. Walk\01. Right">
+      <UniqueIdentifier>{1e4ea677-8c14-4e9b-92a9-2a9d84101a82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\02. Walk\02. Left">
+      <UniqueIdentifier>{3d43df14-b83f-4a21-8737-6b7946609e6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\01. Begin">
+      <UniqueIdentifier>{31561aae-04e4-48b6-8ef7-944cab3e9dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\02. Loop">
+      <UniqueIdentifier>{696bfa3c-c8b9-45aa-a87f-ea0de2c84cd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\02. Loop\01. Right">
+      <UniqueIdentifier>{c32a1687-7b58-4d73-8ded-a9f0798f0d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\02. Loop\02. Left">
+      <UniqueIdentifier>{8f28a908-ce95-4b1b-be99-6aa733722b7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\01. Begin\01. Right">
+      <UniqueIdentifier>{26a30242-8989-45d7-a9d4-16191bb99868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\01. Begin\02. Left">
+      <UniqueIdentifier>{794de5c8-8ff8-4803-b48c-2da215712926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\01. Begin">
+      <UniqueIdentifier>{9286dbf9-d119-40b8-ae66-1ef8d348c7a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\02. Fall">
+      <UniqueIdentifier>{dec4b5da-2478-43b1-ba78-77a492271a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\03. Land">
+      <UniqueIdentifier>{c52d0bb1-bb5c-4d0f-b3a9-7799847d5e6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\01. Begin\02. Left">
+      <UniqueIdentifier>{afbd7606-25c7-43b3-b6a7-d264ffa55f24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\02. Fall\02. Left">
+      <UniqueIdentifier>{3e1295c1-4325-46f6-9bf0-f08936ebc140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\03. Land\01. Right">
+      <UniqueIdentifier>{65377013-52ec-4cd3-beb1-6fbd2abde0c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\03. Land\02. Left">
+      <UniqueIdentifier>{825259f6-a103-4b82-a77c-5d65c34c0a52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\01. Begin\01. Right">
+      <UniqueIdentifier>{76d72a73-dfe0-4d9a-8d4c-24e32625e46b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\02. Fall\01. Right">
+      <UniqueIdentifier>{75239644-b415-453a-a820-df29f1a64b4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\01. Jump">
+      <UniqueIdentifier>{00506fcd-0827-44eb-b23f-3166849f89af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\01. Jump\01. Begin">
+      <UniqueIdentifier>{29baa356-3fce-45d3-8b93-7e85051e0385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\01. Jump\02. Fall">
+      <UniqueIdentifier>{22309893-3743-4099-970a-88398f454c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\02. Attack">
+      <UniqueIdentifier>{af6c5371-9194-4997-882f-a044b0ee5766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\02. Attack\01. Begin">
+      <UniqueIdentifier>{4db66e26-5e8d-4a14-a9cc-47bc7b9f6410}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\02. Attack\02. RealAttack">
+      <UniqueIdentifier>{71c4391e-d80c-4932-8ba0-92773ad2b2e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run">
+      <UniqueIdentifier>{54da5f87-d64e-4426-bd42-55fdff47f383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run\01. Begin">
+      <UniqueIdentifier>{0c82923a-d2da-48fc-9dab-a1824a22d4a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run\02. Loop">
+      <UniqueIdentifier>{d59161e6-180d-457e-96e4-d7d64135880d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run\03. End">
+      <UniqueIdentifier>{e8c127c0-4cb0-4b0a-97b1-83b0611da26c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\10. Stop\01. Right">
+      <UniqueIdentifier>{7b0de179-c6f9-4597-86f9-6ec99a49b00f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\10. Stop\02. Left">
+      <UniqueIdentifier>{b9e99958-180b-4413-aabe-a968571083c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\02. Left">
+      <UniqueIdentifier>{dacb18f4-c005-421d-8a84-576f45783f78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\03. SwitchRtoL">
+      <UniqueIdentifier>{f1200eef-1ab9-4753-828f-7c0c7354cf29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\04. SwitchLtoR">
+      <UniqueIdentifier>{9e420182-4183-4751-9c8a-169e2de6f447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default">
+      <UniqueIdentifier>{307f8901-c021-41af-9fa3-566ea802b449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\02. Charge">
+      <UniqueIdentifier>{6fc15e71-a387-4882-9207-1c0dbda1af1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\03. Groggy">
+      <UniqueIdentifier>{973d8857-a700-49a8-ba98-ae08116e32c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\01. HorizontalMiddle">
+      <UniqueIdentifier>{d6678d6f-79b5-41e4-8033-69a9b0770332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\01. HorizontalMiddle\01. Right">
+      <UniqueIdentifier>{cdb6240e-41db-4a7d-a607-48b1d6a9adb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\01. HorizontalMiddle\02. Left">
+      <UniqueIdentifier>{a44ce246-2c1e-4bc6-8cb3-5b8eb71359b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\02. VerticalAttack">
+      <UniqueIdentifier>{45b5e4fd-f54c-4d7d-9507-0ea7dd140986}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\02. VerticalAttack\01. Right">
+      <UniqueIdentifier>{3fce8efa-dd75-411c-a016-613f58666e9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\02. VerticalAttack\02. Left">
+      <UniqueIdentifier>{12a83055-864a-4961-9bfd-aa2a6ce221c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\05. Bounce">
+      <UniqueIdentifier>{93c7d81d-c2da-4ddb-b2e0-239aff6a5946}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\05. Bounce\01. Right">
+      <UniqueIdentifier>{7e0f1632-d3df-4285-80e8-b8437c9ebc4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\05. Bounce\02. Left">
+      <UniqueIdentifier>{8797f541-cf73-4ed2-8605-517c41f886e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike">
+      <UniqueIdentifier>{0e070aad-d9a9-448f-81d8-30aaa24dd586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike\01. Begin">
+      <UniqueIdentifier>{7a15d856-ff46-44e7-b950-5786705c2065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike\02. Loop">
+      <UniqueIdentifier>{aa9d9970-689c-4fa4-9f1d-140f8d98119a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike\03. End">
+      <UniqueIdentifier>{97bcd36d-be91-49d0-b162-ab4f79e36b61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\01. Begin">
+      <UniqueIdentifier>{2840379d-f39a-491c-8ef6-e38260b3ab26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\02. Loop">
+      <UniqueIdentifier>{9603844c-dfe2-4834-9674-4b25feeb3838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\03. End">
+      <UniqueIdentifier>{eda65c4b-2eff-47a7-9221-2fe788137b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\04. Dash">
+      <UniqueIdentifier>{bd738d7e-89f1-417c-a5ce-881f629ab221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\05. Cancel">
+      <UniqueIdentifier>{a7936e3e-d42d-4907-973f-e6a9115f997a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting">
+      <UniqueIdentifier>{490af19b-8fe1-48c8-92de-001c4ab8a786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\01. Right">
+      <UniqueIdentifier>{6693ddf8-253e-4ec5-b7fd-ddc1222f19d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\02. Left">
+      <UniqueIdentifier>{fadedd28-c96f-4855-8155-515a05daea2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -946,7 +1144,7 @@
       <Filter>00. Header</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CIdle_Player_R.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\01. Right</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWalk_Player_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\02. Walk\01. Right</Filter>
@@ -1248,6 +1446,159 @@
     <ClInclude Include="..\Public\CUI_HUD.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CIdle_WarHammer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUnit_WarHammer.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\WarHammer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\02. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_WarHammer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\02. Walk\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_WarHammer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\02. Walk\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_WarHammer_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_WarHammer_Begin_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\01. Begin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_WarHammer_Begin_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\01. Begin\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_WarHammer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\02. Loop\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_WarHammer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\02. Loop\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_WarHammer_Fall_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\02. Fall\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_WarHammer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\01. Begin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_WarHammer_Land_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\03. Land\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_WarHammer_Land_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\03. Land\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Begin_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_End_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_Fall_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\01. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Loop_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprintAttack_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\02. Attack\02. RealAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprintAttack_WarHammer_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\02. Attack\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\10. Stop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_WarHammer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\10. Stop\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_WarHammer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\10. Stop\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_WarHammer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_WarHammer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\01. Begin\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_WarHammer_Fall_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\02. Fall\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSwitchRtoL_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\03. SwitchRtoL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSwitchLtoR_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\04. SwitchLtoR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_Attack_HorizontalMiddle.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\01. HorizontalMiddle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_Attack_HorizontalMiddle_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\01. HorizontalMiddle\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_Attack_HorizontalMiddle_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\01. HorizontalMiddle\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_WarHammer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\05. Bounce\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_WarHammer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\05. Bounce\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_Attack_VerticalAttack.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\02. VerticalAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_Attack_VerticalAttack_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\02. VerticalAttack\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_Attack_VerticalAttack_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\02. VerticalAttack\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_GroggyAttack.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\03. Groggy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\05. Bounce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_AirSpike_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_AirSpike_End.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_AirSpike_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Begin_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Cancel_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\05. Cancel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_End_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Loop_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_Attack_Sting.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_Attack_Sting_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWarHammer_Attack_Sting_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\01. Right</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1466,7 +1817,7 @@
       <Filter>03. Instances\02. GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CIdle_Player_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\01. Right</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWalk_Player_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\02. Walk\01. Right</Filter>
@@ -1764,6 +2115,159 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HUD.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_WarHammer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_WarHammer.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\WarHammer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\02. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_WarHammer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\02. Walk\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_WarHammer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\02. Walk\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_WarHammer_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_WarHammer_Begin_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\01. Begin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_WarHammer_Begin_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\01. Begin\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_WarHammer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\02. Loop\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_WarHammer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\03. Run\02. Loop\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_WarHammer_Fall_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\02. Fall\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_WarHammer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\01. Begin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_WarHammer_Land_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\03. Land\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_WarHammer_Land_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\03. Land\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Begin_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_End_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_Fall_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\01. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Loop_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\03. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprintAttack_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\02. Attack\02. RealAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprintAttack_WarHammer_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\07. Sprint\02. Attack\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\10. Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_WarHammer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\10. Stop\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_WarHammer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\10. Stop\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_WarHammer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_WarHammer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\01. Begin\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_WarHammer_Fall_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\05. Jump\02. Fall\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSwitchRtoL_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\03. SwitchRtoL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSwitchLtoR_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\04. SwitchLtoR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_Attack_HorizontalMiddle.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\01. HorizontalMiddle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_Attack_HorizontalMiddle_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\01. HorizontalMiddle\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_Attack_HorizontalMiddle_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\01. HorizontalMiddle\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_WarHammer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\05. Bounce\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_WarHammer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\05. Bounce\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_Attack_VerticalAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\02. VerticalAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_Attack_VerticalAttack_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\02. VerticalAttack\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_Attack_VerticalAttack_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\02. VerticalAttack\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_GroggyAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\03. Groggy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\05. Bounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_AirSpike_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_AirSpike_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_AirSpike_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\04. AirSpike\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Begin_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Cancel_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\05. Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_End_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Loop_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_Attack_Sting.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_Attack_Sting_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWarHammer_Attack_Sting_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\01. Right</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
