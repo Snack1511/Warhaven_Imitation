@@ -42,7 +42,6 @@ HRESULT CUI::Initialize_Prototype()
 		
 	CUI_Renderer* pRenderer = CUI_Renderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT, _float4(0.f, 0.f, 0.f, 1.f));
 	Add_Component<CUI_Renderer>(pRenderer);
-	pRenderer->Set_UI(this);
 
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
@@ -74,6 +73,7 @@ HRESULT CUI::Start()
 	__super::Start();
 
 	m_pFader = GET_COMPONENT(CFader);
+	GET_COMPONENT(CUI_Renderer)->Set_UI(this);
 
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource, this, placeholders::_1, "g_vColor");
 

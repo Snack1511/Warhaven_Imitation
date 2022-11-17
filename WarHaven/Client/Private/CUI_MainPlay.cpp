@@ -3,6 +3,9 @@
 #include "GameInstance.h"
 #include "CUI_Object.h"
 #include "CUI_Renderer.h"
+#include "CUser.h"
+#include "CUI_Cursor.h"
+#include "CShader.h"
 
 #include "Loading_Manager.h"
 
@@ -30,6 +33,7 @@ HRESULT CUI_MainPlay::Initialize_Prototype()
 
 	Create_ModeBG();
 	Create_StageBtn();
+	Create_LockImg();
 
 	return S_OK;
 }
@@ -57,6 +61,11 @@ void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 	CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
 }
 
+void CUI_MainPlay::On_PointEnterStay_Stage(const _uint& iEventNum)
+{
+	CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+}
+
 void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 {
 	for (int i = 0; i < 2; ++i)
@@ -65,17 +74,32 @@ void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 	}
 
 	ENABLE_GAMEOBJECT(m_pBG);
+	ENABLE_GAMEOBJECT(m_pTextModeSelect);
+	ENABLE_GAMEOBJECT(m_pEscKey);
+	ENABLE_GAMEOBJECT(m_pLine);
 
 	for (int i = 0; i < 4; ++i)
 	{
 		ENABLE_GAMEOBJECT(m_pStageSelectBtn[i]);
 	}
+
+	Set_LockImg();
 }
 
 void CUI_MainPlay::Bind_Btn()
 {
 	m_pPlayBtnUI[0]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Start, this, placeholders::_1);
 	m_pPlayBtnUI[1]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Mode, this, placeholders::_1);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		_uint itextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Get_CurTextureIndex();
+
+		if (itextureNum > 3)
+		{
+			m_pStageSelectBtn[i]->CallBack_PointStay += bind(&CUI_MainPlay::On_PointEnterStay_Stage, this, placeholders::_1);
+		}
+	}
 }
 
 void CUI_MainPlay::Set_ModeBtn()
@@ -86,17 +110,93 @@ void CUI_MainPlay::Set_ModeBtn()
 	GET_COMPONENT_FROM(m_pPlayBtnUI[1], CTexture)->Set_CurTextureIndex(1);
 }
 
+void CUI_MainPlay::Set_LockImg()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Get_CurTextureIndex();
+
+		if (iTextureNum > 3)
+		{
+			_float4 vPos = m_pStageSelectBtn[i]->Get_Pos();
+
+			if (i == 0)
+			{
+				if (iTextureNum == 4)
+				{
+					m_pLockBtn[i]->Set_Pos(vPos.x, vPos.y);
+
+					ENABLE_GAMEOBJECT(m_pLockBtn[i]);
+				}
+			}
+
+			if (i == 1)
+			{
+				if (iTextureNum == 5)
+				{
+					m_pLockBtn[i]->Set_Pos(vPos.x, vPos.y);
+
+					ENABLE_GAMEOBJECT(m_pLockBtn[i]);
+				}
+			}
+
+			if (i == 2)
+			{
+				if (iTextureNum == 6)
+				{
+					m_pLockBtn[i]->Set_Pos(vPos.x, vPos.y);
+
+					ENABLE_GAMEOBJECT(m_pLockBtn[i]);
+				}
+			}
+		}
+	}
+}
+
 void CUI_MainPlay::Create_ModeBG()
 {
 	m_pBG = CUI_Object::Create();
-
 	m_pBG->Set_Scale(1280.f, 720.f);
 	m_pBG->Set_Sort(0.9f);
-
 	m_pBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_LobbyBG2.dds"));
+
+	m_pTextModeSelect = CUI_Object::Create();
+	m_pTextModeSelect->Set_Pos(-470.f, 230.f);
+	m_pTextModeSelect->Set_Sort(0.85f);
+	m_pTextModeSelect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+	m_pTextModeSelect->Set_FontRender(true);
+	m_pTextModeSelect->Set_FontStyle(true);
+	m_pTextModeSelect->Set_FontScale(0.4f);
+	m_pTextModeSelect->Set_FontText(TEXT("게임 모드 선택"));
+
+	m_pEscKey = CUI_Object::Create();
+	m_pEscKey->Set_Pos(-600.f, -330.f);
+	m_pEscKey->Set_Scale(36.f, 28.f);
+	m_pEscKey->Set_Sort(0.85f);
+	m_pEscKey->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_BlackEscKeyIcon.png"));
+	m_pEscKey->Set_FontRender(true);
+	m_pEscKey->Set_FontStyle(true);
+	m_pEscKey->Set_FontOffset(31.f, -16.f);
+	m_pEscKey->Set_FontScale(0.3f);
+	m_pEscKey->Set_FontText(TEXT("뒤로가기"));
+
+	m_pLine = CUI_Object::Create();
+	m_pLine->Set_Pos(0.f, -200.f);
+	m_pLine->Set_Scale(1000.f, 20.f);
+	m_pLine->Set_Sort(0.85f);
+	m_pLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_LineDeco.png"));
 
 	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pBG);
+
+	CREATE_GAMEOBJECT(m_pTextModeSelect, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pTextModeSelect);
+
+	CREATE_GAMEOBJECT(m_pEscKey, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pEscKey);
+
+	CREATE_GAMEOBJECT(m_pLine, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pLine);
 }
 
 void CUI_MainPlay::Create_StageBtn()
@@ -104,10 +204,10 @@ void CUI_MainPlay::Create_StageBtn()
 	m_pPrototypeStageBtn = CUI_Object::Create();
 
 	m_pPrototypeStageBtn->Set_Scale(216.f, 340.f);
-	m_pPrototypeStageBtn->Set_Sort(0.4f);
+	m_pPrototypeStageBtn->Set_Sort(0.85f);
 
 	m_pPrototypeStageBtn->Set_MouseTarget(true);
-	
+
 	m_pPrototypeStageBtn->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Enable_Stage1.dds"));
 
 	GET_COMPONENT_FROM(m_pPrototypeStageBtn, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Enable_Stage2.dds"));
@@ -134,13 +234,65 @@ void CUI_MainPlay::Create_StageBtn()
 		// 훈련장 제외 모든 버튼 비활성화
 		GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i + (1 * 4));
 
+		m_pStageSelectBtn[i]->Set_FontRender(true);
+		m_pStageSelectBtn[i]->Set_FontStyle(true);
+
+		if (i == 0)
+		{
+			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
+			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("일반전"));
+		}
+
+		if (i == 1)
+		{
+			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
+			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("경쟁전"));
+		}
+
+		if (i == 2)
+		{
+			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
+			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("사용자 지정 게임"));
+		}
+
 		// 훈련장 활성화
 		if (i == 3)
 		{
+			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
+			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("훈련소"));
+
 			GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i);
 		}
 
 		CREATE_GAMEOBJECT(m_pStageSelectBtn[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pStageSelectBtn[i]);
+	}
+}
+
+void CUI_MainPlay::Create_LockImg()
+{
+	m_pPrototypeLock = CUI_Object::Create();
+	m_pPrototypeLock->Set_Scale(64.f);
+
+	m_pPrototypeLock->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_Lock.dds"));
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pLockBtn[i] = m_pPrototypeLock->Clone();
+	}
+
+	CREATE_GAMEOBJECT(m_pPrototypeLock, GROUP_UI);
+	DELETE_GAMEOBJECT(m_pPrototypeLock);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pLockBtn[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pLockBtn[i]);
+
+		m_pLockBtn[i]->Set_Sort(0.8f);
 	}
 }
