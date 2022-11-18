@@ -26,6 +26,7 @@ public:
 
 public:
 	_float4 Get_Pos() { return m_vPosition; }
+	void Set_Pos(_float4 vPos);
 	void Set_Pos(_float fX, _float fY);
 	void Set_PosX(_float fX);
 

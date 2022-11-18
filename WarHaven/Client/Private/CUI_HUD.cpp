@@ -1,5 +1,6 @@
 #include "CUI_HUD.h"
 #include "GameInstance.h"
+#include "Texture.h"
 
 #include "CUnit.h"
 #include "CUI_Object.h"
@@ -28,7 +29,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	CREATE_GAMEOBJECT(m_pWrap[Skill], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[HeroGauge], GROUP_UI);
 
-	//Create_CharacterSelectWindow();
+	Create_CharacterSelectWindow();
 
 	return S_OK;
 }
@@ -42,14 +43,19 @@ HRESULT CUI_HUD::Start()
 {
 	m_eCurClass = m_tStatus.eClass;
 
-	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
-	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
-	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
-	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
+	//dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+	//dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
+	//dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
+	//dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
 
-	//ENABLE_GAMEOBJECT(m_pBG);
-	//ENABLE_GAMEOBJECT(m_pPort);
-	//ENABLE_GAMEOBJECT(m_pPortBG);
+	ENABLE_GAMEOBJECT(m_pBG);
+
+	for (int i = 0; i < 6; ++i)
+	{
+		ENABLE_GAMEOBJECT(m_pPortClone[i]);
+		ENABLE_GAMEOBJECT(m_pPortBGClone[i]);
+		ENABLE_GAMEOBJECT(m_pClassIconClone[i]);
+	}
 
 	return S_OK;
 }
@@ -117,7 +123,7 @@ void CUI_HUD::My_Tick()
 				Set_HUD(CUnit::LANCER);
 			}
 		}
-	}	
+	}
 }
 
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
@@ -163,33 +169,79 @@ void CUI_HUD::Set_ActiveHeroPort(_bool value)
 
 void CUI_HUD::Create_CharacterSelectWindow()
 {
+	// 백그라운드
 	m_pBG = CUI_Object::Create();
 	m_pBG->Set_Scale(1280.f, 720.f);
 	m_pBG->Set_Sort(0.02f);
 	m_pBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_LobbyBG.dds"));
 
+	// 포트레이트
 	m_pPort = CUI_Object::Create();
-	m_pPort->Set_Scale(120.f, 160.f);
+	m_pPort->Set_Scale(100.f, 140.f);
 	m_pPort->Set_Sort(0.01f);
 	m_pPort->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Warrior.dds"));
 
+	m_pPort->Set_MouseTarget(true);
+
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Spearman.dds"));
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Archer.dds"));
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Paladin.dds"));
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Priest.dds"));
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Engineer.dds"));
+
 	m_pPortBG = CUI_Object::Create();
-	m_pPortBG->Set_Scale(120.f, 160.f);
+	m_pPortBG->Set_Scale(100.f, 140.f);
 	m_pPortBG->Set_Sort(0.015f);
 	m_pPortBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_CharacterBG.dds"));
 
-	for (int i = 0; i < 10; ++i)
+	m_pClassIcon = CUI_Object::Create();
+	m_pClassIcon->Set_Scale(20.f);
+	m_pClassIcon->Set_Sort(0.01f);
+	m_pClassIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_WarriorIconGold.dds"));
+
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_SpearmanIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_ArcherIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PaladinIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PriestIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_EngineerIconGold.dds"));
+
+	for (int i = 0; i < 6; ++i)
 	{
 		m_pPortClone[i] = m_pPort->Clone();
 		m_pPortBGClone[i] = m_pPortBG->Clone();
+		m_pClassIconClone[i] = m_pClassIcon->Clone();
+
+		_float fPosX = -330.f + (i * 110.f);
+
+		m_pPortClone[i]->Set_Pos(fPosX, -250.f);
+
+		_float4 vPos = m_pPortClone[i]->Get_Pos();
+
+		m_pPortBGClone[i]->Set_Pos(vPos);
+		m_pClassIconClone[i]->Set_Pos(vPos.x + 35.f, vPos.y + 55.f);
+
+		GET_COMPONENT_FROM(m_pPortClone[i], CTexture)->Set_CurTextureIndex(i);
+		GET_COMPONENT_FROM(m_pClassIconClone[i], CTexture)->Set_CurTextureIndex(i);
+
+		CREATE_GAMEOBJECT(m_pPortClone[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPortClone[i]);
+
+		CREATE_GAMEOBJECT(m_pPortBGClone[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPortBGClone[i]);
+
+		CREATE_GAMEOBJECT(m_pClassIconClone[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pClassIconClone[i]);
 	}
 
 	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pBG);
 
 	CREATE_GAMEOBJECT(m_pPort, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pPort);
+	DELETE_GAMEOBJECT(m_pPort);
 
 	CREATE_GAMEOBJECT(m_pPortBG, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pPortBG);
+	DELETE_GAMEOBJECT(m_pPortBG);
+
+	CREATE_GAMEOBJECT(m_pClassIcon, GROUP_UI);
+	DELETE_GAMEOBJECT(m_pClassIcon);
 }
