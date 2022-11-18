@@ -27,6 +27,8 @@ public:
 public:
 	virtual void On_PointEnter_Port(const _uint& iEventNum);
 
+	virtual void On_PointDown_Port(const _uint& iEventNum);
+
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
 

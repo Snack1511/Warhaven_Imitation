@@ -139,34 +139,55 @@ void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
 		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPortClone[i], CButton)->Get_TargetUI();
 		if (pTarget)
 		{
-			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
-
-			switch (iTextureNum)
-			{
-			case 0:
-				break;
-
-			case 1:
-				break;
-
-			case 2:
-				break;
-
-			case 3:
-				break;
-
-			case 4:
-				break;
-
-			case 5:
-				break;
-			}
-
 			_float4 vPos = pTarget->Get_Pos();
 			vPos.y += 2.f;
 			m_pPortHighlight->Set_Pos(vPos);
 
 			ENABLE_GAMEOBJECT(m_pPortHighlight);
+		}
+	}
+}
+
+void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPortClone[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
+			switch (iTextureNum)
+			{
+			case 0:
+				m_pClassInfo->Set_FontText(TEXT("블레이드"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
+				break;
+
+			case 1:
+				m_pClassInfo->Set_FontText(TEXT("스파이크"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
+				break;
+
+			case 2:
+				m_pClassInfo->Set_FontText(TEXT("아치"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
+				break;
+
+			case 3:
+				m_pClassInfo->Set_FontText(TEXT("가디언"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
+				break;
+
+			case 4:
+				m_pClassInfo->Set_FontText(TEXT("스모크"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
+				break;
+
+			case 5:
+				m_pClassInfo->Set_FontText(TEXT("워해머"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
+				break;
+			}
 		}
 	}
 }
@@ -217,18 +238,17 @@ void CUI_HUD::Bind_Btn()
 	for (int i = 0; i < 6; ++i)
 	{
 		m_pPortClone[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_Port, this, placeholders::_1);
+		m_pPortClone[i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Port, this, placeholders::_1);
 	}
 }
 
 void CUI_HUD::Create_CharacterSelectWindow()
 {
-	// 백그라운드
 	m_pBG = CUI_Object::Create();
 	m_pBG->Set_Scale(1280.f, 720.f);
 	m_pBG->Set_Sort(0.02f);
 	m_pBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_LobbyBG.dds"));
 
-	// 포트레이트
 	m_pPort = CUI_Object::Create();
 	m_pPort->Set_Scale(100.f, 140.f);
 	m_pPort->Set_Sort(0.01f);
@@ -272,7 +292,6 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 	m_pClassInfo->Set_FontRender(true);
 	m_pClassInfo->Set_FontStyle(true);
-	m_pClassInfo->Set_FontText(TEXT("아처"));
 	m_pClassInfo->Set_FontScale(0.5f);
 	m_pClassInfo->Set_FontOffset(50.f, -50.f);
 
