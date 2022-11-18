@@ -24,16 +24,17 @@ public:
 
 	virtual void My_Tick();
 
+public:
+	virtual void On_PointEnter_Port(const _uint& iEventNum);
+
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
 
 	CUnit::UNIT_STATUS m_tStatus;
-
 	CUnit::CLASS_TYPE m_eCurClass;
 	CUnit::CLASS_TYPE m_ePrvClass;
 
 	_float m_fHeroGauge = 0.f;
-
 	_bool m_bIsEnableHeroPort = false;
 
 private:	// 클래스 변경 창
@@ -47,6 +48,9 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pPortClone[6];
 	CUI_Object* m_pPortBGClone[6];
 	CUI_Object* m_pClassIconClone[6];
+
+private:
+	void Bind_Btn();
 
 private:	
 	void Set_HUD(CUnit::CLASS_TYPE eClass);

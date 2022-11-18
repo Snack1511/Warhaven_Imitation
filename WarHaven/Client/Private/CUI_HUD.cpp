@@ -1,6 +1,7 @@
 #include "CUI_HUD.h"
 #include "GameInstance.h"
 #include "Texture.h"
+#include "CButton.h"
 
 #include "CUnit.h"
 #include "CUI_Object.h"
@@ -56,6 +57,8 @@ HRESULT CUI_HUD::Start()
 		ENABLE_GAMEOBJECT(m_pPortBGClone[i]);
 		ENABLE_GAMEOBJECT(m_pClassIconClone[i]);
 	}
+
+	Bind_Btn();
 
 	return S_OK;
 }
@@ -126,6 +129,50 @@ void CUI_HUD::My_Tick()
 	}
 }
 
+void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPortClone[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
+			
+			switch (iTextureNum)
+			{
+			case 0:
+				Call_MsgBox(TEXT("워리어"));
+				break;
+
+			case 1:
+				Call_MsgBox(TEXT("스피어"));
+				break;
+
+			case 2:
+				Call_MsgBox(TEXT("아처"));
+				break;
+
+			case 3:
+				Call_MsgBox(TEXT("팔라딘"));
+				break;
+
+			case 4:
+				Call_MsgBox(TEXT("프리스트"));
+				break;
+
+			case 5:
+				Call_MsgBox(TEXT("엔지니어"));
+				break;
+			}
+
+			//_float4 vPos = pTarget->Get_Pos();
+			//m_pPortHighlight->Set_Pos(vPos);
+
+			//ENABLE_GAMEOBJECT(m_pPortHighlight);
+		}
+	}
+}
+
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 {
 	m_ePrvClass = m_eCurClass;
@@ -165,6 +212,14 @@ void CUI_HUD::Set_ActiveHeroPort(_bool value)
 	}
 
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(eType);
+}
+
+void CUI_HUD::Bind_Btn()
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pPortClone[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_Port, this, placeholders::_1);
+	}
 }
 
 void CUI_HUD::Create_CharacterSelectWindow()
@@ -211,7 +266,7 @@ void CUI_HUD::Create_CharacterSelectWindow()
 		m_pPortBGClone[i] = m_pPortBG->Clone();
 		m_pClassIconClone[i] = m_pClassIcon->Clone();
 
-		_float fPosX = -330.f + (i * 110.f);
+		_float fPosX = -275.f + (i * 110.f);
 
 		m_pPortClone[i]->Set_Pos(fPosX, -250.f);
 
