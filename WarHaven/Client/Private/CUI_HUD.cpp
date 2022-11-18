@@ -29,7 +29,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	CREATE_GAMEOBJECT(m_pWrap[Port], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[Skill], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[HeroGauge], GROUP_UI);
-
+	
 	Create_CharacterSelectWindow();
 
 	return S_OK;

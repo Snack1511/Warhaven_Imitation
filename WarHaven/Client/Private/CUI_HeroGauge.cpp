@@ -29,6 +29,9 @@ HRESULT CUI_HeroGauge::Initialize_Prototype()
 		DISABLE_GAMEOBJECT(m_Prototypes[i]);
 	}
 
+	m_Prototypes[BG]->Set_Sort(0.3f);
+	m_Prototypes[Gauge]->Set_Sort(0.29f);
+
 	return S_OK;
 }
 

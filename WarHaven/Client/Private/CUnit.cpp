@@ -192,8 +192,8 @@ HRESULT CUnit::Initialize_Prototype()
 	Add_Component(pPhysXCharacter);
 #endif // PHYSX_OFF
 
-	
-	
+
+
 
 
 	return S_OK;
@@ -221,7 +221,7 @@ HRESULT CUnit::Initialize()
 	if (!m_pPhysics)
 		return E_FAIL;
 
-	
+
 
 
 	return S_OK;
@@ -234,7 +234,7 @@ HRESULT CUnit::Start()
 	if (m_pWeaponCollider_R)
 		DISABLE_COMPONENT(m_pWeaponCollider_R);
 
-	if(m_pWeaponCollider_L)
+	if (m_pWeaponCollider_L)
 		DISABLE_COMPONENT(m_pWeaponCollider_L);
 
 	m_pPhysics->Get_PhysicsDetail().fCurGroundY = m_pTransform->Get_MyWorld(WORLD_POS).y;
@@ -250,11 +250,11 @@ HRESULT CUnit::Start()
 	CallBack_CollisionStay += bind(&CUnit::Unit_CollisionStay, this, placeholders::_1, placeholders::_2);
 	CallBack_CollisionExit += bind(&CUnit::Unit_CollisionExit, this, placeholders::_1, placeholders::_2);
 
-	
+
 	SetUp_TrailEffect(m_tUnitStatus.eWeapon);
 
 	m_pPhysics->Set_Jump(0.f);
-	
+
 	if (!m_pCurState)
 	{
 		Call_MsgBox(L"상태 세팅 안댔음");
@@ -279,13 +279,21 @@ void CUnit::OnEnable()
 	DISABLE_COMPONENT(m_pPhysics);
 	On_PlusHp(m_tUnitStatus.fMaxHP - m_tUnitStatus.fHP);
 
-
+	if (!m_pFollowCam)
+	{
+		ENABLE_GAMEOBJECT(m_pFollowCam);
+	}
 }
 
 void CUnit::OnDisable()
 {
 	__super::OnDisable();
 
+	if (m_pFollowCam)
+	{
+		DISABLE_GAMEOBJECT(m_pFollowCam);
+		m_pFollowCam = nullptr;
+	}
 }
 
 //void CUnit::Set_Enable_WeaponCol(_bool bEnable)
@@ -314,13 +322,17 @@ void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 		if (bEnable)
 		{
 			ENABLE_COMPONENT(m_pWeaponCollider_R);
-			ENABLE_COMPONENT(m_pWeaponCollider_L);
-			
+
+			if (m_pWeaponCollider_L)
+				ENABLE_COMPONENT(m_pWeaponCollider_L);
+
 		}
 		else
 		{
-			ENABLE_COMPONENT(m_pWeaponCollider_R);
-			ENABLE_COMPONENT(m_pWeaponCollider_L);
+			DISABLE_COMPONENT(m_pWeaponCollider_R);
+
+			if (m_pWeaponCollider_L)
+				DISABLE_COMPONENT(m_pWeaponCollider_L);
 		}
 
 
@@ -434,7 +446,7 @@ HRESULT CUnit::SetUp_Model(const UNIT_MODEL_DATA& tData)
 {
 	m_tModelData = tData;
 	_float4x4			TransformMatrix;
-	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) *XMMatrixRotationX(XMConvertToRadians(90.0f))* XMMatrixRotationZ(XMConvertToRadians(180.0f));
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixRotationZ(XMConvertToRadians(180.0f));
 
 	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, tData.strModelPaths[MODEL_PART_SKEL], TransformMatrix);
 
