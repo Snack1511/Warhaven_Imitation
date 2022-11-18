@@ -327,8 +327,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	CMap_Loader::Load_Data(wstring(TEXT("Effect_Test")), Ready_Object);
 	m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
-
-	
+	//TrainingRoom01
+	//Effect_Test
 
 	//터레인 불러오기
 	//오브젝트 불러오기
