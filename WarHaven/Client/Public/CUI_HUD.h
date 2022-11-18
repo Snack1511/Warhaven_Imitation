@@ -66,6 +66,9 @@ private:
 
 	void Set_ActiveHeroPort(_bool value);
 
+	void SetActive_CharacterSelectWindow(_bool value);
+	void Set_ClassInfo(CUnit::CLASS_TYPE eClass);
+
 private:
 	void Create_CharacterSelectWindow();
 };

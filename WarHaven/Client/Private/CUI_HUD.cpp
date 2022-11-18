@@ -49,18 +49,6 @@ HRESULT CUI_HUD::Start()
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
 	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
 
-	ENABLE_GAMEOBJECT(m_pBG);
-	ENABLE_GAMEOBJECT(m_pLine);
-	ENABLE_GAMEOBJECT(m_pClassInfo);
-	ENABLE_GAMEOBJECT(m_pClassInfoIcon);
-
-	for (int i = 0; i < 6; ++i)
-	{
-		ENABLE_GAMEOBJECT(m_pPortClone[i]);
-		ENABLE_GAMEOBJECT(m_pPortBGClone[i]);
-		ENABLE_GAMEOBJECT(m_pClassIconClone[i]);
-	}
-
 	Bind_Btn();
 
 	return S_OK;
@@ -94,10 +82,9 @@ void CUI_HUD::My_Tick()
 			}
 			else
 			{
-				// 영웅 변경 키를 누르면 영웅 변경
 				if (KEY(T, TAP))
 				{
-					// 영웅 변경 창 활성화
+					SetActive_CharacterSelectWindow(true);
 				}
 
 				m_tStatus.fHeroGague -= fDT(0) * 20.f;
@@ -128,6 +115,14 @@ void CUI_HUD::My_Tick()
 			{
 				Set_HUD(CUnit::LANCER);
 			}
+		}
+	}
+
+	if (m_pBG->Is_Valid())
+	{
+		if (KEY(F, TAP))
+		{
+			SetActive_CharacterSelectWindow(false);
 		}
 	}
 }
@@ -370,4 +365,70 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 	CREATE_GAMEOBJECT(m_pLine, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pLine);
+}
+
+void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
+{
+	Set_ClassInfo(m_eCurClass);
+
+	if (value == true)
+	{
+		ENABLE_GAMEOBJECT(m_pBG);
+		ENABLE_GAMEOBJECT(m_pLine);
+		ENABLE_GAMEOBJECT(m_pClassInfo);
+		ENABLE_GAMEOBJECT(m_pClassInfoIcon);
+
+		for (int i = 0; i < 6; ++i)
+		{
+			ENABLE_GAMEOBJECT(m_pPortClone[i]);
+			ENABLE_GAMEOBJECT(m_pPortBGClone[i]);
+			ENABLE_GAMEOBJECT(m_pClassIconClone[i]);
+		}
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(m_pBG);
+		DISABLE_GAMEOBJECT(m_pLine);
+		DISABLE_GAMEOBJECT(m_pClassInfo);
+		DISABLE_GAMEOBJECT(m_pClassInfoIcon);
+		DISABLE_GAMEOBJECT(m_pPortHighlight);
+
+		for (int i = 0; i < 6; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_pPortClone[i]);
+			DISABLE_GAMEOBJECT(m_pPortBGClone[i]);
+			DISABLE_GAMEOBJECT(m_pClassIconClone[i]);
+		}
+	}
+}
+
+void CUI_HUD::Set_ClassInfo(CUnit::CLASS_TYPE eClass)
+{
+	switch (eClass)
+	{
+	case Client::CUnit::WARRIOR:
+		m_pClassInfo->Set_FontText(TEXT("블레이드"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
+		break;
+	case Client::CUnit::SPEAR:
+		m_pClassInfo->Set_FontText(TEXT("스파이크"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
+		break;
+	case Client::CUnit::ARCHER:
+		m_pClassInfo->Set_FontText(TEXT("아치"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
+		break;
+	case Client::CUnit::PALADIN:
+		m_pClassInfo->Set_FontText(TEXT("가디언"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
+		break;
+	case Client::CUnit::PRIEST:
+		m_pClassInfo->Set_FontText(TEXT("스모크"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
+		break;
+	case Client::CUnit::ENGINEER:
+		m_pClassInfo->Set_FontText(TEXT("워해머"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
+		break;
+	}
 }
