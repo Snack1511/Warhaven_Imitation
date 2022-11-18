@@ -153,6 +153,40 @@ HRESULT CMap_Loader::SetUp_StructureData(ifstream& rhsReadFile, string& strPath)
             pGameObject->Initialize();
             Ready_Object(pGameObject, GROUP_DECORATION);
 
+            //콜라이더 타입
+            _uint ColType = 0;
+            rhsReadFile.read((char*)&ColType, sizeof(_uint));
+
+            //LOD
+            _uint LODType = 0;
+            rhsReadFile.read((char*)&LODType, sizeof(_uint));
+            pGameObject->Make_PhysXCollider(CStructure::ePhysXEnum(ColType), LODType);
+
+            //박스콜라이더 수
+            _uint BoxCount = 0;
+            rhsReadFile.read((char*)&BoxCount, sizeof(_uint));
+
+            for (_uint i = 0; i < BoxCount; ++i)
+            {
+                pGameObject->Make_PhysXCollier_Box();
+            }
+            for (_uint i = 0; i < BoxCount; ++i)
+            {
+                _float4 vPosition = _float4(0.f, 0.f, 0.f, 1.f);
+                _float4 vAngle = _float4(0.f, 0.f, 0.f, 0.f);
+                _float4 vScale = _float4(0.f, 0.f, 0.f, 0.f);
+
+                rhsReadFile.read((char*)&vPosition, sizeof(_float4));
+                rhsReadFile.read((char*)&vAngle, sizeof(_float4));
+                rhsReadFile.read((char*)&vScale, sizeof(_float4));
+
+                pGameObject->RePosition_Box(i, vPosition);
+                pGameObject->ReScale_Box(i, vScale);
+                pGameObject->Rotate_Box(i, vAngle);
+            }
+
+            //박스콜라이더 정보 저장
+
             //Safe_Delete_Array(pObjectName);
         }
 

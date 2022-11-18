@@ -273,6 +273,7 @@ void CWindow_Map::Func_FileControl()
     m_pObjectController->Func_Grouping();
     m_pObjectController->Func_FBXList();
     m_pObjectController->Func_ObjectList();
+    m_pObjectController->Func_SetUpCollider();
 
 
     //5. 선택된 오브젝트 이름 텍스트
@@ -1846,9 +1847,11 @@ void CWindow_Map::Add_Brush(const char* BrushName)
 }
 list<_uint> CWindow_Map::Select_Vertices()
 {
+    _matrix matInverse = m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad();
+    matInverse = XMMatrixInverse(nullptr, matInverse);
     _float3* Verts = m_pCurTerrain->Get_TerrainVerticesPos();
     _float fRount = m_fBrushSize * 0.5f;
-    _float4 Center = get<PICK_OUTPOS>(m_OutDatas);
+    _float4 Center = XMVector3TransformCoord(get<PICK_OUTPOS>(m_OutDatas).XMLoad(), matInverse);
     _int VertXNums = m_pCurTerrain->Get_TerrainVerticesX();
     _int VertZNums = m_pCurTerrain->Get_TerrainVerticesZ();
 
@@ -1875,7 +1878,7 @@ list<_uint> CWindow_Map::Select_Vertices()
         for (_int j = IndexWidStart; j <= IndexWidEnd; ++j)
         {
             _uint Index = i * VertXNums + j;
-            if(Check_InBrush(&Verts[Index]))
+            if(Check_InBrush(&Verts[Index], Center))
                 VertsList.push_back(Index);
         }
     }
@@ -1883,10 +1886,10 @@ list<_uint> CWindow_Map::Select_Vertices()
 
     return VertsList;
 }
-_bool CWindow_Map::Check_InBrush(_float3* CompVert)
+_bool CWindow_Map::Check_InBrush(_float3* CompVert, _float4 vCenterPos)
 {
     _float fRount = m_fBrushSize * 0.5f;
-    _float4 Center = get<PICK_OUTPOS>(m_OutDatas);
+    _float4 Center = vCenterPos;//get<PICK_OUTPOS>(m_OutDatas);
     _float XPos = (*CompVert).x;
     _float ZPos = (*CompVert).z;
 
@@ -1903,7 +1906,10 @@ _bool CWindow_Map::Check_InBrush(_float3* CompVert)
 }
 _float3 CWindow_Map::Easing_Vertices(_float3* pVertPos)
 {
-    _float4 OutPos = get<PICK_OUTPOS>(m_OutDatas);
+    _matrix matInverse = m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad();
+    matInverse = XMMatrixInverse(nullptr, matInverse);
+
+    _float4 OutPos = XMVector3TransformCoord(get<PICK_OUTPOS>(m_OutDatas).XMLoad(), matInverse);
     _float4 vVertPos 
         = _float4(
             pVertPos->x, 

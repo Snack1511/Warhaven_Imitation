@@ -220,7 +220,7 @@ private:
 	void Add_Brush(const char* BrushName);
 
 	list<_uint> Select_Vertices();
-	_bool Check_InBrush(_float3* CompVert);
+	_bool Check_InBrush(_float3* CompVert, _float4 vCenterPos);
 	_float3 Easing_Vertices(_float3* pArrVertPos);
 
 #pragma endregion

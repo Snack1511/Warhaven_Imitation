@@ -25,6 +25,8 @@ CFunc_ObjectControl* CFunc_ObjectControl::Create(CWindow_Map* pMaptool)
     CFunc_ObjectControl* pInstance = new CFunc_ObjectControl();
     pInstance->m_pMapTool = pMaptool;
     pInstance->m_pMeshRoot = pMaptool->Get_MeshRoot();
+    pInstance->SetUp_ColliderType();
+    pInstance->SetUp_LODLevel();
     return pInstance;
 }
 
@@ -283,6 +285,139 @@ void CFunc_ObjectControl::Func_ObjectControl()
         {
         }
     }
+    ImGui::Spacing();
+
+    if (ImGui::CollapsingHeader("Collider Control", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        ImGui::Text("Select ColliderType");
+        if (ImGui::BeginCombo("##Select ColliderType", get<0>(m_listColliderType[m_ColliderType]).c_str()))
+        {
+            for (vector<tuple<string, _uint>>::value_type& Value : m_listColliderType)
+            {
+                _bool bSelect = false;
+                if (get<1>(Value) == m_ColliderType)
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(get<0>(Value).c_str(), bSelect))
+                {
+                    m_ColliderType = get<1>(Value);
+                }
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::Spacing();
+        ImGui::Text("Select LODLEVEL");
+        string strPreviewLODLevel = (m_LODLevel >= 1) ? get<0>(m_listLODLevel[m_LODLevel - 1]) : "";
+        if (ImGui::BeginCombo("##Select LOD Level", strPreviewLODLevel.c_str()))
+        {
+            for (vector<tuple<string, _uint>>::value_type& Value : m_listLODLevel)
+            {
+                _bool bSelect = false;
+                if (get<1>(Value) == m_LODLevel)
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(get<0>(Value).c_str(), bSelect))
+                {
+                    m_LODLevel = get<1>(Value);
+                }
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::Spacing();
+        CStructure* pStructure = static_cast<CStructure*>(m_pCurSelectGameObject);
+        if (nullptr == pStructure)
+            assert(0);
+        if (ImGui::Button("Generate!"))
+        {
+            if (m_ColliderType == _uint(CStructure::ePhysXEnum::eBOX))
+            {
+                pStructure->Make_PhysXCollier_Box();
+            }
+            else
+            {
+                pStructure->Make_PhysXCollider(CStructure::ePhysXEnum(m_ColliderType), m_LODLevel);
+            }
+            m_iCurSelectBoxIndex = 0;
+        }
+        _uint BoxCount = pStructure->Get_BoxCount();
+        if (ImGui::BeginCombo("Box Collider", to_string(m_iCurSelectBoxIndex).c_str()))
+        {
+            for (_uint i = 0; i < BoxCount; ++i)
+            {
+                _bool bSelect = false;
+                if (m_iCurSelectBoxIndex == i)
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(to_string(i).c_str(), bSelect))
+                {
+                    m_iCurSelectBoxIndex = i;
+                }
+            }
+            ImGui::EndCombo();
+        }
+        if (BoxCount > 0) 
+        {
+            string strDebug = to_string(m_iCurSelectBoxIndex);
+            m_pMapTool->DebugData("Cur Select Box", strDebug);
+            ImGui::Text("Box Position");
+            
+            vector<_float4>& ColPoses = pStructure->Get_ColliderPoses();
+            vector<_float4>& ColSize = pStructure->Get_ColliderScales();
+            vector<_float4>& ColAngles = pStructure->Get_ColliderAngles();
+
+            float vPos[3] = {0};
+            if (!ColPoses.empty())
+            {
+                vPos[0] = ColPoses[m_iCurSelectBoxIndex].x;
+                vPos[1] = ColPoses[m_iCurSelectBoxIndex].y;
+                vPos[2] = ColPoses[m_iCurSelectBoxIndex].z;
+            }
+
+            float vRot[3] = {0};
+            if (!ColAngles.empty()) 
+            {
+                vRot[0] = ColAngles[m_iCurSelectBoxIndex].x;
+                vRot[1] = ColAngles[m_iCurSelectBoxIndex].y;
+                vRot[2] = ColAngles[m_iCurSelectBoxIndex].z;
+            }
+
+            float vScal[3] = {0};
+            if (!ColSize.empty()) 
+            {
+                vScal[0] = ColSize[m_iCurSelectBoxIndex].x;
+                vScal[1] = ColSize[m_iCurSelectBoxIndex].y;
+                vScal[2] = ColSize[m_iCurSelectBoxIndex].z;
+            }
+            if (ImGui::InputFloat3("##Box Pos", vPos))
+            {
+                if (!ColPoses.empty())
+                {
+                    pStructure->RePosition_Box(m_iCurSelectBoxIndex, _float4(vPos[0], vPos[1], vPos[2], 1.f));
+                }
+
+            }
+            ImGui::Text("Box Size");
+            if (ImGui::InputFloat3("##Box Scal", vScal))
+            {
+                if (!ColSize.empty())
+                {
+                    pStructure->ReScale_Box(m_iCurSelectBoxIndex, _float4(vScal[0], vScal[1], vScal[2], 1.f));
+                }
+            }
+            ImGui::Text("Box Rotate");
+            if (ImGui::InputFloat3("##Box Rot", vRot))
+            {
+                if (!ColAngles.empty())
+                {
+                    pStructure->Rotate_Box(m_iCurSelectBoxIndex, _float4(vRot[0], vRot[1], vRot[2], 1.f));
+                }
+            }
+        }
+    }
+    ImGui::Spacing();
 }
 
 void CFunc_ObjectControl::Func_Picking()
@@ -295,6 +430,99 @@ void CFunc_ObjectControl::Func_Picking()
     else if(m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_GROUP))
     {
         Place_Group();
+    }
+}
+
+void CFunc_ObjectControl::Func_SetUpCollider()
+{
+    if (m_arrMeshGroupName.empty())
+        return;
+
+    if (m_SelectMeshGroupIndex >= m_arrMeshGroupName.size())
+        return;
+
+    if (ImGui::CollapsingHeader("GroupCollider"))
+    {
+        ImGui::Text("Select ColliderType");
+        if (ImGui::BeginCombo("##Select ColliderType", get<0>(m_listColliderType[m_ColliderType]).c_str()))
+        {
+            for (vector<tuple<string, _uint>>::value_type& Value : m_listColliderType)
+            {
+                _bool bSelect = false;
+                if (get<1>(Value) == m_ColliderType)
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(get<0>(Value).c_str(), bSelect))
+                {
+                    m_ColliderType = get<1>(Value);
+                }
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::Spacing();
+        ImGui::Text("Select LODLEVEL");
+        string strPreviewLODLevel = (m_LODLevel >= 1) ? get<0>(m_listLODLevel[m_LODLevel - 1]) : "";
+        if (ImGui::BeginCombo("##Select LOD Level", strPreviewLODLevel.c_str()))
+        {
+            for (vector<tuple<string, _uint>>::value_type& Value : m_listLODLevel)
+            {
+                _bool bSelect = false;
+                if (get<1>(Value) == m_LODLevel)
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(get<0>(Value).c_str(), bSelect))
+                {
+                    m_LODLevel = get<1>(Value);
+                }
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::Spacing();
+
+        if (ImGui::Button("Bake Group"))
+        {
+            size_t Hashnum = HASHING(string, string(get<CWindow_Map::Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex])));
+            vector<CGameObject*>& CurGroupData = m_ObjectGroupMap[Hashnum];
+
+            if (CurGroupData.empty())
+                return;
+            if (m_ColliderType == _uint(CStructure::ePhysXEnum::eBOX))
+            {
+                for (vector<CGameObject*>::value_type& Value : CurGroupData)
+                {
+                    static_cast<CStructure*>(Value)->Make_PhysXCollier_Box();
+                }
+            }
+            else
+            {
+                for (vector<CGameObject*>::value_type& Value : CurGroupData)
+                {
+                    static_cast<CStructure*>(Value)->Make_PhysXCollider(CStructure::ePhysXEnum(m_ColliderType), m_LODLevel);
+                }
+            }
+        }
+
+        if (ImGui::Button("Bake All"))
+        {
+            for (OBJGROUPING::value_type& MapValue : m_ObjectGroupMap)
+            {
+                for(OBJVECTOR::value_type& Value : MapValue.second)
+                {
+                    if (m_ColliderType == _uint(CStructure::ePhysXEnum::eBOX))
+                    {
+                        static_cast<CStructure*>(Value)->Make_PhysXCollier_Box();
+                    }
+                    else
+                    {
+
+                        static_cast<CStructure*>(Value)->Make_PhysXCollider(CStructure::ePhysXEnum(m_ColliderType), m_LODLevel);
+                    }
+                }
+            }
+        }
+
     }
 }
 
@@ -386,6 +614,7 @@ void CFunc_ObjectControl::Confirm_Data()
     m_fTickPerScalingSpeed = 1.f;
     m_fTickPerRotSpeed = 1.f;
     m_fTickPerMoveSpeed = 1.f;
+    m_iCurSelectBoxIndex = 0;
 }
 
 void CFunc_ObjectControl::Add_MeshGroup(char* pMeshGroupName)
@@ -467,8 +696,10 @@ void CFunc_ObjectControl::Delete_MeshGroup(char* pMeshGroupName)
     }
 }
 
-void CFunc_ObjectControl::Add_Object(string MeshGroup, string Meshpath, string MeshName)
+CStructure* CFunc_ObjectControl::Add_Object(string MeshGroup, string Meshpath, string MeshName)
 {
+    CStructure* pStructure = nullptr;
+
     vector<CGameObject*>* pObjectList = nullptr;
     vector<MTO_DATA>* pDataList = nullptr;
     wstring strObjectGroupName;
@@ -524,10 +755,15 @@ void CFunc_ObjectControl::Add_Object(string MeshGroup, string Meshpath, string M
     pObjectList->push_back(pGameObject);
     pDataList->push_back(tData);
     Confirm_Data();
+
+    pStructure = pGameObject;
+    return pStructure;
 }
 
-void CFunc_ObjectControl::Add_Object(string MeshGroup, MTO_DATA& tData)
+CStructure* CFunc_ObjectControl::Add_Object(string MeshGroup, MTO_DATA& tData)
 {
+    CStructure* pStructure = nullptr;
+
     vector<CGameObject*>* pObjectList = nullptr;
     vector<MTO_DATA>* pDataList = nullptr;
     wstring strObjectGroupName;
@@ -579,8 +815,10 @@ void CFunc_ObjectControl::Add_Object(string MeshGroup, MTO_DATA& tData)
 
     pObjectList->push_back(pGameObject);
     pDataList->push_back(tData);
-
     Confirm_Data();
+
+    pStructure = pGameObject;
+    return pStructure;
 }
 
 void CFunc_ObjectControl::Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<MTO_DATA>& DataList)
@@ -1189,6 +1427,7 @@ void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)
         string strGroupName = pGroupName;
         size_t GroupNameHash = HASHING(string, strGroupName);
         vector<MTO_DATA>* pDataList = &(m_ObjectDataGroupMap.find(GroupNameHash)->second);
+        vector<CGameObject*>* pObjectVector = &(m_ObjectGroupMap.find(GroupNameHash)->second);
         _int DataSize = _int(pDataList->size());
         writeFile.write((char*)&DataSize, sizeof(_int));
         //Loop~ MTO데이터 저장
@@ -1220,6 +1459,33 @@ void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)
 
             //라이트플래그 저장
             writeFile.write((char*)&LightFlag, sizeof(_byte));
+
+
+#pragma region 콜라이더 정보 저장 섹션
+            CStructure* pStructure = static_cast<CStructure*>((*pObjectVector)[j]);
+            //콜라이더 타입 저장
+            _uint ColliderType = pStructure->Get_ColliderType();
+            writeFile.write((char*)&ColliderType, sizeof(_uint));
+
+            //콜라이더 소스 LOD 저장
+            _uint ColliderLOD = pStructure->Get_LODType();
+            writeFile.write((char*)&ColliderLOD, sizeof(_uint));
+
+            //박스 콜라이더 수 저장
+            _uint BoxCount = pStructure->Get_BoxCount();
+            vector<_float4>& PosVec = pStructure->Get_ColliderPoses();
+            vector<_float4>& AngleVec = pStructure->Get_ColliderAngles();
+            vector<_float4>& ScaleVec = pStructure->Get_ColliderScales();
+            writeFile.write((char*)&BoxCount, sizeof(_uint));
+            for (_uint k = 0; k < BoxCount; ++k)
+            {
+                //박스 콜라이더 정보 저장
+                writeFile.write((char*)&(PosVec[k]), sizeof(_float4));
+                writeFile.write((char*)&(AngleVec[k]), sizeof(_float4));
+                writeFile.write((char*)&(ScaleVec[k]), sizeof(_float4));
+            }
+
+#pragma endregion
 
             Safe_Delete_Array(pName);
             Safe_Delete_Array(pPath);
@@ -1313,7 +1579,41 @@ void CFunc_ObjectControl::Load_ObjectGroup(string FilePath)
             readFile.read((char*)&LightFlag, sizeof(_byte));
             tData.byteLightFlag = LightFlag;
 
-            Add_Object(strGroupName, tData);
+            CStructure* pStructure = Add_Object(strGroupName, tData);
+
+            //콜라이더 타입
+            _uint ColType = 0;
+            readFile.read((char*)&ColType, sizeof(_uint));
+
+            //LOD
+            _uint LODType = 0;
+            readFile.read((char*)&LODType, sizeof(_uint));
+            pStructure->Make_PhysXCollider(CStructure::ePhysXEnum(ColType), LODType);
+
+            //박스콜라이더 수
+            _uint BoxCount = 0;
+            readFile.read((char*)&BoxCount, sizeof(_uint));
+
+            for (_uint i = 0; i < BoxCount; ++i)
+            {
+                pStructure->Make_PhysXCollier_Box();
+            }
+            for (_uint i = 0; i < BoxCount; ++i)
+            {
+                _float4 vPosition = _float4(0.f, 0.f, 0.f, 1.f);
+                _float4 vAngle = _float4(0.f, 0.f, 0.f, 0.f);
+                _float4 vScale = _float4(0.f, 0.f, 0.f, 0.f);
+
+                readFile.read((char*)&vPosition, sizeof(_float4));
+                readFile.read((char*)&vAngle, sizeof(_float4));
+                readFile.read((char*)&vScale, sizeof(_float4));
+
+                pStructure->RePosition_Box(i, vPosition);
+                pStructure->ReScale_Box(i, vScale);
+                pStructure->Rotate_Box(i, vAngle);
+            }
+
+            //박스콜라이더 정보 저장
 
             Safe_Delete_Array(pObjectName);
             Safe_Delete_Array(pObjectPath);
@@ -1331,6 +1631,18 @@ void CFunc_ObjectControl::Clear_TupleData(vector<tuple<char*, bool>>& ArrData)
         Safe_Delete_Array(get<0>(ArrData[i]));
     }
     ArrData.clear();
+}
+void CFunc_ObjectControl::SetUp_ColliderType()
+{
+    m_listColliderType.push_back(make_tuple(string("Convex"), _uint(CStructure::ePhysXEnum::eCONVEX)));
+    m_listColliderType.push_back(make_tuple(string("Triangle"), _uint(CStructure::ePhysXEnum::eTRIANGLE)));
+    m_listColliderType.push_back(make_tuple(string("Box"), _uint(CStructure::ePhysXEnum::eBOX)));
+}
+void CFunc_ObjectControl::SetUp_LODLevel()
+{
+   m_listLODLevel.push_back(make_tuple(string("Level_1"), 1));
+   m_listLODLevel.push_back(make_tuple(string("Level_2"), 2));
+   m_listLODLevel.push_back(make_tuple(string("Level_3"),3));
 }
 #pragma region MTO_DATA 멤버함수
 void CFunc_ObjectControl::tagMapToolObjectData::Initialize()

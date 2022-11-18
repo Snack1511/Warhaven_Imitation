@@ -136,6 +136,10 @@ void CStructure::Make_PhysXCollider(ePhysXEnum eShapeType, _uint iLODLevel)
 
 	m_vecPhysXColliders.clear();
 	m_mapComponents[HASHCODE(CPhysXCollider)].clear();
+
+	m_vecColliderPos.clear();
+	m_vecColliderScale.clear();
+	m_vecAngles.clear();
 	
 	
 	switch (eShapeType)
@@ -179,6 +183,10 @@ void CStructure::Make_PhysXCollider(ePhysXEnum eShapeType, _uint iLODLevel)
 
 	if (m_vecPhysXColliders.empty())
 		Call_MsgBox(L"LOD없어서 충돌체 굽기 실패!");
+	else
+	{
+		m_iCOlliderSourceLOD = iLODLevel;
+	}
 }
 
 CPhysXCollider* CStructure::Make_PhysXCollier_Box()
@@ -195,6 +203,10 @@ CPhysXCollider* CStructure::Make_PhysXCollier_Box()
 
 		m_vecPhysXColliders.clear();
 		m_mapComponents[HASHCODE(CPhysXCollider)].clear();
+
+		m_vecColliderPos.clear();
+		m_vecColliderScale.clear();
+		m_vecAngles.clear();
 	}
 
 
@@ -217,6 +229,11 @@ CPhysXCollider* CStructure::Make_PhysXCollier_Box()
 	Add_Component(pPhysXCollider);
 	m_vecPhysXColliders.push_back(pPhysXCollider);
 
+	m_vecColliderPos.push_back(tPhysXColliderDesc.vPosition);
+	m_vecAngles.push_back(tPhysXColliderDesc.vQuat);
+	m_vecColliderScale.push_back(tPhysXColliderDesc.vScale);
+
+
 	return pPhysXCollider;
 }
 
@@ -236,6 +253,7 @@ void CStructure::RePosition_Box(_uint iIndex, _float4 vOffsetPosition)
 	vWorldPos += vOffsetPosition;
 
 	m_vecPhysXColliders[iIndex]->Set_Position(vWorldPos.XMLoad());
+	m_vecColliderPos[iIndex] = vWorldPos;
 }
 
 void CStructure::ReScale_Box(_uint iIndex, _float4 vScale)
@@ -250,6 +268,7 @@ void CStructure::ReScale_Box(_uint iIndex, _float4 vScale)
 	}
 
 	m_vecPhysXColliders[iIndex]->Set_Scale(vScale.XMLoad());
+	m_vecColliderScale[iIndex] = vScale;
 }
 
 void CStructure::Rotate_Box(_uint iIndex, _float4 vAngles)
@@ -266,6 +285,7 @@ void CStructure::Rotate_Box(_uint iIndex, _float4 vAngles)
 	_float4 vQuat = XMQuaternionRotationRollPitchYawFromVector(vAngles.XMLoad());
 
 	m_vecPhysXColliders[iIndex]->Rotate(vQuat.XMLoad());
+	m_vecAngles[iIndex] = vQuat;
 }
 
 
@@ -346,6 +366,7 @@ HRESULT CStructure::SetUp_World(_float4 vScale, _float4x4 worldMat)
 	return S_OK;
 }
 
+
 void CStructure::My_Tick()
 {
 	__super::My_Tick();
@@ -355,4 +376,14 @@ void CStructure::My_Tick()
 void CStructure::My_LateTick()
 {
 	__super::My_LateTick();
+}
+
+_uint CStructure::Get_BoxCount()
+{
+	if (m_eCurType != ePhysXEnum::eBOX)
+		return 0;
+	if (m_vecPhysXColliders.empty())
+		return 0;
+
+	return _uint(m_vecPhysXColliders.size());
 }

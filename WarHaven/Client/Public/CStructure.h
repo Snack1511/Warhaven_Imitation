@@ -77,5 +77,19 @@ protected:
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+public:
+	_uint Get_ColliderType() { return _uint(m_eCurType); }
+	_uint Get_LODType() { return m_iCOlliderSourceLOD; }
+	_uint Get_BoxCount();
+	vector<_float4>& Get_ColliderPoses() { return m_vecColliderPos; }
+	vector<_float4>& Get_ColliderScales() { return m_vecColliderScale; }
+	vector<_float4>& Get_ColliderAngles() { return m_vecAngles; }
+
+
+private:
+	_uint m_iCOlliderSourceLOD = 3;
+	vector<_float4> m_vecColliderPos;
+	vector<_float4> m_vecColliderScale;
+	vector<_float4> m_vecAngles;
 };
 END

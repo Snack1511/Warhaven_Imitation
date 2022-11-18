@@ -5,6 +5,7 @@ class CGameObject;
 class CTransform;
 END
 BEGIN(Client)
+class CStructure;
 class CWindow_Map;
 class CFunc_ObjectControl
 {
@@ -39,6 +40,9 @@ public:
 	void Func_GroupControl();
 	void Func_ObjectControl();
 	void Func_Picking();
+
+	void Func_SetUpCollider();
+
 	void Tick_Function();
 	_bool Is_CurSelectObject();
 	void Confirm_Group();
@@ -49,8 +53,8 @@ public:
 public:
 	void Add_MeshGroup(char* pMeshGroupName);
 	void Delete_MeshGroup(char* pMeshGroupName);
-	void Add_Object(string MeshGroup, string Meshpath, string MeshName);
-	void Add_Object(string MeshGroup, MTO_DATA& tData);
+	CStructure* Add_Object(string MeshGroup, string Meshpath, string MeshName);
+	CStructure* Add_Object(string MeshGroup, MTO_DATA& tData);
 	void Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<MTO_DATA>& DataList);
 
 	void Clear_MeshGroup(char* pMeshGroupName);
@@ -85,6 +89,10 @@ public:
 	void Save_ObjectGroup(string BasePath, string SaveName);
 	void Load_ObjectGroup(string FilePath);
 	void Clear_TupleData(vector<tuple<char*, bool>>& ArrData);
+
+private:
+	void SetUp_ColliderType();
+	void SetUp_LODLevel();
 private:
 	CWindow_Map* m_pMapTool = nullptr;
 private:
@@ -127,6 +135,13 @@ private:
 	_bool m_bGroupControl = false;
 
 	void* m_pMeshRoot = nullptr;
+
+	vector<tuple<string, _uint>> m_listColliderType;
+	vector<tuple<string, _uint>> m_listLODLevel;
+
+	_uint m_ColliderType = 0;
+	_uint m_LODLevel = 3;
+	_uint m_iCurSelectBoxIndex = 0;
 };
 
 END
