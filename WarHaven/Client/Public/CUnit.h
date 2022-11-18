@@ -163,6 +163,7 @@ protected:
 	//PhysX 용 충돌체
 	CPhysXCharacter* m_pPhysXCharacter = nullptr;
 	CBoneCollider* m_pWeaponCollider_R = nullptr;
+	CBoneCollider* m_pWeaponCollider_L = nullptr;
 
 	//우리가 알던 그 충돌체
 	CCollider_Sphere* m_pUnitCollider[UNITCOLLIDER_END] = {};

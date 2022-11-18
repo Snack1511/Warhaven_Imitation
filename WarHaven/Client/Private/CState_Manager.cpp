@@ -179,6 +179,9 @@
 #include "CGuard_End_WarHammer.h"
 #include "CGuard_Cancel_WarHammer.h"
 
+#include "CInstall_Begin_WarHammer.h"
+#include "CInstall_Loop_WarHammer.h"
+#include "CInstall_End_WarHammer.h"
 
 
 
@@ -447,6 +450,9 @@ void CState_Manager::WarHammer_State()
 	m_arrStates[STATE_GUARD_END_WARHAMMER] = CGuard_End_WarHammer::Create();
 	m_arrStates[STATE_GUARD_CANCEL_WARHAMMER] = CGuard_Cancel_WarHammer::Create();
 	
+	m_arrStates[STATE_INSTALL_BEIGN_WARHAMMER] = CInstall_Begin_WarHammer::Create();
+	m_arrStates[STATE_INSTALL_LOOP_WARHAMMER] = CInstall_Loop_WarHammer::Create();
+	m_arrStates[STATE_INSTALL_END_WARHAMMER] = CInstall_End_WarHammer::Create();
 
 	
 	

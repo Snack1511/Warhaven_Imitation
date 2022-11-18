@@ -193,9 +193,12 @@
     <ClInclude Include="..\Public\CBounce_WarHammer_L.h" />
     <ClInclude Include="..\Public\CBounce_WarHammer_R.h" />
     <ClInclude Include="..\Public\CBounce_SpearMan.h" />
+    <ClInclude Include="..\Public\CInstall_Begin_WarHammer.h" />
     <ClInclude Include="..\Public\CGuard_Begin_WarHammer.h" />
     <ClInclude Include="..\Public\CGuard_Cancel_WarHammer.h" />
+    <ClInclude Include="..\Public\CInstall_End_WarHammer.h" />
     <ClInclude Include="..\Public\CGuard_End_WarHammer.h" />
+    <ClInclude Include="..\Public\CInstall_Loop_WarHammer.h" />
     <ClInclude Include="..\Public\CGuard_Loop_WarHammer.h" />
     <ClInclude Include="..\Public\CIdle_WarHammer_L.h" />
     <ClInclude Include="..\Public\CIdle_SpearMan_L.h" />
@@ -249,6 +252,8 @@
     <ClInclude Include="..\Public\CStop_SpearMan_R.h" />
     <ClInclude Include="..\Public\CSwitchLtoR_WarHammer.h" />
     <ClInclude Include="..\Public\CSwitchRtoL_WarHammer.h" />
+    <ClInclude Include="..\Public\CBarricade.h" />
+    <ClInclude Include="..\Public\CUnit_Valkyrie.h" />
     <ClInclude Include="..\Public\CUnit_WarHammer.h" />
     <ClInclude Include="..\Public\CWalk_WarHammer_L.h" />
     <ClInclude Include="..\Public\CWalk_WarHammer_R.h" />
@@ -425,9 +430,12 @@
     <ClCompile Include="..\Private\CBounce_WarHammer_L.cpp" />
     <ClCompile Include="..\Private\CBounce_WarHammer_R.cpp" />
     <ClCompile Include="..\Private\CBounce_SpearMan.cpp" />
+    <ClCompile Include="..\Private\CInstall_Begin_WarHammer.cpp" />
     <ClCompile Include="..\Private\CGuard_Begin_WarHammer.cpp" />
     <ClCompile Include="..\Private\CGuard_Cancel_WarHammer.cpp" />
+    <ClCompile Include="..\Private\CInstall_End_WarHammer.cpp" />
     <ClCompile Include="..\Private\CGuard_End_WarHammer.cpp" />
+    <ClCompile Include="..\Private\CInstall_Loop_WarHammer.cpp" />
     <ClCompile Include="..\Private\CGuard_Loop_WarHammer.cpp" />
     <ClCompile Include="..\Private\CIdle_WarHammer_L.cpp" />
     <ClCompile Include="..\Private\CIdle_WarHammer_R.cpp" />
@@ -480,6 +488,8 @@
     <ClCompile Include="..\Private\CStop_SpearMan_R.cpp" />
     <ClCompile Include="..\Private\CSwitchLtoR_WarHammer.cpp" />
     <ClCompile Include="..\Private\CSwitchRtoL_WarHammer.cpp" />
+    <ClCompile Include="..\Private\CBarricade.cpp" />
+    <ClCompile Include="..\Private\CUnit_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CUnit_WarHammer.cpp" />
     <ClCompile Include="..\Private\CWalk_WarHammer_L.cpp" />
     <ClCompile Include="..\Private\CWalk_WarHammer_R.cpp" />

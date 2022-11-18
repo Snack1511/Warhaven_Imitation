@@ -52,6 +52,9 @@ HRESULT CIdle_WarHammer_R::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.f;
 
+
+    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
+    
     m_vecAdjState.push_back(STATE_SWITCH_R_TO_L_WARHAMMER);
 
     m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);

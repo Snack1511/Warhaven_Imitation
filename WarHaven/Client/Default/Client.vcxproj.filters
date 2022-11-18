@@ -220,24 +220,6 @@
     <Filter Include="03. Instances\02. GameObject\06. Map\InstanceStucture">
       <UniqueIdentifier>{d6635c26-ab3b-44a9-97ed-3af5b9bfc64b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\HeroGauge">
-      <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Hp">
-      <UniqueIdentifier>{7d943caf-c5b6-40db-ac10-fc78b426c290}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Portrait">
-      <UniqueIdentifier>{e04cf9a6-f562-4abd-b27c-c1d1b034a13c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\BloodOverlay">
-      <UniqueIdentifier>{1fc27a28-399a-464b-8f29-f80d90014dcf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Skill">
-      <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\03.Wrapper\Play\03.HUD\Crosshair">
-      <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\BlendableBase">
       <UniqueIdentifier>{8195c3b2-5e3b-43cd-9799-601b3803c4f6}</UniqueIdentifier>
     </Filter>
@@ -909,6 +891,24 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\02. Left">
       <UniqueIdentifier>{fadedd28-c96f-4855-8155-515a05daea2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\WarHammer\Barricade">
+      <UniqueIdentifier>{c03f58b6-6c47-4255-8fdb-aa119381c614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create">
+      <UniqueIdentifier>{c6505edf-2253-4f10-9114-b3bc91e2897e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\01. Begin">
+      <UniqueIdentifier>{f9936a8b-f174-47b9-98bf-61602e384fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\02. Loop">
+      <UniqueIdentifier>{50723988-2424-4a53-858e-e1accea717d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\03. End">
+      <UniqueIdentifier>{e77061d0-6dab-4fe6-8cc4-ec28d6f3ed96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Valkyrie">
+      <UniqueIdentifier>{d12a3315-0754-4842-9667-1f7b22cce7f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1599,6 +1599,21 @@
     <ClInclude Include="..\Public\CWarHammer_Attack_Sting_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\01. Right</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CBarricade.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\WarHammer\Barricade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInstall_Begin_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInstall_End_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInstall_Loop_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Valkyrie.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Valkyrie</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2268,6 +2283,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\CWarHammer_Attack_Sting_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBarricade.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\WarHammer\Barricade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInstall_Begin_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInstall_End_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInstall_Loop_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Valkyrie.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Valkyrie</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
