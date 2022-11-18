@@ -104,9 +104,7 @@ void CUI_Main::On_PointDown_TopBtn(const _uint& iEventNum)
 		if (pTarget)
 		{
 			_float4 vPos = pTarget->Get_Pos();
-
 			m_pBtnHighlight->Set_Pos(vPos.x, vPos.y);
-			m_pBtnHighlight->Set_Scale(90.f, 120.f);
 
 			ENABLE_GAMEOBJECT(m_pBtnHighlight);
 		}
@@ -159,7 +157,7 @@ void CUI_Main::Create_BtnHighlight()
 {
 	m_pBtnHighlight = CUI_Object::Create();
 
-	m_pBtnHighlight->Set_Scale(180.f, 220.f);
+	m_pBtnHighlight->Set_Scale(90.f, 120.f);
 	m_pBtnHighlight->Set_Sort(0.95f);
 
 	m_pBtnHighlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_BGMainTab.dds"));

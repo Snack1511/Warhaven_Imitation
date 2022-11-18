@@ -129,14 +129,16 @@ void CButton::Late_Tick()
 		{
 			if (m_bPrvState)
 			{
-				m_pTargetUI = nullptr;
-
 				m_pMouse->Set_Mouse(CUI_Cursor::Default);
 
 				m_pOwnerUI->CallBack_PointExit(0);
 			}
+			else
+			{
+				m_pTargetUI = nullptr;
+			}
 		}
-	}	
+	}
 }
 
 void CButton::Release()
