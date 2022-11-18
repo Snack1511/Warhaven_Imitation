@@ -54,6 +54,9 @@ HRESULT CState_Blendable::Initialize()
 	/* Blend Stop Event*/
 	Add_KeyFrame(m_iStopIndex, 998);
 	Add_KeyFrame(m_iAttackEndIndex, 999);
+	Add_KeyFrame((m_iStopIndex + m_iAttackEndIndex) / 1.7f, 1000); // 시작, 끝 사이
+
+
 
 	m_fMyAccel = 20.f;
 	m_fMyMaxLerp = 0.1f;
@@ -111,6 +114,7 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"GroundHitParticle", pOwner->Get_HitMatrix());
 			}
 
 
@@ -342,6 +346,12 @@ void CState_Blendable::Create_SwordAfterEffect()
 	
 }
 
+void CState_Blendable::Create_SoilEffect()
+{
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", m_pOwner, m_pOwner->Get_Transform()->Get_World(WORLD_POS));
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", m_pOwner, m_pOwner->Get_Transform()->Get_World(WORLD_POS));
+}
+
 void CState_Blendable::Move_Cycle(CAnimator* pAnimator, _uint* arrDirectionAnimIndices, ANIM_TYPE eAnimType)
 {
 	_uint iDirection = Get_Direction();
@@ -379,6 +389,7 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 			pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed);
 			pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 			pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
+			
 		}
 
 		
@@ -403,6 +414,14 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 			m_eAnimLeftorRight = ANIM_BASE_L;
 
 		//cout << "Blendable On" << endl;
+
+		break;
+
+	case 1000:
+		/*effect*/
+		if (!pOwner->Is_Air())
+			Create_SoilEffect();
+
 		break;
 
 	default:
@@ -452,6 +471,7 @@ void CState_Blendable::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 		else
 			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iLandRightIndex, ANIM_DIVIDE::eDEFAULT);
 
+		Create_SoilEffect();
 		break;
 
 	case Client::CState_Blendable::Enum::eIDLE:

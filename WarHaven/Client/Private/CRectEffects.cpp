@@ -48,6 +48,7 @@ CRectEffects::CRectEffects(const CRectEffects& _origin)
 	, m_fDurationRange(_origin.m_fDurationRange)
 	, m_strBoneName(_origin.m_strBoneName)
 	, m_fDiscardPower(_origin.m_fDiscardPower)
+	, m_bKeepSticked(_origin.m_bKeepSticked)
 {
 	if (_origin.m_pRectInstances)
 	{
@@ -169,7 +170,7 @@ void CRectEffects::Reset(_float4x4 matWorld)
 void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 	{
 		pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
@@ -328,7 +329,7 @@ HRESULT CRectEffects::Initialize()
 			0.f);
 
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 		{
 			m_pInstancingDatas[i].vScale.y = m_pInstancingDatas[i].vScale.x;
 		}
@@ -371,6 +372,13 @@ HRESULT CRectEffects::Initialize()
 			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+		{
+			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
+			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
+
+			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
+		}
+		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 		{
 			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
@@ -504,7 +512,7 @@ void CRectEffects::My_Tick()
 
 
 		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA &&
-			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 			m_pRectInstances[i].vColor = m_pInstancingDatas[i].vColor;
 		else
 			m_pRectInstances[i].vColor.w = m_pInstancingDatas[i].vColor.w;
@@ -625,7 +633,7 @@ void CRectEffects::My_Tick()
 		m_pRectInstances[i].vTranslation = vOriginPos;
 
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 			Update_Animation(i);
 
 	}
@@ -661,7 +669,10 @@ void CRectEffects::My_LateTick()
 	if (m_bEffectFlag & EFFECT_REFBONE)
 	{
 		if (m_pRefBone)
-			Stick_RefBone();
+		{
+			if(m_bKeepSticked)
+				Stick_RefBone();
+		}
 	}
 
 
@@ -686,11 +697,11 @@ void CRectEffects::OnEnable()
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
-		m_pInstancingDatas[i].vColor.w = 0.f;
-		m_pRectInstances[i].vColor.w = 0.f;
+		
 		Reset_Instance(i);
 	}
 
+	Stick_RefBone();
 }
 
 void CRectEffects::Dead_Instance(_uint iIndex)
@@ -820,6 +831,10 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 	m_strBoneName = CUtility_File::Read_Text(pReadFile);
 
 	pReadFile->read((char*)&m_fDiscardPower, sizeof(_float));
+	pReadFile->read((char*)&m_bKeepSticked, sizeof(_bool));
+
+	pReadFile->read((char*)&m_vPlusColor, sizeof(_float4));
+	pReadFile->read((char*)&m_fColorPower, sizeof(_float));
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
@@ -870,6 +885,10 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 	m_strBoneName = CUtility_File::Read_Text(pReadFile);
 
 	pReadFile->read((char*)&m_fDiscardPower, sizeof(_float));
+	pReadFile->read((char*)&m_bKeepSticked, sizeof(_bool));
+
+	pReadFile->read((char*)&m_vPlusColor, sizeof(_float4));
+	pReadFile->read((char*)&m_fColorPower, sizeof(_float));
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -920,6 +939,9 @@ void CRectEffects::Update_Animation(_uint iIndex)
 
 void CRectEffects::Stick_RefBone()
 {
+	if (!m_pRefBone)
+		return;
+
 	_float4 vPos = m_vOffsetPos;
 	_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
 
@@ -940,6 +962,8 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 	Set_NewStartPos(iIndex);
 
+	m_pInstancingDatas[iIndex].vColor.w = 0.f;
+	m_pRectInstances[iIndex].vColor.w = 0.f;
 
 	m_pInstancingDatas[iIndex].vScale = m_pInstancingDatas[iIndex].vStartScale;
 
@@ -953,7 +977,7 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pInstancingDatas[iIndex].vTurnDir.z = 0.f;
 
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
+		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 	{
 		m_pRectInstances[iIndex].vColor.x = 0.f;
 		m_pRectInstances[iIndex].vColor.y = 0.f;

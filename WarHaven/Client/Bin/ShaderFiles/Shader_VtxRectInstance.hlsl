@@ -15,12 +15,15 @@ float3		g_vCamLook;
 
 int			g_iWidthSize;
 int			g_iHeightSize;
-float			g_iCurWidthIndex;
-float			g_iCurHeightIndex;
+float		g_iCurWidthIndex;
+float		g_iCurHeightIndex;
 
-bool			g_bBlackBG;
-float			g_fDissolvePower = 5.f;
-float			g_fDiscardPower = 0.01f;
+bool		g_bBlackBG;
+float		g_fDissolvePower = 5.f;
+float		g_fDiscardPower = 0.01f;
+
+vector		g_vPlusColor;
+float		g_fColorPower;
 
 
 struct VS_IN
@@ -239,6 +242,8 @@ PS_OUT PS_ANIMATION_ALPHA_MAIN(PS_IN In)
 	if (Out.vDiffuse.a < 0.01f)
 		discard;
 
+	
+
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
 	Out.vFlag = g_vFlag;
 	Out.vGlowFlag = g_vGlowFlag;
@@ -372,6 +377,56 @@ PS_OUT PS_BLACKBACKGROUND_TEXTURE(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_ANIMATION_ALPHACOLOR_MAIN(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float fStepX = 1.f / g_iWidthSize;
+
+	//갯수만큼 나누고
+	In.vTexUV.x /= g_iWidthSize;
+	//현재 가로줄만큼 늘려
+	In.vTexUV.x += fStepX * In.vColor.x;
+
+
+	float fStepY = 1.f / g_iHeightSize;
+
+	//갯수만큼 나누고
+	In.vTexUV.y /= g_iHeightSize;
+	//현재 세로줄만큼 늘려
+	In.vTexUV.y += fStepY * In.vColor.y;
+
+
+	
+	//masking
+	vector vMaskDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (g_bBlackBG)
+	{
+		Out.vDiffuse.a = vMaskDesc.r;
+	}
+	else
+		Out.vDiffuse.a = vMaskDesc.a;
+
+	if (Out.vDiffuse.a < 0.01f)
+		discard;
+
+	Out.vDiffuse.xyz = g_vPlusColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
+
+	if (Out.vDiffuse.a < 0.01f)
+		discard;
+
+
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
+	Out.vFlag = g_vFlag;
+	Out.vGlowFlag = g_vGlowFlag;
+	Out.vEffectDiffuse = Out.vDiffuse;
+
+	return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -450,5 +505,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_BLACKBACKGROUND_TEXTURE();
+	}
+
+	pass ANIMATION_ALPHACOLOR
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_None);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_ANIMATION_ALPHACOLOR_MAIN();
 	}
 }
