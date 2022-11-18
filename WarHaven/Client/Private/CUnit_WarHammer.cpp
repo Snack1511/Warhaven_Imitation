@@ -50,11 +50,11 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	CUnit::UNIT_MODEL_DATA  tModelData;
 
 	//1. 바리게이트
-	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx";
+//	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx";
 
 
 
-	for (int i = 0; i < BarricadeCnt_END; ++i)
+	/*for (int i = 0; i < BarricadeCnt_END; ++i)
 	{
 		CBarricade* pBarricade = CBarricade::Create(tModelData, this);
 		if (!pBarricade)
@@ -62,7 +62,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 
 		CREATE_GAMEOBJECT(pBarricade, GROUP_PLAYER);
 		DISABLE_GAMEOBJECT(pBarricade);
-	}
+	}*/
 
 
 	//Creaete_Barricade();

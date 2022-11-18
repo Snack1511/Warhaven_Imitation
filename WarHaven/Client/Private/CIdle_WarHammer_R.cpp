@@ -53,7 +53,7 @@ HRESULT CIdle_WarHammer_R::Initialize()
     m_fAnimSpeed = 1.f;
 
 
-    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
+//    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
     
     m_vecAdjState.push_back(STATE_SWITCH_R_TO_L_WARHAMMER);
 
