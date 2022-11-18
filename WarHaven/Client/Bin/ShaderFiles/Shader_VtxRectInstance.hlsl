@@ -239,7 +239,7 @@ PS_OUT PS_ANIMATION_ALPHA_MAIN(PS_IN In)
 
 	Out.vDiffuse.a *= In.vColor.a;
 	
-	if (Out.vDiffuse.a < 0.01f)
+	if (Out.vDiffuse.a < g_fDiscardPower)
 		discard;
 
 	
@@ -416,8 +416,11 @@ PS_OUT PS_ANIMATION_ALPHACOLOR_MAIN(PS_IN In)
 	Out.vDiffuse.xyz = g_vPlusColor.xyz;
 	Out.vDiffuse.xyz *= g_fColorPower;
 
-	if (Out.vDiffuse.a < 0.01f)
+	Out.vDiffuse.a *= In.vColor.a;
+
+	if (Out.vDiffuse.a < g_fDiscardPower)
 		discard;
+
 
 
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);

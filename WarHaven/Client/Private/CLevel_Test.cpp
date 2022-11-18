@@ -264,17 +264,17 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// 테스트할 객체 띄우기
 
-	//if (FAILED(SetUp_Warrior_TH()))
-	//	return E_FAIL;
+	if (FAILED(SetUp_Warrior_TH()))
+		return E_FAIL;
 
 	/*if (FAILED(SetUp_SpearMan_TH()))
 		return E_FAIL;*/
 
-	//if (FAILED(SetUp_WarHammer_TH()))
-	//	return E_FAIL;
+	/*if (FAILED(SetUp_WarHammer_TH()))
+		return E_FAIL;*/
 
-	if (FAILED(SetUp_Valkyrie_TH()))
-		return E_FAIL;
+	//if (FAILED(SetUp_Valkyrie_TH()))
+	//	return E_FAIL;
 
 
 	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
@@ -325,7 +325,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
+	CMap_Loader::Load_Data(wstring(TEXT("Effect_Test")), Ready_Object);
 	m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
 
 	
@@ -684,7 +684,7 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	Ready_GameObject(pTestWarHammerUnit, GROUP_PLAYER);
 
 
-	_float4 vPlayerPos = _float4(20.f, 2.f, 20.f);
+	_float4 vPlayerPos = _float4(0.f, 10.f, 0.f);
 	pTestWarHammerUnit->Teleport_Unit(vPlayerPos);
 
 
