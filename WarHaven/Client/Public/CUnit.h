@@ -59,7 +59,7 @@ public:
 		_float fWalkSpeed = 1.8f;
 		/* 공격할 때 살짝 앞으로 가는 속도 */
 		_float fShortDashSpeed = 8.f;
-		_float fDashSpeed = 16.f;
+		_float fDashAttackSpeed = 16.f;
 		_float fWallJumpSpeed = 15.f;
 		_float fBackStepSpeed = 30.f;
 		_float fSprintAttackSpeed = 11.F;
@@ -163,6 +163,7 @@ protected:
 	//PhysX 용 충돌체
 	CPhysXCharacter* m_pPhysXCharacter = nullptr;
 	CBoneCollider* m_pWeaponCollider_R = nullptr;
+	CBoneCollider* m_pWeaponCollider_L = nullptr;
 
 	//우리가 알던 그 충돌체
 	CCollider_Sphere* m_pUnitCollider[UNITCOLLIDER_END] = {};

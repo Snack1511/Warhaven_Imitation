@@ -15,6 +15,8 @@
 
 #include "CUnit_Warrior.h"
 #include "CUnit_Spearman.h"
+#include "CUnit_WarHammer.h"
+#include "CUnit_Valkyrie.h"
 
 #include "CCamera_Free.h"
 #include "CCamera_Follow.h"
@@ -262,11 +264,17 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// 테스트할 객체 띄우기
 
-	if (FAILED(SetUp_Warrior_TH()))
-		return E_FAIL;
+	//if (FAILED(SetUp_Warrior_TH()))
+	//	return E_FAIL;
 
 	/*if (FAILED(SetUp_SpearMan_TH()))
 		return E_FAIL;*/
+
+	//if (FAILED(SetUp_WarHammer_TH()))
+	//	return E_FAIL;
+
+	if (FAILED(SetUp_Valkyrie_TH()))
+		return E_FAIL;
 
 
 	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
@@ -593,6 +601,195 @@ HRESULT CLevel_Test::SetUp_SpearMan_TH()
 	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
 	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
 	DISABLE_GAMEOBJECT(pFollowCam);
+
+	
+
+	return S_OK;
+}
+
+HRESULT CLevel_Test::SetUp_WarHammer_TH()
+{
+
+	CUnit::UNIT_MODEL_DATA  tModelData;
+
+	//2. WarHammer
+	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/Hammer/SM_WP_WarHammer0001_A00.fbx";
+
+	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
+
+	tModelData.strModelPaths[MODEL_PART_WEAPON_L] = L"../bin/resources/meshes/weapons/LongSpear/SM_WP_LongSpear0002_A00.fbx";
+	tModelData.strRefBoneName[MODEL_PART_WEAPON_L] = "0B_L_WP1";
+
+	CUnit_WarHammer* pTestWarHammerUnit = CUnit_WarHammer::Create(tModelData);
+	if (!pTestWarHammerUnit)
+		return E_FAIL;
+
+
+
+	pTestWarHammerUnit->Initialize();
+
+	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
+	pTestWarHammerUnit->Reserve_State(STATE_IDLE_WARHAMMER_R);
+
+
+
+	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
+
+
+	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
+		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
+	};
+
+
+
+	pTestWarHammerUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
+
+	tUnitColDesc[0].fRadius = 0.4f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
+
+
+	pTestWarHammerUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestWarHammerUnit, CModel)->Find_HierarchyNode("ob_Head"));
+
+	CUnit::UNIT_COLLIDERDESC tWeapon_RUnitColDesc[3] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.5f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -160.f),COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
+	};
+
+	pTestWarHammerUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeapon_RUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestWarHammerUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
+
+	//CUnit::UNIT_COLLIDERDESC tWeapon_LUnitColDesc[2] =
+	//{
+	//	//Radius,	vOffsetPos.		eColType
+	//	{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERATTACK },
+	//	{0.6f, _float4(0.f, 0.7f, 0.f),COL_PLAYERATTACK },
+	//};
+
+
+	//pTestWarHammerUnit->SetUp_UnitCollider(CUnit::WEAPON_L, tWeapon_LUnitColDesc, 2);
+
+
+	Ready_GameObject(pTestWarHammerUnit, GROUP_PLAYER);
+
+
+	_float4 vPlayerPos = _float4(20.f, 2.f, 20.f);
+	pTestWarHammerUnit->Teleport_Unit(vPlayerPos);
+
+
+	CUser::Get_Instance()->Set_Player(pTestWarHammerUnit);
+
+	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarHammerUnit, nullptr);
+	pFollowCam->Initialize();
+	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
+	pFollowCam->Get_Transform()->Make_WorldMatrix();
+	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	DISABLE_GAMEOBJECT(pFollowCam);
+	pTestWarHammerUnit->Set_FollowCam(pFollowCam);
+
+
+	return S_OK;
+}
+
+HRESULT CLevel_Test::SetUp_Valkyrie_TH()
+{
+
+	CUnit::UNIT_MODEL_DATA  tModelData;
+
+	//2. WarHammer
+	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/Valkyrie/Valkyrie.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/Valkyrie/body/SK_Fiona0001_Body_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Helmet_A00.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00.fbx";
+	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
+
+	tModelData.strModelPaths[MODEL_PART_WEAPON_L] = L"../bin/resources/meshes/weapons/Valkyrie_Shield/SK_WP_HeaterShield0001_A00.fbx";
+	tModelData.strRefBoneName[MODEL_PART_WEAPON_L] = "0B_L_WP1";
+
+	CUnit_Valkyrie* pTestValkyrieUnit = CUnit_Valkyrie::Create(tModelData);
+	if (!pTestValkyrieUnit)
+		return E_FAIL;
+
+	pTestValkyrieUnit->Initialize();
+
+	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
+	pTestValkyrieUnit->Reserve_State(STATE_IDLE_PLAYER_L);
+
+
+	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
+
+
+	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
+		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
+	};
+
+
+	
+	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
+
+	tUnitColDesc[0].fRadius = 0.4f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
+
+
+	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestValkyrieUnit, CModel)->Find_HierarchyNode("ob_Head"));
+
+	CUnit::UNIT_COLLIDERDESC tWeapon_RUnitColDesc[3] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.45f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
+		{0.45f, _float4(0.f, 0.f, -85.f),COL_PLAYERATTACK },
+		{0.45f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
+	};
+
+	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeapon_RUnitColDesc, 3, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestValkyrieUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
+
+	CUnit::UNIT_COLLIDERDESC tWeapon_LUnitColDesc[3] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.5f, _float4(0.f, 0.f, -20.f),COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f,  5.f),COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f,  30.f),COL_PLAYERATTACK }
+	};
+
+	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::WEAPON_L, tWeapon_LUnitColDesc, 3, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestValkyrieUnit, CModel)->Find_HierarchyNode("0B_L_WP1"));
+
+
+	Ready_GameObject(pTestValkyrieUnit, GROUP_PLAYER);
+
+
+	_float4 vPlayerPos = _float4(20.f, 2.f, 20.f);
+	pTestValkyrieUnit->Teleport_Unit(vPlayerPos);
+
+
+	CUser::Get_Instance()->Set_Player(pTestValkyrieUnit);
+
+	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestValkyrieUnit, nullptr);
+	pFollowCam->Initialize();
+	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
+	pFollowCam->Get_Transform()->Make_WorldMatrix();
+	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	DISABLE_GAMEOBJECT(pFollowCam);
+	pTestValkyrieUnit->Set_FollowCam(pFollowCam);
 
 	
 

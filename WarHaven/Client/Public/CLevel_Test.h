@@ -40,6 +40,8 @@ private:
 private:
 	HRESULT SetUp_Warrior_TH();
 	HRESULT SetUp_SpearMan_TH();
+	HRESULT SetUp_WarHammer_TH();
+	HRESULT SetUp_Valkyrie_TH();
 
 private:
 	CGameObject* m_pTestObj = nullptr;

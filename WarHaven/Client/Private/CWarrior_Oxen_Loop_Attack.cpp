@@ -108,7 +108,7 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
         return STATE_JUMPFALL_PLAYER_L;
 
     Follow_MouseLook(pOwner);
-    pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
+    pOwner->Set_DirAsLook();
 
     /*dust*/
     if (m_bAttackTrigger)
@@ -165,7 +165,7 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
     {
     case 0:
     {
-		Physics_Setting(pOwner->Get_Status().fDashSpeed, pOwner, true);
+		Physics_Setting(pOwner->Get_Status().fDashAttackSpeed, pOwner, true);
 
         CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 

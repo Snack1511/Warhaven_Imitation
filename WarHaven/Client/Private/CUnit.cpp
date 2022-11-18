@@ -230,8 +230,12 @@ HRESULT CUnit::Initialize()
 HRESULT CUnit::Start()
 {
 	__super::Start();
+
 	if (m_pWeaponCollider_R)
-	DISABLE_COMPONENT(m_pWeaponCollider_R);
+		DISABLE_COMPONENT(m_pWeaponCollider_R);
+
+	if(m_pWeaponCollider_L)
+		DISABLE_COMPONENT(m_pWeaponCollider_L);
 
 	m_pPhysics->Get_PhysicsDetail().fCurGroundY = m_pTransform->Get_MyWorld(WORLD_POS).y;
 
@@ -308,9 +312,17 @@ void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 	if (ePartType == WEAPON_R)
 	{
 		if (bEnable)
+		{
 			ENABLE_COMPONENT(m_pWeaponCollider_R);
+			ENABLE_COMPONENT(m_pWeaponCollider_L);
+			
+		}
 		else
-			DISABLE_COMPONENT(m_pWeaponCollider_R);
+		{
+			ENABLE_COMPONENT(m_pWeaponCollider_R);
+			ENABLE_COMPONENT(m_pWeaponCollider_L);
+		}
+
 
 	}
 }

@@ -118,6 +118,76 @@
 
 #pragma endregion
 
+
+#pragma region WarHammer
+
+#include "CIdle_WarHammer_L.h"
+#include "CIdle_WarHammer_R.h"
+
+#include "CWalk_WarHammer_L.h"
+#include "CWalk_WarHammer_R.h"
+
+#include "CRun_WarHammer_Begin_L.h"
+#include "CRun_WarHammer_Begin_R.h"
+
+#include "CRun_WarHammer_L.h"
+#include "CRun_WarHammer_R.h"
+
+#include "CJump_WarHammer_L.h"
+#include "CJump_WarHammer_R.h"
+
+#include "CJump_WarHammer_Fall_L.h"
+#include "CJump_WarHammer_Fall_R.h"
+
+#include "CJump_WarHammer_Land_L.h"
+#include "CJump_WarHammer_Land_R.h"
+
+#include "CStop_WarHammer_L.h"
+#include "CStop_WarHammer_R.h"
+
+#include "CSprint_Jump_WarHammer.h"
+#include "CSprint_Jump_Fall_WarHammer.h"
+#include "CSprintAttack_WarHammer_Begin.h"
+#include "CSprintAttack_WarHammer.h"
+#include "CSprint_Begin_WarHammer.h"
+#include "CSprint_Loop_WarHammer.h"
+#include "CSprint_End_WarHammer.h"
+
+#include "CSwitchLtoR_WarHammer.h"
+#include "CSwitchRtoL_WarHammer.h"
+
+#include "CWarHammer_Attack_HorizontalMiddle_L.h"
+#include "CWarHammer_Attack_HorizontalMiddle_R.h"
+
+#include "CWarHammer_Attack_VerticalAttack_L.h"
+#include "CWarHammer_Attack_VerticalAttack_R.h"
+
+#include "CWarHammer_GroggyAttack.h"
+
+#include "CWarHammer_AirSpike_Begin.h"
+#include "CWarHammer_AirSpike_Loop.h"
+#include "CWarHammer_AirSpike_End.h"
+
+#include "CWarHammer_Attack_Sting_L.h"
+#include "CWarHammer_Attack_Sting_R.h"
+
+
+#include "CBounce_WarHammer_L.h"
+#include "CBounce_WarHammer_R.h"
+
+#include "CGuard_Begin_WarHammer.h"
+#include "CGuard_Loop_WarHammer.h"
+#include "CGuard_End_WarHammer.h"
+#include "CGuard_Cancel_WarHammer.h"
+
+#include "CInstall_Begin_WarHammer.h"
+#include "CInstall_Loop_WarHammer.h"
+#include "CInstall_End_WarHammer.h"
+
+
+
+#pragma endregion
+
 #include "CHit_Player.h"
 
 #include "CAI_SandBack.h"
@@ -139,7 +209,11 @@ CState_Manager::~CState_Manager()
 
 HRESULT CState_Manager::Initialize()
 {
+
+
+
 	Warrior_State();
+	WarHammer_State();
 
 	m_arrStates[STATE_IDLE_SPEARMAN_L] = CIdle_SpearMan_L::Create();
 	m_arrStates[STATE_IDLE_SPEARMAN_R] = CIdle_SpearMan_R::Create();
@@ -297,6 +371,92 @@ void CState_Manager::Warrior_State()
 
 
 #pragma endregion
+}
+
+void CState_Manager::WarHammer_State()
+{
+
+	/* Idle */
+	m_arrStates[STATE_IDLE_WARHAMMER_L] = CIdle_WarHammer_L::Create();
+	m_arrStates[STATE_IDLE_WARHAMMER_R] = CIdle_WarHammer_R::Create();
+
+	/* Walk */
+	m_arrStates[STATE_WALK_WARHAMMER_L] = CWalk_WarHammer_L::Create();
+	m_arrStates[STATE_WALK_WARHAMMER_R] = CWalk_WarHammer_R::Create();
+
+	/* RunBegin */
+	m_arrStates[STATE_RUNBEGIN_WARHAMMER_L] = CRun_WarHammer_Begin_L::Create();
+	m_arrStates[STATE_RUNBEGIN_WARHAMMER_R] = CRun_WarHammer_Begin_R::Create();
+
+	/* Run */
+	m_arrStates[STATE_RUN_WARHAMMER_L] = CRun_WarHammer_L::Create();
+	m_arrStates[STATE_RUN_WARHAMMER_R] = CRun_WarHammer_R::Create();
+
+	/* Jump */
+	m_arrStates[STATE_JUMP_WARHAMMER_L] = CJump_WarHammer_L::Create();
+	m_arrStates[STATE_JUMPFALL_WARHAMMER_L] = CJump_WarHammer_Fall_L::Create();
+	m_arrStates[STATE_JUMP_LAND_WARHAMMER_L] = CJump_WarHammer_Land_L::Create();
+
+	m_arrStates[STATE_JUMP_WARHAMMER_R] = CJump_WarHammer_R::Create();
+	m_arrStates[STATE_JUMPFALL_WARHAMMER_R] = CJump_WarHammer_Fall_R::Create();
+	m_arrStates[STATE_JUMP_LAND_WARHAMMER_R] = CJump_WarHammer_Land_R::Create();
+	
+	/* Stop */
+	m_arrStates[STATE_STOP_WARHAMMER_L] = CStop_WarHammer_L::Create();
+	m_arrStates[STATE_STOP_WARHAMMER_R] = CStop_WarHammer_R::Create();
+
+	/* Sprint */
+	m_arrStates[STATE_SPRINT_BEGIN_WARHAMMER] = CSprint_Begin_WarHammer::Create();
+	m_arrStates[STATE_SPRINT_LOOP_WARHAMMER] = CSprint_Loop_WarHammer::Create();
+	m_arrStates[STATE_SPRINT_END_WARHAMMER] = CSprint_End_WarHammer::Create();
+
+
+	m_arrStates[STATE_SPRINT_JUMPFALL_WARHAMMER] = CSprint_Jump_Fall_WarHammer::Create();
+
+	m_arrStates[STATE_SPRINT_JUMP_WARHAMMER] = CSprint_Jump_WarHammer::Create();
+
+	m_arrStates[STATE_SPRINTATTACK_BEGIN_WARHAMMER] = CSprintAttack_WarHammer_Begin::Create();
+	m_arrStates[STATE_SPRINTATTACK_WARHAMMER] = CSprintAttack_WarHammer::Create();
+
+
+	m_arrStates[STATE_SWITCH_R_TO_L_WARHAMMER] = CSwitchLtoR_WarHammer::Create();
+	m_arrStates[STATE_SWITCH_L_TO_R_WARHAMMER] = CSwitchRtoL_WarHammer::Create();
+	
+	/* Attack */
+	m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L] = CWarHammer_Attack_HorizontalMiddle_L::Create();
+	m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R] = CWarHammer_Attack_HorizontalMiddle_R::Create();
+
+
+	m_arrStates[STATE_VERTICALATTACK_WARHAMMER_L] = CWarHammer_Attack_VerticalAttack_L::Create();
+	m_arrStates[STATE_VERTICALATTACK_WARHAMMER_R] = CWarHammer_Attack_VerticalAttack_R::Create();
+
+	m_arrStates[STATE_GROGGYATTACK_WARHAMMER] = CWarHammer_GroggyAttack::Create();
+
+	m_arrStates[STATE_AIRSPIKE_BEGIN_WARHAMMER] = CWarHammer_AirSpike_Begin::Create();
+	m_arrStates[STATE_AIRSPIKE_LOOP_WARHAMMER] = CWarHammer_AirSpike_Loop::Create();
+	m_arrStates[STATE_AIRSPIKE_END_WARHAMMER] = CWarHammer_AirSpike_End::Create();
+
+
+	m_arrStates[STATE_ATTACK_STING_WARHAMMER_L] = CWarHammer_Attack_Sting_L::Create();
+	m_arrStates[STATE_ATTACK_STING_WARHAMMER_R] = CWarHammer_Attack_Sting_R::Create();
+
+	/* Bounce */
+	m_arrStates[STATE_BOUNCE_WARHAMMER_L] = CWarHammer_Attack_VerticalAttack_L::Create();
+	m_arrStates[STATE_BOUNCE_WARHAMMER_R] = CWarHammer_Attack_VerticalAttack_R::Create();
+
+
+	/* Guard */
+	m_arrStates[STATE_GUARD_BEGIN_WARHAMMER] = CGuard_Begin_WarHammer::Create();
+	m_arrStates[STATE_GUARD_LOOP_WARHAMMER] = CGuard_Loop_WarHammer::Create();
+	m_arrStates[STATE_GUARD_END_WARHAMMER] = CGuard_End_WarHammer::Create();
+	m_arrStates[STATE_GUARD_CANCEL_WARHAMMER] = CGuard_Cancel_WarHammer::Create();
+	
+	m_arrStates[STATE_INSTALL_BEIGN_WARHAMMER] = CInstall_Begin_WarHammer::Create();
+	m_arrStates[STATE_INSTALL_LOOP_WARHAMMER] = CInstall_Loop_WarHammer::Create();
+	m_arrStates[STATE_INSTALL_END_WARHAMMER] = CInstall_End_WarHammer::Create();
+
+	
+	
 }
 
 //void CState_Manager::Warrior_Base_R()
