@@ -44,10 +44,10 @@ HRESULT CUI_HUD::Start()
 {
 	m_eCurClass = m_tStatus.eClass;
 
-	//dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
-	//dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
-	//dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
-	//dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
+	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
+	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
+	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
 
 	ENABLE_GAMEOBJECT(m_pBG);
 	ENABLE_GAMEOBJECT(m_pLine);
@@ -161,31 +161,37 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 			case 0:
 				m_pClassInfo->Set_FontText(TEXT("블레이드"));
 				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
+				Set_HUD(CUnit::WARRIOR);
 				break;
 
 			case 1:
 				m_pClassInfo->Set_FontText(TEXT("스파이크"));
 				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
+				Set_HUD(CUnit::SPEAR);
 				break;
 
 			case 2:
 				m_pClassInfo->Set_FontText(TEXT("아치"));
 				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
+				Set_HUD(CUnit::ARCHER);
 				break;
 
 			case 3:
 				m_pClassInfo->Set_FontText(TEXT("가디언"));
 				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
+				Set_HUD(CUnit::PALADIN);
 				break;
 
 			case 4:
 				m_pClassInfo->Set_FontText(TEXT("스모크"));
 				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
+				Set_HUD(CUnit::PRIEST);
 				break;
 
 			case 5:
 				m_pClassInfo->Set_FontText(TEXT("워해머"));
 				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
+				Set_HUD(CUnit::ENGINEER);
 				break;
 			}
 		}
