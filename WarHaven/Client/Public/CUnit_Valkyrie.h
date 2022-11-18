@@ -22,7 +22,7 @@ public:
 	virtual HRESULT Start() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
-
+	virtual void My_LateTick() override;
 
 };
 

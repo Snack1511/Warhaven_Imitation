@@ -184,6 +184,17 @@
 #include "CInstall_Loop_WarHammer.h"
 #include "CInstall_End_WarHammer.h"
 
+#include "CCharge_WarHammer_L.h"
+#include "CCharge_WarHammer_R.h"
+
+#include "CWarHammer_ChargeAttack_L.h"
+#include "CWarHammer_ChargeAttack_R.h"
+
+#include "CCharge_WarHammer_Front_L.h"
+#include "CCharge_WarHammer_Front_R.h"
+
+#include "CWarHammer_Attack_VerticalAttack_L.h"
+#include "CWarHammer_Attack_VerticalAttack_R.h"
 
 
 #pragma endregion
@@ -455,8 +466,17 @@ void CState_Manager::WarHammer_State()
 	m_arrStates[STATE_INSTALL_LOOP_WARHAMMER] = CInstall_Loop_WarHammer::Create();
 	m_arrStates[STATE_INSTALL_END_WARHAMMER] = CInstall_End_WarHammer::Create();
 
-	
-	
+	m_arrStates[STATE_CHARGE_WARHAMMER_L] = CCharge_WarHammer_L::Create();
+	m_arrStates[STATE_CHARGE_WARHAMMER_R] = CCharge_WarHammer_R::Create();
+
+	m_arrStates[STATE_CHARGEATTACK_WARHAMMER_L] = CWarHammer_ChargeAttack_L::Create();
+	m_arrStates[STATE_CHARGEATTACK_WARHAMMER_R] = CWarHammer_ChargeAttack_R::Create();
+
+	m_arrStates[STATE_CHARGE_FRONT_WARHAMMER_L] = CCharge_WarHammer_Front_L::Create();
+	m_arrStates[STATE_CHARGE_FRONT_WARHAMMER_R] = CCharge_WarHammer_Front_R::Create();
+
+	m_arrStates[STATE_CHARGEATTACK_FRONT_WARHAMMER_L] = CWarHammer_Attack_VerticalAttack_L::Create();
+	m_arrStates[STATE_CHARGEATTACK_FRONT_WARHAMMER_R] = CWarHammer_Attack_VerticalAttack_R::Create();
 }
 
 //void CState_Manager::Warrior_Base_R()

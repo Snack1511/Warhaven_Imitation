@@ -50,6 +50,7 @@ HRESULT CWarHammer_AirSpike_End::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
+	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
@@ -100,10 +101,12 @@ void CWarHammer_AirSpike_End::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 	switch (iSequence)
 	{
 	case 0:
+		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 
 	case 1:
+		m_bAttackTrigger = false;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 		break;
 

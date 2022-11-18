@@ -43,24 +43,27 @@ HRESULT CSwitchRtoL_WarHammer::Initialize()
     m_iStateChangeKeyFrame = 20;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.1f;
+    m_fInterPolationTime = 0.f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 3.5f;
+    m_fAnimSpeed = 2.f;
 
     m_vecAdjState.push_back(STATE_IDLE_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_RUN_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_WALK_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_L);
 
-    m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
-
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
+
+
+    m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_L);
 
 
     m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_L);
+
+    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 
     return S_OK;
@@ -76,6 +79,10 @@ STATE_TYPE CSwitchRtoL_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 		return STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L;
+
+    if (CUser::Get_Instance()->Get_LastKey() == KEY::V)
+        return STATE_CHARGE_FRONT_WARHAMMER_L;
+
 
     if(MOUSE_MOVE(MMS_WHEEL) > 0)
         return STATE_VERTICALATTACK_WARHAMMER_L;
@@ -94,7 +101,7 @@ STATE_TYPE CSwitchRtoL_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAni
     1. 현재 진행중인 애니메이션이 끝났을 때
     */
 
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::R)
+    if (CUser::Get_Instance()->Get_LastKey() == KEY::F)
         return m_eStateType;
 
     return STATE_END;

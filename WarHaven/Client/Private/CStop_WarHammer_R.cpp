@@ -44,9 +44,11 @@ HRESULT CStop_WarHammer_R::Initialize()
 	m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_RUNBEGIN_WARHAMMER_R);
 
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L);
-	m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_L);
-	m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_L);
+	m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_R);
+
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
+	m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
 
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 34;

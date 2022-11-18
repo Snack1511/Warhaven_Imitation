@@ -24,14 +24,14 @@ HRESULT CRun_SpearMan::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_STING_SPEARMAN);
 
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.2f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.2f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.2f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.2f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.2f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.2f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 2.2f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 2.2f;
 
     m_iStateChangeKeyFrame = 0;
 

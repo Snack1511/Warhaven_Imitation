@@ -54,6 +54,8 @@ HRESULT CInstall_End_WarHammer::Initialize()
 	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
 
+	m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_R);
+
     return S_OK;
 }
 
@@ -87,7 +89,7 @@ STATE_TYPE CInstall_End_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAn
 
 	if (pAnimator->Is_CurAnimFinished())
 	{
-		ENABLE_GAMEOBJECT(dynamic_cast<CUnit_WarHammer*>(pOwner)->Get_Barricade());
+		// ENABLE_GAMEOBJECT(dynamic_cast<CUnit_WarHammer*>(pOwner)->Get_Barricade());
 		//dynamic_cast<CUnit_WarHammer*>(pOwner)->Creaete_Barricade();
 		return m_eStateType;
 	}

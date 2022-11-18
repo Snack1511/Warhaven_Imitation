@@ -39,15 +39,9 @@ HRESULT CJump_WarHammer_Fall_R::Initialize()
 
     m_vecAdjState.push_back(STATE_JUMP_LAND_WARHAMMER_R);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
+    m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
+
 
 
     return S_OK;

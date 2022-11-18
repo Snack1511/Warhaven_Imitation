@@ -26,7 +26,7 @@ HRESULT CJump_Player::Initialize()
 
 void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed * 3.f;
 
 
     /* Owner¿« Animator Set Idle∑Œ */

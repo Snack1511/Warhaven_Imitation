@@ -25,6 +25,7 @@ HRESULT CWarHammer_Attack_HorizontalMiddle::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
 	m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
 	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
+	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
@@ -147,6 +148,7 @@ STATE_TYPE CWarHammer_Attack_HorizontalMiddle::Check_Condition(CUnit* pOwner, CA
 	/* WARHAMMER가 Walk로 오는 조건
 	1. 공격 시
 	*/
+
 	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 	{
 		_float fDot = CUtility_Transform::Get_LookRotateAngle(pOwner->Get_FollowCamLook());

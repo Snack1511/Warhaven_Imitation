@@ -62,6 +62,8 @@ HRESULT CIdle_WarHammer_L::Initialize()
     m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_RUNBEGIN_WARHAMMER_L);
 
+    m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_L);
+
     m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
     m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L);
@@ -72,6 +74,8 @@ HRESULT CIdle_WarHammer_L::Initialize()
 
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
 
+
+    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 
     return S_OK;

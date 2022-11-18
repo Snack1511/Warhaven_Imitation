@@ -19,6 +19,7 @@ public:
 
 protected:
 	_uint		m_iCurDirection = 0;
+	_float		m_fOriRunSpeed = 0.f;
 
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;

@@ -53,9 +53,6 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	if (!pAnimator)
 		return E_FAIL;
 	
-	//CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/Spearman/A_AttackStab_Spearman_01.fbx");
-	//if (!pAnimator)
-	//	return E_FAIL;
 
 	
 	//1. L_Base
@@ -67,7 +64,7 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	//3. hit
 	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Hit.fbx");
 
-	//4. ETCK
+	//4. ETC
 	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_ETC.fbx");
 
 

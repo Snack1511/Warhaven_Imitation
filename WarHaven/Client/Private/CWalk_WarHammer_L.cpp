@@ -45,11 +45,12 @@ HRESULT CWalk_WarHammer_L::Initialize()
     m_vecAdjState.push_back(STATE_SWITCH_L_TO_R_WARHAMMER);
 
     m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_L);
-    m_vecAdjState.push_back(STATE_RUNBEGIN_WARHAMMER_L);
+    m_vecAdjState.push_back(STATE_RUN_WARHAMMER_L);
 
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_L);
+    m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_L);
 
 
 
@@ -108,42 +109,7 @@ void CWalk_WarHammer_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CWalk_WarHammer_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* WARHAMMER가 Walk로 오는 조건
-    1. 
-    */
 
-    // m_eStateType 이 End 에 가지 않으면 Enter 를 호출한다.
-
-    // W 랑 A 를 누르면 왼쪽 앞으로 이동한다.
-    // W 랑 D 를 누르면 왼쪽 옆으로 이동한다.
-
-    // 만약 WASD 를 눌렀다면
-
-    // 점프를 하지 않고
-    if (KEY(SPACE, NONE))
-    {
-        // 천천히 
-        if (KEY(CTRL, HOLD))
-        {
-            // 걸어간다.
-            if (KEY(W, HOLD) ||
-                KEY(A, HOLD) ||
-                KEY(S, HOLD) ||
-                KEY(D, HOLD))
-            {
-
-                return m_eStateType;
-            }
-
-        }
-    }
+    return __super::Check_Condition(pOwner, pAnimator);
    
-        //CTRL 로 바꾸셈.
-      
-      
-
-   
-
-
-    return STATE_END;
 }

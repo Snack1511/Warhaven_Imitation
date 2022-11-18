@@ -20,16 +20,24 @@ CBarricade::~CBarricade()
 {
 }
 
-CBarricade* CBarricade::Create(const UNIT_MODEL_DATA& tUnitModelData, CUnit_WarHammer* pOwner)
+CBarricade* CBarricade::Create(CUnit_WarHammer* pOwner)
 {
 	CBarricade* pInstance = new CBarricade;
 
-	if (FAILED(pInstance->SetUp_Model(tUnitModelData)))
+
+	if (FAILED(pInstance->__super::SetUp_Model(L"../Bin/Resources/Meshes/Map/Environments/Module/Fence/SM_Module_Fence_Wood08a.dat")))
 	{
 		SAFE_DELETE(pInstance);
 		Call_MsgBox(L"Failed to SetUp_Model : CBarricade");
 		return nullptr;
 	}
+
+	//if (FAILED(pInstance->SetUp_Model(tUnitModelData)))
+	//{
+	//	SAFE_DELETE(pInstance);
+	//	Call_MsgBox(L"Failed to SetUp_Model : CBarricade");
+	//	return nullptr;
+	//}
 
 	if (FAILED(pInstance->Initialize_Prototype(pOwner)))
 	{
@@ -72,34 +80,34 @@ HRESULT CBarricade::Initialize_Prototype(CUnit_WarHammer* pOwner)
 	
 	
 
-	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/WarHammer/SKEL_Engineer_Base_R.fbx");
-	if (!pAnimator)
-		return E_FAIL;
+	//CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/WarHammer/SKEL_Engineer_Base_R.fbx");
+	//if (!pAnimator)
+	//	return E_FAIL;
 
-	
-	//1. L_Base
-	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_Base_L.fbx");
+	//
+	////1. L_Base
+	//pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_Base_L.fbx");
 
-	//2. Attack
-	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_Attack.fbx");
+	////2. Attack
+	//pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_Attack.fbx");
 
-	//3. hit
-	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_HIT.fbx");
+	////3. hit
+	//pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_HIT.fbx");
 
-	//4. ETCK
-	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_ETC.fbx");
+	////4. ETCK
+	//pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_ETC.fbx");
 
 
-	Add_Component(pAnimator);
+	//Add_Component(pAnimator);
 
-	/* PhysX Collider */
+	///* PhysX Collider */
 
-	CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
+	//CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
 
-	if (!pCController)
-		return E_FAIL;
+	//if (!pCController)
+	//	return E_FAIL;
 
-	Add_Component(pCController);
+	//Add_Component(pCController);
 
 	//CBoneCollider::BONECOLLIDERDESC tDesc;
 	//// Ä® ±æÀÌ
@@ -135,12 +143,12 @@ void CBarricade::OnEnable()
 {
 	__super::OnEnable();
 
-	m_pOwner->Creaete_Barricade();
+	// m_pOwner->Creaete_Barricade();
 }
 
 void CBarricade::OnDisable()
 {
 	__super::OnDisable();
 
-	m_pOwner->Destroy_Barricade(this);
+	// m_pOwner->Destroy_Barricade(this);
 }

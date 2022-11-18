@@ -67,7 +67,7 @@ HRESULT CWarHammer_Attack_Sting_L::Initialize()
 	m_eFallState = STATE_JUMPFALL_WARHAMMER_L;
 	m_eRunState = STATE_RUN_WARHAMMER_L;
 	m_eIdleState = STATE_IDLE_WARHAMMER_L;
-	m_eBounceState = STATE_BOUNCE_WARHAMMER_R;
+	m_eBounceState = STATE_BOUNCE_WARHAMMER_L;
 
 
     return __super::Initialize();

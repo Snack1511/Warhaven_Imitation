@@ -484,12 +484,20 @@ void CModel::Late_Tick()
 		vWorldPos.y += 0.6f;
 		_float fRange = 2.f;
 
+
+
 		//통과면은 절두체까지해서 처리
 		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vWorldPos.XMLoad(), fRange))
 		{
 			for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 			{
-				m_MeshContainers[i].second->Set_Enable(true);
+				if (m_MeshContainers[i].first == 0)
+				{
+					m_MeshContainers[i].second->Set_Enable(false);
+				}
+				else
+					m_MeshContainers[i].second->Set_Enable(true);
+				
 			}
 		}
 		else

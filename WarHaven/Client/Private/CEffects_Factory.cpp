@@ -486,6 +486,9 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"GroundHitParticle"), "GroundHitParticle")))
 		return E_FAIL;
+
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SmashSoilParticle"), "SmashSoilParticle")))
+		return E_FAIL;
 	
 	return S_OK;
 }

@@ -26,6 +26,7 @@ HRESULT CWarHammer_Attack_Sting::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
 	m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
 	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
+	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 
 	m_fInterPolationTime = 0.1f;

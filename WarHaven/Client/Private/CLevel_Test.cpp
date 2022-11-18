@@ -185,6 +185,8 @@ void CLevel_Test::Tick()
 		}
 	}
 	
+	Change_Player();
+	
 
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Tick();
@@ -264,17 +266,19 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// 테스트할 객체 띄우기
 
-	//if (FAILED(SetUp_Warrior_TH()))
-	//	return E_FAIL;
+	
+
+/*	if (FAILED(SetUp_Warrior_TH()))
+		return E_FAIL*/;
 
 	/*if (FAILED(SetUp_SpearMan_TH()))
 		return E_FAIL;*/
 
-	//if (FAILED(SetUp_WarHammer_TH()))
-	//	return E_FAIL;
-
-	if (FAILED(SetUp_Valkyrie_TH()))
+	if (FAILED(SetUp_WarHammer_TH()))
 		return E_FAIL;
+
+	//if (FAILED(SetUp_Valkyrie_TH()))
+	//	return E_FAIL;
 
 
 	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
@@ -300,10 +304,6 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 
 
-
-
-
-
 	/*fColRadius = 1.f;
 	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_ENEMYHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
 	fColRadius = 0.3f;
@@ -324,9 +324,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	/*function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
-	m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
+	m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);*/
 
 	
 
@@ -337,11 +337,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//라이트
 
 
-	//_float4x4 mat;
-	//mat.Identity();
-	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
-	//pDrawableTerrain->Initialize();
-	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	_float4x4 mat;
+	mat.Identity();
+	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
+	pDrawableTerrain->Initialize();
+	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 	
 	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);
@@ -512,8 +512,7 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 	vEnemyPos.z += 4.f;
 	pTestEnemyWarrior->Teleport_Unit(vEnemyPos);
 
-
-
+	
 
 	CUser::Get_Instance()->Set_Player(pTestWarriorUnit);
 
@@ -525,6 +524,8 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
 	DISABLE_GAMEOBJECT(pFollowCam);
 	pTestWarriorUnit->Set_FollowCam(pFollowCam);
+
+	m_pWarrior = pTestWarriorUnit;
 
 	return S_OK;
 }
@@ -596,6 +597,7 @@ HRESULT CLevel_Test::SetUp_SpearMan_TH()
 
 	CUser::Get_Instance()->Set_Player(pTestSpearmanUnit);
 
+
 	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestSpearmanUnit, nullptr);
 	pFollowCam->Initialize();
 	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
@@ -615,6 +617,7 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	//2. WarHammer
 	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx";
 
+
 	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00.fbx";
 	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00.fbx";
 	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00.fbx";
@@ -622,9 +625,6 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/Hammer/SM_WP_WarHammer0001_A00.fbx";
 
 	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-
-	tModelData.strModelPaths[MODEL_PART_WEAPON_L] = L"../bin/resources/meshes/weapons/LongSpear/SM_WP_LongSpear0002_A00.fbx";
-	tModelData.strRefBoneName[MODEL_PART_WEAPON_L] = "0B_L_WP1";
 
 	CUnit_WarHammer* pTestWarHammerUnit = CUnit_WarHammer::Create(tModelData);
 	if (!pTestWarHammerUnit)
@@ -670,15 +670,6 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 
 	pTestWarHammerUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeapon_RUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestWarHammerUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
 
-	//CUnit::UNIT_COLLIDERDESC tWeapon_LUnitColDesc[2] =
-	//{
-	//	//Radius,	vOffsetPos.		eColType
-	//	{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERATTACK },
-	//	{0.6f, _float4(0.f, 0.7f, 0.f),COL_PLAYERATTACK },
-	//};
-
-
-	//pTestWarHammerUnit->SetUp_UnitCollider(CUnit::WEAPON_L, tWeapon_LUnitColDesc, 2);
 
 
 	Ready_GameObject(pTestWarHammerUnit, GROUP_PLAYER);
@@ -690,6 +681,7 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 
 	CUser::Get_Instance()->Set_Player(pTestWarHammerUnit);
 
+
 	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarHammerUnit, nullptr);
 	pFollowCam->Initialize();
 	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
@@ -698,6 +690,16 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
 	DISABLE_GAMEOBJECT(pFollowCam);
 	pTestWarHammerUnit->Set_FollowCam(pFollowCam);
+
+	//CCamera_Follow* pFollowCam = (CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam");
+	//pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
+	//pFollowCam->Get_Transform()->Make_WorldMatrix();
+	//DISABLE_GAMEOBJECT(pFollowCam);
+	//pTestWarHammerUnit->Set_FollowCam(pFollowCam);
+
+	//DISABLE_GAMEOBJECT(m_pWarrior);
+
+	m_pWarHammer = pTestWarHammerUnit;
 
 
 	return S_OK;
@@ -708,7 +710,7 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 
 	CUnit::UNIT_MODEL_DATA  tModelData;
 
-	//2. WarHammer
+	//3. Valkyrie
 	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/Valkyrie/Valkyrie.fbx";
 
 	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/Valkyrie/body/SK_Fiona0001_Body_A00.fbx";
@@ -795,3 +797,27 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 
 	return S_OK;
 }
+
+void CLevel_Test::Change_Player()
+{
+	if (KEY(M, TAP))
+	{
+		if (KEY(P, TAP))
+		{
+			ENABLE_GAMEOBJECT(m_pWarHammer);
+			static_cast<CUnit*>(m_pWarHammer)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
+
+			DISABLE_GAMEOBJECT(m_pWarrior);
+		}
+
+		if (KEY(J, TAP))
+		{
+			ENABLE_GAMEOBJECT(m_pWarrior);
+
+			static_cast<CUnit*>(m_pWarrior)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
+			DISABLE_GAMEOBJECT(m_pWarHammer);
+		}
+	}
+
+}
+

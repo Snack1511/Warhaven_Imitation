@@ -43,8 +43,13 @@ private:
 	HRESULT SetUp_WarHammer_TH();
 	HRESULT SetUp_Valkyrie_TH();
 
+	void	Change_Player();
+
 private:
 	CGameObject* m_pTestObj = nullptr;
+
+	CGameObject* m_pWarrior = nullptr;
+	CGameObject* m_pWarHammer = nullptr;
 
 	CUI_HUD* m_pHUD = nullptr;
 

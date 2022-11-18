@@ -54,13 +54,6 @@ HRESULT CJump_WarHammer_L::Initialize()
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_L);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
  
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 7;
     m_iDirectionAnimIndex[STATE_DIRECTION_S] = 8;

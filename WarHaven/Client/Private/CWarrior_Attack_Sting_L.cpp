@@ -64,8 +64,8 @@ HRESULT CWarrior_Attack_Sting_L::Initialize()
 	m_iStopIndex = 40;
 	m_iAttackEndIndex = 60;
 	
-	Add_KeyFrame(38, 1);
-	Add_KeyFrame(50, 2);
+	Add_KeyFrame(38, 0);
+	Add_KeyFrame(50, 1);
 
 	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_L;

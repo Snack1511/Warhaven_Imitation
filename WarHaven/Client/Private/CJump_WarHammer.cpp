@@ -26,7 +26,7 @@ HRESULT CJump_WarHammer::Initialize()
 
 void CJump_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed * 2.f;
 
 
     /* Owner¿« Animator Set Idle∑Œ */

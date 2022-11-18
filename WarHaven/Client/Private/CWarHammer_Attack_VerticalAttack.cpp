@@ -38,6 +38,7 @@ HRESULT CWarHammer_Attack_VerticalAttack::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
+	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 
 	m_fInterPolationTime = 0.1f;
@@ -51,8 +52,8 @@ HRESULT CWarHammer_Attack_VerticalAttack::Initialize()
 	m_iStopIndex = 60;
 	m_iAttackEndIndex = 90;
 
-	Add_KeyFrame(m_iStopIndex, 1);
-	Add_KeyFrame(80, 2);
+	Add_KeyFrame(m_iStopIndex, 0);
+	Add_KeyFrame(80, 1);
 
 	m_iIdle_Index = 4;
 	m_iLandRightIndex = 20;
@@ -165,6 +166,22 @@ STATE_TYPE CWarHammer_Attack_VerticalAttack::Check_Condition(CUnit* pOwner, CAni
 
 void CWarHammer_Attack_VerticalAttack::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
+	switch (iSequence)
+	{
+	case 0:
+		m_bAttackTrigger = true;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		break;
+
+	case 1:
+		m_bAttackTrigger = false;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		break;
+
+	default:
+		break;
+	}
+
 	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

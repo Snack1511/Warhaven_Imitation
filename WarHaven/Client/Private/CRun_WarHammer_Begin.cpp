@@ -23,6 +23,8 @@ HRESULT CRun_WarHammer_Begin::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
 	m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
 	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
+	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
+
 
     m_iStateChangeKeyFrame = 20;
 
@@ -52,6 +54,7 @@ void CRun_WarHammer_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CRun_WarHammer_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
 	_uint iDirection = Get_Direction();
 
 	Move(iDirection, pOwner);
@@ -66,7 +69,7 @@ STATE_TYPE CRun_WarHammer_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CRun_WarHammer_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+	m_pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
 
 STATE_TYPE CRun_WarHammer_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

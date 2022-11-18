@@ -75,8 +75,8 @@ STATE_TYPE CInstall_Begin_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* p
 	1. 스프린트 공격 준비가 끝나면
     */
 
-	if (KEY(R, TAP))
-		return m_eStateType;
+	//if (KEY(R, TAP))
+	//	return m_eStateType;
    
     return STATE_END;
 }

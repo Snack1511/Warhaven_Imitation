@@ -40,7 +40,7 @@ HRESULT CSprint_Loop_WarHammer::Initialize()
     m_fInterPolationTime = 0.f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 1.5f;
+    m_fAnimSpeed = 1.8f;
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 200.f;

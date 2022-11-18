@@ -36,6 +36,8 @@ CIdle_WarHammer_R* CIdle_WarHammer_R::Create()
 }
 HRESULT CIdle_WarHammer_R::Initialize()
 {
+
+
     // 상하체 분리.
     // 
 
@@ -57,9 +59,13 @@ HRESULT CIdle_WarHammer_R::Initialize()
     
     m_vecAdjState.push_back(STATE_SWITCH_R_TO_L_WARHAMMER);
 
+    m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_R);
+
     m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_RUNBEGIN_WARHAMMER_R);
+
+    m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_R);
 
     m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
     m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
@@ -71,10 +77,10 @@ HRESULT CIdle_WarHammer_R::Initialize()
 
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
 
+    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
+
+
     
-
-
-
     return S_OK;
 }
 

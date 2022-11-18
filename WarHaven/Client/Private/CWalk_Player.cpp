@@ -30,6 +30,7 @@ HRESULT CWalk_Player::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
+
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;

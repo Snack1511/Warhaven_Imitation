@@ -49,19 +49,13 @@ HRESULT CJump_WarHammer_Land_R::Initialize()
 	m_vecAdjState.push_back(STATE_RUN_WARHAMMER_R);
 
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 
-	/*m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
-
-	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
-	m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
-
-
-	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
-	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
-
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);*/
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
+    m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
+    m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
+    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 
     return S_OK;

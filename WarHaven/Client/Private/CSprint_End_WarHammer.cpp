@@ -49,16 +49,20 @@ HRESULT CSprint_End_WarHammer::Initialize()
     m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_IDLE_WARHAMMER_R);
     
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
+
+    m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_R);
+
+    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
-
-	/*m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
-	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
-	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);*/
+    m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
+    m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
+    m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
+    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
+
 
 
 	m_fMyMaxLerp = 0.4f;
@@ -79,14 +83,6 @@ void CSprint_End_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
-	//_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	//vCamLook.y = 0.f;
-
-	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
-	//pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
-
-	//실제 움직이는 방향
-	//pMyPhysicsCom->Set_Dir(vCamLook);
 
 	//최대속도 설정
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);

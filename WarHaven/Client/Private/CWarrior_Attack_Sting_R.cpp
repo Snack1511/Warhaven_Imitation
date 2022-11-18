@@ -66,8 +66,8 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
 	m_iStopIndex = 40;
 	m_iAttackEndIndex = 50;
 
-	Add_KeyFrame(38, 1);
-	Add_KeyFrame(50, 2);
+	Add_KeyFrame(38, 0);
+	Add_KeyFrame(50, 1);
 
 
 	/* Setting for Blendable */

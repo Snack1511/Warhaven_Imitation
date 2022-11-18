@@ -55,12 +55,12 @@ HRESULT CSprint_Begin_WarHammer::Initialize()
 	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_WARHAMMER);
 
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
-    //m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
-    //m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
+    m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
+    m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
+    m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 
 	Add_KeyFrame(10, 0);
@@ -70,7 +70,7 @@ HRESULT CSprint_Begin_WarHammer::Initialize()
 
 void CSprint_Begin_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, false);
+	Physics_Setting(pOwner->Get_Status().fSprintSpeed * 0.8f, pOwner, false);
 
 
 	if (ePrevType == STATE_RUNBEGIN_WARHAMMER_L || ePrevType == STATE_RUNBEGIN_WARHAMMER_R)

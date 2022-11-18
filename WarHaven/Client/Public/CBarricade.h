@@ -1,11 +1,11 @@
 #pragma once
-#include "CUnit.h"
+#include "CStructure.h"
 
 BEGIN(Client)
 class CUnit_WarHammer;
 
 class CBarricade
-	: public CUnit
+	: public CStructure
 {
 
 
@@ -18,7 +18,7 @@ private:
 	virtual ~CBarricade();
 
 public:
-	static	CBarricade* Create(const UNIT_MODEL_DATA& tUnitModelData, CUnit_WarHammer* pOwner);
+	static	CBarricade* Create(CUnit_WarHammer* pOwner);
 
 
 public:

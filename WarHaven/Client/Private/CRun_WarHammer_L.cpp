@@ -40,6 +40,8 @@ HRESULT CRun_WarHammer_L::Initialize()
 
     m_vecAdjState.push_back(STATE_SWITCH_L_TO_R_WARHAMMER);
 
+    m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_L);
+
     m_vecAdjState.push_back(STATE_WALK_WARHAMMER_L);
     m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_L);
 
