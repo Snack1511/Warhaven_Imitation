@@ -50,6 +50,9 @@ HRESULT CUI_HUD::Start()
 	//dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
 
 	ENABLE_GAMEOBJECT(m_pBG);
+	ENABLE_GAMEOBJECT(m_pLine);
+	ENABLE_GAMEOBJECT(m_pClassInfo);
+	ENABLE_GAMEOBJECT(m_pClassInfoIcon);
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -137,38 +140,33 @@ void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
 		if (pTarget)
 		{
 			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
-			
+
 			switch (iTextureNum)
 			{
 			case 0:
-				Call_MsgBox(TEXT("워리어"));
 				break;
 
 			case 1:
-				Call_MsgBox(TEXT("스피어"));
 				break;
 
 			case 2:
-				Call_MsgBox(TEXT("아처"));
 				break;
 
 			case 3:
-				Call_MsgBox(TEXT("팔라딘"));
 				break;
 
 			case 4:
-				Call_MsgBox(TEXT("프리스트"));
 				break;
 
 			case 5:
-				Call_MsgBox(TEXT("엔지니어"));
 				break;
 			}
 
-			//_float4 vPos = pTarget->Get_Pos();
-			//m_pPortHighlight->Set_Pos(vPos);
+			_float4 vPos = pTarget->Get_Pos();
+			vPos.y += 2.f;
+			m_pPortHighlight->Set_Pos(vPos);
 
-			//ENABLE_GAMEOBJECT(m_pPortHighlight);
+			ENABLE_GAMEOBJECT(m_pPortHighlight);
 		}
 	}
 }
@@ -260,13 +258,49 @@ void CUI_HUD::Create_CharacterSelectWindow()
 	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PriestIconGold.dds"));
 	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_EngineerIconGold.dds"));
 
+	m_pPortHighlight = CUI_Object::Create();
+	m_pPortHighlight->Set_Scale(100.f, 144.f);
+	m_pPortHighlight->Set_Sort(0.001f);
+	m_pPortHighlight->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
+	m_pPortHighlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PortraitBustShotBG.png"));
+
+	m_pClassInfo = CUI_Object::Create();
+	m_pClassInfo->Set_Scale(75.f, 165.f);
+	m_pClassInfo->Set_Pos(-550.f, 200.f);
+	m_pClassInfo->Set_Sort(0.01f);
+	m_pClassInfo->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_DecoLam04.dds"));
+
+	m_pClassInfo->Set_FontRender(true);
+	m_pClassInfo->Set_FontStyle(true);
+	m_pClassInfo->Set_FontText(TEXT("아처"));
+	m_pClassInfo->Set_FontScale(0.5f);
+	m_pClassInfo->Set_FontOffset(50.f, -50.f);
+
+	m_pClassInfoIcon = CUI_Object::Create();
+	m_pClassInfoIcon->Set_Scale(54.f);
+	m_pClassInfoIcon->Set_Pos(-550.f, 220.f);
+	m_pClassInfoIcon->Set_Sort(0.001f);
+	m_pClassInfoIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_WarriorIconGold.dds"));
+
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_SpearmanIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_ArcherIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PaladinIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PriestIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_EngineerIconGold.dds"));
+
+	m_pLine = CUI_Object::Create();
+	m_pLine->Set_Scale(650.f, 28.f);
+	m_pLine->Set_Pos(0.f, -150.f);
+	m_pLine->Set_Sort(0.01f);
+	m_pLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_DecoLam02.png"));
+
 	for (int i = 0; i < 6; ++i)
 	{
 		m_pPortClone[i] = m_pPort->Clone();
 		m_pPortBGClone[i] = m_pPortBG->Clone();
 		m_pClassIconClone[i] = m_pClassIcon->Clone();
 
-		_float fPosX = -275.f + (i * 110.f);
+		_float fPosX = -300.f + (i * 120.f);
 
 		m_pPortClone[i]->Set_Pos(fPosX, -250.f);
 
@@ -299,4 +333,16 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 	CREATE_GAMEOBJECT(m_pClassIcon, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pClassIcon);
+
+	CREATE_GAMEOBJECT(m_pPortHighlight, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pPortHighlight);
+
+	CREATE_GAMEOBJECT(m_pClassInfo, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pClassInfo);
+
+	CREATE_GAMEOBJECT(m_pClassInfoIcon, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pClassInfoIcon);
+
+	CREATE_GAMEOBJECT(m_pLine, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pLine);
 }

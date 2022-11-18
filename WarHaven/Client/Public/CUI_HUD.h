@@ -43,6 +43,10 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pPortBG;
 	CUI_Object* m_pClassIcon = nullptr;
 	CUI_Object* m_pPortHighlight = nullptr;
+	CUI_Object* m_pClassInfo = nullptr;
+	CUI_Object* m_pClassInfoIcon = nullptr;
+	CUI_Object* m_pLine = nullptr;
+	CUI_Object* m_pSelectLine = nullptr;
 	CUI_Object* m_pConfirmBtn = nullptr;
 
 	CUI_Object* m_pPortClone[6];
