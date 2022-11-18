@@ -56,7 +56,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
 	//Sound
@@ -236,6 +236,12 @@ HRESULT CMainApp::SetUp_ShaderFiles()
 
 HRESULT CMainApp::SetUp_Font()
 {
+	if (FAILED(CGameInstance::Get_Instance()->Add_Font(TEXT("WarKR_Regular"), TEXT("../Bin/Resources/Fonts/WarhavenKR_Regular.spritefont"))))
+		return E_FAIL;
+
+	if (FAILED(CGameInstance::Get_Instance()->Add_Font(TEXT("WarKR_Bold"), TEXT("../Bin/Resources/Fonts/WarhavenKR_Bold.spritefont"))))
+		return E_FAIL;
+
 	if (FAILED(CGameInstance::Get_Instance()->Add_Font(TEXT("War_Regular"), TEXT("../Bin/Resources/Fonts/WarHavenRegular.spritefont"))))
 		return E_FAIL;
 

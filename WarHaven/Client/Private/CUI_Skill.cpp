@@ -262,15 +262,13 @@ void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool b
 	}
 	else
 	{
-		_float4 vScale = m_arrSkillUI[iIndex][Key]->Get_Transform()->Get_Scale();
-
 		if (iKeyIdx == 46)
 		{
-			m_arrSkillUI[iIndex][Key]->Set_Scale(31.f, 18.f);
+			m_arrSkillUI[iIndex][Key]->Set_Scale(31.f, 15.f);
 		}
 		else
 		{
-			m_arrSkillUI[iIndex][Key]->Set_Scale(18.f);
+			m_arrSkillUI[iIndex][Key]->Set_Scale(15.f);
 		}
 
 		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Key], CTexture)->Set_CurTextureIndex(iKeyIdx);

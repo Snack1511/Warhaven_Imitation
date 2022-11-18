@@ -36,6 +36,16 @@ private:
 
 	_bool m_bIsEnableHeroPort = false;
 
+private:	// 클래스 변경 창
+	CUI_Object* m_pBG = nullptr;
+	CUI_Object* m_pPort;
+	CUI_Object* m_pPortBG;
+	CUI_Object* m_pPortHighlight = nullptr;
+	CUI_Object* m_pConfirmBtn = nullptr;
+
+	CUI_Object* m_pPortClone[10];
+	CUI_Object* m_pPortBGClone[10];
+
 private:	
 	void Set_HUD(CUnit::CLASS_TYPE eClass);
 	void Set_Portrait(CUnit::CLASS_TYPE eClass);
@@ -43,6 +53,9 @@ private:
 	void Set_SkillHUD(CUnit::CLASS_TYPE eClass);
 
 	void Set_ActiveHeroPort(_bool value);
+
+private:
+	void Create_CharacterSelectWindow();
 };
 
 END

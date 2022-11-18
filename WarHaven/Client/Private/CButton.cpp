@@ -94,6 +94,8 @@ void CButton::Late_Tick()
 
 		if (m_bIsInMouse)
 		{
+			m_pTargetUI = m_pOwnerUI;
+
 			m_pMouse = CUser::Get_Instance()->Get_Cursor();
 			m_pMouse->Set_Mouse(CUI_Cursor::Over);
 
@@ -111,9 +113,11 @@ void CButton::Late_Tick()
 				}
 				else if (KEY(LBUTTON, HOLD))
 				{
-					m_pMouse->Set_Mouse(CUI_Cursor::Down);
-
-					m_pOwnerUI->CallBack_PointPress(0);
+					if (m_pMouse->Get_MouseType() != CUI_Cursor::Disable)
+					{
+						m_pMouse->Set_Mouse(CUI_Cursor::Down);
+						m_pOwnerUI->CallBack_PointPress(0);
+					}
 				}
 				else if (KEY(LBUTTON, AWAY))
 				{
@@ -125,10 +129,16 @@ void CButton::Late_Tick()
 		{
 			if (m_bPrvState)
 			{
+				m_pMouse->Set_Mouse(CUI_Cursor::Default);
+
 				m_pOwnerUI->CallBack_PointExit(0);
 			}
+			else
+			{
+				m_pTargetUI = nullptr;
+			}
 		}
-	}	
+	}
 }
 
 void CButton::Release()

@@ -202,6 +202,8 @@ namespace Client
 		VTXTEX_PASS_UI_RELIC,
 		VTXTEX_PASS_UI_PortEffect,
 		VTXTEX_PASS_UI_HeroKeySkill,
+		VTXTEX_PASS_UI_MainEffect,
+		VTXTEX_PASS_UI_LobbyEffect,
 
 		VTXTEX_PASS_ALPHA,
 		VTXTEX_PASS_TRAIL,

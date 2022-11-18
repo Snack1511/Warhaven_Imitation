@@ -7,7 +7,7 @@ class CUnit;
 
 class CUI_Skill : public CUI_Wrapper
 {
-	enum UI_TYPE { Outline0, Outline1, Outline2, BG, Icon, Key, HeroKey, Type_End };
+	enum WindowType { Outline0, Outline1, Outline2, BG, Icon, Key, HeroKey, Type_End };
 
 	DECLARE_PROTOTYPE(CUI_Skill);
 	DECLARE_GAMEOBJECT(CUI_Skill);

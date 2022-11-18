@@ -5,7 +5,7 @@ BEGIN(Client)
 
 class CUI_HpBar : public CUI_Wrapper
 {
-	enum UI_TYPE { BG, Bar, Type_End };
+	enum WindowType { BG, Bar, Type_End };
 
 	DECLARE_PROTOTYPE(CUI_HpBar);
 	DECLARE_GAMEOBJECT(CUI_HpBar);

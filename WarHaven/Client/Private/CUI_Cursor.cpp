@@ -44,7 +44,7 @@ HRESULT CUI_Cursor::Start()
 {
 	__super::Start();
 
-	ShowCursor(true);
+	// ShowCursor(false);
 
 	CUser::Get_Instance()->Set_Cursor(this);
 
@@ -65,17 +65,24 @@ void CUI_Cursor::My_Tick()
 
 	Set_Pos(vPos.x, -vPos.y);
 
-	if (KEY(LBUTTON, HOLD))
+	_uint iTextureNum = GET_COMPONENT(CTexture)->Get_CurTextureIndex();
+
+	if (m_eType != MouseType::Disable)
 	{
-		GET_COMPONENT(CTexture)->Set_CurTextureIndex(1);
-	}
-	else
-	{
-		GET_COMPONENT(CTexture)->Set_CurTextureIndex(0);
+		if (KEY(LBUTTON, HOLD))
+		{
+			GET_COMPONENT(CTexture)->Set_CurTextureIndex(1);
+		}
+		else
+		{
+			GET_COMPONENT(CTexture)->Set_CurTextureIndex(0);
+		}
 	}
 }
 
 void CUI_Cursor::Set_Mouse(MouseType eType)
 {
-	GET_COMPONENT(CTexture)->Set_CurTextureIndex(eType);
+	m_eType = eType;
+
+	GET_COMPONENT(CTexture)->Set_CurTextureIndex(m_eType);
 }

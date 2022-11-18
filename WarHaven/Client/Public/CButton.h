@@ -59,8 +59,11 @@ public:
 public:
 	void Set_OwnerUI(CUI_Object* pUI) { m_pOwnerUI = pUI; }
 
+	CUI_Object* Get_TargetUI() { return m_pTargetUI; }
+
 private:
 	CUI_Object* m_pOwnerUI = nullptr;
+	CUI_Object* m_pTargetUI = nullptr;
 	CUI_Cursor* m_pMouse = nullptr;
 
 	RECT m_tRect;

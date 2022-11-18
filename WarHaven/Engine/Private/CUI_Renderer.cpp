@@ -64,14 +64,14 @@ HRESULT CUI_Renderer::Render()
 	// 유아이 위치
 	if (m_bIsRenderText)
 	{
-		_float4 vUIPos = m_pUI->Get_Transform()->Get_World(WORLD_POS);
+		_float4 vUIPos = m_pUI->Get_Transform()->Get_MyWorld(WORLD_POS);
 		_float2 vFontPos = { vUIPos.x + m_vOffset.x, -vUIPos.y + m_vOffset.y };
 
 		const _tchar* wszText = m_wstrText.c_str();
 
 		if (m_bIsBold)
 		{
-			CGameInstance::Get_Instance()->Render_Font(TEXT("War_Bold"), wszText, vFontPos, m_vColor, m_fFontScale);
+			CGameInstance::Get_Instance()->Render_Font(TEXT("WarKR_Bold"), wszText, vFontPos, m_vColor, m_fFontScale);
 		}
 		else
 		{
@@ -91,7 +91,6 @@ void CUI_Renderer::Set_Text(_bool value, wstring wstrText, _float4 vOffset, _flo
 {
 	vOffset.x += 640.f;
 	vOffset.y += 360.f;
-
 
 	m_bIsBold = value;
 	m_wstrText = wstrText;

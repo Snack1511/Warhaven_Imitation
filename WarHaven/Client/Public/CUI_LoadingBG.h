@@ -19,6 +19,7 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	virtual void	My_Tick() override;
 	virtual	void	OnEnable();
 
 public:
@@ -26,6 +27,7 @@ public:
 
 private:
 	_uint m_iBGIndex = 0;
+	_float m_fAccTime = 0.f;
 };
 
 END

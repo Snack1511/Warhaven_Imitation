@@ -355,7 +355,7 @@ void CWindow_UI::Show_Font()
 			if (ImGui::TreeNode("Scale"))
 			{
 				_float fScale = pUI->Get_FontScale();
-				ImGui::DragFloat("Scale", &fScale, 1.f, 0.1f, 9999.f, "%.f");
+				ImGui::DragFloat("Scale", &fScale, 0.1f, 0.1f, 9999.f, "%.1f");
 				pUI->Set_FontScale(fScale);
 
 				ImGui::TreePop();

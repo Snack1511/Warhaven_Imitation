@@ -52,7 +52,7 @@ public:	// Font
 	void Set_FontOffset(_float fX, _float fY);
 
 	_float4 Get_FontColor() { return m_vColor; }
-	void Set_FontColor(_float4 vColor) { vColor = vColor; }
+	void Set_FontColor(_float4 vColor) { m_vColor = vColor; }
 
 	_float Get_FontScale() { return m_fFontScale; }
 	void Set_FontScale(_float fValue) { m_fFontScale = fValue; }
@@ -69,7 +69,7 @@ private:	// Font
 	_bool m_bIsBold = false;
 	wstring m_wstrText;
 	_float4 m_vOffset;
-	_float4 m_vColor = { 1.f, 1.f, 1.f, 1.f };
+	_float4 m_vColor = { 1.f,1.f,1.f,1.f };
 	_float m_fFontScale = 1.f;
 
 private:	// Button

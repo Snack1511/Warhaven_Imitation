@@ -24,12 +24,15 @@ public:
 	virtual void My_Tick();
 
 public:
+	MouseType Get_MouseType() { return m_eType; };
 	void Set_Mouse(MouseType eType);
 
 private:
 	RECT m_tScreen;
 	POINT m_ptMouse;
 	_bool m_bIsClick = false;
+
+	MouseType m_eType = MouseType::TYPE_END;
 };
 
 END

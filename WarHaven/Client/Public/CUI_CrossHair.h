@@ -5,7 +5,7 @@ BEGIN(Client)
 
 class CUI_Crosshair final : public CUI_Wrapper
 {
-	enum UI_TYPE { Point, Outline, ArrowBG, Arrow, GaugeBG, Gauge, Type_End };
+	enum WindowType { Point, Outline, ArrowBG, Arrow, GaugeBG, Gauge, Type_End };
 
 	DECLARE_PROTOTYPE(CUI_Crosshair);
 	DECLARE_GAMEOBJECT(CUI_Crosshair);
