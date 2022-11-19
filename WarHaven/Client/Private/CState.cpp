@@ -6,8 +6,6 @@
 #include "CAnimator.h"
 #include "CState_Manager.h"
 
-#include "UsefulHeaders.h"
-
 #include "CUser.h"
 
 #include "CUnit.h"
@@ -361,6 +359,10 @@ void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _b
 
 }
 
+void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)
+{
+	GET_COMPONENT_FROM(pOwner, CModel)->Enable_ModelParts(iPartType, bEnable);
+}
 
 void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence)
 {

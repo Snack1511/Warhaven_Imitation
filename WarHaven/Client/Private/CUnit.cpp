@@ -315,16 +315,16 @@ void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 		{
 			ENABLE_COMPONENT(m_pWeaponCollider_R);
 
-			//if(m_pWeaponCollider_L)
-			//	ENABLE_COMPONENT(m_pWeaponCollider_L);
+			if(m_pWeaponCollider_L)
+				ENABLE_COMPONENT(m_pWeaponCollider_L);
 			
 		}
 		else
 		{
 			DISABLE_COMPONENT(m_pWeaponCollider_R);
 
-			//if (m_pWeaponCollider_L)
-			//	DISABLE_COMPONENT(m_pWeaponCollider_L);
+			if (m_pWeaponCollider_L)
+				DISABLE_COMPONENT(m_pWeaponCollider_L);
 		}
 
 

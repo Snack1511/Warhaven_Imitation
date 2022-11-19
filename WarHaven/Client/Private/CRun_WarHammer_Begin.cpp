@@ -78,7 +78,6 @@ STATE_TYPE CRun_WarHammer_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnim
     // 뛰어갈 준비를 한다.
     if (KEY(W, HOLD) ||
         KEY(A, HOLD) ||
-        KEY(S, HOLD) ||
         KEY(D, HOLD))
     {
 

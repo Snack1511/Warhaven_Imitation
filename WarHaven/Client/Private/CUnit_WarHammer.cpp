@@ -41,6 +41,28 @@ CUnit_WarHammer* CUnit_WarHammer::Create(const UNIT_MODEL_DATA& tUnitModelData)
 	return pInstance;
 }
 
+// push_back 하면서 Disable 시켜주는 함수. -> 바리게이트 파괴
+void CUnit_WarHammer::Disable_Barricade(CGameObject* pBarricade)
+{
+	DISABLE_GAMEOBJECT(pBarricade);
+	m_Barricade.push_back(pBarricade);
+}
+
+// pop_back 하면서 Enable 시켜주는 함수. -> 바리게이트 설치 (인자 받아서 설정)
+void CUnit_WarHammer::Create_Barricade()
+{
+	if (!m_Barricade.empty())
+	{
+		// 
+		_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
+		
+		m_Barricade.back()->Get_Transform()->Set_World(WORLD_POS, vPos);
+
+		ENABLE_GAMEOBJECT(m_Barricade.back());
+		m_Barricade.pop_back();
+	}
+}
+
 HRESULT CUnit_WarHammer::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -52,13 +74,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	
 	
 
-	for (int i = 0; i < BARRICADE_CNT; ++i)
-	{
-		CBarricade* pBarricade = CBarricade::Create(this);
 
-		m_Barricade.push_back(pBarricade);
-		CREATE_GAMEOBJECT(pBarricade, GROUP_DEFAULT);
-	}
 
 	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/WarHammer/SKEL_Engineer_Base_R.fbx");
 	if (!pAnimator)
@@ -110,9 +126,12 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_tUnitStatus.fSprintJumpSpeed *= 0.8f;
 	m_tUnitStatus.fSprintSpeed *= 0.7f;
 	m_tUnitStatus.fRunSpeed *= 0.6f;
+	m_tUnitStatus.fWalkSpeed *= 0.7f;
 	m_tUnitStatus.fRunBeginSpeed *= 0.8f;
 	m_tUnitStatus.fJumpPower *= 0.9f;
-
+	
+	//Enable_ModelParts(3, false);
+	
 	return S_OK;
 }
 

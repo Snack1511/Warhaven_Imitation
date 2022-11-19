@@ -81,6 +81,8 @@ protected:
 
 	_bool				m_bMoveTrigger = true;
 	_bool				m_bAttackTrigger = false;
+	_bool				m_bETC_Trigger = false;
+
 
 	_int				m_iFinishedFrame = 0;
 
@@ -107,7 +109,8 @@ protected:
 protected:
 	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bBackStep = false);
 	
-
+protected:
+	void	Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable);
 
 
 protected:

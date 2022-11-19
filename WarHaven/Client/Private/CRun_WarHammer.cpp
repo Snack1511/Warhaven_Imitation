@@ -50,7 +50,6 @@ HRESULT CRun_WarHammer::Initialize()
 void CRun_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
-	m_fOriRunSpeed = m_fMaxSpeed;
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 

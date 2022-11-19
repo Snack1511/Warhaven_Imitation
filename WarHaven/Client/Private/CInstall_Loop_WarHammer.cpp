@@ -4,7 +4,7 @@
 #include "GameInstance.h"
 
 #include "CAnimator.h"
-#include "CUnit.h"
+#include "CUnit_WarHammer.h"
 
 #include "CUser.h"
 
@@ -47,6 +47,8 @@ HRESULT CInstall_Loop_WarHammer::Initialize()
 
 void CInstall_Loop_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	CUnit_WarHammer* PWarHammer = static_cast<CUnit_WarHammer*>(pOwner);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

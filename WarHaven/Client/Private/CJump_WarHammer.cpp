@@ -26,7 +26,7 @@ HRESULT CJump_WarHammer::Initialize()
 
 void CJump_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed * 2.f;
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
 
     /* OwnerÀÇ Animator Set Idle·Î */
@@ -50,13 +50,8 @@ void CJump_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 
 		Move(iDirection, pOwner);
 
-		if (pOwner->Get_PhysicsCom()->Get_Physics().fSpeed <= 1.f)
-		{
-			pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
-			pOwner->Get_PhysicsCom()->Set_SpeedasMax();
-
-		}
-
+		pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
+		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 
 	}
 

@@ -25,8 +25,8 @@ public:
 
 private:
 	void Warrior_State();
-
 	void WarHammer_State();
+	void Valkyrie_State();
 
 private:
 	CState* m_arrStates[STATE_END] = {};

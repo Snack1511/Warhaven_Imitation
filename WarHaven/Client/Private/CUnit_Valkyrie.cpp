@@ -65,7 +65,7 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	//3. hit
 	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_HIT.fbx");
 
-	//4. ETCK
+	//4. ETC
 	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_ETC.fbx");
 
 
@@ -96,15 +96,15 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
 
-	// Ä® ±æÀÌ
-	tDesc.fHeight = 0.1f;
-	// Ä® µÎ²²
-	tDesc.fRadius = 0.2f;
-	// Ä® ºÙÀÏ »À
-	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1");
+	//// Ä® ±æÀÌ
+	//tDesc.fHeight = 0.1f;
+	//// Ä® µÎ²²
+	//tDesc.fRadius = 0.2f;
+	//// Ä® ºÙÀÏ »À
+	//tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1");
 
-	//Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
-	tDesc.vOffset = _float4(0.f, 0.f, -100.f);
+	////Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
+	//tDesc.vOffset = _float4(0.f, 0.f, -100.f);
 
 	//m_pWeaponCollider_L = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	//Add_Component(m_pWeaponCollider_L);
@@ -139,15 +139,9 @@ void CUnit_Valkyrie::OnDisable()
 
 void CUnit_Valkyrie::My_LateTick()
 {
-	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
-		return;
 
 	if (KEY(NUM8, TAP))
-		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 50.f, 0.f));
-	//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
+		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(20.f, 2.f, 20.f));
 
-/*if (KEY(SPACE, TAP))
-{
-	m_pPhysics->Set_Jump(7.f);
-}*/
 }
+

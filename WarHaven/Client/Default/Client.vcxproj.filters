@@ -895,18 +895,6 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\WarHammer\Barricade">
       <UniqueIdentifier>{c03f58b6-6c47-4255-8fdb-aa119381c614}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create">
-      <UniqueIdentifier>{c6505edf-2253-4f10-9114-b3bc91e2897e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\01. Begin">
-      <UniqueIdentifier>{f9936a8b-f174-47b9-98bf-61602e384fe1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\02. Loop">
-      <UniqueIdentifier>{50723988-2424-4a53-858e-e1accea717d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\03. End">
-      <UniqueIdentifier>{e77061d0-6dab-4fe6-8cc4-ec28d6f3ed96}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\02. Unit\Valkyrie">
       <UniqueIdentifier>{d12a3315-0754-4842-9667-1f7b22cce7f4}</UniqueIdentifier>
     </Filter>
@@ -954,6 +942,174 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\02. Charge\02. Attack\02. Left\02. Vertical">
       <UniqueIdentifier>{c2f0bb85-a2ec-4157-a9b8-9e4fe415b95b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade">
+      <UniqueIdentifier>{c6505edf-2253-4f10-9114-b3bc91e2897e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\01. Begin">
+      <UniqueIdentifier>{f9936a8b-f174-47b9-98bf-61602e384fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\02. Loop">
+      <UniqueIdentifier>{50723988-2424-4a53-858e-e1accea717d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\03. End">
+      <UniqueIdentifier>{e77061d0-6dab-4fe6-8cc4-ec28d6f3ed96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie">
+      <UniqueIdentifier>{0fafe19a-0552-44c9-a650-451acaa3b350}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle">
+      <UniqueIdentifier>{7e36b5d3-36ef-432f-95e9-586f06b68c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\02. Walk">
+      <UniqueIdentifier>{6d536c15-274e-4101-8e23-b42bf982b930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run">
+      <UniqueIdentifier>{4e97896d-2835-41fe-924a-44cd986ff114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack">
+      <UniqueIdentifier>{c67c2f3f-fc82-419e-b496-8f838fe4c351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump">
+      <UniqueIdentifier>{0ab4cc44-ab19-4c1a-9998-67512fd67771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\06. Sliding">
+      <UniqueIdentifier>{fae14d28-77c1-495d-a742-062542e84bcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint">
+      <UniqueIdentifier>{f26fc030-d4b2-4b95-b007-758ccb316241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard">
+      <UniqueIdentifier>{7a8ee6d7-d2cd-4037-bc05-82a3e258cb53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit">
+      <UniqueIdentifier>{4db08690-2148-4fec-9e34-665fd9310431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop">
+      <UniqueIdentifier>{da6114a6-774e-460e-a079-c838a51c7fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\01. Right">
+      <UniqueIdentifier>{9dc71ccd-2964-4b67-9d75-309f716d400b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\02. Left">
+      <UniqueIdentifier>{ae7f988d-1830-42c2-9b38-bfd1461e889d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\03. SwitchRtoL">
+      <UniqueIdentifier>{b0652f92-ad58-48d9-8493-39ef3f49f50f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\04. SwitchLtoR">
+      <UniqueIdentifier>{22c268f3-faad-423c-92b7-58826558fdb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\02. Walk\01. Right">
+      <UniqueIdentifier>{4095ca67-4e6e-4433-ae89-0d1e290e4f6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\02. Walk\02. Left">
+      <UniqueIdentifier>{c8759ff2-33bf-44be-b41a-61dead455862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\01. Begin">
+      <UniqueIdentifier>{460c2fbd-7add-48b1-8581-a43ba9cfdf64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\02. Loop">
+      <UniqueIdentifier>{3abb0770-4100-4904-8387-5a7ae7c47bdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\01. Begin\01. Right">
+      <UniqueIdentifier>{73817bad-eb04-42a0-ab06-e9481035e67b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\01. Begin\02. Left">
+      <UniqueIdentifier>{c32e2cc8-85ff-4fe2-ba4b-6bf3d90b703b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\02. Loop\01. Right">
+      <UniqueIdentifier>{40d465be-b8c4-4f8b-bcfb-802ec3401333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\02. Loop\02. Left">
+      <UniqueIdentifier>{4c2ee94c-d3cf-4513-bdec-1d77f61348d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default">
+      <UniqueIdentifier>{65adbe76-ee21-4f48-9348-8f2ccabe1900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\01. Begin">
+      <UniqueIdentifier>{df25c929-3ae2-44be-94fd-397f9a9ba2db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\03. Land">
+      <UniqueIdentifier>{1be469f4-02d6-4744-8422-1fa8b4a76eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\02. Fall">
+      <UniqueIdentifier>{ad65a737-6f3a-4fc3-8b6e-c295bb0b8394}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\06. Sliding\01. Begin">
+      <UniqueIdentifier>{c4b1ec78-d5e9-4909-b6b2-4837b787c9b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\06. Sliding\02. Loop">
+      <UniqueIdentifier>{1dda5904-23b9-4379-b3f9-ccd45131679c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\06. Sliding\03. End">
+      <UniqueIdentifier>{94849eae-51c0-4071-82c9-537c548a61f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. End">
+      <UniqueIdentifier>{bb6fa7bc-7dc0-49fe-bb4b-09a6285f14b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\04. Attack">
+      <UniqueIdentifier>{f8325edb-48cd-42ce-859f-1ce24866c1a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\01. Begin">
+      <UniqueIdentifier>{639f53d9-5c01-4bba-9080-2e2d1ef3fd3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\02. Loop">
+      <UniqueIdentifier>{8179ecbf-b913-4a74-a044-bcdf2995f443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\03. End">
+      <UniqueIdentifier>{29181715-c296-43d1-b642-b2ef8271431b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\04. Cancel">
+      <UniqueIdentifier>{f9fe44f0-cf5b-4f55-b9c8-3d0b03d42d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\01. Right">
+      <UniqueIdentifier>{aee71eb7-9644-4c61-9092-29b567042925}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\02. Left">
+      <UniqueIdentifier>{f8f61bfd-db3a-4c85-a89c-859d38ea4b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\02. Fall\01. Right">
+      <UniqueIdentifier>{68d08c3c-e9b0-4508-9853-4936475f74df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\02. Fall\02. Left">
+      <UniqueIdentifier>{a782632c-9371-4949-9baa-09c57a10ba26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\01. Begin\01. Right">
+      <UniqueIdentifier>{0bb1649d-b6ec-4ce1-89d4-cec905ba1dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\01. Begin\02. Left">
+      <UniqueIdentifier>{022f7fa1-110b-4998-b907-3939987cc2bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\03. Land\01. Right">
+      <UniqueIdentifier>{256c5764-13ec-4c65-8b01-291340f7b440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\03. Land\02. Left">
+      <UniqueIdentifier>{9efc3f5b-4517-415e-8805-369e4930a01e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump">
+      <UniqueIdentifier>{53c1a3de-101e-4a2a-a0dc-18cc64446751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\02. Attack">
+      <UniqueIdentifier>{cee2c28b-8863-4b89-aa61-b3e56e711a62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run">
+      <UniqueIdentifier>{aeac56d5-6f0f-4185-a1de-22d58c400d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump\01. Begin">
+      <UniqueIdentifier>{032c98b6-19da-4abd-b51c-4572677b0079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\01. Begin">
+      <UniqueIdentifier>{1f542306-c9dd-425a-9c9f-16fa5414adca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\02. Loop">
+      <UniqueIdentifier>{499f3798-26ee-40c7-82ec-5ada3414b8a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\03. End">
+      <UniqueIdentifier>{7f8bebb1-9f31-41f7-890f-1d5b4cc594cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump\02. Fall">
+      <UniqueIdentifier>{a68e82c1-92b2-4294-b38e-25a71c0800b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1639,13 +1795,13 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\01. Right</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CInstall_Begin_WarHammer.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\01. Begin</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CInstall_End_WarHammer.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\03. End</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\03. End</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CInstall_Loop_WarHammer.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\02. Loop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUnit_Valkyrie.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Valkyrie</Filter>
@@ -1691,6 +1847,90 @@
     </ClInclude>
     <ClInclude Include="..\Public\CWarHammer_ChargeAttack_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\02. Charge\02. Attack\01. Right\01. Middle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Valkyrie_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Valkyrie_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSwitchRtoL_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\03. SwitchRtoL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSwitchLtoR_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\04. SwitchLtoR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\02. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Valkyrie_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\02. Walk\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Valkyrie_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\02. Walk\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Valkyrie_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Valkyrie_Begin_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\01. Begin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Valkyrie_Begin_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\01. Begin\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Valkyrie_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\02. Loop\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Valkyrie_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\02. Loop\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Valkyrie_Fall_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\02. Fall\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Valkyrie_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\01. Begin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Valkyrie_Land_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\03. Land\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Valkyrie_Land_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\03. Land\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Valkyrie_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\01. Begin\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Valkyrie_Fall_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\02. Fall\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_Fall_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Loop_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_End_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Begin_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Valkyrie_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Valkyrie_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\01. Right</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2360,13 +2600,13 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\01. Default\03. Sting\01. Right</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CInstall_Begin_WarHammer.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\01. Begin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CInstall_End_WarHammer.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\03. End</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\03. End</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CInstall_Loop_WarHammer.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\02. Loop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_Valkyrie.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Valkyrie</Filter>
@@ -2409,6 +2649,90 @@
     </ClCompile>
     <ClCompile Include="..\Private\CWarHammer_ChargeAttack_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\02. Charge\02. Attack\01. Right\01. Middle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Valkyrie_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Valkyrie_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSwitchRtoL_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\03. SwitchRtoL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSwitchLtoR_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\01. Idle\04. SwitchLtoR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\02. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Valkyrie_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\02. Walk\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Valkyrie_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\02. Walk\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Valkyrie_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Valkyrie_Begin_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\01. Begin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Valkyrie_Begin_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\01. Begin\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Valkyrie_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\02. Loop\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Valkyrie_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\03. Run\02. Loop\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Valkyrie_Fall_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\02. Fall\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Valkyrie_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\01. Begin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Valkyrie_Land_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\03. Land\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Valkyrie_Land_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\03. Land\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Valkyrie_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\01. Begin\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Valkyrie_Fall_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\05. Jump\02. Fall\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_Fall_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_End_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Begin_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Loop_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Valkyrie_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Valkyrie_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\01. Right</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

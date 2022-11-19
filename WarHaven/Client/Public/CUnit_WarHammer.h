@@ -8,7 +8,7 @@ class CUnit_WarHammer
 {
 	DECLARE_PROTOTYPE(CUnit_WarHammer);
 
-	enum Barricade_Cnt { BARRICADE_CNT = 2};
+	enum BARRICADE_CNT { BARRICADE_CNT_END = 2};
 
 private:
 	CUnit_WarHammer();
@@ -16,6 +16,14 @@ private:
 
 public:
 	static	CUnit_WarHammer* Create(const UNIT_MODEL_DATA& tUnitModelData);
+
+public:
+	void	Disable_Barricade(CGameObject* pBarricade);	
+	void	Create_Barricade();
+
+	_uint	Get_Size() {
+		return (_uint)m_Barricade.size();
+	}
 
 public:
 	// CGameObject을(를) 통해 상속됨

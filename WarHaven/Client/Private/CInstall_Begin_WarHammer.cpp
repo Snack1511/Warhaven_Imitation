@@ -4,9 +4,10 @@
 #include "GameInstance.h"
 
 #include "CAnimator.h"
-#include "CUnit.h"
+#include "CUnit_WarHammer.h"
 
 #include "CUser.h"
+
 
 CInstall_Begin_WarHammer::CInstall_Begin_WarHammer()
 {
@@ -52,6 +53,11 @@ HRESULT CInstall_Begin_WarHammer::Initialize()
 
 void CInstall_Begin_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	CUnit_WarHammer* PWarHammer = static_cast<CUnit_WarHammer*>(pOwner);
+
+	__super::Enable_ModelParts(PWarHammer, 4, false);
+
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -66,7 +72,7 @@ STATE_TYPE CInstall_Begin_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CInstall_Begin_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	__super::Enable_ModelParts(pOwner, 4, true);
 }
 
 STATE_TYPE CInstall_Begin_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -75,8 +81,10 @@ STATE_TYPE CInstall_Begin_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* p
 	1. 스프린트 공격 준비가 끝나면
     */
 
-	//if (KEY(R, TAP))
-	//	return m_eStateType;
+	CUnit_WarHammer* PWarHammer = static_cast<CUnit_WarHammer*>(pOwner);
+
+	if (KEY(R, TAP) && PWarHammer->Get_Size() > 0)
+		return m_eStateType;
    
     return STATE_END;
 }

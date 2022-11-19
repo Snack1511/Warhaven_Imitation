@@ -40,8 +40,8 @@ HRESULT CWarHammer_Attack_Sting::Initialize()
 	m_iStopIndex = 63;
 	m_iAttackEndIndex = 80;
 
-	Add_KeyFrame(m_iStopIndex, 1);
-	Add_KeyFrame(76, 2);
+	Add_KeyFrame(m_iStopIndex, 0);
+	Add_KeyFrame(76, 1);
 
 	m_iIdle_Index = 4;
 	m_iLandRightIndex = 20;
@@ -156,5 +156,19 @@ STATE_TYPE CWarHammer_Attack_Sting::Check_Condition(CUnit* pOwner, CAnimator* pA
 void CWarHammer_Attack_Sting::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
 	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
+	switch (iSequence)
+	{
+	case 0:
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		break;
+
+	case 1:
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		break;
+
+	default:
+		break;
+	}
 }
 

@@ -18,6 +18,8 @@
 #include "CUnit_WarHammer.h"
 #include "CUnit_Valkyrie.h"
 
+#include "CBarricade.h"
+
 #include "CCamera_Free.h"
 #include "CCamera_Follow.h"
 
@@ -185,8 +187,6 @@ void CLevel_Test::Tick()
 		}
 	}
 	
-	Change_Player();
-	
 
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Tick();
@@ -268,17 +268,17 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 	
 
-/*	if (FAILED(SetUp_Warrior_TH()))
-		return E_FAIL*/;
+	//if (FAILED(SetUp_Warrior_TH()))
+	//	return E_FAIL;
 
 	/*if (FAILED(SetUp_SpearMan_TH()))
 		return E_FAIL;*/
 
-	if (FAILED(SetUp_WarHammer_TH()))
-		return E_FAIL;
-
-	//if (FAILED(SetUp_Valkyrie_TH()))
+	//if (FAILED(SetUp_WarHammer_TH()))
 	//	return E_FAIL;
+
+	if (FAILED(SetUp_Valkyrie_TH()))
+		return E_FAIL;
 
 
 	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
@@ -601,7 +601,7 @@ HRESULT CLevel_Test::SetUp_SpearMan_TH()
 	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestSpearmanUnit, nullptr);
 	pFollowCam->Initialize();
 	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	GAMEINSTANCE->Add_Camera(L"PlayerCam2", pFollowCam);
 	DISABLE_GAMEOBJECT(pFollowCam);
 
 	
@@ -674,12 +674,27 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 
 	Ready_GameObject(pTestWarHammerUnit, GROUP_PLAYER);
 
+	int iCnt = (int)CUnit_WarHammer::BARRICADE_CNT::BARRICADE_CNT_END;
+
+	/* 바리게이트 생성 */
+	for (int i = 0; i < iCnt; ++i)
+	{
+		CBarricade* pBarricade = CBarricade::Create(pTestWarHammerUnit);
+
+	
+		pTestWarHammerUnit->Disable_Barricade(pBarricade);
+
+		Ready_GameObject(pBarricade, GROUP_PLAYER);
+	}
+	
+
+
 
 	_float4 vPlayerPos = _float4(20.f, 2.f, 20.f);
 	pTestWarHammerUnit->Teleport_Unit(vPlayerPos);
 
 
-	CUser::Get_Instance()->Set_Player(pTestWarHammerUnit);
+	//CUser::Get_Instance()->Set_Player(pTestWarHammerUnit);
 
 
 	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarHammerUnit, nullptr);
@@ -687,7 +702,7 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
 	pFollowCam->Get_Transform()->Make_WorldMatrix();
 	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	GAMEINSTANCE->Add_Camera(L"PlayerCam3", pFollowCam);
 	DISABLE_GAMEOBJECT(pFollowCam);
 	pTestWarHammerUnit->Set_FollowCam(pFollowCam);
 
@@ -700,6 +715,7 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	//DISABLE_GAMEOBJECT(m_pWarrior);
 
 	m_pWarHammer = pTestWarHammerUnit;
+	DISABLE_GAMEOBJECT(m_pWarHammer);
 
 
 	return S_OK;
@@ -730,7 +746,7 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 	pTestValkyrieUnit->Initialize();
 
 	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
-	pTestValkyrieUnit->Reserve_State(STATE_IDLE_PLAYER_L);
+	pTestValkyrieUnit->Reserve_State(STATE_IDLE_VALKYRIE_R);
 
 
 	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
@@ -800,23 +816,31 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 
 void CLevel_Test::Change_Player()
 {
-	if (KEY(M, TAP))
+
+	if (KEY(P, TAP))
 	{
-		if (KEY(P, TAP))
-		{
-			ENABLE_GAMEOBJECT(m_pWarHammer);
-			static_cast<CUnit*>(m_pWarHammer)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
+		ENABLE_GAMEOBJECT(m_pWarHammer);
+		CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarHammer));
+		DISABLE_GAMEOBJECT(m_pWarrior);
+		
+		
+//		static_cast<CUnit*>(m_pWarHammer)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
 
-			DISABLE_GAMEOBJECT(m_pWarrior);
-		}
+		
+	}
 
-		if (KEY(J, TAP))
-		{
-			ENABLE_GAMEOBJECT(m_pWarrior);
+	if (KEY(J, TAP))
+	{
+		ENABLE_GAMEOBJECT(m_pWarrior);
+		CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarHammer));
+		DISABLE_GAMEOBJECT(m_pWarHammer);
 
-			static_cast<CUnit*>(m_pWarrior)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
-			DISABLE_GAMEOBJECT(m_pWarHammer);
-		}
+		//CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarrior));
+		//DISABLE_GAMEOBJECT(m_pWarHammer);
+		//ENABLE_GAMEOBJECT(m_pWarrior);
+
+		//static_cast<CUnit*>(m_pWarrior)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam3")));
+		
 	}
 
 }

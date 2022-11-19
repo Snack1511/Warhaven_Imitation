@@ -4,8 +4,6 @@
 #include "GameInstance.h"
 
 #include "CAnimator.h"
-#include "CUnit.h"
-
 #include "CUser.h"
 
 #include "CUnit_WarHammer.h"
@@ -61,7 +59,16 @@ HRESULT CInstall_End_WarHammer::Initialize()
 
 void CInstall_End_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	
+
+	if(m_bETC_Trigger)
+	{
+		CUnit_WarHammer* PWarHammer = static_cast<CUnit_WarHammer*>(pOwner);
+
+		
+
+		PWarHammer->Create_Barricade();
+	}
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -82,15 +89,16 @@ void CInstall_End_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CInstall_End_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
+
 	if (KEY(RBUTTON, TAP))
 	{
+		m_bETC_Trigger = false;
 		return m_eStateType;
 	}
 
 	if (pAnimator->Is_CurAnimFinished())
 	{
-		// ENABLE_GAMEOBJECT(dynamic_cast<CUnit_WarHammer*>(pOwner)->Get_Barricade());
-		//dynamic_cast<CUnit_WarHammer*>(pOwner)->Creaete_Barricade();
+		m_bETC_Trigger = true;
 		return m_eStateType;
 	}
 	
