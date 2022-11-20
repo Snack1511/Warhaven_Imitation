@@ -492,18 +492,17 @@ void CModel::Late_Tick()
 			for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 			{
 				if (m_MeshContainers[i].first == 0)
-				{
-					m_MeshContainers[i].second->Set_Enable(false);
-				}
-				else
+					continue;
+
 					m_MeshContainers[i].second->Set_Enable(true);
-				
 			}
 		}
 		else
 		{
 			for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 			{
+				if (m_MeshContainers[i].first == 0)
+					continue;
 				m_MeshContainers[i].second->Set_Enable(false);
 			}
 		}

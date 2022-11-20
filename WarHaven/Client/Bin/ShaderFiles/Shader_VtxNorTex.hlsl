@@ -155,9 +155,6 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 	{
 		TextureDesc[i] = g_DiffArray[i].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 	}
-
-
-
 	int SourIndex = round(In.vTileFlag.r * (float)g_iNumTexture);
 	int DestIndex = round(In.vTileFlag.g * (float)g_iNumTexture);*/
 	

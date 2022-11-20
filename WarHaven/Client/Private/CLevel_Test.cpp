@@ -266,8 +266,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// 테스트할 객체 띄우기
 
-	if (FAILED(SetUp_Warrior_TH()))
-		return E_FAIL;
+	/*if (FAILED(SetUp_Warrior_TH()))
+		return E_FAIL;*/
 
 	if (FAILED(SetUp_WarHammer_TH()))
 		return E_FAIL;
@@ -329,9 +329,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	// function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	// CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
-	// m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
+	 function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	 CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
+	 m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
 
 
 
@@ -695,24 +695,24 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 
 
 
-	_float4 vPlayerPos = _float4(20.f, 2.f, 20.f);
+	_float4 vPlayerPos = _float4(40.f, 5.f, 40.f);
 	pTestWarHammerUnit->Teleport_Unit(vPlayerPos);
 
 
-	//CUser::Get_Instance()->Set_Player(pTestWarHammerUnit);
+	CUser::Get_Instance()->Set_Player(pTestWarHammerUnit);
 
 
-	// CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarHammerUnit, nullptr);
-	// pFollowCam->Initialize();
-	// pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
-	// pFollowCam->Get_Transform()->Make_WorldMatrix();
-	// CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+	 CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarHammerUnit, nullptr);
+	 pFollowCam->Initialize();
+	 pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
+	 pFollowCam->Get_Transform()->Make_WorldMatrix();
+	 CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
 
-	// GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
-	// DISABLE_GAMEOBJECT(pFollowCam);
-	// pTestWarHammerUnit->Set_FollowCam(pFollowCam);
+	 GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	 DISABLE_GAMEOBJECT(pFollowCam);
+	 pTestWarHammerUnit->Set_FollowCam(pFollowCam);
 
-	DISABLE_GAMEOBJECT(pTestWarHammerUnit);
+	//DISABLE_GAMEOBJECT(pTestWarHammerUnit);
 
 	return S_OK;
 }

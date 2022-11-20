@@ -31,9 +31,6 @@ CJump_WarHammer_Fall_L* CJump_WarHammer_Fall_L::Create()
 
 HRESULT CJump_WarHammer_Fall_L::Initialize()
 {
-
-
-
     m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 1;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_JUMPFALL_WARHAMMER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -46,8 +43,6 @@ HRESULT CJump_WarHammer_Fall_L::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
 
-
-    m_vecAdjState.push_back(STATE_JUMP_LAND_WARHAMMER_L);
 
 
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L);

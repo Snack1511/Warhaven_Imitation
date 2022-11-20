@@ -32,13 +32,6 @@ HRESULT CJump_WarHammer_Fall_R::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
 
-    // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
-
-    //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    //m_vecAdjState.push_back(STATE_IDLE_WARHAMMER);
-
-    m_vecAdjState.push_back(STATE_JUMP_LAND_WARHAMMER_R);
-
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 
