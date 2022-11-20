@@ -72,6 +72,11 @@ HRESULT CWindow_Effect::Initialize()
 	m_EffectRootNode.strFileName = "Effects";
 	m_EffectRootNode.strFullPath = "../bin/Effects/";
 	Read_Folder("../bin/effects", m_EffectRootNode);
+	
+	m_PresetRootNode.strFolderPath = "../bin";
+	m_PresetRootNode.strFileName = "Presets";
+	m_PresetRootNode.strFullPath = "../bin/EffectsPreset/";
+	Read_Folder("../bin/EffectsPreset", m_PresetRootNode);
 
 	return S_OK;
 }
@@ -114,13 +119,16 @@ HRESULT CWindow_Effect::Render()
 	if (m_iCurrentIdx != 9999)
 	{
 		if (m_vecEffects[m_iCurrentIdx].iEffectType == 0)
+		{
 			Show_EffectTab();
+
+		}
 		else
 			Show_ParticleTab();
 	}
 
 
-
+	Show_Preset();
 
 
 	__super::End();
@@ -298,6 +306,7 @@ void CWindow_Effect::Show_MainList()
 
 		if (ImGui::Button("Refresh"))
 		{
+			m_EffectRootNode.vecChildren.clear();
 			Read_Folder("../bin/effects", m_EffectRootNode);
 		}
 
@@ -1371,6 +1380,30 @@ void CWindow_Effect::Show_ParticleTab()
 	}
 }
 
+void CWindow_Effect::Show_Preset()
+{
+	ImGui::Begin("PRESET");
+
+	if (ImGui::Button("Load_Preset"))
+	{
+		if (!m_CurSelectedEffectFileKey.empty())
+		{
+			Load_SelectedPreset();
+		}
+	}
+
+	ImGui::Text("Preset_Bin_Files_List");
+	if (ImGui::BeginListBox("Preset_Bin_Files_List", ImVec2(200.f, 300.f)))
+	{
+		Show_TreeData_Effect(m_PresetRootNode);
+
+		ImGui::EndListBox();
+	}
+
+
+	ImGui::End();
+}
+
 void CWindow_Effect::Save_CurEffect()
 {
 	if (m_iCurrentIdx == 9999)
@@ -1555,6 +1588,33 @@ void CWindow_Effect::Load_SelectedEffect()
 	string strFileKey = m_CurSelectedEffectFileKey.substr(0, iFind2);
 
 	CEffect* pNewEffect = CEffect::Create_Effect_FromBinFile(strFileKey);
+
+	if (!pNewEffect)
+		return;
+
+	if (FAILED(pNewEffect->Initialize()))
+		Call_MsgBox(L"Failed to Initialize Effect");
+
+	EFFECT_ITEM tItem;
+	tItem.bSelected = false;
+	tItem.iEffectType = pNewEffect->m_eEffectType;
+	tItem.pEffect = pNewEffect;
+	tItem.strName = strFileKey;
+
+	CREATE_GAMEOBJECT(pNewEffect, GROUP_EFFECT);
+	pNewEffect->m_pFollowTarget = PLAYER;
+	m_vecEffects.push_back(tItem);
+}
+
+void CWindow_Effect::Load_SelectedPreset()
+{
+	if (m_CurSelectedEffectFileKey.empty())
+		return;
+
+	_int iFind2 = (_int)m_CurSelectedEffectFileKey.find(".");
+	string strFileKey = m_CurSelectedEffectFileKey.substr(0, iFind2);
+
+	CEffect* pNewEffect = CEffect::Create_EffectPreset_FromBinFile(strFileKey);
 
 	if (!pNewEffect)
 		return;
