@@ -155,8 +155,6 @@ void CUI_HUD::My_Tick()
 			SetActive_CharacterSelectWindow(true);
 		}
 	}
-
-	Port_MoveY(m_pClickPort);
 }
 
 void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
@@ -464,25 +462,5 @@ void CUI_HUD::Set_ClassInfo(CUnit::CLASS_TYPE eClass)
 		m_pClassInfo->Set_FontText(TEXT("¿öÇØ¸Ó"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
 		break;
-	}
-}
-
-void CUI_HUD::Port_MoveY(CUI_Object* pTarget)
-{
-	if (!pTarget)
-		return;
-
-	if (m_bIsPortMoveY)
-	{
-		_float fCurPosY = pTarget->Get_PosY();
-
-		if (fCurPosY >= -200.f)
-		{
-			pTarget->Set_PosY(fCurPosY + fDT(0));
-
-			fCurPosY = -200.f;
-
-			m_bIsPortMoveY = false;
-		}
 	}
 }

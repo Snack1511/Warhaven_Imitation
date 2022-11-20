@@ -47,14 +47,23 @@ private:
 	CUI_Object* m_pStageHighlight = nullptr;
 	CUI_Object* m_pBtnHightlight = nullptr;
 	CUI_Object* m_pStageSelectRect = nullptr;
+	CUI_Object* m_pStageNameRect = nullptr;
 
 	CUI_Object* m_pPrototypeStageBtn = nullptr;
 	CUI_Object* m_pStageSelectBtn[4];
+
+	CUI_Object* m_pPlayBtnMouseEnterLine = nullptr;
 
 	CUI_Object* m_pPrototypeLock = nullptr;
 	CUI_Object* m_pLockBtn[3];
 
 	Select_Stage m_eStage = Select_Stage::Test;
+
+private:
+	CUI_Object* m_pTarget = nullptr;
+
+	_bool m_bIsPlayBtnOnMouse = true;
+	_bool m_bIsMovePlayBtn = false;
 
 private:	// 폰트 설정
 	_float2 vFontOffset = { -100.f, 120.f };
@@ -63,6 +72,9 @@ private:	// 폰트 설정
 private:
 	void Bind_Shader();
 	void Bind_Btn();
+
+private:
+	void Move_PlayBtn();
 
 private:
 	void SetActive_ModeWindow();
@@ -79,4 +91,6 @@ private:
 	void Create_LockImg();
 	void Create_StageHighlight();
 	void Create_BtnHighlight();
+	void Create_StageNameRect();
+	void Crerate_PlayBtnMouseEnterLine();
 };

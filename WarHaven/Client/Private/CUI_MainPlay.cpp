@@ -10,6 +10,7 @@
 #include "CButton.h"
 
 #include "Loading_Manager.h"
+#include "Easing_Utillity.h"
 
 CUI_MainPlay::CUI_MainPlay()
 {
@@ -27,6 +28,8 @@ HRESULT CUI_MainPlay::Initialize_Prototype()
 	Create_LockImg();
 	Create_StageHighlight();
 	Create_BtnHighlight();
+	Create_StageNameRect();
+	Crerate_PlayBtnMouseEnterLine();
 
 	return S_OK;
 }
@@ -50,6 +53,41 @@ void CUI_MainPlay::My_Tick()
 		if (KEY(ESC, TAP))
 		{
 			SetActive_ModeWindow();
+		}
+	}
+
+	if (m_bIsPlayBtnOnMouse)
+	{
+		if (m_pTarget)
+		{
+			_float fScaleY = m_pTarget->Get_Scale().y;
+			_float fPosX = m_pTarget->Get_PosX();
+			_float fDuration = 0.5f;
+
+			m_pPlayBtnMouseEnterLine->Lerp_ScaleY(4.f, fScaleY - 20.f, fDuration);
+			m_bIsPlayBtnOnMouse = false;
+		}
+	}
+
+	if (m_bIsMovePlayBtn)
+	{
+		if (m_pTarget)
+		{
+			// 현재 위치에서 목표 위치까지 점점 증감
+			_float fCurPosX = m_pTarget->Get_PosX();
+			_float fEndPosX = fCurPosX + 10.f;
+			_float fDuration = 0.3f;
+			_float fMoveValue = fEndPosX - fCurPosX;
+			_float fMoveSpeed = (fMoveValue / fDuration) * fDT(0) * 2.f;
+			m_pTarget->Set_PosX(fCurPosX + fMoveSpeed);
+
+			m_fAccTime += fDT(0);
+			if (m_fAccTime >= fDuration)
+			{
+				m_fAccTime = 0.f;
+
+				m_bIsMovePlayBtn = false;
+			}
 		}
 	}
 }
@@ -80,26 +118,32 @@ void CUI_MainPlay::Set_Shader_BtnHighlight(CShader* pShader, const char* pConstN
 
 void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
 {
-	for (int i = 0; i < 2; ++i)
-	{
-		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPlayBtnUI[i], CButton)->Get_TargetUI();
-		if (pTarget)
-		{
-			_float4 vPos = pTarget->Get_Pos();
-			_float4 vScale = pTarget->Get_Scale();
-			_float fPosX = vPos.x + vScale.x;
-			_float fScaleX = vScale.x * 3.f;
+	m_pTarget = GET_COMPONENT_FROM(m_pPlayBtnUI[iEventNum], CButton)->Get_TargetUI();
 
-			m_pBtnHightlight->Set_Pos(fPosX - 20.f, vPos.y);
-			m_pBtnHightlight->Set_Scale(fScaleX, 500.f);
+	_float4 vPos = m_pTarget->Get_Pos();
+	_float4 vScale = m_pTarget->Get_Scale();
 
-			ENABLE_GAMEOBJECT(m_pBtnHightlight);
-		}
-	}
+	_float fPosX = vPos.x + vScale.x;
+	_float fScaleX = vScale.x * 3.f;
+
+	m_pBtnHightlight->Set_Pos(fPosX - 20.f, vPos.y);
+	m_pBtnHightlight->Set_Scale(fScaleX, 500.f);
+
+	m_bIsPlayBtnOnMouse = true;
+	m_pPlayBtnMouseEnterLine->Set_PosY(vPos.y - 3.5f);
+
+	m_bIsMovePlayBtn = true;
+
+	ENABLE_GAMEOBJECT(m_pBtnHightlight);
+	ENABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
 }
 
 void CUI_MainPlay::On_PointExit_PlayBtn(const _uint& iEventNum)
 {
+	m_pPlayBtnUI[0]->Set_PosX(-500.f);
+	m_pPlayBtnUI[1]->Set_PosX(-535.f);
+
+	m_pPlayBtnMouseEnterLine->Set_Scale(4.f);
 	DISABLE_GAMEOBJECT(m_pBtnHightlight);
 }
 
@@ -174,6 +218,7 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 					Enable_StageClickRect(vPos);
 
 					m_eStage = Select_Stage::Test;
+					m_pStageNameRect->Set_FontText(TEXT("모드 - 테스트"));
 				}
 				else if (iTextureNum == 1)
 				{
@@ -188,6 +233,7 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 					Enable_StageClickRect(vPos);
 
 					m_eStage = Select_Stage::Training;
+					m_pStageNameRect->Set_FontText(TEXT("모드 - 훈련소"));
 				}
 			}
 		}
@@ -213,18 +259,21 @@ void CUI_MainPlay::Bind_Shader()
 
 void CUI_MainPlay::Bind_Btn()
 {
+	m_pPlayBtnUI[0]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_PlayBtn, this, 0);
+	m_pPlayBtnUI[1]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_PlayBtn, this, 1);
+
 	for (int i = 0; i < 2; ++i)
 	{
-		m_pPlayBtnUI[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_PlayBtn, this, placeholders::_1);
 		m_pPlayBtnUI[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_PlayBtn, this, placeholders::_1);
 	}
 
 	m_pPlayBtnUI[0]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Start, this, placeholders::_1);
 	m_pPlayBtnUI[1]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Mode, this, placeholders::_1);
 
+
 	for (int i = 0; i < 4; ++i)
 	{
-		m_pStageSelectBtn[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_Stage, this, placeholders::_1);
+
 		m_pStageSelectBtn[i]->CallBack_PointStay += bind(&CUI_MainPlay::On_PointStay_Stage, this, placeholders::_1);
 		m_pStageSelectBtn[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_Stage, this, placeholders::_1);
 
@@ -244,6 +293,8 @@ void CUI_MainPlay::SetActive_ModeWindow()
 			DISABLE_GAMEOBJECT(m_pPlayBtnUI[i]);
 		}
 
+		DISABLE_GAMEOBJECT(m_pStageNameRect);
+
 		ENABLE_GAMEOBJECT(m_pBG);
 		ENABLE_GAMEOBJECT(m_pTextModeSelect);
 		ENABLE_GAMEOBJECT(m_pEscKey);
@@ -258,6 +309,7 @@ void CUI_MainPlay::SetActive_ModeWindow()
 	}
 	else
 	{
+		ENABLE_GAMEOBJECT(m_pStageNameRect);
 		for (int i = 0; i < 2; ++i)
 		{
 			ENABLE_GAMEOBJECT(m_pPlayBtnUI[i]);
@@ -268,6 +320,7 @@ void CUI_MainPlay::SetActive_ModeWindow()
 		DISABLE_GAMEOBJECT(m_pEscKey);
 		DISABLE_GAMEOBJECT(m_pLine);
 		DISABLE_GAMEOBJECT(m_pStageHighlight);
+		DISABLE_GAMEOBJECT(m_pStageSelectRect);
 
 		for (int i = 0; i < 4; ++i)
 		{
@@ -542,4 +595,35 @@ void CUI_MainPlay::Create_BtnHighlight()
 
 	CREATE_GAMEOBJECT(m_pBtnHightlight, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pBtnHightlight);
+}
+
+void CUI_MainPlay::Create_StageNameRect()
+{
+	m_pStageNameRect = CUI_Object::Create();
+	m_pStageNameRect->Set_Scale(100.f, 28.f);
+	m_pStageNameRect->Set_Pos(-545.f, 220.f);
+	m_pStageNameRect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_BoxFrame.png"));
+
+	m_pStageNameRect->Set_FontRender(true);
+	m_pStageNameRect->Set_FontStyle(true);
+	m_pStageNameRect->Set_FontOffset(-40.f, -11.f);
+	m_pStageNameRect->Set_FontScale(0.2f);
+	m_pStageNameRect->Set_FontColor(_float4(0.773f, 0.714f, 0.596f, 1.f));
+	m_pStageNameRect->Set_FontText(TEXT("모드 - 테스트"));
+
+	CREATE_GAMEOBJECT(m_pStageNameRect, GROUP_UI);
+}
+
+void CUI_MainPlay::Crerate_PlayBtnMouseEnterLine()
+{
+	m_pPlayBtnMouseEnterLine = CUI_Object::Create();
+
+	m_pPlayBtnMouseEnterLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_3pxBoxWhite.dds"));
+
+	m_pPlayBtnMouseEnterLine->Set_PosX(-590.f);
+	m_pPlayBtnMouseEnterLine->Set_Scale(4.f);
+	m_pPlayBtnMouseEnterLine->Set_Color(_float4(0.773f, 0.714f, 0.596f, 1.f));
+
+	CREATE_GAMEOBJECT(m_pPlayBtnMouseEnterLine, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
 }

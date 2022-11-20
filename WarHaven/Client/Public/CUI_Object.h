@@ -64,6 +64,9 @@ public:	// Button
 public:
 	void Lerp_Scale(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration);
+	void Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration);
+
+	void Lerp_MoveX(_float fStart, _float fEnd, _float fDuration);
 
 private:
 	wstring m_wstrName;
@@ -87,8 +90,13 @@ private:	// Etc
 	_bool m_bIsInMouse = false;
 
 private:	// Lerp
+	_bool m_bLerpMove = false;
+	_bool m_bLerpMoveX = false;
+	_bool m_bLerpMoveY = false;
+
 	_bool m_bLerpScale = false;
 	_bool m_bLerpScaleX = false;
+	_bool m_bLerpScaleY = false;
 	_bool m_fAccScale = false;
 	_float m_fStart = 0.f;
 	_float m_fEnd = 0.f;

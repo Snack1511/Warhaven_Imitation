@@ -145,6 +145,13 @@ void CUI::Set_ScaleX(_float fX)
 	m_pTransform->Set_Scale(m_vScale);
 }
 
+void CUI::Set_ScaleY(_float fY)
+{
+	m_vScale.x = m_pTransform->Get_Scale().x;
+	m_vScale.y = fY;
+	m_pTransform->Set_Scale(m_vScale);
+}
+
 void CUI::Set_RotationZ(_float fAngle)
 {
 	_float4 vAxisZ = { 0.f,0.f,1.f };

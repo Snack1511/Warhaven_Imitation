@@ -118,6 +118,32 @@ void CUI_Object::Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration)
 	Set_ScaleX(m_fStart);
 }
 
+void CUI_Object::Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration)
+{
+	m_bLerpScaleY = true;
+
+	m_fStart = Min(fStart);
+	m_fEnd = Min(fEnd);
+	m_fDuration = fDuration;
+
+	m_fAccScale = m_fEnd > m_fStart ? true : false;
+
+	Set_ScaleX(m_fStart);
+}
+
+void CUI_Object::Lerp_MoveX(_float fStart, _float fEnd, _float fDuration)
+{
+	m_bLerpMoveX = true;
+
+	m_fStart = Min(fStart);
+	m_fEnd = Min(fEnd);
+	m_fDuration = fDuration;
+
+	m_fAccScale = m_fEnd > m_fStart ? true : false;
+
+	Set_PosX(m_fStart);
+}
+
 void CUI_Object::OnEnable()
 {
 	__super::OnEnable();
@@ -216,6 +242,76 @@ void CUI_Object::Lerp_Scale()
 				Set_ScaleX(m_fEnd);
 				m_fAccTime = 0.f;
 				m_bLerpScaleX = false;
+			}
+		}
+	}
+
+	if (m_bLerpScaleY)
+	{
+		m_fAccTime += fDT(0);
+
+		_float4 vScale = m_pTransform->Get_Scale();
+		_float fSpeed = ((m_fStart - m_fEnd) / m_fDuration) * fDT(0);
+
+		if (!m_fAccScale)
+		{
+			vScale -= fabs(fSpeed);
+			vScale.y = Min(vScale.y);
+
+			Set_ScaleY(vScale.y);
+
+			if (vScale.y <= m_fEnd)
+			{
+				Set_ScaleY(m_fEnd);
+				m_fAccTime = 0.f;
+				m_bLerpScaleY = false;
+			}
+		}
+		else
+		{
+			vScale += fabs(fSpeed);
+			Set_ScaleY(vScale.y);
+
+			if (vScale.y >= m_fEnd)
+			{
+				Set_ScaleY(m_fEnd);
+				m_fAccTime = 0.f;
+				m_bLerpScaleY = false;
+			}
+		}
+	}
+
+	if (m_bLerpMoveX)
+	{
+		m_fAccTime += fDT(0);
+
+		_float4 vPos = Get_Pos();
+		_float fSpeed = ((m_fStart - m_fEnd) / m_fDuration) * fDT(0);
+
+		if (!m_fAccScale)
+		{
+			vPos -= fabs(fSpeed);
+			vPos.x = Min(vPos.x);
+
+			Set_PosX(vPos.x);
+
+			if (vPos.x >= m_fEnd)
+			{
+				Set_PosX(m_fEnd);
+				m_fAccTime = 0.f;
+				m_bLerpMoveX = false;
+			}
+		}
+		else
+		{
+			vPos += fabs(fSpeed);
+			Set_PosX(vPos.x);
+
+			if (vPos.x <= m_fEnd)
+			{
+				Set_PosX(m_fEnd);
+				m_fAccTime = 0.f;
+				m_bLerpMoveX = false;
 			}
 		}
 	}
