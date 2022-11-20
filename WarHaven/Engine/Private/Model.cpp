@@ -124,6 +124,7 @@ CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFileP
 {
 	CModel* pInstance = new CModel(iGroupIdx);
 	pInstance->m_wstrModelFilePath = wstrModelFilePath;
+	pInstance->m_bInstancing = true;
 
 	if (FAILED(pInstance->SetUp_InstancingModel(eType, wstrModelFilePath, iNumInstance, pInstanceData, TransformMatrix, 0)))
 	{
@@ -450,7 +451,7 @@ HRESULT CModel::Initialize_Prototype()
 
 
 	/* NonAnim이면 LOD도 읽기 */
-	if (m_eMODEL_TYPE == TYPE_NONANIM)
+	if (m_eMODEL_TYPE == TYPE_NONANIM && !m_bInstancing)
 	{
 		SetUp_Model_LOD();
 	}

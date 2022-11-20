@@ -75,6 +75,7 @@ HRESULT CStructure_Instance::Initialize_Prototype()
 	CModel_Renderer* pRenderer = CModel_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXMODEL_PASS_DEFAULT
 		, _float4(0.f, 0.f, 0.f, 1.f));
 	pRenderer->Initialize();
+
 	Add_Component<CRenderer>(pRenderer);
 	return S_OK;
 }
@@ -93,7 +94,7 @@ HRESULT CStructure_Instance::Start()
 	__super::Start();
 
 	//m_pTransform->Set_Scale(_float4(0.01f, 0.01f, 0.01f, 0.f));
-	//m_pModelCom->Set_ShaderPassToAll(VTXMODEL_PASS_NORMALMAPPING);
+	m_pModelCom->Set_ShaderPassToAll(VTXINSTANCE_PASS_DEFAULT);
 	return S_OK;
 }
 

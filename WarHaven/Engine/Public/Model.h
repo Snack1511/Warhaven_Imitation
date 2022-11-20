@@ -56,6 +56,7 @@ public:
 	void	Set_OutlinePower(_float fOutline);
 	void	Set_OutlinePower(_uint iMeshPartType, _float fOutline);
 
+	_bool	Is_Instancing() { return m_bInstancing; }
 
 	void	Switch_MeshContainerBone(_uint iMeshPartType, string strBoneName);
 	HRESULT	Add_Model(wstring wstrModelFilePath, _uint iMeshPartType);
@@ -88,6 +89,7 @@ private:
 	_float4x4					m_TransformMatrix;
 	_bool						m_bCloned = false;
 	_bool						m_bCulling = false;
+	_bool						m_bInstancing = false;
 
 private:
 	_bool						m_bLOD = false;

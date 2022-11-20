@@ -104,6 +104,9 @@ HRESULT CModel_Renderer::Render()
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 
+	if (m_pModelCom->Is_Instancing())
+		int i = 0;
+
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
@@ -117,7 +120,8 @@ HRESULT CModel_Renderer::Render()
 		/*if (FAILED(m_pShaderCom->Begin(m_iCurPass)))
 			return E_FAIL;*/
 
-		m_pModelCom->Render(i, m_pShaderCom, m_iCurPass, "g_Bones");
+		if (FAILED(m_pModelCom->Render(i, m_pShaderCom, m_iCurPass, "g_Bones")))
+			return E_FAIL;
 	}
 
 	return S_OK;
