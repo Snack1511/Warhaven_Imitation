@@ -54,6 +54,7 @@ HRESULT CWarrior_Attack_HorizontalDown::Initialize()
 
 void CWarrior_Attack_HorizontalDown::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->On_Attack(this);
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 

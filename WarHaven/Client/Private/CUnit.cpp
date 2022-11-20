@@ -236,6 +236,14 @@ _bool CUnit::On_PlusHp(_float fHp)
 	return true;
 }
 
+void CUnit::On_Attack(CState* pState)
+{
+	_int iKeyFrame = pState->Get_StateChangeKeyFrame();
+
+	if (iKeyFrame > 0)
+		m_fAttackDelay = (_float)iKeyFrame / 60.f;
+}
+
 _bool CUnit::Is_Weapon_R_Collision()
 {
 	if (!m_pWeaponCollider_R)
@@ -669,6 +677,23 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
+	for (_int i = 0; i < COOL_END; ++i)
+	{
+		if (m_fCoolAcc[i] > 0.f)
+			m_fCoolAcc[i] -= fDT(0);
+		else
+			m_fCoolAcc[i] = 0.f;
+
+	}
+
+
+	if (m_fAttackDelay > 0.f)
+		m_fAttackDelay -= fDT(0);
+	else
+		m_fAttackDelay = 0.f;
+
+	
+
 	if (!m_pCurState)
 	{
 		Call_MsgBox(L"State is Nullptr : CUnit");
@@ -691,5 +716,7 @@ void CUnit::My_Tick()
 
 void CUnit::My_LateTick()
 {
+	if (KEY(NUM8, TAP))
+		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(20.f, 2.f, 20.f));
 }
 

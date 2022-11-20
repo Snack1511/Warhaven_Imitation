@@ -54,6 +54,8 @@ void CWalk_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
     /* Owner의 Animator Set Idle로 */
 	m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
 
+    Physics_Setting(m_fMaxSpeed, pOwner);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -84,7 +86,6 @@ STATE_TYPE CWalk_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
             // 걸어간다.
             if (KEY(W, HOLD) ||
                 KEY(A, HOLD) ||
-                KEY(S, HOLD) ||
                 KEY(D, HOLD))
             {
 
@@ -92,6 +93,10 @@ STATE_TYPE CWalk_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
             }
 
         }
+
+        if (KEY(S, HOLD))
+            return m_eStateType;
+
         //CTRL 로 바꾸셈.
       
       

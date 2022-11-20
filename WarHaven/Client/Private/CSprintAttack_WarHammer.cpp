@@ -178,6 +178,9 @@ void	CSprintAttack_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 	break;
 	case 1:
 	{
+		pOwner->Shake_Camera(0.22f, 0.5f);
+
+		cout << "Attack End " << endl;
 		m_bAttackTrigger = false;
 		m_bTrigger = false;
 		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();

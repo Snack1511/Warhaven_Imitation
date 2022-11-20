@@ -67,6 +67,8 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
 
 void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    pOwner->On_Use(CUnit::SKILL1);
+
     /*effect*/
     pOwner->TurnOn_TrailEffect(true);
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SkillLightParticle", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
@@ -153,6 +155,10 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Check_Condition(CUnit* pOwner, CAnimator* 
     1.  Q 을 이용해 공격한다.
         */
 
+    if(!pOwner->Can_Use(CUnit::SKILL1))
+        return STATE_END;
+    
+        
     if (KEY(Q, NONE))
         return m_eStateType;
 

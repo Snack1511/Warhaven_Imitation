@@ -1045,9 +1045,6 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. End">
       <UniqueIdentifier>{bb6fa7bc-7dc0-49fe-bb4b-09a6285f14b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\04. Attack">
-      <UniqueIdentifier>{f8325edb-48cd-42ce-859f-1ce24866c1a9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\01. Begin">
       <UniqueIdentifier>{639f53d9-5c01-4bba-9080-2e2d1ef3fd3a}</UniqueIdentifier>
     </Filter>
@@ -1102,14 +1099,26 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\02. Loop">
       <UniqueIdentifier>{499f3798-26ee-40c7-82ec-5ada3414b8a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\03. End">
-      <UniqueIdentifier>{7f8bebb1-9f31-41f7-890f-1d5b4cc594cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump\02. Fall">
       <UniqueIdentifier>{a68e82c1-92b2-4294-b38e-25a71c0800b3}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Crosshair">
       <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\02. Attack\01. Beign">
+      <UniqueIdentifier>{8460b46d-c3c0-4cd0-b5b1-5192af89fe6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\02. Attack\02. RealAttack">
+      <UniqueIdentifier>{1c65b885-8e04-4e28-aa70-dea46a9926ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\02. Counter">
+      <UniqueIdentifier>{c1ea65d8-b0f7-4914-9dce-5b526d76a61d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\03. ShieldAttack">
+      <UniqueIdentifier>{90812db9-0da7-43e3-bdd2-04adb812da30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\03. SpinAttack">
+      <UniqueIdentifier>{a83f9096-754a-4139-b72a-abadf4d7b8f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1917,9 +1926,6 @@
     <ClInclude Include="..\Public\CSprint_Loop_Valkyrie.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\02. Loop</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CSprint_End_Valkyrie.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\03. End</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CSprint_Begin_Valkyrie.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\01. Begin</Filter>
     </ClInclude>
@@ -1931,6 +1937,24 @@
     </ClInclude>
     <ClInclude Include="..\Public\CStop_Valkyrie_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_End_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprintAttack_Valkyrie_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\02. Attack\01. Beign</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprintAttack_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\02. Attack\02. RealAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_SpinAttack.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\03. SpinAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_ShieldAttack.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\03. ShieldAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Counter.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\02. Counter</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CState_Hit.h">
       <Filter>02. Design\06. State_Manager\States\01. Player</Filter>
@@ -2719,9 +2743,6 @@
     <ClCompile Include="..\Private\CSprint_Jump_Fall_Valkyrie.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump\02. Fall</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CSprint_End_Valkyrie.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. Run\03. End</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CSprint_Jump_Valkyrie.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\01. Jump\01. Begin</Filter>
     </ClCompile>
@@ -2739,6 +2760,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\CStop_Valkyrie_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_End_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprintAttack_Valkyrie_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\02. Attack\01. Beign</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprintAttack_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\07. Sprint\02. Attack\02. RealAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_SpinAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\03. SpinAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_ShieldAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\03. ShieldAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Counter.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\02. Counter</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CState_Hit.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player</Filter>

@@ -176,7 +176,6 @@ void CWarrior_Attack_Sting_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
-
 }
 
 STATE_TYPE CWarrior_Attack_Sting_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

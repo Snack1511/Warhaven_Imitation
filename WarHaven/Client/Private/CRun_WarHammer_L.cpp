@@ -57,7 +57,7 @@ HRESULT CRun_WarHammer_L::Initialize()
    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 21;
    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 22;
 
-   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 33;
+   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 20;
    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 34;
    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
 

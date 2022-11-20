@@ -26,7 +26,7 @@ HRESULT CJump_Player::Initialize()
 
 void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed * 3.f;
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
 
     /* Owner의 Animator Set Idle로 */
@@ -86,10 +86,8 @@ STATE_TYPE CJump_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 
     // 만약 WASD 를 눌렀다면
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::SPACE)
-    {
-		
-	
+	if (KEY(SPACE, TAP))
+	{
 		return m_eStateType;
     }
   

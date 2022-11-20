@@ -275,8 +275,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	/*if (FAILED(SetUp_SpearMan_TH()))
 	return E_FAIL;*/
 
-	/*if (FAILED(SetUp_WarHammer_TH()))
-		return E_FAIL;*/
+	if (FAILED(SetUp_WarHammer_TH()))
+		return E_FAIL;
 
 	//if (FAILED(SetUp_Valkyrie_TH()))
 	//	return E_FAIL;
@@ -288,9 +288,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	 function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	 CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
-	 m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
+	 //function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	 //CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
+	 //m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
 
 
 
@@ -301,11 +301,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//라이트
 
 
-	//_float4x4 mat;
-	//mat.Identity();
-	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
-	//pDrawableTerrain->Initialize();
-	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	_float4x4 mat;
+	mat.Identity();
+	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
+	pDrawableTerrain->Initialize();
+	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);
@@ -446,7 +446,7 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
 	pFollowCam->Get_Transform()->Make_WorldMatrix();
 	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	GAMEINSTANCE->Add_Camera(L"PlayerCam1", pFollowCam);
 	DISABLE_GAMEOBJECT(pFollowCam);
 	pTestWarriorUnit->Set_FollowCam(pFollowCam);
 
@@ -588,9 +588,9 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	CUnit::UNIT_COLLIDERDESC tWeapon_RUnitColDesc[3] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.5f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -160.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
+		{0.6f, _float4(0.f, 0.f, -115.f),	COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -80.f),	COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -55.f),	COL_PLAYERATTACK }
 	};
 
 	pTestWarHammerUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeapon_RUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestWarHammerUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
@@ -604,12 +604,12 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	/* 바리게이트 생성 */
 	for (int i = 0; i < iCnt; ++i)
 	{
-		CBarricade* pBarricade = CBarricade::Create(pTestWarHammerUnit);
+		CBarricade* pBarricade = CBarricade::Create(pTestWarHammerUnit, L"../Bin/Resources/Meshes/Map/Environments/Install/SM_Prop_Installation_Trap01a.fbx");
 
 	
 		pTestWarHammerUnit->Disable_Barricade(pBarricade);
 
-		Ready_GameObject(pBarricade, GROUP_PLAYER);
+		Ready_GameObject(pBarricade, GROUP_DEFAULT);
 	}
 	
 
@@ -628,11 +628,9 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	 pFollowCam->Get_Transform()->Make_WorldMatrix();
 	 CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
 
-	 GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	 GAMEINSTANCE->Add_Camera(L"PlayerCam4", pFollowCam);
 	 DISABLE_GAMEOBJECT(pFollowCam);
 	 pTestWarHammerUnit->Set_FollowCam(pFollowCam);
-
-	//DISABLE_GAMEOBJECT(pTestWarHammerUnit);
 
 	return S_OK;
 }
@@ -644,9 +642,9 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 	//3. Valkyrie
 	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/Valkyrie/Valkyrie.fbx";
 
-	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/Valkyrie/body/SK_Fiona0001_Body_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/Valkyrie/body/SK_Fiona0004_Body_A00.fbx";
 	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Helmet_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0004_Helmet_A00.fbx";
 
 	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00.fbx";
 	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";

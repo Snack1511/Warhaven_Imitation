@@ -67,6 +67,13 @@ void CBounce_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 		break;
 
 	case Client::STATE_VERTICALATTACK_WARHAMMER_R:
+
+		m_eAnimType = ANIM_BASE_L;
+		m_iAnimIndex = 38;
+		m_eStateType = STATE_BOUNCE_WARHAMMER_L;
+
+		break;
+
 	case Client::STATE_SPRINTATTACK_WARHAMMER:
 	case Client::STATE_VERTICALATTACK_WARHAMMER_L:
 	

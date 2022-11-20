@@ -24,10 +24,10 @@ HRESULT CWalk_Valkyrie::Initialize()
 
 	////m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
- //   m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
- //   m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
- //   m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
- //   m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
+    /*나중에 추가*/
+    m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
+    m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
+    m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;

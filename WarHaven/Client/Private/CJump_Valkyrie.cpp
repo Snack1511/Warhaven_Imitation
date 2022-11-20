@@ -81,10 +81,8 @@ STATE_TYPE CJump_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 
     // 만약 WASD 를 눌렀다면
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::SPACE)
-    {
-		
-	
+	if (KEY(SPACE, TAP))
+	{
 		return m_eStateType;
     }
   

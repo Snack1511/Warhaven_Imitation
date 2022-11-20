@@ -54,12 +54,10 @@ void CRun_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 	m_fMyAccel = 10.f;
 
 
-    
-	if (ePrevType == STATE_RUN_PLAYER_R || ePrevType == STATE_RUN_PLAYER_L)
+	if (ePrevType == STATE_RUN_WARHAMMER_R || ePrevType == STATE_RUN_WARHAMMER_L)
 	{
 		m_fInterPolationTime = 0.f;
 	}
-
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -96,8 +94,8 @@ STATE_TYPE CRun_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 			KEY(A, HOLD) ||
 			KEY(D, HOLD))
 		{
-
-			return m_eStateType;
+			if (KEY(S, NONE))
+				return m_eStateType;
 		}
 		
 	}

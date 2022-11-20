@@ -68,6 +68,8 @@ HRESULT CWarHammer_GroggyAttack::Initialize()
 
 void CWarHammer_GroggyAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->On_Use(CUnit::SKILL2);
+
 	m_fMaxSpeed = pOwner->Get_Status().fDashAttackSpeed;
 	
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -89,6 +91,10 @@ STATE_TYPE CWarHammer_GroggyAttack::Check_Condition(CUnit* pOwner, CAnimator* pA
 	/* WARHAMMER가 Attack 으로 오는 조건
 	1.  LBuutton 을 이용해 공격한다.
 	*/
+
+	if (!pOwner->Can_Use(CUnit::SKILL2))
+		return STATE_END;
+
 	if (KEY(E, TAP))
 	{
 		return m_eStateType;

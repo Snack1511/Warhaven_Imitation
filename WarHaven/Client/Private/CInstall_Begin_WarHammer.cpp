@@ -55,6 +55,8 @@ void CInstall_Begin_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 {
 	CUnit_WarHammer* PWarHammer = static_cast<CUnit_WarHammer*>(pOwner);
 
+	PWarHammer->Set_BarricadeMatrix();
+
 	__super::Enable_ModelParts(PWarHammer, 4, false);
 
 
@@ -63,11 +65,7 @@ void CInstall_Begin_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 
 STATE_TYPE CInstall_Begin_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	// 가드 상태에서도 움직일 수 있도록 설정한다.
-	Follow_MouseLook(pOwner);
-
     return __super::Tick(pOwner, pAnimator);
-
 }
 
 void CInstall_Begin_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)
@@ -81,10 +79,22 @@ STATE_TYPE CInstall_Begin_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* p
 	1. 스프린트 공격 준비가 끝나면
     */
 
+	if (!pOwner->Can_Use(CUnit::SKILL3))
+		return STATE_END;
+
 	CUnit_WarHammer* PWarHammer = static_cast<CUnit_WarHammer*>(pOwner);
 
-	if (KEY(R, TAP) && PWarHammer->Get_Size() > 0)
+	// R을 누르면 임시로 보일 수 있게 설정
+	if (KEY(R, TAP))
+		m_bETC_Trigger = true;
+
+	// R을 눌렀던 상태에서 LButtion 을 누르면 만약 바리게이트 설치할 개수가 남아 있다면 바리게이트 위치를 설정하고 상태를 바꾼다.
+	if (m_bETC_Trigger && KEY(LBUTTON, TAP) && PWarHammer->Get_Size() > 0)
+	{
+		PWarHammer->Set_BarricadeMatrix();
 		return m_eStateType;
+	}
    
+
     return STATE_END;
 }

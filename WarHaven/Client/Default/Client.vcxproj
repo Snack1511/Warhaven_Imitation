@@ -256,7 +256,9 @@
     <ClInclude Include="..\Public\CSpearMan_SpecialGuard.h" />
     <ClInclude Include="..\Public\CFunc_ObjectControl.h" />
     <ClInclude Include="..\public\CButton.h" />
+    <ClInclude Include="..\Public\CSprintAttack_Valkyrie.h" />
     <ClInclude Include="..\Public\CSprintAttack_WarHammer.h" />
+    <ClInclude Include="..\Public\CSprintAttack_Valkyrie_Begin.h" />
     <ClInclude Include="..\Public\CSprintAttack_WarHammer_Begin.h" />
     <ClInclude Include="..\Public\CSprint_Begin_Valkyrie.h" />
     <ClInclude Include="..\Public\CSprint_Begin_WarHammer.h" />
@@ -287,6 +289,8 @@
     <ClInclude Include="..\Public\CSwitchRtoL_WarHammer.h" />
     <ClInclude Include="..\Public\CUnit_Valkyrie.h" />
     <ClInclude Include="..\Public\CUnit_WarHammer.h" />
+    <ClInclude Include="..\Public\CValkyrie_Counter.h" />
+    <ClInclude Include="..\Public\CValkyrie_ShieldAttack.h" />
     <ClInclude Include="..\Public\CWalk_Valkyrie.h" />
     <ClInclude Include="..\Public\CWalk_Valkyrie_L.h" />
     <ClInclude Include="..\Public\CWalk_WarHammer_L.h" />
@@ -297,6 +301,7 @@
     <ClInclude Include="..\Public\CWalk_SpearMan_L.h" />
     <ClInclude Include="..\Public\CWalk_SpearMan_R.h" />
     <ClInclude Include="..\Public\CWarHammer_AirSpike_Begin.h" />
+    <ClInclude Include="..\Public\CValkyrie_SpinAttack.h" />
     <ClInclude Include="..\Public\CWarHammer_AirSpike_Loop.h" />
     <ClInclude Include="..\Public\CWarHammer_AirSpike_End.h" />
     <ClInclude Include="..\Public\CWarHammer_ChargeAttack_Front_L.h" />
@@ -533,7 +538,9 @@
     <ClCompile Include="..\Private\CSpearMan_SpecialGuard.cpp" />
     <ClCompile Include="..\Private\CFunc_ObjectControl.cpp" />
     <ClCompile Include="..\private\CButton.cpp" />
+    <ClCompile Include="..\Private\CSprintAttack_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CSprintAttack_WarHammer.cpp" />
+    <ClCompile Include="..\Private\CSprintAttack_Valkyrie_Begin.cpp" />
     <ClCompile Include="..\Private\CSprintAttack_WarHammer_Begin.cpp" />
     <ClCompile Include="..\Private\CSprint_Begin_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CSprint_Begin_WarHammer.cpp" />
@@ -564,6 +571,8 @@
     <ClCompile Include="..\Private\CSwitchRtoL_WarHammer.cpp" />
     <ClCompile Include="..\Private\CUnit_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CUnit_WarHammer.cpp" />
+    <ClCompile Include="..\Private\CValkyrie_Counter.cpp" />
+    <ClCompile Include="..\Private\CValkyrie_ShieldAttack.cpp" />
     <ClCompile Include="..\Private\CWalk_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CWalk_Valkyrie_L.cpp" />
     <ClCompile Include="..\Private\CWalk_WarHammer_L.cpp" />
@@ -574,6 +583,7 @@
     <ClCompile Include="..\Private\CWalk_SpearMan_L.cpp" />
     <ClCompile Include="..\Private\CWalk_SpearMan_R.cpp" />
     <ClCompile Include="..\Private\CWarHammer_AirSpike_Begin.cpp" />
+    <ClCompile Include="..\Private\CValkyrie_SpinAttack.cpp" />
     <ClCompile Include="..\Private\CWarHammer_AirSpike_Loop.cpp" />
     <ClCompile Include="..\Private\CWarHammer_AirSpike_End.cpp" />
     <ClCompile Include="..\Private\CWarHammer_ChargeAttack_Front_L.cpp" />

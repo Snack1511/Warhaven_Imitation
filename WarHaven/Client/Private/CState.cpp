@@ -46,6 +46,30 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
     //    }
     //}
 
+	if (m_bAttackTrigger)
+	{
+		// 공격 진입
+		if (pOwner->Is_Weapon_R_Collision())
+		{
+			_float4 vHitPos = pOwner->Get_HitPos();
+			_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+			//HitPos가 발 보다 아래, 즉 땅을 때린 경우에는 튕겨나는게 아니라 작은 파티클과 진동만.
+			if (vHitPos.y <= vPos.y + 0.1f)
+			{
+				pOwner->Shake_Camera(0.25f, 0.25f);
+
+				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", vHitPos);
+			}
+
+			m_bAttackTrigger = false;
+		}
+
+	}
+
     Check_KeyFrameEvent(pOwner, pAnimator);
 
     STATE_TYPE eType = STATE_END;
@@ -303,7 +327,7 @@ _uint CState::Move(_uint iDirection, CUnit* pOwner)
 		iDirection == STATE_DIRECTION_SW ||
 		iDirection == STATE_DIRECTION_SE 
 		)
-		pMyPhysicsCom->Set_MaxSpeed(2.f);
+		pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fWalkSpeed);
 	else
 		pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
 

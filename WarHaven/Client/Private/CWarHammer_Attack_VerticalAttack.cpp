@@ -29,15 +29,10 @@ HRESULT CWarHammer_Attack_VerticalAttack::Initialize()
 
 	m_vecAdjState.push_back(STATE_SWITCH_L_TO_R_WARHAMMER);
 
-	m_vecAdjState.push_back(STATE_IDLE_WARHAMMER_R);
-	m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
-	m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_R);
-	m_vecAdjState.push_back(STATE_RUN_WARHAMMER_R);
 
-
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
-	m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
-	m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L);
+	m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_L);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_L);
 	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
 
@@ -61,14 +56,14 @@ HRESULT CWarHammer_Attack_VerticalAttack::Initialize()
 	m_iJumpFallRightIndex = 11;
 	m_iJumpFallLeftIndex = 1;
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.3f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.15f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.15f;
 
 
 	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 19;
@@ -130,13 +125,14 @@ HRESULT CWarHammer_Attack_VerticalAttack::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 
 
+
 	return __super::Initialize();
 
 }
 
 void CWarHammer_Attack_VerticalAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+	pOwner->On_Attack(this);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -149,6 +145,7 @@ STATE_TYPE CWarHammer_Attack_VerticalAttack::Tick(CUnit* pOwner, CAnimator* pAni
 
 void CWarHammer_Attack_VerticalAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
@@ -158,7 +155,7 @@ STATE_TYPE CWarHammer_Attack_VerticalAttack::Check_Condition(CUnit* pOwner, CAni
 	/* WARHAMMER가 Walk로 오는 조건
 	1. 휠위로 올릴 시 
 	*/
-	if (MOUSE_MOVE(MMS_WHEEL) > 0)
+	if (MOUSE_MOVE(MMS_WHEEL) < 0)
 		return m_eStateType;
 
 	return STATE_END;

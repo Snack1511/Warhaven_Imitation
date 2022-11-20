@@ -50,6 +50,9 @@ HRESULT CSprint_Begin_Valkyrie::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_vecAdjState.push_back(STATE_SPRINT_LOOP_VALKYRIE);
     m_vecAdjState.push_back(STATE_SPRINT_END_VALKYRIE);
+    m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_VALKYRIE);
+
+    
 
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_VALKYRIE);
 //	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_VALKYRIE);

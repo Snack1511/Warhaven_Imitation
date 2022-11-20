@@ -53,14 +53,14 @@ HRESULT CWarHammer_Attack_HorizontalMiddle::Initialize()
 	m_iJumpFallRightIndex = 11;
 	m_iJumpFallLeftIndex = 1;
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.5f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.7f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.7f;
 
 
 	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 19;
@@ -154,8 +154,8 @@ STATE_TYPE CWarHammer_Attack_HorizontalMiddle::Check_Condition(CUnit* pOwner, CA
 
 	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 	{
-		_float fDot = CUtility_Transform::Get_LookRotateAngle(pOwner->Get_FollowCamLook());
-		if (fabs(fDot) > 0.96f)
+		//_float fDot = CUtility_Transform::Get_LookRotateAngle(pOwner->Get_FollowCamLook());
+		//if (fabs(fDot) > 0.96f)
 		{
 
 			return m_eStateType;
