@@ -266,11 +266,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// Å×½ºÆ®ÇÒ °´Ã¼ ¶ç¿ì±â
 
-	if (FAILED(SetUp_Warrior_TH()))
-		return E_FAIL;
+	//if (FAILED(SetUp_Warrior_TH()))
+	//	return E_FAIL;
 
-	/*if (FAILED(SetUp_WarHammer_TH()))
-		return E_FAIL;*/
+	if (FAILED(SetUp_WarHammer_TH()))
+		return E_FAIL;
 
 	/*if (FAILED(SetUp_SpearMan_TH()))
 	return E_FAIL;*/

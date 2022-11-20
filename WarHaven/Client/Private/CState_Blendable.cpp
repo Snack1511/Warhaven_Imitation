@@ -54,7 +54,7 @@ HRESULT CState_Blendable::Initialize()
 	/* Blend Stop Event*/
 	Add_KeyFrame(m_iStopIndex, 998);
 	Add_KeyFrame(m_iAttackEndIndex, 999);
-	Add_KeyFrame((m_iStopIndex + m_iAttackEndIndex) / 1.7f, 1000); // 시작, 끝 사이
+	Add_KeyFrame((m_iStopIndex + m_iAttackEndIndex) / 1.8f, 1000); // 시작, 끝 사이
 
 
 
