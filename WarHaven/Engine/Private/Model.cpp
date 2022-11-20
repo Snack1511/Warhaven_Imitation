@@ -549,7 +549,6 @@ void CModel::Late_Tick()
 				m_eLOD_Level = (eLOD_LEVEL)i;
 		}
 
-		cout << (_int)m_eLOD_Level << endl;
 
 	}
 
