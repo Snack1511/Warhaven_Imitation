@@ -174,7 +174,7 @@ protected:
 	HRESULT	SetUp_InstancingEffects(wstring wstrFbxPath, _uint iNumInstance, const INSTANCING_CREATE_DATA& tCreateData, _hashcode _hcCode);
 
 protected:
-	_bool	Fade_Lerp(_uint iIndex);
+	virtual _bool	Fade_Lerp(_uint iIndex);
 	virtual void	Dead_Instance(_uint iIndex);
 	void	ReMake_OffsetPositions(_int iSize);
 };

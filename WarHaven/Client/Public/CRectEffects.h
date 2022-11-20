@@ -31,19 +31,36 @@ public:
 
 	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName) override;
 
+
+
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
 	virtual HRESULT Re_Initialize() override;
 	virtual HRESULT Start() override;
 
+	virtual	void	Release() override;
+
 protected:
 	virtual void	My_Tick() override;
 	virtual void	My_LateTick() override;
 	virtual void	OnEnable() override;
 
+protected:
+	virtual _bool	Fade_Lerp(_uint iIndex);
+
+
 private:
-	VTXRECTINSTANCE* m_pRectInstances = nullptr;
+	struct DATAS
+	{
+		INSTANCING_DATA InstancingData;
+		VTXRECTINSTANCE RectInstance;
+		_float			fDistance;
+	};
+
+	DATAS* m_pDatas;
+	VTXRECTINSTANCE* m_pFinalRectInstances;
 
 	_bool		m_bBillBoard = false;
 	_bool		m_bSorting = false;
