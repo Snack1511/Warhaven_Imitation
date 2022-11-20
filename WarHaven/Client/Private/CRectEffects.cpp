@@ -615,7 +615,7 @@ void CRectEffects::My_Tick()
 				vRotRight = vRight.MultiplyNormal(matRot);
 				vRotUp = vUp.MultiplyNormal(matRot);
 			}
-			else if(m_pInstancingDatas[i].fTurnSpeed == 0.f)
+			else if(m_pDatas[i].InstancingData.fTurnSpeed == 0.f)
 			{
 				if (CURVE_LINEAR == m_eCurveType)
 				{
@@ -1159,11 +1159,11 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 	case Client::CURVE_LINEAR:
 		break;
 	case Client::CURVE_SIN:
-		fY = m_pInstancingDatas[iIdx].fCurvePower * sinf(m_pInstancingDatas[iIdx].fCurveFrequency * m_pInstancingDatas[iIdx].fMovingAcc); // a sin(bx)
+		fY = m_pDatas[iIdx].InstancingData.fCurvePower * sinf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc); // a sin(bx)
 
-		vPos.x += fY * m_pInstancingDatas[iIdx].vRight.x;
-		vPos.y += fY * m_pInstancingDatas[iIdx].vRight.y;
-		vPos.z += fY * m_pInstancingDatas[iIdx].vRight.z;
+		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
+		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y;
+		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
 		break;
 	case Client::CURVE_END:
 		break;

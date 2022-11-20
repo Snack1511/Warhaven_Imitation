@@ -275,8 +275,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	/*if (FAILED(SetUp_SpearMan_TH()))
 	return E_FAIL;*/
 
-	if (FAILED(SetUp_WarHammer_TH()))
-		return E_FAIL;
+	/*if (FAILED(SetUp_WarHammer_TH()))
+		return E_FAIL;*/
 
 	//if (FAILED(SetUp_Valkyrie_TH()))
 	//	return E_FAIL;
@@ -288,9 +288,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	 //function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	 //CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
-	 //m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
+	 function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	 CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
+	 m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
 
 
 
@@ -301,11 +301,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//라이트
 
 
-	_float4x4 mat;
+	/*_float4x4 mat;
 	mat.Identity();
 	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
 	pDrawableTerrain->Initialize();
-	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);*/
 
 	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);
@@ -446,7 +446,7 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
 	pFollowCam->Get_Transform()->Make_WorldMatrix();
 	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam1", pFollowCam);
+	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
 	DISABLE_GAMEOBJECT(pFollowCam);
 	pTestWarriorUnit->Set_FollowCam(pFollowCam);
 
