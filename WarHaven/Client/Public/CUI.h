@@ -39,6 +39,7 @@ public:
 	void Set_Scale(_float value);
 	void Set_Scale(_float fX, _float fY);
 	void Set_ScaleX(_float fX);
+	void Set_ScaleY(_float fY);
 
 public:
 	_float Get_RotationValue() { return m_fRotValue; }

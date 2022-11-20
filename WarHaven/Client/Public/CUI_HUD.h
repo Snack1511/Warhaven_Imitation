@@ -59,9 +59,6 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pPortBGClone[6];
 	CUI_Object* m_pClassIconClone[6];
 
-	CUI_Object* m_pClickPort = nullptr;
-	_bool m_bIsPortMoveY = false;
-
 private:
 	void Bind_Btn();
 
@@ -75,8 +72,6 @@ private:
 
 	void SetActive_CharacterSelectWindow(_bool value);
 	void Set_ClassInfo(CUnit::CLASS_TYPE eClass);
-
-	void Port_MoveY(CUI_Object* pTarget);
 
 private:
 	void Create_CharacterSelectWindow();

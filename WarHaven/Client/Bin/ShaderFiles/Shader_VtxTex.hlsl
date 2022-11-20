@@ -388,7 +388,7 @@ PS_OUT PS_UIColor_MAIN(PS_IN In)
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 		
-    Out.vColor *= g_vColor;
+    Out.vColor.w *= g_fAlpha;
 
     if (Out.vColor.w < 0.01f)
         discard;

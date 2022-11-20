@@ -20,6 +20,7 @@ public:
 
 public:
 	virtual void Set_Shader_StageHighlight(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_StageClickRect(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName);
 
 public:
@@ -45,14 +46,27 @@ private:
 	CUI_Object* m_pLine = nullptr;
 	CUI_Object* m_pStageHighlight = nullptr;
 	CUI_Object* m_pBtnHightlight = nullptr;
+	CUI_Object* m_pStageSelectRect = nullptr;
+	CUI_Object* m_pStageNameRect = nullptr;
 
 	CUI_Object* m_pPrototypeStageBtn = nullptr;
 	CUI_Object* m_pStageSelectBtn[4];
+
+	CUI_Object* m_pPlayBtnMouseEnterLine = nullptr;
 
 	CUI_Object* m_pPrototypeLock = nullptr;
 	CUI_Object* m_pLockBtn[3];
 
 	Select_Stage m_eStage = Select_Stage::Test;
+
+private:
+	CUI_Object* m_pTarget = nullptr;
+
+	_bool m_bIsPlayBtnOnMouseEnter = false;
+	_bool m_bIsMovePlayBtnEnter = false;
+
+	_bool m_bIsPlayBtnOnMouseExit = false;
+	_bool m_bIsMovePlayBtnExit = false;
 
 private:	// 폰트 설정
 	_float2 vFontOffset = { -100.f, 120.f };
@@ -65,6 +79,7 @@ private:
 private:
 	void SetActive_ModeWindow();
 	void Enable_StageHighlight(_float4 vPos);
+	void Enable_StageClickRect(_float4 vPos);
 
 private:
 	void Set_LockImg();
@@ -76,4 +91,6 @@ private:
 	void Create_LockImg();
 	void Create_StageHighlight();
 	void Create_BtnHighlight();
+	void Create_StageNameRect();
+	void Crerate_PlayBtnMouseEnterLine();
 };
