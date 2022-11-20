@@ -315,10 +315,6 @@ void CFader::Change_State(FADE_STATE eState)
 
 void CFader::OnFadeOut_Finish()
 {
-
-	
-
-
 	switch (m_tFadeDesc.eFadeOutType)
 	{
 	case FADEDESC::FADEOUT_DELETE:

@@ -8,7 +8,7 @@ class CUnit;
 
 class CUI_HUD : public CUI_Wrapper
 {
-	enum HUD_Type{Crosshair, Port, Skill, HeroGauge, HUD_END};
+	enum HUD_Type{Crosshair, Port, Skill, HeroGauge, HpBar, HUD_END};
 
 	DECLARE_PROTOTYPE(CUI_HUD);
 	DECLARE_GAMEOBJECT(CUI_HUD);
@@ -36,6 +36,10 @@ private:
 	CUnit::CLASS_TYPE m_eCurClass;
 	CUnit::CLASS_TYPE m_ePrvClass;
 
+private:	// 체력바
+	_float m_fHpRatio = 0.f;
+
+private:	// 히어로 변신 게이지
 	_float m_fHeroGauge = 0.f;
 	_bool m_bIsEnableHeroPort = false;
 

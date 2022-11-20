@@ -57,6 +57,10 @@ public:	// Font
 	_float Get_FontScale() { return m_fFontScale; }
 	void Set_FontScale(_float fValue) { m_fFontScale = fValue; }
 
+public:	// Button
+	_bool Get_IsClick() { return m_bIsClick; }
+	void Set_IsClick(_bool value) { m_bIsClick = value; }
+
 public:
 	void Lerp_Scale(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration);
@@ -74,6 +78,7 @@ private:	// Font
 
 private:	// Button
 	_bool m_bIsMouseTarget = false;
+	_bool m_bIsClick = false;
 
 private:	// Etc
 	_float m_fMinValue = 0.01f;

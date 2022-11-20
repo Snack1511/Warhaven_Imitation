@@ -9,6 +9,7 @@
 #include "CUI_Portrait.h"
 #include "CUI_Skill.h"
 #include "CUI_HeroGauge.h"
+#include "CUI_HpBar.h"
 
 CUI_HUD::CUI_HUD()
 {
@@ -24,12 +25,14 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	m_pWrap[Port] = CUI_Portrait::Create();
 	m_pWrap[Skill] = CUI_Skill::Create();
 	m_pWrap[HeroGauge] = CUI_HeroGauge::Create();
+	m_pWrap[HpBar] = CUI_HpBar::Create();
 
 	CREATE_GAMEOBJECT(m_pWrap[Crosshair], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[Port], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[Skill], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[HeroGauge], GROUP_UI);
-	
+	CREATE_GAMEOBJECT(m_pWrap[HpBar], GROUP_UI);
+
 	Create_CharacterSelectWindow();
 
 	return S_OK;
@@ -48,6 +51,7 @@ HRESULT CUI_HUD::Start()
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
 	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
+	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
 
 	Bind_Btn();
 
@@ -57,6 +61,30 @@ HRESULT CUI_HUD::Start()
 void CUI_HUD::My_Tick()
 {
 	__super::My_Tick();
+
+	if (m_pWrap[HpBar]->Is_Valid())
+	{
+		m_fHpRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
+		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHpRatio);
+
+		if (KEY(Z, HOLD))
+		{
+			m_tStatus.fHP -= fDT(0) * 10.f;
+			if (m_tStatus.fHP <= 0)
+			{
+				m_tStatus.fHP = 0;
+			}
+		}
+
+		if (KEY(X, HOLD))
+		{
+			m_tStatus.fHP += fDT(0) * 10.f;
+			if (m_tStatus.fHP >= m_tStatus.fMaxHP)
+			{
+				m_tStatus.fHP = m_tStatus.fMaxHP;
+			}
+		}
+	}
 
 	if (m_pWrap[HeroGauge]->Is_Valid())
 	{
@@ -82,11 +110,6 @@ void CUI_HUD::My_Tick()
 			}
 			else
 			{
-				if (KEY(T, TAP))
-				{
-					SetActive_CharacterSelectWindow(true);
-				}
-
 				m_tStatus.fHeroGague -= fDT(0) * 20.f;
 				if (m_fHeroGauge <= 0.f)
 				{
@@ -123,6 +146,13 @@ void CUI_HUD::My_Tick()
 		if (KEY(F, TAP))
 		{
 			SetActive_CharacterSelectWindow(false);
+		}
+	}
+	else
+	{
+		if (KEY(T, TAP))
+		{
+			SetActive_CharacterSelectWindow(true);
 		}
 	}
 }
@@ -370,6 +400,8 @@ void CUI_HUD::Create_CharacterSelectWindow()
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 {
 	Set_ClassInfo(m_eCurClass);
+
+	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(!value);
 
 	if (value == true)
 	{
