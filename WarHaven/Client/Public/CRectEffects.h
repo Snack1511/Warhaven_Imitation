@@ -43,9 +43,7 @@ protected:
 	virtual void	OnEnable() override;
 
 private:
-	pair<INSTANCING_DATA, VTXRECTINSTANCE>* m_pRectInstances;
-
-	VTXRECTINSTANCE* m_pFinalRectInstances;
+	VTXRECTINSTANCE* m_pRectInstances = nullptr;
 
 	_bool		m_bBillBoard = false;
 	_bool		m_bSorting = false;
