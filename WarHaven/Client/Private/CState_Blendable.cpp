@@ -54,8 +54,8 @@ HRESULT CState_Blendable::Initialize()
 	/* Blend Stop Event*/
 	Add_KeyFrame(m_iStopIndex, 998);
 	Add_KeyFrame(m_iAttackEndIndex, 999);
-	Add_KeyFrame((m_iStopIndex + m_iAttackEndIndex) / 1.8f, 1000); // 시작, 끝 사이
-
+	Add_KeyFrame((m_iStopIndex + m_iAttackEndIndex) / 1.8f, 1000); // war 시작, 끝 사이
+	Add_KeyFrame((m_iStopIndex + m_iAttackEndIndex) / 1.9f, 1001); // eng
 
 
 	m_fMyAccel = 20.f;
@@ -417,8 +417,16 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 
 	case 1000:
 		/*effect*/
-		if (!pOwner->Is_Air())
-			Create_SoilEffect();
+		if(CUnit::CLASS_TYPE::WARRIOR == pOwner->Get_Status().eClass)
+			if (!pOwner->Is_Air())
+				Create_SoilEffect();
+
+		break;
+	case 1001:
+		/*effect*/
+		if (CUnit::CLASS_TYPE::ENGINEER == pOwner->Get_Status().eClass)
+			if (!pOwner->Is_Air())
+				Create_SoilEffect();
 
 		break;
 

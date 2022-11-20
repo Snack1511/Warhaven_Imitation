@@ -94,9 +94,7 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
 
-
-
-	
+	m_tUnitStatus.eClass = WARRIOR;
 
 	return S_OK;
 }
