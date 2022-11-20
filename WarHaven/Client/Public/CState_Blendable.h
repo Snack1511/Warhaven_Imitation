@@ -91,6 +91,7 @@ private:
 	Enum				m_eEnum = Enum::eIDLE;
 	_bool				m_bBlendable = true;
 	_bool				m_bCycling = false;
+	_bool				m_bHitEffect = false;
 
 private:
 	_bool		m_bAfterEffect = false;

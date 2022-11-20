@@ -45,21 +45,20 @@ void CPhysXCharacter::Set_Position(_float4 vPos)
 void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 {
 	
-		//닿은 곳이 만약
-		hit.worldPos.y;
-		//내 발 위치의 y랑 비슷하면 땅이랑 닿은거구
-		//닿은곳이 머 발 위치의 y보다 높다면 아닌거제
+		////닿은 곳이 만약
+		//hit.worldPos.y;
+		////내 발 위치의 y랑 비슷하면 땅이랑 닿은거구
+		////닿은곳이 머 발 위치의 y보다 높다면 아닌거제
 
-		_float fContactY = hit.worldPos.y;
-		_float	fMyFootY = hit.controller->getFootPosition().y;
+		//_float fContactY = hit.worldPos.y;
+		//_float	fMyFootY = hit.controller->getFootPosition().y;
 
-		//닿은곳이 발 위치보다 아래면 (땅에 착지)
-		if (fMyFootY + 0.2f > fContactY)
-		{
-			m_bColGround = true;
+		////닿은곳이 발 위치보다 아래면 (땅에 착지)
+		//if (fMyFootY + 0.2f > fContactY)
+		//{
+		//	m_bColGround = true;
 
-		}
-
+		//}
 
 }
 
@@ -111,7 +110,10 @@ void CPhysXCharacter::Tick()
 	//Move가 아니라 set posi로 가자 안댐
 	//
 
-	m_pPxController->move(PxVec3(vMove.x, vMove.y, vMove.z), 0.f, fDT(0), m_tControllerFilters);
+	PxControllerCollisionFlags eFlag = m_pPxController->move(PxVec3(vMove.x, vMove.y, vMove.z), 0.f, fDT(0), m_tControllerFilters);
+
+	if (eFlag & PxControllerCollisionFlag::eCOLLISION_DOWN)
+		m_bColGround = true;
 
 	
 	

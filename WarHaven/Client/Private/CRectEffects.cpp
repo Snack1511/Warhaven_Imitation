@@ -653,18 +653,26 @@ void CRectEffects::My_LateTick()
 {
 	if (m_bSorting)
 	{
-		/*_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
-
-		sort(m_pRectInstances, m_pRectInstances + (m_tCreateData.iNumInstance - 1), [vCamPos](VTXRECTINSTANCE p1, VTXRECTINSTANCE p2)
+		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+		_int i = 0;
+		//섞고난 RectInstance가 몇번째 인덱스로 가있는지 알 수 있엉?
+		sort(m_pRectInstances, m_pRectInstances + (m_tCreateData.iNumInstance - 1), [vCamPos](pair<INSTANCING_DATA, VTXRECTINSTANCE> p1, pair<INSTANCING_DATA, VTXRECTINSTANCE> p2)
 			{
-				_float fDist1 = XMVector3Length((XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p1.vTranslation))).m128_f32[0];
-				_float fDist2 = XMVector3Length((XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p2.vTranslation))).m128_f32[0];
-
+				_float fDist1 = XMVector3Length((XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p1.second.vTranslation))).m128_f32[0];
+				_float fDist2 = XMVector3Length((XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p2.second.vTranslation))).m128_f32[0];
+				
 				return fDist1 > fDist2;
-			});*/
+			});
 
 			//sorting해도 InstancingData를 어케 해야하지
+
 	}
+
+	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
+	{
+		m_pFinalRectInstances[i] = m_pRectInstances[i].second;
+	}
+
 
 	if (m_bEffectFlag & EFFECT_REFBONE)
 	{
@@ -676,7 +684,7 @@ void CRectEffects::My_LateTick()
 	}
 
 
-	static_cast<CRect_Instance*>(GET_COMPONENT(CMesh))->ReMap_Instances(m_pRectInstances);
+	static_cast<CRect_Instance*>(GET_COMPONENT(CMesh))->ReMap_Instances(m_pFinalRectInstances);
 
 	if (m_bEffectFlag & EFFECT_FOLLOWTARGET)
 	{

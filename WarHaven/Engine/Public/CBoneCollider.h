@@ -28,11 +28,12 @@ public:
 
 public:
 	virtual void onShapeHit(const PxControllerShapeHit& hit);
-	virtual void onControllerHit(const PxControllersHit& hit) {};
+	virtual void onControllerHit(const PxControllersHit& hit);
 	virtual void onObstacleHit(const PxControllerObstacleHit& hit) {};
 
 public:
 	_bool		Is_Collision() { return m_bCollision; };
+	_bool		Is_CCT_Collision() { return m_bCCTCollision; };
 	_float4		Get_HitPos() {
 		return m_vHitPos;
 	};
@@ -57,9 +58,11 @@ private:
 
 	//실제 현재 충돌중 여부
 	_bool				m_bCollision = false;
+	_bool				m_bCCTCollision = false;
 
 	//충돌 체크용도
 	_bool				m_bCollisionTemp = false;
+	_bool				m_bCCTCollisionTemp = false;
 
 	_bool				m_bStart = false;
 

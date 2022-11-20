@@ -21,4 +21,6 @@
 #include "CEffects_Factory.h"
 #include "CUnit.h"
 
+#include "CScript_FollowCam.h"
+
 #include "Camera.h"

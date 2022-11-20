@@ -39,6 +39,57 @@ CUnit_Warrior* CUnit_Warrior::Create(const UNIT_MODEL_DATA& tUnitModelData)
 	return pInstance;
 }
 
+void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
+{
+	COL_GROUP_CLIENT	eHitBoxBody = (bPlayer) ? COL_PLAYERHITBOX_BODY : COL_ENEMYHITBOX_BODY;
+	COL_GROUP_CLIENT	eHitBoxHead = (bPlayer) ? COL_PLAYERHITBOX_HEAD : COL_ENEMYHITBOX_HEAD;
+	COL_GROUP_CLIENT	eHitBoxGuard = (bPlayer) ? COL_PLAYERGUARD : COL_ENEMYGUARD;
+	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_PLAYERATTACK : COL_ENEMYATTACK;
+
+	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
+
+	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.5f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
+		{0.5f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
+	};
+
+	SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
+
+	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
+	{
+		//Radius,	vOffsetPos.		eColType
+		{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxGuard },
+		{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxGuard },
+	};
+
+	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
+
+
+	tUnitColDesc[0].fRadius = 0.3f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	tUnitColDesc[0].eColType = eHitBoxHead;
+
+
+	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
+
+
+	const _uint iWeaponSphereNum = 6;
+
+	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
+
+	for (_uint i = 0; i < iWeaponSphereNum; ++i)
+	{
+		tWeaponUnitColDesc[i].fRadius = 0.2f;
+		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
+		tWeaponUnitColDesc[i].eColType = eAttack;
+	}
+
+	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+
+}
+
 HRESULT CUnit_Warrior::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();

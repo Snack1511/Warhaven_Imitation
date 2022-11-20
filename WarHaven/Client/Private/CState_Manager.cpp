@@ -242,6 +242,7 @@
 #include "CHit_Player.h"
 
 #include "CAI_SandBack.h"
+#include "CAI_SandBack_Hit.h"
 
 
 IMPLEMENT_SINGLETON(CState_Manager);
@@ -400,6 +401,7 @@ void CState_Manager::Warrior_State()
 	m_arrStates[STATE_WARRIOR_OXEN_END] = CWarrior_Oxen_Cancel::Create();
 
 	m_arrStates[STATE_IDLE_WARRIOR_R_AI_ENEMY] = CAI_SandBack::Create();
+	m_arrStates[STATE_HIT_TEST_ENEMY] = CAI_SandBack_Hit::Create();
 
 	m_arrStates[STATE_CHARGETEST] = CChargeTest::Create();
 

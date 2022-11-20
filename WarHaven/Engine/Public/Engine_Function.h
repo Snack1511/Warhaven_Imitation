@@ -5,6 +5,20 @@
 namespace Engine
 {
 
+	template<typename T>
+	static	T* Safe_Cast(void* pDest)
+	{
+		T* pReturn = nullptr;
+#ifdef _DEBUG
+		pReturn = dynamic_cast<T*>(pDest);
+#else
+		pReturn = static_cast<T*>(pDest);
+#endif // _DEBUG
+
+
+		return pReturn;
+	}
+
 	static _int random(_int _min, _int _max)
 	{
 		random_device rd;

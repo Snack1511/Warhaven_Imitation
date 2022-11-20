@@ -151,6 +151,9 @@ HRESULT CScript_FollowCam::Initialize_Prototype()
 
 HRESULT CScript_FollowCam::Initialize()
 {
+	m_arrLerpDesc[CAMERA_LERP_SPRINT].vTargetOffset.x = 0.f;
+
+
 	m_arrLerpDesc[CAMERA_LERP_DASH].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 2.f;
 	//m_arrLerpDesc[CAMERA_LERP_DASH].fMaxDistance = 0.1f;
 	//m_arrLerpDesc[CAMERA_LERP_DASH].fCameraDirectingLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.3f;

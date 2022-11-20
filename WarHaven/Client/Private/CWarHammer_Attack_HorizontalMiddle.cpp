@@ -9,6 +9,8 @@
 
 #include "CUser.h"
 
+#include "CEffects_Factory.h"
+
 CWarHammer_Attack_HorizontalMiddle::CWarHammer_Attack_HorizontalMiddle()
 {
 }
@@ -133,6 +135,7 @@ void CWarHammer_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimat
 
 STATE_TYPE CWarHammer_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	
 
 	return __super::Tick(pOwner, pAnimator);
 }

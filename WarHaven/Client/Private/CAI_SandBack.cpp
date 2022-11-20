@@ -36,16 +36,16 @@ CAI_SandBack* CAI_SandBack::Create()
 
     return pInstance;
 }
-void CAI_SandBack::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType)
+void CAI_SandBack::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
-    if (iOtherColType == COL_PLAYERATTACK)
+   /* if (iOtherColType == COL_PLAYERATTACK)
     {
         m_pOwner->Get_PhysicsCom()->Set_MaxSpeed(10.f);
         m_pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 
        
         m_pOwner->Get_PhysicsCom()->Set_Dir(CUtility_Transform::Get_Dir_2D(pOtherObject->Get_Transform(), m_pOwner->Get_Transform()));
-    }
+    }*/
 }
 HRESULT CAI_SandBack::Initialize()
 {
@@ -89,7 +89,7 @@ void CAI_SandBack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
-    pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2);
+    pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 }
 
@@ -106,7 +106,7 @@ STATE_TYPE CAI_SandBack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CAI_SandBack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    pOwner->CallBack_CollisionEnter -= bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2);
+    pOwner->CallBack_CollisionEnter -= bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 }
 

@@ -60,7 +60,7 @@ public:
 
 public:
 	virtual	void	ReBind_Texture();
-	virtual void	OnCollisionEnter(CGameObject* pOtherObj, const _uint& eColType);
+	virtual void	OnCollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
 	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
 
 public:

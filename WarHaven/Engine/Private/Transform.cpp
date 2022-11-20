@@ -311,7 +311,7 @@ void CTransform::Start()
 void CTransform::Tick()
 {
 	//m_pOwner->CallBack_CollisionEnter +=
-		//bind(&CTransform::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3);
+		//bind(&CTransform::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 }
 
 void CTransform::Late_Tick()

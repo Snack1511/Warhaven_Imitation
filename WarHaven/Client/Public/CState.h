@@ -13,6 +13,26 @@ class CUnit;
 class CState
 {
 public:
+	enum class HIT_TYPE { eLEFT, eRIGHT, eEND };
+	struct HIT_INFO
+	{
+		/* 맞고나서 밀려나는 힘 */
+		_float	fKnockBackPower = 0.f;
+		/* 맞고나서 띄워지는 힘*/
+		_float	fJumpPower = 0.f;
+		/* 상대 위치에서 내 위치로의 방향, or 밀려날 방향 */
+		_float4 vDir = ZERO_VECTOR;
+		/* 내가 바라볼 방향 */
+		_float4 vLook = ZERO_VECTOR;
+
+		_bool	bHeadShot = false;
+
+		_bool	bFace = false;
+
+		HIT_TYPE	eHitType = HIT_TYPE::eEND;
+	};
+
+public:
 	struct KEYFRAME_EVENT
 	{
 		//enum EVENT_TYPE {EVENT_MOVE, EVENT_ATTACK, EVENT_ATTACKEND, EVENT_END};
@@ -42,11 +62,14 @@ public:
 	virtual CState* Clone() PURE;
 
 public:
-	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType) {}
+	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos) {}
 
 public:
 	void	Set_AnimType(ANIM_TYPE eAnimType) { m_eAnimType = eAnimType; }
 	void	Set_AnimIndex(_uint iAnimIndex) { m_iAnimIndex = iAnimIndex; }
+
+	_float	Get_DamagePumping() { return m_fDamagePumping; }
+	HIT_INFO& Get_HitInfo() { return m_tHitInfo; }
 
 public:
 	virtual HRESULT		Initialize()	PURE;
@@ -88,6 +111,15 @@ protected:
 
 	_int				m_iDirectionAnimIndex[STATE_DIRECTION_END];
 	_float				m_fDirectionAnimSpeed[STATE_DIRECTION_END];
+
+protected:
+	/* 공격, 피격 정보
+	1. 공격하는 상태가 들고있는 hit Info를
+	맞는 상태한테 넘겨줘서 쓰는 방식.
+	
+	*/
+	HIT_INFO			m_tHitInfo;
+	_float				m_fDamagePumping = 1.f;
 
 protected:
 	vector<KEYFRAME_EVENT>	m_vecKeyFrameEvent;

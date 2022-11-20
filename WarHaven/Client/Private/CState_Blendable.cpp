@@ -116,14 +116,21 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", vHitPos);
 			}
-
-
 			else
 				return m_eBounceState;
 
 			m_bAttackTrigger = false;
 		}
+	}
 
+	if (m_bHitEffect && pOwner->Is_Weapon_R_CCT_Collision())
+	{
+		m_bHitEffect = false;
+		pOwner->Shake_Camera(0.15f, 0.25f);
+
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
 	}
 
 	// Create_SwordAfterEffect();
@@ -380,6 +387,7 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 	{
 	case 998:
 		m_bAfterEffect = true;
+		m_bHitEffect = true;
 		pOwner->TurnOn_TrailEffect(true);
 
 		/* dash Front */
@@ -397,7 +405,6 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 		m_bBlendable = false;
 		if (m_eEnum == Enum::eWALK || m_eEnum == Enum::eRUN)
 		pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
-		cout << "Blendable Off" << endl;
 
 		break;
 
@@ -413,7 +420,6 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 		else
 			m_eAnimLeftorRight = ANIM_BASE_L;
 
-		//cout << "Blendable On" << endl;
 
 		break;
 

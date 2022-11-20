@@ -170,7 +170,6 @@ void	CSprintAttack_Player::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 		//Attack Begin
 	case 0:
 	{
-		cout << "Attack Begin " << endl;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		m_bAttackTrigger = true;
 	}
@@ -179,7 +178,6 @@ void	CSprintAttack_Player::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	break;
 	case 1:
 	{
-		cout << "Attack End " << endl;
 		m_bAttackTrigger = false;
 		m_bTrigger = false;
 		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();

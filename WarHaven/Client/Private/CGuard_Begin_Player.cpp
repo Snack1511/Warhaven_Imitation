@@ -52,6 +52,7 @@ HRESULT CGuard_Begin_Player::Initialize()
 
 void CGuard_Begin_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Enable_GuardCollider(true);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -67,6 +68,8 @@ STATE_TYPE CGuard_Begin_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CGuard_Begin_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+	pOwner->Enable_GuardCollider(false);
+
 }
 
 STATE_TYPE CGuard_Begin_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

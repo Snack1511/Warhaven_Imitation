@@ -69,6 +69,7 @@ HRESULT CSprint_Begin::Initialize()
 void CSprint_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, false);
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_SPRINT);
 
 
 	if (ePrevType == STATE_RUN_BEGIN_PLAYER_L || ePrevType == STATE_RUN_BEGIN_PLAYER_R)
@@ -150,6 +151,8 @@ STATE_TYPE CSprint_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CSprint_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+
 	//pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
     /* 할거없음 */
 }

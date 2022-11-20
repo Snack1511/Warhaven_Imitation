@@ -1,12 +1,7 @@
 #include "stdafx.h"
 #include "CSprint_Player.h"
 
-#include "GameInstance.h"
-
-#include "CAnimator.h"
-#include "CUnit.h"
-
-#include "CUser.h"
+#include "UsefulHeaders.h"
 
 CSprint_Player::CSprint_Player()
 {
@@ -58,6 +53,8 @@ void CSprint_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 {
     m_eAnimType = ANIM_BASE_R;
     m_iAnimIndex = 55;
+
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_SPRINT);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -180,6 +177,8 @@ STATE_TYPE CSprint_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CSprint_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_END);
+
 }
 
 STATE_TYPE CSprint_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

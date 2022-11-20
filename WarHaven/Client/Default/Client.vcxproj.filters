@@ -1932,6 +1932,12 @@
     <ClInclude Include="..\Public\CStop_Valkyrie_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\01. Right</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CState_Hit.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CAI_SandBack_Hit.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2733,6 +2739,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CStop_Valkyrie_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CState_Hit.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CAI_SandBack_Hit.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

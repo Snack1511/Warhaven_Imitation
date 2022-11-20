@@ -48,9 +48,9 @@ private:
 private:
 	void Collider_GroupUpdate(const _uint& _eLeft, const _uint& _eRight);
 
-	_bool Is_Collision(CCollider* _pLeft, CCollider* _pRight);
+	_bool Is_Collision(CCollider* _pLeft, CCollider* _pRight, _float4* pOutHitPos);
 	_bool Is_OBBCollision(CCollider* _pLeft, CCollider* _pRight);
-	_bool Is_SphereCollision(CCollider* _pLeft, CCollider* _pRight);
+	_bool Is_SphereCollision(CCollider* _pLeft, CCollider* _pRight, _float4* pOut);
 	_bool Is_OBBtoSphereCollision(CCollider* _pOBB, CCollider* _pSphere);
 	_bool Check_BeforeOBB(CCollider* _pLeft, CCollider* _pRight);
 

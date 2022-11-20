@@ -188,6 +188,7 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
+    <ClInclude Include="..\public\CAI_SandBack_Hit.h" />
     <ClInclude Include="..\Public\CBarricade.h" />
     <ClInclude Include="..\Public\CBloodOverlay.h" />
     <ClInclude Include="..\Public\CBounce_WarHammer.h" />
@@ -268,6 +269,7 @@
     <ClInclude Include="..\Public\CSprint_Loop_Valkyrie.h" />
     <ClInclude Include="..\Public\CSprint_Loop_WarHammer.h" />
     <ClInclude Include="..\public\CState_Blendable.h" />
+    <ClInclude Include="..\public\CState_Hit.h" />
     <ClInclude Include="..\Public\CStop_Valkyrie.h" />
     <ClInclude Include="..\Public\CStop_WarHammer.h" />
     <ClInclude Include="..\public\CState_BlendableCharge.h" />
@@ -464,6 +466,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\private\CAI_SandBack.cpp" />
+    <ClCompile Include="..\private\CAI_SandBack_Hit.cpp" />
     <ClCompile Include="..\Private\CBarricade.cpp" />
     <ClCompile Include="..\Private\CBloodOverlay.cpp" />
     <ClCompile Include="..\Private\CBounce_WarHammer.cpp" />
@@ -543,6 +546,7 @@
     <ClCompile Include="..\Private\CSprint_Loop_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CSprint_Loop_WarHammer.cpp" />
     <ClCompile Include="..\private\CState_Blendable.cpp" />
+    <ClCompile Include="..\private\CState_Hit.cpp" />
     <ClCompile Include="..\Private\CStop_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CStop_WarHammer.cpp" />
     <ClCompile Include="..\Private\CStop_Valkyrie_L.cpp" />

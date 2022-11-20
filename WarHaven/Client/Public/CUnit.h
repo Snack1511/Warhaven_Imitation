@@ -66,6 +66,9 @@ public:
 		_float fSprintJumpSpeed = 10.F;
 		_float fSprintSpeed = 7.f;
 		_float fJumpPower = 4.5f;
+
+
+		_float	fAttackDamage = 50.f;
 	};
 	struct UNIT_MODEL_DATA
 	{
@@ -74,18 +77,18 @@ public:
 	};
 
 public:
-	enum UNITCOLLIDER{BODY, HEAD, WEAPON_L, WEAPON_R, UNITCOLLIDER_END};
-	enum WEAPONCOLLIDER{ WEAPONCOLLIDER_END = 3};
-	enum COOL_TYPE {SKILL1, COOL_END};
+	enum UNITCOLLIDER { BODY, HEAD, WEAPON_L, WEAPON_R, GUARD, UNITCOLLIDER_END };
+	enum WEAPONCOLLIDER { WEAPONCOLLIDER_END = 3 };
+	enum COOL_TYPE { SKILL1, COOL_END };
 
 protected:
 	CUnit();
 	virtual ~CUnit();
 
 public:
-	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType);
-	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType);
-	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType);
+	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
+	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
+	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 
 public: /* Physics */
 	_bool		Is_Air();
@@ -97,9 +100,12 @@ public:
 	void	Set_FollowCam(CCamera_Follow* pFollowCam) { m_pFollowCam = pFollowCam; }
 	/* 들고있는 FollowCam에 Shake 넣기. 1인자 : 강도, 2인자 : 시간 (시간이 짧을 수록 강도를 조금만 줘도 세게 흔들림)*/
 	void	Shake_Camera(_float fPower, _float fTime);
+	/* 카메라 위치 조정 */
+	void	Lerp_Camera(const _uint& iCameraLerpType);
 
 public:
-	virtual void	On_PlusHp(_float fHp);
+	_float			Calculate_Damage(_bool bHeadShot, _bool bGuard);
+	virtual _bool	On_PlusHp(_float fHp);
 
 
 public:
@@ -107,6 +113,8 @@ public:
 	void		On_Use(COOL_TYPE eType) { m_fCoolAcc[eType] = m_fCoolTime[eType]; }
 
 	_bool		Is_Weapon_R_Collision();
+	/* 캐릭터에 부딪힌거 체크 */
+	_bool		Is_Weapon_R_CCT_Collision();
 
 
 public:
@@ -117,16 +125,14 @@ public:
 	void	Set_TargetUnit(CUnit* pUnit) { m_pTargetUnit = pUnit; }
 
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
-	CState*	Get_CurStateP() { return m_pCurState; }
+	CState* Get_CurStateP() { return m_pCurState; }
 
 	_float4	Get_FollowCamLook();
 	_float4	Get_FollowCamRight();
 
-
 public:
 	void SetUp_TrailEffect(WEAPON_TYPE eWeapon);
 	void TurnOn_TrailEffect(_bool bOn);
-
 
 public:
 	void	Enter_State(STATE_TYPE eType, void* pData = nullptr);
@@ -152,7 +158,7 @@ public:
 
 public:
 	// CGameObject을(를) 통해 상속됨
-	
+
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
 	virtual HRESULT Start() override;
@@ -171,15 +177,16 @@ protected:
 
 public:
 	void	Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable);
+	void	Enable_GuardCollider(_bool bEnable);
 
 	struct UNIT_COLLIDERDESC
 	{
 		_float fRadius = 0.f;
 		_float4 vOffsetPos = ZERO_VECTOR;
 		_uint	eColType;
-		
+
 	};
-	
+
 	struct UNIT_COLLIDREINFODESC
 	{
 		_float4x4 matModelTransformation = DEFAULT_TRANS_MATRIX;
@@ -188,8 +195,12 @@ public:
 		_bool	bEnable = true;
 	};
 
-	void	SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, 
+	virtual void	SetUp_Colliders(_bool bPlayer);
+	void	SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc,
 		_uint iNumCollider = 1, _float4x4 matTransformation = DEFAULT_TRANS_MATRIX, _bool bEnable = true, CHierarchyNode* pRefBone = nullptr);
+
+public:
+	virtual void SetUp_HitStates(_bool bPlayer);
 
 
 protected:
@@ -201,9 +212,9 @@ protected:
 	UNIT_MODEL_DATA	m_tModelData;
 
 protected:
-	CModel*			m_pModelCom = nullptr;
-	CAnimator*		m_pAnimator = nullptr;
-	CPhysics*		m_pPhysics = nullptr;
+	CModel* m_pModelCom = nullptr;
+	CAnimator* m_pAnimator = nullptr;
+	CPhysics* m_pPhysics = nullptr;
 
 	UNIT_STATUS		m_tUnitStatus;
 	STATE_TYPE		m_eCurState = STATE_END;
@@ -222,12 +233,25 @@ protected:
 	CCamera_Follow* m_pFollowCam = nullptr;
 
 protected:
+	/* Hit 상태 넣어놓기 */
+	STATE_TYPE		m_eHitState = STATE_END;
+	STATE_TYPE		m_eDeathState = STATE_END;
+	/* 가드 성공시 상태 */
+	STATE_TYPE		m_eGuardState = STATE_END;
+
+	/* 가드 깨진 상태*/
+	STATE_TYPE		m_eGuardBreakState = STATE_END;
+
+	_float			m_fHitDelayAcc = 0.f;
+	_float			m_fHitDelayTime = 0.1f;
+
+protected:
 	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);
 	virtual	HRESULT	SetUp_Navigation(CCell* pStartCell);
 
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
-	
+
 };
 END

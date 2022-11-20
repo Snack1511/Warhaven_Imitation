@@ -15,7 +15,7 @@ struct DEFAULTFOLLOWDESC
 	_float	fDefaultFOV = 0.785398f;
 	//_float	fDefaultDistance = 2.5f;
 	_float	fDefaultDistance = 3.3f;
-	_float4 vDefaultOffset = _float4(0.7f, 1.5f, 0.f, 1.f);
+	_float4 vDefaultOffset = _float4(0.6f, 1.5f, 0.f, 1.f);
 	_float	fDefaultLerpTime = 1.5f;
 	_float	fMaxDistance = 1.5f;
 };
@@ -44,7 +44,11 @@ class CScript_FollowCam final
 
 public:
 	enum CAMERA_LERP_TYPE {
-		CAMERA_LERP_DEFAULT, 
+		CAMERA_LERP_DEFAULT,
+		CAMERA_LERP_MOVE,
+		CAMERA_LERP_SPRINT,
+
+
 		CAMERA_LERP_RUN, 
 		CAMERA_LERP_DASH, 
 		CAMERA_LERP_BACKDASH, 

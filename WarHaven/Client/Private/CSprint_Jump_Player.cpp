@@ -67,6 +67,9 @@ HRESULT CSprint_Jump_Player::Initialize()
 
 void CSprint_Jump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_SPRINT);
+
+
 	pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower + 0.5f);
 
     CTransform* pMyTransform = pOwner->Get_Transform();
@@ -140,6 +143,8 @@ STATE_TYPE CSprint_Jump_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CSprint_Jump_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+
 }
 
 STATE_TYPE CSprint_Jump_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

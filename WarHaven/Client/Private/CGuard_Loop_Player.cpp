@@ -50,6 +50,8 @@ HRESULT CGuard_Loop_Player::Initialize()
 
 void CGuard_Loop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	pOwner->Enable_GuardCollider(true);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -66,6 +68,8 @@ STATE_TYPE CGuard_Loop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CGuard_Loop_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+	pOwner->Enable_GuardCollider(false);
+
 }
 
 STATE_TYPE CGuard_Loop_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

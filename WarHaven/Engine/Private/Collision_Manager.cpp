@@ -188,6 +188,8 @@ void CCollision_Manager::Collider_GroupUpdate(const _uint& _eLeft, const _uint& 
 
 	map<_ulonglong, _bool>::iterator iter;
 
+	_float4 vHitPos = ZERO_VECTOR;
+
 	for (auto LeftIter = LeftList.begin(); LeftIter != LeftList.end(); ++LeftIter)
 	{
 		CGameObject* pLeftOwner = (*LeftIter)->Get_Owner();
@@ -207,8 +209,8 @@ void CCollision_Manager::Collider_GroupUpdate(const _uint& _eLeft, const _uint& 
 			{
 				if (!(*LeftIter)->Is_Valid() || !(*RightIter)->Is_Valid()) // 둘중 하나가 유효하지 않을 경우
 				{
-					pLeftOwner->CallBack_CollisionExit(pRightOwner, _eRight);
-					pRightOwner->CallBack_CollisionExit(pLeftOwner, _eLeft);
+					pLeftOwner->CallBack_CollisionExit(pRightOwner, _eRight, _eLeft);
+					pRightOwner->CallBack_CollisionExit(pLeftOwner, _eLeft, _eRight);
 					(*LeftIter)->Set_Col(false);
 					(*RightIter)->Set_Col(false);
 
@@ -216,15 +218,15 @@ void CCollision_Manager::Collider_GroupUpdate(const _uint& _eLeft, const _uint& 
 				}
 				else // 둘 다 유효하긴 함
 				{
-					if (Is_Collision((*LeftIter), (*RightIter))) // true면 stay
+					if (Is_Collision((*LeftIter), (*RightIter), &vHitPos)) // true면 stay
 					{
-						pLeftOwner->CallBack_CollisionStay(pRightOwner, _eRight);
-						pRightOwner->CallBack_CollisionStay(pLeftOwner, _eLeft);
+						pLeftOwner->CallBack_CollisionStay(pRightOwner, _eRight, _eLeft);
+						pRightOwner->CallBack_CollisionStay(pLeftOwner, _eLeft, _eRight);
 					}
 					else
 					{
-						pLeftOwner->CallBack_CollisionExit(pRightOwner, _eRight);
-						pRightOwner->CallBack_CollisionExit(pLeftOwner, _eLeft);
+						pLeftOwner->CallBack_CollisionExit(pRightOwner, _eRight, _eLeft);
+						pRightOwner->CallBack_CollisionExit(pLeftOwner, _eLeft, _eRight);
 						(*LeftIter)->Set_Col(false);
 						(*RightIter)->Set_Col(false);
 
@@ -238,11 +240,11 @@ void CCollision_Manager::Collider_GroupUpdate(const _uint& _eLeft, const _uint& 
 					continue;
 				else // 둘 다 유효
 				{
-					if (Is_Collision((*LeftIter), (*RightIter))) // true면 Enter
+					if (Is_Collision((*LeftIter), (*RightIter), &vHitPos)) // true면 Enter
 					{
 
-						pLeftOwner->CallBack_CollisionEnter(pRightOwner, _eRight);
-						pRightOwner->CallBack_CollisionEnter(pLeftOwner, _eLeft);
+						pLeftOwner->CallBack_CollisionEnter(pRightOwner, _eRight, _eLeft, vHitPos);
+						pRightOwner->CallBack_CollisionEnter(pLeftOwner, _eLeft, _eRight, vHitPos);
 						(*LeftIter)->Set_Col(true);
 						(*RightIter)->Set_Col(true);
 
@@ -254,11 +256,11 @@ void CCollision_Manager::Collider_GroupUpdate(const _uint& _eLeft, const _uint& 
 	}
 }
 
-bool CCollision_Manager::Is_Collision(CCollider* _pLeft, CCollider* _pRight)
+bool CCollision_Manager::Is_Collision(CCollider* _pLeft, CCollider* _pRight, _float4* pOutHitPos)
 {
 	if (_pLeft->Get_ColType() == CT_SPHERE && _pRight->Get_ColType() == CT_SPHERE)
 	{
-		return Is_SphereCollision(_pLeft, _pRight);
+		return Is_SphereCollision(_pLeft, _pRight, pOutHitPos);
 	}
 	else if (_pLeft->Get_ColType() == CT_SPHERE && _pRight->Get_ColType() == CT_BOX)
 	{
@@ -272,6 +274,8 @@ bool CCollision_Manager::Is_Collision(CCollider* _pLeft, CCollider* _pRight)
 	{
 		return Is_OBBCollision(_pLeft, _pRight);
 	}
+
+	
 }
 
 bool CCollision_Manager::Is_OBBCollision(CCollider* _pLeft, CCollider* _pRight)
@@ -434,8 +438,10 @@ bool CCollision_Manager::Is_OBBCollision(CCollider* _pLeft, CCollider* _pRight)
 	return true;
 }
 
-bool CCollision_Manager::Is_SphereCollision(CCollider* _pLeft, CCollider* _pRight)
+bool CCollision_Manager::Is_SphereCollision(CCollider* _pLeft, CCollider* _pRight, _float4* pOut)
 {
+	//충돌 지점 알기
+
 	list<COL_INFO_SPHERE> LeftInfo = ((CCollider_Sphere*)_pLeft)->Get_ColInfo();
 	list<COL_INFO_SPHERE> RightInfo = ((CCollider_Sphere*)_pRight)->Get_ColInfo();
 	
@@ -452,6 +458,15 @@ bool CCollision_Manager::Is_SphereCollision(CCollider* _pLeft, CCollider* _pRigh
 
 			if (Dist <= LeftRadius + RightRadius)
 			{
+				//충돌지점 알라면
+				//어케알지? 
+				
+				_float4 vDir = CenterDiff.Normalize();
+
+				_float4 vHitPos = Leftelem.vFinalPos + vDir * Dist * 0.5f;
+				*pOut = vHitPos;
+
+
 				return true;
 			}
 

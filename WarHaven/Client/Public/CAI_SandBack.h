@@ -20,7 +20,7 @@ public:
 	static CAI_SandBack* Create();
 
 public:
-	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType);
+	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos);
 
 public:
 	// CState을(를) 통해 상속됨

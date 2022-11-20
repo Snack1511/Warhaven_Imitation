@@ -21,6 +21,8 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CScript_FollowCam.h"
+
 #include "MeshContainer.h"
 
 #include "CState.h"
@@ -31,6 +33,7 @@
 #include "CBoneCollider.h"
 
 #include "CCamera_Follow.h"
+#include "CState_Hit.h"
 
 
 #define PHYSX_ON
@@ -45,16 +48,124 @@ CUnit::~CUnit()
 	SAFE_DELETE(m_pCurState);
 }
 
-void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType)
+void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-	int i = 0;
+	//내 충돌체에 대해 바디샷 인지 헤드샷 인지 판정
+	CUnit* pOtherUnit = nullptr;
+
+#ifdef _DEBUG
+	pOtherUnit = dynamic_cast<CUnit*>(pOtherObj);
+#else
+	pOtherUnit = static_cast<CUnit*>(pOtherObj);
+
+#endif // _DEBUG
+
+	if (!pOtherUnit)
+		return;
+	
+	/* 이미 hit 상태면 delay 걸기 */
+	if (m_fHitDelayAcc > 0.f)
+		return;
+
+	m_fHitDelayAcc = m_fHitDelayTime;
+
+	STATE_TYPE	eFinalHitState = STATE_END;
+	_bool		bGuardSuccess = false;
+
+	UNIT_STATUS& tOtherStatus = pOtherUnit->Get_Status();
+
+	CState::HIT_INFO tOtherHitInfo = pOtherUnit->Get_CurStateP()->Get_HitInfo();
+
+	tOtherHitInfo.vDir = (m_pTransform->Get_World(WORLD_POS) - vHitPos);
+	tOtherHitInfo.vDir.y = 0.f;
+	tOtherHitInfo.vDir.Normalize();
+	
+	
+	//상대 위치 계산
+	_float4 vOtherDir = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
+	_float4 vCurLook = m_pTransform->Get_World(WORLD_LOOK);
+
+	//양수면 앞임.
+	if (vCurLook.Dot(vOtherDir) > 0.f)
+		tOtherHitInfo.bFace = true;
+	else
+		tOtherHitInfo.bFace = false;
+
+	switch (eMyColType)
+	{
+	case COL_PLAYERGUARD:
+	case COL_ENEMYGUARD:
+	{
+		if (tOtherHitInfo.bFace)
+		{
+			//일단 가드는 성공
+			if (eOtherColType == COL_PLAYERGUARDBREAK || eOtherColType == COL_ENEMYGUARDBREAK)
+			{
+				//가드 브레이크공격이 들어오면 
+				eFinalHitState = m_eGuardBreakState;
+			}
+			/* 가드 성공 */
+			else
+			{
+				eFinalHitState = m_eGuardState;
+				bGuardSuccess = true;
+
+			}
+		}
+	}
+
+	break;
+
+	case COL_PLAYERHITBOX_BODY:
+	case COL_ENEMYHITBOX_BODY:
+		eFinalHitState = m_eHitState;
+
+#ifdef _DEBUG
+		cout << " 바디샷 " << endl;
+#endif // 
+
+
+		break;
+
+
+	case COL_PLAYERHITBOX_HEAD:
+	case COL_ENEMYHITBOX_HEAD:
+		eFinalHitState = m_eHitState;
+		tOtherHitInfo.bHeadShot = true;
+
+#ifdef _DEBUG
+		cout << " 헤드샷 " << endl;
+#endif // 
+		
+
+		break;
+
+	default:
+		break;
+	}
+
+
+	if (eFinalHitState == STATE_END)
+		return;
+
+
+	if (On_PlusHp(pOtherUnit->Calculate_Damage(tOtherHitInfo.bHeadShot, bGuardSuccess)))
+	{
+		Enter_State(eFinalHitState, &tOtherHitInfo);
+	}
+	else
+	{
+		/* 체력 0 이하로 내려간 경우 */
+
+	}
+
 }
 
-void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eColType)
+void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
 }
 
-void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eColType)
+void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
 	int i = 0;
 }
@@ -92,19 +203,37 @@ void CUnit::Shake_Camera(_float fPower, _float fTime)
 	m_pFollowCam->Start_ShakingCamera(fPower, fTime);
 }
 
-void CUnit::On_PlusHp(_float fHp)
+void CUnit::Lerp_Camera(const _uint& iCameraLerpType)
+{
+	GET_COMPONENT_FROM(m_pFollowCam, CScript_FollowCam)->Start_LerpType((CScript_FollowCam::CAMERA_LERP_TYPE)iCameraLerpType);
+}
+
+_float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
+{
+#define HEADSHOTRATIO 1.5f
+#define GUARDSUCCESS 0.1f
+
+	//헤드샷이면 1.5배
+	return m_tUnitStatus.fAttackDamage* m_pCurState->Get_DamagePumping() 
+		* (bHeadShot) ? HEADSHOTRATIO : 1.f
+		* (bGuard) ? GUARDSUCCESS : 1.f;
+}
+
+_bool CUnit::On_PlusHp(_float fHp)
 {
 	m_tUnitStatus.fHP += fHp;
 
 	if (m_tUnitStatus.fHP <= 0.f)
 	{
 		m_tUnitStatus.fHP = 0.f;
-		//On_Die();
+		return false;
 	}
 	else if (m_tUnitStatus.fHP >= m_tUnitStatus.fMaxHP)
 	{
 		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	}
+
+	return true;
 }
 
 _bool CUnit::Is_Weapon_R_Collision()
@@ -113,6 +242,14 @@ _bool CUnit::Is_Weapon_R_Collision()
 		return false;
 
 	return m_pWeaponCollider_R->Is_Collision();
+}
+
+_bool CUnit::Is_Weapon_R_CCT_Collision()
+{
+	if (!m_pWeaponCollider_R)
+		return false;
+
+	return m_pWeaponCollider_R->Is_CCT_Collision();
 }
 
 void CUnit::Enter_State(STATE_TYPE eType, void* pData)
@@ -187,7 +324,7 @@ HRESULT CUnit::Initialize_Prototype()
 	//PhysX캐릭터 : 캐릭터 본체
 	CPhysXCharacter::PHYSXCCTDESC tDesc;
 	tDesc.fRadius = 0.25f;
-	tDesc.fHeight = 1.0f;
+	tDesc.fHeight = 1.5f;
 	CPhysXCharacter* pPhysXCharacter = CPhysXCharacter::Create(CP_BEFORE_TRANSFORM, tDesc);
 	Add_Component(pPhysXCharacter);
 #endif // PHYSX_OFF
@@ -246,9 +383,9 @@ HRESULT CUnit::Start()
 	m_pPhysics->Set_NaviOn();
 #endif
 
-	CallBack_CollisionEnter += bind(&CUnit::Unit_CollisionEnter, this, placeholders::_1, placeholders::_2);
-	CallBack_CollisionStay += bind(&CUnit::Unit_CollisionStay, this, placeholders::_1, placeholders::_2);
-	CallBack_CollisionExit += bind(&CUnit::Unit_CollisionExit, this, placeholders::_1, placeholders::_2);
+	CallBack_CollisionEnter += bind(&CUnit::Unit_CollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+	CallBack_CollisionStay += bind(&CUnit::Unit_CollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
+	CallBack_CollisionExit += bind(&CUnit::Unit_CollisionExit, this, placeholders::_1, placeholders::_2, placeholders::_3);
 
 
 	SetUp_TrailEffect(m_tUnitStatus.eWeapon);
@@ -339,6 +476,31 @@ void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 	}
 }
 
+void CUnit::Enable_GuardCollider(_bool bEnable)
+{
+	if (!m_pUnitCollider[GUARD])
+		return;
+
+	if (bEnable)
+	{
+		/* 다른건 꺼놓기*/
+		ENABLE_COMPONENT(m_pUnitCollider[GUARD]);
+		DISABLE_COMPONENT(m_pUnitCollider[HEAD]);
+		DISABLE_COMPONENT(m_pUnitCollider[BODY]);
+	}
+	else
+	{
+		DISABLE_COMPONENT(m_pUnitCollider[GUARD]);
+		ENABLE_COMPONENT(m_pUnitCollider[HEAD]);
+		ENABLE_COMPONENT(m_pUnitCollider[BODY]);
+	}
+
+}
+
+void CUnit::SetUp_Colliders(_bool bPlayer)
+{
+}
+
 void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, _uint iNumCollider, _float4x4 matTransformation, _bool bEnable, CHierarchyNode* pRefBone)
 {
 	if (m_pUnitCollider[ePartType])
@@ -346,6 +508,9 @@ void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrCol
 
 	m_pUnitCollider[ePartType] = m_pUnitCollider[ePartType] = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, arrColliderDesc[0].fRadius, arrColliderDesc[0].eColType, arrColliderDesc[0].vOffsetPos,
 		matTransformation, pRefBone);
+
+	if (!m_pUnitCollider[ePartType])
+		return;
 
 	Add_Component(m_pUnitCollider[ePartType]);
 
@@ -355,6 +520,12 @@ void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrCol
 	{
 		m_pUnitCollider[ePartType]->Add_Collider(arrColliderDesc[i].fRadius, arrColliderDesc[i].vOffsetPos);
 	}
+}
+
+void CUnit::SetUp_HitStates(_bool bPlayer)
+{
+	if (!bPlayer)
+		m_eHitState = STATE_HIT_TEST_ENEMY;
 }
 
 _float4 CUnit::Get_FollowCamLook()
@@ -511,6 +682,11 @@ void CUnit::My_Tick()
 	{
 		Enter_State(eNewState);
 	}
+
+	if (m_fHitDelayAcc > 0.f)
+		m_fHitDelayAcc -= fDT(0);
+	else
+		m_fHitDelayAcc = 0.f;
 }
 
 void CUnit::My_LateTick()

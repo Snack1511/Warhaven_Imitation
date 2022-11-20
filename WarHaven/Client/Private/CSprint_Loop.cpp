@@ -65,6 +65,9 @@ HRESULT CSprint_Loop::Initialize()
 
 void CSprint_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_SPRINT);
+
+
     if (ePrevType == STATE_SPRINT_BEGIN_PLAYER || ePrevType == STATE_SPRINT_LOOP_PLAYER)
         m_fInterPolationTime = 0.f;
 
@@ -156,6 +159,8 @@ void CSprint_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+
     /* 할거없음 */
 }
 

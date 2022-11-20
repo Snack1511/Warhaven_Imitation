@@ -24,7 +24,6 @@ public:
 
 public:
 	// CGameObject을(를) 통해 상속됨
-
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
 	virtual HRESULT Start() override;
@@ -32,6 +31,7 @@ public:
 protected:
 	virtual	HRESULT	SetUp_InstanceModel(wstring strMeshPath,wstring strInstnacePath);
 	virtual	HRESULT	SetUp_InstanceModel(wstring strMeshPath, _int iNumInstance, VTXINSTANCE* pInstanceVTX);
+
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;

@@ -52,6 +52,9 @@ HRESULT CSprintAttack_Player_Begin::Initialize()
 
 void CSprintAttack_Player_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_SPRINT);
+
+
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
@@ -90,6 +93,7 @@ STATE_TYPE CSprintAttack_Player_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CSprintAttack_Player_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
     /* 할거없음 */
 }
 

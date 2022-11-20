@@ -282,56 +282,15 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	//	return E_FAIL;
 
 
-	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
-		2. 뒤로가는 키는 Walk로 가게해라 뒤로가는 RUn은 없다
-		3. Run 끝날때 모션
-		4. Walk
-		5. 공격 마우스 시야에 따라
-
-			-
-			절댓값이
-			0.9~1 중단
-
-			- 양수인지 음수인지 확인
-
-			양수일때 0.9보다 작으면 올려베기
-			음수일때
-			0보다 작으면 내려베기
-
-
-			6. 가드브레이크 E키로 변경*/
-
-
-
-
-
-
-
-
-
-			/*fColRadius = 1.f;
-			pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_ENEMYHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
-			fColRadius = 0.3f;
-			pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, fColRadius, COL_ENEMYHITBOX_HEAD, _float4(0.f, 1.75f, 0.f), DEFAULT_TRANS_MATRIX, GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_Head"));
-			fColRadius = 0.5f;*/
-			/*pTestEnemyWarrior->SetUp_UnitCollider(CUnit::WEAPON_R, fColRadius, COL_ENEMYATTACK, _float4(0.f, 0.f, 50.f), DEFAULT_TRANS_MATRIX,
-				GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_R_WP1"));*/
-
-
-
-				//1. SpearMan
-
-
-
 	return S_OK;
 }
 
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	 /*function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	 function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	 CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
-	 m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);*/
+	 m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
 
 
 
@@ -423,6 +382,10 @@ void CLevel_Test::Col_Check()
 	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERHITBOX_HEAD);
 	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_BODY);
 	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_HEAD);
+
+
+	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYGUARD);
+	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERGUARD);
 }
 
 HRESULT CLevel_Test::SetUp_Warrior_TH()
@@ -443,46 +406,15 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 	if (!pTestWarriorUnit)
 		return E_FAIL;
 
-
-
 	pTestWarriorUnit->Initialize();
 
 	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
-	pTestWarriorUnit->Reserve_State(STATE_IDLE_PLAYER_R);
+	pTestWarriorUnit->Reserve_State(STATE_JUMPFALL_PLAYER_R);
 
-
-
-	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
-
-
-	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
-		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
-	};
-
-	pTestWarriorUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
-
-	tUnitColDesc[0].fRadius = 0.4f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
-
-
-	pTestWarriorUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("ob_Head"));
-
-	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[3] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.5f, _float4(0.f, 0.f, -80.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -135.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -190.f),COL_PLAYERATTACK }
-	};
-
-	pTestWarriorUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestWarriorUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
+	pTestWarriorUnit->SetUp_Colliders(true);
 
 	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
-	_float4 vPlayerPos = _float4(20.f, 2.f, 20.f);
+	_float4 vPlayerPos = _float4(20.f, 5.f, 20.f);
 	pTestWarriorUnit->Teleport_Unit(vPlayerPos);
 	/* Game Collider */
 
@@ -495,21 +427,9 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 	pTestEnemyWarrior->Set_TargetUnit(pTestWarriorUnit);
 	pTestEnemyWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
 
-	CUnit::UNIT_COLLIDREINFODESC tEnemyUnitInfoDesc;
-	CUnit::UNIT_COLLIDERDESC tEnemyUnitColDesc[1];
 
-	tEnemyUnitColDesc[0].fRadius = 1.f;
-	tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, tEnemyUnitColDesc->fRadius * 0.5f, 0.f);
-	tEnemyUnitColDesc[0].eColType = COL_ENEMYHITBOX_BODY;
-
-	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, tEnemyUnitColDesc);
-
-	tEnemyUnitColDesc[0].fRadius = 0.3f;
-	tEnemyUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tEnemyUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
-
-
-	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, tEnemyUnitColDesc);
+	pTestEnemyWarrior->SetUp_Colliders(false);
+	pTestEnemyWarrior->SetUp_HitStates(false);
 
 	Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
 

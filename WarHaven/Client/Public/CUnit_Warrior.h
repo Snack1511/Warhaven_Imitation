@@ -16,6 +16,10 @@ public:
 	static	CUnit_Warrior* Create(const UNIT_MODEL_DATA& tUnitModelData);
 
 public:
+	virtual void	SetUp_Colliders(_bool bPlayer);
+
+
+public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
