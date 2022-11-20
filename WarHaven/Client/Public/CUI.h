@@ -26,9 +26,12 @@ public:
 
 public:
 	_float4 Get_Pos() { return m_vPosition; }
+	_float Get_PosX() { return m_vPosition.x; }
+	_float Get_PosY() { return m_vPosition.y; }
 	void Set_Pos(_float4 vPos);
 	void Set_Pos(_float fX, _float fY);
 	void Set_PosX(_float fX);
+	void Set_PosY(_float fY);
 
 public:
 	_float4 Get_Scale() { return m_vScale; }
@@ -61,7 +64,7 @@ public:
 public:
 	_float Get_Sort() { return m_vPosition.z; }
 	void Set_Sort(_float value);
-	
+
 public:
 	CDelegate<const _uint&>		CallBack_PointEnter;
 	CDelegate<const _uint&>		CallBack_PointStay;

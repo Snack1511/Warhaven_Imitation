@@ -119,6 +119,12 @@ void CUI::Set_PosX(_float fX)
 	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
 }
 
+void CUI::Set_PosY(_float fY)
+{
+	m_vPosition.y= fY;
+	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
+}
+
 void CUI::Set_Scale(_float value)
 {
 	m_vScale = value;
