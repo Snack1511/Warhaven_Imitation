@@ -259,6 +259,9 @@ void CWindow_Effect::Show_MainList()
 
 	if (ImGui::Button("DELETE_ALL"))
 	{
+		for(_uint i = 0; i < m_vecEffects.size(); ++i)
+			DISABLE_GAMEOBJECT(m_vecEffects[i].pEffect);
+
 		m_vecEffects.clear();
 		m_iCurrentIdx = 9999;
 	}
@@ -1440,6 +1443,7 @@ void CWindow_Effect::Save_CurEffect()
 		savePath += m_vecEffects[m_iCurrentIdx].strName;
 		savePath += "_Preset.bin";
 	}
+
 	
 	ofstream	writeFile(savePath, ios::binary);
 
