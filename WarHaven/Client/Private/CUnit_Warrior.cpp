@@ -152,6 +152,7 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 
 	m_fCoolAcc[SKILL3] = 0.f;
+	m_tUnitStatus.eClass = WARRIOR;
 
 	return S_OK;
 }

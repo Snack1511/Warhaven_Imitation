@@ -38,6 +38,7 @@ protected:
 
 public:
 	static	CEffect* Create_Effect_FromBinFile(string strFileKey);
+	static	CEffect* Create_EffectPreset_FromBinFile(string strFileKey);
 
 public:
 	void	Set_EffectFlag(_byte bFlag) { m_bEffectFlag = bFlag; }

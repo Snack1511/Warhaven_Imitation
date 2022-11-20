@@ -128,6 +128,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
 
+	m_tUnitStatus.eClass = ENGINEER;
 	m_tUnitStatus.fDashAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintJumpSpeed *= 0.8f;

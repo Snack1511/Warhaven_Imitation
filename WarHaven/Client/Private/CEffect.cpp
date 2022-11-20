@@ -114,6 +114,85 @@ CEffect* CEffect::Create_Effect_FromBinFile(string strFileKey)
 	return pNewEffect;
 }
 
+CEffect* CEffect::Create_EffectPreset_FromBinFile(string strFileKey)
+{
+	CEffect* pNewEffect = nullptr;
+
+	string savePath = "../bin/effectsPreset/";
+	savePath += strFileKey;
+	savePath += ".bin";
+
+	ifstream	readFile(savePath, ios::binary);
+
+	if (!readFile.is_open())
+	{
+		Call_MsgBox(L"Load 실패 ??!?!");
+		return nullptr;
+	}
+	EFFECT_TYPE	eType = CEffect::MESH;
+	readFile.read((char*)&eType, sizeof(_uint));
+
+	switch (eType)
+	{
+	case Client::CEffect::MESH:
+		pNewEffect = CDefault_Effect::Create(&readFile);
+		if (!pNewEffect)
+		{
+			Call_MsgBox(L"Failed to Initialize_Prototype : CDefault_Effect");
+			SAFE_DELETE(pNewEffect);
+			return nullptr;
+		}
+
+		{
+			if (FAILED(pNewEffect->CEffect::Initialize_Prototype()))
+			{
+				Call_MsgBox(L"Failed to Initialize_Prototype : CDefault_Effect");
+				SAFE_DELETE(pNewEffect);
+				return nullptr;
+			}
+
+			CModel* pModelCom = GET_COMPONENT_FROM(pNewEffect, CModel);
+			//Roughness : 노이즈
+			pModelCom->Change_Texture(0, aiTextureType_REFLECTION, pNewEffect->m_wstrMaskMapPath);
+			pModelCom->Change_Texture(0, 1, pNewEffect->m_wstrColorMapPath);
+			pModelCom->Change_Texture(0, aiTextureType_DIFFUSE_ROUGHNESS, pNewEffect->m_wstrNoiseMapPath);
+
+		}
+
+		break;
+
+	case Client::CEffect::PARTICLE:
+		pNewEffect = CRectEffects::Create(&readFile);
+		if (!pNewEffect)
+		{
+			Call_MsgBox(L"Failed to Create : CRectEffects");
+			return nullptr;
+		}
+		break;
+
+	case Client::CEffect::ANIMPARTICLE:
+		pNewEffect = CRectEffects::Create_Anim(&readFile);
+		if (!pNewEffect)
+		{
+			Call_MsgBox(L"Failed to Create : CRectEffects");
+			return nullptr;
+		}
+		break;
+
+	case Client::CEffect::EFFECT_END:
+		break;
+
+	default:
+		break;
+	}
+
+	readFile.close();
+	pNewEffect->m_hcMyCode = Convert_ToHash(CFunctor::To_Wstring(strFileKey));
+
+
+	return pNewEffect;
+}
+
 void CEffect::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 {
 	m_pFollowTarget = pGameObject;

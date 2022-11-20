@@ -51,22 +51,27 @@ private:
 	TREE_DATA			m_MeshRootNode;
 	TREE_DATA			m_TextureRootNode;
 	TREE_DATA			m_EffectRootNode;
+	TREE_DATA			m_PresetRootNode;
 
 
 	string				m_CurSelectedMeshFilePath;
 	string				m_CurSelectedTextureFilePath;
 	string				m_CurSelectedEffectFileKey;
 
+private:
+	_bool				m_bEffectPath = true;
+
 
 private:
 	void	Show_MainList();
 	void	Show_EffectTab();
 	void	Show_ParticleTab();
-
+	void	Show_Preset();
 
 private:
 	void	Save_CurEffect();
 	void	Load_SelectedEffect();
+	void	Load_SelectedPreset();
 
 
 private:
