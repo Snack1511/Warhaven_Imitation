@@ -306,6 +306,9 @@ PS_OUT PS_ANIMATION_DISSOLVE_MAIN(PS_IN In)
 	vector vMaskDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	Out.vDiffuse = vMaskDesc; //마스크의 색상까지 가져옴
+	Out.vDiffuse.xyz = g_vPlusColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
+
 
 	if (g_bBlackBG)
 	{
@@ -361,7 +364,7 @@ PS_OUT PS_BLACKBACKGROUND_TEXTURE(PS_IN In)
 	//Only masking
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vDiffuse.a = (Out.vDiffuse.r);
+	Out.vDiffuse.a = Out.vDiffuse.r;
 	Out.vDiffuse.xyz += In.vColor.xyz;
 
 	Out.vDiffuse.a *= In.vColor.a;
@@ -430,6 +433,7 @@ PS_OUT PS_ANIMATION_ALPHACOLOR_MAIN(PS_IN In)
 
 	return Out;
 }
+
 
 technique11 DefaultTechnique
 {

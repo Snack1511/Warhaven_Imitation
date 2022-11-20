@@ -174,8 +174,8 @@ void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 	{
 		pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
-		pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
 		pShader->Set_RawValue("g_bBlackBG", &m_bBlackBackGround, sizeof(_bool));
+		pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
 	}
 
 	pShader->Set_RawValue("g_fDiscardPower", &m_fDiscardPower, sizeof(_float));
@@ -361,26 +361,26 @@ HRESULT CRectEffects::Initialize()
 
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION)
 		{
-			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
+			//m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA)
 		{
-			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
+			//m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 
 			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE)
 		{
-			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
+			//m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 
 			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
 		}
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 		{
-			m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
+			//m_pInstancingDatas[i].vFadeInTargetScale.y = m_pInstancingDatas[i].vFadeInTargetScale.x;
 			m_pInstancingDatas[i].fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 
 			m_pInstancingDatas[i].fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
@@ -599,6 +599,19 @@ void CRectEffects::My_Tick()
 				vRotLook = vLook.MultiplyNormal(matRot);
 				vRotRight = vRight.MultiplyNormal(matRot);
 				vRotUp = vUp.MultiplyNormal(matRot);
+			}
+			else if(m_pInstancingDatas[i].fTurnSpeed == 0.f)
+			{
+				if (CURVE_LINEAR == m_eCurveType)
+				{
+					_float4x4 matRot;
+
+					matRot = XMMatrixRotationAxis(vCamLook.XMLoad(), ToRadian(m_tCreateData.fCurveAngle));
+
+					vRotLook = vLook.MultiplyNormal(matRot);
+					vRotRight = vRight.MultiplyNormal(matRot);
+					vRotUp = vUp.MultiplyNormal(matRot);
+				}
 			}
 
 

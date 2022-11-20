@@ -1427,7 +1427,7 @@ void CWindow_Effect::Show_Preset()
 	}
 
 	ImGui::Text("Preset_Bin_Files_List");
-	if (ImGui::BeginListBox("Preset_Bin_Files_List", ImVec2(200.f, 300.f)))
+	if (ImGui::BeginListBox("Preset_Bin_Files_List", ImVec2(250.f, 300.f)))
 	{
 		Show_TreeData_Effect(m_PresetRootNode);
 
@@ -1455,7 +1455,12 @@ void CWindow_Effect::Save_CurEffect()
 	{
 		savePath = "../bin/EffectsPreset/";
 		savePath += m_vecEffects[m_iCurrentIdx].strName;
-		savePath += "_Preset.bin";
+
+		if(0 == m_vecEffects[m_iCurrentIdx].iEffectType)
+			savePath += "_MeshPreset.bin";
+		else
+			savePath += "_ParticlePreset.bin";
+
 	}
 
 	
