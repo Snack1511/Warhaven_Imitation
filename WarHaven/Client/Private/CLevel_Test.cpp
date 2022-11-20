@@ -275,15 +275,18 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	/*if (FAILED(SetUp_SpearMan_TH()))
 	return E_FAIL;*/
 
-	/*if (FAILED(SetUp_Valkyrie_TH()))
+	/*if (FAILED(SetUp_WarHammer_TH()))
 		return E_FAIL;*/
 
+	//if (FAILED(SetUp_Valkyrie_TH()))
+	//	return E_FAIL;
 
-		/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
-			2. 뒤로가는 키는 Walk로 가게해라 뒤로가는 RUn은 없다
-			3. Run 끝날때 모션
-			4. Walk
-			5. 공격 마우스 시야에 따라
+
+	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
+		2. 뒤로가는 키는 Walk로 가게해라 뒤로가는 RUn은 없다
+		3. Run 끝날때 모션
+		4. Walk
+		5. 공격 마우스 시야에 따라
 
 			-
 			절댓값이
