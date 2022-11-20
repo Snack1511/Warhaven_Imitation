@@ -23,8 +23,31 @@ HRESULT CUI_Logo::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 
+	
+
+	SetTexture(TEXT("../Bin/Resources/Textures/UI/Logo/Nexon.png"));
+
+	GET_COMPONENT(CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Logo/Logo.png"));
+	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_ALPHA);
+
+	Set_Pos(0.f, 0.f);
+	Set_Scale(1280.f, 720.f);
+
+	return S_OK;
+}
+
+HRESULT CUI_Logo::Initialize()
+{
+	return S_OK;
+}
+
+HRESULT CUI_Logo::Start()
+{
+	__super::Start();
+	
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
 	// 페이드가 완료된 후에
 	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NEXTTEXTURE;
 	// 페이드가 어떻게 될지
@@ -42,26 +65,6 @@ HRESULT CUI_Logo::Initialize_Prototype()
 	tFadeDesc.fFadeOutTime = 0.5f;
 
 	m_pFader->Get_FadeDesc() = tFadeDesc;
-
-	SetTexture(TEXT("../Bin/Resources/Textures/UI/Logo/Nexon.png"));
-
-	GET_COMPONENT(CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Logo/Logo.png"));
-	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
-
-	Set_Pos(0.f, 0.f);
-	Set_Scale(1280.f, 720.f);
-
-	return S_OK;
-}
-
-HRESULT CUI_Logo::Initialize()
-{
-	return S_OK;
-}
-
-HRESULT CUI_Logo::Start()
-{
-	__super::Start();
 
 	GET_COMPONENT(CFader)->Set_FadeMessage();
 	CallBack_FadeOutEvent += bind(&CUI_Logo::LoadScene, this, placeholders::_1);

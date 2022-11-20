@@ -265,7 +265,7 @@ void CFader::OnFadeStyle(_bool bFadeOut)
 
 	m_tFadeDesc.fAlpha = fRatio * fSign;
 
-	switch (m_tFadeDesc.eFadeStyle)
+ 	switch (m_tFadeDesc.eFadeStyle)
 	{
 	case Client::FADEDESC::FADE_STYLE_DEFAULT:
 	{
