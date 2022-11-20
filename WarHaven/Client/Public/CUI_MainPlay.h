@@ -62,8 +62,11 @@ private:
 private:
 	CUI_Object* m_pTarget = nullptr;
 
-	_bool m_bIsPlayBtnOnMouse = true;
-	_bool m_bIsMovePlayBtn = false;
+	_bool m_bIsPlayBtnOnMouseEnter = false;
+	_bool m_bIsMovePlayBtnEnter = false;
+
+	_bool m_bIsPlayBtnOnMouseExit = false;
+	_bool m_bIsMovePlayBtnExit = false;
 
 private:	// 폰트 설정
 	_float2 vFontOffset = { -100.f, 120.f };
@@ -72,9 +75,6 @@ private:	// 폰트 설정
 private:
 	void Bind_Shader();
 	void Bind_Btn();
-
-private:
-	void Move_PlayBtn();
 
 private:
 	void SetActive_ModeWindow();

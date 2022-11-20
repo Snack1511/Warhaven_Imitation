@@ -56,38 +56,33 @@ void CUI_MainPlay::My_Tick()
 		}
 	}
 
-	if (m_bIsPlayBtnOnMouse)
+	if (m_bIsPlayBtnOnMouseEnter)
 	{
 		if (m_pTarget)
 		{
 			_float fScaleY = m_pTarget->Get_Scale().y;
-			_float fPosX = m_pTarget->Get_PosX();
-			_float fDuration = 0.5f;
+			_float fDuration = 0.2f;
 
 			m_pPlayBtnMouseEnterLine->Lerp_ScaleY(4.f, fScaleY - 20.f, fDuration);
-			m_bIsPlayBtnOnMouse = false;
+			m_bIsPlayBtnOnMouseEnter = false;
 		}
 	}
 
-	if (m_bIsMovePlayBtn)
+	if (m_bIsMovePlayBtnEnter)
 	{
-		if (m_pTarget)
+		// 현재 위치에서 목표 위치까지 점점 증감
+		_float fCurPosX = m_pTarget->Get_PosX();
+		_float fEndPosX = fCurPosX + 10.f;
+		_float fDuration = 0.4f;
+		_float fMoveValue = fEndPosX - fCurPosX;
+		_float fMoveSpeed = (fMoveValue / fDuration) * fDT(0) * 2.f;
+		m_pTarget->Set_PosX(fCurPosX + fMoveSpeed);
+
+		m_fAccTime += fDT(0);
+		if (m_fAccTime >= fDuration)
 		{
-			// 현재 위치에서 목표 위치까지 점점 증감
-			_float fCurPosX = m_pTarget->Get_PosX();
-			_float fEndPosX = fCurPosX + 10.f;
-			_float fDuration = 0.3f;
-			_float fMoveValue = fEndPosX - fCurPosX;
-			_float fMoveSpeed = (fMoveValue / fDuration) * fDT(0) * 2.f;
-			m_pTarget->Set_PosX(fCurPosX + fMoveSpeed);
-
-			m_fAccTime += fDT(0);
-			if (m_fAccTime >= fDuration)
-			{
-				m_fAccTime = 0.f;
-
-				m_bIsMovePlayBtn = false;
-			}
+			m_fAccTime = 0.f;
+			m_bIsMovePlayBtnEnter = false;
 		}
 	}
 }
@@ -129,10 +124,10 @@ void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
 	m_pBtnHightlight->Set_Pos(fPosX - 20.f, vPos.y);
 	m_pBtnHightlight->Set_Scale(fScaleX, 500.f);
 
-	m_bIsPlayBtnOnMouse = true;
 	m_pPlayBtnMouseEnterLine->Set_PosY(vPos.y - 3.5f);
 
-	m_bIsMovePlayBtn = true;
+	m_bIsPlayBtnOnMouseEnter = true;
+	m_bIsMovePlayBtnEnter = true;
 
 	ENABLE_GAMEOBJECT(m_pBtnHightlight);
 	ENABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
@@ -144,7 +139,12 @@ void CUI_MainPlay::On_PointExit_PlayBtn(const _uint& iEventNum)
 	m_pPlayBtnUI[1]->Set_PosX(-535.f);
 
 	m_pPlayBtnMouseEnterLine->Set_Scale(4.f);
+
+	m_bIsPlayBtnOnMouseExit = true;
+	m_bIsMovePlayBtnExit = true;
+
 	DISABLE_GAMEOBJECT(m_pBtnHightlight);
+	DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
 }
 
 void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
@@ -259,21 +259,18 @@ void CUI_MainPlay::Bind_Shader()
 
 void CUI_MainPlay::Bind_Btn()
 {
-	m_pPlayBtnUI[0]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_PlayBtn, this, 0);
-	m_pPlayBtnUI[1]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_PlayBtn, this, 1);
-
 	for (int i = 0; i < 2; ++i)
 	{
-		m_pPlayBtnUI[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_PlayBtn, this, placeholders::_1);
+		m_pPlayBtnUI[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_PlayBtn, this, i);
+		m_pPlayBtnUI[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_PlayBtn, this, i);
 	}
 
 	m_pPlayBtnUI[0]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Start, this, placeholders::_1);
 	m_pPlayBtnUI[1]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Mode, this, placeholders::_1);
 
-
 	for (int i = 0; i < 4; ++i)
 	{
-
+		m_pStageSelectBtn[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_Stage, this, placeholders::_1);
 		m_pStageSelectBtn[i]->CallBack_PointStay += bind(&CUI_MainPlay::On_PointStay_Stage, this, placeholders::_1);
 		m_pStageSelectBtn[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_Stage, this, placeholders::_1);
 
@@ -294,6 +291,7 @@ void CUI_MainPlay::SetActive_ModeWindow()
 		}
 
 		DISABLE_GAMEOBJECT(m_pStageNameRect);
+		DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
 
 		ENABLE_GAMEOBJECT(m_pBG);
 		ENABLE_GAMEOBJECT(m_pTextModeSelect);

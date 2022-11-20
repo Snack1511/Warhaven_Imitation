@@ -619,9 +619,6 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG">
       <UniqueIdentifier>{18f43bf2-a938-4b4d-8911-0b877f340bff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\Icon">
-      <UniqueIdentifier>{08a2ffa7-5a48-4af9-8e51-2be888a8669a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby">
       <UniqueIdentifier>{3971a91c-b0f4-4a24-961f-1e81ced819bf}</UniqueIdentifier>
     </Filter>
@@ -1111,6 +1108,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Crosshair">
       <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG\Icon">
+      <UniqueIdentifier>{08a2ffa7-5a48-4af9-8e51-2be888a8669a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1246,7 +1246,7 @@
       <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_LoadingIcon.h">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\Icon</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG\Icon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Object.h">
       <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default</Filter>
@@ -2054,7 +2054,7 @@
       <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_LoadingIcon.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\Icon</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG\Icon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Object.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default</Filter>

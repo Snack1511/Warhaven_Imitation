@@ -280,41 +280,6 @@ void CUI_Object::Lerp_Scale()
 			}
 		}
 	}
-
-	if (m_bLerpMoveX)
-	{
-		m_fAccTime += fDT(0);
-
-		_float4 vPos = Get_Pos();
-		_float fSpeed = ((m_fStart - m_fEnd) / m_fDuration) * fDT(0);
-
-		if (!m_fAccScale)
-		{
-			vPos -= fabs(fSpeed);
-			vPos.x = Min(vPos.x);
-
-			Set_PosX(vPos.x);
-
-			if (vPos.x >= m_fEnd)
-			{
-				Set_PosX(m_fEnd);
-				m_fAccTime = 0.f;
-				m_bLerpMoveX = false;
-			}
-		}
-		else
-		{
-			vPos += fabs(fSpeed);
-			Set_PosX(vPos.x);
-
-			if (vPos.x <= m_fEnd)
-			{
-				Set_PosX(m_fEnd);
-				m_fAccTime = 0.f;
-				m_bLerpMoveX = false;
-			}
-		}
-	}
 }
 
 _float CUI_Object::Min(_float fValue)
