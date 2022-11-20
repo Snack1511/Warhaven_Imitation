@@ -141,8 +141,17 @@ void CWindow_Effect::Show_MainList()
 	//이펙트들 리스트박스
 	if (ImGui::Button("Save_Effects"))
 	{
+		m_bEffectPath = true;
 		Save_CurEffect();
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Save_Presets"))
+	{
+		m_bEffectPath = false;
+		Save_CurEffect();
+	}
+
+
 	static _uint g_iEffectIndex = 0;
 	if (ImGui::Button("Create Mesh Effect"))
 	{
@@ -1392,6 +1401,14 @@ void CWindow_Effect::Show_Preset()
 		}
 	}
 
+	ImGui::SameLine();
+
+	if (ImGui::Button("Refresh"))
+	{
+		m_PresetRootNode.vecChildren.clear();
+		Read_Folder("../bin/EffectsPreset", m_PresetRootNode);
+	}
+
 	ImGui::Text("Preset_Bin_Files_List");
 	if (ImGui::BeginListBox("Preset_Bin_Files_List", ImVec2(200.f, 300.f)))
 	{
@@ -1409,9 +1426,21 @@ void CWindow_Effect::Save_CurEffect()
 	if (m_iCurrentIdx == 9999)
 		return;
 
-	string savePath = "../bin/effects/";
-	savePath += m_vecEffects[m_iCurrentIdx].strName;
-	savePath += ".bin";
+	string savePath;
+
+	if (m_bEffectPath)
+	{
+		savePath = "../bin/effects/";
+		savePath += m_vecEffects[m_iCurrentIdx].strName;
+		savePath += ".bin";
+	}
+	else
+	{
+		savePath = "../bin/EffectsPreset/";
+		savePath += m_vecEffects[m_iCurrentIdx].strName;
+		savePath += "_Preset.bin";
+	}
+	
 	ofstream	writeFile(savePath, ios::binary);
 
 

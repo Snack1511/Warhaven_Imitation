@@ -58,6 +58,9 @@ private:
 	string				m_CurSelectedTextureFilePath;
 	string				m_CurSelectedEffectFileKey;
 
+private:
+	_bool				m_bEffectPath = true;
+
 
 private:
 	void	Show_MainList();
