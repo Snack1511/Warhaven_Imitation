@@ -49,7 +49,7 @@ void CUI_LoadingBG::My_Tick()
 	_float4 vScale = Get_Scale();
 	_float4 vTargetScale = _float4(1280.f, 720.f, 1.f);
 
-	m_fAccTime += fDT(0) * 0.005f;
+	m_fAccTime += fDT(0) * 0.001f;
 	_float4 vResultScale = CEasing_Utillity::Linear(vScale, vTargetScale, m_fAccTime, 100.f);
 
 	Set_Scale(vResultScale.x, vResultScale.y);

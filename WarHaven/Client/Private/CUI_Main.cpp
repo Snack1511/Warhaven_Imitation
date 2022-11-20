@@ -129,6 +129,21 @@ void CUI_Main::SetActive_Window(WindowType eWindow)
 	}
 
 	ENABLE_GAMEOBJECT(m_Prototypes[eWindow]);
+
+	switch (m_eWindow)
+	{
+	case CUI_Main::Play:
+	{
+		m_pTopBtn[0]->Set_IsClick(true);
+		m_pTopBtn[0]->Set_FontColor(_float4(1.f, 1.f, 1.f, 1.f));
+
+		_float4 vPos = m_pTopBtn[0]->Get_Pos();
+		m_pBtnHighlight->Set_Pos(vPos.x, vPos.y);
+
+		ENABLE_GAMEOBJECT(m_pBtnHighlight);
+	}
+	break;
+	}
 }
 
 void CUI_Main::Ready_MainUI()

@@ -20,6 +20,7 @@ public:
 
 public:
 	virtual void Set_Shader_StageHighlight(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_StageClickRect(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName);
 
 public:
@@ -45,6 +46,7 @@ private:
 	CUI_Object* m_pLine = nullptr;
 	CUI_Object* m_pStageHighlight = nullptr;
 	CUI_Object* m_pBtnHightlight = nullptr;
+	CUI_Object* m_pStageSelectRect = nullptr;
 
 	CUI_Object* m_pPrototypeStageBtn = nullptr;
 	CUI_Object* m_pStageSelectBtn[4];
@@ -65,6 +67,7 @@ private:
 private:
 	void SetActive_ModeWindow();
 	void Enable_StageHighlight(_float4 vPos);
+	void Enable_StageClickRect(_float4 vPos);
 
 private:
 	void Set_LockImg();

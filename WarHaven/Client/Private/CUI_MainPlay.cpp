@@ -56,8 +56,17 @@ void CUI_MainPlay::My_Tick()
 
 void CUI_MainPlay::Set_Shader_StageHighlight(CShader* pShader, const char* pConstName)
 {
-	_float4 vColor = _float4(1.f, 1.f, 1.f, 0.05f);
+	_float4 vColor = _float4(1.f, 1.f, 1.f, 0.3f);
 	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+}
+
+void CUI_MainPlay::Set_Shader_StageClickRect(CShader* pShader, const char* pConstName)
+{
+	if (m_pStageSelectRect->Is_Valid())
+	{
+		_float4 vColor = _float4(0.773f, 0.714f, 0.596f, 1.f);
+		pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+	}
 }
 
 void CUI_MainPlay::Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName)
@@ -158,20 +167,26 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
 			if (iTextureNum <= 3)
 			{
+				_float4 vPos = pTarget->Get_Pos();
+
 				if (iTextureNum == 0)
 				{
+					Enable_StageClickRect(vPos);
+
 					m_eStage = Select_Stage::Test;
 				}
 				else if (iTextureNum == 1)
 				{
-
+					Enable_StageClickRect(vPos);
 				}
 				else if (iTextureNum == 2)
 				{
-
+					Enable_StageClickRect(vPos);
 				}
 				else if (iTextureNum == 3)
 				{
+					Enable_StageClickRect(vPos);
+
 					m_eStage = Select_Stage::Training;
 				}
 			}
@@ -186,6 +201,9 @@ void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 
 void CUI_MainPlay::Bind_Shader()
 {
+	GET_COMPONENT_FROM(m_pStageSelectRect, CShader)
+		->CallBack_SetRawValues += bind(&CUI_MainPlay::Set_Shader_StageClickRect, this, placeholders::_1, "g_vColor");
+
 	GET_COMPONENT_FROM(m_pStageHighlight, CShader)
 		->CallBack_SetRawValues += bind(&CUI_MainPlay::Set_Shader_StageHighlight, this, placeholders::_1, "g_vColor");
 
@@ -209,6 +227,7 @@ void CUI_MainPlay::Bind_Btn()
 		m_pStageSelectBtn[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_Stage, this, placeholders::_1);
 		m_pStageSelectBtn[i]->CallBack_PointStay += bind(&CUI_MainPlay::On_PointStay_Stage, this, placeholders::_1);
 		m_pStageSelectBtn[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_Stage, this, placeholders::_1);
+
 		m_pStageSelectBtn[i]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage, this, placeholders::_1);
 	}
 }
@@ -267,6 +286,13 @@ void CUI_MainPlay::Enable_StageHighlight(_float4 vPos)
 	m_pStageHighlight->Set_Pos(vPos.x, vPos.y);
 
 	ENABLE_GAMEOBJECT(m_pStageHighlight);
+}
+
+void CUI_MainPlay::Enable_StageClickRect(_float4 vPos)
+{
+	m_pStageSelectRect->Set_Pos(vPos.x, vPos.y);
+
+	ENABLE_GAMEOBJECT(m_pStageSelectRect);
 }
 
 void CUI_MainPlay::Set_LockImg()
@@ -491,8 +517,16 @@ void CUI_MainPlay::Create_StageHighlight()
 	m_pStageHighlight->Set_Sort(0.8f);
 	m_pStageHighlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_GradientSmall2.dds"));
 
+	m_pStageSelectRect = CUI_Object::Create();
+	m_pStageSelectRect->Set_Scale(250.f, 380.f);
+	m_pStageSelectRect->Set_Sort(0.8f);
+	m_pStageSelectRect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_2pxStrokeBox.png"));
+
 	CREATE_GAMEOBJECT(m_pStageHighlight, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pStageHighlight);
+
+	CREATE_GAMEOBJECT(m_pStageSelectRect, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pStageSelectRect);
 }
 
 void CUI_MainPlay::Create_BtnHighlight()

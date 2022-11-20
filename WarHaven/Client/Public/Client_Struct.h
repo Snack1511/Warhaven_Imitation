@@ -24,14 +24,14 @@ namespace Client
 
 		FADE_STYLE		eFadeStyle = FADE_STYLE_END;
 		FADEOUT_TYPE	eFadeOutType = FADEOUT_END;
-		_byte		bFadeInFlag = 0;
-		_byte		bFadeOutFlag = 0;
-		_float		fFadeInStartTime = 0.f;
-		_float		fFadeInTime = 0.f;
-		_float		fFadeOutTime = 0.f;
-		_float		fFadeOutStartTime = 0.f;
-		_float		fAlpha = 0.f;
-		KEY			eKeyType = KEY::LAST;
+		_byte			bFadeInFlag = 0;
+		_byte			bFadeOutFlag = 0;
+		_float			fFadeInStartTime = 0.f;
+		_float			fFadeInTime = 0.f;
+		_float			fFadeOutTime = 0.f;
+		_float			fFadeOutStartTime = 0.f;
+		_float			fAlpha = 0.f;
+		KEY				eKeyType = KEY::LAST;
 	};
 
 
