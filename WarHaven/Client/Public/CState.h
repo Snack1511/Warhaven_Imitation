@@ -45,6 +45,11 @@ public:
 	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType) {}
 
 public:
+	_uint Get_StateChangeKeyFrame() {
+		return m_iStateChangeKeyFrame;
+	}
+
+public:
 	void	Set_AnimType(ANIM_TYPE eAnimType) { m_eAnimType = eAnimType; }
 	void	Set_AnimIndex(_uint iAnimIndex) { m_iAnimIndex = iAnimIndex; }
 
@@ -74,6 +79,10 @@ protected:
 	_bool				m_bExecuted = false;
 
 	_uint				m_iStateChangeKeyFrame = 0;
+
+
+	_float				m_fETCCurTime = 0.f; // 건설, 점령 수리 등에 사용 
+	_float				m_fETCCoolTime = 0.f; // 건설, 점령 수리 등에 사용 
 
 	_float				m_fMyMaxLerp = 0.f; 
 	_float				m_fMyAccel = 0.f;

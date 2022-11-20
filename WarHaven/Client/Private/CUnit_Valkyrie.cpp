@@ -109,6 +109,19 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	//m_pWeaponCollider_L = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	//Add_Component(m_pWeaponCollider_L);
 
+	m_tUnitStatus.fSprintAttackSpeed = 13.f;
+	m_tUnitStatus.fDashAttackSpeed = 4.f;
+
+	
+
+	m_fCoolTime[SKILL1] = 5.f;
+	m_fCoolTime[SKILL2] = 0.f; // 화신력 소모 스킬
+	m_fCoolTime[SKILL3] = 45.f;
+
+	m_fCoolAcc[SKILL1] = 0.f;
+	m_fCoolAcc[SKILL2] = 0.f; // 화신력 소모 스킬
+	m_fCoolAcc[SKILL3] = 10.f;
+
 	return S_OK;
 }
 

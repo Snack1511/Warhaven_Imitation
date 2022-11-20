@@ -44,14 +44,14 @@ HRESULT CCharge_WarHammer::Initialize()
 	m_iJumpFallRightIndex = 11;
 	m_iJumpFallLeftIndex = 1;
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.f * 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.f * 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.f * 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.f * 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.3f * 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.f * 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.15f * 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.15f * 0.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.3f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.15f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.15f;
 
 
 	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 19;
@@ -120,6 +120,8 @@ void CCharge_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 	//m_pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed * 0.5f;
+	pOwner->Get_Status().fRunSpeed = m_fMaxSpeed;
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -133,7 +135,9 @@ void CCharge_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed * 2.f;
+	pOwner->Get_Status().fRunSpeed = m_fMaxSpeed;
+
 	//Exit에선 무조건 남겨놔야함
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);

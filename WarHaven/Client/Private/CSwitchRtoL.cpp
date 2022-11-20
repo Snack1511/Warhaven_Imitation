@@ -86,7 +86,7 @@ STATE_TYPE CSwitchRtoL::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     1. 현재 진행중인 애니메이션이 끝났을 때
     */
 
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::R)
+    if (CUser::Get_Instance()->Get_LastKey() == KEY::TAB)
         return m_eStateType;
 
     return STATE_END;

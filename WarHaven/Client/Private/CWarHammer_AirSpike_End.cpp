@@ -37,7 +37,7 @@ HRESULT CWarHammer_AirSpike_End::Initialize()
 	m_iAnimIndex = 2;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_AIRSPIKE_END_WARHAMMER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-	m_iStateChangeKeyFrame = 66;
+	m_iStateChangeKeyFrame = 40;
 
 	m_fInterPolationTime = 0.f;
 	m_fAnimSpeed = 2.5f;
@@ -64,6 +64,8 @@ HRESULT CWarHammer_AirSpike_End::Initialize()
 
 void CWarHammer_AirSpike_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+
+
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
 	Physics_Setting(0.1, pOwner);
@@ -101,6 +103,7 @@ void CWarHammer_AirSpike_End::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 	switch (iSequence)
 	{
 	case 0:
+		pOwner->Shake_Camera(0.2f, 0.3f);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;

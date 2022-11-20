@@ -47,7 +47,7 @@ HRESULT CWarrior_Attack_VerticalCut::Initialize()
     m_iStateChangeKeyFrame = 70;
     
 	m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
-	m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
+	m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);

@@ -49,17 +49,16 @@ void CInstall_Loop_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 {
 	CUnit_WarHammer* PWarHammer = static_cast<CUnit_WarHammer*>(pOwner);
 
+	pOwner->On_Use(CUnit::SKILL3);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CInstall_Loop_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	// 가드 상태에서도 움직일 수 있도록 설정한다.
-	Follow_MouseLook(pOwner);
 
 
     return __super::Tick(pOwner, pAnimator);
-
 }
 
 void CInstall_Loop_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)

@@ -56,14 +56,10 @@ HRESULT CSwitchRtoL_Valkyrie::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
 
-    //m_vecAdjState.push_back(STATE_GROGGYATTACK_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_L);
-
-
-    //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_L);
-
-    //m_vecAdjState.push_back(STATE_INSTALL_BEIGN_VALKYRIE);
+    /*나중에 추가*/
+    m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
+    m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
+    m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 
 
     return S_OK;
@@ -101,7 +97,7 @@ STATE_TYPE CSwitchRtoL_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAnim
     1. 현재 진행중인 애니메이션이 끝났을 때
     */
 
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::F)
+    if (CUser::Get_Instance()->Get_LastKey() == KEY::TAB)
         return m_eStateType;
 
     return STATE_END;

@@ -17,6 +17,10 @@ private:
 public:
 	static	CUnit_WarHammer* Create(const UNIT_MODEL_DATA& tUnitModelData);
 
+
+public:
+	void	Set_BarricadeMatrix();
+
 public:
 	void	Disable_Barricade(CGameObject* pBarricade);	
 	void	Create_Barricade();
@@ -33,8 +37,16 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override; 
 
+protected:
+	//virtual void My_Tick() override;
+	//virtual void My_LateTick() override;
+
 private:
 	list<CGameObject*> m_Barricade;
+	_float4x4		   m_BarricadeMatrix;
+
+
+
 };
 
 END

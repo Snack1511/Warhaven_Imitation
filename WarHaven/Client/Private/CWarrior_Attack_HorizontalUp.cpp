@@ -55,10 +55,7 @@ HRESULT CWarrior_Attack_HorizontalUp::Initialize()
 
 void CWarrior_Attack_HorizontalUp::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    /* OwnerÀÇ Animator Set Idle·Î */
-
-  //  pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
-
+	pOwner->On_Attack(this);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

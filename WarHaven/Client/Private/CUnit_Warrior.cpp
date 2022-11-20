@@ -94,9 +94,13 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
 
+	m_fCoolTime[SKILL1] = 5.f;
+	m_fCoolTime[SKILL2] = 15.f;
+	m_fCoolTime[SKILL3] = 0.f;
 
-
-	
+	m_fCoolAcc[SKILL1] = 0.f;
+	m_fCoolAcc[SKILL2] = 0.f; 
+	m_fCoolAcc[SKILL3] = 0.f;
 
 	return S_OK;
 }

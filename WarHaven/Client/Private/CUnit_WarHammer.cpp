@@ -42,6 +42,12 @@ CUnit_WarHammer* CUnit_WarHammer::Create(const UNIT_MODEL_DATA& tUnitModelData)
 	return pInstance;
 }
 
+void CUnit_WarHammer::Set_BarricadeMatrix()
+{
+	
+	m_BarricadeMatrix = m_pTransform->Get_WorldMatrix();
+}
+
 // push_back 하면서 Disable 시켜주는 함수. -> 바리게이트 파괴
 void CUnit_WarHammer::Disable_Barricade(CGameObject* pBarricade)
 {
@@ -54,10 +60,10 @@ void CUnit_WarHammer::Create_Barricade()
 {
 	if (!m_Barricade.empty())
 	{
-		// 
-		_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
-		
-		m_Barricade.back()->Get_Transform()->Set_World(WORLD_POS, vPos);
+		m_Barricade.back()->Get_Transform()->Set_World(WORLD_RIGHT, m_BarricadeMatrix.XMLoad().r[0]);
+		m_Barricade.back()->Get_Transform()->Set_World(WORLD_UP, m_BarricadeMatrix.XMLoad().r[1]);
+		m_Barricade.back()->Get_Transform()->Set_World(WORLD_LOOK, m_BarricadeMatrix.XMLoad().r[2]);
+		m_Barricade.back()->Get_Transform()->Set_World(WORLD_POS, m_BarricadeMatrix.XMLoad().r[3]);
 
 		ENABLE_GAMEOBJECT(m_Barricade.back());
 		m_Barricade.pop_back();
@@ -131,6 +137,12 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_tUnitStatus.fRunBeginSpeed *= 0.8f;
 	m_tUnitStatus.fJumpPower *= 0.9f;
 	
+
+
+	m_fCoolTime[SKILL1] = 10.f;
+	m_fCoolTime[SKILL2] = 8.f;
+	m_fCoolTime[SKILL3] = 0.f;
+
 	//Enable_ModelParts(3, false);
 	
 	return S_OK;

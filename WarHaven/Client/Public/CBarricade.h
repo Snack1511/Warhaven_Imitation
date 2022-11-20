@@ -27,7 +27,7 @@ private:
 	virtual ~CBarricade();
 
 public:
-	static	CBarricade* Create(CUnit_WarHammer* pOwner);
+	static	CBarricade* Create(CUnit_WarHammer* pOwner, wstring strModelPath);
 
 
 public:

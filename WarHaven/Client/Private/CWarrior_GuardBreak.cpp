@@ -81,6 +81,8 @@ HRESULT CWarrior_GuardBreak::Initialize()
 
 void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    pOwner->On_Use(CUnit::SKILL2);
+
     /* Owner의 Animator Set Idle로 */
     m_fMaxSpeed = pOwner->Get_Status().fSprintAttackSpeed;
     pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
@@ -105,6 +107,9 @@ STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnima
     /* Player가 Attack 으로 오는 조건
     1.  스킬버튼 을 이용해 공격한다.
     */
+
+    if (!pOwner->Can_Use(CUnit::SKILL2))
+        return STATE_END;
 
     if (CUser::Get_Instance()->Get_LastKey() == KEY::E)
         return m_eStateType;

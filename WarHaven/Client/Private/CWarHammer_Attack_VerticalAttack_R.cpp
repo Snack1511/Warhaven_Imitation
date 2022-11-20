@@ -42,13 +42,18 @@ HRESULT CWarHammer_Attack_VerticalAttack_R::Initialize()
 	m_eAnimLeftorRight = ANIM_BASE_R;
 	m_iIdle_Index = 14;
 
+	m_vecAdjState.push_back(STATE_IDLE_WARHAMMER_R);
+	m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
+	m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_R);
+	m_vecAdjState.push_back(STATE_RUN_WARHAMMER_R);
+
 	m_eWalkState = STATE_WALK_WARHAMMER_L;
 	m_eJumpState = STATE_JUMP_WARHAMMER_L;
 	m_eLandState = STATE_JUMP_LAND_WARHAMMER_L;
 	m_eFallState = STATE_JUMPFALL_WARHAMMER_L;
 	m_eRunState = STATE_RUNBEGIN_WARHAMMER_L;
 	m_eIdleState = STATE_IDLE_WARHAMMER_L;
-	m_eBounceState = STATE_BOUNCE_WARHAMMER_R;
+	m_eBounceState = STATE_BOUNCE_WARHAMMER_L;
 
 
 	return __super::Initialize();

@@ -22,12 +22,11 @@ CBarricade::~CBarricade()
 {
 }
 
-CBarricade* CBarricade::Create(CUnit_WarHammer* pOwner)
+CBarricade* CBarricade::Create(CUnit_WarHammer* pOwner, wstring strModelPath)
 {
 	CBarricade* pInstance = new CBarricade;
 
-
-	if (FAILED(pInstance->__super::SetUp_Model(L"../Bin/Resources/Meshes/Map/Environments/Module/Fence/SM_Module_Fence_Wood08a.fbx")))
+	if (FAILED(pInstance->SetUp_Model(strModelPath)))
 	{
 		SAFE_DELETE(pInstance);
 		Call_MsgBox(L"Failed to SetUp_Model : CBarricade");

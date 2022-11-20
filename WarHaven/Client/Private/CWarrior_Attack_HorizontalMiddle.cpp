@@ -56,6 +56,8 @@ HRESULT CWarrior_Attack_HorizontalMiddle::Initialize()
 
 void CWarrior_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->On_Attack(this);
+
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

@@ -76,7 +76,7 @@ public:
 public:
 	enum UNITCOLLIDER{BODY, HEAD, WEAPON_L, WEAPON_R, UNITCOLLIDER_END};
 	enum WEAPONCOLLIDER{ WEAPONCOLLIDER_END = 3};
-	enum COOL_TYPE {SKILL1, COOL_END};
+	enum COOL_TYPE {SKILL1, SKILL2, SKILL3, COOL_END};
 
 protected:
 	CUnit();
@@ -103,8 +103,11 @@ public:
 
 
 public:
-	_bool		Can_Use(COOL_TYPE eType) { if (m_fCoolAcc[eType] <= 0.f) return true; return false; }
-	void		On_Use(COOL_TYPE eType) { m_fCoolAcc[eType] = m_fCoolTime[eType]; }
+	_bool		Can_Use(COOL_TYPE eType) { if (m_fCoolAcc[eType] <= 0.f && eType < COOL_END) return true; return false; }
+	void		On_Use(COOL_TYPE eType) { if(eType < COOL_END) m_fCoolAcc[eType] = m_fCoolTime[eType]; }
+
+	_bool		Can_Attack() { if (m_fAttackDelay <= 0.f) return true; return false; }
+	void		On_Attack(CState* pState);
 
 	_bool		Is_Weapon_R_Collision();
 
@@ -196,6 +199,7 @@ protected:
 	_float	m_fCoolTime[COOL_END] = {};
 	_float	m_fCoolAcc[COOL_END] = {};
 
+	_float	m_fAttackDelay = 0.f;
 
 protected:
 	UNIT_MODEL_DATA	m_tModelData;
