@@ -3,6 +3,9 @@
 
 BEGIN(Client)
 
+class CLoading_Manager;
+class CUI_Object;
+
 class CUI_LoadingBG final : public CUI
 {
 	DECLARE_PROTOTYPE(CUI_LoadingBG);
@@ -28,6 +31,13 @@ public:
 private:
 	_uint m_iBGIndex = 0;
 	_float m_fAccTime = 0.f;
+
+	CUI_Object* m_pNextMapName = nullptr;
+	CUI_Object* m_pGibberish = nullptr;
+	CUI_Object* m_pLoddingText = nullptr;
+
+private:
+	void Create_LoadingText(LEVEL_TYPE_CLIENT eLevel);
 };
 
 END
