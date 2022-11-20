@@ -84,8 +84,6 @@ void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
 			m_pBtnHightlight->Set_Pos(fPosX - 20.f, vPos.y);
 			m_pBtnHightlight->Set_Scale(fScaleX, 500.f);
 
-			// 글자 위치 이동 러프
-
 			ENABLE_GAMEOBJECT(m_pBtnHightlight);
 		}
 	}
@@ -221,6 +219,9 @@ void CUI_MainPlay::SetActive_ModeWindow()
 	{
 		for (int i = 0; i < 2; ++i)
 		{
+			// 왼쪽으로 이동
+			// 위로 살짝 이동
+			// 페이드 아웃
 			DISABLE_GAMEOBJECT(m_pPlayBtnUI[i]);
 		}
 

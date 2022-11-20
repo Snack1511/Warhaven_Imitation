@@ -23,6 +23,12 @@ HRESULT CUI_HpBar::Initialize_Prototype()
 	m_Prototypes[Bar]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_16.dds"));
 	m_Prototypes[Bar]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_36.png"));
 
+	for (_uint i = 0; i < Type_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
+	}
+
 	return S_OK;
 }
 
@@ -33,11 +39,6 @@ HRESULT CUI_HpBar::Initialize()
 
 HRESULT CUI_HpBar::Start()
 {
-	for (_uint i = 0; i < Type_End; ++i)
-	{
-		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
-	}
-
 	Set_Pass();
 	Bind_Shader();
 
@@ -49,8 +50,6 @@ HRESULT CUI_HpBar::Start()
 void CUI_HpBar::My_Tick()
 {
 	__super::My_Tick();
-
-	m_fValue += fDT(0);
 }
 
 void CUI_HpBar::My_LateTick()
@@ -66,7 +65,25 @@ void CUI_HpBar::Set_ShaderResourcesBG(CShader* pShader, const char* pConstName)
 
 void CUI_HpBar::Set_ShaderResourcesBar(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fValue, sizeof(_float));
+	pShader->Set_RawValue("g_fHpRatio", &m_fHpRatio, sizeof(_float));
+}
+
+void CUI_HpBar::SetActive_HpBar(_bool value)
+{
+	if (value == true)
+	{
+		for (int i = 0; i < 2; ++i)
+		{
+			ENABLE_GAMEOBJECT(m_Prototypes[i]);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < 2; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_Prototypes[i]);
+		}
+	}
 }
 
 void CUI_HpBar::Set_Pass()
@@ -77,9 +94,7 @@ void CUI_HpBar::Set_Pass()
 
 void CUI_HpBar::Bind_Shader()
 {
-	GET_COMPONENT_FROM(m_Prototypes[BG], CShader)
-		->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResourcesBG, this, placeholders::_1, "g_vColor");
+	GET_COMPONENT_FROM(m_Prototypes[BG], CShader)->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResourcesBG, this, placeholders::_1, "g_vColor");
 
-	GET_COMPONENT_FROM(m_Prototypes[Bar], CShader)
-		->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResourcesBar, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_Prototypes[Bar], CShader)->CallBack_SetRawValues += bind(&CUI_HpBar::Set_ShaderResourcesBar, this, placeholders::_1, "g_fHpRatio");
 }

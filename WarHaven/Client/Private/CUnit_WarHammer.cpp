@@ -11,6 +11,7 @@
 #include "CBoneCollider.h"
 
 #include "CBarricade.h"
+#include "Camera.h"
 
 CUnit_WarHammer::CUnit_WarHammer()
 {

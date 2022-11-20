@@ -317,6 +317,11 @@ void CUI_Skill::Ready_SkillHUD()
 	m_Prototypes[Key] = m_pUIMap[TEXT("Skill_Key")];
 	m_Prototypes[HeroKey] = m_pUIMap[TEXT("Skill_HeroKeySkill")];
 
+	m_Prototypes[BG]->Set_Sort(0.3f);
+	m_Prototypes[Icon]->Set_Sort(0.29f);
+	m_Prototypes[Key]->Set_Sort(0.3f);
+	m_Prototypes[HeroKey]->Set_Sort(0.3f);
+
 	GET_COMPONENT_FROM(m_Prototypes[Icon], CTexture)->Remove_Texture(0);
 
 	Read_Texture(m_Prototypes[Icon], "/HUD/Skill", "_");

@@ -99,6 +99,13 @@ void CUI::Set_Sort(_float value)
 	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
 }
 
+void CUI::Set_Pos(_float4 vPos)
+{
+	m_vPosition.x = vPos.x;
+	m_vPosition.y = vPos.y;
+	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
+}
+
 void CUI::Set_Pos(_float fX, _float fY)
 {
 	m_vPosition.x = fX;
@@ -109,6 +116,12 @@ void CUI::Set_Pos(_float fX, _float fY)
 void CUI::Set_PosX(_float fX)
 {
 	m_vPosition.x = fX;
+	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
+}
+
+void CUI::Set_PosY(_float fY)
+{
+	m_vPosition.y= fY;
 	Get_Transform()->Set_World(WORLD_POS, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z));
 }
 

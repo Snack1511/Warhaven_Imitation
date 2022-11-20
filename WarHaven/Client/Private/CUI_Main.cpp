@@ -87,11 +87,13 @@ void CUI_Main::On_PointExit_TopBtn(const _uint& iEventNum)
 {
 	for (int i = 0; i < 3; ++i)
 	{
-		// 왜 비워져있지???????
 		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pTopBtn[i], CButton)->Get_TargetUI();
 		if (pTarget)
 		{
-			pTarget->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+			if (!pTarget->Get_IsClick())
+			{
+				pTarget->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+			}
 		}
 	}
 }
@@ -100,9 +102,15 @@ void CUI_Main::On_PointDown_TopBtn(const _uint& iEventNum)
 {
 	for (int i = 0; i < 3; ++i)
 	{
+		m_pTopBtn[i]->Set_IsClick(false);
+		m_pTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+
 		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pTopBtn[i], CButton)->Get_TargetUI();
 		if (pTarget)
 		{
+			pTarget->Set_IsClick(true);
+			pTarget->Set_FontColor(_float4(1.f, 1.f, 1.f, 1.f));
+
 			_float4 vPos = pTarget->Get_Pos();
 			m_pBtnHighlight->Set_Pos(vPos.x, vPos.y);
 

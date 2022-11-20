@@ -79,7 +79,7 @@ void CUI_Portrait::Set_HeroPort(HeroPortAnimType eState)
 
 void CUI_Portrait::My_Tick()
 {
-	__super::My_Tick();	
+	__super::My_Tick();
 
 	_float fEffectSpeed = fDT(0) * 5.f;
 	m_fEffectValue -= fEffectSpeed;
@@ -310,6 +310,11 @@ void CUI_Portrait::Ready_Portrait()
 	m_Prototypes[Key] = m_pUIMap[TEXT("PortKey")];
 	m_Prototypes[Effect] = m_pUIMap[TEXT("Port_Effect")];
 
+	m_Prototypes[BG]->Set_Sort(0.3f);
+	m_Prototypes[Port]->Set_Sort(0.29f);
+	m_Prototypes[Key]->Set_Sort(0.3f);
+	m_Prototypes[Effect]->Set_Sort(0.31f);
+
 	GET_COMPONENT_FROM(m_Prototypes[Port], CTexture)->Remove_Texture(0);
 
 	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/R\esources/Textures/UI/Effect/T_Pattern_06.dds"));
@@ -353,9 +358,6 @@ void CUI_Portrait::Ready_Portrait()
 		GET_COMPONENT_FROM(m_arrPortraitUI[i][BG], CTexture)->Set_CurTextureIndex(1);
 		GET_COMPONENT_FROM(m_arrPortraitUI[i][Port], CTexture)->Set_CurTextureIndex(iPortIndex);
 		GET_COMPONENT_FROM(m_arrPortraitUI[i][Key], CTexture)->Set_CurTextureIndex(iKeyIndex);
-
-		m_arrPortraitUI[i][BG]->Set_Sort(0.1f);
-		m_arrPortraitUI[i][Effect]->Set_Sort(0.2f);
 
 		for (int j = 0; j < Type_End; ++j)
 		{

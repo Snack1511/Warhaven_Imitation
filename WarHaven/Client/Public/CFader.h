@@ -26,6 +26,14 @@ public:
 	};
 
 public:
+	enum Fade_Type
+	{
+		// 객체가 활성화 되었을 때 실행
+		Enable_Fade,
+		Fade_End
+	};
+
+public:
 	DECLARE_PROTOTYPE(CFader);
 
 private:

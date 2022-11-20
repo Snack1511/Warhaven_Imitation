@@ -88,7 +88,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	//여기서 객체 생성한 후 Ready_GameObject 함수로 넣어놓으면 로딩 넘어가고 (멀티쓰레드 끝나고) 오브젝트 매니저에 추가됨.
 	// 
 	//로딩 Finish 수동으로 해야댐 ㅠ
-	
+
 	GAMEINSTANCE->Create_Scene(CPhysX_Manager::Scene::SCENE_CURRENT);
 
 
@@ -108,7 +108,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	/* 각자 이름 함수에서 놀으셈*/
 	if (FAILED(SetUp_Prototypes_MJ()))
 		return E_FAIL;
-    m_fLoadingFinish = 0.3f;
+	m_fLoadingFinish = 0.3f;
 
 	/*사연이 있어서 이쪽으로 내려놓음*/
 	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
@@ -186,7 +186,7 @@ void CLevel_Test::Tick()
 			m_bStaticShadowBake = true;
 		}
 	}
-	
+
 
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Tick();
@@ -266,69 +266,71 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// 테스트할 객체 띄우기
 
-	
-
-	//if (FAILED(SetUp_Warrior_TH()))
-	//	return E_FAIL;
-
-	/*if (FAILED(SetUp_SpearMan_TH()))
-		return E_FAIL;*/
-
-	//if (FAILED(SetUp_WarHammer_TH()))
-	//	return E_FAIL;
-
-	if (FAILED(SetUp_Valkyrie_TH()))
+	if (FAILED(SetUp_Warrior_TH()))
 		return E_FAIL;
 
+	if (FAILED(SetUp_WarHammer_TH()))
+		return E_FAIL;
 
-	/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
-		2. 뒤로가는 키는 Walk로 가게해라 뒤로가는 RUn은 없다
-		3. Run 끝날때 모션
-		4. Walk
-		5. 공격 마우스 시야에 따라
+	/*if (FAILED(SetUp_SpearMan_TH()))
+	return E_FAIL;*/
 
-		-
-		절댓값이
-		0.9~1 중단
-
-		- 양수인지 음수인지 확인
-
-		양수일때 0.9보다 작으면 올려베기
-		음수일때
-		0보다 작으면 내려베기
+	/*if (FAILED(SetUp_Valkyrie_TH()))
+		return E_FAIL;*/
 
 
-		6. 가드브레이크 E키로 변경*/
+		/*1. Jump_Fall이나 Land는 Tick에서 따로 넣어
+			2. 뒤로가는 키는 Walk로 가게해라 뒤로가는 RUn은 없다
+			3. Run 끝날때 모션
+			4. Walk
+			5. 공격 마우스 시야에 따라
+
+			-
+			절댓값이
+			0.9~1 중단
+
+			- 양수인지 음수인지 확인
+
+			양수일때 0.9보다 작으면 올려베기
+			음수일때
+			0보다 작으면 내려베기
 
 
-
-
-
-	/*fColRadius = 1.f;
-	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_ENEMYHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
-	fColRadius = 0.3f;
-	pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, fColRadius, COL_ENEMYHITBOX_HEAD, _float4(0.f, 1.75f, 0.f), DEFAULT_TRANS_MATRIX, GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_Head"));
-	fColRadius = 0.5f;*/
-	/*pTestEnemyWarrior->SetUp_UnitCollider(CUnit::WEAPON_R, fColRadius, COL_ENEMYATTACK, _float4(0.f, 0.f, 50.f), DEFAULT_TRANS_MATRIX,
-		GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_R_WP1"));*/
+			6. 가드브레이크 E키로 변경*/
 
 
 
-	//1. SpearMan
-	
-	
 
-    return S_OK;
+
+
+
+
+
+			/*fColRadius = 1.f;
+			pTestEnemyWarrior->SetUp_UnitCollider(CUnit::BODY, fColRadius, COL_ENEMYHITBOX_BODY, _float4(0.f, fColRadius * 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
+			fColRadius = 0.3f;
+			pTestEnemyWarrior->SetUp_UnitCollider(CUnit::HEAD, fColRadius, COL_ENEMYHITBOX_HEAD, _float4(0.f, 1.75f, 0.f), DEFAULT_TRANS_MATRIX, GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_Head"));
+			fColRadius = 0.5f;*/
+			/*pTestEnemyWarrior->SetUp_UnitCollider(CUnit::WEAPON_R, fColRadius, COL_ENEMYATTACK, _float4(0.f, 0.f, 50.f), DEFAULT_TRANS_MATRIX,
+				GET_COMPONENT_FROM(pTestEnemyWarrior, CModel)->Find_HierarchyNode("0B_R_WP1"));*/
+
+
+
+				//1. SpearMan
+
+
+
+	return S_OK;
 }
 
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	/*function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
-	m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);*/
+	// function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	// CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
+	// m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
 
-	
+
 
 	//터레인 불러오기
 	//오브젝트 불러오기
@@ -337,12 +339,12 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//라이트
 
 
-	_float4x4 mat;
-	mat.Identity();
-	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
-	pDrawableTerrain->Initialize();
-	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
-	
+	//_float4x4 mat;
+	//mat.Identity();
+	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(10, 10);
+	//pDrawableTerrain->Initialize();
+	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+
 	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);
 	if (nullptr == pTestStruct)
@@ -357,7 +359,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
 	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 	//SM_Grass_Weed_Weed02a.FBX
-	
+
 	//_int iNumInstance = 10000;
 	//VTXINSTANCE* pVtxInstance = new VTXINSTANCE[iNumInstance];
 	//for (_int i = 0; i < iNumInstance; ++i)
@@ -396,7 +398,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_HR()
 	pTest->Initialize();
 	Ready_GameObject(pTest, GROUP_EFFECT);*/
 
-	
+
 
 	return S_OK;
 }
@@ -591,7 +593,7 @@ HRESULT CLevel_Test::SetUp_SpearMan_TH()
 	pTestSpearmanUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestSpearmanUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 	Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);
-	
+
 
 
 
@@ -604,7 +606,7 @@ HRESULT CLevel_Test::SetUp_SpearMan_TH()
 	GAMEINSTANCE->Add_Camera(L"PlayerCam2", pFollowCam);
 	DISABLE_GAMEOBJECT(pFollowCam);
 
-	
+
 
 	return S_OK;
 }
@@ -697,33 +699,23 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	//CUser::Get_Instance()->Set_Player(pTestWarHammerUnit);
 
 
-	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarHammerUnit, nullptr);
-	pFollowCam->Initialize();
-	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
-	pFollowCam->Get_Transform()->Make_WorldMatrix();
-	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam3", pFollowCam);
-	DISABLE_GAMEOBJECT(pFollowCam);
-	pTestWarHammerUnit->Set_FollowCam(pFollowCam);
+	// CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarHammerUnit, nullptr);
+	// pFollowCam->Initialize();
+	// pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
+	// pFollowCam->Get_Transform()->Make_WorldMatrix();
+	// CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
 
-	//CCamera_Follow* pFollowCam = (CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam");
-	//pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
-	//pFollowCam->Get_Transform()->Make_WorldMatrix();
-	//DISABLE_GAMEOBJECT(pFollowCam);
-	//pTestWarHammerUnit->Set_FollowCam(pFollowCam);
+	// GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+	// DISABLE_GAMEOBJECT(pFollowCam);
+	// pTestWarHammerUnit->Set_FollowCam(pFollowCam);
 
-	//DISABLE_GAMEOBJECT(m_pWarrior);
-
-	m_pWarHammer = pTestWarHammerUnit;
-	DISABLE_GAMEOBJECT(m_pWarHammer);
-
+	DISABLE_GAMEOBJECT(pTestWarHammerUnit);
 
 	return S_OK;
 }
 
 HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 {
-
 	CUnit::UNIT_MODEL_DATA  tModelData;
 
 	//3. Valkyrie
@@ -751,6 +743,16 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 
 	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
 
+	// 워해머를 꺼잖아
+	// 카메라 매니저가 터지는 이유는 ? 팔로우캠을 못 받아서??
+
+	// 팔로우 캠이 못 받는 이유는 ??
+
+	// 유닛에서 생성하지
+
+	// 유닛에서 복사해서 하는거야
+
+	// 원본객체를 두번 생선한거야?
 
 	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
 	{
@@ -760,7 +762,7 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 	};
 
 
-	
+
 	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
 
 	tUnitColDesc[0].fRadius = 0.4f;
@@ -809,7 +811,7 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 	DISABLE_GAMEOBJECT(pFollowCam);
 	pTestValkyrieUnit->Set_FollowCam(pFollowCam);
 
-	
+
 
 	return S_OK;
 }

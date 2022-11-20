@@ -1,5 +1,7 @@
 #include "CUI_HUD.h"
 #include "GameInstance.h"
+#include "Texture.h"
+#include "CButton.h"
 
 #include "CUnit.h"
 #include "CUI_Object.h"
@@ -7,6 +9,7 @@
 #include "CUI_Portrait.h"
 #include "CUI_Skill.h"
 #include "CUI_HeroGauge.h"
+#include "CUI_HpBar.h"
 
 CUI_HUD::CUI_HUD()
 {
@@ -22,13 +25,15 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	m_pWrap[Port] = CUI_Portrait::Create();
 	m_pWrap[Skill] = CUI_Skill::Create();
 	m_pWrap[HeroGauge] = CUI_HeroGauge::Create();
+	m_pWrap[HpBar] = CUI_HpBar::Create();
 
 	CREATE_GAMEOBJECT(m_pWrap[Crosshair], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[Port], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[Skill], GROUP_UI);
 	CREATE_GAMEOBJECT(m_pWrap[HeroGauge], GROUP_UI);
+	CREATE_GAMEOBJECT(m_pWrap[HpBar], GROUP_UI);
 
-	//Create_CharacterSelectWindow();
+	Create_CharacterSelectWindow();
 
 	return S_OK;
 }
@@ -46,10 +51,9 @@ HRESULT CUI_HUD::Start()
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
 	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
+	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
 
-	//ENABLE_GAMEOBJECT(m_pBG);
-	//ENABLE_GAMEOBJECT(m_pPort);
-	//ENABLE_GAMEOBJECT(m_pPortBG);
+	Bind_Btn();
 
 	return S_OK;
 }
@@ -57,6 +61,30 @@ HRESULT CUI_HUD::Start()
 void CUI_HUD::My_Tick()
 {
 	__super::My_Tick();
+
+	if (m_pWrap[HpBar]->Is_Valid())
+	{
+		m_fHpRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
+		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHpRatio);
+
+		if (KEY(Z, HOLD))
+		{
+			m_tStatus.fHP -= fDT(0) * 10.f;
+			if (m_tStatus.fHP <= 0)
+			{
+				m_tStatus.fHP = 0;
+			}
+		}
+
+		if (KEY(X, HOLD))
+		{
+			m_tStatus.fHP += fDT(0) * 10.f;
+			if (m_tStatus.fHP >= m_tStatus.fMaxHP)
+			{
+				m_tStatus.fHP = m_tStatus.fMaxHP;
+			}
+		}
+	}
 
 	if (m_pWrap[HeroGauge]->Is_Valid())
 	{
@@ -82,12 +110,6 @@ void CUI_HUD::My_Tick()
 			}
 			else
 			{
-				// 영웅 변경 키를 누르면 영웅 변경
-				if (KEY(T, TAP))
-				{
-					// 영웅 변경 창 활성화
-				}
-
 				m_tStatus.fHeroGague -= fDT(0) * 20.f;
 				if (m_fHeroGauge <= 0.f)
 				{
@@ -117,7 +139,90 @@ void CUI_HUD::My_Tick()
 				Set_HUD(CUnit::LANCER);
 			}
 		}
-	}	
+	}
+
+	if (m_pBG->Is_Valid())
+	{
+		if (KEY(F, TAP))
+		{
+			SetActive_CharacterSelectWindow(false);
+		}
+	}
+	else
+	{
+		if (KEY(T, TAP))
+		{
+			SetActive_CharacterSelectWindow(true);
+		}
+	}
+
+	Port_MoveY(m_pClickPort);
+}
+
+void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPortClone[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			_float4 vPos = pTarget->Get_Pos();
+			vPos.y += 2.f;
+			m_pPortHighlight->Set_Pos(vPos);
+
+			ENABLE_GAMEOBJECT(m_pPortHighlight);
+		}
+	}
+}
+
+void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPortClone[i], CButton)->Get_TargetUI();
+		if (pTarget)
+		{
+			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
+			switch (iTextureNum)
+			{
+			case 0:
+				m_pClassInfo->Set_FontText(TEXT("블레이드"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
+				Set_HUD(CUnit::WARRIOR);
+				break;
+
+			case 1:
+				m_pClassInfo->Set_FontText(TEXT("스파이크"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
+				Set_HUD(CUnit::SPEAR);
+				break;
+
+			case 2:
+				m_pClassInfo->Set_FontText(TEXT("아치"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
+				Set_HUD(CUnit::ARCHER);
+				break;
+
+			case 3:
+				m_pClassInfo->Set_FontText(TEXT("가디언"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
+				Set_HUD(CUnit::PALADIN);
+				break;
+
+			case 4:
+				m_pClassInfo->Set_FontText(TEXT("스모크"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
+				Set_HUD(CUnit::PRIEST);
+				break;
+
+			case 5:
+				m_pClassInfo->Set_FontText(TEXT("워해머"));
+				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
+				Set_HUD(CUnit::ENGINEER);
+				break;
+			}
+		}
+	}
 }
 
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
@@ -161,6 +266,15 @@ void CUI_HUD::Set_ActiveHeroPort(_bool value)
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(eType);
 }
 
+void CUI_HUD::Bind_Btn()
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pPortClone[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_Port, this, placeholders::_1);
+		m_pPortClone[i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Port, this, placeholders::_1);
+	}
+}
+
 void CUI_HUD::Create_CharacterSelectWindow()
 {
 	m_pBG = CUI_Object::Create();
@@ -169,27 +283,206 @@ void CUI_HUD::Create_CharacterSelectWindow()
 	m_pBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_LobbyBG.dds"));
 
 	m_pPort = CUI_Object::Create();
-	m_pPort->Set_Scale(120.f, 160.f);
+	m_pPort->Set_Scale(100.f, 140.f);
 	m_pPort->Set_Sort(0.01f);
 	m_pPort->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Warrior.dds"));
 
+	m_pPort->Set_MouseTarget(true);
+
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Spearman.dds"));
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Archer.dds"));
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Paladin.dds"));
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Priest.dds"));
+	GET_COMPONENT_FROM(m_pPort, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_Portrait2Engineer.dds"));
+
 	m_pPortBG = CUI_Object::Create();
-	m_pPortBG->Set_Scale(120.f, 160.f);
+	m_pPortBG->Set_Scale(100.f, 140.f);
 	m_pPortBG->Set_Sort(0.015f);
 	m_pPortBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_CharacterBG.dds"));
 
-	for (int i = 0; i < 10; ++i)
+	m_pClassIcon = CUI_Object::Create();
+	m_pClassIcon->Set_Scale(20.f);
+	m_pClassIcon->Set_Sort(0.01f);
+	m_pClassIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_WarriorIconGold.dds"));
+
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_SpearmanIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_ArcherIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PaladinIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PriestIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_EngineerIconGold.dds"));
+
+	m_pPortHighlight = CUI_Object::Create();
+	m_pPortHighlight->Set_Scale(100.f, 144.f);
+	m_pPortHighlight->Set_Sort(0.001f);
+	m_pPortHighlight->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
+	m_pPortHighlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PortraitBustShotBG.png"));
+
+	m_pClassInfo = CUI_Object::Create();
+	m_pClassInfo->Set_Scale(75.f, 165.f);
+	m_pClassInfo->Set_Pos(-550.f, 200.f);
+	m_pClassInfo->Set_Sort(0.01f);
+	m_pClassInfo->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_DecoLam04.dds"));
+
+	m_pClassInfo->Set_FontRender(true);
+	m_pClassInfo->Set_FontStyle(true);
+	m_pClassInfo->Set_FontScale(0.5f);
+	m_pClassInfo->Set_FontOffset(50.f, -50.f);
+
+	m_pClassInfoIcon = CUI_Object::Create();
+	m_pClassInfoIcon->Set_Scale(54.f);
+	m_pClassInfoIcon->Set_Pos(-550.f, 220.f);
+	m_pClassInfoIcon->Set_Sort(0.001f);
+	m_pClassInfoIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_WarriorIconGold.dds"));
+
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_SpearmanIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_ArcherIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PaladinIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PriestIconGold.dds"));
+	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_EngineerIconGold.dds"));
+
+	m_pLine = CUI_Object::Create();
+	m_pLine->Set_Scale(650.f, 28.f);
+	m_pLine->Set_Pos(0.f, -150.f);
+	m_pLine->Set_Sort(0.01f);
+	m_pLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_DecoLam02.png"));
+
+	for (int i = 0; i < 6; ++i)
 	{
 		m_pPortClone[i] = m_pPort->Clone();
 		m_pPortBGClone[i] = m_pPortBG->Clone();
+		m_pClassIconClone[i] = m_pClassIcon->Clone();
+
+		_float fPosX = -300.f + (i * 120.f);
+
+		m_pPortClone[i]->Set_Pos(fPosX, -250.f);
+
+		_float4 vPos = m_pPortClone[i]->Get_Pos();
+
+		m_pPortBGClone[i]->Set_Pos(vPos);
+		m_pClassIconClone[i]->Set_Pos(vPos.x + 35.f, vPos.y + 55.f);
+
+		GET_COMPONENT_FROM(m_pPortClone[i], CTexture)->Set_CurTextureIndex(i);
+		GET_COMPONENT_FROM(m_pClassIconClone[i], CTexture)->Set_CurTextureIndex(i);
+
+		CREATE_GAMEOBJECT(m_pPortClone[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPortClone[i]);
+
+		CREATE_GAMEOBJECT(m_pPortBGClone[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPortBGClone[i]);
+
+		CREATE_GAMEOBJECT(m_pClassIconClone[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pClassIconClone[i]);
 	}
 
 	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pBG);
 
 	CREATE_GAMEOBJECT(m_pPort, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pPort);
+	DELETE_GAMEOBJECT(m_pPort);
 
 	CREATE_GAMEOBJECT(m_pPortBG, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pPortBG);
+	DELETE_GAMEOBJECT(m_pPortBG);
+
+	CREATE_GAMEOBJECT(m_pClassIcon, GROUP_UI);
+	DELETE_GAMEOBJECT(m_pClassIcon);
+
+	CREATE_GAMEOBJECT(m_pPortHighlight, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pPortHighlight);
+
+	CREATE_GAMEOBJECT(m_pClassInfo, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pClassInfo);
+
+	CREATE_GAMEOBJECT(m_pClassInfoIcon, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pClassInfoIcon);
+
+	CREATE_GAMEOBJECT(m_pLine, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pLine);
+}
+
+void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
+{
+	Set_ClassInfo(m_eCurClass);
+
+	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(!value);
+
+	if (value == true)
+	{
+		ENABLE_GAMEOBJECT(m_pBG);
+		ENABLE_GAMEOBJECT(m_pLine);
+		ENABLE_GAMEOBJECT(m_pClassInfo);
+		ENABLE_GAMEOBJECT(m_pClassInfoIcon);
+
+		for (int i = 0; i < 6; ++i)
+		{
+			ENABLE_GAMEOBJECT(m_pPortClone[i]);
+			ENABLE_GAMEOBJECT(m_pPortBGClone[i]);
+			ENABLE_GAMEOBJECT(m_pClassIconClone[i]);
+		}
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(m_pBG);
+		DISABLE_GAMEOBJECT(m_pLine);
+		DISABLE_GAMEOBJECT(m_pClassInfo);
+		DISABLE_GAMEOBJECT(m_pClassInfoIcon);
+		DISABLE_GAMEOBJECT(m_pPortHighlight);
+
+		for (int i = 0; i < 6; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_pPortClone[i]);
+			DISABLE_GAMEOBJECT(m_pPortBGClone[i]);
+			DISABLE_GAMEOBJECT(m_pClassIconClone[i]);
+		}
+	}
+}
+
+void CUI_HUD::Set_ClassInfo(CUnit::CLASS_TYPE eClass)
+{
+	switch (eClass)
+	{
+	case Client::CUnit::WARRIOR:
+		m_pClassInfo->Set_FontText(TEXT("블레이드"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
+		break;
+	case Client::CUnit::SPEAR:
+		m_pClassInfo->Set_FontText(TEXT("스파이크"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
+		break;
+	case Client::CUnit::ARCHER:
+		m_pClassInfo->Set_FontText(TEXT("아치"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
+		break;
+	case Client::CUnit::PALADIN:
+		m_pClassInfo->Set_FontText(TEXT("가디언"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
+		break;
+	case Client::CUnit::PRIEST:
+		m_pClassInfo->Set_FontText(TEXT("스모크"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
+		break;
+	case Client::CUnit::ENGINEER:
+		m_pClassInfo->Set_FontText(TEXT("워해머"));
+		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
+		break;
+	}
+}
+
+void CUI_HUD::Port_MoveY(CUI_Object* pTarget)
+{
+	if (!pTarget)
+		return;
+
+	if (m_bIsPortMoveY)
+	{
+		_float fCurPosY = pTarget->Get_PosY();
+
+		if (fCurPosY >= -200.f)
+		{
+			pTarget->Set_PosY(fCurPosY + fDT(0));
+
+			fCurPosY = -200.f;
+
+			m_bIsPortMoveY = false;
+		}
+	}
 }

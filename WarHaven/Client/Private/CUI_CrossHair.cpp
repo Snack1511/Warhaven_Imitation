@@ -347,6 +347,8 @@ void CUI_Crosshair::Ready_Crosshair()
 		{
 			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+
+			m_arrSkillUI[i][j]->Set_Sort(0.3f);
 		}
 	}
 }
