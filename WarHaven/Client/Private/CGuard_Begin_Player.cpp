@@ -80,7 +80,7 @@ STATE_TYPE CGuard_Begin_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 
 
 
-	if (KEY(RBUTTON, TAP))
+	if (KEY(RBUTTON, HOLD))
 		return m_eStateType;
    
     return STATE_END;

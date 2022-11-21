@@ -35,9 +35,12 @@ CWarrior_Attack_Sting_R* CWarrior_Attack_Sting_R::Create()
 }
 HRESULT CWarrior_Attack_Sting_R::Initialize()
 {
-	m_tHitInfo.eHitType = HIT_TYPE::eUP;
+	m_tHitInfo.eHitType = HIT_TYPE::eDOWN;
 	m_tHitInfo.fKnockBackPower = 3.f;
 	m_tHitInfo.fJumpPower = 0.f;
+	m_tHitInfo.bFace = false;
+	m_tHitInfo.bSting = true;
+
 
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
@@ -207,12 +210,12 @@ void CWarrior_Attack_Sting_R::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 	switch (iSequence)
 	{
 
-	case 1:
+	case 0:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 
-	case 2:
+	case 1:
 		m_bAttackTrigger = false;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 		break;

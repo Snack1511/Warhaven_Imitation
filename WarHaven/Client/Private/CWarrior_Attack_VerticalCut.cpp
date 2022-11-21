@@ -38,6 +38,7 @@ HRESULT CWarrior_Attack_VerticalCut::Initialize()
 	m_tHitInfo.eHitType = HIT_TYPE::eUP;
 	m_tHitInfo.fKnockBackPower = 3.f;
 	m_tHitInfo.fJumpPower = 0.f;
+	m_tHitInfo.bFace = false;
 
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 

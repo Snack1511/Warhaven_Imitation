@@ -53,8 +53,6 @@ HRESULT CAI_SandBack_Hit::Initialize()
     m_fAnimSpeed = 2.f;
 
     m_vecAdjState.push_back(STATE_IDLE_WARRIOR_R_AI_ENEMY);
-   // m_vecAdjState.push_back(STATE_IDLE_WARRIOR_L_AI_ENEMY);
-
     
 
     return S_OK;
@@ -62,15 +60,27 @@ HRESULT CAI_SandBack_Hit::Initialize()
 
 void CAI_SandBack_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+
+
+    if (ePrevType == STATE_GUARD_LOOP_WARRIOR_AI_ENEMY)
+        bTestGuard = true;
+
+    /* 날 때린놈의 hit info를 받았다. */
+    m_tHitInfo = *((HIT_INFO*)(pData));
+    __super::Hit_State();
+
     /* Owner의 Animator Set Idle로 */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
+
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
-
-
 }
 
 STATE_TYPE CAI_SandBack_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+    if (bTestGuard && pAnimator->Get_CurAnimFrame() > 50)
+        return STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY;
 
 
     return __super::Tick(pOwner, pAnimator);

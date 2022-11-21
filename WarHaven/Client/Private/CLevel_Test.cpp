@@ -266,6 +266,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// Å×½ºÆ®ÇÒ °´Ã¼ ¶ç¿ì±â
 
+	if (FAILED(SetUp_Warrior_Sandback()))
+		return E_FAIL;
+
 	if (FAILED(SetUp_Warrior_TH()))
 		return E_FAIL;
 
@@ -396,6 +399,19 @@ void CLevel_Test::Col_Check()
 
 	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYGUARD);
 	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERGUARD);
+
+	GAMEINSTANCE->Check_Group(COL_PLAYERGUARDBREAK, COL_ENEMYGUARD);
+	GAMEINSTANCE->Check_Group(COL_ENEMYGUARDBREAK, COL_PLAYERGUARD);
+
+	//GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERHITBOX_BODY);
+	//GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERGUARD);
+	//GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERATTACK);
+
+
+//	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYHITBOX_BODY);
+//	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYGUARD);
+	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYATTACK);
+	
 }
 
 HRESULT CLevel_Test::SetUp_Warrior_TH()
@@ -422,32 +438,18 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 	pTestWarriorUnit->Reserve_State(STATE_JUMPFALL_PLAYER_R);
 
 	pTestWarriorUnit->SetUp_Colliders(true);
+	pTestWarriorUnit->SetUp_HitStates(true);
+
+	
 
 	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
 	_float4 vPlayerPos = _float4(20.f, 5.f, 20.f);
 	pTestWarriorUnit->Teleport_Unit(vPlayerPos);
 	/* Game Collider */
 
-	/* Test Enemy */
-	CUnit_Warrior* pTestEnemyWarrior = CUnit_Warrior::Create(tModelData);
-	if (!pTestEnemyWarrior)
-		return E_FAIL;
-
-	pTestEnemyWarrior->Initialize();
-	pTestEnemyWarrior->Set_TargetUnit(pTestWarriorUnit);
-	pTestEnemyWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
 
 
-	pTestEnemyWarrior->SetUp_Colliders(false);
-	pTestEnemyWarrior->SetUp_HitStates(false);
-
-	Ready_GameObject(pTestEnemyWarrior, GROUP_ENEMY);
-
-	_float4 vEnemyPos = vPlayerPos;
-	vEnemyPos.z += 4.f;
-	pTestEnemyWarrior->Teleport_Unit(vEnemyPos);
-
-	
+	m_pWarrior = pTestWarriorUnit;
 
 	CUser::Get_Instance()->Set_Player(pTestWarriorUnit);
 
@@ -460,7 +462,7 @@ HRESULT CLevel_Test::SetUp_Warrior_TH()
 	DISABLE_GAMEOBJECT(pFollowCam);
 	pTestWarriorUnit->Set_FollowCam(pFollowCam);
 
-	m_pWarrior = pTestWarriorUnit;
+	
 
 	return S_OK;
 }
@@ -743,6 +745,82 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 	pTestValkyrieUnit->Set_FollowCam(pFollowCam);
 
 
+
+
+	return S_OK;
+}
+
+HRESULT CLevel_Test::SetUp_Warrior_Sandback()
+{
+	CUnit::UNIT_MODEL_DATA  tModelData;
+
+	//1. Idle
+	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Warrior/Warrior.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx";
+	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
+
+	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx";
+	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
+
+	_float4 vEnemyPos = _float4(20.f, 5.f, 24.f);
+
+	/* Test Enemy */
+	CUnit_Warrior* pTestIdleWarrior = CUnit_Warrior::Create(tModelData);
+	if (!pTestIdleWarrior)
+		return E_FAIL;
+
+	pTestIdleWarrior->Initialize();
+	pTestIdleWarrior->Set_TargetUnit(m_pWarrior);
+	pTestIdleWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
+
+
+	pTestIdleWarrior->SetUp_Colliders(false);
+	pTestIdleWarrior->SetUp_HitStates(false);
+
+	Ready_GameObject(pTestIdleWarrior, GROUP_ENEMY);
+
+
+	vEnemyPos.z += 4.f;
+	pTestIdleWarrior->Teleport_Unit(vEnemyPos);
+
+
+	CUnit_Warrior* pTestGuardWarrior = CUnit_Warrior::Create(tModelData);
+	if (!pTestGuardWarrior)
+		return E_FAIL;
+
+	pTestGuardWarrior->Initialize();
+	pTestGuardWarrior->Set_TargetUnit(m_pWarrior);
+	pTestGuardWarrior->Reserve_State(STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY);
+
+
+	pTestGuardWarrior->SetUp_Colliders(false);
+	pTestGuardWarrior->SetUp_HitStates(false);
+
+	Ready_GameObject(pTestGuardWarrior, GROUP_ENEMY);
+
+	vEnemyPos.x += 4.f;
+	pTestGuardWarrior->Teleport_Unit(vEnemyPos);
+
+
+
+	CUnit_Warrior* pTestAttackWarrior = CUnit_Warrior::Create(tModelData);
+	if (!pTestAttackWarrior)
+		return E_FAIL;
+
+	pTestAttackWarrior->Initialize();
+	pTestAttackWarrior->Set_TargetUnit(m_pWarrior);
+	pTestAttackWarrior->Reserve_State(STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY);
+
+
+	pTestAttackWarrior->SetUp_Colliders(false);
+	pTestAttackWarrior->SetUp_HitStates(false);
+
+	Ready_GameObject(pTestAttackWarrior, GROUP_ENEMY);
+
+	vEnemyPos.x += 4.f;
+	pTestAttackWarrior->Teleport_Unit(vEnemyPos);
 
 	return S_OK;
 }

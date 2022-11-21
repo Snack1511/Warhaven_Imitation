@@ -28,9 +28,10 @@ public:
 		_bool	bHeadShot = false;
 
 		_bool	bFace = false;
-		_bool	bSting = true;
+		_bool	bSting = false;
 
 		_bool	bGuardBreak = false;
+		_bool	bFly = false;
 
 		HIT_TYPE	eHitType = HIT_TYPE::eEND;
 
@@ -66,7 +67,8 @@ public:
 	virtual CState* Clone() PURE;
 
 public:
-	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos) {}
+	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos);
+	virtual void	OnCollisionStay(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType) {};
 
 public:
 	_uint Get_StateChangeKeyFrame() {
@@ -119,6 +121,7 @@ protected:
 	_bool				m_bAttackTrigger = false;
 	_bool				m_bETC_Trigger = false;
 
+	_bool				m_bFace = false;
 
 	_int				m_iFinishedFrame = 0;
 

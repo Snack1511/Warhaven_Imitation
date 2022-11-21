@@ -97,7 +97,7 @@ STATE_TYPE CSwitchRtoL_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAnim
     1. 현재 진행중인 애니메이션이 끝났을 때
     */
 
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::TAB)
+    if (CUser::Get_Instance()->Get_LastKey() == KEY::CTRL)
         return m_eStateType;
 
     return STATE_END;

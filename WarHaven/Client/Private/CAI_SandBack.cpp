@@ -97,8 +97,8 @@ STATE_TYPE CAI_SandBack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     CUnit* pTargetUnit = pOwner->Get_TargetUnit();
 
-    if (pTargetUnit)
-          CUtility_Transform::LookAt(pOwner->Get_Transform(), pTargetUnit->Get_Transform()->Get_World(WORLD_POS), true);
+  /*  if (pTargetUnit)
+          CUtility_Transform::LookAt(pOwner->Get_Transform(), pTargetUnit->Get_Transform()->Get_World(WORLD_POS), true);*/
 
 
     return __super::Tick(pOwner, pAnimator);

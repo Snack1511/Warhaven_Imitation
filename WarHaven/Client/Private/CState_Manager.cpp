@@ -244,10 +244,27 @@
 #pragma endregion 
 
 #include "CHit_Player.h"
+#include "CHit_GuardHit_Warrior.h"
+#include "CHit_Groggy_Warrior.h"
+#include "CHit_Sting_Warrior.h"
 
 #include "CAI_SandBack.h"
 #include "CAI_SandBack_L.h"
+
 #include "CAI_SandBack_Hit.h"
+#include "CAI_SandBack_GuardHit.h"
+#include "CAI_SandBack_Groggy.h"
+#include "CAI_SandBack_StingHit.h"
+#include "CAI_SandBack_FlyHit.h"
+//#include "CGuard_Cancel_Warrior_AI.h"
+
+#include "CAI_CWarrior_Attack_HorizontalMiddle_L.h"
+#include "CAI_CWarrior_Attack_HorizontalMiddle_R.h"
+
+#include "CGuard_Begin_Player_Warrior_AI.h"
+#include "CGuard_Loop_Warrior_AI.h"
+#include "CGuard_Cancel_Warrior_AI.h"
+
 
 
 IMPLEMENT_SINGLETON(CState_Manager);
@@ -394,6 +411,10 @@ void CState_Manager::Warrior_State()
 
 
 	m_arrStates[STATE_HIT] = CHit_Player::Create();
+	m_arrStates[STATE_GUARDHIT_WARRIOR] = CHit_GuardHit_Warrior::Create();
+	m_arrStates[STATE_GROGGYHIT_WARRIOR] = CHit_Groggy_Warrior::Create();
+	m_arrStates[STATE_STINGHIT_WARRIOR] = CHit_Sting_Warrior::Create();
+
 
 	//	m_arrStates[STATE_WARRIOR_OXEN] = CWarrior_Oxen::Create();
 	m_arrStates[STATE_WARRIOR_GUARDBREAK] = CWarrior_GuardBreak::Create();
@@ -405,12 +426,31 @@ void CState_Manager::Warrior_State()
 	m_arrStates[STATE_WARRIOR_OXEN_LOOPATTACK] = CWarrior_Oxen_Loop_Attack::Create();
 	m_arrStates[STATE_WARRIOR_OXEN_END] = CWarrior_Oxen_Cancel::Create();
 
-	m_arrStates[STATE_IDLE_WARRIOR_R_AI_ENEMY] = CAI_SandBack::Create();
-	m_arrStates[STATE_IDLE_WARRIOR_L_AI_ENEMY] = CAI_SandBack_L::Create();
+	/*AI TEST*/
+	m_arrStates[STATE_IDLE_WARRIOR_R_AI_ENEMY] =						CAI_SandBack::Create();
+	m_arrStates[STATE_IDLE_WARRIOR_L_AI_ENEMY] =						CAI_SandBack_L::Create();
 	
-	m_arrStates[STATE_HIT_TEST_ENEMY] = CAI_SandBack_Hit::Create();
 
+	m_arrStates[STATE_HIT_TEST_ENEMY] = CAI_SandBack_Hit::Create();
+	m_arrStates[STATE_GUARDHIT_ENEMY] = CAI_SandBack_GuardHit::Create();
+	m_arrStates[STATE_GROGGY_ENEMY] = CAI_SandBack_Groggy::Create();
+	m_arrStates[STATE_STINGHIT_ENEMY] = CAI_SandBack_StingHit::Create();
+	m_arrStates[STATE_FLYHIT_ENEMY] = CAI_SandBack_FlyHit::Create();
+	
+
+
+	m_arrStates[STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY] =					CGuard_Begin_Player_Warrior_AI::Create();
+	m_arrStates[STATE_GUARD_LOOP_WARRIOR_AI_ENEMY] =					CGuard_Loop_Warrior_AI::Create();
+	m_arrStates[STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY] =					CGuard_Cancel_Warrior_AI::Create();
+	m_arrStates[STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY] =		CAI_CWarrior_Attack_HorizontalMiddle_L::Create();
+	m_arrStates[STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY] =		CAI_CWarrior_Attack_HorizontalMiddle_R::Create();
+
+	/* Charge Test */
 	m_arrStates[STATE_CHARGETEST] = CChargeTest::Create();
+
+
+	
+
 
 	//STATE_HIT
 

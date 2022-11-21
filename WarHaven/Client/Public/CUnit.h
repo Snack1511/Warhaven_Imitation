@@ -76,8 +76,29 @@ public:
 		string	strRefBoneName[MODEL_PART_END];
 	};
 
+	struct STATE_HIT_TYPE
+	{
+		/* Hit, Dead 상태 */
+		STATE_TYPE		m_eHitState = STATE_END;
+		STATE_TYPE		m_eDeathState = STATE_END;
+		/* 가드 성공시 상태 */
+		STATE_TYPE		m_eGuardState = STATE_END;
+
+		/* 그로기 상태 */
+		STATE_TYPE		m_eGroggyState = STATE_END;
+
+		/* 가드 깨진 상태*/
+		STATE_TYPE		m_eGuardBreakState = STATE_END;
+
+		/* 찌르기맞고 죽기 전 상태 */ 
+		STATE_TYPE		m_eStingHitState = STATE_END;
+
+
+		STATE_TYPE		m_eFlyState = STATE_END;
+	};
+
 public:
-	enum UNITCOLLIDER { BODY, HEAD, WEAPON_L, WEAPON_R, GUARD, UNITCOLLIDER_END };
+	enum UNITCOLLIDER { BODY, HEAD, WEAPON_L, WEAPON_R, GUARD, GUARDBREAK_L, GUARDBREAK_R, GROGGY, UNITCOLLIDER_END };
 	enum WEAPONCOLLIDER { WEAPONCOLLIDER_END = 3 };
 	enum COOL_TYPE { SKILL1, SKILL2, SKILL3, COOL_END };
 
@@ -103,12 +124,16 @@ public:
 	/* 카메라 위치 조정 */
 	void	Lerp_Camera(const _uint& iCameraLerpType);
 
+
+public:
+
+
 public:
 	_float			Calculate_Damage(_bool bHeadShot, _bool bGuard);
 	virtual _bool	On_PlusHp(_float fHp);
 
 public:
-	_bool		Can_Use(COOL_TYPE eType) { if (m_fCoolAcc[eType] <= 0.f && eType < COOL_END) return true; return false; }
+	_bool		Can_Use(COOL_TYPE eType) { if (eType < COOL_END && m_fCoolAcc[eType] <= 0.f) return true; return false; }
 	void		On_Use(COOL_TYPE eType) { if(eType < COOL_END) m_fCoolAcc[eType] = m_fCoolTime[eType]; }
 
 	_bool		Can_Attack() { if (m_fAttackDelay <= 0.f) return true; return false; }
@@ -130,6 +155,8 @@ public:
 
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState* Get_CurStateP() { return m_pCurState; }
+
+	const STATE_HIT_TYPE& Get_HitType() { return m_tHitType; }
 
 	_float4	Get_FollowCamLook();
 	_float4	Get_FollowCamRight();
@@ -184,6 +211,9 @@ protected:
 public:
 	void	Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable);
 	void	Enable_GuardCollider(_bool bEnable);
+	void	Enable_GroggyCollider(_bool bEnable);
+	void	Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable);
+
 
 	struct UNIT_COLLIDERDESC
 	{
@@ -240,14 +270,8 @@ protected:
 	CCamera_Follow* m_pFollowCam = nullptr;
 
 protected:
-	/* Hit 상태 넣어놓기 */
-	STATE_TYPE		m_eHitState = STATE_END;
-	STATE_TYPE		m_eDeathState = STATE_END;
-	/* 가드 성공시 상태 */
-	STATE_TYPE		m_eGuardState = STATE_END;
 
-	/* 가드 깨진 상태*/
-	STATE_TYPE		m_eGuardBreakState = STATE_END;
+	STATE_HIT_TYPE	m_tHitType;
 
 	_float			m_fHitDelayAcc = 0.f;
 	_float			m_fHitDelayTime = 0.1f;

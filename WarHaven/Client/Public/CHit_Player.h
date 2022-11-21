@@ -1,11 +1,11 @@
 #pragma once
-#include "CState.h"
+#include "CState_Hit.h"
 
 BEGIN(Client)
 class CColorController;
 
 class CHit_Player
-	: public CState
+	: public CState_Hit
 {
 	DECLARE_STATE(CHit_Player);
 
@@ -25,9 +25,7 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
-	
 };
 
 END

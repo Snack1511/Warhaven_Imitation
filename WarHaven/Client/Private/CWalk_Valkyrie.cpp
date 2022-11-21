@@ -77,7 +77,7 @@ STATE_TYPE CWalk_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
 
         // 천천히 
-        if (KEY(CTRL, HOLD))
+        if (KEY(C, HOLD))
         {
             // 걸어간다.
             if (KEY(W, HOLD) ||
