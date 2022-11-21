@@ -55,7 +55,7 @@ HRESULT CUI::Initialize_Prototype()
 
 	// 페이드가 시작되는 시간
 	tFadeDesc.fFadeInStartTime = 0.f;
-	tFadeDesc.fFadeInTime = 0.5f;
+	tFadeDesc.fFadeInTime = 0.f;
 
 	// 페이드인이 끝나고 얼마 뒤에 아웃
 	tFadeDesc.fFadeOutStartTime = 0.f;

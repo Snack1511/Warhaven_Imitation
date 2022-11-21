@@ -24,7 +24,6 @@ HRESULT CUI_Main::Initialize_Prototype()
 	m_Prototypes[Play] = CUI_MainPlay::Create();
 
 	Ready_MainUI();
-
 	Create_BtnHighlight();
 
 	return S_OK;

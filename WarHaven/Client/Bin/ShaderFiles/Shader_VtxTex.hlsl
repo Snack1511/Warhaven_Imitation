@@ -223,6 +223,7 @@ PS_OUT PS_COLOR(PS_IN In)
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vColor *= g_vColor;
+    Out.vColor.w *= g_fAlpha;
     
     if (Out.vColor.w < 0.01f)
         discard;
@@ -385,9 +386,10 @@ PS_OUT PS_LOBBYEFFECT(PS_IN In)
 PS_OUT PS_UIColor_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-
+    
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 		
+    Out.vColor *= g_vColor;
     Out.vColor.w *= g_fAlpha;
 
     if (Out.vColor.w < 0.01f)

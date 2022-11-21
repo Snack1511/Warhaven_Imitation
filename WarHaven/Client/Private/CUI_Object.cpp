@@ -131,17 +131,22 @@ void CUI_Object::Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration)
 	Set_ScaleX(m_fStart);
 }
 
-void CUI_Object::Lerp_MoveX(_float fStart, _float fEnd, _float fDuration)
+void CUI_Object::Lerp_PosX(_float fStart, _float fEnd, _float fDuration)
 {
-	m_bLerpMoveX = true;
+	m_bLerpPosX = true;
 
-	m_fStart = Min(fStart);
-	m_fEnd = Min(fEnd);
+	m_fStart = fStart;
+	m_fEnd = fEnd;
 	m_fDuration = fDuration;
 
 	m_fAccScale = m_fEnd > m_fStart ? true : false;
+}
 
-	Set_PosX(m_fStart);
+void CUI_Object::Fade_Font(_bool value)
+{
+	m_bIsFontFade = true;
+
+	m_bIsFadeIn = value;
 }
 
 void CUI_Object::OnEnable()
@@ -161,6 +166,9 @@ void CUI_Object::My_Tick()
 	RenderText();
 
 	Lerp_Scale();
+	Lerp_Position();
+
+	Fade_Font();
 }
 
 void CUI_Object::My_LateTick()
@@ -277,6 +285,70 @@ void CUI_Object::Lerp_Scale()
 				Set_ScaleY(m_fEnd);
 				m_fAccTime = 0.f;
 				m_bLerpScaleY = false;
+			}
+		}
+	}
+}
+
+void CUI_Object::Lerp_Position()
+{
+	if (m_bLerpPosX)
+	{
+		m_fAccTime += fDT(0);
+
+		_float fCurPos = Get_PosX();
+		_float fMoveValue = m_fEnd - m_fStart;
+		_float fMoveSpeed = (fMoveValue / m_fDuration) * fDT(0);
+
+		Set_PosX(fCurPos + fMoveSpeed);
+
+		if (m_fAccTime >= m_fDuration)
+		{
+			m_fAccTime = 0.f;
+			m_bLerpPosX = false;
+		}
+	}
+}
+
+void CUI_Object::Fade_Font()
+{
+	if (m_bIsFontFade)
+	{
+		m_fAccTime += fDT(0) * 0.3f; // 0.3f
+
+		_float4 vStartColor = Get_FontColor();
+
+		// ∆‰¿ÃµÂ æ∆øÙ
+		if (!m_bIsFadeIn)
+		{
+			vStartColor.x -= m_fAccTime;
+			vStartColor.y -= m_fAccTime;
+			vStartColor.z -= m_fAccTime;
+			vStartColor.w -= m_fAccTime;
+
+			Set_FontColor(vStartColor);
+
+			if (vStartColor.w <= 0.f)
+			{
+				m_fAccTime = 0.f;
+				m_bIsFontFade = false;
+
+				DISABLE_GAMEOBJECT(this);
+			}
+		}
+		else
+		{
+			vStartColor.x += m_fAccTime;
+			vStartColor.y += m_fAccTime;
+			vStartColor.z += m_fAccTime;
+			vStartColor.w += m_fAccTime;
+
+			Set_FontColor(vStartColor);
+
+			if (vStartColor.w >= 1.f)
+			{
+				m_fAccTime = 0.f;
+				m_bIsFontFade = false;
 			}
 		}
 	}

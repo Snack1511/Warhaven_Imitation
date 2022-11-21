@@ -29,31 +29,23 @@ public:
 public:
 	wstring Get_Name() { return m_wstrName; }
 	void Set_Name(wstring str) { m_wstrName = str; }
-
 	_bool Get_MouseTarget() { return m_bIsMouseTarget; }
 	void Set_MouseTarget(_bool value) { m_bIsMouseTarget = value; }
-
 	_bool Get_MultiTexture() { return m_bIsMultiTex; }
 	void Set_MultiTexture(_bool value) { m_bIsMultiTex = value; }
-
 	_bool Get_IsInMouse() { return m_bIsInMouse; }
 
 public:	// Font
 	_bool Get_FontRender() { return m_bIsRenderText; }
 	void Set_FontRender(_bool value) { m_bIsRenderText = value; }
-
 	_bool Get_FontStyle() { return m_bIsBold; }
 	void Set_FontStyle(_bool value) { m_bIsBold = value; }
-
 	wstring Get_FontText() { return m_wstrText; }
 	void Set_FontText(wstring szText) { m_wstrText = szText; }
-
 	_float4 Get_FontOffset() { return m_vOffset; }
 	void Set_FontOffset(_float fX, _float fY);
-
 	_float4 Get_FontColor() { return m_vColor; }
 	void Set_FontColor(_float4 vColor) { m_vColor = vColor; }
-
 	_float Get_FontScale() { return m_fFontScale; }
 	void Set_FontScale(_float fValue) { m_fFontScale = fValue; }
 
@@ -66,7 +58,10 @@ public:
 	void Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration);
 
-	void Lerp_MoveX(_float fStart, _float fEnd, _float fDuration);
+	void Lerp_PosX(_float fStart, _float fEnd, _float fDuration);
+
+	// 1 In, 0 Out
+	void Fade_Font(_bool value);
 
 private:
 	wstring m_wstrName;
@@ -78,6 +73,8 @@ private:	// Font
 	_float4 m_vOffset;
 	_float4 m_vColor = { 1.f,1.f,1.f,1.f };
 	_float m_fFontScale = 1.f;
+	_bool m_bIsFontFade = false;
+	_bool m_bIsFadeIn = false;
 
 private:	// Button
 	_bool m_bIsMouseTarget = false;
@@ -90,9 +87,7 @@ private:	// Etc
 	_bool m_bIsInMouse = false;
 
 private:	// Lerp
-	_bool m_bLerpMove = false;
-	_bool m_bLerpMoveX = false;
-	_bool m_bLerpMoveY = false;
+	_bool m_bLerpPosX = false;
 
 	_bool m_bLerpScale = false;
 	_bool m_bLerpScaleX = false;
@@ -112,6 +107,8 @@ private:
 private:
 	void RenderText();
 	void Lerp_Scale();
+	void Lerp_Position();
+	void Fade_Font();
 
 private:
 	_float Min(_float fValue);
