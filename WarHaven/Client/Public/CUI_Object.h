@@ -61,6 +61,8 @@ public:
 	void Lerp_PosX(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_PosY(_float fStart, _float fEnd, _float fDuration);
 
+	void MoveY(_float fMoveValue, _float fDuration);
+
 	// 1 In, 0 Out
 	void Fade_Font(_bool value);
 
@@ -88,6 +90,10 @@ private:	// Etc
 	_bool m_bIsInMouse = false;
 
 private:	// Lerp
+	_bool m_bIsMoveY = false;
+
+	_float m_fMoveValue = 0.f;
+
 	_bool m_bLerpPosX = false;
 	_bool m_bLerpPosY = false;
 
@@ -110,6 +116,7 @@ private:
 	void RenderText();
 	void Lerp_Scale();
 	void Lerp_Position();
+	void Move();
 	void Fade_Font();
 
 private:

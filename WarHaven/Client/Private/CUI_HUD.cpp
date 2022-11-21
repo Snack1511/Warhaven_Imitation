@@ -35,6 +35,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	CREATE_GAMEOBJECT(m_pWrap[HpBar], GROUP_UI);
 
 	Create_CharacterSelectWindow();
+	Create_PortUnderLine();
 
 	return S_OK;
 }
@@ -158,6 +159,15 @@ void CUI_HUD::My_Tick()
 			SetActive_CharacterSelectWindow(true);
 		}
 	}
+
+	for (int i = 0; i < 6; ++i)
+	{
+		_float4 vScale = m_pPortUnderLines[i]->Get_Scale();
+		if (vScale.x <= 2.f)
+		{
+			DISABLE_GAMEOBJECT(m_pPortUnderLines[i]);
+		}
+	}
 }
 
 void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
@@ -178,25 +188,29 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 {
 	CUI_Object* pTarget = m_pPortClone[iEventNum];
 
-	_float4 vPos = pTarget->Get_Pos();
-	_float fTargetPosY = vPos.y + 10.f;
 	_float fDuraition = 0.15f;
 
 	for (int i = 0; i < 6; ++i)
 	{
-		if (m_pPortClone[i]->Get_PosY() >= fTargetPosY)
+		_float fPosY = m_pPortClone[i]->Get_PosY();
+		if (fPosY > -245.f)
 		{
-			m_pPortClone[i]->Lerp_PosY(fTargetPosY, vPos.y, fDuraition);
-			m_pPortBGClone[i]->Lerp_PosY(fTargetPosY, vPos.y, fDuraition);
-			m_pClassIconClone[i]->Lerp_PosY(fTargetPosY, vPos.y, fDuraition);
-			m_pPortHighlights[i]->Lerp_PosY(fTargetPosY, vPos.y, fDuraition);
+			m_pPortClone[i]->MoveY(-10.f, fDuraition);
+			m_pPortBGClone[i]->MoveY(-10.f, fDuraition);
+			m_pClassIconClone[i]->MoveY(-10.f, fDuraition);
+			m_pPortHighlights[i]->MoveY(-10.f, fDuraition);
+
+			m_pPortUnderLines[i]->Lerp_ScaleX(100.f, 2.f, fDuraition);
 		}
 	}
 
-	m_pPortClone[iEventNum]->Lerp_PosY(vPos.y, fTargetPosY, fDuraition);
-	m_pPortBGClone[iEventNum]->Lerp_PosY(vPos.y, fTargetPosY, fDuraition);
-	m_pClassIconClone[iEventNum]->Lerp_PosY(vPos.y, fTargetPosY, fDuraition);
-	m_pPortHighlights[iEventNum]->Lerp_PosY(vPos.y, fTargetPosY, fDuraition);
+	m_pPortClone[iEventNum]->MoveY(10.f, fDuraition);
+	m_pPortBGClone[iEventNum]->MoveY(10.f, fDuraition);
+	m_pClassIconClone[iEventNum]->MoveY(10.f, fDuraition);
+	m_pPortHighlights[iEventNum]->MoveY(10.f, fDuraition);
+
+	ENABLE_GAMEOBJECT(m_pPortUnderLines[iEventNum]);
+	m_pPortUnderLines[iEventNum]->Lerp_ScaleX(2.f, 100.f, fDuraition);
 
 	if (pTarget)
 	{
@@ -511,4 +525,27 @@ void CUI_HUD::Set_ClassInfo(CUnit::CLASS_TYPE eClass)
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
 		break;
 	}
+}
+
+void CUI_HUD::Create_PortUnderLine()
+{
+	m_pPortUnderLine = CUI_Object::Create();
+	
+	m_pPortUnderLine->Set_PosY(-318.f);
+	m_pPortUnderLine->Set_Scale(2.f);
+	m_pPortUnderLine->Set_Color(_float4(0.773f, 0.714f, 0.596f, 1.f));
+
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pPortUnderLines[i] = m_pPortUnderLine->Clone();
+
+		_float fPosX = -300.f + (i * 120.f);
+		m_pPortUnderLines[i]->Set_PosX(fPosX);
+
+		CREATE_GAMEOBJECT(m_pPortUnderLines[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPortUnderLines[i]);
+	}
+
+	CREATE_GAMEOBJECT(m_pPortUnderLine, GROUP_UI);
+	DELETE_GAMEOBJECT(m_pPortUnderLine);
 }

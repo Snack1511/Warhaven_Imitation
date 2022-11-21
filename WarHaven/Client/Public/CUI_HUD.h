@@ -59,6 +59,9 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pSelectLine = nullptr;
 	CUI_Object* m_pConfirmBtn = nullptr;
 
+	CUI_Object* m_pPortUnderLine = nullptr;
+	CUI_Object* m_pPortUnderLines[6];
+
 	CUI_Object* m_pPortClone[6];
 	CUI_Object* m_pPortBGClone[6];
 	CUI_Object* m_pClassIconClone[6];
@@ -81,6 +84,7 @@ private:
 
 private:
 	void Create_CharacterSelectWindow();
+	void Create_PortUnderLine();
 };
 
 END
