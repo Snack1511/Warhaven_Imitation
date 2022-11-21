@@ -24,6 +24,7 @@
 #include "Functor.h"
 
 #include "HIerarchyNode.h"
+#include "CUser.h"
 
 
 
@@ -756,9 +757,10 @@ void CRectEffects::OnEnable()
 	m_fLoopTimeAcc = 0.f;
 	//시작위치
 
+
+
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
-		
 		Reset_Instance(i);
 	}
 
@@ -1135,12 +1137,20 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pDatas[iIndex].InstancingData.vTurnDir.y = 0.f;
 	m_pDatas[iIndex].InstancingData.vTurnDir.z = 0.f;
 
+	/*_float4 vRotRight, vRotUp, vRotLook;
+
+	_float4x4 matRot = m_pTransform->Get_Transform().matMyWorld;
+
+	vRotLook = vLook.MultiplyNormal(matRot);
+	vRotRight = vRight.MultiplyNormal(matRot);
+	vRotUp = vUp.MultiplyNormal(matRot);
+
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
 		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 	{
 		m_pDatas[iIndex].RectInstance.vColor.x = 0.f;
 		m_pDatas[iIndex].RectInstance.vColor.y = 0.f;
-	}
+	}*/
 
 	//Jump
 	m_pDatas[iIndex].InstancingData.fPrevY = m_pDatas[iIndex].RectInstance.vTranslation.y;
@@ -1148,6 +1158,8 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pDatas[iIndex].InstancingData.fAcc = 0.f;
 
 	m_pDatas[iIndex].InstancingData.bAlive = true;
+
+
 }
 
 _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
