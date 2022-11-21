@@ -508,6 +508,7 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 			DISABLE_GAMEOBJECT(m_pPortBGClone[i]);
 			DISABLE_GAMEOBJECT(m_pClassIconClone[i]);
 			DISABLE_GAMEOBJECT(m_pPortHighlights[i]);
+			DISABLE_GAMEOBJECT(m_pPortUnderLines[i]);
 		}
 	}
 }

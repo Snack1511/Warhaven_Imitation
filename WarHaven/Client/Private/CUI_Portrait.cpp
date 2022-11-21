@@ -37,7 +37,7 @@ HRESULT CUI_Portrait::Start()
 	Set_Pass();
 	Bind_Shader();
 
-	Set_FadeHeroPort(); 
+	Set_FadeHeroPort();
 
 	__super::Start();
 
@@ -214,10 +214,7 @@ void CUI_Portrait::Set_FadeUserPort(_float fSpeed)
 	tFadeDesc.fFadeOutStartTime = 0.f;
 	tFadeDesc.fFadeOutTime = fSpeed;
 
-	for (int i = 0; i < 2; ++i)
-	{
-		GET_COMPONENT_FROM(m_arrPortraitUI[0][i], CFader)->Get_FadeDesc() = tFadeDesc;
-	}
+	GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
 void CUI_Portrait::Set_FadeHeroPort()
@@ -318,11 +315,7 @@ void CUI_Portrait::PortSizeUP(_float fDuration)
 	m_arrPortraitUI[0][BG]->Lerp_ScaleX(0.f, 64.f, fRotSpeed);
 	m_arrPortraitUI[0][Port]->Lerp_ScaleX(0.f, 63.f, fRotSpeed);
 
-	for (int i = 0; i < 2; ++i)
-	{
-		Enable_Fade(m_arrPortraitUI[0][i]);
-		// GET_COMPONENT_FROM(m_arrPortraitUI[0][i], CFader)->Re_FadeIn();
-	}
+	Enable_Fade(m_arrPortraitUI[0][Port]);
 }
 
 void CUI_Portrait::PortSizeDown(_float fDuration)
@@ -334,11 +327,7 @@ void CUI_Portrait::PortSizeDown(_float fDuration)
 	m_arrPortraitUI[0][BG]->Lerp_ScaleX(64.f, 0.f, fRotSpeed);
 	m_arrPortraitUI[0][Port]->Lerp_ScaleX(63.f, 0.f, fRotSpeed);
 
-	for (int i = 0; i < 2; ++i)
-	{
-		Disable_Fade(m_arrPortraitUI[0][i]);
-		// GET_COMPONENT_FROM(m_arrPortraitUI[0][i], CFader)->Re_FadeOut();
-	}
+	Disable_Fade(m_arrPortraitUI[0][Port]);
 }
 
 void CUI_Portrait::Enable_HeroLerp(_bool value, _float fDuration)
