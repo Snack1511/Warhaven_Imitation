@@ -291,7 +291,7 @@ void CWindow_Effect::Show_MainList()
 	}
 
 
-	if (ImGui::BeginListBox("CurrentEffects_List", ImVec2(360.f, 300.f)))
+	if (ImGui::BeginListBox("CurrentEffects_List", ImVec2(360.f, 150.f)))
 	{
 		for (_uint i = 0; i < m_vecEffects.size(); ++i)
 		{

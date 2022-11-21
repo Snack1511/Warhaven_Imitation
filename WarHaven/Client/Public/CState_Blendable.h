@@ -23,6 +23,7 @@ public:
 
 protected:
 	virtual void Hit_GroundEffect(CUnit* pOwner);
+	virtual void Hit_SlashEffect(CUnit* pOwner);
 
 protected:
 	//L, R ¿©ºÎ
@@ -98,10 +99,12 @@ private:
 
 private:
 	_bool		m_bAfterEffect = false;
+	_bool		m_bBlood = false;
 	_float		m_fCreateTimeAcc = 0.f;
 	_float		m_fCreateTime = 0.02f;
 	_float		m_fCreateTimeSlow = 0.07f;
 	void		Create_SwordAfterEffect();
+	void		Create_BloodEffect();
 	void		Create_SoilEffect(); 
 
 private:

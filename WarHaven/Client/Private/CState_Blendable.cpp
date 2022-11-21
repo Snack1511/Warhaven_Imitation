@@ -104,6 +104,43 @@ void CState_Blendable::Hit_GroundEffect(CUnit* pOwner)
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", vHitPos);
 }
 
+void CState_Blendable::Hit_SlashEffect(CUnit* pOwner)
+{
+	m_bBlood = true;
+
+	switch (pOwner->Get_CurState())
+	{
+	case STATE_ATTACK_HORIZONTALUP_L:
+		break;
+	case STATE_ATTACK_HORIZONTALMIDDLE_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", pOwner, pOwner->Get_HitPos());
+		break;
+	case STATE_ATTACK_HORIZONTALDOWN_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", pOwner, pOwner->Get_HitPos());
+		break;
+	case STATE_ATTACK_HORIZONTALUP_R:
+		break;
+	case STATE_ATTACK_HORIZONTALMIDDLE_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", pOwner, pOwner->Get_HitPos());
+		break;
+	case STATE_ATTACK_HORIZONTALDOWN_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", pOwner, pOwner->Get_HitPos());
+		break;
+	case STATE_ATTACK_VERTICALCUT:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", pOwner, pOwner->Get_HitPos());
+		break;
+
+	}
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner->Get_HitMatrix());
+
+	
+
+	
+}
+
 STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	STATE_TYPE	eStateType = STATE_END;
@@ -133,16 +170,10 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		m_bHitEffect = false;
 		pOwner->Shake_Camera(0.15f, 0.25f);
 
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-		//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-		//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-		/*CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark_R", pOwner->Get_HitMatrix());
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_R", pOwner->Get_HitMatrix());*/
-
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner->Get_HitMatrix());
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash", pOwner->Get_HitMatrix());
+		Hit_SlashEffect(pOwner);
 	}
 
+	//Create_BloodEffect();
 	// Create_SwordAfterEffect();
 
 	switch (m_eEnum)
@@ -363,6 +394,24 @@ void CState_Blendable::Create_SwordAfterEffect()
 	
 }
 
+void CState_Blendable::Create_BloodEffect()
+{
+	
+
+	_float fTargetTime = 0.03f;
+
+	if (m_bBlood)
+	{
+		m_fCreateTimeAcc += fDT(0);
+
+		if (m_fCreateTimeAcc >= fTargetTime)
+		{
+			m_fCreateTimeAcc = 0.f;
+			CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"BloodEffect_1"), m_pOwner, m_pOwner->Get_Transform()->Get_World(WORLD_POS));
+		}
+	}
+}
+
 void CState_Blendable::Create_SoilEffect()
 {
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", m_pOwner, m_pOwner->Get_Transform()->Get_World(WORLD_POS));
@@ -420,7 +469,7 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 
 	case 999:
 		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-
+		m_bBlood = false;
 		m_bAfterEffect = false;
 		pOwner->TurnOn_TrailEffect(false);
 

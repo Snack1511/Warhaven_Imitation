@@ -1073,10 +1073,9 @@ void CRectEffects::Update_Animation(_uint iIndex)
 
 	//UV넘기는 코드
 
-	if (m_pDatas[iIndex].InstancingData.vTurnDir.y > m_pDatas[iIndex].InstancingData.fDuration)
+	while (m_pDatas[iIndex].InstancingData.vTurnDir.y > m_pDatas[iIndex].InstancingData.fDuration * 
+		((m_pDatas[iIndex].RectInstance.vColor.x + 1) + m_iHeightSize * m_pDatas[iIndex].RectInstance.vColor.y))
 	{
-		m_pDatas[iIndex].InstancingData.vTurnDir.y = 0.f;
-
 		m_pDatas[iIndex].RectInstance.vColor.x += 1.f;
 		if (m_pDatas[iIndex].RectInstance.vColor.x >= m_iWidthSize)
 		{
@@ -1085,6 +1084,7 @@ void CRectEffects::Update_Animation(_uint iIndex)
 			if (m_pDatas[iIndex].RectInstance.vColor.y >= m_iHeightSize)
 			{
 				//여기 들어왔다 : 한바퀴돌아서 1순한거임
+				m_pDatas[iIndex].InstancingData.vTurnDir.y = 0.f;
 				m_pDatas[iIndex].RectInstance.vColor.x = m_iWidthSize - 1;
 				m_pDatas[iIndex].RectInstance.vColor.y = m_iHeightSize - 1;
 
