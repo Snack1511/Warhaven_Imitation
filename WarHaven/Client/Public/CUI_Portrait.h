@@ -63,6 +63,7 @@ private:	// Shader
 	void Set_Pass();
 	void Bind_Shader();
 
+	void Set_FadeUserPort(_float fSpeed);
 	void Set_FadeHeroPort();
 
 private:

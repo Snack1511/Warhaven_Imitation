@@ -102,8 +102,6 @@ void CUI_HUD::My_Tick()
 		{
 			if (m_tStatus.bIsHero)
 			{
-				Enable_Fade(m_pInactiveHeroText);
-
 				m_tStatus.fHeroGague += fDT(0) * 20.f;
 				if (m_fHeroGauge >= 1.f)
 				{
@@ -271,6 +269,7 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 	{
 		if (m_tStatus.bAbleHero)
 		{
+			Enable_Fade(m_pInactiveHeroText);
 			Set_ActiveHeroPort(false);
 		}
 
@@ -464,6 +463,8 @@ void CUI_HUD::Set_FadePortHighlight()
 	{
 		GET_COMPONENT_FROM(m_pPortHighlights[i], CFader)->Get_FadeDesc() = tFadeDesc;
 	}
+
+	GET_COMPONENT_FROM(m_pInactiveHeroText, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
