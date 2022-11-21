@@ -90,6 +90,12 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 
 }
 
+void	CUnit_Warrior::SetUp_HitStates(_bool bPlayer)
+{
+	//if (!bPlayer)
+	//	m_eHitState = STATE_PLAYER_HIT;
+}
+
 HRESULT CUnit_Warrior::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();

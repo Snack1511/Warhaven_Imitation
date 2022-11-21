@@ -36,6 +36,10 @@ CWarrior_GuardBreak* CWarrior_GuardBreak::Create()
 }
 HRESULT CWarrior_GuardBreak::Initialize()
 {
+    m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
+    m_tHitInfo.fKnockBackPower = 1.f;
+    m_tHitInfo.fJumpPower = 0.f;
+    m_tHitInfo.bGuardBreak = true;
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 15;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)

@@ -577,6 +577,7 @@ namespace Client
 
 #pragma region AI
 			STATE_IDLE_WARRIOR_R_AI_ENEMY,
+			STATE_IDLE_WARRIOR_L_AI_ENEMY,
 			STATE_HIT_TEST_ENEMY,
 #pragma endregion
 

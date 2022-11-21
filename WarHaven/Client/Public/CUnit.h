@@ -107,13 +107,14 @@ public:
 	_float			Calculate_Damage(_bool bHeadShot, _bool bGuard);
 	virtual _bool	On_PlusHp(_float fHp);
 
-
 public:
 	_bool		Can_Use(COOL_TYPE eType) { if (m_fCoolAcc[eType] <= 0.f && eType < COOL_END) return true; return false; }
 	void		On_Use(COOL_TYPE eType) { if(eType < COOL_END) m_fCoolAcc[eType] = m_fCoolTime[eType]; }
 
 	_bool		Can_Attack() { if (m_fAttackDelay <= 0.f) return true; return false; }
 	void		On_Attack(CState* pState);
+
+	
 
 	_bool		Is_Weapon_R_Collision();
 	/* Ä³¸¯ÅÍ¿¡ ºÎµúÈù°Å Ã¼Å© */

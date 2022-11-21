@@ -39,10 +39,8 @@ CAI_SandBack_Hit* CAI_SandBack_Hit::Create()
 
 HRESULT CAI_SandBack_Hit::Initialize()
 {
-    // 상하체 분리.
-    // 
 
-  //  __super::Initialize();
+    __super::Initialize();
 
     m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 2;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
@@ -55,6 +53,9 @@ HRESULT CAI_SandBack_Hit::Initialize()
     m_fAnimSpeed = 2.f;
 
     m_vecAdjState.push_back(STATE_IDLE_WARRIOR_R_AI_ENEMY);
+   // m_vecAdjState.push_back(STATE_IDLE_WARRIOR_L_AI_ENEMY);
+
+    
 
     return S_OK;
 }

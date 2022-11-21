@@ -5,6 +5,7 @@
 BEGIN(Client)
 
 class CUI_HUD;
+class CUnit;
 
 class CLevel_Test final
 	: public CLevel
@@ -48,8 +49,8 @@ private:
 private:
 	CGameObject* m_pTestObj = nullptr;
 
-	CGameObject* m_pWarrior = nullptr;
-	CGameObject* m_pWarHammer = nullptr;
+	CUnit* m_pWarrior = nullptr;
+	CUnit* m_pWarHammer = nullptr;
 
 	CUI_HUD* m_pHUD = nullptr;
 

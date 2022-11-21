@@ -33,6 +33,11 @@ CWarHammer_Attack_HorizontalMiddle_R* CWarHammer_Attack_HorizontalMiddle_R::Crea
 }
 HRESULT CWarHammer_Attack_HorizontalMiddle_R::Initialize()
 {
+	m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
+	m_tHitInfo.fKnockBackPower = 3.f;
+	m_tHitInfo.fJumpPower = 0.f;
+
+
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
 	m_iAnimIndex = 7;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)

@@ -35,6 +35,10 @@ CWarrior_Attack_VerticalCut* CWarrior_Attack_VerticalCut::Create()
 }
 HRESULT CWarrior_Attack_VerticalCut::Initialize()
 {
+	m_tHitInfo.eHitType = HIT_TYPE::eUP;
+	m_tHitInfo.fKnockBackPower = 3.f;
+	m_tHitInfo.fJumpPower = 0.f;
+
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입

@@ -189,6 +189,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\public\CAI_SandBack_Hit.h" />
+    <ClInclude Include="..\Public\CAI_SandBack_L.h" />
     <ClInclude Include="..\Public\CBarricade.h" />
     <ClInclude Include="..\Public\CBloodOverlay.h" />
     <ClInclude Include="..\Public\CBounce_WarHammer.h" />
@@ -470,6 +471,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\CAI_SandBack_L.cpp" />
     <ClCompile Include="..\private\CAI_SandBack.cpp" />
     <ClCompile Include="..\private\CAI_SandBack_Hit.cpp" />
     <ClCompile Include="..\Private\CBarricade.cpp" />

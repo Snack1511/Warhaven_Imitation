@@ -13,7 +13,7 @@ class CUnit;
 class CState
 {
 public:
-	enum class HIT_TYPE { eLEFT, eRIGHT, eEND };
+	enum class HIT_TYPE { eLEFT, eRIGHT, eUP, eDOWN, eGROGGY, eEND };
 	struct HIT_INFO
 	{
 		/* 맞고나서 밀려나는 힘 */
@@ -28,8 +28,12 @@ public:
 		_bool	bHeadShot = false;
 
 		_bool	bFace = false;
+		_bool	bSting = true;
+
+		_bool	bGuardBreak = false;
 
 		HIT_TYPE	eHitType = HIT_TYPE::eEND;
+
 	};
 
 public:

@@ -33,6 +33,9 @@ CWarHammer_Attack_HorizontalMiddle_L* CWarHammer_Attack_HorizontalMiddle_L::Crea
 }
 HRESULT CWarHammer_Attack_HorizontalMiddle_L::Initialize()
 {
+	m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
+	m_tHitInfo.fKnockBackPower = 3.f;
+	m_tHitInfo.fJumpPower = 0.f;
 
 
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
