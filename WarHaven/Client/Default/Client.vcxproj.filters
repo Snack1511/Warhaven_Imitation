@@ -1120,6 +1120,12 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\03. SpinAttack">
       <UniqueIdentifier>{a83f9096-754a-4139-b72a-abadf4d7b8f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\AI_Idle_R">
+      <UniqueIdentifier>{e4c5a156-f615-4d19-b205-c11bdac7c742}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\AI_Idle_L">
+      <UniqueIdentifier>{9ade192c-0a8c-4634-9326-7403699b39dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1484,9 +1490,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\CGame_Manager_MJ.h">
       <Filter>02. Design\04. Game_Manager\MJ</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\CAI_SandBack.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBounce_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\03. Bounce</Filter>
@@ -1962,6 +1965,12 @@
     <ClInclude Include="..\public\CAI_SandBack_Hit.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CAI_SandBack.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\AI_Idle_R</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAI_SandBack_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\AI_Idle_L</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2313,9 +2322,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGame_Manager_MJ.cpp">
       <Filter>02. Design\04. Game_Manager\MJ</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\CAI_SandBack.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\03. Bounce</Filter>
@@ -2784,6 +2790,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CAI_SandBack_Hit.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CAI_SandBack.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\AI_Idle_R</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAI_SandBack_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\AI_Idle_L</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

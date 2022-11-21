@@ -55,7 +55,7 @@ HRESULT CWarrior_Attack_HorizontalUp::Initialize()
 
 void CWarrior_Attack_HorizontalUp::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->On_Attack(this);
+	pOwner->On_Attack	(this);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

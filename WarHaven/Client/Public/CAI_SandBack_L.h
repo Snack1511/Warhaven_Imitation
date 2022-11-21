@@ -1,22 +1,26 @@
 #pragma once
-#include "CState_Hit.h"
+#include "CState.h"
 
 BEGIN(Engine)
+class CAnimator;
 END
 
 
 BEGIN(Client)
-class CAI_SandBack_Hit
-	: public CState_Hit
+class CAI_SandBack_L
+	: public CState
 {
-	DECLARE_STATE(CAI_SandBack_Hit);
+	DECLARE_STATE(CAI_SandBack_L);
 
 private:
-	CAI_SandBack_Hit();
-	virtual ~CAI_SandBack_Hit();
+	CAI_SandBack_L();
+	virtual ~CAI_SandBack_L();
 
 public:
-	static CAI_SandBack_Hit* Create();
+	static CAI_SandBack_L* Create();
+
+public:
+	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos);
 
 public:
 	// CState을(를) 통해 상속됨
@@ -27,9 +31,6 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
-private:
-	_bool	bTest = false; 
 
 };
 

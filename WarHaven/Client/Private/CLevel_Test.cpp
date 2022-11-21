@@ -177,6 +177,8 @@ HRESULT CLevel_Test::Enter()
 
 void CLevel_Test::Tick()
 {
+	Change_Player();
+
 	if (!m_bStaticShadowBake)
 	{
 		m_fDealyAcc += fDT(0);
@@ -742,28 +744,59 @@ void CLevel_Test::Change_Player()
 
 	if (KEY(P, TAP))
 	{
-		ENABLE_GAMEOBJECT(m_pWarHammer);
-		CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarHammer));
-		DISABLE_GAMEOBJECT(m_pWarrior);
-		
-		
-//		static_cast<CUnit*>(m_pWarHammer)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
 
-		
+		_float4 vPlayerPos = m_pWarrior->Get_Transform()->Get_World(WORLD_POS);
+		m_pWarrior->Teleport_Unit(vPlayerPos);
+
+		ENABLE_GAMEOBJECT(m_pWarrior);
+
+
+		CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarrior));
+
+		if (m_pWarHammer)
+			DISABLE_GAMEOBJECT(m_pWarHammer);
+
+		//		static_cast<CUnit*>(m_pWarHammer)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
+
+
+		CCamera_Follow* pFollowCam = (CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam");
+		pFollowCam->Initialize();
+		pFollowCam->Get_Transform()->Set_World(WORLD_POS, m_pWarrior->Get_Transform()->Get_World(WORLD_POS));
+		pFollowCam->Get_Transform()->Make_WorldMatrix();
+		CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+		static_cast<CUnit*>(m_pWarrior)->Set_FollowCam(pFollowCam);
+
 	}
 
-	if (KEY(J, TAP))
+	if (KEY(O, TAP))
 	{
-		ENABLE_GAMEOBJECT(m_pWarrior);
-		CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarHammer));
-		DISABLE_GAMEOBJECT(m_pWarHammer);
+
+		_float4 vPlayerPos = m_pWarHammer->Get_Transform()->Get_World(WORLD_POS);
+		m_pWarHammer->Teleport_Unit(vPlayerPos);
+
+		ENABLE_GAMEOBJECT(m_pWarHammer);
+
+		CCamera_Follow* pFollowCam = (CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam");
+		pFollowCam->Initialize();
+		pFollowCam->Get_Transform()->Set_World(WORLD_POS, m_pWarHammer->Get_Transform()->Get_World(WORLD_POS));
+		pFollowCam->Get_Transform()->Make_WorldMatrix();
+		CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+		m_pWarHammer->Set_FollowCam(pFollowCam);
+
+
+		//	ENABLE_GAMEOBJECT(m_pWarHammer);
+		CUser::Get_Instance()->Set_Player(m_pWarHammer);
+		//	DISABLE_GAMEOBJECT(m_pWarrior);
+
+		if (m_pWarrior)
+			DISABLE_GAMEOBJECT(m_pWarrior);
 
 		//CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarrior));
 		//DISABLE_GAMEOBJECT(m_pWarHammer);
 		//ENABLE_GAMEOBJECT(m_pWarrior);
 
 		//static_cast<CUnit*>(m_pWarrior)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam3")));
-		
+
 	}
 
 }

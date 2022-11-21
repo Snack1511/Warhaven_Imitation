@@ -33,6 +33,10 @@ CWarrior_Attack_HorizontalDown_L* CWarrior_Attack_HorizontalDown_L::Create()
 }
 HRESULT CWarrior_Attack_HorizontalDown_L::Initialize()
 {
+	m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
+	m_tHitInfo.fKnockBackPower = 2.f;
+	m_tHitInfo.fJumpPower = 0.f;
+
 
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
 	m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
