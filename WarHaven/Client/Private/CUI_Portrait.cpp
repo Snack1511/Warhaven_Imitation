@@ -8,6 +8,7 @@
 #include "Transform.h"
 #include "CShader.h"
 #include "CUI_Renderer.h"
+#include "CFader.h"
 
 CUI_Portrait::CUI_Portrait()
 {
@@ -36,6 +37,8 @@ HRESULT CUI_Portrait::Start()
 	Set_Pass();
 	Bind_Shader();
 
+	Set_FadeHeroPort();
+
 	__super::Start();
 
 	return S_OK;
@@ -52,7 +55,7 @@ void CUI_Portrait::Start_Portrait(_uint iIndex)
 	{
 		GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture)->Set_CurTextureIndex(iIndex);
 
-		ENABLE_GAMEOBJECT(m_arrPortraitUI[0][i]);
+		Enable_Fade(m_arrPortraitUI[0][i]);
 	}
 }
 
@@ -89,7 +92,7 @@ void CUI_Portrait::My_Tick()
 	// 영웅 변신 상태일 때
 	if (m_bAbleHero)
 	{
-		_float fDuration = 0.3f;
+		_float fDuration = 0.1f;
 		if (m_eHeroPortAnimType == Enable)
 		{
 			if (m_bIsHeroLerp)
@@ -98,19 +101,22 @@ void CUI_Portrait::My_Tick()
 				{
 					for (int i = 0; i < Type_End; ++i)
 					{
-						ENABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroEndIdx][i]);
+						// Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i]);
 
 						if (i == Key)
 						{
+							Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i]);
 							continue;
 						}
 
 						if (i == Effect)
 						{
+							Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i]);
 							continue;
 						}
 
 						m_arrPortraitUI[m_iHeroEndIdx][i]->Lerp_ScaleX(0.f, 43.f, fDuration);
+						Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i]);
 					}
 
 					m_bIsHeroLerp = false;
@@ -140,15 +146,18 @@ void CUI_Portrait::My_Tick()
 					{
 						if (i == Key)
 						{
+							Disable_Fade(m_arrPortraitUI[m_iHeroStartIdx][i]);
 							continue;
 						}
 
 						if (i == Effect)
 						{
+							Disable_Fade(m_arrPortraitUI[m_iHeroStartIdx][i]);
 							continue;
 						}
 
 						m_arrPortraitUI[m_iHeroStartIdx][i]->Lerp_ScaleX(43.f, 0.f, fDuration);
+						Disable_Fade(m_arrPortraitUI[m_iHeroStartIdx][i]);
 					}
 
 					m_bIsHeroLerp = false;
@@ -163,9 +172,6 @@ void CUI_Portrait::My_Tick()
 				_float4 vScale = m_arrPortraitUI[m_iHeroStartIdx][BG]->Get_Transform()->Get_Scale();
 				if (vScale.x <= m_fMinValue)
 				{
-					DISABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroStartIdx][Key]);
-					DISABLE_GAMEOBJECT(m_arrPortraitUI[m_iHeroStartIdx][Effect]);
-
 					m_iHeroStartIdx++;
 					m_bIsHeroLerp = true;
 				}
@@ -189,6 +195,52 @@ void CUI_Portrait::Set_Pass()
 void CUI_Portrait::Bind_Shader()
 {
 	//GET_COMPONENT_FROM(m_arrPortraitUI[0][Effect], CShader)->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
+}
+
+void CUI_Portrait::Set_FadeUserPort(_float fSpeed)
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = fSpeed;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = fSpeed;
+
+	GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CFader)->Get_FadeDesc() = tFadeDesc;
+}
+
+void CUI_Portrait::Set_FadeHeroPort()
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.3f;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
+
+	for (int i = 1; i < 5; ++i)
+	{
+		for (int j = 0; j < Type_End; ++j)
+		{
+			GET_COMPONENT_FROM(m_arrPortraitUI[i][j], CFader)->Get_FadeDesc() = tFadeDesc;
+		}
+	}
 }
 
 void CUI_Portrait::Change_UserPort()
@@ -258,16 +310,24 @@ void CUI_Portrait::PortSizeUP(_float fDuration)
 {
 	_float fRotSpeed = fDuration * (m_iRotationCount * 0.5f);
 
+	Set_FadeUserPort(fRotSpeed);
+
 	m_arrPortraitUI[0][BG]->Lerp_ScaleX(0.f, 64.f, fRotSpeed);
 	m_arrPortraitUI[0][Port]->Lerp_ScaleX(0.f, 63.f, fRotSpeed);
+
+	Enable_Fade(m_arrPortraitUI[0][Port]);
 }
 
 void CUI_Portrait::PortSizeDown(_float fDuration)
 {
 	_float fRotSpeed = 0.1f * (m_iRotationCount * 0.5f);
 
+	Set_FadeUserPort(fRotSpeed);
+
 	m_arrPortraitUI[0][BG]->Lerp_ScaleX(64.f, 0.f, fRotSpeed);
 	m_arrPortraitUI[0][Port]->Lerp_ScaleX(63.f, 0.f, fRotSpeed);
+
+	Disable_Fade(m_arrPortraitUI[0][Port]);
 }
 
 void CUI_Portrait::Enable_HeroLerp(_bool value, _float fDuration)

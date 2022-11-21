@@ -25,7 +25,9 @@ public:
 
 public:
 	virtual void On_PointEnter_PlayBtn(const _uint& iEventNum);
-	virtual void On_PointExit_PlayBtn(const _uint& iEventNum);
+
+	virtual void On_PointExit_Start(const _uint& iEventNum);
+	virtual void On_PointExit_Mode(const _uint& iEventNum);
 
 	virtual void On_PointUpEvent_Start(const _uint& iEventNum);
 	virtual void On_PointUpEvent_Mode(const _uint& iEventNum);
@@ -44,7 +46,10 @@ private:
 	CUI_Object* m_pTextModeSelect = nullptr;
 	CUI_Object* m_pEscKey = nullptr;
 	CUI_Object* m_pLine = nullptr;
+
 	CUI_Object* m_pStageHighlight = nullptr;
+	CUI_Object* m_pStageHighlights[4];
+
 	CUI_Object* m_pBtnHightlight = nullptr;
 	CUI_Object* m_pStageSelectRect = nullptr;
 	CUI_Object* m_pStageNameRect = nullptr;
@@ -53,20 +58,15 @@ private:
 	CUI_Object* m_pStageSelectBtn[4];
 
 	CUI_Object* m_pPlayBtnMouseEnterLine = nullptr;
+	CUI_Object* m_pPlayBtnMouseEnterLineArr[2];
 
 	CUI_Object* m_pPrototypeLock = nullptr;
-	CUI_Object* m_pLockBtn[3];
+	CUI_Object* m_pLockBtn[2];
 
 	Select_Stage m_eStage = Select_Stage::Test;
 
 private:
 	CUI_Object* m_pTarget = nullptr;
-
-	_bool m_bIsPlayBtnOnMouseEnter = false;
-	_bool m_bIsMovePlayBtnEnter = false;
-
-	_bool m_bIsPlayBtnOnMouseExit = false;
-	_bool m_bIsMovePlayBtnExit = false;
 
 private:	// 폰트 설정
 	_float2 vFontOffset = { -100.f, 120.f };
@@ -76,13 +76,12 @@ private:
 	void Bind_Shader();
 	void Bind_Btn();
 
+	void Set_FadeModeWindow();
+
 private:
 	void SetActive_ModeWindow();
 	void Enable_StageHighlight(_float4 vPos);
 	void Enable_StageClickRect(_float4 vPos);
-
-private:
-	void Set_LockImg();
 
 private:
 	void Create_PlayBtn();

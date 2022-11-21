@@ -45,9 +45,7 @@ private:
 
 private:
 	void Ready_MainUI();
-
 	void Create_BtnHighlight();
-
 	void Enable_MainUI();
 	void Enable_MainWindow();
 };

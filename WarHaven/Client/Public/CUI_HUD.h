@@ -26,6 +26,7 @@ public:
 
 public:
 	virtual void On_PointEnter_Port(const _uint& iEventNum);
+	virtual void On_PointExit_Port(const _uint& iEventNum);
 
 	virtual void On_PointDown_Port(const _uint& iEventNum);
 
@@ -48,19 +49,30 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pPort;
 	CUI_Object* m_pPortBG;
 	CUI_Object* m_pClassIcon = nullptr;
+
 	CUI_Object* m_pPortHighlight = nullptr;
+	CUI_Object* m_pPortHighlights[6];
+
 	CUI_Object* m_pClassInfo = nullptr;
 	CUI_Object* m_pClassInfoIcon = nullptr;
 	CUI_Object* m_pLine = nullptr;
 	CUI_Object* m_pSelectLine = nullptr;
 	CUI_Object* m_pConfirmBtn = nullptr;
 
+	CUI_Object* m_pPortUnderLine = nullptr;
+	CUI_Object* m_pPortUnderLines[6];
+
 	CUI_Object* m_pPortClone[6];
 	CUI_Object* m_pPortBGClone[6];
 	CUI_Object* m_pClassIconClone[6];
 
+	CUI_Object* m_pChangeClassText = nullptr;
+	CUI_Object* m_pInactiveHeroText = nullptr;
+
 private:
 	void Bind_Btn();
+
+	void Set_FadePortHighlight();
 
 private:	
 	void Set_HUD(CUnit::CLASS_TYPE eClass);
@@ -75,6 +87,9 @@ private:
 
 private:
 	void Create_CharacterSelectWindow();
+	void Create_PortUnderLine();
+
+	void Create_TraingText();
 };
 
 END

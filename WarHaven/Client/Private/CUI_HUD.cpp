@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Texture.h"
 #include "CButton.h"
+#include "CFader.h"
 
 #include "CUnit.h"
 #include "CUI_Object.h"
@@ -34,6 +35,8 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	CREATE_GAMEOBJECT(m_pWrap[HpBar], GROUP_UI);
 
 	Create_CharacterSelectWindow();
+	Create_PortUnderLine();
+	Create_TraingText();
 
 	return S_OK;
 }
@@ -53,7 +56,11 @@ HRESULT CUI_HUD::Start()
 	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
 	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
 
+	ENABLE_GAMEOBJECT(m_pChangeClassText);
+
 	Bind_Btn();
+
+	Set_FadePortHighlight();
 
 	return S_OK;
 }
@@ -110,6 +117,8 @@ void CUI_HUD::My_Tick()
 			}
 			else
 			{
+				DISABLE_GAMEOBJECT(m_pInactiveHeroText);
+
 				m_tStatus.fHeroGague -= fDT(0) * 20.f;
 				if (m_fHeroGauge <= 0.f)
 				{
@@ -155,70 +164,98 @@ void CUI_HUD::My_Tick()
 			SetActive_CharacterSelectWindow(true);
 		}
 	}
-}
 
-void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
-{
 	for (int i = 0; i < 6; ++i)
 	{
-		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPortClone[i], CButton)->Get_TargetUI();
-		if (pTarget)
+		_float4 vScale = m_pPortUnderLines[i]->Get_Scale();
+		if (vScale.x <= 2.f)
 		{
-			_float4 vPos = pTarget->Get_Pos();
-			vPos.y += 2.f;
-			m_pPortHighlight->Set_Pos(vPos);
-
-			ENABLE_GAMEOBJECT(m_pPortHighlight);
+			DISABLE_GAMEOBJECT(m_pPortUnderLines[i]);
 		}
 	}
 }
 
+void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
+{
+	CUI_Object* pTarget = m_pPortClone[iEventNum];
+	if (pTarget)
+	{
+		Enable_Fade(m_pPortHighlights[iEventNum]);
+	}
+}
+
+void CUI_HUD::On_PointExit_Port(const _uint& iEventNum)
+{
+	Disable_Fade(m_pPortHighlights[iEventNum]);
+}
+
 void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 {
+	CUI_Object* pTarget = m_pPortClone[iEventNum];
+
+	_float fDuraition = 0.15f;
+
 	for (int i = 0; i < 6; ++i)
 	{
-		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPortClone[i], CButton)->Get_TargetUI();
-		if (pTarget)
+		_float fPosY = m_pPortClone[i]->Get_PosY();
+		if (fPosY > -245.f)
 		{
-			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
-			switch (iTextureNum)
-			{
-			case 0:
-				m_pClassInfo->Set_FontText(TEXT("블레이드"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
-				Set_HUD(CUnit::WARRIOR);
-				break;
+			m_pPortClone[i]->MoveY(-10.f, fDuraition);
+			m_pPortBGClone[i]->MoveY(-10.f, fDuraition);
+			m_pClassIconClone[i]->MoveY(-10.f, fDuraition);
+			m_pPortHighlights[i]->MoveY(-10.f, fDuraition);
 
-			case 1:
-				m_pClassInfo->Set_FontText(TEXT("스파이크"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
-				Set_HUD(CUnit::SPEAR);
-				break;
+			m_pPortUnderLines[i]->Lerp_ScaleX(100.f, 2.f, fDuraition);
+		}
+	}
 
-			case 2:
-				m_pClassInfo->Set_FontText(TEXT("아치"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
-				Set_HUD(CUnit::ARCHER);
-				break;
+	m_pPortClone[iEventNum]->MoveY(10.f, fDuraition);
+	m_pPortBGClone[iEventNum]->MoveY(10.f, fDuraition);
+	m_pClassIconClone[iEventNum]->MoveY(10.f, fDuraition);
+	m_pPortHighlights[iEventNum]->MoveY(10.f, fDuraition);
 
-			case 3:
-				m_pClassInfo->Set_FontText(TEXT("가디언"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
-				Set_HUD(CUnit::PALADIN);
-				break;
+	ENABLE_GAMEOBJECT(m_pPortUnderLines[iEventNum]);
+	m_pPortUnderLines[iEventNum]->Lerp_ScaleX(2.f, 100.f, fDuraition);
 
-			case 4:
-				m_pClassInfo->Set_FontText(TEXT("스모크"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
-				Set_HUD(CUnit::PRIEST);
-				break;
+	if (pTarget)
+	{
+		switch (iEventNum)
+		{
+		case 0:
+			m_pClassInfo->Set_FontText(TEXT("블레이드"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::WARRIOR);
+			break;
 
-			case 5:
-				m_pClassInfo->Set_FontText(TEXT("워해머"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
-				Set_HUD(CUnit::ENGINEER);
-				break;
-			}
+		case 1:
+			m_pClassInfo->Set_FontText(TEXT("스파이크"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::SPEAR);
+			break;
+
+		case 2:
+			m_pClassInfo->Set_FontText(TEXT("아치"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::ARCHER);
+			break;
+
+		case 3:
+			m_pClassInfo->Set_FontText(TEXT("가디언"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::PALADIN);
+			break;
+
+		case 4:
+			m_pClassInfo->Set_FontText(TEXT("스모크"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::PRIEST);
+			break;
+
+		case 5:
+			m_pClassInfo->Set_FontText(TEXT("워해머"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::ENGINEER);
+			break;
 		}
 	}
 }
@@ -232,6 +269,7 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 	{
 		if (m_tStatus.bAbleHero)
 		{
+			Enable_Fade(m_pInactiveHeroText);
 			Set_ActiveHeroPort(false);
 		}
 
@@ -268,8 +306,10 @@ void CUI_HUD::Bind_Btn()
 {
 	for (int i = 0; i < 6; ++i)
 	{
-		m_pPortClone[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_Port, this, placeholders::_1);
-		m_pPortClone[i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Port, this, placeholders::_1);
+		m_pPortClone[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_Port, this, i);
+		m_pPortClone[i]->CallBack_PointExit += bind(&CUI_HUD::On_PointExit_Port, this, i);
+
+		m_pPortClone[i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Port, this, i);
 	}
 }
 
@@ -340,7 +380,7 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 	m_pLine = CUI_Object::Create();
 	m_pLine->Set_Scale(650.f, 28.f);
-	m_pLine->Set_Pos(0.f, -150.f);
+	m_pLine->Set_Pos(0.f, -100.f);
 	m_pLine->Set_Sort(0.01f);
 	m_pLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_DecoLam02.png"));
 
@@ -349,10 +389,12 @@ void CUI_HUD::Create_CharacterSelectWindow()
 		m_pPortClone[i] = m_pPort->Clone();
 		m_pPortBGClone[i] = m_pPortBG->Clone();
 		m_pClassIconClone[i] = m_pClassIcon->Clone();
+		m_pPortHighlights[i] = m_pPortHighlight->Clone();
 
 		_float fPosX = -300.f + (i * 120.f);
 
 		m_pPortClone[i]->Set_Pos(fPosX, -250.f);
+		m_pPortHighlights[i]->Set_Pos(fPosX, -248.f);
 
 		_float4 vPos = m_pPortClone[i]->Get_Pos();
 
@@ -370,6 +412,9 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 		CREATE_GAMEOBJECT(m_pClassIconClone[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pClassIconClone[i]);
+
+		CREATE_GAMEOBJECT(m_pPortHighlights[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPortHighlights[i]);
 	}
 
 	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
@@ -385,7 +430,7 @@ void CUI_HUD::Create_CharacterSelectWindow()
 	DELETE_GAMEOBJECT(m_pClassIcon);
 
 	CREATE_GAMEOBJECT(m_pPortHighlight, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pPortHighlight);
+	DELETE_GAMEOBJECT(m_pPortHighlight);
 
 	CREATE_GAMEOBJECT(m_pClassInfo, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pClassInfo);
@@ -397,9 +442,42 @@ void CUI_HUD::Create_CharacterSelectWindow()
 	DISABLE_GAMEOBJECT(m_pLine);
 }
 
+void CUI_HUD::Set_FadePortHighlight()
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.3f;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		GET_COMPONENT_FROM(m_pPortHighlights[i], CFader)->Get_FadeDesc() = tFadeDesc;
+	}
+
+	GET_COMPONENT_FROM(m_pInactiveHeroText, CFader)->Get_FadeDesc() = tFadeDesc;
+}
+
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 {
 	Set_ClassInfo(m_eCurClass);
+
+	m_pPortClone[m_eCurClass]->Set_PosY(-240.f);
+	m_pPortBGClone[m_eCurClass]->Set_PosY(-240.f);
+	m_pClassIconClone[m_eCurClass]->Set_PosY(-240.f);
+	m_pPortHighlights[m_eCurClass]->Set_PosY(-240.f);
+	m_pPortUnderLines[m_eCurClass]->Set_ScaleX(100.f);
+
+	Enable_Fade(m_pPortUnderLines[m_eCurClass]);
 
 	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(!value);
 
@@ -423,13 +501,14 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 		DISABLE_GAMEOBJECT(m_pLine);
 		DISABLE_GAMEOBJECT(m_pClassInfo);
 		DISABLE_GAMEOBJECT(m_pClassInfoIcon);
-		DISABLE_GAMEOBJECT(m_pPortHighlight);
 
 		for (int i = 0; i < 6; ++i)
 		{
 			DISABLE_GAMEOBJECT(m_pPortClone[i]);
 			DISABLE_GAMEOBJECT(m_pPortBGClone[i]);
 			DISABLE_GAMEOBJECT(m_pClassIconClone[i]);
+			DISABLE_GAMEOBJECT(m_pPortHighlights[i]);
+			DISABLE_GAMEOBJECT(m_pPortUnderLines[i]);
 		}
 	}
 }
@@ -463,4 +542,66 @@ void CUI_HUD::Set_ClassInfo(CUnit::CLASS_TYPE eClass)
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
 		break;
 	}
+}
+
+void CUI_HUD::Create_PortUnderLine()
+{
+	m_pPortUnderLine = CUI_Object::Create();
+
+	m_pPortUnderLine->Set_PosY(-318.f);
+	m_pPortUnderLine->Set_Scale(2.f);
+	m_pPortUnderLine->Set_Color(_float4(0.773f, 0.714f, 0.596f, 1.f));
+
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pPortUnderLines[i] = m_pPortUnderLine->Clone();
+
+		_float fPosX = -300.f + (i * 120.f);
+		m_pPortUnderLines[i]->Set_PosX(fPosX);
+
+		CREATE_GAMEOBJECT(m_pPortUnderLines[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPortUnderLines[i]);
+	}
+
+	CREATE_GAMEOBJECT(m_pPortUnderLine, GROUP_UI);
+	DELETE_GAMEOBJECT(m_pPortUnderLine);
+}
+
+void CUI_HUD::Create_TraingText()
+{
+	m_pChangeClassText = CUI_Object::Create();
+
+	m_pChangeClassText->Set_Scale(20.f);
+	m_pChangeClassText->Set_Pos(-25.f, -250.f);
+	m_pChangeClassText->Set_Sort(0.85f);
+
+	m_pChangeClassText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteTKeyIcon.dds"));
+
+	m_pChangeClassText->Set_FontRender(true);
+	m_pChangeClassText->Set_FontStyle(true);
+	m_pChangeClassText->Set_FontScale(0.25f);
+	m_pChangeClassText->Set_FontOffset(10.f, -13.f);
+
+	m_pChangeClassText->Set_FontText(TEXT("로 전투원 변경 가능"));
+
+	m_pInactiveHeroText = CUI_Object::Create();
+
+	m_pInactiveHeroText->Set_Scale(20.f);
+	m_pInactiveHeroText->Set_Pos(450.f, -195.f);
+	m_pInactiveHeroText->Set_Sort(0.85f);
+
+	m_pInactiveHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteNum1KeyIcon.dds"));
+
+	m_pInactiveHeroText->Set_FontRender(true);
+	m_pInactiveHeroText->Set_FontStyle(true);
+	m_pInactiveHeroText->Set_FontScale(0.25f);
+	m_pInactiveHeroText->Set_FontOffset(10.f, -13.f);
+
+	m_pInactiveHeroText->Set_FontText(TEXT("화신 해제"));
+
+	CREATE_GAMEOBJECT(m_pChangeClassText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pChangeClassText);
+
+	CREATE_GAMEOBJECT(m_pInactiveHeroText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pInactiveHeroText);
 }

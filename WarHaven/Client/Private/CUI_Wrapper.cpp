@@ -11,6 +11,7 @@
 #include "CUtility_File.h"
 
 #include "CButton.h"
+#include "CFader.h"
 
 CUI_Wrapper::CUI_Wrapper()
 {
@@ -115,6 +116,27 @@ void CUI_Wrapper::OnDisable()
 	__super::OnDisable();
 
 	DISABLE_GAMEOBJECT(m_pUI);
+}
+
+void CUI_Wrapper::Enable_Fade(CUI_Object* m_pUI)
+{
+	ENABLE_GAMEOBJECT(m_pUI);
+	GET_COMPONENT_FROM(m_pUI, CFader)->Re_FadeIn();
+
+	if (m_pUI->Get_FontRender())
+	{
+		m_pUI->Fade_Font(true);
+	}
+}
+
+void CUI_Wrapper::Disable_Fade(CUI_Object* m_pUI)
+{
+	GET_COMPONENT_FROM(m_pUI, CFader)->Re_FadeOut();
+
+	if (m_pUI->Get_FontRender())
+	{
+		m_pUI->Fade_Font(false);
+	}
 }
 
 void CUI_Wrapper::Read_UI(string key)

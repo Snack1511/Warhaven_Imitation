@@ -40,7 +40,12 @@ void CFader::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 	if (!Is_Disable())
 		fValue = m_tFadeDesc.fAlpha;
 
+	
+
+	_float4 vColor = _float4(1.f, 1.f, 1.f, fValue);
+
 	pShader->Set_RawValue(pConstantName, &fValue, sizeof(_float));
+	//pShader->Set_RawValue(pConstantName, &vColor, sizeof(_float4));
 }
 
 void CFader::Re_FadeIn()
@@ -120,6 +125,7 @@ void CFader::OnEnable()
 	//m_vTargetPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
 	//m_vOriginScale = m_pOwner->Get_Transform()->Get_Scale();
 	BIND_SHADERRESOURCES(CFader, "g_fAlpha");
+	//BIND_SHADERRESOURCES(CFader, "g_vColor");
 }
 
 void CFader::OnDisable()
@@ -132,6 +138,7 @@ void CFader::OnDisable()
 void CFader::OnDead()
 {
 	REMOVE_SHADERRESOURCES(CFader, "g_fAlpha");
+	//REMOVE_SHADERRESOURCES(CFader, "g_vColor");
 }
 
 void CFader::FadeReady()

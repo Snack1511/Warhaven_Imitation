@@ -43,6 +43,10 @@ protected:
 	virtual void OnDisable() override;
 
 protected:
+	void Enable_Fade(CUI_Object* m_pUI);
+	void Disable_Fade(CUI_Object* m_pUI);
+
+protected:
 	void Read_UI(string key);
 	void Read_Texture(string strFolderPath, string key);
 	void Read_Texture(CUI_Object* pUI, string strFolderPath, string key);

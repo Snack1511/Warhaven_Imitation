@@ -265,7 +265,7 @@ void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool b
 		if (iKeyIdx == 46)
 		{
 			m_arrSkillUI[iIndex][Key]->Set_Scale(31.f, 15.f);
-		}
+		} 
 		else
 		{
 			m_arrSkillUI[iIndex][Key]->Set_Scale(15.f);
@@ -320,7 +320,7 @@ void CUI_Skill::Ready_SkillHUD()
 	m_Prototypes[BG]->Set_Sort(0.3f);
 	m_Prototypes[Icon]->Set_Sort(0.29f);
 	m_Prototypes[Key]->Set_Sort(0.3f);
-	m_Prototypes[HeroKey]->Set_Sort(0.3f);
+	m_Prototypes[HeroKey]->Set_Sort(0.2f);
 
 	GET_COMPONENT_FROM(m_Prototypes[Icon], CTexture)->Remove_Texture(0);
 
