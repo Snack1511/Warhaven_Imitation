@@ -87,8 +87,7 @@ void	CState_Blendable::OnCollisionEnter(CGameObject* pOtherObject, const _uint& 
 		else
 		{
 			m_pOwner->Shake_Camera(0.1f, 0.25f);
-			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", vHitPos);
-			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash", vHitPos);
+			Hit_SlashEffect(m_pOwner);
 		}
 
 	}
