@@ -169,6 +169,8 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
+
+
 protected:
 	//PhysX 용 충돌체
 	CPhysXCharacter* m_pPhysXCharacter = nullptr;

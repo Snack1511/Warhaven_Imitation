@@ -67,7 +67,6 @@ void CWarrior_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator
 
 STATE_TYPE CWarrior_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	
 
 	return __super::Tick(pOwner, pAnimator);
 }
