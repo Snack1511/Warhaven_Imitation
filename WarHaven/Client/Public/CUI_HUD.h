@@ -66,6 +66,9 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pPortBGClone[6];
 	CUI_Object* m_pClassIconClone[6];
 
+	CUI_Object* m_pChangeClassText = nullptr;
+	CUI_Object* m_pInactiveHeroText = nullptr;
+
 private:
 	void Bind_Btn();
 
@@ -85,6 +88,8 @@ private:
 private:
 	void Create_CharacterSelectWindow();
 	void Create_PortUnderLine();
+
+	void Create_TraingText();
 };
 
 END

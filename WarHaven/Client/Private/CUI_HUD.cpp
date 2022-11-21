@@ -36,6 +36,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 
 	Create_CharacterSelectWindow();
 	Create_PortUnderLine();
+	Create_TraingText();
 
 	return S_OK;
 }
@@ -54,6 +55,8 @@ HRESULT CUI_HUD::Start()
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
 	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
 	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
+
+	ENABLE_GAMEOBJECT(m_pChangeClassText);
 
 	Bind_Btn();
 
@@ -99,6 +102,8 @@ void CUI_HUD::My_Tick()
 		{
 			if (m_tStatus.bIsHero)
 			{
+				Enable_Fade(m_pInactiveHeroText);
+
 				m_tStatus.fHeroGague += fDT(0) * 20.f;
 				if (m_fHeroGauge >= 1.f)
 				{
@@ -114,6 +119,8 @@ void CUI_HUD::My_Tick()
 			}
 			else
 			{
+				DISABLE_GAMEOBJECT(m_pInactiveHeroText);
+
 				m_tStatus.fHeroGague -= fDT(0) * 20.f;
 				if (m_fHeroGauge <= 0.f)
 				{
@@ -463,6 +470,14 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 {
 	Set_ClassInfo(m_eCurClass);
 
+	m_pPortClone[m_eCurClass]->Set_PosY(-240.f);
+	m_pPortBGClone[m_eCurClass]->Set_PosY(-240.f);
+	m_pClassIconClone[m_eCurClass]->Set_PosY(-240.f);
+	m_pPortHighlights[m_eCurClass]->Set_PosY(-240.f);
+	m_pPortUnderLines[m_eCurClass]->Set_ScaleX(100.f);
+
+	Enable_Fade(m_pPortUnderLines[m_eCurClass]);
+
 	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(!value);
 
 	if (value == true)
@@ -530,7 +545,7 @@ void CUI_HUD::Set_ClassInfo(CUnit::CLASS_TYPE eClass)
 void CUI_HUD::Create_PortUnderLine()
 {
 	m_pPortUnderLine = CUI_Object::Create();
-	
+
 	m_pPortUnderLine->Set_PosY(-318.f);
 	m_pPortUnderLine->Set_Scale(2.f);
 	m_pPortUnderLine->Set_Color(_float4(0.773f, 0.714f, 0.596f, 1.f));
@@ -548,4 +563,43 @@ void CUI_HUD::Create_PortUnderLine()
 
 	CREATE_GAMEOBJECT(m_pPortUnderLine, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pPortUnderLine);
+}
+
+void CUI_HUD::Create_TraingText()
+{
+	m_pChangeClassText = CUI_Object::Create();
+
+	m_pChangeClassText->Set_Scale(20.f);
+	m_pChangeClassText->Set_Pos(-25.f, -250.f);
+	m_pChangeClassText->Set_Sort(0.85f);
+
+	m_pChangeClassText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteTKeyIcon.dds"));
+
+	m_pChangeClassText->Set_FontRender(true);
+	m_pChangeClassText->Set_FontStyle(true);
+	m_pChangeClassText->Set_FontScale(0.25f);
+	m_pChangeClassText->Set_FontOffset(10.f, -13.f);
+
+	m_pChangeClassText->Set_FontText(TEXT("로 전투원 변경 가능"));
+
+	m_pInactiveHeroText = CUI_Object::Create();
+
+	m_pInactiveHeroText->Set_Scale(20.f);
+	m_pInactiveHeroText->Set_Pos(450.f, -195.f);
+	m_pInactiveHeroText->Set_Sort(0.85f);
+
+	m_pInactiveHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteNum1KeyIcon.dds"));
+
+	m_pInactiveHeroText->Set_FontRender(true);
+	m_pInactiveHeroText->Set_FontStyle(true);
+	m_pInactiveHeroText->Set_FontScale(0.25f);
+	m_pInactiveHeroText->Set_FontOffset(10.f, -13.f);
+
+	m_pInactiveHeroText->Set_FontText(TEXT("화신 해제"));
+
+	CREATE_GAMEOBJECT(m_pChangeClassText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pChangeClassText);
+
+	CREATE_GAMEOBJECT(m_pInactiveHeroText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pInactiveHeroText);
 }

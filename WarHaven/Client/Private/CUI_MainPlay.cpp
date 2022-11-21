@@ -109,13 +109,14 @@ void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
 	_float4 vScale = m_pTarget->Get_Scale();
 
 	_float fPosX = vPos.x + vScale.x - 20.f;
+	_float fDuration = 0.2f;
 
 	m_pBtnHightlight->Set_Pos(fPosX, vPos.y);
 	m_pBtnHightlight->Set_Scale(vScale.x * 3.f, 500.f);
-	m_pTarget->Lerp_PosX(vPos.x, vPos.x + 20.f, 0.4f);
+	m_pTarget->Lerp_PosX(vPos.x, vPos.x + 20.f, fDuration);
 
 	m_pPlayBtnMouseEnterLineArr[iEventNum]->Set_PosY(vPos.y - 3.5f);
-	m_pPlayBtnMouseEnterLineArr[iEventNum]->Lerp_ScaleY(4.f, vScale.y - 22.f, 0.4f);
+	m_pPlayBtnMouseEnterLineArr[iEventNum]->Lerp_ScaleY(4.f, vScale.y - 22.f, fDuration);
 
 	ENABLE_GAMEOBJECT(m_pBtnHightlight);
 	ENABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLineArr[iEventNum]);
@@ -125,10 +126,12 @@ void CUI_MainPlay::On_PointExit_Start(const _uint& iEventNum)
 {
 	_float4 vPos = m_pPlayBtnUI[0]->Get_Pos();
 
-	m_pPlayBtnUI[0]->Lerp_PosX(vPos.x, -500.f, 0.4f);
+	_float fDuration = 0.2f;
+
+	m_pPlayBtnUI[0]->Lerp_PosX(vPos.x, -500.f, fDuration);
 
 	_float fCurScaleY = m_pPlayBtnMouseEnterLineArr[0]->Get_Scale().y;
-	m_pPlayBtnMouseEnterLineArr[0]->Lerp_ScaleY(fCurScaleY, 4.f, 0.4f);
+	m_pPlayBtnMouseEnterLineArr[0]->Lerp_ScaleY(fCurScaleY, 4.f, fDuration);
 
 	DISABLE_GAMEOBJECT(m_pBtnHightlight);
 }
@@ -137,10 +140,13 @@ void CUI_MainPlay::On_PointExit_Mode(const _uint& iEventNum)
 {
 	_float4 vPos = m_pPlayBtnUI[1]->Get_Pos();
 
-	m_pPlayBtnUI[1]->Lerp_PosX(vPos.x, -535.f, 0.4f);
+	_float fDuration = 0.2f;
+
+	m_pPlayBtnUI[1]->Lerp_PosX(vPos.x, -535.f, fDuration);
 
 	_float fCurScaleY = m_pPlayBtnMouseEnterLineArr[1]->Get_Scale().y;
-	m_pPlayBtnMouseEnterLineArr[1]->Lerp_ScaleY(fCurScaleY, 4.f, 0.4f);
+
+	m_pPlayBtnMouseEnterLineArr[1]->Lerp_ScaleY(fCurScaleY, 4.f, fDuration);
 
 	DISABLE_GAMEOBJECT(m_pBtnHightlight);
 }

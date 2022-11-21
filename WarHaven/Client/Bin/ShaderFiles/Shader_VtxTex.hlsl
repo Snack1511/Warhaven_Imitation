@@ -332,7 +332,10 @@ PS_OUT PS_PORTEFFECT(PS_IN In)
     
     Out.vColor.a *= vNoise.r;
     // Out.vColor *= vNormal;
-      
+          
+    Out.vColor *= g_vColor;
+    Out.vColor.w *= g_fAlpha;
+    
     if (Out.vColor.r <= 0.01f)
         discard;
     
