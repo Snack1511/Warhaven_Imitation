@@ -64,10 +64,10 @@ HRESULT CWarrior_Attack_VerticalCut::Initialize()
 
 	//Add_KeyFrame(36, 0);
 
-	m_iStopIndex = 31;
+	m_iStopIndex = 33;
 	m_iAttackEndIndex = 50;
 
-	Add_KeyFrame(31, 1);
+	Add_KeyFrame(33, 1);
 	Add_KeyFrame(50, 2);
 
 	//Vertical은 전부 Land로 맞춤
