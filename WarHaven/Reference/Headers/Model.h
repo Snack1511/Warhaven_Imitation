@@ -7,11 +7,11 @@ BEGIN(Engine)
 class CShader;
 class CHierarchyNode;
 
-class ENGINE_DLL CModel final : public CComponent
+class ENGINE_DLL CModel : public CComponent
 {
 	DECLARE_PROTOTYPE(CModel);
 
-private:
+protected:
 	CModel(_uint iGroupIdx);
 	CModel(const CModel& rhs);
 	virtual ~CModel();
@@ -83,7 +83,7 @@ public:
 public:
 	HRESULT Bind_SRV(class CShader* pShader, const char* pContantName, _uint iMeshContainerIndex, aiTextureType eType);
 
-private:
+protected:
 	wstring						m_wstrModelFilePath;
 	MODEL_TYPE					m_eMODEL_TYPE = TYPE_END;
 	_float4x4					m_TransformMatrix;
@@ -91,7 +91,7 @@ private:
 	_bool						m_bCulling = false;
 	_bool						m_bInstancing = false;
 
-private:
+protected:
 	_bool						m_bLOD = false;
 
 	enum class eLOD_LEVEL {eDefault, eLOD1, eLOD2, eLOD3, eLOD_END};
@@ -102,19 +102,19 @@ private:
 	_float4						m_vLODCenterPos = ZERO_VECTOR;
 	_float						m_fLODMaxRange = 0.f;
 
-private:
+protected:
 	vector<pair<_uint, class CMeshContainer*>>			m_MeshContainers;
 	_uint			m_iNumMeshContainers = 0;
 
-private:
+protected:
 	vector<pair<_uint, MODEL_MATERIAL>>					m_Materials;
 	_uint			m_iNumMaterials = 0;
 
-private:
+protected:
 	vector<pair<_uint, CHierarchyNode*>>		m_vecHierarchyNodes;
 
 
-private:
+protected:
 	HRESULT	SetUp_Model(MODEL_TYPE eType, wstring wstrModelFilePath, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, wstring wstrInstanceFilePath, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, _float4x4 TransformMatrix, _uint iMeshPartType);

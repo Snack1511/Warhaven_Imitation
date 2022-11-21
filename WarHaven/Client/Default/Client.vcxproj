@@ -199,6 +199,7 @@
     <ClInclude Include="..\Public\CCharge_WarHammer.h" />
     <ClInclude Include="..\Public\CCharge_WarHammer_Front_L.h" />
     <ClInclude Include="..\Public\CCharge_WarHammer_Front_R.h" />
+    <ClInclude Include="..\public\CMesh_Particle.h" />
     <ClInclude Include="..\Public\CIdle_Valkyrie_L.h" />
     <ClInclude Include="..\Public\CIdle_Valkyrie_R.h" />
     <ClInclude Include="..\Public\CInstall_Begin_WarHammer.h" />
@@ -234,6 +235,7 @@
     <ClInclude Include="..\Public\CJump_SpearMan_Land_L.h" />
     <ClInclude Include="..\Public\CJump_SpearMan_Land_R.h" />
     <ClInclude Include="..\Public\CJump_SpearMan_R.h" />
+    <ClInclude Include="..\public\CMapColliders.h" />
     <ClInclude Include="..\Public\CRun_Valkyrie.h" />
     <ClInclude Include="..\Public\CRun_WarHammer.h" />
     <ClInclude Include="..\Public\CRun_Valkyrie_Begin.h" />
@@ -483,6 +485,7 @@
     <ClCompile Include="..\Private\CCharge_WarHammer.cpp" />
     <ClCompile Include="..\Private\CCharge_WarHammer_Front_L.cpp" />
     <ClCompile Include="..\Private\CCharge_WarHammer_Front_R.cpp" />
+    <ClCompile Include="..\private\CMesh_Particle.cpp" />
     <ClCompile Include="..\Private\CIdle_Valkyrie_L.cpp" />
     <ClCompile Include="..\Private\CIdle_Valkyrie_R.cpp" />
     <ClCompile Include="..\Private\CInstall_Begin_WarHammer.cpp" />
@@ -518,6 +521,7 @@
     <ClCompile Include="..\Private\CJump_SpearMan_Land_L.cpp" />
     <ClCompile Include="..\Private\CJump_SpearMan_Land_R.cpp" />
     <ClCompile Include="..\Private\CJump_SpearMan_R.cpp" />
+    <ClCompile Include="..\private\CMapColliders.cpp" />
     <ClCompile Include="..\Private\CRun_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CRun_WarHammer.cpp" />
     <ClCompile Include="..\Private\CRun_Valkyrie_Begin.cpp" />

@@ -40,6 +40,8 @@
 #include "CPhysXCharacter.h"
 #include "CStructure.h"
 
+#include "CMapColliders.h"
+
 CLevel_Test::CLevel_Test()
 {
 }
@@ -155,12 +157,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
 HRESULT CLevel_Test::Enter()
 {
-
-
 	__super::Enter();
 	/*Static Shadow*/
-
-
 
 	/* Check for Collision */
 	Col_Check();
@@ -303,16 +301,26 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//라이트
 
 
+	/* ============= PhysX 충돌체 불러오기 ===================== */
+
+	/*CMapColliders* pMapColliders = CMapColliders::Create("SaveTest");
+	Ready_GameObject(pMapColliders, GROUP_DEFAULT);*/
+
+
 	_float4x4 mat;
 	mat.Identity();
 	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
 	pDrawableTerrain->Initialize();
 	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
-	//CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Structure/Gate/SM_Module_Gate_CastleGate01a.FBX")), mat);
+	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Environments/prop/etc/SM_Prop_Etc_Scarecrow02a.FBX")), mat);
+	Ready_GameObject(pTestStruct, GROUP_DECORATION);*/
+
+
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);
 	if (nullptr == pTestStruct)
 		return E_FAIL;
+	pTestStruct->Get_Transform()->Set_Scale(_float4(40.f, 2.f, 40.f));
 	pTestStruct->Get_Transform()->Set_Scale(_float4(40.f, 2.f, 40.f));
 	pTestStruct->Get_Transform()->Set_World(WORLD_POS, _float4(10.f, -2.f, 10.f));
 	pTestStruct->Get_Transform()->Make_WorldMatrix();

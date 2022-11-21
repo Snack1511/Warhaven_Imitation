@@ -10,6 +10,8 @@ BEGIN(Client)
 class CDebugObject
 	: public CGameObject
 {
+	friend class CWindow_PhysX;
+
 	DECLARE_PROTOTYPE(CDebugObject);
 
 private:
@@ -17,10 +19,16 @@ private:
 	virtual ~CDebugObject();
 
 public:
-	static CDebugObject* Create(_float4 vPos, _float4 vScale, _float4 vAngle = ZERO_VECTOR);
+	static CDebugObject* Create(_float4 vPos = ZERO_VECTOR, _float4 vScale = _float4(1.f, 1.f, 1.f, 1.f), _float4 vAngle = ZERO_VECTOR);
+	static CDebugObject* Create(PxTransform tTransform, _float4 vScale = _float4(1.f, 1.f, 1.f, 1.f));
 
 public:
 	void	SetUp_ShaderResources(CShader* pShaderCom, const char* pConstantName);
+
+public:
+	/* 박스 위치 옮김*/
+	void			Synchronize_Box(PxTransform tTransform);
+	void			ReScale_Box(_float4 vScale);
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;
@@ -28,6 +36,7 @@ public:
 	virtual HRESULT	Start() override;
 
 private:
+	_float4		m_vAngles = ZERO_VECTOR;
 	_float4		m_vColor = _float4(0.f, 1.f, 0.f, 1.f);
 
 private:

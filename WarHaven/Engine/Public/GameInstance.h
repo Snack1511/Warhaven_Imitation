@@ -92,6 +92,9 @@ public:/* For.Resource_Manager*/
 	ComPtr<ID3D11ShaderResourceView>	Get_Texture(wstring wstrFilePath);
 
 public: /* For.PhysX_Manager*/
+
+	void			Create_ConvexMesh(_float3* pVertices, _uint iNumVertices,
+		void* pIndices, _uint iNumPrimitive, PxConvexMesh** ppOut);
 	HRESULT	Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
 	HRESULT	Delete_Scene(CPhysX_Manager::Scene eScene);
 	HRESULT	Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
@@ -126,6 +129,8 @@ public: /* For Picking_Manager */
 	_bool	Is_Picked(CGameObject* pGameObject, _float4* pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4* pOut,  _float4* pOutNormal = nullptr);
+	_bool	Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _float4* pOut, _uint* pOutIndex, _float4* pOutNormal = nullptr);
+
 
 
 

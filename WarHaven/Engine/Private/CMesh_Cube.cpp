@@ -51,30 +51,31 @@ HRESULT CMesh_Cube::Initialize_Prototype()
 	m_BufferDesc.MiscFlags = 0;
 
 	VTXCUBETEX* pVertices = new VTXCUBETEX[m_iNumVertices];
+	m_pVerticesPos = new _float3[m_iNumVertices];
 
-	pVertices[0].vPosition = _float3(-0.5f, 0.5f, -0.5f);
+	pVertices[0].vPosition = m_pVerticesPos[0] = _float3(-0.5f, 0.5f, -0.5f);
 	pVertices[0].vTexUV = pVertices[0].vPosition;
 
-	pVertices[1].vPosition = _float3(0.5f, 0.5f, -0.5f);
+	pVertices[1].vPosition = m_pVerticesPos[1] = _float3(0.5f, 0.5f, -0.5f);
 	pVertices[1].vTexUV = pVertices[1].vPosition;
 
-	pVertices[2].vPosition = _float3(0.5f, -0.5f, -0.5f);
+	pVertices[2].vPosition = m_pVerticesPos[2] = _float3(0.5f, -0.5f, -0.5f);
 	pVertices[2].vTexUV = pVertices[2].vPosition;
 
-	pVertices[3].vPosition = _float3(-0.5f, -0.5f, -0.5f);
+	pVertices[3].vPosition = m_pVerticesPos[3] = _float3(-0.5f, -0.5f, -0.5f);
 	pVertices[3].vTexUV = pVertices[3].vPosition;
 
 
-	pVertices[4].vPosition = _float3(-0.5f, 0.5f, 0.5f);
+	pVertices[4].vPosition = m_pVerticesPos[4] = _float3(-0.5f, 0.5f, 0.5f);
 	pVertices[4].vTexUV = pVertices[4].vPosition;
 
-	pVertices[5].vPosition = _float3(0.5f, 0.5f, 0.5f);
+	pVertices[5].vPosition = m_pVerticesPos[5] = _float3(0.5f, 0.5f, 0.5f);
 	pVertices[5].vTexUV = pVertices[5].vPosition;
 
-	pVertices[6].vPosition = _float3(0.5f, -0.5f, 0.5f);
+	pVertices[6].vPosition = m_pVerticesPos[6] = _float3(0.5f, -0.5f, 0.5f);
 	pVertices[6].vTexUV = pVertices[6].vPosition;
 
-	pVertices[7].vPosition = _float3(-0.5f, -0.5f, 0.5f);
+	pVertices[7].vPosition = m_pVerticesPos[7] = _float3(-0.5f, -0.5f, 0.5f);
 	pVertices[7].vTexUV = pVertices[7].vPosition;
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
@@ -130,6 +131,10 @@ HRESULT CMesh_Cube::Initialize_Prototype()
 	/* -z */
 	pIndices[10]._1 = 0; pIndices[10]._2 = 1; pIndices[10]._3 = 2;
 	pIndices[11]._1 = 0; pIndices[11]._2 = 2; pIndices[11]._3 = 3;
+
+	m_pIndices = new FACEINDICES16[m_iNumPrimitive];
+	ZeroMemory(m_pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
+	memcpy(m_pIndices, pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = pIndices;

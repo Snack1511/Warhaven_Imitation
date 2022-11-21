@@ -1554,8 +1554,6 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&pCurEffect->m_vGlowFlag, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_iPassType, sizeof(_uint));
 
-
-
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bBillBoard, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSoft, sizeof(_bool));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bZeroSpeedDisable, sizeof(_bool));

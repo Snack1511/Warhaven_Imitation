@@ -16,15 +16,15 @@ CDebugObject::~CDebugObject()
 
 CDebugObject* CDebugObject::Create(_float4 vPos, _float4 vScale, _float4 vAngle)
 {
-	
 	CDebugObject* pInstance = new CDebugObject;
 
-	if (FAILED(pInstance->SetUp_PhysXCollider(vPos, vScale, vAngle)))
+	/*if (FAILED(pInstance->SetUp_PhysXCollider(vPos, vScale, vAngle)))
 	{
 		Call_MsgBox(L"Failed to SetUp_PhysXCollider : CDebugObject");
 		SAFE_DELETE(pInstance);
 		return nullptr;
-	}
+	}*/
+
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
@@ -35,9 +35,53 @@ CDebugObject* CDebugObject::Create(_float4 vPos, _float4 vScale, _float4 vAngle)
 	return pInstance;
 }
 
+CDebugObject* CDebugObject::Create(PxTransform tTransform, _float4 vScale)
+{
+	CDebugObject* pInstance = new CDebugObject;
+
+	
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		Call_MsgBox(L"Failed to Initialize_Prototype : CDebugObject");
+		SAFE_DELETE(pInstance);
+	}
+
+	pInstance->Synchronize_Box(tTransform);
+	pInstance->m_pTransform->Set_Scale(vScale);
+	pInstance->m_pTransform->Make_WorldMatrix();
+
+	return pInstance;
+}
+
+
 void CDebugObject::SetUp_ShaderResources(CShader* pShaderCom, const char* pConstantName)
 {
 	pShaderCom->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
+}
+
+void CDebugObject::Synchronize_Box(PxTransform tTransform)
+{
+	_float4 vPos;
+	vPos.x = tTransform.p.x;
+	vPos.y = tTransform.p.y;
+	vPos.z = tTransform.p.z;
+	vPos.w = 1.f;
+
+	_float4 vQuat;
+	vQuat.x = tTransform.q.x;
+	vQuat.y = tTransform.q.y;
+	vQuat.z = tTransform.q.z;
+	vQuat.w = tTransform.q.w;
+
+	m_pTransform->Set_World(WORLD_POS, vPos);
+	m_pTransform->MatrixRotationQuaternion(vQuat);
+
+}
+
+void CDebugObject::ReScale_Box(_float4 vScale)
+{
+	m_pTransform->Set_Scale(vScale);
 }
 
 HRESULT CDebugObject::Initialize_Prototype()

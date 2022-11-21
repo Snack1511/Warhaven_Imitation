@@ -1126,6 +1126,12 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\AI_Idle_L">
       <UniqueIdentifier>{9ade192c-0a8c-4634-9326-7403699b39dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\06. Map\MapColliders">
+      <UniqueIdentifier>{8c135688-9a6f-4256-ac9c-7637abdd252c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\10. Destructible">
+      <UniqueIdentifier>{2564424f-9056-49ff-beaf-be4c083146b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1971,6 +1977,12 @@
     <ClInclude Include="..\Public\CAI_SandBack_L.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\AI_Idle_L</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CMapColliders.h">
+      <Filter>03. Instances\02. GameObject\06. Map\MapColliders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CMesh_Particle.h">
+      <Filter>03. Instances\02. GameObject\10. Destructible</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2796,6 +2808,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CAI_SandBack_L.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\AI_Idle_L</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CMapColliders.cpp">
+      <Filter>03. Instances\02. GameObject\06. Map\MapColliders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CMesh_Particle.cpp">
+      <Filter>03. Instances\02. GameObject\10. Destructible</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

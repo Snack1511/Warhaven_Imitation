@@ -396,6 +396,11 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 	switch (iSequence)
 	{
 	case 998:
+		/* Test */
+		//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"TestParticle", pOwner->Get_HitPos(), _float4(0.f, 1.f, 0.f, 0.f), 1.f);
+
+
+
 		m_bAfterEffect = true;
 		m_bHitEffect = true;
 		pOwner->TurnOn_TrailEffect(true);
@@ -419,6 +424,7 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 		break;
 
 	case 999:
+
 		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 
 		m_bAfterEffect = false;

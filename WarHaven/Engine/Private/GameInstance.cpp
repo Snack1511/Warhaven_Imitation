@@ -309,6 +309,11 @@ ComPtr<ID3D11ShaderResourceView> CGameInstance::Get_Texture(wstring wstrFilePath
 	return m_pResourceManager->Get_Texture(wstrFilePath);
 }
 
+void CGameInstance::Create_ConvexMesh(_float3* pVertices, _uint iNumVertices, void* pIndices, _uint iNumPrimitive, PxConvexMesh** ppOut)
+{
+	m_pPhysXManager->Create_ConvexMesh(pVertices, iNumPrimitive, pIndices, iNumPrimitive, ppOut);
+}
+
 HRESULT CGameInstance::Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity)
 {
 	return m_pPhysXManager->Create_Scene(eScene, Gravity);
@@ -414,6 +419,11 @@ _bool CGameInstance::Is_Picked(CMesh* pRenderer, _float4* pOut, _float4* pOutNor
 _bool CGameInstance::Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4* pOut,_float4* pOutNormal)
 {
 	return m_pPickingManager->Is_Picked_Mesh(pRenderer, pOutPickedIndex, pOut, pOutNormal);
+}
+
+_bool CGameInstance::Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _float4* pOut, _uint* pOutIndex, _float4* pOutNormal)
+{
+	return m_pPickingManager->Is_Picked_Cubes(GameObjectList, pOut, pOutIndex, pOutNormal);
 }
 
 void CGameInstance::Add_Camera(wstring strKey, CCamera * pCamera)

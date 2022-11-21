@@ -16,6 +16,8 @@
 
 #include "CCamera_Default.h"
 
+#include "CMesh_Particle.h"
+
 IMPLEMENT_SINGLETON(CEffects_Factory);
 
 CEffects_Factory::CEffects_Factory()
@@ -31,6 +33,14 @@ HRESULT CEffects_Factory::Initialize()
 	//이펙트 만들어놓기
 	if(FAILED(Add_Effect(HASHCODE(CSword_Effect), CSword_Effect::Create())))
 		return E_FAIL;
+	
+	
+	//wstring wstrName = L"TestParticle";
+	//if(FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+	////L"../bin/resources/meshes/map/environments/building/SM_Architecture_Building_ShipBase01a.fbx", 20, wstrName
+	//L"../bin/resources/meshes/map/environments/module/bridge/SM_Module_Bridge_Bridge01a_Lod1.fbx", 20, wstrName
+	//))))
+	//	return E_FAIL;
 
 
 	if (FAILED(SetUp_MultiEffects()))
@@ -117,6 +127,22 @@ list<CGameObject*> CEffects_Factory::Create_MultiEffects(wstring wstrKey, _float
 	}
 
 	return EffectsList;
+}
+
+CGameObject* CEffects_Factory::Create_MeshParticle(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower)
+{
+	CGameObject* pGameObject = nullptr;
+
+	_hashcode _hcCode = Convert_ToHash(wstrKey);
+
+	if (m_Effects[_hcCode].empty())
+	{
+		pGameObject = GAMEINSTANCE->Clone_GameObject(_hcCode);
+
+	}
+
+
+		return nullptr;
 }
 
 CGameObject* CEffects_Factory::Create_Effects(_hashcode _hcCode, CGameObject* pFollowTarget, _float4 vPos)

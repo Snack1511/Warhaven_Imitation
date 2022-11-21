@@ -180,6 +180,11 @@ PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform
 	else
 		pStatic = PxCreateStatic(*m_pPhysics, Transform, Geometry, *m_pMaterial);
 
+	if (!pStatic)
+	{
+		Call_MsgBox(L"Failed to PxCreateStatic : CPhysX_Manager");
+		return nullptr;
+	}
 
 	m_pCurScene->addActor(*pStatic);
 
@@ -213,7 +218,7 @@ void CPhysX_Manager::Create_ConvexMesh(_float3* pVerticesPos, _uint iNumVertices
 	Desc.points.data = pPxVerticesPos;
 	Desc.points.count = iNumVertices;
 	Desc.points.stride = sizeof(PxVec3);
-	Desc.vertexLimit = 10;
+	Desc.vertexLimit = 12;
 
 	/*Desc.indices.count = iNumPrimitive;
 	Desc.indices.data = pIndices;
@@ -252,6 +257,7 @@ void CPhysX_Manager::Create_ConvexMesh(_float3* pVerticesPos, _uint iNumVertices
 	{
 		assert(0);
 	}
+
 	PxConvexMeshCookingResult::Enum eResult;
 	*ppOut = m_pCooking->createConvexMesh(Desc, m_pPhysics->getPhysicsInsertionCallback(), &eResult);
 

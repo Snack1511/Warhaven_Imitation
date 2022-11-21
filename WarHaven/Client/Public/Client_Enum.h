@@ -77,6 +77,7 @@ namespace Client
 		GROUP_PLAYER,
 		GROUP_LOADING,
 		GROUP_EFFECT,
+		GROUP_DEBUG,
 
 		GROUP_END = GR_END
 	};
