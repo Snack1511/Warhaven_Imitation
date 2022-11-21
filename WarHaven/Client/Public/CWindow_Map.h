@@ -1,6 +1,6 @@
 #pragma once
 
-#define HASHING(Type, Value) hash<Type>()(Value)
+//#define HASHING(Type, Value) hash<Type>()(Value)
 
 #include "CImGui_Window.h"
 

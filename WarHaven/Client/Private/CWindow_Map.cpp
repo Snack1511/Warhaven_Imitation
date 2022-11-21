@@ -337,7 +337,7 @@ void CWindow_Map::SetUp_CurPickingGroup()
     m_pCurObjectList = &(GAMEINSTANCE->Get_ObjGroup(m_SelectObjectGroupIDIndex));
 }
 
-//void CWindow_Map::Add_MeshGroup(char* pMeshGroupName)
+//void CWindow_Map::Add_ObjectGroup(char* pMeshGroupName)
 //{
 //    DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](DataComboArr::value_type& Value)
 //        {
@@ -373,7 +373,7 @@ void CWindow_Map::SetUp_CurPickingGroup()
 //
 //
 //}
-//void CWindow_Map::Delete_MeshGroup(char* pMeshGroupName)
+//void CWindow_Map::Delete_ObjectNamingMap(char* pMeshGroupName)
 //{
 //    DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](DataComboArr::value_type& Value)
 //        {
@@ -408,7 +408,7 @@ void CWindow_Map::SetUp_CurPickingGroup()
 //
 //        m_arrMeshGroupName.erase(MeshGroupIter);
 //        Safe_Delete_Array(pGroupName);
-//        m_SelectMeshGroupIndex = (m_SelectMeshGroupIndex <= 1) ? 0 : m_SelectMeshGroupIndex - 1;
+//        m_SelectObjectGroupIndex = (m_SelectObjectGroupIndex <= 1) ? 0 : m_SelectObjectGroupIndex - 1;
 //        Confirm_Data();
 //    }
 //}
@@ -578,7 +578,7 @@ void CWindow_Map::SetUp_CurPickingGroup()
 //
 //}
 
-//void CWindow_Map::Clear_MeshGroup(char* pMeshGroupName)
+//void CWindow_Map::Clear_ObjectGroup(char* pMeshGroupName)
 //{
 //    DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](DataComboArr::value_type& Value)
 //        {
@@ -695,7 +695,7 @@ void CWindow_Map::SetUp_CurPickingGroup()
 
 //void CWindow_Map::SetUp_CurSelectObject()
 //{
-    //string CurSelectMeshGroup = get<Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex]);
+    //string CurSelectMeshGroup = get<Tuple_CharPtr>(m_arrMeshGroupName[m_SelectObjectGroupIndex]);
     //size_t HashNum = HASHING(string, CurSelectMeshGroup);
 
     //OBJGROUPING::iterator ObjGroupIter = m_ObjectGroupMap.find(HashNum);
@@ -717,12 +717,12 @@ void CWindow_Map::SetUp_CurPickingGroup()
     //if (nullptr == pObjGroupArr)
     //    return;
     //else
-    //    m_pCurSelectGameObject = (*pObjGroupArr)[m_iCurSelectObjectIndex];
+    //    m_pCurSelectGameObject = (*pObjGroupArr)[m_iCurSelectObjecNametIndex];
 
     //if (nullptr == pDataGroupArr)
     //    return;
     //else
-    //    m_pCurSelectData = &((*pDataGroupArr)[m_iCurSelectObjectIndex]);
+    //    m_pCurSelectData = &((*pDataGroupArr)[m_iCurSelectObjecNametIndex]);
 
     //if (nullptr != m_pCurSelectGameObject)
     //    m_pObjTransform = m_pCurSelectGameObject->Get_Transform();
@@ -1186,7 +1186,7 @@ void CWindow_Map::Save_MapData(string BasePath, string SaveName)
     //오브젝트 데이터 저장
     string GroupPath = BasePath;
     GroupPath += "ObjectData/";
-    m_pObjectController->Save_ObjectGroup(GroupPath, SaveName);
+    m_pObjectController->Save_Data(GroupPath, SaveName);
 
     string InstancePath = BasePath;
     InstancePath += "InstanceData/";
@@ -1214,7 +1214,7 @@ void CWindow_Map::Load_MapData(string FilePath)
     }
 
     Load_TerrainData(CFunctor::To_String(tMapData.TerrainDataPath));
-    m_pObjectController->Load_ObjectGroup(CFunctor::To_String(tMapData.ObjectDataPath));
+    m_pObjectController->Load_Data(CFunctor::To_String(tMapData.ObjectDataPath));
     Load_InstanceData(CFunctor::To_String(tMapData.InstanceDataPath));
     Load_NavGroup(CFunctor::To_String(tMapData.NavDataPath));
     Load_LightGroup(CFunctor::To_String(tMapData.LightDataPath));
@@ -1367,7 +1367,7 @@ void CWindow_Map::Save_SpliteData(string BasePath, string SaveName)
     writeFile.write((char*)&GroupSize, sizeof(_int));
     for (_int i = 0; i < GroupSize; ++i)
     {
-        INSTANCEVECTOR& InstanceVector = m_InstanceMap[HASHING(string, m_strArrInstanceMeshName[i])];
+        INSTANCEVECTOR& InstanceVector = m_InstanceMap[Convert_ToHash( m_strArrInstanceMeshName[i])];
         _int InstanceSize = _int(InstanceVector.size());
         writeFile.write((char*)&InstanceSize, sizeof(_int));
         for (_int j = 0; j < InstanceSize; ++j)
@@ -1489,7 +1489,7 @@ void CWindow_Map::Load_InstanceData(string FilePath)
             MTINSTANCE_DATA Data;
             Data.Load(readFile);
             string strGroupName = CFunctor::To_String(Data.strInstanceGorupName);
-            size_t HashNums = HASHING(string, strGroupName);
+            size_t HashNums = Convert_ToHash( strGroupName);
             INSTANCEGROUPING::iterator GroupIter = m_InstanceMap.find(HashNums);
             if (m_InstanceMap.end() == GroupIter)
             {
@@ -1986,7 +1986,7 @@ void CWindow_Map::Func_InstanceObjectControl()
     INSTANCEGROUPING::iterator pTupleList;
     if (!m_strArrInstanceMeshName.empty())
     {
-        pTupleList = m_InstanceMap.find(HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]));
+        pTupleList = m_InstanceMap.find(Convert_ToHash( m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]));
     }
     else
     {
@@ -2048,7 +2048,7 @@ void CWindow_Map::Make_InstanceObject()
         return;
 
 
-    size_t HashNum = HASHING(string, m_strCurSelectInstanceMeshName);
+    size_t HashNum = Convert_ToHash( m_strCurSelectInstanceMeshName);
     INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
 
     if (InstanceIter == m_InstanceMap.end())
@@ -2136,7 +2136,7 @@ void CWindow_Map::Delete_InstanceObject()
 {
     if (m_iCurSelectInstanceNameIndex >= _int(m_strArrInstanceMeshName.size()))
         return;
-    size_t HashNum = HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
+    size_t HashNum = Convert_ToHash( m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
     INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
     if (m_InstanceMap.end() != InstanceIter)
     {
@@ -2173,7 +2173,7 @@ void CWindow_Map::Clear_InstanceGroup()
 {
     if (m_iCurSelectInstanceNameIndex >= _int(m_strArrInstanceMeshName.size()))
         return;
-    size_t HashNum = HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
+    size_t HashNum = Convert_ToHash( m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
     INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
     if (m_InstanceMap.end() != InstanceIter)
     {
@@ -2202,7 +2202,7 @@ void CWindow_Map::Merge_Instance()
 {
     if (m_iCurSelectInstanceNameIndex >= _int(m_strArrInstanceMeshName.size()))
         return;
-    size_t HashNum = HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
+    size_t HashNum = Convert_ToHash( m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
     INSTANCEGROUPING::iterator InstanceIter = m_InstanceMap.find(HashNum);
 
     if (m_InstanceMap.end() != InstanceIter)
@@ -2239,7 +2239,7 @@ void CWindow_Map::Merge_Instance()
             PrevNumInstance += get<0>(Value).iInstanceNums;
         }
 
-        size_t HashNum = HASHING(string, CFunctor::To_String(strGroupname));
+        size_t HashNum = Convert_ToHash( CFunctor::To_String(strGroupname));
         map<size_t, CGameObject*>::iterator MergeInstanceIter = m_MergeObjects.find(HashNum);
         if (MergeInstanceIter != m_MergeObjects.end()) 
         {
@@ -2259,7 +2259,7 @@ void CWindow_Map::Split_Instance()
 {
     if (m_iCurSelectInstanceNameIndex >= _int(m_strArrInstanceMeshName.size()))
         return;
-    size_t HashNum = HASHING(string, m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
+    size_t HashNum = Convert_ToHash( m_strArrInstanceMeshName[m_iCurSelectInstanceNameIndex]);
     map<size_t, CGameObject*>::iterator MergeInstanceIter = m_MergeObjects.find(HashNum);
 
     if (m_MergeObjects.end() != MergeInstanceIter)
@@ -2716,7 +2716,7 @@ void CWindow_Map::MAPDATA::Make_Path(string BasePath, string DataName)
     ObjectDataPath = CFunctor::To_Wstring(BasePath);
     ObjectDataPath += TEXT("ObjectData/");
     ObjectDataPath += CFunctor::To_Wstring(DataName);
-    ObjectDataPath += TEXT(".GroupData");
+    ObjectDataPath += TEXT(".ObjectData");
 
     InstanceDataPath = CFunctor::To_Wstring(BasePath);
     InstanceDataPath += TEXT("InstanceData/");
