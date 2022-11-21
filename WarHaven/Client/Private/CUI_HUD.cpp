@@ -178,7 +178,25 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 {
 	CUI_Object* pTarget = m_pPortClone[iEventNum];
 
-	// pTarget->Lerp_PosY();
+	_float4 vPos = pTarget->Get_Pos();
+	_float fTargetPosY = vPos.y + 10.f;
+	_float fDuraition = 0.15f;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		if (m_pPortClone[i]->Get_PosY() >= fTargetPosY)
+		{
+			m_pPortClone[i]->Lerp_PosY(fTargetPosY, vPos.y, fDuraition);
+			m_pPortBGClone[i]->Lerp_PosY(fTargetPosY, vPos.y, fDuraition);
+			m_pClassIconClone[i]->Lerp_PosY(fTargetPosY, vPos.y, fDuraition);
+			m_pPortHighlights[i]->Lerp_PosY(fTargetPosY, vPos.y, fDuraition);
+		}
+	}
+
+	m_pPortClone[iEventNum]->Lerp_PosY(vPos.y, fTargetPosY, fDuraition);
+	m_pPortBGClone[iEventNum]->Lerp_PosY(vPos.y, fTargetPosY, fDuraition);
+	m_pClassIconClone[iEventNum]->Lerp_PosY(vPos.y, fTargetPosY, fDuraition);
+	m_pPortHighlights[iEventNum]->Lerp_PosY(vPos.y, fTargetPosY, fDuraition);
 
 	if (pTarget)
 	{

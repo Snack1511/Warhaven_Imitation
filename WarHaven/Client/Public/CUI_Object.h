@@ -59,6 +59,7 @@ public:
 	void Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration);
 
 	void Lerp_PosX(_float fStart, _float fEnd, _float fDuration);
+	void Lerp_PosY(_float fStart, _float fEnd, _float fDuration);
 
 	// 1 In, 0 Out
 	void Fade_Font(_bool value);
@@ -88,6 +89,7 @@ private:	// Etc
 
 private:	// Lerp
 	_bool m_bLerpPosX = false;
+	_bool m_bLerpPosY = false;
 
 	_bool m_bLerpScale = false;
 	_bool m_bLerpScaleX = false;

@@ -142,6 +142,17 @@ void CUI_Object::Lerp_PosX(_float fStart, _float fEnd, _float fDuration)
 	m_fAccScale = m_fEnd > m_fStart ? true : false;
 }
 
+void CUI_Object::Lerp_PosY(_float fStart, _float fEnd, _float fDuration)
+{
+	m_bLerpPosY = true;
+
+	m_fStart = fStart;
+	m_fEnd = fEnd;
+	m_fDuration = fDuration;
+
+	m_fAccScale = m_fEnd > m_fStart ? true : false;
+}
+
 void CUI_Object::Fade_Font(_bool value)
 {
 	m_bIsFontFade = true;
@@ -306,6 +317,23 @@ void CUI_Object::Lerp_Position()
 		{
 			m_fAccTime = 0.f;
 			m_bLerpPosX = false;
+		}
+	}
+
+	if (m_bLerpPosY)
+	{
+		m_fAccTime += fDT(0);
+
+		_float fCurPos = Get_PosY();
+		_float fMoveValue = m_fEnd - m_fStart;
+		_float fMoveSpeed = (fMoveValue / m_fDuration) * fDT(0);
+
+		Set_PosY(fCurPos + fMoveSpeed);
+
+		if (m_fAccTime >= m_fDuration)
+		{
+			m_fAccTime = 0.f;
+			m_bLerpPosY = false;
 		}
 	}
 }
