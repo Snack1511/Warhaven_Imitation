@@ -1091,6 +1091,13 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_bPlayOnce = !static_cast<CRectEffects*>(pCurEffect)->m_bPlayOnce;
 			}
 
+			ImGui::SameLine();
+
+			if (ImGui::RadioButton("bSorting", static_cast<CRectEffects*>(pCurEffect)->m_bSorting))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_bSorting = !static_cast<CRectEffects*>(pCurEffect)->m_bSorting;
+			}
+
 		
 			ImGui::Text("LoopTime 0 is Infinite");
 
@@ -1237,7 +1244,7 @@ void CWindow_Effect::Show_ParticleTab()
 			}
 
 			_float fColorPower = static_cast<CRectEffects*>(pCurEffect)->m_fColorPower;
-			if (ImGui::SliderFloat("fColorPower", &fColorPower, 0.f, 1.f, "%.2f"))
+			if (ImGui::SliderFloat("fColorPower", &fColorPower, 0.f, 2.f, "%.2f"))
 			{
 				static_cast<CRectEffects*>(pCurEffect)->m_fColorPower = fColorPower;
 			}
@@ -1574,6 +1581,8 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_vPlusColor, sizeof(_float4));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fColorPower, sizeof(_float));
 
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSorting, sizeof(_bool));
+
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -1615,6 +1624,8 @@ void CWindow_Effect::Save_CurEffect()
 
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_vPlusColor, sizeof(_float4));
 		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_fColorPower, sizeof(_float));
+
+		writeFile.write((char*)&static_cast<CRectEffects*>(pCurEffect)->m_bSorting, sizeof(_bool));
 
 		CInstancingEffects::INSTANCING_CREATE_DATA* tData = &static_cast<CInstancingEffects*>(pCurEffect)->m_tCreateData;
 		writeFile.write((char*)tData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));

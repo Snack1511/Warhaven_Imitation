@@ -242,7 +242,7 @@ HRESULT CRectEffects::Initialize()
 {
 	m_fTimeAcc = 0.f;
 	m_iNumDead = 0;
-	m_bSorting = true;
+	//m_bSorting = true;
 
 	GET_COMPONENT(CRenderer)->Set_Pass(m_iPassType);
 
@@ -995,6 +995,8 @@ HRESULT CRectEffects::SetUp_RectEffects(ifstream* pReadFile)
 	pReadFile->read((char*)&m_vPlusColor, sizeof(_float4));
 	pReadFile->read((char*)&m_fColorPower, sizeof(_float));
 
+	pReadFile->read((char*)&m_bSorting, sizeof(_bool));
+
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 	if (m_tCreateData.iOffsetPositionCount > 0)
 	{
@@ -1048,6 +1050,8 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 
 	pReadFile->read((char*)&m_vPlusColor, sizeof(_float4));
 	pReadFile->read((char*)&m_fColorPower, sizeof(_float));
+
+	pReadFile->read((char*)&m_bSorting, sizeof(_bool));
 
 	pReadFile->read((char*)&m_tCreateData, sizeof(CInstancingEffects::INSTANCING_CREATE_DATA));
 
@@ -1134,14 +1138,6 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pDatas[iIndex].InstancingData.vTurnDir.x = 0.f;
 	m_pDatas[iIndex].InstancingData.vTurnDir.y = 0.f;
 	m_pDatas[iIndex].InstancingData.vTurnDir.z = 0.f;
-
-	/*_float4 vRotRight, vRotUp, vRotLook;
-
-	_float4x4 matRot = m_pTransform->Get_Transform().matMyWorld;
-
-	vRotLook = vLook.MultiplyNormal(matRot);
-	vRotRight = vRight.MultiplyNormal(matRot);
-	vRotUp = vUp.MultiplyNormal(matRot);*/
 
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
 		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
