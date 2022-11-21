@@ -104,7 +104,6 @@ private:
 	_float		m_fCreateTime = 0.02f;
 	_float		m_fCreateTimeSlow = 0.07f;
 	void		Create_SwordAfterEffect();
-	void		Create_BloodEffect();
 	void		Create_SoilEffect(); 
 
 private:

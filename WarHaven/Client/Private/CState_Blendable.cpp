@@ -106,8 +106,6 @@ void CState_Blendable::Hit_GroundEffect(CUnit* pOwner)
 
 void CState_Blendable::Hit_SlashEffect(CUnit* pOwner)
 {
-	m_bBlood = true;
-
 	switch (pOwner->Get_CurState())
 	{
 	case STATE_ATTACK_HORIZONTALUP_L:
@@ -394,24 +392,6 @@ void CState_Blendable::Create_SwordAfterEffect()
 	
 }
 
-void CState_Blendable::Create_BloodEffect()
-{
-	
-
-	_float fTargetTime = 0.03f;
-
-	if (m_bBlood)
-	{
-		m_fCreateTimeAcc += fDT(0);
-
-		if (m_fCreateTimeAcc >= fTargetTime)
-		{
-			m_fCreateTimeAcc = 0.f;
-			CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"BloodEffect_1"), m_pOwner, m_pOwner->Get_Transform()->Get_World(WORLD_POS));
-		}
-	}
-}
-
 void CState_Blendable::Create_SoilEffect()
 {
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", m_pOwner, m_pOwner->Get_Transform()->Get_World(WORLD_POS));
@@ -469,7 +449,6 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 
 	case 999:
 		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-		m_bBlood = false;
 		m_bAfterEffect = false;
 		pOwner->TurnOn_TrailEffect(false);
 
