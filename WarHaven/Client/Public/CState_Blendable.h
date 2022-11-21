@@ -22,6 +22,9 @@ public:
 	virtual void		Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
 protected:
+	virtual void Hit_GroundEffect(CUnit* pOwner);
+
+protected:
 	//L, R ¿©ºÎ
 	ANIM_TYPE	m_eAnimLeftorRight = ANIM_BASE_R;
 

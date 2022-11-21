@@ -94,6 +94,16 @@ void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 
 }
 
+void CState_Blendable::Hit_GroundEffect(CUnit* pOwner)
+{
+	pOwner->Shake_Camera(0.25f, 0.25f);
+
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", vHitPos);
+}
+
 STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	STATE_TYPE	eStateType = STATE_END;
@@ -109,12 +119,7 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			//HitPos가 발 보다 아래, 즉 땅을 때린 경우에는 튕겨나는게 아니라 작은 파티클과 진동만.
 			if (vHitPos.y <= vPos.y + 0.1f)
 			{
-				pOwner->Shake_Camera(0.25f, 0.25f);
-
-				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", vHitPos);
+				Hit_GroundEffect(pOwner);
 			}
 			else
 				return m_eBounceState;
