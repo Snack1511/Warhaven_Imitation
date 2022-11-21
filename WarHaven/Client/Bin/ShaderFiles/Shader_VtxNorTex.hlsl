@@ -7,7 +7,7 @@ vector	g_vCamPosition;
 vector	g_vLightDir;
 vector	g_vLightPos;
 float	g_fRange = 1.f;
-float	g_fTileRatio = 5.f;
+float	g_fTileRatio = 100.f;
 
 vector	g_vBrushPos = vector(15.f, 0.f, 15.f, 1.f);
 float	g_fBrushRange = 10.f;
@@ -149,44 +149,33 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 {
 	PS_LIGHTOUT		Out = (PS_LIGHTOUT)0;
 
-	//vector TextureDesc[TEXTURESIZE];
-
-	/*for (uint i = 0; i < TEXTURESIZE; ++i)
-	{
-		TextureDesc[i] = g_DiffArray[i].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
-	}
-	int SourIndex = round(In.vTileFlag.r * (float)g_iNumTexture);
-	int DestIndex = round(In.vTileFlag.g * (float)g_iNumTexture);*/
-	
 	vector TextureDesc[TEXTURESIZE];
-	//vector BGDiff = g_DiffArray[0].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
-	//vector SourDiff = g_DiffArray[1].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
-	//vector DestDiff = g_DiffArray[2].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
-	//In.vTileFlag --> Normalize되어야 함..
 
 	TextureDesc[0] = g_DiffArray[0].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 	TextureDesc[1] = g_DiffArray[1].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 	TextureDesc[2] = g_DiffArray[2].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 
+	//int index = 0;
+	//if (fmax < In.vTileFlag.g)
+	//{
+	//	fmax = In.vTileFlag.g;
+	//	index = 1;
+	//}
+	//if (fmax < In.vTileFlag.b)
+	//{
+	//	fmax = In.vTileFlag.b;
+	//	index = 2;
+	//}
 
+	//1
+	//0.5
+	//0
+	int iTileFlag = (int)(round(In.vTileFlag.r + 1.f));
+	
 
-
-
-
-	float fmax = In.vTileFlag.r;
-	int index = 0;
-	if (fmax < In.vTileFlag.g)
-	{
-		fmax = In.vTileFlag.g;
-		index = 1;
-	}
-	if (fmax < In.vTileFlag.b)
-	{
-		fmax = In.vTileFlag.b;
-		index = 2;
-	}
-
-	Out.vDiffuse = TextureDesc[index];//g_DiffArray[index].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
+	Out.vDiffuse 
+		= (TextureDesc[iTileFlag] * In.vTileFlag.b)
+		+ (TextureDesc[0] * (1.f - In.vTileFlag.b));//g_DiffArray[index].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 		//BGDiff * In.vTileFlag.r +
 		//DestDiff * (In.vTileFlag.g) +
 		//SourDiff * (In.vTileFlag.b);

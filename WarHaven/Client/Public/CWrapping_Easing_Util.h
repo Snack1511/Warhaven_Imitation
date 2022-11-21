@@ -11,6 +11,7 @@ private:
 	friend class CGame_Manager_MJ;
 
 private:
+	_float4 Default(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime);
 	_float4 Linear(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime);
 
 	_float4 QuadIn(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime);

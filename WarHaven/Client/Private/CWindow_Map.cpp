@@ -98,7 +98,7 @@ HRESULT CWindow_Map::Initialize()
     if(FAILED(SetUp_Cameras()))
         return E_FAIL;
 
-    m_OutDatas = make_tuple(_float4(0.f, 0.f, 0.f, 1.f), _float4(0.f, 0.f, 0.f, 0.f));
+    m_OutDatas = make_tuple(_float4(0.f, 0.f, 0.f, 1.f), _float4(0.f, 0.f, 0.f, 1.f), _float4(0.f, 0.f, 0.f, 0.f));
     return S_OK;
 }
 
@@ -1524,6 +1524,7 @@ void CWindow_Map::Load_LightGroup(string FilePath)
 #pragma region 터레인 컨트롤 함수
 void CWindow_Map::Ready_TerrainBrushType()
 {
+    Add_Brush("Default");
     Add_Brush("Linear");
     
     Add_Brush("QuadIn");
@@ -1635,6 +1636,15 @@ void CWindow_Map::Func_TerrainControl()
     ImGui::Text("CurPickedIndex(Ready - Only)");
     ImGui::InputInt3("##CurPickedIndex", (int*)&m_i3PickedIndex, ImGuiInputTextFlags_ReadOnly);
     ImGui::Spacing();
+    ImGui::Text("CurPickedWorldPos(Ready - Only)");
+    ImGui::InputFloat4("##CurPickedWorld", (float*)&get<PICK_OUTPOS>(m_OutDatas), "%.2f", ImGuiInputTextFlags_ReadOnly);
+    ImGui::Spacing();
+    ImGui::Text("CurPickedLocalPos(Ready - Only)");
+    ImGui::InputFloat4("##CurPickedLocal",  (float*)&get<PICK_OUTLOCALPOS>(m_OutDatas), "%.2f", ImGuiInputTextFlags_ReadOnly);
+    ImGui::Spacing();
+    ImGui::Text("CurPickedNormal(Ready - Only)");
+    ImGui::InputFloat4("##CurPickedNormal",  (float*)&get<PICK_OUTNORM>(m_OutDatas), "%.2f", ImGuiInputTextFlags_ReadOnly);
+    ImGui::Spacing();
 
     switch(m_ePickingType)
     {
@@ -1676,7 +1686,7 @@ void CWindow_Map::Change_TileTexture()
     {
         _float4* TileFlags = m_pCurTerrain->Get_TerrainTileFlag();
         _float3* pVertPos = m_pCurTerrain->Get_TerrainVerticesPos();
-        _float4 OutPos = get<PICK_OUTPOS>(m_OutDatas);
+        _float4 OutPos = get<PICK_OUTLOCALPOS>(m_OutDatas);
         list<_uint> VertsList = Select_Vertices();
         for (list<_uint>::value_type& Value : VertsList)
         {
@@ -1687,15 +1697,15 @@ void CWindow_Map::Change_TileTexture()
                     OutPos.y,
                     (pVertPos+ Value)->z,
                     1.f);
-
             _float VertLength = XMVectorGetX(XMVector3Length(vVertPos.XMLoad() - OutPos.XMLoad()));
             _float fVertRatio = VertLength / (m_fBrushSize * 0.5f);
-            _float4 vStartValue = TileFlags[Value];
+            _float4 vStartValue = _float4(0.f, 0.f, 0.f, 0.f);
+            m_vTileTypeFlag.y += m_fBrushWeight * (1 - fVertRatio) * fDT(0);
             _float4 vTargetValue = m_vTileTypeFlag;
             _float4 vOut;
             CGame_Manager_MJ::Get_Instance()->Easing_Vert(m_iCurSelectTerrainBrush, &vOut, vStartValue, vTargetValue, 1 - fVertRatio);
-            
-            TileFlags[Value] = vOut.Normalize();
+
+            TileFlags[Value] = vOut;
             TileFlags[Value].w = 1.f;
         }
         VertsList.clear();
@@ -1759,10 +1769,10 @@ void CWindow_Map::Edit_TerrainTex()
             }
             ImGui::EndCombo();
         }
-        if (ImGui::SliderFloat("##BGRate", &m_vTileTypeFlag.x, 0.f, 1.f, "%.4f"))
-        {
-            m_vTileTypeFlag.Normalize();
-        }
+        //if (ImGui::SliderFloat("##BGRate", &m_vTileTypeFlag.x, 0.f, 1.f, "%.4f"))
+        //{
+        //    m_vTileTypeFlag.Normalize();
+        //}
         ImGui::Spacing();
         ImGui::Text("Select SourTex");
         if (ImGui::BeginCombo("##SourCombo", m_curSelectSourTextureName.c_str()))
@@ -1782,10 +1792,6 @@ void CWindow_Map::Edit_TerrainTex()
                 }
             }
             ImGui::EndCombo();
-        }
-        if (ImGui::SliderFloat("##SourRate", &m_vTileTypeFlag.y, 0.f, 1.f, "%.4f"))
-        {
-            m_vTileTypeFlag.Normalize();
         }
         ImGui::Spacing();
         ImGui::Text("Select DestTex");
@@ -1807,11 +1813,21 @@ void CWindow_Map::Edit_TerrainTex()
             }
             ImGui::EndCombo();
         }
-        if (ImGui::SliderFloat("##DestRate", &m_vTileTypeFlag.z, 0.f, 1.f, "%.4f"))
-        {
-            m_vTileTypeFlag.Normalize();
-        }
+        //if (ImGui::SliderFloat("##DestRate", &m_vTileTypeFlag.z, 0.f, 1.f, "%.4f"))
+        //{
+        //    m_vTileTypeFlag.Normalize();
+        //}
         ImGui::Spacing();
+        if (ImGui::RadioButton("##Active SourTex", &m_iTileIndexFlag, 0))
+        {
+            m_iTileIndexFlag = 0;
+            m_vTileTypeFlag.x = 0.f;
+        }
+        if (ImGui::RadioButton("##Active DestTex", &m_iTileIndexFlag, 1))
+        {
+            m_iTileIndexFlag = 1;
+            m_vTileTypeFlag.x = 1.f;
+        }
         DebugData("Debug_Sour", strBGDebug, ImVec4(1.f, 0.f, 0.f, 1.f));
         DebugData("Debug_Sour", strSourDebug, ImVec4(0.f, 1.f, 0.f, 1.f));
         DebugData("Debug_Dest", strDestDebug, ImVec4(0.f, 0.f, 1.f, 1.f));
@@ -1851,7 +1867,7 @@ list<_uint> CWindow_Map::Select_Vertices()
     matInverse = XMMatrixInverse(nullptr, matInverse);
     _float3* Verts = m_pCurTerrain->Get_TerrainVerticesPos();
     _float fRount = m_fBrushSize * 0.5f;
-    _float4 Center = XMVector3TransformCoord(get<PICK_OUTPOS>(m_OutDatas).XMLoad(), matInverse);
+    _float4 Center = get<PICK_OUTLOCALPOS>(m_OutDatas);//XMVector3TransformCoord().XMLoad(), matInverse);
     _int VertXNums = m_pCurTerrain->Get_TerrainVerticesX();
     _int VertZNums = m_pCurTerrain->Get_TerrainVerticesZ();
 
@@ -1909,7 +1925,7 @@ _float3 CWindow_Map::Easing_Vertices(_float3* pVertPos)
     _matrix matInverse = m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad();
     matInverse = XMMatrixInverse(nullptr, matInverse);
 
-    _float4 OutPos = XMVector3TransformCoord(get<PICK_OUTPOS>(m_OutDatas).XMLoad(), matInverse);
+    _float4 OutPos = get<PICK_OUTLOCALPOS>(m_OutDatas);//XMVector3TransformCoord(get<PICK_OUTPOS>(m_OutDatas).XMLoad(), matInverse);
     _float4 vVertPos 
         = _float4(
             pVertPos->x, 
@@ -2057,7 +2073,7 @@ void CWindow_Map::Make_InstanceObject()
         m_strArrInstanceMeshName.push_back(m_strCurSelectInstanceMeshName);
     }
 
-    _float4 OutPos = get<PICK_OUTPOS>(m_OutDatas);
+    _float4 OutPos = get<PICK_OUTLOCALPOS>(m_OutDatas);
     MTINSTANCE_DATA tInstanceData;
     tInstanceData.strInstanceGorupName = CFunctor::To_Wstring(m_strCurSelectInstanceMeshName);
     tInstanceData.strMeshPath = CFunctor::To_Wstring(m_strCurSelectInstanceMeshPath);
@@ -2087,6 +2103,9 @@ void CWindow_Map::Make_InstanceObject()
         {
             // 위치와 노멀 받아서 적용
             vInstancePosition.y += (vPickOutPos.y - OutPos.y);
+
+            _float4x4 TerrainMat = m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad();
+            vInstancePosition = vInstancePosition.MultiplyCoord(TerrainMat);
 
             _matrix Mat = XMMatrixIdentity();
             _float4 IntiMatUp = -vPickOutNormal.XMLoad();
@@ -2314,8 +2333,8 @@ _bool CWindow_Map::Calculate_Pick()
                 Make_InstanceObject();
                 break;
             }
-            OutPos= XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
-            m_OutDatas = make_tuple(OutPos, OutNorm);
+            _float4 OutWorldPos= XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
+            m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
             bPicked = true;
         }
     }
@@ -2594,8 +2613,8 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
     matWorld.Inverse();
     _float3     f3Position = _float3(vPosition.x, vPosition.y, vPosition.z);
     _vector			xRayPos, xRayDir;
-    xRayPos = XMVector3TransformCoord(XMLoadFloat3(&f3Position), WorldMatrixInv);
-    xRayDir = XMVector3Normalize(XMVector3TransformNormal(XMVectorSet(0.f, -1.f, 0.f, 0.f), WorldMatrixInv));
+    xRayPos = vPosition.XMLoad(); //XMVector3TransformCoord(XMLoadFloat3(&f3Position), WorldMatrixInv);
+    xRayDir = XMVectorSet(0.f, -1.f, 0.f, 0.f); //XMVector3Normalize(XMVector3TransformNormal(XMVectorSet(0.f, -1.f, 0.f, 0.f), WorldMatrixInv));
 
     _uint VertXNum = m_pCurTerrain->Get_TerrainVerticesX();
     _uint VertZNum = m_pCurTerrain->Get_TerrainVerticesZ();
@@ -2634,11 +2653,11 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
             V1 = (vVecA - vVecB);
             V2 = (vVecC - vVecB);
 
-            vOutNormal = XMVector3Cross(V1.XMLoad(), V2.XMLoad());
+            vOutNormal = XMVector3Cross(V1.Normalize().XMLoad(), V2.Normalize().XMLoad());
             vOutNormal = vOutNormal.MultiplyNormal(worldMat);
             vOutNormal.Normalize();
             vPickedPos = xRayPos + XMVector3Normalize(xRayDir) * fDist;
-
+            //vPickedPos = vPickedPos.MultiplyCoord(worldMat);
             _float4 vRayPos = _float4(vPosition.x, vPosition.y, vPosition.z, 1.f);
 
             _float fDistance = (vRayPos - vPickedPos).Length();
@@ -2662,7 +2681,7 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
                 V1 = (vVecA - vVecC);
                 V2 = (vVecD - vVecC);
 
-                vOutNormal = XMVector3Cross(V1.XMLoad(), V2.XMLoad());
+                vOutNormal = XMVector3Cross(V1.Normalize().XMLoad(), V2.Normalize().XMLoad());
                 vOutNormal = vOutNormal.MultiplyNormal(worldMat);
                 vOutNormal.Normalize();
                 vPickedPos = xRayPos + XMVector3Normalize(xRayDir) * fDist;
