@@ -23,7 +23,7 @@ public:
 //	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
 	enum PICKINGTYPE {PICK_GROUP, PICK_OBJECT, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_INSTANCEOBJECT, PICK_NONE};
 	enum CAMERATYPE {CAM_RIGHT, CAM_UP, CAM_LOOK, CAM_FREE};
-	enum PICKOUTTYPE {PICK_OUTPOS, PICK_OUTNORM};
+	enum PICKOUTTYPE {PICK_OUTPOS, PICK_OUTLOCALPOS, PICK_OUTNORM};
 	struct MAPDATA
 	{
 		wstring TerrainDataPath;
@@ -98,7 +98,7 @@ public:
 		void Load(ifstream& readFile);
 	}MTINSTANCE_DATA;
 
-	typedef tuple<_float4, _float4> PICKDATA;
+	typedef tuple<_float4, _float4, _float4> PICKDATA;
 	typedef vector<tuple<char*, bool>> DataComboArr;
 
 	//typedef struct tagMapToolObjectData
@@ -282,7 +282,7 @@ private:
 	_float m_fBrushWeight = 1.f;
 
 	//Diffuse, Normal
-	_float4 m_vTileTypeFlag = _float4(1.f, 0.f, 0.f, 0.f);
+	_float4 m_vTileTypeFlag = _float4(0.f, 0.f, 1.f, 1.f);
 
 #pragma endregion
 
@@ -343,6 +343,7 @@ private:
 	_float4x4 m_matTerrain;
 private:
 	CFunc_ObjectControl* m_pObjectController = nullptr;
+	_int m_iTileIndexFlag = 0;
 #pragma endregion
 
 

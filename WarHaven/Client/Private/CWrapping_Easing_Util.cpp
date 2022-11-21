@@ -8,6 +8,11 @@ CWrapping_Easing_Util::~CWrapping_Easing_Util()
 {
 }
 
+_float4 CWrapping_Easing_Util::Default(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime)
+{
+    return vTargetPoint;
+}
+
 _float4 CWrapping_Easing_Util::Linear(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime)
 {
     return CEasing_Utillity::Linear(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);

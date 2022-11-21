@@ -47,6 +47,7 @@ void CGame_Manager_MJ::SetUp_Wrapping_Easing()
 {
 	//function<_float4(CWrapping_Easing_Util*, _float4, _float4, _float, _float)>
 //	func = ;
+	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::Default));
 	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::Linear));
 	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::QuadIn));
 	Add_Wrapping_Easing(EASINGFUNCS(&CWrapping_Easing_Util::QuadOut));

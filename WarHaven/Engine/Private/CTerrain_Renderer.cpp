@@ -105,11 +105,7 @@ void CTerrain_Renderer::Update_TextureIndex(_int Sour, _int Dest)
 		{
 			pDestSRV = elem->Get_vecTexture()[0].pSRV.Get();
 		}
-
-		else
-		{
-			Index++;
-		}
+		Index++;
 		//for(auto& elemvec : elem->Get_vecTexture())
 	}
 	while (m_SRVList.size() > 1)
