@@ -1143,14 +1143,14 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 	vRotLook = vLook.MultiplyNormal(matRot);
 	vRotRight = vRight.MultiplyNormal(matRot);
-	vRotUp = vUp.MultiplyNormal(matRot);
+	vRotUp = vUp.MultiplyNormal(matRot);*/
 
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
 		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 	{
 		m_pDatas[iIndex].RectInstance.vColor.x = 0.f;
 		m_pDatas[iIndex].RectInstance.vColor.y = 0.f;
-	}*/
+	}
 
 	//Jump
 	m_pDatas[iIndex].InstancingData.fPrevY = m_pDatas[iIndex].RectInstance.vTranslation.y;
