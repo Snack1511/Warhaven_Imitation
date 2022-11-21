@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Texture.h"
 #include "CButton.h"
+#include "CFader.h"
 
 #include "CUnit.h"
 #include "CUI_Object.h"
@@ -54,6 +55,8 @@ HRESULT CUI_HUD::Start()
 	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
 
 	Bind_Btn();
+
+	Set_FadePortHighlight();
 
 	return S_OK;
 }
@@ -159,66 +162,63 @@ void CUI_HUD::My_Tick()
 
 void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
 {
-	for (int i = 0; i < 6; ++i)
+	CUI_Object* pTarget = m_pPortClone[iEventNum];
+	if (pTarget)
 	{
-		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPortClone[i], CButton)->Get_TargetUI();
-		if (pTarget)
-		{
-			_float4 vPos = pTarget->Get_Pos();
-			vPos.y += 2.f;
-			m_pPortHighlight->Set_Pos(vPos);
-
-			ENABLE_GAMEOBJECT(m_pPortHighlight);
-		}
+		Enable_Fade(m_pPortHighlights[iEventNum]);
 	}
+}
+
+void CUI_HUD::On_PointExit_Port(const _uint& iEventNum)
+{
+	Disable_Fade(m_pPortHighlights[iEventNum]);
 }
 
 void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 {
-	for (int i = 0; i < 6; ++i)
+	CUI_Object* pTarget = m_pPortClone[iEventNum];
+
+	// pTarget->Lerp_PosY();
+
+	if (pTarget)
 	{
-		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pPortClone[i], CButton)->Get_TargetUI();
-		if (pTarget)
+		switch (iEventNum)
 		{
-			_uint iTextureNum = GET_COMPONENT_FROM(pTarget, CTexture)->Get_CurTextureIndex();
-			switch (iTextureNum)
-			{
-			case 0:
-				m_pClassInfo->Set_FontText(TEXT("블레이드"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
-				Set_HUD(CUnit::WARRIOR);
-				break;
+		case 0:
+			m_pClassInfo->Set_FontText(TEXT("블레이드"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::WARRIOR);
+			break;
 
-			case 1:
-				m_pClassInfo->Set_FontText(TEXT("스파이크"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
-				Set_HUD(CUnit::SPEAR);
-				break;
+		case 1:
+			m_pClassInfo->Set_FontText(TEXT("스파이크"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::SPEAR);
+			break;
 
-			case 2:
-				m_pClassInfo->Set_FontText(TEXT("아치"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
-				Set_HUD(CUnit::ARCHER);
-				break;
+		case 2:
+			m_pClassInfo->Set_FontText(TEXT("아치"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::ARCHER);
+			break;
 
-			case 3:
-				m_pClassInfo->Set_FontText(TEXT("가디언"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
-				Set_HUD(CUnit::PALADIN);
-				break;
+		case 3:
+			m_pClassInfo->Set_FontText(TEXT("가디언"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::PALADIN);
+			break;
 
-			case 4:
-				m_pClassInfo->Set_FontText(TEXT("스모크"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
-				Set_HUD(CUnit::PRIEST);
-				break;
+		case 4:
+			m_pClassInfo->Set_FontText(TEXT("스모크"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::PRIEST);
+			break;
 
-			case 5:
-				m_pClassInfo->Set_FontText(TEXT("워해머"));
-				GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
-				Set_HUD(CUnit::ENGINEER);
-				break;
-			}
+		case 5:
+			m_pClassInfo->Set_FontText(TEXT("워해머"));
+			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			Set_HUD(CUnit::ENGINEER);
+			break;
 		}
 	}
 }
@@ -268,8 +268,10 @@ void CUI_HUD::Bind_Btn()
 {
 	for (int i = 0; i < 6; ++i)
 	{
-		m_pPortClone[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_Port, this, placeholders::_1);
-		m_pPortClone[i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Port, this, placeholders::_1);
+		m_pPortClone[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_Port, this, i);
+		m_pPortClone[i]->CallBack_PointExit += bind(&CUI_HUD::On_PointExit_Port, this, i);
+
+		m_pPortClone[i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Port, this, i);
 	}
 }
 
@@ -340,7 +342,7 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 	m_pLine = CUI_Object::Create();
 	m_pLine->Set_Scale(650.f, 28.f);
-	m_pLine->Set_Pos(0.f, -150.f);
+	m_pLine->Set_Pos(0.f, -100.f);
 	m_pLine->Set_Sort(0.01f);
 	m_pLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_DecoLam02.png"));
 
@@ -349,10 +351,12 @@ void CUI_HUD::Create_CharacterSelectWindow()
 		m_pPortClone[i] = m_pPort->Clone();
 		m_pPortBGClone[i] = m_pPortBG->Clone();
 		m_pClassIconClone[i] = m_pClassIcon->Clone();
+		m_pPortHighlights[i] = m_pPortHighlight->Clone();
 
 		_float fPosX = -300.f + (i * 120.f);
 
 		m_pPortClone[i]->Set_Pos(fPosX, -250.f);
+		m_pPortHighlights[i]->Set_Pos(fPosX, -248.f);
 
 		_float4 vPos = m_pPortClone[i]->Get_Pos();
 
@@ -370,6 +374,9 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 		CREATE_GAMEOBJECT(m_pClassIconClone[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pClassIconClone[i]);
+
+		CREATE_GAMEOBJECT(m_pPortHighlights[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPortHighlights[i]);
 	}
 
 	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
@@ -385,7 +392,7 @@ void CUI_HUD::Create_CharacterSelectWindow()
 	DELETE_GAMEOBJECT(m_pClassIcon);
 
 	CREATE_GAMEOBJECT(m_pPortHighlight, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pPortHighlight);
+	DELETE_GAMEOBJECT(m_pPortHighlight);
 
 	CREATE_GAMEOBJECT(m_pClassInfo, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pClassInfo);
@@ -395,6 +402,29 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 	CREATE_GAMEOBJECT(m_pLine, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pLine);
+}
+
+void CUI_HUD::Set_FadePortHighlight()
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.3f;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		GET_COMPONENT_FROM(m_pPortHighlights[i], CFader)->Get_FadeDesc() = tFadeDesc;
+	}
 }
 
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
@@ -423,13 +453,13 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 		DISABLE_GAMEOBJECT(m_pLine);
 		DISABLE_GAMEOBJECT(m_pClassInfo);
 		DISABLE_GAMEOBJECT(m_pClassInfoIcon);
-		DISABLE_GAMEOBJECT(m_pPortHighlight);
 
 		for (int i = 0; i < 6; ++i)
 		{
 			DISABLE_GAMEOBJECT(m_pPortClone[i]);
 			DISABLE_GAMEOBJECT(m_pPortBGClone[i]);
 			DISABLE_GAMEOBJECT(m_pClassIconClone[i]);
+			DISABLE_GAMEOBJECT(m_pPortHighlights[i]);
 		}
 	}
 }

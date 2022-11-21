@@ -46,7 +46,10 @@ private:
 	CUI_Object* m_pTextModeSelect = nullptr;
 	CUI_Object* m_pEscKey = nullptr;
 	CUI_Object* m_pLine = nullptr;
+
 	CUI_Object* m_pStageHighlight = nullptr;
+	CUI_Object* m_pStageHighlights[4];
+
 	CUI_Object* m_pBtnHightlight = nullptr;
 	CUI_Object* m_pStageSelectRect = nullptr;
 	CUI_Object* m_pStageNameRect = nullptr;

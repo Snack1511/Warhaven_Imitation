@@ -175,10 +175,7 @@ void CUI_MainPlay::On_PointEnter_Stage(const _uint& iEventNum)
 	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[iEventNum], CTexture)->Get_CurTextureIndex();
 	if (iTextureNum <= 3)
 	{
-		_float4 vPos = m_pStageSelectBtn[iEventNum]->Get_Pos();
-		m_pStageHighlight->Set_Pos(vPos.x, vPos.y);
-
-		Enable_Fade(m_pStageHighlight);
+		Enable_Fade(m_pStageHighlights[iEventNum]);
 	}
 }
 
@@ -193,7 +190,7 @@ void CUI_MainPlay::On_PointStay_Stage(const _uint& iEventNum)
 
 void CUI_MainPlay::On_PointExit_Stage(const _uint& iEventNum)
 {
-	Disable_Fade(m_pStageHighlight);
+	Disable_Fade(m_pStageHighlights[iEventNum]);
 }
 
 void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
@@ -255,6 +252,7 @@ void CUI_MainPlay::Bind_Btn()
 		m_pStageSelectBtn[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_Stage, this, i);
 		m_pStageSelectBtn[i]->CallBack_PointStay += bind(&CUI_MainPlay::On_PointStay_Stage, this, i);
 		m_pStageSelectBtn[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_Stage, this, i);
+
 		m_pStageSelectBtn[i]->CallBack_PointDown += bind(&CUI_MainPlay::On_PointDown_Stage, this, i);
 	}
 }
@@ -281,11 +279,11 @@ void CUI_MainPlay::Set_FadeModeWindow()
 	GET_COMPONENT_FROM(m_pLine, CFader)->Get_FadeDesc() = tFadeDesc;
 
 	GET_COMPONENT_FROM(m_pStageSelectRect, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pStageHighlight, CFader)->Get_FadeDesc() = tFadeDesc;
 
 	for (int i = 0; i < 4; ++i)
 	{
 		GET_COMPONENT_FROM(m_pStageSelectBtn[i], CFader)->Get_FadeDesc() = tFadeDesc;
+		GET_COMPONENT_FROM(m_pStageHighlights[i], CFader)->Get_FadeDesc() = tFadeDesc;
 	}
 
 	for (int i = 0; i < 2; ++i)
@@ -325,11 +323,11 @@ void CUI_MainPlay::SetActive_ModeWindow()
 		Disable_Fade(m_pEscKey);
 
 		Disable_Fade(m_pStageSelectRect);
-		Disable_Fade(m_pStageHighlight);
 
 		for (int i = 0; i < 4; ++i)
 		{
 			Disable_Fade(m_pStageSelectBtn[i]);
+			Disable_Fade(m_pStageHighlights[i]);
 		}
 
 		for (int i = 0; i < 2; ++i)
@@ -534,6 +532,18 @@ void CUI_MainPlay::Create_StageHighlight()
 	m_pStageHighlight->Set_Scale(216.f, 340.f);
 	m_pStageHighlight->Set_Sort(0.8f);
 	m_pStageHighlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_GradientSmall2.dds"));
+	m_pStageHighlight->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
+
+	for (int i = 0; i < 4; ++i)
+	{
+		m_pStageHighlights[i] = m_pStageHighlight->Clone();
+
+		_float fPosX = -360.f + (i * 240.f);
+		m_pStageHighlights[i]->Set_PosX(fPosX);
+
+		CREATE_GAMEOBJECT(m_pStageHighlights[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pStageHighlights[i]);
+	}
 
 	m_pStageSelectRect = CUI_Object::Create();
 	m_pStageSelectRect->Set_Scale(250.f, 380.f);
@@ -543,7 +553,7 @@ void CUI_MainPlay::Create_StageHighlight()
 	m_pStageSelectRect->Set_Pos(m_pStageSelectBtn[0]->Get_PosX(), m_pStageSelectBtn[0]->Get_PosY());
 
 	CREATE_GAMEOBJECT(m_pStageHighlight, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pStageHighlight);
+	DELETE_GAMEOBJECT(m_pStageHighlight);
 
 	CREATE_GAMEOBJECT(m_pStageSelectRect, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pStageSelectRect);

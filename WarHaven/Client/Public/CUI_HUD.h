@@ -26,6 +26,7 @@ public:
 
 public:
 	virtual void On_PointEnter_Port(const _uint& iEventNum);
+	virtual void On_PointExit_Port(const _uint& iEventNum);
 
 	virtual void On_PointDown_Port(const _uint& iEventNum);
 
@@ -48,7 +49,10 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pPort;
 	CUI_Object* m_pPortBG;
 	CUI_Object* m_pClassIcon = nullptr;
+
 	CUI_Object* m_pPortHighlight = nullptr;
+	CUI_Object* m_pPortHighlights[6];
+
 	CUI_Object* m_pClassInfo = nullptr;
 	CUI_Object* m_pClassInfoIcon = nullptr;
 	CUI_Object* m_pLine = nullptr;
@@ -61,6 +65,8 @@ private:	// 클래스 변경 창
 
 private:
 	void Bind_Btn();
+
+	void Set_FadePortHighlight();
 
 private:	
 	void Set_HUD(CUnit::CLASS_TYPE eClass);
