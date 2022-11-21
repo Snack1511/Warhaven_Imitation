@@ -44,6 +44,10 @@ private:
 	HRESULT SetUp_WarHammer_TH();
 	HRESULT SetUp_Valkyrie_TH();
 
+
+
+	HRESULT	SetUp_Warrior_Sandback();
+
 	void	Change_Player();
 
 private:

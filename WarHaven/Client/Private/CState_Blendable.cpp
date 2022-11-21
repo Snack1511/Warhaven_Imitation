@@ -64,6 +64,41 @@ HRESULT CState_Blendable::Initialize()
 	return S_OK;
 }
 
+void	CState_Blendable::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
+{
+	if (m_bHitEffect) //&& m_pOwner->Is_Weapon_R_CCT_Collision())
+	{
+		m_bHitEffect = false;
+
+		if (iOtherColType == COL_PLAYERGUARD || iOtherColType == COL_ENEMYGUARD)
+		{
+			_float4 vOtherLook = pOtherObject->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+			_float4 vCurLook = m_pOwner->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+
+
+
+			//양수면 앞임.
+			if (vCurLook.Dot(vOtherLook) < 0.f)
+				m_bParringed = true;
+			else
+				m_bParringed = false;
+
+		}
+		else
+		{
+			m_pOwner->Shake_Camera(0.1f, 0.25f);
+			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", vHitPos);
+			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash", vHitPos);
+		}
+
+	}
+}
+
+void	CState_Blendable::OnCollisionStay(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType)
+{
+	OnCollisionEnter(pOtherObject, iOtherColType, iMyColType, ZERO_VECTOR);
+}
+
 void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData )
 {
 	CColorController::COLORDESC tColorDesc;
@@ -82,6 +117,10 @@ void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
+
+	pOwner->CallBack_CollisionEnter += bind(&CState_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+	//pOwner->CallBack_CollisionStay += bind(&CState_Blendable::OnCollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
+
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 
 }
@@ -91,6 +130,9 @@ void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	pOwner->TurnOn_TrailEffect(false);
+
+	pOwner->CallBack_CollisionEnter -= bind(&CState_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+	//pOwner->CallBack_CollisionStay -= bind(&CState_Blendable::OnCollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 
 }
 
@@ -107,6 +149,10 @@ void CState_Blendable::Hit_GroundEffect(CUnit* pOwner)
 STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	STATE_TYPE	eStateType = STATE_END;
+
+	if (m_bParringed)
+		return m_eBounceState;
+
 
 	if (m_bAttackTrigger)
 	{
@@ -128,20 +174,7 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		}
 	}
 
-	if (m_bHitEffect && pOwner->Is_Weapon_R_CCT_Collision())
-	{
-		m_bHitEffect = false;
-		pOwner->Shake_Camera(0.15f, 0.25f);
-
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-		//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-		//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-		/*CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark_R", pOwner->Get_HitMatrix());
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_R", pOwner->Get_HitMatrix());*/
-
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner->Get_HitMatrix());
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash", pOwner->Get_HitMatrix());
-	}
+	
 
 	// Create_SwordAfterEffect();
 

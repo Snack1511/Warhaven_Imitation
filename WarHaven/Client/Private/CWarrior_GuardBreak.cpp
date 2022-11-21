@@ -87,6 +87,8 @@ void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 {
     pOwner->On_Use(CUnit::SKILL2);
 
+    pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+
     /* OwnerÀÇ Animator Set Idle·Î */
     m_fMaxSpeed = pOwner->Get_Status().fSprintAttackSpeed;
     pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
@@ -103,7 +105,9 @@ STATE_TYPE CWarrior_GuardBreak::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarrior_GuardBreak::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    pOwner->CallBack_CollisionEnter -= bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+    
+    pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 }
 
 STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -115,7 +119,7 @@ STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnima
     if (!pOwner->Can_Use(CUnit::SKILL2))
         return STATE_END;
 
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::E)
+    if (KEY(E, TAP))
         return m_eStateType;
 
 
@@ -129,13 +133,16 @@ void CWarrior_GuardBreak::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 	{
 
 	case 1:
+        m_bAttackTrigger = true;
         pOwner->Get_PhysicsCom()->Set_SpeedasMax();
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+        pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
+
 		break;
 
 
 	case 2:
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+        m_bAttackTrigger = false;
+        pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 		break;
 
 	default:

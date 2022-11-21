@@ -45,6 +45,9 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eHitBoxHead = (bPlayer) ? COL_PLAYERHITBOX_HEAD : COL_ENEMYHITBOX_HEAD;
 	COL_GROUP_CLIENT	eHitBoxGuard = (bPlayer) ? COL_PLAYERGUARD : COL_ENEMYGUARD;
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_PLAYERATTACK : COL_ENEMYATTACK;
+	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_PLAYERGUARDBREAK : COL_ENEMYGUARDBREAK;
+	COL_GROUP_CLIENT	eGroggy = (bPlayer) ? COL_PLAYERGROGGYATTACK : COL_ENEMYGROGGYATTACK;
+
 
 	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
 
@@ -88,12 +91,44 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 
 	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
+
+	for (_uint i = 0; i < iWeaponSphereNum; ++i)
+		tWeaponUnitColDesc[i].eColType = eGuardBreak;
+
+
+	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+	
+	//for (_uint i = 0; i < iWeaponSphereNum; ++i)
+	//	tWeaponUnitColDesc[i].eColType = eGroggy;
+	
+	// SetUp_UnitCollider(CUnit::GROGGY, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+
 }
 
 void	CUnit_Warrior::SetUp_HitStates(_bool bPlayer)
 {
-	//if (!bPlayer)
-	//	m_eHitState = STATE_PLAYER_HIT;
+
+	/* 나중에 사망 후 부활 할 시 위치 저장할 때 사용해야 하므로 전체적으로 추가하도록 한다. */
+	//m_tHitType.m_eDeathState  = STATE_DEAD;
+
+	if (!bPlayer)
+	{
+		m_tHitType.m_eHitState = STATE_HIT_TEST_ENEMY;
+		m_tHitType.m_eGuardState = STATE_GUARDHIT_ENEMY;
+		m_tHitType.m_eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
+		m_tHitType.m_eStingHitState = STATE_STINGHIT_ENEMY;
+		m_tHitType.m_eGroggyState = STATE_GROGGY_ENEMY;
+		m_tHitType.m_eFlyState = STATE_FLYHIT_ENEMY;
+		
+	}
+	else
+	{
+		m_tHitType.m_eHitState = STATE_HIT;
+		m_tHitType.m_eGuardState = STATE_GUARDHIT_WARRIOR;
+		m_tHitType.m_eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
+		m_tHitType.m_eStingHitState = STATE_STINGHIT_WARRIOR;
+	}
+		
 }
 
 HRESULT CUnit_Warrior::Initialize_Prototype()
@@ -141,7 +176,7 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	// 칼 길이
 	tDesc.fHeight = 0.9f;
 	// 칼 두께
-	tDesc.fRadius = 0.1f;
+	tDesc.fRadius = 0.2f;
 	// 칼 붙일 뼈
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 

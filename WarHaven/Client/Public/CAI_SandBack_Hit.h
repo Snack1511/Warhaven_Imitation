@@ -29,7 +29,7 @@ private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
-	_bool	bTest = false; 
+	_bool	bTestGuard = false;  // 가드에서 맞고 Idle 로 가는 거 방지 : 테스트용
 
 };
 

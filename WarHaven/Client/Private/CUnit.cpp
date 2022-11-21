@@ -74,6 +74,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	UNIT_STATUS& tOtherStatus = pOtherUnit->Get_Status();
 
+
 	CState::HIT_INFO tOtherHitInfo = pOtherUnit->Get_CurStateP()->Get_HitInfo();
 
 	tOtherHitInfo.vDir = (m_pTransform->Get_World(WORLD_POS) - vHitPos);
@@ -82,17 +83,35 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	
 	
 	//상대 위치 계산
-	_float4 vOtherDir = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
-	_float4 vCurLook = m_pTransform->Get_World(WORLD_LOOK);
+	_float4 vOtherLook = pOtherObj->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+	_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+
+
 
 	//양수면 앞임.
-	if (vCurLook.Dot(vOtherDir) > 0.f)
+	if (vCurLook.Dot(vOtherLook) < 0.f)
 		tOtherHitInfo.bFace = true;
 	else
 		tOtherHitInfo.bFace = false;
 
 	switch (eMyColType)
 	{
+		
+	case COL_PLAYERATTACK:
+	case COL_ENEMYATTACK:
+
+		if (tOtherHitInfo.bFace)
+		{
+			// 반격 당했다면?
+			if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
+			{
+				eFinalHitState = m_tHitType.m_eGroggyState;
+			}
+		}
+
+
+		break;
+
 	case COL_PLAYERGUARD:
 	case COL_ENEMYGUARD:
 	{
@@ -102,23 +121,28 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 			if (eOtherColType == COL_PLAYERGUARDBREAK || eOtherColType == COL_ENEMYGUARDBREAK)
 			{
 				//가드 브레이크공격이 들어오면 
-				eFinalHitState = m_eGuardBreakState;
+				eFinalHitState = m_tHitType.m_eGuardBreakState;
 			}
 			/* 가드 성공 */
 			else
 			{
-				eFinalHitState = m_eGuardState;
+				eFinalHitState = m_tHitType.m_eGuardState;
 				bGuardSuccess = true;
 
 			}
 		}
+		else
+		{
+			eFinalHitState = m_tHitType.m_eHitState;
+		}
+
 	}
 
 	break;
 
 	case COL_PLAYERHITBOX_BODY:
 	case COL_ENEMYHITBOX_BODY:
-		eFinalHitState = m_eHitState;
+		eFinalHitState = m_tHitType.m_eHitState;
 
 #ifdef _DEBUG
 		cout << " 바디샷 " << endl;
@@ -130,15 +154,13 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	case COL_PLAYERHITBOX_HEAD:
 	case COL_ENEMYHITBOX_HEAD:
-		eFinalHitState = m_eHitState;
+		eFinalHitState = m_tHitType.m_eHitState;
 		tOtherHitInfo.bHeadShot = true;
 
 #ifdef _DEBUG
 		cout << " 헤드샷 " << endl;
 #endif // 
 		
-
-		break;
 
 	default:
 		break;
@@ -155,6 +177,10 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	}
 	else
 	{
+
+		//m_eStingHitState (COL 찌르기 상태를 추가하자.)
+		//if()
+
 		/* 체력 0 이하로 내려간 경우 */
 
 	}
@@ -441,16 +467,6 @@ void CUnit::OnDisable()
 	}
 }
 
-//void CUnit::Set_Enable_WeaponCol(_bool bEnable)
-//{
-//	for (int i = 0; i < WEAPONCOLLIDER_END; ++i)
-//	{
-//		if (bEnable)
-//			ENABLE_COMPONENT(m_pUnitCollider[i]);
-//		else
-//			DISABLE_COMPONENT(m_pUnitCollider[i]);
-//	}
-//}
 
 void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 {
@@ -466,22 +482,57 @@ void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 	{
 		if (bEnable)
 		{
-			ENABLE_COMPONENT(m_pWeaponCollider_R);
-
-			if (m_pWeaponCollider_L)
-				ENABLE_COMPONENT(m_pWeaponCollider_L);
-
+			if (m_pWeaponCollider_R)
+				ENABLE_COMPONENT(m_pWeaponCollider_R);
 		}
 		else
 		{
-			DISABLE_COMPONENT(m_pWeaponCollider_R);
+			if (m_pWeaponCollider_R)
+				DISABLE_COMPONENT(m_pWeaponCollider_R);
+		}
+	}
+}
 
+void CUnit::Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable)
+{
+	if (!m_pUnitCollider[ePartType])
+		return;
+
+
+	if (ePartType == GUARDBREAK_R)
+	{
+		if (bEnable)
+		{
+			ENABLE_COMPONENT(m_pUnitCollider[ePartType]);
+
+			if (m_pWeaponCollider_R)
+				ENABLE_COMPONENT(m_pWeaponCollider_R);
+		}
+		else
+		{
+			DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
+
+			if (m_pWeaponCollider_R)
+				DISABLE_COMPONENT(m_pWeaponCollider_R);
+		}
+	}
+
+	else if (ePartType == GUARDBREAK_L)
+	{
+		if (bEnable)
+		{
+			if (m_pWeaponCollider_L)
+				ENABLE_COMPONENT(m_pWeaponCollider_L);
+		}
+		else
+		{
 			if (m_pWeaponCollider_L)
 				DISABLE_COMPONENT(m_pWeaponCollider_L);
 		}
-
-
 	}
+
+		
+
 }
 
 void CUnit::Enable_GuardCollider(_bool bEnable)
@@ -503,6 +554,24 @@ void CUnit::Enable_GuardCollider(_bool bEnable)
 		ENABLE_COMPONENT(m_pUnitCollider[BODY]);
 	}
 
+}
+
+void CUnit::Enable_GroggyCollider(_bool bEnable)
+{
+	if (!m_pUnitCollider[GROGGY])
+		return;
+
+	if (bEnable)
+	{
+		/* 다른건 꺼놓기*/
+		ENABLE_COMPONENT(m_pUnitCollider[GROGGY]);
+		ENABLE_COMPONENT(m_pWeaponCollider_R);
+	}
+	else
+	{
+		DISABLE_COMPONENT(m_pUnitCollider[GROGGY]);
+		DISABLE_COMPONENT(m_pWeaponCollider_R);
+	}
 }
 
 void CUnit::SetUp_Colliders(_bool bPlayer)
@@ -533,7 +602,7 @@ void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrCol
 void CUnit::SetUp_HitStates(_bool bPlayer)
 {
 	if (!bPlayer)
-		m_eHitState = STATE_HIT_TEST_ENEMY;
+		m_tHitType.m_eHitState = STATE_HIT_TEST_ENEMY;
 }
 
 _float4 CUnit::Get_FollowCamLook()

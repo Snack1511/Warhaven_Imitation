@@ -20,6 +20,11 @@ CState::~CState()
 {
 }
 
+void	CState::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
+{
+	int a = 0;
+}
+
 void CState::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
 	CUser::Get_Instance()->Clear_KeyCommands();

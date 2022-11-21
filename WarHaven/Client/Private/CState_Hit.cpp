@@ -45,8 +45,8 @@ HRESULT CState_Hit::Initialize()
 
 void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
-    /* 날 때린놈의 hit info를 받았다. */
-    m_tHitInfo = *((HIT_INFO*)(pData));
+
+
 
     if (!m_tHitInfo.vDir.Is_Zero())
         pOwner->Get_PhysicsCom()->Set_Dir(m_tHitInfo.vDir);
@@ -60,66 +60,61 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
     if (m_tHitInfo.fKnockBackPower > 0.f)
         pOwner->Get_PhysicsCom()->Set_Speed(m_tHitInfo.fKnockBackPower);
 
-    
+    if (m_tHitInfo.bFly)
+    {
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iFlyHitIndex;
+        m_eStateType = pOwner->Get_HitType().m_eFlyState;
+    }
 
-    // if(ePrevStateType == STATE_HIT)
 
+    __super::Enter(pOwner, pAnimator, ePrevStateType);
+}
 
+STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
+{
+
+    return __super::Tick(pOwner, pAnimator);
+}
+
+void CState_Hit::Exit(CUnit* pOwner, CAnimator* pAnimator)
+{
+
+}
+
+void CState_Hit::Face_Check(_bool bUseUpandDown)
+{
     /* 방향 조정 */
     if (m_tHitInfo.bFace)
     {
         if (m_tHitInfo.eHitType == HIT_TYPE::eLEFT)
             m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
-            
+
         else  if (m_tHitInfo.eHitType == HIT_TYPE::eRIGHT)
             m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
-    }
 
-
-    if (m_tHitInfo.bFace)
-    {
-        if (m_tHitInfo.eHitType == HIT_TYPE::eUP)
-            m_tHitInfo.eHitType = HIT_TYPE::eDOWN;
-
-        else  if (m_tHitInfo.eHitType == HIT_TYPE::eDOWN)
-            m_tHitInfo.eHitType = HIT_TYPE::eUP;
-    }
-
-
-    // 가드 브레이크 시전 중
-    if (m_tHitInfo.bGuardBreak)
-    {
-        // 가드 중에 가드 브레이크를 맞은 경우
-    }
-
-
-    /* 상대가 찌르기를 시전했을 경우 */
-    if(m_tHitInfo.bSting)
-    {
-        if (!m_iHitStabIndex[HIT_STATE_N])
-            m_iAnimIndex = m_iHitStabIndex[HIT_STATE_N];
-
-        else
+        else if (bUseUpandDown)
         {
             if (m_tHitInfo.eHitType == HIT_TYPE::eUP)
-            {
-                m_eAnimType = ANIM_HIT;
-                m_iAnimIndex = m_iHitIndex[HIT_STATE_S];
-            }
-            else if (m_tHitInfo.eHitType == HIT_TYPE::eDOWN)
-            {
-                m_eAnimType = ANIM_HIT;
-                m_iAnimIndex = m_iHitIndex[HIT_STATE_N];
-            }
-        }
-            m_iAnimIndex = m_iHitIndex[HIT_STATE_N];
+                m_tHitInfo.eHitType = HIT_TYPE::eDOWN;
 
-        __super::Enter(pOwner, pAnimator, ePrevStateType);
-        return;
+            else  if (m_tHitInfo.eHitType == HIT_TYPE::eDOWN)
+                m_tHitInfo.eHitType = HIT_TYPE::eUP;
+        }
+
+ 
     }
 
+}
 
-    /* 실제 처리 */
+void CState_Hit::Hit_State()
+{
+
+  
+
+    Face_Check();
+
+    /* Hit 처리 */
     switch (m_tHitInfo.eHitType)
     {
         /* 내가 기울어지는 방향대로 애니메이션 처리 */
@@ -137,43 +132,118 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
 
     case HIT_TYPE::eUP:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_S];
+        m_iAnimIndex = m_iHitIndex[HIT_STATE_N];
 
         break;
 
     case HIT_TYPE::eDOWN:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_N];
+        m_iAnimIndex = m_iHitIndex[HIT_STATE_S];
 
         break;
 
     default:
         break;
     }
-
-    __super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 
-STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
+
+void CState_Hit::Guard_State()
 {
+    Face_Check(false);
 
-
-
-    return __super::Tick(pOwner, pAnimator);
-}
-
-void CState_Hit::Exit(CUnit* pOwner, CAnimator* pAnimator)
-{
-}
-
-void CState_Hit::Face_Change(_uint iDest, _uint iSour)
-{
-    if (m_tHitInfo.bFace)
+    /* 가드 Hit 처리 */
+    switch (m_tHitInfo.eHitType)
     {
-        if (m_tHitInfo.eHitType == HIT_TYPE(iDest))
-            m_tHitInfo.eHitType = HIT_TYPE(iSour);
+    case HIT_TYPE::eLEFT:
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_R];
 
-        else  if (m_tHitInfo.eHitType == HIT_TYPE(iSour))
-            m_tHitInfo.eHitType = HIT_TYPE(iDest);
+        break;
+
+    case HIT_TYPE::eRIGHT:
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_L];
+
+        break;
+
+    case HIT_TYPE::eUP:
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_TOP];
+
+        break;
+
+    case HIT_TYPE::eDOWN:
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_F];
+
+        break;
+
+    default:
+        break;
     }
+}
+
+void CState_Hit::Groggy_State()
+{
+    Face_Check();
+
+    /* 그로기(기절) 처리 */
+    switch (m_tHitInfo.eHitType)
+    {
+        /* 내가 기울어지는 방향대로 애니메이션 처리 */
+    case HIT_TYPE::eLEFT:
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_W];
+
+        break;
+
+    case HIT_TYPE::eRIGHT:
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_E];
+
+        break;
+
+    case HIT_TYPE::eUP:
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_N];
+
+        break;
+
+    case HIT_TYPE::eDOWN:
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_S];
+
+        break;
+
+    default:
+        break;
+    }
+}
+
+
+void CState_Hit::Sting_State()
+{
+ 
+    if (!m_iHitStabIndex[HIT_STATE_N])
+    {
+        m_iAnimIndex = m_iHitStabIndex[HIT_STATE_N];
+    }
+    else
+    {
+        Face_Check();
+
+        if (m_tHitInfo.eHitType == HIT_TYPE::eUP)
+        {
+            m_eAnimType = ANIM_HIT;
+            m_iAnimIndex = m_iHitIndex[HIT_STATE_N];
+        }
+        else if (m_tHitInfo.eHitType == HIT_TYPE::eDOWN)
+        {
+            m_eAnimType = ANIM_HIT;
+            m_iAnimIndex = m_iHitIndex[HIT_STATE_S];
+        }
+
+    }
+
 }

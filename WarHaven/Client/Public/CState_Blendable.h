@@ -16,6 +16,11 @@ protected:
 	virtual ~CState_Blendable();
 
 public:
+	virtual void	OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos) override;
+	virtual void	OnCollisionStay(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType) override;
+
+
+public:
 	virtual HRESULT		Initialize();
 	virtual void		Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData = nullptr);
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
@@ -95,6 +100,8 @@ private:
 	_bool				m_bBlendable = true;
 	_bool				m_bCycling = false;
 	_bool				m_bHitEffect = false;
+
+	_bool				m_bParringed = false;
 
 private:
 	_bool		m_bAfterEffect = false;

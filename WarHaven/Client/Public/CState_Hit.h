@@ -26,20 +26,36 @@ public:
 protected:
 	_uint			m_iHitIndex[HIT_STATE_END]; // 히트 상태
 	_uint			m_iGuardIndex[GUARD_STATE_END]; // 가드 성공
-	_uint			m_iHitStabIndex[HIT_STATE_END]; // 찌르기 사망 애니메이션
-
 	_uint			m_iGroggyIndex[GROGGY_STATE_END]; // 그로기 상태(가만히 기절 상태도 있음)
+
+	_uint			m_iHitStabIndex[HIT_STATE_END]; // 찌르기 사망 애니메이션
 
 	_uint			m_iFallHitIndex = 0;
 	_uint			m_iFlyHitIndex = 0;
 
+	_bool			m_bGuardBreak = false; // GuardBreak 가 hit 상태에 없기 때문에 따로 만들어줌.
+	_bool			m_bHitSting = false;
 
-	_uint			m_iHitLeftIndex = 3;
-	_uint			m_iHitRightIndex = 4;
-	/* 쭉쭉 추가하셈*/
+	/*For. Enter*/
 
+/*For. Tick*/
 private:
-	void	Face_Change(_uint iDest, _uint iSour);
+	STATE_TYPE Play_HitSting(CUnit* pOwner, CAnimator* pAnimator);
+
+/*For. Enter*/
+protected:
+	void	Face_Check(_bool bUseUpandDown = true);
+
+
+	void	Hit_State();
+	void	Guard_State();
+	void	Groggy_State();
+
+	void	Sting_State();
+
+	
+
+
 
 };
 

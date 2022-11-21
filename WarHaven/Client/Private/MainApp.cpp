@@ -75,6 +75,7 @@ HRESULT CMainApp::Progress()
 		return E_FAIL;
 	}
 
+
 	if (FAILED(m_pGameInstance->Tick_Engine()))
 	{
 		Call_MsgBox(L"Failed to Tick_Engine : CMainApp");
