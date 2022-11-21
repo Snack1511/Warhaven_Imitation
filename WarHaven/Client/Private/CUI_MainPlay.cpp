@@ -57,6 +57,24 @@ void CUI_MainPlay::My_Tick()
 			SetActive_ModeWindow();
 		}
 	}
+
+	if (m_pPlayBtnMouseEnterLineArr[0]->Is_Valid())
+	{
+		_float fCurScaleY = m_pPlayBtnMouseEnterLineArr[0]->Get_Scale().y;
+		if (fCurScaleY <= 4.f)
+		{
+			DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLineArr[0]);
+		}
+	}
+
+	if (m_pPlayBtnMouseEnterLineArr[1]->Is_Valid())
+	{
+		_float fCurScaleY = m_pPlayBtnMouseEnterLineArr[1]->Get_Scale().y;
+		if (fCurScaleY <= 4.f)
+		{
+			DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLineArr[1]);
+		}
+	}
 }
 
 void CUI_MainPlay::Set_Shader_StageHighlight(CShader* pShader, const char* pConstName)
@@ -96,35 +114,59 @@ void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
 	m_pBtnHightlight->Set_Scale(vScale.x * 3.f, 500.f);
 	m_pTarget->Lerp_PosX(vPos.x, vPos.x + 20.f, 0.4f);
 
-	m_pPlayBtnMouseEnterLine->Set_PosY(vPos.y - 3.5f);
-	m_pPlayBtnMouseEnterLine->Lerp_ScaleY(4.f, vScale.y - 22.f, 0.4f);
+	m_pPlayBtnMouseEnterLineArr[iEventNum]->Set_PosY(vPos.y - 3.5f);
+	m_pPlayBtnMouseEnterLineArr[iEventNum]->Lerp_ScaleY(4.f, vScale.y - 22.f, 0.4f);
 
 	ENABLE_GAMEOBJECT(m_pBtnHightlight);
-	ENABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
+	ENABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLineArr[iEventNum]);
 }
 
-void CUI_MainPlay::On_PointExit_PlayBtn(const _uint& iEventNum)
+void CUI_MainPlay::On_PointExit_Start(const _uint& iEventNum)
 {
-	m_pPlayBtnUI[0]->Set_PosX(-500.f);
-	m_pPlayBtnUI[1]->Set_PosX(-535.f);
+	_float4 vPos = m_pPlayBtnUI[0]->Get_Pos();
 
-	m_pPlayBtnMouseEnterLine->Set_Scale(4.f);
+	m_pPlayBtnUI[0]->Lerp_PosX(vPos.x, -500.f, 0.4f);
+
+	_float fCurScaleY = m_pPlayBtnMouseEnterLineArr[0]->Get_Scale().y;
+	m_pPlayBtnMouseEnterLineArr[0]->Lerp_ScaleY(fCurScaleY, 4.f, 0.4f);
 
 	DISABLE_GAMEOBJECT(m_pBtnHightlight);
-	DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
+}
+
+void CUI_MainPlay::On_PointExit_Mode(const _uint& iEventNum)
+{
+	_float4 vPos = m_pPlayBtnUI[1]->Get_Pos();
+
+	m_pPlayBtnUI[1]->Lerp_PosX(vPos.x, -535.f, 0.4f);
+
+	_float fCurScaleY = m_pPlayBtnMouseEnterLineArr[1]->Get_Scale().y;
+	m_pPlayBtnMouseEnterLineArr[1]->Lerp_ScaleY(fCurScaleY, 4.f, 0.4f);
+
+	DISABLE_GAMEOBJECT(m_pBtnHightlight);
 }
 
 void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 {
-	switch (m_eStage)
+	if (!m_pBG->Is_Valid())
 	{
-	case CUI_MainPlay::Test:
-		CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
-		break;
+		switch (m_eStage)
+		{
+		case CUI_MainPlay::Test:
+			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
+			break;
 
-	case CUI_MainPlay::Training:
-		Call_MsgBox(TEXT("ÈÆ·Ã¼Ò"));
-		break;
+		case CUI_MainPlay::Training:
+			Call_MsgBox(TEXT("ÈÆ·Ã¼Ò"));
+			break;
+		}
+	}
+}
+
+void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
+{
+	if (!m_pBG->Is_Valid())
+	{
+		SetActive_ModeWindow();
 	}
 }
 
@@ -186,11 +228,6 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 	}
 }
 
-void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
-{
-	SetActive_ModeWindow();
-}
-
 void CUI_MainPlay::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pStageSelectRect, CShader)->CallBack_SetRawValues += bind(&CUI_MainPlay::Set_Shader_StageClickRect, this, placeholders::_1, "g_vColor");
@@ -205,10 +242,12 @@ void CUI_MainPlay::Bind_Btn()
 	m_pPlayBtnUI[0]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Start, this, placeholders::_1);
 	m_pPlayBtnUI[1]->CallBack_PointUp += bind(&CUI_MainPlay::On_PointUpEvent_Mode, this, placeholders::_1);
 
+	m_pPlayBtnUI[0]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_Start, this, placeholders::_1);
+	m_pPlayBtnUI[1]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_Mode, this, placeholders::_1);
+
 	for (int i = 0; i < 2; ++i)
 	{
 		m_pPlayBtnUI[i]->CallBack_PointEnter += bind(&CUI_MainPlay::On_PointEnter_PlayBtn, this, i);
-		m_pPlayBtnUI[i]->CallBack_PointExit += bind(&CUI_MainPlay::On_PointExit_PlayBtn, this, i);
 	}
 
 	for (int i = 0; i < 4; ++i)
@@ -554,6 +593,14 @@ void CUI_MainPlay::Crerate_PlayBtnMouseEnterLine()
 	m_pPlayBtnMouseEnterLine->Set_Sort(0.91f);
 	m_pPlayBtnMouseEnterLine->Set_Color(_float4(0.773f, 0.714f, 0.596f, 1.f));
 
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pPlayBtnMouseEnterLineArr[i] = m_pPlayBtnMouseEnterLine->Clone();
+
+		CREATE_GAMEOBJECT(m_pPlayBtnMouseEnterLineArr[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLineArr[i]);
+	}
+
 	CREATE_GAMEOBJECT(m_pPlayBtnMouseEnterLine, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
+	DELETE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
 }

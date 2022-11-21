@@ -25,7 +25,9 @@ public:
 
 public:
 	virtual void On_PointEnter_PlayBtn(const _uint& iEventNum);
-	virtual void On_PointExit_PlayBtn(const _uint& iEventNum);
+
+	virtual void On_PointExit_Start(const _uint& iEventNum);
+	virtual void On_PointExit_Mode(const _uint& iEventNum);
 
 	virtual void On_PointUpEvent_Start(const _uint& iEventNum);
 	virtual void On_PointUpEvent_Mode(const _uint& iEventNum);
@@ -53,6 +55,7 @@ private:
 	CUI_Object* m_pStageSelectBtn[4];
 
 	CUI_Object* m_pPlayBtnMouseEnterLine = nullptr;
+	CUI_Object* m_pPlayBtnMouseEnterLineArr[2];
 
 	CUI_Object* m_pPrototypeLock = nullptr;
 	CUI_Object* m_pLockBtn[2];

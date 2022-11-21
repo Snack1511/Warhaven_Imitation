@@ -128,7 +128,7 @@ void CUI_Object::Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration)
 
 	m_fAccScale = m_fEnd > m_fStart ? true : false;
 
-	Set_ScaleX(m_fStart);
+	Set_ScaleY(m_fStart);
 }
 
 void CUI_Object::Lerp_PosX(_float fStart, _float fEnd, _float fDuration)
