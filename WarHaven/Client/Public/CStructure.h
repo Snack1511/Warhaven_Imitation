@@ -24,6 +24,7 @@ public:
 	static CStructure* Create(wstring MeshPath);
 	static CStructure* Create(wstring MeshPath, _float4x4 ObjectWorldMatrix);
 	static CStructure* Create(wstring MeshPath, _float4 vScale, _float4x4 ObjectWorldMatrix);
+	//static CStructure* Create(wstring MeshName, wstring strMergeDataPath);
 
 public:
 	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType);
@@ -63,7 +64,7 @@ protected:
 	CModel* m_pModelCom = nullptr;
 	CModel* m_pLODModelCom = nullptr;
 	wstring m_DebugPath = TEXT("");
-
+	wstring m_MeshName = TEXT("");
 protected:
 	/* PhysX Collider */
 	ePhysXEnum				m_eCurType = ePhysXEnum::eEND;
@@ -74,6 +75,7 @@ protected:
 	virtual	HRESULT	SetUp_Model(wstring strMeshPath);
 	virtual HRESULT SetUp_World(_float4x4 worldMat);
 	virtual HRESULT SetUp_World(_float4 vScale, _float4x4 worldMat);
+	virtual HRESULT SetUp_MergeData(wstring strMeshName, wstring strMergePath);
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;

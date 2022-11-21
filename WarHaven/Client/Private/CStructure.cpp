@@ -105,6 +105,28 @@ CStructure* CStructure::Create(wstring MeshPath, _float4 vScale, _float4x4 Objec
 	return pInstance;
 }
 
+//
+//CStructure* CStructure::Create(wstring MeshName, wstring strMergeDataPath)
+//{
+//	CStructure* pInstance = new CStructure;
+//
+//	if (FAILED(pInstance->SetUp_MergeData(MeshName, strMergeDataPath)))
+//	{
+//		SAFE_DELETE(pInstance);
+//		Call_MsgBox(L"Failed to SetUp_MergeData : CStructure");
+//		return nullptr;
+//	}
+//
+//	if (FAILED(pInstance->Initialize_Prototype()))
+//	{
+//		SAFE_DELETE(pInstance);
+//		Call_MsgBox(L"Failed to Initialize_Prototype : CStructure");
+//		return nullptr;
+//	}
+//
+//	return pInstance;
+//}
+
 void CStructure::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eColType)
 {
 }
@@ -363,6 +385,48 @@ HRESULT CStructure::SetUp_World(_float4 vScale, _float4x4 worldMat)
 	m_pTransform->Get_Transform().vScale = vScale;
 	m_pTransform->Get_Transform().matMyWorld = worldMat;
 	m_pTransform->Make_WorldMatrix();
+	return S_OK;
+}
+
+HRESULT CStructure::SetUp_MergeData(wstring strMeshName, wstring strMergePath)
+{
+	m_MeshName = strMeshName;
+
+	ifstream readFile;
+	readFile.open(strMergePath, ios::binary);
+
+	if (readFile.is_open())
+	{
+		Call_MsgBox(_T("머지 데이터 못읽음"));
+		assert(0);
+	}
+
+	//메시 경로 길이 읽기
+	_uint iMeshPathLength = 0;
+	readFile.read((char*)&iMeshPathLength, sizeof(_uint));
+
+	//메시 경로 읽기
+	char szFilePath[MAX_PATH];
+	readFile.read(szFilePath, sizeof(char) * iMeshPathLength);
+	wstring strMeshPath = CFunctor::To_Wstring(string(szFilePath));
+	
+
+	//인스턴스 갯수 셋팅
+	_uint iMeshCount = 0;
+	readFile.read((char*)&iMeshCount, sizeof(_uint));
+
+
+	//VTX 셋업
+	VTXINSTANCE* pMeshInstance = new VTXINSTANCE[iMeshCount];
+	ZeroMemory(pMeshInstance, sizeof(VTXINSTANCE) * iMeshCount);
+	//월드 매트릭스들 셋팅
+	readFile.read((char*)pMeshInstance, sizeof(VTXINSTANCE) * iMeshCount);
+
+
+	//모델 인스턴싱 생성
+	CModel* pModel = CModel::Create(0, TYPE_NONANIM, strMeshPath, iMeshCount, pMeshInstance, DEFAULT_MODEL_MATRIX);
+	Add_Component(pModel);
+
 	return S_OK;
 }
 

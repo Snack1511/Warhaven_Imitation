@@ -10,6 +10,7 @@
 #include "CUtility_Transform.h"
 
 #include "Functor.h"
+#include "CStructure_Instance.h"
 
 CFunc_ObjectControl::CFunc_ObjectControl()
 {
@@ -17,7 +18,6 @@ CFunc_ObjectControl::CFunc_ObjectControl()
 
 CFunc_ObjectControl::~CFunc_ObjectControl()
 {
-    Clear_TupleData(m_arrMeshGroupName);
 }
 
 CFunc_ObjectControl* CFunc_ObjectControl::Create(CWindow_Map* pMaptool)
@@ -42,18 +42,15 @@ void CFunc_ObjectControl::Func_Grouping()
         //그룹 이름
         string DebugMeshGroupName = szMeshGroupNameBuf;
         m_pMapTool->DebugData("MeshGroupName", DebugMeshGroupName);
-        if (ImGui::InputText("##GroupNameInput", szMeshGroupNameBuf, sizeof(char) * MAXCHAR))
-        {
-
-        }
+        ImGui::InputText("##GroupNameInput", szMeshGroupNameBuf, sizeof(char) * MAXCHAR);
         if (ImGui::Button("Add MeshGroup"))
         {
-            Add_MeshGroup(szMeshGroupNameBuf);
+            Add_ObjectGroup(szMeshGroupNameBuf);
         }
         ImGui::SameLine();
         if (ImGui::Button("Delete MeshGroup"))
         {
-            Delete_MeshGroup(szMeshGroupNameBuf);
+            Delete_ObjectGroup(szMeshGroupNameBuf);
         }
         if (ImGui::Checkbox("GroupControl", &m_bGroupControl))
         {
@@ -76,17 +73,6 @@ void CFunc_ObjectControl::Func_FBXList()
         m_pMapTool->DebugData("CurSelectedMeshFilePath", m_CurSelectedMeshFilePath);
         m_pMapTool->DebugData("SelectedMeshName", m_CurSelectedMeshName);
         ImGui::Spacing();
-
-        if (ImGui::Button("Add Object"))
-        {
-            Func_AddObject();
-
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Delete Object"))
-        {
-            Func_DeleteOBject();
-        }
     }
     ImGui::Spacing();
 }
@@ -98,60 +84,150 @@ void CFunc_ObjectControl::Func_ObjectList()
         //해당 이름을 가진 탭
         if (ImGui::BeginTabBar("##AddObject TabBar"))
         {
-            for (_int i = 0; i < _int(m_arrMeshGroupName.size()); ++i)
+            for (_int i = 0; i < _int(m_GroupingInfo.size()); ++i)
             {
-                if (ImGui::BeginTabItem(get<CWindow_Map::Tuple_CharPtr>(m_arrMeshGroupName[i])))
+                if (ImGui::BeginTabItem(get<Tuple_GroupName>(m_GroupingInfo[i]).c_str()))
                 {
                     //리스트 업데이트
-                    if (ImGui::BeginListBox("##TabList", ImVec2(360.f, 200.f)))
+                    ImGui::Text("GroupList");
+                    if (ImGui::BeginListBox("##TabGroupList", ImVec2(360.f, 200.f)))
                     {
-                        m_SelectMeshGroupIndex = i;
-                        size_t Hashnum = HASHING(string, string(get<CWindow_Map::Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex])));
-                        vector<MTO_DATA>& CurGroupData = m_ObjectDataGroupMap[Hashnum];
-                        _int Index = 0;
-                        for (MTO_DATA& Data : CurGroupData)
+                        m_SelectObjectGroupIndex = i;
+                        OBJECTGROUPINGMAP::iterator NamingGroup;
+                        string CurSelectGroupName = string(get< Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+                        size_t Hashnum = Convert_ToHash(CurSelectGroupName);//HASHING(string, CurSelectGroupName);
+                        _bool bFindGropingName = Find_ObjectGroupingName(Hashnum, NamingGroup);
+                        vector<tuple<string, list<_int>>> GroupingNames;
+                        if (bFindGropingName)
+                        {
+                            GroupingNames = NamingGroup->second;
+                        }
+
+                        for (_uint ObjectNameIndex = 0; ObjectNameIndex < _uint(GroupingNames.size()); ++ObjectNameIndex)
                         {
                             _bool bSelected = false;
-                            string MeshName = CFunctor::To_String(Data.strMeshName);
+                            if (m_iCurSelectObjecNametIndex == ObjectNameIndex)
+                            {
+                                bSelected = true;
+                            }
+                            if (ImGui::Selectable(get<0>(GroupingNames[ObjectNameIndex]).c_str(), bSelected))
+                            {
+                                m_strCurSelectObjectName = get<0>(GroupingNames[ObjectNameIndex]);
+                                m_iCurSelectObjecNametIndex = ObjectNameIndex;
+                                ObjectMap::iterator ObjectMapIter;
+                                DataMap::iterator DataMapIter;
+                                Find_ObjectDatas(m_strCurSelectObjectName, ObjectMapIter, DataMapIter);
+                                if (m_ObjectNamingGroupMap.end() != ObjectMapIter)
+                                    m_pCurSelectObjectGroup = &(ObjectMapIter->second);
+                                else
+                                    m_pCurSelectObjectGroup = nullptr;
 
-                            if (m_strCurSelectObjectName == MeshName)
-                            {
-                                bSelected = true;
-                            }
-                            if (m_iCurSelectObjectIndex == Index)
-                            {
-                                bSelected = true;
-                            }
-                            if (ImGui::Selectable(MeshName.c_str(), bSelected))
-                            {
-                                m_strCurSelectObjectName = MeshName;
-                                m_iCurSelectObjectIndex = Index;
-                                SetUp_CurSelectObject();
+                                if (m_DataNamingGroupMap.end() != DataMapIter)
+                                    m_pCurSelectDataGroup = &(DataMapIter->second);
+                                else
+                                    m_pCurSelectDataGroup = nullptr;
+                                //SetUp_CurSelectObject();
                                 //선택 
                             }
-
-                            Index++;
                         }
                         ImGui::EndListBox();
                     }
                     ImGui::EndTabItem();
                 }
-
             }
 
             ImGui::EndTabBar();
         }
-        if (ImGui::Button("Clear MeshGroup"))
+        ImGui::Text("ObjectList");
+        if (ImGui::BeginListBox("##TabObjectList", ImVec2(360.f, 200.f)))
         {
-            Clear_MeshGroup(szMeshGroupNameBuf);
+            if (nullptr != m_pCurSelectObjectGroup)
+            {
+                for (_uint i = 0; i < _uint(m_pCurSelectObjectGroup->size()); ++i)
+                {
+                    if ((*m_pCurSelectObjectGroup)[i]->Is_Valid()) 
+                    {
+                        _bool bSelect = false;
+                        if (m_iCurSelectObjectIndex == i)
+                        {
+                            bSelect = true;
+                        }
+                        if (ImGui::Selectable(to_string(i).c_str(), bSelect))
+                        {
+                            m_iCurSelectObjectIndex = i;
+                            SetUp_CurSelectObject();
+                        }
+                    }
+                }
+            }
+            ImGui::EndListBox();
         }
-        if (!m_arrMeshGroupName.empty())
-        {
-            string DebugTab = get<CWindow_Map::Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex]);
-            m_pMapTool->DebugData("SelectTab", DebugTab);
-        }
-        m_pMapTool->DebugData("SelectedName", m_strCurSelectObjectName);
     }
+    ImGui::Spacing();
+    if (ImGui::Button("Add Object"))
+    {
+        Func_AddObject();
+        SetUp_CurSelectObject();
+
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Delete Object"))
+    {
+        Func_DeleteOBject();
+        SetUp_CurSelectObject();
+    }
+    ImGui::Spacing();
+    if (ImGui::Button("Clear NameGroup"))
+    {
+        Clear_SameNameObject(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+        Confirm_Data();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Clear MeshGroup"))
+    {
+        Clear_ObjectGroup(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+        Confirm_Data();
+    }
+    ImGui::Spacing();
+    if (ImGui::Button("Merge"))
+    {
+        string CurSelectGroupName = string(get< Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+        size_t Hashnum = Convert_ToHash(CurSelectGroupName);
+        OBJECTGROUPINGMAP::iterator NamingGroup;
+        Find_ObjectGroupingName(Hashnum, NamingGroup);
+        string strSelectObjectName = get<0>(NamingGroup->second[m_iCurSelectObjecNametIndex]);
+        Merge_Object(strSelectObjectName);
+        Confirm_Data();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Split"))
+    {
+        string CurSelectGroupName = string(get< Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+        size_t Hashnum = Convert_ToHash(CurSelectGroupName);
+        OBJECTGROUPINGMAP::iterator NamingGroup;
+        Find_ObjectGroupingName(Hashnum, NamingGroup);
+        string strSelectObjectName = get<0>(NamingGroup->second[m_iCurSelectObjecNametIndex]);
+        Split_Object(strSelectObjectName);
+        Confirm_Data();
+    }
+
+    if (ImGui::Button("Merge All"))
+    {
+        Merge_All();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Split All"))
+    {
+        Split_All();
+    }
+
+    if (!m_GroupingInfo.empty())
+    {
+        string DebugTab = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
+        m_pMapTool->DebugData("SelectTab", DebugTab);
+    }
+    string DebugSelectObject = m_strCurSelectObjectName + to_string(m_iCurSelectObjecNametIndex);
+    m_pMapTool->DebugData("SelectedName", DebugSelectObject);
     ImGui::Spacing();
 }
 
@@ -435,10 +511,10 @@ void CFunc_ObjectControl::Func_Picking()
 
 void CFunc_ObjectControl::Func_SetUpCollider()
 {
-    if (m_arrMeshGroupName.empty())
+    if (m_GroupingInfo.empty())
         return;
 
-    if (m_SelectMeshGroupIndex >= m_arrMeshGroupName.size())
+    if (m_SelectObjectGroupIndex >= m_GroupingInfo.size())
         return;
 
     if (ImGui::CollapsingHeader("GroupCollider"))
@@ -483,32 +559,45 @@ void CFunc_ObjectControl::Func_SetUpCollider()
 
         if (ImGui::Button("Bake Group"))
         {
-            size_t Hashnum = HASHING(string, string(get<CWindow_Map::Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex])));
-            vector<CGameObject*>& CurGroupData = m_ObjectGroupMap[Hashnum];
+            size_t GroupHash = Convert_ToHash(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));//HASHING(string, get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+            OBJECTGROUPINGMAP::iterator GroupIter;
+            _bool bFindGroupingName = Find_ObjectGroupingName(GroupHash, GroupIter);
 
-            if (CurGroupData.empty())
+            if (!bFindGroupingName)
                 return;
-            if (m_ColliderType == _uint(CStructure::ePhysXEnum::eBOX))
+            
+            for (ObjectNameTupleArr::value_type Value: GroupIter->second)
             {
-                for (vector<CGameObject*>::value_type& Value : CurGroupData)
+                string ObjectName = get<0>(Value);
+                size_t NameHash = Convert_ToHash(ObjectName);
+                vector<CGameObject*>& CurGroupData = m_ObjectNamingGroupMap[NameHash];
+
+                if (CurGroupData.empty())
+                    return;
+                if (m_ColliderType == _uint(CStructure::ePhysXEnum::eBOX))
                 {
-                    static_cast<CStructure*>(Value)->Make_PhysXCollier_Box();
+                    for (vector<CGameObject*>::value_type& Value : CurGroupData)
+                    {
+                        static_cast<CStructure*>(Value)->Make_PhysXCollier_Box();
+                    }
+                }
+                else
+                {
+                    for (vector<CGameObject*>::value_type& Value : CurGroupData)
+                    {
+                        static_cast<CStructure*>(Value)->Make_PhysXCollider(CStructure::ePhysXEnum(m_ColliderType), m_LODLevel);
+                    }
                 }
             }
-            else
-            {
-                for (vector<CGameObject*>::value_type& Value : CurGroupData)
-                {
-                    static_cast<CStructure*>(Value)->Make_PhysXCollider(CStructure::ePhysXEnum(m_ColliderType), m_LODLevel);
-                }
-            }
+
+            
         }
 
         if (ImGui::Button("Bake All"))
         {
-            for (OBJGROUPING::value_type& MapValue : m_ObjectGroupMap)
+            for (ObjectMap::value_type& MapValue : m_ObjectNamingGroupMap)
             {
-                for(OBJVECTOR::value_type& Value : MapValue.second)
+                for(ObjectArr::value_type& Value : MapValue.second)
                 {
                     if (m_ColliderType == _uint(CStructure::ePhysXEnum::eBOX))
                     {
@@ -545,47 +634,29 @@ _bool CFunc_ObjectControl::Is_CurSelectObject()
 
 void CFunc_ObjectControl::Confirm_Group()
 {
-    m_pObjGroup = nullptr;
-    m_pDataGroup = nullptr;
+    //m_pObjGroup = nullptr;
+    //m_pDataGroup = nullptr;
 }
 
 void CFunc_ObjectControl::SetUp_CurSelectObject()
 {
-    string CurSelectMeshGroup = get<CWindow_Map::Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex]);
-    size_t HashNum = HASHING(string, CurSelectMeshGroup);
-
-    OBJGROUPING::iterator ObjGroupIter = m_ObjectGroupMap.find(HashNum);
-    DATAGROUPING::iterator DataGroupIter = m_ObjectDataGroupMap.find(HashNum);
-
-    OBJVECTOR* pObjGroupArr = nullptr;
-    DATAVECTOR* pDataGroupArr = nullptr;
-
-    if (m_ObjectGroupMap.end() != ObjGroupIter)
-    {
-        pObjGroupArr = &(ObjGroupIter->second);
-    }
-
-    if (m_ObjectDataGroupMap.end() != DataGroupIter)
-    {
-        pDataGroupArr = &(DataGroupIter->second);
-    }
-
-    if (nullptr == pObjGroupArr)
-        return;
+    if (nullptr != m_pCurSelectObjectGroup 
+        && _uint(m_pCurSelectObjectGroup->size()) > m_iCurSelectObjectIndex)
+        m_pCurSelectGameObject = (*m_pCurSelectObjectGroup)[m_iCurSelectObjectIndex];
     else
-        m_pCurSelectGameObject = (*pObjGroupArr)[m_iCurSelectObjectIndex];
+        m_pCurSelectGameObject = nullptr;
 
-    if (nullptr == pDataGroupArr)
-        return;
+    if (nullptr != m_pCurSelectDataGroup 
+        && _uint(m_pCurSelectDataGroup->size()) > m_iCurSelectObjectIndex)
+        m_pCurSelectData = &((*m_pCurSelectDataGroup)[m_iCurSelectObjectIndex]);
     else
-        m_pCurSelectData = &((*pDataGroupArr)[m_iCurSelectObjectIndex]);
+        m_pCurSelectData = nullptr;
 
     if (nullptr != m_pCurSelectGameObject)
         m_pObjTransform = m_pCurSelectGameObject->Get_Transform();
     else
-    {
         m_pObjTransform = nullptr;
-    }
+
 }
 
 void CFunc_ObjectControl::Show_GroupMatrix()
@@ -617,290 +688,388 @@ void CFunc_ObjectControl::Confirm_Data()
     m_iCurSelectBoxIndex = 0;
 }
 
-void CFunc_ObjectControl::Add_MeshGroup(char* pMeshGroupName)
+void CFunc_ObjectControl::Add_ObjectGroup(char* pObjectGroupName)
 {
-    CWindow_Map::DataComboArr::iterator MeshGroupIter 
-        = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), 
-            [&pMeshGroupName](CWindow_Map::DataComboArr::value_type& Value)
-        {
-            if (0 == strcmp(pMeshGroupName, get<CWindow_Map::Tuple_CharPtr>(Value)))
-                return true;
-            else
-                return false;
-        });
-
-    if (MeshGroupIter == m_arrMeshGroupName.end())
+    GroupingArr::iterator GroupInfoIter;
+    string strGroupName = pObjectGroupName;
+    size_t HashNum = 0;
+    _bool bFind = Find_ObjectGroupInfo(strGroupName, GroupInfoIter, HashNum);
+    if (!bFind)
     {
-        char* pGroupName = new char[260];
-        ZeroMemory(pGroupName, sizeof(char) * 260);
-        memcpy_s(pGroupName, sizeof(char) * 260, pMeshGroupName, sizeof(char) * 260);
-        m_arrMeshGroupName.push_back(make_tuple(pGroupName, false));
-
-        string strObjectGroup = pMeshGroupName;
-        size_t HashNum = HASHING(string, strObjectGroup);
-
-        OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-        if (ObjMapIter == m_ObjectGroupMap.end())
+        m_GroupingInfo.push_back(make_tuple(strGroupName, true));
+        OBJECTGROUPINGMAP::iterator GroupingMapIter;
+        _bool bGroupNameFind = Find_ObjectGroupingName(HashNum, GroupingMapIter);
+        if (!bGroupNameFind)
         {
-            m_ObjectGroupMap.emplace(HashNum, vector<CGameObject*>());
+            m_ObjectNameGroupingMap.emplace(HashNum, ObjectNameTupleArr());
         }
-
-        DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-        if (DataMapIter == m_ObjectDataGroupMap.end())
-        {
-            m_ObjectDataGroupMap.emplace(HashNum, vector<MTO_DATA>());
-        }
-        Confirm_Data();
     }
+    Confirm_Data();
 }
 
-void CFunc_ObjectControl::Delete_MeshGroup(char* pMeshGroupName)
+void CFunc_ObjectControl::Delete_ObjectGroup(char* pObjectGroupName)
 {
-    CWindow_Map::DataComboArr::iterator MeshGroupIter
-        = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), 
-            [&pMeshGroupName](CWindow_Map::DataComboArr::value_type& Value)
-        {
-            if (0 == strcmp(pMeshGroupName, get<CWindow_Map::Tuple_CharPtr>(Value)))
-                return true;
-            else
-                return false;
-        });
-
-    if (MeshGroupIter != m_arrMeshGroupName.end())
+    GroupingArr::iterator GroupInfoIter;
+    string strGroupName = pObjectGroupName;
+    size_t HashNum = 0;
+    _bool bFind = Find_ObjectGroupInfo(strGroupName, GroupInfoIter, HashNum);
+    if (bFind)
     {
-        char* pGroupName = get<CWindow_Map::Tuple_CharPtr>((*MeshGroupIter));
-
-        string strObjectGroup = pGroupName;
-        size_t HashNum = HASHING(string, strObjectGroup);
-        OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-        DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-        if (ObjMapIter != m_ObjectGroupMap.end())
+        string strDeleteObjectGroupName = get<Tuple_GroupName>(*GroupInfoIter);
+        m_GroupingInfo.erase(GroupInfoIter);
+        OBJECTGROUPINGMAP::iterator GroupingMapIter;
+        _bool bGroupNameFind = Find_ObjectGroupingName(HashNum, GroupingMapIter);
+        if (bGroupNameFind)
         {
-            for (list<CGameObject*>::value_type& Value : ObjMapIter->second)
+            //그룹핑된 오브젝트 이름 탐색
+            //해당이름을 키값으로 가지는 오브젝트 데이터 그룹을 탐색
+            //해당 이름을 키값으로 가지는 오브젝트 그룹을 탐색
+            for (ObjectNameTupleArr::value_type& SearchObjectNameTuple : GroupingMapIter->second)
             {
-                DELETE_GAMEOBJECT(Value);
+                string SearchObjectName = get<0>(SearchObjectNameTuple);
+                list<_int>& rhsIndexList = get<1>(SearchObjectNameTuple);
+                Delete_ObjectNamingMap(SearchObjectName, rhsIndexList);
             }
-            ObjMapIter->second.clear();
-            m_ObjectGroupMap.erase(ObjMapIter);
-        }
-        if (DataMapIter != m_ObjectDataGroupMap.end())
-        {
-            DataMapIter->second.clear();
-            m_ObjectDataGroupMap.erase(DataMapIter);
+            
+            GroupingMapIter->second.clear();
+            m_ObjectNameGroupingMap.erase(GroupingMapIter);
         }
 
-        m_arrMeshGroupName.erase(MeshGroupIter);
-        Safe_Delete_Array(pGroupName);
-        m_SelectMeshGroupIndex = (m_SelectMeshGroupIndex <= 1) ? 0 : m_SelectMeshGroupIndex - 1;
-        Confirm_Data();
     }
+    Confirm_Data();
+}
+CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, string Meshpath, string ObjectName)
+{
+    size_t HashNum = 0;
+    GroupingArr::iterator GroupingIter;
+    _bool bFindGroupName = Find_ObjectGroupInfo(GroupName, GroupingIter, HashNum);
+
+    OBJECTGROUPINGMAP::iterator SelectGroupIter;
+    _bool bFindGroup = Find_ObjectGroupingName(HashNum, SelectGroupIter);
+
+    list<_int>* pIndexList = nullptr;
+    if (bFindGroup)
+    {
+        ObjectNameTupleArr::iterator NameIter = find_if(SelectGroupIter->second.begin(), SelectGroupIter->second.end(),
+            [&ObjectName](ObjectNameTupleArr::value_type& Value)
+            {
+                if (ObjectName == get<0>(Value))
+                    return true;
+                else
+                    return false;
+            }
+        );
+        if (SelectGroupIter->second.end() == NameIter)
+        {
+            SelectGroupIter->second.push_back(make_tuple(ObjectName, list<_int>()));
+            pIndexList = &(get<1>(SelectGroupIter->second.back()));
+        }
+        else
+        {
+            pIndexList = &(get<1>(*NameIter));
+        }
+
+    }
+    else
+    {
+        return nullptr;
+    }
+
+    if (nullptr == pIndexList)
+        return nullptr;
+
+    ObjectMap::iterator ObjMapIter;
+    DataMap::iterator DataMapIter;
+
+    if (false == Find_ObjectDatas(ObjectName, ObjMapIter, DataMapIter))
+    {
+        if (m_ObjectNamingGroupMap.end() == ObjMapIter)
+            m_ObjectNamingGroupMap.emplace(Convert_ToHash(ObjectName), ObjectArr());
+        if (m_DataNamingGroupMap.end() == DataMapIter)
+            m_DataNamingGroupMap.emplace(Convert_ToHash(ObjectName), DataArr());
+        Find_ObjectDatas(ObjectName, ObjMapIter, DataMapIter);
+    }
+
+    CStructure* pStructure = Add_Object(ObjectName, ObjMapIter->second, Meshpath);
+    Add_Data(ObjectName, DataMapIter->second, Meshpath);
+
+    pIndexList->push_back(_int(ObjMapIter->second.size()) - 1);
+    return pStructure;
 }
 
-CStructure* CFunc_ObjectControl::Add_Object(string MeshGroup, string Meshpath, string MeshName)
+CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, MTO_DATA& tData)
 {
     CStructure* pStructure = nullptr;
+    size_t HashNum = 0;
+    GroupingArr::iterator GroupingIter;
+    _bool bFindGroupName = Find_ObjectGroupInfo(GroupName, GroupingIter, HashNum);
 
-    vector<CGameObject*>* pObjectList = nullptr;
-    vector<MTO_DATA>* pDataList = nullptr;
-    wstring strObjectGroupName;
+    OBJECTGROUPINGMAP::iterator SelectGroupIter;
+    _bool bFindGroup = Find_ObjectGroupingName(HashNum, SelectGroupIter);
 
-    size_t HashNum = HASHING(string, MeshGroup);
-    OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-    DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-    if (ObjMapIter == m_ObjectGroupMap.end())
+    string ObjectName = CFunctor::To_String(tData.strObejctName);
+
+    list<_int>* pIndexList = nullptr;
+    if (bFindGroup)
     {
-        m_ObjectGroupMap.emplace(HashNum, vector<CGameObject*>());
-        pObjectList = &(m_ObjectGroupMap[HashNum]);
+        ObjectNameTupleArr::iterator NameIter = find_if(SelectGroupIter->second.begin(), SelectGroupIter->second.end(),
+            [&ObjectName](ObjectNameTupleArr::value_type& Value)
+            {
+                if (ObjectName == get<0>(Value))
+                    return true;
+                else
+                    return false;
+            }
+        );
+        if (SelectGroupIter->second.end() == NameIter)
+        {
+            SelectGroupIter->second.push_back(make_tuple(ObjectName, list<_int>()));
+            pIndexList = &(get<1>(SelectGroupIter->second.back()));
+        }
+        else
+        {
+            pIndexList = &(get<1>(*NameIter));
+        }
+
     }
     else
     {
-        pObjectList = &ObjMapIter->second;
+        return nullptr;
     }
-    if (DataMapIter == m_ObjectDataGroupMap.end())
-    {
-        m_ObjectDataGroupMap.emplace(HashNum, vector<MTO_DATA>());
-        pDataList = &(m_ObjectDataGroupMap[HashNum]);
-    }
-    else
-    {
-        pDataList = &DataMapIter->second;
-    }
+    if (nullptr == pIndexList)
+        return nullptr;
+    ObjectMap::iterator ObjMapIter;
+    DataMap::iterator DataMapIter;
 
-    if (nullptr == pObjectList)
-        assert(0);
-    if (nullptr == pDataList)
-        assert(0);
-    //Meshpath
-    wstring strName = CFunctor::To_Wstring(MeshName);
-    size_t NameHashNum = HASHING(wstring, strName);
-    map<size_t, _int>::iterator CallStackIter = m_ObjNameCallStack.find(NameHashNum);
-    if (CallStackIter == m_ObjNameCallStack.end())
+    if (false == Find_ObjectDatas(ObjectName, ObjMapIter, DataMapIter))
     {
-        m_ObjNameCallStack.emplace(NameHashNum, 0);
+        if (m_ObjectNamingGroupMap.end() == ObjMapIter)
+            m_ObjectNamingGroupMap.emplace(Convert_ToHash(ObjectName), ObjectArr());
+        if (m_DataNamingGroupMap.end() == DataMapIter)
+            m_DataNamingGroupMap.emplace(Convert_ToHash(ObjectName), DataArr());
+        Find_ObjectDatas(ObjectName, ObjMapIter, DataMapIter);
     }
+    pStructure = Add_Object(ObjMapIter->second, tData);
+    Add_Data(DataMapIter->second, tData);
+    pIndexList->push_back(_int(ObjMapIter->second.size()) - 1);
+    return pStructure;
+}
+CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(MTO_DATA& tData) 
+{
+    CStructure* pStructure = nullptr;
+    string ObjectName = CFunctor::To_String(tData.strObejctName);
+    ObjectMap::iterator ObjMapIter;
+    DataMap::iterator DataMapIter;
 
+    if (false == Find_ObjectDatas(ObjectName, ObjMapIter, DataMapIter))
+    {
+        if (m_ObjectNamingGroupMap.end() == ObjMapIter)
+            m_ObjectNamingGroupMap.emplace(Convert_ToHash(ObjectName), ObjectArr());
+        if (m_DataNamingGroupMap.end() == DataMapIter)
+            m_DataNamingGroupMap.emplace(Convert_ToHash(ObjectName), DataArr());
+        Find_ObjectDatas(ObjectName, ObjMapIter, DataMapIter);
+    }
+    pStructure = Add_Object(ObjMapIter->second, tData);
+    Add_Data(DataMapIter->second, tData);
+    return pStructure;
+}
+
+CStructure* CFunc_ObjectControl::Add_Object(string ObjectName, vector<CGameObject*>& rhsObjectArr, string MeshPath)
+{
+
+    wstring strMeshPath = CFunctor::To_Wstring(MeshPath);
+    CStructure* pStructure = CStructure::Create(strMeshPath);
+    if (nullptr == pStructure)
+        assert(0);
+    pStructure->Initialize();
+    CREATE_GAMEOBJECT(pStructure, GROUP_DECORATION);
+    rhsObjectArr.push_back(pStructure);
+    return pStructure;
+}
+
+CFunc_ObjectControl::MTO_DATA CFunc_ObjectControl::Add_Data(string ObjectName, vector<MTO_DATA>& rhsDataArr, string MeshPath)
+{
     MTO_DATA tData;
     tData.Initialize();
-    tData.strMeshName = strName + wstring(TEXT("_")) + to_wstring(m_ObjNameCallStack[NameHashNum]++);
-    //tData.strGroupName = CFunctor::To_Wstring(MeshGroup);
-    tData.strMeshPath = CFunctor::To_Wstring(Meshpath);
-    tData.ObjectStateMatrix.Identity();
+    tData.strMeshPath = CFunctor::To_Wstring(MeshPath);
+    tData.strObejctName = CFunctor::To_Wstring(ObjectName);
+    tData.ObejectIndex = _int(rhsDataArr.size());
+    rhsDataArr.push_back(tData);
+    return tData;
+}
 
-    CStructure* pGameObject = CStructure::Create(tData.strMeshPath);
-    if (nullptr == pGameObject)
+CStructure* CFunc_ObjectControl::Add_Object(vector<CGameObject*>& rhsObjectArr, MTO_DATA& tData) 
+{
+    wstring MeshPath = tData.strMeshPath;
+    _float4 vScale = tData.vScale;
+    _float4x4 matWorld = tData.ObjectStateMatrix;
+    CStructure* pStructure = CStructure::Create(MeshPath, vScale, matWorld);
+    if (nullptr == pStructure)
         assert(0);
-    pGameObject->Initialize();
-    CREATE_GAMEOBJECT(pGameObject, GROUP_DECORATION);
-
-    pObjectList->push_back(pGameObject);
-    pDataList->push_back(tData);
-    Confirm_Data();
-
-    pStructure = pGameObject;
+    pStructure->Initialize();
+    CREATE_GAMEOBJECT(pStructure, GROUP_DECORATION);
+    rhsObjectArr.push_back(pStructure);
     return pStructure;
 }
-
-CStructure* CFunc_ObjectControl::Add_Object(string MeshGroup, MTO_DATA& tData)
+CFunc_ObjectControl::MTO_DATA CFunc_ObjectControl::Add_Data(vector<MTO_DATA>& rhsDataArr, MTO_DATA& tData) 
 {
-    CStructure* pStructure = nullptr;
-
-    vector<CGameObject*>* pObjectList = nullptr;
-    vector<MTO_DATA>* pDataList = nullptr;
-    wstring strObjectGroupName;
-
-    size_t HashNum = HASHING(string, MeshGroup);
-    OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-    DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-    if (ObjMapIter == m_ObjectGroupMap.end())
-    {
-        m_ObjectGroupMap.emplace(HashNum, vector<CGameObject*>());
-        pObjectList = &(m_ObjectGroupMap[HashNum]);
-    }
-    else
-    {
-        pObjectList = &ObjMapIter->second;
-    }
-
-    if (DataMapIter == m_ObjectDataGroupMap.end())
-    {
-        m_ObjectDataGroupMap.emplace(HashNum, vector<MTO_DATA>());
-        pDataList = &(m_ObjectDataGroupMap[HashNum]);
-    }
-    else
-    {
-        pDataList = &DataMapIter->second;
-    }
-
-    if (nullptr == pObjectList)
-        assert(0);
-    if (nullptr == pDataList)
-        assert(0);
-    //Meshpath
-    wstring strName = tData.strMeshName;
-    _int iIndexLength = strName.rfind(TEXT("_"), strName.length() + 1);
-    strName = strName.substr(0, iIndexLength);
-    size_t NameHashNum = HASHING(wstring, strName);
-    map<size_t, _int>::iterator CallStackIter = m_ObjNameCallStack.find(NameHashNum);
-    if (CallStackIter == m_ObjNameCallStack.end())
-    {
-        m_ObjNameCallStack.emplace(NameHashNum, 0);
-    }
-    m_ObjNameCallStack[NameHashNum]++;
-
-    CStructure* pGameObject = CStructure::Create(tData.strMeshPath, tData.vScale, tData.ObjectStateMatrix);
-    if (nullptr == pGameObject)
-        assert(0);
-    pGameObject->Initialize();
-    CREATE_GAMEOBJECT(pGameObject, GROUP_DECORATION);
-
-    pObjectList->push_back(pGameObject);
-    pDataList->push_back(tData);
-    Confirm_Data();
-
-    pStructure = pGameObject;
-    return pStructure;
+    rhsDataArr.push_back(tData);
+    return tData;
 }
 
-void CFunc_ObjectControl::Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<MTO_DATA>& DataList)
+CStructure* CFunc_ObjectControl::Merge_Object(string ObjectName) 
 {
-    if (ObjList.size() != DataList.size())
-        assert(0);
-    if (ObjList.empty())
+    size_t HashNum = Convert_ToHash(ObjectName);
+
+    map<size_t, CStructure*>::iterator MergeIter = m_MergeMap.find(HashNum);
+    if (m_MergeMap.end() != MergeIter)
+        return MergeIter->second;
+
+    ObjectMap::iterator ObjectIter;
+    DataMap::iterator DataIter;
+    Find_ObjectDatas(ObjectName, ObjectIter, DataIter);
+
+    for (ObjectArr::value_type& Value  : ObjectIter->second)
+    {
+        DISABLE_GAMEOBJECT(Value);
+    }
+
+    wstring strMeshPath;
+    _int InstanceCount = DataIter->second.size();
+    VTXINSTANCE* pInstance = new VTXINSTANCE[InstanceCount];
+    ZeroMemory(pInstance, sizeof(VTXINSTANCE)* InstanceCount);
+    for (_uint i = 0; i < InstanceCount; ++i)
+    {
+        strMeshPath = DataIter->second[i].strMeshPath;
+        _float4x4 matInstanceWorld = DataIter->second[i].ObjectStateMatrix;
+        _float4 vScale = _float4(1.f, 1.f, 1.f, 0.f);//= DataIter->second[i].vScale;
+        XMStoreFloat4(&pInstance[i].vRight, matInstanceWorld.XMLoad().r[0] * vScale.x);
+        XMStoreFloat4(&pInstance[i].vUp, matInstanceWorld.XMLoad().r[1] * vScale.y);
+        XMStoreFloat4(&pInstance[i].vLook, matInstanceWorld.XMLoad().r[2] * vScale.z);
+        XMStoreFloat4(&pInstance[i].vTranslation, matInstanceWorld.XMLoad().r[3]);
+    }
+
+    CStructure_Instance* pInstanceStructure = CStructure_Instance::Create(strMeshPath, InstanceCount,pInstance);
+    pInstanceStructure->Initialize();
+    CREATE_GAMEOBJECT(pInstanceStructure, GROUP_DECORATION);
+    m_MergeMap.emplace(HashNum, pInstanceStructure);
+    Safe_Delete_Array(pInstance);
+    return pInstanceStructure;
+}
+void CFunc_ObjectControl::Split_Object(string ObjectName) 
+{
+    size_t HashNum = Convert_ToHash(ObjectName);
+
+    map<size_t, CStructure*>::iterator MergeIter = m_MergeMap.find(HashNum);
+    if (m_MergeMap.end() == MergeIter)
         return;
-    wstring CmpMeshName = CFunctor::To_Wstring(MeshName);
-    _int ObjectIndex = 0;
-    vector<MTO_DATA>::iterator DataListIter = DataList.begin();
-    for (; DataListIter != DataList.end(); ++DataListIter)
+    DELETE_GAMEOBJECT(MergeIter->second);
+    m_MergeMap.erase(MergeIter);
+
+
+    ObjectMap::iterator ObjectIter;
+    DataMap::iterator DataIter;
+    Find_ObjectDatas(ObjectName, ObjectIter, DataIter);
+
+    for (ObjectArr::value_type& Value : ObjectIter->second)
     {
-        if ((*DataListIter).strMeshName == CmpMeshName)
-            break;
-        ObjectIndex++;
+        ENABLE_GAMEOBJECT(Value);
     }
-    if (DataListIter == DataList.end())
-        return;
-
-    wstring strName = (*DataListIter).strMeshName;
-    _int iIndexLength = strName.rfind(TEXT("_"), strName.length() + 1);
-    strName = strName.substr(0, iIndexLength);
-    size_t NameHashNum = HASHING(wstring, strName);
-    map<size_t, _int>::iterator CallStackIter = m_ObjNameCallStack.find(NameHashNum);
-    if (--(CallStackIter->second) == 0)
-    {
-        m_ObjNameCallStack.erase(CallStackIter);
-    }
-
-
-
-    DataList.erase(DataListIter);
-
-    if (ObjectIndex >= _int(ObjList.size()))
-        assert(0);
-
-
-    CGameObject* pDelete = ObjList[ObjectIndex];
-    vector<CGameObject*>::iterator ObjListIter = ObjList.begin();
-
-    for (_int CompIndex = 0; CompIndex < ObjectIndex; ++CompIndex)
-    {
-        ObjListIter++;
-    }
-    ObjListIter = ObjList.erase(ObjListIter);
-    DELETE_GAMEOBJECT(pDelete);
-    Confirm_Data();
 }
 
-void CFunc_ObjectControl::Clear_MeshGroup(char* pMeshGroupName)
+void CFunc_ObjectControl::Merge_All() 
 {
-    CWindow_Map::DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](CWindow_Map::DataComboArr::value_type& Value)
-        {
-            if (0 == strcmp(pMeshGroupName, get<CWindow_Map::Tuple_CharPtr>(Value)))
-                return true;
-            else
-                return false;
-        });
-
-    if (MeshGroupIter != m_arrMeshGroupName.end())
+    for (auto& elem : m_ObjectNamingGroupMap)
     {
-        string strObjectGroup = get<CWindow_Map::Tuple_CharPtr>((*MeshGroupIter));
-        size_t HashNum = HASHING(string, strObjectGroup);
-        OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-        DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-        if (ObjMapIter != m_ObjectGroupMap.end())
+        for (auto& elemArr : elem.second)
         {
-            for (list<CGameObject*>::value_type& Value : ObjMapIter->second)
+            DISABLE_GAMEOBJECT(elemArr);
+        }
+    }
+
+    for (auto& elem : m_DataNamingGroupMap)
+    {
+        wstring strMeshPath;
+        _int InstanceCount = elem.second.size();
+        VTXINSTANCE* pInstance = new VTXINSTANCE[InstanceCount];
+        ZeroMemory(pInstance, sizeof(VTXINSTANCE) * InstanceCount);
+        for (_uint i = 0; i < InstanceCount; ++i)
+        {
+            strMeshPath = elem.second[i].strMeshPath;
+            _float4x4 matInstanceWorld = elem.second[i].ObjectStateMatrix;
+            _float4 vScale = _float4(1.f, 1.f, 1.f, 0.f);//= elem.second[i].vScale;
+            XMStoreFloat4(&pInstance[i].vRight, matInstanceWorld.XMLoad().r[0] * vScale.x);
+            XMStoreFloat4(&pInstance[i].vUp, matInstanceWorld.XMLoad().r[1] * vScale.y);
+            XMStoreFloat4(&pInstance[i].vLook, matInstanceWorld.XMLoad().r[2] * vScale.z);
+            XMStoreFloat4(&pInstance[i].vTranslation, matInstanceWorld.XMLoad().r[3]);
+        }
+
+        CStructure_Instance* pInstanceStructure = CStructure_Instance::Create(strMeshPath, InstanceCount, pInstance);
+        pInstanceStructure->Initialize();
+        CREATE_GAMEOBJECT(pInstanceStructure, GROUP_DECORATION);
+        m_MergeMap.emplace(elem.first, pInstanceStructure);
+        Safe_Delete_Array(pInstance);
+    }
+}
+void CFunc_ObjectControl::Split_All() 
+{
+    for (auto& elem : m_MergeMap)
+    {
+        DELETE_GAMEOBJECT(elem.second);
+    }
+    m_MergeMap.clear();
+
+    for (auto& elem : m_ObjectNamingGroupMap)
+    {
+        for (auto& elemArr : elem.second)
+        {
+            ENABLE_GAMEOBJECT(elemArr);
+        }
+    }
+
+}
+
+void CFunc_ObjectControl::Clear_SameNameObject(string ObjectGroupName)
+{
+    size_t GroupHash = Convert_ToHash(ObjectGroupName);
+    OBJECTGROUPINGMAP::iterator ObjectGroupIter;
+    _bool bFindGroupingName = Find_ObjectGroupingName(GroupHash, ObjectGroupIter);
+    if (bFindGroupingName)
+    {
+        for (ObjectNameTupleArr::value_type& Value : ObjectGroupIter->second)
+        {
+            ObjectMap::iterator ObjectIter;
+            DataMap::iterator DataIter;
+            if (Find_ObjectDatas(get<0>(Value), ObjectIter, DataIter))
             {
-                DELETE_GAMEOBJECT(Value);
+                for (ObjectArr::value_type& ObjValue : ObjectIter->second)
+                {
+                    DELETE_GAMEOBJECT(ObjValue);
+                }
+                ObjectIter->second.clear();
+                DataIter->second.clear();
+                get<1>(Value).clear();
             }
-            ObjMapIter->second.clear();
-            m_ObjectGroupMap.erase(ObjMapIter);
         }
-        if (DataMapIter != m_ObjectDataGroupMap.end())
-        {
-            DataMapIter->second.clear();
-            m_ObjectDataGroupMap.erase(DataMapIter);
-        }
-        Confirm_Data();
 
+    }
+}
+
+void CFunc_ObjectControl::Clear_ObjectGroup(string ObjectGroupName)
+{
+    size_t GroupHash = Convert_ToHash(ObjectGroupName);
+    OBJECTGROUPINGMAP::iterator ObjectGroupIter;
+    _bool bFindGroupingName = Find_ObjectGroupingName(GroupHash, ObjectGroupIter);
+    if (bFindGroupingName)
+    {
+        for (ObjectNameTupleArr::value_type& Value : ObjectGroupIter->second)
+        {
+            Delete_ObjectNamingMap(get<0>(Value), get<1>(Value));
+
+        }
+        ObjectGroupIter->second.clear();
+
+        
     }
 }
 
@@ -983,33 +1152,79 @@ void CFunc_ObjectControl::Routine_MeshSelect(void* tTreeNode)
     }
 }
 
-void CFunc_ObjectControl::Func_DeleteOBject()
-{
-    size_t HashNum = HASHING(string, string(get<CWindow_Map::Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex])));
-
-    OBJGROUPING::iterator ObjectMapIter = m_ObjectGroupMap.find(HashNum);
-    DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-
-    if (ObjectMapIter != m_ObjectGroupMap.end() && DataMapIter != m_ObjectDataGroupMap.end())
-    {
-        Delete_Object(m_strCurSelectObjectName, ObjectMapIter->second, DataMapIter->second);
-    }
-}
-
 void CFunc_ObjectControl::Func_AddObject()
 {
     _int NameIndex = 0;
     for (vector<string>::value_type& Value : m_vecSelectedMeshFilePath)
     {
-        if (!m_arrMeshGroupName.empty())
+        if (!m_GroupingInfo.empty())
         {
-            Add_Object(get<CWindow_Map::Tuple_CharPtr>(m_arrMeshGroupName[m_SelectMeshGroupIndex]),
-                Value, m_vecSelectedMeshName[NameIndex]);
+            string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
+            Add_ObjectNamingMap(strGroupName, Value, m_vecSelectedMeshName[NameIndex]);
         }
         NameIndex++;
     }
 
 }
+void CFunc_ObjectControl::Func_DeleteOBject()
+{
+    string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
+    size_t HashNum = Convert_ToHash( strGroupName);
+    //그룹정보에서 제거
+
+    string CurSelectName = string();
+
+    OBJECTGROUPINGMAP::iterator GroupingIter;
+    _bool bFindGroup = Find_ObjectGroupingName(HashNum, GroupingIter);
+    if (bFindGroup)
+    {
+        _int SelectIndex = m_iCurSelectObjecNametIndex;
+        _int Index = 0;
+        ObjectNameTupleArr::iterator GroupingNameIter = GroupingIter->second.begin();
+        for (; GroupingNameIter != GroupingIter->second.end(); ++GroupingNameIter)
+        {
+            if (Index == SelectIndex)
+                break;
+            else
+            {
+                Index++;
+            }
+        }
+
+        if (GroupingNameIter != GroupingIter->second.end())
+        {
+            CurSelectName = get<0>((*GroupingNameIter));
+            get<1>(*GroupingNameIter).remove(m_iCurSelectObjecNametIndex);
+            //GroupingIter->second.erase(GroupingNameIter);
+        }
+        else
+        {
+            return;
+        }
+        
+    }
+
+    ObjectMap::iterator ObjectMapIter;
+    DataMap::iterator DataMapIter;
+    Find_ObjectDatas(CurSelectName, ObjectMapIter, DataMapIter);
+
+    //이름을 통해 
+    if (ObjectMapIter == m_ObjectNamingGroupMap.end())
+        assert(0);
+    if (DataMapIter == m_DataNamingGroupMap.end())
+        assert(0);
+
+
+    Delete_Object(ObjectMapIter->second, m_iCurSelectObjecNametIndex);
+    Delete_Data(DataMapIter->second, m_iCurSelectObjecNametIndex);
+    m_iCurSelectObjecNametIndex--;
+    if (m_iCurSelectObjecNametIndex <= 0)
+    {
+        m_iCurSelectObjecNametIndex = 0;
+    }
+}
+
+
 
 void CFunc_ObjectControl::Show_ObjectData()
 {
@@ -1215,6 +1430,19 @@ void CFunc_ObjectControl::Place_Group()
     m_matGroup.XMLoad().r[3] = OutPos.XMLoad();
 }
 
+void CFunc_ObjectControl::Delete_ObjectNamingMap(string strSearchObejctName, list<_int>& IndexList)
+{
+    ObjectMap::iterator ObjectMapIter;
+    DataMap::iterator DataMapIter;
+    //CollisionMap::iterator CollisionMapIter;
+    
+    Find_ObjectDatas(strSearchObejctName, ObjectMapIter, DataMapIter);
+
+    Delete_Object(ObjectMapIter, IndexList);
+    Delete_Data(DataMapIter, IndexList);
+    //Delete_Collision(CollisionMapIter);
+}
+
 void CFunc_ObjectControl::Scaling_Object()
 {
     if (nullptr == m_pObjTransform)
@@ -1299,6 +1527,132 @@ void CFunc_ObjectControl::Rotate_Object()
         CUtility_Transform::Turn_ByAngle(m_pObjTransform, Look, m_fTickPerRotSpeed * fDT(0));
     }
 }
+
+void CFunc_ObjectControl::Delete_Object(map<size_t, vector<CGameObject*>>::iterator& ObjectIter, list<_int> IndexList)
+{
+    if (ObjectIter != m_ObjectNamingGroupMap.end())
+    {
+        for(list<_int>::value_type& Value : IndexList)
+        {
+            CGameObject* pGameObject = ObjectIter->second[Value];
+            DELETE_GAMEOBJECT(pGameObject);
+            ObjectIter->second[Value] = nullptr;
+
+        }
+
+        for (ObjectArr::iterator ObjArrIter = ObjectIter->second.begin();  ObjArrIter != ObjectIter->second.end();)
+        {
+            if ((*ObjArrIter) == nullptr)
+            {
+                ObjArrIter = ObjectIter->second.erase(ObjArrIter);
+            }
+            else
+            {
+                ObjArrIter++;
+            }
+        }
+        if (ObjectIter->second.empty())
+        {
+            ObjectIter->second.clear();
+            m_ObjectNamingGroupMap.erase(ObjectIter);
+        }
+    }
+
+}
+void CFunc_ObjectControl::Delete_Data(map<size_t, vector<MTO_DATA>>::iterator& DataIter, list<_int> IndexList)
+{
+    if (DataIter != m_DataNamingGroupMap.end())
+    {
+        DataArr TempVector;
+        IndexList.sort();
+
+        for (_uint i = 0; i < _uint(DataIter->second.size()); ++i)
+        {
+            if (!IndexList.empty() && i == IndexList.front())
+            {
+                IndexList.pop_front();
+                continue;
+            }
+            else
+            {
+                TempVector.push_back(DataIter->second[i]);
+            }
+        }
+        DataIter->second.swap(TempVector);
+        if (DataIter->second.empty())
+        {
+            DataIter->second.clear();
+            m_DataNamingGroupMap.erase(DataIter);
+        }
+    }
+
+
+}
+
+void CFunc_ObjectControl::Delete_Object(vector<CGameObject*>& rhsObjectGroup, _int TargetIndex) 
+{
+    _int SelectIndex = TargetIndex;
+    _int Index = 0;
+    ObjectArr::iterator SelectIter = rhsObjectGroup.begin();
+    for(; SelectIter != rhsObjectGroup.end(); ++SelectIter)
+    {
+        if (SelectIndex == Index)
+        {
+            break;
+        }
+        else
+        {
+            Index++;
+        }
+    }
+    CStructure* pStructure = nullptr;
+    if (rhsObjectGroup.end() != SelectIter)
+    {
+        pStructure = dynamic_cast<CStructure*>((*SelectIter));
+        rhsObjectGroup.erase(SelectIter);
+        DELETE_GAMEOBJECT(pStructure);
+    }
+
+}
+void CFunc_ObjectControl::Delete_Data(vector<MTO_DATA>& rhsDataGroup, _int TargetIndex)
+{
+    _int SelectIndex = TargetIndex;
+    _int Index = 0;
+    DataArr::iterator SelectIter = rhsDataGroup.begin();
+
+    for (; SelectIter != rhsDataGroup.end(); ++SelectIter)
+    {
+        if (SelectIndex == Index)
+        {
+            break;
+        }
+        else
+        {
+            Index++;
+        }
+    }
+        /*find_if(rhsDataGroup.begin(), rhsDataGroup.end(), [&SelectIndex, &Index]()
+        {
+            if (SelectIndex == Index)
+                return true;
+            else
+            {
+                Index++;
+                return false;
+            }
+        });*/
+
+    if (rhsDataGroup.end() != SelectIter)
+    {
+        rhsDataGroup.erase(SelectIter);
+    }
+
+    for (_uint i = 0; i < _uint(rhsDataGroup.size()); ++i)
+    {
+        rhsDataGroup[i].ObejectIndex = i;
+    }
+}
+
 
 void CFunc_ObjectControl::Position_Object()
 {
@@ -1396,11 +1750,67 @@ void CFunc_ObjectControl::Update_Group()
 
 }
 
-void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)
+void CFunc_ObjectControl::Save_Data(string BasePath, string SaveName)
+{
+    Save_ObjectData(BasePath, SaveName);
+    Save_ObjectGroup(BasePath, SaveName);
+    Save_ObjectSplit(BasePath, SaveName);
+    Save_ObjectMerge(BasePath, SaveName);
+}
+
+void CFunc_ObjectControl::Save_ObjectData(string BasePath, string SaveName) 
 {
     string SaveFullPath = BasePath;
     SaveFullPath += SaveName;
+    SaveFullPath += ".ObjectData";
+    ofstream	writeFile(SaveFullPath, ios::binary);
+
+    if (!writeFile.is_open())
+    {
+        Call_MsgBox(L"SSave 실패 ??!?!");
+        assert(0);
+    }
+    string SaveGroupFullPath = BasePath;
+    SaveGroupFullPath += "GroupData/";
+    SaveGroupFullPath += SaveName;
+    SaveGroupFullPath += ".GroupData";
+
+    string SaveSplitFullPath = BasePath;
+    SaveSplitFullPath += "SplitData/";
+    SaveSplitFullPath += SaveName;
+    SaveSplitFullPath += ".SplitData";
+
+    string SaveMergeFullPath = BasePath;
+    SaveMergeFullPath += "MergeData/";
+    SaveMergeFullPath += SaveName;
+    SaveMergeFullPath += ".MergeData";
+
+    _uint GroupPathLength = _uint(SaveGroupFullPath.size()) + 1;
+    char szGroupFullPath[MAX_PATH] = "";
+    strcpy_s(szGroupFullPath, SaveGroupFullPath.c_str());
+    writeFile.write((char*)&GroupPathLength, sizeof(_uint));
+    writeFile.write(szGroupFullPath, sizeof(char) * GroupPathLength);
+
+    _uint SplitPathLength = _uint(SaveSplitFullPath.size()) + 1;
+    char szSplitFullPath[MAX_PATH] = "";
+    strcpy_s(szSplitFullPath, SaveSplitFullPath.c_str());
+    writeFile.write((char*)&SplitPathLength, sizeof(_uint));
+    writeFile.write(szSplitFullPath, sizeof(char) * SplitPathLength);
+
+
+    _uint MergePathLength = _uint(SaveMergeFullPath.size()) + 1;
+    char szMergeFullPath[MAX_PATH] = "";
+    strcpy_s(szMergeFullPath, SaveMergeFullPath.c_str());
+    writeFile.write((char*)&MergePathLength, sizeof(_uint));
+    writeFile.write(szMergeFullPath, sizeof(char) * MergePathLength);
+}
+void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)
+{
+    string SaveFullPath = BasePath;
+    SaveFullPath += "GroupData/";
+    SaveFullPath += SaveName;
     SaveFullPath += ".GroupData";
+
     ofstream	writeFile(SaveFullPath, ios::binary);
 
     if (!writeFile.is_open())
@@ -1410,114 +1820,257 @@ void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)
     }
 
 
-    //그룹 개수 저장
-    _int GroupSize = _int(m_arrMeshGroupName.size());
-    writeFile.write((char*)&GroupSize, sizeof(_int));
-
-    _int i = 0;
-    for (_int i = 0; i < GroupSize; ++i)
+    _uint GroupLength = _uint(m_GroupingInfo.size());
+    writeFile.write((char*)&GroupLength, sizeof(_uint));
+    for (_uint i = 0; i < GroupLength; ++i) 
     {
-        //Loop~ 그룹 이름 저장
-        char* pGroupName = get<CWindow_Map::Tuple_CharPtr>(m_arrMeshGroupName[i]);
-        _int GroupNameLength = strlen(pGroupName) + 1;
-        writeFile.write((char*)&GroupNameLength, sizeof(_int));
-        writeFile.write(pGroupName, sizeof(char) * GroupNameLength);
+        string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[i]);
+        _uint GroupNameLength = _uint(get<Tuple_GroupName>(m_GroupingInfo[i]).length()) + 1;
+        char GroupName[MAXCHAR] = "";
+        strcpy_s(GroupName, strGroupName.c_str());
+        writeFile.write((char*)&GroupNameLength, sizeof(_uint));
+        writeFile.write(GroupName, sizeof(char) * GroupNameLength);
 
-        //오브젝트 개수 저장
-        string strGroupName = pGroupName;
-        size_t GroupNameHash = HASHING(string, strGroupName);
-        vector<MTO_DATA>* pDataList = &(m_ObjectDataGroupMap.find(GroupNameHash)->second);
-        vector<CGameObject*>* pObjectVector = &(m_ObjectGroupMap.find(GroupNameHash)->second);
-        _int DataSize = _int(pDataList->size());
-        writeFile.write((char*)&DataSize, sizeof(_int));
-        //Loop~ MTO데이터 저장
-        for (_int j = 0; j < DataSize; ++j)
+        size_t HashNum = Convert_ToHash(strGroupName);
+
+        OBJECTGROUPINGMAP::iterator MapGroupIter;
+        Find_ObjectGroupingName(HashNum, MapGroupIter);
+
+        _uint NameGroupLength = _uint(MapGroupIter->second.size());
+        writeFile.write((char*)&NameGroupLength, sizeof(_uint));
+
+        for (ObjectNameTupleArr::value_type& NameValue : MapGroupIter->second)
         {
-            char* pName = new char[MAX_PATH];
-            strcpy_s(pName, sizeof(char) * MAX_PATH, CFunctor::To_String((*pDataList)[j].strMeshName).c_str());
-            char* pPath = new char[MAX_PATH];
-            strcpy_s(pPath, sizeof(char) * MAX_PATH, CFunctor::To_String((*pDataList)[j].strMeshPath).c_str());
-            _float4x4 StateMatrix = (*pDataList)[j].ObjectStateMatrix;
-            _float4 vScale = (*pDataList)[j].vScale;
-            _byte LightFlag = (*pDataList)[j].byteLightFlag;
+            string strObjectName = get<0>(NameValue);
+            _int NameLenght = _int(strObjectName.length()) + 1;
+            char ObjectName[MAXCHAR] = "";
+            strcpy_s(ObjectName, strObjectName.c_str());
 
-            //이름 저장
-            _int NameLength = strlen(pName) + 1;
-            writeFile.write((char*)&NameLength, sizeof(_int));
-            writeFile.write(pName, sizeof(char) * NameLength);
+            writeFile.write((char*)&NameLenght, sizeof(_int));
+            writeFile.write(ObjectName, sizeof(char) * NameLenght);
 
-            //경로 저장
-            _int PathLength = strlen(pPath) + 1;
-            writeFile.write((char*)&PathLength, sizeof(_int));
-            writeFile.write(pPath, sizeof(char) * PathLength);
-
-            //행렬 저장
-            writeFile.write((char*)&StateMatrix, sizeof(_float4x4));
-
-            //스케일 저장
-            writeFile.write((char*)&vScale, sizeof(_float4));
-
-            //라이트플래그 저장
-            writeFile.write((char*)&LightFlag, sizeof(_byte));
-
-
-#pragma region 콜라이더 정보 저장 섹션
-            CStructure* pStructure = static_cast<CStructure*>((*pObjectVector)[j]);
-            //콜라이더 타입 저장
-            _uint ColliderType = pStructure->Get_ColliderType();
-            writeFile.write((char*)&ColliderType, sizeof(_uint));
-
-            //콜라이더 소스 LOD 저장
-            _uint ColliderLOD = pStructure->Get_LODType();
-            writeFile.write((char*)&ColliderLOD, sizeof(_uint));
-
-            //박스 콜라이더 수 저장
-            _uint BoxCount = pStructure->Get_BoxCount();
-            vector<_float4>& PosVec = pStructure->Get_ColliderPoses();
-            vector<_float4>& AngleVec = pStructure->Get_ColliderAngles();
-            vector<_float4>& ScaleVec = pStructure->Get_ColliderScales();
-            writeFile.write((char*)&BoxCount, sizeof(_uint));
-            for (_uint k = 0; k < BoxCount; ++k)
+            _uint IndexListLength = _uint(get<1>(NameValue).size());
+            writeFile.write((char*) & IndexListLength, sizeof(_uint));
+            for (list<_int>::value_type& value : get<1>(NameValue))
             {
-                //박스 콜라이더 정보 저장
-                writeFile.write((char*)&(PosVec[k]), sizeof(_float4));
-                writeFile.write((char*)&(AngleVec[k]), sizeof(_float4));
-                writeFile.write((char*)&(ScaleVec[k]), sizeof(_float4));
+                writeFile.write((char*)&value, sizeof(_uint));
             }
+        }
+    }
+}
 
-#pragma endregion
+void CFunc_ObjectControl::Save_ObjectSplit(string BasePath, string SaveName)
+{
+    string SaveFullPath = BasePath;
+    SaveFullPath += "SplitData/";
+    SaveFullPath += SaveName;
+    SaveFullPath += ".SplitData";
+    ofstream	writeFile(SaveFullPath, ios::binary);
 
-            Safe_Delete_Array(pName);
-            Safe_Delete_Array(pPath);
+    if (!writeFile.is_open())
+    {
+        Call_MsgBox(L"SSave 실패 ??!?!");
+        assert(0);
+    }
+
+
+    //전체 그룹 순회
+    _uint MapLength = _uint(m_DataNamingGroupMap.size());
+    writeFile.write((char*)&MapLength, sizeof(_uint));
+    for (DataMap::value_type& DataArrValue : m_DataNamingGroupMap)
+    {
+        string strName = CFunctor::To_String(DataArrValue.second.front().strObejctName);
+        _int NameLength = _int(strName.length()) + 1;
+        char ObjectName[MAXCHAR] = "";
+        strcpy_s(ObjectName, strName.c_str());
+        writeFile.write((char*)&NameLength, sizeof(_int));
+        writeFile.write(ObjectName, sizeof(char) * NameLength);
+
+        string MeshPath = CFunctor::To_String(DataArrValue.second.front().strMeshPath);
+        _int PathLength = _int(MeshPath.length()) + 1;
+        char szMeshPath[MAX_PATH] = "";
+        strcpy_s(szMeshPath, MeshPath.c_str());
+
+        writeFile.write((char*)&PathLength, sizeof(_int));
+        writeFile.write(szMeshPath, sizeof(char) * PathLength);
+
+        _uint DataLength = _uint(DataArrValue.second.size());
+        writeFile.write((char*)&DataLength, sizeof(_uint));
+        for (DataArr::value_type& Value : DataArrValue.second)
+        {
+            writeFile.write((char*)&Value.ObjectStateMatrix, sizeof(_float4x4));
+            writeFile.write((char*)&Value.vScale, sizeof(_float4));
+            writeFile.write((char*)&Value.ObejectIndex, sizeof(_int));
+            writeFile.write((char*)&Value.byteLightFlag, sizeof(_byte));
         }
     }
     writeFile.close();
 }
 
-void CFunc_ObjectControl::Load_ObjectGroup(string FilePath)
+void CFunc_ObjectControl::Clear_AllDatas()
 {
-    Clear_TupleData(m_arrMeshGroupName);
-    for (DATAGROUPING::value_type& Value : m_ObjectDataGroupMap)
+    m_GroupingInfo.clear();
+    for (OBJECTGROUPINGMAP::value_type& GroupingValue : m_ObjectNameGroupingMap)
+    {
+        GroupingValue.second.clear();
+    }
+    m_ObjectNameGroupingMap.clear();
+
+    for (ObjectMap::value_type& Value : m_ObjectNamingGroupMap)
+    {
+        for (ObjectArr::value_type& ObjValue : Value.second)
+        {
+            DELETE_GAMEOBJECT(ObjValue);
+        }
+        Value.second.clear();
+    }
+    m_ObjectNamingGroupMap.clear();
+
+    for (DataMap::value_type& Value : m_DataNamingGroupMap)
     {
         Value.second.clear();
     }
-    m_ObjectDataGroupMap.clear();
+    m_DataNamingGroupMap.clear();
+}
 
-    for (OBJGROUPING::value_type& MapValue : m_ObjectGroupMap)
+void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
+{
+    string SaveFullPath = BasePath;
+    SaveFullPath += "MergeData/";
+    SaveFullPath += SaveName;
+    SaveFullPath += ".MergeData";
+    ofstream	writeFile(SaveFullPath, ios::binary);
+
+    if (!writeFile.is_open())
     {
-        for (OBJVECTOR::value_type& Value : MapValue.second)
+        Call_MsgBox(L"SSave 실패 ??!?!");
+        assert(0);
+    }
+    
+    //이름 길이 저장
+    //이름 저장
+    //개수 저장
+    //인스턴싱 정보 생성
+    //정보 저장
+
+    for (DataMap::value_type& DataArrValue : m_DataNamingGroupMap)
+    {
+        string strName = CFunctor::To_String(DataArrValue.second.front().strObejctName);
+        _int NameLength = _int(strName.length()) + 1;
+        char ObjectName[MAXCHAR] = "";
+        strcpy_s(ObjectName, strName.c_str());
+        writeFile.write((char*)&NameLength, sizeof(_int));
+        writeFile.write(ObjectName, sizeof(char) * NameLength);
+
+        string MeshPath = CFunctor::To_String(DataArrValue.second.front().strMeshPath);
+        _int PathLength = _int(MeshPath.length()) + 1;
+        char szMeshPath[MAX_PATH] = "";
+        strcpy_s(szMeshPath, MeshPath.c_str());
+
+        writeFile.write((char*)&PathLength, sizeof(_int));
+        writeFile.write(szMeshPath, sizeof(char) * PathLength);
+
+        for (DataArr::value_type& Value : DataArrValue.second)
         {
-            DELETE_GAMEOBJECT(Value);
+            writeFile.write((char*)&Value.ObjectStateMatrix, sizeof(_float4x4));
+            writeFile.write((char*)&Value.vScale, sizeof(_float4));
+            writeFile.write((char*)&Value.ObejectIndex, sizeof(_int));
+            writeFile.write((char*)&Value.byteLightFlag, sizeof(_byte));
         }
-        MapValue.second.clear();
     }
-    m_ObjectGroupMap.clear();
+    writeFile.close();
+}
+void CFunc_ObjectControl::Load_ObjectData(string FilePath, string& GroupFilePath, string& SplitFilePath, string& MergeFilePath)
+{
+    string LoadFullPath = FilePath;
+    ifstream	readFile(LoadFullPath, ios::binary);
 
-    for (map<size_t, _int>::value_type& Value : m_ObjNameCallStack)
+    if (!readFile.is_open())
     {
-        Value.second = 0;
+        Call_MsgBox(L"Load 실패 ??!?!");
+        assert(0);
     }
 
+
+    _uint GroupFilePathLength = 0;
+    readFile.read((char*)&GroupFilePathLength, sizeof(_uint));
+    char GroupPath[MAX_PATH] = "";
+    readFile.read(GroupPath, sizeof(char) * GroupFilePathLength);
+    GroupFilePath = GroupPath;
+
+    _uint SplitFilePathLength = 0;
+    readFile.read((char*)&SplitFilePathLength, sizeof(_uint));
+    char SplitPath[MAX_PATH] = "";
+    readFile.read(SplitPath, sizeof(char) * SplitFilePathLength);
+    SplitFilePath = SplitPath;
+
+    _uint MergeFilePathLength = 0;
+    readFile.read((char*)&MergeFilePathLength, sizeof(_uint));
+    char MergePath[MAX_PATH] = "";
+    readFile.read(MergePath, sizeof(char) * MergeFilePathLength);
+    MergeFilePath = MergePath;
+}
+void CFunc_ObjectControl::Load_ObjectGroup(string FilePath) 
+{
+    string LoadFullPath = FilePath;
+    ifstream	readFile(LoadFullPath, ios::binary);
+
+    if (!readFile.is_open())
+    {
+        Call_MsgBox(L"Load 실패 ??!?!");
+        assert(0);
+    }
+
+
+
+    _uint GroupLength = 0;
+    readFile.read((char*)&GroupLength, sizeof(_uint));
+
+    for (_uint i = 0; i < GroupLength; ++i)
+    {
+        _uint GroupNameLength = 0;
+        char GroupName[MAXCHAR] = "";
+        readFile.read((char*)&GroupNameLength, sizeof(_uint));
+        readFile.read(GroupName, sizeof(char) * GroupNameLength);
+
+        Add_ObjectGroup(GroupName);
+
+        string strGroupName = GroupName;
+
+        size_t HashNum = Convert_ToHash(strGroupName);
+
+        OBJECTGROUPINGMAP::iterator MapGroupIter;
+        Find_ObjectGroupingName(HashNum, MapGroupIter);
+
+        _uint NameGroupLength = 0;
+        readFile.read((char*)&NameGroupLength, sizeof(_uint));
+
+        for (_uint j = 0; j < NameGroupLength; ++j)
+        {
+            _int NameLenght = 0;
+            readFile.read((char*)&NameLenght, sizeof(_int));
+            char ObjectName[MAXCHAR] = "";
+            readFile.read(ObjectName, sizeof(char) * NameLenght);
+
+            string strObjectName = ObjectName;
+
+            _uint IndexListLength = 0;
+            readFile.read((char*)&IndexListLength, sizeof(_uint));
+            list<_int> IndexList;
+            for (_uint k = 0;  k < IndexListLength; ++k)
+            {
+                _uint SavedIndex = 0;
+                readFile.read((char*)&SavedIndex, sizeof(_uint));
+                IndexList.push_back(SavedIndex);
+            }
+
+            MapGroupIter->second.push_back(make_tuple(strObjectName, IndexList));
+        }
+    }
+}
+void CFunc_ObjectControl::Load_ObjectGroup_Temp(string FilePath)
+{
+    Clear_AllDatas();
 
     string LoadFullPath = FilePath;
     ifstream	readFile(LoadFullPath, ios::binary);
@@ -1539,7 +2092,8 @@ void CFunc_ObjectControl::Load_ObjectGroup(string FilePath)
 
         char* pGroupName = new char[ObjectGroupNameLength];
         readFile.read(pGroupName, sizeof(char) * ObjectGroupNameLength);
-        m_arrMeshGroupName.push_back(make_tuple(pGroupName, false));
+        Add_ObjectGroup(pGroupName);
+
         string strGroupName = pGroupName;
         //오브젝트 개수 저장
         _int ObjectCount = 0;
@@ -1554,7 +2108,10 @@ void CFunc_ObjectControl::Load_ObjectGroup(string FilePath)
             char* pObjectName = new char[ObjectNameLength];
             readFile.read(pObjectName, sizeof(char) * ObjectNameLength);
             string strObjName = pObjectName;
-            tData.strMeshName = CFunctor::To_Wstring(strObjName);
+            tData.strObejctName = CFunctor::To_Wstring(strObjName);
+            //_int Pos = tData.strObejctName.rfind(_T("_"));
+            //tData.strObejctName = tData.strObejctName.substr(0, Pos);
+
 
             //경로 저장
             _int ObjectPathLength = 0;
@@ -1563,7 +2120,11 @@ void CFunc_ObjectControl::Load_ObjectGroup(string FilePath)
             readFile.read(pObjectPath, sizeof(char) * ObjectPathLength);
             string strObjPath = pObjectPath;
             tData.strMeshPath = CFunctor::To_Wstring(strObjPath);
+            _int PosStart = tData.strMeshPath.rfind(_T("\\")) + 1;
+            tData.strObejctName = tData.strMeshPath.substr(PosStart, tData.strMeshPath.length());
 
+            _int PosEnd = tData.strObejctName.rfind(_T("."));
+            tData.strObejctName = tData.strObejctName.substr(0, PosEnd);
             //행렬 저장
             _float4x4 StateMatrix;
             readFile.read((char*)&StateMatrix, sizeof(_float4x4));
@@ -1579,7 +2140,8 @@ void CFunc_ObjectControl::Load_ObjectGroup(string FilePath)
             readFile.read((char*)&LightFlag, sizeof(_byte));
             tData.byteLightFlag = LightFlag;
 
-            CStructure* pStructure = Add_Object(strGroupName, tData);
+            CStructure* pStructure = 
+                Add_ObjectNamingMap(strGroupName, tData);
 
             //콜라이더 타입
             _uint ColType = 0;
@@ -1618,8 +2180,57 @@ void CFunc_ObjectControl::Load_ObjectGroup(string FilePath)
             Safe_Delete_Array(pObjectName);
             Safe_Delete_Array(pObjectPath);
         }
+        Safe_Delete_Array(pGroupName);
+
+    }
+    readFile.close();
+}
+void CFunc_ObjectControl::Load_ObjectSplit(string FilePath) 
+{
+    string LoadFullPath = FilePath;
+    ifstream	readFile(LoadFullPath, ios::binary);
+
+    if (!readFile.is_open())
+    {
+        Call_MsgBox(L"Load 실패 ??!?!");
+        assert(0);
+    }
+
+    _uint MapLength = 0;
+    readFile.read((char*)&MapLength, sizeof(_uint));
+    for (_uint i = 0; i < MapLength; ++i)
+    {
+        _int NameLength = 0;
+        readFile.read((char*)&NameLength, sizeof(_int));
+        char ObjectName[MAXCHAR] = "";
+        readFile.read(ObjectName, sizeof(char) * NameLength);
+        string strName = ObjectName;
+
+        _int PathLength = 0;
+        readFile.read((char*)&PathLength, sizeof(_int));
+        char szMeshPath[MAX_PATH] = "";
+        readFile.read(szMeshPath, sizeof(char) * PathLength);
+        string MeshPath = szMeshPath;
 
 
+        _uint DataLength = 0;
+        readFile.read((char*)&DataLength, sizeof(_uint));
+
+        wstring strObjName = CFunctor::To_Wstring(strName);
+        wstring strPath = CFunctor::To_Wstring(MeshPath);
+        for (_uint j = 0; j < DataLength; ++j)
+        {
+            MTO_DATA tData;
+            tData.Initialize();
+            tData.strObejctName = strObjName;
+            tData.strMeshPath = strPath;
+            readFile.read((char*)&tData.ObjectStateMatrix, sizeof(_float4x4));
+            readFile.read((char*)&tData.vScale, sizeof(_float4));
+            readFile.read((char*)&tData.ObejectIndex, sizeof(_int));
+            readFile.read((char*)&tData.byteLightFlag, sizeof(_byte));
+
+            CStructure* pStructure = Add_ObjectNamingMap(tData);
+        }
     }
     readFile.close();
 }
@@ -1644,14 +2255,93 @@ void CFunc_ObjectControl::SetUp_LODLevel()
    m_listLODLevel.push_back(make_tuple(string("Level_2"), 2));
    m_listLODLevel.push_back(make_tuple(string("Level_3"),3));
 }
+
+_bool CFunc_ObjectControl::Find_ObjectGroupingName(size_t GroupNameHashNum, map<size_t, vector<tuple<string, list<_int>>>>::iterator& OutGroupingName)
+{
+    OutGroupingName = m_ObjectNameGroupingMap.find(GroupNameHashNum);
+    if (OutGroupingName == m_ObjectNameGroupingMap.end())
+        return false;
+    else
+        return true;
+}
+
+_bool CFunc_ObjectControl::Find_ObjectDatas(string strObjectName, map<size_t, vector<CGameObject*>>::iterator& OutObjectIter, map<size_t, vector<MTO_DATA>>::iterator& OutDataIter)
+{
+    size_t HashNum = Convert_ToHash( strObjectName);
+    OutObjectIter = m_ObjectNamingGroupMap.find(HashNum);
+    OutDataIter = m_DataNamingGroupMap.find(HashNum);
+
+    if (OutObjectIter == m_ObjectNamingGroupMap.end())
+        return false;
+    if (OutDataIter == m_DataNamingGroupMap.end())
+        return false;
+
+    return true;
+}
+
+void CFunc_ObjectControl::Load_Data(string FilePath)
+{
+    if(bTest)
+        Load_ObjectGroup_Temp(FilePath);
+    else
+    {
+        Clear_AllDatas();
+        string strGroupPath;
+        string strSplitPath;
+        string strMergePath;
+        Load_ObjectData(FilePath, strGroupPath, strSplitPath, strMergePath);
+        Load_ObjectGroup(strGroupPath);
+        Load_ObjectSplit(strSplitPath);
+    }
+}
+
+
+
+_bool CFunc_ObjectControl::Find_ObjectGroupInfo(string strGroupName, vector<tuple<string, bool>>::iterator& OutGroupingIter, size_t& OutHashNum)
+{
+    OutHashNum = Convert_ToHash( strGroupName);
+    OutGroupingIter
+        = find_if(m_GroupingInfo.begin(), m_GroupingInfo.end(),
+            [&strGroupName](GroupingArr::value_type& Value)
+            {
+                if (get<Tuple_GroupName>(Value) == strGroupName)
+                    return true;
+                else
+                    return false;
+            });
+
+    if (OutGroupingIter == m_GroupingInfo.end())
+        return false;
+    return true;
+}
 #pragma region MTO_DATA 멤버함수
 void CFunc_ObjectControl::tagMapToolObjectData::Initialize()
 {
-    strMeshName = wstring();
     //strGroupName = wstring();
+    strObejctName = wstring();
     strMeshPath = wstring();
     ObjectStateMatrix.Identity();
     vScale = _float4(1.f, 1.f, 1.f, 0.f);
     byteLightFlag = 0;
 }
 #pragma endregion
+
+void CFunc_ObjectControl::tagMapToolObjectMergeData::Initialize()
+{
+    _float4x4 ObjectStateMatrix;
+    ObjectStateMatrix.Identity();
+    _float4 vScale = _float4(1.f, 1.f,1.f, 0.f);
+    _int ObejectIndex = 0;
+    _byte byteLightFlag = 0;
+}
+
+void CFunc_ObjectControl::tagMapToolCollisionData::Initialize()
+{
+    strObejctName = wstring(_T(""));
+    iCollisionType = 0;
+    iLODType = 3;
+    iBoxNums = 0;
+    pBoxScaleInfo = nullptr;
+    pBoxRotInfo = nullptr;
+    pBoxTranslateInfo = nullptr;
+}
