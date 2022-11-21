@@ -701,12 +701,10 @@ void CRectEffects::My_LateTick()
 				_float fDist1 = vNormalLook.Dot(vVector);
 
 				//노말라이즈한 룩이랑
-				 vNormalLook;
 				vNormalLook = p2.RectInstance.vLook;
 				vNormalLook.Normalize();
 
 				//카메라위치에서 내위치 뺸 벡터를
-				 vVector;
 				vVector = (XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p2.RectInstance.vTranslation));
 
 				//내적

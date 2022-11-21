@@ -31,6 +31,7 @@ HRESULT CLevel_Logo::Initialize()
 
 HRESULT CLevel_Logo::SetUp_Prototypes()
 {
+	m_fLoadingFinish = 1.f;
 	return S_OK;
 }
 
