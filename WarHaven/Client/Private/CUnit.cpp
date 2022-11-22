@@ -752,16 +752,13 @@ void CUnit::My_Tick()
 			m_fCoolAcc[i] -= fDT(0);
 		else
 			m_fCoolAcc[i] = 0.f;
-
 	}
 
 
 	if (m_fAttackDelay > 0.f)
 		m_fAttackDelay -= fDT(0);
 	else
-		m_fAttackDelay = 0.f;
-
-	
+		m_fAttackDelay = 0.f;	
 
 	if (!m_pCurState)
 	{
@@ -781,6 +778,9 @@ void CUnit::My_Tick()
 		m_fHitDelayAcc -= fDT(0);
 	else
 		m_fHitDelayAcc = 0.f;
+
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	cout << vPos.x << ", " << vPos.y << ", " << vPos.z << endl;
 }
 
 void CUnit::My_LateTick()

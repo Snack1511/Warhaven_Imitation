@@ -97,19 +97,15 @@ void CUI_HUD::My_Tick()
 
 	if (m_pWrap[HeroGauge]->Is_Valid())
 	{
-		// 0~100 0~1 할때 나누기 100을 하자나
-		
-
-		m_fHeroGauge = 1 - ( m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge);
+		m_fHeroGauge =  m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge;
 		//m_fHeroGauge = -1.f * (m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge) + 1.f;
 		//m_fHeroGauge = m_tStatus.fMaxHeroGauge / m_tStatus.fHeroGague -1.f;
 
-		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Set_HeroValue(m_fHeroGauge);
-
 		_tchar  szTemp[MAX_STR] = {};
-		swprintf_s(szTemp, TEXT("%.f"), m_fHeroGauge);
-
+		swprintf_s(szTemp, TEXT("%.f"), m_fHeroGauge * 100.f);
 		m_pHeroGaugeText->Set_FontText(szTemp);
+
+		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Set_HeroValue(m_fHeroGauge);
 
 		if (!m_tStatus.bAbleHero)
 		{

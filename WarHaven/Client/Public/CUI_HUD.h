@@ -90,7 +90,6 @@ private:
 private:
 	void Create_CharacterSelectWindow();
 	void Create_PortUnderLine();
-
 	void Create_TraingText();
 	void Create_HeroGaugeText();
 };

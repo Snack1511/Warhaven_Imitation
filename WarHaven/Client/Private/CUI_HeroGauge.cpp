@@ -45,11 +45,6 @@ HRESULT CUI_HeroGauge::Start()
 	Set_Pass();
 	Bind_Shader();
 
-	// m_Prototypes[Gauge]->Set_FontRender(true);
-	// m_Prototypes[Gauge]->Set_FontOffset(-23.f, -90.f);
-	// m_Prototypes[Gauge]->Set_FontScale(0.25f);
-	// m_Prototypes[Gauge]->Set_FontStyle(true);
-
 	__super::Start();
 
 	return S_OK;

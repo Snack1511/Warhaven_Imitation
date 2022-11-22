@@ -266,7 +266,7 @@ PS_OUT PS_LOADINGICON(PS_IN In)
 PS_OUT PS_HEROGAUGE(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-
+        
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     In.vTexUV.x -= g_fValue;
@@ -275,7 +275,7 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
 
     Out.vColor *= (vNoise + vNoise);
     
-    if (In.vTexUV.y < g_fHeroValue)
+    if (In.vTexUV.y > g_fHeroValue)
         discard;
 	
     if (Out.vColor.a < 0.01f)

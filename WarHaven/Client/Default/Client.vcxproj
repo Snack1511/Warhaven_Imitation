@@ -302,6 +302,8 @@
     <ClInclude Include="..\Public\CSwitchLtoR_WarHammer.h" />
     <ClInclude Include="..\Public\CSwitchRtoL_Valkyrie.h" />
     <ClInclude Include="..\Public\CSwitchRtoL_WarHammer.h" />
+    <ClInclude Include="..\Public\CUI_Target_HP.h" />
+    <ClInclude Include="..\Public\CUI_Traing.h" />
     <ClInclude Include="..\Public\CUnit_Valkyrie.h" />
     <ClInclude Include="..\Public\CUnit_WarHammer.h" />
     <ClInclude Include="..\Public\CValkyrie_Counter.h" />
@@ -602,6 +604,8 @@
     <ClCompile Include="..\Private\CSwitchLtoR_WarHammer.cpp" />
     <ClCompile Include="..\Private\CSwitchRtoL_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CSwitchRtoL_WarHammer.cpp" />
+    <ClCompile Include="..\Private\CUI_Target_HP.cpp" />
+    <ClCompile Include="..\Private\CUI_Traing.cpp" />
     <ClCompile Include="..\Private\CUnit_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CUnit_WarHammer.cpp" />
     <ClCompile Include="..\Private\CValkyrie_Counter.cpp" />

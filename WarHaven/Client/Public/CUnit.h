@@ -21,6 +21,7 @@ class CState;
 class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
+class CUI_Wrapper;
 
 class CUnit abstract
 	: public CGameObject
@@ -48,7 +49,7 @@ public:
 		_bool		bAbleHero = false;
 		_bool		bIsHero = false;
 		_float		fMaxHeroGauge = 100.f;
-		_float		fHeroGague = 50.f;
+		_float		fHeroGague = 70.f;
 
 		WEAPON_TYPE eWeapon;
 		_float fHP = 50.f;
@@ -284,5 +285,7 @@ protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
+private:
+	CUI_Wrapper* m_pHeadHpUI = nullptr;
 };
 END
