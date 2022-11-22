@@ -66,12 +66,13 @@ HRESULT CState_Blendable::Initialize()
 
 void	CState_Blendable::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
-	if (m_bHitEffect) //&& m_pOwner->Is_Weapon_R_CCT_Collision())
+	if (m_bHitEffect)
 	{
 		m_bHitEffect = false;
 
 		if (iOtherColType == COL_PLAYERGUARD || iOtherColType == COL_ENEMYGUARD)
 		{
+
 			_float4 vOtherLook = pOtherObject->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
 			_float4 vCurLook = m_pOwner->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
 
@@ -79,15 +80,20 @@ void	CState_Blendable::OnCollisionEnter(CGameObject* pOtherObject, const _uint& 
 
 			//양수면 앞임.
 			if (vCurLook.Dot(vOtherLook) < 0.f)
+			{
 				m_bParringed = true;
-			else
-				m_bParringed = false;
+				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", m_pOwner, vHitPos);
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), m_pOwner, vHitPos);
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), m_pOwner, vHitPos);
+				return;
+			}
 
 		}
-		else
+
+
 		{
 			m_pOwner->Shake_Camera(0.1f, 0.25f);
-			Hit_SlashEffect(m_pOwner);
+			Hit_SlashEffect(m_pOwner, vHitPos);
 		}
 
 	}
@@ -145,35 +151,35 @@ void CState_Blendable::Hit_GroundEffect(CUnit* pOwner)
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", vHitPos);
 }
 
-void CState_Blendable::Hit_SlashEffect(CUnit* pOwner)
+void CState_Blendable::Hit_SlashEffect(CUnit* pOwner, _float4 vHitPos)
 {
 	switch (pOwner->Get_CurState())
 	{
 	case STATE_ATTACK_HORIZONTALUP_L:
 		break;
 	case STATE_ATTACK_HORIZONTALMIDDLE_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", pOwner, pOwner->Get_HitPos());
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", pOwner, vHitPos);
 		break;
 	case STATE_ATTACK_HORIZONTALDOWN_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", pOwner, pOwner->Get_HitPos());
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", pOwner, vHitPos);
 		break;
 	case STATE_ATTACK_HORIZONTALUP_R:
 		break;
 	case STATE_ATTACK_HORIZONTALMIDDLE_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", pOwner, pOwner->Get_HitPos());
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", pOwner, vHitPos);
 		break;
 	case STATE_ATTACK_HORIZONTALDOWN_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", pOwner, pOwner->Get_HitPos());
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", pOwner, vHitPos);
 		break;
 	case STATE_ATTACK_VERTICALCUT:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", pOwner, pOwner->Get_HitPos());
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", pOwner, vHitPos);
 		break;
 
 	}
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner, vHitPos);
 	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner, vHitPos);
 
 	
 
@@ -202,7 +208,12 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 				Hit_GroundEffect(pOwner);
 			}
 			else
+			{
+				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
 				return m_eBounceState;
+			}
 
 			m_bAttackTrigger = false;
 		}

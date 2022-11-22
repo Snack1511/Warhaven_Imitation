@@ -28,7 +28,7 @@ public:
 
 protected:
 	virtual void Hit_GroundEffect(CUnit* pOwner);
-	virtual void Hit_SlashEffect(CUnit* pOwner);
+	virtual void Hit_SlashEffect(CUnit* pOwner, _float4 vHitPos);
 
 protected:
 	//L, R ¿©ºÎ

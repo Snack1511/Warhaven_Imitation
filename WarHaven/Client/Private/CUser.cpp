@@ -129,7 +129,7 @@ void CUser::Time_Slow()
 	static _bool	bSlow = false;
 
 	if (bSlow = !bSlow)
-		GAMEINSTANCE->Set_TimeSpeed(0, 0.1f);
+		GAMEINSTANCE->Set_TimeSpeed(0, 0.05f);
 	else
 		GAMEINSTANCE->Set_TimeSpeed(0, 1.f);
 }

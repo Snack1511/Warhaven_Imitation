@@ -51,6 +51,12 @@ CUnit::~CUnit()
 void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
 	//내 충돌체에 대해 바디샷 인지 헤드샷 인지 판정
+
+	//칼 충돌체가 충돌했는지 판단
+	/*if (!Is_Weapon_R_Collision())
+		return;*/
+
+
 	CUnit* pOtherUnit = nullptr;
 
 #ifdef _DEBUG
@@ -73,7 +79,6 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	_bool		bGuardSuccess = false;
 
 	UNIT_STATUS& tOtherStatus = pOtherUnit->Get_Status();
-
 
 	CState::HIT_INFO tOtherHitInfo = pOtherUnit->Get_CurStateP()->Get_HitInfo();
 
@@ -189,6 +194,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
+	//Unit_CollisionEnter(pOtherObj, eOtherColType, eMyColType, ZERO_VECTOR);
 }
 
 void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)

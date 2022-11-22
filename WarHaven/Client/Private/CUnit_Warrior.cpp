@@ -49,28 +49,35 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eGroggy = (bPlayer) ? COL_PLAYERGROGGYATTACK : COL_ENEMYGROGGYATTACK;
 
 
-	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
+
+	//CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	//{
+	//	//Radius,	vOffsetPos.		eColType
+	//	{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
+	//	{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
+	//};
 
 	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.5f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
-		{0.5f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
+		{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
+		{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
 	};
 
+	//SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_COM"));
 	SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
 
 	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxGuard },
-		{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxGuard },
+		{0.7f, _float4(0.f, 0.5f, 0.f),eHitBoxGuard },
+		{0.7f, _float4(0.f, 1.2f, 0.f),eHitBoxGuard },
 	};
 
 	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
 
 
-	tUnitColDesc[0].fRadius = 0.3f;
+	tUnitColDesc[0].fRadius = 0.4f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
 	tUnitColDesc[0].eColType = eHitBoxHead;
 

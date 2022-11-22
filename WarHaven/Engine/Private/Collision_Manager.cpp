@@ -460,10 +460,12 @@ bool CCollision_Manager::Is_SphereCollision(CCollider* _pLeft, CCollider* _pRigh
 			{
 				//충돌지점 알라면
 				//어케알지? 
+
+				//두 중점의 중점
 				
 				_float4 vDir = CenterDiff.Normalize();
 
-				_float4 vHitPos = Leftelem.vFinalPos + vDir * Dist * 0.5f;
+				_float4 vHitPos = (Leftelem.vFinalPos + Rightelem.vFinalPos) * 0.5f;
 				*pOut = vHitPos;
 
 

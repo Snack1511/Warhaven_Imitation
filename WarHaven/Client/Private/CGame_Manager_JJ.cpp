@@ -64,7 +64,7 @@ void CGame_Manager_JJ::KeyInput_FPSSetter()
 {
 	_double dCurFPSLimit = CGameInstance::Get_Instance()->Get_FPSLimitTime();
 
-	if (KEY(F3, TAP))
+	/*if (KEY(F3, TAP))
 	{
 		dCurFPSLimit = 1. / 30.;
 	}
@@ -75,7 +75,7 @@ void CGame_Manager_JJ::KeyInput_FPSSetter()
 	else if (KEY(F1, TAP))
 	{
 		dCurFPSLimit = 0.;
-	}
+	}*/
 
 	CGameInstance::Get_Instance()->Set_FPSLimitTIme(dCurFPSLimit);
 
