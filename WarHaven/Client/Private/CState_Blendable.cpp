@@ -500,7 +500,7 @@ void CState_Blendable::Move_Cycle(CAnimator* pAnimator, _uint* arrDirectionAnimI
 	}
 
 
-	Move(iDirection, m_pOwner);
+	DoMove(iDirection, m_pOwner);
 }
 
 void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)

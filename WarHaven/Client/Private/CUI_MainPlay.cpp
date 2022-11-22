@@ -182,7 +182,7 @@ void CUI_MainPlay::On_PointEnter_Stage(const _uint& iEventNum)
 	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[iEventNum], CTexture)->Get_CurTextureIndex();
 	if (iTextureNum <= 3)
 	{
-		Enable_Fade(m_pStageHighlights[iEventNum]);
+		Enable_Fade(m_pStageHighlights[iEventNum], 0.3f);
 	}
 }
 
@@ -197,7 +197,7 @@ void CUI_MainPlay::On_PointStay_Stage(const _uint& iEventNum)
 
 void CUI_MainPlay::On_PointExit_Stage(const _uint& iEventNum)
 {
-	Disable_Fade(m_pStageHighlights[iEventNum]);
+	Disable_Fade(m_pStageHighlights[iEventNum], 0.3f);
 }
 
 void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
@@ -303,45 +303,45 @@ void CUI_MainPlay::SetActive_ModeWindow()
 {
 	if (!m_pBG->Is_Valid())
 	{
-		Enable_Fade(m_pBG);
-		Enable_Fade(m_pLine);
+		Enable_Fade(m_pBG, 0.3f);
+		Enable_Fade(m_pLine, 0.3f);
 
-		Enable_Fade(m_pTextModeSelect);
-		Enable_Fade(m_pEscKey);
+		Enable_Fade(m_pTextModeSelect, 0.3f);
+		Enable_Fade(m_pEscKey, 0.3f);
 
-		Enable_Fade(m_pStageSelectRect);
-		Enable_Fade(m_pSelectTextRect);
+		Enable_Fade(m_pStageSelectRect, 0.3f);
+		Enable_Fade(m_pSelectTextRect, 0.3f);
 
 		for (int i = 0; i < 4; ++i)
 		{
-			Enable_Fade(m_pStageSelectBtn[i]);
+			Enable_Fade(m_pStageSelectBtn[i], 0.3f);
 		}
 
 		for (int i = 0; i < 2; ++i)
 		{
-			Enable_Fade(m_pLockBtn[i]);
+			Enable_Fade(m_pLockBtn[i], 0.3f);
 		}
 	}
 	else
 	{
-		Disable_Fade(m_pBG);
-		Disable_Fade(m_pLine);
+		Disable_Fade(m_pBG, 0.3f);
+		Disable_Fade(m_pLine, 0.3f);
 
-		Disable_Fade(m_pTextModeSelect);
-		Disable_Fade(m_pEscKey);
+		Disable_Fade(m_pTextModeSelect, 0.3f);
+		Disable_Fade(m_pEscKey, 0.3f);
 
-		Disable_Fade(m_pStageSelectRect);
-		Disable_Fade(m_pSelectTextRect);
+		Disable_Fade(m_pStageSelectRect, 0.3f);
+		Disable_Fade(m_pSelectTextRect, 0.3f);
 
 		for (int i = 0; i < 4; ++i)
 		{
-			Disable_Fade(m_pStageSelectBtn[i]);
-			Disable_Fade(m_pStageHighlights[i]);
+			Disable_Fade(m_pStageSelectBtn[i], 0.3f);
+			Disable_Fade(m_pStageHighlights[i], 0.3f);
 		}
 
 		for (int i = 0; i < 2; ++i)
 		{
-			Disable_Fade(m_pLockBtn[i]);
+			Disable_Fade(m_pLockBtn[i], 0.3f);
 		}
 	}
 }

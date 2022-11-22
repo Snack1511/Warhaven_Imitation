@@ -121,24 +121,24 @@ void CUI_Wrapper::OnDisable()
 		DISABLE_GAMEOBJECT(m_pUI);
 }
 
-void CUI_Wrapper::Enable_Fade(CUI_Object* m_pUI)
+void CUI_Wrapper::Enable_Fade(CUI_Object* m_pUI, _float fDuration)
 {
 	ENABLE_GAMEOBJECT(m_pUI);
 	GET_COMPONENT_FROM(m_pUI, CFader)->Re_FadeIn();
 
 	if (m_pUI->Get_FontRender())
 	{
-		m_pUI->Fade_Font(true);
+		m_pUI->Fade_Font(true, fDuration);
 	}
 }
 
-void CUI_Wrapper::Disable_Fade(CUI_Object* m_pUI)
+void CUI_Wrapper::Disable_Fade(CUI_Object* m_pUI, _float fDuration)
 {
 	GET_COMPONENT_FROM(m_pUI, CFader)->Re_FadeOut();
 
 	if (m_pUI->Get_FontRender())
 	{
-		m_pUI->Fade_Font(false);
+		m_pUI->Fade_Font(false, fDuration);
 	}
 }
 

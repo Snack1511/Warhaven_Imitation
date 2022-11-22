@@ -55,7 +55,7 @@ void CUI_Portrait::Start_Portrait(_uint iIndex)
 	{
 		GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture)->Set_CurTextureIndex(iIndex);
 
-		Enable_Fade(m_arrPortraitUI[0][i]);
+		Enable_Fade(m_arrPortraitUI[0][i], 0.1f);
 	}
 }
 
@@ -105,18 +105,18 @@ void CUI_Portrait::My_Tick()
 
 						if (i == Key)
 						{
-							Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i]);
+							Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i], fDuration);
 							continue;
 						}
 
 						if (i == Effect)
 						{
-							Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i]);
+							Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i], fDuration);
 							continue;
 						}
 
 						m_arrPortraitUI[m_iHeroEndIdx][i]->Lerp_ScaleX(0.f, 43.f, fDuration);
-						Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i]);
+						Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i], fDuration);
 					}
 
 					m_bIsHeroLerp = false;
@@ -146,18 +146,18 @@ void CUI_Portrait::My_Tick()
 					{
 						if (i == Key)
 						{
-							Disable_Fade(m_arrPortraitUI[m_iHeroStartIdx][i]);
+							Disable_Fade(m_arrPortraitUI[m_iHeroStartIdx][i], fDuration);
 							continue;
 						}
 
 						if (i == Effect)
 						{
-							Disable_Fade(m_arrPortraitUI[m_iHeroStartIdx][i]);
+							Disable_Fade(m_arrPortraitUI[m_iHeroStartIdx][i], fDuration);
 							continue;
 						}
 
 						m_arrPortraitUI[m_iHeroStartIdx][i]->Lerp_ScaleX(43.f, 0.f, fDuration);
-						Disable_Fade(m_arrPortraitUI[m_iHeroStartIdx][i]);
+						Disable_Fade(m_arrPortraitUI[m_iHeroStartIdx][i], fDuration);
 					}
 
 					m_bIsHeroLerp = false;
@@ -315,7 +315,7 @@ void CUI_Portrait::PortSizeUP(_float fDuration)
 	m_arrPortraitUI[0][BG]->Lerp_ScaleX(0.f, 64.f, fRotSpeed);
 	m_arrPortraitUI[0][Port]->Lerp_ScaleX(0.f, 63.f, fRotSpeed);
 
-	Enable_Fade(m_arrPortraitUI[0][Port]);
+	Enable_Fade(m_arrPortraitUI[0][Port], fRotSpeed);
 }
 
 void CUI_Portrait::PortSizeDown(_float fDuration)
@@ -327,7 +327,7 @@ void CUI_Portrait::PortSizeDown(_float fDuration)
 	m_arrPortraitUI[0][BG]->Lerp_ScaleX(64.f, 0.f, fRotSpeed);
 	m_arrPortraitUI[0][Port]->Lerp_ScaleX(63.f, 0.f, fRotSpeed);
 
-	Disable_Fade(m_arrPortraitUI[0][Port]);
+	Disable_Fade(m_arrPortraitUI[0][Port], fRotSpeed);
 }
 
 void CUI_Portrait::Enable_HeroLerp(_bool value, _float fDuration)

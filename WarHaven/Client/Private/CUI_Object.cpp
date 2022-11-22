@@ -153,19 +153,28 @@ void CUI_Object::Lerp_PosY(_float fStart, _float fEnd, _float fDuration)
 	m_fAccScale = m_fEnd > m_fStart ? true : false;
 }
 
-void CUI_Object::MoveY(_float fMoveValue, _float fDuration)
+void CUI_Object::DoMoveY(_float fMoveValue, _float fDuration)
 {
-	m_bIsMoveY = true;
+	m_bIsDoMoveY = true;
 
 	m_fMoveValue = fMoveValue;
 	m_fDuration = fDuration;
 }
 
-void CUI_Object::Fade_Font(_bool value)
+void CUI_Object::DoScale(_float fScaleValue, _float fDuration)
+{
+	m_bIsDoScale = true;
+
+	m_fScaleValue = fScaleValue;
+	m_fDuration = fDuration;
+}
+
+void CUI_Object::Fade_Font(_bool value, _float fDuration)
 {
 	m_bIsFontFade = true;
 
 	m_bIsFadeIn = value;
+	m_fDuration = fDuration;
 }
 
 void CUI_Object::OnEnable()
@@ -187,7 +196,8 @@ void CUI_Object::My_Tick()
 	Lerp_Scale();
 	Lerp_Position();
 
-	Move();
+	DoMove();
+	DoScale();
 
 	Fade_Font();
 }
@@ -348,9 +358,9 @@ void CUI_Object::Lerp_Position()
 	}
 }
 
-void CUI_Object::Move()
+void CUI_Object::DoMove()
 {
-	if (m_bIsMoveY)
+	if (m_bIsDoMoveY)
 	{
 		m_fAccTime += fDT(0);
 
@@ -360,10 +370,47 @@ void CUI_Object::Move()
 
 		Set_PosY(fResultPos);
 
+
+
 		if (m_fAccTime >= m_fDuration)
 		{
 			m_fAccTime = 0.f;
-			m_bIsMoveY = false;
+			m_bIsDoMoveY = false;
+		}
+	}
+}
+
+void CUI_Object::DoScale()
+{
+	if (m_bIsDoScale)
+	{
+		m_fAccTime += fDT(0);
+
+		_float4 vCurScale = Get_Scale();
+		_float fScaleValue = (m_fScaleValue / m_fDuration) * fDT(0);
+
+		vCurScale.x += fScaleValue;
+		vCurScale.y += fScaleValue;
+
+		Set_Scale(vCurScale.x, vCurScale.y);
+
+		if (Get_FontRender())
+		{
+			_float fFontScale = Get_FontScale();
+			_float fAddValue = 0.01f * fScaleValue;
+			_float fResultFontScale = fFontScale + fAddValue;
+			Set_FontScale(fResultFontScale);
+
+			_float4 vFontOffset = Get_FontOffset();
+			vFontOffset.x += fScaleValue * 0.4f;
+			vFontOffset.y -= fScaleValue * 0.4f;
+			Set_FontOffset(vFontOffset.x, vFontOffset.y);
+		}
+
+		if (m_fAccScale >= m_fDuration)
+		{
+			m_fAccTime = 0.f;
+			m_bIsDoScale = false;
 		}
 	}
 }
@@ -372,7 +419,7 @@ void CUI_Object::Fade_Font()
 {
 	if (m_bIsFontFade)
 	{
-		m_fAccTime += fDT(0) * 0.3f; // 0.3f
+		m_fAccTime += fDT(0) * m_fDuration; // 0.3f
 
 		_float4 vStartColor = Get_FontColor();
 
@@ -396,10 +443,17 @@ void CUI_Object::Fade_Font()
 		}
 		else
 		{
-			vStartColor.x += m_fAccTime;
-			vStartColor.y += m_fAccTime;
-			vStartColor.z += m_fAccTime;
-			vStartColor.w += m_fAccTime;
+			if (vStartColor.x > 0.f)
+				vStartColor.x += m_fAccTime;
+
+			if (vStartColor.y > 0.f)
+				vStartColor.y += m_fAccTime;
+
+			if (vStartColor.z > 0.f)
+				vStartColor.z += m_fAccTime;
+
+			if (vStartColor.w > 0.f)
+				vStartColor.w += m_fAccTime;
 
 			Set_FontColor(vStartColor);
 

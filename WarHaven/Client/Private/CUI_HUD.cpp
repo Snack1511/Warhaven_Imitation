@@ -188,6 +188,14 @@ void CUI_HUD::My_Tick()
 			DISABLE_GAMEOBJECT(m_pPortUnderLines[i]);
 		}
 	}
+
+	if (m_bDmgTextEffct)
+	{
+		// 화면에 텍스트가 활성화되면 활성화된 객체에 한해서 실행
+		m_pDmgTexts[m_iDmgTextIndex]->DoScale(10.f, 0.3f);
+
+		m_bDmgTextEffct = false;
+	}
 }
 
 void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
@@ -195,13 +203,13 @@ void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
 	CUI_Object* pTarget = m_pPortClone[iEventNum];
 	if (pTarget)
 	{
-		Enable_Fade(m_pPortHighlights[iEventNum]);
+		Enable_Fade(m_pPortHighlights[iEventNum], 0.3f);
 	}
 }
 
 void CUI_HUD::On_PointExit_Port(const _uint& iEventNum)
 {
-	Disable_Fade(m_pPortHighlights[iEventNum]);
+	Disable_Fade(m_pPortHighlights[iEventNum], 0.3f);
 }
 
 void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
@@ -215,19 +223,19 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		_float fPosY = m_pPortClone[i]->Get_PosY();
 		if (fPosY > -245.f)
 		{
-			m_pPortClone[i]->MoveY(-10.f, fDuraition);
-			m_pPortBGClone[i]->MoveY(-10.f, fDuraition);
-			m_pClassIconClone[i]->MoveY(-10.f, fDuraition);
-			m_pPortHighlights[i]->MoveY(-10.f, fDuraition);
+			m_pPortClone[i]->DoMoveY(-10.f, fDuraition);
+			m_pPortBGClone[i]->DoMoveY(-10.f, fDuraition);
+			m_pClassIconClone[i]->DoMoveY(-10.f, fDuraition);
+			m_pPortHighlights[i]->DoMoveY(-10.f, fDuraition);
 
 			m_pPortUnderLines[i]->Lerp_ScaleX(100.f, 2.f, fDuraition);
 		}
 	}
 
-	m_pPortClone[iEventNum]->MoveY(10.f, fDuraition);
-	m_pPortBGClone[iEventNum]->MoveY(10.f, fDuraition);
-	m_pClassIconClone[iEventNum]->MoveY(10.f, fDuraition);
-	m_pPortHighlights[iEventNum]->MoveY(10.f, fDuraition);
+	m_pPortClone[iEventNum]->DoMoveY(10.f, fDuraition);
+	m_pPortBGClone[iEventNum]->DoMoveY(10.f, fDuraition);
+	m_pClassIconClone[iEventNum]->DoMoveY(10.f, fDuraition);
+	m_pPortHighlights[iEventNum]->DoMoveY(10.f, fDuraition);
 
 	ENABLE_GAMEOBJECT(m_pPortUnderLines[iEventNum]);
 	m_pPortUnderLines[iEventNum]->Lerp_ScaleX(2.f, 100.f, fDuraition);
@@ -289,16 +297,29 @@ void CUI_HUD::SetActive_OxenJumpText(_bool value)
 
 void CUI_HUD::SetActive_DamageTex(_float fDmg)
 {
+	m_bDmgTextEffct = true;
+
 	_tchar  szTemp[MAX_STR] = {};
 	swprintf_s(szTemp, TEXT("%.f"), -fDmg);
-	m_pDmgText->Set_FontText(szTemp);
+	m_pDmgTexts[m_iDmgTextIndex]->Set_FontText(szTemp);
 
 	_float fPosX = frandom(100.f, 300.f);
 	_float fPosY = frandom(-300.f, 300.f);
+	m_pDmgTexts[m_iDmgTextIndex]->Set_Pos(fPosX, fPosY);
 
-	m_pDmgText->Set_Pos(fPosX, fPosY);
+	// 평타
+	// GET_COMPONENT_FROM(m_pDmgTexts[m_iDmgTextIndex], CTexture)->Set_CurTextureIndex(1);
+	// 헤드샷
+	// GET_COMPONENT_FROM(m_pDmgTexts[m_iDmgTextIndex], CTexture)->Set_CurTextureIndex(0);
 
-	Enable_Fade(m_pDmgText);
+	Enable_Fade(m_pDmgTexts[m_iDmgTextIndex], 0.7f);
+	// ENABLE_GAMEOBJECT(m_pDmgTexts[m_iDmgTextIndex]);
+
+	m_iDmgTextIndex++;
+	if (m_iDmgTextIndex > 32)
+	{
+		m_iDmgTextIndex = 0;
+	}
 }
 
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
@@ -310,7 +331,7 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 	{
 		if (m_tStatus.bAbleHero)
 		{
-			Enable_Fade(m_pInactiveHeroText);
+			Enable_Fade(m_pInactiveHeroText, 1.f);
 			Set_ActiveHeroPort(false);
 		}
 
@@ -518,7 +539,7 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 	m_pPortHighlights[m_eCurClass]->Set_PosY(-240.f);
 	m_pPortUnderLines[m_eCurClass]->Set_ScaleX(100.f);
 
-	Enable_Fade(m_pPortUnderLines[m_eCurClass]);
+	Enable_Fade(m_pPortUnderLines[m_eCurClass], 0.3f);
 
 	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(!value);
 
@@ -691,7 +712,25 @@ void CUI_HUD::Create_DmgText()
 {
 	m_pDmgText = CUI_Object::Create();
 
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_TIME;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.7f;
+
+	tFadeDesc.fFadeOutStartTime = 1.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
+
+	GET_COMPONENT_FROM(m_pDmgText, CFader)->Get_FadeDesc() = tFadeDesc;
+
 	m_pDmgText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
+	//m_pDmgText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
 	m_pDmgText->Set_Scale(50.f);
 
@@ -704,6 +743,14 @@ void CUI_HUD::Create_DmgText()
 
 	m_pDmgText->Set_FontColor(_float4(1.f, 0.f, 0.f, 1.f));
 
+	for (int i = 0; i < 32; ++i)
+	{
+		m_pDmgTexts[i] = m_pDmgText->Clone();
+
+		CREATE_GAMEOBJECT(m_pDmgTexts[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pDmgTexts[i]);
+	}
+
 	CREATE_GAMEOBJECT(m_pDmgText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pDmgText);
+	DELETE_GAMEOBJECT(m_pDmgText);
 }

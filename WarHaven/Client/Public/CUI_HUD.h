@@ -75,6 +75,9 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pOxenJumpText = nullptr;
 
 	CUI_Object* m_pDmgText = nullptr;
+	CUI_Object* m_pDmgTexts[32];
+	_uint m_iDmgTextIndex = 0;
+	_bool m_bDmgTextEffct = false;
 
 private:
 	void Bind_Btn();

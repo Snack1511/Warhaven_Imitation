@@ -48,7 +48,7 @@ void CJump_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 		m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
 		m_fAnimSpeed = 1.5f;
 
-		Move(iDirection, pOwner);
+		DoMove(iDirection, pOwner);
 
 		pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
 		pOwner->Get_PhysicsCom()->Set_SpeedasMax();

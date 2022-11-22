@@ -55,7 +55,7 @@ STATE_TYPE CRun_Player_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	_uint iDirection = Get_Direction();
 
-	Move(iDirection, pOwner);
+	DoMove(iDirection, pOwner);
 
 
 	if (iDirection < 8)
