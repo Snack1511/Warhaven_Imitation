@@ -52,3 +52,6 @@
 
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWarHammer_Attack_HorizontalMiddle_R.cpp"
 
+
+#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CAI_CWarrior_Attack_HorizontalMiddle_R.cpp"
+

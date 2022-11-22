@@ -405,6 +405,7 @@ PS_OUT PS_ANIMATION_ALPHACOLOR_MAIN(PS_IN In)
 	
 	//masking
 	vector vMaskDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vDiffuse = vMaskDesc;
 
 	if (g_bBlackBG)
 	{
@@ -416,7 +417,7 @@ PS_OUT PS_ANIMATION_ALPHACOLOR_MAIN(PS_IN In)
 	if (Out.vDiffuse.a < 0.01f)
 		discard;
 
-	Out.vDiffuse.xyz = g_vPlusColor.xyz;
+	Out.vDiffuse.xyz += g_vPlusColor.xyz;
 	Out.vDiffuse.xyz *= g_fColorPower;
 
 	Out.vDiffuse.a *= In.vColor.a;
