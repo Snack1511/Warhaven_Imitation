@@ -1096,7 +1096,7 @@ void CFunc_ObjectControl::Routine_MeshSelect(void* tTreeNode)
 
         string prevFilePath = m_CurSelectedMeshFilePath;
         m_CurSelectedMeshFilePath = (*pTreeNode).strFullPath;
-        string Ext(".fbx");
+        string Ext("fbx");
         m_CurSelectedMeshName = m_pMapTool->CutOut_Ext((*pTreeNode).strFileName, Ext);
         if (KEY(LSHIFT, HOLD))
         {
