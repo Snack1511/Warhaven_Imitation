@@ -659,7 +659,16 @@ void CUnit::SetUp_HitStates(_bool bPlayer)
 
 _float4 CUnit::Get_FollowCamLook()
 {
-	return m_pFollowCam->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vCamLook = m_pFollowCam->Get_Transform()->Get_World(WORLD_LOOK);
+	return vCamLook;
+}
+
+_float4 CUnit::Get_FollowCamLook_Turn()
+{
+	_float4 vCamLook = m_pFollowCam->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4x4 matRotY = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), ToRadian(20.f));
+
+	return vCamLook.MultiplyNormal(matRotY);
 }
 
 _float4 CUnit::Get_FollowCamRight()

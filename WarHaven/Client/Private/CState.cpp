@@ -355,8 +355,17 @@ void CState::Follow_MouseLook(CUnit* pOwner)
 	vCamLook.y = 0.f;
 	vCamLook.Normalize();
 
-	pOwner->Get_Transform()->Set_LerpLook(vCamLook, 0.1f);
+	pOwner->Get_Transform()->Set_LerpLook(vCamLook, 0.4f);
 
+}
+
+void CState::Follow_MouseLook_Turn(CUnit* pOwner)
+{
+	_float4 vCamLook = pOwner->Get_FollowCamLook_Turn();
+	vCamLook.y = 0.f;
+	vCamLook.Normalize();
+
+	pOwner->Get_Transform()->Set_LerpLook(vCamLook, 0.4f);
 }
 
 

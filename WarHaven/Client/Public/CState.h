@@ -154,6 +154,7 @@ protected:
 
 	_uint	Move(_uint iDirection, CUnit* pOwner);
 	void	Follow_MouseLook(CUnit* pOwner);
+	void	Follow_MouseLook_Turn(CUnit* pOwner);
 
 
 protected:

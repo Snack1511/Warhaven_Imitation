@@ -79,6 +79,8 @@ public: /* For. Time_Manager */
 	_double		Get_FPSLimitTime();
 	void		Set_FPSLimitTIme(_double dTime);
 	_bool		Can_Update();
+
+	_float	Get_TimeSpeed(_uint iIndex);
 	void	Set_TimeSpeed(_uint iIndex, _float fSpeed);
 
 public: /* For. Key_Manager */

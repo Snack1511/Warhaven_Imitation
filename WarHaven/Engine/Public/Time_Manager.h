@@ -18,6 +18,7 @@ public:
 	void	Set_TimeSpeed(_uint iIndex, _float fSpeed) { m_arrTimeSpeeds[iIndex] = fSpeed; };
 	void	Set_FPSUpdateTime(_double dTime) { m_dFPSUpdateTime = dTime; }
 
+	_float	Get_TimeSpeed(_uint iIndex) { return m_arrTimeSpeeds[iIndex]; };
 	_double	Get_FPSLimitTime()				{ return m_dFPSLimitTime; }
 	void	Set_FPSLimitTIme(_double dTime) { m_dFPSLimitTime = dTime; }
 	

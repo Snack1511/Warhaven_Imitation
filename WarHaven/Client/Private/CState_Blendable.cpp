@@ -101,7 +101,7 @@ void	CState_Blendable::OnCollisionEnter(CGameObject* pOtherObject, const _uint& 
 
 void	CState_Blendable::OnCollisionStay(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType)
 {
-	OnCollisionEnter(pOtherObject, iOtherColType, iMyColType, ZERO_VECTOR);
+	//OnCollisionEnter(pOtherObject, iOtherColType, iMyColType, ZERO_VECTOR);
 }
 
 void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData )
@@ -177,8 +177,8 @@ void CState_Blendable::Hit_SlashEffect(CUnit* pOwner, _float4 vHitPos)
 
 	}
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pOwner->Get_HitMatrix());
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pOwner, vHitPos);
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner, vHitPos);
 	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
 
@@ -254,7 +254,8 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	default:
 		break;
 	}
-	Follow_MouseLook(pOwner);
+
+	Follow_MouseLook_Turn(pOwner);
 
 	
 

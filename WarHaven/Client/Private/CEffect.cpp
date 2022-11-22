@@ -196,7 +196,8 @@ CEffect* CEffect::Create_EffectPreset_FromBinFile(string strFileKey)
 void CEffect::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 {
 	m_pFollowTarget = pGameObject;
-	Reset(pGameObject->Get_Transform()->Get_WorldMatrix());
+
+	Reset(pGameObject->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS), vStartPos);
 }
 
 void CEffect::Self_Reset_Turn(CGameObject* pGameObject, _float4 vStartPos)
@@ -242,6 +243,21 @@ void CEffect::Reset(_float4x4 matWorld)
 	m_pTransform->Make_WorldMatrix();
 	ENABLE_GAMEOBJECT(this);
 
+}
+
+void CEffect::Reset(_float4x4 matWorld, _float4 vStartPos)
+{
+	m_pTransform->Get_Transform().matMyWorld = matWorld;
+
+
+	_float4 vOffsetPos = m_vOffsetPos.MultiplyCoord(matWorld);
+	vOffsetPos += vStartPos;
+
+
+	m_pTransform->Set_World(WORLD_POS, vOffsetPos);
+
+	m_pTransform->Make_WorldMatrix();
+	ENABLE_GAMEOBJECT(this);
 }
 
 void CEffect::ReBind_Texture()

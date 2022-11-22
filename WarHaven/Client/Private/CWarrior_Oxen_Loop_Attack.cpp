@@ -131,7 +131,7 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
     if (pAnimator->Get_CurAnimFrame() >= m_iStateChangeKeyFrame && pOwner->Is_Air())
         return STATE_JUMPFALL_PLAYER_L;
 
-    Follow_MouseLook(pOwner);
+    Follow_MouseLook_Turn(pOwner);
     pOwner->Set_DirAsLook();
 
     /*dust*/

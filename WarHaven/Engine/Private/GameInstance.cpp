@@ -284,6 +284,11 @@ _bool CGameInstance::Can_Update()
 }
 
 
+_float CGameInstance::Get_TimeSpeed(_uint iIndex)
+{
+	return m_pTimeManager->Get_TimeSpeed(iIndex);
+}
+
 void CGameInstance::Set_TimeSpeed(_uint iIndex, _float fSpeed)
 {
 	m_pTimeManager->Set_TimeSpeed(iIndex, fSpeed);

@@ -502,6 +502,14 @@ void CScript_FollowCam::Start_CameraDirecting()
 
 void CScript_FollowCam::Update_Shaking()
 {
+#ifdef _DEBUG
+	
+	if (GAMEINSTANCE->Get_TimeSpeed(0) < 1.f)
+		return;
+
+#endif // _DEBUG
+
+
 	if (m_fShakingTime > 0.f)
 	{
 		

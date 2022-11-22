@@ -164,6 +164,7 @@ public:
 	const STATE_HIT_TYPE& Get_HitType() { return m_tHitType; }
 
 	_float4	Get_FollowCamLook();
+	_float4	Get_FollowCamLook_Turn();
 	_float4	Get_FollowCamRight();
 
 public:

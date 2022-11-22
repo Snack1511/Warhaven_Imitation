@@ -45,7 +45,7 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitPos());
 
-	
+	pOwner->Get_PhysicsCom()->Set_Speed(0.f);
 
 	switch (ePrevType)
 	{

@@ -55,6 +55,7 @@ public:
 
 	void		Reset(_float4 vStartPos, _float4x4 matTrans);
 	virtual void		Reset(_float4x4 matWorld);
+	virtual void		Reset(_float4x4 matWorld, _float4 vStartPos);
 
 	void		Set_RefBone(CHierarchyNode* pNode) { m_pRefBone = pNode; m_fTimeAcc = 0.f; m_bEffectFlag |= EFFECT_REFBONE; }
 	void		Set_FollowTarget(CGameObject* pTarget) { m_pFollowTarget = pTarget; }
