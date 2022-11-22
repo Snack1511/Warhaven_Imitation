@@ -16,6 +16,8 @@
 #include "CMesh_Rect.h"
 #include "Texture.h"
 
+#define SHADOW_ON
+
 IMPLEMENT_SINGLETON(CRender_Manager)
 
 #define	SHADER_DEFERRED	0
@@ -163,7 +165,7 @@ HRESULT CRender_Manager::Initialize()
 	*((_float4*)&m_ShadowViewMatrix.m[1]) = vUp;
 
 
-	*((_float4*)&m_ShadowViewMatrix.m[3]) = _float4(100.f, 200.f, 100.f, 1.f);
+	*((_float4*)&m_ShadowViewMatrix.m[3]) = _float4(100.f, 200.f, 50.f, 1.f);
 	m_ShadowViewMatrix.Inverse();
 	m_ShadowViewMatrix.Transpose();
 
@@ -558,8 +560,12 @@ HRESULT CRender_Manager::Render()
 		return E_FAIL;
 
 	/* Shadow Baking */
-	//if (FAILED(Bake_Shadow()))
-	//	return E_FAIL;
+#ifdef SHADOW_ON
+	if (FAILED(Bake_Shadow()))
+		return E_FAIL;
+#endif 
+
+	
 
 	/* Deferred MRT */
 	if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources()))

@@ -266,7 +266,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
-	_float4 vPlayerPos = _float4(10.f, 3.f, 10.f);
+	_float4 vPlayerPos = _float4(20.f, 3.f, -10.f);
 
 	CPlayer* pUserPlayer = nullptr;
 
@@ -276,8 +276,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 
-
-	vPlayerPos.z += 5.f;
+	vPlayerPos.x = 70.f;
+	vPlayerPos.z = -10.f;
 
 	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
 		STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
@@ -305,9 +305,14 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//맵 데이타 불러오기
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
-	m_StaticShadowObjects.push_back(m_vecGameObjects.front().first);
 
+	list<CGameObject*> ObjList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
 
+	for (auto& elem : ObjList)
+	{
+		m_StaticShadowObjects.push_back(elem);
+
+	}
 
 	//터레인 불러오기
 	//오브젝트 불러오기

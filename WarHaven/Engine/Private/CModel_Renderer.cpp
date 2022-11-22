@@ -65,6 +65,12 @@ void CModel_Renderer::Start()
 
 
 		}
+		else
+		{
+			m_eShadowType = DEFAULTSHADOW;
+
+			m_iShadowPass = 3;
+		}
 	}
 
 	//if (m_pShaderCom->Get_ShaderFileIndex() - CUR_ENGINESHADER == 3)
