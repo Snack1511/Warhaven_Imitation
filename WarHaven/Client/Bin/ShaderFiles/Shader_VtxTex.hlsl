@@ -20,6 +20,9 @@ float g_fValue;
 float g_fHpRatio;
 float g_fHeroValue;
 
+bool g_bIsDecrease;
+float g_fHealthGauge;
+
 bool g_bIsSlice;
 float4 g_SliceRatio;
 float4 g_vScale;
@@ -212,6 +215,27 @@ PS_OUT PS_COLOR(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_HealthGauge(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+        
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+               
+    Out.vColor *= g_vColor;
+    Out.vColor.w *= g_fAlpha;
+    
+    if (g_bIsDecrease)
+    {
+        if (In.vTexUV.x > g_fHealthGauge)
+            discard;
+    }
+    
+    if (Out.vColor.a < 0.01f)
+        discard;
+    
+    return Out;
+}
+
 PS_OUT PS_HPBAR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -363,20 +387,6 @@ PS_OUT PS_LOBBYEFFECT(PS_IN In)
     Out.vColor.a += vNoise.r;
     Out.vColor.a *= vColor.r;
     Out.vColor.a *= vNormal.r;
-    
-    return Out;
-}
-
-PS_OUT PS_Lock(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-        
-    Out.vColor.rgb = 1.f;
-    
-    if (Out.vColor.a < 0.99f)
-        discard;
     
     return Out;
 }
@@ -759,6 +769,17 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_LOADINGICON();
     }
 
+    pass UI_HealthGauge
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_HealthGauge();
+    }
+
     pass UI_HpBar
     {
         SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -834,17 +855,6 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_LOBBYEFFECT();
-    }
-
-    pass UI_Lock
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_Lock();
     }
 
     pass ALPHA

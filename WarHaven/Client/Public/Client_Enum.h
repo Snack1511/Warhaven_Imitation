@@ -207,6 +207,7 @@ namespace Client
 		VTXTEX_PASS_DEFAULT,
 		VTXTEX_PASS_UI_Color,
 		VTXTEX_PASS_UI_LoadingIcon,
+		VTXTEX_PASS_UI_HealthGauge,
 		VTXTEX_PASS_UI_HpBar,
 		VTXTEX_PASS_UI_HeroGauge,
 		VTXTEX_PASS_UI_RELIC,

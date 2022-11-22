@@ -515,9 +515,7 @@ void CUI_MainPlay::Create_LockImg()
 {
 	m_pPrototypeLock = CUI_Object::Create();
 	m_pPrototypeLock->Set_Scale(64.f);
-	m_pPrototypeLock->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_Lock.dds"));
-
-	GET_COMPONENT_FROM(m_pPrototypeLock, CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Lock);
+	m_pPrototypeLock->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_IconLock.dds"));
 
 	for (int i = 0; i < 2; ++i)
 	{
