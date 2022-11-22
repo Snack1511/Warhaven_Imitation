@@ -11,7 +11,7 @@ HRESULT CUI_UnitHP::Initialize_Prototype()
 	for (int i = 0; i < IT_END; ++i)
 	{
 		m_pUnitHP[i] = CUI_Object::Create();
-		m_pUnitHP[i]->Set_Scale(120.f, 10.f);
+		m_pUnitHP[i]->Set_Scale(80.f, 8.f);
 	}
 
 	m_pUnitHP[BG]->Set_Color(_float4(0.f, 0.f, 0.f));
@@ -27,6 +27,7 @@ HRESULT CUI_UnitHP::Initialize_Prototype()
 	m_pUnitHP[Gauge]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HPBarGrey.dds"));
 
 	GET_COMPONENT_FROM(m_pUnitHP[Gauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HealthGauge);
+	GET_COMPONENT_FROM(m_pUnitHP[BackGauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HealthGauge);
 
 	return S_OK;
 }
@@ -82,6 +83,6 @@ void CUI_UnitHP::Set_ProjPos(CTransform* pTransform)
 
 void CUI_UnitHP::Bind_Shader()
 {
-		GET_COMPONENT_FROM(m_pUnitHP[Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_UnitHP::Set_Shader_HpGauge, this, placeholders::_1, "g_fHealthGauge");
-	
+	GET_COMPONENT_FROM(m_pUnitHP[Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_UnitHP::Set_Shader_HpGauge, this, placeholders::_1, "g_fHealthGauge");
+	GET_COMPONENT_FROM(m_pUnitHP[BackGauge], CShader)->CallBack_SetRawValues += bind(&CUI_UnitHP::Set_Shader_HpGauge, this, placeholders::_1, "g_fHealthGauge");
 }

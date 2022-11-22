@@ -264,8 +264,7 @@ _bool CUnit::On_PlusHp(_float fHp)
 	{
 		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	}
-
-	
+		
 	// 돌아올 곳
 
 	return true;

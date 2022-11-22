@@ -38,22 +38,6 @@ void CUI_UnitHUD::My_Tick()
 
 	_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
-
-	if (KEY(Z, HOLD))
-	{
-		m_tStatus.fHP += fDT(0) * 20.f;
-
-		cout << m_tStatus.fHP << endl;
-		cout << fHpGaugeRatio << endl;
-	}
-
-	if (KEY(X, HOLD))
-	{
-		m_tStatus.fHP -= fDT(0) * 20.f;
-
-		cout << m_tStatus.fHP << endl;
-		cout << fHpGaugeRatio<< endl;
-	}
 }
 
 void CUI_UnitHUD::My_LateTick()
@@ -68,6 +52,8 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform, vOffset);
 
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_ProjPos(pTransform);
+
+
 }
 
 void CUI_UnitHUD::Ready_UnitHP()
