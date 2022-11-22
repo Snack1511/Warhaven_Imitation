@@ -93,8 +93,10 @@ STATE_TYPE CWarrior_Oxen_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 {
     /* Player가 Oxen_Begin 으로 오는 조건
     1.  Q 을 이용해 공격한다.
-    2.  쿨타임이 없다.
-        */
+     */
+
+    if (!pOwner->Can_Use(CUnit::SKILL1))
+        return STATE_END;
 
     if(KEY(Q, TAP))
         return m_eStateType;

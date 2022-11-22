@@ -266,14 +266,14 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// 테스트할 객체 띄우기
 
-	if (FAILED(SetUp_Warrior_Sandback()))
-		return E_FAIL;
-
 	if (FAILED(SetUp_Warrior_TH()))
 		return E_FAIL;
 
-	/*if (FAILED(SetUp_WarHammer_TH()))
-		return E_FAIL;*/
+	if (FAILED(SetUp_Warrior_Sandback()))
+		return E_FAIL;
+	
+	//if (FAILED(SetUp_WarHammer_TH()))
+	//	return E_FAIL;
 
 	/*if (FAILED(SetUp_SpearMan_TH()))
 	return E_FAIL;*/
@@ -408,9 +408,13 @@ void CLevel_Test::Col_Check()
 	//GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERATTACK);
 
 
-//	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYHITBOX_BODY);
-//	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYGUARD);
+	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYGUARD);
 	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYATTACK);
+
+	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACK, COL_ENEMYHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACK, COL_PLAYERHITBOX_BODY);
+
 	
 }
 
@@ -573,41 +577,11 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 
 	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
 	pTestWarHammerUnit->Reserve_State(STATE_IDLE_WARHAMMER_R);
+	pTestWarHammerUnit->SetUp_Colliders(true);
+	pTestWarHammerUnit->SetUp_HitStates(true);
 
 
-
-	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
-
-
-	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
-		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
-	};
-
-
-
-	pTestWarHammerUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
-
-	tUnitColDesc[0].fRadius = 0.4f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
-
-
-	pTestWarHammerUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestWarHammerUnit, CModel)->Find_HierarchyNode("ob_Head"));
-
-	CUnit::UNIT_COLLIDERDESC tWeapon_RUnitColDesc[3] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.f, -115.f),	COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -80.f),	COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -55.f),	COL_PLAYERATTACK }
-	};
-
-	pTestWarHammerUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeapon_RUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestWarHammerUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-
+	
 
 	Ready_GameObject(pTestWarHammerUnit, GROUP_PLAYER);
 
@@ -626,7 +600,6 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	
 
 
-
 	_float4 vPlayerPos = _float4(40.f, 5.f, 40.f);
 	pTestWarHammerUnit->Teleport_Unit(vPlayerPos);
 
@@ -643,6 +616,9 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 	 GAMEINSTANCE->Add_Camera(L"PlayerCam4", pFollowCam);
 	 DISABLE_GAMEOBJECT(pFollowCam);
 	 pTestWarHammerUnit->Set_FollowCam(pFollowCam);
+
+	 m_pWarHammer = pTestWarHammerUnit;
+
 
 	return S_OK;
 }
@@ -778,6 +754,8 @@ HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 
 	pTestIdleWarrior->SetUp_Colliders(false);
 	pTestIdleWarrior->SetUp_HitStates(false);
+	pTestIdleWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam"));
+	
 
 	Ready_GameObject(pTestIdleWarrior, GROUP_ENEMY);
 
@@ -797,6 +775,7 @@ HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 
 	pTestGuardWarrior->SetUp_Colliders(false);
 	pTestGuardWarrior->SetUp_HitStates(false);
+	pTestGuardWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam"));
 
 	Ready_GameObject(pTestGuardWarrior, GROUP_ENEMY);
 
@@ -816,6 +795,7 @@ HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 
 	pTestAttackWarrior->SetUp_Colliders(false);
 	pTestAttackWarrior->SetUp_HitStates(false);
+	pTestAttackWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam"));
 
 	Ready_GameObject(pTestAttackWarrior, GROUP_ENEMY);
 
@@ -828,31 +808,27 @@ HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 void CLevel_Test::Change_Player()
 {
 
-	if (KEY(P, TAP))
-	{
+	//if (KEY(P, TAP))
+	//{
 
-		_float4 vPlayerPos = m_pWarrior->Get_Transform()->Get_World(WORLD_POS);
-		m_pWarrior->Teleport_Unit(vPlayerPos);
+	//	_float4 vPlayerPos = m_pWarrior->Get_Transform()->Get_World(WORLD_POS);
+	//	m_pWarrior->Teleport_Unit(vPlayerPos);
 
-		ENABLE_GAMEOBJECT(m_pWarrior);
+	//	if (m_pWarHammer)
+	//		DISABLE_GAMEOBJECT(m_pWarHammer);
 
-
-		CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarrior));
-
-		if (m_pWarHammer)
-			DISABLE_GAMEOBJECT(m_pWarHammer);
-
-		//		static_cast<CUnit*>(m_pWarHammer)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
+	//	ENABLE_GAMEOBJECT(m_pWarrior);
 
 
-		CCamera_Follow* pFollowCam = (CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam");
-		pFollowCam->Initialize();
-		pFollowCam->Get_Transform()->Set_World(WORLD_POS, m_pWarrior->Get_Transform()->Get_World(WORLD_POS));
-		pFollowCam->Get_Transform()->Make_WorldMatrix();
-		CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-		static_cast<CUnit*>(m_pWarrior)->Set_FollowCam(pFollowCam);
+	////	CUser::Get_Instance()->Set_Player(m_pWarrior);
 
-	}
+
+
+	//	//		static_cast<CUnit*>(m_pWarHammer)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
+	//	m_pWarrior->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
+
+
+	//}
 
 	//if (KEY(O, TAP))
 	//{
@@ -860,28 +836,22 @@ void CLevel_Test::Change_Player()
 	//	_float4 vPlayerPos = m_pWarHammer->Get_Transform()->Get_World(WORLD_POS);
 	//	m_pWarHammer->Teleport_Unit(vPlayerPos);
 
-	//	ENABLE_GAMEOBJECT(m_pWarHammer);
-
-	//	CCamera_Follow* pFollowCam = (CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam");
-	//	pFollowCam->Initialize();
-	//	pFollowCam->Get_Transform()->Set_World(WORLD_POS, m_pWarHammer->Get_Transform()->Get_World(WORLD_POS));
-	//	pFollowCam->Get_Transform()->Make_WorldMatrix();
-	//	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	//	m_pWarHammer->Set_FollowCam(pFollowCam);
-
-
-	//	//	ENABLE_GAMEOBJECT(m_pWarHammer);
-	//	CUser::Get_Instance()->Set_Player(m_pWarHammer);
-	//	//	DISABLE_GAMEOBJECT(m_pWarrior);
 
 	//	if (m_pWarrior)
 	//		DISABLE_GAMEOBJECT(m_pWarrior);
+
+	//	ENABLE_GAMEOBJECT(m_pWarHammer);
+
+	//	//	ENABLE_GAMEOBJECT(m_pWarHammer);
+	//	//CUser::Get_Instance()->Set_Player(m_pWarHammer);
+	//	//	DISABLE_GAMEOBJECT(m_pWarrior);
+
 
 	//	//CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarrior));
 	//	//DISABLE_GAMEOBJECT(m_pWarHammer);
 	//	//ENABLE_GAMEOBJECT(m_pWarrior);
 
-	//	//static_cast<CUnit*>(m_pWarrior)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam3")));
+	//	m_pWarHammer->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam4")));
 
 	//}
 

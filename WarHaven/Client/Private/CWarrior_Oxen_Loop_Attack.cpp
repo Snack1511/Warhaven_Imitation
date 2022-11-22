@@ -38,6 +38,7 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
     m_tHitInfo.fKnockBackPower = 1.f;
     m_tHitInfo.fJumpPower = 6.5f;
     m_tHitInfo.bFly = true;
+    m_tHitInfo.iLandKeyFrame = 60;
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 23;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
@@ -54,17 +55,33 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 87;
 
+
+
     m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
-    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
+    m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
     m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
 
+    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
+    m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
+
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
+
+    m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
+    m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
+
+    m_vecAdjState.push_back(STATE_SLIDE_BEGIN_PLAYER);
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 
 
     Add_KeyFrame(5, 0);
 	Add_KeyFrame(47, 1);
-	Add_KeyFrame(62, 2);
+	Add_KeyFrame(60, 2);
 
 
     return S_OK;
@@ -147,7 +164,7 @@ void CWarrior_Oxen_Loop_Attack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
     pOwner->TurnOn_TrailEffect(false);
-	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+	pOwner->Enable_FlyAttackCollider(false);
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
     pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
 
@@ -159,9 +176,6 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Check_Condition(CUnit* pOwner, CAnimator* 
     /* Player가 Oxen 으로 오는 조건
     1.  Q 을 이용해 공격한다.
         */
-
-    if(!pOwner->Can_Use(CUnit::SKILL1))
-        return STATE_END;
     
         
     if (KEY(Q, NONE))
@@ -191,13 +205,13 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
        
 	case 1:
         m_bAttackTrigger = true;
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		pOwner->Enable_FlyAttackCollider(true);
 		break;
 
 
 	case 2:
         m_bAttackTrigger = false;
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		pOwner->Enable_FlyAttackCollider(false);
 		break;
 
     default:

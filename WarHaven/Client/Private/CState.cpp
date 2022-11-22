@@ -22,7 +22,9 @@ CState::~CState()
 
 void	CState::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
+
 	int a = 0;
+
 }
 
 void CState::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
@@ -39,6 +41,7 @@ void CState::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateTyp
 
 STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
     //if (!m_wstrSoundKey.empty())
     //{
     //    m_fLoopSoundAcc += fDT(0);

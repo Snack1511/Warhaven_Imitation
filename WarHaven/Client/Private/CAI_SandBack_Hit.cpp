@@ -65,6 +65,9 @@ void CAI_SandBack_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
     if (ePrevType == STATE_GUARD_LOOP_WARRIOR_AI_ENEMY)
         bTestGuard = true;
 
+	Test_Attack(ePrevType);
+
+
     /* 날 때린놈의 hit info를 받았다. */
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Hit_State();
@@ -79,8 +82,15 @@ void CAI_SandBack_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 STATE_TYPE CAI_SandBack_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    if (bTestGuard && pAnimator->Get_CurAnimFrame() > 50)
-        return STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY;
+	if (pAnimator->Get_CurAnimFrame() > 50)
+	{
+		if (bTestGuard)
+			return STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY;
+
+		if (bTestAttack)
+			return STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY;
+	}
+
 
 
     return __super::Tick(pOwner, pAnimator);
@@ -89,6 +99,15 @@ STATE_TYPE CAI_SandBack_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CAI_SandBack_Hit::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 
+}
+
+void CAI_SandBack_Hit::Test_Attack(STATE_TYPE ePrevType)
+{
+	if (ePrevType == STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY ||
+		ePrevType == STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY ||
+        ePrevType == STATE_BOUNCE_WARRIOR_L_AI_ENEMY ||
+        ePrevType == STATE_BOUNCE_WARRIOR_R_AI_ENEMY )
+		bTestAttack = true;
 }
 
 STATE_TYPE CAI_SandBack_Hit::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

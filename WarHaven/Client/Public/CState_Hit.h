@@ -40,12 +40,13 @@ protected:
 
 /*For. Tick*/
 private:
-	STATE_TYPE Play_HitSting(CUnit* pOwner, CAnimator* pAnimator);
+	
 
 /*For. Enter*/
 protected:
 	void	Face_Check(_bool bUseUpandDown = true);
 
+	void Fly_State();
 
 	void	Hit_State();
 	void	Guard_State();
