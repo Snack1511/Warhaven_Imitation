@@ -39,6 +39,11 @@
 #include "CCamera_Follow.h"
 #include "CState_Hit.h"
 
+#include "CUtility_Transform.h"
+
+#include "CUI_Wrapper.h"
+#include "CUI_UnitHUD.h"
+
 
 #define PHYSX_ON
 
@@ -72,7 +77,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	if (!pOtherUnit)
 		return;
-	
+
 	/* 이미 hit 상태면 delay 걸기 */
 	if (m_fHitDelayAcc > 0.f)
 		return;
@@ -89,8 +94,8 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir = (m_pTransform->Get_World(WORLD_POS) - vHitPos);
 	tOtherHitInfo.vDir.y = 0.f;
 	tOtherHitInfo.vDir.Normalize();
-	
-	
+
+
 	//상대 위치 계산
 	_float4 vOtherLook = pOtherObj->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
 	_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
@@ -104,7 +109,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	switch (eMyColType)
 	{
-		
+
 	case COL_PLAYERATTACK:
 	case COL_ENEMYATTACK:
 
@@ -208,7 +213,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 #ifdef _DEBUG
 		cout << " 헤드샷 " << endl;
 #endif // 
-		
+
 
 	default:
 		break;
@@ -305,6 +310,9 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 {
 #define HEADSHOTRATIO 1.5f
 #define GUARDSUCCESS 0.1f
+	_float fDmg = m_tUnitStatus.fAttackDamage* m_pCurState->Get_DamagePumping()
+		* ((bHeadShot) ? HEADSHOTRATIO : 1.f)
+		* ((bGuard) ? GUARDSUCCESS : 1.f);
 
 	//헤드샷이면 1.5배
 	
@@ -330,7 +338,8 @@ _bool CUnit::On_PlusHp(_float fHp)
 	{
 		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	}
-
+		
+	// 돌아올 곳
 
 	return true;
 }
@@ -437,7 +446,7 @@ HRESULT CUnit::Initialize_Prototype()
 #endif // PHYSX_OFF
 
 
-
+	Create_UnitHUD();
 
 
 	return S_OK;
@@ -511,6 +520,8 @@ HRESULT CUnit::Start()
 		ENABLE_COMPONENT(m_pUnitCollider[BODY]);
 	if (m_pUnitCollider[HEAD])
 		ENABLE_COMPONENT(m_pUnitCollider[HEAD]);
+
+	Enable_UnitHUD();
 
 	return S_OK;
 }
@@ -850,7 +861,6 @@ void CUnit::My_Tick()
 			m_fCoolAcc[i] -= fDT(0);
 		else
 			m_fCoolAcc[i] = 0.f;
-
 	}
 
 
@@ -858,8 +868,6 @@ void CUnit::My_Tick()
 		m_fAttackDelay -= fDT(0);
 	else
 		m_fAttackDelay = 0.f;
-
-	
 
 	if (!m_pCurState)
 	{
@@ -879,6 +887,10 @@ void CUnit::My_Tick()
 		m_fHitDelayAcc -= fDT(0);
 	else
 		m_fHitDelayAcc = 0.f;
+
+	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
+
+	TransformProjection();
 }
 
 void CUnit::My_LateTick()
@@ -901,3 +913,19 @@ void CUnit::Effect_Hit(_float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"GroundHitParticle", vHitPos);
 }
+void CUnit::TransformProjection()
+{
+	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_ProjPos(m_pTransform);
+}
+
+void CUnit::Create_UnitHUD()
+{
+	m_pUnitHUD = CUI_UnitHUD::Create();
+}
+
+void CUnit::Enable_UnitHUD()
+{
+	CREATE_GAMEOBJECT(m_pUnitHUD, GROUP_UI);
+}
+
+// 체력을 

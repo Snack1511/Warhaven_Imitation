@@ -295,6 +295,10 @@ void CWindow_UI::Set_Object_Info()
 		ImGui::ColorEdit4("Color", (_float*)&vColor);
 		pUI->Set_Color(vColor);
 
+		bool bIsSlice = pUI->Get_IsSlice();
+		ImGui::Checkbox("Nine-Slice", &bIsSlice);
+		pUI->Set_IsSlice(bIsSlice);
+
 		_float4 vRatio = pUI->Get_SliceRatio();
 		float fRatio[4] = { vRatio.x, vRatio.y, vRatio.z, vRatio.w };
 		ImGui::DragFloat4("Ratio", fRatio, 0.1f, -9999.f, 9999.f, "%.1f");

@@ -119,9 +119,10 @@ _float4 CUtility_Transform::LookAt(CTransform* pTransform, _float4 vPos, _bool b
 	return vLook;
 }
 
-_float4 CUtility_Transform::Get_ProjPos(CTransform* pTransform)
+_float4 CUtility_Transform::Get_ProjPos(CTransform* pTransform, _float4 vOffsetPos)
 {
 	_float4 vPos = pTransform->Get_World(WORLD_POS);
+	vPos += vOffsetPos;
 	_float4x4 matVP = GAMEINSTANCE->Get_CurViewMatrix() * GAMEINSTANCE->Get_CurProjMatrix();
 
 	vPos = vPos.MultiplyCoord(matVP);

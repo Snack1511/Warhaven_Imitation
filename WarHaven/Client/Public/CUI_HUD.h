@@ -69,6 +69,8 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pChangeClassText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;
 
+	CUI_Object* m_pHeroGaugeText = nullptr;
+
 private:
 	void Bind_Btn();
 
@@ -88,8 +90,8 @@ private:
 private:
 	void Create_CharacterSelectWindow();
 	void Create_PortUnderLine();
-
 	void Create_TraingText();
+	void Create_HeroGaugeText();
 };
 
 END

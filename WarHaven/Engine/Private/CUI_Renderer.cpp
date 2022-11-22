@@ -75,7 +75,7 @@ HRESULT CUI_Renderer::Render()
 		}
 		else
 		{
-			CGameInstance::Get_Instance()->Render_Font(TEXT("War_Regular"), wszText, vFontPos, m_vColor, m_fFontScale);
+			CGameInstance::Get_Instance()->Render_Font(TEXT("WarKR_Regular"), wszText, vFontPos, m_vColor, m_fFontScale);
 		}
 	}
 

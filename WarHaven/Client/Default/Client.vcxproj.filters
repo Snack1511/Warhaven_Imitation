@@ -1245,6 +1245,15 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect\06. Mesh_Particle">
       <UniqueIdentifier>{10a2865b-1ad7-4e12-a219-87c34f733b96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\00.Traing">
+      <UniqueIdentifier>{148df79a-4c0d-4b26-9464-29a084009f32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target">
+      <UniqueIdentifier>{1836d204-61f7-49a8-8e3b-15c25843962c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit">
+      <UniqueIdentifier>{3803cb98-a360-472a-aeb2-f6d6815ab0bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2183,6 +2192,15 @@
     <ClInclude Include="..\public\CMesh_Particle.h">
       <Filter>03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Traing.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\00.Traing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_UnitHP.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_UnitHUD.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3101,6 +3119,15 @@
     </ClCompile>
     <ClCompile Include="..\private\CMesh_Particle.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Traing.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\00.Traing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_UnitHP.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_UnitHUD.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
