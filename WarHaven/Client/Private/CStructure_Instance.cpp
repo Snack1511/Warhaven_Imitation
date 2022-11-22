@@ -94,7 +94,7 @@ HRESULT CStructure_Instance::Start()
 	__super::Start();
 
 	//m_pTransform->Set_Scale(_float4(0.01f, 0.01f, 0.01f, 0.f));
-	m_pModelCom->Set_ShaderPassToAll(VTXINSTANCE_PASS_DEFAULT);
+	m_pModelCom->Set_ShaderPassToAll(VTXINSTANCE_PASS_NORMALMAPPING);
 	return S_OK;
 }
 

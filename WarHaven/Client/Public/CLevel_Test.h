@@ -6,6 +6,7 @@ BEGIN(Client)
 
 class CUI_HUD;
 class CUnit;
+class CPlayer;
 
 class CLevel_Test final
 	: public CLevel
