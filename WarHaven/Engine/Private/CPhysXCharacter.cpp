@@ -51,10 +51,13 @@ void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 		_float4 vHitPos = CUtility_PhysX::To_Vector(hit.worldPos);
 
 		_float4 vDir = vOtherPos - vHitPos;
+		vDir.y = 0.f;
 		vDir.Normalize();
 		vDir *= (_float)hit.length;
-		
-		static_cast<PxRigidDynamic*>(hit.actor)->addForce(CUtility_PhysX::To_PxVec3(vDir));
+
+		//vDir *= static_cast<PxRigidDynamic*>(hit.actor)->getInvMass();
+
+		static_cast<PxRigidDynamic*>(hit.actor)->addForce(CUtility_PhysX::To_PxVec3(vDir), PxForceMode::eFORCE);
 	}
 }
 

@@ -23,6 +23,8 @@
 
 #include "CScript_FollowCam.h"
 
+#include "CEffects_Factory.h"
+
 #include "MeshContainer.h"
 
 #include "CState.h"
@@ -199,8 +201,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	if (eFinalHitState == STATE_END)
 		return;
 
+	_float fDamage = pOtherUnit->Calculate_Damage(tOtherHitInfo.bHeadShot, bGuardSuccess);
 
-	if (On_PlusHp(pOtherUnit->Calculate_Damage(tOtherHitInfo.bHeadShot, bGuardSuccess)))
+	if (On_PlusHp(fDamage))
 	{
 		Enter_State(eFinalHitState, &tOtherHitInfo);
 	}
@@ -211,6 +214,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		//if()
 
 		/* 체력 0 이하로 내려간 경우 */
+		On_Die();
 
 	}
 
@@ -264,15 +268,29 @@ void CUnit::Lerp_Camera(const _uint& iCameraLerpType)
 	GET_COMPONENT_FROM(m_pFollowCam, CScript_FollowCam)->Start_LerpType((CScript_FollowCam::CAMERA_LERP_TYPE)iCameraLerpType);
 }
 
+void CUnit::On_Die()
+{
+	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
+	vPos.y += 1.f;
+	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f);
+	DISABLE_GAMEOBJECT(this);
+
+}
+
 _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 {
 #define HEADSHOTRATIO 1.5f
 #define GUARDSUCCESS 0.1f
 
 	//헤드샷이면 1.5배
-	return m_tUnitStatus.fAttackDamage* m_pCurState->Get_DamagePumping() 
-		* (bHeadShot) ? HEADSHOTRATIO : 1.f
-		* (bGuard) ? GUARDSUCCESS : 1.f;
+	
+	_float fDamage = m_tUnitStatus.fAttackDamage;
+	fDamage *= m_pCurState->Get_DamagePumping();
+	fDamage *= (bHeadShot) ? HEADSHOTRATIO : 1.f;
+	fDamage *= (bGuard) ? GUARDSUCCESS : 1.f;
+	fDamage *= -1.f;
+
+	return fDamage;
 }
 
 _bool CUnit::On_PlusHp(_float fHp)
@@ -288,6 +306,7 @@ _bool CUnit::On_PlusHp(_float fHp)
 	{
 		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	}
+
 
 	return true;
 }
@@ -490,11 +509,11 @@ void CUnit::OnDisable()
 {
 	__super::OnDisable();
 
-	if (m_pFollowCam)
-	{
-		DISABLE_GAMEOBJECT(m_pFollowCam);
-		m_pFollowCam = nullptr;
-	}
+	//if (m_pFollowCam)
+	//{
+	//	DISABLE_GAMEOBJECT(m_pFollowCam);
+	//	m_pFollowCam = nullptr;
+	//}
 }
 
 

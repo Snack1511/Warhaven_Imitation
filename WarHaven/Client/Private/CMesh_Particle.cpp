@@ -52,7 +52,7 @@ CMesh_Particle::~CMesh_Particle()
 }
 
 CMesh_Particle* CMesh_Particle::Create(wstring wstrModelFilePath, _uint iNumInstance, wstring strName, _float fDensity, _float fLifeTime
-	, wstring wstrTextureFilePath, wstring wstrNormalTexturePath)
+	, wstring wstrTextureFilePath, wstring wstrNormalTexturePath, wstring	wstrConvexMeshPath)
 {
 	CMesh_Particle* pInstance = new CMesh_Particle();
 
@@ -62,6 +62,7 @@ CMesh_Particle* CMesh_Particle::Create(wstring wstrModelFilePath, _uint iNumInst
 	pInstance->m_fDensity = fDensity;
 	pInstance->m_wstrColorMapPath = wstrTextureFilePath;
 	pInstance->m_wstrMaskMapPath = wstrNormalTexturePath;
+	pInstance->m_wstrPath = wstrConvexMeshPath;
 
 	if (FAILED(pInstance->SetUp_MeshParticle(wstrModelFilePath)))
 	{
@@ -90,10 +91,16 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower)
 	{
 		PxTransform tTransform;
 		ZeroMemory(&tTransform, sizeof(PxTransform));
+
+
 		tTransform.p.x = vPos.x;
 		tTransform.p.y = vPos.y;
 		tTransform.p.z = vPos.z;
 		tTransform.q.w = 1.f;
+
+		vPos.x += frandom(-0.1f, 0.1f);
+		vPos.y += frandom(-0.1f, 0.1f);
+		vPos.z += frandom(-0.1f, 0.1f);
 
 		_float4	vNewDir =
 		{
@@ -179,7 +186,9 @@ HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
 {
 	m_matTrans = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 
-	CModel* pModelCom = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, wstrModelFilePath.c_str(), m_iNumInstance, m_matTrans);
+	CModel* pModelCom = nullptr;
+
+	pModelCom = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, wstrModelFilePath.c_str(), m_iNumInstance, m_matTrans);
 	Add_Component(pModelCom);
 
 
@@ -195,7 +204,15 @@ HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
 
 
 	//ConvexMesh 하나 구워놓고 일단
-	CMeshContainer* pMesh = (pModelCom->Get_MeshContainers().front().second);
+	CModel* pConvexModel = pModelCom;
+	if (!m_wstrPath.empty())
+	{
+		pConvexModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, m_wstrPath.c_str(), m_iNumInstance, m_matTrans);
+		Add_Component(pConvexModel);
+	}
+
+
+	CMeshContainer* pMesh = (pConvexModel->Get_MeshContainers().front().second);
 
 	FACEINDICES32* pIndices = pMesh->CMesh::Get_Indices();
 	_uint iNumPrimitive = pMesh->Get_NumPrimitive();
@@ -216,6 +233,7 @@ HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
 
 	m_pInstanceMatrices = new _float4x4[m_iNumInstance];
 	ZeroMemory(m_pInstanceMatrices, sizeof(_float4x4) * m_iNumInstance);
+
 
 	return S_OK;
 }

@@ -477,16 +477,6 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 	switch (iSequence)
 	{
 	case 998:
-		/* Test */
-	{
-		_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-		vPos.y += 1.f;
-		vPos += pOwner->Get_Transform()->Get_World(WORLD_LOOK);
-		CEffects_Factory::Get_Instance()->Create_MeshParticle(L"WarriorDead_Head", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f);
-	}
-		
-
-
 
 		m_bAfterEffect = true;
 		m_bHitEffect = true;

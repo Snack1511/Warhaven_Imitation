@@ -39,6 +39,13 @@ CUnit_Warrior* CUnit_Warrior::Create(const UNIT_MODEL_DATA& tUnitModelData)
 	return pInstance;
 }
 
+void CUnit_Warrior::On_Die()
+{
+	__super::On_Die();
+	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
+	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Warrior", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f);
+}
+
 void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 {
 	COL_GROUP_CLIENT	eHitBoxBody = (bPlayer) ? COL_PLAYERHITBOX_BODY : COL_ENEMYHITBOX_BODY;

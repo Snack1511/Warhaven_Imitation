@@ -20,7 +20,10 @@ private:
 
 public:
 	static CMesh_Particle* Create(wstring wstrModelFilePath , _uint iNumInstance, wstring strName,
-		_float fDensity = 1.f, _float fLifeTime = 3.f, wstring wstrTextureFilePath = wstring(), wstring wstrNormalTexturePath = wstring());
+		_float fDensity = 1.f, _float fLifeTime = 3.f, wstring wstrTextureFilePath = wstring(), wstring wstrNormalTexturePath = wstring(),
+		wstring	wstrConvexMeshPath = wstring()
+
+	);
 
 public:
 	void			Start_Particle(_float4 vPos, _float4 vDir, _float fPower = 1.f);

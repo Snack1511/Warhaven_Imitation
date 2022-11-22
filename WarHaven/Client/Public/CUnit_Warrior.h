@@ -16,6 +16,9 @@ public:
 	static	CUnit_Warrior* Create(const UNIT_MODEL_DATA& tUnitModelData);
 
 public:
+	virtual void On_Die() override;
+
+public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
 	virtual void	SetUp_HitStates(_bool bPlayer);
 

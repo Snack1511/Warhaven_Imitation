@@ -67,6 +67,8 @@ private:
 
 private:
 	void	Set_Dead() { if (m_bAlive)OnDead(); m_bAlive = false; }
+
+public:
 	void	Destroy_Instance() { delete this; }
 
 

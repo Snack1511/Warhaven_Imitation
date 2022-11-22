@@ -36,14 +36,18 @@ CBoneCollider* CBoneCollider::Create(_uint iGroupID, const BONECOLLIDERDESC& tBo
 
 void CBoneCollider::onShapeHit(const PxControllerShapeHit& hit)
 {
-	CPhysXCharacter::onShapeHit(hit);
+	//CPhysXCharacter::onShapeHit(hit);
 
 	if (PxActorType::eRIGID_DYNAMIC == hit.actor->getType())
+	{
+		static_cast<PxRigidDynamic*>(hit.actor)->setMaxLinearVelocity(1.f);
+		static_cast<PxRigidDynamic*>(hit.actor)->setMaxContactImpulse(1.f);
+
 		return;
+
+	}
 	
 	m_bCollisionTemp = true;
-
-	
 	m_vHitPos = _float4(hit.worldPos.x, hit.worldPos.y, hit.worldPos.z);
 	
 
@@ -112,8 +116,6 @@ HRESULT CBoneCollider::Initialize_Prototype()
 
 	if (!m_pPxController)
 		return E_FAIL;
-
-
 
 	return S_OK;
 }
