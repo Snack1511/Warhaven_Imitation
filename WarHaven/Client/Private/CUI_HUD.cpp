@@ -4,6 +4,7 @@
 #include "CButton.h"
 #include "CFader.h"
 
+#include "CUser.h"
 #include "CUnit.h"
 #include "CUI_Object.h"
 #include "CUI_CrossHair.h"
@@ -50,6 +51,7 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
+	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 	m_eCurClass = m_tStatus.eClass;
 
 	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
@@ -71,6 +73,8 @@ HRESULT CUI_HUD::Start()
 void CUI_HUD::My_Tick()
 {
 	__super::My_Tick();
+
+	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 
 	if (m_pWrap[HpBar]->Is_Valid())
 	{
