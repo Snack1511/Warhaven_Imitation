@@ -30,7 +30,6 @@ HRESULT CUI_MainPlay::Initialize_Prototype()
 	Create_BtnHighlight();
 	Create_StageNameRect();
 	Crerate_PlayBtnMouseEnterLine();
-	Create_SelectTextRect();
 
 	return S_OK;
 }
@@ -310,7 +309,6 @@ void CUI_MainPlay::SetActive_ModeWindow()
 		Enable_Fade(m_pEscKey);
 
 		Enable_Fade(m_pStageSelectRect);
-		Enable_Fade(m_pSelectTextRect);
 
 		for (int i = 0; i < 4; ++i)
 		{
@@ -331,7 +329,6 @@ void CUI_MainPlay::SetActive_ModeWindow()
 		Disable_Fade(m_pEscKey);
 
 		Disable_Fade(m_pStageSelectRect);
-		Disable_Fade(m_pSelectTextRect);
 
 		for (int i = 0; i < 4; ++i)
 		{
@@ -356,10 +353,8 @@ void CUI_MainPlay::Enable_StageHighlight(_float4 vPos)
 void CUI_MainPlay::Enable_StageClickRect(_float4 vPos)
 {
 	m_pStageSelectRect->Set_Pos(vPos.x, vPos.y);
-	m_pSelectTextRect->Set_Pos(vPos.x - 65.f, vPos.y - 100.f);
 
 	ENABLE_GAMEOBJECT(m_pStageSelectRect);
-	ENABLE_GAMEOBJECT(m_pSelectTextRect);
 }
 
 void CUI_MainPlay::Create_PlayBtn()
@@ -515,7 +510,7 @@ void CUI_MainPlay::Create_LockImg()
 {
 	m_pPrototypeLock = CUI_Object::Create();
 	m_pPrototypeLock->Set_Scale(64.f);
-	m_pPrototypeLock->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_IconLock.dds"));
+	m_pPrototypeLock->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_Lock.dds"));
 
 	for (int i = 0; i < 2; ++i)
 	{
@@ -557,13 +552,9 @@ void CUI_MainPlay::Create_StageHighlight()
 	}
 
 	m_pStageSelectRect = CUI_Object::Create();
-	m_pStageSelectRect->Set_Scale(230.f, 355.f);
+	m_pStageSelectRect->Set_Scale(250.f, 380.f);
 	m_pStageSelectRect->Set_Sort(0.75f);
 	m_pStageSelectRect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_2pxStrokeBox.png"));
-
-	m_pStageSelectRect->Set_IsSlice(true);
-	m_pStageSelectRect->Set_TextureSzie(_float2(32.f, 32.f));
-	m_pStageSelectRect->Set_SliceRatio(_float4(0.1f, 0.1f, 0.8f, 0.8f));
 
 	m_pStageSelectRect->Set_Pos(m_pStageSelectBtn[0]->Get_PosX(), m_pStageSelectBtn[0]->Get_PosY());
 
@@ -592,21 +583,16 @@ void CUI_MainPlay::Create_BtnHighlight()
 void CUI_MainPlay::Create_StageNameRect()
 {
 	m_pStageNameRect = CUI_Object::Create();
-	m_pStageNameRect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_BoxFrame.png"));
-
-	m_pStageNameRect->Set_Scale(90.f, 28.f);
+	m_pStageNameRect->Set_Scale(100.f, 28.f);
 	m_pStageNameRect->Set_Sort(0.91f);
 	m_pStageNameRect->Set_Pos(-545.f, 220.f);
-
-	m_pStageNameRect->Set_IsSlice(true);
-	m_pStageNameRect->Set_SliceRatio(_float4(0.5f, 0.5f, 0.5f, 0.5f));
-	m_pStageNameRect->Set_TextureSzie(_float2(50.f, 50.f));
+	m_pStageNameRect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_BoxFrame.png"));
 
 	m_pStageNameRect->Set_FontRender(true);
 	m_pStageNameRect->Set_FontStyle(true);
-	m_pStageNameRect->Set_FontOffset(-39.f, -11.f);
+	m_pStageNameRect->Set_FontOffset(-40.f, -11.f);
 	m_pStageNameRect->Set_FontScale(0.2f);
-	m_pStageNameRect->Set_FontColor(m_vFontColor);
+	m_pStageNameRect->Set_FontColor(_float4(0.773f, 0.714f, 0.596f, 1.f));
 	m_pStageNameRect->Set_FontText(TEXT("모드 - 테스트"));
 
 	CREATE_GAMEOBJECT(m_pStageNameRect, GROUP_UI);
@@ -633,29 +619,4 @@ void CUI_MainPlay::Crerate_PlayBtnMouseEnterLine()
 
 	CREATE_GAMEOBJECT(m_pPlayBtnMouseEnterLine, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pPlayBtnMouseEnterLine);
-}
-
-void CUI_MainPlay::Create_SelectTextRect()
-{
-	m_pSelectTextRect = CUI_Object::Create();
-	m_pSelectTextRect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_SaleTag.png"));
-
-	m_pSelectTextRect->Set_Sort(0.8f);
-	m_pSelectTextRect->Set_Scale(60.f, 30.f);
-	m_pSelectTextRect->Set_Pos(-425.f, -100.f);
-
-	m_pSelectTextRect->Set_IsSlice(true);
-	m_pSelectTextRect->Set_TextureSzie(_float2(25.f, 25.f));
-	m_pSelectTextRect->Set_SliceRatio(_float4(0.5f, 0.5f, 0.5f, 0.5f));
-
-	m_pSelectTextRect->Set_FontRender(true);
-	m_pSelectTextRect->Set_FontStyle(true);
-
-	m_pSelectTextRect->Set_FontText(TEXT("선택 중"));
-	m_pSelectTextRect->Set_FontOffset(-22.f, -10.f);
-	m_pSelectTextRect->Set_FontScale(0.2f);
-	m_pSelectTextRect->Set_FontColor(m_vFontColor);
-
-	CREATE_GAMEOBJECT(m_pSelectTextRect, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pSelectTextRect);
 }

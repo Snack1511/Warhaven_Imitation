@@ -53,7 +53,7 @@ public:	// Button
 	_bool Get_IsClick() { return m_bIsClick; }
 	void Set_IsClick(_bool value) { m_bIsClick = value; }
 
-public:	// Lerp
+public:
 	void Lerp_Scale(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration);
@@ -63,6 +63,7 @@ public:	// Lerp
 
 	void MoveY(_float fMoveValue, _float fDuration);
 
+	// 1 In, 0 Out
 	void Fade_Font(_bool value);
 
 private:

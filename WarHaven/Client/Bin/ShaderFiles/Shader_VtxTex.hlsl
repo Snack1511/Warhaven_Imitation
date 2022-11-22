@@ -20,15 +20,11 @@ float g_fValue;
 float g_fHpRatio;
 float g_fHeroValue;
 
-bool g_bIsDecrease;
-float g_fHealthGauge;
-
-bool g_bIsSlice;
 float4 g_SliceRatio;
-float4 g_vScale;
 float2 g_TextureSize;
 
 bool g_bAppear;
+
 
 struct VS_IN
 {
@@ -49,13 +45,16 @@ VS_OUT VS_MAIN(VS_IN In)
 
     matrix matWV, matWVP;
     
+    // float3 vSize = (vector) 1;
+    // Out.vSize = vSize.xy;
+    // vSize = mul(vector(vSize, 0.f), g_WorldMatrix);
+    
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
 
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vTexUV = In.vTexUV;
-    //Out.vSize = mul(g_vScale, matWVP).xy;
-    
+
     return Out;
 }
 
@@ -133,78 +132,103 @@ PS_OUT PS_MAIN(PS_IN In)
 PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-        
-   // 새로 부여할 UV
-    float2 TexUV = In.vTexUV;
     
-    if (g_bIsSlice)
-    {
-        // 셰이더를 적용할 UI의 화면에 출력될 크기
-        float2 vSize;
-        vSize.x = g_vScale.x;
-        vSize.y = g_vScale.y;
+    //// 버텍스 셰이더에서 사이즈를 1을 사이즈로 나눠서
+    //float2 vSize = 1.f;
+    //float fX = vSize.x / g_TextureSize.x;
+    //float fY = vSize.y / g_TextureSize.y;
+    //
+    //// 전체 그려져야 할 이미지의 픽셀 개수를 확인
+    //float fPixelWidth = In.vTexUV.x * fX;
+    //float fPixelHeight = In.vTexUV.y * fY;
+    //
+    //// 픽셀 개수를 가지고 UV 좌표를 구하고
+    //float fUVLeftX = g_TextureSize.x * g_SliceRatio.x;
+    //float fUVTopY = g_TextureSize.y * g_SliceRatio.y;
+    //
+    //float fUVRightX = vSize.x - (g_TextureSize.x * (1 - g_SliceRatio.z));
+    //float fUVBottomX = vSize.y - (g_TextureSize.y * (1 - g_SliceRatio.w));
+    //    
+    //float HorizonLinear = (g_SliceRatio.z - g_SliceRatio.x) / (fUVRightX - fUVLeftX);
+    //float VertiLinear = (g_SliceRatio.w - g_SliceRatio.y) / (fUVBottomX - fUVTopY);
+    //
+    //
+    //float2 TexUV = In.vTexUV;
+    //
+    //if (fPixelWidth > fUVLeftX)
+    //{
+    //    In.vTexUV.x = HorizonLinear * fPixelWidth + g_SliceRatio.x;
+    //}
+    //else if (fPixelWidth < fUVRightX)
+    //{
+    //    
+    //}
+    //
+    //if (fPixelHeight > fUVTopY)
+    //{
+    //    
+    //}
+    //else if (fPixelHeight < fUVBottomX)
+    //{
+    //    
+    //}
+    //
+    //float LeftAnchor = g_SliceRatio.x;
+    //float TopAnchor = g_SliceRatio.y;
+    //float RightAnchor = g_SliceRatio.z;
+    //float BottomAnchor = g_SliceRatio.w;
+    //
+    //float PaddleLeft = g_TextureSize.x * LeftAnchor;
+    //float PaddleRight = (vRectSize.x - (g_TextureSize.x * (1 - RightAnchor)));
+    //float PaddleTop = g_TextureSize.y * TopAnchor;
+    //float PaddleBottom = (vRectSize.y - (g_TextureSize.y * (1 - BottomAnchor)));
+	
+    //float2 TexUV = In.vTexUV;
+    //
+    //float HorizonLinear = (RightAnchor - LeftAnchor) / (PaddleRight - PaddleLeft);
+    //float VertiLinear = (BottomAnchor - TopAnchor) / (PaddleBottom - PaddleTop);
+	
+    //if (vRectSize.x > g_TextureSize.x)
+    //{
+    //    if (WidPixelNum > PaddleLeft && WidPixelNum < PaddleRight)
+    //    {
+    //        TexUV.x = HorizonLinear * WidPixelNum + LeftAnchor;
+    //    }
+    //    else if (WidPixelNum <= PaddleLeft)
+    //    {
+    //        TexUV.x = WidPixelNum / g_TextureSize.x; //찾아야될 픽셀 / 이미지 크기
+    //    }
+    //    else if (WidPixelNum >= PaddleRight)
+    //    {
+    //        TexUV.x = (vRectSize.x - WidPixelNum) / g_TextureSize.x; //찾아야될 픽셀 / 이미지 크기
+    //    }
+    //}
+    //else
+    //{
+    //    TexUV.x = In.vTexUV.x;
+    //}
+    //
+    //if (vRectSize.y > g_TextureSize.y)
+    //{
+    //    if (HeightPixelNum > PaddleTop && HeightPixelNum < PaddleBottom)
+    //    {
+    //        TexUV.y = VertiLinear * HeightPixelNum + TopAnchor;
+    //    }
+    //    else if (HeightPixelNum <= PaddleTop)
+    //    {
+    //        TexUV.y = HeightPixelNum / g_TextureSize.y; //찾아야될 픽셀 / 이미지 크기
+    //    }
+    //    else if (HeightPixelNum >= PaddleBottom)
+    //    {
+    //        TexUV.y = (vRectSize.y - HeightPixelNum) / g_TextureSize.y; //찾아야될 픽셀 / 이미지 크기
+    //    }
+    //}
+    //else
+    //{
+    //    TexUV.y = In.vTexUV.y;
+    //}
     
-        // 출력된 UI의 UV좌표를 픽셀 좌표로 변환한 값
-        float fPixelCoordX = In.vTexUV.x * vSize.x;
-        float fPixelCoordY = In.vTexUV.y * vSize.y;
-    
-        // 이미지 상에서 늘어나야 할 픽셀의 좌표
-        float fUV_CoordLeft = g_TextureSize.x * g_SliceRatio.x;
-        float fUV_CoordRight = vSize.x - (g_TextureSize.x * (1 - g_SliceRatio.z));
-        float fUV_CoordTop = g_TextureSize.y * g_SliceRatio.y;
-        float fUV_CoordBottom = vSize.y - (g_TextureSize.y * (1 - g_SliceRatio.w));
-        
-        // 보간되는 범위의 비율
-        float fRatioX = (g_SliceRatio.z - g_SliceRatio.x) / (fUV_CoordRight - fUV_CoordLeft);
-        float fRatioY = (g_SliceRatio.w - g_SliceRatio.y) / (fUV_CoordBottom - fUV_CoordTop);
-        
-        // 화면에 출력된 UI의 크기가 이미지의 원본보다 크면
-        if (vSize.x > g_TextureSize.x)
-        {
-            if (fPixelCoordX > fUV_CoordLeft && fPixelCoordX < fUV_CoordRight)
-            {
-                // 비율에 픽셀 좌표를 곱하면 UV좌표로 변환된 비율이 나오는데
-                // 비율을 더하면 보간 시작 지점을 정할 수 있다.
-                TexUV.x = fRatioX * fPixelCoordX + g_SliceRatio.x;
-            }
-            else if (fPixelCoordX <= fUV_CoordLeft)
-            {
-                // 픽셀 위치에서 픽셀 사이즈만큼 나누면 해당 픽셀의 UV좌표가 나옴
-                TexUV.x = fPixelCoordX / g_TextureSize.x;
-            }
-            else if (fPixelCoordX >= fUV_CoordRight)
-            {
-                // 반대
-                TexUV.x = -(vSize.x - fPixelCoordX) / g_TextureSize.x;
-            }
-        }
-        else
-        {
-            TexUV.x = In.vTexUV.x;
-        }
-    
-        if (vSize.y > g_TextureSize.y)
-        {
-            if (fPixelCoordY > fUV_CoordTop && fPixelCoordY < fUV_CoordBottom)
-            {
-                TexUV.y = fRatioY * fPixelCoordY + g_SliceRatio.y;
-            }
-            else if (fPixelCoordY <= fUV_CoordTop)
-            {
-                TexUV.y = fPixelCoordY / g_TextureSize.y;
-            }
-            else if (fPixelCoordY >= fUV_CoordBottom)
-            {
-                TexUV.y = -(vSize.y - fPixelCoordY) / g_TextureSize.y;
-            }
-        }
-        else
-        {
-            TexUV.y = In.vTexUV.y;
-        }
-    }
-    
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, TexUV);
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vColor *= g_vColor;
     Out.vColor.w *= g_fAlpha;
@@ -212,27 +236,6 @@ PS_OUT PS_COLOR(PS_IN In)
     if (Out.vColor.w < 0.01f)
         discard;
 	
-    return Out;
-}
-
-PS_OUT PS_HealthGauge(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-        
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-               
-    Out.vColor *= g_vColor;
-    Out.vColor.w *= g_fAlpha;
-    
-    if (g_bIsDecrease)
-    {
-        if (In.vTexUV.x > g_fHealthGauge)
-            discard;
-    }
-    
-    if (Out.vColor.a < 0.01f)
-        discard;
-    
     return Out;
 }
 
@@ -290,7 +293,7 @@ PS_OUT PS_LOADINGICON(PS_IN In)
 PS_OUT PS_HEROGAUGE(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-        
+
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     In.vTexUV.x -= g_fValue;
@@ -299,7 +302,7 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
 
     Out.vColor *= (vNoise + vNoise);
     
-    if (In.vTexUV.y > g_fHeroValue)
+    if (In.vTexUV.y < g_fHeroValue)
         discard;
 	
     if (Out.vColor.a < 0.01f)
@@ -767,17 +770,6 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_LOADINGICON();
-    }
-
-    pass UI_HealthGauge
-    {
-        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_HealthGauge();
     }
 
     pass UI_HpBar

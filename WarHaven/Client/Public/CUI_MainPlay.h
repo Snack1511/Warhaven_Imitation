@@ -63,8 +63,6 @@ private:
 	CUI_Object* m_pPrototypeLock = nullptr;
 	CUI_Object* m_pLockBtn[2];
 
-	CUI_Object* m_pSelectTextRect = nullptr;
-
 	Select_Stage m_eStage = Select_Stage::Test;
 
 private:
@@ -73,7 +71,6 @@ private:
 private:	// 폰트 설정
 	_float2 vFontOffset = { -100.f, 120.f };
 	_float m_fFontSize = 0.33f;
-	_float4 m_vFontColor = _float4(0.773f, 0.714f, 0.596f, 1.f);
 
 private:
 	void Bind_Shader();
@@ -95,5 +92,4 @@ private:
 	void Create_BtnHighlight();
 	void Create_StageNameRect();
 	void Crerate_PlayBtnMouseEnterLine();
-	void Create_SelectTextRect();
 };
