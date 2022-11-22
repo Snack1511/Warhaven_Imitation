@@ -37,6 +37,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_CharacterSelectWindow();
 	Create_PortUnderLine();
 	Create_TraingText();
+	Create_HeroGaugeText();
 
 	return S_OK;
 }
@@ -57,6 +58,7 @@ HRESULT CUI_HUD::Start()
 	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
 
 	ENABLE_GAMEOBJECT(m_pChangeClassText);
+	ENABLE_GAMEOBJECT(m_pHeroGaugeText);
 
 	Bind_Btn();
 
@@ -95,8 +97,19 @@ void CUI_HUD::My_Tick()
 
 	if (m_pWrap[HeroGauge]->Is_Valid())
 	{
-		m_fHeroGauge = m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge;
+		// 0~100 0~1 할때 나누기 100을 하자나
+		
+
+		m_fHeroGauge = 1 - ( m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge);
+		//m_fHeroGauge = -1.f * (m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge) + 1.f;
+		//m_fHeroGauge = m_tStatus.fMaxHeroGauge / m_tStatus.fHeroGague -1.f;
+
 		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Set_HeroValue(m_fHeroGauge);
+
+		_tchar  szTemp[MAX_STR] = {};
+		swprintf_s(szTemp, TEXT("%.f"), m_fHeroGauge);
+
+		m_pHeroGaugeText->Set_FontText(szTemp);
 
 		if (!m_tStatus.bAbleHero)
 		{
@@ -604,4 +617,23 @@ void CUI_HUD::Create_TraingText()
 
 	CREATE_GAMEOBJECT(m_pInactiveHeroText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pInactiveHeroText);
+}
+
+void CUI_HUD::Create_HeroGaugeText()
+{
+	m_pHeroGaugeText = CUI_Object::Create();
+
+	m_pHeroGaugeText->Set_Scale(20.f);
+	m_pHeroGaugeText->Set_Pos(550.f, -195.f);
+	m_pHeroGaugeText->Set_Sort(0.85f);
+
+	GET_COMPONENT_FROM(m_pHeroGaugeText, CTexture)->Remove_Texture(0);
+
+	m_pHeroGaugeText->Set_FontRender(true);
+	m_pHeroGaugeText->Set_FontStyle(true);
+	m_pHeroGaugeText->Set_FontScale(0.25f);
+	m_pHeroGaugeText->Set_FontOffset(-18.f, -13.f);
+
+	CREATE_GAMEOBJECT(m_pHeroGaugeText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pHeroGaugeText);
 }

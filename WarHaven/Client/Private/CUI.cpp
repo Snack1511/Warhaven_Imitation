@@ -83,6 +83,9 @@ HRESULT CUI::Start()
 void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
+		
+	pShader->Set_RawValue("g_bIsSlice", &m_bIsSlice, sizeof(_bool));
+	pShader->Set_RawValue("g_vScale", &m_vScale, sizeof(_float4));
 	pShader->Set_RawValue("g_SliceRatio", &m_vSliceRatio, sizeof(_float4));
 	pShader->Set_RawValue("g_TextureSize", &m_vTextureSize, sizeof(_float2));
 }
