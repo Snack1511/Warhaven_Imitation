@@ -32,6 +32,26 @@ HRESULT CUI_UnitHUD::Start()
 	return S_OK;
 }
 
+void CUI_UnitHUD::OnEnable()
+{
+	__super::OnEnable();
+
+	for (int i = 0; i < UI_End; ++i)
+	{
+		ENABLE_GAMEOBJECT(m_pUnitUI[i]);
+	}
+}
+
+void CUI_UnitHUD::OnDisable()
+{
+	__super::OnDisable();
+
+	for (int i = 0; i < UI_End; ++i)
+	{
+		DISABLE_GAMEOBJECT(m_pUnitUI[i]);
+	}
+}
+
 void CUI_UnitHUD::My_Tick()
 {
 	__super::My_Tick();

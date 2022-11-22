@@ -41,7 +41,8 @@ HRESULT CUI_Wrapper::Start()
 	if (!m_pUI)
 		return E_FAIL;
 
-	CREATE_GAMEOBJECT(m_pUI, GROUP_UI);
+	if (m_pUI)
+		CREATE_GAMEOBJECT(m_pUI, GROUP_UI);
 
 	__super::Start();
 
@@ -108,14 +109,16 @@ void CUI_Wrapper::OnEnable()
 {
 	__super::OnEnable();
 
-	ENABLE_GAMEOBJECT(m_pUI);
+	if (m_pUI)
+		ENABLE_GAMEOBJECT(m_pUI);
 }
 
 void CUI_Wrapper::OnDisable()
 {
 	__super::OnDisable();
 
-	DISABLE_GAMEOBJECT(m_pUI);
+	if (m_pUI)
+		DISABLE_GAMEOBJECT(m_pUI);
 }
 
 void CUI_Wrapper::Enable_Fade(CUI_Object* m_pUI)

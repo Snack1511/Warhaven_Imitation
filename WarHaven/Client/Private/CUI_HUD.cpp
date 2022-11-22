@@ -38,6 +38,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_PortUnderLine();
 	Create_TraingText();
 	Create_HeroGaugeText();
+	Create_OxenJumpText();
 
 	return S_OK;
 }
@@ -632,4 +633,24 @@ void CUI_HUD::Create_HeroGaugeText()
 
 	CREATE_GAMEOBJECT(m_pHeroGaugeText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pHeroGaugeText);
+}
+
+void CUI_HUD::Create_OxenJumpText()
+{
+	m_pOxenJumpText = CUI_Object::Create();
+
+	m_pOxenJumpText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteSpaceKeyIcon.png"));
+
+	m_pOxenJumpText->Set_PosY(-50.f);
+	m_pOxenJumpText->Set_Scale(20.f);
+
+	m_pOxenJumpText->Set_FontRender(true);
+	m_pOxenJumpText->Set_FontStyle(true);
+
+	m_pOxenJumpText->Set_FontOffset(13.f, -13.f);
+	m_pOxenJumpText->Set_FontScale(0.25f);
+
+	m_pOxenJumpText->Set_FontText(TEXT("มกวม"));
+
+	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 }

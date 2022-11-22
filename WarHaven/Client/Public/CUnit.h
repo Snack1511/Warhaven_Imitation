@@ -45,7 +45,7 @@ public:
 public:
 	struct UNIT_STATUS
 	{
-		CLASS_TYPE	eClass = ENGINEER;
+		CLASS_TYPE	eClass = WARRIOR;
 		_bool		bAbleHero = false;
 		_bool		bIsHero = false;
 		_float		fMaxHeroGauge = 100.f;
@@ -305,6 +305,7 @@ private:
 	void Create_UnitHUD();
 	void Enable_UnitHUD();
 
+	void Frustum_UnitHUD();
 	void TransformProjection();
 
 private:

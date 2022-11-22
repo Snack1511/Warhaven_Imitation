@@ -433,9 +433,7 @@ HRESULT CUnit::Initialize_Prototype()
 	Add_Component(pPhysXCharacter);
 #endif // PHYSX_OFF
 
-
 	Create_UnitHUD();
-
 
 	return S_OK;
 }
@@ -461,8 +459,6 @@ HRESULT CUnit::Initialize()
 
 	if (!m_pPhysics)
 		return E_FAIL;
-
-
 
 
 	return S_OK;
@@ -876,8 +872,6 @@ void CUnit::My_Tick()
 		m_fHitDelayAcc = 0.f;
 
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
-
-	TransformProjection();
 }
 
 void CUnit::My_LateTick()
@@ -892,21 +886,8 @@ void CUnit::My_LateTick()
 		}
 	}
 
-	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.f))
-	{
-		if (!m_pUnitHUD->Is_Valid())
-		{
-			ENABLE_GAMEOBJECT(m_pUnitHUD);
-		}
-	}
-	else
-	{
-		if (m_pUnitHUD->Is_Valid())
-		{
-			DISABLE_GAMEOBJECT(m_pUnitHUD);
-		}
-	}
+	Frustum_UnitHUD();
+	TransformProjection();
 }
 
 void CUnit::Effect_Hit(_float4 vHitPos)
@@ -916,6 +897,7 @@ void CUnit::Effect_Hit(_float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"GroundHitParticle", vHitPos);
 }
+
 void CUnit::TransformProjection()
 {
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_ProjPos(m_pTransform);
@@ -961,4 +943,21 @@ void CUnit::Enable_UnitHUD()
 	CREATE_GAMEOBJECT(m_pUnitHUD, GROUP_UI);
 }
 
-// Ã¼·ÂÀ» 
+void CUnit::Frustum_UnitHUD()
+{
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.f))
+	{
+		if (!m_pUnitHUD->Is_Valid())
+		{
+			ENABLE_GAMEOBJECT(m_pUnitHUD);
+		}
+	}
+	else
+	{
+		if (m_pUnitHUD->Is_Valid())
+		{
+			DISABLE_GAMEOBJECT(m_pUnitHUD);
+		}
+	}
+}

@@ -71,6 +71,8 @@ private:	// 클래스 변경 창
 
 	CUI_Object* m_pHeroGaugeText = nullptr;
 
+	CUI_Object* m_pOxenJumpText = nullptr;
+
 private:
 	void Bind_Btn();
 
@@ -92,6 +94,7 @@ private:
 	void Create_PortUnderLine();
 	void Create_TraingText();
 	void Create_HeroGaugeText();
+	void Create_OxenJumpText();
 };
 
 END

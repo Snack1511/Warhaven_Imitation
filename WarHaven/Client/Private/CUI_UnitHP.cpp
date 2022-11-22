@@ -39,12 +39,12 @@ HRESULT CUI_UnitHP::Initialize()
 
 HRESULT CUI_UnitHP::Start()
 {
-	__super::Start();
-
 	for (int i = 0; i < IT_END; ++i)
 	{
 		CREATE_GAMEOBJECT(m_pUnitHP[i], GROUP_ENEMY);
 	}
+
+	__super::Start();
 
 	Bind_Shader();
 
@@ -53,12 +53,34 @@ HRESULT CUI_UnitHP::Start()
 	return S_OK;
 }
 
+void CUI_UnitHP::OnEnable()
+{
+	__super::OnEnable();
+
+	for (int i = 0; i < IT_END; ++i)
+	{
+		ENABLE_GAMEOBJECT(m_pUnitHP[i]);
+	}
+}
+
+void CUI_UnitHP::OnDisable()
+{
+	__super::OnDisable();
+
+	for (int i = 0; i < IT_END; ++i)
+	{
+		DISABLE_GAMEOBJECT(m_pUnitHP[i]);
+	}
+}
+
 void CUI_UnitHP::My_Tick()
 {
+	__super::My_Tick();
 }
 
 void CUI_UnitHP::My_LateTick()
 {
+	__super::My_LateTick();
 }
 
 void CUI_UnitHP::Set_Shader_HpGauge(CShader* pShader, const char* pConstName)
