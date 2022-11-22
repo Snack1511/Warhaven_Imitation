@@ -41,6 +41,7 @@
 
 #include "CUtility_Transform.h"
 
+#include "CUser.h"
 #include "CUI_Wrapper.h"
 #include "CUI_UnitHUD.h"
 
@@ -156,17 +157,17 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	case COL_ENEMYHITBOX_BODY:
 
 		// 공격 공격을 당했다면
-		if(eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
+		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
 			eFinalHitState = m_tHitType.m_eFlyState;
 
 		// 그로기 공격을 당했다면
-		else if(eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
+		else if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
 			eFinalHitState = m_tHitType.m_eGroggyState;
 
 		else
 			eFinalHitState = m_tHitType.m_eHitState;
 
-		
+
 
 #ifdef _DEBUG
 		cout << " 바디샷 " << endl;
@@ -179,7 +180,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	case COL_PLAYERHITBOX_HEAD:
 	case COL_ENEMYHITBOX_HEAD:
 
-		
+
 		// 공격 공격을 당했다면
 		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
 			eFinalHitState = m_tHitType.m_eFlyState;
@@ -209,7 +210,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	_float fDamage = pOtherUnit->Calculate_Damage(tOtherHitInfo.bHeadShot, bGuardSuccess);
 
-	if (On_PlusHp(fDamage))
+	if (On_PlusHp(fDamage, pOtherUnit))
 	{
 		Enter_State(eFinalHitState, &tOtherHitInfo);
 	}
@@ -298,12 +299,12 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 {
 #define HEADSHOTRATIO 1.5f
 #define GUARDSUCCESS 0.1f
-	_float fDmg = m_tUnitStatus.fAttackDamage* m_pCurState->Get_DamagePumping()
+	_float fDmg = m_tUnitStatus.fAttackDamage * m_pCurState->Get_DamagePumping()
 		* ((bHeadShot) ? HEADSHOTRATIO : 1.f)
 		* ((bGuard) ? GUARDSUCCESS : 1.f);
 
 	//헤드샷이면 1.5배
-	
+
 	_float fDamage = m_tUnitStatus.fAttackDamage;
 	fDamage *= m_pCurState->Get_DamagePumping();
 	fDamage *= (bHeadShot) ? HEADSHOTRATIO : 1.f;
@@ -313,8 +314,16 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 	return fDamage;
 }
 
-_bool CUnit::On_PlusHp(_float fHp)
+_bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit)
 {
+	if (pOtherUnit)
+	{
+		if (pOtherUnit->m_bIsMainPlayer)
+		{
+			CUser::Get_Instance()->SetActive_DamageTex(fHp);
+		}
+	}
+
 	m_tUnitStatus.fHP += fHp;
 
 	if (m_tUnitStatus.fHP <= 0.f)
@@ -326,8 +335,6 @@ _bool CUnit::On_PlusHp(_float fHp)
 	{
 		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	}
-		
-	// 돌아올 곳
 
 	return true;
 }
@@ -433,9 +440,7 @@ HRESULT CUnit::Initialize_Prototype()
 	Add_Component(pPhysXCharacter);
 #endif // PHYSX_OFF
 
-
 	Create_UnitHUD();
-
 
 	return S_OK;
 }
@@ -461,8 +466,6 @@ HRESULT CUnit::Initialize()
 
 	if (!m_pPhysics)
 		return E_FAIL;
-
-
 
 
 	return S_OK;
@@ -523,15 +526,13 @@ void CUnit::OnEnable()
 		m_pCurState->Enter(this, m_pAnimator, m_eCurState);
 
 	On_InitSetting();
-
-
 }
 
 void CUnit::OnDisable()
 {
 	__super::OnDisable();
-	
-	
+
+	DISABLE_GAMEOBJECT(m_pUnitHUD);
 }
 
 
@@ -598,7 +599,7 @@ void CUnit::Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable)
 		}
 	}
 
-		
+
 
 }
 
@@ -878,8 +879,6 @@ void CUnit::My_Tick()
 		m_fHitDelayAcc = 0.f;
 
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
-
-	TransformProjection();
 }
 
 void CUnit::My_LateTick()
@@ -893,6 +892,9 @@ void CUnit::My_LateTick()
 			On_Die();
 		}
 	}
+
+	Frustum_UnitHUD();
+	TransformProjection();
 }
 
 void CUnit::Effect_Hit(_float4 vHitPos)
@@ -902,6 +904,7 @@ void CUnit::Effect_Hit(_float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"GroundHitParticle", vHitPos);
 }
+
 void CUnit::TransformProjection()
 {
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_ProjPos(m_pTransform);
@@ -925,9 +928,10 @@ void CUnit::On_InitSetting()
 		case UNITCOLLIDER::GROGGY:
 		case UNITCOLLIDER::FLYATTACK:
 			if (m_pUnitCollider[i])
-			DISABLE_COMPONENT(m_pUnitCollider[i]);
+				DISABLE_COMPONENT(m_pUnitCollider[i]);
 
 			break;
+
 
 		default:
 			break;
@@ -946,4 +950,21 @@ void CUnit::Enable_UnitHUD()
 	CREATE_GAMEOBJECT(m_pUnitHUD, GROUP_UI);
 }
 
-// 체력을 
+void CUnit::Frustum_UnitHUD()
+{
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.f))
+	{
+		if (!m_pUnitHUD->Is_Valid())
+		{
+			ENABLE_GAMEOBJECT(m_pUnitHUD);
+		}
+	}
+	else
+	{
+		if (m_pUnitHUD->Is_Valid())
+		{
+			DISABLE_GAMEOBJECT(m_pUnitHUD);
+		}
+	}
+}

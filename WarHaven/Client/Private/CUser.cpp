@@ -23,6 +23,7 @@
 
 #include "CCamera_Free.h"
 
+#include "CUI_HUD.h"
 #include "CBloodOverlay.h"
 
 
@@ -88,7 +89,7 @@ void CUser::Fix_CursorPosToCenter()
 	ptMouse = m_ptCenter;
 
 	::ClientToScreen(g_hWnd, &ptMouse);
-	::SetCursorPos(ptMouse.x, ptMouse.y);	
+	::SetCursorPos(ptMouse.x, ptMouse.y);
 }
 
 void CUser::KeyInput_FPSSetter()
@@ -163,5 +164,25 @@ void CUser::Turn_BloodOverLay(_float fHpRatio)
 
 	ENABLE_GAMEOBJECT(m_pBloodOverlay);
 
+}
+
+void CUser::On_EnterLevel()
+{
+	if (!m_pUI_HUD)
+	{
+		m_pUI_HUD = CUI_HUD::Create();
+
+		CREATE_GAMEOBJECT(m_pUI_HUD, GROUP_UI);
+	}
+}
+
+void CUser::SetActive_OxenJumpText(_bool value)
+{
+	m_pUI_HUD->SetActive_OxenJumpText(value);
+}
+
+void CUser::SetActive_DamageTex(_float fDmg)
+{
+	m_pUI_HUD->SetActive_DamageTex(fDmg);
 }
 

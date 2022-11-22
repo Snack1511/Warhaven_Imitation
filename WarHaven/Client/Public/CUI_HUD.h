@@ -27,8 +27,11 @@ public:
 public:
 	virtual void On_PointEnter_Port(const _uint& iEventNum);
 	virtual void On_PointExit_Port(const _uint& iEventNum);
-
 	virtual void On_PointDown_Port(const _uint& iEventNum);
+
+public:
+	void SetActive_OxenJumpText(_bool value);
+	void SetActive_DamageTex(_float fDmg);
 
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
@@ -68,8 +71,13 @@ private:	// 클래스 변경 창
 
 	CUI_Object* m_pChangeClassText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;
-
 	CUI_Object* m_pHeroGaugeText = nullptr;
+	CUI_Object* m_pOxenJumpText = nullptr;
+
+	CUI_Object* m_pDmgText = nullptr;
+	CUI_Object* m_pDmgTexts[32];
+	_uint m_iDmgTextIndex = 0;
+	_bool m_bDmgTextEffct = false;
 
 private:
 	void Bind_Btn();
@@ -92,6 +100,8 @@ private:
 	void Create_PortUnderLine();
 	void Create_TraingText();
 	void Create_HeroGaugeText();
+	void Create_OxenJumpText();
+	void Create_DmgText();
 };
 
 END

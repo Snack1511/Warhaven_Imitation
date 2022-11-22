@@ -45,7 +45,7 @@ public:
 public:
 	struct UNIT_STATUS
 	{
-		CLASS_TYPE	eClass = ENGINEER;
+		CLASS_TYPE	eClass = WARRIOR;
 		_bool		bAbleHero = false;
 		_bool		bIsHero = false;
 		_float		fMaxHeroGauge = 100.f;
@@ -95,7 +95,7 @@ public:
 		/* AI Test Bounce */
 		STATE_TYPE		m_eRightBounce = STATE_END;
 
-		
+
 
 
 		/* °¡µå ±úÁø »óÅÂ*/
@@ -139,9 +139,11 @@ public:
 public:
 	virtual	void	On_Die();
 
+	void Set_MainPlayer() { m_bIsMainPlayer = true; }
+
 public:
 	_float			Calculate_Damage(_bool bHeadShot, _bool bGuard);
-	virtual _bool	On_PlusHp(_float fHp);
+	virtual _bool	On_PlusHp(_float fHp, CUnit* pOtherUnit);
 
 public:
 	_bool		Can_Use(COOL_TYPE eType) { if (eType < COOL_END && m_fCoolAcc[eType] <= 0.f) return true; return false; }
@@ -252,7 +254,9 @@ public:
 
 
 protected:
+	// ¾ê°¡ max
 	_float	m_fCoolTime[COOL_END] = {};
+	// ¾ê°¡ cur
 	_float	m_fCoolAcc[COOL_END] = {};
 
 	_float	m_fAttackDelay = 0.f;
@@ -303,6 +307,7 @@ private:
 	void Create_UnitHUD();
 	void Enable_UnitHUD();
 
+	void Frustum_UnitHUD();
 	void TransformProjection();
 
 private:
@@ -311,10 +316,11 @@ private:
 private:
 	void	Effect_Hit(_float4 vHitPos);
 
-	private:
-		_bool		m_bDie = false;
-		_float		m_fDeadTimeAcc = 0.f;
-		_float		m_fDeadTime = 0.1f;
+private:
+	_bool		m_bIsMainPlayer = false;
+	_bool		m_bDie = false;
+	_float		m_fDeadTimeAcc = 0.f;
+	_float		m_fDeadTime = 0.1f;
 
 };
 END

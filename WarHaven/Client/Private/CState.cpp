@@ -227,7 +227,7 @@ _uint CState::Move_Direction_Loop(CUnit* pOwner, CAnimator* pAnimator, _float fI
 
 	Change_Location_Loop(iDirection, pAnimator, fInterPolationTime);
 
-	return Move(iDirection, pOwner);
+	return DoMove(iDirection, pOwner);
 
 }
 
@@ -251,7 +251,7 @@ void CState::Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float
 
 
 
-_uint CState::Move(_uint iDirection, CUnit* pOwner)
+_uint CState::DoMove(_uint iDirection, CUnit* pOwner)
 {
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();

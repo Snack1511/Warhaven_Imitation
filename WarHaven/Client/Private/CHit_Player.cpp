@@ -80,7 +80,7 @@ void CHit_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 
 STATE_TYPE CHit_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	Move(Get_Direction(), pOwner);
+	DoMove(Get_Direction(), pOwner);
 
     return __super::Tick(pOwner, pAnimator);
 }

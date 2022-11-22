@@ -79,7 +79,7 @@ void CHit_Sting_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 STATE_TYPE CHit_Sting_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (m_bMoveTrigger)
-		Move(Get_Direction(), pOwner);
+		DoMove(Get_Direction(), pOwner);
 
     return __super::Tick(pOwner, pAnimator);
 }

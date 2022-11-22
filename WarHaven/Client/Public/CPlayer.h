@@ -81,7 +81,7 @@ public:
 
 public:
 	CUnit* Get_CurrentUnit() { return m_pCurrentUnit; }
-
+	void Set_MainPlayer();
 
 public:
 	// CGameObject을(를) 통해 상속됨
@@ -101,6 +101,7 @@ private:
 
 	_uint	m_iReserveState = MyRESERVE_ERR_MSG_END;
 
+	_bool m_bIsMainPlayer = false;
 
 private:
 	virtual void My_Tick() override;

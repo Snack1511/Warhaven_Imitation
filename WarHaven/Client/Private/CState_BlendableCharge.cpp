@@ -337,7 +337,7 @@ void CState_BlendableCharge::Move_Cycle(CAnimator* pAnimator, _uint* arrDirectio
 	}
 
 
-	Move(iDirection, m_pOwner);
+	DoMove(iDirection, m_pOwner);
 }
 
 void CState_BlendableCharge::On_MaxCharge(CUnit* pOwner, CAnimator* pAnimator)

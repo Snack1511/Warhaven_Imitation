@@ -61,7 +61,7 @@ STATE_TYPE CRun_SpearmMan_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	Change_Location_Begin(iDirection, pAnimator);
 
-	Move(iDirection, pOwner);
+	DoMove(iDirection, pOwner);
 
     return __super::Tick(pOwner, pAnimator);
 }

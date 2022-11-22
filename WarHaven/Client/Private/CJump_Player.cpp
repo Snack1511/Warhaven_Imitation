@@ -59,7 +59,7 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 			m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
 			m_fAnimSpeed = 1.5f;
 
-			Move(iDirection, pOwner);
+			DoMove(iDirection, pOwner);
 
 			if (pOwner->Get_PhysicsCom()->Get_Physics().fSpeed <= 1.f)
 			{

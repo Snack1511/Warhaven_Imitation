@@ -377,6 +377,16 @@ void CPlayer::Set_Postion(_float4 vPos)
 	}
 }
 
+void CPlayer::Set_MainPlayer()
+{
+	m_bIsMainPlayer = true;
+
+	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
+	{
+		m_pDefaultClass[i]->Set_MainPlayer();
+	}
+}
+
 
 HRESULT CPlayer::Initialize_Prototype(wstring wstrCamKey, CLASS_DEFAULT eClass)
 {

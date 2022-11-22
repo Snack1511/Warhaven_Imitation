@@ -161,7 +161,7 @@ protected:
 
 	void	Change_Location_Loop(_uint iDirection, CAnimator* pAnimator, _float fInterPolationTime);
 
-	_uint	Move(_uint iDirection, CUnit* pOwner);
+	_uint	DoMove(_uint iDirection, CUnit* pOwner);
 	void	Follow_MouseLook(CUnit* pOwner);
 	void	Follow_MouseLook_Turn(CUnit* pOwner);
 

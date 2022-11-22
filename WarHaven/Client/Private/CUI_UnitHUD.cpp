@@ -32,6 +32,26 @@ HRESULT CUI_UnitHUD::Start()
 	return S_OK;
 }
 
+void CUI_UnitHUD::OnEnable()
+{
+	__super::OnEnable();
+
+	for (int i = 0; i < UI_End; ++i)
+	{
+		ENABLE_GAMEOBJECT(m_pUnitUI[i]);
+	}
+}
+
+void CUI_UnitHUD::OnDisable()
+{
+	__super::OnDisable();
+
+	for (int i = 0; i < UI_End; ++i)
+	{
+		DISABLE_GAMEOBJECT(m_pUnitUI[i]);
+	}
+}
+
 void CUI_UnitHUD::My_Tick()
 {
 	__super::My_Tick();
@@ -52,8 +72,6 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform, vOffset);
 
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_ProjPos(pTransform);
-
-
 }
 
 void CUI_UnitHUD::Ready_UnitHP()

@@ -10,6 +10,7 @@ class CUnit;
 class CBloodOverlay;
 class CUI_Cursor;
 class CPlayer;
+class CUI_HUD;
 
 class CUser
 {
@@ -62,8 +63,15 @@ public:
 	void SetUp_BloodOverlay();
 	void Turn_BloodOverLay(_float fHpRatio);
 
+public:
+	void On_EnterLevel();
+
+	void SetActive_OxenJumpText(_bool value);
+	void SetActive_DamageTex(_float fDmg);
+
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
 	CUI_Cursor* m_pCursor = nullptr;
+	CUI_HUD* m_pUI_HUD = nullptr;
 };
 END
