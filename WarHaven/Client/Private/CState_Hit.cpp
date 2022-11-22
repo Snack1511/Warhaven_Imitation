@@ -34,10 +34,10 @@ HRESULT CState_Hit::Initialize()
     m_iHitIndex[HIT_STATE_S] = 14;
     m_iHitIndex[HIT_STATE_W] = 15;
 
-    m_iHitStingIndex[HIT_STATE_E] = 16;
-    m_iHitStingIndex[HIT_STATE_N] = 17;
-    m_iHitStingIndex[HIT_STATE_S] = 18;
-    m_iHitStingIndex[HIT_STATE_W] = 19;
+    m_iHitStabIndex[HIT_STATE_E] = 16;
+    m_iHitStabIndex[HIT_STATE_N] = 17;
+    m_iHitStabIndex[HIT_STATE_S] = 18;
+    m_iHitStabIndex[HIT_STATE_W] = 19;
 
 
     return S_OK;
@@ -155,9 +155,6 @@ void CState_Hit::Guard_State()
 {
     Face_Check(false);
 
-    m_tHitInfo.fJumpPower = 0.f;
-    m_tHitInfo.fKnockBackPower = 0.f;
-
     /* 가드 Hit 처리 */
     switch (m_tHitInfo.eHitType)
     {
@@ -231,9 +228,9 @@ void CState_Hit::Groggy_State()
 void CState_Hit::Sting_State()
 {
  
-    if (!m_iHitStingIndex[HIT_STATE_N])
+    if (!m_iHitStabIndex[HIT_STATE_N])
     {
-        m_iAnimIndex = m_iHitStingIndex[HIT_STATE_N];
+        m_iAnimIndex = m_iHitStabIndex[HIT_STATE_N];
     }
     else
     {

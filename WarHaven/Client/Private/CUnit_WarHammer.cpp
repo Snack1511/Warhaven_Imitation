@@ -50,7 +50,6 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_PLAYERATTACK : COL_ENEMYATTACK;
 	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_PLAYERGUARDBREAK : COL_ENEMYGUARDBREAK;
 	COL_GROUP_CLIENT	eGroggy = (bPlayer) ? COL_PLAYERGROGGYATTACK : COL_ENEMYGROGGYATTACK;
-	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_PLAYERFLYATTACK : COL_ENEMYFLYATTACK;
 
 	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
 
@@ -58,8 +57,8 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),	eHitBoxBody },
-		{0.6f, _float4(0.f, 1.f, 0.f),	eHitBoxBody },
+		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
+		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
 	};
 
 
@@ -68,10 +67,10 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 
 	tUnitColDesc[0].fRadius = 0.4f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = eHitBoxHead;
+	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
 
 
-	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
+	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("ob_Head"));
 
 	const _uint iWeaponSphereNum = 6;
 
@@ -91,62 +90,33 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 			tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
 			tWeaponUnitColDesc[i].eColType = eAttack;
 		}
+
 	}
 
-	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 6, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-
-	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
+	CUnit::UNIT_COLLIDERDESC tWeapon_RUnitColDesc[3] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.7f, _float4(0.f, 0.5f, 0.f), eHitBoxGuard },
-		{0.7f, _float4(0.f, 1.2f, 0.f), eHitBoxGuard },
+		{0.6f, _float4(0.f, 0.f, -115.f),	COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -80.f),	COL_PLAYERATTACK },
+		{0.5f, _float4(0.f, 0.f, -55.f),	COL_PLAYERATTACK }
 	};
 
-	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
+	SetUp_UnitCollider(CUnit::WEAPON_R, tWeapon_RUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 
-	CUnit::UNIT_COLLIDERDESC tGroggyColDesc[2] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),	eGroggy },
-		{0.6f, _float4(0.f, 1.f, 0.f),	eGroggy },
-	};
+	tUnitColDesc[0].fRadius = 2.f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.5f, 0.f, 0.f);
+	tUnitColDesc[0].eColType = eGroggy;
 
-	SetUp_UnitCollider(CUnit::GROGGY, tGroggyColDesc, 2, DEFAULT_TRANS_MATRIX, false);
+	SetUp_UnitCollider(CUnit::GROGGY, tUnitColDesc, 1);
 
 
-	tUnitColDesc[0].fRadius = 1.f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = eFlyAttack;
 
-	SetUp_UnitCollider(CUnit::FLYATTACK, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false);
 }
 
 void CUnit_WarHammer::SetUp_HitStates(_bool bPlayer)
 {
-	
-	if (!bPlayer)
-	{
-		m_tHitType.m_eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.m_eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.m_eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.m_eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.m_eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.m_eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.m_eLeftBounce = STATE_BOUNCE_WARHAMMER_L;
 
-	}
-	else
-	{
-		m_tHitType.m_eHitState = STATE_HIT_WARHAMMER;
-		m_tHitType.m_eGuardState = STATE_GUARDHIT_WARHAMMER;
-		m_tHitType.m_eGuardBreakState = STATE_GUARD_CANCEL_WARHAMMER;
-		m_tHitType.m_eGroggyState = STATE_GROGGYHIT_WARHAMMER;
-		m_tHitType.m_eStingHitState = STATE_STINGHIT_WARHAMMER;
-		m_tHitType.m_eFlyState = STATE_FLYHIT_WARHAMMER;
-		m_tHitType.m_eLeftBounce = STATE_BOUNCE_WARHAMMER_L;
-	}
 }
 
 void CUnit_WarHammer::Set_BarricadeMatrix()

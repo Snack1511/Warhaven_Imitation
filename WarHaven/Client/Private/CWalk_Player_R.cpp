@@ -123,5 +123,38 @@ void CWalk_Player_R::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CWalk_Player_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return __super::Check_Condition(pOwner, pAnimator);
+    /* Player가 Walk로 오는 조건
+    1. 
+    */
+
+    // m_eStateType 이 End 에 가지 않으면 Enter 를 호출한다.
+
+    // W 랑 A 를 누르면 왼쪽 앞으로 이동한다.
+    // W 랑 D 를 누르면 왼쪽 옆으로 이동한다.
+
+    // 만약 WASD 를 눌렀다면
+
+    // 점프를 하지 않고
+    if (KEY(SPACE, NONE))
+    {
+        // 천천히 
+        if (KEY(CTRL, HOLD))
+        {
+            // 걸어간다.
+            if (KEY(W, HOLD) ||
+                KEY(A, HOLD) ||
+                KEY(S, HOLD) ||
+                KEY(D, HOLD))
+            {
+
+                return m_eStateType;
+            }
+
+        }
+    }
+
+   
+
+
+    return STATE_END;
 }

@@ -37,8 +37,6 @@ private:
 
 	void	Col_Check();
 
-	void	My_FreeCam();
-
 
 private:
 	HRESULT SetUp_Warrior_TH();

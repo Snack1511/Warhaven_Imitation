@@ -43,7 +43,7 @@ HRESULT CAI_SandBack_Hit::Initialize()
     __super::Initialize();
 
     m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = m_iHitIndex[0];                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 2;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_HIT_TEST_ENEMY;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     // 선형 보간 시간
@@ -116,8 +116,8 @@ STATE_TYPE CAI_SandBack_Hit::Check_Condition(CUnit* pOwner, CAnimator* pAnimator
     1. 현재 진행중인 애니메이션이 끝났을 때
     */
 
-    //if (pAnimator->Is_CurAnimFinished())
-    //    return m_eStateType;
+    if (pAnimator->Is_CurAnimFinished())
+        return m_eStateType;
 
 
     return STATE_END;

@@ -60,11 +60,6 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 		break;
 
-	case Client::STATE_SPRINTATTACK_PLAYER:
-		m_eAnimType = ANIM_ATTACK;
-		m_iAnimIndex = 17;
-		break;
-
 	case Client::STATE_ATTACK_HORIZONTALUP_R:
 	case Client::STATE_ATTACK_HORIZONTALMIDDLE_R:
 	case Client::STATE_ATTACK_HORIZONTALDOWN_R:
@@ -74,9 +69,8 @@ void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 		m_eStateType = STATE_BOUNCE_PLAYER_R;
 
 		break;
-
 	case Client::STATE_ATTACK_VERTICALCUT:
-
+	case Client::STATE_SPRINTATTACK_PLAYER:
 
 		m_eAnimType = ANIM_ATTACK;
 		m_iAnimIndex = 19;

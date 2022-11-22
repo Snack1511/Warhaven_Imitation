@@ -33,13 +33,6 @@ CWarHammer_AirSpike_End* CWarHammer_AirSpike_End::Create()
 }
 HRESULT CWarHammer_AirSpike_End::Initialize()
 {
-	m_tHitInfo.eHitType = HIT_TYPE::eUP;
-	m_tHitInfo.fKnockBackPower = 3.f;
-	m_tHitInfo.fJumpPower = 3.2f;
-	m_tHitInfo.bFly = true;
-	m_tHitInfo.iLandKeyFrame = 30;
-
-
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
 	m_iAnimIndex = 2;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_AIRSPIKE_END_WARHAMMER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -87,7 +80,7 @@ STATE_TYPE CWarHammer_AirSpike_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarHammer_AirSpike_End::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Enable_FlyAttackCollider(false);
+	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
 
@@ -112,12 +105,12 @@ void CWarHammer_AirSpike_End::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 	case 0:
 		pOwner->Shake_Camera(0.2f, 0.3f);
 		m_bAttackTrigger = true;
-		pOwner->Enable_FlyAttackCollider(true);
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 
 	case 1:
 		m_bAttackTrigger = false;
-		pOwner->Enable_FlyAttackCollider(false);
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 		break;
 
 	default:

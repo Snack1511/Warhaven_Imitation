@@ -85,7 +85,8 @@ STATE_TYPE CHit_GuardHit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CHit_GuardHit_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    pOwner->Enable_GuardCollider(false);
+	//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+
 }
 
 STATE_TYPE CHit_GuardHit_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

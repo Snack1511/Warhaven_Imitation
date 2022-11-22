@@ -67,6 +67,7 @@ STATE_TYPE CGuard_Loop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CGuard_Loop_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+    /* 할거없음 */
 	pOwner->Enable_GuardCollider(false);
 
 }

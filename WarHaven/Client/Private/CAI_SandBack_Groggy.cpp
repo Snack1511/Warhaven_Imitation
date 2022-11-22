@@ -52,7 +52,7 @@ HRESULT CAI_SandBack_Groggy::Initialize()
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 1.5f;
+    m_fAnimSpeed = 2.f;
 
     //m_vecAdjState.push_back(STATE_IDLE_WARRIOR_R_AI_ENEMY);
    // m_vecAdjState.push_back(STATE_IDLE_WARRIOR_L_AI_ENEMY);
@@ -74,24 +74,13 @@ void CAI_SandBack_Groggy::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
     /* Owner의 Animator Set Idle로 */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
 
-    if (ePrevType == STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY ||
-        ePrevType == STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY ||
-        ePrevType == STATE_BOUNCE_WARRIOR_L_AI_ENEMY ||
-        ePrevType == STATE_BOUNCE_WARRIOR_R_AI_ENEMY)
-        bTestAttack = true;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CAI_SandBack_Groggy::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pAnimator->Get_CurAnimFrame() > 50)
-    {
-        if (bTestAttack)
-            return STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY;
-    }
-
-    if(pAnimator->Is_CurAnimFinished())
+    if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
         return STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY;
 
     return __super::Tick(pOwner, pAnimator);

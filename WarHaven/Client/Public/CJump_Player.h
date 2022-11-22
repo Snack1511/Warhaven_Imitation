@@ -24,10 +24,6 @@ protected:
 
 protected:
 	_int	iPlaceJumpAnimIndex = 0; // 제자리 점프 AnimIndex;
-	
-
-private:
-	_float	fOxenJumpPower = 0.f;
 
 };
 

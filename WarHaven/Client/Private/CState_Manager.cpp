@@ -201,11 +201,6 @@
 #include "CWarHammer_Attack_VerticalAttack_L.h"
 #include "CWarHammer_Attack_VerticalAttack_R.h"
 
-#include "CHit_WarHammer.h"
-#include "CHit_GuardHit_WarHammer.h"
-#include "CHit_Groggy_WarHammer.h"
-#include "CHit_Sting_WarHammer.h"
-#include "CHit_Fly_WarHammer.h"
 
 #pragma endregion
 
@@ -597,15 +592,6 @@ void CState_Manager::WarHammer_State()
 
 	m_arrStates[STATE_CHARGEATTACK_FRONT_WARHAMMER_L] = CWarHammer_Attack_VerticalAttack_L::Create();
 	m_arrStates[STATE_CHARGEATTACK_FRONT_WARHAMMER_R] = CWarHammer_Attack_VerticalAttack_R::Create();
-
-
-	m_arrStates[STATE_HIT_WARHAMMER] = CHit_WarHammer::Create();
-	m_arrStates[STATE_GUARDHIT_WARHAMMER] = CHit_GuardHit_WarHammer::Create();
-	m_arrStates[STATE_GROGGYHIT_WARHAMMER] = CHit_Groggy_WarHammer::Create();
-	m_arrStates[STATE_STINGHIT_WARHAMMER] = CHit_Sting_WarHammer::Create();
-	m_arrStates[STATE_FLYHIT_WARHAMMER] = CHit_Fly_WarHammer::Create();
-
-
 }
 
 void CState_Manager::Valkyrie_State()

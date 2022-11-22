@@ -50,8 +50,8 @@ void CBounce_Warrior_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	switch (ePrevType)
 	{
-	case Client::STATE_BOUNCE_WARRIOR_L_AI_ENEMY:
-	case Client::STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
+	case Client::STATE_ATTACK_HORIZONTALUP_L:
+	case Client::STATE_ATTACK_HORIZONTALMIDDLE_L:
 	case Client::STATE_ATTACK_HORIZONTALDOWN_L:
 
 
@@ -62,7 +62,7 @@ void CBounce_Warrior_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 		break;
 
 	case Client::STATE_ATTACK_HORIZONTALUP_R:
-	case Client::STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
+	case Client::STATE_ATTACK_HORIZONTALMIDDLE_R:
 	case Client::STATE_ATTACK_HORIZONTALDOWN_R:
 
 		m_eAnimType = ANIM_ATTACK;
