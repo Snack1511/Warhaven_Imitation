@@ -320,14 +320,14 @@ PS_OUT PS_ANIMATION_DISSOLVE_MAIN(PS_IN In)
 	if (Out.vDiffuse.a < 0.01f)
 		discard;
 	//알파는 마스크맵 검은곳에다가 기본 칼라까지
-	Out.vDiffuse.a *= In.vColor.a;
+	/*Out.vDiffuse.a *= ;
 
 	if (Out.vDiffuse.a < 0.01f)
-		discard;
+		discard;*/
 
 	//내 알파가 이녀석 r보다 더 크면
-	if (vDissolveDesc.r > Out.vDiffuse.a)
-		Out.vDiffuse.a = 0;
+	if (vDissolveDesc.r > In.vColor.a)
+		discard;
 
 	//if (vDissolveDesc.r >= Out.vDiffuse.a - 0.05 && vDissolveDesc.r <= Out.vDiffuse.a + 0.05)
 	//	Out.vDiffuse = float4(1, 0, 0, 1); // 빨
@@ -364,7 +364,7 @@ PS_OUT PS_BLACKBACKGROUND_TEXTURE(PS_IN In)
 	//Only masking
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vDiffuse.a = Out.vDiffuse.r;
+	//Out.vDiffuse.a = Out.vDiffuse.r;
 	Out.vDiffuse.xyz += In.vColor.xyz;
 
 	Out.vDiffuse.a *= In.vColor.a;

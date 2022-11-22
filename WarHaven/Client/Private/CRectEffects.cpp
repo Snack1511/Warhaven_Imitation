@@ -1062,7 +1062,7 @@ HRESULT CRectEffects::SetUp_RectEffects_Anim(ifstream* pReadFile)
 
 	}
 
-	m_bSorting = true;
+	//m_bSorting = true;
 
 	return Initialize_Prototype();
 }

@@ -156,6 +156,7 @@ void CState_Blendable::Hit_SlashEffect(CUnit* pOwner, _float4 vHitPos)
 	switch (pOwner->Get_CurState())
 	{
 	case STATE_ATTACK_HORIZONTALUP_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", pOwner, vHitPos);
 		break;
 	case STATE_ATTACK_HORIZONTALMIDDLE_L:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", pOwner, vHitPos);
@@ -164,6 +165,7 @@ void CState_Blendable::Hit_SlashEffect(CUnit* pOwner, _float4 vHitPos)
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", pOwner, vHitPos);
 		break;
 	case STATE_ATTACK_HORIZONTALUP_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", pOwner, vHitPos);
 		break;
 	case STATE_ATTACK_HORIZONTALMIDDLE_R:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", pOwner, vHitPos);
@@ -173,6 +175,12 @@ void CState_Blendable::Hit_SlashEffect(CUnit* pOwner, _float4 vHitPos)
 		break;
 	case STATE_ATTACK_VERTICALCUT:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", pOwner, vHitPos);
+		break;
+	case STATE_ATTACK_STING_PLAYER_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", pOwner, vHitPos);
+		break;
+	case STATE_ATTACK_STING_PLAYER_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", pOwner, vHitPos);
 		break;
 
 	}

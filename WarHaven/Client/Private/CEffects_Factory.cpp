@@ -525,10 +525,17 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_RD"), "HitSlash_RD"))) //right down
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_RU"), "HitSlash_RU"))) //right Up
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_Left"), "HitSlash_Left"))) //Left
 		return E_FAIL;
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_LD"), "HitSlash_LD"))) //Left dpwn
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_LD"), "HitSlash_LD"))) //Left down
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_LU"), "HitSlash_LU"))) //Left up
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StingBlood"), "StingBlood"))) //
+		return E_FAIL;
+
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BloodEffect"), "BloodEffect"))) //bone
 		return E_FAIL;
