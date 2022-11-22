@@ -595,6 +595,14 @@ void CModel::Late_Tick()
 		for (auto& elem : m_MeshContainers)
 		{
 
+			/*юс╫ц╥н*/
+			if (elem.first == 1)
+				elem.second->Set_Enable(true);
+			else
+				elem.second->Set_Enable(false);
+
+			continue;
+
 			_uint iCurNumInstance = m_iLODNumInstance[elem.first];
 			_float4x4* matInstance = m_pIntancingMatricesLOD[elem.first];
 
