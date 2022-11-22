@@ -188,8 +188,7 @@ void CState_Blendable::Hit_SlashEffect(CUnit* pOwner, _float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pOwner, vHitPos);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner, vHitPos);
 
-	_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"KillSmoke", vHitPos, vCamMatrix);
+	
 	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
 

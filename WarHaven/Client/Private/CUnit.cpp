@@ -214,7 +214,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		//if()
 
 		/* 체력 0 이하로 내려간 경우 */
-		On_Die();
+		m_bDie = true;
 
 	}
 
@@ -270,9 +270,16 @@ void CUnit::Lerp_Camera(const _uint& iCameraLerpType)
 
 void CUnit::On_Die()
 {
+	m_bDie = false;
+	m_fDeadTimeAcc = 0.f;
+
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 1.f;
 	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f);
+	vPos.y += 0.5f;
+
+	_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"KillSmoke", vPos, vCamMatrix);
 	DISABLE_GAMEOBJECT(this);
 
 }
@@ -865,7 +872,14 @@ void CUnit::My_Tick()
 
 void CUnit::My_LateTick()
 {
-	if (KEY(NUM8, TAP))
-		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(20.f, 2.f, 20.f));
+
+	if (m_bDie)
+	{
+		m_fDeadTimeAcc += fDT(0);
+		if (m_fDeadTimeAcc >= m_fDeadTime)
+		{
+			On_Die();
+		}
+	}
 }
 

@@ -255,6 +255,8 @@ void CUnit_Warrior::OnDisable()
 
 void CUnit_Warrior::My_LateTick()
 {
+	__super::My_LateTick();
+
 	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
 		return;
 
