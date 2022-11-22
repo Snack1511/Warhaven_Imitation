@@ -19,6 +19,7 @@ public:
 
 public:
 	void	ReMap_Instances(_float4x4* pInstancesMatrices);
+	void	ReMap_Instances(_uint iNumInstance, _float4x4* pInstancesMatrices);
 
 public:
 	virtual void	Release() override;
@@ -28,6 +29,7 @@ private:
 	ComPtr<ID3D11Buffer>				m_pVBInstance = nullptr;
 	_uint						m_iInstanceStride = 0;
 	_uint						m_iNumInstance = 0;
+
 
 	//_float* m_pInstanceSpeeds = nullptr;
 

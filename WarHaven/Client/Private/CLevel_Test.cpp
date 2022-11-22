@@ -145,8 +145,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(100.f, 200.f, 100.f, 1.f);
 	LightDesc.fRange = 1000.f;
-	LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))

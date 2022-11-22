@@ -43,7 +43,7 @@ HRESULT CEffects_Factory::Initialize()
 	/* 이 시간 후에 사라짐 */
 	_float fStoneLifeTime = 6.f;
 
-	_uint	iStoneNumInstance = 10;
+	_uint	iStoneNumInstance = 8;
 	
 	wstring wstrName = L"DeathStoneParticle_0";
 	if(FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
@@ -61,7 +61,21 @@ HRESULT CEffects_Factory::Initialize()
 	))))
 		return E_FAIL;
 
+	wstrName = L"DeathStoneParticle_2";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_17.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_32.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_32.dds"
+	))))
+		return E_FAIL;
 
+	wstrName = L"DeathStoneParticle_3";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_36.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_32.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_32.dds"
+	))))
+		return E_FAIL;
 
 
 	_float fDeadBodyDensity = 10.f;
@@ -719,7 +733,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_1"))))
 		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_2"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_3"))))
+		return E_FAIL;
 
-	
 	return S_OK;
 }

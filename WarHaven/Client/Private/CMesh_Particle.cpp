@@ -98,18 +98,21 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower)
 		tTransform.p.z = vPos.z;
 		tTransform.q.w = 1.f;
 
-		vPos.x += frandom(-0.1f, 0.1f);
-		vPos.y += frandom(-0.1f, 0.1f);
-		vPos.z += frandom(-0.1f, 0.1f);
+		_float fRand = 0.3f;
+
+		vPos.x += frandom(-fRand, fRand);
+		vPos.y += frandom(-fRand, fRand);
+		vPos.z += frandom(-fRand, fRand);
 
 		_float4	vNewDir =
 		{
-		vDir.x * frandom(0.9f, 1.1f),
-		vDir.y * frandom(0.9f, 1.1f),
-		vDir.z * frandom(0.9f, 1.1f),
+		vDir.x = frandom(-1.f, 1.f),
+		vDir.y = frandom(-1.f, 1.f),
+		vDir.z = frandom(-1.f, 1.f),
 		0.f
 		};
 
+		vNewDir.Normalize();
 		vNewDir *= fPower * frandom(0.9f, 1.1f);
 
 

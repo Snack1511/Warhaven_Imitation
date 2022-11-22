@@ -137,6 +137,8 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
     
     if (m_bKeyInputable)
     {
+
+
         if (KEY(SPACE, TAP))
             m_bKeyInput = true;
     }
@@ -184,6 +186,9 @@ void CWarrior_Oxen_Loop_Attack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->Enable_FlyAttackCollider(false);
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
     pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
+
+
+
 
 
 }
@@ -274,6 +279,7 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
 		break;
 
     case 3:
+
         m_bKeyInputable = true;
         break;
     default:

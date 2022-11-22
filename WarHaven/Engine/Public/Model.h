@@ -98,7 +98,7 @@ protected:
 
 	eLOD_LEVEL					m_eLOD_Level = eLOD_LEVEL::eLOD_END;
 
-	_float						m_fLODDistance = 15.f;
+	_float						m_fLODDistance = 20.f;
 	_float4						m_vLODCenterPos = ZERO_VECTOR;
 	_float						m_fLODMaxRange = 0.f;
 
@@ -115,13 +115,23 @@ protected:
 
 
 protected:
+	_uint		m_iNumInstance = 0;
+	VTXINSTANCE* m_pInstancingMatrices = nullptr;
+
+	_uint m_iLODNumInstance[(_uint)eLOD_LEVEL::eLOD_END] = {};
+	_float4x4* m_pIntancingMatricesLOD[(_uint)eLOD_LEVEL::eLOD_END] = {};
+
+
+protected:
 	HRESULT	SetUp_Model(MODEL_TYPE eType, wstring wstrModelFilePath, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, wstring wstrInstanceFilePath, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT	SetUp_MeshContainersPtr();
 	HRESULT	SetUp_Model_LOD();
+	HRESULT	SetUp_InstancingModel_LOD();
 	HRESULT	Load_LOD(eLOD_LEVEL eLevel);
+	HRESULT	Load_InstancingLOD(eLOD_LEVEL eLevel);
 
 	HRESULT Create_ModelData(class CResource* pResource, _uint iResType, _uint iMeshPartType);
 	HRESULT Create_Material(class CResource_Material* pResource, _uint iMeshPartType);
@@ -130,6 +140,9 @@ protected:
 	HRESULT Create_InstancingMesh(class CResource_Mesh* pResource, _uint iNumInstance, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT Create_InstancingMesh(class CResource_Mesh* pResource, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix, _uint iMeshPartType);
 	HRESULT Create_HierarchyNode(class CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, _uint iMeshPartType);
+
+private:
+		void	Bake_LODFrustumInfo();
 
 
 

@@ -50,6 +50,8 @@ public:
 	virtual void	OnDisable() override;
 
 protected:
+	_float	m_fCurCosTheta = 0.f;
+
 	CPhysics* m_pPhysicsCom = nullptr;
 
 	PHYSXCCTDESC		m_tPhysXCCTDESC;

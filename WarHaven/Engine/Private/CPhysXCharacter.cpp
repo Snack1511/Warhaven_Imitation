@@ -59,6 +59,22 @@ void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 
 		static_cast<PxRigidDynamic*>(hit.actor)->addForce(CUtility_PhysX::To_PxVec3(vDir), PxForceMode::eFORCE);
 	}
+
+	if (m_pPxController->getFootPosition().y + 0.1f > hit.worldPos.y)
+	{
+		//닿은 곳 노말이랑
+		//010 을 내적
+
+		_float4 vNormal = CUtility_PhysX::To_Vector(hit.worldNormal);
+		_float4 vUp = _float4(0.f, 1.f, 0.f, 0.f);
+
+		vNormal.Normalize();
+
+		_float fCosTheta = vNormal.Dot(vUp);
+		m_fCurCosTheta = fCosTheta;
+	}
+
+
 }
 
 
@@ -99,7 +115,7 @@ void CPhysXCharacter::Tick()
 	_float4 vFall = _float4(0.f, 1.f, 0.f, 0.f) * fFallPower;
 
 
-	_float4 vMove = vDir * fSpeed * fDT(0);
+	_float4 vMove = vDir * fSpeed * fDT(0) * m_fCurCosTheta;
 
 	vMove += vFall;
 
@@ -128,6 +144,7 @@ void CPhysXCharacter::Tick()
 	{
 		//만약 땅에서 떨어졌는데 air가 false면
 		//0.1초 정도 시간을 재기
+		m_fCurCosTheta = 1.f;
 
 		m_fTimeAcc += fDT(0);
 		//if (m_fTimeAcc >= m_fColTime)

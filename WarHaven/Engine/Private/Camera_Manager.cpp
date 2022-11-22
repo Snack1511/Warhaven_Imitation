@@ -64,8 +64,14 @@ HRESULT CCamera_Manager::SetUp_ShaderResources(_bool Ortho)
 
 		_float4 vCamPos = Get_ViewPos();
 
-		/*if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(4, "g_vCamPosition", &vCamPos, sizeof(_float4))))
-			return E_FAIL;*/
+		if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(7, "g_vCamPosition", &vCamPos, sizeof(_float4))))
+			return E_FAIL;
+
+		if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(8, "g_vCamPosition", &vCamPos, sizeof(_float4))))
+			return E_FAIL;
+
+		if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(9, "g_vCamPosition", &vCamPos, sizeof(_float4))))
+			return E_FAIL;
 
 		/*if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(4, "g_vCamPosition", &vCamPos, sizeof(_float4))))
 			return E_FAIL;*/

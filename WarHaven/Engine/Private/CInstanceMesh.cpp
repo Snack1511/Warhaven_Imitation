@@ -144,6 +144,20 @@ void CInstanceMesh::ReMap_Instances(_float4x4* pInstancesMatrices)
 
 }
 
+void CInstanceMesh::ReMap_Instances(_uint iNumInstance, _float4x4* pInstancesMatrices)
+{
+	m_iNumInstance = iNumInstance;
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	DEVICE_CONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	memcpy(SubResource.pData, pInstancesMatrices, sizeof(VTXINSTANCE) * m_iNumInstance);
+
+	DEVICE_CONTEXT->Unmap(m_pVBInstance.Get(), 0);
+
+}
+
 void CInstanceMesh::Release()
 {
 }
@@ -170,6 +184,8 @@ HRESULT CInstanceMesh::Render()
 	DEVICE_CONTEXT->IASetPrimitiveTopology(m_eToplogy);
 
 	/* 6 : 하나의 도형을 그리기위해 사용하는 인덱스의 갯수. 네모라서 여섯개.  */
+
+	//_uint iNumInstance = max(m_iNumInstance / 2, 1);
 	DEVICE_CONTEXT->DrawIndexedInstanced(m_iNumIndices, m_iNumInstance, 0, 0, 0);
 
 	return S_OK;

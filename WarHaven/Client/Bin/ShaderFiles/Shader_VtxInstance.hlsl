@@ -9,6 +9,7 @@ float		g_fOutlinePower = 1.f;
 texture2D	g_DiffuseTexture, g_NoiseTexture, g_NormalTexture;
 texture2D	g_StaticShadowTexture;
 
+vector g_vCamPosition;
 
 struct VS_IN
 {
