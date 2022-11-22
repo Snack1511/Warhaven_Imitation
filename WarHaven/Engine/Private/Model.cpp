@@ -536,6 +536,21 @@ void CModel::Late_Tick()
 	/* INSTANCING */
 	if (m_bInstancing && m_bLOD)
 	{
+		//for (auto& elem : m_MeshContainers)
+		//{
+
+		//	/*LOD 켜기*/
+		//	if (elem.first == 1)
+		//		elem.second->Set_Enable(true);
+		//	else
+		//		elem.second->Set_Enable(false);
+
+		//	continue;
+		//}
+		//return;
+
+
+
 		_float4x4 matWorld = m_pOwner->Get_Transform()->Get_WorldMatrix();
 		_float4 vWorldPos = m_vLODCenterPos.MultiplyCoord(matWorld);
 		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
@@ -562,8 +577,8 @@ void CModel::Late_Tick()
 			_float fRange = m_fLODMaxRange;
 			fRange *= fScaleLength;
 
-			/*if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
-				continue;*/
+			if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
+				continue;
 
 			//2. 살아남은 애들 LOD 체크
 			_float fCurDistance = (vCamPos - vCurPos).Length();
@@ -595,13 +610,13 @@ void CModel::Late_Tick()
 		for (auto& elem : m_MeshContainers)
 		{
 
-			/*임시로*/
-			if (elem.first == 1)
+			/*LOD 켜기*/
+			/*if (elem.first == 1)
 				elem.second->Set_Enable(true);
 			else
 				elem.second->Set_Enable(false);
 
-			continue;
+			continue;*/
 
 			_uint iCurNumInstance = m_iLODNumInstance[elem.first];
 			_float4x4* matInstance = m_pIntancingMatricesLOD[elem.first];
@@ -1479,6 +1494,8 @@ void CModel::Bake_LODFrustumInfo()
 		}
 
 	}
+
+	m_fLODMaxRange *= 2.f;
 
 
 

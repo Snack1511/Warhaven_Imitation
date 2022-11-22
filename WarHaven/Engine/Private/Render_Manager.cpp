@@ -16,7 +16,7 @@
 #include "CMesh_Rect.h"
 #include "Texture.h"
 
-//#define SHADOW_ON
+#define SHADOW_ON
 
 IMPLEMENT_SINGLETON(CRender_Manager)
 
