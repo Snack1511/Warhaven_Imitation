@@ -190,6 +190,27 @@ list<CGameObject*> CEffects_Factory::Create_Multi_MeshParticle(wstring wstrKey, 
 	return EffectsList;
 }
 
+list<CGameObject*> CEffects_Factory::Create_MultiEffects(wstring wstrKey, _float4 vPos, _float4x4 matWorld)
+{
+	list<CGameObject*> EffectsList;
+
+	if (m_MultiEffects.find(Convert_ToHash(wstrKey)) == m_MultiEffects.end())
+	{
+		Call_MsgBox(L"Cant Find MultiEffects");
+		return EffectsList;
+	}
+
+	list<_hashcode> hcEffects = m_MultiEffects.find(Convert_ToHash(wstrKey))->second;
+
+	for (auto& hcCode : hcEffects)
+	{
+		EffectsList.push_back(Create_Effects(hcCode, vPos, matWorld));
+	}
+
+	return EffectsList;
+}
+
+
 CGameObject* CEffects_Factory::Create_MeshParticle(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower)
 {
 	CGameObject* pGameObject = nullptr;
@@ -303,6 +324,29 @@ CGameObject* CEffects_Factory::Create_Effects(_hashcode _hcCode, _float4x4 world
 	{
 		CEffect* pEffect = m_Effects[_hcCode].front();
 		pEffect->Reset(worldMat);
+		m_Effects[_hcCode].pop_front();
+		pGameObject = pEffect;
+	}
+
+	return pGameObject;
+}
+
+CGameObject* CEffects_Factory::Create_Effects(_hashcode _hcCode, _float4 vPos, _float4x4 worldMat)
+{
+	CGameObject* pGameObject = nullptr;
+
+	if (m_Effects[_hcCode].empty())
+	{
+		pGameObject = GAMEINSTANCE->Clone_GameObject(_hcCode);
+		//없으면 새로 집어넣음
+		pGameObject->Initialize();
+		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+		static_cast<CEffect*>(pGameObject)->Reset(vPos, worldMat);
+	}
+	else
+	{
+		CEffect* pEffect = m_Effects[_hcCode].front();
+		pEffect->Reset(vPos, worldMat);
 		m_Effects[_hcCode].pop_front();
 		pGameObject = pEffect;
 	}
@@ -621,12 +665,21 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_RD"), "HitSlash_RD"))) //right down
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_RU"), "HitSlash_RU"))) //right Up
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_Left"), "HitSlash_Left"))) //Left
 		return E_FAIL;
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_LD"), "HitSlash_LD"))) //Left dpwn
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_LD"), "HitSlash_LD"))) //Left down
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_LU"), "HitSlash_LU"))) //Left up
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StingBlood"), "StingBlood"))) //
 		return E_FAIL;
 
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BloodEffect"), "BloodEffect"))) //bone
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BloodEffect"), "BloodEffect"))) //
+		return E_FAIL;
+
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke"), "KillSmoke"))) //bone
 		return E_FAIL;
 
 

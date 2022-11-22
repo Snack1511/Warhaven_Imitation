@@ -30,6 +30,7 @@ public:
 	list<CGameObject*>			Create_MultiEffects(wstring	wstrKey, CGameObject* pFollowTarget, _float4 vPos);
 	list<CGameObject*>			Create_MultiEffects(wstring	wstrKey, _float4 vPos);
 	list<CGameObject*>			Create_MultiEffects(wstring	wstrKey, _float4x4 matWorld);
+	list<CGameObject*>			Create_MultiEffects(wstring	wstrKey, _float4 vPos, _float4x4 matWorld);
 
 
 
@@ -42,6 +43,7 @@ public:
 	CGameObject* Create_Effects(_hashcode _hcCode, CGameObject* pFollowTarget, _float4 vPos);
 	CGameObject* Create_Effects(_hashcode _hcCode, _float4 vPos);
 	CGameObject* Create_Effects(_hashcode _hcCode, _float4x4 worldMat);
+	CGameObject* Create_Effects(_hashcode _hcCode, _float4 vPos, _float4x4 matWorld);
 
 	CGameObject* Create_Effects_Turn(_hashcode _hcCode, CGameObject* pFollowTarget, _float4 vPos);
 	CGameObject* Create_LandingEffects(_float4 vPos, CCell* pCurCell);
