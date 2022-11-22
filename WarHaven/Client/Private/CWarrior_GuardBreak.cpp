@@ -77,6 +77,7 @@ HRESULT CWarrior_GuardBreak::Initialize()
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 
+ 
 	Add_KeyFrame(26, 1);
 	Add_KeyFrame(54, 2);
 
@@ -97,6 +98,17 @@ void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CWarrior_GuardBreak::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_bKeyInputable)
+    {
+        if (KEY(LBUTTON, TAP))
+            m_bKeyInput = true;
+    }
+
+    if (m_bHit && m_bKeyInput)
+    {
+        return STATE_ATTACK_HORIZONTALDOWN_L;
+    }
+
     Follow_MouseLook(pOwner);
     pOwner->Set_DirAsLook();
 
@@ -126,6 +138,13 @@ STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnima
     return STATE_END;
 }
 
+void CWarrior_GuardBreak::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
+{
+    if (iOtherColType == COL_ENEMYHITBOX_BODY || 
+        iOtherColType == COL_ENEMYHITBOX_HEAD ||
+        iOtherColType == COL_ENEMYGUARD)
+        m_bHit = true;
+}
 
 void CWarrior_GuardBreak::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
@@ -133,6 +152,7 @@ void CWarrior_GuardBreak::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 	{
 
 	case 1:
+        m_bKeyInputable = true;
         m_bAttackTrigger = true;
         pOwner->Get_PhysicsCom()->Set_SpeedasMax();
         pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);

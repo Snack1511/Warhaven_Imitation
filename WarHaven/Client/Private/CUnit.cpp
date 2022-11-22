@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CUnit.h"
 
+#include "CEffects_Factory.h"
+
 #include "GameInstance.h"
 
 #include "CCamera_Default.h"
@@ -112,10 +114,10 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 				eFinalHitState = m_tHitType.m_eGroggyState;
 			}
 
-			// 테스트용
-			if (eOtherColType == COL_PLAYERGUARD)
+			// 에어본 공격을 당했다면?
+			else if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
 			{
-				eFinalHitState = m_tHitType.m_eTestBounce;
+				eFinalHitState = m_tHitType.m_eFlyState;
 			}
 		}
 
@@ -132,6 +134,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 			{
 				//가드 브레이크공격이 들어오면 
 				eFinalHitState = m_tHitType.m_eGuardBreakState;
+				Effect_Hit(vHitPos);
 			}
 			/* 가드 성공 */
 			else
@@ -143,7 +146,15 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		}
 		else
 		{
-			eFinalHitState = m_tHitType.m_eHitState;
+			// 공격 공격을 당했다면
+			if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
+				eFinalHitState = m_tHitType.m_eFlyState;
+
+			else if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
+				eFinalHitState = m_tHitType.m_eGroggyState;
+
+			else
+				eFinalHitState = m_tHitType.m_eHitState;
 		}
 
 	}
@@ -152,9 +163,12 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	case COL_PLAYERHITBOX_BODY:
 	case COL_ENEMYHITBOX_BODY:
+
+		// 공격 공격을 당했다면
 		if(eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
 			eFinalHitState = m_tHitType.m_eFlyState;
 
+		// 그로기 공격을 당했다면
 		else if(eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
 			eFinalHitState = m_tHitType.m_eGroggyState;
 
@@ -174,9 +188,12 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	case COL_PLAYERHITBOX_HEAD:
 	case COL_ENEMYHITBOX_HEAD:
 
+		
+		// 공격 공격을 당했다면
 		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
 			eFinalHitState = m_tHitType.m_eFlyState;
 
+		// 그로기 공격을 당했다면
 		else if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
 			eFinalHitState = m_tHitType.m_eGroggyState;
 
@@ -458,11 +475,11 @@ HRESULT CUnit::Start()
 
 	if (!m_pCurState)
 	{
-		Call_MsgBox(L"상태 세팅 안댔음");
-		return E_FAIL;
+		//Call_MsgBox(L"상태 세팅 안댔음");
+		//return E_FAIL;
 	}
-
-	m_pCurState->Enter(this, m_pAnimator, m_eCurState);
+	else
+		m_pCurState->Enter(this, m_pAnimator, m_eCurState);
 
 	if (m_pUnitCollider[BODY])
 		ENABLE_COMPONENT(m_pUnitCollider[BODY]);
@@ -477,24 +494,18 @@ void CUnit::OnEnable()
 	__super::OnEnable();
 	m_pPhysics->Get_PhysicsDetail().fCurGroundY = m_pTransform->Get_MyWorld(WORLD_POS).y;
 
-	DISABLE_COMPONENT(m_pPhysics);
-	On_PlusHp(m_tUnitStatus.fMaxHP - m_tUnitStatus.fHP);
+	
 
-	if (!m_pFollowCam)
-	{
-		ENABLE_GAMEOBJECT(m_pFollowCam);
-	}
+	if (m_pCurState)
+	m_pCurState->Enter(this, m_pAnimator, m_eCurState);
+
 }
 
 void CUnit::OnDisable()
 {
 	__super::OnDisable();
 
-	if (m_pFollowCam)
-	{
-		DISABLE_GAMEOBJECT(m_pFollowCam);
-		m_pFollowCam = nullptr;
-	}
+	
 }
 
 
@@ -850,3 +861,10 @@ void CUnit::My_LateTick()
 		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(20.f, 2.f, 20.f));
 }
 
+void CUnit::Effect_Hit(_float4 vHitPos)
+{
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"GroundHitParticle", vHitPos);
+}

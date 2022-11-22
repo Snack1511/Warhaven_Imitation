@@ -38,7 +38,7 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
     m_tHitInfo.fKnockBackPower = 1.f;
     m_tHitInfo.fJumpPower = 6.5f;
     m_tHitInfo.bFly = true;
-    m_tHitInfo.iLandKeyFrame = 60;
+    m_tHitInfo.iLandKeyFrame = 110;
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 23;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
@@ -78,8 +78,8 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
     m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
 
-
     Add_KeyFrame(5, 0);
+	Add_KeyFrame(40, 3);
 	Add_KeyFrame(47, 1);
 	Add_KeyFrame(60, 2);
 
@@ -120,6 +120,7 @@ void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
     }
 
 
+    pOwner->CallBack_CollisionEnter += bind(&CWarrior_Oxen_Loop_Attack::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 
     /* Owner의 Animator Set Idle로 */
@@ -128,8 +129,23 @@ void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pAnimator->Get_CurAnimFrame() >= m_iStateChangeKeyFrame && pOwner->Is_Air())
-        return STATE_JUMPFALL_PLAYER_L;
+    if (m_bParringed)
+        return STATE_BOUNCE_PLAYER_R;
+
+    if (pAnimator->Get_CurAnimFrame() >= m_tHitInfo.iLandKeyFrame && !pOwner->Is_Air())
+        return STATE_JUMP_LAND_PLAYER_L;
+    
+    if (m_bKeyInputable)
+    {
+        if (KEY(SPACE, TAP))
+            m_bKeyInput = true;
+    }
+
+    if (m_bHit && m_bKeyInput)
+    {
+            return STATE_JUMP_PLAYER_L;
+    }
+
 
     Follow_MouseLook_Turn(pOwner);
     pOwner->Set_DirAsLook();
@@ -162,7 +178,8 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarrior_Oxen_Loop_Attack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+    pOwner->CallBack_CollisionEnter -= bind(&CWarrior_Oxen_Loop_Attack::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+
     pOwner->TurnOn_TrailEffect(false);
 	pOwner->Enable_FlyAttackCollider(false);
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -182,6 +199,48 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Check_Condition(CUnit* pOwner, CAnimator* 
         return m_eStateType;
 
     return STATE_END;
+}
+
+void CWarrior_Oxen_Loop_Attack::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
+{
+
+
+    if (iOtherColType == COL_ENEMYGUARD)
+    {
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
+        CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
+        CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
+        m_bParringed = true;
+    }
+    else if (iOtherColType == COL_ENEMYHITBOX_BODY || iOtherColType == COL_ENEMYHITBOX_HEAD)
+    {
+
+        //case STATE_ATTACK_HORIZONTALUP_L:
+        //    break;
+        //case STATE_ATTACK_HORIZONTALMIDDLE_L:
+        //    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", pOwner, vHitPos);
+        //    break;
+        //case STATE_ATTACK_HORIZONTALDOWN_L:
+        //    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", pOwner, vHitPos);
+        //    break;
+        //case STATE_ATTACK_HORIZONTALUP_R:
+        //    break;
+        //case STATE_ATTACK_HORIZONTALMIDDLE_R:
+        //    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", pOwner, vHitPos);
+        //    break;
+        //case STATE_ATTACK_HORIZONTALDOWN_R:
+            CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", m_pOwner, vHitPos);
+        //case STATE_ATTACK_VERTICALCUT:
+        //    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", pOwner, vHitPos);
+        //    break;
+        m_bHit = true;
+    }
+
+
+
+
+
+
 }
 
 void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
@@ -214,6 +273,9 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
 		pOwner->Enable_FlyAttackCollider(false);
 		break;
 
+    case 3:
+        m_bKeyInputable = true;
+        break;
     default:
         break;
     }

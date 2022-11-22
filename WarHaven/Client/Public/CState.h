@@ -123,12 +123,21 @@ protected:
 	_bool				m_bAttackTrigger = false;
 	_bool				m_bETC_Trigger = false;
 
-	_bool				m_bFace = false;
+	_bool				m_bParringed = false;
+	_bool				m_bHit = false;
+	_bool				m_bKeyInput = false;
+	_bool				m_bKeyInputable = false;
 
 	_int				m_iFinishedFrame = 0;
 
 	_int				m_iDirectionAnimIndex[STATE_DIRECTION_END];
 	_float				m_fDirectionAnimSpeed[STATE_DIRECTION_END];
+
+	_int				m_iStateForcePushIndex = 0;
+
+
+
+
 
 protected:
 	/* 공격, 피격 정보
@@ -165,6 +174,9 @@ protected:
 
 
 protected:
+	void	Bounce_State(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos);
+
+protected:
 	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence);
 	void					Check_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator);
 	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence) {};
@@ -185,7 +197,7 @@ protected:
 
 
 private:
-	_bool				m_bTestParringed = false;
+
 	
 };
 

@@ -96,6 +96,8 @@ public:
 
 	void	On_FixedTarget(_bool bActivate, class CUnit* pLockedTarget);
 
+	void	Set_FollowTarget(CGameObject* pTarget) { m_pFollowTarget = pTarget; }
+
 public:
 	// CScriptable을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;

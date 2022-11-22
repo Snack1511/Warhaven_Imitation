@@ -93,6 +93,7 @@ void CSprintAttack_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
 
+	pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 
 	//마찰 조절하기
@@ -104,6 +105,10 @@ void CSprintAttack_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CSprintAttack_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (m_bParringed)
+		return STATE_BOUNCE_PLAYER_L;
+
+
 	if (m_bTrigger)
 	{
 		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -146,6 +151,8 @@ STATE_TYPE CSprintAttack_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CSprintAttack_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->CallBack_CollisionEnter -= bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+
 	pOwner->TurnOn_TrailEffect(false);
 
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -165,6 +172,19 @@ STATE_TYPE CSprintAttack_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnim
 		return m_eStateType;
    
     return STATE_END;
+}
+
+void CSprintAttack_Player::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
+{
+	//case STATE_ATTACK_VERTICALCUT:
+//    
+//    break;
+
+	Bounce_State(pOtherObject, iOtherColType, iMyColType, vHitPos);
+	
+	if(!m_bParringed)
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", m_pOwner, vHitPos);
+
 }
 
 void	CSprintAttack_Player::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)

@@ -45,6 +45,11 @@ void CCamera_Follow::Start_ShakingCamera(_float fPower, _float fTime)
 	m_pFollowScript->Start_ShakingCamera(fPower, fTime);
 }
 
+void CCamera_Follow::Set_FollowTarget(CGameObject* pTarget)
+{
+	m_pFollowScript->Set_FollowTarget(pTarget);
+}
+
 HRESULT CCamera_Follow::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();

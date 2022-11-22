@@ -102,8 +102,6 @@ private:
 	_bool				m_bCycling = false;
 	_bool				m_bHitEffect = false;
 
-	_bool				m_bParringed = false;
-
 private:
 	_bool		m_bAfterEffect = false;
 	_bool		m_bBlood = false;

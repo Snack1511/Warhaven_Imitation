@@ -13,6 +13,8 @@
 #include "CSkyBox.h"
 #include "CTerrain.h"
 
+#include "CPlayer.h"
+
 #include "CUnit_Warrior.h"
 #include "CUnit_Spearman.h"
 #include "CUnit_WarHammer.h"
@@ -266,11 +268,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	// 테스트할 객체 띄우기
 
-	if (FAILED(SetUp_Warrior_TH()))
-		return E_FAIL;
+	//if (FAILED(SetUp_Warrior_TH()))
+	//	return E_FAIL;
 
-	if (FAILED(SetUp_Warrior_Sandback()))
-		return E_FAIL;
+	//if (FAILED(SetUp_Warrior_Sandback()))
+	//	return E_FAIL;
 	
 	//if (FAILED(SetUp_WarHammer_TH()))
 	//	return E_FAIL;
@@ -283,6 +285,41 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 	//if (FAILED(SetUp_Valkyrie_TH()))
 	//	return E_FAIL;
+
+
+	// 1. 카메라 키
+	// 2. 초기 Unit Enum
+
+	//CPlayer* pUserPlayer = CPlayer::Create();
+
+	CPlayer* pUserPlayer = CPlayer::Create(L"PlayerCam", CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR);
+
+	if (nullptr == pUserPlayer)
+		return E_FAIL;
+
+	_float4 vPlayerPos = _float4(10.f, 3.f, 10.f);
+
+	pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_L);
+	pUserPlayer->SetUp_UnitColliders(true);
+	pUserPlayer->SetUp_UnitHitStates(true);
+	pUserPlayer->Set_Postion(vPlayerPos);
+
+	Ready_GameObject(pUserPlayer, GROUP_USER);
+
+
+
+	// 최종 목표 : 
+	/*
+	* 
+	
+
+	//1. 어떤 캐릭으로 시작할 지
+	//2. 어떤 상태로 시작할 지
+	//3. 어떤 팀인지
+
+	
+	
+	*/
 
 
 	return S_OK;
@@ -391,29 +428,54 @@ HRESULT CLevel_Test::SetUp_Prototypes_YJ()
 
 void CLevel_Test::Col_Check()
 {
-	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERHITBOX_BODY);
-	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERHITBOX_HEAD);
+
+	/* 일반 공격 플레이어 */
 	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_BODY);
 	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_HEAD);
 
-
+	/* 가드 공격 플레이어 */
 	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYGUARD);
-	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERGUARD);
 
+	/*가드 브레이크 플레이어 */
 	GAMEINSTANCE->Check_Group(COL_PLAYERGUARDBREAK, COL_ENEMYGUARD);
-	GAMEINSTANCE->Check_Group(COL_ENEMYGUARDBREAK, COL_PLAYERGUARD);
+	GAMEINSTANCE->Check_Group(COL_PLAYERGUARDBREAK, COL_ENEMYHITBOX_BODY);
 
-	//GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERHITBOX_BODY);
-	//GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERGUARD);
-	//GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERATTACK);
-
-
+	/* 그로기 공격 플레이어 */
 	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYHITBOX_BODY);
 	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYGUARD);
 	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYATTACK);
 
+
+	/* 띄우기 공격 플레이어 */
 	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACK, COL_ENEMYHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACK, COL_ENEMYGUARD);
+
+	//==========================================================================================
+
+
+	/* 일반 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERHITBOX_HEAD);
+
+	/* 가드 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERGUARD);
+
+	/*가드 브레이크 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYGUARDBREAK, COL_PLAYERGUARD);
+	GAMEINSTANCE->Check_Group(COL_ENEMYGUARDBREAK, COL_PLAYERHITBOX_BODY);
+
+	/* 그로기 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERGUARD);
+	GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERATTACK);
+
+	/* 띄우기 공격 적 */
 	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACK, COL_PLAYERHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACK, COL_ENEMYGUARD);
+
+
+
+
 
 	
 }
@@ -747,6 +809,16 @@ HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 	if (!pTestIdleWarrior)
 		return E_FAIL;
 
+	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestIdleWarrior, nullptr);
+	pFollowCam->Initialize();
+	pFollowCam->Get_Transform()->Set_World(WORLD_POS, ZERO_VECTOR);
+	pFollowCam->Get_Transform()->Make_WorldMatrix();
+	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+	GAMEINSTANCE->Add_Camera(L"PlayerCam1", pFollowCam);
+	DISABLE_GAMEOBJECT(pFollowCam);
+	pTestIdleWarrior->Set_FollowCam(pFollowCam);
+
+
 	pTestIdleWarrior->Initialize();
 	pTestIdleWarrior->Set_TargetUnit(m_pWarrior);
 	pTestIdleWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
@@ -754,7 +826,7 @@ HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 
 	pTestIdleWarrior->SetUp_Colliders(false);
 	pTestIdleWarrior->SetUp_HitStates(false);
-	pTestIdleWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam"));
+	pTestIdleWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam1"));
 	
 
 	Ready_GameObject(pTestIdleWarrior, GROUP_ENEMY);
@@ -775,7 +847,7 @@ HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 
 	pTestGuardWarrior->SetUp_Colliders(false);
 	pTestGuardWarrior->SetUp_HitStates(false);
-	pTestGuardWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam"));
+	pTestGuardWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam1"));
 
 	Ready_GameObject(pTestGuardWarrior, GROUP_ENEMY);
 
@@ -795,7 +867,7 @@ HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 
 	pTestAttackWarrior->SetUp_Colliders(false);
 	pTestAttackWarrior->SetUp_HitStates(false);
-	pTestAttackWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam"));
+	pTestAttackWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam1"));
 
 	Ready_GameObject(pTestAttackWarrior, GROUP_ENEMY);
 

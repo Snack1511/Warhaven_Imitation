@@ -130,10 +130,7 @@ void	CUnit_Warrior::SetUp_HitStates(_bool bPlayer)
 		m_tHitType.m_eStingHitState = STATE_STINGHIT_ENEMY;
 		m_tHitType.m_eGroggyState = STATE_GROGGY_ENEMY;
 		m_tHitType.m_eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.m_eTestBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
-
-		
-		
+		m_tHitType.m_eLeftBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;	
 	}
 	else
 	{
@@ -144,7 +141,6 @@ void	CUnit_Warrior::SetUp_HitStates(_bool bPlayer)
 		m_tHitType.m_eGroggyState = STATE_GROGGYHIT_WARRIOR;
 		m_tHitType.m_eStingHitState = STATE_STINGHIT_WARRIOR;
 		m_tHitType.m_eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.m_eTestBounce = STATE_BOUNCE_PLAYER_L;
 	}
 		
 }
