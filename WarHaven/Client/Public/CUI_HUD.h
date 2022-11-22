@@ -27,8 +27,10 @@ public:
 public:
 	virtual void On_PointEnter_Port(const _uint& iEventNum);
 	virtual void On_PointExit_Port(const _uint& iEventNum);
-
 	virtual void On_PointDown_Port(const _uint& iEventNum);
+
+public:
+	void SetActive_OxenJumpText(_bool value);
 
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];

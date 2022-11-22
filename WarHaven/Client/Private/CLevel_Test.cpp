@@ -168,6 +168,8 @@ HRESULT CLevel_Test::Enter()
 
 	CUser::Get_Instance()->SetUp_BloodOverlay();
 
+	CUser::Get_Instance()->On_EnterLevel();
+
 	GAMEINSTANCE->Begin_PhysScene();
 
 	CEffects_Factory::Get_Instance()->On_EnterLevel();
@@ -255,9 +257,6 @@ HRESULT CLevel_Test::Exit()
 
 HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 {
-	m_pHUD = CUI_HUD::Create();
-	Ready_GameObject(m_pHUD, GROUP_UI);
-
 	CUI_Cursor* pCursor = CUI_Cursor::Create();
 	Ready_GameObject(pCursor, GROUP_UI);
 

@@ -270,6 +270,18 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 	}
 }
 
+void CUI_HUD::SetActive_OxenJumpText(_bool value)
+{
+	if (value == true)
+	{
+		ENABLE_GAMEOBJECT(m_pOxenJumpText);
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(m_pOxenJumpText);
+	}
+}
+
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 {
 	m_ePrvClass = m_eCurClass;
@@ -653,4 +665,5 @@ void CUI_HUD::Create_OxenJumpText()
 	m_pOxenJumpText->Set_FontText(TEXT("มกวม"));
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pOxenJumpText);
 }
