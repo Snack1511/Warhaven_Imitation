@@ -81,6 +81,21 @@ void CUI_UnitHP::Set_ProjPos(CTransform* pTransform)
 	}
 }
 
+void CUI_UnitHP::SetActive_UnitHP(_bool value)
+{	
+	for (int i = 0; i < IT_END; ++i)
+	{
+		if (value)
+		{
+			ENABLE_GAMEOBJECT(m_pUnitHP[i]);
+		}
+		else
+		{
+			DISABLE_GAMEOBJECT(m_pUnitHP[i]);
+		}
+	}
+}
+
 void CUI_UnitHP::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pUnitHP[Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_UnitHP::Set_Shader_HpGauge, this, placeholders::_1, "g_fHealthGauge");

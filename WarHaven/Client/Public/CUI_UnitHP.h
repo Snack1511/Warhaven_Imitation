@@ -28,6 +28,8 @@ public:
 
 	void Set_GaugeRatio(_float fRatio) { m_fGaugeRatio = fRatio; }
 
+	void SetActive_UnitHP(_bool value);
+
 private:
 	CUI_Object* m_pUnitHP[IT_END];
 

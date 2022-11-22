@@ -252,7 +252,9 @@ public:
 
 
 protected:
+	// ¾ê°¡ max
 	_float	m_fCoolTime[COOL_END] = {};
+	// ¾ê°¡ cur
 	_float	m_fCoolAcc[COOL_END] = {};
 
 	_float	m_fAttackDelay = 0.f;

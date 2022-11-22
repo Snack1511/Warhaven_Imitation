@@ -185,7 +185,7 @@ void CWarrior_Oxen_Loop_Attack::Exit(CUnit* pOwner, CAnimator* pAnimator)
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
     pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
 
-
+    // ²ô±â
 }
 
 STATE_TYPE CWarrior_Oxen_Loop_Attack::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -275,6 +275,8 @@ void CWarrior_Oxen_Loop_Attack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
 
     case 3:
         m_bKeyInputable = true;
+
+        // È°¼ºÈ­
         break;
     default:
         break;

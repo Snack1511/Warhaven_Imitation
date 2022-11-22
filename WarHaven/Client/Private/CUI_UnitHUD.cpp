@@ -52,8 +52,6 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform, vOffset);
 
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_ProjPos(pTransform);
-
-
 }
 
 void CUI_UnitHUD::Ready_UnitHP()
