@@ -44,7 +44,7 @@ HRESULT CAI_SandBack_FlyHit::Initialize()
 
     m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
     m_iAnimIndex = m_iFlyHitIndex;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_STINGHIT_ENEMY;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = STATE_FLYHIT_ENEMY;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
@@ -62,25 +62,23 @@ HRESULT CAI_SandBack_FlyHit::Initialize()
 
 void CAI_SandBack_FlyHit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    if (ePrevType == STATE_HIT_TEST_ENEMY)
-        return;
-
     /* 날 때린놈의 hit info를 받았다. */
-   // m_tHitInfo = *((HIT_INFO*)(pData));
 
+    m_tHitInfo = *((HIT_INFO*)(pData));
+    __super::Fly_State();
 
-    m_eAnimType = ANIM_HIT;           
-    m_iAnimIndex = m_iFlyHitIndex;
-    
     /* Owner의 Animator Set Idle로 */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
-
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CAI_SandBack_FlyHit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Get_CurAnimFrame() > m_tHitInfo.iLandKeyFrame)
+		return STATE_FALL_WARRIOR_R_AI_ENEMY;
+
+
     if (pAnimator->Is_CurAnimFinished())
         return STATE_IDLE_WARRIOR_R_AI_ENEMY;
 

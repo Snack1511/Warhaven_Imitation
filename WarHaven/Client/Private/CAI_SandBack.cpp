@@ -89,8 +89,6 @@ void CAI_SandBack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
-    pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
-
 }
 
 STATE_TYPE CAI_SandBack::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -106,7 +104,6 @@ STATE_TYPE CAI_SandBack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CAI_SandBack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    pOwner->CallBack_CollisionEnter -= bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 }
 

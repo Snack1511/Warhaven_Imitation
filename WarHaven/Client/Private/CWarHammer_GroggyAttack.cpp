@@ -83,7 +83,7 @@ STATE_TYPE CWarHammer_GroggyAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarHammer_GroggyAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+	pOwner->Enable_GroggyCollider(false);
 }
 
 STATE_TYPE CWarHammer_GroggyAttack::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -112,11 +112,11 @@ void CWarHammer_GroggyAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 		break;
 
 	case 1:
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		pOwner->Enable_GroggyCollider(true);
 		break;
 
 	case 2:
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		pOwner->Enable_GroggyCollider(false);
 		break;
 
 

@@ -62,9 +62,9 @@ HRESULT CHit_Player::Initialize()
 	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_R);
 
 
-    m_fMyAccel = 10.f;
+    m_fMyAccel = 1.f;
     m_fMyMaxLerp = 10.f;
-    m_fMaxSpeed = 0.8f;
+    m_fMaxSpeed = 0.1f;
 
     return __super::Initialize();
 }
@@ -80,10 +80,7 @@ void CHit_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 
 STATE_TYPE CHit_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-        
-
-    if (m_bMoveTrigger)
-		Move(Get_Direction(), pOwner);
+	Move(Get_Direction(), pOwner);
 
     return __super::Tick(pOwner, pAnimator);
 }

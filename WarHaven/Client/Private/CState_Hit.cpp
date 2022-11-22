@@ -60,12 +60,7 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
     if (m_tHitInfo.fKnockBackPower > 0.f)
         pOwner->Get_PhysicsCom()->Set_Speed(m_tHitInfo.fKnockBackPower);
 
-    if (m_tHitInfo.bFly)
-    {
-        m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iFlyHitIndex;
-        m_eStateType = pOwner->Get_HitType().m_eFlyState;
-    }
+
 
 
     __super::Enter(pOwner, pAnimator, ePrevStateType);
@@ -73,7 +68,6 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
 
 STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
     return __super::Tick(pOwner, pAnimator);
 }
 
@@ -105,6 +99,15 @@ void CState_Hit::Face_Check(_bool bUseUpandDown)
  
     }
 
+}
+
+void CState_Hit::Fly_State()
+{
+    if (m_tHitInfo.bFly)
+    {
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iFlyHitIndex;
+    }
 }
 
 void CState_Hit::Hit_State()

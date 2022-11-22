@@ -46,7 +46,7 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eHitBoxGuard = (bPlayer) ? COL_PLAYERGUARD : COL_ENEMYGUARD;
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_PLAYERATTACK : COL_ENEMYATTACK;
 	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_PLAYERGUARDBREAK : COL_ENEMYGUARDBREAK;
-	COL_GROUP_CLIENT	eGroggy = (bPlayer) ? COL_PLAYERGROGGYATTACK : COL_ENEMYGROGGYATTACK;
+	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_PLAYERFLYATTACK : COL_ENEMYFLYATTACK;
 
 
 	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
@@ -95,8 +95,12 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
 		tWeaponUnitColDesc[i].eColType = eGuardBreak;
 
-
 	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+
+	for (_uint i = 0; i < iWeaponSphereNum; ++i)
+		tWeaponUnitColDesc[i].eColType = eFlyAttack;
+
+	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 	
 	//for (_uint i = 0; i < iWeaponSphereNum; ++i)
 	//	tWeaponUnitColDesc[i].eColType = eGroggy;
@@ -119,14 +123,21 @@ void	CUnit_Warrior::SetUp_HitStates(_bool bPlayer)
 		m_tHitType.m_eStingHitState = STATE_STINGHIT_ENEMY;
 		m_tHitType.m_eGroggyState = STATE_GROGGY_ENEMY;
 		m_tHitType.m_eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.m_eTestBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
+
+		
 		
 	}
 	else
 	{
+
 		m_tHitType.m_eHitState = STATE_HIT;
 		m_tHitType.m_eGuardState = STATE_GUARDHIT_WARRIOR;
 		m_tHitType.m_eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
+		m_tHitType.m_eGroggyState = STATE_GROGGYHIT_WARRIOR;
 		m_tHitType.m_eStingHitState = STATE_STINGHIT_WARRIOR;
+		m_tHitType.m_eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.m_eTestBounce = STATE_BOUNCE_PLAYER_L;
 	}
 		
 }

@@ -188,6 +188,7 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
+    <ClInclude Include="..\Public\CHit_Fly_Warrior.h" />
     <ClInclude Include="..\Public\CAI_SandBack_GuardCancel.h" />
     <ClInclude Include="..\Public\CAI_SandBack_Groggy.h" />
     <ClInclude Include="..\Public\CAI_SandBack_FlyHit.h" />
@@ -197,6 +198,9 @@
     <ClInclude Include="..\Public\CAI_SandBack_L.h" />
     <ClInclude Include="..\Public\CBarricade.h" />
     <ClInclude Include="..\Public\CBloodOverlay.h" />
+    <ClInclude Include="..\Public\CBounce_Warrior_AI.h" />
+    <ClInclude Include="..\Public\CBounce_Warrior_AI_L.h" />
+    <ClInclude Include="..\Public\CBounce_Warrior_AI_R.h" />
     <ClInclude Include="..\Public\CBounce_WarHammer.h" />
     <ClInclude Include="..\Public\CBounce_WarHammer_L.h" />
     <ClInclude Include="..\Public\CBounce_WarHammer_R.h" />
@@ -211,6 +215,10 @@
     <ClInclude Include="..\Public\CHit_Groggy_Warrior.h" />
     <ClInclude Include="..\Public\CHit_GuardHit_Warrior.h" />
     <ClInclude Include="..\Public\CHit_Sting_Warrior.h" />
+    <ClInclude Include="..\Public\CJump_Warrior_AI_Land_L.h" />
+    <ClInclude Include="..\Public\CJump_Warrior_AI_Land_R.h" />
+    <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_L.h" />
+    <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_R.h" />
     <ClInclude Include="..\public\CMesh_Particle.h" />
     <ClInclude Include="..\Public\CIdle_Valkyrie_L.h" />
     <ClInclude Include="..\Public\CIdle_Valkyrie_R.h" />
@@ -488,6 +496,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\CHit_Fly_Warrior.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_Groggy.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_GuardCancel.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_FlyHit.cpp" />
@@ -498,6 +507,9 @@
     <ClCompile Include="..\private\CAI_SandBack_Hit.cpp" />
     <ClCompile Include="..\Private\CBarricade.cpp" />
     <ClCompile Include="..\Private\CBloodOverlay.cpp" />
+    <ClCompile Include="..\Private\CBounce_Warrior_AI.cpp" />
+    <ClCompile Include="..\Private\CBounce_Warrior_AI_L.cpp" />
+    <ClCompile Include="..\Private\CBounce_Warrior_AI_R.cpp" />
     <ClCompile Include="..\Private\CBounce_WarHammer.cpp" />
     <ClCompile Include="..\Private\CBounce_WarHammer_L.cpp" />
     <ClCompile Include="..\Private\CBounce_WarHammer_R.cpp" />
@@ -512,6 +524,10 @@
     <ClCompile Include="..\Private\CHit_Groggy_Warrior.cpp" />
     <ClCompile Include="..\Private\CHit_GuardHit_Warrior.cpp" />
     <ClCompile Include="..\Private\CHit_Sting_Warrior.cpp" />
+    <ClCompile Include="..\Private\CJump_Warrior_AI_Land_L.cpp" />
+    <ClCompile Include="..\Private\CJump_Warrior_AI_Land_R.cpp" />
+    <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_L.cpp" />
+    <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_R.cpp" />
     <ClCompile Include="..\private\CMesh_Particle.cpp" />
     <ClCompile Include="..\Private\CIdle_Valkyrie_L.cpp" />
     <ClCompile Include="..\Private\CIdle_Valkyrie_R.cpp" />

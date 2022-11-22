@@ -81,11 +81,16 @@ public:
 		/* Hit, Dead 상태 */
 		STATE_TYPE		m_eHitState = STATE_END;
 		STATE_TYPE		m_eDeathState = STATE_END;
+
 		/* 가드 성공시 상태 */
 		STATE_TYPE		m_eGuardState = STATE_END;
 
 		/* 그로기 상태 */
 		STATE_TYPE		m_eGroggyState = STATE_END;
+
+		/* AI Test Bounce */
+		STATE_TYPE		m_eTestBounce = STATE_END;
+
 
 		/* 가드 깨진 상태*/
 		STATE_TYPE		m_eGuardBreakState = STATE_END;
@@ -93,12 +98,12 @@ public:
 		/* 찌르기맞고 죽기 전 상태 */ 
 		STATE_TYPE		m_eStingHitState = STATE_END;
 
-
+		/* 황소 베기 등 특정 FlyAttack 공격을 맞을 시 */
 		STATE_TYPE		m_eFlyState = STATE_END;
 	};
 
 public:
-	enum UNITCOLLIDER { BODY, HEAD, WEAPON_L, WEAPON_R, GUARD, GUARDBREAK_L, GUARDBREAK_R, GROGGY, UNITCOLLIDER_END };
+	enum UNITCOLLIDER { BODY, HEAD, WEAPON_L, WEAPON_R, GUARD, GUARDBREAK_L, GUARDBREAK_R, GROGGY, FLYATTACK, UNITCOLLIDER_END };
 	enum WEAPONCOLLIDER { WEAPONCOLLIDER_END = 3 };
 	enum COOL_TYPE { SKILL1, SKILL2, SKILL3, COOL_END };
 
@@ -213,6 +218,7 @@ public:
 	void	Enable_GuardCollider(_bool bEnable);
 	void	Enable_GroggyCollider(_bool bEnable);
 	void	Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable);
+	void	Enable_FlyAttackCollider(_bool bEnable);
 
 
 	struct UNIT_COLLIDERDESC

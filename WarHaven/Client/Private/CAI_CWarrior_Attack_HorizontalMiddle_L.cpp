@@ -143,13 +143,6 @@ HRESULT CAI_CWarrior_Attack_HorizontalMiddle_L::Initialize()
 
 void CAI_CWarrior_Attack_HorizontalMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	if (ePrevType == STATE_SWITCH_L_TO_R)
-	{
-		m_fAnimSpeed = 2.3f;
-	}
-	else
-		m_fAnimSpeed = 2.5f;
-
 
 	/* Owner¿« Animator Set Idle∑Œ */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

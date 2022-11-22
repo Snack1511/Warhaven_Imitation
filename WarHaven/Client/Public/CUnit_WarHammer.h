@@ -17,6 +17,9 @@ private:
 public:
 	static	CUnit_WarHammer* Create(const UNIT_MODEL_DATA& tUnitModelData);
 
+public:
+	virtual void	SetUp_Colliders(_bool bPlayer);
+	virtual void	SetUp_HitStates(_bool bPlayer);
 
 public:
 	void	Set_BarricadeMatrix();

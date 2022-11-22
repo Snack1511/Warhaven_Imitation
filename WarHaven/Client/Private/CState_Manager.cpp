@@ -81,6 +81,12 @@
 #include "CStop_Player_L.h"
 #include "CStop_Player_R.h"
 
+#include "CHit_Player.h"
+#include "CHit_GuardHit_Warrior.h"
+#include "CHit_Groggy_Warrior.h"
+#include "CHit_Sting_Warrior.h"
+#include "CHit_Fly_Warrior.h"
+
 #pragma endregion
 
 #pragma region Spearman
@@ -243,10 +249,7 @@
 
 #pragma endregion 
 
-#include "CHit_Player.h"
-#include "CHit_GuardHit_Warrior.h"
-#include "CHit_Groggy_Warrior.h"
-#include "CHit_Sting_Warrior.h"
+
 
 #include "CAI_SandBack.h"
 #include "CAI_SandBack_L.h"
@@ -260,6 +263,14 @@
 
 #include "CAI_CWarrior_Attack_HorizontalMiddle_L.h"
 #include "CAI_CWarrior_Attack_HorizontalMiddle_R.h"
+
+#include "CJump_Warrior_AI_Fall_L.h"
+#include "CJump_Warrior_AI_Fall_R.h"
+#include "CJump_Warrior_AI_Land_L.h"
+#include "CJump_Warrior_AI_Land_R.h"
+
+#include "CBounce_Warrior_AI_R.h"
+#include "CBounce_Warrior_AI_L.h"
 
 #include "CGuard_Begin_Player_Warrior_AI.h"
 #include "CGuard_Loop_Warrior_AI.h"
@@ -414,7 +425,9 @@ void CState_Manager::Warrior_State()
 	m_arrStates[STATE_GUARDHIT_WARRIOR] = CHit_GuardHit_Warrior::Create();
 	m_arrStates[STATE_GROGGYHIT_WARRIOR] = CHit_Groggy_Warrior::Create();
 	m_arrStates[STATE_STINGHIT_WARRIOR] = CHit_Sting_Warrior::Create();
+	m_arrStates[STATE_FLYHIT_WARRIOR] = CHit_Fly_Warrior::Create();
 
+	
 
 	//	m_arrStates[STATE_WARRIOR_OXEN] = CWarrior_Oxen::Create();
 	m_arrStates[STATE_WARRIOR_GUARDBREAK] = CWarrior_GuardBreak::Create();
@@ -444,6 +457,18 @@ void CState_Manager::Warrior_State()
 	m_arrStates[STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY] =					CGuard_Cancel_Warrior_AI::Create();
 	m_arrStates[STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY] =		CAI_CWarrior_Attack_HorizontalMiddle_L::Create();
 	m_arrStates[STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY] =		CAI_CWarrior_Attack_HorizontalMiddle_R::Create();
+
+	
+
+	m_arrStates[STATE_FALL_WARRIOR_L_AI_ENEMY] = CJump_Warrior_AI_Fall_L::Create();
+	m_arrStates[STATE_FALL_WARRIOR_R_AI_ENEMY] = CJump_Warrior_AI_Fall_R::Create();
+
+	m_arrStates[STATE_LAND_WARRIOR_L_AI_ENEMY] = CJump_Warrior_AI_Land_L::Create();
+	m_arrStates[STATE_LAND_WARRIOR_R_AI_ENEMY] = CJump_Warrior_AI_Land_R::Create();
+	
+	m_arrStates[STATE_BOUNCE_WARRIOR_L_AI_ENEMY] = CBounce_Warrior_AI_L::Create();
+	m_arrStates[STATE_BOUNCE_WARRIOR_R_AI_ENEMY] = CBounce_Warrior_AI_R::Create();
+
 
 	/* Charge Test */
 	m_arrStates[STATE_CHARGETEST] = CChargeTest::Create();
@@ -621,7 +646,8 @@ void CState_Manager::Valkyrie_State()
 	m_arrStates[STATE_COUNTER_VALKYRIE] =					CValkyrie_Counter::Create();
 	m_arrStates[STATE_SHIELDATTACK_VALKYRIE] =	CValkyrie_SpinAttack::Create();
 	m_arrStates[STATE_SPINATTACK_VALKYRIE] =				CValkyrie_SpinAttack::Create();
-	
+
+
 }
 
 //void CState_Manager::Warrior_Base_R()

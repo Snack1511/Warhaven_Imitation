@@ -87,7 +87,6 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
 
 
-
 	//양수면 앞임.
 	if (vCurLook.Dot(vOtherLook) < 0.f)
 		tOtherHitInfo.bFace = true;
@@ -106,6 +105,12 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 			if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
 			{
 				eFinalHitState = m_tHitType.m_eGroggyState;
+			}
+
+			// 테스트용
+			if (eOtherColType == COL_PLAYERGUARD)
+			{
+				eFinalHitState = m_tHitType.m_eTestBounce;
 			}
 		}
 
@@ -142,7 +147,16 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	case COL_PLAYERHITBOX_BODY:
 	case COL_ENEMYHITBOX_BODY:
-		eFinalHitState = m_tHitType.m_eHitState;
+		if(eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
+			eFinalHitState = m_tHitType.m_eFlyState;
+
+		else if(eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
+			eFinalHitState = m_tHitType.m_eGroggyState;
+
+		else
+			eFinalHitState = m_tHitType.m_eHitState;
+
+		
 
 #ifdef _DEBUG
 		cout << " 바디샷 " << endl;
@@ -154,8 +168,18 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	case COL_PLAYERHITBOX_HEAD:
 	case COL_ENEMYHITBOX_HEAD:
-		eFinalHitState = m_tHitType.m_eHitState;
-		tOtherHitInfo.bHeadShot = true;
+
+		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
+			eFinalHitState = m_tHitType.m_eFlyState;
+
+		else if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
+			eFinalHitState = m_tHitType.m_eGroggyState;
+
+		else
+		{
+			eFinalHitState = m_tHitType.m_eHitState;
+			tOtherHitInfo.bHeadShot = true;
+		}
 
 #ifdef _DEBUG
 		cout << " 헤드샷 " << endl;
@@ -535,6 +559,27 @@ void CUnit::Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable)
 
 }
 
+void CUnit::Enable_FlyAttackCollider(_bool bEnable)
+{
+	if (!m_pUnitCollider[FLYATTACK])
+		return;
+
+	if (bEnable)
+	{
+		ENABLE_COMPONENT(m_pUnitCollider[FLYATTACK]);
+
+		if (m_pWeaponCollider_R)
+			ENABLE_COMPONENT(m_pWeaponCollider_R);
+	}
+	else
+	{
+		DISABLE_COMPONENT(m_pUnitCollider[FLYATTACK]);
+
+		if (m_pWeaponCollider_R)
+			DISABLE_COMPONENT(m_pWeaponCollider_R);
+	}
+}
+
 void CUnit::Enable_GuardCollider(_bool bEnable)
 {
 	if (!m_pUnitCollider[GUARD])
@@ -576,6 +621,7 @@ void CUnit::Enable_GroggyCollider(_bool bEnable)
 
 void CUnit::SetUp_Colliders(_bool bPlayer)
 {
+
 }
 
 void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrColliderDesc, _uint iNumCollider, _float4x4 matTransformation, _bool bEnable, CHierarchyNode* pRefBone)

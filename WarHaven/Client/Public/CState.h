@@ -33,6 +33,8 @@ public:
 		_bool	bGuardBreak = false;
 		_bool	bFly = false;
 
+		_int	iLandKeyFrame = 0;
+
 		HIT_TYPE	eHitType = HIT_TYPE::eEND;
 
 	};
@@ -181,6 +183,8 @@ protected:
 	virtual void		TickExecute(CUnit* pOwner, CAnimator* pAnimator) {};
 
 
+private:
+	_bool				m_bTestParringed = false;
 	
 };
 
