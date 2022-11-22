@@ -3,7 +3,7 @@
 #include "CDrawable_Terrain.h"
 #include "CStructure.h"
 #include "CStructure_Instance.h"
-
+#include "CMapColliders.h"
 CMap_Loader::CMap_Loader()
 {
 }
@@ -24,6 +24,11 @@ void CMap_Loader::Load_Data(wstring strPath, function<void(CGameObject*, _uint)>
     if (FAILED(pInstance->Load_MapData()))
     {
         Call_MsgBox(TEXT("Fail to Load_MapData : CMap_Loader"));
+        delete pInstance;
+    }  
+    if (FAILED(pInstance->Load_ColliderData()))
+    {
+        Call_MsgBox(TEXT("Fail to Load_ColliderData : CMap_Loader"));
         delete pInstance;
     }
 
@@ -85,6 +90,15 @@ HRESULT CMap_Loader::Load_MapData()
     return S_OK;
 }
 
+HRESULT CMap_Loader::Load_ColliderData()
+{
+
+    CMapColliders* pMapColliders = CMapColliders::Create(CFunctor::To_String(m_strDataName));
+    Ready_Object(pMapColliders, GROUP_DEFAULT);
+
+    return S_OK;
+}
+
 HRESULT CMap_Loader::SetUp_TerrainData(ifstream& rhsReadFile, string& strPath)
 {
     CDrawable_Terrain* pTerrain = nullptr;
@@ -110,89 +124,74 @@ HRESULT CMap_Loader::SetUp_StructureData(ifstream& rhsReadFile, string& strPath)
         Call_MsgBox(TEXT("Fail to Read : StructureData"));
         return E_FAIL;
     }
-    rhsReadFile.read((char*)&GroupSize, sizeof(_int));
-    for (_int i = 0; i < GroupSize; ++i)
-    {
-        //Loop~ 그룹 이름 저장
-        _int ObjectGroupNameLength = 0;
-        rhsReadFile.read((char*)&ObjectGroupNameLength, sizeof(_int));
+    
+    string GroupFilePath;
+    string SplitFilePath;
+    string MergeFilePath;
 
-        char pSkip[MAXCHAR] = "";
-        rhsReadFile.read(pSkip, sizeof(char) * ObjectGroupNameLength);
-        _int ObjectCount = 0;
-        rhsReadFile.read((char*)&ObjectCount, sizeof(_int));
-        for (_int j = 0; j < ObjectCount; ++j)
-        {
-            _int ObjectNameLength = 0;
-            rhsReadFile.read((char*)&ObjectNameLength, sizeof(_int));
-            rhsReadFile.read(pSkip, sizeof(char) * ObjectNameLength);
+    _uint GroupFilePathLength = 0;
+    rhsReadFile.read((char*)&GroupFilePathLength, sizeof(_uint));
+    char GroupPath[MAX_PATH] = "";
+    rhsReadFile.read(GroupPath, sizeof(char) * GroupFilePathLength);
+    GroupFilePath = GroupPath;
 
-            //경로 저장
-            _int ObjectPathLength = 0;
-            rhsReadFile.read((char*)&ObjectPathLength, sizeof(_int));
-            char pObjectPath[MAXCHAR]="";
-            rhsReadFile.read(pObjectPath, sizeof(char) * ObjectPathLength);
-            string strObjPath = pObjectPath;
-            wstring wstrObjPath = CFunctor::To_Wstring(strObjPath);
+    _uint SplitFilePathLength = 0;
+    rhsReadFile.read((char*)&SplitFilePathLength, sizeof(_uint));
+    char SplitPath[MAX_PATH] = "";
+    rhsReadFile.read(SplitPath, sizeof(char) * SplitFilePathLength);
+    SplitFilePath = SplitPath;
 
-            //행렬 저장
-            _float4x4 StateMatrix;
-            rhsReadFile.read((char*)&StateMatrix, sizeof(_float4x4));
+    _uint MergeFilePathLength = 0;
+    rhsReadFile.read((char*)&MergeFilePathLength, sizeof(_uint));
+    char MergePath[MAX_PATH] = "";
+    rhsReadFile.read(MergePath, sizeof(char) * MergeFilePathLength);
+    MergeFilePath = MergePath;
 
-            //스케일 저장
-            _float4 vScale;
-            rhsReadFile.read((char*)&vScale, sizeof(_float4));
-
-            //라이트플래그 저장
-            _byte LightFlag = 0;
-            rhsReadFile.read((char*)&LightFlag, sizeof(_byte));
-
-            CStructure* pGameObject = CStructure::Create(wstrObjPath, vScale, StateMatrix);
-            if (nullptr == pGameObject)
-                assert(0);
-            pGameObject->Initialize();
-            Ready_Object(pGameObject, GROUP_DECORATION);
-
-            //콜라이더 타입
-            _uint ColType = 0;
-            rhsReadFile.read((char*)&ColType, sizeof(_uint));
-
-            //LOD
-            _uint LODType = 0;
-            rhsReadFile.read((char*)&LODType, sizeof(_uint));
-            pGameObject->Make_PhysXCollider(CStructure::ePhysXEnum(ColType), LODType);
-
-            //박스콜라이더 수
-            _uint BoxCount = 0;
-            rhsReadFile.read((char*)&BoxCount, sizeof(_uint));
-
-            for (_uint i = 0; i < BoxCount; ++i)
-            {
-                pGameObject->Make_PhysXCollier_Box();
-            }
-            for (_uint i = 0; i < BoxCount; ++i)
-            {
-                _float4 vPosition = _float4(0.f, 0.f, 0.f, 1.f);
-                _float4 vAngle = _float4(0.f, 0.f, 0.f, 0.f);
-                _float4 vScale = _float4(0.f, 0.f, 0.f, 0.f);
-
-                rhsReadFile.read((char*)&vPosition, sizeof(_float4));
-                rhsReadFile.read((char*)&vAngle, sizeof(_float4));
-                rhsReadFile.read((char*)&vScale, sizeof(_float4));
-
-                pGameObject->RePosition_Box(i, vPosition);
-                pGameObject->ReScale_Box(i, vScale);
-                pGameObject->Rotate_Box(i, vAngle);
-            }
-
-            //박스콜라이더 정보 저장
-
-            //Safe_Delete_Array(pObjectName);
-        }
-
-
-    }
     rhsReadFile.close();
+
+
+
+    LoadFullPath = MergeFilePath;
+    ifstream	readFile(LoadFullPath, ios::binary);
+
+    if (!readFile.is_open())
+    {
+        Call_MsgBox(L"Load 실패 ??!?!");
+        assert(0);
+    }
+
+    _uint GroupMapSize = 0;
+    readFile.read((char*)&GroupMapSize, sizeof(_uint));
+
+    for (_uint i = 0; i < GroupMapSize; ++i)
+    {
+        _int NameLength = 0;
+        char ObjectName[MAXCHAR] = "";
+        readFile.read((char*)&NameLength, sizeof(_int));
+        readFile.read(ObjectName, sizeof(char) * NameLength);
+
+        _int PathLength = 0;
+        char szMeshPath[MAX_PATH] = "";
+        readFile.read((char*)&PathLength, sizeof(_int));
+        readFile.read(szMeshPath, sizeof(char) * PathLength);
+
+        wstring strMeshPath = CFunctor::To_Wstring(szMeshPath);
+        _uint iInstanceNums = 0;
+        readFile.read((char*)&iInstanceNums, sizeof(_uint));
+
+        VTXINSTANCE* pInstance = new VTXINSTANCE[iInstanceNums];
+        ZeroMemory(pInstance, sizeof(VTXINSTANCE) * iInstanceNums);
+        readFile.read((char*)pInstance, sizeof(VTXINSTANCE) * iInstanceNums);
+
+        CStructure_Instance* pInstanceStructure = CStructure_Instance::Create(strMeshPath, iInstanceNums, pInstance);
+        pInstanceStructure->Initialize();
+        Ready_Object(pInstanceStructure, GROUP_DECORATION);
+
+        Safe_Delete_Array(pInstance);
+    }
+
+    readFile.close();
+
 
     return S_OK;
 }
@@ -279,6 +278,7 @@ HRESULT CMap_Loader::LoadPath(ifstream& rhsReadFile, string& strPath)
 
 HRESULT CMap_Loader::SetUp_LoadOption(wstring strDataPath, function<void(CGameObject*, _uint)> Func_ReadyObject, _int Index)
 {
+    m_strDataName = strDataPath;
     m_strDataPath += TEXT("../Bin/Data/MapData/");
     m_strDataPath += strDataPath;
     m_strDataPath += TEXT(".MapData");

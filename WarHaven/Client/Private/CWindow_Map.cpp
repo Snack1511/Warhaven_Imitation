@@ -1579,7 +1579,8 @@ HRESULT CWindow_Map::Disable_DefaultTerrain()
     }
     if (nullptr != m_pDefaultTerrain)
     {
-        m_pDefaultTerrain->Set_Enable(false);
+        DELETE_GAMEOBJECT(m_pDefaultTerrain);
+        //m_pDefaultTerrain->Set_Enable(false);
         m_pDefaultTerrain = nullptr;
     }
     return S_OK;
