@@ -21,6 +21,7 @@ class CState;
 class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
+class CUI_Wrapper;
 
 class CUnit abstract
 	: public CGameObject
@@ -48,7 +49,7 @@ public:
 		_bool		bAbleHero = false;
 		_bool		bIsHero = false;
 		_float		fMaxHeroGauge = 100.f;
-		_float		fHeroGague = 50.f;
+		_float		fHeroGague = 70.f;
 
 		WEAPON_TYPE eWeapon;
 		_float fHP = 100.f;
@@ -100,7 +101,7 @@ public:
 		/* 가드 깨진 상태*/
 		STATE_TYPE		m_eGuardBreakState = STATE_END;
 
-		/* 찌르기맞고 죽기 전 상태 */ 
+		/* 찌르기맞고 죽기 전 상태 */
 		STATE_TYPE		m_eStingHitState = STATE_END;
 
 		/* 황소 베기 등 특정 FlyAttack 공격을 맞을 시 */
@@ -144,12 +145,12 @@ public:
 
 public:
 	_bool		Can_Use(COOL_TYPE eType) { if (eType < COOL_END && m_fCoolAcc[eType] <= 0.f) return true; return false; }
-	void		On_Use(COOL_TYPE eType) { if(eType < COOL_END) m_fCoolAcc[eType] = m_fCoolTime[eType]; }
+	void		On_Use(COOL_TYPE eType) { if (eType < COOL_END) m_fCoolAcc[eType] = m_fCoolTime[eType]; }
 
 	_bool		Can_Attack() { if (m_fAttackDelay <= 0.f) return true; return false; }
 	void		On_Attack(CState* pState);
 
-	
+
 
 	_bool		Is_Weapon_R_Collision();
 	/* 캐릭터에 부딪힌거 체크 */
@@ -207,8 +208,6 @@ public:
 	virtual HRESULT Start() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
-
-
 
 protected:
 	//PhysX 용 충돌체
@@ -297,6 +296,14 @@ protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
+private:
+	CUI_Wrapper* m_pUnitHUD = nullptr;
+
+private:
+	void Create_UnitHUD();
+	void Enable_UnitHUD();
+
+	void TransformProjection();
 private:
 	void	Effect_Hit(_float4 vHitPos);
 

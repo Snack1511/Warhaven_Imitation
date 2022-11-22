@@ -56,9 +56,11 @@ public:
 	_float4 Get_Color() { return m_vColor; }
 	void Set_Color(_float4 vColor) { m_vColor = vColor; }
 
+	_bool Get_IsSlice() { return m_bIsSlice; }
+	void Set_IsSlice(_bool value) { m_bIsSlice = value; }
+
 	_float4 Get_SliceRatio() { return m_vSliceRatio; }
 	void Set_SliceRatio(_float4 vRatio) { m_vSliceRatio = vRatio; }
-
 	_float2 Get_TextureSize() { return m_vTextureSize; }
 	void Set_TextureSzie(_float2 vTextureSize) { m_vTextureSize = vTextureSize; }
 
@@ -83,6 +85,7 @@ protected:
 	RECT m_tRect;
 	POINT m_ptMouse;
 
+	_bool m_bIsSlice = false;
 	_float4 m_vSliceRatio;
 	_float2 m_vTextureSize;
 
