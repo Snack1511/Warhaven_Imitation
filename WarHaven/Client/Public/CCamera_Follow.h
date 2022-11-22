@@ -25,6 +25,9 @@ public:
 	void	Start_ShakingCamera(_float fPower, _float fTime);
 
 public:
+	void	Set_FollowTarget(CGameObject* pTarget);
+
+public:
 	// CCamera을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;

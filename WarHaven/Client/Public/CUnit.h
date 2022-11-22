@@ -89,7 +89,12 @@ public:
 		STATE_TYPE		m_eGroggyState = STATE_END;
 
 		/* AI Test Bounce */
-		STATE_TYPE		m_eTestBounce = STATE_END;
+		STATE_TYPE		m_eLeftBounce = STATE_END;
+
+		/* AI Test Bounce */
+		STATE_TYPE		m_eRightBounce = STATE_END;
+
+		
 
 
 		/* 가드 깨진 상태*/
@@ -182,6 +187,7 @@ public:
 	_float4x4	Get_HitMatrix();
 
 	void	Set_Controlable() { m_bControlable = !m_bControlable; }
+
 
 public:
 	struct UNIT_DESC
@@ -290,6 +296,9 @@ protected:
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+
+private:
+	void	Effect_Hit(_float4 vHitPos);
 
 	private:
 		_bool		m_bDie = false;

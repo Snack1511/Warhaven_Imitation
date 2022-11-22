@@ -59,6 +59,9 @@ HRESULT CAI_CWarrior_Attack_HorizontalMiddle::Initialize()
 
 void CAI_CWarrior_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->CallBack_CollisionEnter += bind(&CAI_CWarrior_Attack_HorizontalMiddle::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+
+
 	// pOwner->On_Attack(this);
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
@@ -68,13 +71,13 @@ void CAI_CWarrior_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnim
 
 STATE_TYPE CAI_CWarrior_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	
-
 	return __super::Tick(pOwner, pAnimator);
 }
 
 void CAI_CWarrior_Attack_HorizontalMiddle::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->CallBack_CollisionEnter -= bind(&CAI_CWarrior_Attack_HorizontalMiddle::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	//__super::Exit(pOwner, pAnimator);
 }
@@ -85,6 +88,13 @@ STATE_TYPE CAI_CWarrior_Attack_HorizontalMiddle::Check_Condition(CUnit* pOwner, 
 
 	return STATE_END;
 }
+
+void CAI_CWarrior_Attack_HorizontalMiddle::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
+{	
+	if(iOtherColType == COL_PLAYERGUARD)
+		Bounce_State(pOtherObject, iOtherColType, iMyColType, vHitPos);
+}
+
 
 void CAI_CWarrior_Attack_HorizontalMiddle::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
