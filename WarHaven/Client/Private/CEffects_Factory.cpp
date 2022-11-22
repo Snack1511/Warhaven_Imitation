@@ -35,10 +35,19 @@ HRESULT CEffects_Factory::Initialize()
 		return E_FAIL;
 	
 	
-	//wstring wstrName = L"TestParticle";
-	//if(FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-	////L"../bin/resources/meshes/map/environments/building/SM_Architecture_Building_ShipBase01a.fbx", 20, wstrName
+	wstring wstrName = L"DeathStoneParticle";
+	if(FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+	L"../bin/resources/meshes/map/environments/prop/etc/SM_Prop_Etc_Fish02a_Lod1.fbx", 20, wstrName, 5.f, 10.f
 	//L"../bin/resources/meshes/map/environments/module/bridge/SM_Module_Bridge_Bridge01a_Lod1.fbx", 20, wstrName
+	))))
+		return E_FAIL;
+
+	//wstrName = L"WarriorDead_Head";
+	//if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+	//	L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice1.fbx", 1, wstrName, 10.f, 10.f,
+	//	L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+	//	L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
 	//))))
 	//	return E_FAIL;
 
@@ -138,11 +147,21 @@ CGameObject* CEffects_Factory::Create_MeshParticle(wstring wstrKey, _float4 vPos
 	if (m_Effects[_hcCode].empty())
 	{
 		pGameObject = GAMEINSTANCE->Clone_GameObject(_hcCode);
-
+		static_cast<CMesh_Particle*>(pGameObject)->Start_Particle(vPos, vDir, fPower);
+		//없으면 새로 집어넣음
+		pGameObject->Initialize();
+		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+	}
+	else
+	{
+		CEffect* pEffect = m_Effects[_hcCode].front();
+		static_cast<CMesh_Particle*>(pEffect)->Start_Particle(vPos, vDir, fPower);
+		m_Effects[_hcCode].pop_front();
+		pGameObject = pEffect;
 	}
 
 
-		return nullptr;
+	return pGameObject;
 }
 
 CGameObject* CEffects_Factory::Create_Effects(_hashcode _hcCode, CGameObject* pFollowTarget, _float4 vPos)

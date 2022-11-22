@@ -19,7 +19,8 @@ private:
 	virtual ~CMesh_Particle();
 
 public:
-	static CMesh_Particle* Create(wstring wstrModelFilePath, _uint iNumInstance, wstring strName, _float fLifeTime = 3.f);
+	static CMesh_Particle* Create(wstring wstrModelFilePath , _uint iNumInstance, wstring strName,
+		_float fDensity = 1.f, _float fLifeTime = 3.f, wstring wstrTextureFilePath = wstring(), wstring wstrNormalTexturePath = wstring());
 
 public:
 	void			Start_Particle(_float4 vPos, _float4 vDir, _float fPower = 1.f);
@@ -50,6 +51,8 @@ private:
 	_float	m_fLifeTime = 0.f;
 
 	_bool		m_bCloned = false;
+
+	_float	m_fDensity = 1.f;
 
 private:
 	HRESULT		SetUp_MeshParticle(wstring wstrModelFilePath);

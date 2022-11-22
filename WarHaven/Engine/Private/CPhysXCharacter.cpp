@@ -44,22 +44,18 @@ void CPhysXCharacter::Set_Position(_float4 vPos)
 
 void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 {
-	
-		////닿은 곳이 만약
-		//hit.worldPos.y;
-		////내 발 위치의 y랑 비슷하면 땅이랑 닿은거구
-		////닿은곳이 머 발 위치의 y보다 높다면 아닌거제
+	if (PxActorType::eRIGID_DYNAMIC == hit.actor->getType())
+	{
+		//밀어내야함
+		_float4 vOtherPos = CUtility_PhysX::To_Vector(hit.actor->getGlobalPose().p);
+		_float4 vHitPos = CUtility_PhysX::To_Vector(hit.worldPos);
 
-		//_float fContactY = hit.worldPos.y;
-		//_float	fMyFootY = hit.controller->getFootPosition().y;
-
-		////닿은곳이 발 위치보다 아래면 (땅에 착지)
-		//if (fMyFootY + 0.2f > fContactY)
-		//{
-		//	m_bColGround = true;
-
-		//}
-
+		_float4 vDir = vOtherPos - vHitPos;
+		vDir.Normalize();
+		vDir *= (_float)hit.length;
+		
+		static_cast<PxRigidDynamic*>(hit.actor)->addForce(CUtility_PhysX::To_PxVec3(vDir));
+	}
 }
 
 

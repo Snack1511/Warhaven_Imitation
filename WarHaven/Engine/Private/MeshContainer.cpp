@@ -162,6 +162,7 @@ HRESULT CMeshContainer::SetUp_MeshContainer(CResource_Mesh* pResource, _float4x4
 	
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_pVerticesPos = new _float3[m_iNumVertices];
+	ZeroMemory(m_pVerticesPos, sizeof(_float3) * m_iNumVertices);
 
 	VTXMODEL* pVertices = nullptr;
 	VTXANIM* pAnimVertices = nullptr;
@@ -171,6 +172,7 @@ HRESULT CMeshContainer::SetUp_MeshContainer(CResource_Mesh* pResource, _float4x4
 
 		m_iStride = sizeof(VTXMODEL);
 		pVertices = new VTXMODEL[m_iNumVertices];
+		ZeroMemory(pVertices, m_iStride * m_iNumVertices);
 		memcpy(pVertices, tMeshDesc.pVertices, sizeof(VTXMODEL) * m_iNumVertices);
 
 		for (_uint i = 0; i < m_iNumVertices; ++i)

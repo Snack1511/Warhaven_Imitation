@@ -143,7 +143,7 @@ void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 
 void CState_Blendable::Hit_GroundEffect(CUnit* pOwner)
 {
-	pOwner->Shake_Camera(0.25f, 0.25f);
+	pOwner->Shake_Camera(0.1f, 0.3f);
 
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
@@ -478,7 +478,13 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 	{
 	case 998:
 		/* Test */
-		//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"TestParticle", pOwner->Get_HitPos(), _float4(0.f, 1.f, 0.f, 0.f), 1.f);
+	{
+		_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+		vPos.y += 1.f;
+		vPos += pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+		CEffects_Factory::Get_Instance()->Create_MeshParticle(L"WarriorDead_Head", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f);
+	}
+		
 
 
 

@@ -41,3 +41,13 @@ _float4x4 CUtility_PhysX::To_Matrix(PxTransform& pxTransform)
 
 	return _float4x4(QuaternionMatrix);
 }
+
+_float4 CUtility_PhysX::To_Vector(const PxVec3& pxVec3)
+{
+	return _float4(pxVec3.x, pxVec3.y, pxVec3.z, 1.f);
+}
+
+_float4 CUtility_PhysX::To_Vector(const PxExtendedVec3& pxExtendedVec3)
+{
+	return _float4(pxExtendedVec3.x, pxExtendedVec3.y, pxExtendedVec3.z, 1.f);
+}

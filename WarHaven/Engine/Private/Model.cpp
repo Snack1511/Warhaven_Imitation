@@ -793,6 +793,7 @@ HRESULT CModel::SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePat
 
 HRESULT CModel::SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, _float4x4 TransformMatrix, _uint iMeshPartType)
 {
+	m_bInstancing = true;
 	m_eMODEL_TYPE = eType;
 	m_bCulling = false;
 	XMStoreFloat4x4(&m_TransformMatrix, TransformMatrix.XMLoad());

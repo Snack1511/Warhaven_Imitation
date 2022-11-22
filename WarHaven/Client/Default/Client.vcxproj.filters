@@ -1192,9 +1192,6 @@
     <Filter Include="03. Instances\02. GameObject\06. Map\MapColliders">
       <UniqueIdentifier>{8c135688-9a6f-4256-ac9c-7637abdd252c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\10. Destructible">
-      <UniqueIdentifier>{2564424f-9056-49ff-beaf-be4c083146b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump">
       <UniqueIdentifier>{5fb412b1-f33d-4db7-ada4-0e6d6c8bf6d5}</UniqueIdentifier>
     </Filter>
@@ -1215,6 +1212,12 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\05. FlyHit">
       <UniqueIdentifier>{1d91b6f4-7d31-4416-9526-6f0958467159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\08. Effect\05. CharacterDeath">
+      <UniqueIdentifier>{6ed1517e-5dec-41f8-a386-efc2e6b2a7e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\08. Effect\06. Mesh_Particle">
+      <UniqueIdentifier>{10a2865b-1ad7-4e12-a219-87c34f733b96}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2109,9 +2112,6 @@
     <ClInclude Include="..\public\CMapColliders.h">
       <Filter>03. Instances\02. GameObject\06. Map\MapColliders</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CMesh_Particle.h">
-      <Filter>03. Instances\02. GameObject\10. Destructible</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_L.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump\02. Fall</Filter>
     </ClInclude>
@@ -2135,6 +2135,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CHit_Fly_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\05. FlyHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CMesh_Particle.h">
+      <Filter>03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3010,9 +3013,6 @@
     <ClCompile Include="..\private\CMapColliders.cpp">
       <Filter>03. Instances\02. GameObject\06. Map\MapColliders</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CMesh_Particle.cpp">
-      <Filter>03. Instances\02. GameObject\10. Destructible</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_L.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump\02. Fall</Filter>
     </ClCompile>
@@ -3036,6 +3036,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CHit_Fly_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\05. FlyHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CMesh_Particle.cpp">
+      <Filter>03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

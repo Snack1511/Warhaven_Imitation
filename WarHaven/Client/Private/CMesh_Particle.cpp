@@ -8,6 +8,7 @@
 
 #include "CInstanceMesh.h"
 
+
 CMesh_Particle::CMesh_Particle()
 {
 }
@@ -28,7 +29,7 @@ CMesh_Particle::CMesh_Particle(const CMesh_Particle& _origin)
 	ZeroMemory(&tTransform, sizeof(tTransform));
 	tTransform.q.w = 1.f;
 
-	for (_uint i = 0; i < m_iNumInstance; ++i)
+	/*for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
 		PxRigidDynamic* pActor = nullptr;
 
@@ -37,7 +38,7 @@ CMesh_Particle::CMesh_Particle(const CMesh_Particle& _origin)
 		m_vecRigidDynamics.push_back(pActor);
 		pActor->setActorFlag(PxActorFlag::Enum::eDISABLE_SIMULATION, true);
 		pActor->putToSleep();
-	}
+	}*/
 
 }
 
@@ -50,13 +51,17 @@ CMesh_Particle::~CMesh_Particle()
 	SAFE_DELETE_ARRAY(m_pInstanceMatrices);
 }
 
-CMesh_Particle* CMesh_Particle::Create(wstring wstrModelFilePath, _uint iNumInstance, wstring strName, _float fLifeTime)
+CMesh_Particle* CMesh_Particle::Create(wstring wstrModelFilePath, _uint iNumInstance, wstring strName, _float fDensity, _float fLifeTime
+	, wstring wstrTextureFilePath, wstring wstrNormalTexturePath)
 {
 	CMesh_Particle* pInstance = new CMesh_Particle();
 
 	pInstance->m_iNumInstance = iNumInstance;
 	pInstance->m_fLifeTime = fLifeTime;
 	pInstance->m_hcMyCode = Convert_ToHash(strName);
+	pInstance->m_fDensity = fDensity;
+	pInstance->m_wstrColorMapPath = wstrTextureFilePath;
+	pInstance->m_wstrMaskMapPath = wstrNormalTexturePath;
 
 	if (FAILED(pInstance->SetUp_MeshParticle(wstrModelFilePath)))
 	{
@@ -78,6 +83,8 @@ CMesh_Particle* CMesh_Particle::Create(wstring wstrModelFilePath, _uint iNumInst
 
 void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower)
 {
+	//m_pTransform->Set_World(WORLD_POS, vPos);
+	//m_pTransform->Make_WorldMatrix();
 
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
@@ -87,8 +94,6 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower)
 		tTransform.p.y = vPos.y;
 		tTransform.p.z = vPos.z;
 		tTransform.q.w = 1.f;
-		m_vecRigidDynamics[i]->setGlobalPose(tTransform);
-
 
 		_float4	vNewDir =
 		{
@@ -100,11 +105,20 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower)
 
 		vNewDir *= fPower * frandom(0.9f, 1.1f);
 
-		m_vecRigidDynamics[i]->setActorFlag(PxActorFlag::Enum::eDISABLE_SIMULATION, false);
-		//m_vecRigidDynamics[i]->wakeUp();
-		m_vecRigidDynamics[i]->addForce(CUtility_PhysX::To_PxVec3(vNewDir));
+
+		PxRigidDynamic* pActor = nullptr;
+
+		pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, m_fDensity);
+
+		if (!pActor)
+			continue;
+
+		pActor->addForce(CUtility_PhysX::To_PxVec3(vNewDir));
+		m_vecRigidDynamics.push_back(pActor);
 
 	}
+
+	ENABLE_GAMEOBJECT(this);
 }
 
 HRESULT CMesh_Particle::Initialize_Prototype()
@@ -123,25 +137,7 @@ HRESULT CMesh_Particle::Initialize_Prototype()
 
 	Add_Component<CRenderer>(pRenderer);
 
-	/* 피직스 굽기 */
-	PxTransform tTransform;
-	ZeroMemory(&tTransform, sizeof(tTransform));
-	tTransform.q.w = 1.f;
-
-	for (_uint i = 0; i < m_iNumInstance; ++i)
-	{
-		PxRigidDynamic* pActor = nullptr;
-
-		pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 1.f);
-
-		if (!pActor)
-			return E_FAIL;
-
-		m_vecRigidDynamics.push_back(pActor);
-		pActor->setActorFlag(PxActorFlag::Enum::eDISABLE_SIMULATION, true);
-		pActor->putToSleep();
-	}
-
+	
 
 
 
@@ -163,28 +159,55 @@ HRESULT CMesh_Particle::Start()
 
 void CMesh_Particle::OnEnable()
 {
+	
 }
 
 void CMesh_Particle::OnDisable()
 {
 	__super::OnDisable();
 	m_fTimeAcc = 0.f;
+
+	for (_uint i = 0; i < m_iNumInstance; ++i)
+	{
+		Safe_release(m_vecRigidDynamics[i]);
+	}
+
+	m_vecRigidDynamics.clear();
 }
 
 HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
 {
+	m_matTrans = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+
 	CModel* pModelCom = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, wstrModelFilePath.c_str(), m_iNumInstance, m_matTrans);
 	Add_Component(pModelCom);
 
 
+	if (!m_wstrColorMapPath.empty())
+	{
+		pModelCom->Change_Texture(0, 1, m_wstrColorMapPath);
+	}
+
+	if (!m_wstrMaskMapPath.empty())
+	{
+		pModelCom->Change_Texture(0, aiTextureType_NORMALS, m_wstrMaskMapPath);
+	}
+
+
 	//ConvexMesh 하나 구워놓고 일단
-	CMesh* pMesh = static_cast<CMesh*>(pModelCom->Get_MeshContainers().front().second);
+	CMeshContainer* pMesh = (pModelCom->Get_MeshContainers().front().second);
+
+	FACEINDICES32* pIndices = pMesh->CMesh::Get_Indices();
+	_uint iNumPrimitive = pMesh->Get_NumPrimitive();
+
+	_uint iNumVertices = pMesh->Get_NumVertices();
+	_float3* pVerticesPos = pMesh->Get_VerticesPos();
 
 	GAMEINSTANCE->Create_ConvexMesh(
-		pMesh->Get_VerticesPos(),
-		pMesh->Get_NumVertices(),
-		pMesh->Get_Indices(),
-		pMesh->Get_NumPrimitive(),
+		pVerticesPos,
+		iNumVertices,
+		pIndices,
+		iNumPrimitive,
 		&m_pConvexMesh);
 
 	if (!m_pConvexMesh)
@@ -207,6 +230,8 @@ void CMesh_Particle::My_Tick()
 
 void CMesh_Particle::My_LateTick()
 {
+	if (!m_pInstanceMatrices)
+		return;
 
 	_float4x4 matWorldInv = m_pTransform->Get_WorldMatrix();
 	matWorldInv.Inverse();
@@ -219,7 +244,7 @@ void CMesh_Particle::My_LateTick()
 
 		//피직스월드매트릭스에 역행렬을 곱해야대
 
-		m_pInstanceMatrices[i] = matPhysX * matWorldInv;
+		m_pInstanceMatrices[i] = matPhysX;// * matWorldInv;
 	}
 
 	static_cast<CInstanceMesh*>(GET_COMPONENT(CModel)->Get_MeshContainers().front().second)

@@ -239,13 +239,12 @@ void CPhysX_Manager::Create_ConvexMesh(_float3* pVerticesPos, _uint iNumVertices
 
 	if (iNumVertices > 2000)
 	{
-		if (iNumVertices > 12000)
+		if (iNumVertices > 14000)
 		{
 			Call_MsgBox(L"정점 너무 많아서 Convex 못만듬, 건너 뛰겠음.");
 			SAFE_DELETE_ARRAY(pPxVerticesPos);
 			return;
 		}
-
 
 		Desc.quantizedCount = iNumVertices / 4;
 		Desc.flags |= PxConvexFlag::eQUANTIZE_INPUT;

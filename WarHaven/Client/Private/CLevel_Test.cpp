@@ -317,6 +317,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Environments/prop/etc/SM_Prop_Etc_Scarecrow02a.FBX")), mat);
+	pTestStruct->Initialize();
+	pTestStruct->Make_PhysXCollider(CStructure::ePhysXEnum::eCONVEX);
 	Ready_GameObject(pTestStruct, GROUP_DECORATION);*/
 
 

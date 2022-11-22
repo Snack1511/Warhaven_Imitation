@@ -36,6 +36,11 @@ CBoneCollider* CBoneCollider::Create(_uint iGroupID, const BONECOLLIDERDESC& tBo
 
 void CBoneCollider::onShapeHit(const PxControllerShapeHit& hit)
 {
+	CPhysXCharacter::onShapeHit(hit);
+
+	if (PxActorType::eRIGID_DYNAMIC == hit.actor->getType())
+		return;
+	
 	m_bCollisionTemp = true;
 
 	
