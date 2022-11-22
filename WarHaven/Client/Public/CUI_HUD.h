@@ -31,6 +31,7 @@ public:
 
 public:
 	void SetActive_OxenJumpText(_bool value);
+	void SetActive_DamageTex(_float fDmg);
 
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
@@ -70,10 +71,10 @@ private:	// 클래스 변경 창
 
 	CUI_Object* m_pChangeClassText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;
-
 	CUI_Object* m_pHeroGaugeText = nullptr;
-
 	CUI_Object* m_pOxenJumpText = nullptr;
+
+	CUI_Object* m_pDmgText = nullptr;
 
 private:
 	void Bind_Btn();
@@ -97,6 +98,7 @@ private:
 	void Create_TraingText();
 	void Create_HeroGaugeText();
 	void Create_OxenJumpText();
+	void Create_DmgText();
 };
 
 END

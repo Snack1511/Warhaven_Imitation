@@ -95,7 +95,7 @@ public:
 		/* AI Test Bounce */
 		STATE_TYPE		m_eRightBounce = STATE_END;
 
-		
+
 
 
 		/* 가드 깨진 상태*/
@@ -139,9 +139,11 @@ public:
 public:
 	virtual	void	On_Die();
 
+	void Set_MainPlayer() { m_bIsMainPlayer = true; }
+
 public:
 	_float			Calculate_Damage(_bool bHeadShot, _bool bGuard);
-	virtual _bool	On_PlusHp(_float fHp);
+	virtual _bool	On_PlusHp(_float fHp, CUnit* pOtherUnit);
 
 public:
 	_bool		Can_Use(COOL_TYPE eType) { if (eType < COOL_END && m_fCoolAcc[eType] <= 0.f) return true; return false; }
@@ -314,10 +316,11 @@ private:
 private:
 	void	Effect_Hit(_float4 vHitPos);
 
-	private:
-		_bool		m_bDie = false;
-		_float		m_fDeadTimeAcc = 0.f;
-		_float		m_fDeadTime = 0.1f;
+private:
+	_bool		m_bIsMainPlayer = false;
+	_bool		m_bDie = false;
+	_float		m_fDeadTimeAcc = 0.f;
+	_float		m_fDeadTime = 0.1f;
 
 };
 END

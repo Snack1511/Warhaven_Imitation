@@ -40,6 +40,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_TraingText();
 	Create_HeroGaugeText();
 	Create_OxenJumpText();
+	Create_DmgText();
 
 	return S_OK;
 }
@@ -102,7 +103,7 @@ void CUI_HUD::My_Tick()
 
 	if (m_pWrap[HeroGauge]->Is_Valid())
 	{
-		m_fHeroGauge =  m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge;
+		m_fHeroGauge = m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge;
 		//m_fHeroGauge = -1.f * (m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge) + 1.f;
 		//m_fHeroGauge = m_tStatus.fMaxHeroGauge / m_tStatus.fHeroGague -1.f;
 
@@ -284,6 +285,20 @@ void CUI_HUD::SetActive_OxenJumpText(_bool value)
 	{
 		DISABLE_GAMEOBJECT(m_pOxenJumpText);
 	}
+}
+
+void CUI_HUD::SetActive_DamageTex(_float fDmg)
+{
+	_tchar  szTemp[MAX_STR] = {};
+	swprintf_s(szTemp, TEXT("%.f"), -fDmg);
+	m_pDmgText->Set_FontText(szTemp);
+
+	_float fPosX = frandom(100.f, 300.f);
+	_float fPosY = frandom(-300.f, 300.f);
+
+	m_pDmgText->Set_Pos(fPosX, fPosY);
+
+	Enable_Fade(m_pDmgText);
 }
 
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
@@ -670,4 +685,25 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
+}
+
+void CUI_HUD::Create_DmgText()
+{
+	m_pDmgText = CUI_Object::Create();
+
+	m_pDmgText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
+
+	m_pDmgText->Set_Scale(50.f);
+
+	m_pDmgText->Set_FontRender(true);
+	m_pDmgText->Set_FontStyle(true);
+	m_pDmgText->Set_FontScale(0.5f);
+
+	// 스케일에 비례하여 오프셋이 증감
+	m_pDmgText->Set_FontOffset(15.f, -27.5f);
+
+	m_pDmgText->Set_FontColor(_float4(1.f, 0.f, 0.f, 1.f));
+
+	CREATE_GAMEOBJECT(m_pDmgText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pDmgText);
 }

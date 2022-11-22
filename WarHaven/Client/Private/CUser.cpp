@@ -181,3 +181,8 @@ void CUser::SetActive_OxenJumpText(_bool value)
 	m_pUI_HUD->SetActive_OxenJumpText(value);
 }
 
+void CUser::SetActive_DamageTex(_float fDmg)
+{
+	m_pUI_HUD->SetActive_DamageTex(fDmg);
+}
+

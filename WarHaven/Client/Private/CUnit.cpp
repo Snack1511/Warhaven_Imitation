@@ -41,6 +41,7 @@
 
 #include "CUtility_Transform.h"
 
+#include "CUser.h"
 #include "CUI_Wrapper.h"
 #include "CUI_UnitHUD.h"
 
@@ -209,7 +210,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	_float fDamage = pOtherUnit->Calculate_Damage(tOtherHitInfo.bHeadShot, bGuardSuccess);
 
-	if (On_PlusHp(fDamage))
+	if (On_PlusHp(fDamage, pOtherUnit))
 	{
 		Enter_State(eFinalHitState, &tOtherHitInfo);
 	}
@@ -313,8 +314,16 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 	return fDamage;
 }
 
-_bool CUnit::On_PlusHp(_float fHp)
+_bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit)
 {
+	if (pOtherUnit)
+	{
+		if (pOtherUnit->m_bIsMainPlayer)
+		{
+			CUser::Get_Instance()->SetActive_DamageTex(fHp);
+		}
+	}
+
 	m_tUnitStatus.fHP += fHp;
 
 	if (m_tUnitStatus.fHP <= 0.f)
@@ -326,8 +335,6 @@ _bool CUnit::On_PlusHp(_float fHp)
 	{
 		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	}
-
-	// 돌아올 곳
 
 	return true;
 }
