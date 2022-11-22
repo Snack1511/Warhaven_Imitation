@@ -170,10 +170,11 @@ void CState_Blendable::Hit_SlashEffect(CUnit* pOwner)
 		break;
 
 	}
-	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner->Get_HitMatrix());
+	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
 
 	
 
