@@ -1953,6 +1953,9 @@ void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
     //인스턴싱 정보 생성
     //정보 저장
 
+    _uint GroupMapSize = _uint(m_DataNamingGroupMap.size());
+    writeFile.write((char*)&GroupMapSize, sizeof(_uint));
+
     for (DataMap::value_type& DataArrValue : m_DataNamingGroupMap)
     {
         string strName = CFunctor::To_String(DataArrValue.second.front().strObejctName);
@@ -1966,18 +1969,42 @@ void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
         _int PathLength = _int(MeshPath.length()) + 1;
         char szMeshPath[MAX_PATH] = "";
         strcpy_s(szMeshPath, MeshPath.c_str());
-
         writeFile.write((char*)&PathLength, sizeof(_int));
         writeFile.write(szMeshPath, sizeof(char) * PathLength);
 
-        for (DataArr::value_type& Value : DataArrValue.second)
+        _uint iInstanceNums = _uint(DataArrValue.second.size());
+        VTXINSTANCE* pInstance = new VTXINSTANCE[iInstanceNums];
+        ZeroMemory(pInstance, sizeof(VTXINSTANCE) * iInstanceNums);
+
+        for (_uint i = 0; i < iInstanceNums; ++i)
         {
-            writeFile.write((char*)&Value.ObjectStateMatrix, sizeof(_float4x4));
-            writeFile.write((char*)&Value.vScale, sizeof(_float4));
-            writeFile.write((char*)&Value.ObejectIndex, sizeof(_int));
-            writeFile.write((char*)&Value.byteLightFlag, sizeof(_byte));
+            _float4x4 matInstanceWorld = DataArrValue.second[i].ObjectStateMatrix;
+            _float4 vScale = _float4(1.f, 1.f, 1.f, 0.f);//= DataIter->second[i].vScale;
+            XMStoreFloat4(&pInstance[i].vRight, matInstanceWorld.XMLoad().r[0] * vScale.x);
+            XMStoreFloat4(&pInstance[i].vUp, matInstanceWorld.XMLoad().r[1] * vScale.y);
+            XMStoreFloat4(&pInstance[i].vLook, matInstanceWorld.XMLoad().r[2] * vScale.z);
+            XMStoreFloat4(&pInstance[i].vTranslation, matInstanceWorld.XMLoad().r[3]);
         }
+
+        writeFile.write((char*)&iInstanceNums, sizeof(_uint));
+        writeFile.write((char*)pInstance, sizeof(VTXINSTANCE)* iInstanceNums);
+        Safe_Delete_Array(pInstance);
     }
+
+    //wstring strMeshPath;
+    //_int InstanceCount = DataIter->second.size();
+    //VTXINSTANCE* pInstance = new VTXINSTANCE[InstanceCount];
+    //ZeroMemory(pInstance, sizeof(VTXINSTANCE) * InstanceCount);
+    //for (_uint i = 0; i < InstanceCount; ++i)
+    //{
+    //    strMeshPath = DataIter->second[i].strMeshPath;
+    //    _float4x4 matInstanceWorld = DataIter->second[i].ObjectStateMatrix;
+    //    _float4 vScale = _float4(1.f, 1.f, 1.f, 0.f);//= DataIter->second[i].vScale;
+    //    XMStoreFloat4(&pInstance[i].vRight, matInstanceWorld.XMLoad().r[0] * vScale.x);
+    //    XMStoreFloat4(&pInstance[i].vUp, matInstanceWorld.XMLoad().r[1] * vScale.y);
+    //    XMStoreFloat4(&pInstance[i].vLook, matInstanceWorld.XMLoad().r[2] * vScale.z);
+    //    XMStoreFloat4(&pInstance[i].vTranslation, matInstanceWorld.XMLoad().r[3]);
+    //}
     writeFile.close();
 }
 void CFunc_ObjectControl::Load_ObjectData(string FilePath, string& GroupFilePath, string& SplitFilePath, string& MergeFilePath)
@@ -2009,6 +2036,8 @@ void CFunc_ObjectControl::Load_ObjectData(string FilePath, string& GroupFilePath
     char MergePath[MAX_PATH] = "";
     readFile.read(MergePath, sizeof(char) * MergeFilePathLength);
     MergeFilePath = MergePath;
+
+    readFile.close();
 }
 void CFunc_ObjectControl::Load_ObjectGroup(string FilePath) 
 {

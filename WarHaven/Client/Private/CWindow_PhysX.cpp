@@ -209,15 +209,23 @@ HRESULT CWindow_PhysX::Render()
 
 		if (ImGui::DragFloat3("Scale", arrScale, 0.05f, 0.1f, 200.f, "%.1f"))
 		{
-			vScale.x = arrScale[0];
-			vScale.y = arrScale[1];
-			vScale.z = arrScale[2];
+			if (arrScale[0] >= 0.0001f &&
+				arrScale[1] >= 0.0001f &&
+				arrScale[2] >= 0.0001f
+				)
+			{
+				vScale.x = arrScale[0];
+				vScale.y = arrScale[1];
+				vScale.z = arrScale[2];
 
-			pCurDebugBox->ReScale_Box(vScale);
-			//기존꺼 지우고 다시 늫기
-			pCurRigidStatic->release();
-			pCurRigidStatic = Create_StaticBox(tTransform, vScale);
-			m_StaticBoxes[m_iCurSelectedIndex] = pCurRigidStatic;
+				pCurDebugBox->ReScale_Box(vScale);
+				//기존꺼 지우고 다시 늫기
+				pCurRigidStatic->release();
+				pCurRigidStatic = Create_StaticBox(tTransform, vScale);
+				m_StaticBoxes[m_iCurSelectedIndex] = pCurRigidStatic;
+			}
+
+			
 			
 		}
 
@@ -295,6 +303,7 @@ void CWindow_PhysX::Update_CreateMode()
 		{
 			PxTransform tTransform;
 			ZeroMemory(&tTransform, sizeof(PxTransform));
+			vPos = vPos.MultiplyCoord(m_pMeshTerrain->Get_Owner()->Get_Transform()->Get_WorldMatrix());
 			tTransform.p.x = vPos.x;
 			tTransform.p.y = vPos.y;
 			tTransform.p.z = vPos.z;
@@ -412,7 +421,7 @@ void CWindow_PhysX::Load_Data()
 		Call_MsgBox(L"로드 경로 없음");
 		return;
 	}
-
+	Delete_All();
 	_uint iNumBoxes = 0;
 
 	readFile.read((char*)&iNumBoxes, sizeof(_uint));
