@@ -12,6 +12,8 @@
 #include "Transform.h"
 #include "Loading_Manager.h"
 
+#include "CPlayer.h"
+
 #include "CEffects_Factory.h"
 #include "Functor.h"
 #include "CState_Manager.h"
@@ -56,6 +58,11 @@ void CUser::On_ExitLevel()
 {
 	m_pBloodOverlay = nullptr;
 
+}
+
+CUnit* CUser::Get_Player()
+{
+	return m_pPlayer->Get_CurrentUnit();
 }
 
 void CUser::Fix_CursorPosToCenter()

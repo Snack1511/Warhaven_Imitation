@@ -304,6 +304,10 @@ private:
 	void Enable_UnitHUD();
 
 	void TransformProjection();
+
+private:
+	void	On_InitSetting();
+
 private:
 	void	Effect_Hit(_float4 vHitPos);
 

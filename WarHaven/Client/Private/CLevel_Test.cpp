@@ -266,60 +266,35 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
-	// 테스트할 객체 띄우기
-
-	//if (FAILED(SetUp_Warrior_TH()))
-	//	return E_FAIL;
-
-	//if (FAILED(SetUp_Warrior_Sandback()))
-	//	return E_FAIL;
-	
-	//if (FAILED(SetUp_WarHammer_TH()))
-	//	return E_FAIL;
-
-	/*if (FAILED(SetUp_SpearMan_TH()))
-	return E_FAIL;*/
-
-	/*if (FAILED(SetUp_WarHammer_TH()))
-		return E_FAIL;*/
-
-	//if (FAILED(SetUp_Valkyrie_TH()))
-	//	return E_FAIL;
-
-
-	// 1. 카메라 키
-	// 2. 초기 Unit Enum
-
-	//CPlayer* pUserPlayer = CPlayer::Create();
-
-	CPlayer* pUserPlayer = CPlayer::Create(L"PlayerCam", CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR);
-
-	if (nullptr == pUserPlayer)
-		return E_FAIL;
-
 	_float4 vPlayerPos = _float4(10.f, 3.f, 10.f);
 
-	pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_L);
-	pUserPlayer->SetUp_UnitColliders(true);
-	pUserPlayer->SetUp_UnitHitStates(true);
-	pUserPlayer->Set_Postion(vPlayerPos);
+	CPlayer* pUserPlayer = nullptr;
 
-	Ready_GameObject(pUserPlayer, GROUP_USER);
+	if (!(pUserPlayer = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+		STATE_JUMPFALL_PLAYER_R, true, L"PlayerCam")))
+		return E_FAIL;
+
+	CUser::Get_Instance()->Set_Player(pUserPlayer);
 
 
+	vPlayerPos.z += 5.f;
 
-	// 최종 목표 : 
-	/*
-	* 
-	
+	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+		STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
+		return E_FAIL;
 
-	//1. 어떤 캐릭으로 시작할 지
-	//2. 어떤 상태로 시작할 지
-	//3. 어떤 팀인지
+	vPlayerPos.x += 5.f;
 
-	
-	
-	*/
+	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+		STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY, false, L"SandBackCam2")))
+		return E_FAIL;
+
+	vPlayerPos.x -= 10.f;
+
+	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+		STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY, false, L"SandBackCam3")))
+		return E_FAIL;
+
 
 
 	return S_OK;
@@ -482,132 +457,32 @@ void CLevel_Test::Col_Check()
 	
 }
 
+CPlayer* CLevel_Test::SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TYPE eStartState, _bool bUserPlayer, wstring wstrCamName)
+{
+	CPlayer* pPlayerInstance = CPlayer::Create(wstrCamName, (CPlayer::CLASS_DEFAULT)(iClassType));
+
+	if (nullptr == pPlayerInstance)
+		return nullptr;
+
+	pPlayerInstance->Reserve_State(eStartState);
+	pPlayerInstance->SetUp_UnitColliders(bUserPlayer);
+	pPlayerInstance->SetUp_UnitHitStates(bUserPlayer);
+	pPlayerInstance->Set_Postion(vStartPos);
+	Ready_GameObject(pPlayerInstance, GROUP_USER);
+
+
+
+	return pPlayerInstance;
+}
+
 HRESULT CLevel_Test::SetUp_Warrior_TH()
 {
-	CUnit::UNIT_MODEL_DATA  tModelData;
-
-	//0. Warrior
-	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Warrior/Warrior.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx";
-	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-
-	CUnit_Warrior* pTestWarriorUnit = CUnit_Warrior::Create(tModelData);
-	if (!pTestWarriorUnit)
-		return E_FAIL;
-
-	pTestWarriorUnit->Initialize();
-
-	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
-	pTestWarriorUnit->Reserve_State(STATE_JUMPFALL_PLAYER_R);
-
-	pTestWarriorUnit->SetUp_Colliders(true);
-	pTestWarriorUnit->SetUp_HitStates(true);
-
-	
-
-	Ready_GameObject(pTestWarriorUnit, GROUP_PLAYER);
-	_float4 vPlayerPos = _float4(20.f, 5.f, 20.f);
-	pTestWarriorUnit->Teleport_Unit(vPlayerPos);
-	/* Game Collider */
-
-
-
-	m_pWarrior = pTestWarriorUnit;
-
-	CUser::Get_Instance()->Set_Player(pTestWarriorUnit);
-
-	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarriorUnit, nullptr);
-	pFollowCam->Initialize();
-	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
-	pFollowCam->Get_Transform()->Make_WorldMatrix();
-	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
-	DISABLE_GAMEOBJECT(pFollowCam);
-	pTestWarriorUnit->Set_FollowCam(pFollowCam);
-
-	
-
 	return S_OK;
 }
 
 
 HRESULT CLevel_Test::SetUp_SpearMan_TH()
 {
-
-	CUnit::UNIT_MODEL_DATA  tModelData;
-
-	//0. Warrior
-	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Spearman/Spearman.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Spearman/body/SK_Spearman0001_Body_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Face_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Spearman/Head/SK_Spearman0001_Helmet_A00.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSpear/SM_WP_LongSpear0002_A00.fbx";
-	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-
-	CUnit_Spearman* pTestSpearmanUnit = CUnit_Spearman::Create(tModelData);
-	if (!pTestSpearmanUnit)
-		return E_FAIL;
-
-
-
-	pTestSpearmanUnit->Initialize();
-
-	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
-	pTestSpearmanUnit->Reserve_State(STATE_IDLE_SPEARMAN_R);
-
-
-
-	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
-
-
-	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
-		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
-	};
-
-
-
-	pTestSpearmanUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
-
-	tUnitColDesc[0].fRadius = 0.4f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
-
-
-	pTestSpearmanUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestSpearmanUnit, CModel)->Find_HierarchyNode("ob_Head"));
-
-	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[3] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.5f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -160.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
-	};
-
-	pTestSpearmanUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 3, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT_FROM(pTestSpearmanUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-	Ready_GameObject(pTestSpearmanUnit, GROUP_PLAYER);
-
-
-
-
-	CUser::Get_Instance()->Set_Player(pTestSpearmanUnit);
-
-
-	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestSpearmanUnit, nullptr);
-	pFollowCam->Initialize();
-	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam2", pFollowCam);
-	DISABLE_GAMEOBJECT(pFollowCam);
 
 
 
@@ -617,71 +492,71 @@ HRESULT CLevel_Test::SetUp_SpearMan_TH()
 HRESULT CLevel_Test::SetUp_WarHammer_TH()
 {
 
-	CUnit::UNIT_MODEL_DATA  tModelData;
+	//CUnit::UNIT_MODEL_DATA  tModelData;
 
-	//2. WarHammer
-	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx";
-
-
-	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/Hammer/SM_WP_WarHammer0001_A00.fbx";
-
-	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-
-	CUnit_WarHammer* pTestWarHammerUnit = CUnit_WarHammer::Create(tModelData);
-	if (!pTestWarHammerUnit)
-		return E_FAIL;
+	////2. WarHammer
+	//tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx";
 
 
+	//tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00.fbx";
+	//tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00.fbx";
+	//tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00.fbx";
 
-	pTestWarHammerUnit->Initialize();
+	//tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/Hammer/SM_WP_WarHammer0001_A00.fbx";
 
-	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
-	pTestWarHammerUnit->Reserve_State(STATE_IDLE_WARHAMMER_R);
-	pTestWarHammerUnit->SetUp_Colliders(true);
-	pTestWarHammerUnit->SetUp_HitStates(true);
+	//tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
 
-
-	
-
-	Ready_GameObject(pTestWarHammerUnit, GROUP_PLAYER);
-
-	int iCnt = (int)CUnit_WarHammer::BARRICADE_CNT::BARRICADE_CNT_END;
-
-	/* 바리게이트 생성 */
-	for (int i = 0; i < iCnt; ++i)
-	{
-		CBarricade* pBarricade = CBarricade::Create(pTestWarHammerUnit, L"../Bin/Resources/Meshes/Map/Environments/Install/SM_Prop_Installation_Trap01a.fbx");
-
-	
-		pTestWarHammerUnit->Disable_Barricade(pBarricade);
-
-		Ready_GameObject(pBarricade, GROUP_DEFAULT);
-	}
-	
+	//CUnit_WarHammer* pTestWarHammerUnit = CUnit_WarHammer::Create(tModelData);
+	//if (!pTestWarHammerUnit)
+	//	return E_FAIL;
 
 
-	_float4 vPlayerPos = _float4(40.f, 5.f, 40.f);
-	pTestWarHammerUnit->Teleport_Unit(vPlayerPos);
+
+	//pTestWarHammerUnit->Initialize();
+
+	////상태 예약해놓고 Start에서 Enter 호출로 시작됨
+	//pTestWarHammerUnit->Reserve_State(STATE_IDLE_WARHAMMER_R);
+	//pTestWarHammerUnit->SetUp_Colliders(true);
+	//pTestWarHammerUnit->SetUp_HitStates(true);
 
 
-	CUser::Get_Instance()->Set_Player(pTestWarHammerUnit);
+	//
+
+	//Ready_GameObject(pTestWarHammerUnit, GROUP_PLAYER);
+
+	//int iCnt = (int)CUnit_WarHammer::BARRICADE_CNT::BARRICADE_CNT_END;
+
+	///* 바리게이트 생성 */
+	//for (int i = 0; i < iCnt; ++i)
+	//{
+	//	CBarricade* pBarricade = CBarricade::Create(pTestWarHammerUnit, L"../Bin/Resources/Meshes/Map/Environments/Install/SM_Prop_Installation_Trap01a.fbx");
+
+	//
+	//	pTestWarHammerUnit->Disable_Barricade(pBarricade);
+
+	//	Ready_GameObject(pBarricade, GROUP_DEFAULT);
+	//}
+	//
 
 
-	 CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarHammerUnit, nullptr);
-	 pFollowCam->Initialize();
-	 pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
-	 pFollowCam->Get_Transform()->Make_WorldMatrix();
-	 CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+	//_float4 vPlayerPos = _float4(40.f, 5.f, 40.f);
+	//pTestWarHammerUnit->Teleport_Unit(vPlayerPos);
 
-	 GAMEINSTANCE->Add_Camera(L"PlayerCam4", pFollowCam);
-	 DISABLE_GAMEOBJECT(pFollowCam);
-	 pTestWarHammerUnit->Set_FollowCam(pFollowCam);
 
-	 m_pWarHammer = pTestWarHammerUnit;
+	//CUser::Get_Instance()->Set_Player(pTestWarHammerUnit);
+
+
+	// CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestWarHammerUnit, nullptr);
+	// pFollowCam->Initialize();
+	// pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
+	// pFollowCam->Get_Transform()->Make_WorldMatrix();
+	// CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+
+	// GAMEINSTANCE->Add_Camera(L"PlayerCam4", pFollowCam);
+	// DISABLE_GAMEOBJECT(pFollowCam);
+	// pTestWarHammerUnit->Set_FollowCam(pFollowCam);
+
+	// m_pWarHammer = pTestWarHammerUnit;
 
 
 	return S_OK;
@@ -689,100 +564,100 @@ HRESULT CLevel_Test::SetUp_WarHammer_TH()
 
 HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 {
-	CUnit::UNIT_MODEL_DATA  tModelData;
-
-	//3. Valkyrie
-	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/Valkyrie/Valkyrie.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/Valkyrie/body/SK_Fiona0004_Body_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0004_Helmet_A00.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00.fbx";
-	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-
-	tModelData.strModelPaths[MODEL_PART_WEAPON_L] = L"../bin/resources/meshes/weapons/Valkyrie_Shield/SK_WP_HeaterShield0001_A00.fbx";
-	tModelData.strRefBoneName[MODEL_PART_WEAPON_L] = "0B_L_WP1";
-
-	CUnit_Valkyrie* pTestValkyrieUnit = CUnit_Valkyrie::Create(tModelData);
-	if (!pTestValkyrieUnit)
-		return E_FAIL;
-
-	pTestValkyrieUnit->Initialize();
-
-	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
-	pTestValkyrieUnit->Reserve_State(STATE_IDLE_VALKYRIE_R);
-
-
-	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
-
-	// 워해머를 꺼잖아
-	// 카메라 매니저가 터지는 이유는 ? 팔로우캠을 못 받아서??
-
-	// 팔로우 캠이 못 받는 이유는 ??
-
-	// 유닛에서 생성하지
-
-	// 유닛에서 복사해서 하는거야
-
-	// 원본객체를 두번 생선한거야?
-
-	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
-		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
-	};
-
-
-
-	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
-
-	tUnitColDesc[0].fRadius = 0.4f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
-
-
-	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestValkyrieUnit, CModel)->Find_HierarchyNode("ob_Head"));
-
-	CUnit::UNIT_COLLIDERDESC tWeapon_RUnitColDesc[3] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.45f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
-		{0.45f, _float4(0.f, 0.f, -85.f),COL_PLAYERATTACK },
-		{0.45f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
-	};
-
-	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeapon_RUnitColDesc, 3, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestValkyrieUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-	CUnit::UNIT_COLLIDERDESC tWeapon_LUnitColDesc[3] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.5f, _float4(0.f, 0.f, -20.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f,  5.f),COL_PLAYERATTACK },
-		{0.5f, _float4(0.f, 0.f,  30.f),COL_PLAYERATTACK }
-	};
-
-	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::WEAPON_L, tWeapon_LUnitColDesc, 3, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestValkyrieUnit, CModel)->Find_HierarchyNode("0B_L_WP1"));
-
-
-	Ready_GameObject(pTestValkyrieUnit, GROUP_PLAYER);
-
-
-	_float4 vPlayerPos = _float4(20.f, 2.f, 20.f);
-	pTestValkyrieUnit->Teleport_Unit(vPlayerPos);
-
-
-	CUser::Get_Instance()->Set_Player(pTestValkyrieUnit);
-
-	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestValkyrieUnit, nullptr);
-	pFollowCam->Initialize();
-	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
-	pFollowCam->Get_Transform()->Make_WorldMatrix();
-	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
-	DISABLE_GAMEOBJECT(pFollowCam);
-	pTestValkyrieUnit->Set_FollowCam(pFollowCam);
+//	CUnit::UNIT_MODEL_DATA  tModelData;
+//
+//	//3. Valkyrie
+//	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/Characters/Valkyrie/Valkyrie.fbx";
+//
+//	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/Characters/Valkyrie/body/SK_Fiona0004_Body_A00.fbx";
+//	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00.fbx";
+//	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0004_Helmet_A00.fbx";
+//
+//	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00.fbx";
+//	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
+//
+//	tModelData.strModelPaths[MODEL_PART_WEAPON_L] = L"../bin/resources/meshes/weapons/Valkyrie_Shield/SK_WP_HeaterShield0001_A00.fbx";
+//	tModelData.strRefBoneName[MODEL_PART_WEAPON_L] = "0B_L_WP1";
+//
+//	CUnit_Valkyrie* pTestValkyrieUnit = CUnit_Valkyrie::Create(tModelData);
+//	if (!pTestValkyrieUnit)
+//		return E_FAIL;
+//
+//	pTestValkyrieUnit->Initialize();
+//
+//	//상태 예약해놓고 Start에서 Enter 호출로 시작됨
+//	pTestValkyrieUnit->Reserve_State(STATE_IDLE_VALKYRIE_R);
+//
+//
+//	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
+//
+//	// 워해머를 꺼잖아
+//	// 카메라 매니저가 터지는 이유는 ? 팔로우캠을 못 받아서??
+//
+//	// 팔로우 캠이 못 받는 이유는 ??
+//
+//	// 유닛에서 생성하지
+//
+//	// 유닛에서 복사해서 하는거야
+//
+//	// 원본객체를 두번 생선한거야?
+//
+//	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+//	{
+//		//Radius,	vOffsetPos.		eColType
+//		{0.6f, _float4(0.f, 0.5f, 0.f),COL_PLAYERHITBOX_BODY },
+//		{0.6f, _float4(0.f, 1.f, 0.f),COL_PLAYERHITBOX_BODY },
+//	};
+//
+//
+//
+//	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
+//
+//	tUnitColDesc[0].fRadius = 0.4f;
+//	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+//	tUnitColDesc[0].eColType = COL_PLAYERHITBOX_HEAD;
+//
+//
+//	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestValkyrieUnit, CModel)->Find_HierarchyNode("ob_Head"));
+//
+//	CUnit::UNIT_COLLIDERDESC tWeapon_RUnitColDesc[3] =
+//	{
+//		//Radius,	vOffsetPos.		eColType
+//		{0.45f, _float4(0.f, 0.f, -115.f),COL_PLAYERATTACK },
+//		{0.45f, _float4(0.f, 0.f, -85.f),COL_PLAYERATTACK },
+//		{0.45f, _float4(0.f, 0.f, -55.0f),COL_PLAYERATTACK }
+//	};
+//
+//	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::WEAPON_R, tWeapon_RUnitColDesc, 3, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestValkyrieUnit, CModel)->Find_HierarchyNode("0B_R_WP1"));
+//
+//	CUnit::UNIT_COLLIDERDESC tWeapon_LUnitColDesc[3] =
+//	{
+//		//Radius,	vOffsetPos.		eColType
+//		{0.5f, _float4(0.f, 0.f, -20.f),COL_PLAYERATTACK },
+//		{0.5f, _float4(0.f, 0.f,  5.f),COL_PLAYERATTACK },
+//		{0.5f, _float4(0.f, 0.f,  30.f),COL_PLAYERATTACK }
+//	};
+//
+//	pTestValkyrieUnit->SetUp_UnitCollider(CUnit::WEAPON_L, tWeapon_LUnitColDesc, 3, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT_FROM(pTestValkyrieUnit, CModel)->Find_HierarchyNode("0B_L_WP1"));
+//
+//
+//	Ready_GameObject(pTestValkyrieUnit, GROUP_PLAYER);
+//
+//
+//	_float4 vPlayerPos = _float4(20.f, 2.f, 20.f);
+//	pTestValkyrieUnit->Teleport_Unit(vPlayerPos);
+//
+//
+//	CUser::Get_Instance()->Set_Player(pTestValkyrieUnit);
+//
+//	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestValkyrieUnit, nullptr);
+//	pFollowCam->Initialize();
+//	pFollowCam->Get_Transform()->Set_World(WORLD_POS, vPlayerPos);
+//	pFollowCam->Get_Transform()->Make_WorldMatrix();
+//	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
+//	GAMEINSTANCE->Add_Camera(L"PlayerCam", pFollowCam);
+//	DISABLE_GAMEOBJECT(pFollowCam);
+//	pTestValkyrieUnit->Set_FollowCam(pFollowCam);
 
 
 
@@ -792,89 +667,7 @@ HRESULT CLevel_Test::SetUp_Valkyrie_TH()
 
 HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 {
-	CUnit::UNIT_MODEL_DATA  tModelData;
-
-	//1. Idle
-	tModelData.strModelPaths[MODEL_PART_SKEL] = L"../bin/resources/meshes/characters/Warrior/Warrior.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_BODY] = L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_FACE] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx";
-	tModelData.strModelPaths[MODEL_PART_HEAD] = L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx";
-
-	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx";
-	tModelData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-
-	_float4 vEnemyPos = _float4(20.f, 5.f, 24.f);
-
-	/* Test Enemy */
-	CUnit_Warrior* pTestIdleWarrior = CUnit_Warrior::Create(tModelData);
-	if (!pTestIdleWarrior)
-		return E_FAIL;
-
-	CCamera_Follow* pFollowCam = CCamera_Follow::Create(pTestIdleWarrior, nullptr);
-	pFollowCam->Initialize();
-	pFollowCam->Get_Transform()->Set_World(WORLD_POS, ZERO_VECTOR);
-	pFollowCam->Get_Transform()->Make_WorldMatrix();
-	CREATE_STATIC(pFollowCam, HASHCODE(CCamera_Follow));
-	GAMEINSTANCE->Add_Camera(L"PlayerCam1", pFollowCam);
-	DISABLE_GAMEOBJECT(pFollowCam);
-	pTestIdleWarrior->Set_FollowCam(pFollowCam);
-
-
-	pTestIdleWarrior->Initialize();
-	pTestIdleWarrior->Set_TargetUnit(m_pWarrior);
-	pTestIdleWarrior->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
-
-
-	pTestIdleWarrior->SetUp_Colliders(false);
-	pTestIdleWarrior->SetUp_HitStates(false);
-	pTestIdleWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam1"));
 	
-
-	Ready_GameObject(pTestIdleWarrior, GROUP_ENEMY);
-
-
-	vEnemyPos.z += 4.f;
-	pTestIdleWarrior->Teleport_Unit(vEnemyPos);
-
-
-	CUnit_Warrior* pTestGuardWarrior = CUnit_Warrior::Create(tModelData);
-	if (!pTestGuardWarrior)
-		return E_FAIL;
-
-	pTestGuardWarrior->Initialize();
-	pTestGuardWarrior->Set_TargetUnit(m_pWarrior);
-	pTestGuardWarrior->Reserve_State(STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY);
-
-
-	pTestGuardWarrior->SetUp_Colliders(false);
-	pTestGuardWarrior->SetUp_HitStates(false);
-	pTestGuardWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam1"));
-
-	Ready_GameObject(pTestGuardWarrior, GROUP_ENEMY);
-
-	vEnemyPos.x += 4.f;
-	pTestGuardWarrior->Teleport_Unit(vEnemyPos);
-
-
-
-	CUnit_Warrior* pTestAttackWarrior = CUnit_Warrior::Create(tModelData);
-	if (!pTestAttackWarrior)
-		return E_FAIL;
-
-	pTestAttackWarrior->Initialize();
-	pTestAttackWarrior->Set_TargetUnit(m_pWarrior);
-	pTestAttackWarrior->Reserve_State(STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY);
-
-
-	pTestAttackWarrior->SetUp_Colliders(false);
-	pTestAttackWarrior->SetUp_HitStates(false);
-	pTestAttackWarrior->Set_FollowCam((CCamera_Follow*)GAMEINSTANCE->Find_Camera(L"PlayerCam1"));
-
-	Ready_GameObject(pTestAttackWarrior, GROUP_ENEMY);
-
-	vEnemyPos.x += 4.f;
-	pTestAttackWarrior->Teleport_Unit(vEnemyPos);
 
 	return S_OK;
 }

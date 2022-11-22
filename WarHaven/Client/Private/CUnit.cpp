@@ -113,22 +113,6 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	case COL_PLAYERATTACK:
 	case COL_ENEMYATTACK:
 
-		if (tOtherHitInfo.bFace)
-		{
-			// 반격 당했다면?
-			if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
-			{
-				eFinalHitState = m_tHitType.m_eGroggyState;
-			}
-
-			// 에어본 공격을 당했다면?
-			else if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
-			{
-				eFinalHitState = m_tHitType.m_eFlyState;
-			}
-		}
-
-
 		break;
 
 	case COL_PLAYERGUARD:
@@ -244,12 +228,10 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
-	//Unit_CollisionEnter(pOtherObj, eOtherColType, eMyColType, ZERO_VECTOR);
 }
 
 void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
-	int i = 0;
 }
 
 _bool CUnit::Is_Air()
@@ -304,6 +286,12 @@ void CUnit::On_Die()
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"KillSmoke", vPos, vCamMatrix);
 
 	DISABLE_GAMEOBJECT(this);
+
+	if (m_pCurState)
+	{
+		m_pCurState->Exit(this, m_pAnimator);
+		//SAFE_DELETE(m_pCurState);
+	}
 }
 
 _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
@@ -508,13 +496,13 @@ HRESULT CUnit::Start()
 
 	m_pPhysics->Set_Jump(0.f);
 
-	if (!m_pCurState)
-	{
-		//Call_MsgBox(L"상태 세팅 안댔음");
-		//return E_FAIL;
-	}
-	else
-		m_pCurState->Enter(this, m_pAnimator, m_eCurState);
+	//if (!m_pCurState)
+	//{
+	//	//Call_MsgBox(L"상태 세팅 안댔음");
+	//	//return E_FAIL;
+	//}
+	//else
+	//	m_pCurState->Enter(this, m_pAnimator, m_eCurState);
 
 	if (m_pUnitCollider[BODY])
 		ENABLE_COMPONENT(m_pUnitCollider[BODY]);
@@ -531,17 +519,18 @@ void CUnit::OnEnable()
 	__super::OnEnable();
 	m_pPhysics->Get_PhysicsDetail().fCurGroundY = m_pTransform->Get_MyWorld(WORLD_POS).y;
 
-	
-
 	if (m_pCurState)
-	m_pCurState->Enter(this, m_pAnimator, m_eCurState);
+		m_pCurState->Enter(this, m_pAnimator, m_eCurState);
+
+	On_InitSetting();
+
 
 }
 
 void CUnit::OnDisable()
 {
 	__super::OnDisable();
-
+	
 	
 }
 
@@ -916,6 +905,35 @@ void CUnit::Effect_Hit(_float4 vHitPos)
 void CUnit::TransformProjection()
 {
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_ProjPos(m_pTransform);
+}
+
+void CUnit::On_InitSetting()
+{
+	for (_uint i = 0; i < UNITCOLLIDER_END; ++i)
+	{
+		switch (i)
+		{
+		case UNITCOLLIDER::BODY:
+		case UNITCOLLIDER::HEAD:
+
+			break;
+		case UNITCOLLIDER::WEAPON_L:
+		case UNITCOLLIDER::WEAPON_R:
+		case UNITCOLLIDER::GUARD:
+		case UNITCOLLIDER::GUARDBREAK_L:
+		case UNITCOLLIDER::GUARDBREAK_R:
+		case UNITCOLLIDER::GROGGY:
+		case UNITCOLLIDER::FLYATTACK:
+			if (m_pUnitCollider[i])
+			DISABLE_COMPONENT(m_pUnitCollider[i]);
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
 }
 
 void CUnit::Create_UnitHUD()

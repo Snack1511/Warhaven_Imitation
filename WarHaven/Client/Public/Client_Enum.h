@@ -218,7 +218,6 @@ namespace Client
 		VTXTEX_PASS_UI_HeroKeySkill,
 		VTXTEX_PASS_UI_MainEffect,
 		VTXTEX_PASS_UI_LobbyEffect,
-		VTXTEX_PASS_UI_Lock,
 
 		VTXTEX_PASS_ALPHA,
 		VTXTEX_PASS_TRAIL,

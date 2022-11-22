@@ -9,6 +9,8 @@ BEGIN(Client)
 class CUnit;
 class CBloodOverlay;
 class CUI_Cursor;
+class CPlayer;
+
 class CUser
 {
 	DECLARE_SINGLETON(CUser);
@@ -26,8 +28,8 @@ public:
 
 
 public:
-	void	Set_Player(CUnit* pPlayer) { m_pPlayer = pPlayer; }
-	CUnit*	Get_Player() { return m_pPlayer; }
+	void	Set_Player(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
+	CUnit* Get_Player();
 	void	Set_FixCursor(_bool bEnable) { m_bFixCursor = bEnable;  ::ShowCursor(!bEnable); }
 
 	CUI_Cursor* Get_Cursor() { return m_pCursor; }
@@ -49,7 +51,7 @@ public:
 	void	Time_Slow();
 
 private:
-	CUnit* m_pPlayer = nullptr;
+	CPlayer* m_pPlayer = nullptr;
 
 private:
 	_bool	m_bFixCursor = false;

@@ -92,7 +92,7 @@ void	CState_Blendable::OnCollisionEnter(CGameObject* pOtherObject, const _uint& 
 
 
 		{
-			m_pOwner->Shake_Camera(0.1f, 0.25f);
+			m_pOwner->Shake_Camera(0.08f, 0.25f);
 			Hit_SlashEffect(m_pOwner, vHitPos);
 		}
 
@@ -143,7 +143,7 @@ void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 
 void CState_Blendable::Hit_GroundEffect(CUnit* pOwner)
 {
-	pOwner->Shake_Camera(0.1f, 0.3f);
+	pOwner->Shake_Camera(0.08f, 0.3f);
 
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());

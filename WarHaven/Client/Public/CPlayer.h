@@ -31,21 +31,21 @@ class CPlayer final
 public:
 	enum CLASS_HREO
 	{
-		CLASS_HREO_FIONA,
+		/*CLASS_HREO_FIONA,
 		CLASS_HREO_QANDA,
 		CLASS_HREO_HOEDT,
-		CLASS_HREO_LANCER,
+		CLASS_HREO_LANCER,*/
 		CLASS_HERO_END
 	};
 
 	enum CLASS_DEFAULT
 	{
 		CLASS_DEFAULT_WARRIOR,
-		CLASS_DEFAULT_SPEAR,
+		/*CLASS_DEFAULT_SPEAR,
 		CLASS_DEFAULT_ARCHER,
 		CLASS_DEFAULT_PALADIN,
 		CLASS_DEFAULT_PRIEST,
-		CLASS_DEFAULT_ENGINEER,
+		CLASS_DEFAULT_ENGINEER,*/
 		CLASS_DEFAULT_END
 	};
 
@@ -79,6 +79,9 @@ public:
 
 	void	Set_Postion(_float4 vPos);
 
+public:
+	CUnit* Get_CurrentUnit() { return m_pCurrentUnit; }
+
 
 public:
 	// CGameObject을(를) 통해 상속됨
@@ -93,7 +96,7 @@ public:
 private:
 	CUnit* m_pCurrentUnit = nullptr;
 	CCamera_Follow* m_pFollowCam = nullptr;
-	CUnit* m_pHeroClass[CLASS_HERO_END] = { nullptr };
+	//CUnit* m_pHeroClass[CLASS_HERO_END] = { nullptr };
 	CUnit* m_pDefaultClass[CLASS_DEFAULT_END] = { nullptr };
 
 	_uint	m_iReserveState = MyRESERVE_ERR_MSG_END;
