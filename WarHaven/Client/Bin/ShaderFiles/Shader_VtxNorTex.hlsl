@@ -139,8 +139,6 @@ VS_OUT_LIGHT VS_MAIN_NORMAL(VS_DEFAULT_IN In)
 	Out.vTexUV = In.vTexUV;
 	Out.vProjPos = Out.vPosition;
 	Out.vTileFlag = In.vColor;
-	//Out.vTangent = normalize(mul(vector(In.vTangent, 0.f), g_WorldMatrix)).xyz;
-	//Out.vBinormal = normalize(cross(Out.vNormal, Out.vTangent));
 
 	return Out;
 }
@@ -155,35 +153,13 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 	TextureDesc[1] = g_DiffArray[1].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 	TextureDesc[2] = g_DiffArray[2].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 
-	//int index = 0;
-	//if (fmax < In.vTileFlag.g)
-	//{
-	//	fmax = In.vTileFlag.g;
-	//	index = 1;
-	//}
-	//if (fmax < In.vTileFlag.b)
-	//{
-	//	fmax = In.vTileFlag.b;
-	//	index = 2;
-	//}
-
-	//1
-	//0.5
-	//0
 	int iTileFlag = (int)(round(In.vTileFlag.r + 1.f));
 	
 
 	Out.vDiffuse 
 		= (TextureDesc[iTileFlag] * In.vTileFlag.b)
-		+ (TextureDesc[0] * (1.f - In.vTileFlag.b));//g_DiffArray[index].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
-		//BGDiff * In.vTileFlag.r +
-		//DestDiff * (In.vTileFlag.g) +
-		//SourDiff * (In.vTileFlag.b);
-	
-	//vector SourDiff = g_DiffArray.Sample(DefaultSampler, float3(In.vTexUV * g_fTileRatio, SourIndex));
-	//vector DestDiff = g_DiffArray.Sample(DefaultSampler, float3(In.vTexUV * g_fTileRatio, DestIndex));
-	//Out.vDiffuse = SourDiff * In.vTileFlag.b +
-	//	DestDiff * (1.f - In.vTileFlag.b);
+		+ (TextureDesc[0] * (1.f - In.vTileFlag.b));
+
 
 	Out.vDiffuse.a = 1.f;
 
