@@ -67,7 +67,7 @@ STATE_TYPE CGuard_End_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CGuard_End_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	pOwner->Enable_GuardCollider(false);
 }
 
 STATE_TYPE CGuard_End_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

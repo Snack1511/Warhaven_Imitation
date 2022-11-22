@@ -153,6 +153,10 @@ STATE_TYPE CAI_CWarrior_Attack_HorizontalMiddle_R::Tick(CUnit* pOwner, CAnimator
 	if (pAnimator->Is_CurAnimFinished())
 		return STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY;
 
+	if (m_bParringed)
+		return STATE_BOUNCE_WARRIOR_R_AI_ENEMY;
+
+
 	return __super::Tick(pOwner, pAnimator);
 }
 

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CHit_GuardHit_Warrior.h"
+#include "CHit_GuardHit_WarHammer.h"
 
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
@@ -11,32 +11,32 @@
 #include "CColorController.h"
 
 
-CHit_GuardHit_Warrior::CHit_GuardHit_Warrior()
+CHit_GuardHit_WarHammer::CHit_GuardHit_WarHammer()
 {
 }
 
-CHit_GuardHit_Warrior::~CHit_GuardHit_Warrior()
+CHit_GuardHit_WarHammer::~CHit_GuardHit_WarHammer()
 {
 }
 
-CHit_GuardHit_Warrior* CHit_GuardHit_Warrior::Create()
+CHit_GuardHit_WarHammer* CHit_GuardHit_WarHammer::Create()
 {
-    CHit_GuardHit_Warrior* pInstance = new CHit_GuardHit_Warrior();
+    CHit_GuardHit_WarHammer* pInstance = new CHit_GuardHit_WarHammer();
 
     if (FAILED(pInstance->Initialize()))
     {
-        Call_MsgBox(L"Failed to Initialize : CHit_GuardHit_Warrior");
+        Call_MsgBox(L"Failed to Initialize : CHit_GuardHit_WarHammer");
         SAFE_DELETE(pInstance);
     }
 
     return pInstance;
 }
-HRESULT CHit_GuardHit_Warrior::Initialize()
+HRESULT CHit_GuardHit_WarHammer::Initialize()
 {
     
     m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 9;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_GUARDHIT_WARRIOR;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = STATE_GUARDHIT_WARHAMMER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     // 선형 보간 시간
@@ -50,16 +50,12 @@ HRESULT CHit_GuardHit_Warrior::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 30;
     
-    m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-    m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-    m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-
-	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_R);
-	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_R);
+    m_vecAdjState.push_back(STATE_IDLE_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_RUN_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 
 
     m_fMyAccel = 10.f;
@@ -69,7 +65,7 @@ HRESULT CHit_GuardHit_Warrior::Initialize()
     return __super::Initialize();
 }
 
-void CHit_GuardHit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CHit_GuardHit_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Guard_State();
@@ -78,19 +74,20 @@ void CHit_GuardHit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
-STATE_TYPE CHit_GuardHit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
+STATE_TYPE CHit_GuardHit_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     return __super::Tick(pOwner, pAnimator);
 }
 
-void CHit_GuardHit_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
+void CHit_GuardHit_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    pOwner->Enable_GuardCollider(false);
+	//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+
 }
 
-STATE_TYPE CHit_GuardHit_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
+STATE_TYPE CHit_GuardHit_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Attack 으로 오는 조건
+    /* WARHAMMER가 Attack 으로 오는 조건
     1.  LBuutton 을 이용해 공격한다.
     */
     //if (KEY(CTRL, NONE))

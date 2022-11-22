@@ -405,6 +405,24 @@ void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)
 	GET_COMPONENT_FROM(pOwner, CModel)->Enable_ModelParts(iPartType, bEnable);
 }
 
+void CState::Bounce_State(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
+{
+	if (iOtherColType == COL_PLAYERGUARD || iOtherColType == COL_ENEMYGUARD)
+	{
+		_float4 vOtherLook = pOtherObject->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+		_float4 vCurLook = m_pOwner->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+
+		//양수면 앞임.
+		if (vCurLook.Dot(vOtherLook) < 0.f)
+		{
+			m_bParringed = true;
+			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", m_pOwner, vHitPos);
+			CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), m_pOwner, vHitPos);
+			CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), m_pOwner, vHitPos);
+		}
+	}
+}
+
 void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence)
 {
     KEYFRAME_EVENT  tEvent;

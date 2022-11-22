@@ -21,6 +21,8 @@ HRESULT CJump_Player::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
 
+	fOxenJumpPower = 1.3f;
+
     return S_OK;
 }
 
@@ -31,34 +33,48 @@ void CJump_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
     /* OwnerÀÇ Animator Set Idle·Î */
 
-    pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
+    
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
 	_uint iDirection = Get_Direction();
 
-	if (iDirection == STATE_DIRECTION_END)
+	if (ePrevType == STATE_WARRIOR_OXEN_LOOPATTACK)
 	{
 		m_iAnimIndex = iPlaceJumpAnimIndex;
-		m_fAnimSpeed = 1.5f;
+		pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower * fOxenJumpPower);
+		pOwner->Get_PhysicsCom()->Set_MaxSpeed(0.f);
+		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 	}
 	else
 	{
-		m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
-		m_fAnimSpeed = 1.5f;
-
-		Move(iDirection, pOwner);
-
-		if (pOwner->Get_PhysicsCom()->Get_Physics().fSpeed <= 1.f)
+		if (iDirection == STATE_DIRECTION_END)
 		{
-			pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
-			pOwner->Get_PhysicsCom()->Set_SpeedasMax();
+			m_iAnimIndex = iPlaceJumpAnimIndex;
+			m_fAnimSpeed = 1.5f;
+		}
+		else
+		{
+			m_iAnimIndex = m_iDirectionAnimIndex[iDirection];
+			m_fAnimSpeed = 1.5f;
+
+			Move(iDirection, pOwner);
+
+			if (pOwner->Get_PhysicsCom()->Get_Physics().fSpeed <= 1.f)
+			{
+				pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
+				pOwner->Get_PhysicsCom()->Set_SpeedasMax();
+
+			}
+
 
 		}
 
-
+		pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
 	}
+
+
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

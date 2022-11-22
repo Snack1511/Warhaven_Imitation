@@ -6,17 +6,17 @@ END
 
 
 BEGIN(Client)
-class CAI_SandBack_Groggy
+class CHit_Fly_WarHammer
 	: public CState_Hit
 {
-	DECLARE_STATE(CAI_SandBack_Groggy);
+	DECLARE_STATE(CHit_Fly_WarHammer);
 
 private:
-	CAI_SandBack_Groggy();
-	virtual ~CAI_SandBack_Groggy();
+	CHit_Fly_WarHammer();
+	virtual ~CHit_Fly_WarHammer();
 
 public:
-	static CAI_SandBack_Groggy* Create();
+	static CHit_Fly_WarHammer* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -29,7 +29,7 @@ private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
-	_bool	bTestAttack = false;
+	_bool	bTest = false; 
 
 };
 

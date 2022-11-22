@@ -1,22 +1,20 @@
 #pragma once
 #include "CState_Hit.h"
 
-BEGIN(Engine)
-END
-
-
 BEGIN(Client)
-class CAI_SandBack_Groggy
+class CColorController;
+
+class CHit_GuardHit_WarHammer
 	: public CState_Hit
 {
-	DECLARE_STATE(CAI_SandBack_Groggy);
+	DECLARE_STATE(CHit_GuardHit_WarHammer);
 
 private:
-	CAI_SandBack_Groggy();
-	virtual ~CAI_SandBack_Groggy();
+	CHit_GuardHit_WarHammer();
+	virtual ~CHit_GuardHit_WarHammer();
 
 public:
-	static CAI_SandBack_Groggy* Create();
+	static CHit_GuardHit_WarHammer* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -27,9 +25,6 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
-private:
-	_bool	bTestAttack = false;
 
 };
 
