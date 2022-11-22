@@ -20,7 +20,7 @@ CState::~CState()
 {
 }
 
-void	CState::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
+void CState::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
 
 	int a = 0;
