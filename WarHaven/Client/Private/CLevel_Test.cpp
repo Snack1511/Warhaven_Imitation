@@ -291,23 +291,19 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	vPlayerPos.x = 70.f;
 	vPlayerPos.z = -10.f;
 
-	vPlayerPos.x += 5.f;
-
 	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
 		STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
 		return E_FAIL;
 
 	vPlayerPos.x += 5.f;
 
-//	vPlayerPos.x += 5.f;
-
 	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
 		STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY, false, L"SandBackCam2")))
 		return E_FAIL;
 
 
-	vPlayerPos.x += 5.f;
-//	vPlayerPos.x -= 10.f;
+	//vPlayerPos.x += 5.f;
+	vPlayerPos.x -= 10.f;
 
 	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
 		STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY, false, L"SandBackCam3")))
