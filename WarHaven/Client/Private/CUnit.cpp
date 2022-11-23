@@ -214,7 +214,6 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	{
 		if (pOtherUnit->m_bIsMainPlayer)
 		{
-			// 헤드를 넘길 방법
 			CUser::Get_Instance()->SetActive_DamageTex(fDamage, tOtherHitInfo.bHeadShot);
 		}
 	}

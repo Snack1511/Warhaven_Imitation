@@ -178,6 +178,11 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 	}
 }
 
+void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime)
+{
+	m_fCoolTime[iSkillType] = fCoolTime;
+}
+
 void CUI_Skill::Active_SkillHUD(_uint iIndex)
 {
 	m_iBtnCount = iIndex;
@@ -253,6 +258,20 @@ void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool b
 		for (int i = 0; i < 4; ++i)
 		{
 			DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][i]);
+		}
+
+		if (iIndex < 3)
+		{
+			DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[iIndex]);
+		}
+	}
+	else
+	{
+		if (iIndex < 3)
+		{
+			_float4 vPos = m_arrSkillUI[iIndex][Icon]->Get_Pos();
+			m_pSkillCoolTextArr[iIndex]->Set_Pos(vPos);
+			ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[iIndex]);
 		}
 	}
 
@@ -376,7 +395,7 @@ void CUI_Skill::Create_SkillCoolText()
 	m_pSkillCoolText->Set_FontText(TEXT("5.5"));
 
 	CREATE_GAMEOBJECT(m_pSkillCoolText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pSkillCoolText);
+	DELETE_GAMEOBJECT(m_pSkillCoolText);
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -387,7 +406,7 @@ void CUI_Skill::Create_SkillCoolText()
 		m_pSkillCoolTextArr[i]->Set_Pos(fPosX, -315.f);
 
 		CREATE_GAMEOBJECT(m_pSkillCoolTextArr[i], GROUP_UI);
-		//DISABLE_GAMEOBJECT(m_pskillCoolTextArr[i]);
+		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
 	}
 }
 

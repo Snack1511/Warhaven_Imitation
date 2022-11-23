@@ -301,7 +301,7 @@ void CUI_HUD::SetActive_DamageTex(_float fDmg, _bool bIsHead)
 	_float fPosY = frandom(-300.f, 300.f);
 	m_pDmgTexts[m_iDmgTextIndex]->Set_Pos(fPosX, fPosY);
 
-	if (bIsHead)
+	if (bIsHead == true)
 	{
 		GET_COMPONENT_FROM(m_pDmgTexts[m_iDmgTextIndex], CTexture)->Set_CurTextureIndex(0);
 	}
@@ -316,6 +316,14 @@ void CUI_HUD::SetActive_DamageTex(_float fDmg, _bool bIsHead)
 	if (m_iDmgTextIndex > 32)
 	{
 		m_iDmgTextIndex = 0;
+	}
+}
+
+void CUI_HUD::SetActive_SkillCoolTime(_uint iSkillType, _float fCoolTime)
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(i, fCoolTime);
 	}
 }
 
