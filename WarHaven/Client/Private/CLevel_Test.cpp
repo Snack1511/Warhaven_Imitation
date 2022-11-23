@@ -276,7 +276,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	_float4 vPlayerPos = _float4(20.f, 3.f, -10.f);
 	
-	vPlayerPos = _float4(20.f, 3.f, 20.f);
+	//vPlayerPos = _float4(20.f, 3.f, 20.f);
 
 	CPlayer* pUserPlayer = nullptr;
 
@@ -288,8 +288,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 
-	//vPlayerPos.x += 70.f;
-	//vPlayerPos.z = -10.f;
+	vPlayerPos.x = 70.f;
+	vPlayerPos.z = -10.f;
 
 	vPlayerPos.x += 5.f;
 
@@ -321,8 +321,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	//function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	//CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
+	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
 
 	
 
