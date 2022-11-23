@@ -331,11 +331,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//Ready_GameObject(pMapColliders, GROUP_DEFAULT);
 
 
-	//_float4x4 mat;
-	//mat.Identity();
-	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
-	//pDrawableTerrain->Initialize();
-	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	/*_float4x4 mat;
+	mat.Identity();
+	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
+	pDrawableTerrain->Initialize();
+	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);*/
 
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Environments/prop/etc/SM_Prop_Etc_Scarecrow02a.FBX")), mat);
 	pTestStruct->Initialize();

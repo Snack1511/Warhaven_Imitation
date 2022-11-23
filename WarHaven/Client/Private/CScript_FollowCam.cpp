@@ -268,7 +268,7 @@ void CScript_FollowCam::Start()
 		Call_MsgBox(L"No Owner In FollowCam");
 		m_pOwner = GAMEINSTANCE->Find_Camera(L"PlayerCam");
 	}
-	ShowCursor(false);
+	ShowCursor(true); // 툴에서 커서 안보여서 true로 바꿔놓음
 
 }
 

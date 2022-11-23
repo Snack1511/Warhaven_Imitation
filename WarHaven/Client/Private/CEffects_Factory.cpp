@@ -52,7 +52,7 @@ HRESULT CEffects_Factory::Initialize()
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
 	))))
 		return E_FAIL;
-
+	
 	wstrName = L"DeathStoneParticle_1";
 	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
 		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_04.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
@@ -708,13 +708,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_LU"), "HitSlash_LU"))) //Left up
 		return E_FAIL;
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StingBlood"), "StingBlood"))) //
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StingBlood"), "StingBlood")))
 		return E_FAIL;
 
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BloodEffect"), "BloodEffect"))) //
-		return E_FAIL;
-
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke"), "KillSmoke"))) //bone
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke_Right"), "KillSmoke_Right")))
 		return E_FAIL;
 
 
@@ -736,6 +733,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_2"))))
 		return E_FAIL;
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_3"))))
+		return E_FAIL;
+
+	/*Stone spark particle*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StoneSpark"), "StoneSpark")))
 		return E_FAIL;
 
 	return S_OK;

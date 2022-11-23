@@ -102,8 +102,8 @@ PS_OUT PS_MAIN(PS_IN In)
 	//Only masking
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vDiffuse.a = (Out.vDiffuse.r);
-	Out.vDiffuse.xyz = In.vColor.xyz;
+	Out.vDiffuse.a = (Out.vDiffuse.a);
+	Out.vDiffuse.xyz += g_vPlusColor.xyz;
 	
 	Out.vDiffuse.a *= In.vColor.a;
 
@@ -234,7 +234,7 @@ PS_OUT PS_ANIMATION_ALPHA_MAIN(PS_IN In)
 	else
 		Out.vDiffuse.a = vMaskDesc.a;
 
-	if (Out.vDiffuse.a < 0.01f)
+	if (Out.vDiffuse.a < 0.05f)
 		discard;
 
 	Out.vDiffuse.a *= In.vColor.a;
@@ -364,7 +364,7 @@ PS_OUT PS_BLACKBACKGROUND_TEXTURE(PS_IN In)
 	//Only masking
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	//Out.vDiffuse.a = Out.vDiffuse.r;
+	Out.vDiffuse.a = Out.vDiffuse.r;
 	Out.vDiffuse.xyz += In.vColor.xyz;
 
 	Out.vDiffuse.a *= In.vColor.a;
@@ -414,7 +414,7 @@ PS_OUT PS_ANIMATION_ALPHACOLOR_MAIN(PS_IN In)
 	else
 		Out.vDiffuse.a = vMaskDesc.a;
 
-	if (Out.vDiffuse.a < 0.01f)
+	if (Out.vDiffuse.a < 0.05f)
 		discard;
 
 	Out.vDiffuse.xyz += g_vPlusColor.xyz;
