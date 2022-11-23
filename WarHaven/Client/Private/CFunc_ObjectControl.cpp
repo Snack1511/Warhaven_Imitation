@@ -733,6 +733,11 @@ void CFunc_ObjectControl::Delete_ObjectGroup(char* pObjectGroupName)
             
             GroupingMapIter->second.clear();
             m_ObjectNameGroupingMap.erase(GroupingMapIter);
+            m_SelectObjectGroupIndex--;
+            if (m_SelectObjectGroupIndex <= 0)
+            {
+                m_SelectObjectGroupIndex = 0;
+            }
         }
 
     }
