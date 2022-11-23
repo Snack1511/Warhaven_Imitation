@@ -210,17 +210,18 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	_float fDamage = pOtherUnit->Calculate_Damage(tOtherHitInfo.bHeadShot, bGuardSuccess);
 
+	if (pOtherUnit)
+	{
+		if (pOtherUnit->m_bIsMainPlayer)
+		{
+			// 헤드를 넘길 방법
+			CUser::Get_Instance()->SetActive_DamageTex(fDamage, tOtherHitInfo.bHeadShot);
+		}
+	}
+
 	if (On_PlusHp(fDamage, pOtherUnit))
 	{
 		Enter_State(eFinalHitState, &tOtherHitInfo);
-
-		if (pOtherUnit)
-		{
-			if (pOtherUnit->m_bIsMainPlayer)
-			{
-				CUser::Get_Instance()->SetActive_DamageTex(fDamage, tOtherHitInfo.bHeadShot);
-			}
-		}
 	}
 	else
 	{
