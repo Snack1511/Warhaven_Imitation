@@ -373,6 +373,8 @@ void CUI_Skill::Create_SkillCoolText()
 	m_pSkillCoolText->Set_FontScale(0.3f);
 	m_pSkillCoolText->Set_FontOffset(-18.f, -15.f);
 
+	m_pSkillCoolText->Set_FontText(TEXT("5.5"));
+
 	CREATE_GAMEOBJECT(m_pSkillCoolText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pSkillCoolText);
 

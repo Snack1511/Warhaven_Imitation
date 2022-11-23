@@ -289,7 +289,7 @@ void CUI_HUD::SetActive_OxenJumpText(_bool value)
 	}
 }
 
-void CUI_HUD::SetActive_DamageTex(_float fDmg)
+void CUI_HUD::SetActive_DamageTex(_float fDmg, _bool bIsHead)
 {
 	m_bDmgTextEffct = true;
 
@@ -301,13 +301,22 @@ void CUI_HUD::SetActive_DamageTex(_float fDmg)
 	_float fPosY = frandom(-300.f, 300.f);
 	m_pDmgTexts[m_iDmgTextIndex]->Set_Pos(fPosX, fPosY);
 
-	// ÆòÅ¸
-	// GET_COMPONENT_FROM(m_pDmgTexts[m_iDmgTextIndex], CTexture)->Set_CurTextureIndex(1);
-	// Çìµå¼¦
-	// GET_COMPONENT_FROM(m_pDmgTexts[m_iDmgTextIndex], CTexture)->Set_CurTextureIndex(0);
+	if (bIsHead)
+	{
+		GET_COMPONENT_FROM(m_pDmgTexts[m_iDmgTextIndex], CTexture)->Set_CurTextureIndex(0);
+	}
+	else
+	{
+		GET_COMPONENT_FROM(m_pDmgTexts[m_iDmgTextIndex], CTexture)->Set_CurTextureIndex(1);
+	}
 
 	Enable_Fade(m_pDmgTexts[m_iDmgTextIndex], 0.7f);
-	// ENABLE_GAMEOBJECT(m_pDmgTexts[m_iDmgTextIndex]);
+
+	m_iDmgTextIndex++;
+	if (m_iDmgTextIndex > 32)
+	{
+		m_iDmgTextIndex = 0;
+	}
 }
 
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
@@ -718,7 +727,7 @@ void CUI_HUD::Create_DmgText()
 	GET_COMPONENT_FROM(m_pDmgText, CFader)->Get_FadeDesc() = tFadeDesc;
 
 	m_pDmgText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
-	//m_pDmgText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+	GET_COMPONENT_FROM(m_pDmgText, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
 	m_pDmgText->Set_Scale(50.f);
 

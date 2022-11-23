@@ -213,6 +213,14 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	if (On_PlusHp(fDamage, pOtherUnit))
 	{
 		Enter_State(eFinalHitState, &tOtherHitInfo);
+
+		if (pOtherUnit)
+		{
+			if (pOtherUnit->m_bIsMainPlayer)
+			{
+				CUser::Get_Instance()->SetActive_DamageTex(fDamage, tOtherHitInfo.bHeadShot);
+			}
+		}
 	}
 	else
 	{
@@ -316,13 +324,6 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 
 _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit)
 {
-	if (pOtherUnit)
-	{
-		if (pOtherUnit->m_bIsMainPlayer)
-		{
-			CUser::Get_Instance()->SetActive_DamageTex(fHp);
-		}
-	}
 
 	m_tUnitStatus.fHP += fHp;
 
