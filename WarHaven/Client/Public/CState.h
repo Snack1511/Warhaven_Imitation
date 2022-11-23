@@ -168,7 +168,10 @@ protected:
 
 protected:
 	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bBackStep = false);
-	
+	void	Physics_Setting_Right(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bRight = true);
+
+
+
 protected:
 	void	Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable);
 

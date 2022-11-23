@@ -265,7 +265,6 @@ HRESULT CUnit_WarHammer::Start()
 {
 	__super::Start();
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
-	Enter_State(m_eCurState);
 	return S_OK;
 }
 

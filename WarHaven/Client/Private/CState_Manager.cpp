@@ -87,6 +87,8 @@
 #include "CHit_Sting_Warrior.h"
 #include "CHit_Fly_Warrior.h"
 
+#include "CGuard_Dash_Player.h"
+
 #pragma endregion
 
 #pragma region Spearman
@@ -604,6 +606,9 @@ void CState_Manager::WarHammer_State()
 	m_arrStates[STATE_GROGGYHIT_WARHAMMER] = CHit_Groggy_WarHammer::Create();
 	m_arrStates[STATE_STINGHIT_WARHAMMER] = CHit_Sting_WarHammer::Create();
 	m_arrStates[STATE_FLYHIT_WARHAMMER] = CHit_Fly_WarHammer::Create();
+
+	m_arrStates[STATE_GUARDDASH_WARRIOR] = CGuard_Dash_Player::Create();
+	
 
 
 }

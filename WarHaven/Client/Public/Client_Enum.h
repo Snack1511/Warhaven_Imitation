@@ -379,6 +379,9 @@ namespace Client
 		STATE_STINGHIT_WARRIOR,
 		STATE_FLYHIT_WARRIOR,
 
+		STATE_GUARDDASH_WARRIOR,
+
+
 //
 //
 //#pragma endregion
@@ -400,14 +403,11 @@ namespace Client
 //		//STATE_SLIDE_PLAYER,
 //		STATE_JUMP_PLAYER,
 
-#pragma region Guard
 		STATE_GUARD_BEGIN_PLAYER,
 		STATE_GUARD_END_PLAYER,
 		STATE_GUARD_LOOP_PLAYER,
 		STATE_GUARD_CANCEL_PLAYER,
 
-
-#pragma endregion
 
 #pragma endregion
 
@@ -547,6 +547,7 @@ namespace Client
 		STATE_GROGGYHIT_WARHAMMER,
 		STATE_STINGHIT_WARHAMMER,
 		STATE_FLYHIT_WARHAMMER,
+
 
 #pragma endregion
 
