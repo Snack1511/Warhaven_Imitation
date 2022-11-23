@@ -29,7 +29,6 @@ public:
 
 public:
 	void Set_ProjPos(CTransform* pTransform);
-
 	void Set_UnitStatus(CUnit::UNIT_STATUS tStatus) { m_tStatus = tStatus; }
 
 private:
@@ -37,8 +36,12 @@ private:
 
 	CUnit::UNIT_STATUS m_tStatus;
 
+	CUI_Object* m_pUnitNameText = nullptr;
+
 private:
-	void Ready_UnitHP();
+	void Create_UnitHUD();
+
+	void Init_UnitNameText();
 };
 
 END

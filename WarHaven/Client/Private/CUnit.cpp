@@ -327,7 +327,6 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 
 _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit)
 {
-
 	m_tUnitStatus.fHP += fHp;
 
 	if (m_tUnitStatus.fHP <= 0.f)
@@ -851,12 +850,15 @@ void CUnit::My_Tick()
 {
 	for (_int i = 0; i < COOL_END; ++i)
 	{
-		// 여기서 쿨타임을 넘기자
-		// 쿨타임이 0일 때는 비활성화
-		// 
+		if (m_fCoolAcc[i] >= 0.01f)
+		{
+			if (i == 0)
+			{
+				CUser::Get_Instance()->Set_SkillCoolTime(0, m_fCoolAcc[0], m_fCoolTime[0]);
+			}
 
-		if (m_fCoolAcc[i] > 0.f)
 			m_fCoolAcc[i] -= fDT(0);
+		}
 		else
 			m_fCoolAcc[i] = 0.f;
 	}
@@ -1047,6 +1049,10 @@ void CUnit::Frustum_UnitHUD()
 		{
 			if (!m_bIsMainPlayer)
 			{
+				// 처음에는 동그라미만 뜨다가 가까이 접근하면 적군으로 바뀌고
+				// 카메라의 위치를 뷰위치를 받아오고 유닛들의 위치를 받아와서 일정 거리 이하
+				// 유틸리티트랜스폼에 함수 구현
+				// 데미지를 입을 시 체력바 활성화
 				ENABLE_GAMEOBJECT(m_pUnitHUD);
 			}
 		}

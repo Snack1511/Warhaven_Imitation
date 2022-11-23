@@ -23,6 +23,7 @@ HRESULT CUI_Skill::Initialize_Prototype()
 
 	Ready_SkillHUD();
 	Create_SkillCoolText();
+	Create_SkillCoolBG();	
 
 	return S_OK;
 }
@@ -47,12 +48,27 @@ void CUI_Skill::My_Tick()
 	__super::My_Tick();
 
 	Enable_Outline();
+
+	_tchar  szTemp[MAX_STR] = {};
+	swprintf_s(szTemp, TEXT("%.1f"), m_fCoolTime[0]);
+	m_pSkillCoolTextArr[0]->Set_FontText(szTemp);
+
+	if (m_fCoolTime[0] <= 0.05f)
+	{
+		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[0]);
+		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[0]);
+	}
 }
 
 void CUI_Skill::Set_ShaderResources_HeroKeySkill(CShader* pShader, const char* pConstName)
 {
 	_float4 vColor = m_arrSkillUI[0][HeroKey]->Get_Color();
 	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+}
+
+void CUI_Skill::Set_Shader_SkillGauge(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fSkillGauge, sizeof(_float4));
 }
 
 void CUI_Skill::Set_SkillHUD(_uint iIndex)
@@ -178,9 +194,15 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 	}
 }
 
-void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime)
+void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
 {
 	m_fCoolTime[iSkillType] = fCoolTime;
+	m_fMaxCoolTime[iSkillType] = fMaxCoolTime;
+
+	//m_fSkillGauge = m_fCoolTime[iSkillType] / m_fMaxCoolTime[iSkillType];
+
+	ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[0]);
+	ENABLE_GAMEOBJECT(m_pSkillCoolBGArr[0]);
 }
 
 void CUI_Skill::Active_SkillHUD(_uint iIndex)
@@ -333,23 +355,21 @@ void CUI_Skill::Ready_SkillHUD()
 	}
 
 	m_Prototypes[BG] = m_pUIMap[TEXT("Skill_BG")];
-	m_Prototypes[Icon] = m_pUIMap[TEXT("Skill_Icon")];
-	m_Prototypes[Key] = m_pUIMap[TEXT("Skill_Key")];
-	m_Prototypes[HeroKey] = m_pUIMap[TEXT("Skill_HeroKeySkill")];
-
 	m_Prototypes[BG]->Set_Sort(0.3f);
+
+	m_Prototypes[Icon] = m_pUIMap[TEXT("Skill_Icon")];
 	m_Prototypes[Icon]->Set_Sort(0.29f);
-	m_Prototypes[Key]->Set_Sort(0.3f);
-	m_Prototypes[HeroKey]->Set_Sort(0.2f);
-
 	GET_COMPONENT_FROM(m_Prototypes[Icon], CTexture)->Remove_Texture(0);
-
 	Read_Texture(m_Prototypes[Icon], "/HUD/Skill", "_");
 	Read_Texture(m_Prototypes[Icon], "/HUD/Relic", "Relic");
-
 	m_Prototypes[Icon]->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/Relic/T_RelicIconMask.dds"));
 
+	m_Prototypes[Key] = m_pUIMap[TEXT("Skill_Key")];
+	m_Prototypes[Key]->Set_Sort(0.3f);
 	Read_Texture(m_Prototypes[Key], "/KeyIcon/Keyboard", "Key");
+
+	m_Prototypes[HeroKey] = m_pUIMap[TEXT("Skill_HeroKeySkill")];
+	m_Prototypes[HeroKey]->Set_Sort(0.2f);
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -410,11 +430,37 @@ void CUI_Skill::Create_SkillCoolText()
 	}
 }
 
+void CUI_Skill::Create_SkillCoolBG()
+{
+	m_pSkillCoolBG = CUI_Object::Create();
+
+	m_pSkillCoolBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_256Circle.dds"));
+
+	m_pSkillCoolBG->Set_Color(_float4(0.5f, 0.f, 0.f, 0.588f));
+	m_pSkillCoolBG->Set_Sort(0.2f);
+	m_pSkillCoolBG->Set_Scale(44.f);
+
+	CREATE_GAMEOBJECT(m_pSkillCoolBG, GROUP_UI);
+	DELETE_GAMEOBJECT(m_pSkillCoolBG);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pSkillCoolBGArr[i] = m_pSkillCoolBG->Clone();
+
+		float fPosX = 480.f - (55.f * i);
+		m_pSkillCoolBGArr[i]->Set_Pos(fPosX, -315.f);
+
+		CREATE_GAMEOBJECT(m_pSkillCoolBGArr[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
+	}
+}
+
 void CUI_Skill::Set_Pass()
 {
 	for (int i = 0; i < 4; ++i)
 	{
 		GET_COMPONENT_FROM(m_arrSkillUI[i][HeroKey], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+		GET_COMPONENT_FROM(m_arrSkillUI[i][Outline0], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
 	}
 }
 
@@ -424,5 +470,8 @@ void CUI_Skill::Bind_Shader()
 	{
 		GET_COMPONENT_FROM(m_arrSkillUI[i][HeroKey], CShader)
 			->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_HeroKeySkill, this, placeholders::_1, "g_vColor");
+
+		GET_COMPONENT_FROM(m_arrSkillUI[i][Outline0], CShader)
+			->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge, this, placeholders::_1, "g_fValue");
 	}
 }

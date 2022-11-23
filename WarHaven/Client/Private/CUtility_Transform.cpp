@@ -2,6 +2,7 @@
 #include "CUtility_Transform.h"
 #include "GameInstance.h"
 #include "Transform.h"
+#include "GameObject.h"
 
 void CUtility_Transform::Turn_ByAngle(CTransform* pTransform, _float4 vAxis, _float fAngle)
 {
@@ -158,4 +159,15 @@ _float CUtility_Transform::Get_LookRotateAngle(_float4 vLook)
 		fCosTheta *= -1.f;
 
 	return fCosTheta;
+}
+
+_float CUtility_Transform::Get_FromCameraDistance(CGameObject* pObject)
+{
+	_float4 vObjPos = pObject->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vViewPos =  GAMEINSTANCE->Get_ViewPos();
+	
+	vViewPos.x -vObjPos.x;
+	vViewPos.z - vObjPos.z;
+	
+	return _float();
 }

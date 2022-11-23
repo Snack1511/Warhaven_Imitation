@@ -120,7 +120,7 @@ void CUI_HUD::My_Tick()
 
 		if (!m_tStatus.bAbleHero)
 		{
-			if (m_tStatus.bIsHero)
+			if (!m_tStatus.bIsHero)
 			{
 				m_tStatus.fHeroGague += fDT(0) * 20.f;
 				if (m_fHeroGauge >= 1.f)
@@ -327,11 +327,11 @@ void CUI_HUD::SetActive_DamageTex(_float fDmg, _bool bIsHead)
 	}
 }
 
-void CUI_HUD::SetActive_SkillCoolTime(_uint iSkillType, _float fCoolTime)
+void CUI_HUD::Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
 {
 	for (int i = 0; i < 3; ++i)
 	{
-		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(i, fCoolTime);
+		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(i, fCoolTime, fMaxCoolTime);
 	}
 }
 

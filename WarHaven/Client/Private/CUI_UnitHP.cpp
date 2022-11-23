@@ -91,11 +91,8 @@ void CUI_UnitHP::Set_Shader_HpGauge(CShader* pShader, const char* pConstName)
 
 void CUI_UnitHP::Set_ProjPos(CTransform* pTransform)
 {
-	_float m_fLengh = 2.f;
-	_float4 vOffset = _float4(0.f, m_fLengh, 0.f);
+	_float4 vOffset = _float4(0.f, 2.1f, 0.f);
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform, vOffset);
-
-	_float fScaleZ = vNewPos.z;
 
 	for (int i = 0; i < IT_END; ++i)
 	{
