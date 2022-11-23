@@ -43,7 +43,7 @@ HRESULT CEffects_Factory::Initialize()
 	/* 이 시간 후에 사라짐 */
 	_float fStoneLifeTime = 6.f;
 
-	_uint	iStoneNumInstance = 8;
+	_uint	iStoneNumInstance = 15;
 	
 	wstring wstrName = L"DeathStoneParticle_0";
 	if(FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(

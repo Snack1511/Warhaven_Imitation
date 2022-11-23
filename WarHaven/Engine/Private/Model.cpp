@@ -534,9 +534,11 @@ void CModel::Late_Tick()
 
 
 	/* INSTANCING */
-	if (m_bInstancing && m_bLOD)
+	if (m_bInstancing)
 	{
-		//for (auto& elem : m_MeshContainers)
+		if (m_bLOD)
+		{
+			//for (auto& elem : m_MeshContainers)
 		//{
 
 		//	/*LOD 켜기*/
@@ -551,96 +553,103 @@ void CModel::Late_Tick()
 
 
 
-		_float4x4 matWorld = m_pOwner->Get_Transform()->Get_WorldMatrix();
-		_float4 vWorldPos = m_vLODCenterPos.MultiplyCoord(matWorld);
-		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
-		_float4 vScale = m_pOwner->Get_Transform()->Get_Scale();
-		_float fScaleLength = vScale.x;
-		if (vScale.y > fScaleLength)
-			fScaleLength = vScale.y;
+			_float4x4 matWorld = m_pOwner->Get_Transform()->Get_WorldMatrix();
+			_float4 vWorldPos = m_vLODCenterPos.MultiplyCoord(matWorld);
+			_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+			_float4 vScale = m_pOwner->Get_Transform()->Get_Scale();
+			_float fScaleLength = vScale.x;
+			if (vScale.y > fScaleLength)
+				fScaleLength = vScale.y;
 
-		if (vScale.z > fScaleLength)
-			fScaleLength = vScale.z;
+			if (vScale.z > fScaleLength)
+				fScaleLength = vScale.z;
 
-		/* 갯수들 일단 다 초기화 */
-		ZeroMemory(m_iLODNumInstance, sizeof(_uint) * (_uint)eLOD_LEVEL::eLOD_END);
+			/* 갯수들 일단 다 초기화 */
+			ZeroMemory(m_iLODNumInstance, sizeof(_uint) * (_uint)eLOD_LEVEL::eLOD_END);
 
-		for (_uint i = 0; i < m_iNumInstance; ++i)
-		{
-			//1. 절두체로 걸러
+			for (_uint i = 0; i < m_iNumInstance; ++i)
+			{
+				//1. 절두체로 걸러
 
-			_float4x4 matInstance;
-			memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(VTXINSTANCE));
+				_float4x4 matInstance;
+				memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(VTXINSTANCE));
 
-			_float4 vCurPos = m_vLODCenterPos.MultiplyCoord(matInstance);
-			vCurPos = vCurPos.MultiplyCoord(matWorld);
-			_float fRange = m_fLODMaxRange;
-			fRange *= fScaleLength;
+				_float4 vCurPos = m_vLODCenterPos.MultiplyCoord(matInstance);
+				vCurPos = vCurPos.MultiplyCoord(matWorld);
+				_float fRange = m_fLODMaxRange;
+				fRange *= fScaleLength;
 
-			/*if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
-				continue;*/
+				/*if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
+					continue;*/
 
-			//2. 살아남은 애들 LOD 체크
-			_float fCurDistance = (vCamPos - vCurPos).Length();
-
-
-			eLOD_LEVEL eLODLevel = eLOD_LEVEL::eDefault;
-
-			//for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
-			//{
-			//	_float fLODDistance = m_fLODDistance;
-			//	//i만큼 곱해서 단계를 나눔
-			//	fLODDistance *= (_float)i;
-
-			//	fLODDistance += fRange;
-
-			//	//현재 거리가 단계보다 크면
-			//	if (fCurDistance > fLODDistance)
-			//		eLODLevel = (eLOD_LEVEL)i;
-			//}
+					//2. 살아남은 애들 LOD 체크
+				_float fCurDistance = (vCamPos - vCurPos).Length();
 
 
-			/* LOD별 인스턴스 리맵 정보 갱신 */
-			m_pIntancingMatricesLOD[(_uint)eLODLevel][m_iLODNumInstance[(_uint)eLODLevel]++] = matInstance;
+				eLOD_LEVEL eLODLevel = eLOD_LEVEL::eDefault;
+
+				//for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+				//{
+				//	_float fLODDistance = m_fLODDistance;
+				//	//i만큼 곱해서 단계를 나눔
+				//	fLODDistance *= (_float)i;
+
+				//	fLODDistance += fRange;
+
+				//	//현재 거리가 단계보다 크면
+				//	if (fCurDistance > fLODDistance)
+				//		eLODLevel = (eLOD_LEVEL)i;
+				//}
 
 
+				/* LOD별 인스턴스 리맵 정보 갱신 */
+				m_pIntancingMatricesLOD[(_uint)eLODLevel][m_iLODNumInstance[(_uint)eLODLevel]++] = matInstance;
+
+
+			}
+
+			//3. 이제 remap 해야함
+			for (auto& elem : m_MeshContainers)
+			{
+
+				/*LOD 켜기*/
+				if (elem.first != 0)
+				{
+					elem.second->Set_Enable(false);
+					continue;
+
+				}
+				else
+				{
+					elem.second->Set_Enable(true);
+					continue;
+				}
+
+
+				_uint iCurNumInstance = m_iLODNumInstance[elem.first];
+				_float4x4* matInstance = m_pIntancingMatricesLOD[elem.first];
+
+				if (iCurNumInstance == 0)
+				{
+					elem.second->Set_Enable(false);
+					continue;
+				}
+				else
+					elem.second->Set_Enable(true);
+
+				CInstanceMesh* pMesh = dynamic_cast<CInstanceMesh*>(elem.second);
+
+				if (!pMesh)
+				{
+					elem.second->Set_Enable(false);
+					continue;
+
+				}
+
+				static_cast<CInstanceMesh*>(elem.second)->ReMap_Instances(iCurNumInstance, matInstance);
+			}
 		}
-
-		//3. 이제 remap 해야함
-		for (auto& elem : m_MeshContainers)
-		{
-
-			/*LOD 켜기*/
-			if (elem.first != 0)
-			{
-				elem.second->Set_Enable(false);
-				continue;
-
-			}
-
-
-			_uint iCurNumInstance = m_iLODNumInstance[elem.first];
-			_float4x4* matInstance = m_pIntancingMatricesLOD[elem.first];
-
-			if (iCurNumInstance == 0)
-			{
-				elem.second->Set_Enable(false);
-				continue;
-			}
-			else
-				elem.second->Set_Enable(true);
-
-			CInstanceMesh* pMesh = dynamic_cast<CInstanceMesh*>(elem.second);
-
-			if (!pMesh)
-			{
-				elem.second->Set_Enable(false);
-				continue;
-
-			}
-
-			static_cast<CInstanceMesh*>(elem.second)->ReMap_Instances(iCurNumInstance, matInstance);
-		}
+		
 		return;
 
 	}
@@ -1496,7 +1505,7 @@ void CModel::Bake_LODFrustumInfo()
 
 	}
 
-	m_fLODMaxRange *= 2.f;
+	//m_fLODMaxRange *= 2.f;
 
 
 
