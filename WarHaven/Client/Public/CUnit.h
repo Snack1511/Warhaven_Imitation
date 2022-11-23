@@ -23,8 +23,7 @@ class CScript_FollowCam;
 class CCamera_Follow;
 class CUI_Wrapper;
 
-class CUnit abstract
-	: public CGameObject
+class CUnit abstract : public CGameObject
 {
 public:
 	enum CLASS_TYPE
@@ -324,11 +323,6 @@ private:
 	_bool		m_bIsMainPlayer = false;
 	_bool		m_bDie = false;
 	_float		m_fDeadTimeAcc = 0.f;
-<<<<<<< HEAD
 	_float		m_fDeadTime = 0.01f;
-
-=======
-	_float		m_fDeadTime = 0.1f;
->>>>>>> origin/221123_HR
 };
 END

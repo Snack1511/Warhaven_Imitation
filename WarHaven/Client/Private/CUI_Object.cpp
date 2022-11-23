@@ -370,8 +370,6 @@ void CUI_Object::DoMove()
 
 		Set_PosY(fResultPos);
 
-
-
 		if (m_fAccTime >= m_fDuration)
 		{
 			m_fAccTime = 0.f;

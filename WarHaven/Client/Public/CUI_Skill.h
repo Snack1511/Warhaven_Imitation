@@ -26,10 +26,14 @@ public:
 
 public:
 	void Set_SkillHUD(_uint iIndex);
+	void Set_CoolTime(_uint iSkillType, _float fCoolTime);
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 	CUI_Object* m_arrSkillUI[4][Type_End] = {};
+
+	CUI_Object* m_pSkillCoolText = nullptr;
+	CUI_Object* m_pSkillCoolTextArr[3];
 
 	_bool m_bAbleOutline = false;
 
@@ -37,6 +41,8 @@ private:
 	_uint m_iBtnCount = 0;
 	_uint m_iPrvSkill = 0;
 	_uint m_iCurSkill = 0;
+
+	_float m_fCoolTime[3];
 
 private:
 	virtual void My_Tick() override;
@@ -52,6 +58,7 @@ private:
 
 private:
 	void Ready_SkillHUD();
+	void Create_SkillCoolText();
 };
 
 END

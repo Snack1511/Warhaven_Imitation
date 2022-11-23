@@ -68,7 +68,7 @@ public:
 	void On_EnterLevel();
 
 	void SetActive_OxenJumpText(_bool value);
-	void SetActive_DamageTex(_float fDmg);
+	void SetActive_DamageTex(_float fDmg, _bool bIsHead);
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
