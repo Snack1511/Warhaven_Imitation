@@ -577,8 +577,8 @@ void CModel::Late_Tick()
 			_float fRange = m_fLODMaxRange;
 			fRange *= fScaleLength;
 
-			if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
-				continue;
+			/*if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
+				continue;*/
 
 			//2. 살아남은 애들 LOD 체크
 			_float fCurDistance = (vCamPos - vCurPos).Length();
@@ -586,18 +586,18 @@ void CModel::Late_Tick()
 
 			eLOD_LEVEL eLODLevel = eLOD_LEVEL::eDefault;
 
-			for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
-			{
-				_float fLODDistance = m_fLODDistance;
-				//i만큼 곱해서 단계를 나눔
-				fLODDistance *= (_float)i;
+			//for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+			//{
+			//	_float fLODDistance = m_fLODDistance;
+			//	//i만큼 곱해서 단계를 나눔
+			//	fLODDistance *= (_float)i;
 
-				fLODDistance += fRange;
+			//	fLODDistance += fRange;
 
-				//현재 거리가 단계보다 크면
-				if (fCurDistance > fLODDistance)
-					eLODLevel = (eLOD_LEVEL)i;
-			}
+			//	//현재 거리가 단계보다 크면
+			//	if (fCurDistance > fLODDistance)
+			//		eLODLevel = (eLOD_LEVEL)i;
+			//}
 
 
 			/* LOD별 인스턴스 리맵 정보 갱신 */
@@ -611,12 +611,13 @@ void CModel::Late_Tick()
 		{
 
 			/*LOD 켜기*/
-			/*if (elem.first == 1)
-				elem.second->Set_Enable(true);
-			else
+			if (elem.first != 0)
+			{
 				elem.second->Set_Enable(false);
+				continue;
 
-			continue;*/
+			}
+
 
 			_uint iCurNumInstance = m_iLODNumInstance[elem.first];
 			_float4x4* matInstance = m_pIntancingMatricesLOD[elem.first];
