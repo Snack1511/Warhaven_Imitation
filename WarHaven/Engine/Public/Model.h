@@ -124,6 +124,9 @@ protected:
 	_uint m_iLODNumInstance[(_uint)eLOD_LEVEL::eLOD_END] = {};
 	_float4x4* m_pIntancingMatricesLOD[(_uint)eLOD_LEVEL::eLOD_END] = {};
 
+	_float4* m_pInstancingCenterPos = nullptr;
+	_float* m_pInstancingMaxRange = nullptr;
+
 
 protected:
 	HRESULT	SetUp_Model(MODEL_TYPE eType, wstring wstrModelFilePath, _float4x4 TransformMatrix, _uint iMeshPartType);

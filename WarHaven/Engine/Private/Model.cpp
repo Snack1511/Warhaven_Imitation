@@ -543,60 +543,25 @@ void CModel::Final_Tick()
 	{
 		if (m_bLOD)
 		{
-
-			_float4x4 matWorld = m_pOwner->Get_Transform()->Get_WorldMatrix();
-			_float4 vWorldPos = m_vLODCenterPos.MultiplyCoord(matWorld);
-
 			_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
 
 			/* 갯수들 일단 다 초기화 */
-			//ZeroMemory(m_iLODNumInstance, sizeof(_uint) * );
-			for (_uint i = 0; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
-			{
-				m_iLODNumInstance[i] = 0;
-				ZeroMemory(m_pIntancingMatricesLOD[i], sizeof(_float4x4) * m_iNumInstance);
-			}
+			ZeroMemory(m_iLODNumInstance, sizeof(_uint) * (_uint)eLOD_LEVEL::eLOD_END);
 
 			for (_uint i = 0; i < m_iNumInstance; ++i)
 			{
 				//1. 절두체로 걸러
-
+				
 				_float4x4 matInstance;
 				memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(_float4x4));
 
-				_float4 vCurPos = m_vLODCenterPos.MultiplyCoord(matInstance);
-
-				vCurPos = vCurPos.MultiplyCoord(matWorld);
-
-				vCurPos = m_pInstancingMatrices[i].vTranslation;
-
-				_float4 vRight = matInstance.XMLoad().r[0];
-				_float4 vUp = matInstance.XMLoad().r[1];
-				_float4 vLook = matInstance.XMLoad().r[2];
-
-				_float4 vInstanceScale =
-				{
-					vRight.Length(), vUp.Length(), vLook.Length()
-				};
-
-				/* 늘어난 스케일 만큼 반지름 늘리기. */
-				_float fInstanceScaleLength;
-
-				fInstanceScaleLength = sqrtf((vInstanceScale.x * vInstanceScale.x) + (vInstanceScale.y * vInstanceScale.y)
-					+ (vInstanceScale.z * vInstanceScale.z));
-
-
-				_float fRange = m_fLODMaxRange;
-				fRange *=  fInstanceScaleLength;
-
-				if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
+				if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pInstancingCenterPos[i].XMLoad(), m_pInstancingMaxRange[i]))
 				{
 					continue;
 				}
 
 				//2. 살아남은 애들 LOD 체크
-				_float fCurDistance = (vCamPos - vCurPos).Length();
-
+				_float fCurDistance = (vCamPos - m_pInstancingCenterPos[i]).Length();
 
 				eLOD_LEVEL eLODLevel = eLOD_LEVEL::eDefault;
 
@@ -605,8 +570,7 @@ void CModel::Final_Tick()
 					_float fLODDistance = m_fLODDistance;
 					//i만큼 곱해서 단계를 나눔
 					fLODDistance *= (_float)i;
-
-					fLODDistance += fRange;
+					fLODDistance += m_pInstancingMaxRange[i];
 
 					//현재 거리가 단계보다 크면
 					if (fCurDistance > fLODDistance)
@@ -627,7 +591,6 @@ void CModel::Final_Tick()
 			//3. 이제 remap 해야함
 			for (auto& elem : m_MeshContainers)
 			{
-
 				_uint iCurNumInstance = m_iLODNumInstance[elem.first];
 				_float4x4* matInstance = m_pIntancingMatricesLOD[elem.first];
 
@@ -697,8 +660,6 @@ void CModel::Final_Tick()
 			if (fCurDistance > fLODDistance)
 				m_eLOD_Level = (eLOD_LEVEL)i;
 		}
-
-
 	}
 
 
@@ -778,7 +739,11 @@ void CModel::Release()
 
 	m_MeshContainers.clear();
 
+	/*Instancing Culling Data */
 	SAFE_DELETE_ARRAY(m_pInstancingMatrices);
+	SAFE_DELETE_ARRAY(m_pInstancingCenterPos);
+	SAFE_DELETE_ARRAY(m_pInstancingMaxRange);
+
 	for (_uint i = 0; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
 	{
 		SAFE_DELETE_ARRAY(m_pIntancingMatricesLOD[i]);
@@ -1068,18 +1033,6 @@ HRESULT CModel::SetUp_InstancingModel_LOD()
 
 	m_iNumMeshContainers = m_MeshContainers.size();
 	m_iNumMaterials = m_Materials.size();
-	//m_bLOD = true;
-	/*m_fLODMaxRange = 0.f;
-	for (auto& elem : m_MeshContainers)
-	{
-		m_vLODCenterPos += elem.second->Get_CenterPos();
-		_float fRange = elem.second->Get_MaxRange();
-
-		m_fLODMaxRange += fRange;
-
-	}
-
-	m_vLODCenterPos /= m_iNumMeshContainers;*/
 
 	m_bLOD = true;
 	Bake_LODFrustumInfo();
@@ -1461,61 +1414,77 @@ HRESULT CModel::Create_HierarchyNode(CResource_Bone* pResource, CHierarchyNode* 
 
 void CModel::Bake_LODFrustumInfo()
 {
+	m_pInstancingCenterPos = new _float4[m_iNumInstance];
+	ZeroMemory(m_pInstancingCenterPos, sizeof(_float4) * m_iNumInstance);
+	m_pInstancingMaxRange = new _float[m_iNumInstance];
+	ZeroMemory(m_pInstancingMaxRange, sizeof(_float) * m_iNumInstance);
 
-	_float4 vMin = _float4(99909.f, 99099.f, 99099.f), vMax = _float4(-90999.f, -99909.f, -99999.f);
-	for (auto& elem : m_MeshContainers)
+
+	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
-		_uint iNumVertices = elem.second->Get_NumVertices();
-		_float3* pVerticesPos = elem.second->Get_VerticesPos();
+		_float4x4 matInstance;
+		memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(_float4x4));
 
-		for (_uint i = 0; i < iNumVertices; ++i)
+		//1. CenterPos 찾기
+		_float4 vMin = _float4(99909.f, 99099.f, 99099.f), vMax = _float4(-90999.f, -99909.f, -99999.f);
+
+		for (auto& elem : m_MeshContainers)
 		{
-			if (pVerticesPos[i].x < vMin.x)
-				vMin.x = pVerticesPos[i].x;
-			else if (pVerticesPos[i].x > vMax.x)
-				vMax.x = pVerticesPos[i].x;
+			_uint iNumVertices = elem.second->Get_NumVertices();
+			_float3* pVerticesPos = elem.second->Get_VerticesPos();
+
+			for (_uint j = 0; j < iNumVertices; ++j)
+			{
+				_float4 vCurVerticesPos;
+				memcpy(&vCurVerticesPos, &pVerticesPos[j], sizeof(_float3));
+				vCurVerticesPos.w = 1.f;
+				vCurVerticesPos = vCurVerticesPos.MultiplyCoord(matInstance);
 
 
-			if (pVerticesPos[i].y < vMin.y)
-				vMin.y = pVerticesPos[i].y;
-			else if (pVerticesPos[i].y > vMax.y)
-				vMax.y = pVerticesPos[i].y;
 
-			if (pVerticesPos[i].z < vMin.z)
-				vMin.z = pVerticesPos[i].z;
-			else if (pVerticesPos[i].z > vMax.z)
-				vMax.z = pVerticesPos[i].z;
+				if (vCurVerticesPos.x < vMin.x)
+					vMin.x = vCurVerticesPos.x;
+				else if (vCurVerticesPos.x > vMax.x)
+					vMax.x = vCurVerticesPos.x;
+
+				if (vCurVerticesPos.y < vMin.y)
+					vMin.y = vCurVerticesPos.y;
+				else if (vCurVerticesPos.y > vMax.y)
+					vMax.y = vCurVerticesPos.y;
+
+				if (vCurVerticesPos.z < vMin.z)
+					vMin.z = vCurVerticesPos.z;
+				else if (vCurVerticesPos.z > vMax.z)
+					vMax.z = vCurVerticesPos.z;
+			}
 		}
 
-	}
+		//2. MaxRange 찾기
+		m_pInstancingCenterPos[i] = (vMin + vMax) * 0.5f;
+		_float fMaxRange = 0.f;
 
-
-
-	m_vLODCenterPos = (vMin + vMax) * 0.5f;
-	//m_fLODMaxRange = (vMin - vMax).Length() * 0.5f;
-
-	m_fLODMaxRange = 0.f;
-
-	for (auto& elem : m_MeshContainers)
-	{
-		_uint iNumVertices = elem.second->Get_NumVertices();
-		_float3* pVerticesPos = elem.second->Get_VerticesPos();
-
-		for (_uint i = 0; i < iNumVertices; ++i)
+		for (auto& elem : m_MeshContainers)
 		{
-			_float4 vPosition;
-			memcpy(&vPosition, &pVerticesPos[i], sizeof(_float3));
-			vPosition.w = 1.f;
+			_uint iNumVertices = elem.second->Get_NumVertices();
+			_float3* pVerticesPos = elem.second->Get_VerticesPos();
 
-			_float fLength = (vPosition - m_vLODCenterPos).Length();
+			for (_uint j = 0; j < iNumVertices; ++j)
+			{
+				_float4 vCurVerticesPos;
+				memcpy(&vCurVerticesPos, &pVerticesPos[j], sizeof(_float3));
+				vCurVerticesPos.w = 1.f;
 
-			if (fLength > m_fLODMaxRange)
-				m_fLODMaxRange = fLength;
+				vCurVerticesPos = vCurVerticesPos.MultiplyCoord(matInstance);
+
+				_float fDistance = (vCurVerticesPos - m_pInstancingCenterPos[i]).Length();
+
+				if (fDistance > fMaxRange)
+					fMaxRange = fDistance;
+			}
 		}
 
+		m_pInstancingMaxRange[i] = fMaxRange;
 	}
-
-	//m_fLODMaxRange += 30.f;
 
 
 
