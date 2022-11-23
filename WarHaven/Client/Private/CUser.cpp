@@ -159,11 +159,8 @@ void CUser::Turn_BloodOverLay(_float fHpRatio)
 	if (!m_pBloodOverlay)
 		return;
 
-	m_pBloodOverlay->Trun_BloodOverlay(fHpRatio);
-
-
 	ENABLE_GAMEOBJECT(m_pBloodOverlay);
-
+	m_pBloodOverlay->Trun_BloodOverlay(fHpRatio);
 }
 
 void CUser::On_EnterLevel()

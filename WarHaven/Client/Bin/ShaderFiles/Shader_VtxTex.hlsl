@@ -30,6 +30,9 @@ float2 g_TextureSize;
 
 bool g_bAppear;
 
+float g_fBloodRatio;
+bool g_bDeadBlood;
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -727,7 +730,15 @@ PS_OUT PS_BLOODOVERLAY(PS_IN In)
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-    Out.vColor.a = Out.vColor.a * g_fAlpha;
+    if (!g_bDeadBlood)
+    {
+        Out.vColor.a = Out.vColor.a * g_fAlpha;
+    }
+    else
+    {
+        Out.vColor.a = g_fBloodRatio;
+    }
+
     if (Out.vColor.a < 0.01f)
         discard;
 

@@ -51,8 +51,8 @@ public:
 		_float		fHeroGague = 70.f;
 
 		WEAPON_TYPE eWeapon;
-		_float fHP = 100.f;
-		_float fMaxHP = 100.f;
+		_float fHP = 500.f;
+		_float fMaxHP = 500.f;
 		_float fGuardBreakSpeed = 10.f;
 		_float fGuardDashSpeed = 10.f;
 		_float fRunSpeed = 4.f;
@@ -324,5 +324,6 @@ private:
 	_bool		m_bDie = false;
 	_float		m_fDeadTimeAcc = 0.f;
 	_float		m_fDeadTime = 0.01f;
+
 };
 END

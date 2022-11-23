@@ -234,7 +234,6 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		m_bDie = true;
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
 	}
-
 }
 
 void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -329,6 +328,11 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit)
 {
 
 	m_tUnitStatus.fHP += fHp;
+
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Turn_BloodOverLay(PLAYER->Get_Status().fHP / PLAYER->Get_Status().fMaxHP);
+	}
 
 	if (m_tUnitStatus.fHP <= 0.f)
 	{
@@ -913,7 +917,8 @@ void CUnit::Switch_ClassEffect(CUnit* pUnit, _float4 vHitPos)
 {
 	CLASS_TYPE eClass = pUnit->Get_Status().eClass;
 
-	if ((STATE_GUARDHIT_WARRIOR != m_eCurState) && (STATE_GUARDHIT_ENEMY != m_eCurState))
+	if ((STATE_GUARDHIT_WARRIOR != m_eCurState) && (STATE_GUARDHIT_ENEMY != m_eCurState) &&
+		STATE_GUARDHIT_WARHAMMER != m_eCurState)
 	{
 		switch (eClass)
 		{

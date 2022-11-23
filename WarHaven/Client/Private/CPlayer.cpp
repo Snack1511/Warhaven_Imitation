@@ -42,6 +42,8 @@
 #include "CUnit_WarHammer.h"
 #include "CUnit_Valkyrie.h"
 
+#include "CUser.h"
+
 
 
 #define ERR_MSG_TH
@@ -338,12 +340,15 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 {
 	if (eClass >= CLASS_DEFAULT_END)
 		return E_FAIL;
+
+	m_vCurrentPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 		
 	if (m_pCurrentUnit)
 	{
+
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
 	}
-		
+	
 	m_pCurrentUnit = m_pDefaultClass[eClass];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
@@ -351,6 +356,7 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveState[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
+	Set_Postion(m_vCurrentPos);
 	return S_OK;
 }
 
