@@ -259,6 +259,9 @@ void CWindow_Effect::Show_MainList()
 
 	if (ImGui::Button("DELETE_SELECTED"))
 	{
+		if (9999 == m_iCurrentIdx)
+			return;
+
 		DISABLE_GAMEOBJECT(m_vecEffects[m_iCurrentIdx].pEffect);
 
 		m_vecEffects.erase(m_vecEffects.begin() + m_iCurrentIdx);
@@ -267,6 +270,7 @@ void CWindow_Effect::Show_MainList()
 			m_iCurrentIdx = 9999;
 		else
 			m_iCurrentIdx = m_vecEffects.size() - 1;
+
 	}
 
 	ImGui::SameLine();

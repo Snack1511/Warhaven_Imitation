@@ -213,6 +213,8 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	if (On_PlusHp(fDamage, pOtherUnit))
 	{
 		Enter_State(eFinalHitState, &tOtherHitInfo);
+
+		Switch_ClassEffect(pOtherUnit, vHitPos); // 체력 줄을시에만 이펙트 발생 사망시 연기이펙트만 나옴
 	}
 	else
 	{
@@ -222,7 +224,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 		/* 체력 0 이하로 내려간 경우 */
 		m_bDie = true;
-
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
 	}
 
 }
@@ -284,7 +286,8 @@ void CUnit::On_Die()
 	vPos.y -= 0.5f;
 
 	_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"KillSmoke", vPos, vCamMatrix);
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"KillSmoke_Right", vPos, vCamMatrix);
+	vPos.y += 1.f;
 
 	DISABLE_GAMEOBJECT(this);
 
@@ -903,6 +906,86 @@ void CUnit::Effect_Hit(_float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"GroundHitParticle", vHitPos);
+}
+
+void CUnit::Switch_ClassEffect(CUnit* pUnit, _float4 vHitPos)
+{
+	CLASS_TYPE eClass = pUnit->Get_Status().eClass;
+
+	if ((STATE_GUARDHIT_WARRIOR != m_eCurState) && (STATE_GUARDHIT_ENEMY != m_eCurState))
+	{
+		switch (eClass)
+		{
+		case Client::CUnit::WARRIOR:
+			Warrior_Effect(pUnit, vHitPos);
+			break;
+		case Client::CUnit::SPEAR:
+			break;
+		case Client::CUnit::ARCHER:
+			break;
+		case Client::CUnit::PALADIN:
+			break;
+		case Client::CUnit::PRIEST:
+			break;
+		case Client::CUnit::ENGINEER:
+			break;
+		case Client::CUnit::FIONA:
+			break;
+		case Client::CUnit::QANDA:
+			break;
+		case Client::CUnit::HOEDT:
+			break;
+		case Client::CUnit::LANCER:
+			break;
+		case Client::CUnit::CLASS_END:
+			break;
+		default:
+			break;
+		}
+	}
+
+}
+
+void CUnit::Warrior_Effect(CUnit* pUnit, _float4 vHitPos)
+{
+	_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+
+	switch (pUnit->Get_CurState())
+	{
+	case STATE_ATTACK_HORIZONTALUP_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, vCamMatrix);
+		break;
+	case STATE_ATTACK_HORIZONTALMIDDLE_L:
+	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, vCamMatrix);
+		break;
+	case STATE_ATTACK_HORIZONTALDOWN_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, vCamMatrix);
+		break;
+	case STATE_ATTACK_HORIZONTALUP_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, vCamMatrix);
+		break;
+	case STATE_ATTACK_HORIZONTALMIDDLE_R:
+	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, vCamMatrix);
+		break;
+	case STATE_ATTACK_HORIZONTALDOWN_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, vCamMatrix);
+		break;
+	case STATE_ATTACK_VERTICALCUT:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, vCamMatrix);
+		break;
+	case STATE_ATTACK_STING_PLAYER_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, vCamMatrix);
+		break;
+	case STATE_ATTACK_STING_PLAYER_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, vCamMatrix);
+		break;
+
+	}
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pUnit, vHitPos);
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pUnit, vHitPos);
 }
 
 void CUnit::TransformProjection()

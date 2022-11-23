@@ -708,13 +708,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_LU"), "HitSlash_LU"))) //Left up
 		return E_FAIL;
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StingBlood"), "StingBlood"))) //
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StingBlood"), "StingBlood")))
 		return E_FAIL;
 
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BloodEffect"), "BloodEffect"))) //
-		return E_FAIL;
-
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke"), "KillSmoke"))) //bone
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke_Right"), "KillSmoke_Right")))
 		return E_FAIL;
 
 
@@ -736,6 +733,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_2"))))
 		return E_FAIL;
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_3"))))
+		return E_FAIL;
+
+	/*Stone spark particle*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StoneSpark"), "StoneSpark")))
 		return E_FAIL;
 
 	return S_OK;
