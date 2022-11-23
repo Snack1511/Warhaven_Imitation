@@ -851,6 +851,10 @@ void CUnit::My_Tick()
 {
 	for (_int i = 0; i < COOL_END; ++i)
 	{
+		// 여기서 쿨타임을 넘기자
+		// 쿨타임이 0일 때는 비활성화
+		// 
+
 		if (m_fCoolAcc[i] > 0.f)
 			m_fCoolAcc[i] -= fDT(0);
 		else

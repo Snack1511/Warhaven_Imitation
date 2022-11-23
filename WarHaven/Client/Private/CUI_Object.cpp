@@ -441,17 +441,10 @@ void CUI_Object::Fade_Font()
 		}
 		else
 		{
-			if (vStartColor.x > 0.f)
-				vStartColor.x += m_fAccTime;
-
-			if (vStartColor.y > 0.f)
-				vStartColor.y += m_fAccTime;
-
-			if (vStartColor.z > 0.f)
-				vStartColor.z += m_fAccTime;
-
-			if (vStartColor.w > 0.f)
-				vStartColor.w += m_fAccTime;
+			vStartColor.x += m_fAccTime;
+			vStartColor.y += m_fAccTime;
+			vStartColor.z += m_fAccTime;
+			vStartColor.w += m_fAccTime;
 
 			Set_FontColor(vStartColor);
 
