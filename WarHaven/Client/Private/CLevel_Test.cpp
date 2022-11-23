@@ -186,7 +186,16 @@ void CLevel_Test::Tick()
 		m_fDealyAcc += fDT(0);
 		if (m_fDealyAcc >= m_fDelayTime)
 		{
-			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, 200.f);
+			list<CGameObject*> ObjList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
+
+			for (auto& elem : ObjList)
+			{
+				m_StaticShadowObjects.push_back(elem);
+
+			}
+
+
+			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, 400.f);
 			m_bStaticShadowBake = true;
 		}
 	}
@@ -307,13 +316,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
 
-	list<CGameObject*> ObjList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
-
-	for (auto& elem : ObjList)
-	{
-		m_StaticShadowObjects.push_back(elem);
-
-	}
+	
 
 	//터레인 불러오기
 	//오브젝트 불러오기

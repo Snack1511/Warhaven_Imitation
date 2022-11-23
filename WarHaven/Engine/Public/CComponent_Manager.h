@@ -21,6 +21,7 @@ public:
 public:
 	void	Tick();
 	void	Late_Tick();
+	void	Final_Tick();
 
 private:
 	list <CComponent*>		m_Components[COM_GROUP_END];

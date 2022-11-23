@@ -70,7 +70,7 @@ void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fD
 	vUp = vLook.Cross(vRight);
 	*((_float4*)&m_ShadowViewMatrix.m[1]) = vUp;
 
-	_float4 vPos = vLook * -1.f * fDistance;
+	_float4 vPos = _float4(0.f, 0.f, -50.f) + vLook * -1.f * fDistance;
 	vPos.w = 1.f;
 
 	*((_float4*)&m_ShadowViewMatrix.m[3]) = vPos;
@@ -165,7 +165,7 @@ HRESULT CRender_Manager::Initialize()
 	*((_float4*)&m_ShadowViewMatrix.m[1]) = vUp;
 
 
-	*((_float4*)&m_ShadowViewMatrix.m[3]) = _float4(100.f, 200.f, 50.f, 1.f);
+	*((_float4*)&m_ShadowViewMatrix.m[3]) = _float4(200.f, 400.f, 200.f, 1.f);
 	m_ShadowViewMatrix.Inverse();
 	m_ShadowViewMatrix.Transpose();
 

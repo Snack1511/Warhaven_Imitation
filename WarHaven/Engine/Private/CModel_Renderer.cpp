@@ -67,9 +67,9 @@ void CModel_Renderer::Start()
 		}
 		else
 		{
-			m_eShadowType = DEFAULTSHADOW;
-
-			m_iShadowPass = 3;
+			m_eShadowType = STATICSHADOW;
+			//Instance static pass
+			m_iShadowPass = 4;
 		}
 	}
 

@@ -320,7 +320,7 @@ private:
 	_bool		m_bIsMainPlayer = false;
 	_bool		m_bDie = false;
 	_float		m_fDeadTimeAcc = 0.f;
-	_float		m_fDeadTime = 0.1f;
+	_float		m_fDeadTime = 0.01f;
 
 };
 END

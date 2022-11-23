@@ -65,3 +65,15 @@ void CComponent_Manager::Late_Tick()
 		}
 	}
 }
+
+void CComponent_Manager::Final_Tick()
+{
+	for (_uint i = 0; i < COM_GROUP_END; ++i)
+	{
+		for (auto& pComponent : m_Components[i])
+		{
+			if (pComponent->Is_Valid())
+				pComponent->Final_Tick();
+		}
+	}
+}

@@ -69,6 +69,9 @@ public:
 	HRESULT Initialize() override;
 	void Tick() override;
 	void Late_Tick() override;
+	virtual void	Final_Tick() override;
+
+
 	HRESULT Render(_uint iMeshContainerIndex, class CShader* pShader, _uint iPassIndex = 0, const char* pConstantBoneName = nullptr);
 	HRESULT Bake_Shadow(_uint iMeshContainerIndex, class CShader* pShader, _uint iPassIndex = 0);
 	void	Release();

@@ -103,6 +103,7 @@ HRESULT CGameInstance::Tick_Engine( )
 
 
 	m_pLevelManager->Late_Tick();
+
 	m_pComponentManager->Late_Tick();
 	m_pObjectManager->LateTick_GameObjects();
 
@@ -112,6 +113,8 @@ HRESULT CGameInstance::Tick_Engine( )
 
 	/* Frustum */
 	m_pFrustumManager->Update();
+
+	m_pComponentManager->Final_Tick();
 
 	/* Other Events */
 	m_pPickingManager->Execute_Picking();

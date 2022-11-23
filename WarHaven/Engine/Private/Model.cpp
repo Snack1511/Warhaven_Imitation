@@ -498,6 +498,11 @@ void CModel::Late_Tick()
 	for (auto& pHierarchyNode : m_vecHierarchyNodes)
 		pHierarchyNode.second->Update_CombinedTransformationMatrix();
 
+	
+}
+
+void CModel::Final_Tick()
+{
 	if (!m_bCulling)
 		return;
 
@@ -538,24 +543,12 @@ void CModel::Late_Tick()
 	{
 		if (m_bLOD)
 		{
-			//for (auto& elem : m_MeshContainers)
-		//{
-
-		//	/*LOD 켜기*/
-		//	if (elem.first == 1)
-		//		elem.second->Set_Enable(true);
-		//	else
-		//		elem.second->Set_Enable(false);
-
-		//	continue;
-		//}
-		//return;
-
-
 
 			_float4x4 matWorld = m_pOwner->Get_Transform()->Get_WorldMatrix();
 			_float4 vWorldPos = m_vLODCenterPos.MultiplyCoord(matWorld);
+
 			_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+
 			_float4 vScale = m_pOwner->Get_Transform()->Get_Scale();
 			_float fScaleLength = vScale.x;
 			if (vScale.y > fScaleLength)
@@ -565,24 +558,56 @@ void CModel::Late_Tick()
 				fScaleLength = vScale.z;
 
 			/* 갯수들 일단 다 초기화 */
-			ZeroMemory(m_iLODNumInstance, sizeof(_uint) * (_uint)eLOD_LEVEL::eLOD_END);
+			//ZeroMemory(m_iLODNumInstance, sizeof(_uint) * );
+			for (_uint i = 0; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+			{
+				m_iLODNumInstance[i] = 0;
+				ZeroMemory(m_pIntancingMatricesLOD[i], sizeof(_float4x4) * m_iNumInstance);
+			}
 
 			for (_uint i = 0; i < m_iNumInstance; ++i)
 			{
 				//1. 절두체로 걸러
 
 				_float4x4 matInstance;
-				memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(VTXINSTANCE));
+				memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(_float4x4));
 
 				_float4 vCurPos = m_vLODCenterPos.MultiplyCoord(matInstance);
 				vCurPos = vCurPos.MultiplyCoord(matWorld);
+
+
+				_float4 vRight = matInstance.XMLoad().r[0];
+				_float4 vUp = matInstance.XMLoad().r[1];
+				_float4 vLook = matInstance.XMLoad().r[2];
+
+				_float4 vInstanceScale =
+				{
+					vRight.Length(), vUp.Length(), vLook.Length()
+				};
+
+				_float fInstanceScaleLength = vInstanceScale.x;
+				if (vInstanceScale.y > fInstanceScaleLength)
+					fInstanceScaleLength = vInstanceScale.y;
+
+				if (vInstanceScale.z > fInstanceScaleLength)
+					fInstanceScaleLength = vInstanceScale.z;
+
+
+				fInstanceScaleLength = sqrtf((vInstanceScale.x * vInstanceScale.x) + (vInstanceScale.y * vInstanceScale.y)
+					+ (vInstanceScale.z * vInstanceScale.z));
+
+
 				_float fRange = m_fLODMaxRange;
-				fRange *= fScaleLength;
+				fRange *= fScaleLength * fInstanceScaleLength;
+				fRange += 10.f;
 
-				/*if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
-					continue;*/
+				//if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
+				//{
+				//	//cout << "절두체" << endl;
+				//	continue;
+				//}
 
-					//2. 살아남은 애들 LOD 체크
+				//2. 살아남은 애들 LOD 체크
 				_float fCurDistance = (vCamPos - vCurPos).Length();
 
 
@@ -603,7 +628,11 @@ void CModel::Late_Tick()
 
 
 				/* LOD별 인스턴스 리맵 정보 갱신 */
-				m_pIntancingMatricesLOD[(_uint)eLODLevel][m_iLODNumInstance[(_uint)eLODLevel]++] = matInstance;
+				_uint iCurLODNumInstance = m_iLODNumInstance[(_uint)eLODLevel];
+
+				m_pIntancingMatricesLOD[(_uint)eLODLevel][iCurLODNumInstance] = matInstance;
+
+				m_iLODNumInstance[(_uint)eLODLevel] += 1;
 
 
 			}
@@ -622,9 +651,7 @@ void CModel::Late_Tick()
 				else
 				{
 					elem.second->Set_Enable(true);
-					continue;
 				}
-
 
 				_uint iCurNumInstance = m_iLODNumInstance[elem.first];
 				_float4x4* matInstance = m_pIntancingMatricesLOD[elem.first];
@@ -637,7 +664,9 @@ void CModel::Late_Tick()
 				else
 					elem.second->Set_Enable(true);
 
-				CInstanceMesh* pMesh = dynamic_cast<CInstanceMesh*>(elem.second);
+				CInstanceMesh* pMesh = nullptr;
+#ifdef _DEBUG
+				pMesh = dynamic_cast<CInstanceMesh*>(elem.second);
 
 				if (!pMesh)
 				{
@@ -645,14 +674,17 @@ void CModel::Late_Tick()
 					continue;
 
 				}
+#else
+				pMesh = static_cast<CInstanceMesh*>(elem.second);
 
+#endif
 				static_cast<CInstanceMesh*>(elem.second)->ReMap_Instances(iCurNumInstance, matInstance);
+				}
 			}
-		}
-		
+
 		return;
 
-	}
+		}
 
 	/* NONANIM MODEL */
 
@@ -1455,7 +1487,7 @@ HRESULT CModel::Create_HierarchyNode(CResource_Bone* pResource, CHierarchyNode* 
 void CModel::Bake_LODFrustumInfo()
 {
 
-	_float4 vMin = _float4(99909.f, 99099.f, 99099.f), vMax = _float4(-90999.f, -99909.f, -09999.f);
+	_float4 vMin = _float4(99909.f, 99099.f, 99099.f), vMax = _float4(-90999.f, -99909.f, -99999.f);
 	for (auto& elem : m_MeshContainers)
 	{
 		_uint iNumVertices = elem.second->Get_NumVertices();
@@ -1465,16 +1497,18 @@ void CModel::Bake_LODFrustumInfo()
 		{
 			if (pVerticesPos[i].x < vMin.x)
 				vMin.x = pVerticesPos[i].x;
+			else if (pVerticesPos[i].x > vMax.x)
+				vMax.x = pVerticesPos[i].x;
+
+
 			if (pVerticesPos[i].y < vMin.y)
 				vMin.y = pVerticesPos[i].y;
+			else if (pVerticesPos[i].y > vMax.y)
+				vMax.y = pVerticesPos[i].y;
+
 			if (pVerticesPos[i].z < vMin.z)
 				vMin.z = pVerticesPos[i].z;
-
-			if (pVerticesPos[i].x > vMax.x)
-				vMax.x = pVerticesPos[i].x;
-			if (pVerticesPos[i].y > vMax.y)
-				vMax.y = pVerticesPos[i].y;
-			if (pVerticesPos[i].z > vMax.z)
+			else if (pVerticesPos[i].z > vMax.z)
 				vMax.z = pVerticesPos[i].z;
 		}
 
@@ -1485,6 +1519,7 @@ void CModel::Bake_LODFrustumInfo()
 	m_vLODCenterPos = (vMin + vMax) * 0.5f;
 	//m_fLODMaxRange = (vMin - vMax).Length() * 0.5f;
 
+	m_fLODMaxRange = 0.f;
 
 	for (auto& elem : m_MeshContainers)
 	{
@@ -1505,7 +1540,7 @@ void CModel::Bake_LODFrustumInfo()
 
 	}
 
-	//m_fLODMaxRange *= 2.f;
+	//m_fLODMaxRange += 30.f;
 
 
 

@@ -37,6 +37,7 @@ public:
 	virtual void	Start() { OnEnable(); }
 	virtual void	Tick() PURE;
 	virtual void	Late_Tick() PURE;
+	virtual void	Final_Tick() {};
 
 public:
 	virtual void		OnCollisionEnter(CGameObject* pGameObject, const _uint& iColType, _float4 vColPoint) {}
