@@ -71,6 +71,8 @@ HRESULT CHit_GuardHit_Warrior::Initialize()
 
 void CHit_GuardHit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    m_bMoveTrigger = false;
+
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Guard_State();
 
@@ -80,12 +82,19 @@ void CHit_GuardHit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CHit_GuardHit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+    if (KEY(SPACE, TAP) && KEY(A, HOLD) || KEY(D, HOLD))
+        return STATE_GUARDDASH_WARRIOR;
+    
+
+
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CHit_GuardHit_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     pOwner->Enable_GuardCollider(false);
+    m_bMoveTrigger = false;
 }
 
 STATE_TYPE CHit_GuardHit_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

@@ -54,7 +54,9 @@ HRESULT CSprint_Begin_WarHammer::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_WARHAMMER);
 	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_WARHAMMER);
 
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_R);
+
+    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);

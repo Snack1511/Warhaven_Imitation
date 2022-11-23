@@ -4,7 +4,7 @@
 BEGIN(Engine)
 class CCollider;
 class CCollider_Sphere;
-class CPhysXCollider;
+class CPhysXCharacter;
 class CPhysics;
 END
 

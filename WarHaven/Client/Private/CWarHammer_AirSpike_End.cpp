@@ -54,7 +54,9 @@ HRESULT CWarHammer_AirSpike_End::Initialize()
 	m_vecAdjState.push_back(STATE_RUNBEGIN_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_R);
 
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
+	m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_R);
+
+	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);

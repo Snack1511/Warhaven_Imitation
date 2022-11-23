@@ -87,6 +87,8 @@
 #include "CHit_Sting_Warrior.h"
 #include "CHit_Fly_Warrior.h"
 
+#include "CGuard_Dash_Player.h"
+
 #pragma endregion
 
 #pragma region Spearman
@@ -206,6 +208,8 @@
 #include "CHit_Groggy_WarHammer.h"
 #include "CHit_Sting_WarHammer.h"
 #include "CHit_Fly_WarHammer.h"
+
+#include "CGuard_Dash_WarHammer.h"
 
 #pragma endregion
 
@@ -449,14 +453,6 @@ void CState_Manager::Warrior_State()
 	m_arrStates[STATE_IDLE_WARRIOR_L_AI_ENEMY] =						CAI_SandBack_L::Create();
 	
 
-	m_arrStates[STATE_HIT_TEST_ENEMY] = CAI_SandBack_Hit::Create();
-	m_arrStates[STATE_GUARDHIT_ENEMY] = CAI_SandBack_GuardHit::Create();
-	m_arrStates[STATE_GROGGY_ENEMY] = CAI_SandBack_Groggy::Create();
-	m_arrStates[STATE_STINGHIT_ENEMY] = CAI_SandBack_StingHit::Create();
-	m_arrStates[STATE_FLYHIT_ENEMY] = CAI_SandBack_FlyHit::Create();
-	
-
-
 	m_arrStates[STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY] =					CGuard_Begin_Player_Warrior_AI::Create();
 	m_arrStates[STATE_GUARD_LOOP_WARRIOR_AI_ENEMY] =					CGuard_Loop_Warrior_AI::Create();
 	m_arrStates[STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY] =					CGuard_Cancel_Warrior_AI::Create();
@@ -473,6 +469,15 @@ void CState_Manager::Warrior_State()
 	
 	m_arrStates[STATE_BOUNCE_WARRIOR_L_AI_ENEMY] = CBounce_Warrior_AI_L::Create();
 	m_arrStates[STATE_BOUNCE_WARRIOR_R_AI_ENEMY] = CBounce_Warrior_AI_R::Create();
+
+
+	m_arrStates[STATE_HIT_TEST_ENEMY] = CAI_SandBack_Hit::Create();
+	m_arrStates[STATE_GUARDHIT_ENEMY] = CAI_SandBack_GuardHit::Create();
+	m_arrStates[STATE_GROGGY_ENEMY] = CAI_SandBack_Groggy::Create();
+	m_arrStates[STATE_STINGHIT_ENEMY] = CAI_SandBack_StingHit::Create();
+	m_arrStates[STATE_FLYHIT_ENEMY] = CAI_SandBack_FlyHit::Create();
+
+	m_arrStates[STATE_GUARDDASH_WARRIOR] = CGuard_Dash_Player::Create();
 
 
 	/* Charge Test */
@@ -605,6 +610,7 @@ void CState_Manager::WarHammer_State()
 	m_arrStates[STATE_STINGHIT_WARHAMMER] = CHit_Sting_WarHammer::Create();
 	m_arrStates[STATE_FLYHIT_WARHAMMER] = CHit_Fly_WarHammer::Create();
 
+	m_arrStates[STATE_GUARDDASH_WARHAMMER] = CGuard_Dash_WarHammer::Create();
 
 }
 

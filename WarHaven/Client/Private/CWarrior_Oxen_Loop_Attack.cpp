@@ -217,24 +217,8 @@ void CWarrior_Oxen_Loop_Attack::OnCollisionEnter(CGameObject* pOtherObject, cons
     else if (iOtherColType == COL_ENEMYHITBOX_BODY || iOtherColType == COL_ENEMYHITBOX_HEAD)
     {
 
-        //case STATE_ATTACK_HORIZONTALUP_L:
-        //    break;
-        //case STATE_ATTACK_HORIZONTALMIDDLE_L:
-        //    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", pOwner, vHitPos);
-        //    break;
-        //case STATE_ATTACK_HORIZONTALDOWN_L:
-        //    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", pOwner, vHitPos);
-        //    break;
-        //case STATE_ATTACK_HORIZONTALUP_R:
-        //    break;
-        //case STATE_ATTACK_HORIZONTALMIDDLE_R:
-        //    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", pOwner, vHitPos);
-        //    break;
-        //case STATE_ATTACK_HORIZONTALDOWN_R:
             CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", m_pOwner, vHitPos);
-        //case STATE_ATTACK_VERTICALCUT:
-        //    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", pOwner, vHitPos);
-        //    break;
+
         m_bHit = true;
     }
 

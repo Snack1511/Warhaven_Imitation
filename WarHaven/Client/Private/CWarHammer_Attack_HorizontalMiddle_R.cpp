@@ -86,19 +86,14 @@ HRESULT CWarHammer_Attack_HorizontalMiddle_R::Initialize()
 
 void CWarHammer_Attack_HorizontalMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	if (ePrevType == STATE_SWITCH_L_TO_R)
-	{
-		m_fAnimSpeed = 2.3f;
-	}
-	else
-		m_fAnimSpeed = 2.5f;
-
-
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CWarHammer_Attack_HorizontalMiddle_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (KEY(LBUTTON, HOLD) && pAnimator->Get_CurAnimFrame() >= 11)
+		return STATE_CHARGE_WARHAMMER_R;
+
 	return __super::Tick(pOwner, pAnimator);
 }
 

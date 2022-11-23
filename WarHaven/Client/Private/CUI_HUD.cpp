@@ -13,6 +13,9 @@
 #include "CUI_HeroGauge.h"
 #include "CUI_HpBar.h"
 
+#include"CPlayer.h"
+
+
 CUI_HUD::CUI_HUD()
 {
 }
@@ -240,6 +243,9 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 	ENABLE_GAMEOBJECT(m_pPortUnderLines[iEventNum]);
 	m_pPortUnderLines[iEventNum]->Lerp_ScaleX(2.f, 100.f, fDuraition);
 
+	CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
+
+
 	if (pTarget)
 	{
 		switch (iEventNum)
@@ -247,6 +253,7 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		case 0:
 			m_pClassInfo->Set_FontText(TEXT("블레이드"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			pPlayer->Change_DefaultUnit(CPlayer::CLASS_DEFAULT_WARRIOR);
 			Set_HUD(CUnit::WARRIOR);
 			break;
 
@@ -277,6 +284,7 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		case 5:
 			m_pClassInfo->Set_FontText(TEXT("워해머"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
+			pPlayer->Change_DefaultUnit(CPlayer::CLASS_DEFAULT_ENGINEER);
 			Set_HUD(CUnit::ENGINEER);
 			break;
 		}

@@ -364,91 +364,69 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\99. Hit">
       <UniqueIdentifier>{081522a9-348f-4cf0-aca5-3fe147352ce0}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\99. Hit\01. GuardHit">
       <UniqueIdentifier>{2663df3d-1d07-445a-b2b9-6b89ed1be8e3}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\99. Hit\00. Hit">
       <UniqueIdentifier>{43499238-8c4a-43d4-bd6b-3eec68398ecb}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\99. Hit\02. Groggy">
       <UniqueIdentifier>{ec0bad91-2b15-4844-9664-51cc13ee4554}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\99. Hit\03. Sting">
       <UniqueIdentifier>{502d551c-dadb-4383-ac0d-a5f38450c311}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\99. Hit\04. GuardCancel">
       <UniqueIdentifier>{18d5e94e-2344-4ebf-882c-261641eb6046}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\99. Hit\05. Fly">
       <UniqueIdentifier>{4fe5729a-b531-41da-a4a6-45527beabd35}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="03. Instances\02. GameObject\06. Map\MapColliders">
       <UniqueIdentifier>{8c135688-9a6f-4256-ac9c-7637abdd252c}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="03. Instances\02. GameObject\10. Destructible">
       <UniqueIdentifier>{2564424f-9056-49ff-beaf-be4c083146b6}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump">
       <UniqueIdentifier>{5fb412b1-f33d-4db7-ada4-0e6d6c8bf6d5}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump\03. Land">
       <UniqueIdentifier>{506a4fa6-1823-4486-831d-757d390cdecc}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump\02. Fall">
       <UniqueIdentifier>{52d4a6ae-7fd4-4df6-9444-6081012ec559}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\10. Bounce">
       <UniqueIdentifier>{1c58a2b1-edb4-4bf1-9d44-aec925727d6f}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\10. Bounce\01. Right">
       <UniqueIdentifier>{36be589d-8f7b-4f59-9d61-526df35ec97a}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\10. Bounce\02. Left">
       <UniqueIdentifier>{8101fcab-d46c-413b-bc08-c5e230aa4cf7}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior">
       <UniqueIdentifier>{e738b401-bf01-47de-ad82-6f319b9b4824}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle">
       <UniqueIdentifier>{55da9af3-4a32-4e5f-8d7e-d33016b948e4}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\02. Left">
       <UniqueIdentifier>{ecacf648-1230-410e-b07a-102c9b08b1b1}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\03. SwitchRL">
       <UniqueIdentifier>{ee79bde1-c9e4-42cb-b27e-2c24a98457fc}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\04. SwitchLR">
       <UniqueIdentifier>{b98b2249-7aa9-4861-8ada-1da35438052a}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\01. Right">
       <UniqueIdentifier>{452f8399-99da-4e84-a138-968dff75ad5c}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\02. Walk">
       <UniqueIdentifier>{cb832d74-dbab-4e98-8fee-52fb44a03b60}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\02. Walk\01. Right">
       <UniqueIdentifier>{702b0bed-ad01-40dc-9f6e-f460ff954df7}</UniqueIdentifier>
     </Filter>
@@ -506,19 +484,15 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\03. Run\01. Begin">
       <UniqueIdentifier>{491d11df-ec0c-4709-b91d-99dcee1cc3b1}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\03. Run\01. Begin\01. Right">
       <UniqueIdentifier>{6e21e3d6-0042-487f-84e1-87021ccb4f0c}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\03. Run\01. Begin\02. Left">
       <UniqueIdentifier>{46531212-d597-41a4-a12c-ad50e3aa85e5}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\03. Run\02. Loop">
       <UniqueIdentifier>{07f9acb9-cb28-4f27-b1bf-9f46038a454f}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\03. Run\02. Loop\02. Left">
       <UniqueIdentifier>{96dce53e-d829-4d37-97f6-351d8d312001}</UniqueIdentifier>
     </Filter>
@@ -1227,35 +1201,27 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\03. End">
       <UniqueIdentifier>{29181715-c296-43d1-b642-b2ef8271431b}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\04. Cancel">
       <UniqueIdentifier>{f9fe44f0-cf5b-4f55-b9c8-3d0b03d42d38}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit">
       <UniqueIdentifier>{4db08690-2148-4fec-9e34-665fd9310431}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop">
       <UniqueIdentifier>{da6114a6-774e-460e-a079-c838a51c7fd6}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\01. Right">
       <UniqueIdentifier>{aee71eb7-9644-4c61-9092-29b567042925}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\02. Left">
       <UniqueIdentifier>{f8f61bfd-db3a-4c85-a89c-859d38ea4b0d}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="03. Instances\02. GameObject\02. Unit">
       <UniqueIdentifier>{5ace4eb0-2e8b-4956-9a87-e813c988962b}</UniqueIdentifier>
-	</Filter>
-
+    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump">
       <UniqueIdentifier>{5fb412b1-f33d-4db7-ada4-0e6d6c8bf6d5}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
       <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
     </Filter>
@@ -1288,6 +1254,9 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit">
       <UniqueIdentifier>{3803cb98-a360-472a-aeb2-f6d6815ab0bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\04. Dash">
+      <UniqueIdentifier>{bfce23c4-a7fe-445e-a58b-d47535d71f74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2236,6 +2205,12 @@
     <ClInclude Include="..\Public\CUI_UnitHUD.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Dash_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\04. Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Dash_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\04. Dash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3164,14 +3139,18 @@
     <ClCompile Include="..\Private\CUI_UnitHUD.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Dash_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\04. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Dash_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\04. Dash</Filter>
+    </ClCompile>
   </ItemGroup>
-
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
       <Filter>99. Default</Filter>
     </ResourceCompile>
   </ItemGroup>
-
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTex.hlsl">
       <Filter>05. ShaderFiles</Filter>

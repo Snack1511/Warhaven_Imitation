@@ -400,6 +400,35 @@ void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _b
 
 }
 
+void	CState::Physics_Setting_Right(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _bool bRight)
+{
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+
+	_float4 vCamRight = pOwner->Get_FollowCamRight();
+	_float4 vCamLook = pOwner->Get_FollowCamLook();
+
+	vCamRight.y = 0.f;
+	vCamLook.y = 0.f;
+
+	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+
+	if (!bRight)
+		vCamRight *= -1.f;
+
+	//실제 움직이는 방향
+	pMyPhysicsCom->Set_Dir(vCamRight);
+
+	//최대속도 설정
+
+	pMyPhysicsCom->Set_MaxSpeed(fSpeed);
+
+	if (bSpeedasMax)
+		pMyPhysicsCom->Set_SpeedasMax();
+}
+
 void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)
 {
 	GET_COMPONENT_FROM(pOwner, CModel)->Enable_ModelParts(iPartType, bEnable);
@@ -407,7 +436,7 @@ void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)
 
 void CState::Bounce_State(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
-	if (iOtherColType == COL_PLAYERGUARD || iOtherColType == COL_ENEMYGUARD)
+	if (iOtherColType == COL_PLAYERGUARD || iOtherColType == COL_ENEMYGUARD || iOtherColType == COL_WALL)
 	{
 		_float4 vOtherLook = pOtherObject->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
 		_float4 vCurLook = m_pOwner->Get_Transform()->Get_World(WORLD_LOOK).Normalize();

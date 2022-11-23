@@ -42,6 +42,7 @@ HRESULT CRun_Player_Begin_L::Initialize()
     m_vecAdjState.push_back(STATE_JUMP_PLAYER_L);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
 
+
     m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);

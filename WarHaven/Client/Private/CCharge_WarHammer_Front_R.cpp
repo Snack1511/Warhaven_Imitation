@@ -40,6 +40,7 @@ HRESULT CCharge_WarHammer_Front_R::Initialize()
 
 	/* Setting for Blendable */
 
+	m_iChargeChangeKeyFrame = 10;
 
 	m_eAnimLeftorRight = ANIM_BASE_R;
 	m_iIdle_Index = 14;

@@ -41,6 +41,8 @@ HRESULT CCharge_WarHammer_Front_L::Initialize()
 	m_eStateType = STATE_CHARGE_FRONT_WARHAMMER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
+	m_iChargeChangeKeyFrame = 10;
+
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_L;
@@ -61,6 +63,7 @@ HRESULT CCharge_WarHammer_Front_L::Initialize()
 
 void CCharge_WarHammer_Front_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

@@ -86,7 +86,7 @@ STATE_TYPE CState_BlendableCharge::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (m_bChargeFinish)
 		return m_eChargeAttackState;
 
-	if (GAMEINSTANCE->Get_KeyState(m_eCurrentChargeKey) == KEY_STATE::NONE)
+	if (GAMEINSTANCE->Get_KeyState(m_eCurrentChargeKey) == KEY_STATE::NONE && pAnimator->Get_CurAnimFrame() > m_iChargeChangeKeyFrame)
 	{
 		switch (m_eEnum)
 		{

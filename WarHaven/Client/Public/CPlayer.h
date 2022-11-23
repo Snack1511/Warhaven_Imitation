@@ -41,18 +41,15 @@ public:
 	enum CLASS_DEFAULT
 	{
 		CLASS_DEFAULT_WARRIOR,
+		CLASS_DEFAULT_ENGINEER,
 		/*CLASS_DEFAULT_SPEAR,
 		CLASS_DEFAULT_ARCHER,
 		CLASS_DEFAULT_PALADIN,
 		CLASS_DEFAULT_PRIEST,
-		CLASS_DEFAULT_ENGINEER,*/
+		,*/
 		CLASS_DEFAULT_END
 	};
 
-	enum MyRESERVE_ERR_MSG
-	{
-		MyRESERVE_ERR_MSG_END = 99999
-	};
 
 private:
 	CPlayer();
@@ -99,7 +96,8 @@ private:
 	//CUnit* m_pHeroClass[CLASS_HERO_END] = { nullptr };
 	CUnit* m_pDefaultClass[CLASS_DEFAULT_END] = { nullptr };
 
-	_uint	m_iReserveState = MyRESERVE_ERR_MSG_END;
+	_uint	m_iReserveState[CLASS_DEFAULT_END] = { 0 };
+	
 
 	_bool m_bIsMainPlayer = false;
 

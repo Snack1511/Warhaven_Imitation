@@ -52,6 +52,7 @@ HRESULT CGuard_Begin_WarHammer::Initialize()
 
 void CGuard_Begin_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Enable_GuardCollider(true);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -66,6 +67,7 @@ STATE_TYPE CGuard_Begin_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CGuard_Begin_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Enable_GuardCollider(false);
     /* 할거없음 */
 }
 

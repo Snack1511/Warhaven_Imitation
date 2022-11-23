@@ -72,7 +72,7 @@ STATE_TYPE CGuard_End_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CGuard_End_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+	pOwner->Enable_GuardCollider(false);
 }
 
 STATE_TYPE CGuard_End_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

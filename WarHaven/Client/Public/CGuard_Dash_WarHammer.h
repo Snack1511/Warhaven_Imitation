@@ -1,20 +1,18 @@
 #pragma once
-#include "CCharge_WarHammer.h"
+#include "CState.h"
 
 BEGIN(Client)
-class CColorController;
-
-class CCharge_WarHammer_L
-	: public CCharge_WarHammer
+class CGuard_Dash_WarHammer
+	: public CState
 {
-	DECLARE_STATE(CCharge_WarHammer_L);
+	DECLARE_STATE(CGuard_Dash_WarHammer);
 
 private:
-	CCharge_WarHammer_L();
-	virtual ~CCharge_WarHammer_L();
+	CGuard_Dash_WarHammer();
+	virtual ~CGuard_Dash_WarHammer();
 
 public:
-	static CCharge_WarHammer_L* Create();
+	static CGuard_Dash_WarHammer* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -25,7 +23,7 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	virtual void On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence) override;
+
 
 };
 
