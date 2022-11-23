@@ -181,6 +181,7 @@
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
     <ClCompile Include="..\private\CAnimator.cpp" />
     <ClCompile Include="..\private\CBoneCollider.cpp" />
+    <ClCompile Include="..\private\CCameraCollider.cpp" />
     <ClCompile Include="..\private\CCell.cpp" />
     <ClCompile Include="..\private\CCollider_Box.cpp" />
     <ClCompile Include="..\Private\CCollider_Sphere.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="..\Public\Camera_Manager.h" />
     <ClInclude Include="..\public\CAnimator.h" />
     <ClInclude Include="..\public\CBoneCollider.h" />
+    <ClInclude Include="..\public\CCameraCollider.h" />
     <ClInclude Include="..\public\CCell.h" />
     <ClInclude Include="..\public\CCollider_Box.h" />
     <ClInclude Include="..\public\CCollider_Sphere.h" />

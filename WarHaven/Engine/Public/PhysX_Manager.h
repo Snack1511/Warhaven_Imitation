@@ -75,6 +75,9 @@ public:
 public:
 	void			Create_TriangleMesh(_float3* pVerticesPos, _uint iNumVertices, _uint iNumPrimitive, PxTriangleMesh** ppOut);
 
+public:
+	_bool			Shoot_Ray(_float4 vStartPos, _float4 vRayDir, _float4* pOutPos);
+
 private:
 	PxControllerManager* m_pPxControllerManager = nullptr;
 	PxCudaContextManager* m_pPxCudaContextManager = nullptr;

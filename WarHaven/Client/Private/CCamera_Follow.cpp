@@ -10,6 +10,7 @@
 #include "Transform.h"
 #include "CUnit.h"
 
+#include "CCameraCollider.h"
 #include "CCell.h"
 
 CCamera_Follow::CCamera_Follow()
@@ -48,11 +49,20 @@ void CCamera_Follow::Start_ShakingCamera(_float fPower, _float fTime)
 void CCamera_Follow::Set_FollowTarget(CGameObject* pTarget)
 {
 	m_pFollowScript->Set_FollowTarget(pTarget);
+	m_pParent = pTarget;
 }
 
 HRESULT CCamera_Follow::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
+	m_pTransform->Set_ParentFlag(MATRIX_IDENTITY);
+	CCameraCollider::BONECOLLIDERDESC tDesc;
+	tDesc.fHeight = 0.1f;
+	tDesc.fRadius = 0.1f;
+	tDesc.vOffset = ZERO_VECTOR;
+	CCameraCollider* pPhysXCollider = CCameraCollider::Create(CP_BEFORE_RENDERER, tDesc);
+	pPhysXCollider->Initialize();
+	Add_Component(pPhysXCollider);
 
 	return S_OK;
 }
@@ -81,6 +91,7 @@ HRESULT CCamera_Follow::SetUp_Components(CGameObject* pTarget, CCell* pStartCell
 	Add_Component(CScript_FollowCam::Create(CP_BEFORE_NAVIGATION, pTarget));
 	CPhysics* pPhyscisCom = CPhysics::Create(0);
 	Add_Component(pPhyscisCom);
+	m_pParent = pTarget;
 
 
 	/**/

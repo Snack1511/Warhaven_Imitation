@@ -989,6 +989,10 @@ void CUnit::Warrior_Effect(CUnit* pUnit, _float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pUnit, vHitPos);
 }
 
+void CUnit::Effect_KillSmoke()
+{
+}
+
 void CUnit::TransformProjection()
 {
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_ProjPos(m_pTransform);

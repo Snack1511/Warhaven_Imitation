@@ -43,69 +43,68 @@ void CBoneCollider::onShapeHit(const PxControllerShapeHit& hit)
 		static_cast<PxRigidDynamic*>(hit.actor)->setMaxLinearVelocity(1.f);
 		static_cast<PxRigidDynamic*>(hit.actor)->setMaxContactImpulse(1.f);
 
-		return;
+	}
+	else if (PxActorType::eRIGID_STATIC == hit.actor->getType())
+	{
+		m_bCollisionTemp = true;
+		m_vHitPos = _float4(hit.worldPos.x, hit.worldPos.y, hit.worldPos.z);
 
+		_matrix matHit;
+
+		_float4 vLook = _float4(hit.worldNormal.x, hit.worldNormal.y, hit.worldNormal.z, 0.f).Normalize();
+		//vLook *= -1.f;
+
+
+		matHit.r[2] = vLook.XMLoad();
+
+		_float4 vUp = { 0.f, 1.f, 0.f };
+		if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
+			(vLook.y > -1.1f && vLook.y < -0.9f)
+			)
+			vUp = _float4(0.f, 0.f, 1.f, 0.f);
+
+		vUp.Normalize();
+		_float4 vRight = vUp.Cross(vLook);
+		matHit.r[0] = vRight.Normalize().XMLoad();
+
+		vUp = vLook.Cross(vRight);
+		matHit.r[1] = vUp.Normalize().XMLoad();
+		matHit.r[3] = m_vHitPos.XMLoad();
+
+		m_HitMatrix = matHit;
 	}
 	
-	m_bCollisionTemp = true;
-	m_vHitPos = _float4(hit.worldPos.x, hit.worldPos.y, hit.worldPos.z);
 	
-
-
-	_matrix matHit;
-
-
-	_float4 vLook = _float4(hit.worldNormal.x, hit.worldNormal.y, hit.worldNormal.z, 0.f).Normalize();
-	//vLook *= -1.f;
-
-
-	matHit.r[2] = vLook.XMLoad();
-
-	_float4 vUp = { 0.f, 1.f, 0.f };
-	if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
-		(vLook.y > -1.1f && vLook.y < -0.9f)
-		)
-		vUp = _float4(0.f, 0.f, 1.f, 0.f);
-
-	vUp.Normalize();
-	_float4 vRight = vUp.Cross(vLook);
-	matHit.r[0] = vRight.Normalize().XMLoad();
-
-	vUp = vLook.Cross(vRight);
-	matHit.r[1] = vUp.Normalize().XMLoad();
-	matHit.r[3] = m_vHitPos.XMLoad();
-
-
-	m_HitMatrix = matHit;
 }
 
 void CBoneCollider::onControllerHit(const PxControllersHit& hit)
 {
-	m_bCCTCollisionTemp = true;
-	m_vHitPos = _float4(hit.worldPos.x, hit.worldPos.y, hit.worldPos.z);
+	//ÀÏ´Ü²¨µÒ
+	//m_bCCTCollisionTemp = true;
+	//m_vHitPos = _float4(hit.worldPos.x, hit.worldPos.y, hit.worldPos.z);
 
-	_matrix matHit;
+	//_matrix matHit;
 
-	_float4 vLook = _float4(hit.worldNormal.x, hit.worldNormal.y, hit.worldNormal.z, 0.f).Normalize();
-	//vLook *= -1.f;
+	//_float4 vLook = _float4(hit.worldNormal.x, hit.worldNormal.y, hit.worldNormal.z, 0.f).Normalize();
+	////vLook *= -1.f;
 
-	matHit.r[2] = vLook.XMLoad();
+	//matHit.r[2] = vLook.XMLoad();
 
-	_float4 vUp = { 0.f, 1.f, 0.f };
-	if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
-		(vLook.y > -1.1f && vLook.y < -0.9f)
-		)
-		vUp = _float4(0.f, 0.f, 1.f, 0.f);
+	//_float4 vUp = { 0.f, 1.f, 0.f };
+	//if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
+	//	(vLook.y > -1.1f && vLook.y < -0.9f)
+	//	)
+	//	vUp = _float4(0.f, 0.f, 1.f, 0.f);
 
-	vUp.Normalize();
-	_float4 vRight = vUp.Cross(vLook);
-	matHit.r[0] = vRight.Normalize().XMLoad();
+	//vUp.Normalize();
+	//_float4 vRight = vUp.Cross(vLook);
+	//matHit.r[0] = vRight.Normalize().XMLoad();
 
-	vUp = vLook.Cross(vRight);
-	matHit.r[1] = vUp.Normalize().XMLoad();
-	matHit.r[3] = m_vHitPos.XMLoad();
+	//vUp = vLook.Cross(vRight);
+	//matHit.r[1] = vUp.Normalize().XMLoad();
+	//matHit.r[3] = m_vHitPos.XMLoad();
 
-	m_HitMatrix = matHit;
+	//m_HitMatrix = matHit;
 
 }
 

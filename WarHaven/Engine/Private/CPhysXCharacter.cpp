@@ -170,6 +170,7 @@ void CPhysXCharacter::Late_Tick()
 	PxExtendedVec3 vec3 = m_pPxController->getFootPosition();
 	m_pOwner->Get_Transform()->Set_World(WORLD_POS, _float4(vec3.x, vec3.y+0.f, vec3.z));
 	Update_Colliders();
+
 }
 
 void CPhysXCharacter::Release()

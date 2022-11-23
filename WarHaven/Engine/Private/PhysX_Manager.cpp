@@ -358,6 +358,14 @@ void CPhysX_Manager::Create_TriangleMesh(_float3* pVerticesPos, _uint iNumVertic
 	SAFE_DELETE_ARRAY(pPxVerticesPos);
 }
 
+_bool CPhysX_Manager::Shoot_Ray(_float4 vStartPos, _float4 vRayDir, _float4* pOutPos)
+{
+	
+
+
+	return _bool();
+}
+
 HRESULT CPhysX_Manager::SetUp_PxCudaContextManager()
 {
 	PxCudaContextManagerDesc cudaContextManagerDesc;

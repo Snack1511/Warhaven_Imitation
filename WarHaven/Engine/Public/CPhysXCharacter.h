@@ -68,9 +68,14 @@ protected:
 protected:
 	void			Update_Colliders();
 
+};
 
-	
-
+class CMyControllerFilters
+	: public PxControllerFilters
+{
+public:
+	CMyControllerFilters() {}
+	~CMyControllerFilters() {}
 
 };
 
