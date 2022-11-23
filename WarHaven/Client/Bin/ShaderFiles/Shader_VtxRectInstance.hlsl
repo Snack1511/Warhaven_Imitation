@@ -234,7 +234,7 @@ PS_OUT PS_ANIMATION_ALPHA_MAIN(PS_IN In)
 	else
 		Out.vDiffuse.a = vMaskDesc.a;
 
-	if (Out.vDiffuse.a < 0.01f)
+	if (Out.vDiffuse.a < 0.05f)
 		discard;
 
 	Out.vDiffuse.a *= In.vColor.a;
@@ -414,7 +414,7 @@ PS_OUT PS_ANIMATION_ALPHACOLOR_MAIN(PS_IN In)
 	else
 		Out.vDiffuse.a = vMaskDesc.a;
 
-	if (Out.vDiffuse.a < 0.01f)
+	if (Out.vDiffuse.a < 0.05f)
 		discard;
 
 	Out.vDiffuse.xyz += g_vPlusColor.xyz;
