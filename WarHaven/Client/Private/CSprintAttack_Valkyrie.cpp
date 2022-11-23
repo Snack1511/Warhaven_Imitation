@@ -114,7 +114,7 @@ STATE_TYPE CSprintAttack_Valkyrie::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			//발쪽이면
 			if (vHitPos.y <= vPos.y + 0.1f)
 			{
-				pOwner->Shake_Camera(0.25f, 0.25f);
+				pOwner->Shake_Camera(0.1f, 0.25f);
 				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());

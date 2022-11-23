@@ -83,7 +83,7 @@ void CHit_GuardHit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 STATE_TYPE CHit_GuardHit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    if (KEY(SPACE, TAP) && KEY(A, HOLD) || KEY(D, HOLD))
+    if (KEY(A, TAP) || KEY(D, TAP))
         return STATE_GUARDDASH_WARRIOR;
     
 

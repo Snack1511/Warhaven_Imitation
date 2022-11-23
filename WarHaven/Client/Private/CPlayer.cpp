@@ -342,7 +342,10 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	if (m_pCurrentUnit)
 	{
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
+		m_pDefaultClass[eClass]->Teleport_Unit(m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
+
 	}
+
 		
 	m_pCurrentUnit = m_pDefaultClass[eClass];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);

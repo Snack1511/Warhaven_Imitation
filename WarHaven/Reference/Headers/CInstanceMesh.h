@@ -29,6 +29,7 @@ private:
 	ComPtr<ID3D11Buffer>				m_pVBInstance = nullptr;
 	_uint						m_iInstanceStride = 0;
 	_uint						m_iNumInstance = 0;
+	_uint						m_iOriginNumInstance = 0;
 
 
 	//_float* m_pInstanceSpeeds = nullptr;

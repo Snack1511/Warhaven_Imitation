@@ -483,8 +483,6 @@ CPlayer* CLevel_Test::SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TY
 	pPlayerInstance->Set_Postion(vStartPos);
 	Ready_GameObject(pPlayerInstance, GROUP_USER);
 
-
-
 	return pPlayerInstance;
 }
 

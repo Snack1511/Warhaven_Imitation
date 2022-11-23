@@ -549,14 +549,6 @@ void CModel::Final_Tick()
 
 			_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
 
-			_float4 vScale = m_pOwner->Get_Transform()->Get_Scale();
-			_float fScaleLength = vScale.x;
-			if (vScale.y > fScaleLength)
-				fScaleLength = vScale.y;
-
-			if (vScale.z > fScaleLength)
-				fScaleLength = vScale.z;
-
 			/* 갯수들 일단 다 초기화 */
 			//ZeroMemory(m_iLODNumInstance, sizeof(_uint) * );
 			for (_uint i = 0; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
@@ -573,8 +565,10 @@ void CModel::Final_Tick()
 				memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(_float4x4));
 
 				_float4 vCurPos = m_vLODCenterPos.MultiplyCoord(matInstance);
+
 				vCurPos = vCurPos.MultiplyCoord(matWorld);
 
+				vCurPos = m_pInstancingMatrices[i].vTranslation;
 
 				_float4 vRight = matInstance.XMLoad().r[0];
 				_float4 vUp = matInstance.XMLoad().r[1];
@@ -585,27 +579,20 @@ void CModel::Final_Tick()
 					vRight.Length(), vUp.Length(), vLook.Length()
 				};
 
-				_float fInstanceScaleLength = vInstanceScale.x;
-				if (vInstanceScale.y > fInstanceScaleLength)
-					fInstanceScaleLength = vInstanceScale.y;
-
-				if (vInstanceScale.z > fInstanceScaleLength)
-					fInstanceScaleLength = vInstanceScale.z;
-
+				/* 늘어난 스케일 만큼 반지름 늘리기. */
+				_float fInstanceScaleLength;
 
 				fInstanceScaleLength = sqrtf((vInstanceScale.x * vInstanceScale.x) + (vInstanceScale.y * vInstanceScale.y)
 					+ (vInstanceScale.z * vInstanceScale.z));
 
 
 				_float fRange = m_fLODMaxRange;
-				fRange *= fScaleLength * fInstanceScaleLength;
-				fRange += 10.f;
+				fRange *=  fInstanceScaleLength;
 
-				//if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
-				//{
-				//	//cout << "절두체" << endl;
-				//	continue;
-				//}
+				if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCurPos.XMLoad(), fRange))
+				{
+					continue;
+				}
 
 				//2. 살아남은 애들 LOD 체크
 				_float fCurDistance = (vCamPos - vCurPos).Length();
@@ -613,18 +600,18 @@ void CModel::Final_Tick()
 
 				eLOD_LEVEL eLODLevel = eLOD_LEVEL::eDefault;
 
-				//for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
-				//{
-				//	_float fLODDistance = m_fLODDistance;
-				//	//i만큼 곱해서 단계를 나눔
-				//	fLODDistance *= (_float)i;
+				for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+				{
+					_float fLODDistance = m_fLODDistance;
+					//i만큼 곱해서 단계를 나눔
+					fLODDistance *= (_float)i;
 
-				//	fLODDistance += fRange;
+					fLODDistance += fRange;
 
-				//	//현재 거리가 단계보다 크면
-				//	if (fCurDistance > fLODDistance)
-				//		eLODLevel = (eLOD_LEVEL)i;
-				//}
+					//현재 거리가 단계보다 크면
+					if (fCurDistance > fLODDistance)
+						eLODLevel = (eLOD_LEVEL)i;
+				}
 
 
 				/* LOD별 인스턴스 리맵 정보 갱신 */
@@ -632,7 +619,7 @@ void CModel::Final_Tick()
 
 				m_pIntancingMatricesLOD[(_uint)eLODLevel][iCurLODNumInstance] = matInstance;
 
-				m_iLODNumInstance[(_uint)eLODLevel] += 1;
+				m_iLODNumInstance[(_uint)eLODLevel]++;
 
 
 			}
@@ -640,18 +627,6 @@ void CModel::Final_Tick()
 			//3. 이제 remap 해야함
 			for (auto& elem : m_MeshContainers)
 			{
-
-				/*LOD 켜기*/
-				if (elem.first != 0)
-				{
-					elem.second->Set_Enable(false);
-					continue;
-
-				}
-				else
-				{
-					elem.second->Set_Enable(true);
-				}
 
 				_uint iCurNumInstance = m_iLODNumInstance[elem.first];
 				_float4x4* matInstance = m_pIntancingMatricesLOD[elem.first];

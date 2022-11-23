@@ -37,7 +37,7 @@ HRESULT CBounce_WarHammer::Initialize()
 void CBounce_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	/* Shake */
-	pOwner->Shake_Camera(0.4f, 0.25f);
+	pOwner->Shake_Camera(0.1f, 0.25f);
 
     /* Owner¿« Animator Set Idle∑Œ */
 

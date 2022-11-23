@@ -37,7 +37,7 @@ HRESULT CGuard_Dash_Player::Initialize()
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 0.4f;
 
-	m_iStateChangeKeyFrame = 43;
+	m_iStateChangeKeyFrame = 20;
 
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.f;
@@ -49,7 +49,6 @@ HRESULT CGuard_Dash_Player::Initialize()
 	m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_L);
 	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
 
-	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
 	m_vecAdjState.push_back(STATE_JUMP_PLAYER_L);
 
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
@@ -73,13 +72,13 @@ void CGuard_Dash_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
 	_bool bRight = false;
 
-	if (KEY(A, HOLD))
+	if (KEY(A, TAP))
 	{
 		m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_W];
 		bRight = false;
 	}
 
-	if (KEY(D, HOLD))
+	else if (KEY(D, TAP))
 	{
 		m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_E];
 		bRight = true;

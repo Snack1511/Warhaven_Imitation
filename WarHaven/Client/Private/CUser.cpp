@@ -94,28 +94,38 @@ void CUser::Fix_CursorPosToCenter()
 
 void CUser::KeyInput_FPSSetter()
 {
-	_double dCurFPSLimit = CGameInstance::Get_Instance()->Get_FPSLimitTime();
-
-	/*if (KEY(F3, TAP))
-	{
-		dCurFPSLimit = 1. / 30.;
-	}
-	else if (KEY(F2, TAP))
-	{
-		dCurFPSLimit = 1. / 120.;
-	}
-	else if (KEY(F1, TAP))
-	{
-		dCurFPSLimit = 0.;
-	}*/
-
 	if (KEY(F1, TAP))
 		Time_Slow();
+	else if (KEY(F2, TAP))
+	{
+		_double dCurFPSLimit = CGameInstance::Get_Instance()->Get_FPSLimitTime();
 
-	if (KEY(F2, TAP))
-		Turn_BloodOverLay(random(0.f, 1.f));
+		if (dCurFPSLimit <= 0.)
+		{
+			dCurFPSLimit = 1. / 120.;
+		}
+		else
+		{
+			dCurFPSLimit = 0.;
+		}
+		CGameInstance::Get_Instance()->Set_FPSLimitTIme(dCurFPSLimit);
 
-	CGameInstance::Get_Instance()->Set_FPSLimitTIme(dCurFPSLimit);
+	}
+	else if (KEY(F3, TAP))
+	{
+		_double dCurFPSLimit = CGameInstance::Get_Instance()->Get_FPSLimitTime();
+
+		if (dCurFPSLimit <= 0.)
+		{
+			dCurFPSLimit = 1. / 60.;
+		}
+		else
+		{
+			dCurFPSLimit = 0.;
+		}
+		CGameInstance::Get_Instance()->Set_FPSLimitTIme(dCurFPSLimit);
+
+	}
 
 }
 

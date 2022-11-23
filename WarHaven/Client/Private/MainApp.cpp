@@ -54,7 +54,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
 	//Sound
@@ -69,6 +69,7 @@ HRESULT CMainApp::Initialize()
 
 HRESULT CMainApp::Progress()
 {
+
 	if (FAILED(CLoading_Manager::Get_Instance()->Load_Level()))
 	{
 		Call_MsgBox(L"Failed to Load_Level : CLoading_Manager");

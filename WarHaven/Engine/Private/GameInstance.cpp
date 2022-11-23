@@ -82,8 +82,8 @@ HRESULT CGameInstance::Tick_Engine( )
 {
 	m_pTimeManager->Tick();
 
-	//if (!m_pTimeManager->Can_Update())
-		//return S_OK;
+	if (!m_pTimeManager->Can_Update())
+		return S_OK;
 
 	/* Event */
 	m_pEventManager->Tick();
@@ -129,7 +129,6 @@ HRESULT CGameInstance::Render_Engine()
 #ifdef _DEBUG
 	m_pRenderManager->Tick_Debug();
 #endif // _DEBUG
-
 
 	if (FAILED(m_pRenderManager->Render()))
 		return E_FAIL;

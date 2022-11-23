@@ -268,7 +268,7 @@ HRESULT CInstanceMesh::SetUp_InstanceMesh(_uint iNumInstance, VTXINSTANCE* pInst
 	m_iNumVertexBuffers = 2;
 
 	m_iInstanceStride = sizeof(VTXINSTANCE);
-	m_iNumInstance = iNumInstance;
+	m_iNumInstance = m_iOriginNumInstance= iNumInstance;
 
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
