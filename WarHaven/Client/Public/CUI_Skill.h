@@ -31,6 +31,9 @@ private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 	CUI_Object* m_arrSkillUI[4][Type_End] = {};
 
+	CUI_Object* m_pSkillCoolText = nullptr;
+	CUI_Object* m_pSkillCoolTextArr[3];
+
 	_bool m_bAbleOutline = false;
 
 	_uint m_iLerpCount = 0;
@@ -52,6 +55,7 @@ private:
 
 private:
 	void Ready_SkillHUD();
+	void Create_SkillCoolText();
 };
 
 END

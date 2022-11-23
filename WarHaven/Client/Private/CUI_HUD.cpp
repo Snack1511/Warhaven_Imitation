@@ -13,6 +13,8 @@
 #include "CUI_HeroGauge.h"
 #include "CUI_HpBar.h"
 
+#include "Easing_Utillity.h"
+
 CUI_HUD::CUI_HUD()
 {
 }
@@ -188,14 +190,6 @@ void CUI_HUD::My_Tick()
 			DISABLE_GAMEOBJECT(m_pPortUnderLines[i]);
 		}
 	}
-
-	if (m_bDmgTextEffct)
-	{
-		// 화면에 텍스트가 활성화되면 활성화된 객체에 한해서 실행
-		m_pDmgTexts[m_iDmgTextIndex]->DoScale(10.f, 0.3f);
-
-		m_bDmgTextEffct = false;
-	}
 }
 
 void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
@@ -314,12 +308,6 @@ void CUI_HUD::SetActive_DamageTex(_float fDmg)
 
 	Enable_Fade(m_pDmgTexts[m_iDmgTextIndex], 0.7f);
 	// ENABLE_GAMEOBJECT(m_pDmgTexts[m_iDmgTextIndex]);
-
-	m_iDmgTextIndex++;
-	if (m_iDmgTextIndex > 32)
-	{
-		m_iDmgTextIndex = 0;
-	}
 }
 
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
@@ -722,10 +710,10 @@ void CUI_HUD::Create_DmgText()
 	tFadeDesc.bFadeOutFlag = FADE_TIME;
 
 	tFadeDesc.fFadeInStartTime = 0.f;
-	tFadeDesc.fFadeInTime = 0.7f;
+	tFadeDesc.fFadeInTime = 0.f;
 
 	tFadeDesc.fFadeOutStartTime = 1.f;
-	tFadeDesc.fFadeOutTime = 0.3f;
+	tFadeDesc.fFadeOutTime = 0.f;
 
 	GET_COMPONENT_FROM(m_pDmgText, CFader)->Get_FadeDesc() = tFadeDesc;
 

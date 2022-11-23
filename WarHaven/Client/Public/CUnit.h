@@ -23,8 +23,7 @@ class CScript_FollowCam;
 class CCamera_Follow;
 class CUI_Wrapper;
 
-class CUnit abstract
-	: public CGameObject
+class CUnit abstract : public CGameObject
 {
 public:
 	enum CLASS_TYPE

@@ -22,6 +22,7 @@ HRESULT CUI_Skill::Initialize_Prototype()
 	Read_UI("Skill");
 
 	Ready_SkillHUD();
+	Create_SkillCoolText();
 
 	return S_OK;
 }
@@ -265,7 +266,7 @@ void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool b
 		if (iKeyIdx == 46)
 		{
 			m_arrSkillUI[iIndex][Key]->Set_Scale(31.f, 15.f);
-		} 
+		}
 		else
 		{
 			m_arrSkillUI[iIndex][Key]->Set_Scale(15.f);
@@ -355,6 +356,36 @@ void CUI_Skill::Ready_SkillHUD()
 			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
 		}
+	}
+}
+
+void CUI_Skill::Create_SkillCoolText()
+{
+	m_pSkillCoolText = CUI_Object::Create();
+
+	GET_COMPONENT_FROM(m_pSkillCoolText, CTexture)->Remove_Texture(0);
+
+	m_pSkillCoolText->Set_Sort(0.15f);
+
+	m_pSkillCoolText->Set_FontRender(true);
+	m_pSkillCoolText->Set_FontStyle(true);
+
+	m_pSkillCoolText->Set_FontScale(0.3f);
+	m_pSkillCoolText->Set_FontOffset(-18.f, -15.f);
+
+	CREATE_GAMEOBJECT(m_pSkillCoolText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pSkillCoolText);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pSkillCoolTextArr[i] = m_pSkillCoolText->Clone();
+
+		float fPosX = 480.f - (55.f * i);
+
+		m_pSkillCoolTextArr[i]->Set_Pos(fPosX, -315.f);
+
+		CREATE_GAMEOBJECT(m_pSkillCoolTextArr[i], GROUP_UI);
+		//DISABLE_GAMEOBJECT(m_pskillCoolTextArr[i]);
 	}
 }
 

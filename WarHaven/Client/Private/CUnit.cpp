@@ -957,7 +957,10 @@ void CUnit::Frustum_UnitHUD()
 	{
 		if (!m_pUnitHUD->Is_Valid())
 		{
-			ENABLE_GAMEOBJECT(m_pUnitHUD);
+			if (!m_bIsMainPlayer)
+			{
+				ENABLE_GAMEOBJECT(m_pUnitHUD);
+			}
 		}
 	}
 	else
