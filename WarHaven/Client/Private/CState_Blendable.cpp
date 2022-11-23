@@ -90,7 +90,7 @@ void	CState_Blendable::OnCollisionEnter(CGameObject* pOtherObject, const _uint& 
 
 		}
 
-
+		
 		{
 			m_pOwner->Shake_Camera(0.08f, 0.25f);
 			//Hit_SlashEffect(m_pOwner, vHitPos);

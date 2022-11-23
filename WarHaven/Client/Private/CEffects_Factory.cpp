@@ -52,7 +52,7 @@ HRESULT CEffects_Factory::Initialize()
 		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
 	))))
 		return E_FAIL;
-
+	
 	wstrName = L"DeathStoneParticle_1";
 	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
 		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_04.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
