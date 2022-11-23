@@ -2208,6 +2208,9 @@
     <ClInclude Include="..\Public\CGuard_Dash_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\04. Dash</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Dash_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\04. Dash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3138,6 +3141,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Dash_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\04. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Dash_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\04. Dash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

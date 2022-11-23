@@ -67,6 +67,8 @@ HRESULT CHit_GuardHit_WarHammer::Initialize()
 
 void CHit_GuardHit_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    m_bMoveTrigger = false;
+
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Guard_State();
 
@@ -76,6 +78,13 @@ void CHit_GuardHit_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 
 STATE_TYPE CHit_GuardHit_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (KEY(SPACE, TAP))
+        m_bMoveTrigger = true;
+
+    if (m_bMoveTrigger || KEY(S, TAP))
+        return STATE_GUARDDASH_WARHAMMER;
+    
+
     return __super::Tick(pOwner, pAnimator);
 }
 

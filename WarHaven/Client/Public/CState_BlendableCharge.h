@@ -79,6 +79,10 @@ protected:
 	KEY					m_eCurrentChargeKey = KEY::LAST;
 
 
+	// 해당 키를 떼고 이 프레임만큼 지나면 상태가 풀림 
+	_uint				m_iChargeChangeKeyFrame = 0;
+
+
 
 	virtual void	On_MaxCharge(CUnit* pOwner, CAnimator* pAnimator);
 

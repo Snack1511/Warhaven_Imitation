@@ -90,29 +90,60 @@ void CPlayer::Create_DefaultClass()
 
 	tModelData.strModelPaths[MODEL_PART_WEAPON] = L"../bin/resources/meshes/weapons/Hammer/SM_WP_WarHammer0001_A00.fbx";*/
 
+	//wstring wstrModeSkel[CLASS_DEFAULT_END] = {
+	//	L"../bin/resources/meshes/characters/Warrior/Warrior.fbx" // WARRIOR
+	//};
+
+	//wstring wstrModeBody[CLASS_DEFAULT_END] = {
+	//	L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx" // WARRIOR
+	//};
+
+	//wstring wstrModeFace[CLASS_DEFAULT_END] = {
+	//	L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx" // WARRIOR
+	//};
+
+	//wstring wstrModeHead[CLASS_DEFAULT_END] = {
+	//	L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx" // WARRIOR
+	//};
+
+	//wstring wstrModeWeapon_R[CLASS_DEFAULT_END] = {
+	//	L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx" // WARRIOR
+	//};
+
+	//wstring wstrModeWeapon_L[CLASS_DEFAULT_END] = {
+	//	L"" // WARRIOR
+	//};
+
 	wstring wstrModeSkel[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/Warrior.fbx" // WARRIOR
+		L"../bin/resources/meshes/characters/Warrior/Warrior.fbx", // WARRIOR
+		L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx"
 	};
 
 	wstring wstrModeBody[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx" // WARRIOR
+		L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx", // WARRIOR
+		L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00.fbx"
 	};
 
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx" // WARRIOR
+		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx", // WARRIOR
+		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00.fbx"
 	};
 
 	wstring wstrModeHead[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx" // WARRIOR
+		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx", // WARRIOR
+		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00.fbx"
 	};
 
 	wstring wstrModeWeapon_R[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx" // WARRIOR
-	};
+		L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx", // WARRIOR
+		L"../bin/resources/meshes/weapons/Hammer/SM_WP_WarHammer0001_A00.fbx" };
 
 	wstring wstrModeWeapon_L[CLASS_DEFAULT_END] = {
-		L"" // WARRIOR
+		L"", // WARRIOR
+		L"" // 
 	};
+
+
 
 
 	CUnit::UNIT_MODEL_DATA  tModelData[CLASS_DEFAULT_END];
@@ -141,11 +172,12 @@ void CPlayer::Create_DefaultClass()
 	}
 
 	m_pDefaultClass[CLASS_DEFAULT_WARRIOR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_WARRIOR]);
-	/*m_pDefaultClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
+	m_pDefaultClass[CLASS_DEFAULT_ENGINEER] = CUnit_WarHammer::Create(tModelData[CLASS_DEFAULT_ENGINEER]);
+	/*_pDefaultClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
 	m_pDefaultClass[CLASS_DEFAULT_ARCHER] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_ARCHER]);
 	m_pDefaultClass[CLASS_DEFAULT_PALADIN] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PALADIN]);
 	m_pDefaultClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
-	m_pDefaultClass[CLASS_DEFAULT_ENGINEER] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_ENGINEER]);*/
+	*/
 
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
@@ -165,9 +197,13 @@ void CPlayer::Create_DefaultClass()
 			}
 				
 			m_pDefaultClass[i]->Set_FollowCam(m_pFollowCam);
+			m_pDefaultClass[i]->Teleport_Unit(_float4(20.f, 3.f, 20.f));
 		}
 
 	}
+
+	m_iReserveState[CLASS_DEFAULT_WARRIOR] = STATE_IDLE_PLAYER_R;
+	m_iReserveState[CLASS_DEFAULT_ENGINEER] = STATE_IDLE_WARHAMMER_R;
 
 }
 
@@ -311,8 +347,9 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	m_pCurrentUnit = m_pDefaultClass[eClass];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
-	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
+	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveState[eClass]);
+	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	return S_OK;
 }
@@ -478,15 +515,6 @@ void CPlayer::OnDisable()
 
 void CPlayer::My_Tick()
 {
-	if (KEY(B, TAP))
-	{
-
-	}
-
-	if (KEY(V, TAP))
-	{
-
-	}
 
 }
 

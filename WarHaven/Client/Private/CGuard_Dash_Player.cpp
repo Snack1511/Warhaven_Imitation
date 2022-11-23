@@ -73,13 +73,13 @@ void CGuard_Dash_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
 	_bool bRight = false;
 
-	if (CUser::Get_Instance()->Get_LastKey() == KEY::A)
+	if (KEY(A, HOLD))
 	{
 		m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_W];
 		bRight = false;
 	}
 
-	if (CUser::Get_Instance()->Get_LastKey() == KEY::D)
+	if (KEY(D, HOLD))
 	{
 		m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_E];
 		bRight = true;
@@ -87,7 +87,7 @@ void CGuard_Dash_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
-	Physics_Setting_Right(10.f, pOwner, true, bRight);
+	Physics_Setting_Right(pOwner->Get_Status().fGuardDashSpeed, pOwner, true, bRight);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -107,10 +107,12 @@ void CGuard_Dash_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CGuard_Dash_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Sprint로 오는 조건
-	1. 스프린트 공격 준비가 끝나면
-    */
 
-   
+
+	if (KEY(LSHIFT, TAP))
+	{
+		return m_eStateType;
+	}
+
     return STATE_END;
 }

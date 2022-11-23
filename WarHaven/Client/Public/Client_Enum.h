@@ -548,6 +548,8 @@ namespace Client
 		STATE_STINGHIT_WARHAMMER,
 		STATE_FLYHIT_WARHAMMER,
 
+		STATE_GUARDDASH_WARHAMMER,
+
 
 #pragma endregion
 

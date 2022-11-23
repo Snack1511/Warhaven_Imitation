@@ -75,9 +75,6 @@ void CHit_Groggy_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CHit_Groggy_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (m_bMoveTrigger)
-		DoMove(Get_Direction(), pOwner);
-
     return __super::Tick(pOwner, pAnimator);
 }
 

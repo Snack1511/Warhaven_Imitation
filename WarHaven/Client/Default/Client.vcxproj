@@ -188,6 +188,7 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
+    <ClInclude Include="..\Public\CGuard_Dash_WarHammer.h" />
     <ClInclude Include="..\Public\CGuard_Dash_Player.h" />
     <ClInclude Include="..\Public\CHit_Fly_WarHammer.h" />
     <ClInclude Include="..\Public\CHit_Fly_Warrior.h" />
@@ -506,6 +507,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\CGuard_Dash_WarHammer.cpp" />
     <ClCompile Include="..\Private\CGuard_Dash_Player.cpp" />
     <ClCompile Include="..\Private\CHit_Fly_WarHammer.cpp" />
     <ClCompile Include="..\Private\CHit_Fly_Warrior.cpp" />

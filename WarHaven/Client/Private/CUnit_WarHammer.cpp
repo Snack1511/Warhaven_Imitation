@@ -73,7 +73,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
 
-	const _uint iWeaponSphereNum = 6;
+	const _uint iWeaponSphereNum = 4;
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
 
@@ -81,7 +81,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 	{
 		if (i == iWeaponSphereNum - 1)
 		{
-			tWeaponUnitColDesc[i].fRadius = 0.5f;
+			tWeaponUnitColDesc[i].fRadius = 0.35f;
 			tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
 			tWeaponUnitColDesc[i].eColType = eAttack;
 		}
@@ -93,7 +93,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 		}
 	}
 
-	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 6, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 4, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 
 	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
@@ -242,7 +242,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_tUnitStatus.fWalkSpeed *= 0.7f;
 	m_tUnitStatus.fRunBeginSpeed *= 0.8f;
 	m_tUnitStatus.fJumpPower *= 0.9f;
-	
+	m_tUnitStatus.fGuardDashSpeed *= 0.8f;
 
 
 	m_fCoolTime[SKILL1] = 10.f;

@@ -128,6 +128,7 @@ HRESULT CWarHammer_Attack_HorizontalMiddle::Initialize()
 
 void CWarHammer_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

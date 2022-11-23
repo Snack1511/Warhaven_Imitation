@@ -37,9 +37,11 @@ HRESULT CCharge_WarHammer_L::Initialize()
 {
 
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
-	m_iAnimIndex = 26;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	m_iAnimIndex = 27;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_CHARGE_WARHAMMER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
+
+	m_iChargeChangeKeyFrame = 10;
 
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */
@@ -78,7 +80,26 @@ void CCharge_WarHammer_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CCharge_WarHammer_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-	return __super::Check_Condition(pOwner, pAnimator);
+
+	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
+	{
+
+		_float fDot = CUtility_Transform::Get_LookRotateAngle(pOwner->Get_FollowCamLook());
+		if (fabs(fDot) > 0.96f)
+		{
+			m_eStateType = STATE_CHARGE_WARHAMMER_L;
+		}
+		else
+		{
+			m_eStateType = STATE_CHARGE_FRONT_WARHAMMER_L;
+		}
+
+		return m_eStateType;
+	}
+
+	return STATE_END;
+
+	// return __super::Check_Condition(pOwner, pAnimator);
 }
 
 void CCharge_WarHammer_L::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)

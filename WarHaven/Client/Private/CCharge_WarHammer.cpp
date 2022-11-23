@@ -31,12 +31,13 @@ HRESULT CCharge_WarHammer::Initialize()
 	m_iStateChangeKeyFrame = 100;
 
 	m_iMaxChargeFrame = 100;
-	m_eCurrentChargeKey = KEY::V;
+	m_eCurrentChargeKey = KEY::LBUTTON;
 
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 0.5f;
 
 	
+
 
 	/* Setting for Blendable */
 	m_iLandRightIndex = 20;
@@ -128,6 +129,7 @@ void CCharge_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 STATE_TYPE CCharge_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
 	return __super::Tick(pOwner, pAnimator);
 }
 
@@ -146,11 +148,14 @@ void CCharge_WarHammer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CCharge_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 	/* WARHAMMER가 Attack 으로 오는 조건
-	1. V 차징 을 이용해 기를 모은다..
+	1. LBUTTON 차징 을 이용해 기를 모은다..
 	*/
 
-	if (CUser::Get_Instance()->Get_LastKey() == KEY::V)
+	
+	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 	{
+
+		// 위 아래, 양 옆 구분 코드
 		_float fDot = CUtility_Transform::Get_LookRotateAngle(pOwner->Get_FollowCamLook());
 		if (fabs(fDot) > 0.96f)
 		{

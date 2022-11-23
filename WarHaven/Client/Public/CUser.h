@@ -30,6 +30,7 @@ public:
 
 public:
 	void	Set_Player(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
+	CPlayer* Get_PlayerObejects() { return m_pPlayer; }
 	CUnit* Get_Player();
 	void	Set_FixCursor(_bool bEnable) { m_bFixCursor = bEnable;  ::ShowCursor(!bEnable); }
 

@@ -87,7 +87,7 @@ STATE_TYPE CRun_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     1. 뛰어간다.
     */
 
-	if (KEY(CTRL, NONE))
+	if (KEY(C, NONE))
 	{
 		// 걸어간다.
 		if (KEY(W, HOLD) ||
