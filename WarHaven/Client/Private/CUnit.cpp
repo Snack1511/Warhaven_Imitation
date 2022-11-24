@@ -223,7 +223,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	{
 		if (pOtherUnit->m_bIsMainPlayer)
 		{
-			CUser::Get_Instance()->SetActive_DamageTex(fDamage, tOtherHitInfo.bHeadShot);
+			CUser::Get_Instance()->Enable_DamageFont((_uint)-fDamage, tOtherHitInfo.bHeadShot);
 		}
 	}
 

@@ -46,7 +46,6 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_TraingText();
 	Create_HeroGaugeText();
 	Create_OxenJumpText();
-	Create_DmgText();
 
 	return S_OK;
 }
@@ -298,36 +297,6 @@ void CUI_HUD::SetActive_OxenJumpText(_bool value)
 	}
 }
 
-void CUI_HUD::SetActive_DamageTex(_float fDmg, _bool bIsHead)
-{
-	m_bDmgTextEffct = true;
-
-	_tchar  szTemp[MAX_STR] = {};
-	swprintf_s(szTemp, TEXT("%.f"), -fDmg);
-	m_pDmgTexts[m_iDmgTextIndex]->Set_FontText(szTemp);
-
-	_float fPosX = frandom(100.f, 300.f);
-	_float fPosY = frandom(-300.f, 300.f);
-	m_pDmgTexts[m_iDmgTextIndex]->Set_Pos(fPosX, fPosY);
-
-	if (bIsHead == true)
-	{
-		GET_COMPONENT_FROM(m_pDmgTexts[m_iDmgTextIndex], CTexture)->Set_CurTextureIndex(0);
-	}
-	else
-	{
-		GET_COMPONENT_FROM(m_pDmgTexts[m_iDmgTextIndex], CTexture)->Set_CurTextureIndex(1);
-	}
-
-	Enable_Fade(m_pDmgTexts[m_iDmgTextIndex], 0.7f);
-
-	m_iDmgTextIndex++;
-	if (m_iDmgTextIndex > 32)
-	{
-		m_iDmgTextIndex = 0;
-	}
-}
-
 void CUI_HUD::Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
 {
 	for (int i = 0; i < 3; ++i)
@@ -545,7 +514,6 @@ void CUI_HUD::Set_FadePortHighlight()
 
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 {
-
 	Set_ClassInfo(m_eCurClass);
 
 	m_pPortClone[m_eCurClass]->Set_PosY(-240.f);
@@ -725,51 +693,4 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
-}
-
-void CUI_HUD::Create_DmgText()
-{
-	m_pDmgText = CUI_Object::Create();
-
-	FADEDESC tFadeDesc;
-	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
-	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-
-	tFadeDesc.bFadeInFlag = FADE_NONE;
-	tFadeDesc.bFadeOutFlag = FADE_TIME;
-
-	tFadeDesc.fFadeInStartTime = 0.f;
-	tFadeDesc.fFadeInTime = 0.f;
-
-	tFadeDesc.fFadeOutStartTime = 1.f;
-	tFadeDesc.fFadeOutTime = 0.f;
-
-	GET_COMPONENT_FROM(m_pDmgText, CFader)->Get_FadeDesc() = tFadeDesc;
-
-	m_pDmgText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
-	GET_COMPONENT_FROM(m_pDmgText, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
-
-	m_pDmgText->Set_Scale(50.f);
-
-	m_pDmgText->Set_FontRender(true);
-	m_pDmgText->Set_FontStyle(true);
-	m_pDmgText->Set_FontScale(0.5f);
-
-	// 스케일에 비례하여 오프셋이 증감
-	m_pDmgText->Set_FontOffset(15.f, -27.5f);
-
-	m_pDmgText->Set_FontColor(_float4(1.f, 0.f, 0.f, 1.f));
-
-	for (int i = 0; i < 32; ++i)
-	{
-		m_pDmgTexts[i] = m_pDmgText->Clone();
-
-		CREATE_GAMEOBJECT(m_pDmgTexts[i], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pDmgTexts[i]);
-	}
-
-	CREATE_GAMEOBJECT(m_pDmgText, GROUP_UI);
-	DELETE_GAMEOBJECT(m_pDmgText);
 }

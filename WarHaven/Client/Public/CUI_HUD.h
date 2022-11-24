@@ -31,7 +31,6 @@ public:
 
 public:
 	void SetActive_OxenJumpText(_bool value);
-	void SetActive_DamageTex(_float fDmg, _bool bIsHead);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 private:
@@ -74,11 +73,6 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pInactiveHeroText = nullptr;
 	CUI_Object* m_pHeroGaugeText = nullptr;
 	CUI_Object* m_pOxenJumpText = nullptr;
-
-	CUI_Object* m_pDmgText = nullptr;
-	CUI_Object* m_pDmgTexts[32];
-	_uint m_iDmgTextIndex = 0;
-	_bool m_bDmgTextEffct = false;
 
 private:
 	void Bind_Btn();

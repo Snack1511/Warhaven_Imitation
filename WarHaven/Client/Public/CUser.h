@@ -11,6 +11,7 @@ class CBloodOverlay;
 class CUI_Cursor;
 class CPlayer;
 class CUI_HUD;
+class CUI_Damage;
 
 class CUser
 {
@@ -68,12 +69,13 @@ public:
 	void On_EnterLevel();
 
 	void SetActive_OxenJumpText(_bool value);
-	void SetActive_DamageTex(_float fDmg, _bool bIsHead);
 	void Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime);
+	void Enable_DamageFont(_float fDmg, _bool bHeadShot = false);
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
 	CUI_Cursor* m_pCursor = nullptr;
 	CUI_HUD* m_pUI_HUD = nullptr;
+	CUI_Damage* m_pUI_Damage = nullptr;
 };
 END
