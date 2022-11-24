@@ -147,6 +147,7 @@ void CWarrior_Attack_HorizontalMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimat
 	else
 		m_fAnimSpeed = 2.5f;
 
+	pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_L);
 
 	/* Owner¿« Animator Set Idle∑Œ */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

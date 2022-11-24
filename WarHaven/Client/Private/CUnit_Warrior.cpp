@@ -131,23 +131,26 @@ void	CUnit_Warrior::SetUp_HitStates(_bool bPlayer)
 
 	if (!bPlayer)
 	{
-		m_tHitType.m_eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.m_eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.m_eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.m_eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.m_eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.m_eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.m_eLeftBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;	
+		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
+		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
+		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
+		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
+		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.eBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
 	}
 	else
 	{
 
-		m_tHitType.m_eHitState = STATE_HIT;
-		m_tHitType.m_eGuardState = STATE_GUARDHIT_WARRIOR;
-		m_tHitType.m_eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
-		m_tHitType.m_eGroggyState = STATE_GROGGYHIT_WARRIOR;
-		m_tHitType.m_eStingHitState = STATE_STINGHIT_WARRIOR;
-		m_tHitType.m_eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.eHitState = STATE_HIT;
+		m_tHitType.eGuardState = STATE_GUARDHIT_WARRIOR;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARRIOR;
+		m_tHitType.eStingHitState = STATE_STINGHIT_WARRIOR;
+		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.eBounce = STATE_BOUNCE_PLAYER_L;
+
+
 	}
 		
 }
@@ -159,7 +162,9 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	/*_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
 	_float fHitDist = m_pTransform->Get_World(WORLD_POS)*/
 
-	//pUnit 때리는 놈, this 맞는놈 
+	//pOtherUnit : 맞은 쪽
+
+	//때리는 사람 기준으로 나와야함
 
 	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
 
@@ -175,6 +180,7 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 			break;
 
 	case STATE_ATTACK_HORIZONTALDOWN_L:
+	case STATE_SPRINTATTACK_PLAYER:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
 		break;
 

@@ -117,7 +117,7 @@ STATE_TYPE CSprintAttack_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			//발쪽이면
 			if (vHitPos.y <= vPos.y + 0.1f)
 			{
-				pOwner->Shake_Camera(0.25f, 0.25f);
+				pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
@@ -178,7 +178,7 @@ void	CSprintAttack_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 	break;
 	case 1:
 	{
-		pOwner->Shake_Camera(0.22f, 0.5f);
+		pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
 		cout << "Attack End " << endl;
 		m_bAttackTrigger = false;

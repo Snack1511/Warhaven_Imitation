@@ -27,10 +27,6 @@ public:
 	virtual void		Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
 protected:
-	virtual void Hit_GroundEffect(CUnit* pOwner);
-	virtual void Hit_SlashEffect(CUnit* pOwner, _float4 vHitPos);
-
-protected:
 	//L, R 여부
 	ANIM_TYPE	m_eAnimLeftorRight = ANIM_BASE_R;
 
@@ -87,8 +83,6 @@ protected:
 	STATE_TYPE			m_eLandState = STATE_END;
 	/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
 	STATE_TYPE			m_eIdleState = STATE_END;
-	/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
-	STATE_TYPE			m_eBounceState = STATE_END;
 
 
 

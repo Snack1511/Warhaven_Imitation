@@ -60,13 +60,8 @@ CUnit::~CUnit()
 
 void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-	//내 충돌체에 대해 바디샷 인지 헤드샷 인지 판정
-
-	//칼 충돌체가 충돌했는지 판단
-	/*if (!Is_Weapon_R_Collision())
-		return;*/
-
-
+	/* 충돌한 대상이 Unit이 아니면 Return */
+	/* ================================================= */
 	CUnit* pOtherUnit = nullptr;
 
 #ifdef _DEBUG
@@ -79,6 +74,8 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	if (!pOtherUnit)
 		return;
 
+	/* ================================================= */
+
 	/* 이미 hit 상태면 delay 걸기 */
 	if (m_fHitDelayAcc > 0.f)
 		return;
@@ -86,7 +83,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	m_fHitDelayAcc = m_fHitDelayTime;
 
 	STATE_TYPE	eFinalHitState = STATE_END;
-	_bool		bGuardSuccess = false;
+
 
 	UNIT_STATUS& tOtherStatus = pOtherUnit->Get_Status();
 
@@ -96,11 +93,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir.y = 0.f;
 	tOtherHitInfo.vDir.Normalize();
 
-
 	//상대 위치 계산
-	_float4 vOtherLook = pOtherObj->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+	_float4 vOtherLook = pOtherUnit->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
 	_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
-
 
 	//양수면 앞임.
 	if (vCurLook.Dot(vOtherLook) < 0.f)
@@ -108,143 +103,34 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	else
 		tOtherHitInfo.bFace = false;
 
+	/* 무조건 맞은 쪽에서 처리하기 */
 	switch (eMyColType)
 	{
-
-	case COL_PLAYERATTACK:
-	case COL_ENEMYATTACK:
-
-		break;
-
+	/* 내가 막은 상황 */
 	case COL_PLAYERGUARD:
 	case COL_ENEMYGUARD:
-	{
-		if (tOtherHitInfo.bFace)
-		{
-			//일단 가드는 성공
-			if (eOtherColType == COL_PLAYERGUARDBREAK || eOtherColType == COL_ENEMYGUARDBREAK ||
-				eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
-			{
-				//가드 브레이크공격이 들어오면 
-				eFinalHitState = m_tHitType.m_eGuardBreakState;
-				Effect_Parring(vHitPos);
-			}
-			else if (eOtherColType == COL_PLAYERFLYATTACKGUARDBREAK || eOtherColType == COL_ENEMYFLYATTACKGUARDBREAK)
-			{
-				eFinalHitState = m_tHitType.m_eFlyState;
-			}
-
-			/* 가드 성공 */
-			else
-			{
-				eFinalHitState = m_tHitType.m_eGuardState;
-				bGuardSuccess = true;
-
-			}
-		}
-		else
-		{
-			// 공격 공격을 당했다면
-			if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK ||
-				eOtherColType == COL_PLAYERFLYATTACKGUARDBREAK || eOtherColType == COL_ENEMYFLYATTACKGUARDBREAK)
-				eFinalHitState = m_tHitType.m_eFlyState;
-
-			else if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
-				eFinalHitState = m_tHitType.m_eGroggyState;
-
-			else
-				eFinalHitState = m_tHitType.m_eHitState;
-		}
-
-	}
-
-	break;
-
-	case COL_PLAYERHITBOX_BODY:
-	case COL_ENEMYHITBOX_BODY:
-
-		// 공격 공격을 당했다면
-		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK ||
-			eOtherColType == COL_PLAYERFLYATTACKGUARDBREAK || eOtherColType == COL_ENEMYFLYATTACKGUARDBREAK)
-			eFinalHitState = m_tHitType.m_eFlyState;
-
-		// 그로기 공격을 당했다면
-		else if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
-			eFinalHitState = m_tHitType.m_eGroggyState;
-
-		else
-			eFinalHitState = m_tHitType.m_eHitState;
-
-
-
-#ifdef _DEBUG
-		cout << " 바디샷 " << endl;
-#endif // 
-
-
+		On_GuardHit(pOtherUnit, eOtherColType, vHitPos, &tOtherHitInfo);
 		break;
 
-
+		/* 내가 맞은 상황 */
+	case COL_PLAYERHITBOX_BODY:
+	case COL_ENEMYHITBOX_BODY:
+		tOtherHitInfo.bHeadShot = false;
+		On_Hit(pOtherUnit, eOtherColType, vHitPos, &tOtherHitInfo);
+		break;
+	
 	case COL_PLAYERHITBOX_HEAD:
 	case COL_ENEMYHITBOX_HEAD:
-
-
-		// 공격 공격을 당했다면
-		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK ||
-			eOtherColType == COL_PLAYERFLYATTACKGUARDBREAK || eOtherColType == COL_ENEMYFLYATTACKGUARDBREAK)
-			eFinalHitState = m_tHitType.m_eFlyState;
-
-		// 그로기 공격을 당했다면
-		else if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
-			eFinalHitState = m_tHitType.m_eGroggyState;
-
-		else
-		{
-			eFinalHitState = m_tHitType.m_eHitState;
-			tOtherHitInfo.bHeadShot = true;
-		}
-
-#ifdef _DEBUG
-		cout << " 헤드샷 " << endl;
-#endif // 
-
+		tOtherHitInfo.bHeadShot = true;
+		On_Hit(pOtherUnit, eOtherColType, vHitPos, &tOtherHitInfo);
+		break;
 
 	default:
 		break;
-	}
-
-
-	if (eFinalHitState == STATE_END)
-		return;
-
-	_float fDamage = pOtherUnit->Calculate_Damage(tOtherHitInfo.bHeadShot, bGuardSuccess);
-
-	if (pOtherUnit)
-	{
-		if (pOtherUnit->m_bIsMainPlayer)
-		{
-			CUser::Get_Instance()->SetActive_DamageTex(fDamage, tOtherHitInfo.bHeadShot);
-		}
-	}
-
-	if (On_PlusHp(fDamage, pOtherUnit))
-	{
-		Enter_State(eFinalHitState, &tOtherHitInfo);
-
-		if (!bGuardSuccess)
-			pOtherUnit->Effect_Hit(this, vHitPos);
 
 	}
-	else
-	{
 
-		//m_eStingHitState (COL 찌르기 상태를 추가하자.)
-		//if()
-
-		/* 체력 0 이하로 내려간 경우 */
-		m_bDie = true;
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
-	}
+	
 }
 
 void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -300,7 +186,7 @@ void CUnit::On_Die()
 
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 1.f;
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 0.5f);
+	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f);
 	vPos.y -= 0.5f;
 
 	_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
@@ -335,14 +221,23 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 	return fDamage;
 }
 
-_bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit)
+_bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot)
 {
 	m_tUnitStatus.fHP += fHp;
 
+	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)
 	{
 		CUser::Get_Instance()->Turn_BloodOverLay(PLAYER->Get_Status().fHP / PLAYER->Get_Status().fMaxHP);
 	}
+
+	/*데미지 표시*/
+	if (pOtherUnit->m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->SetActive_DamageTex(fHp, bHeadShot);
+	}
+
+
 
 	if (m_tUnitStatus.fHP <= 0.f)
 	{
@@ -452,8 +347,10 @@ HRESULT CUnit::Initialize_Prototype()
 
 	//PhysX캐릭터 : 캐릭터 본체
 	CPhysXCharacter::PHYSXCCTDESC tDesc;
+
 	tDesc.fRadius = 0.25f;
 	tDesc.fHeight = 1.5f;
+
 	CPhysXCharacter* pPhysXCharacter = CPhysXCharacter::Create(CP_BEFORE_TRANSFORM, tDesc);
 	Add_Component(pPhysXCharacter);
 #endif // PHYSX_OFF
@@ -710,7 +607,7 @@ void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrCol
 void CUnit::SetUp_HitStates(_bool bPlayer)
 {
 	if (!bPlayer)
-		m_tHitType.m_eHitState = STATE_HIT_TEST_ENEMY;
+		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
 }
 
 _float4 CUnit::Get_FollowCamLook()
@@ -974,6 +871,157 @@ void CUnit::On_InitSetting()
 		}
 	}
 
+}
+
+void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)
+{
+	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
+	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, false);
+
+
+	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot);
+
+	if (!bDie)
+	{
+		On_DieBegin(pOtherUnit, vHitPos);
+		Enter_State(m_tHitType.eHitState, pHitInfo);
+		
+		return;
+	}
+
+
+	switch (iOtherColType)
+	{
+	case COL_ENEMYATTACK:
+	case COL_PLAYERATTACK:
+		pOtherUnit->Effect_Hit(this, vHitPos);
+		Enter_State(m_tHitType.eHitState, pHitInfo);
+
+		break;
+
+
+		//상대방 GuardBreak가 들어온 경우
+	case COL_PLAYERGUARDBREAK:
+	case COL_ENEMYGUARDBREAK:
+		//1. 이펙트
+
+
+		//2. 나와 적 상태 변경
+		Enter_State(m_tHitType.eHitState, pHitInfo);
+		break;
+
+	case COL_ENEMYFLYATTACK:
+	case COL_PLAYERFLYATTACK:
+	case COL_PLAYERFLYATTACKGUARDBREAK:
+	case COL_ENEMYFLYATTACKGUARDBREAK:
+		//1. 이펙트
+
+		//2. 나와 적 상태 변경
+		Enter_State(m_tHitType.eFlyState, pHitInfo);
+		break;
+
+	case COL_PLAYERGROGGYATTACK:
+	case COL_ENEMYGROGGYATTACK:
+		//1. 이펙트
+
+
+		//2. 나와 적 상태 변경
+		Enter_State(m_tHitType.eGroggyState, pHitInfo);
+		break;
+
+
+
+	default:
+		break;
+	}
+}
+
+
+void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)
+{
+	//내 Guard충돌체에 무언가 hit한 상황
+
+	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
+
+	//마주보지않았을 경우 가드 실패
+	if (!tInfo.bFace)
+	{
+		On_Hit(pOtherUnit, iOtherColType, vHitPos, pHitInfo);
+		return;
+	}
+
+	//마주본 경우 가드 성공
+	tInfo.bHeadShot = false;
+	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, true);
+
+
+	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot);
+
+	if (!bDie)
+	{
+		On_DieBegin(pOtherUnit, vHitPos);
+		Enter_State(m_tHitType.eHitState, pHitInfo);
+
+		return;
+	}
+
+	switch (iOtherColType)
+	{
+	//평범한 상대방 평타가 들어온 경우
+	case COL_ENEMYATTACK:
+	case COL_PLAYERATTACK:
+	case COL_ENEMYFLYATTACK:
+	case COL_PLAYERFLYATTACK:
+		//1. 이펙트
+		Effect_Parring(vHitPos);
+
+		//2. 나와 적 상태 변경
+		Enter_State(m_tHitType.eGuardState, pHitInfo);
+		pOtherUnit->On_Bounce(pHitInfo);
+
+		break;
+
+	//상대방 GuardBreak가 들어온 경우
+	case COL_PLAYERGUARDBREAK:
+	case COL_ENEMYGUARDBREAK:
+		//1. 이펙트
+		Effect_Parring(vHitPos);
+
+		//2. 나와 적 상태 변경
+		Enter_State(m_tHitType.eGuardBreakState, pHitInfo);
+		break;
+
+	case COL_PLAYERFLYATTACKGUARDBREAK:
+	case COL_ENEMYFLYATTACKGUARDBREAK:
+		//1. 이펙트
+
+		//2. 나와 적 상태 변경
+		Enter_State(m_tHitType.eFlyState, pHitInfo);
+		break;
+
+	case COL_PLAYERGROGGYATTACK:
+	case COL_ENEMYGROGGYATTACK:
+		//1. 이펙트
+		Effect_Parring(vHitPos);
+		//2. 나와 적 상태 변경
+		Enter_State(m_tHitType.eGroggyState, pHitInfo);
+		break;
+
+	default:
+		break;
+	}
+}
+
+void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
+{
+	m_bDie = true;
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
+}
+
+void CUnit::On_Bounce(void* pHitInfo)
+{
+	//Left인지 Right인지 판단
+	Enter_State(m_tHitType.eBounce, pHitInfo);
 }
 
 

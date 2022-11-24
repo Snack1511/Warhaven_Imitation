@@ -100,14 +100,14 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower)
 
 		_float fRand = 0.3f;
 
-		vPos.x += frandom(-fRand, fRand);
+		/*vPos.x += frandom(-fRand, fRand);
 		vPos.y += frandom(-fRand, fRand);
-		vPos.z += frandom(-fRand, fRand);
+		vPos.z += frandom(-fRand, fRand);*/
 
 		_float4	vNewDir =
 		{
 		vDir.x = frandom(-1.f, 1.f),
-		vDir.y = frandom(-1.f, 1.f),
+		vDir.y = frandom(-0.5f, 1.f),
 		vDir.z = frandom(-1.f, 1.f),
 		0.f
 		};

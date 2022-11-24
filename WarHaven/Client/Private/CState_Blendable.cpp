@@ -66,42 +66,10 @@ HRESULT CState_Blendable::Initialize()
 
 void	CState_Blendable::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
-	if (m_bHitEffect)
-	{
-		m_bHitEffect = false;
-		m_bBlood = true;
-		if (iOtherColType == COL_PLAYERGUARD || iOtherColType == COL_ENEMYGUARD)
-		{
-
-			_float4 vOtherLook = pOtherObject->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
-			_float4 vCurLook = m_pOwner->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
-
-
-
-			//양수면 앞임.
-			if (vCurLook.Dot(vOtherLook) < 0.f)
-			{
-				m_bParringed = true;
-				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", m_pOwner, vHitPos);
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), m_pOwner, vHitPos);
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), m_pOwner, vHitPos);
-				return;
-			}
-
-		}
-
-		
-		{
-			m_pOwner->Shake_Camera(0.08f, 0.25f);
-			//Hit_SlashEffect(m_pOwner, vHitPos);
-		}
-
-	}
 }
 
 void	CState_Blendable::OnCollisionStay(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType)
 {
-	//OnCollisionEnter(pOtherObject, iOtherColType, iMyColType, ZERO_VECTOR);
 }
 
 void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData )
@@ -123,7 +91,7 @@ void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
 
-	pOwner->CallBack_CollisionEnter += bind(&CState_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+	//pOwner->CallBack_CollisionEnter += bind(&CState_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 	//pOwner->CallBack_CollisionStay += bind(&CState_Blendable::OnCollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
@@ -136,106 +104,15 @@ void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	pOwner->TurnOn_TrailEffect(false);
 
-	pOwner->CallBack_CollisionEnter -= bind(&CState_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+	//pOwner->CallBack_CollisionEnter -= bind(&CState_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 	//pOwner->CallBack_CollisionStay -= bind(&CState_Blendable::OnCollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 
-}
-
-void CState_Blendable::Hit_GroundEffect(CUnit* pOwner)
-{
-	pOwner->Get_Status().fCamPower = 0.08f;
-	pOwner->Get_Status().fCamTime = 0.3f;
-
-	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
-
-	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", vHitPos);
-}
-
-void CState_Blendable::Hit_SlashEffect(CUnit* pOwner, _float4 vHitPos)
-{
-	switch (pOwner->Get_CurState())
-	{
-	case STATE_ATTACK_HORIZONTALUP_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", pOwner, vHitPos);
-		break;
-	case STATE_ATTACK_HORIZONTALMIDDLE_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", pOwner, vHitPos);
-		break;
-	case STATE_ATTACK_HORIZONTALDOWN_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", pOwner, vHitPos);
-		break;
-	case STATE_ATTACK_HORIZONTALUP_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", pOwner, vHitPos);
-		break;
-	case STATE_ATTACK_HORIZONTALMIDDLE_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", pOwner, vHitPos);
-		break;
-	case STATE_ATTACK_HORIZONTALDOWN_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", pOwner, vHitPos);
-		break;
-	case STATE_ATTACK_VERTICALCUT:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", pOwner, vHitPos);
-		break;
-	case STATE_ATTACK_STING_PLAYER_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", pOwner, vHitPos);
-		break;
-	case STATE_ATTACK_STING_PLAYER_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", pOwner, vHitPos);
-		break;
-
-	}
-
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pOwner, vHitPos);
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOwner, vHitPos);
-
-	
-	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-
-	
-
-	
 }
 
 STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	STATE_TYPE	eStateType = STATE_END;
 
-	if (m_bParringed)
-		return m_eBounceState;
-
-
-	if (m_bAttackTrigger)
-	{
-		// 공격 진입
-		if (pOwner->Is_Weapon_R_Collision())
-		{
-			_float4 vHitPos = pOwner->Get_HitPos();
-			_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-
-			//HitPos가 발 보다 아래, 즉 땅을 때린 경우에는 튕겨나는게 아니라 작은 파티클과 진동만.
-			if (vHitPos.y <= vPos.y + 0.1f)
-			{
-				Hit_GroundEffect(pOwner);
-			}
-			else
-			{
-				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-				return m_eBounceState;
-			}
-
-			m_bAttackTrigger = false;
-		}
-	}
-
-	
-
-	//Create_BloodEffect();
 	// Create_SwordAfterEffect();
 
 	switch (m_eEnum)
@@ -269,8 +146,6 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	}
 
 	Follow_MouseLook_Turn(pOwner);
-
-	
 
 	return __super::Tick(pOwner, pAnimator);
 }

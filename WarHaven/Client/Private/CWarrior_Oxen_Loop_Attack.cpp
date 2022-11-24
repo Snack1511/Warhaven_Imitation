@@ -129,9 +129,6 @@ void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (m_bParringed)
-        return STATE_BOUNCE_PLAYER_R;
-
     if (pAnimator->Get_CurAnimFrame() >= m_tHitInfo.iLandKeyFrame && !pOwner->Is_Air())
         return STATE_JUMP_LAND_PLAYER_L;
     
@@ -148,32 +145,9 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Tick(CUnit* pOwner, CAnimator* pAnimator)
             return STATE_JUMP_PLAYER_L;
     }
 
-
     Follow_MouseLook_Turn(pOwner);
     pOwner->Set_DirAsLook();
 
-    /*dust*/
-    if (m_bAttackTrigger)
-    {
-        // 공격 진입
-        if (pOwner->Is_Weapon_R_Collision())
-        {
-            _float4 vHitPos = pOwner->Get_HitPos();
-            _float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-
-            //HitPos가 발 보다 아래, 즉 땅을 때린 경우에는 튕겨나는게 아니라 작은 파티클과 진동만.
-            if (vHitPos.y <= vPos.y + 0.1f)
-            {
-                //CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-                CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-                CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-                CEffects_Factory::Get_Instance()->Create_MultiEffects(L"GroundHitParticle", vHitPos);
-            }
-
-            m_bAttackTrigger = false;
-        }
-
-    }
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -205,20 +179,8 @@ STATE_TYPE CWarrior_Oxen_Loop_Attack::Check_Condition(CUnit* pOwner, CAnimator* 
 
 void CWarrior_Oxen_Loop_Attack::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
-
-
-    if (iOtherColType == COL_ENEMYGUARD)
+   if (iOtherColType == COL_ENEMYHITBOX_BODY || iOtherColType == COL_ENEMYHITBOX_HEAD)
     {
-        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
-        CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
-        CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
-        m_bParringed = true;
-    }
-    else if (iOtherColType == COL_ENEMYHITBOX_BODY || iOtherColType == COL_ENEMYHITBOX_HEAD)
-    {
-
-            CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", m_pOwner, vHitPos); //오른쪽으로 올려벰
-
         m_bHit = true;
     }
 

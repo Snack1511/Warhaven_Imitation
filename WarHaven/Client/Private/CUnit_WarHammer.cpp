@@ -128,24 +128,24 @@ void CUnit_WarHammer::SetUp_HitStates(_bool bPlayer)
 	
 	if (!bPlayer)
 	{
-		m_tHitType.m_eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.m_eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.m_eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.m_eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.m_eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.m_eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.m_eLeftBounce = STATE_BOUNCE_WARHAMMER_L;
+		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
+		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
+		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
+		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
+		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
 
 	}
 	else
 	{
-		m_tHitType.m_eHitState = STATE_HIT_WARHAMMER;
-		m_tHitType.m_eGuardState = STATE_GUARDHIT_WARHAMMER;
-		m_tHitType.m_eGuardBreakState = STATE_GUARD_CANCEL_WARHAMMER;
-		m_tHitType.m_eGroggyState = STATE_GROGGYHIT_WARHAMMER;
-		m_tHitType.m_eStingHitState = STATE_STINGHIT_WARHAMMER;
-		m_tHitType.m_eFlyState = STATE_FLYHIT_WARHAMMER;
-		m_tHitType.m_eLeftBounce = STATE_BOUNCE_WARHAMMER_L;
+		m_tHitType.eHitState = STATE_HIT_WARHAMMER;
+		m_tHitType.eGuardState = STATE_GUARDHIT_WARHAMMER;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARHAMMER;
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARHAMMER;
+		m_tHitType.eStingHitState = STATE_STINGHIT_WARHAMMER;
+		m_tHitType.eFlyState = STATE_FLYHIT_WARHAMMER;
+		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
 	}
 }
 
@@ -221,9 +221,9 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
 
-	tDesc.fHeight = 0.9f;
+	tDesc.fHeight = 1.f;
 	// Ä® µÎ²²
-	tDesc.fRadius = 0.1f;
+	tDesc.fRadius = 0.2f;
 	// Ä® ºÙÀÏ »À
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 

@@ -292,13 +292,9 @@ HRESULT CRectEffects::Initialize()
 		_float4x4 matCurveRot;
 
 		_float fStartCurveAngle = m_tCreateData.fCurveAngle + frandom(-m_tCreateData.fCurveAngleRange, m_tCreateData.fCurveAngleRange);
-
 		matCurveRot = XMMatrixRotationAxis(m_pDatas[i].InstancingData.vStartPureLocalDir.XMLoad(), ToRadian(fStartCurveAngle));
-
 		m_pDatas[i].InstancingData.vStartPureLocalRight = m_pDatas[i].InstancingData.vStartPureLocalRight.MultiplyNormal(matCurveRot);
-
 		m_pDatas[i].InstancingData.fCurvePower = m_tCreateData.fCurvePower + frandom(-m_tCreateData.fCurvePowerRange, m_tCreateData.fCurvePowerRange);
-
 		m_pDatas[i].InstancingData.fCurveFrequency = m_tCreateData.fCurveFrequency + frandom(-m_tCreateData.fCurveFrequencyRange, m_tCreateData.fCurveFrequencyRange);
 
 
@@ -622,7 +618,10 @@ void CRectEffects::My_Tick()
 				{
 					_float4x4 matRot;
 
-					matRot = XMMatrixRotationAxis(vCamLook.XMLoad(), ToRadian(m_tCreateData.fCurveAngle));
+					_float4 vAxis = m_matTrans.XMLoad().r[2];
+					matRot = XMMatrixRotationAxis(vAxis.XMLoad(), ToRadian(m_tCreateData.fCurveAngle));
+
+					//matRot *= m_matTrans;
 
 					vRotLook = vLook.MultiplyNormal(matRot);
 					vRotRight = vRight.MultiplyNormal(matRot);

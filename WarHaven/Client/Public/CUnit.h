@@ -55,8 +55,8 @@ public:
 
 
 		WEAPON_TYPE eWeapon;
-		_float fHP = 150.f;
-		_float fMaxHP = 150.f;
+		_float fHP = 300.f;
+		_float fMaxHP = 300.f;
 		_float fGuardBreakSpeed = 10.f;
 		_float fGuardDashSpeed = 10.f;
 		_float fRunSpeed = 4.f;
@@ -84,32 +84,29 @@ public:
 	struct STATE_HIT_TYPE
 	{
 		/* Hit, Dead 상태 */
-		STATE_TYPE		m_eHitState = STATE_END;
-		STATE_TYPE		m_eDeathState = STATE_END;
+		STATE_TYPE		eHitState = STATE_END;
+		STATE_TYPE		eDeathState = STATE_END;
 
 		/* 가드 성공시 상태 */
-		STATE_TYPE		m_eGuardState = STATE_END;
+		STATE_TYPE		eGuardState = STATE_END;
 
 		/* 그로기 상태 */
-		STATE_TYPE		m_eGroggyState = STATE_END;
+		STATE_TYPE		eGroggyState = STATE_END;
 
-		/* AI Test Bounce */
-		STATE_TYPE		m_eLeftBounce = STATE_END;
-
-		/* AI Test Bounce */
-		STATE_TYPE		m_eRightBounce = STATE_END;
+		/* Bounce */
+		STATE_TYPE		eBounce = STATE_END;
 
 
 
 
 		/* 가드 깨진 상태*/
-		STATE_TYPE		m_eGuardBreakState = STATE_END;
+		STATE_TYPE		eGuardBreakState = STATE_END;
 
 		/* 찌르기맞고 죽기 전 상태 */
-		STATE_TYPE		m_eStingHitState = STATE_END;
+		STATE_TYPE		eStingHitState = STATE_END;
 
 		/* 황소 베기 등 특정 FlyAttack 공격을 맞을 시 */
-		STATE_TYPE		m_eFlyState = STATE_END;
+		STATE_TYPE		eFlyState = STATE_END;
 	};
 
 public:
@@ -125,6 +122,7 @@ public:
 	virtual void	Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
 	virtual void	Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 	virtual void	Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
+
 
 public: /* Physics */
 	_bool		Is_Air();
@@ -147,7 +145,7 @@ public:
 
 public:
 	_float			Calculate_Damage(_bool bHeadShot, _bool bGuard);
-	virtual _bool	On_PlusHp(_float fHp, CUnit* pOtherUnit);
+	virtual _bool	On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot = false);
 
 public:
 	_bool		Can_Use(COOL_TYPE eType) { if (eType < COOL_END && m_fCoolAcc[eType] <= 0.f) return true; return false; }
@@ -160,8 +158,9 @@ public:
 	_uint		Get_HeroChangeIndex() { return m_iChangeHeroAnimIndex; };
 
 
+	/* PhysX 충돌 검출 */
 	_bool		Is_Weapon_R_Collision();
-	/* 캐릭터에 부딪힌거 체크 */
+	/* 캐릭터에 부딪힌거 체크(지금 안씀) */
 	_bool		Is_Weapon_R_CCT_Collision();
 
 
@@ -176,6 +175,7 @@ public:
 	CState* Get_CurStateP() { return m_pCurState; }
 
 	const STATE_HIT_TYPE& Get_HitType() { return m_tHitType; }
+	void	Set_BounceState(STATE_TYPE eType) { m_tHitType.eBounce = eType; }
 
 	CLASS_TYPE&		Get_HeroType() { return m_eChangeHero; }
 
@@ -304,7 +304,7 @@ protected:
 	STATE_HIT_TYPE	m_tHitType;;
 
 	_float			m_fHitDelayAcc = 0.f;
-	_float			m_fHitDelayTime = 0.1f;
+	_float			m_fHitDelayTime = 0.15f;
 
 protected:
 	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);
@@ -338,5 +338,20 @@ private:
 	_bool		m_bDie = false;
 	_float		m_fDeadTimeAcc = 0.f;
 	_float		m_fDeadTime = 0.05f;
+
+
+
+	/* 상태 체크 함수 */
+private:
+	//내가 공격 당했을 때 들어오는 함수
+	void		On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo);
+	//내가 가드했을 떄 들어오는 함수
+	void		On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo);
+
+
+	/* 딱 체력 0된 시점에 호출되는 함수 */
+	void		On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos);
+	void		On_Bounce(void* pHitInfo);
+
 };
 END

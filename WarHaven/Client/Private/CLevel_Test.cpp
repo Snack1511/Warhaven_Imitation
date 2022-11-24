@@ -180,7 +180,7 @@ HRESULT CLevel_Test::Enter()
 void CLevel_Test::Tick()
 {
 
-	/*if (!m_bStaticShadowBake)
+	if (!m_bStaticShadowBake)
 	{
 		m_fDealyAcc += fDT(0);
 		if (m_fDealyAcc >= m_fDelayTime)
@@ -197,7 +197,7 @@ void CLevel_Test::Tick()
 			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, 400.f);
 			m_bStaticShadowBake = true;
 		}
-	}*/
+	}
 
 
 #ifdef _DEBUG
@@ -273,7 +273,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
-	_float4 vPlayerPos = _float4(20.f, 3.f, 10.f);
+	_float4 vPlayerPos = _float4(20.f, 3.f, -10.f);
 
 	CPlayer* pUserPlayer = nullptr;
 
@@ -285,8 +285,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 
-	//vPlayerPos.x = 70.f;
-	//vPlayerPos.z = -10.f;
+	vPlayerPos.x = 70.f;
+	vPlayerPos.z = -10.f;
 
 	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,								
 		STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
@@ -312,8 +312,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	/*function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);*/
+	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
 
 	
 
@@ -353,8 +353,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	Ready_GameObject(pTestStruct, GROUP_DECORATION);*/
 
 
-	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
-	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
+	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 	//SM_Grass_Weed_Weed02a.FBX
 
 	//_int iNumInstance = 10000;

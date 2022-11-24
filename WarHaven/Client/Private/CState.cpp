@@ -54,6 +54,7 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
     //    }
     //}
 
+
 	if (m_bAttackTrigger)
 	{
 		// 공격 진입
@@ -65,20 +66,18 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			//HitPos가 발 보다 아래, 즉 땅을 때린 경우에는 튕겨나는게 아니라 작은 파티클과 진동만.
 			if (vHitPos.y <= vPos.y + 0.1f)
 			{
-				pOwner->Get_Status().fCamPower = 0.25f;
-				pOwner->Get_Status().fCamTime = 0.25f;
-
-				pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
-
-				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
+				Hit_GroundEffect(pOwner);
+			}
+			else
+			{
+				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", vHitPos);
+				return m_eBounceState;
 			}
 
 			m_bAttackTrigger = false;
 		}
-
 	}
 
     Check_KeyFrameEvent(pOwner, pAnimator);
@@ -111,6 +110,14 @@ void CState::Re_Enter(CUnit* pOwner, CAnimator* pAnimator, _float fInterpolation
         m_fAnimSpeed = fAnimSpeed;
 
     Enter(pOwner, pAnimator, m_eStateType);
+}
+
+void CState::Hit_GroundEffect(CUnit* pOwner)
+{
+	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
+
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
 }
 
 
@@ -437,23 +444,6 @@ void CState::Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable)
 	GET_COMPONENT_FROM(pOwner, CModel)->Enable_ModelParts(iPartType, bEnable);
 }
 
-void CState::Bounce_State(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
-{
-	if (iOtherColType == COL_PLAYERGUARD || iOtherColType == COL_ENEMYGUARD || iOtherColType == COL_WALL)
-	{
-		_float4 vOtherLook = pOtherObject->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
-		_float4 vCurLook = m_pOwner->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
-
-		//양수면 앞임.
-		if (vCurLook.Dot(vOtherLook) < 0.f)
-		{
-			m_bParringed = true;
-			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", m_pOwner, vHitPos);
-			CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), m_pOwner, vHitPos);
-			CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), m_pOwner, vHitPos);
-		}
-	}
-}
 
 void CState::Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence)
 {

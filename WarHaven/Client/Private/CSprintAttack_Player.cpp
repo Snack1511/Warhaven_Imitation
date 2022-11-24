@@ -105,49 +105,11 @@ void CSprintAttack_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CSprintAttack_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (m_bParringed)
-		return STATE_BOUNCE_PLAYER_L;
-
 
 	if (m_bTrigger)
 	{
 		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 		pMyPhysicsCom->Set_Accel(m_fMyAccel);
-	}
-
-	if (m_bAttackTrigger)
-	{
-		// 공격 진입
-		if (pOwner->Is_Weapon_R_Collision())
-		{
-			_float4 vHitPos = pOwner->Get_HitPos();
-			_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-
-			//발쪽이면
-			if (vHitPos.y <= vPos.y + 0.1f)
-			{
-				pOwner->Get_Status().fCamPower = 0.25f;
-				pOwner->Get_Status().fCamTime = 0.25f;
-
-				pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
-
-				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-			}
-
-			else
-			{
-				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", m_pOwner, vHitPos);
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), m_pOwner, vHitPos);
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), m_pOwner, vHitPos);
-				return STATE_BOUNCE_PLAYER_R;
-			}
-				
-
-			m_bAttackTrigger = false;
-		}
-
 	}
 	
 	Follow_MouseLook(pOwner);
@@ -160,7 +122,6 @@ STATE_TYPE CSprintAttack_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CSprintAttack_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->CallBack_CollisionEnter -= bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 	pOwner->TurnOn_TrailEffect(false);
 
@@ -185,14 +146,6 @@ STATE_TYPE CSprintAttack_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnim
 
 void CSprintAttack_Player::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
-	//case STATE_ATTACK_VERTICALCUT:
-//    
-//    break;
-
-	Bounce_State(pOtherObject, iOtherColType, iMyColType, vHitPos);
-	
-	if(!m_bParringed)
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", m_pOwner, vHitPos);
 
 }
 

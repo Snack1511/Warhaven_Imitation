@@ -94,6 +94,9 @@ protected:
 	void Re_Enter(CUnit* pOwner, CAnimator* pAnimator, _float fInterpolationTime = -1.f, _float fAnimSpeed = -1.f);
 
 protected:
+	virtual void Hit_GroundEffect(CUnit* pOwner);
+
+protected:
 	CUnit* m_pOwner = nullptr;
 
 protected:
@@ -123,7 +126,6 @@ protected:
 	_bool				m_bAttackTrigger = false;
 	_bool				m_bETC_Trigger = false;
 
-	_bool				m_bParringed = false;
 	_bool				m_bHit = false;
 	_bool				m_bKeyInput = false;
 	_bool				m_bKeyInputable = false;
@@ -134,6 +136,11 @@ protected:
 	_float				m_fDirectionAnimSpeed[STATE_DIRECTION_END];
 
 	_int				m_iStateForcePushIndex = 0;
+
+
+protected:
+		/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
+		STATE_TYPE			m_eBounceState = STATE_END;
 
 
 protected:
@@ -172,9 +179,6 @@ protected:
 protected:
 	void	Enable_ModelParts(CUnit* pOwner, _uint iPartType, _bool bEnable);
 
-
-protected:
-	void	Bounce_State(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos);
 
 protected:
 	void					Add_KeyFrame(_uint iKeyFrameIndex, _uint iSequence);

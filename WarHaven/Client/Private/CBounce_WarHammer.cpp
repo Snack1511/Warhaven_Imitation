@@ -37,8 +37,6 @@ HRESULT CBounce_WarHammer::Initialize()
 void CBounce_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 
-	pOwner->Get_Status().fCamPower = 0.4f;
-	pOwner->Get_Status().fCamTime = 0.25f;
 
 	/* Shake */
 	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);

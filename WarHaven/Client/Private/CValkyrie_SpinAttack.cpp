@@ -126,7 +126,7 @@ void CValkyrie_SpinAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 
 		Physics_Setting(m_fMaxSpeed, pOwner);
 
-		pOwner->Shake_Camera(0.1f, 0.05f);
+		pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;

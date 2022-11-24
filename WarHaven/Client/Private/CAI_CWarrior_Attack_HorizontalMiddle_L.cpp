@@ -145,6 +145,8 @@ void CAI_CWarrior_Attack_HorizontalMiddle_L::Enter(CUnit* pOwner, CAnimator* pAn
 {
 
 	/* OwnerÀÇ Animator Set Idle·Î */
+	pOwner->Set_BounceState(STATE_BOUNCE_WARRIOR_L_AI_ENEMY);
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -152,9 +154,6 @@ STATE_TYPE CAI_CWarrior_Attack_HorizontalMiddle_L::Tick(CUnit* pOwner, CAnimator
 {
 	if (pAnimator->Is_CurAnimFinished())
 		return STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY;
-
-	if (m_bParringed)
-		return STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
 
 
 	return __super::Tick(pOwner, pAnimator);
