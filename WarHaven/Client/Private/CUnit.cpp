@@ -954,44 +954,57 @@ void CUnit::Switch_ClassEffect(CUnit* pUnit, _float4 vHitPos)
 
 void CUnit::Warrior_Effect(CUnit* pUnit, _float4 vHitPos)
 {
-	_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+	//_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+	//
+	//_float4 vCampos = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_POS);
+	//_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
+	//_float fHitDist = m_pTransform->Get_World(WORLD_POS)
 
-	switch (pUnit->Get_CurState())
-	{
-	case STATE_ATTACK_HORIZONTALUP_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, vCamMatrix);
-		break;
-	case STATE_ATTACK_HORIZONTALMIDDLE_L:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, vCamMatrix);
-		break;
-	case STATE_ATTACK_HORIZONTALDOWN_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, vCamMatrix);
-		break;
-	case STATE_ATTACK_HORIZONTALUP_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, vCamMatrix);
-		break;
-	case STATE_ATTACK_HORIZONTALMIDDLE_R:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, vCamMatrix);
-		break;
-	case STATE_ATTACK_HORIZONTALDOWN_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, vCamMatrix);
-		break;
-	case STATE_ATTACK_VERTICALCUT:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, vCamMatrix);
-		break;
-	case STATE_ATTACK_STING_PLAYER_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, vCamMatrix);
-		break;
-	case STATE_ATTACK_STING_PLAYER_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, vCamMatrix);
-		break;
+	//
+	//
+	////pUnit ¶§¸®´Â ³ð, this ¸Â´Â³ð 
+	//switch (pUnit->Get_CurState())
+	//{
+	//case STATE_ATTACK_HORIZONTALUP_L:
+	//	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, vCamMatrix);
+	//	break;
+	//case STATE_ATTACK_HORIZONTALMIDDLE_L:
+	//case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
+	//	if (fHitDist > fUnitDist)
+	//		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, vCamMatrix);
+	//	else
+	//		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, vCamMatrix);
+	//	break;
+	//case STATE_ATTACK_HORIZONTALDOWN_L:
+	//	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, vCamMatrix);
+	//	break;
+	//case STATE_ATTACK_HORIZONTALUP_R:
+	//	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, vCamMatrix);
+	//	break;
+	//case STATE_ATTACK_HORIZONTALMIDDLE_R:
+	//case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
+	//	if (fHitDist > fUnitDist)
+	//		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, vCamMatrix);
+	//	else
+	//		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, vCamMatrix);
+	//	break;
+	//case STATE_ATTACK_HORIZONTALDOWN_R:
+	//	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, vCamMatrix);
+	//	break;
+	//case STATE_ATTACK_VERTICALCUT:
+	//	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, vCamMatrix);
+	//	break;
+	//case STATE_ATTACK_STING_PLAYER_L:
+	//	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, vCamMatrix);
+	//	break;
+	//case STATE_ATTACK_STING_PLAYER_R:
+	//	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, vCamMatrix);
+	//	break;
 
-	}
+	//}
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pUnit, vHitPos);
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pUnit, vHitPos);
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pUnit, vHitPos);
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pUnit, vHitPos);
 }
 
 void CUnit::TransformProjection()

@@ -93,7 +93,7 @@ void CBloodOverlay::OnEnable()
 
 void CBloodOverlay::OnDisable()
 {
-	int i = 0;
+	m_bDeadBlood = false;
 }
 
 void CBloodOverlay::My_Tick()
@@ -102,12 +102,12 @@ void CBloodOverlay::My_Tick()
 
 	if (m_bDeadBlood)
 	{
-		m_fBloodRatio -= 5.f * fDT(0);
+		m_fBloodRatio -= 8.f * fDT(0);
 
 		if (0 >= m_fBloodRatio)
 		{
 			m_fBloodRatio = 0.f;
-			m_bDeadBlood = false;
+			
 		}
 	}
 	/*if (STATE_HIT == m_pUint->Get_CurState())
