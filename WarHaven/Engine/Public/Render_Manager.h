@@ -77,7 +77,10 @@ private:
 private:
 	HRESULT	Render_Lights();
 	HRESULT	Render_ShadowBlur();
+	HRESULT	Render_ForwardBloom();
 	HRESULT	Render_ForwardBlend();
+	HRESULT	Render_BloomBlend();
+
 
 private:
 	HRESULT	Render_AlphaGroup();
@@ -92,6 +95,10 @@ private:
 	HRESULT	Render_PostEffect();
 	HRESULT	Render_SSD();
 	HRESULT	Render_FinalBlend();
+
+	HRESULT	Render_UI();
+	HRESULT	Render_UIBloom();
+	HRESULT	Render_UIBlend();
 
 private:
 	HRESULT		Render_Group(RENDER_GROUP eGroup);

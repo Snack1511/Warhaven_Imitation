@@ -264,6 +264,7 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_BloomBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
+
 	/* For.FinalBlend */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_FinalBlend"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
@@ -278,6 +279,28 @@ HRESULT CRender_Manager::Initialize()
 
 	/* For.Distortion */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_SSD"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
+	/* NonAlpha Bloom */
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_ForwardBloom"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_ForwardBloomBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_BloomBlend"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
+	/* UI SHADER */
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_UIForward"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_UIBloom"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_UIBloomBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_UIBlend"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_UIFlag"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_PostEffect"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* SkyBox */
@@ -296,7 +319,7 @@ HRESULT CRender_Manager::Initialize()
 		return E_FAIL;
 
 	/* For.MRT_Effect */
-	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Effect"), TEXT("Target_Forward"))))
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Effect"), TEXT("Target_BloomBlend"))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Effect"), TEXT("Target_Depth"))))
 		return E_FAIL;
@@ -353,6 +376,18 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_BloomBlurAcc"), TEXT("Target_BloomBlur"))))
 		return E_FAIL;
 
+	/*For Bloom*/
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ForwardBloomAcc"), TEXT("Target_ForwardBloom"))))
+		return E_FAIL;
+
+	/*For Bloom*/
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ForwardBloomBlurAcc"), TEXT("Target_ForwardBloomBlur"))))
+		return E_FAIL;
+
+	/*For Bloom*/
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_BloomBlendAcc"), TEXT("Target_BloomBlend"))))
+		return E_FAIL;
+
 	/*For Distortion*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_FinalBlendAcc"), TEXT("Target_FinalBlend"))))
 		return E_FAIL;
@@ -373,9 +408,27 @@ HRESULT CRender_Manager::Initialize()
 
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_SSDAcc"), TEXT("Target_GlowFlag"))))
 		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_PostEffectAcc"), TEXT("Target_PostEffect"))))
+		return E_FAIL;
 	
 	/*SHadow Blur*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ShadowBlurAcc"), TEXT("Target_ShadowBlur"))))
+		return E_FAIL;
+
+	/*UI*/
+
+	
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_UIForwardAcc"), TEXT("Target_UIForward"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_UIForwardAcc"), TEXT("Target_UIFlag"))))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_UIBloomAcc"), TEXT("Target_UIBloom"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_UIBloomBlurAcc"), TEXT("Target_UIBloomBlur"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_UIBlendAcc"), TEXT("Target_UIBlend"))))
 		return E_FAIL;
 
 	/*if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_SSDAcc"), TEXT("Target_EffectDiffuse"))))
@@ -450,9 +503,13 @@ HRESULT CRender_Manager::Initialize()
 
 	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_BloomBlur"), fPosX, fPosY, fSize, fSize)))
 		return E_FAIL;
-	fPosY += fSize;
 
-	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_SSD"), fPosX, fPosY, fSize, fSize)))
+	fPosY += fSize;
+	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_ForwardBloomBlur"), fPosX, fPosY, fSize, fSize)))
+		return E_FAIL;
+
+	fPosY += fSize;
+	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_UIBloomBlur"), fPosX, fPosY, fSize, fSize)))
 		return E_FAIL;
 	
 #endif // _DEBUG
@@ -598,6 +655,12 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_ForwardBlend()))
 		return E_FAIL;
 
+	if (FAILED(Render_ForwardBloom()))
+		return E_FAIL;
+
+	if (FAILED(Render_BloomBlend()))
+		return E_FAIL;
+
 	//Blur For Outline
 	if (FAILED(Render_Blur()))
 		return E_FAIL;
@@ -645,10 +708,18 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_PostEffect()))
 		return E_FAIL;
 
-	Sort_UIGroup();
-
-	if (FAILED(Render_Group(RENDER_UI)))
+	/* UI */
+	if (FAILED(Render_UI()))
 		return E_FAIL;
+
+	if (FAILED(Render_UIBloom()))
+		return E_FAIL;
+
+	if (FAILED(Render_UIBlend()))
+		return E_FAIL;
+
+
+	
 
 #ifdef _DEBUG
 	if (FAILED(Render_Debug()))
@@ -690,7 +761,8 @@ HRESULT CRender_Manager::Render_Debug()
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_Distortion"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_StaticShadowAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_ShadowBlurAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
-	//m_pTarget_Manager->Render_Debug(TEXT("MRT_SSDAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
+	m_pTarget_Manager->Render_Debug(TEXT("MRT_ForwardBloomBlurAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
+	m_pTarget_Manager->Render_Debug(TEXT("MRT_UIBloomBlurAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
 
 
 
@@ -850,6 +922,70 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 
 	return S_OK;
 }
+HRESULT CRender_Manager::Render_ForwardBloom()
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ForwardBloomAcc"))))
+		return E_FAIL;
+
+	//1. Bloom 대상 찾기
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Flag")))))
+		return E_FAIL;
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_vecShader[SHADER_BLUR]->Begin(3);
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	//2. 블러
+
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_DownScaleAcc"))))
+		return E_FAIL;
+
+	//1. 다운 샘플링
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ForwardBloom")))))
+		return E_FAIL;
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_DownScaleWorldMatrix, sizeof(_float4x4));
+	m_vecShader[SHADER_BLUR]->Begin(0);
+	m_pMeshRect->Render();
+
+	//2. 수평블러
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HorizonBlurAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_DownScale")))))
+		return E_FAIL;
+
+	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+
+	m_vecShader[SHADER_BLUR]->Begin(2);
+
+	m_pMeshRect->Render();
+
+	//3. 수직
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ForwardBloomBlurAcc"))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_HorizonBlur")))))
+		return E_FAIL;
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_UpScaleWorldMatrix, sizeof(_float4x4));
+
+	m_vecShader[SHADER_BLUR]->Begin(1);
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+	return S_OK;
+}
 HRESULT CRender_Manager::Render_AlphaGroup()
 {
 	Sort_AlphaList();
@@ -938,6 +1074,33 @@ HRESULT CRender_Manager::Render_ForwardBlend()
 
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_BloomBlend()
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_BloomBlendAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BloomTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ForwardBloomBlur")))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BloomOriginTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ForwardBloom")))))
+		return E_FAIL;
+
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+
+	m_vecShader[SHADER_DEFERRED]->Begin(7);
+
+	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -1302,7 +1465,7 @@ HRESULT CRender_Manager::Render_EffectBlur()
 		return E_FAIL;
 
 	//1. 다운 샘플링
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_BloomBlend")))))
 		return E_FAIL;
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_DownScaleWorldMatrix, sizeof(_float4x4));
 	m_vecShader[SHADER_BLUR]->Begin(0);
@@ -1347,6 +1510,8 @@ HRESULT CRender_Manager::Render_EffectBlur()
 
 HRESULT CRender_Manager::Render_PostEffect()
 {
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_PostEffectAcc"))))
+		return E_FAIL;
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(TEXT("Target_FinalBlend")))))
 		return E_FAIL;
 
@@ -1363,7 +1528,8 @@ HRESULT CRender_Manager::Render_PostEffect()
 	m_vecShader[SHADER_DEFERRED]->Begin(6);
 
 	m_pMeshRect->Render();
-
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
 	return S_OK;
 
 
@@ -1401,7 +1567,7 @@ HRESULT CRender_Manager::Render_FinalBlend()
 		return E_FAIL;
 
 	//1. Forward
-	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(TEXT("Target_BloomBlend")))))
 		return E_FAIL;
 
 	//2. EffectFlag
@@ -1440,6 +1606,115 @@ HRESULT CRender_Manager::Render_FinalBlend()
 
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
+
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_UI()
+{
+	Sort_UIGroup();
+
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_UIForwardAcc"))))
+		return E_FAIL;
+
+	if (FAILED(Render_Group(RENDER_UI)))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_UIBloom()
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_UIBloomAcc"))))
+		return E_FAIL;
+
+	//1. Bloom 대상 찾기
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UIForward")))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UIFlag")))))
+		return E_FAIL;
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_vecShader[SHADER_BLUR]->Begin(3);
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	//2. 블러
+
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_DownScaleAcc"))))
+		return E_FAIL;
+
+	//1. 다운 샘플링
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UIBloom")))))
+		return E_FAIL;
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_DownScaleWorldMatrix, sizeof(_float4x4));
+	m_vecShader[SHADER_BLUR]->Begin(0);
+	m_pMeshRect->Render();
+
+	//2. 수평블러
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HorizonBlurAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_DownScale")))))
+		return E_FAIL;
+
+	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+
+	m_vecShader[SHADER_BLUR]->Begin(2);
+
+	m_pMeshRect->Render();
+
+	//3. 수직
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_UIBloomBlurAcc"))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_HorizonBlur")))))
+		return E_FAIL;
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_UpScaleWorldMatrix, sizeof(_float4x4));
+
+	m_vecShader[SHADER_BLUR]->Begin(1);
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_UIBlend()
+{
+	/*if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_UIBloomBlendAcc"))))
+		return E_FAIL;*/
+
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(TEXT("Target_PostEffect")))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UIForward")))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BloomTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UIBloomBlur")))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BloomOriginTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UIBloom")))))
+		return E_FAIL;
+
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+
+	m_vecShader[SHADER_DEFERRED]->Begin(8);
+
+	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
+	m_pMeshRect->Render();
+
+	//if (FAILED(m_pTarget_Manager->End_MRT()))
+	//	return E_FAIL;
 
 
 	return S_OK;

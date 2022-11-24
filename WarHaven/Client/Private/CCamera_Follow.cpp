@@ -49,6 +49,8 @@ void CCamera_Follow::Start_ShakingCamera(_float fPower, _float fTime)
 void CCamera_Follow::Set_FollowTarget(CGameObject* pTarget)
 {
 	m_pFollowScript->Set_FollowTarget(pTarget);
+	m_pTransform->Set_World(WORLD_POS, pTarget->Get_Transform()->Get_World(WORLD_POS));
+	m_pTransform->Make_WorldMatrix();
 	m_pParent = pTarget;
 }
 

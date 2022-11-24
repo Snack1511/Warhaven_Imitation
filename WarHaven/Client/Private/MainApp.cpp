@@ -17,6 +17,8 @@
 #include "CEffects_Factory.h"
 #include "Transform.h"
 
+#include "CGameSystem.h"
+
 
 IMPLEMENT_SINGLETON(CMainApp);
 
@@ -51,10 +53,13 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(SetUp_Statics()))
 		return E_FAIL;
 
+	if (FAILED(CGameSystem::Get_Instance()->Initialize()))
+		return E_FAIL;
+
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
 	//Sound
@@ -119,6 +124,8 @@ void CMainApp::Release()
 
 	CLoading_Manager::Get_Instance()->Destroy_Instance();
 	CUser::Get_Instance()->Destroy_Instance();
+
+	CGameSystem::Get_Instance()->Destroy_Instance();
 
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Destroy_Instance();

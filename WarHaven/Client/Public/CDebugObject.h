@@ -11,6 +11,7 @@ class CDebugObject
 	: public CGameObject
 {
 	friend class CWindow_PhysX;
+	friend class CWindow_Position;
 
 	DECLARE_PROTOTYPE(CDebugObject);
 

@@ -43,7 +43,7 @@ HRESULT CSprint_Begin::Initialize()
     m_fInterPolationTime = 0.15f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.f;
+    m_fAnimSpeed = 2.5f;
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 

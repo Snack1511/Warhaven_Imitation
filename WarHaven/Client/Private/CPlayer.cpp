@@ -301,7 +301,6 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
 	Set_Postion(vPos);
-
 	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateDefault[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
@@ -324,7 +323,6 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
 	Set_Postion(vPos);
-
 	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 

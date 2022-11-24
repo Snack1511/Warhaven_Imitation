@@ -20,6 +20,9 @@
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Reference\Headers\Imgui\imgui_widgets.cpp"
 
 
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CGameSystem.cpp"
+
+
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CGuard_Dash_WarHammer.cpp"
 
 

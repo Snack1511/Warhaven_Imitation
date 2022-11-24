@@ -73,6 +73,10 @@ HRESULT CWindow_Select::Render()
 	{
 		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_PhysX);
 	}
+	if (ImGui::Button("Position Tool"))
+	{
+		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_POSITION);
+	}
 	ImGui::Spacing();
 
 	__super::End();

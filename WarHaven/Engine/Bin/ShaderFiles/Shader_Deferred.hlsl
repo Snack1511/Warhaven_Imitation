@@ -236,6 +236,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 }
 
 
+
 PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 {
 	PS_OUT			Out = (PS_OUT)Out;
@@ -253,33 +254,36 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 		Out.vColor += vSpecular;
 
 	//DOF
-	//if (Out.vColor.a > 0.f && vDepthDesc.y > 0.01f)
-	//{
-	//	//멀수록 강해짐
-	//	float fRatio = min((vDepthDesc.y - 0.01f) / 0.15f, 1.f);
+	if (Out.vColor.a > 0.f && vDepthDesc.y > 0.001f)
+	{
+		//멀수록 강해짐
+		float fRatio = min((vDepthDesc.y - 0.001f) / 0.1f, 1.f);
 
-	//	vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
+		vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
 
-	//	fRatio *= 0.6f;
-	//	fRatio = pow(fRatio, 1.5f);
+		fRatio *= 1.f;
+		//fRatio = pow(fRatio, 1.5f);
 
-	//	Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
-	//	Out.vColor.r -= 0.3f * fRatio;
-	//	Out.vColor.g += (0.2f * fRatio);
-	//	Out.vColor.b += (0.8f * fRatio);
+		Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
+		Out.vColor.r -= 0.01f * fRatio;
+		Out.vColor.g += (0.1f * fRatio);
+		Out.vColor.b += (0.2f * fRatio);
 
-	//}
+	}
+
+	
+
+	//Shadow
+	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vColor *= vShadowDesc;
+
+	Out.vColor *= 1.2f;
 
 	if (Out.vColor.a <= 0.f)
 	{
 		vector			vSkyDesc = g_SkyTexture.Sample(DefaultSampler, In.vTexUV);
 		Out.vColor = vSkyDesc;
 	}
-
-	//Shadow
-	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor *= vShadowDesc;
-
 
 	//
 
@@ -310,9 +314,30 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
+{
+	//블룸합치기
+	PS_OUT			Out = (PS_OUT)0;
+	vector			vDefaultDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	//BloomDesc의 알파가 반영되어야함.
+	vector			vBloomDesc = g_BloomTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vBloomOriginDesc = g_BloomOriginTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float fPower = 2.2f;
+
+	float4		vBloom = pow(pow(abs(vBloomDesc), fPower) + pow(abs(vBloomOriginDesc), fPower), 1.f / fPower);
+
+	Out.vColor = vDefaultDesc;
+	if (vBloomOriginDesc.a > 0.f)
+	Out.vColor.xyz += vBloom.xyz;
+
+	return Out;
+}
+
 PS_OUT PS_MAIN_FINALBLEND(PS_IN In)
 {
-	PS_OUT			Out = (PS_OUT)Out;
+	PS_OUT			Out = (PS_OUT)0;
 	//vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -502,6 +527,32 @@ PS_OUT PS_MAIN_POSTEFFECT(PS_IN In)
 
 	if (Out.vColor.a <= 0.f)
 		discard;
+
+	return Out;
+}
+
+
+PS_OUT PS_MAIN_UIBLEND(PS_IN In)
+{
+	PS_OUT			Out = (PS_OUT)0;
+
+	vector			vDefaultDesc = g_Texture.Sample(DefaultSampler, In.vTexUV);
+
+	vector			vUIDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	vector			vBloomDesc = g_BloomTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vBloomOriginDesc = g_BloomOriginTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float fPower = 2.2f;
+
+	float4		vBloom = pow(pow(abs(vBloomDesc), fPower) + pow(abs(vBloomOriginDesc), fPower), 1.f / fPower);
+
+	//UI추가하고
+	Out.vColor.xyz = vUIDesc.xyz * vUIDesc.a + (vDefaultDesc * (1.f - vUIDesc.a));
+	//UI 블룸 추가
+	Out.vColor.xyz += vBloom.xyz;
+	Out.vColor.a = 1;
+
 
 	return Out;
 }
@@ -706,5 +757,27 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_POSTEFFECT();
+	}
+
+	pass PS_MAIN_BLOOMBLEND
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_BLOOMBLEND();
+	}
+
+	pass PS_MAIN_UIBLEND
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_UIBLEND();
 	}
 }

@@ -109,8 +109,8 @@ STATE_TYPE CBounce_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     1. 공격이 닿았을 시     
 	*/
 
-	if (pOwner->Is_Weapon_R_Collision())
-		return m_eStateType;
+	//if (pOwner->Is_Weapon_R_Collision())
+	//	return m_eStateType;
 
 
     return STATE_END;

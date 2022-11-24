@@ -20,6 +20,7 @@ public:
 		IMGUI_MAPTOOL,
 		IMGUI_EFFECT,
 		IMGUI_PhysX,
+		IMGUI_POSITION,
 		IMGUI_END
 	};
 

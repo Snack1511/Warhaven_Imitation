@@ -1261,6 +1261,27 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\11. Transform">
       <UniqueIdentifier>{6dcc2b1e-fd18-48b1-9fb3-c5ec86627be0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\07. GameSystem">
+      <UniqueIdentifier>{90510603-a1e6-4fa1-8d74-b87aa4abfb38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\07. GameSystem\Table">
+      <UniqueIdentifier>{7c6c0943-b98d-4995-889c-99c16020c4b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\07. GameSystem\Table\01. PositionTable">
+      <UniqueIdentifier>{94d854ff-c6d8-42b2-9475-ab930135e71f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\07. GameSystem\Table\base">
+      <UniqueIdentifier>{b2ebd6db-930d-4568-a166-5cf3d6a0eda0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\07. Window_Position">
+      <UniqueIdentifier>{a8c4b641-ff28-4fb7-9a1e-3262c10dfe4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\11. Trigger">
+      <UniqueIdentifier>{baec1996-7f79-4614-9376-6d210d0b91a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp">
+      <UniqueIdentifier>{60f67a37-97ec-4ba4-8eca-18ede6faa8fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2217,6 +2238,24 @@
     <ClInclude Include="..\Public\CChangeHero_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\11. Transform</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CGameSystem.h">
+      <Filter>02. Design\07. GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CPositionTable.h">
+      <Filter>02. Design\07. GameSystem\Table\01. PositionTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CTable.h">
+      <Filter>02. Design\07. GameSystem\Table\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CWindow_Position.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\07. Window_Position</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CTrigger.h">
+      <Filter>03. Instances\02. GameObject\11. Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CTrigger_BootCamp.h">
+      <Filter>03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3153,6 +3192,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\CChangeHero_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\11. Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CGameSystem.cpp">
+      <Filter>02. Design\07. GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CPositionTable.cpp">
+      <Filter>02. Design\07. GameSystem\Table\01. PositionTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CTable.cpp">
+      <Filter>02. Design\07. GameSystem\Table\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CWindow_Position.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\07. Window_Position</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CTrigger.cpp">
+      <Filter>03. Instances\02. GameObject\11. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CTrigger_BootCamp.cpp">
+      <Filter>03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

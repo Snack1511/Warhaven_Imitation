@@ -55,3 +55,6 @@
 
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_GuardHit_WarHammer.cpp"
 
+
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_GuardHit_Warrior.cpp"
+

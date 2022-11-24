@@ -127,7 +127,7 @@ HRESULT CWindow_PhysX::Render()
 
 	ImGui::SameLine();
 
-	if (ImGui::Button("DELETE(BACKSPACE)") || KEY(BACKSPACE, TAP))
+	if (ImGui::Button("DELETE"))
 	{
 		if (m_iCurSelectedIndex != 99999)
 		{
@@ -282,6 +282,25 @@ void CWindow_PhysX::Find_Terrain()
 			continue;
 		else
 			break;
+	}
+
+	if (!m_pMeshTerrain)
+	{
+		list<CGameObject*>& DefaultList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
+
+		for (auto& elem : DefaultList)
+		{
+			list<CComponent*> MeshList = elem->Get_Component<CMesh>();
+			if (MeshList.empty())
+				continue;
+
+			m_pMeshTerrain = dynamic_cast<CMesh_Terrain*>(MeshList.front());
+
+			if (!m_pMeshTerrain)
+				continue;
+			else
+				break;
+		}
 	}
 
 }
@@ -441,6 +460,8 @@ void CWindow_PhysX::Load_Data()
 
 		CREATE_GAMEOBJECT(m_pDebugBoxes.back(), GROUP_DEBUG);
 	}
+
+	readFile.close();
 
 }
 

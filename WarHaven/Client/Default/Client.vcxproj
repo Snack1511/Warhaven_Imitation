@@ -188,6 +188,7 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
+    <ClInclude Include="..\public\CGameSystem.h" />
     <ClInclude Include="..\Public\CGuard_Dash_WarHammer.h" />
     <ClInclude Include="..\Public\CGuard_Dash_Player.h" />
     <ClInclude Include="..\Public\CHit_Fly_WarHammer.h" />
@@ -263,6 +264,7 @@
     <ClInclude Include="..\Public\CJump_SpearMan_Land_R.h" />
     <ClInclude Include="..\Public\CJump_SpearMan_R.h" />
     <ClInclude Include="..\public\CMapColliders.h" />
+    <ClInclude Include="..\public\CPositionTable.h" />
     <ClInclude Include="..\Public\CRun_Valkyrie.h" />
     <ClInclude Include="..\Public\CRun_WarHammer.h" />
     <ClInclude Include="..\Public\CRun_Valkyrie_Begin.h" />
@@ -319,6 +321,9 @@
     <ClInclude Include="..\Public\CSwitchRtoL_Valkyrie.h" />
     <ClInclude Include="..\Public\CSwitchRtoL_WarHammer.h" />
     <ClInclude Include="..\Public\CPlayer.h" />
+    <ClInclude Include="..\public\CTable.h" />
+    <ClInclude Include="..\public\CTrigger.h" />
+    <ClInclude Include="..\public\CTrigger_BootCamp.h" />
     <ClInclude Include="..\Public\CUI_UnitHP.h" />
     <ClInclude Include="..\Public\CUI_Traing.h" />
     <ClInclude Include="..\Public\CUI_UnitHUD.h" />
@@ -487,6 +492,7 @@
     <ClInclude Include="..\Public\CWindow_Effect.h" />
     <ClInclude Include="..\Public\CWindow_Map.h" />
     <ClInclude Include="..\public\CWindow_PhysX.h" />
+    <ClInclude Include="..\public\CWindow_Position.h" />
     <ClInclude Include="..\public\CWindow_Select.h" />
     <ClInclude Include="..\Public\CWindow_UI.h" />
     <ClInclude Include="..\Public\CWrapping_Easing_Util.h" />
@@ -508,6 +514,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\private\CGameSystem.cpp" />
     <ClCompile Include="..\Private\CGuard_Dash_WarHammer.cpp" />
     <ClCompile Include="..\Private\CGuard_Dash_Player.cpp" />
     <ClCompile Include="..\Private\CHit_Fly_WarHammer.cpp" />
@@ -584,6 +591,7 @@
     <ClCompile Include="..\Private\CJump_SpearMan_Land_R.cpp" />
     <ClCompile Include="..\Private\CJump_SpearMan_R.cpp" />
     <ClCompile Include="..\private\CMapColliders.cpp" />
+    <ClCompile Include="..\private\CPositionTable.cpp" />
     <ClCompile Include="..\Private\CRun_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CRun_WarHammer.cpp" />
     <ClCompile Include="..\Private\CRun_Valkyrie_Begin.cpp" />
@@ -639,6 +647,9 @@
     <ClCompile Include="..\Private\CSwitchRtoL_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CSwitchRtoL_WarHammer.cpp" />
     <ClCompile Include="..\Private\CPlayer.cpp" />
+    <ClCompile Include="..\private\CTable.cpp" />
+    <ClCompile Include="..\private\CTrigger.cpp" />
+    <ClCompile Include="..\private\CTrigger_BootCamp.cpp" />
     <ClCompile Include="..\Private\CUI_UnitHP.cpp" />
     <ClCompile Include="..\Private\CUI_Traing.cpp" />
     <ClCompile Include="..\Private\CUI_UnitHUD.cpp" />
@@ -804,6 +815,7 @@
     <ClCompile Include="..\Private\CWindow_Effect.cpp" />
     <ClCompile Include="..\Private\CWindow_Map.cpp" />
     <ClCompile Include="..\private\CWindow_PhysX.cpp" />
+    <ClCompile Include="..\private\CWindow_Position.cpp" />
     <ClCompile Include="..\private\CWindow_Select.cpp" />
     <ClCompile Include="..\Private\CWindow_UI.cpp" />
     <ClCompile Include="..\Private\CWrapping_Easing_Util.cpp" />

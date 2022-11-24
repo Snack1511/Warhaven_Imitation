@@ -43,8 +43,11 @@ namespace Client
 	{
 		COL_DEFAULT,
 
+		COL_TRIGGER,
 
 		COL_BODY,
+
+		COL_PLAYERTEAM,
 		COL_PLAYERHITBOX_HEAD,
 		COL_PLAYERHITBOX_BODY,
 		COL_PLAYERGUARD,
@@ -56,6 +59,7 @@ namespace Client
 		COL_PLAYERFLYATTACK, // 공중에 뜨는 공격 -> 방어 가능(블레이드 Q)
 		COL_PLAYERFLYATTACKGUARDBREAK, // 공중에 뜨는 공격-> 방어 불가(워해머 Q)
 
+		COL_ENEMYTEAM,
 
 		COL_ENEMYHITBOX_HEAD,
 		COL_ENEMYHITBOX_BODY,
@@ -86,6 +90,7 @@ namespace Client
 		GROUP_EFFECT,
 		GROUP_DEBUG,
 		GROUP_USER,
+		GROUP_TRIGGER,
 
 		GROUP_END = GR_END
 	};

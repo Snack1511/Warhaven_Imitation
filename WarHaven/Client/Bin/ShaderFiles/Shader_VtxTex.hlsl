@@ -119,6 +119,7 @@ struct PS_IN
 struct PS_OUT
 {
     vector vColor : SV_TARGET0;
+    vector vFlag : SV_TARGET1;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -126,6 +127,7 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vFlag = g_vFlag;
 
     if (Out.vColor.a < 0.1f)
         discard;
@@ -136,7 +138,8 @@ PS_OUT PS_MAIN(PS_IN In)
 PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-        
+    Out.vFlag = g_vFlag;
+
    // 새로 부여할 UV
     float2 TexUV = In.vTexUV;
     
@@ -221,7 +224,8 @@ PS_OUT PS_COLOR(PS_IN In)
 PS_OUT PS_HealthGauge(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-        
+    Out.vFlag = g_vFlag;
+
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
                
     Out.vColor *= g_vColor;
@@ -242,7 +246,8 @@ PS_OUT PS_HealthGauge(PS_IN In)
 PS_OUT PS_HPBAR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
+    Out.vFlag = g_vFlag;
+
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
@@ -262,7 +267,8 @@ PS_OUT PS_HPBAR(PS_IN In)
 PS_OUT PS_LOADINGICON(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-	
+    Out.vFlag = g_vFlag;
+
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	
     if (Out.vColor.a < 0.1f)
@@ -293,7 +299,8 @@ PS_OUT PS_LOADINGICON(PS_IN In)
 PS_OUT PS_HEROGAUGE(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-        
+    Out.vFlag = g_vFlag;
+
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     In.vTexUV.x -= g_fValue;
@@ -314,7 +321,8 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
 PS_OUT PS_RELIC(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
+    Out.vFlag = g_vFlag;
+
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
         
     In.vTexUV += g_fValue;
@@ -330,7 +338,8 @@ PS_OUT PS_RELIC(PS_IN In)
 PS_OUT PS_PORTEFFECT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
+    Out.vFlag = g_vFlag;
+
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     In.vTexUV.y += g_fValue;
@@ -356,7 +365,8 @@ PS_OUT PS_PORTEFFECT(PS_IN In)
 PS_OUT PS_MAINEFFECT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
+    Out.vFlag = g_vFlag;
+
     vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV) * 2.f;
     
     In.vTexUV.x -= g_fValue;
@@ -377,7 +387,8 @@ PS_OUT PS_MAINEFFECT(PS_IN In)
 PS_OUT PS_LOBBYEFFECT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
+    Out.vFlag = g_vFlag;
+
     vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     In.vTexUV.y += 0.44f;
@@ -397,7 +408,8 @@ PS_OUT PS_LOBBYEFFECT(PS_IN In)
 PS_OUT PS_VerticalGauge(PS_IN In)
 {    
     PS_OUT Out = (PS_OUT) 0;
-        
+    Out.vFlag = g_vFlag;
+
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     if (In.vTexUV.y < g_fValue)
@@ -409,7 +421,8 @@ PS_OUT PS_VerticalGauge(PS_IN In)
 PS_OUT PS_UIColor_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
+    Out.vFlag = g_vFlag;
+
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 		
     Out.vColor *= g_vColor;
@@ -424,6 +437,7 @@ PS_OUT PS_UIColor_MAIN(PS_IN In)
 PS_OUT PS_LoadingBar_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -443,6 +457,7 @@ PS_OUT PS_LoadingBar_MAIN(PS_IN In)
 PS_OUT PS_NOBLACK_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -458,6 +473,7 @@ PS_OUT PS_NOBLACK_MAIN(PS_IN In)
 PS_OUT PS_HPBAREFFECT_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -478,6 +494,7 @@ PS_OUT PS_HPBAREFFECT_MAIN(PS_IN In)
 PS_OUT PS_CROSSHAIR_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -494,6 +511,7 @@ PS_OUT PS_CROSSHAIR_MAIN(PS_IN In)
 PS_OUT PS_COLORNOBLACK_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -511,6 +529,7 @@ PS_OUT PS_COLORNOBLACK_MAIN(PS_IN In)
 PS_OUT PS_HPBAR_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -536,6 +555,7 @@ PS_OUT PS_SKILLICON_MAIN(VS_SKILLICON_OUT In)
     }
 	
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -566,6 +586,7 @@ PS_OUT PS_SKILLICON_MAIN(VS_SKILLICON_OUT In)
 PS_OUT PS_ENEMYHPBAR_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -583,6 +604,7 @@ PS_OUT PS_ENEMYHPBAR_MAIN(PS_IN In)
 PS_OUT PS_ENEMYHPBARLINE_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -600,6 +622,7 @@ PS_OUT PS_ENEMYHPBARLINE_MAIN(PS_IN In)
 PS_OUT PS_KOTO_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -617,6 +640,7 @@ PS_OUT PS_KOTO_MAIN(PS_IN In)
 PS_OUT PS_DIALOG_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 

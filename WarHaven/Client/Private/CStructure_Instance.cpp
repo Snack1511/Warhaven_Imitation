@@ -95,6 +95,7 @@ HRESULT CStructure_Instance::Start()
 
 	//m_pTransform->Set_Scale(_float4(0.01f, 0.01f, 0.01f, 0.f));
 	m_pModelCom->Set_ShaderPassToAll(VTXINSTANCE_PASS_NORMALMAPPING);
+	m_pModelCom->Set_ShaderFlag(SH_LIGHT_NOSPEC);
 	return S_OK;
 }
 

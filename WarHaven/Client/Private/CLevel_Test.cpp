@@ -44,6 +44,8 @@
 
 #include "CMapColliders.h"
 
+#include "CGameSystem.h"
+
 CLevel_Test::CLevel_Test()
 {
 }
@@ -145,8 +147,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(100.f, 200.f, 50.f, 1.f);
 	LightDesc.fRange = 1500.f;
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
+	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
@@ -173,6 +175,10 @@ HRESULT CLevel_Test::Enter()
 	GAMEINSTANCE->Begin_PhysScene();
 
 	CEffects_Factory::Get_Instance()->On_EnterLevel();
+
+	/* GameSystem */
+	if (FAILED(CGameSystem::Get_Instance()->On_EnterBootCamp()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -413,6 +419,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_YJ()
 
 void CLevel_Test::Col_Check()
 {
+	/* TRIGGER */
+	GAMEINSTANCE->Check_Group(COL_PLAYERTEAM, COL_TRIGGER);
+	GAMEINSTANCE->Check_Group(COL_ENEMYTEAM, COL_TRIGGER);
 
 	/* 일반 공격 플레이어 */
 	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_BODY);
@@ -484,6 +493,7 @@ CPlayer* CLevel_Test::SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TY
 	pPlayerInstance->SetUp_UnitColliders(bUserPlayer);
 	pPlayerInstance->SetUp_UnitHitStates(bUserPlayer);
 	pPlayerInstance->Set_Postion(vStartPos);
+	pPlayerInstance->Get_CurrentUnit()->Synchronize_CamPos();
 	Ready_GameObject(pPlayerInstance, GROUP_USER);
 
 	return pPlayerInstance;

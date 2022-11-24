@@ -32,6 +32,11 @@ CDebugObject* CDebugObject::Create(_float4 vPos, _float4 vScale, _float4 vAngle)
 		SAFE_DELETE(pInstance);
 	}
 
+
+	pInstance->m_pTransform->Set_Scale(vScale);
+	pInstance->m_pTransform->Set_World(WORLD_POS, vPos);
+	pInstance->m_pTransform->Make_WorldMatrix();
+
 	return pInstance;
 }
 

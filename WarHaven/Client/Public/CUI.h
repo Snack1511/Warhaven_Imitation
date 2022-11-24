@@ -49,6 +49,7 @@ public:
 	// ÄÄÆ÷³ÍÆ®
 	HRESULT SetTexture(const _tchar* pFilePath, _uint iIndex = 1);
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
+	void SetUp_ShaderResource_Flag(CShader* pShader, const char* pConstName);
 
 	void Active_Fade(FADEDESC tFadeDesc);
 
@@ -76,6 +77,9 @@ public:
 	CDelegate<const _uint&>		CallBack_PointDown;
 	CDelegate<const _uint&>		CallBack_PointPress;
 	CDelegate<const _uint&>		CallBack_PointUp;
+
+protected:
+	_float4		m_vUIShaderFlag = SH_UI_BLOOM;
 
 protected:
 	_float4 m_vPosition;

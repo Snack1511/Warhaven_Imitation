@@ -1419,13 +1419,9 @@ void CModel::Bake_LODFrustumInfo()
 	m_pInstancingMaxRange = new _float[m_iNumInstance];
 	ZeroMemory(m_pInstancingMaxRange, sizeof(_float) * m_iNumInstance);
 
+	_float4 vRealCenterPos;
 
-	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
-		_float4x4 matInstance;
-		memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(_float4x4));
-
-		//1. CenterPos 찾기
 		_float4 vMin = _float4(99909.f, 99099.f, 99099.f), vMax = _float4(-90999.f, -99909.f, -99999.f);
 
 		for (auto& elem : m_MeshContainers)
@@ -1438,9 +1434,6 @@ void CModel::Bake_LODFrustumInfo()
 				_float4 vCurVerticesPos;
 				memcpy(&vCurVerticesPos, &pVerticesPos[j], sizeof(_float3));
 				vCurVerticesPos.w = 1.f;
-				vCurVerticesPos = vCurVerticesPos.MultiplyCoord(matInstance);
-
-
 
 				if (vCurVerticesPos.x < vMin.x)
 					vMin.x = vCurVerticesPos.x;
@@ -1457,10 +1450,27 @@ void CModel::Bake_LODFrustumInfo()
 				else if (vCurVerticesPos.z > vMax.z)
 					vMax.z = vCurVerticesPos.z;
 			}
+
+
 		}
 
+		vRealCenterPos = (vMin + vMax) * 0.5f;
+	}
+	
+
+
+	for (_uint i = 0; i < m_iNumInstance; ++i)
+	{
+		_float4x4 matInstance;
+		memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(_float4x4));
+
+
+		m_pInstancingCenterPos[i] = vRealCenterPos.MultiplyCoord(matInstance);
+
+
 		//2. MaxRange 찾기
-		m_pInstancingCenterPos[i] = (vMin + vMax) * 0.5f;
+		//m_pInstancingCenterPos[i] = (vMin + vMax) * 0.5f;
+
 		_float fMaxRange = 0.f;
 
 		for (auto& elem : m_MeshContainers)

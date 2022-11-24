@@ -111,7 +111,7 @@ public:
 	};
 
 public:
-	enum UNITCOLLIDER { BODY, HEAD, WEAPON_L, WEAPON_R, GUARD, GUARDBREAK_L, GUARDBREAK_R, GROGGY, FLYATTACK, UNITCOLLIDER_END };
+	enum UNITCOLLIDER { TEAM, BODY, HEAD, WEAPON_L, WEAPON_R, GUARD, GUARDBREAK_L, GUARDBREAK_R, GROGGY, FLYATTACK, UNITCOLLIDER_END };
 	enum WEAPONCOLLIDER { WEAPONCOLLIDER_END = 3 };
 	enum COOL_TYPE { SKILL1, SKILL2, SKILL3, COOL_END };
 
@@ -133,6 +133,8 @@ public:
 	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
 	void	Set_Passes(VTXANIM_PASS_TYPE ePassType);
 	void	Set_FollowCam(CCamera_Follow* pFollowCam) { m_pFollowCam = pFollowCam; }
+	void	Synchronize_CamPos();
+
 	/* 들고있는 FollowCam에 Shake 넣기. 1인자 : 강도, 2인자 : 시간 (시간이 짧을 수록 강도를 조금만 줘도 세게 흔들림)*/
 	void	Shake_Camera(_float fPower, _float fTime);
 	/* 카메라 위치 조정 */
@@ -143,6 +145,7 @@ public:
 	virtual	void	On_Die();
 
 	void Set_MainPlayer() { m_bIsMainPlayer = true; }
+	_bool		Is_MainPlayer() { return m_bIsMainPlayer; }
 
 public:
 	_float			Calculate_Damage(_bool bHeadShot, _bool bGuard);
@@ -266,8 +269,8 @@ public:
 public:
 	virtual void SetUp_HitStates(_bool bPlayer);
 
-	protected:
-		CPlayer* m_pOwnerPlayer = nullptr;
+protected:
+	CPlayer* m_pOwnerPlayer = nullptr;
 
 
 protected:

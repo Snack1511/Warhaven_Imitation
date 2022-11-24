@@ -39,6 +39,7 @@ HRESULT CUI::Initialize_Prototype()
 	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXTEX, VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 	pShader->Initialize();
 	Add_Component(pShader);
+
 		
 	CUI_Renderer* pRenderer = CUI_Renderer::Create(CP_RENDERER, RENDER_UI, VTXTEX_PASS_DEFAULT, _float4(0.f, 0.f, 0.f, 1.f));
 	Add_Component<CUI_Renderer>(pRenderer);
@@ -76,6 +77,7 @@ HRESULT CUI::Start()
 	GET_COMPONENT(CUI_Renderer)->Set_UI(this);
 
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource, this, placeholders::_1, "g_vColor");
+	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource_Flag, this, placeholders::_1, "g_vFlag");
 
 	return S_OK;
 }
@@ -88,6 +90,11 @@ void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 	pShader->Set_RawValue("g_vScale", &m_vScale, sizeof(_float4));
 	pShader->Set_RawValue("g_SliceRatio", &m_vSliceRatio, sizeof(_float4));
 	pShader->Set_RawValue("g_TextureSize", &m_vTextureSize, sizeof(_float2));
+}
+
+void CUI::SetUp_ShaderResource_Flag(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_vFlag", &m_vUIShaderFlag, sizeof(_float4));
 }
 
 void CUI::Active_Fade(FADEDESC tFadeDesc)

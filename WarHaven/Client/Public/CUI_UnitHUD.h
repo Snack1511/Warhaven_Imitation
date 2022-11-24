@@ -1,5 +1,6 @@
 #pragma once
 #include "CUI_Wrapper.h"
+#include "CUnit.h"
 
 BEGIN(Engine)
 
@@ -36,6 +37,8 @@ private:
 	CUI_Wrapper* m_pUnitUI[UI_End];
 
 	CUnit::UNIT_STATUS m_tStatus;
+
+
 
 	_float4 vColorRed = _float4(1.f, 0.f, 0.f, 1.f);
 	_float4 vColorAlpha = _float4(1.f, 0.f, 0.f, 0.f);

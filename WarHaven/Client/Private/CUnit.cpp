@@ -64,13 +64,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	/* 충돌한 대상이 Unit이 아니면 Return */
 	/* ================================================= */
 	CUnit* pOtherUnit = nullptr;
-
-#ifdef _DEBUG
 	pOtherUnit = dynamic_cast<CUnit*>(pOtherObj);
-#else
-	pOtherUnit = static_cast<CUnit*>(pOtherObj);
 
-#endif // _DEBUG
+
 
 	if (!pOtherUnit)
 		return;
@@ -82,6 +78,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		return;
 
 	m_fHitDelayAcc = m_fHitDelayTime;
+
+	/* SHAKE */
+	Shake_Camera(m_tUnitStatus.fCamPower, m_tUnitStatus.fCamTime);
 
 	STATE_TYPE	eFinalHitState = STATE_END;
 
@@ -171,6 +170,14 @@ void CUnit::Set_Passes(VTXANIM_PASS_TYPE ePassType)
 	}
 }
 
+void CUnit::Synchronize_CamPos()
+{
+	if (!m_pFollowCam)
+		return;
+
+	m_pFollowCam->Get_Transform()->Set_World(WORLD_POS, m_pTransform->Get_World(WORLD_POS));
+}
+
 void CUnit::Shake_Camera(_float fPower, _float fTime)
 {
 	m_pFollowCam->Start_ShakingCamera(fPower, fTime);
@@ -219,6 +226,10 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 	fDamage *= (bHeadShot) ? HEADSHOTRATIO : 1.f;
 	fDamage *= (bGuard) ? GUARDSUCCESS : 1.f;
 	fDamage *= -1.f;
+
+	_float fRandom = frandom(0.8f, 1.2f);
+
+	fDamage *= fRandom;
 
 	return fDamage;
 }
@@ -303,6 +314,8 @@ void CUnit::Reserve_State(STATE_TYPE eType)
 void CUnit::Teleport_Unit(_float4 vPosition)
 {
 #ifdef PHYSX_ON
+	m_pTransform->Set_World(WORLD_POS, vPosition);
+	m_pTransform->Make_WorldMatrix();
 	GET_COMPONENT(CPhysXCharacter)->Set_Position(vPosition);
 
 #endif
@@ -379,6 +392,10 @@ HRESULT CUnit::Initialize()
 
 	if (!m_pPhysics)
 		return E_FAIL;
+
+	m_pModelCom->Set_ShaderFlag(SH_LIGHT_DEFAULT);
+	m_pModelCom->Set_ShaderFlag(MODEL_PART_WEAPON_L, SH_LIGHT_BLOOM);
+	m_pModelCom->Set_ShaderFlag(MODEL_PART_WEAPON, SH_LIGHT_BLOOM);
 
 
 	return S_OK;
@@ -578,6 +595,14 @@ void CUnit::Enable_GroggyCollider(_bool bEnable)
 
 void CUnit::SetUp_Colliders(_bool bPlayer)
 {
+	COL_GROUP_CLIENT	eTeam = (bPlayer) ? COL_PLAYERTEAM : COL_ENEMYTEAM;
+
+	UNIT_COLLIDERDESC tDesc;
+	tDesc.eColType = eTeam;
+	tDesc.fRadius = 1.f;
+	tDesc.vOffsetPos = _float4(0.f, 1.f, 0.f);
+
+	SetUp_UnitCollider(CUnit::TEAM, &tDesc, 1);
 
 }
 
@@ -852,6 +877,7 @@ void CUnit::On_InitSetting()
 	{
 		switch (i)
 		{
+		case UNITCOLLIDER::TEAM:
 		case UNITCOLLIDER::BODY:
 		case UNITCOLLIDER::HEAD:
 
@@ -890,6 +916,7 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 		CUser::Get_Instance()->Turn_BloodOverLay(m_tUnitStatus.fHP / m_tUnitStatus.fMaxHP);
 	}
 
+	
 
 	if (!bDie)
 	{

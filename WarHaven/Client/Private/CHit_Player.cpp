@@ -59,7 +59,6 @@ HRESULT CHit_Player::Initialize()
 	m_vecAdjState.push_back(STATE_JUMPFALL_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_R);
 
 
     m_fMyAccel = 1.f;
