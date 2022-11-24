@@ -383,6 +383,7 @@ void CUI_Skill::Ready_SkillHUD()
 
 	m_Prototypes[Icon] = m_pUIMap[TEXT("Skill_Icon")];
 	m_Prototypes[Icon]->Set_Sort(0.29f);
+
 	GET_COMPONENT_FROM(m_Prototypes[Icon], CTexture)->Remove_Texture(0);
 	Read_Texture(m_Prototypes[Icon], "/HUD/Skill", "_");
 	Read_Texture(m_Prototypes[Icon], "/HUD/Relic", "Relic");
