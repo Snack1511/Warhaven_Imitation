@@ -176,8 +176,8 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	case STATE_ATTACK_HORIZONTALMIDDLE_L:
 	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
-			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
-			break;
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
+		break;
 
 	case STATE_ATTACK_HORIZONTALDOWN_L:
 	case STATE_SPRINTATTACK_PLAYER:
