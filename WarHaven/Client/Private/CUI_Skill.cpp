@@ -265,16 +265,16 @@ void CUI_Skill::Active_SkillHUD(_uint iIndex)
 						continue;
 					}
 
-					m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
+					//m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
 
 					if (j == Outline0)
 					{
-						m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
+						//m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
 					}
 
 					if (j == Icon)
 					{
-						m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
+						//m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
 					}
 				}
 			}
@@ -347,15 +347,17 @@ void CUI_Skill::Enable_Outline()
 	{
 		m_fAccTime += fDT(0);
 
-		_float4 vScale = m_arrSkillUI[1][BG]->Get_Transform()->Get_Scale();
-		_float m_fLeprSpeed = 0.5f;
+		_float fDuration = 0.5f;
 
 		for (int i = 0; i < m_iBtnCount; ++i)
 		{
 			if (i != m_iBtnCount - 1)
 			{
-				m_arrSkillUI[i][Outline1]->Lerp_Scale(95.f, 50.f, m_fLeprSpeed);
-				m_arrSkillUI[i][Outline2]->Lerp_Scale(150.f, 50.f, m_fLeprSpeed);
+				//m_arrSkillUI[i][Outline1]->Set_Scale(95.f);
+				//m_arrSkillUI[i][Outline1]->DoScale(-45.f, fDuration);
+
+				//m_arrSkillUI[i][Outline1]->Set_Scale(150.f);
+				//m_arrSkillUI[i][Outline2]->DoScale(-100.f, fDuration);
 
 				if (m_iLerpCount > 1)
 				{
@@ -401,7 +403,6 @@ void CUI_Skill::Ready_SkillHUD()
 		}
 	}
 
-	// 원본 객체 생성 후 삭제
 	for (_uint i = 0; i < Type_End; ++i)
 	{
 		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
@@ -409,7 +410,6 @@ void CUI_Skill::Ready_SkillHUD()
 		m_Prototypes[i] = nullptr;
 	}
 
-	// 사용할 클론 생성 후 비활성화
 	for (int i = 0; i < 4; ++i)
 	{
 		for (int j = 0; j < Type_End; ++j)
