@@ -20,6 +20,13 @@
 #define COLOR_BLACK		_float4(0.1f, 0.1f, 0.1f, 1.0f)
 #define COLOR_BROWN		_float4(0.4f, 0.2f, 0.1f, 1.0f)
 
+/*Pos*/
+#define TEST_POS				_float4(20.f, 3.f, 10.f);
+#define TEST_SANDBAG_POS		_float4(20.f, 3.f, 10.f);
+
+#define TRAINING_POS			_float4(20.f, 3.f, -10.f);
+#define TRAINING_SANDBAG_POS	_float4(70.f, 3.f, -10.f);
+
 /* Glow*/
 #define	GLOW_CHAKRA(power)		_float4(0.f, 0.5f, 1.f, power)
 

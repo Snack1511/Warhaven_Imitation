@@ -189,11 +189,10 @@ void CUnit::On_Die()
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 1.f;
 	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f);
-	vPos.y -= 0.5f;
+	vPos.y -= 0.7f;
 
 	_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"KillSmoke_Right", vPos, vCamMatrix);
-	vPos.y += 1.f;
 
 	DISABLE_GAMEOBJECT(this);
 

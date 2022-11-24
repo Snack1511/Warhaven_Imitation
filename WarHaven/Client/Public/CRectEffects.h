@@ -95,6 +95,7 @@ private:
 	HRESULT	SetUp_RectEffects_Anim(ifstream* pReadFile);
 
 	void		Update_Animation(_uint iIndex);
+	void		Select_UVTexture(_uint iIndex);
 
 private:
 	void			Reset_Instance(_uint iIndex);

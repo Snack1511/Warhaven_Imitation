@@ -174,13 +174,16 @@ HRESULT CLevel_Test::Enter()
 
 	CEffects_Factory::Get_Instance()->On_EnterLevel();
 
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", _float4(70.f, 0.f, -20.f));
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Leaf_Particle", _float4(70.f, 0.f, -15.f));
+
 	return S_OK;
 }
 
 void CLevel_Test::Tick()
 {
 
-	if (!m_bStaticShadowBake)
+	/*if (!m_bStaticShadowBake)
 	{
 		m_fDealyAcc += fDT(0);
 		if (m_fDealyAcc >= m_fDelayTime)
@@ -197,7 +200,7 @@ void CLevel_Test::Tick()
 			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, 400.f);
 			m_bStaticShadowBake = true;
 		}
-	}
+	}*/
 
 
 #ifdef _DEBUG
@@ -273,7 +276,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
-	_float4 vPlayerPos = _float4(20.f, 3.f, -10.f);
+	_float4 vPlayerPos = TRAINING_POS;
 
 	CPlayer* pUserPlayer = nullptr;
 
@@ -285,8 +288,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 
-	vPlayerPos.x = 70.f;
-	vPlayerPos.z = -10.f;
+	vPlayerPos = TRAINING_SANDBAG_POS;
 
 	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,								
 		STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
@@ -332,9 +334,9 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 
 	//_float4x4 mat;
 	//mat.Identity();
-	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
-	//pDrawableTerrain->Initialize();
-	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	/*CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
+	pDrawableTerrain->Initialize();
+	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);*/
 
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Environments/prop/etc/SM_Prop_Etc_Scarecrow02a.FBX")), mat);
 	pTestStruct->Initialize();
