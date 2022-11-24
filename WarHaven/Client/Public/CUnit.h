@@ -298,8 +298,6 @@ protected:
 	CState* m_pCurState = nullptr;
 	CUnit* m_pTargetUnit = nullptr;
 
-	CPlayer* m_pOwnerPlayer = nullptr;
-
 protected:
 	_bool m_bControlable = true;
 
