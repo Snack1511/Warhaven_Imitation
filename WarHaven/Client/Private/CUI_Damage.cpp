@@ -28,26 +28,54 @@ HRESULT CUI_Damage::Start()
 	return S_OK;
 }
 
+void CUI_Damage::My_Tick()
+{
+	m_fAccTime += fDT(0);
+
+	_float m_fAliveTime = m_fFadeInTime + m_fFadeOutTime + m_fMaintainTime;
+	if (m_fAccTime >= m_fAliveTime)
+	{
+		DISABLE_GAMEOBJECT(this);
+	}
+}
+
 void CUI_Damage::OnEnable()
 {
 	__super::OnEnable();
 
-	if (m_bIsHeadShot)
-	{
-		Enable_Fade(m_pHeadShot, m_fFadeInTime);
-	}
+	vector<_float> vecDigitDmg;
 
-	_uint iDigit = 0;
 	while (m_iDamageValue != 0)
-	{		
-		_uint iTextureNum = m_iDamageValue % 10; ;
-		GET_COMPONENT_FROM(m_pArrDmgNum[iDigit], CTexture)->Set_CurTextureIndex(iTextureNum);
-		iDigit++;
-
-		m_vecDigitDmg.push_back(iTextureNum);
-		sort(m_vecDigitDmg.begin(), m_vecDigitDmg.end(), greater<_uint>());
+	{
+		_uint iDigitDmg = m_iDamageValue % 10; ;
+		vecDigitDmg.push_back(iDigitDmg);
+		sort(vecDigitDmg.begin(), vecDigitDmg.end(), greater<_uint>());
 
 		m_iDamageValue /= 10;
+	}
+
+	_float fRandPosX = frandom(0.f, 300.f);
+	_float fRandPosY = frandom(-300.f, 300.f);
+
+	for (int i = 0; i < vecDigitDmg.size(); ++i)
+	{
+		GET_COMPONENT_FROM(m_pArrDmgNum[i], CTexture)->Set_CurTextureIndex(vecDigitDmg[i]);
+
+		_float fPosX = fRandPosX + (i * 40.f);
+		m_pArrDmgNum[i]->Set_Pos(fPosX, fRandPosY);
+
+		Enable_Fade(m_pArrDmgNum[i], m_fFadeInTime);
+
+		m_pArrDmgNum[i]->DoScale(30.f, 0.5f);
+	}
+
+	if (m_bIsHeadShot)
+	{
+		m_pHeadShot->Set_Pos(fRandPosX - 70.f, fRandPosY);
+
+		Enable_Fade(m_pHeadShot, m_fFadeInTime);
+
+		m_pHeadShot->DoScale(30.f, 0.5f);
 	}
 }
 
@@ -62,8 +90,12 @@ void CUI_Damage::Enable_Damage(_float fDmg, _bool bHeadShot)
 void CUI_Damage::Init_HeadShot()
 {
 	m_pHeadShot->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
+	m_pHeadShot->Set_Scale(100.f);
 
 	Set_FadeDesc(m_pHeadShot);
+
+	CREATE_GAMEOBJECT(m_pHeadShot, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pHeadShot);
 }
 
 void CUI_Damage::Init_DmgNum()
@@ -103,7 +135,7 @@ void CUI_Damage::Set_FadeDesc(CUI_Object* pOther)
 	tFadeDesc.fFadeInStartTime = 0.f;
 	tFadeDesc.fFadeInTime = m_fFadeInTime;
 
-	tFadeDesc.fFadeOutStartTime = 1.f;
+	tFadeDesc.fFadeOutStartTime = m_fMaintainTime;
 	tFadeDesc.fFadeOutTime = m_fFadeOutTime;
 
 	GET_COMPONENT_FROM(pOther, CFader)->Get_FadeDesc() = tFadeDesc;

@@ -13,6 +13,8 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
+	virtual void My_Tick() override;
+
 	virtual void OnEnable() override;
 
 public:
@@ -29,12 +31,13 @@ private:
 
 	_float m_fFadeInTime = 0.3f;
 	_float m_fFadeOutTime = 0.1f;
+	_float m_fMaintainTime = 1.f;
 
 	_uint m_iDamageValue = 0.f;
 
 	_bool m_bIsHeadShot = false;
 
-	vector<_float> m_vecDigitDmg;
+	vector<_float> m_vecDigitDmg;	
 
 private:
 	void Init_HeadShot();
