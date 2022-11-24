@@ -165,6 +165,10 @@ _float CUtility_Transform::Get_FromCameraDistance(CGameObject* pObject)
 {
 	_float4 vObjPos = pObject->Get_Transform()->Get_World(WORLD_POS);
 	_float4 vViewPos = GAMEINSTANCE->Get_ViewPos();
+	
+	//_float4 vDis = vObjPos - vViewPos;
+	
+	//XMVector3Length(XMLoadFloat4(&vDis));
 
 	_float fDisX = vViewPos.x - vObjPos.x;
 	_float fDisZ = vViewPos.z - vObjPos.z;

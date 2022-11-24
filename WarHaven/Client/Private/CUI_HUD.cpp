@@ -12,6 +12,7 @@
 #include "CUI_Skill.h"
 #include "CUI_HeroGauge.h"
 #include "CUI_HpBar.h"
+#include "CUI_Training.h"
 
 #include "Easing_Utillity.h"
 

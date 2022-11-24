@@ -41,10 +41,6 @@ void CUI_UnitHUD::OnEnable()
 	__super::OnEnable();
 
 	ENABLE_GAMEOBJECT(m_pUnitNameText);
-	for (int i = 0; i < UI_End; ++i)
-	{
-		ENABLE_GAMEOBJECT(m_pUnitUI[i]);
-	}
 }
 
 void CUI_UnitHUD::OnDisable()
@@ -72,6 +68,8 @@ void CUI_UnitHUD::My_Tick()
 
 	if (m_fUnitDis > 10.f)
 	{
+		m_vOffset = _float4(0.f, 1.9f, 0.f);
+
 		m_pUnitNameText->Set_FontRender(false);
 		m_pUnitNameText->Set_Color(vColorRed);
 
@@ -79,6 +77,8 @@ void CUI_UnitHUD::My_Tick()
 	}
 	else
 	{
+		m_vOffset = _float4(-0.15f, 2.f, 0.f);
+
 		m_pUnitNameText->Set_FontRender(true);
 		m_pUnitNameText->Set_Color(vColorAlpha);		
 	}
@@ -98,8 +98,7 @@ void CUI_UnitHUD::My_LateTick()
 
 void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 {	
-	_float4 vOffset = _float4(-0.1f, 2.f, 0.f);
-	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform, vOffset);
+	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform, m_vOffset);
 
 	m_pUnitNameText->Set_Pos(vNewPos);
 

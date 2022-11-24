@@ -42,6 +42,8 @@ private:
 
 	CUI_Object* m_pUnitNameText = nullptr;
 	
+	_float4 m_vOffset;
+
 	_float m_fUnitDis = 0.f;
 
 private:
