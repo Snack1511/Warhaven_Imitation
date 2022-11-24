@@ -83,7 +83,6 @@ void CUI_UnitHUD::My_Tick()
 		m_pUnitNameText->Set_Color(vColorAlpha);		
 	}
 
-	// 체력 비율이 1보다 작을 경우에만 활성화
 	_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
 	if (fHpGaugeRatio < 1.f)
 	{
