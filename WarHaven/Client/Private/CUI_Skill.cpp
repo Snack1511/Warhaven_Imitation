@@ -49,14 +49,34 @@ void CUI_Skill::My_Tick()
 
 	Enable_Outline();
 
-	_tchar  szTemp[MAX_STR] = {};
-	swprintf_s(szTemp, TEXT("%.1f"), m_fCoolTime[0]);
-	m_pSkillCoolTextArr[0]->Set_FontText(szTemp);
+	_tchar  szSkill1[MAX_STR] = {};
+	swprintf_s(szSkill1, TEXT("%.1f"), m_fCoolTime[0]);
+	m_pSkillCoolTextArr[0]->Set_FontText(szSkill1);
 
 	if (m_fCoolTime[0] <= 0.05f)
 	{
 		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[0]);
 		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[0]);
+	}
+
+	_tchar  szSkill2[MAX_STR] = {};
+	swprintf_s(szSkill2, TEXT("%.1f"), m_fCoolTime[1]);
+	m_pSkillCoolTextArr[1]->Set_FontText(szSkill2);
+
+	if (m_fCoolTime[1] <= 0.05f)
+	{
+		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[1]);
+		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[1]);
+	}
+
+	_tchar  szSkill3[MAX_STR] = {};
+	swprintf_s(szSkill3, TEXT("%.1f"), m_fCoolTime[2]);
+	m_pSkillCoolTextArr[2]->Set_FontText(szSkill3);
+
+	if (m_fCoolTime[2] <= 0.05f)
+	{
+		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[2]);
+		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[2]);
 	}
 }
 
@@ -201,8 +221,11 @@ void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCool
 
 	//m_fSkillGauge = m_fCoolTime[iSkillType] / m_fMaxCoolTime[iSkillType];
 
-	ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[0]);
-	ENABLE_GAMEOBJECT(m_pSkillCoolBGArr[0]);
+	if (m_fCoolTime[iSkillType] > 0.01f)
+	{
+		ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[iSkillType]);
+		ENABLE_GAMEOBJECT(m_pSkillCoolBGArr[iSkillType]);
+	}
 }
 
 void CUI_Skill::Active_SkillHUD(_uint iIndex)

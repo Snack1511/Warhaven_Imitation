@@ -299,10 +299,7 @@ void CUI_HUD::SetActive_OxenJumpText(_bool value)
 
 void CUI_HUD::Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
 {
-	for (int i = 0; i < 3; ++i)
-	{
-		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(i, fCoolTime, fMaxCoolTime);
-	}
+	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(iSkillType, fCoolTime, fMaxCoolTime);
 }
 
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
