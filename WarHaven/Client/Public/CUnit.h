@@ -343,8 +343,6 @@ private:
 private:
 	void	On_InitSetting();
 
-
-
 private:
 	_bool		m_bIsMainPlayer = false;
 	_bool		m_bDie = false;

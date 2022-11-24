@@ -36,11 +36,11 @@ CCameraCollider* CCameraCollider::Create(_uint iGroupID, const BONECOLLIDERDESC&
 
 void CCameraCollider::onShapeHit(const PxControllerShapeHit& hit)
 {
-	//if (hit.actor->getType() == PxActorType::eRIGID_STATIC)
-	//{
-	//	m_pCurrentHitActor = hit.actor;
-	//	m_pCurrentShape= hit.shape;
-	//}
+	if (hit.actor->getType() == PxActorType::eRIGID_STATIC)
+	{
+		m_pCurrentHitActor = hit.actor;
+		m_pCurrentShape= hit.shape;
+	}
 }
 
 void CCameraCollider::onControllerHit(const PxControllersHit& hit)

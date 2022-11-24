@@ -196,7 +196,7 @@ void CUnit::On_Die()
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 1.f;
 
-	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_NOSCALE | MARTIX_NOTRANS);
+	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
 
 	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 	vPos.y -= 0.7f;
@@ -909,14 +909,11 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 
 	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot);
 
-
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)
 	{
 		CUser::Get_Instance()->Turn_BloodOverLay(m_tUnitStatus.fHP / m_tUnitStatus.fMaxHP);
 	}
-
-	
 
 	if (!bDie)
 	{
@@ -926,12 +923,12 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 		return;
 	}
 
+	pOtherUnit->Effect_Hit(this, vHitPos);
 
 	switch (iOtherColType)
 	{
 	case COL_ENEMYATTACK:
 	case COL_PLAYERATTACK:
-		pOtherUnit->Effect_Hit(this, vHitPos);
 		Enter_State(m_tHitType.eHitState, pHitInfo);
 
 		break;

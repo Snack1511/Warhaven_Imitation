@@ -8,6 +8,8 @@
 
 #include "CInstanceMesh.h"
 
+#include "Easing_Utillity.h"
+
 
 CMesh_Particle::CMesh_Particle()
 {
@@ -100,11 +102,15 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower, _
 
 
 #ifdef _DEBUG
-		_float fRand = 0.3f;
+		if (m_iNumInstance > 1)
+		{
+			_float fRand = 0.3f;
 
-		vPos.x += frandom(-fRand, fRand);
-		vPos.y += frandom(-fRand, fRand);
-		vPos.z += frandom(-fRand, fRand);
+			vPos.x += frandom(-fRand, fRand);
+			vPos.y += frandom(-fRand, fRand);
+			vPos.z += frandom(-fRand, fRand);
+		}
+	
 #endif // _DEBUG
 
 
@@ -130,9 +136,35 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower, _
 		pActor->addForce(CUtility_PhysX::To_PxVec3(vNewDir));
 		m_vecRigidDynamics.push_back(pActor);
 
+
+
+		_float4x4 matPhysX = CUtility_PhysX::To_Matrix(tTransform);
+
+		//피직스월드매트릭스에 역행렬을 곱해야대
+
+		m_pInstanceMatrices[i] = matPhysX;// * matWorldInv;
 	}
 
+	m_bReverse = false;
+	m_vecMatrices.clear();
 	ENABLE_GAMEOBJECT(this);
+}
+
+void CMesh_Particle::Start_Reverse()
+{
+	m_fReverseAcc = 0.f;
+
+	if (!m_bReverse && !m_vecMatrices.empty())
+	{
+		m_bReverse = true;
+
+		for (_uint i = 0; i < m_iNumInstance; ++i)
+		{
+			Safe_release(m_vecRigidDynamics[i]);
+		}
+
+		m_vecRigidDynamics.clear();
+	}
 }
 
 HRESULT CMesh_Particle::Initialize_Prototype()
@@ -219,7 +251,7 @@ HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
 	}
 
 
-	CMeshContainer* pMesh = (pConvexModel->Get_MeshContainers().back().second);
+	CMeshContainer* pMesh = (pConvexModel->Get_MeshContainers().front().second);
 
 	FACEINDICES32* pIndices = pMesh->CMesh::Get_Indices();
 	_uint iNumPrimitive = pMesh->Get_NumPrimitive();
@@ -247,7 +279,111 @@ HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
 
 void CMesh_Particle::My_Tick()
 {
+	if (KEY(ENTER, TAP))
+		Start_Reverse();
 
+
+
+	if (m_bReverse)
+	{
+		m_fReverseAcc += fDT(0.f);
+
+		if (m_fReverseAcc >= m_fRebornTime)
+		{
+			//다음으로
+			m_fReverseAcc = 0.f;
+			m_vecMatrices.pop_back();
+
+			//남은 갯수가 적을 수록 시간이 늘어나
+			//m_fRebornTime += 0.03f * sqrtf(1.f - m_vecMatrices.size() / 50.f);
+			
+			//매트릭스갱신
+			m_pInstanceMatrices[0] = m_vecMatrices.back();
+
+			if (m_vecMatrices.size() <= 1)
+			{
+				//끝
+				m_vecMatrices.clear();
+				m_bReverse = false;
+				return;
+			}
+		}
+		else
+		{
+			//시간 안지났으면 보간
+			_float fRatio = m_fReverseAcc / m_fRebornTime;
+
+			//맨 뒤에서 그 전꺼로 보간
+			_uint iSize = m_vecMatrices.size();
+
+			_float4x4 matPrev = m_vecMatrices[iSize - 1];
+			_float4x4 matTarget = m_vecMatrices[iSize - 2];
+
+			_vector vRight, vUp, vLook, vPos;
+			if (m_vecMatrices.size() == 2)
+			{
+				vRight = CEasing_Utillity::SinIn(matPrev.XMLoad().r[0], matTarget.XMLoad().r[0], m_fReverseAcc, m_fRebornTime).XMLoad();
+				vUp = CEasing_Utillity::SinIn(matPrev.XMLoad().r[1], matTarget.XMLoad().r[1], m_fReverseAcc, m_fRebornTime).XMLoad();
+				vLook = CEasing_Utillity::SinIn(matPrev.XMLoad().r[2], matTarget.XMLoad().r[2], m_fReverseAcc, m_fRebornTime).XMLoad();
+				vPos = CEasing_Utillity::SinIn(matPrev.XMLoad().r[3], matTarget.XMLoad().r[3], m_fReverseAcc, m_fRebornTime).XMLoad();
+			}
+			else
+			{
+				vRight = XMVectorLerp(matPrev.XMLoad().r[0], matTarget.XMLoad().r[0], fRatio);
+				vUp = XMVectorLerp(matPrev.XMLoad().r[1], matTarget.XMLoad().r[1], fRatio);
+				vLook = XMVectorLerp(matPrev.XMLoad().r[2], matTarget.XMLoad().r[2], fRatio);
+				vPos = XMVectorLerp(matPrev.XMLoad().r[3], matTarget.XMLoad().r[3], fRatio);
+			}
+
+
+		
+
+			XMMATRIX	CurMat;
+			CurMat.r[0] = vRight;
+			CurMat.r[1] = vUp;
+			CurMat.r[2] = vLook;
+			CurMat.r[3] = vPos;
+
+			m_pInstanceMatrices[0] = CurMat;
+		}
+
+		vector<pair<_uint, class CMeshContainer*>>& vecMC = GET_COMPONENT(CModel)->Get_MeshContainers();
+
+		for (auto& elem : vecMC)
+		{
+			static_cast<CInstanceMesh*>(elem.second)->ReMap_Instances(m_pInstanceMatrices);
+		}
+
+
+		//넘겨
+		return;
+	}
+
+
+
+	/* 이동  매트릭스 저장 */
+	if (m_iNumInstance == 1)
+	{
+		m_fReverseAcc += fDT(0.f);
+
+		if (m_fReverseAcc >= m_fReverseTime)
+		{
+			m_fReverseAcc = 0.f;
+
+
+			//_float4 vCurPos = m_pInstanceMatrices[0].XMLoad().r[3];
+		/*	_float4 vPrevPos = ZERO_VECTOR;
+
+			if (!m_vecMatrices.empty())
+				vPrevPos = m_vecMatrices.back().XMLoad().r[3];
+
+			if (vCurPos != vPrevPos)*/
+			if (m_vecMatrices.size() < 30)
+				m_vecMatrices.push_back(m_pInstanceMatrices[0]);
+
+		}
+	}
+	
 
 
 	m_fTimeAcc += fDT(0);
@@ -259,6 +395,12 @@ void CMesh_Particle::My_Tick()
 void CMesh_Particle::My_LateTick()
 {
 	if (!m_pInstanceMatrices)
+		return;
+
+	if (m_bReverse)
+		return;
+
+	if (m_vecRigidDynamics.empty())
 		return;
 
 	_float4x4 matWorldInv = m_pTransform->Get_WorldMatrix();

@@ -875,7 +875,7 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
 
-	_uint iNumBlur = 1;
+	_uint iNumBlur = 0;
 	
 	for (_uint i = 0; i < iNumBlur; ++i)
 	{

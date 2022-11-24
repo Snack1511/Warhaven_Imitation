@@ -29,6 +29,7 @@ texture2D	g_NormalTexture;
 texture2D	g_Texture;
 texture2D	g_FlagTexture;
 texture2D	g_OutlineTexture;
+texture2D	g_ShadowDepthTexture;
 texture2D	g_ShadowTexture;
 texture2D	g_BlurTexture;
 texture2D	g_EffectFlagTexture;
@@ -261,19 +262,20 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 
 		vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
 
-		fRatio *= 1.f;
+		fRatio *= 0.6f;
 		//fRatio = pow(fRatio, 1.5f);
 
 		Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
-		Out.vColor.r -= 0.01f * fRatio;
-		Out.vColor.g += (0.1f * fRatio);
-		Out.vColor.b += (0.2f * fRatio);
+		Out.vColor.r += 0.5f * fRatio;
+		Out.vColor.g += (0.5f * fRatio);
+		Out.vColor.b += (0.5f * fRatio);
 
 	}
 
 	
 
 	//Shadow
+	
 	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
 	Out.vColor *= vShadowDesc;
 
