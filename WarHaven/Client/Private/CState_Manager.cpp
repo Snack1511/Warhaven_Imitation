@@ -484,7 +484,7 @@ void CState_Manager::Warrior_State()
 	/* Charge Test */
 	m_arrStates[STATE_CHARGETEST] = CChargeTest::Create();
 
-//	m_arrStates[STATE_CHANGE_PLAYER] = CChangeHero_Player::Create();
+	m_arrStates[STATE_CHANGE_PLAYER] = CChangeHero_Player::Create();
 
 
 
