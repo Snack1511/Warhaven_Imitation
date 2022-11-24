@@ -37,6 +37,11 @@ public:
 	virtual void	OnDisable() override;
 
 private:
+	_float				m_fReverseAcc = 0.f;
+	_float				m_fReverseTime = 0.08f;
+	vector<_float4x4*> m_vecMatrices;
+
+private:
 	//부서질 수 있는 객체
 	// 1. 인스턴싱으로 객체 만들고
 	_uint		m_iNumInstance = 0;

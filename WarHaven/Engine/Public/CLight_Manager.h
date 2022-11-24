@@ -22,6 +22,7 @@ public:
 
 public:
 	void	Update_Lights();
+
 private:
 	list<class CLight*>				m_Lights;
 	list<LIGHTDESC>				m_ReservedLights;

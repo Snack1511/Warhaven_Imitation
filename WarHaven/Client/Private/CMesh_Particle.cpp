@@ -247,6 +247,9 @@ HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
 
 void CMesh_Particle::My_Tick()
 {
+
+
+
 	m_fTimeAcc += fDT(0);
 
 	if (m_fTimeAcc >= m_fLifeTime)

@@ -77,6 +77,8 @@ HRESULT CPositionTable::Load_Position(string strFileKey)
 	}
 
 	readFile.close();
+
+	return S_OK;
 }
 
 void CPositionTable::Add_Position(string strPositionKey, _float4 vPosition)

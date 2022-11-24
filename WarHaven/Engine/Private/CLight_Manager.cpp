@@ -89,11 +89,17 @@ HRESULT CLight_Manager::Load_Lights(wstring wstrPath)
 
 void CLight_Manager::Update_Lights()
 {
-	
-
 	for (auto iter = m_Lights.begin(); iter != m_Lights.end();)
 	{
 		CLight* pLight = *iter;
+
+		//Random Range
+		if (pLight->m_LightDesc.fRandomRange > 0.f)
+		{
+			_float fRange = frandom(-pLight->m_LightDesc.fRandomRange, pLight->m_LightDesc.fRandomRange);
+			pLight->m_LightDesc.fRange = pLight->m_LightDesc.fOriginRange + fRange;
+		}
+
 
 		if (pLight->m_LightDesc.pOwner)
 		{

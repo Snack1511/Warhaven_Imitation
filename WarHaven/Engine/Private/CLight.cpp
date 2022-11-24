@@ -15,6 +15,7 @@ CLight::~CLight()
 HRESULT CLight::Initialize(const LIGHTDESC& LightDesc)
 {
 	m_LightDesc = LightDesc;
+	m_LightDesc.fOriginRange = m_LightDesc.fRange;
 
 	return S_OK;
 }

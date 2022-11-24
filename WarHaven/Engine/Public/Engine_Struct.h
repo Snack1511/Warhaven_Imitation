@@ -369,6 +369,8 @@ namespace Engine
 
 		XMFLOAT4		vPosition;
 		float			fRange;
+		float			fOriginRange;
+		float			fRandomRange = 0.f;
 
 		XMFLOAT4		vDiffuse;
 		XMFLOAT4		vAmbient;
