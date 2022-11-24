@@ -181,11 +181,15 @@ void CUser::On_EnterLevel()
 		CREATE_GAMEOBJECT(m_pUI_HUD, GROUP_UI);
 	}
 
-	if (!m_pUI_Damage)
+	if (!m_pUI_Damage[0])
 	{
-		m_pUI_Damage = CUI_Damage::Create();
-		CREATE_GAMEOBJECT(m_pUI_Damage, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pUI_Damage);
+		for (int i = 0; i < 5; ++i)
+		{
+			m_pUI_Damage[i] = CUI_Damage::Create();
+
+			CREATE_GAMEOBJECT(m_pUI_Damage[i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pUI_Damage[i]);
+		}
 	}
 }
 
@@ -200,7 +204,13 @@ void CUser::Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fM
 }
 
 void CUser::Enable_DamageFont(_float fDmg, _bool bHeadShot)
-{
-	m_pUI_Damage->Enable_Damage(fDmg, bHeadShot);
+{	
+	m_pUI_Damage[m_iDamageFontIdx]->Enable_Damage(fDmg, bHeadShot);
+
+	m_iDamageFontIdx++;
+	if (m_iDamageFontIdx > 4)
+	{
+		m_iDamageFontIdx = 0;
+	}
 }
 

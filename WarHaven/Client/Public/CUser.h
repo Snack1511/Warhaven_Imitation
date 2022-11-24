@@ -76,6 +76,8 @@ private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
 	CUI_Cursor* m_pCursor = nullptr;
 	CUI_HUD* m_pUI_HUD = nullptr;
-	CUI_Damage* m_pUI_Damage = nullptr;
+
+	CUI_Damage* m_pUI_Damage[5];
+	_uint m_iDamageFontIdx = 0;
 };
 END

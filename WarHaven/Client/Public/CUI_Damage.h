@@ -8,6 +8,10 @@ class CUI_Damage : public CUI_Wrapper
 	DECLARE_PROTOTYPE(CUI_Damage);
 	DECLARE_GAMEOBJECT(CUI_Damage);
 
+private:
+	CUI_Damage();
+	virtual ~CUI_Damage();
+
 public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
@@ -34,7 +38,7 @@ private:
 
 	_float m_fFadeInTime = 0.3f;
 	_float m_fFadeOutTime = 0.1f;
-	_float m_fMaintainTime = 1.f;
+	_float m_fMaintainTime = 2.f;
 
 	_float m_fScaleUpTime = 0.1f;
 	_float m_fScaleDownTime = 0.2f;
@@ -45,7 +49,7 @@ private:
 	_bool m_bIsHeadShot = false;
 	_bool m_bIsScaleDown = false;
 
-	vector<_float> m_vecDigitDmg;
+	vector<_uint> m_vecDigitDmg;
 
 private:
 	void Init_HeadShot();

@@ -6,6 +6,14 @@
 #include "Texture.h"
 #include "CFader.h"
 
+CUI_Damage::CUI_Damage()
+{
+}
+
+CUI_Damage::~CUI_Damage()
+{
+}
+
 HRESULT CUI_Damage::Initialize_Prototype()
 {
 	m_pHeadShot = CUI_Object::Create();
@@ -63,8 +71,6 @@ void CUI_Damage::My_Tick()
 void CUI_Damage::OnEnable()
 {
 	__super::OnEnable();
-
-	vector<_float> vecDigitDmg;
 
 	while (m_iDamageValue != 0)
 	{
@@ -135,7 +141,7 @@ void CUI_Damage::Init_DmgNum()
 	GET_COMPONENT_FROM(m_pDmgNum, CTexture)->Remove_Texture(0);
 
 	CREATE_GAMEOBJECT(m_pDmgNum, GROUP_UI);
-	DELETE_GAMEOBJECT(m_pDmgNum);
+	DISABLE_GAMEOBJECT(m_pDmgNum);
 
 	for (int i = 0; i < 3; ++i)
 	{
