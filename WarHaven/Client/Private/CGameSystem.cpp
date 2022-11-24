@@ -24,7 +24,7 @@ HRESULT CGameSystem::Initialize()
     SAFE_CREATE(m_pPositionTable, CPositionTable);
 
 
-    if (FAILED(m_pPositionTable->Load_Position("PositionTest")))
+    if (FAILED(m_pPositionTable->Load_Position("BootCamp")))
     {
         Call_MsgBox(L"Failed to Load_Position : CGameSystem");
         return E_FAIL;
@@ -45,12 +45,35 @@ void CGameSystem::Release()
 
 HRESULT CGameSystem::On_EnterBootCamp()
 {
-    CTrigger_BootCamp* pBootCampTrigger = CTrigger_BootCamp::Create("PositionTest_0", 0, 3.f);
+   /* CTrigger_BootCamp* pBootCampTrigger = CTrigger_BootCamp::Create("PositionTest_0", 0, 3.f);
 
     if (!pBootCampTrigger)
         return E_FAIL;
 
-    CREATE_GAMEOBJECT(pBootCampTrigger, GROUP_TRIGGER);
+    CREATE_GAMEOBJECT(pBootCampTrigger, GROUP_TRIGGER);*/
+
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_0"));
+
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_1"));
+
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_2"));
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_3"));
+
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Leaf_Particle", _float4(70.f, 0.f, -15.f));
+
+
+    LIGHTDESC			LightDesc;
+
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = Find_Position("Fire_0");
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
 
 
     return S_OK;

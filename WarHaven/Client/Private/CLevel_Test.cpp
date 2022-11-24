@@ -180,8 +180,7 @@ HRESULT CLevel_Test::Enter()
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterBootCamp()))
 		return E_FAIL;
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", _float4(70.f, 0.f, -20.f));
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Leaf_Particle", _float4(70.f, 0.f, -15.f));
+	
 
 	return S_OK;
 }

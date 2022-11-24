@@ -255,14 +255,14 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 		Out.vColor += vSpecular;
 
 	//DOF
-	if (Out.vColor.a > 0.f && vDepthDesc.y > 0.001f)
+	if (Out.vColor.a > 0.f && vDepthDesc.y > 0.002f)
 	{
 		//멀수록 강해짐
-		float fRatio = min((vDepthDesc.y - 0.001f) / 0.1f, 1.f);
+		float fRatio = min((vDepthDesc.y - 0.002f) / 0.15f, 1.f);
 
 		vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
 
-		fRatio *= 0.6f;
+		fRatio *= 0.8f;
 		//fRatio = pow(fRatio, 1.5f);
 
 		Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;

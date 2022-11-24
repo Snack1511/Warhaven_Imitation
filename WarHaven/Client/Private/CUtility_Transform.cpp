@@ -177,3 +177,30 @@ _float CUtility_Transform::Get_FromCameraDistance(CGameObject* pObject)
 
 	return fDis;
 }
+
+_float4x4 CUtility_Transform::Get_MatrixbyLook(_float4 vLook, _float4 vPos)
+{
+	_float4x4 matNew;
+	matNew.Identity();
+
+	_float4 _vLook = vLook;
+	*((_float4*)&matNew.m[2]) = _vLook;
+
+
+	_float4 vUp = { 0.f, 1.f, 0.f };
+	if ((vLook.y < 1.1f && vLook.y > 0.9f) ||
+		(vLook.y > -1.1f && vLook.y < -0.9f)
+		)
+		vUp = _float4(0.f, 0.f, 1.f, 0.f);
+
+	vUp.Normalize();
+	_float4 vRight = vUp.Cross(vLook);
+	*((_float4*)&matNew.m[0]) = vRight;
+
+	vUp = _vLook.Cross(vRight);
+	*((_float4*)&matNew.m[1]) = vUp;
+
+	*((_float4*)&matNew.m[3]) = vPos;
+
+	return matNew;
+}
