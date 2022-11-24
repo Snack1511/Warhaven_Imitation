@@ -45,6 +45,8 @@ HRESULT CGuard_End_Player::Initialize()
 	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
 
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+
 	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
 

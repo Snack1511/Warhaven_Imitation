@@ -21,6 +21,8 @@ HRESULT CJump_WarHammer::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
 
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+
     return S_OK;
 }
 

@@ -165,7 +165,7 @@ HRESULT CWarrior_Attack_Sting_L::Initialize()
 
 void CWarrior_Attack_Sting_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	
+	pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_L);
 	
 
     /* Owner¿« Animator Set Idle∑Œ */

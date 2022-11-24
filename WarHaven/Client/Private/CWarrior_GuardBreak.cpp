@@ -86,7 +86,7 @@ HRESULT CWarrior_GuardBreak::Initialize()
 
 void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    pOwner->On_Use(CUnit::SKILL2);
+    pOwner->On_Use(CUnit::SKILL1);
 
     pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
@@ -128,7 +128,7 @@ STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnima
     1.  스킬버튼 을 이용해 공격한다.
     */
 
-    if (!pOwner->Can_Use(CUnit::SKILL2))
+    if (!pOwner->Can_Use(CUnit::SKILL1))
         return STATE_END;
 
     if (KEY(E, TAP))

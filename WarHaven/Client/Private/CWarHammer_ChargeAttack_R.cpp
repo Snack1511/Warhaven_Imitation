@@ -63,12 +63,16 @@ HRESULT CWarHammer_ChargeAttack_R::Initialize()
 	m_eIdleState = STATE_IDLE_WARHAMMER_L;
 	m_eBounceState = STATE_BOUNCE_WARHAMMER_R;
 
+	m_fDamagePumping = 5.6f;
 
 	return __super::Initialize();
 }
 
 void CWarHammer_ChargeAttack_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_R);
+
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

@@ -52,7 +52,7 @@ HRESULT CWarHammer_AirSpike_Begin::Initialize()
 
 void CWarHammer_AirSpike_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->On_Use(CUnit::SKILL1);
+	pOwner->On_Use(CUnit::SKILL3);
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
@@ -78,10 +78,10 @@ void CWarHammer_AirSpike_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CWarHammer_AirSpike_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-	if (!pOwner->Can_Use(CUnit::SKILL1))
+	if (!pOwner->Can_Use(CUnit::SKILL3))
 		return STATE_END;
 
-	if (KEY(Q, TAP))
+	if (KEY(Q, HOLD))
 		return m_eStateType;
 
 

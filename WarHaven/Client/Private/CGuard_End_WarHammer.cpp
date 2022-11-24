@@ -45,12 +45,13 @@ HRESULT CGuard_End_WarHammer::Initialize()
 	m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_R);
 
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_WARHAMMER);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
     return S_OK;

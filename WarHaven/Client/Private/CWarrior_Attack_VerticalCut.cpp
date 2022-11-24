@@ -173,6 +173,8 @@ void CWarrior_Attack_VerticalCut::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 STATE_TYPE CWarrior_Attack_VerticalCut::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_R);
+
     return __super::Tick(pOwner, pAnimator);
 }
 

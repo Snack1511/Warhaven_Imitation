@@ -27,6 +27,7 @@ HRESULT CWarHammer_Attack_VerticalAttack::Initialize()
 	m_vecAdjState.push_back(STATE_GROGGYATTACK_WARHAMMER);
 	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
 
+
 	m_vecAdjState.push_back(STATE_SWITCH_L_TO_R_WARHAMMER);
 
 

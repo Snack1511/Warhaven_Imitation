@@ -186,6 +186,7 @@ public:
 	void	Set_OwnerPlayer(CPlayer* pPlayer) { m_pOwnerPlayer = pPlayer; }
 	void	On_ChangeToHero(_uint iIndex);
 
+	CPlayer* Get_OwnerPlayer() { return m_pOwnerPlayer; }
 	
 
 	_float4	Get_FollowCamLook();
@@ -294,9 +295,10 @@ protected:
 
 	CLASS_TYPE		m_eHeroType = CLASS_END;
 
-
 	CState* m_pCurState = nullptr;
 	CUnit* m_pTargetUnit = nullptr;
+
+	CPlayer* m_pOwnerPlayer = nullptr;
 
 protected:
 	_bool m_bControlable = true;

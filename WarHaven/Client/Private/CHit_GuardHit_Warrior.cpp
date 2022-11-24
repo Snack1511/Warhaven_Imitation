@@ -60,6 +60,8 @@ HRESULT CHit_GuardHit_Warrior::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+
 
     m_fMyAccel = 10.f;
     m_fMyMaxLerp = 10.f;

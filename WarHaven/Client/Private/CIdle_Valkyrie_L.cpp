@@ -64,10 +64,13 @@ HRESULT CIdle_Valkyrie_L::Initialize()
 
     /*나중에 추가*/
     m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
-    m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-    //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
+
+
     m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);

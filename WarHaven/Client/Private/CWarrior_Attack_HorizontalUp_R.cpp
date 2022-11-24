@@ -139,6 +139,8 @@ HRESULT CWarrior_Attack_HorizontalUp_R::Initialize()
 
 void CWarrior_Attack_HorizontalUp_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_R);
+
 	if (ePrevType == STATE_SWITCH_L_TO_R)
 	{
 		m_fAnimSpeed = 2.3f;

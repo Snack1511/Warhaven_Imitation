@@ -48,7 +48,27 @@ _float4 CResource_Material::Check_FileName(string strName)
 		//m_tMatDesc.TexturePaths[aiTextureType_DIFFUSE_ROUGHNESS] = "../bin/resources/textures/materials/T_Faceparts_base_coptes.dds";
 
 	}
+	else if (strName == "MI_Fiona001_A00_HairLarge")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_Hair_B.dds";
 
+	}
+	else if (strName == "MI_Fiona001_A00_HairBraid")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_Hair_B.dds";
 
+	}
+	else if (strName == "MI_Fiona0001_HairProp_A00")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_HairProp_B.dds";
+
+	}
+
+	
+
+	
 	return vReturnColor;
 }

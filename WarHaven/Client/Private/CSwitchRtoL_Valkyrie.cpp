@@ -55,6 +55,11 @@ HRESULT CSwitchRtoL_Valkyrie::Initialize()
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
 
     /*나중에 추가*/
     m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);

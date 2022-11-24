@@ -27,7 +27,9 @@ HRESULT CRun_Player::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
@@ -37,7 +39,6 @@ HRESULT CRun_Player::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
-	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
     m_iStateChangeKeyFrame = 0;
 
@@ -104,7 +105,7 @@ STATE_TYPE CRun_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     1. 뛰어간다.
     */
 
-	if (KEY(CTRL, NONE))
+	if (KEY(C, NONE))
 	{
 		// 걸어간다.
 		if (KEY(W, HOLD) ||

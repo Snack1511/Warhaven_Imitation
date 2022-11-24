@@ -60,18 +60,6 @@ HRESULT CWarHammer_Attack_HorizontalMiddle_R::Initialize()
 	m_eAnimLeftorRight = ANIM_BASE_R;
 
 
-	//m_eAnimLeftorRight = ANIM_BASE_R;
-
-	//m_iIdle_Index = 14;
-	//m_iLandRightIndex = 20;
-	//m_iLandLeftIndex = 10;
-	//m_iJumpFallRightIndex = 11;
-	//m_iJumpFallLeftIndex = 1;
-
-
-
-
-
 	m_eWalkState = STATE_WALK_WARHAMMER_L;
 	m_eJumpState = STATE_JUMP_WARHAMMER_L;
 	m_eLandState = STATE_JUMP_LAND_WARHAMMER_L;
@@ -79,13 +67,25 @@ HRESULT CWarHammer_Attack_HorizontalMiddle_R::Initialize()
 	m_eRunState = STATE_RUNBEGIN_WARHAMMER_L;
 	m_eIdleState = STATE_IDLE_WARHAMMER_L;
 	m_eBounceState = STATE_BOUNCE_WARHAMMER_R;
-
+	
+	m_fDamagePumping = 4.2f;
 
 	return __super::Initialize();
 }
 
 void CWarHammer_Attack_HorizontalMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_R);
+
+
+	if (ePrevType == STATE_SWITCH_L_TO_R)
+	{
+		m_fAnimSpeed = 2.5f;
+	}
+	else
+		m_fAnimSpeed = 2.7f;
+
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

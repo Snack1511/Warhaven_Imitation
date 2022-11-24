@@ -25,6 +25,9 @@ HRESULT CRun_WarHammer::Initialize()
 	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
 	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+
+
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.5f;

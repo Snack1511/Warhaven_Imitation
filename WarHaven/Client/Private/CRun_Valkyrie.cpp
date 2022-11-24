@@ -24,6 +24,7 @@ HRESULT CRun_Valkyrie::Initialize()
 	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.8f;
@@ -89,7 +90,7 @@ STATE_TYPE CRun_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 		2. WAD 를 누른 상태
 		*/
 
-	if (KEY(CTRL, NONE))
+	if (KEY(C, NONE))
 	{
 		// 걸어간다.
 		if (KEY(W, HOLD) ||

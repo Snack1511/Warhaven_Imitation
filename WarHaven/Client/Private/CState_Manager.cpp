@@ -252,9 +252,25 @@
 #include "CSprintAttack_Valkyrie_Begin.h"
 #include "CSprintAttack_Valkyrie.h"
 
+#include "CValkyrie_Attack_HorizontalDown_L.h"
+#include "CValkyrie_Attack_HorizontalDown_R.h"
+#include "CValkyrie_Attack_HorizontalMiddle_L.h"
+#include "CValkyrie_Attack_HorizontalMiddle_R.h"
+#include "CValkyrie_Attack_HorizontalUp_L.h"
+#include "CValkyrie_Attack_HorizontalUp_R.h"
+
+#include "CValkyrie_Attack_Sting_L.h"
+#include "CValkyrie_Attack_Sting_R.h"
+#include "CValkyrie_Attack_VerticalCut.h"
+
+
+#include "CBounce_Valkyrie_L.h"
+#include "CBounce_Valkyrie_R.h"
+
+
 #include "CValkyrie_Counter.h"
 #include "CValkyrie_SpinAttack.h"
-
+#include "CValkyrie_ShieldAttack.h"
 
 
 #pragma endregion 
@@ -285,6 +301,15 @@
 #include "CGuard_Begin_Player_Warrior_AI.h"
 #include "CGuard_Loop_Warrior_AI.h"
 #include "CGuard_Cancel_Warrior_AI.h"
+
+#include "CHit_Valkyrie.h"
+#include "CHit_GuardHit_Valkyrie.h"
+#include "CHit_Groggy_Valkyrie.h"
+#include "CHit_Sting_Valkyrie.h"
+#include "CHit_Fly_Valkyrie.h"
+
+
+
 
 
 
@@ -640,16 +665,43 @@ void CState_Manager::Valkyrie_State()
 	m_arrStates[STATE_SPRINTATTACK_BEGIN_VALKYRIE] =		CSprintAttack_Valkyrie_Begin::Create();
 	m_arrStates[STATE_SPRINTATTACK_VALKYRIE] =				CSprintAttack_Valkyrie::Create();
 
+	
+		
+		
+	m_arrStates[STATE_ATTACK_HORIZONTALUP_VALKYRIE_L] = CValkyrie_Attack_HorizontalUp_L::Create();
+	m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L] = CValkyrie_Attack_HorizontalMiddle_L::Create();
+	m_arrStates[STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L] = CValkyrie_Attack_HorizontalDown_L::Create();
+	m_arrStates[STATE_ATTACK_STING_VALKYRIE_L] = CValkyrie_Attack_Sting_L::Create();
+
+	m_arrStates[STATE_ATTACK_HORIZONTALUP_VALKYRIE_R] = CValkyrie_Attack_HorizontalUp_R::Create();
+	m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R] = CValkyrie_Attack_HorizontalMiddle_R::Create();
+	m_arrStates[STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R] = CValkyrie_Attack_HorizontalDown_R::Create();
+	m_arrStates[STATE_ATTACK_STING_VALKYRIE_R] = CValkyrie_Attack_Sting_R::Create();
+
+	m_arrStates[STATE_ATTACK_VERTICALCUT_VALKYRIE] = CValkyrie_Attack_VerticalCut::Create();
+
+	m_arrStates[STATE_BOUNCE_VALKYRIE_L] = CBounce_Valkyrie_L::Create();
+	m_arrStates[STATE_BOUNCE_VALKYRIE_R] = CBounce_Valkyrie_R::Create();
+
 
 	m_arrStates[STATE_SWITCH_R_TO_L_VALKYRIE] =				CSwitchLtoR_Valkyrie::Create();
 	m_arrStates[STATE_SWITCH_L_TO_R_VALKYRIE] =				CSwitchRtoL_Valkyrie::Create();
 
 
 	m_arrStates[STATE_COUNTER_VALKYRIE] =					CValkyrie_Counter::Create();
-	m_arrStates[STATE_SHIELDATTACK_VALKYRIE] =	CValkyrie_SpinAttack::Create();
+	m_arrStates[STATE_SHIELDATTACK_VALKYRIE] =				CValkyrie_ShieldAttack::Create();
 	m_arrStates[STATE_SPINATTACK_VALKYRIE] =				CValkyrie_SpinAttack::Create();
 
 
+	m_arrStates[STATE_HIT_VALKYRIE] =						CHit_Valkyrie::Create();
+	m_arrStates[STATE_GUARDHIT_VALKYRIE] =					CHit_GuardHit_Valkyrie::Create();
+	m_arrStates[STATE_GROGGYHIT_VALKYRIE] =					CHit_Groggy_Valkyrie::Create();
+	m_arrStates[STATE_STINGHIT_VALKYRIE] =					CHit_Sting_Valkyrie::Create();
+	m_arrStates[STATE_FLYHIT_VALKYRIE] =					CHit_Fly_Valkyrie::Create();
+
+	
+		
+		
 }
 
 //void CState_Manager::Warrior_Base_R()

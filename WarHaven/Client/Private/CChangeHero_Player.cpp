@@ -56,9 +56,10 @@ HRESULT CChangeHero_Player::Initialize()
 
 void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
+	CPlayer* pPlayer = pOwner->Get_OwnerPlayer();
 
-	CUnit::CLASS_TYPE eDefaultType = pOwner->Get_Status().eClass;
+
+	CPlayer::CLASS_DEFAULT eDefaultType = (CPlayer::CLASS_DEFAULT)pPlayer->Get_CurrentDefaultClass();
 
 	m_iAnimIndex = pPlayer->Get_ChangeHeroIndex(eDefaultType);
 
@@ -77,10 +78,8 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		switch (pOwner->Get_HeroType())
 		{
 		case CUnit::FIONA:
-
 			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
 			return STATE_IDLE_VALKYRIE_R;
-
 		case CUnit::QANDA:
 
 			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);

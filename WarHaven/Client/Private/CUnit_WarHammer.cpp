@@ -75,17 +75,25 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
 
-	const _uint iWeaponSphereNum = 4;
+	const _uint iWeaponSphereNum = 5;
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
 
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
+	for (_uint i = 0; i < iWeaponSphereNum - 1; ++i)
 	{
 		if (i == iWeaponSphereNum - 1)
 		{
 			tWeaponUnitColDesc[i].fRadius = 0.35f;
 			tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
 			tWeaponUnitColDesc[i].eColType = eAttack;
+
+			tWeaponUnitColDesc[i + 1].fRadius = tWeaponUnitColDesc[i].fRadius;
+			tWeaponUnitColDesc[i + 1].vOffsetPos = tWeaponUnitColDesc[i].vOffsetPos;
+			tWeaponUnitColDesc[i + 1].eColType = tWeaponUnitColDesc[i].eColType;
+
+			tWeaponUnitColDesc[i].vOffsetPos.x -= 10.f;
+			tWeaponUnitColDesc[i].vOffsetPos.x += 20.f;
+
 		}
 		else
 		{
@@ -94,6 +102,9 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 			tWeaponUnitColDesc[i].eColType = eAttack;
 		}
 	}
+
+
+
 
 	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 4, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 

@@ -81,9 +81,10 @@ public:
 	_uint	Get_DefaultReserveStateIndex(_uint eClass) { return m_iReserveStateDefault[eClass]; }
 
 
-
-
 	CUnit* Get_CurrentUnit() { return m_pCurrentUnit; }
+
+	CLASS_DEFAULT Get_CurrentDefaultClass() { return m_eCurrentDefaultClass; }
+
 	void Set_MainPlayer();
 
 public:
@@ -109,6 +110,8 @@ private:
 	_uint	m_iReserveStateDefault[CLASS_DEFAULT_END] = { 0 };
 	_uint	m_iReserveStateHero[CLASS_HERO_END] = { 0 };
 
+
+	CLASS_DEFAULT	m_eCurrentDefaultClass = CLASS_DEFAULT_END;
 
 
 	_bool m_bIsMainPlayer = false;

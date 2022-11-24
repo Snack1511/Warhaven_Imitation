@@ -67,18 +67,22 @@ HRESULT CWarHammer_Attack_HorizontalMiddle_L::Initialize()
 	m_eIdleState = STATE_IDLE_WARHAMMER_R;
 	m_eBounceState = STATE_BOUNCE_WARHAMMER_L;
 
+	m_fDamagePumping = 4.2f;
 
 	return __super::Initialize();
 }
 
 void CWarHammer_Attack_HorizontalMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	if (ePrevType == STATE_SWITCH_L_TO_R)
+	pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_L);
+
+
+	if (ePrevType == STATE_SWITCH_R_TO_L)
 	{
-		m_fAnimSpeed = 2.3f;
+		m_fAnimSpeed = 2.5f;
 	}
 	else
-		m_fAnimSpeed = 2.5f;
+		m_fAnimSpeed = 2.7f;
 
 
 	/* Owner¿« Animator Set Idle∑Œ */

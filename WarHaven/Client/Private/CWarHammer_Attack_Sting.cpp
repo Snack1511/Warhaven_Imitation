@@ -117,6 +117,7 @@ HRESULT CWarHammer_Attack_Sting::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 
+	m_fDamagePumping = 4.2f;
 
 	return __super::Initialize();
 

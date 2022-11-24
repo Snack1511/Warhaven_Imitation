@@ -55,18 +55,22 @@ HRESULT CWarHammer_Attack_VerticalAttack_R::Initialize()
 	m_eIdleState = STATE_IDLE_WARHAMMER_L;
 	m_eBounceState = STATE_BOUNCE_WARHAMMER_L;
 
+	m_fDamagePumping = 4.2f;
 
 	return __super::Initialize();
 }
 
 void CWarHammer_Attack_VerticalAttack_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_R);
+
+
 	if (ePrevType == STATE_SWITCH_L_TO_R)
 	{
-		m_fAnimSpeed = 2.3f;
+		m_fAnimSpeed = 2.5f;
 	}
 	else
-		m_fAnimSpeed = 2.5f;
+		m_fAnimSpeed = 2.7f;
 
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

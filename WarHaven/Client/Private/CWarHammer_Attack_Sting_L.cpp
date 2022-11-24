@@ -70,6 +70,16 @@ HRESULT CWarHammer_Attack_Sting_L::Initialize()
 
 void CWarHammer_Attack_Sting_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_L);
+
+
+	if (ePrevType == STATE_SWITCH_R_TO_L)
+	{
+		m_fAnimSpeed = 2.5f;
+	}
+	else
+		m_fAnimSpeed = 2.7f;
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

@@ -54,6 +54,7 @@ HRESULT CWarHammer_ChargeAttack_Front_L::Initialize()
 	m_eIdleState = STATE_IDLE_WARHAMMER_L;
 	m_eBounceState = STATE_BOUNCE_WARHAMMER_R;
 
+    m_fDamagePumping = 5.6f;
 
     return __super::Initialize();
 }
@@ -61,6 +62,9 @@ HRESULT CWarHammer_ChargeAttack_Front_L::Initialize()
 void CWarHammer_ChargeAttack_Front_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+
+    pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_L);
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

@@ -58,6 +58,8 @@ HRESULT CWarrior_Oxen_Loop::Initialize()
 
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_LOOPATTACK);
 
+    m_eBounceState = STATE_BOUNCE_PLAYER_R;
+
     m_iEndFinishedFrame = 3;
 
     return S_OK;

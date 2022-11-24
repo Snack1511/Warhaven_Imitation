@@ -1282,6 +1282,63 @@
     <Filter Include="03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp">
       <UniqueIdentifier>{60f67a37-97ec-4ba4-8eca-18ede6faa8fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\00. Hit">
+      <UniqueIdentifier>{ed00768b-08ad-4bff-b18d-60f8d58e9e8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\01. GuardHit">
+      <UniqueIdentifier>{4d0b28dc-2435-4b66-a89f-d3536348c99d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\03. Sting">
+      <UniqueIdentifier>{403a1857-6640-47e7-833d-f7b734d9f3dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\02. Groggy">
+      <UniqueIdentifier>{07cbaca6-e120-4ddb-949c-fc144cc9cf74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\04. FlyHit">
+      <UniqueIdentifier>{4f0abe29-ebf0-4648-972b-5f3d5c8a87ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalUp">
+      <UniqueIdentifier>{72b7f543-8b04-4310-932c-f6224e2eba29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalMiddle">
+      <UniqueIdentifier>{3b0e3201-8427-4125-b6d6-d9dc92ceb4a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalDown">
+      <UniqueIdentifier>{2909678f-5ac6-45c2-a09f-c6b05e9a63ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalUp\01. Right">
+      <UniqueIdentifier>{ef10136d-3f0c-4971-8334-fd0300dbf306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalUp\02. Left">
+      <UniqueIdentifier>{32b7f9f7-2a89-456a-baff-9788378ca9ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalMiddle\01. Right">
+      <UniqueIdentifier>{9c06e52f-f45e-4675-be6c-77b6738d7ec0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalDown\01. Right">
+      <UniqueIdentifier>{94b1282f-b7f0-4757-ab2d-6dbbb9000bcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalMiddle\02. Left">
+      <UniqueIdentifier>{435babef-6155-4098-a489-68ec42e1c333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalDown\02. Left">
+      <UniqueIdentifier>{2513b5ee-80a5-41bd-952b-722b83ee03d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\12. Bounce">
+      <UniqueIdentifier>{d447f9e9-584d-4f94-a556-f32145a1d12e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\12. Bounce\01. Right">
+      <UniqueIdentifier>{b23fc86f-4dc2-4e7f-86c8-db3a7eab20e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\12. Bounce\02. Left">
+      <UniqueIdentifier>{c776b3f9-36d7-46e5-b68c-ca6bf9b7863b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Vertical">
+      <UniqueIdentifier>{15f596b1-7843-4ba5-87b1-b5f5d72d55a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting">
+      <UniqueIdentifier>{3702c170-edcb-4e4a-95c7-fb92a493f118}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2256,6 +2313,66 @@
     <ClInclude Include="..\public\CTrigger_BootCamp.h">
       <Filter>03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CHit_Fly_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\04. FlyHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Groggy_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\02. Groggy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_GuardHit_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\01. GuardHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Sting_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\03. Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\00. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalMiddle.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalMiddle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalMiddle_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalMiddle\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalMiddle_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalMiddle\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalDown.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalDown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalUp.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalUp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalUp_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalUp\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalDown_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalDown\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalUp_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalUp\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalDown_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalDown\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_Valkyrie_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\12. Bounce\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_Valkyrie_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\12. Bounce\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\12. Bounce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_VerticalCut.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Vertical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_Sting_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CValkyrie_Attack_Sting_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3210,6 +3327,66 @@
     </ClCompile>
     <ClCompile Include="..\private\CTrigger_BootCamp.cpp">
       <Filter>03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Fly_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\04. FlyHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Groggy_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\02. Groggy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_GuardHit_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\01. GuardHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Sting_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\03. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\00. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalMiddle.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalMiddle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalMiddle_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalMiddle\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalMiddle_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalMiddle\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalDown.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalDown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalUp.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalUp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalDown_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalDown\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalUp_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalUp\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalUp_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalUp\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalDown_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\HorzontalDown\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_Valkyrie_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\12. Bounce\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_Valkyrie_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\12. Bounce\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\12. Bounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_VerticalCut.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Vertical</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_Sting_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CValkyrie_Attack_Sting_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

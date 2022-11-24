@@ -23,6 +23,9 @@ HRESULT CJump_Player::Initialize()
 
 	fOxenJumpPower = 1.3f;
 
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+
+
     return S_OK;
 }
 

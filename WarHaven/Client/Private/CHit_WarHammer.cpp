@@ -34,7 +34,7 @@ CHit_WarHammer* CHit_WarHammer::Create()
 HRESULT CHit_WarHammer::Initialize()
 {
     
-    m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
+    m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 9;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_HIT_WARHAMMER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 

@@ -41,8 +41,6 @@ HRESULT CWarrior_Attack_HorizontalDown_R::Initialize()
 	m_iAnimIndex = 3;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_ATTACK_HORIZONTALDOWN_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-
-
 	m_vecAdjState.push_back(STATE_IDLE_PLAYER_L);
 	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
 	m_vecAdjState.push_back(STATE_RUN_PLAYER_L);
@@ -130,13 +128,13 @@ HRESULT CWarrior_Attack_HorizontalDown_R::Initialize()
 	m_eBounceState = STATE_BOUNCE_PLAYER_R;
 
 
-
-
 	return __super::Initialize();
 }
 
 void CWarrior_Attack_HorizontalDown_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_R);
+
 	if (ePrevType == STATE_SWITCH_L_TO_R)
 	{
 		m_fAnimSpeed = 2.3f;
