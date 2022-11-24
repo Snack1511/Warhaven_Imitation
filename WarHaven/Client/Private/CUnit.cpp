@@ -889,6 +889,9 @@ void CUnit::My_Tick()
 		m_fHitDelayAcc = 0.f;
 
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
+
+	_float fDis = CUtility_Transform::Get_FromCameraDistance(this);
+	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
 }
 
 void CUnit::My_LateTick()

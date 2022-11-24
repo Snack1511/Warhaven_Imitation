@@ -152,9 +152,9 @@ _float CUtility_Transform::Get_LookRotateAngle(_float4 vLook)
 	_float4 vRealLook = vLook;
 	vRealLook.Normalize();
 
-	
+
 	_float fCosTheta = vOriginLook.Dot(vRealLook);
-	
+
 	if (vRealLook.y < 0.f)
 		fCosTheta *= -1.f;
 
@@ -164,10 +164,12 @@ _float CUtility_Transform::Get_LookRotateAngle(_float4 vLook)
 _float CUtility_Transform::Get_FromCameraDistance(CGameObject* pObject)
 {
 	_float4 vObjPos = pObject->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vViewPos =  GAMEINSTANCE->Get_ViewPos();
-	
-	vViewPos.x -vObjPos.x;
-	vViewPos.z - vObjPos.z;
-	
-	return _float();
+	_float4 vViewPos = GAMEINSTANCE->Get_ViewPos();
+
+	_float fDisX = vViewPos.x - vObjPos.x;
+	_float fDisZ = vViewPos.z - vObjPos.z;
+
+	_float fDis = sqrt(pow(fDisX, 2) + pow(fDisZ, 2));
+
+	return fDis;
 }
