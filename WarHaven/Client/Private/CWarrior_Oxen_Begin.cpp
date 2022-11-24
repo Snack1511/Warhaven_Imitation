@@ -95,7 +95,7 @@ STATE_TYPE CWarrior_Oxen_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnima
     1.  Q 을 이용해 공격한다.
      */
 
-    if (!pOwner->Can_Use(CUnit::SKILL1))
+    if (!pOwner->Can_Use(CUnit::SKILL2))
         return STATE_END;
 
     if(KEY(Q, TAP))

@@ -57,6 +57,8 @@ HRESULT CGuard_Dash_Player::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_L);
 	m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
 
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+
 
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);

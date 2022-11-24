@@ -54,30 +54,22 @@ HRESULT CIdle_Valkyrie_R::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.f;
 
-
-   // m_vecAdjState.push_back(STATE_INSTALL_BEIGN_VALKYRIE);
     
     m_vecAdjState.push_back(STATE_SWITCH_R_TO_L_VALKYRIE);
-
-   // m_vecAdjState.push_back(STATE_CHARGE_VALKYRIE_R);
 
     m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_JUMP_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_RUNBEGIN_VALKYRIE_R);
 
-    //m_vecAdjState.push_back(STATE_CHARGE_VALKYRIE_R);
-
-    //m_vecAdjState.push_back(STATE_GROGGYATTACK_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_VALKYRIE);
-
-
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
 
     /*나중에 추가*/
     m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
     m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-    //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);

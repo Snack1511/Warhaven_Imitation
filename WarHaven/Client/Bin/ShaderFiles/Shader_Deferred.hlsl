@@ -277,8 +277,8 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	}
 
 	//Shadow
-	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor *= vShadowDesc;
+	/*vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vColor *= vShadowDesc;*/
 
 
 	//

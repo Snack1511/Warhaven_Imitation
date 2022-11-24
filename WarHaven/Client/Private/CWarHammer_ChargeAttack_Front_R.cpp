@@ -50,18 +50,14 @@ HRESULT CWarHammer_ChargeAttack_Front_R::Initialize()
 	m_eIdleState = STATE_IDLE_WARHAMMER_L;
 	m_eBounceState = STATE_BOUNCE_WARHAMMER_R;
 
+	m_fDamagePumping = 5.6f;
 
 	return __super::Initialize();
 }
 
 void CWarHammer_ChargeAttack_Front_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	if (ePrevType == STATE_SWITCH_L_TO_R)
-	{
-		m_fAnimSpeed = 2.3f;
-	}
-	else
-		m_fAnimSpeed = 2.5f;
+	pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_R);
 
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

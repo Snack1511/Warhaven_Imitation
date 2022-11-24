@@ -52,6 +52,8 @@ HRESULT CSprintAttack_WarHammer::Initialize()
 	m_vecAdjState.push_back(STATE_WALK_WARHAMMER_L);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
 
+	m_eBounceState = STATE_BOUNCE_WARHAMMER_L;
+
 	Add_KeyFrame(23, 0);
 	Add_KeyFrame(32, 1);
 
@@ -89,6 +91,7 @@ void CSprintAttack_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
 
+	pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_L);
 
 
 	//마찰 조절하기

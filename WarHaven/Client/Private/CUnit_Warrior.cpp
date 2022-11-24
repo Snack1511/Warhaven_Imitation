@@ -116,10 +116,7 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 
 	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 	
-	//for (_uint i = 0; i < iWeaponSphereNum; ++i)
-	//	tWeaponUnitColDesc[i].eColType = eGroggy;
-	
-	// SetUp_UnitCollider(CUnit::GROGGY, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+
 
 }
 

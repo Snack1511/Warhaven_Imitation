@@ -23,9 +23,10 @@ HRESULT CRun_Player_Begin::Initialize()
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 
 
-    m_iStateChangeKeyFrame = 20;
+    m_iStateChangeKeyFrame = 0;
 
     m_fInterPolationTime = 0.f;
 

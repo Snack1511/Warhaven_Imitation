@@ -44,12 +44,11 @@ HRESULT CStop_Valkyrie_L::Initialize()
 	m_vecAdjState.push_back(STATE_WALK_VALKYRIE_L);
 	m_vecAdjState.push_back(STATE_RUNBEGIN_VALKYRIE_L);
 
-	//m_vecAdjState.push_back(STATE_CHARGE_VALKYRIE_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
-	//m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_L);
-
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_L);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_L);
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
 
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 23;

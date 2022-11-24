@@ -55,14 +55,9 @@ HRESULT CSprint_Jump_Valkyrie::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_JUMPFALL_VALKYRIE);
     m_vecAdjState.push_back(STATE_JUMP_LAND_VALKYRIE_R);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-    //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
-
-   /* m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
-    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);*/
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R);
 
 
     return S_OK;

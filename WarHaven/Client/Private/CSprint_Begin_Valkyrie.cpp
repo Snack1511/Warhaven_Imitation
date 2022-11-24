@@ -52,18 +52,13 @@ HRESULT CSprint_Begin_Valkyrie::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_END_VALKYRIE);
     m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_VALKYRIE);
 
-    
 
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_VALKYRIE);
-//	m_vecAdjState.push_back(STATE_SPRINTATTACK_BEGIN_VALKYRIE);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-    //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
-
-    //m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_GROGGYATTACK_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_INSTALL_BEIGN_VALKYRIE);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
 
 
 	Add_KeyFrame(10, 0);

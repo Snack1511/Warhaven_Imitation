@@ -159,6 +159,7 @@ void CPlayer::Create_DefaultClass()
 		else
 		{
 			m_pDefaultClass[i]->Initialize();
+			m_pDefaultClass[i]->Set_OwnerPlayer(this);
 
 			if (!m_pFollowCam)
 			{
@@ -252,6 +253,7 @@ void CPlayer::Create_HeroClass()
 		else
 		{
 			m_pHeroClass[i]->Initialize();
+			m_pHeroClass[i]->Set_OwnerPlayer(this);
 
 			if (!m_pFollowCam)
 			{
@@ -304,6 +306,8 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateDefault[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
+	m_eCurrentDefaultClass = eClass;
+
 	return S_OK;
 }
 
@@ -317,12 +321,12 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	if (m_pCurrentUnit)
 	{
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
+		m_pHeroClass[eClass]->Teleport_Unit(m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
 	}
 
 	m_pCurrentUnit = m_pHeroClass[eClass];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
-	Set_Postion(vPos);
 
 	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
@@ -391,6 +395,7 @@ HRESULT CPlayer::Initialize_Prototype(wstring wstrCamKey, CLASS_DEFAULT eClass)
 
 
 	m_pCurrentUnit = m_pDefaultClass[eClass];
+	m_eCurrentDefaultClass = eClass;
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	// À¯´Ö 10°³ »ý¼º

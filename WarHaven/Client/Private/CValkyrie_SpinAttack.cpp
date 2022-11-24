@@ -52,55 +52,49 @@ HRESULT CValkyrie_SpinAttack::Initialize()
 	m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
 	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
 
-	/*나중에 추가*/
-	//m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
-	//m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-	//m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
-
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R); 
+	
 
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
 	Add_KeyFrame(12, 0);
 	Add_KeyFrame(39, 1);
 
-	// return __super::Initialize();
 	return S_OK;
 }
 
 void CValkyrie_SpinAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	if (ePrevType != STATE_COUNTER_VALKYRIE)
+	if (ePrevType == STATE_COUNTER_VALKYRIE)
 	{
-		m_fInterPolationTime = 0.1f;
-		pOwner->On_Use(CUnit::SKILL3);
+		m_fInterPolationTime = 0.f;
 	}
 	else
-		m_fInterPolationTime = 0.f;
+	{ 
+		m_fInterPolationTime = 0.1f;
+		pOwner->On_Use(CUnit::SKILL1);
+	}
+
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CValkyrie_SpinAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (pAnimator->Get_CurAnimFrame() > 11)
-	{
-		int a = 0;
-	}
-
 	return __super::Tick(pOwner, pAnimator);
 }
 
 void CValkyrie_SpinAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+	pOwner->Enable_GroggyCollider(false);
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
 
 STATE_TYPE CValkyrie_SpinAttack::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (!pOwner->Can_Use(CUnit::SKILL3))
+	if (!pOwner->Can_Use(CUnit::SKILL1))
 		return STATE_END;
 
 	/* VALKYRIE가 SpinAttack 로 오는 조건
@@ -126,16 +120,15 @@ void CValkyrie_SpinAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 
 		Physics_Setting(m_fMaxSpeed, pOwner);
 
-		pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 		m_bAttackTrigger = true;
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+		pOwner->Enable_GroggyCollider(true);
 		break;
 
 	case 1:
 		Physics_Setting(0.f, pOwner);
 
 		m_bAttackTrigger = false;
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		pOwner->Enable_GroggyCollider(false);
 		break;
 
 	default:

@@ -89,7 +89,7 @@ HRESULT CWarrior_Oxen_Loop_Attack::Initialize()
 
 void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    pOwner->On_Use(CUnit::SKILL1);
+    pOwner->On_Use(CUnit::SKILL2);
 
     /*effect*/
     pOwner->TurnOn_TrailEffect(true);
@@ -118,6 +118,8 @@ void CWarrior_Oxen_Loop_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
     {
         m_fInterPolationTime = 0.1f;
     }
+
+    pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_R);
 
 
     pOwner->CallBack_CollisionEnter += bind(&CWarrior_Oxen_Loop_Attack::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);

@@ -16,12 +16,17 @@ public:
 	static	CUnit_Valkyrie* Create(const UNIT_MODEL_DATA& tUnitModelData);
 
 public:
+	virtual void	SetUp_Colliders(_bool bPlayer);
+	virtual void	SetUp_HitStates(_bool bPlayer);
+
+public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
 	virtual HRESULT Start() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
+	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
 };

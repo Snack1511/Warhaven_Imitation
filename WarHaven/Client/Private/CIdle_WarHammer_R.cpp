@@ -79,6 +79,7 @@ HRESULT CIdle_WarHammer_R::Initialize()
 
     m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
+    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 
     
     return S_OK;

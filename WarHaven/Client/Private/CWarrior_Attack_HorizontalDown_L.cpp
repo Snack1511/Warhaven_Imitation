@@ -136,6 +136,9 @@ HRESULT CWarrior_Attack_HorizontalDown_L::Initialize()
 
 void CWarrior_Attack_HorizontalDown_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_L);
+
+
 	if (ePrevType == STATE_SWITCH_L_TO_R)
 	{
 		m_fAnimSpeed = 2.3f;

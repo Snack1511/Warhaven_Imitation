@@ -52,8 +52,10 @@ HRESULT CJump_Valkyrie_L::Initialize()
     m_vecAdjState.push_back(STATE_JUMP_LAND_VALKYRIE_L);
     
     //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
-    //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_L);
-
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_L);
  
     m_iDirectionAnimIndex[STATE_DIRECTION_E] = 5;
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 6;

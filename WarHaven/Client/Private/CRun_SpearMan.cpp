@@ -78,7 +78,7 @@ STATE_TYPE CRun_SpearMan::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 	2. WAD 를 누른 상태
 	*/
 
-	if (KEY(CTRL, NONE))
+	if (KEY(C, NONE))
 	{
 		// 걸어간다.
 		if (KEY(W, HOLD) ||

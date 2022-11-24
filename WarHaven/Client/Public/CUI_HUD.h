@@ -80,6 +80,8 @@ private:	// 클래스 변경 창
 	_uint m_iDmgTextIndex = 0;
 	_bool m_bDmgTextEffct = false;
 
+	_uint m_iChoiceClass = 999;
+
 private:
 	void Bind_Btn();
 

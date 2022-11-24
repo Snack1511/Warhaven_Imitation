@@ -22,6 +22,7 @@ class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
 class CUI_Wrapper;
+class CPlayer;
 
 class CUnit abstract : public CGameObject
 {
@@ -155,13 +156,11 @@ public:
 	void		On_Attack(CState* pState);
 
 
-<<<<<<< HEAD
-	_uint		Get_HeroChangeIndex() { return m_iChangeHeroAnimIndex; };
+//	_uint		Get_HeroChangeIndex() { return m_iChangeHeroAnimIndex; };
 
 
 	/* PhysX 충돌 검출 */
-=======
->>>>>>> origin/221124_TH
+
 	_bool		Is_Weapon_R_Collision();
 	/* 캐릭터에 부딪힌거 체크(지금 안씀) */
 	_bool		Is_Weapon_R_CCT_Collision();
@@ -182,6 +181,8 @@ public:
 
 	CLASS_TYPE&				Get_HeroType() { return m_eHeroType; }
 
+	void	Set_OwnerPlayer(CPlayer* pPlayer) { m_pOwnerPlayer = pPlayer; }
+	CPlayer* Get_OwnerPlayer() { return m_pOwnerPlayer; }
 	
 
 	_float4	Get_FollowCamLook();
@@ -287,9 +288,10 @@ protected:
 
 	CLASS_TYPE		m_eHeroType = CLASS_END;
 
-
 	CState* m_pCurState = nullptr;
 	CUnit* m_pTargetUnit = nullptr;
+
+	CPlayer* m_pOwnerPlayer = nullptr;
 
 protected:
 	_bool m_bControlable = true;

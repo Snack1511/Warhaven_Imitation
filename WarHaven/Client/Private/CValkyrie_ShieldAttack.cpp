@@ -52,12 +52,9 @@ HRESULT CValkyrie_ShieldAttack::Initialize()
 	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 
-	/*나중에 추가*/
-	//m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
-	//m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-	//m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
+	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R);
 
 
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
@@ -72,6 +69,9 @@ HRESULT CValkyrie_ShieldAttack::Initialize()
 void CValkyrie_ShieldAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	pOwner->On_Use(CUnit::SKILL2);
+
+	//pOwner->Set_BounceState(STATE_BOUNCE_VAL);
+
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

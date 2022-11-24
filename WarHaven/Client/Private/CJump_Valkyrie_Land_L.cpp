@@ -44,12 +44,10 @@ HRESULT CJump_Valkyrie_Land_L::Initialize()
 	m_vecAdjState.push_back(STATE_WALK_VALKYRIE_L);
 	m_vecAdjState.push_back(STATE_RUN_VALKYRIE_L);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
-    //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_L);
-    //m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_GROGGYATTACK_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_VALKYRIE);
-    //m_vecAdjState.push_back(STATE_INSTALL_BEIGN_VALKYRIE);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_L);
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 

@@ -273,38 +273,41 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
-	_float4 vPlayerPos = _float4(20.f, 3.f, -10.f);
-
-	CPlayer* pUserPlayer = nullptr;
-
-	if (!(pUserPlayer = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-		STATE_JUMPFALL_PLAYER_R, true, L"PlayerCam")))
+	if(FAILED(SetUp_Terrian_InPlayer()))
 		return E_FAIL;
 
-	pUserPlayer->Set_MainPlayer();
+	//_float4 vPlayerPos = _float4(20.f, 3.f, -10.f);
 
-	CUser::Get_Instance()->Set_Player(pUserPlayer);
+	//CPlayer* pUserPlayer = nullptr;
 
-	vPlayerPos.x = 70.f;
-	vPlayerPos.z = -10.f;
+	//if (!(pUserPlayer = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+	//	STATE_JUMPFALL_PLAYER_R, true, L"PlayerCam")))
+	//	return E_FAIL;
 
-	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,								
-		STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
-		return E_FAIL;
+	//pUserPlayer->Set_MainPlayer();
 
-	vPlayerPos.x += 5.f;
+	//CUser::Get_Instance()->Set_Player(pUserPlayer);
 
-	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-		STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY, false, L"SandBackCam2")))
-		return E_FAIL;
+	//vPlayerPos.x = 70.f;
+	//vPlayerPos.z = -10.f;
 
+	//if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,								
+	//	STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
+	//	return E_FAIL;
 
 	//vPlayerPos.x += 5.f;
-	vPlayerPos.x -= 10.f;
 
-	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-		STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY, false, L"SandBackCam3")))
-		return E_FAIL;
+	//if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+	//	STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY, false, L"SandBackCam2")))
+	//	return E_FAIL;
+
+
+	////vPlayerPos.x += 5.f;
+	//vPlayerPos.x -= 10.f;
+
+	//if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+	//	STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY, false, L"SandBackCam3")))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -312,8 +315,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
+	//function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	//CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
 
 	
 
@@ -330,11 +333,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//Ready_GameObject(pMapColliders, GROUP_DEFAULT);
 
 
-	//_float4x4 mat;
-	//mat.Identity();
-	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
-	//pDrawableTerrain->Initialize();
-	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	_float4x4 mat;
+	mat.Identity();
+	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
+	pDrawableTerrain->Initialize();
+	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Environments/prop/etc/SM_Prop_Etc_Scarecrow02a.FBX")), mat);
 	pTestStruct->Initialize();
