@@ -409,7 +409,7 @@ void CUI_Object::DoScale()
 
 		if (m_fAccTime >= m_fDuration)
 		{
-			Set_Scale(m_vOriginScale.x + m_fScaleValue);
+			Set_Scale(m_vOriginScale.x + m_fScaleValue, m_vOriginScale.y + m_fScaleValue);
 
 			m_fAccTime = 0.f;
 			m_bIsDoScale = false;

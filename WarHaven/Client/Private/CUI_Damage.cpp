@@ -80,8 +80,6 @@ void CUI_Damage::OnEnable()
 
 	for (int i = 0; i < m_vecDigitDmg.size(); ++i)
 	{
-		m_pArrDmgNum[i]->Set_Scale(m_vFontScale);
-
 		GET_COMPONENT_FROM(m_pArrDmgNum[i], CTexture)->Set_CurTextureIndex(m_vecDigitDmg[i]);
 
 		_float fPosX = fRandPosX + (i * 20.f);
@@ -89,18 +87,21 @@ void CUI_Damage::OnEnable()
 
 		Enable_Fade(m_pArrDmgNum[i], m_fFadeInTime);
 
+		m_pArrDmgNum[i]->Set_Scale(m_vFontScale);
 		m_pArrDmgNum[i]->DoScale(m_fScaleValue, m_fScaleUpTime);
-
-		m_bIsScaleDown = true;
 	}
 
 	if (m_bIsHeadShot)
 	{
-		m_pHeadShot->Set_Pos(fRandPosX - 50.f, fRandPosY);
+		m_pHeadShot->Set_Pos(fRandPosX - 40.f, fRandPosY);
+
+		m_pHeadShot->Set_Scale(m_vHeadShotScale);
 		m_pHeadShot->DoScale(m_fScaleValue, m_fScaleUpTime);
 
 		Enable_Fade(m_pHeadShot, m_fFadeInTime);
 	}
+
+	m_bIsScaleDown = true;
 }
 
 void CUI_Damage::Enable_Damage(_float fDmg, _bool bHeadShot)

@@ -30,6 +30,7 @@ private:
 	_float4 m_vColorRed = _float4(1.f, 0.f, 0.f, 1.f);
 
 	_float2 m_vFontScale = _float2(60.f, 71.f);
+	_float m_vHeadShotScale = 70.f;
 
 	_float m_fFadeInTime = 0.3f;
 	_float m_fFadeOutTime = 0.1f;
@@ -44,7 +45,7 @@ private:
 	_bool m_bIsHeadShot = false;
 	_bool m_bIsScaleDown = false;
 
-	vector<_float> m_vecDigitDmg;	
+	vector<_float> m_vecDigitDmg;
 
 private:
 	void Init_HeadShot();
