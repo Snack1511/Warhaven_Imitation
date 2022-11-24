@@ -56,6 +56,8 @@ HRESULT CSprintAttack_Player::Initialize()
 	m_vecAdjState.push_back(STATE_WALK_PLAYER_L);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
+	//m_eBounceState
+
 	Add_KeyFrame(23, 0);
 	Add_KeyFrame(32, 1);
 
@@ -93,7 +95,7 @@ void CSprintAttack_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
 
-	pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+	//pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 
 	//마찰 조절하기

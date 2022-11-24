@@ -94,11 +94,12 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir.Normalize();
 
 	//상대 위치 계산
-	_float4 vOtherLook = pOtherUnit->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+	_float4 vOtherDir = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
+
 	_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
 
 	//양수면 앞임.
-	if (vCurLook.Dot(vOtherLook) < 0.f)
+	if (vCurLook.Dot(vOtherDir) > 0.f)
 		tOtherHitInfo.bFace = true;
 	else
 		tOtherHitInfo.bFace = false;

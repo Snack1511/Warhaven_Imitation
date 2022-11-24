@@ -98,11 +98,15 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower)
 		tTransform.p.z = vPos.z;
 		tTransform.q.w = 1.f;
 
+
+#ifdef _DEBUG
 		_float fRand = 0.3f;
 
-		/*vPos.x += frandom(-fRand, fRand);
+		vPos.x += frandom(-fRand, fRand);
 		vPos.y += frandom(-fRand, fRand);
-		vPos.z += frandom(-fRand, fRand);*/
+		vPos.z += frandom(-fRand, fRand);
+#endif // _DEBUG
+
 
 		_float4	vNewDir =
 		{
