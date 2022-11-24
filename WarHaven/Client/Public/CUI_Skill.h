@@ -48,7 +48,7 @@ private:
 
 	_float m_fCoolTime[3];
 	_float m_fMaxCoolTime[3];
-	_float m_fSkillGauge = 1.f;
+	_float m_fSkillGauge = 0.f;
 
 private:
 	virtual void My_Tick() override;

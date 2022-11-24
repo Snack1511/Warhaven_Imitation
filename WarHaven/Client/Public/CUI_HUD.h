@@ -36,6 +36,8 @@ public:
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
 
+	CUnit* m_pPlayer = nullptr;
+
 	CUnit::UNIT_STATUS m_tStatus;
 	CUnit::CLASS_TYPE m_eCurClass;
 	CUnit::CLASS_TYPE m_ePrvClass;

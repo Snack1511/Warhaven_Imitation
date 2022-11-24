@@ -23,7 +23,7 @@ HRESULT CUI_Skill::Initialize_Prototype()
 
 	Ready_SkillHUD();
 	Create_SkillCoolText();
-	Create_SkillCoolBG();	
+	Create_SkillCoolBG();
 
 	return S_OK;
 }
@@ -49,34 +49,17 @@ void CUI_Skill::My_Tick()
 
 	Enable_Outline();
 
-	_tchar  szSkill1[MAX_STR] = {};
-	swprintf_s(szSkill1, TEXT("%.1f"), m_fCoolTime[0]);
-	m_pSkillCoolTextArr[0]->Set_FontText(szSkill1);
-
-	if (m_fCoolTime[0] <= 0.05f)
+	for (int i = 0; i < 3; ++i)
 	{
-		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[0]);
-		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[0]);
-	}
+		_tchar  szSkill[MAX_STR] = {};
+		swprintf_s(szSkill, TEXT("%.1f"), m_fCoolTime[i]);
+		m_pSkillCoolTextArr[i]->Set_FontText(szSkill);
 
-	_tchar  szSkill2[MAX_STR] = {};
-	swprintf_s(szSkill2, TEXT("%.1f"), m_fCoolTime[1]);
-	m_pSkillCoolTextArr[1]->Set_FontText(szSkill2);
-
-	if (m_fCoolTime[1] <= 0.05f)
-	{
-		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[1]);
-		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[1]);
-	}
-
-	_tchar  szSkill3[MAX_STR] = {};
-	swprintf_s(szSkill3, TEXT("%.1f"), m_fCoolTime[2]);
-	m_pSkillCoolTextArr[2]->Set_FontText(szSkill3);
-
-	if (m_fCoolTime[2] <= 0.05f)
-	{
-		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[2]);
-		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[2]);
+		if (m_fCoolTime[i] <= 0.05f)
+		{
+			DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
+			DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
+		}
 	}
 }
 
@@ -88,7 +71,7 @@ void CUI_Skill::Set_ShaderResources_HeroKeySkill(CShader* pShader, const char* p
 
 void CUI_Skill::Set_Shader_SkillGauge(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fSkillGauge, sizeof(_float4));
+	pShader->Set_RawValue("g_fValue", &m_fSkillGauge, sizeof(_float));
 }
 
 void CUI_Skill::Set_SkillHUD(_uint iIndex)
@@ -219,7 +202,10 @@ void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCool
 	m_fCoolTime[iSkillType] = fCoolTime;
 	m_fMaxCoolTime[iSkillType] = fMaxCoolTime;
 
-	//m_fSkillGauge = m_fCoolTime[iSkillType] / m_fMaxCoolTime[iSkillType];
+	if (m_fCoolTime[iSkillType] > 0.f)
+	{
+		m_fSkillGauge = m_fCoolTime[iSkillType] / m_fMaxCoolTime[iSkillType];
+	}
 
 	if (m_fCoolTime[iSkillType] > 0.01f)
 	{
@@ -494,7 +480,6 @@ void CUI_Skill::Bind_Shader()
 		GET_COMPONENT_FROM(m_arrSkillUI[i][HeroKey], CShader)
 			->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_HeroKeySkill, this, placeholders::_1, "g_vColor");
 
-		GET_COMPONENT_FROM(m_arrSkillUI[i][Outline0], CShader)
-			->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge, this, placeholders::_1, "g_fValue");
+		GET_COMPONENT_FROM(m_arrSkillUI[i][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge, this, placeholders::_1, "g_fValue");
 	}
 }
