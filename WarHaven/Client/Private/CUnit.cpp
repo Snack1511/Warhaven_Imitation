@@ -225,11 +225,7 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot)
 {
 	m_tUnitStatus.fHP += fHp;
 
-	/*블러드 오버레이*/
-	if (m_bIsMainPlayer)
-	{
-		CUser::Get_Instance()->Turn_BloodOverLay(PLAYER->Get_Status().fHP / PLAYER->Get_Status().fMaxHP);
-	}
+	
 
 	/*데미지 표시*/
 	if (pOtherUnit->m_bIsMainPlayer)
@@ -878,8 +874,15 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, false);
 
-
 	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot);
+
+
+	/*블러드 오버레이*/
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Turn_BloodOverLay(m_tUnitStatus.fHP / m_tUnitStatus.fMaxHP);
+	}
+
 
 	if (!bDie)
 	{
