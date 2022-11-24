@@ -3,6 +3,7 @@
 
 #include "CEffects_Factory.h"
 
+#include "CPlayer.h"
 #include "GameInstance.h"
 
 #include "CCamera_Default.h"
@@ -605,6 +606,11 @@ void CUnit::SetUp_HitStates(_bool bPlayer)
 {
 	if (!bPlayer)
 		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
+}
+
+void CUnit::On_ChangeToHero(_uint iIndex)
+{
+	//m_pOwnerPlayer->Change_HeroUnit()
 }
 
 _float4 CUnit::Get_FollowCamLook()

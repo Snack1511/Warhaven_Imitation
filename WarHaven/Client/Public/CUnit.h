@@ -22,6 +22,7 @@ class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
 class CUI_Wrapper;
+class CPlayer;
 
 class CUnit abstract : public CGameObject
 {
@@ -155,13 +156,10 @@ public:
 	void		On_Attack(CState* pState);
 
 
-<<<<<<< HEAD
-	_uint		Get_HeroChangeIndex() { return m_iChangeHeroAnimIndex; };
+	//_uint		Get_HeroChangeIndex() { return m_iChangeHeroAnimIndex; };
 
 
 	/* PhysX 충돌 검출 */
-=======
->>>>>>> origin/221124_TH
 	_bool		Is_Weapon_R_Collision();
 	/* 캐릭터에 부딪힌거 체크(지금 안씀) */
 	_bool		Is_Weapon_R_CCT_Collision();
@@ -181,6 +179,9 @@ public:
 	void	Set_BounceState(STATE_TYPE eType) { m_tHitType.eBounce = eType; }
 
 	CLASS_TYPE&				Get_HeroType() { return m_eHeroType; }
+
+	void	Set_OwnerPlayer(CPlayer* pPlayer) { m_pOwnerPlayer = pPlayer; }
+	void	On_ChangeToHero(_uint iIndex);
 
 	
 
@@ -264,6 +265,9 @@ public:
 
 public:
 	virtual void SetUp_HitStates(_bool bPlayer);
+
+	protected:
+		CPlayer* m_pOwnerPlayer = nullptr;
 
 
 protected:

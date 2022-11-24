@@ -159,6 +159,7 @@ void CPlayer::Create_DefaultClass()
 		else
 		{
 			m_pDefaultClass[i]->Initialize();
+			m_pDefaultClass[i]->Set_OwnerPlayer(this);
 
 			if (!m_pFollowCam)
 			{
