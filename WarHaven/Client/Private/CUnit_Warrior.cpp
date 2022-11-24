@@ -152,6 +152,65 @@ void	CUnit_Warrior::SetUp_HitStates(_bool bPlayer)
 		
 }
 
+void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
+{
+	__super::Effect_Hit(pOtherUnit, vHitPos);
+
+	/*_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
+	_float fHitDist = m_pTransform->Get_World(WORLD_POS)*/
+
+	//pUnit ¶§¸®´Â ³ð, this ¸Â´Â³ð 
+
+	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
+
+	switch (m_eCurState)
+	{
+	case STATE_ATTACK_HORIZONTALUP_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_HORIZONTALMIDDLE_L:
+	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
+			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
+			break;
+
+	case STATE_ATTACK_HORIZONTALDOWN_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_HORIZONTALUP_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_HORIZONTALMIDDLE_R:
+	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
+			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
+			break;
+
+	case STATE_ATTACK_HORIZONTALDOWN_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_VERTICALCUT:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_STING_PLAYER_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_STING_PLAYER_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
+		break;
+
+	default:
+		break;
+
+	}
+
+	
+}
+
 HRESULT CUnit_Warrior::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();

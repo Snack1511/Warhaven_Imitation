@@ -353,8 +353,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	Ready_GameObject(pTestStruct, GROUP_DECORATION);*/
 
 
-	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
-	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
+	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 	//SM_Grass_Weed_Weed02a.FBX
 
 	//_int iNumInstance = 10000;

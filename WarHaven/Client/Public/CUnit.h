@@ -314,6 +314,10 @@ protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
+protected:
+		virtual void	Effect_Parring(_float4 vHitPos);
+		virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
+
 private:
 	CUI_Wrapper* m_pUnitHUD = nullptr;
 
@@ -327,11 +331,7 @@ private:
 private:
 	void	On_InitSetting();
 
-private:
-	void	Effect_Hit(_float4 vHitPos);
-	void	Switch_ClassEffect(CUnit* pUnit, _float4 vHitPos);
-	void	Warrior_Effect(CUnit* pUnit, _float4 vHitPos);
-	void	Effect_KillSmoke();
+
 
 private:
 	_bool		m_bIsMainPlayer = false;
