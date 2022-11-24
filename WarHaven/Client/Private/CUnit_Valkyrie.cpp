@@ -112,7 +112,8 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	m_tUnitStatus.fSprintAttackSpeed = 13.f;
 	m_tUnitStatus.fDashAttackSpeed = 4.f;
 
-	
+	m_tUnitStatus.eClass = FIONA;
+
 
 	m_fCoolTime[SKILL1] = 5.f;
 	m_fCoolTime[SKILL2] = 0.f; // 화신력 소모 스킬

@@ -285,7 +285,6 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 
 
 
-
 	return S_OK;
 }
 

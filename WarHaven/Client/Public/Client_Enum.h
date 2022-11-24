@@ -412,7 +412,7 @@ namespace Client
 		STATE_GUARD_LOOP_PLAYER,
 		STATE_GUARD_CANCEL_PLAYER,
 
-//		STATE_CHANGE_PLAYER,
+		STATE_CHANGE_PLAYER,
 
 
 #pragma endregion

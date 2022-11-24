@@ -31,7 +31,7 @@ class CPlayer final
 public:
 	enum CLASS_HREO
 	{
-		//CLASS_HREO_FIONA,
+		CLASS_HREO_FIONA,
 		/*CLASS_HREO_QANDA,
 		CLASS_HREO_HOEDT,
 		CLASS_HREO_LANCER,*/
@@ -77,6 +77,12 @@ public:
 	void	Set_Postion(_float4 vPos);
 
 public:
+	_uint	Get_ChangeHeroIndex(_uint eClass) { return m_iChangeHeroAnimIndex[eClass]; }
+	_uint	Get_DefaultReserveStateIndex(_uint eClass) { return m_iReserveStateDefault[eClass]; }
+
+
+
+
 	CUnit* Get_CurrentUnit() { return m_pCurrentUnit; }
 	void Set_MainPlayer();
 
@@ -93,12 +99,17 @@ public:
 private:
 	CUnit* m_pCurrentUnit = nullptr;
 	CCamera_Follow* m_pFollowCam = nullptr;
-	//CUnit* m_pHeroClass[CLASS_HERO_END] = { nullptr };
+	CUnit* m_pHeroClass[CLASS_HERO_END] = { nullptr };
 	CUnit* m_pDefaultClass[CLASS_DEFAULT_END] = { nullptr };
 
+	// 변신 Index
+	_uint	m_iChangeHeroAnimIndex[CLASS_DEFAULT_END] = { 0 };
+
+	/* 예약 Index */
 	_uint	m_iReserveStateDefault[CLASS_DEFAULT_END] = { 0 };
-	//_uint	m_iReserveStateHero[CLASS_HERO_END] = { 0 };
-	
+	_uint	m_iReserveStateHero[CLASS_HERO_END] = { 0 };
+
+
 
 	_bool m_bIsMainPlayer = false;
 
@@ -106,8 +117,6 @@ private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
-private:
-	_float4 m_vCurrentPos;
 
 };
 END
