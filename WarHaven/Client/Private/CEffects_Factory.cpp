@@ -714,6 +714,11 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke_Right"), "KillSmoke_Right")))
 		return E_FAIL;
 
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"TrainigRoomSmoke"), "TrainigRoomSmoke")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Leaf_Particle"), "Leaf_Particle")))
+		return E_FAIL;
+
 
 	/* Dead Body */
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Warrior"), Convert_ToHash(L"WarriorDead_Slice0"))))

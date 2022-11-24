@@ -177,7 +177,8 @@ void CRectEffects::Reset(_float4x4 matWorld)
 void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
 	if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
+		m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR ||
+		m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT)
 	{
 		pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
@@ -334,7 +335,8 @@ HRESULT CRectEffects::Initialize()
 			0.f);
 
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
-			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
+			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR ||
+			m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT)
 		{
 			m_pDatas[i].InstancingData.vScale.y = m_pDatas[i].InstancingData.vScale.x;
 		}
@@ -389,6 +391,13 @@ HRESULT CRectEffects::Initialize()
 			m_pDatas[i].InstancingData.fDuration = m_fDuration + frandom(-m_fDurationRange, m_fDurationRange);
 
 			m_pDatas[i].InstancingData.fDissolveEndTime = m_iWidthSize * m_iHeightSize * m_fDuration; // 
+		}
+		if (m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT)
+		{
+			m_pDatas[i].InstancingData.fDuration = m_fDuration; 
+
+			if(0 < m_fDurationRange)
+				m_pDatas[i].InstancingData.fDuration = random(0, m_fDurationRange);
 		}
 		//
 
@@ -524,7 +533,8 @@ void CRectEffects::My_Tick()
 
 
 		if (m_iPassType != VTXRECTINSTANCE_PASS_ANIMATION && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHA &&
-			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
+			m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE && m_iPassType != VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR &&
+			m_iPassType != VTXRECTINSTANCE_PASS_UVTEXTURESELECT)
 			m_pDatas[i].RectInstance.vColor = m_pDatas[i].InstancingData.vColor;
 		else
 			m_pDatas[i].RectInstance.vColor.w = m_pDatas[i].InstancingData.vColor.w;
@@ -663,6 +673,9 @@ void CRectEffects::My_Tick()
 		if (m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA ||
 			m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE || m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
 			Update_Animation(i);
+
+		if (m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT)
+			Select_UVTexture(i);
 
 	}
 
@@ -938,7 +951,7 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 	m_pDatas[iIndex].RectInstance.vRight = vRight.MultiplyNormal(m_matTrans).Normalize();
 	m_pDatas[iIndex].RectInstance.vUp = vUp.MultiplyNormal(m_matTrans).Normalize();
 	m_pDatas[iIndex].RectInstance.vLook = vLook.MultiplyNormal(m_matTrans).Normalize();*/
-	if (!m_bLoop)
+	if (!(m_bLoop && m_bBillBoard))
 	{
 		_float4 vLook = m_pDatas[iIndex].InstancingData.vDir;
 
@@ -1099,6 +1112,13 @@ void CRectEffects::Update_Animation(_uint iIndex)
 	}
 }
 
+void CRectEffects::Select_UVTexture(_uint iIndex)
+{
+	_uint iSelect = (_uint)m_pDatas[iIndex].InstancingData.fDuration;
+	m_pDatas[iIndex].RectInstance.vColor.x = iSelect % m_iWidthSize;
+	m_pDatas[iIndex].RectInstance.vColor.y = iSelect / m_iHeightSize;
+}
+
 void CRectEffects::Stick_RefBone()
 {
 	if (!m_pRefBone)
@@ -1118,9 +1138,9 @@ void CRectEffects::Stick_RefBone()
 
 void CRectEffects::Reset_Instance(_uint iIndex)
 {
-	/*m_pDatas[iIndex].RectInstance.vRight = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[0])));
+	m_pDatas[iIndex].RectInstance.vRight = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[0])));
 	m_pDatas[iIndex].RectInstance.vUp = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[1])));
-	m_pDatas[iIndex].RectInstance.vLook = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[2])));*/
+	m_pDatas[iIndex].RectInstance.vLook = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[2])));
 
 	Set_NewStartPos(iIndex);
 
@@ -1143,6 +1163,12 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	{
 		m_pDatas[iIndex].RectInstance.vColor.x = 0.f;
 		m_pDatas[iIndex].RectInstance.vColor.y = 0.f;
+	}
+	if (m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT)
+	{
+		_uint iSelect = (_uint)m_pDatas[iIndex].InstancingData.fDuration;
+		m_pDatas[iIndex].RectInstance.vColor.x = iSelect % m_iWidthSize;
+		m_pDatas[iIndex].RectInstance.vColor.y = iSelect / m_iHeightSize;
 	}
 
 	//Jump

@@ -151,6 +151,43 @@ void CUnit_WarHammer::SetUp_HitStates(_bool bPlayer)
 	}
 }
 
+void CUnit_WarHammer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
+{
+	__super::Effect_Hit(pOtherUnit, vHitPos);
+
+	/*_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
+	_float fHitDist = m_pTransform->Get_World(WORLD_POS)*/
+
+	//pOtherUnit : 맞은 쪽
+
+	//때리는 사람 기준으로 나와야함
+
+	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
+	
+	switch (m_eCurState)
+	{
+	case STATE_SPRINTATTACK_WARHAMMER:
+		break;
+	case STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L:
+		break;
+	case STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R:
+		break;
+	case STATE_VERTICALATTACK_WARHAMMER_L:
+		break;
+	case STATE_VERTICALATTACK_WARHAMMER_R:
+		break;
+	case STATE_ATTACK_STING_WARHAMMER_L:
+		break;
+	case STATE_ATTACK_STING_WARHAMMER_R:
+		break;
+	case STATE_GROGGYATTACK_WARHAMMER:
+		break;
+	case STATE_AIRSPIKE_END_WARHAMMER:
+		break;
+	}
+
+}
+
 void CUnit_WarHammer::Set_BarricadeMatrix()
 {
 	

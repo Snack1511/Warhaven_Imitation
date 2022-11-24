@@ -943,6 +943,8 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_BLACKBACKGROUNDTEXTURE;
 			if (ImGui::Selectable("ANIMATION_ALPHACOLOR", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR;
+			if (ImGui::Selectable("UVTEXTURESELECT", &bSelect[VTXRECTINSTANCE_PASS_UVTEXTURESELECT]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_UVTEXTURESELECT;
 
 			
 			pRenderer->Set_Pass(pCurEffect->m_iPassType);
@@ -1072,6 +1074,9 @@ void CWindow_Effect::Show_ParticleTab()
 			_int	iNumInstance = tCurData.iNumInstance;
 			if (ImGui::InputInt("NumInstance", &iNumInstance, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
 			{
+				if (0 == iNumInstance)
+					return;
+
 				tCurData.iNumInstance = (_uint)iNumInstance;
 				pCurEffect->Re_Initialize();
 			}
@@ -1490,7 +1495,8 @@ void CWindow_Effect::Save_CurEffect()
 	{
 		if (pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA
 			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE 
-			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR)
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT)
 			m_vecEffects[m_iCurrentIdx].iEffectType = 2;
 		else
 			m_vecEffects[m_iCurrentIdx].iEffectType = 1;

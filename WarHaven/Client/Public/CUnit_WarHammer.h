@@ -21,6 +21,9 @@ public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
 	virtual void	SetUp_HitStates(_bool bPlayer);
 
+protected:
+	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
+
 public:
 	void	Set_BarricadeMatrix();
 
