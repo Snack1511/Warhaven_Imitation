@@ -36,8 +36,10 @@ HRESULT CBounce_Player::Initialize()
 
 void CBounce_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+
+
 	/* Shake */
-	pOwner->Shake_Camera(0.08f, 0.25f);
+	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
     /* Owner¿« Animator Set Idle∑Œ */
 

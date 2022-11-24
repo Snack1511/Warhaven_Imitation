@@ -35,15 +35,10 @@ CWarHammer_Attack_Sting_L* CWarHammer_Attack_Sting_L::Create()
 }
 HRESULT CWarHammer_Attack_Sting_L::Initialize()
 {
-	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
-
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 16;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_ATTACK_STING_WARHAMMER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-
-	m_iStopIndex = 31;
-	m_iAttackEndIndex = 50;
 
 	m_vecAdjState.push_back(STATE_IDLE_WARHAMMER_L);
 	m_vecAdjState.push_back(STATE_WALK_WARHAMMER_L);
@@ -75,8 +70,6 @@ HRESULT CWarHammer_Attack_Sting_L::Initialize()
 
 void CWarHammer_Attack_Sting_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -87,10 +80,6 @@ STATE_TYPE CWarHammer_Attack_Sting_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarHammer_Attack_Sting_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
-
-    //Exit에선 무조건 남겨놔야함
-    pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
 

@@ -50,7 +50,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_PLAYERATTACK : COL_ENEMYATTACK;
 	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_PLAYERGUARDBREAK : COL_ENEMYGUARDBREAK;
 	COL_GROUP_CLIENT	eGroggy = (bPlayer) ? COL_PLAYERGROGGYATTACK : COL_ENEMYGROGGYATTACK;
-	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_PLAYERFLYATTACK : COL_ENEMYFLYATTACK;
+	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_PLAYERFLYATTACKGUARDBREAK : COL_ENEMYFLYATTACKGUARDBREAK;
 
 	CUnit::UNIT_COLLIDREINFODESC tUnitInfoDesc;
 
@@ -116,7 +116,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 	SetUp_UnitCollider(CUnit::GROGGY, tGroggyColDesc, 2, DEFAULT_TRANS_MATRIX, false);
 
 
-	tUnitColDesc[0].fRadius = 1.f;
+	tUnitColDesc[0].fRadius = 2.f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 0.f, 0.f);
 	tUnitColDesc[0].eColType = eFlyAttack;
 
@@ -245,12 +245,27 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_tUnitStatus.fGuardDashSpeed *= 0.8f;
 
 
-	m_fCoolTime[SKILL1] = 10.f;
-	m_fCoolTime[SKILL2] = 8.f;
+	m_fCoolTime[SKILL1] = 5.f;
+	m_fCoolTime[SKILL2] = 4.f;
 	m_fCoolTime[SKILL3] = 0.f;
 
 	//Enable_ModelParts(3, false);
 	
+
+	int iCnt = (int)CUnit_WarHammer::BARRICADE_CNT::BARRICADE_CNT_END;
+
+	/* 바리게이트 생성 */
+	for (int i = 0; i < iCnt; ++i)
+	{
+		CBarricade* pBarricade = CBarricade::Create(this, L"../Bin/Resources/Meshes/Map/Environments/Install/SM_Prop_Installation_Trap01a.fbx");
+
+
+		Disable_Barricade(pBarricade);
+		CREATE_GAMEOBJECT(pBarricade, GROUP_DEFAULT);
+		DISABLE_GAMEOBJECT(pBarricade);
+		
+	}
+
 	return S_OK;
 }
 

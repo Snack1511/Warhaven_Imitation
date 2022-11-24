@@ -302,6 +302,7 @@
     <ClInclude Include="..\Public\CSprint_Loop_WarHammer.h" />
     <ClInclude Include="..\public\CState_Blendable.h" />
     <ClInclude Include="..\public\CState_Hit.h" />
+    <ClInclude Include="..\Public\CChangeHero_Player.h" />
     <ClInclude Include="..\Public\CStop_Valkyrie.h" />
     <ClInclude Include="..\Public\CStop_WarHammer.h" />
     <ClInclude Include="..\public\CState_BlendableCharge.h" />
@@ -621,6 +622,7 @@
     <ClCompile Include="..\Private\CSprint_Loop_WarHammer.cpp" />
     <ClCompile Include="..\private\CState_Blendable.cpp" />
     <ClCompile Include="..\private\CState_Hit.cpp" />
+    <ClCompile Include="..\Private\CChangeHero_Player.cpp" />
     <ClCompile Include="..\Private\CStop_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CStop_WarHammer.cpp" />
     <ClCompile Include="..\Private\CStop_Valkyrie_L.cpp" />

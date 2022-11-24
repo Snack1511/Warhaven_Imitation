@@ -136,9 +136,6 @@ protected:
 	_int				m_iStateForcePushIndex = 0;
 
 
-
-
-
 protected:
 	/* 공격, 피격 정보
 	1. 공격하는 상태가 들고있는 hit Info를

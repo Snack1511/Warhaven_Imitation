@@ -77,9 +77,7 @@ STATE_TYPE CGuard_Begin_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAn
 	1. 스프린트 공격 준비가 끝나면
     */
 
-
-
-	if (KEY(RBUTTON, TAP))
+	if (KEY(RBUTTON, HOLD))
 		return m_eStateType;
    
     return STATE_END;

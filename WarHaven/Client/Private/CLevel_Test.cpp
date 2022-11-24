@@ -179,7 +179,6 @@ HRESULT CLevel_Test::Enter()
 
 void CLevel_Test::Tick()
 {
-	Change_Player();
 
 	/*if (!m_bStaticShadowBake)
 	{
@@ -275,8 +274,6 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	_float4 vPlayerPos = _float4(20.f, 3.f, 10.f);
-	
-	//vPlayerPos = _float4(20.f, 3.f, 20.f);
 
 	CPlayer* pUserPlayer = nullptr;
 
@@ -291,7 +288,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	//vPlayerPos.x = 70.f;
 	//vPlayerPos.z = -10.f;
 
-	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,								
 		STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
 		return E_FAIL;
 
@@ -308,8 +305,6 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
 		STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY, false, L"SandBackCam3")))
 		return E_FAIL;
-
-
 
 	return S_OK;
 }
@@ -335,16 +330,16 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//Ready_GameObject(pMapColliders, GROUP_DEFAULT);
 
 
-	_float4x4 mat;
-	mat.Identity();
-	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
-	pDrawableTerrain->Initialize();
-	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	//_float4x4 mat;
+	//mat.Identity();
+	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
+	//pDrawableTerrain->Initialize();
+	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Map/Environments/prop/etc/SM_Prop_Etc_Scarecrow02a.FBX")), mat);
 	pTestStruct->Initialize();
 	pTestStruct->Make_PhysXCollider(CStructure::ePhysXEnum::eCONVEX);
-	Ready_GameObject(pTestStruct, GROUP_DECORATION);*/
+	Ready_GameObject(pTestStruct, GROUP_DECORATION);
 
 
 	/*CStructure* pTestStruct = CStructure::Create(wstring(TEXT("../Bin/Resources/Meshes/Effects/naruto/GroundBreak/SM_EFF_GroundBreak_C.FBX")), mat);
@@ -440,6 +435,10 @@ void CLevel_Test::Col_Check()
 	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACK, COL_ENEMYHITBOX_BODY);
 	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACK, COL_ENEMYGUARD);
 
+	/* 가드 불가 띄우기 공격 플레이어 */
+	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACKGUARDBREAK, COL_ENEMYHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACKGUARDBREAK, COL_ENEMYGUARD);
+
 	//==========================================================================================
 
 
@@ -461,9 +460,13 @@ void CLevel_Test::Col_Check()
 
 	/* 띄우기 공격 적 */
 	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACK, COL_PLAYERHITBOX_BODY);
-	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACK, COL_ENEMYGUARD);
+	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACK, COL_PLAYERGUARD);
 
 
+	/* 가드 불가 띄우기 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACKGUARDBREAK, COL_PLAYERHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACKGUARDBREAK, COL_PLAYERGUARD);
+	
 
 
 
@@ -683,55 +686,41 @@ HRESULT CLevel_Test::SetUp_Warrior_Sandback()
 	return S_OK;
 }
 
-void CLevel_Test::Change_Player()
+HRESULT	CLevel_Test::SetUp_Terrian_InPlayer()
 {
+	_float4 vPlayerPos = _float4(20.f, 3.f, 20.f);
 
-	//if (KEY(P, TAP))
-	//{
+	CPlayer* pUserPlayer = nullptr;
 
-	//	_float4 vPlayerPos = m_pWarrior->Get_Transform()->Get_World(WORLD_POS);
-	//	m_pWarrior->Teleport_Unit(vPlayerPos);
+	if (!(pUserPlayer = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+		STATE_JUMPFALL_PLAYER_R, true, L"PlayerCam")))
+		return E_FAIL;
 
-	//	if (m_pWarHammer)
-	//		DISABLE_GAMEOBJECT(m_pWarHammer);
+	pUserPlayer->Set_MainPlayer();
 
-	//	ENABLE_GAMEOBJECT(m_pWarrior);
+	CUser::Get_Instance()->Set_Player(pUserPlayer);
 
+	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+		STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
+		return E_FAIL;
 
-	////	CUser::Get_Instance()->Set_Player(m_pWarrior);
+	vPlayerPos.x += 5.f;
 
+	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+		STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY, false, L"SandBackCam2")))
+		return E_FAIL;
 
+	vPlayerPos.x += 5.f;
 
-	//	//		static_cast<CUnit*>(m_pWarHammer)->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
-	//	m_pWarrior->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam")));
+	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+		STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY, false, L"SandBackCam3")))
+		return E_FAIL;
 
-
-	//}
-
-	//if (KEY(O, TAP))
-	//{
-
-	//	_float4 vPlayerPos = m_pWarHammer->Get_Transform()->Get_World(WORLD_POS);
-	//	m_pWarHammer->Teleport_Unit(vPlayerPos);
-
-
-	//	if (m_pWarrior)
-	//		DISABLE_GAMEOBJECT(m_pWarrior);
-
-	//	ENABLE_GAMEOBJECT(m_pWarHammer);
-
-	//	//	ENABLE_GAMEOBJECT(m_pWarHammer);
-	//	//CUser::Get_Instance()->Set_Player(m_pWarHammer);
-	//	//	DISABLE_GAMEOBJECT(m_pWarrior);
-
-
-	//	//CUser::Get_Instance()->Set_Player(static_cast<CUnit*>(m_pWarrior));
-	//	//DISABLE_GAMEOBJECT(m_pWarHammer);
-	//	//ENABLE_GAMEOBJECT(m_pWarrior);
-
-	//	m_pWarHammer->Set_FollowCam(static_cast<CCamera_Follow*>(GAMEINSTANCE->Find_Camera(L"PlayerCam4")));
-
-	//}
-
+	return S_OK;
 }
 
+
+HRESULT	CLevel_Test::SetUp_Map_InPlayer()
+{
+	return S_OK;
+}

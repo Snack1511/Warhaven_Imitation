@@ -24,7 +24,7 @@ HRESULT CBounce_WarHammer::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 50;
+	
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 5.f;
@@ -36,8 +36,12 @@ HRESULT CBounce_WarHammer::Initialize()
 
 void CBounce_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+
+	pOwner->Get_Status().fCamPower = 0.4f;
+	pOwner->Get_Status().fCamTime = 0.25f;
+
 	/* Shake */
-	pOwner->Shake_Camera(0.1f, 0.25f);
+	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
     /* OwnerÀÇ Animator Set Idle·Î */
 
@@ -47,11 +51,13 @@ void CBounce_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-
 	switch (ePrevType)
 	{
 	case Client::STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L:
+	case Client::STATE_CHARGEATTACK_WARHAMMER_L:
+	case Client::STATE_ATTACK_STING_WARHAMMER_L:
 
+		m_iStateChangeKeyFrame = 74;
 		m_eAnimType = ANIM_BASE_L;     
 		m_iAnimIndex = 0;    
 		m_eStateType = STATE_BOUNCE_WARHAMMER_L;
@@ -59,25 +65,33 @@ void CBounce_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 		break;
 
 	case Client::STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R:
+	case Client::STATE_CHARGEATTACK_WARHAMMER_R:
+	case Client::STATE_ATTACK_STING_WARHAMMER_R:
 
+		m_iStateChangeKeyFrame = 60;
 		m_eAnimType = ANIM_BASE_R;
 		m_iAnimIndex = 10;
 		m_eStateType = STATE_BOUNCE_WARHAMMER_R;
 
 		break;
 
+		// RF
 	case Client::STATE_VERTICALATTACK_WARHAMMER_R:
+	case Client::STATE_CHARGEATTACK_FRONT_WARHAMMER_R:
 
+		m_iStateChangeKeyFrame = 50;
 		m_eAnimType = ANIM_BASE_L;
 		m_iAnimIndex = 38;
 		m_eStateType = STATE_BOUNCE_WARHAMMER_L;
 
 		break;
 
+		//LF
 	case Client::STATE_SPRINTATTACK_WARHAMMER:
 	case Client::STATE_VERTICALATTACK_WARHAMMER_L:
+	case Client::STATE_CHARGEATTACK_FRONT_WARHAMMER_L:
 	
-
+		m_iStateChangeKeyFrame = 50;
 		m_eAnimType = ANIM_BASE_L;
 		m_iAnimIndex = 38;
 		m_eStateType = STATE_BOUNCE_WARHAMMER_L;

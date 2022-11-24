@@ -52,8 +52,10 @@ private:
 
 	HRESULT	SetUp_Warrior_Sandback();
 
-	void	Change_Player();
+	HRESULT	SetUp_Terrian_InPlayer();
+	HRESULT	SetUp_Map_InPlayer();
 
+	
 private:
 	CGameObject* m_pTestObj = nullptr;
 

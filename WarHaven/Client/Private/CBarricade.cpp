@@ -68,6 +68,9 @@ HRESULT CBarricade::Initialize_Prototype(CUnit_WarHammer* pOwner)
 	m_pOwner = pOwner;
 
 
+	
+
+
 	//CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/WarHammer/SKEL_Engineer_Base_R.fbx");
 	//if (!pAnimator)
 	//	return E_FAIL;

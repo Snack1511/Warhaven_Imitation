@@ -1258,6 +1258,9 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\04. Dash">
       <UniqueIdentifier>{bfce23c4-a7fe-445e-a58b-d47535d71f74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\11. Transform">
+      <UniqueIdentifier>{6dcc2b1e-fd18-48b1-9fb3-c5ec86627be0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2211,6 +2214,9 @@
     <ClInclude Include="..\Public\CGuard_Dash_WarHammer.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\04. Dash</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CChangeHero_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\11. Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3144,6 +3150,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Dash_WarHammer.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\08. Guard\04. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CChangeHero_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\11. Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

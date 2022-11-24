@@ -126,15 +126,24 @@ STATE_TYPE CSprintAttack_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			//발쪽이면
 			if (vHitPos.y <= vPos.y + 0.1f)
 			{
-				pOwner->Shake_Camera(0.25f, 0.25f);
+				pOwner->Get_Status().fCamPower = 0.25f;
+				pOwner->Get_Status().fCamTime = 0.25f;
+
+				pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
+
 				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
 			}
 
-
 			else
+			{
+				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", m_pOwner, vHitPos);
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), m_pOwner, vHitPos);
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), m_pOwner, vHitPos);
 				return STATE_BOUNCE_PLAYER_R;
+			}
+				
 
 			m_bAttackTrigger = false;
 		}

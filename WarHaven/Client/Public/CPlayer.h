@@ -31,8 +31,8 @@ class CPlayer final
 public:
 	enum CLASS_HREO
 	{
-		/*CLASS_HREO_FIONA,
-		CLASS_HREO_QANDA,
+		//CLASS_HREO_FIONA,
+		/*CLASS_HREO_QANDA,
 		CLASS_HREO_HOEDT,
 		CLASS_HREO_LANCER,*/
 		CLASS_HERO_END
@@ -96,7 +96,8 @@ private:
 	//CUnit* m_pHeroClass[CLASS_HERO_END] = { nullptr };
 	CUnit* m_pDefaultClass[CLASS_DEFAULT_END] = { nullptr };
 
-	_uint	m_iReserveState[CLASS_DEFAULT_END] = { 0 };
+	_uint	m_iReserveStateDefault[CLASS_DEFAULT_END] = { 0 };
+	//_uint	m_iReserveStateHero[CLASS_HERO_END] = { 0 };
 	
 
 	_bool m_bIsMainPlayer = false;

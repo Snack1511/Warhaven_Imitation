@@ -91,18 +91,12 @@ void CWarHammer_Attack_HorizontalMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnim
 
 STATE_TYPE CWarHammer_Attack_HorizontalMiddle_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (KEY(LBUTTON, HOLD) && pAnimator->Get_CurAnimFrame() >= 11)
-		return STATE_CHARGE_WARHAMMER_R;
-
 	return __super::Tick(pOwner, pAnimator);
 }
 
 void CWarHammer_Attack_HorizontalMiddle_R::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	__super::Exit(pOwner, pAnimator);
-
-	
-
 }
 
 STATE_TYPE CWarHammer_Attack_HorizontalMiddle_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
