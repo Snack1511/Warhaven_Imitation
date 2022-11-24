@@ -8,6 +8,7 @@ class CUnit;
 class CUI_Skill : public CUI_Wrapper
 {
 	enum WindowType { Outline0, Outline1, Outline2, BG, Icon, Key, HeroKey, Type_End };
+	enum SkillIndex{Skill1, Skill2, Skill3, SkillEnd};
 
 	DECLARE_PROTOTYPE(CUI_Skill);
 	DECLARE_GAMEOBJECT(CUI_Skill);
@@ -23,7 +24,9 @@ public:
 
 public:
 	virtual void Set_ShaderResources_HeroKeySkill(CShader* pShader, const char* pConstName);
-	virtual void Set_Shader_SkillGauge(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_SkillGauge1(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_SkillGauge2(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_SkillGauge3(CShader* pShader, const char* pConstName);
 
 public:
 	void Set_SkillHUD(_uint iIndex);
@@ -46,9 +49,9 @@ private:
 	_uint m_iPrvSkill = 0;
 	_uint m_iCurSkill = 0;
 
-	_float m_fCoolTime[3];
-	_float m_fMaxCoolTime[3];
-	_float m_fSkillGauge = 0.f;
+	_float m_fCoolTime[SkillEnd];
+	_float m_fMaxCoolTime[SkillEnd];
+	_float m_fSkillGauge[SkillEnd];
 
 private:
 	virtual void My_Tick() override;
