@@ -232,8 +232,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		Enter_State(eFinalHitState, &tOtherHitInfo);
 
 		if (!bGuardSuccess)
+		{
 			pOtherUnit->Effect_Hit(this, vHitPos);
-
+		}
 	}
 	else
 	{
@@ -244,6 +245,14 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		/* 체력 0 이하로 내려간 경우 */
 		m_bDie = true;
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
+	}
+
+	if (!bGuardSuccess)
+	{
+		if (m_bIsMainPlayer)
+		{
+			CUser::Get_Instance()->Turn_BloodOverLay(PLAYER->Get_Status().fHP / PLAYER->Get_Status().fMaxHP);
+		}
 	}
 }
 
@@ -338,11 +347,6 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit)
 {
 	m_tUnitStatus.fHP += fHp;
-
-	if (m_bIsMainPlayer)
-	{
-		CUser::Get_Instance()->Turn_BloodOverLay(PLAYER->Get_Status().fHP / PLAYER->Get_Status().fMaxHP);
-	}
 
 	if (m_tUnitStatus.fHP <= 0.f)
 	{

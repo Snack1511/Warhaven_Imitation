@@ -622,7 +622,8 @@ void CRectEffects::My_Tick()
 				{
 					_float4x4 matRot;
 
-					matRot = XMMatrixRotationAxis(vCamLook.XMLoad(), ToRadian(m_tCreateData.fCurveAngle));
+					_float4 vAxis = m_matTrans.XMLoad().r[2];
+					matRot = XMMatrixRotationAxis(vAxis.XMLoad(), ToRadian(m_tCreateData.fCurveAngle));
 
 					vRotLook = vLook.MultiplyNormal(matRot);
 					vRotRight = vRight.MultiplyNormal(matRot);
