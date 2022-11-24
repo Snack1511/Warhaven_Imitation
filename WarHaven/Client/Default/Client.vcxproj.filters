@@ -1261,6 +1261,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Traing">
       <UniqueIdentifier>{148df79a-4c0d-4b26-9464-29a084009f32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage">
+      <UniqueIdentifier>{e1b7b09d-01a7-4192-bb8d-433710027162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2217,6 +2220,9 @@
     <ClInclude Include="..\Public\CChangeHero_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\11. Transform</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Damage.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3153,6 +3159,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CChangeHero_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\11. Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Damage.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
