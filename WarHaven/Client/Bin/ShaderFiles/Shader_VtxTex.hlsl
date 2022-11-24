@@ -299,7 +299,7 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
 
     Out.vColor *= (vNoise + vNoise);
     
-    if (In.vTexUV.y > g_fHeroValue)
+    if (In.vTexUV.y < g_fHeroValue)
         discard;
 	
     if (Out.vColor.a < 0.01f)
@@ -387,6 +387,18 @@ PS_OUT PS_LOBBYEFFECT(PS_IN In)
     Out.vColor.a += vNoise.r;
     Out.vColor.a *= vColor.r;
     Out.vColor.a *= vNormal.r;
+    
+    return Out;
+}
+
+PS_OUT PS_VerticalGauge(PS_IN In)
+{    
+    PS_OUT Out = (PS_OUT) 0;
+        
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    if (In.vTexUV.y < g_fValue)
+        discard;
     
     return Out;
 }
@@ -855,6 +867,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_LOBBYEFFECT();
+    }
+
+    pass UI_VerticalGauge
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_VerticalGauge();
     }
 
     pass ALPHA

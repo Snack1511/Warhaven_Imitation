@@ -29,16 +29,28 @@ public:
 
 public:
 	void Set_ProjPos(CTransform* pTransform);
-
 	void Set_UnitStatus(CUnit::UNIT_STATUS tStatus) { m_tStatus = tStatus; }
+	void Set_UnitDis(_float fDis) { m_fUnitDis = fDis; }
 
 private:
 	CUI_Wrapper* m_pUnitUI[UI_End];
 
 	CUnit::UNIT_STATUS m_tStatus;
 
+	_float4 vColorRed = _float4(1.f, 0.f, 0.f, 1.f);
+	_float4 vColorAlpha = _float4(1.f, 0.f, 0.f, 0.f);
+
+	CUI_Object* m_pUnitNameText = nullptr;
+	
+	_float m_fUnitDis = 0.f;
+
 private:
-	void Ready_UnitHP();
+	void Create_UnitHUD();
+
+	void Init_UnitNameText();
+
+private:
+	void SetActive_UnitHP(_bool value);
 };
 
 END

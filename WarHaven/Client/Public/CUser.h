@@ -41,7 +41,7 @@ public:
 	void	Fix_CursorPosToCenter();
 	void	KeyInput_FPSSetter();
 
-	KEY		Get_LastKey() { 
+	KEY		Get_LastKey() {
 		if (m_KeyCommands.empty())
 			return KEY::LAST;
 		return m_KeyCommands.back();
@@ -69,6 +69,7 @@ public:
 
 	void SetActive_OxenJumpText(_bool value);
 	void SetActive_DamageTex(_float fDmg, _bool bIsHead);
+	void Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime);
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

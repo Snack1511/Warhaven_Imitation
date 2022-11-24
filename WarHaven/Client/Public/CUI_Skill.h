@@ -23,10 +23,11 @@ public:
 
 public:
 	virtual void Set_ShaderResources_HeroKeySkill(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_SkillGauge(CShader* pShader, const char* pConstName);
 
 public:
 	void Set_SkillHUD(_uint iIndex);
-	void Set_CoolTime(_uint iSkillType, _float fCoolTime);
+	void Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
@@ -34,6 +35,9 @@ private:
 
 	CUI_Object* m_pSkillCoolText = nullptr;
 	CUI_Object* m_pSkillCoolTextArr[3];
+
+	CUI_Object* m_pSkillCoolBG = nullptr;
+	CUI_Object* m_pSkillCoolBGArr[3];
 
 	_bool m_bAbleOutline = false;
 
@@ -43,6 +47,8 @@ private:
 	_uint m_iCurSkill = 0;
 
 	_float m_fCoolTime[3];
+	_float m_fMaxCoolTime[3];
+	_float m_fSkillGauge = 1.f;
 
 private:
 	virtual void My_Tick() override;
@@ -59,6 +65,7 @@ private:
 private:
 	void Ready_SkillHUD();
 	void Create_SkillCoolText();
+	void Create_SkillCoolBG();
 };
 
 END

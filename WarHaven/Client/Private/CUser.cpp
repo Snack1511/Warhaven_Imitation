@@ -196,3 +196,8 @@ void CUser::SetActive_DamageTex(_float fDmg, _bool bIsHead)
 	m_pUI_HUD->SetActive_DamageTex(fDmg, bIsHead);
 }
 
+void CUser::Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime)
+{
+	m_pUI_HUD->Set_SkillCoolTime(iSkillType, fSkillCoolTime, fMaxCoolTime);
+}
+

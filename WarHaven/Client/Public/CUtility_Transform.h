@@ -24,5 +24,7 @@ public:
 	static	_float	Get_LookRotateAngle(_float4 vLook);
 	//static _float4x4 Matrix_ByLook(_float4 vLook);
 
+	static _float Get_FromCameraDistance(CGameObject* pObject);
+
 };
 END
