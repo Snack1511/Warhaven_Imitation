@@ -38,7 +38,7 @@ private:
 
 	_float m_fFadeInTime = 0.3f;
 	_float m_fFadeOutTime = 0.1f;
-	_float m_fMaintainTime = 2.f;
+	_float m_fMaintainTime = 1.f;
 
 	_float m_fScaleUpTime = 0.1f;
 	_float m_fScaleDownTime = 0.2f;
