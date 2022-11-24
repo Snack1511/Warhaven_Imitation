@@ -32,7 +32,9 @@ public:
 	
 
 private:
-	_uint m_fImgIdx = 0;
+	_bool		m_bDeadBlood = false;
+	_uint		m_fImgIdx = 0;
+	_float		m_fBloodRatio = 0.f;
 
 };
 

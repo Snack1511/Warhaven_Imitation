@@ -77,6 +77,7 @@ HRESULT CFader::Initialize()
 void CFader::Start()
 {
 	__super::Start();
+	BIND_SHADERRESOURCES(CFader, "g_fAlpha");
 
 	m_vTargetPos = m_pOwner->Get_Transform()->Get_MyWorld(WORLD_POS);
 	m_vOriginScale = m_pOwner->Get_Transform()->Get_Scale();
@@ -124,7 +125,6 @@ void CFader::OnEnable()
 	__super::OnEnable();
 	//m_vTargetPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
 	//m_vOriginScale = m_pOwner->Get_Transform()->Get_Scale();
-	BIND_SHADERRESOURCES(CFader, "g_fAlpha");
 	//BIND_SHADERRESOURCES(CFader, "g_vColor");
 }
 

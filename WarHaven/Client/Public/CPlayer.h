@@ -105,6 +105,8 @@ private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
+private:
+	_float4 m_vCurrentPos;
 
 };
 END

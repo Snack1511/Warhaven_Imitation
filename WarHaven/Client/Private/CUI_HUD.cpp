@@ -544,6 +544,7 @@ void CUI_HUD::Set_FadePortHighlight()
 
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 {
+
 	Set_ClassInfo(m_eCurClass);
 
 	m_pPortClone[m_eCurClass]->Set_PosY(-240.f);
@@ -558,6 +559,8 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 
 	if (value == true)
 	{
+		CUser::Get_Instance()->Set_FixCursor(false); // 픽창 마우스 고정 해제
+
 		ENABLE_GAMEOBJECT(m_pBG);
 		ENABLE_GAMEOBJECT(m_pLine);
 		ENABLE_GAMEOBJECT(m_pClassInfo);
@@ -572,6 +575,8 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 	}
 	else
 	{
+		CUser::Get_Instance()->Set_FixCursor(true); //픽 후 마우스 고정
+
 		DISABLE_GAMEOBJECT(m_pBG);
 		DISABLE_GAMEOBJECT(m_pLine);
 		DISABLE_GAMEOBJECT(m_pClassInfo);

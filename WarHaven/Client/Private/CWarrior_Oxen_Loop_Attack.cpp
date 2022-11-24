@@ -217,7 +217,7 @@ void CWarrior_Oxen_Loop_Attack::OnCollisionEnter(CGameObject* pOtherObject, cons
     else if (iOtherColType == COL_ENEMYHITBOX_BODY || iOtherColType == COL_ENEMYHITBOX_HEAD)
     {
 
-            CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", m_pOwner, vHitPos);
+            CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", m_pOwner, vHitPos); //오른쪽으로 올려벰
 
         m_bHit = true;
     }
