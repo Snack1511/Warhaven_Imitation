@@ -2205,6 +2205,9 @@ void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
         char szMeshPath[MAX_PATH] = "";
         strcpy_s(szMeshPath, MeshPath.c_str());
 
+        writeFile.write((char*)&PathLength, sizeof(_int));
+        writeFile.write(szMeshPath, sizeof(char) * PathLength);
+
         _uint iInstanceNums = _uint(ValidList.size());
         VTXINSTANCE* pInstance = new VTXINSTANCE[iInstanceNums];
         ZeroMemory(pInstance, sizeof(VTXINSTANCE) * iInstanceNums);
