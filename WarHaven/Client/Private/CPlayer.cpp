@@ -370,6 +370,7 @@ void CPlayer::Set_Postion(_float4 vPos)
 	if (m_pCurrentUnit)
 	{
 		m_pCurrentUnit->Teleport_Unit(vPos);
+		m_pCurrentUnit->Synchronize_CamPos();
 	}
 }
 

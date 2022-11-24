@@ -480,7 +480,7 @@ HRESULT	CLevel_Test::SetUp_Terrian_InPlayer()
 
 HRESULT	CLevel_Test::SetUp_Map_InPlayer()
 {
-	_float4 vPlayerPos = _float4(20.f, 3.f, -10.f);
+	_float4 vPlayerPos = CGameSystem::Get_Instance()->Find_Position("StartPosition");
 
 	CPlayer* pUserPlayer = nullptr;
 

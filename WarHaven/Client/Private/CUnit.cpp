@@ -176,6 +176,7 @@ void CUnit::Synchronize_CamPos()
 		return;
 
 	m_pFollowCam->Get_Transform()->Set_World(WORLD_POS, m_pTransform->Get_World(WORLD_POS));
+	m_pFollowCam->Get_Transform()->Make_WorldMatrix();
 }
 
 void CUnit::Shake_Camera(_float fPower, _float fTime)
