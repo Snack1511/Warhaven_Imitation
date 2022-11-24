@@ -58,20 +58,12 @@ void CUI_UnitHUD::My_Tick()
 {
 	__super::My_Tick();
 
-	/*m_fAccTime += fDT(0);
-	if (1.f < m_fAccTime)
-	{
-		m_fAccTime = 1.f;
-	}
-	_float4 vCurPoint = CEasing_Utillity::CubicIn(vStartPoint, vTargetPoint, m_fAccTime, 1.f);
-	m_tStatus.fHP = vCurPoint.x; */
-
 	if (m_fUnitDis > 10.f)
 	{
 		m_vOffset = _float4(0.f, 1.9f, 0.f);
 
 		m_pUnitNameText->Set_FontRender(false);
-		m_pUnitNameText->Set_Color(vColorRed);
+		m_pUnitNameText->Set_Color(m_vColorRed);
 
 		SetActive_UnitHP(false);
 	}
@@ -114,13 +106,13 @@ void CUI_UnitHUD::Create_UnitHUD()
 void CUI_UnitHUD::Init_UnitNameText()
 {
 	m_pUnitNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_32Circle.dds"));
-	m_pUnitNameText->Set_Color(vColorRed);
+	m_pUnitNameText->Set_Color(m_vColorRed);
 	m_pUnitNameText->Set_Scale(8.f);
 	m_pUnitNameText->Set_Sort(0.5f);
 
 	m_pUnitNameText->Set_FontStyle(true);
 	m_pUnitNameText->Set_FontScale(0.2f);
-	m_pUnitNameText->Set_FontColor(vColorRed);
+	m_pUnitNameText->Set_FontColor(m_vColorRed);
 
 	m_pUnitNameText->Set_FontText(TEXT("Àû±º"));
 

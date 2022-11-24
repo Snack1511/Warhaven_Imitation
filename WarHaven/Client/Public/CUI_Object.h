@@ -93,6 +93,7 @@ private:	// Etc
 private:	// Lerp
 	_bool m_bIsDoMoveY = false;
 
+	_float4 m_vOriginScale;
 	_bool m_bIsDoScale = false;
 
 	_float m_fMoveValue = 0.f;

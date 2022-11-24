@@ -26,16 +26,23 @@ private:
 	CUI_Object* m_pArrDmgNum[3];
 
 private:
-	_float4 vColorWhite = _float4(1.f, 1.f, 1.f, 1.f);
-	_float4 vColorRed = _float4(1.f, 0.f, 0.f, 1.f);
+	_float4 m_vColorWhite = _float4(1.f, 1.f, 1.f, 1.f);
+	_float4 m_vColorRed = _float4(1.f, 0.f, 0.f, 1.f);
+
+	_float2 m_vFontScale = _float2(60.f, 71.f);
 
 	_float m_fFadeInTime = 0.3f;
 	_float m_fFadeOutTime = 0.1f;
 	_float m_fMaintainTime = 1.f;
 
+	_float m_fScaleUpTime = 0.1f;
+	_float m_fScaleDownTime = 0.2f;
+	_float m_fScaleValue = 200.f;
+
 	_uint m_iDamageValue = 0.f;
 
 	_bool m_bIsHeadShot = false;
+	_bool m_bIsScaleDown = false;
 
 	vector<_float> m_vecDigitDmg;	
 

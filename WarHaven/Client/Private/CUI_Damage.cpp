@@ -1,6 +1,7 @@
 #include "CUI_Damage.h"
 #include "CUI_Object.h"
 
+#include "Easing_Utillity.h"
 #include "GameInstance.h"
 #include "Texture.h"
 #include "CFader.h"
@@ -33,8 +34,28 @@ void CUI_Damage::My_Tick()
 	m_fAccTime += fDT(0);
 
 	_float m_fAliveTime = m_fFadeInTime + m_fFadeOutTime + m_fMaintainTime;
+	
+	if (m_fAccTime >= m_fScaleDownTime)
+	{
+		if (m_bIsScaleDown)
+		{
+			m_bIsScaleDown = false;
+			for (int i = 0; i < m_vecDigitDmg.size(); ++i)
+			{
+				m_pArrDmgNum[i]->DoScale(-m_fScaleValue, m_fScaleDownTime);
+			}
+
+			if (m_pHeadShot->Is_Valid())
+			{
+				m_pHeadShot->DoScale(-m_fScaleValue, m_fScaleUpTime);
+			}
+		}
+	}
+
 	if (m_fAccTime >= m_fAliveTime)
 	{
+		m_fAccTime = 0.f;
+		m_vecDigitDmg.clear();
 		DISABLE_GAMEOBJECT(this);
 	}
 }
@@ -48,8 +69,8 @@ void CUI_Damage::OnEnable()
 	while (m_iDamageValue != 0)
 	{
 		_uint iDigitDmg = m_iDamageValue % 10; ;
-		vecDigitDmg.push_back(iDigitDmg);
-		sort(vecDigitDmg.begin(), vecDigitDmg.end(), greater<_uint>());
+		m_vecDigitDmg.push_back(iDigitDmg);
+		sort(m_vecDigitDmg.begin(), m_vecDigitDmg.end(), greater<_uint>());
 
 		m_iDamageValue /= 10;
 	}
@@ -57,25 +78,28 @@ void CUI_Damage::OnEnable()
 	_float fRandPosX = frandom(0.f, 300.f);
 	_float fRandPosY = frandom(-300.f, 300.f);
 
-	for (int i = 0; i < vecDigitDmg.size(); ++i)
+	for (int i = 0; i < m_vecDigitDmg.size(); ++i)
 	{
-		GET_COMPONENT_FROM(m_pArrDmgNum[i], CTexture)->Set_CurTextureIndex(vecDigitDmg[i]);
+		m_pArrDmgNum[i]->Set_Scale(m_vFontScale);
 
-		_float fPosX = fRandPosX + (i * 40.f);
+		GET_COMPONENT_FROM(m_pArrDmgNum[i], CTexture)->Set_CurTextureIndex(m_vecDigitDmg[i]);
+
+		_float fPosX = fRandPosX + (i * 20.f);
 		m_pArrDmgNum[i]->Set_Pos(fPosX, fRandPosY);
 
 		Enable_Fade(m_pArrDmgNum[i], m_fFadeInTime);
 
-		m_pArrDmgNum[i]->DoScale(30.f, 0.5f);
+		m_pArrDmgNum[i]->DoScale(m_fScaleValue, m_fScaleUpTime);
+
+		m_bIsScaleDown = true;
 	}
 
 	if (m_bIsHeadShot)
 	{
-		m_pHeadShot->Set_Pos(fRandPosX - 70.f, fRandPosY);
+		m_pHeadShot->Set_Pos(fRandPosX - 50.f, fRandPosY);
+		m_pHeadShot->DoScale(m_fScaleValue, m_fScaleUpTime);
 
 		Enable_Fade(m_pHeadShot, m_fFadeInTime);
-
-		m_pHeadShot->DoScale(30.f, 0.5f);
 	}
 }
 
@@ -102,8 +126,8 @@ void CUI_Damage::Init_DmgNum()
 {
 	Read_Texture(m_pDmgNum, "/Number", "Num");
 
-	m_pDmgNum->Set_Scale(126.f, 150.f);
-	m_pDmgNum->Set_Color(vColorRed);
+	m_pDmgNum->Set_Scale(m_vFontScale);
+	m_pDmgNum->Set_Color(m_vColorRed);
 
 	Set_FadeDesc(m_pDmgNum);
 
