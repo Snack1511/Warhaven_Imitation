@@ -2297,10 +2297,7 @@ void CWindow_Map::Split_Instance()
         }
     }
 }
-//_bool CWindow_Map::Search_NearInstanceObject()
-//{
-//    return false;
-//}
+
 _bool CWindow_Map::Calculate_Pick()
 {
     _bool bPicked = false;
@@ -2308,6 +2305,28 @@ _bool CWindow_Map::Calculate_Pick()
         return bPicked;
     if (nullptr == m_pCurTerrain)
         return bPicked;
+
+    if (KEY(LBUTTON, TAP))
+    {
+        _float4 OutPos;
+        _float4 OutNorm;
+        if (PICK_NONE == m_ePickingType)
+            return bPicked;
+        if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &m_i3PickedIndex, &OutPos, &OutNorm))
+        {
+            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
+            m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
+            bPicked = true;
+            switch (m_ePickingType)
+            {
+            case PICK_CLONE:
+                m_pObjectController->Func_PickStart();
+                break;
+            }
+
+        }
+    }
+
 
     if (KEY(LBUTTON, HOLD))
     {
@@ -2317,9 +2336,13 @@ _bool CWindow_Map::Calculate_Pick()
             return bPicked;
         if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &m_i3PickedIndex, &OutPos, &OutNorm))
         {
+            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
+            m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
+            bPicked = true;
             switch (m_ePickingType)
             {
             case PICK_OBJECT:
+            case PICK_GROUP:
                 //Place_Object();
                 //Change_Object_UpDir();
                 m_pObjectController->Func_Picking();
@@ -2334,9 +2357,28 @@ _bool CWindow_Map::Calculate_Pick()
                 Make_InstanceObject();
                 break;
             }
-            _float4 OutWorldPos= XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
+
+        }
+    }
+
+    if (KEY(LBUTTON, AWAY))
+    {
+        _float4 OutPos;
+        _float4 OutNorm;
+        if (PICK_NONE == m_ePickingType)
+            return bPicked;
+        if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &m_i3PickedIndex, &OutPos, &OutNorm))
+        {
+            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
             m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
             bPicked = true;
+            switch (m_ePickingType)
+            {
+            case PICK_CLONE:
+                m_pObjectController->Func_PickEnd();
+                break;
+            }
+
         }
     }
     return bPicked;

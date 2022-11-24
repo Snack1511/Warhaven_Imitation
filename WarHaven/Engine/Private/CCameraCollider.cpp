@@ -36,11 +36,11 @@ CCameraCollider* CCameraCollider::Create(_uint iGroupID, const BONECOLLIDERDESC&
 
 void CCameraCollider::onShapeHit(const PxControllerShapeHit& hit)
 {
-	if (hit.actor->getType() == PxActorType::eRIGID_STATIC)
-	{
-		m_pCurrentHitActor = hit.actor;
-		m_pCurrentShape= hit.shape;
-	}
+	//if (hit.actor->getType() == PxActorType::eRIGID_STATIC)
+	//{
+	//	m_pCurrentHitActor = hit.actor;
+	//	m_pCurrentShape= hit.shape;
+	//}
 }
 
 void CCameraCollider::onControllerHit(const PxControllersHit& hit)
@@ -79,7 +79,8 @@ void CCameraCollider::Late_Tick()
 	//ÃÖ±Ù¿¡ ´êÀº ¾ÖÇåÆ¼ ray½î±â
 	if (!m_pCurrentHitActor)
 		return;
-
+	if (!m_pCurrentShape)
+		return;
 	_float4 vOwnerPlayerPos = m_pOwner->Get_Parent()->Get_Transform()->Get_World(WORLD_POS);
 	vOwnerPlayerPos.y += 1.f;
 

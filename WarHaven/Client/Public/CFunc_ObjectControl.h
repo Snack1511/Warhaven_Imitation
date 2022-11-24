@@ -11,6 +11,14 @@ class CFunc_ObjectControl
 {
 public:
 	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
+	enum CLONEDIR { CLONE_RIGHT, CLONE_UP, CLONE_LOOK, CLONE_NONE, CLONE_END };
+	const char* CloneTypeDesc[CLONE_END] =
+	{
+		"CLONE_RIGHT",
+		"CLONE_UP",
+		"CLONE_LOOK",
+		"CLONE_NONE"
+	};
 	typedef struct tagMapToolObjectMergeData
 	{
 		_float4x4 ObjectStateMatrix;
@@ -24,6 +32,7 @@ public:
 	typedef struct tagMapToolObjectData
 	{
 		//wstring strGroupName;
+		_bool bIgnoreFlag;
 		wstring strObejctName;
 		wstring strMeshPath;
 		_float4x4 ObjectStateMatrix;
@@ -92,6 +101,9 @@ public:
 	void Func_ObjectList();
 	void Func_GroupControl();
 	void Func_ObjectControl();
+
+	void Func_PickStart();
+	void Func_PickEnd();
 	void Func_Picking();
 
 	void Func_SetUpCollider();
@@ -132,9 +144,9 @@ public:
 	void Delete_Object(vector<CGameObject*>& rhsObjectGroup, _int TargetIndex);
 	void Delete_Data(vector<MTO_DATA>& rhsDataGroup, _int TargetIndex);
 
-	void Clear_SameNameObject(string ObjectName);
+	void Clear_SameNameObject(string ObjectName, _int NameIndexInGroup);
 	void Clear_ObjectGroup(string ObjectGroupName);
-
+	void Clear_SameNameInGroup(string ObjectGroupName, _int NameIndexInGroup);
 	void Clear_AllDatas();
 
 	void Routine_MeshSelect(void* tTreeNode);
@@ -185,6 +197,8 @@ private:
 	_bool Find_ObjectGroupInfo(string strGroupName, vector<tuple<string, bool>>::iterator& OutGroupingIter, size_t& OutHashNum);
 	_bool Find_ObjectGroupingName(size_t GroupNameHashNum, map<size_t, vector<tuple<string, list<_int>>>>::iterator& OutGroupingName);
 	_bool Find_ObjectDatas(string strObjectName, map<size_t, vector<CGameObject*>>::iterator& OutObjectIter, map<size_t, vector<MTO_DATA>>::iterator& OutDataIter);
+private:
+	void Clone();
 
 private:
 	CWindow_Map* m_pMapTool = nullptr;
@@ -202,6 +216,8 @@ private:
 	map<size_t, vector<MTO_DATA>> m_DataNamingGroupMap;
 
 private:
+	//그룹에 포함된 이름들
+	vector<tuple<string, list<_int>>>* m_pCurSelectGroupingNameArr = nullptr;
 	//같은 이름으로 묶인 오브젝트들
 	vector<CGameObject*>* m_pCurSelectObjectGroup = nullptr;
 	//같은 이름으로 묶인 데이터들
@@ -252,6 +268,12 @@ private:
 	_bool bTest = false;
 
 	map<size_t, CStructure*> m_MergeMap;
+
+	_float4 m_vClonePos;
+	_float4 m_vCompDir;
+	CLONEDIR m_eCloneDir = CLONE_NONE;
+	//라업룩중 하나.
+
 };
 
 END
