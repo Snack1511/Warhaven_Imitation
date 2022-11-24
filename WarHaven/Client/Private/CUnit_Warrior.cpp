@@ -9,6 +9,7 @@
 #include "Camera.h"
 
 #include "CBoneCollider.h"
+#include "HIerarchyNode.h"
 
 CUnit_Warrior::CUnit_Warrior()
 {
@@ -43,7 +44,18 @@ void CUnit_Warrior::On_Die()
 {
 	__super::On_Die();
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Warrior", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f);
+
+	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_NOSCALE | MARTIX_NOTRANS);
+
+	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_R_WP1")->Get_BoneMatrix();
+	_float4 vBonePos = matWeapon.XMLoad().r[3];
+	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
+
+
+	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Warrior", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	vPos.y += 1.f;
+	CEffects_Factory::Get_Instance()->Create_MeshParticle(L"WarriorDead_Weapon", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+
 }
 
 void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)

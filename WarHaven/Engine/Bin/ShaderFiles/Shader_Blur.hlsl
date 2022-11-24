@@ -95,7 +95,7 @@ PS_OUT PS_BLOOM_MAIN(PS_DOWNSCALE_IN In)
 
 	if (fBrightness > 0.8f)
 	{
-		Out.vColor = float4(Out.vColor.xyz, Out.vColor.a);
+		Out.vColor = float4(Out.vColor.xyz, fBrightness);
 	}
 	else
 		discard;
@@ -115,13 +115,10 @@ PS_OUT PS_BLOOMHARD_MAIN(PS_DOWNSCALE_IN In)
 	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
 
 	float fBrightness = dot(Out.vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
+	//float fBrightness = Out.vColor.r * Out.vColor.g * Out.vColor.b;
 
-	if (fBrightness > 0.3f)
-	{
-		Out.vColor = float4(Out.vColor.xyz, fBrightness);
-	}
-	else
-		discard;
+	Out.vColor = float4(Out.vColor.xyz, Out.vColor.a);
+
 
 	return Out;
 }

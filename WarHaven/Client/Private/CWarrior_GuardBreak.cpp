@@ -153,7 +153,6 @@ void CWarrior_GuardBreak::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 
 	case 1:
         m_bKeyInputable = true;
-        m_bAttackTrigger = true;
         pOwner->Get_PhysicsCom()->Set_SpeedasMax();
         pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 
@@ -161,7 +160,6 @@ void CWarrior_GuardBreak::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 
 
 	case 2:
-        m_bAttackTrigger = false;
         pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 		break;
 

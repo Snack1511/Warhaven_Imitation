@@ -195,7 +195,10 @@ void CUnit::On_Die()
 
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 1.f;
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f);
+
+	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_NOSCALE | MARTIX_NOTRANS);
+
+	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 	vPos.y -= 0.7f;
 
 	_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
@@ -237,12 +240,10 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot)
 {
 	m_tUnitStatus.fHP += fHp;
 
-	
-
 	/*데미지 표시*/
 	if (pOtherUnit->m_bIsMainPlayer)
 	{
-		CUser::Get_Instance()->SetActive_DamageTex(fHp, bHeadShot);
+		CUser::Get_Instance()->Enable_DamageFont(fHp, bHeadShot);
 	}
 
 
@@ -1075,7 +1076,10 @@ void CUnit::Enable_UnitHUD()
 void CUnit::Frustum_UnitHUD()
 {
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.f))
+
+	vPos.y += 2.f;
+
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
 	{
 		if (!m_pUnitHUD->Is_Valid())
 		{

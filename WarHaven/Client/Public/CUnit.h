@@ -30,11 +30,11 @@ public:
 	enum CLASS_TYPE
 	{
 		WARRIOR,
+		ENGINEER,
 		SPEAR,
 		ARCHER,
 		PALADIN,
 		PRIEST,
-		ENGINEER,
 		FIONA,
 		QANDA,
 		HOEDT,

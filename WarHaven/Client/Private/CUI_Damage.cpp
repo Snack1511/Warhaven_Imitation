@@ -48,7 +48,7 @@ void CUI_Damage::My_Tick()
 		if (m_bIsScaleDown)
 		{
 			m_bIsScaleDown = false;
-			for (int i = 0; i < m_vecDigitDmg.size(); ++i)
+			for (int i = 0; i < 3; ++i)
 			{
 				m_pArrDmgNum[i]->DoScale(-m_fScaleValue, m_fScaleDownTime);
 			}
@@ -63,7 +63,6 @@ void CUI_Damage::My_Tick()
 	if (m_fAccTime >= m_fAliveTime)
 	{
 		m_fAccTime = 0.f;
-		m_vecDigitDmg.clear();
 		DISABLE_GAMEOBJECT(this);
 	}
 }
@@ -72,17 +71,24 @@ void CUI_Damage::OnEnable()
 {
 	__super::OnEnable();
 
-	while (m_iDamageValue != 0)
+	m_vecDigitDmg.clear();
+	_uint iSize = 0;
+	while (1)
 	{
-		_uint iDigitDmg = m_iDamageValue % 10; ;
+		_uint iDigitDmg = m_iDamageValue % 10;
 		m_vecDigitDmg.push_back(iDigitDmg);
-		sort(m_vecDigitDmg.begin(), m_vecDigitDmg.end(), greater<_uint>());
+		iSize++;
+
+		if (m_iDamageValue < 10)
+			break;
 
 		m_iDamageValue /= 10;
 	}
 
-	_float fRandPosX = frandom(0.f, 300.f);
-	_float fRandPosY = frandom(-300.f, 300.f);
+	sort(m_vecDigitDmg.begin(), m_vecDigitDmg.end(), greater<_uint>());
+
+	_float fRandPosX = (_float)random(0, 300);
+	_float fRandPosY = (_float)random(-300, 300);
 
 	for (int i = 0; i < m_vecDigitDmg.size(); ++i)
 	{
@@ -95,6 +101,7 @@ void CUI_Damage::OnEnable()
 
 		m_pArrDmgNum[i]->Set_Scale(m_vFontScale);
 		m_pArrDmgNum[i]->DoScale(m_fScaleValue, m_fScaleUpTime);
+		
 	}
 
 	if (m_bIsHeadShot)
@@ -112,7 +119,7 @@ void CUI_Damage::OnEnable()
 
 void CUI_Damage::Enable_Damage(_float fDmg, _bool bHeadShot)
 {
-	m_iDamageValue = fDmg;
+	m_iDamageValue = (_uint)(fDmg * -1.f);
 	m_bIsHeadShot = bHeadShot;
 
 	ENABLE_GAMEOBJECT(this);

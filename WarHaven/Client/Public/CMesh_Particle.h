@@ -26,7 +26,7 @@ public:
 	);
 
 public:
-	void			Start_Particle(_float4 vPos, _float4 vDir, _float fPower = 1.f);
+	void			Start_Particle(_float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld);
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;

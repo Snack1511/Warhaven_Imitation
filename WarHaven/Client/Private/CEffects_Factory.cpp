@@ -33,90 +33,12 @@ HRESULT CEffects_Factory::Initialize()
 	//이펙트 만들어놓기
 	if(FAILED(Add_Effect(HASHCODE(CSword_Effect), CSword_Effect::Create())))
 		return E_FAIL;
-	
 
-	/* stone */
-
-	/* 질량 */
-	_float fStoneDensity = 10.f;
-
-	/* 이 시간 후에 사라짐 */
-	_float fStoneLifeTime = 6.f;
-
-	_uint	iStoneNumInstance = 15;
-	
-	wstring wstrName = L"DeathStoneParticle_0";
-	if(FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-	L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_11.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
-		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
-		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
-	))))
+	if (FAILED(SetUp_StoneParticles()))
 		return E_FAIL;
 	
-	wstrName = L"DeathStoneParticle_1";
-	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_04.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
-		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_32.dds",
-		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_32.dds"
-	))))
-		return E_FAIL;
 
-	wstrName = L"DeathStoneParticle_2";
-	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_17.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
-		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_32.dds",
-		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_32.dds"
-	))))
-		return E_FAIL;
-
-	wstrName = L"DeathStoneParticle_3";
-	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_36.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
-		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_32.dds",
-		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_32.dds"
-	))))
-		return E_FAIL;
-
-
-	_float fDeadBodyDensity = 10.f;
-	_float fDeadBodyLifeTime = 15.f;
-
-	wstrName = L"WarriorDead_Slice0";
-	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice0.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
-		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
-		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
-		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice0.fbx"
-
-	))))
-		return E_FAIL;
-
-	wstrName = L"WarriorDead_Slice1";
-	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice1.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
-		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
-		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
-
-	))))
-		return E_FAIL;
-
-	wstrName = L"WarriorDead_Slice2";
-	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice2.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
-		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
-		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
-
-	))))
-		return E_FAIL;
-
-	wstrName = L"WarriorDead_Slice3";
-	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice3.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
-		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
-		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
-
-	))))
-		return E_FAIL;
+	
 
 
 	if (FAILED(SetUp_MultiEffects()))
@@ -205,7 +127,7 @@ list<CGameObject*> CEffects_Factory::Create_MultiEffects(wstring wstrKey, _float
 	return EffectsList;
 }
 
-list<CGameObject*> CEffects_Factory::Create_Multi_MeshParticle(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower)
+list<CGameObject*> CEffects_Factory::Create_Multi_MeshParticle(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld)
 {
 	list<CGameObject*> EffectsList;
 
@@ -219,7 +141,7 @@ list<CGameObject*> CEffects_Factory::Create_Multi_MeshParticle(wstring wstrKey, 
 
 	for (auto& hcCode : hcEffects)
 	{
-		EffectsList.push_back(Create_MeshParticle(hcCode, vPos, vDir, fPower));
+		EffectsList.push_back(Create_MeshParticle(hcCode, vPos, vDir, fPower, matWorld));
 	}
 
 	return EffectsList;
@@ -246,7 +168,7 @@ list<CGameObject*> CEffects_Factory::Create_MultiEffects(wstring wstrKey, _float
 }
 
 
-CGameObject* CEffects_Factory::Create_MeshParticle(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower)
+CGameObject* CEffects_Factory::Create_MeshParticle(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld)
 {
 	CGameObject* pGameObject = nullptr;
 
@@ -255,7 +177,7 @@ CGameObject* CEffects_Factory::Create_MeshParticle(wstring wstrKey, _float4 vPos
 	if (m_Effects[_hcCode].empty())
 	{
 		pGameObject = GAMEINSTANCE->Clone_GameObject(_hcCode);
-		static_cast<CMesh_Particle*>(pGameObject)->Start_Particle(vPos, vDir, fPower);
+		static_cast<CMesh_Particle*>(pGameObject)->Start_Particle(vPos, vDir, fPower, matWorld);
 		//없으면 새로 집어넣음
 		pGameObject->Initialize();
 		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
@@ -263,7 +185,7 @@ CGameObject* CEffects_Factory::Create_MeshParticle(wstring wstrKey, _float4 vPos
 	else
 	{
 		CEffect* pEffect = m_Effects[_hcCode].front();
-		static_cast<CMesh_Particle*>(pEffect)->Start_Particle(vPos, vDir, fPower);
+		static_cast<CMesh_Particle*>(pEffect)->Start_Particle(vPos, vDir, fPower, matWorld);
 		m_Effects[_hcCode].pop_front();
 		pGameObject = pEffect;
 	}
@@ -272,7 +194,7 @@ CGameObject* CEffects_Factory::Create_MeshParticle(wstring wstrKey, _float4 vPos
 	return pGameObject;
 }
 
-CGameObject* CEffects_Factory::Create_MeshParticle(_hashcode _hcCode, _float4 vPos, _float4 vDir, _float fPower)
+CGameObject* CEffects_Factory::Create_MeshParticle(_hashcode _hcCode, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld)
 {
 	CGameObject* pGameObject = nullptr;
 
@@ -280,7 +202,7 @@ CGameObject* CEffects_Factory::Create_MeshParticle(_hashcode _hcCode, _float4 vP
 	if (m_Effects[_hcCode].empty())
 	{
 		pGameObject = GAMEINSTANCE->Clone_GameObject(_hcCode);
-		static_cast<CMesh_Particle*>(pGameObject)->Start_Particle(vPos, vDir, fPower);
+		static_cast<CMesh_Particle*>(pGameObject)->Start_Particle(vPos, vDir, fPower, matWorld);
 		//없으면 새로 집어넣음
 		pGameObject->Initialize();
 		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
@@ -288,7 +210,7 @@ CGameObject* CEffects_Factory::Create_MeshParticle(_hashcode _hcCode, _float4 vP
 	else
 	{
 		CEffect* pEffect = m_Effects[_hcCode].front();
-		static_cast<CMesh_Particle*>(pEffect)->Start_Particle(vPos, vDir, fPower);
+		static_cast<CMesh_Particle*>(pEffect)->Start_Particle(vPos, vDir, fPower, matWorld);
 		m_Effects[_hcCode].pop_front();
 		pGameObject = pEffect;
 	}
@@ -743,6 +665,107 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	/*Stone spark particle*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StoneSpark"), "StoneSpark")))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CEffects_Factory::SetUp_StoneParticles()
+{
+	/* stone */
+
+	/* 질량 */
+	_float fStoneDensity = 10.f;
+
+	/* 이 시간 후에 사라짐 */
+	_float fStoneLifeTime = 6.f;
+
+	_uint	iStoneNumInstance = 15;
+
+	wstring wstrName = L"DeathStoneParticle_0";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_11.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+	))))
+		return E_FAIL;
+
+	wstrName = L"DeathStoneParticle_1";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_04.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_32.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_32.dds"
+	))))
+		return E_FAIL;
+
+	wstrName = L"DeathStoneParticle_2";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_17.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_32.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_32.dds"
+	))))
+		return E_FAIL;
+
+	wstrName = L"DeathStoneParticle_3";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/effects/fbx/stone/SM_Stone_36.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_32.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_32.dds"
+	))))
+		return E_FAIL;
+
+
+	/* ========================================================================== */
+
+	/*===================== Warrior =====================*/
+
+	_float fDeadBodyDensity = 10.f;
+	_float fDeadBodyLifeTime = 15.f;
+
+	wstrName = L"WarriorDead_Slice0";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice0.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice0.fbx"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"WarriorDead_Slice1";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice1.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"WarriorDead_Slice2";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice2.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"WarriorDead_Slice3";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Warrior0004_Body_A00_Slice3.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"WarriorDead_Weapon";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0006_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime
+	))))
+		return E_FAIL;
+
+
+	/* ========================================================================== */
 
 	return S_OK;
 }

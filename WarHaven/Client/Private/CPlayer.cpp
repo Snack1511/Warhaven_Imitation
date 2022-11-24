@@ -294,7 +294,6 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	{
 
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
-		m_pDefaultClass[eClass]->Teleport_Unit(m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
 
 	}
 	
@@ -320,12 +319,12 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	if (m_pCurrentUnit)
 	{
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
-		m_pHeroClass[eClass]->Teleport_Unit(m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
 	}
 
 	m_pCurrentUnit = m_pHeroClass[eClass];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
+	Set_Postion(vPos);
 
 	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);

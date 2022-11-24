@@ -249,7 +249,7 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		case 0:
 			m_pClassInfo->Set_FontText(TEXT("블레이드"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			m_iChoiceClass = CPlayer::CLASS_DEFAULT_WARRIOR;
+			m_eCurClass = CUnit::CLASS_TYPE::WARRIOR;
 			Set_HUD(CUnit::WARRIOR);
 			break;
 
@@ -280,7 +280,7 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		case 5:
 			m_pClassInfo->Set_FontText(TEXT("워해머"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			m_iChoiceClass = CPlayer::CLASS_DEFAULT_ENGINEER;
+			m_eCurClass = CUnit::CLASS_TYPE::ENGINEER;
 			Set_HUD(CUnit::ENGINEER);
 			break;
 		}
@@ -328,6 +328,18 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);
 	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(eClass);
+}
+
+void CUI_HUD::Set_Portrait(CUnit::CLASS_TYPE eClass)
+{
+}
+
+void CUI_HUD::Set_Crosshair(CUnit::CLASS_TYPE eClass)
+{
+}
+
+void CUI_HUD::Set_SkillHUD(CUnit::CLASS_TYPE eClass)
+{
 }
 
 void CUI_HUD::Set_ActiveHeroPort(_bool value)
@@ -562,7 +574,7 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 		CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
 
 
-		pPlayer->Change_DefaultUnit((CPlayer::CLASS_DEFAULT)m_iChoiceClass);
+		pPlayer->Change_DefaultUnit((CPlayer::CLASS_DEFAULT)m_eCurClass);
 		
 	}
 }
@@ -698,4 +710,8 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
+}
+
+void CUI_HUD::Create_DmgText()
+{
 }

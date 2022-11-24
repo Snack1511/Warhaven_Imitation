@@ -82,10 +82,10 @@ CMesh_Particle* CMesh_Particle::Create(wstring wstrModelFilePath, _uint iNumInst
 
 
 
-void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower)
+void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld)
 {
-	//m_pTransform->Set_World(WORLD_POS, vPos);
-	//m_pTransform->Make_WorldMatrix();
+	m_pTransform->Get_Transform().matMyWorld = matWorld;
+	m_pTransform->Make_WorldMatrix();
 
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
@@ -219,7 +219,7 @@ HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
 	}
 
 
-	CMeshContainer* pMesh = (pConvexModel->Get_MeshContainers().front().second);
+	CMeshContainer* pMesh = (pConvexModel->Get_MeshContainers().back().second);
 
 	FACEINDICES32* pIndices = pMesh->CMesh::Get_Indices();
 	_uint iNumPrimitive = pMesh->Get_NumPrimitive();
@@ -272,7 +272,12 @@ void CMesh_Particle::My_LateTick()
 		m_pInstanceMatrices[i] = matPhysX;// * matWorldInv;
 	}
 
-	static_cast<CInstanceMesh*>(GET_COMPONENT(CModel)->Get_MeshContainers().front().second)
-		->ReMap_Instances(m_pInstanceMatrices);
+	vector<pair<_uint, class CMeshContainer*>>& vecMC = GET_COMPONENT(CModel)->Get_MeshContainers();
+
+	for (auto& elem : vecMC)
+	{
+		static_cast<CInstanceMesh*>(elem.second)->ReMap_Instances(m_pInstanceMatrices);
+	}
+		
 
 }

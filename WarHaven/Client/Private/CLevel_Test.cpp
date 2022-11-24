@@ -189,7 +189,7 @@ HRESULT CLevel_Test::Enter()
 void CLevel_Test::Tick()
 {
 
-	/*if (!m_bStaticShadowBake)
+	if (!m_bStaticShadowBake)
 	{
 		m_fDealyAcc += fDT(0);
 		if (m_fDealyAcc >= m_fDelayTime)
@@ -206,7 +206,7 @@ void CLevel_Test::Tick()
 			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, 400.f);
 			m_bStaticShadowBake = true;
 		}
-	}*/
+	}
 
 
 #ifdef _DEBUG
