@@ -79,7 +79,7 @@ void CFunc_ObjectControl::Func_FBXList()
 
 void CFunc_ObjectControl::Func_ObjectList()
 {
-    if (ImGui::CollapsingHeader("Add Object List", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    if (ImGui::CollapsingHeader("Grouping Object List", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         //해당 이름을 가진 탭
         if (ImGui::BeginTabBar("##AddObject TabBar"))
@@ -97,37 +97,39 @@ void CFunc_ObjectControl::Func_ObjectList()
                         string CurSelectGroupName = string(get< Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
                         size_t Hashnum = Convert_ToHash(CurSelectGroupName);//HASHING(string, CurSelectGroupName);
                         _bool bFindGropingName = Find_ObjectGroupingName(Hashnum, NamingGroup);
-                        vector<tuple<string, list<_int>>> GroupingNames;
                         if (bFindGropingName)
                         {
-                            GroupingNames = NamingGroup->second;
+                            m_pCurSelectGroupingNameArr = (&NamingGroup->second);
                         }
-
-                        for (_uint ObjectNameIndex = 0; ObjectNameIndex < _uint(GroupingNames.size()); ++ObjectNameIndex)
+                        if (nullptr != m_pCurSelectGroupingNameArr)
                         {
-                            _bool bSelected = false;
-                            if (m_iCurSelectObjecNametIndex == ObjectNameIndex)
+                            for (_uint ObjectNameIndex = 0; ObjectNameIndex < _uint(m_pCurSelectGroupingNameArr->size()); ++ObjectNameIndex)
                             {
-                                bSelected = true;
-                            }
-                            if (ImGui::Selectable(get<0>(GroupingNames[ObjectNameIndex]).c_str(), bSelected))
-                            {
-                                m_strCurSelectObjectName = get<0>(GroupingNames[ObjectNameIndex]);
-                                m_iCurSelectObjecNametIndex = ObjectNameIndex;
-                                ObjectMap::iterator ObjectMapIter;
-                                DataMap::iterator DataMapIter;
-                                Find_ObjectDatas(m_strCurSelectObjectName, ObjectMapIter, DataMapIter);
-                                if (m_ObjectNamingGroupMap.end() != ObjectMapIter)
-                                    m_pCurSelectObjectGroup = &(ObjectMapIter->second);
-                                else
-                                    m_pCurSelectObjectGroup = nullptr;
+                                _bool bSelected = false;
+                                if (m_iCurSelectObjecNametIndex == ObjectNameIndex)
+                                {
+                                    bSelected = true;
+                                }
+                                if (ImGui::Selectable(get<0>((*m_pCurSelectGroupingNameArr)[ObjectNameIndex]).c_str(), bSelected))
+                                {
+                                    m_strCurSelectObjectName = get<0>((*m_pCurSelectGroupingNameArr)[ObjectNameIndex]);
+                                    m_iCurSelectObjecNametIndex = ObjectNameIndex;
+                                    ObjectMap::iterator ObjectMapIter;
+                                    DataMap::iterator DataMapIter;
+                                    Find_ObjectDatas(m_strCurSelectObjectName, ObjectMapIter, DataMapIter);
+                                    if (m_ObjectNamingGroupMap.end() != ObjectMapIter)
+                                        m_pCurSelectObjectGroup = &(ObjectMapIter->second);
+                                    else
+                                        m_pCurSelectObjectGroup = nullptr;
 
-                                if (m_DataNamingGroupMap.end() != DataMapIter)
-                                    m_pCurSelectDataGroup = &(DataMapIter->second);
-                                else
-                                    m_pCurSelectDataGroup = nullptr;
-                                //SetUp_CurSelectObject();
-                                //선택 
+                                    if (m_DataNamingGroupMap.end() != DataMapIter)
+                                        m_pCurSelectDataGroup = &(DataMapIter->second);
+                                    else
+                                        m_pCurSelectDataGroup = nullptr;
+
+                                    //SetUp_CurSelectObject();
+                                    //선택 
+                                }
                             }
                         }
                         ImGui::EndListBox();
@@ -138,14 +140,46 @@ void CFunc_ObjectControl::Func_ObjectList()
 
             ImGui::EndTabBar();
         }
-        ImGui::Text("ObjectList");
-        if (ImGui::BeginListBox("##TabObjectList", ImVec2(360.f, 200.f)))
+        if (nullptr != m_pCurSelectGroupingNameArr)
+        {
+            if (!(*m_pCurSelectGroupingNameArr).empty())
+            {
+                string ListBoxTitleData = "ObjectList : ";
+                ListBoxTitleData += get<0>((*m_pCurSelectGroupingNameArr)[m_iCurSelectObjecNametIndex]).c_str();
+                ImGui::Text(ListBoxTitleData.c_str());
+                if (ImGui::BeginListBox("##TabObjectList", ImVec2(360.f, 200.f)))
+                {
+                    if (!get<1>((*m_pCurSelectGroupingNameArr)[m_iCurSelectObjecNametIndex]).empty())
+                    {
+                        list<_int>& ObjectList = get<1>((*m_pCurSelectGroupingNameArr)[m_iCurSelectObjecNametIndex]);
+                        for (list<_int>::value_type& Value : ObjectList)
+                        {
+                            _bool bSelect = false;
+                            if (m_iCurSelectObjectIndex == Value)
+                            {
+                                bSelect = true;
+                            }
+                            if (ImGui::Selectable(to_string(Value).c_str(), bSelect))
+                            {
+                                m_iCurSelectObjectIndex = Value;
+                                SetUp_CurSelectObject();
+                            }
+                        }
+                    }
+                    ImGui::EndListBox();
+                }
+            }
+        }
+    }
+    if (ImGui::CollapsingHeader("Add Object List", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    {
+        if (ImGui::BeginListBox("##AddObjectList", ImVec2(360.f, 200.f)))
         {
             if (nullptr != m_pCurSelectObjectGroup)
             {
                 for (_uint i = 0; i < _uint(m_pCurSelectObjectGroup->size()); ++i)
                 {
-                    if ((*m_pCurSelectObjectGroup)[i]->Is_Valid()) 
+                    if ((*m_pCurSelectObjectGroup)[i] != nullptr&&(*m_pCurSelectObjectGroup)[i]->Is_Valid())
                     {
                         _bool bSelect = false;
                         if (m_iCurSelectObjectIndex == i)
@@ -179,15 +213,32 @@ void CFunc_ObjectControl::Func_ObjectList()
     ImGui::Spacing();
     if (ImGui::Button("Clear NameGroup"))
     {
-        Clear_SameNameObject(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+        Clear_SameNameObject(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]), m_iCurSelectObjecNametIndex);
+        m_pCurSelectObjectGroup = nullptr;
+        m_pCurSelectDataGroup = nullptr;
         Confirm_Data();
-    }
+        m_iCurSelectObjecNametIndex = 0;
+    }//같은 이름을 모든 오브젝트 삭제
+    ImGui::Spacing();
+    if (ImGui::Button("Clear NameGroup In SelectGroup"))
+    {
+        Clear_SameNameInGroup(
+            get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]), m_iCurSelectObjecNametIndex);
+        m_pCurSelectObjectGroup = nullptr;
+        m_pCurSelectDataGroup = nullptr;
+        Confirm_Data();
+        m_iCurSelectObjecNametIndex = 0;
+    }//그룹내에 같은 오브젝트들 삭제
     ImGui::SameLine();
     if (ImGui::Button("Clear MeshGroup"))
     {
+        m_pCurSelectObjectGroup = nullptr;
+        m_pCurSelectDataGroup = nullptr;
         Clear_ObjectGroup(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+        m_iCurSelectObjecNametIndex = 0;
+        m_SelectObjectGroupIndex = 0;
         Confirm_Data();
-    }
+    }//그룹 삭제
     ImGui::Spacing();
     if (ImGui::Button("Merge"))
     {
@@ -294,11 +345,11 @@ void CFunc_ObjectControl::Func_ObjectControl()
     string strPickInfo = "";
     if (!m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_OBJECT))
     {
-        strPickInfo = "Use_Picking";
+        strPickInfo = "Use_Placing";
     }
     else
     {
-        strPickInfo = "Unuse_Picking";
+        strPickInfo = "Unuse_Placing";
     }
     if (ImGui::Button(strPickInfo.c_str()))
     {
@@ -309,6 +360,48 @@ void CFunc_ObjectControl::Func_ObjectControl()
         else
         {
             m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_OBJECT);
+        }
+    }
+
+    if (!m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_CLONE))
+    {
+        strPickInfo = "Use_Cloning";
+    }
+    else
+    {
+        strPickInfo = "Unuse_Cloning";
+    }
+    if (ImGui::Button(strPickInfo.c_str()))
+    {
+        if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_CLONE))
+        {
+            m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_NONE);
+            m_eCloneDir = CLONE_NONE;
+        }
+        else
+        {
+            m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_CLONE);
+        }
+    }
+    ImGui::Spacing();
+    if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_CLONE)) 
+    {
+        ImGui::Text(CloneTypeDesc[m_eCloneDir]);
+        if (ImGui::BeginCombo("##CloneDIR", CloneTypeDesc[m_eCloneDir]))
+        {
+            for (_int i = 0; i < CLONE_END; ++i) {
+                _bool bSelect = false;
+                if (m_eCloneDir == i)
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(CloneTypeDesc[i], bSelect))
+                {
+                    m_eCloneDir = CLONEDIR(i);
+                    m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_CLONE);
+                }
+            }
+            ImGui::EndCombo();
         }
     }
     ImGui::Spacing();
@@ -856,7 +949,11 @@ CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, MTO_DATA&
     }
     pStructure = Add_Object(ObjMapIter->second, tData);
     Add_Data(DataMapIter->second, tData);
+    m_pCurSelectData = &DataMapIter->second.back();
     pIndexList->push_back(_int(ObjMapIter->second.size()) - 1);
+    m_iCurSelectObjectIndex = _int(ObjMapIter->second.size()) - 1;
+    SetUp_CurSelectObject();
+
     return pStructure;
 }
 CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(MTO_DATA& tData) 
@@ -896,6 +993,7 @@ CFunc_ObjectControl::MTO_DATA CFunc_ObjectControl::Add_Data(string ObjectName, v
 {
     MTO_DATA tData;
     tData.Initialize();
+    tData.bIgnoreFlag = false;
     tData.strMeshPath = CFunctor::To_Wstring(MeshPath);
     tData.strObejctName = CFunctor::To_Wstring(ObjectName);
     tData.ObejectIndex = _int(rhsDataArr.size());
@@ -936,17 +1034,29 @@ CStructure* CFunc_ObjectControl::Merge_Object(string ObjectName)
 
     for (ObjectArr::value_type& Value  : ObjectIter->second)
     {
-        DISABLE_GAMEOBJECT(Value);
+        if (nullptr != Value)
+            DISABLE_GAMEOBJECT(Value);
+    }
+
+    vector<_int>ValidList;
+    _int Index = 0;
+    for (DataArr::value_type& Value : DataIter->second)
+    {
+        if (Value.bIgnoreFlag == false)
+        {
+            ValidList.push_back(Index);
+        }
+        Index++;
     }
 
     wstring strMeshPath;
-    _int InstanceCount = DataIter->second.size();
+    _int InstanceCount = ValidList.size();
     VTXINSTANCE* pInstance = new VTXINSTANCE[InstanceCount];
     ZeroMemory(pInstance, sizeof(VTXINSTANCE)* InstanceCount);
     for (_uint i = 0; i < InstanceCount; ++i)
     {
-        strMeshPath = DataIter->second[i].strMeshPath;
-        _float4x4 matInstanceWorld = DataIter->second[i].ObjectStateMatrix;
+        strMeshPath = DataIter->second[ValidList[i]].strMeshPath;
+        _float4x4 matInstanceWorld = DataIter->second[ValidList[i]].ObjectStateMatrix;
         _float4 vScale = _float4(1.f, 1.f, 1.f, 0.f);//= DataIter->second[i].vScale;
         XMStoreFloat4(&pInstance[i].vRight, matInstanceWorld.XMLoad().r[0] * vScale.x);
         XMStoreFloat4(&pInstance[i].vUp, matInstanceWorld.XMLoad().r[1] * vScale.y);
@@ -978,7 +1088,8 @@ void CFunc_ObjectControl::Split_Object(string ObjectName)
 
     for (ObjectArr::value_type& Value : ObjectIter->second)
     {
-        ENABLE_GAMEOBJECT(Value);
+        if(nullptr != Value)
+            ENABLE_GAMEOBJECT(Value);
     }
 }
 
@@ -988,20 +1099,31 @@ void CFunc_ObjectControl::Merge_All()
     {
         for (auto& elemArr : elem.second)
         {
-            DISABLE_GAMEOBJECT(elemArr);
+            if (nullptr != elemArr)
+                DISABLE_GAMEOBJECT(elemArr);
         }
     }
 
     for (auto& elem : m_DataNamingGroupMap)
     {
+        vector<_int>ValidList;
+        _int Index = 0;
+        for (DataArr::value_type& Value : elem.second)
+        {
+            if (Value.bIgnoreFlag == false)
+            {
+                ValidList.push_back(Index);
+            }
+            Index++;
+        }
         wstring strMeshPath;
-        _int InstanceCount = elem.second.size();
+        _int InstanceCount = ValidList.size();
         VTXINSTANCE* pInstance = new VTXINSTANCE[InstanceCount];
         ZeroMemory(pInstance, sizeof(VTXINSTANCE) * InstanceCount);
         for (_uint i = 0; i < InstanceCount; ++i)
         {
-            strMeshPath = elem.second[i].strMeshPath;
-            _float4x4 matInstanceWorld = elem.second[i].ObjectStateMatrix;
+            strMeshPath = elem.second[ValidList[i]].strMeshPath;
+            _float4x4 matInstanceWorld = elem.second[ValidList[i]].ObjectStateMatrix;
             _float4 vScale = _float4(1.f, 1.f, 1.f, 0.f);//= elem.second[i].vScale;
             XMStoreFloat4(&pInstance[i].vRight, matInstanceWorld.XMLoad().r[0] * vScale.x);
             XMStoreFloat4(&pInstance[i].vUp, matInstanceWorld.XMLoad().r[1] * vScale.y);
@@ -1028,33 +1150,52 @@ void CFunc_ObjectControl::Split_All()
     {
         for (auto& elemArr : elem.second)
         {
-            ENABLE_GAMEOBJECT(elemArr);
+            if (nullptr != elemArr)
+                ENABLE_GAMEOBJECT(elemArr);
         }
     }
 
 }
 
-void CFunc_ObjectControl::Clear_SameNameObject(string ObjectGroupName)
+void CFunc_ObjectControl::Clear_SameNameObject(string ObjectGroupName, _int NameIndexInGroup)
 {
     size_t GroupHash = Convert_ToHash(ObjectGroupName);
     OBJECTGROUPINGMAP::iterator ObjectGroupIter;
     _bool bFindGroupingName = Find_ObjectGroupingName(GroupHash, ObjectGroupIter);
     if (bFindGroupingName)
     {
-        for (ObjectNameTupleArr::value_type& Value : ObjectGroupIter->second)
+        string ObjectName = get<0>(ObjectGroupIter->second[NameIndexInGroup]);
+        ObjectMap::iterator ObjectIter;
+        DataMap::iterator DataIter;
+        Find_ObjectDatas(ObjectName, ObjectIter, DataIter);
+
+        for (ObjectArr::value_type& ObjValue : ObjectIter->second)
         {
-            ObjectMap::iterator ObjectIter;
-            DataMap::iterator DataIter;
-            if (Find_ObjectDatas(get<0>(Value), ObjectIter, DataIter))
+            if (nullptr != ObjValue)
+                DELETE_GAMEOBJECT(ObjValue);
+        }
+
+        ObjectIter->second.clear();
+        DataIter->second.clear();
+        m_ObjectNamingGroupMap.erase(ObjectIter);
+        m_DataNamingGroupMap.erase(DataIter);
+
+        OBJECTGROUPINGMAP::iterator GroupingIter = m_ObjectNameGroupingMap.begin();
+        for (; GroupingIter != m_ObjectNameGroupingMap.end(); ++GroupingIter)
+        {
+            ObjectNameTupleArr::iterator GroupArrIter = GroupingIter->second.begin();
+            for (; GroupArrIter != GroupingIter->second.end(); ++GroupArrIter)
             {
-                for (ObjectArr::value_type& ObjValue : ObjectIter->second)
+                if (get<0>((*GroupArrIter)) == ObjectName)
                 {
-                    DELETE_GAMEOBJECT(ObjValue);
+                    break;
                 }
-                ObjectIter->second.clear();
-                DataIter->second.clear();
-                get<1>(Value).clear();
             }
+            if (GroupArrIter != GroupingIter->second.end())
+            {
+                GroupingIter->second.erase(GroupArrIter);
+            }
+
         }
 
     }
@@ -1073,9 +1214,48 @@ void CFunc_ObjectControl::Clear_ObjectGroup(string ObjectGroupName)
 
         }
         ObjectGroupIter->second.clear();
-
+        m_ObjectNameGroupingMap.erase(ObjectGroupIter);
         
     }
+}
+void CFunc_ObjectControl::Clear_SameNameInGroup(string ObjectGroupName, _int NameIndexInGroup)
+{
+    size_t GroupHash = Convert_ToHash(ObjectGroupName);
+    OBJECTGROUPINGMAP::iterator ObjectGroupIter;
+    _bool bFindGroupingName = Find_ObjectGroupingName(GroupHash, ObjectGroupIter);
+    if (bFindGroupingName)
+    {
+        string ObjectName = get<0>(ObjectGroupIter->second[NameIndexInGroup]);
+        list<_int> ObjectIndexList = get<1>(ObjectGroupIter->second[NameIndexInGroup]);
+        Delete_ObjectNamingMap(ObjectName, ObjectIndexList);
+
+        ObjectNameTupleArr::iterator GroupArrIter = ObjectGroupIter->second.begin();
+        for (; GroupArrIter != ObjectGroupIter->second.end(); ++GroupArrIter)
+        {
+            if (get<0>((*GroupArrIter)) == ObjectName)
+            {
+                break;
+            }
+        }
+        if (GroupArrIter != ObjectGroupIter->second.end())
+        {
+            ObjectGroupIter->second.erase(GroupArrIter);
+        }
+
+
+    }
+}
+
+void CFunc_ObjectControl::Func_PickStart()
+{
+    if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_CLONE))
+    {
+        Clone();
+    }
+}
+
+void CFunc_ObjectControl::Func_PickEnd()
+{
 }
 
 void CFunc_ObjectControl::Routine_MeshSelect(void* tTreeNode)
@@ -1199,14 +1379,18 @@ void CFunc_ObjectControl::Func_DeleteOBject()
         if (GroupingNameIter != GroupingIter->second.end())
         {
             CurSelectName = get<0>((*GroupingNameIter));
-            get<1>(*GroupingNameIter).remove(m_iCurSelectObjecNametIndex);
+            get<1>(*GroupingNameIter).remove(m_iCurSelectObjectIndex);
+            if (get<1>(*GroupingNameIter).empty())
+            {
+                GroupingIter->second.erase(GroupingNameIter);
+            }
             //GroupingIter->second.erase(GroupingNameIter);
         }
         else
         {
             return;
         }
-        
+
     }
 
     ObjectMap::iterator ObjectMapIter;
@@ -1220,13 +1404,9 @@ void CFunc_ObjectControl::Func_DeleteOBject()
         assert(0);
 
 
-    Delete_Object(ObjectMapIter->second, m_iCurSelectObjecNametIndex);
-    Delete_Data(DataMapIter->second, m_iCurSelectObjecNametIndex);
-    m_iCurSelectObjecNametIndex--;
-    if (m_iCurSelectObjecNametIndex <= 0)
-    {
-        m_iCurSelectObjecNametIndex = 0;
-    }
+    Delete_Object(ObjectMapIter->second, m_iCurSelectObjectIndex);
+    Delete_Data(DataMapIter->second, m_iCurSelectObjectIndex);
+    m_iCurSelectObjectIndex = 0;
 }
 
 
@@ -1568,7 +1748,6 @@ void CFunc_ObjectControl::Delete_Data(map<size_t, vector<MTO_DATA>>::iterator& D
 {
     if (DataIter != m_DataNamingGroupMap.end())
     {
-        DataArr TempVector;
         IndexList.sort();
 
         for (_uint i = 0; i < _uint(DataIter->second.size()); ++i)
@@ -1576,18 +1755,26 @@ void CFunc_ObjectControl::Delete_Data(map<size_t, vector<MTO_DATA>>::iterator& D
             if (!IndexList.empty() && i == IndexList.front())
             {
                 IndexList.pop_front();
+                DataIter->second[i].Initialize();
                 continue;
             }
-            else
-            {
-                TempVector.push_back(DataIter->second[i]);
-            }
         }
-        DataIter->second.swap(TempVector);
-        if (DataIter->second.empty())
+        if (!DataIter->second.empty())
         {
-            DataIter->second.clear();
-            m_DataNamingGroupMap.erase(DataIter);
+            _bool bAllIgnore = true;
+            for (_uint i = 0; i < _uint(DataIter->second.size()); ++i)
+            {
+                if (DataIter->second[i].bIgnoreFlag == false)
+                {
+                    bAllIgnore = false;
+                    break;
+                }
+            }
+            if (bAllIgnore) 
+            {
+                DataIter->second.clear();
+                m_DataNamingGroupMap.erase(DataIter);
+            }
         }
     }
 
@@ -1614,7 +1801,8 @@ void CFunc_ObjectControl::Delete_Object(vector<CGameObject*>& rhsObjectGroup, _i
     if (rhsObjectGroup.end() != SelectIter)
     {
         pStructure = dynamic_cast<CStructure*>((*SelectIter));
-        rhsObjectGroup.erase(SelectIter);
+        //rhsObjectGroup.erase(SelectIter);
+        (*SelectIter) = nullptr;
         DELETE_GAMEOBJECT(pStructure);
     }
 
@@ -1649,7 +1837,8 @@ void CFunc_ObjectControl::Delete_Data(vector<MTO_DATA>& rhsDataGroup, _int Targe
 
     if (rhsDataGroup.end() != SelectIter)
     {
-        rhsDataGroup.erase(SelectIter);
+        //rhsDataGroup.erase(SelectIter);
+        (*SelectIter).Initialize();
     }
 
     for (_uint i = 0; i < _uint(rhsDataGroup.size()); ++i)
@@ -1825,6 +2014,22 @@ void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)
     }
 
 
+    map<size_t, vector<_int>> SyncData;
+    for (ObjectMap::value_type& ValueMap : m_ObjectNamingGroupMap)
+    {
+        SyncData.emplace(ValueMap.first, vector<_int>());
+        _int IndexPadding = 0;
+        for (ObjectArr::value_type& Value : ValueMap.second)
+        {
+            SyncData[ValueMap.first].push_back(IndexPadding);
+            if (Value == nullptr)
+            {
+                IndexPadding++;
+            }
+
+        }
+    }
+
     _uint GroupLength = _uint(m_GroupingInfo.size());
     writeFile.write((char*)&GroupLength, sizeof(_uint));
     for (_uint i = 0; i < GroupLength; ++i) 
@@ -1856,9 +2061,12 @@ void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)
 
             _uint IndexListLength = _uint(get<1>(NameValue).size());
             writeFile.write((char*) & IndexListLength, sizeof(_uint));
+            size_t NameHash = Convert_ToHash(get<0>(NameValue));
             for (list<_int>::value_type& value : get<1>(NameValue))
             {
-                writeFile.write((char*)&value, sizeof(_uint));
+                _int Padding = SyncData[NameHash][value];
+                _int SaveIndex = value - Padding;
+                writeFile.write((char*)&SaveIndex, sizeof(_uint));
             }
         }
     }
@@ -1884,14 +2092,24 @@ void CFunc_ObjectControl::Save_ObjectSplit(string BasePath, string SaveName)
     writeFile.write((char*)&MapLength, sizeof(_uint));
     for (DataMap::value_type& DataArrValue : m_DataNamingGroupMap)
     {
-        string strName = CFunctor::To_String(DataArrValue.second.front().strObejctName);
+        list<_int>ValidList;
+        _int Index = 0;
+        for (DataArr::value_type& Value : DataArrValue.second)
+        {
+            if (Value.bIgnoreFlag == false)
+            {
+                ValidList.push_back(Index);
+            }
+            Index++;
+        }
+        string strName = CFunctor::To_String(DataArrValue.second[ValidList.front()].strObejctName);
         _int NameLength = _int(strName.length()) + 1;
         char ObjectName[MAXCHAR] = "";
         strcpy_s(ObjectName, strName.c_str());
         writeFile.write((char*)&NameLength, sizeof(_int));
         writeFile.write(ObjectName, sizeof(char) * NameLength);
 
-        string MeshPath = CFunctor::To_String(DataArrValue.second.front().strMeshPath);
+        string MeshPath = CFunctor::To_String(DataArrValue.second[ValidList.front()].strMeshPath);
         _int PathLength = _int(MeshPath.length()) + 1;
         char szMeshPath[MAX_PATH] = "";
         strcpy_s(szMeshPath, MeshPath.c_str());
@@ -1899,14 +2117,14 @@ void CFunc_ObjectControl::Save_ObjectSplit(string BasePath, string SaveName)
         writeFile.write((char*)&PathLength, sizeof(_int));
         writeFile.write(szMeshPath, sizeof(char) * PathLength);
 
-        _uint DataLength = _uint(DataArrValue.second.size());
+        _uint DataLength = _uint(ValidList.size());
         writeFile.write((char*)&DataLength, sizeof(_uint));
-        for (DataArr::value_type& Value : DataArrValue.second)
+        for (list<_int>::value_type Value : ValidList)
         {
-            writeFile.write((char*)&Value.ObjectStateMatrix, sizeof(_float4x4));
-            writeFile.write((char*)&Value.vScale, sizeof(_float4));
-            writeFile.write((char*)&Value.ObejectIndex, sizeof(_int));
-            writeFile.write((char*)&Value.byteLightFlag, sizeof(_byte));
+            writeFile.write((char*)&DataArrValue.second[Value].ObjectStateMatrix, sizeof(_float4x4));
+            writeFile.write((char*)&DataArrValue.second[Value].vScale, sizeof(_float4));
+            writeFile.write((char*)&DataArrValue.second[Value].ObejectIndex, sizeof(_int));
+            writeFile.write((char*)&DataArrValue.second[Value].byteLightFlag, sizeof(_byte));
         }
     }
     writeFile.close();
@@ -1925,11 +2143,13 @@ void CFunc_ObjectControl::Clear_AllDatas()
     {
         for (ObjectArr::value_type& ObjValue : Value.second)
         {
-            DELETE_GAMEOBJECT(ObjValue);
+            if(nullptr != ObjValue)
+                DELETE_GAMEOBJECT(ObjValue);
         }
         Value.second.clear();
     }
     m_ObjectNamingGroupMap.clear();
+
 
     for (DataMap::value_type& Value : m_DataNamingGroupMap)
     {
@@ -1963,32 +2183,41 @@ void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
 
     for (DataMap::value_type& DataArrValue : m_DataNamingGroupMap)
     {
-        string strName = CFunctor::To_String(DataArrValue.second.front().strObejctName);
+        list<_int>ValidList;
+        _int Index = 0;
+        for (DataArr::value_type& Value : DataArrValue.second)
+        {
+            if (Value.bIgnoreFlag == false)
+            {
+                ValidList.push_back(Index);
+            }
+            Index++;
+        }
+        string strName = CFunctor::To_String(DataArrValue.second[ValidList.front()].strObejctName);
         _int NameLength = _int(strName.length()) + 1;
         char ObjectName[MAXCHAR] = "";
         strcpy_s(ObjectName, strName.c_str());
         writeFile.write((char*)&NameLength, sizeof(_int));
         writeFile.write(ObjectName, sizeof(char) * NameLength);
 
-        string MeshPath = CFunctor::To_String(DataArrValue.second.front().strMeshPath);
+        string MeshPath = CFunctor::To_String(DataArrValue.second[ValidList.front()].strMeshPath);
         _int PathLength = _int(MeshPath.length()) + 1;
         char szMeshPath[MAX_PATH] = "";
         strcpy_s(szMeshPath, MeshPath.c_str());
-        writeFile.write((char*)&PathLength, sizeof(_int));
-        writeFile.write(szMeshPath, sizeof(char) * PathLength);
 
-        _uint iInstanceNums = _uint(DataArrValue.second.size());
+        _uint iInstanceNums = _uint(ValidList.size());
         VTXINSTANCE* pInstance = new VTXINSTANCE[iInstanceNums];
         ZeroMemory(pInstance, sizeof(VTXINSTANCE) * iInstanceNums);
-
+        list<_int>::iterator ValidIter = ValidList.begin();
         for (_uint i = 0; i < iInstanceNums; ++i)
         {
-            _float4x4 matInstanceWorld = DataArrValue.second[i].ObjectStateMatrix;
+            _float4x4 matInstanceWorld = DataArrValue.second[(*ValidIter)].ObjectStateMatrix;
             _float4 vScale = _float4(1.f, 1.f, 1.f, 0.f);//= DataIter->second[i].vScale;
             XMStoreFloat4(&pInstance[i].vRight, matInstanceWorld.XMLoad().r[0] * vScale.x);
             XMStoreFloat4(&pInstance[i].vUp, matInstanceWorld.XMLoad().r[1] * vScale.y);
             XMStoreFloat4(&pInstance[i].vLook, matInstanceWorld.XMLoad().r[2] * vScale.z);
             XMStoreFloat4(&pInstance[i].vTranslation, matInstanceWorld.XMLoad().r[3]);
+            ValidIter++;
         }
 
         writeFile.write((char*)&iInstanceNums, sizeof(_uint));
@@ -2256,6 +2485,7 @@ void CFunc_ObjectControl::Load_ObjectSplit(string FilePath)
         {
             MTO_DATA tData;
             tData.Initialize();
+            tData.bIgnoreFlag = false;
             tData.strObejctName = strObjName;
             tData.strMeshPath = strPath;
             readFile.read((char*)&tData.ObjectStateMatrix, sizeof(_float4x4));
@@ -2277,6 +2507,7 @@ void CFunc_ObjectControl::Clear_TupleData(vector<tuple<char*, bool>>& ArrData)
     }
     ArrData.clear();
 }
+
 void CFunc_ObjectControl::SetUp_ColliderType()
 {
     m_listColliderType.push_back(make_tuple(string("Convex"), _uint(CStructure::ePhysXEnum::eCONVEX)));
@@ -2313,6 +2544,41 @@ _bool CFunc_ObjectControl::Find_ObjectDatas(string strObjectName, map<size_t, ve
     return true;
 }
 
+void CFunc_ObjectControl::Clone()
+{
+    if (m_eCloneDir == CLONE_END)
+        assert(0);
+    if (nullptr == m_pObjTransform || nullptr == m_pCurSelectGameObject)
+    {
+        m_eCloneDir = CLONE_NONE;
+        return;
+    }
+    switch(m_eCloneDir)
+    {
+    case CLONE_RIGHT:
+        m_vCompDir = m_pObjTransform->Get_World(WORLD_RIGHT);
+        break;
+    case CLONE_UP:
+        m_vCompDir = m_pObjTransform->Get_World(WORLD_UP);
+        break;
+    case CLONE_LOOK:
+        m_vCompDir = m_pObjTransform->Get_World(WORLD_LOOK);
+        break;
+    }
+
+
+    _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
+    MTO_DATA tData = (*m_pCurSelectData);
+    _matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
+    WorldMat.r[3] = OutPos.XMLoad();
+    tData.ObjectStateMatrix = WorldMat;
+    string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
+    Add_ObjectNamingMap(strGroupName, tData);
+
+}
+
+
+
 void CFunc_ObjectControl::Load_Data(string FilePath)
 {
     if(bTest)
@@ -2327,6 +2593,61 @@ void CFunc_ObjectControl::Load_Data(string FilePath)
         Load_ObjectGroup(strGroupPath);
         Load_ObjectSplit(strSplitPath);
     }
+
+    map<size_t, list<_int>> Padding;
+    for(auto& elem : m_ObjectNameGroupingMap)
+    {
+        for (auto& elem2 : elem.second)
+        {
+            size_t hash = Convert_ToHash(get<0>(elem2));
+            map<size_t, list<_int>>::iterator PaddingIter = Padding.find(hash);
+            if (PaddingIter == Padding.end())
+            {
+                Padding.emplace(hash, list<_int>());
+                PaddingIter = Padding.find(hash);
+            }
+            for (auto& elem3 : get<1>(elem2))
+            {
+                PaddingIter->second.push_back(elem3);
+            }
+            PaddingIter->second.sort();
+        }
+    }
+
+    for (auto& elem : Padding)
+    {
+        vector<CGameObject*>& ObjArr = m_ObjectNamingGroupMap[elem.first];
+        vector<MTO_DATA>& DataArr = m_DataNamingGroupMap[elem.first];
+
+        vector<CGameObject*>::iterator ObjArrIter = m_ObjectNamingGroupMap[elem.first].begin();
+        vector<MTO_DATA>::iterator DataArrIter = m_DataNamingGroupMap[elem.first].begin();
+        _int Index = 0;
+        _bool bInsert = false;
+        for (list<_int>::iterator iter = elem.second.begin(); iter != elem.second.end(); ++iter)
+        {
+            if(bInsert)
+            {
+                iter--;
+                bInsert = false;
+            }
+            if ((*iter) != Index)
+            {
+                MTO_DATA tData;
+                tData.Initialize();
+                ObjArrIter = ObjArr.emplace(ObjArrIter, nullptr);
+                DataArrIter = DataArr.emplace(DataArrIter, tData);
+                
+                Index++;
+                bInsert = true;
+            }
+            else {
+                Index++;
+                ObjArrIter++;
+                DataArrIter++;
+            }
+        }
+    }
+
 }
 
 
@@ -2351,10 +2672,12 @@ _bool CFunc_ObjectControl::Find_ObjectGroupInfo(string strGroupName, vector<tupl
 #pragma region MTO_DATA 멤버함수
 void CFunc_ObjectControl::tagMapToolObjectData::Initialize()
 {
+    bIgnoreFlag = true;
     //strGroupName = wstring();
     strObejctName = wstring();
     strMeshPath = wstring();
     ObjectStateMatrix.Identity();
+    ObejectIndex = 0;
     vScale = _float4(1.f, 1.f, 1.f, 0.f);
     byteLightFlag = 0;
 }
