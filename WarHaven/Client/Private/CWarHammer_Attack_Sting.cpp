@@ -160,10 +160,12 @@ void CWarHammer_Attack_Sting::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnim
 	switch (iSequence)
 	{
 	case 0:
+		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
 		break;
 
 	case 1:
+		m_bAttackTrigger = false;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 		break;
 

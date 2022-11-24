@@ -51,6 +51,9 @@ HRESULT CWalk_WarHammer::Initialize()
 
 void CWalk_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    if (ePrevType == STATE_BOUNCE_WARHAMMER_R)
+        m_fInterPolationTime = 0.05f;
+
     /* OwnerÀÇ Animator Set Idle·Î */
 	m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
 

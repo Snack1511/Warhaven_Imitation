@@ -122,12 +122,18 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		if (tOtherHitInfo.bFace)
 		{
 			//일단 가드는 성공
-			if (eOtherColType == COL_PLAYERGUARDBREAK || eOtherColType == COL_ENEMYGUARDBREAK)
+			if (eOtherColType == COL_PLAYERGUARDBREAK || eOtherColType == COL_ENEMYGUARDBREAK ||
+				eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
 			{
 				//가드 브레이크공격이 들어오면 
 				eFinalHitState = m_tHitType.m_eGuardBreakState;
 				Effect_Hit(vHitPos);
 			}
+			else if (eOtherColType == COL_PLAYERFLYATTACKGUARDBREAK || eOtherColType == COL_ENEMYFLYATTACKGUARDBREAK)
+			{
+				eFinalHitState = m_tHitType.m_eFlyState;
+			}
+
 			/* 가드 성공 */
 			else
 			{
@@ -139,7 +145,8 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		else
 		{
 			// 공격 공격을 당했다면
-			if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
+			if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK ||
+				eOtherColType == COL_PLAYERFLYATTACKGUARDBREAK || eOtherColType == COL_ENEMYFLYATTACKGUARDBREAK)
 				eFinalHitState = m_tHitType.m_eFlyState;
 
 			else if (eOtherColType == COL_PLAYERGROGGYATTACK || eOtherColType == COL_ENEMYGROGGYATTACK)
@@ -157,7 +164,8 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	case COL_ENEMYHITBOX_BODY:
 
 		// 공격 공격을 당했다면
-		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
+		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK ||
+			eOtherColType == COL_PLAYERFLYATTACKGUARDBREAK || eOtherColType == COL_ENEMYFLYATTACKGUARDBREAK)
 			eFinalHitState = m_tHitType.m_eFlyState;
 
 		// 그로기 공격을 당했다면
@@ -182,7 +190,8 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 
 		// 공격 공격을 당했다면
-		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK)
+		if (eOtherColType == COL_PLAYERFLYATTACK || eOtherColType == COL_ENEMYFLYATTACK ||
+			eOtherColType == COL_PLAYERFLYATTACKGUARDBREAK || eOtherColType == COL_ENEMYFLYATTACKGUARDBREAK)
 			eFinalHitState = m_tHitType.m_eFlyState;
 
 		// 그로기 공격을 당했다면
@@ -913,7 +922,8 @@ void CUnit::Switch_ClassEffect(CUnit* pUnit, _float4 vHitPos)
 {
 	CLASS_TYPE eClass = pUnit->Get_Status().eClass;
 
-	if ((STATE_GUARDHIT_WARRIOR != m_eCurState) && (STATE_GUARDHIT_ENEMY != m_eCurState))
+	if ((STATE_GUARDHIT_WARRIOR != m_eCurState) && (STATE_GUARDHIT_ENEMY != m_eCurState) &&
+		(STATE_GUARDHIT_WARHAMMER != m_eCurState))
 	{
 		switch (eClass)
 		{

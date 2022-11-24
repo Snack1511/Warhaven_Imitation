@@ -50,6 +50,10 @@ public:
 		_float		fMaxHeroGauge = 100.f;
 		_float		fHeroGague = 70.f;
 
+		_float		fCamPower = 0.1f;
+		_float		fCamTime = 0.3f;
+
+
 		WEAPON_TYPE eWeapon;
 		_float fHP = 100.f;
 		_float fMaxHP = 100.f;
@@ -153,6 +157,8 @@ public:
 	void		On_Attack(CState* pState);
 
 
+	_uint		Get_HeroChangeIndex() { return m_iChangeHeroAnimIndex; };
+
 
 	_bool		Is_Weapon_R_Collision();
 	/* 캐릭터에 부딪힌거 체크 */
@@ -170,6 +176,8 @@ public:
 	CState* Get_CurStateP() { return m_pCurState; }
 
 	const STATE_HIT_TYPE& Get_HitType() { return m_tHitType; }
+
+	CLASS_TYPE&		Get_HeroType() { return m_eChangeHero; }
 
 	_float4	Get_FollowCamLook();
 	_float4	Get_FollowCamLook_Turn();
@@ -261,6 +269,9 @@ protected:
 
 	_float	m_fAttackDelay = 0.f;
 
+	// 변신 Index
+	_uint	m_iChangeHeroAnimIndex = 0;
+
 protected:
 	UNIT_MODEL_DATA	m_tModelData;
 
@@ -271,6 +282,9 @@ protected:
 
 	UNIT_STATUS		m_tUnitStatus;
 	STATE_TYPE		m_eCurState = STATE_END;
+
+	CLASS_TYPE		m_eChangeHero = CLASS_END;
+
 
 	CState* m_pCurState = nullptr;
 	CUnit* m_pTargetUnit = nullptr;
@@ -287,7 +301,7 @@ protected:
 
 protected:
 
-	STATE_HIT_TYPE	m_tHitType;
+	STATE_HIT_TYPE	m_tHitType;;
 
 	_float			m_fHitDelayAcc = 0.f;
 	_float			m_fHitDelayTime = 0.1f;

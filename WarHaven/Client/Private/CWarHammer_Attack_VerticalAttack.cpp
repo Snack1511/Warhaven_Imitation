@@ -163,6 +163,8 @@ STATE_TYPE CWarHammer_Attack_VerticalAttack::Check_Condition(CUnit* pOwner, CAni
 
 void CWarHammer_Attack_VerticalAttack::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+
 	switch (iSequence)
 	{
 	case 0:
@@ -178,7 +180,5 @@ void CWarHammer_Attack_VerticalAttack::On_KeyFrameEvent(CUnit * pOwner, CAnimato
 	default:
 		break;
 	}
-
-	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 }
 

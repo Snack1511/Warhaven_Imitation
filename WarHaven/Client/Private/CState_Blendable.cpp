@@ -143,7 +143,10 @@ void CState_Blendable::Exit(CUnit * pOwner, CAnimator * pAnimator)
 
 void CState_Blendable::Hit_GroundEffect(CUnit* pOwner)
 {
-	pOwner->Shake_Camera(0.08f, 0.3f);
+	pOwner->Get_Status().fCamPower = 0.08f;
+	pOwner->Get_Status().fCamTime = 0.3f;
+
+	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());

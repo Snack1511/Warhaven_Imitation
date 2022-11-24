@@ -88,6 +88,7 @@
 #include "CHit_Fly_Warrior.h"
 
 #include "CGuard_Dash_Player.h"
+#include "CChangeHero_Player.h"
 
 #pragma endregion
 
@@ -483,27 +484,8 @@ void CState_Manager::Warrior_State()
 	/* Charge Test */
 	m_arrStates[STATE_CHARGETEST] = CChargeTest::Create();
 
+//	m_arrStates[STATE_CHANGE_PLAYER] = CChangeHero_Player::Create();
 
-	
-
-
-	//STATE_HIT
-
-
-
-
-
-		//Warrior_Base_R();
-		//Warrior_Base_L();
-
-		//Warrior_Base_Attack_R();
-		//Warrior_Base_Attack_L();
-		//Warrior_Base_Attack_Default();
-		//
-		//Warrior_Base_Hit();
-		//Warrior_Base_ETC();
-
-		//Warrior_Others();
 
 
 #pragma endregion

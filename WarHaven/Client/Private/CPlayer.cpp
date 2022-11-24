@@ -202,8 +202,8 @@ void CPlayer::Create_DefaultClass()
 
 	}
 
-	m_iReserveState[CLASS_DEFAULT_WARRIOR] = STATE_IDLE_PLAYER_R;
-	m_iReserveState[CLASS_DEFAULT_ENGINEER] = STATE_IDLE_WARHAMMER_R;
+	m_iReserveStateDefault[CLASS_DEFAULT_WARRIOR] = STATE_IDLE_PLAYER_R;
+	m_iReserveStateDefault[CLASS_DEFAULT_ENGINEER] = STATE_IDLE_WARHAMMER_R;
 
 }
 
@@ -311,6 +311,30 @@ void CPlayer::Create_HeroClass()
 	//		
 
 	//}
+
+
+	/*for (int i = 0; i < CLASS_HERO_END; ++i)
+	{
+		if (nullptr == m_pHeroClass[i])
+		{
+			Call_MsgBox(L"À¯´Ö »ý¼º ¾ÈµÆÀ½.");
+			return;
+		}
+		else
+		{
+			m_pHeroClass[i]->Initialize();
+
+			if (!m_pFollowCam)
+			{
+				Call_MsgBox(L"Ä«¸Þ¶ó »ý¼º ¾ÈµÆÀ½.");
+				return;
+			}
+
+			m_pHeroClass[i]->Set_FollowCam(m_pFollowCam);
+			m_pHeroClass[i]->Teleport_Unit(_float4(20.f, 3.f, 20.f));
+		}
+
+	}*/
 }
 
 HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
@@ -339,6 +363,8 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	if (eClass >= CLASS_DEFAULT_END)
 		return E_FAIL;
 		
+	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+
 	if (m_pCurrentUnit)
 	{
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
@@ -347,8 +373,9 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	m_pCurrentUnit = m_pDefaultClass[eClass];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
+	Set_Postion(vPos);
 
-	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveState[eClass]);
+	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateDefault[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	return S_OK;
@@ -359,6 +386,8 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	//if (eClass >= CLASS_HERO_END)
 	//	return E_FAIL;
 
+	//_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+
 	//if (m_pCurrentUnit)
 	//{
 	//	DISABLE_GAMEOBJECT(m_pCurrentUnit);
@@ -367,8 +396,12 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	//m_pCurrentUnit = m_pHeroClass[eClass];
 	//ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
-	//m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
+	//Set_Postion(vPos);
 
+	//m_iReserveStateHero[eClass] = STATE_IDLE_VALKYRIE_R;
+
+	//m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
+	//m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	return S_OK;
 }

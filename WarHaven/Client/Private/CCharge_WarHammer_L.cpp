@@ -81,7 +81,7 @@ void CCharge_WarHammer_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CCharge_WarHammer_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
+	if (CUser::Get_Instance()->Get_LastKey() == KEY::V)
 	{
 
 		_float fDot = CUtility_Transform::Get_LookRotateAngle(pOwner->Get_FollowCamLook());

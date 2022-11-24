@@ -27,11 +27,11 @@ HRESULT CCharge_WarHammer::Initialize()
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
 	m_fInterPolationTime = 0.1f;
-	m_fAnimSpeed = 1.f;
+	m_fAnimSpeed = 1.5f;
 	m_iStateChangeKeyFrame = 100;
 
 	m_iMaxChargeFrame = 100;
-	m_eCurrentChargeKey = KEY::LBUTTON;
+	m_eCurrentChargeKey = KEY::V;
 
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 0.5f;
@@ -152,7 +152,7 @@ STATE_TYPE CCharge_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAnimato
 	*/
 
 	
-	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
+	if (CUser::Get_Instance()->Get_LastKey() == KEY::V)
 	{
 
 		// 위 아래, 양 옆 구분 코드

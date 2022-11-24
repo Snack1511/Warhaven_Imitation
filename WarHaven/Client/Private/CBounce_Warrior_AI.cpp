@@ -36,8 +36,11 @@ HRESULT CBounce_Warrior_AI::Initialize()
 
 void CBounce_Warrior_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+
+	pOwner->Get_Status().fCamPower = 0.3f;
+	pOwner->Get_Status().fCamTime = 0.25f;
 	/* Shake */
-	pOwner->Shake_Camera(0.3f, 0.25f);
+	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
     /* Owner의 Animator Set Idle로 */
 
@@ -102,8 +105,8 @@ STATE_TYPE CBounce_Warrior_AI::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
     1. 공격이 닿았을 시     
 	*/
 
-	if (pOwner->Is_Weapon_R_Collision())
-		return m_eStateType;
+	//if (pOwner->Is_Weapon_R_Collision())
+	//	return m_eStateType;
 
 
     return STATE_END;

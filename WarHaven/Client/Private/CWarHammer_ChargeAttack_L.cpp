@@ -77,8 +77,6 @@ void CWarHammer_ChargeAttack_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CWarHammer_ChargeAttack_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (pAnimator->Get_CurAnimIndex() >= 100)
-		__super::On_KeyFrameEvent(pOwner, pAnimator, m_vecKeyFrameEvent[0], 997);
 
 	return __super::Tick(pOwner, pAnimator);
 }

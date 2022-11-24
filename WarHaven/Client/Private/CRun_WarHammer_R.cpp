@@ -40,18 +40,14 @@ HRESULT CRun_WarHammer_R::Initialize()
 
     m_vecAdjState.push_back(STATE_SWITCH_R_TO_L_WARHAMMER);
 
-
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
-
-    //m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_CHARGE_WARHAMMER_R);
 
     m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_JUMP_WARHAMMER_R);
 
-   // m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
-
-
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
 
    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 29;
 

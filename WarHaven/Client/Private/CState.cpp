@@ -65,7 +65,10 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			//HitPos가 발 보다 아래, 즉 땅을 때린 경우에는 튕겨나는게 아니라 작은 파티클과 진동만.
 			if (vHitPos.y <= vPos.y + 0.1f)
 			{
-				pOwner->Shake_Camera(0.25f, 0.25f);
+				pOwner->Get_Status().fCamPower = 0.25f;
+				pOwner->Get_Status().fCamTime = 0.25f;
+
+				pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
 				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());

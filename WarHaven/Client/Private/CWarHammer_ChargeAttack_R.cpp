@@ -69,8 +69,6 @@ HRESULT CWarHammer_ChargeAttack_R::Initialize()
 
 void CWarHammer_ChargeAttack_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-
-
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
