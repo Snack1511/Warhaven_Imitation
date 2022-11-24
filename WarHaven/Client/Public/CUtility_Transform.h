@@ -25,6 +25,7 @@ public:
 	//static _float4x4 Matrix_ByLook(_float4 vLook);
 
 	static _float Get_FromCameraDistance(CGameObject* pObject);
+	//static _float4 Get_FromCameraDistance(CGameObject* pObject);
 
 };
 END

@@ -38,13 +38,13 @@ private:
 
 	CUnit::UNIT_STATUS m_tStatus;
 
-
-
-	_float4 vColorRed = _float4(1.f, 0.f, 0.f, 1.f);
+	_float4 m_vColorRed = _float4(1.f, 0.f, 0.f, 1.f);
 	_float4 vColorAlpha = _float4(1.f, 0.f, 0.f, 0.f);
 
 	CUI_Object* m_pUnitNameText = nullptr;
 	
+	_float4 m_vOffset;
+
 	_float m_fUnitDis = 0.f;
 
 private:

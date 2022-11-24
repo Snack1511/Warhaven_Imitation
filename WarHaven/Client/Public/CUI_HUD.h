@@ -31,11 +31,12 @@ public:
 
 public:
 	void SetActive_OxenJumpText(_bool value);
-	void SetActive_DamageTex(_float fDmg, _bool bIsHead);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
+
+	CUnit* m_pPlayer = nullptr;
 
 	CUnit::UNIT_STATUS m_tStatus;
 	CUnit::CLASS_TYPE m_eCurClass;
@@ -74,13 +75,6 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pInactiveHeroText = nullptr;
 	CUI_Object* m_pHeroGaugeText = nullptr;
 	CUI_Object* m_pOxenJumpText = nullptr;
-
-	CUI_Object* m_pDmgText = nullptr;
-	CUI_Object* m_pDmgTexts[32];
-	_uint m_iDmgTextIndex = 0;
-	_bool m_bDmgTextEffct = false;
-
-	_uint m_iChoiceClass = 999;
 
 private:
 	void Bind_Btn();

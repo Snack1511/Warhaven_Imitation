@@ -25,7 +25,7 @@
 
 #include "CUI_HUD.h"
 #include "CBloodOverlay.h"
-
+#include "CUI_Damage.h"
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -178,8 +178,18 @@ void CUser::On_EnterLevel()
 	if (!m_pUI_HUD)
 	{
 		m_pUI_HUD = CUI_HUD::Create();
-
 		CREATE_GAMEOBJECT(m_pUI_HUD, GROUP_UI);
+	}
+
+	if (!m_pUI_Damage[0])
+	{
+		for (int i = 0; i < 5; ++i)
+		{
+			m_pUI_Damage[i] = CUI_Damage::Create();
+
+			CREATE_GAMEOBJECT(m_pUI_Damage[i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pUI_Damage[i]);
+		}
 	}
 }
 
@@ -188,13 +198,19 @@ void CUser::SetActive_OxenJumpText(_bool value)
 	m_pUI_HUD->SetActive_OxenJumpText(value);
 }
 
-void CUser::SetActive_DamageTex(_float fDmg, _bool bIsHead)
-{
-	m_pUI_HUD->SetActive_DamageTex(fDmg, bIsHead);
-}
-
 void CUser::Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime)
 {
 	m_pUI_HUD->Set_SkillCoolTime(iSkillType, fSkillCoolTime, fMaxCoolTime);
+}
+
+void CUser::Enable_DamageFont(_float fDmg, _bool bHeadShot)
+{	
+	m_pUI_Damage[m_iDamageFontIdx]->Enable_Damage(fDmg, bHeadShot);
+
+	m_iDamageFontIdx++;
+	if (m_iDamageFontIdx > 4)
+	{
+		m_iDamageFontIdx = 0;
+	}
 }
 

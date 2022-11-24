@@ -1246,9 +1246,6 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect\06. Mesh_Particle">
       <UniqueIdentifier>{10a2865b-1ad7-4e12-a219-87c34f733b96}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\00.Traing">
-      <UniqueIdentifier>{148df79a-4c0d-4b26-9464-29a084009f32}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target">
       <UniqueIdentifier>{1836d204-61f7-49a8-8e3b-15c25843962c}</UniqueIdentifier>
     </Filter>
@@ -1338,6 +1335,12 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting">
       <UniqueIdentifier>{3702c170-edcb-4e4a-95c7-fb92a493f118}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Traing">
+      <UniqueIdentifier>{148df79a-4c0d-4b26-9464-29a084009f32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage">
+      <UniqueIdentifier>{e1b7b09d-01a7-4192-bb8d-433710027162}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2277,8 +2280,8 @@
     <ClInclude Include="..\public\CMesh_Particle.h">
       <Filter>03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_Traing.h">
-      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\00.Traing</Filter>
+    <ClInclude Include="..\Public\CUI_Training.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Traing</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_UnitHP.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target</Filter>
@@ -2372,6 +2375,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CValkyrie_Attack_Sting_L.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Damage.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3292,8 +3298,8 @@
     <ClCompile Include="..\private\CMesh_Particle.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_Traing.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\00.Traing</Filter>
+    <ClCompile Include="..\Private\CUI_Training.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Traing</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_UnitHP.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target</Filter>
@@ -3387,6 +3393,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CValkyrie_Attack_Sting_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Damage.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

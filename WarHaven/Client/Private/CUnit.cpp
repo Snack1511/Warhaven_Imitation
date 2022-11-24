@@ -791,9 +791,9 @@ void CUnit::My_Tick()
 	{
 		if (m_fCoolAcc[i] >= 0.01f)
 		{
-			if (i == 0)
+			for (int i = 0; i < COOL_END; ++i)
 			{
-				CUser::Get_Instance()->Set_SkillCoolTime(0, m_fCoolAcc[0], m_fCoolTime[0]);
+				CUser::Get_Instance()->Set_SkillCoolTime(i, m_fCoolAcc[i], m_fCoolTime[i]);
 			}
 
 			m_fCoolAcc[i] -= fDT(0);

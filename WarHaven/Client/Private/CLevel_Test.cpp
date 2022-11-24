@@ -271,11 +271,15 @@ HRESULT CLevel_Test::Exit()
 
 #include "CUI_HUD.h"
 #include "CUI_Cursor.h"
+#include "CUI_Training.h"
 
 HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 {
 	CUI_Cursor* pCursor = CUI_Cursor::Create();
 	Ready_GameObject(pCursor, GROUP_UI);
+
+	CUI_Training* pUI_Training = CUI_Training::Create();
+	Ready_GameObject(pUI_Training, GROUP_UI);
 
 	return S_OK;
 }
