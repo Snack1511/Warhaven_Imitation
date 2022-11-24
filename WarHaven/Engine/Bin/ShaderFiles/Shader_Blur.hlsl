@@ -91,12 +91,37 @@ PS_OUT PS_BLOOM_MAIN(PS_DOWNSCALE_IN In)
 	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
 	
 	float fBrightness = dot(Out.vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-	//float fBrightness = dot(Out.vColor.rgb, float3(0.33f, 0.33f, 0.33f));
+	//float fBrightness = Out.vColor.r * Out.vColor.g * Out.vColor.b;
 
-	if (fBrightness > 0.99f)
+	if (fBrightness > 0.8f)
 	{
 		Out.vColor = float4(Out.vColor.xyz, Out.vColor.a);
 	}
+	else
+		discard;
+
+	return Out;
+}
+
+PS_OUT PS_BLOOMHARD_MAIN(PS_DOWNSCALE_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	vector vEffectFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (vEffectFlagDesc.g < 0.99f)
+		discard;
+
+	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float fBrightness = dot(Out.vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
+
+	if (fBrightness > 0.3f)
+	{
+		Out.vColor = float4(Out.vColor.xyz, fBrightness);
+	}
+	else
+		discard;
 
 	return Out;
 }
@@ -378,6 +403,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_BLOOM_MAIN();
+	}
+
+	pass BLOOMHARD
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BLOOMHARD_MAIN();
 	}
 
 }

@@ -425,7 +425,7 @@ PS_OUT PS_MAIN_FINALBLEND(PS_IN In)
 	//Out.vColor.xyz += vBloom.xyz;
 
 
-	Out.vColor.xyz += vBloom.xyz * (sqrt(vBloom.a));
+	Out.vColor.xyz += vBloom.xyz * ((vBloom.a));
 
 
 

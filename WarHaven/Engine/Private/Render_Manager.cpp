@@ -1405,7 +1405,7 @@ HRESULT CRender_Manager::Render_Bloom()
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_EffectFlag")))))
 		return E_FAIL;
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_vecShader[SHADER_BLUR]->Begin(3);
+	m_vecShader[SHADER_BLUR]->Begin(4);
 	m_pMeshRect->Render();
 
 	if (FAILED(m_pTarget_Manager->End_MRT()))
