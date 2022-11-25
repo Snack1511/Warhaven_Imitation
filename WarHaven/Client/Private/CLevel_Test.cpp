@@ -300,9 +300,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	//맵 데이타 불러오기
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
-
-	
-
+ 
 	//_float4x4 mat;
 	//mat.Identity();
 	/*CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
