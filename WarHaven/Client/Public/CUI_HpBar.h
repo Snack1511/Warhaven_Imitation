@@ -29,12 +29,12 @@ public:
 
 public:
 	void SetActive_HpBar(_bool value);
-	void Set_HpRatio(_float value) { m_fHpRatio = value; }
+	void Set_HpRatio(_float value) { m_fHealthRatio = value; }
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 
-	_float m_fHpRatio = 0.f;
+	_float m_fHealthRatio = 0.f;
 	_float m_fUVAnimSpeed = 0.f;
 
 private:

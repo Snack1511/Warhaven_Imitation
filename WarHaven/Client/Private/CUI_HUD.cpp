@@ -15,6 +15,7 @@
 #include "CUI_Training.h"
 
 #include "Easing_Utillity.h"
+#include "Functor.h"
 
 #include"CPlayer.h"
 
@@ -82,35 +83,12 @@ void CUI_HUD::My_Tick()
 
 	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 
-	if (m_pWrap[HpBar]->Is_Valid())
-	{
-		m_fHpRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
-		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHpRatio);
-
-		if (KEY(Z, HOLD))
-		{
-			m_tStatus.fHP -= fDT(0) * 10.f;
-			if (m_tStatus.fHP <= 0)
-			{
-				m_tStatus.fHP = 0;
-			}
-		}
-
-		if (KEY(X, HOLD))
-		{
-			m_tStatus.fHP += fDT(0) * 10.f;
-			if (m_tStatus.fHP >= m_tStatus.fMaxHP)
-			{
-				m_tStatus.fHP = m_tStatus.fMaxHP;
-			}
-		}
-	}
+	Update_HP();
 
 	if (m_pWrap[HeroGauge]->Is_Valid())
 	{
-		m_fHeroGauge = m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge;
-		//m_fHeroGauge = -1.f * (m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge) + 1.f;
-		//m_fHeroGauge = m_tStatus.fMaxHeroGauge / m_tStatus.fHeroGague -1.f;
+		// m_fHeroGauge = -1.f * (m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge) + 1.f;
+		// m_fHeroGauge = m_tStatus.fMaxHeroGauge / m_tStatus.fHeroGague -1.f;
 
 		_tchar  szTemp[MAX_STR] = {};
 		swprintf_s(szTemp, TEXT("%.f"), m_fHeroGauge * 100.f);
@@ -237,7 +215,7 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 	ENABLE_GAMEOBJECT(m_pPortUnderLines[iEventNum]);
 	m_pPortUnderLines[iEventNum]->Lerp_ScaleX(2.f, 100.f, fDuraition);
 
-	
+
 
 
 	// m_iChoiceClass = iEventNum 으로 나중에 변경 -> 현재 모든 캐릭이 없어 Enum 이 맞지 않는다.
@@ -304,6 +282,14 @@ void CUI_HUD::Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxC
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(iSkillType, fCoolTime, fMaxCoolTime);
 }
 
+void CUI_HUD::Set_HP(_float fMaxHP, _float fCurHP)
+{
+	m_fPrvHP = m_fCurHP;
+
+	m_fMaxHP = fMaxHP;
+	m_fCurHP = fCurHP;
+}
+
 void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 {
 	m_ePrvClass = m_eCurClass;
@@ -328,18 +314,6 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);
 	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(eClass);
-}
-
-void CUI_HUD::Set_Portrait(CUnit::CLASS_TYPE eClass)
-{
-}
-
-void CUI_HUD::Set_Crosshair(CUnit::CLASS_TYPE eClass)
-{
-}
-
-void CUI_HUD::Set_SkillHUD(CUnit::CLASS_TYPE eClass)
-{
 }
 
 void CUI_HUD::Set_ActiveHeroPort(_bool value)
@@ -575,7 +549,7 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 
 
 		pPlayer->Change_DefaultUnit((CPlayer::CLASS_DEFAULT)m_eCurClass);
-		
+
 	}
 }
 
@@ -672,6 +646,22 @@ void CUI_HUD::Create_TraingText()
 	DISABLE_GAMEOBJECT(m_pInactiveHeroText);
 }
 
+void CUI_HUD::Update_HP()
+{
+	if (m_pWrap[HpBar]->Is_Valid())
+	{
+		_float fLerpSpeed = fDT(0) * 10.f;
+		m_fCurHP = ((1 - fLerpSpeed) * m_fPrvHP) + (fLerpSpeed * m_fCurHP);
+
+		m_fHealthRatio = m_fCurHP / m_fMaxHP;
+
+		if (m_fCurHP < -0.f)
+			m_fHealthRatio = 0.f;
+
+		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHealthRatio);
+	}
+}
+
 void CUI_HUD::Create_HeroGaugeText()
 {
 	m_pHeroGaugeText = CUI_Object::Create();
@@ -710,8 +700,4 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
-}
-
-void CUI_HUD::Create_DmgText()
-{
 }

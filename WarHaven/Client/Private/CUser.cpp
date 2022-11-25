@@ -26,6 +26,7 @@
 #include "CUI_HUD.h"
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
+#include "CUI_Training.h"
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -191,6 +192,17 @@ void CUser::On_EnterLevel()
 			DISABLE_GAMEOBJECT(m_pUI_Damage[i]);
 		}
 	}
+
+	if (CLoading_Manager::Get_Instance()->Get_Level(LEVEL_TEST))
+	{
+		m_pUI_Training = CUI_Training::Create();
+		CREATE_GAMEOBJECT(m_pUI_Training, GROUP_UI);
+	}
+}
+
+void CUser::Set_HP(_float fMaxHP, _float fCurHP)
+{
+	m_pUI_HUD->Set_HP(fMaxHP, fCurHP);
 }
 
 void CUser::SetActive_OxenJumpText(_bool value)
@@ -211,6 +223,18 @@ void CUser::Enable_DamageFont(_float fDmg, _bool bHeadShot)
 	if (m_iDamageFontIdx > 4)
 	{
 		m_iDamageFontIdx = 0;
+	}
+}
+
+void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
+{
+	if (value == true)
+	{
+		m_pUI_Training->Enable_Popup(iIndex);
+	}
+	else
+	{
+		m_pUI_Training->Disable_Popup();
 	}
 }
 

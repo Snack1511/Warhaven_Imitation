@@ -42,7 +42,7 @@ void CUI_Damage::My_Tick()
 	m_fAccTime += fDT(0);
 
 	_float m_fAliveTime = m_fFadeInTime + m_fFadeOutTime + m_fMaintainTime;
-	
+
 	if (m_fAccTime >= m_fScaleDownTime)
 	{
 		if (m_bIsScaleDown)
@@ -72,12 +72,10 @@ void CUI_Damage::OnEnable()
 	__super::OnEnable();
 
 	m_vecDigitDmg.clear();
-	_uint iSize = 0;
 	while (1)
 	{
 		_uint iDigitDmg = m_iDamageValue % 10;
 		m_vecDigitDmg.push_back(iDigitDmg);
-		iSize++;
 
 		if (m_iDamageValue < 10)
 			break;
@@ -101,7 +99,7 @@ void CUI_Damage::OnEnable()
 
 		m_pArrDmgNum[i]->Set_Scale(m_vFontScale);
 		m_pArrDmgNum[i]->DoScale(m_fScaleValue, m_fScaleUpTime);
-		
+
 	}
 
 	if (m_bIsHeadShot)

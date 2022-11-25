@@ -265,16 +265,16 @@ void CUI_Skill::Active_SkillHUD(_uint iIndex)
 						continue;
 					}
 
-					//m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
+					// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
 
 					if (j == Outline0)
 					{
-						//m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
+						// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
 					}
 
 					if (j == Icon)
 					{
-						//m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
+						// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
 					}
 				}
 			}

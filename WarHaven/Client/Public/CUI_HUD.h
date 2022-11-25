@@ -33,6 +33,8 @@ public:
 	void SetActive_OxenJumpText(_bool value);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
+	void Set_HP(_float fMaxHP, _float fCurHP);
+
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
 
@@ -43,7 +45,10 @@ private:
 	CUnit::CLASS_TYPE m_ePrvClass;
 
 private:	// 체력바
-	_float m_fHpRatio = 0.f;
+	_float m_fMaxHP = 0.f;
+	_float m_fCurHP = 0.f;
+	_float m_fPrvHP = 0.f;
+	_float m_fHealthRatio = 0.f;
 
 private:	// 히어로 변신 게이지
 	_float m_fHeroGauge = 0.f;
@@ -78,19 +83,15 @@ private:	// 클래스 변경 창
 
 private:
 	void Bind_Btn();
-
 	void Set_FadePortHighlight();
 
 private:	
 	void Set_HUD(CUnit::CLASS_TYPE eClass);
-	void Set_Portrait(CUnit::CLASS_TYPE eClass);
-	void Set_Crosshair(CUnit::CLASS_TYPE eClass);
-	void Set_SkillHUD(CUnit::CLASS_TYPE eClass);
-
 	void Set_ActiveHeroPort(_bool value);
-
 	void SetActive_CharacterSelectWindow(_bool value);
 	void Set_ClassInfo(CUnit::CLASS_TYPE eClass);
+
+	void Update_HP();
 
 private:
 	void Create_CharacterSelectWindow();
@@ -98,7 +99,6 @@ private:
 	void Create_TraingText();
 	void Create_HeroGaugeText();
 	void Create_OxenJumpText();
-	void Create_DmgText();
 };
 
 END

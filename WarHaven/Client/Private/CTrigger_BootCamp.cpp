@@ -20,8 +20,22 @@ void CTrigger_BootCamp::Trigger_CollisionEnter(CGameObject* pOtherObj, const _ui
 	{
 		if (static_cast<CUnit*>(pOtherObj)->Is_MainPlayer())
 		{
-			//¿Ã ¿Œµ¶Ω∫∑Œ UI ≈∞±‚
-			m_iUIIndex;
+			if (m_iUIIndex == 99)
+			{				
+				if (!m_vecAdjTriggers.empty())
+				{
+					for (int i = 0;i < m_vecAdjTriggers.size(); ++i)
+					{
+						DISABLE_GAMEOBJECT(m_vecAdjTriggers[i]);
+					}
+
+					ENABLE_GAMEOBJECT(m_vecAdjTriggers.back());
+				}
+			}
+			else
+			{
+				CUser::Get_Instance()->SetActive_TrainingPopup(true, m_iUIIndex);
+			}
 		}
 	}
 
@@ -39,8 +53,7 @@ void CTrigger_BootCamp::Trigger_CollisionExit(CGameObject* pOtherObj, const _uin
 	{
 		if (static_cast<CUnit*>(pOtherObj)->Is_MainPlayer())
 		{
-			//¿Ã ¿Œµ¶Ω∫∑Œ UI ≤Ù±‚
-			m_iUIIndex;
+			CUser::Get_Instance()->SetActive_TrainingPopup(false, m_iUIIndex);
 		}
 	}
 }

@@ -107,6 +107,17 @@ _float4 CFunctor::To_Window(_float4 vPos)
 	return _float4(vPos.x, vPos.y, vPos.z);
 }
 
+_float CFunctor::Lerp(_float fDest, _float fSour, _float fRatio)
+{
+	if (fRatio > 1.f)
+		fRatio = 1.f;
+
+	if (fRatio < 0.f)
+		fRatio = 0.f;
+
+	return fDest + (fSour - fDest) * fRatio;
+}
+
 //void	CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume)
 //{
 //#define SOUND_MAX_RANGE	30.f

@@ -107,7 +107,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	/* 무조건 맞은 쪽에서 처리하기 */
 	switch (eMyColType)
 	{
-	/* 내가 막은 상황 */
+		/* 내가 막은 상황 */
 	case COL_PLAYERGUARD:
 	case COL_ENEMYGUARD:
 		On_GuardHit(pOtherUnit, eOtherColType, vHitPos, &tOtherHitInfo);
@@ -119,7 +119,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		tOtherHitInfo.bHeadShot = false;
 		On_Hit(pOtherUnit, eOtherColType, vHitPos, &tOtherHitInfo);
 		break;
-	
+
 	case COL_PLAYERHITBOX_HEAD:
 	case COL_ENEMYHITBOX_HEAD:
 		tOtherHitInfo.bHeadShot = true;
@@ -131,7 +131,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	}
 
-	
+
 }
 
 void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -739,7 +739,6 @@ HRESULT CUnit::SetUp_Model(const UNIT_MODEL_DATA& tData)
 
 	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, tData.strModelPaths[MODEL_PART_SKEL], TransformMatrix);
 
-
 	if (!pModel)
 		return E_FAIL;
 
@@ -787,6 +786,11 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Set_HP(m_tUnitStatus.fMaxHP, m_tUnitStatus.fHP);
+	}
+
 	for (_int i = 0; i < COOL_END; ++i)
 	{
 		if (m_fCoolAcc[i] >= 0.01f)
@@ -918,7 +922,7 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	{
 		On_DieBegin(pOtherUnit, vHitPos);
 		Enter_State(m_tHitType.eHitState, pHitInfo);
-		
+
 		return;
 	}
 
@@ -1000,7 +1004,7 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 
 	switch (iOtherColType)
 	{
-	//평범한 상대방 평타가 들어온 경우
+		//평범한 상대방 평타가 들어온 경우
 	case COL_ENEMYATTACK:
 	case COL_PLAYERATTACK:
 	case COL_ENEMYFLYATTACK:
@@ -1014,7 +1018,7 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 
 		break;
 
-	//상대방 GuardBreak가 들어온 경우
+		//상대방 GuardBreak가 들어온 경우
 	case COL_PLAYERGUARDBREAK:
 	case COL_ENEMYGUARDBREAK:
 		//1. 이펙트

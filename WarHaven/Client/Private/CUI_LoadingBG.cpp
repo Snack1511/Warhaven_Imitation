@@ -69,8 +69,6 @@ void CUI_LoadingBG::OnEnable()
 {
 	__super::OnEnable();
 
-
-	// 활성화 될 때 인덱스에 따라 불러올 배경이 바뀜
 	GET_COMPONENT(CTexture)->Set_CurTextureIndex(m_iBGIndex);
 }
 

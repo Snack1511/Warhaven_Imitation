@@ -65,7 +65,7 @@ void CUI_HpBar::Set_ShaderResourcesBG(CShader* pShader, const char* pConstName)
 
 void CUI_HpBar::Set_ShaderResourcesBar(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fHpRatio", &m_fHpRatio, sizeof(_float));
+	pShader->Set_RawValue("g_fHpRatio", &m_fHealthRatio, sizeof(_float));
 }
 
 void CUI_HpBar::SetActive_HpBar(_bool value)

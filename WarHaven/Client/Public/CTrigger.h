@@ -19,6 +19,8 @@ public:
 	virtual void	Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 	virtual void	Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 
+	void Add_AdjTriggers(CTrigger* pTrigger) { m_vecAdjTriggers.push_back(pTrigger); }
+
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize() override;
@@ -28,6 +30,9 @@ protected:
 	COL_GROUP_CLIENT	m_eColGroup = COL_END;
 	_float				m_fRadius = 0.f;
 	_float4				m_vPosition = ZERO_VECTOR;
+
+	protected:
+		vector< CTrigger*> m_vecAdjTriggers;
 };
 
 END
