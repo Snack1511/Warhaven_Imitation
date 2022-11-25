@@ -28,7 +28,6 @@ public:
 private:
 	_uint	m_iUIIndex = 0;
 
-
 };
 
 END

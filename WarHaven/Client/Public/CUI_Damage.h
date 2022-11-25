@@ -44,7 +44,7 @@ private:
 	_float m_fScaleDownTime = 0.2f;
 	_float m_fScaleValue = 200.f;
 
-	_uint m_iDamageValue = 0.f;
+	_uint m_iDamageValue = 0;
 
 	_bool m_bIsHeadShot = false;
 	_bool m_bIsScaleDown = false;

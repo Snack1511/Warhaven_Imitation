@@ -36,20 +36,6 @@ HRESULT CUI_Training::Start()
 void CUI_Training::My_Tick()
 {
 	__super::My_Tick();
-
-	static _uint iNum = 0;
-
-	// if (KEY(X, TAP))
-	// {
-	// 	Enable_Popup(iNum);
-	// 	iNum++;
-	// }
-	// 
-	// if (KEY(Z, TAP))
-	// {
-	// 	Enable_Popup(iNum);
-	// 	iNum--;
-	// }
 }
 
 void CUI_Training::Enable_Popup(_uint iIndex)
@@ -59,6 +45,11 @@ void CUI_Training::Enable_Popup(_uint iIndex)
 	if (iIndex > 3)
 	{
 		m_pPopup->Set_Scale(m_vLongPopupScale);
+
+		if (iIndex == 11)
+		{
+			m_pPopup->Set_Scale(m_vLongPopupScale3);
+		}
 	}
 	else
 	{
