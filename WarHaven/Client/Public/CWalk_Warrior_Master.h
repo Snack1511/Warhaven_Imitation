@@ -1,14 +1,14 @@
 #pragma once
-#include "CWalk_Warrior_Master.h"
+#include "CState.h"
 
 BEGIN(Client)
-class CWalk_Player abstract
-	: public CWalk_Warrior_Master
+class CWalk_Warrior_Master abstract
+	: public CState
 {
 
 protected:
-	CWalk_Player();
-	virtual ~CWalk_Player();
+	CWalk_Warrior_Master();
+	virtual ~CWalk_Warrior_Master();
 
 public:
 	// CState을(를) 통해 상속됨

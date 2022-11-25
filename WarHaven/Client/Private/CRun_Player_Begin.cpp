@@ -106,8 +106,3 @@ void CRun_Player_Begin::Change_Location_Begin(_uint iDirection, CAnimator* pAnim
 
 	m_bMoveTrigger = true;
 }
-
-void CRun_Player_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
-{
-
-}

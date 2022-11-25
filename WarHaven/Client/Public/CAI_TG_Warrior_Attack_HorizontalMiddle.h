@@ -1,14 +1,15 @@
 #pragma once
-#include "CWalk_Warrior_Master.h"
+#include "CState_Blendable.h"
 
 BEGIN(Client)
-class CWalk_Player abstract
-	: public CWalk_Warrior_Master
+class CAI_TG_Warrior_Attack_HorizontalMiddle abstract
+	: public CState_Blendable
 {
 
 protected:
-	CWalk_Player();
-	virtual ~CWalk_Player();
+	CAI_TG_Warrior_Attack_HorizontalMiddle();
+	virtual ~CAI_TG_Warrior_Attack_HorizontalMiddle();
+
 
 public:
 	// CState을(를) 통해 상속됨
@@ -17,8 +18,11 @@ public:
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
+
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
+
 
 };
 

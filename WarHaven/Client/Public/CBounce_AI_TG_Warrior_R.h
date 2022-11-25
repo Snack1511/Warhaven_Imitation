@@ -1,25 +1,34 @@
 #pragma once
-#include "CWalk_Warrior_Master.h"
+#include "CBounce_AI_TG_Warrior.h"
+
+BEGIN(Engine)
+END
 
 BEGIN(Client)
-class CWalk_Player abstract
-	: public CWalk_Warrior_Master
-{
+class CColorController;
 
-protected:
-	CWalk_Player();
-	virtual ~CWalk_Player();
+class CBounce_AI_TG_Warrior_R
+	: public CBounce_AI_TG_Warrior
+{
+	DECLARE_STATE(CBounce_AI_TG_Warrior_R);
+
+private:
+	CBounce_AI_TG_Warrior_R();
+	virtual ~CBounce_AI_TG_Warrior_R();
 
 public:
-	// CState을(를) 통해 상속됨
+	static CBounce_AI_TG_Warrior_R* Create();
+
+public:
+	// CPlayer_Bounce을(를) 통해 상속됨
 	virtual HRESULT Initialize()	override;
 	virtual void Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData = nullptr) override;
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
-protected:
+private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
+	
 };
 
 END

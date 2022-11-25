@@ -1,14 +1,22 @@
 #pragma once
-#include "CWalk_Warrior_Master.h"
+#include "CRun_AI_TG_Warrior.h"
+
+BEGIN(Engine)
+class CAnimator;
+END
 
 BEGIN(Client)
-class CWalk_Player abstract
-	: public CWalk_Warrior_Master
+class CRun_AI_TG_Warrior_L
+	: public CRun_AI_TG_Warrior
 {
+	DECLARE_STATE(CRun_AI_TG_Warrior_L);
 
-protected:
-	CWalk_Player();
-	virtual ~CWalk_Player();
+private:
+	CRun_AI_TG_Warrior_L();
+	virtual ~CRun_AI_TG_Warrior_L();
+
+public:
+	static CRun_AI_TG_Warrior_L* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -17,8 +25,9 @@ public:
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
-protected:
+private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+
 
 };
 

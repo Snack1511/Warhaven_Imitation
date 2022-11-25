@@ -145,7 +145,6 @@ void CUnit_Valkyrie::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
 
-
 	switch (m_eCurState)
 	{
 	case STATE_ATTACK_HORIZONTALUP_VALKYRIE_L:
@@ -190,10 +189,7 @@ void CUnit_Valkyrie::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		break;
 
 	}
-
-
 }
-
 
 HRESULT CUnit_Valkyrie::Initialize_Prototype()
 {
