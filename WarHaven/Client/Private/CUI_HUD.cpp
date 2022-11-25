@@ -614,7 +614,7 @@ void CUI_HUD::Update_HeroGauge()
 
 		if (m_fGaugeRatio >= 1.f)
 		{
-			m_pHeroGaugeText->Set_FontOffset(-23.f, -13.f);
+			m_pHeroGaugeText->Set_FontOffset(-23.5f, -13.f);
 		}
 		else
 		{
@@ -643,7 +643,6 @@ void CUI_HUD::Create_HeroGaugeText()
 	m_pHeroGaugeText->Set_FontRender(true);
 	m_pHeroGaugeText->Set_FontStyle(true);
 	m_pHeroGaugeText->Set_FontScale(0.25f);
-	m_pHeroGaugeText->Set_FontOffset(-18.f, -13.f);
 
 	CREATE_GAMEOBJECT(m_pHeroGaugeText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pHeroGaugeText);

@@ -112,8 +112,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	m_fLoadingFinish = 0.2f;
 
 	/* 각자 이름 함수에서 놀으셈*/
-	//if (FAILED(SetUp_Prototypes_MJ()))
-	//	return E_FAIL;
+	if (FAILED(SetUp_Prototypes_MJ()))
+		return E_FAIL;
 
 	m_fLoadingFinish = 0.5f;
 
@@ -128,7 +128,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"FreeCam");
 	DISABLE_GAMEOBJECT(pFreeCam);
 
-	
+
 
 	m_fLoadingFinish = 1.f;
 
@@ -156,7 +156,7 @@ HRESULT CLevel_Test::Enter()
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterBootCamp()))
 		return E_FAIL;
 
-	
+
 
 	return S_OK;
 }
@@ -261,10 +261,10 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
 	/*if(FAILED(SetUp_Terrian_InPlayer()))
 		return E_FAIL;*/
-	
-	if(FAILED(SetUp_Map_InPlayer()))
+
+	if (FAILED(SetUp_Map_InPlayer()))
 		return E_FAIL;
-	
+
 
 	return S_OK;
 }
@@ -275,7 +275,7 @@ HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
 
-	
+
 
 	//_float4x4 mat;
 	//mat.Identity();
@@ -358,7 +358,7 @@ void CLevel_Test::Col_Check()
 	/* 가드 불가 띄우기 공격 적 */
 	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACKGUARDBREAK, COL_PLAYERHITBOX_BODY);
 	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACKGUARDBREAK, COL_PLAYERGUARD);
-	
+
 
 
 

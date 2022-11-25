@@ -895,7 +895,18 @@ void CUnit::My_Tick()
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
 
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(this);
-	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
+	if (fDis < 10.f)
+	{
+		if (!m_bIsMainPlayer)
+		{
+			ENABLE_GAMEOBJECT(m_pUnitHUD);
+			dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
+		}
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(m_pUnitHUD);
+	}
 }
 
 void CUnit::My_LateTick()
@@ -1146,10 +1157,6 @@ void CUnit::Frustum_UnitHUD()
 		{
 			if (!m_bIsMainPlayer)
 			{
-				// 처음에는 동그라미만 뜨다가 가까이 접근하면 적군으로 바뀌고
-				// 카메라의 위치를 뷰위치를 받아오고 유닛들의 위치를 받아와서 일정 거리 이하
-				// 유틸리티트랜스폼에 함수 구현
-				// 데미지를 입을 시 체력바 활성화
 				ENABLE_GAMEOBJECT(m_pUnitHUD);
 			}
 		}
