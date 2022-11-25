@@ -34,6 +34,7 @@ public:
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 	void Set_HP(_float fMaxHP, _float fCurHP);
+	void Set_HeroGauge(_float fMaxGauge, _float fCurGauge);
 
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
@@ -50,8 +51,10 @@ private:	// 체력바
 	_float m_fPrvHP = 0.f;
 	_float m_fHealthRatio = 0.f;
 
-private:	// 히어로 변신 게이지
-	_float m_fHeroGauge = 0.f;
+private:	// 히어로 게이지
+	_float m_fMaxGauge = 0.f;
+	_float m_fCurGauge = 0.f;
+	_float m_fGaugeRatio = 0.f;
 	_bool m_bIsEnableHeroPort = false;
 
 private:	// 클래스 변경 창
@@ -92,6 +95,7 @@ private:
 	void Set_ClassInfo(CUnit::CLASS_TYPE eClass);
 
 	void Update_HP();
+	void Update_HeroGauge();
 
 private:
 	void Create_CharacterSelectWindow();

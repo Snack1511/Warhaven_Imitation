@@ -30,14 +30,14 @@ public:
 	void Set_ShaderResources(CShader* pShader, const char* pConstName);
 
 public:
-	void Set_HeroValue(_float fValue) { m_fGaugeValue = fValue; }
+	void Set_GaugeRatio(_float fValue) { m_fGaugeRatio = fValue; }
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
 
 	_float m_fUVSpeed = 0.f;
 
-	_float m_fGaugeValue = 1.f;
+	_float m_fGaugeRatio = 1.f;
 
 	_bool m_bHeroAble = false;
 	_bool bIsHero = false;

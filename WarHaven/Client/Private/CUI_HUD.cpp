@@ -84,69 +84,7 @@ void CUI_HUD::My_Tick()
 	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 
 	Update_HP();
-
-	if (m_pWrap[HeroGauge]->Is_Valid())
-	{
-		// m_fHeroGauge = -1.f * (m_tStatus.fHeroGague / m_tStatus.fMaxHeroGauge) + 1.f;
-		// m_fHeroGauge = m_tStatus.fMaxHeroGauge / m_tStatus.fHeroGague -1.f;
-
-		_tchar  szTemp[MAX_STR] = {};
-		swprintf_s(szTemp, TEXT("%.f"), m_fHeroGauge * 100.f);
-		m_pHeroGaugeText->Set_FontText(szTemp);
-
-		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Set_HeroValue(m_fHeroGauge);
-
-		if (!m_tStatus.bAbleHero)
-		{
-			if (!m_tStatus.bIsHero)
-			{
-				m_tStatus.fHeroGague += fDT(0) * 20.f;
-				if (m_fHeroGauge >= 1.f)
-				{
-					m_fHeroGauge = 1.f;
-					m_tStatus.bIsHero = false;
-
-					Set_HUD(m_ePrvClass);
-				}
-				else if (KEY(NUM1, TAP))
-				{
-					Set_HUD(m_ePrvClass);
-				}
-			}
-			else
-			{
-				DISABLE_GAMEOBJECT(m_pInactiveHeroText);
-
-				m_tStatus.fHeroGague -= fDT(0) * 20.f;
-				if (m_fHeroGauge <= 0.f)
-				{
-					m_fHeroGauge = 0.f;
-					m_tStatus.bAbleHero = true;
-
-					Set_ActiveHeroPort(true);
-				}
-			}
-		}
-		else
-		{
-			if (KEY(NUM1, TAP))
-			{
-				Set_HUD(CUnit::FIONA);
-			}
-			else if (KEY(NUM2, TAP))
-			{
-				Set_HUD(CUnit::QANDA);
-			}
-			else if (KEY(NUM3, TAP))
-			{
-				Set_HUD(CUnit::HOEDT);
-			}
-			else if (KEY(NUM4, TAP))
-			{
-				Set_HUD(CUnit::LANCER);
-			}
-		}
-	}
+	Update_HeroGauge();
 
 	if (m_pBG->Is_Valid())
 	{
@@ -314,6 +252,12 @@ void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);
 	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(eClass);
+}
+
+void CUI_HUD::Set_HeroGauge(_float fMaxGauge, _float fCurGauge)
+{
+	m_fMaxGauge = fMaxGauge;
+	m_fCurGauge = fCurGauge;
 }
 
 void CUI_HUD::Set_ActiveHeroPort(_bool value)
@@ -659,6 +603,30 @@ void CUI_HUD::Update_HP()
 			m_fHealthRatio = 0.f;
 
 		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHealthRatio);
+	}
+}
+
+void CUI_HUD::Update_HeroGauge()
+{
+	if (m_pWrap[HeroGauge]->Is_Valid())
+	{
+		m_fGaugeRatio = m_fCurGauge / m_fMaxGauge;
+
+		if (m_fGaugeRatio >= 1.f)
+		{
+			m_pHeroGaugeText->Set_FontOffset(-23.f, -13.f);
+		}
+		else
+		{
+			m_pHeroGaugeText->Set_FontOffset(-18.f, -13.f);
+		}
+
+		_tchar  szTemp[MAX_STR] = {};
+		swprintf_s(szTemp, TEXT("%.f%%"), m_fGaugeRatio * 100.f);
+		m_pHeroGaugeText->Set_FontText(szTemp);
+
+		m_fGaugeRatio = 1 - m_fGaugeRatio;
+		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Set_GaugeRatio(m_fGaugeRatio);
 	}
 }
 

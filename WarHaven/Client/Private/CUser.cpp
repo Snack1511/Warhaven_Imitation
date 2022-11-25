@@ -205,6 +205,11 @@ void CUser::Set_HP(_float fMaxHP, _float fCurHP)
 	m_pUI_HUD->Set_HP(fMaxHP, fCurHP);
 }
 
+void CUser::Set_HeroGauge(_float fMaxGauge, _float fCurGauge)
+{
+	m_pUI_HUD->Set_HeroGauge(fMaxGauge, fCurGauge);
+}
+
 void CUser::SetActive_OxenJumpText(_bool value)
 {
 	m_pUI_HUD->SetActive_OxenJumpText(value);

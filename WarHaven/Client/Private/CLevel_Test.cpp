@@ -112,8 +112,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	m_fLoadingFinish = 0.2f;
 
 	/* 각자 이름 함수에서 놀으셈*/
-	if (FAILED(SetUp_Prototypes_MJ()))
-		return E_FAIL;
+	//if (FAILED(SetUp_Prototypes_MJ()))
+	//	return E_FAIL;
 
 	m_fLoadingFinish = 0.5f;
 

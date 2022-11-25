@@ -60,7 +60,7 @@ void CUI_HeroGauge::Start_HeroGauge()
 
 void CUI_HeroGauge::Set_ShaderResources(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fHeroValue", &m_fGaugeValue, sizeof(_float));
+	pShader->Set_RawValue("g_fHeroValue", &m_fGaugeRatio, sizeof(_float));
 	pShader->Set_RawValue("g_fValue", &m_fUVSpeed, sizeof(_float));
 }
 
