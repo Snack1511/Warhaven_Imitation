@@ -19,7 +19,9 @@ public:
 	virtual void	Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 	virtual void	Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 
+public:
 	void Add_AdjTriggers(CTrigger* pTrigger) { m_vecAdjTriggers.push_back(pTrigger); }
+	void	Reserve_DisableOnStart() { m_bStartDisable = true; }
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;
@@ -33,6 +35,9 @@ protected:
 
 	protected:
 		vector< CTrigger*> m_vecAdjTriggers;
+
+private:
+	_bool		m_bStartDisable = false;
 };
 
 END

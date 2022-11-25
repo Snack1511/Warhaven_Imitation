@@ -26,6 +26,7 @@ public: /* BootCamp */
 	HRESULT					On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_ReadyUIs(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 
 	HRESULT					On_EnterBootCamp();
 

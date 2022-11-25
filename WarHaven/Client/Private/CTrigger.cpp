@@ -47,5 +47,8 @@ HRESULT CTrigger::Start()
 	CallBack_CollisionStay += bind(&CTrigger::Trigger_CollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 	CallBack_CollisionExit += bind(&CTrigger::Trigger_CollisionExit, this, placeholders::_1, placeholders::_2, placeholders::_3);
 
+	if (m_bStartDisable)
+		DISABLE_GAMEOBJECT(this);
+
 	return S_OK;
 }

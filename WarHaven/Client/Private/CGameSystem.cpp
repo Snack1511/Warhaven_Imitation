@@ -120,50 +120,49 @@ HRESULT CGameSystem::On_ReadyUIs(vector<pair<CGameObject*, _uint>>& vecReadyObje
     return E_NOTIMPL;
 }
 
+HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    CTrigger_BootCamp* pBootCampTrigger0 = CTrigger_BootCamp::Create("StartPosition", 0, 3.f);
+    CTrigger_BootCamp* pBootCampTrigger1 = CTrigger_BootCamp::Create("Popup01", 1, 3.f);
+    CTrigger_BootCamp* pBootCampTrigger2 = CTrigger_BootCamp::Create("PopUp02", 2, 3.f);
+    CTrigger_BootCamp* pBootCampTrigger3 = CTrigger_BootCamp::Create("Popup03", 3, 3.f);
+    CTrigger_BootCamp* pBootCampTrigger5 = CTrigger_BootCamp::Create("Popup05", 5, 3.f);
+    CTrigger_BootCamp* pBootCampTrigger6 = CTrigger_BootCamp::Create("Popup06", 6, 3.f);
+    CTrigger_BootCamp* pBootCampTrigger7 = CTrigger_BootCamp::Create("Popup07", 7, 3.f);
+    CTrigger_BootCamp* pBootCampTrigger8 = CTrigger_BootCamp::Create("Popup08", 8, 3.f);
+    CTrigger_BootCamp* pBootCampTrigger9 = CTrigger_BootCamp::Create("Popup09", 9, 3.f);
+    CTrigger_BootCamp* pBootCampTrigger10 = CTrigger_BootCamp::Create("Popup10", 10, 2.f);
+    pBootCampTrigger10->Reserve_DisableOnStart();
+
+    CTrigger_BootCamp* pBootCampTriggerBasicEnd = CTrigger_BootCamp::Create("BasicEnd", 99, 2.f);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger0);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger1);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger2);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger3);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger5);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger6);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger7);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger8);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger9);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger10);
+
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger0, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger1, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger2, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger3, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger5, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger6, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger7, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger8, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger9, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger10, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTriggerBasicEnd, GROUP_TRIGGER));
+
+    return S_OK;
+}
+
 HRESULT CGameSystem::On_EnterBootCamp()
 {
-	CTrigger_BootCamp* pBootCampTrigger0 = CTrigger_BootCamp::Create("StartPosition", 0, 3.f);
-	CTrigger_BootCamp* pBootCampTrigger1 = CTrigger_BootCamp::Create("Popup01", 1, 3.f);
-	CTrigger_BootCamp* pBootCampTrigger2 = CTrigger_BootCamp::Create("PopUp02", 2, 3.f);
-	CTrigger_BootCamp* pBootCampTrigger3 = CTrigger_BootCamp::Create("Popup03", 3, 3.f);
-	CTrigger_BootCamp* pBootCampTrigger5 = CTrigger_BootCamp::Create("Popup05", 5, 3.f);
-	CTrigger_BootCamp* pBootCampTrigger6 = CTrigger_BootCamp::Create("Popup06", 6, 3.f);
-	CTrigger_BootCamp* pBootCampTrigger7 = CTrigger_BootCamp::Create("Popup07", 7, 3.f);
-	CTrigger_BootCamp* pBootCampTrigger8 = CTrigger_BootCamp::Create("Popup08", 8, 3.f);
-	CTrigger_BootCamp* pBootCampTrigger9 = CTrigger_BootCamp::Create("Popup09", 9, 3.f);
-
-	CTrigger_BootCamp* pBootCampTrigger10 = CTrigger_BootCamp::Create("Popup10", 10, 2.f);
-
-	CTrigger_BootCamp* pBootCampTriggerBasicEnd = CTrigger_BootCamp::Create("BasicEnd", 99, 2.f);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger0);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger1);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger2);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger3);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger5);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger6);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger7);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger8);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger9);
-	pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger10);
-
-	if (!pBootCampTrigger0)
-		return E_FAIL;
-
-	CREATE_GAMEOBJECT(pBootCampTrigger0, GROUP_TRIGGER);
-	CREATE_GAMEOBJECT(pBootCampTrigger1, GROUP_TRIGGER);
-	CREATE_GAMEOBJECT(pBootCampTrigger2, GROUP_TRIGGER);
-	CREATE_GAMEOBJECT(pBootCampTrigger3, GROUP_TRIGGER);
-	CREATE_GAMEOBJECT(pBootCampTrigger5, GROUP_TRIGGER);
-	CREATE_GAMEOBJECT(pBootCampTrigger6, GROUP_TRIGGER);
-	CREATE_GAMEOBJECT(pBootCampTrigger7, GROUP_TRIGGER);
-	CREATE_GAMEOBJECT(pBootCampTrigger8, GROUP_TRIGGER);
-	CREATE_GAMEOBJECT(pBootCampTrigger9, GROUP_TRIGGER);
-
-	CREATE_GAMEOBJECT(pBootCampTrigger10, GROUP_TRIGGER);
-	DISABLE_GAMEOBJECT(pBootCampTrigger10, GROUP_TRIGGER);
-
-	CREATE_GAMEOBJECT(pBootCampTriggerBasicEnd, GROUP_TRIGGER);
-
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_0"));
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_1"));
