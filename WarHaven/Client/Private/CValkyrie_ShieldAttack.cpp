@@ -70,7 +70,7 @@ void CValkyrie_ShieldAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 {
 	pOwner->On_Use(CUnit::SKILL2);
 
-	//pOwner->Set_BounceState(STATE_BOUNCE_VAL);
+	pOwner->Set_BounceState(STATE_BOUNCE_VALKYRIE_L);
 
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
