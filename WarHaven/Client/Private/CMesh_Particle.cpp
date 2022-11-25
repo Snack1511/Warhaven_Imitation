@@ -213,12 +213,17 @@ void CMesh_Particle::OnDisable()
 	__super::OnDisable();
 	m_fTimeAcc = 0.f;
 
-	for (_uint i = 0; i < m_iNumInstance; ++i)
+	if (!m_vecRigidDynamics.empty())
 	{
-		Safe_release(m_vecRigidDynamics[i]);
+		for (_uint i = 0; i < m_iNumInstance; ++i)
+		{
+			Safe_release(m_vecRigidDynamics[i]);
+		}
+
+		m_vecRigidDynamics.clear();
+
 	}
 
-	m_vecRigidDynamics.clear();
 }
 
 HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)

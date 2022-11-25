@@ -374,6 +374,22 @@ void CPlayer::Set_Postion(_float4 vPos)
 	}
 }
 
+void CPlayer::Set_TargetUnit(CUnit* pUnit)
+{
+	if (m_pCurrentUnit)
+	{
+		m_pCurrentUnit->Set_TargetUnit(pUnit);
+	}
+}
+
+void CPlayer::Set_LookToTarget()
+{
+	if (m_pCurrentUnit)
+	{
+		m_pCurrentUnit->Set_LookToTarget();
+	}
+}
+
 void CPlayer::Set_MainPlayer()
 {
 	m_bIsMainPlayer = true;

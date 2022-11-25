@@ -7,6 +7,8 @@ END
 
 BEGIN(Client)
 
+class CPlayer;
+
 class CTrigger abstract
 	: public CGameObject
 {
@@ -33,8 +35,8 @@ protected:
 	_float				m_fRadius = 0.f;
 	_float4				m_vPosition = ZERO_VECTOR;
 
-	protected:
-		vector< CTrigger*> m_vecAdjTriggers;
+protected:
+	vector< CTrigger*> m_vecAdjTriggers;
 
 private:
 	_bool		m_bStartDisable = false;

@@ -97,9 +97,6 @@ public:
 		/* Bounce */
 		STATE_TYPE		eBounce = STATE_END;
 
-
-
-
 		/* 가드 깨진 상태*/
 		STATE_TYPE		eGuardBreakState = STATE_END;
 
@@ -128,6 +125,7 @@ public:
 public: /* Physics */
 	_bool		Is_Air();
 	void		Set_DirAsLook();
+	void		Set_LookToTarget();
 
 public:
 	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);

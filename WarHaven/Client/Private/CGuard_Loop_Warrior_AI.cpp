@@ -62,6 +62,9 @@ void CGuard_Loop_Warrior_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 
 STATE_TYPE CGuard_Loop_Warrior_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Set_LookToTarget();
+
+
     return __super::Tick(pOwner, pAnimator);
 
 }

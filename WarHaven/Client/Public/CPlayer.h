@@ -75,6 +75,9 @@ public:
 	void	SetUp_UnitHitStates(_bool bPlayer);
 
 	void	Set_Postion(_float4 vPos);
+	void	Set_TargetUnit(CUnit* pUnit);
+
+	void	Set_LookToTarget();
 
 public:
 	_uint	Get_ChangeHeroIndex(_uint eClass) { return m_iChangeHeroAnimIndex[eClass]; }

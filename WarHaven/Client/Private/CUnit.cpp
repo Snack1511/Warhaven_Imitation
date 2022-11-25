@@ -156,6 +156,14 @@ void CUnit::Set_DirAsLook()
 	m_pPhysics->Set_Dir(vLook);
 }
 
+void CUnit::Set_LookToTarget()
+{
+	if (m_pTargetUnit)
+	{
+		CUtility_Transform::LookAt(m_pTransform, m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS), true);
+	}
+}
+
 void CUnit::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
 

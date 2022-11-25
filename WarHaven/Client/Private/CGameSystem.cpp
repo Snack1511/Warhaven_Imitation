@@ -61,10 +61,15 @@ HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecRead
 
     if (FAILED(On_ReadyUIs(vecReadyObjects)))
     {
-        Call_MsgBox(L"Failed to On_ReadyPlayers : CGameSystem");
+        Call_MsgBox(L"Failed to On_ReadyUIs : CGameSystem");
         return E_FAIL;
     }
 
+    if (FAILED(On_ReadyTriggers(vecReadyObjects)))
+    {
+        Call_MsgBox(L"Failed to On_ReadyTriggers : CGameSystem");
+        return E_FAIL;
+    }
 
     /* Default Light */
     LIGHTDESC			LightDesc;
@@ -99,9 +104,63 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
     vecReadyObjects.push_back(make_pair(pUserPlayer, GROUP_PLAYER));
 
 
-    if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-        STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
-        return E_FAIL;
+    _float4 vEnemyPos;
+    CPlayer* pEnemyUser = nullptr;
+    
+    for (_uint i = 0; i < 7; ++i)
+    {
+        STATE_TYPE eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
+        string strKey;
+
+        switch (i)
+        {
+        case 0:
+            strKey = "EnemyTrio_1";
+            break;
+        case 1:
+            strKey = "EnemyTrio_2";
+            break;
+        case 2:
+            strKey = "q";
+            break;
+        case 3:
+            strKey = "EnemyHall";
+            break;
+        case 4:
+            strKey = "EnemyBlock";
+            eEnemyState = STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY;
+            break;
+        case 5:
+            strKey = "EnemyHeadShot";
+            eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
+            break;
+        case 6:
+            strKey = "EnemyGuardBreak";
+            eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY;
+
+            break;
+
+        default:
+            break;
+        }
+
+
+
+        vEnemyPos = CGameSystem::Get_Instance()->Find_Position(strKey);
+
+
+        if (!(pEnemyUser = SetUp_Player(vEnemyPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+            eEnemyState, false, CFunctor::To_Wstring(strKey))))
+            return E_FAIL;
+
+        pEnemyUser->Set_TargetUnit(pUserPlayer->Get_CurrentUnit());
+        vecReadyObjects.push_back(make_pair(pEnemyUser, GROUP_ENEMY));
+        m_mapEnemyPlayers.emplace(strKey, pEnemyUser);
+    }
+   
+
+
+
 
 
 
@@ -117,20 +176,36 @@ HRESULT CGameSystem::On_ReadyUIs(vector<pair<CGameObject*, _uint>>& vecReadyObje
     CUI_Training* pUI_Training = CUI_Training::Create();
     vecReadyObjects.push_back(make_pair(pUI_Training, GROUP_UI));
 
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
-    CTrigger_BootCamp* pBootCampTrigger0 = CTrigger_BootCamp::Create("StartPosition", 0, 3.f);
-    CTrigger_BootCamp* pBootCampTrigger1 = CTrigger_BootCamp::Create("Popup01", 1, 3.f);
-    CTrigger_BootCamp* pBootCampTrigger2 = CTrigger_BootCamp::Create("PopUp02", 2, 3.f);
-    CTrigger_BootCamp* pBootCampTrigger3 = CTrigger_BootCamp::Create("Popup03", 3, 3.f);
-    CTrigger_BootCamp* pBootCampTrigger5 = CTrigger_BootCamp::Create("Popup05", 5, 3.f);
-    CTrigger_BootCamp* pBootCampTrigger6 = CTrigger_BootCamp::Create("Popup06", 6, 3.f);
-    CTrigger_BootCamp* pBootCampTrigger7 = CTrigger_BootCamp::Create("Popup07", 7, 3.f);
-    CTrigger_BootCamp* pBootCampTrigger8 = CTrigger_BootCamp::Create("Popup08", 8, 3.f);
-    CTrigger_BootCamp* pBootCampTrigger9 = CTrigger_BootCamp::Create("Popup09", 9, 3.f);
+    _float fRadius = 4.f;
+
+    CTrigger_BootCamp* pBootCampTrigger0 = CTrigger_BootCamp::Create("StartPosition", 0, fRadius);
+    CTrigger_BootCamp* pBootCampTrigger1 = CTrigger_BootCamp::Create("Popup01", 1, fRadius);
+    CTrigger_BootCamp* pBootCampTrigger2 = CTrigger_BootCamp::Create("PopUp02", 2, fRadius);
+
+    CTrigger_BootCamp* pBootCampTrigger3 = CTrigger_BootCamp::Create("Popup03", 3, fRadius);
+
+    CTrigger_BootCamp* pBootCampTrigger5 = CTrigger_BootCamp::Create("Popup05", 5, fRadius);
+    pBootCampTrigger5->Add_AdjPlayer(m_mapEnemyPlayers["EnemyTrio_1"]);
+    pBootCampTrigger5->Add_AdjPlayer(m_mapEnemyPlayers["EnemyTrio_2"]);
+    pBootCampTrigger5->Add_AdjPlayer(m_mapEnemyPlayers["q"]);
+
+    CTrigger_BootCamp* pBootCampTrigger6 = CTrigger_BootCamp::Create("Popup06", 6, fRadius);
+    pBootCampTrigger6->Add_AdjPlayer(m_mapEnemyPlayers["EnemyHall"]);
+
+    CTrigger_BootCamp* pBootCampTrigger7 = CTrigger_BootCamp::Create("Popup07", 7, fRadius);
+    pBootCampTrigger7->Add_AdjPlayer(m_mapEnemyPlayers["EnemyBlock"]);
+
+    CTrigger_BootCamp* pBootCampTrigger8 = CTrigger_BootCamp::Create("Popup08", 8, fRadius);
+    pBootCampTrigger8->Add_AdjPlayer(m_mapEnemyPlayers["EnemyHeadShot"]);
+
+    CTrigger_BootCamp* pBootCampTrigger9 = CTrigger_BootCamp::Create("EnemyGuardBreak", 9, fRadius);
+    pBootCampTrigger9->Add_AdjPlayer(m_mapEnemyPlayers["EnemyGuardBreak"]);
+
     CTrigger_BootCamp* pBootCampTrigger10 = CTrigger_BootCamp::Create("Popup10", 10, 2.f);
     pBootCampTrigger10->Reserve_DisableOnStart();
 
@@ -163,6 +238,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
 
 HRESULT CGameSystem::On_EnterBootCamp()
 {
+
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_0"));
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_1"));
@@ -174,7 +250,9 @@ HRESULT CGameSystem::On_EnterBootCamp()
 
     /*fire0~9*/
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_0"), _float4(29.2f, 2.95f, 20.65f));  //0
-    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"BonFire_1"), _float4(47.8f, 1.6f, 25.7f));  //1 화로
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"BonFire_0"), _float4(47.8f, 1.6f, 25.7f));  //1 화로
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", _float4(47.8f, 2.6f, 25.7f));
+
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_2"), _float4(50.9f, 4.0f, -20.5f)); //2 o
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_0"), _float4(33.43f, 2.1f, 22.2f));  //3
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_1"), _float4(36.87f, 3.2f, 21.77f));  //4
@@ -183,6 +261,8 @@ HRESULT CGameSystem::On_EnterBootCamp()
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_1"), _float4(37.05f, 4.5f, -25.0f)); //7
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_2"), _float4(26.6f, 3.55f, -21.1f)); //8
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"BonFire_0"), _float4(41.4f, 1.8f, 27.8f));  //9 화로
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", _float4(41.4f, 2.8f, 27.8f));
+
 
 	LIGHTDESC			LightDesc;
 

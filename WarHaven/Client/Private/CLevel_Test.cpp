@@ -115,12 +115,12 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	if (FAILED(SetUp_Prototypes_MJ()))
 		return E_FAIL;
 
-	m_fLoadingFinish = 0.3f;
+	m_fLoadingFinish = 0.5f;
 
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyBootCamp(m_vecGameObjects)))
 		return E_FAIL;
 
-	m_fLoadingFinish = 0.5f;
+	m_fLoadingFinish = 0.7f;
 
 	if (FAILED(CEffects_Factory::Get_Instance()->Initialize()))
 		return E_FAIL;
@@ -272,8 +272,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	//function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	//CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
+	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
 
 	
 

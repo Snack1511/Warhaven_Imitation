@@ -5,6 +5,8 @@
 
 #include "UsefulHeaders.h"
 
+#include "CPlayer.h"
+
 CTrigger_BootCamp::CTrigger_BootCamp()
 {
 }
@@ -35,6 +37,14 @@ void CTrigger_BootCamp::Trigger_CollisionEnter(CGameObject* pOtherObj, const _ui
 			else
 			{
 				CUser::Get_Instance()->SetActive_TrainingPopup(true, m_iUIIndex);
+				
+				for (auto& elem : m_vecAdjPlayers)
+				{
+					ENABLE_GAMEOBJECT(elem->Get_CurrentUnit());
+					elem->Set_LookToTarget();
+				}
+
+				m_vecAdjPlayers.clear();
 			}
 		}
 	}
@@ -82,4 +92,16 @@ HRESULT CTrigger_BootCamp::Initialize_Prototype()
 	m_eColGroup = COL_TRIGGER;
 
 	return __super::Initialize_Prototype();
+}
+
+HRESULT CTrigger_BootCamp::Start()
+{
+	__super::Start();
+
+	for (auto& elem : m_vecAdjPlayers)
+	{
+		DISABLE_GAMEOBJECT(elem->Get_CurrentUnit());
+	}
+
+	return S_OK;
 }

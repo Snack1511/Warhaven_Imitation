@@ -1,3 +1,4 @@
+//#define SHADOW_ON
 
 matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 matrix		g_ProjMatrixInv, g_ViewMatrixInv, g_LightViewMatrix, g_LightVeiwProjMatrix;
@@ -275,9 +276,10 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	
 
 	//Shadow
-	
+#ifdef SHADOW_ON
 	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
 	Out.vColor *= vShadowDesc;
+#endif
 
 	Out.vColor *= 1.2f;
 
