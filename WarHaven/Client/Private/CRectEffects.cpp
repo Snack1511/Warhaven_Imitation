@@ -1198,16 +1198,28 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
 		break;
 	case Client::CURVE_SPIRAL:
-		fX = m_pDatas[iIdx].InstancingData.fCurvePower * sinf(m_pDatas[iIdx].InstancingData.fMovingAcc * PI * 0.5f);
-		fY = m_pDatas[iIdx].InstancingData.fCurvePower * cosf(-1.f * m_pDatas[iIdx].InstancingData.fMovingAcc * PI * 0.5f);
 
-		vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x;
-		vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y;
-		vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z;
+		fX = m_pDatas[iIdx].InstancingData.fCurvePower *
+			sinf(m_pDatas[iIdx].InstancingData.fMovingAcc * PI * 0.5f);
 
-		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
-		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y; 
-		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
+		fY = m_pDatas[iIdx].InstancingData.fCurvePower *
+			cosf(-1.f * m_pDatas[iIdx].InstancingData.fMovingAcc * PI * 0.5f);
+
+		fX *= m_pDatas[iIdx].InstancingData.fCurveFrequency;
+		fY *= m_pDatas[iIdx].InstancingData.fCurveFrequency;
+
+		{
+			vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x;
+			vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y;
+			vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z;
+
+			vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
+			vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y;
+			vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
+		}
+
+		break;
+	default:
 		break;
 	}
 
