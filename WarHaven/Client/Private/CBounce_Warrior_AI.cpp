@@ -58,7 +58,7 @@ void CBounce_Warrior_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 		m_eAnimType = ANIM_ATTACK;     
 		m_iAnimIndex = 16;    
-		m_eStateType = STATE_BOUNCE_PLAYER_L;
+		m_eStateType = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
 
 		break;
 
@@ -68,7 +68,7 @@ void CBounce_Warrior_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 		m_eAnimType = ANIM_ATTACK;
 		m_iAnimIndex = 18;
-		m_eStateType = STATE_BOUNCE_PLAYER_R;
+		m_eStateType = STATE_BOUNCE_WARRIOR_R_AI_ENEMY;
 
 		break;
 	case Client::STATE_ATTACK_VERTICALCUT:

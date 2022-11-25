@@ -19,6 +19,9 @@ public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
 	virtual void	SetUp_HitStates(_bool bPlayer);
 
+protected:
+	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
+
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;

@@ -28,6 +28,11 @@ private:
 	void WarHammer_State();
 	void Valkyrie_State();
 
+	void Warrior_SandBagState();
+	void Warrior_State_AI();
+
+	void Spear_State();
+
 private:
 	CState* m_arrStates[STATE_END] = {};
 

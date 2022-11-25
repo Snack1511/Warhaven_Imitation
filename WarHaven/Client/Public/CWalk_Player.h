@@ -1,9 +1,9 @@
 #pragma once
-#include "CState.h"
+#include "CWalk_Warrior_Master.h"
 
 BEGIN(Client)
 class CWalk_Player abstract
-	: public CState
+	: public CWalk_Warrior_Master
 {
 
 protected:
