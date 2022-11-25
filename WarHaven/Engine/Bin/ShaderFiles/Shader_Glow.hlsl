@@ -16,6 +16,7 @@ vector		g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 texture2D	g_ShaderTexture;
 texture2D	g_FlagTexture;
 texture2D	g_GlowFlagTexture;
+texture2D	g_NormalTexture;
 
 
 float		g_fWinCX = 640.f;
@@ -86,6 +87,29 @@ PS_OUT PS_GLOWABLE_MAIN(PS_DOWNSCALE_IN In)
 	return Out;
 }
 
+PS_OUT PS_RIMLIGHT_MAIN(PS_DOWNSCALE_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	//1. 림라이트 플래그
+	vector vRimLightFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
+	
+
+	if (vRimLightFlagDesc.a > 0.05f)
+	{
+		vector vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+
+
+
+
+	}
+	else
+		discard;
+
+	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
+
+	return Out;
+}
 
 struct VS_OUT
 {
@@ -814,6 +838,18 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_HORIZONTAL_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_FIRSTBLUR_MAIN();
+	}
+
+
+	pass RIMLIGHT
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_RIMLIGHT_MAIN();
 	}
 
 }

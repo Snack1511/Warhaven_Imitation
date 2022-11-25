@@ -6,6 +6,8 @@
 #include "CUI_Renderer.h"
 #include "CShader.h"
 
+#include "Transform.h"
+
 HRESULT CUI_UnitHP::Initialize_Prototype()
 {
 	for (int i = 0; i < IT_END; ++i)
@@ -97,7 +99,11 @@ void CUI_UnitHP::Set_ProjPos(CTransform* pTransform)
 	for (int i = 0; i < IT_END; ++i)
 	{
 		m_pUnitHP[i]->Set_Pos(vNewPos);
+		m_pUnitHP[i]->Get_Transform()->Make_WorldMatrix();
+
 	}
+
+
 }
 
 void CUI_UnitHP::SetActive_UnitHP(_bool value)
