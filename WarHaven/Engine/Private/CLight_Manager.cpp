@@ -27,6 +27,33 @@ const LIGHTDESC* CLight_Manager::Get_LightDesc(_uint iIndex)
 	return (*iter)->Get_LightDesc();
 }
 
+CLight* CLight_Manager::Get_Light(_uint iIndex)
+{
+	auto	iter = m_Lights.begin();
+
+	for (_uint i = 0; i < iIndex; ++i)
+		++iter;
+	
+	if (iter == m_Lights.end())
+		return nullptr;
+
+	return (*iter);
+}
+
+CLight* CLight_Manager::Get_FirstLight()
+{
+	if (m_Lights.empty())
+		return nullptr;
+	return m_Lights.front();
+}
+
+CLight* CLight_Manager::Get_LastLight()
+{
+	if (m_Lights.empty())
+		return nullptr;
+	return m_Lights.back();
+}
+
 HRESULT CLight_Manager::Add_Light(const LIGHTDESC& LightDesc)
 {
 	m_ReservedLights.push_back(LightDesc);
@@ -53,6 +80,17 @@ void CLight_Manager::Pop_Light()
 {
 	SAFE_DELETE(m_Lights.back());
 	m_Lights.pop_back();
+}
+
+void CLight_Manager::Remove_Light(_uint iIndex)
+{
+	auto	iter = m_Lights.begin();
+
+	for (_uint i = 0; i < iIndex; ++i)
+		++iter;
+	CLight* pLight = (*iter);
+	SAFE_DELETE(pLight);
+	m_Lights.erase(iter);
 }
 
 HRESULT CLight_Manager::Load_Lights(wstring wstrPath)

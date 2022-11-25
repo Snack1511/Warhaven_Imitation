@@ -20,6 +20,7 @@ public:
 		return &m_LightDesc;
 	}
 
+	LIGHTDESC& Get_LightDesc_Modify() { return m_LightDesc; }
 public:
 	HRESULT Initialize(const LIGHTDESC& LightDesc);
 	HRESULT Render(class CShader* pShader, class CMesh_Rect* pVIBuffer);
