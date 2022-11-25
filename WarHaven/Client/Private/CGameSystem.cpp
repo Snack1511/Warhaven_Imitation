@@ -6,6 +6,11 @@
 
 #include "CTrigger_BootCamp.h"
 
+#include "CPlayer.h"
+
+#include "CUI_Cursor.h"
+#include "CUI_Training.h"
+
 IMPLEMENT_SINGLETON(CGameSystem);
 
 CGameSystem::CGameSystem()
@@ -41,6 +46,78 @@ HRESULT CGameSystem::Tick()
 void CGameSystem::Release()
 {
     SAFE_DELETE(m_pPositionTable);
+}
+
+HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    /* Player */
+  
+    if (FAILED(On_ReadyPlayers(vecReadyObjects)))
+    {
+        Call_MsgBox(L"Failed to On_ReadyPlayers : CGameSystem");
+        return E_FAIL;
+    }
+
+
+    if (FAILED(On_ReadyUIs(vecReadyObjects)))
+    {
+        Call_MsgBox(L"Failed to On_ReadyPlayers : CGameSystem");
+        return E_FAIL;
+    }
+
+
+    /* Default Light */
+    LIGHTDESC			LightDesc;
+
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(100.f, 200.f, 50.f, 1.f);
+    LightDesc.fRange = 1500.f;
+    LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
+    LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+
+
+
+    return S_OK;
+}
+
+HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    _float4 vPlayerPos = CGameSystem::Get_Instance()->Find_Position("StartPosition");
+
+    CPlayer* pUserPlayer = nullptr;
+
+    if (!(pUserPlayer = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+        STATE_JUMPFALL_PLAYER_R, true, L"PlayerCam")))
+        return E_FAIL;
+
+    CUser::Get_Instance()->Set_Player(pUserPlayer);
+    pUserPlayer->Set_MainPlayer();
+    vecReadyObjects.push_back(make_pair(pUserPlayer, GROUP_PLAYER));
+
+
+    if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+        STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
+        return E_FAIL;
+
+
+
+    return S_OK;
+
+}
+
+HRESULT CGameSystem::On_ReadyUIs(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    CUI_Cursor* pCursor = CUI_Cursor::Create();
+    vecReadyObjects.push_back(make_pair(pCursor, GROUP_UI));
+
+    CUI_Training* pUI_Training = CUI_Training::Create();
+    vecReadyObjects.push_back(make_pair(pUI_Training, GROUP_UI));
+
+    return E_NOTIMPL;
 }
 
 HRESULT CGameSystem::On_EnterBootCamp()
@@ -92,4 +169,20 @@ _float4 CGameSystem::Find_Position(string wstrPositionKey)
 void CGameSystem::Add_Position(string wstrPositionKey, _float4 vPosition)
 {
     m_pPositionTable->Add_Position(wstrPositionKey, vPosition);
+}
+
+CPlayer* CGameSystem::SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TYPE eStartState, _bool bUserPlayer, wstring wstrCamName)
+{
+    CPlayer* pPlayerInstance = CPlayer::Create(wstrCamName, (CPlayer::CLASS_DEFAULT)(iClassType));
+
+    if (nullptr == pPlayerInstance)
+        return nullptr;
+
+    pPlayerInstance->Reserve_State(eStartState);
+    pPlayerInstance->SetUp_UnitColliders(bUserPlayer);
+    pPlayerInstance->SetUp_UnitHitStates(bUserPlayer);
+    pPlayerInstance->Set_Postion(vStartPos);
+    pPlayerInstance->Get_CurrentUnit()->Synchronize_CamPos();
+
+    return pPlayerInstance;
 }

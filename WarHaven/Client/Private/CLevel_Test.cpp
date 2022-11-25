@@ -102,57 +102,33 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 
 	if (FAILED(pSkyBox->Initialize()))
 		return E_FAIL;
+	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
 
 
 	m_fLoadingFinish = 0.1f;
-	//CTerrain* pTerrain = CTerrain::Create(100, 100);
-	//Ready_GameObject(pTerrain, GROUP_DEFAULT);
+
+
 
 	m_fLoadingFinish = 0.2f;
-
 
 	/* 각자 이름 함수에서 놀으셈*/
 	if (FAILED(SetUp_Prototypes_MJ()))
 		return E_FAIL;
+
 	m_fLoadingFinish = 0.3f;
 
-	/*사연이 있어서 이쪽으로 내려놓음*/
-	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
-
-
-	if (FAILED(SetUp_Prototypes_HR()))
+	if (FAILED(CGameSystem::Get_Instance()->On_ReadyBootCamp(m_vecGameObjects)))
 		return E_FAIL;
-	m_fLoadingFinish = 0.4f;
-	if (FAILED(SetUp_Prototypes_TH()))
-		return E_FAIL;
+
 	m_fLoadingFinish = 0.5f;
-	if (FAILED(SetUp_Prototypes_JJ()))
-		return E_FAIL;
-	m_fLoadingFinish = 0.6f;
-	if (FAILED(SetUp_Prototypes_YJ()))
-		return E_FAIL;
-	m_fLoadingFinish = 0.7f;
-
 
 	if (FAILED(CEffects_Factory::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-
 	CCamera* pFreeCam = GAMEINSTANCE->Find_Camera(L"FreeCam");
 	DISABLE_GAMEOBJECT(pFreeCam);
 
-
-	LIGHTDESC			LightDesc;
-
-	LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = _float4(100.f, 200.f, 50.f, 1.f);
-	LightDesc.fRange = 1500.f;
-	LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
-
-	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
-		return E_FAIL;
+	
 
 	m_fLoadingFinish = 1.f;
 
@@ -480,36 +456,6 @@ HRESULT	CLevel_Test::SetUp_Terrian_InPlayer()
 
 HRESULT	CLevel_Test::SetUp_Map_InPlayer()
 {
-	_float4 vPlayerPos = CGameSystem::Get_Instance()->Find_Position("StartPosition");
-
-	CPlayer* pUserPlayer = nullptr;
-
-	if (!(pUserPlayer = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-		STATE_JUMPFALL_PLAYER_R, true, L"PlayerCam")))
-		return E_FAIL;
-
-	pUserPlayer->Set_MainPlayer();
-
-	CUser::Get_Instance()->Set_Player(pUserPlayer);
-
-	vPlayerPos.x = 70.f;
-
-
-	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-		STATE_IDLE_WARRIOR_R_AI_ENEMY, false, L"SandBackCam1")))
-		return E_FAIL;
-
-	vPlayerPos.x += 5.f;
-
-	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-		STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY, false, L"SandBackCam2")))
-		return E_FAIL;
-
-	vPlayerPos.x += 5.f;
-
-	if (!(SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-		STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY, false, L"SandBackCam3")))
-		return E_FAIL;
 
 	return S_OK;
 }
