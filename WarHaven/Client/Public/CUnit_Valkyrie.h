@@ -23,9 +23,6 @@ protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
 public:
-	void Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
-
-public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
