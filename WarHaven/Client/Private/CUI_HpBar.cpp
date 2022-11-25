@@ -26,7 +26,7 @@ HRESULT CUI_HpBar::Initialize_Prototype()
 	for (_uint i = 0; i < Type_End; ++i)
 	{
 		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_Prototypes[i]);
 	}
 
 	return S_OK;

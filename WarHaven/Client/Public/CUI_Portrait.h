@@ -46,7 +46,7 @@ private:
 
 	_bool m_bIsUserLerp = false;
 	_bool m_bAbleRotationPort = false;
-	_uint m_iRotationCount = 0.f;
+	_uint m_iRotationCount = 0;
 
 	HeroPortAnimType m_eHeroPortAnimType = HeroPortAnimType::AnimEnd;
 	_bool m_bAbleHero = false;

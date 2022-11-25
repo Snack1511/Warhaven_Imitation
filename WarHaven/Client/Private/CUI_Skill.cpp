@@ -349,7 +349,7 @@ void CUI_Skill::Enable_Outline()
 
 		_float fDuration = 0.5f;
 
-		for (int i = 0; i < m_iBtnCount; ++i)
+		for (_uint i = 0; i < m_iBtnCount; ++i)
 		{
 			if (i != m_iBtnCount - 1)
 			{

@@ -377,10 +377,10 @@ void CUI_Portrait::Ready_Portrait()
 
 	GET_COMPONENT_FROM(m_Prototypes[Port], CTexture)->Remove_Texture(0);
 
-	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/R\esources/Textures/UI/Effect/T_Pattern_06.dds"));
-	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/R\esources/Textures/UI/Effect/T_Pattern_13.dds"));
+	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_06.dds"));
+	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_13.dds"));
 
-	GET_COMPONENT_FROM(m_Prototypes[BG], CTexture)->Add_Texture(TEXT("../Bin/R\esources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
+	GET_COMPONENT_FROM(m_Prototypes[BG], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
 
 	Read_Texture(m_Prototypes[Port], "/HUD/Portrait", "Class");
 	Read_Texture(m_Prototypes[Key], "/KeyIcon/Keyboard", "Key");

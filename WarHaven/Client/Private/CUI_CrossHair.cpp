@@ -166,7 +166,7 @@ void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 	m_arrSkillUI[0][GaugeBG]->Set_RotationZ(fRotZ);
 	m_arrSkillUI[0][Gauge]->Set_RotationZ(fRotZ);
 
-	for (int i = 0; i < iIndex; ++i)
+	for (_uint i = 0; i < iIndex; ++i)
 	{
 		ENABLE_GAMEOBJECT(m_arrSkillUI[i][ArrowBG]);
 		ENABLE_GAMEOBJECT(m_arrSkillUI[i][Arrow]);

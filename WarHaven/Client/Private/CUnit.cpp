@@ -247,8 +247,6 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot)
 		CUser::Get_Instance()->Enable_DamageFont(fHp, bHeadShot);
 	}
 
-
-
 	if (m_tUnitStatus.fHP <= 0.f)
 	{
 		m_tUnitStatus.fHP = 0.f;
@@ -622,7 +620,7 @@ void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrCol
 
 	Enable_UnitCollider(ePartType, bEnable);
 
-	for (int i = 1; i < iNumCollider; ++i)
+	for (_uint i = 1; i < iNumCollider; ++i)
 	{
 		m_pUnitCollider[ePartType]->Add_Collider(arrColliderDesc[i].fRadius, arrColliderDesc[i].vOffsetPos);
 	}
