@@ -32,6 +32,8 @@ public:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
+private:
+	void Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
 };
 
 END

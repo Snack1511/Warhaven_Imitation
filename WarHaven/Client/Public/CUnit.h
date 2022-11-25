@@ -48,8 +48,8 @@ public:
 		CLASS_TYPE	eClass = WARRIOR;
 		_bool		bAbleHero = false;
 		_bool		bIsHero = false;
-		_float		fMaxHeroGauge = 100.f;
-		_float		fHeroGague = 70.f;
+		_float		fMaxGauge = 100.f;
+		_float		fGauge = 50.f;
 
 		_float		fCamPower = 0.1f;
 		_float		fCamTime = 0.3f;

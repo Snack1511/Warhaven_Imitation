@@ -803,6 +803,59 @@ void CUnit::My_Tick()
 	if (m_bIsMainPlayer)
 	{
 		CUser::Get_Instance()->Set_HP(m_tUnitStatus.fMaxHP, m_tUnitStatus.fHP);
+
+		if (!m_tUnitStatus.bAbleHero)
+		{
+			_float fGaugeSpeed = fDT(0) * 20.f;
+
+			if (!m_tUnitStatus.bIsHero)
+			{
+				m_tUnitStatus.fGauge += fGaugeSpeed;
+				if (m_tUnitStatus.fGauge > m_tUnitStatus.fMaxGauge)
+				{
+					m_tUnitStatus.fGauge = m_tUnitStatus.fMaxGauge;
+					m_tUnitStatus.bAbleHero = true;
+
+					// 영웅 포트레이트 활성화
+				}
+			}
+			else
+			{
+				m_tUnitStatus.fGauge -= fGaugeSpeed;
+				if (m_tUnitStatus.fGauge < 0.f)
+				{
+					m_tUnitStatus.fGauge = 0.f;
+					m_tUnitStatus.bIsHero = false;
+
+					// 원래 포트레이트 활성화
+				}
+				else if (KEY(NUM1, TAP))
+				{
+					m_tUnitStatus.bIsHero = false;
+
+					// 원래 포트레이트 활성화
+				}
+			}
+		}
+		else
+		{
+			// 각 번호에 해당하는 영웅으로 변신
+			if (KEY(NUM1, TAP))
+			{
+
+			}
+			else if (KEY(NUM2, TAP))
+			{
+			}
+			else if (KEY(NUM3, TAP))
+			{
+			}
+			else if (KEY(NUM4, TAP))
+			{
+			}
+		}
+
+		CUser::Get_Instance()->Set_HeroGauge(m_tUnitStatus.fMaxGauge, m_tUnitStatus.fGauge);
 	}
 
 	for (_int i = 0; i < COOL_END; ++i)
@@ -848,7 +901,18 @@ void CUnit::My_Tick()
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
 
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(this);
-	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
+	if (fDis < 10.f)
+	{
+		if (!m_bIsMainPlayer)
+		{
+			ENABLE_GAMEOBJECT(m_pUnitHUD);
+			dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
+		}
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(m_pUnitHUD);
+	}
 }
 
 void CUnit::My_LateTick()
@@ -1099,10 +1163,6 @@ void CUnit::Frustum_UnitHUD()
 		{
 			if (!m_bIsMainPlayer)
 			{
-				// 처음에는 동그라미만 뜨다가 가까이 접근하면 적군으로 바뀌고
-				// 카메라의 위치를 뷰위치를 받아오고 유닛들의 위치를 받아와서 일정 거리 이하
-				// 유틸리티트랜스폼에 함수 구현
-				// 데미지를 입을 시 체력바 활성화
 				ENABLE_GAMEOBJECT(m_pUnitHUD);
 			}
 		}

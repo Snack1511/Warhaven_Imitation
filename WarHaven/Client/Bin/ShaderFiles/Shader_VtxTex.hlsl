@@ -255,7 +255,7 @@ PS_OUT PS_HPBAR(PS_IN In)
     Out.vColor.xyz *= saturate(vNoise.r + 0.95f);
     Out.vColor.xyz *= saturate(vNormal.r + 0.95f);
     
-    if (In.vTexUV.x >= g_fHpRatio)
+    if (In.vTexUV.x > g_fHpRatio)
         discard;
     
     if (Out.vColor.w < 0.01f)
@@ -301,7 +301,7 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
 
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, float2(In.vTexUV.x, 1 - In.vTexUV.y));
     
     In.vTexUV.x -= g_fValue;
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
@@ -406,7 +406,7 @@ PS_OUT PS_LOBBYEFFECT(PS_IN In)
 }
 
 PS_OUT PS_VerticalGauge(PS_IN In)
-{    
+{
     PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
 

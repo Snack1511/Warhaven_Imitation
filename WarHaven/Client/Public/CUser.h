@@ -69,6 +69,8 @@ public:
 	void On_ExitStageLevel();
 
 	void Set_HP(_float fMaxHP, _float fCurHP);
+	void Set_HeroGauge(_float fMaxGauge, _float fCurGauge);
+
 	void SetActive_OxenJumpText(_bool value);
 	void Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime);
 	void Enable_DamageFont(_float fDmg, _bool bHeadShot = false);
