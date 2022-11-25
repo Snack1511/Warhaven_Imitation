@@ -76,7 +76,7 @@ HRESULT CGameSystem::On_EnterBootCamp()
     LIGHTDESC			LightDesc;
 
     LightDesc.eType = tagLightDesc::TYPE_POINT;
-    LightDesc.vPosition = Find_Position("Fire_0");
+    LightDesc.vPosition = _float4(29.2f, 2.95f, 20.65f);
     LightDesc.fRange = 2.5f;
     LightDesc.fRandomRange = 0.3f;
     LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
@@ -86,6 +86,98 @@ HRESULT CGameSystem::On_EnterBootCamp()
     if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
         return E_FAIL;
 
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(47.8f, 1.6f, 25.7f);
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(50.9f, 4.0f, -20.5f);
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(33.43f, 2.1f, 22.2f);
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(36.87f, 3.2f, 21.77f);
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(34.0f, 3.7f, 10.6f);
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(27.35f, 4.35f, -29.3f);
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(37.05f, 4.5f, -25.0f);
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(26.6f, 3.55f, -21.1f);
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(41.4f, 1.8f, 27.8f);
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
 
     return S_OK;
 }
