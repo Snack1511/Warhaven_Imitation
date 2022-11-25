@@ -54,6 +54,10 @@ HRESULT CWindow_Select::Render()
 	{
 		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_DEFAULT);
 	}
+	if (ImGui::Button("LEVEL_CHANGE"))
+	{
+		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_LEVEL);
+	}
 	ImGui::Spacing();
 
 	if (ImGui::Button("Map Tool"))

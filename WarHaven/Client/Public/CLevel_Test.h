@@ -1,6 +1,5 @@
 #pragma once
-#include "Level.h"
-#include "Client_Defines.h"
+#include "CLevel_Stage.h"
 
 BEGIN(Client)
 
@@ -9,7 +8,7 @@ class CUnit;
 class CPlayer;
 
 class CLevel_Test final
-	: public CLevel
+	: public CLevel_Stage
 {
 private:
 	CLevel_Test();
@@ -27,45 +26,6 @@ public:
 	virtual void Late_Tick() override;
 	virtual HRESULT Render() override;
 	virtual HRESULT Exit() override;
-
-
-private:
-	HRESULT SetUp_Prototypes_JJ();
-	HRESULT SetUp_Prototypes_TH();
-	HRESULT SetUp_Prototypes_MJ();
-	HRESULT SetUp_Prototypes_HR();
-	HRESULT SetUp_Prototypes_YJ();
-
-	void	Col_Check();
-
-private:
-	CPlayer*	SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TYPE eStartState, _bool bUserPlayer, wstring wstrCamName);
-
-
-private:
-	HRESULT SetUp_Warrior_TH();
-	HRESULT SetUp_SpearMan_TH();
-	HRESULT SetUp_WarHammer_TH();
-	HRESULT SetUp_Valkyrie_TH();
-
-	HRESULT	SetUp_Warrior_Sandback();
-
-	HRESULT	SetUp_Terrian_InPlayer();
-	HRESULT	SetUp_Map_InPlayer();
-
-	
-private:
-	CGameObject* m_pTestObj = nullptr;
-
-	CUnit* m_pWarrior = nullptr;
-	CUnit* m_pWarHammer = nullptr;
-
-	CUI_HUD* m_pHUD = nullptr;
-
-private:
-	_bool	m_bStaticShadowBake = false;
-	_float	m_fDealyAcc = 0.f;
-	_float	m_fDelayTime = 0.1f;
 };
 
 END

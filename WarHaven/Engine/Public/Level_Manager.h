@@ -14,6 +14,9 @@ private:
 	virtual ~CLevel_Manager();
 
 public:
+	HRESULT	Exit_CurLevel();
+
+public:
 	void	Tick();
 	void	Late_Tick();
 	HRESULT	Render();

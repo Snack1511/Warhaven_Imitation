@@ -168,7 +168,6 @@ void CPlayer::Create_DefaultClass()
 			}
 				
 			m_pDefaultClass[i]->Set_FollowCam(m_pFollowCam);
-			m_pDefaultClass[i]->Teleport_Unit(_float4(20.f, 3.f, 20.f));
 		}
 
 	}
@@ -262,7 +261,6 @@ void CPlayer::Create_HeroClass()
 			}
 
 			m_pHeroClass[i]->Set_FollowCam(m_pFollowCam);
-			m_pHeroClass[i]->Teleport_Unit(_float4(20.f, 3.f, 20.f));
 		}
 	}
 
@@ -271,12 +269,12 @@ void CPlayer::Create_HeroClass()
 
 HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
 {
-	m_pFollowCam = CCamera_Follow::Create(this, nullptr);
+	m_pFollowCam = CCamera_Follow::Create(nullptr, nullptr);
 	m_pFollowCam->Initialize();
 	m_pFollowCam->Get_Transform()->Set_World(WORLD_POS, ZERO_VECTOR);
 	m_pFollowCam->Get_Transform()->Make_WorldMatrix();
-	CREATE_STATIC(m_pFollowCam, Convert_ToHash(wstrCamKey));
-	GAMEINSTANCE->Add_Camera(wstrCamKey, m_pFollowCam);
+	CREATE_GAMEOBJECT(m_pFollowCam, GROUP_CAMERA);
+	GAMEINSTANCE->Add_Camera_Level(wstrCamKey, m_pFollowCam);
 	DISABLE_GAMEOBJECT(m_pFollowCam);
 
 	return S_OK;
@@ -301,7 +299,6 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
 	Set_Postion(vPos);
-	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateDefault[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	m_eCurrentDefaultClass = eClass;
@@ -325,8 +322,6 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
 	Set_Postion(vPos);
-
-	m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	return S_OK;

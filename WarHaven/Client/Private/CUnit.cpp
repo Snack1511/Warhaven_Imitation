@@ -313,6 +313,12 @@ void CUnit::Enter_State(STATE_TYPE eType, void* pData)
 
 void CUnit::Reserve_State(STATE_TYPE eType)
 {
+	if (m_pCurState)
+	{
+		m_pCurState->Exit(this, m_pAnimator);
+		SAFE_DELETE(m_pCurState);
+	}
+
 	m_pCurState = CState_Manager::Get_Instance()->Get_State(eType)->Clone();
 	m_eCurState = eType;
 

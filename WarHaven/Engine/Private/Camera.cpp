@@ -16,6 +16,8 @@ HRESULT CCamera::Initialize_Prototype()
 	m_tProj.fFOV = XMConvertToRadians(45.f);
 	m_tProj.fNear = 0.05f;
 	m_tProj.fFar = 1500.f;
+	
+	//m_bEnable = false;
 
 	return S_OK;
 }

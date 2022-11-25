@@ -40,6 +40,9 @@ void CUI_Training::My_Tick()
 
 void CUI_Training::Enable_Popup(_uint iIndex)
 {
+	if (!m_pPopup)
+		return;
+
 	GET_COMPONENT_FROM(m_pPopup, CTexture)->Set_CurTextureIndex(iIndex);
 
 	if (iIndex > 3)

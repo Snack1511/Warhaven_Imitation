@@ -83,6 +83,10 @@ public: /* For. Time_Manager */
 	_float	Get_TimeSpeed(_uint iIndex);
 	void	Set_TimeSpeed(_uint iIndex, _float fSpeed);
 
+public: /* Level Manager */
+	HRESULT	Exit_CurLevel();
+
+
 public: /* For. Key_Manager */
 	KEY_STATE	Get_KeyState(KEY _key);
 	vector<CKey_Manager::tKeyInfo>& Get_KeyList();
@@ -138,7 +142,10 @@ public: /* For Picking_Manager */
 
 public: /* For. Camera_Manager */
 	void		Add_Camera(wstring strKey, CCamera* pCamera);
+	void		Add_Camera_Level(wstring strKey, CCamera* pCamera);
+
 	CCamera* Change_Camera(wstring strKey);
+	CCamera* Reset_Camera(wstring strKey);
 	CCamera* Get_CurCam();
 	_float4		Get_CurCamLook();
 	_float4		Get_ViewPos();

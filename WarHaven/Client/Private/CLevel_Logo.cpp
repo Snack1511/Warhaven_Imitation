@@ -43,6 +43,7 @@ HRESULT CLevel_Logo::Enter()
 	Ready_GameObject(pUI_Black, GROUP_UI);
 	Ready_GameObject(pUI_Logo, GROUP_UI);
 
+
 	__super::Enter();
 
 	return S_OK;

@@ -70,6 +70,12 @@ CPhysXCollider* CPhysXCollider::Create_Convex(_uint iGroupID, CMesh* pMesh, CTra
 	return pInstance;
 }
 
+void CPhysXCollider::Regist_CollisionCallBack()
+{
+	if (m_pRigidStatic)
+		m_pRigidStatic->userData = m_pOwner;
+}
+
 HRESULT CPhysXCollider::Initialize_Prototype()
 {
 
@@ -145,6 +151,11 @@ void CPhysXCollider::OnDisable()
 		m_pRigidDynamic->putToSleep();
 		m_pRigidDynamic->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
 
+	}
+
+	if (m_pRigidStatic)
+	{
+		Safe_release(m_pRigidStatic);
 	}
 }
 

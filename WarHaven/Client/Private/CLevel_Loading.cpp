@@ -68,7 +68,7 @@ void CLevel_Loading::Tick()
 {
 	if (true == CLoading_Manager::Get_Instance()->IsFinished())
 	{
-		if (KEY(ENTER, TAP))
+		//if (KEY(ENTER, TAP))
 		{
 			CLoading_Manager::Get_Instance()->Open_NextLevel();
 		}

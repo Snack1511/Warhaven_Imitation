@@ -188,6 +188,7 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
+    <ClInclude Include="..\public\CDestructible.h" />
     <ClInclude Include="..\public\CGameSystem.h" />
     <ClInclude Include="..\Public\CBounce_Valkyrie.h" />
     <ClInclude Include="..\Public\CBounce_Valkyrie_L.h" />
@@ -235,6 +236,8 @@
     <ClInclude Include="..\Public\CJump_Warrior_AI_Land_R.h" />
     <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_L.h" />
     <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_R.h" />
+    <ClInclude Include="..\public\CLevel_BootCamp.h" />
+    <ClInclude Include="..\public\CLevel_Stage.h" />
     <ClInclude Include="..\public\CMesh_Particle.h" />
     <ClInclude Include="..\Public\CIdle_Valkyrie_L.h" />
     <ClInclude Include="..\Public\CIdle_Valkyrie_R.h" />
@@ -511,6 +514,7 @@
     <ClInclude Include="..\Public\CWarrior_Oxen_Loop_Attack.h" />
     <ClInclude Include="..\public\CWindow_Default.h" />
     <ClInclude Include="..\Public\CWindow_Effect.h" />
+    <ClInclude Include="..\public\CWindow_Level.h" />
     <ClInclude Include="..\Public\CWindow_Map.h" />
     <ClInclude Include="..\public\CWindow_PhysX.h" />
     <ClInclude Include="..\public\CWindow_Position.h" />
@@ -535,6 +539,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\private\CDestructible.cpp" />
     <ClCompile Include="..\private\CGameSystem.cpp" />
     <ClCompile Include="..\Private\CBounce_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CBounce_Valkyrie_L.cpp" />
@@ -583,6 +588,8 @@
     <ClCompile Include="..\Private\CJump_Warrior_AI_Land_R.cpp" />
     <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_L.cpp" />
     <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_R.cpp" />
+    <ClCompile Include="..\private\CLevel_BootCamp.cpp" />
+    <ClCompile Include="..\private\CLevel_Stage.cpp" />
     <ClCompile Include="..\private\CMesh_Particle.cpp" />
     <ClCompile Include="..\Private\CIdle_Valkyrie_L.cpp" />
     <ClCompile Include="..\Private\CIdle_Valkyrie_R.cpp" />
@@ -855,6 +862,7 @@
     <ClCompile Include="..\Private\CWarrior_Oxen_Loop_Attack.cpp" />
     <ClCompile Include="..\Private\CWindow_Default.cpp" />
     <ClCompile Include="..\Private\CWindow_Effect.cpp" />
+    <ClCompile Include="..\private\CWindow_Level.cpp" />
     <ClCompile Include="..\Private\CWindow_Map.cpp" />
     <ClCompile Include="..\private\CWindow_PhysX.cpp" />
     <ClCompile Include="..\private\CWindow_Position.cpp" />

@@ -11,6 +11,8 @@
 #include "CUI_Cursor.h"
 #include "CUI_Training.h"
 
+#include "CDestructible.h"
+
 IMPLEMENT_SINGLETON(CGameSystem);
 
 CGameSystem::CGameSystem()
@@ -27,7 +29,6 @@ HRESULT CGameSystem::Initialize()
 #define SAFE_CREATE(name, className) name = className::Create(); if (!name) return E_FAIL;
 
 	SAFE_CREATE(m_pPositionTable, CPositionTable);
-
 
 	if (FAILED(m_pPositionTable->Load_Position("BootCamp")))
 	{
@@ -48,22 +49,50 @@ void CGameSystem::Release()
 	SAFE_DELETE(m_pPositionTable);
 }
 
+HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    _float4 vPlayerPos = _float4(10.f, 3.f, 10.f);
+
+    CPlayer* pUserPlayer = nullptr;
+
+    if (!(pUserPlayer = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+        STATE_JUMPFALL_PLAYER_R, true, L"PlayerCam")))
+        return E_FAIL;
+
+    CUser::Get_Instance()->Set_Player(pUserPlayer);
+    pUserPlayer->Set_MainPlayer();
+    vecReadyObjects.push_back(make_pair(pUserPlayer, GROUP_PLAYER));
+
+
+    vPlayerPos.z += 3.f;
+
+    CPlayer* pEnemy = nullptr;
+
+    if (!(pEnemy = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+        STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY, false, L"FollowCam_0")))
+        return E_FAIL;
+
+    vecReadyObjects.push_back(make_pair(pEnemy, GROUP_PLAYER));
+
+    SetUp_DefaultLight();
+
+    return S_OK;
+}
+
 HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
     /* Player */
-  
     if (FAILED(On_ReadyPlayers(vecReadyObjects)))
     {
         Call_MsgBox(L"Failed to On_ReadyPlayers : CGameSystem");
         return E_FAIL;
     }
 
-
-    if (FAILED(On_ReadyUIs(vecReadyObjects)))
+   /* if (FAILED(On_ReadyUIs(vecReadyObjects)))
     {
         Call_MsgBox(L"Failed to On_ReadyUIs : CGameSystem");
         return E_FAIL;
-    }
+    }*/
 
     if (FAILED(On_ReadyTriggers(vecReadyObjects)))
     {
@@ -71,19 +100,19 @@ HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecRead
         return E_FAIL;
     }
 
-    /* Default Light */
-    LIGHTDESC			LightDesc;
-
-    LightDesc.eType = tagLightDesc::TYPE_POINT;
-    LightDesc.vPosition = _float4(100.f, 200.f, 50.f, 1.f);
-    LightDesc.fRange = 1500.f;
-    LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
-    LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-    LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
-
-    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+    if (FAILED(On_ReadyDestructible(vecReadyObjects)))
+    {
+        Call_MsgBox(L"Failed to On_ReadyDestructible : CGameSystem");
         return E_FAIL;
+    } 
+    
+    if (FAILED(SetUp_DefaultLight()))
+    {
+        Call_MsgBox(L"Failed to On_ReadyDestructible : CGameSystem");
+        return E_FAIL;
+    }
 
+   
 
 
     return S_OK;
@@ -102,7 +131,6 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     pUserPlayer->Set_MainPlayer();
     vecReadyObjects.push_back(make_pair(pUserPlayer, GROUP_PLAYER));
-
 
     _float4 vEnemyPos;
     CPlayer* pEnemyUser = nullptr;
@@ -144,7 +172,7 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
             break;
         }
 
-
+      
 
         vEnemyPos = CGameSystem::Get_Instance()->Find_Position(strKey);
 
@@ -170,11 +198,7 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
 
 HRESULT CGameSystem::On_ReadyUIs(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
-    CUI_Cursor* pCursor = CUI_Cursor::Create();
-    vecReadyObjects.push_back(make_pair(pCursor, GROUP_UI));
-
-    CUI_Training* pUI_Training = CUI_Training::Create();
-    vecReadyObjects.push_back(make_pair(pUI_Training, GROUP_UI));
+ 
 
     return S_OK;
 }
@@ -236,8 +260,25 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     return S_OK;
 }
 
+HRESULT CGameSystem::On_ReadyDestructible(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    CDestructible* pDestructible = CDestructible::Create(
+        L"../bin/resources/meshes/map/environments/prop/Barrier/SM_Prop_Barrier_Fence02a.fbx",
+        L"",
+        L"",
+        2
+    );
+
+
+    pDestructible->Set_Position(Find_Position("PopUp02"));
+    vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+    return S_OK;
+}
+
 HRESULT CGameSystem::On_EnterBootCamp()
 {
+    m_mapEnemyPlayers.clear();
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_0"));
 
@@ -409,4 +450,22 @@ CPlayer* CGameSystem::SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TY
     pPlayerInstance->Get_CurrentUnit()->Synchronize_CamPos();
 
     return pPlayerInstance;
+}
+
+HRESULT CGameSystem::SetUp_DefaultLight()
+{
+    /* Default Light */
+    LIGHTDESC			LightDesc;
+
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = _float4(100.f, 200.f, 50.f, 1.f);
+    LightDesc.fRange = 1500.f;
+    LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
+    LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
+
+    return S_OK;
 }

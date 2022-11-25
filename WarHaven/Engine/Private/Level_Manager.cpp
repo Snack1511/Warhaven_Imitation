@@ -15,6 +15,14 @@ CLevel_Manager::~CLevel_Manager()
 	Release();
 }
 
+HRESULT CLevel_Manager::Exit_CurLevel()
+{
+	if (!m_pCurrentLevel)
+		return S_OK;
+
+	return m_pCurrentLevel->OnExit();
+}
+
 void CLevel_Manager::Tick()
 {
 	if (m_pCurrentLevel)

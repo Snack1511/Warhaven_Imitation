@@ -14,6 +14,7 @@
 #include "CWindow_Effect.h"
 #include "CWindow_PhysX.h"
 #include "CWindow_Position.h"
+#include "CWindow_Level.h"
 
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
@@ -73,6 +74,7 @@ HRESULT CImGui_Manager::Initialize()
 	m_arrWindows[IMGUI_EFFECT] = CWindow_Effect::Create();
 	m_arrWindows[IMGUI_PhysX] = CWindow_PhysX::Create();
 	m_arrWindows[IMGUI_POSITION] = CWindow_Position::Create();
+	m_arrWindows[IMGUI_LEVEL] = CWindow_Level::Create();
 #pragma endregion 윈도우 등록
 
 	return S_OK;

@@ -35,8 +35,14 @@ public:
 	
 public:
 	CCamera*	Change_Camera(wstring strKey);
+	CCamera*	Reset_Camera(wstring strKey);
 	void		Add_Camera(wstring strKey, CCamera* pCamera);
-	CCamera* Find_Camera(wstring strKey);
+
+	void		Add_Camera_Level(wstring strKey, CCamera* pCamera);
+	CCamera*	Find_Camera(wstring strKey);
+
+	void		Clear_LevelCam();
+
 private:
 	VIEW_TRANSFORM			m_tView;
 	PROJ_TRANSFORM			m_tProj;
@@ -46,6 +52,9 @@ private:
 	CCamera* m_pNextCamera = nullptr;
 
 	map<_hashcode, CCamera*>	m_mapCam;
+
+	/* Level 전환시 사라지는 카메라 */
+	map<_hashcode, CCamera*>	m_mapLevelCam;
 
 private:
 	_float4x4										m_matOrthoView;

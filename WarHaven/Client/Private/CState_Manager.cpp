@@ -277,14 +277,14 @@
 
 
 
-#include "CAI_Sandbag.h"
-#include "CAI_Sandbag_L.h"
+#include "CAI_SandBack.h"
+#include "CAI_SandBack_L.h"
 
-#include "CAI_Sandbag_Hit.h"
-#include "CAI_Sandbag_GuardHit.h"
-#include "CAI_Sandbag_Groggy.h"
-#include "CAI_Sandbag_StingHit.h"
-#include "CAI_Sandbag_FlyHit.h"
+#include "CAI_SandBack_Hit.h"
+#include "CAI_SandBack_GuardHit.h"
+#include "CAI_SandBack_Groggy.h"
+#include "CAI_SandBack_StingHit.h"
+#include "CAI_SandBack_FlyHit.h"
 //#include "CGuard_Cancel_Warrior_AI.h"
 
 #include "CAI_CWarrior_Attack_HorizontalMiddle_L.h"
@@ -475,8 +475,8 @@ void CState_Manager::Warrior_State()
 	m_arrStates[STATE_WARRIOR_OXEN_END] = CWarrior_Oxen_Cancel::Create();
 
 	/*AI TEST*/
-	m_arrStates[STATE_IDLE_WARRIOR_R_AI_ENEMY] =						CAI_Sandbag::Create();
-	m_arrStates[STATE_IDLE_WARRIOR_L_AI_ENEMY] =						CAI_Sandbag_L::Create();
+	m_arrStates[STATE_IDLE_WARRIOR_R_AI_ENEMY] = CAI_SandBack::Create();
+	m_arrStates[STATE_IDLE_WARRIOR_L_AI_ENEMY] = CAI_SandBack_L::Create();
 	
 
 	m_arrStates[STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY] =					CGuard_Begin_Player_Warrior_AI::Create();
@@ -497,11 +497,11 @@ void CState_Manager::Warrior_State()
 	m_arrStates[STATE_BOUNCE_WARRIOR_R_AI_ENEMY] = CBounce_Warrior_AI_R::Create();
 
 
-	m_arrStates[STATE_HIT_TEST_ENEMY] = CAI_Sandbag_Hit::Create();
-	m_arrStates[STATE_GUARDHIT_ENEMY] = CAI_Sandbag_GuardHit::Create();
-	m_arrStates[STATE_GROGGY_ENEMY] = CAI_SandBag_Groggy::Create();
-	m_arrStates[STATE_STINGHIT_ENEMY] = CAI_Sandbag_StingHit::Create();
-	m_arrStates[STATE_FLYHIT_ENEMY] = CAI_Sandbag_FlyHit::Create();
+	m_arrStates[STATE_HIT_TEST_ENEMY] = CAI_SandBack_Hit::Create();
+	m_arrStates[STATE_GUARDHIT_ENEMY] = CAI_SandBack_GuardHit::Create();
+	m_arrStates[STATE_GROGGY_ENEMY] = CAI_SandBack_Groggy::Create();
+	m_arrStates[STATE_STINGHIT_ENEMY] = CAI_SandBack_StingHit::Create();
+	m_arrStates[STATE_FLYHIT_ENEMY] = CAI_SandBack_FlyHit::Create();
 
 	m_arrStates[STATE_GUARDDASH_WARRIOR] = CGuard_Dash_Player::Create();
 

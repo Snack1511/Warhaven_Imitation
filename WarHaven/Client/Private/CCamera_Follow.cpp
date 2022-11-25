@@ -46,18 +46,13 @@ void CCamera_Follow::Start_ShakingCamera(_float fPower, _float fTime)
 	m_pFollowScript->Start_ShakingCamera(fPower, fTime);
 }
 
-void CCamera_Follow::Set_FollowTarget(CGameObject* pTarget)
+void CCamera_Follow::Create_CamCollider()
 {
-	m_pFollowScript->Set_FollowTarget(pTarget);
-	m_pTransform->Set_World(WORLD_POS, pTarget->Get_Transform()->Get_World(WORLD_POS));
-	m_pTransform->Make_WorldMatrix();
-	m_pParent = pTarget;
-}
+	list<CComponent*> ColList = Get_Component<CCameraCollider>();
 
-HRESULT CCamera_Follow::Initialize_Prototype()
-{
-	__super::Initialize_Prototype();
-	m_pTransform->Set_ParentFlag(MATRIX_IDENTITY);
+	if (!ColList.empty())
+		return;
+
 	CCameraCollider::BONECOLLIDERDESC tDesc;
 	tDesc.fHeight = 0.1f;
 	tDesc.fRadius = 0.1f;
@@ -65,6 +60,37 @@ HRESULT CCamera_Follow::Initialize_Prototype()
 	CCameraCollider* pPhysXCollider = CCameraCollider::Create(CP_BEFORE_RENDERER, tDesc);
 	pPhysXCollider->Initialize();
 	Add_Component(pPhysXCollider);
+}
+void CCamera_Follow::Delete_CamCollider()
+{
+	list<CComponent*> ColList = Get_Component<CCameraCollider>();
+
+	if (!ColList.empty())
+	{
+		for (auto& elem : ColList)
+		{
+			DELETE_COMPONENT(elem, this);
+		}
+	}
+	
+}
+void CCamera_Follow::Set_FollowTarget(CGameObject* pTarget)
+{
+	m_pFollowScript->Set_FollowTarget(pTarget);
+	m_pTransform->Set_World(WORLD_POS, pTarget->Get_Transform()->Get_World(WORLD_POS));
+	m_pTransform->Make_WorldMatrix();
+	m_pParent = pTarget;
+
+	
+}
+
+HRESULT CCamera_Follow::Initialize_Prototype()
+{
+	__super::Initialize_Prototype();
+	m_pTransform->Set_ParentFlag(MATRIX_IDENTITY);
+
+	Create_CamCollider();
+	
 
 	return S_OK;
 }

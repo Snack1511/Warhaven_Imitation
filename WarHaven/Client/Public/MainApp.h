@@ -26,11 +26,15 @@ private:
 private:
 	HRESULT Render();
 	void	Release();
+	HRESULT	Default_Initialize();
 	HRESULT	SetUp_Engine();
 	HRESULT	SetUp_Levels();
 	HRESULT	SetUp_Statics();
 	HRESULT	SetUp_ShaderFiles();
 	HRESULT SetUp_Font();
+
+private:
+	void	Col_Check();
 };
 
 END

@@ -25,6 +25,8 @@ public:
 	void	Start_ShakingCamera(_float fPower, _float fTime);
 
 public:
+	void	Create_CamCollider();
+	void	Delete_CamCollider();
 	void	Set_FollowTarget(CGameObject* pTarget);
 
 public:
@@ -37,6 +39,8 @@ private:
 	CNavigation* m_pNaviCom = nullptr;
 	class CScript_FollowCam* m_pFollowScript = nullptr;
 	_bool			m_bCurOnWall = false;
+
+	_bool			m_bColliderCreated = false;
 
 private:
 	HRESULT	SetUp_Components(CGameObject* pTarget, CCell* pStartCell);

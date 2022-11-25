@@ -28,6 +28,8 @@
 #include "CUI_Damage.h"
 #include "CUI_Training.h"
 
+#include "CUI_Cursor.h"
+
 IMPLEMENT_SINGLETON(CUser);
 
 CUser::CUser()
@@ -56,11 +58,7 @@ void CUser::Tick()
 	Fix_CursorPosToCenter();
 }
 
-void CUser::On_ExitLevel()
-{
-	m_pBloodOverlay = nullptr;
 
-}
 
 CUnit* CUser::Get_Player()
 {
@@ -176,6 +174,20 @@ void CUser::Turn_BloodOverLay(_float fHpRatio)
 
 void CUser::On_EnterLevel()
 {
+	
+
+	ENABLE_GAMEOBJECT(m_pCursor);
+
+}
+
+void CUser::On_ExitLevel()
+{
+	DISABLE_GAMEOBJECT(m_pCursor);
+
+}
+
+void CUser::On_EnterStageLevel()
+{
 	if (!m_pUI_HUD)
 	{
 		m_pUI_HUD = CUI_HUD::Create();
@@ -193,11 +205,24 @@ void CUser::On_EnterLevel()
 		}
 	}
 
-	if (CLoading_Manager::Get_Instance()->Get_Level(LEVEL_TEST))
+	if (!m_pUI_Training)
 	{
 		m_pUI_Training = CUI_Training::Create();
 		CREATE_GAMEOBJECT(m_pUI_Training, GROUP_UI);
 	}
+
+	SetUp_BloodOverlay();
+}
+
+void CUser::On_ExitStageLevel()
+{
+	m_pBloodOverlay = nullptr;
+	m_pUI_HUD = nullptr;
+	for (_uint i = 0; i < 5; ++i)
+		m_pUI_Damage[i] = nullptr;
+
+	m_pUI_Training = nullptr;
+	m_pPlayer = nullptr;
 }
 
 void CUser::Set_HP(_float fMaxHP, _float fCurHP)
@@ -228,6 +253,9 @@ void CUser::Enable_DamageFont(_float fDmg, _bool bHeadShot)
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
 {
+	if (!m_pUI_Training)
+		return;
+
 	if (value == true)
 	{
 		m_pUI_Training->Enable_Popup(iIndex);

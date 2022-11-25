@@ -1117,230 +1117,242 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting">
       <UniqueIdentifier>{3702c170-edcb-4e4a-95c7-fb92a493f118}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances">
+    <Filter Include="03. Instances">
       <UniqueIdentifier>{f9a7ca65-19b2-4707-8baf-8704fbfefdd0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject">
+    <Filter Include="03. Instances\02. GameObject">
       <UniqueIdentifier>{fcc28956-43c8-4d1e-ab30-d5f4892f07d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI">
+    <Filter Include="03. Instances\02. GameObject\01. UI">
       <UniqueIdentifier>{2af18f2f-4a48-4919-8cee-dbbc2b2d1574}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\00. Base">
+    <Filter Include="03. Instances\02. GameObject\01. UI\00. Base">
       <UniqueIdentifier>{fd6488fc-6d17-4d39-985b-4cc0c04d6679}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object">
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object">
       <UniqueIdentifier>{c5067414-7568-4150-bbe4-b1cf625ee711}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading">
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading">
       <UniqueIdentifier>{2bd10a4d-ad71-4463-9c19-af55646d4b8f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG">
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG">
       <UniqueIdentifier>{18f43bf2-a938-4b4d-8911-0b877f340bff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG\Icon">
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG\Icon">
       <UniqueIdentifier>{08a2ffa7-5a48-4af9-8e51-2be888a8669a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby">
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby">
       <UniqueIdentifier>{3971a91c-b0f4-4a24-961f-1e81ced819bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default">
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default">
       <UniqueIdentifier>{eae3d0de-0e2b-4293-a4a1-10a5c49e90b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default\Black">
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default\Black">
       <UniqueIdentifier>{ce60bc22-043f-42d6-822d-36717ae53d82}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\00.Logo">
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\00.Logo">
       <UniqueIdentifier>{e2e62525-c7a1-40f2-a5d1-92444378f3cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\98.Cursor">
+    <Filter Include="03. Instances\02. GameObject\01. UI\01.UI_Object\98.Cursor">
       <UniqueIdentifier>{423fdc2c-7038-4a91-92eb-1df1541bf3b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper">
       <UniqueIdentifier>{df70e0fd-717d-4898-9003-9ee5dff3f0a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play">
       <UniqueIdentifier>{dd6f1321-fc66-4e02-b5b2-eb90124295ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD">
       <UniqueIdentifier>{cf100bac-50b2-400a-83a4-b47fbfbf0520}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge">
       <UniqueIdentifier>{b21d8887-990c-4132-9f06-0c866703d66f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Hp">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Hp">
       <UniqueIdentifier>{7d943caf-c5b6-40db-ac10-fc78b426c290}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Portrait">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Portrait">
       <UniqueIdentifier>{e04cf9a6-f562-4abd-b27c-c1d1b034a13c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\BloodOverlay">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\BloodOverlay">
       <UniqueIdentifier>{1fc27a28-399a-464b-8f29-f80d90014dcf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Skill">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Skill">
       <UniqueIdentifier>{03024782-fdd1-4e06-84d9-dba56c8d4937}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Crosshair">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Crosshair">
       <UniqueIdentifier>{160dc2da-946b-47e6-91d3-f0957a6ce8ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage">
       <UniqueIdentifier>{e1b7b09d-01a7-4192-bb8d-433710027162}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target">
       <UniqueIdentifier>{1836d204-61f7-49a8-8e3b-15c25843962c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit">
       <UniqueIdentifier>{3803cb98-a360-472a-aeb2-f6d6815ab0bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Main">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Main">
       <UniqueIdentifier>{67ba239e-a0f3-48cc-8d58-dcb36d4c9e41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play">
       <UniqueIdentifier>{4630fbb5-38df-4147-a0be-ae38171370f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Traing">
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Traing">
       <UniqueIdentifier>{148df79a-4c0d-4b26-9464-29a084009f32}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera">
+    <Filter Include="03. Instances\02. GameObject\03. Camera">
       <UniqueIdentifier>{a7c876e7-acb8-4078-985c-9d806694ba93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Free">
+    <Filter Include="03. Instances\02. GameObject\03. Camera\Camera_Free">
       <UniqueIdentifier>{3a78cade-5ede-4357-b853-72beb4c76d23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Default">
+    <Filter Include="03. Instances\02. GameObject\03. Camera\Camera_Default">
       <UniqueIdentifier>{cca51b9b-4651-470b-9cb5-6322f05da2e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Follow">
+    <Filter Include="03. Instances\02. GameObject\03. Camera\Camera_Follow">
       <UniqueIdentifier>{760c678a-a9eb-4217-bf2e-bfdcfba89849}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_FixedAngle">
+    <Filter Include="03. Instances\02. GameObject\03. Camera\Camera_FixedAngle">
       <UniqueIdentifier>{156f7c9f-6902-452a-8c83-487e66f4d542}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\04. SkyBox">
+    <Filter Include="03. Instances\02. GameObject\04. SkyBox">
       <UniqueIdentifier>{e44984c4-ff41-4acd-bb30-f34b71e76516}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\05. Decoration">
+    <Filter Include="03. Instances\02. GameObject\05. Decoration">
       <UniqueIdentifier>{763de49c-7246-49ef-91f9-ae6ba14443e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map">
+    <Filter Include="03. Instances\02. GameObject\06. Map">
       <UniqueIdentifier>{f265b4ab-8149-4659-a048-46f691b0caf3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\Structure">
+    <Filter Include="03. Instances\02. GameObject\06. Map\Structure">
       <UniqueIdentifier>{fc549796-059c-4e5e-b47d-221c1aea9508}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\InstanceStucture">
+    <Filter Include="03. Instances\02. GameObject\06. Map\InstanceStucture">
       <UniqueIdentifier>{d6635c26-ab3b-44a9-97ed-3af5b9bfc64b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\MapLoader">
+    <Filter Include="03. Instances\02. GameObject\06. Map\MapLoader">
       <UniqueIdentifier>{c5230a57-5ae4-4768-b878-9b72ab197a34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\MapColliders">
+    <Filter Include="03. Instances\02. GameObject\06. Map\MapColliders">
       <UniqueIdentifier>{8c135688-9a6f-4256-ac9c-7637abdd252c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\07. Terrain">
+    <Filter Include="03. Instances\02. GameObject\07. Terrain">
       <UniqueIdentifier>{7f6b8132-3a08-4709-a053-5fa44a00fd19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\07. Terrain\Drawable_Terrain">
+    <Filter Include="03. Instances\02. GameObject\07. Terrain\Drawable_Terrain">
       <UniqueIdentifier>{0eb99d93-a6d8-4287-aab9-aacedc234d92}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect">
+    <Filter Include="03. Instances\02. GameObject\08. Effect">
       <UniqueIdentifier>{394425bb-c3e9-44b4-a0b1-6780ecfb8107}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\01. TrailEffect">
+    <Filter Include="03. Instances\02. GameObject\08. Effect\01. TrailEffect">
       <UniqueIdentifier>{2c1c6df1-abd8-4c61-88d2-0c9d2c52c299}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\00. TestEffect">
+    <Filter Include="03. Instances\02. GameObject\08. Effect\00. TestEffect">
       <UniqueIdentifier>{e1d3c056-0ef4-469d-8da2-b08bc529b452}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\00. Default_Effect">
+    <Filter Include="03. Instances\02. GameObject\08. Effect\00. Default_Effect">
       <UniqueIdentifier>{1a8f52dc-1865-4115-8ec9-5747a3346a35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\02. InstancEffect">
+    <Filter Include="03. Instances\02. GameObject\08. Effect\02. InstancEffect">
       <UniqueIdentifier>{f01bc36a-524c-4edf-b843-dc846112584b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\03. Particle">
+    <Filter Include="03. Instances\02. GameObject\08. Effect\03. Particle">
       <UniqueIdentifier>{77b80bfe-439f-437d-b45a-7ce59fb8e33e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\04. Sword_Effect">
+    <Filter Include="03. Instances\02. GameObject\08. Effect\04. Sword_Effect">
       <UniqueIdentifier>{e2bc60ec-aebe-463d-b842-1b125c554e21}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\05. CharacterDeath">
+    <Filter Include="03. Instances\02. GameObject\08. Effect\05. CharacterDeath">
       <UniqueIdentifier>{6ed1517e-5dec-41f8-a386-efc2e6b2a7e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\06. Mesh_Particle">
+    <Filter Include="03. Instances\02. GameObject\08. Effect\06. Mesh_Particle">
       <UniqueIdentifier>{10a2865b-1ad7-4e12-a219-87c34f733b96}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\09. Debug">
+    <Filter Include="03. Instances\02. GameObject\09. Debug">
       <UniqueIdentifier>{422b2b63-31f8-4cb6-a18b-f640eae27b24}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\10. Destructible">
+    <Filter Include="03. Instances\02. GameObject\10. Destructible">
       <UniqueIdentifier>{2564424f-9056-49ff-beaf-be4c083146b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit">
+    <Filter Include="03. Instances\02. GameObject\02. Unit">
       <UniqueIdentifier>{5ace4eb0-2e8b-4956-9a87-e813c988962b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\Warrior">
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
       <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\Spearman">
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Spearman">
       <UniqueIdentifier>{587217d8-7c7c-428a-90b4-4e365c31490e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\WarHammer">
+    <Filter Include="03. Instances\02. GameObject\02. Unit\WarHammer">
       <UniqueIdentifier>{6777bf75-76b8-40cc-ac13-4d7d43b49b62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\WarHammer\Barricade">
+    <Filter Include="03. Instances\02. GameObject\02. Unit\WarHammer\Barricade">
       <UniqueIdentifier>{c03f58b6-6c47-4255-8fdb-aa119381c614}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\Valkyrie">
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Valkyrie">
       <UniqueIdentifier>{d12a3315-0754-4842-9667-1f7b22cce7f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\99. Player">
+    <Filter Include="03. Instances\02. GameObject\99. Player">
       <UniqueIdentifier>{6b4bff6e-6e42-4fd3-9840-96fe123d33ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\11. Trigger">
+    <Filter Include="03. Instances\02. GameObject\11. Trigger">
       <UniqueIdentifier>{baec1996-7f79-4614-9376-6d210d0b91a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp">
+    <Filter Include="03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp">
       <UniqueIdentifier>{60f67a37-97ec-4ba4-8eca-18ede6faa8fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\01. Level">
+    <Filter Include="03. Instances\01. Level">
       <UniqueIdentifier>{4024bbdb-c656-4a43-bb70-c99eb58d9c76}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\01. Level\00. Level_Loading">
+    <Filter Include="03. Instances\01. Level\00. Level_Loading">
       <UniqueIdentifier>{01e49f4a-6746-4eab-bb07-8420e38cdb08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\01. Level\01. Level_Test">
+    <Filter Include="03. Instances\01. Level\01. Level_Test">
       <UniqueIdentifier>{74da3066-0c94-411f-9ab2-a8fa523e4cf1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\01. Level\02.Level_Logo">
-      <UniqueIdentifier>{8d56d1ae-6203-49bf-8e2b-b4dfe22c1f78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\01. Level\03.Level_Main">
-      <UniqueIdentifier>{fd28c482-61c9-4553-9fba-4b645532e423}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\03. Component">
+    <Filter Include="03. Instances\03. Component">
       <UniqueIdentifier>{97a9d4be-a63d-419b-84aa-7f691c038efe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\03. Component\01. Scriptable">
+    <Filter Include="03. Instances\03. Component\01. Scriptable">
       <UniqueIdentifier>{de33774c-a19d-4592-aa2d-d3f122a51d8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\03. Component\01. Scriptable\Script_FreeCam">
+    <Filter Include="03. Instances\03. Component\01. Scriptable\Script_FreeCam">
       <UniqueIdentifier>{bdb3f120-a30f-47b6-b6fa-8f85abad82f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\03. Component\01. Scriptable\Script_FixedAngleCam">
+    <Filter Include="03. Instances\03. Component\01. Scriptable\Script_FixedAngleCam">
       <UniqueIdentifier>{8da4589e-b4b8-4e35-80c9-48bec436f4b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\03. Component\02. Fader">
+    <Filter Include="03. Instances\03. Component\02. Fader">
       <UniqueIdentifier>{e3a093a7-6adb-430e-8b7c-0c0af79af8b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\03. Component\03. TrailBuffer">
+    <Filter Include="03. Instances\03. Component\03. TrailBuffer">
       <UniqueIdentifier>{6f53b573-925a-4eac-ae6c-0f9507bf0b58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\03. Component\04. ColorController">
+    <Filter Include="03. Instances\03. Component\04. ColorController">
       <UniqueIdentifier>{52202c2e-e784-4acd-978e-0b515adaf11d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\03. Instances\03. Component\05. Button">
+    <Filter Include="03. Instances\03. Component\05. Button">
       <UniqueIdentifier>{13c9e04c-abf4-4339-a894-abeec00a6f76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\04. Level_BootCamp">
+      <UniqueIdentifier>{16891a36-319b-40c9-a2b5-f4ddf6d99fa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\02. Level_Logo">
+      <UniqueIdentifier>{8d56d1ae-6203-49bf-8e2b-b4dfe22c1f78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\03. Level_Main">
+      <UniqueIdentifier>{fd28c482-61c9-4553-9fba-4b645532e423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\04. Level_Stage">
+      <UniqueIdentifier>{54f85df6-ae52-466d-b7b0-ddab7d890ea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\04. Level_Stage\BootCamp">
+      <UniqueIdentifier>{3e6cf2f0-35d7-491d-97f9-06bac3b60d45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Level">
+      <UniqueIdentifier>{6ff99d2b-2bd7-4d08-ae69-0d99c7bb9fab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1381,10 +1393,10 @@
       <Filter>02. Design\01. Loading_Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CScript_Freecam.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\01. Scriptable\Script_FreeCam</Filter>
+      <Filter>03. Instances\03. Component\01. Scriptable\Script_FreeCam</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CCamera_Free.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Free</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Free</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CUser.h">
       <Filter>02. Design\03. User</Filter>
@@ -1393,16 +1405,16 @@
       <Filter>04. Module\01. Utility\Utility_Transform</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CLevel_Loading.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\01. Level\00. Level_Loading</Filter>
+      <Filter>03. Instances\01. Level\00. Level_Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CFader.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\02. Fader</Filter>
+      <Filter>03. Instances\03. Component\02. Fader</Filter>
     </ClInclude>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>05. ShaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CCamera_Default.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Default</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Default</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImGui_Manager.h">
       <Filter>02. Design\05. ImGui_Manager</Filter>
@@ -1438,10 +1450,10 @@
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\00. base</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CSkyBox.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\04. SkyBox</Filter>
+      <Filter>03. Instances\02. GameObject\04. SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CTerrain.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\07. Terrain</Filter>
+      <Filter>03. Instances\02. GameObject\07. Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CState.h">
       <Filter>02. Design\06. State_Manager\States</Filter>
@@ -1456,58 +1468,58 @@
       <Filter>02. Design\02. Abstract_Factory\Effects_Factory</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CTrailBuffer.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\03. TrailBuffer</Filter>
+      <Filter>03. Instances\03. Component\03. TrailBuffer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTrailEffect.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\01. TrailEffect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\01. TrailEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CUnit_Warrior.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\Warrior</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWindow_UI.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\05. Window_UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\00. Base</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_LobbyBG.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_LoadingBG.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_LoadingIcon.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG\Icon</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG\Icon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Object.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_Logo.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\01. Level\02.Level_Logo</Filter>
+      <Filter>03. Instances\01. Level\02. Level_Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Logo.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\00.Logo</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\00.Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_Main.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\01. Level\03.Level_Main</Filter>
+      <Filter>03. Instances\01. Level\03. Level_Main</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Black.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default\Black</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default\Black</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWindow_Map.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CStructure.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\Structure</Filter>
+      <Filter>03. Instances\02. GameObject\06. Map\Structure</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CEffect.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTestEffect.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUnit_Spearman.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\Spearman</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CWalk_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\02. Walk</Filter>
@@ -1516,31 +1528,31 @@
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CDefault_Effect.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\00. Default_Effect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\00. Default_Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CScript_FollowCam.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CCamera_Follow.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRectEffects.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CInstancingEffects.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CSword_Effect.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CColorController.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\04. ColorController</Filter>
+      <Filter>03. Instances\03. Component\04. ColorController</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Cursor.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\98.Cursor</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\98.Cursor</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Wrapper.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGame_Manager_JJ.h">
       <Filter>02. Design\04. Game_Manager\JJ</Filter>
@@ -1552,22 +1564,22 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\07. Sprint</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HeroGauge.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Crosshair.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Crosshair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Crosshair</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HpBar.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Hp</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Hp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Portrait.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Portrait</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Portrait</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CWindow_PhysX.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CTestObject.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject</Filter>
+      <Filter>03. Instances\02. GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UsefulHeaders.h">
       <Filter>00. Header</Filter>
@@ -1585,13 +1597,13 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\02. Skill\01. GuardBreak</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CDebugObject.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\09. Debug</Filter>
+      <Filter>03. Instances\02. GameObject\09. Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBloodOverlay.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\BloodOverlay</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\BloodOverlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Skill.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Skill</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Skill</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CSwitchRtoL.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\03. SwitchRL</Filter>
@@ -1696,7 +1708,7 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\01. Begin</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CDrawable_Terrain.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\07. Terrain\Drawable_Terrain</Filter>
+      <Filter>03. Instances\02. GameObject\07. Terrain\Drawable_Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWrapping_Easing_Util.h">
       <Filter>02. Design\04. Game_Manager\MJ\Wrapped_Util\Easing_Util</Filter>
@@ -1717,19 +1729,19 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\01. Attack\VerticalCut</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CCamera_FixedAngle.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_FixedAngle</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_FixedAngle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CScript_FixedCam.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\01. Scriptable\Script_FixedAngleCam</Filter>
+      <Filter>03. Instances\03. Component\01. Scriptable\Script_FixedAngleCam</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CLevel_Test.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\01. Level\01. Level_Test</Filter>
+      <Filter>03. Instances\01. Level\01. Level_Test</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Main.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Main</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_MainPlay.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalUp_L.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\01. Attack\HorizontalUp\02. Left</Filter>
@@ -1771,10 +1783,10 @@
       <Filter>02. Design\06. State_Manager\States\BlendableBase</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CStructure_Instance.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\InstanceStucture</Filter>
+      <Filter>03. Instances\02. GameObject\06. Map\InstanceStucture</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMap_Loader.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\MapLoader</Filter>
+      <Filter>03. Instances\02. GameObject\06. Map\MapLoader</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CWindow_Select.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\02. Window_Select</Filter>
@@ -1861,10 +1873,10 @@
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CButton.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\05. Button</Filter>
+      <Filter>03. Instances\03. Component\05. Button</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_HUD.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CIdle_WarHammer_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\01. Right</Filter>
@@ -2026,7 +2038,7 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\02. Loop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUnit_Valkyrie.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\Valkyrie</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\Valkyrie</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CState_BlendableCharge.h">
       <Filter>02. Design\06. State_Manager\States\BlendableBase</Filter>
@@ -2035,13 +2047,13 @@
       <Filter>02. Design\06. State_Manager\ChargeTest</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CUnit.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUnit_WarHammer.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\WarHammer</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\WarHammer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBarricade.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\WarHammer\Barricade</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\WarHammer\Barricade</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CCharge_WarHammer.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\02. Charge\01. Charge</Filter>
@@ -2230,7 +2242,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\99. Hit\05. Fly</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CMapColliders.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\MapColliders</Filter>
+      <Filter>03. Instances\02. GameObject\06. Map\MapColliders</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_L.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump\02. Fall</Filter>
@@ -2275,19 +2287,19 @@
       <Filter>02. Design\06. State_Manager\States\01. Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayer.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\99. Player</Filter>
+      <Filter>03. Instances\02. GameObject\99. Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CMesh_Particle.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Training.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Traing</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Traing</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_UnitHP.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_UnitHUD.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGuard_Dash_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\04. Dash</Filter>
@@ -2311,10 +2323,10 @@
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\07. Window_Position</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CTrigger.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\11. Trigger</Filter>
+      <Filter>03. Instances\02. GameObject\11. Trigger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CTrigger_BootCamp.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp</Filter>
+      <Filter>03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CHit_Fly_Valkyrie.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\04. FlyHit</Filter>
@@ -2377,7 +2389,19 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Damage.h">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CDestructible.h">
+      <Filter>03. Instances\02. GameObject\10. Destructible</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CLevel_BootCamp.h">
+      <Filter>03. Instances\01. Level\04. Level_BootCamp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CLevel_Stage.h">
+      <Filter>03. Instances\01. Level\04. Level_Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CWindow_Level.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2402,10 +2426,10 @@
       <Filter>99. Default</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CScript_Freecam.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\01. Scriptable\Script_FreeCam</Filter>
+      <Filter>03. Instances\03. Component\01. Scriptable\Script_FreeCam</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CCamera_Free.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Free</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Free</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CUser.cpp">
       <Filter>02. Design\03. User</Filter>
@@ -2414,10 +2438,10 @@
       <Filter>04. Module\01. Utility\Utility_Transform</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CLevel_Loading.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\01. Level\00. Level_Loading</Filter>
+      <Filter>03. Instances\01. Level\00. Level_Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CCamera_Default.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Default</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>02. Design\05. ImGui_Manager</Filter>
@@ -2447,10 +2471,10 @@
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\01. Window_Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Test.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\01. Level\01. Level_Test</Filter>
+      <Filter>03. Instances\01. Level\01. Level_Test</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CFader.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\02. Fader</Filter>
+      <Filter>03. Instances\03. Component\02. Fader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CImGui_Window.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\00. base</Filter>
@@ -2462,10 +2486,10 @@
       <Filter>00. Header</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CSkyBox.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\04. SkyBox</Filter>
+      <Filter>03. Instances\02. GameObject\04. SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CTerrain.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\07. Terrain</Filter>
+      <Filter>03. Instances\02. GameObject\07. Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CState.cpp">
       <Filter>02. Design\06. State_Manager\States</Filter>
@@ -2480,58 +2504,58 @@
       <Filter>02. Design\02. Abstract_Factory\Effects_Factory</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CTrailBuffer.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\03. TrailBuffer</Filter>
+      <Filter>03. Instances\03. Component\03. TrailBuffer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTrailEffect.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\01. TrailEffect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\01. TrailEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CUnit_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\Warrior</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\Warrior</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWindow_UI.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\05. Window_UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\00. Base</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\00. Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_LobbyBG.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\02.Lobby</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_LoadingBG.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_LoadingIcon.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG\Icon</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\01.Loading\BG\Icon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Object.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Logo.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\01. Level\02.Level_Logo</Filter>
+      <Filter>03. Instances\01. Level\02. Level_Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Logo.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\00.Logo</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\00.Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Main.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\01. Level\03.Level_Main</Filter>
+      <Filter>03. Instances\01. Level\03. Level_Main</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Black.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default\Black</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\99.Default\Black</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWindow_Map.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CStructure.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\Structure</Filter>
+      <Filter>03. Instances\02. GameObject\06. Map\Structure</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CEffect.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTestEffect.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\00. TestEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_Spearman.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\Spearman</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\Spearman</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CWalk_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\02. Walk</Filter>
@@ -2540,31 +2564,31 @@
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\04. Window_Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CDefault_Effect.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\00. Default_Effect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\00. Default_Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CCamera_Follow.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CScript_FollowCam.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_Follow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CInstancingEffects.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\02. InstancEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRectEffects.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\03. Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CSword_Effect.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\04. Sword_Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CColorController.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\04. ColorController</Filter>
+      <Filter>03. Instances\03. Component\04. ColorController</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Cursor.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\01.UI_Object\98.Cursor</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\01.UI_Object\98.Cursor</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Wrapper.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGame_Manager_JJ.cpp">
       <Filter>02. Design\04. Game_Manager\JJ</Filter>
@@ -2579,22 +2603,22 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\07. Sprint</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HeroGauge.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\HeroGauge</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Crosshair.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Crosshair</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Crosshair</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HpBar.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Hp</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Hp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Portrait.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Portrait</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Portrait</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CWindow_PhysX.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\06. Window_PhysX</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CTestObject.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject</Filter>
+      <Filter>03. Instances\02. GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CIdle_Player_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\01. Right</Filter>
@@ -2609,13 +2633,13 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\02. Skill\01. GuardBreak</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CDebugObject.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\09. Debug</Filter>
+      <Filter>03. Instances\02. GameObject\09. Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBloodOverlay.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\BloodOverlay</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\BloodOverlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Skill.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Skill</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Skill</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CSwitchRtoL.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\01. Idle\03. SwitchRL</Filter>
@@ -2720,7 +2744,7 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\01. Begin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CDrawable_Terrain.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\07. Terrain\Drawable_Terrain</Filter>
+      <Filter>03. Instances\02. GameObject\07. Terrain\Drawable_Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWrapping_Easing_Util.cpp">
       <Filter>02. Design\04. Game_Manager\MJ\Wrapped_Util\Easing_Util</Filter>
@@ -2741,16 +2765,16 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\01. Attack\VerticalCut</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CCamera_FixedAngle.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\03. Camera\Camera_FixedAngle</Filter>
+      <Filter>03. Instances\02. GameObject\03. Camera\Camera_FixedAngle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CScript_FixedCam.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\01. Scriptable\Script_FixedAngleCam</Filter>
+      <Filter>03. Instances\03. Component\01. Scriptable\Script_FixedAngleCam</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Main.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Main</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_MainPlay.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Play</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalUp_L.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\01. Attack\HorizontalUp\02. Left</Filter>
@@ -2789,16 +2813,16 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\10. Stop\02. Left</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CUnit.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CState_Blendable.cpp">
       <Filter>02. Design\06. State_Manager\States\BlendableBase</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CStructure_Instance.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\InstanceStucture</Filter>
+      <Filter>03. Instances\02. GameObject\06. Map\InstanceStucture</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMap_Loader.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\MapLoader</Filter>
+      <Filter>03. Instances\02. GameObject\06. Map\MapLoader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRun_SpearMan_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\02. SpearMan\03. Run\02. Loop\01. Right</Filter>
@@ -2882,10 +2906,10 @@
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\03. Window_MapTool\Func_ObjectControl</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CButton.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\03. Component\05. Button</Filter>
+      <Filter>03. Instances\03. Component\05. Button</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_HUD.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CIdle_WarHammer_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\01. Idle\01. Right</Filter>
@@ -3047,7 +3071,7 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\11. Create_Barricade\02. Loop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_Valkyrie.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\Valkyrie</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\Valkyrie</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CState_BlendableCharge.cpp">
       <Filter>02. Design\06. State_Manager\States\BlendableBase</Filter>
@@ -3056,10 +3080,10 @@
       <Filter>02. Design\06. State_Manager\ChargeTest</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_WarHammer.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\WarHammer</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\WarHammer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBarricade.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\02. Unit\WarHammer\Barricade</Filter>
+      <Filter>03. Instances\02. GameObject\02. Unit\WarHammer\Barricade</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CCharge_WarHammer.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\03. WarHammer\04. Attack\02. Charge\01. Charge</Filter>
@@ -3248,7 +3272,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\99. Hit\05. Fly</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CMapColliders.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\06. Map\MapColliders</Filter>
+      <Filter>03. Instances\02. GameObject\06. Map\MapColliders</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_L.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump\02. Fall</Filter>
@@ -3293,19 +3317,19 @@
       <Filter>02. Design\06. State_Manager\States\01. Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\99. Player</Filter>
+      <Filter>03. Instances\02. GameObject\99. Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CMesh_Particle.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
+      <Filter>03. Instances\02. GameObject\08. Effect\06. Mesh_Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Training.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Traing</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Traing</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_UnitHP.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Target</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_UnitHUD.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Unit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Dash_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\04. Dash</Filter>
@@ -3329,10 +3353,10 @@
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\07. Window_Position</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CTrigger.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\11. Trigger</Filter>
+      <Filter>03. Instances\02. GameObject\11. Trigger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CTrigger_BootCamp.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp</Filter>
+      <Filter>03. Instances\02. GameObject\11. Trigger\01. Trigger_BootCamp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CHit_Fly_Valkyrie.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit\04. FlyHit</Filter>
@@ -3395,7 +3419,19 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\01. Default\Sting</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Damage.cpp">
-      <Filter>02. Design\06. State_Manager\03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage</Filter>
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CDestructible.cpp">
+      <Filter>03. Instances\02. GameObject\10. Destructible</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CLevel_BootCamp.cpp">
+      <Filter>03. Instances\01. Level\04. Level_BootCamp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CLevel_Stage.cpp">
+      <Filter>03. Instances\01. Level\04. Level_Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CWindow_Level.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

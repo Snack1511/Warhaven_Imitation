@@ -6,7 +6,7 @@
 #include "CLevel_Main.h"
 #include "CLevel_Test.h"
 #include "GameInstance.h"
-
+#include "CLevel_BootCamp.h"
 #include "CShader.h"
 
 IMPLEMENT_SINGLETON(CLoading_Manager)
@@ -50,6 +50,7 @@ HRESULT CLoading_Manager::Initialize()
 	m_arrLevels[LEVEL_LOADING] = CLevel_Loading::Create();
 	m_arrLevels[LEVEL_MAINMENU] = CLevel_Main::Create();
 	m_arrLevels[LEVEL_TEST] = CLevel_Test::Create();	
+	m_arrLevels[LEVEL_BOOTCAMP] = CLevel_BootCamp::Create();	
 
 	return S_OK;
 }
@@ -89,6 +90,8 @@ HRESULT CLoading_Manager::Load_Level()
 
 	m_bFinish = false;
 	static_cast<CLevel_Loading*>(m_arrLevels[LEVEL_LOADING])->Set_NextLevel(m_eLoadID);
+	if (FAILED(GAMEINSTANCE->Exit_CurLevel()))
+		return E_FAIL;
 	CHANGE_LEVEL(m_arrLevels[LEVEL_LOADING]);
 
 

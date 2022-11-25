@@ -47,8 +47,8 @@ public:
 	static CPhysXCollider* Create(_uint iGroupID, CMesh*	pMesh, CTransform* pWorldTransform);
 	static CPhysXCollider* Create_Convex(_uint iGroupID, CMesh*	pMesh, CTransform* pWorldTransform);
 
-
-
+public:
+	void	Regist_CollisionCallBack();
 
 public:
 	_vector	Get_Position();

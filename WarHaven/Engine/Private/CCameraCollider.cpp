@@ -56,6 +56,7 @@ HRESULT CCameraCollider::Initialize_Prototype()
 	if (!m_pPxController)
 		return E_FAIL;
 
+
 	return S_OK;
 }
 

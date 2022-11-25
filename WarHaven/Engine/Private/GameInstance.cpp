@@ -296,6 +296,11 @@ void CGameInstance::Set_TimeSpeed(_uint iIndex, _float fSpeed)
 	m_pTimeManager->Set_TimeSpeed(iIndex, fSpeed);
 }
 
+HRESULT CGameInstance::Exit_CurLevel()
+{
+	return m_pLevelManager->Exit_CurLevel();
+}
+
 KEY_STATE CGameInstance::Get_KeyState(KEY _key)
 {
 	return m_pKeyManager->Get_KeyState(_key);
@@ -438,9 +443,19 @@ void CGameInstance::Add_Camera(wstring strKey, CCamera * pCamera)
 	m_pCameraManager->Add_Camera(strKey, pCamera);
 }
 
+void CGameInstance::Add_Camera_Level(wstring strKey, CCamera* pCamera)
+{
+	m_pCameraManager->Add_Camera_Level(strKey, pCamera);
+}
+
 CCamera * CGameInstance::Change_Camera(wstring strKey)
 {
 	return m_pCameraManager->Change_Camera(strKey);
+}
+
+CCamera* CGameInstance::Reset_Camera(wstring strKey)
+{
+	return m_pCameraManager->Reset_Camera(strKey);
 }
 
 CCamera* CGameInstance::Get_CurCam()

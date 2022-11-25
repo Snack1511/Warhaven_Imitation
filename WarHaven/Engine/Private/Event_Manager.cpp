@@ -54,53 +54,53 @@ void CEvent_Manager::Tick()
 
 void CEvent_Manager::Delete_GameObject(CGameObject * pGameObject)
 {
-	Add_Event(EVENT_DELETE_OBJECT, (DWORD_PTR)pGameObject);
+	Add_Event(EVENT_DELETE_OBJECT, pGameObject);
 }
 
 void CEvent_Manager::Create_GameObject(CGameObject * pGameObject, const _uint& iGroupIdx)
 {
-	Add_Event(EVENT_CREATE_OBJECT, (DWORD_PTR)pGameObject, (DWORD_PTR)iGroupIdx);
+	Add_Event(EVENT_CREATE_OBJECT, pGameObject, (DWORD_PTR)iGroupIdx);
 }
 
 void CEvent_Manager::Delete_Component(CComponent* pComponent, CGameObject* pGameObject)
 {
-	Add_Event(EVENT_DELETE_COMPONENT, (DWORD_PTR)pComponent, (DWORD_PTR)pGameObject);
+	Add_Event(EVENT_DELETE_COMPONENT, pGameObject, 0, pComponent);
 }
 
 void CEvent_Manager::Create_Component(CComponent* pComponent, CGameObject* pGameObject)
 {
-	Add_Event(EVENT_CREATE_COMPONENT, (DWORD_PTR)pComponent, (DWORD_PTR)pGameObject);
+	Add_Event(EVENT_CREATE_COMPONENT, pGameObject, 0, pComponent);
 }
 
 void CEvent_Manager::Enable_GameObject(CGameObject * pGameObject)
 {
-	Add_Event(EVENT_ENABLE_OBJECT, (DWORD_PTR)pGameObject);
+	Add_Event(EVENT_ENABLE_OBJECT, pGameObject);
 }
 
 void CEvent_Manager::Disable_GameObject(CGameObject * pGameObject)
 {
-	Add_Event(EVENT_DISABLE_OBJECT, (DWORD_PTR)pGameObject);
+	Add_Event(EVENT_DISABLE_OBJECT, pGameObject);
 }
 
 void CEvent_Manager::Disable_Component(CComponent* pComponent)
 {
-	Add_Event(EVENT_DISABLE_COMPONENT, (DWORD_PTR)pComponent);
+	Add_Event(EVENT_DISABLE_COMPONENT, nullptr, 0 ,pComponent);
 }
 
 void CEvent_Manager::Enable_Component(CComponent* pComponent)
 {
-	Add_Event(EVENT_ENABLE_COMPONENT, (DWORD_PTR)pComponent);
+	Add_Event(EVENT_ENABLE_COMPONENT, nullptr, 0, pComponent);
 }
 
 void CEvent_Manager::Create_StaticObject(CGameObject * pGameObject, _hashcode hcClassName)
 {
-	Add_Event(EVENT_CREATE_STATIC, (DWORD_PTR)pGameObject, (DWORD_PTR)hcClassName);
+	Add_Event(EVENT_CREATE_STATIC, pGameObject, (DWORD_PTR)hcClassName);
 
 }
 
 void CEvent_Manager::Change_Level(CLevel* pLevel)
 {
-	Add_Event(EVENT_CHANGE_LEVEL, (DWORD_PTR)pLevel);
+	Add_Event(EVENT_CHANGE_LEVEL, nullptr, 0, nullptr, pLevel);
 }
 
 void CEvent_Manager::Clear_All_Event()
@@ -123,9 +123,9 @@ void CEvent_Manager::Clear_Enable_Events()
 	}
 }
 
-void CEvent_Manager::Add_Event(const EVENT_TYPE & eEven, const DWORD_PTR & lParam, const DWORD_PTR & wParam)
+void CEvent_Manager::Add_Event(const EVENT_TYPE& eEven, CGameObject* _pGameObject, DWORD_PTR lParam , CComponent* _pComponent , CLevel* _pLevel )
 {
-	m_vecEvent.push_back(EVENT(eEven, lParam, wParam));
+	m_vecEvent.push_back(EVENT(eEven, lParam, _pGameObject, _pComponent, _pLevel));
 }
 
 void CEvent_Manager::Execute(const EVENT & tEvent)
@@ -137,8 +137,8 @@ void CEvent_Manager::Execute(const EVENT & tEvent)
 
 	case EVENT_CREATE_OBJECT:
 	{
-		CGameObject* pGameObject = (CGameObject*)(tEvent.lParam);
-		_uint iGroupIdx = (_uint)(tEvent.wParam);
+		CGameObject* pGameObject = (tEvent.pGameObject);
+		_uint iGroupIdx = (_uint)(tEvent.lParam);
 		CObject_Manager::Get_Instance()->Add_Object(pGameObject, iGroupIdx);
 		if (FAILED(pGameObject->Start()))
 		{
@@ -160,8 +160,8 @@ void CEvent_Manager::Execute(const EVENT & tEvent)
 
 	case EVENT_CREATE_STATIC:
 	{
-		CGameObject* pGameObject = (CGameObject*)(tEvent.lParam);
-		_hashcode	iObjectID =(_hashcode)(tEvent.wParam);
+		CGameObject* pGameObject = tEvent.pGameObject;
+		_hashcode	iObjectID =(_hashcode)(tEvent.lParam);
 		CObject_Manager::Get_Instance()->Add_StaticObject(pGameObject, iObjectID);
 		if (FAILED(pGameObject->Start()))
 		{
@@ -174,7 +174,7 @@ void CEvent_Manager::Execute(const EVENT & tEvent)
 
 	case EVENT_DELETE_OBJECT:
 	{
-		CGameObject* pGameObject = (CGameObject*)(tEvent.lParam);
+		CGameObject* pGameObject = tEvent.pGameObject;
 		if (pGameObject->Is_Dead())
 			return;
 
@@ -193,7 +193,7 @@ void CEvent_Manager::Execute(const EVENT & tEvent)
 
 	case EVENT_DELETE_COMPONENT:
 	{
-		CComponent* pComponent = (CComponent*)(tEvent.lParam);
+		CComponent* pComponent = tEvent.pComponent;
 		if (pComponent->Is_Dead())
 			return;
 
@@ -212,7 +212,7 @@ void CEvent_Manager::Execute(const EVENT & tEvent)
 
 	case EVENT_ENABLE_OBJECT:
 	{
-		CGameObject* pGameObject = (CGameObject*)(tEvent.lParam);
+		CGameObject* pGameObject = tEvent.pGameObject;
 		pGameObject->Set_Enable(true);
 		pGameObject->Call_Enable();
 	}
@@ -221,7 +221,7 @@ void CEvent_Manager::Execute(const EVENT & tEvent)
 
 	case EVENT_ENABLE_COMPONENT:
 	{
-		CComponent* pComponent = (CComponent*)(tEvent.lParam);
+		CComponent* pComponent = tEvent.pComponent;
 		pComponent->Set_Enable(true);
 	}
 
@@ -229,7 +229,7 @@ void CEvent_Manager::Execute(const EVENT & tEvent)
 
 	case EVENT_DISABLE_OBJECT:
 	{
-		CGameObject* pGameObject = (CGameObject*)(tEvent.lParam);
+		CGameObject* pGameObject = tEvent.pGameObject;
 		pGameObject->Set_Enable(false);
 		pGameObject->Call_Disable();
 
@@ -238,7 +238,7 @@ void CEvent_Manager::Execute(const EVENT & tEvent)
 
 	case EVENT_DISABLE_COMPONENT:
 	{
-		CComponent* pComponent = (CComponent*)(tEvent.lParam);
+		CComponent* pComponent = tEvent.pComponent;
 		pComponent->Set_Enable(false);
 	}
 
@@ -246,7 +246,7 @@ void CEvent_Manager::Execute(const EVENT & tEvent)
 
 	case EVENT_CHANGE_LEVEL:
 	{
-		CLevel*	pLevel = (CLevel*)(tEvent.lParam);
+		CLevel*	pLevel = tEvent.pLevel;
 		CLevel_Manager::Get_Instance()->Enter_Level(pLevel);
 	}
 	break;

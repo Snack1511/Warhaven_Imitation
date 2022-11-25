@@ -118,7 +118,7 @@ protected:
 	virtual void	My_Tick() {}
 	virtual void	My_LateTick() {}
 
-private:
+protected:
 	_bool				m_bEnable = true;
 	_bool				m_bAlive = true;
 

@@ -48,7 +48,7 @@ HRESULT CSword_Effect::Initialize_Prototype()
 	m_wstrPath = L"../bin/resources/meshes/effects/FBX/weapon/LongSword_Effect.fbx";
 	m_matTrans = XMMatrixScaling(1.f, 1.f, 1.f);
 	m_hcMyCode = HASHCODE(CSword_Effect);
-	m_pFollowTarget = PLAYER;
+	m_pFollowTarget = nullptr;
 	m_vOffsetPos = _float4(0.f, 0.f, 0.f);
 	m_vEffectFlag = _float4(0.95f, 0.95f, 1.f, 1.f);
 	m_vStartScale = _float4{ 0.01f, 0.01f, 0.01f, 0.f };

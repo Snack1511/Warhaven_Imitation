@@ -27,10 +27,6 @@ public:
 	void	Tick();
 
 public:
-	void	On_ExitLevel();
-
-
-public:
 	void	Set_Player(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
 	CPlayer* Get_PlayerObejects() { return m_pPlayer; }
 	CUnit* Get_Player();
@@ -68,6 +64,9 @@ public:
 
 public:
 	void On_EnterLevel();
+	void On_ExitLevel();
+	void On_EnterStageLevel();
+	void On_ExitStageLevel();
 
 	void Set_HP(_float fMaxHP, _float fCurHP);
 	void SetActive_OxenJumpText(_bool value);

@@ -83,11 +83,8 @@ public:
 	_uint	Get_ChangeHeroIndex(_uint eClass) { return m_iChangeHeroAnimIndex[eClass]; }
 	_uint	Get_DefaultReserveStateIndex(_uint eClass) { return m_iReserveStateDefault[eClass]; }
 
-
 	CUnit* Get_CurrentUnit() { return m_pCurrentUnit; }
-
 	CLASS_DEFAULT Get_CurrentDefaultClass() { return m_eCurrentDefaultClass; }
-
 	void Set_MainPlayer();
 
 public:

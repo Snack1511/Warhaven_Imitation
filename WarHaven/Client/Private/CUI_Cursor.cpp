@@ -44,10 +44,6 @@ HRESULT CUI_Cursor::Start()
 {
 	__super::Start();
 
-	// ShowCursor(false);
-
-	CUser::Get_Instance()->Set_Cursor(this);
-
 	return S_OK;
 }
 

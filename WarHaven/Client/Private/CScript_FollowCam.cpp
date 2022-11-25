@@ -65,6 +65,9 @@ void CScript_FollowCam::Start_LerpType(CAMERA_LERP_TYPE eType)
 			return;
 	}
 
+	if (!m_pFollowTarget)
+		return;
+
 	m_eCurrentLerpType = eType;
 
 	m_bCameraMoving = m_arrLerpDesc[eType].bCameraMove;

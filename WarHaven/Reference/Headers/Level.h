@@ -27,6 +27,7 @@ public:
 	virtual void	Tick() PURE;
 	virtual void	Late_Tick() PURE;
 	virtual HRESULT Render() PURE;
+	virtual HRESULT	OnExit();
 	virtual HRESULT	Exit();
 
 protected:

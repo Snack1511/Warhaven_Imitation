@@ -30,6 +30,13 @@ HRESULT CLevel::Enter()
     return S_OK;
 }
 
+HRESULT CLevel::OnExit()
+{
+    CCamera_Manager::Get_Instance()->Clear_LevelCam();
+
+    return S_OK;
+}
+
 HRESULT CLevel::Exit()
 {
     m_vecGameObjects.clear();

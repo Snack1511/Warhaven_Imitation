@@ -7,7 +7,7 @@
 #include "CUI_Cursor.h"
 
 #include "ImGui_Manager.h"
-
+#include "CUser.h"
 CLevel_Main::CLevel_Main()
 {
 }
@@ -50,8 +50,8 @@ HRESULT CLevel_Main::Enter()
 	CUI_Main* pUI_Main = CUI_Main::Create();
 	Ready_GameObject(pUI_Main, GROUP_UI);
 
-	CUI_Cursor* pCursor = CUI_Cursor::Create();
-	Ready_GameObject(pCursor, GROUP_UI);
+	CUser::Get_Instance()->On_EnterLevel();
+
 
 	__super::Enter();
 
@@ -86,6 +86,7 @@ HRESULT CLevel_Main::Render()
 HRESULT CLevel_Main::Exit()
 {
 	__super::Exit();
+	CUser::Get_Instance()->On_ExitLevel();
 
 	return S_OK;
 }

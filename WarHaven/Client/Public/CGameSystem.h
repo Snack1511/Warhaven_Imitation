@@ -23,11 +23,16 @@ public:
 	HRESULT					Tick();
 	void					Release();
 
+public:
+	HRESULT					On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+
 public: /* BootCamp */
 	HRESULT					On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+
 	HRESULT					On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_ReadyUIs(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyDestructible(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 
 	HRESULT					On_EnterBootCamp();
 
@@ -44,6 +49,9 @@ private:
 
 private:
 	CPlayer* SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TYPE eStartState, _bool bUserPlayer, wstring wstrCamName);
+
+	HRESULT					SetUp_DefaultLight();
+
 
 };
 

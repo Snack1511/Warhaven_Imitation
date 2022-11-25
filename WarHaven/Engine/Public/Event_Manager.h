@@ -24,12 +24,16 @@ private:
 	{
 		EVENT_TYPE		eEven;
 		DWORD_PTR		lParam;
-		DWORD_PTR		wParam;
+		CGameObject* pGameObject = nullptr;
+		CComponent* pComponent = nullptr;
+		CLevel* pLevel = nullptr;
 
-		tag_Event_Info(EVENT_TYPE _eEven, DWORD_PTR _lParam, DWORD_PTR _wParam)
+		tag_Event_Info(EVENT_TYPE _eEven, DWORD_PTR _lParam, CGameObject* _pGameObject, CComponent* _pComponent, CLevel* _pLevel)
 			: eEven(_eEven)
 			, lParam(_lParam)
-			, wParam(_wParam)
+			, pGameObject(_pGameObject)
+			, pComponent(_pComponent)
+			, pLevel(_pLevel)
 		{}
 	}EVENT;
 
@@ -56,7 +60,7 @@ public:
 	void	Clear_Enable_Events();
 
 private:
-	void	Add_Event(const EVENT_TYPE& eEven, const DWORD_PTR& lParam = 0, const DWORD_PTR& wParam = 0);
+	void	Add_Event(const EVENT_TYPE& eEven, CGameObject* _pGameObject, DWORD_PTR lParam = 0, CComponent* _pComponent = nullptr, CLevel* _pLevel = nullptr);
 	void	Execute(const EVENT& tEvent);
 
 private:

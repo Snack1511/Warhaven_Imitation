@@ -10,6 +10,7 @@
 
 #include "CCamera_Free.h"
 #include "CCamera_Default.h"
+#include "CCamera_Follow.h"
 
 
 #include "ImGui_Manager.h"
@@ -18,6 +19,7 @@
 #include "Transform.h"
 
 #include "CGameSystem.h"
+#include "CUI_Cursor.h"
 
 
 IMPLEMENT_SINGLETON(CMainApp);
@@ -53,13 +55,16 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(SetUp_Statics()))
 		return E_FAIL;
 
+	if (FAILED(Default_Initialize()))
+		return E_FAIL;
+
 	if (FAILED(CGameSystem::Get_Instance()->Initialize()))
 		return E_FAIL;
 
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
 	//Sound
@@ -149,6 +154,35 @@ void CMainApp::Release()
 
 }
 
+HRESULT CMainApp::Default_Initialize()
+{
+	Col_Check();
+
+	if (FAILED(CEffects_Factory::Get_Instance()->Initialize()))
+		return E_FAIL;
+
+	CUser::Get_Instance()->Initialize();
+
+#ifdef _DEBUG
+	if (FAILED(CImGui_Manager::Get_Instance()->Initialize()))
+		return E_FAIL;
+#endif
+
+#ifdef RELEASE_IMGUI
+
+#ifndef _DEBUG
+	if (FAILED(CImGui_Manager::Get_Instance()->Initialize()))
+		return nullptr;
+#endif // !_DEBUG
+
+
+#endif
+
+
+
+	return S_OK;
+}
+
 HRESULT CMainApp::SetUp_Engine()
 {
 	GRAPHICDESC		GraphicDesc;
@@ -183,12 +217,19 @@ HRESULT CMainApp::SetUp_Levels()
 
 HRESULT CMainApp::SetUp_Statics()
 {
+	CUI_Cursor* pCursor = CUI_Cursor::Create();
+	pCursor->Initialize();
+	CREATE_STATIC(pCursor, HASHCODE(CUI_Cursor));
+	DISABLE_GAMEOBJECT(pCursor);
+	CUser::Get_Instance()->Set_Cursor(pCursor);
+
+
 	/*Default Cam*/
 	CCamera* pDefaultCam = CCamera_Default::Create();
 	pDefaultCam->Initialize();
 	CREATE_STATIC(pDefaultCam, HASHCODE(CCamera_Default));
-	CGameInstance::Get_Instance()->Add_Camera(L"Default", pDefaultCam);
-	CGameInstance::Get_Instance()->Change_Camera(L"Default");
+	CGameInstance::Get_Instance()->Add_Camera(L"DefaultCam", pDefaultCam);
+	CGameInstance::Get_Instance()->Change_Camera(L"DefaultCam");
 
 
 	/* Free Camera */
@@ -200,8 +241,6 @@ HRESULT CMainApp::SetUp_Statics()
 
 	if (FAILED(m_pGameInstance->Add_Font(L"DefaultFont", L"../bin/resources/fonts/128.spritefont")))
 		return E_FAIL;
-
-
 
 	return S_OK;
 }
@@ -256,4 +295,63 @@ HRESULT CMainApp::SetUp_Font()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CMainApp::Col_Check()
+{
+	/* TRIGGER */
+	GAMEINSTANCE->Check_Group(COL_PLAYERTEAM, COL_TRIGGER);
+	GAMEINSTANCE->Check_Group(COL_ENEMYTEAM, COL_TRIGGER);
+
+	/* 일반 공격 플레이어 */
+	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYHITBOX_HEAD);
+
+	/* 가드 공격 플레이어 */
+	GAMEINSTANCE->Check_Group(COL_PLAYERATTACK, COL_ENEMYGUARD);
+
+	/*가드 브레이크 플레이어 */
+	GAMEINSTANCE->Check_Group(COL_PLAYERGUARDBREAK, COL_ENEMYGUARD);
+	GAMEINSTANCE->Check_Group(COL_PLAYERGUARDBREAK, COL_ENEMYHITBOX_BODY);
+
+	/* 그로기 공격 플레이어 */
+	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYGUARD);
+	GAMEINSTANCE->Check_Group(COL_PLAYERGROGGYATTACK, COL_ENEMYATTACK);
+
+
+	/* 띄우기 공격 플레이어 */
+	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACK, COL_ENEMYHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACK, COL_ENEMYGUARD);
+
+	/* 가드 불가 띄우기 공격 플레이어 */
+	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACKGUARDBREAK, COL_ENEMYHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_PLAYERFLYATTACKGUARDBREAK, COL_ENEMYGUARD);
+
+	//==========================================================================================
+
+	/* 일반 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERHITBOX_HEAD);
+
+	/* 가드 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYATTACK, COL_PLAYERGUARD);
+
+	/*가드 브레이크 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYGUARDBREAK, COL_PLAYERGUARD);
+	GAMEINSTANCE->Check_Group(COL_ENEMYGUARDBREAK, COL_PLAYERHITBOX_BODY);
+
+	/* 그로기 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERGUARD);
+	GAMEINSTANCE->Check_Group(COL_ENEMYGROGGYATTACK, COL_PLAYERATTACK);
+
+	/* 띄우기 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACK, COL_PLAYERHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACK, COL_PLAYERGUARD);
+
+
+	/* 가드 불가 띄우기 공격 적 */
+	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACKGUARDBREAK, COL_PLAYERHITBOX_BODY);
+	GAMEINSTANCE->Check_Group(COL_ENEMYFLYATTACKGUARDBREAK, COL_PLAYERGUARD);
 }

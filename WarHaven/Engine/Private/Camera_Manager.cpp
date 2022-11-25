@@ -155,28 +155,41 @@ void CCamera_Manager::Make_ViewProj()
 
 CCamera * CCamera_Manager::Change_Camera(wstring strKey)
 {
-	auto iter = m_mapCam.find(Convert_ToHash(strKey));
+	CCamera* pCam = Find_Camera(strKey);
 
-	if (iter == m_mapCam.end())
+	if (!pCam)
 	{
-		Call_MsgBox(L"Failed to Find CCamera : CCamera_Manager");
+		Call_MsgBox(L"Can't Find Camera : CCamera_Manager");
 		return nullptr;
 	}
 
-
 	if (m_pCurCam)
 	{
-		DISABLE_GAMEOBJECT(m_pCurCam);
+		if (m_pCurCam->Is_Valid())
+			DISABLE_GAMEOBJECT(m_pCurCam);
 	}
 
 
-	ENABLE_GAMEOBJECT(iter->second);
-	m_pNextCamera = iter->second;
+	ENABLE_GAMEOBJECT(pCam);
+	m_pNextCamera = pCam;
 
-	//m_pCurCam = iter->second;
-	//Make_ViewProj();
+	return m_pNextCamera;
+}
 
-	return m_pCurCam;
+CCamera* CCamera_Manager::Reset_Camera(wstring strKey)
+{
+	CCamera* pCam = Find_Camera(strKey);
+
+	if (!pCam)
+	{
+		Call_MsgBox(L"Can't Find Camera : CCamera_Manager");
+		return nullptr;
+	}
+
+	ENABLE_GAMEOBJECT(pCam);
+	m_pNextCamera = pCam;
+
+	return m_pNextCamera;
 }
 
 void CCamera_Manager::Add_Camera(wstring strKey, CCamera * pCamera)
@@ -193,9 +206,45 @@ void CCamera_Manager::Add_Camera(wstring strKey, CCamera * pCamera)
 	//DISABLE_GAMEOBJECT(pCamera);
 }
 
+void CCamera_Manager::Add_Camera_Level(wstring strKey, CCamera* pCamera)
+{
+	auto iter = m_mapLevelCam.find(Convert_ToHash(strKey));
+
+	if (iter != m_mapLevelCam.end())
+	{
+		Call_MsgBox(L"Alreadt Exist Camera : CCamera_Manager");
+		return;
+	}
+
+	m_mapLevelCam.emplace(Convert_ToHash(strKey), pCamera);
+	//DISABLE_GAMEOBJECT(pCamera);
+}
+
 CCamera* CCamera_Manager::Find_Camera(wstring strKey)
 {
-	return m_mapCam.find(Convert_ToHash(strKey))->second;
+	CCamera* pCam = nullptr;
+	auto Leveliter = m_mapLevelCam.find(Convert_ToHash(strKey));
+
+	if (Leveliter == m_mapLevelCam.end())
+	{
+		auto StaticIter = m_mapCam.find(Convert_ToHash(strKey));
+		if (StaticIter == m_mapCam.end())
+		{
+			return nullptr;
+		}
+
+		pCam = StaticIter->second;
+	}
+	else
+		pCam = Leveliter->second;
+
+
+	return pCam;
+}
+
+void CCamera_Manager::Clear_LevelCam()
+{
+	m_mapLevelCam.clear();
 }
 
 void CCamera_Manager::Make_ViewMatrix()

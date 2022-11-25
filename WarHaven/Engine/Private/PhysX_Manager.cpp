@@ -131,11 +131,15 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 
 HRESULT CPhysX_Manager::Delete_Scene(Scene eScene)
 {
+	Safe_release(m_pPxControllerManager);
+
 	m_pScenes[eScene]->release();
 	m_pScenes[eScene] = nullptr;
 
 	m_pDispatcher->release();
 	m_pDispatcher = nullptr;
+
+
 	return S_OK;
 }
 
