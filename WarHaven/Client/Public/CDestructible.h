@@ -48,7 +48,12 @@ private:
 	list<CPhysXCollider*>	m_PhysXColliders;
 
 private:
+	_float m_fHitDelayAcc = 0.f;
+	_float m_fHitDelayTime = 0.1f;
+
+private:
 	HRESULT	SetUp_Destructible(wstring wstrMeshFilePath);
+	virtual void My_Tick();
 
 	
 

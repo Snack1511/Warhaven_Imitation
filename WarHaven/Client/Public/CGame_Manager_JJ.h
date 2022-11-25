@@ -20,7 +20,6 @@ public:
 
 public:
 	void	Fix_CursorPosToCenter();
-	void	KeyInput_FPSSetter();
 
 	void	Clear_KeyCommands() { m_KeyCommands.clear(); }
 	void	Update_KeyCommands();

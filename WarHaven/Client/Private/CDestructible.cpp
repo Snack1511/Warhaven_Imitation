@@ -39,13 +39,18 @@ CDestructible* CDestructible::Create(wstring wstrMeshFilePath, wstring wstrDesto
 
 void CDestructible::On_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	if (m_fHitDelayAcc > 0.f)
+		return;
+
+	m_fHitDelayAcc = m_fHitDelayTime;
+
 	m_iHitCount--;
 
 	_float4x4 matIdentity;
 	matIdentity.Identity();
 
 	if (!m_wstrHitMultiEffectsKey.empty())
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(m_wstrHitMultiEffectsKey, vHitPos);
+		CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(m_wstrHitMultiEffectsKey, vHitPos, _float4(0.f, 1.f, 0.f, 0.f), 0.1f, matIdentity);
 
 	if (m_iHitCount == 0)
 	{
@@ -53,8 +58,8 @@ void CDestructible::On_CollisionEnter(CGameObject* pOtherObj, const _uint& eOthe
 		_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 		vPos.y += 0.5f;
 
-		if (!m_wstrHitMultiEffectsKey.empty())
-			CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(m_wstrDestoryMultiEffectsKey, vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matIdentity);
+		if (!m_wstrDestoryMultiEffectsKey.empty())
+			CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(m_wstrDestoryMultiEffectsKey, vPos, _float4(0.f, 1.f, 0.f, 0.f), 4.f, matIdentity);
 	}
 }
 
@@ -90,7 +95,7 @@ HRESULT CDestructible::Start()
 void CDestructible::Set_Position(_float4 vPosition)
 {
 	m_pTransform->Set_World(WORLD_POS, vPosition);
-	
+	m_pTransform->Make_WorldMatrix();
 	for (auto& elem : m_PhysXColliders)
 	{
 		elem->Set_Position(vPosition.XMLoad());
@@ -101,7 +106,7 @@ void CDestructible::Set_Look(_float4 vLook)
 {
 	m_pTransform->Set_Look(vLook);
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-
+	m_pTransform->Make_WorldMatrix();
 	for (auto& elem : m_PhysXColliders)
 	{
 		elem->Set_Position(vPos.XMLoad(), m_pTransform->Get_Quaternion().XMLoad());
@@ -132,4 +137,12 @@ HRESULT CDestructible::SetUp_Destructible(wstring wstrMeshFilePath)
 	}
 
 	return S_OK;
+}
+
+void CDestructible::My_Tick()
+{
+	if (m_fHitDelayAcc > 0.f)
+		m_fHitDelayAcc -= fDT(0.f);
+	else
+		m_fHitDelayAcc = 0.f;
 }

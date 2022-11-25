@@ -666,6 +666,19 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_3"))))
 		return E_FAIL;
 
+	/* Wood */
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"WoodenDestroyParticle"), Convert_ToHash(L"WoodenLog_0"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"WoodenDestroyParticle"), Convert_ToHash(L"WoodenLog_1"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"WoodenDestroyParticle"), Convert_ToHash(L"WoodenLog_2"))))
+		return E_FAIL;
+
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"WoodenHitParticle"), Convert_ToHash(L"WoodenParticle_0"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"WoodenHitParticle"), Convert_ToHash(L"WoodenParticle_1"))))
+		return E_FAIL;
+
 	/*Stone spark particle*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StoneSpark"), "StoneSpark")))
 		return E_FAIL;
@@ -719,6 +732,58 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 
 
 	/* ========================================================================== */
+
+	iStoneNumInstance = 20;
+	fStoneDensity = 100.f;
+	wstrName = L"WoodenParticle_0";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/effects/fbx/wood/SM_Wood_05.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_WoodDebris_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_WoodDebrisN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"WoodenParticle_1";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/effects/fbx/wood/SM_Wood_06.fbx", iStoneNumInstance, wstrName, fStoneDensity, fStoneLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_WoodDebris_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_WoodDebrisN_01.dds"
+	))))
+		return E_FAIL;
+
+	_uint iWoodLogNumInstance = 8;
+	_float fWoodDensity = 10.f;
+	_float fWoodLifeTime = 10.f;
+
+	wstrName = L"WoodenLog_0";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/map/environments/structure/wood/wood01/SM_Structure_Wood_Log01a.fbx", iWoodLogNumInstance, wstrName, fWoodDensity, fWoodLifeTime
+	))))
+		return E_FAIL;
+
+	wstrName = L"WoodenLog_1";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/map/environments/structure/wood/wood03/SM_Structure_Wood_Plank01a.fbx", iWoodLogNumInstance, wstrName, fWoodDensity, fWoodLifeTime
+	))))
+		return E_FAIL;
+
+	wstrName = L"WoodenLog_2";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/map/environments/structure/wood/wood07/SM_Structure_Wood_Log04c.fbx", iWoodLogNumInstance, wstrName, fWoodDensity, fWoodLifeTime
+	))))
+		return E_FAIL;
+
+	/* ================ Wood ================ */
+
+
+
+
+
+
+
+
+
 
 	/*===================== Warrior =====================*/
 

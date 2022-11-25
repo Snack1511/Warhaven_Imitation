@@ -32,8 +32,6 @@ public:
 	list<CGameObject*>			Create_MultiEffects(wstring	wstrKey, _float4x4 matWorld);
 	list<CGameObject*>			Create_MultiEffects(wstring	wstrKey, _float4 vPos, _float4x4 matWorld);
 
-
-
 	list<CGameObject*>			Create_Multi_MeshParticle(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld);
 
 

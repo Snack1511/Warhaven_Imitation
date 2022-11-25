@@ -1021,6 +1021,13 @@ HRESULT CModel::SetUp_Model_LOD()
 
 HRESULT CModel::SetUp_InstancingModel_LOD()
 {
+	if (!m_pInstancingMatrices)
+	{
+		m_bLOD = false;
+		return S_OK;
+
+	}
+
 	for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
 	{
 		if (FAILED(Load_InstancingLOD((eLOD_LEVEL)i)))

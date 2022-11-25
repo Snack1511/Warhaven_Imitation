@@ -172,7 +172,7 @@ HRESULT CMainApp::Default_Initialize()
 
 #ifndef _DEBUG
 	if (FAILED(CImGui_Manager::Get_Instance()->Initialize()))
-		return nullptr;
+		return E_FAIL;
 #endif // !_DEBUG
 
 

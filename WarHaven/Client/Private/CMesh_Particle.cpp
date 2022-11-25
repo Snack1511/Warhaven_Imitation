@@ -94,11 +94,15 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower, _
 		PxTransform tTransform;
 		ZeroMemory(&tTransform, sizeof(PxTransform));
 
+		_float4 vAngles = _float4(frandom(-10.f, 10.f), frandom(-10.f, 10.f), frandom(-10.f, 10.f));
+		vAngles = XMQuaternionRotationRollPitchYawFromVector(vAngles.XMLoad());
 
 		tTransform.p.x = vPos.x;
 		tTransform.p.y = vPos.y;
 		tTransform.p.z = vPos.z;
-		tTransform.q.w = 1.f;
+
+
+		memcpy(&tTransform.q, &vAngles, sizeof(_float4));
 
 
 #ifdef _DEBUG

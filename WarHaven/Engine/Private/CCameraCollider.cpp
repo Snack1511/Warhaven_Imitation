@@ -38,6 +38,10 @@ void CCameraCollider::onShapeHit(const PxControllerShapeHit& hit)
 {
 	if (hit.actor->getType() == PxActorType::eRIGID_STATIC)
 	{
+		//userdata가 있으면 그냥 벽은 아님
+		if (hit.actor->userData)
+			return;
+
 		m_pCurrentHitActor = hit.actor;
 		m_pCurrentShape= hit.shape;
 	}

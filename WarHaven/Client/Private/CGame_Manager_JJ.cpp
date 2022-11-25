@@ -60,27 +60,6 @@ void CGame_Manager_JJ::Fix_CursorPosToCenter()
 	::SetCursorPos(ptMouse.x, ptMouse.y);
 }
 
-void CGame_Manager_JJ::KeyInput_FPSSetter()
-{
-	_double dCurFPSLimit = CGameInstance::Get_Instance()->Get_FPSLimitTime();
-
-	/*if (KEY(F3, TAP))
-	{
-		dCurFPSLimit = 1. / 30.;
-	}
-	else if (KEY(F2, TAP))
-	{
-		dCurFPSLimit = 1. / 120.;
-	}
-	else if (KEY(F1, TAP))
-	{
-		dCurFPSLimit = 0.;
-	}*/
-
-	CGameInstance::Get_Instance()->Set_FPSLimitTIme(dCurFPSLimit);
-
-}
-
 void CGame_Manager_JJ::Update_KeyCommands()
 {
 	vector<CKey_Manager::tKeyInfo>& vecKeys = CGameInstance::Get_Instance()->Get_KeyList();

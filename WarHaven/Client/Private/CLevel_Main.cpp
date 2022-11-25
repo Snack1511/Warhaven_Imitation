@@ -18,11 +18,6 @@ CLevel_Main::~CLevel_Main()
 
 CLevel_Main* CLevel_Main::Create()
 {
-#ifdef _DEBUG
-	if (FAILED(CImGui_Manager::Get_Instance()->Initialize()))
-		return nullptr;
-#endif
-
 	CLevel_Main* pLevel = new CLevel_Main();
 
 	pLevel->Initialize();
@@ -62,6 +57,15 @@ void CLevel_Main::Tick()
 {
 #ifdef _DEBUG
 	CImGui_Manager::Get_Instance()->Tick();
+
+#endif
+
+#ifdef RELEASE_IMGUI
+
+#ifndef _DEBUG
+	CImGui_Manager::Get_Instance()->Tick();
+
+#endif // !_DEBUG
 #endif
 
 	if (true == CLoading_Manager::Get_Instance()->IsFinished())
@@ -78,6 +82,16 @@ HRESULT CLevel_Main::Render()
 #ifdef _DEBUG
 	if (FAILED(CImGui_Manager::Get_Instance()->Render()))
 		return E_FAIL;
+
+#endif
+
+#ifdef RELEASE_IMGUI
+
+#ifndef _DEBUG
+	if (FAILED(CImGui_Manager::Get_Instance()->Render()))
+		return E_FAIL;
+
+#endif // !_DEBUG
 #endif
 
 	return S_OK;

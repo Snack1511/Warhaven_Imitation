@@ -106,7 +106,7 @@ void CLevel_BootCamp::Tick()
 
 void CLevel_BootCamp::Late_Tick()
 {
-	__super::Tick();
+	__super::Late_Tick();
 }
 
 HRESULT CLevel_BootCamp::Render()
