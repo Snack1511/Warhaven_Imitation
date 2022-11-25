@@ -81,8 +81,6 @@ HRESULT CValkyrie_Counter::Initialize()
 
 void CValkyrie_Counter::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->On_Use(CUnit::SKILL1);
-
 	pOwner->Enable_GuardCollider(true);
 
 
@@ -105,13 +103,14 @@ void CValkyrie_Counter::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 
+	pOwner->On_Use(CUnit::SKILL3);
 	pOwner->Enable_GuardCollider(false);
 
 }
 
 STATE_TYPE CValkyrie_Counter::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (!pOwner->Can_Use(CUnit::SKILL1))
+	if (!pOwner->Can_Use(CUnit::SKILL3))
 		return STATE_END;
 
 	/* VALKYRIE가 SpinAttack 로 오는 조건

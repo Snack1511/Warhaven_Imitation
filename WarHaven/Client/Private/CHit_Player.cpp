@@ -50,7 +50,6 @@ HRESULT CHit_Player::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 50;
     
-    m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
     m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
     m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
@@ -79,7 +78,9 @@ void CHit_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 
 STATE_TYPE CHit_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	DoMove(Get_Direction(), pOwner);
+
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_PLAYER_R;
 
     return __super::Tick(pOwner, pAnimator);
 }

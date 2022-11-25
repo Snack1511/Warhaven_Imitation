@@ -132,6 +132,69 @@ void CUnit_Valkyrie::SetUp_HitStates(_bool bPlayer)
 
 }
 
+void CUnit_Valkyrie::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
+{
+	__super::Effect_Hit(pOtherUnit, vHitPos);
+
+	/*_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
+	_float fHitDist = m_pTransform->Get_World(WORLD_POS)*/
+
+	//pOtherUnit : 맞은 쪽
+
+	//때리는 사람 기준으로 나와야함
+
+	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
+
+
+	switch (m_eCurState)
+	{
+	case STATE_ATTACK_HORIZONTALUP_VALKYRIE_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L:
+	case STATE_SPINATTACK_VALKYRIE:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L:
+	case STATE_SPRINTATTACK_VALKYRIE:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_HORIZONTALUP_VALKYRIE_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_VERTICALCUT_VALKYRIE:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_STING_VALKYRIE_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
+		break;
+
+	case STATE_ATTACK_STING_VALKYRIE_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
+		break;
+
+	default:
+		break;
+
+	}
+
+
+}
+
+
 HRESULT CUnit_Valkyrie::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -207,14 +270,16 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	m_tUnitStatus.eClass = FIONA;
 	m_tUnitStatus.fHP = 100000.f;
 
+	m_tUnitStatus.fRunSpeed *= 0.8f;
 
-	m_fCoolTime[SKILL3] = 5.f;
-	m_fCoolTime[SKILL2] = 0.f; // 화신력 소모 스킬
+
 	m_fCoolTime[SKILL1] = 45.f;
+	m_fCoolTime[SKILL2] = 0.f; // 화신력 소모 스킬
+	m_fCoolTime[SKILL3] = 5.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; // 화신력 소모 스킬
-	m_fCoolAcc[SKILL3] = 10.f;
+	m_fCoolAcc[SKILL3] = 0.f;
 
 	return S_OK;
 }

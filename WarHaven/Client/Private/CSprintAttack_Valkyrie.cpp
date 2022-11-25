@@ -97,45 +97,12 @@ void CSprintAttack_Valkyrie::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 
 STATE_TYPE CSprintAttack_Valkyrie::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (m_bTrigger)
-	{
-		CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-		pMyPhysicsCom->Set_Accel(m_fMyAccel);
-	}
 
-	if (m_bAttackTrigger)
-	{
-		// 공격 진입
-		if (pOwner->Is_Weapon_R_Collision())
-		{
-			_float4 vHitPos = pOwner->Get_HitPos();
-			_float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-
-			//발쪽이면
-			if (vHitPos.y <= vPos.y + 0.1f)
-			{
-				pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
-
-				//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
-			}
-
-
-			//else
-			//	return STATE_BOUNCE_VALKYRIE_R;
-
-			m_bAttackTrigger = false;
-		}
-
-	}
-	
 	Follow_MouseLook(pOwner);
 	pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
 
 
     return __super::Tick(pOwner, pAnimator);
-
 }
 
 void CSprintAttack_Valkyrie::Exit(CUnit* pOwner, CAnimator* pAnimator)

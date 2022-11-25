@@ -54,7 +54,6 @@ HRESULT CWarrior_Attack_HorizontalUp_R::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_R);
 
 
 	/* Setting for Blendable */

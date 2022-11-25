@@ -67,16 +67,13 @@ HRESULT CValkyrie_SpinAttack::Initialize()
 
 void CValkyrie_SpinAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	if (ePrevType == STATE_COUNTER_VALKYRIE)
+	if (ePrevType != STATE_GUARDHIT_VALKYRIE)
 	{
-		m_fInterPolationTime = 0.f;
+		pOwner->On_Use(CUnit::SKILL1);
+		m_fInterPolationTime = 0.1f;
 	}
 	else
-	{ 
-		m_fInterPolationTime = 0.1f;
-		pOwner->On_Use(CUnit::SKILL1);
-	}
-
+		m_fInterPolationTime = 0.f;
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

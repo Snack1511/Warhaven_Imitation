@@ -50,7 +50,6 @@ HRESULT CHit_WarHammer::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 50;
     
-    m_vecAdjState.push_back(STATE_IDLE_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_RUN_WARHAMMER_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
@@ -76,6 +75,9 @@ void CHit_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 STATE_TYPE CHit_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_WARHAMMER_R;
+
     return __super::Tick(pOwner, pAnimator);
 }
 
