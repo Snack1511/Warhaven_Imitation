@@ -225,8 +225,6 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		break;
 
 	}
-
-	
 }
 
 HRESULT CUnit_Warrior::Initialize_Prototype()

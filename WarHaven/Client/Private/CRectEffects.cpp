@@ -1184,6 +1184,7 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 {
 	_float fY;
+	_float fX;
 
 	switch (m_eCurveType)
 	{
@@ -1196,9 +1197,17 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y;
 		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
 		break;
-	case Client::CURVE_END:
-		break;
-	default:
+	case Client::CURVE_SPIRAL:
+		fX = m_pDatas[iIdx].InstancingData.fCurvePower * sinf(m_pDatas[iIdx].InstancingData.fMovingAcc * PI * 0.5f);
+		fY = m_pDatas[iIdx].InstancingData.fCurvePower * cosf(-1.f * m_pDatas[iIdx].InstancingData.fMovingAcc * PI * 0.5f);
+
+		vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x;
+		vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y;
+		vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z;
+
+		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
+		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y; 
+		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
 		break;
 	}
 

@@ -261,11 +261,11 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
-	/*if(FAILED(SetUp_Terrian_InPlayer()))
-		return E_FAIL;*/
-	
-	if(FAILED(SetUp_Map_InPlayer()))
+	if(FAILED(SetUp_Terrian_InPlayer()))
 		return E_FAIL;
+	
+	/*if(FAILED(SetUp_Map_InPlayer()))
+		return E_FAIL;*/
 	
 
 	return S_OK;
@@ -274,16 +274,14 @@ HRESULT CLevel_Test::SetUp_Prototypes_TH()
 HRESULT CLevel_Test::SetUp_Prototypes_MJ()
 {
 	//맵 데이타 불러오기
-	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
-
-	
-
+	/*function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Test::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);*/
+ 
 	//_float4x4 mat;
 	//mat.Identity();
-	/*CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
+	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(200, 200);
 	pDrawableTerrain->Initialize();
-	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);*/
+	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	return S_OK;
 }
