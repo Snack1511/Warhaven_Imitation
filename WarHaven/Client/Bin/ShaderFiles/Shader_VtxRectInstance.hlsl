@@ -472,6 +472,9 @@ PS_OUT PS_UVTEXTURESELECT_MAIN(PS_IN In)
 	if (Out.vDiffuse.a < 0.05f)
 		discard;
 
+	Out.vDiffuse.xyz += g_vPlusColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
+
 	Out.vDiffuse.a *= In.vColor.a;
 
 	if (Out.vDiffuse.a < g_fDiscardPower)

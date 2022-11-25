@@ -285,8 +285,8 @@ HRESULT CLevel_Test::SetUp_Prototypes_JJ()
 
 HRESULT CLevel_Test::SetUp_Prototypes_TH()
 {
-	/*if(FAILED(SetUp_Terrian_InPlayer()))
-		return E_FAIL;*/
+	//if(FAILED(SetUp_Terrian_InPlayer()))
+	//	return E_FAIL;
 	
 	if(FAILED(SetUp_Map_InPlayer()))
 		return E_FAIL;
