@@ -236,6 +236,12 @@ public: /*For Light_Manager */
 	HRESULT Load_Lights(wstring wstrPath);
 	const LIGHTDESC* Get_LightDesc(_uint iIndex);
 	void	Clear_Lights();
+	void	Remove_Light(_uint iIndex);
+	class CLight* Get_Light(_uint iIndex);
+	class CLight* Get_FirstLight();
+	class CLight* Get_LastLight();
+	_int Get_LightSize();
+
 
 public: /* For.Target_Manager */
 	ComPtr<ID3D11ShaderResourceView> Get_RenderTarget_SRV(wstring pTargetTag);

@@ -20,6 +20,7 @@
 #include "CStructure_Instance.h"
 
 #include "CFunc_ObjectControl.h"
+#include "CLight.h"
 CWindow_Map::CWindow_Map()
 {
     m_CurTerrainData.Initialize();
@@ -32,7 +33,6 @@ CWindow_Map::~CWindow_Map()
     Clear_TupleData(m_arrSaveFilesCombo);
     Clear_TupleData(m_arrObjectGroupId);
     Clear_TupleData(m_arrLightTypeCombo);
-    Clear_TupleData(m_arrLightGroupCombo);
     Clear_TupleData(m_arrBrushType);
     Clear_TupleData(m_arrTileTextureName);
 
@@ -74,7 +74,6 @@ HRESULT CWindow_Map::Initialize()
     m_MeshRootNode.strFullPath = "../bin/resources/meshes/Map";
     Read_Folder_ForTree("../bin/resources/meshes/Map", m_MeshRootNode);
 
-    //D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Meshes\Map
     m_tInstanceMeshDataRoot.strFolderPath = "../bin/resources/Meshes/Map";
     m_tInstanceMeshDataRoot.strFileName = "InstancingObjects";
     m_tInstanceMeshDataRoot.strFullPath = "../bin/resources/Meshes/Map/InstancingObjects";
@@ -88,8 +87,6 @@ HRESULT CWindow_Map::Initialize()
         get<Tuple_Bool>(m_arrSaveFilesCombo[SaveFileIndex]) = true;
     }
     Ready_ObjectGroupID();
-
-    Ready_LightGroup();
 
     Ready_LightType();
 
@@ -106,7 +103,6 @@ void CWindow_Map::Tick()
 {
     _bool bPicked = false;
     Select_Camera();
-    //Select_DataControlFlag();
 
     if (Calculate_Pick())
         bPicked = true;
@@ -114,9 +110,8 @@ void CWindow_Map::Tick()
     if (false == bPicked)
         m_pObjectController->Tick_Function();
 
-    /*    Control_Object();
-
-    Update_Data();*/
+    //if (m_bLightControl)
+    //    Update_Light();
 }
 
 HRESULT CWindow_Map::Render()
@@ -155,8 +150,12 @@ HRESULT CWindow_Map::Render()
     //라이트 컨트롤
     // 
     //조건 필요.. 
-    if (false)
+
+    ImGui::Checkbox("Enable LightControl", &m_bLightControl);
+    if (m_bLightControl)
     {
+        if (-1 == m_iLightPadding)
+            m_iLightPadding = GAMEINSTANCE->Get_LightSize();
         Create_SubWindow("Light_Controller", vLightControlPos, vPannelSize, bind(&CWindow_Map::Func_LightControl, this));
     }
     __super::End();
@@ -231,7 +230,6 @@ void CWindow_Map::Func_FileControl()
     if (ImGui::Button("Load", ButtonSize))
     {
         string strLoadPath = LoadFilePath;
-        //"../bin/Data/MapData/Test.MapData"
         Load_MapData(LoadFilePath);
         strcpy_s(szSaveNameBuf, sizeof(char) * MAXCHAR, get<Tuple_CharPtr>(m_arrSaveFilesCombo[SaveFileIndex]));
         m_pObjectController->Confirm_Data();
@@ -263,7 +261,6 @@ void CWindow_Map::Func_FileControl()
             m_CurTerrainData.iNumVerticesZ = iTerrainVerticalZ;
         }
         ImGui::Text("SelectTileTexture");
-        //Make_Combo("##TileTextureCombo", m_arrTileTextureName, &iCurSelectTileIndex, bind(&CWindow_Map::EmptyFunction, this));
         if (ImGui::Button("Generate!"))
         {
             Generate_Terrain();
@@ -337,651 +334,20 @@ void CWindow_Map::SetUp_CurPickingGroup()
     m_pCurObjectList = &(GAMEINSTANCE->Get_ObjGroup(m_SelectObjectGroupIDIndex));
 }
 
-//void CWindow_Map::Add_ObjectGroup(char* pMeshGroupName)
-//{
-//    DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](DataComboArr::value_type& Value)
-//        {
-//            if (0 == strcmp(pMeshGroupName, get<Tuple_CharPtr>(Value)))
-//                return true;
-//            else
-//                return false;
-//        });
-//
-//    if (MeshGroupIter == m_arrMeshGroupName.end())
-//    {
-//        char* pGroupName = new char[260];
-//        ZeroMemory(pGroupName, sizeof(char) * 260);
-//        memcpy_s(pGroupName, sizeof(char) * 260, pMeshGroupName, sizeof(char) * 260);
-//        m_arrMeshGroupName.push_back(make_tuple(pGroupName, false));
-//
-//        string strObjectGroup = pMeshGroupName;
-//        size_t HashNum = HASHING(string, strObjectGroup);
-//
-//        OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-//        if (ObjMapIter == m_ObjectGroupMap.end())
-//        {
-//            m_ObjectGroupMap.emplace(HashNum, vector<CGameObject*>());
-//        }
-//
-//        DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-//        if (DataMapIter == m_ObjectDataGroupMap.end())
-//        {
-//            m_ObjectDataGroupMap.emplace(HashNum, vector<MTO_DATA>());
-//        }
-//        Confirm_Data();
-//    }
-//
-//
-//}
-//void CWindow_Map::Delete_ObjectNamingMap(char* pMeshGroupName)
-//{
-//    DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](DataComboArr::value_type& Value)
-//        {
-//            if (0 == strcmp(pMeshGroupName, get<Tuple_CharPtr>(Value)))
-//                return true;
-//            else
-//                return false;
-//        });
-//
-//    if (MeshGroupIter != m_arrMeshGroupName.end())
-//    {
-//        char* pGroupName = get<Tuple_CharPtr>((*MeshGroupIter));
-//
-//        string strObjectGroup = pGroupName;
-//        size_t HashNum = HASHING(string, strObjectGroup);
-//        OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-//        DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-//        if (ObjMapIter != m_ObjectGroupMap.end())
-//        {
-//            for (list<CGameObject*>::value_type& Value : ObjMapIter->second)
-//            {
-//                DELETE_GAMEOBJECT(Value);
-//            }
-//            ObjMapIter->second.clear();
-//            m_ObjectGroupMap.erase(ObjMapIter);
-//        }
-//        if (DataMapIter != m_ObjectDataGroupMap.end())
-//        {
-//            DataMapIter->second.clear();
-//            m_ObjectDataGroupMap.erase(DataMapIter);
-//        }
-//
-//        m_arrMeshGroupName.erase(MeshGroupIter);
-//        Safe_Delete_Array(pGroupName);
-//        m_SelectObjectGroupIndex = (m_SelectObjectGroupIndex <= 1) ? 0 : m_SelectObjectGroupIndex - 1;
-//        Confirm_Data();
-//    }
-//}
-
-//void CWindow_Map::Add_Object(string MeshGroup, string Meshpath, string MeshName)
-//{
-//    vector<CGameObject*>* pObjectList = nullptr;
-//    vector<MTO_DATA>* pDataList = nullptr;
-//    wstring strObjectGroupName;
-//
-//    size_t HashNum = HASHING(string, MeshGroup);
-//    OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-//    DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-//    if (ObjMapIter == m_ObjectGroupMap.end())
-//    {
-//        m_ObjectGroupMap.emplace(HashNum, vector<CGameObject*>());
-//        pObjectList = &(m_ObjectGroupMap[HashNum]);
-//    }
-//    else
-//    {
-//        pObjectList = &ObjMapIter->second;
-//    }
-//    if (DataMapIter == m_ObjectDataGroupMap.end())
-//    {
-//        m_ObjectDataGroupMap.emplace(HashNum, vector<MTO_DATA>());
-//        pDataList = &(m_ObjectDataGroupMap[HashNum]);
-//    }
-//    else
-//    {
-//        pDataList = &DataMapIter->second;
-//    }
-//
-//    if (nullptr == pObjectList)
-//        assert(0);
-//    if (nullptr == pDataList)
-//        assert(0);
-//    //Meshpath
-//    wstring strName = CFunctor::To_Wstring(MeshName);
-//    size_t NameHashNum = HASHING(wstring, strName);
-//    map<size_t, _int>::iterator CallStackIter = m_ObjNameCallStack.find(NameHashNum);
-//    if (CallStackIter == m_ObjNameCallStack.end())
-//    {
-//        m_ObjNameCallStack.emplace(NameHashNum, 0);
-//    }
-//
-//    MTO_DATA tData;
-//    tData.Initialize();
-//    tData.strMeshName = strName + wstring(TEXT("_")) + to_wstring(m_ObjNameCallStack[NameHashNum]++);
-//    //tData.strGroupName = CFunctor::To_Wstring(MeshGroup);
-//    tData.strMeshPath = CFunctor::To_Wstring(Meshpath);
-//    tData.ObjectStateMatrix.Identity();
-//
-//    CStructure* pGameObject = CStructure::Create(tData.strMeshPath);
-//    if (nullptr == pGameObject)
-//        assert(0);
-//    pGameObject->Initialize();
-//    CREATE_GAMEOBJECT(pGameObject, GROUP_DECORATION);
-//
-//    pObjectList->push_back(pGameObject);
-//    pDataList->push_back(tData);
-//    Confirm_Data();
-//
-//}
-//void CWindow_Map::Add_Object(string MeshGroup, MTO_DATA& tData)
-//{
-//    vector<CGameObject*>* pObjectList = nullptr;
-//    vector<MTO_DATA>* pDataList = nullptr;
-//    wstring strObjectGroupName;
-//
-//    size_t HashNum = HASHING(string, MeshGroup);
-//    OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-//    DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-//    if (ObjMapIter == m_ObjectGroupMap.end())
-//    {
-//        m_ObjectGroupMap.emplace(HashNum, vector<CGameObject*>());
-//        pObjectList = &(m_ObjectGroupMap[HashNum]);
-//    }
-//    else
-//    {
-//        pObjectList = &ObjMapIter->second;
-//    }
-//
-//    if (DataMapIter == m_ObjectDataGroupMap.end())
-//    {
-//        m_ObjectDataGroupMap.emplace(HashNum, vector<MTO_DATA>());
-//        pDataList = &(m_ObjectDataGroupMap[HashNum]);
-//    }
-//    else
-//    {
-//        pDataList = &DataMapIter->second;
-//    }
-//
-//    if (nullptr == pObjectList)
-//        assert(0);
-//    if (nullptr == pDataList)
-//        assert(0);
-//    //Meshpath
-//    wstring strName = tData.strMeshName;
-//    _int iIndexLength = strName.rfind(TEXT("_"), strName.length() + 1);
-//    strName = strName.substr(0, iIndexLength);
-//    size_t NameHashNum = HASHING(wstring, strName);
-//    map<size_t, _int>::iterator CallStackIter = m_ObjNameCallStack.find(NameHashNum);
-//    if (CallStackIter == m_ObjNameCallStack.end())
-//    {
-//        m_ObjNameCallStack.emplace(NameHashNum, 0);
-//    }
-//    m_ObjNameCallStack[NameHashNum]++;
-//
-//    CStructure* pGameObject = CStructure::Create(tData.strMeshPath, tData.vScale, tData.ObjectStateMatrix);
-//    if (nullptr == pGameObject)
-//        assert(0);
-//    pGameObject->Initialize();
-//    CREATE_GAMEOBJECT(pGameObject, GROUP_DECORATION);
-//
-//    pObjectList->push_back(pGameObject);
-//    pDataList->push_back(tData);
-//
-//    Confirm_Data();
-//
-//}
-//void CWindow_Map::Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<MTO_DATA>& DataList)
-//{
-//    if (ObjList.size() != DataList.size())
-//        assert(0);
-//    if (ObjList.empty())
-//        return;
-//    wstring CmpMeshName = CFunctor::To_Wstring(MeshName);
-//    _int ObjectIndex = 0;
-//    vector<MTO_DATA>::iterator DataListIter = DataList.begin();
-//    for (; DataListIter != DataList.end(); ++DataListIter)
-//    {
-//        if ((*DataListIter).strMeshName == CmpMeshName)
-//            break;
-//        ObjectIndex++;
-//    }
-//    if (DataListIter == DataList.end())
-//        return;
-//
-//    wstring strName = (*DataListIter).strMeshName;
-//    _int iIndexLength = strName.rfind(TEXT("_"), strName.length() + 1);
-//    strName = strName.substr(0, iIndexLength);
-//    size_t NameHashNum = HASHING(wstring, strName);
-//    map<size_t, _int>::iterator CallStackIter = m_ObjNameCallStack.find(NameHashNum);
-//    if (--(CallStackIter->second) == 0)
-//    {
-//        m_ObjNameCallStack.erase(CallStackIter);
-//    }
-//
-//
-//
-//    DataList.erase(DataListIter);
-//
-//    if (ObjectIndex >= _int(ObjList.size()))
-//        assert(0);
-//
-//
-//    CGameObject* pDelete = ObjList[ObjectIndex];
-//    vector<CGameObject*>::iterator ObjListIter = ObjList.begin();
-//
-//    for (_int CompIndex = 0; CompIndex < ObjectIndex; ++CompIndex)
-//    {
-//        ObjListIter++;
-//    }
-//    ObjList.erase(ObjListIter);
-//    DELETE_GAMEOBJECT(pDelete);
-//    Confirm_Data();
-//
-//}
-
-//void CWindow_Map::Clear_ObjectGroup(char* pMeshGroupName)
-//{
-//    DataComboArr::iterator MeshGroupIter = find_if(m_arrMeshGroupName.begin(), m_arrMeshGroupName.end(), [&pMeshGroupName](DataComboArr::value_type& Value)
-//        {
-//            if (0 == strcmp(pMeshGroupName, get<Tuple_CharPtr>(Value)))
-//                return true;
-//            else
-//                return false;
-//        });
-//
-//    if (MeshGroupIter != m_arrMeshGroupName.end())
-//    {
-//        string strObjectGroup = get<Tuple_CharPtr>((*MeshGroupIter));
-//        size_t HashNum = HASHING(string, strObjectGroup);
-//        OBJGROUPING::iterator ObjMapIter = m_ObjectGroupMap.find(HashNum);
-//        DATAGROUPING::iterator DataMapIter = m_ObjectDataGroupMap.find(HashNum);
-//        if (ObjMapIter != m_ObjectGroupMap.end())
-//        {
-//            for (list<CGameObject*>::value_type& Value : ObjMapIter->second)
-//            {
-//                DELETE_GAMEOBJECT(Value);
-//            }
-//            ObjMapIter->second.clear();
-//            m_ObjectGroupMap.erase(ObjMapIter);
-//        }
-//        if (DataMapIter != m_ObjectDataGroupMap.end())
-//        {
-//            DataMapIter->second.clear();
-//            m_ObjectDataGroupMap.erase(DataMapIter);
-//        }
-//        Confirm_Data();
-//
-//    }
-//}
 #pragma endregion
 
-#pragma region static value 데이터 컨트롤러
-//static 
-//static bool ObjectLightFlagOpt[4] = { false };
-#pragma endregion
 
-//void CWindow_Map::Func_DataControl()
-//{
-    //string strPickInfo = "";
-    //if (PICK_OBJECT != m_ePickingType)
-    //{
-    //    strPickInfo = "Use_Picking";
-    //}
-    //else
-    //{
-    //    strPickInfo = "Unuse_Picking";
-    //}
-    //if (ImGui::Button(strPickInfo.c_str()))
-    //{
-    //    if (PICK_OBJECT == m_ePickingType)
-    //    {
-    //        m_ePickingType = PICK_NONE;
-    //    }
-    //    else
-    //    {
-    //        m_ePickingType = PICK_OBJECT;
-    //    }
-    //}
-    //ImGui::Spacing();
-
-    //switch (m_eControlType)
-    //{
-    //case CONTROL_SCALING:
-    //    ImGui::Text("MODE : SCALING");
-    //    break;
-    //case CONTROL_ROTATE:
-    //    ImGui::Text("MODE : ROTATE");
-    //    break;
-    //case CONTROL_MOVE:
-    //    ImGui::Text("MODE : MOVE");
-    //    break;
-    //}
-    //ImGui::Spacing();
-
-    //if (ImGui::Button("Confirm"))
-    //{
-    //    m_ePickingType = PICK_NONE;
-    //    Confirm_Data();
-    //}
-    //ImGui::Spacing();
-
-    //if (ImGui::CollapsingHeader("Object Matrix(Read-Only)", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
-    //{
-    //    Show_ObjectData();
-    //}
-    //ImGui::Spacing();
-
-    //if (ImGui::CollapsingHeader("Object Speed", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
-    //{
-    //    Set_ControlSpeed();
-    //}
-    //ImGui::Spacing();
-
-    //if (ImGui::CollapsingHeader("Light Option", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
-    //{
-    //    if (ImGui::Checkbox("LightOpt_1", &ObjectLightFlagOpt[0]))
-    //    {
-    //    }
-    //    if (ImGui::Checkbox("LightOpt_2", &ObjectLightFlagOpt[1]))
-    //    {
-    //    }
-    //    if (ImGui::Checkbox("LightOpt_3", &ObjectLightFlagOpt[2]))
-    //    {
-    //    }
-    //    if (ImGui::Checkbox("LightOpt_4", &ObjectLightFlagOpt[3]))
-    //    {
-    //    }
-    //}
-//}
-
-//void CWindow_Map::SetUp_CurSelectObject()
-//{
-    //string CurSelectMeshGroup = get<Tuple_CharPtr>(m_arrMeshGroupName[m_SelectObjectGroupIndex]);
-    //size_t HashNum = HASHING(string, CurSelectMeshGroup);
-
-    //OBJGROUPING::iterator ObjGroupIter = m_ObjectGroupMap.find(HashNum);
-    //DATAGROUPING::iterator DataGroupIter = m_ObjectDataGroupMap.find(HashNum);
-
-    //OBJVECTOR* pObjGroupArr = nullptr;
-    //DATAVECTOR* pDataGroupArr = nullptr;
-
-    //if (m_ObjectGroupMap.end() != ObjGroupIter)
-    //{
-    //    pObjGroupArr = &(ObjGroupIter->second);
-    //}
-
-    //if (m_ObjectDataGroupMap.end() != DataGroupIter)
-    //{
-    //    pDataGroupArr = &(DataGroupIter->second);
-    //}
-
-    //if (nullptr == pObjGroupArr)
-    //    return;
-    //else
-    //    m_pCurSelectGameObject = (*pObjGroupArr)[m_iCurSelectObjecNametIndex];
-
-    //if (nullptr == pDataGroupArr)
-    //    return;
-    //else
-    //    m_pCurSelectData = &((*pDataGroupArr)[m_iCurSelectObjecNametIndex]);
-
-    //if (nullptr != m_pCurSelectGameObject)
-    //    m_pObjTransform = m_pCurSelectGameObject->Get_Transform();
-    //else
-    //{
-    //    m_pObjTransform = nullptr;
-    //}
-//}
-
-//void CWindow_Map::Confirm_Data()
-//{
-    //m_pCurSelectGameObject = nullptr;
-    //m_pObjTransform = nullptr;
-    //m_pCurSelectData = nullptr;
-    //m_eControlType = CONTROL_MOVE;
-    //m_fTickPerScalingSpeed = 1.f;
-    //m_fTickPerRotSpeed = 1.f;
-    //m_fTickPerMoveSpeed = 1.f;
-//}
-
-//void CWindow_Map::Show_ObjectData()
-//{
-    //if (nullptr == m_pCurSelectData)
-    //    return;
-    //else
-    //{
-    //    _float* pRight = (_float*)(&m_pCurSelectData->ObjectStateMatrix._11);
-    //    _float* pUp = (_float*)(&m_pCurSelectData->ObjectStateMatrix._21);
-    //    _float* pLook = (_float*)(&m_pCurSelectData->ObjectStateMatrix._31);
-    //    _float* pPosition = (_float*)(&m_pCurSelectData->ObjectStateMatrix._41);
-    //    ImGui::InputFloat4("##ObjectRight", pRight, "%.2f", ImGuiInputTextFlags_ReadOnly);
-    //    ImGui::InputFloat4("##ObjectUp", pUp, "%.2f", ImGuiInputTextFlags_ReadOnly);
-    //    ImGui::InputFloat4("##ObjectLook", pLook, "%.2f", ImGuiInputTextFlags_ReadOnly);
-    //    ImGui::InputFloat4("##ObjectPosition", pPosition, "%.2f", ImGuiInputTextFlags_ReadOnly);
-    //}
-//}
-
-//void CWindow_Map::Set_ControlSpeed()
-//{
-    //ImGui::Text("Scale : ");
-    //ImGui::SameLine();
-    //ImGui::SliderFloat("##Scaling Speed", &m_fTickPerScalingSpeed, 0.1f, 10.f, "%.1f");
-    //ImGui::Text("Rotate : ");
-    //ImGui::SameLine();
-    //ImGui::SliderFloat("##Rotate Speed", &m_fTickPerRotSpeed, 0.1f, 90.f, "%.1f");
-    //ImGui::Text("Move : ");
-    //ImGui::SameLine();
-    //ImGui::SliderFloat("##Move Speed", &m_fTickPerMoveSpeed, 0.1f, 50.f, "%.1f");
-//}
-
-//void CWindow_Map::Select_DataControlFlag()
-//{
-    //if (KEY(Z, TAP))
-    //{
-    //    m_eControlType = CONTROL_MOVE;
-    //}
-    //if (KEY(X, TAP))
-    //{
-    //    m_eControlType = CONTROL_ROTATE;
-    //}
-    //if (KEY(C, TAP))
-    //{
-    //    m_eControlType = CONTROL_SCALING;
-    //}
-//}
-
-//void CWindow_Map::Control_Object()
-//{
-    //switch (m_eControlType)
-    //{
-    //case CONTROL_SCALING:
-    //    Scaling_Object();
-    //    break;
-    //case CONTROL_ROTATE:
-    //    Rotate_Object();
-    //    break;
-    //case CONTROL_MOVE:
-    //    Position_Object();
-    //    break;
-    //}
-//}
-
-
-//void CWindow_Map::Scaling_Object()
-//{
-    //if (nullptr == m_pObjTransform)
-    //    return;
-    //_float4 ScaleValue = m_pObjTransform->Get_Scale();
-    ////RightDir
-    //if (KEY(INSERTKEY, HOLD))
-    //{
-    //    ScaleValue.x += m_fTickPerScalingSpeed * fDT(0);
-    //}
-    //if (KEY(DELETEKEY, HOLD))
-    //{
-    //    ScaleValue.x -= m_fTickPerScalingSpeed * fDT(0);
-    //}
-
-    ////UpDir
-    //if (KEY(HOMEKEY, HOLD))
-    //{
-    //    ScaleValue.y += m_fTickPerScalingSpeed * fDT(0);
-    //}
-    //if (KEY(ENDKEY, HOLD))
-    //{
-    //    ScaleValue.y -= m_fTickPerScalingSpeed * fDT(0);
-    //}
-
-    ////LookDir
-    //if (KEY(PAGEUP, HOLD))
-    //{
-    //    ScaleValue.z += m_fTickPerScalingSpeed * fDT(0);
-    //}
-    //if (KEY(PAGEDOWN, HOLD))
-    //{
-    //    ScaleValue.z -= m_fTickPerScalingSpeed * fDT(0);
-    //}
-
-    //m_pCurSelectGameObject->Get_Transform()->Set_Scale(ScaleValue);
-//}
-
-//void CWindow_Map::Rotate_Object()
-//{
-    //if (nullptr == m_pObjTransform)
-    //    return;
-    ////RightAxis
-    //if (KEY(HOMEKEY, HOLD))
-    //{
-    //    _float4 Right = m_pObjTransform->Get_World(WORLD_RIGHT);
-
-    //    CUtility_Transform::Turn_ByAngle(m_pObjTransform, Right, m_fTickPerRotSpeed * fDT(0));
-    //}
-    //if (KEY(ENDKEY, HOLD))
-    //{
-    //    _float4 Right = m_pObjTransform->Get_World(WORLD_RIGHT);
-
-    //    CUtility_Transform::Turn_ByAngle(m_pObjTransform, Right, -m_fTickPerRotSpeed * fDT(0));
-    //}
-
-    ////UpAxis
-    //if (KEY(DELETEKEY, HOLD))
-    //{
-    //    _float4 Up = m_pObjTransform->Get_World(WORLD_UP);
-
-    //    CUtility_Transform::Turn_ByAngle(m_pObjTransform, Up, -m_fTickPerRotSpeed * fDT(0));
-    //}
-    //if (KEY(PAGEDOWN, HOLD))
-    //{
-    //    _float4 Up = m_pObjTransform->Get_World(WORLD_UP);
-
-    //    CUtility_Transform::Turn_ByAngle(m_pObjTransform, Up, m_fTickPerRotSpeed * fDT(0));
-    //}
-
-    ////LookAxis
-    //if (KEY(INSERTKEY, HOLD))
-    //{
-    //    _float4 Look = m_pObjTransform->Get_World(WORLD_LOOK);
-
-    //    CUtility_Transform::Turn_ByAngle(m_pObjTransform, Look, -m_fTickPerRotSpeed * fDT(0));
-    //}
-    //if (KEY(PAGEUP, HOLD))
-    //{
-    //    _float4 Look = m_pObjTransform->Get_World(WORLD_LOOK);
-
-    //    CUtility_Transform::Turn_ByAngle(m_pObjTransform, Look, m_fTickPerRotSpeed * fDT(0));
-    //}
-
-
-//}
-
-//void CWindow_Map::Position_Object()
-//{
-    //if (nullptr == m_pObjTransform)
-    //    return;
-    //_float4 PosValue = m_pObjTransform->Get_World(WORLD_POS);
-    ////RightDir
-    //if (KEY(INSERTKEY, HOLD))
-    //{
-    //    PosValue.x += m_fTickPerMoveSpeed * fDT(0);
-    //}
-    //if (KEY(DELETEKEY, HOLD))
-    //{
-    //    PosValue.x -= m_fTickPerMoveSpeed * fDT(0);
-    //}
-
-    ////UpDir
-    //if (KEY(HOMEKEY, HOLD))
-    //{
-    //    PosValue.y -= m_fTickPerMoveSpeed * fDT(0);
-    //}
-    //if (KEY(ENDKEY, HOLD))
-    //{
-    //    PosValue.y += m_fTickPerMoveSpeed * fDT(0);
-    //}
-
-    ////LookDir
-    //if (KEY(PAGEUP, HOLD))
-    //{
-    //    PosValue.z += m_fTickPerMoveSpeed * fDT(0);
-    //}
-    //if (KEY(PAGEDOWN, HOLD))
-    //{
-    //    PosValue.z -= m_fTickPerMoveSpeed * fDT(0);
-    //}
-
-    //m_pCurSelectGameObject->Get_Transform()->Set_World(WORLD_POS, PosValue);
-//}
-
-//void CWindow_Map::Place_Object()
-//{
-    //if (nullptr == m_pObjTransform)
-    //    return;
-    //m_pObjTransform->Set_World(WORLD_POS, m_OutPos);
-//}
-
-//void CWindow_Map::Change_Object_UpDir()
-//{
-    /*if (nullptr == m_pObjTransform)
-        return;
-    
-    _vector xNormal = -m_OutNorm.XMLoad();
-    _vector xRight = XMVector3Cross( xNormal, XMVectorSet(0.f, 0.f, 1.f, 0.f));
-    _vector xLook = XMVector3Cross(xRight, xNormal);
-    _float4 Scale = m_pObjTransform->Get_Scale();
-
-    _float4 vRight;
-    _float4 vUp;
-    _float4 vLook;
-    XMStoreFloat4(&vRight, xRight);
-    XMStoreFloat4(&vUp, xNormal);
-    XMStoreFloat4(&vLook, xLook);
-
-    m_pObjTransform->Set_World(WORLD_RIGHT, vRight);
-    m_pObjTransform->Set_World(WORLD_UP, vUp);
-    m_pObjTransform->Set_World(WORLD_LOOK, vLook);
-    m_pObjTransform->Set_Scale(Scale);*/
-//}
-
-//void CWindow_Map::Update_Data()
-//{
-    //if (nullptr == m_pCurSelectData)
-    //    return;
-    //if (m_pCurSelectGameObject)
-    //{
-    //    m_pCurSelectData->vScale = m_pCurSelectGameObject->Get_Transform()->Get_Scale();
-    //    m_pCurSelectData->ObjectStateMatrix = m_pCurSelectGameObject->Get_Transform()->Get_WorldMatrix();
-    //}
-//}
 
 
 #pragma region static value 라이트 컨트롤러 
-static int LightGroupIndex = 0;
-static string SelectLightGroup = "";
-static char szLightGroupName[MAXCHAR] = "";
-static char szLightName[MAXCHAR] = "";
-static int LightTypeIndex = 0;
+
 static float LightPos[3] = { 0.f };
 static float LightDir[3] = { 0.f };
 static float LightRange = 0.f;
+static float LightOriginRange = 0.f;
+static float LightRandomRange = 0.f;
+static float LightTime = 999999.f;
+static float LightOffset[3] = { 0.f };
 static float LightDiffuse[3] = { 0.f };
 static float LightAmbient[3] = { 0.f };
 static float LightSpecular[3] = { 0.f };
@@ -991,61 +357,76 @@ static bool LightFlagOpt[4] = { false };
 #pragma region 라이트 컨트롤함수
 void CWindow_Map::Func_LightControl()
 {
-    ImGui::Text("Light GroupList");
-    //1. 빛 그룹 리스트 콤보
-    if (!m_arrLightGroupCombo.empty())
+    if (ImGui::BeginListBox("##LightListBox"))
     {
-        SelectLightGroup = get<Tuple_CharPtr>(m_arrLightGroupCombo[LightGroupIndex]);
+        for (_uint i = 0; i < m_LightDescs.size(); ++i)
+        {
+            _bool bSelect = false;
+            if (i = m_iCurSelectLight)
+            {
+                bSelect = true;
+            }
+            if (ImGui::Selectable(to_string(i).c_str(), bSelect))
+            {
+                m_iCurSelectLight = i;
+            }
+        }
+        ImGui::EndListBox();
     }
-    Make_Combo("##Light_GroupList", m_arrLightGroupCombo, &LightGroupIndex, bind(&CWindow_Map::EmptyFunction, this));
-    DebugData("Debug_SelectLightGroup", SaveFilePath);
 
-    if (ImGui::InputText("##Light_GroupName", szLightGroupName, sizeof(char) * MAXCHAR))
-    {
-
-    }
-    if (ImGui::Button("Add Group"))
-    {
-        Add_LightGroupList(szLightGroupName);
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Delete Group"))
-    {
-        Delete_LightGroupList(szLightGroupName);
-    }
 
     //해당 그룹 소속 빛 정보 리스트
     //빛 추가
     if (ImGui::Button("Add Light"))
     {
-        Add_Light(szLightName);
+        Add_Light();
     }
     ImGui::SameLine();
     //빛 제거
     if (ImGui::Button("Delete Light"))
     {
-        Delete_Light(szLightName);
+        Delete_Light();
     }
-
+    ImGui::SameLine();
+    if (ImGui::Button("Clone Light"))
+    {
+        Clone_Light();
+    }
 
 
     if (ImGui::CollapsingHeader("Light Default", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
+        ImGui::Text("Light Tag");
+        char szTagName[MAXCHAR] = "";
+        if (m_iCurSelectLight >= 0 && m_iCurSelectLight < _int(m_LightDescs.size()))
+        {
+            string strTag = get<0>(m_LightDescs[m_iCurSelectLight]);
+            strcpy_s(szTagName, strTag.c_str());
+        }
+        if (ImGui::InputText("##Input Tag", szTagName, sizeof(char) * MAXCHAR))
+        {
+            if (m_iCurSelectLight >= 0 && m_iCurSelectLight < _int(m_LightDescs.size()))
+            {
+                get<0>(m_LightDescs[m_iCurSelectLight]) = szTagName;
+            }
+        }
         //2. 빛 종류
         ImGui::Text("Light Type");
-        Make_Combo("##Light_TypeList", m_arrLightTypeCombo, &LightTypeIndex, bind(&CWindow_Map::EmptyFunction, this));
+        Make_Combo("##Light_TypeList", m_arrLightTypeCombo, &m_iLightTypeIndex, bind(&CWindow_Map::Set_LightType, this));
         ImGui::Spacing();
         //3. 위치
         ImGui::Text("Light Pos");
-        if (ImGui::InputFloat3("##Light_Pos", LightPos, "%.1f", ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::DragFloat3("##Light_Pos", LightPos))
         {
+            Set_LightPos(LightPos);
         }
         ImGui::Spacing();
 
         //4. 방향
         ImGui::Text("Light Dir");
-        if (ImGui::InputFloat3("##Light_Dir", LightDir, "%.1f", ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::DragFloat3("##Light_Dir", LightDir))
         {
+            Set_LightDir(LightDir);
         }
         ImGui::Spacing();
 
@@ -1057,9 +438,23 @@ void CWindow_Map::Func_LightControl()
         }
         if (ImGui::DragFloat("##Light_Range", &LightRange, 0.1f, 0.0f, 0.f, "%.1f"))
         {
+            Set_LightRange(LightRange);
+        }
+        if (ImGui::CollapsingHeader("RandomRange"))
+        {
 
+            ImGui::Text("Light RandomRange");
+            if (0.f >= LightRandomRange)
+            {
+                LightRandomRange = 0.f;
+            }
+            if (ImGui::DragFloat("##Light RandomRange", &LightRandomRange, 0.1f, 0.0f, 0.f, "%.1f"))
+            {
+                Set_LightRandomRange(LightRandomRange);
+            }
         }
         ImGui::Spacing();
+
     }
 
     if (ImGui::CollapsingHeader("Light Color", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
@@ -1068,6 +463,7 @@ void CWindow_Map::Func_LightControl()
         ImGui::Text("Light Diffuse");
         if (ImGui::ColorEdit3("##Light_Diffuse", LightDiffuse))
         {
+            Set_LightDifColor(LightDiffuse);
         }
         ImGui::Spacing();
 
@@ -1075,6 +471,7 @@ void CWindow_Map::Func_LightControl()
         ImGui::Text("Light Ambient");
         if (ImGui::ColorEdit3("##Light_Ambient", LightAmbient))
         {
+            Set_LightAmbColor(LightAmbient);
         }
         ImGui::Spacing();
 
@@ -1082,10 +479,10 @@ void CWindow_Map::Func_LightControl()
         ImGui::Text("Light Specular");
         if (ImGui::ColorEdit3("##Light_Specular", LightSpecular))
         {
+            Set_LightSpecColor(LightSpecular);
         }
         ImGui::Spacing();
     }
-
     //9. 타입플래그
     if (ImGui::CollapsingHeader("Light Option", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
@@ -1104,10 +501,8 @@ void CWindow_Map::Func_LightControl()
     }
 }
 
-void CWindow_Map::Ready_LightGroup()
-{
 
-}
+
 void CWindow_Map::Ready_LightType()
 {
     char* pLightType = new char[260];
@@ -1119,51 +514,175 @@ void CWindow_Map::Ready_LightType()
     ZeroMemory(pLightType, sizeof(char) * 260);
     memcpy_s(pLightType, sizeof(char) * 260, "POINT", sizeof(char) * 260);
     m_arrLightTypeCombo.push_back(make_tuple(pLightType, false));
+
+    //pLightType = new char[260];
+    //ZeroMemory(pLightType, sizeof(char) * 260);
+    //memcpy_s(pLightType, sizeof(char) * 260, "TARGET", sizeof(char) * 260);
+    //m_arrLightTypeCombo.push_back(make_tuple(pLightType, false));
 }
 
-void CWindow_Map::Add_LightGroupList(char* pLightGroupName)
+void CWindow_Map::Add_Light()
 {
-    DataComboArr::iterator LightGroupIter = find_if(m_arrLightGroupCombo.begin(), m_arrLightGroupCombo.end(), [&pLightGroupName](DataComboArr::value_type& Value)
-        {
-            if (0 == strcmp(pLightGroupName, get<Tuple_CharPtr>(Value)))
-                return true;
-            else
-                return false;
-        });
+    LIGHTDESC tLightDesc;
+    ZeroMemory(&tLightDesc, sizeof(LIGHTDESC));
+    tLightDesc.fLightTime = 99999999.f;
+    m_LightDescs.push_back(make_tuple(string("New Light"), tLightDesc));
 
-    if (LightGroupIter == m_arrLightGroupCombo.end())
+    if (FAILED(GAMEINSTANCE->Add_Light(tLightDesc)))
     {
-        char* pLightGroup = new char[260];
-        ZeroMemory(pLightGroup, sizeof(char) * 260);
-        memcpy_s(pLightGroup, sizeof(char) * 260, pLightGroupName, sizeof(char) * 260);
-        m_arrLightGroupCombo.push_back(make_tuple(pLightGroup, false));
-    }
-
-
-}
-void CWindow_Map::Delete_LightGroupList(char* pLightGroupName)
-{
-    DataComboArr::iterator LightGroupIter = find_if(m_arrLightGroupCombo.begin(), m_arrLightGroupCombo.end(), [&pLightGroupName](DataComboArr::value_type& Value)
-        {
-            if (0 == strcmp(pLightGroupName, get<Tuple_CharPtr>(Value)))
-                return true;
-            else
-                return false;
-        });
-
-    if (LightGroupIter != m_arrLightGroupCombo.end())
-    {
-        char* pGroupName = get<Tuple_CharPtr>((*LightGroupIter));
-        m_arrLightGroupCombo.erase(LightGroupIter);
-        Safe_Delete_Array(pGroupName);
+        assert(0);
     }
 }
-
-void CWindow_Map::Add_Light(char* pLightName)
+void CWindow_Map::Delete_Light()
 {
+    _int LightIndex = m_iCurSelectLight;
+    _int CmpIndex = 0;
+    vector<tuple<string, LIGHTDESC>>::iterator iter = m_LightDescs.begin();
+    for (; iter != m_LightDescs.end(); ++iter)
+    {
+        if (CmpIndex == LightIndex)
+        {
+            break;
+        }
+        CmpIndex++;
+    }
+    m_LightDescs.erase(iter);
+    GAMEINSTANCE->Remove_Light(LightIndex);
 }
-void CWindow_Map::Delete_Light(char* pLightName)
+void CWindow_Map::Clone_Light()
 {
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+    LIGHTDESC tLightDesc;
+    memcpy(&tLightDesc, &get<1>(m_LightDescs[m_iCurSelectLight]), sizeof(LIGHTDESC));
+    m_LightDescs.push_back(make_tuple(string("New Light"), tLightDesc));
+    if (FAILED(GAMEINSTANCE->Add_Light(tLightDesc)))
+    {
+        assert(0);
+    }
+}
+
+void CWindow_Map::Set_LightTag(string strTag)
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+    get<0>(m_LightDescs[m_iCurSelectLight]) = strTag;
+}
+
+void CWindow_Map::Set_LightType()
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+    get<1>(m_LightDescs[m_iCurSelectLight]).eType = LIGHTDESC::TYPE(m_iLightTypeIndex);
+    CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
+    if(pLight != nullptr)
+        pLight->Get_LightDesc_Modify().eType = LIGHTDESC::TYPE(m_iLightTypeIndex);
+
+
+}
+void CWindow_Map::Set_LightPos(float* PosArr)
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+
+    memcpy(&get<1>(m_LightDescs[m_iCurSelectLight]).vPosition, PosArr, sizeof(_float3));
+    get<1>(m_LightDescs[m_iCurSelectLight]).vPosition.w = 1.f;
+    CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
+    if (pLight != nullptr)
+        pLight->Get_LightDesc_Modify().vPosition = get<1>(m_LightDescs[m_iCurSelectLight]).vPosition;
+}
+void CWindow_Map::Set_LightOffset(float* OffsetArr)
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+
+    memcpy(&get<1>(m_LightDescs[m_iCurSelectLight]).vOffset, OffsetArr, sizeof(_float3));
+    get<1>(m_LightDescs[m_iCurSelectLight]).vOffset.w = 1.f;
+    CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
+    if (pLight != nullptr)
+        pLight->Get_LightDesc_Modify().vOffset = get<1>(m_LightDescs[m_iCurSelectLight]).vOffset;
+}
+void CWindow_Map::Set_LightDir(float* DirArr)
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+
+    memcpy(&get<1>(m_LightDescs[m_iCurSelectLight]).vDirection, DirArr, sizeof(_float3));
+    get<1>(m_LightDescs[m_iCurSelectLight]).vDirection.w = 0.f;
+    CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
+    if (pLight != nullptr)
+        pLight->Get_LightDesc_Modify().vDirection = get<1>(m_LightDescs[m_iCurSelectLight]).vDirection;
+}
+void CWindow_Map::Set_LightRange(float fRange)
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+
+    get<1>(m_LightDescs[m_iCurSelectLight]).fRange = fRange;
+    CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
+    if (pLight != nullptr)
+        pLight->Get_LightDesc_Modify().fRange = get<1>(m_LightDescs[m_iCurSelectLight]).fRange;
+}
+
+void CWindow_Map::Set_LightRandomRange(float fRandomRange)
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+
+    get<1>(m_LightDescs[m_iCurSelectLight]).fRandomRange = fRandomRange;
+    CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
+    if (pLight != nullptr)
+        pLight->Get_LightDesc_Modify().fRandomRange = get<1>(m_LightDescs[m_iCurSelectLight]).fRandomRange;
+}
+void CWindow_Map::Set_LightDifColor(float* ColorValue)
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+    memcpy(&get<1>(m_LightDescs[m_iCurSelectLight]).vDiffuse, ColorValue, sizeof(_float3));
+    get<1>(m_LightDescs[m_iCurSelectLight]).vDiffuse.w = 1.f;
+    CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
+    if (pLight != nullptr)
+        pLight->Get_LightDesc_Modify().vDiffuse = get<1>(m_LightDescs[m_iCurSelectLight]).vDiffuse;
+}
+void CWindow_Map::Set_LightAmbColor(float* ColorValue)
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+    memcpy(&get<1>(m_LightDescs[m_iCurSelectLight]).vAmbient, ColorValue, sizeof(_float3));
+    get<1>(m_LightDescs[m_iCurSelectLight]).vAmbient.w = 1.f;
+
+    CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
+    if (pLight != nullptr)
+        pLight->Get_LightDesc_Modify().vAmbient = get<1>(m_LightDescs[m_iCurSelectLight]).vAmbient;
+}
+void CWindow_Map::Set_LightSpecColor(float* ColorValue)
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+    memcpy(&get<1>(m_LightDescs[m_iCurSelectLight]).vSpecular, ColorValue, sizeof(_float3));
+    get<1>(m_LightDescs[m_iCurSelectLight]).vSpecular.w = 1.f;
+
+
+    CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
+    if (pLight != nullptr)
+        pLight->Get_LightDesc_Modify().vSpecular = get<1>(m_LightDescs[m_iCurSelectLight]).vSpecular;
+}
+void CWindow_Map::Set_LightOption()
+{
+    if (m_iCurSelectLight < 0 || m_iCurSelectLight >= _int(m_LightDescs.size()))
+        return;
+
+}
+void CWindow_Map::Update_Light()
+{
+    GAMEINSTANCE->Clear_Lights();
+    for (auto& elem : m_LightDescs)
+    {
+        if (FAILED(GAMEINSTANCE->Add_Light(get<1>(elem))))
+        {
+            assert(0);
+        }
+    }
 }
 #pragma endregion
 

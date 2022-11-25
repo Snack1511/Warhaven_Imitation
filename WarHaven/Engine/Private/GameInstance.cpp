@@ -638,6 +638,31 @@ void CGameInstance::Clear_Lights()
 	m_pLightManager->Clear_Lights();
 }
 
+void CGameInstance::Remove_Light(_uint iIndex)
+{
+	m_pLightManager->Remove_Light(iIndex);
+}
+
+CLight* CGameInstance::Get_Light(_uint iIndex)
+{
+	return m_pLightManager->Get_Light(iIndex);
+}
+
+CLight* CGameInstance::Get_FirstLight()
+{
+	return m_pLightManager->Get_FirstLight();
+}
+
+CLight* CGameInstance::Get_LastLight()
+{
+	return m_pLightManager->Get_LastLight();
+}
+
+_int CGameInstance::Get_LightSize()
+{
+	return m_pLightManager->Get_LightSize();
+}
+
 ComPtr<ID3D11ShaderResourceView> CGameInstance::Get_RenderTarget_SRV(wstring pTargetTag)
 {
 	return m_pTargetManager->Get_SRV(pTargetTag);

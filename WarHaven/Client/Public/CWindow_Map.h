@@ -20,7 +20,6 @@ class CWindow_Map final
 {
 public:
 	enum TUPLEDATA { Tuple_CharPtr, Tuple_Bool, Tuple_Index };
-//	enum CONTROLTYPE { CONTROL_SCALING, CONTROL_ROTATE, CONTROL_MOVE };
 	enum PICKINGTYPE {PICK_GROUP, PICK_OBJECT, PICK_CLONE, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_INSTANCEOBJECT, PICK_NONE};
 	enum CAMERATYPE {CAM_RIGHT, CAM_UP, CAM_LOOK, CAM_FREE};
 	enum PICKOUTTYPE {PICK_OUTPOS, PICK_OUTLOCALPOS, PICK_OUTNORM};
@@ -101,18 +100,6 @@ public:
 	typedef tuple<_float4, _float4, _float4> PICKDATA;
 	typedef vector<tuple<char*, bool>> DataComboArr;
 
-	//typedef struct tagMapToolObjectData
-	//{
-	//	wstring strMeshName;
-	//	//wstring strGroupName;
-	//	wstring strMeshPath;
-	//	_float4x4 ObjectStateMatrix;
-	//	_float4 vScale;
-	//	_byte byteLightFlag;
-
-	//public:
-	//	void Initialize();
-	//}MTO_DATA;
 
 	const char* ArrObjectGroup[GROUP_END] =
 	{
@@ -150,10 +137,6 @@ private:
 	typedef struct tagMapToolObjectData MTO_DATA;
 
 	typedef tuple<char*, bool> SelectComboData;
-	//typedef vector<CGameObject*> OBJVECTOR;
-	//typedef vector<MTO_DATA> DATAVECTOR;
-	//typedef map<size_t, vector<CGameObject*>> OBJGROUPING;
-	//typedef map<size_t, vector<MTO_DATA>> DATAGROUPING;
 private:
 	HRESULT Functions_Maptool();
 #pragma region Private 파일컨트롤
@@ -172,15 +155,27 @@ private:
 #pragma region Private 라이트컨트롤
 private:
 	void Func_LightControl();
-
-	void Ready_LightGroup();
 	void Ready_LightType();
 
-	void Add_LightGroupList(char* pLightGroupName);
-	void Delete_LightGroupList(char* pLightGroupName);
+	void Add_Light();
+	void Delete_Light();
+	void Clone_Light();
 
-	void Add_Light(char* pLightName);
-	void Delete_Light(char* pLightName);
+	void Set_LightTag(string strTag);
+	void Set_LightType();
+	void Set_LightPos(float* PosArr);
+	void Set_LightOffset(float* OffsetArr);
+	void Set_LightDir(float* DirArr);
+	void Set_LightRange(float fRange);
+	void Set_LightRandomRange(float fRandomRange);
+	void Set_LightDifColor(float* ColorValue);
+	void Set_LightAmbColor(float* ColorValue);
+	void Set_LightSpecColor(float* ColorValue);
+	void Set_LightOption();
+
+	void Update_Light();
+
+
 #pragma endregion
 
 #pragma region Priavate 파일 입출력 함수
@@ -232,7 +227,6 @@ private:
 	void Clear_InstanceGroup();
 	void Merge_Instance();
 	void Split_Instance();
-	//_bool Search_NearInstanceObject();
 private:
 	_bool Calculate_Pick();
 
@@ -301,23 +295,17 @@ private:
 	map<size_t, CGameObject*> m_MergeObjects;
 	_int m_iCurSelectInstanceNameIndex = 0;
 	_int m_iCurSelectInstanceObjectIndex = 0;
-#pragma region Value 오브젝트 컨트롤
-//private:
-//	CGameObject* m_pCurSelectGameObject = nullptr;
-//	CTransform* m_pObjTransform = nullptr;
-//	MTO_DATA* m_pCurSelectData = nullptr;
-//	CONTROLTYPE m_eControlType = CONTROL_MOVE;
-//
-//	_float m_fTickPerScalingSpeed = 1.f;
-//	_float m_fTickPerRotSpeed = 1.f;
-//	_float m_fTickPerMoveSpeed = 1.f;
-#pragma endregion
 
 #pragma region Value 라이트컨트롤
 private:
-	vector<tuple<char*, bool>> m_arrLightGroupCombo;
 	vector<tuple<char*, bool>> m_arrLightTypeCombo;
+	vector<tuple<string, LIGHTDESC>> m_LightDescs;
+	_uint m_iCurSelectLight = 0;
+	_bool m_bLightControl = false;
+	_int m_iLightTypeIndex = 0;
+	_int m_iLightPadding = -1;
 #pragma endregion
+
 	public:
 		TREE_DATA* Get_MeshRoot() {
 			return &m_MeshRootNode;
