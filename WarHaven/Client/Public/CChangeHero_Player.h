@@ -26,7 +26,7 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-	void Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass);
+	STATE_TYPE Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass);
 };
 
 END

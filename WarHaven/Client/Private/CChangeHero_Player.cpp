@@ -117,19 +117,19 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 	{
 		if (KEY(NUM1, TAP))
 		{
-			Set_HeroType(pOwner, FIONA);
+			return Set_HeroType(pOwner, FIONA);
 		}
 		else if (KEY(NUM2, TAP))
 		{
-			Set_HeroType(pOwner, QANDA);
+			return Set_HeroType(pOwner, QANDA);
 		}
 		else if (KEY(NUM3, TAP))
 		{
-			Set_HeroType(pOwner, HOEDT);
+			return Set_HeroType(pOwner, HOEDT);
 		}
 		else if (KEY(NUM4, TAP))
 		{
-			Set_HeroType(pOwner, LANCER);
+			return Set_HeroType(pOwner, LANCER);
 		}
 	}
 	else
@@ -148,11 +148,13 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 	return STATE_END;
 }
 
-void CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
+STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 {
 	pOwner->Get_OwnerPlayer()->IsHero() = true;
 	pOwner->Get_HeroType() = eClass;
 	pOwner->On_ChangeToHero((CPlayer::CLASS_HREO)eClass);
 
 	CUser::Get_Instance()->Set_HUD(eClass);
+
+	return m_eStateType;
 }
