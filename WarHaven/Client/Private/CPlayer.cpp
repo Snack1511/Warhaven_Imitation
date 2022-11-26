@@ -91,7 +91,7 @@ void CPlayer::Create_DefaultClass()
 
 	wstring wstrModeBody[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00_50.fbx", // WARRIOR
-		L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00.fbx"
+		L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx"
 	};
 
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {

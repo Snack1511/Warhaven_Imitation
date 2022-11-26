@@ -137,7 +137,7 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
     _float4 vEnemyPos;
     CPlayer* pEnemyUser = nullptr;
     
-    for (_uint i = 0; i < 7; ++i)
+    for (_uint i = 0; i < 8; ++i)
     {
         STATE_TYPE eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
         string strKey;
@@ -167,6 +167,12 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
         case 6:
             strKey = "EnemyGuardBreak";
             eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY;
+
+            break;
+
+        case 7:
+            strKey = "EnemyFinal";
+            eEnemyState = AI_STATE_IDLE_WARRIOR_L;
 
             break;
 
@@ -247,6 +253,10 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger9);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger10);
 
+    CTrigger_BootCamp* pLastTrigger = CTrigger_BootCamp::Create("LastTrigger", 100, 3.f);
+    pLastTrigger->Add_AdjPlayer(m_mapEnemyPlayers["EnemyFinal"]);
+
+
     vecReadyObjects.push_back(make_pair(pBootCampTrigger0, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger1, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger2, GROUP_TRIGGER));
@@ -258,6 +268,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     vecReadyObjects.push_back(make_pair(pBootCampTrigger9, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger10, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTriggerBasicEnd, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pLastTrigger, GROUP_TRIGGER));
 
     return S_OK;
 }

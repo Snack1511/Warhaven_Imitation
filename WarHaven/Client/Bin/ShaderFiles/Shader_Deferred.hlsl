@@ -1,4 +1,4 @@
-//#define SHADOW_ON
+#define SHADOW_ON
 
 matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 matrix		g_ProjMatrixInv, g_ViewMatrixInv, g_LightViewMatrix, g_LightVeiwProjMatrix;

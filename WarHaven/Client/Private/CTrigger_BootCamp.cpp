@@ -22,7 +22,17 @@ void CTrigger_BootCamp::Trigger_CollisionEnter(CGameObject* pOtherObj, const _ui
 	{
 		if (static_cast<CUnit*>(pOtherObj)->Is_MainPlayer())
 		{
-			if (m_iUIIndex == 99)
+			if (m_iUIIndex == 100)
+			{
+				for (auto& elem : m_vecAdjPlayers)
+				{
+					ENABLE_GAMEOBJECT(elem->Get_CurrentUnit());
+					elem->Set_LookToTarget();
+				}
+				m_vecAdjPlayers.clear();
+
+			}
+			else if (m_iUIIndex == 99)
 			{				
 				if (!m_vecAdjTriggers.empty())
 				{

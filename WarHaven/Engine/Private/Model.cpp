@@ -563,7 +563,7 @@ void CModel::Final_Tick()
 						m_eLOD_Level = (eLOD_LEVEL)i;
 				}
 
-				cout << (_uint)m_eLOD_Level << endl;
+				//cout << (_uint)m_eLOD_Level << endl;
 
 				//LOD메쉬만 켜주기
 				for (_uint i = 0; i < m_iNumMeshContainers; ++i)
