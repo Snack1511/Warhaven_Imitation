@@ -41,21 +41,22 @@ void CRun_AI_TG_Warrior_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 {
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+	m_fMaxSpeed = pOwner->Get_Status().fRunBeginSpeed;
+
+	if (0 != rand() % 3)
+		m_bAIMove = true;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CRun_AI_TG_Warrior_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	/*_uint iDirection = Get_Direction();
 
-	DoMove(iDirection, pOwner);
+	CUnit* pUnit = pOwner->Get_TargetUnit();
 
+	pOwner->Set_LookToTarget();
 
-	if (iDirection < 8)
-		m_iCurDirection = iDirection;*/
-
+	Move_Direction_Loop_AI(pOwner);
 
 
     return __super::Tick(pOwner, pAnimator);
@@ -100,9 +101,4 @@ void CRun_AI_TG_Warrior_Begin::Change_Location_Begin(_uint iDirection, CAnimator
 
 
 	m_bMoveTrigger = true;
-}
-
-void CRun_AI_TG_Warrior_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
-{
-
 }

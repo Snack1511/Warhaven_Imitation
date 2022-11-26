@@ -71,7 +71,7 @@ void CSwitchLtoR::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 
 STATE_TYPE CSwitchLtoR::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
+    if (KEY(LBUTTON, TAP))
 		return STATE_ATTACK_HORIZONTALMIDDLE_R;
 
     return __super::Tick(pOwner, pAnimator);

@@ -69,10 +69,12 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
     CPlayer* pEnemy = nullptr;
 
     if (!(pEnemy = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-        STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY, false, L"FollowCam_0")))
+        AI_STATE_IDLE_WARRIOR_R, false, L"FollowCam_0")))
         return E_FAIL;
 
-    vecReadyObjects.push_back(make_pair(pEnemy, GROUP_PLAYER));
+    pEnemy->Set_TargetUnit(pUserPlayer->Get_CurrentUnit());
+
+    vecReadyObjects.push_back(make_pair(pEnemy, GROUP_ENEMY));
 
     SetUp_DefaultLight();
 

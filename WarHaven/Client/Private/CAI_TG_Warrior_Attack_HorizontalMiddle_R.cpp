@@ -48,9 +48,9 @@ HRESULT CAI_TG_Warrior_Attack_HorizontalMiddle_R::Initialize()
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.5f;
 
-	m_vecAdjState.push_back(AI_STATE_IDLE_WARRIOR_L);
-	m_vecAdjState.push_back(AI_STATE_RUN_WARRIOR_L);
-	m_vecAdjState.push_back(AI_STATE_ATTACK_HORIZONTALMIDDLE_L);
+	//m_vecAdjState.push_back(AI_STATE_IDLE_WARRIOR_L);
+	//m_vecAdjState.push_back(AI_STATE_RUN_WARRIOR_L);
+	//m_vecAdjState.push_back(AI_STATE_ATTACK_HORIZONTALMIDDLE_L);
 
 	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
@@ -135,7 +135,7 @@ HRESULT CAI_TG_Warrior_Attack_HorizontalMiddle_R::Initialize()
 
 void CAI_TG_Warrior_Attack_HorizontalMiddle_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_R);
+	pOwner->Set_BounceState(AI_STATE_BOUNE_WARRIOR_R);
 
 	if (ePrevType == STATE_SWITCH_L_TO_R)
 	{

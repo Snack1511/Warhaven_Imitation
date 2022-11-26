@@ -126,6 +126,13 @@ protected:
 	_bool				m_bAttackTrigger = false;
 	_bool				m_bETC_Trigger = false;
 
+	_bool				m_bAIMove = false;
+	_bool				m_bAIAttack = false;
+
+	_uint				m_iRand = 0;
+	_int				m_iDirectionRand = 0;
+
+
 	_bool				m_bHit = false;
 	_bool				m_bKeyInput = false;
 	_bool				m_bKeyInputable = false;
@@ -157,6 +164,7 @@ protected:
 
 
 
+	/* 플레이어 용도*/
 protected:
 	_uint	Get_Direction(); // 8방향
 	_uint	Get_Direction_Four(); // 4방향
@@ -169,6 +177,12 @@ protected:
 	void	Follow_MouseLook(CUnit* pOwner);
 	void	Follow_MouseLook_Turn(CUnit* pOwner);
 
+
+	/* AI 용도*/
+protected:
+	_float	Move_Direction_Loop_AI(CUnit* pOwner);
+
+	_float	Get_TargetLook_Length(CUnit* pOwner);
 
 protected:
 	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bBackStep = false);

@@ -188,6 +188,11 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
+    <ClInclude Include="..\Public\CAI_TG_StingHit.h" />
+    <ClInclude Include="..\Public\CAI_TG_FlyHit.h" />
+    <ClInclude Include="..\Public\CAI_TG_Groggy.h" />
+    <ClInclude Include="..\Public\CAI_TG_GuardHit.h" />
+    <ClInclude Include="..\Public\CAI_TG_Hit.h" />
     <ClInclude Include="..\Public\CBounce_AI_TG_Warrior.h" />
     <ClInclude Include="..\Public\CBounce_AI_TG_Warrior_L.h" />
     <ClInclude Include="..\Public\CBounce_AI_TG_Warrior_R.h" />
@@ -361,6 +366,9 @@
     <ClInclude Include="..\Public\CUnit_WarHammer.h" />
     <ClInclude Include="..\Public\CValkyrie_Counter.h" />
     <ClInclude Include="..\Public\CValkyrie_ShieldAttack.h" />
+    <ClInclude Include="..\Public\CWalk_AI_TG_Warrior.h" />
+    <ClInclude Include="..\Public\CWalk_AI_TG_Warrior_L.h" />
+    <ClInclude Include="..\Public\CWalk_AI_TG_Warrior_R.h" />
     <ClInclude Include="..\Public\CWalk_Valkyrie.h" />
     <ClInclude Include="..\Public\CWalk_Valkyrie_L.h" />
     <ClInclude Include="..\Public\CWalk_WarHammer_L.h" />
@@ -562,6 +570,11 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\CAI_TG_StingHit.cpp" />
+    <ClCompile Include="..\Private\CAI_TG_FlyHit.cpp" />
+    <ClCompile Include="..\Private\CAI_TG_Groggy.cpp" />
+    <ClCompile Include="..\Private\CAI_TG_GuardHit.cpp" />
+    <ClCompile Include="..\Private\CAI_TG_Hit.cpp" />
     <ClCompile Include="..\Private\CBounce_AI_TG_Warrior.cpp" />
     <ClCompile Include="..\Private\CBounce_AI_TG_Warrior_L.cpp" />
     <ClCompile Include="..\Private\CBounce_AI_TG_Warrior_R.cpp" />
@@ -735,6 +748,9 @@
     <ClCompile Include="..\Private\CUnit_WarHammer.cpp" />
     <ClCompile Include="..\Private\CValkyrie_Counter.cpp" />
     <ClCompile Include="..\Private\CValkyrie_ShieldAttack.cpp" />
+    <ClCompile Include="..\Private\CWalk_AI_TG_Warrior.cpp" />
+    <ClCompile Include="..\Private\CWalk_AI_TG_Warrior_L.cpp" />
+    <ClCompile Include="..\Private\CWalk_AI_TG_Warrior_R.cpp" />
     <ClCompile Include="..\Private\CWalk_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CWalk_Valkyrie_L.cpp" />
     <ClCompile Include="..\Private\CWalk_WarHammer_L.cpp" />

@@ -76,12 +76,10 @@ STATE_TYPE CGuard_Loop_AI_TG_Warrior::Check_Condition(CUnit* pOwner, CAnimator* 
 	1. 스프린트 공격 준비가 끝나면
     */
 
-	//if (pAnimator->Is_CurAnimFinished())
-	//{
-	//	if (KEY(RBUTTON, HOLD))
-	//		return m_eStateType;
-	//}
+	if (pAnimator->Is_CurAnimFinished())
+	{
+		return m_eStateType;
+	}
 
-   
     return STATE_END;
 }

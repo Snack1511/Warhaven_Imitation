@@ -25,29 +25,34 @@ HRESULT CAI_TG_Warrior_Attack_HorizontalMiddle::Initialize()
 	m_tHitInfo.fKnockBackPower = 2.f;
 	m_tHitInfo.fJumpPower = 0.f;
 
-	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
-	m_iAnimIndex = 6;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-	m_eStateType = STATE_ATTACK_HORIZONTALUP_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+	//m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
+	//m_iAnimIndex = 6;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	//m_eStateType = STATE_ATTACK_HORIZONTALUP_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	m_fInterPolationTime = 0.1f;
 
 
+	m_iStopIndex = 30;
+	m_iAttackEndIndex = 55;
 
-	m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-	m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-	m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
+	Add_KeyFrame(m_iStopIndex, 1);
+	Add_KeyFrame(50, 2);
 
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
+	//m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
+	//m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
+	//m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
 
-	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
 
-	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_L);
+	//m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+
+	//m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
+	//m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_L);
 
 
-	m_eAnimLeftorRight = ANIM_BASE_L;
+//	m_eAnimLeftorRight = ANIM_BASE_L;
 	m_iIdle_Index = 3;
 	m_iLandRightIndex = 17;
 	m_iLandLeftIndex = 9;
@@ -114,13 +119,13 @@ HRESULT CAI_TG_Warrior_Attack_HorizontalMiddle::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 7;
 
 
-	m_eWalkState = STATE_WALK_PLAYER_R;
-	m_eJumpState = STATE_JUMP_PLAYER_R;
-	m_eLandState = STATE_JUMP_LAND_PLAYER_R;
-	m_eFallState = STATE_JUMPFALL_PLAYER_R;
-	m_eRunState = STATE_RUN_PLAYER_R;
-	m_eIdleState = STATE_IDLE_PLAYER_R;
-	m_eBounceState = STATE_BOUNCE_PLAYER_L;
+	m_eWalkState = AI_STATE_RUN_WARRIOR_L;
+	m_eJumpState = AI_STATE_RUN_WARRIOR_L;
+	m_eLandState = AI_STATE_RUN_WARRIOR_L;
+	m_eFallState = AI_STATE_RUN_WARRIOR_L;
+	m_eRunState = AI_STATE_RUN_WARRIOR_L;
+	m_eIdleState = AI_STATE_IDLE_WARRIOR_L;
+	m_eBounceState = AI_STATE_BOUNE_WARRIOR_R;
 
 	return S_OK;
 }
@@ -136,6 +141,9 @@ void CAI_TG_Warrior_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAn
 
 STATE_TYPE CAI_TG_Warrior_Attack_HorizontalMiddle::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+	if (pAnimator->Is_CurAnimFinished())
+		return AI_STATE_IDLE_WARRIOR_R;
 
 	return __super::Tick(pOwner, pAnimator);
 }

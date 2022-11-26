@@ -380,6 +380,40 @@ void CState::Follow_MouseLook_Turn(CUnit* pOwner)
 
 
 
+_float CState::Move_Direction_Loop_AI(CUnit* pOwner)
+{
+	CUnit* pUnit = pOwner->Get_TargetUnit();
+
+	CTransform* pMyTransform = pOwner->Get_Transform();
+
+	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vRight = (pUnit->Get_Transform()->Get_World(WORLD_LOOK) - pOwner->Get_Transform()->Get_World(WORLD_LOOK));
+
+	_float fLength = vLook.Length();
+
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	vLook.Normalize();
+	vRight.Normalize();
+
+	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+
+	pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+	return fLength;
+}
+
+_float CState::Get_TargetLook_Length(CUnit* pOwner)
+{
+	CUnit* pUnit = pOwner->Get_TargetUnit();
+
+	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+	return vLook.Length();
+}
+
 void CState::Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _bool bBackStep)
 {
 

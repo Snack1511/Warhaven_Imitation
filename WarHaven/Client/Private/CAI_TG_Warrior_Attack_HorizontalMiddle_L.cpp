@@ -131,7 +131,7 @@ HRESULT CAI_TG_Warrior_Attack_HorizontalMiddle_L::Initialize()
 void CAI_TG_Warrior_Attack_HorizontalMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 
-	pOwner->Set_BounceState(STATE_BOUNCE_PLAYER_L);
+	pOwner->Set_BounceState(AI_STATE_BOUNE_WARRIOR_L);
 
 	if (ePrevType == STATE_SWITCH_L_TO_R)
 	{

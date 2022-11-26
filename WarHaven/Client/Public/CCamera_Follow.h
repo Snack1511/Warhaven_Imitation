@@ -29,6 +29,8 @@ public:
 	void	Delete_CamCollider();
 	void	Set_FollowTarget(CGameObject* pTarget);
 
+	void	On_FixedTarget(_bool bActivate, class CUnit* pLockedTarget);
+
 public:
 	// CCamera을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;

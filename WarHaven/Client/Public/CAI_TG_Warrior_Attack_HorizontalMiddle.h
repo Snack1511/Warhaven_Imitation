@@ -1,9 +1,9 @@
 #pragma once
-#include "CState_Blendable.h"
+#include "CState_AI_Warrior_Blendable.h"
 
 BEGIN(Client)
 class CAI_TG_Warrior_Attack_HorizontalMiddle abstract
-	: public CState_Blendable
+	: public CState_AI_Warrior_Blendable
 {
 
 protected:

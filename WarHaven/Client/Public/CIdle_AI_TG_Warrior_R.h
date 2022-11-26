@@ -29,6 +29,10 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
+private:
+	_float	fwaitCurTime = 0.f;
+	_float	fwaitCoolTime = 0.6f;
+
 };
 
 END

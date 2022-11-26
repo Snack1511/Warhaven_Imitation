@@ -21,6 +21,8 @@ HRESULT CJump_Valkyrie::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
 
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
+
     return S_OK;
 }
 

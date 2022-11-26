@@ -47,7 +47,7 @@ HRESULT CRun_AI_TG_Warrior_R::Initialize()
     m_fAnimSpeed = 2.5f;
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
-    m_vecAdjState.push_back(AI_STATE_ATTACK_HORIZONTALMIDDLE_L);
+   // m_vecAdjState.push_back(AI_STATE_ATTACK_HORIZONTALMIDDLE_L);
 
    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 26;
    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 27;
@@ -72,14 +72,101 @@ void CRun_AI_TG_Warrior_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CRun_AI_TG_Warrior_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_iRand == 0)
+        return AI_STATE_WALK_WARRIOR_R;
+
+    if (m_bAIMove)
+        return AI_STATE_RUNBEGIN_WARRIOR_L;
+
+
+
     CUnit* pUnit = pOwner->Get_TargetUnit();
 
-    pOwner->Set_LookToTarget();
 
-    _float fLength = (pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
 
-    if (fLength < 1.f)
-        return AI_STATE_ATTACK_HORIZONTALMIDDLE_R;
+    CTransform* pMyTransform = pOwner->Get_Transform();
+
+    _float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+    _float4 vRight = (pUnit->Get_Transform()->Get_World(WORLD_LOOK) - pOwner->Get_Transform()->Get_World(WORLD_LOOK));
+
+    _float fLength = vLook.Length();
+
+    CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+    vLook.Normalize();
+    vRight.Normalize();
+
+    pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+
+    pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+
+    pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+    if (fLength < 2.f)
+    {
+        _int iRand = rand() % 20;
+
+        if(iRand < 15)
+            return AI_STATE_ATTACK_HORIZONTALMIDDLE_R;
+
+        else
+            return AI_STATE_GUARD_BEGIN_WARRIOR;
+
+        //switch (iRand)
+        //{
+
+        //case 0:
+        //case 1:
+        //case 2:
+
+        //    return AI_STATE_ATTACK_HORIZONTALMIDDLE_R;
+
+        //case 3:
+
+        //    return AI_STATE_GUARD_BEGIN_WARRIOR;
+
+        //default:
+        //    break;
+        //}
+    }
+    
+
+
+
+    //if (fLength < 2.f)
+    //    return AI_STATE_ATTACK_HORIZONTALMIDDLE_R;
+
+  //  if (fLength > 6.f)
+  //  {
+        if (!vLook.Is_Zero())
+            pMyPhysicsCom->Set_Dir(vLook);
+        
+
+        Change_Location_Loop(STATE_DIRECTION_N, pAnimator, 0.1f);
+
+//    }
+    //else
+    //{
+
+    //    _float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    //    _float4 vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+
+    //    _float4 vDir = vLook + vRight * -1.f;
+
+    //    if (vRight.z > 0.9f)
+    //    {
+    //        if ((!vLook.Is_Zero()))
+    //            pMyPhysicsCom->Set_Dir(vLook);
+
+    //        Change_Location_Loop(STATE_DIRECTION_N, pAnimator, 0.1f);
+    //    }
+    //}
+
+
+
+
+
+
 
     //if (pOwner->Is_Air())
     //    return STATE_JUMPFALL_PLAYER_R;

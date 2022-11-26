@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CRun_AI_TG_Warrior_Begin_L.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -66,31 +66,21 @@ void CRun_AI_TG_Warrior_Begin_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 STATE_TYPE CRun_AI_TG_Warrior_Begin_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    //if (KEY(SPACE, TAP))
-    //{
-    //    return STATE_JUMP_PLAYER_L;
-    //}
 
-	if (pAnimator->Is_CurAnimFinished())
-		return AI_STATE_RUN_WARRIOR_L;
 
-    //if (
-    //    KEY(W, NONE) &&
-    //    KEY(A, NONE) &&
-    //    KEY(S, NONE) &&
-    //    KEY(D, NONE)
-    //    )
-    //{
-    //    _uint* pInt = new _uint;
-    //    *pInt = m_iCurDirection;
-    //    pOwner->Enter_State(STATE_STOP_PLAYER_L, (void*)pInt);
-    //    return STATE_END;
 
-    //}
+    
+
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        if (m_bAIMove)
+            return AI_STATE_RUN_WARRIOR_L;
+        else
+            return AI_STATE_RUNBEGIN_WARRIOR_R;
+    }
 
 
     return __super::Tick(pOwner, pAnimator);
-
 }
 
 void CRun_AI_TG_Warrior_Begin_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
@@ -101,18 +91,18 @@ void CRun_AI_TG_Warrior_Begin_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CRun_AI_TG_Warrior_Begin_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-    if (KEY(LSHIFT, NONE))
-    {
-        if (
-            KEY(W, HOLD) ||
-            KEY(A, HOLD) ||
-            KEY(S, HOLD) ||
-            KEY(D, HOLD)
-            )
-        {
-            return m_eStateType;
-        }
-    }
+    //if (KEY(LSHIFT, NONE))
+    //{
+    //    if (
+    //        KEY(W, HOLD) ||
+    //        KEY(A, HOLD) ||
+    //        KEY(S, HOLD) ||
+    //        KEY(D, HOLD)
+    //        )
+    //    {
+    //        return m_eStateType;
+    //    }
+    //}
    
     return STATE_END;
 }
