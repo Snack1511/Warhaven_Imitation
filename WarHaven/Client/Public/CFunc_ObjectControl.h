@@ -135,9 +135,6 @@ public:
 	void Merge_All();
 	void Split_All();
 
-	//CStructure* Add_Object(string GroupName, MTO_DATA& tData);
-	//void Delete_Object(string MeshName, vector<CGameObject*>& ObjList, vector<TEMP_MTO_DATA>& DataList);
-	
 	void Delete_ObjectNamingMap(string strSearchObejctName, list<_int>& IndexList);
 	void Delete_Object(map<size_t, vector<CGameObject*>>::iterator& ObjectIter, list<_int> IndexList);
 	void Delete_Data(map<size_t, vector<MTO_DATA>>::iterator& DataIter, list<_int> IndexList);
@@ -150,6 +147,10 @@ public:
 	void Clear_AllDatas();
 
 	void Routine_MeshSelect(void* tTreeNode);
+
+public:
+	void Add_HLOD();
+
 private:
 	void SetUp_CurSelectObject();
 	void Show_GroupMatrix();
@@ -174,6 +175,9 @@ private:
 
 	void Update_Data();
 	void Update_Group();
+
+private:
+	void Pick_inOjbect();
 	//void Update_
 public:
 	void Save_Data(string BasePath, string SaveName);
@@ -273,7 +277,8 @@ private:
 	_float4 m_vCompDir;
 	CLONEDIR m_eCloneDir = CLONE_NONE;
 	//라업룩중 하나.
-
+	list<CStructure*> m_pHLODList;
+	_bool m_bHLOD_HIDE = false;
 };
 
 END
