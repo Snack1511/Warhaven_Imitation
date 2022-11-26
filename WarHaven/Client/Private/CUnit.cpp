@@ -900,8 +900,6 @@ void CUnit::My_Tick()
 
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
 
-	_float fDis = CUtility_Transform::Get_FromCameraDistance(this);
-	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
 }
 
 void CUnit::My_LateTick()
@@ -1142,17 +1140,30 @@ void CUnit::Enable_UnitHUD()
 
 void CUnit::Frustum_UnitHUD()
 {
-	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	_float fDis = CUtility_Transform::Get_FromCameraDistance(this);
 
-	vPos.y += 2.f;
-
-	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
+	if (fDis < 30.f)
 	{
-		if (!m_pUnitHUD->Is_Valid())
+		dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
+
+		_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+		vPos.y += 2.f;
+
+		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
 		{
-			if (!m_bIsMainPlayer)
+			if (!m_pUnitHUD->Is_Valid())
 			{
-				ENABLE_GAMEOBJECT(m_pUnitHUD);
+				if (!m_bIsMainPlayer)
+				{
+					ENABLE_GAMEOBJECT(m_pUnitHUD);
+				}
+			}
+		}
+		else
+		{
+			if (m_pUnitHUD->Is_Valid())
+			{
+				DISABLE_GAMEOBJECT(m_pUnitHUD);
 			}
 		}
 	}
