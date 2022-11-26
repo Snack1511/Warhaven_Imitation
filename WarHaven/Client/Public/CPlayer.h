@@ -26,7 +26,6 @@ class CCamera_Follow;
 
 class CPlayer final : public CGameObject
 {
-
 	DECLARE_PROTOTYPE(CPlayer);
 
 public:
@@ -88,6 +87,8 @@ public:
 	CLASS_DEFAULT Get_CurrentDefaultClass() { return m_eCurrentDefaultClass; }
 	void Set_MainPlayer();
 
+	wstring Get_PlayerName() { return m_wstrName; }
+
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() { return S_OK; }
@@ -119,7 +120,10 @@ private:
 
 	_bool m_bIsMainPlayer = false;
 
-private:	// 영웅
+private:	// 이름
+	wstring m_wstrName = TEXT("쥬신");
+
+private:	// 화신 게이지
 	_bool		m_bAbleHero = false;
 	_bool		m_bIsHero = false;
 	_float		m_fMaxGauge = 100.f;

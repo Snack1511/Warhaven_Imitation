@@ -86,6 +86,8 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pOxenJumpText = nullptr;
 	CUI_Object* m_pHpText = nullptr;
 
+	CUI_Object* m_pPlayerNameText = nullptr;
+
 private:
 	void Bind_Btn();
 	void Set_FadePortHighlight();
@@ -104,6 +106,7 @@ private:
 	void Create_HeroGaugeText();
 	void Create_OxenJumpText();
 	void Create_HpText();
+	void Create_PlayerNameText();
 };
 
 END

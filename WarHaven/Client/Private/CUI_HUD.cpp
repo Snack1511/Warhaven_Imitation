@@ -48,6 +48,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HeroGaugeText();
 	Create_OxenJumpText();
 	Create_HpText();
+	Create_PlayerNameText();
 
 	return S_OK;
 }
@@ -71,6 +72,7 @@ HRESULT CUI_HUD::Start()
 	ENABLE_GAMEOBJECT(m_pChangeClassText);
 	ENABLE_GAMEOBJECT(m_pHeroGaugeText);
 	ENABLE_GAMEOBJECT(m_pHpText);
+	ENABLE_GAMEOBJECT(m_pPlayerNameText);
 
 	Bind_Btn();
 
@@ -167,7 +169,7 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		case 0:
 			m_pClassInfo->Set_FontText(TEXT("블레이드"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			m_eCurClass =WARRIOR;
+			m_eCurClass = WARRIOR;
 			Set_HUD(WARRIOR);
 			break;
 
@@ -198,7 +200,7 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		case 5:
 			m_pClassInfo->Set_FontText(TEXT("워해머"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			m_eCurClass =ENGINEER;
+			m_eCurClass = ENGINEER;
 			Set_HUD(ENGINEER);
 			break;
 		}
@@ -236,7 +238,7 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 	m_eCurClass = eClass;
 
 	if (eClass > ENGINEER)
-	{		
+	{
 		if (CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero())
 		{
 			Enable_Fade(m_pInactiveHeroText, 1.f);
@@ -692,4 +694,26 @@ void CUI_HUD::Create_HpText()
 
 	CREATE_GAMEOBJECT(m_pHpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pHpText);
+}
+
+void CUI_HUD::Create_PlayerNameText()
+{
+	m_pPlayerNameText = CUI_Object::Create();
+
+	m_pPlayerNameText->Set_Scale(20.f);
+	m_pPlayerNameText->Set_Pos(-535.f, -283.f);
+	m_pPlayerNameText->Set_Sort(0.85f);
+
+	m_pPlayerNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_256Circle.dds"));
+
+	m_pPlayerNameText->Set_FontRender(true);
+	m_pPlayerNameText->Set_FontStyle(true);
+	m_pPlayerNameText->Set_FontScale(0.25f);
+	m_pPlayerNameText->Set_FontOffset(-20.f, -13.f);
+
+	wstring wstrPlayerName = CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->Get_PlayerName();
+	m_pPlayerNameText->Set_FontText(wstrPlayerName);
+
+	CREATE_GAMEOBJECT(m_pPlayerNameText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pPlayerNameText);
 }
