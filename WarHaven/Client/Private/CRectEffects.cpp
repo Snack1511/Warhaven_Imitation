@@ -269,6 +269,7 @@ HRESULT CRectEffects::Initialize()
 			frandom(-m_tCreateData.vMoveDirRange.z, m_tCreateData.vMoveDirRange.z),
 			0.f);
 
+
 		vMoveDir += m_tCreateData.vMoveDir;
 		vMoveDir.Normalize();
 
@@ -298,6 +299,18 @@ HRESULT CRectEffects::Initialize()
 		m_pDatas[i].InstancingData.fCurvePower = m_tCreateData.fCurvePower + frandom(-m_tCreateData.fCurvePowerRange, m_tCreateData.fCurvePowerRange);
 		m_pDatas[i].InstancingData.fCurveFrequency = m_tCreateData.fCurveFrequency + frandom(-m_tCreateData.fCurveFrequencyRange, m_tCreateData.fCurveFrequencyRange);
 
+		if (CURVE_SPIRAL == m_eCurveType)
+		{
+			_float4x4 matRot;
+			
+			vUpDir = _float4(0.f, cosf(ToRadian(fStartCurveAngle)), sinf(ToRadian(fStartCurveAngle)));
+
+			matRot = XMMatrixRotationAxis(vUpDir.XMLoad(),
+				ToRadian(frandom(0.f, 360.f)));
+
+			m_pDatas[i].InstancingData.vStartPureLocalDir = m_pDatas[i].InstancingData.vStartPureLocalDir.MultiplyNormal(matRot);
+			m_pDatas[i].InstancingData.vStartPureLocalRight = m_pDatas[i].InstancingData.vStartPureLocalRight.MultiplyNormal(matRot);
+		}
 
 		Set_NewStartPos(i);
 
@@ -1208,15 +1221,13 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 		fX *= m_pDatas[iIdx].InstancingData.fCurveFrequency;
 		fY *= m_pDatas[iIdx].InstancingData.fCurveFrequency;
 
-		{
-			vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x;
-			vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y;
-			vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z;
+		vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x;
+		vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y;
+		vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z;
 
-			vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
-			vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y;
-			vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
-		}
+		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
+		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y;
+		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
 
 		break;
 	default:
