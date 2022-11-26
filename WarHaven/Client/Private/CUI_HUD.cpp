@@ -681,7 +681,7 @@ void CUI_HUD::Create_HpText()
 	m_pHpText = CUI_Object::Create();
 
 	m_pHpText->Set_Scale(20.f);
-	m_pHpText->Set_Pos(-290.f, -270.f);
+	m_pHpText->Set_Pos(-270.f, -270.f);
 	m_pHpText->Set_Sort(0.85f);
 
 	GET_COMPONENT_FROM(m_pHpText, CTexture)->Remove_Texture(0);
