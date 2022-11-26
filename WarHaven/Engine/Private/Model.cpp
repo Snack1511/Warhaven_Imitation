@@ -214,7 +214,7 @@ _float4 CModel::Get_Color(_uint iMeshPartType)
 	for (auto& elem : m_MeshContainers)
 	{
 		if (elem.first == iMeshPartType)
-			return elem.second->m_vColor;
+			return elem.second->m_vFontColor;
 	}
 
 	return ZERO_VECTOR;

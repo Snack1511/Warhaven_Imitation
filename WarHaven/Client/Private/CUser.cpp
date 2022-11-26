@@ -256,9 +256,9 @@ void CUser::Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fM
 	m_pUI_HUD->Set_SkillCoolTime(iSkillType, fSkillCoolTime, fMaxCoolTime);
 }
 
-void CUser::Enable_DamageFont(_float fDmg, _bool bHeadShot)
-{	
-	m_pUI_Damage[m_iDamageFontIdx]->Enable_Damage(fDmg, bHeadShot);
+void CUser::Enable_DamageFont(_uint eType, _float fDmg)
+{
+	m_pUI_Damage[m_iDamageFontIdx]->Enable_Damage(eType, fDmg);
 
 	m_iDamageFontIdx++;
 	if (m_iDamageFontIdx > 4)

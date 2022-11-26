@@ -38,7 +38,7 @@ public:
 
 private:
 	_float4		m_vAngles = ZERO_VECTOR;
-	_float4		m_vColor = _float4(0.f, 1.f, 0.f, 1.f);
+	_float4		m_vFontColor = _float4(0.f, 1.f, 0.f, 1.f);
 
 private:
 	HRESULT		SetUp_PhysXCollider(_float4 vPos, _float4 vScale, _float4 vAngle);

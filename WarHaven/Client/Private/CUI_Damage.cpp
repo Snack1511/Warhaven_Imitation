@@ -5,6 +5,7 @@
 #include "GameInstance.h"
 #include "Texture.h"
 #include "CFader.h"
+#include "CShader.h"
 
 CUI_Damage::CUI_Damage()
 {
@@ -16,7 +17,7 @@ CUI_Damage::~CUI_Damage()
 
 HRESULT CUI_Damage::Initialize_Prototype()
 {
-	m_pHeadShot = CUI_Object::Create();
+	m_pDmgIcon = CUI_Object::Create();
 	m_pDmgNum = CUI_Object::Create();
 
 	return S_OK;
@@ -53,9 +54,9 @@ void CUI_Damage::My_Tick()
 				m_pArrDmgNum[i]->DoScale(-m_fScaleValue, m_fScaleDownTime);
 			}
 
-			if (m_pHeadShot->Is_Valid())
+			if (m_pDmgIcon->Is_Valid())
 			{
-				m_pHeadShot->DoScale(-m_fScaleValue, m_fScaleUpTime);
+				m_pDmgIcon->DoScale(-m_fScaleValue, m_fScaleUpTime);
 			}
 		}
 	}
@@ -99,51 +100,66 @@ void CUI_Damage::OnEnable()
 
 		m_pArrDmgNum[i]->Set_Scale(m_vFontScale);
 		m_pArrDmgNum[i]->DoScale(m_fScaleValue, m_fScaleUpTime);
-
+		m_pArrDmgNum[i]->Set_Color(m_vColorWhite);
 	}
 
-	if (m_bIsHeadShot)
+	if (m_eDamageIcon != Default)
 	{
-		m_pHeadShot->Set_Pos(fRandPosX - 40.f, fRandPosY);
+		for (int i = 0; i < m_vecDigitDmg.size(); ++i)
+		{
+			if (m_eDamageIcon == Head)
+			{
+				m_pArrDmgNum[i]->Set_Color(m_vColorRed);
+			}
+			else
+			{
+				m_pArrDmgNum[i]->Set_Color(m_vColorGray);
+			}
+		}
 
-		m_pHeadShot->Set_Scale(m_vHeadShotScale);
-		m_pHeadShot->DoScale(m_fScaleValue, m_fScaleUpTime);
+		m_pDmgIcon->Set_Pos(fRandPosX - 40.f, fRandPosY);
+		m_pDmgIcon->Set_Scale(m_vHeadShotScale);
+		m_pDmgIcon->DoScale(m_fScaleValue, m_fScaleUpTime);
 
-		Enable_Fade(m_pHeadShot, m_fFadeInTime);
+		GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Set_CurTextureIndex(m_eDamageIcon);
+
+		Enable_Fade(m_pDmgIcon, m_fFadeInTime);
 	}
 
 	m_bIsScaleDown = true;
 }
 
-void CUI_Damage::Enable_Damage(_float fDmg, _bool bHeadShot)
+void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
 {
 	m_iDamageValue = (_uint)(fDmg * -1.f);
-	m_bIsHeadShot = bHeadShot;
+	m_eDamageIcon = (DamageIcon)eIcon;
 
 	ENABLE_GAMEOBJECT(this);
 }
 
 void CUI_Damage::Init_HeadShot()
 {
-	m_pHeadShot->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
-	m_pHeadShot->Set_Scale(100.f);
+	m_pDmgIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
+	GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_IconGuardShield.dds"));
 
-	Set_FadeDesc(m_pHeadShot);
+	m_pDmgIcon->Set_Scale(100.f);
 
-	CREATE_GAMEOBJECT(m_pHeadShot, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pHeadShot);
+	Set_FadeDesc(m_pDmgIcon);
+
+	CREATE_GAMEOBJECT(m_pDmgIcon, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pDmgIcon);
 }
 
 void CUI_Damage::Init_DmgNum()
 {
 	Read_Texture(m_pDmgNum, "/Number", "Num");
 
-	m_pDmgNum->Set_Scale(m_vFontScale);
-	m_pDmgNum->Set_Color(m_vColorRed);
+	m_pDmgNum->Set_Scale(m_vFontScale); 
 
 	Set_FadeDesc(m_pDmgNum);
 
 	GET_COMPONENT_FROM(m_pDmgNum, CTexture)->Remove_Texture(0);
+
 
 	CREATE_GAMEOBJECT(m_pDmgNum, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pDmgNum);

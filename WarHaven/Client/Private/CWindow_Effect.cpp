@@ -1548,7 +1548,7 @@ void CWindow_Effect::Save_CurEffect()
 		writeFile.write((char*)&pCurEffect->m_vFadeOutTargetScale, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_fTargetAlpha, sizeof(_float));
 
-		writeFile.write((char*)&pCurEffect->m_vColor, sizeof(_float4));
+		writeFile.write((char*)&pCurEffect->m_vFontColor, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_vPlusColor, sizeof(_float4));
 		writeFile.write((char*)&pCurEffect->m_fColorPower, sizeof(_float));
 		writeFile.write((char*)&pCurEffect->m_fDissolvePower, sizeof(_float));

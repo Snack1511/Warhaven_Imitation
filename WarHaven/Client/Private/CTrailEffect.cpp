@@ -26,7 +26,7 @@ CTrailEffect* CTrailEffect::Create(_uint iGroupIdx, _uint iTriCnt, _float4 vLoca
 {
 	CTrailEffect* pInstance = new CTrailEffect();
 
-	pInstance->m_vColor = vColor;
+	pInstance->m_vFontColor = vColor;
 
 	if (FAILED(pInstance->SetUp_TrailEffect(iGroupIdx, iTriCnt, vLocalSwordLow, vLocalSwordHigh, pSwordBone, pUnitTransform, vGlowFlag, wstrMaskMapPath, wstrColorMapPath)))
 	{
@@ -49,7 +49,7 @@ void CTrailEffect::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 {
 	pShader->Set_RawValue(pConstantName, &m_vShaderFlag, sizeof(_float4));
 	pShader->Set_RawValue("g_vGlowFlag", &m_vGlowFlag, sizeof(_float4));
-	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
+	pShader->Set_RawValue("g_vColor", &m_vFontColor, sizeof(_float4));
 }
 
 void CTrailEffect::TurnOn_TrailEffect(_bool bTrunOn)

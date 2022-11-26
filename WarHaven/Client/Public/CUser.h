@@ -76,7 +76,7 @@ public:
 	void SetActive_HeroPortrait(_bool value);
 	void SetActive_OxenJumpText(_bool value);
 
-	void Enable_DamageFont(_float fDmg, _bool bHeadShot = false);
+	void Enable_DamageFont(_uint eType, _float fDmg);
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
 private:

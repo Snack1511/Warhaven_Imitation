@@ -163,7 +163,7 @@ protected:
 	_float4	m_vFadeOutTargetScale = _float4(1.f, 1.f, 1.f, 1.f);
 	_float	m_fTargetAlpha = 1.f;
 
-	_float4	m_vColor;
+	_float4	m_vFontColor;
 	_float4 m_vPlusColor = _float4( 0.f, 0.f, 0.f, 0.f );
 	_float	m_fColorPower = 1.f;
 	_float  m_fDissolvePower = 1.f;

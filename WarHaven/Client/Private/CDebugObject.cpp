@@ -62,7 +62,7 @@ CDebugObject* CDebugObject::Create(PxTransform tTransform, _float4 vScale)
 
 void CDebugObject::SetUp_ShaderResources(CShader* pShaderCom, const char* pConstantName)
 {
-	pShaderCom->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
+	pShaderCom->Set_RawValue("g_vColor", &m_vFontColor, sizeof(_float4));
 }
 
 void CDebugObject::Synchronize_Box(PxTransform tTransform)

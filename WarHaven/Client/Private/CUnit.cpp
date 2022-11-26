@@ -245,14 +245,21 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 	return fDamage;
 }
 
-_bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot)
+_bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDmgType)
 {
 	m_tUnitStatus.fHP += fHp;
 
 	/*데미지 표시*/
 	if (pOtherUnit->m_bIsMainPlayer)
 	{
-		CUser::Get_Instance()->Enable_DamageFont(fHp, bHeadShot);
+		if (bHeadShot)
+		{
+			CUser::Get_Instance()->Enable_DamageFont(0, fHp);
+		}
+		else
+		{
+			CUser::Get_Instance()->Enable_DamageFont(iDmgType, fHp);
+		}
 	}
 
 	if (m_tUnitStatus.fHP <= 0.f)
@@ -916,7 +923,7 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, false);
 
-	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot);
+	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 2);
 
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)
@@ -939,16 +946,12 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	case COL_ENEMYATTACK:
 	case COL_PLAYERATTACK:
 		Enter_State(m_tHitType.eHitState, pHitInfo);
-
 		break;
-
-
 		//상대방 GuardBreak가 들어온 경우
 	case COL_PLAYERGUARDBREAK:
+		break;
 	case COL_ENEMYGUARDBREAK:
 		//1. 이펙트
-
-
 		//2. 나와 적 상태 변경
 		Enter_State(m_tHitType.eHitState, pHitInfo);
 		break;
@@ -997,8 +1000,7 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 	tInfo.bHeadShot = false;
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, true);
 
-
-	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot);
+	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 1);
 
 	if (!bDie)
 	{
