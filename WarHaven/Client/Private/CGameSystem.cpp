@@ -306,17 +306,36 @@ HRESULT CGameSystem::On_EnterBootCamp()
 
     /*fire0~9*/
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_0"), _float4(29.2f, 2.95f, 20.65f));  //0
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_3"), _float4(29.2f, 2.95f, 20.65f));  //0
+
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"BonFire_0"), _float4(47.8f, 1.6f, 25.7f));  //1 화로
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"BonFire_2"), _float4(47.8f, 1.6f, 25.7f));
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", _float4(47.8f, 2.6f, 25.7f));
 
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_2"), _float4(50.9f, 4.0f, -20.5f)); //2 o
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_3"), _float4(50.9f, 4.0f, -20.5f)); //2 o
+
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_0"), _float4(33.43f, 2.1f, 22.2f));  //3
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_3"), _float4(33.43f, 2.1f, 22.2f));  //3
+
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_1"), _float4(36.87f, 3.2f, 21.77f));  //4
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_3"), _float4(36.87f, 3.2f, 21.77f));  //4
+
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_2"), _float4(34.0f, 3.7f, 10.6f));  //5
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_3"), _float4(34.0f, 3.7f, 10.6f));  //5
+
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_0"), _float4(27.35f, 4.35f, -29.3f)); //6
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_3"), _float4(27.35f, 4.35f, -29.3f)); //6
+
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_1"), _float4(37.05f, 4.5f, -25.0f)); //7
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_3"), _float4(37.05f, 4.5f, -25.0f)); //7
+
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_2"), _float4(26.6f, 3.55f, -21.1f)); //8
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_3"), _float4(26.6f, 3.55f, -21.1f)); //8
+
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"BonFire_0"), _float4(41.4f, 1.8f, 27.8f));  //9 화로
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"BonFire_2"), _float4(41.4f, 1.8f, 27.8f));  //9 화로
+
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", _float4(41.4f, 2.8f, 27.8f));
 
 

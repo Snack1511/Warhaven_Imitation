@@ -614,6 +614,7 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 
 	/*Hit effect*/
+		/*slash*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSpark"), "HitSpark")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_D"), "HitSlash_D"))) //down
@@ -632,6 +633,11 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StingBlood"), "StingBlood")))
 		return E_FAIL;
+		/*smash*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Smash_Right"), "Smash_Right")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Smash_Left"), "Smash_Left")))
+		return E_FAIL;
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke_Right"), "KillSmoke_Right")))
 		return E_FAIL;
@@ -644,6 +650,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"FireTorch"), "FireTorch")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BonFire"), "BonFire")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"spiral"), "spiral")))
 		return E_FAIL;
 
 	/* Dead Body */

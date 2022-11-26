@@ -68,7 +68,7 @@ HRESULT CWarHammer_Attack_HorizontalMiddle_R::Initialize()
 	m_eIdleState = STATE_IDLE_WARHAMMER_L;
 	m_eBounceState = STATE_BOUNCE_WARHAMMER_R;
 	
-	m_fDamagePumping = 4.2f;
+	m_fDamagePumping = 0.1f;
 
 	return __super::Initialize();
 }
