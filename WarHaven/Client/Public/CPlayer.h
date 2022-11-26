@@ -97,6 +97,9 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
+public:
+	_bool& AbleHero() { return m_bAbleHero; }
+	_bool& IsHero() { return m_bIsHero; }
 
 private:
 	CUnit* m_pCurrentUnit = nullptr;
@@ -116,10 +119,18 @@ private:
 
 	_bool m_bIsMainPlayer = false;
 
+private:	// ¿µ¿õ
+	_bool		m_bAbleHero = false;
+	_bool		m_bIsHero = false;
+	_float		m_fMaxGauge = 100.f;
+	_float		m_fGauge = 0.f;
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
-
+private:
+	void Update_HP();
+	void Update_HeroGauge();
 };
 END

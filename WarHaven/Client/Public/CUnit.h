@@ -33,10 +33,6 @@ public:
 	struct UNIT_STATUS
 	{
 		CLASS_TYPE	eClass = WARRIOR;
-		_bool		bAbleHero = false;
-		_bool		bIsHero = false;
-		_float		fMaxGauge = 100.f;
-		_float		fGauge = 50.f;
 
 		_float		fCamPower = 0.1f;
 		_float		fCamTime = 0.3f;

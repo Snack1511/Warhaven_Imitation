@@ -648,7 +648,7 @@ void CUnit::SetUp_HitStates(_bool bPlayer)
 
 void CUnit::On_ChangeToHero(_uint iIndex)
 {
-	//m_pOwnerPlayer->Change_HeroUnit()
+	m_pOwnerPlayer->Change_HeroUnit((CPlayer::CLASS_HREO)iIndex);
 }
 
 _float4 CUnit::Get_FollowCamLook()

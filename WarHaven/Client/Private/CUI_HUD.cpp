@@ -234,19 +234,20 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 	m_eCurClass = eClass;
 
 	if (eClass > ENGINEER)
-	{
-		if (m_tStatus.bAbleHero)
+	{		
+		if (CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero())
 		{
 			Enable_Fade(m_pInactiveHeroText, 1.f);
 			SetActive_HeroPortrait(false);
 		}
 
-		m_tStatus.bAbleHero = false;
-		m_tStatus.bIsHero = true;
+		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero() = false;
+		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = true;
 	}
 	else
 	{
-		m_tStatus.bIsHero = false;
+		Disable_Fade(m_pInactiveHeroText, 1.f);
+		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
 
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);

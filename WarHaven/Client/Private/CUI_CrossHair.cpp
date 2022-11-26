@@ -252,63 +252,6 @@ void CUI_Crosshair::ArrowCrosshair()
 void CUI_Crosshair::My_Tick()
 {
 	__super::My_Tick();
-
-	/*if (!m_bIsHero)
-	{
-		if (KEY(T, TAP))
-		{
-			static int iIndex = 0;
-			iIndex++;
-			if (iIndex >= 6)
-				iIndex = 0;
-
-			Set_Crosshair(iIndex);
-		}
-
-		if (KEY(NUM1, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_Crosshair(6);
-		}
-		else if (KEY(NUM2, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_Crosshair(7);
-		}
-		else if (KEY(NUM3, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_Crosshair(8);
-		}
-		else if (KEY(NUM4, TAP))
-		{
-			m_bIsHero = true;
-
-			Set_Crosshair(9);
-		}
-	}
-	else
-	{
-		if (KEY(NUM1, TAP))
-		{
-			m_bIsHero = false;
-
-			Set_Crosshair(m_iPrvCrosshair);
-		}
-	}*/
-
-	/*if (KEY(T, TAP))
-	{
-		static int iIndex = 0;
-		iIndex++;
-		if (iIndex >= 10)
-			iIndex = 0;
-
-		Set_Crosshair(iIndex);
-	}*/
 }
 
 void CUI_Crosshair::Ready_Texture()

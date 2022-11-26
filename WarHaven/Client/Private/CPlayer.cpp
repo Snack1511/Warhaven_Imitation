@@ -55,7 +55,7 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
-	
+
 }
 
 CPlayer* CPlayer::Create(wstring wstrCamKey, CLASS_DEFAULT eClass)
@@ -193,7 +193,7 @@ void CPlayer::Create_DefaultClass()
 				Call_MsgBox(L"카메라 생성 안됐음.");
 				return;
 			}
-				
+
 			m_pDefaultClass[i]->Set_FollowCam(m_pFollowCam);
 		}
 
@@ -343,7 +343,7 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
 
 	}
-	
+
 	m_pCurrentUnit = m_pDefaultClass[eClass];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
@@ -360,8 +360,7 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 
 HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 {
-
-	if (eClass >= HERO_END)
+	if (eClass >= CLASS_HERO_END)
 		return E_FAIL;
 
 	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
@@ -371,7 +370,7 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
 	}
 
-	m_pCurrentUnit = m_pHeroClass[eClass];
+	m_pCurrentUnit = m_pHeroClass[eClass - CPlayer::CLASS_HREO_FIONA];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
 	Set_Postion(vPos);
@@ -385,7 +384,7 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 
 void CPlayer::Reserve_State(_uint eState)
 {
-	m_pCurrentUnit->Reserve_State(STATE_TYPE(eState)); 
+	m_pCurrentUnit->Reserve_State(STATE_TYPE(eState));
 }
 
 void CPlayer::SetUp_UnitColliders(_bool bPlayer)
@@ -511,7 +510,7 @@ HRESULT CPlayer::Start()
 
 		CREATE_GAMEOBJECT(m_pDefaultClass[i], GROUP_PLAYER);
 		DISABLE_GAMEOBJECT(m_pDefaultClass[i]);
-	
+
 	}
 
 	for (int i = 0; i < HERO_END; ++i)
@@ -525,7 +524,7 @@ HRESULT CPlayer::Start()
 
 		CREATE_GAMEOBJECT(m_pHeroClass[i], GROUP_PLAYER);
 		DISABLE_GAMEOBJECT(m_pHeroClass[i]);
-		
+
 	}
 
 
@@ -558,11 +557,50 @@ void CPlayer::My_Tick()
 {
 	if (m_pCurrentUnit->Is_MainPlayer())
 	{
-		CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fMaxHP, m_pCurrentUnit->Get_Status().fHP);
+		Update_HP();
+		Update_HeroGauge();
 	}
 }
 
 void CPlayer::My_LateTick()
 {
 
+}
+
+void CPlayer::Update_HP()
+{
+	CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fMaxHP, m_pCurrentUnit->Get_Status().fHP);
+}
+
+void CPlayer::Update_HeroGauge()
+{
+	if (!m_bAbleHero)
+	{
+		_float fGaugeSpeed = fDT(0) * 20.f;
+
+		if (!m_bIsHero)
+		{
+			m_fGauge += fGaugeSpeed;
+			if (m_fGauge > m_fMaxGauge)
+			{
+				m_bAbleHero = true;
+				m_fGauge = m_fMaxGauge;
+
+				CUser::Get_Instance()->SetActive_HeroPortrait(true);
+			}
+		}
+		else
+		{
+			m_fGauge -= fGaugeSpeed;
+			if (m_fMaxGauge < 0.f)
+			{
+				m_fGauge = 0.f;
+				m_bIsHero = false;
+
+				CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
+			}
+		}
+	}
+
+	CUser::Get_Instance()->Set_HeroGauge(m_fMaxGauge, m_fGauge);
 }
