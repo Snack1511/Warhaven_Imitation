@@ -800,64 +800,6 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
-	if (m_bIsMainPlayer)
-	{
-		CUser::Get_Instance()->Set_HP(m_tUnitStatus.fMaxHP, m_tUnitStatus.fHP);
-
-		if (!m_tUnitStatus.bAbleHero)
-		{
-			_float fGaugeSpeed = fDT(0) * 20.f;
-
-			if (!m_tUnitStatus.bIsHero)
-			{
-				m_tUnitStatus.fGauge += fGaugeSpeed;
-				if (m_tUnitStatus.fGauge > m_tUnitStatus.fMaxGauge)
-				{
-					m_tUnitStatus.fGauge = m_tUnitStatus.fMaxGauge;
-					m_tUnitStatus.bAbleHero = true;
-
-					// 영웅 포트레이트 활성화
-				}
-			}
-			else
-			{
-				m_tUnitStatus.fGauge -= fGaugeSpeed;
-				if (m_tUnitStatus.fGauge < 0.f)
-				{
-					m_tUnitStatus.fGauge = 0.f;
-					m_tUnitStatus.bIsHero = false;
-
-					// 원래 포트레이트 활성화
-				}
-				else if (KEY(NUM1, TAP))
-				{
-					m_tUnitStatus.bIsHero = false;
-
-					// 원래 포트레이트 활성화
-				}
-			}
-		}
-		else
-		{
-			// 각 번호에 해당하는 영웅으로 변신
-			if (KEY(NUM1, TAP))
-			{
-
-			}
-			else if (KEY(NUM2, TAP))
-			{
-			}
-			else if (KEY(NUM3, TAP))
-			{
-			}
-			else if (KEY(NUM4, TAP))
-			{
-			}
-		}
-
-		CUser::Get_Instance()->Set_HeroGauge(m_tUnitStatus.fMaxGauge, m_tUnitStatus.fGauge);
-	}
-
 	for (_int i = 0; i < COOL_END; ++i)
 	{
 		if (m_fCoolAcc[i] >= 0.01f)
@@ -899,12 +841,10 @@ void CUnit::My_Tick()
 		m_fHitDelayAcc = 0.f;
 
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
-
 }
 
 void CUnit::My_LateTick()
 {
-
 	if (m_bDie)
 	{
 		m_fDeadTimeAcc += fDT(0);

@@ -493,7 +493,64 @@ void CPlayer::OnDisable()
 
 void CPlayer::My_Tick()
 {
+	if (m_pCurrentUnit->Is_MainPlayer())
+	{
+		CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fMaxHP, m_pCurrentUnit->Get_Status().fHP);
 
+		if (!m_pCurrentUnit->Get_Status().bAbleHero)
+		{
+			_float fGaugeSpeed = fDT(0) * 20.f;
+
+			if (!m_pCurrentUnit->Get_Status().bIsHero)
+			{
+				m_pCurrentUnit->Get_Status().fGauge += fGaugeSpeed;
+				if (m_pCurrentUnit->Get_Status().fGauge > m_pCurrentUnit->Get_Status().fMaxGauge)
+				{
+					m_pCurrentUnit->Get_Status().fGauge = m_pCurrentUnit->Get_Status().fMaxGauge;
+					m_pCurrentUnit->Get_Status().bAbleHero = true;
+
+					// 영웅 포트레이트 활성화
+				}
+			}
+			else
+			{
+				m_pCurrentUnit->Get_Status().fGauge -= fGaugeSpeed;
+				if (m_pCurrentUnit->Get_Status().fGauge < 0.f)
+				{
+					m_pCurrentUnit->Get_Status().fGauge = 0.f;
+					m_pCurrentUnit->Get_Status().bIsHero = false;
+
+					// 원래 포트레이트 활성화
+				}
+				else if (KEY(NUM1, TAP))
+				{
+					m_pCurrentUnit->Get_Status().bIsHero = false;
+
+					// 원래 포트레이트 활성화
+				}
+			}
+		}
+		else
+		{
+			// 각 번호에 해당하는 영웅으로 변신
+			if (KEY(NUM1, TAP))
+			{
+
+			}
+			else if (KEY(NUM2, TAP))
+			{
+			}
+			else if (KEY(NUM3, TAP))
+			{
+			}
+			else if (KEY(NUM4, TAP))
+			{
+			}
+		}
+
+		CUser::Get_Instance()->Set_HeroGauge(m_pCurrentUnit->Get_Status().fMaxGauge, m_pCurrentUnit->Get_Status().fGauge);
+
+	}
 }
 
 void CPlayer::My_LateTick()

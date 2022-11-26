@@ -22,8 +22,7 @@ class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
 
-class CPlayer final
-	: public CGameObject
+class CPlayer final : public CGameObject
 {
 
 	DECLARE_PROTOTYPE(CPlayer);
@@ -112,8 +111,7 @@ private:
 
 
 	CLASS_DEFAULT	m_eCurrentDefaultClass = CLASS_DEFAULT_END;
-
-
+	
 	_bool m_bIsMainPlayer = false;
 
 private:
