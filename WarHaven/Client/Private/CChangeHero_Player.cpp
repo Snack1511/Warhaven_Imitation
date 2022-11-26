@@ -150,7 +150,6 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 
 void CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 {
-	pOwner->Get_OwnerPlayer()->AbleHero() = false;
 	pOwner->Get_OwnerPlayer()->IsHero() = true;
 	pOwner->Get_HeroType() = eClass;
 	pOwner->On_ChangeToHero((CPlayer::CLASS_HREO)eClass);

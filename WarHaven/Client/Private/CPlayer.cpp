@@ -313,7 +313,7 @@ void CPlayer::Create_HeroClass()
 		}
 	}
 
-	m_iReserveStateHero[CLASS_HREO_FIONA] = STATE_IDLE_VALKYRIE_R;
+	m_iReserveStateHero[CLASS_HREO_FIONA - CLASS_HREO_FIONA] = STATE_IDLE_VALKYRIE_R;
 }
 
 HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
@@ -375,7 +375,8 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 
 	Set_Postion(vPos);
 
-	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateHero[eClass]);
+	m_pCurrentUnit->Set_MainPlayer();
+	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateHero[eClass - CPlayer::CLASS_HREO_FIONA]);
 	//m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
@@ -574,6 +575,8 @@ void CPlayer::Update_HP()
 
 void CPlayer::Update_HeroGauge()
 {
+	m_fMaxGauge = 100.f;
+
 	if (!m_bAbleHero)
 	{
 		_float fGaugeSpeed = fDT(0) * 20.f;
@@ -592,7 +595,7 @@ void CPlayer::Update_HeroGauge()
 		else
 		{
 			m_fGauge -= fGaugeSpeed;
-			if (m_fMaxGauge < 0.f)
+			if (m_fGauge < 0.f)
 			{
 				m_fGauge = 0.f;
 				m_bIsHero = false;
