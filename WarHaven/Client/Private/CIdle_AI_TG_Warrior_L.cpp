@@ -45,6 +45,7 @@ HRESULT CIdle_AI_TG_Warrior_L::Initialize()
     m_iAnimIndex = 3;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_IDLE_WARRIOR_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
+    m_fMyMaxLerp = 0.45f;
     
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
@@ -61,14 +62,39 @@ HRESULT CIdle_AI_TG_Warrior_L::Initialize()
 
 void CIdle_AI_TG_Warrior_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    if (ePrevType == STATE_SWITCH_R_TO_L)
-        m_fInterPolationTime = 0.f;
+    if (ePrevType == AI_STATE_TG_HIT_WARRIOR ||
+        ePrevType == AI_STATE_TG_GUARDHIT_WARRIOR ||
+        ePrevType == AI_STATE_TG_GROGGYHIT_WARRIOR ||
+        ePrevType == AI_STATE_TG_STINGHIT_WARRIOR ||
+        ePrevType == AI_STATE_TG_FLYHIT_WARRIOR
+        )
+        fwaitCurTime = 20.f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CIdle_AI_TG_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    fwaitCurTime += fDT(0);
+
+    CUnit* pUnit = pOwner->Get_TargetUnit();
+
+
+    CTransform* pMyTransform = pOwner->Get_Transform();
+
+    _float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+    _float fLength = vLook.Length();
+
+    if (fwaitCurTime > fwaitCoolTime)
+        return AI_STATE_RUNBEGIN_WARRIOR_L;
+
+    if (fLength < 3.f)
+        return AI_STATE_RUNBEGIN_WARRIOR_R;
+
+
+    pMyTransform->Set_LerpLook(vLook.Normalize(), m_fMyMaxLerp);
+
     return __super::Tick(pOwner, pAnimator);
 
 }
@@ -84,16 +110,11 @@ STATE_TYPE CIdle_AI_TG_Warrior_L::Check_Condition(CUnit* pOwner, CAnimator* pAni
 	1. 현재 진행중인 애니메이션이 끝났을 때
 	*/
 
-	//if (
-	//	KEY(W, NONE) &&
-	//	KEY(A, NONE) &&
-	//	KEY(S, NONE) &&
-	//	KEY(D, NONE))
-	//{		
-	//
-	//	if (pAnimator->Is_CurAnimFinished())
-	//		return m_eStateType;
-	//}
+	{		
+	
+		if (pAnimator->Is_CurAnimFinished())
+			return m_eStateType;
+	}
 
     return STATE_END;
 }

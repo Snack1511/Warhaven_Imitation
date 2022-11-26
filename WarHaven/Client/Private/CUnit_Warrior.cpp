@@ -142,13 +142,21 @@ void	CUnit_Warrior::SetUp_HitStates(_bool bPlayer)
 
 	if (!bPlayer)
 	{
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
+		//m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
+		//m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
+		//m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
+		//m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
+		//m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
+		//m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
+		//m_tHitType.eBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
+
+		m_tHitType.eHitState = AI_STATE_TG_HIT_WARRIOR;
+		m_tHitType.eGuardState = AI_STATE_TG_GUARDHIT_WARRIOR;
+		m_tHitType.eGuardBreakState = AI_STATE_GUARD_CANCEL_WARRIOR;
+		m_tHitType.eStingHitState = AI_STATE_TG_STINGHIT_WARRIOR;
+		m_tHitType.eGroggyState = AI_STATE_TG_GROGGYHIT_WARRIOR;
+		m_tHitType.eFlyState = AI_STATE_TG_FLYHIT_WARRIOR;
+		m_tHitType.eBounce = AI_STATE_BOUNE_WARRIOR_L;
 	}
 	else
 	{

@@ -311,6 +311,10 @@
 #include "CIdle_AI_TG_Warrior_L.h"
 #include "CIdle_AI_TG_Warrior_R.h"
 
+#include "CWalk_AI_TG_Warrior_L.h"
+#include "CWalk_AI_TG_Warrior_R.h"
+
+
 #include "CRun_AI_TG_Warrior_L.h"
 #include "CRun_AI_TG_Warrior_R.h"
 
@@ -328,6 +332,11 @@
 #include "CAI_TG_Warrior_Attack_HorizontalMiddle_L.h"
 #include "CAI_TG_Warrior_Attack_HorizontalMiddle_R.h"
 
+#include "CAI_TG_Hit.h"
+#include "CAI_TG_GuardHit.h"
+#include "CAI_TG_StingHit.h"
+#include "CAI_TG_FlyHit.h"
+#include "CAI_TG_Groggy.h"
 
 IMPLEMENT_SINGLETON(CState_Manager);
 
@@ -694,14 +703,16 @@ void CState_Manager::Warrior_SandBagState()
 
 void CState_Manager::Warrior_State_AI()
 {
-
-
+	
 	m_arrStates[AI_STATE_IDLE_WARRIOR_L] = CIdle_AI_TG_Warrior_L::Create();
 	m_arrStates[AI_STATE_IDLE_WARRIOR_R] = CIdle_AI_TG_Warrior_R::Create();
 
+	m_arrStates[AI_STATE_WALK_WARRIOR_L] = CWalk_AI_TG_Warrior_L::Create();
+	m_arrStates[AI_STATE_WALK_WARRIOR_R] = CWalk_AI_TG_Warrior_R::Create();
 
 	m_arrStates[AI_STATE_RUN_WARRIOR_L] = CRun_AI_TG_Warrior_L::Create();
 	m_arrStates[AI_STATE_RUN_WARRIOR_R] = CRun_AI_TG_Warrior_R::Create();
+
 	m_arrStates[AI_STATE_RUNBEGIN_WARRIOR_L] = CRun_AI_TG_Warrior_Begin_L::Create();
 	m_arrStates[AI_STATE_RUNBEGIN_WARRIOR_R] = CRun_AI_TG_Warrior_Begin_R::Create();
 
@@ -716,7 +727,15 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_ATTACK_HORIZONTALMIDDLE_L] = CAI_TG_Warrior_Attack_HorizontalMiddle_L::Create();
 	m_arrStates[AI_STATE_ATTACK_HORIZONTALMIDDLE_R] = CAI_TG_Warrior_Attack_HorizontalMiddle_R::Create();
 
+	    
+	m_arrStates[AI_STATE_TG_HIT_WARRIOR] = CAI_TG_Hit::Create();
+	m_arrStates[AI_STATE_TG_GUARDHIT_WARRIOR] = CAI_TG_GuardHit::Create();
+	m_arrStates[AI_STATE_TG_GROGGYHIT_WARRIOR] = CAI_TG_Groggy::Create();
+	m_arrStates[AI_STATE_TG_STINGHIT_WARRIOR] = CAI_TG_StingHit::Create();
+	m_arrStates[AI_STATE_TG_FLYHIT_WARRIOR] = CAI_TG_FlyHit::Create();
 
+
+	//CRun_AI_TG_FlyHit
 }
 
 void CState_Manager::Spear_State()

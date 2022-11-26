@@ -90,7 +90,6 @@ void CState_AI_Warrior_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
 
-
 	//pOwner->CallBack_CollisionEnter += bind(&CState_AI_Warrior_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 	//pOwner->CallBack_CollisionStay += bind(&CState_AI_Warrior_Blendable::OnCollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 
@@ -115,37 +114,37 @@ STATE_TYPE CState_AI_Warrior_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator
 
 	// Create_SwordAfterEffect();
 
-	switch (m_eEnum)
-	{
-	case Client::CState_AI_Warrior_Blendable::Enum::eWALK:
-		if ((eStateType = Update_Walk(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_AI_Warrior_Blendable::Enum::eRUN:
-		if ((eStateType = Update_Run(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_AI_Warrior_Blendable::Enum::eJUMP:
-		if ((eStateType = Update_Jump(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_AI_Warrior_Blendable::Enum::eFALL:
-		if ((eStateType = Update_Fall(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_AI_Warrior_Blendable::Enum::eLAND:
-		if ((eStateType = Update_Land(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_AI_Warrior_Blendable::Enum::eIDLE:
-		if ((eStateType = Update_Idle(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	default:
-		break;
-	}
+	//switch (m_eEnum)
+	//{
+	//case Client::CState_AI_Warrior_Blendable::Enum::eWALK:
+	//	if ((eStateType = Update_Walk(pOwner, pAnimator)) != STATE_END)
+	//		return eStateType;
+	//	break;
+	//case Client::CState_AI_Warrior_Blendable::Enum::eRUN:
+	//	if ((eStateType = Update_Run(pOwner, pAnimator)) != STATE_END)
+	//		return eStateType;
+	//	break;
+	//case Client::CState_AI_Warrior_Blendable::Enum::eJUMP:
+	//	if ((eStateType = Update_Jump(pOwner, pAnimator)) != STATE_END)
+	//		return eStateType;
+	//	break;
+	//case Client::CState_AI_Warrior_Blendable::Enum::eFALL:
+	//	if ((eStateType = Update_Fall(pOwner, pAnimator)) != STATE_END)
+	//		return eStateType;
+	//	break;
+	//case Client::CState_AI_Warrior_Blendable::Enum::eLAND:
+	//	if ((eStateType = Update_Land(pOwner, pAnimator)) != STATE_END)
+	//		return eStateType;
+	//	break;
+	//case Client::CState_AI_Warrior_Blendable::Enum::eIDLE:
+	//	if ((eStateType = Update_Idle(pOwner, pAnimator)) != STATE_END)
+	//		return eStateType;
+	//	break;
+	//default:
+	//	break;
+	//}
 
-	Follow_MouseLook_Turn(pOwner);
+	//Follow_MouseLook_Turn(pOwner);
 
 	return __super::Tick(pOwner, pAnimator);
 }
@@ -203,7 +202,7 @@ STATE_TYPE CState_AI_Warrior_Blendable::Update_Run(CUnit* pOwner, CAnimator* pAn
 
 	if (m_bBlendable)
 	{
-		if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
+		if(m_bAIMove)
 		{
 			if (m_eAnimLeftorRight == ANIM_BASE_L)
 			{
@@ -289,7 +288,7 @@ STATE_TYPE CState_AI_Warrior_Blendable::Update_Idle(CUnit* pOwner, CAnimator* pA
 	{
 		On_EnumChange(Enum::eFALL, pAnimator);
 	}
-	else if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
+	else if (!m_bAIMove)
 	{
 		if (KEY(CTRL, HOLD))
 		{

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CRun_AI_TG_Warrior_L.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -51,7 +51,7 @@ HRESULT CRun_AI_TG_Warrior_L::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
 //    m_vecAdjState.push_back(STATE_ATTACK_WARRIOR);
 
-	m_vecAdjState.push_back(AI_STATE_ATTACK_HORIZONTALMIDDLE_L);
+	//m_vecAdjState.push_back(AI_STATE_ATTACK_HORIZONTALMIDDLE_L);
 
     // 15
 
@@ -96,24 +96,87 @@ void CRun_AI_TG_Warrior_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CRun_AI_TG_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_iRand == 0)
+        return AI_STATE_WALK_WARRIOR_L;
+
+    if (m_bAIMove)
+        return AI_STATE_RUNBEGIN_WARRIOR_R;
+
+    CUnit* pUnit = pOwner->Get_TargetUnit();
+
+    pOwner->Set_LookToTarget();
 
 
-    //if (pOwner->Is_Air())
-    //    return STATE_JUMPFALL_PLAYER_L;
 
-    //if (
-    //    KEY(W, NONE) &&
-    //    KEY(A, NONE) &&
-    //    KEY(S, NONE) &&
-    //    KEY(D, NONE)
-    //    )
-    //{ 
-    //    _uint*   pInt = new _uint;
-    //    *pInt = m_iCurDirection;
-    //    pOwner->Enter_State(STATE_STOP_PLAYER_L, (void*)pInt);
-    //    return STATE_END;
+    _float4 vLook = (pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS));
+    _float4 vRight = (pUnit->Get_Transform()->Get_World(WORLD_LOOK) - pOwner->Get_Transform()->Get_World(WORLD_LOOK));
+
+    _float fLength = vLook.Length();
+
+    CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+    vLook.Normalize();
+    vRight.Normalize();
+
+    pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+
+
+    pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+    if (fLength < 2.f)
+    {
+        _int iRand = rand() % 20;
+
+        if (iRand < 15)
+            return AI_STATE_ATTACK_HORIZONTALMIDDLE_R;
+
+        else
+            return AI_STATE_GUARD_BEGIN_WARRIOR;
+
+        //switch (iRand)
+        //{
+
+        //case 0:
+        //case 1:
+
+        //    return AI_STATE_ATTACK_HORIZONTALMIDDLE_L;
+
+        //case 2:
+
+        //    return AI_STATE_GUARD_BEGIN_WARRIOR;
+
+        //default:
+        //    break;
+        //}
+    }
+
+
+    //if (fLength > 6.f)
+    //{
+        if (!vLook.Is_Zero())
+            pMyPhysicsCom->Set_Dir(vLook);
+
+
+        Change_Location_Loop(STATE_DIRECTION_N, pAnimator, 0.1f);
 
     //}
+    //else
+    //{
+
+    //    _float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+    //    _float4 vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+
+
+    //    if (vRight.z > 0.9f)
+    //    {
+    //        if ((!vLook.Is_Zero()))
+    //            pMyPhysicsCom->Set_Dir(vLook);
+
+    //        Change_Location_Loop(STATE_DIRECTION_N, pAnimator, 0.1f);
+    //    }
+    //}
+
+
 
     return __super::Tick(pOwner, pAnimator);
 }

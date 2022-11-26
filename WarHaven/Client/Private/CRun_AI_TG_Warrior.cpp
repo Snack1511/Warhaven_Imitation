@@ -39,11 +39,11 @@ HRESULT CRun_AI_TG_Warrior::Initialize()
 
 void CRun_AI_TG_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed * 0.7f;
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
-
+	m_iRand = rand() % 3;
 
 	//CTransform* pMyTransform = pOwner->Get_Transform();
 	//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();

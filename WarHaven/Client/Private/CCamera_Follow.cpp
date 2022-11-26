@@ -84,6 +84,11 @@ void CCamera_Follow::Set_FollowTarget(CGameObject* pTarget)
 	
 }
 
+void CCamera_Follow::On_FixedTarget(_bool bActivate, CUnit* pLockedTarget)
+{
+	m_pFollowScript->On_FixedTarget(bActivate, pLockedTarget);
+}
+
 HRESULT CCamera_Follow::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();

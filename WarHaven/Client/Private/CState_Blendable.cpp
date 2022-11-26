@@ -3,6 +3,7 @@
 
 #include "UsefulHeaders.h"
 
+
 #include "CSword_Effect.h"
 #include "CColorController.h"
 
@@ -115,37 +116,41 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	// Create_SwordAfterEffect();
 
-	switch (m_eEnum)
+	if (pOwner->Is_MainPlayer())
 	{
-	case Client::CState_Blendable::Enum::eWALK:
-		if ((eStateType = Update_Walk(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_Blendable::Enum::eRUN:
-		if ((eStateType = Update_Run(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_Blendable::Enum::eJUMP:
-		if ((eStateType = Update_Jump(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_Blendable::Enum::eFALL:
-		if ((eStateType = Update_Fall(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_Blendable::Enum::eLAND:
-		if ((eStateType = Update_Land(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	case Client::CState_Blendable::Enum::eIDLE:
-		if ((eStateType = Update_Idle(pOwner, pAnimator)) != STATE_END)
-			return eStateType;
-		break;
-	default:
-		break;
+		switch (m_eEnum)
+		{
+		case Client::CState_Blendable::Enum::eWALK:
+			if ((eStateType = Update_Walk(pOwner, pAnimator)) != STATE_END)
+				return eStateType;
+			break;
+		case Client::CState_Blendable::Enum::eRUN:
+			if ((eStateType = Update_Run(pOwner, pAnimator)) != STATE_END)
+				return eStateType;
+			break;
+		case Client::CState_Blendable::Enum::eJUMP:
+			if ((eStateType = Update_Jump(pOwner, pAnimator)) != STATE_END)
+				return eStateType;
+			break;
+		case Client::CState_Blendable::Enum::eFALL:
+			if ((eStateType = Update_Fall(pOwner, pAnimator)) != STATE_END)
+				return eStateType;
+			break;
+		case Client::CState_Blendable::Enum::eLAND:
+			if ((eStateType = Update_Land(pOwner, pAnimator)) != STATE_END)
+				return eStateType;
+			break;
+		case Client::CState_Blendable::Enum::eIDLE:
+			if ((eStateType = Update_Idle(pOwner, pAnimator)) != STATE_END)
+				return eStateType;
+			break;
+		default:
+			break;
+		}
+
+		Follow_MouseLook_Turn(pOwner);
 	}
 
-	Follow_MouseLook_Turn(pOwner);
 
 	return __super::Tick(pOwner, pAnimator);
 }

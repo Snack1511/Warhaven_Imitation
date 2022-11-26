@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CRun_AI_TG_Warrior_Begin_R.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -66,31 +66,14 @@ void CRun_AI_TG_Warrior_Begin_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 STATE_TYPE CRun_AI_TG_Warrior_Begin_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    //if (KEY(SPACE, TAP))
-    //{
-    //    return STATE_JUMP_PLAYER_R;
-    //}
 
-
-	if (pAnimator->Is_CurAnimFinished())
-		return AI_STATE_RUN_WARRIOR_R;
-
-
-   // 
-  /*  if (
-        KEY(W, NONE) &&
-        KEY(A, NONE) &&
-        KEY(S, NONE) &&
-        KEY(D, NONE)
-        )
+    if (pAnimator->Is_CurAnimFinished())
     {
-        _uint* pInt = new _uint;
-        *pInt = m_iCurDirection;
-        pOwner->Enter_State(AI_STATE_BOUNE_WARRIOR_R, (void*)pInt);
-        return STATE_END;
-
-    }*/
-
+        if (m_bAIMove)
+            return AI_STATE_RUN_WARRIOR_R;
+        else
+            return AI_STATE_RUNBEGIN_WARRIOR_L;
+    }
 
     return __super::Tick(pOwner, pAnimator);
 

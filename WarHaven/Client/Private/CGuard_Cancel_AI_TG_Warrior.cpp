@@ -42,6 +42,7 @@ HRESULT CGuard_Cancel_AI_TG_Warrior::Initialize()
 
 	m_iStateChangeKeyFrame = 100;
 
+    m_vecAdjState.push_back(AI_STATE_IDLE_WARRIOR_R);
     m_vecAdjState.push_back(AI_STATE_RUN_WARRIOR_R);
     m_vecAdjState.push_back(AI_STATE_ATTACK_HORIZONTALMIDDLE_R);
 
