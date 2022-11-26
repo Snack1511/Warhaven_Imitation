@@ -40,6 +40,10 @@ public:
 	MODEL_TYPE	Get_ModelType() { return m_eMODEL_TYPE; }
 
 public:
+	HRESULT	SetUp_AnimModel_LOD();
+
+
+public:
 	_uint Get_NumMeshContainers() const {
 		return m_iNumMeshContainers;
 	}
@@ -102,6 +106,7 @@ protected:
 	eLOD_LEVEL					m_eLOD_Level = eLOD_LEVEL::eLOD_END;
 
 	_float						m_fLODDistance = 15.f;
+	_float						m_fAnimLODDistance = 5.f;
 	_float4						m_vLODCenterPos = ZERO_VECTOR;
 	_float						m_fLODMaxRange = 0.f;
 
@@ -137,6 +142,7 @@ protected:
 	HRESULT	SetUp_Model_LOD();
 	HRESULT	SetUp_InstancingModel_LOD();
 	HRESULT	Load_LOD(eLOD_LEVEL eLevel);
+	HRESULT	Load_Anim_LOD(eLOD_LEVEL eLevel, _uint iMeshPartType);
 	HRESULT	Load_InstancingLOD(eLOD_LEVEL eLevel);
 
 	HRESULT Create_ModelData(class CResource* pResource, _uint iResType, _uint iMeshPartType);

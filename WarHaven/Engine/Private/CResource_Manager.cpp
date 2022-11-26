@@ -598,7 +598,7 @@ HRESULT CResource_Manager::Fill_ModelData(ifstream* pReadFile, RES_TYPE eType, M
 		string strName = CUtility_File::Read_Text(pReadFile);
 		wstring wstrName(strName.begin(), strName.end());
 
-		if (wstrName == L"RootNode")
+		//if (wstrName == L"RootNode")
 			wstrName += to_wstring(m_iRootNodeIdx++);
 
 
@@ -609,11 +609,12 @@ HRESULT CResource_Manager::Fill_ModelData(ifstream* pReadFile, RES_TYPE eType, M
 		{
 			return E_FAIL;
 		}
-
+		//존재하지않을때만 넣고
 		if (!Find_Resource(wstrName))
 			Add_Resource(wstrName, pResource);
 		else
 		{
+		//이미존재하면 삭제..가 아니라 
 			SAFE_DELETE(pResource);
 		}
 

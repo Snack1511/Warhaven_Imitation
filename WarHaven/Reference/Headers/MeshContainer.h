@@ -16,7 +16,7 @@ protected:
 	virtual ~CMeshContainer();
 
 public:
-	static CMeshContainer* Create(CResource_Mesh* pMeshResource, _float4x4 TransformMatrix);
+	static CMeshContainer* Create(CResource_Mesh* pMeshResource, _float4x4 TransformMatrix, wstring wstrFilePath = wstring());
 
 public:
 	void		Set_ShaderFlag(_float4 vFlag) { m_vFlag = vFlag; }
@@ -60,6 +60,7 @@ public:
 
 
 protected: /* 현재ㅑ 메시컨테이너에게 적용되어야할 머테리얼 인덱스*/
+	wstring	m_wstrFilePath;
 	BONE_DATA* m_pBoneDatas = nullptr;
 	char		m_szName[MAX_PATH] = "";
 	string		m_strRefBoneName;

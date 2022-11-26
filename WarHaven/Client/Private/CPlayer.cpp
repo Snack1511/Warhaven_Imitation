@@ -90,17 +90,17 @@ void CPlayer::Create_DefaultClass()
 	};
 
 	wstring wstrModeBody[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx", // WARRIOR
+		L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00_50.fbx", // WARRIOR
 		L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00.fbx"
 	};
 
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx", // WARRIOR
+		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
 		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00.fbx"
 	};
 
 	wstring wstrModeHead[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx", // WARRIOR
+		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00_50.fbx", // WARRIOR
 		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00.fbx"
 	};
 
@@ -158,7 +158,13 @@ void CPlayer::Create_DefaultClass()
 		}
 		else
 		{
-			m_pDefaultClass[i]->Initialize();
+			if (FAILED(m_pDefaultClass[i]->Initialize()))
+			{
+				Call_MsgBox_Index(L"Failed to Initialize Unit / Index : ", i);
+				return;
+
+			}
+
 			m_pDefaultClass[i]->Set_OwnerPlayer(this);
 
 			if (!m_pFollowCam)
@@ -251,7 +257,13 @@ void CPlayer::Create_HeroClass()
 		}
 		else
 		{
-			m_pHeroClass[i]->Initialize();
+			if (FAILED(m_pHeroClass[i]->Initialize()))
+			{
+				Call_MsgBox_Index(L"Failed to Initialize UnitHero / Index : ", i);
+				return;
+
+			}
+
 			m_pHeroClass[i]->Set_OwnerPlayer(this);
 
 			if (!m_pFollowCam)

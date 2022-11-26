@@ -351,6 +351,8 @@ void CModel::Switch_MeshContainerBone(_uint iMeshPartType, string strBoneName)
 
 HRESULT CModel::Add_Model(wstring wstrModelFilePath, _uint iMeshPartType)
 {
+	m_wstrModelFilePath = wstrModelFilePath;
+
 	MODEL_DATA* pModelData = CGameInstance::Get_Instance()->Get_ModelData(wstrModelFilePath, m_eMODEL_TYPE);
 	_uint iSize = (_uint)pModelData->m_vecResourceKeys.size();
 	for (_uint i = 0; i < iSize; ++i)
@@ -376,6 +378,8 @@ HRESULT CModel::Add_Model(wstring wstrModelFilePath, _uint iMeshPartType)
 
 HRESULT CModel::Add_Model(wstring wstrModelFilePath, _uint iMeshPartType, string strBoneName)
 {
+	m_wstrModelFilePath = wstrModelFilePath;
+
 	MODEL_DATA* pModelData = CGameInstance::Get_Instance()->Get_ModelData(wstrModelFilePath, m_eMODEL_TYPE);
 	_uint iSize = (_uint)pModelData->m_vecResourceKeys.size();
 	for (_uint i = 0; i < iSize; ++i)
@@ -468,15 +472,13 @@ HRESULT CModel::Initialize_Prototype()
 
 
 	/* NonAnim이면 LOD도 읽기 */
-	if (m_eMODEL_TYPE == TYPE_NONANIM)
+	if (m_eMODEL_TYPE == TYPE_NONANIM || m_bInstancing)
 	{
-		if (m_bInstancing)
-		{
-			SetUp_InstancingModel_LOD();
-		}
-		else
-			SetUp_Model_LOD();
+		SetUp_InstancingModel_LOD();
 	}
+	else
+		SetUp_Model_LOD();
+
 
 	return S_OK;
 }
@@ -498,7 +500,7 @@ void CModel::Late_Tick()
 	for (auto& pHierarchyNode : m_vecHierarchyNodes)
 		pHierarchyNode.second->Update_CombinedTransformationMatrix();
 
-	
+
 }
 
 void CModel::Final_Tick()
@@ -508,31 +510,97 @@ void CModel::Final_Tick()
 
 	if (m_eMODEL_TYPE == TYPE_ANIM)
 	{
+		//1.일단 절두체
 		_float4 vWorldPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
 		vWorldPos.y += 0.6f;
 		_float fRange = 2.f;
 
-		//통과면은 절두체까지해서 처리
-		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vWorldPos.XMLoad(), fRange))
+		//절두체에 없으면 
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vWorldPos.XMLoad(), fRange))
 		{
+			//다끄기
 			for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 			{
 				if (m_MeshContainers[i].first == 0)
 					continue;
 
-				m_MeshContainers[i].second->Set_Enable(true);
+				m_MeshContainers[i].second->Set_Enable(false);
 			}
 		}
 		else
 		{
-			for (_uint i = 0; i < m_iNumMeshContainers; ++i)
+			//d있으면 LOD 체크
+			if (m_bLOD)
 			{
-				if (m_MeshContainers[i].first == 0)
-					continue;
-				m_MeshContainers[i].second->Set_Enable(false);
-			}
-		}
+				_float4x4 matWorld = m_pOwner->Get_Transform()->Get_WorldMatrix();
+				_float4 vScale = m_pOwner->Get_Transform()->Get_Scale();
+				_float fScaleLength = vScale.x;
+				_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
 
+				if (vScale.y > fScaleLength)
+					fScaleLength = vScale.y;
+
+				if (vScale.z > fScaleLength)
+					fScaleLength = vScale.z;
+
+				vWorldPos;
+
+				_float fCurDistance = (vCamPos - vWorldPos).Length();
+
+				//거리가 멀면 LOD true
+				m_eLOD_Level = eLOD_LEVEL::eDefault;
+
+				for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+				{
+					_float fLODDistance = m_fAnimLODDistance;
+					//i만큼 곱해서 단계를 나눔
+					fLODDistance *= (_float)i;
+
+					//fLODDistance += m_fAnimLODDistance;
+
+					//현재 거리가 단계보다 크면
+					if (fCurDistance > fLODDistance)
+						m_eLOD_Level = (eLOD_LEVEL)i;
+				}
+
+				cout << (_uint)m_eLOD_Level << endl;
+
+				//LOD메쉬만 켜주기
+				for (_uint i = 0; i < m_iNumMeshContainers; ++i)
+				{
+					if (m_MeshContainers[i].first == 0)
+						continue;
+
+					if (m_MeshContainers[i].first == 4 || m_MeshContainers[i].first == 5)
+					{
+						m_MeshContainers[i].second->Set_Enable(true);
+						continue;
+					}
+
+
+					//10보다 크고 20보다 작아야함
+					if (m_MeshContainers[i].first >= (_uint)m_eLOD_Level * 10 && m_MeshContainers[i].first < ((_uint)m_eLOD_Level + 1) * 10)
+						m_MeshContainers[i].second->Set_Enable(true);
+					else
+						m_MeshContainers[i].second->Set_Enable(false);
+
+				}
+
+
+			}
+			else
+			{
+				//LOD가 아니면 0제외 다키기
+				for (_uint i = 0; i < m_iNumMeshContainers; ++i)
+				{
+					if (m_MeshContainers[i].first == 0)
+						continue;
+
+					m_MeshContainers[i].second->Set_Enable(true);
+				}
+			}
+
+		}
 		return;
 
 	}
@@ -551,7 +619,7 @@ void CModel::Final_Tick()
 			for (_uint i = 0; i < m_iNumInstance; ++i)
 			{
 				//1. 절두체로 걸러
-				
+
 				_float4x4 matInstance;
 				memcpy(&matInstance, &m_pInstancingMatrices[i], sizeof(_float4x4));
 
@@ -1019,6 +1087,50 @@ HRESULT CModel::SetUp_Model_LOD()
 	return S_OK;
 }
 
+HRESULT CModel::SetUp_AnimModel_LOD()
+{
+	//모든 메쉬컨테이너 별로 LOD를 따야함
+	//한 fbx 주소로 모델타입을 해야함
+
+	//_uint iCurIndex = 0;
+
+
+	wstring	wstrPrevPath;
+
+	vector<pair<_uint, class CMeshContainer*>>	vecMCTemp = m_MeshContainers;
+
+	for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+	{
+		for (auto elem : vecMCTemp)
+		{
+			if (elem.first == 0 || elem.first == 4 || elem.first == 5)
+				continue;
+
+			m_wstrModelFilePath = elem.second->m_wstrFilePath;
+			//이전꺼랑 같으면 넘기기
+			if (m_wstrModelFilePath == wstrPrevPath)
+			{
+				continue;
+			}
+
+			wstrPrevPath = m_wstrModelFilePath;
+			if (FAILED(Load_Anim_LOD((eLOD_LEVEL)i, elem.first)))
+			{
+				m_bLOD = false;
+				return S_OK;
+			}
+		}
+
+	}
+
+
+	m_iNumMeshContainers = m_MeshContainers.size();
+	m_iNumMaterials = m_Materials.size();
+	m_bLOD = true;
+
+	return S_OK;
+}
+
 HRESULT CModel::SetUp_InstancingModel_LOD()
 {
 	if (!m_pInstancingMatrices)
@@ -1064,7 +1176,37 @@ HRESULT CModel::Load_LOD(eLOD_LEVEL eLevel)
 	wstrNewPath += to_wstring(iLevelNum);
 	wstrNewPath += L".FBX";
 
-	//5. 일단 함 찾아보기
+
+	if (FAILED(SetUp_Model(m_eMODEL_TYPE, wstrNewPath, m_TransformMatrix, iLevelNum)))
+	{
+		//실패시 LOD는 false인걸루
+		m_bLOD = false;
+		return E_FAIL;
+	}
+
+
+	return S_OK;
+}
+
+HRESULT CModel::Load_Anim_LOD(eLOD_LEVEL eLevel, _uint iMeshPartType)
+{
+	_int iLevelNum = (_int)eLevel;
+
+
+	/* LOD 찾기 */
+	m_wstrModelFilePath;
+
+	wstring wstrNewPath;
+	//1. 확장자까지 잘라보기
+	wstrNewPath = CutPath_R(m_wstrModelFilePath, L".");
+
+	//4. _LOD3 더하기
+	wstrNewPath += L"_Lod";
+	wstrNewPath += to_wstring(iLevelNum);
+	wstrNewPath += L".FBX";
+
+	iLevelNum = iMeshPartType + iLevelNum * 10;
+
 	if (FAILED(SetUp_Model(m_eMODEL_TYPE, wstrNewPath, m_TransformMatrix, iLevelNum)))
 	{
 		//실패시 LOD는 false인걸루
@@ -1185,7 +1327,7 @@ HRESULT CModel::Create_MeshContainer(CResource_Mesh* pResource, _float4x4 Transf
 {
 	MESH_DESC& tMeshDesc = pResource->Get_MeshDesc();
 
-	CMeshContainer* pMeshContainer = CMeshContainer::Create(pResource, TransformMatrix);
+	CMeshContainer* pMeshContainer = CMeshContainer::Create(pResource, TransformMatrix, m_wstrModelFilePath);
 
 	if (nullptr == pMeshContainer)
 		return E_FAIL;
@@ -1463,7 +1605,7 @@ void CModel::Bake_LODFrustumInfo()
 
 		vRealCenterPos = (vMin + vMax) * 0.5f;
 	}
-	
+
 
 
 	for (_uint i = 0; i < m_iNumInstance; ++i)

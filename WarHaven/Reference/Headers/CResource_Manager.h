@@ -29,6 +29,9 @@ public:
 private:
 	Assimp::Importer			m_Importer;
 	map<_hashcode, MODEL_DATA*>	m_mapModelData;
+
+
+
 	map<_hashcode, CResource*>	m_mapResources;
 	map<_hashcode, ComPtr<ID3D11ShaderResourceView>>	m_mapTextures;
 	_uint						m_iRootNodeIdx = 0;

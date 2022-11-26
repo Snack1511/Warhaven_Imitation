@@ -406,9 +406,14 @@ HRESULT CUnit::Initialize()
 	if (!m_pPhysics)
 		return E_FAIL;
 
+	if (FAILED(m_pModelCom->SetUp_AnimModel_LOD()))
+		return E_FAIL;
+
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
-	m_pModelCom->Set_ShaderFlag(MODEL_PART_WEAPON_L, SH_LIGHT_BLOOM);
-	m_pModelCom->Set_ShaderFlag(MODEL_PART_WEAPON, SH_LIGHT_BLOOM);
+	//m_pModelCom->Set_ShaderFlag(MODEL_PART_WEAPON_L, SH_LIGHT_BLOOM);
+	//m_pModelCom->Set_ShaderFlag(MODEL_PART_WEAPON, SH_LIGHT_BLOOM);
+
+
 
 
 	return S_OK;

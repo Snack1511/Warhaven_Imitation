@@ -19,10 +19,10 @@ CMeshContainer::~CMeshContainer()
 	Release();
 }
 
-CMeshContainer* CMeshContainer::Create(CResource_Mesh* pMeshResource, _float4x4 TransformMatrix)
+CMeshContainer* CMeshContainer::Create(CResource_Mesh* pMeshResource, _float4x4 TransformMatrix, wstring wstrFilePath)
 {
 	CMeshContainer* pInstance = new CMeshContainer(0);
-
+	pInstance->m_wstrFilePath = wstrFilePath;
 	if (FAILED(pInstance->SetUp_MeshContainer(pMeshResource, TransformMatrix)))
 	{
 		Call_MsgBox(L"Failed to SetUp_MeshContainer : CMeshContainer");
