@@ -45,7 +45,7 @@ void CUI_Training::Enable_Popup(_uint iIndex)
 
 	GET_COMPONENT_FROM(m_pPopup, CTexture)->Set_CurTextureIndex(iIndex);
 
-	if (iIndex > 3)
+	if (iIndex > 4)
 	{
 		m_pPopup->Set_Scale(m_vLongPopupScale);
 
