@@ -106,7 +106,7 @@ protected:
 	eLOD_LEVEL					m_eLOD_Level = eLOD_LEVEL::eLOD_END;
 
 	_float						m_fLODDistance = 15.f;
-	_float						m_fAnimLODDistance = 5.f;
+	_float						m_fAnimLODDistance = 4.f;
 	_float4						m_vLODCenterPos = ZERO_VECTOR;
 	_float						m_fLODMaxRange = 0.f;
 

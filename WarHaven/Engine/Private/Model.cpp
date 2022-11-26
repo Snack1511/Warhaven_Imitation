@@ -593,7 +593,7 @@ void CModel::Final_Tick()
 				//LOD가 아니면 0제외 다키기
 				for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 				{
-					if (m_MeshContainers[i].first == 0)
+					if (m_MeshContainers[i].first == 0 || m_MeshContainers[i].first >= 10)
 						continue;
 
 					m_MeshContainers[i].second->Set_Enable(true);
