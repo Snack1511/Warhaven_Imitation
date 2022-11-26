@@ -84,6 +84,7 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pInactiveHeroText = nullptr;
 	CUI_Object* m_pHeroGaugeText = nullptr;
 	CUI_Object* m_pOxenJumpText = nullptr;
+	CUI_Object* m_pHpText = nullptr;
 
 private:
 	void Bind_Btn();
@@ -102,6 +103,7 @@ private:
 	void Create_TraingText();
 	void Create_HeroGaugeText();
 	void Create_OxenJumpText();
+	void Create_HpText();
 };
 
 END

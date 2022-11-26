@@ -47,6 +47,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_TraingText();
 	Create_HeroGaugeText();
 	Create_OxenJumpText();
+	Create_HpText();
 
 	return S_OK;
 }
@@ -69,6 +70,7 @@ HRESULT CUI_HUD::Start()
 
 	ENABLE_GAMEOBJECT(m_pChangeClassText);
 	ENABLE_GAMEOBJECT(m_pHeroGaugeText);
+	ENABLE_GAMEOBJECT(m_pHpText);
 
 	Bind_Btn();
 
@@ -598,6 +600,10 @@ void CUI_HUD::Update_HP()
 		_float fLerpSpeed = fDT(0) * 10.f;
 		m_fCurHP = ((1 - fLerpSpeed) * m_fPrvHP) + (fLerpSpeed * m_fCurHP);
 
+		_tchar  szTemp[MAX_STR] = {};
+		swprintf_s(szTemp, TEXT("%.f / %.f"), m_fCurHP, m_fMaxHP);
+		m_pHpText->Set_FontText(szTemp);
+
 		m_fHealthRatio = m_fCurHP / m_fMaxHP;
 
 		if (m_fCurHP < -0.f)
@@ -668,4 +674,22 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
+}
+
+void CUI_HUD::Create_HpText()
+{
+	m_pHpText = CUI_Object::Create();
+
+	m_pHpText->Set_Scale(20.f);
+	m_pHpText->Set_Pos(-290.f, -270.f);
+	m_pHpText->Set_Sort(0.85f);
+
+	GET_COMPONENT_FROM(m_pHpText, CTexture)->Remove_Texture(0);
+
+	m_pHpText->Set_FontRender(true);
+	m_pHpText->Set_FontStyle(true);
+	m_pHpText->Set_FontScale(0.25f);
+
+	CREATE_GAMEOBJECT(m_pHpText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pHpText);
 }

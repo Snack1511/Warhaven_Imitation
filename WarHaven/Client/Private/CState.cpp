@@ -95,7 +95,6 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
             break;
     }
 
-
     return eType;
 }
 
