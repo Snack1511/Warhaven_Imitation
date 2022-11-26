@@ -44,6 +44,9 @@ HRESULT CUI_MainPlay::Start()
 
 	Set_FadeModeWindow();
 
+	_float4 vPos = m_pStageSelectBtn[m_eStage]->Get_Pos();
+	Enable_StageClickRect(vPos);
+
 	return S_OK;
 }
 
@@ -159,11 +162,11 @@ void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 		switch (m_eStage)
 		{
 		case CUI_MainPlay::Test:
-			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
+			Call_MsgBox(TEXT("테스트"));
 			break;
 
 		case CUI_MainPlay::Training:
-			Call_MsgBox(TEXT("훈련소"));
+			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_BOOTCAMP);
 			break;
 		}
 	}
@@ -607,7 +610,7 @@ void CUI_MainPlay::Create_StageNameRect()
 	m_pStageNameRect->Set_FontOffset(-39.f, -11.f);
 	m_pStageNameRect->Set_FontScale(0.2f);
 	m_pStageNameRect->Set_FontColor(m_vFontColor);
-	m_pStageNameRect->Set_FontText(TEXT("모드 - 테스트"));
+	m_pStageNameRect->Set_FontText(TEXT("모드 - 훈련소"));
 
 	CREATE_GAMEOBJECT(m_pStageNameRect, GROUP_UI);
 }
