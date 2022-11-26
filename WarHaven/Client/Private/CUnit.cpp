@@ -901,18 +901,7 @@ void CUnit::My_Tick()
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
 
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(this);
-	if (fDis < 10.f)
-	{
-		if (!m_bIsMainPlayer)
-		{
-			ENABLE_GAMEOBJECT(m_pUnitHUD);
-			dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
-		}
-	}
-	else
-	{
-		DISABLE_GAMEOBJECT(m_pUnitHUD);
-	}
+	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
 }
 
 void CUnit::My_LateTick()

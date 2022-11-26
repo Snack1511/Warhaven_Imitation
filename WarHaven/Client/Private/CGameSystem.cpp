@@ -212,6 +212,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     CTrigger_BootCamp* pBootCampTrigger2 = CTrigger_BootCamp::Create("PopUp02", 2, fRadius);
 
     CTrigger_BootCamp* pBootCampTrigger3 = CTrigger_BootCamp::Create("Popup03", 3, fRadius);
+    CTrigger_BootCamp* pBootCampTrigger4 = CTrigger_BootCamp::Create("Popup04", 4, fRadius);
 
     CTrigger_BootCamp* pBootCampTrigger5 = CTrigger_BootCamp::Create("Popup05", 5, fRadius);
     pBootCampTrigger5->Add_AdjPlayer(m_mapEnemyPlayers["EnemyTrio_1"]);
@@ -238,6 +239,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger1);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger2);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger3);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger4);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger5);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger6);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger7);
@@ -249,6 +251,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     vecReadyObjects.push_back(make_pair(pBootCampTrigger1, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger2, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger3, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger4, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger5, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger6, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger7, GROUP_TRIGGER));
