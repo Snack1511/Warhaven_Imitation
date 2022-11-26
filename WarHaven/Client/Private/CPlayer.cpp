@@ -86,30 +86,54 @@ void CPlayer::Create_DefaultClass()
 
 	wstring wstrModeSkel[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/Warrior.fbx", // WARRIOR
+		L"",
+		L"",
+		L"",
+		L"",
 		L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx"
 	};
 
 	wstring wstrModeBody[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx", // WARRIOR
+		L"",
+		L"",
+		L"",
+		L"",
 		L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00.fbx"
 	};
 
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx", // WARRIOR
+		L"",
+		L"",
+		L"",
+		L"",
 		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00.fbx"
 	};
 
 	wstring wstrModeHead[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx", // WARRIOR
+		L"",
+		L"",
+		L"",
+		L"",
 		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00.fbx"
 	};
 
 	wstring wstrModeWeapon_R[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx", // WARRIOR
+		L"",
+		L"",
+		L"",
+		L"",
 		L"../bin/resources/meshes/weapons/Hammer/SM_WP_WarHammer0001_A00.fbx" };
 
 	wstring wstrModeWeapon_L[CLASS_DEFAULT_END] = {
 		L"", // WARRIOR
+		L"",
+		L"",
+		L"",
+		L"",
 		L"" // 
 	};
 
@@ -120,6 +144,8 @@ void CPlayer::Create_DefaultClass()
 
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
+		if (wstrModeSkel[i].empty())
+			continue;
 
 		tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeSkel[i];
 
@@ -153,6 +179,7 @@ void CPlayer::Create_DefaultClass()
 	{
 		if (nullptr == m_pDefaultClass[i])
 		{
+			continue;
 			Call_MsgBox(L"유닛 생성 안됐음.");
 			return;
 		}
@@ -185,36 +212,57 @@ void CPlayer::Create_DefaultClass()
 void CPlayer::Create_HeroClass()
 {
 
-	wstring wstrModeSkel[CLASS_DEFAULT_END] = {
+	wstring wstrModeSkel[HERO_END] = {
 		L"../bin/resources/meshes/characters/Valkyrie/Valkyrie.fbx" // FIONA
+		L"",
+		L"",
+		L"",
 	};
 
-	wstring wstrModeBody[CLASS_DEFAULT_END] = {
+	wstring wstrModeBody[HERO_END] = {
 		L"../bin/resources/meshes/characters/Valkyrie/body/SK_Fiona0004_Body_A00.fbx" // FIONA
+		L"",
+		L"",
+		L"",
 	};
 
-	wstring wstrModeFace[CLASS_DEFAULT_END] = {
+	wstring wstrModeFace[HERO_END] = {
 		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0001_Face_A00.fbx" // FIONA
+		L"",
+		L"",
+		L"",
 	};
 
-	wstring wstrModeHead[CLASS_DEFAULT_END] = {
+	wstring wstrModeHead[HERO_END] = {
 		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0004_Helmet_A00.fbx" // FIONA
+		L"",
+		L"",
+		L"",
 	};
 
-	wstring wstrModeWeapon_R[CLASS_DEFAULT_END] = {
+	wstring wstrModeWeapon_R[HERO_END] = {
 		L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00.fbx" // FIONA
+		L"",
+		L"",
+		L"",
 	};
 
-	wstring wstrModeWeapon_L[CLASS_DEFAULT_END] = {
+	wstring wstrModeWeapon_L[HERO_END] = {
 		L"../bin/resources/meshes/weapons/Valkyrie_Shield/SK_WP_HeaterShield0001_A00.fbx" // FIONA 
+		L"",
+		L"",
+		L"",
 	};
 
 
 
-	CUnit::UNIT_MODEL_DATA  tModelData[CLASS_HERO_END];
+	CUnit::UNIT_MODEL_DATA  tModelData[HERO_END];
 
-	for (int i = 0; i < CLASS_HERO_END; ++i)
+	for (int i = 0; i < HERO_END; ++i)
 	{
+		if (wstrModeSkel[i].empty())
+			continue;
+
 		tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeSkel[i];
 
 		tModelData[i].strModelPaths[MODEL_PART_BODY] = wstrModeBody[i];
@@ -236,16 +284,17 @@ void CPlayer::Create_HeroClass()
 	}
 
 
-	m_pHeroClass[CLASS_HREO_FIONA] = CUnit_Valkyrie::Create(tModelData[CLASS_HREO_FIONA]);
-	//m_pHeroClass[CLASS_HREO_QANDA] = CUnit_Warrior::Create(tModelData[CLASS_HREO_QANDA]);
-	//m_pHeroClass[CLASS_HREO_HOEDT] = CUnit_Warrior::Create(tModelData[CLASS_HREO_HOEDT]);
-	//m_pHeroClass[CLASS_HREO_LANCER] = CUnit_Warrior::Create(tModelData[CLASS_HREO_LANCER]);
+	m_pHeroClass[CLASS_HREO_FIONA - CLASS_HREO_FIONA] = CUnit_Valkyrie::Create(tModelData[CLASS_HREO_FIONA - CLASS_HREO_FIONA]);
+	//m_pHeroClass[CLASS_HREO_QANDA - CLASS_HREO_FIONA] = CUnit_Warrior::Create(tModelData[CLASS_HREO_QANDA]);
+	//m_pHeroClass[CLASS_HREO_HOEDT - CLASS_HREO_FIONA] = CUnit_Warrior::Create(tModelData[CLASS_HREO_HOEDT]);
+	//m_pHeroClass[CLASS_HREO_LANCER - CLASS_HREO_FIONA] = CUnit_Warrior::Create(tModelData[CLASS_HREO_LANCER]);
 
 
-	for (int i = 0; i < CLASS_HERO_END; ++i)
+	for (int i = 0; i < HERO_END; ++i)
 	{
 		if (nullptr == m_pHeroClass[i])
 		{
+			continue;
 			Call_MsgBox(L"유닛 생성 안됐음.");
 			return;
 		}
@@ -311,7 +360,8 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 
 HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 {
-	if (eClass >= CLASS_HERO_END)
+
+	if (eClass >= HERO_END)
 		return E_FAIL;
 
 	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
@@ -342,11 +392,17 @@ void CPlayer::SetUp_UnitColliders(_bool bPlayer)
 {
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
+		if (m_pDefaultClass[i] == nullptr)
+			continue;
+
 		m_pDefaultClass[i]->SetUp_Colliders(bPlayer);
 	}
 
-	for (int i = 0; i < CLASS_HERO_END; ++i)
+	for (int i = 0; i < HERO_END; ++i)
 	{
+		if (m_pHeroClass[i] == nullptr)
+			continue;
+
 		m_pHeroClass[i]->SetUp_Colliders(bPlayer);
 	}
 
@@ -357,11 +413,17 @@ void CPlayer::SetUp_UnitHitStates(_bool bPlayer)
 
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
+		if (m_pDefaultClass[i] == nullptr)
+			continue;
+
 		m_pDefaultClass[i]->SetUp_HitStates(bPlayer);
 	}
 
-	for (int i = 0; i < CLASS_HERO_END; ++i)
+	for (int i = 0; i < HERO_END; ++i)
 	{
+		if (m_pHeroClass[i] == nullptr)
+			continue;
+
 		m_pHeroClass[i]->SetUp_HitStates(bPlayer);
 	}
 }
@@ -397,6 +459,9 @@ void CPlayer::Set_MainPlayer()
 
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
+		if (m_pDefaultClass[i] == nullptr)
+			continue;
+
 		m_pDefaultClass[i]->Set_MainPlayer();
 	}
 }
@@ -439,6 +504,7 @@ HRESULT CPlayer::Start()
 	{
 		if (nullptr == m_pDefaultClass[i])
 		{
+			continue;
 			Call_MsgBox(L"CPlayer : 기본 영웅 추가 안됐음");
 			return E_FAIL;
 		}
@@ -448,10 +514,11 @@ HRESULT CPlayer::Start()
 	
 	}
 
-	for (int i = 0; i < CLASS_HERO_END; ++i)
+	for (int i = 0; i < HERO_END; ++i)
 	{
 		if (nullptr == m_pHeroClass[i])
 		{
+			continue;
 			Call_MsgBox(L"CPlayer : 영웅 추가 안됐음");
 			return E_FAIL;
 		}
@@ -473,8 +540,6 @@ HRESULT CPlayer::Start()
 		return E_FAIL;
 	}
 
-
-
 	return S_OK;
 }
 
@@ -486,8 +551,6 @@ void CPlayer::OnEnable()
 void CPlayer::OnDisable()
 {
 	__super::OnDisable();
-
-
 }
 
 
@@ -496,60 +559,6 @@ void CPlayer::My_Tick()
 	if (m_pCurrentUnit->Is_MainPlayer())
 	{
 		CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fMaxHP, m_pCurrentUnit->Get_Status().fHP);
-
-		if (!m_pCurrentUnit->Get_Status().bAbleHero)
-		{
-			_float fGaugeSpeed = fDT(0) * 20.f;
-
-			if (!m_pCurrentUnit->Get_Status().bIsHero)
-			{
-				m_pCurrentUnit->Get_Status().fGauge += fGaugeSpeed;
-				if (m_pCurrentUnit->Get_Status().fGauge > m_pCurrentUnit->Get_Status().fMaxGauge)
-				{
-					m_pCurrentUnit->Get_Status().fGauge = m_pCurrentUnit->Get_Status().fMaxGauge;
-					m_pCurrentUnit->Get_Status().bAbleHero = true;
-
-					// 영웅 포트레이트 활성화
-				}
-			}
-			else
-			{
-				m_pCurrentUnit->Get_Status().fGauge -= fGaugeSpeed;
-				if (m_pCurrentUnit->Get_Status().fGauge < 0.f)
-				{
-					m_pCurrentUnit->Get_Status().fGauge = 0.f;
-					m_pCurrentUnit->Get_Status().bIsHero = false;
-
-					// 원래 포트레이트 활성화
-				}
-				else if (KEY(NUM1, TAP))
-				{
-					m_pCurrentUnit->Get_Status().bIsHero = false;
-
-					// 원래 포트레이트 활성화
-				}
-			}
-		}
-		else
-		{
-			// 각 번호에 해당하는 영웅으로 변신
-			if (KEY(NUM1, TAP))
-			{
-
-			}
-			else if (KEY(NUM2, TAP))
-			{
-			}
-			else if (KEY(NUM3, TAP))
-			{
-			}
-			else if (KEY(NUM4, TAP))
-			{
-			}
-		}
-
-		CUser::Get_Instance()->Set_HeroGauge(m_pCurrentUnit->Get_Status().fMaxGauge, m_pCurrentUnit->Get_Status().fGauge);
-
 	}
 }
 

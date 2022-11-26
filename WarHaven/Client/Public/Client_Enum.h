@@ -1,6 +1,21 @@
 #pragma once
 namespace Client
 {
+	enum CLASS_TYPE
+	{
+		WARRIOR,
+		SPEAR,
+		ARCHER,
+		PALADIN,
+		PRIEST,
+		ENGINEER,
+		FIONA,
+		QANDA,
+		HOEDT,
+		LANCER,
+		CLASS_END
+	};
+
 	enum ANIM_TYPE
 	{
 		ANIM_BASE_R,

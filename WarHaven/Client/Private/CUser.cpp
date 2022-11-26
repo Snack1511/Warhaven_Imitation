@@ -218,11 +218,17 @@ void CUser::On_ExitStageLevel()
 {
 	m_pBloodOverlay = nullptr;
 	m_pUI_HUD = nullptr;
+
 	for (_uint i = 0; i < 5; ++i)
 		m_pUI_Damage[i] = nullptr;
 
 	m_pUI_Training = nullptr;
 	m_pPlayer = nullptr;
+}
+
+void CUser::Set_HUD(CLASS_TYPE eClass)
+{
+	m_pUI_HUD->Set_HUD(eClass);
 }
 
 void CUser::Set_HP(_float fMaxHP, _float fCurHP)
@@ -233,6 +239,11 @@ void CUser::Set_HP(_float fMaxHP, _float fCurHP)
 void CUser::Set_HeroGauge(_float fMaxGauge, _float fCurGauge)
 {
 	m_pUI_HUD->Set_HeroGauge(fMaxGauge, fCurGauge);
+}
+
+void CUser::SetActive_HeroPortrait(_bool value)
+{
+	m_pUI_HUD->SetActive_HeroPortrait(value);
 }
 
 void CUser::SetActive_OxenJumpText(_bool value)

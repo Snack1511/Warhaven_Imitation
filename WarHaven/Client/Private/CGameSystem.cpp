@@ -94,11 +94,11 @@ HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecRead
         return E_FAIL;
     }*/
 
-    if (FAILED(On_ReadyTriggers(vecReadyObjects)))
+    /*if (FAILED(On_ReadyTriggers(vecReadyObjects)))
     {
         Call_MsgBox(L"Failed to On_ReadyTriggers : CGameSystem");
         return E_FAIL;
-    }
+    }*/
 
     if (FAILED(On_ReadyDestructible(vecReadyObjects)))
     {
@@ -135,7 +135,7 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
     _float4 vEnemyPos;
     CPlayer* pEnemyUser = nullptr;
     
-    for (_uint i = 0; i < 7; ++i)
+    /*for (_uint i = 0; i < 7; ++i)
     {
         STATE_TYPE eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
         string strKey;
@@ -184,7 +184,7 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
         pEnemyUser->Set_TargetUnit(pUserPlayer->Get_CurrentUnit());
         vecReadyObjects.push_back(make_pair(pEnemyUser, GROUP_ENEMY));
         m_mapEnemyPlayers.emplace(strKey, pEnemyUser);
-    }
+    }*/
    
 
 

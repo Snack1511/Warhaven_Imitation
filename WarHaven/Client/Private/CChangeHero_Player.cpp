@@ -77,20 +77,20 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		switch (pOwner->Get_HeroType())
 		{
-		case CUnit::FIONA:
+		case FIONA:
 			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
 			return STATE_IDLE_VALKYRIE_R;
-		case CUnit::QANDA:
-
-			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
-			return STATE_IDLE_VALKYRIE_R;
-
-		case CUnit::HOEDT:
+		case QANDA:
 
 			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
 			return STATE_IDLE_VALKYRIE_R;
 
-		case CUnit::LANCER:
+		case HOEDT:
+
+			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
+			return STATE_IDLE_VALKYRIE_R;
+
+		case LANCER:
 
 			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
 			return STATE_IDLE_VALKYRIE_R;
@@ -114,31 +114,68 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 {
 	_bool bReturn = false;
 
-	//if (pOwner->Get_Status().bAbleHero)
+	if (!pOwner->Get_Status().bAbleHero)
+	{
+		_float fGaugeSpeed = fDT(0) * 20.f;
+
+		if (!pOwner->Get_Status().bIsHero)
+		{
+			pOwner->Get_Status().fGauge += fGaugeSpeed;
+			if (pOwner->Get_Status().fGauge > pOwner->Get_Status().fMaxGauge)
+			{
+				pOwner->Get_Status().bAbleHero = true;
+				pOwner->Get_Status().fGauge = pOwner->Get_Status().fMaxGauge;
+
+				CUser::Get_Instance()->SetActive_HeroPortrait(true);
+			}
+		}
+		else
+		{
+			pOwner->Get_Status().fGauge -= fGaugeSpeed;
+			if (pOwner->Get_Status().fGauge < 0.f)
+			{
+				pOwner->Get_Status().fGauge = 0.f;
+				pOwner->Get_Status().bIsHero = false;
+
+				CUser::Get_Instance()->Set_HUD((CLASS_TYPE)pOwner->Get_OwnerPlayer()->Get_CurrentDefaultClass());
+			}
+			else if (KEY(NUM1, TAP))
+			{
+				pOwner->Get_Status().bIsHero = false;
+
+				CUser::Get_Instance()->Set_HUD((CLASS_TYPE)pOwner->Get_OwnerPlayer()->Get_CurrentDefaultClass());
+			}
+		}
+	}
+	else
 	{
 		if (KEY(NUM1, TAP))
 		{
-			pOwner->Get_HeroType() = CUnit::FIONA;
-			return m_eStateType;
+			Set_HeroType(pOwner, FIONA);
 		}
 		else if (KEY(NUM2, TAP))
 		{
-			pOwner->Get_HeroType() = CUnit::QANDA;
-			return m_eStateType;
+			Set_HeroType(pOwner, QANDA);
 		}
-
 		else if (KEY(NUM3, TAP))
 		{
-			pOwner->Get_HeroType() = CUnit::HOEDT;
-			return m_eStateType;
+			Set_HeroType(pOwner, HOEDT);
 		}
 		else if (KEY(NUM4, TAP))
 		{
-			pOwner->Get_HeroType() = CUnit::LANCER;
-			return m_eStateType;
+			Set_HeroType(pOwner, LANCER);
 		}
 	}
 
+	CUser::Get_Instance()->Set_HeroGauge(pOwner->Get_Status().fMaxGauge, pOwner->Get_Status().fGauge);
 
 	return STATE_END;
+}
+
+void CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
+{
+	pOwner->Get_Status().bAbleHero = false;
+	pOwner->Get_Status().bIsHero = true;
+	pOwner->Get_HeroType() = eClass;
+	CUser::Get_Instance()->Set_HUD(eClass);
 }

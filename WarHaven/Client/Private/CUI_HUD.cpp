@@ -165,39 +165,39 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		case 0:
 			m_pClassInfo->Set_FontText(TEXT("블레이드"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			m_eCurClass = CUnit::CLASS_TYPE::WARRIOR;
-			Set_HUD(CUnit::WARRIOR);
+			m_eCurClass =WARRIOR;
+			Set_HUD(WARRIOR);
 			break;
 
 		case 1:
 			m_pClassInfo->Set_FontText(TEXT("스파이크"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			Set_HUD(CUnit::SPEAR);
+			Set_HUD(SPEAR);
 			break;
 
 		case 2:
 			m_pClassInfo->Set_FontText(TEXT("아치"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			Set_HUD(CUnit::ARCHER);
+			Set_HUD(ARCHER);
 			break;
 
 		case 3:
 			m_pClassInfo->Set_FontText(TEXT("가디언"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			Set_HUD(CUnit::PALADIN);
+			Set_HUD(PALADIN);
 			break;
 
 		case 4:
 			m_pClassInfo->Set_FontText(TEXT("스모크"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			Set_HUD(CUnit::PRIEST);
+			Set_HUD(PRIEST);
 			break;
 
 		case 5:
 			m_pClassInfo->Set_FontText(TEXT("워해머"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			m_eCurClass = CUnit::CLASS_TYPE::ENGINEER;
-			Set_HUD(CUnit::ENGINEER);
+			m_eCurClass =ENGINEER;
+			Set_HUD(ENGINEER);
 			break;
 		}
 	}
@@ -228,17 +228,17 @@ void CUI_HUD::Set_HP(_float fMaxHP, _float fCurHP)
 	m_fCurHP = fCurHP;
 }
 
-void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
+void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 {
 	m_ePrvClass = m_eCurClass;
 	m_eCurClass = eClass;
 
-	if (eClass > CUnit::ENGINEER)
+	if (eClass > ENGINEER)
 	{
 		if (m_tStatus.bAbleHero)
 		{
 			Enable_Fade(m_pInactiveHeroText, 1.f);
-			Set_ActiveHeroPort(false);
+			SetActive_HeroPortrait(false);
 		}
 
 		m_tStatus.bAbleHero = false;
@@ -260,7 +260,7 @@ void CUI_HUD::Set_HeroGauge(_float fMaxGauge, _float fCurGauge)
 	m_fCurGauge = fCurGauge;
 }
 
-void CUI_HUD::Set_ActiveHeroPort(_bool value)
+void CUI_HUD::SetActive_HeroPortrait(_bool value)
 {
 	CUI_Portrait::HeroPortAnimType eType;
 
@@ -497,31 +497,31 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 	}
 }
 
-void CUI_HUD::Set_ClassInfo(CUnit::CLASS_TYPE eClass)
+void CUI_HUD::Set_ClassInfo(CLASS_TYPE eClass)
 {
 	switch (eClass)
 	{
-	case Client::CUnit::WARRIOR:
+	case Client::WARRIOR:
 		m_pClassInfo->Set_FontText(TEXT("블레이드"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
 		break;
-	case Client::CUnit::SPEAR:
+	case Client::SPEAR:
 		m_pClassInfo->Set_FontText(TEXT("스파이크"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
 		break;
-	case Client::CUnit::ARCHER:
+	case Client::ARCHER:
 		m_pClassInfo->Set_FontText(TEXT("아치"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
 		break;
-	case Client::CUnit::PALADIN:
+	case Client::PALADIN:
 		m_pClassInfo->Set_FontText(TEXT("가디언"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
 		break;
-	case Client::CUnit::PRIEST:
+	case Client::PRIEST:
 		m_pClassInfo->Set_FontText(TEXT("스모크"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
 		break;
-	case Client::CUnit::ENGINEER:
+	case Client::ENGINEER:
 		m_pClassInfo->Set_FontText(TEXT("워해머"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
 		break;

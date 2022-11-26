@@ -121,10 +121,6 @@ void CUI_Portrait::My_Tick()
 
 					m_bIsHeroLerp = false;
 				}
-				else
-				{
-					m_eHeroPortAnimType = AnimEnd;
-				}
 			}
 			else
 			{
@@ -161,10 +157,6 @@ void CUI_Portrait::My_Tick()
 					}
 
 					m_bIsHeroLerp = false;
-				}
-				else
-				{
-					m_eHeroPortAnimType = AnimEnd;
 				}
 			}
 			else

@@ -44,9 +44,6 @@ HRESULT CUI_MainPlay::Start()
 
 	Set_FadeModeWindow();
 
-	_float4 vPos = m_pStageSelectBtn[m_eStage]->Get_Pos();
-	Enable_StageClickRect(vPos);
-
 	return S_OK;
 }
 
@@ -162,7 +159,7 @@ void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 		switch (m_eStage)
 		{
 		case CUI_MainPlay::Test:
-			Call_MsgBox(TEXT("Å×½ºÆ®"));
+			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
 			break;
 
 		case CUI_MainPlay::Training:
@@ -304,6 +301,9 @@ void CUI_MainPlay::Set_FadeModeWindow()
 
 void CUI_MainPlay::SetActive_ModeWindow()
 {
+	_float4 vPos = m_pStageSelectBtn[m_eStage]->Get_Pos();
+	Enable_StageClickRect(vPos);
+
 	if (!m_pBG->Is_Valid())
 	{
 		Enable_Fade(m_pBG, 0.3f);

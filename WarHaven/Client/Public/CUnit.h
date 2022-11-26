@@ -27,20 +27,7 @@ class CPlayer;
 class CUnit abstract : public CGameObject
 {
 public:
-	enum CLASS_TYPE
-	{
-		WARRIOR,
-		ENGINEER,
-		SPEAR,
-		ARCHER,
-		PALADIN,
-		PRIEST,
-		FIONA,
-		QANDA,
-		HOEDT,
-		LANCER,
-		CLASS_END
-	};
+	
 
 public:
 	struct UNIT_STATUS

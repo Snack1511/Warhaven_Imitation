@@ -4,7 +4,6 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "Functor.h"
-#include "CUnit.h"
 #include "CShader.h"
 #include "CUI_Renderer.h"
 #include "Easing_Utillity.h"
@@ -93,7 +92,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	switch (iIndex)
 	{
-	case CUnit::WARRIOR:
+	case WARRIOR:
 
 		Active_SkillHUD(3);
 
@@ -103,7 +102,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::SPEAR:
+	case SPEAR:
 
 		Active_SkillHUD(4);
 
@@ -114,7 +113,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::ARCHER:
+	case ARCHER:
 
 		Active_SkillHUD(4);
 
@@ -125,7 +124,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::PALADIN:
+	case PALADIN:
 
 		Active_SkillHUD(4);
 
@@ -136,7 +135,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::PRIEST:
+	case PRIEST:
 
 		Active_SkillHUD(4);
 
@@ -147,7 +146,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::ENGINEER:
+	case ENGINEER:
 
 		Active_SkillHUD(4);
 
@@ -158,7 +157,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::FIONA:
+	case FIONA:
 
 		Active_SkillHUD(4);
 
@@ -171,7 +170,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::QANDA:
+	case QANDA:
 
 		Active_SkillHUD(3);
 
@@ -183,7 +182,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::HOEDT:
+	case HOEDT:
 
 		Active_SkillHUD(4);
 
@@ -196,7 +195,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 		break;
 
-	case CUnit::LANCER:
+	case LANCER:
 
 		Active_SkillHUD(2);
 

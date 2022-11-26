@@ -30,11 +30,12 @@ public:
 	virtual void On_PointDown_Port(const _uint& iEventNum);
 
 public:
-	void SetActive_OxenJumpText(_bool value);
-	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
-
+	void Set_HUD(CLASS_TYPE eClass);
 	void Set_HP(_float fMaxHP, _float fCurHP);
 	void Set_HeroGauge(_float fMaxGauge, _float fCurGauge);
+	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
+	void SetActive_HeroPortrait(_bool value);
+	void SetActive_OxenJumpText(_bool value);
 
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
@@ -42,8 +43,8 @@ private:
 	CUnit* m_pPlayer = nullptr;
 
 	CUnit::UNIT_STATUS m_tStatus;
-	CUnit::CLASS_TYPE m_eCurClass;
-	CUnit::CLASS_TYPE m_ePrvClass;
+	CLASS_TYPE m_eCurClass;
+	CLASS_TYPE m_ePrvClass;
 
 private:	// Ã¼·Â¹Ù
 	_float m_fMaxHP = 0.f;
@@ -89,10 +90,8 @@ private:
 	void Set_FadePortHighlight();
 
 private:	
-	void Set_HUD(CUnit::CLASS_TYPE eClass);
-	void Set_ActiveHeroPort(_bool value);
 	void SetActive_CharacterSelectWindow(_bool value);
-	void Set_ClassInfo(CUnit::CLASS_TYPE eClass);
+	void Set_ClassInfo(CLASS_TYPE eClass);
 
 	void Update_HP();
 	void Update_HeroGauge();

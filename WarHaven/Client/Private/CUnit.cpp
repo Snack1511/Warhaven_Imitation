@@ -800,6 +800,7 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
+
 	for (_int i = 0; i < COOL_END; ++i)
 	{
 		if (m_fCoolAcc[i] >= 0.01f)
