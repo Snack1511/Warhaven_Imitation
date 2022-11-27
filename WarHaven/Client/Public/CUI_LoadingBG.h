@@ -37,7 +37,7 @@ private:
 	CUI_Object* m_pLoddingText = nullptr;
 
 private:
-	void Create_LoadingText(LEVEL_TYPE_CLIENT eLevel);
+	void Create_LoadingText(LEVEL_TYPE_CLIENT eLevel, wstring eName);
 };
 
 END
