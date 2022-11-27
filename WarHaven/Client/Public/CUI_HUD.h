@@ -93,6 +93,7 @@ private:
 	void Set_FadePortHighlight();
 
 private:	
+	void SetActive_PlayerInfoUI(_bool value);
 	void SetActive_CharacterSelectWindow(_bool value);
 	void Set_ClassInfo(CLASS_TYPE eClass);
 

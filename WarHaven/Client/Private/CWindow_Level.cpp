@@ -77,6 +77,10 @@ HRESULT CWindow_Level::Render()
 			strName = "BOOTCAMP";
 			break;
 
+		case 5:
+			strName = "PADEN";
+			break;
+
 		default:
 			break;
 		}

@@ -22,14 +22,6 @@ HRESULT CUI_LoadingBG::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 
-	// 이미지를 추가한 후
-	// 추가한 이미지 중 랜덤으로 하나 출력
-	// 로딩 텍스트를 추가할 때 그 때 이미지를 추가하자
-
-	// 처음에 폴더에 모든 이미지 추가 후
-	// 메인 메뉴까지는 랜덤으로 출력
-
-	// 이후 스테이지 이동 할 때는 해당 스테이지에 해당하는 인덱스만 랜덤으로 출력
 	SetTexture(TEXT("../Bin/Resources/Textures/UI/Loading/Map_Training_01.dds"));
 	GET_COMPONENT(CTexture)->Remove_Texture(0);
 
@@ -48,21 +40,28 @@ HRESULT CUI_LoadingBG::Initialize_Prototype()
 
 	switch (eLoadLevel)
 	{
-	case Client::LEVEL_LOGO:
+		case LEVEL_LOGO:
+			break;
+		case LEVEL_LOADING:
+			break;
+		case LEVEL_MAINMENU:
+			break;
+		case LEVEL_TEST:
+			Create_LoadingText(eLoadLevel, TEXT("테스트레벨"));
+			break;
+		case LEVEL_BOOTCAMP:
+		{
+			_uint iTraninigTexture = random(12, 13);
+			GET_COMPONENT(CTexture)->Set_CurTextureIndex(iTraninigTexture);
+			Create_LoadingText(eLoadLevel, TEXT("훈련장"));
+		}
 		break;
-	case Client::LEVEL_LOADING:
-		break;
-	case Client::LEVEL_MAINMENU:
-		break;
-	case Client::LEVEL_TEST:
-		Create_LoadingText(eLoadLevel, TEXT("테스트레벨"));
-		break;
-	case Client::LEVEL_BOOTCAMP:
-	{
-		_uint iTraninigTexture = random(12, 13);
-		GET_COMPONENT(CTexture)->Set_CurTextureIndex(iTraninigTexture);
-		Create_LoadingText(eLoadLevel, TEXT("훈련장"));
-	}
+		case LEVEL_PADEN:
+		{
+			_uint iTraninigTexture = random(0, 11);
+			GET_COMPONENT(CTexture)->Set_CurTextureIndex(iTraninigTexture);
+			Create_LoadingText(eLoadLevel, TEXT("파덴"));
+		}
 		break;
 	}
 

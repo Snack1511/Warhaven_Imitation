@@ -949,9 +949,6 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\10. Stop\02. Left">
       <UniqueIdentifier>{f8f61bfd-db3a-4c85-a89c-859d38ea4b0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_ENEMY\Warrior\Test\05. Jump">
-      <UniqueIdentifier>{5fb412b1-f33d-4db7-ada4-0e6d6c8bf6d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\08. Guard\04. Dash">
       <UniqueIdentifier>{bfce23c4-a7fe-445e-a58b-d47535d71f74}</UniqueIdentifier>
     </Filter>
@@ -1444,11 +1441,11 @@
     <Filter Include="03. Instances\01. Level\04. Level_Stage">
       <UniqueIdentifier>{54f85df6-ae52-466d-b7b0-ddab7d890ea0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\01. Level\04. Level_Stage\BootCamp">
-      <UniqueIdentifier>{3e6cf2f0-35d7-491d-97f9-06bac3b60d45}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Level">
       <UniqueIdentifier>{6ff99d2b-2bd7-4d08-ae69-0d99c7bb9fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\04. Level_Stage\Paden">
+      <UniqueIdentifier>{405c7fdf-7fb1-4b1e-bccd-455538fd7865}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2568,6 +2565,9 @@
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalMiddle_Master.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\99. Master\04. Attack\HorizontalMiddle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Paden.h">
+      <Filter>03. Instances\01. Level\04. Level_Stage\Paden</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3666,6 +3666,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalMiddle_Master.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\99. Master\04. Attack\HorizontalMiddle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Paden.cpp">
+      <Filter>03. Instances\01. Level\04. Level_Stage\Paden</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

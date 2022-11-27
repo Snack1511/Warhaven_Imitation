@@ -15,6 +15,9 @@
 
 IMPLEMENT_SINGLETON(CGameSystem);
 
+
+#define READY_GAMEOBJECT(instance, grouptype) vecReadyObjects.push_back(make_pair(instance, grouptype))
+
 CGameSystem::CGameSystem()
 {
 }
@@ -61,7 +64,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     pUserPlayer->Set_MainPlayer();
-    vecReadyObjects.push_back(make_pair(pUserPlayer, GROUP_PLAYER));
+    READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
 
     vPlayerPos.z += 3.f;
@@ -74,7 +77,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
     vecReadyObjects.push_back(make_pair(pEnemy, GROUP_PLAYER));
 
-    SetUp_DefaultLight();
+    SetUp_DefaultLight_BootCamp();
 
     return S_OK;
 }
@@ -82,43 +85,41 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
     /* Player */
-    if (FAILED(On_ReadyPlayers(vecReadyObjects)))
+    if (FAILED(On_ReadyPlayers_BootCamp(vecReadyObjects)))
     {
-        Call_MsgBox(L"Failed to On_ReadyPlayers : CGameSystem");
+        Call_MsgBox(L"Failed to On_ReadyPlayers_BootCamp : CGameSystem");
         return E_FAIL;
     }
 
-    if (FAILED(On_ReadyUIs(vecReadyObjects)))
+    if (FAILED(On_ReadyUIs_BootCamp(vecReadyObjects)))
     {
-        Call_MsgBox(L"Failed to On_ReadyUIs : CGameSystem");
+        Call_MsgBox(L"Failed to On_ReadyUIs_BootCamp : CGameSystem");
         return E_FAIL;
     }
 
-    if (FAILED(On_ReadyTriggers(vecReadyObjects)))
+    if (FAILED(On_ReadyTriggers_BootCamp(vecReadyObjects)))
     {
-        Call_MsgBox(L"Failed to On_ReadyTriggers : CGameSystem");
+        Call_MsgBox(L"Failed to On_ReadyTriggers_BootCamp : CGameSystem");
         return E_FAIL;
     }
 
-    if (FAILED(On_ReadyDestructible(vecReadyObjects)))
+    if (FAILED(On_ReadyDestructible_BootCamp(vecReadyObjects)))
     {
-        Call_MsgBox(L"Failed to On_ReadyDestructible : CGameSystem");
+        Call_MsgBox(L"Failed to On_ReadyDestructible_BootCamp : CGameSystem");
         return E_FAIL;
     } 
     
-    if (FAILED(SetUp_DefaultLight()))
+    if (FAILED(SetUp_DefaultLight_BootCamp()))
     {
-        Call_MsgBox(L"Failed to On_ReadyDestructible : CGameSystem");
+        Call_MsgBox(L"Failed to SetUp_DefaultLight_BootCamp : CGameSystem");
         return E_FAIL;
-    }
-
-   
+    }  
 
 
     return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
     _float4 vPlayerPos = CGameSystem::Get_Instance()->Find_Position("StartPosition");
 
@@ -196,14 +197,14 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
 
 }
 
-HRESULT CGameSystem::On_ReadyUIs(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyUIs_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
  
 
     return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyTriggers_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
     _float fRadius = 4.f;
 
@@ -263,7 +264,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyDestructible(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyDestructible_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
     CDestructible* pDestructible = CDestructible::Create(
         L"../bin/resources/meshes/map/environments/prop/Barrier/SM_Prop_Barrier_Fence02a.fbx",
@@ -439,6 +440,11 @@ HRESULT CGameSystem::On_EnterBootCamp()
 	return S_OK;
 }
 
+HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    return S_OK;
+}
+
 HRESULT CGameSystem::Load_Position(string strFileKey)
 {
 	return m_pPositionTable->Load_Position(strFileKey);
@@ -470,7 +476,7 @@ CPlayer* CGameSystem::SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TY
     return pPlayerInstance;
 }
 
-HRESULT CGameSystem::SetUp_DefaultLight()
+HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()
 {
     /* Default Light */
     LIGHTDESC			LightDesc;

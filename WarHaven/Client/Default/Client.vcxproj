@@ -246,6 +246,7 @@
     <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_L.h" />
     <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_R.h" />
     <ClInclude Include="..\public\CLevel_BootCamp.h" />
+    <ClInclude Include="..\Public\CLevel_Paden.h" />
     <ClInclude Include="..\public\CLevel_Stage.h" />
     <ClInclude Include="..\public\CMesh_Particle.h" />
     <ClInclude Include="..\Public\CIdle_Valkyrie_L.h" />
@@ -621,6 +622,7 @@
     <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_L.cpp" />
     <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_R.cpp" />
     <ClCompile Include="..\private\CLevel_BootCamp.cpp" />
+    <ClCompile Include="..\Private\CLevel_Paden.cpp" />
     <ClCompile Include="..\private\CLevel_Stage.cpp" />
     <ClCompile Include="..\private\CMesh_Particle.cpp" />
     <ClCompile Include="..\Private\CIdle_Valkyrie_L.cpp" />

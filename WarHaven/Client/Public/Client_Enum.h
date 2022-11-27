@@ -118,6 +118,7 @@ namespace Client
 		LEVEL_MAINMENU,
 		LEVEL_TEST,
 		LEVEL_BOOTCAMP,
+		LEVEL_PADEN,
 		LEVEL_END
 	};
 

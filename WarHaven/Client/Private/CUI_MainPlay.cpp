@@ -158,8 +158,8 @@ void CUI_MainPlay::On_PointUpEvent_Start(const _uint& iEventNum)
 	{
 		switch (m_eStage)
 		{
-		case CUI_MainPlay::Test:
-			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_TEST);
+		case CUI_MainPlay::Paden:
+			CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_PADEN);
 			break;
 
 		case CUI_MainPlay::Training:
@@ -211,8 +211,8 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 		{
 			Enable_StageClickRect(vPos);
 
-			m_eStage = Select_Stage::Test;
-			m_pStageNameRect->Set_FontText(TEXT("¸ðµå - Å×½ºÆ®"));
+			m_eStage = Select_Map::Paden;
+			m_pStageNameRect->Set_FontText(TEXT("¸Ê - ÆÄµ§"));
 		}
 		else if (iTextureNum == 1)
 		{
@@ -226,8 +226,8 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 		{
 			Enable_StageClickRect(vPos);
 
-			m_eStage = Select_Stage::Training;
-			m_pStageNameRect->Set_FontText(TEXT("¸ðµå - ÈÆ·Ã¼Ò"));
+			m_eStage = Select_Map::Training;
+			m_pStageNameRect->Set_FontText(TEXT("¸Ê - ÈÆ·Ã¼Ò"));
 		}
 	}
 }
@@ -389,7 +389,7 @@ void CUI_MainPlay::Create_PlayBtn()
 
 	m_pPlayBtnUI[1]->Set_Pos(-535.f, 100.f);
 	m_pPlayBtnUI[1]->Set_Scale(128.f, 40.f);
-	m_pPlayBtnUI[1]->Set_FontText(TEXT("¸ðµå º¯°æ"));
+	m_pPlayBtnUI[1]->Set_FontText(TEXT("¸Ê º¯°æ"));
 	m_pPlayBtnUI[1]->Set_FontScale(0.4f);
 	m_pPlayBtnUI[1]->Set_FontOffset(-60.f, -17.f);
 }
@@ -480,7 +480,7 @@ void CUI_MainPlay::Create_StageBtn()
 		{
 			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
 			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
-			m_pStageSelectBtn[i]->Set_FontText(TEXT("ÀÏ¹ÝÀü"));
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("ÆÄµ§"));
 
 			GET_COMPONENT_FROM(m_pStageSelectBtn[i], CTexture)->Set_CurTextureIndex(i);
 		}
@@ -489,14 +489,14 @@ void CUI_MainPlay::Create_StageBtn()
 		{
 			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
 			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
-			m_pStageSelectBtn[i]->Set_FontText(TEXT("°æÀïÀü"));
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("°³¹ß Áß"));
 		}
 
 		if (i == 2)
 		{
 			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
 			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
-			m_pStageSelectBtn[i]->Set_FontText(TEXT("»ç¿ëÀÚ ÁöÁ¤ °ÔÀÓ"));
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("°³¹ß Áß"));
 		}
 
 		// ÈÆ·ÃÀå È°¼ºÈ­
@@ -597,7 +597,7 @@ void CUI_MainPlay::Create_StageNameRect()
 	m_pStageNameRect = CUI_Object::Create();
 	m_pStageNameRect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_BoxFrame.png"));
 
-	m_pStageNameRect->Set_Scale(90.f, 28.f);
+	m_pStageNameRect->Set_Scale(80.f, 28.f);
 	m_pStageNameRect->Set_Sort(0.91f);
 	m_pStageNameRect->Set_Pos(-545.f, 220.f);
 
@@ -607,10 +607,10 @@ void CUI_MainPlay::Create_StageNameRect()
 
 	m_pStageNameRect->Set_FontRender(true);
 	m_pStageNameRect->Set_FontStyle(true);
-	m_pStageNameRect->Set_FontOffset(-39.f, -11.f);
+	m_pStageNameRect->Set_FontOffset(-30.f, -11.f);
 	m_pStageNameRect->Set_FontScale(0.2f);
 	m_pStageNameRect->Set_FontColor(m_vFontColor);
-	m_pStageNameRect->Set_FontText(TEXT("¸ðµå - ÈÆ·Ã¼Ò"));
+	m_pStageNameRect->Set_FontText(TEXT("¸Ê - ÈÆ·Ã¼Ò"));
 
 	CREATE_GAMEOBJECT(m_pStageNameRect, GROUP_UI);
 }

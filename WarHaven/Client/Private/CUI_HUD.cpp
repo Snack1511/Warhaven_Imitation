@@ -18,6 +18,7 @@
 #include "Functor.h"
 
 #include"CPlayer.h"
+#include "Loading_Manager.h"
 
 
 CUI_HUD::CUI_HUD()
@@ -60,23 +61,22 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
-	m_eCurClass = m_tStatus.eClass;
-
-	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
-	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
-	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
-	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
-	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
-
-	ENABLE_GAMEOBJECT(m_pChangeClassText);
-	ENABLE_GAMEOBJECT(m_pHeroGaugeText);
-	ENABLE_GAMEOBJECT(m_pHpText);
-	ENABLE_GAMEOBJECT(m_pPlayerNameText);
+	LEVEL_TYPE_CLIENT eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+	if (eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	{
+		// 훈련장이 아닐 때에는 작전 회의창이 끝나야 HUD 활성화
+		SetActive_PlayerInfoUI(false);
+	}
+	else
+	{
+		SetActive_PlayerInfoUI(true);
+	}
 
 	Bind_Btn();
 
 	Set_FadePortHighlight();
+
+	__super::Start();
 
 	return S_OK;
 }
@@ -156,9 +156,6 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 
 	ENABLE_GAMEOBJECT(m_pPortUnderLines[iEventNum]);
 	m_pPortUnderLines[iEventNum]->Lerp_ScaleX(2.f, 100.f, fDuraition);
-
-
-
 
 	// m_iChoiceClass = iEventNum 으로 나중에 변경 -> 현재 모든 캐릭이 없어 Enum 이 맞지 않는다.
 
@@ -444,6 +441,26 @@ void CUI_HUD::Set_FadePortHighlight()
 	}
 
 	GET_COMPONENT_FROM(m_pInactiveHeroText, CFader)->Get_FadeDesc() = tFadeDesc;
+}
+
+void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
+{
+	if (value == true)
+	{
+		m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
+		m_eCurClass = m_tStatus.eClass;
+
+		dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
+		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
+		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
+		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
+
+		ENABLE_GAMEOBJECT(m_pChangeClassText);
+		ENABLE_GAMEOBJECT(m_pHeroGaugeText);
+		ENABLE_GAMEOBJECT(m_pHpText);
+		ENABLE_GAMEOBJECT(m_pPlayerNameText);
+	}
 }
 
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
