@@ -106,6 +106,7 @@ protected:
 
 protected:
 	void CheckInRect();
+	void Read_Texture(string strFolderPath, string key);
 };
 
 END

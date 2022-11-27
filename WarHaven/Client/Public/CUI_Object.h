@@ -44,8 +44,8 @@ public:	// Font
 	void Set_FontText(wstring szText) { m_wstrText = szText; }
 	_float4 Get_FontOffset() { return m_vOffset; }
 	void Set_FontOffset(_float fX, _float fY);
-	_float4 Get_FontColor() { return m_vColor; }
-	void Set_FontColor(_float4 vColor) { m_vColor = vColor; }
+	_float4 Get_FontColor() { return m_vFontColor; }
+	void Set_FontColor(_float4 vColor) { m_vFontColor = vColor; }
 	_float Get_FontScale() { return m_fFontScale; }
 	void Set_FontScale(_float fValue) { m_fFontScale = fValue; }
 
@@ -75,7 +75,7 @@ private:	// Font
 	_bool m_bIsBold = false;
 	wstring m_wstrText;
 	_float4 m_vOffset;
-	_float4 m_vColor = { 1.f,1.f,1.f,1.f };
+	_float4 m_vFontColor = { 1.f,1.f,1.f,1.f };
 	_float m_fFontScale = 1.f;
 	_bool m_bIsFontFade = false;
 	_bool m_bIsFadeIn = false;
@@ -95,6 +95,9 @@ private:	// Lerp
 
 	_float4 m_vOriginScale;
 	_bool m_bIsDoScale = false;
+
+	_float m_fMoveDuration = 0.f;
+	_float m_fScaleDuration = 0.f;
 
 	_float m_fMoveValue = 0.f;
 	_float m_fScaleValue = 0.f;

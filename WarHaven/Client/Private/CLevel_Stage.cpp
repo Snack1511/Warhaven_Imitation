@@ -82,7 +82,7 @@ HRESULT CLevel_Stage::Enter()
 
 	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 	CUser::Get_Instance()->On_EnterStageLevel();
-	CEffects_Factory::Get_Instance()->On_EnterLevel();
+	//CEffects_Factory::Get_Instance()->On_EnterLevel();
 
 	GAMEINSTANCE->Begin_PhysScene();
 	GAMEINSTANCE->Clear_Resources();

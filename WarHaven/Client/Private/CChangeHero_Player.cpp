@@ -72,25 +72,24 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
 
-
 	if (pAnimator->Is_CurAnimFinished())
 	{
 		switch (pOwner->Get_HeroType())
 		{
-		case CUnit::FIONA:
+		case FIONA:
 			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
 			return STATE_IDLE_VALKYRIE_R;
-		case CUnit::QANDA:
-
-			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
-			return STATE_IDLE_VALKYRIE_R;
-
-		case CUnit::HOEDT:
+		case QANDA:
 
 			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
 			return STATE_IDLE_VALKYRIE_R;
 
-		case CUnit::LANCER:
+		case HOEDT:
+
+			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
+			return STATE_IDLE_VALKYRIE_R;
+
+		case LANCER:
 
 			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
 			return STATE_IDLE_VALKYRIE_R;
@@ -114,31 +113,48 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 {
 	_bool bReturn = false;
 
-	//if (pOwner->Get_Status().bAbleHero)
+	if (pOwner->Get_OwnerPlayer()->AbleHero())
 	{
 		if (KEY(NUM1, TAP))
 		{
-			pOwner->Get_HeroType() = CUnit::FIONA;
-			return m_eStateType;
+			return Set_HeroType(pOwner, FIONA);
 		}
 		else if (KEY(NUM2, TAP))
 		{
-			pOwner->Get_HeroType() = CUnit::QANDA;
-			return m_eStateType;
+			return Set_HeroType(pOwner, QANDA);
 		}
-
 		else if (KEY(NUM3, TAP))
 		{
-			pOwner->Get_HeroType() = CUnit::HOEDT;
-			return m_eStateType;
+			return Set_HeroType(pOwner, HOEDT);
 		}
 		else if (KEY(NUM4, TAP))
 		{
-			pOwner->Get_HeroType() = CUnit::LANCER;
-			return m_eStateType;
+			return Set_HeroType(pOwner, LANCER);
+		}
+	}
+	else
+	{
+		if (pOwner->Get_OwnerPlayer()->IsHero())
+		{
+			if (KEY(NUM1, TAP))
+			{
+				pOwner->Get_OwnerPlayer()->IsHero() = false;
+
+				CUser::Get_Instance()->Set_HUD((CLASS_TYPE)pOwner->Get_OwnerPlayer()->Get_CurrentDefaultClass());
+			}
 		}
 	}
 
-
 	return STATE_END;
+}
+
+STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
+{
+	pOwner->Get_OwnerPlayer()->IsHero() = true;
+	pOwner->Get_HeroType() = eClass;
+	pOwner->On_ChangeToHero((CPlayer::CLASS_HREO)eClass);
+
+	CUser::Get_Instance()->Set_HUD(eClass);
+
+	return m_eStateType;
 }

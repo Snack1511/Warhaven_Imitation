@@ -68,12 +68,17 @@ public:
 	void On_EnterStageLevel();
 	void On_ExitStageLevel();
 
+	void Set_HUD(CLASS_TYPE eClass);
 	void Set_HP(_float fMaxHP, _float fCurHP);
 	void Set_HeroGauge(_float fMaxGauge, _float fCurGauge);
-
-	void SetActive_OxenJumpText(_bool value);
 	void Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime);
-	void Enable_DamageFont(_float fDmg, _bool bHeadShot = false);
+
+	void SetActive_HeroPortrait(_bool value);
+	void SetActive_OxenJumpText(_bool value);
+
+	_bool Is_OnHeroGauge(); 
+
+	void Enable_DamageFont(_uint eType, _float fDmg);
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
 private:

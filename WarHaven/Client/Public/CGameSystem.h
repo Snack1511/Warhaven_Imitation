@@ -29,12 +29,15 @@ public:
 public: /* BootCamp */
 	HRESULT					On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 
-	HRESULT					On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
-	HRESULT					On_ReadyUIs(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
-	HRESULT					On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
-	HRESULT					On_ReadyDestructible(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyUIs_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyTriggers_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyDestructible_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 
 	HRESULT					On_EnterBootCamp();
+
+public:	// Paden
+	HRESULT					On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 
 public: /* Position Table */
 	HRESULT					Load_Position(string strFileKey);
@@ -50,7 +53,7 @@ private:
 private:
 	CPlayer* SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TYPE eStartState, _bool bUserPlayer, wstring wstrCamName);
 
-	HRESULT					SetUp_DefaultLight();
+	HRESULT					SetUp_DefaultLight_BootCamp();
 
 
 };

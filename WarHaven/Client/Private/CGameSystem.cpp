@@ -15,6 +15,9 @@
 
 IMPLEMENT_SINGLETON(CGameSystem);
 
+
+#define READY_GAMEOBJECT(instance, grouptype) vecReadyObjects.push_back(make_pair(instance, grouptype))
+
 CGameSystem::CGameSystem()
 {
 }
@@ -61,7 +64,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     pUserPlayer->Set_MainPlayer();
-    vecReadyObjects.push_back(make_pair(pUserPlayer, GROUP_PLAYER));
+    READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
 
     for (_uint i = 0; i < 1; ++i)
@@ -84,7 +87,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
     }
 
-    SetUp_DefaultLight();
+    SetUp_DefaultLight_BootCamp();
 
     return S_OK;
 
@@ -93,43 +96,41 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
     /* Player */
-    if (FAILED(On_ReadyPlayers(vecReadyObjects)))
+    if (FAILED(On_ReadyPlayers_BootCamp(vecReadyObjects)))
     {
-        Call_MsgBox(L"Failed to On_ReadyPlayers : CGameSystem");
+        Call_MsgBox(L"Failed to On_ReadyPlayers_BootCamp : CGameSystem");
         return E_FAIL;
     }
 
-   /* if (FAILED(On_ReadyUIs(vecReadyObjects)))
+    if (FAILED(On_ReadyUIs_BootCamp(vecReadyObjects)))
     {
-        Call_MsgBox(L"Failed to On_ReadyUIs : CGameSystem");
-        return E_FAIL;
-    }*/
-
-    if (FAILED(On_ReadyTriggers(vecReadyObjects)))
-    {
-        Call_MsgBox(L"Failed to On_ReadyTriggers : CGameSystem");
+        Call_MsgBox(L"Failed to On_ReadyUIs_BootCamp : CGameSystem");
         return E_FAIL;
     }
 
-    if (FAILED(On_ReadyDestructible(vecReadyObjects)))
+    if (FAILED(On_ReadyTriggers_BootCamp(vecReadyObjects)))
     {
-        Call_MsgBox(L"Failed to On_ReadyDestructible : CGameSystem");
+        Call_MsgBox(L"Failed to On_ReadyTriggers_BootCamp : CGameSystem");
+        return E_FAIL;
+    }
+
+    if (FAILED(On_ReadyDestructible_BootCamp(vecReadyObjects)))
+    {
+        Call_MsgBox(L"Failed to On_ReadyDestructible_BootCamp : CGameSystem");
         return E_FAIL;
     } 
     
-    if (FAILED(SetUp_DefaultLight()))
+    if (FAILED(SetUp_DefaultLight_BootCamp()))
     {
-        Call_MsgBox(L"Failed to On_ReadyDestructible : CGameSystem");
+        Call_MsgBox(L"Failed to SetUp_DefaultLight_BootCamp : CGameSystem");
         return E_FAIL;
-    }
-
-   
+    }  
 
 
     return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
     _float4 vPlayerPos = CGameSystem::Get_Instance()->Find_Position("StartPosition");
 
@@ -219,14 +220,14 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
 
 }
 
-HRESULT CGameSystem::On_ReadyUIs(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyUIs_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
  
 
     return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyTriggers_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
     _float fRadius = 4.f;
 
@@ -235,6 +236,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     CTrigger_BootCamp* pBootCampTrigger2 = CTrigger_BootCamp::Create("PopUp02", 2, fRadius);
 
     CTrigger_BootCamp* pBootCampTrigger3 = CTrigger_BootCamp::Create("Popup03", 3, fRadius);
+    CTrigger_BootCamp* pBootCampTrigger4 = CTrigger_BootCamp::Create("Popup04", 4, fRadius);
 
     CTrigger_BootCamp* pBootCampTrigger5 = CTrigger_BootCamp::Create("Popup05", 5, fRadius);
     pBootCampTrigger5->Add_AdjPlayer(m_mapEnemyPlayers["EnemyTrio_1"]);
@@ -261,6 +263,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger1);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger2);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger3);
+    pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger4);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger5);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger6);
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger7);
@@ -276,6 +279,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     vecReadyObjects.push_back(make_pair(pBootCampTrigger1, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger2, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger3, GROUP_TRIGGER));
+    vecReadyObjects.push_back(make_pair(pBootCampTrigger4, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger5, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger6, GROUP_TRIGGER));
     vecReadyObjects.push_back(make_pair(pBootCampTrigger7, GROUP_TRIGGER));
@@ -288,7 +292,7 @@ HRESULT CGameSystem::On_ReadyTriggers(vector<pair<CGameObject*, _uint>>& vecRead
     return S_OK;
 }
 
-HRESULT CGameSystem::On_ReadyDestructible(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+HRESULT CGameSystem::On_ReadyDestructible_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
     CDestructible* pDestructible = CDestructible::Create(
         L"../bin/resources/meshes/map/environments/prop/Barrier/SM_Prop_Barrier_Fence02a.fbx",
@@ -483,6 +487,11 @@ HRESULT CGameSystem::On_EnterBootCamp()
 	return S_OK;
 }
 
+HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    return S_OK;
+}
+
 HRESULT CGameSystem::Load_Position(string strFileKey)
 {
 	return m_pPositionTable->Load_Position(strFileKey);
@@ -514,7 +523,7 @@ CPlayer* CGameSystem::SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TY
     return pPlayerInstance;
 }
 
-HRESULT CGameSystem::SetUp_DefaultLight()
+HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()
 {
     /* Default Light */
     LIGHTDESC			LightDesc;

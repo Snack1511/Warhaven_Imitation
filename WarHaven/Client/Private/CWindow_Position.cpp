@@ -306,11 +306,11 @@ void CWindow_Position::Update_SelectMode()
 		if (GAMEINSTANCE->Is_Picked_Cubes(GameObjects, &vPos, &iIndex, &vNormal))
 		{
 			if (m_iCurSelectedIndex != 99999)
-				m_pDebugBoxes[m_iCurSelectedIndex]->m_vColor = _float4(0.f, 1.f, 0.f, 1.f);
+				m_pDebugBoxes[m_iCurSelectedIndex]->m_vFontColor = _float4(0.f, 1.f, 0.f, 1.f);
 
 			m_iCurSelectedIndex = iIndex;
 
-			m_pDebugBoxes[m_iCurSelectedIndex]->m_vColor = _float4(1.f, 0.f, 0.f, 1.f);
+			m_pDebugBoxes[m_iCurSelectedIndex]->m_vFontColor = _float4(1.f, 0.f, 0.f, 1.f);
 
 		}
 

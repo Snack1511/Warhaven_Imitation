@@ -6,7 +6,7 @@ class CUI_MainPlay : public CUI_Wrapper
 	DECLARE_GAMEOBJECT(CUI_MainPlay);
 
 public:
-	enum Select_Stage { Test, Training, Stage_End };
+	enum Select_Map { Paden, Training = 3, Stage_End };
 
 private:
 	CUI_MainPlay();
@@ -65,7 +65,7 @@ private:
 
 	CUI_Object* m_pSelectTextRect = nullptr;
 
-	Select_Stage m_eStage = Select_Stage::Test;
+	Select_Map m_eStage = Select_Map::Training;
 
 private:
 	CUI_Object* m_pTarget = nullptr;

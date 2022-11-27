@@ -105,7 +105,7 @@ HRESULT CDefault_Effect::SetUp_DefaultEffect(ifstream* pReadFile)
 	pReadFile->read((char*)&m_vFadeOutTargetScale, sizeof(_float4));
 	pReadFile->read((char*)&m_fTargetAlpha, sizeof(_float));
 
-	pReadFile->read((char*)&m_vColor, sizeof(_float4));
+	pReadFile->read((char*)&m_vFontColor, sizeof(_float4));
 	pReadFile->read((char*)&m_vPlusColor, sizeof(_float4));
 	pReadFile->read((char*)&m_fColorPower, sizeof(_float));
 	pReadFile->read((char*)&m_fDissolvePower, sizeof(_float));

@@ -245,14 +245,21 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 	return fDamage;
 }
 
-_bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot)
+_bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDmgType)
 {
 	m_tUnitStatus.fHP += fHp;
 
 	/*데미지 표시*/
 	if (pOtherUnit->m_bIsMainPlayer)
 	{
-		CUser::Get_Instance()->Enable_DamageFont(fHp, bHeadShot);
+		if (bHeadShot)
+		{
+			CUser::Get_Instance()->Enable_DamageFont(0, fHp);
+		}
+		else
+		{
+			CUser::Get_Instance()->Enable_DamageFont(iDmgType, fHp);
+		}
 	}
 
 	if (m_tUnitStatus.fHP <= 0.f)
@@ -647,7 +654,7 @@ void CUnit::SetUp_HitStates(_bool bPlayer)
 
 void CUnit::On_ChangeToHero(_uint iIndex)
 {
-	//m_pOwnerPlayer->Change_HeroUnit()
+	m_pOwnerPlayer->Change_HeroUnit((CPlayer::CLASS_HREO)iIndex);
 }
 
 _float4 CUnit::Get_FollowCamLook()
@@ -761,63 +768,6 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
-	if (m_bIsMainPlayer)
-	{
-		CUser::Get_Instance()->Set_HP(m_tUnitStatus.fMaxHP, m_tUnitStatus.fHP);
-
-		if (!m_tUnitStatus.bAbleHero)
-		{
-			_float fGaugeSpeed = fDT(0) * 20.f;
-
-			if (!m_tUnitStatus.bIsHero)
-			{
-				m_tUnitStatus.fGauge += fGaugeSpeed;
-				if (m_tUnitStatus.fGauge > m_tUnitStatus.fMaxGauge)
-				{
-					m_tUnitStatus.fGauge = m_tUnitStatus.fMaxGauge;
-					m_tUnitStatus.bAbleHero = true;
-
-					// 영웅 포트레이트 활성화
-				}
-			}
-			else
-			{
-				m_tUnitStatus.fGauge -= fGaugeSpeed;
-				if (m_tUnitStatus.fGauge < 0.f)
-				{
-					m_tUnitStatus.fGauge = 0.f;
-					m_tUnitStatus.bIsHero = false;
-
-					// 원래 포트레이트 활성화
-				}
-				else if (KEY(NUM1, TAP))
-				{
-					m_tUnitStatus.bIsHero = false;
-
-					// 원래 포트레이트 활성화
-				}
-			}
-		}
-		else
-		{
-			// 각 번호에 해당하는 영웅으로 변신
-			if (KEY(NUM1, TAP))
-			{
-
-			}
-			else if (KEY(NUM2, TAP))
-			{
-			}
-			else if (KEY(NUM3, TAP))
-			{
-			}
-			else if (KEY(NUM4, TAP))
-			{
-			}
-		}
-
-		CUser::Get_Instance()->Set_HeroGauge(m_tUnitStatus.fMaxGauge, m_tUnitStatus.fGauge);
-	}
 
 	for (_int i = 0; i < COOL_END; ++i)
 	{
@@ -860,25 +810,10 @@ void CUnit::My_Tick()
 		m_fHitDelayAcc = 0.f;
 
 	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
-
-	_float fDis = CUtility_Transform::Get_FromCameraDistance(this);
-	if (fDis < 10.f)
-	{
-		if (!m_bIsMainPlayer)
-		{
-			ENABLE_GAMEOBJECT(m_pUnitHUD);
-			dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
-		}
-	}
-	else
-	{
-		DISABLE_GAMEOBJECT(m_pUnitHUD);
-	}
 }
 
 void CUnit::My_LateTick()
 {
-
 	if (m_bDie)
 	{
 		m_fDeadTimeAcc += fDT(0);
@@ -949,7 +884,7 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, false);
 
-	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot);
+	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 2);
 
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)
@@ -972,16 +907,12 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	case COL_ENEMYATTACK:
 	case COL_PLAYERATTACK:
 		Enter_State(m_tHitType.eHitState, pHitInfo);
-
 		break;
-
-
 		//상대방 GuardBreak가 들어온 경우
 	case COL_PLAYERGUARDBREAK:
+		break;
 	case COL_ENEMYGUARDBREAK:
 		//1. 이펙트
-
-
 		//2. 나와 적 상태 변경
 		Enter_State(m_tHitType.eHitState, pHitInfo);
 		break;
@@ -1030,8 +961,7 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 	tInfo.bHeadShot = false;
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, true);
 
-
-	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot);
+	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 1);
 
 	if (!bDie)
 	{
@@ -1114,17 +1044,30 @@ void CUnit::Enable_UnitHUD()
 
 void CUnit::Frustum_UnitHUD()
 {
-	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	_float fDis = CUtility_Transform::Get_FromCameraDistance(this);
 
-	vPos.y += 2.f;
-
-	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
+	if (fDis < 30.f)
 	{
-		if (!m_pUnitHUD->Is_Valid())
+		dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
+
+		_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+		vPos.y += 2.f;
+
+		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
 		{
-			if (!m_bIsMainPlayer)
+			if (!m_pUnitHUD->Is_Valid())
 			{
-				ENABLE_GAMEOBJECT(m_pUnitHUD);
+				if (!m_bIsMainPlayer)
+				{
+					ENABLE_GAMEOBJECT(m_pUnitHUD);
+				}
+			}
+		}
+		else
+		{
+			if (m_pUnitHUD->Is_Valid())
+			{
+				DISABLE_GAMEOBJECT(m_pUnitHUD);
 			}
 		}
 	}

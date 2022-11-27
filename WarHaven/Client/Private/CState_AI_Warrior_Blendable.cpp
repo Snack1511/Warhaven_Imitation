@@ -426,14 +426,14 @@ void CState_AI_Warrior_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAn
 
 	case 1000:
 		/*effect*/
-		if(CUnit::CLASS_TYPE::WARRIOR == pOwner->Get_Status().eClass)
+		if(WARRIOR == pOwner->Get_Status().eClass)
 			if (!pOwner->Is_Air())
 				Create_SoilEffect();
 
 		break;
 	case 1001:
 		/*effect*/
-		if (CUnit::CLASS_TYPE::ENGINEER == pOwner->Get_Status().eClass)
+		if (ENGINEER == pOwner->Get_Status().eClass)
 			if (!pOwner->Is_Air())
 				Create_SoilEffect();
 

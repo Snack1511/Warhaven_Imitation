@@ -23,18 +23,46 @@ HRESULT CUI_LoadingBG::Initialize_Prototype()
 	__super::Initialize_Prototype();
 
 	SetTexture(TEXT("../Bin/Resources/Textures/UI/Loading/Map_Training_01.dds"));
+	GET_COMPONENT(CTexture)->Remove_Texture(0);
+
+	Read_Texture("/Loading", "Map");
 
 	Set_Pos(0.f, 0.f);
 	Set_Scale(2280.f, 1720.f);
 
 	Set_Sort(1.f);
 
-	m_iBGIndex = 1;
+	_uint iMaxIdx = GET_COMPONENT(CTexture)->Get_TextureSize();
+	_uint iRandNum = random(0, iMaxIdx);
+	GET_COMPONENT(CTexture)->Set_CurTextureIndex(iRandNum);
 
 	LEVEL_TYPE_CLIENT eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
-	if (eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
+
+	switch (eLoadLevel)
 	{
-		Create_LoadingText(eLoadLevel);
+		case LEVEL_LOGO:
+			break;
+		case LEVEL_LOADING:
+			break;
+		case LEVEL_MAINMENU:
+			break;
+		case LEVEL_TEST:
+			Create_LoadingText(eLoadLevel, TEXT("테스트레벨"));
+			break;
+		case LEVEL_BOOTCAMP:
+		{
+			_uint iTraninigTexture = random(12, 13);
+			GET_COMPONENT(CTexture)->Set_CurTextureIndex(iTraninigTexture);
+			Create_LoadingText(eLoadLevel, TEXT("훈련장"));
+		}
+		break;
+		case LEVEL_PADEN:
+		{
+			_uint iTraninigTexture = random(0, 11);
+			GET_COMPONENT(CTexture)->Set_CurTextureIndex(iTraninigTexture);
+			Create_LoadingText(eLoadLevel, TEXT("파덴"));
+		}
+		break;
 	}
 
 	return S_OK;
@@ -68,11 +96,9 @@ void CUI_LoadingBG::My_Tick()
 void CUI_LoadingBG::OnEnable()
 {
 	__super::OnEnable();
-
-	GET_COMPONENT(CTexture)->Set_CurTextureIndex(m_iBGIndex);
 }
 
-void CUI_LoadingBG::Create_LoadingText(LEVEL_TYPE_CLIENT eLevel)
+void CUI_LoadingBG::Create_LoadingText(LEVEL_TYPE_CLIENT eLevel, wstring eName)
 {
 	m_pNextMapName = CUI_Object::Create();
 	m_pLoddingText = CUI_Object::Create();
@@ -100,20 +126,7 @@ void CUI_LoadingBG::Create_LoadingText(LEVEL_TYPE_CLIENT eLevel)
 	CREATE_GAMEOBJECT(m_pNextMapName, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pNextMapName);
 
-	switch (eLevel)
-	{
-	case Client::LEVEL_LOGO:
-		break;
-	case Client::LEVEL_LOADING:
-		break;
-	case Client::LEVEL_MAINMENU:
-		break;
-	case Client::LEVEL_TEST:
-
-		m_pNextMapName->Set_FontText(TEXT("테스트 레벨"));
-
-		break;
-	}
+	m_pNextMapName->Set_FontText(eName);
 
 	if (eLevel > 2)
 	{

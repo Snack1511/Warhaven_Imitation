@@ -46,7 +46,7 @@ private: // Font
 	_bool m_bIsBold = false;
 	wstring m_wstrText;
 	_float4 m_vOffset;
-	_float4 m_vColor = { 1.f, 1.f, 1.f, 1.f };
+	_float4 m_vFontColor = { 1.f, 1.f, 1.f, 1.f };
 	_float m_fFontScale = 1.f;
 
 private:

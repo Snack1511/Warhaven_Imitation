@@ -32,6 +32,8 @@ public:
 	_float4&		Get_CenterPos() { return m_vCenterPos; }
 	_float		Get_MaxRange() { return m_fMaxRange; }
 
+	void		Set_Color(_float4 vColor) { m_vFontColor = vColor; }
+	
 	void		Set_Color(_float4 vColor) { m_vColor = vColor; }
 
 	void		Set_OutlineFlag(_float4 vOutLineFlag) { m_vOutLineFlag = vOutLineFlag; }
@@ -75,6 +77,7 @@ protected: /* 현재ㅑ 메시컨테이너에게 적용되어야할 머테리얼 인덱스*/
 	_uint								m_iMaterialIndex = 0;
 
 	_float4								m_vFlag = SH_LIGHT_NOSPEC;
+	_float4								m_vFontColor;
 	_float4								m_vOutLineFlag = ZERO_VECTOR;
 	_float4								m_vRimLightFlag = ZERO_VECTOR;
 	_float4								m_vColor;

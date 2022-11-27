@@ -1477,6 +1477,18 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk\02. Left">
       <UniqueIdentifier>{0b7a9ffa-dd9e-4777-80b8-f41fd1479661}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\01. Level\03. Level_Main">
+      <UniqueIdentifier>{fd28c482-61c9-4553-9fba-4b645532e423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\04. Level_Stage">
+      <UniqueIdentifier>{54f85df6-ae52-466d-b7b0-ddab7d890ea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Level">
+      <UniqueIdentifier>{6ff99d2b-2bd7-4d08-ae69-0d99c7bb9fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\01. Level\04. Level_Stage\Paden">
+      <UniqueIdentifier>{405c7fdf-7fb1-4b1e-bccd-455538fd7865}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2594,6 +2606,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalMiddle_Master.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\99. Master\04. Attack\HorizontalMiddle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Paden.h">
+      <Filter>03. Instances\01. Level\04. Level_Stage\Paden</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_TG_Groggy.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\02. Groggy</Filter>
@@ -3717,6 +3732,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalMiddle_Master.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\99. Master\04. Attack\HorizontalMiddle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Paden.cpp">
+      <Filter>03. Instances\01. Level\04. Level_Stage\Paden</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_TG_Groggy.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\02. Groggy</Filter>

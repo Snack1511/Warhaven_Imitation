@@ -1,6 +1,21 @@
 #pragma once
 namespace Client
 {
+	enum CLASS_TYPE
+	{
+		WARRIOR,
+		SPEAR,
+		ARCHER,
+		PALADIN,
+		PRIEST,
+		ENGINEER,
+		FIONA,
+		QANDA,
+		HOEDT,
+		LANCER,
+		CLASS_END
+	};
+
 	enum ANIM_TYPE
 	{
 		ANIM_BASE_R,
@@ -103,6 +118,7 @@ namespace Client
 		LEVEL_MAINMENU,
 		LEVEL_TEST,
 		LEVEL_BOOTCAMP,
+		LEVEL_PADEN,
 		LEVEL_END
 	};
 
@@ -235,6 +251,7 @@ namespace Client
 		VTXTEX_PASS_ALPHA,
 		VTXTEX_PASS_TRAIL,
 		VTXTEX_PASS_BLOODOVERLAY,
+		VTXTEX_PASS_DEBUG,
 		VTXTEX_PASS_END,
 	};
 

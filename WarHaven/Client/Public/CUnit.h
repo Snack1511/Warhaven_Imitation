@@ -27,29 +27,12 @@ class CPlayer;
 class CUnit abstract : public CGameObject
 {
 public:
-	enum CLASS_TYPE
-	{
-		WARRIOR,
-		ENGINEER,
-		SPEAR,
-		ARCHER,
-		PALADIN,
-		PRIEST,
-		FIONA,
-		QANDA,
-		HOEDT,
-		LANCER,
-		CLASS_END
-	};
+
 
 public:
 	struct UNIT_STATUS
 	{
 		CLASS_TYPE	eClass = WARRIOR;
-		_bool		bAbleHero = false;
-		_bool		bIsHero = false;
-		_float		fMaxGauge = 100.f;
-		_float		fGauge = 50.f;
 
 		_float		fCamPower = 0.1f;
 		_float		fCamTime = 0.3f;
@@ -148,7 +131,7 @@ public:
 
 public:
 	_float			Calculate_Damage(_bool bHeadShot, _bool bGuard);
-	virtual _bool	On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot = false);
+	virtual _bool	On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot = false, _uint iDmgType = 2);
 
 public:
 	_bool		Can_Use(COOL_TYPE eType) { if (eType < COOL_END && m_fCoolAcc[eType] <= 0.f) return true; return false; }
@@ -180,13 +163,13 @@ public:
 	const STATE_HIT_TYPE& Get_HitType() { return m_tHitType; }
 	void	Set_BounceState(STATE_TYPE eType) { m_tHitType.eBounce = eType; }
 
-	CLASS_TYPE&				Get_HeroType() { return m_eHeroType; }
+	CLASS_TYPE& Get_HeroType() { return m_eHeroType; }
 
 	void	Set_OwnerPlayer(CPlayer* pPlayer) { m_pOwnerPlayer = pPlayer; }
 	void	On_ChangeToHero(_uint iIndex);
 
 	CPlayer* Get_OwnerPlayer() { return m_pOwnerPlayer; }
-	
+
 
 	_float4	Get_FollowCamLook();
 	_float4	Get_FollowCamLook_Turn();
@@ -327,8 +310,8 @@ protected:
 	virtual void My_LateTick() override;
 
 protected:
-		virtual void	Effect_Parring(_float4 vHitPos);
-		virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
+	virtual void	Effect_Parring(_float4 vHitPos);
+	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
 
 private:
 	CUI_Wrapper* m_pUnitHUD = nullptr;

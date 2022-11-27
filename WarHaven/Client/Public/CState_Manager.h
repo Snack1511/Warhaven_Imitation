@@ -17,6 +17,9 @@ private:
 public:
 	CState* Get_State(STATE_TYPE eType)
 	{
+		if (eType >= STATE_END)
+			return nullptr;
+
 		return m_arrStates[eType];
 	}
 

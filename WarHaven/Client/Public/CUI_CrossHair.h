@@ -28,7 +28,7 @@ public:
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
-	CUI_Object* m_arrSkillUI[4][Type_End] = {};
+	CUI_Object* m_arrCrosshair[4][Type_End] = {};
 
 	_bool bIsHero = false;
 	_uint m_iPrvCrosshair = 0;

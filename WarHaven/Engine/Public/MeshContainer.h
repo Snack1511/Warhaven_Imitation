@@ -32,10 +32,14 @@ public:
 	_float4&		Get_CenterPos() { return m_vCenterPos; }
 	_float		Get_MaxRange() { return m_fMaxRange; }
 
+<<<<<<< HEAD
 	void		Set_Color(_float4 vColor) { m_vColor = vColor; }
 
 	void		Set_OutlineFlag(_float4 vOutLineFlag) { m_vOutLineFlag = vOutLineFlag; }
 	void		Set_RimLightFlag(_float4 vRimLightFlag) { m_vRimLightFlag = vRimLightFlag; }
+=======
+	void		Set_Color(_float4 vColor) { m_vFontColor = vColor; }
+>>>>>>> origin/1126_ì •ì§„
 	
 public:
 	_uint Get_MaterialIndex() const {
@@ -75,9 +79,13 @@ protected: /* ÇöÀç¤Á ¸Ş½ÃÄÁÅ×ÀÌ³Ê¿¡°Ô Àû¿ëµÇ¾î¾ßÇÒ ¸ÓÅ×¸®¾ó ÀÎµ¦½º*/
 	_uint								m_iMaterialIndex = 0;
 
 	_float4								m_vFlag = SH_LIGHT_NOSPEC;
+<<<<<<< HEAD
 	_float4								m_vOutLineFlag = ZERO_VECTOR;
 	_float4								m_vRimLightFlag = ZERO_VECTOR;
 	_float4								m_vColor;
+=======
+	_float4								m_vFontColor;
+>>>>>>> origin/1126_ì •ì§„
 
 	_float								m_fOutline = 1.f;
 	_uint								m_iCurPass = 0;

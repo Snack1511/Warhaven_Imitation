@@ -64,7 +64,7 @@ HRESULT CMeshContainer::SetUp_Ptr(CModel* pModel)
 {
 	// 1. 머테리얼 인덱슷 찾기
 	m_iMaterialIndex = pModel->Find_MaterialIndex(m_MaterialName.c_str());
-	m_vColor = pModel->Get_Materials()[m_iMaterialIndex].second.vColor;
+	m_vFontColor = pModel->Get_Materials()[m_iMaterialIndex].second.vColor;
 
 	// 2. 하이라키 노드 연결
 	m_Bones.clear();
@@ -143,7 +143,7 @@ void CMeshContainer::Set_ShaderResourceFlag(CShader* pShader, const char* pConst
 
 void CMeshContainer::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 {
-	pShader->Set_RawValue(pConstantName, &m_vColor, sizeof(_float4));
+	pShader->Set_RawValue(pConstantName, &m_vFontColor, sizeof(_float4));
 }
 
 HRESULT CMeshContainer::SetUp_MeshContainer(CResource_Mesh* pResource, _float4x4 TransformMatrix)

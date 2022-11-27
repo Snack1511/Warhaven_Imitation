@@ -52,7 +52,7 @@ private:
 	CTransform* m_pUnitTransform = nullptr;
 	_float4		m_vShaderFlag = SH_EFFECT_NOBLOOM;
 	_float4		m_vGlowFlag = GLOW_CHAKRA(1.f);
-	_float4		m_vColor = _float4(0.f, 0.f, 0.f, 1.f);
+	_float4		m_vFontColor = _float4(0.f, 0.f, 0.f, 1.f);
 };
 
 END

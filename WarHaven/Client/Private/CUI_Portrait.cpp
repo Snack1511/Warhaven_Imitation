@@ -101,8 +101,6 @@ void CUI_Portrait::My_Tick()
 				{
 					for (int i = 0; i < Type_End; ++i)
 					{
-						// Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i]);
-
 						if (i == Key)
 						{
 							Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i], fDuration);
@@ -120,10 +118,6 @@ void CUI_Portrait::My_Tick()
 					}
 
 					m_bIsHeroLerp = false;
-				}
-				else
-				{
-					m_eHeroPortAnimType = AnimEnd;
 				}
 			}
 			else
@@ -162,10 +156,6 @@ void CUI_Portrait::My_Tick()
 
 					m_bIsHeroLerp = false;
 				}
-				else
-				{
-					m_eHeroPortAnimType = AnimEnd;
-				}
 			}
 			else
 			{
@@ -194,7 +184,7 @@ void CUI_Portrait::Set_Pass()
 
 void CUI_Portrait::Bind_Shader()
 {
-	//GET_COMPONENT_FROM(m_arrPortraitUI[0][Effect], CShader)->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_arrPortraitUI[0][Effect], CShader)->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
 }
 
 void CUI_Portrait::Set_FadeUserPort(_float fSpeed)

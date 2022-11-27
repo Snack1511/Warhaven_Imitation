@@ -12,6 +12,7 @@
 #include "CUI_Renderer.h"
 #include "Renderer.h"
 #include "CButton.h"
+#include "Functor.h"
 
 CUI::CUI()
 {
@@ -84,8 +85,7 @@ HRESULT CUI::Start()
 
 void CUI::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
-		
+	pShader->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));		
 	pShader->Set_RawValue("g_bIsSlice", &m_bIsSlice, sizeof(_bool));
 	pShader->Set_RawValue("g_vScale", &m_vScale, sizeof(_float4));
 	pShader->Set_RawValue("g_SliceRatio", &m_vSliceRatio, sizeof(_float4));
@@ -227,4 +227,30 @@ void CUI::CheckInRect()
 	GetCursorPos(&m_ptMouse);
 
 	ScreenToClient(g_hWnd, &m_ptMouse);
+}
+
+void CUI::Read_Texture(string strFolderPath, string key)
+{
+	string strBasePath = "../Bin/Resources/Textures/UI";
+	strBasePath += strFolderPath;
+
+	const char* pFilePath = strBasePath.c_str();
+
+	for (filesystem::directory_iterator FileIter(pFilePath); FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		string strPathTemp = CFunctor::To_String(wstrPath);
+
+		if (strPathTemp.find(key) != string::npos)
+		{
+			const _tchar* pFullFilePath = wstrPath.c_str();
+			//GET_COMPONENT_FROM(this, CTexture)->Add_Texture(pFullFilePath);
+			GET_COMPONENT(CTexture)->Add_Texture(pFullFilePath);
+		}
+	}
 }

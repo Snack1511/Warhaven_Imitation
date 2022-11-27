@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+#define HERO_END 4
+
 BEGIN(Engine)
 class CModel;
 class CAnimator;
@@ -22,31 +24,29 @@ class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
 
-class CPlayer final
-	: public CGameObject
+class CPlayer final : public CGameObject
 {
-
 	DECLARE_PROTOTYPE(CPlayer);
 
 public:
 	enum CLASS_HREO
 	{
-		CLASS_HREO_FIONA,
+		CLASS_HREO_FIONA = 6,
 		/*CLASS_HREO_QANDA,
 		CLASS_HREO_HOEDT,
 		CLASS_HREO_LANCER,*/
-		CLASS_HERO_END
+		CLASS_HERO_END = 10
 	};
 
 	enum CLASS_DEFAULT
 	{
-		CLASS_DEFAULT_WARRIOR,
-		CLASS_DEFAULT_ENGINEER,
+		CLASS_DEFAULT_WARRIOR = 0,
 		/*CLASS_DEFAULT_SPEAR,
 		CLASS_DEFAULT_ARCHER,
 		CLASS_DEFAULT_PALADIN,
 		CLASS_DEFAULT_PRIEST,
 		,*/
+		CLASS_DEFAULT_ENGINEER = 5,
 		CLASS_DEFAULT_END
 	};
 
@@ -101,6 +101,8 @@ public:
 	CLASS_DEFAULT Get_CurrentDefaultClass() { return m_eCurrentDefaultClass; }
 	void Set_MainPlayer();
 
+	wstring Get_PlayerName() { return m_wstrName; }
+
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() { return S_OK; }
@@ -111,6 +113,9 @@ public:
 	virtual void OnDisable() override;
 
 public:
+	_bool& AbleHero() { return m_bAbleHero; }
+	_bool& IsHero() { return m_bIsHero; }
+public:
 	void	Set_TeamType(int eTeamType);
 
 private:
@@ -120,7 +125,7 @@ private:
 private:
 	CUnit* m_pCurrentUnit = nullptr;
 	CCamera_Follow* m_pFollowCam = nullptr;
-	CUnit* m_pHeroClass[CLASS_HERO_END] = { nullptr };
+	CUnit* m_pHeroClass[HERO_END] = { nullptr };
 	CUnit* m_pDefaultClass[CLASS_DEFAULT_END] = { nullptr };
 
 	// 변신 Index
@@ -128,18 +133,28 @@ private:
 
 	/* 예약 Index */
 	_uint	m_iReserveStateDefault[CLASS_DEFAULT_END] = { 0 };
-	_uint	m_iReserveStateHero[CLASS_HERO_END] = { 0 };
+	_uint	m_iReserveStateHero[HERO_END] = { 0 };
 
 
 	CLASS_DEFAULT	m_eCurrentDefaultClass = CLASS_DEFAULT_END;
 
-
 	_bool m_bIsMainPlayer = false;
+
+private:	// 이름
+	wstring m_wstrName = TEXT("쥬신");
+
+private:	// 화신 게이지
+	_bool		m_bAbleHero = false;
+	_bool		m_bIsHero = false;
+	_float		m_fMaxGauge = 100.f;
+	_float		m_fGauge = 0.f;
 
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
-
+private:
+	void Update_HP();
+	void Update_HeroGauge();
 };
 END

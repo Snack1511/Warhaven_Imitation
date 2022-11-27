@@ -13,11 +13,13 @@
 #include "CUI_HeroGauge.h"
 #include "CUI_HpBar.h"
 #include "CUI_Training.h"
-
+#include "CUI_Black.h"
 #include "Easing_Utillity.h"
 #include "Functor.h"
 
 #include"CPlayer.h"
+#include "Loading_Manager.h"
+#include "CUI_Renderer.h"
 
 
 CUI_HUD::CUI_HUD()
@@ -30,6 +32,8 @@ CUI_HUD::~CUI_HUD()
 
 HRESULT CUI_HUD::Initialize_Prototype()
 {
+	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+
 	m_pWrap[Crosshair] = CUI_Crosshair::Create();
 	m_pWrap[Port] = CUI_Portrait::Create();
 	m_pWrap[Skill] = CUI_Skill::Create();
@@ -47,6 +51,14 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_TraingText();
 	Create_HeroGaugeText();
 	Create_OxenJumpText();
+	Create_HpText();
+	Create_PlayerNameText();
+
+	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	{
+		Create_OperWindow(m_eLoadLevel);
+	}
+
 
 	return S_OK;
 }
@@ -58,21 +70,20 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
-	m_eCurClass = m_tStatus.eClass;
-
-	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
-	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
-	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
-	dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
-	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
-
-	ENABLE_GAMEOBJECT(m_pChangeClassText);
-	ENABLE_GAMEOBJECT(m_pHeroGaugeText);
+	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	{
+		SetActive_OperUI(true);
+	}
+	else
+	{
+		SetActive_PlayerInfoUI(true);
+	}
 
 	Bind_Btn();
 
 	Set_FadePortHighlight();
+
+	__super::Start();
 
 	return S_OK;
 }
@@ -85,6 +96,7 @@ void CUI_HUD::My_Tick()
 
 	Update_HP();
 	Update_HeroGauge();
+	Update_OperWindow();
 
 	if (m_pBG->Is_Valid())
 	{
@@ -153,9 +165,6 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 	ENABLE_GAMEOBJECT(m_pPortUnderLines[iEventNum]);
 	m_pPortUnderLines[iEventNum]->Lerp_ScaleX(2.f, 100.f, fDuraition);
 
-
-
-
 	// m_iChoiceClass = iEventNum 으로 나중에 변경 -> 현재 모든 캐릭이 없어 Enum 이 맞지 않는다.
 
 	if (pTarget)
@@ -165,39 +174,39 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		case 0:
 			m_pClassInfo->Set_FontText(TEXT("블레이드"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			m_eCurClass = CUnit::CLASS_TYPE::WARRIOR;
-			Set_HUD(CUnit::WARRIOR);
+			m_eCurClass = WARRIOR;
+			Set_HUD(WARRIOR);
 			break;
 
 		case 1:
 			m_pClassInfo->Set_FontText(TEXT("스파이크"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			Set_HUD(CUnit::SPEAR);
+			Set_HUD(SPEAR);
 			break;
 
 		case 2:
 			m_pClassInfo->Set_FontText(TEXT("아치"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			Set_HUD(CUnit::ARCHER);
+			Set_HUD(ARCHER);
 			break;
 
 		case 3:
 			m_pClassInfo->Set_FontText(TEXT("가디언"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			Set_HUD(CUnit::PALADIN);
+			Set_HUD(PALADIN);
 			break;
 
 		case 4:
 			m_pClassInfo->Set_FontText(TEXT("스모크"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			Set_HUD(CUnit::PRIEST);
+			Set_HUD(PRIEST);
 			break;
 
 		case 5:
 			m_pClassInfo->Set_FontText(TEXT("워해머"));
 			GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-			m_eCurClass = CUnit::CLASS_TYPE::ENGINEER;
-			Set_HUD(CUnit::ENGINEER);
+			m_eCurClass = ENGINEER;
+			Set_HUD(ENGINEER);
 			break;
 		}
 	}
@@ -228,25 +237,26 @@ void CUI_HUD::Set_HP(_float fMaxHP, _float fCurHP)
 	m_fCurHP = fCurHP;
 }
 
-void CUI_HUD::Set_HUD(CUnit::CLASS_TYPE eClass)
+void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 {
 	m_ePrvClass = m_eCurClass;
 	m_eCurClass = eClass;
 
-	if (eClass > CUnit::ENGINEER)
+	if (eClass > ENGINEER)
 	{
-		if (m_tStatus.bAbleHero)
+		if (CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero())
 		{
 			Enable_Fade(m_pInactiveHeroText, 1.f);
-			Set_ActiveHeroPort(false);
+			SetActive_HeroPortrait(false);
 		}
 
-		m_tStatus.bAbleHero = false;
-		m_tStatus.bIsHero = true;
+		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero() = false;
+		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = true;
 	}
 	else
 	{
-		m_tStatus.bIsHero = false;
+		Disable_Fade(m_pInactiveHeroText, 1.f);
+		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
 
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);
@@ -260,7 +270,7 @@ void CUI_HUD::Set_HeroGauge(_float fMaxGauge, _float fCurGauge)
 	m_fCurGauge = fCurGauge;
 }
 
-void CUI_HUD::Set_ActiveHeroPort(_bool value)
+void CUI_HUD::SetActive_HeroPortrait(_bool value)
 {
 	CUI_Portrait::HeroPortAnimType eType;
 
@@ -441,6 +451,26 @@ void CUI_HUD::Set_FadePortHighlight()
 	GET_COMPONENT_FROM(m_pInactiveHeroText, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
+void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
+{
+	if (value == true)
+	{
+		m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
+		m_eCurClass = m_tStatus.eClass;
+
+		dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
+		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
+		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
+		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
+
+		ENABLE_GAMEOBJECT(m_pChangeClassText);
+		ENABLE_GAMEOBJECT(m_pHeroGaugeText);
+		ENABLE_GAMEOBJECT(m_pHpText);
+		ENABLE_GAMEOBJECT(m_pPlayerNameText);
+	}
+}
+
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 {
 	Set_ClassInfo(m_eCurClass);
@@ -497,31 +527,31 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 	}
 }
 
-void CUI_HUD::Set_ClassInfo(CUnit::CLASS_TYPE eClass)
+void CUI_HUD::Set_ClassInfo(CLASS_TYPE eClass)
 {
 	switch (eClass)
 	{
-	case Client::CUnit::WARRIOR:
+	case Client::WARRIOR:
 		m_pClassInfo->Set_FontText(TEXT("블레이드"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
 		break;
-	case Client::CUnit::SPEAR:
+	case Client::SPEAR:
 		m_pClassInfo->Set_FontText(TEXT("스파이크"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
 		break;
-	case Client::CUnit::ARCHER:
+	case Client::ARCHER:
 		m_pClassInfo->Set_FontText(TEXT("아치"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
 		break;
-	case Client::CUnit::PALADIN:
+	case Client::PALADIN:
 		m_pClassInfo->Set_FontText(TEXT("가디언"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
 		break;
-	case Client::CUnit::PRIEST:
+	case Client::PRIEST:
 		m_pClassInfo->Set_FontText(TEXT("스모크"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
 		break;
-	case Client::CUnit::ENGINEER:
+	case Client::ENGINEER:
 		m_pClassInfo->Set_FontText(TEXT("워해머"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
 		break;
@@ -597,6 +627,10 @@ void CUI_HUD::Update_HP()
 		_float fLerpSpeed = fDT(0) * 10.f;
 		m_fCurHP = ((1 - fLerpSpeed) * m_fPrvHP) + (fLerpSpeed * m_fCurHP);
 
+		_tchar  szTemp[MAX_STR] = {};
+		swprintf_s(szTemp, TEXT("%.f / %.f"), m_fCurHP, m_fMaxHP);
+		m_pHpText->Set_FontText(szTemp);
+
 		m_fHealthRatio = m_fCurHP / m_fMaxHP;
 
 		if (m_fCurHP < -0.f)
@@ -667,4 +701,173 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
+}
+
+void CUI_HUD::Create_HpText()
+{
+	m_pHpText = CUI_Object::Create();
+
+	m_pHpText->Set_Scale(20.f);
+	m_pHpText->Set_Pos(-270.f, -270.f);
+	m_pHpText->Set_Sort(0.85f);
+
+	GET_COMPONENT_FROM(m_pHpText, CTexture)->Remove_Texture(0);
+
+	m_pHpText->Set_FontRender(true);
+	m_pHpText->Set_FontStyle(true);
+	m_pHpText->Set_FontScale(0.25f);
+
+	CREATE_GAMEOBJECT(m_pHpText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pHpText);
+}
+
+void CUI_HUD::SetActive_OperUI(_bool value)
+{
+	if (value == true)
+	{
+		ENABLE_GAMEOBJECT(m_pOperWindow);
+
+		m_pOperWindow->DoScale(-2186.f, 0.3f);
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(m_pOperWindow);
+		DISABLE_GAMEOBJECT(m_pOperTextImg);
+	}
+}
+
+void CUI_HUD::Create_PlayerNameText()
+{
+	m_pPlayerNameText = CUI_Object::Create();
+
+	m_pPlayerNameText->Set_Scale(20.f);
+	m_pPlayerNameText->Set_Pos(-535.f, -283.f);
+	m_pPlayerNameText->Set_Sort(0.85f);
+
+	m_pPlayerNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_256Circle.dds"));
+
+	m_pPlayerNameText->Set_FontRender(true);
+	m_pPlayerNameText->Set_FontStyle(true);
+	m_pPlayerNameText->Set_FontScale(0.25f);
+	m_pPlayerNameText->Set_FontOffset(13.f, -13.f);
+
+	wstring wstrPlayerName = CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->Get_PlayerName();
+	m_pPlayerNameText->Set_FontText(wstrPlayerName);
+
+	CREATE_GAMEOBJECT(m_pPlayerNameText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pPlayerNameText);
+}
+
+void CUI_HUD::Update_OperWindow()
+{
+	cout << GET_COMPONENT_FROM(m_pOperWindow, CFader)->Get_FadeDesc().fAlpha << endl;
+	cout << m_pOperWindow->Get_Color().x << m_pOperWindow->Get_Color().y << m_pOperWindow->Get_Color().z << endl;;
+
+	if (m_pOperWindow->Is_Valid())
+	{
+		m_fAccTime += fDT(0);
+
+		if (m_iOperWindowCnt == 0)
+		{
+			if (m_fAccTime > 0.5f)
+			{
+				m_fAccTime = 0.f;
+
+				if (!m_pOperBlackBG->Is_Valid())
+				{
+					Enable_Fade(m_pOperBlackBG, 0.15f);
+
+					m_iOperWindowCnt++;
+				}
+			}
+		}
+		else if (m_iOperWindowCnt == 1)
+		{
+			if (m_pOperBlackBG->Is_Valid())
+			{
+				if (m_fAccTime > 0.3f)
+				{
+					m_fAccTime = 0.f;
+
+					if (!m_pOperTextImg->Is_Valid())
+					{
+						ENABLE_GAMEOBJECT(m_pOperTextImg);
+						m_pOperTextImg->DoScale(-512.f, 0.3);
+					}
+
+					m_iOperWindowCnt++;
+				}
+			}
+		}
+		else if (m_iOperWindowCnt == 2)
+		{
+			if (m_pOperTextImg->Is_Valid())
+			{
+				if (m_fAccTime > 0.5f)
+				{
+					m_fAccTime = 0.f;
+
+					m_pOperTextImg->DoMoveY(200.f, 0.5f);
+					m_pOperTextImg->DoScale(-256.f, 1.f);
+
+					m_iOperWindowCnt++;
+				}
+			}
+		}
+	}
+}
+
+void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
+{
+	m_pOperBlackBG = CUI_Object::Create();
+	m_pOperBlackBG->Set_Texture(TEXT("../Bin/Resources/Textures/Black.png"));
+	m_pOperBlackBG->Set_Scale(1280.f);
+	m_pOperBlackBG->Set_Sort(0.5f);
+	m_pOperBlackBG->Set_Color(_float4(1.f, 1.f, 1.f, 0.9f));
+
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.1f;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.f;
+
+	GET_COMPONENT_FROM(m_pOperBlackBG, CFader)->Get_FadeDesc() = tFadeDesc;
+
+	m_pOperWindow = CUI_Object::Create();
+	m_pOperWindow->Set_PosY(45.f);
+	m_pOperWindow->Set_Scale(4096.f);
+	m_pOperWindow->Set_Sort(0.51f);
+
+	GET_COMPONENT_FROM(m_pOperWindow, CUI_Renderer)->Set_Pass(VTXTEX_PASS_DEBUG);
+
+	switch (eLoadLevel)
+	{
+	case Client::LEVEL_PADEN:
+		m_pOperWindow->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
+		break;
+	}
+
+	m_pOperTextImg = CUI_Object::Create();
+	m_pOperTextImg->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting.png"));
+	m_pOperTextImg->Set_PosY(50.f);
+	m_pOperTextImg->Set_Scale(1024.f);
+	m_pOperTextImg->Set_Sort(0.49f);
+
+	CREATE_GAMEOBJECT(m_pOperBlackBG, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperBlackBG);
+
+	CREATE_GAMEOBJECT(m_pOperWindow, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperWindow);
+
+	CREATE_GAMEOBJECT(m_pOperTextImg, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperTextImg);
 }

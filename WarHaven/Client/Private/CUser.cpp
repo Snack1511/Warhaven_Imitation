@@ -218,11 +218,17 @@ void CUser::On_ExitStageLevel()
 {
 	m_pBloodOverlay = nullptr;
 	m_pUI_HUD = nullptr;
+
 	for (_uint i = 0; i < 5; ++i)
 		m_pUI_Damage[i] = nullptr;
 
 	m_pUI_Training = nullptr;
 	m_pPlayer = nullptr;
+}
+
+void CUser::Set_HUD(CLASS_TYPE eClass)
+{
+	m_pUI_HUD->Set_HUD(eClass);
 }
 
 void CUser::Set_HP(_float fMaxHP, _float fCurHP)
@@ -235,9 +241,19 @@ void CUser::Set_HeroGauge(_float fMaxGauge, _float fCurGauge)
 	m_pUI_HUD->Set_HeroGauge(fMaxGauge, fCurGauge);
 }
 
+void CUser::SetActive_HeroPortrait(_bool value)
+{
+	m_pUI_HUD->SetActive_HeroPortrait(value);
+}
+
 void CUser::SetActive_OxenJumpText(_bool value)
 {
 	m_pUI_HUD->SetActive_OxenJumpText(value);
+}
+
+_bool CUser::Is_OnHeroGauge()
+{
+	return m_pUI_HUD->Is_OnHeroGauge();
 }
 
 void CUser::Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime)
@@ -245,9 +261,9 @@ void CUser::Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fM
 	m_pUI_HUD->Set_SkillCoolTime(iSkillType, fSkillCoolTime, fMaxCoolTime);
 }
 
-void CUser::Enable_DamageFont(_float fDmg, _bool bHeadShot)
-{	
-	m_pUI_Damage[m_iDamageFontIdx]->Enable_Damage(fDmg, bHeadShot);
+void CUser::Enable_DamageFont(_uint eType, _float fDmg)
+{
+	m_pUI_Damage[m_iDamageFontIdx]->Enable_Damage(eType, fDmg);
 
 	m_iDamageFontIdx++;
 	if (m_iDamageFontIdx > 4)

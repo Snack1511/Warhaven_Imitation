@@ -7,6 +7,7 @@
 #include "CLevel_Test.h"
 #include "GameInstance.h"
 #include "CLevel_BootCamp.h"
+#include "CLevel_Paden.h"
 #include "CShader.h"
 
 IMPLEMENT_SINGLETON(CLoading_Manager)
@@ -51,6 +52,7 @@ HRESULT CLoading_Manager::Initialize()
 	m_arrLevels[LEVEL_MAINMENU] = CLevel_Main::Create();
 	m_arrLevels[LEVEL_TEST] = CLevel_Test::Create();	
 	m_arrLevels[LEVEL_BOOTCAMP] = CLevel_BootCamp::Create();	
+	m_arrLevels[LEVEL_PADEN] = CLevel_Paden::Create();	
 
 	return S_OK;
 }
