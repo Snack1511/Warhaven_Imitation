@@ -87,11 +87,11 @@ void CWarHammer_AirSpike_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 
 STATE_TYPE CWarHammer_AirSpike_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (pOwner->Is_Weapon_R_Collision() && !m_bETC_Trigger)
+	/*if (pOwner->Is_Weapon_R_Collision() && !m_bETC_Trigger)
 	{
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", pOwner->Get_HitPos());
 		m_bETC_Trigger = true;
-	}
+	}*/ 
 
 
 	if (m_bKeyInputable)

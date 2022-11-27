@@ -613,6 +613,9 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SmashSoilParticle"), "SmashSoilParticle")))
 		return E_FAIL;
 
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Oxen_Smoke"), "Oxen_Smoke")))
+		return E_FAIL;
+
 	/*Hit effect*/
 		/*slash*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSpark"), "HitSpark")))
@@ -637,6 +640,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Smash_Right"), "Smash_Right")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Smash_Left"), "Smash_Left")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HammerFlare"), "HammerFlare")))
 		return E_FAIL;
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke_Right"), "KillSmoke_Right")))
