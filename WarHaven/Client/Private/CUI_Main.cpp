@@ -9,6 +9,9 @@
 
 #include "CUI_Object.h"
 #include "CButton.h"
+#include "CUser.h"
+#include "CPlayer.h"
+#include "CUnit.h"
 
 CUI_Main::CUI_Main()
 {
@@ -160,8 +163,10 @@ void CUI_Main::Ready_MainUI()
 
 	GET_COMPONENT_FROM(m_pPrototypeUI[Btn], CTexture)->Remove_Texture(0);
 
-	GET_COMPONENT_FROM(m_pPrototypeUI[Key], CTexture)
-		->Add_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_BlackEKeyIcon.dds"));
+	GET_COMPONENT_FROM(m_pPrototypeUI[Key], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_BlackEKeyIcon.dds"));
+
+	GET_COMPONENT_FROM(m_pPrototypeUI[Goods], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/GoldeGem.dds"));
+	GET_COMPONENT_FROM(m_pPrototypeUI[Goods], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_IconLevelBG.dds"));
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -203,8 +208,8 @@ void CUI_Main::Enable_MainUI()
 		CREATE_GAMEOBJECT(m_pTopBtn[i], GROUP_UI);
 		CREATE_GAMEOBJECT(m_pGoodsUI[i], GROUP_UI);
 
-		_float fPosX = -530.f + (i * 95.f);
-		m_pTopBtn[i]->Set_PosX(fPosX);
+		_float fTopBtnPosX = -530.f + (i * 95.f);
+		m_pTopBtn[i]->Set_PosX(fTopBtnPosX);
 		m_pTopBtn[i]->Set_Sort(0.9f);
 
 		m_pTopBtn[i]->Set_FontRender(true);
@@ -213,7 +218,11 @@ void CUI_Main::Enable_MainUI()
 		m_pTopBtn[i]->Set_FontOffset(-40.f, -22.f);
 		m_pTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
+		_float fGoodsPosX = 315.f + (i * 100.f);
+		m_pGoodsUI[i]->Set_PosX(fGoodsPosX);
 		m_pGoodsUI[i]->Set_Sort(0.8f);
+
+		GET_COMPONENT_FROM(m_pGoodsUI[i], CTexture)->Set_CurTextureIndex(i);
 	}
 
 	m_pTopBtn[1]->Set_FontOffset(-28.5f, -22.f);
@@ -221,6 +230,14 @@ void CUI_Main::Enable_MainUI()
 	m_pTopBtn[0]->Set_FontText(TEXT("플레이"));
 	m_pTopBtn[1]->Set_FontText(TEXT("병영"));
 	m_pTopBtn[2]->Set_FontText(TEXT("프로필"));
+
+	m_pGoodsUI[2]->Set_FontRender(true);
+	m_pGoodsUI[2]->Set_FontStyle(true);
+	m_pGoodsUI[2]->Set_FontScale(0.3f);
+	m_pGoodsUI[2]->Set_FontOffset(17.f, -15.f);
+
+	// wstring wstrPlayerName = CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->Get_PlayerName();
+	m_pGoodsUI[2]->Set_FontText(TEXT("쥬신"));
 
 	for (int i = 0; i < 2; ++i)
 	{

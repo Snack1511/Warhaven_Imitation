@@ -26,7 +26,7 @@ HRESULT CUI_Crosshair::Initialize_Prototype()
 	{
 		for (int j = 0; j < Type_End; ++j)
 		{
-			m_arrSkillUI[i][j] = m_Prototypes[j]->Clone();
+			m_arrCrosshair[i][j] = m_Prototypes[j]->Clone();
 		}
 	}
 
@@ -55,7 +55,7 @@ void CUI_Crosshair::Set_ShaderResources_Arrow(CShader* pShader, const char* pCon
 	_float4 vColor;
 	for (int i = 0; i < 3; ++i)
 	{
-		vColor = m_arrSkillUI[i][Arrow]->Get_Color();
+		vColor = m_arrCrosshair[i][Arrow]->Get_Color();
 	}
 
 	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
@@ -66,7 +66,7 @@ void CUI_Crosshair::Set_ShaderResources_ArrowBG(CShader* pShader, const char* pC
 	_float4 vColor;
 	for (int i = 0; i < 3; ++i)
 	{
-		vColor = m_arrSkillUI[i][ArrowBG]->Get_Color();
+		vColor = m_arrCrosshair[i][ArrowBG]->Get_Color();
 	}
 
 	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
@@ -81,7 +81,7 @@ void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 	{
 		for (int j = 0; j < Type_End; ++j)
 		{
-			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+			DISABLE_GAMEOBJECT(m_arrCrosshair[i][j]);
 		}
 	}
 
@@ -133,8 +133,8 @@ void CUI_Crosshair::Set_Pass()
 {
 	for (int i = 0; i < 3; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
-		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+		GET_COMPONENT_FROM(m_arrCrosshair[i][Arrow], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+		GET_COMPONENT_FROM(m_arrCrosshair[i][ArrowBG], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
 	}
 }
 
@@ -142,56 +142,56 @@ void CUI_Crosshair::Bind_Shader()
 {
 	for (int i = 0; i < 3; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CShader)
+		GET_COMPONENT_FROM(m_arrCrosshair[i][Arrow], CShader)
 			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_Arrow, this, placeholders::_1, "g_vColor");
 
-		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CShader)
+		GET_COMPONENT_FROM(m_arrCrosshair[i][ArrowBG], CShader)
 			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_ArrowBG, this, placeholders::_1, "g_vColor");
 	}
 }
 
 void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 {
-	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Point]);
-	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Outline]);
+	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Point]);
+	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Outline]);
 
-	GET_COMPONENT_FROM(m_arrSkillUI[0][Point], CTexture)->Set_CurTextureIndex(1);
-	GET_COMPONENT_FROM(m_arrSkillUI[0][Outline], CTexture)->Set_CurTextureIndex(1);
+	GET_COMPONENT_FROM(m_arrCrosshair[0][Point], CTexture)->Set_CurTextureIndex(1);
+	GET_COMPONENT_FROM(m_arrCrosshair[0][Outline], CTexture)->Set_CurTextureIndex(1);
 
 	// 기본 비활성화
-	ENABLE_GAMEOBJECT(m_arrSkillUI[0][GaugeBG]);
-	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Gauge]);
+	ENABLE_GAMEOBJECT(m_arrCrosshair[0][GaugeBG]);
+	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Gauge]);
 
 	_float fRotZ = 180.f;
-	m_arrSkillUI[0][GaugeBG]->Set_RotationZ(fRotZ);
-	m_arrSkillUI[0][Gauge]->Set_RotationZ(fRotZ);
+	m_arrCrosshair[0][GaugeBG]->Set_RotationZ(fRotZ);
+	m_arrCrosshair[0][Gauge]->Set_RotationZ(fRotZ);
 
 	for (_uint i = 0; i < iIndex; ++i)
 	{
-		ENABLE_GAMEOBJECT(m_arrSkillUI[i][ArrowBG]);
-		ENABLE_GAMEOBJECT(m_arrSkillUI[i][Arrow]);
+		ENABLE_GAMEOBJECT(m_arrCrosshair[i][ArrowBG]);
+		ENABLE_GAMEOBJECT(m_arrCrosshair[i][Arrow]);
 
-		GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CTexture)->Set_CurTextureIndex(0);
-		GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CTexture)->Set_CurTextureIndex(0);
+		GET_COMPONENT_FROM(m_arrCrosshair[i][ArrowBG], CTexture)->Set_CurTextureIndex(0);
+		GET_COMPONENT_FROM(m_arrCrosshair[i][Arrow], CTexture)->Set_CurTextureIndex(0);
 
-		m_arrSkillUI[i][Arrow]->Set_Pos(0.f, 0.f);
-		m_arrSkillUI[i][ArrowBG]->Set_Pos(0.f, 0.f);
+		m_arrCrosshair[i][Arrow]->Set_Pos(0.f, 0.f);
+		m_arrCrosshair[i][ArrowBG]->Set_Pos(0.f, 0.f);
 
-		m_arrSkillUI[i][Arrow]->Set_Scale(100.f);
-		m_arrSkillUI[i][ArrowBG]->Set_Scale(100.f);
+		m_arrCrosshair[i][Arrow]->Set_Scale(100.f);
+		m_arrCrosshair[i][ArrowBG]->Set_Scale(100.f);
 
 		if (iIndex == 2)
 		{
 			_float fRotZ = -90.f - (i * 180.f);
-			m_arrSkillUI[i][Arrow]->Set_RotationZ(fRotZ);
-			m_arrSkillUI[i][ArrowBG]->Set_RotationZ(fRotZ);
+			m_arrCrosshair[i][Arrow]->Set_RotationZ(fRotZ);
+			m_arrCrosshair[i][ArrowBG]->Set_RotationZ(fRotZ);
 		}
 
 		if (iIndex == 3)
 		{
 			_float fRotZ = -120.f * i;
-			m_arrSkillUI[i][Arrow]->Set_RotationZ(fRotZ);
-			m_arrSkillUI[i][ArrowBG]->Set_RotationZ(fRotZ);
+			m_arrCrosshair[i][Arrow]->Set_RotationZ(fRotZ);
+			m_arrCrosshair[i][ArrowBG]->Set_RotationZ(fRotZ);
 		}
 
 		if (iIndex == 4)
@@ -202,50 +202,50 @@ void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 			_float fScaleX = 35.f;
 			_float fScaleY = 85.f;
 
-			m_arrSkillUI[i][Arrow]->Set_Pos(fPosX, fPosY);
-			m_arrSkillUI[i][ArrowBG]->Set_Pos(fPosX, fPosY);
+			m_arrCrosshair[i][Arrow]->Set_Pos(fPosX, fPosY);
+			m_arrCrosshair[i][ArrowBG]->Set_Pos(fPosX, fPosY);
 
-			m_arrSkillUI[i][Arrow]->Set_Scale(fScaleX, fScaleY);
-			m_arrSkillUI[i][ArrowBG]->Set_Scale(fScaleX, fScaleY);
+			m_arrCrosshair[i][Arrow]->Set_Scale(fScaleX, fScaleY);
+			m_arrCrosshair[i][ArrowBG]->Set_Scale(fScaleX, fScaleY);
 
-			m_arrSkillUI[i][Arrow]->Set_RotationZ(0.f);
-			m_arrSkillUI[i][ArrowBG]->Set_RotationZ(0.f);
+			m_arrCrosshair[i][Arrow]->Set_RotationZ(0.f);
+			m_arrCrosshair[i][ArrowBG]->Set_RotationZ(0.f);
 
-			GET_COMPONENT_FROM(m_arrSkillUI[i][ArrowBG], CTexture)->Set_CurTextureIndex(1);
-			GET_COMPONENT_FROM(m_arrSkillUI[i][Arrow], CTexture)->Set_CurTextureIndex(2);
+			GET_COMPONENT_FROM(m_arrCrosshair[i][ArrowBG], CTexture)->Set_CurTextureIndex(1);
+			GET_COMPONENT_FROM(m_arrCrosshair[i][Arrow], CTexture)->Set_CurTextureIndex(2);
 		}
 	}
 }
 
 void CUI_Crosshair::ArrowCrosshair()
 {
-	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Point]);
-	GET_COMPONENT_FROM(m_arrSkillUI[0][Point], CTexture)->Set_CurTextureIndex(1);
+	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Point]);
+	GET_COMPONENT_FROM(m_arrCrosshair[0][Point], CTexture)->Set_CurTextureIndex(1);
 
 	// 타겟팅 중이면 포인터 변경
-	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Point]);
-	GET_COMPONENT_FROM(m_arrSkillUI[0][Point], CTexture)->Set_CurTextureIndex(0);
+	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Point]);
+	GET_COMPONENT_FROM(m_arrCrosshair[0][Point], CTexture)->Set_CurTextureIndex(0);
 
 	// 기본 비활성화
-	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Outline]);
-	GET_COMPONENT_FROM(m_arrSkillUI[0][Outline], CTexture)->Set_CurTextureIndex(0);
+	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Outline]);
+	GET_COMPONENT_FROM(m_arrCrosshair[0][Outline], CTexture)->Set_CurTextureIndex(0);
 
-	ENABLE_GAMEOBJECT(m_arrSkillUI[0][GaugeBG]);
-	ENABLE_GAMEOBJECT(m_arrSkillUI[0][Gauge]);
+	ENABLE_GAMEOBJECT(m_arrCrosshair[0][GaugeBG]);
+	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Gauge]);
 
 	_float fRotZ = 180.f;
-	m_arrSkillUI[0][GaugeBG]->Set_RotationZ(fRotZ);
-	m_arrSkillUI[0][Gauge]->Set_RotationZ(fRotZ);
+	m_arrCrosshair[0][GaugeBG]->Set_RotationZ(fRotZ);
+	m_arrCrosshair[0][Gauge]->Set_RotationZ(fRotZ);
 
 	for (int i = 0; i < 3; ++i)
 	{
-		ENABLE_GAMEOBJECT(m_arrSkillUI[i][ArrowBG]);
-		ENABLE_GAMEOBJECT(m_arrSkillUI[i][Arrow]);
+		ENABLE_GAMEOBJECT(m_arrCrosshair[i][ArrowBG]);
+		ENABLE_GAMEOBJECT(m_arrCrosshair[i][Arrow]);
 
 		_float fRotZ = -120.f * i;
 
-		m_arrSkillUI[i][Arrow]->Set_RotationZ(fRotZ);
-		m_arrSkillUI[i][ArrowBG]->Set_RotationZ(fRotZ);
+		m_arrCrosshair[i][Arrow]->Set_RotationZ(fRotZ);
+		m_arrCrosshair[i][ArrowBG]->Set_RotationZ(fRotZ);
 	}
 }
 
@@ -288,10 +288,10 @@ void CUI_Crosshair::Ready_Crosshair()
 	{
 		for (int j = 0; j < Type_End; ++j)
 		{
-			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+			CREATE_GAMEOBJECT(m_arrCrosshair[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_arrCrosshair[i][j]);
 
-			m_arrSkillUI[i][j]->Set_Sort(0.3f);
+			m_arrCrosshair[i][j]->Set_Sort(0.3f);
 		}
 	}
 }

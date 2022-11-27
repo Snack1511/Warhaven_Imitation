@@ -709,7 +709,7 @@ void CUI_HUD::Create_PlayerNameText()
 	m_pPlayerNameText->Set_FontRender(true);
 	m_pPlayerNameText->Set_FontStyle(true);
 	m_pPlayerNameText->Set_FontScale(0.25f);
-	m_pPlayerNameText->Set_FontOffset(-20.f, -13.f);
+	m_pPlayerNameText->Set_FontOffset(13.f, -13.f);
 
 	wstring wstrPlayerName = CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->Get_PlayerName();
 	m_pPlayerNameText->Set_FontText(wstrPlayerName);
