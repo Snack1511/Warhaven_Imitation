@@ -2189,6 +2189,8 @@ void CFunc_ObjectControl::Clear_AllDatas()
         Value.second.clear();
     }
     m_DataNamingGroupMap.clear();
+    m_iCurSelectObjecNametIndex = 0;
+    m_iCurSelectObjectIndex = 0;
 }
 
 void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
@@ -2319,6 +2321,9 @@ void CFunc_ObjectControl::Load_ObjectGroup(string FilePath)
         Call_MsgBox(L"Load ½ÇÆÐ ??!?!");
         assert(0);
     }
+
+
+
 
 
 
