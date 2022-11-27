@@ -269,6 +269,7 @@ HRESULT CRectEffects::Initialize()
 			frandom(-m_tCreateData.vMoveDirRange.z, m_tCreateData.vMoveDirRange.z),
 			0.f);
 
+
 		vMoveDir += m_tCreateData.vMoveDir;
 		vMoveDir.Normalize();
 
@@ -297,6 +298,19 @@ HRESULT CRectEffects::Initialize()
 		m_pDatas[i].InstancingData.vStartPureLocalRight = m_pDatas[i].InstancingData.vStartPureLocalRight.MultiplyNormal(matCurveRot);
 		m_pDatas[i].InstancingData.fCurvePower = m_tCreateData.fCurvePower + frandom(-m_tCreateData.fCurvePowerRange, m_tCreateData.fCurvePowerRange);
 		m_pDatas[i].InstancingData.fCurveFrequency = m_tCreateData.fCurveFrequency + frandom(-m_tCreateData.fCurveFrequencyRange, m_tCreateData.fCurveFrequencyRange);
+
+		if (CURVE_SPIRAL == m_eCurveType)
+		{
+			_float4x4 matRot;
+			
+			vUpDir = _float4(0.f, cosf(ToRadian(fStartCurveAngle)), sinf(ToRadian(fStartCurveAngle)));
+
+			matRot = XMMatrixRotationAxis(vUpDir.XMLoad(),
+				ToRadian(frandom(0.f, 360.f)));
+
+			m_pDatas[i].InstancingData.vStartPureLocalDir = m_pDatas[i].InstancingData.vStartPureLocalDir.MultiplyNormal(matRot);
+			m_pDatas[i].InstancingData.vStartPureLocalRight = m_pDatas[i].InstancingData.vStartPureLocalRight.MultiplyNormal(matRot);
+		}
 
 
 		Set_NewStartPos(i);
@@ -622,21 +636,23 @@ void CRectEffects::My_Tick()
 				vRotRight = vRight.MultiplyNormal(matRot);
 				vRotUp = vUp.MultiplyNormal(matRot);
 			}
-			else if(m_pDatas[i].InstancingData.fTurnSpeed == 0.f)
+
+			if (CURVE_ROTATION == m_eCurveType)
 			{
-				if (CURVE_LINEAR == m_eCurveType)
-				{
-					_float4x4 matRot;
 
-					_float4 vAxis = m_matTrans.XMLoad().r[2];
-					matRot = XMMatrixRotationAxis(vAxis.XMLoad(), ToRadian(m_tCreateData.fCurveAngle));
+				vRight = m_matTrans.XMLoad().r[0];
+				vUp = m_matTrans.XMLoad().r[1];
 
-					//matRot *= m_matTrans;
+				_float4x4 matRot;
+				_float4 vAxis = m_matTrans.XMLoad().r[2];
+				matRot = XMMatrixRotationAxis(vAxis.XMLoad(), ToRadian(m_tCreateData.fCurveAngle));
 
-					vRotLook = vLook.MultiplyNormal(matRot);
-					vRotRight = vRight.MultiplyNormal(matRot);
-					vRotUp = vUp.MultiplyNormal(matRot);
-				}
+				//matRot *= m_matTrans;
+
+				vRotLook = vLook.MultiplyNormal(matRot);
+				vRotRight = vRight.MultiplyNormal(matRot);
+				vRotUp = vUp.MultiplyNormal(matRot);
+
 			}
 
 
@@ -1138,6 +1154,8 @@ void CRectEffects::Stick_RefBone()
 
 void CRectEffects::Reset_Instance(_uint iIndex)
 {
+	
+
 	m_pDatas[iIndex].RectInstance.vRight = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[0])));
 	m_pDatas[iIndex].RectInstance.vUp = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[1])));
 	m_pDatas[iIndex].RectInstance.vLook = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[2])));
@@ -1175,7 +1193,7 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	m_pDatas[iIndex].InstancingData.fPrevY = m_pDatas[iIndex].RectInstance.vTranslation.y;
 	m_pDatas[iIndex].InstancingData.fOriginY = m_pDatas[iIndex].RectInstance.vTranslation.y;
 	m_pDatas[iIndex].InstancingData.fAcc = 0.f;
-
+	m_pDatas[iIndex].InstancingData.fMovingAcc = 0.f;
 	m_pDatas[iIndex].InstancingData.bAlive = true;
 
 
@@ -1189,6 +1207,7 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 	switch (m_eCurveType)
 	{
 	case Client::CURVE_LINEAR:
+	case Client::CURVE_ROTATION:
 		break;
 	case Client::CURVE_SIN:
 		fY = m_pDatas[iIdx].InstancingData.fCurvePower * sinf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc); // a sin(bx)
@@ -1208,15 +1227,13 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 		fX *= m_pDatas[iIdx].InstancingData.fCurveFrequency;
 		fY *= m_pDatas[iIdx].InstancingData.fCurveFrequency;
 
-		{
-			vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x;
-			vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y;
-			vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z;
+		vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x;
+		vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y;
+		vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z;
 
-			vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
-			vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y;
-			vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
-		}
+		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
+		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y;
+		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
 
 		break;
 	default:

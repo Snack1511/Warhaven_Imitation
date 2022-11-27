@@ -6,7 +6,7 @@
 #include "Physics.h"
 #include "CAnimator.h"
 #include "CUnit.h"
-
+#include "Transform.h"
 #include "CUser.h"
 
 #include "CEffects_Factory.h"
@@ -128,6 +128,9 @@ HRESULT CWarHammer_Attack_HorizontalMiddle::Initialize()
 
 void CWarHammer_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HammerFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HammerFlare_1"), pOwner,
+		pOwner->Get_Transform()->Get_World(WORLD_POS)); //test
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 

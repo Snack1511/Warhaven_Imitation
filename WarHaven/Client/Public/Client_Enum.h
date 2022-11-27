@@ -715,6 +715,7 @@ namespace Client
 		CURVE_LINEAR,
 		CURVE_SIN,
 		CURVE_SPIRAL,
+		CURVE_ROTATION,
 		CURVE_END,
 	};
 }

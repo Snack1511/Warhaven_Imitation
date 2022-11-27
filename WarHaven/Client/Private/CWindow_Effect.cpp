@@ -1337,6 +1337,8 @@ void CWindow_Effect::Show_ParticleTab()
 
 			if (ImGui::Selectable("LINEAR", &bCurveSelect[CURVE_LINEAR]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_LINEAR;
+			if (ImGui::Selectable("ROTATION", &bCurveSelect[CURVE_ROTATION]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_ROTATION;
 			if (ImGui::Selectable("SINE", &bCurveSelect[CURVE_SIN]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SIN;
 			if (ImGui::Selectable("SPRAL", &bCurveSelect[CURVE_SPIRAL]))
