@@ -327,14 +327,30 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 	//BloomDesc의 알파가 반영되어야함.
 	vector			vBloomDesc = g_BloomTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vBloomOriginDesc = g_BloomOriginTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
 
 	float fPower = 2.2f;
 
 	float4		vBloom = pow(pow(abs(vBloomDesc), fPower) + pow(abs(vBloomOriginDesc), fPower), 1.f / fPower);
 
 	Out.vColor = vDefaultDesc;
-	if (vBloomOriginDesc.a > 0.f)
+	//if (vBloomOriginDesc.a > 0.f)
 	Out.vColor.xyz += vBloom.xyz;
+
+	//Outline
+
+	//a에다가 outline 깊이는 저장할 수 있음
+	vector			vOutlineDesc = g_OutlineTexture.Sample(DefaultSampler, In.vTexUV);
+
+	//1. OutLine 그려야할 때
+	if (vOutlineDesc.x > 0.f)
+	{
+		//if (vOutlineDesc.a + 0.1f < vDepthDesc.y)
+			Out.vColor.xyz = Out.vColor.xyz * 0.5f + vOutlineDesc * 0.5f;
+		
+
+		Out.vColor.a = 1.f;
+	}
 
 	return Out;
 }
@@ -352,7 +368,7 @@ PS_OUT PS_MAIN_FINALBLEND(PS_IN In)
 
 	In.vTexUV.x += g_fUVPlusX;
 	In.vTexUV.y += g_fUVPlusY;
-	vector			vFogColor = g_FogTexture.Sample(DefaultSampler, In.vTexUV * 0.3f);
+	//vector			vFogColor = g_FogTexture.Sample(DefaultSampler, In.vTexUV * 0.3f);
 
 	In.vTexUV.x -= g_fUVPlusX;
 	In.vTexUV.y -= g_fUVPlusY;
@@ -397,7 +413,7 @@ PS_OUT PS_MAIN_FINALBLEND(PS_IN In)
 		if (vEffectFlagDesc.r <= 0.1f)
 		{
 			//안개켜져있고, 그리는곳 depth가 안개범위 밖이면
-			if (vFogColor.x > 0.1f && vDepthDesc.y > 0.01f)
+			if (vDepthDesc.y > 0.01f)
 			{
 				
 			}
@@ -433,40 +449,7 @@ PS_OUT PS_MAIN_FINALBLEND(PS_IN In)
 
 
 
-	////Outline
-
-	////a에다가 outline 깊이는 저장할 수 있음
-
-	////이펙트의 깊이를 알아야함
-	//vector			vOutlineDesc = g_OutlineTexture.Sample(DefaultSampler, In.vTexUV);
-
-	////1. OutLine 그려야할 때
-	//if (vOutlineDesc.x < 0.8f)
-	//{
-	//	//2. 그냥 depth 확인
-	//	//그릴곳의 W가 
-	//	//if (vDepthDesc.w > vOutlineDesc.a)
-	//	if (vFogColor.x > 0.1f && vOutlineDesc.a > 0.01f)
-	//	{
-
-	//	}
-	//	else
-	//	{
-	//		if (bFog)
-	//		{
-	//			//이펙트가 그려진곳은
-	//			/*if (vEffectDiffuseDesc.a < 0.3f)
-	//				Out.vColor *= vOutlineDesc;*/
-	//		}
-	//		else
-	//		{
-	//			Out.vColor *= vOutlineDesc;
-	//		}
-
-	//		Out.vColor.a = 1.f;
-
-	//	}
-	//}
+	
 
 
 
@@ -565,74 +548,58 @@ PS_OUT PS_MAIN_OUTLINE(PS_IN In)
 {
 	PS_OUT			Out = (PS_OUT)0;
 
-	float fOutlinePower = 1.f;
+	float4 vFinalColor = 0;
 
 	vector DepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
-	vector NormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+	//vector NormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 
-	float	fCurDepth = DepthDesc.y;
-
-	//멀수록 y가 높음
-	//너무 멀면 Outline없나본디
-	if (DepthDesc.y > 0.1f)
-	{
-		Out = (PS_OUT)1;
-		return Out;
-
-	}
+	bool bOutline = false;
 
 	for (unsigned int i = 0; i < 9; ++i)
 	{
 		float2 OtherTexUV = In.vTexUV + float2(g_fCoord[i % 3] / g_fWinCX, g_fCoord[i / 3] / g_fWinCY);
 
-		vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, OtherTexUV);
-		vector OtherDepthDesc = g_DepthTexture.Sample(DefaultSampler, OtherTexUV);
-		vector OtherNormalDesc = g_NormalTexture.Sample(DefaultSampler, OtherTexUV);
+		vector	vOutLineFlagDesc = g_FlagTexture.Sample(DefaultSampler, OtherTexUV);
 
-		if (OtherDepthDesc.y < fCurDepth)
-			fCurDepth = OtherDepthDesc.y;
-
-		if (vFlagDesc.r > 0.8f)
+		//OutLineFlag 조건 : 내 옆에있는 녀석이 OutLine을 요구하면
+		if (vOutLineFlagDesc.a > 0.f)
 		{
-			vector vPlusColor = (g_fLaplacianMask[i] * g_DiffuseTexture.Sample(DefaultSampler, OtherTexUV));
+			//vector OtherNormalDesc = g_NormalTexture.Sample(DefaultSampler, OtherTexUV);
+			vector OtherDepthDesc = g_DepthTexture.Sample(DefaultSampler, OtherTexUV);
+
 
 			//Add Normal and Depth
 			float fDepthSub = length(OtherDepthDesc - DepthDesc);
-			float fNormalSub = abs(dot(normalize(OtherNormalDesc), normalize(NormalDesc)));
+			//float fNormalSub = abs(dot(normalize(OtherNormalDesc), normalize(NormalDesc)));
 
-			float fMaxRange = 0.03f;
-			float fRatio = 1.f - min((DepthDesc.y * 1.f / fMaxRange), 1.f);
-
-			if (DepthDesc.y < fMaxRange)
-			{
 				//Depth
-				if (fDepthSub > 0.005f)
+			//내 깊이랑 옆에있는 깊이가 차이가 좀 나면
+				if (fDepthSub > 0.0005f)
 				{
-					vPlusColor += 0.5f * fRatio;
+					vFinalColor = vOutLineFlagDesc;
+					bOutline = true;
+					Out.vColor.a = OtherDepthDesc.y;
+
+					break;
 				}
-				if (fNormalSub <= 0.75f)
+				/*if (fNormalSub <= 0.5f)
 				{
-					vPlusColor += 0.5f * fRatio;
+					vFinalColor = vOutLineFlagDesc;
+					bOutline = true;
+					Out.vColor.a = OtherDepthDesc.y;
 
-				}
-			}
+					break;
+
+				}*/
 
 
-			Out.vColor += vPlusColor;
-
-
-			if (vFlagDesc.b < 0.9f)
-				fOutlinePower = (vFlagDesc.b);
+			
 		}
-
-
-
 	}
-	float fBlack = 1 - min((Out.vColor.r * 0.33f + Out.vColor.g * 0.59f + Out.vColor.b * 0.11f), 1.f);
-	/*if (fBlack < 0.8f)
-		fBlack *= 0.5f;*/
-	fBlack += (1.f - fOutlinePower);
-	Out.vColor = vector(fBlack, fBlack, fBlack, fCurDepth);
+
+
+	if (bOutline)
+		Out.vColor.xyz = vFinalColor.xyz;
 
 	return Out;
 }

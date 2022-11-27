@@ -122,6 +122,8 @@ struct PS_LIGHTOUT
 	vector		vNormal : SV_TARGET1;
 	vector		vDepth : SV_TARGET2;
 	vector		vFlag : SV_TARGET3;
+	vector		vOutlineFlag : SV_TARGET4;
+	vector		vRimLightFlag : SV_TARGET5;
 };
 
 VS_OUT_LIGHT VS_MAIN_NORMAL(VS_DEFAULT_IN In)
@@ -172,7 +174,6 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 0.f);
 
 	Out.vFlag = g_vFlag;
-
 
 
 	return Out;
@@ -227,7 +228,6 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_Default);
 
-
 		VertexShader = compile vs_5_0 VS_DEFAULT_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_DEFAULT_MAIN();
@@ -238,7 +238,6 @@ technique11 DefaultTechnique
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_WireFrame);
-
 
 		VertexShader = compile vs_5_0 VS_DEFAULT_MAIN();
 		GeometryShader = NULL;

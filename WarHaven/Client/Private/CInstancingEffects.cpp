@@ -264,7 +264,6 @@ HRESULT CInstancingEffects::Initialize()
 		m_pInstancingDatas[i].bAlive = true;
 	}
 
-	GET_COMPONENT(CModel)->Set_OutlinePower(0.3f);
 
     return S_OK;
 }

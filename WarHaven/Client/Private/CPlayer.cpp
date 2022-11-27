@@ -83,7 +83,6 @@ CPlayer* CPlayer::Create(wstring wstrCamKey, CLASS_DEFAULT eClass)
 
 void CPlayer::Create_DefaultClass()
 {
-
 	wstring wstrModeSkel[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/Warrior.fbx", // WARRIOR
 		L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx"
@@ -96,12 +95,12 @@ void CPlayer::Create_DefaultClass()
 
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
-		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00.fbx"
+		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00_50.fbx"
 	};
 
 	wstring wstrModeHead[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00_50.fbx", // WARRIOR
-		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00.fbx"
+		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00_50.fbx"
 	};
 
 	wstring wstrModeWeapon_R[CLASS_DEFAULT_END] = {
@@ -196,15 +195,15 @@ void CPlayer::Create_HeroClass()
 	};
 
 	wstring wstrModeBody[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/body/SK_Fiona0004_Body_A00.fbx" // FIONA
+		L"../bin/resources/meshes/characters/Valkyrie/body/SK_Fiona0004_Body_A00_50.fbx" // FIONA
 	};
 
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0001_Face_A00.fbx" // FIONA
+		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx" // FIONA
 	};
 
 	wstring wstrModeHead[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0004_Helmet_A00.fbx" // FIONA
+		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0004_Helmet_A00_50.fbx" // FIONA
 	};
 
 	wstring wstrModeWeapon_R[CLASS_DEFAULT_END] = {
@@ -500,6 +499,35 @@ void CPlayer::OnDisable()
 	__super::OnDisable();
 
 
+}
+
+void CPlayer::Set_TeamType(int eTeamType)
+{
+	m_eTeamTypeFlag = eTeamType;
+
+	_float4 vOutlineFlag = ZERO_VECTOR;
+
+	if (m_eTeamTypeFlag & eTEAM_TYPE::ePLAYERTEAM)
+	{
+		if (m_eTeamTypeFlag & eTEAM_TYPE::eSQUADMEMBER)
+			vOutlineFlag = _float4(0.709f, 0.901f, 0.113f);
+	}
+	else if (m_eTeamTypeFlag & eTEAM_TYPE::eENEMYTEAM)
+	{
+		vOutlineFlag = _float4(0.9f, 0.1f, 0.1f);
+	}
+
+	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+	{
+		if (m_pDefaultClass[i])
+			GET_COMPONENT_FROM(m_pDefaultClass[i], CModel)->Set_OutlineFlag(vOutlineFlag);
+	}
+
+	for (_uint i = 0; i < CLASS_HERO_END; ++i)
+	{
+		if (m_pHeroClass[i])
+			GET_COMPONENT_FROM(m_pHeroClass[i], CModel)->Set_OutlineFlag(vOutlineFlag);
+	}
 }
 
 

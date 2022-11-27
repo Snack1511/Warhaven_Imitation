@@ -78,8 +78,9 @@ public:
 	};
 	struct UNIT_MODEL_DATA
 	{
-		wstring	strModelPaths[MODEL_PART_END];
-		string	strRefBoneName[MODEL_PART_END];
+		wstring		strModelPaths[MODEL_PART_END];
+		string		strRefBoneName[MODEL_PART_END];
+		_float4x4	matTransform[MODEL_PART_END];
 	};
 
 	struct STATE_HIT_TYPE
@@ -192,7 +193,6 @@ public:
 	_float4	Get_FollowCamRight();
 
 public:
-	void SetUp_TrailEffect(WEAPON_TYPE eWeapon);
 	void TurnOn_TrailEffect(_bool bOn);
 
 public:
@@ -317,6 +317,8 @@ protected:
 	_float			m_fHitDelayTime = 0.15f;
 
 protected:
+	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+			_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);
 	virtual	HRESULT	SetUp_Navigation(CCell* pStartCell);
 

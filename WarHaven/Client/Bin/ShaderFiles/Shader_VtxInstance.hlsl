@@ -115,6 +115,8 @@ struct PS_OUT
 	vector		vNormal : SV_TARGET1;
 	vector		vDepth : SV_TARGET2;
 	vector		vFlag : SV_TARGET3;
+	vector		vOutlineFlag : SV_TARGET4;
+	vector		vRimLightFlag : SV_TARGET5;
 };
 
 struct PS_SHADOW_OUT
@@ -175,7 +177,6 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
 	Out.vFlag = g_vFlag;
-	Out.vFlag.b = g_fOutlinePower;
 	return Out;	
 }
 

@@ -33,6 +33,9 @@ public:
 	_float		Get_MaxRange() { return m_fMaxRange; }
 
 	void		Set_Color(_float4 vColor) { m_vColor = vColor; }
+
+	void		Set_OutlineFlag(_float4 vOutLineFlag) { m_vOutLineFlag = vOutLineFlag; }
+	void		Set_RimLightFlag(_float4 vRimLightFlag) { m_vRimLightFlag = vRimLightFlag; }
 	
 public:
 	_uint Get_MaterialIndex() const {
@@ -72,6 +75,8 @@ protected: /* 현재ㅑ 메시컨테이너에게 적용되어야할 머테리얼 인덱스*/
 	_uint								m_iMaterialIndex = 0;
 
 	_float4								m_vFlag = SH_LIGHT_NOSPEC;
+	_float4								m_vOutLineFlag = ZERO_VECTOR;
+	_float4								m_vRimLightFlag = ZERO_VECTOR;
 	_float4								m_vColor;
 
 	_float								m_fOutline = 1.f;

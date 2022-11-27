@@ -26,6 +26,8 @@ public:
 	CResource* Get_Resource(wstring wstrResourceKey);
 	ComPtr<ID3D11ShaderResourceView>	Get_Texture(wstring wstrFilePath);
 
+	void	Clear_Resources();
+
 private:
 	Assimp::Importer			m_Importer;
 	map<_hashcode, MODEL_DATA*>	m_mapModelData;

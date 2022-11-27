@@ -11,6 +11,9 @@
 #include "CBoneCollider.h"
 #include "HIerarchyNode.h"
 
+#include "CTrailEffect.h"
+#include "CTrailBuffer.h"
+
 CUnit_Warrior::CUnit_Warrior()
 {
 }
@@ -310,7 +313,11 @@ HRESULT CUnit_Warrior::Initialize()
 {
 	__super::Initialize();
 
-	
+	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
+
+	//m_pModelCom->Set_OutlineFlag(_float4(0.9f, 0.2f, 0.2f, 1.f));
+	//m_pModelCom->Set_RimLightFlag(SH_LIGHT_BLOOM);
+
 	
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
@@ -322,6 +329,19 @@ HRESULT CUnit_Warrior::Start()
 	__super::Start();
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
+	SetUp_TrailEffect(
+		_float4(0.f, 0.f, -168.f, 1.f),	//Weapon Low
+		_float4(0.f, 0.f, -171.f, 1.f),	//Weapon High
+		_float4(0.f, -1.5f, -169.5f, 1.f), //Left
+		_float4(0.f, 1.5f, -169.5f, 1.f), //Right
+		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
+		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
+		0.f,
+		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds",
+		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds",
+		10,
+		"0B_R_WP1"
+	);
 
 	return S_OK;
 }

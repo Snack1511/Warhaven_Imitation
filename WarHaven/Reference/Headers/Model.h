@@ -56,9 +56,13 @@ public:
 	void	No_Culling() { m_bCulling = false; }
 	void	Set_ShaderFlag(_float4 vFlag);
 	void	Set_ShaderFlag(_uint iMeshPartType, _float4 vFlag);
+
 	void	Set_ShaderColor(_uint iMeshPartType, _float4 vColor);
-	void	Set_OutlinePower(_float fOutline);
-	void	Set_OutlinePower(_uint iMeshPartType, _float fOutline);
+
+	void	Set_OutlineFlag(_float4 vOutlineFlag);
+	void	Set_OutlineFlag(_uint iMeshPartType, _float4 vOutlineFlag);
+	void	Set_RimLightFlag(_float4 vRimLightFlag);
+	void	Set_RimLightFlag(_uint iMeshPartType, _float4 vRimLightFlag);
 
 	_bool	Is_Instancing() { return m_bInstancing; }
 

@@ -83,6 +83,19 @@ ComPtr<ID3D11ShaderResourceView> CResource_Manager::Get_Texture(wstring wstrFile
 	return pSRV;
 }
 
+void CResource_Manager::Clear_Resources()
+{
+	/*for (auto& elem : m_mapModelData)
+	{
+		SAFE_DELETE(elem.second);
+	}
+
+	for (auto& elem : m_mapResources)
+	{
+		SAFE_DELETE(elem.second);
+	}*/
+}
+
 MODEL_DATA* CResource_Manager::Find_ModelData(wstring wstrFilePath)
 {
 	auto iter = m_mapModelData.find(Convert_ToHash(wstrFilePath));

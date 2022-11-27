@@ -18,8 +18,9 @@ vector		g_vFlag = vector(0.f, 0.f, 0.f, 0.f);
 vector		g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 vector		g_vCamPosition;
-float		g_fOutlinePower = 1.f;
 
+vector g_vOutLineFlag = vector(0.f, 0.f, 0.f, 0.f);
+vector g_vRimLightFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 
 struct VS_IN
@@ -80,12 +81,15 @@ struct PS_OUT
 	vector		vNormal : SV_TARGET1;
 	vector		vDepth : SV_TARGET2;
 	vector		vFlag : SV_TARGET3;
+	vector		vOutLineFlag : SV_TARGET4;
+	vector		vRimLightFlag : SV_TARGET5;
 };
 
 struct PS_SHADOW_OUT
 {
 	vector		vLightDepth : SV_TARGET0;
 };
+
 PS_SHADOW_OUT PS_SHADOW_MAIN(PS_IN In)
 {
 	PS_SHADOW_OUT		Out = (PS_SHADOW_OUT)0;
@@ -133,86 +137,12 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
 	Out.vFlag = g_vFlag;
-	Out.vFlag.b = g_fOutlinePower;
+	Out.vOutLineFlag = g_vOutLineFlag;
+	Out.vRimLightFlag = g_vRimLightFlag;
 
 
 	return Out;	
 }
-
-PS_OUT PS_GROUND_MAIN(PS_IN In)
-{
-	PS_OUT		Out = PS_MAIN(In);
-
-	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vDiffuse *= g_vColor;
-	Out.vDiffuse *= saturate(g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fNoiseScale) * 1.5f);
-	Out.vDiffuse.a = 1.f;
-
-	vector	vFilter =		g_FilterTexture.Sample(DefaultSampler, In.vTexUV * 0.1f);
-
-	if (vFilter.r > 0.7f)
-	{
-		vector vSourDiffuse = g_BlendTexture.Sample(DefaultSampler, In.vTexUV * 1.f);
-		Out.vDiffuse = vSourDiffuse;
-		Out.vDiffuse *= g_NoiseTexture.Sample(DefaultSampler, In.vTexUV* g_fNoiseScale);
-		Out.vDiffuse *= 1.5f;
-
-	}
-	else
-	{
-		//¶¥ »ö º¸Á¤
-		Out.vDiffuse.r += 0.1f;
-		Out.vDiffuse.g += 0.05f;
-		Out.vDiffuse.b -= 0.f;
-
-	}
-	/*else
-	{
-		Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * 1.f);
-		Out.vDiffuse.a = 1.f;
-	}*/
-
-	
-
-	return Out;
-}
-
-PS_OUT PS_GROUNDEXAM_MAIN(PS_IN In)
-{
-	PS_OUT		Out = PS_MAIN(In);
-
-	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vDiffuse *= g_vColor;
-	Out.vDiffuse *= saturate(g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fNoiseScale) * 1.5f);
-	Out.vDiffuse.a = 1.f;
-
-	vector	vFilter = g_FilterTexture.Sample(DefaultSampler, In.vTexUV * 0.1f);
-
-	if (vFilter.r > 0.5f)
-	{
-		vector vSourDiffuse = g_BlendTexture.Sample(DefaultSampler, In.vTexUV * 1.f);
-		Out.vDiffuse = vSourDiffuse;
-		Out.vDiffuse *= (g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fNoiseScale) * 2.f);
-
-	}
-	else
-	{
-		//¶¥ »ö º¸Á¤
-		Out.vDiffuse.r += 0.1f;
-		Out.vDiffuse.g += 0.05f;
-		Out.vDiffuse.b -= 0.f;
-
-	}
-	/*else
-	{
-		Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * 1.f);
-		Out.vDiffuse.a = 1.f;
-	}*/
-	
-
-	return Out;
-}
-
 
 PS_OUT PS_SAMPLE_MAIN(PS_IN In)
 {
@@ -298,7 +228,8 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 0.f);
 
 	Out.vFlag = g_vFlag;
-	Out.vFlag.b = g_fOutlinePower;
+	Out.vOutLineFlag = g_vOutLineFlag;
+	Out.vRimLightFlag = g_vRimLightFlag;
 
 	
 
@@ -335,7 +266,8 @@ PS_OUT PS_MAIN_GROUNDBREAK(PS_IN_NORMAL In)
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 0.f);
 
 	Out.vFlag = g_vFlag;
-	Out.vFlag.b = g_fOutlinePower;
+	Out.vOutLineFlag = g_vOutLineFlag;
+	Out.vRimLightFlag = g_vRimLightFlag;
 
 
 
@@ -395,7 +327,7 @@ technique11 DefaultTechnique
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_GROUND_MAIN();
+		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
 	pass Ground_Exam
@@ -406,7 +338,7 @@ technique11 DefaultTechnique
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_GROUNDEXAM_MAIN();
+		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
 	pass Sample

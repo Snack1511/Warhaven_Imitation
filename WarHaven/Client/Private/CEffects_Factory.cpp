@@ -31,8 +31,8 @@ CEffects_Factory::~CEffects_Factory()
 HRESULT CEffects_Factory::Initialize()
 {
 	//이펙트 만들어놓기
-	/*if(FAILED(Add_Effect(HASHCODE(CSword_Effect), CSword_Effect::Create())))
-		return E_FAIL;*/
+	if(FAILED(Add_Effect(HASHCODE(CSword_Effect), CSword_Effect::Create())))
+		return E_FAIL;
 
 	if (FAILED(SetUp_StoneParticles()))
 		return E_FAIL;

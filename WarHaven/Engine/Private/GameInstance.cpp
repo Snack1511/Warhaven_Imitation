@@ -203,6 +203,11 @@ void CGameInstance::Release()
 
 }
 
+void CGameInstance::Clear_Resources()
+{
+	m_pResourceManager->Clear_Resources();
+}
+
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
 {
 	return m_pGraphicDevice->Clear_BackBuffer_View(vClearColor);

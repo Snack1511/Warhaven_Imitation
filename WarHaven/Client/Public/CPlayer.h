@@ -50,6 +50,20 @@ public:
 		CLASS_DEFAULT_END
 	};
 
+	enum eTEAM_TYPE
+	{
+		//이거랑 &이면 메인플레이어
+		eMAINPLAYER = (1 << 0),
+
+		//둘중 하나랑 &면 어느 진영인지
+		ePLAYERTEAM = (1 << 1),
+		eENEMYTEAM = (1 << 2),
+
+		//&해서 스쿼드 멤버인지 스쿼드장인지 여부
+		eSQUADMEMBER = (1 << 3),
+		eSQUADLEADER = (1 << 4)
+	};
+
 
 private:
 	CPlayer();
@@ -96,6 +110,12 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
+public:
+	void	Set_TeamType(int eTeamType);
+
+private:
+	//어느 진영인지, 스쿼드멤버인지 스쿼드장인지 여부
+	int	m_eTeamTypeFlag = eTEAM_TYPE::eMAINPLAYER;
 
 private:
 	CUnit* m_pCurrentUnit = nullptr;

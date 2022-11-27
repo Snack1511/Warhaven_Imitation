@@ -64,21 +64,30 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
     vecReadyObjects.push_back(make_pair(pUserPlayer, GROUP_PLAYER));
 
 
-    vPlayerPos.z += 3.f;
+    for (_uint i = 0; i < 1; ++i)
+    {
+        vPlayerPos.z += 3.f;
+        vPlayerPos.x += 1.f;
+        CPlayer* pEnemy = nullptr;
 
-    CPlayer* pEnemy = nullptr;
+        wstring wstrCamName = L"FollowCam_";
+        wstrCamName += to_wstring(i);
 
-    if (!(pEnemy = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-        AI_STATE_IDLE_WARRIOR_R, false, L"FollowCam_0")))
-        return E_FAIL;
+        if (!(pEnemy = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
+            AI_STATE_IDLE_WARRIOR_R, false, wstrCamName)))
+            return E_FAIL;
 
-    pEnemy->Set_TargetUnit(pUserPlayer->Get_CurrentUnit());
+        pEnemy->Set_TargetUnit(pUserPlayer->Get_CurrentUnit());
 
-    vecReadyObjects.push_back(make_pair(pEnemy, GROUP_ENEMY));
+        vecReadyObjects.push_back(make_pair(pEnemy, GROUP_ENEMY));
+
+
+    }
 
     SetUp_DefaultLight();
 
     return S_OK;
+
 }
 
 HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
@@ -132,6 +141,8 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
 
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     pUserPlayer->Set_MainPlayer();
+    pUserPlayer->Set_TeamType(CPlayer::ePLAYERTEAM);
+
     vecReadyObjects.push_back(make_pair(pUserPlayer, GROUP_PLAYER));
 
     _float4 vEnemyPos;
@@ -190,6 +201,10 @@ HRESULT CGameSystem::On_ReadyPlayers(vector<pair<CGameObject*, _uint>>& vecReady
             return E_FAIL;
 
         pEnemyUser->Set_TargetUnit(pUserPlayer->Get_CurrentUnit());
+        pEnemyUser->Set_TeamType(CPlayer::eENEMYTEAM);
+        if (strKey == "EnemyFinal")
+            pEnemyUser->Set_TeamType((CPlayer::ePLAYERTEAM | CPlayer::eSQUADMEMBER));
+
         vecReadyObjects.push_back(make_pair(pEnemyUser, GROUP_ENEMY));
         m_mapEnemyPlayers.emplace(strKey, pEnemyUser);
     }
@@ -279,7 +294,7 @@ HRESULT CGameSystem::On_ReadyDestructible(vector<pair<CGameObject*, _uint>>& vec
         L"../bin/resources/meshes/map/environments/prop/Barrier/SM_Prop_Barrier_Fence02a.fbx",
         L"WoodenDestroyParticle",
         L"WoodenHitParticle",
-        2
+        1
     );
 
     _float4 vPos = Find_Position("Fence_0");
@@ -292,7 +307,7 @@ HRESULT CGameSystem::On_ReadyDestructible(vector<pair<CGameObject*, _uint>>& vec
         L"../bin/resources/meshes/map/environments/prop/Barrier/SM_Prop_Barrier_Fence02a.fbx",
         L"WoodenDestroyParticle",
         L"WoodenHitParticle",
-        2
+        1
     );
 
     vPos = Find_Position("Fence_1");

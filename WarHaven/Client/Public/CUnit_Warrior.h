@@ -25,7 +25,6 @@ public:
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
-
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
@@ -33,8 +32,6 @@ public:
 	virtual HRESULT Start() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
-
-protected:
 	virtual void My_LateTick();
 };
 

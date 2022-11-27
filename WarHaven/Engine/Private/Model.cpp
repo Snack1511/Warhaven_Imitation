@@ -284,6 +284,7 @@ void CModel::Set_Owner(CGameObject* pOwner)
 
 void CModel::Set_ShaderFlag(_float4 vFlag)
 {
+
 	for (auto& elem : m_MeshContainers)
 	{
 		elem.second->Set_ShaderFlag(vFlag);
@@ -295,7 +296,26 @@ void CModel::Set_ShaderFlag(_uint iMeshPartType, _float4 vFlag)
 	for (auto& elem : m_MeshContainers)
 	{
 		if (elem.first == iMeshPartType)
+		{
 			elem.second->Set_ShaderFlag(vFlag);
+			
+		}
+
+		if (m_bLOD)
+		{
+			//만약 나머지 값이 그거면
+			for (_uint i = 0; i < 3; ++i)
+			{
+				_uint iNewPartType = elem.first % 10;
+
+				if (iNewPartType == iMeshPartType)
+					elem.second->Set_ShaderFlag(vFlag);
+
+			}
+		}
+
+		
+	
 	}
 }
 
@@ -305,25 +325,83 @@ void CModel::Set_ShaderColor(_uint iMeshPartType, _float4 vColor)
 	{
 		if (elem.first == iMeshPartType)
 			elem.second->Set_Color(vColor);
+
+		if (m_bLOD)
+		{
+			//만약 나머지 값이 그거면
+			for (_uint i = 0; i < 3; ++i)
+			{
+				_uint iNewPartType = elem.first % 10;
+
+				if (iNewPartType == iMeshPartType)
+					elem.second->Set_Color(vColor);
+
+			}
+		}
 	}
 }
 
-void CModel::Set_OutlinePower(_float fOutline)
+void CModel::Set_OutlineFlag(_float4 vOutlineFlag)
 {
 	for (auto& elem : m_MeshContainers)
 	{
-		elem.second->Set_OutlinePower(fOutline);
+		elem.second->Set_OutlineFlag(vOutlineFlag);
 	}
 }
 
-void CModel::Set_OutlinePower(_uint iMeshPartType, _float fOutline)
+void CModel::Set_OutlineFlag(_uint iMeshPartType, _float4 vOutlineFlag)
 {
 	for (auto& elem : m_MeshContainers)
 	{
 		if (elem.first == iMeshPartType)
-			elem.second->Set_OutlinePower(fOutline);
+			elem.second->Set_OutlineFlag(vOutlineFlag);
+
+		if (m_bLOD)
+		{
+			//만약 나머지 값이 그거면
+			for (_uint i = 0; i < 3; ++i)
+			{
+				_uint iNewPartType = elem.first % 10;
+
+				if (iNewPartType == iMeshPartType)
+					elem.second->Set_OutlineFlag(vOutlineFlag);
+
+			}
+		}
 	}
 }
+
+void CModel::Set_RimLightFlag(_float4 vRimLightFlag)
+{
+	for (auto& elem : m_MeshContainers)
+	{
+		elem.second->Set_RimLightFlag(vRimLightFlag);
+	}
+}
+
+
+void CModel::Set_RimLightFlag(_uint iMeshPartType, _float4 vRimLightFlag)
+{
+	for (auto& elem : m_MeshContainers)
+	{
+		if (elem.first == iMeshPartType)
+			elem.second->Set_RimLightFlag(vRimLightFlag);
+
+		if (m_bLOD)
+		{
+			//만약 나머지 값이 그거면
+			for (_uint i = 0; i < 3; ++i)
+			{
+				_uint iNewPartType = elem.first % 10;
+
+				if (iNewPartType == iMeshPartType)
+					elem.second->Set_RimLightFlag(vRimLightFlag);
+
+			}
+		}
+	}
+}
+
 
 void CModel::Switch_MeshContainerBone(_uint iMeshPartType, string strBoneName)
 {
@@ -394,6 +472,7 @@ HRESULT CModel::Add_Model(wstring wstrModelFilePath, _uint iMeshPartType, string
 		if (pModelData->m_vecResType[i] == RES_MESH)
 		{
 			m_MeshContainers.back().second->m_strRefBoneName = strBoneName;
+			//m_MeshContainers.back().second->m_TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(270.0f));
 		}
 	}
 
@@ -500,7 +579,6 @@ void CModel::Late_Tick()
 	for (auto& pHierarchyNode : m_vecHierarchyNodes)
 		pHierarchyNode.second->Update_CombinedTransformationMatrix();
 
-
 }
 
 void CModel::Final_Tick()
@@ -548,7 +626,7 @@ void CModel::Final_Tick()
 				_float fCurDistance = (vCamPos - vWorldPos).Length();
 
 				//거리가 멀면 LOD true
-				m_eLOD_Level = eLOD_LEVEL::eDefault;
+				m_eLOD_Level = eLOD_LEVEL::eLOD1;
 
 				for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
 				{
@@ -631,7 +709,7 @@ void CModel::Final_Tick()
 				//2. 살아남은 애들 LOD 체크
 				_float fCurDistance = (vCamPos - m_pInstancingCenterPos[i]).Length();
 
-				eLOD_LEVEL eLODLevel = eLOD_LEVEL::eDefault;
+				eLOD_LEVEL eLODLevel = eLOD_LEVEL::eLOD1;
 
 				for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
 				{
@@ -714,7 +792,7 @@ void CModel::Final_Tick()
 		_float fCurDistance = (vCamPos - vWorldPos).Length();
 
 		//거리가 멀면 LOD true
-		m_eLOD_Level = eLOD_LEVEL::eDefault;
+		m_eLOD_Level = eLOD_LEVEL::eLOD1;
 
 		for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
 		{

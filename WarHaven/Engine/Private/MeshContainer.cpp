@@ -136,7 +136,8 @@ void CMeshContainer::SetUp_BoneMatrices(class CShader* pShader, const char* pCon
 void CMeshContainer::Set_ShaderResourceFlag(CShader* pShader, const char* pConstantName)
 {
 	pShader->Set_RawValue(pConstantName, &m_vFlag, sizeof(_float4));
-	pShader->Set_RawValue("g_fOutlinePower", &m_fOutline, sizeof(_float));
+	pShader->Set_RawValue("g_vOutLineFlag", &m_vOutLineFlag, sizeof(_float4));
+	pShader->Set_RawValue("g_vRimLightFlag", &m_vRimLightFlag, sizeof(_float4));
 
 }
 

@@ -406,12 +406,9 @@ HRESULT CUnit::Initialize()
 	if (!m_pPhysics)
 		return E_FAIL;
 
+
 	if (FAILED(m_pModelCom->SetUp_AnimModel_LOD()))
 		return E_FAIL;
-
-	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
-	//m_pModelCom->Set_ShaderFlag(MODEL_PART_WEAPON_L, SH_LIGHT_BLOOM);
-	//m_pModelCom->Set_ShaderFlag(MODEL_PART_WEAPON, SH_LIGHT_BLOOM);
 
 
 
@@ -441,9 +438,6 @@ HRESULT CUnit::Start()
 	CallBack_CollisionEnter += bind(&CUnit::Unit_CollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 	CallBack_CollisionStay += bind(&CUnit::Unit_CollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 	CallBack_CollisionExit += bind(&CUnit::Unit_CollisionExit, this, placeholders::_1, placeholders::_2, placeholders::_3);
-
-
-	SetUp_TrailEffect(m_tUnitStatus.eWeapon);
 
 	m_pPhysics->Set_Jump(0.f);
 
@@ -675,54 +669,27 @@ _float4 CUnit::Get_FollowCamRight()
 	return m_pFollowCam->Get_Transform()->Get_World(WORLD_RIGHT);
 }
 
-void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
+
+void CUnit::TurnOn_TrailEffect(_bool bOn)
 {
-	const char* pBoneName = "empty";
-	_float4 vWeaponLow;
-	_float4 vWeaponHigh;
-	_float4 vWeaponLeft;
-	_float4 vWeaponRight;
-	_float4 vGlowFlag;
-	_float4 vColor;
+	if (!m_pTrailEffect)
+		return;
 
-	_float fWeaponCenter;
-	wstring wstrMaskMapPath;
-	wstring wstrColorMapPath;
-	_uint	m_iTrailCount;
+	m_pTrailEffect->TurnOn_TrailEffect(bOn);
+	m_pTrailEffect2->TurnOn_TrailEffect(bOn);
 
-	switch (eWeapon)
-	{
-	case Client::WEAPON_LONGSWORD:
-		/* Trail 길이 */
-		m_iTrailCount = 10;
-		pBoneName = "0B_R_WP1";
-		vWeaponLow = _float4(0.f, 0.f, -168.f, 1.f);
-		vWeaponHigh = _float4(0.f, 0.f, -171.f, 1.f);
-
-		fWeaponCenter = (vWeaponLow.z + vWeaponHigh.z) * 0.5f;
-
-		vWeaponLeft = _float4(0.f, -1.5f, fWeaponCenter, 1.f);
-		vWeaponRight = _float4(0.f, 1.5f, fWeaponCenter, 1.f);
+}
 
 
 
-		vGlowFlag = _float4(1.f, 0.f, 0.f, 0.05f);
-		vColor = _float4(1.f, 0.1f, 0.1f, 0.25f);
-		wstrMaskMapPath = L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds";
-		wstrColorMapPath = L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds";
-		break;
-	default:
-		break;
-	}
-
-	/* 3D느낌 주려고 Trail 십자가 모양으로 2개 쓰는 중*/
-
-	m_pTrailEffect = CTrailEffect::Create(0, m_iTrailCount, vWeaponLow, vWeaponHigh,
-		m_pModelCom->Find_HierarchyNode(pBoneName), m_pTransform, vGlowFlag, vColor,
+void CUnit::SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pTrailEffect = CTrailEffect::Create(0, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
 		wstrMaskMapPath, wstrColorMapPath);
 
-	m_pTrailEffect2 = CTrailEffect::Create(0, m_iTrailCount, vWeaponLeft, vWeaponRight,
-		m_pModelCom->Find_HierarchyNode(pBoneName), m_pTransform, vGlowFlag, vColor,
+	m_pTrailEffect2 = CTrailEffect::Create(0, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
 		wstrMaskMapPath, wstrColorMapPath);
 
 	if (!m_pTrailEffect)
@@ -736,19 +703,8 @@ void CUnit::SetUp_TrailEffect(WEAPON_TYPE eWeapon)
 
 	m_pTrailEffect->TurnOn_TrailEffect(false);
 	m_pTrailEffect2->TurnOn_TrailEffect(false);
-}
-
-void CUnit::TurnOn_TrailEffect(_bool bOn)
-{
-	if (!m_pTrailEffect)
-		return;
-
-	m_pTrailEffect->TurnOn_TrailEffect(bOn);
-	m_pTrailEffect2->TurnOn_TrailEffect(bOn);
 
 }
-
-
 
 HRESULT CUnit::SetUp_Model(const UNIT_MODEL_DATA& tData)
 {

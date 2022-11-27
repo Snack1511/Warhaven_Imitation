@@ -49,6 +49,8 @@ void CDestructible::On_CollisionEnter(CGameObject* pOtherObj, const _uint& eOthe
 	_float4x4 matIdentity;
 	matIdentity.Identity();
 
+
+
 	if (!m_wstrHitMultiEffectsKey.empty())
 		CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(m_wstrHitMultiEffectsKey, vHitPos, _float4(0.f, 1.f, 0.f, 0.f), 0.1f, matIdentity);
 
@@ -60,6 +62,12 @@ void CDestructible::On_CollisionEnter(CGameObject* pOtherObj, const _uint& eOthe
 
 		if (!m_wstrDestoryMultiEffectsKey.empty())
 			CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(m_wstrDestoryMultiEffectsKey, vPos, _float4(0.f, 1.f, 0.f, 0.f), 4.f, matIdentity);
+
+		static_cast<CUnit*>(pOtherObj)->Shake_Camera(0.1f, 0.4f);
+
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
+		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
+		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
 	}
 }
 

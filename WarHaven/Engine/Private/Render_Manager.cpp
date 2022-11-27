@@ -222,6 +222,7 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_ShadowBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
+	
 
 	/* For.Target_Forward */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_Forward"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
@@ -254,8 +255,14 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_VerticalBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
-	/* For.Outline_Flag */
+	/* For.Outline */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_Outline"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_OutlineFlag"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
+	/*RimLight*/
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_RimLightFlag"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* For.Bloom */
@@ -316,6 +323,10 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Depth"))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Flag"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_OutlineFlag"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_RimLightFlag"))))
 		return E_FAIL;
 
 	/* For.MRT_Effect */
@@ -658,14 +669,14 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_ForwardBloom()))
 		return E_FAIL;
 
+	if (FAILED(Render_Outline()))
+		return E_FAIL;
+
 	if (FAILED(Render_BloomBlend()))
 		return E_FAIL;
 
 	//Blur For Outline
 	if (FAILED(Render_Blur()))
-		return E_FAIL;
-
-	if (FAILED(Render_Outline()))
 		return E_FAIL;
 
 
@@ -1110,10 +1121,10 @@ HRESULT CRender_Manager::Render_Outline()
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_OutlineAcc"))))
 		return E_FAIL;
 
-	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Flag")))))
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_OutlineFlag")))))
 		return E_FAIL;
 
-	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_VerticalBlur")))))
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
 		return E_FAIL;
 
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))

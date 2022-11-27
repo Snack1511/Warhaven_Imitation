@@ -52,6 +52,9 @@ public:
 	HRESULT Render_Engine();
 	void	Release();
 
+public:
+	void	Clear_Resources();
+
 public: /* For. Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();

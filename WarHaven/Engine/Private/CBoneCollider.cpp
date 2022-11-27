@@ -56,6 +56,7 @@ void CBoneCollider::onShapeHit(const PxControllerShapeHit& hit)
 		{
 			CGameObject* pGameObject = static_cast<CGameObject*>(hit.actor->userData);
 			pGameObject->CallBack_CollisionEnter(m_pOwner, COL_END, COL_END, m_vHitPos);
+			m_bCollisionTemp = false;
 		}
 
 		_matrix matHit;

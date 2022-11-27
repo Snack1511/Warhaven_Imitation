@@ -29,6 +29,9 @@ float		g_fAlpha = 0.f;
 
 vector		g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
+vector g_vOutLineFlag = vector(0.f, 0.f, 0.f, 0.f);
+vector g_vRimLightFlag = vector(0.f, 0.f, 0.f, 0.f);
+
 
 struct		tagBoneMatrix
 {
@@ -101,6 +104,8 @@ struct PS_OUT
 	vector		vNormal : SV_TARGET1;
 	vector		vDepth : SV_TARGET2;
 	vector	vFlag : SV_TARGET3;
+	vector	vOutLineFlag : SV_TARGET4;
+	vector	vRimLightFlag : SV_TARGET5;
 };
 
 struct PS_SHADOW_OUT
@@ -153,7 +158,8 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
 	Out.vFlag = g_vFlag;
-	Out.vFlag.b = g_fOutlinePower;
+	Out.vOutLineFlag = g_vOutLineFlag;
+	Out.vRimLightFlag = g_vRimLightFlag;
 
 
 
@@ -172,7 +178,9 @@ PS_OUT PS_FACE_MAIN(PS_IN In)
 	Out.vDiffuse.a = 1.f;
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
-	Out.vFlag = g_vFlag;
+
+	Out.vOutLineFlag = g_vOutLineFlag;
+	Out.vRimLightFlag = g_vRimLightFlag;
 
 
 
@@ -321,7 +329,8 @@ PS_OUT PS_NORMAL_MAIN(PS_IN_NORMAL In)
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 0.f);
 
 	Out.vFlag = g_vFlag;
-	Out.vFlag.b = g_fOutlinePower;
+	Out.vOutLineFlag = g_vOutLineFlag;
+	Out.vRimLightFlag = g_vRimLightFlag;
 
 
 
