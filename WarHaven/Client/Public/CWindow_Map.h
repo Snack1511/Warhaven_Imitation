@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CGameObject;
 class CTransform;
 class CCamera;
+class CMesh;
 END
 
 BEGIN(Client)
@@ -100,7 +101,7 @@ public:
 	typedef tuple<_float4, _float4, _float4> PICKDATA;
 	typedef vector<tuple<char*, bool>> DataComboArr;
 
-
+	 dds 
 	const char* ArrObjectGroup[GROUP_END] =
 	{
 		"Static",
@@ -128,7 +129,9 @@ public:
 public:
 	void Change_CurPickMode(PICKINGTYPE eType);
 	_bool Is_CurPickMode(PICKINGTYPE eType);
+	_bool Is_PickTerrain() { return m_bTerrainPick; }
 	PICKDATA Get_PickData();
+	void SetUp_PickMesh(CMesh* pMesh);
 protected:
 
 protected:
@@ -332,6 +335,8 @@ private:
 private:
 	CFunc_ObjectControl* m_pObjectController = nullptr;
 	_int m_iTileIndexFlag = 0;
+	_bool m_bTerrainPick = true;
+	CMesh* m_PickTargetMesh = nullptr;
 #pragma endregion
 
 

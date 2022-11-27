@@ -272,6 +272,11 @@ void CFunc_ObjectControl::Func_ObjectList()
         Split_All();
     }
 
+    ImGui::Spacing();
+    if (ImGui::Button("ADD HLOD"))
+    {
+        Add_HLOD();
+    }
     if (!m_GroupingInfo.empty())
     {
         string DebugTab = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
@@ -710,6 +715,34 @@ void CFunc_ObjectControl::Func_SetUpCollider()
 
 void CFunc_ObjectControl::Tick_Function()
 {
+    if (KEY(F7, TAP))
+    {
+        if (m_bHLOD_HIDE)
+        {
+            m_bHLOD_HIDE = false;
+            for(auto& elem : m_pHLODList)
+            {
+                ENABLE_GAMEOBJECT(elem);
+            }
+        }
+        else
+        {
+            m_bHLOD_HIDE = true;
+            for (auto& elem : m_pHLODList)
+            {
+                DISABLE_GAMEOBJECT(elem);
+            }
+        }
+    }
+
+    if (false == m_pMapTool->Is_PickTerrain()) 
+    {
+        if (KEY(LBUTTON, TAP))
+        {
+            Pick_inOjbect();
+        }
+    }
+
     Select_DataControlFlag();
     if (m_bGroupControl)
         Control_Group();
@@ -2156,6 +2189,8 @@ void CFunc_ObjectControl::Clear_AllDatas()
         Value.second.clear();
     }
     m_DataNamingGroupMap.clear();
+    m_iCurSelectObjecNametIndex = 0;
+    m_iCurSelectObjectIndex = 0;
 }
 
 void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
@@ -2286,6 +2321,9 @@ void CFunc_ObjectControl::Load_ObjectGroup(string FilePath)
         Call_MsgBox(L"Load ½ÇÆÐ ??!?!");
         assert(0);
     }
+
+
+
 
 
 
@@ -2511,6 +2549,39 @@ void CFunc_ObjectControl::Clear_TupleData(vector<tuple<char*, bool>>& ArrData)
     ArrData.clear();
 }
 
+void CFunc_ObjectControl::Pick_inOjbect()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+
+    list<CGameObject*>& ObjectList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
+    _float4 OutPos;
+    _float4 OutNorm;
+    if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_OBJECT))
+    {
+        if (GAMEINSTANCE->Is_Picked(ObjectList, &OutPos, &OutNorm))
+        {
+            m_pObjTransform->Set_World(WORLD_POS, OutPos);
+            m_pObjTransform->Make_WorldMatrix();
+        }
+    }
+    else if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_CLONE))
+    {
+        if (GAMEINSTANCE->Is_Picked(ObjectList, &OutPos, &OutNorm))
+        {
+
+            _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
+            MTO_DATA tData = (*m_pCurSelectData);
+            _matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
+            WorldMat.r[3] = OutPos.XMLoad();
+            tData.ObjectStateMatrix = WorldMat;
+            string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
+            Add_ObjectNamingMap(strGroupName, tData);
+        }
+    }        
+
+}
+
 void CFunc_ObjectControl::SetUp_ColliderType()
 {
     m_listColliderType.push_back(make_tuple(string("Convex"), _uint(CStructure::ePhysXEnum::eCONVEX)));
@@ -2581,6 +2652,28 @@ void CFunc_ObjectControl::Clone()
 }
 
 
+
+void CFunc_ObjectControl::Add_HLOD()
+{
+    for (auto& elem : m_pHLODList)
+    {
+        DELETE_GAMEOBJECT(elem);
+    }
+    m_pHLODList.clear();
+
+    _int NameIndex = 0;
+    for (vector<string>::value_type& Value : m_vecSelectedMeshFilePath)
+    {
+        wstring strMeshPath = CFunctor::To_Wstring(Value);
+        CStructure* pStructure = CStructure::Create(strMeshPath);
+        if (nullptr == pStructure)
+            assert(0);
+        pStructure->Initialize();
+        CREATE_GAMEOBJECT(pStructure, GROUP_DEFAULT);
+        m_pHLODList.push_back(pStructure);
+        NameIndex++;
+    }
+}
 
 void CFunc_ObjectControl::Load_Data(string FilePath)
 {

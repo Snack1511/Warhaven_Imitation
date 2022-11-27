@@ -48,13 +48,16 @@ _bool CPicking_Manager::Is_Picked(list<CGameObject*>& GameObjectList, _float4* p
 	_float4 vPickedPos, vPickedNormal;
 	_float fDist, fMin = 9999.f;
 	_float4 vFinalPickedPos, vFinalPickedNormal;
-
+	CGameObject* pPickGameObject = nullptr;
 	for (auto& pGameObject : GameObjectList)
 	{
 		vector<pair<_uint, CMeshContainer*>>& vecMeshContainers = GET_COMPONENT_FROM(pGameObject, CModel)->Get_MeshContainers();
 
 		for (auto& pMesh : vecMeshContainers)
 		{
+			if (!pMesh.second->Is_Valid())
+				continue;
+
 			if (Is_Picked(pMesh.second, &vPickedPos, &vPickedNormal))
 			{
 				fDist = (vPickedPos - vViewPos).Length();
@@ -64,6 +67,7 @@ _bool CPicking_Manager::Is_Picked(list<CGameObject*>& GameObjectList, _float4* p
 					vFinalPickedPos = vPickedPos;
 					vFinalPickedNormal = vPickedNormal;
 				}
+				pPickGameObject = pGameObject;
 			}
 		}
 	}
@@ -71,8 +75,10 @@ _bool CPicking_Manager::Is_Picked(list<CGameObject*>& GameObjectList, _float4* p
 
 	if (fMin != 9999.f)
 	{
-		*pOut = vFinalPickedPos;
-
+		if (nullptr == pPickGameObject)
+			assert(0);//NULLÀÌ ¶ß¸é ¾ÈµÊ
+		_float4x4 WorldMat = pPickGameObject->Get_Transform()->Get_WorldMatrix();
+		*pOut = vFinalPickedPos.MultiplyCoord(WorldMat);
 		if (pOutNormal)
 			*pOutNormal = vPickedNormal;
 

@@ -104,8 +104,15 @@ void CWindow_Map::Tick()
     _bool bPicked = false;
     Select_Camera();
 
-    if (Calculate_Pick())
-        bPicked = true;
+    if (m_bTerrainPick)
+    {
+        if(nullptr != m_pCurTerrain)
+            SetUp_PickMesh(m_pCurTerrain->Get_MeshTerrain());
+        if (Calculate_Pick())
+            bPicked = true;
+    }
+
+
 
     if (false == bPicked)
         m_pObjectController->Tick_Function();
@@ -180,6 +187,11 @@ CWindow_Map::PICKDATA CWindow_Map::Get_PickData()
     return m_OutDatas;
 }
 
+void CWindow_Map::SetUp_PickMesh(CMesh* pMesh)
+{
+    m_PickTargetMesh = pMesh;
+}
+
 #pragma region static value 파일컨트롤러
 static char szSaveNameBuf[MAXCHAR] = "";
 
@@ -241,6 +253,10 @@ void CWindow_Map::Func_FileControl()
     SetUp_CurPickingGroup();
     Make_Combo("##PickingGroupID", m_arrObjectGroupId, &m_SelectObjectGroupIDIndex, bind(&CWindow_Map::EmptyFunction, this));
     ImGui::Spacing();
+    if(ImGui::Checkbox("Terrain Pick", &m_bTerrainPick))
+    {
+        //m_bTerrainPick = true;
+    }
     if (ImGui::CollapsingHeader("SetUp Terrain", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         ImGui::Text("VertX : ");
@@ -1362,7 +1378,21 @@ void CWindow_Map::Edit_TerrainData()
         m_pCurTerrain->Get_Transform()->Get_World(WORLD_POS).y,
         m_pCurTerrain->Get_Transform()->Get_World(WORLD_POS).z
     };
-
+    float terrainScale[3] =
+    {
+        m_pCurTerrain->Get_Transform()->Get_Scale().x,
+        m_pCurTerrain->Get_Transform()->Get_Scale().y,
+        m_pCurTerrain->Get_Transform()->Get_Scale().z
+    };
+    ImGui::Text("Terrain Scale");
+    if (ImGui::InputFloat3("##ScaleInput", terrainScale))
+    {
+        if (nullptr != m_pCurTerrain)
+        {
+            _float4 vScale = _float4(terrainScale[0], terrainScale[1], terrainScale[2], 0.f);
+            m_pCurTerrain->Get_Transform()->Set_Scale(vScale);
+        }
+    }
     ImGui::Text("Terrain Position");
     if (ImGui::InputFloat3("##PosInput", terrainPos))
     {
@@ -1822,8 +1852,9 @@ _bool CWindow_Map::Calculate_Pick()
     _bool bPicked = false;
     if (m_bHoverWindow)
         return bPicked;
-    if (nullptr == m_pCurTerrain)
+    if (nullptr == m_PickTargetMesh)
         return bPicked;
+    _float4x4 OwnerMat = m_PickTargetMesh->Get_Owner()->Get_Transform()->Get_WorldMatrix();
 
     if (KEY(LBUTTON, TAP))
     {
@@ -1831,9 +1862,10 @@ _bool CWindow_Map::Calculate_Pick()
         _float4 OutNorm;
         if (PICK_NONE == m_ePickingType)
             return bPicked;
-        if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &m_i3PickedIndex, &OutPos, &OutNorm))
+        if (GAMEINSTANCE->Is_Picked_Mesh(m_PickTargetMesh, &m_i3PickedIndex, &OutPos, &OutNorm))
         {
-            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
+
+            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), OwnerMat.XMLoad());
             m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
             bPicked = true;
             switch (m_ePickingType)
@@ -1853,9 +1885,9 @@ _bool CWindow_Map::Calculate_Pick()
         _float4 OutNorm;
         if (PICK_NONE == m_ePickingType)
             return bPicked;
-        if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &m_i3PickedIndex, &OutPos, &OutNorm))
+        if (GAMEINSTANCE->Is_Picked_Mesh(m_PickTargetMesh, &m_i3PickedIndex, &OutPos, &OutNorm))
         {
-            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
+            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), OwnerMat.XMLoad());
             m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
             bPicked = true;
             switch (m_ePickingType)
@@ -1866,15 +1898,17 @@ _bool CWindow_Map::Calculate_Pick()
                 //Change_Object_UpDir();
                 m_pObjectController->Func_Picking();
                 break;
-            case PICK_TERRAINVERT:
-                Increase_Height();
-                break;
-            case PICK_TERRAINTEX:
-                Change_TileTexture();
-                break;  
-            case PICK_INSTANCEOBJECT:
-                Make_InstanceObject();
-                break;
+                if (m_bTerrainPick) {
+                case PICK_TERRAINVERT:
+                    Increase_Height();
+                    break;
+                case PICK_TERRAINTEX:
+                    Change_TileTexture();
+                    break;
+                case PICK_INSTANCEOBJECT:
+                    Make_InstanceObject();
+                    break;
+                }
             }
 
         }
@@ -1886,9 +1920,9 @@ _bool CWindow_Map::Calculate_Pick()
         _float4 OutNorm;
         if (PICK_NONE == m_ePickingType)
             return bPicked;
-        if (GAMEINSTANCE->Is_Picked_Mesh(m_pCurTerrain->Get_MeshTerrain(), &m_i3PickedIndex, &OutPos, &OutNorm))
+        if (GAMEINSTANCE->Is_Picked_Mesh(m_PickTargetMesh, &m_i3PickedIndex, &OutPos, &OutNorm))
         {
-            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad());
+            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), OwnerMat.XMLoad());
             m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
             bPicked = true;
             switch (m_ePickingType)
