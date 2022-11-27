@@ -158,10 +158,11 @@ void CUnit::Set_DirAsLook()
 
 void CUnit::Set_LookToTarget()
 {
-	if (m_pTargetUnit)
-	{
-		CUtility_Transform::LookAt(m_pTransform, m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS), true);
-	}
+	if (!m_pOwnerPlayer->Get_TargetPlayer())
+		return;
+
+	CUtility_Transform::LookAt(m_pTransform, m_pOwnerPlayer->Get_TargetPlayer()->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), true);
+	
 }
 
 void CUnit::Set_ShaderResource(CShader* pShader, const char* pConstantName)
@@ -297,6 +298,14 @@ _bool CUnit::Is_Weapon_R_CCT_Collision()
 		return false;
 
 	return m_pWeaponCollider_R->Is_CCT_Collision();
+}
+
+CUnit* CUnit::Get_TargetUnit()
+{
+	if (!m_pOwnerPlayer->Get_TargetPlayer())
+		return nullptr;
+
+	return m_pOwnerPlayer->Get_TargetPlayer()->Get_CurrentUnit();
 }
 
 void CUnit::Enter_State(STATE_TYPE eType, void* pData)

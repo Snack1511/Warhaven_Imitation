@@ -89,7 +89,6 @@ public:
 	void	SetUp_UnitHitStates(_bool bPlayer);
 
 	void	Set_Postion(_float4 vPos);
-	void	Set_TargetUnit(CUnit* pUnit);
 
 	void	Set_LookToTarget();
 
@@ -113,14 +112,22 @@ public:
 	virtual void OnDisable() override;
 
 public:
+	void	Set_TargetPlayer(CPlayer* pTargetPlayer) { m_pTargetPlayer = pTargetPlayer; }
+	CPlayer*	Get_TargetPlayer() { return m_pTargetPlayer; }
+
+public:
 	_bool& AbleHero() { return m_bAbleHero; }
 	_bool& IsHero() { return m_bIsHero; }
+
 public:
 	void	Set_TeamType(int eTeamType);
 
 private:
 	//어느 진영인지, 스쿼드멤버인지 스쿼드장인지 여부
 	int	m_eTeamTypeFlag = eTEAM_TYPE::eMAINPLAYER;
+
+private:
+	CPlayer* m_pTargetPlayer = nullptr;
 
 private:
 	CUnit* m_pCurrentUnit = nullptr;

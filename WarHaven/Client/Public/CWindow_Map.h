@@ -101,7 +101,6 @@ public:
 	typedef tuple<_float4, _float4, _float4> PICKDATA;
 	typedef vector<tuple<char*, bool>> DataComboArr;
 
-	 dds 
 	const char* ArrObjectGroup[GROUP_END] =
 	{
 		"Static",

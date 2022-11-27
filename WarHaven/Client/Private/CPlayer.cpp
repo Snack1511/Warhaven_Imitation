@@ -452,14 +452,6 @@ void CPlayer::Set_Postion(_float4 vPos)
 	}
 }
 
-void CPlayer::Set_TargetUnit(CUnit* pUnit)
-{
-	if (m_pCurrentUnit)
-	{
-		m_pCurrentUnit->Set_TargetUnit(pUnit);
-	}
-}
-
 void CPlayer::Set_LookToTarget()
 {
 	if (m_pCurrentUnit)
@@ -566,6 +558,35 @@ void CPlayer::OnEnable()
 void CPlayer::OnDisable()
 {
 	__super::OnDisable();
+}
+
+void CPlayer::Set_TeamType(int eTeamType)
+{
+	m_eTeamTypeFlag = eTeamType;
+
+	_float4 vOutlineFlag = ZERO_VECTOR;
+
+	if (m_eTeamTypeFlag & eTEAM_TYPE::ePLAYERTEAM)
+	{
+		if (m_eTeamTypeFlag & eTEAM_TYPE::eSQUADMEMBER)
+			vOutlineFlag = _float4(0.709f, 0.901f, 0.113f);
+	}
+	else if (m_eTeamTypeFlag & eTEAM_TYPE::eENEMYTEAM)
+	{
+		vOutlineFlag = _float4(0.9f, 0.1f, 0.1f);
+	}
+
+	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+	{
+		if (m_pDefaultClass[i])
+			GET_COMPONENT_FROM(m_pDefaultClass[i], CModel)->Set_OutlineFlag(vOutlineFlag);
+	}
+
+	for (_uint i = 0; i < CLASS_HERO_END; ++i)
+	{
+		if (m_pHeroClass[i])
+			GET_COMPONENT_FROM(m_pHeroClass[i], CModel)->Set_OutlineFlag(vOutlineFlag);
+	}
 }
 
 

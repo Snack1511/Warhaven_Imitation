@@ -80,7 +80,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
             AI_STATE_IDLE_WARRIOR_R, false, wstrCamName)))
             return E_FAIL;
 
-        pEnemy->Set_TargetUnit(pUserPlayer->Get_CurrentUnit());
+        pEnemy->Set_TargetPlayer(pUserPlayer);
 
         vecReadyObjects.push_back(make_pair(pEnemy, GROUP_ENEMY));
 
@@ -201,7 +201,7 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
             eEnemyState, false, CFunctor::To_Wstring(strKey))))
             return E_FAIL;
 
-        pEnemyUser->Set_TargetUnit(pUserPlayer->Get_CurrentUnit());
+        pEnemyUser->Set_TargetPlayer(pUserPlayer);
         pEnemyUser->Set_TeamType(CPlayer::eENEMYTEAM);
         if (strKey == "EnemyFinal")
             pEnemyUser->Set_TeamType((CPlayer::ePLAYERTEAM | CPlayer::eSQUADMEMBER));

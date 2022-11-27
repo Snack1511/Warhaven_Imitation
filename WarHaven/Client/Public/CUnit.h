@@ -39,8 +39,8 @@ public:
 
 
 		WEAPON_TYPE eWeapon;
-		_float fHP = 30000.f;
-		_float fMaxHP = 30000.f;
+		_float fHP = 300.f;
+		_float fMaxHP = 300.f;
 		_float fGuardBreakSpeed = 10.f;
 		_float fGuardDashSpeed = 10.f;
 		_float fRunSpeed = 4.f;
@@ -154,8 +154,7 @@ public:
 	UNIT_STATUS& Get_Status() { return m_tUnitStatus; }
 	CPhysics* Get_PhysicsCom() { return m_pPhysics; }
 
-	CUnit* Get_TargetUnit() { return m_pTargetUnit; }
-	void	Set_TargetUnit(CUnit* pUnit) { m_pTargetUnit = pUnit; }
+	CUnit* Get_TargetUnit();
 
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState* Get_CurStateP() { return m_pCurState; }
@@ -277,7 +276,6 @@ protected:
 	CLASS_TYPE		m_eHeroType = CLASS_END;
 
 	CState* m_pCurState = nullptr;
-	CUnit* m_pTargetUnit = nullptr;
 
 protected:
 	_bool m_bControlable = true;

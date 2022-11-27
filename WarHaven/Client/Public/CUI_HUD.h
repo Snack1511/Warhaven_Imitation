@@ -38,7 +38,7 @@ public:
 	void SetActive_OxenJumpText(_bool value);
 
 public:
-	_bool Is_OnHeroGauge() { return m_pPlayerNameText->Is_Valid(); }
+	_bool Is_OnHeroGauge();
 
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];

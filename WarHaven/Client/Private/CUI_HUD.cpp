@@ -96,7 +96,7 @@ void CUI_HUD::My_Tick()
 
 	Update_HP();
 	Update_HeroGauge();
-	Update_OperWindow();
+	//Update_OperWindow();
 
 	if (m_pBG->Is_Valid())
 	{
@@ -222,6 +222,11 @@ void CUI_HUD::SetActive_OxenJumpText(_bool value)
 	{
 		DISABLE_GAMEOBJECT(m_pOxenJumpText);
 	}
+}
+
+_bool CUI_HUD::Is_OnHeroGauge()
+{
+	return m_pPlayerNameText->Is_Valid();
 }
 
 void CUI_HUD::Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
