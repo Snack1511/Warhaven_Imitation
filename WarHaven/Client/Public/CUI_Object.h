@@ -96,6 +96,9 @@ private:	// Lerp
 	_float4 m_vOriginScale;
 	_bool m_bIsDoScale = false;
 
+	_float m_fMoveDuration = 0.f;
+	_float m_fScaleDuration = 0.f;
+
 	_float m_fMoveValue = 0.f;
 	_float m_fScaleValue = 0.f;
 

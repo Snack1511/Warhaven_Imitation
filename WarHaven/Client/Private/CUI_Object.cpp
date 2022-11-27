@@ -158,7 +158,7 @@ void CUI_Object::DoMoveY(_float fMoveValue, _float fDuration)
 	m_bIsDoMoveY = true;
 
 	m_fMoveValue = fMoveValue;
-	m_fDuration = fDuration;
+	m_fMoveDuration = fDuration;
 }
 
 void CUI_Object::DoScale(_float fScaleValue, _float fDuration)
@@ -167,7 +167,7 @@ void CUI_Object::DoScale(_float fScaleValue, _float fDuration)
 
 	m_vOriginScale = Get_Scale();
 	m_fScaleValue = fScaleValue;
-	m_fDuration = fDuration;
+	m_fScaleDuration = fDuration;
 }
 
 void CUI_Object::Fade_Font(_bool value, _float fDuration)
@@ -366,12 +366,12 @@ void CUI_Object::DoMove()
 		m_fAccTime += fDT(0);
 
 		_float fCurPosY = Get_PosY();
-		_float fMoveValue = (m_fMoveValue / m_fDuration) * fDT(0);
+		_float fMoveValue = (m_fMoveValue / m_fMoveDuration) * fDT(0);
 		_float fResultPos = fCurPosY + fMoveValue;
 
 		Set_PosY(fResultPos);
 
-		if (m_fAccTime >= m_fDuration)
+		if (m_fAccTime >= m_fMoveDuration)
 		{
 			m_fAccTime = 0.f;
 			m_bIsDoMoveY = false;
@@ -387,7 +387,7 @@ void CUI_Object::DoScale()
 
 		_float4 vCurScale = Get_Scale();
 
-		_float fScaleValue = (m_fScaleValue / m_fDuration) * fDT(0);
+		_float fScaleValue = (m_fScaleValue / m_fScaleDuration) * fDT(0);
 
 		vCurScale.x += fScaleValue;
 		vCurScale.y += fScaleValue;
@@ -407,7 +407,7 @@ void CUI_Object::DoScale()
 			Set_FontOffset(vFontOffset.x, vFontOffset.y);
 		}
 
-		if (m_fAccTime >= m_fDuration)
+		if (m_fAccTime >= m_fScaleDuration)
 		{
 			Set_Scale(m_vOriginScale.x + m_fScaleValue, m_vOriginScale.y + m_fScaleValue);
 

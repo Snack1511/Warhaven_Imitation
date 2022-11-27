@@ -13,12 +13,13 @@
 #include "CUI_HeroGauge.h"
 #include "CUI_HpBar.h"
 #include "CUI_Training.h"
-
+#include "CUI_Black.h"
 #include "Easing_Utillity.h"
 #include "Functor.h"
 
 #include"CPlayer.h"
 #include "Loading_Manager.h"
+#include "CUI_Renderer.h"
 
 
 CUI_HUD::CUI_HUD()
@@ -31,6 +32,8 @@ CUI_HUD::~CUI_HUD()
 
 HRESULT CUI_HUD::Initialize_Prototype()
 {
+	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+
 	m_pWrap[Crosshair] = CUI_Crosshair::Create();
 	m_pWrap[Port] = CUI_Portrait::Create();
 	m_pWrap[Skill] = CUI_Skill::Create();
@@ -51,6 +54,12 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HpText();
 	Create_PlayerNameText();
 
+	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	{
+		Create_OperWindow(m_eLoadLevel);
+	}
+
+
 	return S_OK;
 }
 
@@ -61,11 +70,9 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	LEVEL_TYPE_CLIENT eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
-	if (eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		// 훈련장이 아닐 때에는 작전 회의창이 끝나야 HUD 활성화
-		SetActive_PlayerInfoUI(false);
+		SetActive_OperUI(true);
 	}
 	else
 	{
@@ -89,6 +96,7 @@ void CUI_HUD::My_Tick()
 
 	Update_HP();
 	Update_HeroGauge();
+	Update_OperWindow();
 
 	if (m_pBG->Is_Valid())
 	{
@@ -713,6 +721,21 @@ void CUI_HUD::Create_HpText()
 	DISABLE_GAMEOBJECT(m_pHpText);
 }
 
+void CUI_HUD::SetActive_OperUI(_bool value)
+{
+	if (value == true)
+	{
+		ENABLE_GAMEOBJECT(m_pOperWindow);
+
+		m_pOperWindow->DoScale(-2186.f, 0.3f);
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(m_pOperWindow);
+		DISABLE_GAMEOBJECT(m_pOperTextImg);
+	}
+}
+
 void CUI_HUD::Create_PlayerNameText()
 {
 	m_pPlayerNameText = CUI_Object::Create();
@@ -733,4 +756,118 @@ void CUI_HUD::Create_PlayerNameText()
 
 	CREATE_GAMEOBJECT(m_pPlayerNameText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pPlayerNameText);
+}
+
+void CUI_HUD::Update_OperWindow()
+{
+	cout << GET_COMPONENT_FROM(m_pOperWindow, CFader)->Get_FadeDesc().fAlpha << endl;
+	cout << m_pOperWindow->Get_Color().x << m_pOperWindow->Get_Color().y << m_pOperWindow->Get_Color().z << endl;;
+
+	if (m_pOperWindow->Is_Valid())
+	{
+		m_fAccTime += fDT(0);
+
+		if (m_iOperWindowCnt == 0)
+		{
+			if (m_fAccTime > 0.5f)
+			{
+				m_fAccTime = 0.f;
+
+				if (!m_pOperBlackBG->Is_Valid())
+				{
+					Enable_Fade(m_pOperBlackBG, 0.15f);
+
+					m_iOperWindowCnt++;
+				}
+			}
+		}
+		else if (m_iOperWindowCnt == 1)
+		{
+			if (m_pOperBlackBG->Is_Valid())
+			{
+				if (m_fAccTime > 0.3f)
+				{
+					m_fAccTime = 0.f;
+
+					if (!m_pOperTextImg->Is_Valid())
+					{
+						ENABLE_GAMEOBJECT(m_pOperTextImg);
+						m_pOperTextImg->DoScale(-512.f, 0.3);
+					}
+
+					m_iOperWindowCnt++;
+				}
+			}
+		}
+		else if (m_iOperWindowCnt == 2)
+		{
+			if (m_pOperTextImg->Is_Valid())
+			{
+				if (m_fAccTime > 0.5f)
+				{
+					m_fAccTime = 0.f;
+
+					m_pOperTextImg->DoMoveY(200.f, 0.5f);
+					m_pOperTextImg->DoScale(-256.f, 1.f);
+
+					m_iOperWindowCnt++;
+				}
+			}
+		}
+	}
+}
+
+void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
+{
+	m_pOperBlackBG = CUI_Object::Create();
+	m_pOperBlackBG->Set_Texture(TEXT("../Bin/Resources/Textures/Black.png"));
+	m_pOperBlackBG->Set_Scale(1280.f);
+	m_pOperBlackBG->Set_Sort(0.5f);
+	m_pOperBlackBG->Set_Color(_float4(1.f, 1.f, 1.f, 0.9f));
+
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.1f;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.f;
+
+	GET_COMPONENT_FROM(m_pOperBlackBG, CFader)->Get_FadeDesc() = tFadeDesc;
+
+	m_pOperWindow = CUI_Object::Create();
+	m_pOperWindow->Set_PosY(45.f);
+	m_pOperWindow->Set_Scale(4096.f);
+	m_pOperWindow->Set_Sort(0.51f);
+
+	GET_COMPONENT_FROM(m_pOperWindow, CUI_Renderer)->Set_Pass(VTXTEX_PASS_DEBUG);
+
+	switch (eLoadLevel)
+	{
+	case Client::LEVEL_PADEN:
+		m_pOperWindow->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
+		break;
+	}
+
+	m_pOperTextImg = CUI_Object::Create();
+	m_pOperTextImg->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting.png"));
+	m_pOperTextImg->Set_PosY(50.f);
+	m_pOperTextImg->Set_Scale(1024.f);
+	m_pOperTextImg->Set_Sort(0.49f);
+
+	CREATE_GAMEOBJECT(m_pOperBlackBG, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperBlackBG);
+
+	CREATE_GAMEOBJECT(m_pOperWindow, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperWindow);
+
+	CREATE_GAMEOBJECT(m_pOperTextImg, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperTextImg);
 }

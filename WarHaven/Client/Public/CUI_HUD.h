@@ -37,6 +37,9 @@ public:
 	void SetActive_HeroPortrait(_bool value);
 	void SetActive_OxenJumpText(_bool value);
 
+public:
+	_bool Is_OnHeroGauge() { return m_pPlayerNameText->Is_Valid(); }
+
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
 
@@ -57,6 +60,21 @@ private:	// 히어로 게이지
 	_float m_fCurGauge = 0.f;
 	_float m_fGaugeRatio = 0.f;
 	_bool m_bIsEnableHeroPort = false;
+
+private:	// 작전회의
+	CUI_Object* m_pOperBlackBG = nullptr;
+	CUI_Object* m_pOperWindow = nullptr;
+	CUI_Object* m_pOperTextImg = nullptr;
+	CUI_Object* m_pOperSideBG = nullptr;
+	CUI_Object* m_pArrOperSideBG[2];
+	CUI_Object* m_pOperSelectChar = nullptr;
+	CUI_Object* m_pArrOperSelectChar[6];
+	CUI_Object* m_pOperSelectBG = nullptr;
+	CUI_Object* m_pOperSelectLight = nullptr;
+	CUI_Object* m_pOperMapIcon = nullptr;
+	CUI_Object* m_pOperMapBG = nullptr;
+
+	_uint m_iOperWindowCnt = 0;
 
 private:	// 클래스 변경 창
 	CUI_Object* m_pBG = nullptr;
@@ -88,17 +106,22 @@ private:	// 클래스 변경 창
 
 	CUI_Object* m_pPlayerNameText = nullptr;
 
+	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;
+
 private:
 	void Bind_Btn();
 	void Set_FadePortHighlight();
 
 private:	
+	void SetActive_OperUI(_bool value);
 	void SetActive_PlayerInfoUI(_bool value);
 	void SetActive_CharacterSelectWindow(_bool value);
 	void Set_ClassInfo(CLASS_TYPE eClass);
 
 	void Update_HP();
 	void Update_HeroGauge();
+
+	void Update_OperWindow();
 
 private:
 	void Create_CharacterSelectWindow();
@@ -108,6 +131,7 @@ private:
 	void Create_OxenJumpText();
 	void Create_HpText();
 	void Create_PlayerNameText();
+	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
 };
 
 END

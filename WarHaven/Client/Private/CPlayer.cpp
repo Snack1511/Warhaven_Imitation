@@ -575,6 +575,10 @@ void CPlayer::Update_HP()
 
 void CPlayer::Update_HeroGauge()
 {
+	_bool IsHeroGaugeEnable = CUser::Get_Instance()->Is_OnHeroGauge();
+	if (!IsHeroGaugeEnable)
+		return;
+
 	m_fMaxGauge = 100.f;
 
 	if (!m_bAbleHero)

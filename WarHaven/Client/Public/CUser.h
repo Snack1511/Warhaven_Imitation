@@ -76,6 +76,8 @@ public:
 	void SetActive_HeroPortrait(_bool value);
 	void SetActive_OxenJumpText(_bool value);
 
+	_bool Is_OnHeroGauge(); 
+
 	void Enable_DamageFont(_uint eType, _float fDmg);
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 

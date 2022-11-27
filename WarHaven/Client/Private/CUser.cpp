@@ -251,6 +251,11 @@ void CUser::SetActive_OxenJumpText(_bool value)
 	m_pUI_HUD->SetActive_OxenJumpText(value);
 }
 
+_bool CUser::Is_OnHeroGauge()
+{
+	return m_pUI_HUD->Is_OnHeroGauge();
+}
+
 void CUser::Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime)
 {
 	m_pUI_HUD->Set_SkillCoolTime(iSkillType, fSkillCoolTime, fMaxCoolTime);
