@@ -56,8 +56,8 @@ public:
 
 
 		WEAPON_TYPE eWeapon;
-		_float fHP = 300.f;
-		_float fMaxHP = 300.f;
+		_float fHP = 30000.f;
+		_float fMaxHP = 30000.f;
 		_float fGuardBreakSpeed = 10.f;
 		_float fGuardDashSpeed = 10.f;
 		_float fRunSpeed = 4.f;

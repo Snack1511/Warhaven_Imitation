@@ -175,15 +175,16 @@ void CUnit_WarHammer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos, matWorld);
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", vHitPos, matWorld);
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos, matWorld);
-	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos, matWorld);
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", vHitPos, matWorld);
+	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos, matWorld);
+	////CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos, matWorld);
-	
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmashSpark_0"), Get_HitMatrix());
 	switch (m_eCurState)
 	{
 	case STATE_SPRINTATTACK_WARHAMMER:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_D", vHitPos, matWorld);
 		break;
 	case STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_Left", vHitPos, matWorld);
@@ -192,14 +193,15 @@ void CUnit_WarHammer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_Right", vHitPos, matWorld);
 		break;
 	case STATE_VERTICALATTACK_WARHAMMER_L:
-		break;
 	case STATE_VERTICALATTACK_WARHAMMER_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_D", vHitPos, matWorld);
 		break;
 	case STATE_ATTACK_STING_WARHAMMER_L:
-		break;
 	case STATE_ATTACK_STING_WARHAMMER_R:
+		
 		break;
 	case STATE_GROGGYATTACK_WARHAMMER:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Heading", vHitPos, matWorld);
 		break;
 	case STATE_AIRSPIKE_END_WARHAMMER:
 		break;

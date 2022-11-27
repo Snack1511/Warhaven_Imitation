@@ -640,8 +640,9 @@ void CRectEffects::My_Tick()
 			if (CURVE_ROTATION == m_eCurveType)
 			{
 
-				/*vUp = m_matTrans.XMLoad().r[1];
-				vRight = m_matTrans.XMLoad().r[0];*/
+				vRight = m_matTrans.XMLoad().r[0];
+				vUp = m_matTrans.XMLoad().r[1];
+
 				_float4x4 matRot;
 				_float4 vAxis = m_matTrans.XMLoad().r[2];
 				matRot = XMMatrixRotationAxis(vAxis.XMLoad(), ToRadian(m_tCreateData.fCurveAngle));
