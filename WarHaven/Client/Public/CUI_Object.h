@@ -91,12 +91,9 @@ private:	// Etc
 	_bool m_bIsInMouse = false;
 
 private:	// Lerp
-	_float4 m_vOriginPos;
-	_float m_fMoveAccTime = 0.f;
 	_bool m_bIsDoMoveY = false;
 
 	_float4 m_vOriginScale;
-	_float m_fScaleAccTime = 0.f;
 	_bool m_bIsDoScale = false;
 
 	_float m_fMoveDuration = 0.f;

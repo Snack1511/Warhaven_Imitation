@@ -157,7 +157,6 @@ void CUI_Object::DoMoveY(_float fMoveValue, _float fDuration)
 {
 	m_bIsDoMoveY = true;
 
-	m_vOriginPos = Get_Pos();
 	m_fMoveValue = fMoveValue;
 	m_fMoveDuration = fDuration;
 }
@@ -364,7 +363,7 @@ void CUI_Object::DoMove()
 {
 	if (m_bIsDoMoveY)
 	{
-		m_fMoveAccTime += fDT(0);
+		m_fAccTime += fDT(0);
 
 		_float fCurPosY = Get_PosY();
 		_float fMoveValue = (m_fMoveValue / m_fMoveDuration) * fDT(0);
@@ -372,12 +371,9 @@ void CUI_Object::DoMove()
 
 		Set_PosY(fResultPos);
 
-		if (m_fMoveAccTime >= m_fMoveDuration)
+		if (m_fAccTime >= m_fMoveDuration)
 		{
-			_float fResultPosY = m_vOriginPos.y + m_fMoveValue;
-			Set_PosY(fResultPosY);
-
-			m_fMoveAccTime = 0.f;
+			m_fAccTime = 0.f;
 			m_bIsDoMoveY = false;
 		}
 	}
@@ -387,7 +383,7 @@ void CUI_Object::DoScale()
 {
 	if (m_bIsDoScale)
 	{
-		m_fScaleAccTime += fDT(0);
+		m_fAccTime += fDT(0);
 
 		_float4 vCurScale = Get_Scale();
 
@@ -411,12 +407,11 @@ void CUI_Object::DoScale()
 			Set_FontOffset(vFontOffset.x, vFontOffset.y);
 		}
 
-		if (m_fScaleAccTime >= m_fScaleDuration)
+		if (m_fAccTime >= m_fScaleDuration)
 		{
-			_float fResultScale = m_vOriginScale.x + m_fScaleValue;
-			Set_Scale(fResultScale);
+			Set_Scale(m_vOriginScale.x + m_fScaleValue, m_vOriginScale.y + m_fScaleValue);
 
-			m_fScaleAccTime = 0.f;
+			m_fAccTime = 0.f;
 			m_bIsDoScale = false;
 		}
 	}
