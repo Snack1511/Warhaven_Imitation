@@ -106,6 +106,13 @@ PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 	//이전 위치 담은 Depth 가져오기
 
 	vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+	vector vDiffuseDesc = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
+
+	int iNumSamples = 5;
+	if (vDepthDesc.y >= 0.95f)
+	{
+		iNumSamples = 1;
+	}
 
 	//현재 Depth를 통해 월드위치 구하고
 	vector			vWorldPos;
@@ -138,23 +145,24 @@ PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 	float2 velocity = (vCurrentPos.xy - vPrevPos.xy) * 0.5f;
 
 
-	vector vDiffuseDesc = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
 
 	//In.vTexUV += velocity;
 	//velocity *= 0.05f;
 	//velocity /= g_numSamples;
 
-	velocity /= g_numSamples;
-	velocity *= 0.01f;
-	velocity.y *= 0.1f;
-	velocity /= g_fTimeDelta;
+	velocity /= iNumSamples;
 
-	velocity = max(min(velocity, 0.005f), -0.005f);
+	/*velocity *= 0.005f;
+	velocity.y *= 0.1f;
+	velocity /= g_fTimeDelta;*/
+
+	/*float maxVelocity = 0.01f;
+	velocity = max(min(velocity, maxVelocity), -maxVelocity);*/
 
 	//velocity /= g_fTimeDelta;
 	//velocity = max(min(velocity /g_numSamples, 0.005f), -0.005f);
 
-	for (int i = 1; i < g_numSamples; ++i)
+	for (int i = 1; i < iNumSamples; ++i)
 	{
 		In.vTexUV += velocity;
 		//velocity *= 0.5f;
@@ -164,7 +172,10 @@ PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 		vDiffuseDesc += vCurrentDiffuse;
 	} 
 	// 최종 블러 색상을 얻기 위해 모든 샘플의 평균을 냅니다.
-	float4 finalColor = vDiffuseDesc / g_numSamples;
+	float4 finalColor = vDiffuseDesc / iNumSamples;
+
+
+
 
 	Out.vColor = finalColor;
 

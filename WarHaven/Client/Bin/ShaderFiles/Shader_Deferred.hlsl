@@ -290,6 +290,7 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	{
 		vector			vSkyDesc = g_SkyTexture.Sample(DefaultSampler, In.vTexUV);
 		Out.vColor = vSkyDesc;
+		//Out.vColor.a = 0.1f;
 	}
 
 
