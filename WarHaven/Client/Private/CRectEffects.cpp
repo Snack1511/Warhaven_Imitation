@@ -586,7 +586,7 @@ void CRectEffects::My_Tick()
 
 			vOriginPos += m_pDatas[i].InstancingData.vDir * m_pDatas[i].InstancingData.fSpeed * fTimeDelta;
 
-			vOriginPos = Switch_CurveType(vOriginPos, i);
+			vOriginPos = Switch_CurveType(vOriginPos, i, fTimeDelta);
 
 
 
@@ -1199,7 +1199,7 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 }
 
-_float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
+_float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDelta)
 {
 	_float fY;
 	_float fX;
@@ -1212,9 +1212,9 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 	case Client::CURVE_SIN:
 		fY = m_pDatas[iIdx].InstancingData.fCurvePower * sinf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc); // a sin(bx)
 
-		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
-		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y;
-		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
+		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x * fTimeDelta;
+		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y * fTimeDelta;
+		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z * fTimeDelta;
 		break;
 	case Client::CURVE_SPIRAL:
 
@@ -1224,16 +1224,13 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx)
 		fY = m_pDatas[iIdx].InstancingData.fCurvePower *
 			cosf(-1.f * m_pDatas[iIdx].InstancingData.fMovingAcc * PI * 0.5f);
 
-		fX *= m_pDatas[iIdx].InstancingData.fCurveFrequency;
-		fY *= m_pDatas[iIdx].InstancingData.fCurveFrequency;
+		vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x * fTimeDelta;
+		vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y * fTimeDelta;
+		vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z * fTimeDelta;
 
-		vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x;
-		vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y;
-		vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z;
-
-		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x;
-		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y;
-		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z;
+		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x * fTimeDelta;
+		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y * fTimeDelta;
+		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z * fTimeDelta;
 
 		break;
 	default:

@@ -72,7 +72,7 @@ HRESULT CUI_HUD::Start()
 {
 	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		SetActive_OperUI(false);
+		SetActive_OperUI(false); // 화면 가려져서 true 에서 바꿈
 	}
 	else
 	{
