@@ -897,6 +897,9 @@ void CUI_HUD::Update_OperWindow()
 				m_pArrOperSelectIcon[i]->DoMoveX(50.f, fDuration);
 			}
 
+			Enable_Fade(m_pOperMapIcon, fDuration);
+			Enable_Fade(m_pOperMapBG, fDuration);
+
 			// 오른쪽 맵이랑 분대원 정보
 
 			// 맵에 거점에 해당하는 버튼
@@ -978,13 +981,14 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	Create_OperProfile();
 	Create_OperSideBG();
 	Create_OperSelectCharacter();
+	Create_OperMap();
 }
 
 void CUI_HUD::Set_FadeOperSelectChaderUI()
 {
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
 	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
 	tFadeDesc.bFadeInFlag = FADE_NONE;
 	tFadeDesc.bFadeOutFlag = FADE_NONE;
@@ -998,6 +1002,8 @@ void CUI_HUD::Set_FadeOperSelectChaderUI()
 	GET_COMPONENT_FROM(m_pOperSelectChar, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pOperSelectCharPort, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pOperSelectIcon, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
 void CUI_HUD::Create_OperProfile()
@@ -1009,7 +1015,7 @@ void CUI_HUD::Create_OperProfile()
 
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
 	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
 	tFadeDesc.bFadeInFlag = FADE_NONE;
 	tFadeDesc.bFadeOutFlag = FADE_NONE;
@@ -1178,4 +1184,30 @@ void CUI_HUD::Create_OperSelectCharacter()
 	m_pArrOperSelectIcon[4]->Set_Pos(fMidPosIconX, -fMidPosY);
 	m_pArrOperSelectIcon[2]->Set_Pos(fBotPosIconX, fBotPosY);
 	m_pArrOperSelectIcon[3]->Set_Pos(fBotPosIconX, -fBotPosY);
+}
+
+void CUI_HUD::Create_OperMap()
+{
+	m_pOperMapIcon = CUI_Object::Create();
+	m_pOperMapIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_MapIcon2.dds"));
+	m_pOperMapIcon->Set_Pos(540.f, 150.f);
+	m_pOperMapIcon->Set_Scale(32.f);
+	m_pOperMapIcon->Set_Sort(0.47f);
+	m_pOperMapIcon->Set_FontRender(true);
+	m_pOperMapIcon->Set_FontStyle(true);
+	m_pOperMapIcon->Set_FontOffset(-100.f, -15.f);
+	m_pOperMapIcon->Set_FontScale(0.3f);
+	m_pOperMapIcon->Set_FontText(TEXT("지도"));
+
+	m_pOperMapBG = CUI_Object::Create();
+	m_pOperMapBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SwitchHandle.png"));
+	m_pOperMapBG->Set_Sort(0.48f);
+	m_pOperMapBG->Set_Scale(65.f);
+	m_pOperMapBG->Set_Pos(540.f, 150.f);
+
+	CREATE_GAMEOBJECT(m_pOperMapIcon, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperMapIcon);
+
+	CREATE_GAMEOBJECT(m_pOperMapBG, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperMapBG);
 }

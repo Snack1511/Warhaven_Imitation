@@ -77,8 +77,10 @@ private:	// 작전회의
 
 	CUI_Object* m_pOperSideBG = nullptr;
 	CUI_Object* m_pArrOperSideBG[2];
+
 	CUI_Object* m_pOperSelectChar = nullptr;
 	CUI_Object* m_pArrOperSelectChar[6];
+
 	CUI_Object* m_pOperSelectCharPort = nullptr;
 	CUI_Object* m_pArrOperSelectCharPort[6];
 
@@ -88,9 +90,10 @@ private:	// 작전회의
 	CUI_Object* m_pOperSelectIcon = nullptr;
 	CUI_Object* m_pArrOperSelectIcon[6];
 
-	CUI_Object* m_pOperSelectLight = nullptr;
 	CUI_Object* m_pOperMapIcon = nullptr;
 	CUI_Object* m_pOperMapBG = nullptr;
+
+	CUI_Object* m_pOperSelectLight = nullptr;
 
 	_uint m_iOperWindowCnt = 0;
 	_float m_fSmokeUV = 0.f;
@@ -159,6 +162,7 @@ private:	// OperWindow
 	void Create_OperProfile();
 	void Create_OperSideBG();
 	void Create_OperSelectCharacter();
+	void Create_OperMap();
 };
 
 END
