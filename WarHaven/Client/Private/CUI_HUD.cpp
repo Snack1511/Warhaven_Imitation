@@ -54,7 +54,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HpText();
 	Create_PlayerNameText();
 
-	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	if ((m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP))
 	{
 		Create_OperWindow(m_eLoadLevel);
 	}
@@ -72,7 +72,7 @@ HRESULT CUI_HUD::Start()
 {
 	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		SetActive_OperUI(true);
+		SetActive_OperUI(false);
 	}
 	else
 	{
