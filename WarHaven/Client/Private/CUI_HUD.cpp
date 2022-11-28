@@ -82,6 +82,8 @@ HRESULT CUI_HUD::Start()
 	Bind_Btn();
 
 	Set_FadePortHighlight();
+	Set_FadeOperBlackBG();
+	Set_FadeOperProfile();
 
 	__super::Start();
 
@@ -96,7 +98,8 @@ void CUI_HUD::My_Tick()
 
 	Update_HP();
 	Update_HeroGauge();
-	//Update_OperWindow();
+
+	Update_OperWindow();
 
 	if (m_pBG->Is_Valid())
 	{
@@ -763,10 +766,54 @@ void CUI_HUD::Create_PlayerNameText()
 	DISABLE_GAMEOBJECT(m_pPlayerNameText);
 }
 
+void CUI_HUD::Set_FadeOperBlackBG()
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.15f;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
+
+	GET_COMPONENT_FROM(m_pOperBlackBG, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperTextImg, CFader)->Get_FadeDesc() = tFadeDesc;
+}
+
+void CUI_HUD::Set_FadeOperProfile()
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.5f;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
+
+	for (int i = 0; i < 4; ++i)
+	{
+		GET_COMPONENT_FROM(m_pArrOperProfile[i], CFader)->Get_FadeDesc() = tFadeDesc;
+	}
+}
+
 void CUI_HUD::Update_OperWindow()
 {
-	cout << GET_COMPONENT_FROM(m_pOperWindow, CFader)->Get_FadeDesc().fAlpha << endl;
-	cout << m_pOperWindow->Get_Color().x << m_pOperWindow->Get_Color().y << m_pOperWindow->Get_Color().z << endl;;
+	if (!m_pOperWindow)
+		return;
 
 	if (m_pOperWindow->Is_Valid())
 	{
@@ -790,14 +837,15 @@ void CUI_HUD::Update_OperWindow()
 		{
 			if (m_pOperBlackBG->Is_Valid())
 			{
-				if (m_fAccTime > 0.3f)
+				_float fDuration = 0.3f;
+				if (m_fAccTime > fDuration)
 				{
 					m_fAccTime = 0.f;
 
 					if (!m_pOperTextImg->Is_Valid())
 					{
-						ENABLE_GAMEOBJECT(m_pOperTextImg);
-						m_pOperTextImg->DoScale(-512.f, 0.3);
+						Enable_Fade(m_pOperTextImg, fDuration);
+						m_pOperTextImg->DoScale(-512.f, fDuration);
 					}
 
 					m_iOperWindowCnt++;
@@ -812,8 +860,34 @@ void CUI_HUD::Update_OperWindow()
 				{
 					m_fAccTime = 0.f;
 
-					m_pOperTextImg->DoMoveY(200.f, 0.5f);
-					m_pOperTextImg->DoScale(-256.f, 1.f);
+					_float fDuration = 0.3f;
+					m_pOperTextImg->DoMoveY(200.f, fDuration);
+					m_pOperTextImg->DoScale(-256.f, fDuration);
+
+					for (int i = 0; i < 4; ++i)
+					{
+						Enable_Fade(m_pArrOperProfile[i], fDuration);
+					}
+
+					m_iOperWindowCnt++;
+				}
+			}
+		}
+		else if (m_iOperWindowCnt == 3)
+		{
+			if (m_pArrOperProfile[0]->Is_Valid())
+			{
+				if (m_fAccTime > 5.f)
+				{
+					m_fAccTime = 0.f;
+
+					_float fDuration = 0.3f;
+					Disable_Fade(m_pOperBlackBG, fDuration);
+					Disable_Fade(m_pOperTextImg, fDuration);
+					for (int i = 0; i < 4; ++i)
+					{
+						Disable_Fade(m_pArrOperProfile[i], fDuration);
+					}
 
 					m_iOperWindowCnt++;
 				}
@@ -830,29 +904,12 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	m_pOperBlackBG->Set_Sort(0.5f);
 	m_pOperBlackBG->Set_Color(_float4(1.f, 1.f, 1.f, 0.9f));
 
-	FADEDESC tFadeDesc;
-	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
-	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-
-	tFadeDesc.bFadeInFlag = FADE_NONE;
-	tFadeDesc.bFadeOutFlag = FADE_NONE;
-
-	tFadeDesc.fFadeInStartTime = 0.f;
-	tFadeDesc.fFadeInTime = 0.1f;
-
-	tFadeDesc.fFadeOutStartTime = 0.f;
-	tFadeDesc.fFadeOutTime = 0.f;
-
-	GET_COMPONENT_FROM(m_pOperBlackBG, CFader)->Get_FadeDesc() = tFadeDesc;
-
 	m_pOperWindow = CUI_Object::Create();
 	m_pOperWindow->Set_PosY(45.f);
 	m_pOperWindow->Set_Scale(4096.f);
 	m_pOperWindow->Set_Sort(0.51f);
 
-	GET_COMPONENT_FROM(m_pOperWindow, CUI_Renderer)->Set_Pass(VTXTEX_PASS_DEBUG);
+	// GET_COMPONENT_FROM(m_pOperWindow, CUI_Renderer)->Set_Pass(VTXTEX_PASS_DEBUG);
 
 	switch (eLoadLevel)
 	{
@@ -875,4 +932,30 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 
 	CREATE_GAMEOBJECT(m_pOperTextImg, RENDER_UI);
 	DISABLE_GAMEOBJECT(m_pOperTextImg);
+
+	Create_OperProfile();
+}
+
+void CUI_HUD::Create_OperProfile()
+{
+	m_pOperProfile = CUI_Object::Create();
+
+	m_pOperProfile->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultArcher.dds"));
+
+	m_pOperProfile->Set_Scale(156.f, 350.f);
+	m_pOperProfile->Set_Sort(0.49f);
+
+	CREATE_GAMEOBJECT(m_pOperProfile, RENDER_UI);
+	DELETE_GAMEOBJECT(m_pOperProfile);
+
+	for (int i = 0; i < 4; ++i)
+	{
+		m_pArrOperProfile[i] = m_pOperProfile->Clone();
+
+		_float fPosX = -375.f + (i * 250.f);
+		m_pArrOperProfile[i]->Set_PosX(fPosX);
+
+		CREATE_GAMEOBJECT(m_pArrOperProfile[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pArrOperProfile[i]);
+	}
 }

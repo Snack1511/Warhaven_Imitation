@@ -69,7 +69,7 @@ void CUI_UnitHUD::My_Tick()
 	}
 	else
 	{
-		m_vOffset = _float4(-0.2f, 2.f, 0.f);
+		m_vOffset = _float4(-0.17f, 2.f, 0.f);
 
 		m_pUnitNameText->Set_FontRender(true);
 		m_pUnitNameText->Set_Color(vColorAlpha);		
