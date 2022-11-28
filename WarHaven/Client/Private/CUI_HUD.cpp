@@ -73,7 +73,7 @@ HRESULT CUI_HUD::Start()
 
 	if ((m_eLoadLevel == LEVEL_TEST) || (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP))
 	{
-		SetActive_PlayerInfoUI(true);
+		//SetActive_PlayerInfoUI(true);
 	}
 	else
 	{
