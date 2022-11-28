@@ -711,7 +711,7 @@ void CRectEffects::My_LateTick()
 	if (m_bSorting)
 	{
 		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
-		vCamPos *= 1000.f;
+		vCamPos *= 1500.f;
 
 		//섞고난 RectInstance가 몇번째 인덱스로 가있는지 알 수 있엉?
 

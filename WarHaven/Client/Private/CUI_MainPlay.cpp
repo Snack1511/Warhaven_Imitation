@@ -424,7 +424,7 @@ void CUI_MainPlay::Create_ModeBG()
 
 	m_pLine = CUI_Object::Create();
 	m_pLine->Set_Pos(0.f, -200.f);
-	m_pLine->Set_Scale(1000.f, 20.f);
+	m_pLine->Set_Scale(1500.f, 20.f);
 	m_pLine->Set_Sort(0.85f);
 	m_pLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_LineDeco.png"));
 

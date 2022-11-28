@@ -70,7 +70,7 @@ HRESULT CLevel_Paden::Render()
 		return E_FAIL;
 
 #ifdef _DEBUG
-	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Test Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
+	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Paden Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
 #endif
@@ -78,7 +78,7 @@ HRESULT CLevel_Paden::Render()
 #ifdef RELEASE_IMGUI
 
 #ifndef _DEBUG
-	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Test Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
+	if (FAILED(GAMEINSTANCE->Render_Font(L"DefaultFont", L"Paden Level", _float2(100.f, 30.f), _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
 #endif // !_DEBUG

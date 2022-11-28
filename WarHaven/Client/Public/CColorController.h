@@ -27,8 +27,10 @@ public:
 			FADEOUT,
 			FADE_END,
 		};
+		FADETYPE	eCurFadeType = FADEINREADY;
 		FADE_STYLE	eFadeStyle = FADESTYLE_END;
 
+		_float		fFadeTimeAcc = 0.f;
 		_float		fFadeInStartTime = 0.f;
 		_float		fFadeInTime = 0.f;
 		_float		fFadeOutStartTime = 9999.f;
@@ -40,7 +42,7 @@ public:
 		_float4 vTargetColor = {};
 
 
-		_uint iMeshPartType = 0;
+		_uint iMeshPartType;
 		_uint iStartKeyFrame = 0;
 		_uint iEndKeyFrame = 0;
 	};
@@ -56,7 +58,7 @@ public:
 	static CColorController* Create(_uint iGroupIdx);
 
 public: //starttime > 몇초부터 변할지 endtime > starttime으로부터 걸리는 시간
-	HRESULT Set_ColorControll(const COLORDESC& tColorDesc);
+	HRESULT Add_ColorControll(const COLORDESC& tColorDesc);
 
 public:
 	// CComponent을(를) 통해 상속
@@ -74,19 +76,13 @@ private:
 	CModel* m_pTargetModel = nullptr;
 	CAnimator* m_pTargetAnimator = nullptr;
 
-	_float		m_fFadeTimeAcc = 0.f;
-	COLORDESC::FADETYPE	m_eCurFadeType = COLORDESC::FADEINREADY;
-
-
-	_float4 m_vOriginColor[MODEL_PART_END];
-	_uint	m_iCurModelPart = 0;
+private:
+	_float4 m_vOriginColor[MODEL_PART_END] = {};
+	list<COLORDESC> m_ColorDesclist;
 
 private:
-	COLORDESC m_tColorDesc;
-
-private:
-	void LerpColor();
-	void Fade_Time();
-	void Fade_KeyFrame();
+	_bool LerpColor(COLORDESC& tColorDesc);
+	_bool Fade_Time(COLORDESC& tColorDesc);
+	_bool Fade_KeyFrame(COLORDESC& tColorDesc);
 };
 END

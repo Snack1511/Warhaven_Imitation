@@ -70,11 +70,11 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	/*if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
 		SetActive_OperUI(true);
 	}
-	else
+	else*/
 	{
 		SetActive_PlayerInfoUI(true);
 	}

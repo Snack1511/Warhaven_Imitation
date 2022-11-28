@@ -94,7 +94,7 @@ void CValkyrie_Attack_HorizontalDown_R::Enter(CUnit* pOwner, CAnimator* pAnimato
 	m_tColorDesc.iEndKeyFrame = 4;
 
 
-	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(m_tColorDesc);
 
 	/* Owner¿« Animator Set Idle∑Œ */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

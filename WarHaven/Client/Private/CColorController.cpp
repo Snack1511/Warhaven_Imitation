@@ -32,12 +32,9 @@ CColorController* CColorController::Create(_uint iGroupIdx)
 	return pInstance;
 }
 
-HRESULT CColorController::Set_ColorControll(const COLORDESC& tColorDesc)
+HRESULT CColorController::Add_ColorControll(const COLORDESC& tColorDesc)
 {
-	m_tColorDesc = tColorDesc;
-	m_iCurModelPart = m_tColorDesc.iMeshPartType;
-	m_eCurFadeType = COLORDESC::FADEINREADY;
-	m_fFadeTimeAcc = 0.f;
+	m_ColorDesclist.push_back(tColorDesc);
 
 
 	if (!m_pTargetAnimator)
@@ -65,7 +62,7 @@ void CColorController::Start()
 
 	for (_uint i = 0; i < MODEL_PART_END; ++i)
 	{
-		m_vOriginColor[i] = m_pTargetModel->Get_Color(i);
+		m_vOriginColor[i] = ZERO_VECTOR;
 	}
 
 	if(TYPE_ANIM == m_pTargetModel->Get_ModelType())
@@ -77,7 +74,16 @@ void CColorController::Tick()
 	if (!m_pTargetModel)
 		return;
 
-	LerpColor();
+	for (auto iter = m_ColorDesclist.begin(); iter != m_ColorDesclist.end();)
+	{
+		if (LerpColor(*iter))
+		{
+			++iter;
+		}
+		else
+			iter = m_ColorDesclist.erase(iter);
+
+	}
 }
 
 void CColorController::Late_Tick()
@@ -103,15 +109,15 @@ void CColorController::OnDead()
 	__super::OnDead();
 }
 
-void CColorController::LerpColor()
+_bool CColorController::LerpColor(COLORDESC& tColorDesc)
 {
-	switch (m_tColorDesc.eFadeStyle)
+	switch (tColorDesc.eFadeStyle)
 	{
 	case Client::CColorController::TIME:
-		Fade_Time();
+		return Fade_Time(tColorDesc);
 		break;
 	case Client::CColorController::KEYFRAME:
-		Fade_KeyFrame();
+		return Fade_KeyFrame(tColorDesc);
 		break;
 	case Client::CColorController::COLORDESC::FADE_END:
 		break;
@@ -119,74 +125,75 @@ void CColorController::LerpColor()
 		break;
 	}
 
-		
+	return true;
 }
 
-void CColorController::Fade_Time()
+_bool CColorController::Fade_Time(COLORDESC& tColorDesc)
 {
-	m_fFadeTimeAcc += fDT(0);
+	tColorDesc.fFadeTimeAcc += fDT(0);
 
-	switch (m_eCurFadeType)
+	switch (tColorDesc.eCurFadeType)
 	{
 	case COLORDESC::FADEINREADY:
-		if (m_fFadeTimeAcc >= m_tColorDesc.fFadeInStartTime)
+		if (tColorDesc.fFadeTimeAcc >= tColorDesc.fFadeInStartTime)
 		{
-			m_fFadeTimeAcc = 0.f;
-			m_eCurFadeType = COLORDESC::FADEIN;
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_vOriginColor[m_iCurModelPart]);
+			tColorDesc.fFadeTimeAcc = 0.f;
+			tColorDesc.eCurFadeType = COLORDESC::FADEIN;
+
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
 		}
 		else
 		{
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_vOriginColor[m_iCurModelPart]);
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
 		}
 
 		break;
 
 	case COLORDESC::FADEIN:
-		if (m_fFadeTimeAcc >= m_tColorDesc.fFadeInTime)
+		if (tColorDesc.fFadeTimeAcc >= tColorDesc.fFadeInTime)
 		{
-			m_fFadeTimeAcc = 0.f;
-			m_eCurFadeType = COLORDESC::FADEOUTREADY;
+			tColorDesc.fFadeTimeAcc = 0.f;
+			tColorDesc.eCurFadeType = COLORDESC::FADEOUTREADY;
 
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_tColorDesc.vTargetColor);
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, tColorDesc.vTargetColor);
 		}
 		else
 		{
-			_float fRatio = m_fFadeTimeAcc / m_tColorDesc.fFadeInTime;
+			_float fRatio = tColorDesc.fFadeTimeAcc / tColorDesc.fFadeInTime;
 			_float4 vLerpColor =
-				XMVectorLerp(m_vOriginColor[m_iCurModelPart].XMLoad(), m_tColorDesc.vTargetColor.XMLoad(), fRatio);
+				XMVectorLerp(m_vOriginColor[tColorDesc.iMeshPartType].XMLoad(), tColorDesc.vTargetColor.XMLoad(), fRatio);
 
-			m_tColorDesc.vCurColor = vLerpColor;
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_tColorDesc.vCurColor);
+			tColorDesc.vCurColor = vLerpColor;
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, tColorDesc.vCurColor);
 		}
 
 		break;
 
 	case COLORDESC::FADEOUTREADY:
-		if (m_fFadeTimeAcc >= m_tColorDesc.fFadeOutStartTime)
+		if (tColorDesc.fFadeTimeAcc >= tColorDesc.fFadeOutStartTime)
 		{
-			m_fFadeTimeAcc = 0.f;
-			m_eCurFadeType = COLORDESC::FADEOUT;
+			tColorDesc.fFadeTimeAcc = 0.f;
+			tColorDesc.eCurFadeType = COLORDESC::FADEOUT;
 		}
 
 		break;
 
 	case COLORDESC::FADEOUT:
-		if (m_fFadeTimeAcc >= m_tColorDesc.fFadeOutTime)
+		if (tColorDesc.fFadeTimeAcc >= tColorDesc.fFadeOutTime)
 		{
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_vOriginColor[m_iCurModelPart]);
-			m_eCurFadeType = COLORDESC::FADE_END;
-
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
+			tColorDesc.eCurFadeType = COLORDESC::FADE_END;
+			return false;
 		}
 		else
 		{
-			_float fRatio = m_fFadeTimeAcc / m_tColorDesc.fFadeOutTime;
+			_float fRatio = tColorDesc.fFadeTimeAcc / tColorDesc.fFadeOutTime;
 			_float4 vLerpColor =
-				XMVectorLerp(m_tColorDesc.vTargetColor.XMLoad(), m_vOriginColor[m_iCurModelPart].XMLoad(), fRatio);
+				XMVectorLerp(tColorDesc.vTargetColor.XMLoad(), m_vOriginColor[tColorDesc.iMeshPartType].XMLoad(), fRatio);
 
-			m_tColorDesc.vCurColor = vLerpColor;
+			tColorDesc.vCurColor = vLerpColor;
 
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_tColorDesc.vCurColor);
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, tColorDesc.vCurColor);
 		}
 
 		break;
@@ -194,74 +201,78 @@ void CColorController::Fade_Time()
 	default:
 		break;
 	}
+
+	return true;
 }
 
-void CColorController::Fade_KeyFrame()
+_bool CColorController::Fade_KeyFrame(COLORDESC& tColorDesc)
 {
 	_uint iCurFrame = m_pTargetAnimator->Get_CurAnimFrame();
 	
-	m_fFadeTimeAcc += fDT(0);
+	tColorDesc.fFadeTimeAcc += fDT(0);
 
-	switch (m_eCurFadeType)
+	switch (tColorDesc.eCurFadeType)
 	{
 	case COLORDESC::FADEINREADY:
-		if (iCurFrame >= m_tColorDesc.iStartKeyFrame)
+		if (iCurFrame >= tColorDesc.iStartKeyFrame)
 		{
-			m_fFadeTimeAcc = 0.f;
-			m_eCurFadeType = COLORDESC::FADEIN;
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_vOriginColor[m_iCurModelPart]);
+			tColorDesc.fFadeTimeAcc = 0.f;
+			tColorDesc.eCurFadeType = COLORDESC::FADEIN;
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
 		}
 		else
 		{
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_vOriginColor[m_iCurModelPart]);
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
 		}
 
 		break;
 
 	case COLORDESC::FADEIN:
-		if (m_fFadeTimeAcc >= m_tColorDesc.fFadeInTime)
+		if (tColorDesc.fFadeTimeAcc >= tColorDesc.fFadeInTime)
 		{
-			m_fFadeTimeAcc = 0.f;
-			m_eCurFadeType = COLORDESC::FADEOUTREADY;
+			tColorDesc.fFadeTimeAcc = 0.f;
+			tColorDesc.eCurFadeType = COLORDESC::FADEOUTREADY;
 
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_tColorDesc.vTargetColor);
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, tColorDesc.vTargetColor);
 		}
 		else
 		{
-			_float fRatio = m_fFadeTimeAcc / m_tColorDesc.fFadeInTime;
+			_float fRatio = tColorDesc.fFadeTimeAcc / tColorDesc.fFadeInTime;
 			_float4 vLerpColor =
-				XMVectorLerp(m_vOriginColor[m_iCurModelPart].XMLoad(), m_tColorDesc.vTargetColor.XMLoad(), fRatio);
+				XMVectorLerp(m_vOriginColor[tColorDesc.iMeshPartType].XMLoad(), tColorDesc.vTargetColor.XMLoad(), fRatio);
 
-			m_tColorDesc.vCurColor = vLerpColor;
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_tColorDesc.vCurColor);
+			tColorDesc.vCurColor = vLerpColor;
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, tColorDesc.vCurColor);
 		}
 
 		break;
 
 	case COLORDESC::FADEOUTREADY:
-		if (iCurFrame >= m_tColorDesc.iEndKeyFrame)
+		if (iCurFrame >= tColorDesc.iEndKeyFrame)
 		{
-			m_fFadeTimeAcc = 0.f;
-			m_eCurFadeType = COLORDESC::FADEOUT;
+			tColorDesc.fFadeTimeAcc = 0.f;
+			tColorDesc.eCurFadeType = COLORDESC::FADEOUT;
 		}
 
 		break;
 
 	case COLORDESC::FADEOUT:
-		if (m_fFadeTimeAcc >= m_tColorDesc.fFadeOutTime)
+		if (tColorDesc.fFadeTimeAcc >= tColorDesc.fFadeOutTime)
 		{
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_vOriginColor[m_iCurModelPart]);
-			m_eCurFadeType = COLORDESC::FADE_END;
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
+			tColorDesc.eCurFadeType = COLORDESC::FADE_END;
+			return false;
+
 		}
 		else
 		{
-			_float fRatio = m_fFadeTimeAcc / m_tColorDesc.fFadeOutTime;
+			_float fRatio = tColorDesc.fFadeTimeAcc / tColorDesc.fFadeOutTime;
 			_float4 vLerpColor =
-				XMVectorLerp(m_tColorDesc.vTargetColor.XMLoad(), m_vOriginColor[m_iCurModelPart].XMLoad(), fRatio);
+				XMVectorLerp(tColorDesc.vTargetColor.XMLoad(), m_vOriginColor[tColorDesc.iMeshPartType].XMLoad(), fRatio);
 
-			m_tColorDesc.vCurColor = vLerpColor;
+			tColorDesc.vCurColor = vLerpColor;
 
-			m_pTargetModel->Set_ShaderColor(m_tColorDesc.iMeshPartType, m_tColorDesc.vCurColor);
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, tColorDesc.vCurColor);
 		}
 
 		break;
@@ -269,5 +280,8 @@ void CColorController::Fade_KeyFrame()
 	default:
 		break;
 	}
+
+	return true;
+
 
 }

@@ -262,6 +262,8 @@ HRESULT CRender_Manager::Initialize()
 		return E_FAIL;
 
 	/*RimLight*/
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_RimLight"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_RimLightFlag"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
@@ -308,6 +310,9 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_UIFlag"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_PostEffect"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_MotionBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* SkyBox */
@@ -369,6 +374,10 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_OutlineAcc"), TEXT("Target_Outline"))))
 		return E_FAIL;
 
+	/*For RimLight*/
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_RimLightAcc"), TEXT("Target_RimLight"))))
+		return E_FAIL;
+
 	/*For Shadow*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ShadowAcc"), TEXT("Target_Shadow"))))
 		return E_FAIL;
@@ -405,6 +414,10 @@ HRESULT CRender_Manager::Initialize()
 
 	/*For EffectBlur*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_EffectBlurAcc"), TEXT("Target_EffectBlur"))))
+		return E_FAIL;
+
+	/*For MotionBlur*/
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_MotionBlurAcc"), TEXT("Target_MotionBlur"))))
 		return E_FAIL;
 
 	/*For Decal*/
@@ -465,6 +478,9 @@ HRESULT CRender_Manager::Initialize()
 	fPosY += fSize;
 	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Flag"), fPosX, fPosY, fSize, fSize)))
 		return E_FAIL;
+	fPosY += fSize;
+	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_RimLight"), fPosX, fPosY, fSize, fSize)))
+		return E_FAIL;
 
 	fPosX += fSize;
 	fPosY = fStep;
@@ -500,6 +516,10 @@ HRESULT CRender_Manager::Initialize()
 		return E_FAIL;
 	fPosY += fSize;
 	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Distortion"), fPosX, fPosY, fSize, fSize)))
+		return E_FAIL;
+	fPosY += fSize;
+	fPosY += fSize;
+	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_MotionBlur"), fPosX, fPosY, fSize, fSize)))
 		return E_FAIL;
 
 	fPosX -= fSize;
@@ -661,8 +681,11 @@ HRESULT CRender_Manager::Render()
 
 	if (FAILED(Render_ShadowBlur()))
 		return E_FAIL;
+
+	if (FAILED(Render_RimLight()))
+		return E_FAIL;
 	
-	//Lights, Shadow, DOF
+	//RimLight, Outline, Lights, Shadow, DOF
 	if (FAILED(Render_ForwardBlend()))
 		return E_FAIL;
 
@@ -671,6 +694,8 @@ HRESULT CRender_Manager::Render()
 
 	if (FAILED(Render_Outline()))
 		return E_FAIL;
+
+	
 
 	if (FAILED(Render_BloomBlend()))
 		return E_FAIL;
@@ -717,6 +742,9 @@ HRESULT CRender_Manager::Render()
 		return E_FAIL;
 
 	if (FAILED(Render_PostEffect()))
+		return E_FAIL;
+
+	if (FAILED(Render_MotionBlur()))
 		return E_FAIL;
 
 	/* UI */
@@ -774,6 +802,8 @@ HRESULT CRender_Manager::Render_Debug()
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_ShadowBlurAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_ForwardBloomBlurAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_UIBloomBlurAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
+	m_pTarget_Manager->Render_Debug(TEXT("MRT_RimLightAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
+	m_pTarget_Manager->Render_Debug(TEXT("MRT_MotionBlurAcc"), m_vecShader[SHADER_DEFERRED], m_pMeshRect);
 
 
 
@@ -933,6 +963,46 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 
 	return S_OK;
 }
+HRESULT CRender_Manager::Render_RimLight()
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_RimLightAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_RimLightFlag")))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_NormalTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Normal")))))
+		return E_FAIL;
+
+	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
+	/*m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+
+	_float4x4		ViewMatrixInv, ProjMatrixInv;
+
+	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(GAMEINSTANCE->Get_CurViewMatrix().Inverse().XMLoad()));
+	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(GAMEINSTANCE->Get_CurProjMatrix().Inverse().XMLoad()));
+
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
+
+	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCamLook();
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4));
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamLook", &vCamLook, sizeof(_float4));*/
+
+	m_vecShader[SHADER_DEFERRED]->Begin(9);
+
+	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+	return S_OK;
+}
 HRESULT CRender_Manager::Render_ForwardBloom()
 {
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ForwardBloomAcc"))))
@@ -1073,6 +1143,9 @@ HRESULT CRender_Manager::Render_ForwardBlend()
 		return E_FAIL;
 
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BlurTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_VerticalBlur")))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_RimLightTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_RimLight")))))
 		return E_FAIL;
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
@@ -1622,6 +1695,53 @@ HRESULT CRender_Manager::Render_FinalBlend()
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Render_MotionBlur()
+{
+	//1. 모션블러 텍스쳐 굽기
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_MotionBlurAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_PostEffect")))))
+		return E_FAIL;
+
+	//이전 행렬 던지기
+	_float4x4		OldViewMatrix, OldProjMatrix;
+
+	XMStoreFloat4x4(&OldViewMatrix, XMMatrixTranspose(CCamera_Manager::Get_Instance()->Get_OldView().XMLoad()));
+	XMStoreFloat4x4(&OldProjMatrix, XMMatrixTranspose(CCamera_Manager::Get_Instance()->Get_OldProj().XMLoad()));
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_OldViewMatrix", &OldViewMatrix, sizeof(_float4x4));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_OldProjMatrix", &OldProjMatrix, sizeof(_float4x4));
+
+	_float4x4		ViewMatrixInv, ProjMatrixInv;
+
+	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(GAMEINSTANCE->Get_CurViewMatrix().Inverse().XMLoad()));
+	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(GAMEINSTANCE->Get_CurProjMatrix().Inverse().XMLoad()));
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
+
+	_float fTimeDelta = fDT(0);
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fTimeDelta", &fTimeDelta, sizeof(_float));
+
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(5)))
+		return E_FAIL;
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Render_UI()
 {
 	Sort_UIGroup();
@@ -1708,7 +1828,7 @@ HRESULT CRender_Manager::Render_UIBlend()
 	/*if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_UIBloomBlendAcc"))))
 		return E_FAIL;*/
 
-	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(TEXT("Target_PostEffect")))))
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(TEXT("Target_MotionBlur")))))
 		return E_FAIL;
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UIForward")))))
 		return E_FAIL;
@@ -1726,7 +1846,6 @@ HRESULT CRender_Manager::Render_UIBlend()
 
 	//if (FAILED(m_pTarget_Manager->End_MRT()))
 	//	return E_FAIL;
-
 
 	return S_OK;
 }

@@ -33,7 +33,7 @@ private:
 	// 길고 두 줄
 	_float2 m_vLongPopupScale2 = _float2(880.f, 140.f);
 	// 더 길고 두 줄
-	_float2 m_vLongPopupScale3 = _float2(1000.f, 140.f);
+	_float2 m_vLongPopupScale3 = _float2(1500.f, 140.f);
 
 private:
 	void Init_Popup();

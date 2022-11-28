@@ -90,6 +90,12 @@ void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
     pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
+
+
+
+   
+    
+
     /* OwnerÀÇ Animator Set Idle·Î */
     m_fMaxSpeed = pOwner->Get_Status().fSprintAttackSpeed;
     pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);

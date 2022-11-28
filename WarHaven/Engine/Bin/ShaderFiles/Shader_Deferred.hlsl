@@ -10,6 +10,7 @@ vector		g_vLightPos;
 float		g_fRange;
 
 vector		g_vCamPosition;
+vector		g_vCamLook;
 
 vector		g_vLightDiffuse;
 vector		g_vLightAmbient;
@@ -41,6 +42,8 @@ texture2D	g_BloomTexture;
 texture2D	g_BloomOriginTexture;
 texture2D	g_DistortionTexture;
 texture2D	g_FogTexture;
+texture2D	g_RimLightTexture;
+
 
 float		g_fWinCX = 1280.f;
 float		g_fWinCY = 720.f;
@@ -289,6 +292,13 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 		Out.vColor = vSkyDesc;
 	}
 
+
+
+	//RimLight
+	vector			vRimLightDesc = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
+	//if (vRimLightDesc.a > 0.1f)
+	Out.vColor.xyz += vRimLightDesc.xyz;
+
 	//
 
 	////white
@@ -343,14 +353,15 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 	vector			vOutlineDesc = g_OutlineTexture.Sample(DefaultSampler, In.vTexUV);
 
 	//1. OutLine 그려야할 때
-	if (vOutlineDesc.x > 0.f)
+	if (vOutlineDesc.y > 0.f)
 	{
 		//if (vOutlineDesc.a + 0.1f < vDepthDesc.y)
 			Out.vColor.xyz = Out.vColor.xyz * 0.5f + vOutlineDesc * 0.5f;
-		
-
-		Out.vColor.a = 1.f;
 	}
+
+
+	
+
 
 	return Out;
 }
@@ -604,6 +615,62 @@ PS_OUT PS_MAIN_OUTLINE(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
+{
+	//림라이트 필요한거
+	//1. 림라이트 플래그 확인
+	PS_OUT		Out = (PS_OUT)0;
+	vector			vRimLightFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (vRimLightFlagDesc.a <= 0.001f)
+		return Out;
+
+	//2. viewdir : 버텍스에서 바라보는 카메라의 방향
+	
+	//버텍스의 world pos를 구해야한다
+	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+
+	//Shadow
+	vector			vWorldPos;
+
+	vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+	vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+	vWorldPos.z = vDepthDesc.x;
+	vWorldPos.w = 1.0f;
+
+	float			fViewZ = vDepthDesc.y * 1500.f;
+	vWorldPos *= fViewZ;
+
+	vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+
+	vector vViewNormal = (g_vCamPosition - vWorldPos);
+
+	//2. Normal과 ViewDir을 dot연산
+	vector			vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
+
+	//float fRim = 1 - saturate(dot(vViewNormal, vNormal));
+
+	float		fShade = saturate(saturate(dot(normalize(vViewNormal), vNormal)));
+
+	//노말 벡터가 카메라로 향하면 1
+	//노말 벡터가 카메라를 안보면 0
+	/*if (fShade > 0.5f)
+		return Out;*/
+
+	//int iRimPower = (int)(vRimLightFlagDesc.a * 10.f);
+	
+	float fRimPower = vRimLightFlagDesc.a;
+	fShade = pow(fShade, fRimPower);
+
+	Out.vColor.xyz = (fShade * vRimLightFlagDesc.xyz);
+
+
+	Out.vColor.a = fShade;
+
+	return Out;
+}
 
 
 BlendState BS_Default
@@ -730,7 +797,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN_POSTEFFECT();
 	}
 
-	pass PS_MAIN_BLOOMBLEND
+	pass BLOOMBLEND
 	{
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
@@ -741,7 +808,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN_BLOOMBLEND();
 	}
 
-	pass PS_MAIN_UIBLEND
+	pass UIBLEND
 	{
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
@@ -750,5 +817,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_UIBLEND();
+	}
+
+	pass RIMLIGHT
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_RIMLIGHT();
 	}
 }

@@ -471,6 +471,14 @@ void CPlayer::Set_MainPlayer()
 
 		m_pDefaultClass[i]->Set_MainPlayer();
 	}
+
+	for (int i = 0; i < CLASS_HERO_END-CLASS_HREO_FIONA; ++i)
+	{
+		if (m_pHeroClass[i] == nullptr)
+			continue;
+
+		m_pHeroClass[i]->Set_MainPlayer();
+	}
 }
 
 
@@ -579,7 +587,10 @@ void CPlayer::Set_TeamType(int eTeamType)
 	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
 		if (m_pDefaultClass[i])
+		{
 			GET_COMPONENT_FROM(m_pDefaultClass[i], CModel)->Set_OutlineFlag(vOutlineFlag);
+
+		}
 	}
 
 	for (_uint i = 0; i < CLASS_HERO_END; ++i)
@@ -601,7 +612,35 @@ void CPlayer::My_Tick()
 
 void CPlayer::My_LateTick()
 {
+	if (!m_bIsMainPlayer)
+		return;
+	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.1f);
 
+	if (KEY(UP, TAP))
+	{
+		vRimLightFlag.w += 0.05f;
+		for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+		{
+			if (m_pDefaultClass[i])
+			{
+				GET_COMPONENT_FROM(m_pDefaultClass[i], CModel)->Set_RimLightFlag(vRimLightFlag);
+
+			}
+		}
+	}
+
+	if (KEY(DOWN, TAP))
+	{
+		vRimLightFlag.w -= 0.05f;
+		for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+		{
+			if (m_pDefaultClass[i])
+			{
+				GET_COMPONENT_FROM(m_pDefaultClass[i], CModel)->Set_RimLightFlag(vRimLightFlag);
+
+			}
+		}
+	}
 }
 
 void CPlayer::Update_HP()

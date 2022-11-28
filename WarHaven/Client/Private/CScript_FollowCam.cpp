@@ -254,7 +254,7 @@ void CScript_FollowCam::Start()
 	m_pPhyscisCom = GET_COMPONENT_FROM(m_pOwner, CPhysics);
 	DISABLE_COMPONENT(m_pPhyscisCom);
 	m_pPhyscisCom->Get_Physics().fPlusAcc = 0.f;
-	m_pPhyscisCom->Set_MaxSpeed(1000.f);
+	m_pPhyscisCom->Set_MaxSpeed(1500.f);
 	Start_LerpType(CAMERA_LERP_DEFAULT);
 
 

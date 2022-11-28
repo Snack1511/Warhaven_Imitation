@@ -30,6 +30,7 @@ public:
 	_float4x4 Get_TransformationMatrix() { return m_TransformMatrix; }
 
 	_float4 Get_Color(_uint iMeshPartType);
+
 	void	Set_NewModel(wstring wstrModelFilePath);
 	void	Set_NewTransformMatrix(_float4x4 TransformMatrix);
 	void	Change_Texture(_uint iModelPart, _uint iTextureIndex, wstring wstrFilePath);

@@ -83,13 +83,13 @@ void CState_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 1.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (222.f / 255.f), (42.f / 255.f), 0.f);
+	tColorDesc.vTargetColor = _float4((255.f / 255.f), (222.f / 255.f), (42.f / 255.f), 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
 	tColorDesc.iStartKeyFrame = 2;
 	tColorDesc.iEndKeyFrame = m_iStopIndex; // 프레임 맞춰놓음
 
-	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
 
 	//pOwner->CallBack_CollisionEnter += bind(&CState_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);

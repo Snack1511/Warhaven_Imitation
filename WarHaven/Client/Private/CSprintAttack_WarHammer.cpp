@@ -88,7 +88,7 @@ void CSprintAttack_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 	tColorDesc.iStartKeyFrame = 2;
 	tColorDesc.iEndKeyFrame = 24; // 프레임 맞춰놓음
 
-	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
 
 	pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_L);

@@ -104,30 +104,24 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower, _
 
 		memcpy(&tTransform.q, &vAngles, sizeof(_float4));
 
-
-#ifdef _DEBUG
-		if (m_iNumInstance > 1)
+		//À§Ä¡ ·£´ýÀ¸·Î »Ì°í ±× ¹æÇâÀ¸·Î Èû ÁÖ±â
+		_float4 vRandDir =
 		{
-			_float fRand = 0.3f;
-
-			vPos.x += frandom(-fRand, fRand);
-			vPos.y += frandom(-fRand, fRand);
-			vPos.z += frandom(-fRand, fRand);
-		}
-	
-#endif // _DEBUG
-
-
-		_float4	vNewDir =
-		{
-		vDir.x = frandom(-1.f, 1.f),
-		vDir.y = frandom(-0.5f, 1.f),
-		vDir.z = frandom(-1.f, 1.f),
-		0.f
+			frandom(-1.f, 1.f),
+			frandom(-0.5f, 1.f),
+			frandom(-1.f, 1.f),
+			0.f
 		};
 
-		vNewDir.Normalize();
-		vNewDir *= fPower * frandom(0.9f, 1.1f);
+		vRandDir.Normalize();
+
+		if (m_iNumInstance > 1)
+		{
+			vPos += vRandDir * 0.2f;
+		}
+
+
+		vRandDir *= fPower * frandom(0.9f, 1.1f);
 
 
 		PxRigidDynamic* pActor = nullptr;
@@ -137,7 +131,7 @@ void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower, _
 		if (!pActor)
 			continue;
 
-		pActor->addForce(CUtility_PhysX::To_PxVec3(vNewDir));
+		pActor->addForce(CUtility_PhysX::To_PxVec3(vRandDir));
 		m_vecRigidDynamics.push_back(pActor);
 
 

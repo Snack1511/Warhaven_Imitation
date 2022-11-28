@@ -249,13 +249,19 @@ void CCamera_Manager::Clear_LevelCam()
 
 void CCamera_Manager::Make_ViewMatrix()
 {
+	m_matOldView = m_tView.matView;
+
 	m_tView.matView = m_pCurCam->Get_Transform()->Get_WorldMatrix();
 	m_tView.matView.Inverse();
 }
 
 void CCamera_Manager::Make_ProjMatrix()
 {
+	m_matOldProj = m_tProj.matProj;
+
+
 	m_tProj = m_pCurCam->Get_Proj();
+
 
 	m_tProj.matProj = XMMatrixPerspectiveFovLH(m_tProj.fFOV,
 		m_fAspect,

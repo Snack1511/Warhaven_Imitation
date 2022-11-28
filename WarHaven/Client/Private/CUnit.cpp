@@ -472,6 +472,10 @@ HRESULT CUnit::Start()
 
 	Enable_UnitHUD();
 
+	/* PASS */
+	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
+
+
 	return S_OK;
 }
 

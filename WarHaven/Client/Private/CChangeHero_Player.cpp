@@ -119,7 +119,7 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 		{
 			return Set_HeroType(pOwner, FIONA);
 		}
-		else if (KEY(NUM2, TAP))
+		/*else if (KEY(NUM2, TAP))
 		{
 			return Set_HeroType(pOwner, QANDA);
 		}
@@ -130,7 +130,7 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 		else if (KEY(NUM4, TAP))
 		{
 			return Set_HeroType(pOwner, LANCER);
-		}
+		}*/
 	}
 	else
 	{

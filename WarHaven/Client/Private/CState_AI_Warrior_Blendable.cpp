@@ -88,7 +88,7 @@ void CState_AI_Warrior_Blendable::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 	tColorDesc.iStartKeyFrame = 2;
 	tColorDesc.iEndKeyFrame = m_iStopIndex; // 프레임 맞춰놓음
 
-	GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(tColorDesc);
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
 	//pOwner->CallBack_CollisionEnter += bind(&CState_AI_Warrior_Blendable::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 	//pOwner->CallBack_CollisionStay += bind(&CState_AI_Warrior_Blendable::OnCollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);

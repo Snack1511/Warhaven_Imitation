@@ -64,10 +64,12 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     pUserPlayer->Set_MainPlayer();
+    pUserPlayer->Set_TeamType(CPlayer::ePLAYERTEAM);
+
     READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
 
-    for (_uint i = 0; i < 1; ++i)
+    for (_uint i = 0; i < 0; ++i)
     {
         vPlayerPos.z += 3.f;
         vPlayerPos.x += 1.f;

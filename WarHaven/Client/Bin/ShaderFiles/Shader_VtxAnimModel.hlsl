@@ -281,11 +281,14 @@ VS_OUT_NORMAL VS_NORMAL_MAIN(VS_IN In)
 	Out.vPosition = mul(vPosition, matWVP);
 	vector vNormal = mul(vector(In.vNormal, 0.f), BoneMatrix);
 	Out.vNormal = normalize(mul(vNormal, g_WorldMatrix)).xyz;
+
 	Out.vWorldPos = mul(vPosition, g_WorldMatrix);
 	Out.vTexUV = In.vTexUV;
 	Out.vProjPos = Out.vPosition;
+
 	Out.vTangent = normalize(mul(vector(In.vTangent, 0.f), BoneMatrix)).xyz;
 	Out.vTangent = normalize(mul(vector(Out.vTangent, 0.f), g_WorldMatrix)).xyz;
+
 	Out.vBinormal = normalize(cross(Out.vNormal, Out.vTangent));
 
 	return Out;

@@ -339,7 +339,6 @@ HRESULT CUnit_WarHammer::Initialize()
 HRESULT CUnit_WarHammer::Start()
 {
 	__super::Start();
-	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
 	SetUp_TrailEffect(
 		_float4(0.f, 0.f, -168.f, 1.f),	//Weapon Low

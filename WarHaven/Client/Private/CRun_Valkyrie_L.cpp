@@ -87,7 +87,7 @@ void CRun_Valkyrie_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
     m_tColorDesc.iEndKeyFrame = 6;
 
 
-    GET_COMPONENT_FROM(pOwner, CColorController)->Set_ColorControll(m_tColorDesc);*/
+    GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(m_tColorDesc);*/
 
 
 

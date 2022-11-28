@@ -20,6 +20,8 @@ public:
 	_float4x4	Get_BillBoard();
 	_float4x4	Get_OrthoView() { return m_matOrthoView; }
 	_float4x4	Get_OrthoProj() { return m_matOrthoProj; }
+	_float4x4	Get_OldProj() { return m_matOldProj; }
+	_float4x4	Get_OldView() { return m_matOldView; }
 
 	CCamera* Get_CurCam() { return m_pCurCam; }
 
@@ -59,6 +61,11 @@ private:
 private:
 	_float4x4										m_matOrthoView;
 	_float4x4										m_matOrthoProj;
+
+
+private:
+	_float4x4										m_matOldView;
+	_float4x4										m_matOldProj;
 
 private:
 	void	Make_ViewMatrix();
