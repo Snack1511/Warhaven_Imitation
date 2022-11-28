@@ -93,7 +93,9 @@ private:	// 작전회의
 	CUI_Object* m_pOperMapIcon = nullptr;
 	CUI_Object* m_pOperMapBG = nullptr;
 
-	CUI_Object* m_pOperSelectLight = nullptr;
+	CUI_Object* m_pGoalPoint = nullptr;
+	CUI_Object* m_pGoalPointText = nullptr;
+	CUI_Object* m_pGoalPointGauge = nullptr;
 
 	_uint m_iOperWindowCnt = 0;
 	_float m_fSmokeUV = 0.f;
@@ -163,6 +165,9 @@ private:	// OperWindow
 	void Create_OperSideBG();
 	void Create_OperSelectCharacter();
 	void Create_OperMap();
+
+private:
+	void Create_GoalPoint();
 };
 
 END

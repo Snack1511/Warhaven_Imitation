@@ -84,6 +84,7 @@ HRESULT CUI_HUD::Start()
 	Bind_Shader();
 
 	Set_FadePortHighlight();
+	Set_FadeOperSelectChaderUI();
 
 	__super::Start();
 
@@ -855,7 +856,7 @@ void CUI_HUD::Update_OperWindow()
 		{
 			if (m_pArrOperProfile[0]->Is_Valid())
 			{
-				if (m_fAccTime > 1.f)
+				if (m_fAccTime > 3.f)
 				{
 					m_fAccTime = 0.f;
 
@@ -875,30 +876,53 @@ void CUI_HUD::Update_OperWindow()
 		else if (m_iOperWindowCnt == 4)
 		{
 			_float fDuration = 0.3f;
-			for (int i = 0; i < 2; ++i)
+			_float fScaleValue = -50.f;
+
+			Enable_Fade(m_pGoalPoint, fDuration);
+			Enable_Fade(m_pGoalPointText, fDuration);
+			Enable_Fade(m_pGoalPointGauge, fDuration);
+
+			m_pGoalPoint->DoScale(fScaleValue, fDuration);
+			m_pGoalPointText->DoScale(fScaleValue, fDuration);
+			m_pGoalPointGauge->DoScale(fScaleValue, fDuration);
+
+			m_fAccTime = 0.f;
+			m_iOperWindowCnt++;
+		}
+		else if (m_iOperWindowCnt == 5)
+		{
+			if (m_fAccTime > 1.f)
 			{
-				Enable_Fade(m_pArrOperSideBG[i], fDuration);
+				_float fDuration = 0.3f;
+				for (int i = 0; i < 2; ++i)
+				{
+					Enable_Fade(m_pArrOperSideBG[i], fDuration);
+				}
+				m_pArrOperSideBG[0]->DoMoveX(50.f, fDuration);
+				m_pArrOperSideBG[1]->DoMoveX(-50.f, fDuration);
+
+				for (int i = 0; i < 6; ++i)
+				{
+					Enable_Fade(m_pArrOperSelectChar[i], fDuration);
+					m_pArrOperSelectChar[i]->DoMoveX(50.f, fDuration);
+
+					Enable_Fade(m_pArrOperSelectCharPort[i], fDuration);
+					m_pArrOperSelectCharPort[i]->DoMoveX(50.f, fDuration);
+
+					Enable_Fade(m_pArrOperSelectBG[i], fDuration);
+					m_pArrOperSelectBG[i]->DoMoveX(50.f, fDuration);
+
+					Enable_Fade(m_pArrOperSelectIcon[i], fDuration);
+					m_pArrOperSelectIcon[i]->DoMoveX(50.f, fDuration);
+				}
+
+				Enable_Fade(m_pOperMapIcon, fDuration);
+				Enable_Fade(m_pOperMapBG, fDuration);
+
+				m_fAccTime = 0.f;
+				m_iOperWindowCnt++;
 			}
-			m_pArrOperSideBG[0]->DoMoveX(50.f, fDuration);
-			m_pArrOperSideBG[1]->DoMoveX(-50.f, fDuration);
 
-			for (int i = 0; i < 6; ++i)
-			{
-				Enable_Fade(m_pArrOperSelectChar[i], fDuration);
-				m_pArrOperSelectChar[i]->DoMoveX(50.f, fDuration);
-
-				Enable_Fade(m_pArrOperSelectCharPort[i], fDuration);
-				m_pArrOperSelectCharPort[i]->DoMoveX(50.f, fDuration);
-
-				Enable_Fade(m_pArrOperSelectBG[i], fDuration);
-				m_pArrOperSelectBG[i]->DoMoveX(50.f, fDuration);
-
-				Enable_Fade(m_pArrOperSelectIcon[i], fDuration);
-				m_pArrOperSelectIcon[i]->DoMoveX(50.f, fDuration);
-			}
-
-			Enable_Fade(m_pOperMapIcon, fDuration);
-			Enable_Fade(m_pOperMapBG, fDuration);
 
 			// 오른쪽 맵이랑 분대원 정보
 
@@ -906,7 +930,6 @@ void CUI_HUD::Update_OperWindow()
 
 			// 게임 시작 게이지
 
-			m_iOperWindowCnt++;
 		}
 	}
 }
@@ -982,6 +1005,7 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	Create_OperSideBG();
 	Create_OperSelectCharacter();
 	Create_OperMap();
+	Create_GoalPoint();
 }
 
 void CUI_HUD::Set_FadeOperSelectChaderUI()
@@ -1004,6 +1028,9 @@ void CUI_HUD::Set_FadeOperSelectChaderUI()
 	GET_COMPONENT_FROM(m_pOperSelectIcon, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pGoalPoint, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pGoalPointText, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pGoalPointGauge, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
 void CUI_HUD::Create_OperProfile()
@@ -1210,4 +1237,36 @@ void CUI_HUD::Create_OperMap()
 
 	CREATE_GAMEOBJECT(m_pOperMapBG, RENDER_UI);
 	DISABLE_GAMEOBJECT(m_pOperMapBG);
+}
+
+void CUI_HUD::Create_GoalPoint()
+{
+	m_pGoalPoint = CUI_Object::Create();
+	m_pGoalPoint->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Paden/T_FootholdStrokeEdge.dds"));
+	m_pGoalPoint->Set_PosY(58.f);
+	m_pGoalPoint->Set_Scale(114.f);
+	m_pGoalPoint->Set_Sort(0.48f);
+	m_pGoalPoint->Set_MouseTarget(true);
+
+	m_pGoalPointText = CUI_Object::Create();
+	m_pGoalPointText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Paden/A.png"));
+	m_pGoalPointText->Set_PosY(52.f);
+	m_pGoalPointText->Set_Scale(130.f);
+	m_pGoalPointText->Set_Sort(0.48f);
+
+	m_pGoalPointGauge = CUI_Object::Create();
+	m_pGoalPointGauge->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/T_4pxBoxWhite.dds"));
+	m_pGoalPointGauge->Set_PosY(58.f);
+	m_pGoalPointGauge->Set_Scale(100.f);
+	m_pGoalPointGauge->Set_Sort(0.49f);
+	m_pGoalPointGauge->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
+
+	CREATE_GAMEOBJECT(m_pGoalPoint, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pGoalPoint);
+
+	CREATE_GAMEOBJECT(m_pGoalPointText, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pGoalPointText);
+
+	CREATE_GAMEOBJECT(m_pGoalPointGauge, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pGoalPointGauge);
 }
