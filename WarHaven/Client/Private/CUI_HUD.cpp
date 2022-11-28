@@ -70,17 +70,16 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+
+	if ((m_eLoadLevel == LEVEL_TEST) || (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP))
 	{
-		if (m_eLoadLevel == LEVEL_TEST)
-		{
-			SetActive_PlayerInfoUI(true);
-		}
-		else
-		{
-			SetActive_OperUI(true); // 화면 가려져서 true 에서 바꿈
-		}
+		SetActive_PlayerInfoUI(true);
 	}
+	else
+	{
+		SetActive_OperUI(true); // 화면 가려져서 true 에서 바꿈
+	}
+
 
 	Bind_Btn();
 

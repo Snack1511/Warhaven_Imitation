@@ -387,8 +387,6 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
 	Set_Postion(vPos);
-	_float4	vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-	m_pCurrentUnit->Get_Transform()->Set_World(WORLD_LOOK, vCamLook);
 	
 	m_pCurrentUnit->Set_MainPlayer();
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateHero[eClass - CPlayer::CLASS_HREO_FIONA]);
