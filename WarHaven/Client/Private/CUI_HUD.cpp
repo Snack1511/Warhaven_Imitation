@@ -882,14 +882,19 @@ void CUI_HUD::Update_OperWindow()
 			m_pArrOperSideBG[0]->DoMoveX(50.f, fDuration);
 			m_pArrOperSideBG[1]->DoMoveX(-50.f, fDuration);
 
-			// 왼쪽 캐릭터 선택 창
 			for (int i = 0; i < 6; ++i)
 			{
 				Enable_Fade(m_pArrOperSelectChar[i], fDuration);
 				m_pArrOperSelectChar[i]->DoMoveX(50.f, fDuration);
 
+				Enable_Fade(m_pArrOperSelectCharPort[i], fDuration);
+				m_pArrOperSelectCharPort[i]->DoMoveX(50.f, fDuration);
+
 				Enable_Fade(m_pArrOperSelectBG[i], fDuration);
 				m_pArrOperSelectBG[i]->DoMoveX(50.f, fDuration);
+
+				Enable_Fade(m_pArrOperSelectIcon[i], fDuration);
+				m_pArrOperSelectIcon[i]->DoMoveX(50.f, fDuration);
 			}
 
 			// 오른쪽 맵이랑 분대원 정보
@@ -989,8 +994,10 @@ void CUI_HUD::Set_FadeOperSelectChaderUI()
 	tFadeDesc.fFadeOutTime = 0.3f;
 
 	GET_COMPONENT_FROM(m_pOperSideBG, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pOperSelectChar, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pOperSelectBG, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperSelectChar, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperSelectCharPort, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperSelectIcon, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
 void CUI_HUD::Create_OperProfile()
@@ -1063,15 +1070,62 @@ void CUI_HUD::Create_OperSelectCharacter()
 	m_pOperSelectBG->Set_Sort(0.49f);
 	m_pOperSelectBG->Set_MouseTarget(true);
 
+	m_pOperSelectChar = CUI_Object::Create();
+	m_pOperSelectChar->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
+	m_pOperSelectChar->Set_Scale(65.f);
+	m_pOperSelectChar->Set_Sort(0.48f);
+
+	m_pOperSelectCharPort = CUI_Object::Create();
+	m_pOperSelectCharPort->Set_Scale(65.f);
+	m_pOperSelectCharPort->Set_Sort(0.47f);
+
+	m_pOperSelectIcon = CUI_Object::Create();
+	m_pOperSelectIcon->Set_Scale(32.f);
+	m_pOperSelectIcon->Set_Sort(0.48f);
+	m_pOperSelectIcon->Set_FontRender(true);
+	m_pOperSelectIcon->Set_FontStyle(true);
+	m_pOperSelectIcon->Set_FontOffset(20.f, -15.f);
+	m_pOperSelectIcon->Set_FontScale(0.3f);
+
+	GET_COMPONENT_FROM(m_pOperSelectCharPort, CTexture)->Remove_Texture(0);
+	Read_Texture(m_pOperSelectCharPort, "/HUD/Portrait", "Class");
+
+	GET_COMPONENT_FROM(m_pOperSelectIcon, CTexture)->Remove_Texture(0);
+	Read_Texture(m_pOperSelectIcon, "/Oper", "Class");
+
 	CREATE_GAMEOBJECT(m_pOperSelectBG, RENDER_UI);
 	DELETE_GAMEOBJECT(m_pOperSelectBG);
+
+	CREATE_GAMEOBJECT(m_pOperSelectChar, RENDER_UI);
+	DELETE_GAMEOBJECT(m_pOperSelectChar);
+
+	CREATE_GAMEOBJECT(m_pOperSelectCharPort, RENDER_UI);
+	DELETE_GAMEOBJECT(m_pOperSelectCharPort);
+
+	CREATE_GAMEOBJECT(m_pOperSelectIcon, RENDER_UI);
+	DELETE_GAMEOBJECT(m_pOperSelectIcon);
 
 	for (int i = 0; i < 6; ++i)
 	{
 		m_pArrOperSelectBG[i] = m_pOperSelectBG->Clone();
+		m_pArrOperSelectChar[i] = m_pOperSelectChar->Clone();
+		m_pArrOperSelectCharPort[i] = m_pOperSelectCharPort->Clone();
+		m_pArrOperSelectIcon[i] = m_pOperSelectIcon->Clone();
+
+		GET_COMPONENT_FROM(m_pArrOperSelectCharPort[i], CTexture)->Set_CurTextureIndex(i);
+		GET_COMPONENT_FROM(m_pArrOperSelectIcon[i], CTexture)->Set_CurTextureIndex(i);
 
 		CREATE_GAMEOBJECT(m_pArrOperSelectBG[i], RENDER_UI);
 		DISABLE_GAMEOBJECT(m_pArrOperSelectBG[i]);
+
+		CREATE_GAMEOBJECT(m_pArrOperSelectChar[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pArrOperSelectChar[i]);
+
+		CREATE_GAMEOBJECT(m_pArrOperSelectCharPort[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pArrOperSelectCharPort[i]);
+
+		CREATE_GAMEOBJECT(m_pArrOperSelectIcon[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pArrOperSelectIcon[i]);
 	}
 
 	_float fTopPosY = 250.f;
@@ -1089,22 +1143,6 @@ void CUI_HUD::Create_OperSelectCharacter()
 	m_pArrOperSelectBG[2]->Set_Pos(fBotPosXSelectBG, fTopPosY);
 	m_pArrOperSelectBG[3]->Set_Pos(fBotPosXSelectBG, -fTopPosY);
 
-	m_pOperSelectChar = CUI_Object::Create();
-	m_pOperSelectChar->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
-	m_pOperSelectChar->Set_Scale(65.f);
-	m_pOperSelectChar->Set_Sort(0.48f);
-
-	CREATE_GAMEOBJECT(m_pOperSelectChar, RENDER_UI);
-	DELETE_GAMEOBJECT(m_pOperSelectChar);
-
-	for (int i = 0; i < 6; ++i)
-	{
-		m_pArrOperSelectChar[i] = m_pOperSelectChar->Clone();
-
-		CREATE_GAMEOBJECT(m_pArrOperSelectChar[i], RENDER_UI);
-		DISABLE_GAMEOBJECT(m_pArrOperSelectChar[i]);
-	}
-
 	_float fTopPosCharX = -555.f;
 	_float fMidPosCharX = -590.f;
 	_float fBotPosCharX = -605.f;
@@ -1115,4 +1153,29 @@ void CUI_HUD::Create_OperSelectCharacter()
 	m_pArrOperSelectChar[4]->Set_Pos(fMidPosCharX, -fMidPosY);
 	m_pArrOperSelectChar[2]->Set_Pos(fBotPosCharX, fBotPosY);
 	m_pArrOperSelectChar[3]->Set_Pos(fBotPosCharX, -fBotPosY);
+
+	m_pArrOperSelectCharPort[0]->Set_Pos(fTopPosCharX, fTopPosY);
+	m_pArrOperSelectCharPort[5]->Set_Pos(fTopPosCharX, -fTopPosY);
+	m_pArrOperSelectCharPort[1]->Set_Pos(fMidPosCharX, fMidPosY);
+	m_pArrOperSelectCharPort[4]->Set_Pos(fMidPosCharX, -fMidPosY);
+	m_pArrOperSelectCharPort[2]->Set_Pos(fBotPosCharX, fBotPosY);
+	m_pArrOperSelectCharPort[3]->Set_Pos(fBotPosCharX, -fBotPosY);
+
+	_float fTopPosIconX = -505.f;
+	_float fMidPosIconX = -540.f;
+	_float fBotPosIconX = -555.f;
+
+	m_pArrOperSelectIcon[0]->Set_FontText(TEXT("블레이드"));
+	m_pArrOperSelectIcon[1]->Set_FontText(TEXT("스파이크"));
+	m_pArrOperSelectIcon[2]->Set_FontText(TEXT("아치"));
+	m_pArrOperSelectIcon[3]->Set_FontText(TEXT("가디언"));
+	m_pArrOperSelectIcon[4]->Set_FontText(TEXT("스모크"));
+	m_pArrOperSelectIcon[5]->Set_FontText(TEXT("워해머"));
+
+	m_pArrOperSelectIcon[0]->Set_Pos(fTopPosIconX, fTopPosY);
+	m_pArrOperSelectIcon[5]->Set_Pos(fTopPosIconX, -fTopPosY);
+	m_pArrOperSelectIcon[1]->Set_Pos(fMidPosIconX, fMidPosY);
+	m_pArrOperSelectIcon[4]->Set_Pos(fMidPosIconX, -fMidPosY);
+	m_pArrOperSelectIcon[2]->Set_Pos(fBotPosIconX, fBotPosY);
+	m_pArrOperSelectIcon[3]->Set_Pos(fBotPosIconX, -fBotPosY);
 }

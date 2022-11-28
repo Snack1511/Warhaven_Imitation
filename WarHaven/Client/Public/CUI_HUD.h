@@ -77,12 +77,16 @@ private:	// 작전회의
 
 	CUI_Object* m_pOperSideBG = nullptr;
 	CUI_Object* m_pArrOperSideBG[2];
-
 	CUI_Object* m_pOperSelectChar = nullptr;
 	CUI_Object* m_pArrOperSelectChar[6];
+	CUI_Object* m_pOperSelectCharPort = nullptr;
+	CUI_Object* m_pArrOperSelectCharPort[6];
 
 	CUI_Object* m_pOperSelectBG = nullptr;
 	CUI_Object* m_pArrOperSelectBG[6];
+
+	CUI_Object* m_pOperSelectIcon = nullptr;
+	CUI_Object* m_pArrOperSelectIcon[6];
 
 	CUI_Object* m_pOperSelectLight = nullptr;
 	CUI_Object* m_pOperMapIcon = nullptr;
