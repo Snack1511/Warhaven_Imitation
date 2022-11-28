@@ -65,6 +65,10 @@ private:	// 작전회의
 	CUI_Object* m_pOperBlackBG = nullptr;
 	CUI_Object* m_pOperWindow = nullptr;
 	CUI_Object* m_pOperTextImg = nullptr;
+
+	CUI_Object* m_pOperProfile = nullptr;
+	CUI_Object* m_pArrOperProfile[4];
+
 	CUI_Object* m_pOperSideBG = nullptr;
 	CUI_Object* m_pArrOperSideBG[2];
 	CUI_Object* m_pOperSelectChar = nullptr;
@@ -111,6 +115,8 @@ private:	// 클래스 변경 창
 private:
 	void Bind_Btn();
 	void Set_FadePortHighlight();
+	void Set_FadeOperBlackBG();
+	void Set_FadeOperProfile();
 
 private:	
 	void SetActive_OperUI(_bool value);
@@ -132,6 +138,7 @@ private:
 	void Create_HpText();
 	void Create_PlayerNameText();
 	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
+	void Create_OperProfile();
 };
 
 END
