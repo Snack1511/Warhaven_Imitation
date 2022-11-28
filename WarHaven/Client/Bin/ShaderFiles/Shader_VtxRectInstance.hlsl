@@ -599,4 +599,15 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_UVTEXTURESELECT_MAIN();
 	}
+
+	pass FLARE
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_None);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BLACKBACKGROUND_TEXTURE();
+	}
 }

@@ -72,11 +72,14 @@ HRESULT CUI_HUD::Start()
 {
 	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		SetActive_OperUI(false); // 화면 가려져서 true 에서 바꿈
-	}
-	else
-	{
-		SetActive_PlayerInfoUI(true);
+		if (m_eLoadLevel == LEVEL_TEST)
+		{
+			SetActive_PlayerInfoUI(true);
+		}
+		else
+		{
+			SetActive_OperUI(true); // 화면 가려져서 true 에서 바꿈
+		}
 	}
 
 	Bind_Btn();
@@ -728,6 +731,8 @@ void CUI_HUD::Create_HpText()
 
 void CUI_HUD::SetActive_OperUI(_bool value)
 {
+
+
 	if (value == true)
 	{
 		ENABLE_GAMEOBJECT(m_pOperWindow);
@@ -852,7 +857,7 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	m_pOperWindow->Set_Scale(4096.f);
 	m_pOperWindow->Set_Sort(0.51f);
 
-	GET_COMPONENT_FROM(m_pOperWindow, CUI_Renderer)->Set_Pass(VTXTEX_PASS_DEBUG);
+	// GET_COMPONENT_FROM(m_pOperWindow, CUI_Renderer)->Set_Pass(VTXTEX_PASS_DEBUG);
 
 	switch (eLoadLevel)
 	{

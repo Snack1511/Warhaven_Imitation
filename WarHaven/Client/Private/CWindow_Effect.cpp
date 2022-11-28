@@ -439,7 +439,7 @@ void CWindow_Effect::Show_EffectTab()
 			if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
 			{
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISTORTION;
-				//GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
+				GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
 
 			}
 			if (ImGui::Selectable("DISSOLVE", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
@@ -630,7 +630,7 @@ void CWindow_Effect::Show_EffectTab()
 
 			}
 
-			/*	if (ImGui::Selectable("DISTORTION", &bShFlagSelect[2]))
+				if (ImGui::Selectable("DISTORTION", &bShFlagSelect[2]))
 				{
 					if (pCurEffect->m_vEffectFlag.z > 0.99f)
 					{
@@ -643,7 +643,7 @@ void CWindow_Effect::Show_EffectTab()
 
 					GET_COMPONENT_FROM(pCurEffect, CModel)->Set_ShaderFlag(pCurEffect->m_vEffectFlag);
 
-				}*/
+				}
 
 		}
 		if (ImGui::CollapsingHeader(" - GLOW VECTOR "))
@@ -945,7 +945,9 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR;
 			if (ImGui::Selectable("UVTEXTURESELECT", &bSelect[VTXRECTINSTANCE_PASS_UVTEXTURESELECT]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_UVTEXTURESELECT;
-
+			if (ImGui::Selectable("FLARE", &bSelect[VTXRECTINSTANCE_PASS_FLARE]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_FLARE;
+			
 			
 			pRenderer->Set_Pass(pCurEffect->m_iPassType);
 
