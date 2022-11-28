@@ -33,6 +33,9 @@ private:
 	_bool m_bIsClick = false;
 
 	MouseType m_eType = MouseType::TYPE_END;
+
+private:
+	void SetActive_Mouse(_bool value);
 };
 
 END

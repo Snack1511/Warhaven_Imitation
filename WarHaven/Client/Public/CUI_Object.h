@@ -62,6 +62,7 @@ public:	// Lerp
 	void Lerp_PosY(_float fStart, _float fEnd, _float fDuration);
 
 	void DoMoveY(_float fMoveValue, _float fDuration);
+	void DoMoveX(_float fMoveValue, _float fDuration);
 
 	void DoScale(_float fScaleValue, _float fDuration);
 
@@ -94,6 +95,7 @@ private:	// Lerp
 	_float4 m_vOriginPos;
 	_float m_fMoveAccTime = 0.f;
 	_bool m_bIsDoMoveY = false;
+	_bool m_bIsDoMoveX = false;
 
 	_float4 m_vOriginScale;
 	_float m_fScaleAccTime = 0.f;

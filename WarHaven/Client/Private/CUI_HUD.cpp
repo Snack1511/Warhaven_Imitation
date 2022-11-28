@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "CButton.h"
 #include "CFader.h"
+#include "CShader.h"
 
 #include "CUser.h"
 #include "CUnit.h"
@@ -17,7 +18,8 @@
 #include "Easing_Utillity.h"
 #include "Functor.h"
 
-#include"CPlayer.h"
+#include "CPlayer.h"
+#include "CUI_Cursor.h"
 #include "Loading_Manager.h"
 #include "CUI_Renderer.h"
 
@@ -59,7 +61,6 @@ HRESULT CUI_HUD::Initialize_Prototype()
 		Create_OperWindow(m_eLoadLevel);
 	}
 
-
 	return S_OK;
 }
 
@@ -80,10 +81,9 @@ HRESULT CUI_HUD::Start()
 	}
 
 	Bind_Btn();
+	Bind_Shader();
 
 	Set_FadePortHighlight();
-	Set_FadeOperBlackBG();
-	Set_FadeOperProfile();
 
 	__super::Start();
 
@@ -215,6 +215,16 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 	}
 }
 
+void CUI_HUD::On_PointEnter_SelectBG(const _uint& iEventNum)
+{
+
+}
+
+void CUI_HUD::Set_Shader_Smoke(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fSmokeUV, sizeof(_float));
+}
+
 void CUI_HUD::SetActive_OxenJumpText(_bool value)
 {
 	if (value == true)
@@ -300,8 +310,12 @@ void CUI_HUD::Bind_Btn()
 	{
 		m_pPortClone[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_Port, this, i);
 		m_pPortClone[i]->CallBack_PointExit += bind(&CUI_HUD::On_PointExit_Port, this, i);
-
 		m_pPortClone[i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Port, this, i);
+
+		if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+		{
+			m_pArrOperSelectBG[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_SelectBG, this, i);
+		}
 	}
 }
 
@@ -734,11 +748,14 @@ void CUI_HUD::SetActive_OperUI(_bool value)
 	if (value == true)
 	{
 		ENABLE_GAMEOBJECT(m_pOperWindow);
+		ENABLE_GAMEOBJECT(m_pSmokeBG);
 
 		m_pOperWindow->DoScale(-2186.f, 0.3f);
 	}
 	else
 	{
+		DISABLE_GAMEOBJECT(CUser::Get_Instance()->Get_Cursor());
+
 		DISABLE_GAMEOBJECT(m_pOperWindow);
 		DISABLE_GAMEOBJECT(m_pOperTextImg);
 	}
@@ -766,54 +783,15 @@ void CUI_HUD::Create_PlayerNameText()
 	DISABLE_GAMEOBJECT(m_pPlayerNameText);
 }
 
-void CUI_HUD::Set_FadeOperBlackBG()
-{
-	FADEDESC tFadeDesc;
-	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
-	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-
-	tFadeDesc.bFadeInFlag = FADE_NONE;
-	tFadeDesc.bFadeOutFlag = FADE_NONE;
-
-	tFadeDesc.fFadeInStartTime = 0.f;
-	tFadeDesc.fFadeInTime = 0.15f;
-
-	tFadeDesc.fFadeOutStartTime = 0.f;
-	tFadeDesc.fFadeOutTime = 0.3f;
-
-	GET_COMPONENT_FROM(m_pOperBlackBG, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pOperTextImg, CFader)->Get_FadeDesc() = tFadeDesc;
-}
-
-void CUI_HUD::Set_FadeOperProfile()
-{
-	FADEDESC tFadeDesc;
-	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
-	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-
-	tFadeDesc.bFadeInFlag = FADE_NONE;
-	tFadeDesc.bFadeOutFlag = FADE_NONE;
-
-	tFadeDesc.fFadeInStartTime = 0.f;
-	tFadeDesc.fFadeInTime = 0.5f;
-
-	tFadeDesc.fFadeOutStartTime = 0.f;
-	tFadeDesc.fFadeOutTime = 0.3f;
-
-	for (int i = 0; i < 4; ++i)
-	{
-		GET_COMPONENT_FROM(m_pArrOperProfile[i], CFader)->Get_FadeDesc() = tFadeDesc;
-	}
-}
-
 void CUI_HUD::Update_OperWindow()
 {
 	if (!m_pOperWindow)
 		return;
+
+	if (m_pSmokeBG->Is_Valid())
+	{
+		m_fSmokeUV += fDT(0) * 0.01f;
+	}
 
 	if (m_pOperWindow->Is_Valid())
 	{
@@ -877,13 +855,14 @@ void CUI_HUD::Update_OperWindow()
 		{
 			if (m_pArrOperProfile[0]->Is_Valid())
 			{
-				if (m_fAccTime > 5.f)
+				if (m_fAccTime > 1.f)
 				{
 					m_fAccTime = 0.f;
 
 					_float fDuration = 0.3f;
 					Disable_Fade(m_pOperBlackBG, fDuration);
 					Disable_Fade(m_pOperTextImg, fDuration);
+
 					for (int i = 0; i < 4; ++i)
 					{
 						Disable_Fade(m_pArrOperProfile[i], fDuration);
@@ -893,23 +872,51 @@ void CUI_HUD::Update_OperWindow()
 				}
 			}
 		}
+		else if (m_iOperWindowCnt == 4)
+		{
+			_float fDuration = 0.3f;
+			for (int i = 0; i < 2; ++i)
+			{
+				Enable_Fade(m_pArrOperSideBG[i], fDuration);
+			}
+			m_pArrOperSideBG[0]->DoMoveX(50.f, fDuration);
+			m_pArrOperSideBG[1]->DoMoveX(-50.f, fDuration);
+
+			// 왼쪽 캐릭터 선택 창
+			for (int i = 0; i < 6; ++i)
+			{
+				Enable_Fade(m_pArrOperSelectChar[i], fDuration);
+				m_pArrOperSelectChar[i]->DoMoveX(50.f, fDuration);
+
+				Enable_Fade(m_pArrOperSelectBG[i], fDuration);
+				m_pArrOperSelectBG[i]->DoMoveX(50.f, fDuration);
+			}
+
+			// 오른쪽 맵이랑 분대원 정보
+
+			// 맵에 거점에 해당하는 버튼
+
+			// 게임 시작 게이지
+
+			m_iOperWindowCnt++;
+		}
+	}
+}
+
+void CUI_HUD::Bind_Shader()
+{
+	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	{
+		GET_COMPONENT_FROM(m_pSmokeBG, CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
 	}
 }
 
 void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 {
-	m_pOperBlackBG = CUI_Object::Create();
-	m_pOperBlackBG->Set_Texture(TEXT("../Bin/Resources/Textures/Black.png"));
-	m_pOperBlackBG->Set_Scale(1280.f);
-	m_pOperBlackBG->Set_Sort(0.5f);
-	m_pOperBlackBG->Set_Color(_float4(1.f, 1.f, 1.f, 0.9f));
-
 	m_pOperWindow = CUI_Object::Create();
-	m_pOperWindow->Set_PosY(45.f);
+	m_pOperWindow->Set_PosY(150.f);
 	m_pOperWindow->Set_Scale(4096.f);
-	m_pOperWindow->Set_Sort(0.51f);
-
-	// GET_COMPONENT_FROM(m_pOperWindow, CUI_Renderer)->Set_Pass(VTXTEX_PASS_DEBUG);
+	m_pOperWindow->Set_Sort(0.52f);
 
 	switch (eLoadLevel)
 	{
@@ -918,32 +925,91 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 		break;
 	}
 
+	m_pSmokeBG = CUI_Object::Create();
+	m_pSmokeBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_soft_smoke.dds"));
+	m_pSmokeBG->SetTexture(TEXT("../Bin/Resources/Textures/UI/Oper/T_Noise_02.dds"));
+	m_pSmokeBG->Set_Scale(4096.f);
+	m_pSmokeBG->Set_Sort(0.51f);
+
+	GET_COMPONENT_FROM(m_pSmokeBG, CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_OperSmoke);
+
+	m_pOperBlackBG = CUI_Object::Create();
+	m_pOperBlackBG->Set_Texture(TEXT("../Bin/Resources/Textures/Black.png"));
+	m_pOperBlackBG->Set_Scale(1280.f);
+	m_pOperBlackBG->Set_Sort(0.5f);
+	m_pOperBlackBG->Set_Color(_float4(1.f, 1.f, 1.f, 0.9f));
+
 	m_pOperTextImg = CUI_Object::Create();
 	m_pOperTextImg->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting.png"));
 	m_pOperTextImg->Set_PosY(50.f);
 	m_pOperTextImg->Set_Scale(1024.f);
 	m_pOperTextImg->Set_Sort(0.49f);
 
-	CREATE_GAMEOBJECT(m_pOperBlackBG, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pOperBlackBG);
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.15f;
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
+	GET_COMPONENT_FROM(m_pOperBlackBG, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperTextImg, CFader)->Get_FadeDesc() = tFadeDesc;
 
 	CREATE_GAMEOBJECT(m_pOperWindow, RENDER_UI);
 	DISABLE_GAMEOBJECT(m_pOperWindow);
+
+	CREATE_GAMEOBJECT(m_pSmokeBG, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pSmokeBG);
+
+	CREATE_GAMEOBJECT(m_pOperBlackBG, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperBlackBG);
 
 	CREATE_GAMEOBJECT(m_pOperTextImg, RENDER_UI);
 	DISABLE_GAMEOBJECT(m_pOperTextImg);
 
 	Create_OperProfile();
+	Create_OperSideBG();
+	Create_OperSelectCharacter();
+}
+
+void CUI_HUD::Set_FadeOperSelectChaderUI()
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.3f;
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
+
+	GET_COMPONENT_FROM(m_pOperSideBG, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperSelectChar, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperSelectBG, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
 void CUI_HUD::Create_OperProfile()
 {
 	m_pOperProfile = CUI_Object::Create();
-
 	m_pOperProfile->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultArcher.dds"));
-
 	m_pOperProfile->Set_Scale(156.f, 350.f);
 	m_pOperProfile->Set_Sort(0.49f);
+
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.5f;
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
 
 	CREATE_GAMEOBJECT(m_pOperProfile, RENDER_UI);
 	DELETE_GAMEOBJECT(m_pOperProfile);
@@ -955,7 +1021,98 @@ void CUI_HUD::Create_OperProfile()
 		_float fPosX = -375.f + (i * 250.f);
 		m_pArrOperProfile[i]->Set_PosX(fPosX);
 
+		GET_COMPONENT_FROM(m_pArrOperProfile[i], CFader)->Get_FadeDesc() = tFadeDesc;
+
 		CREATE_GAMEOBJECT(m_pArrOperProfile[i], RENDER_UI);
 		DISABLE_GAMEOBJECT(m_pArrOperProfile[i]);
 	}
+}
+
+void CUI_HUD::Create_OperSideBG()
+{
+	m_pOperSideBG = CUI_Object::Create();
+	m_pOperSideBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_ScrollBG.png"));
+	m_pOperSideBG->Set_Scale(250.f, 753.f);
+	m_pOperSideBG->Set_Sort(0.49f);
+
+	CREATE_GAMEOBJECT(m_pOperSideBG, RENDER_UI);
+	DELETE_GAMEOBJECT(m_pOperSideBG);
+
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pArrOperSideBG[i] = m_pOperSideBG->Clone();
+
+		_float fPosX = -565 + (i * 1130.f);
+		m_pArrOperSideBG[i]->Set_PosX(fPosX);
+
+		if (i == 1)
+		{
+			m_pArrOperSideBG[1]->Set_RotationZ(180.f);
+		}
+
+		CREATE_GAMEOBJECT(m_pArrOperSideBG[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pArrOperSideBG[i]);
+	}
+}
+
+void CUI_HUD::Create_OperSelectCharacter()
+{
+	m_pOperSelectBG = CUI_Object::Create();
+	m_pOperSelectBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SelectedBG.png"));
+	m_pOperSelectBG->Set_Scale(213.f, 65.f);
+	m_pOperSelectBG->Set_Sort(0.49f);
+	m_pOperSelectBG->Set_MouseTarget(true);
+
+	CREATE_GAMEOBJECT(m_pOperSelectBG, RENDER_UI);
+	DELETE_GAMEOBJECT(m_pOperSelectBG);
+
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pArrOperSelectBG[i] = m_pOperSelectBG->Clone();
+
+		CREATE_GAMEOBJECT(m_pArrOperSelectBG[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pArrOperSelectBG[i]);
+	}
+
+	_float fTopPosY = 250.f;
+	_float fMidPosY = 150.f;
+	_float fBotPosY = 50.f;
+
+	_float fTopPosXSelectBG = -530.f;
+	_float fMidPosXSelectBG = -515.f;
+	_float fBotPosXSelectBG = -480.f;
+
+	m_pArrOperSelectBG[0]->Set_Pos(fTopPosXSelectBG, fBotPosY);
+	m_pArrOperSelectBG[5]->Set_Pos(fTopPosXSelectBG, -fBotPosY);
+	m_pArrOperSelectBG[1]->Set_Pos(fMidPosXSelectBG, fMidPosY);
+	m_pArrOperSelectBG[4]->Set_Pos(fMidPosXSelectBG, -fMidPosY);
+	m_pArrOperSelectBG[2]->Set_Pos(fBotPosXSelectBG, fTopPosY);
+	m_pArrOperSelectBG[3]->Set_Pos(fBotPosXSelectBG, -fTopPosY);
+
+	m_pOperSelectChar = CUI_Object::Create();
+	m_pOperSelectChar->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
+	m_pOperSelectChar->Set_Scale(65.f);
+	m_pOperSelectChar->Set_Sort(0.48f);
+
+	CREATE_GAMEOBJECT(m_pOperSelectChar, RENDER_UI);
+	DELETE_GAMEOBJECT(m_pOperSelectChar);
+
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pArrOperSelectChar[i] = m_pOperSelectChar->Clone();
+
+		CREATE_GAMEOBJECT(m_pArrOperSelectChar[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pArrOperSelectChar[i]);
+	}
+
+	_float fTopPosCharX = -555.f;
+	_float fMidPosCharX = -590.f;
+	_float fBotPosCharX = -605.f;
+
+	m_pArrOperSelectChar[0]->Set_Pos(fTopPosCharX, fTopPosY);
+	m_pArrOperSelectChar[5]->Set_Pos(fTopPosCharX, -fTopPosY);
+	m_pArrOperSelectChar[1]->Set_Pos(fMidPosCharX, fMidPosY);
+	m_pArrOperSelectChar[4]->Set_Pos(fMidPosCharX, -fMidPosY);
+	m_pArrOperSelectChar[2]->Set_Pos(fBotPosCharX, fBotPosY);
+	m_pArrOperSelectChar[3]->Set_Pos(fBotPosCharX, -fBotPosY);
 }

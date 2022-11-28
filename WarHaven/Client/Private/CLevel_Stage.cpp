@@ -46,6 +46,9 @@
 
 #include "CGameSystem.h"
 
+//JJ
+#include "Loading_Manager.h"
+
 CLevel_Stage::CLevel_Stage()
 {
 }
@@ -82,6 +85,13 @@ HRESULT CLevel_Stage::Enter()
 
 	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 	CUser::Get_Instance()->On_EnterStageLevel();
+
+	LEVEL_TYPE_CLIENT eLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+	if (eLevel != LEVEL_BOOTCAMP)
+	{
+		CUser::Get_Instance()->On_EnterLevel();
+	}
+
 	//CEffects_Factory::Get_Instance()->On_EnterLevel();
 
 	GAMEINSTANCE->Begin_PhysScene();

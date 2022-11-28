@@ -223,7 +223,6 @@ HRESULT CMainApp::SetUp_Statics()
 	DISABLE_GAMEOBJECT(pCursor);
 	CUser::Get_Instance()->Set_Cursor(pCursor);
 
-
 	/*Default Cam*/
 	CCamera* pDefaultCam = CCamera_Default::Create();
 	pDefaultCam->Initialize();

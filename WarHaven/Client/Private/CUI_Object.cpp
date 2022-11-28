@@ -162,6 +162,15 @@ void CUI_Object::DoMoveY(_float fMoveValue, _float fDuration)
 	m_fMoveDuration = fDuration;
 }
 
+void CUI_Object::DoMoveX(_float fMoveValue, _float fDuration)
+{
+	m_bIsDoMoveX = true;
+
+	m_vOriginPos = Get_Pos();
+	m_fMoveValue = fMoveValue;
+	m_fMoveDuration = fDuration;
+}
+
 void CUI_Object::DoScale(_float fScaleValue, _float fDuration)
 {
 	m_bIsDoScale = true;
@@ -379,6 +388,25 @@ void CUI_Object::DoMove()
 
 			m_fMoveAccTime = 0.f;
 			m_bIsDoMoveY = false;
+		}
+	}
+	else if (m_bIsDoMoveX)
+	{
+		m_fMoveAccTime += fDT(0);
+
+		_float fCurPosX = Get_PosX();
+		_float fMoveValue = (m_fMoveValue / m_fMoveDuration) * fDT(0);
+		_float fResultPos = fCurPosX + fMoveValue;
+
+		Set_PosX(fResultPos);
+
+		if (m_fMoveAccTime >= m_fMoveDuration)
+		{
+			_float fResultPosY = m_vOriginPos.x + m_fMoveValue;
+			Set_PosX(fResultPosY);
+
+			m_fMoveAccTime = 0.f;
+			m_bIsDoMoveX = false;
 		}
 	}
 }
