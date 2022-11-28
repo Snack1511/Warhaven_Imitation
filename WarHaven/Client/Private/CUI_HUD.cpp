@@ -70,7 +70,8 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP 
+		&& m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
 		SetActive_OperUI(true);
 	}
