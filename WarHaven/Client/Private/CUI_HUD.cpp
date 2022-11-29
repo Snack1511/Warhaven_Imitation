@@ -916,26 +916,7 @@ void CUI_HUD::Update_OperWindow()
 		}
 		else if (m_iOperWindowCnt == 5)
 		{
-			for (int i = 0; i < PT_End; ++i)
-			{
-				switch (m_eLoadLevel)
-				{
-				case LEVEL_PADEN:
-
-					for (int j = 0; j < 2; ++j)
-					{
-						Enable_Fade(m_pArrOperPointUI[i][j], 0.3f);
-						m_pArrOperPointUI[i][j]->DoScale(-70.f, 0.3f);
-					}
-
-					DISABLE_GAMEOBJECT(m_pArrOperPointUI[PT_Icon][0]);
-
-					break;
-				}
-			}
-
-			m_fAccTime = 0.f;
-			m_iOperWindowCnt++;
+			Enable_OperPointUI();
 		}
 		else if (m_iOperWindowCnt == 6)
 		{
@@ -1002,16 +983,6 @@ void CUI_HUD::Update_OperWindow()
 		}
 		else if (m_iOperWindowCnt == 9)
 		{
-			switch (m_eLoadLevel)
-			{
-			case LEVEL_PADEN:
-				for (int j = 0; j < 2; ++j)
-				{
-					m_pArrOperPointUI[PT_Point][j]->Set_MouseTarget(true);
-				}
-				break;
-			}
-
 			// 타임어택
 			m_fOperTime += fDT(0);
 			if (m_fOperTime > 10.f)
@@ -1225,6 +1196,32 @@ void CUI_HUD::Create_OperSideBG()
 		CREATE_GAMEOBJECT(m_pArrOperSideBG[i], RENDER_UI);
 		DISABLE_GAMEOBJECT(m_pArrOperSideBG[i]);
 	}
+}
+
+void CUI_HUD::Enable_OperPointUI()
+{
+	for (int i = 0; i < PT_End; ++i)
+	{
+		switch (m_eLoadLevel)
+		{
+		case LEVEL_PADEN:
+
+			for (int j = 0; j < 2; ++j)
+			{
+				Enable_Fade(m_pArrOperPointUI[i][j], 0.3f);
+				m_pArrOperPointUI[i][j]->DoScale(-70.f, 0.3f);
+
+				m_pArrOperPointUI[PT_Point][j]->Set_MouseTarget(true);
+			}
+
+			DISABLE_GAMEOBJECT(m_pArrOperPointUI[PT_Icon][0]);
+
+			break;
+		}
+	}
+
+	m_fAccTime = 0.f;
+	m_iOperWindowCnt++;
 }
 
 void CUI_HUD::Create_OperSelectCharacter()

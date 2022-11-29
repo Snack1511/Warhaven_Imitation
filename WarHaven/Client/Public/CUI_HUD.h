@@ -171,7 +171,10 @@ private:
 	void Update_HP();
 	void Update_HeroGauge();
 
+private:	// 작전 회의
 	void Update_OperWindow();
+
+	void Enable_OperPointUI();
 
 private:
 	void Create_CharacterSelectWindow();
