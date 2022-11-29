@@ -31,8 +31,7 @@ public:
 
 	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
 
-	virtual void On_PointDown_Goal(const _uint& iEventNum);
-	virtual void On_PointDown_Join(const _uint& iEventNum);
+	virtual void On_PointDown_Point(const _uint& iEventNum);
 
 public:
 	virtual void Set_Shader_Smoke(CShader* pShader, const char* pConstName);
@@ -83,27 +82,33 @@ private:	// 작전회의
 	CUI_Object* m_pOperSideBG = nullptr;
 	CUI_Object* m_pArrOperSideBG[2];
 
-	enum Select_Type { ST_Char, ST_Port, ST_BG, ST_Icon, SelectEnd };
+private:	// 작전회의 캐릭터 선택 창
+	enum SelectType { ST_Char, ST_Port, ST_BG, ST_Icon, ST_End };
 
-	CUI_Object* m_pOperSelectUI[SelectEnd];
-	CUI_Object* m_pArrOperSelectUI[SelectEnd][6];
+	CUI_Object* m_pOperSelectUI[ST_End];
+	CUI_Object* m_pArrOperSelectUI[ST_End][6];
 
 	_uint m_iCurSelectEventNum = 0;
 	_uint m_iPrvSelectEventNum = 0;
 
+private:
+	void Create_OperSelectCharacter();
 
+private:
 	CUI_Object* m_pOperMapIcon = nullptr;
 	CUI_Object* m_pOperMapBG = nullptr;
 
-	CUI_Object* m_pGoalPoint = nullptr;
-	CUI_Object* m_pGoalPointText = nullptr;
-	CUI_Object* m_pGoalPointGauge = nullptr;
+private:	// 작전회의 거점 아이콘
+	enum PointType { PT_Point, PT_Gauge, PT_Icon, PT_Text, PT_End };
 
-	CUI_Object* m_pJoinPoint = nullptr;
-	CUI_Object* m_pJoinPointText = nullptr;
-	CUI_Object* m_pJoinPointIcon = nullptr;
-	CUI_Object* m_pJoinPointGauge = nullptr;
+	CUI_Object* m_pOperPointUI[PT_End];
+	CUI_Object* m_pArrOperPointUI[PT_End][3];
 
+private:
+	void Create_OperPoint();
+	void Create_OperPointEffect();
+
+private:
 	CUI_Object* m_pOperAttackPointText = nullptr;
 
 	CUI_Object* m_pTargetPoint = nullptr;
@@ -118,25 +123,27 @@ private:	// 작전회의
 
 private:	// 클래스 변경 창
 	CUI_Object* m_pBG = nullptr;
-	CUI_Object* m_pPort;
-	CUI_Object* m_pPortBG;
+
+	CUI_Object* m_pPort = nullptr;
+	CUI_Object* m_pPortClone[6];
+
+	CUI_Object* m_pPortBG = nullptr;
+	CUI_Object* m_pPortBGClone[6];
+
 	CUI_Object* m_pClassIcon = nullptr;
+	CUI_Object* m_pClassIconClone[6];
 
 	CUI_Object* m_pPortHighlight = nullptr;
 	CUI_Object* m_pPortHighlights[6];
+
+	CUI_Object* m_pPortUnderLine = nullptr;
+	CUI_Object* m_pPortUnderLines[6];
 
 	CUI_Object* m_pClassInfo = nullptr;
 	CUI_Object* m_pClassInfoIcon = nullptr;
 	CUI_Object* m_pLine = nullptr;
 	CUI_Object* m_pSelectLine = nullptr;
 	CUI_Object* m_pConfirmBtn = nullptr;
-
-	CUI_Object* m_pPortUnderLine = nullptr;
-	CUI_Object* m_pPortUnderLines[6];
-
-	CUI_Object* m_pPortClone[6];
-	CUI_Object* m_pPortBGClone[6];
-	CUI_Object* m_pClassIconClone[6];
 
 	CUI_Object* m_pChangeClassText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;
@@ -179,12 +186,9 @@ private:	// OperWindow
 	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
 	void Create_OperProfile();
 	void Create_OperSideBG();
-	void Create_OperSelectCharacter();
 	void Create_OperMap();
 
 private:
-	void Create_OperPoint();
-	void Create_OperPointEffect();
 };
 
 END
