@@ -172,6 +172,7 @@ public:
 	_float4	Get_FollowCamLook_Turn();
 	_float4	Get_FollowCamRight();
 
+
 public:
 	void TurnOn_TrailEffect(_bool bOn);
 
@@ -248,6 +249,7 @@ public:
 
 public:
 	virtual void SetUp_HitStates(_bool bPlayer);
+
 
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;

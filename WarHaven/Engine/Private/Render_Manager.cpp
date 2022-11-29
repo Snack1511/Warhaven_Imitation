@@ -1101,7 +1101,7 @@ HRESULT CRender_Manager::Render_RimLight()
 		return E_FAIL;
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
-	/*m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 	_float4x4		ViewMatrixInv, ProjMatrixInv;
 
@@ -1112,9 +1112,7 @@ HRESULT CRender_Manager::Render_RimLight()
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 
 	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
-	_float4 vCamLook = GAMEINSTANCE->Get_CurCamLook();
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4));
-	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamLook", &vCamLook, sizeof(_float4));*/
 
 	m_vecShader[SHADER_DEFERRED]->Begin(9);
 

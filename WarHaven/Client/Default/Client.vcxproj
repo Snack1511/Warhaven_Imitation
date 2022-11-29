@@ -356,6 +356,7 @@
     <ClInclude Include="..\Public\CSwitchRtoL_Valkyrie.h" />
     <ClInclude Include="..\Public\CSwitchRtoL_WarHammer.h" />
     <ClInclude Include="..\Public\CPlayer.h" />
+    <ClInclude Include="..\public\CTrigger_Paden.h" />
     <ClInclude Include="..\Public\CUI_Damage.h" />
     <ClInclude Include="..\public\CTable.h" />
     <ClInclude Include="..\public\CTrigger.h" />
@@ -739,6 +740,7 @@
     <ClCompile Include="..\Private\CSwitchRtoL_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CSwitchRtoL_WarHammer.cpp" />
     <ClCompile Include="..\Private\CPlayer.cpp" />
+    <ClCompile Include="..\private\CTrigger_Paden.cpp" />
     <ClCompile Include="..\Private\CUI_Damage.cpp" />
     <ClCompile Include="..\private\CTable.cpp" />
     <ClCompile Include="..\private\CTrigger.cpp" />

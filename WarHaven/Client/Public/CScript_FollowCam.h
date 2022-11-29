@@ -116,6 +116,7 @@ private:
 	_float	m_fShakingTimeAcc = 0.f;
 	_float	m_fShakingTime = 0.f;
 	_float	m_fShakingPower = 0.f;
+	_float			m_fCurShakingPower = 0.f;
 
 private:
 	_bool			m_bTargetLocked = false;

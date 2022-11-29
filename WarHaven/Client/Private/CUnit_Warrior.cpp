@@ -317,10 +317,21 @@ HRESULT CUnit_Warrior::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
-	//m_pModelCom->Set_OutlineFlag(_float4(0.9f, 0.2f, 0.2f, 1.f));
-	//m_pModelCom->Set_RimLightFlag(SH_LIGHT_BLOOM);
+	for (_uint i = 0; i < MODEL_PART_END; ++i)
+	{
+		_int iTemp = 0;
+		iTemp = m_tModelData.strModelPaths[i].find(L"SK_Warrior_Helmet_Rabbit_50");
 
-	
+		if (iTemp > 0)
+			m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
+		
+		iTemp = m_tModelData.strModelPaths[i].find(L"SK_Warrior0004_Body_A00_25");
+
+		if (iTemp > 0)
+			m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
+	}
+
+
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
 	return S_OK;

@@ -60,10 +60,11 @@ CPlayer::~CPlayer()
 
 }
 
-CPlayer* CPlayer::Create(wstring wstrCamKey, CLASS_DEFAULT eClass)
+CPlayer* CPlayer::Create(wstring wstrCamKey, CLASS_DEFAULT eClass, eCUSTOM_TYPE eCustomType)
 {
 	CPlayer* pInstance = new CPlayer;
 
+	pInstance->Ready_Customizing(eCustomType);
 
 	if (FAILED(pInstance->Initialize_Prototype(wstrCamKey, eClass)))
 	{
@@ -94,35 +95,38 @@ void CPlayer::Create_DefaultClass()
 		L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx"
 	};
 
+	//L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx"
+
 	wstring wstrModeBody[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx", // WARRIOR
+		m_wstrBodyMeshPath[CLASS_TYPE::WARRIOR], // WARRIOR
 		L"",
 		L"",
 		L"",
 		L"",
-		L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00.fbx"
+		L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx"
 	};
 
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx", // WARRIOR
+		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
 		L"",
 		L"",
 		L"",
 		L"",
-		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00.fbx"
+		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00_50.fbx"
 	};
 
 	wstring wstrModeHead[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00.fbx", // WARRIOR
+		m_wstrHelmetMeshPath[CLASS_TYPE::WARRIOR], // WARRIOR
 		L"",
 		L"",
 		L"",
 		L"",
-		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00.fbx"
+		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00_50.fbx"
 	};
 
+	//L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx"
 	wstring wstrModeWeapon_R[CLASS_DEFAULT_END] = {
-		L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx", // WARRIOR
+		m_wstrWeaponMeshPath[CLASS_TYPE::WARRIOR], // WARRIOR
 		L"",
 		L"",
 		L"",
@@ -137,8 +141,6 @@ void CPlayer::Create_DefaultClass()
 		L"",
 		L"" // 
 	};
-
-
 
 
 	CUnit::UNIT_MODEL_DATA  tModelData[CLASS_DEFAULT_END];
@@ -227,21 +229,21 @@ void CPlayer::Create_HeroClass()
 	};
 
 	wstring wstrModeBody[HERO_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/body/SK_Fiona0004_Body_A00.fbx" // FIONA
+		L"../bin/resources/meshes/characters/Valkyrie/body/SK_Fiona0004_Body_A00_50.fbx" // FIONA
 		L"",
 		L"",
 		L"",
 	};
 
 	wstring wstrModeFace[HERO_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0001_Face_A00.fbx" // FIONA
+		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx" // FIONA
 		L"",
 		L"",
 		L"",
 	};
 
 	wstring wstrModeHead[HERO_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0004_Helmet_A00.fbx" // FIONA
+		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0004_Helmet_A00_50.fbx" // FIONA
 		L"",
 		L"",
 		L"",
@@ -615,11 +617,11 @@ void CPlayer::My_LateTick()
 {
 	if (!m_bIsMainPlayer)
 		return;
-	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.1f);
+	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
 
 	if (KEY(UP, TAP))
 	{
-		vRimLightFlag.w += 0.05f;
+		vRimLightFlag.w += 0.01f;
 		for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
 		{
 			if (m_pDefaultClass[i])
@@ -628,11 +630,13 @@ void CPlayer::My_LateTick()
 
 			}
 		}
+		cout << vRimLightFlag.w << endl;
+
 	}
 
 	if (KEY(DOWN, TAP))
 	{
-		vRimLightFlag.w -= 0.05f;
+		vRimLightFlag.w -= 0.01f;
 		for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
 		{
 			if (m_pDefaultClass[i])
@@ -641,7 +645,11 @@ void CPlayer::My_LateTick()
 
 			}
 		}
+		cout << vRimLightFlag.w << endl;
+
 	}
+
+
 }
 
 void CPlayer::Update_HP()
@@ -689,4 +697,26 @@ void CPlayer::Update_HeroGauge()
 	}
 
 	CUser::Get_Instance()->Set_HeroGauge(m_fMaxGauge, m_fGauge);
+}
+
+void CPlayer::Ready_Customizing(eCUSTOM_TYPE eType)
+{
+	switch (eType)
+	{
+	case Client::CPlayer::eCUSTOM_TYPE::eDEFAULT:
+		m_wstrBodyMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/body/SK_Warrior0004_Body_A00_25.fbx";
+		m_wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0005_Helmet_A00_50.fbx";
+		m_wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
+
+
+		break;
+	case Client::CPlayer::eCUSTOM_TYPE::eLEADER:
+		m_wstrBodyMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/body/SK_Warrior0001_Body_A00_50.fbx";
+		m_wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0002_Helmet_A00_50.fbx";
+		m_wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
+
+		break;
+	default:
+		break;
+	}
 }

@@ -178,6 +178,14 @@ _float CUtility_Transform::Get_FromCameraDistance(CGameObject* pObject)
 	return fDis;
 }
 
+_float4 CUtility_Transform::Turn_ByAngle(_float4 vLook, _float4 vAxis, _float fAngle)
+{
+	_float4x4 matRot;
+	matRot = XMMatrixRotationAxis(vAxis.Normalize().XMLoad(), ToRadian(fAngle));
+	vLook = vLook.MultiplyNormal(matRot);
+	return vLook;
+}
+
 _float4x4 CUtility_Transform::Get_MatrixbyLook(_float4 vLook, _float4 vPos)
 {
 	_float4x4 matNew;

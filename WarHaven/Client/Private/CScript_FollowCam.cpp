@@ -49,7 +49,7 @@ void CScript_FollowCam::Start_ShakingCamera(_float fPower, _float fTime)
 	{
 		//새로온 힘이 더 약한애면
 
-		if (fPower < m_fShakingPower)
+		if (fPower < m_fCurShakingPower)
 			return;
 	}
 
@@ -383,8 +383,11 @@ void CScript_FollowCam::Update_CameraByMouse()
 	_float fTurnSpeedX = ((_float)MOUSE_MOVE(MMS_X)) * MOUSE_DPI_X;
 	_float fTurnSpeedY = ((_float)MOUSE_MOVE(MMS_Y)) * MOUSE_DPI_Y;
 
-	CUtility_Transform::Turn_ByAngle(pTransform, pTransform->Get_MyWorld(WORLD_RIGHT), fTurnSpeedY);
-	CUtility_Transform::Turn_ByAngle(pTransform, _float4(0.f, 1.f, 0.f, 0.f), fTurnSpeedX);
+
+	m_vOriginLook = CUtility_Transform::Turn_ByAngle(m_vOriginLook, pTransform->Get_MyWorld(WORLD_RIGHT), fTurnSpeedY);
+	m_vOriginLook = CUtility_Transform::Turn_ByAngle(m_vOriginLook, _float4(0.f, 1.f, 0.f, 0.f), fTurnSpeedX);
+
+	pTransform->Set_Look(m_vOriginLook);
 
 
 	//CUtility_Transform::Turn_ByAngle(pTransform, )
@@ -523,9 +526,7 @@ void CScript_FollowCam::Update_Shaking()
 
 	if (m_bShaking)
 	{
-		_float fRatio = m_fShakingTimeAcc / m_fShakingTime;
-
-		_float fShakingPower = CEasing_Utillity::sinfOut(m_fShakingPower, 0.f, m_fShakingTimeAcc, m_fShakingTime);
+		m_fCurShakingPower = CEasing_Utillity::sinfOut(m_fShakingPower, 0.f, m_fShakingTimeAcc, m_fShakingTime);
 
 		_float4 vRandDir;
 		vRandDir.x = frandom(-1.f, 1.f);
@@ -534,9 +535,8 @@ void CScript_FollowCam::Update_Shaking()
 		vRandDir.w = 0.f;
 		vRandDir.Normalize();
 
-		m_vOriginLook = m_pOwner->Get_Transform()->Get_MyWorld(WORLD_LOOK);
-		m_vOriginLook += vRandDir * fShakingPower * fDT(0);
-		m_pOwner->Get_Transform()->Set_Look(m_vOriginLook);
+		_float4 vNewLook = m_vOriginLook + (vRandDir * m_fCurShakingPower * fDT(0));
+		m_pOwner->Get_Transform()->Set_Look(vNewLook);
 	}
 
 }

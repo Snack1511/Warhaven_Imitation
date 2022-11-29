@@ -64,13 +64,19 @@ public:
 		eSQUADLEADER = (1 << 4)
 	};
 
+public:
+	enum class eCUSTOM_TYPE
+	{
+		eDEFAULT,
+		eLEADER,
+	};
 
 private:
 	CPlayer();
 	virtual ~CPlayer();
 
 public:
-	static CPlayer* Create(wstring wstrCamKey, CLASS_DEFAULT eClass);
+	static CPlayer* Create(wstring wstrCamKey, CLASS_DEFAULT eClass, eCUSTOM_TYPE eCustomType = eCUSTOM_TYPE::eLEADER);
 
 	/* Initialize_Prototype */
 public:
@@ -123,6 +129,12 @@ public:
 	void	Set_TeamType(int eTeamType);
 
 private:
+	eCUSTOM_TYPE	m_eCustomType = eCUSTOM_TYPE::eDEFAULT;
+	wstring	m_wstrHelmetMeshPath[CLASS_END];
+	wstring	m_wstrBodyMeshPath[CLASS_END];
+	wstring	m_wstrWeaponMeshPath[CLASS_END];
+
+private:
 	//어느 진영인지, 스쿼드멤버인지 스쿼드장인지 여부
 	int	m_eTeamTypeFlag = eTEAM_TYPE::eMAINPLAYER;
 
@@ -163,5 +175,10 @@ private:
 private:
 	void Update_HP();
 	void Update_HeroGauge();
+
+
+
+private:
+	void Ready_Customizing(eCUSTOM_TYPE eType);
 };
 END

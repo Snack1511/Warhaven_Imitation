@@ -115,7 +115,7 @@ PS_OUT PS_MAIN_SHADOWING(PS_IN In)
 
 	vector			vShadowDesc = g_ShadowTexture.Sample(ShadowSampler, vNewUV);
 
-	if (vLightViewSpacePos.z - 0.4f > vShadowDesc.r * 1500.f)
+	if (vLightViewSpacePos.z - 0.5f > vShadowDesc.r * 1500.f)
 	{
 		{
 			Out.vColor.xyz = 0.3f;

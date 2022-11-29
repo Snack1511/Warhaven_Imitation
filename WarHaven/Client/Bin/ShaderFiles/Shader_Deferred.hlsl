@@ -254,9 +254,28 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 
 	Out.vColor = vDiffuse * vShade;
 
+
+	//Shadow
+#ifdef SHADOW_ON
+	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vColor *= vShadowDesc;
+#endif
+
+	Out.vColor *= 1.2f;
+
+	//RimLight
+	vector			vRimLightDesc = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
+	//if (vRimLightDesc.a > 0.1f)
+	Out.vColor.xyz += vRimLightDesc.xyz;
+
+
+
 	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 	if (vSpecular.r < 1.f)
-		Out.vColor += vSpecular;
+	{
+		if (dot(Out.vColor.xyz, float3(0.333f, 0.333f, 0.333f)) > 0.5f)
+			Out.vColor += vSpecular;
+	}
 
 	//DOF
 	//if (Out.vColor.a > 0.f && vDepthDesc.y > 0.002f)
@@ -278,13 +297,7 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 
 	
 
-	//Shadow
-#ifdef SHADOW_ON
-	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor *= vShadowDesc;
-#endif
 
-	Out.vColor *= 1.2f;
 
 	if (Out.vColor.a <= 0.f)
 	{
@@ -295,10 +308,7 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 
 
 
-	//RimLight
-	vector			vRimLightDesc = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
-	//if (vRimLightDesc.a > 0.1f)
-	Out.vColor.xyz += vRimLightDesc.xyz;
+	
 
 	//
 
@@ -653,7 +663,7 @@ PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
 
 	//float fRim = 1 - saturate(dot(vViewNormal, vNormal));
 
-	float		fShade = saturate(saturate(dot(normalize(vViewNormal), vNormal)));
+	float		fShade = 1.f - saturate(saturate(dot(normalize(vViewNormal.xyz), vNormal.xyz)));
 
 	//노말 벡터가 카메라로 향하면 1
 	//노말 벡터가 카메라를 안보면 0
@@ -662,7 +672,7 @@ PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
 
 	//int iRimPower = (int)(vRimLightFlagDesc.a * 10.f);
 	
-	float fRimPower = vRimLightFlagDesc.a;
+	float fRimPower = vRimLightFlagDesc.a * 10.f;
 	fShade = pow(fShade, fRimPower);
 
 	Out.vColor.xyz = (fShade * vRimLightFlagDesc.xyz);
