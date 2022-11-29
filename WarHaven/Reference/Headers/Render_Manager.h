@@ -29,6 +29,13 @@ public:
 	void	Start_RadialBlur(_float fTargetPower);
 	void	Stop_RadialBlur();
 
+	void	Start_ChromaticAberration(_float fTargetPower);
+	void	Stop_ChromaticAberration();
+
+	void	Start_GrayScale(_float fTargetPower);
+	void	Stop_GrayScale();
+
+
 public:
 	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fDistance);
 
@@ -68,6 +75,16 @@ private:
 	_bool	m_bRadialBlur = false;
 	_float	m_fRadialPower = 0.f;
 	_float	m_fRadialTargetPower = 0.f;
+
+private:
+	_bool	m_bChromaticAberration = false;
+	_float	m_fChromaticAberrationPower = 0.f;
+	_float	m_fChromaticAberrationTargetPower = 0.f;
+
+private:
+	_bool	m_bGrayScale = false;
+	_float	m_fGrayScalePower = 0.f;
+	_float	m_fGrayScaleTargetPower = 0.f;
 
 
 #ifdef _DEBUG
@@ -109,11 +126,13 @@ private:
 	HRESULT	Render_SSD();
 	HRESULT	Render_FinalBlend();
 	HRESULT Render_MotionBlur();
-	HRESULT	Render_RadialBlur();
+	HRESULT	Render_RadialBlur(const _tchar* pRenderTargetName);
+	HRESULT	Render_ChromaticAberration(const _tchar* pRenderTargetName);
+	HRESULT	Render_GrayScale(const _tchar* pRenderTargetName);
 
 	HRESULT	Render_UI();
 	HRESULT	Render_UIBloom();
-	HRESULT	Render_UIBlend();
+	HRESULT	Render_UIBlend(const _tchar* pRenderTargetName);
 
 private:
 	HRESULT		Render_Group(RENDER_GROUP eGroup);

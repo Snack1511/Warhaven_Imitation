@@ -689,6 +689,10 @@ void CModel::Final_Tick()
 	{
 		if (m_bLOD)
 		{
+			
+
+
+
 			_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
 
 			/* 갯수들 일단 다 초기화 */
@@ -711,17 +715,26 @@ void CModel::Final_Tick()
 
 				eLOD_LEVEL eLODLevel = eLOD_LEVEL::eLOD1;
 
-				for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+				/*if (m_iNumInstance > 10)
 				{
-					_float fLODDistance = m_fLODDistance;
-					//i만큼 곱해서 단계를 나눔
-					fLODDistance *= (_float)i;
-					fLODDistance += m_pInstancingMaxRange[i];
-
-					//현재 거리가 단계보다 크면
-					if (fCurDistance > fLODDistance)
-						eLODLevel = (eLOD_LEVEL)i;
+					eLODLevel = eLOD_LEVEL::eLOD3;
 				}
+				else*/
+				{
+					for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
+					{
+						_float fLODDistance = m_fLODDistance;
+						//i만큼 곱해서 단계를 나눔
+						fLODDistance *= (_float)i;
+						fLODDistance += m_pInstancingMaxRange[i];
+
+						//현재 거리가 단계보다 크면
+						if (fCurDistance > fLODDistance)
+							eLODLevel = (eLOD_LEVEL)i;
+					}
+				}
+
+				
 
 
 				/* LOD별 인스턴스 리맵 정보 갱신 */

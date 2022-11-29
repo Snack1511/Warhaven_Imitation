@@ -68,6 +68,29 @@ void CRender_Manager::Stop_RadialBlur()
 	m_bRadialBlur = false;
 }
 
+void CRender_Manager::Start_ChromaticAberration(_float fTargetPower)
+{
+	m_fChromaticAberrationTargetPower = fTargetPower;
+	m_bChromaticAberration = true;
+}
+
+void CRender_Manager::Stop_ChromaticAberration()
+{
+	m_bChromaticAberration = false;
+
+}
+
+void CRender_Manager::Start_GrayScale(_float fTargetPower)
+{
+	m_fGrayScaleTargetPower = fTargetPower;
+	m_bGrayScale = true;
+}
+
+void CRender_Manager::Stop_GrayScale()
+{
+	m_bGrayScale = false;
+}
+
 void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fDistance)
 {
 	m_ShadowViewMatrix.Identity();
@@ -232,6 +255,8 @@ HRESULT CRender_Manager::Initialize()
 
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_ShadowBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_ChromaticAberration"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
 
 	
 
@@ -328,6 +353,8 @@ HRESULT CRender_Manager::Initialize()
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_RadialBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_GrayScale"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
 
 	/* SkyBox */
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_SkyBox"), TEXT("Target_SkyBox"))))
@@ -391,6 +418,8 @@ HRESULT CRender_Manager::Initialize()
 	/*For RimLight*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_RimLightAcc"), TEXT("Target_RimLight"))))
 		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ChromaticAberrationAcc"), TEXT("Target_ChromaticAberration"))))
+		return E_FAIL;
 
 	/*For Shadow*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ShadowAcc"), TEXT("Target_Shadow"))))
@@ -416,6 +445,9 @@ HRESULT CRender_Manager::Initialize()
 
 	/*For Bloom*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ForwardBloomBlurAcc"), TEXT("Target_ForwardBloomBlur"))))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_GrayScaleAcc"), TEXT("Target_GrayScale"))))
 		return E_FAIL;
 
 	/*For Bloom*/
@@ -652,16 +684,48 @@ void CRender_Manager::Update()
 	if (m_bRadialBlur)
 	{
 		if (m_fRadialPower < m_fRadialTargetPower)
-			m_fRadialPower += fDT(0) * 0.1f;
+			m_fRadialPower += fDT(0) * m_fRadialTargetPower * 1.5f;
 		else
 			m_fRadialPower = m_fRadialTargetPower;
 	}
 	else
 	{
 		if (m_fRadialPower > 0.f)
-			m_fRadialPower -= fDT(0) * 0.1f;
+			m_fRadialPower -= fDT(0) * m_fRadialTargetPower * 1.5f;
 		else
 			m_fRadialPower = 0.f;
+
+	}
+
+	if (m_bChromaticAberration)
+	{
+		if (m_fChromaticAberrationPower < m_fChromaticAberrationTargetPower)
+			m_fChromaticAberrationPower += fDT(0) * m_fChromaticAberrationTargetPower * 1.5f;
+		else
+			m_fChromaticAberrationPower = m_fChromaticAberrationTargetPower;
+	}
+	else
+	{
+		if (m_fChromaticAberrationPower > 0.f)
+			m_fChromaticAberrationPower -= fDT(0) * m_fChromaticAberrationTargetPower * 1.5f;
+		else
+			m_fChromaticAberrationPower = 0.f;
+
+	}
+
+	if (m_bGrayScale)
+	{
+		if (m_fGrayScalePower < m_fGrayScaleTargetPower)
+			m_fGrayScalePower += fDT(0) * m_fGrayScaleTargetPower * 1.f;
+		else
+			m_fGrayScalePower = m_fGrayScaleTargetPower;
+	}
+	else
+	{
+		if (m_fGrayScalePower > 0.f)
+			m_fGrayScalePower -= fDT(0) * m_fGrayScaleTargetPower * 1.f;
+		else
+			m_fGrayScalePower = 0.f;
 
 	}
 }
@@ -780,10 +844,30 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_MotionBlur()))
 		return E_FAIL;
 
+	wstring wstrRenderTargetName = L"Target_MotionBlur";
+
 	if (m_fRadialPower > 0.f)
 	{
-		if (FAILED(Render_RadialBlur()))
+		if (FAILED(Render_RadialBlur(wstrRenderTargetName.c_str())))
 			return E_FAIL;
+
+		wstrRenderTargetName = L"Target_RadialBlur";
+	}
+
+	if (m_fChromaticAberrationPower > 0.f)
+	{
+		if (FAILED(Render_ChromaticAberration(wstrRenderTargetName.c_str())))
+			return E_FAIL;
+
+		wstrRenderTargetName = L"Target_ChromaticAberration";
+	}
+
+	if (m_fGrayScalePower > 0.f)
+	{
+		if (FAILED(Render_GrayScale(wstrRenderTargetName.c_str())))
+			return E_FAIL;
+
+		wstrRenderTargetName = L"Target_GrayScale";
 	}
 
 	/* UI */
@@ -793,7 +877,7 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_UIBloom()))
 		return E_FAIL;
 
-	if (FAILED(Render_UIBlend()))
+	if (FAILED(Render_UIBlend(wstrRenderTargetName.c_str())))
 		return E_FAIL;
 
 
@@ -1653,6 +1737,14 @@ HRESULT CRender_Manager::Render_PostEffect()
 	m_pMeshRect->Render();
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
+
+
+
+
+
+
+
+
 	return S_OK;
 
 
@@ -1768,7 +1860,7 @@ HRESULT CRender_Manager::Render_MotionBlur()
 	_float fTimeDelta = fDT(0);
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fTimeDelta", &fTimeDelta, sizeof(_float));
 
-	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fRadialPower", &m_fRadialPower, sizeof(_float));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fRadialPower, sizeof(_float));
 
 
 
@@ -1784,7 +1876,7 @@ HRESULT CRender_Manager::Render_MotionBlur()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_RadialBlur()
+HRESULT CRender_Manager::Render_RadialBlur(const _tchar* pRenderTargetName)
 {
 	//1. 모션블러 텍스쳐 굽기
 	
@@ -1792,12 +1884,57 @@ HRESULT CRender_Manager::Render_RadialBlur()
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_RadialBlurAcc"))))
 		return E_FAIL;
 
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_MotionBlur")))))
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(pRenderTargetName))))
 		return E_FAIL;
 
-	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fRadialPower", &m_fRadialPower, sizeof(_float));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fRadialPower, sizeof(_float));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(6)))
+		return E_FAIL;
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_ChromaticAberration(const _tchar* pRenderTargetName)
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ChromaticAberrationAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(pRenderTargetName))))
+		return E_FAIL;
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fChromaticAberrationPower, sizeof(_float));
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(7)))
+		return E_FAIL;
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_GrayScale(const _tchar* pRenderTargetName)
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_GrayScaleAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(pRenderTargetName))))
+		return E_FAIL;
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fGrayScalePower, sizeof(_float));
+
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(8)))
 		return E_FAIL;
 
 	m_pMeshRect->Render();
@@ -1890,21 +2027,13 @@ HRESULT CRender_Manager::Render_UIBloom()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_UIBlend()
+HRESULT CRender_Manager::Render_UIBlend(const _tchar* pRenderTargetName)
 {
 	/*if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_UIBloomBlendAcc"))))
 		return E_FAIL;*/
 
-	if (m_fRadialPower > 0.f)
-	{
-		if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(TEXT("Target_RadialBlur")))))
+		if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(pRenderTargetName))))
 			return E_FAIL;
-	}
-	else
-	{
-		if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(TEXT("Target_MotionBlur")))))
-			return E_FAIL;
-	}
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UIForward")))))
 		return E_FAIL;
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BloomTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UIBloomBlur")))))

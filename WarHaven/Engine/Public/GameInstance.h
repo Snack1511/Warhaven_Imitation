@@ -121,6 +121,12 @@ public:	/* For. Render_Manager */
 	void	Start_RadialBlur(_float fTargetPower);
 	void	Stop_RadialBlur();
 
+	void	Start_ChromaticAberration(_float fTargetPower);
+	void	Stop_ChromaticAberration();
+
+	void	Start_GrayScale(_float fTargetPower);
+	void	Stop_GrayScale();
+
 public:	/* For. Object_Manager */
 	template <typename T>
 	T* Get_StaticObj()

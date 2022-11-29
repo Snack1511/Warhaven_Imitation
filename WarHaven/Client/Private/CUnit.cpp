@@ -221,6 +221,11 @@ void CUnit::On_Die()
 		m_pCurState->Exit(this, m_pAnimator);
 		//SAFE_DELETE(m_pCurState);
 	}
+
+	if (m_bIsMainPlayer)
+	{
+		GAMEINSTANCE->Start_GrayScale(1.f);
+	}
 }
 
 _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)

@@ -52,7 +52,6 @@ private:
 
 private:
 	CPlayer* SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TYPE eStartState, _bool bUserPlayer, wstring wstrCamName);
-
 	HRESULT					SetUp_DefaultLight_BootCamp();
 
 

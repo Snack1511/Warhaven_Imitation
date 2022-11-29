@@ -32,7 +32,7 @@ float		g_fWinCY = 720.f;
 
 float		g_fTimeDelta = 0.f;
 
-float		g_fRadialPower = 0.f;
+float		g_fShaderPower = 0.f;
 
 
 sampler DefaultSampler = sampler_state
@@ -125,7 +125,7 @@ PS_OUT	PS_RADIALBLUR_MAIN(PS_DOWNSCALE_IN In)
 		iNumSamples = max(min(iMaxNumSamples * fRatio, 6), 1);
 	}*/
 
-	float2 precompute = g_fRadialPower * vDirection;
+	float2 precompute = g_fShaderPower * vDirection;
 
 	for (int i = 0; i < iNumSamples; ++i)
 	{
@@ -133,6 +133,40 @@ PS_OUT	PS_RADIALBLUR_MAIN(PS_DOWNSCALE_IN In)
 	}
 
 	Out.vColor /= float(iNumSamples);
+	return Out;
+
+}
+
+PS_OUT	PS_CHROMATIC_ABERRATION_MAIN(PS_DOWNSCALE_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	float fPower = g_fShaderPower;
+	float2 vTexel = 1.f / float2(g_fWinCX, g_fWinCY);
+
+	float2 vCoords = (In.vTexUV - 0.5f) * 2.f;
+	float fCoordDot = dot(vCoords, vCoords);
+
+	float2 precompute = fPower * fCoordDot * vCoords;
+	float2 uvR = In.vTexUV - vTexel * precompute;
+	float2 uvB = In.vTexUV + vTexel * precompute;
+
+	Out.vColor.r = g_ShaderTexture.Sample(MotionBlurSampler, uvR).r;
+	Out.vColor.g = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV).g;
+	Out.vColor.b = g_ShaderTexture.Sample(MotionBlurSampler, uvB).b;
+
+	return Out;
+
+}
+
+PS_OUT	PS_GRAYSCALE_MAIN(PS_DOWNSCALE_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+	Out.vColor = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
+	vector GrayScaleColor = dot(Out.vColor, float3(0.2126f, 0.7152f, 0.0722f));
+
+	Out.vColor = Out.vColor * (1.f - g_fShaderPower) + GrayScaleColor * g_fShaderPower;
+
 	return Out;
 
 }
@@ -571,6 +605,28 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_RADIALBLUR_MAIN();
+	}
+
+	pass CHROMATIC_ABERRATION
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_CHROMATIC_ABERRATION_MAIN();
+	}
+
+	pass GRAYSCALE
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_GRAYSCALE_MAIN();
 	}
 
 }

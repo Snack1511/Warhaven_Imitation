@@ -401,6 +401,27 @@ void CGameInstance::Stop_RadialBlur()
 	m_pRenderManager->Stop_RadialBlur();
 }
 
+void CGameInstance::Start_ChromaticAberration(_float fTargetPower)
+{
+	m_pRenderManager->Start_ChromaticAberration(fTargetPower);
+}
+
+void CGameInstance::Stop_ChromaticAberration()
+{
+	m_pRenderManager->Stop_ChromaticAberration();
+
+}
+
+void CGameInstance::Start_GrayScale(_float fTargetPower)
+{
+	m_pRenderManager->Start_GrayScale(fTargetPower);
+}
+
+void CGameInstance::Stop_GrayScale()
+{
+	m_pRenderManager->Stop_GrayScale();
+}
+
 list<CGameObject*>& CGameInstance::Get_ObjGroup(const _uint& iGroupIdx)
 {
 	return m_pObjectManager->Get_ObjGroup(iGroupIdx);

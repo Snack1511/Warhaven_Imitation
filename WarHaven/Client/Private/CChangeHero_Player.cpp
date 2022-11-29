@@ -65,6 +65,7 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	m_iAnimIndex = pPlayer->Get_ChangeHeroIndex(eDefaultType);
 
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
+	GAMEINSTANCE->Start_ChromaticAberration(30.f);
 
 	pOwner->Enable_HitBoxColliders(false);
 
@@ -83,6 +84,7 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		Set_HeroType(pOwner, m_eChangeClassType);
 		pOwner->Shake_Camera(10.f, 1.f);
 		GAMEINSTANCE->Stop_RadialBlur();
+		GAMEINSTANCE->Stop_ChromaticAberration();
 
 		return STATE_END;
 	}

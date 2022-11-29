@@ -365,6 +365,7 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClass]);
 
+	GAMEINSTANCE->Stop_GrayScale();
 
 	m_eCurrentDefaultClass = eClass;
 
