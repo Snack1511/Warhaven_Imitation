@@ -393,8 +393,6 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	//m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Henshin", m_pCurrentUnit->Get_Transform()->Get_WorldMatrix());
-
 	return S_OK;
 }
 

@@ -436,16 +436,20 @@ void CWindow_Effect::Show_EffectTab()
 
 			if (ImGui::Selectable("DEFAULT", &bSelect[VTXEFFECT_PASS_DEFAULT]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DEFAULT;
-			if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
+			/*if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
 			{
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISTORTION;
 				GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
-
-			}
+				
+			}*/
 			if (ImGui::Selectable("DISSOLVE", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISSOLVE;
 			if (ImGui::Selectable("CLAMP", &bSelect[VTXEFFECT_PASS_CLAMP]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_CLAMP;
+			if (ImGui::Selectable("BORDER", &bSelect[VTXEFFECT_PASS_BORDER]))
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_BORDER;
+			if (ImGui::Selectable("LIGHTNING", &bSelect[VTXEFFECT_PASS_LIGHTNING]))
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_LIGHTNING;
 
 			pModelCom->Set_ShaderPassToAll(pCurEffect->m_iPassType);
 
@@ -547,7 +551,7 @@ void CWindow_Effect::Show_EffectTab()
 		}
 		if (ImGui::CollapsingHeader(" - EFFECT SHADER FLAG -"))
 		{
-			const static _uint iShFlagCnt = 4;
+			const static _uint iShFlagCnt = 3;
 			_bool	bShFlagSelect[iShFlagCnt] = {};
 
 			if (pCurEffect->m_vEffectFlag.x > 0.99f)
@@ -577,14 +581,14 @@ void CWindow_Effect::Show_EffectTab()
 				bShFlagSelect[2] = true;
 			}
 
-			if (pCurEffect->m_vEffectFlag.z > 0.99f)
+			/*if (pCurEffect->m_vEffectFlag.z > 0.99f)
 			{
 				bShFlagSelect[3] = true;
 			}
 			else
 			{
 				bShFlagSelect[3] = false;
-			}
+			}*/
 
 			if (ImGui::Selectable("GLOW", &bShFlagSelect[0]))
 			{
@@ -630,7 +634,7 @@ void CWindow_Effect::Show_EffectTab()
 
 			}
 
-				if (ImGui::Selectable("DISTORTION", &bShFlagSelect[3]))
+				/*if (ImGui::Selectable("DISTORTION", &bShFlagSelect[3]))
 				{
 					if (pCurEffect->m_vEffectFlag.z > 0.99f)
 					{
@@ -643,7 +647,7 @@ void CWindow_Effect::Show_EffectTab()
 
 					GET_COMPONENT_FROM(pCurEffect, CModel)->Set_ShaderFlag(pCurEffect->m_vEffectFlag);
 
-				}
+				}*/
 
 		}
 		if (ImGui::CollapsingHeader(" - GLOW VECTOR "))
