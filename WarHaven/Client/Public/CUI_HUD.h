@@ -97,6 +97,14 @@ private:	// 작전회의
 	CUI_Object* m_pGoalPointText = nullptr;
 	CUI_Object* m_pGoalPointGauge = nullptr;
 
+	CUI_Object* m_pJoinPoint = nullptr;
+	CUI_Object* m_pJoinPointText = nullptr;
+	CUI_Object* m_pJoinPointIcon = nullptr;
+	CUI_Object* m_pJoinPointGauge = nullptr;
+
+	CUI_Object* m_pOperPointCircleEffect = nullptr;
+	CUI_Object* m_pArrOperPointCircleEffect[4];
+
 	_uint m_iOperWindowCnt = 0;
 	_float m_fSmokeUV = 0.f;
 
@@ -167,7 +175,8 @@ private:	// OperWindow
 	void Create_OperMap();
 
 private:
-	void Create_GoalPoint();
+	void Create_OperPoint();
+	void Create_OperPointEffect();
 };
 
 END
