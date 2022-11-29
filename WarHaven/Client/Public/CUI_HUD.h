@@ -75,6 +75,7 @@ private:	// 작전회의
 	CUI_Object* m_pOperBlackBG = nullptr;
 	CUI_Object* m_pOperTextImg = nullptr;
 	CUI_Object* m_pOperTextImg2 = nullptr;
+	CUI_Object* m_pSquardTextImg = nullptr;
 
 	CUI_Object* m_pOperProfile = nullptr;
 	CUI_Object* m_pArrOperProfile[4];		

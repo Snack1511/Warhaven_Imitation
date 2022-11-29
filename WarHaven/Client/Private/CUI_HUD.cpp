@@ -864,9 +864,21 @@ void CUI_HUD::Update_OperWindow()
 		}
 		else if (m_iOperWindowCnt == 2)
 		{
+			m_fAccTime = 0.f;
+			m_iOperWindowCnt++;
+
+			if (m_fAccTime > 0.5f)
+			{
+
+				//Enable_Fade(m_pSquardTextImg, 0.3f);
+
+			}
+		}
+		else if (m_iOperWindowCnt == 3)
+		{				
 			if (m_pOperTextImg->Is_Valid())
 			{
-				if (m_fAccTime > 0.5f)
+				if (m_fAccTime > 0.3f)
 				{
 					m_fAccTime = 0.f;
 
@@ -874,16 +886,19 @@ void CUI_HUD::Update_OperWindow()
 					m_pOperTextImg->DoMoveY(200.f, fDuration);
 					m_pOperTextImg->DoScale(-256.f, fDuration);
 
+					//m_pSquardTextImg->DoMoveY(235.f, fDuration);
+					//m_pSquardTextImg->DoScale(-17.f, fDuration);
+
 					for (int i = 0; i < 4; ++i)
 					{
 						Enable_Fade(m_pArrOperProfile[i], fDuration);
 					}
-
+					
 					m_iOperWindowCnt++;
 				}
 			}
 		}
-		else if (m_iOperWindowCnt == 3)
+		else if (m_iOperWindowCnt == 4)
 		{
 			if (m_pArrOperProfile[0]->Is_Valid())
 			{
@@ -894,6 +909,7 @@ void CUI_HUD::Update_OperWindow()
 					_float fDuration = 0.3f;
 					Disable_Fade(m_pOperBlackBG, fDuration);
 					Disable_Fade(m_pOperTextImg, fDuration);
+					Disable_Fade(m_pSquardTextImg, fDuration);
 
 					for (int i = 0; i < 4; ++i)
 					{
@@ -904,7 +920,7 @@ void CUI_HUD::Update_OperWindow()
 				}
 			}
 		}
-		else if (m_iOperWindowCnt == 4)
+		else if (m_iOperWindowCnt == 5)
 		{
 			_float fDuration = 0.3f;
 			_float fScaleValue = -70.f;
@@ -930,7 +946,7 @@ void CUI_HUD::Update_OperWindow()
 			m_fAccTime = 0.f;
 			m_iOperWindowCnt++;
 		}
-		else if (m_iOperWindowCnt == 5)
+		else if (m_iOperWindowCnt == 6)
 		{
 			if (m_fAccTime > 0.3f)
 			{
@@ -946,7 +962,7 @@ void CUI_HUD::Update_OperWindow()
 				m_iOperWindowCnt++;
 			}
 		}
-		else if (m_iOperWindowCnt == 6)
+		else if (m_iOperWindowCnt == 7)
 		{
 			if (m_fAccTime > 0.3f)
 			{
@@ -962,7 +978,7 @@ void CUI_HUD::Update_OperWindow()
 				m_iOperWindowCnt++;
 			}
 		}
-		else if (m_iOperWindowCnt == 7)
+		else if (m_iOperWindowCnt == 8)
 		{
 			if (m_fAccTime > 1.f)
 			{
@@ -984,7 +1000,7 @@ void CUI_HUD::Update_OperWindow()
 
 					Enable_Fade(m_pArrOperSelectBG[i], fDuration);
 					m_pArrOperSelectBG[i]->DoMoveX(50.f, fDuration);
-					
+
 					GET_COMPONENT_FROM(m_pArrOperSelectBG[i], CFader)->Re_FadeOut();
 
 					Enable_Fade(m_pArrOperSelectIcon[i], fDuration);
@@ -1052,6 +1068,12 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	m_pOperTextImg2->Set_Scale(243.f, 100.f);
 	m_pOperTextImg2->Set_Sort(0.49f);
 
+	m_pSquardTextImg = CUI_Object::Create();
+	m_pSquardTextImg->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/SquadText.png"));
+	m_pSquardTextImg->Set_PosY(-20.f);
+	m_pSquardTextImg->Set_Scale(204.f, 38.f);
+	m_pSquardTextImg->Set_Sort(0.48f);
+
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
 	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
@@ -1079,6 +1101,9 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 
 	CREATE_GAMEOBJECT(m_pOperTextImg2, RENDER_UI);
 	DISABLE_GAMEOBJECT(m_pOperTextImg2);
+
+	CREATE_GAMEOBJECT(m_pSquardTextImg, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pSquardTextImg);
 
 	Create_OperProfile();
 	Create_OperSideBG();
@@ -1117,6 +1142,7 @@ void CUI_HUD::Set_FadeOperSelectChaderUI()
 	GET_COMPONENT_FROM(m_pJoinPointGauge, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pOperAttackPointText, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pTargetPoint, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pSquardTextImg, CFader)->Get_FadeDesc() = tFadeDesc;
 
 	FADEDESC tFadeDescBG;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
