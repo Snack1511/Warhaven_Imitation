@@ -79,7 +79,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
         wstrCamName += to_wstring(i);
 
         if (!(pEnemy = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-            AI_STATE_IDLE_WARRIOR_R, false, wstrCamName)))
+            STATE_IDLE_WARRIOR_R_AI_ENEMY, false, wstrCamName)))
             return E_FAIL;
 
         pEnemy->Set_TargetPlayer(pUserPlayer);

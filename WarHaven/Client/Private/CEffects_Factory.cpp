@@ -662,7 +662,7 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BonFire"), "BonFire")))
 		return E_FAIL;
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"spiral"), "spiral")))
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Henshin"), "Henshin")))
 		return E_FAIL;
 
 	/* Dead Body */

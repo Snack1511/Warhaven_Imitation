@@ -103,11 +103,16 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	Out.vDiffuse.a = (Out.vDiffuse.a);
+
+	if ((abs(In.vColor.x) > 0.f) || (abs(In.vColor.y) > 0.f) || (abs(In.vColor.z) > 0.f))
+		Out.vDiffuse.xyz = In.vColor.xyz;
+
 	Out.vDiffuse.xyz += g_vPlusColor.xyz;
-	
+	Out.vDiffuse.xyz *= g_fColorPower;
+
 	Out.vDiffuse.a *= In.vColor.a;
 
-	if (Out.vDiffuse.a < 0.05f)
+	if (Out.vDiffuse.a < g_fDiscardPower)
 		discard;
 
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
@@ -365,8 +370,12 @@ PS_OUT PS_BLACKBACKGROUND_TEXTURE(PS_IN In)
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	Out.vDiffuse.a = Out.vDiffuse.r;
-	Out.vDiffuse.xyz += In.vColor.xyz;
 
+	if ((abs(In.vColor.x) > 0.f) || (abs(In.vColor.y) > 0.f) || (abs(In.vColor.z) > 0.f))
+		Out.vDiffuse.xyz = In.vColor.xyz;
+
+	Out.vDiffuse.xyz += g_vPlusColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
 	Out.vDiffuse.a *= In.vColor.a;
 
 	if (Out.vDiffuse.a < g_fDiscardPower)
@@ -589,5 +598,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_UVTEXTURESELECT_MAIN();
+	}
+
+	pass FLARE
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_None);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BLACKBACKGROUND_TEXTURE();
 	}
 }

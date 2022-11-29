@@ -26,7 +26,7 @@ CBloodOverlay::~CBloodOverlay()
 
 void CBloodOverlay::Trun_BloodOverlay(_float fHpRatio)
 {
-	m_fBloodRatio = fHpRatio;
+	m_fBloodRatio = 1.f - fHpRatio;
 
 	if (0 >= fHpRatio)
 	{

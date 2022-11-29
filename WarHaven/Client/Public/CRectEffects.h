@@ -102,7 +102,7 @@ private:
 	virtual void	Stick_RefBone() override;
 
 private:
-	_float4		Switch_CurveType(_float4 vPos, _uint iIdx);
+	_float4		Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDelta);
 
 };
 

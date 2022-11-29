@@ -56,7 +56,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HpText();
 	Create_PlayerNameText();
 
-	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	if ((m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP))
 	{
 		Create_OperWindow(m_eLoadLevel);
 	}
@@ -73,12 +73,13 @@ HRESULT CUI_HUD::Start()
 {
 	/*if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		SetActive_OperUI(true);
+		//SetActive_PlayerInfoUI(true);
 	}
 	else*/
 	{
-		SetActive_PlayerInfoUI(true);
+		SetActive_OperUI(true); // 화면 가려져서 true 에서 바꿈
 	}
+
 
 	Bind_Btn();
 	Bind_Shader();
@@ -746,6 +747,8 @@ void CUI_HUD::Create_HpText()
 
 void CUI_HUD::SetActive_OperUI(_bool value)
 {
+
+
 	if (value == true)
 	{
 		ENABLE_GAMEOBJECT(m_pOperWindow);
