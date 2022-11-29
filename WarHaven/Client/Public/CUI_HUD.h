@@ -8,7 +8,7 @@ class CUnit;
 
 class CUI_HUD : public CUI_Wrapper
 {
-	enum HUD_Type{Crosshair, Port, Skill, HeroGauge, HpBar, HUD_END};
+	enum HUD_Type { Crosshair, Port, Skill, HeroGauge, HpBar, HUD_END };
 
 	DECLARE_PROTOTYPE(CUI_HUD);
 	DECLARE_GAMEOBJECT(CUI_HUD);
@@ -78,22 +78,19 @@ private:	// 작전회의
 	CUI_Object* m_pSquardTextImg = nullptr;
 
 	CUI_Object* m_pOperProfile = nullptr;
-	CUI_Object* m_pArrOperProfile[4];		
+	CUI_Object* m_pArrOperProfile[4];
 
 	CUI_Object* m_pOperSideBG = nullptr;
 	CUI_Object* m_pArrOperSideBG[2];
 
-	CUI_Object* m_pOperSelectChar = nullptr;
-	CUI_Object* m_pArrOperSelectChar[6];
+	enum Select_Type { ST_Char, ST_Port, ST_BG, ST_Icon, SelectEnd };
 
-	CUI_Object* m_pOperSelectCharPort = nullptr;
-	CUI_Object* m_pArrOperSelectCharPort[6];
+	CUI_Object* m_pOperSelectUI[SelectEnd];
+	CUI_Object* m_pArrOperSelectUI[SelectEnd][6];
 
-	CUI_Object* m_pOperSelectBG = nullptr;
-	CUI_Object* m_pArrOperSelectBG[6];
+	_uint m_iCurSelectEventNum = 0;
+	_uint m_iPrvSelectEventNum = 0;
 
-	CUI_Object* m_pOperSelectIcon = nullptr;
-	CUI_Object* m_pArrOperSelectIcon[6];
 
 	CUI_Object* m_pOperMapIcon = nullptr;
 	CUI_Object* m_pOperMapBG = nullptr;
@@ -117,6 +114,7 @@ private:	// 작전회의
 
 	_uint m_iOperWindowCnt = 0;
 	_float m_fSmokeUV = 0.f;
+	_float m_fOperTime = 0.f;
 
 private:	// 클래스 변경 창
 	CUI_Object* m_pBG = nullptr;
@@ -157,7 +155,7 @@ private:
 	void Set_FadePortHighlight();
 	void Set_FadeOperSelectChaderUI();
 
-private:	
+private:
 	void SetActive_OperUI(_bool value);
 	void SetActive_PlayerInfoUI(_bool value);
 	void SetActive_CharacterSelectWindow(_bool value);

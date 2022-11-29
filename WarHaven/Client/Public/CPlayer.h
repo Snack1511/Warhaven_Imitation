@@ -83,6 +83,7 @@ public:
 	HRESULT	Change_DefaultUnit(CLASS_DEFAULT eClass);
 	HRESULT	Change_HeroUnit(CLASS_HREO eClass);
 
+
 	void	Reserve_State(_uint eState);
 
 	void	SetUp_UnitColliders(_bool bPlayer);
@@ -91,6 +92,9 @@ public:
 	void	Set_Postion(_float4 vPos);
 
 	void	Set_LookToTarget();
+
+public:
+	void	Respawn_Unit(_float4 vPos, CLASS_DEFAULT eClass);
 
 public:
 	_uint	Get_ChangeHeroIndex(_uint eClass) { return m_iChangeHeroAnimIndex[eClass]; }

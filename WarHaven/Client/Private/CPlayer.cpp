@@ -342,7 +342,6 @@ HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
 	return S_OK;
 }
 
-
 HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 {
 	if (eClass >= CLASS_DEFAULT_END)
@@ -396,6 +395,13 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Henshin", m_pCurrentUnit->Get_Transform()->Get_WorldMatrix());
 
 	return S_OK;
+}
+
+void CPlayer::Respawn_Unit(_float4 vPos, CLASS_DEFAULT eClass)
+{
+	Change_DefaultUnit(eClass);
+
+	Set_Postion(vPos);
 }
 
 void CPlayer::Reserve_State(_uint eState)
