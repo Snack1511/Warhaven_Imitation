@@ -29,7 +29,10 @@ public:
 	virtual void On_PointExit_Port(const _uint& iEventNum);
 	virtual void On_PointDown_Port(const _uint& iEventNum);
 
-	virtual void On_PointEnter_SelectBG(const _uint& iEventNum);
+	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
+
+	virtual void On_PointDown_Goal(const _uint& iEventNum);
+	virtual void On_PointDown_Join(const _uint& iEventNum);
 
 public:
 	virtual void Set_Shader_Smoke(CShader* pShader, const char* pConstName);
@@ -71,6 +74,7 @@ private:	// 작전회의
 	CUI_Object* m_pSmokeBG = nullptr;
 	CUI_Object* m_pOperBlackBG = nullptr;
 	CUI_Object* m_pOperTextImg = nullptr;
+	CUI_Object* m_pOperTextImg2 = nullptr;
 
 	CUI_Object* m_pOperProfile = nullptr;
 	CUI_Object* m_pArrOperProfile[4];		
@@ -101,6 +105,11 @@ private:	// 작전회의
 	CUI_Object* m_pJoinPointText = nullptr;
 	CUI_Object* m_pJoinPointIcon = nullptr;
 	CUI_Object* m_pJoinPointGauge = nullptr;
+
+	CUI_Object* m_pOperAttackPointText = nullptr;
+
+	CUI_Object* m_pTargetPoint = nullptr;
+	CUI_Object* m_pArrTargetPoint[2];
 
 	CUI_Object* m_pOperPointCircleEffect = nullptr;
 	CUI_Object* m_pArrOperPointCircleEffect[4];

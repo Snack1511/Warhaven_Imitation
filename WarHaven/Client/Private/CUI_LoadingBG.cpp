@@ -49,7 +49,6 @@ HRESULT CUI_LoadingBG::Initialize_Prototype()
 			_uint iTraninigTexture = random(12, 13);
 			GET_COMPONENT(CTexture)->Set_CurTextureIndex(iTraninigTexture);
 			Create_LoadingText(eLoadLevel, TEXT("ÈÆ·ÃÀå"));
-			m_pModeText->Set_FontText(TEXT(""));
 		}
 		break;
 		case LEVEL_PADEN:
