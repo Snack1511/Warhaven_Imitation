@@ -1489,6 +1489,9 @@
     <Filter Include="03. Instances\01. Level\04. Level_Stage\Paden">
       <UniqueIdentifier>{405c7fdf-7fb1-4b1e-bccd-455538fd7865}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\04. Game_Manager\HR">
+      <UniqueIdentifier>{a6848b0f-39e3-42b0-a12d-ebf732b59733}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2634,6 +2637,9 @@
     <ClInclude Include="..\Public\CWalk_AI_TG_Warrior_R.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk\01. Right</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGame_Manager_HR.h">
+      <Filter>02. Design\04. Game_Manager\HR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3759,6 +3765,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CWalk_AI_TG_Warrior_R.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGame_Manager_HR.cpp">
+      <Filter>02. Design\04. Game_Manager\HR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

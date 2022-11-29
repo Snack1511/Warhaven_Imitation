@@ -547,7 +547,7 @@ void CWindow_Effect::Show_EffectTab()
 		}
 		if (ImGui::CollapsingHeader(" - EFFECT SHADER FLAG -"))
 		{
-			const static _uint iShFlagCnt = 3;
+			const static _uint iShFlagCnt = 4;
 			_bool	bShFlagSelect[iShFlagCnt] = {};
 
 			if (pCurEffect->m_vEffectFlag.x > 0.99f)
@@ -577,14 +577,14 @@ void CWindow_Effect::Show_EffectTab()
 				bShFlagSelect[2] = true;
 			}
 
-			/*if (pCurEffect->m_vEffectFlag.z > 0.99f)
+			if (pCurEffect->m_vEffectFlag.z > 0.99f)
 			{
-				bShFlagSelect[2] = true;
+				bShFlagSelect[3] = true;
 			}
 			else
 			{
-				bShFlagSelect[2] = false;
-			}*/
+				bShFlagSelect[3] = false;
+			}
 
 			if (ImGui::Selectable("GLOW", &bShFlagSelect[0]))
 			{
@@ -630,7 +630,7 @@ void CWindow_Effect::Show_EffectTab()
 
 			}
 
-				if (ImGui::Selectable("DISTORTION", &bShFlagSelect[2]))
+				if (ImGui::Selectable("DISTORTION", &bShFlagSelect[3]))
 				{
 					if (pCurEffect->m_vEffectFlag.z > 0.99f)
 					{
@@ -1153,7 +1153,10 @@ void CWindow_Effect::Show_ParticleTab()
 			if (ImGui::InputFloat3("vMoveDir", vMoveDir, "%.3f"))
 			{
 				if ((0.0001f >= vMoveDir[0]) && (0.0001f >= vMoveDir[1]) && (0.0001f >= vMoveDir[2]) &&
-					(0.0001f >= vMoveDirRange[0]) && (0.0001f >= vMoveDirRange[1]) && (0.0001f >= vMoveDirRange[2]))
+					(0.0001f >= vMoveDirRange[0]) && (0.0001f >= vMoveDirRange[1]) && (0.0001f >= vMoveDirRange[2]) &&
+					(-0.0001f <= vMoveDir[0]) && (-0.0001f <= vMoveDir[1]) && (-0.0001f <= vMoveDir[2]) &&
+					(-0.0001f <= vMoveDirRange[0]) && (-0.0001f <= vMoveDirRange[1]) && (-0.0001f <= vMoveDirRange[2])
+					)
 					vMoveDir[0] = 1.f;
 
 
@@ -1164,7 +1167,10 @@ void CWindow_Effect::Show_ParticleTab()
 			if (ImGui::InputFloat3("vMoveDirRange", vMoveDirRange, "%.3f"))
 			{
 				if ((0.0001f >= vMoveDir[0]) && (0.0001f >= vMoveDir[1]) && (0.0001f >= vMoveDir[2]) &&
-					(0.0001f >= vMoveDirRange[0]) && (0.0001f >= vMoveDirRange[1]) && (0.0001f >= vMoveDirRange[2]))
+					(0.0001f >= vMoveDirRange[0]) && (0.0001f >= vMoveDirRange[1]) && (0.0001f >= vMoveDirRange[2]) &&
+					(-0.0001f <= vMoveDir[0]) && (-0.0001f <= vMoveDir[1]) && (-0.0001f <= vMoveDir[2]) &&
+					(-0.0001f <= vMoveDirRange[0]) && (-0.0001f <= vMoveDirRange[1]) && (-0.0001f <= vMoveDirRange[2])
+					)
 				{
 					vMoveDir[0] = 1.f;
 					tCurData.vMoveDir.x = vMoveDir[0];

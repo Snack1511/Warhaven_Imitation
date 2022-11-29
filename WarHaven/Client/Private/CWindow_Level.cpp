@@ -4,12 +4,15 @@
 #include "GameInstance.h"
 #include "ImGui_Manager.h"
 #include "Loading_Manager.h"
+#include "CGame_Manager_HR.h"
+
 CWindow_Level::CWindow_Level()
 {
 }
 
 CWindow_Level::~CWindow_Level()
 {
+	CGame_Manager_HR::Destroy_Instance();
 }
 
 CWindow_Level* CWindow_Level::Create()
@@ -35,6 +38,8 @@ HRESULT CWindow_Level::Initialize()
 
 	m_bEnable = true;
 	SetUp_ImGuiDESC(typeid(CWindow_Level).name(), ImVec2(200.f, 300.f), window_flags);
+
+	CGame_Manager_HR::Get_Instance()->Initialize();
 
 	return S_OK;
 }
@@ -87,7 +92,16 @@ HRESULT CWindow_Level::Render()
 
 		if (ImGui::Button(strName.c_str()))
 		{
-			CLoading_Manager::Get_Instance()->Reserve_Load_Level((LEVEL_TYPE_CLIENT)i);
+			if ((LEVEL_TYPE_CLIENT)2 == CGame_Manager_HR::Get_Instance()->Get_CurrentLevel())
+			{
+				CLoading_Manager::Get_Instance()->Reserve_Load_Level((LEVEL_TYPE_CLIENT)i);
+				CGame_Manager_HR::Get_Instance()->Set_CurrentLevel((LEVEL_TYPE_CLIENT)i);
+			}
+			else
+			{
+				CLoading_Manager::Get_Instance()->Reserve_Load_Level((LEVEL_TYPE_CLIENT)2);
+				CGame_Manager_HR::Get_Instance()->Set_CurrentLevel((LEVEL_TYPE_CLIENT)2);
+			}
 		}
 
 	}
