@@ -64,7 +64,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_PADEN)))
 		return E_FAIL;
 
 	//Sound
@@ -222,7 +222,6 @@ HRESULT CMainApp::SetUp_Statics()
 	CREATE_STATIC(pCursor, HASHCODE(CUI_Cursor));
 	DISABLE_GAMEOBJECT(pCursor);
 	CUser::Get_Instance()->Set_Cursor(pCursor);
-
 
 	/*Default Cam*/
 	CCamera* pDefaultCam = CCamera_Default::Create();

@@ -29,6 +29,11 @@ public:
 	virtual void On_PointExit_Port(const _uint& iEventNum);
 	virtual void On_PointDown_Port(const _uint& iEventNum);
 
+	virtual void On_PointEnter_SelectBG(const _uint& iEventNum);
+
+public:
+	virtual void Set_Shader_Smoke(CShader* pShader, const char* pConstName);
+
 public:
 	void Set_HUD(CLASS_TYPE eClass);
 	void Set_HP(_float fMaxHP, _float fCurHP);
@@ -62,19 +67,46 @@ private:	// 히어로 게이지
 	_bool m_bIsEnableHeroPort = false;
 
 private:	// 작전회의
-	CUI_Object* m_pOperBlackBG = nullptr;
 	CUI_Object* m_pOperWindow = nullptr;
+	CUI_Object* m_pSmokeBG = nullptr;
+	CUI_Object* m_pOperBlackBG = nullptr;
 	CUI_Object* m_pOperTextImg = nullptr;
+
+	CUI_Object* m_pOperProfile = nullptr;
+	CUI_Object* m_pArrOperProfile[4];		
+
 	CUI_Object* m_pOperSideBG = nullptr;
 	CUI_Object* m_pArrOperSideBG[2];
+
 	CUI_Object* m_pOperSelectChar = nullptr;
 	CUI_Object* m_pArrOperSelectChar[6];
+
+	CUI_Object* m_pOperSelectCharPort = nullptr;
+	CUI_Object* m_pArrOperSelectCharPort[6];
+
 	CUI_Object* m_pOperSelectBG = nullptr;
-	CUI_Object* m_pOperSelectLight = nullptr;
+	CUI_Object* m_pArrOperSelectBG[6];
+
+	CUI_Object* m_pOperSelectIcon = nullptr;
+	CUI_Object* m_pArrOperSelectIcon[6];
+
 	CUI_Object* m_pOperMapIcon = nullptr;
 	CUI_Object* m_pOperMapBG = nullptr;
 
+	CUI_Object* m_pGoalPoint = nullptr;
+	CUI_Object* m_pGoalPointText = nullptr;
+	CUI_Object* m_pGoalPointGauge = nullptr;
+
+	CUI_Object* m_pJoinPoint = nullptr;
+	CUI_Object* m_pJoinPointText = nullptr;
+	CUI_Object* m_pJoinPointIcon = nullptr;
+	CUI_Object* m_pJoinPointGauge = nullptr;
+
+	CUI_Object* m_pOperPointCircleEffect = nullptr;
+	CUI_Object* m_pArrOperPointCircleEffect[4];
+
 	_uint m_iOperWindowCnt = 0;
+	_float m_fSmokeUV = 0.f;
 
 private:	// 클래스 변경 창
 	CUI_Object* m_pBG = nullptr;
@@ -110,7 +142,10 @@ private:	// 클래스 변경 창
 
 private:
 	void Bind_Btn();
+	void Bind_Shader();
+
 	void Set_FadePortHighlight();
+	void Set_FadeOperSelectChaderUI();
 
 private:	
 	void SetActive_OperUI(_bool value);
@@ -131,7 +166,17 @@ private:
 	void Create_OxenJumpText();
 	void Create_HpText();
 	void Create_PlayerNameText();
+
+private:	// OperWindow
 	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
+	void Create_OperProfile();
+	void Create_OperSideBG();
+	void Create_OperSelectCharacter();
+	void Create_OperMap();
+
+private:
+	void Create_OperPoint();
+	void Create_OperPointEffect();
 };
 
 END

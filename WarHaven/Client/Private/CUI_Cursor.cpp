@@ -29,6 +29,7 @@ HRESULT CUI_Cursor::Initialize_Prototype()
 	GET_COMPONENT(CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Cursors/T_CursorDisabled.dds"));
 
 	Set_Scale(32.f);
+	Set_Sort(0.f);
 
 	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_ALPHA);
 
@@ -81,4 +82,16 @@ void CUI_Cursor::Set_Mouse(MouseType eType)
 	m_eType = eType;
 
 	GET_COMPONENT(CTexture)->Set_CurTextureIndex(m_eType);
+}
+
+void CUI_Cursor::SetActive_Mouse(_bool value)
+{
+	if (value == true)
+	{
+		ENABLE_GAMEOBJECT(this);
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(this);
+	}
 }

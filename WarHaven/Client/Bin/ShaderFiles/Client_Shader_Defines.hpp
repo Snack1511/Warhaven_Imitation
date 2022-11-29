@@ -37,14 +37,13 @@ BlendState BS_Default
 BlendState BS_AlphaBlending
 {
 	BlendEnable[0] = true;
-	BlendEnable[1] = true;
+	
 
 	SrcBlend = src_alpha;
 	DestBlend = inv_src_alpha;
 	BlendOp = add;
-	BlendOpAlpha = add;
-	SrcBlendAlpha = src_alpha;
-	DestBlendAlpha = inv_src_alpha;
+	BlendOpAlpha = max;
+	
 };
 
 

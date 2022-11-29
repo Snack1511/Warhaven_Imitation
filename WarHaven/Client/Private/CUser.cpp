@@ -126,6 +126,36 @@ void CUser::KeyInput_FPSSetter()
 
 	}
 
+	if (KEY(Z, TAP))
+	{
+		if (!m_pCursor)
+		{
+			cout << "마우스 없음" << endl;
+		}
+		else
+		{
+			cout << "마우스 활성화" << endl;
+			if (!m_pCursor->Is_Valid())
+			{
+				ENABLE_GAMEOBJECT(m_pCursor);
+			}
+		}
+	}
+	else if (KEY(X, TAP))
+	{
+		if (!m_pCursor)
+		{
+			cout << "마우스 없음" << endl;
+		}
+		else
+		{
+			cout << "마우스 비활성화" << endl;
+			if (m_pCursor->Is_Valid())
+			{
+				DISABLE_GAMEOBJECT(m_pCursor);
+			}
+		}
+	}
 }
 
 void CUser::Update_KeyCommands()
@@ -174,16 +204,13 @@ void CUser::Turn_BloodOverLay(_float fHpRatio)
 
 void CUser::On_EnterLevel()
 {
-	
-
+	DISABLE_GAMEOBJECT(m_pCursor);
 	ENABLE_GAMEOBJECT(m_pCursor);
-
 }
 
 void CUser::On_ExitLevel()
 {
 	DISABLE_GAMEOBJECT(m_pCursor);
-
 }
 
 void CUser::On_EnterStageLevel()

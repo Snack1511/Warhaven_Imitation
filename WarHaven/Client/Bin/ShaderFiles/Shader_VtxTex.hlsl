@@ -418,6 +418,22 @@ PS_OUT PS_VerticalGauge(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_OPERSMOKE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    In.vTexUV.x -= g_fValue;
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * 0.3f);
+    
+    Out.vColor = vColor;
+    Out.vColor.a = vNoise.r;
+    
+    return Out;
+}
+
 PS_OUT PS_UIColor_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -923,6 +939,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_VerticalGauge();
+    }
+
+    pass UI_OperSmoke
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_OPERSMOKE();
     }
 
     pass ALPHA
