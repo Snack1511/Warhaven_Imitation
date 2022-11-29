@@ -76,7 +76,7 @@ private:
 	virtual ~CPlayer();
 
 public:
-	static CPlayer* Create(wstring wstrCamKey, CLASS_DEFAULT eClass, eCUSTOM_TYPE eCustomType = eCUSTOM_TYPE::eLEADER);
+	static CPlayer* Create(wstring wstrCamKey, CLASS_DEFAULT eClass, eCUSTOM_TYPE eCustomType = eCUSTOM_TYPE::eDEFAULT);
 
 	/* Initialize_Prototype */
 public:
