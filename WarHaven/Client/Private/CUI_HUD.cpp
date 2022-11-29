@@ -994,7 +994,7 @@ void CUI_HUD::Update_OperWindow()
 		{
 			// 작전회의 시간 감소
 			_tchar  szTemp[MAX_STR] = {};
-			swprintf_s(szTemp, TEXT("%01.1f"), m_fOperTime);
+			swprintf_s(szTemp, TEXT("%04.1f"), m_fOperTime);
 			m_pOperTimer[TT_Bar]->Set_FontText(szTemp);
 
 			m_fTimerRatio = m_fOperTime / m_fMaxOperTime;
@@ -1553,7 +1553,7 @@ void CUI_HUD::Create_OperTimer()
 	m_pOperTimer[TT_Bar]->Set_Sort(0.48f);
 	m_pOperTimer[TT_Bar]->Set_FontRender(true);
 	m_pOperTimer[TT_Bar]->Set_FontStyle(true);
-	m_pOperTimer[TT_Bar]->Set_FontOffset(-25.f,-13.f);
+	m_pOperTimer[TT_Bar]->Set_FontOffset(-22.f,-13.f);
 	m_pOperTimer[TT_Bar]->Set_FontScale(0.25f);
 
 	GET_COMPONENT_FROM(m_pOperTimer[TT_Bar], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
