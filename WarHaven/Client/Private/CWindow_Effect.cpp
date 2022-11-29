@@ -1152,8 +1152,8 @@ void CWindow_Effect::Show_ParticleTab()
 			_float	vMoveDirRange[3] = { tCurData.vMoveDirRange.x, tCurData.vMoveDirRange.y, tCurData.vMoveDirRange.z };
 			if (ImGui::InputFloat3("vMoveDir", vMoveDir, "%.3f"))
 			{
-				if ((0.f >= vMoveDir[0]) && (0.f >= vMoveDir[1]) && (0.f >= vMoveDir[2]) &&
-					(0.f >= vMoveDirRange[0]) && (0.f >= vMoveDirRange[1]) && (0.f >= vMoveDirRange[2]))
+				if ((0.0001f >= vMoveDir[0]) && (0.0001f >= vMoveDir[1]) && (0.0001f >= vMoveDir[2]) &&
+					(0.0001f >= vMoveDirRange[0]) && (0.0001f >= vMoveDirRange[1]) && (0.0001f >= vMoveDirRange[2]))
 					vMoveDir[0] = 1.f;
 
 
@@ -1163,8 +1163,8 @@ void CWindow_Effect::Show_ParticleTab()
 			}
 			if (ImGui::InputFloat3("vMoveDirRange", vMoveDirRange, "%.3f"))
 			{
-				if ((0.f >= vMoveDir[0]) && (0.f >= vMoveDir[1]) && (0.f >= vMoveDir[2]) &&
-					(0.f >= vMoveDirRange[0]) && (0.f >= vMoveDirRange[1]) && (0.f >= vMoveDirRange[2]))
+				if ((0.0001f >= vMoveDir[0]) && (0.0001f >= vMoveDir[1]) && (0.0001f >= vMoveDir[2]) &&
+					(0.0001f >= vMoveDirRange[0]) && (0.0001f >= vMoveDirRange[1]) && (0.0001f >= vMoveDirRange[2]))
 				{
 					vMoveDir[0] = 1.f;
 					tCurData.vMoveDir.x = vMoveDir[0];
