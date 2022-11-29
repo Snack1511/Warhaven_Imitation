@@ -88,7 +88,7 @@ HRESULT CUI_HUD::Start()
 	}
 
 
-	
+
 
 	__super::Start();
 
@@ -750,8 +750,6 @@ void CUI_HUD::Create_HpText()
 
 void CUI_HUD::SetActive_OperUI(_bool value)
 {
-
-
 	if (value == true)
 	{
 		ENABLE_GAMEOBJECT(m_pOperWindow);
@@ -902,12 +900,6 @@ void CUI_HUD::Update_OperWindow()
 			m_pJoinPointIcon->DoScale(fScaleValue, fDuration);
 			m_pJoinPointGauge->DoScale(fScaleValue, fDuration);
 
-			Enable_Fade(m_pArrOperPointCircleEffect[0], fDuration);
-			Enable_Fade(m_pArrOperPointCircleEffect[2], fDuration);
-
-			m_pArrOperPointCircleEffect[0]->DoScale(40.f, fDuration);
-			m_pArrOperPointCircleEffect[2]->DoScale(40.f, fDuration);
-
 			m_fAccTime = 0.f;
 			m_iOperWindowCnt++;
 		}
@@ -917,17 +909,33 @@ void CUI_HUD::Update_OperWindow()
 			{
 				_float fDuration = 0.3f;
 
-				Enable_Fade(m_pArrOperPointCircleEffect[1], fDuration);
-				Enable_Fade(m_pArrOperPointCircleEffect[3], fDuration);
+				Enable_Fade(m_pArrOperPointCircleEffect[0], fDuration);
+				Enable_Fade(m_pArrOperPointCircleEffect[2], fDuration);
 
-				m_pArrOperPointCircleEffect[1]->DoScale(40.f, fDuration);
-				m_pArrOperPointCircleEffect[3]->DoScale(40.f, fDuration);
+				m_pArrOperPointCircleEffect[0]->DoScale(50.f, fDuration);
+				m_pArrOperPointCircleEffect[2]->DoScale(50.f, fDuration);
 
 				m_fAccTime = 0.f;
 				m_iOperWindowCnt++;
 			}
 		}
 		else if (m_iOperWindowCnt == 6)
+		{
+			if (m_fAccTime > 0.3f)
+			{
+				_float fDuration = 0.3f;
+
+				Enable_Fade(m_pArrOperPointCircleEffect[1], fDuration);
+				Enable_Fade(m_pArrOperPointCircleEffect[3], fDuration);
+
+				m_pArrOperPointCircleEffect[1]->DoScale(50.f, fDuration);
+				m_pArrOperPointCircleEffect[3]->DoScale(50.f, fDuration);
+
+				m_fAccTime = 0.f;
+				m_iOperWindowCnt++;
+			}
+		}
+		else if (m_iOperWindowCnt == 7)
 		{
 			if (m_fAccTime > 1.f)
 			{
@@ -969,6 +977,11 @@ void CUI_HUD::Update_OperWindow()
 			// 게임 시작 게이지
 
 		}
+	}
+
+	if (m_pArrOperPointCircleEffect[3]->Is_Valid())
+	{
+		cout << "테스트" << endl;
 	}
 }
 
@@ -1316,7 +1329,7 @@ void CUI_HUD::Create_OperPoint()
 	m_pJoinPointIcon = CUI_Object::Create();
 	m_pJoinPointIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Paden/T_FootholdIconRespawn.dds"));
 	m_pJoinPointIcon->Set_PosY(-303.f);
-	m_pJoinPointIcon->Set_Scale(100.f);
+	m_pJoinPointIcon->Set_Scale(110.f);
 	m_pJoinPointIcon->Set_Color(_float4(0.7f, 0.7f, 0.7f, 1.f));
 	m_pJoinPointIcon->Set_Sort(0.485f);
 
@@ -1368,7 +1381,7 @@ void CUI_HUD::Create_OperPointEffect()
 	tFadeDesc.fFadeInStartTime = 0.f;
 	tFadeDesc.fFadeInTime = 0.3f;
 	tFadeDesc.fFadeOutStartTime = 0.f;
-	tFadeDesc.fFadeOutTime = 0.3f;
+	tFadeDesc.fFadeOutTime = 0.5f;
 	GET_COMPONENT_FROM(m_pOperPointCircleEffect, CFader)->Get_FadeDesc() = tFadeDesc;
 
 	CREATE_GAMEOBJECT(m_pOperPointCircleEffect, RENDER_UI);
