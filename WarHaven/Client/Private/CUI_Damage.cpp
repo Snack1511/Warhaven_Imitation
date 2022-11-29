@@ -32,6 +32,9 @@ HRESULT CUI_Damage::Start()
 {
 	__super::Start();
 
+	m_pDmgIcon->Set_UIShaderFlag(SH_UI_NONE);
+	m_pDmgNum->Set_UIShaderFlag(SH_UI_NONE);
+
 	Init_HeadShot();
 	Init_DmgNum();
 

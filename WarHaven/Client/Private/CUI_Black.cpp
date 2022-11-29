@@ -4,11 +4,6 @@ CUI_Black::CUI_Black()
 {
 }
 
-CUI_Black::CUI_Black(const CUI_Black& Prototype)
-    : CUI(Prototype)
-{
-}
-
 CUI_Black::~CUI_Black()
 {
 }

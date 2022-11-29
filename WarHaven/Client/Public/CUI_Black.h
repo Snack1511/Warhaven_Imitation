@@ -10,7 +10,6 @@ class CUI_Black final : public CUI
 
 private:
 	CUI_Black();
-	CUI_Black(const CUI_Black& Prototype);
 	virtual ~CUI_Black();
 
 public:

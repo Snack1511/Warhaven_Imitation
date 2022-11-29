@@ -8,11 +8,6 @@ CUI_Logo::CUI_Logo()
 {
 }
 
-CUI_Logo::CUI_Logo(const CUI_Logo& Prototype)
-	: CUI(Prototype)
-{
-}
-
 CUI_Logo::~CUI_Logo()
 {
 }

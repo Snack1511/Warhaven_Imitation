@@ -13,7 +13,6 @@ class CUI_LoadingBG final : public CUI
 
 private:
 	CUI_LoadingBG();
-	CUI_LoadingBG(const CUI_LoadingBG& Prototype);
 	virtual ~CUI_LoadingBG();
 
 public:

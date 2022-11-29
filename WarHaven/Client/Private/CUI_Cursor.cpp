@@ -9,11 +9,6 @@ CUI_Cursor::CUI_Cursor()
 {
 }
 
-CUI_Cursor::CUI_Cursor(const CUI_Cursor& Prototype)
-	: CUI(Prototype)
-{
-}
-
 CUI_Cursor::~CUI_Cursor()
 {
 }

@@ -12,7 +12,6 @@ class CUI_LoadingIcon final : public CUI
 
 private:
 	CUI_LoadingIcon();
-	CUI_LoadingIcon(const CUI_LoadingIcon& Prototype);
 	virtual ~CUI_LoadingIcon();
 
 public:

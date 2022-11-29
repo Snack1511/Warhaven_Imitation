@@ -13,7 +13,6 @@ class CUI_Object final : public CUI
 
 private:
 	CUI_Object();
-	CUI_Object(const CUI_Object& Prototype);
 	virtual ~CUI_Object();
 
 public:

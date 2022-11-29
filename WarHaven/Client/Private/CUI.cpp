@@ -18,16 +18,6 @@ CUI::CUI()
 {
 }
 
-CUI::CUI(const CUI& Prototype)
-	: CGameObject(Prototype)
-	, m_vColor(Prototype.m_vColor)
-	, m_vPosition(Prototype.m_vPosition)
-	, m_vScale(Prototype.m_vScale)
-	, m_pFader(Prototype.m_pFader)
-	, m_vSliceRatio(Prototype.m_vSliceRatio)
-	, m_vTextureSize(Prototype.m_vTextureSize)
-{
-}
 
 CUI::~CUI()
 {

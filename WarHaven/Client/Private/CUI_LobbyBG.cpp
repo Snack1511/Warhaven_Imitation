@@ -4,10 +4,6 @@ CUI_LobbyBG::CUI_LobbyBG()
 {
 }
 
-CUI_LobbyBG::CUI_LobbyBG(const CUI_LobbyBG& Prototype)
-    : CUI(Prototype)
-{
-}
 
 CUI_LobbyBG::~CUI_LobbyBG()
 {

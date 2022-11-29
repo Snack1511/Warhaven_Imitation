@@ -9,11 +9,6 @@ CUI_LoadingBG::CUI_LoadingBG()
 {
 }
 
-CUI_LoadingBG::CUI_LoadingBG(const CUI_LoadingBG& Prototype)
-	: CUI(Prototype)
-{
-}
-
 CUI_LoadingBG::~CUI_LoadingBG()
 {
 }

@@ -10,7 +10,6 @@ class CUI_Logo final : public CUI
 
 private:
 	CUI_Logo();
-	CUI_Logo(const CUI_Logo& Prototype);
 	virtual ~CUI_Logo();
 
 public:

@@ -13,7 +13,6 @@ public:
 
 private:
 	CUI_Cursor();
-	CUI_Cursor(const CUI_Cursor& Prototype);
 	virtual ~CUI_Cursor();
 
 public:

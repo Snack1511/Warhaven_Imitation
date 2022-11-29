@@ -10,10 +10,6 @@ CUI_LoadingIcon::CUI_LoadingIcon()
 {
 }
 
-CUI_LoadingIcon::CUI_LoadingIcon(const CUI_LoadingIcon& Prototype)
-	: CUI(Prototype)
-{
-}
 
 CUI_LoadingIcon::~CUI_LoadingIcon()
 {
