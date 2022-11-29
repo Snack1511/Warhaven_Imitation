@@ -118,6 +118,8 @@ public: /* For.PhysX_Manager*/
 
 public:	/* For. Render_Manager */
 	void	Bake_StaticShadow(vector <CGameObject*>& MapList, _float fDistance);
+	void	Start_RadialBlur(_float fTargetPower);
+	void	Stop_RadialBlur();
 
 public:	/* For. Object_Manager */
 	template <typename T>

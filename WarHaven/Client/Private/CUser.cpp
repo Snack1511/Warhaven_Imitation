@@ -169,6 +169,7 @@ void CUser::Update_KeyCommands()
 			m_KeyCommands.push_back((KEY)i);
 		}
 	}
+
 }
 
 void CUser::Time_Slow()

@@ -81,12 +81,12 @@ HRESULT CUI_HUD::Start()
 	{
 		SetActive_OperUI(true); // 화면 가려져서 true 에서 바꿈
 		Set_FadeOperSelectChaderUI();
-		Bind_Btn();
 		Bind_Shader();
 
 		Set_FadePortHighlight();
 	}
 
+	Bind_Btn();
 
 	
 

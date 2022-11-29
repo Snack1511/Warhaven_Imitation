@@ -32,6 +32,8 @@ float		g_fWinCY = 720.f;
 
 float		g_fTimeDelta = 0.f;
 
+float		g_fRadialPower = 0.f;
+
 
 sampler DefaultSampler = sampler_state
 {
@@ -97,21 +99,37 @@ PS_OUT	PS_RADIALBLUR_MAIN(PS_DOWNSCALE_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	float2 center = float2(640.f, 360.f) / float2(g_fWinCX, g_fWinCY);
-	float blurStart = 1.f;
-	float blurWidth = 0.1f;
+	//Out.vColor = 
 
-	float2 uv = In.vTexUV / float2(g_fWinCX, g_fWinCY);
-	uv -= center;
+	float2 center = float2(0.5f, 0.5f);
 
-	int iNumSamples = 4;
+	int iMaxNumSamples = 6;
+	int iNumSamples = 5;
+	float fMaxLength = 0.35f;
 
-	float precompute = blurWidth * (1.0 / float(iNumSamples - 1));
+	float2 vDirection = In.vTexUV - center;
+
+	float fLength = length(vDirection);
+
+	if (fLength < fMaxLength)
+		iNumSamples = 1;
+
+	//max까지는 1로가고
+	//max부터 0.707 까지는 점차 늘으나게
+
+	/*if (fLength < fMaxLength)
+		iNumSamples = 1;
+	else
+	{
+		float fRatio = (fLength - fMaxLength) /( 0.707f - fMaxLength);
+		iNumSamples = max(min(iMaxNumSamples * fRatio, 6), 1);
+	}*/
+
+	float2 precompute = g_fRadialPower * vDirection;
 
 	for (int i = 0; i < iNumSamples; ++i)
 	{
-		float fScale = blurStart + (float(i) * precompute);
-		Out.vColor += g_ShaderTexture.Sample(MotionBlurSampler, uv * fScale + center);
+		Out.vColor += g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV - (precompute * float(i)));
 	}
 
 	Out.vColor /= float(iNumSamples);
@@ -132,9 +150,11 @@ PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 	//이전 위치 담은 Depth 가져오기
 
 	vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
-	vector vDiffuseDesc = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
 
-	int iNumSamples = 5;
+	Out.vColor = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
+
+	int iNumSamples = 6;
+
 	if (vDepthDesc.y >= 0.95f)
 	{
 		iNumSamples = 1;
@@ -164,29 +184,18 @@ PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 	vPrevPos = mul(vPrevPos, g_OldProjMatrix);
 
 	//이전 프레임의 -1 ~ 1의 투영좌표? ㅇㅇ w 나누기 수행 완료
-	vPrevPos /= vPrevPos.w ;
+	vPrevPos /= vPrevPos.w;
 
 	//방향이랑 힘 구하기
 	//이거 투영좌표계에서 투영좌표계 뺸거야 그럼이거 값이 -0.5~0.5아님? 1은나올수가없어 맞지
 	float2 velocity = (vCurrentPos.xy - vPrevPos.xy) * 0.5f;
 
+	velocity /= (iNumSamples);
 
-
-	//In.vTexUV += velocity;
-	//velocity *= 0.05f;
-	//velocity /= g_numSamples;
-
-	velocity /= (iNumSamples - 1);
-
-	/*velocity *= 0.005f;
-	velocity.y *= 0.1f;
-	velocity /= g_fTimeDelta;*/
-
-	/*float maxVelocity = 0.01f;
-	velocity = max(min(velocity, maxVelocity), -maxVelocity);*/
-
-	//velocity /= g_fTimeDelta;
-	//velocity = max(min(velocity /g_numSamples, 0.005f), -0.005f);
+	//타임델타가 높다 = 프레임이 낮다 = velocity가 낮아져야함
+	velocity /= g_fTimeDelta;
+	velocity *= 0.015f;
+	velocity *= max(min(vDepthDesc.y / 0.01f, 1.f), 0.5f);
 
 	for (int i = 1; i < iNumSamples; ++i)
 	{
@@ -195,15 +204,13 @@ PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 		// 속도 벡터를 따라 컬러 버퍼를 샘플링합니다.
 		vector vCurrentDiffuse = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
 		// 현재 색상을 색상 합계에 추가합니다.
-		vDiffuseDesc += vCurrentDiffuse;
+		Out.vColor += vCurrentDiffuse;
 	} 
 	// 최종 블러 색상을 얻기 위해 모든 샘플의 평균을 냅니다.
-	float4 finalColor = vDiffuseDesc / iNumSamples;
+
+	Out.vColor /= float(iNumSamples);
 
 
-
-
-	Out.vColor = finalColor;
 
 
 	return Out;

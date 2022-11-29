@@ -109,6 +109,7 @@ private:
 	HRESULT	Render_SSD();
 	HRESULT	Render_FinalBlend();
 	HRESULT Render_MotionBlur();
+	HRESULT	Render_RadialBlur();
 
 	HRESULT	Render_UI();
 	HRESULT	Render_UIBloom();

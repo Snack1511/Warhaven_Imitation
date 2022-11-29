@@ -39,6 +39,7 @@ HRESULT CChangeHero_Player::Initialize()
 	m_iAnimIndex = 24;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_CHANGE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
+	m_fAnimSpeed = 1.5f;
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 24;
 	m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 24;
@@ -63,7 +64,9 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	m_iAnimIndex = pPlayer->Get_ChangeHeroIndex(eDefaultType);
 
+	GAMEINSTANCE->Start_RadialBlur(0.015f);
 
+	pOwner->Enable_HitBoxColliders(false);
 
 	/* Owner의 Animator Set Idle로 */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -79,6 +82,7 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		Set_HeroType(pOwner, m_eChangeClassType);
 		pOwner->Shake_Camera(0.1f, 0.5f);
+		GAMEINSTANCE->Stop_RadialBlur();
 
 		return STATE_END;
 	}
@@ -89,6 +93,7 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CChangeHero_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Enable_HitBoxColliders(true);
 }
 
 STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

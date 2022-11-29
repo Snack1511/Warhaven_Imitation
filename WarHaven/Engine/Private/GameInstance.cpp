@@ -391,6 +391,16 @@ void CGameInstance::Bake_StaticShadow(vector<CGameObject*>& MapList, _float fDis
 	m_pRenderManager->Bake_StaticShadow(MapList, fDistance);
 }
 
+void CGameInstance::Start_RadialBlur(_float fTargetPower)
+{
+	m_pRenderManager->Start_RadialBlur(fTargetPower);
+}
+
+void CGameInstance::Stop_RadialBlur()
+{
+	m_pRenderManager->Stop_RadialBlur();
+}
+
 list<CGameObject*>& CGameInstance::Get_ObjGroup(const _uint& iGroupIdx)
 {
 	return m_pObjectManager->Get_ObjGroup(iGroupIdx);

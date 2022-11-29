@@ -218,6 +218,7 @@ protected:
 	//CCollider_Sphere* m_pUnitWeaponCollider[WEAPONCOLLIDER_END] = {};
 
 public:
+	void	Enable_HitBoxColliders(_bool bEnable);
 	void	Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable);
 	void	Enable_GuardCollider(_bool bEnable);
 	void	Enable_GroggyCollider(_bool bEnable);

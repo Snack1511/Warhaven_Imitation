@@ -498,6 +498,21 @@ void CUnit::OnDisable()
 }
 
 
+void CUnit::Enable_HitBoxColliders(_bool bEnable)
+{
+	if (bEnable)
+	{
+		ENABLE_COMPONENT(m_pUnitCollider[UNITCOLLIDER::BODY]);
+		ENABLE_COMPONENT(m_pUnitCollider[UNITCOLLIDER::HEAD]);
+
+	}
+	else
+	{
+		DISABLE_COMPONENT(m_pUnitCollider[UNITCOLLIDER::BODY]);
+		DISABLE_COMPONENT(m_pUnitCollider[UNITCOLLIDER::HEAD]);
+	}
+}
+
 void CUnit::Enable_UnitCollider(UNITCOLLIDER ePartType, _bool bEnable)
 {
 	if (!m_pUnitCollider[ePartType])

@@ -82,7 +82,7 @@ public:
 	CDelegate<const _uint&>		CallBack_PointUp;
 
 protected:
-	_float4		m_vUIShaderFlag = SH_UI_BLOOM;
+	_float4		m_vUIShaderFlag = SH_UI_NONE;
 
 protected:
 	_float4 m_vPosition;
