@@ -30,11 +30,11 @@ public:
 	virtual void On_PointDown_Port(const _uint& iEventNum);
 
 	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
-
 	virtual void On_PointDown_Point(const _uint& iEventNum);
 
 public:
 	virtual void Set_Shader_Smoke(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Timer(CShader* pShader, const char* pConstName);
 
 public:
 	void Set_HUD(CLASS_TYPE eClass);
@@ -83,7 +83,7 @@ private:	// 작전회의
 	CUI_Object* m_pArrOperSideBG[2];
 
 private:	// 작전회의 캐릭터 선택 창
-	enum SelectType { ST_Char, ST_Port, ST_BG, ST_Icon, ST_End };
+	enum OperSelectType { ST_Char, ST_Port, ST_BG, ST_Icon, ST_End };
 
 	CUI_Object* m_pOperSelectUI[ST_End];
 	CUI_Object* m_pArrOperSelectUI[ST_End][6];
@@ -99,16 +99,11 @@ private:
 	CUI_Object* m_pOperMapBG = nullptr;
 
 private:	// 작전회의 거점 아이콘
-	enum PointType { PT_Point, PT_Gauge, PT_Icon, PT_Text, PT_End };
+	enum OperPointType { PT_Point, PT_Gauge, PT_Icon, PT_Text, PT_End };
 
 	CUI_Object* m_pOperPointUI[PT_End];
 	CUI_Object* m_pArrOperPointUI[PT_End][3];
 
-private:
-	void Create_OperPoint();
-	void Create_OperPointEffect();
-
-private:
 	CUI_Object* m_pOperAttackPointText = nullptr;
 
 	CUI_Object* m_pTargetPoint = nullptr;
@@ -117,9 +112,24 @@ private:
 	CUI_Object* m_pOperPointCircleEffect = nullptr;
 	CUI_Object* m_pArrOperPointCircleEffect[4];
 
+private:
+	void Create_OperPoint();
+	void Create_OperPointEffect();
+
+private:	// 작전회의 타이머
+	enum OperTimerType { TT_BG, TT_Bar, TT_End };
+	CUI_Object* m_pOperTimer[TT_End];
+
+	_float m_fMaxOperTime = 15.f;
+	_float m_fOperTime = 0.f;
+	_float m_fTimerRatio = 1.f;
+
+private:
+	void Create_OperTimer();
+
+private:
 	_uint m_iOperWindowCnt = 0;
 	_float m_fSmokeUV = 0.f;
-	_float m_fOperTime = 0.f;
 
 private:	// 클래스 변경 창
 	CUI_Object* m_pBG = nullptr;
@@ -173,7 +183,6 @@ private:
 
 private:	// 작전 회의
 	void Update_OperWindow();
-
 	void Enable_OperPointUI();
 
 private:

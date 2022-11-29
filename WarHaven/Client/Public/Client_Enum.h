@@ -248,6 +248,7 @@ namespace Client
 		VTXTEX_PASS_UI_MainEffect,
 		VTXTEX_PASS_UI_LobbyEffect,
 		VTXTEX_PASS_UI_VerticalGauge,
+		VTXTEX_PASS_UI_HorizontalGauge,
 		VTXTEX_PASS_UI_OperSmoke,
 
 		VTXTEX_PASS_ALPHA,

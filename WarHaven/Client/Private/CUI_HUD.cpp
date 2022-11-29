@@ -56,7 +56,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HpText();
 	Create_PlayerNameText();
 
-	if ((m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP))
+	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
 		Create_OperWindow(m_eLoadLevel);
 	}
@@ -233,17 +233,22 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 
 void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
 {
-	DISABLE_GAMEOBJECT(m_pArrTargetPoint[iEventNum]);
+	DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 
 	_float4 vPos = m_pArrOperPointUI[PT_Point][iEventNum]->Get_Pos();
 	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
 
-	ENABLE_GAMEOBJECT(m_pArrTargetPoint[iEventNum]);
+	ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 }
 
 void CUI_HUD::Set_Shader_Smoke(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fSmokeUV, sizeof(_float));
+}
+
+void CUI_HUD::Set_Shader_Timer(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fTimerRatio, sizeof(_float));
 }
 
 void CUI_HUD::SetActive_OxenJumpText(_bool value)
@@ -863,9 +868,7 @@ void CUI_HUD::Update_OperWindow()
 
 			if (m_fAccTime > 0.5f)
 			{
-
 				//Enable_Fade(m_pSquardTextImg, 0.3f);
-
 			}
 		}
 		else if (m_iOperWindowCnt == 3)
@@ -977,22 +980,31 @@ void CUI_HUD::Update_OperWindow()
 				Enable_Fade(m_pOperAttackPointText, fDuration);
 				Enable_Fade(m_pArrTargetPoint[0], fDuration);
 
+				for (int i = 0; i < TT_End; ++i)
+				{
+					m_fOperTime = m_fMaxOperTime;
+					Enable_Fade(m_pOperTimer[i], fDuration);
+				}
+
 				m_fAccTime = 0.f;
 				m_iOperWindowCnt++;
 			}
 		}
 		else if (m_iOperWindowCnt == 9)
 		{
-			// 타임어택
-			m_fOperTime += fDT(0);
-			if (m_fOperTime > 10.f)
+			// 작전회의 시간 감소
+			_tchar  szTemp[MAX_STR] = {};
+			swprintf_s(szTemp, TEXT("%01.1f"), m_fOperTime);
+			m_pOperTimer[TT_Bar]->Set_FontText(szTemp);
+
+			m_fTimerRatio = m_fOperTime / m_fMaxOperTime;
+			m_fOperTime -= fDT(0);		
+			if (m_fOperTime < 0.f)
 			{
-
+				m_fOperTime = 0.f;
+				// 페이드 아웃
+				// 게임 시작
 			}
-
-			// 거점 출발
-
-			// 시간이 다 닳거나 시작 버튼을 누르거나
 		}
 	}
 }
@@ -1002,6 +1014,7 @@ void CUI_HUD::Bind_Shader()
 	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
 		GET_COMPONENT_FROM(m_pSmokeBG, CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
+		GET_COMPONENT_FROM(m_pOperTimer[TT_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Timer, this, placeholders::_1, "g_fValue");
 	}
 }
 
@@ -1041,8 +1054,8 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 
 	m_pOperTextImg2 = CUI_Object::Create();
 	m_pOperTextImg2->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting2.png"));
-	m_pOperTextImg2->Set_PosY(300.f);
-	m_pOperTextImg2->Set_Scale(243.f, 100.f);
+	m_pOperTextImg2->Set_PosY(305.f);
+	m_pOperTextImg2->Set_Scale(155.f, 50.f);
 	m_pOperTextImg2->Set_Sort(0.49f);
 
 	m_pSquardTextImg = CUI_Object::Create();
@@ -1088,6 +1101,7 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	Create_OperMap();
 	Create_OperPoint();
 	Create_OperPointEffect();
+	Create_OperTimer();
 }
 
 void CUI_HUD::Set_FadeOperSelectChaderUI()
@@ -1117,10 +1131,14 @@ void CUI_HUD::Set_FadeOperSelectChaderUI()
 	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
 
-
 	GET_COMPONENT_FROM(m_pOperAttackPointText, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pTargetPoint, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pSquardTextImg, CFader)->Get_FadeDesc() = tFadeDesc;
+	
+	for (int i = 0; i < TT_End; ++i)
+	{
+		GET_COMPONENT_FROM(m_pOperTimer[i], CFader)->Get_FadeDesc() = tFadeDesc;
+	}
 
 	FADEDESC tFadeDescBG;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
@@ -1210,8 +1228,6 @@ void CUI_HUD::Enable_OperPointUI()
 			{
 				Enable_Fade(m_pArrOperPointUI[i][j], 0.3f);
 				m_pArrOperPointUI[i][j]->DoScale(-70.f, 0.3f);
-
-				m_pArrOperPointUI[PT_Point][j]->Set_MouseTarget(true);
 			}
 
 			DISABLE_GAMEOBJECT(m_pArrOperPointUI[PT_Icon][0]);
@@ -1380,6 +1396,7 @@ void CUI_HUD::Create_OperPoint()
 	m_pOperPointUI[PT_Point]->Set_Scale(120.f);
 	m_pOperPointUI[PT_Point]->Set_Sort(0.48f);
 	m_pOperPointUI[PT_Point]->Set_Color(_float4(0.9f, 0.9f, 0.9f, 0.5f));
+	m_pOperPointUI[PT_Point]->Set_MouseTarget(true);
 
 	m_pOperPointUI[PT_Gauge]->Set_Scale(115.f);
 	m_pOperPointUI[PT_Gauge]->Set_Sort(0.49f);
@@ -1422,12 +1439,14 @@ void CUI_HUD::Create_OperPoint()
 		for (int i = 0; i < 3; ++i)
 		{
 			GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Point][i], CTexture)->Set_CurTextureIndex(i);
+			GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Gauge][i], CTexture)->Set_CurTextureIndex(i);
 			GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Icon][i], CTexture)->Set_CurTextureIndex(i);
 			GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Text][i], CTexture)->Set_CurTextureIndex(i);
 
 			if (i > 0)
 			{
 				GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Point][i], CTexture)->Set_CurTextureIndex(1);
+				GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Gauge][i], CTexture)->Set_CurTextureIndex(1);
 				GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Icon][i], CTexture)->Set_CurTextureIndex(1);
 				GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Text][i], CTexture)->Set_CurTextureIndex(1);
 			}
@@ -1436,7 +1455,7 @@ void CUI_HUD::Create_OperPoint()
 		break;
 	}
 
-	//////////////////////
+#pragma region Etc
 
 	m_pOperAttackPointText = CUI_Object::Create();
 	m_pOperAttackPointText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperText.png"));
@@ -1471,6 +1490,8 @@ void CUI_HUD::Create_OperPoint()
 
 	CREATE_GAMEOBJECT(m_pTargetPoint, RENDER_UI);
 	DELETE_GAMEOBJECT(m_pTargetPoint);
+
+#pragma endregion
 }
 
 void CUI_HUD::Create_OperPointEffect()
@@ -1509,4 +1530,31 @@ void CUI_HUD::Create_OperPointEffect()
 	m_pArrOperPointCircleEffect[1]->Set_PosY(133.f);
 	m_pArrOperPointCircleEffect[2]->Set_PosY(-161.f);
 	m_pArrOperPointCircleEffect[3]->Set_PosY(-161.f);
+}
+
+void CUI_HUD::Create_OperTimer()
+{
+	for (int i = 0; i < TT_End; ++i)
+	{
+		m_pOperTimer[i] = CUI_Object::Create();
+
+		m_pOperTimer[i]->Set_PosY(275.f);
+		m_pOperTimer[i]->Set_Scale(242.f, 10.f);
+
+		CREATE_GAMEOBJECT(m_pOperTimer[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pOperTimer[i]);
+	}
+
+	m_pOperTimer[TT_BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarBG.png"));
+	m_pOperTimer[TT_BG]->Set_Color(_float4(0.f, 0.f, 0.f, 0.5f));
+	m_pOperTimer[TT_BG]->Set_Sort(0.49f);
+
+	m_pOperTimer[TT_Bar]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarGrey.dds"));
+	m_pOperTimer[TT_Bar]->Set_Sort(0.48f);
+	m_pOperTimer[TT_Bar]->Set_FontRender(true);
+	m_pOperTimer[TT_Bar]->Set_FontStyle(true);
+	m_pOperTimer[TT_Bar]->Set_FontOffset(-25.f,-13.f);
+	m_pOperTimer[TT_Bar]->Set_FontScale(0.25f);
+
+	GET_COMPONENT_FROM(m_pOperTimer[TT_Bar], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
 }
