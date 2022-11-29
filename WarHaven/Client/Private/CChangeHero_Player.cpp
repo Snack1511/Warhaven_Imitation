@@ -76,12 +76,12 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
 
-	pOwner->Shake_Camera(0.05f, 0.1f);
+	pOwner->Shake_Camera(1.5f, 0.1f);
 
 	if (pAnimator->Is_CurAnimFinished())
 	{
 		Set_HeroType(pOwner, m_eChangeClassType);
-		pOwner->Shake_Camera(0.1f, 0.5f);
+		pOwner->Shake_Camera(10.f, 1.f);
 		GAMEINSTANCE->Stop_RadialBlur();
 
 		return STATE_END;

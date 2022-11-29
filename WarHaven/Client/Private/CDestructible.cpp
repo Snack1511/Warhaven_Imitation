@@ -63,7 +63,7 @@ void CDestructible::On_CollisionEnter(CGameObject* pOtherObj, const _uint& eOthe
 		if (!m_wstrDestoryMultiEffectsKey.empty())
 			CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(m_wstrDestoryMultiEffectsKey, vPos, _float4(0.f, 1.f, 0.f, 0.f), 4.f, matIdentity);
 
-		static_cast<CUnit*>(pOtherObj)->Shake_Camera(0.1f, 0.4f);
+		static_cast<CUnit*>(pOtherObj)->Shake_Camera(5.f, 0.6f);
 
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
 		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);

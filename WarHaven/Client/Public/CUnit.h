@@ -34,8 +34,8 @@ public:
 	{
 		CLASS_TYPE	eClass = WARRIOR;
 
-		_float		fCamPower = 0.1f;
-		_float		fCamTime = 0.3f;
+		_float		fCamPower = 3.f;
+		_float		fCamTime = 0.5f;
 
 
 		WEAPON_TYPE eWeapon;

@@ -300,6 +300,33 @@ _float4 CEasing_Utillity::BounceEaseOut(_float4 vStartPoint, _float4 vTargetPoin
 		return _float4((vTargetPoint - vStartPoint) * (7.5625f * (fPassedTime -= (2.625f / 2.75f)) * fPassedTime + .984375f) + vStartPoint);
 }
 
+_float CEasing_Utillity::SinIn(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime)
+{
+	return ((vTargetValue - vStartValue) * -cosf(fPassedTime / fTotalTime * (PI / 2)) + (vTargetValue - vStartValue) + vStartValue);
+}
+
+
+_float CEasing_Utillity::sinfOut(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime)
+{
+	return ((vTargetValue - vStartValue) * sinf(fPassedTime / fTotalTime * (PI / 2)) + vStartValue);
+}
+
+_float CEasing_Utillity::sinfInOut(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime)
+{
+	return ((vTargetValue - vStartValue) / -2 * (cosf(PI * fPassedTime / fTotalTime) - 1) + vStartValue);
+}
+
+_float CEasing_Utillity::ElasticEaseOut(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime)
+{
+	if ((fPassedTime /= fTotalTime) == 1)
+		return vStartValue + (vTargetValue - vStartValue);
+
+	_float p = fTotalTime * .3f;
+	_float s = p / 4;
+
+	return ((vTargetValue - vStartValue) * pow(2, -10 * fPassedTime) * sinf((fPassedTime * fTotalTime - s) * (2 * PI) / p) + (vTargetValue - vStartValue) + vStartValue);
+}
+
 
 _float4 CEasing_Utillity::BounceEaseIn(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime)
 {

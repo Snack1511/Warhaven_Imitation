@@ -112,6 +112,8 @@ public:
 private:
 	//µé¾î¿À´Â Èû, ½Ã°£ °è¼Ó ¹Þ¾Æ¼­ Èçµë
 
+	_bool	m_bShaking = false;
+	_float	m_fShakingTimeAcc = 0.f;
 	_float	m_fShakingTime = 0.f;
 	_float	m_fShakingPower = 0.f;
 

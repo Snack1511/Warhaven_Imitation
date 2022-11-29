@@ -15,6 +15,8 @@
 #include "CCamera_Follow.h"
 #include "Physics.h"
 
+#include "Easing_Utillity.h"
+
 CScript_FollowCam::CScript_FollowCam(_uint iGroupIdx)
 	: CScriptable(iGroupIdx)
 {
@@ -43,7 +45,7 @@ CScript_FollowCam* CScript_FollowCam::Create(_uint iGroupIdx, CGameObject* pTarg
 void CScript_FollowCam::Start_ShakingCamera(_float fPower, _float fTime)
 {
 	//돌고있을 때
-	if (m_fShakingTime > 0.f)
+	if (m_bShaking)
 	{
 		//새로온 힘이 더 약한애면
 
@@ -53,7 +55,8 @@ void CScript_FollowCam::Start_ShakingCamera(_float fPower, _float fTime)
 
 	m_fShakingPower = fPower;
 	m_fShakingTime = fTime;
-		 
+	m_fShakingTimeAcc = 0.f;
+	m_bShaking = true;
 }
 
 void CScript_FollowCam::Start_LerpType(CAMERA_LERP_TYPE eType)
@@ -293,9 +296,7 @@ void CScript_FollowCam::Tick()
 	if (m_bMouseVisible)
 		return;
 
-	m_fShakingTime -= fDT(0);
-	if (m_fShakingTime < 0.f)
-		m_fShakingTime = 0.f;
+
 
 	//0. 타겟 고정 여부
 	if (m_bTargetLocked)
@@ -509,11 +510,22 @@ void CScript_FollowCam::Update_Shaking()
 		return;
 
 
-	if (m_fShakingTime > 0.f)
-	{
-		
+	//power가 시간에 따라 줄어들자 그냥
 
-		_float fShakingPower = m_fShakingTime * m_fShakingPower;
+	m_fShakingTimeAcc += fDT(0);
+
+	if (m_fShakingTimeAcc >= m_fShakingTime)
+	{
+		m_bShaking = false;
+		m_fShakingTimeAcc = 0.f;
+		return;
+	}
+
+	if (m_bShaking)
+	{
+		_float fRatio = m_fShakingTimeAcc / m_fShakingTime;
+
+		_float fShakingPower = CEasing_Utillity::sinfOut(m_fShakingPower, 0.f, m_fShakingTimeAcc, m_fShakingTime);
 
 		_float4 vRandDir;
 		vRandDir.x = frandom(-1.f, 1.f);
@@ -523,7 +535,7 @@ void CScript_FollowCam::Update_Shaking()
 		vRandDir.Normalize();
 
 		m_vOriginLook = m_pOwner->Get_Transform()->Get_MyWorld(WORLD_LOOK);
-		m_vOriginLook += vRandDir * fShakingPower;
+		m_vOriginLook += vRandDir * fShakingPower * fDT(0);
 		m_pOwner->Get_Transform()->Set_Look(m_vOriginLook);
 	}
 
