@@ -162,8 +162,6 @@ public:
 	const STATE_HIT_TYPE& Get_HitType() { return m_tHitType; }
 	void	Set_BounceState(STATE_TYPE eType) { m_tHitType.eBounce = eType; }
 
-	CLASS_TYPE& Get_HeroType() { return m_eHeroType; }
-
 	void	Set_OwnerPlayer(CPlayer* pPlayer) { m_pOwnerPlayer = pPlayer; }
 	void	On_ChangeToHero(_uint iIndex);
 
@@ -272,8 +270,6 @@ protected:
 
 	UNIT_STATUS		m_tUnitStatus;
 	STATE_TYPE		m_eCurState = STATE_END;
-
-	CLASS_TYPE		m_eHeroType = CLASS_END;
 
 	CState* m_pCurState = nullptr;
 

@@ -93,6 +93,32 @@ PS_OUT PS_DOWNSCALE_MAIN(PS_DOWNSCALE_IN In)
 	return Out;
 }
 
+PS_OUT	PS_RADIALBLUR_MAIN(PS_DOWNSCALE_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	float2 center = float2(640.f, 360.f) / float2(g_fWinCX, g_fWinCY);
+	float blurStart = 1.f;
+	float blurWidth = 0.1f;
+
+	float2 uv = In.vTexUV / float2(g_fWinCX, g_fWinCY);
+	uv -= center;
+
+	int iNumSamples = 4;
+
+	float precompute = blurWidth * (1.0 / float(iNumSamples - 1));
+
+	for (int i = 0; i < iNumSamples; ++i)
+	{
+		float fScale = blurStart + (float(i) * precompute);
+		Out.vColor += g_ShaderTexture.Sample(MotionBlurSampler, uv * fScale + center);
+	}
+
+	Out.vColor /= float(iNumSamples);
+	return Out;
+
+}
+
 PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
@@ -150,7 +176,7 @@ PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 	//velocity *= 0.05f;
 	//velocity /= g_numSamples;
 
-	velocity /= iNumSamples;
+	velocity /= (iNumSamples - 1);
 
 	/*velocity *= 0.005f;
 	velocity.y *= 0.1f;
@@ -527,6 +553,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MOTIONBLUR_MAIN();
+	}
+
+	pass RADIALBLUR
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_RADIALBLUR_MAIN();
 	}
 
 }

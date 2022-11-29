@@ -24,6 +24,9 @@ public:
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
+	CLASS_TYPE	m_eChangeClassType = FIONA;
+
+private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
 	STATE_TYPE Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass);

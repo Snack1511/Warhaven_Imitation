@@ -658,11 +658,11 @@ void CPlayer::Update_HeroGauge()
 
 	if (!m_bAbleHero)
 	{
-		_float fGaugeSpeed = fDT(0) * 20.f;
+		_float fGaugeSpeed = fDT(0);
 
 		if (!m_bIsHero)
 		{
-			m_fGauge += fGaugeSpeed;
+			m_fGauge += fGaugeSpeed * 20.f;
 			if (m_fGauge > m_fMaxGauge)
 			{
 				m_bAbleHero = true;
@@ -678,8 +678,11 @@ void CPlayer::Update_HeroGauge()
 			{
 				m_fGauge = 0.f;
 				m_bIsHero = false;
-
 				CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
+				
+				Change_DefaultUnit(m_eCurrentDefaultClass);
+
+
 			}
 		}
 	}

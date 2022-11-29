@@ -64,6 +64,7 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	m_iAnimIndex = pPlayer->Get_ChangeHeroIndex(eDefaultType);
 
 
+
 	/* Owner의 Animator Set Idle로 */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -72,32 +73,14 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
 
+	pOwner->Shake_Camera(0.05f, 0.1f);
+
 	if (pAnimator->Is_CurAnimFinished())
 	{
-		switch (pOwner->Get_HeroType())
-		{
-		case FIONA:
-			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
-			return STATE_IDLE_VALKYRIE_R;
-		case QANDA:
+		Set_HeroType(pOwner, m_eChangeClassType);
+		pOwner->Shake_Camera(0.1f, 0.5f);
 
-			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
-			return STATE_IDLE_VALKYRIE_R;
-
-		case HOEDT:
-
-			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
-			return STATE_IDLE_VALKYRIE_R;
-
-		case LANCER:
-
-			pPlayer->Change_HeroUnit(CPlayer::CLASS_HREO_FIONA);
-			return STATE_IDLE_VALKYRIE_R;
-
-		default:
-			Call_MsgBox(L"변신 상태 안됨.");
-			break;
-		}
+		return STATE_END;
 	}
 
 
@@ -106,7 +89,6 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CChangeHero_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
 }
 
 STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -115,24 +97,32 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 
 	if (pOwner->Get_OwnerPlayer()->AbleHero())
 	{
+
 		if (KEY(NUM1, TAP))
 		{
-			return Set_HeroType(pOwner, FIONA);
+			m_eChangeClassType = FIONA;
+			return m_eStateType;
+
 		}
-		/*else if (KEY(NUM2, TAP))
+		else if (KEY(NUM2, TAP))
 		{
-			return Set_HeroType(pOwner, QANDA);
+			m_eChangeClassType = QANDA;
+			return m_eStateType;
 		}
 		else if (KEY(NUM3, TAP))
 		{
-			return Set_HeroType(pOwner, HOEDT);
+			m_eChangeClassType = HOEDT;
+			return m_eStateType;
 		}
 		else if (KEY(NUM4, TAP))
 		{
-			return Set_HeroType(pOwner, LANCER);
-		}*/
+			m_eChangeClassType = LANCER;
+			return m_eStateType;
+		}
+
+
 	}
-	else
+	/*else
 	{
 		if (pOwner->Get_OwnerPlayer()->IsHero())
 		{
@@ -143,7 +133,7 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 				CUser::Get_Instance()->Set_HUD((CLASS_TYPE)pOwner->Get_OwnerPlayer()->Get_CurrentDefaultClass());
 			}
 		}
-	}
+	}*/
 
 	return STATE_END;
 }
@@ -151,7 +141,6 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 {
 	pOwner->Get_OwnerPlayer()->IsHero() = true;
-	pOwner->Get_HeroType() = eClass;
 	pOwner->On_ChangeToHero((CPlayer::CLASS_HREO)eClass);
 
 	CUser::Get_Instance()->Set_HUD(eClass);

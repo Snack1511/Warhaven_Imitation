@@ -26,6 +26,10 @@ public:
 	class CShader* Get_DeferredShader();
 
 public:
+	void	Start_RadialBlur(_float fTargetPower);
+	void	Stop_RadialBlur();
+
+public:
 	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fDistance);
 
 public:
@@ -59,6 +63,11 @@ private:
 	vector<class CShader*> m_vecShader;
 	class CMesh_Rect* m_pMeshRect = nullptr;
 	class CTexture* m_pBlackTexture = nullptr;
+
+private:
+	_bool	m_bRadialBlur = false;
+	_float	m_fRadialPower = 0.f;
+	_float	m_fRadialTargetPower = 0.f;
 
 
 #ifdef _DEBUG

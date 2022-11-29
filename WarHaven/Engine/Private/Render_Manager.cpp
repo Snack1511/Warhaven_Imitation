@@ -57,6 +57,14 @@ CShader* CRender_Manager::Get_DeferredShader()
 	return m_vecShader[SHADER_DEFERRED];
 }
 
+void CRender_Manager::Start_RadialBlur(_float fTargetPower)
+{
+}
+
+void CRender_Manager::Stop_RadialBlur()
+{
+}
+
 void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fDistance)
 {
 	m_ShadowViewMatrix.Identity();
