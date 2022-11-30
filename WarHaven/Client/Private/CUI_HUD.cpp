@@ -466,7 +466,7 @@ void CUI_HUD::Create_BriefingUI()
 	Read_Texture(m_pBriefingUI[BU_Icon], "/Oper/Briefing", "Icon");
 
 	m_pBriefingUI[BU_Icon]->Set_Sort(0.49f);
-	m_pBriefingUI[BU_Icon]->Set_Pos(-40.f, 246.f);
+	m_pBriefingUI[BU_Icon]->Set_Pos(-45.f, 246.f);
 	m_pBriefingUI[BU_Icon]->Set_Scale(32.f);
 	m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.6f, 0.6f, 0.6f, 1.f));
 
@@ -940,6 +940,11 @@ void CUI_HUD::Update_OperWindow()
 						Enable_Fade(m_pArrOperSelectUI[i][j], fDuration);
 						m_pArrOperSelectUI[i][j]->DoMoveX(50.f, fDuration);
 					}
+				}
+
+				for (int i = 0; i < ST_End; ++i)
+				{
+					m_pArrOperSelectUI[i][0]->DoScale(10.f, fDuration);
 				}
 
 				Enable_Fade(m_pOperMapIcon, fDuration);
