@@ -717,6 +717,7 @@ void CPlayer::On_FinishHero()
 
 	if (m_bIsMainPlayer)
 	{
+
 		CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
 		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 	}
@@ -732,6 +733,3 @@ void CPlayer::On_FinishHero_KeyInput()
 		}
 }	
 
-
-	CUser::Get_Instance()->Set_HeroGauge(m_fMaxGauge, m_fGauge);
-}
