@@ -83,6 +83,7 @@ void CValkyrie_Counter::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 {
 	pOwner->Enable_GuardCollider(true);
 
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"FionaParring", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

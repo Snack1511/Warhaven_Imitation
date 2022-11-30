@@ -874,6 +874,11 @@ void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOtherUnit, vHitPos);
 }
 
+void CUnit::Effect_HeroToDefaultUnit(CUnit* pOwner)
+{
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+}
 
 
 void CUnit::TransformProjection()

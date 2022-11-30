@@ -92,15 +92,15 @@ HRESULT CWindow_Level::Render()
 
 		if (ImGui::Button(strName.c_str()))
 		{
-			if ((LEVEL_TYPE_CLIENT)2 == CGame_Manager_HR::Get_Instance()->Get_CurrentLevel()) //메인메뉴일때만 이동
+			if (LEVEL_MAINMENU == CGame_Manager_HR::Get_Instance()->Get_CurrentLevel()) //메인메뉴일때만 이동
 			{
 				CLoading_Manager::Get_Instance()->Reserve_Load_Level((LEVEL_TYPE_CLIENT)i);
 				CGame_Manager_HR::Get_Instance()->Set_CurrentLevel((LEVEL_TYPE_CLIENT)i);
 			}
 			else
 			{
-				CLoading_Manager::Get_Instance()->Reserve_Load_Level((LEVEL_TYPE_CLIENT)2);
-				CGame_Manager_HR::Get_Instance()->Set_CurrentLevel((LEVEL_TYPE_CLIENT)2);
+				CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU);
+				CGame_Manager_HR::Get_Instance()->Set_CurrentLevel(LEVEL_MAINMENU);
 			}
 		}
 

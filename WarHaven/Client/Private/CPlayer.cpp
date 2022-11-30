@@ -610,28 +610,25 @@ void CPlayer::Set_TeamType(int eTeamType)
 
 void CPlayer::My_Tick()
 {
-	if (m_pCurrentUnit->Is_MainPlayer())
+	//공통으로 업데이트 되어야 하는것
+	Update_HeroGauge();
+
+
+	if (m_bIsMainPlayer)
 	{
 		Update_HP();
-		Update_HeroGauge();
 	}
 }
 
 void CPlayer::My_LateTick()
 {
+	//공통으로 업데이트 되어야 하는것
+	
+	
+
 	if (!m_bIsMainPlayer)
 		return;
 
-	if (KEY(NUM1, TAP) && m_bIsHero)
-	{
-		m_fGauge = 95.f;
-		m_bIsHero = false;
-		CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
-		Change_DefaultUnit(m_eCurrentDefaultClass);
-
-		//변신해제 테스트
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", PLAYER, PLAYER->Get_Transform()->Get_World(WORLD_POS));
-	}
 
 	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
 
@@ -675,45 +672,80 @@ void CPlayer::Update_HP()
 
 void CPlayer::Update_HeroGauge()
 {
-	_bool IsHeroGaugeEnable = CUser::Get_Instance()->Is_OnHeroGauge();
-	if (!IsHeroGaugeEnable)
-		return;
+	if (m_bIsMainPlayer)
+	{
+		_bool IsHeroGaugeEnable = CUser::Get_Instance()->Is_OnHeroGauge();
+		if (!IsHeroGaugeEnable)
+			return;
 
-	m_fMaxGauge = 100.f;
+		CUser::Get_Instance()->Set_HeroGauge(m_fMaxGauge, m_fGauge);
+	}
 
-	if (!m_bAbleHero)
+	if (!m_bAbleHero) //CChangeHero_Player, HUD
 	{
 		_float fGaugeSpeed = fDT(0);
 
-		if (!m_bIsHero)
+		if (!m_bIsHero) //CChangeHero_Player
 		{
 			m_fGauge += fGaugeSpeed * 20.f;
 			if (m_fGauge > m_fMaxGauge)
 			{
-				m_bAbleHero = true;
-				m_fGauge = m_fMaxGauge;
-
-				CUser::Get_Instance()->SetActive_HeroPortrait(true);
+				On_AbleHero();
 			}
 		}
-		else
+		else //변신 중일때 
 		{
-			m_fGauge -= fGaugeSpeed;
+			m_fGauge -= fGaugeSpeed * 2.f; // 인게임속도2.f 
+
+			if (m_bIsMainPlayer)
+			{
+				On_FinishHero_KeyInput();
+			}
+
 			if (m_fGauge <= 0.f)
 			{
-				m_fGauge = 0.f;
-				m_bIsHero = false;
-				CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
-				
-				Change_DefaultUnit(m_eCurrentDefaultClass);
-
-
+				On_FinishHero();
 			}
 		}
 	}
 
-	CUser::Get_Instance()->Set_HeroGauge(m_fMaxGauge, m_fGauge);
+	
 }
+
+void CPlayer::On_AbleHero()
+{
+	m_bAbleHero = true;
+	m_fGauge = m_fMaxGauge;
+
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->SetActive_HeroPortrait(true);
+	}
+}
+
+void CPlayer::On_FinishHero()
+{
+	m_fGauge = 0.f;
+	m_bIsHero = false;
+
+	Change_DefaultUnit(m_eCurrentDefaultClass);
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", m_pCurrentUnit, m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
+
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
+	}
+
+}
+
+void CPlayer::On_FinishHero_KeyInput()
+{
+	//if(KEY(CTRL, HOLD)) //1번 자주눌러서 막음
+		if (KEY(NUM1, TAP))
+		{	
+			On_FinishHero();
+		}
+}	
 
 void CPlayer::Ready_Customizing(eCUSTOM_TYPE eType)
 {

@@ -668,6 +668,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"UnHenshin"), "UnHenshin")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"FionaParring"), "FionaParring")))
+		return E_FAIL; 
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FionaParring"), Convert_ToHash(L"FionaParring_Mesh_0"))))
+		return E_FAIL;
 
 	/* Dead Body */
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Warrior"), Convert_ToHash(L"WarriorDead_Slice0"))))

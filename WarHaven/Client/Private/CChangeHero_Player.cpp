@@ -154,7 +154,15 @@ STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 	pOwner->Get_OwnerPlayer()->IsHero() = true;
 	pOwner->On_ChangeToHero((CPlayer::CLASS_HREO)eClass);
 
-	CUser::Get_Instance()->Set_HUD(eClass);
+
+	if (pOwner->Is_MainPlayer())
+	{
+		CUser::Get_Instance()->Set_HUD(eClass);
+	}
+	else
+	{
+		pOwner->Get_OwnerPlayer()->AbleHero() = false;
+	}
 
 	return m_eStateType;
 }

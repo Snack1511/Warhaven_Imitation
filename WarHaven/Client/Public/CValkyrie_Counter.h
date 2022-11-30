@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CAnimator;
+class CHierarchyNode;
 END
 
 BEGIN(Client)
