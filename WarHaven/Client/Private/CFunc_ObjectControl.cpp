@@ -27,6 +27,7 @@ CFunc_ObjectControl* CFunc_ObjectControl::Create(CWindow_Map* pMaptool)
     pInstance->m_pMeshRoot = pMaptool->Get_MeshRoot();
     pInstance->SetUp_ColliderType();
     pInstance->SetUp_LODLevel();
+    pInstance->m_matPickedAnchor.Identity();
     return pInstance;
 }
 
@@ -271,7 +272,236 @@ void CFunc_ObjectControl::Func_ObjectList()
     {
         Split_All();
     }
+    ImGui::Spacing();
+    if (ImGui::CollapsingHeader("Group Copy"))
+    {
+        char szFromGroup[MAXCHAR] = "";
+        strcpy_s(szFromGroup, strFromeGroup.c_str());
 
+        char szToGroup[MAXCHAR] = "";
+        strcpy_s(szToGroup, strToGroup.c_str());
+
+        ImGui::Text("From : ");
+        ImGui::SameLine();
+        if (ImGui::InputText("##InputFromGroup", szFromGroup, sizeof(char) * MAXCHAR))
+        {
+            strFromeGroup = szFromGroup;
+        }
+
+        ImGui::Text("To : ");
+        ImGui::SameLine();
+        if(ImGui::InputText("##InputToGroup", szToGroup, sizeof(char)*MAXCHAR))
+        {
+            strToGroup = szToGroup;
+        }
+
+        if (ImGui::Button("Clone"))
+        {
+            Clone_Group();
+        }//새로 생성
+    }
+    ImGui::Spacing(); 
+    if (ImGui::CollapsingHeader("Group Control"))
+    {
+        if (ImGui::BeginCombo("##ControlGroupSelectCombo", get<0>(m_GroupingInfo[m_iSelectedControlGroup]).c_str()))
+        {
+            for (_uint i = 0; i < m_GroupingInfo.size(); ++i)
+            {
+                _bool bSelect = false;
+                if (m_iSelectedControlGroup == i)
+                {
+                    bSelect = true;
+                }
+                if (ImGui::Selectable(get<0>(m_GroupingInfo[i]).c_str(), bSelect))
+                {
+                    if (!m_ObjectOriginMatrixlist.empty())
+                    {
+                        ObjectNameTupleArr& PrevSelectObjectVector = Get_TupleArr(get<0>(m_GroupingInfo[m_iSelectedControlGroup]).c_str());
+                        for (auto& Value : PrevSelectObjectVector)
+                        {
+                            size_t NameHash = Convert_ToHash(get<0>(Value));
+                            ObjectArr& rhsObject = m_ObjectNamingGroupMap[NameHash];
+                            for (auto& ObjectListElem : get<1>(Value))
+                            {
+                                _int Index = ObjectListElem;
+                                SetUp_Matrix(rhsObject[Index], m_ObjectOriginMatrixlist.front());
+                                m_ObjectOriginMatrixlist.pop_front();
+                            }
+                        }
+                    }
+                    m_iSelectedControlGroup = i;
+                    m_ObjectOriginMatrixlist.clear();
+                    ObjectNameTupleArr& SelectObjectVector = Get_TupleArr(get<0>(m_GroupingInfo[i]).c_str());
+                    for (auto& Value : SelectObjectVector)
+                    {
+                        size_t NameHash = Convert_ToHash(get<0>(Value));
+                        ObjectArr& rhsObject = m_ObjectNamingGroupMap[NameHash];
+                        for (auto& ObjectListElem : get<1>(Value))
+                        {
+                            _int Index = ObjectListElem;
+
+                            _float4x4 Matrix = rhsObject[Index]->Get_Transform()->Get_WorldMatrix();
+                            m_ObjectOriginMatrixlist.push_back(Matrix);
+                        }
+                    }
+                }
+            }
+            ImGui::EndCombo();
+        }
+
+
+        string strPickInfo = "";
+        if (!m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_ANCHOR))
+        {
+            strPickInfo = "Use_Picking";
+        }
+        else
+        {
+            strPickInfo = "Unuse_Picking";
+        }
+        if (ImGui::Button(strPickInfo.c_str()))
+        {
+            if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_ANCHOR))
+            {
+                m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_NONE);
+            }
+            else
+            {
+                m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_ANCHOR);
+            }
+        }
+
+        Show_GroupMatrix();
+        static _float ImGuiGroupMoveDragSpeed = 0.01f;
+        if (ImGui::CollapsingHeader("Group Move"))
+        {
+            ImGui::SliderFloat("##ImGuiGroupMoveDragSpeed", &ImGuiGroupMoveDragSpeed, 0.01f, 50.f, "%.2f");
+
+            m_AnchorPos = m_matPickedAnchor.XMLoad().r[3];
+            if (ImGui::DragFloat("##InputXPos", &m_AnchorPos.x, ImGuiGroupMoveDragSpeed))
+            {
+                _matrix TmpMat = m_matPickedAnchor.XMLoad();
+                TmpMat.r[3] = m_AnchorPos.XMLoad();
+                m_matPickedAnchor = TmpMat;
+                Update_GroupMatrixForAnchor();
+            }
+            if (ImGui::DragFloat("##InputYPos", &m_AnchorPos.y, ImGuiGroupMoveDragSpeed))
+            {
+                _matrix TmpMat = m_matPickedAnchor.XMLoad();
+                TmpMat.r[3] = m_AnchorPos.XMLoad();
+                m_matPickedAnchor = TmpMat;
+                Update_GroupMatrixForAnchor();
+            }
+            if (ImGui::DragFloat("##InputZPos", &m_AnchorPos.z, ImGuiGroupMoveDragSpeed))
+            {
+                _matrix TmpMat = m_matPickedAnchor.XMLoad();
+                TmpMat.r[3] = m_AnchorPos.XMLoad();
+                m_matPickedAnchor = TmpMat;
+                Update_GroupMatrixForAnchor();
+            }
+        }
+        if (ImGui::CollapsingHeader("Group Rotate"))
+        {
+            if (ImGui::DragFloat("##InputXAngle", &m_AnchorRot.x, 0.01f))
+            {
+                if (m_AnchorRot.x >= 360.f)
+                {
+                    _int INTLOWER = _int(m_AnchorRot.x * 10000);
+                    INTLOWER %= 3600000;
+                    m_AnchorRot.x = _float(INTLOWER) / 10000;
+                }
+                if (m_AnchorRot.x < 0.f)
+                {
+                    m_AnchorRot.x = 360.f + m_AnchorRot.x;
+                }
+                _float4x4 InitMat = XMMatrixIdentity();
+                _float4 Scale = _float4(
+                    XMVectorGetX(XMVector3Length(m_matPickedAnchor.XMLoad().r[0])),
+                    XMVectorGetX(XMVector3Length(m_matPickedAnchor.XMLoad().r[1])),
+                    XMVectorGetX(XMVector3Length(m_matPickedAnchor.XMLoad().r[2])),
+                    0.f
+                );
+                CUtility_Transform::Turn_ByAngle(m_matPickedAnchor, _float4(1.f, 0.f, 0.f, 0.f), m_AnchorRot.x);
+                _matrix TmpMat = InitMat.XMLoad();
+                TmpMat.r[0] = XMVector3Normalize(TmpMat.r[0]) * Scale.x;
+                TmpMat.r[1] = XMVector3Normalize(TmpMat.r[1]) * Scale.y;
+                TmpMat.r[2] = XMVector3Normalize(TmpMat.r[2]) * Scale.z;
+                TmpMat.r[3] = m_matPickedAnchor.XMLoad().r[3];
+                m_matPickedAnchor = TmpMat;
+
+
+                Update_GroupMatrixForAnchor();
+            }
+            if (ImGui::DragFloat("##InputYAngle", &m_AnchorRot.y), 0.01f)
+            {
+                if (m_AnchorRot.y >= 360.f)
+                {
+                    _int INTLOWER = _int(m_AnchorRot.y * 10000);
+                    INTLOWER %= 3600000;
+                    m_AnchorRot.y = _float(INTLOWER) / 10000;
+                }
+                if (m_AnchorRot.y < 0.f)
+                {
+                    m_AnchorRot.y = 360.f + m_AnchorRot.y;
+                }
+                _float4x4 InitMat = XMMatrixIdentity();
+                _float4 Scale = _float4(
+                    XMVectorGetX(XMVector3Length(m_matPickedAnchor.XMLoad().r[0])),
+                    XMVectorGetX(XMVector3Length(m_matPickedAnchor.XMLoad().r[1])),
+                    XMVectorGetX(XMVector3Length(m_matPickedAnchor.XMLoad().r[2])),
+                    0.f
+                );
+                CUtility_Transform::Turn_ByAngle(InitMat, _float4(0.f, 1.f, 0.f, 0.f), m_AnchorRot.y);
+                _matrix TmpMat = InitMat.XMLoad();
+                TmpMat.r[0] = XMVector3Normalize(TmpMat.r[0]) * Scale.x;
+                TmpMat.r[1] = XMVector3Normalize(TmpMat.r[1]) * Scale.y;
+                TmpMat.r[2] = XMVector3Normalize(TmpMat.r[2]) * Scale.z;
+                TmpMat.r[3] = m_matPickedAnchor.XMLoad().r[3];
+                m_matPickedAnchor = TmpMat;
+
+                Update_GroupMatrixForAnchor();
+            }
+            if (ImGui::DragFloat("##InputZAngle", &m_AnchorRot.z, 0.01f))
+            {
+                if (m_AnchorRot.z >= 360.f)
+                {
+                    _int INTLOWER = _int(m_AnchorRot.z * 10000);
+                    INTLOWER %= 3600000;
+                    m_AnchorRot.z = _float(INTLOWER) / 10000;
+                }
+                if (m_AnchorRot.z < 0.f)
+                {
+                    m_AnchorRot.z = 360.f + m_AnchorRot.z;
+                }
+                _float4x4 InitMat = XMMatrixIdentity();
+                _float4 Scale = _float4(
+                    XMVectorGetX(XMVector3Length(m_matPickedAnchor.XMLoad().r[0])),
+                    XMVectorGetX(XMVector3Length(m_matPickedAnchor.XMLoad().r[1])),
+                    XMVectorGetX(XMVector3Length(m_matPickedAnchor.XMLoad().r[2])),
+                    0.f
+                );
+                CUtility_Transform::Turn_ByAngle(m_matPickedAnchor, _float4(0.f, 0.f, 1.f, 0.f), m_AnchorRot.z);
+                _matrix TmpMat = InitMat.XMLoad();
+                TmpMat.r[0] = XMVector3Normalize(TmpMat.r[0]) * Scale.x;
+                TmpMat.r[1] = XMVector3Normalize(TmpMat.r[1]) * Scale.y;
+                TmpMat.r[2] = XMVector3Normalize(TmpMat.r[2]) * Scale.z;
+                TmpMat.r[3] = m_matPickedAnchor.XMLoad().r[3];
+                m_matPickedAnchor = TmpMat;
+
+                Update_GroupMatrixForAnchor();
+            }
+        }
+        if (ImGui::Button("Group Update!"))
+        {
+            Update_GroupObject();
+        }
+        //Confirm()
+    }
+    ImGui::Spacing();
+
+
+    ImGui::Spacing();
+    ImGui::Spacing();
     ImGui::Spacing();
     if (ImGui::Button("ADD HLOD"))
     {
@@ -290,7 +520,7 @@ void CFunc_ObjectControl::Func_ObjectList()
 void CFunc_ObjectControl::Func_GroupControl()
 {
     string strPickInfo = "";
-    if (!m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_GROUP))
+    if (!m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_ANCHOR))
     {
         strPickInfo = "Use_Picking";
     }
@@ -300,29 +530,14 @@ void CFunc_ObjectControl::Func_GroupControl()
     }
     if (ImGui::Button(strPickInfo.c_str()))
     {
-        if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_GROUP))
+        if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_ANCHOR))
         {
             m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_NONE);
         }
         else
         {
-            m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_GROUP);
+            m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_ANCHOR);
         }
-    }
-    ImGui::Spacing();
-
-
-    switch (m_eControlType)
-    {
-    case CONTROL_SCALING:
-        ImGui::Text("MODE : SCALING");
-        break;
-    case CONTROL_ROTATE:
-        ImGui::Text("MODE : ROTATE");
-        break;
-    case CONTROL_MOVE:
-        ImGui::Text("MODE : MOVE");
-        break;
     }
     ImGui::Spacing();
 
@@ -335,12 +550,6 @@ void CFunc_ObjectControl::Func_GroupControl()
     if (ImGui::CollapsingHeader("Group Matrix(Read-Only)", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         Show_GroupMatrix();
-    }
-    ImGui::Spacing();
-
-    if (ImGui::CollapsingHeader("Group Speed", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
-    {
-        Set_ControlSpeed(&m_fTickPerGroupMoveSpeed,&m_fTickPerGroupRotSpeed, &m_fTickPerGroupScalingSpeed);
     }
     ImGui::Spacing();
 }
@@ -601,9 +810,9 @@ void CFunc_ObjectControl::Func_Picking()
         Place_Object();
         Change_Object_UpDir();
     }
-    else if(m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_GROUP))
+    else if(m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_ANCHOR))
     {
-        Place_Group();
+        Pick_Anchor();
     }
 }
 
@@ -744,10 +953,11 @@ void CFunc_ObjectControl::Tick_Function()
     }
 
     Select_DataControlFlag();
-    if (m_bGroupControl)
-        Control_Group();
-    else
-        Control_Object();
+    //if (m_bGroupControl)
+    //    Control_Group();
+    //else
+    //    Control_Object();
+    Control_Object();
     Update_Data();
 }
 
@@ -763,12 +973,26 @@ void CFunc_ObjectControl::Confirm_Group()
     //m_pObjGroup = nullptr;
     //m_pDataGroup = nullptr;
 }
-
+#include "Model.h"
 void CFunc_ObjectControl::SetUp_CurSelectObject()
 {
-    if (nullptr != m_pCurSelectObjectGroup 
+
+
+
+    if (nullptr != m_pCurSelectObjectGroup
         && _uint(m_pCurSelectObjectGroup->size()) > m_iCurSelectObjectIndex)
+    {
+        if (nullptr != m_pCurSelectGameObject) {
+            GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_RimLightFlag(_float4(1, 0, 0, 0));
+            GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_OutlineFlag(_float4(1, 0, 0, 0));
+        }
         m_pCurSelectGameObject = (*m_pCurSelectObjectGroup)[m_iCurSelectObjectIndex];
+
+        if (nullptr != m_pCurSelectGameObject) {
+            GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_RimLightFlag(_float4(1, 0.2f, 0.2f, 0.5f));
+            GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_OutlineFlag(_float4(1, 0.1f, 0, 1));
+        }
+    }
     else
         m_pCurSelectGameObject = nullptr;
 
@@ -783,23 +1007,29 @@ void CFunc_ObjectControl::SetUp_CurSelectObject()
     else
         m_pObjTransform = nullptr;
 
+    
 }
 
 void CFunc_ObjectControl::Show_GroupMatrix()
 {
-    if (nullptr == m_pCurSelectData)
-        return;
-    else
-    {
-        _float* pRight = (_float*)(&m_matGroup._11);
-        _float* pUp = (_float*)(&m_matGroup._21);
-        _float* pLook = (_float*)(&m_matGroup._31);
-        _float* pPosition = (_float*)(&m_matGroup._41);
-        ImGui::InputFloat4("##GroupRight", pRight, "%.2f", ImGuiInputTextFlags_ReadOnly);
-        ImGui::InputFloat4("##GroupUp", pUp, "%.2f", ImGuiInputTextFlags_ReadOnly);
-        ImGui::InputFloat4("##GroupLook", pLook, "%.2f", ImGuiInputTextFlags_ReadOnly);
-        ImGui::InputFloat4("##GroupPosition", pPosition, "%.2f", ImGuiInputTextFlags_ReadOnly);
-    }
+    _float* pRight = (_float*)(&m_matPickedAnchor._11);
+    _float* pUp = (_float*)(&m_matPickedAnchor._21);
+    _float* pLook = (_float*)(&m_matPickedAnchor._31);
+    _float* pPosition = (_float*)(&m_matPickedAnchor._41);
+    ImGui::InputFloat4("##GroupRight", pRight, "%.2f", ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputFloat4("##GroupUp", pUp, "%.2f", ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputFloat4("##GroupLook", pLook, "%.2f", ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputFloat4("##GroupPosition", pPosition, "%.2f", ImGuiInputTextFlags_ReadOnly);
+    //if (nullptr == m_pCurSelectData)
+    //    return;
+    //else
+    //{
+    //    //_float* pRight = (_float*)(&m_matGroup._11);
+    //    //_float* pUp = (_float*)(&m_matGroup._21);
+    //    //_float* pLook = (_float*)(&m_matGroup._31);
+    //    //_float* pPosition = (_float*)(&m_matGroup._41);
+
+    //}
 }
 
 void CFunc_ObjectControl::Confirm_Data()
@@ -1474,21 +1704,21 @@ void CFunc_ObjectControl::Set_ControlSpeed(_float* fMoveSpeed, _float* fRotateSp
     ImGui::SliderFloat("##Group Move Speed", fMoveSpeed, 0.1f, 50.f, "%.1f");
 }
 
-void CFunc_ObjectControl::Control_Group()
-{
-    switch (m_eControlType)
-    {
-    case CONTROL_SCALING:
-        Scaling_Group();
-        break;
-    case CONTROL_ROTATE:
-        Rotate_Group();
-        break;
-    case CONTROL_MOVE:
-        Position_Group();
-        break;
-    }
-}
+//void CFunc_ObjectControl::Control_Group()
+//{
+//    switch (m_eControlType)
+//    {
+//    case CONTROL_SCALING:
+//        Scaling_Group();
+//        break;
+//    case CONTROL_ROTATE:
+//        Rotate_Group();
+//        break;
+//    case CONTROL_MOVE:
+//        Position_Group();
+//        break;
+//    }
+//}
 
 void CFunc_ObjectControl::Select_DataControlFlag()
 {
@@ -1522,131 +1752,123 @@ void CFunc_ObjectControl::Control_Object()
     }
 }
 
-void CFunc_ObjectControl::Scaling_Group()
-{
-    if (nullptr == m_pObjTransform)
-        return;
-    _float XScale = XMVectorGetX(XMVector3Length(m_matGroup.XMLoad().r[0]));
-    _float YScale = XMVectorGetX(XMVector3Length(m_matGroup.XMLoad().r[1]));
-    _float ZScale = XMVectorGetX(XMVector3Length(m_matGroup.XMLoad().r[2]));
-    _float4 ScaleValue = _float4(XScale, YScale, ZScale, 0.f);
-    //RightDir
-    if (KEY(INSERTKEY, HOLD))
-    {
-        ScaleValue.x += m_fTickPerGroupScalingSpeed * fDT(0);
-    }
-    if (KEY(DELETEKEY, HOLD))
-    {
-        ScaleValue.x -= m_fTickPerGroupScalingSpeed * fDT(0);
-    }
-
-    //UpDir
-    if (KEY(HOMEKEY, HOLD))
-    {
-        ScaleValue.y += m_fTickPerGroupScalingSpeed * fDT(0);
-    }
-    if (KEY(ENDKEY, HOLD))
-    {
-        ScaleValue.y -= m_fTickPerGroupScalingSpeed * fDT(0);
-    }
-
-    //LookDir
-    if (KEY(PAGEUP, HOLD))
-    {
-        ScaleValue.z += m_fTickPerGroupScalingSpeed * fDT(0);
-    }
-    if (KEY(PAGEDOWN, HOLD))
-    {
-        ScaleValue.z -= m_fTickPerGroupScalingSpeed * fDT(0);
-    }
-    m_matGroup.XMLoad().r[0] = XMVector3Normalize(m_matGroup.XMLoad().r[0]) * ScaleValue.x;
-    m_matGroup.XMLoad().r[1] = XMVector3Normalize(m_matGroup.XMLoad().r[1]) * ScaleValue.y;
-    m_matGroup.XMLoad().r[2] = XMVector3Normalize(m_matGroup.XMLoad().r[2]) * ScaleValue.z;
-}
-
-void CFunc_ObjectControl::Rotate_Group()
-{
-    if (nullptr == m_pObjTransform)
-        return;
-    //RightAxis
-    _float4 Right = m_matGroup.XMLoad().r[0];
-    if (KEY(HOMEKEY, HOLD))
-    {
-        CUtility_Transform::Turn_ByAngle(m_matGroup, Right, m_fTickPerGroupRotSpeed * fDT(0));
-    }
-    if (KEY(ENDKEY, HOLD))
-    {
-        CUtility_Transform::Turn_ByAngle(m_matGroup, Right, -m_fTickPerGroupRotSpeed * fDT(0));
-    }
-
-    //UpAxis    
-    _float4 Up = m_matGroup.XMLoad().r[1];
-    if (KEY(DELETEKEY, HOLD))
-    {
-        CUtility_Transform::Turn_ByAngle(m_matGroup, Up, -m_fTickPerGroupRotSpeed * fDT(0));
-    }
-    if (KEY(PAGEDOWN, HOLD))
-    {
-        CUtility_Transform::Turn_ByAngle(m_matGroup, Up, m_fTickPerGroupRotSpeed * fDT(0));
-    }
-
-    //LookAxis
-    _float4 Look = m_matGroup.XMLoad().r[2];
-    if (KEY(INSERTKEY, HOLD))
-    {
-        CUtility_Transform::Turn_ByAngle(m_matGroup, Look, -m_fTickPerGroupRotSpeed * fDT(0));
-    }
-    if (KEY(PAGEUP, HOLD))
-    {
-        CUtility_Transform::Turn_ByAngle(m_matGroup, Look, m_fTickPerGroupRotSpeed * fDT(0));
-    }
-}
-
-void CFunc_ObjectControl::Position_Group()
-{
-    if (nullptr == m_pObjTransform)
-        return;
-    _float4 PosValue = m_matGroup.XMLoad().r[3];
-    //RightDir
-    if (KEY(INSERTKEY, HOLD))
-    {
-        PosValue.x += m_fTickPerGroupMoveSpeed * fDT(0);
-    }
-    if (KEY(DELETEKEY, HOLD))
-    {
-        PosValue.x -= m_fTickPerGroupMoveSpeed * fDT(0);
-    }
-
-    //UpDir
-    if (KEY(HOMEKEY, HOLD))
-    {
-        PosValue.y -= m_fTickPerGroupMoveSpeed * fDT(0);
-    }
-    if (KEY(ENDKEY, HOLD))
-    {
-        PosValue.y += m_fTickPerGroupMoveSpeed * fDT(0);
-    }
-
-    //LookDir
-    if (KEY(PAGEUP, HOLD))
-    {
-        PosValue.z += m_fTickPerGroupMoveSpeed * fDT(0);
-    }
-    if (KEY(PAGEDOWN, HOLD))
-    {
-        PosValue.z -= m_fTickPerGroupMoveSpeed * fDT(0);
-    }
-
-    m_matGroup.XMLoad().r[3] = PosValue.XMLoad();
-}
-
-void CFunc_ObjectControl::Place_Group()
-{
-    if (nullptr == m_pObjTransform)
-        return;
-    _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
-    m_matGroup.XMLoad().r[3] = OutPos.XMLoad();
-}
+//void CFunc_ObjectControl::Scaling_Group()
+//{
+//    if (nullptr == m_pObjTransform)
+//        return;
+//    _float XScale = XMVectorGetX(XMVector3Length(m_matGroup.XMLoad().r[0]));
+//    _float YScale = XMVectorGetX(XMVector3Length(m_matGroup.XMLoad().r[1]));
+//    _float ZScale = XMVectorGetX(XMVector3Length(m_matGroup.XMLoad().r[2]));
+//    _float4 ScaleValue = _float4(XScale, YScale, ZScale, 0.f);
+//    //RightDir
+//    if (KEY(INSERTKEY, HOLD))
+//    {
+//        ScaleValue.x += m_fTickPerGroupScalingSpeed * fDT(0);
+//    }
+//    if (KEY(DELETEKEY, HOLD))
+//    {
+//        ScaleValue.x -= m_fTickPerGroupScalingSpeed * fDT(0);
+//    }
+//
+//    //UpDir
+//    if (KEY(HOMEKEY, HOLD))
+//    {
+//        ScaleValue.y += m_fTickPerGroupScalingSpeed * fDT(0);
+//    }
+//    if (KEY(ENDKEY, HOLD))
+//    {
+//        ScaleValue.y -= m_fTickPerGroupScalingSpeed * fDT(0);
+//    }
+//
+//    //LookDir
+//    if (KEY(PAGEUP, HOLD))
+//    {
+//        ScaleValue.z += m_fTickPerGroupScalingSpeed * fDT(0);
+//    }
+//    if (KEY(PAGEDOWN, HOLD))
+//    {
+//        ScaleValue.z -= m_fTickPerGroupScalingSpeed * fDT(0);
+//    }
+//    m_matGroup.XMLoad().r[0] = XMVector3Normalize(m_matGroup.XMLoad().r[0]) * ScaleValue.x;
+//    m_matGroup.XMLoad().r[1] = XMVector3Normalize(m_matGroup.XMLoad().r[1]) * ScaleValue.y;
+//    m_matGroup.XMLoad().r[2] = XMVector3Normalize(m_matGroup.XMLoad().r[2]) * ScaleValue.z;
+//}
+//
+//void CFunc_ObjectControl::Rotate_Group()
+//{
+//    if (nullptr == m_pObjTransform)
+//        return;
+//    //RightAxis
+//    _float4 Right = m_matGroup.XMLoad().r[0];
+//    if (KEY(HOMEKEY, HOLD))
+//    {
+//        CUtility_Transform::Turn_ByAngle(m_matGroup, Right, m_fTickPerGroupRotSpeed * fDT(0));
+//    }
+//    if (KEY(ENDKEY, HOLD))
+//    {
+//        CUtility_Transform::Turn_ByAngle(m_matGroup, Right, -m_fTickPerGroupRotSpeed * fDT(0));
+//    }
+//
+//    //UpAxis    
+//    _float4 Up = m_matGroup.XMLoad().r[1];
+//    if (KEY(DELETEKEY, HOLD))
+//    {
+//        CUtility_Transform::Turn_ByAngle(m_matGroup, Up, -m_fTickPerGroupRotSpeed * fDT(0));
+//    }
+//    if (KEY(PAGEDOWN, HOLD))
+//    {
+//        CUtility_Transform::Turn_ByAngle(m_matGroup, Up, m_fTickPerGroupRotSpeed * fDT(0));
+//    }
+//
+//    //LookAxis
+//    _float4 Look = m_matGroup.XMLoad().r[2];
+//    if (KEY(INSERTKEY, HOLD))
+//    {
+//        CUtility_Transform::Turn_ByAngle(m_matGroup, Look, -m_fTickPerGroupRotSpeed * fDT(0));
+//    }
+//    if (KEY(PAGEUP, HOLD))
+//    {
+//        CUtility_Transform::Turn_ByAngle(m_matGroup, Look, m_fTickPerGroupRotSpeed * fDT(0));
+//    }
+//}
+//
+//void CFunc_ObjectControl::Position_Group()
+//{
+//    if (nullptr == m_pObjTransform)
+//        return;
+//    _float4 PosValue = m_matGroup.XMLoad().r[3];
+//    //RightDir
+//    if (KEY(INSERTKEY, HOLD))
+//    {
+//        PosValue.x += m_fTickPerGroupMoveSpeed * fDT(0);
+//    }
+//    if (KEY(DELETEKEY, HOLD))
+//    {
+//        PosValue.x -= m_fTickPerGroupMoveSpeed * fDT(0);
+//    }
+//
+//    //UpDir
+//    if (KEY(HOMEKEY, HOLD))
+//    {
+//        PosValue.y -= m_fTickPerGroupMoveSpeed * fDT(0);
+//    }
+//    if (KEY(ENDKEY, HOLD))
+//    {
+//        PosValue.y += m_fTickPerGroupMoveSpeed * fDT(0);
+//    }
+//
+//    //LookDir
+//    if (KEY(PAGEUP, HOLD))
+//    {
+//        PosValue.z += m_fTickPerGroupMoveSpeed * fDT(0);
+//    }
+//    if (KEY(PAGEDOWN, HOLD))
+//    {
+//        PosValue.z -= m_fTickPerGroupMoveSpeed * fDT(0);
+//    }
+//
+//    m_matGroup.XMLoad().r[3] = PosValue.XMLoad();
+//}
 
 void CFunc_ObjectControl::Delete_ObjectNamingMap(string strSearchObejctName, list<_int>& IndexList)
 {
@@ -2097,7 +2319,7 @@ void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)
             size_t NameHash = Convert_ToHash(get<0>(NameValue));
             for (list<_int>::value_type& value : get<1>(NameValue))
             {
-                _int Padding = SyncData[NameHash][value];
+                  _int Padding = SyncData[NameHash][value];
                 _int SaveIndex = value - Padding;
                 writeFile.write((char*)&SaveIndex, sizeof(_uint));
             }
@@ -2191,6 +2413,7 @@ void CFunc_ObjectControl::Clear_AllDatas()
     m_DataNamingGroupMap.clear();
     m_iCurSelectObjecNametIndex = 0;
     m_iCurSelectObjectIndex = 0;
+    m_iSelectedControlGroup = 0;
 }
 
 void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
@@ -2263,20 +2486,6 @@ void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
         Safe_Delete_Array(pInstance);
     }
 
-    //wstring strMeshPath;
-    //_int InstanceCount = DataIter->second.size();
-    //VTXINSTANCE* pInstance = new VTXINSTANCE[InstanceCount];
-    //ZeroMemory(pInstance, sizeof(VTXINSTANCE) * InstanceCount);
-    //for (_uint i = 0; i < InstanceCount; ++i)
-    //{
-    //    strMeshPath = DataIter->second[i].strMeshPath;
-    //    _float4x4 matInstanceWorld = DataIter->second[i].ObjectStateMatrix;
-    //    _float4 vScale = _float4(1.f, 1.f, 1.f, 0.f);//= DataIter->second[i].vScale;
-    //    XMStoreFloat4(&pInstance[i].vRight, matInstanceWorld.XMLoad().r[0] * vScale.x);
-    //    XMStoreFloat4(&pInstance[i].vUp, matInstanceWorld.XMLoad().r[1] * vScale.y);
-    //    XMStoreFloat4(&pInstance[i].vLook, matInstanceWorld.XMLoad().r[2] * vScale.z);
-    //    XMStoreFloat4(&pInstance[i].vTranslation, matInstanceWorld.XMLoad().r[3]);
-    //}
     writeFile.close();
 }
 void CFunc_ObjectControl::Load_ObjectData(string FilePath, string& GroupFilePath, string& SplitFilePath, string& MergeFilePath)
@@ -2549,6 +2758,49 @@ void CFunc_ObjectControl::Clear_TupleData(vector<tuple<char*, bool>>& ArrData)
     ArrData.clear();
 }
 
+void CFunc_ObjectControl::Clone_Group()
+{
+    OBJECTGROUPINGMAP::iterator FromIter;
+    OBJECTGROUPINGMAP::iterator ToIter;
+    if (false == Find_ObjectGroupingName(Convert_ToHash(strFromeGroup), FromIter))
+    {
+        Call_MsgBox(_T("Not Found Group_From"));
+        return;
+    }//FromFind
+
+    if (false == Find_ObjectGroupingName(Convert_ToHash(strToGroup), ToIter))
+    {
+        Call_MsgBox(_T("Not Found Group_To"));
+        return;
+    }//ToFind
+
+    ObjectNameTupleArr& FromeArr = Get_TupleArr(strFromeGroup);
+
+    for (auto& FromValue : FromeArr)
+    {
+        size_t NameHash = Convert_ToHash(get<0>(FromValue));
+        DataArr& rhsDatas = m_DataNamingGroupMap[NameHash];
+        for (auto& ObjectListElem : get<1>(FromValue))
+        {
+            _int Index = ObjectListElem;
+            MTO_DATA OriginData = rhsDatas[Index];
+
+            Add_ObjectNamingMap(strToGroup, OriginData);
+        }
+    }
+}
+
+CFunc_ObjectControl::ObjectNameTupleArr& CFunc_ObjectControl::Get_TupleArr(string GroupName)
+{
+    OBJECTGROUPINGMAP::iterator GroupIter;
+    if (false == Find_ObjectGroupingName(Convert_ToHash(GroupName), GroupIter))
+    {
+        return m_ObjectNameGroupingMap.begin()->second;
+    }
+    return GroupIter->second;
+    // // O: 여기에 return 문을 삽입합니다.
+}
+
 void CFunc_ObjectControl::Pick_inOjbect()
 {
     if (nullptr == m_pObjTransform)
@@ -2582,6 +2834,99 @@ void CFunc_ObjectControl::Pick_inOjbect()
 
 }
 
+void CFunc_ObjectControl::Pick_Anchor()
+{
+    _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
+    memcpy_s(&m_matPickedAnchor._41, sizeof(_float4), &OutPos, sizeof(_float4));
+}
+
+void CFunc_ObjectControl::SetUp_Matrix(CGameObject* pGameObject, _float4x4 Matrix)
+{
+    _float4 vRight = Matrix.XMLoad().r[0];
+    _float4 vUp = Matrix.XMLoad().r[1];
+    _float4 vLook = Matrix.XMLoad().r[2];
+    _float4 vPos = Matrix.XMLoad().r[3];
+    pGameObject->Get_Transform()->Set_World(WORLD_RIGHT, vRight);
+    pGameObject->Get_Transform()->Set_World(WORLD_UP, vUp);
+    pGameObject->Get_Transform()->Set_World(WORLD_LOOK, vLook);
+    pGameObject->Get_Transform()->Set_World(WORLD_POS, vPos);
+
+}
+void CFunc_ObjectControl::Update_GroupMatrixForAnchor()
+{
+    if (m_ObjectOriginMatrixlist.empty())
+        return;
+    ObjectNameTupleArr& SelectObjectVector = Get_TupleArr(get<0>(m_GroupingInfo[m_iSelectedControlGroup]).c_str());
+    list<_float4x4>::iterator OriginMatIter = m_ObjectOriginMatrixlist.begin();
+    for (auto& Value : SelectObjectVector)
+    {
+        size_t NameHash = Convert_ToHash(get<0>(Value));
+        ObjectArr& rhsObject = m_ObjectNamingGroupMap[NameHash];
+        for (auto& ObjectListElem : get<1>(Value))
+        {
+            _int Index = ObjectListElem;
+            _float4x4 GroupingMat = (*OriginMatIter);
+            GroupingMat = GroupingMat.XMLoad() * m_matPickedAnchor.XMLoad();
+            SetUp_Matrix(rhsObject[Index], GroupingMat);
+            OriginMatIter++;
+        }
+    }
+}
+void CFunc_ObjectControl::Update_GroupObject() 
+{
+    if (m_ObjectOriginMatrixlist.empty())
+    {
+        return;
+    }
+    ObjectNameTupleArr& SelectObjectVector = Get_TupleArr(get<0>(m_GroupingInfo[m_iSelectedControlGroup]).c_str());
+    list<_float4x4>::iterator OriginMatIter = m_ObjectOriginMatrixlist.begin();
+    for (auto& Value : SelectObjectVector)
+    {
+        size_t NameHash = Convert_ToHash(get<0>(Value));
+        DataArr& rhsDatas = m_DataNamingGroupMap[NameHash];
+        for (auto& ObjectListElem : get<1>(Value))
+        {
+            _int Index = ObjectListElem;
+            _float4x4 GroupingMat = (*OriginMatIter);
+            GroupingMat = GroupingMat.XMLoad() * m_matPickedAnchor.XMLoad();
+
+            _float4 vRight = rhsDatas[Index].ObjectStateMatrix.XMLoad().r[0];
+            _float4 vUp = rhsDatas[Index].ObjectStateMatrix.XMLoad().r[1];
+            _float4 vLook = rhsDatas[Index].ObjectStateMatrix.XMLoad().r[2];
+            _float4 vPos = rhsDatas[Index].ObjectStateMatrix.XMLoad().r[3];
+            
+            _float4 Scale = _float4(
+                vRight.Length(),
+                vUp.Length(),
+                vLook.Length(),
+                0.f
+            );
+
+            vRight = GroupingMat.XMLoad().r[0];
+            vUp = GroupingMat.XMLoad().r[1];
+            vLook = GroupingMat.XMLoad().r[2];
+            vPos = GroupingMat.XMLoad().r[3];
+
+            vRight = vRight.Normalize() * Scale.x;
+            vUp = vUp.Normalize() * Scale.y;
+            vLook = vLook.Normalize() * Scale.z;
+
+            _matrix Mat = XMMatrixIdentity();
+            Mat.r[0] = vRight.XMLoad();
+            Mat.r[1] = vUp.XMLoad();
+            Mat.r[2] = vLook.XMLoad();
+            Mat.r[3] = vPos.XMLoad();
+
+            GroupingMat = Mat;
+            rhsDatas[Index].vScale = Scale;
+            rhsDatas[Index].ObjectStateMatrix = GroupingMat;
+
+            OriginMatIter++;
+        }
+    }
+    m_ObjectOriginMatrixlist.clear();
+    m_iSelectedControlGroup = 0;
+}
 void CFunc_ObjectControl::SetUp_ColliderType()
 {
     m_listColliderType.push_back(make_tuple(string("Convex"), _uint(CStructure::ePhysXEnum::eCONVEX)));

@@ -21,7 +21,7 @@ class CWindow_Map final
 {
 public:
 	enum TUPLEDATA { Tuple_CharPtr, Tuple_Bool, Tuple_Index };
-	enum PICKINGTYPE {PICK_GROUP, PICK_OBJECT, PICK_CLONE, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_INSTANCEOBJECT, PICK_NONE};
+	enum PICKINGTYPE {PICK_ANCHOR, PICK_OBJECT, PICK_CLONE, PICK_TERRAINVERT, PICK_TERRAINTEX, PICK_INSTANCEOBJECT, PICK_NONE};
 	enum CAMERATYPE {CAM_RIGHT, CAM_UP, CAM_LOOK, CAM_FREE};
 	enum PICKOUTTYPE {PICK_OUTPOS, PICK_OUTLOCALPOS, PICK_OUTNORM};
 	struct MAPDATA
@@ -145,7 +145,7 @@ private:
 private:
 	void Func_FileControl();
 	void Ready_FileArray();
-	void Ready_ObjectGroupID();
+	void Ready_ObjectGroupID();    
 
 	void Update_FileArray();
 	void SetUp_FilePath(string& strFilePath, char* szData, string strExt = "");

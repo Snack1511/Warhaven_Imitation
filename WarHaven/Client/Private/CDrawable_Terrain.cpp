@@ -306,6 +306,14 @@ HRESULT CDrawable_Terrain::SetUp_TerrainInfo(ifstream& readFile, CMesh_Terrain* 
     _float4x4 mat_Terrain;
     readFile.read((char*)&mat_Terrain, sizeof(_float4x4));
 
+    _float4 TerrainScale = _float4
+    (
+        XMVectorGetX(XMVector3Length(mat_Terrain.XMLoad().r[0])),
+        XMVectorGetX(XMVector3Length(mat_Terrain.XMLoad().r[1])),
+        XMVectorGetX(XMVector3Length(mat_Terrain.XMLoad().r[2])),
+        0.f
+    );
+    m_pTransform->Set_Scale(TerrainScale);
     m_pTransform->Set_MyMatrix(mat_Terrain);
     m_pTransform->Make_WorldMatrix();
     return S_OK;
