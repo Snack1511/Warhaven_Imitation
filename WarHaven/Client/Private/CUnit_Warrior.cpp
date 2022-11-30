@@ -324,11 +324,6 @@ HRESULT CUnit_Warrior::Initialize()
 
 		if (iTemp > 0)
 			m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
-		
-		/*iTemp = m_tModelData.strModelPaths[i].find(L"SK_Warrior0004_Body_A00_25");
-
-		if (iTemp > 0)
-			m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);*/
 	}
 
 

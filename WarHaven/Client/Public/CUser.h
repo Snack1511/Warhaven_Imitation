@@ -82,6 +82,9 @@ public:
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
 private:
+	
+
+private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
 	CUI_Cursor* m_pCursor = nullptr;
 	CUI_HUD* m_pUI_HUD = nullptr;

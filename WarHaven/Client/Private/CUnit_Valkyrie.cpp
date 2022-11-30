@@ -285,6 +285,7 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 HRESULT CUnit_Valkyrie::Initialize()
 {
 	__super::Initialize();
+	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
 	return S_OK;
 }

@@ -13,6 +13,9 @@
 
 #include "CDestructible.h"
 
+#include "CPlayerInfo_Main.h"
+#include "CPlayerInfo_SandBack.h"
+
 IMPLEMENT_SINGLETON(CGameSystem);
 
 
@@ -39,6 +42,12 @@ HRESULT CGameSystem::Initialize()
 		return E_FAIL;
 	}
 
+    if (FAILED(SetUp_AllPlayerInfos()))
+    {
+        Call_MsgBox(L"Failed to SetUp_AllPlayerInfos : CGameSystem");
+        return E_FAIL;
+    }
+
 	return S_OK;
 }
 
@@ -50,6 +59,28 @@ HRESULT CGameSystem::Tick()
 void CGameSystem::Release()
 {
 	SAFE_DELETE(m_pPositionTable);
+    SAFE_DELETE(m_pRedTeam);
+    SAFE_DELETE(m_pBlueTeam);
+
+    for (auto& elem : m_mapAllPlayers)
+    {
+        SAFE_DELETE(elem.second);
+    }
+
+    m_mapAllPlayers.clear();
+}
+
+HRESULT CGameSystem::On_ExitLevel()
+{
+    for (auto& elem : m_mapAllPlayers)
+    {
+        elem.second->m_pMyPlayer = nullptr;
+    }
+
+    SAFE_DELETE(m_pRedTeam);
+    SAFE_DELETE(m_pBlueTeam);
+
+    return S_OK;
 }
 
 HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
@@ -58,35 +89,26 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
     CPlayer* pUserPlayer = nullptr;
 
-    if (!(pUserPlayer = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-        STATE_JUMPFALL_PLAYER_R, true, L"PlayerCam")))
-        return E_FAIL;
-
-    CUser::Get_Instance()->Set_Player(pUserPlayer);
-    pUserPlayer->Set_MainPlayer();
+    pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
     pUserPlayer->Set_TeamType(CPlayer::ePLAYERTEAM);
-
+    pUserPlayer->Set_Postion(vPlayerPos);
+    pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
+    CUser::Get_Instance()->Set_Player(pUserPlayer);
     READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
-
 
     for (_uint i = 0; i < 0; ++i)
     {
         vPlayerPos.z += 3.f;
         vPlayerPos.x += 1.f;
+
         CPlayer* pEnemy = nullptr;
 
-        wstring wstrCamName = L"FollowCam_";
-        wstrCamName += to_wstring(i);
-
-        if (!(pEnemy = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-            STATE_IDLE_WARRIOR_R_AI_ENEMY, false, wstrCamName)))
-            return E_FAIL;
-
+        pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"));
+        pEnemy->Set_TeamType(CPlayer::eENEMYTEAM);
+        pEnemy->Set_Postion(vPlayerPos);
         pEnemy->Set_TargetPlayer(pUserPlayer);
-
-        vecReadyObjects.push_back(make_pair(pEnemy, GROUP_ENEMY));
-
-
+        pEnemy->Reserve_State(AI_STATE_IDLE_WARRIOR_L);
+        READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
     }
 
     SetUp_DefaultLight_BootCamp();
@@ -138,15 +160,12 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
 
     CPlayer* pUserPlayer = nullptr;
 
-    if (!(pUserPlayer = SetUp_Player(vPlayerPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-        STATE_JUMPFALL_PLAYER_R, true, L"PlayerCam")))
-        return E_FAIL;
-
-    CUser::Get_Instance()->Set_Player(pUserPlayer);
-    pUserPlayer->Set_MainPlayer();
+    pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
     pUserPlayer->Set_TeamType(CPlayer::ePLAYERTEAM);
-
-    vecReadyObjects.push_back(make_pair(pUserPlayer, GROUP_PLAYER));
+    pUserPlayer->Set_Postion(vPlayerPos);
+    pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
+    CUser::Get_Instance()->Set_Player(pUserPlayer);
+    READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
     _float4 vEnemyPos;
     CPlayer* pEnemyUser = nullptr;
@@ -155,37 +174,46 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
     {
         STATE_TYPE eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
         string strKey;
+        wstring wstrInfoKey;
 
         switch (i)
         {
         case 0:
             strKey = "EnemyTrio_1";
+            wstrInfoKey = L"EnemyTrio_0";
             break;
         case 1:
             strKey = "EnemyTrio_2";
+            wstrInfoKey = L"EnemyTrio_1";
             break;
         case 2:
             strKey = "q";
+            wstrInfoKey = L"EnemyTrio_2";
             break;
         case 3:
             strKey = "EnemyHall";
+            wstrInfoKey = L"EnemyHall";
             break;
         case 4:
             strKey = "EnemyBlock";
+            wstrInfoKey = L"EnemyBlock";
             eEnemyState = STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY;
             break;
         case 5:
             strKey = "EnemyHeadShot";
+            wstrInfoKey = L"EnemyHeadShot";
             eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
             break;
         case 6:
             strKey = "EnemyGuardBreak";
+            wstrInfoKey = L"EnemyGuardBreak";
             eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY;
 
             break;
 
         case 7:
             strKey = "EnemyFinal";
+            wstrInfoKey = L"EnemyFinal";
             eEnemyState = AI_STATE_IDLE_WARRIOR_L;
 
             break;
@@ -199,17 +227,20 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
         vEnemyPos = CGameSystem::Get_Instance()->Find_Position(strKey);
 
 
-        if (!(pEnemyUser = SetUp_Player(vEnemyPos, (_uint)CPlayer::CLASS_DEFAULT::CLASS_DEFAULT_WARRIOR,
-            eEnemyState, false, CFunctor::To_Wstring(strKey))))
-            return E_FAIL;
+        CPlayer* pEnemy = nullptr;
 
-        pEnemyUser->Set_TargetPlayer(pUserPlayer);
-        pEnemyUser->Set_TeamType(CPlayer::eENEMYTEAM);
-        if (strKey == "EnemyFinal")
-            pEnemyUser->Set_TeamType((CPlayer::ePLAYERTEAM | CPlayer::eSQUADMEMBER));
+        pEnemy = SetUp_Player(Convert_ToHash(wstrInfoKey));
 
-        vecReadyObjects.push_back(make_pair(pEnemyUser, GROUP_ENEMY));
-        m_mapEnemyPlayers.emplace(strKey, pEnemyUser);
+        if (!pEnemy)
+            assert(0);
+
+        pEnemy->Set_TeamType(CPlayer::eENEMYTEAM);
+        pEnemy->Set_Postion(vEnemyPos);
+        pEnemy->Set_TargetPlayer(pUserPlayer);
+        pEnemy->Reserve_State(eEnemyState);
+        READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
+
+
     }
    
 
@@ -231,6 +262,8 @@ HRESULT CGameSystem::On_ReadyUIs_BootCamp(vector<pair<CGameObject*, _uint>>& vec
 
 HRESULT CGameSystem::On_ReadyTriggers_BootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
+#define ADD_ADJPLAYER(triggerName, Key)  triggerName->Add_AdjPlayer(m_mapAllPlayers[Convert_ToHash(Key)]->Get_Player());
+
     _float fRadius = 4.f;
 
     CTrigger_BootCamp* pBootCampTrigger0 = CTrigger_BootCamp::Create("StartPosition", 0, fRadius);
@@ -241,21 +274,21 @@ HRESULT CGameSystem::On_ReadyTriggers_BootCamp(vector<pair<CGameObject*, _uint>>
     CTrigger_BootCamp* pBootCampTrigger4 = CTrigger_BootCamp::Create("Popup04", 4, fRadius);
 
     CTrigger_BootCamp* pBootCampTrigger5 = CTrigger_BootCamp::Create("Popup05", 5, fRadius);
-    pBootCampTrigger5->Add_AdjPlayer(m_mapEnemyPlayers["EnemyTrio_1"]);
-    pBootCampTrigger5->Add_AdjPlayer(m_mapEnemyPlayers["EnemyTrio_2"]);
-    pBootCampTrigger5->Add_AdjPlayer(m_mapEnemyPlayers["q"]);
+    ADD_ADJPLAYER(pBootCampTrigger5, L"EnemyTrio_0");
+    ADD_ADJPLAYER(pBootCampTrigger5, L"EnemyTrio_1");
+    ADD_ADJPLAYER(pBootCampTrigger5, L"EnemyTrio_2");
 
     CTrigger_BootCamp* pBootCampTrigger6 = CTrigger_BootCamp::Create("Popup06", 6, fRadius);
-    pBootCampTrigger6->Add_AdjPlayer(m_mapEnemyPlayers["EnemyHall"]);
+    ADD_ADJPLAYER(pBootCampTrigger6, L"EnemyHall");
 
     CTrigger_BootCamp* pBootCampTrigger7 = CTrigger_BootCamp::Create("Popup07", 7, fRadius);
-    pBootCampTrigger7->Add_AdjPlayer(m_mapEnemyPlayers["EnemyBlock"]);
+    ADD_ADJPLAYER(pBootCampTrigger7, L"EnemyBlock");
 
     CTrigger_BootCamp* pBootCampTrigger8 = CTrigger_BootCamp::Create("Popup08", 8, fRadius);
-    pBootCampTrigger8->Add_AdjPlayer(m_mapEnemyPlayers["EnemyHeadShot"]);
+    ADD_ADJPLAYER(pBootCampTrigger8, L"EnemyHeadShot");
 
     CTrigger_BootCamp* pBootCampTrigger9 = CTrigger_BootCamp::Create("EnemyGuardBreak", 9, fRadius);
-    pBootCampTrigger9->Add_AdjPlayer(m_mapEnemyPlayers["EnemyGuardBreak"]);
+    ADD_ADJPLAYER(pBootCampTrigger9, L"EnemyGuardBreak");
 
     CTrigger_BootCamp* pBootCampTrigger10 = CTrigger_BootCamp::Create("Popup10", 10, 2.f);
     pBootCampTrigger10->Reserve_DisableOnStart();
@@ -274,7 +307,7 @@ HRESULT CGameSystem::On_ReadyTriggers_BootCamp(vector<pair<CGameObject*, _uint>>
     pBootCampTriggerBasicEnd->Add_AdjTriggers(pBootCampTrigger10);
 
     CTrigger_BootCamp* pLastTrigger = CTrigger_BootCamp::Create("LastTrigger", 100, 3.f);
-    pLastTrigger->Add_AdjPlayer(m_mapEnemyPlayers["EnemyFinal"]);
+    ADD_ADJPLAYER(pLastTrigger, L"EnemyFinal");
 
 
     vecReadyObjects.push_back(make_pair(pBootCampTrigger0, GROUP_TRIGGER));
@@ -327,7 +360,6 @@ HRESULT CGameSystem::On_ReadyDestructible_BootCamp(vector<pair<CGameObject*, _ui
 
 HRESULT CGameSystem::On_EnterBootCamp()
 {
-    m_mapEnemyPlayers.clear();
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_0"));
 
@@ -509,20 +541,52 @@ void CGameSystem::Add_Position(string wstrPositionKey, _float4 vPosition)
 	m_pPositionTable->Add_Position(wstrPositionKey, vPosition);
 }
 
-CPlayer* CGameSystem::SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TYPE eStartState, _bool bUserPlayer, wstring wstrCamName)
+HRESULT CGameSystem::SetUp_AllPlayerInfos()
 {
-    CPlayer* pPlayerInstance = CPlayer::Create(wstrCamName, (CPlayer::CLASS_DEFAULT)(iClassType));
+    /* 모든 플레이어들 정보 다 만들기 */
+    CPlayerInfo* pPlayerInfo = nullptr;
 
-    if (nullptr == pPlayerInstance)
+#define ADD_PLAYERINFO(classname)   pPlayerInfo = classname::Create();\
+    if (!pPlayerInfo)\
+        return E_FAIL;\
+    m_mapAllPlayers.emplace(HASHCODE(classname), pPlayerInfo)
+
+
+    ADD_PLAYERINFO(CPlayerInfo_Main);
+
+
+
+
+
+    /* 훈련장 용 샌드백 Info들 */
+#define ADD_SANDBACKINFO(name) pPlayerInfo = CPlayerInfo_SandBack::Create();\
+    pPlayerInfo->m_tPlayerInfo.wstrName = name;\
+    pPlayerInfo->m_tPlayerInfo.wstrCamName = pPlayerInfo->m_tPlayerInfo.wstrName;\
+    pPlayerInfo->m_tPlayerInfo.wstrCamName += L"_Cam";\
+    m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);
+
+    ADD_SANDBACKINFO(L"TestEnemy");
+    ADD_SANDBACKINFO(L"EnemyTrio_0");
+    ADD_SANDBACKINFO(L"EnemyTrio_1");
+    ADD_SANDBACKINFO(L"EnemyTrio_2");
+    ADD_SANDBACKINFO(L"EnemyHall");
+    ADD_SANDBACKINFO(L"EnemyBlock");
+    ADD_SANDBACKINFO(L"EnemyHeadShot");
+    ADD_SANDBACKINFO(L"EnemyGuardBreak");
+    ADD_SANDBACKINFO(L"EnemyFinal");
+
+
+    return S_OK;
+}
+
+CPlayer* CGameSystem::SetUp_Player(_hashcode hcName)
+{
+    auto iter = m_mapAllPlayers.find(hcName);
+
+    if (iter == m_mapAllPlayers.end())
         return nullptr;
 
-    pPlayerInstance->Reserve_State(eStartState);
-    pPlayerInstance->SetUp_UnitColliders(bUserPlayer);
-    pPlayerInstance->SetUp_UnitHitStates(bUserPlayer);
-    pPlayerInstance->Set_Postion(vStartPos);
-    pPlayerInstance->Get_CurrentUnit()->Synchronize_CamPos();
-
-    return pPlayerInstance;
+    return iter->second->Make_Player();
 }
 
 HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()

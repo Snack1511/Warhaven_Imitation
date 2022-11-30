@@ -334,6 +334,8 @@ HRESULT CUnit_WarHammer::Initialize()
 {
 	__super::Initialize();
 
+	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
+
 	return S_OK;
 }
 

@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+#include "CPlayerInfo.h"
+
 #define HERO_END 4
 
 BEGIN(Engine)
@@ -29,6 +31,28 @@ class CPlayer final : public CGameObject
 	DECLARE_PROTOTYPE(CPlayer);
 
 public:
+	struct KDA_STAT
+	{
+		//총 점수
+		_uint	iTotalScore = 0;
+
+		//총 죽인 적
+		_uint	iTotalKillCount = 0;
+		_uint	iDeathCount = 0;
+		//죽지않고 죽인 적
+		_uint	iCurKillCount = 0;
+		//헤드샷으로 죽인 적
+		_uint	iHeadShotKillCount = 0;
+		//죽인 영웅
+		_uint	iHeroKillCount = 0;
+		//연속 처치 카운트
+		_uint	iKillStreak = 0;
+		//처치 기여
+		_uint	iTotalAssist = 0;
+	};
+
+	
+
 	enum CLASS_HREO
 	{
 		CLASS_HREO_FIONA = 6,
@@ -65,24 +89,18 @@ public:
 	};
 
 public:
-	enum class eCUSTOM_TYPE
-	{
-		eDEFAULT,
-		eLEADER,
-		eLEADER2,
-	};
 
 private:
 	CPlayer();
 	virtual ~CPlayer();
 
 public:
-	static CPlayer* Create(wstring wstrCamKey, CLASS_DEFAULT eClass, eCUSTOM_TYPE eCustomType = eCUSTOM_TYPE::eDEFAULT);
+	static CPlayer* Create(CPlayerInfo* pPlayerInfo);
 
 	/* Initialize_Prototype */
 public:
-	void Create_DefaultClass();
-	void Create_HeroClass();
+	void Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData);
+	void Create_HeroClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData);
 
 	/* Start */
 public:
@@ -111,12 +129,11 @@ public:
 	CLASS_DEFAULT Get_CurrentDefaultClass() { return m_eCurrentDefaultClass; }
 	void Set_MainPlayer();
 
-	wstring Get_PlayerName() { return m_wstrName; }
-
+	wstring Get_PlayerName() { return m_pMyPlayerInfo->m_tPlayerInfo.wstrName; }
+	_uint	Get_Level() { return m_pMyPlayerInfo->m_tPlayerInfo.iLevel; }
 public:
 	// CGameObject을(를) 통해 상속됨
-	virtual HRESULT Initialize_Prototype() { return S_OK; }
-	virtual HRESULT Initialize_Prototype(wstring wstrCamKey, CLASS_DEFAULT eClass);
+	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize() override;
 	virtual HRESULT Start() override;
 	virtual void OnEnable() override;
@@ -133,11 +150,9 @@ public:
 public:
 	void	Set_TeamType(int eTeamType);
 
-private:
-	eCUSTOM_TYPE	m_eCustomType = eCUSTOM_TYPE::eDEFAULT;
-	wstring	m_wstrHelmetMeshPath[CLASS_END];
-	wstring	m_wstrBodyMeshPath[CLASS_END];
-	wstring	m_wstrWeaponMeshPath[CLASS_END];
+private: /* 킬뎃과 플레이어 정보 */
+	KDA_STAT	m_tKdaStat;
+	CPlayerInfo* m_pMyPlayerInfo = nullptr;
 
 private:
 	//어느 진영인지, 스쿼드멤버인지 스쿼드장인지 여부
@@ -164,9 +179,6 @@ private:
 
 	_bool m_bIsMainPlayer = false;
 
-private:	// 이름
-	wstring m_wstrName = TEXT("쥬신");
-
 private:	// 화신 게이지
 	_bool		m_bAbleHero = false;
 	_bool		m_bIsHero = false;
@@ -182,9 +194,5 @@ private:
 	void Update_HeroGauge();
 
 
-
-private:
-	/* 여기 써져있는 경로대로 모든 유닛의 옷이 결정됨. */
-	void Ready_Customizing(eCUSTOM_TYPE eType);
 };
 END

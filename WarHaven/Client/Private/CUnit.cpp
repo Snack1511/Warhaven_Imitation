@@ -902,6 +902,12 @@ void CUnit::On_InitSetting()
 			if (m_pUnitCollider[i])
 				DISABLE_COMPONENT(m_pUnitCollider[i]);
 
+			if (m_pWeaponCollider_L)
+				DISABLE_COMPONENT(m_pWeaponCollider_L);
+
+			if (m_pWeaponCollider_R)
+				DISABLE_COMPONENT(m_pWeaponCollider_R);
+
 			break;
 
 

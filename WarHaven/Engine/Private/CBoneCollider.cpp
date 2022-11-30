@@ -207,5 +207,6 @@ void CBoneCollider::OnEnable()
 void CBoneCollider::OnDisable()
 {
 	__super::OnDisable();
-	m_pPxController->setPosition(PxExtendedVec3(-999.f, - 999.f, -999.f ));
+	m_pPxController->setPosition(PxExtendedVec3(-999.f, -999.f, -999.f));
+
 }

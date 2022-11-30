@@ -60,31 +60,30 @@ CPlayer::~CPlayer()
 
 }
 
-CPlayer* CPlayer::Create(wstring wstrCamKey, CLASS_DEFAULT eClass, eCUSTOM_TYPE eCustomType)
+CPlayer* CPlayer::Create(CPlayerInfo* pPlayerInfo)
 {
 	CPlayer* pInstance = new CPlayer;
 
-	pInstance->Ready_Customizing(eCustomType);
+	pInstance->m_pMyPlayerInfo = pPlayerInfo;
 
-	if (FAILED(pInstance->Initialize_Prototype(wstrCamKey, eClass)))
+	if (FAILED(pInstance->Initialize_Prototype()))
 	{
 		SAFE_DELETE(pInstance);
-		Call_MsgBox(L"Failed to Initialize_Prototype : CBarricade");
+		Call_MsgBox(L"Failed to Initialize_Prototype : CPlayer");
 		return nullptr;
 	}
 
 	if (FAILED(pInstance->Initialize()))
 	{
 		SAFE_DELETE(pInstance);
-		Call_MsgBox(L"Failed to Initialize_Prototype : CBarricade");
+		Call_MsgBox(L"Failed to Initialize_Prototype : CPlayer");
 		return nullptr;
 	}
 
 	return pInstance;
 }
 
-
-void CPlayer::Create_DefaultClass()
+void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 {
 	wstring wstrModeSkel[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/Warrior.fbx", // WARRIOR
@@ -93,17 +92,6 @@ void CPlayer::Create_DefaultClass()
 		L"",
 		L"",
 		L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx"
-	};
-
-	//L"../bin/resources/meshes/characters/Warrior/body/SK_Warrior0001_Body_A00.fbx"
-
-	wstring wstrModeBody[CLASS_DEFAULT_END] = {
-		m_wstrBodyMeshPath[CLASS_TYPE::WARRIOR], // WARRIOR
-		L"",
-		L"",
-		L"",
-		L"",
-		m_wstrBodyMeshPath[CLASS_TYPE::ENGINEER]
 	};
 
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {
@@ -115,36 +103,32 @@ void CPlayer::Create_DefaultClass()
 		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00_50.fbx"
 	};
 
-	wstring wstrModeHead[CLASS_DEFAULT_END] = {
-		m_wstrHelmetMeshPath[CLASS_TYPE::WARRIOR], // WARRIOR
-		L"",
-		L"",
-		L"",
-		L"",
-		m_wstrHelmetMeshPath[CLASS_TYPE::ENGINEER]
-	};
-
-	//L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx"
-	wstring wstrModeWeapon_R[CLASS_DEFAULT_END] = {
-		m_wstrWeaponMeshPath[CLASS_TYPE::WARRIOR], // WARRIOR
-		L"",
-		L"",
-		L"",
-		L"",
-		m_wstrWeaponMeshPath[CLASS_TYPE::ENGINEER]
-	};
-
 	wstring wstrModeWeapon_L[CLASS_DEFAULT_END] = {
-		L"", // WARRIOR
-		L"",
-		L"",
-		L"",
-		L"",
-		L"" // 
+	L"", // WARRIOR
+	L"",
+	L"",
+	L"",
+	L"",
+	L"" // 
 	};
+
+	wstring wstrModeBody[CLASS_DEFAULT_END];
+
+	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+		wstrModeBody[i] = tSetUpData.wstrBodyMeshPath[i];
+
+	wstring wstrModeHead[CLASS_DEFAULT_END];
+
+	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+		wstrModeHead[i] = tSetUpData.wstrHelmetMeshPath[i];
+
+	wstring wstrModeWeapon_R[CLASS_DEFAULT_END];
+	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+		wstrModeWeapon_R[i] = tSetUpData.wstrWeaponMeshPath[i];
 
 
 	CUnit::UNIT_MODEL_DATA  tModelData[CLASS_DEFAULT_END];
+
 
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
@@ -219,7 +203,7 @@ void CPlayer::Create_DefaultClass()
 	m_iChangeHeroAnimIndex[CLASS_DEFAULT_ENGINEER] = 62;
 }
 
-void CPlayer::Create_HeroClass()
+void CPlayer::Create_HeroClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 {
 
 	wstring wstrModeSkel[HERO_END] = {
@@ -229,32 +213,11 @@ void CPlayer::Create_HeroClass()
 		L"",
 	};
 
-	wstring wstrModeBody[HERO_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/body/SK_Fiona0004_Body_A00_50.fbx" // FIONA
-		L"",
-		L"",
-		L"",
-	};
-
 	wstring wstrModeFace[HERO_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx" // FIONA
-		L"",
-		L"",
-		L"",
-	};
-
-	wstring wstrModeHead[HERO_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0004_Helmet_A00_50.fbx" // FIONA
-		L"",
-		L"",
-		L"",
-	};
-
-	wstring wstrModeWeapon_R[HERO_END] = {
-		L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00.fbx" // FIONA
-		L"",
-		L"",
-		L"",
+	L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx" // FIONA
+	L"",
+	L"",
+	L"",
 	};
 
 	wstring wstrModeWeapon_L[HERO_END] = {
@@ -263,6 +226,20 @@ void CPlayer::Create_HeroClass()
 		L"",
 		L"",
 	};
+
+	wstring wstrModeBody[HERO_END];
+
+	for (_uint i = 0; i < HERO_END; ++i)
+		wstrModeBody[i] = tSetUpData.wstrBodyMeshPath[i + FIONA];
+
+	wstring wstrModeHead[HERO_END];
+
+	for (_uint i = 0; i < HERO_END; ++i)
+		wstrModeHead[i] = tSetUpData.wstrHelmetMeshPath[i + FIONA];
+
+	wstring wstrModeWeapon_R[HERO_END];
+	for (_uint i = 0; i < HERO_END; ++i)
+		wstrModeWeapon_R[i] = tSetUpData.wstrWeaponMeshPath[i + FIONA];
 
 
 
@@ -380,6 +357,7 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 		return E_FAIL;
 
 	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
 
 	if (m_pCurrentUnit)
 	{
@@ -390,7 +368,7 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
 	Set_Postion(vPos);
-	
+	m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
 	m_pCurrentUnit->Set_MainPlayer();
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateHero[eClass - CPlayer::CLASS_HREO_FIONA]);
 	//m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
@@ -490,30 +468,36 @@ void CPlayer::Set_MainPlayer()
 }
 
 
-HRESULT CPlayer::Initialize_Prototype(wstring wstrCamKey, CLASS_DEFAULT eClass)
+
+HRESULT CPlayer::Initialize_Prototype()
 {
-	Set_FollowCam(wstrCamKey);
-
-	Create_DefaultClass();
-	Create_HeroClass();
+	if (!m_pMyPlayerInfo)
+		return E_FAIL;
 
 
-	m_pCurrentUnit = m_pDefaultClass[eClass];
-	m_eCurrentDefaultClass = eClass;
+	Set_FollowCam(m_pMyPlayerInfo->m_tPlayerInfo.wstrCamName);
+
+
+	Create_DefaultClass(m_pMyPlayerInfo->m_tPlayerSetUpData);
+	Create_HeroClass(m_pMyPlayerInfo->m_tPlayerSetUpData);
+
+	m_pCurrentUnit = m_pDefaultClass[WARRIOR];
+	m_eCurrentDefaultClass = CLASS_DEFAULT_WARRIOR;
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
-	// 유닛 10개 생성
-	// 카메라 1개 생성
-	// 카메라 이름 안겹치게 생성
-	// 적인지 아군인지 설정
-
-
+	
 
 	return S_OK;
 }
 
+
 HRESULT CPlayer::Initialize()
 {
+	if (m_pMyPlayerInfo->m_bIsMainPlayer)
+		Set_MainPlayer();
+
+	SetUp_UnitColliders(m_bIsMainPlayer);
+	SetUp_UnitHitStates(m_bIsMainPlayer);
 
 	return S_OK;
 }
@@ -711,34 +695,4 @@ void CPlayer::Update_HeroGauge()
 	}
 
 	CUser::Get_Instance()->Set_HeroGauge(m_fMaxGauge, m_fGauge);
-}
-
-void CPlayer::Ready_Customizing(eCUSTOM_TYPE eType)
-{
-	switch (eType)
-	{
-	case Client::CPlayer::eCUSTOM_TYPE::eDEFAULT:
-		m_wstrBodyMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/body/SK_Warrior0004_Body_A00_25.fbx";
-		m_wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0009_Helmet_A00_50.fbx";
-		m_wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
-
-		m_wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0004_Body_A00_30.fbx";
-		m_wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0004_Helmet_A00_50.fbx";
-		m_wstrWeaponMeshPath[ENGINEER] = L"../bin/resources/meshes/weapons/hammer/SM_WP_WarHammer0001_A00.fbx";
-
-
-		break;
-	case Client::CPlayer::eCUSTOM_TYPE::eLEADER:
-		m_wstrBodyMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/body/SK_Warrior0001_Body_A00_50.fbx";
-		m_wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0002_Helmet_A00_50.fbx";
-		m_wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
-
-		m_wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx";
-		m_wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0001_Helmet_A00_50.fbx";
-		m_wstrWeaponMeshPath[ENGINEER] = L"../bin/resources/meshes/weapons/hammer/SM_WP_WarHammer0001_A00.fbx";
-
-		break;
-	default:
-		break;
-	}
 }

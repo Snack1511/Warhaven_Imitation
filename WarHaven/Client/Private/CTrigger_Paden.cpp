@@ -64,6 +64,14 @@ CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _uint iUIIndex, _f
 	return pInstance;
 }
 
+_float4 CTrigger_Paden::Get_RespawnPosition()
+{
+	_float4 vPos = m_vRespawnPositions.front();
+	m_vRespawnPositions.pop_front();
+	m_vRespawnPositions.push_back(vPos);
+	return vPos;
+}
+
 HRESULT CTrigger_Paden::Initialize_Prototype()
 {
 	m_eColGroup = COL_TRIGGER;

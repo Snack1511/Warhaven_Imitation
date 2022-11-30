@@ -9,6 +9,8 @@ BEGIN(Client)
 
 class CPositionTable;
 class CPlayer;
+class CPlayerInfo;
+class CTeamConnector;
 
 class CGameSystem
 {
@@ -22,6 +24,10 @@ public:
 	HRESULT					Initialize();
 	HRESULT					Tick();
 	void					Release();
+
+public:
+	HRESULT					On_ExitLevel();
+
 
 public:
 	HRESULT					On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
@@ -48,10 +54,20 @@ private:
 	CPositionTable* m_pPositionTable = nullptr;
 
 private:
-	map<string, CPlayer*>	m_mapEnemyPlayers;
+	/* 스테이지 진입시 팀이 만들어진다 */
+	CTeamConnector* m_pRedTeam = nullptr;
+	CTeamConnector* m_pBlueTeam = nullptr;
 
 private:
-	CPlayer* SetUp_Player(_float4 vStartPos, _uint iClassType, STATE_TYPE eStartState, _bool bUserPlayer, wstring wstrCamName);
+	/* 모든 플레이어 정보를 미리 만들어놓고 그 정보를 토대로 Player 생성하는 방식 */
+	map<_hashcode, CPlayerInfo*>	m_mapAllPlayers;
+
+private:
+	HRESULT					SetUp_AllPlayerInfos();
+
+private:
+	CPlayer* SetUp_Player(_hashcode hcPlayerInfo);
+
 	HRESULT					SetUp_DefaultLight_BootCamp();
 
 

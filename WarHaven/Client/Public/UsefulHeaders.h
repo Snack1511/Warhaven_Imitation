@@ -24,3 +24,4 @@
 #include "CScript_FollowCam.h"
 
 #include "Camera.h"
+#include "CPlayer.h"

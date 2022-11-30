@@ -1,0 +1,122 @@
+#pragma once
+#include "Client_Defines.h"
+
+#define	DECLARE_PLAYERINFO(classname) public:\
+static classname* Create() \
+{ \
+classname* pInstance = new classname(); \
+if (FAILED(pInstance->Initialize()))\
+{\
+	string text = "Failed to Initialize : ";\
+	text += typeid(classname).name();\
+	wstring wText;\
+	wText.assign(text.begin(), text.end());\
+	Call_MsgBox(wText.c_str());\
+	delete pInstance;\
+	pInstance = nullptr;\
+}\
+return pInstance;\
+}\
+
+
+//실제 mainPlayer 정보 들고있는 클래스
+//인벤토리, 초기화 정보 등등
+//이 정보를 토대로 매칭되고 플레이어 클래스 만들어질거임
+
+//GameSystem은 16개의 Player Info를 들고있따.
+//스테이지 진입 시 섞어서 매칭해준다.
+
+
+BEGIN(Client)
+
+class CPlayer;
+
+class CPlayerInfo abstract
+{
+
+public:
+	struct PLAYER_INFO
+	{
+		wstring wstrName;
+		wstring wstrCamName;
+		_uint	iLevel = 1;
+
+	};
+
+	struct PLAYER_SETUP_DATA
+	{
+		/* Custom 정보 */
+		wstring	wstrHelmetMeshPath[CLASS_END];
+		wstring	wstrBodyMeshPath[CLASS_END];
+		wstring	wstrWeaponMeshPath[CLASS_END];
+	};
+
+	friend class CGameSystem;
+	friend class CPlayer;
+
+protected:
+	CPlayerInfo();
+	virtual ~CPlayerInfo();
+
+
+
+public:
+	/* 레벨 로딩시 이 함수를 통해서 Player를 만들어냄 */
+	CPlayer* Make_Player();
+
+public:
+	CPlayer* Get_Player() { return m_pMyPlayer; }
+
+public:
+	/* 커스텀 추가될 때마다 여기 enum 추가해서 넣어놓기 */
+	enum class eCUSTOM_HEAD{eDEFAULT, eHEAD1, eRABBIT};
+	void	Set_CustomHead(CLASS_TYPE eClassType, eCUSTOM_HEAD eHeadEnum);
+
+	enum class eCUSTOM_BODY { eDEFAULT, eBODY1 };
+	void	Set_CustomBody(CLASS_TYPE eClassType, eCUSTOM_BODY eBodyEnum);
+
+	enum class eCUSTOM_WEAPON { eDEFAULT, eWEAPON1 };
+	void	Set_CustomWeapon(CLASS_TYPE eClassType, eCUSTOM_WEAPON eWeaponEnum);
+
+public:
+	/* m_vecPrefClassType 안에서 랜덤으로 골라서 뱉는 함수 */
+	CLASS_TYPE	Choose_Character();
+
+public:
+	virtual HRESULT	Initialize() PURE;
+
+protected:
+	CPlayer* m_pMyPlayer = nullptr;
+
+protected:
+	PLAYER_INFO	m_tPlayerInfo;
+	_bool	m_bIsMainPlayer = false;
+	
+protected:
+	/* 이 안에 있는 클래스중 하나를 랜덤으로 선택해서 플레이 한다. */
+	vector<CLASS_TYPE>		m_vecPrefClassType;
+
+protected:
+	/* 이 구조체에 담긴 경로로 Player 클래스와 그 안의 Unit 클래스들이 만들어짐 */
+	PLAYER_SETUP_DATA	m_tPlayerSetUpData;
+
+protected:
+	/* Player 클래스 만들기 전에 세팅된 정보들이 유효한지 확인 */
+	_bool	Can_Make_Player(const PLAYER_INFO& tInfo);
+
+private:
+	void	Set_CustomHead_Warrior(eCUSTOM_HEAD eHeadEnum);
+	void	Set_CustomBody_Warrior(eCUSTOM_BODY eBodyEnum);
+	void	Set_CustomWeapon_Warrior(eCUSTOM_WEAPON eWeaponEnum);
+
+	void	Set_CustomHead_Engineer(eCUSTOM_HEAD eHeadEnum);
+	void	Set_CustomBody_Engineer(eCUSTOM_BODY eBodyEnum);
+	void	Set_CustomWeapon_Engineer(eCUSTOM_WEAPON eWeaponEnum);
+
+	void	Set_CustomHead_Fiona(eCUSTOM_HEAD eHeadEnum);
+	void	Set_CustomBody_Fiona(eCUSTOM_BODY eBodyEnum);
+	void	Set_CustomWeapon_Fiona(eCUSTOM_WEAPON eWeaponEnum);
+
+};
+
+END

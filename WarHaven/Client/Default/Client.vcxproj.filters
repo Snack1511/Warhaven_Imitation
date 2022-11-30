@@ -1495,6 +1495,21 @@
     <Filter Include="02. Design\04. Game_Manager\HR">
       <UniqueIdentifier>{a6848b0f-39e3-42b0-a12d-ebf732b59733}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\07. GameSystem\TeamConnector">
+      <UniqueIdentifier>{a9e5ffad-f634-4cf1-a4f5-f04ad028873f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\07. GameSystem\TeamConnector\CSquad">
+      <UniqueIdentifier>{cc5bdd22-e149-4848-b819-9bc6049cbd42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\03. User\PlayerInfo">
+      <UniqueIdentifier>{895ecb3b-23e8-4430-92ea-c30daf296050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\03. User\PlayerInfo\01. MainPlayer">
+      <UniqueIdentifier>{7d745f7b-77ab-473b-81cb-1ec46da6eefa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\03. User\PlayerInfo\02. SandBack">
+      <UniqueIdentifier>{16c5bc42-e5bf-457b-a6ca-e3c9b53efce8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2646,6 +2661,21 @@
     <ClInclude Include="..\public\CTrigger_Paden.h">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CTeamConnector.h">
+      <Filter>02. Design\07. GameSystem\TeamConnector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CSquad.h">
+      <Filter>02. Design\07. GameSystem\TeamConnector\CSquad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CPlayerInfo.h">
+      <Filter>02. Design\03. User\PlayerInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CPlayerInfo_Main.h">
+      <Filter>02. Design\03. User\PlayerInfo\01. MainPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CPlayerInfo_SandBack.h">
+      <Filter>02. Design\03. User\PlayerInfo\02. SandBack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3777,6 +3807,21 @@
     </ClCompile>
     <ClCompile Include="..\private\CTrigger_Paden.cpp">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CTeamConnector.cpp">
+      <Filter>02. Design\07. GameSystem\TeamConnector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CSquad.cpp">
+      <Filter>02. Design\07. GameSystem\TeamConnector\CSquad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CPlayerInfo.cpp">
+      <Filter>02. Design\03. User\PlayerInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CPlayerInfo_Main.cpp">
+      <Filter>02. Design\03. User\PlayerInfo\01. MainPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CPlayerInfo_SandBack.cpp">
+      <Filter>02. Design\03. User\PlayerInfo\02. SandBack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

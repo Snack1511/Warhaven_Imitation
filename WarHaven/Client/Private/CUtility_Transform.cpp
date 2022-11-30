@@ -115,7 +115,7 @@ _float4 CUtility_Transform::LookAt(CTransform* pTransform, _float4 vPos, _bool b
 	if (bNoY)
 		vLook.y = 0.f;
 
-	pTransform->Set_Look(vLook);
+	pTransform->Set_Look(vLook.Normalize());
 
 	return vLook;
 }

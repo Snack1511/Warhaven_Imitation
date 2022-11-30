@@ -172,7 +172,6 @@ public:
 	_float4	Get_FollowCamLook_Turn();
 	_float4	Get_FollowCamRight();
 
-
 public:
 	void TurnOn_TrailEffect(_bool bOn);
 
@@ -287,7 +286,6 @@ protected:
 	CCamera_Follow* m_pFollowCam = nullptr;
 
 protected:
-
 	STATE_HIT_TYPE	m_tHitType;
 
 	_uint			m_iDefaultType = 0;

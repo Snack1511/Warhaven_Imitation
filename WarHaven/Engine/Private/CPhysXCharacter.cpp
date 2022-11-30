@@ -186,7 +186,8 @@ void CPhysXCharacter::OnEnable()
 
 void CPhysXCharacter::OnDisable()
 {
-	__super::OnEnable();
+	__super::OnDisable();
+
 }
 
 void CPhysXCharacter::Update_Colliders()

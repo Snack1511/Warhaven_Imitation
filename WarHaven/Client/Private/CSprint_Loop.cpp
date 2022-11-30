@@ -65,6 +65,8 @@ HRESULT CSprint_Loop::Initialize()
 
 void CSprint_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+   // GAMEINSTANCE->Start_RadialBlur(0.015f);
+
     pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_SPRINT);
 
 
@@ -157,6 +159,8 @@ STATE_TYPE CSprint_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CSprint_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+    //GAMEINSTANCE->Stop_RadialBlur();
+
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
     pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
