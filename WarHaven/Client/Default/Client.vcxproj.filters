@@ -1492,6 +1492,9 @@
     <Filter Include="03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden">
       <UniqueIdentifier>{2d4e93d5-37bd-48d8-bf80-110ac1e1105b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\04. Game_Manager\HR">
+      <UniqueIdentifier>{a6848b0f-39e3-42b0-a12d-ebf732b59733}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2637,6 +2640,9 @@
     <ClInclude Include="..\Public\CWalk_AI_TG_Warrior_R.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk\01. Right</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGame_Manager_HR.h">
+      <Filter>02. Design\04. Game_Manager\HR</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\CTrigger_Paden.h">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
     </ClInclude>
@@ -3765,6 +3771,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CWalk_AI_TG_Warrior_R.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGame_Manager_HR.cpp">
+      <Filter>02. Design\04. Game_Manager\HR</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CTrigger_Paden.cpp">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>

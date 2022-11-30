@@ -201,6 +201,7 @@
     <ClInclude Include="..\Public\CBounce_Valkyrie.h" />
     <ClInclude Include="..\Public\CBounce_Valkyrie_L.h" />
     <ClInclude Include="..\Public\CBounce_Valkyrie_R.h" />
+    <ClInclude Include="..\Public\CGame_Manager_HR.h" />
     <ClInclude Include="..\Public\CGuard_Begin_AI_TG_Warrior.h" />
     <ClInclude Include="..\Public\CGuard_Cancel_AI_TG_Warrior.h" />
     <ClInclude Include="..\Public\CGuard_Dash_WarHammer.h" />
@@ -585,6 +586,7 @@
     <ClCompile Include="..\Private\CBounce_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CBounce_Valkyrie_L.cpp" />
     <ClCompile Include="..\Private\CBounce_Valkyrie_R.cpp" />
+    <ClCompile Include="..\Private\CGame_Manager_HR.cpp" />
     <ClCompile Include="..\Private\CGuard_Begin_AI_TG_Warrior.cpp" />
     <ClCompile Include="..\Private\CGuard_Cancel_AI_TG_Warrior.cpp" />
     <ClCompile Include="..\Private\CGuard_Dash_WarHammer.cpp" />

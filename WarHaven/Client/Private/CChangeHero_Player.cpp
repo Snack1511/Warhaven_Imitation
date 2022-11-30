@@ -50,7 +50,7 @@ HRESULT CChangeHero_Player::Initialize()
 	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 26;
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 23;
 
-
+	m_fAnimSpeed = 1.5f;
 
 	return S_OK;
 }
@@ -68,6 +68,7 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	GAMEINSTANCE->Start_ChromaticAberration(30.f);
 
 	pOwner->Enable_HitBoxColliders(false);
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
 
 	/* OwnerÀÇ Animator Set Idle·Î */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -145,6 +146,9 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 
 STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 {
+	//henshin particle
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinParticle", pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
+
 	pOwner->Get_OwnerPlayer()->IsHero() = true;
 	pOwner->On_ChangeToHero((CPlayer::CLASS_HREO)eClass);
 

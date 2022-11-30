@@ -436,16 +436,20 @@ void CWindow_Effect::Show_EffectTab()
 
 			if (ImGui::Selectable("DEFAULT", &bSelect[VTXEFFECT_PASS_DEFAULT]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DEFAULT;
-			if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
+			/*if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
 			{
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISTORTION;
 				GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
-
-			}
+				
+			}*/
 			if (ImGui::Selectable("DISSOLVE", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISSOLVE;
 			if (ImGui::Selectable("CLAMP", &bSelect[VTXEFFECT_PASS_CLAMP]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_CLAMP;
+			if (ImGui::Selectable("BORDER", &bSelect[VTXEFFECT_PASS_BORDER]))
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_BORDER;
+			if (ImGui::Selectable("LIGHTNING", &bSelect[VTXEFFECT_PASS_LIGHTNING]))
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_LIGHTNING;
 
 			pModelCom->Set_ShaderPassToAll(pCurEffect->m_iPassType);
 
@@ -579,11 +583,11 @@ void CWindow_Effect::Show_EffectTab()
 
 			/*if (pCurEffect->m_vEffectFlag.z > 0.99f)
 			{
-				bShFlagSelect[2] = true;
+				bShFlagSelect[3] = true;
 			}
 			else
 			{
-				bShFlagSelect[2] = false;
+				bShFlagSelect[3] = false;
 			}*/
 
 			if (ImGui::Selectable("GLOW", &bShFlagSelect[0]))
@@ -630,7 +634,7 @@ void CWindow_Effect::Show_EffectTab()
 
 			}
 
-				if (ImGui::Selectable("DISTORTION", &bShFlagSelect[2]))
+				/*if (ImGui::Selectable("DISTORTION", &bShFlagSelect[3]))
 				{
 					if (pCurEffect->m_vEffectFlag.z > 0.99f)
 					{
@@ -643,7 +647,7 @@ void CWindow_Effect::Show_EffectTab()
 
 					GET_COMPONENT_FROM(pCurEffect, CModel)->Set_ShaderFlag(pCurEffect->m_vEffectFlag);
 
-				}
+				}*/
 
 		}
 		if (ImGui::CollapsingHeader(" - GLOW VECTOR "))
@@ -1149,23 +1153,32 @@ void CWindow_Effect::Show_ParticleTab()
 			}
 
 			_float	vMoveDir[3] = { tCurData.vMoveDir.x, tCurData.vMoveDir.y, tCurData.vMoveDir.z };
+			_float	vMoveDirRange[3] = { tCurData.vMoveDirRange.x, tCurData.vMoveDirRange.y, tCurData.vMoveDirRange.z };
 			if (ImGui::InputFloat3("vMoveDir", vMoveDir, "%.3f"))
 			{
-				if ((0.f >= tCurData.vMoveDir.x) && (0.f >= tCurData.vMoveDir.y) && (0.f >= tCurData.vMoveDir.z))
-					tCurData.vMoveDir.x = 1.f;
+				if ((0.0001f >= vMoveDir[0]) && (0.0001f >= vMoveDir[1]) && (0.0001f >= vMoveDir[2]) &&
+					(0.0001f >= vMoveDirRange[0]) && (0.0001f >= vMoveDirRange[1]) && (0.0001f >= vMoveDirRange[2]) &&
+					(-0.0001f <= vMoveDir[0]) && (-0.0001f <= vMoveDir[1]) && (-0.0001f <= vMoveDir[2]) &&
+					(-0.0001f <= vMoveDirRange[0]) && (-0.0001f <= vMoveDirRange[1]) && (-0.0001f <= vMoveDirRange[2])
+					)
+					vMoveDir[0] = 1.f;
 
 
 				tCurData.vMoveDir.x = vMoveDir[0];
 				tCurData.vMoveDir.y = vMoveDir[1];
 				tCurData.vMoveDir.z = vMoveDir[2];
 			}
-
-			_float	vMoveDirRange[3] = { tCurData.vMoveDirRange.x, tCurData.vMoveDirRange.y, tCurData.vMoveDirRange.z };
 			if (ImGui::InputFloat3("vMoveDirRange", vMoveDirRange, "%.3f"))
 			{
-				if ((0.f >= tCurData.vMoveDir.x) && (0.f >= tCurData.vMoveDir.y) && (0.f >= tCurData.vMoveDir.z) &&
-					(0.f >= tCurData.vMoveDirRange.x) && (0.f >= tCurData.vMoveDirRange.y) && (0.f >= tCurData.vMoveDirRange.z))
-					tCurData.vMoveDir.x = 1.f;
+				if ((0.0001f >= vMoveDir[0]) && (0.0001f >= vMoveDir[1]) && (0.0001f >= vMoveDir[2]) &&
+					(0.0001f >= vMoveDirRange[0]) && (0.0001f >= vMoveDirRange[1]) && (0.0001f >= vMoveDirRange[2]) &&
+					(-0.0001f <= vMoveDir[0]) && (-0.0001f <= vMoveDir[1]) && (-0.0001f <= vMoveDir[2]) &&
+					(-0.0001f <= vMoveDirRange[0]) && (-0.0001f <= vMoveDirRange[1]) && (-0.0001f <= vMoveDirRange[2])
+					)
+				{
+					vMoveDir[0] = 1.f;
+					tCurData.vMoveDir.x = vMoveDir[0];
+				}
 
 				tCurData.vMoveDirRange.x = vMoveDirRange[0];
 				tCurData.vMoveDirRange.y = vMoveDirRange[1];
