@@ -280,6 +280,11 @@ void CUser::SetActive_OxenJumpText(_bool value)
 	m_pUI_HUD->SetActive_OxenJumpText(value);
 }
 
+void CUser::SetActive_HeroTransformGauge(_bool value)
+{
+	m_pUI_HUD->SetActive_HeroTransformGauge(value);
+}
+
 _bool CUser::Is_OnHeroGauge()
 {
 	return m_pUI_HUD->Is_OnHeroGauge();

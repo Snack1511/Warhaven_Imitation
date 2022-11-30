@@ -1495,6 +1495,9 @@
     <Filter Include="02. Design\04. Game_Manager\HR">
       <UniqueIdentifier>{a6848b0f-39e3-42b0-a12d-ebf732b59733}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\01. Level\04. Level_Stage\Hwara">
+      <UniqueIdentifier>{e16497fe-49da-4d45-afa4-71d435c0b1bd}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. Design\07. GameSystem\TeamConnector">
       <UniqueIdentifier>{a9e5ffad-f634-4cf1-a4f5-f04ad028873f}</UniqueIdentifier>
     </Filter>
@@ -2661,6 +2664,9 @@
     <ClInclude Include="..\public\CTrigger_Paden.h">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Hwara.h">
+      <Filter>03. Instances\01. Level\04. Level_Stage\Hwara</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\CTeamConnector.h">
       <Filter>02. Design\07. GameSystem\TeamConnector</Filter>
     </ClInclude>
@@ -3807,6 +3813,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CTrigger_Paden.cpp">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Hwara.cpp">
+      <Filter>03. Instances\01. Level\04. Level_Stage\Hwara</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CTeamConnector.cpp">
       <Filter>02. Design\07. GameSystem\TeamConnector</Filter>
