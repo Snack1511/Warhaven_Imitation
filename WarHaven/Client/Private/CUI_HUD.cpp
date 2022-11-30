@@ -287,12 +287,12 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		}
 
 		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero() = false;
-		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = true;
+		//CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = true; 임시로 주석걸어놓음
 	}
 	else
 	{
 		Disable_Fade(m_pInactiveHeroText, 1.f);
-		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
+		//CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
 
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);

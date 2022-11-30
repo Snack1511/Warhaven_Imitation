@@ -468,6 +468,7 @@ HRESULT CRectEffects::Initialize()
 		if (m_pFollowTarget)
 		{
 			m_pRefBone = GET_COMPONENT_FROM(m_pFollowTarget, CModel)->Find_HierarchyNode(m_strBoneName.c_str());
+			Stick_RefBone();
 		}
 	}
 	

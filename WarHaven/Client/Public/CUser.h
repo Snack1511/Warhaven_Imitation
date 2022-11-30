@@ -13,6 +13,7 @@ class CPlayer;
 class CUI_HUD;
 class CUI_Damage;
 class CUI_Training;
+class CUI_Fire;
 
 class CUser
 {
@@ -61,6 +62,8 @@ private:
 public:
 	void SetUp_BloodOverlay();
 	void Turn_BloodOverLay(_float fHpRatio);
+	void SetUp_HeroGaugeFire();
+	void Turn_HeroGaugeFire(_bool bTurnOn);
 
 public:
 	void On_EnterLevel();
@@ -90,6 +93,7 @@ private:
 	CUI_Cursor* m_pCursor = nullptr;
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Training* m_pUI_Training = nullptr;
+	CUI_Fire* m_pFire = nullptr;
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;

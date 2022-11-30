@@ -192,6 +192,9 @@ private:
 private:
 	void Update_HP();
 	void Update_HeroGauge();
+	void On_AbleHero();
+	void On_FinishHero();
+	void On_FinishHero_KeyInput();
 
 
 };

@@ -308,6 +308,12 @@ protected:
 	virtual void	Effect_Parring(_float4 vHitPos);
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
 
+public:
+	virtual void	Effect_HeroToDefaultUnit(CUnit* pOwner);
+
+protected:
+
+
 private:
 	CUI_Wrapper* m_pUnitHUD = nullptr;
 

@@ -325,12 +325,6 @@ void CUnit_Valkyrie::OnDisable()
 void CUnit_Valkyrie::My_Tick()
 {
 	__super::My_Tick();
-
-	if (KEY(NUM7, TAP))
-	{
-		CPlayer::CLASS_DEFAULT eDefaultClass = m_pOwnerPlayer->Get_CurrentDefaultClass();
-		m_pOwnerPlayer->Change_DefaultUnit(eDefaultClass);
-	}
 }
 
 void CUnit_Valkyrie::My_LateTick()
