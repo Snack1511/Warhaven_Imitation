@@ -45,14 +45,10 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 	}
 }
 
-CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _uint iUIIndex, _float fRadius)
+CTrigger_Paden* CTrigger_Paden::Create(_float fRadius)
 {
 	CTrigger_Paden* pInstance = new CTrigger_Paden;
 
-	pInstance->m_vPosition = CGameSystem::Get_Instance()->Find_Position(strPositionKey);
-	pInstance->m_pTransform->Set_World(WORLD_POS, pInstance->m_vPosition);
-	pInstance->m_pTransform->Make_WorldMatrix();
-	pInstance->m_iUIIndex = iUIIndex;
 	pInstance->m_fRadius = fRadius;
 
 	if (FAILED(pInstance->Initialize_Prototype()))

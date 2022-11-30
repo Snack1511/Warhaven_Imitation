@@ -10,6 +10,7 @@ BEGIN(Client)
 class CPositionTable;
 class CPlayer;
 class CPlayerInfo;
+class CTrigger;
 class CTeamConnector;
 
 class CGameSystem
@@ -27,7 +28,6 @@ public:
 
 public:
 	HRESULT					On_ExitLevel();
-
 
 public:
 	HRESULT					On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
@@ -63,11 +63,15 @@ private:
 	map<_hashcode, CPlayerInfo*>	m_mapAllPlayers;
 
 private:
+	/* 트리거 (거점)을 map으로 들고 있기. */
+	map<_hashcode, CTrigger*>	m_mapAllTriggers;
+
+
+private:
 	HRESULT					SetUp_AllPlayerInfos();
 
 private:
-	CPlayer* SetUp_Player(_hashcode hcPlayerInfo);
-
+	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();
 
 

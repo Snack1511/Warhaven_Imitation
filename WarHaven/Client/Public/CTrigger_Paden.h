@@ -15,7 +15,7 @@ private:
 	virtual ~CTrigger_Paden();
 
 public:
-	static CTrigger_Paden* Create(string strPositionKey, _uint iUIIndex, _float fRadius);
+	static CTrigger_Paden* Create(_float fRadius);
 
 public:
 	virtual void	Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
@@ -24,6 +24,7 @@ public:
 
 public:
 	void		Add_AdjPlayer(CPlayer* pPlayer) { m_vecAdjPlayers.push_back(pPlayer); }
+	void		Add_RespawnPositions(_float4 vPosition) { m_vRespawnPositions.push_back(vPosition); };
 
 public:
 	_float4		Get_RespawnPosition();
