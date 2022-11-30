@@ -31,13 +31,14 @@ private:
 	_uint m_iBGIndex = 0;
 	_float m_fAccTime = 0.f;
 
-	CUI_Object* m_pNextMapName = nullptr;
-	CUI_Object* m_pGibberish = nullptr;
-	CUI_Object* m_pLoddingText = nullptr;
-	CUI_Object* m_pModeText = nullptr;
+	enum LoadingText { LT_Map, LT_Loading, LT_Mode, LT_Gibberish, LT_End };
+
+	CUI_Object* m_pLoadingText[LT_End];
 
 private:
-	void Create_LoadingText(LEVEL_TYPE_CLIENT eLevel, wstring eName);
+	void Create_LoadingText(LEVEL_TYPE_CLIENT eLevel);
+
+	wstring Init_GibberishText();
 };
 
 END
