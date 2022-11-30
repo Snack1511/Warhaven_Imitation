@@ -624,10 +624,13 @@ void CPlayer::My_LateTick()
 
 	if (KEY(NUM1, TAP) && m_bIsHero)
 	{
-		m_fGauge = 0.f;
+		m_fGauge = 95.f;
 		m_bIsHero = false;
 		CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
 		Change_DefaultUnit(m_eCurrentDefaultClass);
+
+		//변신해제 테스트
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", PLAYER, PLAYER->Get_Transform()->Get_World(WORLD_POS));
 	}
 
 	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
@@ -696,7 +699,7 @@ void CPlayer::Update_HeroGauge()
 		else
 		{
 			m_fGauge -= fGaugeSpeed;
-			if (m_fGauge < 0.f)
+			if (m_fGauge <= 0.f)
 			{
 				m_fGauge = 0.f;
 				m_bIsHero = false;
