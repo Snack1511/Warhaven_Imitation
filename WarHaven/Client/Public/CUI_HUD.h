@@ -132,26 +132,22 @@ private:
 	_float m_fSmokeUV = 0.f;
 
 private:	// 클래스 변경 창
+	enum BootCampUI { BC_Port, BC_PortBG, BC_Icon, BC_Highlight, BC_Line, BC_End };
+
 	CUI_Object* m_pBG = nullptr;
 
-	CUI_Object* m_pPort = nullptr;
-	CUI_Object* m_pPortClone[6];
+	CUI_Object* m_pBootCampUI[BC_End];
+	CUI_Object* m_pArrBootCampUI[BC_End][6];
 
-	CUI_Object* m_pPortBG = nullptr;
-	CUI_Object* m_pPortBGClone[6];
+	_uint m_iCurBootCharEventNum = 0;
+	_uint m_iPrvBootCharEventNum = 0;
 
-	CUI_Object* m_pClassIcon = nullptr;
-	CUI_Object* m_pClassIconClone[6];
-
-	CUI_Object* m_pPortHighlight = nullptr;
-	CUI_Object* m_pPortHighlights[6];
-
-	CUI_Object* m_pPortUnderLine = nullptr;
-	CUI_Object* m_pPortUnderLines[6];
+private:
+	void Create_CharacterSelectWindow();
 
 	CUI_Object* m_pClassInfo = nullptr;
 	CUI_Object* m_pClassInfoIcon = nullptr;
-	CUI_Object* m_pLine = nullptr;
+	CUI_Object* m_pLine = nullptr;	
 	CUI_Object* m_pSelectLine = nullptr;
 	CUI_Object* m_pConfirmBtn = nullptr;
 
@@ -160,6 +156,9 @@ private:	// 클래스 변경 창
 	CUI_Object* m_pHeroGaugeText = nullptr;
 	CUI_Object* m_pOxenJumpText = nullptr;
 	CUI_Object* m_pHpText = nullptr;
+
+private:
+	void BootCamp_CharacterWindow();
 
 	CUI_Object* m_pPlayerNameText = nullptr;
 
@@ -185,9 +184,6 @@ private:	// 작전 회의
 	void Update_OperWindow();
 	void Enable_OperPointUI();
 
-private:
-	void Create_CharacterSelectWindow();
-	void Create_PortUnderLine();
 	void Create_TraingText();
 	void Create_HeroGaugeText();
 	void Create_OxenJumpText();
@@ -199,8 +195,6 @@ private:	// OperWindow
 	void Create_OperProfile();
 	void Create_OperSideBG();
 	void Create_OperMap();
-
-private:
 };
 
 END
