@@ -56,7 +56,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HpText();
 	Create_PlayerNameText();
 
-	if ((m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP))
+	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
 		Create_OperWindow(m_eLoadLevel);
 	}
@@ -71,24 +71,20 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP ||
-		m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST
-		)
+	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
 		SetActive_PlayerInfoUI(true);
 	}
 	else
 	{
-		SetActive_OperUI(true); // 화면 가려져서 true 에서 바꿈
-		Set_FadeOperSelectChaderUI();
-		Bind_Shader();
-
 		Set_FadePortHighlight();
+		Set_FadeOperSelectChaderUI();
+
+		SetActive_OperUI(true);
+		Bind_Shader();
 	}
 
 	Bind_Btn();
-
-	
 
 	__super::Start();
 
@@ -220,14 +216,39 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 	}
 }
 
-void CUI_HUD::On_PointEnter_SelectBG(const _uint& iEventNum)
+void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 {
+	m_iPrvSelectEventNum = m_iCurSelectEventNum;
+	m_iCurSelectEventNum = iEventNum;
 
+	if (m_iPrvSelectEventNum == iEventNum)
+		return;
+
+	for (int i = 0; i < ST_End; ++i)
+	{
+		m_pArrOperSelectUI[i][m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
+		m_pArrOperSelectUI[i][iEventNum]->DoScale(10.f, 0.1f);
+	}
+}
+
+void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
+{
+	DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
+
+	_float4 vPos = m_pArrOperPointUI[PT_Point][iEventNum]->Get_Pos();
+	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
+
+	ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 }
 
 void CUI_HUD::Set_Shader_Smoke(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fSmokeUV, sizeof(_float));
+}
+
+void CUI_HUD::Set_Shader_Timer(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fTimerRatio, sizeof(_float));
 }
 
 void CUI_HUD::SetActive_OxenJumpText(_bool value)
@@ -319,8 +340,13 @@ void CUI_HUD::Bind_Btn()
 
 		if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 		{
-			m_pArrOperSelectBG[i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_SelectBG, this, i);
+			m_pArrOperSelectUI[ST_BG][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_SelectBG, this, i);
 		}
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pArrOperPointUI[PT_Point][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Point, this, i);
 	}
 }
 
@@ -750,14 +776,12 @@ void CUI_HUD::Create_HpText()
 
 void CUI_HUD::SetActive_OperUI(_bool value)
 {
-
-
 	if (value == true)
 	{
 		ENABLE_GAMEOBJECT(m_pOperWindow);
 		ENABLE_GAMEOBJECT(m_pSmokeBG);
 
-		m_pOperWindow->DoScale(-2016.f, 0.3f);
+		m_pOperWindow->DoScale(-2596.f, 0.3f);
 	}
 	else
 	{
@@ -839,15 +863,28 @@ void CUI_HUD::Update_OperWindow()
 		}
 		else if (m_iOperWindowCnt == 2)
 		{
+			m_fAccTime = 0.f;
+			m_iOperWindowCnt++;
+
+			if (m_fAccTime > 0.5f)
+			{
+				//Enable_Fade(m_pSquardTextImg, 0.3f);
+			}
+		}
+		else if (m_iOperWindowCnt == 3)
+		{
 			if (m_pOperTextImg->Is_Valid())
 			{
-				if (m_fAccTime > 0.5f)
+				if (m_fAccTime > 1.f)
 				{
 					m_fAccTime = 0.f;
 
 					_float fDuration = 0.3f;
 					m_pOperTextImg->DoMoveY(200.f, fDuration);
 					m_pOperTextImg->DoScale(-256.f, fDuration);
+
+					//m_pSquardTextImg->DoMoveY(235.f, fDuration);
+					//m_pSquardTextImg->DoScale(-17.f, fDuration);
 
 					for (int i = 0; i < 4; ++i)
 					{
@@ -858,7 +895,7 @@ void CUI_HUD::Update_OperWindow()
 				}
 			}
 		}
-		else if (m_iOperWindowCnt == 3)
+		else if (m_iOperWindowCnt == 4)
 		{
 			if (m_pArrOperProfile[0]->Is_Valid())
 			{
@@ -869,6 +906,7 @@ void CUI_HUD::Update_OperWindow()
 					_float fDuration = 0.3f;
 					Disable_Fade(m_pOperBlackBG, fDuration);
 					Disable_Fade(m_pOperTextImg, fDuration);
+					Disable_Fade(m_pSquardTextImg, fDuration);
 
 					for (int i = 0; i < 4; ++i)
 					{
@@ -879,55 +917,43 @@ void CUI_HUD::Update_OperWindow()
 				}
 			}
 		}
-		else if (m_iOperWindowCnt == 4)
-		{
-			_float fDuration = 0.3f;
-			_float fScaleValue = -70.f;
-
-			Enable_Fade(m_pGoalPoint, fDuration);
-			Enable_Fade(m_pGoalPointText, fDuration);
-			Enable_Fade(m_pGoalPointGauge, fDuration);
-
-			Enable_Fade(m_pJoinPoint, fDuration);
-			Enable_Fade(m_pJoinPointText, fDuration);
-			Enable_Fade(m_pJoinPointIcon, fDuration);
-			Enable_Fade(m_pJoinPointGauge, fDuration);
-
-			m_pGoalPoint->DoScale(fScaleValue, fDuration);
-			m_pGoalPointText->DoScale(fScaleValue, fDuration);
-			m_pGoalPointGauge->DoScale(fScaleValue, fDuration);
-
-			m_pJoinPoint->DoScale(fScaleValue, fDuration);
-			m_pJoinPointText->DoScale(fScaleValue, fDuration);
-			m_pJoinPointIcon->DoScale(fScaleValue, fDuration);
-			m_pJoinPointGauge->DoScale(fScaleValue, fDuration);
-
-			Enable_Fade(m_pArrOperPointCircleEffect[0], fDuration);
-			Enable_Fade(m_pArrOperPointCircleEffect[2], fDuration);
-
-			m_pArrOperPointCircleEffect[0]->DoScale(40.f, fDuration);
-			m_pArrOperPointCircleEffect[2]->DoScale(40.f, fDuration);
-
-			m_fAccTime = 0.f;
-			m_iOperWindowCnt++;
-		}
 		else if (m_iOperWindowCnt == 5)
+		{
+			Enable_OperPointUI();
+		}
+		else if (m_iOperWindowCnt == 6)
 		{
 			if (m_fAccTime > 0.3f)
 			{
-				_float fDuration = 0.3f;
+				_float fDuration = 1.f;
 
-				Enable_Fade(m_pArrOperPointCircleEffect[1], fDuration);
-				Enable_Fade(m_pArrOperPointCircleEffect[3], fDuration);
+				Enable_Fade(m_pArrOperPointCircleEffect[0], fDuration);
+				Enable_Fade(m_pArrOperPointCircleEffect[2], fDuration);
 
-				m_pArrOperPointCircleEffect[1]->DoScale(40.f, fDuration);
-				m_pArrOperPointCircleEffect[3]->DoScale(40.f, fDuration);
+				m_pArrOperPointCircleEffect[0]->DoScale(70.f, fDuration);
+				m_pArrOperPointCircleEffect[2]->DoScale(70.f, fDuration);
 
 				m_fAccTime = 0.f;
 				m_iOperWindowCnt++;
 			}
 		}
-		else if (m_iOperWindowCnt == 6)
+		else if (m_iOperWindowCnt == 7)
+		{
+			if (m_fAccTime > 0.5f)
+			{
+				_float fDuration = 1.f;
+
+				Enable_Fade(m_pArrOperPointCircleEffect[1], fDuration);
+				Enable_Fade(m_pArrOperPointCircleEffect[3], fDuration);
+
+				m_pArrOperPointCircleEffect[1]->DoScale(70.f, fDuration);
+				m_pArrOperPointCircleEffect[3]->DoScale(70.f, fDuration);
+
+				m_fAccTime = 0.f;
+				m_iOperWindowCnt++;
+			}
+		}
+		else if (m_iOperWindowCnt == 8)
 		{
 			if (m_fAccTime > 1.f)
 			{
@@ -939,35 +965,46 @@ void CUI_HUD::Update_OperWindow()
 				m_pArrOperSideBG[0]->DoMoveX(50.f, fDuration);
 				m_pArrOperSideBG[1]->DoMoveX(-50.f, fDuration);
 
-				for (int i = 0; i < 6; ++i)
+				for (int i = 0; i < ST_End; ++i)
 				{
-					Enable_Fade(m_pArrOperSelectChar[i], fDuration);
-					m_pArrOperSelectChar[i]->DoMoveX(50.f, fDuration);
-
-					Enable_Fade(m_pArrOperSelectCharPort[i], fDuration);
-					m_pArrOperSelectCharPort[i]->DoMoveX(50.f, fDuration);
-
-					Enable_Fade(m_pArrOperSelectBG[i], fDuration);
-					m_pArrOperSelectBG[i]->DoMoveX(50.f, fDuration);
-
-					Enable_Fade(m_pArrOperSelectIcon[i], fDuration);
-					m_pArrOperSelectIcon[i]->DoMoveX(50.f, fDuration);
+					for (int j = 0; j < 6; ++j)
+					{
+						Enable_Fade(m_pArrOperSelectUI[i][j], fDuration);
+						m_pArrOperSelectUI[i][j]->DoMoveX(50.f, fDuration);
+					}
 				}
 
 				Enable_Fade(m_pOperMapIcon, fDuration);
 				Enable_Fade(m_pOperMapBG, fDuration);
+				Enable_Fade(m_pOperTextImg2, fDuration);
+				Enable_Fade(m_pOperAttackPointText, fDuration);
+				Enable_Fade(m_pArrTargetPoint[0], fDuration);
+
+				for (int i = 0; i < TT_End; ++i)
+				{
+					m_fOperTime = m_fMaxOperTime;
+					Enable_Fade(m_pOperTimer[i], fDuration);
+				}
 
 				m_fAccTime = 0.f;
 				m_iOperWindowCnt++;
 			}
+		}
+		else if (m_iOperWindowCnt == 9)
+		{
+			// 작전회의 시간 감소
+			_tchar  szTemp[MAX_STR] = {};
+			swprintf_s(szTemp, TEXT("%04.1f"), m_fOperTime);
+			m_pOperTimer[TT_Bar]->Set_FontText(szTemp);
 
-
-			// 오른쪽 맵이랑 분대원 정보
-
-			// 맵에 거점에 해당하는 버튼
-
-			// 게임 시작 게이지
-
+			m_fTimerRatio = m_fOperTime / m_fMaxOperTime;
+			m_fOperTime -= fDT(0);		
+			if (m_fOperTime < 0.f)
+			{
+				m_fOperTime = 0.f;
+				// 페이드 아웃
+				// 게임 시작
+			}
 		}
 	}
 }
@@ -977,6 +1014,7 @@ void CUI_HUD::Bind_Shader()
 	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
 		GET_COMPONENT_FROM(m_pSmokeBG, CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
+		GET_COMPONENT_FROM(m_pOperTimer[TT_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Timer, this, placeholders::_1, "g_fValue");
 	}
 }
 
@@ -1014,6 +1052,18 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	m_pOperTextImg->Set_Scale(1024.f);
 	m_pOperTextImg->Set_Sort(0.49f);
 
+	m_pOperTextImg2 = CUI_Object::Create();
+	m_pOperTextImg2->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting2.png"));
+	m_pOperTextImg2->Set_PosY(305.f);
+	m_pOperTextImg2->Set_Scale(155.f, 50.f);
+	m_pOperTextImg2->Set_Sort(0.49f);
+
+	m_pSquardTextImg = CUI_Object::Create();
+	m_pSquardTextImg->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/SquadText.png"));
+	m_pSquardTextImg->Set_PosY(-20.f);
+	m_pSquardTextImg->Set_Scale(204.f, 38.f);
+	m_pSquardTextImg->Set_Sort(0.48f);
+
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
 	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
@@ -1039,12 +1089,19 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	CREATE_GAMEOBJECT(m_pOperTextImg, RENDER_UI);
 	DISABLE_GAMEOBJECT(m_pOperTextImg);
 
+	CREATE_GAMEOBJECT(m_pOperTextImg2, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperTextImg2);
+
+	CREATE_GAMEOBJECT(m_pSquardTextImg, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pSquardTextImg);
+
 	Create_OperProfile();
 	Create_OperSideBG();
 	Create_OperSelectCharacter();
 	Create_OperMap();
 	Create_OperPoint();
 	Create_OperPointEffect();
+	Create_OperTimer();
 }
 
 void CUI_HUD::Set_FadeOperSelectChaderUI()
@@ -1060,20 +1117,41 @@ void CUI_HUD::Set_FadeOperSelectChaderUI()
 	tFadeDesc.fFadeOutStartTime = 0.f;
 	tFadeDesc.fFadeOutTime = 0.3f;
 
+	GET_COMPONENT_FROM(m_pOperSelectUI[ST_Char], CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperSelectUI[ST_Port], CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperSelectUI[ST_Icon], CFader)->Get_FadeDesc() = tFadeDesc;
+
+	for (int i = 0; i < PT_End; ++i)
+	{
+		GET_COMPONENT_FROM(m_pOperPointUI[i], CFader)->Get_FadeDesc() = tFadeDesc;
+	}
+
 	GET_COMPONENT_FROM(m_pOperSideBG, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pOperSelectBG, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pOperSelectChar, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pOperSelectCharPort, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pOperSelectIcon, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pOperTextImg2, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
 	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pGoalPoint, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pGoalPointText, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pGoalPointGauge, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pJoinPoint, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pJoinPointText, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pJoinPointIcon, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pJoinPointGauge, CFader)->Get_FadeDesc() = tFadeDesc;
+
+	GET_COMPONENT_FROM(m_pOperAttackPointText, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pTargetPoint, CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pSquardTextImg, CFader)->Get_FadeDesc() = tFadeDesc;
+	
+	for (int i = 0; i < TT_End; ++i)
+	{
+		GET_COMPONENT_FROM(m_pOperTimer[i], CFader)->Get_FadeDesc() = tFadeDesc;
+	}
+
+	FADEDESC tFadeDescBG;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_NONE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = 0.3f;
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = 0.3f;
+
+	GET_COMPONENT_FROM(m_pOperSelectUI[ST_BG], CFader)->Get_FadeDesc() = tFadeDescBG;
 }
 
 void CUI_HUD::Create_OperProfile()
@@ -1138,122 +1216,133 @@ void CUI_HUD::Create_OperSideBG()
 	}
 }
 
+void CUI_HUD::Enable_OperPointUI()
+{
+	for (int i = 0; i < PT_End; ++i)
+	{
+		switch (m_eLoadLevel)
+		{
+		case LEVEL_PADEN:
+
+			for (int j = 0; j < 2; ++j)
+			{
+				Enable_Fade(m_pArrOperPointUI[i][j], 0.3f);
+				m_pArrOperPointUI[i][j]->DoScale(-70.f, 0.3f);
+			}
+
+			DISABLE_GAMEOBJECT(m_pArrOperPointUI[PT_Icon][0]);
+
+			break;
+		}
+	}
+
+	m_fAccTime = 0.f;
+	m_iOperWindowCnt++;
+}
+
 void CUI_HUD::Create_OperSelectCharacter()
 {
-	m_pOperSelectBG = CUI_Object::Create();
-	m_pOperSelectBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SelectedBG.png"));
-	m_pOperSelectBG->Set_Scale(213.f, 65.f);
-	m_pOperSelectBG->Set_Sort(0.49f);
-	m_pOperSelectBG->Set_MouseTarget(true);
+	for (int i = 0; i < ST_End; ++i)
+	{
+		m_pOperSelectUI[i] = CUI_Object::Create();
 
-	m_pOperSelectChar = CUI_Object::Create();
-	m_pOperSelectChar->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
-	m_pOperSelectChar->Set_Scale(65.f);
-	m_pOperSelectChar->Set_Sort(0.48f);
+		CREATE_GAMEOBJECT(m_pOperSelectUI[i], RENDER_UI);
+		DELETE_GAMEOBJECT(m_pOperSelectUI[i]);
+	}
 
-	m_pOperSelectCharPort = CUI_Object::Create();
-	m_pOperSelectCharPort->Set_Scale(65.f);
-	m_pOperSelectCharPort->Set_Sort(0.47f);
+	m_pOperSelectUI[ST_BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SelectedBG.png"));
+	m_pOperSelectUI[ST_BG]->Set_Scale(213.f, 65.f);
+	m_pOperSelectUI[ST_BG]->Set_Sort(0.49f);
+	m_pOperSelectUI[ST_BG]->Set_MouseTarget(true);
 
-	m_pOperSelectIcon = CUI_Object::Create();
-	m_pOperSelectIcon->Set_Scale(32.f);
-	m_pOperSelectIcon->Set_Sort(0.48f);
-	m_pOperSelectIcon->Set_FontRender(true);
-	m_pOperSelectIcon->Set_FontStyle(true);
-	m_pOperSelectIcon->Set_FontOffset(20.f, -15.f);
-	m_pOperSelectIcon->Set_FontScale(0.3f);
+	m_pOperSelectUI[ST_Char]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
+	m_pOperSelectUI[ST_Char]->Set_Scale(65.f);
+	m_pOperSelectUI[ST_Char]->Set_Sort(0.48f);
 
-	GET_COMPONENT_FROM(m_pOperSelectCharPort, CTexture)->Remove_Texture(0);
-	Read_Texture(m_pOperSelectCharPort, "/HUD/Portrait", "Class");
+	m_pOperSelectUI[ST_Port]->Set_Scale(65.f);
+	m_pOperSelectUI[ST_Port]->Set_Sort(0.47f);
 
-	GET_COMPONENT_FROM(m_pOperSelectIcon, CTexture)->Remove_Texture(0);
-	Read_Texture(m_pOperSelectIcon, "/Oper", "Class");
+	m_pOperSelectUI[ST_Icon]->Set_Scale(32.f);
+	m_pOperSelectUI[ST_Icon]->Set_Sort(0.48f);
+	m_pOperSelectUI[ST_Icon]->Set_FontRender(true);
+	m_pOperSelectUI[ST_Icon]->Set_FontStyle(true);
+	m_pOperSelectUI[ST_Icon]->Set_FontOffset(20.f, -15.f);
+	m_pOperSelectUI[ST_Icon]->Set_FontScale(0.3f);
 
-	CREATE_GAMEOBJECT(m_pOperSelectBG, RENDER_UI);
-	DELETE_GAMEOBJECT(m_pOperSelectBG);
+	GET_COMPONENT_FROM(m_pOperSelectUI[ST_Port], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pOperSelectUI[ST_Port], "/HUD/Portrait", "Class");
 
-	CREATE_GAMEOBJECT(m_pOperSelectChar, RENDER_UI);
-	DELETE_GAMEOBJECT(m_pOperSelectChar);
-
-	CREATE_GAMEOBJECT(m_pOperSelectCharPort, RENDER_UI);
-	DELETE_GAMEOBJECT(m_pOperSelectCharPort);
-
-	CREATE_GAMEOBJECT(m_pOperSelectIcon, RENDER_UI);
-	DELETE_GAMEOBJECT(m_pOperSelectIcon);
+	GET_COMPONENT_FROM(m_pOperSelectUI[ST_Icon], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pOperSelectUI[ST_Icon], "/Oper", "Class");
 
 	for (int i = 0; i < 6; ++i)
 	{
-		m_pArrOperSelectBG[i] = m_pOperSelectBG->Clone();
-		m_pArrOperSelectChar[i] = m_pOperSelectChar->Clone();
-		m_pArrOperSelectCharPort[i] = m_pOperSelectCharPort->Clone();
-		m_pArrOperSelectIcon[i] = m_pOperSelectIcon->Clone();
+		for (int j = 0; j < ST_End; ++j)
+		{
+			m_pArrOperSelectUI[j][i] = m_pOperSelectUI[j]->Clone();
 
-		GET_COMPONENT_FROM(m_pArrOperSelectCharPort[i], CTexture)->Set_CurTextureIndex(i);
-		GET_COMPONENT_FROM(m_pArrOperSelectIcon[i], CTexture)->Set_CurTextureIndex(i);
+			CREATE_GAMEOBJECT(m_pArrOperSelectUI[j][i], RENDER_UI);
+			DISABLE_GAMEOBJECT(m_pArrOperSelectUI[j][i]);
+		}
 
-		CREATE_GAMEOBJECT(m_pArrOperSelectBG[i], RENDER_UI);
-		DISABLE_GAMEOBJECT(m_pArrOperSelectBG[i]);
-
-		CREATE_GAMEOBJECT(m_pArrOperSelectChar[i], RENDER_UI);
-		DISABLE_GAMEOBJECT(m_pArrOperSelectChar[i]);
-
-		CREATE_GAMEOBJECT(m_pArrOperSelectCharPort[i], RENDER_UI);
-		DISABLE_GAMEOBJECT(m_pArrOperSelectCharPort[i]);
-
-		CREATE_GAMEOBJECT(m_pArrOperSelectIcon[i], RENDER_UI);
-		DISABLE_GAMEOBJECT(m_pArrOperSelectIcon[i]);
+		GET_COMPONENT_FROM(m_pArrOperSelectUI[ST_Port][i], CTexture)->Set_CurTextureIndex(i);
+		GET_COMPONENT_FROM(m_pArrOperSelectUI[ST_Icon][i], CTexture)->Set_CurTextureIndex(i);
 	}
+
+#pragma region 유아이 위치 지정
 
 	_float fTopPosY = 250.f;
 	_float fMidPosY = 150.f;
 	_float fBotPosY = 50.f;
 
-	_float fTopPosXSelectBG = -530.f;
+	_float fTopPosXSelectBG = -480.f;
 	_float fMidPosXSelectBG = -515.f;
-	_float fBotPosXSelectBG = -480.f;
+	_float fBotPosXSelectBG = -530.f;
 
-	m_pArrOperSelectBG[0]->Set_Pos(fTopPosXSelectBG, fBotPosY);
-	m_pArrOperSelectBG[5]->Set_Pos(fTopPosXSelectBG, -fBotPosY);
-	m_pArrOperSelectBG[1]->Set_Pos(fMidPosXSelectBG, fMidPosY);
-	m_pArrOperSelectBG[4]->Set_Pos(fMidPosXSelectBG, -fMidPosY);
-	m_pArrOperSelectBG[2]->Set_Pos(fBotPosXSelectBG, fTopPosY);
-	m_pArrOperSelectBG[3]->Set_Pos(fBotPosXSelectBG, -fTopPosY);
+	m_pArrOperSelectUI[ST_BG][0]->Set_Pos(fTopPosXSelectBG, fTopPosY);
+	m_pArrOperSelectUI[ST_BG][1]->Set_Pos(fMidPosXSelectBG, fMidPosY);
+	m_pArrOperSelectUI[ST_BG][2]->Set_Pos(fBotPosXSelectBG, fBotPosY);
+	m_pArrOperSelectUI[ST_BG][3]->Set_Pos(fBotPosXSelectBG, -fBotPosY);
+	m_pArrOperSelectUI[ST_BG][4]->Set_Pos(fMidPosXSelectBG, -fMidPosY);
+	m_pArrOperSelectUI[ST_BG][5]->Set_Pos(fTopPosXSelectBG, -fTopPosY);
 
 	_float fTopPosCharX = -555.f;
 	_float fMidPosCharX = -590.f;
 	_float fBotPosCharX = -605.f;
 
-	m_pArrOperSelectChar[0]->Set_Pos(fTopPosCharX, fTopPosY);
-	m_pArrOperSelectChar[5]->Set_Pos(fTopPosCharX, -fTopPosY);
-	m_pArrOperSelectChar[1]->Set_Pos(fMidPosCharX, fMidPosY);
-	m_pArrOperSelectChar[4]->Set_Pos(fMidPosCharX, -fMidPosY);
-	m_pArrOperSelectChar[2]->Set_Pos(fBotPosCharX, fBotPosY);
-	m_pArrOperSelectChar[3]->Set_Pos(fBotPosCharX, -fBotPosY);
+	m_pArrOperSelectUI[ST_Char][0]->Set_Pos(fTopPosCharX, fTopPosY);
+	m_pArrOperSelectUI[ST_Char][1]->Set_Pos(fMidPosCharX, fMidPosY);
+	m_pArrOperSelectUI[ST_Char][2]->Set_Pos(fBotPosCharX, fBotPosY);
+	m_pArrOperSelectUI[ST_Char][3]->Set_Pos(fBotPosCharX, -fBotPosY);
+	m_pArrOperSelectUI[ST_Char][4]->Set_Pos(fMidPosCharX, -fMidPosY);
+	m_pArrOperSelectUI[ST_Char][5]->Set_Pos(fTopPosCharX, -fTopPosY);
 
-	m_pArrOperSelectCharPort[0]->Set_Pos(fTopPosCharX, fTopPosY);
-	m_pArrOperSelectCharPort[5]->Set_Pos(fTopPosCharX, -fTopPosY);
-	m_pArrOperSelectCharPort[1]->Set_Pos(fMidPosCharX, fMidPosY);
-	m_pArrOperSelectCharPort[4]->Set_Pos(fMidPosCharX, -fMidPosY);
-	m_pArrOperSelectCharPort[2]->Set_Pos(fBotPosCharX, fBotPosY);
-	m_pArrOperSelectCharPort[3]->Set_Pos(fBotPosCharX, -fBotPosY);
+	m_pArrOperSelectUI[ST_Port][0]->Set_Pos(fTopPosCharX, fTopPosY);
+	m_pArrOperSelectUI[ST_Port][1]->Set_Pos(fMidPosCharX, fMidPosY);
+	m_pArrOperSelectUI[ST_Port][2]->Set_Pos(fBotPosCharX, fBotPosY);
+	m_pArrOperSelectUI[ST_Port][3]->Set_Pos(fBotPosCharX, -fBotPosY);
+	m_pArrOperSelectUI[ST_Port][4]->Set_Pos(fMidPosCharX, -fMidPosY);
+	m_pArrOperSelectUI[ST_Port][5]->Set_Pos(fTopPosCharX, -fTopPosY);
 
 	_float fTopPosIconX = -505.f;
 	_float fMidPosIconX = -540.f;
 	_float fBotPosIconX = -555.f;
 
-	m_pArrOperSelectIcon[0]->Set_FontText(TEXT("블레이드"));
-	m_pArrOperSelectIcon[1]->Set_FontText(TEXT("스파이크"));
-	m_pArrOperSelectIcon[2]->Set_FontText(TEXT("아치"));
-	m_pArrOperSelectIcon[3]->Set_FontText(TEXT("가디언"));
-	m_pArrOperSelectIcon[4]->Set_FontText(TEXT("스모크"));
-	m_pArrOperSelectIcon[5]->Set_FontText(TEXT("워해머"));
+	m_pArrOperSelectUI[ST_Icon][0]->Set_FontText(TEXT("블레이드"));
+	m_pArrOperSelectUI[ST_Icon][1]->Set_FontText(TEXT("스파이크"));
+	m_pArrOperSelectUI[ST_Icon][2]->Set_FontText(TEXT("아치"));
+	m_pArrOperSelectUI[ST_Icon][3]->Set_FontText(TEXT("가디언"));
+	m_pArrOperSelectUI[ST_Icon][4]->Set_FontText(TEXT("스모크"));
+	m_pArrOperSelectUI[ST_Icon][5]->Set_FontText(TEXT("워해머"));
 
-	m_pArrOperSelectIcon[0]->Set_Pos(fTopPosIconX, fTopPosY);
-	m_pArrOperSelectIcon[5]->Set_Pos(fTopPosIconX, -fTopPosY);
-	m_pArrOperSelectIcon[1]->Set_Pos(fMidPosIconX, fMidPosY);
-	m_pArrOperSelectIcon[4]->Set_Pos(fMidPosIconX, -fMidPosY);
-	m_pArrOperSelectIcon[2]->Set_Pos(fBotPosIconX, fBotPosY);
-	m_pArrOperSelectIcon[3]->Set_Pos(fBotPosIconX, -fBotPosY);
+	m_pArrOperSelectUI[ST_Icon][0]->Set_Pos(fTopPosIconX, fTopPosY);
+	m_pArrOperSelectUI[ST_Icon][1]->Set_Pos(fMidPosIconX, fMidPosY);
+	m_pArrOperSelectUI[ST_Icon][2]->Set_Pos(fBotPosIconX, fBotPosY);
+	m_pArrOperSelectUI[ST_Icon][3]->Set_Pos(fBotPosIconX, -fBotPosY);
+	m_pArrOperSelectUI[ST_Icon][4]->Set_Pos(fMidPosIconX, -fMidPosY);
+	m_pArrOperSelectUI[ST_Icon][5]->Set_Pos(fTopPosIconX, -fTopPosY);
+
+#pragma endregion	
 }
 
 void CUI_HUD::Create_OperMap()
@@ -1284,70 +1373,125 @@ void CUI_HUD::Create_OperMap()
 
 void CUI_HUD::Create_OperPoint()
 {
-	m_pGoalPoint = CUI_Object::Create();
-	m_pGoalPoint->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Paden/T_FootholdStrokeEdge.dds"));
-	m_pGoalPoint->Set_PosY(105.f);
-	m_pGoalPoint->Set_Scale(114.f);
-	m_pGoalPoint->Set_Sort(0.48f);
-	m_pGoalPoint->Set_Color(_float4(0.9f, 0.9f, 0.9f, 0.5f));
-	m_pGoalPoint->Set_MouseTarget(true);
+	for (int i = 0; i < PT_End; ++i)
+	{
+		m_pOperPointUI[i] = CUI_Object::Create();
 
-	m_pGoalPointText = CUI_Object::Create();
-	m_pGoalPointText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Paden/A.png"));
-	m_pGoalPointText->Set_PosY(101.f);
-	m_pGoalPointText->Set_Scale(130.f);
-	m_pGoalPointText->Set_Sort(0.48f);
+		CREATE_GAMEOBJECT(m_pOperPointUI[i], RENDER_UI);
+		DELETE_GAMEOBJECT(m_pOperPointUI[i]);
+	}
 
-	m_pGoalPointGauge = CUI_Object::Create();
-	m_pGoalPointGauge->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/T_4pxBoxWhite.dds"));
-	m_pGoalPointGauge->Set_PosY(105.f);
-	m_pGoalPointGauge->Set_Scale(105.f);
-	m_pGoalPointGauge->Set_Sort(0.49f);
-	m_pGoalPointGauge->Set_Color(_float4(0.4f, 0.4f, 0.4f, 1.f));
+	GET_COMPONENT_FROM(m_pOperPointUI[PT_Point], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pOperPointUI[PT_Point], "/Oper", "PointOutline");
 
-	m_pJoinPoint = CUI_Object::Create();
-	m_pJoinPoint->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Paden/T_FootholdStrokeCircleEdge.dds"));
-	m_pJoinPoint->Set_PosY(-303.f);
-	m_pJoinPoint->Set_Scale(114.f);
-	m_pJoinPoint->Set_Sort(0.48f);
-	m_pJoinPoint->Set_Color(_float4(0.9f, 0.9f, 0.9f, 0.5f));
-	m_pJoinPoint->Set_MouseTarget(true);
+	GET_COMPONENT_FROM(m_pOperPointUI[PT_Gauge], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pOperPointUI[PT_Gauge], "/Oper", "PointGauge");
 
-	m_pJoinPointIcon = CUI_Object::Create();
-	m_pJoinPointIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Paden/T_FootholdIconRespawn.dds"));
-	m_pJoinPointIcon->Set_PosY(-303.f);
-	m_pJoinPointIcon->Set_Scale(100.f);
-	m_pJoinPointIcon->Set_Color(_float4(0.7f, 0.7f, 0.7f, 1.f));
-	m_pJoinPointIcon->Set_Sort(0.485f);
+	GET_COMPONENT_FROM(m_pOperPointUI[PT_Icon], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pOperPointUI[PT_Icon], "/Oper", "PointIcon");
 
-	m_pJoinPointText = CUI_Object::Create();
-	m_pJoinPointText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Paden/R.png"));
-	m_pJoinPointText->Set_PosY(-308.f);
-	m_pJoinPointText->Set_Scale(130.f);
-	m_pJoinPointText->Set_Sort(0.48f);
+	GET_COMPONENT_FROM(m_pOperPointUI[PT_Text], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pOperPointUI[PT_Text], "/Oper", "PointText");
 
-	m_pJoinPointGauge = CUI_Object::Create();
-	m_pJoinPointGauge->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/T_4pxBoxWhite.dds"));
-	m_pJoinPointGauge->Set_PosY(-303.f);
-	m_pJoinPointGauge->Set_Scale(105.f);
-	m_pJoinPointGauge->Set_Sort(0.49f);
-	m_pJoinPointGauge->Set_Color(_float4(0.4f, 0.4f, 0.4f, 1.f));
+	m_pOperPointUI[PT_Point]->Set_Scale(120.f);
+	m_pOperPointUI[PT_Point]->Set_Sort(0.48f);
+	m_pOperPointUI[PT_Point]->Set_Color(_float4(0.9f, 0.9f, 0.9f, 0.5f));
+	m_pOperPointUI[PT_Point]->Set_MouseTarget(true);
 
-	CREATE_GAMEOBJECT(m_pGoalPoint, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pGoalPoint);
-	CREATE_GAMEOBJECT(m_pGoalPointText, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pGoalPointText);
-	CREATE_GAMEOBJECT(m_pGoalPointGauge, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pGoalPointGauge);
+	m_pOperPointUI[PT_Gauge]->Set_Scale(115.f);
+	m_pOperPointUI[PT_Gauge]->Set_Sort(0.49f);
+	m_pOperPointUI[PT_Gauge]->Set_Color(_float4(0.4f, 0.4f, 0.4f, 1.f));
 
-	CREATE_GAMEOBJECT(m_pJoinPoint, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pJoinPoint);
-	CREATE_GAMEOBJECT(m_pJoinPointIcon, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pJoinPointIcon);
-	CREATE_GAMEOBJECT(m_pJoinPointText, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pJoinPointText);
-	CREATE_GAMEOBJECT(m_pJoinPointGauge, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pJoinPointGauge);
+	m_pOperPointUI[PT_Icon]->Set_Scale(115.f);
+	m_pOperPointUI[PT_Icon]->Set_Sort(0.485f);
+	m_pOperPointUI[PT_Icon]->Set_Color(_float4(0.7f, 0.7f, 0.7f, 1.f));
+
+	m_pOperPointUI[PT_Text]->Set_Scale(140.f);
+	m_pOperPointUI[PT_Text]->Set_Sort(0.48f);
+
+	for (int i = 0; i < PT_End; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrOperPointUI[i][j] = m_pOperPointUI[i]->Clone();
+
+			CREATE_GAMEOBJECT(m_pArrOperPointUI[i][j], RENDER_UI);
+			DISABLE_GAMEOBJECT(m_pArrOperPointUI[i][j]);
+		}
+	}
+
+	switch (m_eLoadLevel)
+	{
+	case LEVEL_PADEN:
+
+		// 목표 거점
+		m_pArrOperPointUI[PT_Point][0]->Set_PosY(133.f);
+		m_pArrOperPointUI[PT_Gauge][0]->Set_PosY(132.f);
+		m_pArrOperPointUI[PT_Text][0]->Set_PosY(128.f);
+
+		// 중간 거점
+		m_pArrOperPointUI[PT_Point][1]->Set_PosY(-161.f);
+		m_pArrOperPointUI[PT_Gauge][1]->Set_PosY(-161.f);
+		m_pArrOperPointUI[PT_Icon][1]->Set_PosY(-161.f);
+
+		m_pArrOperPointUI[PT_Text][1]->Set_PosY(-166.f);
+
+		for (int i = 0; i < 3; ++i)
+		{
+			GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Point][i], CTexture)->Set_CurTextureIndex(i);
+			GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Gauge][i], CTexture)->Set_CurTextureIndex(i);
+			GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Icon][i], CTexture)->Set_CurTextureIndex(i);
+			GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Text][i], CTexture)->Set_CurTextureIndex(i);
+
+			if (i > 0)
+			{
+				GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Point][i], CTexture)->Set_CurTextureIndex(1);
+				GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Gauge][i], CTexture)->Set_CurTextureIndex(1);
+				GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Icon][i], CTexture)->Set_CurTextureIndex(1);
+				GET_COMPONENT_FROM(m_pArrOperPointUI[PT_Text][i], CTexture)->Set_CurTextureIndex(1);
+			}
+		}
+
+		break;
+	}
+
+#pragma region Etc
+
+	m_pOperAttackPointText = CUI_Object::Create();
+	m_pOperAttackPointText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperText.png"));
+	m_pOperAttackPointText->Set_PosY(-250.f);
+	m_pOperAttackPointText->Set_Scale(287.f, 50.f);
+	m_pOperAttackPointText->Set_Sort(0.49f);
+
+	m_pTargetPoint = CUI_Object::Create();
+	m_pTargetPoint->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_PingGreenLeader.dds"));
+	m_pTargetPoint->Set_Pos(-45.f, -300.f);
+	m_pTargetPoint->Set_Sort(0.47f);
+
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pArrTargetPoint[i] = m_pTargetPoint->Clone();
+
+		CREATE_GAMEOBJECT(m_pArrTargetPoint[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pArrTargetPoint[i]);
+	}
+
+	m_pArrTargetPoint[0]->Set_Scale(30.f);
+	m_pArrTargetPoint[0]->Set_FontRender(true);
+	m_pArrTargetPoint[0]->Set_FontStyle(true);
+	m_pArrTargetPoint[0]->Set_FontOffset(20.f, -13.f);
+	m_pArrTargetPoint[0]->Set_FontScale(0.25f);
+	m_pArrTargetPoint[0]->Set_FontText(TEXT("공격 목표"));
+
+	m_pArrTargetPoint[1]->Set_Scale(32.f);
+
+	CREATE_GAMEOBJECT(m_pOperAttackPointText, RENDER_UI);
+	DISABLE_GAMEOBJECT(m_pOperAttackPointText);
+
+	CREATE_GAMEOBJECT(m_pTargetPoint, RENDER_UI);
+	DELETE_GAMEOBJECT(m_pTargetPoint);
+
+#pragma endregion
 }
 
 void CUI_HUD::Create_OperPointEffect()
@@ -1368,7 +1512,7 @@ void CUI_HUD::Create_OperPointEffect()
 	tFadeDesc.fFadeInStartTime = 0.f;
 	tFadeDesc.fFadeInTime = 0.3f;
 	tFadeDesc.fFadeOutStartTime = 0.f;
-	tFadeDesc.fFadeOutTime = 0.3f;
+	tFadeDesc.fFadeOutTime = 1.f;
 	GET_COMPONENT_FROM(m_pOperPointCircleEffect, CFader)->Get_FadeDesc() = tFadeDesc;
 
 	CREATE_GAMEOBJECT(m_pOperPointCircleEffect, RENDER_UI);
@@ -1382,8 +1526,35 @@ void CUI_HUD::Create_OperPointEffect()
 		DISABLE_GAMEOBJECT(m_pArrOperPointCircleEffect[i]);
 	}
 
-	m_pArrOperPointCircleEffect[0]->Set_PosY(105.f);
-	m_pArrOperPointCircleEffect[1]->Set_PosY(105.f);
-	m_pArrOperPointCircleEffect[2]->Set_PosY(-303.f);
-	m_pArrOperPointCircleEffect[3]->Set_PosY(-303.f);
+	m_pArrOperPointCircleEffect[0]->Set_PosY(133.f);
+	m_pArrOperPointCircleEffect[1]->Set_PosY(133.f);
+	m_pArrOperPointCircleEffect[2]->Set_PosY(-161.f);
+	m_pArrOperPointCircleEffect[3]->Set_PosY(-161.f);
+}
+
+void CUI_HUD::Create_OperTimer()
+{
+	for (int i = 0; i < TT_End; ++i)
+	{
+		m_pOperTimer[i] = CUI_Object::Create();
+
+		m_pOperTimer[i]->Set_PosY(275.f);
+		m_pOperTimer[i]->Set_Scale(242.f, 10.f);
+
+		CREATE_GAMEOBJECT(m_pOperTimer[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pOperTimer[i]);
+	}
+
+	m_pOperTimer[TT_BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarBG.png"));
+	m_pOperTimer[TT_BG]->Set_Color(_float4(0.f, 0.f, 0.f, 0.5f));
+	m_pOperTimer[TT_BG]->Set_Sort(0.49f);
+
+	m_pOperTimer[TT_Bar]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarGrey.dds"));
+	m_pOperTimer[TT_Bar]->Set_Sort(0.48f);
+	m_pOperTimer[TT_Bar]->Set_FontRender(true);
+	m_pOperTimer[TT_Bar]->Set_FontStyle(true);
+	m_pOperTimer[TT_Bar]->Set_FontOffset(-22.f,-13.f);
+	m_pOperTimer[TT_Bar]->Set_FontScale(0.25f);
+
+	GET_COMPONENT_FROM(m_pOperTimer[TT_Bar], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
 }

@@ -104,12 +104,10 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 
 	if (pOwner->Get_OwnerPlayer()->AbleHero())
 	{
-
 		if (KEY(NUM1, TAP))
 		{
 			m_eChangeClassType = FIONA;
 			return m_eStateType;
-
 		}
 		else if (KEY(NUM2, TAP))
 		{

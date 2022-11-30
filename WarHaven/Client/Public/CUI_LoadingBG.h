@@ -34,6 +34,7 @@ private:
 	CUI_Object* m_pNextMapName = nullptr;
 	CUI_Object* m_pGibberish = nullptr;
 	CUI_Object* m_pLoddingText = nullptr;
+	CUI_Object* m_pModeText = nullptr;
 
 private:
 	void Create_LoadingText(LEVEL_TYPE_CLIENT eLevel, wstring eName);

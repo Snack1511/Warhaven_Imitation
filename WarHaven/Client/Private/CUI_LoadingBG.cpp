@@ -56,6 +56,7 @@ HRESULT CUI_LoadingBG::Initialize_Prototype()
 			_uint iTraninigTexture = random(0, 11);
 			GET_COMPONENT(CTexture)->Set_CurTextureIndex(iTraninigTexture);
 			Create_LoadingText(eLoadLevel, TEXT("파덴"));
+			m_pModeText->Set_FontText(TEXT("점령전"));
 		}
 		break;
 	}
@@ -97,9 +98,11 @@ void CUI_LoadingBG::Create_LoadingText(LEVEL_TYPE_CLIENT eLevel, wstring eName)
 {
 	m_pNextMapName = CUI_Object::Create();
 	m_pLoddingText = CUI_Object::Create();
+	m_pModeText = CUI_Object::Create();
 
 	m_pNextMapName->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 	m_pLoddingText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+	m_pModeText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
 	m_pNextMapName->Set_Pos(-550.f, 150.f);
 	m_pNextMapName->Set_Sort(0.8f);
@@ -115,17 +118,27 @@ void CUI_LoadingBG::Create_LoadingText(LEVEL_TYPE_CLIENT eLevel, wstring eName)
 	m_pLoddingText->Set_FontOffset(0.f, -50.f);
 	m_pLoddingText->Set_FontScale(0.3f);
 	m_pLoddingText->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
-
 	m_pLoddingText->Set_FontText(TEXT("전장 합류 중"));
+
+	m_pModeText->Set_Pos(-540.f, 50.f);
+	m_pModeText->Set_Sort(0.8f);
+	m_pModeText->Set_FontRender(true);
+	m_pModeText->Set_FontStyle(true);
+	m_pModeText->Set_FontOffset(0.f, -50.f);
+	m_pModeText->Set_FontScale(0.4f);
 
 	CREATE_GAMEOBJECT(m_pNextMapName, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pNextMapName);
+
+	CREATE_GAMEOBJECT(m_pModeText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pModeText);
 
 	m_pNextMapName->Set_FontText(eName);
 
 	if (eLevel > 2)
 	{
 		ENABLE_GAMEOBJECT(m_pNextMapName);
+		ENABLE_GAMEOBJECT(m_pModeText);
 	}
 
 	CREATE_GAMEOBJECT(m_pLoddingText, GROUP_UI);

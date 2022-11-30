@@ -8,7 +8,7 @@ class CUnit;
 
 class CUI_HUD : public CUI_Wrapper
 {
-	enum HUD_Type{Crosshair, Port, Skill, HeroGauge, HpBar, HUD_END};
+	enum HUD_Type { Crosshair, Port, Skill, HeroGauge, HpBar, HUD_END };
 
 	DECLARE_PROTOTYPE(CUI_HUD);
 	DECLARE_GAMEOBJECT(CUI_HUD);
@@ -29,10 +29,12 @@ public:
 	virtual void On_PointExit_Port(const _uint& iEventNum);
 	virtual void On_PointDown_Port(const _uint& iEventNum);
 
-	virtual void On_PointEnter_SelectBG(const _uint& iEventNum);
+	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
+	virtual void On_PointDown_Point(const _uint& iEventNum);
 
 public:
 	virtual void Set_Shader_Smoke(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Timer(CShader* pShader, const char* pConstName);
 
 public:
 	void Set_HUD(CLASS_TYPE eClass);
@@ -71,64 +73,87 @@ private:	// 작전회의
 	CUI_Object* m_pSmokeBG = nullptr;
 	CUI_Object* m_pOperBlackBG = nullptr;
 	CUI_Object* m_pOperTextImg = nullptr;
+	CUI_Object* m_pOperTextImg2 = nullptr;
+	CUI_Object* m_pSquardTextImg = nullptr;
 
 	CUI_Object* m_pOperProfile = nullptr;
-	CUI_Object* m_pArrOperProfile[4];		
+	CUI_Object* m_pArrOperProfile[4];
 
 	CUI_Object* m_pOperSideBG = nullptr;
 	CUI_Object* m_pArrOperSideBG[2];
 
-	CUI_Object* m_pOperSelectChar = nullptr;
-	CUI_Object* m_pArrOperSelectChar[6];
+private:	// 작전회의 캐릭터 선택 창
+	enum OperSelectType { ST_Char, ST_Port, ST_BG, ST_Icon, ST_End };
 
-	CUI_Object* m_pOperSelectCharPort = nullptr;
-	CUI_Object* m_pArrOperSelectCharPort[6];
+	CUI_Object* m_pOperSelectUI[ST_End];
+	CUI_Object* m_pArrOperSelectUI[ST_End][6];
 
-	CUI_Object* m_pOperSelectBG = nullptr;
-	CUI_Object* m_pArrOperSelectBG[6];
+	_uint m_iCurSelectEventNum = 0;
+	_uint m_iPrvSelectEventNum = 0;
 
-	CUI_Object* m_pOperSelectIcon = nullptr;
-	CUI_Object* m_pArrOperSelectIcon[6];
+private:
+	void Create_OperSelectCharacter();
 
+private:
 	CUI_Object* m_pOperMapIcon = nullptr;
 	CUI_Object* m_pOperMapBG = nullptr;
 
-	CUI_Object* m_pGoalPoint = nullptr;
-	CUI_Object* m_pGoalPointText = nullptr;
-	CUI_Object* m_pGoalPointGauge = nullptr;
+private:	// 작전회의 거점 아이콘
+	enum OperPointType { PT_Point, PT_Gauge, PT_Icon, PT_Text, PT_End };
 
-	CUI_Object* m_pJoinPoint = nullptr;
-	CUI_Object* m_pJoinPointText = nullptr;
-	CUI_Object* m_pJoinPointIcon = nullptr;
-	CUI_Object* m_pJoinPointGauge = nullptr;
+	CUI_Object* m_pOperPointUI[PT_End];
+	CUI_Object* m_pArrOperPointUI[PT_End][3];
+
+	CUI_Object* m_pOperAttackPointText = nullptr;
+
+	CUI_Object* m_pTargetPoint = nullptr;
+	CUI_Object* m_pArrTargetPoint[2];
 
 	CUI_Object* m_pOperPointCircleEffect = nullptr;
 	CUI_Object* m_pArrOperPointCircleEffect[4];
 
+private:
+	void Create_OperPoint();
+	void Create_OperPointEffect();
+
+private:	// 작전회의 타이머
+	enum OperTimerType { TT_BG, TT_Bar, TT_End };
+	CUI_Object* m_pOperTimer[TT_End];
+
+	_float m_fMaxOperTime = 15.f;
+	_float m_fOperTime = 0.f;
+	_float m_fTimerRatio = 1.f;
+
+private:
+	void Create_OperTimer();
+
+private:
 	_uint m_iOperWindowCnt = 0;
 	_float m_fSmokeUV = 0.f;
 
 private:	// 클래스 변경 창
 	CUI_Object* m_pBG = nullptr;
-	CUI_Object* m_pPort;
-	CUI_Object* m_pPortBG;
+
+	CUI_Object* m_pPort = nullptr;
+	CUI_Object* m_pPortClone[6];
+
+	CUI_Object* m_pPortBG = nullptr;
+	CUI_Object* m_pPortBGClone[6];
+
 	CUI_Object* m_pClassIcon = nullptr;
+	CUI_Object* m_pClassIconClone[6];
 
 	CUI_Object* m_pPortHighlight = nullptr;
 	CUI_Object* m_pPortHighlights[6];
+
+	CUI_Object* m_pPortUnderLine = nullptr;
+	CUI_Object* m_pPortUnderLines[6];
 
 	CUI_Object* m_pClassInfo = nullptr;
 	CUI_Object* m_pClassInfoIcon = nullptr;
 	CUI_Object* m_pLine = nullptr;
 	CUI_Object* m_pSelectLine = nullptr;
 	CUI_Object* m_pConfirmBtn = nullptr;
-
-	CUI_Object* m_pPortUnderLine = nullptr;
-	CUI_Object* m_pPortUnderLines[6];
-
-	CUI_Object* m_pPortClone[6];
-	CUI_Object* m_pPortBGClone[6];
-	CUI_Object* m_pClassIconClone[6];
 
 	CUI_Object* m_pChangeClassText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;
@@ -147,7 +172,7 @@ private:
 	void Set_FadePortHighlight();
 	void Set_FadeOperSelectChaderUI();
 
-private:	
+private:
 	void SetActive_OperUI(_bool value);
 	void SetActive_PlayerInfoUI(_bool value);
 	void SetActive_CharacterSelectWindow(_bool value);
@@ -156,7 +181,9 @@ private:
 	void Update_HP();
 	void Update_HeroGauge();
 
+private:	// 작전 회의
 	void Update_OperWindow();
+	void Enable_OperPointUI();
 
 private:
 	void Create_CharacterSelectWindow();
@@ -171,12 +198,9 @@ private:	// OperWindow
 	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
 	void Create_OperProfile();
 	void Create_OperSideBG();
-	void Create_OperSelectCharacter();
 	void Create_OperMap();
 
 private:
-	void Create_OperPoint();
-	void Create_OperPointEffect();
 };
 
 END
