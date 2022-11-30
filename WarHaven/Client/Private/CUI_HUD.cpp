@@ -338,15 +338,15 @@ void CUI_HUD::Bind_Btn()
 		m_pPortClone[i]->CallBack_PointExit += bind(&CUI_HUD::On_PointExit_Port, this, i);
 		m_pPortClone[i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Port, this, i);
 
-		if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
-		{
+		if (m_pArrOperSelectUI[ST_BG][i])
 			m_pArrOperSelectUI[ST_BG][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_SelectBG, this, i);
-		}
+		
 	}
 
 	for (int i = 0; i < 3; ++i)
 	{
-		m_pArrOperPointUI[PT_Point][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Point, this, i);
+		if (m_pArrOperPointUI[PT_Point][i])
+			m_pArrOperPointUI[PT_Point][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Point, this, i);
 	}
 }
 
@@ -526,6 +526,9 @@ void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 {
+	if (m_eCurClass >= CLASS_TYPE::FIONA)
+		return;
+
 	Set_ClassInfo(m_eCurClass);
 
 	m_pPortClone[m_eCurClass]->Set_PosY(-240.f);
@@ -1011,7 +1014,6 @@ void CUI_HUD::Update_OperWindow()
 
 void CUI_HUD::Bind_Shader()
 {
-	if (m_eLoadLevel != LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
 		GET_COMPONENT_FROM(m_pSmokeBG, CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
 		GET_COMPONENT_FROM(m_pOperTimer[TT_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Timer, this, placeholders::_1, "g_fValue");

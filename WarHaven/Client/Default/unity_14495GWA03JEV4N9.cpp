@@ -1,4 +1,7 @@
 
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_Valkyrie_Begin.cpp"
+
+
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_WarHammer_Begin.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSpearMan_SpecialGuard.cpp"
-
-
-#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CFunc_ObjectControl.cpp"
 

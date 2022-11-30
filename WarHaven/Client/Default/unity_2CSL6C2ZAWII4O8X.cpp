@@ -1,4 +1,7 @@
 
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStop_Valkyrie.cpp"
+
+
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStop_WarHammer.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTrigger.cpp"
-
-
-#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTrigger_BootCamp.cpp"
 

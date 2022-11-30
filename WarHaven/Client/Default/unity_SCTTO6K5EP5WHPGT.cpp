@@ -1,4 +1,7 @@
 
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWalk_Player_L.cpp"
+
+
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWalk_Player_R.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWindow_Effect.cpp"
-
-
-#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CWindow_Level.cpp"
 

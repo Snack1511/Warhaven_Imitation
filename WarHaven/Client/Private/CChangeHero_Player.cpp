@@ -64,9 +64,11 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	m_iAnimIndex = pPlayer->Get_ChangeHeroIndex(eDefaultType);
 
+	/*가운데 집중 블러, 색수차 키기*/
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
 	GAMEINSTANCE->Start_ChromaticAberration(30.f);
 
+	/* 히트박스 끄기 */
 	pOwner->Enable_HitBoxColliders(false);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
 

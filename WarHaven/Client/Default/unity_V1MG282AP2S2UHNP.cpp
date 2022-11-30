@@ -1,4 +1,7 @@
 
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSprint_Begin.cpp"
+
+
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSprint_Jump_Fall_Player.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Crosshair.cpp"
-
-
-#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Cursor.cpp"
 

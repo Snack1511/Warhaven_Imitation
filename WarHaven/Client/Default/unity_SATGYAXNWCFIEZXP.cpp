@@ -1,4 +1,7 @@
 
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CFunc_ObjectControl.cpp"
+
+
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CButton.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CChangeHero_Player.cpp"
-
-
-#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStop_Valkyrie.cpp"
 
