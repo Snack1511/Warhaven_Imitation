@@ -145,11 +145,9 @@ private:	// 클래스 변경 창
 private:
 	void Create_CharacterSelectWindow();
 
+private:
 	CUI_Object* m_pClassInfo = nullptr;
 	CUI_Object* m_pClassInfoIcon = nullptr;
-	CUI_Object* m_pLine = nullptr;	
-	CUI_Object* m_pSelectLine = nullptr;
-	CUI_Object* m_pConfirmBtn = nullptr;
 
 	CUI_Object* m_pChangeClassText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;

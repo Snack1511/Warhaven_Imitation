@@ -409,12 +409,6 @@ void CUI_HUD::Create_CharacterSelectWindow()
 	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Remove_Texture(0);
 	Read_Texture(m_pClassInfoIcon, "/HUD/CharacterSelect", "Icon");
 
-	m_pLine = CUI_Object::Create();
-	m_pLine->Set_Scale(650.f, 28.f);
-	m_pLine->Set_Pos(0.f, -100.f);
-	m_pLine->Set_Sort(0.01f);
-	m_pLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_DecoLam02.png"));
-
 	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pBG);
 
@@ -423,9 +417,6 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 	CREATE_GAMEOBJECT(m_pClassInfoIcon, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pClassInfoIcon);
-
-	CREATE_GAMEOBJECT(m_pLine, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pLine);
 }
 
 void CUI_HUD::Set_FadePortHighlight()
@@ -502,7 +493,6 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 		CUser::Get_Instance()->Set_FixCursor(false); // 픽창 마우스 고정 해제
 
 		ENABLE_GAMEOBJECT(m_pBG);
-		ENABLE_GAMEOBJECT(m_pLine);
 		ENABLE_GAMEOBJECT(m_pClassInfo);
 		ENABLE_GAMEOBJECT(m_pClassInfoIcon);
 
@@ -519,7 +509,6 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 		CUser::Get_Instance()->Set_FixCursor(true); //픽 후 마우스 고정
 
 		DISABLE_GAMEOBJECT(m_pBG);
-		DISABLE_GAMEOBJECT(m_pLine);
 		DISABLE_GAMEOBJECT(m_pClassInfo);
 		DISABLE_GAMEOBJECT(m_pClassInfoIcon);
 
