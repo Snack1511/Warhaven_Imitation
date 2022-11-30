@@ -720,6 +720,7 @@ void CPlayer::On_AbleHero()
 	if (m_bIsMainPlayer)
 	{
 		CUser::Get_Instance()->SetActive_HeroPortrait(true);
+		CUser::Get_Instance()->Turn_HeroGaugeFire(true);
 	}
 }
 
@@ -734,6 +735,7 @@ void CPlayer::On_FinishHero()
 	if (m_bIsMainPlayer)
 	{
 		CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
+		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 	}
 
 }

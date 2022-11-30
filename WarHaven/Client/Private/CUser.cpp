@@ -29,6 +29,7 @@
 #include "CUI_Training.h"
 
 #include "CUI_Cursor.h"
+#include "CUI_Fire.h"
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -204,6 +205,29 @@ void CUser::Turn_BloodOverLay(_float fHpRatio)
 	m_pBloodOverlay->Trun_BloodOverlay(fHpRatio);
 }
 
+void CUser::SetUp_HeroGaugeFire()
+{
+	if (m_pFire)
+		return;
+
+	m_pFire = CUI_Fire::Create();
+
+	CREATE_GAMEOBJECT(m_pFire, GROUP_UI);
+
+	DISABLE_GAMEOBJECT(m_pFire);
+}
+
+void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
+{
+	if (!m_pFire)
+		return;
+
+	if(bTurnOn)
+		ENABLE_GAMEOBJECT(m_pFire);
+	else
+		DISABLE_GAMEOBJECT(m_pFire);
+}
+
 void CUser::On_EnterLevel()
 {
 	DISABLE_GAMEOBJECT(m_pCursor);
@@ -241,6 +265,7 @@ void CUser::On_EnterStageLevel()
 	}
 
 	SetUp_BloodOverlay();
+	SetUp_HeroGaugeFire();
 }
 
 void CUser::On_ExitStageLevel()
@@ -253,6 +278,7 @@ void CUser::On_ExitStageLevel()
 
 	m_pUI_Training = nullptr;
 	m_pPlayer = nullptr;
+	m_pFire = nullptr;
 }
 
 void CUser::Set_HUD(CLASS_TYPE eClass)

@@ -75,6 +75,8 @@ HRESULT CValkyrie_Counter::Initialize()
 	//m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
 	//m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
 
+	Add_KeyFrame(1, 333);
+
 
 	return S_OK;
 }
@@ -83,7 +85,6 @@ void CValkyrie_Counter::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 {
 	pOwner->Enable_GuardCollider(true);
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"FionaParring", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -123,5 +124,17 @@ STATE_TYPE CValkyrie_Counter::Check_Condition(CUnit* pOwner, CAnimator* pAnimato
 	}
 
 	return STATE_END;
+}
+
+void CValkyrie_Counter::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+	switch (iSequence)
+	{
+	case 333:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"FionaParring", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+		break;
+	default:
+		break;
+	}
 }
 
