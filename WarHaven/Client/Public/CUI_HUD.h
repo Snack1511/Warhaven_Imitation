@@ -35,14 +35,17 @@ public:
 public:
 	virtual void Set_Shader_Smoke(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_Timer(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName);
 
 public:
 	void Set_HUD(CLASS_TYPE eClass);
 	void Set_HP(_float fMaxHP, _float fCurHP);
 	void Set_HeroGauge(_float fMaxGauge, _float fCurGauge);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
+
 	void SetActive_HeroPortrait(_bool value);
 	void SetActive_OxenJumpText(_bool value);
+	void SetActive_HeroTransformGauge(_bool value);
 
 public:
 	_bool Is_OnHeroGauge();
@@ -162,6 +165,17 @@ private:
 
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;
 
+private:	// 변신 게이지
+	enum HeroTransformUI { HT_BG, HT_Bar, HT_End };
+	CUI_Object* m_pHeroTransformUI[HT_End];
+
+	_float m_fMaxHeroTransformValue = 1.44272f;
+	_float m_fHeroTransformValue = 0.f;
+	_float m_fHeroTransformGaugeRatio = 0.f;
+
+private:
+	void Create_HeroTransformUI();
+
 private:
 	void Bind_Btn();
 	void Bind_Shader();
@@ -177,6 +191,7 @@ private:
 
 	void Update_HP();
 	void Update_HeroGauge();
+	void Update_HeorTransformGauge();
 
 private:	// 작전 회의
 	void Update_OperWindow();

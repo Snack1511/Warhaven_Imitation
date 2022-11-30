@@ -52,6 +52,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_OxenJumpText();
 	Create_HpText();
 	Create_PlayerNameText();
+	Create_HeroTransformUI();
 
 	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
@@ -74,6 +75,7 @@ HRESULT CUI_HUD::Initialize()
 HRESULT CUI_HUD::Start()
 {
 	Bind_Btn();
+	Bind_Shader();
 
 	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
@@ -83,9 +85,7 @@ HRESULT CUI_HUD::Start()
 	else
 	{
 		Set_FadeOperSelectChaderUI();
-
 		SetActive_OperUI(true);
-		Bind_Shader();
 	}
 
 	__super::Start();
@@ -101,6 +101,7 @@ void CUI_HUD::My_Tick()
 
 	Update_HP();
 	Update_HeroGauge();
+	Update_HeorTransformGauge();
 
 	Update_OperWindow();
 
@@ -216,6 +217,11 @@ void CUI_HUD::Set_Shader_Timer(CShader* pShader, const char* pConstName)
 	pShader->Set_RawValue("g_fValue", &m_fTimerRatio, sizeof(_float));
 }
 
+void CUI_HUD::Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fHeroTransformGaugeRatio, sizeof(_float));
+}
+
 void CUI_HUD::SetActive_OxenJumpText(_bool value)
 {
 	if (value == true)
@@ -225,6 +231,22 @@ void CUI_HUD::SetActive_OxenJumpText(_bool value)
 	else
 	{
 		DISABLE_GAMEOBJECT(m_pOxenJumpText);
+	}
+}
+
+void CUI_HUD::SetActive_HeroTransformGauge(_bool value)
+{
+
+	for (int i = 0; i < HT_End; ++i)
+	{
+		if (value == true)
+		{
+			ENABLE_GAMEOBJECT(m_pHeroTransformUI[i]);
+		}
+		else
+		{
+			DISABLE_GAMEOBJECT(m_pHeroTransformUI[i]);
+		}
 	}
 }
 
@@ -919,8 +941,20 @@ void CUI_HUD::Update_OperWindow()
 
 void CUI_HUD::Bind_Shader()
 {
-	GET_COMPONENT_FROM(m_pSmokeBG, CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_pOperTimer[TT_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Timer, this, placeholders::_1, "g_fValue");
+	if (m_pSmokeBG)
+	{
+		GET_COMPONENT_FROM(m_pSmokeBG, CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
+	}
+
+	if (m_pOperTimer[TT_Bar])
+	{
+		GET_COMPONENT_FROM(m_pOperTimer[TT_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_Timer, this, placeholders::_1, "g_fValue");
+	}
+
+	if (m_pHeroTransformUI[HT_Bar])
+	{
+		GET_COMPONENT_FROM(m_pHeroTransformUI[HT_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_HUD::Set_Shader_HeroTransformGauge, this, placeholders::_1, "g_fValue");
+	}
 }
 
 void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
@@ -1142,6 +1176,29 @@ void CUI_HUD::BootCamp_CharacterWindow()
 	}
 }
 
+void CUI_HUD::Create_HeroTransformUI()
+{
+	for (int i = 0; i < HT_End; ++i)
+	{
+		m_pHeroTransformUI[i] = CUI_Object::Create();
+
+		m_pHeroTransformUI[i]->Set_PosY(-100.f);
+		m_pHeroTransformUI[i]->Set_Scale(200.f, 10.f);
+
+		CREATE_GAMEOBJECT(m_pHeroTransformUI[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pHeroTransformUI[i]);
+	}
+
+	m_pHeroTransformUI[HT_BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarBG.png"));
+	m_pHeroTransformUI[HT_BG]->Set_Sort(0.5f);
+	m_pHeroTransformUI[HT_BG]->Set_Color(_float4(0.f, 0.f, 0.f, 0.4f));
+
+	m_pHeroTransformUI[HT_Bar]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarGrey.dds"));
+	m_pHeroTransformUI[HT_Bar]->Set_Sort(0.49f);
+
+	GET_COMPONENT_FROM(m_pHeroTransformUI[HT_Bar], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
+}
+
 void CUI_HUD::Enable_OperPointUI()
 {
 	for (int i = 0; i < PT_End; ++i)
@@ -1164,6 +1221,32 @@ void CUI_HUD::Enable_OperPointUI()
 
 	m_fAccTime = 0.f;
 	m_iOperWindowCnt++;
+}
+
+void CUI_HUD::Update_HeorTransformGauge()
+{
+	if (m_pHeroTransformUI[HT_Bar])
+	{
+		if (m_pHeroTransformUI[HT_Bar]->Is_Valid())
+		{
+			cout << m_fHeroTransformGaugeRatio << endl;
+
+			m_fHeroTransformValue += fDT(0);
+			m_fHeroTransformGaugeRatio = m_fHeroTransformValue / m_fMaxHeroTransformValue;
+			
+			if (m_fHeroTransformValue > m_fMaxHeroTransformValue)
+			{
+				m_fHeroTransformValue = m_fMaxHeroTransformValue;
+			
+				for (int i = 0; i < HT_End; ++i)
+				{
+					DISABLE_GAMEOBJECT(m_pHeroTransformUI[i]);
+				}
+			
+				m_fHeroTransformValue = 0.f;
+			}
+		}
+	}
 }
 
 void CUI_HUD::Create_OperSelectCharacter()

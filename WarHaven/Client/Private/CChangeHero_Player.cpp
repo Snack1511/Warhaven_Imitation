@@ -64,6 +64,9 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	m_iAnimIndex = pPlayer->Get_ChangeHeroIndex(eDefaultType);
 
+	// 히어로 변신 게이지 활성화
+	CUser::Get_Instance()->SetActive_HeroTransformGauge(true);
+
 	/*가운데 집중 블러, 색수차 키기*/
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
 	GAMEINSTANCE->Start_ChromaticAberration(30.f);
@@ -91,7 +94,6 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 		return STATE_END;
 	}
-
 
 	return __super::Tick(pOwner, pAnimator);
 }

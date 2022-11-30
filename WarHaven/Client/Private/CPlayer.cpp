@@ -353,9 +353,7 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 
 	if (m_pCurrentUnit)
 	{
-
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
-
 	}
 
 	m_pCurrentUnit = m_pDefaultClass[eClass];
