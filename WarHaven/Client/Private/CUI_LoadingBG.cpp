@@ -59,7 +59,7 @@ HRESULT CUI_LoadingBG::Initialize_Prototype()
 		}
 		break;
 
-		/*case LEVEL_HWARA:
+		case LEVEL_HWARA:
 		{
 			_uint iMapTexture = random(0, 8);
 			GET_COMPONENT(CTexture)->Set_CurTextureIndex(iMapTexture);
@@ -67,7 +67,7 @@ HRESULT CUI_LoadingBG::Initialize_Prototype()
 			m_pLoadingText[LT_Map]->Set_FontText(TEXT("파라"));
 			m_pLoadingText[LT_Mode]->Set_FontText(TEXT("호송전"));
 			break;
-		}*/
+		}
 	}
 
 	return S_OK;

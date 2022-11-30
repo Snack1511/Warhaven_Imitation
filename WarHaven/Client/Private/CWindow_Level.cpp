@@ -86,6 +86,10 @@ HRESULT CWindow_Level::Render()
 			strName = "PADEN";
 			break;
 
+		case 6:
+			strName = "HWARA";
+			break;
+
 		default:
 			break;
 		}

@@ -119,7 +119,7 @@ namespace Client
 		LEVEL_TEST,
 		LEVEL_BOOTCAMP,
 		LEVEL_PADEN,
-		//LEVEL_HWARA,
+		LEVEL_HWARA,
 		LEVEL_END
 	};
 
