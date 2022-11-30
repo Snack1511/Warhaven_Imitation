@@ -204,6 +204,12 @@ void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
 	_float4 vPos = m_pArrOperPointUI[PT_Point][iEventNum]->Get_Pos();
 	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
 
+	GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Set_CurTextureIndex(1);
+	m_pBriefingUI[BU_Icon]->Set_Scale(20.f, 15.f);
+	m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.f, 0.6f, 0.f, 1.f));
+	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
+	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
+
 	ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 }
 
@@ -236,7 +242,6 @@ void CUI_HUD::SetActive_OxenJumpText(_bool value)
 
 void CUI_HUD::SetActive_HeroTransformGauge(_bool value)
 {
-
 	for (int i = 0; i < HT_End; ++i)
 	{
 		if (value == true)
@@ -439,6 +444,38 @@ void CUI_HUD::Create_CharacterSelectWindow()
 
 	CREATE_GAMEOBJECT(m_pClassInfoIcon, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pClassInfoIcon);
+}
+
+void CUI_HUD::Create_BriefingUI()
+{
+	for (int i = 0; i < BU_End; ++i)
+	{
+		m_pBriefingUI[i] = CUI_Object::Create();
+
+		CREATE_GAMEOBJECT(m_pBriefingUI[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pBriefingUI[i]);
+	}
+
+	m_pBriefingUI[BU_BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Briefing/T_BriefingBox.dds"));
+	m_pBriefingUI[BU_BG]->Set_PosY(245.f);
+	m_pBriefingUI[BU_BG]->Set_Scale(160.f, 25.f);
+	m_pBriefingUI[BU_BG]->Set_Color(_float4(0.f, 0.f, 0.f, 0.6f));
+	m_pBriefingUI[BU_BG]->Set_Sort(0.5f);
+
+	GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pBriefingUI[BU_Icon], "/Oper/Briefing", "Icon");
+
+	m_pBriefingUI[BU_Icon]->Set_Sort(0.49f);
+	m_pBriefingUI[BU_Icon]->Set_Pos(-40.f, 246.f);
+	m_pBriefingUI[BU_Icon]->Set_Scale(32.f);
+	m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.6f, 0.6f, 0.6f, 1.f));
+
+	m_pBriefingUI[BU_Icon]->Set_FontRender(true);
+	m_pBriefingUI[BU_Icon]->Set_FontStyle(true);
+	m_pBriefingUI[BU_Icon]->Set_FontOffset(10.f, -10.f);
+	m_pBriefingUI[BU_Icon]->Set_FontScale(0.2f);
+	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(_float4(0.6f, 0.6f, 0.6f, 1.f)));
+	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("공격 목표 없음"));
 }
 
 void CUI_HUD::Set_FadePortHighlight()
@@ -917,6 +954,11 @@ void CUI_HUD::Update_OperWindow()
 					Enable_Fade(m_pOperTimer[i], fDuration);
 				}
 
+				for (int i = 0; i < BU_End; ++i)
+				{
+					Enable_Fade(m_pBriefingUI[i], fDuration);
+				}
+
 				m_fAccTime = 0.f;
 				m_iOperWindowCnt++;
 			}
@@ -960,14 +1002,19 @@ void CUI_HUD::Bind_Shader()
 void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 {
 	m_pOperWindow = CUI_Object::Create();
-	m_pOperWindow->Set_PosY(205.f);
 	m_pOperWindow->Set_Scale(4096.f);
 	m_pOperWindow->Set_Sort(0.52f);
 
 	switch (eLoadLevel)
 	{
 	case Client::LEVEL_PADEN:
+		m_pOperWindow->Set_PosY(205.f);
 		m_pOperWindow->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
+		break;
+
+	case Client::LEVEL_HWARA:
+		m_pOperWindow->Set_PosY(0.f);
+		m_pOperWindow->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapHwara.dds"));
 		break;
 	}
 
@@ -1041,6 +1088,7 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	Create_OperPoint();
 	Create_OperPointEffect();
 	Create_OperTimer();
+	Create_BriefingUI();
 }
 
 void CUI_HUD::Set_FadeOperSelectChaderUI()
@@ -1077,6 +1125,11 @@ void CUI_HUD::Set_FadeOperSelectChaderUI()
 	for (int i = 0; i < TT_End; ++i)
 	{
 		GET_COMPONENT_FROM(m_pOperTimer[i], CFader)->Get_FadeDesc() = tFadeDesc;
+	}
+
+	for (int i = 0; i < BU_End; ++i)
+	{
+		GET_COMPONENT_FROM(m_pBriefingUI[i], CFader)->Get_FadeDesc() = tFadeDesc;
 	}
 
 	FADEDESC tFadeDescBG;
@@ -1233,16 +1286,16 @@ void CUI_HUD::Update_HeorTransformGauge()
 
 			m_fHeroTransformValue += fDT(0);
 			m_fHeroTransformGaugeRatio = m_fHeroTransformValue / m_fMaxHeroTransformValue;
-			
+
 			if (m_fHeroTransformValue > m_fMaxHeroTransformValue)
 			{
 				m_fHeroTransformValue = m_fMaxHeroTransformValue;
-			
+
 				for (int i = 0; i < HT_End; ++i)
 				{
 					DISABLE_GAMEOBJECT(m_pHeroTransformUI[i]);
 				}
-			
+
 				m_fHeroTransformValue = 0.f;
 			}
 		}

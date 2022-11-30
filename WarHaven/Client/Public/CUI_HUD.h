@@ -85,6 +85,11 @@ private:	// 작전회의
 	CUI_Object* m_pOperSideBG = nullptr;
 	CUI_Object* m_pArrOperSideBG[2];
 
+private:
+	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
+	void Create_OperProfile();
+	void Create_OperSideBG();
+
 private:	// 작전회의 캐릭터 선택 창
 	enum OperSelectType { ST_Char, ST_Port, ST_BG, ST_Icon, ST_End };
 
@@ -100,6 +105,9 @@ private:
 private:
 	CUI_Object* m_pOperMapIcon = nullptr;
 	CUI_Object* m_pOperMapBG = nullptr;
+
+private:
+	void Create_OperMap();
 
 private:	// 작전회의 거점 아이콘
 	enum OperPointType { PT_Point, PT_Gauge, PT_Icon, PT_Text, PT_End };
@@ -129,6 +137,13 @@ private:	// 작전회의 타이머
 
 private:
 	void Create_OperTimer();
+
+private:	// 작전회의 목표 설정 글자
+	enum BriefingUI { BU_BG, BU_Icon, BU_End };
+	CUI_Object* m_pBriefingUI[BU_End];
+
+private:
+	void Create_BriefingUI();
 
 private:
 	_uint m_iOperWindowCnt = 0;
@@ -202,12 +217,6 @@ private:	// 작전 회의
 	void Create_OxenJumpText();
 	void Create_HpText();
 	void Create_PlayerNameText();
-
-private:	// OperWindow
-	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
-	void Create_OperProfile();
-	void Create_OperSideBG();
-	void Create_OperMap();
 };
 
 END
