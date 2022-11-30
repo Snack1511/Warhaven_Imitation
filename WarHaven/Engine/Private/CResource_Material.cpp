@@ -32,7 +32,11 @@ HRESULT CResource_Material::Initialize(ifstream* pReadFile, string strName)
 		m_tMatDesc.TexturePaths[i] = CUtility_File::Read_Text(pReadFile);
 	}
 
+	if (!m_tMatDesc.TexturePaths[8].empty())
+		m_tMatDesc.TexturePaths[1] = m_tMatDesc.TexturePaths[8];
+
 	m_tMatDesc.vMixColor = Check_FileName(m_strName);
+	
 
 	return S_OK;
 }
@@ -66,7 +70,60 @@ _float4 CResource_Material::Check_FileName(string strName)
 		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_HairProp_B.dds";
 
 	}
+	else if (strName == "MI_Warrior0001_Beard02_A00")
+	{
+		vReturnColor = _float4(0.015625f, 0.00441f, 0.003061f, 1.f);
 
+	}
+	else if (strName == "MI_Warrior0001_Beard03_A00")
+	{
+		vReturnColor = _float4(0.015f, 0.148605f, 0.148438f, 1.f);
+
+	}
+	else if (strName == "MI_Warrior0001_Beard03_A00")
+	{
+		vReturnColor = _float4(0.005208f, 0.001217f, 0.000883f, 1.f);
+
+	}
+	else if (strName == "MI_Warrior0001_Eye_A00")
+	{
+		//vReturnColor = _float4(0.005208f, 0.001217f, 0.000883f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_EyeIris_DarkBrown_B.dds";
+
+	}
+	else if (strName == "MI_Warrior0001_Eyebrow_A00")
+	{
+		vReturnColor = _float4(0.020833f, 0.007304f, 0.00651f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Warrior0001_Eyebrow_A00.dds";
+
+	}
+	else if (strName == "MI_Warrior0001_Eyelashes_A00")
+	{
+		vReturnColor = _float4(0.020833f, 0.007304f, 0.00651f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Warrior0001_Eyelashes_A00.dds";
+
+	}
+	else if (strName == "MI_Warrior0001_Face_A00")
+	{
+		//vReturnColor = _float4(0.020833f, 0.007304f, 0.00651f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Warrior0001_Face_A00_B.dds";
+		m_tMatDesc.TexturePaths[aiTextureType_NORMALS] = "../bin/resources/textures/AnimModelTextures/T_Warrior0001_Face_A00_N.dds";
+
+	}
+	else if (strName == "MI_Face_Asian_01")
+	{
+		//vReturnColor = _float4(0.020833f, 0.007304f, 0.00651f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Male_Face_Asian_01_B.dds";
+		m_tMatDesc.TexturePaths[aiTextureType_NORMALS] = "../bin/resources/textures/AnimModelTextures/T_Face_Asian_01_N.dds";
+
+	}
+	else if (strName == "MI_Eyelash_Male_Mid_Brown")
+	{
+		vReturnColor = _float4(0.002604f, 0.001848f, 0.001824f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Eyelash_01.dds";
+		//m_tMatDesc.TexturePaths[aiTextureType_NORMALS] = "../bin/resources/textures/AnimModelTextures/T_Face_Asian_01_N.dds";
+
+	}
 	
 
 	

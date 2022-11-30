@@ -103,7 +103,7 @@ void CPlayer::Create_DefaultClass()
 		L"",
 		L"",
 		L"",
-		L"../bin/resources/meshes/Characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx"
+		m_wstrBodyMeshPath[CLASS_TYPE::ENGINEER]
 	};
 
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {
@@ -121,7 +121,7 @@ void CPlayer::Create_DefaultClass()
 		L"",
 		L"",
 		L"",
-		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Helmet_A00_50.fbx"
+		m_wstrHelmetMeshPath[CLASS_TYPE::ENGINEER]
 	};
 
 	//L"../bin/resources/meshes/weapons/LongSword/SM_WP_LongSword0001_A00.fbx"
@@ -131,7 +131,8 @@ void CPlayer::Create_DefaultClass()
 		L"",
 		L"",
 		L"",
-		L"../bin/resources/meshes/weapons/Hammer/SM_WP_WarHammer0001_A00.fbx" };
+		m_wstrWeaponMeshPath[CLASS_TYPE::ENGINEER]
+	};
 
 	wstring wstrModeWeapon_L[CLASS_DEFAULT_END] = {
 		L"", // WARRIOR
@@ -718,8 +719,12 @@ void CPlayer::Ready_Customizing(eCUSTOM_TYPE eType)
 	{
 	case Client::CPlayer::eCUSTOM_TYPE::eDEFAULT:
 		m_wstrBodyMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/body/SK_Warrior0004_Body_A00_25.fbx";
-		m_wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0005_Helmet_A00_50.fbx";
+		m_wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0009_Helmet_A00_50.fbx";
 		m_wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
+
+		m_wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0004_Body_A00_30.fbx";
+		m_wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0004_Helmet_A00_50.fbx";
+		m_wstrWeaponMeshPath[ENGINEER] = L"../bin/resources/meshes/weapons/hammer/SM_WP_WarHammer0001_A00.fbx";
 
 
 		break;
@@ -727,6 +732,10 @@ void CPlayer::Ready_Customizing(eCUSTOM_TYPE eType)
 		m_wstrBodyMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/body/SK_Warrior0001_Body_A00_50.fbx";
 		m_wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0002_Helmet_A00_50.fbx";
 		m_wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
+
+		m_wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx";
+		m_wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0001_Helmet_A00_50.fbx";
+		m_wstrWeaponMeshPath[ENGINEER] = L"../bin/resources/meshes/weapons/hammer/SM_WP_WarHammer0001_A00.fbx";
 
 		break;
 	default:

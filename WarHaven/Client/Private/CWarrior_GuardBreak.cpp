@@ -91,6 +91,21 @@ void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
     pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 
+    CColorController::COLORDESC tColorDesc;
+    ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+    tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+    tColorDesc.fFadeInStartTime = 0.f;
+    tColorDesc.fFadeInTime = 0.1f;
+    tColorDesc.fFadeOutStartTime = 1.f;
+    tColorDesc.fFadeOutTime = 0.1f;
+    tColorDesc.vTargetColor = _float4((230.f / 255.f), (10.f / 255.f), (10.f / 255.f), 0.1f);
+    //tColorDesc.vTargetColor *= 1.1f;
+    tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+    tColorDesc.iStartKeyFrame = 2;
+    tColorDesc.iEndKeyFrame = 54; // 프레임 맞춰놓음
+
+    GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
 
    

@@ -69,6 +69,7 @@ public:
 	{
 		eDEFAULT,
 		eLEADER,
+		eLEADER2,
 	};
 
 private:
@@ -183,6 +184,7 @@ private:
 
 
 private:
+	/* 여기 써져있는 경로대로 모든 유닛의 옷이 결정됨. */
 	void Ready_Customizing(eCUSTOM_TYPE eType);
 };
 END
