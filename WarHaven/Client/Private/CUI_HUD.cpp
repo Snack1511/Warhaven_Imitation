@@ -14,6 +14,7 @@
 #include "CUI_HeroGauge.h"
 #include "CUI_HpBar.h"
 #include "CUI_Training.h"
+#include "CUI_Dead.h"
 #include "CUI_Black.h"
 #include "Easing_Utillity.h"
 #include "Functor.h"
@@ -415,8 +416,6 @@ void CUI_HUD::Create_CharacterSelectWindow()
 		m_pArrBootCampUI[BC_Line][i]->Set_PosX(vPos.x);
 	}
 
-	/// ///////////
-
 	m_pClassInfo = CUI_Object::Create();
 	m_pClassInfo->Set_Scale(75.f, 165.f);
 	m_pClassInfo->Set_Pos(-550.f, 200.f);
@@ -668,7 +667,9 @@ void CUI_HUD::Update_HP()
 		m_fHealthRatio = m_fCurHP / m_fMaxHP;
 
 		if (m_fCurHP < -0.f)
+		{
 			m_fHealthRatio = 0.f;
+		}
 
 		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHealthRatio);
 	}

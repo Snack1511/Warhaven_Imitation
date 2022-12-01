@@ -52,6 +52,7 @@ public:
 
 private:
 	CUI_Wrapper* m_pWrap[HUD_END];
+	CUI_Wrapper* m_pDeadUI = nullptr;
 
 	CUnit* m_pPlayer = nullptr;
 

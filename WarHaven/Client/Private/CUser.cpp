@@ -27,6 +27,7 @@
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
 #include "CUI_Training.h"
+#include "CUI_Dead.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Fire.h"
@@ -264,6 +265,13 @@ void CUser::On_EnterStageLevel()
 		CREATE_GAMEOBJECT(m_pUI_Training, GROUP_UI);
 	}
 
+	if (!m_pUI_Dead)
+	{
+		m_pUI_Dead = CUI_Dead::Create();
+		CREATE_GAMEOBJECT(m_pUI_Dead, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Dead);
+	}
+
 	SetUp_BloodOverlay();
 	SetUp_HeroGaugeFire();
 }
@@ -330,6 +338,11 @@ void CUser::Enable_DamageFont(_uint eType, _float fDmg)
 	{
 		m_iDamageFontIdx = 0;
 	}
+}
+
+void CUser::Enable_DeadUI()
+{
+	m_pUI_Dead->Enable_DeadUI();
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

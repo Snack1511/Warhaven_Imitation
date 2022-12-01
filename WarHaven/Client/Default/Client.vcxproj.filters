@@ -1516,6 +1516,9 @@
     <Filter Include="02. Design\03. User\PlayerInfo\02. SandBack">
       <UniqueIdentifier>{16c5bc42-e5bf-457b-a6ca-e3c9b53efce8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Dead">
+      <UniqueIdentifier>{c659e2dd-676c-4e9e-ac27-eb05ba505d1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2688,6 +2691,9 @@
     <ClInclude Include="..\public\CPlayerInfo_SandBack.h">
       <Filter>02. Design\03. User\PlayerInfo\02. SandBack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Dead.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Dead</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3840,6 +3846,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CPlayerInfo_SandBack.cpp">
       <Filter>02. Design\03. User\PlayerInfo\02. SandBack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Dead.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Dead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -91,9 +91,6 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 HRESULT CLevel_Test::Enter()
 {
 	__super::Enter();
-
-	
-
 	
 
 	return S_OK;

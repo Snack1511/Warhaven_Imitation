@@ -27,13 +27,13 @@ HRESULT CFont_Manager::Add_Font(const _tchar* pFontTag, const _tchar * pFontFile
 	return S_OK;
 }
 
-HRESULT CFont_Manager::Render_Font(const _tchar * pFontTag, const _tchar * pString, const _float2 & vPosition, const _float4& vColor, _float fScale)
+HRESULT CFont_Manager::Render_Font(const _tchar * pFontTag, const _tchar * pString, const _float2 & vPosition, const _float4& vColor, _float fScale, _bool bCenter)
 {
 	CCustomFont*		pFont = Find_Font(pFontTag);
 	if (nullptr == pFont)
 		return E_FAIL;
 
-	return pFont->Render(pString, vPosition, vColor, fScale);	
+	return pFont->Render(pString, vPosition, vColor, fScale, bCenter);	
 }
 
 CCustomFont * CFont_Manager::Find_Font(const _tchar * pFontTag)

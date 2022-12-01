@@ -172,7 +172,7 @@ wstring CUI_LoadingBG::Init_GibberishText()
 		wstrGibberish = TEXT("알고 계셨나요?\n호에트의 '면책'은 적의 공격 뿐만 아니라 낙하 피해도 방어합니다.");
 		break;
 	case 3:
-		wstrGibberish = TEXT("알고 계셨나요?\n경기에 집중하고 핌착하게 플레이할수록 승률이 증가합니다.");
+		wstrGibberish = TEXT("알고 계셨나요?\n경기에 집중하고 침착하게 플레이할수록 승률이 증가합니다.");
 		break;
 	case 4:
 		wstrGibberish = TEXT("쉬지 않고 게임을 한다고요?\n잠시 스트레칭을 하며 재충전의 시간을 가져보세요.");

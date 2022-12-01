@@ -48,6 +48,9 @@ public:	// Font
 	_float Get_FontScale() { return m_fFontScale; }
 	void Set_FontScale(_float fValue) { m_fFontScale = fValue; }
 
+	_bool Get_FontCenter() { return m_bIsCenter; }
+	void Set_FontCenter(_bool value) { m_bIsCenter = value; }
+
 public:	// Button
 	_bool Get_IsClick() { return m_bIsClick; }
 	void Set_IsClick(_bool value) { m_bIsClick = value; }
@@ -73,6 +76,7 @@ private:
 private:	// Font
 	_bool m_bIsRenderText = false;
 	_bool m_bIsBold = false;
+	_bool m_bIsCenter = false;
 	wstring m_wstrText;
 	_float4 m_vOffset;
 	_float4 m_vFontColor = { 1.f,1.f,1.f,1.f };

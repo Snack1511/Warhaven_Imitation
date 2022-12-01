@@ -14,6 +14,7 @@ class CUI_HUD;
 class CUI_Damage;
 class CUI_Training;
 class CUI_Fire;
+class CUI_Dead;
 
 class CUser
 {
@@ -83,6 +84,7 @@ public:
 	_bool Is_OnHeroGauge(); 
 
 	void Enable_DamageFont(_uint eType, _float fDmg);
+	void Enable_DeadUI();
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
 private:
@@ -94,6 +96,7 @@ private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Training* m_pUI_Training = nullptr;
 	CUI_Fire* m_pFire = nullptr;
+	CUI_Dead* m_pUI_Dead = nullptr;
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;

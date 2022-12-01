@@ -71,11 +71,11 @@ HRESULT CUI_Renderer::Render()
 
 		if (m_bIsBold)
 		{
-			CGameInstance::Get_Instance()->Render_Font(TEXT("WarKR_Bold"), wszText, vFontPos, m_vFontColor, m_fFontScale);
+			CGameInstance::Get_Instance()->Render_Font(TEXT("WarKR_Bold"), wszText, vFontPos, m_vFontColor, m_fFontScale, m_bIsCenter);
 		}
 		else
 		{
-			CGameInstance::Get_Instance()->Render_Font(TEXT("WarKR_Regular"), wszText, vFontPos, m_vFontColor, m_fFontScale);
+			CGameInstance::Get_Instance()->Render_Font(TEXT("WarKR_Regular"), wszText, vFontPos, m_vFontColor, m_fFontScale, m_bIsCenter);
 		}
 	}
 
@@ -87,12 +87,13 @@ void CUI_Renderer::Release()
 	__super::Release();
 }
 
-void CUI_Renderer::Set_Text(_bool value, wstring wstrText, _float4 vOffset, _float4 vColor, _float fScale)
+void CUI_Renderer::Set_Text(_bool value, wstring wstrText, _float4 vOffset, _float4 vColor, _float fScale, _bool bCenter)
 {
 	vOffset.x += 640.f;
 	vOffset.y += 360.f;
 
 	m_bIsBold = value;
+	m_bIsCenter = bCenter;
 	m_wstrText = wstrText;
 	m_vOffset = vOffset;
 	m_vFontColor = vColor;

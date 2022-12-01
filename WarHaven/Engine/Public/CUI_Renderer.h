@@ -35,7 +35,7 @@ public:
 public:
 	void Set_UI(CGameObject* pUI) { m_pUI = pUI; }
 	void Set_RenderText(_bool value) { m_bIsRenderText = value; }
-	void Set_Text(_bool value, wstring wstrText, _float4 vOffset, _float4 vColor, _float fScale);
+	void Set_Text(_bool value, wstring wstrText, _float4 vOffset, _float4 vColor, _float fScale, _bool bCenter);
 
 private:
 	CGameObject* m_pUI = nullptr;
@@ -44,6 +44,7 @@ private: // Font
 	FontSort m_eSort = SortEnd;
 	_bool m_bIsRenderText = false;
 	_bool m_bIsBold = false;
+	_bool m_bIsCenter = false;
 	wstring m_wstrText;
 	_float4 m_vOffset;
 	_float4 m_vFontColor = { 1.f, 1.f, 1.f, 1.f };

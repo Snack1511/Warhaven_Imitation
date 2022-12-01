@@ -71,7 +71,7 @@ void CUI_UnitHUD::My_Tick()
 	}
 	else
 	{
-		m_vOffset = _float4(-0.2f, 2.f, 0.f);
+		m_vOffset = _float4(0.f, 2.f, 0.f);
 
 		m_pUnitNameText->Set_FontRender(true);
 		m_pUnitNameText->Set_Color(vColorAlpha);		
@@ -113,6 +113,7 @@ void CUI_UnitHUD::Init_UnitNameText()
 	m_pUnitNameText->Set_Sort(0.5f);
 
 	m_pUnitNameText->Set_FontStyle(true);
+	m_pUnitNameText->Set_FontCenter(true);
 	m_pUnitNameText->Set_FontScale(0.2f);
 	m_pUnitNameText->Set_FontColor(m_vColorRed);
 
