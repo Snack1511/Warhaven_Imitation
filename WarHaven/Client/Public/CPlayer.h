@@ -139,6 +139,10 @@ public:
 	virtual void OnDisable() override;
 
 public:
+	void	On_Die();
+	void	On_Reborn();
+
+public:
 	void	Set_TargetPlayer(CPlayer* pTargetPlayer) { m_pTargetPlayer = pTargetPlayer; }
 	CPlayer* Get_TargetPlayer() { return m_pTargetPlayer; }
 
@@ -160,9 +164,6 @@ public:
 private:
 	_bool	m_bEnableOnStart = false;
 
-public:
-	CPlayerInfo* Get_PlayerInfo() { return m_pMyPlayerInfo; }
-
 private: /* 킬뎃과 플레이어 정보 */
 	KDA_STAT	m_tKdaStat;
 	CPlayerInfo* m_pMyPlayerInfo = nullptr;
@@ -178,6 +179,10 @@ private:
 
 private:
 	CPlayer* m_pTargetPlayer = nullptr;
+
+private:
+	/* 죽어있는 상태 */
+	_bool	m_bDie = false;
 
 private:
 	CUnit* m_pCurrentUnit = nullptr;
@@ -212,6 +217,7 @@ private:
 private:
 	void Create_UnitHUD();
 	void Enable_UnitHUD();
+
 	void Frustum_UnitHUD();
 	void TransformProjection();
 

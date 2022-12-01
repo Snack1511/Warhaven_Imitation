@@ -7,7 +7,7 @@ class CPhysXCollider;
 END
 
 BEGIN(Client)
-
+class CUnit;
 class CMesh_Particle
 	: public CEffect
 {
@@ -27,7 +27,9 @@ public:
 
 public:
 	void			Start_Particle(_float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld);
-	void			Start_Reverse();
+	void			Set_DeathParticle();
+	void			Start_Reverse(CUnit* pUnit);
+	
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;
@@ -38,11 +40,16 @@ public:
 	virtual void	OnDisable() override;
 
 private:
-	_float				m_fRebornTime = 0.15f;
+	_bool				m_bDeathParticle = false;
+
+	_float				m_fRebornTimeOrigin = 0.15f;
+	_float				m_fRebornTime = 0.1f;
 	_bool				m_bReverse = false;
 	_float				m_fReverseAcc = 99.f;
 	_float				m_fReverseTime = 0.08f;
-	vector<_float4x4> m_vecMatrices;
+	vector<vector<_float4x4>> m_vecMatrices;
+
+	CUnit* m_pRebornUnit = nullptr;
 
 private:
 	//부서질 수 있는 객체
@@ -71,5 +78,9 @@ private:
 private:
 	virtual void My_Tick();
 	virtual void My_LateTick();
+
+private:
+	void	Update_Reverse();
+	void	Update_NodeSave();
 };
 END

@@ -13,8 +13,8 @@ HRESULT CPlayerInfo_Main::Initialize()
 {
 	for (_uint i = 0; i < CLASS_END; ++i)
 	{
-		Set_CustomHead((CLASS_TYPE)i, eCUSTOM_HEAD::eDEFAULT);
-		Set_CustomBody((CLASS_TYPE)i, eCUSTOM_BODY::eDEFAULT);
+		Set_CustomHead((CLASS_TYPE)i, eCUSTOM_HEAD::eHEAD1);
+		Set_CustomBody((CLASS_TYPE)i, eCUSTOM_BODY::eBODY1);
 		Set_CustomWeapon((CLASS_TYPE)i, eCUSTOM_WEAPON::eDEFAULT);
 	}
 

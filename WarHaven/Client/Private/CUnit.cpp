@@ -24,6 +24,8 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CMesh_Particle.h"
+
 #include "CScript_FollowCam.h"
 
 #include "CEffects_Factory.h"
@@ -208,9 +210,9 @@ void CUnit::On_Respawn()
 
 	tColorDesc.eFadeStyle = CColorController::TIME;
 	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.2f;
-	tColorDesc.fFadeOutStartTime = 0.5f;
-	tColorDesc.fFadeOutTime = 1.f;
+	tColorDesc.fFadeInTime = 0.3f;
+	tColorDesc.fFadeOutStartTime = 1.f;
+	tColorDesc.fFadeOutTime = 2.f;
 	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
 	tColorDesc.iMeshPartType = MODEL_PART_BODY;
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
@@ -218,17 +220,27 @@ void CUnit::On_Respawn()
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 }
 
+void CUnit::On_Reborn()
+{
+	ENABLE_GAMEOBJECT(this);
+	On_Respawn();
+	m_pOwnerPlayer->On_Reborn();
+}
+
 void CUnit::On_Die()
 {
+	m_DeathStones.clear();
+
+	m_pOwnerPlayer->On_Die();
+
 	m_bDie = false;
 	m_fDeadTimeAcc = 0.f;
 
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 1.f;
-
 	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
 
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	m_DeathStones = CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeathStoneParticle", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 	vPos.y -= 0.7f;
 
 	_float4x4 vCamMatrix = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
@@ -928,6 +940,25 @@ void CUnit::On_InitSetting()
 
 }
 
+void CUnit::Add_DeathStones(const list<CGameObject*>& StoneParticleList)
+{
+	for (auto& elem : StoneParticleList)
+		m_DeathStones.push_back(elem);
+}
+
+void CUnit::Start_Reborn()
+{
+	static_cast<CMesh_Particle*>(m_DeathStones.front())->Start_Reverse(this);
+
+	for (auto& elem : m_DeathStones)
+	{
+		if (elem == m_DeathStones.front())
+			continue;
+
+		static_cast<CMesh_Particle*>(elem)->Start_Reverse(nullptr);
+	}
+}
+
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)
 {
 	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
@@ -1073,8 +1104,14 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
 	
 	// 데드에 넘겨주기	
-	CUser::Get_Instance()->Set_TargetInfo(pOtherUnit->Get_OwnerPlayer()->Get_PlayerInfo());
-	CUser::Get_Instance()->Enable_DeadUI();
+
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Set_TargetInfo(pOtherUnit->Get_OwnerPlayer()->Get_PlayerInfo());
+		CUser::Get_Instance()->Enable_DeadUI();
+		m_pFollowCam->Set_FollowTarget(pOtherUnit);
+	}
+	
 }
 
 void CUnit::On_Bounce(void* pHitInfo)

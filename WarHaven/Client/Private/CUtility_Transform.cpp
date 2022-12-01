@@ -191,7 +191,7 @@ _float4x4 CUtility_Transform::Get_MatrixbyLook(_float4 vLook, _float4 vPos)
 	_float4x4 matNew;
 	matNew.Identity();
 
-	_float4 _vLook = vLook;
+	_float4 _vLook = vLook.Normalize();
 	*((_float4*)&matNew.m[2]) = _vLook;
 
 
@@ -203,10 +203,10 @@ _float4x4 CUtility_Transform::Get_MatrixbyLook(_float4 vLook, _float4 vPos)
 
 	vUp.Normalize();
 	_float4 vRight = vUp.Cross(vLook);
-	*((_float4*)&matNew.m[0]) = vRight;
+	*((_float4*)&matNew.m[0]) = vRight.Normalize();
 
 	vUp = _vLook.Cross(vRight);
-	*((_float4*)&matNew.m[1]) = vUp;
+	*((_float4*)&matNew.m[1]) = vUp.Normalize();
 
 	*((_float4*)&matNew.m[3]) = vPos;
 

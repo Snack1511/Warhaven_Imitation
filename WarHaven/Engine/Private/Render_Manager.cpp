@@ -723,7 +723,7 @@ void CRender_Manager::Update()
 	else
 	{
 		if (m_fGrayScalePower > 0.f)
-			m_fGrayScalePower -= fDT(0) * m_fGrayScaleTargetPower * 1.f;
+			m_fGrayScalePower -= fDT(0) * m_fGrayScaleTargetPower * 2.f;
 		else
 			m_fGrayScalePower = 0.f;
 

@@ -199,7 +199,7 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 		m_pArrOperSelectUI[i][iEventNum]->DoScale(10.f, 0.1f);
 	}
 
-	CUser::Get_Instance()->Get_MainPlayerInfo()->
+	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
 	
 }
 
@@ -585,6 +585,7 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 
 		CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
 		pPlayer->Change_DefaultUnit((CPlayer::CLASS_DEFAULT)m_eCurClass);
+		pPlayer->Get_CurrentUnit()->On_Respawn();
 	}
 }
 
@@ -1364,6 +1365,9 @@ void CUI_HUD::Disable_AllOperUIs()
 		DISABLE_GAMEOBJECT(m_pOperMapIcon);
 	if (m_pOperMapBG)
 		DISABLE_GAMEOBJECT(m_pOperMapBG);
+	if (m_pOperAttackPointText)
+		DISABLE_GAMEOBJECT(m_pOperAttackPointText);
+	DISABLE_OPERUI_DARR(m_pArrTeamUI);
 
 	DISABLE_OPERUI_ARR(m_pOperTimer);
 	DISABLE_OPERUI_ARR(m_pBriefingUI);

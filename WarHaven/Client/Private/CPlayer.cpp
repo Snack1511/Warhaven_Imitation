@@ -346,9 +346,11 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClass]);
 
-	GAMEINSTANCE->Stop_GrayScale();
 
 	m_eCurrentDefaultClass = eClass;
+
+	GAMEINSTANCE->Stop_GrayScale();
+
 
 	return S_OK;
 }
@@ -382,11 +384,15 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 
 void CPlayer::Respawn_Unit(_float4 vPos, CLASS_DEFAULT eClass)
 {
+	m_bDie = false;
 	Change_DefaultUnit(eClass);
 
 	Set_Postion(vPos);
 
 	m_pCurrentUnit->On_Respawn();
+
+	if (!m_bIsMainPlayer)
+		ENABLE_GAMEOBJECT(m_pUnitHUD);
 }
 
 void CPlayer::Reserve_State(_uint eState)
@@ -541,11 +547,19 @@ HRESULT CPlayer::Start()
 		DISABLE_GAMEOBJECT(m_pHeroClass[i]);
 
 	}
+	/* hud »ý¼º */
+	Enable_UnitHUD();
 
 	if (m_pCurrentUnit)
 	{
 		if (m_bEnableOnStart)
+		{
+			m_pCurrentUnit->On_Respawn();
+
 			ENABLE_GAMEOBJECT(m_pCurrentUnit);
+			if (!m_bIsMainPlayer)
+				ENABLE_GAMEOBJECT(m_pUnitHUD);
+		}
 	}
 	else
 	{
@@ -562,7 +576,6 @@ HRESULT CPlayer::Start()
 	}
 	
 
-	Enable_UnitHUD();
 
 	return S_OK;
 }
@@ -575,6 +588,26 @@ void CPlayer::OnEnable()
 void CPlayer::OnDisable()
 {
 	__super::OnDisable();
+}
+
+void CPlayer::On_Die()
+{
+	m_bDie = true;
+	DISABLE_GAMEOBJECT(m_pUnitHUD);
+
+	if (m_bIsMainPlayer)
+	{
+
+	}
+
+}
+
+void CPlayer::On_Reborn()
+{
+	GAMEINSTANCE->Stop_GrayScale();
+
+	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[m_eCurrentDefaultClass]);
+	m_bDie = false;
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
@@ -637,13 +670,16 @@ void CPlayer::My_LateTick()
 		Frustum_UnitHUD();
 		TransformProjection();
 	}
-	else
-	{
-		DISABLE_GAMEOBJECT(m_pUnitHUD);
-	}
 
 	if (!m_bIsMainPlayer)
 		return;
+
+	if (m_bDie && KEY(ENTER, TAP))
+	{
+		m_pCurrentUnit->Start_Reborn();
+
+	}
+
 
 	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
 
@@ -772,7 +808,9 @@ void CPlayer::Create_UnitHUD()
 void CPlayer::Enable_UnitHUD()
 {
 	CREATE_GAMEOBJECT(m_pUnitHUD, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pUnitHUD);
 }
+
 
 void CPlayer::Frustum_UnitHUD()
 {

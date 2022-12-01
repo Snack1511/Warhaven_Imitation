@@ -147,6 +147,27 @@ list<CGameObject*> CEffects_Factory::Create_Multi_MeshParticle(wstring wstrKey, 
 	return EffectsList;
 }
 
+list<CGameObject*> CEffects_Factory::Create_Multi_MeshParticle_Death(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld)
+{
+	list<CGameObject*> EffectsList;
+
+	if (m_MultiEffects.find(Convert_ToHash(wstrKey)) == m_MultiEffects.end())
+	{
+		Call_MsgBox(L"Cant Find MultiEffects");
+		return EffectsList;
+	}
+
+	list<_hashcode> hcEffects = m_MultiEffects.find(Convert_ToHash(wstrKey))->second;
+
+	for (auto& hcCode : hcEffects)
+	{
+		EffectsList.push_back(Create_MeshParticle(hcCode, vPos, vDir, fPower, matWorld));
+		static_cast<CMesh_Particle*>(EffectsList.back())->Set_DeathParticle();
+	}
+
+	return EffectsList;
+}
+
 list<CGameObject*> CEffects_Factory::Create_MultiEffects(wstring wstrKey, _float4 vPos, _float4x4 matWorld)
 {
 	list<CGameObject*> EffectsList;
@@ -189,6 +210,34 @@ CGameObject* CEffects_Factory::Create_MeshParticle(wstring wstrKey, _float4 vPos
 		m_Effects[_hcCode].pop_front();
 		pGameObject = pEffect;
 	}
+
+
+	return pGameObject;
+}
+
+CGameObject* CEffects_Factory::Create_MeshParticle_Death(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld)
+{
+	CGameObject* pGameObject = nullptr;
+
+	_hashcode _hcCode = Convert_ToHash(wstrKey);
+
+	if (m_Effects[_hcCode].empty())
+	{
+		pGameObject = GAMEINSTANCE->Clone_GameObject(_hcCode);
+		static_cast<CMesh_Particle*>(pGameObject)->Start_Particle(vPos, vDir, fPower, matWorld);
+		//없으면 새로 집어넣음
+		pGameObject->Initialize();
+		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+	}
+	else
+	{
+		CEffect* pEffect = m_Effects[_hcCode].front();
+		static_cast<CMesh_Particle*>(pEffect)->Start_Particle(vPos, vDir, fPower, matWorld);
+		m_Effects[_hcCode].pop_front();
+		pGameObject = pEffect;
+	}
+
+	static_cast<CMesh_Particle*>(pGameObject)->Set_DeathParticle();
 
 
 	return pGameObject;
@@ -721,7 +770,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 	_float fStoneDensity = 10.f;
 
 	/* 이 시간 후에 사라짐 */
-	_float fStoneLifeTime = 6.f;
+	_float fStoneLifeTime = 10.f;
 
 	_uint	iStoneNumInstance = 15;
 
@@ -815,7 +864,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 	/*===================== Warrior =====================*/
 
 	_float fDeadBodyDensity = 10.f;
-	_float fDeadBodyLifeTime = 15.f;
+	_float fDeadBodyLifeTime = 10.f;
 
 	wstrName = L"WarriorDead_Slice0";
 	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(

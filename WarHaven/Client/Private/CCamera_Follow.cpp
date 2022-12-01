@@ -82,8 +82,10 @@ void CCamera_Follow::Delete_CamCollider()
 void CCamera_Follow::Set_FollowTarget(CGameObject* pTarget)
 {
 	m_pFollowScript->Set_FollowTarget(pTarget);
-	m_pTransform->Set_World(WORLD_POS, pTarget->Get_Transform()->Get_World(WORLD_POS));
-	m_pTransform->Make_WorldMatrix();
+
+	/*m_pTransform->Set_World(WORLD_POS, pTarget->Get_Transform()->Get_World(WORLD_POS));
+	m_pTransform->Make_WorldMatrix();*/
+
 	m_pParent = pTarget;
 
 	

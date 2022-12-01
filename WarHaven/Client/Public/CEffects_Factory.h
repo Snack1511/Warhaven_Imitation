@@ -33,9 +33,11 @@ public:
 	list<CGameObject*>			Create_MultiEffects(wstring	wstrKey, _float4 vPos, _float4x4 matWorld);
 
 	list<CGameObject*>			Create_Multi_MeshParticle(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld);
+	list<CGameObject*>			Create_Multi_MeshParticle_Death(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld);
 
 
 	CGameObject* Create_MeshParticle(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld);
+	CGameObject* Create_MeshParticle_Death(wstring wstrKey, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld);
 	CGameObject* Create_MeshParticle(_hashcode _hcCode, _float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld);
 
 	CGameObject* Create_Effects(_hashcode _hcCode, CGameObject* pFollowTarget, _float4 vPos);

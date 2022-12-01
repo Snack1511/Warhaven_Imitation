@@ -109,11 +109,12 @@ public: /* Physics */
 	_bool		Is_Air();
 	void		Set_DirAsLook();
 	void		Set_LookToTarget();
-
 public:
 	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
 	void	Set_Passes(VTXANIM_PASS_TYPE ePassType);
 	void	Set_FollowCam(CCamera_Follow* pFollowCam) { m_pFollowCam = pFollowCam; }
+	CCamera_Follow* Get_FollowCam() { return m_pFollowCam; }
+
 	void	Synchronize_CamPos();
 
 	/* 들고있는 FollowCam에 Shake 넣기. 1인자 : 강도, 2인자 : 시간 (시간이 짧을 수록 강도를 조금만 줘도 세게 흔들림)*/
@@ -124,6 +125,7 @@ public:
 
 public:
 	virtual void	On_Respawn();
+	virtual void	On_Reborn();
 	virtual	void	On_Die();
 
 	void Set_MainPlayer() { m_bIsMainPlayer = true; }
@@ -289,8 +291,6 @@ protected:
 	STATE_HIT_TYPE	m_tHitType;
 
 	_uint			m_iDefaultType = 0;
-
-
 	_float			m_fHitDelayAcc = 0.f;
 	_float			m_fHitDelayTime = 0.15f;
 
@@ -322,6 +322,12 @@ private:
 	_float		m_fDeadTimeAcc = 0.f;
 	_float		m_fDeadTime = 0.05f;
 
+protected:
+	list<CGameObject*>	m_DeathStones;
+	void	Add_DeathStones(const list<CGameObject*>& StoneParticleList);
+
+public:
+	void	Start_Reborn();
 
 
 	/* 상태 체크 함수 */

@@ -6,6 +6,11 @@
 #include "CPlayerInfo.h"
 #include "CPlayer.h"
 
+#include "CUnit.h"
+#include "CUser.h"
+
+#include "CCamera_Follow.h"
+
 HRESULT CUI_Dead::Initialize_Prototype()
 {
 	Create_DeadUI();
@@ -66,6 +71,7 @@ void CUI_Dead::My_Tick()
 			m_fAccTime = 0.f;
 
 			DISABLE_GAMEOBJECT(this);
+			PLAYER->Get_FollowCam()->Set_FollowTarget(PLAYER);
 		}
 	}
 }

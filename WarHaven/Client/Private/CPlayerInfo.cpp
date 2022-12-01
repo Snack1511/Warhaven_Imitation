@@ -201,7 +201,7 @@ void CPlayerInfo::Set_CustomWeapon_Warrior(eCUSTOM_WEAPON eWeaponEnum)
 		m_tPlayerSetUpData.wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
-		m_tPlayerSetUpData.wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0006_A00.fbx";
+		m_tPlayerSetUpData.wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
 		break;
 
 	default:

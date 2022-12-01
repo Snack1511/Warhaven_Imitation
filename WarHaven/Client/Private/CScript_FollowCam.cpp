@@ -503,8 +503,8 @@ void CScript_FollowCam::Find_TargetPos()
 	_float fSpeed = m_fCamSpeed * fRatio;
 
 	//최대 거리 제한
-	if (fSpeed > 50.f)
-		fSpeed = 50.f;
+	if (fSpeed > 30.f)
+		fSpeed = 30.f;
 
 	m_pPhyscisCom->Get_Physics().bAir = true;
 	m_pPhyscisCom->Set_Dir(vDir);
