@@ -109,6 +109,15 @@ private:
 private:
 	void Create_OperMap();
 
+private:	// 작전회의 팀 아이콘
+	enum TeamUI { TU_Icon, TU_Outline, TU_End };
+
+	CUI_Object* m_pTeamUI[TU_End];
+	CUI_Object* m_pArrTeamUI[TU_End][2];
+
+private:
+	void Create_TeamUI();
+
 private:	// 작전회의 거점 아이콘
 	enum OperPointType { PT_Point, PT_Gauge, PT_Icon, PT_Text, PT_End };
 

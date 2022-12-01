@@ -887,6 +887,14 @@ void CUI_HUD::Update_OperWindow()
 		}
 		else if (m_iOperWindowCnt == 4)
 		{
+			for (int i = 0; i < TU_End; ++i)
+			{
+				for (int j = 0; j < 2; ++j)
+				{
+					Enable_Fade(m_pArrTeamUI[i][j], 0.3f);
+				}
+			}
+
 			Enable_OperPointUI();
 		}
 		else if (m_iOperWindowCnt == 5)
@@ -1094,6 +1102,7 @@ void CUI_HUD::Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel)
 	Create_OperPointEffect();
 	Create_OperTimer();
 	Create_BriefingUI();
+	Create_TeamUI();
 }
 
 void CUI_HUD::Set_FadeOperSelectChaderUI()
@@ -1135,6 +1144,11 @@ void CUI_HUD::Set_FadeOperSelectChaderUI()
 	for (int i = 0; i < BU_End; ++i)
 	{
 		GET_COMPONENT_FROM(m_pBriefingUI[i], CFader)->Get_FadeDesc() = tFadeDesc;
+	}
+
+	for (int i = 0; i < TU_End; ++i)
+	{
+		GET_COMPONENT_FROM(m_pTeamUI[i], CFader)->Get_FadeDesc() = tFadeDesc;
 	}
 
 	FADEDESC tFadeDescBG;
@@ -1597,6 +1611,76 @@ void CUI_HUD::Create_OperPointEffect()
 	m_pArrOperPointCircleEffect[1]->Set_PosY(133.f);
 	m_pArrOperPointCircleEffect[2]->Set_PosY(-161.f);
 	m_pArrOperPointCircleEffect[3]->Set_PosY(-161.f);
+}
+
+void CUI_HUD::Create_TeamUI()
+{
+	for (int i = 0; i < TU_End; ++i)
+	{
+		m_pTeamUI[i] = CUI_Object::Create();
+
+		if (i == TU_Icon)
+		{
+			GET_COMPONENT_FROM(m_pTeamUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pTeamUI[i], "/Oper/Team", "Circle");
+
+			m_pTeamUI[i]->Set_Scale(35.f);
+			m_pTeamUI[i]->Set_Sort(0.5f);
+		}
+		else if (i == TU_Outline)
+		{
+			m_pTeamUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/PointOutline1.dds"));
+			m_pTeamUI[i]->Set_Scale(40.f);
+			m_pTeamUI[i]->Set_Sort(0.49f);
+		}
+
+		CREATE_GAMEOBJECT(m_pTeamUI[i], RENDER_UI);
+		DELETE_GAMEOBJECT(m_pTeamUI[i]);
+	}
+
+
+
+	for (int i = 0; i < TU_End; ++i)
+	{
+		for (int j = 0; j < 2; ++j)
+		{
+			m_pArrTeamUI[i][j] = m_pTeamUI[i]->Clone();
+
+			if (i == TU_Icon)
+			{
+				GET_COMPONENT_FROM(m_pArrTeamUI[i][j], CTexture)->Set_CurTextureIndex(j);
+			}
+
+			if (i == TU_Outline)
+			{
+				if (j == 0)
+					m_pArrTeamUI[i][j]->Set_Color(_float4(0.f, 0.8f, 1.f, 1.f));
+				else if (j == 1)
+					m_pArrTeamUI[i][j]->Set_Color(_float4(1.f, 0.2f, 0.f, 1.f));
+			}
+
+			CREATE_GAMEOBJECT(m_pArrTeamUI[i][j], RENDER_UI);
+			DISABLE_GAMEOBJECT(m_pArrTeamUI[i][j]);
+		}
+	}
+
+	switch (m_eLoadLevel)
+	{
+	case Client::LEVEL_PADEN:
+	{
+		for (int i = 0; i < TU_End; ++i)
+		{
+			m_pArrTeamUI[i][0]->Set_Pos(-325.f, 127.f);
+			m_pArrTeamUI[i][1]->Set_Pos(325.f, 127.f);
+		}
+	}
+	break;
+	case Client::LEVEL_HWARA:
+	{
+
+	}
+	break;
+	}
 }
 
 void CUI_HUD::Create_OperTimer()
