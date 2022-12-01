@@ -60,14 +60,12 @@ HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, con
 	else
 	{
 		XMVECTOR size = m_pFont->MeasureString(pString);
-	
 
+		_float fPosX = (XMVectorGetX(size) * 0.5f) * fScale;
+		_float fPosY = (XMVectorGetY(size) * 0.5f) * fScale;
 
-		_float vPosX = XMVectorGetX(size) * 0.5f;
-		_float vPosY = XMVectorGetY(size) * 0.5f;
-
-		_float fResultX = vPosition.x - vPosX;
-		_float fResultY = vPosition.y - vPosY;
+		_float fResultX = (vPosition.x - 7.f) - fPosX;
+		_float fResultY = (vPosition.y - 5.f) - fPosY;
 
 		_float2 vResult = _float2(fResultX, fResultY);
 

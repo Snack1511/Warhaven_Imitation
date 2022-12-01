@@ -15,6 +15,7 @@ class CUI_Damage;
 class CUI_Training;
 class CUI_Fire;
 class CUI_Dead;
+class CPlayerInfo;
 
 class CUser
 {
@@ -84,8 +85,10 @@ public:
 	_bool Is_OnHeroGauge(); 
 
 	void Enable_DamageFont(_uint eType, _float fDmg);
-	void Enable_DeadUI();
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
+
+	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
+	void Enable_DeadUI();
 
 private:
 	

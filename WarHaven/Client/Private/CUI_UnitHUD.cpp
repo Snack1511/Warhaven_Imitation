@@ -117,7 +117,7 @@ void CUI_UnitHUD::Init_UnitNameText()
 	m_pUnitNameText->Set_FontScale(0.2f);
 	m_pUnitNameText->Set_FontColor(m_vColorRed);
 
-	wstring wstrUnitName = CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->Get_PlayerName();
+	wstring wstrUnitName = m_pOwner->Get_PlayerName();
 	m_pUnitNameText->Set_FontText(wstrUnitName);
 
 	CREATE_GAMEOBJECT(m_pUnitNameText, GROUP_UI);

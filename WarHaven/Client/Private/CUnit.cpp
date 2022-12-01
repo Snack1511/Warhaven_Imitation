@@ -1051,6 +1051,10 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	m_bDie = true;
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
+	
+	// 데드에 넘겨주기	
+	CUser::Get_Instance()->Set_TargetInfo(pOtherUnit->Get_OwnerPlayer()->Get_PlayerInfo());
+	CUser::Get_Instance()->Enable_DeadUI();
 }
 
 void CUnit::On_Bounce(void* pHitInfo)

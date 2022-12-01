@@ -340,6 +340,11 @@ void CUser::Enable_DamageFont(_uint eType, _float fDmg)
 	}
 }
 
+void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
+{
+	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
+}
+
 void CUser::Enable_DeadUI()
 {
 	m_pUI_Dead->Enable_DeadUI();

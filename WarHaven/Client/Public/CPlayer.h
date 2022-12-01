@@ -151,6 +151,9 @@ public:
 public:
 	void	Set_TeamType(int eTeamType);
 
+public:
+	CPlayerInfo* Get_PlayerInfo() { return m_pMyPlayerInfo; }
+
 private: /* 킬뎃과 플레이어 정보 */
 	KDA_STAT	m_tKdaStat;
 	CPlayerInfo* m_pMyPlayerInfo = nullptr;

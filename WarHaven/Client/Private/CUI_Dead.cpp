@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "Texture.h"
 #include "CFader.h"
+#include "CPlayerInfo.h"
+#include "CPlayer.h"
 
 HRESULT CUI_Dead::Initialize_Prototype()
 {
@@ -29,8 +31,8 @@ void CUI_Dead::OnEnable()
 {
 	__super::OnEnable();
 
-	//wstring wstrUnitName = CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->Get_PlayerName();
-	m_pDeadUI[DU_EnemyName]->Set_FontText(TEXT("Àû±º"));
+	wstring wstrUnitName = m_pTargetInfo->Get_Player()->Get_PlayerName();
+	m_pDeadUI[DU_EnemyName]->Set_FontText(wstrUnitName);
 	for (int i = 0; i < DU_End; ++i)
 	{
 		Enable_Fade(m_pDeadUI[i], 1.f);

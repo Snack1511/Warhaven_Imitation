@@ -659,11 +659,6 @@ void CPlayer::My_LateTick()
 void CPlayer::Update_HP()
 {
 	CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fMaxHP, m_pCurrentUnit->Get_Status().fHP);
-
-	if (m_pCurrentUnit->Get_Status().fHP <= 0.f)
-	{
-		CUser::Get_Instance()->Enable_DeadUI();
-	}
 }
 
 void CPlayer::Update_HeroGauge()
@@ -749,6 +744,7 @@ void CPlayer::On_FinishHero_KeyInput()
 void CPlayer::Create_UnitHUD()
 {
 	m_pUnitHUD = CUI_UnitHUD::Create();
+	m_pUnitHUD->Set_OwnerPlayer(this);
 }
 
 void CPlayer::Enable_UnitHUD()
