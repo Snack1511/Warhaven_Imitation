@@ -70,6 +70,8 @@ public:
 	void	Set_TeamType(eTEAM_TYPE eEnum) { m_eTeamType = eEnum; }
 	void	Set_Squad(CSquad* pSquad) { m_pMySquad = pSquad; }
 	void	Set_TeamConnector(CTeamConnector* pTeam) { m_pMyTeam = pTeam; }
+	void	Set_ChosenClass(CLASS_TYPE eEnum) { m_eCurChosenClass = eEnum; }
+
 public:
 	/* 커스텀 추가될 때마다 여기 enum 추가해서 넣어놓기 */
 	enum class eCUSTOM_HEAD{eDEFAULT, eHEAD1, eRABBIT};

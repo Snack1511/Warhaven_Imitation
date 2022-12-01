@@ -198,6 +198,7 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 		m_pArrOperSelectUI[i][iEventNum]->DoScale(10.f, 0.1f);
 	}
 
+	CUser::Get_Instance()->Get_MainPlayerInfo()->
 	
 }
 
