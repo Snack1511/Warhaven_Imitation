@@ -831,10 +831,7 @@ PS_OUT PS_UIFIRE(PS_IN In)
 {
     PS_OUT		Out = (PS_OUT)0;
 
-    
-
     float fStepX = 1.f / g_iWidthSize;
-
     //갯수만큼 나누고
     In.vTexUV.x /= g_iWidthSize;
     //현재 가로줄만큼 늘려
@@ -842,7 +839,6 @@ PS_OUT PS_UIFIRE(PS_IN In)
 
 
     float fStepY = 1.f / g_iHeightSize;
-
     //갯수만큼 나누고
     In.vTexUV.y /= g_iHeightSize;
     //현재 세로줄만큼 늘려
@@ -850,8 +846,6 @@ PS_OUT PS_UIFIRE(PS_IN In)
 
     //masking
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
-    //Out.vColor.xyz = vMaskDesc.xyz; //마스크의 색상까지 가져옴
      if (g_bBlackBG)
      {
          Out.vColor.a = Out.vColor.r;
@@ -863,11 +857,10 @@ PS_OUT PS_UIFIRE(PS_IN In)
         discard;
    
 
+    //Out.vColor *= g_vColor;
+    //Out.vColor.w *= g_fAlpha;
 
-  //  Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
     Out.vFlag = g_vFlag;
-   // Out.vGlowFlag = g_vGlowFlag;
-   // Out.vEffectDiffuse = Out.vDiffuse;
 
     return Out;
 }
