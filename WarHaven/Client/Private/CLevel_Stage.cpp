@@ -180,7 +180,7 @@ HRESULT CLevel_Stage::Exit()
 
 	CUser::Get_Instance()->On_ExitStageLevel();
 	GAMEINSTANCE->Reset_Camera(L"DefaultCam");
-
+	CGameSystem::Get_Instance()->On_ExitLevel();
 	
 
 

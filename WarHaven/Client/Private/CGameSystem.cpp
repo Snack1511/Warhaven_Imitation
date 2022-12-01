@@ -5,6 +5,7 @@
 #include "CPositionTable.h"
 
 #include "CTrigger_BootCamp.h"
+#include "CTrigger_Paden.h"
 
 #include "CPlayer.h"
 
@@ -15,11 +16,18 @@
 
 #include "CPlayerInfo_Main.h"
 #include "CPlayerInfo_SandBack.h"
+#include "CPlayerInfo_Default.h"
+#include "CPlayerInfo_Leader.h"
+
+#include "CSquad.h"
+#include "CTeamConnector.h"
 
 IMPLEMENT_SINGLETON(CGameSystem);
 
 
 #define READY_GAMEOBJECT(instance, grouptype) vecReadyObjects.push_back(make_pair(instance, grouptype))
+
+#define TRIGGER_PADEN(mapkey) static_cast<CTrigger_Paden*>(m_mapAllTriggers[Convert_ToHash(mapkey)])
 
 CGameSystem::CGameSystem()
 {
@@ -37,6 +45,12 @@ HRESULT CGameSystem::Initialize()
 	SAFE_CREATE(m_pPositionTable, CPositionTable);
 
 	if (FAILED(m_pPositionTable->Load_Position("BootCamp")))
+	{
+		Call_MsgBox(L"Failed to Load_Position : CGameSystem");
+		return E_FAIL;
+	}
+    
+    if (FAILED(m_pPositionTable->Load_Position("Position_Paden")))
 	{
 		Call_MsgBox(L"Failed to Load_Position : CGameSystem");
 		return E_FAIL;
@@ -59,8 +73,9 @@ HRESULT CGameSystem::Tick()
 void CGameSystem::Release()
 {
 	SAFE_DELETE(m_pPositionTable);
-    SAFE_DELETE(m_pRedTeam);
-    SAFE_DELETE(m_pBlueTeam);
+
+    for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
+        SAFE_DELETE(m_pTeamConnector[i]);
 
     for (auto& elem : m_mapAllPlayers)
     {
@@ -77,8 +92,10 @@ HRESULT CGameSystem::On_ExitLevel()
         elem.second->m_pMyPlayer = nullptr;
     }
 
-    SAFE_DELETE(m_pRedTeam);
-    SAFE_DELETE(m_pBlueTeam);
+    for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
+        SAFE_DELETE(m_pTeamConnector[i]);
+
+    m_mapAllTriggers.clear();
 
     return S_OK;
 }
@@ -90,9 +107,10 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
     CPlayer* pUserPlayer = nullptr;
 
     pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
-    pUserPlayer->Set_TeamType(CPlayer::ePLAYERTEAM);
     pUserPlayer->Set_Postion(vPlayerPos);
     pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
+    pUserPlayer->SetUp_UnitColliders(true);
+    pUserPlayer->Enable_OnStart();
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
@@ -104,9 +122,12 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
         CPlayer* pEnemy = nullptr;
 
         pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"));
-        pEnemy->Set_TeamType(CPlayer::eENEMYTEAM);
+        pEnemy->Set_OutlineType(CPlayer::eENEMY);
         pEnemy->Set_Postion(vPlayerPos);
         pEnemy->Set_TargetPlayer(pUserPlayer);
+        pEnemy->Enable_OnStart();
+        pEnemy->SetUp_UnitColliders(false);
+
         pEnemy->Reserve_State(AI_STATE_IDLE_WARRIOR_L);
         READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
     }
@@ -115,6 +136,12 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
     return S_OK;
 
+}
+
+HRESULT CGameSystem::On_EnterTest()
+{
+
+    return S_OK;
 }
 
 HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
@@ -161,9 +188,10 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
     CPlayer* pUserPlayer = nullptr;
 
     pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
-    pUserPlayer->Set_TeamType(CPlayer::ePLAYERTEAM);
     pUserPlayer->Set_Postion(vPlayerPos);
+    pUserPlayer->SetUp_UnitColliders(true);
     pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
+    pUserPlayer->Enable_OnStart();
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
@@ -234,7 +262,8 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
         if (!pEnemy)
             assert(0);
 
-        pEnemy->Set_TeamType(CPlayer::eENEMYTEAM);
+        pEnemy->Set_OutlineType(CPlayer::eENEMY);
+        pEnemy->SetUp_UnitColliders(false);
         pEnemy->Set_Postion(vEnemyPos);
         pEnemy->Set_TargetPlayer(pUserPlayer);
         pEnemy->Reserve_State(eEnemyState);
@@ -523,7 +552,253 @@ HRESULT CGameSystem::On_EnterBootCamp()
 
 HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
+    /* 플레이어 모두 생성해서 분류까지 완료 */
+    if (FAILED(On_ReadyPlayers_Stage(vecReadyObjects)))
+        return E_FAIL;
+
+#ifdef _DEBUG
+    cout << "플레이어 생성 후 팀 분류 완료." << endl;
+#endif // _DEBUG
+
+    /* 플레이어 모두 생성해서 분류까지 완료 */
+    if (FAILED(On_ReadyTirggers_Paden(vecReadyObjects)))
+        return E_FAIL;
+
+#ifdef _DEBUG
+    cout << "트리거 생성 완료." << endl;
+#endif // _DEBUG
+
+    SetUp_DefaultLight_BootCamp();
+
     return S_OK;
+}
+
+HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    vector<CPlayer*> pArrPlayers;
+    CPlayer* pPlayersSquad[MAX_SQUAD][MAX_SQUAD] = {};
+
+    CPlayer* pUserPlayer = nullptr;
+
+    pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
+    CUser::Get_Instance()->Set_Player(pUserPlayer);
+    READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
+
+    /* 16개 플레이어 생성하고 섞어서 팀에 뿌림 */
+    _uint iIndex = 0;
+    pArrPlayers.push_back(pUserPlayer);
+
+
+    for (auto& pInfo : m_mapAllPlayers)
+    {
+        if (pInfo.first == HASHCODE(CPlayerInfo_Main))
+            continue;
+
+        /* sandback들은 건너 뛰기 */
+        if (dynamic_cast<CPlayerInfo_SandBack*>(pInfo.second))
+            continue;
+
+        CPlayer* pPlayer = pInfo.second->Make_Player();
+        if (!pPlayer)
+            return E_FAIL;
+
+        pArrPlayers.push_back(pPlayer);
+        pPlayer->Set_Default_ReserveState(WARRIOR, STATE_IDLE_WARRIOR_R_AI_ENEMY);
+        READY_GAMEOBJECT(pPlayer, GROUP_PLAYER);
+
+    }
+
+    //Leader Player부터 하나씩 뽑아서 스쿼드에 배치
+    
+    for (auto iter = pArrPlayers.begin(); iter != pArrPlayers.end();)
+    {
+        CPlayer* pCurPlayer = *iter;
+
+        if (pCurPlayer->Get_Level() > 10 ||
+            pCurPlayer->IsMainPlayer()
+            )
+        {
+            //랜덤 스쿼드 인덱스 뽑기
+            _uint iSquadIndex = random(0, 3);
+
+            //이미 리더플레이어가 있는지 확인 
+            while (pPlayersSquad[iSquadIndex][0])
+            {
+                iSquadIndex = random(0, 3);
+            }
+
+            //리더 플레이어 채워주기
+            pPlayersSquad[iSquadIndex][0] = pCurPlayer;
+            iter = pArrPlayers.erase(iter);
+        }
+        else
+        {
+            ++iter;
+        }
+    }
+
+    /* 스쿼드 나머지 채우기 */
+    for (_uint i = 0; i < MAX_SQUAD; ++i)
+    {
+        // 일반 플레이어들 3명씩 뽑기
+        for (_uint j = 0; j < 3; ++j)
+        {
+            _uint iRandIndex = random(0, pArrPlayers.size() -1);
+            pPlayersSquad[i][j+1] = pArrPlayers[iRandIndex];
+
+            //뽑힌 애 다시 배열에서 빼기
+            auto iter = pArrPlayers.begin();
+            for (_uint k = 0; k < iRandIndex; ++k)
+                ++iter;
+
+            iter = pArrPlayers.erase(iter);
+        }
+    }
+   
+
+    CSquad* pArrSquad[4] = {};
+
+
+    for (_uint i = 0; i < MAX_SQUAD; ++i)
+    {
+      CSquad* pSquad = CSquad::Create(pPlayersSquad[i][0], pPlayersSquad[i][1], pPlayersSquad[i][2], pPlayersSquad[i][3]);
+      pArrSquad[i] = pSquad;
+    }
+    list<CSquad*>   pSquadLists;
+    pSquadLists.push_back(pArrSquad[0]);
+    pSquadLists.push_back(pArrSquad[1]);
+    if (!(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED] = CTeamConnector::Create(pSquadLists)))
+        return E_FAIL;
+
+    pSquadLists.clear();
+    pSquadLists.push_back(pArrSquad[2]);
+    pSquadLists.push_back(pArrSquad[3]);
+    if (!(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE] = CTeamConnector::Create(pSquadLists)))
+        return E_FAIL;
+
+    m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->m_eTeamType = eTEAM_TYPE::eRED;
+    m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->SetUp_TeamType();
+    m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_eTeamType = eTEAM_TYPE::eBLUE;
+    m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->SetUp_TeamType();
+
+#ifdef _DEBUG
+    for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
+    {
+        cout << "====== 팀 : " << i << endl;
+        _uint iSquadCnt = 0;
+        for (auto& elem : m_pTeamConnector[i]->m_SquadList)
+        {
+            cout << "----- 스쿼드 : " << iSquadCnt++ << endl;
+
+            for (auto& pPlayer : elem->m_mapPlayers)
+            {
+                cout << " * 이름 : " << CFunctor::To_String(pPlayer.second->Get_PlayerName()) << endl;
+            }
+        }
+            
+
+    }
+#endif // _DEBUG
+
+
+    return S_OK;
+}
+
+HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+    //0. 양쪽 진영
+    CTrigger* pTrigger = nullptr;
+    string  strTriggerName;
+
+#define ADD_TRIGGER(name, radius)   strTriggerName = name;\
+    pTrigger = CTrigger_Paden::Create(strTriggerName, radius);\
+    if (!pTrigger)\
+        return E_FAIL;\
+    m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
+    CREATE_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
+
+    ADD_TRIGGER("Paden_RedTeam_StartTrigger", 2.f);
+    ADD_TRIGGER("Paden_BlueTeam_StartTrigger", 2.f);
+
+    m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Paden_BlueTeam_StartTrigger")]);
+    m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Paden_RedTeam_StartTrigger")]);
+
+    /*map에서 찾아다가 static cast 하는 매크로*/
+    TRIGGER_PADEN("Paden_RedTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->IsMainPlayerTeam());
+    TRIGGER_PADEN("Paden_BlueTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->IsMainPlayerTeam());
+
+    //1. 메인 거점
+    ADD_TRIGGER("Paden_Trigger_A", 2.f);
+    ADD_TRIGGER("Paden_Trigger_R", 2.f);
+    ADD_TRIGGER("Paden_Trigger_C", 2.f);
+
+
+    
+    
+
+    return S_OK;
+}
+
+HRESULT CGameSystem::On_EnterStage()
+{
+    /* 모든 플레이어들 유닛 일단 꺼놓기 */
+    //for (auto& elem : m_mapAllPlayers)
+    //{
+    //    /* sandback들은 건너 뛰기 */
+    //    if (dynamic_cast<CPlayerInfo_SandBack*>(elem.second))
+    //        continue;
+
+    //    if (!elem.second->Get_Player()->Get_CurrentUnit())
+    //        return E_FAIL;
+
+    //    DISABLE_GAMEOBJECT(elem.second->Get_Player()->Get_CurrentUnit());
+    //}
+
+    return S_OK;
+}
+
+HRESULT CGameSystem::On_Update_Paden()
+{
+    //점령한 거점 확인해서 점수 깎기
+    
+
+    return S_OK;
+}
+
+void CGameSystem::On_StartGame()
+{
+    /* 작전회의 끝나고 호출되는 함수 */
+
+
+
+    //1. 모든 플레이어들 시작 위치에서 생성
+    for (auto& elem : m_mapAllPlayers)
+    {
+        /* sandback들은 건너 뛰기 */
+        if (dynamic_cast<CPlayerInfo_SandBack*>(elem.second))
+            continue;
+        /* ai들은 랜덤 선택 함수 호출 */
+        if (!elem.second->m_bIsMainPlayer)
+            elem.second->Choose_Character();
+
+
+        /* 자기 진영에서 포지션 가져오기 */
+
+       
+        _float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
+        vStartPos.x += frandom(-5.f, 5.f);
+        vStartPos.z += frandom(-5.f, 5.f);
+        
+        elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, (CPlayer::CLASS_DEFAULT)elem.second->m_eCurChosenClass);
+      
+    }
+
+
+}
+
+void CGameSystem::On_FinishGame()
+{
+    //한쪽 점수가 0이 되면 끝
 }
 
 HRESULT CGameSystem::Load_Position(string strFileKey)
@@ -553,6 +828,40 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
 
 
     ADD_PLAYERINFO(CPlayerInfo_Main);
+
+    CUser::Get_Instance()->Set_MainPlayerInfo(m_mapAllPlayers[HASHCODE(CPlayerInfo_Main)]);
+
+
+    /* 일반 AI들 */
+#define ADD_DEFAULTINFO(name) pPlayerInfo = CPlayerInfo_Default::Create();\
+    pPlayerInfo->m_tPlayerInfo.wstrName = name;\
+    pPlayerInfo->m_tPlayerInfo.wstrCamName = pPlayerInfo->m_tPlayerInfo.wstrName;\
+    pPlayerInfo->m_tPlayerInfo.wstrCamName += L"_Cam";\
+    m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);
+
+    _uint iDefaultCnt = 0;
+    for (_uint i = 0; i < 12; ++i)
+    {
+        wstring wstrName = L"DeafultPlayer_";
+        wstrName += to_wstring(iDefaultCnt++);
+        ADD_DEFAULTINFO(wstrName);
+    }
+
+    /* 분대장급 AI들 */
+#define ADD_LEADERINFO(name) pPlayerInfo = CPlayerInfo_Leader::Create();\
+    pPlayerInfo->m_tPlayerInfo.wstrName = name;\
+    pPlayerInfo->m_tPlayerInfo.wstrCamName = pPlayerInfo->m_tPlayerInfo.wstrName;\
+    pPlayerInfo->m_tPlayerInfo.wstrCamName += L"_Cam";\
+    m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);
+
+
+    _uint iLeaderCnt = 0;
+    for (_uint i = 0; i < 3; ++i)
+    {
+        wstring wstrName = L"LeaderPlayer_";
+        wstrName += to_wstring(iLeaderCnt++);
+        ADD_LEADERINFO(wstrName);
+    }
 
 
 

@@ -92,7 +92,7 @@ HRESULT CLevel_Test::Enter()
 {
 	__super::Enter();
 
-	
+	CGameSystem::Get_Instance()->On_EnterTest();
 
 	
 

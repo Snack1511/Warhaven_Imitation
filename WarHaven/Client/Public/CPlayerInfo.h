@@ -29,6 +29,8 @@ return pInstance;\
 
 BEGIN(Client)
 
+class CTeamConnector;
+class CSquad;
 class CPlayer;
 
 class CPlayerInfo abstract
@@ -58,15 +60,16 @@ protected:
 	CPlayerInfo();
 	virtual ~CPlayerInfo();
 
-
-
 public:
 	/* 레벨 로딩시 이 함수를 통해서 Player를 만들어냄 */
 	CPlayer* Make_Player();
 
 public:
 	CPlayer* Get_Player() { return m_pMyPlayer; }
-
+	eTEAM_TYPE	Get_TeamType() { return m_eTeamType; }
+	void	Set_TeamType(eTEAM_TYPE eEnum) { m_eTeamType = eEnum; }
+	void	Set_Squad(CSquad* pSquad) { m_pMySquad = pSquad; }
+	void	Set_TeamConnector(CTeamConnector* pTeam) { m_pMyTeam = pTeam; }
 public:
 	/* 커스텀 추가될 때마다 여기 enum 추가해서 넣어놓기 */
 	enum class eCUSTOM_HEAD{eDEFAULT, eHEAD1, eRABBIT};
@@ -86,7 +89,14 @@ public:
 	virtual HRESULT	Initialize() PURE;
 
 protected:
+	/* GameObject들 포인터 */
 	CPlayer* m_pMyPlayer = nullptr;
+	CSquad* m_pMySquad = nullptr;
+	CTeamConnector* m_pMyTeam = nullptr;
+
+protected:
+	eTEAM_TYPE	m_eTeamType = eTEAM_TYPE::eBLUE;
+	CLASS_TYPE	m_eCurChosenClass = WARRIOR;
 
 protected:
 	PLAYER_INFO	m_tPlayerInfo;

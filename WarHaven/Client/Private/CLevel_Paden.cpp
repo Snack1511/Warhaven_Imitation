@@ -38,7 +38,7 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	/* GameSystem */
-	if (FAILED(CGameSystem::Get_Instance()->On_ReadyTest(m_vecGameObjects)))
+	if (FAILED(CGameSystem::Get_Instance()->On_ReadyPaden(m_vecGameObjects)))
 		return E_FAIL;
 
 	m_fLoadingFinish = 1.f;
@@ -49,6 +49,9 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 HRESULT CLevel_Paden::Enter()
 {
 	if (FAILED(__super::Enter()))
+		return E_FAIL;
+
+	if (FAILED(CGameSystem::Get_Instance()->On_EnterStage()))
 		return E_FAIL;
 
 	return S_OK;

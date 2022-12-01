@@ -74,18 +74,10 @@ public:
 		CLASS_DEFAULT_END
 	};
 
-	enum eTEAM_TYPE
+	enum OUTLINETYPE
 	{
-		//이거랑 &이면 메인플레이어
-		eMAINPLAYER = (1 << 0),
-
-		//둘중 하나랑 &면 어느 진영인지
-		ePLAYERTEAM = (1 << 1),
-		eENEMYTEAM = (1 << 2),
-
-		//&해서 스쿼드 멤버인지 스쿼드장인지 여부
-		eSQUADMEMBER = (1 << 3),
-		eSQUADLEADER = (1 << 4)
+		eENEMY,
+		eSQUADMEMBER,
 	};
 
 public:
@@ -110,6 +102,7 @@ public:
 
 
 	void	Reserve_State(_uint eState);
+	void	Set_Default_ReserveState(_uint eClass, _uint eState);
 
 	void	SetUp_UnitColliders(_bool bPlayer);
 	void	SetUp_UnitHitStates(_bool bPlayer);
@@ -128,9 +121,14 @@ public:
 	CUnit* Get_CurrentUnit() { return m_pCurrentUnit; }
 	CLASS_DEFAULT Get_CurrentDefaultClass() { return m_eCurrentDefaultClass; }
 	void Set_MainPlayer();
+	void Set_LeaderPlayer() { m_bIsLeaderPlayer = true; }
 
 	wstring Get_PlayerName() { return m_pMyPlayerInfo->m_tPlayerInfo.wstrName; }
 	_uint	Get_Level() { return m_pMyPlayerInfo->m_tPlayerInfo.iLevel; }
+	CPlayerInfo* Get_PlayerInfo() { return m_pMyPlayerInfo; }
+
+	void	Enable_OnStart() { m_bEnableOnStart = true; }
+
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype();
@@ -146,17 +144,33 @@ public:
 public:
 	_bool& AbleHero() { return m_bAbleHero; }
 	_bool& IsHero() { return m_bIsHero; }
+	_bool	IsMainPlayer() { return m_bIsMainPlayer; }
+	_bool	IsLeaderPlayer() { return m_bIsLeaderPlayer; }
 
 public:
-	void	Set_TeamType(int eTeamType);
+	void	Set_Squad(CSquad* pSquad) { m_pMySquad = pSquad; }
+	void	Set_Team(CTeamConnector* pTeamConnector) { m_pMyTeam = pTeamConnector; }
+	void	Set_TeamType(eTEAM_TYPE eTeamType);
+	void	Set_OutlineType(OUTLINETYPE eOutlineType);
+
+	CTeamConnector* Get_Team() { return m_pMyTeam; }
+	CSquad* Get_Squad() { return m_pMySquad; }
+
+private:
+	_bool	m_bEnableOnStart = false;
 
 private: /* 킬뎃과 플레이어 정보 */
 	KDA_STAT	m_tKdaStat;
 	CPlayerInfo* m_pMyPlayerInfo = nullptr;
+	CSquad* m_pMySquad = nullptr;
+	CTeamConnector* m_pMyTeam = nullptr;
+	_bool m_bIsMainPlayer = false;
+	_bool m_bIsLeaderPlayer = false;
+
 
 private:
-	//어느 진영인지, 스쿼드멤버인지 스쿼드장인지 여부
-	int	m_eTeamTypeFlag = eTEAM_TYPE::eMAINPLAYER;
+	//어느 진영인지
+	eTEAM_TYPE	m_eTeamType = eTEAM_TYPE::eBLUE;
 
 private:
 	CPlayer* m_pTargetPlayer = nullptr;
@@ -177,7 +191,6 @@ private:
 
 	CLASS_DEFAULT	m_eCurrentDefaultClass = CLASS_DEFAULT_END;
 
-	_bool m_bIsMainPlayer = false;
 
 private:	// 화신 게이지
 	_bool		m_bAbleHero = false;

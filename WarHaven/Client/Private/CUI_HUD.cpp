@@ -23,6 +23,8 @@
 #include "Loading_Manager.h"
 #include "CUI_Renderer.h"
 
+#include "CGameSystem.h"
+
 
 CUI_HUD::CUI_HUD()
 {
@@ -195,6 +197,8 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 		m_pArrOperSelectUI[i][m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
 		m_pArrOperSelectUI[i][iEventNum]->DoScale(10.f, 0.1f);
 	}
+
+	
 }
 
 void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
@@ -979,7 +983,7 @@ void CUI_HUD::Update_OperWindow()
 			if (m_fOperTime < 0.f)
 			{
 				m_fOperTime = 0.f;
-
+				On_OperTimeOver();
 
 			}
 		}
@@ -1305,6 +1309,51 @@ void CUI_HUD::Update_HeorTransformGauge()
 			}
 		}
 	}
+}
+
+void CUI_HUD::On_OperTimeOver()
+{
+	/* 작전회의 시간 모두 지나가고 호출되는 함수 */
+
+	//1. 검은화면 fade in out
+
+	//검은화면 fade in 되면 아래 호출 (임시로 적어놈)
+	CGameSystem::Get_Instance()->On_StartGame();
+	
+	Disable_AllOperUIs();
+	
+}
+
+void CUI_HUD::Disable_AllOperUIs()
+{
+#define	DISABLE_OPERUI_ARR(name) for (auto& elem : name) if (elem)DISABLE_GAMEOBJECT(elem);
+#define	DISABLE_OPERUI_DARR(name) for (auto& elem : name) for (auto& elem2 : elem) if (elem2) DISABLE_GAMEOBJECT(elem2);
+
+	
+	DISABLE_OPERUI_ARR(m_pArrOperSideBG);
+	DISABLE_OPERUI_DARR(m_pArrOperSelectUI);
+	DISABLE_OPERUI_DARR(m_pArrOperPointUI);
+	//DISABLE_OPERUI_DARR(m_pArrBootCampUI);
+	DISABLE_OPERUI_ARR(m_pArrTargetPoint);
+
+	if (m_pOperWindow)
+	DISABLE_GAMEOBJECT(m_pOperWindow);
+	if (m_pSmokeBG)
+		DISABLE_GAMEOBJECT(m_pSmokeBG);
+	if (m_pOperTextImg2)
+		DISABLE_GAMEOBJECT(m_pOperTextImg2);
+	if (m_pSquardTextImg)
+		DISABLE_GAMEOBJECT(m_pSquardTextImg);
+	if (m_pOperMapIcon)
+		DISABLE_GAMEOBJECT(m_pOperMapIcon);
+	if (m_pOperMapBG)
+		DISABLE_GAMEOBJECT(m_pOperMapBG);
+
+	DISABLE_OPERUI_ARR(m_pOperTimer);
+	DISABLE_OPERUI_ARR(m_pBriefingUI);
+		
+		
+		
 }
 
 void CUI_HUD::Create_OperSelectCharacter()

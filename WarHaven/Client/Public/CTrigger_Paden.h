@@ -5,17 +5,17 @@ BEGIN(Client)
 
 class CPlayer;
 
-class CTrigger_Paden final
+class CTrigger_Paden 
 	: public CTrigger
 {
 	DECLARE_PROTOTYPE(CTrigger_Paden);
 
-private:
+protected:
 	CTrigger_Paden();
 	virtual ~CTrigger_Paden();
 
 public:
-	static CTrigger_Paden* Create(_float fRadius);
+	static CTrigger_Paden* Create(string strPositionKey, _float fRadius);
 
 public:
 	virtual void	Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
@@ -27,13 +27,17 @@ public:
 	void		Add_RespawnPositions(_float4 vPosition) { m_vRespawnPositions.push_back(vPosition); };
 
 public:
+	void		Set_StartTrigger(_bool bPlayerTeam);
 	_float4		Get_RespawnPosition();
+	string		Get_TriggerName() { return m_strTriggerName; }
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Start() override;
 
 private:
+	string			m_strTriggerName;
+
 	/* 양 팀중 몇명이 트리거 안에 들어있는지 확인 */
 	_uint			m_iPlayerTeamCnt = 0;
 	_uint			m_iEnemyTeamCnt = 0;
@@ -43,7 +47,16 @@ private:
 	vector<CPlayer*> m_vecAdjPlayers;
 
 private:
-	_uint	m_iUIIndex = 0;
+	_bool			m_bStartTrigger = false;
+	_bool			m_bConquered = false;
+	_bool			m_bIsConqueredByPlayerTeam = false;
+
+	_float			m_fConqueredTimeAcc = 0.f;
+	_float			m_fConqueredTime = 5.f;
+
+private:
+	virtual void My_Tick();
+	void	Update_Conquered();
 
 };
 

@@ -293,6 +293,8 @@
     <ClInclude Include="..\Public\CJump_SpearMan_R.h" />
     <ClInclude Include="..\public\CMapColliders.h" />
     <ClInclude Include="..\public\CPlayerInfo.h" />
+    <ClInclude Include="..\public\CPlayerInfo_Default.h" />
+    <ClInclude Include="..\public\CPlayerInfo_Leader.h" />
     <ClInclude Include="..\public\CPlayerInfo_Main.h" />
     <ClInclude Include="..\public\CPlayerInfo_SandBack.h" />
     <ClInclude Include="..\public\CPositionTable.h" />
@@ -686,6 +688,8 @@
     <ClCompile Include="..\Private\CJump_SpearMan_R.cpp" />
     <ClCompile Include="..\private\CMapColliders.cpp" />
     <ClCompile Include="..\private\CPlayerInfo.cpp" />
+    <ClCompile Include="..\private\CPlayerInfo_Default.cpp" />
+    <ClCompile Include="..\private\CPlayerInfo_Leader.cpp" />
     <ClCompile Include="..\private\CPlayerInfo_Main.cpp" />
     <ClCompile Include="..\private\CPlayerInfo_SandBack.cpp" />
     <ClCompile Include="..\private\CPositionTable.cpp" />

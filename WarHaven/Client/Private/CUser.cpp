@@ -31,6 +31,8 @@
 #include "CUI_Cursor.h"
 #include "CUI_Fire.h"
 
+#include "CGameSystem.h"
+
 IMPLEMENT_SINGLETON(CUser);
 
 CUser::CUser()
@@ -65,6 +67,7 @@ CUnit* CUser::Get_Player()
 {
 	return m_pPlayer->Get_CurrentUnit();
 }
+
 
 void CUser::Fix_CursorPosToCenter()
 {

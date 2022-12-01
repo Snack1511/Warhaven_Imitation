@@ -143,7 +143,7 @@ CLASS_TYPE CPlayerInfo::Choose_Character()
 
 	
 
-	return m_vecPrefClassType[iRand];
+	return m_eCurChosenClass = m_vecPrefClassType[iRand];
 }
 
 

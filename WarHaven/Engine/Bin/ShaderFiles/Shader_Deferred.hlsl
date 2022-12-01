@@ -663,7 +663,7 @@ PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
 
 	//float fRim = 1 - saturate(dot(vViewNormal, vNormal));
 
-	float		fShade = 1.f - saturate(saturate(dot(normalize(vViewNormal.xyz), vNormal.xyz)));
+	float		fShade = 1.f - saturate(saturate(dot(normalize(vViewNormal.xyz), normalize(vNormal.xyz))));
 
 	//노말 벡터가 카메라로 향하면 1
 	//노말 벡터가 카메라를 안보면 0

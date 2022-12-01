@@ -89,6 +89,7 @@ public:
 
 public:
 	void	Start_ShakingCamera(_float fPower, _float fTime);
+	void	Synchronize_Position();
 
 public:
 	void	Start_LerpType(CAMERA_LERP_TYPE eType);

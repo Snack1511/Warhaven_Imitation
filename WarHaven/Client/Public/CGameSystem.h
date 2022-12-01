@@ -1,6 +1,8 @@
 #pragma once
 #include "Client_Defines.h"
 
+#define		MAX_PLAYERSNUM 16
+
 BEGIN(Engine)
 class CGameObject;
 END
@@ -31,6 +33,7 @@ public:
 
 public:
 	HRESULT					On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_EnterTest();
 
 public: /* BootCamp */
 	HRESULT					On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
@@ -42,8 +45,27 @@ public: /* BootCamp */
 
 	HRESULT					On_EnterBootCamp();
 
+
+
+
+
 public:	// Paden
 	HRESULT					On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+
+	/* 스테이지 플레이어 세팅 */
+	HRESULT					On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	
+	/* 파덴 스테이지 거점 세팅 */
+	HRESULT					On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_EnterStage();
+	HRESULT					On_Update_Paden();
+
+	/* 작전회의 끝나고 모두 생성시키기 */
+	void					On_StartGame();
+	void					On_FinishGame();
+
+
+
 
 public: /* Position Table */
 	HRESULT					Load_Position(string strFileKey);
@@ -55,8 +77,7 @@ private:
 
 private:
 	/* 스테이지 진입시 팀이 만들어진다 */
-	CTeamConnector* m_pRedTeam = nullptr;
-	CTeamConnector* m_pBlueTeam = nullptr;
+	CTeamConnector* m_pTeamConnector[_uint(eTEAM_TYPE::eCOUNT)] = {};
 
 private:
 	/* 모든 플레이어 정보를 미리 만들어놓고 그 정보를 토대로 Player 생성하는 방식 */

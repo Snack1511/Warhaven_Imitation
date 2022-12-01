@@ -10,6 +10,7 @@ class CUnit;
 class CBloodOverlay;
 class CUI_Cursor;
 class CPlayer;
+class CPlayerInfo;
 class CUI_HUD;
 class CUI_Damage;
 class CUI_Training;
@@ -31,6 +32,10 @@ public:
 	void		Set_Player(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
 	CPlayer*	Get_PlayerObejects() { return m_pPlayer; }
 	CUnit*		Get_Player();
+	void		Set_MainPlayerInfo(CPlayerInfo* pPlayerInfo) { m_pPlayerInfo = pPlayerInfo; }
+	CPlayerInfo* Get_MainPlayerInfo() { return m_pPlayerInfo; }
+
+
 	void		Set_FixCursor(_bool bEnable) { m_bFixCursor = bEnable;  ::ShowCursor(!bEnable); }
 
 	CUI_Cursor* Get_Cursor() { return m_pCursor; }
@@ -52,6 +57,7 @@ public:
 	void	Time_Slow();
 
 private:
+	CPlayerInfo* m_pPlayerInfo = nullptr;
 	CPlayer* m_pPlayer = nullptr;
 
 private:

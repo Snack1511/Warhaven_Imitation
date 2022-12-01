@@ -108,10 +108,10 @@ HRESULT CTrigger_BootCamp::Start()
 {
 	__super::Start();
 
-	for (auto& elem : m_vecAdjPlayers)
+	/*for (auto& elem : m_vecAdjPlayers)
 	{
 		DISABLE_GAMEOBJECT(elem->Get_CurrentUnit());
-	}
+	}*/
 
 	return S_OK;
 }

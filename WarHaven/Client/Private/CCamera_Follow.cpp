@@ -46,6 +46,11 @@ void CCamera_Follow::Start_ShakingCamera(_float fPower, _float fTime)
 	m_pFollowScript->Start_ShakingCamera(fPower, fTime);
 }
 
+void CCamera_Follow::Synchronize_Position()
+{
+	m_pFollowScript->Synchronize_Position();
+}
+
 void CCamera_Follow::Create_CamCollider()
 {
 	list<CComponent*> ColList = Get_Component<CCameraCollider>();

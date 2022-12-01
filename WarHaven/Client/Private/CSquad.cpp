@@ -3,12 +3,49 @@
 
 #include "UsefulHeaders.h"
 
+
+
 CSquad::CSquad()
 {
 }
 
 CSquad::~CSquad()
 {
+}
+
+CSquad* CSquad::Create(CPlayer* pLeaderPlayer, CPlayer* pPlayer_0, CPlayer* pPlayer_1, CPlayer* pPlayer_2)
+{
+	CSquad* pSquad = new CSquad;
+
+	pSquad->m_pLeaderPlayer = pLeaderPlayer;
+	pSquad->Add_Player(pLeaderPlayer);
+	pSquad->Add_Player(pPlayer_0);
+	pSquad->Add_Player(pPlayer_1);
+	pSquad->Add_Player(pPlayer_2);
+
+	if (pSquad->m_mapPlayers.size() < 4)
+	{
+		Call_MsgBox(L"½ºÄõµå¿¡ ¸â¹ö ºÎÁ· : CSquad");
+		SAFE_DELETE(pSquad);
+	}
+
+	return pSquad;
+}
+
+HRESULT CSquad::Initialize()
+{
+	if (!m_pMyTeam)
+		return E_FAIL;
+
+	for (auto& elem : m_mapPlayers)
+	{
+		elem.second->Set_Squad(this);
+		elem.second->Set_Team(m_pMyTeam);
+	}
+
+	m_pLeaderPlayer->Set_LeaderPlayer();
+
+	return S_OK;
 }
 
 void CSquad::Add_Player(CPlayer* pPlayer)
@@ -52,4 +89,14 @@ void CSquad::Make_LeaderPlayer()
 
 	if (pPlayer)
 		m_pLeaderPlayer = pPlayer;
+}
+
+void CSquad::SetUp_OutlineType_SquadMember()
+{
+	for (auto& elem : m_mapPlayers)
+	{
+		if (elem.second == m_pLeaderPlayer)
+			continue;
+		elem.second->Set_OutlineType(CPlayer::OUTLINETYPE::eSQUADMEMBER);
+	}
 }

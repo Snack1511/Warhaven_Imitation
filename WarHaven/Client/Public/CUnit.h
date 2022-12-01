@@ -124,6 +124,7 @@ public:
 
 
 public:
+	virtual void	On_Respawn();
 	virtual	void	On_Die();
 
 	void Set_MainPlayer() { m_bIsMainPlayer = true; }

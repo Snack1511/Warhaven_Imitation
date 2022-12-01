@@ -1,6 +1,13 @@
 #pragma once
 namespace Client
 {
+	enum class eTEAM_TYPE
+	{
+		eRED,
+		eBLUE,
+		eCOUNT
+	};
+
 	enum CLASS_TYPE
 	{
 		WARRIOR,

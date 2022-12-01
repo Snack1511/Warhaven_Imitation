@@ -25,6 +25,9 @@ public:
 	void	Start_ShakingCamera(_float fPower, _float fTime);
 
 public:
+	void	Synchronize_Position();
+
+public:
 	void	Create_CamCollider();
 	void	Delete_CamCollider();
 	void	Set_FollowTarget(CGameObject* pTarget);

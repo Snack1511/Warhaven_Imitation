@@ -46,6 +46,8 @@
 
 #include "CEffects_Factory.h"
 
+#include "CSquad.h"
+
 
 
 #define ERR_MSG_TH
@@ -337,8 +339,8 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	m_pCurrentUnit = m_pDefaultClass[eClass];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
-	Set_Postion(vPos);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
+	Set_Postion(vPos);
 
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClass]);
 
@@ -365,12 +367,13 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	m_pCurrentUnit = m_pHeroClass[eClass - CPlayer::CLASS_HREO_FIONA];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
-	Set_Postion(vPos);
 	m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
 	m_pCurrentUnit->Set_MainPlayer();
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateHero[eClass - CPlayer::CLASS_HREO_FIONA]);
 	//m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
+
+	Set_Postion(vPos);
 
 	return S_OK;
 }
@@ -380,11 +383,19 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_DEFAULT eClass)
 	Change_DefaultUnit(eClass);
 
 	Set_Postion(vPos);
+
+	m_pCurrentUnit->On_Respawn();
 }
 
 void CPlayer::Reserve_State(_uint eState)
 {
 	m_pCurrentUnit->Reserve_State(STATE_TYPE(eState));
+	
+}
+
+void CPlayer::Set_Default_ReserveState(_uint eClass, _uint eState)
+{
+	m_iReserveStateDefault[eClass] = eState;
 }
 
 void CPlayer::SetUp_UnitColliders(_bool bPlayer)
@@ -432,7 +443,7 @@ void CPlayer::Set_Postion(_float4 vPos)
 	if (m_pCurrentUnit)
 	{
 		m_pCurrentUnit->Teleport_Unit(vPos);
-		//m_pCurrentUnit->Synchronize_CamPos();
+		m_pCurrentUnit->Synchronize_CamPos();
 	}
 }
 
@@ -491,19 +502,15 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize()
 {
-	if (m_pMyPlayerInfo->m_bIsMainPlayer)
-		Set_MainPlayer();
-
-	SetUp_UnitColliders(m_bIsMainPlayer);
-	SetUp_UnitHitStates(m_bIsMainPlayer);
 
 	return S_OK;
 }
 
 HRESULT CPlayer::Start()
 {
-
 	__super::Start();
+
+	SetUp_UnitHitStates(m_bIsMainPlayer);
 
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
@@ -533,17 +540,25 @@ HRESULT CPlayer::Start()
 
 	}
 
-
-
 	if (m_pCurrentUnit)
 	{
-		ENABLE_GAMEOBJECT(m_pCurrentUnit);
+		if (m_bEnableOnStart)
+			ENABLE_GAMEOBJECT(m_pCurrentUnit);
 	}
 	else
 	{
 		Call_MsgBox(L"CPlayer : 현재 지정된 유닛이 없음.");
 		return E_FAIL;
 	}
+
+	if (m_bIsMainPlayer)
+	{
+		if (m_pMySquad)
+		{
+			m_pMySquad->SetUp_OutlineType_SquadMember();
+		}
+	}
+	
 
 	return S_OK;
 }
@@ -558,20 +573,25 @@ void CPlayer::OnDisable()
 	__super::OnDisable();
 }
 
-void CPlayer::Set_TeamType(int eTeamType)
+void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
 {
-	m_eTeamTypeFlag = eTeamType;
+	m_eTeamType = eTeamType;
+}
 
+void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
+{
 	_float4 vOutlineFlag = ZERO_VECTOR;
 
-	if (m_eTeamTypeFlag & eTEAM_TYPE::ePLAYERTEAM)
+	switch (eOutlineType)
 	{
-		if (m_eTeamTypeFlag & eTEAM_TYPE::eSQUADMEMBER)
-			vOutlineFlag = _float4(0.709f, 0.901f, 0.113f);
-	}
-	else if (m_eTeamTypeFlag & eTEAM_TYPE::eENEMYTEAM)
-	{
+	case Client::CPlayer::eENEMY:
 		vOutlineFlag = _float4(0.9f, 0.1f, 0.1f);
+		break;
+	case Client::CPlayer::eSQUADMEMBER:
+		vOutlineFlag = _float4(0.709f, 0.901f, 0.113f);
+		break;
+	default:
+		break;
 	}
 
 	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
@@ -589,7 +609,6 @@ void CPlayer::Set_TeamType(int eTeamType)
 			GET_COMPONENT_FROM(m_pHeroClass[i], CModel)->Set_OutlineFlag(vOutlineFlag);
 	}
 }
-
 
 void CPlayer::My_Tick()
 {

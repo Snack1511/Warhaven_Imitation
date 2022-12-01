@@ -46,6 +46,7 @@
 #include "CUI_Wrapper.h"
 #include "CUI_UnitHUD.h"
 
+#include "CColorController.h"
 
 #define PHYSX_ON
 
@@ -184,8 +185,7 @@ void CUnit::Synchronize_CamPos()
 	if (!m_pFollowCam)
 		return;
 
-	m_pFollowCam->Get_Transform()->Set_World(WORLD_POS, m_pTransform->Get_World(WORLD_POS));
-	m_pFollowCam->Get_Transform()->Make_WorldMatrix();
+	m_pFollowCam->Synchronize_Position();
 }
 
 void CUnit::Shake_Camera(_float fPower, _float fTime)
@@ -196,6 +196,26 @@ void CUnit::Shake_Camera(_float fPower, _float fTime)
 void CUnit::Lerp_Camera(const _uint& iCameraLerpType)
 {
 	GET_COMPONENT_FROM(m_pFollowCam, CScript_FollowCam)->Start_LerpType((CScript_FollowCam::CAMERA_LERP_TYPE)iCameraLerpType);
+}
+
+void CUnit::On_Respawn()
+{
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
+	
+
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.2f;
+	tColorDesc.fFadeOutStartTime = 0.5f;
+	tColorDesc.fFadeOutTime = 1.f;
+	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.iMeshPartType = MODEL_PART_BODY;
+	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
+	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
+	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 }
 
 void CUnit::On_Die()

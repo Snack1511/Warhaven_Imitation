@@ -59,6 +59,18 @@ void CScript_FollowCam::Start_ShakingCamera(_float fPower, _float fTime)
 	m_bShaking = true;
 }
 
+void CScript_FollowCam::Synchronize_Position()
+{
+	_float4 vPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vOffset = m_vCurrentOffset.MultiplyCoord(m_pOwner->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS));
+	vOffset.y = m_vCurrentOffset.y;
+	vPos += vOffset;
+	vPos -= (m_pOwner->Get_Transform()->Get_World(WORLD_LOOK) * m_fCurrentDistance);
+
+	m_pOwner->Get_Transform()->Set_World(WORLD_POS, vPos);
+	m_pOwner->Get_Transform()->Make_WorldMatrix();
+}
+
 void CScript_FollowCam::Start_LerpType(CAMERA_LERP_TYPE eType)
 {
 	if (m_eCurrentLerpType >= CAMERA_LERP_FINISHATTACK)
