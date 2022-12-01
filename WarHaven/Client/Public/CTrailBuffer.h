@@ -66,6 +66,12 @@ private:
 	_uint		m_iCatmullRomCount = 0; // 보간될 값의 Cnt
 	_uint		m_iCatmullRomIndex[4] = {};
 
+private:
+	_float		m_fVtxAcc = 0.f;
+	_uint		m_iMaxVertices = 12;
+	_uint		m_iMinVertices = 4;
+	
+
 };
 
 END

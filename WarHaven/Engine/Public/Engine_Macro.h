@@ -96,6 +96,7 @@
 #define		SH_EFFECT_DEFAULT		_float4(1.f, 1.f, 0.f, 1.f)
 #define		SH_EFFECT_NOGLOW		_float4(0.95f, 1.f, 0.f, 1.f)
 #define		SH_EFFECT_NOBLOOM		_float4(1.f, 0.95f, 0.f, 1.f)
+#define		SH_EFFECT_ONLYBLUR		_float4(0.f, 0.f, 1.f, 1.f)
 #define		SH_EFFECT_NONE		_float4(0.f, 0.f, 0.f, 0.f)
 
 #define		SH_UI_BLOOM		_float4(0.f, 1.f, 0.f, 0.f)

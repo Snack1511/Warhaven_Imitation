@@ -50,7 +50,7 @@ HRESULT CValkyrie_Counter::Initialize()
 	m_iStateChangeKeyFrame = 9999;
 
 	m_fInterPolationTime = 0.1f;
-	m_fAnimSpeed = 2.f;
+	m_fAnimSpeed = 2.7f;
 
 
 	m_fMyAccel = 10.f;
