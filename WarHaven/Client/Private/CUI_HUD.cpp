@@ -1638,8 +1638,6 @@ void CUI_HUD::Create_TeamUI()
 		DELETE_GAMEOBJECT(m_pTeamUI[i]);
 	}
 
-
-
 	for (int i = 0; i < TU_End; ++i)
 	{
 		for (int j = 0; j < 2; ++j)

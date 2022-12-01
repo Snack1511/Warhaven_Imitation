@@ -400,7 +400,6 @@ HRESULT CUnit::Initialize_Prototype()
 	Add_Component(pPhysXCharacter);
 #endif // PHYSX_OFF
 
-	Create_UnitHUD();
 
 	return S_OK;
 }
@@ -475,7 +474,6 @@ HRESULT CUnit::Start()
 	if (m_pUnitCollider[HEAD])
 		ENABLE_COMPONENT(m_pUnitCollider[HEAD]);
 
-	Enable_UnitHUD();
 
 	/* PASS */
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
@@ -498,8 +496,6 @@ void CUnit::OnEnable()
 void CUnit::OnDisable()
 {
 	__super::OnDisable();
-
-	DISABLE_GAMEOBJECT(m_pUnitHUD);
 }
 
 
@@ -841,8 +837,6 @@ void CUnit::My_Tick()
 		m_fHitDelayAcc -= fDT(0);
 	else
 		m_fHitDelayAcc = 0.f;
-
-	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitStatus(m_tUnitStatus);
 }
 
 void CUnit::My_LateTick()
@@ -855,9 +849,6 @@ void CUnit::My_LateTick()
 			On_Die();
 		}
 	}
-
-	Frustum_UnitHUD();
-	TransformProjection();
 }
 
 void CUnit::Effect_Parring(_float4 vHitPos)
@@ -878,12 +869,6 @@ void CUnit::Effect_HeroToDefaultUnit(CUnit* pOwner)
 {
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-}
-
-
-void CUnit::TransformProjection()
-{
-	dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_ProjPos(m_pTransform);
 }
 
 void CUnit::On_InitSetting()
@@ -1074,52 +1059,3 @@ void CUnit::On_Bounce(void* pHitInfo)
 	Enter_State(m_tHitType.eBounce, pHitInfo);
 }
 
-
-
-void CUnit::Create_UnitHUD()
-{
-	m_pUnitHUD = CUI_UnitHUD::Create();
-}
-
-void CUnit::Enable_UnitHUD()
-{
-	CREATE_GAMEOBJECT(m_pUnitHUD, GROUP_UI);
-}
-
-void CUnit::Frustum_UnitHUD()
-{
-	_float fDis = CUtility_Transform::Get_FromCameraDistance(this);
-
-	if (fDis < 30.f)
-	{
-		dynamic_cast<CUI_UnitHUD*>(m_pUnitHUD)->Set_UnitDis(fDis);
-
-		_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-		vPos.y += 2.f;
-
-		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
-		{
-			if (!m_pUnitHUD->Is_Valid())
-			{
-				if (!m_bIsMainPlayer)
-				{
-					ENABLE_GAMEOBJECT(m_pUnitHUD);
-				}
-			}
-		}
-		else
-		{
-			if (m_pUnitHUD->Is_Valid())
-			{
-				DISABLE_GAMEOBJECT(m_pUnitHUD);
-			}
-		}
-	}
-	else
-	{
-		if (m_pUnitHUD->Is_Valid())
-		{
-			DISABLE_GAMEOBJECT(m_pUnitHUD);
-		}
-	}
-}

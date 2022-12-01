@@ -25,6 +25,7 @@ class CUnit;
 class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
+class CUI_UnitHUD;
 
 class CPlayer final : public CGameObject
 {
@@ -51,7 +52,7 @@ public:
 		_uint	iTotalAssist = 0;
 	};
 
-	
+
 
 	enum CLASS_HREO
 	{
@@ -141,7 +142,7 @@ public:
 
 public:
 	void	Set_TargetPlayer(CPlayer* pTargetPlayer) { m_pTargetPlayer = pTargetPlayer; }
-	CPlayer*	Get_TargetPlayer() { return m_pTargetPlayer; }
+	CPlayer* Get_TargetPlayer() { return m_pTargetPlayer; }
 
 public:
 	_bool& AbleHero() { return m_bAbleHero; }
@@ -179,6 +180,9 @@ private:
 
 	_bool m_bIsMainPlayer = false;
 
+private:
+	CUI_UnitHUD* m_pUnitHUD = nullptr;
+
 private:	// 화신 게이지
 	_bool		m_bAbleHero = false;
 	_bool		m_bIsHero = false;
@@ -190,12 +194,16 @@ private:
 	virtual void My_LateTick() override;
 
 private:
+	void Create_UnitHUD();
+	void Enable_UnitHUD();
+	void Frustum_UnitHUD();
+	void TransformProjection();
+
+private:
 	void Update_HP();
 	void Update_HeroGauge();
 	void On_AbleHero();
 	void On_FinishHero();
 	void On_FinishHero_KeyInput();
-
-
 };
 END
