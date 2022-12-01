@@ -57,6 +57,17 @@ void CUI_Dead::Enable_DeadUI()
 void CUI_Dead::My_Tick()
 {
 	__super::My_Tick();
+
+	if (Is_Valid())
+	{
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > 5.f)
+		{
+			m_fAccTime = 0.f;
+
+			DISABLE_GAMEOBJECT(this);
+		}
+	}
 }
 
 void CUI_Dead::My_LateTick()
