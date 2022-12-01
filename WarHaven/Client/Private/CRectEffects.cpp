@@ -1163,6 +1163,11 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 	Set_NewStartPos(iIndex);
 
+	if (m_bLoop)
+	{
+		m_pDatas[iIndex].InstancingData.fSpeed = m_pDatas[iIndex].InstancingData.fOriginSpeed;
+	}
+
 	m_pDatas[iIndex].InstancingData.vColor.w = 0.f;
 	m_pDatas[iIndex].RectInstance.vColor.w = 0.f;
 

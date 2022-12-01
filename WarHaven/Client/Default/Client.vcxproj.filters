@@ -2676,7 +2676,7 @@
     <ClInclude Include="..\public\CTrigger_Paden.h">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_Fire.h">
+    <ClInclude Include="..\Public\CUI_Animation.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_Hwara.h">
@@ -3838,7 +3838,7 @@
     <ClCompile Include="..\private\CTrigger_Paden.cpp">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_Fire.cpp">
+    <ClCompile Include="..\Private\CUI_Animation.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Hwara.cpp">

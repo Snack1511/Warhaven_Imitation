@@ -146,7 +146,7 @@ void CTrailBuffer::OnDisable()
 
 void CTrailBuffer::Tick()
 {
-
+	
 }
 
 void CTrailBuffer::Update_Curve()

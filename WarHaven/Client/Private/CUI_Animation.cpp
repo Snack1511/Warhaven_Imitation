@@ -16,21 +16,23 @@ CUI_Animation::~CUI_Animation()
 {
 }
 
+void CUI_Animation::Trun_UIAnimation(ANIMINFO tAniminfo)
+{
+	m_tAniminfo = tAniminfo;
+	
+	Set_Pos(m_tAniminfo.vPos.x, m_tAniminfo.vPos.y);
+	Set_Scale(m_tAniminfo.vScale.x, m_tAniminfo.vScale.y);
+
+}
+
 HRESULT CUI_Animation::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 
-	SetTexture(TEXT("../Bin/Resources/Textures/Effects/WarHaven/Texture/T_Fire_21.dds"));
+	SetTexture(TEXT("../Bin/Resources/Textures/Effects/WarHaven/Texture/T_Fire_09.dds"));
 
 	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_ANIMATION);
 
-	Set_Pos(500.f, -200.f);
-	Set_Scale(200, 300);
-
-	m_fTimeAcc = 0.f;
-	m_fDuration = 0.020f; //프레임당 속도
-	m_iHeightSize = 8; //애니메이션 가로세로 사이즈
-	m_iWidthSize = 8;
 	m_fRowX = 0.f;
 	m_fColY = 0.f;
 
@@ -56,6 +58,7 @@ void CUI_Animation::OnEnable()
 	m_fTimeAcc = 0.f;
 	m_fRowX = 0.f;
 	m_fColY = 0.f;
+
 	__super::OnEnable();
 }
 
@@ -74,22 +77,22 @@ void CUI_Animation::My_Tick()
 
 	//UV넘기는 코드
 
-	while (m_fTimeAcc > m_fDuration *
-		((m_fRowX + 1.f) + m_iHeightSize * m_fColY))
+	while (m_fTimeAcc > m_tAniminfo.fDuration * 
+		((m_fRowX + 1.f) + m_tAniminfo.iHeightSize * m_fColY))
 	{
 		m_fRowX += 1.f;
-		if (m_fRowX >= m_iWidthSize)
+		if (m_fRowX >= m_tAniminfo.iWidthSize)
 		{
 			m_fRowX = 0.f;
 			m_fColY += 1.f;
-			if (m_fColY >= m_iHeightSize)
+			if (m_fColY >= m_tAniminfo.iHeightSize)
 			{
 				//여기 들어왔다 : 한바퀴돌아서 1순한거임
 				m_fTimeAcc = 0.f;
-				m_fRowX = m_iWidthSize - 1.f;
-				m_fColY = m_iHeightSize - 1.f;
+				m_fRowX = m_tAniminfo.iWidthSize - 1.f;
+				m_fColY = m_tAniminfo.iHeightSize - 1.f;
 
-				if (m_bPlayOnce)
+				if (m_tAniminfo.bPlayOnce)
 					DISABLE_GAMEOBJECT(this);
 				else
 				{
@@ -99,13 +102,15 @@ void CUI_Animation::My_Tick()
 			}
 		}
 	}
+
+
 }
 
 void CUI_Animation::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_bBlackBG", &m_bBlackBackGround, sizeof(_bool));
-	pShader->Set_RawValue("g_iWidthSize", &m_iWidthSize, sizeof(_uint));
-	pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
-	pShader->Set_RawValue("g_fRoWX", &m_fRowX, sizeof(_float));
+	pShader->Set_RawValue("g_bBlackBG", &m_tAniminfo.bBlackBackGround, sizeof(_bool));
+	pShader->Set_RawValue("g_iWidthSize", &m_tAniminfo.iWidthSize, sizeof(_uint));
+	pShader->Set_RawValue("g_iHeightSize", &m_tAniminfo.iHeightSize, sizeof(_uint));
+	pShader->Set_RawValue("g_fRowX", &m_fRowX, sizeof(_float));
 	pShader->Set_RawValue("g_fColY", &m_fColY, sizeof(_float));
 }

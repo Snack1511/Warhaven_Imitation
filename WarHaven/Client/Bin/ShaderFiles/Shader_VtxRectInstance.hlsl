@@ -505,54 +505,7 @@ struct PS_UIFIRE_OUT
 	vector vFlag : SV_TARGET1;
 };
 
-PS_UIFIRE_OUT PS_UIFIRE(PS_IN In)
-{
-	PS_UIFIRE_OUT		Out = (PS_UIFIRE_OUT)1;
-	return Out;
 
-	float fStepX = 1.f / g_iWidthSize;
-
-	//갯수만큼 나누고
-	In.vTexUV.x /= g_iWidthSize;
-	//현재 가로줄만큼 늘려
-	In.vTexUV.x += fStepX * In.vColor.x;
-
-
-	float fStepY = 1.f / g_iHeightSize;
-
-	//갯수만큼 나누고
-	In.vTexUV.y /= g_iHeightSize;
-	//현재 세로줄만큼 늘려
-	In.vTexUV.y += fStepY * In.vColor.y;
-
-
-
-	//masking
-	vector vMaskDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor = vMaskDesc;
-
-	if (g_bBlackBG)
-	{
-		Out.vColor.a = vMaskDesc.r;
-	}
-	else
-		Out.vColor.a = vMaskDesc.a;
-
-	if (Out.vColor.a < 0.01f)
-		discard;
-
-	Out.vColor.xyz += g_vPlusColor.xyz;
-	Out.vColor.xyz *= g_fColorPower;
-
-	Out.vColor.a *= In.vColor.a;
-
-	if (Out.vColor.a < g_fDiscardPower)
-		discard;
-
-	Out.vFlag = g_vFlag;
-
-	return Out;
-}
 
 technique11 DefaultTechnique
 {
@@ -666,14 +619,5 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_BLACKBACKGROUND_TEXTURE();
 	}
 
-	pass UIFIRE
-	{
-		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_None);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_UIFIRE();
-	}
+	
 }

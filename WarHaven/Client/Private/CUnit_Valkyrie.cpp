@@ -12,6 +12,9 @@
 
 #include "CPlayer.h"
 
+#include "CTrailEffect.h"
+#include "CTrailBuffer.h"
+
 
 CUnit_Valkyrie::CUnit_Valkyrie()
 {
@@ -134,6 +137,24 @@ void CUnit_Valkyrie::SetUp_HitStates(_bool bPlayer)
 
 }
 
+void CUnit_Valkyrie::TurnOn_ValkyrieTrail(_bool bOn)
+{
+	if (!m_pValkyrieTrail_R)
+		return;
+
+	m_pValkyrieTrail_R->TurnOn_TrailEffect(bOn);
+	m_pValkyrieTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pValkyrieTrail_L->TurnOn_TrailEffect(bOn);
+	m_pValkyrieTrail_L2->TurnOn_TrailEffect(bOn);
+
+
+	m_pValkyrieLowerTrail_R->TurnOn_TrailEffect(bOn);
+	m_pValkyrieLowerTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pValkyrieLowerTrail_L->TurnOn_TrailEffect(bOn);
+	m_pValkyrieLowerTrail_L2->TurnOn_TrailEffect(bOn);
+	
+}
+
 void CUnit_Valkyrie::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	__super::Effect_Hit(pOtherUnit, vHitPos);
@@ -191,6 +212,111 @@ void CUnit_Valkyrie::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		break;
 
 	}
+}
+
+void CUnit_Valkyrie::SetUp_ValkyrieTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pValkyrieTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pValkyrieTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+	
+	if (!m_pValkyrieTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pValkyrieTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pValkyrieTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pValkyrieTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pValkyrieTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pValkyrieTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pValkyrieTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pValkyrieTrail_R->TurnOn_TrailEffect(false);
+	m_pValkyrieTrail_R2->TurnOn_TrailEffect(false);
+
+}
+
+void CUnit_Valkyrie::SetUp_ValkyrieTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pValkyrieTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pValkyrieTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pValkyrieTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pValkyrieTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pValkyrieTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pValkyrieTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pValkyrieTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pValkyrieTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pValkyrieTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pValkyrieTrail_L->TurnOn_TrailEffect(false);
+	m_pValkyrieTrail_L2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Valkyrie::SetUp_ValkyrieLowerTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pValkyrieLowerTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pValkyrieLowerTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pValkyrieLowerTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pValkyrieLowerTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pValkyrieLowerTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pValkyrieLowerTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pValkyrieLowerTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pValkyrieLowerTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pValkyrieLowerTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pValkyrieLowerTrail_R->TurnOn_TrailEffect(false);
+	m_pValkyrieLowerTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Valkyrie::SetUp_ValkyrieLowerTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pValkyrieLowerTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pValkyrieLowerTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pValkyrieLowerTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pValkyrieLowerTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pValkyrieLowerTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pValkyrieLowerTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pValkyrieLowerTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pValkyrieLowerTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pValkyrieLowerTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pValkyrieLowerTrail_L->TurnOn_TrailEffect(false);
+	m_pValkyrieLowerTrail_L2->TurnOn_TrailEffect(false);
 }
 
 HRESULT CUnit_Valkyrie::Initialize_Prototype()
@@ -303,10 +429,74 @@ HRESULT CUnit_Valkyrie::Start()
 		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
 		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
 		0.f,
-		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds",
-		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/T_EFF_Blur_05_M.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/T_EFF_Blur_05_M.dds",
 		10,
 		"0B_R_WP1"
+	);
+
+
+	//upper
+	m_vTrailShader = SH_EFFECT_NONE;
+	wstring strMask = L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds";
+	_float fAlpha = 0.5f;
+	_float fUpperSize = 10.f;
+
+	SetUp_ValkyrieTrail_R(
+		_float4(0.f, 0.f, fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		4,
+		"0B_R_ShoulderP3_01"
+	);
+
+	SetUp_ValkyrieTrail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		6,
+		"0B_L_ShoulderP3_01"
+	);
+	//lower
+	fUpperSize *= 0.5f;
+
+	SetUp_ValkyrieLowerTrail_R(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		8,
+		"0B_R_Chain02"
+	);
+	SetUp_ValkyrieLowerTrail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		12,
+		"0B_L_Chain02"
 	);
 
 	m_pModelCom->Set_RimLightFlag(_float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 1.f));
@@ -316,11 +506,13 @@ HRESULT CUnit_Valkyrie::Start()
 
 void CUnit_Valkyrie::OnEnable()
 {
+	TurnOn_ValkyrieTrail(true);
 	__super::OnEnable();
 }
 
 void CUnit_Valkyrie::OnDisable()
 {
+	TurnOn_ValkyrieTrail(false);
 	__super::OnDisable();
 }
 

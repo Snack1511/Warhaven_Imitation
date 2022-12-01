@@ -14,6 +14,7 @@ class CPlayerInfo;
 class CUI_HUD;
 class CUI_Damage;
 class CUI_Training;
+class CUI_Animation;
 class CUI_Fire;
 class CUI_Dead;
 class CPlayerInfo;
@@ -104,6 +105,7 @@ private:
 	CUI_Cursor* m_pCursor = nullptr;
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Training* m_pUI_Training = nullptr;
+	CUI_Animation* m_pFire = nullptr;
 	CUI_Fire* m_pFire = nullptr;
 	CUI_Dead* m_pUI_Dead = nullptr;
 

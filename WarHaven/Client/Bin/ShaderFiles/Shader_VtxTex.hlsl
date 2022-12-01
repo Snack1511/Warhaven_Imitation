@@ -33,6 +33,12 @@ bool g_bAppear;
 float g_fBloodRatio;
 bool g_bDeadBlood;
 
+bool    g_bBlackBG;
+int		g_iWidthSize;
+int		g_iHeightSize;
+float		g_fRowX;
+float		g_fColY;
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -821,6 +827,44 @@ PS_OUT PS_BLOODOVERLAY(PS_IN In)
 }
 
 
+PS_OUT PS_UIFIRE(PS_IN In)
+{
+    PS_OUT		Out = (PS_OUT)0;
+
+    float fStepX = 1.f / g_iWidthSize;
+    //갯수만큼 나누고
+    In.vTexUV.x /= g_iWidthSize;
+    //현재 가로줄만큼 늘려
+    In.vTexUV.x += fStepX * g_fRowX;
+
+
+    float fStepY = 1.f / g_iHeightSize;
+    //갯수만큼 나누고
+    In.vTexUV.y /= g_iHeightSize;
+    //현재 세로줄만큼 늘려
+    In.vTexUV.y += fStepY * g_fColY;
+
+    //masking
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+     if (g_bBlackBG)
+     {
+         Out.vColor.a = Out.vColor.r;
+     }
+     //알파는 마스크맵 검은곳에다가 기본 칼라까지
+
+
+    if (Out.vColor.a < 0.01f)
+        discard;
+   
+
+    //Out.vColor *= g_vColor;
+    //Out.vColor.w *= g_fAlpha;
+
+    Out.vFlag = g_vFlag;
+
+    return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -1021,5 +1065,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_DEBUG();
+    }
+
+    pass UI_ANIMATION
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_None);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_UIFIRE();
     }
 }

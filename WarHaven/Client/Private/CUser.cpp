@@ -30,7 +30,7 @@
 #include "CUI_Dead.h"
 
 #include "CUI_Cursor.h"
-#include "CUI_Fire.h"
+#include "CUI_Animation.h"
 
 #include "CGameSystem.h"
 
@@ -214,7 +214,7 @@ void CUser::SetUp_HeroGaugeFire()
 	if (m_pFire)
 		return;
 
-	m_pFire = CUI_Fire::Create();
+	m_pFire = CUI_Animation::Create();
 
 	CREATE_GAMEOBJECT(m_pFire, GROUP_UI);
 
@@ -226,8 +226,22 @@ void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
 	if (!m_pFire)
 		return;
 
-	if(bTurnOn)
+	Client::CUI_Animation::ANIMINFO tAniminfo;
+
+	tAniminfo.bBlackBackGround = true; //이미지 배경이 검은색인지 
+	tAniminfo.bPlayOnce = false;
+	tAniminfo.fDuration = 0.02f; //프레임당 시간
+	tAniminfo.iHeightSize = 8; //가로 세로 프레임
+	tAniminfo.iWidthSize = 8;
+	tAniminfo.vPos = _float2(550.f, -250.f);
+	tAniminfo.vScale = _float2(150.f, 150.f);
+
+
+	if (bTurnOn)
+	{
 		ENABLE_GAMEOBJECT(m_pFire);
+		m_pFire->Trun_UIAnimation(tAniminfo);
+	}
 	else
 		DISABLE_GAMEOBJECT(m_pFire);
 }
