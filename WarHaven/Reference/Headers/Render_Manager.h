@@ -35,7 +35,6 @@ public:
 	void	Start_GrayScale(_float fTargetPower);
 	void	Stop_GrayScale();
 
-
 public:
 	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fDistance);
 

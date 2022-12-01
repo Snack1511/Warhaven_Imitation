@@ -24,7 +24,6 @@ public:
 
 private:
 	CUI_Animation();
-	CUI_Animation(const CUI_Animation& Prototype);
 	virtual ~CUI_Animation();
 
 public:

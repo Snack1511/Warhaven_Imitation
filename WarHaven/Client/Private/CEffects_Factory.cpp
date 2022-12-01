@@ -759,6 +759,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StoneSpark"), "StoneSpark")))
 		return E_FAIL;
 
+	/*DeadLight*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"DeadLight"), "DeadLight")))
+		return E_FAIL;
+
 	return S_OK;
 }
 

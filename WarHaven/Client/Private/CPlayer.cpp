@@ -23,6 +23,8 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CTeamConnector.h"
+
 #include "CScript_FollowCam.h"
 
 #include "MeshContainer.h"
@@ -592,13 +594,34 @@ void CPlayer::OnDisable()
 
 void CPlayer::On_Die()
 {
-	m_bDie = true;
+	//m_bDie = true;
 	DISABLE_GAMEOBJECT(m_pUnitHUD);
+	m_bDieDelay = true;
 
 	if (m_bIsMainPlayer)
 	{
 
 	}
+
+	
+
+}
+
+void CPlayer::On_RealDie()
+{
+	m_bDieDelay = false;
+	m_fDieDelayAcc = 0.f;
+	m_bDie = true;
+
+	if (m_pMyTeam)
+	{
+		if (m_pMyTeam->IsMainPlayerTeam())
+			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
+
+	}
+	else if (m_bIsMainPlayer)
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
+
 
 }
 
@@ -654,6 +677,8 @@ void CPlayer::My_Tick()
 	m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());
 
 	Update_HeroGauge();
+
+	Update_DieDelay();
 
 	if (!m_bIsMainPlayer)
 		return;
@@ -796,6 +821,18 @@ void CPlayer::On_FinishHero_KeyInput()
 	if (KEY(NUM1, TAP))
 	{
 		On_FinishHero();
+	}
+}
+
+void CPlayer::Update_DieDelay()
+{
+	if (m_bDieDelay)
+	{
+		m_fDieDelayAcc += fDT(0);
+		if (m_fDieDelayAcc >= m_fDieCoolTime)
+		{
+			On_RealDie();
+		}
 	}
 }
 

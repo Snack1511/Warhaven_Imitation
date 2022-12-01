@@ -139,7 +139,10 @@ public:
 	virtual void OnDisable() override;
 
 public:
+	/* 죽어서 돌 되자마자 들어오는 함수*/
 	void	On_Die();
+	/* 죽고나서 5초 딜레이까지 지나고 들어오는 함수 */
+	void	On_RealDie();
 	void	On_Reborn();
 
 public:
@@ -181,6 +184,11 @@ private:
 	CPlayer* m_pTargetPlayer = nullptr;
 
 private:
+	/* 돌 되고나서 5초 딜레이 후 진짜 죽는 상태로 감 */
+	_bool	m_bDieDelay = false;
+	_float		m_fDieDelayAcc = 0.f;
+	_float		m_fDieCoolTime = 5.f;
+
 	/* 죽어있는 상태 */
 	_bool	m_bDie = false;
 
@@ -227,5 +235,8 @@ private:
 	void On_AbleHero();
 	void On_FinishHero();
 	void On_FinishHero_KeyInput();
+
+private:
+	void	Update_DieDelay();
 };
 END

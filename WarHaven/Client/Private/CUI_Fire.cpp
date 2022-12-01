@@ -7,11 +7,6 @@ CUI_Animation::CUI_Animation()
 {
 }
 
-CUI_Animation::CUI_Animation(const CUI_Animation& Prototype)
-	: CUI(Prototype)
-{
-}
-
 CUI_Animation::~CUI_Animation()
 {
 }

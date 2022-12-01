@@ -315,12 +315,15 @@ protected:
 
 private:
 	void	On_InitSetting();
+	//데스캠도 끝나고 진짜 죽음
 
 private:
 	_bool		m_bIsMainPlayer = false;
 	_bool		m_bDie = false;
 	_float		m_fDeadTimeAcc = 0.f;
 	_float		m_fDeadTime = 0.05f;
+
+
 
 protected:
 	list<CGameObject*>	m_DeathStones;

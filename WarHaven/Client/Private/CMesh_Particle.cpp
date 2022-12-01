@@ -170,6 +170,8 @@ void CMesh_Particle::Start_Reverse(CUnit* pUnit)
 	if (m_bReverse)
 		return;
 
+	ENABLE_GAMEOBJECT(this);
+
 	m_pRebornUnit = pUnit;
 
 	m_fReverseAcc = 0.f;
@@ -367,6 +369,13 @@ void CMesh_Particle::Update_Reverse()
 
 	if (m_fReverseAcc >= m_fRebornTime)
 	{
+		if (m_vecMatrices[0].size() == 3)
+		{
+			if (m_pRebornUnit)
+				GAMEINSTANCE->Stop_GrayScale();
+		}
+
+
 		//다음으로
 		m_fReverseAcc = 0.f;
 		//남은 갯수가 적을 수록 시간이 늘어나

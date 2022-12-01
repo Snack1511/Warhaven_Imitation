@@ -218,6 +218,8 @@ void CUnit::On_Respawn()
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
+
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));
 }
 
 void CUnit::On_Reborn()
@@ -881,6 +883,9 @@ void CUnit::My_LateTick()
 			On_Die();
 		}
 	}
+
+	
+
 }
 
 void CUnit::Effect_Parring(_float4 vHitPos)
@@ -939,6 +944,7 @@ void CUnit::On_InitSetting()
 	}
 
 }
+
 
 void CUnit::Add_DeathStones(const list<CGameObject*>& StoneParticleList)
 {

@@ -372,7 +372,6 @@
     <ClInclude Include="..\public\CTrigger_BootCamp.h" />
     <ClInclude Include="..\Public\CUI_Animation.h" />
     <ClInclude Include="..\Public\CUI_Dead.h" />
-    <ClInclude Include="..\Public\CUI_Fire.h" />
     <ClInclude Include="..\Public\CUI_UnitHP.h" />
     <ClInclude Include="..\Public\CUI_Training.h" />
     <ClInclude Include="..\Public\CUI_UnitHUD.h" />
@@ -768,7 +767,6 @@
     <ClCompile Include="..\private\CTrigger_BootCamp.cpp" />
     <ClCompile Include="..\Private\CUI_Animation.cpp" />
     <ClCompile Include="..\Private\CUI_Dead.cpp" />
-    <ClCompile Include="..\Private\CUI_Fire.cpp" />
     <ClCompile Include="..\Private\CUI_UnitHP.cpp" />
     <ClCompile Include="..\Private\CUI_Training.cpp" />
     <ClCompile Include="..\Private\CUI_UnitHUD.cpp" />

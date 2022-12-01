@@ -7,11 +7,6 @@ CUI_Animation::CUI_Animation()
 {
 }
 
-CUI_Animation::CUI_Animation(const CUI_Animation& Prototype)
-	: CUI(Prototype)
-{
-}
-
 CUI_Animation::~CUI_Animation()
 {
 }
@@ -48,8 +43,9 @@ HRESULT CUI_Animation::Initialize()
 HRESULT CUI_Animation::Start()
 {
 	__super::Start();
+	Set_Sort(0.1f);
 
-
+	m_vUIShaderFlag = SH_UI_HARDBLOOM;
 	return S_OK;
 }
 

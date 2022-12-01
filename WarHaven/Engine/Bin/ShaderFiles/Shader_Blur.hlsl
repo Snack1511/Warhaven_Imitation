@@ -257,20 +257,34 @@ PS_OUT PS_BLOOM_MAIN(PS_DOWNSCALE_IN In)
 
 	vector vEffectFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (vEffectFlagDesc.g < 0.99f)
+	if (vEffectFlagDesc.g < 0.1f)
 		discard;
 
-	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
-	
-	float fBrightness = dot(Out.vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
-	//float fBrightness = Out.vColor.r * Out.vColor.g * Out.vColor.b;
-
-	if (fBrightness > 0.99f)
+	if (vEffectFlagDesc.g > 0.9f)
 	{
-		Out.vColor = float4(Out.vColor.xyz, fBrightness);
+		Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
+
+		float fBrightness = dot(Out.vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
+		//float fBrightness = Out.vColor.r * Out.vColor.g * Out.vColor.b;
+
+		if (fBrightness > 0.99f)
+		{
+			Out.vColor = float4(Out.vColor.xyz, fBrightness);
+		}
+		else
+			discard;
 	}
 	else
-		discard;
+	{
+		Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
+
+		float fBrightness = dot(Out.vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
+		//float fBrightness = Out.vColor.r * Out.vColor.g * Out.vColor.b;
+
+		Out.vColor = float4(Out.vColor.xyz, Out.vColor.a);
+	}
+
+	
 
 	return Out;
 }
