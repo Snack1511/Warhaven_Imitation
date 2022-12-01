@@ -29,7 +29,7 @@
 #include "CUI_Training.h"
 
 #include "CUI_Cursor.h"
-#include "CUI_Fire.h"
+#include "CUI_Animation.h"
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -210,7 +210,7 @@ void CUser::SetUp_HeroGaugeFire()
 	if (m_pFire)
 		return;
 
-	m_pFire = CUI_Fire::Create();
+	m_pFire = CUI_Animation::Create();
 
 	CREATE_GAMEOBJECT(m_pFire, GROUP_UI);
 
@@ -222,8 +222,22 @@ void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
 	if (!m_pFire)
 		return;
 
-	if(bTurnOn)
+	Client::CUI_Animation::ANIMINFO tAniminfo;
+
+	tAniminfo.bBlackBackGround = true;
+	tAniminfo.bPlayOnce = false;
+	tAniminfo.fDuration = 0.02f;
+	tAniminfo.iHeightSize = 8;
+	tAniminfo.iWidthSize = 8;
+	tAniminfo.vPos = _float2(550.f, -250.f);
+	tAniminfo.vScale = _float2(150.f, 150.f);
+
+
+	if (bTurnOn)
+	{
 		ENABLE_GAMEOBJECT(m_pFire);
+		m_pFire->Trun_UIAnimation(tAniminfo);
+	}
 	else
 		DISABLE_GAMEOBJECT(m_pFire);
 }
