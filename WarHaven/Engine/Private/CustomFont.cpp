@@ -24,7 +24,7 @@ CCustomFont* CCustomFont::Create(const _tchar* pFontFilePath)
 	return pInstance;
 }
 
-HRESULT CCustomFont::Initialize(const _tchar * pFontFilePath)
+HRESULT CCustomFont::Initialize(const _tchar* pFontFilePath)
 {
 	m_pBatch = new SpriteBatch(PDEVICE_CONTEXT);
 	m_pFont = new SpriteFont(PDEVICE, pFontFilePath);
@@ -37,24 +37,49 @@ HRESULT CCustomFont::Initialize(const _tchar * pFontFilePath)
 
 
 
-HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale)
+HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale, _bool bCenter)
 {
-	if (nullptr == m_pBatch ||
-		nullptr == m_pFont)
+	if (nullptr == m_pBatch || nullptr == m_pFont)
 		return E_FAIL;
 
 	m_pBatch->Begin();
 
-	m_pFont->DrawString
-	(
-		m_pBatch, 
-		pString, 
-		vPosition, 
-		XMLoadFloat4(&vColor), 
-		0,						
-		XMFLOAT2(0.f, 0.f),		
-		fScale
-	);
+	if (!bCenter)
+	{
+		m_pFont->DrawString
+		(
+			m_pBatch,
+			pString,
+			vPosition,
+			XMLoadFloat4(&vColor),
+			0,
+			XMFLOAT2(0.f, 0.f),
+			fScale
+		);
+	}
+	else
+	{
+		XMVECTOR size = m_pFont->MeasureString(pString);
+
+		_float fPosX = (XMVectorGetX(size) * 0.5f) * fScale;
+		_float fPosY = (XMVectorGetY(size) * 0.5f) * fScale;
+
+		_float fResultX = (vPosition.x - 7.f) - fPosX;
+		_float fResultY = (vPosition.y - 5.f) - fPosY;
+
+		_float2 vResult = _float2(fResultX, fResultY);
+
+		m_pFont->DrawString
+		(
+			m_pBatch,
+			pString,
+			vResult,
+			XMLoadFloat4(&vColor),
+			0,
+			XMFLOAT2(0.f, 0.f),
+			fScale
+		);
+	}
 
 	m_pBatch->End();
 

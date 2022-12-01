@@ -1,4 +1,4 @@
-#include "CUI_Skill.h"
+ #include "CUI_Skill.h"
 #include "GameInstance.h"
 #include "CUI_Object.h"
 #include "Transform.h"
@@ -496,5 +496,4 @@ void CUI_Skill::Bind_Shader()
 	GET_COMPONENT_FROM(m_arrSkillUI[Skill1][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge1, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_arrSkillUI[Skill2][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge2, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_arrSkillUI[Skill3][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge3, this, placeholders::_1, "g_fValue");
-
 }

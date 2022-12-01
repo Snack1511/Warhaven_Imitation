@@ -210,7 +210,7 @@ void CUI_Object::RenderText()
 
 	if (m_bIsRenderText)
 	{
-		GET_COMPONENT(CUI_Renderer)->Set_Text(m_bIsBold, m_wstrText, m_vOffset, m_vFontColor, m_fFontScale);
+		GET_COMPONENT(CUI_Renderer)->Set_Text(m_bIsBold, m_wstrText, m_vOffset, m_vFontColor, m_fFontScale, m_bIsCenter);
 	}
 }
 

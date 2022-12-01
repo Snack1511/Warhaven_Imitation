@@ -145,7 +145,7 @@ public: /* For Picking_Manager */
 	_bool	Is_Picked(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked(CGameObject* pGameObject, _float4* pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal = nullptr);
-	_bool	Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4* pOut,  _float4* pOutNormal = nullptr);
+	_bool	Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4* pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _float4* pOut, _uint* pOutIndex, _float4* pOutNormal = nullptr);
 
 
@@ -232,7 +232,7 @@ public: /* For. Prototype_Manager */
 
 public: /* For. Font_Manager */
 	HRESULT Add_Font(const _tchar* pFontTag, const _tchar* pFontFilePath);
-	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale = 1.f);
+	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale = 1.f, _bool bCenter = false);
 
 public: /* For. Shader_Manager */
 	HRESULT		Load_EffectFile(const _tchar* pFilePath);

@@ -47,6 +47,8 @@
 #include "CEffects_Factory.h"
 
 #include "CSquad.h"
+#include "CUI_UnitHUD.h"
+#include "CUtility_Transform.h"
 
 
 
@@ -467,7 +469,7 @@ void CPlayer::Set_MainPlayer()
 		m_pDefaultClass[i]->Set_MainPlayer();
 	}
 
-	for (int i = 0; i < CLASS_HERO_END-CLASS_HREO_FIONA; ++i)
+	for (int i = 0; i < CLASS_HERO_END - CLASS_HREO_FIONA; ++i)
 	{
 		if (m_pHeroClass[i] == nullptr)
 			continue;
@@ -494,7 +496,7 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_eCurrentDefaultClass = CLASS_DEFAULT_WARRIOR;
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
-	
+	Create_UnitHUD();
 
 	return S_OK;
 }
@@ -560,6 +562,8 @@ HRESULT CPlayer::Start()
 	}
 	
 
+	Enable_UnitHUD();
+
 	return S_OK;
 }
 
@@ -613,24 +617,33 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 void CPlayer::My_Tick()
 {
 	//공통으로 업데이트 되어야 하는것
+
+	m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());
+
 	Update_HeroGauge();
 
+	if (!m_bIsMainPlayer)
+		return;
 
-	if (m_bIsMainPlayer)
-	{
-		Update_HP();
-	}
+	Update_HP();
 }
 
 void CPlayer::My_LateTick()
 {
 	//공통으로 업데이트 되어야 하는것
-	
-	
+
+	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
+	{
+		Frustum_UnitHUD();
+		TransformProjection();
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(m_pUnitHUD);
+	}
 
 	if (!m_bIsMainPlayer)
 		return;
-
 
 	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
 
@@ -663,8 +676,6 @@ void CPlayer::My_LateTick()
 		cout << vRimLightFlag.w << endl;
 
 	}
-
-
 }
 
 void CPlayer::Update_HP()
@@ -711,7 +722,7 @@ void CPlayer::Update_HeroGauge()
 		}
 	}
 
-	
+
 }
 
 void CPlayer::On_AbleHero()
@@ -746,9 +757,67 @@ void CPlayer::On_FinishHero()
 void CPlayer::On_FinishHero_KeyInput()
 {
 	//if(KEY(CTRL, HOLD)) //1번 자주눌러서 막음
-		if (KEY(NUM1, TAP))
-		{	
-			On_FinishHero();
+	if (KEY(NUM1, TAP))
+	{
+		On_FinishHero();
+	}
+}
+
+void CPlayer::Create_UnitHUD()
+{
+	m_pUnitHUD = CUI_UnitHUD::Create();
+	m_pUnitHUD->Set_OwnerPlayer(this);
+}
+
+void CPlayer::Enable_UnitHUD()
+{
+	CREATE_GAMEOBJECT(m_pUnitHUD, GROUP_UI);
+}
+
+void CPlayer::Frustum_UnitHUD()
+{
+	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
+
+	if (fDis < 30.f)
+	{
+		m_pUnitHUD->Set_UnitDis(fDis);
+
+		_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+		vPos.y += 2.f;
+
+		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
+		{
+			if (!m_pUnitHUD->Is_Valid())
+			{
+				if (!m_bIsMainPlayer)
+				{
+					ENABLE_GAMEOBJECT(m_pUnitHUD);
+				}
+			}
 		}
-}	
+		else
+		{
+			if (m_pUnitHUD->Is_Valid())
+			{
+				DISABLE_GAMEOBJECT(m_pUnitHUD);
+			}
+		}
+	}
+	else
+	{
+		if (m_pUnitHUD->Is_Valid())
+		{
+			DISABLE_GAMEOBJECT(m_pUnitHUD);
+		}
+	}
+}
+
+void CPlayer::TransformProjection()
+{
+	if (m_pCurrentUnit)
+	{
+		m_pUnitHUD->Set_ProjPos(m_pCurrentUnit->Get_Transform());
+	}
+}
+
 

@@ -33,8 +33,12 @@ public:
 	void Set_UnitStatus(CUnit::UNIT_STATUS tStatus) { m_tStatus = tStatus; }
 	void Set_UnitDis(_float fDis) { m_fUnitDis = fDis; }
 
+	void Set_OwnerPlayer(CPlayer* pOwner) { m_pOwner = pOwner; }
+
 private:
 	CUI_Wrapper* m_pUnitUI[UI_End];
+
+	CPlayer* m_pOwner = nullptr;
 
 	CUnit::UNIT_STATUS m_tStatus;
 
@@ -42,7 +46,7 @@ private:
 	_float4 vColorAlpha = _float4(1.f, 0.f, 0.f, 0.f);
 
 	CUI_Object* m_pUnitNameText = nullptr;
-	
+
 	_float4 m_vOffset;
 
 	_float m_fUnitDis = 0.f;

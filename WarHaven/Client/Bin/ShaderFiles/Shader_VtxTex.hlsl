@@ -303,11 +303,11 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, float2(In.vTexUV.x, 1 - In.vTexUV.y));
     
-    In.vTexUV.x -= g_fValue;
-    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+    //In.vTexUV.x -= g_fValue;
+    // vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    // vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 
-    Out.vColor *= (vNoise + vNoise);
+    //Out.vColor *= (vNoise + vNoise);
     
     if (In.vTexUV.y < g_fHeroValue)
         discard;

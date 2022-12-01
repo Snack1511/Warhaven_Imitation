@@ -9,6 +9,8 @@
 #include "Transform.h"
 #include "Easing_Utillity.h"
 #include "Texture.h"
+#include "CUser.h"
+#include "CPlayer.h"
 
 HRESULT CUI_UnitHUD::Initialize_Prototype()
 {
@@ -69,7 +71,7 @@ void CUI_UnitHUD::My_Tick()
 	}
 	else
 	{
-		m_vOffset = _float4(-0.17f, 2.f, 0.f);
+		m_vOffset = _float4(0.f, 2.f, 0.f);
 
 		m_pUnitNameText->Set_FontRender(true);
 		m_pUnitNameText->Set_Color(vColorAlpha);		
@@ -111,10 +113,12 @@ void CUI_UnitHUD::Init_UnitNameText()
 	m_pUnitNameText->Set_Sort(0.5f);
 
 	m_pUnitNameText->Set_FontStyle(true);
+	m_pUnitNameText->Set_FontCenter(true);
 	m_pUnitNameText->Set_FontScale(0.2f);
 	m_pUnitNameText->Set_FontColor(m_vColorRed);
 
-	m_pUnitNameText->Set_FontText(TEXT("Àû±º"));
+	wstring wstrUnitName = m_pOwner->Get_PlayerName();
+	m_pUnitNameText->Set_FontText(wstrUnitName);
 
 	CREATE_GAMEOBJECT(m_pUnitNameText, GROUP_UI);
 }

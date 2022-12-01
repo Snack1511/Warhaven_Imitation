@@ -21,7 +21,6 @@ class CState;
 class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
-class CUI_Wrapper;
 class CPlayer;
 
 class CUnit abstract : public CGameObject
@@ -313,17 +312,6 @@ public:
 	virtual void	Effect_HeroToDefaultUnit(CUnit* pOwner);
 
 protected:
-
-
-private:
-	CUI_Wrapper* m_pUnitHUD = nullptr;
-
-private:
-	void Create_UnitHUD();
-	void Enable_UnitHUD();
-
-	void Frustum_UnitHUD();
-	void TransformProjection();
 
 private:
 	void	On_InitSetting();

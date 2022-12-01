@@ -619,9 +619,9 @@ HRESULT CGameInstance::Add_Font(const _tchar* pFontTag, const _tchar* pFontFileP
 	return m_pFontManager->Add_Font(pFontTag, pFontFilePath);
 }
 
-HRESULT CGameInstance::Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale)
+HRESULT CGameInstance::Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale, _bool bCenter)
 {
-	return m_pFontManager->Render_Font(pFontTag, pString, vPosition, vColor, fScale);
+	return m_pFontManager->Render_Font(pFontTag, pString, vPosition, vColor, fScale, bCenter);
 }
 
 HRESULT CGameInstance::Load_EffectFile(const _tchar* pFilePath)

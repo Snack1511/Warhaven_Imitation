@@ -329,6 +329,10 @@ void CWindow_UI::Show_Font()
 			ImGui::Checkbox("Bold", &bIsBold);
 			pUI->Set_FontStyle(bIsBold);
 
+			bool bIsCenter = pUI->Get_FontCenter();
+			ImGui::Checkbox("Center", &bIsCenter);
+			pUI->Set_FontCenter(bIsCenter);
+
 			if (ImGui::TreeNode("Text"))
 			{
 				static char szBuf[MIN_STR] = "Input Text";
