@@ -4,6 +4,12 @@
 #include "CDrawable_Terrain.h"
 #include "CGameSystem.h"
 
+// MJ_INCLUDE
+#include "CDrawable_Terrain.h"
+#include "CStructure_Instance.h"
+#include "CUtility_Transform.h"
+#include "CMap_Loader.h"
+
 CLevel_Paden::CLevel_Paden()
 {
 }
@@ -31,11 +37,15 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 	if (FAILED(__super::SetUp_Prototypes()))
 		return E_FAIL;
 
-	_float4x4 mat;
-	mat.Identity();
-	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
-	pDrawableTerrain->Initialize();
-	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+	//_float4x4 mat;
+	//mat.Identity();
+	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
+	//pDrawableTerrain->Initialize();
+	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
+
+	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Paden::Ready_GameObject, this, placeholders::_1, placeholders::_2);
+	CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
+	m_fLoadingFinish = 0.5f;
 
 	/* GameSystem */
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyTest(m_vecGameObjects)))
