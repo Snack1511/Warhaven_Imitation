@@ -18,9 +18,6 @@ public:
 	virtual void OnDisable() override;
 
 public:
-	virtual void Set_Shader_RevivalBar(CShader* pShader, const char* pConstName);
-
-public:
 	void Enable_DeadUI();
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo) { m_pTargetInfo = pTargetInfo; }
@@ -33,6 +30,9 @@ private:
 	enum DeadUI { DU_Profile, DU_EnemyName, DU_KillText, DU_End };
 	CUI_Object* m_pDeadUI[DU_End];
 
+	//_float m_fDeadUIEnableTime = 5.f;
+	_float m_fDeadUIEnableTime = 1.f;
+
 private:
 	void Create_DeadUI();
 	void Set_FadeDeadUI();
@@ -44,7 +44,6 @@ private:
 
 	_float m_fMaxRevivalTime = 5.f;
 	_float m_fRevivalTime = 0.f;
-	_float m_fRevivalTimeRatio = 1.f;
 
 private:
 	void Create_RevivalUI();

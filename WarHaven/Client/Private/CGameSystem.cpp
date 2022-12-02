@@ -114,7 +114,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-    for (_uint i = 0; i < 0; ++i)
+    for (_uint i = 0; i < 1; ++i)
     {
         vPlayerPos.z += 3.f;
         vPlayerPos.x += 1.f;
@@ -853,13 +853,13 @@ void CGameSystem::On_StartGame()
         /*if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
             continue;*/
 
-       /* if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+        if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
         {
             bTemp = !bTemp;
 
             if (bTemp)
                 continue;
-        }*/
+        }
         
 
         /* ai들은 랜덤 선택 함수 호출 */
