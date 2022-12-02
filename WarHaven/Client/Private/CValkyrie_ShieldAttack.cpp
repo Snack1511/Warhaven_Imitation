@@ -42,6 +42,8 @@ HRESULT CValkyrie_ShieldAttack::Initialize()
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.f;
 
+	m_fMyMaxLerp = 0.4f;
+	m_fMyAccel = 100.f;
 
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 
@@ -62,6 +64,7 @@ HRESULT CValkyrie_ShieldAttack::Initialize()
 
 	Add_KeyFrame(25, 0);
 	Add_KeyFrame(32, 1);
+	Add_KeyFrame(50, 2);
 
 	// return __super::Initialize();
 	return S_OK;
@@ -75,6 +78,7 @@ void CValkyrie_ShieldAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 
 	pOwner->Set_BounceState(STATE_BOUNCE_VALKYRIE_L);
 
+	Physics_Setting(0.f, pOwner, true);
 
 	CColorController::COLORDESC tColorDesc;
 	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
@@ -98,6 +102,12 @@ void CValkyrie_ShieldAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 
 STATE_TYPE CValkyrie_ShieldAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	Follow_MouseLook(pOwner);
+	pOwner->Set_DirAsLook();
+
+	if(m_bMoveTrigger)
+		pOwner->Get_PhysicsCom()->Set_Accel(m_fMyAccel);
+
 	return __super::Tick(pOwner, pAnimator);
 }
 
@@ -139,10 +149,16 @@ void CValkyrie_ShieldAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 		break;
 
 	case 1:
-		Physics_Setting(0.f, pOwner);
+		Physics_Setting(pOwner->Get_Status().fRunSpeed, pOwner);
 
 		m_bAttackTrigger = false;
 		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
+		break;
+
+	case 2:
+		Physics_Setting(0.f, pOwner);
+
+		m_bMoveTrigger = false;
 		break;
 
 	default:

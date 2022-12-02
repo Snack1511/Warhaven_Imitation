@@ -44,15 +44,15 @@ private:
 
 /*For. Enter*/
 protected:
-	void	Face_Check(_bool bUseUpandDown = true);
+	void	Face_Check(CUnit* pOwner, _bool bUseUpandDown = true);
 
 	void Fly_State();
 
-	void	Hit_State();
-	void	Guard_State();
-	void	Groggy_State();
+	void	Hit_State(CUnit* pOwner);
+	void	Guard_State(CUnit* pOwner);
+	void	Groggy_State(CUnit* pOwner);
 
-	void	Sting_State();
+	void	Sting_State(CUnit* pOwner);
 
 	
 

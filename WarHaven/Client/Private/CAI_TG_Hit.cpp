@@ -61,7 +61,7 @@ void CAI_TG_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType
 {
     /* 날 때린놈의 hit info를 받았다. */
     m_tHitInfo = *((HIT_INFO*)(pData));
-    __super::Hit_State();
+    __super::Hit_State(pOwner);
 
     /* Owner의 Animator Set Idle로 */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));

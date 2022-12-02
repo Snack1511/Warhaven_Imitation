@@ -62,7 +62,7 @@ HRESULT CWarHammer_GroggyAttack::Initialize()
 
 	Add_KeyFrame(30, 0);
 	Add_KeyFrame(32, 1);
-	Add_KeyFrame(49, 2);
+	Add_KeyFrame(59, 2);
 
 
 

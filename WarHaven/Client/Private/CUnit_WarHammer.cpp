@@ -79,20 +79,21 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
 
-	for (_uint i = 0; i < iWeaponSphereNum - 1; ++i)
+	for (_uint i = 0; i < iWeaponSphereNum; ++i)
 	{
 		if (i == iWeaponSphereNum - 1)
 		{
-			tWeaponUnitColDesc[i].fRadius = 0.35f;
-			tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
+			tWeaponUnitColDesc[i].fRadius = 0.4f;
+			tWeaponUnitColDesc[i].vOffsetPos.z = -23.f * _float(i) - 40.f;
+
 			tWeaponUnitColDesc[i].eColType = eAttack;
 
-			tWeaponUnitColDesc[i + 1].fRadius = tWeaponUnitColDesc[i].fRadius;
-			tWeaponUnitColDesc[i + 1].vOffsetPos = tWeaponUnitColDesc[i].vOffsetPos;
-			tWeaponUnitColDesc[i + 1].eColType = tWeaponUnitColDesc[i].eColType;
+			tWeaponUnitColDesc[i - 1].fRadius = tWeaponUnitColDesc[i].fRadius;
+			tWeaponUnitColDesc[i - 1].vOffsetPos = tWeaponUnitColDesc[i].vOffsetPos;
+			tWeaponUnitColDesc[i - 1].eColType = tWeaponUnitColDesc[i].eColType;
 
 			tWeaponUnitColDesc[i].vOffsetPos.x -= 10.f;
-			tWeaponUnitColDesc[i].vOffsetPos.x += 20.f;
+			tWeaponUnitColDesc[i - 1].vOffsetPos.x += 20.f;
 
 		}
 		else
@@ -103,10 +104,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 		}
 	}
 
-
-
-
-	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 4, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, 5, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 
 	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
@@ -310,9 +308,9 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_tUnitStatus.fGuardDashSpeed *= 0.8f;
 
 
-	m_fCoolTime[SKILL1] = 5.f;
+	m_fCoolTime[SKILL1] = 0.f;
 	m_fCoolTime[SKILL2] = 4.f;
-	m_fCoolTime[SKILL3] = 0.f;
+	m_fCoolTime[SKILL3] = 5.f;
 
 	//Enable_ModelParts(3, false);
 	

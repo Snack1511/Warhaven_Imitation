@@ -67,7 +67,7 @@ HRESULT CHit_WarHammer::Initialize()
 void CHit_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     m_tHitInfo = *((HIT_INFO*)(pData));
-    __super::Hit_State();
+    __super::Hit_State(pOwner);
 
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
