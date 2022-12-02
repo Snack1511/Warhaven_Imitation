@@ -110,7 +110,7 @@ void CUI_UnitHUD::Init_UnitNameText()
 	m_pUnitNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_32Circle.dds"));
 	m_pUnitNameText->Set_Color(m_vColorRed);
 	m_pUnitNameText->Set_Scale(8.f);
-	m_pUnitNameText->Set_Sort(0.5f);
+	m_pUnitNameText->Set_Sort(0.55f);
 
 	m_pUnitNameText->Set_FontStyle(true);
 	m_pUnitNameText->Set_FontCenter(true);
