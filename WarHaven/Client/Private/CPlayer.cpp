@@ -910,6 +910,9 @@ void CPlayer::Enable_UnitHUD()
 
 void CPlayer::Frustum_UnitHUD()
 {
+	if (!m_pCurrentUnit->Is_Valid())
+		return;
+
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 
 	if (fDis < m_fEnable_UnitHUDis)
