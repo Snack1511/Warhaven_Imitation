@@ -86,11 +86,10 @@ void CUI_Dead::My_Tick()
 	{
 		if (m_pRevivalUI[RU_Bar]->Is_Valid())
 		{
-			_float vScaleX = m_pRevivalUI[RU_Bar]->Get_Scale().x;
-			vScaleX -= fDT(0);
-			m_pRevivalUI[RU_Bar]->Set_ScaleX(vScaleX);
+			_float4 vScale = m_pRevivalUI[RU_Bar]->Get_Scale();
 
-			cout << vScaleX << endl;
+			// DoScaleX ¸¸µéÀÚ
+			m_pRevivalUI[RU_Bar]->DoScale(-vScale.x, m_fMaxRevivalTime);
 		}
 	}
 }
