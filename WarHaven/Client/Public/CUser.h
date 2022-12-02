@@ -96,6 +96,8 @@ public:
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
 	void Enable_DeadUI();
 
+	void SetActive_PlayerHUD(_bool value);
+
 private:
 	
 

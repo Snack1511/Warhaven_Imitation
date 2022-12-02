@@ -64,7 +64,6 @@ HRESULT CUI::Start()
 	// ,¸â¹ö º¯¼ö ¹«Á¶°Ç ½ºµy
 	__super::Start();
 
-	Set_UIShaderFlag(SH_UI_NONE);
 
 	m_pFader = GET_COMPONENT(CFader);
 	GET_COMPONENT(CUI_Renderer)->Set_UI(this);

@@ -27,8 +27,8 @@ public:
 
 public:
 	void Set_ProjPos(CTransform* pTransform);
-
 	void Set_GaugeRatio(_float fRatio) { m_fGaugeRatio = fRatio; }
+	void Set_UnitHPColor(_float4 vColor) { m_vHpColor = vColor; }
 
 	void SetActive_UnitHP(_bool value);
 
@@ -37,6 +37,8 @@ private:
 
 	_bool m_bIsDecrease = false;
 	_float m_fGaugeRatio = 0.f;
+
+	_float4 m_vHpColor;
 
 private:
 	void Bind_Shader();

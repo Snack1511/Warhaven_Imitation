@@ -21,6 +21,8 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 public:
 	virtual void Set_ShaderResources_HeroKeySkill(CShader* pShader, const char* pConstName);

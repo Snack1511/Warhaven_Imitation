@@ -47,6 +47,26 @@ HRESULT CUI_HpBar::Start()
 	return S_OK;
 }
 
+void CUI_HpBar::OnEnable()
+{
+	__super::OnEnable();
+
+	for (int i = 0; i < Type_End; ++i)
+	{
+		ENABLE_GAMEOBJECT(m_Prototypes[i]);
+	}
+}
+
+void CUI_HpBar::OnDisable()
+{
+	__super::OnDisable();
+
+	for (int i = 0; i < Type_End; ++i)
+	{
+		DISABLE_GAMEOBJECT(m_Prototypes[i]);
+	}
+}
+
 void CUI_HpBar::My_Tick()
 {
 	__super::My_Tick();

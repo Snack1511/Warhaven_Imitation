@@ -697,11 +697,11 @@ void CPlayer::My_LateTick()
 	if (!m_bIsMainPlayer)
 		return;
 
-	if (m_bDie && KEY(ENTER, TAP))
+	/*if (m_bDie && KEY(ENTER, TAP))
 	{
 		m_pCurrentUnit->Start_Reborn();
 
-	}
+	}*/
 
 
 	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
@@ -780,8 +780,6 @@ void CPlayer::Update_HeroGauge()
 			}
 		}
 	}
-
-
 }
 
 void CPlayer::On_AbleHero()
@@ -851,7 +849,7 @@ void CPlayer::Frustum_UnitHUD()
 {
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 
-	if (fDis < 30.f)
+	if (fDis < m_fEnable_UnitHUDis)
 	{
 		m_pUnitHUD->Set_UnitDis(fDis);
 

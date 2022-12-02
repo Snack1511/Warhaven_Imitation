@@ -45,22 +45,22 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	m_pWrap[HeroGauge] = CUI_HeroGauge::Create();
 	m_pWrap[HpBar] = CUI_HpBar::Create();
 
-	CREATE_GAMEOBJECT(m_pWrap[Crosshair], GROUP_UI);
-	CREATE_GAMEOBJECT(m_pWrap[Port], GROUP_UI);
-	CREATE_GAMEOBJECT(m_pWrap[Skill], GROUP_UI);
-	CREATE_GAMEOBJECT(m_pWrap[HeroGauge], GROUP_UI);
-	CREATE_GAMEOBJECT(m_pWrap[HpBar], GROUP_UI);
+	for (int i = 0; i < HUD_END; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pWrap[i], GROUP_UI);
+	}
 
 	Create_HeroGaugeText();
 	Create_OxenJumpText();
 	Create_HpText();
 	Create_PlayerNameText();
 	Create_HeroTransformUI();
+	Create_InactiveHeroText();
 
 	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
 		Create_CharacterSelectWindow();
-		Create_TraingText();
+		// Create_TraingText();
 	}
 	else
 	{
@@ -84,6 +84,9 @@ HRESULT CUI_HUD::Start()
 	{
 		Set_FadePortHighlight();
 		SetActive_PlayerInfoUI(true);
+
+		if (m_pChangeClassText)
+			ENABLE_GAMEOBJECT(m_pChangeClassText);
 	}
 	else
 	{
@@ -200,7 +203,7 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 	}
 
 	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
-	
+
 }
 
 void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
@@ -521,10 +524,23 @@ void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
 		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
 
-		ENABLE_GAMEOBJECT(m_pChangeClassText);
 		ENABLE_GAMEOBJECT(m_pHeroGaugeText);
 		ENABLE_GAMEOBJECT(m_pHpText);
 		ENABLE_GAMEOBJECT(m_pPlayerNameText);
+	}
+	else
+	{
+		for (int i = 0; i < HUD_END; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_pWrap[i]);
+			// DISABLE_GAMEOBJECT(m_pWrap[Crosshair]);
+		}
+
+		DISABLE_GAMEOBJECT(m_pHeroGaugeText);
+		DISABLE_GAMEOBJECT(m_pHpText);
+		DISABLE_GAMEOBJECT(m_pPlayerNameText);
+
+		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 	}
 }
 
@@ -637,26 +653,8 @@ void CUI_HUD::Create_TraingText()
 
 	m_pChangeClassText->Set_FontText(TEXT("로 전투원 변경 가능"));
 
-	m_pInactiveHeroText = CUI_Object::Create();
-
-	m_pInactiveHeroText->Set_Scale(20.f);
-	m_pInactiveHeroText->Set_Pos(450.f, -195.f);
-	m_pInactiveHeroText->Set_Sort(0.85f);
-
-	m_pInactiveHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteNum1KeyIcon.dds"));
-
-	m_pInactiveHeroText->Set_FontRender(true);
-	m_pInactiveHeroText->Set_FontStyle(true);
-	m_pInactiveHeroText->Set_FontScale(0.25f);
-	m_pInactiveHeroText->Set_FontOffset(10.f, -13.f);
-
-	m_pInactiveHeroText->Set_FontText(TEXT("화신 해제"));
-
 	CREATE_GAMEOBJECT(m_pChangeClassText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pChangeClassText);
-
-	CREATE_GAMEOBJECT(m_pInactiveHeroText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pInactiveHeroText);
 }
 
 void CUI_HUD::Update_HP()
@@ -800,6 +798,27 @@ void CUI_HUD::Create_PlayerNameText()
 
 	CREATE_GAMEOBJECT(m_pPlayerNameText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pPlayerNameText);
+}
+
+void CUI_HUD::Create_InactiveHeroText()
+{
+	m_pInactiveHeroText = CUI_Object::Create();
+
+	m_pInactiveHeroText->Set_Scale(20.f);
+	m_pInactiveHeroText->Set_Pos(450.f, -195.f);
+	m_pInactiveHeroText->Set_Sort(0.85f);
+
+	m_pInactiveHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteNum1KeyIcon.dds"));
+
+	m_pInactiveHeroText->Set_FontRender(true);
+	m_pInactiveHeroText->Set_FontStyle(true);
+	m_pInactiveHeroText->Set_FontScale(0.25f);
+	m_pInactiveHeroText->Set_FontOffset(10.f, -13.f);
+
+	m_pInactiveHeroText->Set_FontText(TEXT("화신 해제"));
+
+	CREATE_GAMEOBJECT(m_pInactiveHeroText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pInactiveHeroText);
 }
 
 void CUI_HUD::Update_OperWindow()
@@ -995,7 +1014,6 @@ void CUI_HUD::Update_OperWindow()
 			{
 				m_fOperTime = 0.f;
 				On_OperTimeOver();
-
 			}
 		}
 	}
@@ -1336,9 +1354,10 @@ void CUI_HUD::On_OperTimeOver()
 
 	//검은화면 fade in 되면 아래 호출 (임시로 적어놈)
 	CGameSystem::Get_Instance()->On_StartGame();
-	
+
 	Disable_AllOperUIs();
-	
+
+	SetActive_PlayerInfoUI(true);
 }
 
 void CUI_HUD::Disable_AllOperUIs()
@@ -1346,7 +1365,7 @@ void CUI_HUD::Disable_AllOperUIs()
 #define	DISABLE_OPERUI_ARR(name) for (auto& elem : name) if (elem)DISABLE_GAMEOBJECT(elem);
 #define	DISABLE_OPERUI_DARR(name) for (auto& elem : name) for (auto& elem2 : elem) if (elem2) DISABLE_GAMEOBJECT(elem2);
 
-	
+
 	DISABLE_OPERUI_ARR(m_pArrOperSideBG);
 	DISABLE_OPERUI_DARR(m_pArrOperSelectUI);
 	DISABLE_OPERUI_DARR(m_pArrOperPointUI);
@@ -1354,7 +1373,7 @@ void CUI_HUD::Disable_AllOperUIs()
 	DISABLE_OPERUI_ARR(m_pArrTargetPoint);
 
 	if (m_pOperWindow)
-	DISABLE_GAMEOBJECT(m_pOperWindow);
+		DISABLE_GAMEOBJECT(m_pOperWindow);
 	if (m_pSmokeBG)
 		DISABLE_GAMEOBJECT(m_pSmokeBG);
 	if (m_pOperTextImg2)
@@ -1371,9 +1390,9 @@ void CUI_HUD::Disable_AllOperUIs()
 
 	DISABLE_OPERUI_ARR(m_pOperTimer);
 	DISABLE_OPERUI_ARR(m_pBriefingUI);
-		
-		
-		
+
+
+
 }
 
 void CUI_HUD::Create_OperSelectCharacter()

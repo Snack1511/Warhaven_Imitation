@@ -24,7 +24,6 @@ HRESULT CUI_UnitHP::Initialize_Prototype()
 	m_pUnitHP[BackGauge]->Set_Sort(0.4f);
 	m_pUnitHP[BackGauge]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HPBarGrey.dds"));
 
-	m_pUnitHP[Gauge]->Set_Color(_float4(1.f, 0.f, 0.f));
 	m_pUnitHP[Gauge]->Set_Sort(0.3f);
 	m_pUnitHP[Gauge]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HPBarGrey.dds"));
 
@@ -58,6 +57,8 @@ HRESULT CUI_UnitHP::Start()
 void CUI_UnitHP::OnEnable()
 {
 	__super::OnEnable();
+
+	m_pUnitHP[Gauge]->Set_Color(m_vHpColor);
 
 	for (int i = 0; i < IT_END; ++i)
 	{
@@ -100,14 +101,11 @@ void CUI_UnitHP::Set_ProjPos(CTransform* pTransform)
 	{
 		m_pUnitHP[i]->Set_Pos(vNewPos);
 		m_pUnitHP[i]->Get_Transform()->Make_WorldMatrix();
-
 	}
-
-
 }
 
 void CUI_UnitHP::SetActive_UnitHP(_bool value)
-{	
+{
 	for (int i = 0; i < IT_END; ++i)
 	{
 		if (value)

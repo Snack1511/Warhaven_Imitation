@@ -50,6 +50,26 @@ HRESULT CUI_HeroGauge::Start()
 	return S_OK;
 }
 
+void CUI_HeroGauge::OnEnable()
+{
+	__super::OnEnable();
+
+	for (int i = 0; i < Type_End; ++i)
+	{
+		ENABLE_GAMEOBJECT(m_Prototypes[i]);
+	}
+}
+
+void CUI_HeroGauge::OnDisable()
+{
+	__super::OnDisable();
+
+	for (int i = 0; i < Type_End; ++i)
+	{
+		DISABLE_GAMEOBJECT(m_Prototypes[i]);
+	}
+}
+
 void CUI_HeroGauge::Start_HeroGauge()
 {
 	for (_uint i = 0; i < Type_End; ++i)
@@ -127,6 +147,8 @@ void CUI_HeroGauge::Set_Pass()
 
 void CUI_HeroGauge::Bind_Shader()
 {
+	m_Prototypes[Gauge]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+
 	GET_COMPONENT_FROM(m_Prototypes[Gauge], CShader)
 		->CallBack_SetRawValues += bind(&CUI_HeroGauge::Set_ShaderResources, this, placeholders::_1, "g_fValue");
 }

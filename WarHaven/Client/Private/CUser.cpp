@@ -16,6 +16,7 @@
 
 #include "CEffects_Factory.h"
 #include "Functor.h"
+#include "Functor.h"
 #include "CState_Manager.h"
 #include "CNavigation.h"
 #include "CTerrain.h"
@@ -365,6 +366,11 @@ void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 void CUser::Enable_DeadUI()
 {
 	m_pUI_Dead->Enable_DeadUI();
+}
+
+void CUser::SetActive_PlayerHUD(_bool value)
+{
+	m_pUI_HUD->SetActive_PlayerInfoUI(value);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

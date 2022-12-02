@@ -20,6 +20,10 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
+
+public:
 	void Set_ShaderResources_Arrow(CShader* pShader, const char* pConstName);
 	void Set_ShaderResources_ArrowBG(CShader* pShader, const char* pConstName);
 
@@ -33,9 +37,6 @@ private:
 	_bool bIsHero = false;
 	_uint m_iPrvCrosshair = 0;
 	_uint m_iCurCrosshair = 0;
-
-private:
-	virtual void My_Tick() override;
 
 private:
 	void Set_Pass();

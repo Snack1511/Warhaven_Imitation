@@ -33,11 +33,11 @@ bool g_bAppear;
 float g_fBloodRatio;
 bool g_bDeadBlood;
 
-bool    g_bBlackBG;
-int		g_iWidthSize;
-int		g_iHeightSize;
-float		g_fRowX;
-float		g_fColY;
+bool g_bBlackBG;
+int g_iWidthSize;
+int g_iHeightSize;
+float g_fRowX;
+float g_fColY;
 
 struct VS_IN
 {
@@ -309,11 +309,11 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, float2(In.vTexUV.x, 1 - In.vTexUV.y));
     
-    //In.vTexUV.x -= g_fValue;
-    // vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
-    // vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+    In.vTexUV.x -= g_fValue;
+    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 
-    //Out.vColor *= (vNoise + vNoise);
+    Out.vColor *= (vNoise + vNoise);
     
     if (In.vTexUV.y < g_fHeroValue)
         discard;
@@ -353,7 +353,7 @@ PS_OUT PS_PORTEFFECT(PS_IN In)
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
     
-    Out.vColor.a *= vNoise.r;
+    //Out.vColor.a *= vNoise.r;
     // Out.vColor *= vNormal;
           
     Out.vColor *= g_vColor;
@@ -829,7 +829,7 @@ PS_OUT PS_BLOODOVERLAY(PS_IN In)
 
 PS_OUT PS_UIFIRE(PS_IN In)
 {
-    PS_OUT		Out = (PS_OUT)0;
+    PS_OUT Out = (PS_OUT) 0;
 
     float fStepX = 1.f / g_iWidthSize;
     //갯수만큼 나누고
@@ -846,10 +846,10 @@ PS_OUT PS_UIFIRE(PS_IN In)
 
     //masking
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-     if (g_bBlackBG)
-     {
-         Out.vColor.a = Out.vColor.r;
-     }
+    if (g_bBlackBG)
+    {
+        Out.vColor.a = Out.vColor.r;
+    }
      //알파는 마스크맵 검은곳에다가 기본 칼라까지
 
 

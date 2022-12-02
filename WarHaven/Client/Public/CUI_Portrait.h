@@ -22,6 +22,8 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 public:
 	void Set_ShaderEffect(CShader* pShader, const char* constName);

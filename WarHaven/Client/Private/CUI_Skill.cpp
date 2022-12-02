@@ -1,4 +1,4 @@
- #include "CUI_Skill.h"
+#include "CUI_Skill.h"
 #include "GameInstance.h"
 #include "CUI_Object.h"
 #include "Transform.h"
@@ -40,6 +40,44 @@ HRESULT CUI_Skill::Start()
 	__super::Start();
 
 	return S_OK;
+}
+
+void CUI_Skill::OnEnable()
+{
+	__super::OnEnable();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < Type_End; ++j)
+		{
+			ENABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+		}
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
+		ENABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
+	}
+}
+
+void CUI_Skill::OnDisable()
+{
+	__super::OnDisable();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < Type_End; ++j)
+		{
+			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+		}
+	}
+
+	for (int i = 0; SkillEnd < 3; ++i)
+	{
+		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
+		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
+	}
 }
 
 void CUI_Skill::My_Tick()

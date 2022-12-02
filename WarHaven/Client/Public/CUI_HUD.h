@@ -43,6 +43,9 @@ public:
 	void Set_HeroGauge(_float fMaxGauge, _float fCurGauge);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
+	void SetActive_OperUI(_bool value);
+	void SetActive_PlayerInfoUI(_bool value);
+
 	void SetActive_HeroPortrait(_bool value);
 	void SetActive_OxenJumpText(_bool value);
 	void SetActive_HeroTransformGauge(_bool value);
@@ -209,8 +212,6 @@ private:
 	void Set_FadeOperSelectChaderUI();
 
 private:
-	void SetActive_OperUI(_bool value);
-	void SetActive_PlayerInfoUI(_bool value);
 	void SetActive_CharacterSelectWindow(_bool value);
 	void Set_ClassInfo(CLASS_TYPE eClass);
 
@@ -227,6 +228,7 @@ private:	// 작전 회의
 	void Create_OxenJumpText();
 	void Create_HpText();
 	void Create_PlayerNameText();
+	void Create_InactiveHeroText();
 
 	void	On_OperTimeOver();
 	void	Disable_AllOperUIs();

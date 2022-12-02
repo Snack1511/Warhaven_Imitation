@@ -50,6 +50,32 @@ HRESULT CUI_Crosshair::Start()
 	return S_OK;
 }
 
+void CUI_Crosshair::OnEnable()
+{
+	__super::OnEnable();
+
+	for (int j = 0; j < 4; ++j)
+	{
+		for (int i = 0; i < Type_End; ++i)
+		{
+			ENABLE_GAMEOBJECT(m_arrCrosshair[j][i]);
+		}
+	}
+}
+
+void CUI_Crosshair::OnDisable()
+{
+	__super::OnDisable();
+
+	for (int j = 0; j < 4; ++j)
+	{
+		for (int i = 0; i < Type_End; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_arrCrosshair[j][i]);
+		}
+	}
+}
+
 void CUI_Crosshair::Set_ShaderResources_Arrow(CShader* pShader, const char* pConstName)
 {
 	_float4 vColor;
@@ -247,11 +273,6 @@ void CUI_Crosshair::ArrowCrosshair()
 		m_arrCrosshair[i][Arrow]->Set_RotationZ(fRotZ);
 		m_arrCrosshair[i][ArrowBG]->Set_RotationZ(fRotZ);
 	}
-}
-
-void CUI_Crosshair::My_Tick()
-{
-	__super::My_Tick();
 }
 
 void CUI_Crosshair::Ready_Texture()
