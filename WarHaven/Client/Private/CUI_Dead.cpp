@@ -83,30 +83,30 @@ void CUI_Dead::My_Tick()
 
 			DISABLE_GAMEOBJECT(this);
 
-			for (int i = 0; i < RU_End; ++i)
-			{
-				ENABLE_GAMEOBJECT(m_pRevivalUI[i]);
-			}
+			//for (int i = 0; i < RU_End; ++i)
+			//{
+			//	ENABLE_GAMEOBJECT(m_pRevivalUI[i]);
+			//}
 
 			PLAYER->Get_FollowCam()->Set_FollowTarget(PLAYER);
 		}
 	}
 
-	if (m_pRevivalUI[RU_Bar])
-	{
-		if (m_pRevivalUI[RU_Bar]->Is_Valid())
-		{
-			m_fRevivalTime += fDT(0);
-			m_fRevivalTimeRatio = m_fRevivalTime / m_fMaxRevivalTime;
-
-			if (m_fRevivalTimeRatio >= 1.f)
-			{
-				m_fRevivalTimeRatio = 1.f;
-
-				cout << "家积 阂啊" << endl;
-			}
-		}
-	}
+	//if (m_pRevivalUI[RU_Bar])
+	//{
+	//	if (m_pRevivalUI[RU_Bar]->Is_Valid())
+	//	{
+	//		m_fRevivalTime += fDT(0);
+	//		m_fRevivalTimeRatio = m_fRevivalTime / m_fMaxRevivalTime;
+	//
+	//		if (m_fRevivalTimeRatio >= 1.f)
+	//		{
+	//			m_fRevivalTimeRatio = 1.f;
+	//
+	//			cout << "家积 阂啊" << endl;
+	//		}
+	//	}
+	//}
 }
 
 void CUI_Dead::My_LateTick()
@@ -207,7 +207,7 @@ void CUI_Dead::Create_RevivalUI()
 			}
 			else if (i == RU_Giving)
 			{
-				m_pRevivalUI[i]->Set_Pos(-53.f, -225.f);
+				m_pRevivalUI[i]->Set_Pos(-43.f, -225.f);
 				m_pRevivalUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Mouse/T_MouseRightClickWIcon.dds"));
 				m_pRevivalUI[i]->Set_Scale(28.f);
 				m_pRevivalUI[i]->Set_Sort(0.5f);
