@@ -923,10 +923,7 @@ void CPlayer::Frustum_UnitHUD()
 		{
 			if (!m_pUnitHUD->Is_Valid())
 			{
-				if (!m_bIsMainPlayer)
-				{
-					ENABLE_GAMEOBJECT(m_pUnitHUD);
-				}
+				ENABLE_GAMEOBJECT(m_pUnitHUD);
 			}
 		}
 		else

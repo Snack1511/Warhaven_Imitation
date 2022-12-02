@@ -61,16 +61,21 @@ void CUI_UnitHUD::My_Tick()
 {
 	__super::My_Tick();
 
+	// 거리가 10보다 클 때
 	if (m_fUnitDis > 10.f)
 	{
 		m_vOffset = _float4(0.f, 1.9f, 0.f);
 
+		// 이름을 렌더링 중이면
 		if (m_pUnitNameText->Get_FontRender())
 		{
+			m_pUnitNameText->Set_FontRender(false);
+
 			if (m_pOwner->IsLeaderPlayer())
 			{
 				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 1)
 				{
+					m_pUnitNameText->Set_Scale(16.f);
 					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
 				}
 			}
@@ -80,11 +85,6 @@ void CUI_UnitHUD::My_Tick()
 				{
 					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(0);
 				}
-			}
-
-			if (m_pUnitNameText->Get_FontRender())
-			{
-				m_pUnitNameText->Set_FontRender(false);
 			}
 
 			if (m_pOwner->Get_Team())
@@ -111,6 +111,9 @@ void CUI_UnitHUD::My_Tick()
 	}
 	else
 	{
+		if (m_pOwner->IsMainPlayer())
+			return;
+
 		m_vOffset = _float4(0.f, 2.f, 0.f);
 
 		if (!m_pUnitNameText->Get_FontRender())
@@ -152,7 +155,7 @@ void CUI_UnitHUD::Create_UnitHUD()
 void CUI_UnitHUD::Init_UnitNameText()
 {
 	m_pUnitNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_32Circle.dds"));
-	m_pUnitNameText->SetTexture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_IconSoldier.dds"));
+	m_pUnitNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_IconSoldier.dds"));
 	m_pUnitNameText->Set_Scale(8.f);
 	m_pUnitNameText->Set_Sort(0.55f);
 
