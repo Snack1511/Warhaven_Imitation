@@ -279,6 +279,7 @@ protected:
 
 protected:
 	_bool m_bControlable = true;
+	_bool	m_bRespawn = false;
 
 protected:
 	CTrailEffect* m_pTrailEffect = nullptr;

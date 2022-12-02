@@ -832,14 +832,25 @@ void CGameSystem::On_StartGame()
     }
 
     //1. 모든 플레이어들 시작 위치에서 생성
+    _bool   bTemp = false;
+
     for (auto& elem : m_mapAllPlayers)
     {
         /* sandback들은 건너 뛰기 */
         if (dynamic_cast<CPlayerInfo_SandBack*>(elem.second))
             continue;
 
-      /*  if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+        /*if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
             continue;*/
+
+        if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+        {
+            bTemp = !bTemp;
+
+            if (bTemp)
+                continue;
+        }
+        
 
         /* ai들은 랜덤 선택 함수 호출 */
         if (!elem.second->m_bIsMainPlayer)

@@ -203,7 +203,7 @@ void CUnit::Lerp_Camera(const _uint& iCameraLerpType)
 void CUnit::On_Respawn()
 {
 	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
-	
+	m_bRespawn = true;
 
 	CColorController::COLORDESC tColorDesc;
 	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
@@ -526,8 +526,10 @@ void CUnit::OnEnable()
 
 	On_InitSetting();
 
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));
+	if (m_bRespawn)
+		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));
 
+	m_bRespawn = false;
 }
 
 void CUnit::OnDisable()
