@@ -207,7 +207,7 @@ void CUI_Dead::Create_RevivalUI()
 			}
 			else if (i == RU_Giving)
 			{
-				m_pRevivalUI[i]->Set_Pos(-42.f, -250.f);
+				m_pRevivalUI[i]->Set_Pos(-53.f, -225.f);
 				m_pRevivalUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Mouse/T_MouseRightClickWIcon.dds"));
 				m_pRevivalUI[i]->Set_Scale(28.f);
 				m_pRevivalUI[i]->Set_Sort(0.5f);
@@ -216,7 +216,7 @@ void CUI_Dead::Create_RevivalUI()
 				m_pRevivalUI[i]->Set_FontStyle(true);
 				m_pRevivalUI[i]->Set_FontCenter(true);
 				m_pRevivalUI[i]->Set_FontScale(0.25f);
-				m_pRevivalUI[i]->Set_FontOffset(70.f, 0.f);
+				m_pRevivalUI[i]->Set_FontOffset(60.f, 5.f);
 				m_pRevivalUI[i]->Set_FontText(TEXT("소생 포기"));
 			}
 		}
