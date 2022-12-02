@@ -60,7 +60,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
 		Create_CharacterSelectWindow();
-		Create_TraingText();
+		// Create_TraingText();
 	}
 	else
 	{
@@ -85,7 +85,8 @@ HRESULT CUI_HUD::Start()
 		Set_FadePortHighlight();
 		SetActive_PlayerInfoUI(true);
 
-		ENABLE_GAMEOBJECT(m_pChangeClassText);
+		if (m_pChangeClassText)
+			ENABLE_GAMEOBJECT(m_pChangeClassText);
 	}
 	else
 	{

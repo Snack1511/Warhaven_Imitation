@@ -16,6 +16,7 @@
 
 #include "CEffects_Factory.h"
 #include "Functor.h"
+#include "Functor.h"
 #include "CState_Manager.h"
 #include "CNavigation.h"
 #include "CTerrain.h"

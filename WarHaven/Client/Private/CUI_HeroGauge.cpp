@@ -147,6 +147,8 @@ void CUI_HeroGauge::Set_Pass()
 
 void CUI_HeroGauge::Bind_Shader()
 {
+	m_Prototypes[Gauge]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+
 	GET_COMPONENT_FROM(m_Prototypes[Gauge], CShader)
 		->CallBack_SetRawValues += bind(&CUI_HeroGauge::Set_ShaderResources, this, placeholders::_1, "g_fValue");
 }
