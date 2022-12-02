@@ -90,7 +90,6 @@ void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
     pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
-
     CColorController::COLORDESC tColorDesc;
     ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
@@ -106,10 +105,6 @@ void CWarrior_GuardBreak::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
     tColorDesc.iEndKeyFrame = 54; // 프레임 맞춰놓음
 
     GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
-
-
-   
-    
 
     /* Owner의 Animator Set Idle로 */
     m_fMaxSpeed = pOwner->Get_Status().fSprintAttackSpeed;

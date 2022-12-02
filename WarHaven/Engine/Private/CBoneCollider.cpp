@@ -46,8 +46,6 @@ void CBoneCollider::onShapeHit(const PxControllerShapeHit& hit)
 	}
 	else if (PxActorType::eRIGID_STATIC == hit.actor->getType())
 	{
-
-
 		m_bCollisionTemp = true;
 		m_vHitPos = _float4(hit.worldPos.x, hit.worldPos.y, hit.worldPos.z);
 

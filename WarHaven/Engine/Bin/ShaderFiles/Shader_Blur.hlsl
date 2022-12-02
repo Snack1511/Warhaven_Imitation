@@ -163,12 +163,15 @@ PS_OUT	PS_GRAYSCALE_MAIN(PS_DOWNSCALE_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 	Out.vColor = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
+
 	vector GrayScaleColor = dot(Out.vColor, float3(0.2126f, 0.7152f, 0.0722f));
+	//float fShaderPower = g_fShaderPower;
+
+	
 
 	Out.vColor = Out.vColor * (1.f - g_fShaderPower) + GrayScaleColor * g_fShaderPower;
 
 	return Out;
-
 }
 
 PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)

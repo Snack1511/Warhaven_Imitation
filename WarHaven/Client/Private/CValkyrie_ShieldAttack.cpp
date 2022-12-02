@@ -76,6 +76,23 @@ void CValkyrie_ShieldAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 	pOwner->Set_BounceState(STATE_BOUNCE_VALKYRIE_L);
 
 
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 1.f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = _float4((150.f / 255.f), (0.f / 255.f), (0.f / 255.f), 0.1f);
+	//tColorDesc.vTargetColor *= 1.1f;
+	tColorDesc.iMeshPartType = MODEL_PART_WEAPON_L;
+	tColorDesc.iStartKeyFrame = 2;
+	tColorDesc.iEndKeyFrame = 25; // 프레임 맞춰놓음
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

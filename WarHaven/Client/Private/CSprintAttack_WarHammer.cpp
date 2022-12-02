@@ -74,21 +74,7 @@ void CSprintAttack_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 	pMyPhysicsCom->Set_SpeedasMax();
 
 
-	CColorController::COLORDESC tColorDesc;
-	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
-	tColorDesc.eFadeStyle = CColorController::KEYFRAME;
-	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.1f;
-	tColorDesc.fFadeOutStartTime = 1.f;
-	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((230.f / 255.f), (150.f / 255.f), (40.f / 255.f), 0.f);
-	tColorDesc.vTargetColor *= 1.1f;
-	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
-	tColorDesc.iStartKeyFrame = 2;
-	tColorDesc.iEndKeyFrame = 24; // 프레임 맞춰놓음
-
-	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
 
 	pOwner->Set_BounceState(STATE_BOUNCE_WARHAMMER_L);

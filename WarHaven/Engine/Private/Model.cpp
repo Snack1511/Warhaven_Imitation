@@ -1736,7 +1736,7 @@ void CModel::Bake_LODFrustumInfo()
 			}
 		}
 
-		m_pInstancingMaxRange[i] = fMaxRange;
+		m_pInstancingMaxRange[i] = max(fMaxRange, 1.f);
 	}
 
 

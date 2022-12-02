@@ -224,6 +224,8 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
 		Out.vNormal = normalize(vector(vPixelNormal * 0.5f + 0.5f, 0.f));
 
+		//Out.vNormal = normalize(vector(In.vNormal * 0.5f + 0.5f, 0.f));
+
 	
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 0.f);
 

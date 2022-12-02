@@ -846,20 +846,20 @@ HRESULT CRender_Manager::Render()
 
 	wstring wstrRenderTargetName = L"Target_MotionBlur";
 
-	if (m_fRadialPower > 0.f)
-	{
-		if (FAILED(Render_RadialBlur(wstrRenderTargetName.c_str())))
-			return E_FAIL;
-
-		wstrRenderTargetName = L"Target_RadialBlur";
-	}
-
 	if (m_fChromaticAberrationPower > 0.f)
 	{
 		if (FAILED(Render_ChromaticAberration(wstrRenderTargetName.c_str())))
 			return E_FAIL;
 
 		wstrRenderTargetName = L"Target_ChromaticAberration";
+	}
+
+	if (m_fRadialPower > 0.f)
+	{
+		if (FAILED(Render_RadialBlur(wstrRenderTargetName.c_str())))
+			return E_FAIL;
+
+		wstrRenderTargetName = L"Target_RadialBlur";
 	}
 
 	if (m_fGrayScalePower > 0.f)

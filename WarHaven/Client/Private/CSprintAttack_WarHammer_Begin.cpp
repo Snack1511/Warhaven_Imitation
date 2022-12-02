@@ -8,6 +8,8 @@
 
 #include "CUser.h"
 
+#include "CColorController.h"
+
 CSprintAttack_WarHammer_Begin::CSprintAttack_WarHammer_Begin()
 {
 }
@@ -70,6 +72,22 @@ void CSprintAttack_WarHammer_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, S
 	//최대속도 설정
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
 	pMyPhysicsCom->Set_SpeedasMax();
+
+
+
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 0.7f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	//tColorDesc.vTargetColor *= 1.1f;
+	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

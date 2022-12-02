@@ -59,6 +59,38 @@ void CWarHammer_AirSpike_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 	m_fMaxSpeed = pOwner->Get_Status().fSprintJumpSpeed;
 
+
+
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 1.f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	//tColorDesc.vTargetColor *= 1.1f;
+	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
+	tColorDesc;
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.2f;
+	tColorDesc.fFadeOutStartTime = 1.f;
+	tColorDesc.fFadeOutTime = 0.2f;
+	tColorDesc.vTargetColor = _float4(1.f, 1.f, 1.f, 0.5f);
+
+	tColorDesc.iMeshPartType = MODEL_PART_BODY;
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
+	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

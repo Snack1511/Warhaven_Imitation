@@ -774,7 +774,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 	_float fStoneDensity = 10.f;
 
 	/* 이 시간 후에 사라짐 */
-	_float fStoneLifeTime = 10.f;
+	_float fStoneLifeTime = 15.f;
 
 	_uint	iStoneNumInstance = 15;
 
@@ -868,7 +868,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 	/*===================== Warrior =====================*/
 
 	_float fDeadBodyDensity = 10.f;
-	_float fDeadBodyLifeTime = 10.f;
+	_float fDeadBodyLifeTime = 15.f;
 
 	wstrName = L"WarriorDead_Slice0";
 	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(

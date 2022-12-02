@@ -151,6 +151,7 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 
 	vector TextureDesc[TEXTURESIZE];
 
+	//float fTileRatio = 4.f;
 	TextureDesc[0] = g_DiffArray[0].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 	TextureDesc[1] = g_DiffArray[1].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
 	TextureDesc[2] = g_DiffArray[2].Sample(DefaultSampler, In.vTexUV * g_fTileRatio);
