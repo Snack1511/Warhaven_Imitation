@@ -31,7 +31,8 @@ public:
 
 	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName) override;
 
-
+public:
+	void		Set_LoopControlfalse() { m_bLoopControl = false; }
 
 
 public:
@@ -72,6 +73,7 @@ private:
 	_float		m_fDurationRange = 0.f;
 
 private:
+	_bool		m_bLoopControl = false;
 	_bool		m_bLoop = false;
 	_float		m_fLoopTime = 0.f;
 	_float		m_fLoopTimeAcc = 0.f;

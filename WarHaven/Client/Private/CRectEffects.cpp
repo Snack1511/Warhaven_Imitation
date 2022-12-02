@@ -243,6 +243,7 @@ HRESULT CRectEffects::Initialize()
 {
 	m_fTimeAcc = 0.f;
 	m_iNumDead = 0;
+	m_bLoopControl = m_bLoop;
 	//m_bSorting = true;
 
 	GET_COMPONENT(CRenderer)->Set_Pass(m_iPassType);
@@ -782,6 +783,7 @@ void CRectEffects::OnEnable()
 	m_iNumDead = 0;
 	m_fTimeAcc = 0.f;
 	m_fLoopTimeAcc = 0.f;
+	m_bLoopControl = m_bLoop;
 	//시작위치
 
 
@@ -894,7 +896,7 @@ _bool CRectEffects::Fade_Lerp(_uint iIndex)
 
 void CRectEffects::Dead_Instance(_uint iIndex)
 {
-	if (m_bLoop)
+	if (m_bLoopControl)
 	{
 		if (m_fLoopTime == 0)
 			Reset_Instance(iIndex);
@@ -968,7 +970,7 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 	m_pDatas[iIndex].RectInstance.vRight = vRight.MultiplyNormal(m_matTrans).Normalize();
 	m_pDatas[iIndex].RectInstance.vUp = vUp.MultiplyNormal(m_matTrans).Normalize();
 	m_pDatas[iIndex].RectInstance.vLook = vLook.MultiplyNormal(m_matTrans).Normalize();*/
-	if (!(m_bLoop && m_bBillBoard))
+	if (!(m_bLoopControl && m_bBillBoard))
 	{
 		_float4 vLook = m_pDatas[iIndex].InstancingData.vDir;
 
@@ -1155,7 +1157,6 @@ void CRectEffects::Stick_RefBone()
 
 void CRectEffects::Reset_Instance(_uint iIndex)
 {
-	
 
 	m_pDatas[iIndex].RectInstance.vRight = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[0])));
 	m_pDatas[iIndex].RectInstance.vUp = *((_float4*)(&(m_pDatas[iIndex].InstancingData.StartMatrix.m[1])));
@@ -1163,7 +1164,7 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 	Set_NewStartPos(iIndex);
 
-	if (m_bLoop)
+	if (m_bLoopControl)
 	{
 		m_pDatas[iIndex].InstancingData.fSpeed = m_pDatas[iIndex].InstancingData.fOriginSpeed;
 	}

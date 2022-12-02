@@ -221,6 +221,9 @@ private:	// 화신 게이지
 	_float		m_fGauge = 0.f;
 
 private:
+	list<CGameObject*>	m_DeadLights;
+
+private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
