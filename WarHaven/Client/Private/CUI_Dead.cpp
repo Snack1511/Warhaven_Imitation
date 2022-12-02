@@ -45,6 +45,8 @@ void CUI_Dead::OnEnable()
 	{
 		Enable_Fade(m_pDeadUI[i], 1.f);
 	}
+
+	m_pRevivalUI[RU_Bar]->Set_ScaleX(306.f);
 }
 
 void CUI_Dead::OnDisable()
@@ -86,10 +88,24 @@ void CUI_Dead::My_Tick()
 	{
 		if (m_pRevivalUI[RU_Bar]->Is_Valid())
 		{
-			_float4 vScale = m_pRevivalUI[RU_Bar]->Get_Scale();
+			if (m_fRevivalTime <= 0)
+			{
+				_float4 vScale = m_pRevivalUI[RU_Bar]->Get_Scale();
+				m_pRevivalUI[RU_Bar]->DoScaleX(-vScale.x, m_fMaxRevivalTime);
+			}
 
-			// DoScaleX ¸¸µéÀÚ
-			m_pRevivalUI[RU_Bar]->DoScale(-vScale.x, m_fMaxRevivalTime);
+			m_fRevivalTime += fDT(0);
+			if (m_fRevivalTime > m_fMaxRevivalTime)
+			{
+				m_fRevivalTime = 0.f;
+
+				for (int i = 0; i < RU_End; ++i)
+				{
+					DISABLE_GAMEOBJECT(m_pRevivalUI[i]);
+				}
+
+				DISABLE_GAMEOBJECT(this);
+			}
 		}
 	}
 }

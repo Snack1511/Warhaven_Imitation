@@ -42,7 +42,7 @@ private:
 
 	CUI_Object* m_pRevivalUI[RU_End];
 
-	_float m_fMaxRevivalTime = 5.f;
+	_float m_fMaxRevivalTime = 1.f;
 	_float m_fRevivalTime = 0.f;
 
 private:
