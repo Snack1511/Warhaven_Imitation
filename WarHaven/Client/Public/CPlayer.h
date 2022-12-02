@@ -17,6 +17,7 @@ class CShader;
 class CBoneCollider;
 class CHierarchyNode;
 class CPhysXCharacter;
+class CGameObject;
 END
 
 BEGIN(Client)

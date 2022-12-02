@@ -219,7 +219,7 @@ void CUnit::On_Respawn()
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 
- 	//CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));
+
 }
 
 void CUnit::On_Reborn()
@@ -525,6 +525,9 @@ void CUnit::OnEnable()
 		m_pCurState->Enter(this, m_pAnimator, m_eCurState);
 
 	On_InitSetting();
+
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));
+
 }
 
 void CUnit::OnDisable()

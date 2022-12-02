@@ -77,7 +77,7 @@ void CUI_Dead::My_Tick()
 	if (Is_Valid())
 	{
 		m_fAccTime += fDT(0);
-		if (m_fAccTime > 1.f)
+		if (m_fAccTime > 5.f)
 		{
 			m_fAccTime = 0.f;
 

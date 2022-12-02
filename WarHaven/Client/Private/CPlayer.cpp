@@ -394,6 +394,11 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_DEFAULT eClass)
 
 	if (!m_bIsMainPlayer)
 		ENABLE_GAMEOBJECT(m_pUnitHUD);
+
+	for (auto& elem : m_DeadLights)
+	{
+		static_cast<CRectEffects*>(elem)->Set_LoopControlfalse();
+	}
 }
 
 void CPlayer::Reserve_State(_uint eState)
@@ -634,7 +639,7 @@ void CPlayer::On_Reborn()
 	{
 		static_cast<CRectEffects*>(elem)->Set_LoopControlfalse();
 	}
-
+	m_DeadLights.clear();
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[m_eCurrentDefaultClass]);
 	m_bDie = false;
 }
