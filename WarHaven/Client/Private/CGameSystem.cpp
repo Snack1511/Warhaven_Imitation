@@ -263,7 +263,11 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
         CPlayer* pEnemy = nullptr;
 
         pEnemy = SetUp_Player(Convert_ToHash(wstrInfoKey));
-        pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eSandbag);
+
+        if(i != 7)
+            pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eSandbag);
+        else
+            pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_TG);
 
         if (!pEnemy)
             assert(0);
