@@ -84,7 +84,7 @@ void CHit_GuardHit_Valkyrie::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
     m_bMoveTrigger = false;
 
     m_tHitInfo = *((HIT_INFO*)(pData));
-    __super::Guard_State();
+    __super::Guard_State(pOwner);
 
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

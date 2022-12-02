@@ -76,28 +76,54 @@ void CState_Hit::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 }
 
-void CState_Hit::Face_Check(_bool bUseUpandDown)
+void CState_Hit::Face_Check(CUnit* pOwner, _bool bUseUpandDown)
 {
-    /* 방향 조정 */
-    if (m_tHitInfo.bFace)
+
+    if (pOwner->Is_MainPlayer())
     {
-        if (m_tHitInfo.eHitType == HIT_TYPE::eLEFT)
-            m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
-
-        else  if (m_tHitInfo.eHitType == HIT_TYPE::eRIGHT)
-            m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
-
-        else if (bUseUpandDown)
+        if (m_tHitInfo.bFace)
         {
-            if (m_tHitInfo.eHitType == HIT_TYPE::eUP)
-                m_tHitInfo.eHitType = HIT_TYPE::eDOWN;
+            if (m_tHitInfo.eHitType == HIT_TYPE::eLEFT)
+                m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
 
-            else  if (m_tHitInfo.eHitType == HIT_TYPE::eDOWN)
-                m_tHitInfo.eHitType = HIT_TYPE::eUP;
+            else  if (m_tHitInfo.eHitType == HIT_TYPE::eRIGHT)
+                m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
+
+            else if (bUseUpandDown)
+            {
+                if (m_tHitInfo.eHitType == HIT_TYPE::eUP)
+                    m_tHitInfo.eHitType = HIT_TYPE::eDOWN;
+
+                else  if (m_tHitInfo.eHitType == HIT_TYPE::eDOWN)
+                    m_tHitInfo.eHitType = HIT_TYPE::eUP;
+            }
+
+
         }
-
- 
     }
+    else
+    {
+        if (!m_tHitInfo.bFace)
+        {
+            if (m_tHitInfo.eHitType == HIT_TYPE::eLEFT)
+                m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
+
+            else  if (m_tHitInfo.eHitType == HIT_TYPE::eRIGHT)
+                m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
+
+            else if (bUseUpandDown)
+            {
+                if (m_tHitInfo.eHitType == HIT_TYPE::eUP)
+                    m_tHitInfo.eHitType = HIT_TYPE::eDOWN;
+
+                else  if (m_tHitInfo.eHitType == HIT_TYPE::eDOWN)
+                    m_tHitInfo.eHitType = HIT_TYPE::eUP;
+            }
+
+
+        }
+    }
+
 
 }
 
@@ -110,12 +136,10 @@ void CState_Hit::Fly_State()
     }
 }
 
-void CState_Hit::Hit_State()
+void CState_Hit::Hit_State(CUnit* pOwner)
 {
 
-  
-
-    Face_Check();
+    Face_Check(pOwner);
 
     /* Hit 처리 */
     switch (m_tHitInfo.eHitType)
@@ -123,13 +147,13 @@ void CState_Hit::Hit_State()
         /* 내가 기울어지는 방향대로 애니메이션 처리 */
     case HIT_TYPE::eLEFT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_W];
+        m_iAnimIndex = m_iHitIndex[HIT_STATE_E];
 
         break;
 
     case HIT_TYPE::eRIGHT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_E];
+        m_iAnimIndex = m_iHitIndex[HIT_STATE_W];
 
         break;
 
@@ -151,9 +175,9 @@ void CState_Hit::Hit_State()
 }
 
 
-void CState_Hit::Guard_State()
+void CState_Hit::Guard_State(CUnit* pOwner)
 {
-    Face_Check(false);
+    Face_Check(pOwner, false);
 
     m_tHitInfo.fJumpPower = 0.f;
     m_tHitInfo.fKnockBackPower = 0.f;
@@ -163,25 +187,25 @@ void CState_Hit::Guard_State()
     {
     case HIT_TYPE::eLEFT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_R];
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_L];
 
         break;
 
     case HIT_TYPE::eRIGHT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_L];
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_R];
 
         break;
 
     case HIT_TYPE::eUP:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_TOP];
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_F];
 
         break;
 
     case HIT_TYPE::eDOWN:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_F];
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_TOP];
 
         break;
 
@@ -190,9 +214,9 @@ void CState_Hit::Guard_State()
     }
 }
 
-void CState_Hit::Groggy_State()
+void CState_Hit::Groggy_State(CUnit* pOwner)
 {
-    Face_Check();
+    Face_Check(pOwner);
 
     /* 그로기(기절) 처리 */
     switch (m_tHitInfo.eHitType)
@@ -200,13 +224,13 @@ void CState_Hit::Groggy_State()
         /* 내가 기울어지는 방향대로 애니메이션 처리 */
     case HIT_TYPE::eLEFT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_W];
+        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_E];
 
         break;
 
     case HIT_TYPE::eRIGHT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_E];
+        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_W];
 
         break;
 
@@ -228,7 +252,7 @@ void CState_Hit::Groggy_State()
 }
 
 
-void CState_Hit::Sting_State()
+void CState_Hit::Sting_State(CUnit* pOwner)
 {
  
     if (!m_iHitStingIndex[HIT_STATE_N])
@@ -237,7 +261,7 @@ void CState_Hit::Sting_State()
     }
     else
     {
-        Face_Check();
+        Face_Check(pOwner);
 
         if (m_tHitInfo.eHitType == HIT_TYPE::eUP)
         {

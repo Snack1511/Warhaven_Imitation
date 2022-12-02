@@ -81,6 +81,9 @@ void CValkyrie_ShieldAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 
 STATE_TYPE CValkyrie_ShieldAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	Follow_MouseLook(pOwner);
+	pOwner->Set_DirAsLook();
+
 	return __super::Tick(pOwner, pAnimator);
 }
 
