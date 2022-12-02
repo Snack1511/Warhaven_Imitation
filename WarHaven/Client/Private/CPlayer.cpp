@@ -162,8 +162,8 @@ void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_pDefaultClass[CLASS_DEFAULT_WARRIOR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_WARRIOR]);
 	m_pDefaultClass[CLASS_DEFAULT_ENGINEER] = CUnit_WarHammer::Create(tModelData[CLASS_DEFAULT_ENGINEER]);
 	//m_pDefaultClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
-	m_pDefaultClass[CLASS_DEFAULT_ARCHER] = CUnit_Archer::Create(tModelData[CLASS_DEFAULT_ARCHER]);
-	m_pDefaultClass[CLASS_DEFAULT_PALADIN] = CUnit_Paladin::Create(tModelData[CLASS_DEFAULT_PALADIN]);
+	//m_pDefaultClass[CLASS_DEFAULT_ARCHER] = CUnit_Archer::Create(tModelData[CLASS_DEFAULT_ARCHER]);
+	//m_pDefaultClass[CLASS_DEFAULT_PALADIN] = CUnit_Paladin::Create(tModelData[CLASS_DEFAULT_PALADIN]);
 	//m_pDefaultClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
 
 
@@ -426,15 +426,24 @@ void CPlayer::SetUp_UnitColliders(_bool bPlayer)
 
 }
 
-void CPlayer::SetUp_UnitHitStates(_bool bPlayer)
+
+void CPlayer::SetUp_UnitHitStates()
 {
+
+	if (m_bIsMainPlayer)
+		m_iUnitType = 0;
+	else
+	{
+		if (m_iUnitType != (_uint)CUnit::UNIT_TYPE::eSandbag)
+			m_iUnitType = (_uint)CUnit::UNIT_TYPE::eAI_TG;
+	}
 
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
 		if (m_pDefaultClass[i] == nullptr)
 			continue;
 
-		m_pDefaultClass[i]->SetUp_HitStates(bPlayer);
+		m_pDefaultClass[i]->SetUp_HitStates((CUnit::UNIT_TYPE)m_iUnitType);
 	}
 
 	for (int i = 0; i < HERO_END; ++i)
@@ -442,7 +451,7 @@ void CPlayer::SetUp_UnitHitStates(_bool bPlayer)
 		if (m_pHeroClass[i] == nullptr)
 			continue;
 
-		m_pHeroClass[i]->SetUp_HitStates(bPlayer);
+		m_pHeroClass[i]->SetUp_HitStates((CUnit::UNIT_TYPE)m_iUnitType);
 	}
 }
 
@@ -518,7 +527,7 @@ HRESULT CPlayer::Start()
 {
 	__super::Start();
 
-	SetUp_UnitHitStates(m_bIsMainPlayer);
+	SetUp_UnitHitStates();
 
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{

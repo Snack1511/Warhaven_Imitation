@@ -48,6 +48,8 @@ HRESULT CSwitchRtoL_Valkyrie::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
+
     m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_L);
     m_vecAdjState.push_back(STATE_RUN_VALKYRIE_L);
     m_vecAdjState.push_back(STATE_WALK_VALKYRIE_L);

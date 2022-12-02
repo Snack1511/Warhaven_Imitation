@@ -136,22 +136,11 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 	SetUp_UnitCollider(CUnit::FLYATTACK, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false);
 }
 
-void CUnit_WarHammer::SetUp_HitStates(_bool bPlayer)
+void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
-	
-	if (!bPlayer)
+	switch (eUnitType)
 	{
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
-
-	}
-	else
-	{
+	case Client::CUnit::UNIT_TYPE::ePlayer:
 		m_tHitType.eHitState = STATE_HIT_WARHAMMER;
 		m_tHitType.eGuardState = STATE_GUARDHIT_WARHAMMER;
 		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARHAMMER;
@@ -159,6 +148,21 @@ void CUnit_WarHammer::SetUp_HitStates(_bool bPlayer)
 		m_tHitType.eStingHitState = STATE_STINGHIT_WARHAMMER;
 		m_tHitType.eFlyState = STATE_FLYHIT_WARHAMMER;
 		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
+		break;
+
+	case Client::CUnit::UNIT_TYPE::eAI_TG:
+	case Client::CUnit::UNIT_TYPE::eSandbag:
+		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
+		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
+		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
+		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
+		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
+		break;
+
+	default:
+		break;
 	}
 }
 

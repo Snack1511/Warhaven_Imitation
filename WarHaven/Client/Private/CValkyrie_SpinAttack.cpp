@@ -43,6 +43,7 @@ HRESULT CValkyrie_SpinAttack::Initialize()
 	m_fAnimSpeed = 2.f;
 
 
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 
 	m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
 	m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);

@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CPlayerInfo_Default.h"
 
+#include "CPlayer.h"
+#include "CUnit.h"
+
 CPlayerInfo_Default::CPlayerInfo_Default()
 {
 }

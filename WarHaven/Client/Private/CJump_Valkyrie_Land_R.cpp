@@ -43,6 +43,8 @@ HRESULT CJump_Valkyrie_Land_R::Initialize()
     
 	//m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
 
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
+
 	m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
 	m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
 

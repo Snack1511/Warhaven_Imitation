@@ -61,8 +61,8 @@ HRESULT CAI_SandBack_Hit::Initialize()
 void CAI_SandBack_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 
-
-    if (ePrevType == STATE_GUARD_LOOP_WARRIOR_AI_ENEMY)
+    if (ePrevType == STATE_GUARD_LOOP_WARRIOR_AI_ENEMY ||
+        ePrevType == STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY)
         bTestGuard = true;
 
 	Test_Attack(ePrevType);

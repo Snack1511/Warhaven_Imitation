@@ -34,15 +34,16 @@ CValkyrie_ShieldAttack* CValkyrie_ShieldAttack::Create()
 HRESULT CValkyrie_ShieldAttack::Initialize()
 {
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
-	m_iAnimIndex = 17;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	m_iAnimIndex = 16;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_SHIELDATTACK_VALKYRIE;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-	m_iStateChangeKeyFrame = 60;
+	m_iStateChangeKeyFrame = 44;
 
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.f;
 
 
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 
 	m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
 	m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
@@ -59,8 +60,8 @@ HRESULT CValkyrie_ShieldAttack::Initialize()
 
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
-	Add_KeyFrame(12, 0);
-	Add_KeyFrame(39, 1);
+	Add_KeyFrame(25, 0);
+	Add_KeyFrame(32, 1);
 
 	// return __super::Initialize();
 	return S_OK;
@@ -69,6 +70,8 @@ HRESULT CValkyrie_ShieldAttack::Initialize()
 void CValkyrie_ShieldAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	pOwner->On_Use(CUnit::SKILL2);
+
+	pOwner->Get_OwnerPlayer()->Get_Gauge() -= 15.f;
 
 	pOwner->Set_BounceState(STATE_BOUNCE_VALKYRIE_L);
 
@@ -89,16 +92,14 @@ void CValkyrie_ShieldAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CValkyrie_ShieldAttack::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (!pOwner->Can_Use(CUnit::SKILL2))
-		return STATE_END;
 
 	/* VALKYRIE가 SpinAttack 로 오는 조건
 	1.  R 공격을 누르면 스킬 사용
 	*/
-	//if (KEY(R, TAP))
-	//{
-	//	return m_eStateType;
-	//}
+	if (KEY(E, TAP) && pOwner->Get_OwnerPlayer()->Get_Gauge() > 15.f)
+	{
+		return m_eStateType;
+	}
 
 	return STATE_END;
 }
@@ -109,22 +110,22 @@ void CValkyrie_ShieldAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 	{
 	case 0:
 
-		m_fMaxSpeed = pOwner->Get_Status().fDashAttackSpeed;
+		m_fMaxSpeed = pOwner->Get_Status().fSprintAttackSpeed;
 
 		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
 		Physics_Setting(m_fMaxSpeed, pOwner);
 
-		pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 		m_bAttackTrigger = true;
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
+
+		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 		break;
 
 	case 1:
 		Physics_Setting(0.f, pOwner);
 
 		m_bAttackTrigger = false;
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 		break;
 
 	default:

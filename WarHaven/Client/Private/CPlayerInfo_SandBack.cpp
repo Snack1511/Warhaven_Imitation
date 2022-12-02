@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CPlayerInfo_SandBack.h"
 
+#include "CPlayer.h"
+#include "CUnit.h"
+
 CPlayerInfo_SandBack::CPlayerInfo_SandBack()
 {
 }
@@ -36,6 +39,7 @@ HRESULT CPlayerInfo_SandBack::Initialize()
 
 	m_vecPrefClassType.push_back(WARRIOR);
 
+	m_iUnitType = 1;
 
 	return S_OK;
 }

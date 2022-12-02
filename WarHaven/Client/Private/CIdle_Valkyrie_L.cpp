@@ -56,6 +56,8 @@ HRESULT CIdle_Valkyrie_L::Initialize()
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
 
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
+
     m_vecAdjState.push_back(STATE_SWITCH_L_TO_R_VALKYRIE);
 
     m_vecAdjState.push_back(STATE_WALK_VALKYRIE_L);

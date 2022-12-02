@@ -258,6 +258,7 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
         CPlayer* pEnemy = nullptr;
 
         pEnemy = SetUp_Player(Convert_ToHash(wstrInfoKey));
+        pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eSandbag);
 
         if (!pEnemy)
             assert(0);

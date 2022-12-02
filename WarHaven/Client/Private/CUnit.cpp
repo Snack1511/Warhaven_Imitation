@@ -709,9 +709,9 @@ void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrCol
 	}
 }
 
-void CUnit::SetUp_HitStates(_bool bPlayer)
+void CUnit::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
-	if (!bPlayer)
+	if (eUnitType > UNIT_TYPE::eUNIT_TYPE_END)
 		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
 }
 

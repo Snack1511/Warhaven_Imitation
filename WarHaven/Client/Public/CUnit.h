@@ -249,7 +249,8 @@ public:
 		_uint iNumCollider = 1, _float4x4 matTransformation = DEFAULT_TRANS_MATRIX, _bool bEnable = true, CHierarchyNode* pRefBone = nullptr);
 
 public:
-	virtual void SetUp_HitStates(_bool bPlayer);
+	enum class UNIT_TYPE { ePlayer, eSandbag, eAI_TG, eAI_Panden, eAI_Gela, eAI_Hwara, eUNIT_TYPE_END };
+	virtual void SetUp_HitStates(UNIT_TYPE eUnitType);
 
 
 protected:

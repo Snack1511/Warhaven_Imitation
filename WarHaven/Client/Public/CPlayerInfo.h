@@ -72,6 +72,8 @@ public:
 	void	Set_TeamConnector(CTeamConnector* pTeam) { m_pMyTeam = pTeam; }
 	void	Set_ChosenClass(CLASS_TYPE eEnum) { m_eCurChosenClass = eEnum; }
 
+	_uint	Get_UnitType() { return m_iUnitType; }
+
 public:
 	/* 커스텀 추가될 때마다 여기 enum 추가해서 넣어놓기 */
 	enum class eCUSTOM_HEAD{eDEFAULT, eHEAD1, eRABBIT};
@@ -103,6 +105,8 @@ protected:
 protected:
 	PLAYER_INFO	m_tPlayerInfo;
 	_bool	m_bIsMainPlayer = false;
+
+	_uint	m_iUnitType = 0;
 	
 protected:
 	/* 이 안에 있는 클래스중 하나를 랜덤으로 선택해서 플레이 한다. */

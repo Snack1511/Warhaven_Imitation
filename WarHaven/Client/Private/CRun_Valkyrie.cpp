@@ -19,6 +19,7 @@ CRun_Valkyrie::~CRun_Valkyrie()
 HRESULT CRun_Valkyrie::Initialize()
 {
 
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 	/*나중에 추가*/
 	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);

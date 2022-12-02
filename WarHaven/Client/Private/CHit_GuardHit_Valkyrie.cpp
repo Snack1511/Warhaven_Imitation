@@ -48,12 +48,20 @@ HRESULT CHit_GuardHit_Valkyrie::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 30;
+    m_iStateChangeKeyFrame = 20;
 
-    m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
+  
     m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_RUN_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
+
+    m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
+    m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
+    m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
     //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
     //m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
     //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
@@ -90,9 +98,9 @@ STATE_TYPE CHit_GuardHit_Valkyrie::Tick(CUnit* pOwner, CAnimator* pAnimator)
     if (m_bAttackTrigger)
         return STATE_SPINATTACK_VALKYRIE;
 
-  /*  if (m_bMoveTrigger || KEY(S, TAP))
+    if (KEY(W, TAP) || KEY(A, TAP) || KEY(S, TAP) || KEY(D, TAP))
         return STATE_GUARDDASH_VALKYRIE;
-  */  
+    
 
     return __super::Tick(pOwner, pAnimator);
 }
