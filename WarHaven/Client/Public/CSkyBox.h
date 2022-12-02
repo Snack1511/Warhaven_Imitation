@@ -7,7 +7,6 @@ class CSkyBox
 	: public CGameObject
 {
 	DECLARE_PROTOTYPE(CSkyBox);
-	DECLARE_GAMEOBJECT(CSkyBox);
 
 private:
 	CSkyBox();
@@ -22,5 +21,7 @@ private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
+public:
+	static CSkyBox* Create(_int iSkyIdx);
 };
 END

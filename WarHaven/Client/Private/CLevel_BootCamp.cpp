@@ -73,6 +73,11 @@ HRESULT CLevel_BootCamp::SetUp_Prototypes()
 	if (FAILED(__super::SetUp_Prototypes()))
 		return E_FAIL;
 
+	CSkyBox* pSkyBox = CSkyBox::Create(5);
+	if (FAILED(pSkyBox->Initialize()))
+		return E_FAIL;
+	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
+
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_BootCamp::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	CMap_Loader::Load_Data(wstring(TEXT("TrainingRoom01")), Ready_Object);
 	m_fLoadingFinish = 0.5f;

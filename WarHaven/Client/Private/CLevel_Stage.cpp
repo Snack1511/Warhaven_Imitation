@@ -66,10 +66,7 @@ HRESULT CLevel_Stage::Initialize()
 HRESULT CLevel_Stage::SetUp_Prototypes()
 {
 	GAMEINSTANCE->Create_Scene(CPhysX_Manager::Scene::SCENE_CURRENT);
-	CSkyBox* pSkyBox = CSkyBox::Create();
-	if (FAILED(pSkyBox->Initialize()))
-		return E_FAIL;
-	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
+	
 
 	m_fLoadingFinish = 0.2f;
 	

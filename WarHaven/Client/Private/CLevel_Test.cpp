@@ -73,6 +73,12 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	if (FAILED(__super::SetUp_Prototypes()))
 		return E_FAIL;
 
+	CSkyBox* pSkyBox = CSkyBox::Create(6);
+	if (FAILED(pSkyBox->Initialize()))
+		return E_FAIL;
+	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
+
+
 	_float4x4 mat;
 	mat.Identity();
 	CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);

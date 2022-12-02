@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "CDrawable_Terrain.h"
 #include "CGameSystem.h"
+#include "CSkyBox.h"
 
 CLevel_Hwara::CLevel_Hwara()
 {
@@ -29,6 +30,10 @@ HRESULT CLevel_Hwara::Initialize()
 HRESULT CLevel_Hwara::SetUp_Prototypes()
 {
 	if (FAILED(__super::SetUp_Prototypes()))
+		return E_FAIL;
+
+	CSkyBox* pSkyBox = CSkyBox::Create(6);
+	if (FAILED(pSkyBox->Initialize()))
 		return E_FAIL;
 
 	_float4x4 mat;

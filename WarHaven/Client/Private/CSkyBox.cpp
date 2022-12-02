@@ -28,9 +28,9 @@ HRESULT CSkyBox::Initialize_Prototype()
     Add_Component(pRenderer);
     
     CTexture* pTexture = CTexture::Create(CP_AFTER_TRANSFORM,
-        L"../bin/resources/textures/skybox/MySkyBox_%d.dds", 5);
+        L"../bin/resources/textures/skybox/MySkyBox_%d.dds", 7);
     pTexture->Initialize();
-    pTexture->Set_CurTextureIndex(2);
+
     Add_Component(pTexture);
 
     return S_OK;
@@ -63,4 +63,19 @@ void CSkyBox::My_LateTick()
 {
     m_pTransform->Set_World(WORLD_POS, CGameInstance::Get_Instance()->Get_ViewPos());
     m_pTransform->Make_WorldMatrix();
+}
+
+CSkyBox* CSkyBox::Create(_int iSkyIdx)
+{
+    CSkyBox* pInstance = new CSkyBox;
+
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        Call_MsgBox(L"Failed to Initialize_Prototype : CSkyBox");
+        SAFE_DELETE(pInstance);
+    }
+
+    GET_COMPONENT_FROM(pInstance, CTexture)->Set_CurTextureIndex(iSkyIdx);
+
+    return pInstance;
 }
