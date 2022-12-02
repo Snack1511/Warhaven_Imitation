@@ -853,7 +853,7 @@ void CPlayer::Frustum_UnitHUD()
 {
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 
-	if (fDis < 30.f)
+	if (fDis < m_fEnable_UnitHUDis)
 	{
 		m_pUnitHUD->Set_UnitDis(fDis);
 

@@ -212,6 +212,9 @@ private:
 private:
 	CUI_UnitHUD* m_pUnitHUD = nullptr;
 
+private:
+	_float m_fEnable_UnitHUDis = 35.f;
+
 private:	// 화신 게이지
 	_bool		m_bAbleHero = false;
 	_bool		m_bIsHero = false;
