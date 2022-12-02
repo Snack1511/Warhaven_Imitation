@@ -313,6 +313,11 @@ private:
 			return &m_MeshRootNode;
 		}
 #pragma region 기타 필요변수
+public:
+	_bool Is_HoveredWindow() { return m_bHoverWindow; }
+
+private:
+
 	TREE_DATA			m_MeshRootNode;
 
 	list<CGameObject*>* m_pCurObjectList = nullptr;

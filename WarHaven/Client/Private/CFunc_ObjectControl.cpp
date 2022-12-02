@@ -145,6 +145,9 @@ void CFunc_ObjectControl::Func_ObjectList()
         {
             if (!(*m_pCurSelectGroupingNameArr).empty())
             {
+                if((*m_pCurSelectGroupingNameArr).size() <= m_iCurSelectObjecNametIndex)
+                    m_iCurSelectObjecNametIndex = 0;
+
                 string ListBoxTitleData = "ObjectList : ";
                 ListBoxTitleData += get<0>((*m_pCurSelectGroupingNameArr)[m_iCurSelectObjecNametIndex]).c_str();
                 ImGui::Text(ListBoxTitleData.c_str());
@@ -2806,6 +2809,9 @@ void CFunc_ObjectControl::Pick_inOjbect()
     if (nullptr == m_pObjTransform)
         return;
 
+    if (m_pMapTool->Is_HoveredWindow())
+        return;
+
     list<CGameObject*>& ObjectList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
     _float4 OutPos;
     _float4 OutNorm;
@@ -2822,7 +2828,6 @@ void CFunc_ObjectControl::Pick_inOjbect()
         if (GAMEINSTANCE->Is_Picked(ObjectList, &OutPos, &OutNorm))
         {
 
-            _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
             MTO_DATA tData = (*m_pCurSelectData);
             _matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
             WorldMat.r[3] = OutPos.XMLoad();
