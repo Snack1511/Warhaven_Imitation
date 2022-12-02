@@ -763,7 +763,6 @@ void CPlayer::My_LateTick()
 	if (m_bDie && KEY(ENTER, TAP))
 	{
 		m_pCurrentUnit->Start_Reborn();
-
 	}
 
 	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
