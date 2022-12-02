@@ -1893,7 +1893,7 @@ _bool CWindow_Map::Calculate_Pick()
             switch (m_ePickingType)
             {
             case PICK_OBJECT:
-            case PICK_GROUP:
+            case PICK_ANCHOR:
                 //Place_Object();
                 //Change_Object_UpDir();
                 m_pObjectController->Func_Picking();

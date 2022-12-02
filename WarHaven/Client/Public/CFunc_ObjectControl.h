@@ -157,15 +157,15 @@ private:
 	void Show_ObjectData();
 	void Set_ControlSpeed(_float* fMoveSpeed, _float* fRotateSpeed, _float* fScaleSpeed);
 
-	void Control_Group();
+	//void Control_Group();
 
 	void Select_DataControlFlag();
 	void Control_Object();
 
-	void Scaling_Group();
-	void Rotate_Group();
-	void Position_Group();
-	void Place_Group();
+	//void Scaling_Group();
+	//void Rotate_Group();
+	//void Position_Group();
+	//void Place_Group();
 
 	void Scaling_Object();
 	void Rotate_Object();
@@ -176,6 +176,12 @@ private:
 	void Update_Data();
 	void Update_Group();
 
+	ObjectNameTupleArr& Get_TupleArr(string GroupName);
+	void Clone_Group();
+	void Pick_Anchor();
+	void SetUp_Matrix(CGameObject* pGameObject, _float4x4 Matrix);
+	void Update_GroupMatrixForAnchor();
+	void Update_GroupObject();
 private:
 	void Pick_inOjbect();
 	//void Update_
@@ -232,7 +238,7 @@ private:
 	CGameObject* m_pCurSelectGameObject = nullptr;
 	CTransform* m_pObjTransform = nullptr;
 	MTO_DATA* m_pCurSelectData = nullptr;
-	_float4x4 m_matGroup;
+
 	CONTROLTYPE m_eControlType = CONTROL_MOVE;
 	
 	string m_strCurSelectObjectName = "Test....";
@@ -279,6 +285,14 @@ private:
 	//라업룩중 하나.
 	list<CStructure*> m_pHLODList;
 	_bool m_bHLOD_HIDE = false;
+
+	string strFromeGroup = "";
+	string strToGroup = "";
+	_float4x4 m_matPickedAnchor;
+	_uint m_iSelectedControlGroup = 0;
+	list<_float4x4> m_ObjectOriginMatrixlist;
+	_float4 m_AnchorPos;
+	_float4 m_AnchorRot;
 };
 
 END
