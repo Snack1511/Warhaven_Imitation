@@ -518,6 +518,14 @@ void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 		m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 		m_eCurClass = m_tStatus.eClass;
 
+		for (int i = 0; i < HUD_END; ++i)
+		{
+			if (!m_pWrap[i]->Is_Valid())
+			{
+				ENABLE_GAMEOBJECT(m_pWrap[i]);
+			}
+		}
+
 		dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
 		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
 		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);

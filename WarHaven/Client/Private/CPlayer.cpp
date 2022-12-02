@@ -714,8 +714,8 @@ void CPlayer::My_LateTick()
 	{
 		m_pCurrentUnit->Start_Reborn();
 
+		CUser::Get_Instance()->SetActive_PlayerHUD(true);
 	}
-
 
 	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
 
