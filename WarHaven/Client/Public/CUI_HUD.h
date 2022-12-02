@@ -144,7 +144,7 @@ private:	// 작전회의 타이머
 	enum OperTimerType { TT_BG, TT_Bar, TT_End };
 	CUI_Object* m_pOperTimer[TT_End];
 
-	_float m_fMaxOperTime = 10.f;
+	_float m_fMaxOperTime = 3.f;
 	_float m_fOperTime = 0.f;
 	_float m_fTimerRatio = 1.f;
 

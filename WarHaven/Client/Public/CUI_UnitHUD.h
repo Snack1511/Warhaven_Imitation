@@ -42,8 +42,11 @@ private:
 
 	CUnit::UNIT_STATUS m_tStatus;
 
+	_float m_fLeaderIconScale = 24.f;
+
 	_float4 m_vColorRed = _float4(0.8f, 0.2f, 0.2f, 1.f);
 	_float4 m_vColorGreen = _float4(0.2f, 0.5f, 0.2f, 1.f);
+	_float4 m_vColorLightGreen = _float4(0.6f, 0.85f, 0.3f, 1.f);
 	_float4 m_vColorBlue = _float4(0.25f, 0.65f, 0.9f, 1.f);
 	_float4 vColorAlpha = _float4(1.f, 0.f, 0.f, 0.f);
 
