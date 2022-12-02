@@ -188,6 +188,7 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
+    <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
     <ClInclude Include="..\Public\CAI_TG_StingHit.h" />
     <ClInclude Include="..\Public\CAI_TG_FlyHit.h" />
     <ClInclude Include="..\Public\CAI_TG_Groggy.h" />
@@ -590,6 +591,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
     <ClCompile Include="..\Private\CAI_TG_StingHit.cpp" />
     <ClCompile Include="..\Private\CAI_TG_FlyHit.cpp" />
     <ClCompile Include="..\Private\CAI_TG_Groggy.cpp" />

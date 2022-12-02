@@ -209,14 +209,19 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
         case 0:
             strKey = "EnemyTrio_1";
             wstrInfoKey = L"EnemyTrio_0";
+            eEnemyState = SANDBAG_STATE_IDLE_WARHAMMER_R;
+            
             break;
         case 1:
             strKey = "EnemyTrio_2";
             wstrInfoKey = L"EnemyTrio_1";
+            eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
+            
             break;
         case 2:
             strKey = "q";
             wstrInfoKey = L"EnemyTrio_2";
+            eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
             break;
         case 3:
             strKey = "EnemyHall";

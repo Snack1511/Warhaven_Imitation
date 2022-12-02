@@ -212,6 +212,8 @@
 
 #include "CGuard_Dash_WarHammer.h"
 
+
+
 #pragma endregion
 
 #pragma region Valkyrie
@@ -307,6 +309,8 @@
 #include "CGuard_Begin_Player_Warrior_AI.h"
 #include "CGuard_Loop_Warrior_AI.h"
 #include "CGuard_Cancel_Warrior_AI.h"
+
+#include "CAI_SandBack_WarHammer.h"
 
 #include "CHit_Valkyrie.h"
 #include "CHit_GuardHit_Valkyrie.h"
@@ -711,6 +715,8 @@ void CState_Manager::Warrior_SandBagState()
 	m_arrStates[STATE_GROGGY_ENEMY] = CAI_SandBack_Groggy::Create();
 	m_arrStates[STATE_STINGHIT_ENEMY] = CAI_SandBack_StingHit::Create();
 	m_arrStates[STATE_FLYHIT_ENEMY] = CAI_SandBack_FlyHit::Create();
+
+	m_arrStates[SANDBAG_STATE_IDLE_WARHAMMER_R] = CAI_SandBack_WarHammer::Create();
 }
 
 void CState_Manager::Warrior_State_AI()

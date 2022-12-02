@@ -1534,6 +1534,12 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\05. Cancel">
       <UniqueIdentifier>{3dc9a0b2-c04c-4b19-8e87-87aff8f3c09d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer">
+      <UniqueIdentifier>{70a4c7af-eda9-4c77-89e4-1027bb476a88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer\01. Idle">
+      <UniqueIdentifier>{0555db5b-2862-4eab-b507-d86f96f0051b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2736,6 +2742,9 @@
     <ClInclude Include="..\Public\CGuard_Cancel_Valkyrie.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\05. Cancel</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer\01. Idle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3918,6 +3927,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Cancel_Valkyrie.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\05. Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer\01. Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

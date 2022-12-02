@@ -507,8 +507,46 @@ HRESULT CPlayer::Initialize_Prototype()
 	Create_DefaultClass(m_pMyPlayerInfo->m_tPlayerSetUpData);
 	Create_HeroClass(m_pMyPlayerInfo->m_tPlayerSetUpData);
 
-	m_pCurrentUnit = m_pDefaultClass[WARRIOR];
-	m_eCurrentDefaultClass = CLASS_DEFAULT_WARRIOR;
+
+	_uint iCharacter = m_pMyPlayerInfo->Choose_Character();
+
+	m_pCurrentUnit = m_pDefaultClass[iCharacter];
+
+	switch (iCharacter)
+	{
+	case Client::WARRIOR:
+		m_eCurrentDefaultClass = CLASS_DEFAULT_WARRIOR;
+		break;
+	case Client::SPEAR:
+		break;
+	case Client::ARCHER:
+		//m_eCurrentDefaultClass = CLASS_DEFAULT_ENGINEER;
+		break;
+	case Client::PALADIN:
+		//Set_CustomWeapon_Paladin(eWeaponEnum);
+		break;
+	case Client::PRIEST:
+		break;
+	case Client::ENGINEER:
+		m_eCurrentDefaultClass = CLASS_DEFAULT_ENGINEER;
+		break;
+	case Client::FIONA:
+		//Set_CustomWeapon_Fiona(eWeaponEnum);
+		break;
+	case Client::QANDA:
+		break;
+	case Client::HOEDT:
+		break;
+	case Client::LANCER:
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	
+	}
+
+	
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	Create_UnitHUD();
