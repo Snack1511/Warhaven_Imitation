@@ -163,10 +163,6 @@ PS_OUT	PS_GRAYSCALE_MAIN(PS_DOWNSCALE_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 	Out.vColor = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
-	vector vFlag = g_FlagTexture.Sample(MotionBlurSampler, In.vTexUV);
-
-	if (vFlag.a > 0.3f)
-		return Out;
 
 	vector GrayScaleColor = dot(Out.vColor, float3(0.2126f, 0.7152f, 0.0722f));
 	//float fShaderPower = g_fShaderPower;

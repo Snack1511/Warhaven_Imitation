@@ -110,6 +110,13 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND hWnd, GRAPHICDESC::WINMODE eWinMod
 
 	SwapChain.SampleDesc.Quality = 0;
 	SwapChain.SampleDesc.Count = 1;
+
+	//_uint iOut = 0;
+	//HRESULT sTemp = m_pDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_B8G8R8A8_UNORM, 4, &iOut);
+	//
+	//SwapChain.SampleDesc.Quality = iOut ;
+	//SwapChain.SampleDesc.Count = 4;
+
 	SwapChain.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	SwapChain.BufferCount = 1;
 	SwapChain.OutputWindow = hWnd;
