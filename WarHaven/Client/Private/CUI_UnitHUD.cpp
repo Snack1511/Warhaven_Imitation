@@ -114,33 +114,20 @@ void CUI_UnitHUD::My_Tick()
 		m_vOffset = _float4(0.f, 2.f, 0.f);
 
 		if (m_pOwner->IsMainPlayer())
-		{
-			if (m_pOwner->IsLeaderPlayer())
-			{
-				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 1)
-				{
-					m_pUnitNameText->Set_Scale(m_fLeaderIconScale);
-					m_pUnitNameText->Set_Color(m_vColorGreen);
+			return;
 
-					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
-				}
-			}
+		if (!m_pUnitNameText->Get_FontRender())
+		{
+			m_pUnitNameText->Set_FontRender(true);
+			m_pUnitNameText->Set_Color(vColorAlpha);
 		}
-		else
+
+		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
+		if (fHpGaugeRatio < 1.f)
 		{
-			if (!m_pUnitNameText->Get_FontRender())
-			{
-				m_pUnitNameText->Set_FontRender(true);
-				m_pUnitNameText->Set_Color(vColorAlpha);
-			}
+			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
 
-			_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
-			if (fHpGaugeRatio < 1.f)
-			{
-				dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
-
-				SetActive_UnitHP(true);
-			}
+			SetActive_UnitHP(true);
 		}
 	}
 
@@ -194,6 +181,14 @@ void CUI_UnitHUD::Init_UnitNameText()
 		{
 			m_pUnitNameText->Set_FontColor(m_vColorRed);
 		}
+	}
+
+	if (m_pOwner->IsMainPlayer())
+	{
+		m_pUnitNameText->Set_Scale(m_fLeaderIconScale);
+		m_pUnitNameText->Set_Color(m_vColorGreen);
+
+		GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
 	}
 
 	wstring wstrUnitName = m_pOwner->Get_PlayerName();
