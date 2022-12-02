@@ -3,6 +3,8 @@
 #include "CUI_Renderer.h"
 #include "Texture.h"
 #include "CShader.h"
+#include "CGameSystem.h"
+#include "CPlayerInfo_Main.h"
 
 #include "CUI_MainPlay.h"
 #include "CUI_MainMode.h"
@@ -218,7 +220,7 @@ void CUI_Main::Enable_MainUI()
 		m_pTopBtn[i]->Set_FontOffset(-40.f, -22.f);
 		m_pTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
-		_float fGoodsPosX = 315.f + (i * 100.f);
+		_float fGoodsPosX = 310.f + (i * 100.f);
 		m_pGoodsUI[i]->Set_PosX(fGoodsPosX);
 		m_pGoodsUI[i]->Set_Sort(0.8f);
 
@@ -234,10 +236,11 @@ void CUI_Main::Enable_MainUI()
 	m_pGoodsUI[2]->Set_FontRender(true);
 	m_pGoodsUI[2]->Set_FontStyle(true);
 	m_pGoodsUI[2]->Set_FontScale(0.3f);
-	m_pGoodsUI[2]->Set_FontOffset(17.f, -15.f);
+	m_pGoodsUI[2]->Set_FontOffset(20.f, -15.f);
 
-	// wstring wstrPlayerName = CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->Get_PlayerName();
-	m_pGoodsUI[2]->Set_FontText(TEXT("¡ÍΩ≈"));
+	CPlayerInfo_Main* pMainPlayerInfo = dynamic_cast<CPlayerInfo_Main*>(CGameSystem::Get_Instance()->Find_PlayerInfo(HASHCODE(CPlayerInfo_Main)));
+	wstring mainPlayerName = pMainPlayerInfo->MainPlayerName();
+	m_pGoodsUI[2]->Set_FontText(mainPlayerName);
 
 	for (int i = 0; i < 2; ++i)
 	{

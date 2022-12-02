@@ -30,3 +30,8 @@ HRESULT CPlayerInfo_Main::Initialize()
 
 	return S_OK;
 }
+
+wstring CPlayerInfo_Main::MainPlayerName()
+{
+	return m_tPlayerInfo.wstrName;
+}
