@@ -1525,6 +1525,12 @@
     <Filter Include="02. Design\03. User\PlayerInfo\04. Leader">
       <UniqueIdentifier>{ef399414-0185-465f-8f45-ba8cae708626}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Archer">
+      <UniqueIdentifier>{a446b412-4452-43cd-805a-6f7057a27307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Paladin">
+      <UniqueIdentifier>{d9378861-2b2d-40a6-b68b-e82b959b7de4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2706,6 +2712,12 @@
     <ClInclude Include="..\public\CPlayerInfo_Leader.h">
       <Filter>02. Design\03. User\PlayerInfo\04. Leader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Archer.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Paladin.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Paladin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3867,6 +3879,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CPlayerInfo_Leader.cpp">
       <Filter>02. Design\03. User\PlayerInfo\04. Leader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Paladin.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Paladin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Archer.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Archer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

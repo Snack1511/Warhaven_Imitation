@@ -38,8 +38,10 @@ void CPlayerInfo::Set_CustomHead(CLASS_TYPE eClassType, eCUSTOM_HEAD eHeadEnum)
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
+		Set_CustomHead_Arhcer(eHeadEnum);
 		break;
 	case Client::PALADIN:
+		Set_CustomHead_Paladin(eHeadEnum);
 		break;
 	case Client::PRIEST:
 		break;
@@ -76,8 +78,10 @@ void CPlayerInfo::Set_CustomBody(CLASS_TYPE eClassType, eCUSTOM_BODY eBodyEnum)
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
+		Set_CustomBody_Arhcer(eBodyEnum);
 		break;
 	case Client::PALADIN:
+		Set_CustomBody_Paladin(eBodyEnum);
 		break;
 	case Client::PRIEST:
 		break;
@@ -111,8 +115,10 @@ void CPlayerInfo::Set_CustomWeapon(CLASS_TYPE eClassType, eCUSTOM_WEAPON eWeapon
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
+		Set_CustomWeapon_Arhcer(eWeaponEnum);
 		break;
 	case Client::PALADIN:
+		Set_CustomWeapon_Paladin(eWeaponEnum);
 		break;
 	case Client::PRIEST:
 		break;
@@ -202,6 +208,101 @@ void CPlayerInfo::Set_CustomWeapon_Warrior(eCUSTOM_WEAPON eWeaponEnum)
 		break;
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
 		m_tPlayerSetUpData.wstrWeaponMeshPath[WARRIOR] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
+		break;
+
+	default:
+		break;
+	}
+}
+
+void	CPlayerInfo::Set_CustomHead_Paladin(eCUSTOM_HEAD eHeadEnum)
+{
+	switch (eHeadEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladian0001_Helmet_A00_50.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladian0001_Helmet_A00_50.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Warrior_Helmet_Rabbit_50.fbx";
+		break;
+	default:
+		break;
+	}
+}
+void	CPlayerInfo::Set_CustomBody_Paladin(eCUSTOM_BODY eBodyEnum)
+{
+	switch (eBodyEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
+		m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladian0001_Body_A00_50.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
+		m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladian0001_Body_A00_50.fbx";
+		break;
+
+	default:
+		break;
+	}
+}
+void	CPlayerInfo::Set_CustomWeapon_Paladin(eCUSTOM_WEAPON eWeaponEnum)
+{
+	switch (eWeaponEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eDEFAULT:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[PALADIN] = L"../bin/resources/meshes/Weapons/Mace/WP_Mace0001_A00.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[PALADIN] = L"../bin/resources/meshes/Weapons/Mace/WP_Mace0001_A00.fbx";
+		break;
+
+	default:
+		break;
+	}
+}
+void	CPlayerInfo::Set_CustomHead_Arhcer(eCUSTOM_HEAD eHeadEnum)
+{
+	switch (eHeadEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/head/SK_Archer0001_Helmet_A00_50.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/head/SK_Archer0001_Helmet_A00_50.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Warrior_Helmet_Rabbit_50.fbx";
+		break;
+	default:
+		break;
+	}
+}
+void	CPlayerInfo::Set_CustomBody_Arhcer(eCUSTOM_BODY eBodyEnum)
+{
+	switch (eBodyEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
+		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0001_Body_A00.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
+		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0001_Body_A00.fbx";
+		break;
+
+	default:
+		break;
+	}
+}
+void	CPlayerInfo::Set_CustomWeapon_Arhcer(eCUSTOM_WEAPON eWeaponEnum)
+{
+	switch (eWeaponEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eDEFAULT:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[ARCHER] = L"../bin/resources/meshes/weapons/Claw/SK_WP_Claw0001_A00.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[ARCHER] = L"../bin/resources/meshes/weapons/Claw/SK_WP_Claw0001_A00.fbx";
 		break;
 
 	default:

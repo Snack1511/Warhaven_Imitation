@@ -121,6 +121,14 @@ private:
 	void	Set_CustomBody_Warrior(eCUSTOM_BODY eBodyEnum);
 	void	Set_CustomWeapon_Warrior(eCUSTOM_WEAPON eWeaponEnum);
 
+	void	Set_CustomHead_Paladin(eCUSTOM_HEAD eHeadEnum);
+	void	Set_CustomBody_Paladin(eCUSTOM_BODY eBodyEnum);
+	void	Set_CustomWeapon_Paladin(eCUSTOM_WEAPON eWeaponEnum);
+
+	void	Set_CustomHead_Arhcer(eCUSTOM_HEAD eHeadEnum);
+	void	Set_CustomBody_Arhcer(eCUSTOM_BODY eBodyEnum);
+	void	Set_CustomWeapon_Arhcer(eCUSTOM_WEAPON eWeaponEnum);
+
 	void	Set_CustomHead_Engineer(eCUSTOM_HEAD eHeadEnum);
 	void	Set_CustomBody_Engineer(eCUSTOM_BODY eBodyEnum);
 	void	Set_CustomWeapon_Engineer(eCUSTOM_WEAPON eWeaponEnum);
