@@ -2743,7 +2743,7 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer\01. Idle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CWindow_Level.h">
-      <Filter>03. Instances\01. Level\01. Level_Test</Filter>
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -231,11 +231,11 @@ void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
 
 	tAniminfo.bBlackBackGround = true; //이미지 배경이 검은색인지 
 	tAniminfo.bPlayOnce = false;
-	tAniminfo.fDuration = 0.02f; //프레임당 시간
+	tAniminfo.fDuration = 0.035f; //프레임당 시간
 	tAniminfo.iHeightSize = 8; //가로 세로 프레임
 	tAniminfo.iWidthSize = 8;
-	tAniminfo.vPos = _float2(550.f, -250.f);
-	tAniminfo.vScale = _float2(150.f, 150.f);
+	tAniminfo.vPos = _float2(550.f, -270.f);
+	tAniminfo.vScale = _float2(120.f, 120.f);
 
 
 	if (bTurnOn)
