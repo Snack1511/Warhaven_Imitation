@@ -367,6 +367,11 @@ void CUser::Enable_DeadUI()
 	m_pUI_Dead->Enable_DeadUI();
 }
 
+void CUser::SetActive_PlayerHUD(_bool value)
+{
+	m_pUI_HUD->SetActive_PlayerInfoUI(value);
+}
+
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
 {
 	if (!m_pUI_Training)

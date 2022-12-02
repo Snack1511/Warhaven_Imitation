@@ -92,7 +92,7 @@ void CUI_UnitHUD::My_Tick()
 		{
 			m_pUnitNameText->Set_FontRender(true);
 			m_pUnitNameText->Set_Color(vColorAlpha);
-		}		
+		}
 	}
 
 	_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
@@ -156,15 +156,17 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 {
 	if (value == true)
 	{
-		if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+		if (m_pOwner->Get_Team())
 		{
-			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorGreen);
+			if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+			{
+				dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorGreen);
+			}
+			else
+			{
+				dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
+			}
 		}
-		else
-		{
-			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
-		}
-
 
 		ENABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
 	}

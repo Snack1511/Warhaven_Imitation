@@ -18,6 +18,8 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 public:
 	void Start_HeroGauge();

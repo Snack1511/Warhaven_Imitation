@@ -44,6 +44,34 @@ HRESULT CUI_Portrait::Start()
 	return S_OK;
 }
 
+void CUI_Portrait::OnEnable()
+{
+	__super::OnEnable();
+
+	for (int i = 0; i < 5; ++i)
+	{
+		for (int j = 0; j < Type_End; ++j)
+		{
+			if (m_arrPortraitUI[i][j])
+				ENABLE_GAMEOBJECT(m_arrPortraitUI[i][j]);
+		}
+	}
+}
+
+void CUI_Portrait::OnDisable()
+{
+	__super::OnDisable();
+
+	for (int i = 0; i < 5; ++i)
+	{
+		for (int j = 0; j < Type_End; ++j)
+		{
+			if (m_arrPortraitUI[i][j])
+				DISABLE_GAMEOBJECT(m_arrPortraitUI[i][j]);
+		}
+	}
+}
+
 void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fEffectValue, sizeof(_float));
@@ -184,7 +212,12 @@ void CUI_Portrait::Set_Pass()
 
 void CUI_Portrait::Bind_Shader()
 {
-	GET_COMPONENT_FROM(m_arrPortraitUI[0][Effect], CShader)->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
+	for (int i = 1; i < 5; ++i)
+	{
+		m_arrPortraitUI[i][Effect]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+
+		GET_COMPONENT_FROM(m_arrPortraitUI[i][Effect], CShader)->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
+	}
 }
 
 void CUI_Portrait::Set_FadeUserPort(_float fSpeed)
@@ -397,7 +430,9 @@ void CUI_Portrait::Ready_Portrait()
 
 	// 유저 포트레이트의 필요없는 객체 삭제
 	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Key]);
+	m_arrPortraitUI[0][Key] = nullptr;
 	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Effect]);
+	m_arrPortraitUI[0][Effect] = nullptr;
 
 	for (int i = 1; i < 5; ++i)
 	{

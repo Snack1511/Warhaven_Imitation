@@ -353,7 +353,7 @@ PS_OUT PS_PORTEFFECT(PS_IN In)
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
     
-    Out.vColor.a *= vNoise.r;
+    //Out.vColor.a *= vNoise.r;
     // Out.vColor *= vNormal;
           
     Out.vColor *= g_vColor;
