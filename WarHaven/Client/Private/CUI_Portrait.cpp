@@ -112,8 +112,7 @@ void CUI_Portrait::My_Tick()
 {
 	__super::My_Tick();
 
-	_float fEffectSpeed = fDT(0) * 5.f;
-	m_fEffectValue -= fEffectSpeed;
+	m_fEffectValue -= fDT(0) * 0.05f;
 
 	Change_UserPort();
 
@@ -457,7 +456,7 @@ void CUI_Portrait::Ready_Portrait()
 
 			if (j == Effect)
 			{
-				m_arrPortraitUI[i][j]->Set_Scale(55.f);
+				m_arrPortraitUI[i][j]->Set_Scale(70.f);
 			}
 
 			// 클론 객체 생성 후 비활성화
