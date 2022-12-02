@@ -27,6 +27,7 @@ HRESULT CValkyrie_Attack_HorizontalUp::Initialize()
 	m_fAnimSpeed = 2.5f;
 	m_iStateChangeKeyFrame = 50;
 
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
 	//m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);

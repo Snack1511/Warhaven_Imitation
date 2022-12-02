@@ -51,6 +51,8 @@ HRESULT CValkyrie_Attack_VerticalCut::Initialize()
     m_fAnimSpeed = 2.3f;
     m_iStateChangeKeyFrame = 57;
     
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
+
 	m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
 	m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
 	m_vecAdjState.push_back(STATE_RUN_VALKYRIE_R);

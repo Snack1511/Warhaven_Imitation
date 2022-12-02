@@ -30,10 +30,11 @@ HRESULT CBounce_Valkyrie::Initialize()
 	m_fMyAccel = 5.f;
 	m_fMaxSpeed = 2.f;
 	
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
 	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
-	//m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
+	m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 
     return S_OK;

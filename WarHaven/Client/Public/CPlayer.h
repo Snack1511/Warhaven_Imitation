@@ -68,8 +68,8 @@ public:
 	{
 		CLASS_DEFAULT_WARRIOR = 0,
 		//CLASS_DEFAULT_SPEAR,
-		CLASS_DEFAULT_ARCHER = 2,
-		CLASS_DEFAULT_PALADIN,
+	//	CLASS_DEFAULT_ARCHER = 2,
+	//	CLASS_DEFAULT_PALADIN,
 		//CLASS_DEFAULT_PRIEST,
 		CLASS_DEFAULT_ENGINEER = 5,
 		CLASS_DEFAULT_END
@@ -106,7 +106,7 @@ public:
 	void	Set_Default_ReserveState(_uint eClass, _uint eState);
 
 	void	SetUp_UnitColliders(_bool bPlayer);
-	void	SetUp_UnitHitStates(_bool bPlayer);
+	void	SetUp_UnitHitStates();
 
 	void	Set_Postion(_float4 vPos);
 
@@ -129,6 +129,8 @@ public:
 	CPlayerInfo* Get_PlayerInfo() { return m_pMyPlayerInfo; }
 
 	void	Enable_OnStart() { m_bEnableOnStart = true; }
+
+	void	Set_UnitType(_uint eUnitType) { m_iUnitType = eUnitType; }
 
 public:
 	// CGameObject을(를) 통해 상속됨
@@ -155,6 +157,8 @@ public:
 	_bool	IsMainPlayer() { return m_bIsMainPlayer; }
 	_bool	IsLeaderPlayer() { return m_bIsLeaderPlayer; }
 
+	_float& Get_Gauge() { return m_fGauge; }
+
 public:
 	void	Set_Squad(CSquad* pSquad) { m_pMySquad = pSquad; }
 	void	Set_Team(CTeamConnector* pTeamConnector) { m_pMyTeam = pTeamConnector; }
@@ -174,6 +178,11 @@ private: /* 킬뎃과 플레이어 정보 */
 	CTeamConnector* m_pMyTeam = nullptr;
 	_bool m_bIsMainPlayer = false;
 	_bool m_bIsLeaderPlayer = false;
+
+
+private:
+	//어떤 타입인지(적, 샌드백)
+	_uint	m_iUnitType = 0;
 
 
 private:

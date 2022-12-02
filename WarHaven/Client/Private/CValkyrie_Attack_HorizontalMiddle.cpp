@@ -23,6 +23,7 @@ HRESULT CValkyrie_Attack_HorizontalMiddle::Initialize()
 {
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
 	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);

@@ -39,6 +39,7 @@ private:
 	_bool	bTestGuard = false;  // 가드에서 맞고 Idle 로 가는 거 방지 : 테스트용
 	_bool	bTestAttack = false;  // 어택에서 맞고 Idle 로 가는 거 방지 : 테스트용
 	_bool	bTestAttackVertical = false;  // 어택에서 맞고 Idle 로 가는 거 방지 : 테스트용
+	_bool	bWarHammerIdle = false;
 
 
 };

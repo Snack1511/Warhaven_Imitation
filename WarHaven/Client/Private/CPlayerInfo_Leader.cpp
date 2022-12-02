@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CPlayerInfo_Leader.h"
 
+#include "CPlayer.h"
+#include "CUnit.h"
+
 CPlayerInfo_Leader::CPlayerInfo_Leader()
 {
 }
@@ -35,6 +38,8 @@ HRESULT CPlayerInfo_Leader::Initialize()
 	m_tPlayerInfo.wstrName += to_wstring(g_LeaderCnt++);
 
 	m_vecPrefClassType.push_back(WARRIOR);
+
+
 
 	m_tPlayerInfo.iLevel = 20;
 

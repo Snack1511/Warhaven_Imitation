@@ -81,7 +81,7 @@ void CUnit_Valkyrie::SetUp_Colliders(_bool bPlayer)
 	tGuardColDesc[1].eColType = eGuardBreak;
 
 
-	SetUp_UnitCollider(CUnit::GUARDBREAK_L, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
 
 
 	tUnitColDesc[0].fRadius = 0.4f;
@@ -112,20 +112,12 @@ void CUnit_Valkyrie::SetUp_Colliders(_bool bPlayer)
 
 }
 
-void CUnit_Valkyrie::SetUp_HitStates(_bool bPlayer)
+void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
-	if (!bPlayer)
+
+	switch (eUnitType)
 	{
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_VALKYRIE_L;
-	}
-	else
-	{
+	case Client::CUnit::UNIT_TYPE::ePlayer:
 		m_tHitType.eHitState = STATE_HIT_VALKYRIE;
 		m_tHitType.eGuardState = STATE_GUARDHIT_VALKYRIE;
 		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
@@ -133,6 +125,21 @@ void CUnit_Valkyrie::SetUp_HitStates(_bool bPlayer)
 		m_tHitType.eStingHitState = STATE_STINGHIT_VALKYRIE;
 		m_tHitType.eFlyState = STATE_FLYHIT_VALKYRIE;
 		m_tHitType.eBounce = STATE_BOUNCE_VALKYRIE_L;
+		break;
+
+	case Client::CUnit::UNIT_TYPE::eAI_TG:
+	case Client::CUnit::UNIT_TYPE::eSandbag:
+		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
+		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
+		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
+		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
+		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.eBounce = STATE_BOUNCE_VALKYRIE_L;
+		break;
+
+	default:
+		break;
 	}
 
 }

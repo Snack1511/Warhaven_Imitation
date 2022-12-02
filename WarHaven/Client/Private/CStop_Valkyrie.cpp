@@ -24,8 +24,11 @@ HRESULT CStop_Valkyrie::Initialize()
 	m_fAnimSpeed = 2.f;
 
 	/*나중에 추가*/
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
+
 	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
-	//m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
+	m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 
 	m_iStateChangeKeyFrame = 15;

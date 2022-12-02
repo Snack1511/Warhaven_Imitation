@@ -137,42 +137,34 @@ void CUnit_Paladin::SetUp_Colliders(_bool bPlayer)
 
 }
 
-void	CUnit_Paladin::SetUp_HitStates(_bool bPlayer)
+void	CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
 
-	/* 나중에 사망 후 부활 할 시 위치 저장할 때 사용해야 하므로 전체적으로 추가하도록 한다. */
-	//m_tHitType.m_eDeathState  = STATE_DEAD;
-
-	if (!bPlayer)
+	switch (eUnitType)
 	{
-		//m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		//m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		//m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		//m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		//m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		//m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		//m_tHitType.eBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
+	case Client::CUnit::UNIT_TYPE::ePlayer:
+		m_tHitType.eHitState = STATE_HIT_WARHAMMER;
+		m_tHitType.eGuardState = STATE_GUARDHIT_WARHAMMER;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARHAMMER;
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARHAMMER;
+		m_tHitType.eStingHitState = STATE_STINGHIT_WARHAMMER;
+		m_tHitType.eFlyState = STATE_FLYHIT_WARHAMMER;
+		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
+		break;
 
-		m_tHitType.eHitState = AI_STATE_TG_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_TG_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_GUARD_CANCEL_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_TG_STINGHIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_TG_GROGGYHIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_TG_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_BOUNE_WARRIOR_L;
-	}
-	else
-	{
-
-		m_tHitType.eHitState = STATE_HIT;
-		m_tHitType.eGuardState = STATE_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
-		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARRIOR;
-		m_tHitType.eStingHitState = STATE_STINGHIT_WARRIOR;
+	case Client::CUnit::UNIT_TYPE::eAI_TG:
+	case Client::CUnit::UNIT_TYPE::eSandbag:
+		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
+		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
+		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
+		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
 		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_PLAYER_L;
+		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
+		break;
 
-
+	default:
+		break;
 	}
 		
 }

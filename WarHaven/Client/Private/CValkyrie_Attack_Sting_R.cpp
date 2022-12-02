@@ -58,6 +58,8 @@ HRESULT CValkyrie_Attack_Sting_R::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 70;
 
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
+
 	m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
 	m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
 	m_vecAdjState.push_back(STATE_RUN_VALKYRIE_R);

@@ -212,6 +212,8 @@
 
 #include "CGuard_Dash_WarHammer.h"
 
+
+
 #pragma endregion
 
 #pragma region Valkyrie
@@ -264,6 +266,12 @@
 #include "CValkyrie_Attack_VerticalCut.h"
 
 
+#include "CGuard_Begin_Valkyrie.h"
+#include "CGuard_Loop_Valkyrie.h"
+#include "CGuard_End_Valkyrie.h"
+#include "CGuard_Cancel_Valkyrie.h"
+#include "CGuard_Dash_Valkyrie.h"
+
 #include "CBounce_Valkyrie_L.h"
 #include "CBounce_Valkyrie_R.h"
 
@@ -301,6 +309,8 @@
 #include "CGuard_Begin_Player_Warrior_AI.h"
 #include "CGuard_Loop_Warrior_AI.h"
 #include "CGuard_Cancel_Warrior_AI.h"
+
+#include "CAI_SandBack_WarHammer.h"
 
 #include "CHit_Valkyrie.h"
 #include "CHit_GuardHit_Valkyrie.h"
@@ -648,6 +658,12 @@ void CState_Manager::Valkyrie_State()
 	m_arrStates[STATE_BOUNCE_VALKYRIE_L] = CBounce_Valkyrie_L::Create();
 	m_arrStates[STATE_BOUNCE_VALKYRIE_R] = CBounce_Valkyrie_R::Create();
 
+	m_arrStates[STATE_GUARD_BEGIN_VALKYRIE] =				CGuard_Begin_Valkyrie::Create();
+	m_arrStates[STATE_GUARD_LOOP_VALKYRIE] =				CGuard_Loop_Valkyrie::Create();
+	m_arrStates[STATE_GUARD_END_VALKYRIE] =					CGuard_End_Valkyrie::Create();
+	m_arrStates[STATE_GUARD_CANCEL_VALKYRIE] =				CGuard_Cancel_Valkyrie::Create();
+	m_arrStates[STATE_GUARDDASH_VALKYRIE] =					CGuard_Dash_Valkyrie::Create();
+
 
 	m_arrStates[STATE_SWITCH_R_TO_L_VALKYRIE] =				CSwitchLtoR_Valkyrie::Create();
 	m_arrStates[STATE_SWITCH_L_TO_R_VALKYRIE] =				CSwitchRtoL_Valkyrie::Create();
@@ -699,6 +715,8 @@ void CState_Manager::Warrior_SandBagState()
 	m_arrStates[STATE_GROGGY_ENEMY] = CAI_SandBack_Groggy::Create();
 	m_arrStates[STATE_STINGHIT_ENEMY] = CAI_SandBack_StingHit::Create();
 	m_arrStates[STATE_FLYHIT_ENEMY] = CAI_SandBack_FlyHit::Create();
+
+	m_arrStates[SANDBAG_STATE_IDLE_WARHAMMER_R] = CAI_SandBack_WarHammer::Create();
 }
 
 void CState_Manager::Warrior_State_AI()

@@ -29,6 +29,7 @@ HRESULT CValkyrie_Attack_HorizontalDown::Initialize()
 
 	m_iStateChangeKeyFrame = 50;
 
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
 	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);

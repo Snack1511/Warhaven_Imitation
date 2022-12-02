@@ -934,9 +934,6 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\03. End">
       <UniqueIdentifier>{29181715-c296-43d1-b642-b2ef8271431b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\04. Cancel">
-      <UniqueIdentifier>{f9fe44f0-cf5b-4f55-b9c8-3d0b03d42d38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\09. Hit">
       <UniqueIdentifier>{4db08690-2148-4fec-9e34-665fd9310431}</UniqueIdentifier>
     </Filter>
@@ -1530,6 +1527,18 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\02. Unit\Paladin">
       <UniqueIdentifier>{d9378861-2b2d-40a6-b68b-e82b959b7de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\04. Dash">
+      <UniqueIdentifier>{f9fe44f0-cf5b-4f55-b9c8-3d0b03d42d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\05. Cancel">
+      <UniqueIdentifier>{3dc9a0b2-c04c-4b19-8e87-87aff8f3c09d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer">
+      <UniqueIdentifier>{70a4c7af-eda9-4c77-89e4-1027bb476a88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer\01. Idle">
+      <UniqueIdentifier>{0555db5b-2862-4eab-b507-d86f96f0051b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2715,6 +2724,24 @@
     <ClInclude Include="..\Public\CUnit_Paladin.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Paladin</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Loop_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_End_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Begin_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Dash_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\04. Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Cancel_Valkyrie.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\05. Cancel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer\01. Idle</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\CWindow_Level.h">
       <Filter>03. Instances\01. Level\01. Level_Test</Filter>
     </ClInclude>
@@ -3885,6 +3912,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_Archer.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Dash_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\04. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_End_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Begin_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Loop_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Cancel_Valkyrie.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\05. Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer\01. Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

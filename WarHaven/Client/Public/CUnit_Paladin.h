@@ -20,7 +20,7 @@ public:
 
 public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
-	virtual void	SetUp_HitStates(_bool bPlayer);
+	virtual void	SetUp_HitStates(UNIT_TYPE eUnitType);
 
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;

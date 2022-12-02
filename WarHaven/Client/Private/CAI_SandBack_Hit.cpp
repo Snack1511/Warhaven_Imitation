@@ -61,9 +61,12 @@ HRESULT CAI_SandBack_Hit::Initialize()
 void CAI_SandBack_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 
-
-    if (ePrevType == STATE_GUARD_LOOP_WARRIOR_AI_ENEMY)
+    if (ePrevType == STATE_GUARD_LOOP_WARRIOR_AI_ENEMY ||
+        ePrevType == STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY)
         bTestGuard = true;
+
+    if (ePrevType == SANDBAG_STATE_IDLE_WARHAMMER_R)
+        bWarHammerIdle = true;
 
 	Test_Attack(ePrevType);
 
@@ -89,6 +92,9 @@ STATE_TYPE CAI_SandBack_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 		if (bTestAttack)
 			return STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY;
+
+        if (bWarHammerIdle)
+            return SANDBAG_STATE_IDLE_WARHAMMER_R;
 	}
 
 

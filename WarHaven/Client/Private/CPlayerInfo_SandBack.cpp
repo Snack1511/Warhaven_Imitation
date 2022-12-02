@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CPlayerInfo_SandBack.h"
 
+#include "CPlayer.h"
+#include "CUnit.h"
+
 CPlayerInfo_SandBack::CPlayerInfo_SandBack()
 {
 }
@@ -34,8 +37,12 @@ HRESULT CPlayerInfo_SandBack::Initialize()
 	m_tPlayerInfo.wstrName = L"SandBack_";
 	m_tPlayerInfo.wstrName += to_wstring(g_SandBackCnt++);
 
-	m_vecPrefClassType.push_back(WARRIOR);
+	if(g_SandBackCnt < 3 && g_SandBackCnt % 2 == 0)
+		m_vecPrefClassType.push_back(ENGINEER);
+	else
+		m_vecPrefClassType.push_back(WARRIOR);
 
+	m_iUnitType = 1;
 
 	return S_OK;
 }
