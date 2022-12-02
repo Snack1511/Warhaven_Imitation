@@ -61,19 +61,44 @@ void CUI_UnitHUD::My_Tick()
 {
 	__super::My_Tick();
 
+	// 거리가 10보다 클 때
 	if (m_fUnitDis > 10.f)
 	{
 		m_vOffset = _float4(0.f, 1.9f, 0.f);
 
+		// 이름을 렌더링 중이면
 		if (m_pUnitNameText->Get_FontRender())
 		{
 			m_pUnitNameText->Set_FontRender(false);
+
+			if (m_pOwner->IsLeaderPlayer())
+			{
+				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 1)
+				{
+					m_pUnitNameText->Set_Scale(16.f);
+					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
+				}
+			}
+			else
+			{
+				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 0)
+				{
+					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(0);
+				}
+			}
 
 			if (m_pOwner->Get_Team())
 			{
 				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
 				{
-					m_pUnitNameText->Set_Color(m_vColorGreen);
+					if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						m_pUnitNameText->Set_Color(m_vColorGreen);
+					}
+					else
+					{
+						m_pUnitNameText->Set_Color(m_vColorBlue);
+					}
 				}
 				else
 				{
@@ -86,6 +111,9 @@ void CUI_UnitHUD::My_Tick()
 	}
 	else
 	{
+		if (m_pOwner->IsMainPlayer())
+			return;
+
 		m_vOffset = _float4(0.f, 2.f, 0.f);
 
 		if (!m_pUnitNameText->Get_FontRender())
@@ -127,6 +155,7 @@ void CUI_UnitHUD::Create_UnitHUD()
 void CUI_UnitHUD::Init_UnitNameText()
 {
 	m_pUnitNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_32Circle.dds"));
+	m_pUnitNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_IconSoldier.dds"));
 	m_pUnitNameText->Set_Scale(8.f);
 	m_pUnitNameText->Set_Sort(0.55f);
 
@@ -138,7 +167,14 @@ void CUI_UnitHUD::Init_UnitNameText()
 	{
 		if (m_pOwner->Get_Team()->IsMainPlayerTeam())
 		{
-			m_pUnitNameText->Set_FontColor(m_vColorGreen);
+			if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+			{
+				m_pUnitNameText->Set_FontColor(m_vColorGreen);
+			}
+			else
+			{
+				m_pUnitNameText->Set_FontColor(m_vColorBlue);
+			}
 		}
 		else
 		{
@@ -156,22 +192,34 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 {
 	if (value == true)
 	{
-		if (m_pOwner->Get_Team())
+		if (!m_pUnitUI[UI_Hp]->Is_Valid())
 		{
-			if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+			if (m_pOwner->Get_Team())
 			{
-				dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorGreen);
+				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+				{
+					if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorGreen);
+					}
+					else
+					{
+						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorBlue);
+					}
+				}
+				else
+				{
+					dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
+				}
 			}
-			else
-			{
-				dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
-			}
+			ENABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
 		}
-
-		ENABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
 	}
 	else
 	{
-		DISABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
+		if (m_pUnitUI[UI_Hp]->Is_Valid())
+		{
+			DISABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
+		}
 	}
 }

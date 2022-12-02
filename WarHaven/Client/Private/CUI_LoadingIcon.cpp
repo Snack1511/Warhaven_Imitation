@@ -39,6 +39,8 @@ HRESULT CUI_LoadingIcon::Start()
 {
 	__super::Start();
 
+	Set_UIShaderFlag(SH_UI_BLOOM);
+
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CUI::SetUp_ShaderResource, this, placeholders::_1, "g_bAppear");
 

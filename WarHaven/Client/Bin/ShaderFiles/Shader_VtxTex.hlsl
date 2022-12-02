@@ -311,9 +311,8 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
     
     In.vTexUV.x -= g_fValue;
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
-
-    Out.vColor *= (vNoise + vNoise);
+    
+    Out.vColor.a *= vNoise.r;
     
     if (In.vTexUV.y < g_fHeroValue)
         discard;
@@ -345,22 +344,18 @@ PS_OUT PS_PORTEFFECT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
-
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
-    In.vTexUV.y += g_fValue;
+    vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     
-    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNoise = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
-    //Out.vColor.a *= vNoise.r;
-    // Out.vColor *= vNormal;
+    Out.vColor = vColor;
+    
+    Out.vColor.rgb = vNoise.rgb;
+    
+    Out.vColor.a *= vNoise.r;
           
-    Out.vColor *= g_vColor;
     Out.vColor.w *= g_fAlpha;
-    
-    if (Out.vColor.r <= 0.01f)
-        discard;
     
     if (Out.vColor.a < 0.01f)
         discard;

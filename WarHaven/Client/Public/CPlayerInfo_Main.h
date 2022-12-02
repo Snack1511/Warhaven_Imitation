@@ -14,6 +14,8 @@ private:
 public:
 	virtual HRESULT	Initialize();
 	
+public:
+	wstring MainPlayerName();
 };
 
 END

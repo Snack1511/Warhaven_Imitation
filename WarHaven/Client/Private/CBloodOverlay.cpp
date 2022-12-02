@@ -55,7 +55,7 @@ HRESULT CBloodOverlay::Initialize_Prototype()
 	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_BLOODOVERLAY);
 	
 	Set_Pos(0.f, 0.f);
-	Set_Sort(0.2f);
+	Set_Sort(0.55f);
 	Set_Scale(g_iWinCX, g_iWinCY);
 
 	FADEDESC tFadeDesc;

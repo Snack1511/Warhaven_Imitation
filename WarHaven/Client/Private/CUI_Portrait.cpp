@@ -112,8 +112,7 @@ void CUI_Portrait::My_Tick()
 {
 	__super::My_Tick();
 
-	_float fEffectSpeed = fDT(0) * 5.f;
-	m_fEffectValue -= fEffectSpeed;
+	m_fEffectValue -= fDT(0) * 0.1f;
 
 	Change_UserPort();
 
@@ -401,7 +400,6 @@ void CUI_Portrait::Ready_Portrait()
 	GET_COMPONENT_FROM(m_Prototypes[Port], CTexture)->Remove_Texture(0);
 
 	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_06.dds"));
-	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_13.dds"));
 
 	GET_COMPONENT_FROM(m_Prototypes[BG], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
 
@@ -457,7 +455,7 @@ void CUI_Portrait::Ready_Portrait()
 
 			if (j == Effect)
 			{
-				m_arrPortraitUI[i][j]->Set_Scale(55.f);
+				m_arrPortraitUI[i][j]->Set_Scale(65.f);
 			}
 
 			// 클론 객체 생성 후 비활성화

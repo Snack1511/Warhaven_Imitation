@@ -158,7 +158,7 @@ wstring CUI_LoadingBG::Init_GibberishText()
 {
 	wstring wstrGibberish;
 
-	_uint iRandText = random(0, 9);
+	_uint iRandText = random(0, 12);
 
 	switch (iRandText)
 	{
@@ -169,28 +169,37 @@ wstring CUI_LoadingBG::Init_GibberishText()
 		wstrGibberish = TEXT("알고 계셨나요?\n물리학자는 웃을 때 피직스하고 웃습니다.");
 		break;
 	case 2:
-		wstrGibberish = TEXT("알고 계셨나요?\n호에트의 '면책'은 적의 공격 뿐만 아니라 낙하 피해도 방어합니다.");
-		break;
-	case 3:
-		wstrGibberish = TEXT("알고 계셨나요?\n경기에 집중하고 침착하게 플레이할수록 승률이 증가합니다.");
-		break;
-	case 4:
 		wstrGibberish = TEXT("쉬지 않고 게임을 한다고요?\n잠시 스트레칭을 하며 재충전의 시간을 가져보세요.");
 		break;
-	case 5:
-		wstrGibberish = TEXT("알고 계셨나요?\n지속적으로 게임 도중 탈주하는 플레이어는 제재를 받습니다.");
-		break;
-	case 6:
+	case 3:
 		wstrGibberish = TEXT("그렇게까지 해야하나? 해야 합니다.");
 		break;
-	case 7:
+	case 4:
 		wstrGibberish = TEXT("알고 계셨나요?\n하기 싫으면 그건 중요한 겁니다.");
 		break;
-	case 8:
+	case 5:
 		wstrGibberish = TEXT("알고 계셨나요?\n귀찮으면 그건 해야 하는 겁니다");
 		break;
+	case 6:
+		wstrGibberish = TEXT("어라... 이게 왜 안 되죠?");
+		break;
+	case 7:
+		wstrGibberish = TEXT("어라... 이게 왜 되죠?");
+		break;
+	case 8:
+		wstrGibberish = TEXT("이 세상엔 10가지 사람이 있습니다.\n이진수를 이해하는 사람과 이해하지 못하는 사람.");
+		break;
 	case 9:
-		wstrGibberish = TEXT("알고 계셨나요?\n핑을 이용하여 아군에게 정보를 제공하거나 제안을 할 수 있습니다.");
+		wstrGibberish = TEXT("버그 없는 프로그래밍을 하는 방법에는 두 가지가 있으며, 세 번째 방식만이 성공합니다.");
+		break;
+	case 10:
+		wstrGibberish = TEXT("버그가 너무 심합니까? 걱정하지 마세요.\n어느 순간 그것은 기본 사양이 될 것입니다.");
+		break;
+	case 11:
+		wstrGibberish = TEXT("내일 쉴 수 있다면 오늘 죽어도 괜찮습니다.");
+		break;
+	case 12:
+		wstrGibberish = TEXT("모르셨나요?\n그건 마이크로소프트에서만 가능한 코드입니다.");
 		break;
 	}
 

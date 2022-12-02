@@ -701,6 +701,8 @@ void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
 
 void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 {
+	m_eOutlineType = eOutlineType;
+
 	_float4 vOutlineFlag = ZERO_VECTOR;
 
 	switch (eOutlineType)
@@ -763,7 +765,6 @@ void CPlayer::My_LateTick()
 	if (m_bDie && KEY(ENTER, TAP))
 	{
 		m_pCurrentUnit->Start_Reborn();
-
 	}
 
 	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
@@ -922,10 +923,7 @@ void CPlayer::Frustum_UnitHUD()
 		{
 			if (!m_pUnitHUD->Is_Valid())
 			{
-				if (!m_bIsMainPlayer)
-				{
-					ENABLE_GAMEOBJECT(m_pUnitHUD);
-				}
+				ENABLE_GAMEOBJECT(m_pUnitHUD);
 			}
 		}
 		else
