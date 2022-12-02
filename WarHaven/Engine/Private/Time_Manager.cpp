@@ -41,11 +41,11 @@ _double CTime_Manager::Get_DT(_uint iIndex)
 	// 프레임이 더 잘나오고 있는거다.
 	// 하지만 제한을 걸어야 하므로 1/60 을 리턴.
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (m_dDT * m_arrTimeSpeeds[iIndex] > 0.16)
 		return 1. / 60.;
 
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	
 	if (m_dDT < m_dFPSLimitTime)
