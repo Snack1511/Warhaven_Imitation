@@ -227,6 +227,7 @@ private:	// 작전 회의
 	void Create_OxenJumpText();
 	void Create_HpText();
 	void Create_PlayerNameText();
+	void Create_InactiveHeroText();
 
 	void	On_OperTimeOver();
 	void	Disable_AllOperUIs();

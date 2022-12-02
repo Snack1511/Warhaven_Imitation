@@ -56,6 +56,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HpText();
 	Create_PlayerNameText();
 	Create_HeroTransformUI();
+	Create_InactiveHeroText();
 
 	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
@@ -84,6 +85,8 @@ HRESULT CUI_HUD::Start()
 	{
 		Set_FadePortHighlight();
 		SetActive_PlayerInfoUI(true);
+
+		ENABLE_GAMEOBJECT(m_pChangeClassText);
 	}
 	else
 	{
@@ -521,7 +524,6 @@ void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
 		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
 
-		ENABLE_GAMEOBJECT(m_pChangeClassText);
 		ENABLE_GAMEOBJECT(m_pHeroGaugeText);
 		ENABLE_GAMEOBJECT(m_pHpText);
 		ENABLE_GAMEOBJECT(m_pPlayerNameText);
@@ -637,26 +639,8 @@ void CUI_HUD::Create_TraingText()
 
 	m_pChangeClassText->Set_FontText(TEXT("로 전투원 변경 가능"));
 
-	m_pInactiveHeroText = CUI_Object::Create();
-
-	m_pInactiveHeroText->Set_Scale(20.f);
-	m_pInactiveHeroText->Set_Pos(450.f, -195.f);
-	m_pInactiveHeroText->Set_Sort(0.85f);
-
-	m_pInactiveHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteNum1KeyIcon.dds"));
-
-	m_pInactiveHeroText->Set_FontRender(true);
-	m_pInactiveHeroText->Set_FontStyle(true);
-	m_pInactiveHeroText->Set_FontScale(0.25f);
-	m_pInactiveHeroText->Set_FontOffset(10.f, -13.f);
-
-	m_pInactiveHeroText->Set_FontText(TEXT("화신 해제"));
-
 	CREATE_GAMEOBJECT(m_pChangeClassText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pChangeClassText);
-
-	CREATE_GAMEOBJECT(m_pInactiveHeroText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pInactiveHeroText);
 }
 
 void CUI_HUD::Update_HP()
@@ -800,6 +784,27 @@ void CUI_HUD::Create_PlayerNameText()
 
 	CREATE_GAMEOBJECT(m_pPlayerNameText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pPlayerNameText);
+}
+
+void CUI_HUD::Create_InactiveHeroText()
+{
+	m_pInactiveHeroText = CUI_Object::Create();
+
+	m_pInactiveHeroText->Set_Scale(20.f);
+	m_pInactiveHeroText->Set_Pos(450.f, -195.f);
+	m_pInactiveHeroText->Set_Sort(0.85f);
+
+	m_pInactiveHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteNum1KeyIcon.dds"));
+
+	m_pInactiveHeroText->Set_FontRender(true);
+	m_pInactiveHeroText->Set_FontStyle(true);
+	m_pInactiveHeroText->Set_FontScale(0.25f);
+	m_pInactiveHeroText->Set_FontOffset(10.f, -13.f);
+
+	m_pInactiveHeroText->Set_FontText(TEXT("화신 해제"));
+
+	CREATE_GAMEOBJECT(m_pInactiveHeroText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pInactiveHeroText);
 }
 
 void CUI_HUD::Update_OperWindow()
@@ -995,7 +1000,6 @@ void CUI_HUD::Update_OperWindow()
 			{
 				m_fOperTime = 0.f;
 				On_OperTimeOver();
-
 			}
 		}
 	}
@@ -1338,7 +1342,8 @@ void CUI_HUD::On_OperTimeOver()
 	CGameSystem::Get_Instance()->On_StartGame();
 	
 	Disable_AllOperUIs();
-	
+
+	SetActive_PlayerInfoUI(true);
 }
 
 void CUI_HUD::Disable_AllOperUIs()

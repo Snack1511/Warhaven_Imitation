@@ -70,6 +70,7 @@ void CUI_Dead::My_Tick()
 		{
 			m_fAccTime = 0.f;
 
+			// 소생 창 띄우기
 			DISABLE_GAMEOBJECT(this);
 			PLAYER->Get_FollowCam()->Set_FollowTarget(PLAYER);
 		}
@@ -131,4 +132,12 @@ void CUI_Dead::Set_FadeDeadUI()
 	{
 		GET_COMPONENT_FROM(m_pDeadUI[i], CFader)->Get_FadeDesc() = tFadeDesc;
 	}
+}
+
+void CUI_Dead::Create_RevivalUI()
+{
+	for (int i = 0; i < RU_End; ++i)
+	{
+		m_pRevivalUI[i] = CUI_Object::Create();
+	}	
 }

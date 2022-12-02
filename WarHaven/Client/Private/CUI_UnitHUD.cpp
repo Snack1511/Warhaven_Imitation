@@ -69,13 +69,16 @@ void CUI_UnitHUD::My_Tick()
 		{
 			m_pUnitNameText->Set_FontRender(false);
 
-			if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+			if (m_pOwner->Get_Team())
 			{
-				m_pUnitNameText->Set_Color(m_vColorGreen);
-			}
-			else
-			{
-				m_pUnitNameText->Set_Color(m_vColorRed);
+				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+				{
+					m_pUnitNameText->Set_Color(m_vColorGreen);
+				}
+				else
+				{
+					m_pUnitNameText->Set_Color(m_vColorRed);
+				}
 			}
 
 			SetActive_UnitHP(false);
@@ -131,13 +134,16 @@ void CUI_UnitHUD::Init_UnitNameText()
 	m_pUnitNameText->Set_FontCenter(true);
 	m_pUnitNameText->Set_FontScale(0.2f);
 
-	if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+	if (m_pOwner->Get_Team())
 	{
-		m_pUnitNameText->Set_FontColor(m_vColorGreen);
-	}
-	else
-	{
-		m_pUnitNameText->Set_FontColor(m_vColorRed);
+		if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+		{
+			m_pUnitNameText->Set_FontColor(m_vColorGreen);
+		}
+		else
+		{
+			m_pUnitNameText->Set_FontColor(m_vColorRed);
+		}
 	}
 
 	wstring wstrUnitName = m_pOwner->Get_PlayerName();

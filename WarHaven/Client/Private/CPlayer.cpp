@@ -782,8 +782,6 @@ void CPlayer::Update_HeroGauge()
 			}
 		}
 	}
-
-
 }
 
 void CPlayer::On_AbleHero()

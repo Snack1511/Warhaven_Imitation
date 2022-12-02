@@ -31,11 +31,20 @@ private:
 	CUI_Object* m_pDeadUI[DU_End];
 
 private:
-	CPlayerInfo* m_pTargetInfo = nullptr;
-
-private:
 	void Create_DeadUI();
 	void Set_FadeDeadUI();
+
+private:
+	enum RevivalIO { RU_BG, RU_Bar, RU_Text, RU_Giving, RU_End };
+
+	CUI_Object* m_pRevivalUI[RU_End];
+
+private:
+	void Create_RevivalUI();
+
+private:
+	CPlayerInfo* m_pTargetInfo = nullptr;
+
 };
 
 END
