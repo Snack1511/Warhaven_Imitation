@@ -72,6 +72,9 @@ public: /* Position Table */
 	_float4					Find_Position(string strPositionKey);
 	void					Add_Position(string strPositionKey, _float4 vPosition);
 
+public:
+	CPlayerInfo* Find_PlayerInfo(_hashcode hcCode);
+
 private:
 	CPositionTable* m_pPositionTable = nullptr;
 

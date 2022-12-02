@@ -895,6 +895,15 @@ void CGameSystem::Add_Position(string wstrPositionKey, _float4 vPosition)
 	m_pPositionTable->Add_Position(wstrPositionKey, vPosition);
 }
 
+CPlayerInfo* CGameSystem::Find_PlayerInfo(_hashcode hcCode)
+{
+    auto iter = m_mapAllPlayers.find(hcCode);
+    if (iter == m_mapAllPlayers.end())
+        return nullptr;
+
+    return iter->second;
+}
+
 HRESULT CGameSystem::SetUp_AllPlayerInfos()
 {
     /* 모든 플레이어들 정보 다 만들기 */
