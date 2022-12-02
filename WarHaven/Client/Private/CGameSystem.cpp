@@ -50,7 +50,7 @@ HRESULT CGameSystem::Initialize()
 		return E_FAIL;
 	}
     
-    if (FAILED(m_pPositionTable->Load_Position("Position_Paden")))
+    if (FAILED(m_pPositionTable->Load_Position("Paden_Position")))
 	{
 		Call_MsgBox(L"Failed to Load_Position : CGameSystem");
 		return E_FAIL;
