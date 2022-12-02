@@ -689,6 +689,9 @@ void CPlayer::On_Reborn()
 	m_DeadLights.clear();
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[m_eCurrentDefaultClass]);
 	m_bDie = false;
+
+	CUser::Get_Instance()->SetActive_PlayerHUD(true);
+
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
@@ -761,7 +764,6 @@ void CPlayer::My_LateTick()
 	{
 		m_pCurrentUnit->Start_Reborn();
 
-		CUser::Get_Instance()->SetActive_PlayerHUD(true);
 	}
 
 	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
