@@ -346,6 +346,7 @@ PS_OUT PS_PORTEFFECT(PS_IN In)
     Out.vFlag = g_vFlag;
     
     vector vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    
     vector vNoise = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vColor = vColor;

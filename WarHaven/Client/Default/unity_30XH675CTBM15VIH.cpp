@@ -1,4 +1,22 @@
 
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_Valkyrie_Fall_R.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_WarHammer_Fall_R.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_Valkyrie_L.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_WarHammer_L.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_Valkyrie_Land_L.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_WarHammer_Land_L.cpp"
+
+
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_Valkyrie_Land_R.cpp"
 
 
@@ -39,22 +57,4 @@
 
 
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CPlayerInfo_Default.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CPlayerInfo_Leader.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CPlayerInfo_Main.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CPlayerInfo_SandBack.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CPositionTable.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_AI_TG_Warrior.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_AI_TG_Warrior_Begin.cpp"
 

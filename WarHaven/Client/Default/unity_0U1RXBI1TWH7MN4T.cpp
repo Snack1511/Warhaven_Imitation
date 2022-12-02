@@ -1,4 +1,22 @@
 
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Groggy_Valkyrie.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Groggy_WarHammer.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Groggy_Warrior.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_GuardHit_Valkyrie.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_GuardHit_WarHammer.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_GuardHit_Warrior.cpp"
+
+
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Sting_Valkyrie.cpp"
 
 
@@ -39,22 +57,4 @@
 
 
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CLevel_Paden.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CLevel_Stage.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CMesh_Particle.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CIdle_Valkyrie_L.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CIdle_Valkyrie_R.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CInstall_Begin_WarHammer.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CGuard_Begin_WarHammer.cpp"
 

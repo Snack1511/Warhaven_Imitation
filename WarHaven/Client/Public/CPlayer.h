@@ -79,6 +79,7 @@ public:
 	{
 		eENEMY,
 		eSQUADMEMBER,
+		eEnd
 	};
 
 public:
@@ -159,6 +160,8 @@ public:
 
 	_float& Get_Gauge() { return m_fGauge; }
 
+
+
 public:
 	void	Set_Squad(CSquad* pSquad) { m_pMySquad = pSquad; }
 	void	Set_Team(CTeamConnector* pTeamConnector) { m_pMyTeam = pTeamConnector; }
@@ -167,6 +170,7 @@ public:
 
 	CTeamConnector* Get_Team() { return m_pMyTeam; }
 	CSquad* Get_Squad() { return m_pMySquad; }
+	OUTLINETYPE Get_OutlineType() {		return m_eOutlineType;	}
 
 private:
 	_bool	m_bEnableOnStart = false;
@@ -188,6 +192,8 @@ private:
 private:
 	//어느 진영인지
 	eTEAM_TYPE	m_eTeamType = eTEAM_TYPE::eBLUE;
+
+	OUTLINETYPE m_eOutlineType = OUTLINETYPE::eEnd;
 
 private:
 	CPlayer* m_pTargetPlayer = nullptr;

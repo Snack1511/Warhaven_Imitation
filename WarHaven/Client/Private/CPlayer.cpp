@@ -701,6 +701,8 @@ void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
 
 void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 {
+	m_eOutlineType = eOutlineType;
+
 	_float4 vOutlineFlag = ZERO_VECTOR;
 
 	switch (eOutlineType)
