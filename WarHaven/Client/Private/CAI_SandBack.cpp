@@ -38,7 +38,7 @@ CAI_SandBack* CAI_SandBack::Create()
 }
 void CAI_SandBack::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
-   /* if (iOtherColType == COL_PLAYERATTACK)
+   /* if (iOtherColType == COL_BLUEATTACK)
     {
         m_pOwner->Get_PhysicsCom()->Set_MaxSpeed(10.f);
         m_pOwner->Get_PhysicsCom()->Set_SpeedasMax();

@@ -145,9 +145,9 @@ STATE_TYPE CWarHammer_AirSpike_End::Check_Condition(CUnit* pOwner, CAnimator* pA
 
 void CWarHammer_AirSpike_End::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
-	if (iOtherColType == COL_ENEMYHITBOX_BODY ||
-		iOtherColType == COL_ENEMYHITBOX_HEAD ||
-		iOtherColType == COL_ENEMYGUARD)
+	if (iOtherColType == COL_REDHITBOX_BODY ||
+		iOtherColType == COL_REDHITBOX_HEAD ||
+		iOtherColType == COL_REDGUARD)
 		m_bHit = true;
 }
 

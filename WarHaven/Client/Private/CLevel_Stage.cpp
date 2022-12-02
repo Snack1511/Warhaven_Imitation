@@ -83,7 +83,6 @@ HRESULT CLevel_Stage::Enter()
 {
 	__super::Enter();
 
-	CCamera* pFreeCam = CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 	CUser::Get_Instance()->On_EnterStageLevel();
 
 	LEVEL_TYPE_CLIENT eLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();

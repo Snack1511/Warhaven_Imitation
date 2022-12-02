@@ -58,6 +58,7 @@ protected:
 	PxController*		m_pPxController = nullptr;
 
 	PxControllerFilters		m_tControllerFilters;
+	PxControllerFilters		m_tControllerFiltersOrigin;
 
 	_bool				m_bColGround = false;
 

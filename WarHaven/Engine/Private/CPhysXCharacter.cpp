@@ -181,12 +181,16 @@ void CPhysXCharacter::Release()
 void CPhysXCharacter::OnEnable()
 {
 	__super::OnEnable();
-	
+	//m_tControllerFilters = m_tControllerFiltersOrigin;
 }
 
 void CPhysXCharacter::OnDisable()
 {
 	__super::OnDisable();
+
+	//m_pPxController->getActor()->
+	//m_tControllerFiltersOrigin = m_tControllerFilters;
+	//m_tControllerFilters.mFilterFlags = (PxQueryFlags)0;
 
 }
 

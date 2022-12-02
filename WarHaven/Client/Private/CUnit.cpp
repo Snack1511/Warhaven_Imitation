@@ -111,20 +111,20 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	switch (eMyColType)
 	{
 		/* 내가 막은 상황 */
-	case COL_PLAYERGUARD:
-	case COL_ENEMYGUARD:
+	case COL_BLUEGUARD:
+	case COL_REDGUARD:
 		On_GuardHit(pOtherUnit, eOtherColType, vHitPos, &tOtherHitInfo);
 		break;
 
 		/* 내가 맞은 상황 */
-	case COL_PLAYERHITBOX_BODY:
-	case COL_ENEMYHITBOX_BODY:
+	case COL_BLUEHITBOX_BODY:
+	case COL_REDHITBOX_BODY:
 		tOtherHitInfo.bHeadShot = false;
 		On_Hit(pOtherUnit, eOtherColType, vHitPos, &tOtherHitInfo);
 		break;
 
-	case COL_PLAYERHITBOX_HEAD:
-	case COL_ENEMYHITBOX_HEAD:
+	case COL_BLUEHITBOX_HEAD:
+	case COL_REDHITBOX_HEAD:
 		tOtherHitInfo.bHeadShot = true;
 		On_Hit(pOtherUnit, eOtherColType, vHitPos, &tOtherHitInfo);
 		break;
@@ -677,7 +677,7 @@ void CUnit::Enable_GroggyCollider(_bool bEnable)
 
 void CUnit::SetUp_Colliders(_bool bPlayer)
 {
-	COL_GROUP_CLIENT	eTeam = (bPlayer) ? COL_PLAYERTEAM : COL_ENEMYTEAM;
+	COL_GROUP_CLIENT	eTeam = (bPlayer) ? COL_BLUETEAM : COL_REDTEAM;
 
 	UNIT_COLLIDERDESC tDesc;
 	tDesc.eColType = eTeam;
@@ -990,31 +990,31 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 
 	switch (iOtherColType)
 	{
-	case COL_ENEMYATTACK:
-	case COL_PLAYERATTACK:
+	case COL_REDATTACK:
+	case COL_BLUEATTACK:
 		Enter_State(m_tHitType.eHitState, pHitInfo);
 		break;
 		//상대방 GuardBreak가 들어온 경우
-	case COL_PLAYERGUARDBREAK:
+	case COL_BLUEGUARDBREAK:
 		break;
-	case COL_ENEMYGUARDBREAK:
+	case COL_REDGUARDBREAK:
 		//1. 이펙트
 		//2. 나와 적 상태 변경
 		Enter_State(m_tHitType.eHitState, pHitInfo);
 		break;
 
-	case COL_ENEMYFLYATTACK:
-	case COL_PLAYERFLYATTACK:
-	case COL_PLAYERFLYATTACKGUARDBREAK:
-	case COL_ENEMYFLYATTACKGUARDBREAK:
+	case COL_REDFLYATTACK:
+	case COL_BLUEFLYATTACK:
+	case COL_BLUEFLYATTACKGUARDBREAK:
+	case COL_REDFLYATTACKGUARDBREAK:
 		//1. 이펙트
 
 		//2. 나와 적 상태 변경
 		Enter_State(m_tHitType.eFlyState, pHitInfo);
 		break;
 
-	case COL_PLAYERGROGGYATTACK:
-	case COL_ENEMYGROGGYATTACK:
+	case COL_BLUEGROGGYATTACK:
+	case COL_REDGROGGYATTACK:
 		//1. 이펙트
 
 
@@ -1060,10 +1060,10 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 	switch (iOtherColType)
 	{
 		//평범한 상대방 평타가 들어온 경우
-	case COL_ENEMYATTACK:
-	case COL_PLAYERATTACK:
-	case COL_ENEMYFLYATTACK:
-	case COL_PLAYERFLYATTACK:
+	case COL_REDATTACK:
+	case COL_BLUEATTACK:
+	case COL_REDFLYATTACK:
+	case COL_BLUEFLYATTACK:
 		//1. 이펙트
 		Effect_Parring(vHitPos);
 
@@ -1074,8 +1074,8 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 		break;
 
 		//상대방 GuardBreak가 들어온 경우
-	case COL_PLAYERGUARDBREAK:
-	case COL_ENEMYGUARDBREAK:
+	case COL_BLUEGUARDBREAK:
+	case COL_REDGUARDBREAK:
 		//1. 이펙트
 		Effect_Parring(vHitPos);
 
@@ -1083,16 +1083,16 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 		Enter_State(m_tHitType.eGuardBreakState, pHitInfo);
 		break;
 
-	case COL_PLAYERFLYATTACKGUARDBREAK:
-	case COL_ENEMYFLYATTACKGUARDBREAK:
+	case COL_BLUEFLYATTACKGUARDBREAK:
+	case COL_REDFLYATTACKGUARDBREAK:
 		//1. 이펙트
 
 		//2. 나와 적 상태 변경
 		Enter_State(m_tHitType.eFlyState, pHitInfo);
 		break;
 
-	case COL_PLAYERGROGGYATTACK:
-	case COL_ENEMYGROGGYATTACK:
+	case COL_BLUEGROGGYATTACK:
+	case COL_REDGROGGYATTACK:
 		//1. 이펙트
 		Effect_Parring(vHitPos);
 		//2. 나와 적 상태 변경

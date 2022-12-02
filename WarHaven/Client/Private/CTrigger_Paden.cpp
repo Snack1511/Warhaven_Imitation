@@ -4,7 +4,7 @@
 #include "CGameSystem.h"
 
 #include "UsefulHeaders.h"
-
+#include "CTeamConnector.h"
 #include "CPlayer.h"
 
 CTrigger_Paden::CTrigger_Paden()
@@ -18,14 +18,13 @@ CTrigger_Paden::~CTrigger_Paden()
 void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
 	//1. 충돌한 대상이 어느 팀인지 체크
-	if (eOtherColType == COL_PLAYERTEAM)
+	if (eOtherColType == COL_BLUETEAM)
 	{
-		++m_iPlayerTeamCnt;
+		++m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE];
 	}
-	else if (eOtherColType == COL_ENEMYTEAM)
+	else if (eOtherColType == COL_REDTEAM)
 	{
-		++m_iEnemyTeamCnt;
-
+		++m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 	}
 
 
@@ -38,21 +37,21 @@ void CTrigger_Paden::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& 
 void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
 	//1. 충돌한 대상이 플레이어팀인지 체크
-	if (eOtherColType == COL_PLAYERTEAM)
+	if (eOtherColType == COL_BLUETEAM)
 	{
-		--m_iPlayerTeamCnt;
+		--m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE];
 	}
-	else if (eOtherColType == COL_ENEMYTEAM)
+	else if (eOtherColType == COL_REDTEAM)
 	{
-		--m_iEnemyTeamCnt;
-
+		--m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 	}
 }
 
-CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius)
+CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum)
 {
 	CTrigger_Paden* pInstance = new CTrigger_Paden;
 
+	pInstance->m_eTriggerType = eEnum;
 	pInstance->m_strTriggerName = strPositionKey;
 	pInstance->m_vPosition = CGameSystem::Get_Instance()->Find_Position(strPositionKey);
 	pInstance->m_pTransform->Set_World(WORLD_POS, pInstance->m_vPosition);
@@ -66,14 +65,6 @@ CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius)
 	}
 
 	return pInstance;
-}
-
-void CTrigger_Paden::Set_StartTrigger(_bool bPlayerTeam)
-{
-	m_bConquered = true;
-	m_bIsConqueredByPlayerTeam = bPlayerTeam;
-	m_bStartTrigger = true;
-	
 }
 
 _float4 CTrigger_Paden::Get_RespawnPosition()
@@ -118,54 +109,75 @@ HRESULT CTrigger_Paden::Start()
 
 void CTrigger_Paden::My_Tick()
 {
-	//둘 중 하나가 없을 때 
-	if (m_bStartTrigger)
+	if (m_eTriggerType == ePADEN_TRIGGER_TYPE::eSTART)
 		return;
 
-	if (m_iEnemyTeamCnt != m_iPlayerTeamCnt)
+	//1. 둘 중 한쪽만 0일 때
+	if (m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE] != m_iTeamCnt[(_uint)eTEAM_TYPE::eRED])
 	{
-		if (m_iEnemyTeamCnt == 0 || m_iPlayerTeamCnt == 0)
+		if (m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE] == 0 || m_iTeamCnt[(_uint)eTEAM_TYPE::eRED] == 0)
 		{
 			/* 점령 시간 차기 */
 			Update_Conquered();
-
-
+			return;
 		}
 	}
+
+
+	//2. 그 외에는 시간 줄기
+	if (m_fConqueredTimeAcc > 0.f)
+		m_fConqueredTimeAcc -= fDT(0);
+	else
+		m_fConqueredTimeAcc = 0.f;
+
+
+
+
+	
 
 }
 
 void CTrigger_Paden::Update_Conquered()
 {
 	//이미 점령당한 거점이면
-	if (m_bConquered)
+	if (m_pConqueredTeam)
 	{
-		//플레이어팀에 점령당한 거점이면 
-		if (m_bIsConqueredByPlayerTeam)
-		{
-			//적녀석들로 찼을 때만 진행
-			if (m_iPlayerTeamCnt > 0)
-				return;
-		}
-		else
-		{
-			if (m_iEnemyTeamCnt > 0)
-				return;
-		}
+		//점령당한 팀쪽 사람이 한명 이라도 있으면 리턴
+		if (m_iTeamCnt[(_uint)m_pConqueredTeam->Get_TeamType()] > 0)
+			return;
 	}
 
-
-	_float fConquerSpeed = max(m_iEnemyTeamCnt, m_iPlayerTeamCnt) * 0.5f;
+	_float fConquerSpeed = max(m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE], m_iTeamCnt[(_uint)eTEAM_TYPE::eRED]) * 0.5f;
 	m_fConqueredTimeAcc += fDT(0) * fConquerSpeed;
+
+#ifdef _DEBUG
+	
+	cout << m_strTriggerName << " : " << m_fConqueredTimeAcc << endl;
+	
+#endif // _DEBUG
+
 
 	if (m_fConqueredTimeAcc >= m_fConqueredTime)
 	{
+		//이전 주인이 있었으면 거기서 trigger 빼기
+		if (m_pConqueredTeam)
+			m_pConqueredTeam->Erase_Trigger(m_strTriggerName);
+
 		//더 많은 쪽의 소유가 된다.
-		m_bConquered = true;
-		if (m_iEnemyTeamCnt > m_iPlayerTeamCnt)
-			m_bIsConqueredByPlayerTeam = false;
+		if (m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE] > m_iTeamCnt[(_uint)eTEAM_TYPE::eRED])
+			m_pConqueredTeam = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE);
 		else
-			m_bIsConqueredByPlayerTeam = true;
+			m_pConqueredTeam = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eRED);
+
+
+		m_pConqueredTeam->Add_Trigger(this);
+#ifdef _DEBUG
+		string strName = "BLUE";
+		if (m_pConqueredTeam->Get_TeamType() == eTEAM_TYPE::eRED)
+			strName = "RED";
+
+		cout << m_strTriggerName << " : 점령 완료 by " << strName << endl;
+#endif // _DEBUG
 
 		m_fConqueredTimeAcc = 0.f;
 	}

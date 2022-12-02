@@ -710,27 +710,29 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
     CTrigger* pTrigger = nullptr;
     string  strTriggerName;
 
-#define ADD_TRIGGER(name, radius)   strTriggerName = name;\
-    pTrigger = CTrigger_Paden::Create(strTriggerName, radius);\
+#define ADD_TRIGGER(name, radius, enumtype)   strTriggerName = name;\
+    pTrigger = CTrigger_Paden::Create(strTriggerName, radius, enumtype);\
     if (!pTrigger)\
         return E_FAIL;\
     m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
-    CREATE_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
+    READY_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
 
-    ADD_TRIGGER("Paden_RedTeam_StartTrigger", 2.f);
-    ADD_TRIGGER("Paden_BlueTeam_StartTrigger", 2.f);
+    _float fTriggerSize = 4.f;
+
+    ADD_TRIGGER("Paden_RedTeam_StartTrigger", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
+    ADD_TRIGGER("Paden_BlueTeam_StartTrigger", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
 
     m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Paden_BlueTeam_StartTrigger")]);
     m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Paden_RedTeam_StartTrigger")]);
 
     /*map에서 찾아다가 static cast 하는 매크로*/
-    TRIGGER_PADEN("Paden_RedTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->IsMainPlayerTeam());
-    TRIGGER_PADEN("Paden_BlueTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->IsMainPlayerTeam());
+    /*TRIGGER_PADEN("Paden_RedTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->IsMainPlayerTeam());
+    TRIGGER_PADEN("Paden_BlueTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->IsMainPlayerTeam());*/
 
     //1. 메인 거점
-    ADD_TRIGGER("Paden_Trigger_A", 2.f);
-    ADD_TRIGGER("Paden_Trigger_R", 2.f);
-    ADD_TRIGGER("Paden_Trigger_C", 2.f);
+    ADD_TRIGGER("Paden_Trigger_A", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
+    ADD_TRIGGER("Paden_Trigger_R", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
+    ADD_TRIGGER("Paden_Trigger_C", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
 
 
     
@@ -760,7 +762,61 @@ HRESULT CGameSystem::On_EnterStage()
 HRESULT CGameSystem::On_Update_Paden()
 {
     //점령한 거점 확인해서 점수 깎기
-    
+
+    CTeamConnector* pMinusScoreTeam = nullptr;
+    for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
+    {
+        if (m_pTeamConnector[i]->Has_MainTrigger())
+        {
+            _int j = 0;
+            if (i == 0)
+                j = 1;
+
+            //반대쪽 팀이 깎일 팀
+            pMinusScoreTeam = m_pTeamConnector[j];
+            break;
+        }
+    }
+
+    if (pMinusScoreTeam)
+    {
+        m_fScoreAcc += fDT(0);
+        if (m_fScoreAcc >= m_fScoreMinusTime)
+        {
+            m_fScoreAcc = 0.f;
+
+            if (!pMinusScoreTeam->Minus_Score())
+                On_FinishGame();
+
+
+
+        }
+
+    }
+
+
+   /* for (auto& elem : m_mapAllTriggers)
+    {
+        CTrigger_Paden* pPadenTrigger = static_cast<CTrigger_Paden*>(elem.second);
+
+        switch (pPadenTrigger->Get_TriggerType())
+        {
+        case CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+            pPadenTrigger
+
+
+            break;
+
+        default:
+            break;
+        }
+
+    }*/
+
+
+
+
+
 
     return S_OK;
 }
@@ -768,8 +824,12 @@ HRESULT CGameSystem::On_Update_Paden()
 void CGameSystem::On_StartGame()
 {
     /* 작전회의 끝나고 호출되는 함수 */
+    CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 
-
+    for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
+    {
+        m_pTeamConnector[i]->On_EnterPaden();
+    }
 
     //1. 모든 플레이어들 시작 위치에서 생성
     for (auto& elem : m_mapAllPlayers)
@@ -777,6 +837,10 @@ void CGameSystem::On_StartGame()
         /* sandback들은 건너 뛰기 */
         if (dynamic_cast<CPlayerInfo_SandBack*>(elem.second))
             continue;
+
+      /*  if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+            continue;*/
+
         /* ai들은 랜덤 선택 함수 호출 */
         if (!elem.second->m_bIsMainPlayer)
             elem.second->Choose_Character();
@@ -786,8 +850,6 @@ void CGameSystem::On_StartGame()
 
        
         _float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
-        vStartPos.x += frandom(-5.f, 5.f);
-        vStartPos.z += frandom(-5.f, 5.f);
         
         elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, (CPlayer::CLASS_DEFAULT)elem.second->m_eCurChosenClass);
       

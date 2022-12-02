@@ -161,9 +161,9 @@ STATE_TYPE CWarrior_GuardBreak::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 
 void CWarrior_GuardBreak::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
 {
-    if (iOtherColType == COL_ENEMYHITBOX_BODY || 
-        iOtherColType == COL_ENEMYHITBOX_HEAD ||
-        iOtherColType == COL_ENEMYGUARD)
+    if (iOtherColType == COL_REDHITBOX_BODY || 
+        iOtherColType == COL_REDHITBOX_HEAD ||
+        iOtherColType == COL_REDGUARD)
         m_bHit = true;
 }
 

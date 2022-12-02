@@ -94,14 +94,22 @@ CPlayer* CTeamConnector::Find_Player(wstring wstrName)
 void CTeamConnector::Add_Trigger(CTrigger* pTrigger)
 {
     m_OurTriggers.push_back(pTrigger);
+    if (static_cast<CTrigger_Paden*>(pTrigger)->Get_TriggerType() == CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN)
+    {
+        m_bHasMainTrigger = true;
+    }
 }
 
 void CTeamConnector::Erase_Trigger(string strTriggerKey)
 {
+
     for (auto iter = m_OurTriggers.begin(); iter != m_OurTriggers.end();)
     {
         if (static_cast<CTrigger_Paden*>(*iter)->Get_TriggerName() == strTriggerKey)
         {
+            if (static_cast<CTrigger_Paden*>(*iter)->Get_TriggerType() == CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN)
+                m_bHasMainTrigger = false;
+
             iter = m_OurTriggers.erase(iter);
             break;
         }
@@ -131,9 +139,31 @@ _float4 CTeamConnector::Find_RespawnPosition(string strTriggerKey)
     return vPosition;
 }
 
+_bool CTeamConnector::Minus_Score()
+{
+    --m_iScore;
+
+#ifdef _DEBUG
+    string strName = "BLUE";
+    if (m_eTeamType == eTEAM_TYPE::eRED)
+        strName = "RED";
+    cout << strName << " Score : " << m_iScore << endl;
+#endif // _DEBUG
+
+
+    if (m_iScore == 0)
+    {
+        return false;
+    }
+
+    return true;
+}
+
 HRESULT CTeamConnector::On_EnterPaden()
 {
     m_iScore = 100;
+
+
 
     return S_OK;
 }

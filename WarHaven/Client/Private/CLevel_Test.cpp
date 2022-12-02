@@ -93,6 +93,7 @@ HRESULT CLevel_Test::Enter()
 	__super::Enter();
 
 	CGameSystem::Get_Instance()->On_EnterTest();
+	CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 
 	
 

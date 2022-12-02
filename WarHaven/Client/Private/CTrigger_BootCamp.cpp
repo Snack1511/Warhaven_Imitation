@@ -18,7 +18,7 @@ CTrigger_BootCamp::~CTrigger_BootCamp()
 void CTrigger_BootCamp::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
 	//1. 충돌한 대상이 플레이어인지 체크
-	if (eOtherColType == COL_PLAYERTEAM)
+	if (eOtherColType == COL_BLUETEAM)
 	{
 		if (static_cast<CUnit*>(pOtherObj)->Is_MainPlayer())
 		{
@@ -69,7 +69,7 @@ void CTrigger_BootCamp::Trigger_CollisionStay(CGameObject* pOtherObj, const _uin
 void CTrigger_BootCamp::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
 	//1. 충돌한 대상이 플레이어인지 체크
-	if (eOtherColType == COL_PLAYERTEAM)
+	if (eOtherColType == COL_BLUETEAM)
 	{
 		if (static_cast<CUnit*>(pOtherObj)->Is_MainPlayer())
 		{

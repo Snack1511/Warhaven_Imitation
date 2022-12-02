@@ -93,6 +93,7 @@ HRESULT CLevel_BootCamp::Enter()
 	/* GameSystem */
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterBootCamp()))
 		return E_FAIL;
+	CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
 
 
 

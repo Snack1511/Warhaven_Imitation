@@ -38,7 +38,10 @@ public:
 	_float4	Find_RespawnPosition(string strTriggerKey);
 	
 public:
+	eTEAM_TYPE	Get_TeamType() { return m_eTeamType; }
 	_bool	IsMainPlayerTeam() { return m_bIsMainPlayerTeam; }
+	_bool	Minus_Score();
+	_bool	Has_MainTrigger() { return m_bHasMainTrigger; }
 
 public:
 	/* 파덴 진입시 호출 */
@@ -54,6 +57,7 @@ private:
 
 	//2. 팀이 점령한 거점도 알려주야함
 	list<CTrigger*>	m_OurTriggers;
+	_bool			m_bHasMainTrigger = false;
 
 private:
 	//3. 남은 점수 표기

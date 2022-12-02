@@ -75,6 +75,8 @@ void CLevel_Paden::Tick()
 void CLevel_Paden::Late_Tick()
 {
 	__super::Late_Tick();
+
+	CGameSystem::Get_Instance()->On_Update_Paden();
 }
 
 HRESULT CLevel_Paden::Render()

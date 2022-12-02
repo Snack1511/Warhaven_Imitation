@@ -47,8 +47,6 @@ public: /* BootCamp */
 
 
 
-
-
 public:	// Paden
 	HRESULT					On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 
@@ -64,6 +62,8 @@ public:	// Paden
 	void					On_StartGame();
 	void					On_FinishGame();
 
+	CTeamConnector* Get_Team(eTEAM_TYPE eEnum) { return m_pTeamConnector[(_uint)eEnum]; }
+
 
 
 
@@ -78,6 +78,8 @@ private:
 private:
 	/* 스테이지 진입시 팀이 만들어진다 */
 	CTeamConnector* m_pTeamConnector[_uint(eTEAM_TYPE::eCOUNT)] = {};
+	_float			m_fScoreAcc = 0.f;
+	_float			m_fScoreMinusTime = 1.5f;
 
 private:
 	/* 모든 플레이어 정보를 미리 만들어놓고 그 정보를 토대로 Player 생성하는 방식 */
@@ -86,7 +88,6 @@ private:
 private:
 	/* 트리거 (거점)을 map으로 들고 있기. */
 	map<_hashcode, CTrigger*>	m_mapAllTriggers;
-
 
 private:
 	HRESULT					SetUp_AllPlayerInfos();

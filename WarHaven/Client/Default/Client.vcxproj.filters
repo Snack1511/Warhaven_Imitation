@@ -2577,9 +2577,6 @@
     <ClInclude Include="..\public\CLevel_Stage.h">
       <Filter>03. Instances\01. Level\04. Level_Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CWindow_Level.h">
-      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Level</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CIdle_AI_TG_Warrior_L.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\01. Idle\02. Left</Filter>
     </ClInclude>
@@ -2717,6 +2714,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CUnit_Paladin.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Paladin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CWindow_Level.h">
+      <Filter>03. Instances\01. Level\01. Level_Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
