@@ -180,7 +180,7 @@ void CMesh_Particle::Start_Reverse(CUnit* pUnit)
 	{
 		m_bReverse = true;
 
-		for (_uint i = 0; i < m_iNumInstance; ++i)
+		for (_uint i = 0; i < m_vecRigidDynamics.size(); ++i)
 		{
 			Safe_release(m_vecRigidDynamics[i]);
 		}

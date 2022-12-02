@@ -47,6 +47,7 @@
 #include "CUser.h"
 
 #include "CEffects_Factory.h"
+#include "CRectEffects.h"
 
 #include "CSquad.h"
 #include "CUI_UnitHUD.h"
@@ -613,14 +614,16 @@ void CPlayer::On_RealDie()
 	m_fDieDelayAcc = 0.f;
 	m_bDie = true;
 
+	m_DeadLights.clear();
+
 	if (m_pMyTeam)
 	{
 		if (m_pMyTeam->IsMainPlayerTeam())
-			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
+			m_DeadLights = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
 
 	}
 	else if (m_bIsMainPlayer)
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
+		m_DeadLights = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
 
 
 }
@@ -628,6 +631,11 @@ void CPlayer::On_RealDie()
 void CPlayer::On_Reborn()
 {
 	GAMEINSTANCE->Stop_GrayScale();
+
+	for (auto& elem : m_DeadLights)
+	{
+		static_cast<CRectEffects*>(elem)->Set_LoopControlfalse();
+	}
 
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[m_eCurrentDefaultClass]);
 	m_bDie = false;
