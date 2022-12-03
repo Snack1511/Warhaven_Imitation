@@ -36,7 +36,6 @@ HRESULT CUI_Crosshair::Start()
 
 	// 영웅 선택할 때 실행
 	Init_DefaultCrosshair();
-	Init_ArrowUI(CLASS_TYPE::ENGINEER);
 
 	SetActive_DefaultCrosshair(true);
 	SetActive_ArrowUI(true);
@@ -58,6 +57,11 @@ void CUI_Crosshair::OnDisable()
 	SetActive_DefaultCrosshair(false);
 	SetActive_ArrowUI(false);
 	SetActive_LancerUI(false);
+}
+
+void CUI_Crosshair::Set_Crosshair(_uint iClass)
+{
+	Init_ArrowUI(iClass);
 }
 
 void CUI_Crosshair::SetActive_DefaultCrosshair(_bool value)
@@ -197,6 +201,10 @@ void CUI_Crosshair::Init_ArrowUI(_uint iClass)
 	else if (iClass == CLASS_TYPE::PRIEST || iClass == CLASS_TYPE::ENGINEER)
 	{
 		m_iArrowIndex = 2;
+	}
+	else
+	{
+		return;
 	}
 
 	for (int i = 0; i < AU_End; ++i)

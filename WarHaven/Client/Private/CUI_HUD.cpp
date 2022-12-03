@@ -204,6 +204,7 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 
 	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
 
+	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(iEventNum);
 }
 
 void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
