@@ -43,7 +43,9 @@ private:
 	CUnit::UNIT_STATUS m_tStatus;
 
 	_float m_fLeaderIconScale = 24.f;
+	_float m_fHeroIconScale = 32.f;
 
+	_float4 m_vColorOrigin = _float4(1.f, 1.f, 1.f, 1.f);
 	_float4 m_vColorRed = _float4(0.8f, 0.2f, 0.2f, 1.f);
 	_float4 m_vColorGreen = _float4(0.2f, 0.5f, 0.2f, 1.f);
 	_float4 m_vColorLightGreen = _float4(0.6f, 0.85f, 0.3f, 1.f);
@@ -60,6 +62,10 @@ private:
 	void Create_UnitHUD();
 
 	void Init_UnitNameText();
+
+	void Set_LeaderIcon();
+	void Set_IconColor();
+	void Set_HeroIcon();
 
 private:
 	void SetActive_UnitHP(_bool value);

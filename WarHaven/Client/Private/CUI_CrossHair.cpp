@@ -45,9 +45,6 @@ HRESULT CUI_Crosshair::Initialize()
 
 HRESULT CUI_Crosshair::Start()
 {
-	Set_Pass();
-	Bind_Shader();
-
 	__super::Start();
 
 	return S_OK;
