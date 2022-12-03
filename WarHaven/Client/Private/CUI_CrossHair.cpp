@@ -47,6 +47,8 @@ HRESULT CUI_Crosshair::Start()
 void CUI_Crosshair::OnEnable()
 {
 	__super::OnEnable();
+
+	// 현재 클라스를 받아와서 해당하는 클래스의 UI 활성화
 }
 
 void CUI_Crosshair::OnDisable()
@@ -253,24 +255,4 @@ void CUI_Crosshair::Create_LancerUI()
 			DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
 		}
 	}
-}
-
-void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
-{
-	/*for (_uint i = 0; i < iIndex; ++i)
-	{
-		if (iIndex == 2)
-		{
-			_float fRotZ = -90.f - (i * 180.f);
-			m_arrCrosshair[i][Arrow]->Set_RotationZ(fRotZ);
-			m_arrCrosshair[i][ArrowBG]->Set_RotationZ(fRotZ);
-		}
-
-		if (iIndex == 3)
-		{
-			_float fRotZ = -120.f * i;
-			m_arrCrosshair[i][Arrow]->Set_RotationZ(fRotZ);
-			m_arrCrosshair[i][ArrowBG]->Set_RotationZ(fRotZ);
-		}
-	}*/
 }

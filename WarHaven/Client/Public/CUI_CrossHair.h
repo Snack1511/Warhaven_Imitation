@@ -22,6 +22,10 @@ public:
 	virtual void OnDisable() override;
 
 public:
+	void Init_DefaultCrosshair();
+	void Init_ArrowUI(_uint iClass);
+
+public:
 	void SetActive_DefaultCrosshair(_bool value);
 	void SetActive_ArrowUI(_bool value);
 	void SetActive_LancerUI(_bool value);
@@ -32,7 +36,6 @@ private:
 
 private:
 	void Create_Crosshair();
-	void Init_DefaultCrosshair();
 
 private:
 	enum ArrowUI { AU_BG, AU_Arrow, AU_End };
@@ -45,7 +48,6 @@ private:
 
 private:
 	void Create_ArrowUI();
-	void Init_ArrowUI(_uint iClass);
 
 private:
 	enum LancerUI { LU_BG, LU_Gauge, LU_Full, LU_End };
