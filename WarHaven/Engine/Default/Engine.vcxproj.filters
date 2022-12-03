@@ -250,6 +250,15 @@
     <Filter Include="02. Singleton\02. Design\19. PhysX_Manager\CameraCollider">
       <UniqueIdentifier>{eca15857-0bfe-45ed-aad4-b2d26532231d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Singleton\02. Design\20. Tile_Manager">
+      <UniqueIdentifier>{8cbac36e-0130-477b-93cb-868fee0e7fa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Singleton\02. Design\20. Tile_Manager\Tile">
+      <UniqueIdentifier>{d6c68a66-37bb-46b6-b8f5-c2ceef10c3fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Singleton\02. Design\20. Tile_Manager\Layer">
+      <UniqueIdentifier>{0bc5941a-5a21-4b4b-83ef-8273a70b6283}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
@@ -473,6 +482,15 @@
     </ClCompile>
     <ClCompile Include="..\private\CCameraCollider.cpp">
       <Filter>02. Singleton\02. Design\19. PhysX_Manager\CameraCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CTile.cpp">
+      <Filter>02. Singleton\02. Design\20. Tile_Manager\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CTile_Manager.cpp">
+      <Filter>02. Singleton\02. Design\20. Tile_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CTileLayer.cpp">
+      <Filter>02. Singleton\02. Design\20. Tile_Manager\Layer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1282,6 +1300,15 @@
     </ClInclude>
     <ClInclude Include="..\public\CCameraCollider.h">
       <Filter>02. Singleton\02. Design\19. PhysX_Manager\CameraCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CTile.h">
+      <Filter>02. Singleton\02. Design\20. Tile_Manager\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CTile_Manager.h">
+      <Filter>02. Singleton\02. Design\20. Tile_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CTileLayer.h">
+      <Filter>02. Singleton\02. Design\20. Tile_Manager\Layer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
