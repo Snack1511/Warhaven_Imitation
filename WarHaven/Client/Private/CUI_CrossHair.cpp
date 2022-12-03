@@ -34,9 +34,6 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
-	// 영웅 선택할 때 실행
-	Init_DefaultCrosshair();
-
 	SetActive_DefaultCrosshair(true);
 	SetActive_ArrowUI(true);
 
@@ -61,6 +58,9 @@ void CUI_Crosshair::OnDisable()
 
 void CUI_Crosshair::Set_Crosshair(_uint iClass)
 {
+	// 워리어 엔지니어
+	Init_DefaultCrosshair();
+
 	Init_ArrowUI(iClass);
 }
 
