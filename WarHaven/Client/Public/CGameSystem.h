@@ -99,6 +99,9 @@ private:
 	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();
 
+private:
+
+
 
 };
 
