@@ -24,11 +24,26 @@ public:
 	virtual void OnDisable() override;
 
 public:
-	void Set_ShaderResources_Arrow(CShader* pShader, const char* pConstName);
-	void Set_ShaderResources_ArrowBG(CShader* pShader, const char* pConstName);
-
-public:
 	void Set_Crosshair(_uint iIndex);
+
+private:
+	enum CrosshairUI { CU_Point, CU_Outline, CU_End };
+	CUI_Object* m_pCrosshair[CU_End];
+
+private:
+	void Create_Crosshair();
+	void Init_DefaultCrosshair();
+
+private:
+	enum ArrowUI { AU_BG, AU_Arrow, AU_End };
+	CUI_Object* m_pArrowUI[AU_End];
+	CUI_Object* m_pArrArrowUI[AU_End][3];
+
+	_float4 m_vArrowColor = _float4(1.f, 0.8f, 0.f, 1.f);
+
+private:
+	void Create_ArrowUI();
+	void Init_ArrowUI(_uint iClass);
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
@@ -39,8 +54,6 @@ private:
 	_uint m_iCurCrosshair = 0;
 
 private:
-	void Set_Pass();
-	void Bind_Shader();
 
 	void DefaultCrosshair(_uint iIndex = 0);
 	void ArrowCrosshair();
@@ -51,3 +64,6 @@ private:
 };
 
 END
+
+// 레이븐 기본 화살 세개
+// 스킬 쓸 때 특수 크로스헤어

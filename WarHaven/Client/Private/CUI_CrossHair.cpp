@@ -18,6 +18,9 @@ CUI_Crosshair::~CUI_Crosshair()
 
 HRESULT CUI_Crosshair::Initialize_Prototype()
 {
+	Create_Crosshair();
+	Create_ArrowUI();
+
 	Read_UI("Crosshair");
 
 	Ready_Texture();
@@ -74,28 +77,6 @@ void CUI_Crosshair::OnDisable()
 			DISABLE_GAMEOBJECT(m_arrCrosshair[j][i]);
 		}
 	}
-}
-
-void CUI_Crosshair::Set_ShaderResources_Arrow(CShader* pShader, const char* pConstName)
-{
-	_float4 vColor;
-	for (int i = 0; i < 3; ++i)
-	{
-		vColor = m_arrCrosshair[i][Arrow]->Get_Color();
-	}
-
-	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
-}
-
-void CUI_Crosshair::Set_ShaderResources_ArrowBG(CShader* pShader, const char* pConstName)
-{
-	_float4 vColor;
-	for (int i = 0; i < 3; ++i)
-	{
-		vColor = m_arrCrosshair[i][ArrowBG]->Get_Color();
-	}
-
-	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
 }
 
 void CUI_Crosshair::Set_Crosshair(_uint iIndex)
@@ -155,25 +136,77 @@ void CUI_Crosshair::Set_Crosshair(_uint iIndex)
 	}
 }
 
-void CUI_Crosshair::Set_Pass()
+void CUI_Crosshair::Create_Crosshair()
 {
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < CU_End; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrCrosshair[i][Arrow], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
-		GET_COMPONENT_FROM(m_arrCrosshair[i][ArrowBG], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+		m_pCrosshair[i] = CUI_Object::Create();
+
+		CREATE_GAMEOBJECT(m_pCrosshair[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pCrosshair[i]);
+	}
+
+	GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pCrosshair[CU_Point], "/HUD/Crosshair", "Point");
+
+	GET_COMPONENT_FROM(m_pCrosshair[CU_Outline], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pCrosshair[CU_Outline], "/HUD/Crosshair", "Outline");
+}
+
+void CUI_Crosshair::Init_DefaultCrosshair()
+{
+	GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(0);
+	GET_COMPONENT_FROM(m_pCrosshair[CU_Outline], CTexture)->Set_CurTextureIndex(0);
+
+	m_pCrosshair[CU_Point]->Set_Scale(6.f);
+
+	m_pCrosshair[CU_Outline]->Set_Scale(50.f);
+	m_pCrosshair[CU_Outline]->Set_Color(_float4(0.2f, 0.2f, 0.2f, 0.4f));
+}
+
+void CUI_Crosshair::Create_ArrowUI()
+{
+	for (int i = 0; i < AU_End; ++i)
+	{
+		m_pArrowUI[i] = CUI_Object::Create();
+
+		m_pArrowUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Arrow.png"));
+		m_pArrowUI[i]->Set_Scale(100.f);
+
+		if (i == AU_BG)
+		{
+			m_pArrowUI[i]->Set_Color(m_vArrowColor);
+			m_pArrowUI[i]->Set_Sort(0.5f);
+		}
+		else if (i == AU_Arrow)
+		{
+			m_pArrowUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.6f));
+			m_pArrowUI[i]->Set_Sort(0.49f);
+		}
+
+		CREATE_GAMEOBJECT(m_pArrowUI[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_pArrowUI[i]);
+
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrArrowUI[i][j] = m_pArrowUI[i]->Clone();
+
+			CREATE_GAMEOBJECT(m_pArrArrowUI[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrArrowUI[i][j]);
+		}
 	}
 }
 
-void CUI_Crosshair::Bind_Shader()
+void CUI_Crosshair::Init_ArrowUI(_uint iClass)
 {
-	for (int i = 0; i < 3; ++i)
+	// 스파이크, 아처 60도 세개
+	// 레이븐
+	if (iClass == CLASS_TYPE::SPEAR)
 	{
-		GET_COMPONENT_FROM(m_arrCrosshair[i][Arrow], CShader)
-			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_Arrow, this, placeholders::_1, "g_vColor");
 
-		GET_COMPONENT_FROM(m_arrCrosshair[i][ArrowBG], CShader)
-			->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_ShaderResources_ArrowBG, this, placeholders::_1, "g_vColor");
 	}
+
+	// 프리스트 엔지니어 좌우 두개
 }
 
 void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
