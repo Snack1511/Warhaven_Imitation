@@ -5,6 +5,7 @@ BEGIN(Client)
 
 class CPlayer;
 class CTeamConnector;
+class CDominion_Effect;
 
 class CTrigger_Paden 
 	: public CTrigger
@@ -29,6 +30,7 @@ public:
 
 public:
 	void		Add_RespawnPositions(_float4 vPosition) { m_vRespawnPositions.push_back(vPosition); };
+	void		Set_DominionEffect(CDominion_Effect* pDominion) { m_pDominionEffect = pDominion; }
 
 public:
 	_float4		Get_RespawnPosition();
@@ -57,6 +59,7 @@ private:
 
 	_float			m_fConqueredTimeAcc = 0.f;
 	_float			m_fConqueredTime = 5.f;
+	CDominion_Effect* m_pDominionEffect = nullptr;
 
 private:
 	virtual void My_Tick();

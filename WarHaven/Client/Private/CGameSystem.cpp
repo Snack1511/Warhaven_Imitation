@@ -22,6 +22,8 @@
 #include "CSquad.h"
 #include "CTeamConnector.h"
 
+#include "CDominion_Effect.h"
+
 IMPLEMENT_SINGLETON(CGameSystem);
 
 
@@ -131,6 +133,8 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
         pEnemy->Reserve_State(AI_STATE_IDLE_WARRIOR_L);
         READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
     }
+
+   
 
     SetUp_DefaultLight_BootCamp();
 
@@ -741,8 +745,19 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 
     //1. 메인 거점
     ADD_TRIGGER("Paden_Trigger_A", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
+    CDominion_Effect* pDominionEffect_A = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), _float4(-0.8f, 2.f, -0.3f));
+    READY_GAMEOBJECT(pDominionEffect_A, GROUP_EFFECT);
+    TRIGGER_PADEN("Paden_Trigger_A")->Set_DominionEffect(pDominionEffect_A);
+
     ADD_TRIGGER("Paden_Trigger_R", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
+    CDominion_Effect* pDominionEffect_R = CDominion_Effect::Create(_float4(0.8f, 0.8f, 0.8f), _float4(48.6f, 5.5f, -0.f));
+    READY_GAMEOBJECT(pDominionEffect_R, GROUP_EFFECT);
+    TRIGGER_PADEN("Paden_Trigger_R")->Set_DominionEffect(pDominionEffect_R);
+
     ADD_TRIGGER("Paden_Trigger_C", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
+    CDominion_Effect* pDominionEffect_C = CDominion_Effect::Create(_float4(1.f, 1.f, 1.f), _float4(-61.8f, 20.4f, 0.2f));
+    READY_GAMEOBJECT(pDominionEffect_C, GROUP_EFFECT);
+    TRIGGER_PADEN("Paden_Trigger_C")->Set_DominionEffect(pDominionEffect_C);
 
 
     

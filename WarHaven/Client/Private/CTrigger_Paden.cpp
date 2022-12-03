@@ -7,6 +7,8 @@
 #include "CTeamConnector.h"
 #include "CPlayer.h"
 
+#include "CDominion_Effect.h"
+
 CTrigger_Paden::CTrigger_Paden()
 {
 }
@@ -67,6 +69,7 @@ CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, eP
 	return pInstance;
 }
 
+
 _float4 CTrigger_Paden::Get_RespawnPosition()
 {
 	_float4 vPos = m_vRespawnPositions.front();
@@ -102,7 +105,6 @@ HRESULT CTrigger_Paden::Initialize_Prototype()
 HRESULT CTrigger_Paden::Start()
 {
 	__super::Start();
-
 
 	return S_OK;
 }
@@ -169,6 +171,7 @@ void CTrigger_Paden::Update_Conquered()
 		else
 			m_pConqueredTeam = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eRED);
 
+		m_pDominionEffect->Set_DominionColor(m_pConqueredTeam);
 
 		m_pConqueredTeam->Add_Trigger(this);
 #ifdef _DEBUG

@@ -26,7 +26,8 @@ float		g_fDissolvePower = 1.f;
 vector		g_vCamPosition;
 float		g_fOutlinePower = 1.f;
 
-
+float		g_fBlue;
+float		g_fRed;
 
 
 
@@ -317,6 +318,44 @@ PS_OUT PS_MAIN_LIGHTNING (PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_DOMINION(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vEffectFlag = g_vFlag;
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
+
+	//DiffuseTexture : Color
+	//g_MaskTexture : AlphaMap
+	//
+
+	//
+	//vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	In.vTexUV.x += g_fUVPlusX;
+	In.vTexUV.y += g_fUVPlusY;
+	vector vMtrlDiffuse = g_MaskTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vDiffuse.a = vMtrlDiffuse.r;
+	Out.vDiffuse.a *= g_fAlpha;
+
+	if (Out.vDiffuse.a <= 0.05f)
+		discard;
+
+	Out.vDiffuse.xyz = g_vPlusColor.xyz;
+	Out.vDiffuse.xyz *= g_fColorPower;
+
+
+
+	Out.vEffectDiffuse = Out.vDiffuse;
+	Out.vGlowFlag = g_vGlowFlag;
+
+
+
+
+	return Out;
+}
+
 technique11 DefaultTechnique
 {
 	pass Default
@@ -380,5 +419,16 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_LIGHTNING();
 	}
+	
 
+	pass DOMINION
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_None);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_DOMINION();
+	}
 }
