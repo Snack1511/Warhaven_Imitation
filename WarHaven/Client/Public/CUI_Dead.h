@@ -30,8 +30,7 @@ private:
 	enum DeadUI { DU_Profile, DU_EnemyName, DU_KillText, DU_End };
 	CUI_Object* m_pDeadUI[DU_End];
 
-	//_float m_fDeadUIEnableTime = 5.f;
-	_float m_fDeadUIEnableTime = 1.f;
+	_float m_fDeadUIEnableTime = 5.f;
 
 private:
 	void Create_DeadUI();

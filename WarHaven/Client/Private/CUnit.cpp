@@ -326,12 +326,12 @@ void CUnit::On_FallDamage(_float fFallPower)
 	//-0.6~ -3의 fFallPower
 
 	//프레임이 떨어질수록 -> fDT가 클수록 -> fFallPower는 작아져
-	_float fFinalFallPower = (fFallPower * 15.f) / fDT(0);
+	_float fFinalFallPower = (fFallPower) / fDT(0);
 
-	if (fFinalFallPower > -50.f)
+	if (fFinalFallPower > -13.f)
 		return;
 
-	m_tUnitStatus.fHP += fFinalFallPower;
+	m_tUnitStatus.fHP += fFinalFallPower * 15.f;
 
 	Shake_Camera(m_tUnitStatus.fCamPower, m_tUnitStatus.fCamTime);
 

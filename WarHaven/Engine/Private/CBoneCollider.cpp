@@ -38,7 +38,8 @@ void CBoneCollider::onShapeHit(const PxControllerShapeHit& hit)
 {
 	//CPhysXCharacter::onShapeHit(hit);
 
-	if (PxActorType::eRIGID_DYNAMIC == hit.actor->getType())
+	
+	if (hit.actor && PxActorType::eRIGID_DYNAMIC == hit.actor->getType())
 	{
 		static_cast<PxRigidDynamic*>(hit.actor)->setMaxLinearVelocity(1.f);
 		static_cast<PxRigidDynamic*>(hit.actor)->setMaxContactImpulse(1.f);

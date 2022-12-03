@@ -506,7 +506,7 @@ HRESULT CUnit_Valkyrie::Start()
 		"0B_L_Chain02"
 	);
 
-	m_pModelCom->Set_RimLightFlag(_float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 1.f));
+	//m_pModelCom->Set_RimLightFlag(_float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 1.f));
 
 	return S_OK;
 }
