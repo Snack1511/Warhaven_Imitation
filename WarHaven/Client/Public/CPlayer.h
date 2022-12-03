@@ -106,7 +106,7 @@ public:
 	void	Reserve_State(_uint eState);
 	void	Set_Default_ReserveState(_uint eClass, _uint eState);
 
-	void	SetUp_UnitColliders(_bool bPlayer);
+	void	SetUp_UnitColliders(_bool bBlueTeam);
 	void	SetUp_UnitHitStates();
 
 	void	Set_Postion(_float4 vPos);

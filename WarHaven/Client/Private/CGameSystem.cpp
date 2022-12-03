@@ -695,6 +695,10 @@ HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& ve
     for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
     {
         cout << "====== 팀 : " << i << endl;
+
+        if (m_pTeamConnector[i]->IsMainPlayerTeam())
+         cout << "MainPlayer Team " << i << endl;
+
         _uint iSquadCnt = 0;
         for (auto& elem : m_pTeamConnector[i]->m_SquadList)
         {
@@ -850,16 +854,16 @@ void CGameSystem::On_StartGame()
         if (dynamic_cast<CPlayerInfo_SandBack*>(elem.second))
             continue;
 
-        /*if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
-            continue;*/
-
         if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+            continue;
+
+      /*  if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
         {
             bTemp = !bTemp;
 
             if (bTemp)
                 continue;
-        }
+        }*/
         
 
         /* ai들은 랜덤 선택 함수 호출 */

@@ -412,14 +412,14 @@ void CPlayer::Set_Default_ReserveState(_uint eClass, _uint eState)
 	m_iReserveStateDefault[eClass] = eState;
 }
 
-void CPlayer::SetUp_UnitColliders(_bool bPlayer)
+void CPlayer::SetUp_UnitColliders(_bool bBlueTeam)
 {
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
 	{
 		if (m_pDefaultClass[i] == nullptr)
 			continue;
 
-		m_pDefaultClass[i]->SetUp_Colliders(bPlayer);
+		m_pDefaultClass[i]->SetUp_Colliders(bBlueTeam);
 	}
 
 	for (int i = 0; i < HERO_END; ++i)
@@ -427,7 +427,7 @@ void CPlayer::SetUp_UnitColliders(_bool bPlayer)
 		if (m_pHeroClass[i] == nullptr)
 			continue;
 
-		m_pHeroClass[i]->SetUp_Colliders(bPlayer);
+		m_pHeroClass[i]->SetUp_Colliders(bBlueTeam);
 	}
 
 }

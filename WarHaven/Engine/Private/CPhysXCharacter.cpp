@@ -136,9 +136,19 @@ void CPhysXCharacter::Tick()
 	//¶¥¿¡ ºÙÀº»óÈ²
 	if (m_bColGround)
 	{
+		/* ³«µ© ÆÇº° */
+		if (m_pPhysicsCom->Get_Physics().bAir == true)
+		{
+			if (fFallPower < 0.f)
+			{
+				m_pOwner->CallBack_CollisionEnter(nullptr, 0, 0, _float4(fFallPower, 0.f, 0.f));
+			}
+		}
+
 		//¶¥¿¡ ºÙÀ½
 		m_pPhysicsCom->Get_Physics().bAir = false;
 		m_fTimeAcc = 0.f;
+
 	}
 	else
 	{

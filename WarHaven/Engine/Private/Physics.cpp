@@ -141,8 +141,8 @@ _float CPhysics::Calculate_FreeFall()
 	}
 
 
-	if (fFreeFallPower <= -1.f)
-		fFreeFallPower = -1.f;
+	if (fFreeFallPower <= -3.f)
+		fFreeFallPower = -3.f;
 
 	return fFreeFallPower;
 }

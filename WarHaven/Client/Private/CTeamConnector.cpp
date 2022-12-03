@@ -60,14 +60,17 @@ void CTeamConnector::SetUp_TeamType()
        {
            if (m_bIsMainPlayerTeam)
            {
-
-               pPlayer.second->SetUp_UnitColliders(true);
            }
            else
            {
                pPlayer.second->Set_OutlineType(CPlayer::eENEMY);
-               pPlayer.second->SetUp_UnitColliders(false);
            }
+
+           if (m_eTeamType == eTEAM_TYPE::eBLUE)
+                pPlayer.second->SetUp_UnitColliders(true);
+           else
+               pPlayer.second->SetUp_UnitColliders(false);
+
 
 
            pPlayer.second->Get_PlayerInfo()->Set_TeamType(m_eTeamType);

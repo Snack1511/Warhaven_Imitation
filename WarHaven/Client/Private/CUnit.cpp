@@ -64,6 +64,12 @@ CUnit::~CUnit()
 
 void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	if (!pOtherObj)
+	{
+		//낙뎀
+		On_FallDamage(vHitPos.x);
+	}
+
 	/* 충돌한 대상이 Unit이 아니면 Return */
 	/* ================================================= */
 	CUnit* pOtherUnit = nullptr;
@@ -313,6 +319,36 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDm
 	}
 
 	return true;
+}
+
+void CUnit::On_FallDamage(_float fFallPower)
+{
+	//-0.6~ -3의 fFallPower
+
+	//프레임이 떨어질수록 -> fDT가 클수록 -> fFallPower는 작아져
+	_float fFinalFallPower = (fFallPower * 15.f) / fDT(0);
+
+	if (fFinalFallPower > -50.f)
+		return;
+
+	m_tUnitStatus.fHP += fFinalFallPower;
+
+	Shake_Camera(m_tUnitStatus.fCamPower, m_tUnitStatus.fCamTime);
+
+	if (m_tUnitStatus.fHP <= 0.f)
+	{
+		m_tUnitStatus.fHP = 0.f;
+		On_Die();
+	}
+	else if (m_tUnitStatus.fHP >= m_tUnitStatus.fMaxHP)
+	{
+		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
+	}
+
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Turn_BloodOverLay(m_tUnitStatus.fHP / m_tUnitStatus.fMaxHP);
+	}
 }
 
 void CUnit::On_Attack(CState* pState)
@@ -680,9 +716,9 @@ void CUnit::Enable_GroggyCollider(_bool bEnable)
 	}
 }
 
-void CUnit::SetUp_Colliders(_bool bPlayer)
+void CUnit::SetUp_Colliders(_bool bBlueTeam)
 {
-	COL_GROUP_CLIENT	eTeam = (bPlayer) ? COL_BLUETEAM : COL_REDTEAM;
+	COL_GROUP_CLIENT	eTeam = (bBlueTeam) ? COL_BLUETEAM : COL_REDTEAM;
 
 	UNIT_COLLIDERDESC tDesc;
 	tDesc.eColType = eTeam;

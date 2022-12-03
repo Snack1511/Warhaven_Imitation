@@ -59,6 +59,9 @@ private:
 	map<_hashcode, CCamera*>	m_mapLevelCam;
 
 private:
+	_bool			m_bOnceCheck = false;
+
+private:
 	_float4x4										m_matOrthoView;
 	_float4x4										m_matOrthoProj;
 

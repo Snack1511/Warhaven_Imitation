@@ -177,6 +177,8 @@ void CTrigger_Paden::Update_Conquered()
 			strName = "RED";
 
 		cout << m_strTriggerName << " : 점령 완료 by " << strName << endl;
+		if (m_pConqueredTeam->IsMainPlayerTeam())
+			cout << m_strTriggerName << " 메인플레이어 팀 점령 " << endl;
 #endif // _DEBUG
 
 		m_fConqueredTimeAcc = 0.f;
