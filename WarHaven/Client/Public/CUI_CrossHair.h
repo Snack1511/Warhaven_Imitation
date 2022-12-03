@@ -22,7 +22,8 @@ public:
 	virtual void OnDisable() override;
 
 public:
-	void Setactive_DefaultCrosshair(_bool value);
+	void SetActive_DefaultCrosshair(_bool value);
+	void SetActive_ArrowUI(_bool value);
 	void SetActive_LancerUI(_bool value);
 
 private:
@@ -40,6 +41,8 @@ private:
 
 	_float4 m_vArrowColor = _float4(1.f, 0.8f, 0.f, 1.f);
 
+	_uint m_iArrowIndex = 0;
+
 private:
 	void Create_ArrowUI();
 	void Init_ArrowUI(_uint iClass);
@@ -51,14 +54,6 @@ private:
 
 private:
 	void Create_LancerUI();
-
-private:
-	void DefaultCrosshair(_uint iIndex = 0);
-	void ArrowCrosshair();
-
-private:
-	void Ready_Texture();
-	void Ready_Crosshair();
 };
 
 END

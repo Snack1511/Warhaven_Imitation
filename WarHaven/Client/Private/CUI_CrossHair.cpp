@@ -34,9 +34,12 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
+	// 영웅 선택할 때 실행
 	Init_DefaultCrosshair();
+	Init_ArrowUI(CLASS_TYPE::ENGINEER);
 
-	Setactive_DefaultCrosshair(true);
+	SetActive_DefaultCrosshair(true);
+	SetActive_ArrowUI(true);
 
 	return S_OK;
 }
@@ -50,11 +53,12 @@ void CUI_Crosshair::OnDisable()
 {
 	__super::OnDisable();
 
-	Setactive_DefaultCrosshair(false);
+	SetActive_DefaultCrosshair(false);
+	SetActive_ArrowUI(false);
 	SetActive_LancerUI(false);
 }
 
-void CUI_Crosshair::Setactive_DefaultCrosshair(_bool value)
+void CUI_Crosshair::SetActive_DefaultCrosshair(_bool value)
 {
 	if (value == true)
 	{
@@ -68,6 +72,30 @@ void CUI_Crosshair::Setactive_DefaultCrosshair(_bool value)
 		for (int i = 0; i < CU_End; ++i)
 		{
 			DISABLE_GAMEOBJECT(m_pCrosshair[i]);
+		}
+	}
+}
+
+void CUI_Crosshair::SetActive_ArrowUI(_bool value)
+{
+	if (value == true)
+	{
+		for (int i = 0; i < AU_End; ++i)
+		{
+			for (int j = 0; j < m_iArrowIndex; ++j)
+			{
+				ENABLE_GAMEOBJECT(m_pArrArrowUI[i][j]);
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < AU_End; ++i)
+		{
+			for (int j = 0; j < m_iArrowIndex; ++j)
+			{
+				DISABLE_GAMEOBJECT(m_pArrArrowUI[i][j]);
+			}
 		}
 	}
 }
@@ -135,12 +163,12 @@ void CUI_Crosshair::Create_ArrowUI()
 
 		if (i == AU_BG)
 		{
-			m_pArrowUI[i]->Set_Color(m_vArrowColor);
+			m_pArrowUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.6f));
 			m_pArrowUI[i]->Set_Sort(0.5f);
 		}
 		else if (i == AU_Arrow)
 		{
-			m_pArrowUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.6f));
+			m_pArrowUI[i]->Set_Color(m_vArrowColor);
 			m_pArrowUI[i]->Set_Sort(0.49f);
 		}
 
@@ -159,13 +187,34 @@ void CUI_Crosshair::Create_ArrowUI()
 
 void CUI_Crosshair::Init_ArrowUI(_uint iClass)
 {
-	// 스파이크, 아처 60도 세개
-	if (iClass == CLASS_TYPE::SPEAR)
+	if (iClass == CLASS_TYPE::SPEAR || iClass == CLASS_TYPE::ARCHER)
 	{
+		m_iArrowIndex = 3;
 
 	}
+	else if (iClass == CLASS_TYPE::PRIEST || iClass == CLASS_TYPE::ENGINEER)
+	{
+		m_iArrowIndex = 2;
+	}
 
-	// 프리스트 엔지니어 좌우 두개
+	for (int i = 0; i < AU_End; ++i)
+	{
+		for (int j = 0; j < m_iArrowIndex; ++j)
+		{
+			_float fRotZ = 0.f;
+
+			if (m_iArrowIndex == 2)
+			{
+				fRotZ = -90.f - (j * 180.f);
+			}
+			else if (m_iArrowIndex == 3)
+			{
+				fRotZ = -120.f * j;
+			}
+
+			m_pArrArrowUI[i][j]->Set_RotationZ(fRotZ);
+		}
+	}
 }
 
 void CUI_Crosshair::Create_LancerUI()
