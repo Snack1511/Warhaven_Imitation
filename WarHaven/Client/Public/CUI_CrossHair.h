@@ -5,8 +5,6 @@ BEGIN(Client)
 
 class CUI_Crosshair final : public CUI_Wrapper
 {
-	enum WindowType { Point, Outline, ArrowBG, Arrow, GaugeBG, Gauge, Type_End };
-
 	DECLARE_PROTOTYPE(CUI_Crosshair);
 	DECLARE_GAMEOBJECT(CUI_Crosshair);
 
@@ -24,7 +22,7 @@ public:
 	virtual void OnDisable() override;
 
 public:
-	void Set_Crosshair(_uint iIndex);
+	void SetActive_LancerUI(_bool value);
 
 private:
 	enum CrosshairUI { CU_Point, CU_Outline, CU_End };
@@ -46,15 +44,14 @@ private:
 	void Init_ArrowUI(_uint iClass);
 
 private:
-	CUI_Object* m_Prototypes[Type_End] = {};
-	CUI_Object* m_arrCrosshair[4][Type_End] = {};
-
-	_bool bIsHero = false;
-	_uint m_iPrvCrosshair = 0;
-	_uint m_iCurCrosshair = 0;
+	enum LancerUI { LU_BG, LU_Gauge, LU_Full, LU_End };
+	CUI_Object* m_pLancerUI[LU_End];
+	CUI_Object* m_pArrLancerUI[LU_End][4];
 
 private:
+	void Create_LancerUI();
 
+private:
 	void DefaultCrosshair(_uint iIndex = 0);
 	void ArrowCrosshair();
 

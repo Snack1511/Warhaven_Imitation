@@ -20,20 +20,7 @@ HRESULT CUI_Crosshair::Initialize_Prototype()
 {
 	Create_Crosshair();
 	Create_ArrowUI();
-
-	Read_UI("Crosshair");
-
-	Ready_Texture();
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			m_arrCrosshair[i][j] = m_Prototypes[j]->Clone();
-		}
-	}
-
-	Ready_Crosshair();
+	Create_LancerUI();
 
 	return S_OK;
 }
@@ -47,89 +34,42 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
+	SetActive_LancerUI(true);
+
 	return S_OK;
 }
 
 void CUI_Crosshair::OnEnable()
 {
 	__super::OnEnable();
-
-	for (int j = 0; j < 4; ++j)
-	{
-		for (int i = 0; i < Type_End; ++i)
-		{
-			ENABLE_GAMEOBJECT(m_arrCrosshair[j][i]);
-		}
-	}
 }
 
 void CUI_Crosshair::OnDisable()
 {
 	__super::OnDisable();
-
-	for (int j = 0; j < 4; ++j)
-	{
-		for (int i = 0; i < Type_End; ++i)
-		{
-			DISABLE_GAMEOBJECT(m_arrCrosshair[j][i]);
-		}
-	}
 }
 
-void CUI_Crosshair::Set_Crosshair(_uint iIndex)
+void CUI_Crosshair::SetActive_LancerUI(_bool value)
 {
-	m_iPrvCrosshair = m_iCurCrosshair;
-	m_iCurCrosshair = iIndex;
-
-	for (int i = 0; i < 4; ++i)
+	if (value == true)
 	{
-		for (int j = 0; j < Type_End; ++j)
+		for (int i = 0; i < LU_End; ++i)
 		{
-			DISABLE_GAMEOBJECT(m_arrCrosshair[i][j]);
+			for (int j = 0; j < 4; ++j)
+			{
+				ENABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
+			}
 		}
 	}
-
-	switch (m_iCurCrosshair)
+	else
 	{
-	case WARRIOR:
-		DefaultCrosshair();
-		break;
-
-	case SPEAR:
-		DefaultCrosshair(3);
-		break;
-
-	case ARCHER:
-		ArrowCrosshair();
-		break;
-
-	case PALADIN:
-		DefaultCrosshair();
-		break;
-
-	case PRIEST:
-		DefaultCrosshair(2);
-		break;
-
-	case ENGINEER:
-		DefaultCrosshair(2);
-		break;
-
-	case FIONA:
-		DefaultCrosshair();
-		break;
-
-	case QANDA:
-		DefaultCrosshair(3);
-		break;
-
-	case HOEDT:
-		DefaultCrosshair();
-		break;
-
-	case LANCER:
-		DefaultCrosshair(4);
-		break;
+		for (int i = 0; i < LU_End; ++i)
+		{
+			for (int j = 0; j < 4; ++j)
+			{
+				DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
+			}
+		}
 	}
 }
 
@@ -197,7 +137,6 @@ void CUI_Crosshair::Create_ArrowUI()
 void CUI_Crosshair::Init_ArrowUI(_uint iClass)
 {
 	// 스파이크, 아처 60도 세개
-	// 레이븐
 	if (iClass == CLASS_TYPE::SPEAR)
 	{
 
@@ -206,36 +145,48 @@ void CUI_Crosshair::Init_ArrowUI(_uint iClass)
 	// 프리스트 엔지니어 좌우 두개
 }
 
+void CUI_Crosshair::Create_LancerUI()
+{
+	for (int i = 0; i < LU_End; ++i)
+	{
+		m_pLancerUI[i] = CUI_Object::Create();
+
+		m_pLancerUI[i]->Set_PosY(-100.f);
+		m_pLancerUI[i]->Set_Scale(35.f, 85.f);
+
+		if (i == LU_BG)
+		{
+			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowBG.png"));
+		}
+		else if (i == LU_Gauge)
+		{
+			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowGauge.png"));
+		}
+		else if (i == LU_Full)
+		{
+			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowFull.png"));
+		}
+
+		CREATE_GAMEOBJECT(m_pLancerUI[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_pLancerUI[i]);
+
+		for (int j = 0; j < 4; ++j)
+		{
+			m_pArrLancerUI[i][j] = m_pLancerUI[i]->Clone();
+
+			_float fPosX = -45.f + (j * 30.f);
+			m_pArrLancerUI[i][j]->Set_PosX(fPosX);
+
+			CREATE_GAMEOBJECT(m_pArrLancerUI[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
+		}
+	}
+}
+
 void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 {
-	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Point]);
-	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Outline]);
-
-	GET_COMPONENT_FROM(m_arrCrosshair[0][Point], CTexture)->Set_CurTextureIndex(1);
-	GET_COMPONENT_FROM(m_arrCrosshair[0][Outline], CTexture)->Set_CurTextureIndex(1);
-
-	// 기본 비활성화
-	ENABLE_GAMEOBJECT(m_arrCrosshair[0][GaugeBG]);
-	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Gauge]);
-
-	_float fRotZ = 180.f;
-	m_arrCrosshair[0][GaugeBG]->Set_RotationZ(fRotZ);
-	m_arrCrosshair[0][Gauge]->Set_RotationZ(fRotZ);
-
-	for (_uint i = 0; i < iIndex; ++i)
+	/*for (_uint i = 0; i < iIndex; ++i)
 	{
-		ENABLE_GAMEOBJECT(m_arrCrosshair[i][ArrowBG]);
-		ENABLE_GAMEOBJECT(m_arrCrosshair[i][Arrow]);
-
-		GET_COMPONENT_FROM(m_arrCrosshair[i][ArrowBG], CTexture)->Set_CurTextureIndex(0);
-		GET_COMPONENT_FROM(m_arrCrosshair[i][Arrow], CTexture)->Set_CurTextureIndex(0);
-
-		m_arrCrosshair[i][Arrow]->Set_Pos(0.f, 0.f);
-		m_arrCrosshair[i][ArrowBG]->Set_Pos(0.f, 0.f);
-
-		m_arrCrosshair[i][Arrow]->Set_Scale(100.f);
-		m_arrCrosshair[i][ArrowBG]->Set_Scale(100.f);
-
 		if (iIndex == 2)
 		{
 			_float fRotZ = -90.f - (i * 180.f);
@@ -249,100 +200,5 @@ void CUI_Crosshair::DefaultCrosshair(_uint iIndex)
 			m_arrCrosshair[i][Arrow]->Set_RotationZ(fRotZ);
 			m_arrCrosshair[i][ArrowBG]->Set_RotationZ(fRotZ);
 		}
-
-		if (iIndex == 4)
-		{
-			_float fPosX = -50.f + (i * 30.f);
-			_float fPosY = -100.f;
-
-			_float fScaleX = 35.f;
-			_float fScaleY = 85.f;
-
-			m_arrCrosshair[i][Arrow]->Set_Pos(fPosX, fPosY);
-			m_arrCrosshair[i][ArrowBG]->Set_Pos(fPosX, fPosY);
-
-			m_arrCrosshair[i][Arrow]->Set_Scale(fScaleX, fScaleY);
-			m_arrCrosshair[i][ArrowBG]->Set_Scale(fScaleX, fScaleY);
-
-			m_arrCrosshair[i][Arrow]->Set_RotationZ(0.f);
-			m_arrCrosshair[i][ArrowBG]->Set_RotationZ(0.f);
-
-			GET_COMPONENT_FROM(m_arrCrosshair[i][ArrowBG], CTexture)->Set_CurTextureIndex(1);
-			GET_COMPONENT_FROM(m_arrCrosshair[i][Arrow], CTexture)->Set_CurTextureIndex(2);
-		}
-	}
-}
-
-void CUI_Crosshair::ArrowCrosshair()
-{
-	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Point]);
-	GET_COMPONENT_FROM(m_arrCrosshair[0][Point], CTexture)->Set_CurTextureIndex(1);
-
-	// 타겟팅 중이면 포인터 변경
-	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Point]);
-	GET_COMPONENT_FROM(m_arrCrosshair[0][Point], CTexture)->Set_CurTextureIndex(0);
-
-	// 기본 비활성화
-	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Outline]);
-	GET_COMPONENT_FROM(m_arrCrosshair[0][Outline], CTexture)->Set_CurTextureIndex(0);
-
-	ENABLE_GAMEOBJECT(m_arrCrosshair[0][GaugeBG]);
-	ENABLE_GAMEOBJECT(m_arrCrosshair[0][Gauge]);
-
-	_float fRotZ = 180.f;
-	m_arrCrosshair[0][GaugeBG]->Set_RotationZ(fRotZ);
-	m_arrCrosshair[0][Gauge]->Set_RotationZ(fRotZ);
-
-	for (int i = 0; i < 3; ++i)
-	{
-		ENABLE_GAMEOBJECT(m_arrCrosshair[i][ArrowBG]);
-		ENABLE_GAMEOBJECT(m_arrCrosshair[i][Arrow]);
-
-		_float fRotZ = -120.f * i;
-
-		m_arrCrosshair[i][Arrow]->Set_RotationZ(fRotZ);
-		m_arrCrosshair[i][ArrowBG]->Set_RotationZ(fRotZ);
-	}
-}
-
-void CUI_Crosshair::Ready_Texture()
-{
-	m_Prototypes[Point] = m_pUIMap[TEXT("Crosshair_Point")];
-	m_Prototypes[Outline] = m_pUIMap[TEXT("Crosshair_Outline")];
-	m_Prototypes[ArrowBG] = m_pUIMap[TEXT("Crosshair_ArrowBG")];
-	m_Prototypes[Arrow] = m_pUIMap[TEXT("Crosshair_Arrow")];
-	m_Prototypes[GaugeBG] = m_pUIMap[TEXT("Crosshair_GaugeBG")];
-	m_Prototypes[Gauge] = m_pUIMap[TEXT("Crosshair_Gauge")];
-
-	for (int i = 0; i < Type_End; ++i)
-	{
-		GET_COMPONENT_FROM(m_Prototypes[i], CTexture)->Remove_Texture(0);
-	}
-
-	Read_Texture(m_Prototypes[Point], "/HUD/Crosshair", "Point");
-	Read_Texture(m_Prototypes[Outline], "/HUD/Crosshair", "Outline");
-	Read_Texture(m_Prototypes[ArrowBG], "/HUD/Crosshair", "Arrow");
-	Read_Texture(m_Prototypes[Arrow], "/HUD/Crosshair", "Arrow");
-	Read_Texture(m_Prototypes[GaugeBG], "/HUD/Crosshair", "Gauge");
-	Read_Texture(m_Prototypes[Gauge], "/HUD/Crosshair", "Gauge");
-}
-
-void CUI_Crosshair::Ready_Crosshair()
-{
-	for (_uint i = 0; i < Type_End; ++i)
-	{
-		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_Prototypes[i]);
-	}
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			CREATE_GAMEOBJECT(m_arrCrosshair[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_arrCrosshair[i][j]);
-
-			m_arrCrosshair[i][j]->Set_Sort(0.3f);
-		}
-	}
+	}*/
 }
