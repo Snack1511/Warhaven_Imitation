@@ -124,7 +124,15 @@ _float4 CResource_Material::Check_FileName(string strName)
 		//m_tMatDesc.TexturePaths[aiTextureType_NORMALS] = "../bin/resources/textures/AnimModelTextures/T_Face_Asian_01_N.dds";
 
 	}
-
+	else if (strName == "MI_Eyelash_Fiona")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Eyelash_01.dds";
+	}
+	else if (strName == "MI_Face_Fiona")
+	{
+		//vReturnColor = _float4(0.002604f, 0.001848f, 0.001824f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Face_Fiona_B.dds";
+	}
 	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/T_Fiona0004_Body_A00_B.dds")
 	{
 		//vReturnColor = _float4(0.002604f, 0.001848f, 0.001824f, 1.f);

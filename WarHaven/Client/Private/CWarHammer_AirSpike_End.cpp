@@ -68,7 +68,7 @@ HRESULT CWarHammer_AirSpike_End::Initialize()
 
 	Add_KeyFrame(12, 0);
 	Add_KeyFrame(30, 1);
-	Add_KeyFrame(35, 2);
+	Add_KeyFrame(45, 2);
 
 	// return __super::Initialize();
 	return S_OK;
