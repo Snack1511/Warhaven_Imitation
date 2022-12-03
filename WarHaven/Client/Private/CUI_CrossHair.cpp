@@ -34,7 +34,9 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
-	SetActive_LancerUI(true);
+	Init_DefaultCrosshair();
+
+	Setactive_DefaultCrosshair(true);
 
 	return S_OK;
 }
@@ -47,6 +49,27 @@ void CUI_Crosshair::OnEnable()
 void CUI_Crosshair::OnDisable()
 {
 	__super::OnDisable();
+
+	Setactive_DefaultCrosshair(false);
+	SetActive_LancerUI(false);
+}
+
+void CUI_Crosshair::Setactive_DefaultCrosshair(_bool value)
+{
+	if (value == true)
+	{
+		for (int i = 0; i < CU_End; ++i)
+		{
+			ENABLE_GAMEOBJECT(m_pCrosshair[i]);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < CU_End; ++i)
+		{
+			DISABLE_GAMEOBJECT(m_pCrosshair[i]);
+		}
+	}
 }
 
 void CUI_Crosshair::SetActive_LancerUI(_bool value)

@@ -22,6 +22,7 @@ public:
 	virtual void OnDisable() override;
 
 public:
+	void Setactive_DefaultCrosshair(_bool value);
 	void SetActive_LancerUI(_bool value);
 
 private:
