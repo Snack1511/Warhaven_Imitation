@@ -204,6 +204,7 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 
 	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
 
+	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(iEventNum);
 }
 
 void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
@@ -304,8 +305,8 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		//CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
 
+	//dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);
-	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(eClass);
 }
 
@@ -526,7 +527,7 @@ void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 			}
 		}
 
-		dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+		// dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
 		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
 		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
 		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();

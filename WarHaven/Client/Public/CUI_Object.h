@@ -67,6 +67,7 @@ public:	// Lerp
 	void DoMoveX(_float fMoveValue, _float fDuration);
 
 	void DoScale(_float fScaleValue, _float fDuration);
+	void DoScaleX(_float fScaleValue, _float fDuration);
 
 	void Fade_Font(_bool value, _float fDuration);
 
@@ -103,6 +104,7 @@ private:	// Lerp
 	_float4 m_vOriginScale;
 	_float m_fScaleAccTime = 0.f;
 	_bool m_bIsDoScale = false;
+	_bool m_bIsDoScaleX = false;
 
 	_float m_fMoveDuration = 0.f;
 	_float m_fScaleDuration = 0.f;

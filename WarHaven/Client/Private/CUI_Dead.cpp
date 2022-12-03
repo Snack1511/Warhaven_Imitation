@@ -32,9 +32,6 @@ HRESULT CUI_Dead::Start()
 
 	Set_FadeDeadUI();
 
-	GET_COMPONENT_FROM(m_pRevivalUI[RU_Bar], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
-	GET_COMPONENT_FROM(m_pRevivalUI[RU_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_Dead::Set_Shader_RevivalBar, this, placeholders::_1, "g_fValue");
-
 	return S_OK;
 }
 
@@ -53,16 +50,6 @@ void CUI_Dead::OnEnable()
 void CUI_Dead::OnDisable()
 {
 	__super::OnDisable();
-
-	for (int i = 0; i < DU_End; ++i)
-	{
-		Disable_Fade(m_pDeadUI[i], 1.f);
-	}
-}
-
-void CUI_Dead::Set_Shader_RevivalBar(CShader* pShader, const char* pConstName)
-{
-	pShader->Set_RawValue("g_fValue", &m_fRevivalTimeRatio, sizeof(_float));
 }
 
 void CUI_Dead::Enable_DeadUI()
@@ -77,16 +64,19 @@ void CUI_Dead::My_Tick()
 	if (Is_Valid())
 	{
 		m_fAccTime += fDT(0);
-		if (m_fAccTime > 5.f)
+		if (m_fAccTime > m_fDeadUIEnableTime)
 		{
 			m_fAccTime = 0.f;
 
-			DISABLE_GAMEOBJECT(this);
+			for (int i = 0; i < DU_End; ++i)
+			{
+				Disable_Fade(m_pDeadUI[i], 1.f);
+			}
 
-			//for (int i = 0; i < RU_End; ++i)
-			//{
-			//	ENABLE_GAMEOBJECT(m_pRevivalUI[i]);
-			//}
+			// for (int i = 0; i < RU_End; ++i)
+			// {
+			// 	ENABLE_GAMEOBJECT(m_pRevivalUI[i]);
+			// }
 
 			PLAYER->Get_FollowCam()->Set_FollowTarget(PLAYER);
 		}
@@ -94,17 +84,31 @@ void CUI_Dead::My_Tick()
 
 	//if (m_pRevivalUI[RU_Bar])
 	//{
-	//	if (m_pRevivalUI[RU_Bar]->Is_Valid())
+	//	if (!m_bAbleRevival)
 	//	{
-	//		m_fRevivalTime += fDT(0);
-	//		m_fRevivalTimeRatio = m_fRevivalTime / m_fMaxRevivalTime;
-	//
-	//		if (m_fRevivalTimeRatio >= 1.f)
+	//		if (!m_pRevivalUI[RU_Bar]->Is_Valid())
 	//		{
-	//			m_fRevivalTimeRatio = 1.f;
-	//
-	//			cout << "소생 불가" << endl;
+	//			ENABLE_GAMEOBJECT(m_pRevivalUI[RU_Bar]);
 	//		}
+	//
+	//		m_bAbleRevival = true;
+	//
+	//		m_pRevivalUI[RU_Bar]->Set_ScaleX(306.f);
+	//		m_pRevivalUI[RU_Bar]->DoScaleX(-305.f, m_fRevivalTime);
+	//	}
+	//
+	//	_float fScaleX = m_pRevivalUI[RU_Bar]->Get_Scale().x;
+	//	cout << fScaleX << endl;
+	//	if (fScaleX <= 1.f)
+	//	{
+	//		m_bAbleRevival = false;
+	//
+	//		for (int i = 0; i < RU_End; ++i)
+	//		{
+	//			DISABLE_GAMEOBJECT(m_pRevivalUI[i]);
+	//		}
+	//
+	//		DISABLE_GAMEOBJECT(this);
 	//	}
 	//}
 }

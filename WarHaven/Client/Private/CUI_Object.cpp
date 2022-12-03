@@ -166,6 +166,16 @@ void CUI_Object::DoScale(_float fScaleValue, _float fDuration)
 	m_fScaleDuration = fDuration;
 }
 
+void CUI_Object::DoScaleX(_float fScaleValue, _float fDuration)
+{
+	m_bIsDoScaleX = true;
+
+	m_vOriginScale.x = Get_Scale().x;
+
+	m_fScaleValue = fScaleValue;
+	m_fScaleDuration = fDuration;
+}
+
 void CUI_Object::Fade_Font(_bool value, _float fDuration)
 {
 	m_bIsFontFade = true;
@@ -433,6 +443,28 @@ void CUI_Object::DoScale()
 
 			m_fScaleAccTime = 0.f;
 			m_bIsDoScale = false;
+		}
+	}
+
+	if (m_bIsDoScaleX)
+	{
+		m_fScaleAccTime += fDT(0);
+
+		_float vCurScaleX = Get_Scale().x;
+
+		_float fScaleValueX = (m_fScaleValue / m_fScaleDuration) * fDT(0);
+
+		vCurScaleX += fScaleValueX;
+
+		Set_ScaleX(vCurScaleX);
+
+		if (m_fScaleAccTime >= m_fScaleDuration)
+		{
+			_float fResultScaleX = m_vOriginScale.x + m_fScaleValue;
+			Set_ScaleX(fResultScaleX);
+
+			m_fScaleAccTime = 0.f;
+			m_bIsDoScaleX = false;
 		}
 	}
 }
