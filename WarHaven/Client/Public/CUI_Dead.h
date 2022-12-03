@@ -42,8 +42,8 @@ private:
 
 	CUI_Object* m_pRevivalUI[RU_End];
 
-	_float m_fMaxRevivalTime = 1.f;
-	_float m_fRevivalTime = 0.f;
+	_float m_fRevivalTime = 1.f;
+	_bool m_bAbleRevival = false;
 
 private:
 	void Create_RevivalUI();
