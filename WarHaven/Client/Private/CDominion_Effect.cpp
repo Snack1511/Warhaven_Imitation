@@ -136,5 +136,4 @@ void CDominion_Effect::My_LateTick()
 	if (fabs(m_fCurUVPlusY) >= 1.f)
 		m_fCurUVPlusY = 0.f;
 
-
 }
