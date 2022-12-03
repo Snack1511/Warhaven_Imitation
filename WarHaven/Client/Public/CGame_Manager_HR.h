@@ -17,8 +17,6 @@ private:
 public:
 	LEVEL_TYPE_CLIENT Get_CurrentLevel() { return m_eCurrentLV; }
 	void Set_CurrentLevel(LEVEL_TYPE_CLIENT eLevel) { m_eCurrentLV = eLevel; }
-	_uint Get_TeamCnt(eTEAM_TYPE eType) { return m_iTeamCnt[(_uint)eType]; }
-	void Set_TeamCnt(_uint* pTeamCnt);
 
 public:
 	HRESULT	Initialize();
@@ -26,6 +24,5 @@ public:
 
 private:
 	LEVEL_TYPE_CLIENT m_eCurrentLV = LEVEL_END;
-	_uint m_iTeamCnt[(_uint)eTEAM_TYPE::eCOUNT] = {};
 };
 END

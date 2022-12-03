@@ -20,7 +20,6 @@
 
 #include "CGameSystem.h"
 #include "CUI_Cursor.h"
-#include "CGame_Manager_HR.h"
 
 IMPLEMENT_SINGLETON(CMainApp);
 
@@ -131,8 +130,6 @@ void CMainApp::Release()
 	CUser::Get_Instance()->Destroy_Instance();
 
 	CGameSystem::Get_Instance()->Destroy_Instance();
-
-	CGame_Manager_HR::Get_Instance()->Destroy_Instance();
 
 
 #ifdef _DEBUG
