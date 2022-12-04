@@ -85,7 +85,6 @@ protected:
 	STATE_TYPE			m_eIdleState = STATE_END;
 
 
-
 protected:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 

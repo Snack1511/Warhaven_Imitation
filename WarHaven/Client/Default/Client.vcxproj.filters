@@ -1543,6 +1543,219 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect\07. Dominion_Effect">
       <UniqueIdentifier>{c6451077-b720-4845-bb58-1324bc71fd00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer">
+      <UniqueIdentifier>{1d5f4498-7a6e-40d0-b77c-f5c4f5a85fdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\01. Idle">
+      <UniqueIdentifier>{0d3d1918-7111-4c27-9d6e-ff2f8b1f62de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\02. Walk">
+      <UniqueIdentifier>{fe05e012-3a3c-43f1-af4c-ac6142a1370e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run">
+      <UniqueIdentifier>{f18f28d7-b9aa-49a8-8961-5f481f0bb807}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack">
+      <UniqueIdentifier>{b97d43e1-e9d7-4266-867b-82d386955929}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump">
+      <UniqueIdentifier>{907bef2c-da66-4a7c-888a-0b50cca715ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint">
+      <UniqueIdentifier>{5ef62562-dfb5-48cb-a749-6226d95d013e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\07. Guard">
+      <UniqueIdentifier>{57fd9af4-950e-482d-901c-14420e8e64f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit">
+      <UniqueIdentifier>{b709a349-680d-4ea3-a605-073e7b82fd4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\09. Stop">
+      <UniqueIdentifier>{effbf30e-adb3-4775-94fe-64c8d1c8878d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\01. Idle\01. Right">
+      <UniqueIdentifier>{6df5f0bd-e0d5-4b45-a104-718bac1bca4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\01. Idle\02. Left">
+      <UniqueIdentifier>{e5f568e4-5d1b-4b0b-93fa-269dde009ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master">
+      <UniqueIdentifier>{51ce5dc3-5e64-4c09-838f-cca03ce3e41b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\01. Idle">
+      <UniqueIdentifier>{7653a03a-a0ec-4e62-9373-0acb9d80a0b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\02. Walk">
+      <UniqueIdentifier>{e7969ab1-8706-43d5-a628-1967597d1ebe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\03. Run">
+      <UniqueIdentifier>{ab6e204a-30a0-49cb-9cb5-1516c07609b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\04. Attack">
+      <UniqueIdentifier>{b6a6d885-8e1b-40d5-8837-6b50f9dd2825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\05. Jump">
+      <UniqueIdentifier>{c696d672-4062-4882-b399-b1980597cb78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\06. Sprint">
+      <UniqueIdentifier>{87338678-4c30-45e6-92ac-8c3bf3d7fafd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\07. Guard">
+      <UniqueIdentifier>{06c2dc76-e933-41ab-aa50-de623909b2bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\08. Hit">
+      <UniqueIdentifier>{88b32904-435f-4a6d-bc79-611dc226f45e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\09. Stop">
+      <UniqueIdentifier>{f653c319-6173-4e33-a1a2-1568f44f88d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\02. Walk\01. Right">
+      <UniqueIdentifier>{9f72236b-e3a3-47be-8061-eff6982c9fb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\02. Walk\02. Left">
+      <UniqueIdentifier>{cc22da20-08f1-49ab-8ae6-f1f79eb9ba62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\01. Begin">
+      <UniqueIdentifier>{814fd452-57bc-400d-8805-875e6d4be57b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\01. Begin\01. Right">
+      <UniqueIdentifier>{8ce0c520-9138-4382-ab61-928d433690be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\01. Begin\02. Left">
+      <UniqueIdentifier>{895744b2-5e8c-43b9-9b7a-fdc3b600f704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\02. Loop">
+      <UniqueIdentifier>{4e3fcd87-837b-440b-9e6d-a6e52a58d36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\02. Loop\01. Right">
+      <UniqueIdentifier>{95bfd0d7-27ef-4742-9f28-d3b630663800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\02. Loop\02. Left">
+      <UniqueIdentifier>{7561b04b-d6de-4f5b-99b0-4a64639ce374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\02. Fall">
+      <UniqueIdentifier>{a33f3274-8788-42e2-8632-ffcc2f9b172a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\03. Land">
+      <UniqueIdentifier>{2efa2770-9b0a-4e04-8d3d-d8429d9afdb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\02. Fall\01. Right">
+      <UniqueIdentifier>{34567616-5d55-481d-813f-8480b43b13b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\02. Fall\02. Left">
+      <UniqueIdentifier>{b13401b6-8fb0-4aa1-8a6e-e73af2db5808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\03. Land\01. Right">
+      <UniqueIdentifier>{ef579126-9d3a-45b7-973a-9517bc18ca3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\03. Land\02. Left">
+      <UniqueIdentifier>{5a16268b-23dc-4625-9a60-a2a871be07bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\01. Jump">
+      <UniqueIdentifier>{8ba1fae7-fe0e-4fce-9795-ec332f057daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\02. Run">
+      <UniqueIdentifier>{ee80d267-f8c2-458b-82c3-4626d59f68eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\00. Hit">
+      <UniqueIdentifier>{65053c2d-962a-4e58-8715-b699b4cfa46a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\01. GuardHit">
+      <UniqueIdentifier>{7a266a12-19bc-4d30-a5ac-9633be0e10a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\02. Groggy">
+      <UniqueIdentifier>{1eada134-8cca-4584-b461-64e353be30b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\03. Sting">
+      <UniqueIdentifier>{aafc3176-c6ed-40b1-bd83-ad34b7f77476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\04. GuardCancel">
+      <UniqueIdentifier>{d2fc6169-6f06-4c60-9eb7-d99dda32beff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\05. FlyHit">
+      <UniqueIdentifier>{36c43df9-757d-4c48-843d-273baa7164b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\09. Stop\01. Right">
+      <UniqueIdentifier>{2193f451-368e-4b68-97e5-8a52c51257e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\09. Stop\02. Left">
+      <UniqueIdentifier>{11b0a646-5d94-44b0-a395-c972d2cff5e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\01. Jump">
+      <UniqueIdentifier>{bde768f9-8fff-4921-a8d3-37b3cbb509bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\01. Jump\01. Right">
+      <UniqueIdentifier>{cc55f389-bafc-49bc-994a-0096342600d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\01. Jump\02. Left">
+      <UniqueIdentifier>{2bfc7568-35ed-4077-a319-f5696d4a0e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default">
+      <UniqueIdentifier>{d086a430-ed0f-4d4d-90af-a8ffe648d216}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default\01. Begin">
+      <UniqueIdentifier>{d8b83163-eb06-49e3-bbab-9c5898d85960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default\02. Aiming">
+      <UniqueIdentifier>{2763ec4f-86f6-4327-a062-73e0cb3fdb1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default\03. Shoot">
+      <UniqueIdentifier>{f8e8ae61-edcd-4843-a316-2b4001fa0a11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping">
+      <UniqueIdentifier>{e2e368f5-6b3f-4ca0-9930-ea4555050d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping\01. Begin">
+      <UniqueIdentifier>{c204826b-c813-46e0-96ae-bcca50929373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping\02. Aiming">
+      <UniqueIdentifier>{92c6ccb2-8231-4515-ba5f-f5f35b0dcb81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping\03. Shoot">
+      <UniqueIdentifier>{cda86e43-8701-416b-a896-993c29be4154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\04. Cancel">
+      <UniqueIdentifier>{3f107a48-ff5a-4f43-96c5-be73ff2908f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison">
+      <UniqueIdentifier>{24e1246f-d0e2-4bb1-9aca-44e3b04db129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison\01. Begin">
+      <UniqueIdentifier>{f1ced252-a4d7-4664-8e34-ebee5580420b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison\02. Aiming">
+      <UniqueIdentifier>{870d42ec-f332-4794-ba25-79fd841a641d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison\03. Shoot">
+      <UniqueIdentifier>{3ffc33d9-f3ff-4028-b73d-1cd3e0841822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\03. End">
+      <UniqueIdentifier>{520061a9-4d44-4fb9-9b42-54b57f31e5af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\02. Run\01. Begin">
+      <UniqueIdentifier>{730b4fc2-c1ae-4c68-af8f-97af0202a762}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\02. Run\02. Loop">
+      <UniqueIdentifier>{197d8010-690b-4b1f-84b8-3f62bbed3067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\01. Jump\02. Fall">
+      <UniqueIdentifier>{d3723a57-9f5b-4c6e-9a62-b4f31f4b1a65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\01. Jump\01. Begin">
+      <UniqueIdentifier>{6ca80c20-e895-47c1-a1b2-2fdabfe8cadd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\05. ClawAttack">
+      <UniqueIdentifier>{be9a5a34-834e-4c1e-93fd-16705d261ad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\07. Guard\01. Guard">
+      <UniqueIdentifier>{0ccd71a9-e2bc-482c-a900-90587bbc9196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\07. Guard\02. Cancel">
+      <UniqueIdentifier>{4820fe83-e6ef-4d3b-a776-c15e18f5ab00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\10. Bounce">
+      <UniqueIdentifier>{5f15983c-444b-4bbe-9d4b-2c5a35ebb14f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2751,6 +2964,147 @@
     <ClInclude Include="..\Public\CDominion_Effect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\07. Dominion_Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\01. Idle\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\01. Idle\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Archer_Master_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\01. Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Archer_Master_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\01. Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\02. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\02. Walk\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\02. Walk\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Archer_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Archer_Begin_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\01. Begin\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Archer_Begin_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\01. Begin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\02. Loop\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\02. Loop\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\01. Jump\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\01. Jump\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Archer_Fall_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\02. Fall\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Archer_Fall_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\02. Fall\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Archer_Land_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\03. Land\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Archer_Land_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\03. Land\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\09. Stop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\09. Stop\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\09. Stop\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Attack_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Aiming.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default\02. Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Shoot.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Attack_Cancel.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\04. Cancel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Aiming_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping\02. Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Attack_Begin_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Shoot_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Aiming_Poison.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison\02. Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Attack_Begin_Poison.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Shoot_Poison.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_End_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Loop_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Begin_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_Fall_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\01. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Fly_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\05. FlyHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Groggy_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\02. Groggy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_GuardHit_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\01. GuardHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Sting_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\03. Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\00. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Loop_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\07. Guard\01. Guard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Cancel_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\07. Guard\02. Cancel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CArcher_ClawAttack.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\05. ClawAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\10. Bounce</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3939,6 +4293,147 @@
     </ClCompile>
     <ClCompile Include="..\Private\CDominion_Effect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\07. Dominion_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\01. Idle\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\01. Idle\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Archer_Master_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\01. Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Archer_Master_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\99. Master\01. Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\02. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\02. Walk\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\02. Walk\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Archer_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Archer_Begin_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\01. Begin\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Archer_Begin_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\01. Begin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\02. Loop\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\02. Loop\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\03. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\01. Jump\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\01. Jump\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Archer_Fall_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\02. Fall\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Archer_Fall_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\02. Fall\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Archer_Land_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\03. Land\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Archer_Land_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\05. Jump\03. Land\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\09. Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\09. Stop\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\09. Stop\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Attack_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Aiming.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default\02. Aiming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Shoot.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\01. Default\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Attack_Cancel.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\04. Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Aiming_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping\02. Aiming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Attack_Begin_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Shoot_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\02. Sniping\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Aiming_Poison.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison\02. Aiming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Attack_Begin_Poison.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Shoot_Poison.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\03. Poison\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\01. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_End_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Begin_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_Fall_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Loop_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\06. Sprint\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Fly_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\05. FlyHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Groggy_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\02. Groggy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_GuardHit_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\01. GuardHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Sting_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\03. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\08. Hit\00. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Loop_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\07. Guard\01. Guard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Cancel_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\07. Guard\02. Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_ClawAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\05. ClawAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\10. Bounce</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -34,6 +34,8 @@ public:
 
 	void	On_FixedTarget(_bool bActivate, class CUnit* pLockedTarget);
 
+	void	Start_FOVLerp(_float fTargetFOV);
+
 public:
 	// CCamera을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;

@@ -96,6 +96,12 @@ void CCamera_Follow::On_FixedTarget(_bool bActivate, CUnit* pLockedTarget)
 	m_pFollowScript->On_FixedTarget(bActivate, pLockedTarget);
 }
 
+void	CCamera_Follow::Start_FOVLerp(_float fTargetFOV)
+{
+	m_pFollowScript->Start_FOVLerp(fTargetFOV);
+}
+
+
 HRESULT CCamera_Follow::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();

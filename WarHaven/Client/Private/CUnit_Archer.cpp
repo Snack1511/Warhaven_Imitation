@@ -50,7 +50,7 @@ void CUnit_Archer::On_Die()
 
 	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
 
-	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_R_WP1")->Get_BoneMatrix();
+	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_L_WP1")->Get_BoneMatrix();
 	_float4 vBonePos = matWeapon.XMLoad().r[3];
 	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
 
@@ -88,7 +88,6 @@ void CUnit_Archer::SetUp_Colliders(_bool bPlayer)
 		{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
 	};
 
-	//SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_COM"));
 	SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
 
 	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
@@ -109,31 +108,23 @@ void CUnit_Archer::SetUp_Colliders(_bool bPlayer)
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
 
 
-	const _uint iWeaponSphereNum = 6;
+	const _uint iWeaponSphereNum = 2;
 
-	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
-
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
+	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum] = 
 	{
-		tWeaponUnitColDesc[i].fRadius = 0.2f;
-		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
-		tWeaponUnitColDesc[i].eColType = eAttack;
-	}
+		//Radius,	vOffsetPos.		eColType
+		{0.4f, _float4(0.f, 5.f, 0.f),	eAttack },
+		{0.4f, _float4(0.f, 0.f, 0.f),	eAttack },
+	};
+
 
 	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = eGuardBreak;
+	//for (_uint i = 0; i < iWeaponSphereNum; ++i)
+	//	tWeaponUnitColDesc[i].eColType = eGuardBreak;
 
-	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = eFlyAttack;
-
-	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-	
-
+	//SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 }
 
@@ -143,13 +134,13 @@ void	CUnit_Archer::SetUp_HitStates(UNIT_TYPE eUnitType)
 	switch (eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
-		m_tHitType.eHitState = STATE_HIT_WARHAMMER;
-		m_tHitType.eGuardState = STATE_GUARDHIT_WARHAMMER;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARHAMMER;
-		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARHAMMER;
-		m_tHitType.eStingHitState = STATE_STINGHIT_WARHAMMER;
-		m_tHitType.eFlyState = STATE_FLYHIT_WARHAMMER;
-		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
+		m_tHitType.eHitState = STATE_HIT_ARCHER;
+		m_tHitType.eGuardState = STATE_GUARDHIT_ARCHER;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_ARCHER;
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_ARCHER;
+		m_tHitType.eStingHitState = STATE_STINGHIT_ARCHER;
+		m_tHitType.eFlyState = STATE_FLYHIT_ARCHER;
+		m_tHitType.eBounce = STATE_BOUNCE_ARCHER;
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_TG:
@@ -182,6 +173,7 @@ void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
 
+
 	switch (m_eCurState)
 	{
 	case STATE_ATTACK_HORIZONTALUP_L:
@@ -210,7 +202,7 @@ void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
 			break;
 
-	case STATE_ATTACK_HORIZONTALDOWN_R:
+	case STATE_ATTACK_SWING_ARCHER:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
 		break;
 
@@ -287,16 +279,21 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
 
+
+	//GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1")->Set_OffsetMatrix(DefaultMatrix);
+	//GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1")->Set_OffsetMatrix(DefaultMatrix);
+
+
 	m_fCoolTime[SKILL1] = 3.f;
 	m_fCoolTime[SKILL2] = 5.f;
-	m_fCoolTime[SKILL3] = 0.f;
+	m_fCoolTime[SKILL3] = 60.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 
 	m_fCoolAcc[SKILL3] = 0.f;
 
 
-	m_tUnitStatus.eClass = WARRIOR;
+	m_tUnitStatus.eClass = ARCHER;
 
 
 
@@ -356,9 +353,15 @@ void CUnit_Archer::OnDisable()
 	__super::OnDisable();
 }
 
+void CUnit_Archer::My_Tick()
+{
+	__super::My_Tick();
+}
+
 void CUnit_Archer::My_LateTick()
 {
 	__super::My_LateTick();
+
 
 	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
 		return;

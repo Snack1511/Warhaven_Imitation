@@ -111,7 +111,7 @@ void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	wstring wstrModeWeapon_L[CLASS_DEFAULT_END] = {
 	L"", // WARRIOR
 	L"",
-	L"../bin/resources/meshes/weapons/longBow/SK_WP_LongBow0005_A00.fbx",
+	L"../bin/resources/meshes/weapons/longBow/SM_Bolt.fbx",
 	L"../bin/resources/meshes/Weapons/KiteShield/SM_WP_KiteShield0001_A00.fbx",
 	L"",
 	L"" // 
@@ -163,8 +163,8 @@ void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_pDefaultClass[CLASS_DEFAULT_WARRIOR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_WARRIOR]);
 	m_pDefaultClass[CLASS_DEFAULT_ENGINEER] = CUnit_WarHammer::Create(tModelData[CLASS_DEFAULT_ENGINEER]);
 	//m_pDefaultClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
-	//m_pDefaultClass[CLASS_DEFAULT_ARCHER] = CUnit_Archer::Create(tModelData[CLASS_DEFAULT_ARCHER]);
-	//m_pDefaultClass[CLASS_DEFAULT_PALADIN] = CUnit_Paladin::Create(tModelData[CLASS_DEFAULT_PALADIN]);
+	m_pDefaultClass[CLASS_DEFAULT_ARCHER] = CUnit_Archer::Create(tModelData[CLASS_DEFAULT_ARCHER]);
+	m_pDefaultClass[CLASS_DEFAULT_PALADIN] = CUnit_Paladin::Create(tModelData[CLASS_DEFAULT_PALADIN]);
 	//m_pDefaultClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
 
 
@@ -201,11 +201,14 @@ void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	/* 변신 후 예약된 클래스 */
 	m_iReserveStateDefault[CLASS_DEFAULT_WARRIOR] = STATE_IDLE_PLAYER_R;
 	m_iReserveStateDefault[CLASS_DEFAULT_ENGINEER] = STATE_IDLE_WARHAMMER_R;
+	m_iReserveStateDefault[CLASS_DEFAULT_ARCHER] = STATE_IDLE_ARCHER_R;
 
 
 	/* 변신 애니메이션 Index */
 	m_iChangeHeroAnimIndex[CLASS_DEFAULT_WARRIOR] = 62;
 	m_iChangeHeroAnimIndex[CLASS_DEFAULT_ENGINEER] = 62;
+	m_iChangeHeroAnimIndex[CLASS_DEFAULT_ARCHER] = 53;
+	m_iChangeHeroAnimIndex[CLASS_DEFAULT_PALADIN] = 53;
 }
 
 void CPlayer::Create_HeroClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)

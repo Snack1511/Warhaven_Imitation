@@ -25,8 +25,6 @@ class CPlayer;
 
 class CUnit abstract : public CGameObject
 {
-public:
-
 
 public:
 	struct UNIT_STATUS
@@ -63,6 +61,13 @@ public:
 		wstring		strModelPaths[MODEL_PART_END];
 		string		strRefBoneName[MODEL_PART_END];
 		_float4x4	matTransform[MODEL_PART_END];
+	};
+
+	struct SKILL_TRIGGER
+	{
+		_bool	bSkillQTrigger = false;
+		_bool	bSkillETrigger = false;
+		_bool	bSkillRTrigger = false;
 	};
 
 	struct STATE_HIT_TYPE
@@ -161,6 +166,10 @@ public:
 
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState* Get_CurStateP() { return m_pCurState; }
+
+	SKILL_TRIGGER& Get_SkillTrigger() { 
+		return m_tSkillTrigger; 
+	}
 
 	const STATE_HIT_TYPE& Get_HitType() { return m_tHitType; }
 	void	Set_BounceState(STATE_TYPE eType) { m_tHitType.eBounce = eType; }
@@ -268,6 +277,9 @@ protected:
 
 protected:
 	UNIT_MODEL_DATA	m_tModelData;
+
+protected:
+	SKILL_TRIGGER m_tSkillTrigger;
 
 protected:
 	CModel* m_pModelCom = nullptr;

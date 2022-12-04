@@ -113,7 +113,7 @@ STATE_TYPE CValkyrie_ShieldAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CValkyrie_ShieldAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+	pOwner->Enable_UnitCollider(CUnit::GUARDBREAK_R, false);
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
 

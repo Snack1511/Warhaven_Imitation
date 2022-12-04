@@ -283,6 +283,69 @@
 
 #pragma endregion 
 
+#pragma region Archer
+
+#include "CIdle_Archer_L.h"
+#include "CIdle_Archer_R.h"
+
+#include "CWalk_Archer_L.h"
+#include "CWalk_Archer_R.h"
+
+#include "CRun_Archer_Begin_L.h"
+#include "CRun_Archer_Begin_R.h"
+
+#include "CRun_Archer_L.h"
+#include "CRun_Archer_R.h"
+
+#include "CJump_Archer_L.h"
+#include "CJump_Archer_R.h"
+
+#include "CJump_Archer_Fall_L.h"
+#include "CJump_Archer_Fall_R.h"
+
+#include "CJump_Archer_Land_L.h"
+#include "CJump_Archer_Land_R.h"
+
+#include "CStop_Archer_L.h"
+#include "CStop_Archer_R.h"
+
+#include "CSprint_Jump_Archer.h"
+#include "CSprint_Jump_Fall_Archer.h"
+#include "CSprint_Begin_Archer.h"
+#include "CSprint_Loop_Archer.h"
+#include "CSprint_End_Archer.h"
+
+#include "CArcher_ClawAttack.h"
+
+#include "CArcher_Attack_Begin.h"
+#include "CArcher_Aiming.h"
+#include "CArcher_Shoot.h"
+
+#include "CArcher_Attack_Begin_Sniping.h"
+#include "CArcher_Aiming_Sniping.h"
+#include "CArcher_Shoot_Sniping.h"
+
+#include "CArcher_Attack_Begin_Poison.h"
+#include "CArcher_Aiming_Poison.h"
+#include "CArcher_Shoot_Poison.h"
+
+#include "CBounce_Archer_R.h"
+
+#include "CArcher_Attack_Cancel.h"
+
+#include "CGuard_Loop_Archer.h"
+#include "CGuard_Cancel_Archer.h"
+
+
+#include "CHit_Archer.h"
+#include "CHit_GuardHit_Archer.h"
+#include "CHit_Groggy_Archer.h"
+#include "CHit_Sting_Archer.h"
+#include "CHit_Fly_Archer.h"
+
+
+
+#pragma endregion
 
 
 #include "CAI_SandBack.h"
@@ -366,13 +429,19 @@ HRESULT CState_Manager::Initialize()
 {
 	Spear_State();
 
-
+	// 기본
 	Warrior_State();
 	WarHammer_State();
+	Archer_State();
+
+	// 영웅
 	Valkyrie_State();
 
+	// AI 기본
 	Warrior_SandBagState();
 	Warrior_State_AI();
+
+
 
 	for (_uint i = 0; i < STATE_END; ++i)
 	{
@@ -593,6 +662,83 @@ void CState_Manager::WarHammer_State()
 	m_arrStates[STATE_FLYHIT_WARHAMMER] = CHit_Fly_WarHammer::Create();
 
 	m_arrStates[STATE_GUARDDASH_WARHAMMER] = CGuard_Dash_WarHammer::Create();
+
+}
+
+void CState_Manager::Archer_State()
+{
+
+	/* Idle */
+	m_arrStates[STATE_IDLE_ARCHER_L] = CIdle_Archer_L::Create();
+	m_arrStates[STATE_IDLE_ARCHER_R] = CIdle_Archer_R::Create();
+
+	/* Walk */
+	m_arrStates[STATE_WALK_ARCHER_L] = CWalk_Archer_L::Create();
+	m_arrStates[STATE_WALK_ARCHER_R] = CWalk_Archer_R::Create();
+
+	/* RunBegin */
+	m_arrStates[STATE_RUNBEGIN_ARCHER_L] = CRun_Archer_Begin_L::Create();
+	m_arrStates[STATE_RUNBEGIN_ARCHER_R] = CRun_Archer_Begin_R::Create();
+
+	/* Run */
+	m_arrStates[STATE_RUN_ARCHER_L] = CRun_Archer_L::Create();
+	m_arrStates[STATE_RUN_ARCHER_R] = CRun_Archer_R::Create();
+
+	/* Jump */
+	m_arrStates[STATE_JUMP_ARCHER_L] = CJump_Archer_L::Create();
+	m_arrStates[STATE_JUMPFALL_ARCHER_L] = CJump_Archer_Fall_L::Create();
+	m_arrStates[STATE_JUMP_LAND_ARCHER_L] = CJump_Archer_Land_L::Create();
+
+	m_arrStates[STATE_JUMP_ARCHER_R] = CJump_Archer_R::Create();
+	m_arrStates[STATE_JUMPFALL_ARCHER_R] = CJump_Archer_Fall_R::Create();
+	m_arrStates[STATE_JUMP_LAND_ARCHER_R] = CJump_Archer_Land_R::Create();
+
+	/* Stop */
+	m_arrStates[STATE_STOP_ARCHER_L] = CStop_Archer_L::Create();
+	m_arrStates[STATE_STOP_ARCHER_R] = CStop_Archer_R::Create();
+
+
+	m_arrStates[STATE_SPRINT_JUMP_ARCHER] = CSprint_Jump_Archer::Create();
+	m_arrStates[STATE_SPRINT_JUMPFALL_ARCHER] = CSprint_Jump_Fall_Archer::Create();
+	m_arrStates[STATE_SPRINT_BEGIN_ARCHER] = CSprint_Begin_Archer::Create();
+	m_arrStates[STATE_SPRINT_LOOP_ARCHER] = CSprint_Loop_Archer::Create();
+	m_arrStates[STATE_SPRINT_END_ARCHER] = CSprint_End_Archer::Create();
+
+	m_arrStates[STATE_ATTACK_SWING_ARCHER] = CArcher_ClawAttack::Create();
+
+	m_arrStates[STATE_ATTACK_BEGIN_ARCHER] = CArcher_Attack_Begin::Create();
+	m_arrStates[STATE_ATTACK_AIMING_ARCHER] = CArcher_Aiming::Create();
+	m_arrStates[STATE_ATTACK_SHOOT_ARCHER] = CArcher_Shoot::Create();
+
+	m_arrStates[STATE_ATTACK_BEGIN_SNIPING_ARCHER] = CArcher_Attack_Begin_Sniping::Create();
+	m_arrStates[STATE_ATTACK_AIMING_SNIPING_ARCHER] = CArcher_Aiming_Sniping::Create();
+	m_arrStates[STATE_ATTACK_SHOOT_SNIPING_ARCHER] = CArcher_Shoot_Sniping::Create();
+
+	m_arrStates[STATE_ATTACK_BEGIN_POISION_ARCHER] = CArcher_Attack_Begin_Poison::Create();
+	m_arrStates[STATE_ATTACK_AIMING_POISION_ARCHER] = CArcher_Aiming_Poison::Create();
+	m_arrStates[STATE_ATTACK_SHOOT_POISION_ARCHER] = CArcher_Shoot_Poison::Create();
+
+	
+	m_arrStates[STATE_BOUNCE_ARCHER] = CBounce_Archer_R::Create();
+
+	m_arrStates[STATE_ATTACK_CANCEL_ARCHER] = CArcher_Attack_Cancel::Create();
+
+	m_arrStates[STATE_GUARD_ARCHER] = CGuard_Loop_Archer::Create();
+	m_arrStates[STATE_GUARD_CANCEL_ARCHER] = CGuard_Cancel_Archer::Create();
+		
+
+	m_arrStates[STATE_HIT_ARCHER] = CHit_Archer::Create();
+	m_arrStates[STATE_GUARDHIT_ARCHER] = CHit_GuardHit_Archer::Create();
+	m_arrStates[STATE_GROGGYHIT_ARCHER] = CHit_Groggy_Archer::Create();
+	m_arrStates[STATE_STINGHIT_ARCHER] = CHit_Sting_Archer::Create();
+	m_arrStates[STATE_FLYHIT_ARCHER] = CHit_Fly_Archer::Create();
+
+
+
+	//	,
+	//	,
+	//	,
+	//	,
 
 }
 

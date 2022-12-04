@@ -8,6 +8,7 @@ class CUnit_Archer
 {
 	DECLARE_PROTOTYPE(CUnit_Archer);
 
+
 private:
 	CUnit_Archer();
 	virtual ~CUnit_Archer();
@@ -32,7 +33,9 @@ public:
 	virtual HRESULT Start() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
-	virtual void My_LateTick();
+	virtual void My_Tick() override;
+	virtual void My_LateTick() override;
+
 };
 
 END
