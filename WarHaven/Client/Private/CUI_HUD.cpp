@@ -153,6 +153,7 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
 		m_eCurClass = WARRIOR;
 		Set_HUD(WARRIOR);
+
 		break;
 
 	case 1:
@@ -305,7 +306,7 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		//CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
 
-	//dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
+	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
 	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(eClass);
 }
@@ -527,7 +528,8 @@ void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 			}
 		}
 
-		// dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+		dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+
 		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
 		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
 		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
@@ -1270,12 +1272,14 @@ void CUI_HUD::BootCamp_CharacterWindow()
 			if (KEY(F, TAP))
 			{
 				SetActive_CharacterSelectWindow(false);
+				SetActive_PlayerInfoUI(true);
 			}
 		}
 		else
 		{
 			if (KEY(T, TAP))
 			{
+				SetActive_PlayerInfoUI(false);
 				SetActive_CharacterSelectWindow(true);
 			}
 		}

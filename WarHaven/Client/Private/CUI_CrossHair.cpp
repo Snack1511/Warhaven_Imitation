@@ -34,6 +34,8 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
+	//Set_Crosshair(CLASS_TYPE::WARRIOR);
+
 	SetActive_DefaultCrosshair(true);
 	SetActive_ArrowUI(true);
 
@@ -44,7 +46,7 @@ void CUI_Crosshair::OnEnable()
 {
 	__super::OnEnable();
 
-	// 현재 클라스를 받아와서 해당하는 클래스의 UI 활성화
+	Enable_Defaultcrosshair();
 }
 
 void CUI_Crosshair::OnDisable()
@@ -58,10 +60,22 @@ void CUI_Crosshair::OnDisable()
 
 void CUI_Crosshair::Set_Crosshair(_uint iClass)
 {
-	// 워리어 엔지니어
-	Init_DefaultCrosshair();
+	m_iClassIndex = iClass;
 
-	Init_ArrowUI(iClass);
+	if (m_iClassIndex == WARRIOR || m_iClassIndex == ENGINEER)
+	{
+		Init_DefaultCrosshair();
+	}
+
+	Init_ArrowUI();
+}
+
+void CUI_Crosshair::Enable_Defaultcrosshair()
+{
+	if (m_iClassIndex == WARRIOR || m_iClassIndex == ENGINEER)
+	{
+		SetActive_DefaultCrosshair(true);
+	}
 }
 
 void CUI_Crosshair::SetActive_DefaultCrosshair(_bool value)
@@ -191,14 +205,14 @@ void CUI_Crosshair::Create_ArrowUI()
 	}
 }
 
-void CUI_Crosshair::Init_ArrowUI(_uint iClass)
+void CUI_Crosshair::Init_ArrowUI()
 {
-	if (iClass == CLASS_TYPE::SPEAR || iClass == CLASS_TYPE::ARCHER)
+	if (m_iClassIndex == SPEAR || m_iClassIndex == ARCHER)
 	{
 		m_iArrowIndex = 3;
 
 	}
-	else if (iClass == CLASS_TYPE::PRIEST || iClass == CLASS_TYPE::ENGINEER)
+	else if (m_iClassIndex == PRIEST || m_iClassIndex == ENGINEER)
 	{
 		m_iArrowIndex = 2;
 	}

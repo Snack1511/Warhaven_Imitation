@@ -24,9 +24,14 @@ public:
 public:
 	void Set_Crosshair(_uint iClass);
 
+	void Enable_Defaultcrosshair();
+
 	void SetActive_DefaultCrosshair(_bool value);
 	void SetActive_ArrowUI(_bool value);
 	void SetActive_LancerUI(_bool value);
+
+private:
+	_uint m_iClassIndex = 0;
 
 private:
 	enum CrosshairUI { CU_Point, CU_Outline, CU_End };
@@ -47,7 +52,7 @@ private:
 
 private:
 	void Create_ArrowUI();
-	void Init_ArrowUI(_uint iClass);
+	void Init_ArrowUI();
 
 private:
 	enum LancerUI { LU_BG, LU_Gauge, LU_Full, LU_End };
