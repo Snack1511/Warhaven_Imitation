@@ -382,7 +382,10 @@ void CUnit_Warrior::My_LateTick()
 		return;
 
 	if (KEY(NUM8, TAP))
-		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 2.f, 0.f));
+	{
+		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 0.f, 0.f));
+		m_pTransform->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
+	}
 		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
 
 	/*if (KEY(SPACE, TAP))
