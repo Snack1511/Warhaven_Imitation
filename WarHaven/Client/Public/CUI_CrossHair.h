@@ -18,13 +18,9 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	virtual void OnEnable() override;
-	virtual void OnDisable() override;
-
-public:
 	void Set_Crosshair(_uint iClass);
 
-	void Enable_Defaultcrosshair();
+	void Enable_Crosshair();
 
 	void SetActive_DefaultCrosshair(_bool value);
 	void SetActive_ArrowUI(_bool value);
@@ -61,6 +57,10 @@ private:
 
 private:
 	void Create_LancerUI();
+
+private:
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 };
 
 END

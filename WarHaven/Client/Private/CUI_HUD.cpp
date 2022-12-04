@@ -60,7 +60,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
 		Create_CharacterSelectWindow();
-		// Create_TraingText();
+		Create_TraingText();
 	}
 	else
 	{
@@ -86,7 +86,9 @@ HRESULT CUI_HUD::Start()
 		SetActive_PlayerInfoUI(true);
 
 		if (m_pChangeClassText)
+		{
 			ENABLE_GAMEOBJECT(m_pChangeClassText);
+		}
 	}
 	else
 	{
@@ -307,7 +309,8 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 	}
 
 	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
-	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_Portrait(eClass);
+	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_UserPort(eClass);
+
 	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(eClass);
 }
 
@@ -529,8 +532,8 @@ void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 		}
 
 		dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_UserPort(m_eCurClass);
 
-		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Start_Portrait(m_eCurClass);
 		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
 		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
 		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);

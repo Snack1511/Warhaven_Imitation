@@ -34,28 +34,10 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
-	//Set_Crosshair(CLASS_TYPE::WARRIOR);
-
 	SetActive_DefaultCrosshair(true);
 	SetActive_ArrowUI(true);
 
 	return S_OK;
-}
-
-void CUI_Crosshair::OnEnable()
-{
-	__super::OnEnable();
-
-	Enable_Defaultcrosshair();
-}
-
-void CUI_Crosshair::OnDisable()
-{
-	__super::OnDisable();
-
-	SetActive_DefaultCrosshair(false);
-	SetActive_ArrowUI(false);
-	SetActive_LancerUI(false);
 }
 
 void CUI_Crosshair::Set_Crosshair(_uint iClass)
@@ -70,7 +52,7 @@ void CUI_Crosshair::Set_Crosshair(_uint iClass)
 	Init_ArrowUI();
 }
 
-void CUI_Crosshair::Enable_Defaultcrosshair()
+void CUI_Crosshair::Enable_Crosshair()
 {
 	if (m_iClassIndex == WARRIOR || m_iClassIndex == ENGINEER)
 	{
@@ -277,4 +259,20 @@ void CUI_Crosshair::Create_LancerUI()
 			DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
 		}
 	}
+}
+
+void CUI_Crosshair::OnEnable()
+{
+	__super::OnEnable();
+
+	Enable_Crosshair();
+}
+
+void CUI_Crosshair::OnDisable()
+{
+	__super::OnDisable();
+
+	SetActive_DefaultCrosshair(false);
+	SetActive_ArrowUI(false);
+	SetActive_LancerUI(false);
 }

@@ -22,20 +22,47 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
+	virtual void My_Tick() override;
+
+public:
+	void Set_UserPort(_uint iClass);
+
+private:
+	_uint m_iPrvClass = 0;
+	_uint m_iCurClass = 0;
+
+	_bool m_bChangeUserPort = false;
+	_bool m_bDoScaleUserPort = false;
+	_uint m_iChangeUserPortCount = 0;
+	_float m_fDoScaleUserPortDuration = 0.f;
+
+
+	CTexture* m_pUserPortTexture = nullptr;
+
+private:
+	enum UserPortrait { UP_BG, UP_Port, UP_Effect, UP_End };
+	CUI_Object* m_pUserPortrait[UP_End];
+
+private:
+	void Create_UserPort();
+	
+	void Change_UserPort();
+	void SetTexture_UserPort();
+	void DoScale_UserPort(_bool value);
+	void Set_FadeUserPort(_float fSpeed);
+
+private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
+
+
 
 public:
 	void Set_ShaderEffect(CShader* pShader, const char* constName);
 
+
 public:
-	void Start_Portrait(_uint iIndex);
-	void Set_Portrait(_uint iIndex);
-
 	void Set_HeroPort(HeroPortAnimType eState);
-
-protected:
-	virtual void My_Tick() override;
 
 private:
 	CUI_Object* m_Prototypes[Type_End] = {};
@@ -65,11 +92,9 @@ private:	// Shader
 	void Set_Pass();
 	void Bind_Shader();
 
-	void Set_FadeUserPort(_float fSpeed);
 	void Set_FadeHeroPort();
 
 private:
-	void Change_UserPort();
 	void PortSizeUP(_float fDuration);
 	void PortSizeDown(_float fDuration);
 
