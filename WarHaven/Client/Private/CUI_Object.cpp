@@ -171,7 +171,6 @@ void CUI_Object::DoScaleX(_float fScaleValue, _float fDuration)
 	m_bIsDoScaleX = true;
 
 	m_vOriginScale.x = Get_Scale().x;
-
 	m_fScaleValue = fScaleValue;
 	m_fScaleDuration = fDuration;
 }

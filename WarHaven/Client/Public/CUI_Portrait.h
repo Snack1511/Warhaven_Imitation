@@ -35,9 +35,9 @@ private:
 
 	_bool m_bChangeUserPort = false;
 	_bool m_bDoScaleUserPort = false;
-	_uint m_iChangeUserPortCount = 0;
+	_uint m_iChangeUserPortCount = 1;
 	_float m_fDoScaleUserPortDuration = 0.f;
-
+	_float m_fDoScaleUserPortValue = 63.9f;
 
 	CTexture* m_pUserPortTexture = nullptr;
 

@@ -137,14 +137,7 @@ void CUI_Portrait::Set_UserPort(_uint iClass)
 
 	if (m_iPrvClass != m_iCurClass)
 	{
-		if (iClass <= ENGINEER)
-		{
-			m_pUserPortTexture->Set_CurTextureIndex(iClass);
-		}
-		else if (iClass > ENGINEER)
-		{
-			m_bChangeUserPort = true;
-		}
+		m_bChangeUserPort = true;
 	}
 }
 
@@ -203,22 +196,14 @@ void CUI_Portrait::Change_UserPort()
 		{
 			m_bDoScaleUserPort = true;
 
-			if (m_iChangeUserPortCount < 7)
+			if (m_iChangeUserPortCount % 2 == 1)
 			{
-				if (m_iChangeUserPortCount % 2 == 0)
-				{
-					DoScale_UserPort(false);
-				}
-				else
-				{
-					SetTexture_UserPort();
-					DoScale_UserPort(true);
-				}
+				DoScale_UserPort(false);
 			}
 			else
 			{
-				m_iChangeUserPortCount = 0;
-				m_bChangeUserPort = false;
+				SetTexture_UserPort();
+				DoScale_UserPort(true);
 			}
 		}
 		else
@@ -227,8 +212,15 @@ void CUI_Portrait::Change_UserPort()
 			if (m_fAccTime > m_fDoScaleUserPortDuration)
 			{
 				m_fAccTime = 0.f;
+				m_iChangeUserPortCount++;
 				m_bDoScaleUserPort = false;
 			}
+		}
+
+		if (m_iChangeUserPortCount > 6)
+		{
+			m_iChangeUserPortCount = 1;
+			m_bChangeUserPort = false;
 		}
 	}
 }
@@ -255,7 +247,7 @@ void CUI_Portrait::DoScale_UserPort(_bool value)
 	{
 		if (value == true)
 		{
-			m_pUserPortrait[i]->DoScaleX(64.f, m_fDoScaleUserPortDuration);
+			m_pUserPortrait[i]->Lerp_ScaleX(0.f, 64.f, m_fDoScaleUserPortDuration);
 
 			if (i == UP_Port)
 			{
@@ -264,7 +256,7 @@ void CUI_Portrait::DoScale_UserPort(_bool value)
 		}
 		else
 		{
-			m_pUserPortrait[i]->DoScaleX(64.f, m_fDoScaleUserPortDuration);
+			m_pUserPortrait[i]->Lerp_ScaleX(64.f, 0.f, m_fDoScaleUserPortDuration);
 
 			if (i == UP_Port)
 			{
