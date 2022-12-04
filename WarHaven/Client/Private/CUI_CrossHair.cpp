@@ -34,8 +34,6 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
-	SetActive_DefaultCrosshair(true);
-
 	return S_OK;
 }
 
@@ -45,21 +43,13 @@ void CUI_Crosshair::Set_Crosshair(_uint iClass)
 
 	if (m_iClassIndex == WARRIOR || m_iClassIndex == ENGINEER)
 	{
-		Init_DefaultCrosshair();
+		Set_DefaultCrosshair();
 	}
 
-	Init_ArrowUI();
+	Set_ArrowUI();
 }
 
-void CUI_Crosshair::Enable_Crosshair()
-{
-	if (m_iClassIndex == WARRIOR || m_iClassIndex == ENGINEER)
-	{
-		SetActive_DefaultCrosshair(true);
-	}
-}
-
-void CUI_Crosshair::SetActive_DefaultCrosshair(_bool value)
+void CUI_Crosshair::SetActive_Crosshair(_bool value)
 {
 	if (value == true)
 	{
@@ -131,6 +121,16 @@ void CUI_Crosshair::Create_Crosshair()
 	{
 		m_pCrosshair[i] = CUI_Object::Create();
 
+		if (i == CU_Point)
+		{
+			m_pCrosshair[i]->Set_Scale(6.f);
+		}
+		else if (i == CU_Outline)
+		{
+			m_pCrosshair[i]->Set_Scale(50.f);
+			m_pCrosshair[i]->Set_Color(_float4(0.2f, 0.2f, 0.2f, 0.4f));
+		}
+
 		CREATE_GAMEOBJECT(m_pCrosshair[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pCrosshair[i]);
 	}
@@ -142,15 +142,10 @@ void CUI_Crosshair::Create_Crosshair()
 	Read_Texture(m_pCrosshair[CU_Outline], "/HUD/Crosshair", "Outline");
 }
 
-void CUI_Crosshair::Init_DefaultCrosshair()
+void CUI_Crosshair::Set_DefaultCrosshair()
 {
 	GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(0);
 	GET_COMPONENT_FROM(m_pCrosshair[CU_Outline], CTexture)->Set_CurTextureIndex(0);
-
-	m_pCrosshair[CU_Point]->Set_Scale(6.f);
-
-	m_pCrosshair[CU_Outline]->Set_Scale(50.f);
-	m_pCrosshair[CU_Outline]->Set_Color(_float4(0.2f, 0.2f, 0.2f, 0.4f));
 }
 
 void CUI_Crosshair::Create_ArrowUI()
@@ -186,7 +181,7 @@ void CUI_Crosshair::Create_ArrowUI()
 	}
 }
 
-void CUI_Crosshair::Init_ArrowUI()
+void CUI_Crosshair::Set_ArrowUI()
 {
 	if (m_iClassIndex == SPEAR || m_iClassIndex == ARCHER)
 	{
@@ -264,14 +259,14 @@ void CUI_Crosshair::OnEnable()
 {
 	__super::OnEnable();
 
-	Enable_Crosshair();
+	SetActive_Crosshair(true);
 }
 
 void CUI_Crosshair::OnDisable()
 {
 	__super::OnDisable();
 
-	SetActive_DefaultCrosshair(false);
+	SetActive_Crosshair(false);
 	SetActive_ArrowUI(false);
 	SetActive_LancerUI(false);
 }

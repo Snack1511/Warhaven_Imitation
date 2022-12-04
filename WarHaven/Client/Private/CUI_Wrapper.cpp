@@ -46,22 +46,6 @@ HRESULT CUI_Wrapper::Start()
 
 	__super::Start();
 
-	//m_pUI 여기서막 패스도 바꾸고
-
-	//쉐이더리소스 바인딩도해주고
-
-	//버튼사용예시
-
-	//들고이쓴ㄴ UI중 진짜 버튼으로 만든 애 한테만 이거 넣어주기
-	/*ADD_MOUSE_IN_EVENT(m_pUI, 0);
-	ADD_MOUSE_EXIT_EVENT(m_pUI, 0);
-	ADD_BUTTONCLICK_EVENT(m_pUI, 0);
-
-	ADD_MOUSE_IN_EVENT(m_pUI[2], 1);
-	ADD_MOUSE_EXIT_EVENT(m_pUI[2], 1);
-	ADD_BUTTONCLICK_EVENT(m_pUI[2], 1);*/
-
-
 	return S_OK;
 }
 

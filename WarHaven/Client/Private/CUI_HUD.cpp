@@ -39,18 +39,8 @@ HRESULT CUI_HUD::Initialize_Prototype()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
-	m_pWrap[Crosshair] = CUI_Crosshair::Create();
-	m_pWrap[Port] = CUI_Portrait::Create();
-	m_pWrap[Skill] = CUI_Skill::Create();
-	m_pWrap[HeroGauge] = CUI_HeroGauge::Create();
-	m_pWrap[HpBar] = CUI_HpBar::Create();
+	Create_HUD();
 
-	for (int i = 0; i < HUD_END; ++i)
-	{
-		CREATE_GAMEOBJECT(m_pWrap[i], GROUP_UI);
-	}
-
-	Create_HeroGaugeText();
 	Create_OxenJumpText();
 	Create_HpText();
 	Create_PlayerNameText();
@@ -98,6 +88,8 @@ HRESULT CUI_HUD::Start()
 
 	__super::Start();
 
+	SetActive_HUD(true);
+
 	return S_OK;
 }
 
@@ -108,12 +100,44 @@ void CUI_HUD::My_Tick()
 	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 
 	Update_HP();
-	Update_HeroGauge();
 	Update_HeorTransformGauge();
 
 	Update_OperWindow();
 
 	BootCamp_CharacterWindow();
+}
+
+CUI_Wrapper* CUI_HUD::Get_HUD(_uint eHUD)
+{
+	return m_pHUD[eHUD];
+}
+
+void CUI_HUD::SetActive_HUD(_bool value)
+{
+	for (int i = 0; i < HUD_End; ++i)
+	{
+		if (value == true)
+		{
+			ENABLE_GAMEOBJECT(m_pHUD[i]);
+		}
+		else
+		{
+			DISABLE_GAMEOBJECT(m_pHUD[i]);
+		}
+	}
+}
+
+void CUI_HUD::Create_HUD()
+{
+	m_pHUD[HUD_Crosshair] = CUI_Crosshair::Create();
+	m_pHUD[HUD_Port] = CUI_Portrait::Create();
+	m_pHUD[HUD_HeroGauge] = CUI_HeroGauge::Create();
+
+	for (int i = 0; i < HUD_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pHUD[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pHUD[i]);
+	}
 }
 
 void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
@@ -207,7 +231,7 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 
 	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
 
-	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(iEventNum);
+	//dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(iEventNum);
 }
 
 void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
@@ -275,7 +299,7 @@ _bool CUI_HUD::Is_OnHeroGauge()
 
 void CUI_HUD::Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
 {
-	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(iSkillType, fCoolTime, fMaxCoolTime);
+	//dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(iSkillType, fCoolTime, fMaxCoolTime);
 }
 
 void CUI_HUD::Set_HP(_float fMaxHP, _float fCurHP)
@@ -307,17 +331,6 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		Disable_Fade(m_pInactiveHeroText, 1.f);
 		//CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
-
-	dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(eClass);
-	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_UserPort(eClass);
-
-	dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(eClass);
-}
-
-void CUI_HUD::Set_HeroGauge(_float fMaxGauge, _float fCurGauge)
-{
-	m_fMaxGauge = fMaxGauge;
-	m_fCurGauge = fCurGauge;
 }
 
 void CUI_HUD::SetActive_HeroPortrait(_bool value)
@@ -333,7 +346,7 @@ void CUI_HUD::SetActive_HeroPortrait(_bool value)
 		eType = CUI_Portrait::Disable;
 	}
 
-	dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(eType);
+	// dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(eType);
 }
 
 void CUI_HUD::Bind_Btn()
@@ -518,44 +531,37 @@ void CUI_HUD::Set_FadePortHighlight()
 
 void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 {
-	if (value == true)
-	{
-		m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
-		m_eCurClass = m_tStatus.eClass;
+	//if (value == true)
+	//{
+	//	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
+	//	m_eCurClass = m_tStatus.eClass;
 
-		dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
-		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_UserPort(m_eCurClass);
+	//	for (int i = 0; i < HUD_END; ++i)
+	//	{
+	//		if (!m_pWrap[i]->Is_Valid())
+	//		{
+	//			ENABLE_GAMEOBJECT(m_pWrap[i]);
+	//		}
+	//	}
 
-		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
-		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
-		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
+	//	ENABLE_GAMEOBJECT(m_pHeroGaugeText);
+	//	ENABLE_GAMEOBJECT(m_pHpText);
+	//	ENABLE_GAMEOBJECT(m_pPlayerNameText);
+	//}
+	//else
+	//{
+	//	for (int i = 0; i < HUD_END; ++i)
+	//	{
+	//		DISABLE_GAMEOBJECT(m_pWrap[i]);
+	//		// DISABLE_GAMEOBJECT(m_pWrap[Crosshair]);
+	//	}
 
-		for (int i = 0; i < HUD_END; ++i)
-		{
-			if (!m_pWrap[i]->Is_Valid())
-			{
-				ENABLE_GAMEOBJECT(m_pWrap[i]);
-			}
-		}
+	//	DISABLE_GAMEOBJECT(m_pHeroGaugeText);
+	//	DISABLE_GAMEOBJECT(m_pHpText);
+	//	DISABLE_GAMEOBJECT(m_pPlayerNameText);
 
-		ENABLE_GAMEOBJECT(m_pHeroGaugeText);
-		ENABLE_GAMEOBJECT(m_pHpText);
-		ENABLE_GAMEOBJECT(m_pPlayerNameText);
-	}
-	else
-	{
-		for (int i = 0; i < HUD_END; ++i)
-		{
-			DISABLE_GAMEOBJECT(m_pWrap[i]);
-			// DISABLE_GAMEOBJECT(m_pWrap[Crosshair]);
-		}
-
-		DISABLE_GAMEOBJECT(m_pHeroGaugeText);
-		DISABLE_GAMEOBJECT(m_pHpText);
-		DISABLE_GAMEOBJECT(m_pPlayerNameText);
-
-		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
-	}
+	//	CUser::Get_Instance()->Turn_HeroGaugeFire(false);
+	//}
 }
 
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
@@ -579,7 +585,7 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 	m_pArrBootCampUI[BC_Line][m_eCurClass]->Set_ScaleX(100.f);
 	Enable_Fade(m_pArrBootCampUI[BC_Line][m_eCurClass], 0.3f);
 
-	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(!value);
+	//dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(!value);
 
 	if (value == true)
 	{
@@ -673,66 +679,24 @@ void CUI_HUD::Create_TraingText()
 
 void CUI_HUD::Update_HP()
 {
-	if (m_pWrap[HpBar]->Is_Valid())
-	{
-		_float fLerpSpeed = fDT(0) * 10.f;
-		m_fCurHP = ((1 - fLerpSpeed) * m_fPrvHP) + (fLerpSpeed * m_fCurHP);
-
-		_tchar  szTemp[MAX_STR] = {};
-		swprintf_s(szTemp, TEXT("%.f / %.f"), m_fCurHP, m_fMaxHP);
-		m_pHpText->Set_FontText(szTemp);
-
-		m_fHealthRatio = m_fCurHP / m_fMaxHP;
-
-		if (m_fCurHP < -0.f)
-		{
-			m_fHealthRatio = 0.f;
-		}
-
-		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHealthRatio);
-	}
-}
-
-void CUI_HUD::Update_HeroGauge()
-{
-	if (m_pWrap[HeroGauge]->Is_Valid())
-	{
-		m_fGaugeRatio = m_fCurGauge / m_fMaxGauge;
-
-		if (m_fGaugeRatio >= 1.f)
-		{
-			m_pHeroGaugeText->Set_FontOffset(-23.5f, -13.f);
-		}
-		else
-		{
-			m_pHeroGaugeText->Set_FontOffset(-18.f, -13.f);
-		}
-
-		_tchar  szTemp[MAX_STR] = {};
-		swprintf_s(szTemp, TEXT("%.f%%"), m_fGaugeRatio * 100.f);
-		m_pHeroGaugeText->Set_FontText(szTemp);
-
-		m_fGaugeRatio = 1 - m_fGaugeRatio;
-		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Set_GaugeRatio(m_fGaugeRatio);
-	}
-}
-
-void CUI_HUD::Create_HeroGaugeText()
-{
-	m_pHeroGaugeText = CUI_Object::Create();
-
-	m_pHeroGaugeText->Set_Scale(20.f);
-	m_pHeroGaugeText->Set_Pos(550.f, -195.f);
-	m_pHeroGaugeText->Set_Sort(0.85f);
-
-	GET_COMPONENT_FROM(m_pHeroGaugeText, CTexture)->Remove_Texture(0);
-
-	m_pHeroGaugeText->Set_FontRender(true);
-	m_pHeroGaugeText->Set_FontStyle(true);
-	m_pHeroGaugeText->Set_FontScale(0.25f);
-
-	CREATE_GAMEOBJECT(m_pHeroGaugeText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pHeroGaugeText);
+	//if (m_pWrap[HpBar]->Is_Valid())
+	//{
+	//	_float fLerpSpeed = fDT(0) * 10.f;
+	//	m_fCurHP = ((1 - fLerpSpeed) * m_fPrvHP) + (fLerpSpeed * m_fCurHP);
+	//
+	//	_tchar  szTemp[MAX_STR] = {};
+	//	swprintf_s(szTemp, TEXT("%.f / %.f"), m_fCurHP, m_fMaxHP);
+	//	m_pHpText->Set_FontText(szTemp);
+	//
+	//	m_fHealthRatio = m_fCurHP / m_fMaxHP;
+	//
+	//	if (m_fCurHP < -0.f)
+	//	{
+	//		m_fHealthRatio = 0.f;
+	//	}
+	//
+	//	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHealthRatio);
+	//}
 }
 
 void CUI_HUD::Create_OxenJumpText()

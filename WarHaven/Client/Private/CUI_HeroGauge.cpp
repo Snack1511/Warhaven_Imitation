@@ -15,21 +15,7 @@ CUI_HeroGauge::~CUI_HeroGauge()
 
 HRESULT CUI_HeroGauge::Initialize_Prototype()
 {
-	Read_UI("HeroGauge");
-
-	m_Prototypes[BG] = m_pUIMap[TEXT("HeroGaugeBG")];
-	m_Prototypes[Gauge] = m_pUIMap[TEXT("HeroGauge")];
-
-	m_Prototypes[Gauge]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_06.dds"));
-
-	for (_uint i = 0; i < Type_End; ++i)
-	{
-		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_Prototypes[i]);
-	}
-
-	m_Prototypes[BG]->Set_Sort(0.3f);
-	m_Prototypes[Gauge]->Set_Sort(0.29f);
+	Create_HeroGauge();
 
 	return S_OK;
 }
@@ -49,61 +35,112 @@ HRESULT CUI_HeroGauge::Start()
 	return S_OK;
 }
 
-void CUI_HeroGauge::OnEnable()
+void CUI_HeroGauge::Set_Shader_Gauge(CShader* pShader, const char* pConstName)
 {
-	__super::OnEnable();
+	pShader->Set_RawValue("g_fHeroGaugeRatio", &m_fHeroGaugeRatio, sizeof(_float));
+	pShader->Set_RawValue("g_fValue", &m_fValue, sizeof(_float));
+}
 
-	for (int i = 0; i < Type_End; ++i)
+void CUI_HeroGauge::Set_HeroGauge(_float fCurValue, _float fMaxValue)
+{
+	m_fCurHeroGauge = fCurValue;
+	m_fMaxHeroGauge = fMaxValue;
+}
+
+void CUI_HeroGauge::SetActive_HeroGauge(_bool value)
+{
+	for (int i = 0; i < HG_End; ++i)
 	{
-		ENABLE_GAMEOBJECT(m_Prototypes[i]);
+		if (value == true)
+		{
+			ENABLE_GAMEOBJECT(m_pHeroGauge[i]);
+		}
+		else
+		{
+			DISABLE_GAMEOBJECT(m_pHeroGauge[i]);
+		}
 	}
 }
 
-void CUI_HeroGauge::OnDisable()
+void CUI_HeroGauge::Create_HeroGauge()
 {
-	__super::OnDisable();
-
-	for (int i = 0; i < Type_End; ++i)
+	for (int i = 0; i < HG_End; ++i)
 	{
-		DISABLE_GAMEOBJECT(m_Prototypes[i]);
-	}
-}
+		m_pHeroGauge[i] = CUI_Object::Create();
 
-void CUI_HeroGauge::Start_HeroGauge()
-{
-	for (_uint i = 0; i < Type_End; ++i)
-	{
-		ENABLE_GAMEOBJECT(m_Prototypes[i]);
-	}
-}
+		m_pHeroGauge[i]->Set_Pos(550.f, -280.f);
+		m_pHeroGauge[i]->Set_Scale(75.f, 127.f);
 
-void CUI_HeroGauge::Set_ShaderResources(CShader* pShader, const char* pConstName)
-{
-	pShader->Set_RawValue("g_fHeroValue", &m_fGaugeRatio, sizeof(_float));
-	pShader->Set_RawValue("g_fValue", &m_fUVSpeed, sizeof(_float));
+		if (i == HG_BG)
+		{
+			m_pHeroGauge[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HeroGauge/T_HeroGaugenew1.png"));
+
+			m_pHeroGauge[i]->Set_Sort(0.5f);
+		}
+		else if (i == HG_Gauge)
+		{
+			m_pHeroGauge[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HeroGauge/T_HeroGaugenew2.png"));
+			m_pHeroGauge[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_06.dds"));
+
+			m_pHeroGauge[i]->Set_Sort(0.49f);
+		}
+		else if (i == HG_Text)
+		{
+			m_pHeroGauge[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+
+			m_pHeroGauge[i]->Set_Pos(555.f, -195.f);
+			m_pHeroGauge[i]->Set_Sort(0.5f);
+
+			m_pHeroGauge[i]->Set_FontRender(true);
+			m_pHeroGauge[i]->Set_FontStyle(true);
+			m_pHeroGauge[i]->Set_FontCenter(true);
+			m_pHeroGauge[i]->Set_FontScale(0.25f);
+		}
+
+		CREATE_GAMEOBJECT(m_pHeroGauge[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pHeroGauge[i]);
+	}
 }
 
 void CUI_HeroGauge::My_Tick()
 {
 	__super::My_Tick();
 
-	m_fUVSpeed += fDT(0) * 0.1f;
+	m_fValue += fDT(0) * 0.1f;
+
+	m_fHeroGaugeRatio = m_fCurHeroGauge / m_fMaxHeroGauge;
+	cout << m_fHeroGaugeRatio << endl;
+
+	_tchar  szTemp[MAX_STR] = {};
+	swprintf_s(szTemp, TEXT("%.f%%"), m_fHeroGaugeRatio * 100.f);
+	m_pHeroGauge[HG_Text]->Set_FontText(szTemp);
+	m_fHeroGaugeRatio = 1 - m_fHeroGaugeRatio;
+
+	cout << "1 »«°Å : " << m_fHeroGaugeRatio << endl;
 }
 
-void CUI_HeroGauge::My_LateTick()
+void CUI_HeroGauge::OnEnable()
 {
-	__super::My_LateTick();
+	__super::OnEnable();
+
+	SetActive_HeroGauge(true);
+}
+
+void CUI_HeroGauge::OnDisable()
+{
+	__super::OnDisable();
+
+	SetActive_HeroGauge(false);
 }
 
 void CUI_HeroGauge::Set_Pass()
 {
-	GET_COMPONENT_FROM(m_Prototypes[Gauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HeroGauge);
+	GET_COMPONENT_FROM(m_pHeroGauge[HG_Gauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HeroGauge);
 }
 
 void CUI_HeroGauge::Bind_Shader()
 {
-	m_Prototypes[Gauge]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+	m_pHeroGauge[HG_Gauge]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
 
-	GET_COMPONENT_FROM(m_Prototypes[Gauge], CShader)
-		->CallBack_SetRawValues += bind(&CUI_HeroGauge::Set_ShaderResources, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pHeroGauge[HG_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_HeroGauge::Set_Shader_Gauge, this, placeholders::_1, "g_fHeroGaugeRatio");
 }

@@ -47,14 +47,19 @@ private:
 
 private:
 	void Create_UserPort();
-	
+
 	void Change_UserPort();
 	void SetTexture_UserPort();
 	void DoScale_UserPort(_bool value);
 	void Set_FadeUserPort(_float fSpeed);
 
 private:
+	enum HeroPortrait { HP_BG, HP_Port, HP_Effect, HP_Key, HP_End };
+	CUI_Object* m_pHeroPortrait[UP_End];
+	CUI_Object* m_pArrHeroPortrait[UP_End][4];
 
+private:
+	void Create_HeroPort();
 
 private:
 	virtual void OnEnable() override;
