@@ -34,6 +34,7 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
+	Init_DefaultCrosshair();
 	SetActive_DefaultCrosshair(true);
 	SetActive_ArrowUI(true);
 
