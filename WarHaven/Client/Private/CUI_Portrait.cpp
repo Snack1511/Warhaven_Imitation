@@ -212,15 +212,15 @@ void CUI_Portrait::Change_UserPort()
 			if (m_fAccTime > m_fDoScaleUserPortDuration)
 			{
 				m_fAccTime = 0.f;
-				m_iChangeUserPortCount++;
 				m_bDoScaleUserPort = false;
-			}
-		}
 
-		if (m_iChangeUserPortCount > 6)
-		{
-			m_iChangeUserPortCount = 1;
-			m_bChangeUserPort = false;
+				m_iChangeUserPortCount++;
+				if (m_iChangeUserPortCount > 6)
+				{
+					m_iChangeUserPortCount = 1;
+					m_bChangeUserPort = false;
+				}
+			}
 		}
 	}
 }

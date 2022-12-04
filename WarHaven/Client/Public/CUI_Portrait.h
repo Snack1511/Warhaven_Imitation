@@ -54,10 +54,11 @@ private:
 	void Set_FadeUserPort(_float fSpeed);
 
 private:
+
+
+private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
-
-
 
 public:
 	void Set_ShaderEffect(CShader* pShader, const char* constName);
