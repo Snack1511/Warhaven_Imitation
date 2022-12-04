@@ -523,6 +523,13 @@ void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 		m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 		m_eCurClass = m_tStatus.eClass;
 
+		dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
+		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_UserPort(m_eCurClass);
+
+		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
+		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
+		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
+
 		for (int i = 0; i < HUD_END; ++i)
 		{
 			if (!m_pWrap[i]->Is_Valid())
@@ -530,13 +537,6 @@ void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
 				ENABLE_GAMEOBJECT(m_pWrap[i]);
 			}
 		}
-
-		dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(m_eCurClass);
-		dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_UserPort(m_eCurClass);
-
-		dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_SkillHUD(m_eCurClass);
-		dynamic_cast<CUI_HeroGauge*>(m_pWrap[HeroGauge])->Start_HeroGauge();
-		dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(true);
 
 		ENABLE_GAMEOBJECT(m_pHeroGaugeText);
 		ENABLE_GAMEOBJECT(m_pHpText);

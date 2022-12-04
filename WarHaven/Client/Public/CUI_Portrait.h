@@ -27,6 +27,8 @@ public:
 public:
 	void Set_UserPort(_uint iClass);
 
+	void SetActive_UserPort(_bool value);
+
 private:
 	_uint m_iPrvClass = 0;
 	_uint m_iCurClass = 0;

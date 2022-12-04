@@ -35,7 +35,6 @@ HRESULT CUI_Crosshair::Start()
 	__super::Start();
 
 	SetActive_DefaultCrosshair(true);
-	SetActive_ArrowUI(true);
 
 	return S_OK;
 }

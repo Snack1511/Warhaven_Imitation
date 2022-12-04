@@ -32,12 +32,9 @@ HRESULT CUI_Portrait::Initialize()
 
 HRESULT CUI_Portrait::Start()
 {
-	Set_Pass();
-	Bind_Shader();
-
-	Set_FadeHeroPort();
-
 	__super::Start();
+
+	SetActive_UserPort(true);
 
 	return S_OK;
 }
@@ -46,72 +43,10 @@ void CUI_Portrait::My_Tick()
 {
 	__super::My_Tick();
 
-	m_fEffectValue -= fDT(0) * 0.1f;
-
 	Change_UserPort();
 
-	/*if (m_bAbleRotationPort)
-	{
-		_float fDuration = 0.1f;
-
-		_float4 vScale = m_arrPortraitUI[0][BG]->Get_Transform()->Get_Scale();
-		CTexture* pTexture = GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture);
-
-		if (!m_bIsUserLerp)
-		{
-			m_bIsUserLerp = true;
-
-			if (m_iRotationCount == 1)
-			{
-				PortSizeDown(fDuration);
-			}
-			else if (m_iRotationCount == 2)
-			{
-				pTexture->Set_CurTextureIndex(m_iCurPort);
-				PortSizeUP(fDuration);
-			}
-			else if (m_iRotationCount == 3)
-			{
-				PortSizeDown(fDuration);
-			}
-			else if (m_iRotationCount == 4)
-			{
-				pTexture->Set_CurTextureIndex(m_iPrvPort);
-				PortSizeUP(fDuration);
-			}
-			else if (m_iRotationCount == 5)
-			{
-				PortSizeDown(fDuration);
-			}
-			else if (m_iRotationCount == 6)
-			{
-				pTexture->Set_CurTextureIndex(m_iCurPort);
-				PortSizeUP(fDuration);
-			}
-		}
-		else
-		{
-			if (vScale.x <= m_fMinValue)
-			{
-				m_bIsUserLerp = false;
-				m_iRotationCount++;
-			}
-			else if (vScale.x >= 64.f)
-			{
-				m_bIsUserLerp = false;
-				m_iRotationCount++;
-			}
-		}
-
-		if (m_iRotationCount > 6)
-		{
-			m_iRotationCount = 0;
-			m_bAbleRotationPort = false;
-		}
-	}*/
-
-	// 영웅 변신 상태일 때
-	if (m_bAbleHero)
+	m_fEffectValue -= fDT(0) * 0.1f;
+	/*if (m_bAbleHero)
 	{
 		_float fDuration = 0.1f;
 		if (m_eHeroPortAnimType == Enable)
@@ -192,7 +127,7 @@ void CUI_Portrait::My_Tick()
 	else
 	{
 		m_eHeroPortAnimType = AnimEnd;
-	}
+	}*/
 }
 
 void CUI_Portrait::Set_UserPort(_uint iClass)
@@ -200,7 +135,6 @@ void CUI_Portrait::Set_UserPort(_uint iClass)
 	m_iPrvClass = m_iCurClass;
 	m_iCurClass = iClass;
 
-	// 유저 포트레이트가 바뀔 때
 	if (m_iPrvClass != m_iCurClass)
 	{
 		if (iClass <= ENGINEER)
@@ -210,6 +144,21 @@ void CUI_Portrait::Set_UserPort(_uint iClass)
 		else if (iClass > ENGINEER)
 		{
 			m_bChangeUserPort = true;
+		}
+	}
+}
+
+void CUI_Portrait::SetActive_UserPort(_bool value)
+{
+	for (int i = 0; i < UP_Effect; ++i)
+	{
+		if (value == true)
+		{
+			ENABLE_GAMEOBJECT(m_pUserPortrait[i]);
+		}
+		else
+		{
+			DISABLE_GAMEOBJECT(m_pUserPortrait[i]);
 		}
 	}
 }
@@ -225,17 +174,20 @@ void CUI_Portrait::Create_UserPort()
 
 		if (i == UP_BG)
 		{
-			m_pUserPortrait[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_RoundPortraitBG.dds"));
+			m_pUserPortrait[i]->Set_Sort(0.5f);
+			m_pUserPortrait[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBG.dds"));
 		}
 		else if (i == UP_Port)
 		{
+			m_pUserPortrait[i]->Set_Sort(0.49f);
 			m_pUserPortTexture = GET_COMPONENT_FROM(m_pUserPortrait[i], CTexture);
 			m_pUserPortTexture->Remove_Texture(0);
 			Read_Texture(m_pUserPortrait[i], "/HUD/Portrait", "Class");
 		}
 		else if (i == UP_Effect)
 		{
-
+			m_pUserPortrait[i]->Set_Scale(8.f);
+			m_pUserPortrait[i]->Set_Sort(0.48f);
 		}
 
 		CREATE_GAMEOBJECT(m_pUserPortrait[i], GROUP_UI);
@@ -296,6 +248,8 @@ void CUI_Portrait::SetTexture_UserPort()
 void CUI_Portrait::DoScale_UserPort(_bool value)
 {
 	m_fDoScaleUserPortDuration = 0.1f * (m_iChangeUserPortCount * 0.5f);
+
+	Set_FadeUserPort(m_fDoScaleUserPortDuration);
 
 	for (int i = 0; i < UP_Effect; ++i)
 	{
