@@ -21,7 +21,6 @@ CAI_TG_Warrior_Attack_HorizontalMiddle::~CAI_TG_Warrior_Attack_HorizontalMiddle(
 
 HRESULT CAI_TG_Warrior_Attack_HorizontalMiddle::Initialize()
 {
-	m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
 	m_tHitInfo.fKnockBackPower = 2.f;
 	m_tHitInfo.fJumpPower = 0.f;
 
@@ -30,7 +29,6 @@ HRESULT CAI_TG_Warrior_Attack_HorizontalMiddle::Initialize()
 	//m_eStateType = STATE_ATTACK_HORIZONTALUP_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	m_fInterPolationTime = 0.1f;
-
 
 	m_iStopIndex = 30;
 	m_iAttackEndIndex = 55;

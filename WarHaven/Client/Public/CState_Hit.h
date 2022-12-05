@@ -44,7 +44,7 @@ private:
 
 /*For. Enter*/
 protected:
-	void	Face_Check(CUnit* pOwner, _bool bUseUpandDown = true);
+	void	Face_Check(CUnit* pOwner);
 
 	void Fly_State();
 

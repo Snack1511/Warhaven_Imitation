@@ -76,11 +76,8 @@ void CState_Hit::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 }
 
-void CState_Hit::Face_Check(CUnit* pOwner, _bool bUseUpandDown)
+void CState_Hit::Face_Check(CUnit* pOwner)
 {
-
-    if (pOwner->Is_MainPlayer())
-    {
         if (m_tHitInfo.bFace)
         {
             if (m_tHitInfo.eHitType == HIT_TYPE::eLEFT)
@@ -88,41 +85,7 @@ void CState_Hit::Face_Check(CUnit* pOwner, _bool bUseUpandDown)
 
             else  if (m_tHitInfo.eHitType == HIT_TYPE::eRIGHT)
                 m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
-
-            else if (bUseUpandDown)
-            {
-                if (m_tHitInfo.eHitType == HIT_TYPE::eUP)
-                    m_tHitInfo.eHitType = HIT_TYPE::eDOWN;
-
-                else  if (m_tHitInfo.eHitType == HIT_TYPE::eDOWN)
-                    m_tHitInfo.eHitType = HIT_TYPE::eUP;
-            }
-
-
-        }
-    }
-    else
-    {
-        if (!m_tHitInfo.bFace)
-        {
-            if (m_tHitInfo.eHitType == HIT_TYPE::eLEFT)
-                m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
-
-            else  if (m_tHitInfo.eHitType == HIT_TYPE::eRIGHT)
-                m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
-
-            else if (bUseUpandDown)
-            {
-                if (m_tHitInfo.eHitType == HIT_TYPE::eUP)
-                    m_tHitInfo.eHitType = HIT_TYPE::eDOWN;
-
-                else  if (m_tHitInfo.eHitType == HIT_TYPE::eDOWN)
-                    m_tHitInfo.eHitType = HIT_TYPE::eUP;
-            }
-
-
-        }
-    }
+        } 
 
 
 }
@@ -177,7 +140,7 @@ void CState_Hit::Hit_State(CUnit* pOwner)
 
 void CState_Hit::Guard_State(CUnit* pOwner)
 {
-    Face_Check(pOwner, false);
+    Face_Check(pOwner);
 
     m_tHitInfo.fJumpPower = 0.f;
     m_tHitInfo.fKnockBackPower = 0.f;
