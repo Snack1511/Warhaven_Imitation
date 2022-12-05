@@ -773,6 +773,18 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 HRESULT CGameSystem::On_EnterStage()
 {
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_Envir", _float4(0.f, 0.f, 0.f));
+
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_0"), _float4(-27.7f, -0.5f, 34.8f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_1"), _float4(-38.f, -0.5f, 29.1f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_2"), _float4(36.f, 0.f, 9.2f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_3"), _float4(-60.1f, 4.7f, 34.7f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_4"), _float4(-24.1f, 3.1f, -76.1f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_5"), _float4(19.6f, -0.3f, -72.f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_6"), _float4(-3.8f, -0.3f, -49.8f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_7"), _float4(-10.4f, 0.f, -57.2f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_8"), _float4(9.2f, -0.5f, -71.8f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_9"), _float4(-28.f, -0.5f, -37.1f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_10"), _float4(-2.2f, -0.4f, 51.1f));
     /* 모든 플레이어들 유닛 일단 꺼놓기 */
     //for (auto& elem : m_mapAllPlayers)
     //{
