@@ -5,6 +5,9 @@ BEGIN(Client)
 
 class CUI_Portrait final : public CUI_Wrapper
 {
+public:
+	enum HeroPortActive { Enable, Disable, End };
+
 	DECLARE_PROTOTYPE(CUI_Portrait);
 	DECLARE_GAMEOBJECT(CUI_Portrait);
 
@@ -20,9 +23,11 @@ public:
 
 public:
 	void Set_UserPort(_uint iClass);
+	void Set_HeroPort(HeroPortActive eType);
 
 	void SetActive_UserPort(_bool value);
 	void SetActive_HeroPort(_bool value);
+
 
 private:
 	_uint m_iPrvClass = 0;
@@ -53,40 +58,24 @@ private:
 	CUI_Object* m_pHeroPortrait[HP_End];
 	CUI_Object* m_pArrHeroPortrait[HP_End][4];
 
-	enum HeroPortActive { Enable, Disable, End };
 	HeroPortActive m_eAcitveType = HeroPortActive::End;
-
 	_bool m_bAbleHero = false;
 	_bool m_bLerpHeroPort = false;
-
 	_uint m_iFirstHeroPort = 0;
-	_uint m_iLastHeroPort = 4;
-
-	_bool bIsHero = false;
+	_uint m_iLastHeroPort = 3;
 
 private:
 	void Create_HeroPort();
-	void Set_FadeHeroPort();
+	void Set_FadeHeroPort(CUI_Object* pUI);
 
-	void Active_HeroPort(HeroPortActive eType);
+	void Active_HeroPort();
 
 private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
-public:
-	void Set_ShaderEffect(CShader* pShader, const char* constName);
-
-
-public:
-	_bool m_bIsHeroLerp = false;
-	_uint m_iHeroActiveCount = 0;
-
-	_float m_fMinValue = 0.01f;
-
-private:	// Shader
+private:
 	void Set_Pass();
-	void Bind_Shader();
 };
 
 END

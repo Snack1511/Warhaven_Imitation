@@ -56,6 +56,7 @@
 #include "CUtility_Transform.h"
 
 #include "CUI_HUD.h"
+#include "CUI_Portrait.h"
 #include "CUI_HeroGauge.h"
 
 CPlayer::CPlayer()
@@ -693,8 +694,7 @@ void CPlayer::On_Reborn()
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[m_eCurrentDefaultClass]);
 	m_bDie = false;
 
-	CUser::Get_Instance()->SetActive_PlayerHUD(true);
-
+	// CUser::Get_Instance()->SetActive_PlayerHUD(true);
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
@@ -805,7 +805,7 @@ void CPlayer::My_LateTick()
 
 void CPlayer::Update_HP()
 {
-	CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fMaxHP, m_pCurrentUnit->Get_Status().fHP);
+	CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fHP, m_pCurrentUnit->Get_Status().fMaxHP);
 }
 void CPlayer::Update_HeroGauge()
 {
@@ -814,7 +814,6 @@ void CPlayer::Update_HeroGauge()
 		/*_bool IsHeroGaugeEnable = CUser::Get_Instance()->Is_OnHeroGauge();
 		if (!IsHeroGaugeEnable)
 			return;*/
-
 
 		CUser::Get_Instance()->Set_HeroGauge(m_fGauge, m_fMaxGauge);
 	}
@@ -855,7 +854,7 @@ void CPlayer::On_AbleHero()
 
 	if (m_bIsMainPlayer)
 	{
-		CUser::Get_Instance()->SetActive_HeroPortrait(true);
+		CUser::Get_Instance()->Set_HeroPort(CUI_Portrait::HeroPortActive::Enable);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(true);
 	}
 }

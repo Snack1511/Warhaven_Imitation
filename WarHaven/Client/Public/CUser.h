@@ -19,6 +19,8 @@ class CPlayerInfo;
 class CUI_Cursor;
 class CUI_Wrapper;
 class CUI_HUD;
+class CUI_Portrait;
+class CUI_HpBar;
 class CUI_HeroGauge;
 
 class CUser
@@ -79,6 +81,8 @@ public:
 public:
 	CUI_Wrapper* Get_HUD(_uint eHUD);
 
+	void Set_HeroPort(_uint iType);
+	void Set_HP(_float fCurValue, _float fMaxValue);
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
 
 public:
@@ -88,10 +92,8 @@ public:
 	void On_ExitStageLevel();
 
 	void Set_HUD(CLASS_TYPE eClass);
-	void Set_HP(_float fMaxHP, _float fCurHP);
 	void Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime);
 
-	void SetActive_HeroPortrait(_bool value);
 	void SetActive_OxenJumpText(_bool value);
 	void SetActive_HeroTransformGauge(_bool value);
 
@@ -101,13 +103,12 @@ public:
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
-	void Enable_DeadUI();
-
-	void SetActive_PlayerHUD(_bool value);
-	
+	void Enable_DeadUI();	
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
+	CUI_Portrait* m_pUI_Portrait = nullptr;
+	CUI_HpBar* m_pUI_HP = nullptr;
 	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
 
 private:

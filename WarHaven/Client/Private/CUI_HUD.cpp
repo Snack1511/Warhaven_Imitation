@@ -42,7 +42,6 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HUD();
 
 	Create_OxenJumpText();
-	Create_HpText();
 	Create_PlayerNameText();
 	Create_HeroTransformUI();
 	Create_InactiveHeroText();
@@ -98,7 +97,6 @@ void CUI_HUD::My_Tick()
 
 	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 
-	Update_HP();
 	Update_HeorTransformGauge();
 
 	Update_OperWindow();
@@ -302,14 +300,6 @@ void CUI_HUD::Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxC
 	//dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(iSkillType, fCoolTime, fMaxCoolTime);
 }
 
-void CUI_HUD::Set_HP(_float fMaxHP, _float fCurHP)
-{
-	m_fPrvHP = m_fCurHP;
-
-	m_fMaxHP = fMaxHP;
-	m_fCurHP = fCurHP;
-}
-
 void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 {
 	m_ePrvClass = m_eCurClass;
@@ -320,7 +310,7 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		if (CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero())
 		{
 			Enable_Fade(m_pInactiveHeroText, 1.f);
-			SetActive_HeroPortrait(false);
+			dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_HeroPort(CUI_Portrait::HeroPortActive::Disable);
 		}
 
 		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero() = false;
@@ -331,22 +321,6 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		Disable_Fade(m_pInactiveHeroText, 1.f);
 		//CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
-}
-
-void CUI_HUD::SetActive_HeroPortrait(_bool value)
-{
-	//CUI_Portrait::HeroPortAnimType eType;
-	//
-	//if (value == true)
-	//{
-	//	eType = CUI_Portrait::Enable;
-	//}
-	//else
-	//{
-	//	eType = CUI_Portrait::Disable;
-	//}
-
-	// dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(eType);
 }
 
 void CUI_HUD::Bind_Btn()
@@ -642,28 +616,6 @@ void CUI_HUD::Create_TraingText()
 	DISABLE_GAMEOBJECT(m_pChangeClassText);
 }
 
-void CUI_HUD::Update_HP()
-{
-	//if (m_pWrap[HpBar]->Is_Valid())
-	//{
-	//	_float fLerpSpeed = fDT(0) * 10.f;
-	//	m_fCurHP = ((1 - fLerpSpeed) * m_fPrvHP) + (fLerpSpeed * m_fCurHP);
-	//
-	//	_tchar  szTemp[MAX_STR] = {};
-	//	swprintf_s(szTemp, TEXT("%.f / %.f"), m_fCurHP, m_fMaxHP);
-	//	m_pHpText->Set_FontText(szTemp);
-	//
-	//	m_fHealthRatio = m_fCurHP / m_fMaxHP;
-	//
-	//	if (m_fCurHP < -0.f)
-	//	{
-	//		m_fHealthRatio = 0.f;
-	//	}
-	//
-	//	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHealthRatio);
-	//}
-}
-
 void CUI_HUD::Create_OxenJumpText()
 {
 	m_pOxenJumpText = CUI_Object::Create();
@@ -683,24 +635,6 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
-}
-
-void CUI_HUD::Create_HpText()
-{
-	m_pHpText = CUI_Object::Create();
-
-	m_pHpText->Set_Scale(20.f);
-	m_pHpText->Set_Pos(-270.f, -270.f);
-	m_pHpText->Set_Sort(0.85f);
-
-	GET_COMPONENT_FROM(m_pHpText, CTexture)->Remove_Texture(0);
-
-	m_pHpText->Set_FontRender(true);
-	m_pHpText->Set_FontStyle(true);
-	m_pHpText->Set_FontScale(0.25f);
-
-	CREATE_GAMEOBJECT(m_pHpText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pHpText);
 }
 
 void CUI_HUD::SetActive_OperUI(_bool value)
