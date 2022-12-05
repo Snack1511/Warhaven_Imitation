@@ -251,7 +251,7 @@ private:
 	void		Change_Camera(_int Index);
 
 	void		Set_BrushInform();
-	_bool		Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _float4& OutPos, _float4& OutNormal);
+	_bool		Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _float4& OutLocalPos, _float4& OutNormal);
 	void		EmptyFunction() {}
 #pragma endregion
 

@@ -1612,6 +1612,9 @@ void CWindow_Map::Make_InstanceObject()
 {
     if (nullptr == m_pCurTerrain)
         return;
+    list<_uint> VertsList = Select_Vertices();
+    if (VertsList.empty())
+        return;
 
 
     size_t HashNum = Convert_ToHash( m_strCurSelectInstanceMeshName);
@@ -1628,34 +1631,42 @@ void CWindow_Map::Make_InstanceObject()
     tInstanceData.strInstanceGorupName = CFunctor::To_Wstring(m_strCurSelectInstanceMeshName);
     tInstanceData.strMeshPath = CFunctor::To_Wstring(m_strCurSelectInstanceMeshPath);
     tInstanceData.iInstanceNums = m_iDrawInstanceObjectNums;
+    //여기서 로컬위치 잡아 --> 인스턴스들을 가진 오브젝트의 위치
     tInstanceData.InstancePosition = OutPos;
     tInstanceData.ArrInstanceVTX = new VTXINSTANCE[m_iDrawInstanceObjectNums];
     //생성 전 피킹된 위치 근처의 지형의 정점 가져오기
-    list<_uint> VertsList = Select_Vertices();
+    _float4x4 CurTerrainMat = m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad();
+    _float4x4 CurTerrainMatInv = CurTerrainMat;
+    CurTerrainMatInv = CurTerrainMatInv.Inverse();
     for (_int i = 0; i < m_iDrawInstanceObjectNums; ++i)
     {
-
+        _float4 vInstancePosition = _float4(0.f , 0.f , 0.f , 1.f);
         _float fRatio = frandom(0.f, m_fBrushSize * 0.5f);
-        _float4 vInstancePosition
+        //랜덤 증가치 할당 해
+        vInstancePosition
             = _float4(
                 cosf(frandom(0.f, 360.f)) * fRatio
                 , 0.f
                 , sinf(frandom(0.f, 360.f)) * fRatio
                 , 1.f);
+        //인스턴스 깔 위치 잡아 --> 로컬좌표임
 
-        _float4 TerrainPickPos = vInstancePosition.XMLoad() + OutPos.XMLoad();
+        //터레인 픽킹 위치 잡아 --> 로컬좌표임
+        _float4 TerrainPickPos = vInstancePosition.XMLoad() + tInstanceData.InstancePosition.XMLoad();
         TerrainPickPos.y += 10000.f;
-        TerrainPickPos.w = 1.f;
+
         _float4 vPickOutPos;
         _float4 vPickOutNormal;
         //해당 정점 리스트의 피킹 --> 인스턴스 어레이로..
         if (Picked_VertList(VertsList, TerrainPickPos, vPickOutPos, vPickOutNormal))//터레인 정점리스트 피킹
         {
             // 위치와 노멀 받아서 적용
-            vInstancePosition.y += (vPickOutPos.y - OutPos.y);
+            //여기서 나온 vPickOutPos는 로컬좌표임
+            tInstanceData.InstancePosition.y += (vPickOutPos.y - OutPos.y);
 
-            _float4x4 TerrainMat = m_pCurTerrain->Get_Transform()->Get_WorldMatrix().XMLoad();
-            vInstancePosition = vInstancePosition.MultiplyCoord(TerrainMat);
+            //로컬 좌표상의 데이터를 넘겨줌 --> 원점을 중심으로 오브젝트 인덱스들을 배치한 다음, 터레인 위치상에 픽킹 좌표로 옮겨줘야 함
+            _float4 vObjectPosition = _float4(0.f, 0.f, 0.f, 1.f).XMLoad() + vInstancePosition.XMLoad();
+            vObjectPosition.w = 1.f;
 
             _matrix Mat = XMMatrixIdentity();
             _float4 IntiMatUp = -vPickOutNormal.XMLoad();
@@ -1676,8 +1687,7 @@ void CWindow_Map::Make_InstanceObject()
             tInstanceData.ArrInstanceVTX[i].vRight = vRight;
             tInstanceData.ArrInstanceVTX[i].vUp = vUp;
             tInstanceData.ArrInstanceVTX[i].vLook = vLook;
-            tInstanceData.ArrInstanceVTX[i].vTranslation = vInstancePosition;
-
+            tInstanceData.ArrInstanceVTX[i].vTranslation = vObjectPosition;
         }//성공
         else
         {
@@ -1687,19 +1697,24 @@ void CWindow_Map::Make_InstanceObject()
 
     }
 
-
-    // 인스턴스 오브젝트 생성
-    CStructure_Instance* pInstanceStructure = CStructure_Instance::Create(
-        tInstanceData.strMeshPath.c_str(),
-        m_iDrawInstanceObjectNums,
-        tInstanceData.ArrInstanceVTX);
-    if (nullptr == pInstanceStructure)
-        assert(0);
-    pInstanceStructure->Initialize();
-    CREATE_GAMEOBJECT(pInstanceStructure, GROUP_DECORATION);
-    pInstanceStructure->Get_Transform()->Set_World(WORLD_POS, OutPos);
-    m_pCurSelectInstanceObject = pInstanceStructure;
-    m_InstanceMap[HashNum].push_back(make_tuple(tInstanceData, pInstanceStructure));
+    if (nullptr != tInstanceData.ArrInstanceVTX) 
+    {
+        // 인스턴스 오브젝트 생성
+        CStructure_Instance* pInstanceStructure = CStructure_Instance::Create(
+            tInstanceData.strMeshPath.c_str(),
+            m_iDrawInstanceObjectNums,
+            tInstanceData.ArrInstanceVTX);
+        if (nullptr == pInstanceStructure)
+            assert(0);
+        pInstanceStructure->Initialize();
+        CREATE_GAMEOBJECT(pInstanceStructure, GROUP_DECORATION);
+        _float4 SetUpPos = OutPos.MultiplyCoord(CurTerrainMat);
+        tInstanceData.InstancePosition = SetUpPos;
+        //여기서 월드상의 좌표로 옮겨줌
+        pInstanceStructure->Get_Transform()->Set_World(WORLD_POS, tInstanceData.InstancePosition);
+        m_pCurSelectInstanceObject = pInstanceStructure;
+        m_InstanceMap[HashNum].push_back(make_tuple(tInstanceData, pInstanceStructure));
+    }
 }
 void CWindow_Map::Delete_InstanceObject()
 {
@@ -2202,11 +2217,11 @@ void CWindow_Map::Set_BrushInform()
     }
 }
 
-_bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _float4& OutPos, _float4& OutNormal)
+_bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _float4& OutLocalPos, _float4& OutNormal)
 {
-    _float4x4	matWorld = m_pCurTerrain->Get_Transform()->Get_WorldMatrix();
-    _matrix		WorldMatrixInv = matWorld.Inverse().XMLoad();
-    matWorld.Inverse();
+    //_float4x4	matWorld = m_pCurTerrain->Get_Transform()->Get_WorldMatrix();
+    //_matrix		WorldMatrixInv = matWorld.Inverse().XMLoad();
+    //matWorld.Inverse();
     _float3     f3Position = _float3(vPosition.x, vPosition.y, vPosition.z);
     _vector			xRayPos, xRayDir;
     xRayPos = vPosition.XMLoad(); //XMVector3TransformCoord(XMLoadFloat3(&f3Position), WorldMatrixInv);
@@ -2244,14 +2259,14 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
         {
             _float4 V1, V2;
             _float4 vOutNormal, vPickedPos;
-            _float4x4 worldMat = matWorld;
+            //_float4x4 worldMat = matWorld;
 
             V1 = (vVecA - vVecB);
             V2 = (vVecC - vVecB);
 
             vOutNormal = XMVector3Cross(V1.Normalize().XMLoad(), V2.Normalize().XMLoad());
-            vOutNormal = vOutNormal.MultiplyNormal(worldMat);
-            vOutNormal.Normalize();
+            //vOutNormal = vOutNormal.MultiplyNormal(worldMat);
+            vOutNormal = vOutNormal.Normalize();
             vPickedPos = xRayPos + XMVector3Normalize(xRayDir) * fDist;
             //vPickedPos = vPickedPos.MultiplyCoord(worldMat);
             _float4 vRayPos = _float4(vPosition.x, vPosition.y, vPosition.z, 1.f);
@@ -2261,7 +2276,7 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
             if (fMin > fDistance)
             {
                 OutNormal = vOutNormal;
-                OutPos = vPickedPos;
+                OutLocalPos = vPickedPos;
 
                 fMin = fDistance;
             }
@@ -2272,14 +2287,14 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
             {
                 _float4 V1, V2;
                 _float4 vOutNormal, vPickedPos;
-                _float4x4 worldMat = matWorld;
+                //_float4x4 worldMat = matWorld;
 
                 V1 = (vVecA - vVecC);
                 V2 = (vVecD - vVecC);
 
                 vOutNormal = XMVector3Cross(V1.Normalize().XMLoad(), V2.Normalize().XMLoad());
-                vOutNormal = vOutNormal.MultiplyNormal(worldMat);
-                vOutNormal.Normalize();
+                //vOutNormal = vOutNormal.MultiplyNormal(worldMat);
+                vOutNormal = vOutNormal.Normalize();
                 vPickedPos = xRayPos + XMVector3Normalize(xRayDir) * fDist;
 
                 _float4 vRayPos = _float4(vPosition.x, vPosition.y, vPosition.z, 1.f);
@@ -2289,7 +2304,7 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
                 if (fMin > fDistance)
                 {
                     OutNormal = vOutNormal;
-                    OutPos = vPickedPos;
+                    OutLocalPos = vPickedPos;
 
                     fMin = fDistance;
                 }
