@@ -150,7 +150,11 @@ void CUI_Skill::SetActive_SkillUI(_uint iClass)
 		m_iIndex = 3;
 		m_iSkillNum = 14;
 	}
-
+	else if (iClass == FIONA)
+	{
+		m_iIndex = 3;
+		m_iSkillNum = 17;
+	}
 
 	for (int i = 0; i < SU_End; ++i)
 	{

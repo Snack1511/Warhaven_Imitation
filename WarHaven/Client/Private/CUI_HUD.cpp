@@ -175,39 +175,39 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		m_pClassInfo->Set_FontText(TEXT("블레이드"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
 		m_eCurClass = WARRIOR;
-		Set_HUD(WARRIOR);
+		//Set_HUD(WARRIOR);
 
 		break;
 
 	case 1:
 		m_pClassInfo->Set_FontText(TEXT("스파이크"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		Set_HUD(SPEAR);
+		//Set_HUD(SPEAR);
 		break;
 
 	case 2:
 		m_pClassInfo->Set_FontText(TEXT("아치"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		Set_HUD(ARCHER);
+		//Set_HUD(ARCHER);
 		break;
 
 	case 3:
 		m_pClassInfo->Set_FontText(TEXT("가디언"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		Set_HUD(PALADIN);
+		//Set_HUD(PALADIN);
 		break;
 
 	case 4:
 		m_pClassInfo->Set_FontText(TEXT("스모크"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		Set_HUD(PRIEST);
+		//Set_HUD(PRIEST);
 		break;
 
 	case 5:
 		m_pClassInfo->Set_FontText(TEXT("워해머"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
 		m_eCurClass = ENGINEER;
-		Set_HUD(ENGINEER);
+		//Set_HUD(ENGINEER);
 		break;
 	}
 }
@@ -318,6 +318,10 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		Disable_Fade(m_pInactiveHeroText, 1.f);
 		//CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
+
+	dynamic_cast<CUI_Crosshair*>(m_pHUD[HUD_Crosshair])->Set_Crosshair(m_eCurClass);
+	dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_UserPort(m_eCurClass);
+	dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Set_SkillUI(m_eCurClass);
 }
 
 void CUI_HUD::Bind_Btn()
@@ -559,8 +563,7 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 		pPlayer->Change_DefaultUnit((CPlayer::CLASS_DEFAULT)m_eCurClass);
 		pPlayer->Get_CurrentUnit()->On_Respawn();
 
-		dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_UserPort(m_eCurClass);
-		dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Set_SkillUI(m_eCurClass);
+		Set_HUD(m_eCurClass);
 	}
 }
 
@@ -1138,14 +1141,12 @@ void CUI_HUD::BootCamp_CharacterWindow()
 			if (KEY(F, TAP))
 			{
 				SetActive_CharacterSelectWindow(false);
-				//SetActive_PlayerInfoUI(true);
 			}
 		}
 		else
 		{
 			if (KEY(T, TAP))
 			{
-				//SetActive_PlayerInfoUI(false);
 				SetActive_CharacterSelectWindow(true);
 			}
 		}
