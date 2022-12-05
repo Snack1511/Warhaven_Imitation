@@ -1,4 +1,7 @@
 
+#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTerrain.cpp"
+
+
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTestObject.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Skill.cpp"
-
-
-#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Wrapper.cpp"
 

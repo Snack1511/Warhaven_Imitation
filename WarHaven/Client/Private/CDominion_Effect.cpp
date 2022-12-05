@@ -53,7 +53,7 @@ void CDominion_Effect::Set_DominionColor(CTeamConnector* pConqueredTeam)
 		m_vPlusColor = _float4(1.f, 1.f, 1.f);
 
 	else if (pConqueredTeam->IsMainPlayerTeam()) //파란색
-		m_vPlusColor = _float4(0.f, 0.f, 1.f);
+		m_vPlusColor = _float4(0.3f, 0.7f, 1.f);
 
 	else if (!pConqueredTeam->IsMainPlayerTeam()) //빨간색
 		m_vPlusColor = _float4(1.f, 0.f, 0.f);

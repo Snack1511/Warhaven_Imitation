@@ -1,4 +1,7 @@
 
+#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CSkyBox.cpp"
+
+
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSlide_Loop_Player.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSword_Effect.cpp"
-
-
-#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTerrain.cpp"
 

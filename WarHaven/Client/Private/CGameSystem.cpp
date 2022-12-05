@@ -821,6 +821,25 @@ HRESULT CGameSystem::Paden_EnvironmentEffect()
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_4"), _float4(16.6f, 20.f, -22.4f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_6"), _float4(-17.f, 20.f, -24.3f));
 
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_11"), _float4(11.5f, -0.4f, -41.8f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_12"), _float4(35.7f, 1.6f, -41.3f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_13"), _float4(42.7f, -0.5f, -15.f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_14"), _float4(46.f, -0.5f, 29.6f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_15"), _float4(28.6f, -0.3f, 44.7f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_16"), _float4(15.f, -0.5f, 38.4f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_17"), _float4(-13.5f, -0.5f, 37.5f));
+
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_18"), _float4(-8.5f, 24.7f, 23.9f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_19"), _float4(11.9f, 23.1f, 26.5f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_20"), _float4(23.2f, 23.9f, 13.3f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_21"), _float4(22.f, 21.5f, -2.7f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_22"), _float4(16.9f, 21.7f, -27.1f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_23"), _float4(-21.1f, 21.5f, 22.4f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_24"), _float4(-22.f, 19.9f, -19.2f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_25"), _float4(-12.7f, 23.1f, -25.4f));
+
+
+
     return S_OK;
 }
 
