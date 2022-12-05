@@ -53,9 +53,11 @@ void CRect_Instance::ReMake_Instance(_uint iNumInstance)
 	SetUp_InstanceMesh(iNumInstance);
 }
 
-void CRect_Instance::ReMap_Instances(VTXRECTINSTANCE* pRectInstances)
+void CRect_Instance::ReMap_Instances(VTXRECTINSTANCE* pRectInstances, _uint iNewNumInstance)
 {
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	m_iNumInstance = iNewNumInstance;
 
 	DEVICE_CONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 

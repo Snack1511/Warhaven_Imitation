@@ -19,7 +19,7 @@ public:
 	void	ReMake_Instance(_uint iNumInstance);
 
 public:
-	void	ReMap_Instances(VTXRECTINSTANCE* pRectInstances);
+	void	ReMap_Instances(VTXRECTINSTANCE* pRectInstances, _uint iNewNumInstance);
 
 public:
 	virtual void	Release() override;

@@ -83,6 +83,16 @@ HRESULT CWindow_Tile::Render()
 			}
 		}
 	}
+	
+	ImGui::RadioButton("RENDER_TILE", &m_bRenderTile);
+
+	if (m_bRenderTile)
+	{
+		/* Render */
+
+
+
+	}
 
 	
 

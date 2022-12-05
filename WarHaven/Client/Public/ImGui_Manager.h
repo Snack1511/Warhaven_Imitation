@@ -22,6 +22,7 @@ public:
 		IMGUI_PhysX,
 		IMGUI_POSITION,
 		IMGUI_LEVEL,
+		IMGUI_TILE,
 		IMGUI_END
 	};
 

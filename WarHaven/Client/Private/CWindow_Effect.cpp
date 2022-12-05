@@ -103,15 +103,12 @@ HRESULT CWindow_Effect::Render()
 			}
 		}
 
-#ifdef _DEBUG
 		ImGui::SameLine();
 
 		if (ImGui::Button("STOP_PLAYER(9)") || (KEY(NUM9, TAP)))
 		{
 			PLAYER->Set_Controlable();
 		}
-
-#endif // _DEBUG
 	}
 
 	Show_MainList();

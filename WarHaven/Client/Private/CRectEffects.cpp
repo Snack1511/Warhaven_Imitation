@@ -499,6 +499,17 @@ HRESULT CRectEffects::Start()
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, "g_vFlag");
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CEffect::Set_ShaderResource, this, placeholders::_1, "g_vGlowFlag");
 
+#ifdef _DEBUG
+	m_pMeshCom = dynamic_cast<CRect_Instance*>(GET_COMPONENT(CMesh));
+#else
+	m_pMeshCom = static_cast<CRect_Instance*>(GET_COMPONENT(CMesh));
+
+#endif // _DEBUG
+
+
+	if (!m_pMeshCom)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -710,49 +721,63 @@ void CRectEffects::My_Tick()
 
 void CRectEffects::My_LateTick()
 {
-	if (m_bSorting)
-	{
-		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
-		vCamPos *= 1500.f;
-
-		//섞고난 RectInstance가 몇번째 인덱스로 가있는지 알 수 있엉?
-
-		sort(m_pDatas, m_pDatas + (m_tCreateData.iNumInstance - 1), [vCamPos](DATAS& p1, DATAS& p2)
-			{
-				//노말라이즈한 룩이랑
-				_float4 vNormalLook;
-				vNormalLook = p1.RectInstance.vLook;
-				vNormalLook.Normalize();
-
-				//카메라위치에서 내위치 뺸 벡터를
-				_float4 vVector;
-				vVector = (XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p1.RectInstance.vTranslation));
-
-				//내적
-				_float fDist1 = vNormalLook.Dot(vVector);
-
-				//노말라이즈한 룩이랑
-				vNormalLook = p2.RectInstance.vLook;
-				vNormalLook.Normalize();
-
-				//카메라위치에서 내위치 뺸 벡터를
-				vVector = (XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p2.RectInstance.vTranslation));
-
-				//내적
-				_float fDist2 = vNormalLook.Dot(vVector);
-
-
-				p1.fDistance = fDist1;
-				p2.fDistance = fDist2;
-				
-				return fDist1 > fDist2;
-			});
-	}
-
-	
+	_uint iFinalIndex = 0;
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
-		m_pFinalRectInstances[i] = m_pDatas[i].RectInstance;
+		/* 절두체 검사 해서 필요한 애만 여기에 담기. */
+
+		if (FrustumCheck(i))
+			m_pFinalRectInstances[iFinalIndex++] = m_pDatas[i].RectInstance;
+	}
+
+	/* 0개면 아예 끄고 return */
+	if (iFinalIndex == 0)
+	{
+		m_pMeshCom->Set_Enable(false);
+		return;
+	}
+	else
+	{
+		m_pMeshCom->Set_Enable(true);
+
+		if (m_bSorting)
+		{
+			_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+			vCamPos *= 1500.f;
+
+			//섞고난 RectInstance가 몇번째 인덱스로 가있는지 알 수 있엉?
+
+			sort(m_pDatas, m_pDatas + (m_tCreateData.iNumInstance - 1), [vCamPos](DATAS& p1, DATAS& p2)
+				{
+					//노말라이즈한 룩이랑
+					_float4 vNormalLook;
+					vNormalLook = p1.RectInstance.vLook;
+					vNormalLook.Normalize();
+
+					//카메라위치에서 내위치 뺸 벡터를
+					_float4 vVector;
+					vVector = (XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p1.RectInstance.vTranslation));
+
+					//내적
+					_float fDist1 = vNormalLook.Dot(vVector);
+
+					//노말라이즈한 룩이랑
+					vNormalLook = p2.RectInstance.vLook;
+					vNormalLook.Normalize();
+
+					//카메라위치에서 내위치 뺸 벡터를
+					vVector = (XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p2.RectInstance.vTranslation));
+
+					//내적
+					_float fDist2 = vNormalLook.Dot(vVector);
+
+
+					p1.fDistance = fDist1;
+					p2.fDistance = fDist2;
+
+					return fDist1 > fDist2;
+				});
+		}
 	}
 
 
@@ -765,14 +790,15 @@ void CRectEffects::My_LateTick()
 		}
 	}
 
-
-	static_cast<CRect_Instance*>(GET_COMPONENT(CMesh))->ReMap_Instances(m_pFinalRectInstances);
-
 	if (m_bEffectFlag & EFFECT_FOLLOWTARGET)
 	{
 		m_pTransform->Set_World(WORLD_POS, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS));
 		m_pTransform->Make_WorldMatrix();
 	}
+
+	static_cast<CRect_Instance*>(GET_COMPONENT(CMesh))->ReMap_Instances(m_pFinalRectInstances, iFinalIndex);
+
+	
 
 }
 
@@ -1136,6 +1162,27 @@ void CRectEffects::Select_UVTexture(_uint iIndex)
 	_uint iSelect = (_uint)m_pDatas[iIndex].InstancingData.fDuration;
 	m_pDatas[iIndex].RectInstance.vColor.x = iSelect % m_iWidthSize;
 	m_pDatas[iIndex].RectInstance.vColor.y = iSelect / m_iHeightSize;
+}
+
+_bool CRectEffects::FrustumCheck(_uint iIndex)
+{
+	_float4 vPos;
+	vPos = m_pDatas[iIndex].RectInstance.vTranslation;
+	
+	_float fLength = 0.f;
+
+	_float fScaleX = XMVectorGetX(XMVector3Length(XMLoadFloat4(&m_pDatas[iIndex].RectInstance.vRight)));
+	_float fScaleY = XMVectorGetX(XMVector3Length(XMLoadFloat4(&m_pDatas[iIndex].RectInstance.vUp)));
+
+	fLength = sqrtf(fScaleX * fScaleX + fScaleY * fScaleY);
+
+	vPos = vPos.MultiplyCoord(m_pTransform->Get_WorldMatrix());
+
+	/* 절두체검사 */
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), fLength))
+		return true;
+
+	return false;
 }
 
 void CRectEffects::Stick_RefBone()

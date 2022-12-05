@@ -28,6 +28,7 @@ public:
 
 private:
 	char				m_szFileName[MIN_STR] = {};
+	_bool				m_bRenderTile = false;
 
 };
 END

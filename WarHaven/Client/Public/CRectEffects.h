@@ -1,6 +1,9 @@
 #pragma once
 #include "CInstancingEffects.h"
 
+BEGIN(Engine)
+class CRect_Instance;
+END
 BEGIN(Client)
 class CRectEffects
 	: public CInstancingEffects
@@ -87,6 +90,8 @@ private:
 
 	CURVE_TYPE		m_eCurveType = CURVE_LINEAR;
 
+	
+	CRect_Instance* m_pMeshCom = nullptr;
 
 private:
 	virtual void	Dead_Instance(_uint iIndex) override;
@@ -105,6 +110,7 @@ private:
 
 private:
 	_float4		Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDelta);
+	_bool		FrustumCheck(_uint iIndex);
 
 };
 

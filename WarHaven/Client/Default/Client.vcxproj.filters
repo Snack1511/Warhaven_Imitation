@@ -1762,6 +1762,9 @@
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\09. Window_Tile">
       <UniqueIdentifier>{3bd0ebd9-4d0d-4f25-815c-bd0381f907d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\09. Debug\TileDebugger">
+      <UniqueIdentifier>{a95fef0c-31e6-424d-917d-ea5302aba799}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3117,6 +3120,9 @@
     <ClInclude Include="..\public\CWindow_Tile.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\09. Window_Tile</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CTileDebugger.h">
+      <Filter>03. Instances\02. GameObject\09. Debug\TileDebugger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4452,6 +4458,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CWindow_Tile.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\09. Window_Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CTileDebugger.cpp">
+      <Filter>03. Instances\02. GameObject\09. Debug\TileDebugger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

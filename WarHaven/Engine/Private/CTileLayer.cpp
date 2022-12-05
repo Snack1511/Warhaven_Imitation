@@ -62,6 +62,8 @@ HRESULT CTileLayer::Initialize()
 
 HRESULT CTileLayer::Render()
 {
+
+
 	return S_OK;
 }
 

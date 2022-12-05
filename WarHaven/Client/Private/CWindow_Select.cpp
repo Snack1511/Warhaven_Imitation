@@ -81,6 +81,10 @@ HRESULT CWindow_Select::Render()
 	{
 		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_POSITION);
 	}
+	if (ImGui::Button("TILE Tool"))
+	{
+		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_TILE);
+	}
 	ImGui::Spacing();
 
 	__super::End();
