@@ -128,6 +128,7 @@ void CUI_HUD::Create_HUD()
 	m_pHUD[HUD_Port] = CUI_Portrait::Create();
 	m_pHUD[HUD_HP] = CUI_HpBar::Create();
 	m_pHUD[HUD_HeroGauge] = CUI_HeroGauge::Create();
+	m_pHUD[HUD_Skill] = CUI_Skill::Create();
 
 	for (int i = 0; i < HUD_End; ++i)
 	{

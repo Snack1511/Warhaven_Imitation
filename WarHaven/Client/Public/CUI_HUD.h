@@ -9,7 +9,7 @@ class CUnit;
 class CUI_HUD : public CUI_Wrapper
 {
 public:
-	enum HUD { HUD_Crosshair, HUD_Port, HUD_HP, HUD_HeroGauge, HUD_End };
+	enum HUD { HUD_Crosshair, HUD_Port, HUD_HP, HUD_HeroGauge, HUD_Skill, HUD_End };
 
 	DECLARE_PROTOTYPE(CUI_HUD);
 	DECLARE_GAMEOBJECT(CUI_HUD);
@@ -57,7 +57,7 @@ public:
 	void SetActive_OperUI(_bool value);
 	void SetActive_OxenJumpText(_bool value);
 	void SetActive_HeroTransformGauge(_bool value);
-	
+
 public:
 	_bool Is_OnHeroGauge();
 

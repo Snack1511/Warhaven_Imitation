@@ -7,9 +7,6 @@ class CUnit;
 
 class CUI_Skill : public CUI_Wrapper
 {
-	enum WindowType { Outline0, Outline1, Outline2, BG, Icon, Key, HeroKey, Type_End };
-	enum SkillIndex { Skill1, Skill2, Skill3, SkillEnd };
-
 	DECLARE_PROTOTYPE(CUI_Skill);
 	DECLARE_GAMEOBJECT(CUI_Skill);
 
@@ -22,20 +19,32 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
+public:
+	void SetActive_SkillUI(_bool value);
+	void SetActive_Outline(_bool value);
+
 private:
-	enum SkillUI { SU_BG, SU_Icon, SU_Outline, SU_Key, SU_HeroKey, SU_End };
+	enum SkillUI { SU_BG, SU_Icon, SU_Key, SU_End };
+
 	CUI_Object* m_pSkillUI[SU_End];
-	CUI_Object* m_pArrSkillUI[SU_End][4];
+	CUI_Object* m_pArrSkillUI[SU_End][3];
 
 private:
 	void Create_SkillUI();
+
+private:
+	enum Outline { Outline0, Outline1, Outline2, Outline_End };
+	CUI_Object* m_pOutline[Outline_End];
+	CUI_Object* m_pArrOutline[Outline_End][3];
+
+private:
+	void Create_Outline();
 
 private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
 public:
-	virtual void Set_ShaderResources_HeroKeySkill(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_SkillGauge1(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_SkillGauge2(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_SkillGauge3(CShader* pShader, const char* pConstName);
@@ -45,9 +54,6 @@ public:
 	void Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 private:
-	CUI_Object* m_Prototypes[Type_End] = {};
-	CUI_Object* m_arrSkillUI[4][Type_End] = {};
-
 	CUI_Object* m_pSkillCoolText = nullptr;
 	CUI_Object* m_pSkillCoolTextArr[3];
 
@@ -61,9 +67,9 @@ private:
 	_uint m_iPrvSkill = 0;
 	_uint m_iCurSkill = 0;
 
-	_float m_fCoolTime[SkillEnd];
-	_float m_fMaxCoolTime[SkillEnd];
-	_float m_fSkillGauge[SkillEnd];
+	//_float m_fCoolTime[SkillEnd];
+	//_float m_fMaxCoolTime[SkillEnd];
+	//_float m_fSkillGauge[SkillEnd];
 
 private:
 	virtual void My_Tick() override;
