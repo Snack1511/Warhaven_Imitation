@@ -8,7 +8,7 @@ class CUnit;
 class CUI_Skill : public CUI_Wrapper
 {
 	enum WindowType { Outline0, Outline1, Outline2, BG, Icon, Key, HeroKey, Type_End };
-	enum SkillIndex{Skill1, Skill2, Skill3, SkillEnd};
+	enum SkillIndex { Skill1, Skill2, Skill3, SkillEnd };
 
 	DECLARE_PROTOTYPE(CUI_Skill);
 	DECLARE_GAMEOBJECT(CUI_Skill);
@@ -21,6 +21,16 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
+
+private:
+	enum SkillUI { SU_BG, SU_Icon, SU_Outline, SU_Key, SU_HeroKey, SU_End };
+	CUI_Object* m_pSkillUI[SU_End];
+	CUI_Object* m_pArrSkillUI[SU_End][4];
+
+private:
+	void Create_SkillUI();
+
+private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 

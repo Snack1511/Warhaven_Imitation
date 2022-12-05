@@ -18,11 +18,7 @@ CUI_Skill::~CUI_Skill()
 
 HRESULT CUI_Skill::Initialize_Prototype()
 {
-	Read_UI("Skill");
-
-	Ready_SkillHUD();
-	Create_SkillCoolText();
-	Create_SkillCoolBG();
+	Create_SkillUI();
 
 	return S_OK;
 }
@@ -34,50 +30,35 @@ HRESULT CUI_Skill::Initialize()
 
 HRESULT CUI_Skill::Start()
 {
-	Set_Pass();
-	Bind_Shader();
-
 	__super::Start();
 
 	return S_OK;
 }
 
+void CUI_Skill::Create_SkillUI()
+{
+	for (int i = 0; i < SU_End; ++i)
+	{
+		m_pSkillUI[i] = CUI_Object::Create();
+
+		CREATE_GAMEOBJECT(m_pSkillUI[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_pSkillUI[i]);
+
+		for (int i = 0; i < 4; ++i)
+		{
+
+		}
+	}
+}
+
 void CUI_Skill::OnEnable()
 {
 	__super::OnEnable();
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			ENABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-		}
-	}
-
-	for (int i = 0; i < 3; ++i)
-	{
-		ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
-		ENABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
-	}
 }
 
 void CUI_Skill::OnDisable()
 {
 	__super::OnDisable();
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-		}
-	}
-
-	for (int i = 0; SkillEnd < 3; ++i)
-	{
-		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
-		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
-	}
 }
 
 void CUI_Skill::My_Tick()

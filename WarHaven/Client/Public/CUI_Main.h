@@ -2,8 +2,8 @@
 #include "CUI_Wrapper.h"
 class CUI_Main : public CUI_Wrapper
 {
-	enum MainUI { Btn, Key, Goods, MainEnd };
-	enum WindowType { Play, Barracks, Profile, TypeEnd };
+private:
+	enum MainWindow { MW_Play, MW_Barracks, MW_Profile, MW_End };
 
 	DECLARE_PROTOTYPE(CUI_Main);
 	DECLARE_GAMEOBJECT(CUI_Main);
@@ -17,36 +17,54 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
-	virtual void My_Tick();
-
-public:
-	virtual void Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName);
-
 public:
 	virtual void On_PointEnter_TopBtn(const _uint& iEventNum);
 	virtual void On_PointExit_TopBtn(const _uint& iEventNum);
-
 	virtual void On_PointDown_TopBtn(const _uint& iEventNum);
 
-private:
-	CUI_Wrapper* m_Prototypes[TypeEnd] = {};
+	void Set_Shader_TopBtnEffect(CShader* pShader, const char* pConstName);
 
-	CUI_Object* m_pPrototypeUI[MainEnd] = {};
-	CUI_Object* m_pTopBtn[3] = {};
-	CUI_Object* m_pKeyUI[2] = {};
-	CUI_Object* m_pGoodsUI[3] = {};
-
-	CUI_Object* m_pBtnHighlight = nullptr;
-
-	WindowType m_eWindow = WindowType::Play;
+public:
+	void SetActive_TopBtn(_bool value);
+	void SetActive_PlayerNameText(_bool value);
+	void SetActive_MainWindow(MainWindow eWindow);
 
 private:
-	void SetActive_Window(WindowType eWindow);
+	enum TopBtn { TB_Play, TB_Barracks, TB_Profile, TB_End };
+	CUI_Object* m_pArrTopBtn[TB_End];
 
 private:
-	void Ready_MainUI();
-	void Create_BtnHighlight();
-	void Enable_MainUI();
-	void Enable_MainWindow();
+	void Create_TopBtn();
+
+private:
+	CUI_Object* m_pTopBtnEffect = nullptr;
+
+private:
+	void Create_TopBtnEffect();
+
+private:
+	enum PlayerInfo { PI_Level, PI_Name, PI_End };
+	CUI_Object* m_pPlayerInfo[PI_End];
+
+	_float4 m_vColorWhite = _float4(1.f, 1.f, 1.f, 1.f);
+	_float4 m_vColorGrey = _float4(0.5f, 0.5f, 0.5f, 1.f);
+
+	_uint m_iCurEventNum = 0;
+	_uint m_iPrvEnvetNum = 0;
+
+private:
+	void Create_PlayerNameText();
+
+private:
+	CUI_Wrapper* m_pMainWindow[MW_End];
+
+	MainWindow m_eWindow = MainWindow::MW_Play;
+
+private:
+	void Create_MainWindow();
+
+private:
+	void Bind_Btn();
+	void Bind_Shader();
 };
 

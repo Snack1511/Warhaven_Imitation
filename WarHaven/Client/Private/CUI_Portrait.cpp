@@ -88,6 +88,9 @@ void CUI_Portrait::SetActive_HeroPort(_bool value)
 		{
 			if (value == true)
 			{
+				if (!m_bAbleHero)
+					return;
+
 				ENABLE_GAMEOBJECT(m_pArrHeroPortrait[i][j]);
 			}
 			else
@@ -409,6 +412,7 @@ void CUI_Portrait::OnEnable()
 	__super::OnEnable();
 
 	SetActive_UserPort(true);
+	SetActive_HeroPort(true);
 }
 
 void CUI_Portrait::OnDisable()

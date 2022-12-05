@@ -7,10 +7,8 @@
 #include "CPlayerInfo_Main.h"
 
 #include "CUI_MainPlay.h"
-#include "CUI_MainMode.h"
 
 #include "CUI_Object.h"
-#include "CButton.h"
 #include "CUser.h"
 #include "CPlayer.h"
 #include "CUnit.h"
@@ -25,11 +23,10 @@ CUI_Main::~CUI_Main()
 
 HRESULT CUI_Main::Initialize_Prototype()
 {
-	// 윈도우 준비
-	m_Prototypes[Play] = CUI_MainPlay::Create();
-
-	Ready_MainUI();
-	Create_BtnHighlight();
+	Create_TopBtn();
+	Create_TopBtnEffect();
+	Create_PlayerNameText();
+	Create_MainWindow();
 
 	return S_OK;
 }
@@ -41,221 +38,230 @@ HRESULT CUI_Main::Initialize()
 
 HRESULT CUI_Main::Start()
 {
-	Enable_MainUI();
-	Enable_MainWindow();
-
-	GET_COMPONENT_FROM(m_pBtnHighlight, CShader)
-		->CallBack_SetRawValues += bind(&CUI_Main::Set_Shader_BtnHighlight, this, placeholders::_1, "g_fValue");
-
-	for (int i = 0; i < 3; ++i)
-	{
-		m_pTopBtn[i]->CallBack_PointEnter += bind(&CUI_Main::On_PointEnter_TopBtn, this, placeholders::_1);
-		m_pTopBtn[i]->CallBack_PointExit += bind(&CUI_Main::On_PointExit_TopBtn, this, placeholders::_1);
-
-		m_pTopBtn[i]->CallBack_PointDown += bind(&CUI_Main::On_PointDown_TopBtn, this, placeholders::_1);
-	}
-
-	SetActive_Window(m_eWindow);
-
 	__super::Start();
+
+	Bind_Btn();
+	Bind_Shader();
+
+	SetActive_TopBtn(true);
+	SetActive_PlayerNameText(true);
+	SetActive_MainWindow(MW_Play);
 
 	return S_OK;
 }
 
-void CUI_Main::My_Tick()
-{
-}
-
-void CUI_Main::Set_Shader_BtnHighlight(CShader* pShader, const char* pConstName)
-{
-	if (m_pBtnHighlight->Is_Valid())
-	{
-		m_fAccTime += fDT(0) * 0.25f;
-		pShader->Set_RawValue("g_fValue", &m_fAccTime, sizeof(_float));
-	}
-}
-
 void CUI_Main::On_PointEnter_TopBtn(const _uint& iEventNum)
 {
-	for (int i = 0; i < 3; ++i)
-	{
-		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pTopBtn[i], CButton)->Get_TargetUI();
-		if (pTarget)
-		{
-			pTarget->Set_FontColor(_float4(1.f, 1.f, 1.f, 1.f));
-		}
-	}
+	m_pArrTopBtn[iEventNum]->Set_FontColor(m_vColorWhite);
 }
 
 void CUI_Main::On_PointExit_TopBtn(const _uint& iEventNum)
 {
-	for (int i = 0; i < 3; ++i)
+	if (!m_pArrTopBtn[iEventNum]->Get_IsClick())
 	{
-		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pTopBtn[i], CButton)->Get_TargetUI();
-		if (pTarget)
-		{
-			if (!pTarget->Get_IsClick())
-			{
-				pTarget->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
-			}
-		}
+		m_pArrTopBtn[iEventNum]->Set_FontColor(m_vColorGrey);
 	}
 }
 
 void CUI_Main::On_PointDown_TopBtn(const _uint& iEventNum)
 {
-	for (int i = 0; i < 3; ++i)
+	m_iPrvEnvetNum = m_iCurEventNum;
+	m_iCurEventNum = iEventNum;
+
+	if (m_iPrvEnvetNum == iEventNum)
+		return;
+
+	m_pArrTopBtn[m_iPrvEnvetNum]->Set_IsClick(false);
+	m_pArrTopBtn[m_iPrvEnvetNum]->Set_FontColor(m_vColorGrey);
+
+	m_pArrTopBtn[iEventNum]->Set_IsClick(true);
+	m_pArrTopBtn[iEventNum]->Set_FontColor(m_vColorWhite);
+
+	_float4 vPos = m_pArrTopBtn[iEventNum]->Get_Pos();
+	m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
+
+	ENABLE_GAMEOBJECT(m_pTopBtnEffect);
+}
+
+void CUI_Main::Set_Shader_TopBtnEffect(CShader* pShader, const char* pConstName)
+{
+	m_fAccTime += fDT(0) * 0.25f;
+	pShader->Set_RawValue("g_fValue", &m_fAccTime, sizeof(_float));
+}
+
+void CUI_Main::SetActive_TopBtn(_bool value)
+{
+	for (int i = 0; i < TB_End; ++i)
 	{
-		m_pTopBtn[i]->Set_IsClick(false);
-		m_pTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
-
-		CUI_Object* pTarget = GET_COMPONENT_FROM(m_pTopBtn[i], CButton)->Get_TargetUI();
-		if (pTarget)
+		if (value == true)
 		{
-			pTarget->Set_IsClick(true);
-			pTarget->Set_FontColor(_float4(1.f, 1.f, 1.f, 1.f));
-
-			_float4 vPos = pTarget->Get_Pos();
-			m_pBtnHighlight->Set_Pos(vPos.x, vPos.y);
-
-			ENABLE_GAMEOBJECT(m_pBtnHighlight);
+			ENABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+		}
+		else
+		{
+			DISABLE_GAMEOBJECT(m_pArrTopBtn[i]);
 		}
 	}
 }
 
-void CUI_Main::SetActive_Window(WindowType eWindow)
+void CUI_Main::SetActive_PlayerNameText(_bool value)
+{
+	for (int i = 0; i < PI_End; ++i)
+	{
+		if (value == true)
+		{
+			ENABLE_GAMEOBJECT(m_pPlayerInfo[i]);
+		}
+		else
+		{
+			DISABLE_GAMEOBJECT(m_pPlayerInfo[i]);
+		}
+	}
+}
+
+void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 {
 	m_eWindow = eWindow;
 
-	for (int i = 0; i < WindowType::TypeEnd; ++i)
+	for (int i = 0; i < MW_End; ++i)
 	{
-		//DISABLE_GAMEOBJECT(m_Prototypes[i]);
+		//DISABLE_GAMEOBJECT(m_pMainWindow[i]);
 	}
 
-	ENABLE_GAMEOBJECT(m_Prototypes[eWindow]);
+	ENABLE_GAMEOBJECT(m_pMainWindow[m_eWindow]);
 
 	switch (m_eWindow)
 	{
-	case CUI_Main::Play:
+	case MW_Play:
 	{
-		m_pTopBtn[0]->Set_IsClick(true);
-		m_pTopBtn[0]->Set_FontColor(_float4(1.f, 1.f, 1.f, 1.f));
+		m_pArrTopBtn[TB_Play]->Set_IsClick(true);
+		m_pArrTopBtn[TB_Play]->Set_FontColor(m_vColorWhite);
 
-		_float4 vPos = m_pTopBtn[0]->Get_Pos();
-		m_pBtnHighlight->Set_Pos(vPos.x, vPos.y);
+		_float4 vPos = m_pArrTopBtn[TB_Play]->Get_Pos();
+		m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
 
-		ENABLE_GAMEOBJECT(m_pBtnHighlight);
+		ENABLE_GAMEOBJECT(m_pTopBtnEffect);
 	}
 	break;
 	}
 }
 
-void CUI_Main::Ready_MainUI()
+void CUI_Main::Create_TopBtn()
 {
-	Read_UI("Lobby");
-
-	m_pPrototypeUI[Btn] = m_pUIMap[TEXT("Lobby_Btn")];
-	m_pPrototypeUI[Key] = m_pUIMap[TEXT("Lobby_Key")];
-	m_pPrototypeUI[Goods] = m_pUIMap[TEXT("Lobby_Goods")];
-
-	for (int i = 0; i < MainEnd; ++i)
+	for (int i = 0; i < TB_End; ++i)
 	{
-		m_pPrototypeUI[i]->Set_Sort(0.9f);
-	}
+		m_pArrTopBtn[i] = CUI_Object::Create();
+		m_pArrTopBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
-	GET_COMPONENT_FROM(m_pPrototypeUI[Btn], CTexture)->Remove_Texture(0);
+		_float fPosX = -550.f + (i * 95.f);
 
-	GET_COMPONENT_FROM(m_pPrototypeUI[Key], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/Black/T_BlackEKeyIcon.dds"));
+		m_pArrTopBtn[i]->Set_Pos(fPosX, 300.f);
+		m_pArrTopBtn[i]->Set_Scale(75.f, 35.f);
+		m_pArrTopBtn[i]->Set_Sort(0.5f);
 
-	GET_COMPONENT_FROM(m_pPrototypeUI[Goods], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/GoldeGem.dds"));
-	GET_COMPONENT_FROM(m_pPrototypeUI[Goods], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_IconLevelBG.dds"));
+		m_pArrTopBtn[i]->Set_MouseTarget(true);
 
-	for (int i = 0; i < 3; ++i)
-	{
-		m_pTopBtn[i] = m_pPrototypeUI[Btn]->Clone();
-		m_pGoodsUI[i] = m_pPrototypeUI[Goods]->Clone();
-	}
+		m_pArrTopBtn[i]->Set_FontRender(true);
+		m_pArrTopBtn[i]->Set_FontStyle(true);
+		m_pArrTopBtn[i]->Set_FontCenter(true);
+		m_pArrTopBtn[i]->Set_FontScale(0.4f);
+		m_pArrTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
-	for (int i = 0; i < 2; ++i)
-	{
-		m_pKeyUI[i] = m_pPrototypeUI[Key]->Clone();
+		if (i == TB_Play)
+		{
+			m_pArrTopBtn[i]->Set_FontText(TEXT("플레이"));
+
+		}
+		else if (i == TB_Barracks)
+		{
+			m_pArrTopBtn[i]->Set_FontText(TEXT("병영"));
+		}
+		else if (i == TB_Profile)
+		{
+			m_pArrTopBtn[i]->Set_FontText(TEXT("프로필"));
+		}
+
+		CREATE_GAMEOBJECT(m_pArrTopBtn[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pArrTopBtn[i]);
 	}
 }
 
-void CUI_Main::Create_BtnHighlight()
+void CUI_Main::Create_TopBtnEffect()
 {
-	m_pBtnHighlight = CUI_Object::Create();
+	m_pTopBtnEffect = CUI_Object::Create();
 
-	m_pBtnHighlight->Set_Scale(90.f, 120.f);
-	m_pBtnHighlight->Set_Sort(0.95f);
+	m_pTopBtnEffect->Set_Scale(90.f, 120.f);
+	m_pTopBtnEffect->Set_Sort(0.95f);
 
-	m_pBtnHighlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_BGMainTab.dds"));
-	m_pBtnHighlight->SetTexture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_SelectPT3.png"));
-	m_pBtnHighlight->SetTexture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_soft_smoke.dds"));
+	m_pTopBtnEffect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_BGMainTab.dds"));
+	m_pTopBtnEffect->SetTexture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_SelectPT3.png"));
+	m_pTopBtnEffect->SetTexture(TEXT("../Bin/Resources/Textures/UI/Lobby/Effect/T_soft_smoke.dds"));
 
-	GET_COMPONENT_FROM(m_pBtnHighlight, CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_LobbyEffect);
+	GET_COMPONENT_FROM(m_pTopBtnEffect, CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_LobbyEffect);
 
-	CREATE_GAMEOBJECT(m_pBtnHighlight, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pBtnHighlight);
+	CREATE_GAMEOBJECT(m_pTopBtnEffect, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pTopBtnEffect);
 }
 
-void CUI_Main::Enable_MainUI()
+void CUI_Main::Create_PlayerNameText()
 {
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < PI_End; ++i)
 	{
-		CREATE_GAMEOBJECT(m_pPrototypeUI[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_pPrototypeUI[i]);
-		m_pPrototypeUI[i] = nullptr;
+		m_pPlayerInfo[i] = CUI_Object::Create();
 
-		CREATE_GAMEOBJECT(m_pTopBtn[i], GROUP_UI);
-		CREATE_GAMEOBJECT(m_pGoodsUI[i], GROUP_UI);
+		if (i == PI_Level)
+		{
+			m_pPlayerInfo[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_IconLevelBG.dds"));
+			m_pPlayerInfo[i]->Set_Pos(480.f, 300.f);
+			m_pPlayerInfo[i]->Set_Scale(32.f);
+			m_pPlayerInfo[i]->Set_Sort(0.5f);
 
-		_float fTopBtnPosX = -530.f + (i * 95.f);
-		m_pTopBtn[i]->Set_PosX(fTopBtnPosX);
-		m_pTopBtn[i]->Set_Sort(0.9f);
+			m_pPlayerInfo[i]->Set_FontRender(true);
+			m_pPlayerInfo[i]->Set_FontStyle(true);
+			m_pPlayerInfo[i]->Set_FontCenter(true);
+			m_pPlayerInfo[i]->Set_FontScale(0.25f);
+			m_pPlayerInfo[i]->Set_FontOffset(5.f, 5.f);
 
-		m_pTopBtn[i]->Set_FontRender(true);
-		m_pTopBtn[i]->Set_FontStyle(true);
-		m_pTopBtn[i]->Set_FontScale(0.4f);
-		m_pTopBtn[i]->Set_FontOffset(-40.f, -22.f);
-		m_pTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+			m_pPlayerInfo[i]->Set_FontText(TEXT("1"));
+		}
+		else if (i == PI_Name)
+		{
+			m_pPlayerInfo[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+			m_pPlayerInfo[i]->Set_Pos(500.f, 313.f);
+			m_pPlayerInfo[i]->Set_FontRender(true);
+			m_pPlayerInfo[i]->Set_FontStyle(true);
+			m_pPlayerInfo[i]->Set_FontScale(0.25f);
 
-		_float fGoodsPosX = 310.f + (i * 100.f);
-		m_pGoodsUI[i]->Set_PosX(fGoodsPosX);
-		m_pGoodsUI[i]->Set_Sort(0.8f);
+			CPlayerInfo_Main* pMainPlayerInfo = dynamic_cast<CPlayerInfo_Main*>(CGameSystem::Get_Instance()->Find_PlayerInfo(HASHCODE(CPlayerInfo_Main)));
+			wstring mainPlayerName = pMainPlayerInfo->MainPlayerName();
+			m_pPlayerInfo[i]->Set_FontText(mainPlayerName);
+		}
 
-		GET_COMPONENT_FROM(m_pGoodsUI[i], CTexture)->Set_CurTextureIndex(i);
-	}
-
-	m_pTopBtn[1]->Set_FontOffset(-28.5f, -22.f);
-
-	m_pTopBtn[0]->Set_FontText(TEXT("플레이"));
-	m_pTopBtn[1]->Set_FontText(TEXT("병영"));
-	m_pTopBtn[2]->Set_FontText(TEXT("프로필"));
-
-	m_pGoodsUI[2]->Set_FontRender(true);
-	m_pGoodsUI[2]->Set_FontStyle(true);
-	m_pGoodsUI[2]->Set_FontScale(0.3f);
-	m_pGoodsUI[2]->Set_FontOffset(20.f, -15.f);
-
-	CPlayerInfo_Main* pMainPlayerInfo = dynamic_cast<CPlayerInfo_Main*>(CGameSystem::Get_Instance()->Find_PlayerInfo(HASHCODE(CPlayerInfo_Main)));
-	wstring mainPlayerName = pMainPlayerInfo->MainPlayerName();
-	m_pGoodsUI[2]->Set_FontText(mainPlayerName);
-
-	for (int i = 0; i < 2; ++i)
-	{
-		CREATE_GAMEOBJECT(m_pKeyUI[i], GROUP_UI);
-
-		GET_COMPONENT_FROM(m_pKeyUI[i], CTexture)->Set_CurTextureIndex(i);
-
-		_float fPosX = -600.f + (i * 340.f);
-		m_pKeyUI[i]->Set_PosX(fPosX);
-
-		m_pKeyUI[i]->Set_Sort(0.95f);
+		CREATE_GAMEOBJECT(m_pPlayerInfo[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPlayerInfo[i]);
 	}
 }
 
-void CUI_Main::Enable_MainWindow()
+void CUI_Main::Create_MainWindow()
 {
-	CREATE_GAMEOBJECT(m_Prototypes[Play], GROUP_UI);
+	m_pMainWindow[MW_Play] = CUI_MainPlay::Create();
+
+	CREATE_GAMEOBJECT(m_pMainWindow[MW_Play], GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pMainWindow[MW_Play]);
+}
+
+void CUI_Main::Bind_Btn()
+{
+	for (int i = 0; i < TB_End; ++i)
+	{
+		m_pArrTopBtn[i]->CallBack_PointEnter += bind(&CUI_Main::On_PointEnter_TopBtn, this, i);
+		m_pArrTopBtn[i]->CallBack_PointExit += bind(&CUI_Main::On_PointExit_TopBtn, this, i);
+		m_pArrTopBtn[i]->CallBack_PointDown += bind(&CUI_Main::On_PointDown_TopBtn, this, i);
+	}
+}
+
+void CUI_Main::Bind_Shader()
+{
+	GET_COMPONENT_FROM(m_pTopBtnEffect, CShader)->CallBack_SetRawValues += bind(&CUI_Main::Set_Shader_TopBtnEffect, this, placeholders::_1, "g_fValue");
+
 }

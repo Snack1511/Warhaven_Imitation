@@ -694,7 +694,7 @@ void CPlayer::On_Reborn()
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[m_eCurrentDefaultClass]);
 	m_bDie = false;
 
-	// CUser::Get_Instance()->SetActive_PlayerHUD(true);
+	CUser::Get_Instance()->SetActive_HUD(true);
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)

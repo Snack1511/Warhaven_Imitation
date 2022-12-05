@@ -86,6 +86,8 @@ public:
 	void Set_HP(_float fCurValue, _float fMaxValue);
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
 
+	void SetActive_HUD(_bool value);
+
 public:
 	void On_EnterLevel();
 	void On_ExitLevel();

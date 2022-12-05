@@ -276,6 +276,11 @@ void CUser::Set_HeroGauge(_float fCurValue, _float fMaxValue)
 	m_pUI_HeroGauge->Set_HeroGauge(fCurValue, fMaxValue);
 }
 
+void CUser::SetActive_HUD(_bool value)
+{
+	m_pUI_HUD->SetActive_HUD(value);
+}
+
 void CUser::On_EnterLevel()
 {
 	DISABLE_GAMEOBJECT(m_pCursor);
