@@ -772,6 +772,7 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 
 HRESULT CGameSystem::On_EnterStage()
 {
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_Envir", _float4(0.f, 0.f, 0.f));
     /* 모든 플레이어들 유닛 일단 꺼놓기 */
     //for (auto& elem : m_mapAllPlayers)
     //{

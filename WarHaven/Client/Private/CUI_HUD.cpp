@@ -1243,11 +1243,22 @@ void CUI_HUD::BootCamp_CharacterWindow()
 		}
 		else
 		{
+			
+
+#ifdef _DEBUG
+			if (KEY(T, TAP) && KEY(CTRL, HOLD))
+			{
+				SetActive_CharacterSelectWindow(true);
+		}
+#else
 			if (KEY(T, TAP))
 			{
 				SetActive_PlayerInfoUI(false);
 				SetActive_CharacterSelectWindow(true);
 			}
+
+#endif
+
 		}
 	}
 }
