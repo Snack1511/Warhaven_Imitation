@@ -124,8 +124,10 @@ void CDestructible::Set_Look(_float4 vLook)
 HRESULT CDestructible::SetUp_Destructible(wstring wstrMeshFilePath)
 {
 	CModel* pModelCom = CModel::Create(0, TYPE_NONANIM, wstrMeshFilePath, DEFAULT_MODEL_MATRIX);
+
 	if (!pModelCom)
 		return E_FAIL;
+
 	Add_Component(pModelCom);
 
 	for (auto& elem : pModelCom->Get_MeshContainers())

@@ -1147,7 +1147,8 @@ HRESULT CModel::SetUp_InstancingModel(MODEL_TYPE eType, wstring wstrModelFilePat
 
 		if (pModel_Data->m_vecResType[i] == RES_MESH)
 		{
-			Create_InstancingMesh(static_cast<CResource_Mesh*>(pResource), iNumInstance, TransformMatrix, iMeshPartType);
+			if (FAILED(Create_InstancingMesh(static_cast<CResource_Mesh*>(pResource), iNumInstance, TransformMatrix, iMeshPartType)))
+				return E_FAIL;
 		}
 		else
 		{
@@ -1607,6 +1608,7 @@ HRESULT CModel::Create_InstancingMesh(CResource_Mesh* pResource, _uint iNumInsta
 
 	m_MeshContainers.push_back(make_pair(iMeshPartType, pMeshContainer));
 	pMeshContainer->Set_Owner(m_pOwner);
+	pMeshContainer->Set_SaveMemory();
 
 	return S_OK;
 }

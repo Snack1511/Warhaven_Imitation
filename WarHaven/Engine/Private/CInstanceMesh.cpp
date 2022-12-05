@@ -191,6 +191,12 @@ HRESULT CInstanceMesh::Render()
 	return S_OK;
 }
 
+void CInstanceMesh::Start()
+{
+	if (m_bSaveMemory)
+		__super::Start();
+}
+
 HRESULT CInstanceMesh::SetUp_InstanceMesh(wstring wstrInstanceDataPath, CResource_Mesh* pResource, _float4x4 TransformMatrix)
 {
 	m_iNumVertexBuffers = 2;
