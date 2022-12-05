@@ -1662,11 +1662,24 @@ void CWindow_Map::Make_InstanceObject()
         {
             // 위치와 노멀 받아서 적용
             //여기서 나온 vPickOutPos는 로컬좌표임
-            tInstanceData.InstancePosition.y += (vPickOutPos.y - OutPos.y);
+            //tInstanceData.InstancePosition.y += (vPickOutPos.y - OutPos.y);
 
             //로컬 좌표상의 데이터를 넘겨줌 --> 원점을 중심으로 오브젝트 인덱스들을 배치한 다음, 터레인 위치상에 픽킹 좌표로 옮겨줘야 함
             _float4 vObjectPosition = _float4(0.f, 0.f, 0.f, 1.f).XMLoad() + vInstancePosition.XMLoad();
+            vObjectPosition = vObjectPosition.MultiplyCoord(CurTerrainMat);
+            
+            _float4 vWorldPickPos = vPickOutPos;
+            vWorldPickPos = vWorldPickPos.MultiplyCoord(CurTerrainMat);
+
+            _float4 vInstanceWorldPos = tInstanceData.InstancePosition;
+            vInstanceWorldPos = vInstanceWorldPos.MultiplyCoord(CurTerrainMat);
+
+            vObjectPosition.x += (vWorldPickPos.x - vInstanceWorldPos.x);
+            vObjectPosition.y += (vWorldPickPos.y - vInstanceWorldPos.y);
+            vObjectPosition.z += (vWorldPickPos.z - vInstanceWorldPos.z);
             vObjectPosition.w = 1.f;
+
+            vObjectPosition = vObjectPosition.MultiplyCoord(CurTerrainMatInv);
 
             _matrix Mat = XMMatrixIdentity();
             _float4 IntiMatUp = -vPickOutNormal.XMLoad();
