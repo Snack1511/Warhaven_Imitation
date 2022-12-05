@@ -1291,7 +1291,7 @@ void CUI_HUD::Create_OperSelectCharacter()
 	m_pOperSelectUI[ST_BG]->Set_Sort(0.49f);
 	m_pOperSelectUI[ST_BG]->Set_MouseTarget(true);
 
-	m_pOperSelectUI[ST_Char]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
+	m_pOperSelectUI[ST_Char]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBG.dds"));
 	m_pOperSelectUI[ST_Char]->Set_Scale(65.f);
 	m_pOperSelectUI[ST_Char]->Set_Sort(0.48f);
 
