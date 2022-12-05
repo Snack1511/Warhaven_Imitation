@@ -5,7 +5,7 @@ BEGIN(Client)
 
 class CUI_Portrait final : public CUI_Wrapper
 {
-public:
+private:
 	enum HeroPortActive { Enable, Disable, End };
 
 	DECLARE_PROTOTYPE(CUI_Portrait);
@@ -23,7 +23,7 @@ public:
 
 public:
 	void Set_UserPort(_uint iClass);
-	void Set_HeroPort(HeroPortActive eType);
+	void Set_HeroPort(_uint iType);
 
 	void SetActive_UserPort(_bool value);
 	void SetActive_HeroPort(_bool value);

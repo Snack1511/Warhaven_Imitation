@@ -98,9 +98,7 @@ void CUI_HUD::My_Tick()
 	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 
 	Update_HeorTransformGauge();
-
 	Update_OperWindow();
-
 	BootCamp_CharacterWindow();
 }
 
@@ -228,8 +226,6 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 	}
 
 	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
-
-	//dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(iEventNum);
 }
 
 void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
@@ -310,7 +306,7 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		if (CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero())
 		{
 			Enable_Fade(m_pInactiveHeroText, 1.f);
-			dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_HeroPort(CUI_Portrait::HeroPortActive::Disable);
+			dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_HeroPort(1);
 		}
 
 		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero() = false;

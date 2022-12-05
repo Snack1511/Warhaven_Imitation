@@ -256,9 +256,14 @@ CUI_Wrapper* CUser::Get_HUD(_uint eHUD)
 	return m_pUI_HUD->Get_HUD(eHUD);
 }
 
+void CUser::Set_UserPort(_uint iClass)
+{
+	m_pUI_Portrait->Set_UserPort(iClass);
+}
+
 void CUser::Set_HeroPort(_uint iType)
 {
-	m_pUI_Portrait->Set_HeroPort((CUI_Portrait::HeroPortActive)iType);
+	m_pUI_Portrait->Set_HeroPort(iType);
 }
 
 void CUser::Set_HP(_float fCurValue, _float fMaxValue)

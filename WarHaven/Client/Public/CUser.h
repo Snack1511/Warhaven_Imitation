@@ -81,6 +81,7 @@ public:
 public:
 	CUI_Wrapper* Get_HUD(_uint eHUD);
 
+	void Set_UserPort(_uint iClass);
 	void Set_HeroPort(_uint iType);
 	void Set_HP(_float fCurValue, _float fMaxValue);
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);

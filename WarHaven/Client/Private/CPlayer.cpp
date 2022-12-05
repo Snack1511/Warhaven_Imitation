@@ -854,7 +854,7 @@ void CPlayer::On_AbleHero()
 
 	if (m_bIsMainPlayer)
 	{
-		CUser::Get_Instance()->Set_HeroPort(CUI_Portrait::HeroPortActive::Enable);
+		CUser::Get_Instance()->Set_HeroPort(0);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(true);
 	}
 }

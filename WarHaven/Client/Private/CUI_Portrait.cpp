@@ -53,19 +53,16 @@ void CUI_Portrait::Set_UserPort(_uint iClass)
 	m_iPrvClass = m_iCurClass;
 	m_iCurClass = iClass;
 
-	cout << m_iPrvClass << endl;
-	cout << m_iCurClass << endl;
-
 	if (m_iPrvClass != m_iCurClass)
 	{
 		m_bChangeUserPort = true;
 	}
 }
 
-void CUI_Portrait::Set_HeroPort(HeroPortActive eType)
+void CUI_Portrait::Set_HeroPort(_uint iType)
 {
 	m_bAbleHero = true;
-	m_eAcitveType = eType;
+	m_eAcitveType = (HeroPortActive)iType;
 }
 
 void CUI_Portrait::SetActive_UserPort(_bool value)

@@ -159,6 +159,7 @@ STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 
 	if (pOwner->Is_MainPlayer())
 	{
+		CUser::Get_Instance()->Set_UserPort(eClass);
 		CUser::Get_Instance()->Set_HUD(eClass);
 	}
 	else
