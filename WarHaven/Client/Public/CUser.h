@@ -8,15 +8,18 @@ END
 BEGIN(Client)
 class CUnit;
 class CBloodOverlay;
-class CUI_Cursor;
 class CPlayer;
 class CPlayerInfo;
-class CUI_HUD;
 class CUI_Damage;
 class CUI_Training;
 class CUI_Animation;
 class CUI_Dead;
 class CPlayerInfo;
+
+class CUI_Cursor;
+class CUI_Wrapper;
+class CUI_HUD;
+class CUI_HeroGauge;
 
 class CUser
 {
@@ -74,6 +77,11 @@ public:
 	void Turn_HeroGaugeFire(_bool bTurnOn);
 
 public:
+	CUI_Wrapper* Get_HUD(_uint eHUD);
+
+	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
+
+public:
 	void On_EnterLevel();
 	void On_ExitLevel();
 	void On_EnterStageLevel();
@@ -81,7 +89,6 @@ public:
 
 	void Set_HUD(CLASS_TYPE eClass);
 	void Set_HP(_float fMaxHP, _float fCurHP);
-	void Set_HeroGauge(_float fMaxGauge, _float fCurGauge); 
 	void Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime);
 
 	void SetActive_HeroPortrait(_bool value);
@@ -97,14 +104,15 @@ public:
 	void Enable_DeadUI();
 
 	void SetActive_PlayerHUD(_bool value);
+	
 
 private:
-	
+	CUI_HUD* m_pUI_HUD = nullptr;
+	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
 	CUI_Cursor* m_pCursor = nullptr;
-	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Training* m_pUI_Training = nullptr;
 
 	CUI_Animation* m_pFire = nullptr;

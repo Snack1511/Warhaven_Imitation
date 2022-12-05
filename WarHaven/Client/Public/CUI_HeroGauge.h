@@ -5,8 +5,6 @@ BEGIN(Client)
 
 class CUI_HeroGauge final : public CUI_Wrapper
 {
-	enum WindowType { BG, Gauge, Type_End };
-
 	DECLARE_PROTOTYPE(CUI_HeroGauge);
 	DECLARE_GAMEOBJECT(CUI_HeroGauge);
 
@@ -18,31 +16,32 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
-	virtual void OnEnable() override;
-	virtual void OnDisable() override;
 
 public:
-	void Start_HeroGauge();
-
-protected:
-	virtual void My_Tick() override;
-	virtual void My_LateTick() override;;
+	void Set_Shader_Gauge(CShader* pShader, const char* pConstName);
 
 public:
-	void Set_ShaderResources(CShader* pShader, const char* pConstName);
+	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
 
-public:
-	void Set_GaugeRatio(_float fValue) { m_fGaugeRatio = fValue; }
+	void SetActive_HeroGauge(_bool value);
 
 private:
-	CUI_Object* m_Prototypes[Type_End] = {};
+	enum HeroGauge { HG_BG, HG_Gauge, HG_Text, HG_End };
+	CUI_Object* m_pHeroGauge[HG_End];
 
-	_float m_fUVSpeed = 0.f;
+	_float m_fCurHeroGauge = 0.f;
+	_float m_fMaxHeroGauge = 0.f;
+	_float m_fHeroGaugeRatio = 0.f;
 
-	_float m_fGaugeRatio = 1.f;
+	_float m_fValue = 0.f;
 
-	_bool m_bHeroAble = false;
-	_bool bIsHero = false;
+private:
+	void Create_HeroGauge();
+
+private:
+	virtual void My_Tick() override;
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 private:
 	void Set_Pass();

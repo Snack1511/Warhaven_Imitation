@@ -18,7 +18,8 @@ vector g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 float g_fValue;
 float g_fHpRatio;
-float g_fHeroValue;
+
+float g_fHeroGaugeRatio;
 
 bool g_bIsDecrease;
 float g_fHealthGauge;
@@ -314,7 +315,7 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
     
     Out.vColor.a *= vNoise.r;
     
-    if (In.vTexUV.y < g_fHeroValue)
+    if (In.vTexUV.y < g_fHeroGaugeRatio)
         discard;
 	
     if (Out.vColor.a < 0.01f)

@@ -34,38 +34,22 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
-	Init_DefaultCrosshair();
-	SetActive_DefaultCrosshair(true);
-	SetActive_ArrowUI(true);
-
 	return S_OK;
-}
-
-void CUI_Crosshair::OnEnable()
-{
-	__super::OnEnable();
-
-	// 현재 클라스를 받아와서 해당하는 클래스의 UI 활성화
-}
-
-void CUI_Crosshair::OnDisable()
-{
-	__super::OnDisable();
-
-	SetActive_DefaultCrosshair(false);
-	SetActive_ArrowUI(false);
-	SetActive_LancerUI(false);
 }
 
 void CUI_Crosshair::Set_Crosshair(_uint iClass)
 {
-	// 워리어 엔지니어
-	Init_DefaultCrosshair();
+	m_iClassIndex = iClass;
 
-	Init_ArrowUI(iClass);
+	if (m_iClassIndex == WARRIOR || m_iClassIndex == ENGINEER)
+	{
+		Set_DefaultCrosshair();
+	}
+
+	Set_ArrowUI();
 }
 
-void CUI_Crosshair::SetActive_DefaultCrosshair(_bool value)
+void CUI_Crosshair::SetActive_Crosshair(_bool value)
 {
 	if (value == true)
 	{
@@ -137,6 +121,16 @@ void CUI_Crosshair::Create_Crosshair()
 	{
 		m_pCrosshair[i] = CUI_Object::Create();
 
+		if (i == CU_Point)
+		{
+			m_pCrosshair[i]->Set_Scale(6.f);
+		}
+		else if (i == CU_Outline)
+		{
+			m_pCrosshair[i]->Set_Scale(50.f);
+			m_pCrosshair[i]->Set_Color(_float4(0.2f, 0.2f, 0.2f, 0.4f));
+		}
+
 		CREATE_GAMEOBJECT(m_pCrosshair[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pCrosshair[i]);
 	}
@@ -148,15 +142,10 @@ void CUI_Crosshair::Create_Crosshair()
 	Read_Texture(m_pCrosshair[CU_Outline], "/HUD/Crosshair", "Outline");
 }
 
-void CUI_Crosshair::Init_DefaultCrosshair()
+void CUI_Crosshair::Set_DefaultCrosshair()
 {
 	GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(0);
 	GET_COMPONENT_FROM(m_pCrosshair[CU_Outline], CTexture)->Set_CurTextureIndex(0);
-
-	m_pCrosshair[CU_Point]->Set_Scale(6.f);
-
-	m_pCrosshair[CU_Outline]->Set_Scale(50.f);
-	m_pCrosshair[CU_Outline]->Set_Color(_float4(0.2f, 0.2f, 0.2f, 0.4f));
 }
 
 void CUI_Crosshair::Create_ArrowUI()
@@ -192,14 +181,14 @@ void CUI_Crosshair::Create_ArrowUI()
 	}
 }
 
-void CUI_Crosshair::Init_ArrowUI(_uint iClass)
+void CUI_Crosshair::Set_ArrowUI()
 {
-	if (iClass == CLASS_TYPE::SPEAR || iClass == CLASS_TYPE::ARCHER)
+	if (m_iClassIndex == SPEAR || m_iClassIndex == ARCHER)
 	{
 		m_iArrowIndex = 3;
 
 	}
-	else if (iClass == CLASS_TYPE::PRIEST || iClass == CLASS_TYPE::ENGINEER)
+	else if (m_iClassIndex == PRIEST || m_iClassIndex == ENGINEER)
 	{
 		m_iArrowIndex = 2;
 	}
@@ -264,4 +253,20 @@ void CUI_Crosshair::Create_LancerUI()
 			DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
 		}
 	}
+}
+
+void CUI_Crosshair::OnEnable()
+{
+	__super::OnEnable();
+
+	SetActive_Crosshair(true);
+}
+
+void CUI_Crosshair::OnDisable()
+{
+	__super::OnDisable();
+
+	SetActive_Crosshair(false);
+	SetActive_ArrowUI(false);
+	SetActive_LancerUI(false);
 }

@@ -20,9 +20,8 @@ CUI_Portrait::~CUI_Portrait()
 
 HRESULT CUI_Portrait::Initialize_Prototype()
 {
-	Read_UI("Port");
-
-	Ready_Portrait();
+	Create_UserPort();
+	Create_HeroPort();
 
 	return S_OK;
 }
@@ -34,92 +33,75 @@ HRESULT CUI_Portrait::Initialize()
 
 HRESULT CUI_Portrait::Start()
 {
-	Set_Pass();
-	Bind_Shader();
+	__super::Start();
 
 	Set_FadeHeroPort();
 
-	__super::Start();
+	SetActive_HeroPort(true);
 
 	return S_OK;
-}
-
-void CUI_Portrait::OnEnable()
-{
-	__super::OnEnable();
-
-	for (int i = 0; i < 5; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			if (m_arrPortraitUI[i][j])
-				ENABLE_GAMEOBJECT(m_arrPortraitUI[i][j]);
-		}
-	}
-}
-
-void CUI_Portrait::OnDisable()
-{
-	__super::OnDisable();
-
-	for (int i = 0; i < 5; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			if (m_arrPortraitUI[i][j])
-				DISABLE_GAMEOBJECT(m_arrPortraitUI[i][j]);
-		}
-	}
-}
-
-void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
-{
-	pShader->Set_RawValue("g_fValue", &m_fEffectValue, sizeof(_float));
-}
-
-void CUI_Portrait::Start_Portrait(_uint iIndex)
-{
-	for (int i = 0; i < 2; ++i)
-	{
-		GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture)->Set_CurTextureIndex(iIndex);
-
-		Enable_Fade(m_arrPortraitUI[0][i], 0.1f);
-	}
-}
-
-void CUI_Portrait::Set_Portrait(_uint iIndex)
-{
-	m_bIsHeroLerp = true;
-
-	m_iHeroStartIdx = Hero1;
-	m_iHeroEndIdx = Hero4;
-	m_iHeroActiveCount = 0;
-
-	m_iPrvPort = m_iCurPort;
-	m_iCurPort = iIndex;
-
-	m_bAbleRotationPort = true;
-}
-
-void CUI_Portrait::Set_HeroPort(HeroPortAnimType eState)
-{
-	m_bAbleHero = true;
-	m_eHeroPortAnimType = eState;
-	m_bIsHeroLerp = true;
 }
 
 void CUI_Portrait::My_Tick()
 {
 	__super::My_Tick();
 
-	m_fEffectValue -= fDT(0) * 0.1f;
-
 	Change_UserPort();
 
-	// 영웅 변신 상태일 때
+	if (KEY(Z, TAP))
+	{
+		m_bAbleHero = true;
+		m_iLastHeroPort = 4;
+	}
+
 	if (m_bAbleHero)
 	{
+		cout << m_iLastHeroPort << endl;
+
 		_float fDuration = 0.1f;
+		m_fAccTime += fDT(0);
+
+		if (m_eAcitveType == Enable)
+		{
+			if (!m_bLerpHeroPort)
+			{
+				m_bLerpHeroPort = true;
+
+				for (int i = 0; i < HP_End; ++i)
+				{
+					if (i == HP_Effect)
+					{
+						Enable_Fade(m_pArrHeroPortrait[i][m_iLastHeroPort], fDuration);
+						continue;
+					}
+					else if (i == HP_Key)
+					{
+						Enable_Fade(m_pArrHeroPortrait[i][m_iLastHeroPort], fDuration);
+						continue;
+					}
+
+					m_pArrHeroPortrait[i][m_iLastHeroPort]->DoScaleX(-43.f, fDuration);
+					Enable_Fade(m_pArrHeroPortrait[i][m_iLastHeroPort], fDuration);
+				}
+			}
+		}
+
+		if (m_fAccTime > fDuration)
+		{
+			m_fAccTime = 0.f;
+			m_bLerpHeroPort = false;
+
+			m_iLastHeroPort--;
+			if (m_iLastHeroPort == 0)
+			{
+				m_iLastHeroPort = 4;
+				m_bAbleHero = false;
+			}
+		}
+	}
+
+	/*if (m_bAbleHero)
+	{
 		if (m_eHeroPortAnimType == Enable)
 		{
 			if (m_bIsHeroLerp)
@@ -128,18 +110,6 @@ void CUI_Portrait::My_Tick()
 				{
 					for (int i = 0; i < Type_End; ++i)
 					{
-						if (i == Key)
-						{
-							Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i], fDuration);
-							continue;
-						}
-
-						if (i == Effect)
-						{
-							Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i], fDuration);
-							continue;
-						}
-
 						m_arrPortraitUI[m_iHeroEndIdx][i]->Lerp_ScaleX(0.f, 43.f, fDuration);
 						Enable_Fade(m_arrPortraitUI[m_iHeroEndIdx][i], fDuration);
 					}
@@ -198,24 +168,165 @@ void CUI_Portrait::My_Tick()
 	else
 	{
 		m_eHeroPortAnimType = AnimEnd;
+	}*/
+}
+
+void CUI_Portrait::Set_UserPort(_uint iClass)
+{
+	m_iPrvClass = m_iCurClass;
+	m_iCurClass = iClass;
+
+	cout << m_iPrvClass << endl;
+	cout << m_iCurClass << endl;
+
+	if (m_iPrvClass != m_iCurClass)
+	{
+		m_bChangeUserPort = true;
 	}
 }
 
-void CUI_Portrait::Set_Pass()
+void CUI_Portrait::SetActive_UserPort(_bool value)
 {
-	for (int i = 1; i < 5; ++i)
+	for (int i = 0; i < UP_Effect; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrPortraitUI[i][Effect], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_PortEffect);
+		if (value == true)
+		{
+			ENABLE_GAMEOBJECT(m_pUserPortrait[i]);
+		}
+		else
+		{
+			DISABLE_GAMEOBJECT(m_pUserPortrait[i]);
+		}
 	}
 }
 
-void CUI_Portrait::Bind_Shader()
+void CUI_Portrait::SetActive_HeroPort(_bool value)
 {
-	for (int i = 1; i < 5; ++i)
+	for (int i = 0; i < HP_End; ++i)
 	{
-		m_arrPortraitUI[i][Effect]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+		for (int j = 0; j < 4; ++j)
+		{
+			if (value == true)
+			{
+				ENABLE_GAMEOBJECT(m_pArrHeroPortrait[i][j]);
+			}
+			else
+			{
+				DISABLE_GAMEOBJECT(m_pArrHeroPortrait[i][j]);
+			}
+		}
+	}
+}
 
-		GET_COMPONENT_FROM(m_arrPortraitUI[i][Effect], CShader)->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
+void CUI_Portrait::Create_UserPort()
+{
+	for (int i = 0; i < UP_End; ++i)
+	{
+		m_pUserPortrait[i] = CUI_Object::Create();
+
+		m_pUserPortrait[i]->Set_Pos(-580.f, -280.f);
+		m_pUserPortrait[i]->Set_Scale(64.f);
+
+		if (i == UP_BG)
+		{
+			m_pUserPortrait[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBG.dds"));
+
+			m_pUserPortrait[i]->Set_Sort(0.5f);
+		}
+		else if (i == UP_Port)
+		{
+			m_pUserPortTexture = GET_COMPONENT_FROM(m_pUserPortrait[i], CTexture);
+			m_pUserPortTexture->Remove_Texture(0);
+			Read_Texture(m_pUserPortrait[i], "/HUD/Portrait", "Class");
+
+			m_pUserPortrait[i]->Set_Sort(0.49f);
+		}
+		else if (i == UP_Effect)
+		{
+			m_pUserPortrait[i]->Set_Scale(8.f);
+			m_pUserPortrait[i]->Set_Sort(0.48f);
+		}
+
+		CREATE_GAMEOBJECT(m_pUserPortrait[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUserPortrait[i]);
+	}
+}
+
+void CUI_Portrait::Change_UserPort()
+{
+	if (m_bChangeUserPort)
+	{
+		if (!m_bDoScaleUserPort)
+		{
+			m_bDoScaleUserPort = true;
+
+			if (m_iChangeUserPortCount % 2 == 1)
+			{
+				DoScale_UserPort(false);
+			}
+			else
+			{
+				SetTexture_UserPort();
+				DoScale_UserPort(true);
+			}
+		}
+		else
+		{
+			m_fAccTime += fDT(0);
+			if (m_fAccTime > m_fLerpUserPortDuration)
+			{
+				m_fAccTime = 0.f;
+				m_bDoScaleUserPort = false;
+
+				m_iChangeUserPortCount++;
+				if (m_iChangeUserPortCount > 6)
+				{
+					m_iChangeUserPortCount = 1;
+					m_bChangeUserPort = false;
+				}
+			}
+		}
+	}
+}
+
+void CUI_Portrait::SetTexture_UserPort()
+{
+	if (m_iChangeUserPortCount == 4)
+	{
+		m_pUserPortTexture->Set_CurTextureIndex(m_iPrvClass);
+	}
+	else
+	{
+		m_pUserPortTexture->Set_CurTextureIndex(m_iCurClass);
+	}
+}
+
+void CUI_Portrait::DoScale_UserPort(_bool value)
+{
+	m_fLerpUserPortDuration = 0.1f * (m_iChangeUserPortCount * 0.5f);
+
+	Set_FadeUserPort(m_fLerpUserPortDuration);
+
+	for (int i = 0; i < UP_Effect; ++i)
+	{
+		if (value == true)
+		{
+			m_pUserPortrait[i]->Lerp_ScaleX(0.f, 64.f, m_fLerpUserPortDuration);
+
+			if (i == UP_Port)
+			{
+				Enable_Fade(m_pUserPortrait[i], m_fLerpUserPortDuration);
+			}
+		}
+		else
+		{
+			m_pUserPortrait[i]->Lerp_ScaleX(64.f, 0.f, m_fLerpUserPortDuration);
+
+			if (i == UP_Port)
+			{
+				Disable_Fade(m_pUserPortrait[i], m_fLerpUserPortDuration);
+			}
+		}
 	}
 }
 
@@ -236,7 +347,77 @@ void CUI_Portrait::Set_FadeUserPort(_float fSpeed)
 	tFadeDesc.fFadeOutStartTime = 0.f;
 	tFadeDesc.fFadeOutTime = fSpeed;
 
-	GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CFader)->Get_FadeDesc() = tFadeDesc;
+	GET_COMPONENT_FROM(m_pUserPortrait[UP_Port], CFader)->Get_FadeDesc() = tFadeDesc;
+}
+
+void CUI_Portrait::Create_HeroPort()
+{
+	for (int i = 0; i < HP_End; ++i)
+	{
+		m_pHeroPortrait[i] = CUI_Object::Create();
+
+		m_pHeroPortrait[i]->Set_PosY(-230.f);
+
+		if (i == HP_BG)
+		{
+			m_pHeroPortrait[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBGSmall.dds"));
+
+			m_pHeroPortrait[i]->Set_Scale(43.f);
+			m_pHeroPortrait[i]->Set_Sort(0.5f);
+		}
+		else if (i == HP_Port)
+		{
+			GET_COMPONENT_FROM(m_pHeroPortrait[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pHeroPortrait[i], "/HUD/Portrait", "Hero");
+
+			m_pHeroPortrait[i]->Set_Scale(43.f);
+			m_pHeroPortrait[i]->Set_Sort(0.49f);
+		}
+		else if (i == HP_Effect)
+		{
+			// m_pHeroPortrait[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Glow_08.dds"));
+
+			m_pHeroPortrait[i]->Set_Scale(65.f);
+			m_pHeroPortrait[i]->Set_Sort(0.51f);
+		}
+		else if (i == HP_Key)
+		{
+			GET_COMPONENT_FROM(m_pHeroPortrait[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pHeroPortrait[i], "/KeyIcon/Keyboard/Black", "Num");
+
+			m_pHeroPortrait[i]->Set_PosY(-195.f);
+			m_pHeroPortrait[i]->Set_Scale(15.f);
+			m_pHeroPortrait[i]->Set_Sort(0.5f);
+		}
+
+		CREATE_GAMEOBJECT(m_pHeroPortrait[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_pHeroPortrait[i]);
+	}
+
+	Set_FadeHeroPort();
+
+	for (int i = 0; i < HP_End; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			m_pArrHeroPortrait[i][j] = m_pHeroPortrait[i]->Clone();
+
+			float fPosX = 260.f + (j * 55.f);
+			m_pArrHeroPortrait[i][j]->Set_PosX(fPosX);
+
+			if (i == HP_Port)
+			{
+				GET_COMPONENT_FROM(m_pArrHeroPortrait[i][j], CTexture)->Set_CurTextureIndex(j);
+			}
+			else if (i == HP_Key)
+			{
+				GET_COMPONENT_FROM(m_pArrHeroPortrait[i][j], CTexture)->Set_CurTextureIndex(j + 1);
+			}
+
+			CREATE_GAMEOBJECT(m_pArrHeroPortrait[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrHeroPortrait[i][j]);
+		}
+	}
 }
 
 void CUI_Portrait::Set_FadeHeroPort()
@@ -256,211 +437,58 @@ void CUI_Portrait::Set_FadeHeroPort()
 	tFadeDesc.fFadeOutStartTime = 0.f;
 	tFadeDesc.fFadeOutTime = 0.3f;
 
-	for (int i = 1; i < 5; ++i)
+	for (int i = 0; i < HP_End; ++i)
 	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			GET_COMPONENT_FROM(m_arrPortraitUI[i][j], CFader)->Get_FadeDesc() = tFadeDesc;
-		}
+		GET_COMPONENT_FROM(m_pHeroPortrait[i], CFader)->Get_FadeDesc() = tFadeDesc;
 	}
 }
 
-void CUI_Portrait::Change_UserPort()
+void CUI_Portrait::Set_ShaderEffect(CShader* pShader, const char* constName)
 {
-	if (m_bAbleRotationPort)
-	{
-		_float fDuration = 0.1f;
-
-		_float4 vScale = m_arrPortraitUI[0][BG]->Get_Transform()->Get_Scale();
-		CTexture* pTexture = GET_COMPONENT_FROM(m_arrPortraitUI[0][Port], CTexture);
-
-		if (!m_bIsUserLerp)
-		{
-			m_bIsUserLerp = true;
-
-			if (m_iRotationCount == 1)
-			{
-				PortSizeDown(fDuration);
-			}
-			else if (m_iRotationCount == 2)
-			{
-				pTexture->Set_CurTextureIndex(m_iCurPort);
-				PortSizeUP(fDuration);
-			}
-			else if (m_iRotationCount == 3)
-			{
-				PortSizeDown(fDuration);
-			}
-			else if (m_iRotationCount == 4)
-			{
-				pTexture->Set_CurTextureIndex(m_iPrvPort);
-				PortSizeUP(fDuration);
-			}
-			else if (m_iRotationCount == 5)
-			{
-				PortSizeDown(fDuration);
-			}
-			else if (m_iRotationCount == 6)
-			{
-				pTexture->Set_CurTextureIndex(m_iCurPort);
-				PortSizeUP(fDuration);
-			}
-		}
-		else
-		{
-			if (vScale.x <= m_fMinValue)
-			{
-				m_bIsUserLerp = false;
-				m_iRotationCount++;
-			}
-			else if (vScale.x >= 64.f)
-			{
-				m_bIsUserLerp = false;
-				m_iRotationCount++;
-			}
-		}
-
-		if (m_iRotationCount > 6)
-		{
-			m_iRotationCount = 0;
-			m_bAbleRotationPort = false;
-		}
-	}
+	//pShader->Set_RawValue("g_fValue", &m_fEffectValue, sizeof(_float));
 }
 
-void CUI_Portrait::PortSizeUP(_float fDuration)
+//void CUI_Portrait::Set_HeroPort()
+//{
+//	//m_bAbleHero = true;
+//	//m_eHeroPortAnimType = eState;
+//	//m_bIsHeroLerp = true;
+//}
+
+void CUI_Portrait::Set_Pass()
 {
-	_float fRotSpeed = fDuration * (m_iRotationCount * 0.5f);
-
-	Set_FadeUserPort(fRotSpeed);
-
-	m_arrPortraitUI[0][BG]->Lerp_ScaleX(0.f, 64.f, fRotSpeed);
-	m_arrPortraitUI[0][Port]->Lerp_ScaleX(0.f, 63.f, fRotSpeed);
-
-	Enable_Fade(m_arrPortraitUI[0][Port], fRotSpeed);
+	/*for (int i = 1; i < 5; ++i)
+	{
+		GET_COMPONENT_FROM(m_arrPortraitUI[i][Effect], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_PortEffect);
+	}*/
 }
 
-void CUI_Portrait::PortSizeDown(_float fDuration)
+void CUI_Portrait::Bind_Shader()
 {
-	_float fRotSpeed = 0.1f * (m_iRotationCount * 0.5f);
+	/*for (int i = 1; i < 5; ++i)
+	{
+		m_arrPortraitUI[i][Effect]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
 
-	Set_FadeUserPort(fRotSpeed);
-
-	m_arrPortraitUI[0][BG]->Lerp_ScaleX(64.f, 0.f, fRotSpeed);
-	m_arrPortraitUI[0][Port]->Lerp_ScaleX(63.f, 0.f, fRotSpeed);
-
-	Disable_Fade(m_arrPortraitUI[0][Port], fRotSpeed);
+		GET_COMPONENT_FROM(m_arrPortraitUI[i][Effect], CShader)->CallBack_SetRawValues += bind(&CUI_Portrait::Set_ShaderEffect, this, placeholders::_1, "g_fValue");
+	}*/
 }
 
-void CUI_Portrait::Enable_HeroLerp(_bool value, _float fDuration)
+void CUI_Portrait::Active_HeroPort(HeroPortActive eType)
 {
-	if (m_bAbleHero)
-	{
-		if (m_iHeroActiveCount < 3)
-		{
-			m_fAccTime += fDT(0);
-			if (m_fAccTime > fDuration)
-			{
-				if (value == false)
-				{
-					m_iHeroStartIdx++;
-
-					m_bIsHeroLerp = true;
-					m_fAccTime = 0.f;
-
-					m_iHeroActiveCount++;
-				}
-				else
-				{
-					m_iHeroEndIdx--;
-
-					m_bIsHeroLerp = true;
-					m_fAccTime = 0.f;
-
-					m_iHeroActiveCount++;
-				}
-			}
-		}
-	}
 }
 
-void CUI_Portrait::Ready_Portrait()
+void CUI_Portrait::OnEnable()
 {
-	// 원본 객체 배치
-	m_Prototypes[BG] = m_pUIMap[TEXT("PortBG")];
-	m_Prototypes[Port] = m_pUIMap[TEXT("Port")];
-	m_Prototypes[Key] = m_pUIMap[TEXT("PortKey")];
-	m_Prototypes[Effect] = m_pUIMap[TEXT("Port_Effect")];
+	__super::OnEnable();
 
-	m_Prototypes[BG]->Set_Sort(0.3f);
-	m_Prototypes[Port]->Set_Sort(0.29f);
-	m_Prototypes[Key]->Set_Sort(0.3f);
-	m_Prototypes[Effect]->Set_Sort(0.31f);
+	SetActive_UserPort(true);
+	SetActive_HeroPort(true);
+}
 
-	GET_COMPONENT_FROM(m_Prototypes[Port], CTexture)->Remove_Texture(0);
+void CUI_Portrait::OnDisable()
+{
+	__super::OnDisable();
 
-	m_Prototypes[Effect]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Effect/T_Pattern_06.dds"));
-
-	GET_COMPONENT_FROM(m_Prototypes[BG], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
-
-	Read_Texture(m_Prototypes[Port], "/HUD/Portrait", "Class");
-	Read_Texture(m_Prototypes[Key], "/KeyIcon/Keyboard", "Key");
-
-	// 원본 객체 복사
-	for (int i = 0; i < 5; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			m_arrPortraitUI[i][j] = m_Prototypes[j]->Clone();
-		}
-	}
-
-	for (_uint i = 0; i < Type_End; ++i)
-	{
-		// 원본 객체 생성 후 삭제
-		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_Prototypes[i]);
-
-		// 클론 생성 후 비활성화
-		CREATE_GAMEOBJECT(m_arrPortraitUI[0][i], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_arrPortraitUI[0][i]);
-	}
-
-	// 유저 포트레이트의 필요없는 객체 삭제
-	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Key]);
-	m_arrPortraitUI[0][Key] = nullptr;
-	DELETE_GAMEOBJECT(m_arrPortraitUI[0][Effect]);
-	m_arrPortraitUI[0][Effect] = nullptr;
-
-	for (int i = 1; i < 5; ++i)
-	{
-		float fPosX = 260.f + (i * 55.f);
-		_uint iPortIndex = 5 + i;
-		_uint iKeyIndex = 32 + i;
-
-		GET_COMPONENT_FROM(m_arrPortraitUI[i][BG], CTexture)->Set_CurTextureIndex(1);
-		GET_COMPONENT_FROM(m_arrPortraitUI[i][Port], CTexture)->Set_CurTextureIndex(iPortIndex);
-		GET_COMPONENT_FROM(m_arrPortraitUI[i][Key], CTexture)->Set_CurTextureIndex(iKeyIndex);
-
-		for (int j = 0; j < Type_End; ++j)
-		{
-			m_arrPortraitUI[i][j]->Set_Pos(fPosX, -230.f);
-			m_arrPortraitUI[i][j]->Set_Scale(43.f);
-
-			if (j == Key)
-			{
-				m_arrPortraitUI[i][j]->Set_Pos(fPosX, -195.f);
-				m_arrPortraitUI[i][j]->Set_Scale(15.f);
-			}
-
-			if (j == Effect)
-			{
-				m_arrPortraitUI[i][j]->Set_Scale(65.f);
-			}
-
-			// 클론 객체 생성 후 비활성화
-			CREATE_GAMEOBJECT(m_arrPortraitUI[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_arrPortraitUI[i][j]);
-		}
-	}
+	SetActive_UserPort(false);
+	SetActive_HeroPort(false);
 }

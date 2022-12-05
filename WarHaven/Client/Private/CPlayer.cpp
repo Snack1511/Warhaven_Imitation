@@ -55,6 +55,8 @@
 #include "CUI_UnitHUD.h"
 #include "CUtility_Transform.h"
 
+#include "CUI_HUD.h"
+#include "CUI_HeroGauge.h"
 
 CPlayer::CPlayer()
 {
@@ -404,7 +406,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_DEFAULT eClass)
 void CPlayer::Reserve_State(_uint eState)
 {
 	m_pCurrentUnit->Reserve_State(STATE_TYPE(eState));
-	
+
 }
 
 void CPlayer::Set_Default_ReserveState(_uint eClass, _uint eState)
@@ -430,7 +432,7 @@ void CPlayer::SetUp_UnitColliders(_bool bBlueTeam)
 		m_pHeroClass[i]->SetUp_Colliders(bBlueTeam);
 	}
 
-	
+
 }
 
 
@@ -550,10 +552,10 @@ HRESULT CPlayer::Initialize_Prototype()
 		break;
 	default:
 		break;
-	
+
 	}
 
-	
+
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	Create_UnitHUD();
@@ -628,7 +630,7 @@ HRESULT CPlayer::Start()
 			m_pMySquad->SetUp_OutlineType_SquadMember();
 		}
 	}
-	
+
 
 
 	return S_OK;
@@ -655,7 +657,7 @@ void CPlayer::On_Die()
 
 	}
 
-	
+
 
 }
 
@@ -805,16 +807,16 @@ void CPlayer::Update_HP()
 {
 	CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fMaxHP, m_pCurrentUnit->Get_Status().fHP);
 }
-
 void CPlayer::Update_HeroGauge()
 {
 	if (m_bIsMainPlayer)
 	{
-		_bool IsHeroGaugeEnable = CUser::Get_Instance()->Is_OnHeroGauge();
+		/*_bool IsHeroGaugeEnable = CUser::Get_Instance()->Is_OnHeroGauge();
 		if (!IsHeroGaugeEnable)
-			return;
+			return;*/
 
-		CUser::Get_Instance()->Set_HeroGauge(m_fMaxGauge, m_fGauge);
+
+		CUser::Get_Instance()->Set_HeroGauge(m_fGauge, m_fMaxGauge);
 	}
 
 	if (!m_bAbleHero) //CChangeHero_Player, HUD

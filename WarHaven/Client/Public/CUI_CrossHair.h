@@ -18,15 +18,14 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	virtual void OnEnable() override;
-	virtual void OnDisable() override;
-
-public:
 	void Set_Crosshair(_uint iClass);
 
-	void SetActive_DefaultCrosshair(_bool value);
+	void SetActive_Crosshair(_bool value);
 	void SetActive_ArrowUI(_bool value);
 	void SetActive_LancerUI(_bool value);
+
+private:
+	_uint m_iClassIndex = 0;
 
 private:
 	enum CrosshairUI { CU_Point, CU_Outline, CU_End };
@@ -34,7 +33,7 @@ private:
 
 private:
 	void Create_Crosshair();
-	void Init_DefaultCrosshair();
+	void Set_DefaultCrosshair();
 
 private:
 	enum ArrowUI { AU_BG, AU_Arrow, AU_End };
@@ -47,7 +46,7 @@ private:
 
 private:
 	void Create_ArrowUI();
-	void Init_ArrowUI(_uint iClass);
+	void Set_ArrowUI();
 
 private:
 	enum LancerUI { LU_BG, LU_Gauge, LU_Full, LU_End };
@@ -56,6 +55,10 @@ private:
 
 private:
 	void Create_LancerUI();
+
+private:
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 };
 
 END

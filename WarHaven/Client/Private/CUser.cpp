@@ -25,6 +25,8 @@
 #include "CCamera_Free.h"
 
 #include "CUI_HUD.h"
+#include "CUI_HeroGauge.h"
+
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
 #include "CUI_Training.h"
@@ -247,6 +249,16 @@ void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
 		DISABLE_GAMEOBJECT(m_pFire);
 }
 
+CUI_Wrapper* CUser::Get_HUD(_uint eHUD)
+{
+	return m_pUI_HUD->Get_HUD(eHUD);
+}
+
+void CUser::Set_HeroGauge(_float fCurValue, _float fMaxValue)
+{
+	m_pUI_HeroGauge->Set_HeroGauge(fCurValue, fMaxValue);
+}
+
 void CUser::On_EnterLevel()
 {
 	DISABLE_GAMEOBJECT(m_pCursor);
@@ -264,6 +276,8 @@ void CUser::On_EnterStageLevel()
 	{
 		m_pUI_HUD = CUI_HUD::Create();
 		CREATE_GAMEOBJECT(m_pUI_HUD, GROUP_UI);
+
+		m_pUI_HeroGauge = dynamic_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
 	}
 
 	if (!m_pUI_Damage[0])
@@ -315,11 +329,6 @@ void CUser::Set_HUD(CLASS_TYPE eClass)
 void CUser::Set_HP(_float fMaxHP, _float fCurHP)
 {
 	m_pUI_HUD->Set_HP(fMaxHP, fCurHP);
-}
-
-void CUser::Set_HeroGauge(_float fMaxGauge, _float fCurGauge)
-{
-	m_pUI_HUD->Set_HeroGauge(fMaxGauge, fCurGauge);
 }
 
 void CUser::SetActive_HeroPortrait(_bool value)

@@ -8,7 +8,8 @@ class CUnit;
 
 class CUI_HUD : public CUI_Wrapper
 {
-	enum HUD_Type { Crosshair, Port, Skill, HeroGauge, HpBar, HUD_END };
+public:
+	enum HUD { HUD_Crosshair, HUD_Port, HUD_HeroGauge, HUD_End };
 
 	DECLARE_PROTOTYPE(CUI_HUD);
 	DECLARE_GAMEOBJECT(CUI_HUD);
@@ -21,8 +22,19 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
-
 	virtual void My_Tick();
+
+public:
+	CUI_Wrapper* Get_HUD(_uint eHUD);
+
+public:
+	void SetActive_HUD(_bool value);
+
+private:
+	CUI_Wrapper* m_pHUD[HUD_End];
+
+private:
+	void Create_HUD();
 
 public:
 	virtual void On_PointEnter_Port(const _uint& iEventNum);
@@ -37,10 +49,10 @@ public:
 	virtual void Set_Shader_Timer(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName);
 
+
 public:
 	void Set_HUD(CLASS_TYPE eClass);
 	void Set_HP(_float fMaxHP, _float fCurHP);
-	void Set_HeroGauge(_float fMaxGauge, _float fCurGauge);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 	void SetActive_OperUI(_bool value);
@@ -54,7 +66,7 @@ public:
 	_bool Is_OnHeroGauge();
 
 private:
-	CUI_Wrapper* m_pWrap[HUD_END];
+	//CUI_Wrapper* m_pWrap[HUD_END];
 	CUI_Wrapper* m_pDeadUI = nullptr;
 
 	CUnit* m_pPlayer = nullptr;
@@ -70,9 +82,6 @@ private:	// 체력바
 	_float m_fHealthRatio = 0.f;
 
 private:	// 히어로 게이지
-	_float m_fMaxGauge = 0.f;
-	_float m_fCurGauge = 0.f;
-	_float m_fGaugeRatio = 0.f;
 	_bool m_bIsEnableHeroPort = false;
 
 private:	// 작전회의
@@ -182,7 +191,6 @@ private:
 
 	CUI_Object* m_pChangeClassText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;
-	CUI_Object* m_pHeroGaugeText = nullptr;
 	CUI_Object* m_pOxenJumpText = nullptr;
 	CUI_Object* m_pHpText = nullptr;
 
@@ -216,7 +224,6 @@ private:
 	void Set_ClassInfo(CLASS_TYPE eClass);
 
 	void Update_HP();
-	void Update_HeroGauge();
 	void Update_HeorTransformGauge();
 
 private:	// 작전 회의
@@ -224,7 +231,6 @@ private:	// 작전 회의
 	void Enable_OperPointUI();
 
 	void Create_TraingText();
-	void Create_HeroGaugeText();
 	void Create_OxenJumpText();
 	void Create_HpText();
 	void Create_PlayerNameText();
