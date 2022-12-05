@@ -50,6 +50,17 @@ void CTrailEffect::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 	pShader->Set_RawValue(pConstantName, &m_vShaderFlag, sizeof(_float4));
 	pShader->Set_RawValue("g_vGlowFlag", &m_vGlowFlag, sizeof(_float4));
 	pShader->Set_RawValue("g_vColor", &m_vFontColor, sizeof(_float4));
+	if (m_bDistortion)
+	{
+		pShader->Set_RawValue("g_fTimeAcc", &m_fTimeAcc, sizeof(_float));
+	}
+}
+
+void CTrailEffect::Set_Distortion()
+{
+	GET_COMPONENT(CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
+	GET_COMPONENT(CRenderer)->Set_Pass(VTXTEX_PASS_TRAILDISTORTION);
+	m_bDistortion = true;
 }
 
 void CTrailEffect::TurnOn_TrailEffect(_bool bTrunOn)
@@ -107,4 +118,9 @@ void CTrailEffect::My_LateTick()
 	m_pTransform->Set_World(WORLD_POS, m_pUnitTransform->Get_World(WORLD_POS));
 	m_pTransform->Make_WorldMatrix();
 
+	if (m_bDistortion)
+	{
+		m_fTimeAcc += fDT(0);
+
+	}
 }

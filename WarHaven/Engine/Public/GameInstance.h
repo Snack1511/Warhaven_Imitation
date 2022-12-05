@@ -152,6 +152,7 @@ public: /* For Picking_Manager */
 
 public: /* For Tile_Manager */
 	HRESULT		Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iNumLayers);
+	void		Set_Tile_WorldMatrix(_float4x4 matWorld);
 	void		Clear_AllTiles();
 	_uint		Find_TileIndex(_float4 vPosition);
 	HRESULT		Render_Tiles();

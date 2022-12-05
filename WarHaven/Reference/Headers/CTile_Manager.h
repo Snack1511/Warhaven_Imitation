@@ -19,6 +19,7 @@ public:
 	void		Release();
 
 public:
+	void		Set_WorldMatrix(_float4x4 matWorld);
 	_uint		Find_Index(_float4 vPosition);
 
 public:
@@ -39,6 +40,10 @@ private:
 	_uint				m_iTotalTileSize = 0;
 
 	_float				m_fTileSize = 0.f;
+
+	/* worldmat*/
+	_float4x4			m_matWorld;
+	_float4x4			m_matWorldInv;
 
 
 

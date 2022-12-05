@@ -299,6 +299,8 @@ protected:
 	CTrailEffect* m_pTrailEffect = nullptr;
 	CTrailEffect* m_pTrailEffect2 = nullptr;
 
+	CTrailEffect* m_pDistortionTrail = nullptr;
+
 protected:
 	CCamera_Follow* m_pFollowCam = nullptr;
 
@@ -312,6 +314,8 @@ protected:
 protected:
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
 			_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_DistortionTrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+	_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);
 	virtual	HRESULT	SetUp_Navigation(CCell* pStartCell);
 

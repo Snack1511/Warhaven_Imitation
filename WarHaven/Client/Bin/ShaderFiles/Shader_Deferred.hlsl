@@ -521,13 +521,16 @@ PS_OUT PS_MAIN_POSTEFFECT(PS_IN In)
 
 	//vector			vFogColor = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (vDistortionDesc.a > 0.f)
+	//if (vDistortionDesc.x > 0.f)
 	{
 		//vector		vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
 		//depth에 비례하자
 		//depth.w는 0~1사이구 가까울수록 값이 작다?
 		//vDepthDesc.y = saturate(vDepthDesc.y / 0.1f);
-		In.vTexUV += vDistortionDesc.r * 0.03f;
+
+		//depth 비교
+		if (vDistortionDesc.z < vDepthDesc.y)
+			In.vTexUV += vDistortionDesc.r * 0.03f;
 	}
 
 

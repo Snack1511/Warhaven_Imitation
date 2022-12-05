@@ -40,6 +40,8 @@ int g_iHeightSize;
 float g_fRowX;
 float g_fColY;
 
+float   g_fTimeAcc;
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -726,7 +728,7 @@ PS_EFFECT_OUT PS_TRAIL_MAIN(VS_TRAIL_OUT In)
     if (Out.vDiffuse.a < 0.05f)
         discard;
 
-    //Out.vDiffuse.a = 1.f;
+    Out.vDiffuse.xyz = 1.f;
 
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
     Out.vFlag = g_vFlag;
@@ -857,6 +859,42 @@ PS_OUT PS_UIFIRE(PS_IN In)
     //Out.vColor.w *= g_fAlpha;
 
     Out.vFlag = g_vFlag;
+
+    return Out;
+}
+
+struct PS_DISTORTION_OUT
+{
+    vector		vDistortionFlag : SV_TARGET0;
+};
+
+PS_DISTORTION_OUT PS_MAIN_DISTORTION(VS_TRAIL_OUT In)
+{
+    PS_DISTORTION_OUT		Out = (PS_DISTORTION_OUT)0;
+
+    float fTime = sin(g_fTimeAcc);
+
+
+    In.vTexUV.x = 1.f - In.vTexUV.x;
+
+    //In.vTexUV.y += fTime;
+
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+    vector vDiffuse;
+
+    vDiffuse = vMtrlDiffuse;
+    vDiffuse.a = vDiffuse.r;
+    //vDiffuse.a *= g_fAlpha;
+
+    Out.vDistortionFlag.b = vDiffuse.a;
+
+    if (vDiffuse.a <= 0.05f)
+        discard;
+
+    Out.vDistortionFlag.x = vDiffuse.a * 0.5f;
+    Out.vDistortionFlag.z = In.vProjPos.w / 1500.f;
+    Out.vDistortionFlag.a = 1.f;
 
     return Out;
 }
@@ -1072,5 +1110,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_UIFIRE();
+    }
+
+    pass TRAIL_DISTORTION
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_None);
+
+        VertexShader = compile vs_5_0 VS_TRAIL_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_DISTORTION();
     }
 }

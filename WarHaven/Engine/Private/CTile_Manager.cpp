@@ -36,10 +36,18 @@ void CTile_Manager::Release()
 	m_vecLayers.clear();
 }
 
+void CTile_Manager::Set_WorldMatrix(_float4x4 matWorld)
+{
+	m_matWorld = matWorld;
+	m_matWorldInv = matWorld.Inverse();
+}
+
 _uint CTile_Manager::Find_Index(_float4 vPosition)
 {
 	if (m_vecLayers.empty())
 		return 0;
+
+	vPosition = vPosition.MultiplyCoord(m_matWorldInv);
 
 	_int iIndexX = _int(vPosition.x / m_fTileSize);
 	_int iIndexZ = _int(vPosition.z / m_fTileSize);

@@ -789,6 +789,9 @@ void CUnit::TurnOn_TrailEffect(_bool bOn)
 	m_pTrailEffect->TurnOn_TrailEffect(bOn);
 	m_pTrailEffect2->TurnOn_TrailEffect(bOn);
 
+	if (m_pDistortionTrail)
+		m_pDistortionTrail->TurnOn_TrailEffect(bOn);
+
 }
 
 
@@ -815,6 +818,23 @@ void CUnit::SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 v
 	m_pTrailEffect->TurnOn_TrailEffect(false);
 	m_pTrailEffect2->TurnOn_TrailEffect(false);
 
+}
+
+void CUnit::SetUp_DistortionTrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pDistortionTrail = CTrailEffect::Create(0, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pDistortionTrail)
+		return;
+
+	CREATE_GAMEOBJECT(m_pDistortionTrail, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pDistortionTrail, CMesh))->Set_NoCurve();
+
+	m_pDistortionTrail->TurnOn_TrailEffect(false);
+
+	m_pDistortionTrail->Set_Distortion();
 }
 
 HRESULT CUnit::SetUp_Model(const UNIT_MODEL_DATA& tData)

@@ -14,6 +14,7 @@ protected:
 public:
 	static CMesh_Terrain* Create(_uint iGroupIdx, const _tchar* pHeightMapFilePath);
 	static CMesh_Terrain* Create(_uint iGroupIdx, _uint iNumVerticesX, _uint iNumVerticesZ);
+	static CMesh_Terrain* Create(_uint iGroupIdx, _uint iNumVerticesX, _uint iNumVerticesZ, _float fSize);
 
 public:
 	virtual _uint3 Get_Indices(_uint iIndex) const {
@@ -49,6 +50,7 @@ private:
 private:
 	HRESULT		SetUp_HeightMap(const _tchar* pHeightMapFilePath);
 	HRESULT		SetUp_Terrain(_uint iNumVerticesX, _uint iNumVerticesZ);
+	HRESULT		SetUp_Terrain(_uint iNumVerticesX, _uint iNumVerticesZ, _float fSize);
 
 
 

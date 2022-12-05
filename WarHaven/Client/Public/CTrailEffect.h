@@ -28,8 +28,8 @@ public:
 
 public:
 	void		Set_ShaderResource(CShader* pShader, const char* pConstantName);
-
 	void	Set_EffectFlag(_float4 vEffectFlag) { m_vShaderFlag = vEffectFlag; }
+	void	Set_Distortion();
 
 public:
 	void TurnOn_TrailEffect(_bool bTrunOn);
@@ -53,6 +53,10 @@ private:
 	_float4		m_vShaderFlag = SH_EFFECT_NOBLOOM;
 	_float4		m_vGlowFlag = GLOW_CHAKRA(1.f);
 	_float4		m_vFontColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+	_bool		m_bDistortion = false;
+	_float		m_fTimeAcc = 0.f;
+
 };
 
 END

@@ -481,6 +481,11 @@ HRESULT CGameInstance::Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float 
 	return m_pTileManager->Create_Layers(iNumTilesX, iNumTilesZ, fTileSize, iNumLayers);
 }
 
+void CGameInstance::Set_Tile_WorldMatrix(_float4x4 matWorld)
+{
+	m_pTileManager->Set_WorldMatrix(matWorld);
+}
+
 void CGameInstance::Clear_AllTiles()
 {
 	m_pTileManager->Release();
