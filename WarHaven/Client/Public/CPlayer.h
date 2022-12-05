@@ -222,6 +222,7 @@ private:
 
 
 	CLASS_DEFAULT	m_eCurrentDefaultClass = CLASS_DEFAULT_END;
+	CLASS_TYPE		m_eCurrentClass = CLASS_TYPE::CLASS_END;
 
 
 private:

@@ -289,6 +289,7 @@ void CUI_HUD::SetActive_HeroTransformGauge(_bool value)
 
 _bool CUI_HUD::Is_OnHeroGauge()
 {
+
 	return m_pPlayerNameText->Is_Valid();
 }
 
@@ -567,7 +568,8 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 	}
 }
 
-void CUI_HUD::Set_ClassInfo(CLASS_TYPE eClass)
+void CUI_HUD::Set_ClassInfo(CLASS_TYPE 
+)
 {
 	switch (eClass)
 	{

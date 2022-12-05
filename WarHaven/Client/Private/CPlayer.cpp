@@ -335,12 +335,15 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	if (eClass >= CLASS_DEFAULT_END)
 		return E_FAIL;
 
+	m_eCurrentClass = (CLASS_TYPE)eClass;
+
 	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 
 	if (m_pCurrentUnit)
 	{
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
 	}
+
 
 	m_pCurrentUnit = m_pDefaultClass[eClass];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
@@ -356,6 +359,11 @@ HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
 	GAMEINSTANCE->Stop_GrayScale();
 
 
+
+	CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
+
+
+
 	return S_OK;
 }
 
@@ -363,6 +371,8 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 {
 	if (eClass >= CLASS_HERO_END)
 		return E_FAIL;
+
+	m_eCurrentClass = (CLASS_TYPE)((_uint)eClass + (_uint)FIONA);
 
 	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 	_float4 vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
@@ -382,6 +392,8 @@ HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	Set_Postion(vPos);
+
+	CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
 
 	return S_OK;
 }
@@ -869,8 +881,6 @@ void CPlayer::On_FinishHero()
 
 	if (m_bIsMainPlayer)
 	{
-
-		CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
 		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 	}
 
