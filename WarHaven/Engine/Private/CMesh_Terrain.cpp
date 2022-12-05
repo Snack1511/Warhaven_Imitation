@@ -520,7 +520,7 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumTilesX, _uint iNumTilesZ, _float 
 			//ÀÎµ¦½º¸¶´Ù 4°³¾¿ Âï¾îÁà¾ßÇÔ
 			
 			_vector xCenter = XMLoadFloat3(&vCenterPos);
-
+			
 			_vector xLTPadding = XMLoadFloat3(&vLTPadding);
 			_vector xLBPadding = XMLoadFloat3(&vLBPadding);
 
