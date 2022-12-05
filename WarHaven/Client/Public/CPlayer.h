@@ -4,8 +4,6 @@
 
 #include "CPlayerInfo.h"
 
-#define HERO_END 4
-
 BEGIN(Engine)
 class CModel;
 class CAnimator;
@@ -55,26 +53,6 @@ public:
 
 
 
-	enum CLASS_HREO
-	{
-		CLASS_HREO_FIONA = 6,
-		/*CLASS_HREO_QANDA,
-		CLASS_HREO_HOEDT,
-		CLASS_HREO_LANCER,*/
-		CLASS_HERO_END = 10
-	};
-
-	enum CLASS_DEFAULT
-	{
-		CLASS_DEFAULT_WARRIOR = 0,
-		//CLASS_DEFAULT_SPEAR,
-	//	CLASS_DEFAULT_ARCHER = 2,
-	//	CLASS_DEFAULT_PALADIN,
-		//CLASS_DEFAULT_PRIEST,
-		CLASS_DEFAULT_ENGINEER = 5,
-		CLASS_DEFAULT_END
-	};
-
 	enum OUTLINETYPE
 	{
 		eENEMY,
@@ -93,18 +71,17 @@ public:
 
 	/* Initialize_Prototype */
 public:
-	void Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData);
-	void Create_HeroClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData);
+	void Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData);
 
 	/* Start */
 public:
 	HRESULT	Set_FollowCam(wstring wstrCamKey);
-	HRESULT	Change_DefaultUnit(CLASS_DEFAULT eClass);
-	HRESULT	Change_HeroUnit(CLASS_HREO eClass);
+	HRESULT	Change_UnitClass(CLASS_TYPE eDefaultClass);
 
 
 	void	Reserve_State(_uint eState);
-	void	Set_Default_ReserveState(_uint eClass, _uint eState);
+
+	void	Set_Unit_ReserveState(_uint eClassType, _uint eState);
 
 	void	SetUp_UnitColliders(_bool bBlueTeam);
 	void	SetUp_UnitHitStates();
@@ -114,14 +91,18 @@ public:
 	void	Set_LookToTarget();
 
 public:
-	void	Respawn_Unit(_float4 vPos, CLASS_DEFAULT eClass);
+	void	Respawn_Unit(_float4 vPos, CLASS_TYPE eClass);
 
 public:
 	_uint	Get_ChangeHeroIndex(_uint eClass) { return m_iChangeHeroAnimIndex[eClass]; }
 	_uint	Get_DefaultReserveStateIndex(_uint eClass) { return m_iReserveStateDefault[eClass]; }
 
 	CUnit* Get_CurrentUnit() { return m_pCurrentUnit; }
-	CLASS_DEFAULT Get_CurrentDefaultClass() { return m_eCurrentDefaultClass; }
+	CLASS_TYPE Get_PrevClass() { return m_ePrevClass; }
+	CLASS_TYPE Get_CurClass() { return m_eCurrentClass; }
+
+
+
 	void Set_MainPlayer();
 	void Set_LeaderPlayer() { m_bIsLeaderPlayer = true; }
 
@@ -210,18 +191,16 @@ private:
 private:
 	CUnit* m_pCurrentUnit = nullptr;
 	CCamera_Follow* m_pFollowCam = nullptr;
-	CUnit* m_pHeroClass[HERO_END] = { nullptr };
-	CUnit* m_pDefaultClass[CLASS_DEFAULT_END] = { nullptr };
+	CUnit* m_pAllUnitClass[CLASS_END] = { nullptr };
 
 	// 변신 Index
-	_uint	m_iChangeHeroAnimIndex[CLASS_DEFAULT_END] = { 0 };
+	_uint	m_iChangeHeroAnimIndex[CT_DEFAULT_END] = {};
 
 	/* 예약 Index */
-	_uint	m_iReserveStateDefault[CLASS_DEFAULT_END] = { 0 };
-	_uint	m_iReserveStateHero[HERO_END] = { 0 };
+	_uint	m_iReserveStateDefault[CLASS_END] = {};
 
 
-	CLASS_DEFAULT	m_eCurrentDefaultClass = CLASS_DEFAULT_END;
+	CLASS_TYPE		m_ePrevClass = CLASS_END;
 	CLASS_TYPE		m_eCurrentClass = CLASS_TYPE::CLASS_END;
 
 

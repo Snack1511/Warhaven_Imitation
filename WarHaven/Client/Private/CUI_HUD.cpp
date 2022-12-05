@@ -561,15 +561,14 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 		}
 
 		CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
-		pPlayer->Change_DefaultUnit((CPlayer::CLASS_DEFAULT)m_eCurClass);
+		pPlayer->Change_UnitClass(m_eCurClass);
 		pPlayer->Get_CurrentUnit()->On_Respawn();
 
 		Set_HUD(m_eCurClass);
 	}
 }
 
-void CUI_HUD::Set_ClassInfo(CLASS_TYPE 
-)
+void CUI_HUD::Set_ClassInfo(CLASS_TYPE eClass)
 {
 	switch (eClass)
 	{

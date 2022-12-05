@@ -299,9 +299,9 @@ void CUser::On_EnterStageLevel()
 		m_pUI_HUD = CUI_HUD::Create();
 		CREATE_GAMEOBJECT(m_pUI_HUD, GROUP_UI);
 
-		m_pUI_Portrait = dynamic_cast<CUI_Portrait*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Port));
-		m_pUI_HP = dynamic_cast<CUI_HpBar*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HP));
-		m_pUI_HeroGauge = dynamic_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
+		m_pUI_Portrait = static_cast<CUI_Portrait*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Port));
+		m_pUI_HP = static_cast<CUI_HpBar*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HP));
+		m_pUI_HeroGauge = static_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
 	}
 
 	if (!m_pUI_Damage[0])

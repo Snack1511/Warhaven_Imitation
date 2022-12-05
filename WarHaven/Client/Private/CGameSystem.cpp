@@ -617,7 +617,7 @@ HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& ve
             return E_FAIL;
 
         pArrPlayers.push_back(pPlayer);
-        pPlayer->Set_Default_ReserveState(WARRIOR, STATE_IDLE_WARRIOR_R_AI_ENEMY);
+        pPlayer->Set_Unit_ReserveState(WARRIOR, STATE_IDLE_WARRIOR_R_AI_ENEMY);
         READY_GAMEOBJECT(pPlayer, GROUP_PLAYER);
 
     }
@@ -891,7 +891,7 @@ void CGameSystem::On_StartGame()
        
         _float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
         
-        elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, (CPlayer::CLASS_DEFAULT)elem.second->m_eCurChosenClass);
+        elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
       
     }
 

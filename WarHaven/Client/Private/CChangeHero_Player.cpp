@@ -59,8 +59,7 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
 	CPlayer* pPlayer = pOwner->Get_OwnerPlayer();
 
-
-	CPlayer::CLASS_DEFAULT eDefaultType = (CPlayer::CLASS_DEFAULT)pPlayer->Get_CurrentDefaultClass();
+	CLASS_TYPE eDefaultType = pPlayer->Get_CurClass();
 
 	m_iAnimIndex = pPlayer->Get_ChangeHeroIndex(eDefaultType);
 
@@ -87,9 +86,8 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	if (pAnimator->Is_CurAnimFinished())
 	{
-		Set_HeroType(pOwner, m_eChang
-			
-			Type);
+		Set_HeroType(pOwner, m_eChangeClassType);
+
 		pOwner->Shake_Camera(8.f, 1.f);
 		GAMEINSTANCE->Stop_RadialBlur();
 		GAMEINSTANCE->Stop_ChromaticAberration();
@@ -155,7 +153,7 @@ STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 
 	pOwner->Get_OwnerPlayer()->IsHero() = true;
 
-	_uint iIndex = (_uint)eClass - (_uint)FIONA;
+	_uint iIndex = (_uint)eClass;
 	pOwner->On_ChangeToHero(iIndex);
 
 
