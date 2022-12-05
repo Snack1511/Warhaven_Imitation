@@ -110,13 +110,13 @@ void CState_Hit::Hit_State(CUnit* pOwner)
         /* 내가 기울어지는 방향대로 애니메이션 처리 */
     case HIT_TYPE::eLEFT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_E];
+        m_iAnimIndex = m_iHitIndex[HIT_STATE_W];
 
         break;
 
     case HIT_TYPE::eRIGHT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_W];
+        m_iAnimIndex = m_iHitIndex[HIT_STATE_E];
 
         break;
 
@@ -187,13 +187,13 @@ void CState_Hit::Groggy_State(CUnit* pOwner)
         /* 내가 기울어지는 방향대로 애니메이션 처리 */
     case HIT_TYPE::eLEFT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_E];
+        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_W];
 
         break;
 
     case HIT_TYPE::eRIGHT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_W];
+        m_iAnimIndex = m_iGroggyIndex[HIT_STATE_E];
 
         break;
 

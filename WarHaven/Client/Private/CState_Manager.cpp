@@ -349,6 +349,77 @@
 
 #pragma endregion
 
+#pragma region Paladin
+
+#include "CSwitchLtoR_Paladin.h"
+#include "CSwitchRtoL_Paladin.h"
+
+#include "CIdle_Paladin_L.h"
+#include "CIdle_Paladin_R.h"
+
+#include "CWalk_Paladin_L.h"
+#include "CWalk_Paladin_R.h"
+
+#include "CRun_Paladin_Begin_L.h"
+#include "CRun_Paladin_Begin_R.h"
+
+#include "CRun_Paladin_L.h"
+#include "CRun_Paladin_R.h"
+
+#include "CJump_Paladin_L.h"
+#include "CJump_Paladin_R.h"
+
+#include "CJump_Paladin_Fall_L.h"
+#include "CJump_Paladin_Fall_R.h"
+
+#include "CJump_Paladin_Land_L.h"
+#include "CJump_Paladin_Land_R.h"
+
+#include "CStop_Paladin_L.h"
+#include "CStop_Paladin_R.h"
+
+#include "CSprint_Begin_Paladin.h"
+#include "CSprint_Loop_Paladin.h"
+#include "CSprint_End_Paladin.h"
+
+#include "CSprint_Jump_Paladin.h"
+#include "CSprint_Jump_Fall_Paladin.h"
+#include "CSprintAttack_Paladin_Begin.h"
+#include "CSprintAttack_Paladin.h"
+
+//#include "CValkyrie_Attack_HorizontalDown_L.h"
+//#include "CValkyrie_Attack_HorizontalDown_R.h"
+//#include "CValkyrie_Attack_HorizontalMiddle_L.h"
+//#include "CValkyrie_Attack_HorizontalMiddle_R.h"
+//#include "CValkyrie_Attack_HorizontalUp_L.h"
+//#include "CValkyrie_Attack_HorizontalUp_R.h"
+
+//#include "CValkyrie_Attack_Sting_L.h"
+//#include "CValkyrie_Attack_Sting_R.h"
+//#include "CValkyrie_Attack_VerticalCut.h"
+
+
+#include "CGuard_Begin_Paladin.h"
+#include "CGuard_Loop_Paladin.h"
+#include "CGuard_End_Paladin.h"
+#include "CGuard_Cancel_Paladin.h"
+
+#include "CBounce_Paladin_L.h"
+#include "CBounce_Paladin_R.h"
+
+#include "CHit_Paladin.h"
+#include "CHit_GuardHit_Paladin.h"
+#include "CHit_Groggy_Paladin.h"
+#include "CHit_Sting_Paladin.h"
+#include "CHit_Fly_Paladin.h"
+
+//#include "CValkyrie_Counter.h"
+//#include "CValkyrie_SpinAttack.h"
+//#include "CValkyrie_ShieldAttack.h"
+
+
+#pragma endregion 
+
 
 #include "CAI_SandBack.h"
 #include "CAI_SandBack_L.h"
@@ -435,6 +506,7 @@ HRESULT CState_Manager::Initialize()
 	Warrior_State();
 	WarHammer_State();
 	Archer_State();
+	Paladin_State();
 
 	// ¿µ¿õ
 	Valkyrie_State();
@@ -738,10 +810,105 @@ void CState_Manager::Archer_State()
 
 
 
-	//	,
-	//	,
-	//	,
-	//	,
+}
+void CState_Manager::Paladin_State()
+{
+
+
+
+
+	m_arrStates[STATE_IDLE_PALADIN_L] = CIdle_Paladin_L::Create();
+	m_arrStates[STATE_IDLE_PALADIN_R] = CIdle_Paladin_R::Create();
+
+	/* Walk */
+	m_arrStates[STATE_WALK_PALADIN_L] = CWalk_Paladin_L::Create();
+	m_arrStates[STATE_WALK_PALADIN_R] = CWalk_Paladin_R::Create();
+
+	/* RunBegin */
+	m_arrStates[STATE_RUNBEGIN_PALADIN_L] = CRun_Paladin_Begin_L::Create();
+	m_arrStates[STATE_RUNBEGIN_PALADIN_R] = CRun_Paladin_Begin_R::Create();
+
+	/* Run */
+	m_arrStates[STATE_RUN_PALADIN_L] = CRun_Paladin_L::Create();
+	m_arrStates[STATE_RUN_PALADIN_R] = CRun_Paladin_L::Create();
+
+	/* Jump */
+	m_arrStates[STATE_JUMP_PALADIN_L] = CJump_Paladin_L::Create();
+	m_arrStates[STATE_JUMPFALL_PALADIN_L] = CJump_Paladin_Fall_L::Create();
+	m_arrStates[STATE_JUMP_LAND_PALADIN_L] = CJump_Paladin_Land_L::Create();
+
+	m_arrStates[STATE_JUMP_PALADIN_R] = CJump_Paladin_R::Create();
+	m_arrStates[STATE_JUMPFALL_PALADIN_R] = CJump_Paladin_Fall_R::Create();
+	m_arrStates[STATE_JUMP_LAND_PALADIN_R] = CJump_Paladin_Land_R::Create();
+
+	/* Stop */
+	m_arrStates[STATE_STOP_PALADIN_L] = CStop_Paladin_L::Create();
+	m_arrStates[STATE_STOP_PALADIN_R] = CStop_Paladin_R::Create();
+
+
+
+
+//#include "CGuard_Begin_Paladin.h"
+//#include "CGuard_Loop_Paladin.h"
+//#include "CGuard_End_Paladin.h"
+//#include "CGuard_Cancel_Paladin.h"
+//
+//#include "CBounce_Paladin_L.h"
+//#include "CBounce_Paladin_R.h"
+
+	/* Sprint */
+	m_arrStates[STATE_SPRINT_BEGIN_PALADIN] = CGuard_Begin_Paladin::Create();
+	m_arrStates[STATE_SPRINT_LOOP_PALADIN] = CGuard_Loop_Paladin::Create();
+	m_arrStates[STATE_SPRINT_END_PALADIN] = CGuard_End_Paladin::Create();
+
+
+	m_arrStates[STATE_SPRINT_JUMPFALL_PALADIN] = CSprint_Jump_Fall_Paladin::Create();
+
+	m_arrStates[STATE_SPRINT_JUMP_PALADIN] = CSprint_Jump_Paladin::Create();
+
+	m_arrStates[STATE_SPRINTATTACK_BEGIN_PALADIN] = CSprintAttack_Paladin_Begin::Create();
+	m_arrStates[STATE_SPRINTATTACK_PALADIN] = CSprintAttack_Paladin::Create();
+
+
+
+
+	//m_arrStates[STATE_ATTACK_HORIZONTALUP_PALADIN_L] = CValkyrie_Attack_HorizontalUp_L::Create();
+	//m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L] = CValkyrie_Attack_HorizontalMiddle_L::Create();
+	//m_arrStates[STATE_ATTACK_HORIZONTALDOWN_PALADIN_L] = CValkyrie_Attack_HorizontalDown_L::Create();
+	//m_arrStates[STATE_ATTACK_STING_PALADIN_L] = CValkyrie_Attack_Sting_L::Create();
+
+	//m_arrStates[STATE_ATTACK_HORIZONTALUP_PALADIN_R] = CValkyrie_Attack_HorizontalUp_R::Create();
+	//m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R] = CValkyrie_Attack_HorizontalMiddle_R::Create();
+	//m_arrStates[STATE_ATTACK_HORIZONTALDOWN_PALADIN_R] = CValkyrie_Attack_HorizontalDown_R::Create();
+	//m_arrStates[STATE_ATTACK_STING_PALADIN_R] = CValkyrie_Attack_Sting_R::Create();
+
+	//m_arrStates[STATE_ATTACK_VERTICALCUT_PALADIN] = CValkyrie_Attack_VerticalCut::Create();
+
+	m_arrStates[STATE_BOUNCE_PALADIN_L] = CBounce_Paladin_L::Create();
+	m_arrStates[STATE_BOUNCE_PALADIN_R] = CBounce_Paladin_R::Create();
+
+
+	m_arrStates[STATE_GUARD_BEGIN_PALADIN] = CGuard_Begin_Paladin::Create();
+	m_arrStates[STATE_GUARD_LOOP_PALADIN] = CGuard_Loop_Paladin::Create();
+	m_arrStates[STATE_GUARD_END_PALADIN] = CGuard_End_Paladin::Create();
+	m_arrStates[STATE_GUARD_CANCEL_PALADIN] = CGuard_Cancel_Paladin::Create();
+
+
+	m_arrStates[STATE_SWITCH_R_TO_L_PALADIN] = CSwitchLtoR_Paladin::Create();
+	m_arrStates[STATE_SWITCH_L_TO_R_PALADIN] = CSwitchRtoL_Paladin::Create();
+
+
+	//m_arrStates[STATE_COUNTER_PALADIN] = CValkyrie_Counter::Create();
+	//m_arrStates[STATE_SHIELDATTACK_PALADIN] = CValkyrie_ShieldAttack::Create();
+	//m_arrStates[STATE_SPINATTACK_PALADIN] = CValkyrie_SpinAttack::Create();
+
+
+
+	m_arrStates[STATE_HIT_PALADIN] = CHit_Paladin::Create();
+	m_arrStates[STATE_GUARDHIT_PALADIN] = CHit_GuardHit_Paladin::Create();
+	m_arrStates[STATE_GROGGYHIT_PALADIN] = CHit_Groggy_Paladin::Create();
+	m_arrStates[STATE_STINGHIT_PALADIN] = CHit_Sting_Paladin::Create();
+	m_arrStates[STATE_FLYHIT_PALADIN] = CHit_Fly_Paladin::Create();
 
 }
 
