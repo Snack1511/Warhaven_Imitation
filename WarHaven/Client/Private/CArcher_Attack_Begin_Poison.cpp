@@ -209,8 +209,12 @@ STATE_TYPE CArcher_Attack_Begin_Poison::Check_Condition(CUnit* pOwner, CAnimator
    
 	if (KEY(E, TAP))
 	{
-		pOwner->Get_SkillTrigger().bSkillETrigger = !pOwner->Get_SkillTrigger().bSkillETrigger;
-		pOwner->Get_SkillTrigger().bSkillQTrigger = false;
+		if (!pOwner->Get_SkillTrigger().bSkillETrigger && pOwner->Can_Use(CUnit::SKILL2))
+		{
+			pOwner->Get_SkillTrigger().bSkillETrigger = true;
+			pOwner->Get_SkillTrigger().bSkillQTrigger = false;
+			return STATE_SWAP_ARCHER;
+		}
 	}
 		
 	if (pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)

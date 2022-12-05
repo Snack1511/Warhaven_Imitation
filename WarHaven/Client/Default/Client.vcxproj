@@ -197,6 +197,7 @@
     <ClInclude Include="..\Public\CArcher_Aiming_Poison.h" />
     <ClInclude Include="..\Public\CArcher_Aiming_Sniping.h" />
     <ClInclude Include="..\Public\CArcher_Aiming.h" />
+    <ClInclude Include="..\Public\CArcher_Swap.h" />
     <ClInclude Include="..\Public\CArcher_Attack_Begin_Poison.h" />
     <ClInclude Include="..\Public\CArcher_Attack_Begin_Sniping.h" />
     <ClInclude Include="..\Public\CArcher_Attack_Cancel.h" />
@@ -648,6 +649,7 @@
     <ClCompile Include="..\Private\CArcher_Aiming_Poison.cpp" />
     <ClCompile Include="..\Private\CArcher_Aiming_Sniping.cpp" />
     <ClCompile Include="..\Private\CArcher_Aiming.cpp" />
+    <ClCompile Include="..\Private\CArcher_Swap.cpp" />
     <ClCompile Include="..\Private\CArcher_Attack_Begin_Poison.cpp" />
     <ClCompile Include="..\Private\CArcher_Attack_Begin_Sniping.cpp" />
     <ClCompile Include="..\Private\CArcher_Attack_Cancel.cpp" />

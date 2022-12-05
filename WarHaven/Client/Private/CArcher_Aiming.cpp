@@ -185,12 +185,12 @@ void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_ATTACK_AIMING_ARCHER;
+
 
 	Follow_MouseLook(pOwner);
 	pOwner->Set_DirAsLook();
-
-	//if (pAnimator->Is_CurAnimFinished())
-	//	return STATE_ATTACK_AIMING_ARCHER;
 
 
 	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(15.f));// ->Start_FOVLerp();

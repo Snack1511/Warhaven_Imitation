@@ -329,6 +329,8 @@
 #include "CArcher_Aiming_Poison.h"
 #include "CArcher_Shoot_Poison.h"
 
+#include "CArcher_Swap.h"
+
 #include "CBounce_Archer_R.h"
 
 #include "CArcher_Attack_Cancel.h"
@@ -718,7 +720,8 @@ void CState_Manager::Archer_State()
 	m_arrStates[STATE_ATTACK_AIMING_POISION_ARCHER] = CArcher_Aiming_Poison::Create();
 	m_arrStates[STATE_ATTACK_SHOOT_POISION_ARCHER] = CArcher_Shoot_Poison::Create();
 
-	
+	m_arrStates[STATE_SWAP_ARCHER] = CArcher_Swap::Create();
+
 	m_arrStates[STATE_BOUNCE_ARCHER] = CBounce_Archer_R::Create();
 
 	m_arrStates[STATE_ATTACK_CANCEL_ARCHER] = CArcher_Attack_Cancel::Create();

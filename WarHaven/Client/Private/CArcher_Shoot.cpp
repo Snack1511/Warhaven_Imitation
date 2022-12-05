@@ -58,11 +58,11 @@ HRESULT CArcher_Shoot::Initialize()
 
 	//Add_KeyFrame(36, 0);
 
-	m_iStopIndex = 33;
-	m_iAttackEndIndex = 50;
+	m_iStopIndex = 0;
+	m_iAttackEndIndex = 0;
 
-	Add_KeyFrame(33, 1);
-	Add_KeyFrame(50, 2);
+	//Add_KeyFrame(33, 1);
+	//Add_KeyFrame(50, 2);
 
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */

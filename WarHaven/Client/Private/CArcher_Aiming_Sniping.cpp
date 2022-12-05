@@ -181,6 +181,7 @@ STATE_TYPE CArcher_Aiming_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		return STATE_ATTACK_AIMING_SNIPING_ARCHER;
 
 
+
 	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(5.f));// ->Start_FOVLerp();
 
     return __super::Tick(pOwner, pAnimator);
@@ -191,7 +192,7 @@ void CArcher_Aiming_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
     /* 할거없음 */
 
     //Exit에선 무조건 남겨놔야함
-    pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+    //pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
 

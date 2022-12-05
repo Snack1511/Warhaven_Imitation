@@ -1756,6 +1756,9 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\10. Bounce">
       <UniqueIdentifier>{5f15983c-444b-4bbe-9d4b-2c5a35ebb14f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\06. Swap">
+      <UniqueIdentifier>{25adf05f-15db-4475-99f2-8f9736d5dcb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3105,6 +3108,9 @@
     <ClInclude Include="..\Public\CBounce_Archer_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\10. Bounce</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CArcher_Swap.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\06. Swap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4434,6 +4440,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_Archer_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\10. Bounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CArcher_Swap.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\06. Swap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

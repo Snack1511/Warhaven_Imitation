@@ -145,12 +145,12 @@ HRESULT CArcher_Aiming_Poison::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 
-	m_eWalkState = STATE_ATTACK_AIMING_ARCHER;
-	m_eJumpState = STATE_ATTACK_AIMING_ARCHER;
-	m_eLandState = STATE_ATTACK_AIMING_ARCHER;
-	m_eFallState = STATE_ATTACK_AIMING_ARCHER;
-	m_eRunState = STATE_ATTACK_AIMING_ARCHER;
-	m_eIdleState = STATE_ATTACK_AIMING_ARCHER;
+	m_eWalkState = STATE_ATTACK_AIMING_POISION_ARCHER;
+	m_eJumpState = STATE_ATTACK_AIMING_POISION_ARCHER;
+	m_eLandState = STATE_ATTACK_AIMING_POISION_ARCHER;
+	m_eFallState = STATE_ATTACK_AIMING_POISION_ARCHER;
+	m_eRunState = STATE_ATTACK_AIMING_POISION_ARCHER;
+	m_eIdleState = STATE_ATTACK_AIMING_POISION_ARCHER;
 	m_eBounceState = STATE_BOUNCE_ARCHER;
 
 	//m_eWalkState = STATE_WALK_ARCHER_R;
@@ -176,8 +176,6 @@ HRESULT CArcher_Aiming_Poison::Initialize()
 
 void CArcher_Aiming_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->On_Use(CUnit::SKILL2);
-
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

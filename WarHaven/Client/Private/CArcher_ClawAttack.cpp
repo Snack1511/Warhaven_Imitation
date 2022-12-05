@@ -131,12 +131,12 @@ HRESULT CArcher_ClawAttack::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 
-	m_eWalkState = STATE_WALK_ARCHER_R;
-	m_eJumpState = STATE_JUMP_ARCHER_R;
-	m_eLandState = STATE_JUMP_LAND_ARCHER_R;
-	m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	m_eRunState = STATE_RUN_ARCHER_R;
-	m_eIdleState = STATE_IDLE_ARCHER_R;
+	m_eWalkState = STATE_WALK_ARCHER_L;
+	m_eJumpState = STATE_JUMP_ARCHER_L;
+	m_eLandState = STATE_JUMP_LAND_ARCHER_L;
+	m_eFallState = STATE_JUMPFALL_ARCHER_L;
+	m_eRunState = STATE_RUN_ARCHER_L;
+	m_eIdleState = STATE_IDLE_ARCHER_L;
 	m_eBounceState = STATE_BOUNCE_ARCHER;
 
 
