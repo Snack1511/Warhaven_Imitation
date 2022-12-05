@@ -1909,6 +1909,18 @@ _bool CWindow_Map::Calculate_Pick()
 
     if (KEY(LBUTTON, HOLD))
     {
+        m_fDelayTimeAcc += fDT(0);
+        if (m_fDelayTimeAcc < m_fTimeDelay)
+            return false;
+        else
+        {
+            m_fDelayTimeAcc = 0.f;
+
+        }
+
+
+
+
         _float4 OutPos;
         _float4 OutNorm;
         if (PICK_NONE == m_ePickingType)

@@ -344,5 +344,10 @@ private:
 #pragma endregion
 
 
+	private:
+		_float	m_fTimeDelay = 0.1f;
+		_float	m_fDelayTimeAcc = 0.f;
+
+
 };
 END

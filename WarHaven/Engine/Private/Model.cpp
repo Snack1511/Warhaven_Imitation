@@ -704,10 +704,6 @@ void CModel::Final_Tick()
 	{
 		if (m_bLOD)
 		{
-			
-
-
-
 			_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
 
 			/* 갯수들 일단 다 초기화 */
@@ -728,6 +724,14 @@ void CModel::Final_Tick()
 				//2. 살아남은 애들 LOD 체크
 				_float fCurDistance = (vCamPos - m_pInstancingCenterPos[i]).Length();
 
+				/* 너무많은 잔디같은애면 거리 체크 까지*/
+				if (m_bHardLOD)
+				{
+					if (fCurDistance > 30.f)
+						continue;
+				}
+
+
 				eLOD_LEVEL eLODLevel = eLOD_LEVEL::eLOD1;
 
 				/*if (m_iNumInstance > 10)
@@ -738,7 +742,7 @@ void CModel::Final_Tick()
 				{
 					for (_uint i = 1; i < (_uint)eLOD_LEVEL::eLOD_END; ++i)
 					{
-						_float fLODDistance = m_fLODDistance;
+						_float fLODDistance = (m_bHardLOD) ? m_fLODDistance * 0.5f : m_fLODDistance;
 						//i만큼 곱해서 단계를 나눔
 						fLODDistance *= (_float)i;
 						fLODDistance += m_pInstancingMaxRange[i];
@@ -1179,6 +1183,8 @@ HRESULT CModel::SetUp_Model_LOD()
 	m_iNumMeshContainers = m_MeshContainers.size();
 	m_iNumMaterials = m_Materials.size();
 	m_bLOD = true;
+	if (m_iNumInstance > 200)
+		m_bHardLOD = true;
 	m_fLODMaxRange = 0.f;
 	for (auto& elem : m_MeshContainers)
 	{

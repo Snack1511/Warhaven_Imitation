@@ -107,6 +107,7 @@ protected:
 
 protected:
 	_bool						m_bLOD = false;
+	_bool						m_bHardLOD = false;
 
 	enum class eLOD_LEVEL {eDefault, eLOD1, eLOD2, eLOD3, eLOD_END};
 
