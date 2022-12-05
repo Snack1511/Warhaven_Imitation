@@ -512,6 +512,10 @@ void CFunc_ObjectControl::Func_ObjectList()
     }
     if (!m_GroupingInfo.empty())
     {
+        if (m_GroupingInfo.size() <= m_SelectObjectGroupIndex)
+        {
+            m_SelectObjectGroupIndex = 0;
+        }
         string DebugTab = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
         m_pMapTool->DebugData("SelectTab", DebugTab);
     }
