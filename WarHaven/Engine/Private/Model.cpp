@@ -948,12 +948,51 @@ void CModel::Start()
 	for (auto& elem : m_MeshContainers)
 	{
 		elem.second->Set_Owner(m_pOwner);
+		elem.second->Start();
 	}
 
 	for (auto& elem : m_vecHierarchyNodes)
 	{
 		elem.second->m_pOwner = m_pOwner;
 	}
+
+#ifdef MEMORY_SAVE
+	if (m_bLOD)
+	{
+		if (m_eMODEL_TYPE == TYPE_ANIM)
+		{
+			for (auto iter = m_MeshContainers.begin(); iter != m_MeshContainers.end();)
+			{
+
+
+				if (iter->first == 1 ||
+					iter->first == 2 ||
+					iter->first == 3)
+				{
+					SAFE_DELETE(iter->second);
+					iter = m_MeshContainers.erase(iter);
+				}
+				else
+					++iter;
+			}
+		}
+		else
+		{
+			for (auto iter = m_MeshContainers.begin(); iter != m_MeshContainers.end();)
+			{
+				if (iter->first == 0)
+				{
+					SAFE_DELETE(iter->second);
+					iter = m_MeshContainers.erase(iter);
+				}
+				else
+					++iter;
+			}
+		}
+		
+	}
+
+#endif // _DEBUG
 }
 
 CHierarchyNode* CModel::Find_HierarchyNode(const char* pBoneName)

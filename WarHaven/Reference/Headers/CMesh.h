@@ -29,7 +29,7 @@ public:
 	virtual void Release() override;
 
 	/* Non_Update_Component */
-	virtual void Start() override {}
+	virtual void Start() override;
 	virtual void OnEnable() override {}
 	virtual void OnDisable() override {}
 

@@ -53,6 +53,7 @@ public:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
+	virtual void Start() override;
 	virtual void	Release();
 
 public:

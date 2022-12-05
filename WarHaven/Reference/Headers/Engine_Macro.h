@@ -6,6 +6,8 @@
 #define ENGINE_DLL _declspec(dllimport)
 #endif
 
+#define	MEMORY_SAVE
+
 
 
 #define	SAFE_DELETE(Instance) if (Instance)\

@@ -26,10 +26,13 @@ public:
 	_float4* Get_VerticesColor() { return m_pVerticesColor; }
 	 _uint		Get_PhysXNumVertices() { return m_iPhysXNumVertices; }
 	 _float3* Get_PhysXVerticesPos() { return m_pPhysXVerticesPos; }
+
+
 public:
 	void	Map_Vertex(_uint  iIndex, _float4 vPosition, _float4 vColor);
 	void	ReMap_Vertices();
 	void	Update_VertsNormal();
+	void	Memory_Save();
 
 	
 
@@ -40,6 +43,7 @@ public:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
+	virtual void Start() override;
 
 private:
 	_ulong					m_iNumVerticesX, m_iNumVerticesZ;

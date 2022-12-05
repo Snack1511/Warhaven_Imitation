@@ -28,6 +28,17 @@ CMesh::~CMesh()
 	Release();
 }
 
+void CMesh::Start()
+{
+#ifdef MEMORY_SAVE
+
+	SAFE_DELETE_ARRAY(m_pVerticesPos);
+	SAFE_DELETE_ARRAY(m_pIndices);
+
+#endif // _DEBUG
+}
+
+
 void CMesh::Tick()
 {
 }

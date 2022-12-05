@@ -56,6 +56,20 @@ HRESULT CMeshContainer::Initialize()
 	return S_OK;
 }
 
+void CMeshContainer::Start()
+{
+	__super::Start();
+
+//#ifdef MEMORY_SAVE
+//
+//	SAFE_DELETE_ARRAY(m_pVerticesPos);
+//	SAFE_DELETE_ARRAY(m_pIndices);
+//
+//#endif // _DEBUG
+
+
+}
+
 void CMeshContainer::Release()
 {
 	m_Bones.clear();

@@ -162,6 +162,15 @@ void CMesh_Terrain::Update_VertsNormal()
 	Safe_Delete_Array(ArrNorm);
 }
 
+void CMesh_Terrain::Memory_Save()
+{
+#ifdef MEMORY_SAVE
+	SAFE_DELETE(m_pVerticesPos);
+	SAFE_DELETE(m_pVerticesColor);
+	SAFE_DELETE(m_pIndices);
+#endif
+}
+
 void CMesh_Terrain::ReadyforPhysX()
 {
 	//VerticesPos 를 다시 세팅해주야함
@@ -194,6 +203,12 @@ HRESULT CMesh_Terrain::Initialize_Prototype()
 HRESULT CMesh_Terrain::Initialize()
 {
 	return S_OK;
+}
+
+void CMesh_Terrain::Start()
+{
+	
+
 }
 
 HRESULT CMesh_Terrain::SetUp_HeightMap(const _tchar* pHeightMapFilePath)

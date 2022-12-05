@@ -152,7 +152,10 @@ HRESULT CDrawable_Terrain::Start()
     CPhysXCollider* pCol = CPhysXCollider::Create(0, m_pTerrainMesh, m_pTransform);
     pCol->Initialize();
     Add_Component(pCol);
+
     m_pTerrainMesh->ClearPhysX();
+    m_pTerrainMesh->Memory_Save();
+
     return S_OK;
 }
 
