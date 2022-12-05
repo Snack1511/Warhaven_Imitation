@@ -85,7 +85,7 @@ ComPtr<ID3D11ShaderResourceView> CResource_Manager::Get_Texture(wstring wstrFile
 
 void CResource_Manager::Clear_Resources()
 {
-	/*for (auto& elem : m_mapModelData)
+	for (auto& elem : m_mapModelData)
 	{
 		SAFE_DELETE(elem.second);
 	}
@@ -93,7 +93,47 @@ void CResource_Manager::Clear_Resources()
 	for (auto& elem : m_mapResources)
 	{
 		SAFE_DELETE(elem.second);
-	}*/
+	}
+
+	for (auto iter = m_mapTextures.begin(); iter != m_mapTextures.end();)
+	{
+		ULONG dwCnt = iter->second.Reset();
+		if (dwCnt == 0)
+			iter = m_mapTextures.erase(iter);
+		else
+			++iter;
+	}
+
+	m_mapModelData.clear();
+	m_mapResources.clear();
+}
+
+void CResource_Manager::Save_Memory()
+{
+	for (auto iter = m_mapTextures.begin(); iter != m_mapTextures.end();)
+	{
+		ULONG dwCnt = iter->second.Reset();
+		if (dwCnt == 0)
+			iter = m_mapTextures.erase(iter);
+		else
+			++iter;
+	}
+
+	for (auto& elem : m_mapModelData)
+	{
+		SAFE_DELETE(elem.second);
+	}
+	m_mapModelData.clear();
+
+	for (auto& elem : m_mapResources)
+	{
+		CResource_Animation* pResourceAnim = dynamic_cast<CResource_Animation*>(elem.second);
+		if (pResourceAnim)
+			continue;
+
+		SAFE_DELETE(elem.second);
+	}
+	m_mapResources.clear();
 }
 
 MODEL_DATA* CResource_Manager::Find_ModelData(wstring wstrFilePath)
@@ -611,9 +651,8 @@ HRESULT CResource_Manager::Fill_ModelData(ifstream* pReadFile, RES_TYPE eType, M
 		string strName = CUtility_File::Read_Text(pReadFile);
 		wstring wstrName(strName.begin(), strName.end());
 
-		//if (wstrName == L"RootNode")
+		if (wstrName == L"RootNode")
 			wstrName += to_wstring(m_iRootNodeIdx++);
-
 
 		//일단 생성
 		CResource* pResource = Create_Resource(pReadFile, strName, eType);

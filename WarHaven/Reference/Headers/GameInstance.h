@@ -55,6 +55,7 @@ public:
 
 public:
 	void	Clear_Resources();
+	void	Save_Memory();
 
 public: /* For. Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);

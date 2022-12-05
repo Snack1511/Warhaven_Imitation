@@ -90,6 +90,8 @@ HRESULT CLoading_Manager::Load_Level()
 	CGameInstance::Get_Instance()->Clear_All_Components();
 	GAMEINSTANCE->Clear_Enable_Events();
 	GAMEINSTANCE->Clear_Lights();
+	GAMEINSTANCE->Clear_Resources();
+
 	//CGameInstance::Get_Instance()->Delete_GameObject_Prototypes();
 
 	m_bFinish = false;

@@ -91,7 +91,6 @@ HRESULT CLevel_Stage::Enter()
 	//CEffects_Factory::Get_Instance()->On_EnterLevel();
 
 	GAMEINSTANCE->Begin_PhysScene();
-	GAMEINSTANCE->Clear_Resources();
 
 	return S_OK;
 }
@@ -113,6 +112,8 @@ void CLevel_Stage::Tick()
 
 			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, 400.f);
 			m_bStaticShadowBake = true;
+			GAMEINSTANCE->Save_Memory();
+
 		}
 	}
 

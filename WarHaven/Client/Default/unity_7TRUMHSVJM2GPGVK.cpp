@@ -1,7 +1,4 @@
 
-#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSprintAttack_Valkyrie.cpp"
-
-
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSprintAttack_WarHammer.cpp"
 
 
@@ -57,4 +54,7 @@
 
 
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStop_WarHammer.cpp"
+
+
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStop_Valkyrie_L.cpp"
 

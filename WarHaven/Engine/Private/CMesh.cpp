@@ -77,8 +77,8 @@ void CMesh::Release()
 
 	if (dwCnt == 0)
 	{
-		SAFE_DELETE(m_pVerticesPos);
-		SAFE_DELETE(m_pIndices);
+		SAFE_DELETE_ARRAY(m_pVerticesPos);
+		SAFE_DELETE_ARRAY(m_pIndices);
 	}
 	
 }

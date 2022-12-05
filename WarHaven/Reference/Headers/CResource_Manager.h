@@ -27,6 +27,7 @@ public:
 	ComPtr<ID3D11ShaderResourceView>	Get_Texture(wstring wstrFilePath);
 
 	void	Clear_Resources();
+	void	Save_Memory();
 
 private:
 	Assimp::Importer			m_Importer;

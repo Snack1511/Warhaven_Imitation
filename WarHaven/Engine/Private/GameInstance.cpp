@@ -210,6 +210,11 @@ void CGameInstance::Clear_Resources()
 	m_pResourceManager->Clear_Resources();
 }
 
+void CGameInstance::Save_Memory()
+{
+	m_pResourceManager->Save_Memory();
+}
+
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
 {
 	return m_pGraphicDevice->Clear_BackBuffer_View(vClearColor);
