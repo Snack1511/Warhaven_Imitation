@@ -73,6 +73,8 @@ public:
 	HRESULT Delete_ModelParts(_uint iMeshPartType);
 	HRESULT Enable_ModelParts(_uint iMeshPartType, _bool bEnable = true);
 
+	void	Set_TransformMatrix(_uint iMeshPartType, _float4x4 matTransform);
+
 public:
 	HRESULT Initialize_Prototype() override;
 	HRESULT Initialize() override;

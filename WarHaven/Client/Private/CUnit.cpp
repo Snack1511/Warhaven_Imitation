@@ -821,7 +821,7 @@ HRESULT CUnit::SetUp_Model(const UNIT_MODEL_DATA& tData)
 {
 	m_tModelData = tData;
 	_float4x4			TransformMatrix;
-	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixRotationZ(XMConvertToRadians(180.0f));
+	TransformMatrix = DEFAULT_TRANS_MATRIX;
 
 	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, tData.strModelPaths[MODEL_PART_SKEL], TransformMatrix);
 

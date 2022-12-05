@@ -508,6 +508,18 @@ HRESULT CModel::Enable_ModelParts(_uint iMeshPartType, _bool bEnable)
 	return S_OK;
 }
 
+void CModel::Set_TransformMatrix(_uint iMeshPartType, _float4x4 matTransform)
+{
+	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
+	{
+		if ((m_MeshContainers[i].first % 10) == iMeshPartType)
+		{
+			m_MeshContainers[i].second->m_PrevTransformMatrix = matTransform;
+		}
+	}
+		
+}
+
 HRESULT CModel::Delete_ModelParts(_uint iMeshContainerType)
 {
 	for (auto iter = m_MeshContainers.begin(); iter != m_MeshContainers.end();)

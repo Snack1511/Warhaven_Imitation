@@ -399,10 +399,10 @@ void CPlayerInfo::Set_CustomWeapon_Fiona(eCUSTOM_WEAPON eWeaponEnum)
 	switch (eWeaponEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eDEFAULT:
-		m_tPlayerSetUpData.wstrWeaponMeshPath[FIONA] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00.fbx";
+		m_tPlayerSetUpData.wstrWeaponMeshPath[FIONA] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00_30_4.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
-		m_tPlayerSetUpData.wstrWeaponMeshPath[FIONA] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00.fbx";
+		m_tPlayerSetUpData.wstrWeaponMeshPath[FIONA] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00_30_4.fbx";
 		break;
 
 	default:

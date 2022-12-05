@@ -104,7 +104,7 @@ void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	wstring wstrModeFace[CLASS_DEFAULT_END] = {
 		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
 		L"",
-		L"../bin/resources/meshes/characters/Archer/Head/SK_Archer001_Face_A00.fbx",
+		L"../bin/resources/meshes/characters/Archer/Head/SK_Archer001_Face_A00_50.fbx",
 		L"",//L"../bin/resources/meshes/characters/Paladin/Head/SK_Paladin0001_Face_A00.fbx",
 		L"",
 		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00_50.fbx"
@@ -113,7 +113,7 @@ void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	wstring wstrModeWeapon_L[CLASS_DEFAULT_END] = {
 	L"", // WARRIOR
 	L"",
-	L"../bin/resources/meshes/weapons/longBow/SM_Bolt.fbx",
+	L"../bin/resources/meshes/weapons/longBow/SK_WP_LongBow0005_A00.fbx",
 	L"",//L"../bin/resources/meshes/Weapons/KiteShield/SM_WP_KiteShield0001_A00.fbx",
 	L"",
 	L"" // 
@@ -135,6 +135,7 @@ void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 
 
 	CUnit::UNIT_MODEL_DATA  tModelData[CLASS_DEFAULT_END];
+	tModelData[CLASS_DEFAULT_ARCHER].strModelPaths[MODEL_PART_SUBWEAPON] = L"../bin/resources/meshes/weapons/longBow/SK_LongBow_01.fbx";
 
 
 	for (int i = 0; i < CLASS_DEFAULT_END; ++i)

@@ -508,6 +508,12 @@ HRESULT CUnit_Valkyrie::Start()
 
 	//m_pModelCom->Set_RimLightFlag(_float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 1.f));
 
+
+
+	/* 모델 파츠중 하나 따로 회전시킨느거 */
+	_float4x4 matTrans = XMMatrixRotationZ(XMConvertToRadians(90.0f));
+	m_pModelCom->Set_TransformMatrix(MODEL_PART_WEAPON, matTrans);
+
 	return S_OK;
 }
 

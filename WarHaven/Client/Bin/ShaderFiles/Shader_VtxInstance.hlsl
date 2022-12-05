@@ -208,7 +208,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
 	Out.vDiffuse.a = 1.f;
 
-	float fDistance = length(In.vWorldPos - g_vCamPosition);
+	//float fDistance = length(In.vWorldPos - g_vCamPosition);
 
 	/* 0 ~ 1 */
 	float3		vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV * 1.f).xyz;
@@ -220,10 +220,11 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
 	vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 0.f);
+
 	Out.vNormal = normalize(vector(vPixelNormal * 0.5f + 0.5f, 0.f));
 
 
-	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 0.f);
 
 	Out.vFlag = g_vFlag;
 	Out.vFlag.b = g_fOutlinePower;

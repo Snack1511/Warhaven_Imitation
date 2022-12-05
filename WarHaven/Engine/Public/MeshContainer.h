@@ -81,6 +81,7 @@ protected: /* 현재ㅑ 메시컨테이너에게 적용되어야할 머테리얼 인덱스*/
 	_float4								m_vFontColor;
 	_float								m_fOutline = 1.f;
 	_uint								m_iCurPass = 0;
+	_float4x4							m_PrevTransformMatrix;
 	_float4x4							m_TransformMatrix;
 	_float4x4							m_OffsetMatrix;
 

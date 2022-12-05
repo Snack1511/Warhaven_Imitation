@@ -76,6 +76,24 @@ void CWarHammer_GroggyAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 	pOwner->On_Use(CUnit::SKILL2);
 
 	m_fMaxSpeed = pOwner->Get_Status().fDashAttackSpeed;
+
+	CColorController::COLORDESC tColorDesc;
+
+	tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.2f;
+	tColorDesc.fFadeOutStartTime = 0.f;
+	tColorDesc.fFadeOutTime = 0.2f;
+	tColorDesc.vTargetColor = _float4(1.f, 1.f, 1.f, 0.5f);
+
+	tColorDesc.iMeshPartType = MODEL_PART_BODY;
+	tColorDesc.iStartKeyFrame = 2;
+	tColorDesc.iEndKeyFrame = 32; // 프레임 맞춰놓음
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
+	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 	
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
