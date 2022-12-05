@@ -9,7 +9,7 @@ class CUnit;
 class CUI_HUD : public CUI_Wrapper
 {
 public:
-	enum HUD { HUD_Crosshair, HUD_Port, HUD_HeroGauge, HUD_End };
+	enum HUD { HUD_Crosshair, HUD_Port, HUD_HP, HUD_HeroGauge, HUD_End };
 
 	DECLARE_PROTOTYPE(CUI_HUD);
 	DECLARE_GAMEOBJECT(CUI_HUD);
@@ -56,7 +56,6 @@ public:
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 	void SetActive_OperUI(_bool value);
-	void SetActive_PlayerInfoUI(_bool value);
 
 	void SetActive_HeroPortrait(_bool value);
 	void SetActive_OxenJumpText(_bool value);

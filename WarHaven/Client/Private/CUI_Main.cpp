@@ -165,7 +165,7 @@ void CUI_Main::Ready_MainUI()
 
 	GET_COMPONENT_FROM(m_pPrototypeUI[Btn], CTexture)->Remove_Texture(0);
 
-	GET_COMPONENT_FROM(m_pPrototypeUI[Key], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_BlackEKeyIcon.dds"));
+	GET_COMPONENT_FROM(m_pPrototypeUI[Key], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/Black/T_BlackEKeyIcon.dds"));
 
 	GET_COMPONENT_FROM(m_pPrototypeUI[Goods], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/GoldeGem.dds"));
 	GET_COMPONENT_FROM(m_pPrototypeUI[Goods], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_IconLevelBG.dds"));

@@ -50,8 +50,8 @@ private:
 
 private:
 	enum HeroPortrait { HP_BG, HP_Port, HP_Effect, HP_Key, HP_End };
-	CUI_Object* m_pHeroPortrait[UP_End];
-	CUI_Object* m_pArrHeroPortrait[UP_End][4];
+	CUI_Object* m_pHeroPortrait[HP_End];
+	CUI_Object* m_pArrHeroPortrait[HP_End][4];
 
 	enum HeroPortActive { Enable, Disable, End };
 	HeroPortActive m_eAcitveType = HeroPortActive::End;
@@ -79,8 +79,6 @@ public:
 
 
 public:
-
-
 	_bool m_bIsHeroLerp = false;
 	_uint m_iHeroActiveCount = 0;
 
@@ -89,9 +87,6 @@ public:
 private:	// Shader
 	void Set_Pass();
 	void Bind_Shader();
-
-
-	void Enable_HeroLerp(_bool value, _float fDuration);
 };
 
 END

@@ -392,12 +392,7 @@ void CUI_Portrait::Create_HeroPort()
 
 		CREATE_GAMEOBJECT(m_pHeroPortrait[i], GROUP_UI);
 		DELETE_GAMEOBJECT(m_pHeroPortrait[i]);
-	}
 
-	Set_FadeHeroPort();
-
-	for (int i = 0; i < HP_End; ++i)
-	{
 		for (int j = 0; j < 4; ++j)
 		{
 			m_pArrHeroPortrait[i][j] = m_pHeroPortrait[i]->Clone();
