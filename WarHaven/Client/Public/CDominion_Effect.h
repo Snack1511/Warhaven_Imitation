@@ -3,7 +3,7 @@
 #include "Client_Defines.h"
 
 BEGIN(Engine)
-
+class CShader;
 END
 
 BEGIN(Client)

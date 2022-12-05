@@ -29,7 +29,10 @@ public:
 private:
 	void Warrior_State();
 	void WarHammer_State();
+	void Archer_State();
+
 	void Valkyrie_State();
+	
 
 	void Warrior_SandBagState();
 	void Warrior_State_AI();

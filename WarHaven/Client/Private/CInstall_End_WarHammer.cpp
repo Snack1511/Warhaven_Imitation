@@ -60,12 +60,12 @@ HRESULT CInstall_End_WarHammer::Initialize()
 
 void CInstall_End_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	if(m_bETC_Trigger)
+	if(m_bSkillR_Trigger)
 	{
 		CUnit_WarHammer* PWarHammer = static_cast<CUnit_WarHammer*>(pOwner);
 		PWarHammer->Create_Barricade();
 		
-		m_bETC_Trigger = false;
+		m_bSkillR_Trigger = false;
 	}
 
 
@@ -89,14 +89,14 @@ STATE_TYPE CInstall_End_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAn
 
 	if (pAnimator->Get_CurAnimFrame() > 72)
 	{
-		m_bETC_Trigger = true;
+		m_bSkillR_Trigger = true;
 		return m_eStateType;
 	}
 
 
 	if (KEY(RBUTTON, TAP))
 	{
-		m_bETC_Trigger = false;
+		m_bSkillR_Trigger = false;
 		return m_eStateType;
 	}
 	

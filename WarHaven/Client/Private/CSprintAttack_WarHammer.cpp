@@ -55,7 +55,7 @@ HRESULT CSprintAttack_WarHammer::Initialize()
 	m_eBounceState = STATE_BOUNCE_WARHAMMER_L;
 
 	Add_KeyFrame(23, 0);
-	Add_KeyFrame(32, 1);
+	Add_KeyFrame(36, 1);
 
 
     return S_OK;

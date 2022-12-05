@@ -124,7 +124,10 @@ protected:
 
 	_bool				m_bMoveTrigger = true;
 	_bool				m_bAttackTrigger = false;
-	_bool				m_bETC_Trigger = false;
+
+	_bool				m_bSkillQ_Trigger = false;
+	_bool				m_bSkillE_Trigger = false;
+	_bool				m_bSkillR_Trigger = false;
 
 	_bool				m_bAIMove = false;
 	_bool				m_bAIAttack = false;
