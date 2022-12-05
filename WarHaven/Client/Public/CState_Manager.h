@@ -30,6 +30,7 @@ private:
 	void Warrior_State();
 	void WarHammer_State();
 	void Archer_State();
+	void Paladin_State();
 
 	void Valkyrie_State();
 	

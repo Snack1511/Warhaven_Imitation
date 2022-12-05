@@ -284,10 +284,10 @@ void	CPlayerInfo::Set_CustomBody_Arhcer(eCUSTOM_BODY eBodyEnum)
 	switch (eBodyEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
-		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0001_Body_A00.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0001_Body_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
-		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0001_Body_A00.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0001_Body_A00_50.fbx";
 		break;
 
 	default:
