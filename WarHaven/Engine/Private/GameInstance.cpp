@@ -172,6 +172,7 @@ HRESULT CGameInstance::Initialize()
 	SAFE_GET_INSTANCE(m_pLightManager, CLight_Manager);
 	SAFE_GET_INSTANCE(m_pTargetManager, CTarget_Manager);
 	SAFE_GET_INSTANCE(m_pPhysXManager, CPhysX_Manager);
+	SAFE_GET_INSTANCE(m_pTileManager, CTile_Manager);
 
 	return S_OK;
 }
@@ -199,6 +200,7 @@ void CGameInstance::Release()
 	m_pLightManager->Destroy_Instance();
 	m_pGraphicDevice->Destroy_Instance();
 	m_pPhysXManager->Destroy_Instance();
+	m_pTileManager->Destroy_Instance();
 
 
 }
@@ -472,6 +474,26 @@ _bool CGameInstance::Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex, _
 _bool CGameInstance::Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _float4* pOut, _uint* pOutIndex, _float4* pOutNormal)
 {
 	return m_pPickingManager->Is_Picked_Cubes(GameObjectList, pOut, pOutIndex, pOutNormal);
+}
+
+HRESULT CGameInstance::Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iNumLayers)
+{
+	return m_pTileManager->Create_Layers(iNumTilesX, iNumTilesZ, fTileSize, iNumLayers);
+}
+
+void CGameInstance::Clear_AllTiles()
+{
+	m_pTileManager->Release();
+}
+
+_uint CGameInstance::Find_TileIndex(_float4 vPosition)
+{
+	return m_pTileManager->Find_Index(vPosition);
+}
+
+HRESULT CGameInstance::Render_Tiles()
+{
+	return m_pTileManager->Render();
 }
 
 void CGameInstance::Add_Camera(wstring strKey, CCamera * pCamera)

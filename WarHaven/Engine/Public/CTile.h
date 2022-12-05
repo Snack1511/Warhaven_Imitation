@@ -9,7 +9,7 @@ BEGIN(Engine)
 class CTileLayer;
 
 
-class CTile final
+class ENGINE_DLL CTile final
 {
 	friend class CTileLayer;
 
@@ -29,20 +29,24 @@ private:
 	~CTile();
 
 public:
+	static CTile* Create(_float4 vCenterPos, _uint iIndex, CTileLayer* pLayer);
+
+public:
 	void	Set_TileFlag(_uint eFlag);
 	void	Add_TileFlag(eTileFlags eFlag);
 	void	Remove_TileFlag(eTileFlags eFlag);
 
 public:
 	/* 유효한 타일인 지 (갈 수 있는 타일인지)*/
-	_bool	Is_VaildTile();
+	_bool	Is_ValidTile();
 
 private:
 	/* 인접 타일 */
 	CTile* m_arrAdjTiles[MAX_ADJ_TILES] = {};
 
 	/* 타일의 중앙 포지션 */
-	_float4			m_vCenterPos;
+	_float4			m_vCenterPos = ZERO_VECTOR;
+	_uint			m_iIndex = 0;
 	
 	/* 타일 플래그 */
 	_uint		m_eTileFlag = eTileFlags_None;

@@ -39,10 +39,21 @@ HRESULT CTileLayer::Initialize()
 	/* 타일 생성 */
 	
 	_uint	m_iTotalTileNum = m_iNumTilesX * m_iNumTilesZ;
+	_float4 vCenterPos = ZERO_VECTOR;
 
-	for (_uint i = 0; i < m_iTotalTileNum; ++i)
+	for (_uint i = 0; i < m_iNumTilesZ; ++i)
 	{
-		
+		vCenterPos.z += m_fTileSize * (_float)i;
+
+		for (_uint j = 0; j < m_iNumTilesX; ++j)
+		{
+			vCenterPos.x += m_fTileSize * (_float)j;
+
+			_uint iCurIndex = j + (i * m_iNumTilesX);
+			CTile* pTile = CTile::Create(vCenterPos, iCurIndex, this);
+			m_vecTiles.push_back(pTile);
+
+		}
 		
 	}
 

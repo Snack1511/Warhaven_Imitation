@@ -22,6 +22,7 @@
 #include "CTarget_Manager.h"
 #include "CLight_Manager.h"
 #include "PhysX_Manager.h"
+#include "CTile_Manager.h"
 
 //매니져 매니저..
 
@@ -149,6 +150,11 @@ public: /* For Picking_Manager */
 	_bool	Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _float4* pOut, _uint* pOutIndex, _float4* pOutNormal = nullptr);
 
 
+public: /* For Tile_Manager */
+	HRESULT		Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iNumLayers);
+	void		Clear_AllTiles();
+	_uint		Find_TileIndex(_float4 vPosition);
+	HRESULT		Render_Tiles();
 
 
 public: /* For. Camera_Manager */
@@ -288,6 +294,7 @@ private:
 	CTarget_Manager* m_pTargetManager = nullptr;
 	CLight_Manager* m_pLightManager = nullptr;
 	CPhysX_Manager* m_pPhysXManager = nullptr;
+	CTile_Manager* m_pTileManager = nullptr;
 
 private:
 	HRESULT	Initialize();

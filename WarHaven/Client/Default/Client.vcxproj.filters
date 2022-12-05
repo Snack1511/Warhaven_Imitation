@@ -1543,6 +1543,9 @@
     <Filter Include="03. Instances\02. GameObject\08. Effect\07. Dominion_Effect">
       <UniqueIdentifier>{c6451077-b720-4845-bb58-1324bc71fd00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\09. Window_Tile">
+      <UniqueIdentifier>{3bd0ebd9-4d0d-4f25-815c-bd0381f907d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2751,6 +2754,9 @@
     <ClInclude Include="..\Public\CDominion_Effect.h">
       <Filter>03. Instances\02. GameObject\08. Effect\07. Dominion_Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CWindow_Tile.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\09. Window_Tile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3939,6 +3945,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CDominion_Effect.cpp">
       <Filter>03. Instances\02. GameObject\08. Effect\07. Dominion_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CWindow_Tile.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\09. Window_Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

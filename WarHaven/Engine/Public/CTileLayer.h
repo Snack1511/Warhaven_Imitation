@@ -2,7 +2,7 @@
 #include "CTile.h"
 
 BEGIN(Engine)
-class CTileLayer
+class ENGINE_DLL CTileLayer
 {
 	friend class CTile_Manager;
 
