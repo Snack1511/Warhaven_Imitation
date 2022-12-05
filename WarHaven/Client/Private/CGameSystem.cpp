@@ -404,14 +404,21 @@ HRESULT CGameSystem::On_ReadyDestructible_BootCamp(vector<pair<CGameObject*, _ui
 HRESULT CGameSystem::On_EnterBootCamp()
 {
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_0"));
+    BootCamp_EnvironmentEffect();
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_1"));
+	return S_OK;
+}
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_2"));
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_3"));
+HRESULT CGameSystem::BootCamp_EnvironmentEffect()
+{
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_0"));
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Leaf_Particle", _float4(70.f, 0.f, -15.f));
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_1"));
+
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_2"));
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", Find_Position("Smoke_3"));
+
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Leaf_Particle", _float4(70.f, 0.f, -15.f));
 
     /*fire0~9*/
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"FireTorch_0"), _float4(29.2f, 2.95f, 20.65f));  //0
@@ -448,7 +455,7 @@ HRESULT CGameSystem::On_EnterBootCamp()
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"TrainigRoomSmoke", _float4(41.4f, 2.8f, 27.8f));
 
 
-	LIGHTDESC			LightDesc;
+    LIGHTDESC			LightDesc;
 
     LightDesc.eType = tagLightDesc::TYPE_POINT;
     LightDesc.vPosition = _float4(29.2f, 2.95f, 20.65f);
@@ -539,16 +546,16 @@ HRESULT CGameSystem::On_EnterBootCamp()
     LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
     LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
     LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
-	LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = Find_Position("Fire_0");
-	LightDesc.fRange = 2.5f;
-	LightDesc.fRandomRange = 0.3f;
-	LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
-	LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
+    LightDesc.eType = tagLightDesc::TYPE_POINT;
+    LightDesc.vPosition = Find_Position("Fire_0");
+    LightDesc.fRange = 2.5f;
+    LightDesc.fRandomRange = 0.3f;
+    LightDesc.vDiffuse = _float4(0.6f, 0.2f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 0.5f, 0.5f, 1.f);
 
-	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
-		return E_FAIL;
+    if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+        return E_FAIL;
 
     LightDesc.eType = tagLightDesc::TYPE_POINT;
     LightDesc.vPosition = _float4(41.4f, 1.8f, 27.8f);
@@ -561,7 +568,7 @@ HRESULT CGameSystem::On_EnterBootCamp()
     if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
         return E_FAIL;
 
-	return S_OK;
+    return S_OK;
 }
 
 HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
@@ -772,6 +779,27 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 
 HRESULT CGameSystem::On_EnterStage()
 {
+ 
+    Paden_EnvironmentEffect();
+
+    /* 모든 플레이어들 유닛 일단 꺼놓기 */
+    //for (auto& elem : m_mapAllPlayers)
+    //{
+    //    /* sandback들은 건너 뛰기 */
+    //    if (dynamic_cast<CPlayerInfo_SandBack*>(elem.second))
+    //        continue;
+
+    //    if (!elem.second->Get_Player()->Get_CurrentUnit())
+    //        return E_FAIL;
+
+    //    DISABLE_GAMEOBJECT(elem.second->Get_Player()->Get_CurrentUnit());
+    //}
+
+    return S_OK;
+}
+
+HRESULT CGameSystem::Paden_EnvironmentEffect()
+{
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_Envir", _float4(0.f, 0.f, 0.f));
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_Roof", _float4(0.f, 0.f, 0.f));
 
@@ -788,22 +816,10 @@ HRESULT CGameSystem::On_EnterStage()
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_10"), _float4(-2.2f, -0.4f, 51.1f));
 
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_0"), _float4(-8.5f, -24.7f, 23.9f));
-    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_2"), _float4(-2.2f, -0.4f, 51.1f));
-    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_3"), _float4(-2.2f, -0.4f, 51.1f));
-    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_4"), _float4(-2.2f, -0.4f, 51.1f));
-    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_6"), _float4(-2.2f, -0.4f, 51.1f));
-    /* 모든 플레이어들 유닛 일단 꺼놓기 */
-    //for (auto& elem : m_mapAllPlayers)
-    //{
-    //    /* sandback들은 건너 뛰기 */
-    //    if (dynamic_cast<CPlayerInfo_SandBack*>(elem.second))
-    //        continue;
-
-    //    if (!elem.second->Get_Player()->Get_CurrentUnit())
-    //        return E_FAIL;
-
-    //    DISABLE_GAMEOBJECT(elem.second->Get_Player()->Get_CurrentUnit());
-    //}
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_2"), _float4(12.7f, 21.6f, 22.2f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_3"), _float4(26.3f, 23.2f, -3.3f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_4"), _float4(16.6f, 20.f, -22.4f));
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_6"), _float4(-17.f, 20.f, -24.3f));
 
     return S_OK;
 }

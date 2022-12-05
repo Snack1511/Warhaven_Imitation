@@ -45,6 +45,9 @@ public: /* BootCamp */
 
 	HRESULT					On_EnterBootCamp();
 
+	HRESULT					BootCamp_EnvironmentEffect();
+
+
 
 
 public:	// Paden
@@ -57,6 +60,8 @@ public:	// Paden
 	HRESULT					On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_EnterStage();
 	HRESULT					On_Update_Paden();
+
+	HRESULT					Paden_EnvironmentEffect();
 
 	/* 작전회의 끝나고 모두 생성시키기 */
 	void					On_StartGame();
