@@ -465,7 +465,7 @@ void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
 	_float fSort = pUI->Get_Sort();
 	writeFile.write((char*)&fSort, sizeof(_float));
 
-	_bool bRenderFont = pUI->Get_FontRender();
+	/*_bool bRenderFont = pUI->Get_FontRender();
 	writeFile.write((char*)&bRenderFont, sizeof(_bool));
 
 	_bool bBold = pUI->Get_FontStyle();
@@ -481,7 +481,7 @@ void CWindow_UI::Save_UI_Info(_uint iSelectIndex)
 	writeFile.write((char*)&vFontColor, sizeof(_float4));
 
 	_float fFontScale = pUI->Get_FontScale();
-	writeFile.write((char*)&fFontScale, sizeof(_float));
+	writeFile.write((char*)&fFontScale, sizeof(_float));*/
 
 	writeFile.close();
 }
@@ -546,7 +546,7 @@ void CWindow_UI::Load_UI_Info(string key)
 	readFile.read((char*)&fSort, sizeof(_float));
 	pUI->Set_Sort(fSort);
 
-	_bool bRenderFont = pUI->Get_FontRender();
+	/*_bool bRenderFont = pUI->Get_FontRender();
 	readFile.read((char*)&bRenderFont, sizeof(_bool));
 	pUI->Set_FontRender(bRenderFont);
 
@@ -567,7 +567,7 @@ void CWindow_UI::Load_UI_Info(string key)
 
 	_float fFontScale = pUI->Get_FontScale();
 	readFile.read((char*)&fFontScale, sizeof(_float));
-	pUI->Set_FontScale(fFontScale);
+	pUI->Set_FontScale(fFontScale);*/
 
 	readFile.close();
 }
@@ -625,7 +625,7 @@ void CWindow_UI::Load_UI_List()
 			readFile.read((char*)&fSort, sizeof(_float));
 			pUI->Set_Sort(fSort);
 
-			_bool bRenderFont = pUI->Get_FontRender();
+			/*_bool bRenderFont = pUI->Get_FontRender();
 			readFile.read((char*)&bRenderFont, sizeof(_bool));
 			pUI->Set_FontRender(bRenderFont);
 
@@ -646,7 +646,7 @@ void CWindow_UI::Load_UI_List()
 
 			_float fFontScale = pUI->Get_FontScale();
 			readFile.read((char*)&fFontScale, sizeof(_float));
-			pUI->Set_FontStyle(fFontScale);
+			pUI->Set_FontStyle(fFontScale);*/
 
 			readFile.close();
 		}

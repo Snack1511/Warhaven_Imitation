@@ -415,7 +415,7 @@ void CUI_MainPlay::Create_ModeBG()
 	m_pEscKey->Set_Pos(-600.f, -330.f);
 	m_pEscKey->Set_Scale(36.f, 28.f);
 	m_pEscKey->Set_Sort(0.85f);
-	m_pEscKey->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_BlackEscKeyIcon.png"));
+	m_pEscKey->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/Black/Special_Esc.png"));
 	m_pEscKey->Set_FontRender(true);
 	m_pEscKey->Set_FontStyle(true);
 	m_pEscKey->Set_FontOffset(31.f, -16.f);
@@ -489,14 +489,14 @@ void CUI_MainPlay::Create_StageBtn()
 		{
 			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
 			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
-			m_pStageSelectBtn[i]->Set_FontText(TEXT("개발 중"));
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("파라"));
 		}
 
 		if (i == 2)
 		{
 			m_pStageSelectBtn[i]->Set_FontOffset(vFontOffset.x, vFontOffset.y);
 			m_pStageSelectBtn[i]->Set_FontScale(m_fFontSize);
-			m_pStageSelectBtn[i]->Set_FontText(TEXT("개발 중"));
+			m_pStageSelectBtn[i]->Set_FontText(TEXT("사용자 지정 게임"));
 		}
 
 		// 훈련장 활성화

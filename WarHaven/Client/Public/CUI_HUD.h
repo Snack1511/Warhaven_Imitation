@@ -9,7 +9,7 @@ class CUnit;
 class CUI_HUD : public CUI_Wrapper
 {
 public:
-	enum HUD { HUD_Crosshair, HUD_Port, HUD_HeroGauge, HUD_End };
+	enum HUD { HUD_Crosshair, HUD_Port, HUD_HP, HUD_HeroGauge, HUD_Skill, HUD_End };
 
 	DECLARE_PROTOTYPE(CUI_HUD);
 	DECLARE_GAMEOBJECT(CUI_HUD);
@@ -52,13 +52,9 @@ public:
 
 public:
 	void Set_HUD(CLASS_TYPE eClass);
-	void Set_HP(_float fMaxHP, _float fCurHP);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 	void SetActive_OperUI(_bool value);
-	void SetActive_PlayerInfoUI(_bool value);
-
-	void SetActive_HeroPortrait(_bool value);
 	void SetActive_OxenJumpText(_bool value);
 	void SetActive_HeroTransformGauge(_bool value);
 
@@ -66,7 +62,6 @@ public:
 	_bool Is_OnHeroGauge();
 
 private:
-	//CUI_Wrapper* m_pWrap[HUD_END];
 	CUI_Wrapper* m_pDeadUI = nullptr;
 
 	CUnit* m_pPlayer = nullptr;
@@ -80,9 +75,6 @@ private:	// 체력바
 	_float m_fCurHP = 0.f;
 	_float m_fPrvHP = 0.f;
 	_float m_fHealthRatio = 0.f;
-
-private:	// 히어로 게이지
-	_bool m_bIsEnableHeroPort = false;
 
 private:	// 작전회의
 	CUI_Object* m_pOperWindow = nullptr;
@@ -192,7 +184,6 @@ private:
 	CUI_Object* m_pChangeClassText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;
 	CUI_Object* m_pOxenJumpText = nullptr;
-	CUI_Object* m_pHpText = nullptr;
 
 private:
 	void BootCamp_CharacterWindow();
@@ -223,7 +214,6 @@ private:
 	void SetActive_CharacterSelectWindow(_bool value);
 	void Set_ClassInfo(CLASS_TYPE eClass);
 
-	void Update_HP();
 	void Update_HeorTransformGauge();
 
 private:	// 작전 회의
@@ -232,7 +222,6 @@ private:	// 작전 회의
 
 	void Create_TraingText();
 	void Create_OxenJumpText();
-	void Create_HpText();
 	void Create_PlayerNameText();
 	void Create_InactiveHeroText();
 

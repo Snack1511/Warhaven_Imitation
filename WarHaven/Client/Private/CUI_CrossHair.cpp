@@ -128,7 +128,7 @@ void CUI_Crosshair::Create_Crosshair()
 		else if (i == CU_Outline)
 		{
 			m_pCrosshair[i]->Set_Scale(50.f);
-			m_pCrosshair[i]->Set_Color(_float4(0.2f, 0.2f, 0.2f, 0.4f));
+			m_pCrosshair[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.4f));
 		}
 
 		CREATE_GAMEOBJECT(m_pCrosshair[i], GROUP_UI);

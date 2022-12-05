@@ -38,8 +38,8 @@ HRESULT CUI_Wrapper::Initialize()
 
 HRESULT CUI_Wrapper::Start()
 {
-	if (!m_pUI)
-		return E_FAIL;
+	/*if (!m_pUI)
+		return E_FAIL;*/
 
 	if (m_pUI)
 		CREATE_GAMEOBJECT(m_pUI, GROUP_UI);

@@ -18,11 +18,8 @@ CUI_Skill::~CUI_Skill()
 
 HRESULT CUI_Skill::Initialize_Prototype()
 {
-	Read_UI("Skill");
-
-	Ready_SkillHUD();
-	Create_SkillCoolText();
-	Create_SkillCoolBG();
+	Create_SkillUI();
+	Create_Outline();
 
 	return S_OK;
 }
@@ -34,57 +31,191 @@ HRESULT CUI_Skill::Initialize()
 
 HRESULT CUI_Skill::Start()
 {
-	Set_Pass();
-	Bind_Shader();
-
 	__super::Start();
 
+	Set_SkillUI(WARRIOR);
+
 	return S_OK;
+}
+
+void CUI_Skill::Set_SkillUI(_uint iClass)
+{
+	m_iPrvClass = m_iCurClass;
+	m_iCurClass = iClass;
+
+	/*if (m_iPrvClass == iClass)
+		return;*/
+
+	SetActive_SkillUI(iClass);
+}
+
+void CUI_Skill::SetActive_SkillUI(_bool value)
+{
+	for (int i = 0; i < SU_End; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			if (value == true)
+			{
+				ENABLE_GAMEOBJECT(m_pArrSkillUI[i][j]);
+			}
+			else
+			{
+				DISABLE_GAMEOBJECT(m_pArrSkillUI[i][j]);
+			}
+		}
+	}
+}
+
+void CUI_Skill::SetActive_Outline(_bool value)
+{
+	for (int i = 0; i < Outline_End; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			if (value == true)
+			{
+				ENABLE_GAMEOBJECT(m_pArrOutline[i][j]);
+			}
+			else
+			{
+				DISABLE_GAMEOBJECT(m_pArrOutline[i][j]);
+			}
+		}
+	}
+}
+
+void CUI_Skill::Create_SkillUI()
+{
+	for (int i = 0; i < SU_End; ++i)
+	{
+		m_pSkillUI[i] = CUI_Object::Create();
+
+		m_pSkillUI[i]->Set_PosY(-315.f);
+
+		if (i == SU_BG)
+		{
+			m_pSkillUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Skill/BG1.dds"));
+			m_pSkillUI[i]->Set_Scale(50.f);
+			m_pSkillUI[i]->Set_Sort(0.5f);
+		}
+		else if (i == SU_Icon)
+		{
+			GET_COMPONENT_FROM(m_pSkillUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pSkillUI[i], "/HUD/Skill/Icon", "Skill");
+
+			m_pSkillUI[i]->Set_Scale(28.f);
+			m_pSkillUI[i]->Set_Sort(0.49f);
+		}
+		else if (i == SU_Key)
+		{
+			GET_COMPONENT_FROM(m_pSkillUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pSkillUI[i], "/KeyIcon/Keyboard/Black", "Key");
+
+			m_pSkillUI[i]->Set_PosY(-275.f);
+
+			m_pSkillUI[i]->Set_Scale(15.f);
+			m_pSkillUI[i]->Set_Sort(0.5f);
+		}
+
+		CREATE_GAMEOBJECT(m_pSkillUI[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_pSkillUI[i]);
+
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrSkillUI[i][j] = m_pSkillUI[i]->Clone();
+
+			_float fPosX = 480.f - (55.f * j);
+			m_pArrSkillUI[i][j]->Set_PosX(fPosX);
+
+			CREATE_GAMEOBJECT(m_pArrSkillUI[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrSkillUI[i][j]);
+		}
+	}
+}
+
+void CUI_Skill::SetActive_SkillUI(_uint iClass)
+{
+	SetActive_SkillUI(false);
+	SetActive_Outline(false);
+
+	// 워리어면 두개만 활성화 되어야해
+	if (iClass == WARRIOR)
+	{
+		m_iIndex = 2;
+		m_iSkillNum = 0;
+	}
+	else if (iClass == ENGINEER)
+	{
+		m_iIndex = 3;
+		m_iSkillNum = 14;
+	}
+	else if (iClass == FIONA)
+	{
+		m_iIndex = 3;
+		m_iSkillNum = 17;
+	}
+
+	for (int i = 0; i < SU_End; ++i)
+	{
+		for (int j = 0; j < m_iIndex; ++j)
+		{
+			GET_COMPONENT_FROM(m_pArrSkillUI[SU_Icon][j], CTexture)->Set_CurTextureIndex(m_iSkillNum + j);
+
+			ENABLE_GAMEOBJECT(m_pArrSkillUI[i][j]);
+		}
+	}
+}
+
+void CUI_Skill::Create_Outline()
+{
+	for (int i = 0; i < Outline_End; ++i)
+	{
+		m_pOutline[i] = CUI_Object::Create();
+
+		m_pOutline[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Skill/Outline.png"));
+
+		m_pOutline[i]->Set_PosY(-315.f);
+		m_pOutline[i]->Set_Scale(40.f);
+		m_pOutline[i]->Set_Sort(0.49f);
+
+		CREATE_GAMEOBJECT(m_pOutline[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_pOutline[i]);
+
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrOutline[i][j] = m_pOutline[i]->Clone();
+
+			_float fPosX = 480.f - (55.f * j);
+			m_pArrOutline[i][j]->Set_PosX(fPosX);
+
+			CREATE_GAMEOBJECT(m_pArrOutline[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrOutline[i][j]);
+		}
+	}
 }
 
 void CUI_Skill::OnEnable()
 {
 	__super::OnEnable();
 
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			ENABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-		}
-	}
-
-	for (int i = 0; i < 3; ++i)
-	{
-		ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
-		ENABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
-	}
+	SetActive_SkillUI(true);
+	SetActive_Outline(true);
 }
 
 void CUI_Skill::OnDisable()
 {
 	__super::OnDisable();
 
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-		}
-	}
-
-	for (int i = 0; SkillEnd < 3; ++i)
-	{
-		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
-		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
-	}
+	SetActive_SkillUI(false);
+	SetActive_Outline(false);
 }
 
 void CUI_Skill::My_Tick()
 {
 	__super::My_Tick();
 
-	Enable_Outline();
+	/*Enable_Outline();
 
 	for (int i = 0; i < SkillEnd; ++i)
 	{
@@ -97,28 +228,22 @@ void CUI_Skill::My_Tick()
 			DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
 			DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
 		}
-	}
-}
-
-void CUI_Skill::Set_ShaderResources_HeroKeySkill(CShader* pShader, const char* pConstName)
-{
-	_float4 vColor = m_arrSkillUI[0][HeroKey]->Get_Color();
-	pShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+	}*/
 }
 
 void CUI_Skill::Set_Shader_SkillGauge1(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fSkillGauge[Skill1], sizeof(_float));
+	//pShader->Set_RawValue("g_fValue", &m_fSkillGauge[Skill1], sizeof(_float));
 }
 
 void CUI_Skill::Set_Shader_SkillGauge2(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fSkillGauge[Skill2], sizeof(_float));
+	//pShader->Set_RawValue("g_fValue", &m_fSkillGauge[Skill2], sizeof(_float));
 }
 
 void CUI_Skill::Set_Shader_SkillGauge3(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fSkillGauge[Skill3], sizeof(_float));
+	//pShader->Set_RawValue("g_fValue", &m_fSkillGauge[Skill3], sizeof(_float));
 }
 
 void CUI_Skill::Set_SkillHUD(_uint iIndex)
@@ -132,8 +257,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 	{
 	case WARRIOR:
 
-		Active_SkillHUD(3);
-
 		Set_SkillBtn(2);
 		Set_SkillBtn(1, 44, 25, false);
 		Set_SkillBtn(0, 9, 24, false);
@@ -141,8 +264,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		break;
 
 	case SPEAR:
-
-		Active_SkillHUD(4);
 
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 23, false);
@@ -153,8 +274,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	case ARCHER:
 
-		Active_SkillHUD(4);
-
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 2, false);
 		Set_SkillBtn(1, 9, 1, false);
@@ -163,8 +282,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		break;
 
 	case PALADIN:
-
-		Active_SkillHUD(4);
 
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 15, false);
@@ -175,8 +292,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	case PRIEST:
 
-		Active_SkillHUD(4);
-
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 18, false);
 		Set_SkillBtn(1, 9, 17, false);
@@ -185,8 +300,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		break;
 
 	case ENGINEER:
-
-		Active_SkillHUD(4);
 
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 5, false);
@@ -197,26 +310,24 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	case FIONA:
 
-		Active_SkillHUD(4);
 
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 8, false);
 		Set_SkillBtn(1, 9, 7, false);
 		Set_SkillBtn(0, 99, 6, false);
 
-		ENABLE_GAMEOBJECT(m_arrSkillUI[1][HeroKey]);
+		//ENABLE_GAMEOBJECT(m_arrSkillUI[1][HeroKey]);
 
 		break;
 
 	case QANDA:
 
-		Active_SkillHUD(3);
 
 		Set_SkillBtn(2);
 		Set_SkillBtn(1, 44, 20, false);
 		Set_SkillBtn(0, 9, 19, false);
 
-		ENABLE_GAMEOBJECT(m_arrSkillUI[0][HeroKey]);
+		//ENABLE_GAMEOBJECT(m_arrSkillUI[0][HeroKey]);
 
 		break;
 
@@ -229,7 +340,7 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		Set_SkillBtn(1, 68, 10, false);
 		Set_SkillBtn(0, 9, 9, false);
 
-		ENABLE_GAMEOBJECT(m_arrSkillUI[1][HeroKey]);
+		//ENABLE_GAMEOBJECT(m_arrSkillUI[1][HeroKey]);
 
 		break;
 
@@ -246,10 +357,10 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
 {
-	m_fCoolTime[iSkillType] = fCoolTime;
-	m_fMaxCoolTime[iSkillType] = fMaxCoolTime;
+	//m_fCoolTime[iSkillType] = fCoolTime;
+	//m_fMaxCoolTime[iSkillType] = fMaxCoolTime;
 
-	for (_uint i = 0; i < SkillEnd; ++i)
+	/*for (_uint i = 0; i < SkillEnd; ++i)
 	{
 		if (m_fCoolTime[iSkillType] > 0.f)
 		{
@@ -261,82 +372,82 @@ void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCool
 	{
 		ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[iSkillType]);
 		ENABLE_GAMEOBJECT(m_pSkillCoolBGArr[iSkillType]);
-	}
+	}*/
 }
 
 void CUI_Skill::Active_SkillHUD(_uint iIndex)
 {
-	m_iBtnCount = iIndex;
+	//m_iBtnCount = iIndex;
 
-	for (_uint i = 0; i < 4; ++i)
-	{
-		for (_uint j = 0; j < Type_End; ++j)
-		{
-			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-		}
-	}
+	//for (_uint i = 0; i < 4; ++i)
+	//{
+	//	for (_uint j = 0; j < Type_End; ++j)
+	//	{
+	//		DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+	//	}
+	//}
 
-	_float m_fLerpSpeed = 0.3f;
+	//_float m_fLerpSpeed = 0.3f;
 
-	for (_uint i = 0; i < iIndex; ++i)
-	{
-		float fPosX = 480.f - (55.f * i);
+	//for (_uint i = 0; i < iIndex; ++i)
+	//{
+	//	float fPosX = 480.f - (55.f * i);
 
-		m_arrSkillUI[i][BG]->Set_Sort(0.3f);
-		m_arrSkillUI[i][Outline0]->Set_Sort(0.2f);
-		m_arrSkillUI[i][Outline1]->Set_Sort(0.2f);
-		m_arrSkillUI[i][Outline2]->Set_Sort(0.2f);
+	//	//m_arrSkillUI[i][BG]->Set_Sort(0.3f);
+	//	//m_arrSkillUI[i][Outline0]->Set_Sort(0.2f);
+	//	//m_arrSkillUI[i][Outline1]->Set_Sort(0.2f);
+	//	//m_arrSkillUI[i][Outline2]->Set_Sort(0.2f);
 
-		for (_uint j = 0; j < Type_End; ++j)
-		{
-			m_arrSkillUI[i][j]->Set_PosX(fPosX);
+	//	for (_uint j = 0; j < Type_End; ++j)
+	//	{
+	//		m_arrSkillUI[i][j]->Set_PosX(fPosX);
 
-			if (m_iLerpCount > 0)
-			{
-				if (i < iIndex - 1)
-				{
-					if (j == HeroKey)
-					{
-						m_arrSkillUI[i][j]->Set_Pos(fPosX - 15.f, -295.f);
+	//		if (m_iLerpCount > 0)
+	//		{
+	//			if (i < iIndex - 1)
+	//			{
+	//				//if (j == HeroKey)
+	//				//{
+	//				//	m_arrSkillUI[i][j]->Set_Pos(fPosX - 15.f, -295.f);
 
-						continue;
-					}
+	//				//	continue;
+	//				//}
 
-					// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
+	//				//// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, m_fLerpSpeed);
 
-					if (j == Outline0)
-					{
-						// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
-					}
+	//				//if (j == Outline0)
+	//				//{
+	//				//	// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 49.f, m_fLerpSpeed);
+	//				//}
 
-					if (j == Icon)
-					{
-						// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
-					}
-				}
-			}
+	//				//if (j == Icon)
+	//				//{
+	//				//	// m_arrSkillUI[i][j]->Lerp_Scale(125.f, 40.f, m_fLerpSpeed);
+	//				//}
+	//			}
+	//		}
 
-			if (j < HeroKey)
-			{
-				ENABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
+	//		/*if (j < HeroKey)
+	//		{
+	//			ENABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
 
-				if (m_iLerpCount < 1)
-				{
-					DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
-					DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
-				}
-			}
-		}
-	}
+	//			if (m_iLerpCount < 1)
+	//			{
+	//				DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
+	//				DISABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
+	//			}
+	//		}*/
+	//	}
+	//}
 
-	m_iLerpCount++;
+	//m_iLerpCount++;
 }
 
 void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool bRelic)
 {
 	if (bRelic == true)
 	{
-		for (int i = 0; i < 4; ++i)
+		/*for (int i = 0; i < 4; ++i)
 		{
 			DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][i]);
 		}
@@ -344,38 +455,38 @@ void CUI_Skill::Set_SkillBtn(_uint iIndex, _uint iKeyIdx, _uint iIconIdx, bool b
 		if (iIndex < 3)
 		{
 			DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[iIndex]);
-		}
+		}*/
 	}
 	else
 	{
 		if (iIndex < 3)
 		{
-			_float4 vPos = m_arrSkillUI[iIndex][Icon]->Get_Pos();
+			/*_float4 vPos = m_arrSkillUI[iIndex][Icon]->Get_Pos();
 			m_pSkillCoolTextArr[iIndex]->Set_Pos(vPos);
-			ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[iIndex]);
+			ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[iIndex]);*/
 		}
 	}
 
 	// 키 버튼 비활성화
 	if (iKeyIdx == 99)
 	{
-		DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][Key]);
+		//DISABLE_GAMEOBJECT(m_arrSkillUI[iIndex][Key]);
 	}
 	else
 	{
 		if (iKeyIdx == 46)
 		{
-			m_arrSkillUI[iIndex][Key]->Set_Scale(31.f, 15.f);
+			//m_arrSkillUI[iIndex][Key]->Set_Scale(31.f, 15.f);
 		}
 		else
 		{
-			m_arrSkillUI[iIndex][Key]->Set_Scale(15.f);
+			//m_arrSkillUI[iIndex][Key]->Set_Scale(15.f);
 		}
 
-		GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Key], CTexture)->Set_CurTextureIndex(iKeyIdx);
+		//GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Key], CTexture)->Set_CurTextureIndex(iKeyIdx);
 	}
 
-	GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Icon], CTexture)->Set_CurTextureIndex(iIconIdx);
+	//GET_COMPONENT_FROM(m_arrSkillUI[iIndex][Icon], CTexture)->Set_CurTextureIndex(iIconIdx);
 }
 
 void CUI_Skill::Enable_Outline()
@@ -398,8 +509,8 @@ void CUI_Skill::Enable_Outline()
 
 				if (m_iLerpCount > 1)
 				{
-					ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
-					ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
+					//ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
+					//ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
 				}
 			}
 		}
@@ -410,7 +521,7 @@ void CUI_Skill::Enable_Outline()
 
 void CUI_Skill::Ready_SkillHUD()
 {
-	for (int i = 0; i < 3; ++i)
+	/*for (int i = 0; i < 3; ++i)
 	{
 		m_Prototypes[i] = m_pUIMap[TEXT("Skill_Outline")];
 	}
@@ -455,7 +566,7 @@ void CUI_Skill::Ready_SkillHUD()
 			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
 		}
-	}
+	}*/
 }
 
 void CUI_Skill::Create_SkillCoolText()
@@ -477,7 +588,7 @@ void CUI_Skill::Create_SkillCoolText()
 	CREATE_GAMEOBJECT(m_pSkillCoolText, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pSkillCoolText);
 
-	for (int i = 0; i < SkillEnd; ++i)
+	/*for (int i = 0; i < SkillEnd; ++i)
 	{
 		m_pSkillCoolTextArr[i] = m_pSkillCoolText->Clone();
 
@@ -487,7 +598,7 @@ void CUI_Skill::Create_SkillCoolText()
 
 		CREATE_GAMEOBJECT(m_pSkillCoolTextArr[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
-	}
+	}*/
 }
 
 void CUI_Skill::Create_SkillCoolBG()
@@ -503,7 +614,7 @@ void CUI_Skill::Create_SkillCoolBG()
 	CREATE_GAMEOBJECT(m_pSkillCoolBG, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pSkillCoolBG);
 
-	for (int i = 0; i < SkillEnd; ++i)
+	/*for (int i = 0; i < SkillEnd; ++i)
 	{
 		m_pSkillCoolBGArr[i] = m_pSkillCoolBG->Clone();
 
@@ -512,15 +623,15 @@ void CUI_Skill::Create_SkillCoolBG()
 
 		CREATE_GAMEOBJECT(m_pSkillCoolBGArr[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
-	}
+	}*/
 }
 
 void CUI_Skill::Set_Pass()
 {
 	for (int i = 0; i < 4; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrSkillUI[i][HeroKey], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
-		GET_COMPONENT_FROM(m_arrSkillUI[i][Outline0], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
+		//GET_COMPONENT_FROM(m_arrSkillUI[i][HeroKey], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Color);
+		//GET_COMPONENT_FROM(m_arrSkillUI[i][Outline0], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
 	}
 }
 
@@ -528,10 +639,10 @@ void CUI_Skill::Bind_Shader()
 {
 	for (int i = 0; i < 4; ++i)
 	{
-		GET_COMPONENT_FROM(m_arrSkillUI[i][HeroKey], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_HeroKeySkill, this, placeholders::_1, "g_vColor");
+		//GET_COMPONENT_FROM(m_arrSkillUI[i][HeroKey], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_ShaderResources_HeroKeySkill, this, placeholders::_1, "g_vColor");
 	}
 
-	GET_COMPONENT_FROM(m_arrSkillUI[Skill1][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge1, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_arrSkillUI[Skill2][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge2, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_arrSkillUI[Skill3][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge3, this, placeholders::_1, "g_fValue");
+	//GET_COMPONENT_FROM(m_arrSkillUI[Skill1][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge1, this, placeholders::_1, "g_fValue");
+	//GET_COMPONENT_FROM(m_arrSkillUI[Skill2][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge2, this, placeholders::_1, "g_fValue");
+	//GET_COMPONENT_FROM(m_arrSkillUI[Skill3][Outline0], CShader)->CallBack_SetRawValues += bind(&CUI_Skill::Set_Shader_SkillGauge3, this, placeholders::_1, "g_fValue");
 }

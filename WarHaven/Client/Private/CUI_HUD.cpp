@@ -42,7 +42,6 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HUD();
 
 	Create_OxenJumpText();
-	Create_HpText();
 	Create_PlayerNameText();
 	Create_HeroTransformUI();
 	Create_InactiveHeroText();
@@ -98,11 +97,8 @@ void CUI_HUD::My_Tick()
 
 	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
 
-	Update_HP();
 	Update_HeorTransformGauge();
-
 	Update_OperWindow();
-
 	BootCamp_CharacterWindow();
 }
 
@@ -130,7 +126,9 @@ void CUI_HUD::Create_HUD()
 {
 	m_pHUD[HUD_Crosshair] = CUI_Crosshair::Create();
 	m_pHUD[HUD_Port] = CUI_Portrait::Create();
+	m_pHUD[HUD_HP] = CUI_HpBar::Create();
 	m_pHUD[HUD_HeroGauge] = CUI_HeroGauge::Create();
+	m_pHUD[HUD_Skill] = CUI_Skill::Create();
 
 	for (int i = 0; i < HUD_End; ++i)
 	{
@@ -177,39 +175,39 @@ void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
 		m_pClassInfo->Set_FontText(TEXT("블레이드"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
 		m_eCurClass = WARRIOR;
-		Set_HUD(WARRIOR);
+		//Set_HUD(WARRIOR);
 
 		break;
 
 	case 1:
 		m_pClassInfo->Set_FontText(TEXT("스파이크"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		Set_HUD(SPEAR);
+		//Set_HUD(SPEAR);
 		break;
 
 	case 2:
 		m_pClassInfo->Set_FontText(TEXT("아치"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		Set_HUD(ARCHER);
+		//Set_HUD(ARCHER);
 		break;
 
 	case 3:
 		m_pClassInfo->Set_FontText(TEXT("가디언"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		Set_HUD(PALADIN);
+		//Set_HUD(PALADIN);
 		break;
 
 	case 4:
 		m_pClassInfo->Set_FontText(TEXT("스모크"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		Set_HUD(PRIEST);
+		//Set_HUD(PRIEST);
 		break;
 
 	case 5:
 		m_pClassInfo->Set_FontText(TEXT("워해머"));
 		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
 		m_eCurClass = ENGINEER;
-		Set_HUD(ENGINEER);
+		//Set_HUD(ENGINEER);
 		break;
 	}
 }
@@ -229,8 +227,6 @@ void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
 	}
 
 	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
-
-	//dynamic_cast<CUI_Crosshair*>(m_pWrap[Crosshair])->Set_Crosshair(iEventNum);
 }
 
 void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
@@ -293,20 +289,13 @@ void CUI_HUD::SetActive_HeroTransformGauge(_bool value)
 
 _bool CUI_HUD::Is_OnHeroGauge()
 {
+
 	return m_pPlayerNameText->Is_Valid();
 }
 
 void CUI_HUD::Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
 {
 	//dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(iSkillType, fCoolTime, fMaxCoolTime);
-}
-
-void CUI_HUD::Set_HP(_float fMaxHP, _float fCurHP)
-{
-	m_fPrvHP = m_fCurHP;
-
-	m_fMaxHP = fMaxHP;
-	m_fCurHP = fCurHP;
 }
 
 void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
@@ -319,7 +308,7 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		if (CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero())
 		{
 			Enable_Fade(m_pInactiveHeroText, 1.f);
-			SetActive_HeroPortrait(false);
+			dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_HeroPort(1);
 		}
 
 		CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero() = false;
@@ -330,22 +319,10 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 		Disable_Fade(m_pInactiveHeroText, 1.f);
 		//CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
-}
 
-void CUI_HUD::SetActive_HeroPortrait(_bool value)
-{
-	//CUI_Portrait::HeroPortAnimType eType;
-	//
-	//if (value == true)
-	//{
-	//	eType = CUI_Portrait::Enable;
-	//}
-	//else
-	//{
-	//	eType = CUI_Portrait::Disable;
-	//}
-
-	// dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(eType);
+	dynamic_cast<CUI_Crosshair*>(m_pHUD[HUD_Crosshair])->Set_Crosshair(m_eCurClass);
+	dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_UserPort(m_eCurClass);
+	dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Set_SkillUI(m_eCurClass);
 }
 
 void CUI_HUD::Bind_Btn()
@@ -528,41 +505,6 @@ void CUI_HUD::Set_FadePortHighlight()
 	GET_COMPONENT_FROM(m_pInactiveHeroText, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
-void CUI_HUD::SetActive_PlayerInfoUI(_bool value)
-{
-	//if (value == true)
-	//{
-	//	m_tStatus = CUser::Get_Instance()->Get_Player()->Get_Status();
-	//	m_eCurClass = m_tStatus.eClass;
-
-	//	for (int i = 0; i < HUD_END; ++i)
-	//	{
-	//		if (!m_pWrap[i]->Is_Valid())
-	//		{
-	//			ENABLE_GAMEOBJECT(m_pWrap[i]);
-	//		}
-	//	}
-
-	//	ENABLE_GAMEOBJECT(m_pHeroGaugeText);
-	//	ENABLE_GAMEOBJECT(m_pHpText);
-	//	ENABLE_GAMEOBJECT(m_pPlayerNameText);
-	//}
-	//else
-	//{
-	//	for (int i = 0; i < HUD_END; ++i)
-	//	{
-	//		DISABLE_GAMEOBJECT(m_pWrap[i]);
-	//		// DISABLE_GAMEOBJECT(m_pWrap[Crosshair]);
-	//	}
-
-	//	DISABLE_GAMEOBJECT(m_pHeroGaugeText);
-	//	DISABLE_GAMEOBJECT(m_pHpText);
-	//	DISABLE_GAMEOBJECT(m_pPlayerNameText);
-
-	//	CUser::Get_Instance()->Turn_HeroGaugeFire(false);
-	//}
-}
-
 void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 {
 	if (m_eCurClass >= CLASS_TYPE::FIONA)
@@ -619,8 +561,10 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 		}
 
 		CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
-		pPlayer->Change_DefaultUnit((CPlayer::CLASS_DEFAULT)m_eCurClass);
+		pPlayer->Change_UnitClass(m_eCurClass);
 		pPlayer->Get_CurrentUnit()->On_Respawn();
+
+		Set_HUD(m_eCurClass);
 	}
 }
 
@@ -676,28 +620,6 @@ void CUI_HUD::Create_TraingText()
 	DISABLE_GAMEOBJECT(m_pChangeClassText);
 }
 
-void CUI_HUD::Update_HP()
-{
-	//if (m_pWrap[HpBar]->Is_Valid())
-	//{
-	//	_float fLerpSpeed = fDT(0) * 10.f;
-	//	m_fCurHP = ((1 - fLerpSpeed) * m_fPrvHP) + (fLerpSpeed * m_fCurHP);
-	//
-	//	_tchar  szTemp[MAX_STR] = {};
-	//	swprintf_s(szTemp, TEXT("%.f / %.f"), m_fCurHP, m_fMaxHP);
-	//	m_pHpText->Set_FontText(szTemp);
-	//
-	//	m_fHealthRatio = m_fCurHP / m_fMaxHP;
-	//
-	//	if (m_fCurHP < -0.f)
-	//	{
-	//		m_fHealthRatio = 0.f;
-	//	}
-	//
-	//	dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->Set_HpRatio(m_fHealthRatio);
-	//}
-}
-
 void CUI_HUD::Create_OxenJumpText()
 {
 	m_pOxenJumpText = CUI_Object::Create();
@@ -717,24 +639,6 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
-}
-
-void CUI_HUD::Create_HpText()
-{
-	m_pHpText = CUI_Object::Create();
-
-	m_pHpText->Set_Scale(20.f);
-	m_pHpText->Set_Pos(-270.f, -270.f);
-	m_pHpText->Set_Sort(0.85f);
-
-	GET_COMPONENT_FROM(m_pHpText, CTexture)->Remove_Texture(0);
-
-	m_pHpText->Set_FontRender(true);
-	m_pHpText->Set_FontStyle(true);
-	m_pHpText->Set_FontScale(0.25f);
-
-	CREATE_GAMEOBJECT(m_pHpText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pHpText);
 }
 
 void CUI_HUD::SetActive_OperUI(_bool value)
@@ -1238,7 +1142,6 @@ void CUI_HUD::BootCamp_CharacterWindow()
 			if (KEY(F, TAP))
 			{
 				SetActive_CharacterSelectWindow(false);
-				SetActive_PlayerInfoUI(true);
 			}
 		}
 		else
@@ -1253,7 +1156,6 @@ void CUI_HUD::BootCamp_CharacterWindow()
 #else
 			if (KEY(T, TAP))
 			{
-				SetActive_PlayerInfoUI(false);
 				SetActive_CharacterSelectWindow(true);
 			}
 
@@ -1400,7 +1302,7 @@ void CUI_HUD::Create_OperSelectCharacter()
 	m_pOperSelectUI[ST_BG]->Set_Sort(0.49f);
 	m_pOperSelectUI[ST_BG]->Set_MouseTarget(true);
 
-	m_pOperSelectUI[ST_Char]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_RoundPortraitBGSmall.dds"));
+	m_pOperSelectUI[ST_Char]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBG.dds"));
 	m_pOperSelectUI[ST_Char]->Set_Scale(65.f);
 	m_pOperSelectUI[ST_Char]->Set_Sort(0.48f);
 

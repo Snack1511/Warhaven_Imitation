@@ -126,6 +126,9 @@ void CEvent_Manager::Clear_Enable_Events()
 void CEvent_Manager::Add_Event(const EVENT_TYPE& eEven, CGameObject* _pGameObject, DWORD_PTR lParam , CComponent* _pComponent , CLevel* _pLevel )
 {
 	m_vecEvent.push_back(EVENT(eEven, lParam, _pGameObject, _pComponent, _pLevel));
+
+	 _uint iSize = m_vecEvent.size();
+	 int i = 0;
 }
 
 void CEvent_Manager::Execute(const EVENT & tEvent)

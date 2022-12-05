@@ -103,7 +103,7 @@ namespace physx
 	*/
 	#define PX_DEF_BIN_METADATA_CLASS(stream, Class) \
 	{ \
-		PxMetaDataEntry tmp = {	#Class, 0, 0, sizeof(Class), 0, 0, PxMetaDataFlag::eCLASS, 0 }; \
+		PxMetaDataEntry tmp = {	#Class, 0, 0, sizeof(Class), 0, 0, PxMetaDataFlag::eClassType, 0 }; \
 		PX_STORE_METADATA(stream, tmp); \
 	}
 
@@ -133,7 +133,7 @@ namespace physx
 		Class* myClass = reinterpret_cast<Class*>(42);															\
 		BaseClass* s = static_cast<BaseClass*>(myClass);														\
 		const PxU32 offset = PxU32(size_t(s) - size_t(myClass));												\
-		PxMetaDataEntry tmp = { #Class, #BaseClass, offset, sizeof(Class), 0, 0, PxMetaDataFlag::eCLASS, 0 };	\
+		PxMetaDataEntry tmp = { #Class, #BaseClass, offset, sizeof(Class), 0, 0, PxMetaDataFlag::eClassType, 0 };	\
 		PX_STORE_METADATA(stream, tmp);																			\
 	}
 

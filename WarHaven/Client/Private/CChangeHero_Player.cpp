@@ -59,8 +59,7 @@ void CChangeHero_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
 	CPlayer* pPlayer = pOwner->Get_OwnerPlayer();
 
-
-	CPlayer::CLASS_DEFAULT eDefaultType = (CPlayer::CLASS_DEFAULT)pPlayer->Get_CurrentDefaultClass();
+	CLASS_TYPE eDefaultType = pPlayer->Get_CurClass();
 
 	m_iAnimIndex = pPlayer->Get_ChangeHeroIndex(eDefaultType);
 
@@ -88,6 +87,7 @@ STATE_TYPE CChangeHero_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (pAnimator->Is_CurAnimFinished())
 	{
 		Set_HeroType(pOwner, m_eChangeClassType);
+
 		pOwner->Shake_Camera(8.f, 1.f);
 		GAMEINSTANCE->Stop_RadialBlur();
 		GAMEINSTANCE->Stop_ChromaticAberration();
@@ -154,17 +154,12 @@ STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinParticle", pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
 
 	pOwner->Get_OwnerPlayer()->IsHero() = true;
-	pOwner->On_ChangeToHero((CPlayer::CLASS_HREO)eClass);
+
+	_uint iIndex = (_uint)eClass;
+	pOwner->On_ChangeToHero(iIndex);
 
 
-	if (pOwner->Is_MainPlayer())
-	{
-		CUser::Get_Instance()->Set_HUD(eClass);
-	}
-	else
-	{
-		pOwner->Get_OwnerPlayer()->AbleHero() = false;
-	}
+	pOwner->Get_OwnerPlayer()->AbleHero() = false;
 
 	return m_eStateType;
 }

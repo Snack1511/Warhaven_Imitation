@@ -17,8 +17,8 @@ vector g_vFlag;
 vector g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 float g_fValue;
-float g_fHpRatio;
 
+float g_fHpRatio;
 float g_fHeroGaugeRatio;
 
 bool g_bIsDecrease;
@@ -258,11 +258,11 @@ PS_OUT PS_HPBAR(PS_IN In)
     Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+    //vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    //vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
     
-    Out.vColor.xyz *= saturate(vNoise.r + 0.95f);
-    Out.vColor.xyz *= saturate(vNormal.r + 0.95f);
+    //Out.vColor.xyz *= saturate(vNoise.r + 0.95f);
+    //Out.vColor.xyz *= saturate(vNormal.r + 0.95f);
     
     if (In.vTexUV.x > g_fHpRatio)
         discard;

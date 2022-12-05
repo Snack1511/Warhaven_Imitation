@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "CPlayer.h"
 
 #include "CEffects_Factory.h"
@@ -56,6 +56,7 @@
 #include "CUtility_Transform.h"
 
 #include "CUI_HUD.h"
+#include "CUI_Portrait.h"
 #include "CUI_HeroGauge.h"
 
 CPlayer::CPlayer()
@@ -90,55 +91,70 @@ CPlayer* CPlayer::Create(CPlayerInfo* pPlayerInfo)
 	return pInstance;
 }
 
-void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
+void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 {
-	wstring wstrModeSkel[CLASS_DEFAULT_END] = {
+	wstring wstrModeSkel[CLASS_END] =
+	{
 		L"../bin/resources/meshes/characters/Warrior/Warrior.fbx", // WARRIOR
 		L"",
 		L"../bin/resources/meshes/characters/Archer/Archer.fbx",
 		L"",//L"../bin/resources/meshes/characters/Paladin/Paladin.fbx",
 		L"",
-		L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx"
+		L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx",
+		L"../bin/resources/meshes/Characters/Valkyrie/Valkyrie.fbx",
+		L"",
+		L"",
+		L"",
 	};
 
-	wstring wstrModeFace[CLASS_DEFAULT_END] = {
+	wstring wstrModeFace[CLASS_END] =
+	{
 		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
 		L"",
 		L"../bin/resources/meshes/characters/Archer/Head/SK_Archer001_Face_A00_50.fbx",
 		L"",//L"../bin/resources/meshes/characters/Paladin/Head/SK_Paladin0001_Face_A00.fbx",
 		L"",
-		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00_50.fbx"
+		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00_50.fbx",
+		L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx",
+		L"",
+		L"",
+		L"",
 	};
 
-	wstring wstrModeWeapon_L[CLASS_DEFAULT_END] = {
-	L"", // WARRIOR
+	
+	wstring wstrModeWeapon_L[CLASS_END] =
+	{
+	L"",
 	L"",
 	L"../bin/resources/meshes/weapons/longBow/SK_WP_LongBow0005_A00.fbx",
 	L"",//L"../bin/resources/meshes/Weapons/KiteShield/SM_WP_KiteShield0001_A00.fbx",
 	L"",
-	L"" // 
+	L"",	// ENGINEER
+	L"../bin/resources/meshes/Weapons/Valkyrie_Shield/SK_WP_HeaterShield0001_A00.fbx",
+	L"",
+	L"",
+	L"", 
 	};
 
-	wstring wstrModeBody[CLASS_DEFAULT_END];
+	wstring wstrModeBody[CLASS_END];
 
-	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+	for (_uint i = 0; i < CLASS_END; ++i)
 		wstrModeBody[i] = tSetUpData.wstrBodyMeshPath[i];
 
-	wstring wstrModeHead[CLASS_DEFAULT_END];
+	wstring wstrModeHead[CLASS_END];
 
-	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+	for (_uint i = 0; i < CLASS_END; ++i)
 		wstrModeHead[i] = tSetUpData.wstrHelmetMeshPath[i];
 
-	wstring wstrModeWeapon_R[CLASS_DEFAULT_END];
-	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+	wstring wstrModeWeapon_R[CLASS_END];
+	for (_uint i = 0; i < CLASS_END; ++i)
 		wstrModeWeapon_R[i] = tSetUpData.wstrWeaponMeshPath[i];
 
 
-	CUnit::UNIT_MODEL_DATA  tModelData[CLASS_DEFAULT_END];
-	tModelData[CLASS_DEFAULT_ARCHER].strModelPaths[MODEL_PART_SUBWEAPON] = L"../bin/resources/meshes/weapons/longBow/SK_LongBow_01.fbx";
+	CUnit::UNIT_MODEL_DATA  tModelData[CLASS_END];
 
 
-	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
+	for (int i = 0; i < CLASS_END; ++i)
 	{
 		if (wstrModeSkel[i].empty())
 			continue;
@@ -163,161 +179,54 @@ void CPlayer::Create_DefaultClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		}
 	}
 
-	m_pDefaultClass[CLASS_DEFAULT_WARRIOR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_WARRIOR]);
-	m_pDefaultClass[CLASS_DEFAULT_ENGINEER] = CUnit_WarHammer::Create(tModelData[CLASS_DEFAULT_ENGINEER]);
-	//m_pDefaultClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
-	m_pDefaultClass[CLASS_DEFAULT_ARCHER] = CUnit_Archer::Create(tModelData[CLASS_DEFAULT_ARCHER]);
-	//m_pDefaultClass[CLASS_DEFAULT_PALADIN] = CUnit_Paladin::Create(tModelData[CLASS_DEFAULT_PALADIN]);
-	//m_pDefaultClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
+	m_pAllUnitClass[WARRIOR] = CUnit_Warrior::Create(tModelData[WARRIOR]);
+	m_pAllUnitClass[ENGINEER] = CUnit_WarHammer::Create(tModelData[ENGINEER]);
+	m_pAllUnitClass[FIONA] = CUnit_Valkyrie::Create(tModelData[FIONA]);
+	//m_pAllUnitClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
+	//m_pAllUnitClass[CLASS_DEFAULT_ARCHER] = CUnit_Archer::Create(tModelData[CLASS_DEFAULT_ARCHER]);
+	//m_pAllUnitClass[CLASS_DEFAULT_PALADIN] = CUnit_Paladin::Create(tModelData[CLASS_DEFAULT_PALADIN]);
+	//m_pAllUnitClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
 
 
-	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
+	for (int i = 0; i < CLASS_END; ++i)
 	{
-		if (nullptr == m_pDefaultClass[i])
+		if (nullptr == m_pAllUnitClass[i])
 		{
 			continue;
-			Call_MsgBox(L"¿Ø¥÷ ª˝º∫ æ»µ∆¿Ω.");
+			Call_MsgBox(L"ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ÔøΩ»µÔøΩÔøΩÔøΩ.");
 			return;
 		}
 		else
 		{
-			if (FAILED(m_pDefaultClass[i]->Initialize()))
+			if (FAILED(m_pAllUnitClass[i]->Initialize()))
 			{
 				Call_MsgBox_Index(L"Failed to Initialize Unit / Index : ", i);
 				return;
 
 			}
 
-			m_pDefaultClass[i]->Set_OwnerPlayer(this);
+			m_pAllUnitClass[i]->Set_OwnerPlayer(this);
 
 			if (!m_pFollowCam)
 			{
-				Call_MsgBox(L"ƒ´∏ﬁ∂Û ª˝º∫ æ»µ∆¿Ω.");
+				Call_MsgBox(L"ƒ´ÔøΩﬁ∂ÔøΩ ÔøΩÔøΩÔøΩÔøΩ ÔøΩ»µÔøΩÔøΩÔøΩ.");
 				return;
 			}
 
-			m_pDefaultClass[i]->Set_FollowCam(m_pFollowCam);
+			m_pAllUnitClass[i]->Set_FollowCam(m_pFollowCam);
 		}
 
 	}
 
-	/* ∫ØΩ≈ »ƒ øπæ‡µ» ≈¨∑°Ω∫ */
-	m_iReserveStateDefault[CLASS_DEFAULT_WARRIOR] = STATE_IDLE_PLAYER_R;
-	m_iReserveStateDefault[CLASS_DEFAULT_ENGINEER] = STATE_IDLE_WARHAMMER_R;
-	m_iReserveStateDefault[CLASS_DEFAULT_ARCHER] = STATE_IDLE_ARCHER_R;
+	/* Î≥ÄÏã† ÌõÑ ÏòàÏïΩÎêú ÌÅ¥ÎûòÏä§ */
+	m_iReserveStateDefault[WARRIOR] = STATE_IDLE_PLAYER_R;
+	m_iReserveStateDefault[ENGINEER] = STATE_IDLE_WARHAMMER_R;
+	m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
 
 
-	/* ∫ØΩ≈ æ÷¥œ∏ﬁ¿Ãº« Index */
-	m_iChangeHeroAnimIndex[CLASS_DEFAULT_WARRIOR] = 62;
-	m_iChangeHeroAnimIndex[CLASS_DEFAULT_ENGINEER] = 62;
-	m_iChangeHeroAnimIndex[CLASS_DEFAULT_ARCHER] = 53;
-	//m_iChangeHeroAnimIndex[CLASS_DEFAULT_PALADIN] = 53;
-}
-
-void CPlayer::Create_HeroClass(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
-{
-
-	wstring wstrModeSkel[HERO_END] = {
-		L"../bin/resources/meshes/characters/Valkyrie/Valkyrie.fbx" // FIONA
-		L"",
-		L"",
-		L"",
-	};
-
-	wstring wstrModeFace[HERO_END] = {
-	L"../bin/resources/meshes/characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx" // FIONA
-	L"",
-	L"",
-	L"",
-	};
-
-	wstring wstrModeWeapon_L[HERO_END] = {
-		L"../bin/resources/meshes/weapons/Valkyrie_Shield/SK_WP_HeaterShield0001_A00.fbx" // FIONA 
-		L"",
-		L"",
-		L"",
-	};
-
-	wstring wstrModeBody[HERO_END];
-
-	for (_uint i = 0; i < HERO_END; ++i)
-		wstrModeBody[i] = tSetUpData.wstrBodyMeshPath[i + FIONA];
-
-	wstring wstrModeHead[HERO_END];
-
-	for (_uint i = 0; i < HERO_END; ++i)
-		wstrModeHead[i] = tSetUpData.wstrHelmetMeshPath[i + FIONA];
-
-	wstring wstrModeWeapon_R[HERO_END];
-	for (_uint i = 0; i < HERO_END; ++i)
-		wstrModeWeapon_R[i] = tSetUpData.wstrWeaponMeshPath[i + FIONA];
-
-
-
-	CUnit::UNIT_MODEL_DATA  tModelData[HERO_END];
-
-	for (int i = 0; i < HERO_END; ++i)
-	{
-		if (wstrModeSkel[i].empty())
-			continue;
-
-		tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeSkel[i];
-
-		tModelData[i].strModelPaths[MODEL_PART_BODY] = wstrModeBody[i];
-		tModelData[i].strModelPaths[MODEL_PART_FACE] = wstrModeFace[i];
-		tModelData[i].strModelPaths[MODEL_PART_HEAD] = wstrModeHead[i];
-
-
-		if (wstrModeWeapon_R[i] != L"")
-		{
-			tModelData[i].strModelPaths[MODEL_PART_WEAPON] = wstrModeWeapon_R[i];
-			tModelData[i].strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-		}
-
-		if (wstrModeWeapon_L[i] != L"")
-		{
-			tModelData[i].strModelPaths[MODEL_PART_WEAPON_L] = wstrModeWeapon_L[i];
-			tModelData[i].strRefBoneName[MODEL_PART_WEAPON_L] = "0B_L_WP1";
-		}
-	}
-
-
-	m_pHeroClass[CLASS_HREO_FIONA - CLASS_HREO_FIONA] = CUnit_Valkyrie::Create(tModelData[CLASS_HREO_FIONA - CLASS_HREO_FIONA]);
-	//m_pHeroClass[CLASS_HREO_QANDA - CLASS_HREO_FIONA] = CUnit_Warrior::Create(tModelData[CLASS_HREO_QANDA]);
-	//m_pHeroClass[CLASS_HREO_HOEDT - CLASS_HREO_FIONA] = CUnit_Warrior::Create(tModelData[CLASS_HREO_HOEDT]);
-	//m_pHeroClass[CLASS_HREO_LANCER - CLASS_HREO_FIONA] = CUnit_Warrior::Create(tModelData[CLASS_HREO_LANCER]);
-
-
-	for (int i = 0; i < HERO_END; ++i)
-	{
-		if (nullptr == m_pHeroClass[i])
-		{
-			continue;
-			Call_MsgBox(L"¿Ø¥÷ ª˝º∫ æ»µ∆¿Ω.");
-			return;
-		}
-		else
-		{
-			if (FAILED(m_pHeroClass[i]->Initialize()))
-			{
-				Call_MsgBox_Index(L"Failed to Initialize UnitHero / Index : ", i);
-				return;
-
-			}
-
-			m_pHeroClass[i]->Set_OwnerPlayer(this);
-
-			if (!m_pFollowCam)
-			{
-				Call_MsgBox(L"ƒ´∏ﬁ∂Û ª˝º∫ æ»µ∆¿Ω.");
-				return;
-			}
-
-			m_pHeroClass[i]->Set_FollowCam(m_pFollowCam);
-		}
-	}
-
-	m_iReserveStateHero[CLASS_HREO_FIONA - CLASS_HREO_FIONA] = STATE_IDLE_VALKYRIE_R;
+	/* ÔøΩÔøΩÔøΩÔøΩ ÔøΩ÷¥œ∏ÔøΩÔøΩÃºÔøΩ Index */
+	m_iChangeHeroAnimIndex[WARRIOR] = 62;
+	m_iChangeHeroAnimIndex[ENGINEER] = 62;
 }
 
 HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
@@ -333,66 +242,58 @@ HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
 	return S_OK;
 }
 
-HRESULT CPlayer::Change_DefaultUnit(CLASS_DEFAULT eClass)
+HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 {
-	if (eClass >= CLASS_DEFAULT_END)
+	if (eClassType >= CLASS_END)
 		return E_FAIL;
 
+	if (eClassType >= CT_DEFAULT_END)
+		m_bIsHero = true;
+
+
+	m_ePrevClass = m_eCurrentClass;
+
+	m_eCurrentClass = eClassType;
+
 	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+	_float4	vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
+
 
 	if (m_pCurrentUnit)
 	{
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
 	}
 
-	m_pCurrentUnit = m_pDefaultClass[eClass];
+
+	m_pCurrentUnit = m_pAllUnitClass[eClassType];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
 
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 	Set_Postion(vPos);
+	m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
 
-	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClass]);
+	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
 
 
-	m_eCurrentDefaultClass = eClass;
 
 	GAMEINSTANCE->Stop_GrayScale();
 
+	CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
 
 	return S_OK;
 }
 
-HRESULT CPlayer::Change_HeroUnit(CLASS_HREO eClass)
+
+void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 {
-	if (eClass >= CLASS_HERO_END)
-		return E_FAIL;
-
-	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
-
-	if (m_pCurrentUnit)
+	if (eClass >= CT_DEFAULT_END)
 	{
-		DISABLE_GAMEOBJECT(m_pCurrentUnit);
+		Call_MsgBox(L"Respawn to Wrong Unit : CPlayer");
+		return;
 	}
 
-	m_pCurrentUnit = m_pHeroClass[eClass - CPlayer::CLASS_HREO_FIONA];
-	ENABLE_GAMEOBJECT(m_pCurrentUnit);
-
-	m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
-	m_pCurrentUnit->Set_MainPlayer();
-	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateHero[eClass - CPlayer::CLASS_HREO_FIONA]);
-	//m_pCurrentUnit->Reserve_State((STATE_TYPE)m_iReserveStateHero[eClass]);
-	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
-
-	Set_Postion(vPos);
-
-	return S_OK;
-}
-
-void CPlayer::Respawn_Unit(_float4 vPos, CLASS_DEFAULT eClass)
-{
 	m_bDie = false;
-	Change_DefaultUnit(eClass);
+	Change_UnitClass(eClass);
 
 	Set_Postion(vPos);
 
@@ -413,29 +314,20 @@ void CPlayer::Reserve_State(_uint eState)
 
 }
 
-void CPlayer::Set_Default_ReserveState(_uint eClass, _uint eState)
+void CPlayer::Set_Unit_ReserveState(_uint eClassType, _uint eState)
 {
-	m_iReserveStateDefault[eClass] = eState;
+	m_iReserveStateDefault[eClassType] = eState;
 }
 
 void CPlayer::SetUp_UnitColliders(_bool bBlueTeam)
 {
-	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
+	for (int i = 0; i < CLASS_END; ++i)
 	{
-		if (m_pDefaultClass[i] == nullptr)
+		if (m_pAllUnitClass[i] == nullptr)
 			continue;
 
-		m_pDefaultClass[i]->SetUp_Colliders(bBlueTeam);
+		m_pAllUnitClass[i]->SetUp_Colliders(bBlueTeam);
 	}
-
-	for (int i = 0; i < HERO_END; ++i)
-	{
-		if (m_pHeroClass[i] == nullptr)
-			continue;
-
-		m_pHeroClass[i]->SetUp_Colliders(bBlueTeam);
-	}
-
 
 }
 
@@ -451,20 +343,12 @@ void CPlayer::SetUp_UnitHitStates()
 			m_iUnitType = (_uint)CUnit::UNIT_TYPE::eAI_TG;
 	}
 
-	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
+	for (int i = 0; i < CLASS_END; ++i)
 	{
-		if (m_pDefaultClass[i] == nullptr)
+		if (m_pAllUnitClass[i] == nullptr)
 			continue;
 
-		m_pDefaultClass[i]->SetUp_HitStates((CUnit::UNIT_TYPE)m_iUnitType);
-	}
-
-	for (int i = 0; i < HERO_END; ++i)
-	{
-		if (m_pHeroClass[i] == nullptr)
-			continue;
-
-		m_pHeroClass[i]->SetUp_HitStates((CUnit::UNIT_TYPE)m_iUnitType);
+		m_pAllUnitClass[i]->SetUp_HitStates((CUnit::UNIT_TYPE)m_iUnitType);
 	}
 }
 
@@ -489,20 +373,12 @@ void CPlayer::Set_MainPlayer()
 {
 	m_bIsMainPlayer = true;
 
-	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
+	for (int i = 0; i < CLASS_END; ++i)
 	{
-		if (m_pDefaultClass[i] == nullptr)
+		if (m_pAllUnitClass[i] == nullptr)
 			continue;
 
-		m_pDefaultClass[i]->Set_MainPlayer();
-	}
-
-	for (int i = 0; i < CLASS_HERO_END - CLASS_HREO_FIONA; ++i)
-	{
-		if (m_pHeroClass[i] == nullptr)
-			continue;
-
-		m_pHeroClass[i]->Set_MainPlayer();
+		m_pAllUnitClass[i]->Set_MainPlayer();
 	}
 }
 
@@ -516,24 +392,22 @@ HRESULT CPlayer::Initialize_Prototype()
 
 	Set_FollowCam(m_pMyPlayerInfo->m_tPlayerInfo.wstrCamName);
 
-
-	Create_DefaultClass(m_pMyPlayerInfo->m_tPlayerSetUpData);
-	Create_HeroClass(m_pMyPlayerInfo->m_tPlayerSetUpData);
+	Create_Class(m_pMyPlayerInfo->m_tPlayerSetUpData);
 
 
 	_uint iCharacter = m_pMyPlayerInfo->Choose_Character();
 
-	m_pCurrentUnit = m_pDefaultClass[iCharacter];
+	m_pCurrentUnit = m_pAllUnitClass[iCharacter];
 
 	switch (iCharacter)
 	{
 	case Client::WARRIOR:
-		m_eCurrentDefaultClass = CLASS_DEFAULT_WARRIOR;
+		m_eCurrentClass = WARRIOR;
 		break;
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
-		//m_eCurrentDefaultClass = CLASS_DEFAULT_ENGINEER;
+		//m_eCurrentClass = ENGINEER;
 		break;
 	case Client::PALADIN:
 		//Set_CustomWeapon_Paladin(eWeaponEnum);
@@ -541,7 +415,7 @@ HRESULT CPlayer::Initialize_Prototype()
 	case Client::PRIEST:
 		break;
 	case Client::ENGINEER:
-		m_eCurrentDefaultClass = CLASS_DEFAULT_ENGINEER;
+		m_eCurrentClass = ENGINEER;
 		break;
 	case Client::FIONA:
 		//Set_CustomWeapon_Fiona(eWeaponEnum);
@@ -580,34 +454,21 @@ HRESULT CPlayer::Start()
 
 	SetUp_UnitHitStates();
 
-	for (int i = 0; i < CLASS_DEFAULT_END; ++i)
+	for (int i = 0; i < CLASS_END; ++i)
 	{
-		if (nullptr == m_pDefaultClass[i])
+		if (nullptr == m_pAllUnitClass[i])
 		{
 			continue;
-			Call_MsgBox(L"CPlayer : ±‚∫ª øµøı √ﬂ∞° æ»µ∆¿Ω");
+			Call_MsgBox(L"CPlayer : Í∏∞Î≥∏ ÏòÅÏõÖ Ï∂îÍ∞Ä ÏïàÎêêÏùå");
 			return E_FAIL;
 		}
 
-		CREATE_GAMEOBJECT(m_pDefaultClass[i], GROUP_PLAYER);
-		DISABLE_GAMEOBJECT(m_pDefaultClass[i]);
+		CREATE_GAMEOBJECT(m_pAllUnitClass[i], GROUP_PLAYER);
+		DISABLE_GAMEOBJECT(m_pAllUnitClass[i]);
 
 	}
 
-	for (int i = 0; i < HERO_END; ++i)
-	{
-		if (nullptr == m_pHeroClass[i])
-		{
-			continue;
-			Call_MsgBox(L"CPlayer : øµøı √ﬂ∞° æ»µ∆¿Ω");
-			return E_FAIL;
-		}
-
-		CREATE_GAMEOBJECT(m_pHeroClass[i], GROUP_PLAYER);
-		DISABLE_GAMEOBJECT(m_pHeroClass[i]);
-
-	}
-	/* hud ª˝º∫ */
+	/* hud ÏÉùÏÑ± */
 	Enable_UnitHUD();
 
 	if (m_pCurrentUnit)
@@ -623,7 +484,7 @@ HRESULT CPlayer::Start()
 	}
 	else
 	{
-		Call_MsgBox(L"CPlayer : «ˆ¿Á ¡ˆ¡§µ» ¿Ø¥÷¿Ã æ¯¿Ω.");
+		Call_MsgBox(L"CPlayer : ÌòÑÏû¨ ÏßÄÏ†ïÎêú Ïú†ÎãõÏù¥ ÏóÜÏùå.");
 		return E_FAIL;
 	}
 
@@ -694,11 +555,10 @@ void CPlayer::On_Reborn()
 		static_cast<CRectEffects*>(elem)->Set_LoopControlfalse();
 	}
 	m_DeadLights.clear();
-	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[m_eCurrentDefaultClass]);
+	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[m_eCurrentClass]);
 	m_bDie = false;
 
-	CUser::Get_Instance()->SetActive_PlayerHUD(true);
-
+	CUser::Get_Instance()->SetActive_HUD(true);
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
@@ -724,25 +584,19 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 		break;
 	}
 
-	for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+	for (_uint i = 0; i < CLASS_END; ++i)
 	{
-		if (m_pDefaultClass[i])
+		if (m_pAllUnitClass[i])
 		{
-			GET_COMPONENT_FROM(m_pDefaultClass[i], CModel)->Set_OutlineFlag(vOutlineFlag);
+			GET_COMPONENT_FROM(m_pAllUnitClass[i], CModel)->Set_OutlineFlag(vOutlineFlag);
 
 		}
-	}
-
-	for (_uint i = 0; i < CLASS_HERO_END; ++i)
-	{
-		if (m_pHeroClass[i])
-			GET_COMPONENT_FROM(m_pHeroClass[i], CModel)->Set_OutlineFlag(vOutlineFlag);
 	}
 }
 
 void CPlayer::My_Tick()
 {
-	//∞¯≈Î¿∏∑Œ æ˜µ•¿Ã∆Æ µ«æÓæﬂ «œ¥¬∞Õ
+	//Í≥µÌÜµÏúºÎ°ú ÏóÖÎç∞Ïù¥Ìä∏ ÎêòÏñ¥Ïïº ÌïòÎäîÍ≤É
 
 	m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());
 
@@ -758,7 +612,7 @@ void CPlayer::My_Tick()
 
 void CPlayer::My_LateTick()
 {
-	//∞¯≈Î¿∏∑Œ æ˜µ•¿Ã∆Æ µ«æÓæﬂ «œ¥¬∞Õ
+	//Í≥µÌÜµÏúºÎ°ú ÏóÖÎç∞Ïù¥Ìä∏ ÎêòÏñ¥Ïïº ÌïòÎäîÍ≤É
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{
@@ -779,11 +633,11 @@ void CPlayer::My_LateTick()
 	if (KEY(UP, TAP))
 	{
 		vRimLightFlag.w += 0.01f;
-		for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+		for (_uint i = 0; i < CLASS_END; ++i)
 		{
-			if (m_pDefaultClass[i])
+			if (m_pAllUnitClass[i])
 			{
-				GET_COMPONENT_FROM(m_pDefaultClass[i], CModel)->Set_RimLightFlag(vRimLightFlag);
+				GET_COMPONENT_FROM(m_pAllUnitClass[i], CModel)->Set_RimLightFlag(vRimLightFlag);
 
 			}
 		}
@@ -794,11 +648,11 @@ void CPlayer::My_LateTick()
 	if (KEY(DOWN, TAP))
 	{
 		vRimLightFlag.w -= 0.01f;
-		for (_uint i = 0; i < CLASS_DEFAULT_END; ++i)
+		for (_uint i = 0; i < CLASS_END; ++i)
 		{
-			if (m_pDefaultClass[i])
+			if (m_pAllUnitClass[i])
 			{
-				GET_COMPONENT_FROM(m_pDefaultClass[i], CModel)->Set_RimLightFlag(vRimLightFlag);
+				GET_COMPONENT_FROM(m_pAllUnitClass[i], CModel)->Set_RimLightFlag(vRimLightFlag);
 
 			}
 		}
@@ -809,7 +663,7 @@ void CPlayer::My_LateTick()
 
 void CPlayer::Update_HP()
 {
-	CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fMaxHP, m_pCurrentUnit->Get_Status().fHP);
+	CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fHP, m_pCurrentUnit->Get_Status().fMaxHP);
 }
 void CPlayer::Update_HeroGauge()
 {
@@ -818,7 +672,6 @@ void CPlayer::Update_HeroGauge()
 		/*_bool IsHeroGaugeEnable = CUser::Get_Instance()->Is_OnHeroGauge();
 		if (!IsHeroGaugeEnable)
 			return;*/
-
 
 		CUser::Get_Instance()->Set_HeroGauge(m_fGauge, m_fMaxGauge);
 	}
@@ -835,9 +688,9 @@ void CPlayer::Update_HeroGauge()
 				On_AbleHero();
 			}
 		}
-		else //∫ØΩ≈ ¡ﬂ¿œ∂ß 
+		else //Î≥ÄÏã† Ï§ëÏùºÎïå 
 		{
-			m_fGauge -= fGaugeSpeed * 2.f; // ¿Œ∞‘¿”º”µµ2.f 
+			m_fGauge -= fGaugeSpeed * 2.f; // Ïù∏Í≤åÏûÑÏÜçÎèÑ2.f 
 
 			if (m_bIsMainPlayer)
 			{
@@ -859,7 +712,7 @@ void CPlayer::On_AbleHero()
 
 	if (m_bIsMainPlayer)
 	{
-		CUser::Get_Instance()->SetActive_HeroPortrait(true);
+		CUser::Get_Instance()->Set_HeroPort(0);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(true);
 	}
 }
@@ -869,13 +722,11 @@ void CPlayer::On_FinishHero()
 	m_fGauge = 0.f;
 	m_bIsHero = false;
 
-	Change_DefaultUnit(m_eCurrentDefaultClass);
+	Change_UnitClass(m_ePrevClass);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", m_pCurrentUnit, m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
 
 	if (m_bIsMainPlayer)
 	{
-
-		CUser::Get_Instance()->Set_HUD((CLASS_TYPE)m_pCurrentUnit->Get_OwnerPlayer()->Get_CurrentDefaultClass());
 		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 	}
 
@@ -883,7 +734,7 @@ void CPlayer::On_FinishHero()
 
 void CPlayer::On_FinishHero_KeyInput()
 {
-	//if(KEY(CTRL, HOLD)) //1π¯ ¿⁄¡÷¥≠∑Øº≠ ∏∑¿Ω
+	//if(KEY(CTRL, HOLD)) //1Î≤à ÏûêÏ£ºÎàåÎü¨ÏÑú ÎßâÏùå
 	if (KEY(NUM1, TAP))
 	{
 		On_FinishHero();

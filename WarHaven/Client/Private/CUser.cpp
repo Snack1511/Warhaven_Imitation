@@ -25,6 +25,8 @@
 #include "CCamera_Free.h"
 
 #include "CUI_HUD.h"
+#include "CUI_Portrait.h"
+#include "CUI_HpBar.h"	
 #include "CUI_HeroGauge.h"
 
 #include "CBloodOverlay.h"
@@ -254,9 +256,29 @@ CUI_Wrapper* CUser::Get_HUD(_uint eHUD)
 	return m_pUI_HUD->Get_HUD(eHUD);
 }
 
+void CUser::Set_UserPort(_uint iClass)
+{
+	m_pUI_Portrait->Set_UserPort(iClass);
+}
+
+void CUser::Set_HeroPort(_uint iType)
+{
+	m_pUI_Portrait->Set_HeroPort(iType);
+}
+
+void CUser::Set_HP(_float fCurValue, _float fMaxValue)
+{
+	m_pUI_HP->Set_HP(fCurValue, fMaxValue);
+}
+
 void CUser::Set_HeroGauge(_float fCurValue, _float fMaxValue)
 {
 	m_pUI_HeroGauge->Set_HeroGauge(fCurValue, fMaxValue);
+}
+
+void CUser::SetActive_HUD(_bool value)
+{
+	m_pUI_HUD->SetActive_HUD(value);
 }
 
 void CUser::On_EnterLevel()
@@ -277,7 +299,9 @@ void CUser::On_EnterStageLevel()
 		m_pUI_HUD = CUI_HUD::Create();
 		CREATE_GAMEOBJECT(m_pUI_HUD, GROUP_UI);
 
-		m_pUI_HeroGauge = dynamic_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
+		m_pUI_Portrait = static_cast<CUI_Portrait*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Port));
+		m_pUI_HP = static_cast<CUI_HpBar*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HP));
+		m_pUI_HeroGauge = static_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
 	}
 
 	if (!m_pUI_Damage[0])
@@ -326,16 +350,6 @@ void CUser::Set_HUD(CLASS_TYPE eClass)
 	m_pUI_HUD->Set_HUD(eClass);
 }
 
-void CUser::Set_HP(_float fMaxHP, _float fCurHP)
-{
-	m_pUI_HUD->Set_HP(fMaxHP, fCurHP);
-}
-
-void CUser::SetActive_HeroPortrait(_bool value)
-{
-	m_pUI_HUD->SetActive_HeroPortrait(value);
-}
-
 void CUser::SetActive_OxenJumpText(_bool value)
 {
 	m_pUI_HUD->SetActive_OxenJumpText(value);
@@ -375,11 +389,6 @@ void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 void CUser::Enable_DeadUI()
 {
 	m_pUI_Dead->Enable_DeadUI();
-}
-
-void CUser::SetActive_PlayerHUD(_bool value)
-{
-	m_pUI_HUD->SetActive_PlayerInfoUI(value);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
