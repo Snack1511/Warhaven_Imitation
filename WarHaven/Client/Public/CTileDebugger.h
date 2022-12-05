@@ -17,7 +17,7 @@ private:
 	virtual ~CTileDebugger();
 
 public:
-	static CTileDebugger* Create(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize);
+	static CTileDebugger* Create(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iLayerIndex);
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -25,6 +25,7 @@ public:
 	virtual HRESULT			Start() override;
 
 private:
+	_uint		m_iMyLayerIndex = 0;
 	_uint		m_iNumTilesX = 1;
 	_uint		m_iNumTilesZ = 1;
 	_float		m_fTileSize = 1.f;

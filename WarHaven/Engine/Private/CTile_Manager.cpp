@@ -60,6 +60,17 @@ _uint CTile_Manager::Find_Index(_float4 vPosition)
 	return iCurIndex;
 }
 
+CTile* CTile_Manager::Find_Tile(_uint iLayer, _uint iIndex)
+{
+	if (iLayer >= m_iNumLayers)
+		return nullptr;
+
+	if (iIndex >= m_iNumTilesX * m_iNumTilesZ)
+		return nullptr;
+
+	return m_vecLayers[iLayer]->m_vecTiles[iIndex];
+}
+
 HRESULT CTile_Manager::Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iNumLayers)
 {
 	if (!m_vecLayers.empty())

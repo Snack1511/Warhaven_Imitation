@@ -14,7 +14,7 @@ protected:
 public:
 	static CMesh_Terrain* Create(_uint iGroupIdx, const _tchar* pHeightMapFilePath);
 	static CMesh_Terrain* Create(_uint iGroupIdx, _uint iNumVerticesX, _uint iNumVerticesZ);
-	static CMesh_Terrain* Create(_uint iGroupIdx, _uint iNumVerticesX, _uint iNumVerticesZ, _float fSize);
+	static CMesh_Terrain* Create(_uint iGroupIdx, _uint iNumTilesX, _uint iNumTilesZ, _float fSize);
 
 public:
 	virtual _uint3 Get_Indices(_uint iIndex) const {
@@ -35,6 +35,7 @@ public:
 
 public:
 	void	ReadyforPhysX(); // PhysX 메쉬 충돌체 생성 전에 호출해야함
+	void	ClearPhysX(); // PhysX 메쉬 충돌체 생성 전에 호출해야함
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

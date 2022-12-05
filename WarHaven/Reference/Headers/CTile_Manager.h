@@ -21,6 +21,7 @@ public:
 public:
 	void		Set_WorldMatrix(_float4x4 matWorld);
 	_uint		Find_Index(_float4 vPosition);
+	CTile*		Find_Tile(_uint iLayer, _uint iIndex);
 
 public:
 	/* 레이어들 생성. 

@@ -728,8 +728,6 @@ PS_EFFECT_OUT PS_TRAIL_MAIN(VS_TRAIL_OUT In)
     if (Out.vDiffuse.a < 0.05f)
         discard;
 
-    Out.vDiffuse.xyz = 1.f;
-
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
     Out.vFlag = g_vFlag;
     Out.vGlowFlag = g_vGlowFlag;
@@ -872,7 +870,7 @@ PS_DISTORTION_OUT PS_MAIN_DISTORTION(VS_TRAIL_OUT In)
 {
     PS_DISTORTION_OUT		Out = (PS_DISTORTION_OUT)0;
 
-    float fTime = sin(g_fTimeAcc);
+    //float fTime = sin(g_fTimeAcc);
 
 
     In.vTexUV.x = 1.f - In.vTexUV.x;

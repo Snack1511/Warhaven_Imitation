@@ -156,6 +156,8 @@ public: /* For Tile_Manager */
 	void		Clear_AllTiles();
 	_uint		Find_TileIndex(_float4 vPosition);
 	HRESULT		Render_Tiles();
+	CTile*		Find_Tile(_uint iLayer, _uint iIndex);
+
 
 
 public: /* For. Camera_Manager */

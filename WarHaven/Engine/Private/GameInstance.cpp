@@ -501,6 +501,11 @@ HRESULT CGameInstance::Render_Tiles()
 	return m_pTileManager->Render();
 }
 
+CTile* CGameInstance::Find_Tile(_uint iLayer, _uint iIndex)
+{
+	return m_pTileManager->Find_Tile(iLayer, iIndex);
+}
+
 void CGameInstance::Add_Camera(wstring strKey, CCamera * pCamera)
 {
 	m_pCameraManager->Add_Camera(strKey, pCamera);

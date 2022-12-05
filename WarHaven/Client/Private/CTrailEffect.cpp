@@ -50,6 +50,7 @@ void CTrailEffect::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 	pShader->Set_RawValue(pConstantName, &m_vShaderFlag, sizeof(_float4));
 	pShader->Set_RawValue("g_vGlowFlag", &m_vGlowFlag, sizeof(_float4));
 	pShader->Set_RawValue("g_vColor", &m_vFontColor, sizeof(_float4));
+
 	if (m_bDistortion)
 	{
 		pShader->Set_RawValue("g_fTimeAcc", &m_fTimeAcc, sizeof(_float));
