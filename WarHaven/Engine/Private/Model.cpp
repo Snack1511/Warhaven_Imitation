@@ -1183,8 +1183,7 @@ HRESULT CModel::SetUp_Model_LOD()
 	m_iNumMeshContainers = m_MeshContainers.size();
 	m_iNumMaterials = m_Materials.size();
 	m_bLOD = true;
-	if (m_iNumInstance > 200)
-		m_bHardLOD = true;
+	
 	m_fLODMaxRange = 0.f;
 	for (auto& elem : m_MeshContainers)
 	{
@@ -1266,6 +1265,8 @@ HRESULT CModel::SetUp_InstancingModel_LOD()
 	m_iNumMaterials = m_Materials.size();
 
 	m_bLOD = true;
+	if (m_iNumInstance > 200)
+		m_bHardLOD = true;
 	Bake_LODFrustumInfo();
 
 	return S_OK;
