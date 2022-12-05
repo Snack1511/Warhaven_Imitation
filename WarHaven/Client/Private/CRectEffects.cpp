@@ -742,41 +742,7 @@ void CRectEffects::My_LateTick()
 
 		if (m_bSorting)
 		{
-			_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
-			vCamPos *= 1500.f;
-
-			//섞고난 RectInstance가 몇번째 인덱스로 가있는지 알 수 있엉?
-
-			sort(m_pDatas, m_pDatas + (m_tCreateData.iNumInstance - 1), [vCamPos](DATAS& p1, DATAS& p2)
-				{
-					//노말라이즈한 룩이랑
-					_float4 vNormalLook;
-					vNormalLook = p1.RectInstance.vLook;
-					vNormalLook.Normalize();
-
-					//카메라위치에서 내위치 뺸 벡터를
-					_float4 vVector;
-					vVector = (XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p1.RectInstance.vTranslation));
-
-					//내적
-					_float fDist1 = vNormalLook.Dot(vVector);
-
-					//노말라이즈한 룩이랑
-					vNormalLook = p2.RectInstance.vLook;
-					vNormalLook.Normalize();
-
-					//카메라위치에서 내위치 뺸 벡터를
-					vVector = (XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p2.RectInstance.vTranslation));
-
-					//내적
-					_float fDist2 = vNormalLook.Dot(vVector);
-
-
-					p1.fDistance = fDist1;
-					p2.fDistance = fDist2;
-
-					return fDist1 > fDist2;
-				});
+			Sort_Particle(iFinalIndex);
 		}
 	}
 
@@ -1183,6 +1149,47 @@ _bool CRectEffects::FrustumCheck(_uint iIndex)
 		return true;
 
 	return false;
+}
+
+void CRectEffects::Sort_Particle(_uint iFinalNumInstance)
+{
+	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+	//vCamPos *= 1500.f;
+
+	/* 카메라 위치를 로컬로 내려 */
+	_float4x4 matWorldInv = m_pTransform->Get_WorldMatrix();
+	matWorldInv.Inverse();
+
+	vCamPos = vCamPos.MultiplyCoord(matWorldInv);
+
+	//섞고난 RectInstance가 몇번째 인덱스로 가있는지 알 수 있엉?
+
+	sort(m_pFinalRectInstances, m_pFinalRectInstances + (iFinalNumInstance), [vCamPos](VTXRECTINSTANCE& p1, VTXRECTINSTANCE& p2)
+		{
+			//노말라이즈한 룩이랑
+			_float4 vNormalLook;
+			vNormalLook = p1.vLook;
+			vNormalLook.Normalize();
+
+			//카메라위치에서 내위치 뺸 벡터를
+			_float4 vVector;
+			vVector = (XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p1.vTranslation));
+
+			//내적
+			_float fDist1 = vNormalLook.Dot(vVector);
+
+			//노말라이즈한 룩이랑
+			vNormalLook = p2.vLook;
+			vNormalLook.Normalize();
+
+			//카메라위치에서 내위치 뺸 벡터를
+			vVector = (XMLoadFloat4(&vCamPos) - XMLoadFloat4(&p2.vTranslation));
+
+			//내적
+			_float fDist2 = vNormalLook.Dot(vVector);
+
+			return fDist1 > fDist2;
+		});
 }
 
 void CRectEffects::Stick_RefBone()
