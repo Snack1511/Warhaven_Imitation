@@ -92,6 +92,12 @@ void CTexture::Remove_Texture(_uint iIndex)
 	m_SRVs.erase(m_SRVs.begin() + iIndex);
 }
 
+void CTexture::Remove_Textures()
+{
+	m_SRVs.clear();
+	m_SRVs.shrink_to_fit();
+}
+
 _bool CTexture::Next_Texture()
 {
 	if (++m_iCurTextureIndex >= m_SRVs.size())

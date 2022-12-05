@@ -558,6 +558,9 @@ void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
 		CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
 		pPlayer->Change_DefaultUnit((CPlayer::CLASS_DEFAULT)m_eCurClass);
 		pPlayer->Get_CurrentUnit()->On_Respawn();
+
+		dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_UserPort(m_eCurClass);
+		dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Set_SkillUI(m_eCurClass);
 	}
 }
 

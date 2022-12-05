@@ -33,7 +33,20 @@ HRESULT CUI_Skill::Start()
 {
 	__super::Start();
 
+	Set_SkillUI(WARRIOR);
+
 	return S_OK;
+}
+
+void CUI_Skill::Set_SkillUI(_uint iClass)
+{
+	m_iPrvClass = m_iCurClass;
+	m_iCurClass = iClass;
+
+	/*if (m_iPrvClass == iClass)
+		return;*/
+
+	SetActive_SkillUI(iClass);
 }
 
 void CUI_Skill::SetActive_SkillUI(_bool value)
@@ -117,6 +130,35 @@ void CUI_Skill::Create_SkillUI()
 
 			CREATE_GAMEOBJECT(m_pArrSkillUI[i][j], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrSkillUI[i][j]);
+		}
+	}
+}
+
+void CUI_Skill::SetActive_SkillUI(_uint iClass)
+{
+	SetActive_SkillUI(false);
+	SetActive_Outline(false);
+
+	// 워리어면 두개만 활성화 되어야해
+	if (iClass == WARRIOR)
+	{
+		m_iIndex = 2;
+		m_iSkillNum = 0;
+	}
+	else if (iClass == ENGINEER)
+	{
+		m_iIndex = 3;
+		m_iSkillNum = 14;
+	}
+
+
+	for (int i = 0; i < SU_End; ++i)
+	{
+		for (int j = 0; j < m_iIndex; ++j)
+		{
+			GET_COMPONENT_FROM(m_pArrSkillUI[SU_Icon][j], CTexture)->Set_CurTextureIndex(m_iSkillNum + j);
+
+			ENABLE_GAMEOBJECT(m_pArrSkillUI[i][j]);
 		}
 	}
 }
@@ -211,8 +253,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 	{
 	case WARRIOR:
 
-		Active_SkillHUD(3);
-
 		Set_SkillBtn(2);
 		Set_SkillBtn(1, 44, 25, false);
 		Set_SkillBtn(0, 9, 24, false);
@@ -220,8 +260,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		break;
 
 	case SPEAR:
-
-		Active_SkillHUD(4);
 
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 23, false);
@@ -232,8 +270,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	case ARCHER:
 
-		Active_SkillHUD(4);
-
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 2, false);
 		Set_SkillBtn(1, 9, 1, false);
@@ -242,8 +278,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		break;
 
 	case PALADIN:
-
-		Active_SkillHUD(4);
 
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 15, false);
@@ -254,8 +288,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	case PRIEST:
 
-		Active_SkillHUD(4);
-
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 18, false);
 		Set_SkillBtn(1, 9, 17, false);
@@ -264,8 +296,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 		break;
 
 	case ENGINEER:
-
-		Active_SkillHUD(4);
 
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 5, false);
@@ -276,7 +306,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	case FIONA:
 
-		Active_SkillHUD(4);
 
 		Set_SkillBtn(3);
 		Set_SkillBtn(2, 44, 8, false);
@@ -289,7 +318,6 @@ void CUI_Skill::Set_SkillHUD(_uint iIndex)
 
 	case QANDA:
 
-		Active_SkillHUD(3);
 
 		Set_SkillBtn(2);
 		Set_SkillBtn(1, 44, 20, false);

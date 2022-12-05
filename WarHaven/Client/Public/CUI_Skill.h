@@ -20,8 +20,14 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	void Set_SkillUI(_uint iClass);
+
 	void SetActive_SkillUI(_bool value);
 	void SetActive_Outline(_bool value);
+
+private:
+	_uint m_iPrvClass = -1;
+	_uint m_iCurClass = 0;
 
 private:
 	enum SkillUI { SU_BG, SU_Icon, SU_Key, SU_End };
@@ -29,8 +35,13 @@ private:
 	CUI_Object* m_pSkillUI[SU_End];
 	CUI_Object* m_pArrSkillUI[SU_End][3];
 
+	_uint m_iIndex = 0;
+	_uint m_iSkillNum = 0;
+
 private:
 	void Create_SkillUI();
+
+	void SetActive_SkillUI(_uint iClass);
 
 private:
 	enum Outline { Outline0, Outline1, Outline2, Outline_End };

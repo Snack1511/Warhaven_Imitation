@@ -30,7 +30,7 @@ public:
 
 
 private:
-	_uint m_iPrvClass = 0;
+	_uint m_iPrvClass = -1;
 	_uint m_iCurClass = 0;
 
 	_bool m_bChangeUserPort = false;
