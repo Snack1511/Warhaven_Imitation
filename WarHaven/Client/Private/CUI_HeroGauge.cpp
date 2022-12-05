@@ -109,14 +109,11 @@ void CUI_HeroGauge::My_Tick()
 	m_fValue += fDT(0) * 0.1f;
 
 	m_fHeroGaugeRatio = m_fCurHeroGauge / m_fMaxHeroGauge;
-	cout << m_fHeroGaugeRatio << endl;
 
 	_tchar  szTemp[MAX_STR] = {};
 	swprintf_s(szTemp, TEXT("%.f%%"), m_fHeroGaugeRatio * 100.f);
 	m_pHeroGauge[HG_Text]->Set_FontText(szTemp);
 	m_fHeroGaugeRatio = 1 - m_fHeroGaugeRatio;
-
-	cout << "1 »«°Å : " << m_fHeroGaugeRatio << endl;
 }
 
 void CUI_HeroGauge::OnEnable()

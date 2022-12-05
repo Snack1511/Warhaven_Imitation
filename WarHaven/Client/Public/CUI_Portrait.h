@@ -5,12 +5,6 @@ BEGIN(Client)
 
 class CUI_Portrait final : public CUI_Wrapper
 {
-	enum PortIndex { User, Hero1, Hero4 = 4, PortEnd = 5 };
-	enum WindowType { BG, Port, Key, Effect, Type_End };
-
-public:
-	enum HeroPortAnimType { Enable, Disable, AnimEnd };
-
 	DECLARE_PROTOTYPE(CUI_Portrait);
 	DECLARE_GAMEOBJECT(CUI_Portrait);
 
@@ -28,6 +22,7 @@ public:
 	void Set_UserPort(_uint iClass);
 
 	void SetActive_UserPort(_bool value);
+	void SetActive_HeroPort(_bool value);
 
 private:
 	_uint m_iPrvClass = 0;
@@ -36,8 +31,8 @@ private:
 	_bool m_bChangeUserPort = false;
 	_bool m_bDoScaleUserPort = false;
 	_uint m_iChangeUserPortCount = 1;
-	_float m_fDoScaleUserPortDuration = 0.f;
-	_float m_fDoScaleUserPortValue = 63.9f;
+	_float m_fLerpUserPortDuration = 0.f;
+	_float m_fLerpUserPortValue = 63.9f;
 
 	CTexture* m_pUserPortTexture = nullptr;
 
@@ -58,8 +53,22 @@ private:
 	CUI_Object* m_pHeroPortrait[UP_End];
 	CUI_Object* m_pArrHeroPortrait[UP_End][4];
 
+	enum HeroPortActive { Enable, Disable, End };
+	HeroPortActive m_eAcitveType = HeroPortActive::End;
+
+	_bool m_bAbleHero = false;
+	_bool m_bLerpHeroPort = false;
+
+	_uint m_iFirstHeroPort = 0;
+	_uint m_iLastHeroPort = 4;
+
+	_bool bIsHero = false;
+
 private:
 	void Create_HeroPort();
+	void Set_FadeHeroPort();
+
+	void Active_HeroPort(HeroPortActive eType);
 
 private:
 	virtual void OnEnable() override;
@@ -70,28 +79,9 @@ public:
 
 
 public:
-	void Set_HeroPort(HeroPortAnimType eState);
 
-private:
-	CUI_Object* m_Prototypes[Type_End] = {};
-	CUI_Object* m_arrPortraitUI[5][Type_End] = {};
-
-	_float m_fEffectValue = 0.f;
-
-	_uint m_iPrvPort = 0;
-	_uint m_iCurPort = 0;
-
-	_bool m_bIsUserLerp = false;
-	_bool m_bAbleRotationPort = false;
-	_uint m_iRotationCount = 0;
-
-	HeroPortAnimType m_eHeroPortAnimType = HeroPortAnimType::AnimEnd;
-	_bool m_bAbleHero = false;
-	_bool bIsHero = false;
 
 	_bool m_bIsHeroLerp = false;
-	_uint m_iHeroStartIdx = Hero1;
-	_uint m_iHeroEndIdx = Hero4;
 	_uint m_iHeroActiveCount = 0;
 
 	_float m_fMinValue = 0.01f;
@@ -100,16 +90,8 @@ private:	// Shader
 	void Set_Pass();
 	void Bind_Shader();
 
-	void Set_FadeHeroPort();
-
-private:
-	void PortSizeUP(_float fDuration);
-	void PortSizeDown(_float fDuration);
 
 	void Enable_HeroLerp(_bool value, _float fDuration);
-
-private:
-	void Ready_Portrait();
 };
 
 END

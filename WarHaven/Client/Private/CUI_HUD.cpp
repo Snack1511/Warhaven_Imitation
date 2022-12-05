@@ -73,7 +73,8 @@ HRESULT CUI_HUD::Start()
 	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
 		Set_FadePortHighlight();
-		SetActive_PlayerInfoUI(true);
+
+		SetActive_HUD(true);
 
 		if (m_pChangeClassText)
 		{
@@ -87,8 +88,6 @@ HRESULT CUI_HUD::Start()
 	}
 
 	__super::Start();
-
-	SetActive_HUD(true);
 
 	return S_OK;
 }
@@ -335,16 +334,16 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 
 void CUI_HUD::SetActive_HeroPortrait(_bool value)
 {
-	CUI_Portrait::HeroPortAnimType eType;
-
-	if (value == true)
-	{
-		eType = CUI_Portrait::Enable;
-	}
-	else
-	{
-		eType = CUI_Portrait::Disable;
-	}
+	//CUI_Portrait::HeroPortAnimType eType;
+	//
+	//if (value == true)
+	//{
+	//	eType = CUI_Portrait::Enable;
+	//}
+	//else
+	//{
+	//	eType = CUI_Portrait::Disable;
+	//}
 
 	// dynamic_cast<CUI_Portrait*>(m_pWrap[Port])->Set_HeroPort(eType);
 }
@@ -1337,7 +1336,7 @@ void CUI_HUD::On_OperTimeOver()
 
 	Disable_AllOperUIs();
 
-	SetActive_PlayerInfoUI(true);
+	SetActive_HUD(true);
 }
 
 void CUI_HUD::Disable_AllOperUIs()
