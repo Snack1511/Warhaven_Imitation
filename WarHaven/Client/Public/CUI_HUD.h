@@ -43,6 +43,8 @@ private:
 private:
 	void Create_CharacterWindow();
 
+	void Active_CharacterWindow();
+
 public:
 	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
 	virtual void On_PointDown_Point(const _uint& iEventNum);
@@ -64,10 +66,6 @@ public:
 	_bool Is_OnHeroGauge();
 
 private:
-	CUI_Wrapper* m_pDeadUI = nullptr;
-
-	CUnit* m_pPlayer = nullptr;
-
 	CUnit::UNIT_STATUS m_tStatus;
 	CLASS_TYPE m_eCurClass;
 	CLASS_TYPE m_ePrvClass;
@@ -161,12 +159,15 @@ private:
 	_float m_fSmokeUV = 0.f;
 
 private:
-	CUI_Object* m_pChangeClassText = nullptr;
+	CUI_Object* m_pClassChangeText = nullptr;
+
+private:
+	void Create_ClassChangeText();
+
 	CUI_Object* m_pInactiveHeroText = nullptr;
 	CUI_Object* m_pOxenJumpText = nullptr;
 
 private:
-	void BootCamp_CharacterWindow();
 
 	CUI_Object* m_pPlayerNameText = nullptr;
 
@@ -196,7 +197,7 @@ private:	// 작전 회의
 	void Update_OperWindow();
 	void Enable_OperPointUI();
 
-	void Create_TraingText();
+
 	void Create_OxenJumpText();
 	void Create_PlayerNameText();
 	void Create_InactiveHeroText();

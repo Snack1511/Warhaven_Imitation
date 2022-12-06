@@ -304,6 +304,8 @@ void CUI_CharacterWindow::Init_CharacterWindow(CLASS_TYPE eCurUnitClass)
 		}
 	}
 
+	m_pClassInfo[CI_Icon]->Set_FontText(TEXT("블레이드"));
+
 	m_pArrCharacterUI[CU_Line][m_iCurEventNum]->Set_ScaleX(100.f);
 	Enable_Fade(m_pArrCharacterUI[CU_Line][m_iCurEventNum], 0.1f);
 }

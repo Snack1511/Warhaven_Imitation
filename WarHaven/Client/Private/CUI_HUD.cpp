@@ -48,10 +48,9 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_HeroTransformUI();
 	Create_InactiveHeroText();
 
-	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
+	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
 		Create_CharacterWindow();
-		Create_TraingText();
 	}
 	else
 	{
@@ -75,9 +74,9 @@ HRESULT CUI_HUD::Start()
 	{
 		SetActive_HUD(true);
 
-		if (m_pChangeClassText)
+		if (m_pClassChangeText)
 		{
-			ENABLE_GAMEOBJECT(m_pChangeClassText);
+			ENABLE_GAMEOBJECT(m_pClassChangeText);
 		}
 	}
 	else
@@ -100,7 +99,7 @@ void CUI_HUD::My_Tick()
 	Update_HeorTransformGauge();
 	Update_OperWindow();
 
-	BootCamp_CharacterWindow();
+	Active_CharacterWindow();
 }
 
 CUI_Wrapper* CUI_HUD::Get_HUD(_uint eHUD)
@@ -144,6 +143,48 @@ void CUI_HUD::Create_CharacterWindow()
 
 	CREATE_GAMEOBJECT(m_pUI_CharacterWindow, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pUI_CharacterWindow);
+
+	if (m_pUI_CharacterWindow)
+	{
+		Create_ClassChangeText();
+	}
+}
+
+void CUI_HUD::Active_CharacterWindow()
+{
+	if (m_pUI_CharacterWindow)
+	{
+		if (KEY(F, TAP))
+		{
+			m_pUI_CharacterWindow->SetActive_CharacterWindow(false);
+			SetActive_HUD(true);
+
+			CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
+			pPlayer->Change_UnitClass(m_eCurClass);
+			pPlayer->Get_CurrentUnit()->On_Respawn();
+
+			Set_HUD(m_eCurClass);
+		}
+
+#ifdef _DEBUG
+
+		else if (KEY(T, TAP) && KEY(CTRL, HOLD))
+		{
+			SetActive_HUD(false);
+			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
+		}
+
+#else
+
+		else if (KEY(T, TAP))
+		{
+			SetActive_HUD(false);
+			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
+		}
+
+#endif
+
+	}
 }
 
 void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
@@ -327,25 +368,27 @@ void CUI_HUD::Set_FadePortHighlight()
 	GET_COMPONENT_FROM(m_pInactiveHeroText, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
-void CUI_HUD::Create_TraingText()
+void CUI_HUD::Create_ClassChangeText()
 {
-	m_pChangeClassText = CUI_Object::Create();
+	m_pClassChangeText = CUI_Object::Create();
 
-	m_pChangeClassText->Set_Scale(20.f);
-	m_pChangeClassText->Set_Pos(-25.f, -250.f);
-	m_pChangeClassText->Set_Sort(0.85f);
+	m_pClassChangeText->Set_Scale(20.f);
+	m_pClassChangeText->Set_Pos(-85.f, -250.f);
+	m_pClassChangeText->Set_Sort(0.85f);
 
-	m_pChangeClassText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteTKeyIcon.dds"));
+	m_pClassChangeText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/White/T_WhiteTKeyIcon.dds"));
 
-	m_pChangeClassText->Set_FontRender(true);
-	m_pChangeClassText->Set_FontStyle(true);
-	m_pChangeClassText->Set_FontScale(0.25f);
-	m_pChangeClassText->Set_FontOffset(10.f, -13.f);
+	m_pClassChangeText->Set_FontRender(true);
+	m_pClassChangeText->Set_FontStyle(true);
+	m_pClassChangeText->Set_FontCenter(true);
+	m_pClassChangeText->Set_FontScale(0.25f);
 
-	m_pChangeClassText->Set_FontText(TEXT("로 전투원 변경 가능"));
+	m_pClassChangeText->Set_FontOffset(85.f, 5.f);
 
-	CREATE_GAMEOBJECT(m_pChangeClassText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pChangeClassText);
+	m_pClassChangeText->Set_FontText(TEXT("로 전투원 변경 가능"));
+
+	CREATE_GAMEOBJECT(m_pClassChangeText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pClassChangeText);
 }
 
 void CUI_HUD::Create_OxenJumpText()
@@ -858,43 +901,6 @@ void CUI_HUD::Create_OperSideBG()
 
 		CREATE_GAMEOBJECT(m_pArrOperSideBG[i], RENDER_UI);
 		DISABLE_GAMEOBJECT(m_pArrOperSideBG[i]);
-	}
-}
-
-void CUI_HUD::BootCamp_CharacterWindow()
-{
-	if (m_pUI_CharacterWindow)
-	{
-		if (KEY(F, TAP))
-		{
-			m_pUI_CharacterWindow->SetActive_CharacterWindow(false);
-			SetActive_HUD(true);
-
-			CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
-			pPlayer->Change_UnitClass(m_eCurClass);
-			pPlayer->Get_CurrentUnit()->On_Respawn();
-
-			Set_HUD(m_eCurClass);
-		}
-
-#ifdef _DEBUG
-
-		else if (KEY(T, TAP) && KEY(CTRL, HOLD))
-		{
-			SetActive_HUD(false);
-			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
-		}
-
-#else
-
-		else if (KEY(T, TAP))
-		{
-			SetActive_HUD(false);
-			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
-		}
-
-#endif
-
 	}
 }
 
