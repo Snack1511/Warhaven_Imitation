@@ -55,6 +55,7 @@ void CUI_MainPlay::My_Tick()
 	{
 		if (KEY(ESC, TAP))
 		{
+			m_bIsMouseEvent = false;
 			SetActive_ModeWindow();
 		}
 	}
@@ -173,6 +174,7 @@ void CUI_MainPlay::On_PointUpEvent_Mode(const _uint& iEventNum)
 {
 	if (!m_pBG->Is_Valid())
 	{
+		m_bIsMouseEvent = true;
 		SetActive_ModeWindow();
 	}
 }
@@ -182,7 +184,10 @@ void CUI_MainPlay::On_PointEnter_Stage(const _uint& iEventNum)
 	_uint iTextureNum = GET_COMPONENT_FROM(m_pStageSelectBtn[iEventNum], CTexture)->Get_CurTextureIndex();
 	if (iTextureNum <= 3)
 	{
-		Enable_Fade(m_pStageHighlights[iEventNum], 0.3f);
+		if (m_bIsMouseEvent)
+		{
+			Enable_Fade(m_pStageHighlights[iEventNum], 0.3f);
+		}
 	}
 }
 

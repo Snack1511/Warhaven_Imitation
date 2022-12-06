@@ -21,7 +21,6 @@ private:
 
 public:
 	virtual	HRESULT	Initialize_Prototype();
-	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 	virtual void My_Tick();
 
@@ -58,7 +57,9 @@ public:
 	void Set_HUD(CLASS_TYPE eClass);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
+	
 	void SetActive_OperUI(_bool value);
+
 	void SetActive_OxenJumpText(_bool value);
 	void SetActive_HeroTransformGauge(_bool value);
 
@@ -158,14 +159,23 @@ private:
 	_uint m_iOperWindowCnt = 0;
 	_float m_fSmokeUV = 0.f;
 
-private:
+private:	// 캐릭터 변경 알림
 	CUI_Object* m_pClassChangeText = nullptr;
 
 private:
 	void Create_ClassChangeText();
 
+private:	// 히어로 해제 알림
 	CUI_Object* m_pInactiveHeroText = nullptr;
+
+private:
+	void Create_InactiveHeroText();
+
+private:	// 황소베기 점프 안내
 	CUI_Object* m_pOxenJumpText = nullptr;
+
+private:
+	void Create_OxenJumpText();
 
 private:
 
@@ -198,9 +208,7 @@ private:	// 작전 회의
 	void Enable_OperPointUI();
 
 
-	void Create_OxenJumpText();
 	void Create_PlayerNameText();
-	void Create_InactiveHeroText();
 
 	void	On_OperTimeOver();
 	void	Disable_AllOperUIs();

@@ -25,6 +25,8 @@ public:
 	void SetActive_SkillUI(_bool value);
 	void SetActive_Outline(_bool value);
 
+	void Enable_AllSkillUI();
+
 private:
 	_uint m_iPrvClass = -1;
 	_uint m_iCurClass = 0;
@@ -40,8 +42,6 @@ private:
 
 private:
 	void Create_SkillUI();
-
-	void SetActive_SkillUI(_uint iClass);
 
 private:
 	enum Outline { Outline0, Outline1, Outline2, Outline_End };

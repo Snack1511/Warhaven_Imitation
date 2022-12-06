@@ -43,10 +43,11 @@ HRESULT CUI_HUD::Initialize_Prototype()
 
 	Create_HUD();
 
-	Create_OxenJumpText();
 	Create_PlayerNameText();
-	Create_HeroTransformUI();
+
 	Create_InactiveHeroText();
+	Create_OxenJumpText();
+	Create_HeroTransformUI();
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
@@ -60,24 +61,17 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CUI_HUD::Initialize()
-{
-	return S_OK;
-}
-
 HRESULT CUI_HUD::Start()
 {
 	//Bind_Btn();
 	Bind_Shader();
 
-	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
+	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
 		SetActive_HUD(true);
 
 		if (m_pClassChangeText)
-		{
-			ENABLE_GAMEOBJECT(m_pClassChangeText);
-		}
+			m_pClassChangeText->SetActive(true);
 	}
 	else
 	{
@@ -117,6 +111,12 @@ void CUI_HUD::SetActive_HUD(_bool value)
 		}
 		else
 		{
+			if (i == HUD_Skill)
+			{
+				DISABLE_GAMEOBJECT(m_pHUD[i]);
+			}
+
+
 			DISABLE_GAMEOBJECT(m_pHUD[i]);
 		}
 	}
@@ -237,14 +237,7 @@ void CUI_HUD::Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConst
 
 void CUI_HUD::SetActive_OxenJumpText(_bool value)
 {
-	if (value == true)
-	{
-		ENABLE_GAMEOBJECT(m_pOxenJumpText);
-	}
-	else
-	{
-		DISABLE_GAMEOBJECT(m_pOxenJumpText);
-	}
+	m_pOxenJumpText->SetActive(value);
 }
 
 void CUI_HUD::SetActive_HeroTransformGauge(_bool value)

@@ -46,7 +46,23 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 	/*if (m_iPrvClass == iClass)
 		return;*/
 
-	SetActive_SkillUI(iClass);
+	switch (iClass)
+	{
+	case WARRIOR:
+		m_iIndex = 2;
+		m_iSkillNum = 0;
+		break;
+
+	case ENGINEER:
+		m_iIndex = 3;
+		m_iSkillNum = 14;
+		break;
+
+	case FIONA:
+		m_iIndex = 3;
+		m_iSkillNum = 17;
+		break;
+	}
 }
 
 void CUI_Skill::SetActive_SkillUI(_bool value)
@@ -55,14 +71,7 @@ void CUI_Skill::SetActive_SkillUI(_bool value)
 	{
 		for (int j = 0; j < 3; ++j)
 		{
-			if (value == true)
-			{
-				ENABLE_GAMEOBJECT(m_pArrSkillUI[i][j]);
-			}
-			else
-			{
-				DISABLE_GAMEOBJECT(m_pArrSkillUI[i][j]);
-			}
+			m_pArrSkillUI[i][j]->SetActive(value);
 		}
 	}
 }
@@ -73,14 +82,33 @@ void CUI_Skill::SetActive_Outline(_bool value)
 	{
 		for (int j = 0; j < 3; ++j)
 		{
-			if (value == true)
-			{
-				ENABLE_GAMEOBJECT(m_pArrOutline[i][j]);
-			}
-			else
-			{
-				DISABLE_GAMEOBJECT(m_pArrOutline[i][j]);
-			}
+			m_pArrOutline[i][j]->SetActive(value);
+		}
+	}
+}
+
+void CUI_Skill::Enable_AllSkillUI()
+{
+	// 일단 모든 UI 비활성화
+	SetActive_SkillUI(false);
+	SetActive_Outline(false);
+
+	// 해당 클래스의 할당된 인덱스 만큼의 UI 활성화
+	for (int i = 0; i < SU_End; ++i)
+	{
+		for (int j = 0; j < m_iIndex; ++j)
+		{
+			GET_COMPONENT_FROM(m_pArrSkillUI[SU_Icon][j], CTexture)->Set_CurTextureIndex(m_iSkillNum + j);
+
+			m_pArrSkillUI[i][j]->SetActive(true);
+		}
+	}
+
+	for (int i = 0; i < Outline_End; ++i)
+	{
+		for (int j = 0; j < m_iIndex; ++j)
+		{
+			m_pArrOutline[i][j]->SetActive(true);
 		}
 	}
 }
@@ -134,39 +162,6 @@ void CUI_Skill::Create_SkillUI()
 	}
 }
 
-void CUI_Skill::SetActive_SkillUI(_uint iClass)
-{
-	SetActive_SkillUI(false);
-	SetActive_Outline(false);
-
-	// 워리어면 두개만 활성화 되어야해
-	if (iClass == WARRIOR)
-	{
-		m_iIndex = 2;
-		m_iSkillNum = 0;
-	}
-	else if (iClass == ENGINEER)
-	{
-		m_iIndex = 3;
-		m_iSkillNum = 14;
-	}
-	else if (iClass == FIONA)
-	{
-		m_iIndex = 3;
-		m_iSkillNum = 17;
-	}
-
-	for (int i = 0; i < SU_End; ++i)
-	{
-		for (int j = 0; j < m_iIndex; ++j)
-		{
-			GET_COMPONENT_FROM(m_pArrSkillUI[SU_Icon][j], CTexture)->Set_CurTextureIndex(m_iSkillNum + j);
-
-			ENABLE_GAMEOBJECT(m_pArrSkillUI[i][j]);
-		}
-	}
-}
-
 void CUI_Skill::Create_Outline()
 {
 	for (int i = 0; i < Outline_End; ++i)
@@ -199,8 +194,7 @@ void CUI_Skill::OnEnable()
 {
 	__super::OnEnable();
 
-	SetActive_SkillUI(true);
-	SetActive_Outline(true);
+	Enable_AllSkillUI();
 }
 
 void CUI_Skill::OnDisable()
@@ -230,6 +224,7 @@ void CUI_Skill::My_Tick()
 		}
 	}*/
 }
+
 
 void CUI_Skill::Set_Shader_SkillGauge1(CShader* pShader, const char* pConstName)
 {
