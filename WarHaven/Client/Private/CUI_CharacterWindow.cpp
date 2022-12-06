@@ -59,7 +59,7 @@ void CUI_CharacterWindow::On_PointerDown(const _uint& iEventNum)
 
 	_float fDuration = 0.1f;
 
-	for (int i = 0; i < CU_End; ++i)
+	for (int i = 0; i < CU_Line; ++i)
 	{
 		m_pArrCharacterUI[i][m_iPrvEventNum]->DoMoveY(-10.f, fDuration);
 		m_pArrCharacterUI[i][iEventNum]->DoMoveY(10.f, fDuration);
@@ -178,11 +178,11 @@ void CUI_CharacterWindow::Create_CharacterUI()
 		}
 		else if (i == CU_Line)
 		{
-			m_pCharacterUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/CharacterWindow/T_PopupLine.png"));
 			m_pCharacterUI[i]->Set_Color(m_vColorGold);
 
 			m_pCharacterUI[i]->Set_Sort(0.49f);
 			m_pCharacterUI[i]->Set_PosY(-318.f);
+			m_pCharacterUI[i]->Set_Scale(2.f);
 
 			Set_FadeDesc(m_pCharacterUI[i], 0.1f);
 		}
@@ -295,18 +295,15 @@ void CUI_CharacterWindow::Init_CharacterWindow(CLASS_TYPE eCurUnitClass)
 {
 	m_iCurEventNum = eCurUnitClass;
 
-	for (int i = 0; i < CU_End; ++i)
+	for (int i = 0; i < CU_Line; ++i)
 	{
 		m_pArrCharacterUI[i][m_iCurEventNum]->Set_PosY(-240.f);
-
 		if (i == CU_Icon)
 		{
 			m_pArrCharacterUI[i][m_iCurEventNum]->Set_PosY(-185.f);
 		}
-		else if (i == CU_Line)
-		{
-			m_pArrCharacterUI[i][m_iCurEventNum]->Set_ScaleX(100.f);
-			Enable_Fade(m_pArrCharacterUI[i][m_iCurEventNum], 0.1f);
-		}
 	}
+
+	m_pArrCharacterUI[CU_Line][m_iCurEventNum]->Set_ScaleX(100.f);
+	Enable_Fade(m_pArrCharacterUI[CU_Line][m_iCurEventNum], 0.1f);
 }
