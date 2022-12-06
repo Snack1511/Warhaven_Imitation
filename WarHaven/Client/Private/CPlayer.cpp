@@ -183,7 +183,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_pAllUnitClass[ENGINEER] = CUnit_WarHammer::Create(tModelData[ENGINEER]);
 	m_pAllUnitClass[FIONA] = CUnit_Valkyrie::Create(tModelData[FIONA]);
 	//m_pAllUnitClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
-	//m_pAllUnitClass[CLASS_DEFAULT_ARCHER] = CUnit_Archer::Create(tModelData[CLASS_DEFAULT_ARCHER]);
+	//m_pAllUnitClass[ARCHER] = CUnit_Archer::Create(tModelData[ARCHER]);
 	//m_pAllUnitClass[CLASS_DEFAULT_PALADIN] = CUnit_Paladin::Create(tModelData[CLASS_DEFAULT_PALADIN]);
 	//m_pAllUnitClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
 

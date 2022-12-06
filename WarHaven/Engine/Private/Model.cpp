@@ -992,6 +992,9 @@ void CModel::Start()
 		
 	}
 
+	m_iNumMaterials = (_uint)m_Materials.size();
+	m_iNumMeshContainers = (_uint)m_MeshContainers.size();
+
 #endif // _DEBUG
 }
 
