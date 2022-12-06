@@ -5,6 +5,7 @@
 BEGIN(Client)
 
 class CUnit;
+class CUI_CharacterWindow;
 
 class CUI_HUD : public CUI_Wrapper
 {
@@ -36,11 +37,13 @@ private:
 private:
 	void Create_HUD();
 
-public:
-	virtual void On_PointEnter_Port(const _uint& iEventNum);
-	virtual void On_PointExit_Port(const _uint& iEventNum);
-	virtual void On_PointDown_Port(const _uint& iEventNum);
+private:
+	CUI_CharacterWindow* m_pUI_CharacterWindow = nullptr;
 
+private:
+	void Create_CharacterWindow();
+
+public:
 	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
 	virtual void On_PointDown_Point(const _uint& iEventNum);
 
@@ -48,7 +51,6 @@ public:
 	virtual void Set_Shader_Smoke(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_Timer(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName);
-
 
 public:
 	void Set_HUD(CLASS_TYPE eClass);
@@ -70,16 +72,11 @@ private:
 	CLASS_TYPE m_eCurClass;
 	CLASS_TYPE m_ePrvClass;
 
-private:	// 체력바
-	_float m_fMaxHP = 0.f;
-	_float m_fCurHP = 0.f;
-	_float m_fPrvHP = 0.f;
-	_float m_fHealthRatio = 0.f;
-
 private:	// 작전회의
 	CUI_Object* m_pOperWindow = nullptr;
 	CUI_Object* m_pSmokeBG = nullptr;
 	CUI_Object* m_pOperBlackBG = nullptr;
+
 	CUI_Object* m_pOperTextImg = nullptr;
 	CUI_Object* m_pOperTextImg2 = nullptr;
 	CUI_Object* m_pSquardTextImg = nullptr;
@@ -163,24 +160,7 @@ private:
 	_uint m_iOperWindowCnt = 0;
 	_float m_fSmokeUV = 0.f;
 
-private:	// 클래스 변경 창
-	enum BootCampUI { BC_Port, BC_PortBG, BC_Icon, BC_Highlight, BC_Line, BC_End };
-
-	CUI_Object* m_pBG = nullptr;
-
-	CUI_Object* m_pBootCampUI[BC_End];
-	CUI_Object* m_pArrBootCampUI[BC_End][6];
-
-	_uint m_iCurBootCharEventNum = 0;
-	_uint m_iPrvBootCharEventNum = 0;
-
 private:
-	void Create_CharacterSelectWindow();
-
-private:
-	CUI_Object* m_pClassInfo = nullptr;
-	CUI_Object* m_pClassInfoIcon = nullptr;
-
 	CUI_Object* m_pChangeClassText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;
 	CUI_Object* m_pOxenJumpText = nullptr;
@@ -209,10 +189,6 @@ private:
 
 	void Set_FadePortHighlight();
 	void Set_FadeOperSelectChaderUI();
-
-private:
-	void SetActive_CharacterSelectWindow(_bool value);
-	void Set_ClassInfo(CLASS_TYPE eClass);
 
 	void Update_HeorTransformGauge();
 

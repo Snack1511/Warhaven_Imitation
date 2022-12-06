@@ -24,6 +24,9 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	void SetActive(_bool value);
+
+public:
 	_float4 Get_Pos() { return m_vPosition; }
 	_float Get_PosX() { return m_vPosition.x; }
 	_float Get_PosY() { return m_vPosition.y; }

@@ -24,6 +24,8 @@
 #include "Loading_Manager.h"
 #include "CUI_Renderer.h"
 
+#include "CUI_CharacterWindow.h"
+
 #include "CGameSystem.h"
 
 
@@ -48,7 +50,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 
 	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
-		Create_CharacterSelectWindow();
+		Create_CharacterWindow();
 		Create_TraingText();
 	}
 	else
@@ -66,13 +68,11 @@ HRESULT CUI_HUD::Initialize()
 
 HRESULT CUI_HUD::Start()
 {
-	Bind_Btn();
+	//Bind_Btn();
 	Bind_Shader();
 
 	if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_TEST)
 	{
-		Set_FadePortHighlight();
-
 		SetActive_HUD(true);
 
 		if (m_pChangeClassText)
@@ -99,6 +99,7 @@ void CUI_HUD::My_Tick()
 
 	Update_HeorTransformGauge();
 	Update_OperWindow();
+
 	BootCamp_CharacterWindow();
 }
 
@@ -137,79 +138,12 @@ void CUI_HUD::Create_HUD()
 	}
 }
 
-void CUI_HUD::On_PointEnter_Port(const _uint& iEventNum)
+void CUI_HUD::Create_CharacterWindow()
 {
-	Enable_Fade(m_pArrBootCampUI[BC_Highlight][iEventNum], 0.3f);
-}
+	m_pUI_CharacterWindow = CUI_CharacterWindow::Create();
 
-void CUI_HUD::On_PointExit_Port(const _uint& iEventNum)
-{
-	Disable_Fade(m_pArrBootCampUI[BC_Highlight][iEventNum], 0.3f);
-}
-
-void CUI_HUD::On_PointDown_Port(const _uint& iEventNum)
-{
-	m_iPrvBootCharEventNum = m_iCurBootCharEventNum;
-	m_iCurBootCharEventNum = iEventNum;
-
-	if (m_iPrvBootCharEventNum == iEventNum)
-		return;
-
-	for (int i = 0; i < BC_Line; ++i)
-	{
-		m_pArrBootCampUI[i][m_iPrvBootCharEventNum]->DoMoveY(-10.f, 0.1f);
-		m_pArrBootCampUI[i][m_iCurBootCharEventNum]->DoMoveY(10.f, 0.1f);
-	}
-
-	m_pArrBootCampUI[BC_Line][m_iPrvBootCharEventNum]->Lerp_ScaleX(100.f, 2.f, 0.1f);
-	Disable_Fade(m_pArrBootCampUI[BC_Line][m_iPrvBootCharEventNum], 0.1f);
-
-	Enable_Fade(m_pArrBootCampUI[BC_Line][iEventNum], 0.1f);
-	m_pArrBootCampUI[BC_Line][iEventNum]->Lerp_ScaleX(2.f, 100.f, 0.1f);
-
-	// m_iChoiceClass = iEventNum 으로 나중에 변경 -> 현재 모든 캐릭이 없어 Enum 이 맞지 않는다.
-
-	switch (iEventNum)
-	{
-	case 0:
-		m_pClassInfo->Set_FontText(TEXT("블레이드"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		m_eCurClass = WARRIOR;
-		//Set_HUD(WARRIOR);
-
-		break;
-
-	case 1:
-		m_pClassInfo->Set_FontText(TEXT("스파이크"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		//Set_HUD(SPEAR);
-		break;
-
-	case 2:
-		m_pClassInfo->Set_FontText(TEXT("아치"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		//Set_HUD(ARCHER);
-		break;
-
-	case 3:
-		m_pClassInfo->Set_FontText(TEXT("가디언"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		//Set_HUD(PALADIN);
-		break;
-
-	case 4:
-		m_pClassInfo->Set_FontText(TEXT("스모크"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		//Set_HUD(PRIEST);
-		break;
-
-	case 5:
-		m_pClassInfo->Set_FontText(TEXT("워해머"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(iEventNum);
-		m_eCurClass = ENGINEER;
-		//Set_HUD(ENGINEER);
-		break;
-	}
+	CREATE_GAMEOBJECT(m_pUI_CharacterWindow, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pUI_CharacterWindow);
 }
 
 void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
@@ -289,7 +223,6 @@ void CUI_HUD::SetActive_HeroTransformGauge(_bool value)
 
 _bool CUI_HUD::Is_OnHeroGauge()
 {
-
 	return m_pPlayerNameText->Is_Valid();
 }
 
@@ -327,15 +260,8 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 
 void CUI_HUD::Bind_Btn()
 {
-	for (int i = 0; i < 6; ++i)
+	/*for (int i = 0; i < 6; ++i)
 	{
-		if (m_pArrBootCampUI[BC_Port][i])
-		{
-			m_pArrBootCampUI[BC_Port][i]->CallBack_PointEnter += bind(&CUI_HUD::On_PointEnter_Port, this, i);
-			m_pArrBootCampUI[BC_Port][i]->CallBack_PointExit += bind(&CUI_HUD::On_PointExit_Port, this, i);
-			m_pArrBootCampUI[BC_Port][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Port, this, i);
-		}
-
 		if (m_pArrOperSelectUI[ST_BG][i])
 			m_pArrOperSelectUI[ST_BG][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_SelectBG, this, i);
 	}
@@ -344,108 +270,10 @@ void CUI_HUD::Bind_Btn()
 	{
 		if (m_pArrOperPointUI[PT_Point][i])
 			m_pArrOperPointUI[PT_Point][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Point, this, i);
-	}
+	}*/
 }
 
-void CUI_HUD::Create_CharacterSelectWindow()
-{
-	m_pBG = CUI_Object::Create();
-	m_pBG->Set_Scale(1280.f, 720.f);
-	m_pBG->Set_Sort(0.02f);
-	m_pBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_LobbyBG.dds"));
 
-	for (int i = 0; i < BC_End; ++i)
-	{
-		m_pBootCampUI[i] = CUI_Object::Create();
-
-		CREATE_GAMEOBJECT(m_pBootCampUI[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_pBootCampUI[i]);
-	}
-
-	m_pBootCampUI[BC_Port]->Set_PosY(-250.f);
-	m_pBootCampUI[BC_Port]->Set_Scale(100.f, 140.f);
-	m_pBootCampUI[BC_Port]->Set_Sort(0.01f);
-	m_pBootCampUI[BC_Port]->Set_MouseTarget(true);
-
-	GET_COMPONENT_FROM(m_pBootCampUI[BC_Port], CTexture)->Remove_Texture(0);
-	Read_Texture(m_pBootCampUI[BC_Port], "/HUD/CharacterSelect", "Portrait");
-
-	m_pBootCampUI[BC_PortBG]->Set_Scale(100.f, 140.f);
-	m_pBootCampUI[BC_PortBG]->Set_Sort(0.015f);
-	m_pBootCampUI[BC_PortBG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_CharacterBG.dds"));
-
-	m_pBootCampUI[BC_Icon]->Set_PosY(-195.f);
-	m_pBootCampUI[BC_Icon]->Set_Scale(20.f);
-	m_pBootCampUI[BC_Icon]->Set_Sort(0.01f);
-	m_pBootCampUI[BC_Icon]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_WarriorIconGold.dds"));
-
-	GET_COMPONENT_FROM(m_pBootCampUI[BC_Icon], CTexture)->Remove_Texture(0);
-	Read_Texture(m_pBootCampUI[BC_Icon], "/HUD/CharacterSelect", "Icon");
-
-	m_pBootCampUI[BC_Highlight]->Set_PosY(-248.f);
-	m_pBootCampUI[BC_Highlight]->Set_Scale(100.f, 144.f);
-	m_pBootCampUI[BC_Highlight]->Set_Sort(0.001f);
-	m_pBootCampUI[BC_Highlight]->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
-	m_pBootCampUI[BC_Highlight]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_PortraitBustShotBG.png"));
-
-	m_pBootCampUI[BC_Line]->Set_PosY(-318.f);
-	m_pBootCampUI[BC_Line]->Set_Scale(2.f);
-	m_pBootCampUI[BC_Line]->Set_Color(_float4(0.773f, 0.714f, 0.596f, 1.f));
-
-	for (int i = 0; i < BC_End; ++i)
-	{
-		for (int j = 0; j < 6; ++j)
-		{
-			m_pArrBootCampUI[i][j] = m_pBootCampUI[i]->Clone();
-
-			CREATE_GAMEOBJECT(m_pArrBootCampUI[i][j], RENDER_UI);
-			DISABLE_GAMEOBJECT(m_pArrBootCampUI[i][j]);
-		}
-	}
-
-	for (int i = 0; i < 6; ++i)
-	{
-		GET_COMPONENT_FROM(m_pArrBootCampUI[BC_Port][i], CTexture)->Set_CurTextureIndex(i);
-		GET_COMPONENT_FROM(m_pArrBootCampUI[BC_Icon][i], CTexture)->Set_CurTextureIndex(i);
-
-		_float fPosX = -300.f + (i * 120.f);
-		m_pArrBootCampUI[BC_Port][i]->Set_PosX(fPosX);
-
-		_float4 vPos = m_pArrBootCampUI[BC_Port][i]->Get_Pos();
-		m_pArrBootCampUI[BC_Icon][i]->Set_PosX(vPos.x + 35.f);
-		m_pArrBootCampUI[BC_PortBG][i]->Set_Pos(vPos);
-		m_pArrBootCampUI[BC_Highlight][i]->Set_PosX(vPos.x);
-		m_pArrBootCampUI[BC_Line][i]->Set_PosX(vPos.x);
-	}
-
-	m_pClassInfo = CUI_Object::Create();
-	m_pClassInfo->Set_Scale(75.f, 165.f);
-	m_pClassInfo->Set_Pos(-550.f, 200.f);
-	m_pClassInfo->Set_Sort(0.01f);
-	m_pClassInfo->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/CharacterSelect/T_DecoLam04.dds"));
-
-	m_pClassInfo->Set_FontRender(true);
-	m_pClassInfo->Set_FontStyle(true);
-	m_pClassInfo->Set_FontScale(0.5f);
-	m_pClassInfo->Set_FontOffset(50.f, -50.f);
-
-	m_pClassInfoIcon = CUI_Object::Create();
-	m_pClassInfoIcon->Set_Scale(54.f);
-	m_pClassInfoIcon->Set_Pos(-550.f, 220.f);
-	m_pClassInfoIcon->Set_Sort(0.001f);
-
-	GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Remove_Texture(0);
-	Read_Texture(m_pClassInfoIcon, "/HUD/CharacterSelect", "Icon");
-
-	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pBG);
-
-	CREATE_GAMEOBJECT(m_pClassInfo, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pClassInfo);
-
-	CREATE_GAMEOBJECT(m_pClassInfoIcon, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pClassInfoIcon);
-}
 
 void CUI_HUD::Create_BriefingUI()
 {
@@ -496,107 +324,7 @@ void CUI_HUD::Set_FadePortHighlight()
 	tFadeDesc.fFadeOutStartTime = 0.f;
 	tFadeDesc.fFadeOutTime = 0.3f;
 
-	for (int i = 0; i < 6; ++i)
-	{
-		GET_COMPONENT_FROM(m_pArrBootCampUI[BC_Highlight][i], CFader)->Get_FadeDesc() = tFadeDesc;
-		GET_COMPONENT_FROM(m_pArrBootCampUI[BC_Line][i], CFader)->Get_FadeDesc() = tFadeDesc;
-	}
-
 	GET_COMPONENT_FROM(m_pInactiveHeroText, CFader)->Get_FadeDesc() = tFadeDesc;
-}
-
-void CUI_HUD::SetActive_CharacterSelectWindow(_bool value)
-{
-	if (m_eCurClass >= CLASS_TYPE::FIONA)
-		return;
-
-	Set_ClassInfo(m_eCurClass);
-
-	for (int i = 0; i < BC_Line; ++i)
-	{
-		if (i == BC_Icon)
-		{
-			m_pArrBootCampUI[i][m_eCurClass]->Set_PosY(-185.f);
-			continue;
-		}
-
-		m_pArrBootCampUI[i][m_eCurClass]->Set_PosY(-240.f);
-	}
-
-	m_pArrBootCampUI[BC_Line][m_eCurClass]->Set_ScaleX(100.f);
-	Enable_Fade(m_pArrBootCampUI[BC_Line][m_eCurClass], 0.3f);
-
-	//dynamic_cast<CUI_HpBar*>(m_pWrap[HpBar])->SetActive_HpBar(!value);
-
-	if (value == true)
-	{
-		CUser::Get_Instance()->Set_FixCursor(false); // 픽창 마우스 고정 해제
-
-		ENABLE_GAMEOBJECT(m_pBG);
-		ENABLE_GAMEOBJECT(m_pClassInfo);
-		ENABLE_GAMEOBJECT(m_pClassInfoIcon);
-
-		for (int i = 0; i < BC_Highlight; ++i)
-		{
-			for (int j = 0; j < 6; ++j)
-			{
-				ENABLE_GAMEOBJECT(m_pArrBootCampUI[i][j]);
-			}
-		}
-	}
-	else
-	{
-		CUser::Get_Instance()->Set_FixCursor(true); //픽 후 마우스 고정
-
-		DISABLE_GAMEOBJECT(m_pBG);
-		DISABLE_GAMEOBJECT(m_pClassInfo);
-		DISABLE_GAMEOBJECT(m_pClassInfoIcon);
-
-		for (int i = 0; i < BC_End; ++i)
-		{
-			for (int j = 0; j < 6; ++j)
-			{
-				DISABLE_GAMEOBJECT(m_pArrBootCampUI[i][j]);
-			}
-		}
-
-		CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
-		pPlayer->Change_UnitClass(m_eCurClass);
-		pPlayer->Get_CurrentUnit()->On_Respawn();
-
-		Set_HUD(m_eCurClass);
-	}
-}
-
-void CUI_HUD::Set_ClassInfo(CLASS_TYPE eClass)
-{
-	switch (eClass)
-	{
-	case Client::WARRIOR:
-		m_pClassInfo->Set_FontText(TEXT("블레이드"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(0);
-		break;
-	case Client::SPEAR:
-		m_pClassInfo->Set_FontText(TEXT("스파이크"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(1);
-		break;
-	case Client::ARCHER:
-		m_pClassInfo->Set_FontText(TEXT("아치"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(2);
-		break;
-	case Client::PALADIN:
-		m_pClassInfo->Set_FontText(TEXT("가디언"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(3);
-		break;
-	case Client::PRIEST:
-		m_pClassInfo->Set_FontText(TEXT("스모크"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(4);
-		break;
-	case Client::ENGINEER:
-		m_pClassInfo->Set_FontText(TEXT("워해머"));
-		GET_COMPONENT_FROM(m_pClassInfoIcon, CTexture)->Set_CurTextureIndex(5);
-		break;
-	}
 }
 
 void CUI_HUD::Create_TraingText()
@@ -1135,33 +863,38 @@ void CUI_HUD::Create_OperSideBG()
 
 void CUI_HUD::BootCamp_CharacterWindow()
 {
-	if (m_pBG)
+	if (m_pUI_CharacterWindow)
 	{
-		if (m_pBG->Is_Valid())
+		if (KEY(F, TAP))
 		{
-			if (KEY(F, TAP))
-			{
-				SetActive_CharacterSelectWindow(false);
-			}
+			m_pUI_CharacterWindow->SetActive_CharacterWindow(false);
+			SetActive_HUD(true);
+
+			CPlayer* pPlayer = CUser::Get_Instance()->Get_PlayerObejects();
+			pPlayer->Change_UnitClass(m_eCurClass);
+			pPlayer->Get_CurrentUnit()->On_Respawn();
+
+			Set_HUD(m_eCurClass);
 		}
-		else
-		{
-			
 
 #ifdef _DEBUG
-			if (KEY(T, TAP) && KEY(CTRL, HOLD))
-			{
-				SetActive_CharacterSelectWindow(true);
+
+		else if (KEY(T, TAP) && KEY(CTRL, HOLD))
+		{
+			SetActive_HUD(false);
+			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
 		}
+
 #else
-			if (KEY(T, TAP))
-			{
-				SetActive_CharacterSelectWindow(true);
-			}
+
+		else if (KEY(T, TAP))
+		{
+			SetActive_HUD(false);
+			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
+		}
 
 #endif
 
-		}
 	}
 }
 

@@ -245,3 +245,15 @@ void CUI::Read_Texture(string strFolderPath, string key)
 		}
 	}
 }
+
+void CUI::SetActive(_bool value)
+{
+	if (value == true)
+	{
+		ENABLE_GAMEOBJECT(this);
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(this);
+	}
+}
