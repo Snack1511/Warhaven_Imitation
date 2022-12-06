@@ -71,6 +71,9 @@ public:	// Lerp
 
 	void Fade_Font(_bool value, _float fDuration);
 
+public:
+	void Set_FadeDesc(_float fDuration);
+
 private:
 	wstring m_wstrName;
 

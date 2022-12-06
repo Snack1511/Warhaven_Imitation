@@ -68,7 +68,6 @@ public:
 	virtual void Set_Shader_SkillGauge3(CShader* pShader, const char* pConstName);
 
 public:
-	void Set_SkillHUD(_uint iIndex);
 	void Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 private:
@@ -95,10 +94,6 @@ private:
 private:
 	void Set_Pass();
 	void Bind_Shader();
-
-	void Active_SkillHUD(_uint iIndex);
-	void Set_SkillBtn(_uint iIndex, _uint iKeyIdx = 52, _uint iIconIdx = 29, bool bRelic = true);
-
 	void Enable_Outline();
 
 private:
