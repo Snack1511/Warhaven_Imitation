@@ -58,6 +58,7 @@
 #include "CUI_HUD.h"
 #include "CUI_Portrait.h"
 #include "CUI_HeroGauge.h"
+#include "CUI_Skill.h"
 
 CPlayer::CPlayer()
 {
@@ -273,8 +274,6 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 	m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
 
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
-
-
 
 	GAMEINSTANCE->Stop_GrayScale();
 
@@ -727,6 +726,7 @@ void CPlayer::On_FinishHero()
 
 	if (m_bIsMainPlayer)
 	{
+		static_cast<CUI_Skill*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Skill))->Enable_AllSkillUI();
 		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 	}
 

@@ -20,6 +20,7 @@ HRESULT CUI_Skill::Initialize_Prototype()
 {
 	Create_SkillUI();
 	Create_Outline();
+	Create_HeroKeySkillIcon();
 
 	return S_OK;
 }
@@ -89,11 +90,9 @@ void CUI_Skill::SetActive_Outline(_bool value)
 
 void CUI_Skill::Enable_AllSkillUI()
 {
-	// 일단 모든 UI 비활성화
 	SetActive_SkillUI(false);
 	SetActive_Outline(false);
 
-	// 해당 클래스의 할당된 인덱스 만큼의 UI 활성화
 	for (int i = 0; i < SU_End; ++i)
 	{
 		for (int j = 0; j < m_iIndex; ++j)
@@ -111,6 +110,8 @@ void CUI_Skill::Enable_AllSkillUI()
 			m_pArrOutline[i][j]->SetActive(true);
 		}
 	}
+
+	Active_HeroKeySkillIcon(m_iCurClass);
 }
 
 void CUI_Skill::Create_SkillUI()
@@ -190,6 +191,50 @@ void CUI_Skill::Create_Outline()
 	}
 }
 
+void CUI_Skill::Create_HeroKeySkillIcon()
+{
+	m_pHeroKeySkillIcon = CUI_Object::Create();
+
+	m_pHeroKeySkillIcon->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+
+	m_pHeroKeySkillIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Skill/HeroKeyIcon.dds"));
+	m_pHeroKeySkillIcon->Set_Color(_float4(0.9f, 0.8f, 0.5f, 1.f));
+
+	m_pHeroKeySkillIcon->Set_PosY(-300.f);
+	m_pHeroKeySkillIcon->Set_Scale(28.f);
+	m_pHeroKeySkillIcon->Set_Sort(0.48f);
+
+	CREATE_GAMEOBJECT(m_pHeroKeySkillIcon, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pHeroKeySkillIcon);
+}
+
+void CUI_Skill::Active_HeroKeySkillIcon(_uint eHeroClass)
+{
+	if (eHeroClass < FIONA)
+	{
+		m_pHeroKeySkillIcon->SetActive(false);
+
+		return;
+	}
+
+	_float fPosX;
+	switch (eHeroClass)
+	{
+	case Client::FIONA:
+		fPosX = m_pArrSkillUI[SU_BG][1]->Get_PosX();
+		m_pHeroKeySkillIcon->Set_PosX(fPosX - 10.f);
+		break;
+	case Client::QANDA:
+		break;
+	case Client::HOEDT:
+		break;
+	case Client::LANCER:
+		break;
+	}
+
+	m_pHeroKeySkillIcon->SetActive(true);
+}
+
 void CUI_Skill::OnEnable()
 {
 	__super::OnEnable();
@@ -224,7 +269,6 @@ void CUI_Skill::My_Tick()
 		}
 	}*/
 }
-
 
 void CUI_Skill::Set_Shader_SkillGauge1(CShader* pShader, const char* pConstName)
 {
@@ -372,26 +416,11 @@ void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCool
 
 void CUI_Skill::Active_SkillHUD(_uint iIndex)
 {
-	//m_iBtnCount = iIndex;
-
-	//for (_uint i = 0; i < 4; ++i)
-	//{
-	//	for (_uint j = 0; j < Type_End; ++j)
-	//	{
-	//		DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-	//	}
-	//}
-
 	//_float m_fLerpSpeed = 0.3f;
 
 	//for (_uint i = 0; i < iIndex; ++i)
 	//{
 	//	float fPosX = 480.f - (55.f * i);
-
-	//	//m_arrSkillUI[i][BG]->Set_Sort(0.3f);
-	//	//m_arrSkillUI[i][Outline0]->Set_Sort(0.2f);
-	//	//m_arrSkillUI[i][Outline1]->Set_Sort(0.2f);
-	//	//m_arrSkillUI[i][Outline2]->Set_Sort(0.2f);
 
 	//	for (_uint j = 0; j < Type_End; ++j)
 	//	{
@@ -512,56 +541,6 @@ void CUI_Skill::Enable_Outline()
 
 		m_bAbleOutline = false;
 	}
-}
-
-void CUI_Skill::Ready_SkillHUD()
-{
-	/*for (int i = 0; i < 3; ++i)
-	{
-		m_Prototypes[i] = m_pUIMap[TEXT("Skill_Outline")];
-	}
-
-	m_Prototypes[BG] = m_pUIMap[TEXT("Skill_BG")];
-	m_Prototypes[BG]->Set_Sort(0.3f);
-
-	m_Prototypes[Icon] = m_pUIMap[TEXT("Skill_Icon")];
-	m_Prototypes[Icon]->Set_Sort(0.29f);
-
-	GET_COMPONENT_FROM(m_Prototypes[Icon], CTexture)->Remove_Texture(0);
-	Read_Texture(m_Prototypes[Icon], "/HUD/Skill", "_");
-	Read_Texture(m_Prototypes[Icon], "/HUD/Relic", "Relic");
-	m_Prototypes[Icon]->SetTexture(TEXT("../Bin/Resources/Textures/UI/HUD/Relic/T_RelicIconMask.dds"));
-
-	m_Prototypes[Key] = m_pUIMap[TEXT("Skill_Key")];
-	m_Prototypes[Key]->Set_Sort(0.3f);
-	Read_Texture(m_Prototypes[Key], "/KeyIcon/Keyboard", "Key");
-
-	m_Prototypes[HeroKey] = m_pUIMap[TEXT("Skill_HeroKeySkill")];
-	m_Prototypes[HeroKey]->Set_Sort(0.2f);
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			m_arrSkillUI[i][j] = m_Prototypes[j]->Clone();
-		}
-	}
-
-	for (_uint i = 0; i < Type_End; ++i)
-	{
-		CREATE_GAMEOBJECT(m_Prototypes[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_Prototypes[i]);
-		m_Prototypes[i] = nullptr;
-	}
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < Type_End; ++j)
-		{
-			CREATE_GAMEOBJECT(m_arrSkillUI[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_arrSkillUI[i][j]);
-		}
-	}*/
 }
 
 void CUI_Skill::Create_SkillCoolText()

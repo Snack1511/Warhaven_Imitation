@@ -52,6 +52,13 @@ private:
 	void Create_Outline();
 
 private:
+	CUI_Object* m_pHeroKeySkillIcon = nullptr;
+
+private:
+	void Create_HeroKeySkillIcon();
+	void Active_HeroKeySkillIcon(_uint eHeroClass);
+
+private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
@@ -95,7 +102,6 @@ private:
 	void Enable_Outline();
 
 private:
-	void Ready_SkillHUD();
 	void Create_SkillCoolText();
 	void Create_SkillCoolBG();
 };

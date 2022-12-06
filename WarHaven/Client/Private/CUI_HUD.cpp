@@ -290,6 +290,10 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 	dynamic_cast<CUI_Crosshair*>(m_pHUD[HUD_Crosshair])->Set_Crosshair(m_eCurClass);
 	dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_UserPort(m_eCurClass);
 	dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Set_SkillUI(m_eCurClass);
+	if (m_eCurClass >= FIONA)
+	{
+		dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Enable_AllSkillUI();
+	}
 }
 
 void CUI_HUD::Bind_Btn()
