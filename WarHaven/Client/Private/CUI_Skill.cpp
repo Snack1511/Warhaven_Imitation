@@ -260,6 +260,42 @@ void CUI_Skill::Active_HeroKeySkillIcon(_uint eHeroClass)
 	m_pHeroKeySkillIcon->SetActive(true);
 }
 
+void CUI_Skill::Create_SkillCoolUI()
+{
+	for (int i = 0; i < SC_End; ++i)
+	{
+		m_pSkillCoolUI[i] = CUI_Object::Create();
+
+		if (i == SC_BG)
+		{
+			m_pSkillCoolUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_256Circle.dds"));
+			m_pSkillCoolUI[i]->Set_Color(_float4(1.f, 0.f, 0.f, 0.5f));
+
+			m_pSkillCoolUI[i]->Set_Scale(32.f);
+			m_pSkillCoolUI[i]->Set_Sort(0.49f);
+		}
+		else if (i == SC_Text)
+		{
+			m_pSkillCoolUI[i]->Set_Sort(0.48f);
+			m_pSkillCoolUI[i]->Set_FontRender(true);
+			m_pSkillCoolUI[i]->Set_FontStyle(true);
+			m_pSkillCoolUI[i]->Set_FontCenter(true);
+			m_pSkillCoolUI[i]->Set_FontScale(0.3f);
+		}
+
+		CREATE_GAMEOBJECT(m_pSkillCoolUI[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_pSkillCoolUI[i]);
+
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrSkillCoolUI[i][j] = m_pSkillCoolUI[i]->Clone();
+
+			CREATE_GAMEOBJECT(m_pArrSkillCoolUI[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrSkillCoolUI[i][j]);
+		}
+	}
+}
+
 void CUI_Skill::OnEnable()
 {
 	__super::OnEnable();
@@ -330,36 +366,6 @@ void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCool
 	}*/
 }
 
-void CUI_Skill::Enable_Outline()
-{
-	if (m_bAbleOutline)
-	{
-		m_fAccTime += fDT(0);
-
-		_float fDuration = 0.5f;
-
-		for (_uint i = 0; i < m_iBtnCount; ++i)
-		{
-			if (i != m_iBtnCount - 1)
-			{
-				//m_arrSkillUI[i][Outline1]->Set_Scale(95.f);
-				//m_arrSkillUI[i][Outline1]->DoScale(-45.f, fDuration);
-
-				//m_arrSkillUI[i][Outline1]->Set_Scale(150.f);
-				//m_arrSkillUI[i][Outline2]->DoScale(-100.f, fDuration);
-
-				if (m_iLerpCount > 1)
-				{
-					//ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline1]);
-					//ENABLE_GAMEOBJECT(m_arrSkillUI[i][Outline2]);
-				}
-			}
-		}
-
-		m_bAbleOutline = false;
-	}
-}
-
 void CUI_Skill::Create_SkillCoolText()
 {
 	m_pSkillCoolText = CUI_Object::Create();
@@ -394,17 +400,6 @@ void CUI_Skill::Create_SkillCoolText()
 
 void CUI_Skill::Create_SkillCoolBG()
 {
-	m_pSkillCoolBG = CUI_Object::Create();
-
-	m_pSkillCoolBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_256Circle.dds"));
-
-	m_pSkillCoolBG->Set_Color(_float4(0.5f, 0.f, 0.f, 0.588f));
-	m_pSkillCoolBG->Set_Sort(0.2f);
-	m_pSkillCoolBG->Set_Scale(44.f);
-
-	CREATE_GAMEOBJECT(m_pSkillCoolBG, GROUP_UI);
-	DELETE_GAMEOBJECT(m_pSkillCoolBG);
-
 	/*for (int i = 0; i < SkillEnd; ++i)
 	{
 		m_pSkillCoolBGArr[i] = m_pSkillCoolBG->Clone();

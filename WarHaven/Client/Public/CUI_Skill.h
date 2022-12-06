@@ -59,6 +59,14 @@ private:
 	void Active_HeroKeySkillIcon(_uint eHeroClass);
 
 private:
+	enum SkillCool { SC_BG, SC_Text, SC_End };
+	CUI_Object* m_pSkillCoolUI[SC_End];
+	CUI_Object* m_pArrSkillCoolUI[SC_End][3];
+
+private:
+	void Create_SkillCoolUI();
+
+private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
@@ -94,7 +102,6 @@ private:
 private:
 	void Set_Pass();
 	void Bind_Shader();
-	void Enable_Outline();
 
 private:
 	void Create_SkillCoolText();
