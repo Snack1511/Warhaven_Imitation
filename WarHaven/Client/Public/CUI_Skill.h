@@ -20,6 +20,11 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	virtual void Set_Shader_SkillCoolGauge0(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_SkillCoolGauge1(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_SkillCoolGauge2(CShader* pShader, const char* pConstName);
+
+public:
 	void Set_SkillUI(_uint iClass);
 	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
 
@@ -82,19 +87,10 @@ private:
 	void Update_SkillCoolTime();
 
 private:
+	virtual void My_Tick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
-public:
-	virtual void Set_Shader_SkillGauge1(CShader* pShader, const char* pConstName);
-	virtual void Set_Shader_SkillGauge2(CShader* pShader, const char* pConstName);
-	virtual void Set_Shader_SkillGauge3(CShader* pShader, const char* pConstName);
-
-private:
-	virtual void My_Tick() override;
-
-private:
-	void Set_Pass();
 	void Bind_Shader();
 };
 

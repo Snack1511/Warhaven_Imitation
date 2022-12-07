@@ -171,8 +171,6 @@ void CUI_Portrait::DoScale_UserPort(_bool value)
 {
 	m_fLerpUserPortDuration = 0.1f * (m_iChangeUserPortCount * 0.5f);
 
-	cout << m_fLerpUserPortDuration << endl;
-
 	Set_FadeUserPort(m_fLerpUserPortDuration);
 
 	for (int i = 0; i < UP_Effect; ++i)
