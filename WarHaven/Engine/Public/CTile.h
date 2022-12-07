@@ -14,6 +14,19 @@ class ENGINE_DLL CTile final
 	friend class CTileLayer;
 
 public:
+	enum eNeighvorFlags 
+	{
+		eNeighvorFlags_LeftTop,
+		eNeighvorFlags_Top,
+		eNeighvorFlags_RightTop,
+		eNeighvorFlags_Right,
+		eNeighvorFlags_RightBottom,
+		eNeighvorFlags_Bottom,
+		eNeighvorFlags_LeftBottom,
+		eNeighvorFlags_Left,
+		eNeighvorFlags_END,
+	};
+
 	enum eTileFlags
 	{
 		/* 타일이 아닌 셈 치는 거임 */
@@ -37,13 +50,15 @@ public:
 	void	Add_TileFlag(eTileFlags eFlag);
 	void	Remove_TileFlag(eTileFlags eFlag);
 
+	void	Bake_Neighvor(eNeighvorFlags NeighvorFlag, CTile* pNeighvorTile);
+	_uint	Get_GCost();
 public:
 	/* 유효한 타일인 지 (갈 수 있는 타일인지)*/
 	_bool	Is_ValidTile();
 
 private:
 	/* 인접 타일 */
-	CTile* m_arrAdjTiles[MAX_ADJ_TILES] = {};
+	CTile* m_arrAdjTiles[MAX_ADJ_TILES] = { nullptr };
 
 	/* 타일의 중앙 포지션 */
 	_float4			m_vCenterPos = ZERO_VECTOR;
@@ -51,7 +66,6 @@ private:
 	
 	/* 타일 플래그 */
 	_uint		m_eTileFlag = eTileFlags_None;
-
 
 private:
 	/* 날 소유한 layer */
