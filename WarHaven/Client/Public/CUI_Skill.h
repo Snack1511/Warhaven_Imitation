@@ -79,6 +79,7 @@ private:
 
 private:
 	void Create_SkillCoolUI();
+	void Update_SkillCoolTime();
 
 private:
 	virtual void OnEnable() override;

@@ -327,6 +327,16 @@ void CUI_Skill::Create_SkillCoolUI()
 	}
 }
 
+void CUI_Skill::Update_SkillCoolTime()
+{
+	for (int i = 0; i < m_iIndex; ++i)
+	{
+		_tchar  szSkill[MAX_STR] = {};
+		swprintf_s(szSkill, TEXT("%.1f"), m_fSkillCoolTime[i]);
+		m_pArrSkillCoolUI[SC_Text][i]->Set_FontText(szSkill);
+	}
+}
+
 void CUI_Skill::OnEnable()
 {
 	__super::OnEnable();
@@ -374,12 +384,7 @@ void CUI_Skill::My_Tick()
 
 	Disable_Outline();
 
-	for (int i = 0; i < m_iIndex; ++i)
-	{
-		_tchar  szSkill[MAX_STR] = {};
-		swprintf_s(szSkill, TEXT("%.1f"), m_fSkillCoolTime[i]);
-		m_pArrSkillCoolUI[SC_Text][i]->Set_FontText(szSkill);
-	}
+	Update_SkillCoolTime();
 }
 
 void CUI_Skill::Set_Shader_SkillGauge1(CShader* pShader, const char* pConstName)
