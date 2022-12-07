@@ -30,6 +30,14 @@ public:
 	3인자 : 타일의 한 변의 길이 ( 모든 타일이 동일, 정사각형 )
 	4인자 : 레이어 갯수 */
 	HRESULT		Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iNumLayers);
+public:
+	/*
+		타일 탐색 --> A*
+
+	*/
+	_bool Get_Route(_int iCurLayer, _int StartIndex, _int iTargetLayer, _int TargetIndex, list<CTile*>& pOutRoute);
+
+
 	
 private:
 	/* 레이어 단위로 들고 있음. */

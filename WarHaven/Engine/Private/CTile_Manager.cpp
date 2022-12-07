@@ -92,3 +92,27 @@ HRESULT CTile_Manager::Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float 
 
 	return S_OK;
 }
+
+ _bool CTile_Manager::Get_Route(_int iCurLayer, _int StartIndex, _int iTargetLayer, _int TargetIndex, list<CTile*>& OutRoute)
+{
+	/*
+	if(다른 레이어)
+		해당 레이어로 갈 수 있는 가장 가까운 계단을 탐색
+		Get_Route(다음 레이어, 계단, iTargetLayer, TargetIndex)
+		
+*/
+	 if (iCurLayer != iTargetLayer)
+	 {
+		//계단 탐색
+		 _uint iStairTileIndex = 0;
+		 m_vecLayers[iCurLayer]->Get_Route_NearStair(StartIndex, iStairTileIndex, OutRoute);
+
+		 //여기서 다음 레이어
+		 _int iNextLayer =(iCurLayer > iTargetLayer) ? (iCurLayer - 1) : (iCurLayer + 1);
+		 return Get_Route(iNextLayer, iStairTileIndex, iTargetLayer, TargetIndex, OutRoute);
+	 }
+	else
+	{
+		return m_vecLayers[iCurLayer]->Get_Route_TileBase(StartIndex, TargetIndex, OutRoute);
+	}
+}
