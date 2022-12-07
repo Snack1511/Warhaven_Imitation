@@ -282,6 +282,11 @@ void CUser::SetActive_HUD(_bool value)
 	m_pUI_HUD->SetActive_HUD(value);
 }
 
+void CUser::Transform_SkillUI(_uint iClass)
+{
+	m_pUI_Skill->Transform_SkillUI(iClass);
+}
+
 void CUser::On_EnterLevel()
 {
 	DISABLE_GAMEOBJECT(m_pCursor);

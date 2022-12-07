@@ -277,7 +277,7 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 
 	GAMEINSTANCE->Stop_GrayScale();
 
-	CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
+	CUser::Get_Instance()->Transform_SkillUI(m_eCurrentClass);
 
 	return S_OK;
 }

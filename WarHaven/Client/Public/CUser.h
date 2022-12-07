@@ -89,6 +89,7 @@ public:
 	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
 
 	void SetActive_HUD(_bool value);
+	void Transform_SkillUI(_uint iClass);
 
 public:
 	void On_EnterLevel();

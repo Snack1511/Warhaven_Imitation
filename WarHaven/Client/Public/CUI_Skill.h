@@ -31,6 +31,9 @@ public:
 	void SetActive_SkillUI(_bool value);
 	void SetActive_Outline(_bool value);
 	void SetActive_SkillCool(_bool value);
+	void SetActvie_HeroKeyIcon(_bool value);
+
+	void Transform_SkillUI(_uint iClass);
 
 	void Active_HeroKeySkillIcon(_uint eHeroClass);
 
@@ -85,6 +88,7 @@ private:
 private:
 	void Create_SkillCoolUI();
 	void Update_SkillCoolTime();
+	void Reset_SkillCoolTime();
 
 private:
 	virtual void My_Tick() override;

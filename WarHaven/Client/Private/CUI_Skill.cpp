@@ -67,6 +67,8 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 	/*if (m_iPrvClass == iClass)
 		return;*/
 
+	_float fPosX = m_pArrSkillUI[SU_BG][1]->Get_PosX();
+
 	switch (iClass)
 	{
 	case WARRIOR:
@@ -82,6 +84,7 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 	case FIONA:
 		m_iIndex = 3;
 		m_iSkillNum = 17;
+		m_pHeroKeySkillIcon->Set_PosX(fPosX - 10.f);
 		break;
 	}
 }
@@ -172,6 +175,30 @@ void CUI_Skill::SetActive_SkillCool(_bool value)
 		{
 			m_pArrSkillCoolUI[i][j]->SetActive(value);
 		}
+	}
+}
+
+void CUI_Skill::SetActvie_HeroKeyIcon(_bool value)
+{
+	m_pHeroKeySkillIcon->SetActive(value);
+}
+
+void CUI_Skill::Transform_SkillUI(_uint iClass)
+{
+	SetActive_SkillUI(false);
+	SetActive_Outline(false);
+	SetActive_SkillCool(false);
+	SetActvie_HeroKeyIcon(false);
+
+	Set_SkillUI(iClass);
+
+	SetActive_SkillUI(true);
+	SetActive_Outline(true);
+	SetActive_SkillCool(true);
+
+	if (m_iCurClass >= FIONA)
+	{
+		SetActvie_HeroKeyIcon(true);
 	}
 }
 
@@ -290,8 +317,6 @@ void CUI_Skill::Create_HeroKeySkillIcon()
 {
 	m_pHeroKeySkillIcon = CUI_Object::Create();
 
-	m_pHeroKeySkillIcon->Set_UIShaderFlag(SH_UI_BLOOM);
-
 	m_pHeroKeySkillIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Skill/HeroKeyIcon.dds"));
 	m_pHeroKeySkillIcon->Set_Color(_float4(0.9f, 0.8f, 0.5f, 1.f));
 
@@ -310,21 +335,6 @@ void CUI_Skill::Active_HeroKeySkillIcon(_uint eHeroClass)
 		m_pHeroKeySkillIcon->SetActive(false);
 
 		return;
-	}
-
-	_float fPosX;
-	switch (eHeroClass)
-	{
-	case Client::FIONA:
-		fPosX = m_pArrSkillUI[SU_BG][1]->Get_PosX();
-		m_pHeroKeySkillIcon->Set_PosX(fPosX - 10.f);
-		break;
-	case Client::QANDA:
-		break;
-	case Client::HOEDT:
-		break;
-	case Client::LANCER:
-		break;
 	}
 
 	m_pHeroKeySkillIcon->SetActive(true);
@@ -385,6 +395,14 @@ void CUI_Skill::Update_SkillCoolTime()
 	}
 }
 
+void CUI_Skill::Reset_SkillCoolTime()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		m_fSkillCoolTimeRatio[i] = 0.f;
+	}
+}
+
 void CUI_Skill::My_Tick()
 {
 	__super::My_Tick();
@@ -401,6 +419,7 @@ void CUI_Skill::OnEnable()
 	SetActive_SkillUI(true);
 	SetActive_Outline(true);
 	SetActive_SkillCool(true);
+	SetActvie_HeroKeyIcon(true);
 }
 
 void CUI_Skill::OnDisable()
@@ -409,12 +428,10 @@ void CUI_Skill::OnDisable()
 
 	SetActive_SkillUI(false);
 	SetActive_Outline(false);
-	SetActive_SkillCool(false);
+	SetActive_SkillCool(false); 
+	SetActvie_HeroKeyIcon(false);
 
-	for (int i = 0; i < 3; ++i)
-	{
-		m_fSkillCoolTimeRatio[i] = 0.f;
-	}
+	Reset_SkillCoolTime();
 }
 
 void CUI_Skill::Bind_Shader()
