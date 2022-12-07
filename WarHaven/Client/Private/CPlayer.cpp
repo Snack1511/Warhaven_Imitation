@@ -58,6 +58,7 @@
 #include "CUI_HUD.h"
 #include "CUI_Portrait.h"
 #include "CUI_HeroGauge.h"
+#include "CUI_Skill.h"
 
 CPlayer::CPlayer()
 {
@@ -274,12 +275,11 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
 
-
-
 	GAMEINSTANCE->Stop_GrayScale();
 
-	CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
-
+	CUser::Get_Instance()->Set_HeroPort(1);
+	CUser::Get_Instance()->Transform_SkillUI(m_eCurrentClass);
+	
 	return S_OK;
 }
 
@@ -727,9 +727,9 @@ void CPlayer::On_FinishHero()
 
 	if (m_bIsMainPlayer)
 	{
+		CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 	}
-
 }
 
 void CPlayer::On_FinishHero_KeyInput()

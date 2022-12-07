@@ -28,6 +28,7 @@
 #include "CUI_Portrait.h"
 #include "CUI_HpBar.h"	
 #include "CUI_HeroGauge.h"
+#include "CUI_Skill.h"
 
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
@@ -281,6 +282,11 @@ void CUser::SetActive_HUD(_bool value)
 	m_pUI_HUD->SetActive_HUD(value);
 }
 
+void CUser::Transform_SkillUI(_uint iClass)
+{
+	m_pUI_Skill->Transform_SkillUI(iClass);
+}
+
 void CUser::On_EnterLevel()
 {
 	DISABLE_GAMEOBJECT(m_pCursor);
@@ -302,6 +308,7 @@ void CUser::On_EnterStageLevel()
 		m_pUI_Portrait = static_cast<CUI_Portrait*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Port));
 		m_pUI_HP = static_cast<CUI_HpBar*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HP));
 		m_pUI_HeroGauge = static_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
+		m_pUI_Skill = static_cast<CUI_Skill*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Skill));
 	}
 
 	if (!m_pUI_Damage[0])
@@ -365,9 +372,12 @@ _bool CUser::Is_OnHeroGauge()
 	return m_pUI_HUD->Is_OnHeroGauge();
 }
 
-void CUser::Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime)
+void CUser::Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime)
 {
-	m_pUI_HUD->Set_SkillCoolTime(iSkillType, fSkillCoolTime, fMaxCoolTime);
+	if (!CGameObject::Is_Valid(m_pUI_Skill))
+		return;
+
+	m_pUI_Skill->Set_SkillCoolTime(iSkillIdx, fSkillCoolTime, fSkillMaxCoolTime);
 }
 
 void CUser::Enable_DamageFont(_uint eType, _float fDmg)

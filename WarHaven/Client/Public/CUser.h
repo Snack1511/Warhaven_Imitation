@@ -22,6 +22,7 @@ class CUI_HUD;
 class CUI_Portrait;
 class CUI_HpBar;
 class CUI_HeroGauge;
+class CUI_Skill;
 
 class CUser
 {
@@ -85,8 +86,10 @@ public:
 	void Set_HeroPort(_uint iType);
 	void Set_HP(_float fCurValue, _float fMaxValue);
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
+	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
 
 	void SetActive_HUD(_bool value);
+	void Transform_SkillUI(_uint iClass);
 
 public:
 	void On_EnterLevel();
@@ -95,7 +98,6 @@ public:
 	void On_ExitStageLevel();
 
 	void Set_HUD(CLASS_TYPE eClass);
-	void Set_SkillCoolTime(_uint iSkillType, _float fSkillCoolTime, _float fMaxCoolTime);
 
 	void SetActive_OxenJumpText(_bool value);
 	void SetActive_HeroTransformGauge(_bool value);
@@ -113,6 +115,7 @@ private:
 	CUI_Portrait* m_pUI_Portrait = nullptr;
 	CUI_HpBar* m_pUI_HP = nullptr;
 	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
+	CUI_Skill* m_pUI_Skill = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

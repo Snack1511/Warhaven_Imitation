@@ -7,6 +7,7 @@
 #include "CUI_Renderer.h"
 #include "CShader.h"
 #include "CButton.h"
+#include "CFader.h"
 
 CUI_Object::CUI_Object()
 {
@@ -181,6 +182,26 @@ void CUI_Object::Fade_Font(_bool value, _float fDuration)
 
 	m_bIsFadeIn = value;
 	m_fDuration = fDuration;
+}
+
+void CUI_Object::Set_FadeDesc(_float fDuration)
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = fDuration;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = fDuration;
+
+	GET_COMPONENT_FROM(this, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
 void CUI_Object::OnEnable()

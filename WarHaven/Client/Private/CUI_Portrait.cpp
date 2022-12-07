@@ -69,14 +69,7 @@ void CUI_Portrait::SetActive_UserPort(_bool value)
 {
 	for (int i = 0; i < UP_Effect; ++i)
 	{
-		if (value == true)
-		{
-			ENABLE_GAMEOBJECT(m_pUserPortrait[i]);
-		}
-		else
-		{
-			DISABLE_GAMEOBJECT(m_pUserPortrait[i]);
-		}
+		m_pUserPortrait[i]->SetActive(value);
 	}
 }
 
@@ -86,17 +79,7 @@ void CUI_Portrait::SetActive_HeroPort(_bool value)
 	{
 		for (int j = 0; j < 4; ++j)
 		{
-			if (value == true)
-			{
-				if (!m_bAbleHero)
-					return;
-
-				ENABLE_GAMEOBJECT(m_pArrHeroPortrait[i][j]);
-			}
-			else
-			{
-				DISABLE_GAMEOBJECT(m_pArrHeroPortrait[i][j]);
-			}
+			m_pArrHeroPortrait[i][j]->SetActive(value);
 		}
 	}
 }

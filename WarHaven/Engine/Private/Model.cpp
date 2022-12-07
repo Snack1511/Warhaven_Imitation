@@ -512,8 +512,14 @@ void CModel::Set_TransformMatrix(_uint iMeshPartType, _float4x4 matTransform)
 {
 	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 	{
+		if (!m_MeshContainers[i].first)
+			continue;
+
 		if ((m_MeshContainers[i].first % 10) == iMeshPartType)
 		{
+			if (!m_MeshContainers[i].second)
+				continue;
+
 			m_MeshContainers[i].second->m_PrevTransformMatrix = matTransform;
 		}
 	}

@@ -39,6 +39,9 @@ public:
 	virtual void On_PointDown_Stage(const _uint& iEventNum);
 
 private:
+	_bool m_bIsMouseEvent = false;
+
+private:
 	CUI_Object* m_pPlayBtnUI[2];
 
 	// Mode Select

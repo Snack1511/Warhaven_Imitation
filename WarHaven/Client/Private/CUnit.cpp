@@ -171,7 +171,7 @@ void CUnit::Set_LookToTarget()
 		return;
 
 	CUtility_Transform::LookAt(m_pTransform, m_pOwnerPlayer->Get_TargetPlayer()->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS), true);
-	
+
 }
 
 void CUnit::Set_ShaderResource(CShader* pShader, const char* pConstantName)
@@ -892,20 +892,18 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
-
 	for (_int i = 0; i < COOL_END; ++i)
 	{
-		if (m_fCoolAcc[i] >= 0.01f)
+		if (m_fCoolAcc[i] > 0.f)
 		{
-			for (int i = 0; i < COOL_END; ++i)
-			{
-				CUser::Get_Instance()->Set_SkillCoolTime(i, m_fCoolAcc[i], m_fCoolTime[i]);
-			}
-
 			m_fCoolAcc[i] -= fDT(0);
 		}
 		else
+		{
 			m_fCoolAcc[i] = 0.f;
+		}
+
+		CUser::Get_Instance()->Set_SkillCoolTime(i, m_fCoolAcc[i], m_fCoolTime[i]);
 	}
 
 
@@ -945,7 +943,7 @@ void CUnit::My_LateTick()
 		}
 	}
 
-	
+
 
 }
 
@@ -1169,7 +1167,7 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	m_bDie = true;
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
-	
+
 	// 데드에 넘겨주기	
 
 	if (m_bIsMainPlayer)
@@ -1179,7 +1177,7 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 		CUser::Get_Instance()->Enable_DeadUI();
 
 		m_pFollowCam->Set_FollowTarget(pOtherUnit);
-	}	
+	}
 }
 
 void CUnit::On_Bounce(void* pHitInfo)
