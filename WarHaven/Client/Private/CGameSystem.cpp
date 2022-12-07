@@ -802,10 +802,10 @@ HRESULT CGameSystem::Paden_EnvironmentEffect()
 {
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_Envir", _float4(0.f, 0.f, 0.f));
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_Roof", _float4(0.f, 0.f, 0.f));
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_In", _float4(0.f, 0.f, 0.f));
 
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_0"), _float4(-27.7f, -0.5f, 34.8f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_1"), _float4(-38.f, -0.5f, 29.1f));
-    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_2"), _float4(36.f, 0.f, 9.2f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_3"), _float4(-60.1f, 4.7f, 34.7f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_4"), _float4(-24.1f, 3.1f, -76.1f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_5"), _float4(19.6f, -0.3f, -72.f));
@@ -815,7 +815,6 @@ HRESULT CGameSystem::Paden_EnvironmentEffect()
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_9"), _float4(-28.f, -0.5f, -37.1f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_10"), _float4(-2.2f, -0.4f, 51.1f));
 
-    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_0"), _float4(-8.5f, -24.7f, 23.9f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_2"), _float4(12.7f, 21.6f, 22.2f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_3"), _float4(26.3f, 23.2f, -3.3f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_4"), _float4(16.6f, 20.f, -22.4f));
@@ -838,6 +837,7 @@ HRESULT CGameSystem::Paden_EnvironmentEffect()
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_24"), _float4(-22.f, 19.9f, -19.2f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_25"), _float4(-12.7f, 23.1f, -25.4f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_26"), _float4(-50.8f, 4.6f, 19.8f));
+    
 
 
 
