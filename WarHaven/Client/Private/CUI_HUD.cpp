@@ -268,7 +268,7 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 	{
 		if (CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero())
 		{
-			Enable_Fade(m_pInactiveHeroText, 1.f);
+			Enable_Fade(m_pInactiveHeroText, 1.2f);
 			dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_HeroPort(1);
 		}
 
@@ -277,16 +277,20 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 	}
 	else
 	{
-		Disable_Fade(m_pInactiveHeroText, 1.f);
+		Disable_Fade(m_pInactiveHeroText, 1.2f);
 		//CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->IsHero() = false;
 	}
 
 	dynamic_cast<CUI_Crosshair*>(m_pHUD[HUD_Crosshair])->Set_Crosshair(m_eCurClass);
 	dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_UserPort(m_eCurClass);
 	dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Set_SkillUI(m_eCurClass);
-	if (m_eCurClass >= FIONA)
+
+	if (m_eCurClass > FIONA)
 	{
-		dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Enable_AllSkillUI();
+		DISABLE_GAMEOBJECT(m_pHUD[HUD_Skill]);
+		ENABLE_GAMEOBJECT(m_pHUD[HUD_Skill]);
+
+		dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Active_HeroKeySkillIcon(m_eCurClass);
 	}
 }
 
@@ -448,10 +452,12 @@ void CUI_HUD::Create_InactiveHeroText()
 	m_pInactiveHeroText = CUI_Object::Create();
 
 	m_pInactiveHeroText->Set_Scale(20.f);
-	m_pInactiveHeroText->Set_Pos(450.f, -195.f);
+	m_pInactiveHeroText->Set_Pos(445.f, -191.f);
 	m_pInactiveHeroText->Set_Sort(0.85f);
 
-	m_pInactiveHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteNum1KeyIcon.dds"));
+	m_pInactiveHeroText->Set_FadeDesc(1.2f);
+
+	m_pInactiveHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/White/Num1.dds"));
 
 	m_pInactiveHeroText->Set_FontRender(true);
 	m_pInactiveHeroText->Set_FontStyle(true);

@@ -21,12 +21,13 @@ public:
 
 public:
 	void Set_SkillUI(_uint iClass);
+	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
 
 	void SetActive_SkillUI(_bool value);
 	void SetActive_Outline(_bool value);
 	void SetActive_SkillCool(_bool value);
 
-	void Enable_AllSkillUI();
+	void Active_HeroKeySkillIcon(_uint eHeroClass);
 
 private:
 	_uint m_iPrvClass = -1;
@@ -49,22 +50,6 @@ private:
 	CUI_Object* m_pOutline[Outline_End];
 	CUI_Object* m_pArrOutline[Outline_End][3];
 
-private:
-	void Create_Outline();
-
-private:
-	CUI_Object* m_pHeroKeySkillIcon = nullptr;
-
-private:
-	void Create_HeroKeySkillIcon();
-	void Active_HeroKeySkillIcon(_uint eHeroClass);
-
-private:
-	enum SkillCool { SC_BG, SC_Text, SC_End };
-	CUI_Object* m_pSkillCoolUI[SC_End];
-	CUI_Object* m_pArrSkillCoolUI[SC_End][3];
-
-private:
 	_bool m_bDisableOutline = false;
 
 	_float m_fOutline1LerpTime = 0.4f;
@@ -72,6 +57,25 @@ private:
 
 	_float m_fOutline1AccTime[3] = { 0.f };
 	_float m_fOutline2AccTime[3] = { 0.f };
+
+private:
+	void Create_Outline();
+	void Disable_Outline();
+
+private:
+	CUI_Object* m_pHeroKeySkillIcon = nullptr;
+
+private:
+	void Create_HeroKeySkillIcon();
+
+private:
+	enum SkillCool { SC_BG, SC_Text, SC_End };
+	CUI_Object* m_pSkillCoolUI[SC_End];
+	CUI_Object* m_pArrSkillCoolUI[SC_End][3];
+
+	_float m_fSkillCoolTime[3] = { 0.f };
+	_float m_fSkillMaxCoolTime[3] = { 0.f };
+	_float m_fSkillCoolTimeRatio[3] = { 0.f };
 
 private:
 	void Create_SkillCoolUI();
@@ -84,9 +88,6 @@ public:
 	virtual void Set_Shader_SkillGauge1(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_SkillGauge2(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_SkillGauge3(CShader* pShader, const char* pConstName);
-
-public:
-	void Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 private:
 	virtual void My_Tick() override;

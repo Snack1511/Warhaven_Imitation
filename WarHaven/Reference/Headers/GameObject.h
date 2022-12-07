@@ -55,6 +55,10 @@ public:/*Get, Set*/
 
 	/* Is_Valid : Check the Instance is okay to update. */
 	_bool			Is_Valid() { return (m_bAlive && m_bEnable) ? (true) : (false); }
+
+	// 송로민이 만든 Is_Valid
+	static			_bool Is_Valid(CGameObject* pInstance);
+
 	_bool			Is_Disable() { return !m_bEnable; }
 	_bool			Is_Dead() { return !m_bAlive; }
 #pragma endregion

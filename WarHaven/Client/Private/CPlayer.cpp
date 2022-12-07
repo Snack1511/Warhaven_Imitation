@@ -726,7 +726,7 @@ void CPlayer::On_FinishHero()
 
 	if (m_bIsMainPlayer)
 	{
-		static_cast<CUI_Skill*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Skill))->Enable_AllSkillUI();
+		CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 	}
 

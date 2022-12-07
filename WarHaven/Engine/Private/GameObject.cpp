@@ -66,6 +66,14 @@ void CGameObject::Set_Enable(_bool bEnable)
 	(m_bEnable = bEnable) ? OnEnable() : OnDisable();
 }
 
+_bool CGameObject::Is_Valid(CGameObject* pInstance)
+{
+	if (!pInstance)
+		return false;
+
+	return pInstance->Is_Valid();
+}
+
 #pragma region Tick, Late_Tick
 HRESULT CGameObject::Start()
 {

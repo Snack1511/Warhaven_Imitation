@@ -132,51 +132,6 @@ void CUI_Skill::SetActive_SkillCool(_bool value)
 	}
 }
 
-void CUI_Skill::Enable_AllSkillUI()
-{
-	for (int i = 0; i < SU_End; ++i)
-	{
-		for (int j = 0; j < m_iIndex; ++j)
-		{
-			GET_COMPONENT_FROM(m_pArrSkillUI[SU_Icon][j], CTexture)->Set_CurTextureIndex(m_iSkillNum + j);
-
-			m_pArrSkillUI[i][j]->SetActive(true);
-
-			if (i == SU_BG)
-			{
-				m_pArrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, 0.3f);
-			}
-			else if (i == SU_Icon)
-			{
-				m_pArrSkillUI[i][j]->Lerp_Scale(115.f, 28.f, 0.3f);
-			}
-		}
-	}
-
-	for (int i = 0; i < Outline_End; ++i)
-	{
-		for (int j = 0; j < m_iIndex; ++j)
-		{
-			Enable_Fade(m_pArrOutline[i][j], 0.f);
-
-			if (i == Outline0)
-			{
-				m_pArrOutline[i][j]->Lerp_Scale(125.f, 40.f, 0.3f);
-			}
-			else if (i == Outline1)
-			{
-				m_pArrOutline[i][j]->Lerp_Scale(155.f, 40.f, m_fOutline1LerpTime);
-			}
-			else if (i == Outline2)
-			{
-				m_pArrOutline[i][j]->Lerp_Scale(205.f, 40.f, m_fOutline2LerpTime);
-			}
-		}
-	}
-
-	Active_HeroKeySkillIcon(m_iCurClass);
-}
-
 void CUI_Skill::Create_SkillUI()
 {
 	for (int i = 0; i < SU_End; ++i)
@@ -257,11 +212,37 @@ void CUI_Skill::Create_Outline()
 	}
 }
 
+void CUI_Skill::Disable_Outline()
+{
+	for (int i = 0; i < m_iIndex; ++i)
+	{
+		if (m_pArrOutline[Outline1][i]->Is_Valid())
+		{
+			m_fOutline1AccTime[i] += fDT(0);
+			if (m_fOutline1AccTime[i] > m_fOutline1LerpTime)
+			{
+				m_fOutline1AccTime[i] = 0.f;
+				m_pArrOutline[Outline1][i]->SetActive(false);
+			}
+		}
+
+		if (m_pArrOutline[Outline2][i]->Is_Valid())
+		{
+			m_fOutline2AccTime[i] += fDT(0);
+			if (m_fOutline2AccTime[i] > m_fOutline2LerpTime)
+			{
+				m_fOutline2AccTime[i] = 0.f;
+				m_pArrOutline[Outline2][i]->SetActive(false);
+			}
+		}
+	}
+}
+
 void CUI_Skill::Create_HeroKeySkillIcon()
 {
 	m_pHeroKeySkillIcon = CUI_Object::Create();
 
-	// m_pHeroKeySkillIcon->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+	m_pHeroKeySkillIcon->Set_UIShaderFlag(SH_UI_BLOOM);
 
 	m_pHeroKeySkillIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Skill/HeroKeyIcon.dds"));
 	m_pHeroKeySkillIcon->Set_Color(_float4(0.9f, 0.8f, 0.5f, 1.f));
@@ -328,8 +309,6 @@ void CUI_Skill::Create_SkillCoolUI()
 
 			m_pSkillCoolUI[i]->Set_FontOffset(6.f, 4.f);
 			m_pSkillCoolUI[i]->Set_FontScale(0.2f);
-
-			m_pSkillCoolUI[i]->Set_FontText(TEXT("10.0"));
 		}
 
 		CREATE_GAMEOBJECT(m_pSkillCoolUI[i], GROUP_UI);
@@ -355,7 +334,29 @@ void CUI_Skill::OnEnable()
 	SetActive_SkillUI(true);
 	SetActive_Outline(true);
 	SetActive_SkillCool(true);
-	// Enable_AllSkillUI();
+}
+
+void CUI_Skill::Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime)
+{
+	m_fSkillCoolTime[iSkillIdx] = fSkillCoolTime;
+	m_fSkillMaxCoolTime[iSkillIdx] = fSkillMaxCoolTime;
+
+	if (m_fSkillCoolTime[iSkillIdx] > 0.f)
+	{
+		m_fSkillCoolTimeRatio[iSkillIdx] = m_fSkillCoolTime[iSkillIdx] / m_fSkillMaxCoolTime[iSkillIdx];
+
+		for (int i = 0; i < SC_End; ++i)
+		{
+			m_pArrSkillCoolUI[i][iSkillIdx]->SetActive(true);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < SC_End; ++i)
+		{
+			m_pArrSkillCoolUI[i][iSkillIdx]->SetActive(false);
+		}
+	}
 }
 
 void CUI_Skill::OnDisable()
@@ -371,43 +372,14 @@ void CUI_Skill::My_Tick()
 {
 	__super::My_Tick();
 
-	for (int i = 0; i < 3; ++i)
-	{
-		if (m_pArrOutline[Outline1][i]->Is_Valid())
-		{
-			m_fOutline1AccTime[i] += fDT(0);
-			if (m_fOutline1AccTime[i] > m_fOutline1LerpTime)
-			{
-				m_fOutline1AccTime[i] = 0.f;
-				m_pArrOutline[Outline1][i]->SetActive(false);
-			}
-		}
+	Disable_Outline();
 
-		if (m_pArrOutline[Outline2][i]->Is_Valid())
-		{
-			m_fOutline2AccTime[i] += fDT(0);
-			if (m_fOutline2AccTime[i] > m_fOutline2LerpTime)
-			{
-				m_fOutline2AccTime[i] = 0.f;
-				m_pArrOutline[Outline2][i]->SetActive(false);
-			}
-		}
-	}
-
-	/*Enable_Outline();
-
-	for (int i = 0; i < SkillEnd; ++i)
+	for (int i = 0; i < m_iIndex; ++i)
 	{
 		_tchar  szSkill[MAX_STR] = {};
-		swprintf_s(szSkill, TEXT("%.1f"), m_fCoolTime[i]);
-		m_pSkillCoolTextArr[i]->Set_FontText(szSkill);
-
-		if (m_fCoolTime[i] <= 0.05f)
-		{
-			DISABLE_GAMEOBJECT(m_pSkillCoolTextArr[i]);
-			DISABLE_GAMEOBJECT(m_pSkillCoolBGArr[i]);
-		}
-	}*/
+		swprintf_s(szSkill, TEXT("%.1f"), m_fSkillCoolTime[i]);
+		m_pArrSkillCoolUI[SC_Text][i]->Set_FontText(szSkill);
+	}
 }
 
 void CUI_Skill::Set_Shader_SkillGauge1(CShader* pShader, const char* pConstName)
@@ -423,26 +395,6 @@ void CUI_Skill::Set_Shader_SkillGauge2(CShader* pShader, const char* pConstName)
 void CUI_Skill::Set_Shader_SkillGauge3(CShader* pShader, const char* pConstName)
 {
 	//pShader->Set_RawValue("g_fValue", &m_fSkillGauge[Skill3], sizeof(_float));
-}
-
-void CUI_Skill::Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
-{
-	//m_fCoolTime[iSkillType] = fCoolTime;
-	//m_fMaxCoolTime[iSkillType] = fMaxCoolTime;
-
-	/*for (_uint i = 0; i < SkillEnd; ++i)
-	{
-		if (m_fCoolTime[iSkillType] > 0.f)
-		{
-			m_fSkillGauge[iSkillType] = m_fCoolTime[iSkillType] / m_fMaxCoolTime[iSkillType];
-		}
-	}
-
-	if (m_fCoolTime[iSkillType] > 0.01f)
-	{
-		ENABLE_GAMEOBJECT(m_pSkillCoolTextArr[iSkillType]);
-		ENABLE_GAMEOBJECT(m_pSkillCoolBGArr[iSkillType]);
-	}*/
 }
 
 void CUI_Skill::Set_Pass()
