@@ -1939,6 +1939,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\CharacterWindow">
       <UniqueIdentifier>{3a964216-ba85-44ad-b08a-ad8462b3e420}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Paden">
+      <UniqueIdentifier>{9a4e9623-274f-488e-bac7-57c15002dc12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3429,6 +3432,9 @@
     <ClInclude Include="..\Public\CUI_CharacterWindow.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\CharacterWindow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Paden.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Paden</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4899,6 +4905,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_CharacterWindow.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\CharacterWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Paden.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Paden</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,7 @@ int g_iHeightSize;
 float g_fRowX;
 float g_fColY;
 
-float   g_fTimeAcc;
+float g_fTimeAcc;
 
 struct VS_IN
 {
@@ -447,6 +447,18 @@ PS_OUT PS_OPERSMOKE(PS_IN In)
     
     Out.vColor = vColor;
     Out.vColor.a = vNoise.r;
+    
+    return Out;
+}
+
+PS_OUT PS_STRONGHOLDGAUGE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor = vColor;
     
     return Out;
 }
@@ -863,12 +875,12 @@ PS_OUT PS_UIFIRE(PS_IN In)
 
 struct PS_DISTORTION_OUT
 {
-    vector		vDistortionFlag : SV_TARGET0;
+    vector vDistortionFlag : SV_TARGET0;
 };
 
 PS_DISTORTION_OUT PS_MAIN_DISTORTION(VS_TRAIL_OUT In)
 {
-    PS_DISTORTION_OUT		Out = (PS_DISTORTION_OUT)0;
+    PS_DISTORTION_OUT Out = (PS_DISTORTION_OUT) 0;
 
     //float fTime = sin(g_fTimeAcc);
 
@@ -1052,6 +1064,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_OPERSMOKE();
+    }
+
+    pass UI_StrongHoldGauge
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_STRONGHOLDGAUGE();
     }
 
     pass ALPHA

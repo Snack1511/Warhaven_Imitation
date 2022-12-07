@@ -72,19 +72,37 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 	switch (iClass)
 	{
 	case WARRIOR:
+
 		m_iIndex = 2;
 		m_iSkillNum = 0;
+
+		Set_KeyIcon(0, 17);
+		Set_KeyIcon(1, 29);
+
 		break;
 
 	case ENGINEER:
+
 		m_iIndex = 3;
 		m_iSkillNum = 14;
+
+		Set_KeyIcon(0, 30);
+		Set_KeyIcon(1, 29);
+		Set_KeyIcon(2, 17);
+
 		break;
 
 	case FIONA:
+
 		m_iIndex = 3;
 		m_iSkillNum = 17;
+
+		Set_KeyIcon(0, 0);
+		Set_KeyIcon(1, 17);
+		Set_KeyIcon(2, 29);
+
 		m_pHeroKeySkillIcon->Set_PosX(fPosX - 10.f);
+
 		break;
 	}
 }
@@ -97,8 +115,6 @@ void CUI_Skill::Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float
 	if (m_fSkillCoolTime[iSkillIdx] > 0.f)
 	{
 		m_fSkillCoolTimeRatio[iSkillIdx] = m_fSkillCoolTime[iSkillIdx] / m_fSkillMaxCoolTime[iSkillIdx];
-
-		cout << iSkillIdx << " : " << m_fSkillCoolTimeRatio[iSkillIdx] << endl;
 
 		for (int i = 0; i < SC_End; ++i)
 		{
@@ -226,7 +242,7 @@ void CUI_Skill::Create_SkillUI()
 		}
 		else if (i == SU_Key)
 		{
-			GET_COMPONENT_FROM(m_pSkillUI[i], CTexture)->Remove_Texture(0);
+			m_pSkillUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 			Read_Texture(m_pSkillUI[i], "/KeyIcon/Keyboard/Black", "Key");
 
 			m_pSkillUI[i]->Set_PosY(-275.f);
@@ -311,6 +327,11 @@ void CUI_Skill::Disable_Outline()
 			}
 		}
 	}
+}
+
+void CUI_Skill::Set_KeyIcon(_uint iIndex, _uint iNum)
+{
+	GET_COMPONENT_FROM(m_pArrSkillUI[SU_Key][iIndex], CTexture)->Set_CurTextureIndex(iNum);
 }
 
 void CUI_Skill::Create_HeroKeySkillIcon()
@@ -419,7 +440,6 @@ void CUI_Skill::OnEnable()
 	SetActive_SkillUI(true);
 	SetActive_Outline(true);
 	SetActive_SkillCool(true);
-	SetActvie_HeroKeyIcon(true);
 }
 
 void CUI_Skill::OnDisable()
@@ -428,7 +448,7 @@ void CUI_Skill::OnDisable()
 
 	SetActive_SkillUI(false);
 	SetActive_Outline(false);
-	SetActive_SkillCool(false); 
+	SetActive_SkillCool(false);
 	SetActvie_HeroKeyIcon(false);
 
 	Reset_SkillCoolTime();

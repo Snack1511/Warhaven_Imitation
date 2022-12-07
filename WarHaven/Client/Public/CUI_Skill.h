@@ -52,6 +52,7 @@ private:
 
 private:
 	void Create_SkillUI();
+	void Set_KeyIcon(_uint iIndex, _uint iNum);
 
 private:
 	enum Outline { Outline0, Outline1, Outline2, Outline_End };

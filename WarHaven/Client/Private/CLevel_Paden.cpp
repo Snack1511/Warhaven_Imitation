@@ -50,7 +50,7 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Paden::Ready_GameObject, this, placeholders::_1, placeholders::_2);
-	CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
+	CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
 	m_fLoadingFinish = 0.5f;
 
 	/* GameSystem */
