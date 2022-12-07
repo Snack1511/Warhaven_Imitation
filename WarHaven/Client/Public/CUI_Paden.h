@@ -31,7 +31,7 @@ private:
 	void Create_InGameTimer();
 
 private:
-	enum StrongHoldGauge { Gauge_BG, Gauge_Bar, Gauge_Icon, Gauge_End};
+	enum StrongHoldGauge { Gauge_BG, Gauge_Bar, Gauge_Icon, Gauge_Score, Gauge_End };
 	CUI_Object* m_pStrongHoldGauge[Gauge_End];
 	CUI_Object* m_pArrStrongHoldGauge[Gauge_End][2];
 
@@ -39,12 +39,17 @@ private:
 	void Create_StrongHoldGauge();
 
 private:
-	enum TopPointUI { TP_BG, TP_Gauge, TP_Outline, TP_Icon, TP_End };
-	CUI_Object* m_pTopPointUI[TP_End];
-	CUI_Object* m_pArrTopPointUI[TP_End][3];
+	enum TopPointUI { SU_BG, SU_Gauge, SU_Outline, SU_Icon, SU_End };
+	CUI_Object* m_pStrongHoldUI[SU_End];
+	CUI_Object* m_pArrStrongHoldUI[SU_End][3];
+
+	_float4 m_vColorBG = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	_float4 m_vColorGauge = _float4(1.f, 1.f, 1.f, 0.1f);
+	_float4 m_vColorOutline = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
 private:
-	void Create_TopStrongPointUI();
+	void Create_StrongHoldUI();
+	void Init_StrongHoldUI();
 };
 
 END

@@ -8,7 +8,7 @@ HRESULT CUI_Paden::Initialize_Prototype()
 {
 	Create_InGameTimer();
 	Create_StrongHoldGauge();
-	Create_TopStrongPointUI();
+	Create_StrongHoldUI();
 
 	return S_OK;
 }
@@ -16,6 +16,8 @@ HRESULT CUI_Paden::Initialize_Prototype()
 HRESULT CUI_Paden::Start()
 {
 	__super::Start();
+
+	Init_StrongHoldUI();
 
 	m_pInGameTimer->SetActive(true);
 	SetActive_StrongHoldGauge(true);
@@ -37,11 +39,11 @@ void CUI_Paden::SetActive_StrongHoldGauge(_bool value)
 
 void CUI_Paden::SetActive_TopPointUI(_bool value)
 {
-	for (int i = 0; i < TP_End; ++i)
+	for (int i = 0; i < SU_End; ++i)
 	{
 		for (int j = 0; j < 3; ++j)
 		{
-			m_pArrTopPointUI[i][j]->SetActive(value);
+			m_pArrStrongHoldUI[i][j]->SetActive(value);
 		}
 	}
 }
@@ -102,8 +104,8 @@ void CUI_Paden::Create_InGameTimer()
 	m_pInGameTimer->Set_FontRender(true);
 	m_pInGameTimer->Set_FontStyle(true);
 	m_pInGameTimer->Set_FontCenter(true);
-	m_pInGameTimer->Set_FontOffset(4.5f, 0.5f);
-	m_pInGameTimer->Set_FontScale(0.4f);
+	m_pInGameTimer->Set_FontOffset(5.5f, 0.f);
+	m_pInGameTimer->Set_FontScale(0.3);
 
 	CREATE_GAMEOBJECT(m_pInGameTimer, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pInGameTimer);
@@ -118,7 +120,7 @@ void CUI_Paden::Create_StrongHoldGauge()
 		if (i < Gauge_Icon)
 		{
 			m_pStrongHoldGauge[i]->Set_PosY(300.f);
-			m_pStrongHoldGauge[i]->Set_Scale(215.f, 8.f);
+			m_pStrongHoldGauge[i]->Set_Scale(150.f, 5.f);
 
 			if (i == Gauge_BG)
 			{
@@ -134,13 +136,32 @@ void CUI_Paden::Create_StrongHoldGauge()
 		}
 		else
 		{
-			GET_COMPONENT_FROM(m_pStrongHoldGauge[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pStrongHoldGauge[i], "/Paden", "Team");
+			if (i == Gauge_Icon)
+			{
+				GET_COMPONENT_FROM(m_pStrongHoldGauge[i], CTexture)->Remove_Texture(0);
+				Read_Texture(m_pStrongHoldGauge[i], "/Paden", "Team");
 
-			m_pStrongHoldGauge[i]->Set_Sort(0.5f);
+				m_pStrongHoldGauge[i]->Set_Sort(0.5f);
 
-			m_pStrongHoldGauge[i]->Set_PosY(325);
-			m_pStrongHoldGauge[i]->Set_Scale(38.f);
+				m_pStrongHoldGauge[i]->Set_PosY(325);
+				m_pStrongHoldGauge[i]->Set_Scale(32.f);
+			}
+			else if (i == Gauge_Score)
+			{
+				GET_COMPONENT_FROM(m_pStrongHoldGauge[i], CTexture)->Remove_Texture(0);
+
+				m_pStrongHoldGauge[i]->Set_Sort(0.5f);
+
+				m_pStrongHoldGauge[i]->Set_PosY(322);
+
+				m_pStrongHoldGauge[i]->Set_FontRender(true);
+				m_pStrongHoldGauge[i]->Set_FontStyle(true);
+				m_pStrongHoldGauge[i]->Set_FontCenter(true);
+				m_pStrongHoldGauge[i]->Set_FontScale(0.3f);
+				m_pStrongHoldGauge[i]->Set_FontOffset(5.f, 0.f);
+
+				m_pStrongHoldGauge[i]->Set_FontText(TEXT("100"));
+			}
 		}
 
 		CREATE_GAMEOBJECT(m_pStrongHoldGauge[i], GROUP_UI);
@@ -152,7 +173,7 @@ void CUI_Paden::Create_StrongHoldGauge()
 
 			if (i < Gauge_Icon)
 			{
-				_float fPosX = -200.f + (j * 400.f);
+				_float fPosX = -125 + (j * 250.f);
 				m_pArrStrongHoldGauge[i][j]->Set_PosX(fPosX);
 
 				if (i == Gauge_Bar)
@@ -162,10 +183,18 @@ void CUI_Paden::Create_StrongHoldGauge()
 			}
 			else
 			{
-				GET_COMPONENT_FROM(m_pArrStrongHoldGauge[i][j], CTexture)->Set_CurTextureIndex(j);
+				if (i == Gauge_Icon)
+				{
+					GET_COMPONENT_FROM(m_pArrStrongHoldGauge[i][j], CTexture)->Set_CurTextureIndex(j);
 
-				_float fPosX = -105.f + (j * 210.f);
-				m_pArrStrongHoldGauge[i][j]->Set_PosX(fPosX);
+					_float fPosX = -60.f + (j * 120.f);
+					m_pArrStrongHoldGauge[i][j]->Set_PosX(fPosX);
+				}
+				else if (i == Gauge_Score)
+				{
+					_float fPosX = -100.f + (j * 200.f);
+					m_pArrStrongHoldGauge[i][j]->Set_PosX(fPosX);
+				}
 			}
 
 			CREATE_GAMEOBJECT(m_pArrStrongHoldGauge[i][j], GROUP_UI);
@@ -174,56 +203,84 @@ void CUI_Paden::Create_StrongHoldGauge()
 	}
 }
 
-void CUI_Paden::Create_TopStrongPointUI()
+void CUI_Paden::Create_StrongHoldUI()
 {
-	for (int i = 0; i < TP_End; ++i)
+	for (int i = 0; i < SU_End; ++i)
 	{
-		m_pTopPointUI[i] = CUI_Object::Create();
+		m_pStrongHoldUI[i] = CUI_Object::Create();
 
-		m_pTopPointUI[i]->Set_PosY(275.f);
-		m_pTopPointUI[i]->Set_Scale(35.f);
+		m_pStrongHoldUI[i]->Set_PosY(260.f);
 
-		if (i == TP_BG)
+		if (i == SU_BG)
 		{
-			GET_COMPONENT_FROM(m_pTopPointUI[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pTopPointUI[i], "/Paden", "Gauge");
-		}
-		else if (i == TP_Gauge)
-		{
-			GET_COMPONENT_FROM(m_pTopPointUI[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pTopPointUI[i], "/Paden", "Gauge");
-		}
-		else if (TP_Outline)
-		{
-			GET_COMPONENT_FROM(m_pTopPointUI[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pTopPointUI[i], "/Paden", "Outline");
+			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pStrongHoldUI[i], "/Paden", "Gauge");
+			m_pStrongHoldUI[i]->Set_Color(m_vColorBG);
 
-			m_pTopPointUI[i]->Set_Scale(40.f);
+			m_pStrongHoldUI[i]->Set_Scale(28.f);
+			m_pStrongHoldUI[i]->Set_Sort(0.5f);
 		}
-		else if (TP_Icon)
+		else if (i == SU_Gauge)
 		{
-			m_pTopPointUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
-			GET_COMPONENT_FROM(m_pTopPointUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Paden/PointIcon_Join.dds"));
+			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pStrongHoldUI[i], "/Paden", "Gauge");
+			m_pStrongHoldUI[i]->Set_Color(m_vColorGauge);
+
+			m_pStrongHoldUI[i]->Set_Scale(25.f);
+			m_pStrongHoldUI[i]->Set_Sort(0.49f);
+
+			m_pStrongHoldUI[i]->Set_FontRender(true);
+			m_pStrongHoldUI[i]->Set_FontStyle(true);
+			m_pStrongHoldUI[i]->Set_FontCenter(true);
+			m_pStrongHoldUI[i]->Set_FontScale(0.25f);
+			m_pStrongHoldUI[i]->Set_FontOffset(5.5f, 4.5f);
+		}
+		else if (SU_Outline)
+		{
+			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pStrongHoldUI[i], "/Paden", "Outline");
+			m_pStrongHoldUI[i]->Set_Color(m_vColorOutline);
+
+			m_pStrongHoldUI[i]->Set_Scale(33.f);
+			m_pStrongHoldUI[i]->Set_Sort(0.48f);
+		}
+		else if (SU_Icon)
+		{
+			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Paden/PointIcon_Join.dds"));
+			m_pStrongHoldUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
+
+			m_pStrongHoldUI[i]->Set_Scale(22.f);
+			m_pStrongHoldUI[i]->Set_Sort(0.f);
 		}
 
-		CREATE_GAMEOBJECT(m_pTopPointUI[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_pTopPointUI[i]);
+		CREATE_GAMEOBJECT(m_pStrongHoldUI[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_pStrongHoldUI[i]);
 
 		for (int j = 0; j < 3; ++j)
 		{
-			m_pArrTopPointUI[i][j] = m_pTopPointUI[i]->Clone();
+			m_pArrStrongHoldUI[i][j] = m_pStrongHoldUI[i]->Clone();
+
+			_float fPosX = -50.f + (j * 50.f);
+			m_pArrStrongHoldUI[i][j]->Set_PosX(fPosX);
 
 			if (j == 0)
 			{
-				GET_COMPONENT_FROM(m_pArrTopPointUI[i][j], CTexture)->Set_CurTextureIndex(j);
+				GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(j);
 			}
 			else
 			{
-				GET_COMPONENT_FROM(m_pArrTopPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+				GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(1);
 			}
 
-			CREATE_GAMEOBJECT(m_pArrTopPointUI[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pArrTopPointUI[i][j]);
+			CREATE_GAMEOBJECT(m_pArrStrongHoldUI[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[i][j]);
 		}
 	}
+}
+
+void CUI_Paden::Init_StrongHoldUI()
+{
+	m_pArrStrongHoldUI[SU_Gauge][0]->Set_FontText(TEXT("A"));
+	m_pArrStrongHoldUI[SU_Gauge][1]->Set_FontText(TEXT("R"));
+	m_pArrStrongHoldUI[SU_Gauge][2]->Set_FontText(TEXT("C"));
 }

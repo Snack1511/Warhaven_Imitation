@@ -730,7 +730,6 @@ void CPlayer::On_FinishHero()
 		CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 	}
-
 }
 
 void CPlayer::On_FinishHero_KeyInput()
