@@ -11,17 +11,25 @@ CMesh::CMesh(_uint iGroupIdx)
 	m_eToplogy = D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
 }
 
-//CMesh::CMesh(const CMesh& origin)
-//	: CComponent(origin)
-//	, m_BufferDesc(origin.m_BufferDesc)
-//	, m_SubResourceData(origin.m_SubResourceData)
-//	, m_eIndexFormat(origin.m_eIndexFormat)
-//	, m_eToplogy(origin.m_eToplogy)
-//	, m_iIndicesStride(origin.m_iIndicesStride)
-//	, m_iMeshType(origin.m_iMeshType)
-//	, m_iNumIndices(origin.m_iNumIndices)
-//{
-//}
+CMesh::CMesh(const CMesh& origin)
+	: CComponent(origin)
+	, m_BufferDesc(origin.m_BufferDesc)
+	, m_SubResourceData(origin.m_SubResourceData)
+	, m_eIndexFormat(origin.m_eIndexFormat)
+	, m_eToplogy(origin.m_eToplogy)
+	, m_iIndicesStride(origin.m_iIndicesStride)
+	, m_iMeshType(origin.m_iMeshType)
+	, m_iNumIndices(origin.m_iNumIndices)
+	, m_iNumVertices(origin.m_iNumVertices)
+	, m_iNumVertexBuffers(origin.m_iNumVertexBuffers)
+	, m_bCloned(true)
+	, m_pIndices(origin.m_pIndices)
+	, m_pIB(origin.m_pIB)
+	, m_pVB(origin.m_pVB)
+	, m_iStride(origin.m_iStride)
+	, m_pVerticesPos(origin.m_pVerticesPos)
+{
+}
 
 CMesh::~CMesh()
 {
@@ -31,9 +39,12 @@ CMesh::~CMesh()
 void CMesh::Start()
 {
 #ifdef MEMORY_SAVE
-
-	SAFE_DELETE_ARRAY(m_pVerticesPos);
-	SAFE_DELETE_ARRAY(m_pIndices);
+	if (!m_bCloned)
+	{
+		SAFE_DELETE_ARRAY(m_pVerticesPos);
+		SAFE_DELETE_ARRAY(m_pIndices);
+	}
+	
 
 #endif // _DEBUG
 }

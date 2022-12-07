@@ -21,7 +21,8 @@ public:
 		eTileFlags_Blocked = (1 << 0),
 
 		/* 인접 타일중에 다른 레이어의 타일이 있는 경우. */
-		eTileFlags_Stair = (1 << 1),
+		eTileFlags_Default = (1 << 1),
+		eTileFlags_Stair = (1 << 2),
 	};
 
 private:

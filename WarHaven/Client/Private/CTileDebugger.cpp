@@ -32,10 +32,10 @@ CTileDebugger* CTileDebugger::Create(_uint iNumTilesX, _uint iNumTilesZ, _float 
 
 HRESULT CTileDebugger::Initialize_Prototype()
 {
-    _uint iNumVerticesX = m_iNumTilesX + 1;
-    _uint iNumVerticesZ = m_iNumTilesZ + 1;
+   /* _uint iNumVerticesX = m_iNumTilesX + 1;
+    _uint iNumVerticesZ = m_iNumTilesZ + 1;*/
 
-    m_pTerrainMesh = CMesh_Terrain::Create(CP_BEFORE_RENDERER, iNumVerticesX, iNumVerticesZ);
+    m_pTerrainMesh = CMesh_Terrain::Create(CP_BEFORE_RENDERER, m_iNumTilesX, m_iNumTilesZ, m_fTileSize);
 
     if (!m_pTerrainMesh)
         return E_FAIL;
@@ -56,6 +56,11 @@ HRESULT CTileDebugger::Initialize_Prototype()
 
 HRESULT CTileDebugger::Initialize()
 {
+    /* For Test */
+    CTile* pTile = GAMEINSTANCE->Find_Tile(m_iMyLayerIndex, 0);
+    if (pTile)
+     pTile->Set_TileFlag(CTile::eTileFlags_Default);
+    //GAMEINSTANCE->Find_Tile(m_iMyLayerIndex, 5)->Set_TileFlag(CTile::eTileFlags_Default);
 
     //타일매니저의 값 대로 vertices 만들어주기
     _float3* pVerticesPos = m_pTerrainMesh->Get_VerticesPos();
@@ -72,12 +77,26 @@ HRESULT CTileDebugger::Initialize()
 
             CTile* pTile = GAMEINSTANCE->Find_Tile(m_iMyLayerIndex, iIndex);
 
-            
+            if (!pTile)
+                continue;
+
+            _float4 vColor;
+            if (pTile->Is_ValidTile())
+                vColor = _float4(0.f, 1.f, 0.f, 1.f);
+            else
+                vColor = _float4(1.f, 0.f, 0.f, 1.f);
 
 
+            //타일 기준으로 모서리 점들 4개 검출
+            _uint	iIndexLT = (i * m_iNumTilesX) + j + m_iNumTilesX;
+            _uint	iIndexLB = (i * m_iNumTilesX) + j;
+            _uint	iIndexRT = iIndexLT + 1;
+            _uint	iIndexRB = iIndexLB + 1;
 
-            pVerticesColor[iIndex] = 0;
-
+            memcpy(&pVerticesColor[iIndexLT], &vColor, sizeof(_float4));
+            memcpy(&pVerticesColor[iIndexLB], &vColor, sizeof(_float4));
+            memcpy(&pVerticesColor[iIndexRT], &vColor, sizeof(_float4));
+            memcpy(&pVerticesColor[iIndexRB], &vColor, sizeof(_float4));
         }
     }
 
@@ -89,5 +108,7 @@ HRESULT CTileDebugger::Initialize()
 
 HRESULT CTileDebugger::Start()
 {
+    __super::Start();
+
     return S_OK;
 }

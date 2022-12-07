@@ -80,6 +80,7 @@ HRESULT CTile_Manager::Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float 
 	m_iNumTilesX = iNumTilesX;
 	m_iNumTilesZ = iNumTilesZ;
 	m_iTotalTileSize = iNumTilesX * iNumTilesZ;
+	m_iNumLayers = iNumLayers;
 
 	for (_uint i = 0; i < iNumLayers; ++i)
 	{

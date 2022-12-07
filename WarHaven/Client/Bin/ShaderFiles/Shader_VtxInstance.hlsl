@@ -227,7 +227,6 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
 
 	Out.vFlag = g_vFlag;
-	Out.vFlag.b = g_fOutlinePower;
 
 
 

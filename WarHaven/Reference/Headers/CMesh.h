@@ -7,7 +7,7 @@ class ENGINE_DLL CMesh abstract
 {
 protected:
 	CMesh(_uint iGroupIdx);
-	//CMesh(const CMesh& origin);
+	CMesh(const CMesh& origin);
 	virtual ~CMesh();
 
 public:
@@ -53,6 +53,8 @@ protected:
 
 	_float3*						m_pVerticesPos = nullptr;
 	void*							m_pIndices = nullptr;
+
+	_bool						m_bCloned = false;
 
 protected:
 	HRESULT Create_VertexBuffer();

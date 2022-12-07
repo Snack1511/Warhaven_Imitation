@@ -13,6 +13,7 @@
 #include "CMesh_Terrain.h"
 
 #include "CUtility_File.h"
+#include "CTileDebugger.h"
 
 CWindow_Tile::CWindow_Tile()
 {
@@ -75,24 +76,46 @@ HRESULT CWindow_Tile::Render()
 
 		if (ImGui::Button("GENERATE_TILE"))
 		{
+			for (auto& elem : m_vecTileDebugger)
+				DELETE_GAMEOBJECT(elem);
+
+			m_vecTileDebugger.clear();
+
 			GAMEINSTANCE->Clear_AllTiles();
 			if (FAILED(GAMEINSTANCE->Create_Layers(iNumTilesX, iNumTilesZ, fTileSize, iNumLayers)))
 			{
 				Call_MsgBox(L"Failed to Create_Layers");
 				return E_FAIL;
 			}
+
+			for (_uint i = 0; i < iNumLayers; ++i)
+			{
+				m_vecTileDebugger.push_back(CTileDebugger::Create(iNumTilesX, iNumTilesZ, fTileSize, i));
+				m_vecTileDebugger.back()->Initialize();
+				CREATE_GAMEOBJECT(m_vecTileDebugger.back(), GROUP_DEBUG);
+			}
+
+			Call_MsgBox(L"Generate Success");
+
 		}
 	}
 	
-	ImGui::RadioButton("RENDER_TILE", &m_bRenderTile);
-
-	if (m_bRenderTile)
+	if (ImGui::RadioButton("RENDER_TILE", &m_bRenderTile))
 	{
-		/* Render */
+		m_bRenderTile = !m_bRenderTile;
 
-
-
+		if (m_bRenderTile)
+		{
+			for (auto& elem : m_vecTileDebugger)
+				ENABLE_GAMEOBJECT(elem);
+		}
+		else
+		{
+			for (auto& elem : m_vecTileDebugger)
+				DISABLE_GAMEOBJECT(elem);
+		}
 	}
+
 
 	
 

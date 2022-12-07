@@ -9,6 +9,7 @@ END
 BEGIN(Client)
 
 class CDebugObject;
+class CTileDebugger;
 
 class CWindow_Tile final
 	: public CImGui_Window
@@ -29,6 +30,9 @@ public:
 private:
 	char				m_szFileName[MIN_STR] = {};
 	_bool				m_bRenderTile = false;
+
+private:
+	vector<CTileDebugger*> m_vecTileDebugger;
 
 };
 END
