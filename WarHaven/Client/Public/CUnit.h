@@ -326,7 +326,7 @@ protected:
 protected:
 	virtual void	Effect_Parring(_float4 vHitPos);
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
-
+	virtual void	Effect_Fall(_float fFallPower);
 public:
 	virtual void	Effect_HeroToDefaultUnit(CUnit* pOwner);
 
@@ -363,6 +363,8 @@ private:
 	/* 딱 체력 0된 시점에 호출되는 함수 */
 	void		On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos);
 	void		On_Bounce(void* pHitInfo);
+
+
 
 };
 END

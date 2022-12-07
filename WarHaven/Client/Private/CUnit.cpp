@@ -323,6 +323,11 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDm
 
 void CUnit::On_FallDamage(_float fFallPower)
 {
+	/*착지 이펙트*/
+	Effect_Fall(fFallPower);
+
+
+
 	//-0.6~ -3의 fFallPower
 
 	//프레임이 떨어질수록 -> fDT가 클수록 -> fFallPower는 작아져
@@ -959,6 +964,11 @@ void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	//공통으로 나와야하는 이펙트
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pOtherUnit, vHitPos);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOtherUnit, vHitPos);
+}
+
+void CUnit::Effect_Fall(_float fFallPower)
+{
+	/* 착지 이펙트 */
 }
 
 void CUnit::Effect_HeroToDefaultUnit(CUnit* pOwner)
