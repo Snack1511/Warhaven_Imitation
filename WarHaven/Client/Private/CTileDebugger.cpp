@@ -57,10 +57,10 @@ HRESULT CTileDebugger::Initialize_Prototype()
 HRESULT CTileDebugger::Initialize()
 {
     /* For Test */
-    CTile* pTile = GAMEINSTANCE->Find_Tile(m_iMyLayerIndex, 0);
+    CTile* pTile = GAMEINSTANCE->Find_Tile(m_iMyLayerIndex, 20);
     if (pTile)
      pTile->Set_TileFlag(CTile::eTileFlags_Default);
-    //GAMEINSTANCE->Find_Tile(m_iMyLayerIndex, 5)->Set_TileFlag(CTile::eTileFlags_Default);
+    GAMEINSTANCE->Find_Tile(m_iMyLayerIndex, 5)->Set_TileFlag(CTile::eTileFlags_Default);
 
     //타일매니저의 값 대로 vertices 만들어주기
     _float3* pVerticesPos = m_pTerrainMesh->Get_VerticesPos();
@@ -88,8 +88,8 @@ HRESULT CTileDebugger::Initialize()
 
 
             //타일 기준으로 모서리 점들 4개 검출
-            _uint	iIndexLT = (i * m_iNumTilesX) + j + m_iNumTilesX;
-            _uint	iIndexLB = (i * m_iNumTilesX) + j;
+            _uint	iIndexLT = (i * 2 * m_iNumTilesX) + j * 2 + m_iNumTilesX * 2;
+            _uint	iIndexLB = (i * 2 * m_iNumTilesX) + j * 2;
             _uint	iIndexRT = iIndexLT + 1;
             _uint	iIndexRB = iIndexLB + 1;
 
@@ -111,4 +111,21 @@ HRESULT CTileDebugger::Start()
     __super::Start();
 
     return S_OK;
+}
+
+void CTileDebugger::Set_TileColor(_uint iTileIndex, _float4 vColor)
+{
+    _float4* pVerticesColor = m_pTerrainMesh->Get_VerticesColor();
+
+    _uint	iIndexLT = iTileIndex * 2 + m_iNumTilesX * 2;
+    _uint	iIndexLB = iTileIndex * 2;
+    _uint	iIndexRT = iIndexLT + 1;
+    _uint	iIndexRB = iIndexLB + 1;
+
+    memcpy(&pVerticesColor[iIndexLT], &vColor, sizeof(_float4));
+    memcpy(&pVerticesColor[iIndexLB], &vColor, sizeof(_float4));
+    memcpy(&pVerticesColor[iIndexRT], &vColor, sizeof(_float4));
+    memcpy(&pVerticesColor[iIndexRB], &vColor, sizeof(_float4));
+
+    m_pTerrainMesh->ReMap_Vertices();
 }

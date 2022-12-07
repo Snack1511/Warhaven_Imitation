@@ -50,7 +50,44 @@ HRESULT CWindow_Tile::Initialize()
 
 void CWindow_Tile::Tick()
 {
-	
+	if (KEY(Q, HOLD))
+	{
+		if (KEY(LBUTTON, TAP))
+		{
+			
+			_float4 vOutPos, vFinalPos = _float4(0.f, -999.f, 0.f);
+			_uint3 iIndex(1,2,3);
+			_uint iCurIndex = 0;
+
+
+			_uint iPlusIndex = 0;
+
+
+			for (auto& elem : m_vecTileDebugger)
+			{
+				if (GAMEINSTANCE->Is_Picked_Mesh(elem->m_pTerrainMesh, &iIndex, &vOutPos))
+				{
+					if (vOutPos.y > vFinalPos.y)
+					{
+						vFinalPos = vOutPos;
+						iCurIndex = iPlusIndex;
+					}
+				}
+
+				++iPlusIndex;
+			}
+
+
+			/* 피킹 성공 */
+			if (vFinalPos.y > -999.f)
+			{
+				vFinalPos = vFinalPos.MultiplyCoord(m_vecTileDebugger[iCurIndex]->Get_Transform()->Get_WorldMatrix());
+				On_Picking(iCurIndex, vFinalPos);
+
+
+			}
+		}
+	}
 }
 
 HRESULT CWindow_Tile::Render()
@@ -100,9 +137,12 @@ HRESULT CWindow_Tile::Render()
 		}
 	}
 	
-	if (ImGui::RadioButton("RENDER_TILE", &m_bRenderTile))
+	static _bool bRenderTile = true;
+
+	if (ImGui::RadioButton("RENDER_TILE", bRenderTile))
 	{
 		m_bRenderTile = !m_bRenderTile;
+		bRenderTile = m_bRenderTile;
 
 		if (m_bRenderTile)
 		{
@@ -116,6 +156,48 @@ HRESULT CWindow_Tile::Render()
 		}
 	}
 
+	if (!m_vecTileDebugger.empty())
+	{
+		_float4 vWorldPos = GAMEINSTANCE->Get_TileWorldPos();
+
+
+		// 1. Layer 사이 Y 값
+		if (ImGui::DragFloat("Step Y", &m_fStepY, 0.1f, 0.1f, 100.f, "%.2f"))
+		{
+			for (_uint i = 0; i < m_vecTileDebugger.size(); ++i)
+			{
+				_float4 vPos = vWorldPos;
+				vPos.y += i * m_fStepY;
+				m_vecTileDebugger[i]->Get_Transform()->Set_World(WORLD_POS, vPos);
+			}
+		}
+
+		
+
+
+		// 2. 위치
+
+		static _float	vPosition[3] = {};
+
+		memcpy(vPosition, &vWorldPos, sizeof(_float3));
+
+
+		if (ImGui::DragFloat3("Position", vPosition, 0.1f, -999.f, 999.f, "%.1f"))
+		{
+			memcpy(&vWorldPos, vPosition, sizeof(_float3));
+
+			for (_uint i = 0; i < m_vecTileDebugger.size(); ++i)
+			{
+				_float4 vPos = vWorldPos;
+				vPos.y += i * m_fStepY;
+				m_vecTileDebugger[i]->Get_Transform()->Set_World(WORLD_POS, vPos);
+			}
+
+			GAMEINSTANCE->Set_Tile_WorldPos(vWorldPos);
+
+		}
+	}
+
 
 	
 
@@ -123,4 +205,13 @@ HRESULT CWindow_Tile::Render()
 	__super::End();
 
 	return S_OK;
+}
+
+void CWindow_Tile::On_Picking(_uint iLayerIndex, _float4 vPickedPos)
+{
+	_uint iCurTileIndex = GAMEINSTANCE->Find_TileIndex(vPickedPos);
+	CTile* pTile = GAMEINSTANCE->Find_Tile(iLayerIndex, iCurTileIndex);
+
+	pTile->Set_TileFlag(CTile::eTileFlags_Default);
+	m_vecTileDebugger[iLayerIndex]->Set_TileColor(iCurTileIndex, _float4(0.f, 1.f, 0.f));
 }

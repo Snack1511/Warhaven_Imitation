@@ -521,7 +521,7 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumTilesX, _uint iNumTilesZ, _float 
 		for (_uint j = 0; j < iNumTilesX; ++j)
 		{
 			_float3 vCenterPos = _float3((_float)j * fSize, 0.f, (_float)i * fSize);
-			_uint	iIndexLT = (i * 2 * iNumTilesX) + (j * 2) + iNumTilesX;
+			_uint	iIndexLT = (i * 2 * iNumTilesX) + (j * 2) + iNumTilesX * 2;
 			_uint	iIndexLB = (i * 2 * iNumTilesX) + (j * 2);
 			_uint	iIndexRT = iIndexLT + 1;
 			_uint	iIndexRB = iIndexLB + 1;
@@ -596,7 +596,7 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumTilesX, _uint iNumTilesZ, _float 
 		{
 			_uint	iIndex = (i * iNumTilesX * 2) + j * 2;
 
-			_uint	iIndexLT = iIndex + iNumTilesX;
+			_uint	iIndexLT = iIndex + iNumTilesX * 2;
 			_uint	iIndexLB = iIndex;
 			_uint	iIndexRT = iIndexLT + 1;
 			_uint	iIndexRB = iIndexLB + 1;

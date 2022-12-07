@@ -20,8 +20,12 @@ public:
 
 public:
 	void		Set_WorldMatrix(_float4x4 matWorld);
+	void		Set_WorldPos(_float4 vPos);
 	_uint		Find_Index(_float4 vPosition);
 	CTile*		Find_Tile(_uint iLayer, _uint iIndex);
+
+	_float4x4	Get_WorldMatrix() { return m_matWorld; }
+	_float4		Get_WorldPos() { return m_matWorld.XMLoad().r[3]; }
 
 public:
 	/* 레이어들 생성. 

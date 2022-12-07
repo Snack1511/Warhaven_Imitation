@@ -29,10 +29,16 @@ public:
 
 private:
 	char				m_szFileName[MIN_STR] = {};
-	_bool				m_bRenderTile = false;
+	_bool				m_bRenderTile = true;
 
 private:
 	vector<CTileDebugger*> m_vecTileDebugger;
+
+private:
+	_float			m_fStepY = 0.f;
+
+private:
+	void		On_Picking(_uint iLayerIndex, _float4 vPickedPos);
 
 };
 END

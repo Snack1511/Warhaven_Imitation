@@ -13,6 +13,8 @@ CTile_Manager::~CTile_Manager()
 
 HRESULT CTile_Manager::Initialize()
 {
+	m_matWorld.Identity();
+	m_matWorldInv.Identity();
 	return S_OK;
 }
 
@@ -40,6 +42,13 @@ void CTile_Manager::Set_WorldMatrix(_float4x4 matWorld)
 {
 	m_matWorld = matWorld;
 	m_matWorldInv = matWorld.Inverse();
+}
+
+void CTile_Manager::Set_WorldPos(_float4 vPos)
+{
+	memcpy(&m_matWorld.m[3], &vPos, sizeof(_float4));
+	m_matWorldInv = m_matWorld;
+	m_matWorldInv.Inverse();
 }
 
 _uint CTile_Manager::Find_Index(_float4 vPosition)

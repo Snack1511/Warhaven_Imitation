@@ -10,6 +10,7 @@ BEGIN(Client)
 class CTileDebugger
 	: public CGameObject
 {
+	friend class CWindow_Tile;
 	DECLARE_PROTOTYPE(CTileDebugger)
 
 private:
@@ -23,6 +24,9 @@ public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize() override;
 	virtual HRESULT			Start() override;
+
+public:
+	void	Set_TileColor(_uint iTileIndex, _float4 vColor);
 
 private:
 	_uint		m_iMyLayerIndex = 0;

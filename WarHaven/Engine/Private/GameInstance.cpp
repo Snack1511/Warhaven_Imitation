@@ -46,6 +46,9 @@ HRESULT CGameInstance::Initialize_Engine(const GRAPHICDESC& GraphicDesc, const S
 	/* Initalize PhysX_Manager*/
 	if (FAILED(m_pPhysXManager->Initialize()))
 		return E_FAIL;
+	
+	if (FAILED(m_pTileManager->Initialize()))
+		return E_FAIL;
 
 	/* Time Manager */
 	if (FAILED(m_pTimeManager->Initialize(GraphicDesc.hWnd, TimeDesc)))
@@ -491,6 +494,11 @@ void CGameInstance::Set_Tile_WorldMatrix(_float4x4 matWorld)
 	m_pTileManager->Set_WorldMatrix(matWorld);
 }
 
+void CGameInstance::Set_Tile_WorldPos(_float4 vWorldPos)
+{
+	return m_pTileManager->Set_WorldPos(vWorldPos);
+}
+
 void CGameInstance::Clear_AllTiles()
 {
 	m_pTileManager->Release();
@@ -509,6 +517,16 @@ HRESULT CGameInstance::Render_Tiles()
 CTile* CGameInstance::Find_Tile(_uint iLayer, _uint iIndex)
 {
 	return m_pTileManager->Find_Tile(iLayer, iIndex);
+}
+
+_float4x4 CGameInstance::Get_TileWorldMatrix()
+{
+	return m_pTileManager->Get_WorldMatrix();
+}
+
+_float4 CGameInstance::Get_TileWorldPos()
+{
+	return m_pTileManager->Get_WorldPos();
 }
 
 void CGameInstance::Add_Camera(wstring strKey, CCamera * pCamera)

@@ -39,10 +39,10 @@ void CTile::Remove_TileFlag(eTileFlags eFlag)
 
 _bool CTile::Is_ValidTile()
 {
-	if (!CHECK_FLAG(eTileFlags_None) ||
-		!CHECK_FLAG(eTileFlags_Blocked)
+	if (m_eTileFlag == eTileFlags_None ||
+		CHECK_FLAG(eTileFlags_Blocked)
 		)
-		return true;
+		return false;
 
-	return false;
+	return true;
 }

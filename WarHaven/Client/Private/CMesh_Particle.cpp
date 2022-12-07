@@ -163,6 +163,11 @@ void CMesh_Particle::Set_DeathParticle()
 	m_vecMatrices.resize(m_iNumInstance);
 	Update_NodeSave();
 
+	for (auto& elem : m_vecMatrices)
+	{
+		elem.front() = m_vecMatrices.front().front();
+	}
+
 }
 
 void CMesh_Particle::Start_Reverse(CUnit* pUnit)
