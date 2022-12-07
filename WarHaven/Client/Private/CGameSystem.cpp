@@ -780,7 +780,6 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 HRESULT CGameSystem::On_EnterStage()
 {
  
-    //Paden_EnvironmentEffect();
 
     /* 모든 플레이어들 유닛 일단 꺼놓기 */
     //for (auto& elem : m_mapAllPlayers)

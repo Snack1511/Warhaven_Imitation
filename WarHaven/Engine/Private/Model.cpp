@@ -733,7 +733,7 @@ void CModel::Final_Tick()
 				/* 너무많은 잔디같은애면 거리 체크 까지*/
 				if (m_bHardLOD)
 				{
-					if (fCurDistance > 30.f)
+					if (fCurDistance > 40.f)
 						continue;
 				}
 
