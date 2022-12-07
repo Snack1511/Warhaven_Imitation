@@ -320,7 +320,7 @@ PS_OUT PS_NORMAL_MAIN(PS_IN_NORMAL In)
 	float3		vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV * 1.f).xyz;
 
 	/* -1 ~ 1 */
-	vPixelNormal = normalize(vPixelNormal * 2.f - 1.f) *-1.f;
+	vPixelNormal = normalize(vPixelNormal * 2.f - 1.f) * -1.f;
 
 	float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
 

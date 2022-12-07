@@ -43,6 +43,7 @@ HRESULT CResource_Material::Initialize(ifstream* pReadFile, string strName)
 
 _float4 CResource_Material::Check_FileName(string strName)
 {
+	_int iFind = 0;
 	_float4 vReturnColor = _float4(1.f, 1.f, 1.f, 1.f);
 
 	//Model
@@ -145,7 +146,22 @@ _float4 CResource_Material::Check_FileName(string strName)
 		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona0004_Helm_A02_B.dds";
 
 	}
-	
+	else if ((_int)(m_tMatDesc.TexturePaths[1].find("Weed")) > 0)
+	{
+		vReturnColor = 2.f;
+	}
+	/*else if ((_int)(m_tMatDesc.TexturePaths[1].find("Tree")) > 0)
+	{
+		vReturnColor = 2.f;
+	}
+	else if ((_int)(m_tMatDesc.TexturePaths[1].find("Grass")) > 0)
+	{
+		vReturnColor = 2.f;
+	}
+	else if ((_int)(m_tMatDesc.TexturePaths[1].find("Bush")) > 0)
+	{
+		vReturnColor = 2.f;
+	}*/
 
 	
 	return vReturnColor;
