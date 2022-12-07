@@ -803,6 +803,7 @@ HRESULT CGameSystem::Paden_EnvironmentEffect()
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_Envir", _float4(0.f, 0.f, 0.f));
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_Roof", _float4(0.f, 0.f, 0.f));
     CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Paden_In", _float4(0.f, 0.f, 0.f));
+    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"ash", _float4(0.f, 10.f, 0.f));
 
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_0"), _float4(-27.7f, -0.5f, 34.8f));
     CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_1"), _float4(-38.f, -0.5f, 29.1f));
