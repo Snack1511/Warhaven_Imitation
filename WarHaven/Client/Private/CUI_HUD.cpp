@@ -111,12 +111,6 @@ void CUI_HUD::SetActive_HUD(_bool value)
 		}
 		else
 		{
-			if (i == HUD_Skill)
-			{
-				DISABLE_GAMEOBJECT(m_pHUD[i]);
-			}
-
-
 			DISABLE_GAMEOBJECT(m_pHUD[i]);
 		}
 	}

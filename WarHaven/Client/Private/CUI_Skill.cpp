@@ -72,9 +72,20 @@ void CUI_Skill::SetActive_SkillUI(_bool value)
 {
 	for (int i = 0; i < SU_End; ++i)
 	{
-		for (int j = 0; j < 3; ++j)
+		for (int j = 0; j < m_iIndex; ++j)
 		{
+			GET_COMPONENT_FROM(m_pArrSkillUI[SU_Icon][j], CTexture)->Set_CurTextureIndex(m_iSkillNum + j);
+
 			m_pArrSkillUI[i][j]->SetActive(value);
+
+			if (i == SU_BG)
+			{
+				m_pArrSkillUI[i][j]->Lerp_Scale(125.f, 50.f, 0.3f);
+			}
+			else if (i == SU_Icon)
+			{
+				m_pArrSkillUI[i][j]->Lerp_Scale(115.f, 28.f, 0.3f);
+			}
 		}
 	}
 }
@@ -83,9 +94,29 @@ void CUI_Skill::SetActive_Outline(_bool value)
 {
 	for (int i = 0; i < Outline_End; ++i)
 	{
-		for (int j = 0; j < 3; ++j)
+		for (int j = 0; j < m_iIndex; ++j)
 		{
-			m_pArrOutline[i][j]->SetActive(value);
+			if (value == true)
+			{
+				Enable_Fade(m_pArrOutline[i][j], 0.f);
+
+				if (i == Outline0)
+				{
+					m_pArrOutline[i][j]->Lerp_Scale(125.f, 40.f, 0.3f);
+				}
+				else if (i == Outline1)
+				{
+					m_pArrOutline[i][j]->Lerp_Scale(155.f, 40.f, m_fOutline1LerpTime);
+				}
+				else if (i == Outline2)
+				{
+					m_pArrOutline[i][j]->Lerp_Scale(205.f, 40.f, m_fOutline2LerpTime);
+				}
+			}
+			else
+			{
+				m_pArrOutline[i][j]->SetActive(false);
+			}
 		}
 	}
 }
@@ -94,7 +125,7 @@ void CUI_Skill::SetActive_SkillCool(_bool value)
 {
 	for (int i = 0; i < SC_End; ++i)
 	{
-		for (int j = 0; j < 3; ++j)
+		for (int j = 0; j < m_iIndex; ++j)
 		{
 			m_pArrSkillCoolUI[i][j]->SetActive(value);
 		}
@@ -103,9 +134,6 @@ void CUI_Skill::SetActive_SkillCool(_bool value)
 
 void CUI_Skill::Enable_AllSkillUI()
 {
-	SetActive_SkillUI(false);
-	SetActive_Outline(false);
-
 	for (int i = 0; i < SU_End; ++i)
 	{
 		for (int j = 0; j < m_iIndex; ++j)
@@ -147,8 +175,6 @@ void CUI_Skill::Enable_AllSkillUI()
 	}
 
 	Active_HeroKeySkillIcon(m_iCurClass);
-
-	SetActive_SkillCool(true);
 }
 
 void CUI_Skill::Create_SkillUI()
@@ -242,7 +268,7 @@ void CUI_Skill::Create_HeroKeySkillIcon()
 
 	m_pHeroKeySkillIcon->Set_PosY(-300.f);
 	m_pHeroKeySkillIcon->Set_Scale(28.f);
-	m_pHeroKeySkillIcon->Set_Sort(0.48f);
+	m_pHeroKeySkillIcon->Set_Sort(0.47f);
 
 	CREATE_GAMEOBJECT(m_pHeroKeySkillIcon, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pHeroKeySkillIcon);
@@ -288,7 +314,7 @@ void CUI_Skill::Create_SkillCoolUI()
 			m_pSkillCoolUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_256Circle.dds"));
 			m_pSkillCoolUI[i]->Set_Color(_float4(1.f, 0.f, 0.f, 0.5f));
 
-			m_pSkillCoolUI[i]->Set_Scale(37.f);
+			m_pSkillCoolUI[i]->Set_Scale(35.f);
 			m_pSkillCoolUI[i]->Set_Sort(0.49f);
 		}
 		else if (i == SC_Text)
@@ -326,7 +352,10 @@ void CUI_Skill::OnEnable()
 {
 	__super::OnEnable();
 
-	Enable_AllSkillUI();
+	SetActive_SkillUI(true);
+	SetActive_Outline(true);
+	SetActive_SkillCool(true);
+	// Enable_AllSkillUI();
 }
 
 void CUI_Skill::OnDisable()
@@ -363,7 +392,7 @@ void CUI_Skill::My_Tick()
 				m_pArrOutline[Outline2][i]->SetActive(false);
 			}
 		}
-	}	
+	}
 
 	/*Enable_Outline();
 
