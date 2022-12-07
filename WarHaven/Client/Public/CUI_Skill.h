@@ -24,6 +24,7 @@ public:
 
 	void SetActive_SkillUI(_bool value);
 	void SetActive_Outline(_bool value);
+	void SetActive_SkillCool(_bool value);
 
 	void Enable_AllSkillUI();
 
@@ -64,6 +65,15 @@ private:
 	CUI_Object* m_pArrSkillCoolUI[SC_End][3];
 
 private:
+	_bool m_bDisableOutline = false;
+
+	_float m_fOutline1LerpTime = 0.4f;
+	_float m_fOutline2LerpTime = 0.5f;
+
+	_float m_fOutline1AccTime[3] = { 0.f };
+	_float m_fOutline2AccTime[3] = { 0.f };
+
+private:
 	void Create_SkillCoolUI();
 
 private:
@@ -79,33 +89,11 @@ public:
 	void Set_CoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
 private:
-	CUI_Object* m_pSkillCoolText = nullptr;
-	CUI_Object* m_pSkillCoolTextArr[3];
-
-	CUI_Object* m_pSkillCoolBG = nullptr;
-	CUI_Object* m_pSkillCoolBGArr[3];
-
-	_bool m_bAbleOutline = false;
-
-	_uint m_iLerpCount = 0;
-	_uint m_iBtnCount = 0;
-	_uint m_iPrvSkill = 0;
-	_uint m_iCurSkill = 0;
-
-	//_float m_fCoolTime[SkillEnd];
-	//_float m_fMaxCoolTime[SkillEnd];
-	//_float m_fSkillGauge[SkillEnd];
-
-private:
 	virtual void My_Tick() override;
 
 private:
 	void Set_Pass();
 	void Bind_Shader();
-
-private:
-	void Create_SkillCoolText();
-	void Create_SkillCoolBG();
 };
 
 END
