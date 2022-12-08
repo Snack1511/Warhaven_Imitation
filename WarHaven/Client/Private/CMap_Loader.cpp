@@ -4,6 +4,8 @@
 #include "CStructure.h"
 #include "CStructure_Instance.h"
 #include "CMapColliders.h"
+#include "GameInstance.h"
+#include "CLight.h"
 CMap_Loader::CMap_Loader()
 {
 }
@@ -243,6 +245,7 @@ HRESULT CMap_Loader::SetUp_InstancingData(ifstream& rhsReadFile, string& strPath
         Ready_Object(pInstanceObject, GROUP_DECORATION);
         Safe_Delete_Array(pInstance);
     }
+    rhsReadFile.close();
     return S_OK;
 }
 
@@ -253,6 +256,49 @@ HRESULT CMap_Loader::SetUp_NavData(ifstream& rhsReadFile, string& strPath)
 
 HRESULT CMap_Loader::SetUp_LightData(ifstream& rhsReadFile, string& strPath)
 {
+    string LoadFullPath = strPath;
+    rhsReadFile.open(LoadFullPath, ios::binary);
+    if (!rhsReadFile.is_open())
+    {
+        Call_MsgBox(TEXT("Fail to Read : InstancingData"));
+        return E_FAIL;
+    }
+
+    if (rhsReadFile.eof()) {
+        rhsReadFile.close();
+        Call_MsgBox(L"Light - 저장된 데이터 없음");
+        return S_OK;
+    }
+
+    _uint LightDescLength = 0;
+    rhsReadFile.read((char*)&LightDescLength, sizeof(_uint));
+    for (_uint i = 0; i < LightDescLength; ++i)
+    {
+        _int LightTagLength = 0;
+        rhsReadFile.read((char*)&LightTagLength, sizeof(_int));
+        char szTag[MAXCHAR];
+        rhsReadFile.read(szTag, sizeof(char) * LightTagLength);
+        string LightTag = szTag;
+
+
+
+        LIGHTDESC tData;
+        rhsReadFile.read((char*)&tData.eType, sizeof(_uint));
+        rhsReadFile.read((char*)&tData.vPosition, sizeof(_float4));
+        rhsReadFile.read((char*)&tData.vDirection, sizeof(_float4));
+        rhsReadFile.read((char*)&tData.fRange, sizeof(_float));
+        rhsReadFile.read((char*)&tData.fRandomRange, sizeof(_float));
+        rhsReadFile.read((char*)&tData.vDiffuse, sizeof(_float4));
+        rhsReadFile.read((char*)&tData.vAmbient, sizeof(_float4));
+        rhsReadFile.read((char*)&tData.vSpecular, sizeof(_float4));
+        rhsReadFile.read((char*)&tData.LightOpt, sizeof(char));
+
+        if (FAILED(GAMEINSTANCE->Add_Light(tData)))
+        {
+            assert(0);
+        }
+    }
+    rhsReadFile.close();
     return S_OK;
 }
 

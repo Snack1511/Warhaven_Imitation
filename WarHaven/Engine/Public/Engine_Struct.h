@@ -376,6 +376,7 @@ namespace Engine
 		XMFLOAT4		vAmbient;
 		XMFLOAT4		vSpecular;
 
+		char			LightOpt = 0;//임시변수 --> 뭔가 특수하게 플래그를 줄 경우..
 		//라이트 수명
 		float			fLightAcc = 0.f;
 		float			fLightTime = 999999.f;
