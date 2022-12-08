@@ -128,7 +128,7 @@ void CState::Hit_GroundEffect(CUnit* pOwner)
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", pOwner->Get_HitPos());
 	}
 
-	if (CLASS_TYPE::STATE_SHIELDATTACK_VALKYRIE == pOwner->Get_Status().eClass)
+	if (STATE_SHIELDATTACK_VALKYRIE == pOwner->Get_CurState())
 	{
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Shield_Attack", pOwner->Get_HitPos());
 
