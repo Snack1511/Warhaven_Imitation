@@ -63,7 +63,7 @@ HRESULT CValkyrie_ShieldAttack::Initialize()
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
 	Add_KeyFrame(25, 0);
-	Add_KeyFrame(40, 1); //32
+	Add_KeyFrame(32, 1);
 	Add_KeyFrame(50, 2);
 	//Add_KeyFrame(40, 444);
 
