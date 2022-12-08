@@ -80,7 +80,6 @@ void CUnit_Valkyrie::SetUp_Colliders(_bool bPlayer)
 	tGuardColDesc[0].eColType = eGuardBreak;
 	tGuardColDesc[1].eColType = eGuardBreak;
 
-
 	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
 
 
@@ -429,18 +428,35 @@ HRESULT CUnit_Valkyrie::Start()
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
 	SetUp_TrailEffect(
-		_float4(0.f, 0.f, -100.f, 1.f),	//Weapon Low
-		_float4(0.f, 0.f, -103.f, 1.f),	//Weapon High
-		_float4(0.f, -1.5f, -101.5f, 1.f), //Left
-		_float4(0.f, 1.5f, -101.5f, 1.f), //Right
+		_float4(0.f, 0.f, -115.f, 1.f),	//Weapon Low
+		_float4(0.f, 0.f, -120.f, 1.f),	//Weapon High
+		_float4(-5.f, 0.f, -117.5f, 1.f), //Left
+		_float4(5.f, 0.f, -117.5f, 1.f), //Right
 		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
 		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
 		0.f,
-		L"../bin/resources/Textures/Effects/WarHaven/T_EFF_Blur_05_M.dds",
-		L"../bin/resources/Textures/Effects/WarHaven/T_EFF_Blur_05_M.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"0B_R_WP1"
+	);
+
+	/*Distortion Test*/
+	SetUp_DistortionTrailEffect(
+		_float4(0.f, 0.f, -60.f, 1.f),	//Weapon Low
+		_float4(0.f, 0.f, -120.f, 1.f),	//Weapon High
+		_float4(-5.f, 0.f, -120.f, 1.f), //Left
+		_float4(5.f, 0.f, -120.f, 1.f), //Right
+		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow 
+		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
+		0.f,
+		L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_09_M.dds",
+		L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_09_M.dds",
 		10,
 		"0B_R_WP1"
 	);
+
+	
 
 
 	//upper

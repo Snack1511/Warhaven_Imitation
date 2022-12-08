@@ -65,6 +65,8 @@ HRESULT CValkyrie_ShieldAttack::Initialize()
 	Add_KeyFrame(25, 0);
 	Add_KeyFrame(32, 1);
 	Add_KeyFrame(50, 2);
+	//Add_KeyFrame(40, 444);
+
 
 	// return __super::Initialize();
 	return S_OK;
@@ -96,6 +98,8 @@ void CValkyrie_ShieldAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 
 	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Shield_Flare_0"),
+		pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -146,6 +150,8 @@ void CValkyrie_ShieldAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 		m_bAttackTrigger = true;
 
 		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
+
+		
 		break;
 
 	case 1:
@@ -153,6 +159,8 @@ void CValkyrie_ShieldAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 
 		m_bAttackTrigger = false;
 		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
+
+
 		break;
 
 	case 2:
