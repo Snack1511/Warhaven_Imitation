@@ -11,6 +11,8 @@
 #include "CMap_Loader.h"
 #include "CSkyBox.h"
 
+// JJ
+
 CLevel_Paden::CLevel_Paden()
 {
 }
@@ -30,7 +32,7 @@ CLevel_Paden* CLevel_Paden::Create()
 
 HRESULT CLevel_Paden::Initialize()
 {
-    return S_OK;
+	return S_OK;
 }
 
 HRESULT CLevel_Paden::SetUp_Prototypes()
@@ -51,7 +53,7 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Paden::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 	//CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
-	CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
+	CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
 	m_fLoadingFinish = 0.5f;
 
 	/* GameSystem */
@@ -70,9 +72,9 @@ HRESULT CLevel_Paden::Enter()
 
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterStage()))
 		return E_FAIL;
-	
-	if (FAILED(CGameSystem::Get_Instance()->Paden_EnvironmentEffect()))
-		return E_FAIL;
+
+	/*if (FAILED(CGameSystem::Get_Instance()->Paden_EnvironmentEffect()))
+		return E_FAIL;*/
 
 	return S_OK;
 }

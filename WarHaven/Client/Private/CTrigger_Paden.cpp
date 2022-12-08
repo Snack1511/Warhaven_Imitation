@@ -29,7 +29,8 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		++m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 	}
 
-
+	// 상단 유아이 하이라이트
+	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, 0);
 }
 
 void CTrigger_Paden::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -47,6 +48,9 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 	{
 		--m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 	}
+
+	// 상단 유아이 원위치
+	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, 1);
 }
 
 CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum)

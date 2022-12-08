@@ -24,6 +24,8 @@ class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
 
+class CUI_Paden;
+
 class CUser
 {
 	DECLARE_SINGLETON(CUser);
@@ -91,6 +93,9 @@ public:
 	void SetActive_HUD(_bool value);
 	void Transform_SkillUI(_uint iClass);
 
+public:		// ÆÄµ§
+	void Interat_StrongHoldUI(string wstrPadenPointKey, _uint iTriggerState);
+
 public:
 	void On_EnterLevel();
 	void On_ExitLevel();
@@ -120,7 +125,9 @@ private:
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
 	CUI_Cursor* m_pCursor = nullptr;
+
 	CUI_Training* m_pUI_Training = nullptr;
+	CUI_Paden* m_pUI_Paden = nullptr;
 
 	CUI_Animation* m_pFire = nullptr;
 
