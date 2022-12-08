@@ -64,8 +64,8 @@ private:
 	_float4 m_vColorGauge = _float4(1.f, 1.f, 1.f, 0.1f);
 	_float4 m_vColorOutline = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
-	_float4 m_vColorBlue = _float4(0.f, 0.f, 1.f, 1.f);
-	_float4 m_vColorRed = _float4(1.f, 0.f, 0.f, 1.f);
+	_float4 m_vColorBlue = _float4(0.1f, 0.6f, 1.9f, 0.5f);
+	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.063f, 1.f);
 
 	_float m_fPointUIPosY = 260.f;
 	_float m_fMainPointUIPosX = -50.f;
