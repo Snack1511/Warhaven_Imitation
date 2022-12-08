@@ -404,8 +404,8 @@ void CUI_Object::DoMove()
 		_float fDisPosX = fabs(m_vOriginPos.x - m_fGoalPosX);
 		_float fDisPosY = fabs(m_vOriginPos.y - m_fGoalPosY);
 
-		fDisPosX = m_vOriginPos.x > m_fGoalPosX ? fDisPosX * -1 : fDisPosX;
-		fDisPosY = m_vOriginPos.y > m_fGoalPosY ? fDisPosY * -1 : fDisPosY;
+		fDisPosX = (m_vOriginPos.x > m_fGoalPosX) ? -fDisPosX : fDisPosX;
+		fDisPosY = (m_vOriginPos.y > m_fGoalPosY) ? -fDisPosY : fDisPosY;
 
 		_float fMoveValueX = (fDisPosX / m_fMoveDuration) * fDT(0);
 		_float fMoveValueY = (fDisPosY / m_fMoveDuration) * fDT(0);
