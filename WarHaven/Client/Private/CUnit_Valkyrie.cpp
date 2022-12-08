@@ -431,8 +431,8 @@ HRESULT CUnit_Valkyrie::Start()
 	SetUp_TrailEffect(
 		_float4(0.f, 0.f, -115.f, 1.f),	//Weapon Low
 		_float4(0.f, 0.f, -120.f, 1.f),	//Weapon High
-		_float4(-2.f, 0.f, -117.5f, 1.f), //Left
-		_float4(2.f, 0.f, -117.5f, 1.f), //Right
+		_float4(-5.f, 0.f, -117.5f, 1.f), //Left
+		_float4(5.f, 0.f, -117.5f, 1.f), //Right
 		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
 		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
 		0.f,
@@ -444,10 +444,10 @@ HRESULT CUnit_Valkyrie::Start()
 
 	/*Distortion Test*/
 	SetUp_DistortionTrailEffect(
-		_float4(0.f, 0.f, -80.f, 1.f),	//Weapon Low
+		_float4(0.f, 0.f, -60.f, 1.f),	//Weapon Low
 		_float4(0.f, 0.f, -120.f, 1.f),	//Weapon High
-		_float4(-2.f, 0.f, -120.f, 1.f), //Left
-		_float4(2.f, 0.f, -120.f, 1.f), //Right
+		_float4(-5.f, 0.f, -120.f, 1.f), //Left
+		_float4(5.f, 0.f, -120.f, 1.f), //Right
 		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow 
 		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
 		0.f,

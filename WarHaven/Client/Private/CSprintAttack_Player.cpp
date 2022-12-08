@@ -88,6 +88,7 @@ void CSprintAttack_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	//마찰 조절하기
 	//*주의 : 사용하고나면 Exit에서 반드시 1로 되돌려주기
 
+	Add_KeyFrame(42, 444);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -161,7 +162,11 @@ void	CSprintAttack_Player::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	}
 
+	break;
 
+	case 444:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+		break;
 	default:
 		break;
 	}
