@@ -72,40 +72,29 @@ private:
 	CLASS_TYPE m_ePrvClass;
 
 private:	// 작전회의
-	CUI_Object* m_pOperWindow = nullptr;
-	CUI_Object* m_pSmokeBG = nullptr;
-	CUI_Object* m_pOperBlackBG = nullptr;
 
 	CUI_Object* m_pOperTextImg = nullptr;
 	CUI_Object* m_pOperTextImg2 = nullptr;
 	CUI_Object* m_pSquardTextImg = nullptr;
 
-	CUI_Object* m_pOperProfile = nullptr;
-	CUI_Object* m_pArrOperProfile[4];
+
+private:
+	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
+
+private:	// 작전회의 캐릭터 선택 창
 
 	CUI_Object* m_pOperSideBG = nullptr;
 	CUI_Object* m_pArrOperSideBG[2];
 
-private:
-	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
-	void Create_OperProfile();
-	void Create_OperSideBG();
-
-private:	// 작전회의 캐릭터 선택 창
 	enum OperSelectType { ST_Char, ST_Port, ST_BG, ST_Icon, ST_End };
-
 	CUI_Object* m_pOperSelectUI[ST_End];
 	CUI_Object* m_pArrOperSelectUI[ST_End][6];
 
-	_uint m_iCurSelectEventNum = 0;
-	_uint m_iPrvSelectEventNum = 0;
-
-private:
-	void Create_OperSelectCharacter();
-
-private:
 	CUI_Object* m_pOperMapIcon = nullptr;
 	CUI_Object* m_pOperMapBG = nullptr;
+
+	_uint m_iCurSelectEventNum = 0;
+	_uint m_iPrvSelectEventNum = 0;
 
 private:
 	void Create_OperMap();
