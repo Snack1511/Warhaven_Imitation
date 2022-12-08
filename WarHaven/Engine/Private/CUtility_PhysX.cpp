@@ -51,3 +51,8 @@ _float4 CUtility_PhysX::To_Vector(const PxExtendedVec3& pxExtendedVec3)
 {
 	return _float4(pxExtendedVec3.x, pxExtendedVec3.y, pxExtendedVec3.z, 1.f);
 }
+
+_float4 CUtility_PhysX::To_Vector(const PxQuat& pxQuat)
+{
+	return _float4(pxQuat.x, pxQuat.y, pxQuat.z, pxQuat.w);
+}

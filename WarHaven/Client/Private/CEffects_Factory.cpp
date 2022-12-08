@@ -945,7 +945,8 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 
 	wstrName = L"WarriorDead_Weapon";
 	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0006_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime
+		L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime, wstring(), wstring(),
+		wstring(), XMMatrixScaling(0.01f, 0.01f, 0.01f) //* XMMatrixRotationX(XMConvertToRadians(180.0f))// * XMMatrixRotationY(XMConvertToRadians(90.0f))
 	))))
 		return E_FAIL;
 

@@ -21,7 +21,7 @@ private:
 public:
 	static CMesh_Particle* Create(wstring wstrModelFilePath , _uint iNumInstance, wstring strName,
 		_float fDensity = 1.f, _float fLifeTime = 3.f, wstring wstrTextureFilePath = wstring(), wstring wstrNormalTexturePath = wstring(),
-		wstring	wstrConvexMeshPath = wstring()
+		wstring	wstrConvexMeshPath = wstring(), _float4x4 matTrans = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f))
 
 	);
 
@@ -73,7 +73,7 @@ private:
 	_float	m_fDensity = 1.f;
 
 private:
-	HRESULT		SetUp_MeshParticle(wstring wstrModelFilePath);
+	HRESULT		SetUp_MeshParticle(wstring wstrModelFilePath, _float4x4 matTrans);
 	
 private:
 	virtual void My_Tick();

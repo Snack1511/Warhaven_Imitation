@@ -56,7 +56,7 @@ CMesh_Particle::~CMesh_Particle()
 }
 
 CMesh_Particle* CMesh_Particle::Create(wstring wstrModelFilePath, _uint iNumInstance, wstring strName, _float fDensity, _float fLifeTime
-	, wstring wstrTextureFilePath, wstring wstrNormalTexturePath, wstring	wstrConvexMeshPath)
+	, wstring wstrTextureFilePath, wstring wstrNormalTexturePath, wstring	wstrConvexMeshPath, _float4x4 matTrans)
 {
 	CMesh_Particle* pInstance = new CMesh_Particle();
 
@@ -68,7 +68,7 @@ CMesh_Particle* CMesh_Particle::Create(wstring wstrModelFilePath, _uint iNumInst
 	pInstance->m_wstrMaskMapPath = wstrNormalTexturePath;
 	pInstance->m_wstrPath = wstrConvexMeshPath;
 
-	if (FAILED(pInstance->SetUp_MeshParticle(wstrModelFilePath)))
+	if (FAILED(pInstance->SetUp_MeshParticle(wstrModelFilePath, matTrans)))
 	{
 		Call_MsgBox(L"Failed to SetUp_MeshParticle : CMesh_Particle");
 		SAFE_DELETE(pInstance);
@@ -259,9 +259,9 @@ void CMesh_Particle::OnDisable()
 
 }
 
-HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
+HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath, _float4x4 matTrans)
 {
-	m_matTrans = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));//XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	m_matTrans = matTrans;
 
 	CModel* pModelCom = nullptr;
 
@@ -437,28 +437,9 @@ void CMesh_Particle::Update_Reverse()
 			_float4x4 matPrev = m_vecMatrices[i][iSize - 1];
 			_float4x4 matTarget = m_vecMatrices[i][iSize - 2];
 
-			//1. ÄõÅÍ´Ï¿Â »Ì¾Æ³»±â
-
-			_float4 vPrevQuat = CUtility_Transform::Get_Quaternion(matPrev);
-			_float4 vTargetQuat = CUtility_Transform::Get_Quaternion(matTarget);
-
-			_float4 vCurQuat, vCurPos;
-			if (iSize == 2)
-			{
-				vCurQuat = CEasing_Utillity::QuadOut(vPrevQuat, vTargetQuat, m_fReverseAcc, m_fRebornTime).XMLoad();
-				vCurPos = CEasing_Utillity::QuadOut(matPrev.XMLoad().r[3], matTarget.XMLoad().r[3], m_fReverseAcc, m_fRebornTime).XMLoad();
-			}
-			else
-			{
-				vCurQuat = XMVectorLerp(vPrevQuat.XMLoad(), vTargetQuat.XMLoad(), fRatio);
-				vCurPos = XMVectorLerp(matPrev.XMLoad().r[3], matTarget.XMLoad().r[3], fRatio);
-			}
-
-			vCurPos.w = 1.f;
-			m_pInstanceMatrices[i] = CUtility_Transform::Get_MatrixbyQuat(vCurQuat, vCurPos);
 
 
-			/*_vector vRight, vUp, vLook, vPos;
+			_vector vRight, vUp, vLook, vPos;
 
 			if (iSize == 2)
 			{
@@ -484,7 +465,7 @@ void CMesh_Particle::Update_Reverse()
 			CurMat.r[2] = XMVector3Normalize(vLook);
 			CurMat.r[3] = vPos;
 			m_pInstanceMatrices[i] = CurMat;
-			*/
+			
 
 
 		}
