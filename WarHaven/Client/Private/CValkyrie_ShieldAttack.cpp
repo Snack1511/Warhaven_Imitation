@@ -161,9 +161,6 @@ void CValkyrie_ShieldAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 
 
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Shield_Attack", pOwner->Get_Transform()->Get_World(WORLD_POS));
-
-
 		break;
 
 	case 2:

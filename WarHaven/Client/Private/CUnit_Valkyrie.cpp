@@ -81,7 +81,7 @@ void CUnit_Valkyrie::SetUp_Colliders(_bool bPlayer)
 	tGuardColDesc[0].eColType = eGuardBreak;
 
 	tGuardColDesc[1].fRadius = 0.3f;
-	tGuardColDesc[1].vOffsetPos = _float4(0.f, 0.f, 100.f);
+	tGuardColDesc[1].vOffsetPos = _float4(0.f, 0.f, 120.f);
 	tGuardColDesc[1].eColType = eGuardBreak;
 
 	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
