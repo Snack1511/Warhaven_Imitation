@@ -87,8 +87,8 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 		m_iSkillNum = 14;
 
 		Set_KeyIcon(0, 30);
-		Set_KeyIcon(1, 29);
-		Set_KeyIcon(2, 17);
+		Set_KeyIcon(1, 17);
+		Set_KeyIcon(2, 29);
 
 		break;
 

@@ -214,7 +214,7 @@ void CUI_Main::Create_PlayerNameText()
 			m_pPlayerInfo[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_IconLevelBG.dds"));
 			m_pPlayerInfo[i]->Set_Pos(480.f, 300.f);
 			m_pPlayerInfo[i]->Set_Scale(32.f);
-			m_pPlayerInfo[i]->Set_Sort(0.5f);
+			m_pPlayerInfo[i]->Set_Sort(0.4f);
 
 			m_pPlayerInfo[i]->Set_FontRender(true);
 			m_pPlayerInfo[i]->Set_FontStyle(true);

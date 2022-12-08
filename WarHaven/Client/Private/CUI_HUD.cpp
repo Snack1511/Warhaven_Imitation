@@ -288,7 +288,7 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 
 void CUI_HUD::Bind_Btn()
 {
-	/*for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		if (m_pArrOperSelectUI[ST_BG][i])
 			m_pArrOperSelectUI[ST_BG][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_SelectBG, this, i);
@@ -298,7 +298,7 @@ void CUI_HUD::Bind_Btn()
 	{
 		if (m_pArrOperPointUI[PT_Point][i])
 			m_pArrOperPointUI[PT_Point][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Point, this, i);
-	}*/
+	}
 }
 
 
