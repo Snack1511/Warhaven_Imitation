@@ -107,7 +107,10 @@ void CCameraCollider::Late_Tick()
 	if (hitCount > 0)
 	{
 		m_pPxController->setPosition(PxExtendedVec3(hitInfo.position.x, hitInfo.position.y, hitInfo.position.z));
-		m_pOwner->Get_Transform()->Set_World(WORLD_POS, CUtility_PhysX::To_Vector(hitInfo.position));
+		_float4 vHitPos = CUtility_PhysX::To_Vector(hitInfo.position);
+		_float4 vHitNormal = CUtility_PhysX::To_Vector(hitInfo.normal);
+		vHitPos += vHitNormal;
+		m_pOwner->Get_Transform()->Set_World(WORLD_POS, vHitPos);
 		m_pOwner->Get_Transform()->Make_WorldMatrix();
 		m_vPrevPos = CUtility_PhysX::To_Vector(hitInfo.position);
 

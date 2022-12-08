@@ -924,6 +924,7 @@ void CGameSystem::On_StartGame()
         if (dynamic_cast<CPlayerInfo_SandBack*>(elem.second))
             continue;
 
+
         if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
             continue;
 
