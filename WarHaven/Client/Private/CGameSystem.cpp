@@ -742,7 +742,7 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
     m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
     READY_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
 
-    _float fTriggerSize = 4.f;
+    _float fTriggerSize = 6.f;
 
     ADD_TRIGGER("Paden_RedTeam_StartTrigger", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
     ADD_TRIGGER("Paden_BlueTeam_StartTrigger", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);

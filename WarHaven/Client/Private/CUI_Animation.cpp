@@ -43,7 +43,7 @@ HRESULT CUI_Animation::Initialize()
 HRESULT CUI_Animation::Start()
 {
 	__super::Start();
-	Set_Sort(0.1f);
+	Set_Sort(0.4f);
 
 	m_vUIShaderFlag = SH_UI_HARDBLOOM;
 	return S_OK;
