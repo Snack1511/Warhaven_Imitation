@@ -48,19 +48,13 @@ void CSkyBox::My_Tick()
     {
         static _uint g_iIdx = 0;
 
-        if (KEY(K, TAP))
-        {   
-            if (6 > g_iIdx)
-            {
-                GET_COMPONENT(CTexture)->Set_CurTextureIndex(++g_iIdx);
-            }
-        }
+        if (KEY(K, TAP))  
+            GET_COMPONENT(CTexture)->Set_CurTextureIndex(++g_iIdx);
+        
         if (KEY(L, TAP))
         {
-            if (0 < g_iIdx)
-            {
+           if (0 < g_iIdx)
                 GET_COMPONENT(CTexture)->Set_CurTextureIndex(--g_iIdx);
-            }
         }
     }
 #endif // _DEBUG
