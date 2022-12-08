@@ -94,7 +94,7 @@ public:
 	void Transform_SkillUI(_uint iClass);
 
 public:		// ÆÄµ§
-	void Interat_StrongHoldUI(string wstrPadenPointKey, _uint iTriggerState);
+	void Interat_StrongHoldUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
 
 public:
 	void On_EnterLevel();

@@ -277,6 +277,8 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 
 	GAMEINSTANCE->Stop_GrayScale();
 
+	CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
+
 	if (m_eCurrentClass > ENGINEER)
 	{
 		CUser::Get_Instance()->Set_HeroPort(1);

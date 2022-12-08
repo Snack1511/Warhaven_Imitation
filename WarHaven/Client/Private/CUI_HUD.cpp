@@ -946,8 +946,6 @@ void CUI_HUD::Update_HeorTransformGauge()
 	{
 		if (m_pHeroTransformUI[HT_Bar]->Is_Valid())
 		{
-			cout << m_fHeroTransformGaugeRatio << endl;
-
 			m_fHeroTransformValue += fDT(0);
 			m_fHeroTransformGaugeRatio = m_fHeroTransformValue / m_fMaxHeroTransformValue;
 

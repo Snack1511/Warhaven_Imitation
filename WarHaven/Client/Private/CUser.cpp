@@ -288,9 +288,9 @@ void CUser::Transform_SkillUI(_uint iClass)
 	m_pUI_Skill->Transform_SkillUI(iClass);
 }
 
-void CUser::Interat_StrongHoldUI(string strPadenPointKey, _uint iTriggerState)
+void CUser::Interat_StrongHoldUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
-	m_pUI_Paden->Interact_StrongHoldUI(strPadenPointKey, iTriggerState);
+	m_pUI_Paden->Interact_StrongHoldUI(strPadenPointKey, iTeamType, iTriggerState);
 }
 
 void CUser::On_EnterLevel()

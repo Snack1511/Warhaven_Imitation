@@ -21,7 +21,8 @@ public:
 
 public:
 	enum TriggerState { TS_Enter, TS_Exit, TS_End };
-	void Interact_StrongHoldUI(string wstrPadenPointKey, _uint iTriggerState);
+	void Interact_StrongHoldUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
+	void Set_StrongHoldUI_Color(_uint iTeamType);
 
 private:
 	virtual void My_Tick() override;
@@ -62,6 +63,9 @@ private:
 	_float4 m_vColorBG = _float4(0.3f, 0.3f, 0.3f, 1.f);
 	_float4 m_vColorGauge = _float4(1.f, 1.f, 1.f, 0.1f);
 	_float4 m_vColorOutline = _float4(0.7f, 0.7f, 0.7f, 1.f);
+
+	_float4 m_vColorBlue = _float4(0.f, 0.f, 1.f, 1.f);
+	_float4 m_vColorRed = _float4(1.f, 0.f, 0.f, 1.f);
 
 	_float m_fPointUIPosY = 260.f;
 	_float m_fMainPointUIPosX = -50.f;

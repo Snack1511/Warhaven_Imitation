@@ -201,21 +201,8 @@ void CUI_Skill::SetActvie_HeroKeyIcon(_bool value)
 
 void CUI_Skill::Transform_SkillUI(_uint iClass)
 {
-	SetActive_SkillUI(false);
-	SetActive_Outline(false);
-	SetActive_SkillCool(false);
-	SetActvie_HeroKeyIcon(false);
-
-	Set_SkillUI(iClass);
-
-	SetActive_SkillUI(true);
-	SetActive_Outline(true);
-	SetActive_SkillCool(true);
-
-	if (m_iCurClass >= FIONA)
-	{
-		SetActvie_HeroKeyIcon(true);
-	}
+	m_iCurClass = iClass;
+	m_bTickDisable = true;
 }
 
 void CUI_Skill::Create_SkillUI()
@@ -431,6 +418,38 @@ void CUI_Skill::My_Tick()
 	Disable_Outline();
 
 	Update_SkillCoolTime();
+
+	if (m_bTickDisable)
+	{
+		SetActive_SkillUI(false);
+		SetActive_Outline(false);
+		SetActive_SkillCool(false);
+		SetActvie_HeroKeyIcon(false);
+
+		m_bTickDisable = false;
+		m_bLateTickEnable = true;
+	}
+}
+
+void CUI_Skill::My_LateTick()
+{
+	__super::My_LateTick();
+
+	if (m_bLateTickEnable)
+	{
+		Set_SkillUI(m_iCurClass);
+
+		SetActive_SkillUI(true);
+		SetActive_Outline(true);
+		SetActive_SkillCool(true);
+
+		if (m_iCurClass >= FIONA)
+		{
+			SetActvie_HeroKeyIcon(true);
+		}
+
+		m_bLateTickEnable = false;
+	}
 }
 
 void CUI_Skill::OnEnable()

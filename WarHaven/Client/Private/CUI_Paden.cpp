@@ -72,7 +72,7 @@ void CUI_Paden::SetActive_TopPointUI(_bool value)
 	}
 }
 
-void CUI_Paden::Interact_StrongHoldUI(string strPadenPointKey, _uint iTriggerState)
+void CUI_Paden::Interact_StrongHoldUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
 	_float fDuration = 0.5f;
 
@@ -86,6 +86,8 @@ void CUI_Paden::Interact_StrongHoldUI(string strPadenPointKey, _uint iTriggerSta
 			{
 				m_pArrStrongHoldUI[i][0]->DoScale(10.f, fDuration);
 				m_pArrStrongHoldUI[i][0]->DoMove(0.f, 200.f, fDuration);
+
+				Set_StrongHoldUI_Color(iTeamType);
 			}
 
 			break;
@@ -100,6 +102,20 @@ void CUI_Paden::Interact_StrongHoldUI(string strPadenPointKey, _uint iTriggerSta
 
 			break;
 		}
+	}
+}
+
+void CUI_Paden::Set_StrongHoldUI_Color(_uint iTeamType)
+{
+	switch (iTeamType)
+	{
+	case 3:
+		m_pArrStrongHoldUI[SU_Gauge][0]->Set_Color(m_vColorBlue);
+		break;
+
+	case 13:
+		m_pArrStrongHoldUI[SU_Gauge][0]->Set_Color(m_vColorRed);
+		break;
 	}
 }
 
@@ -126,11 +142,11 @@ void CUI_Paden::My_Tick()
 
 	if (KEY(Z, TAP))
 	{
-		Interact_StrongHoldUI("Paden_Trigger_A", 0);
+		Interact_StrongHoldUI("Paden_Trigger_A", 3, 0);
 	}
 	else if (KEY(C, TAP))
 	{
-		Interact_StrongHoldUI("Paden_Trigger_A", 1);
+		Interact_StrongHoldUI("Paden_Trigger_A", 3, 1);
 	}
 }
 

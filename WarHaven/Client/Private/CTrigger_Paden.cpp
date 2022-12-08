@@ -30,7 +30,7 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 	}
 
 	// 상단 유아이 하이라이트
-	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, 0);
+	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, eOtherColType, 0);
 }
 
 void CTrigger_Paden::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -50,7 +50,7 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 	}
 
 	// 상단 유아이 원위치
-	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, 1);
+	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, 99, 1);
 }
 
 CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum)
@@ -100,7 +100,7 @@ HRESULT CTrigger_Paden::Initialize_Prototype()
 
 		m_vRespawnPositions.push_back(vNewPos);
 	}
-	
+
 
 
 	return __super::Initialize_Prototype();
@@ -139,7 +139,7 @@ void CTrigger_Paden::My_Tick()
 
 
 
-	
+
 
 }
 
@@ -157,9 +157,9 @@ void CTrigger_Paden::Update_Conquered()
 	m_fConqueredTimeAcc += fDT(0) * fConquerSpeed;
 
 #ifdef _DEBUG
-	
+
 	cout << m_strTriggerName << " : " << m_fConqueredTimeAcc << endl;
-	
+
 #endif // _DEBUG
 
 
