@@ -672,6 +672,9 @@ void CPlayer::Update_HP()
 }
 void CPlayer::Update_HeroGauge()
 {
+	if (!CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge)->Is_Valid())
+		return;
+
 	if (m_bIsMainPlayer)
 	{
 		/*_bool IsHeroGaugeEnable = CUser::Get_Instance()->Is_OnHeroGauge();

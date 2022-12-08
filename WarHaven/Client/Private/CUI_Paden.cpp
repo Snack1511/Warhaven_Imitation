@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "CUI_Renderer.h"
 #include <CUtility_Transform.h>
+#include "CShader.h"
 
 HRESULT CUI_Paden::Initialize_Prototype()
 {
@@ -21,12 +22,24 @@ HRESULT CUI_Paden::Start()
 
 	Init_StrongHoldUI();
 
+	Bind_Shader();
+
 	m_pInGameTimer->SetActive(true);
 	SetActive_StrongHoldGauge(true);
 	SetActive_GaugeNum(true);
 	SetActive_TopPointUI(true);
 
 	return S_OK;
+}
+
+void CUI_Paden::Set_Shader_MainPointGauge(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fGaugeRatio[0], sizeof(_float));
+}
+
+void CUI_Paden::Set_Shader_RespawnPointGauge(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fGaugeRatio[1], sizeof(_float));
 }
 
 void CUI_Paden::Set_Proj_StrongHoldUI(_uint iPointIdx, CTransform* pTransform)
@@ -309,6 +322,8 @@ void CUI_Paden::Create_StrongHoldUI()
 		}
 		else if (i == SU_Gauge)
 		{
+			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
+
 			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pStrongHoldUI[i], "/Paden", "Gauge");
 			m_pStrongHoldUI[i]->Set_Color(m_vColorGauge);
@@ -381,4 +396,10 @@ void CUI_Paden::Create_Proj_StrongHoldUI()
 		CREATE_GAMEOBJECT(m_pProj_StrongHoldUI[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pProj_StrongHoldUI[i]);
 	}
+}
+
+void CUI_Paden::Bind_Shader()
+{
+	GET_COMPONENT_FROM(m_pArrStrongHoldUI[SU_Gauge][0], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_MainPointGauge, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrStrongHoldUI[SU_Gauge][1], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_RespawnPointGauge, this, placeholders::_1, "g_fValue");
 }

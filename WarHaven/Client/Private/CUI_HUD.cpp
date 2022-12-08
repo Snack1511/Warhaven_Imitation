@@ -63,7 +63,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 
 HRESULT CUI_HUD::Start()
 {
-	//Bind_Btn();
+	Bind_Btn();
 	Bind_Shader();
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
@@ -157,6 +157,11 @@ void CUI_HUD::Active_CharacterWindow()
 			pPlayer->Change_UnitClass(m_eCurClass);
 			pPlayer->Get_CurrentUnit()->On_Respawn();
 
+			if (CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero())
+			{
+				CUser::Get_Instance()->Turn_HeroGaugeFire(true);
+			}
+
 			Set_HUD(m_eCurClass);
 		}
 
@@ -164,6 +169,7 @@ void CUI_HUD::Active_CharacterWindow()
 
 		else if (KEY(T, TAP) && KEY(CTRL, HOLD))
 		{
+			CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 			SetActive_HUD(false);
 			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
 		}

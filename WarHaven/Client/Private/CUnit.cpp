@@ -1182,6 +1182,7 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 
 	if (m_bIsMainPlayer)
 	{
+		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 		CUser::Get_Instance()->SetActive_HUD(false);
 		CUser::Get_Instance()->Set_TargetInfo(pOtherUnit->Get_OwnerPlayer()->Get_PlayerInfo());
 		CUser::Get_Instance()->Enable_DeadUI();

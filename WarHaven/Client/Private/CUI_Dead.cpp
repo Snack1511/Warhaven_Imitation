@@ -73,44 +73,38 @@ void CUI_Dead::My_Tick()
 				Disable_Fade(m_pDeadUI[i], 1.f);
 			}
 
-			// for (int i = 0; i < RU_End; ++i)
-			// {
-			// 	ENABLE_GAMEOBJECT(m_pRevivalUI[i]);
-			// }
+			for (int i = 0; i < RU_End; ++i)
+			{
+				ENABLE_GAMEOBJECT(m_pRevivalUI[i]);
+			}
 
 			PLAYER->Get_FollowCam()->Set_FollowTarget(PLAYER);
 		}
 	}
 
-	//if (m_pRevivalUI[RU_Bar])
-	//{
-	//	if (!m_bAbleRevival)
-	//	{
-	//		if (!m_pRevivalUI[RU_Bar]->Is_Valid())
-	//		{
-	//			ENABLE_GAMEOBJECT(m_pRevivalUI[RU_Bar]);
-	//		}
-	//
-	//		m_bAbleRevival = true;
-	//
-	//		m_pRevivalUI[RU_Bar]->Set_ScaleX(306.f);
-	//		m_pRevivalUI[RU_Bar]->DoScaleX(-305.f, m_fRevivalTime);
-	//	}
-	//
-	//	_float fScaleX = m_pRevivalUI[RU_Bar]->Get_Scale().x;
-	//	cout << fScaleX << endl;
-	//	if (fScaleX <= 1.f)
-	//	{
-	//		m_bAbleRevival = false;
-	//
-	//		for (int i = 0; i < RU_End; ++i)
-	//		{
-	//			DISABLE_GAMEOBJECT(m_pRevivalUI[i]);
-	//		}
-	//
-	//		DISABLE_GAMEOBJECT(this);
-	//	}
-	//}
+	if (m_pRevivalUI[RU_Bar]->Is_Valid())
+	{
+		if (!m_bAbleRevival)
+		{
+			m_pRevivalUI[RU_Bar]->Lerp_ScaleX(306.f, 0.f, m_fRevivalTime);
+
+			m_bAbleRevival = true;
+		}
+		else
+		{
+			_float fScaleX = m_pRevivalUI[RU_Bar]->Get_Scale().x;
+			if (fScaleX < 0.1f)
+			{
+				m_bAbleRevival = false;
+				for (int i = 0; i < RU_End; ++i)
+				{
+					DISABLE_GAMEOBJECT(m_pRevivalUI[i]);
+				}
+				DISABLE_GAMEOBJECT(this);
+			}
+		}
+	}
+
 }
 
 void CUI_Dead::My_LateTick()

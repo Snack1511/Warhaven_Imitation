@@ -60,9 +60,9 @@ void CUI_Animation::OnEnable()
 
 void CUI_Animation::OnDisable()
 {
-
-
 	__super::OnDisable();
+
+
 }
 
 void CUI_Animation::My_Tick()
