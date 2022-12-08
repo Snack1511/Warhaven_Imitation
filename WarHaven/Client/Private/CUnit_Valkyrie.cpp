@@ -403,7 +403,7 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	m_tUnitStatus.fRunSpeed *= 0.8f;
 
 
-	m_fCoolTime[SKILL1] = 45.f;
+	m_fCoolTime[SKILL1] = 45.f; //45
 	m_fCoolTime[SKILL2] = 0.f; // 화신력 소모 스킬
 	m_fCoolTime[SKILL3] = 5.f;
 

@@ -68,6 +68,8 @@ HRESULT CValkyrie_SpinAttack::Initialize()
 
 void CValkyrie_SpinAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->TurnOn_TrailEffect(true);
+
 	if (ePrevType != STATE_GUARDHIT_VALKYRIE)
 	{
 		pOwner->On_Use(CUnit::SKILL1);
@@ -86,6 +88,8 @@ STATE_TYPE CValkyrie_SpinAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CValkyrie_SpinAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->TurnOn_TrailEffect(true);
+
 	pOwner->Enable_GroggyCollider(false);
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
@@ -108,6 +112,8 @@ STATE_TYPE CValkyrie_SpinAttack::Check_Condition(CUnit* pOwner, CAnimator* pAnim
 
 void CValkyrie_SpinAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
+	
+
 	switch (iSequence)
 	{
 	case 0:
