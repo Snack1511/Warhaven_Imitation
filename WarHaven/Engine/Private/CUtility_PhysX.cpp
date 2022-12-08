@@ -33,9 +33,9 @@ _float4x4 CUtility_PhysX::To_Matrix(PxTransform& pxTransform)
 	vUp = XMVector3TransformNormal(vUp, QuaternionMatrix);
 	vLook = XMVector3TransformNormal(vLook, QuaternionMatrix);
 
-	QuaternionMatrix.r[0] = vRight;
-	QuaternionMatrix.r[1] = vUp;
-	QuaternionMatrix.r[2] = vLook;
+	QuaternionMatrix.r[0] = XMVector3Normalize(vRight);
+	QuaternionMatrix.r[1] = XMVector3Normalize( vUp);
+	QuaternionMatrix.r[2] = XMVector3Normalize(vLook);
 	QuaternionMatrix.r[3] = vPos.XMLoad();
 
 

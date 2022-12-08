@@ -45,15 +45,15 @@ CSword_Effect* CSword_Effect::Create()
 HRESULT CSword_Effect::Initialize_Prototype()
 {
 	m_eDisableType = FADE;
-	m_wstrPath = L"../bin/resources/meshes/effects/FBX/weapon/LongSword_Effect.fbx";
-	m_matTrans = XMMatrixScaling(1.f, 1.f, 1.f);
+	m_wstrPath = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00_Lod1.fbx";
+	m_matTrans = DEFAULT_TRANS_MATRIX;
 	m_hcMyCode = HASHCODE(CSword_Effect);
 	m_pFollowTarget = nullptr;
 	m_vOffsetPos = _float4(0.f, 0.f, 0.f);
 	m_vEffectFlag = _float4(0.95f, 0.95f, 1.f, 1.f);
-	m_vStartScale = _float4{ 0.01f, 0.01f, 0.01f, 0.f };
+	/*m_vStartScale = _float4{ 0.01f, 0.01f, 0.01f, 0.f };
 	m_vFadeInTargetScale  = _float4{ 0.01f, 0.01f, 0.01f, 0.f };
-	m_vFadeOutTargetScale = _float4{ 0.01f, 0.01f, 0.01f, 0.f };
+	m_vFadeOutTargetScale = _float4{ 0.01f, 0.01f, 0.01f, 0.f };*/
 	m_eCurFadeType = FADEOUTREADY;
 	m_fFadeOutStartTime = 0.f;
 	m_fFadeOutTime = 0.07f;

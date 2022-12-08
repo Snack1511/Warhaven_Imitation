@@ -186,6 +186,28 @@ _float4 CUtility_Transform::Turn_ByAngle(_float4 vLook, _float4 vAxis, _float fA
 	return vLook;
 }
 
+_float4 CUtility_Transform::Get_Quaternion(_float4x4 matWorld)
+{
+	_vector		vRight = matWorld.XMLoad().r[0];
+	_vector		vUp = matWorld.XMLoad().r[1];
+	_vector		vLook = matWorld.XMLoad().r[2];
+
+	_float4x4 WorldMatrix;
+	ZeroMemory(&WorldMatrix, sizeof(_float4x4));
+	_float4		vData;
+
+	XMStoreFloat4(&vData, vRight);
+	memcpy(&WorldMatrix.m[WORLD_RIGHT], &vData, sizeof(_float4));
+
+	XMStoreFloat4(&vData, vUp);
+	memcpy(&WorldMatrix.m[WORLD_UP], &vData, sizeof(_float4));
+
+	XMStoreFloat4(&vData, vLook);
+	memcpy(&WorldMatrix.m[WORLD_LOOK], &vData, sizeof(_float4));
+
+	return XMQuaternionRotationMatrix(XMLoadFloat4x4(&WorldMatrix));
+}
+
 _float4x4 CUtility_Transform::Get_MatrixbyLook(_float4 vLook, _float4 vPos)
 {
 	_float4x4 matNew;
@@ -211,4 +233,26 @@ _float4x4 CUtility_Transform::Get_MatrixbyLook(_float4 vLook, _float4 vPos)
 	*((_float4*)&matNew.m[3]) = vPos;
 
 	return matNew;
+}
+
+_float4x4 CUtility_Transform::Get_MatrixbyQuat(_float4 vQuat, _float4 vPos)
+{
+	XMMATRIX	QuaternionMatrix;
+	QuaternionMatrix = XMMatrixRotationQuaternion(vQuat.XMLoad());
+
+	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+
+	vRight = XMVector3TransformNormal(vRight, QuaternionMatrix);
+	vUp = XMVector3TransformNormal(vUp, QuaternionMatrix);
+	vLook = XMVector3TransformNormal(vLook, QuaternionMatrix);
+
+	QuaternionMatrix.r[0] = XMVector3Normalize(vRight);
+	QuaternionMatrix.r[1] = XMVector3Normalize(vUp);
+	QuaternionMatrix.r[2] = XMVector3Normalize(vLook);
+	QuaternionMatrix.r[3] = vPos.XMLoad();
+
+
+	return _float4x4(QuaternionMatrix);
 }

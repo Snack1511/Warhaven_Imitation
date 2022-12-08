@@ -170,7 +170,7 @@ void CPlayerInfo::Set_CustomHead_Warrior(eCUSTOM_HEAD eHeadEnum)
 	switch (eHeadEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
-		m_tPlayerSetUpData.wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0009_Helmet_A00_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0005_Helmet_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
 		m_tPlayerSetUpData.wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0002_Helmet_A00_50.fbx";

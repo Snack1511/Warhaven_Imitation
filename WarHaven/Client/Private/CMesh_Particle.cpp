@@ -88,20 +88,26 @@ CMesh_Particle* CMesh_Particle::Create(wstring wstrModelFilePath, _uint iNumInst
 
 void CMesh_Particle::Start_Particle(_float4 vPos, _float4 vDir, _float fPower, _float4x4 matWorld)
 {
-	m_pTransform->Get_Transform().matMyWorld = matWorld;
-	m_pTransform->Make_WorldMatrix();
-
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
 		PxTransform tTransform;
 		ZeroMemory(&tTransform, sizeof(PxTransform));
 
-		_float4 vAngles = _float4(frandom(-10.f, 10.f), frandom(-10.f, 10.f), frandom(-10.f, 10.f));
+		_float4 vAngles;
 
 		if (m_iNumInstance == 1)
-			vAngles = _float4(0.f, 0.f, 0.f);
+		{
+			//vAngles = _float4(0.f, 0.f, 0.f);
+			//matWorld 에서 quaternion 가져오기
 
-		vAngles = XMQuaternionRotationRollPitchYawFromVector(vAngles.XMLoad());
+			vAngles = CUtility_Transform::Get_Quaternion(matWorld);
+
+		}
+		else
+		{
+			vAngles = _float4(frandom(-10.f, 10.f), frandom(-10.f, 10.f), frandom(-10.f, 10.f));
+			vAngles = XMQuaternionRotationRollPitchYawFromVector(vAngles.XMLoad());
+		}
 
 	
 
@@ -255,7 +261,7 @@ void CMesh_Particle::OnDisable()
 
 HRESULT CMesh_Particle::SetUp_MeshParticle(wstring wstrModelFilePath)
 {
-	m_matTrans = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	m_matTrans = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));//XMMatrixScaling(0.01f, 0.01f, 0.01f);
 
 	CModel* pModelCom = nullptr;
 
@@ -431,7 +437,28 @@ void CMesh_Particle::Update_Reverse()
 			_float4x4 matPrev = m_vecMatrices[i][iSize - 1];
 			_float4x4 matTarget = m_vecMatrices[i][iSize - 2];
 
-			_vector vRight, vUp, vLook, vPos;
+			//1. 쿼터니온 뽑아내기
+
+			_float4 vPrevQuat = CUtility_Transform::Get_Quaternion(matPrev);
+			_float4 vTargetQuat = CUtility_Transform::Get_Quaternion(matTarget);
+
+			_float4 vCurQuat, vCurPos;
+			if (iSize == 2)
+			{
+				vCurQuat = CEasing_Utillity::QuadOut(vPrevQuat, vTargetQuat, m_fReverseAcc, m_fRebornTime).XMLoad();
+				vCurPos = CEasing_Utillity::QuadOut(matPrev.XMLoad().r[3], matTarget.XMLoad().r[3], m_fReverseAcc, m_fRebornTime).XMLoad();
+			}
+			else
+			{
+				vCurQuat = XMVectorLerp(vPrevQuat.XMLoad(), vTargetQuat.XMLoad(), fRatio);
+				vCurPos = XMVectorLerp(matPrev.XMLoad().r[3], matTarget.XMLoad().r[3], fRatio);
+			}
+
+			vCurPos.w = 1.f;
+			m_pInstanceMatrices[i] = CUtility_Transform::Get_MatrixbyQuat(vCurQuat, vCurPos);
+
+
+			/*_vector vRight, vUp, vLook, vPos;
 
 			if (iSize == 2)
 			{
@@ -456,8 +483,10 @@ void CMesh_Particle::Update_Reverse()
 			CurMat.r[1] = XMVector3Normalize(vUp);
 			CurMat.r[2] = XMVector3Normalize(vLook);
 			CurMat.r[3] = vPos;
-
 			m_pInstanceMatrices[i] = CurMat;
+			*/
+
+
 		}
 	}
 

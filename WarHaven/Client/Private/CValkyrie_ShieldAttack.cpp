@@ -65,7 +65,7 @@ HRESULT CValkyrie_ShieldAttack::Initialize()
 	Add_KeyFrame(25, 0);
 	Add_KeyFrame(32, 1);
 	Add_KeyFrame(50, 2);
-	Add_KeyFrame(37, 444);
+	Add_KeyFrame(32, 444);
 
 
 	// return __super::Initialize();
@@ -169,7 +169,7 @@ void CValkyrie_ShieldAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 		m_bMoveTrigger = false;
 		break;
 	case 444:
-		pOwner->Shake_Camera(7.f, 0.4f);
+		pOwner->Shake_Camera(6.f, 0.6f);
 
 		CEffects_Factory::Get_Instance()->Create_MultiEffects((L"Shield_Attack"), pOwner,
 			pOwner->Get_Transform()->Get_World(WORLD_POS));

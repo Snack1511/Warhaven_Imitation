@@ -114,7 +114,7 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	STATE_TYPE	eStateType = STATE_END;
 
-	// Create_SwordAfterEffect();
+	//Create_SwordAfterEffect();
 
 	if (pOwner->Is_MainPlayer())
 	{

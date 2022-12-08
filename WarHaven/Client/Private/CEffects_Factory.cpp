@@ -749,6 +749,24 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Warrior"), Convert_ToHash(L"WarriorDead_Slice3"))))
 		return E_FAIL;
+	
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Engineer"), Convert_ToHash(L"EngineerDead_Slice0"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Engineer"), Convert_ToHash(L"EngineerDead_Slice1"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Engineer"), Convert_ToHash(L"EngineerDead_Slice2"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Engineer"), Convert_ToHash(L"EngineerDead_Slice3"))))
+		return E_FAIL;
+	
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Fiona"), Convert_ToHash(L"FionaDead_Slice0"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Fiona"), Convert_ToHash(L"FionaDead_Slice1"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Fiona"), Convert_ToHash(L"FionaDead_Slice2"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Fiona"), Convert_ToHash(L"FionaDead_Slice3"))))
+		return E_FAIL;
 
 	/* Stone */
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_0"))))
@@ -933,6 +951,111 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 
 
 	/* ========================================================================== */
+
+	/*===================== WarHammer =====================*/
+
+	wstrName = L"EngineerDead_Slice0";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice0.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice0.fbx"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"EngineerDead_Slice1";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice1.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"EngineerDead_Slice2";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice2.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"EngineerDead_Slice3";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice3.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"EngineerDead_Weapon";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/weapons/hammer/SM_WP_WarHammer0001_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime
+	))))
+		return E_FAIL;
+
+
+	/* ========================================================================== */
+
+	/*===================== Fiona =====================*/
+
+	wstrName = L"FionaDead_Slice0";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Fiona0001_Body_A00_Slice0.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds",
+		L"../bin/resources/meshes/characters/deadbody/SM_Engineer0004_Body_A00_Slice0.fbx"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"FionaDead_Slice1";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Fiona0001_Body_A00_Slice1.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"FionaDead_Slice2";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Fiona0001_Body_A00_Slice2.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"FionaDead_Slice3";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/characters/deadbody/SM_Fiona0001_Body_A00_Slice3.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime,
+		L"../bin/resources/textures/effects/warhaven/texture/T_Stone_01.dds",
+		L"../bin/resources/textures/effects/warhaven/texture/T_StoneN_01.dds"
+
+	))))
+		return E_FAIL;
+
+	wstrName = L"FionaDead_Weapon";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00_30.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime
+	))))
+		return E_FAIL;
+	
+	wstrName = L"FionaDead_Weapon2";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/weapons/Valkyrie_Shield/SK_WP_HeaterShield0001_A00.fbx", 1, wstrName, fDeadBodyDensity, fDeadBodyLifeTime
+	))))
+		return E_FAIL;
+
+
+	/* ========================================================================== */
+
+
+
 
 	return S_OK;
 }

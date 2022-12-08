@@ -20,6 +20,10 @@ public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
 	virtual void	SetUp_HitStates(UNIT_TYPE eUnitType);
 
+
+public:
+	virtual void On_Die() override;
+
 public:
 	void TurnOn_ValkyrieTrail(_bool bOn);
 

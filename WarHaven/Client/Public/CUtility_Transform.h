@@ -29,8 +29,10 @@ public:
 
 public:
 	static	_float4	Turn_ByAngle(_float4 vLook, _float4 vAxis, _float fAngle);
+	static _float4	Get_Quaternion(_float4x4 matWorld);
 	
 	static _float4x4 Get_MatrixbyLook(_float4 vLook, _float4 vPos);
+	static _float4x4 Get_MatrixbyQuat(_float4 vQuat, _float4 vPos);
 
 };
 END

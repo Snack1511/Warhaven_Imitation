@@ -307,8 +307,12 @@ struct PS_IN_NORMAL
 PS_OUT PS_NORMAL_MAIN(PS_IN_NORMAL In)
 {
 	PS_OUT		Out = (PS_OUT)0;
-
+	 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (Out.vDiffuse.a < 0.1f)
+		discard;
+
 	Out.vDiffuse *= g_vColor;
 	//Out.vDiffuse *= g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fNoiseScale);
 	//Out.vDiffuse *= 2.f;
@@ -321,6 +325,9 @@ PS_OUT PS_NORMAL_MAIN(PS_IN_NORMAL In)
 
 	/* -1 ~ 1 */
 	vPixelNormal = normalize(vPixelNormal * 2.f - 1.f) * 1.f;
+
+	if (vPixelNormal.b < 0.1f)
+		vPixelNormal *= -1.f;
 
 	float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
 
