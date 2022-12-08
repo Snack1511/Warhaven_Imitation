@@ -355,8 +355,8 @@ HRESULT CUnit_Warrior::Start()
 		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
 		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
 		0.f,
-		L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_09_M.dds",
-		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
 		20,
 		"0B_R_WP1"
 	);
