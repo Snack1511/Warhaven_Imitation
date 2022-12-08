@@ -113,7 +113,7 @@ public:
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
-	void Enable_DeadUI();	
+	void Toggle_DeadUI(_bool value);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;

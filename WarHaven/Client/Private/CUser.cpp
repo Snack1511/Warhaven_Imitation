@@ -409,9 +409,9 @@ void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
 }
 
-void CUser::Enable_DeadUI()
+void CUser::Toggle_DeadUI(_bool value)
 {
-	m_pUI_Dead->Enable_DeadUI();
+	m_pUI_Dead->Toggle_DeadUI(value);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
