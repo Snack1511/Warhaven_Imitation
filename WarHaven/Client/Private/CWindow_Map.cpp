@@ -386,12 +386,29 @@ void CWindow_Map::Func_LightControl()
             if (ImGui::Selectable(to_string(i).c_str(), bSelect))
             {
                 m_iCurSelectLight = i;
+
+                
             }
         }
         ImGui::EndListBox();
     }
 
+    if (!m_LightDescs.empty())
+    {
+        LIGHTDESC tData = get<1>(m_LightDescs[m_iCurSelectLight]);
 
+        memcpy_s(&m_iLightTypeIndex, sizeof(_int), &tData.eType, sizeof(_int));
+
+        memcpy_s(LightPos, sizeof(float) * 3, &tData.vPosition, sizeof(float) * 3);
+        memcpy_s(LightDir, sizeof(float) * 3, &tData.vDirection, sizeof(float) * 3);
+        memcpy_s(&LightRange, sizeof(float), &tData.fRange, sizeof(float));
+        memcpy_s(&LightRandomRange, sizeof(float), &tData.fRandomRange, sizeof(float));
+
+        memcpy_s(LightDiffuse, sizeof(float) * 3, &tData.vDiffuse, sizeof(float) * 3);
+        memcpy_s(LightAmbient, sizeof(float) * 3, &tData.vAmbient, sizeof(float) * 3);
+        memcpy_s(LightSpecular, sizeof(float) * 3, &tData.vSpecular, sizeof(float) * 3);
+        
+    }
     //해당 그룹 소속 빛 정보 리스트
     //빛 추가
     if (ImGui::Button("Add Light"))
@@ -410,6 +427,9 @@ void CWindow_Map::Func_LightControl()
         Clone_Light();
     }
 
+    ImGui::Text("CurSelectIndex : ");
+    ImGui::SameLine();
+    ImGui::Text(to_string(m_iCurSelectLight).c_str());
 
     if (ImGui::CollapsingHeader("Light Default", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
@@ -427,6 +447,9 @@ void CWindow_Map::Func_LightControl()
                 get<0>(m_LightDescs[m_iCurSelectLight]) = szTagName;
             }
         }
+
+
+
         //2. 빛 종류
         ImGui::Text("Light Type");
         Make_Combo("##Light_TypeList", m_arrLightTypeCombo, &m_iLightTypeIndex, bind(&CWindow_Map::Set_LightType, this));
@@ -1096,7 +1119,8 @@ void CWindow_Map::Save_LightGroup(string BasePath, string SaveName)
 }
 void CWindow_Map::Load_LightGroup(string FilePath)
 {
-    GAMEINSTANCE->Clear_Lights();
+    //for(_int i = 0; i < m_LightDescs.size(); ++i)
+    //    GAMEINSTANCE->Pop_Light();
     m_LightDescs.clear();
     string LoadFullPath = FilePath;
     ifstream	readFile(LoadFullPath, ios::binary);
@@ -1133,7 +1157,6 @@ void CWindow_Map::Load_LightGroup(string FilePath)
         readFile.read((char*)&tData.vAmbient, sizeof(_float4));
         readFile.read((char*)&tData.vSpecular, sizeof(_float4));
         readFile.read((char*)&tData.LightOpt, sizeof(char));
-
 
         m_LightDescs.push_back(make_tuple(LightTag, tData));
         if (FAILED(GAMEINSTANCE->Add_Light(tData)))
