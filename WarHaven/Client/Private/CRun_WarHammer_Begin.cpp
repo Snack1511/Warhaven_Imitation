@@ -36,7 +36,7 @@ HRESULT CRun_WarHammer_Begin::Initialize()
 	m_fMyAccel = 10.f;
 	m_fAnimSpeed = 3.f;
 
-	m_iStateChangeKeyFrame = 21;
+	m_iStateChangeKeyFrame = 0;
 
 	m_fInterPolationTime = 0.1f;
 
