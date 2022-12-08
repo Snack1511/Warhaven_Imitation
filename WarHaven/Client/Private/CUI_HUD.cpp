@@ -776,6 +776,10 @@ void CUI_HUD::On_OperTimeOver()
 	//1. 검은화면 fade in out
 
 	//검은화면 fade in 되면 아래 호출 (임시로 적어놈)
+
+	if (m_eLoadLevel == LEVEL_BOOTCAMP || m_eLoadLevel == LEVEL_TEST)
+		return;
+
 	CGameSystem::Get_Instance()->On_StartGame();
 
 	//Disable_AllOperUIs();

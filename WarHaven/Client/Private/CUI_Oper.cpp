@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "CUI_Renderer.h"
 #include "Texture.h"
+#include "Loading_Manager.h"
 
 CUI_Oper::CUI_Oper()
 {
@@ -17,6 +18,8 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_OperBG();
 	Create_OperProfile();
 	Create_OperCharacterSelect();
+
+	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
 	return S_OK;
 }
@@ -160,6 +163,11 @@ void CUI_Oper::Create_OperBG()
 
 			switch (m_eLoadLevel)
 			{
+			case LEVEL_TEST:
+				m_pOperBG[i]->Set_PosY(205.f);
+				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
+				break;
+
 			case Client::LEVEL_PADEN:
 				m_pOperBG[i]->Set_PosY(205.f);
 				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
