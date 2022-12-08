@@ -411,6 +411,13 @@ void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 
 void CUser::Toggle_DeadUI(_bool value)
 {
+	if (!CGameObject::Is_Valid(m_pUI_Dead))
+	{
+		Call_MsgBox(TEXT("DeadUI is Nullptr"));
+
+		return;
+	}
+
 	m_pUI_Dead->Toggle_DeadUI(value);
 }
 
