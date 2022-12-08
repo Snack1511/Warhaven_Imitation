@@ -40,16 +40,16 @@ HRESULT CBounce_Player_R::Initialize()
     m_eStateType = STATE_BOUNCE_PLAYER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-	m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
-	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
+	//m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
 
-    m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-    m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
+    //m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
+    //m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
+    //m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
 
 
     return S_OK;
@@ -71,6 +71,9 @@ void CBounce_Player_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 STATE_TYPE CBounce_Player_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_PLAYER_R;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

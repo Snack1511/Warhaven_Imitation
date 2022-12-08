@@ -52,7 +52,12 @@ void CWalk_AI_TG_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CWalk_AI_TG_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	DoMove_AI(pOwner, pAnimator);
+	Change_Location_Loop(m_iDirectionRand, pAnimator, 0.05f);
+
 	//Move_Direction_Loop(pOwner, pAnimator, 0.05f);
+
+
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -61,9 +66,12 @@ STATE_TYPE CWalk_AI_TG_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vRight = (pUnit->Get_Transform()->Get_World(WORLD_LOOK) - pOwner->Get_Transform()->Get_World(WORLD_LOOK));
+	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
+	//_float4 vRight = (pUnit->Get_Transform()->Get_World(WORLD_LOOK) - pOwner->Get_Transform()->Get_World(WORLD_LOOK));
 
 	_float fLength = vLook.Length();
+
+
 
 	vLook.Normalize();
 	vRight.Normalize();
@@ -83,50 +91,50 @@ STATE_TYPE CWalk_AI_TG_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	//Dir : 실제 이동방향
 	_float4 vDir;
 
-	if (vRight.z > 0.9f || vRight.x > 0.9f)
+	//if (vRight.z > 0.9f || vRight.x > 0.9f)
+	//{
+	//	if (m_iDirectionRand == STATE_DIRECTION_NE ||
+	//		m_iDirectionRand == STATE_DIRECTION_NW ||
+	//		m_iDirectionRand == STATE_DIRECTION_N  ||
+	//		m_iDirectionRand == STATE_DIRECTION_E)
+	//	{
+	//		vDir = vLook;
+	//		Change_Location_Loop(STATE_DIRECTION_N, pAnimator, 0.1f);
+	//	}
+
+
+	//	if (m_iDirectionRand == STATE_DIRECTION_SE ||
+	//		m_iDirectionRand == STATE_DIRECTION_SW ||
+	//		m_iDirectionRand == STATE_DIRECTION_S  ||
+	//		m_iDirectionRand == STATE_DIRECTION_W)
+	//	{
+	//		vDir = vLook * -1.f;
+	//		Change_Location_Loop(STATE_DIRECTION_S, pAnimator, 0.1f);
+	//	}
+
+	//	if ((!vLook.Is_Zero()))
+	//		pMyPhysicsCom->Set_Dir(vLook);
+
+	//	
+
+	//	pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+	//	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fWalkSpeed);
+
+
+	//	vDir.y = 0.f;
+
+	//	if (!vDir.Is_Zero())
+	//		pMyPhysicsCom->Set_Dir(vDir);
+
+	//	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+
+	//	return __super::Tick(pOwner, pAnimator);
+
+	//}
+	//else
 	{
-		if (m_iDirectionRand == STATE_DIRECTION_NE ||
-			m_iDirectionRand == STATE_DIRECTION_NW ||
-			m_iDirectionRand == STATE_DIRECTION_N  ||
-			m_iDirectionRand == STATE_DIRECTION_E)
-		{
-			vDir = vLook;
-			Change_Location_Loop(STATE_DIRECTION_N, pAnimator, 0.1f);
-		}
-
-
-		if (m_iDirectionRand == STATE_DIRECTION_SE ||
-			m_iDirectionRand == STATE_DIRECTION_SW ||
-			m_iDirectionRand == STATE_DIRECTION_S  ||
-			m_iDirectionRand == STATE_DIRECTION_W)
-		{
-			vDir = vLook * -1.f;
-			Change_Location_Loop(STATE_DIRECTION_S, pAnimator, 0.1f);
-		}
-
-		if ((!vLook.Is_Zero()))
-			pMyPhysicsCom->Set_Dir(vLook);
-
-		
-
-		pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
-		pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fWalkSpeed);
-
-
-		vDir.y = 0.f;
-
-		if (!vDir.Is_Zero())
-			pMyPhysicsCom->Set_Dir(vDir);
-
-		pMyPhysicsCom->Set_Accel(m_fMyAccel);
-
-
-		return __super::Tick(pOwner, pAnimator);
-
-	}
-	else
-	{
-		_float fSpeed = 1.f;
+		/*_float fSpeed = 1.f;
 
 		switch (m_iDirectionRand)
 		{
@@ -197,7 +205,7 @@ STATE_TYPE CWalk_AI_TG_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 		pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
-		Change_Location_Loop(m_iDirectionRand, pAnimator, 0.05f);
+		Change_Location_Loop(m_iDirectionRand, pAnimator, 0.05f);*/
 	}
 
 

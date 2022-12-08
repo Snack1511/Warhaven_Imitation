@@ -45,6 +45,7 @@ void CRun_AI_TG_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	m_iRand = rand() % 3;
 
+
 	//CTransform* pMyTransform = pOwner->Get_Transform();
 	//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 	//

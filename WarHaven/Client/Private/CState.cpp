@@ -387,6 +387,15 @@ void CState::Follow_MouseLook_Turn(CUnit* pOwner)
 	pOwner->Get_Transform()->Set_LerpLook(vCamLook, 0.4f);
 }
 
+_float	CState::Get_Length(CUnit* pOwner)
+{
+	CUnit* pUnit = pOwner->Get_TargetUnit();
+
+	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+	//	_float4 vRight = (pUnit->Get_Transform()->Get_World(WORLD_LOOK) - pOwner->Get_Transform()->Get_World(WORLD_LOOK));
+
+	return vLook.Length();
+}
 
 
 _float CState::Move_Direction_Loop_AI(CUnit* pOwner)
@@ -396,14 +405,14 @@ _float CState::Move_Direction_Loop_AI(CUnit* pOwner)
 	CTransform* pMyTransform = pOwner->Get_Transform();
 
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vRight = (pUnit->Get_Transform()->Get_World(WORLD_LOOK) - pOwner->Get_Transform()->Get_World(WORLD_LOOK));
+//	_float4 vRight = (pUnit->Get_Transform()->Get_World(WORLD_LOOK) - pOwner->Get_Transform()->Get_World(WORLD_LOOK));
 
 	_float fLength = vLook.Length();
 
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
 	vLook.Normalize();
-	vRight.Normalize();
+//	vRight.Normalize();
 
 	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
 
@@ -413,6 +422,98 @@ _float CState::Move_Direction_Loop_AI(CUnit* pOwner)
 
 	return fLength;
 }
+
+void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
+{
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+	CUnit* pUnit = pOwner->Get_TargetUnit();
+
+
+	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
+
+	_float fLength = vLook.Length();
+
+
+	vLook.Normalize();
+	vRight.Normalize();
+
+	vLook.y = 0.f;
+	vRight.y = 0.f;
+
+	_float4 vDir;
+
+	//m_fMaxSpeed = 1.f;
+
+	switch (m_iDirectionRand)
+	{
+	case STATE_DIRECTION_NW:
+		vDir = vRight * -1.f + vLook;
+
+		break;
+
+	case STATE_DIRECTION_NE:
+		vDir = vRight * 1.f + vLook * 1.f;
+
+		break;
+
+	case STATE_DIRECTION_SW:
+		vDir = vRight * -1.f + vLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_SE:
+
+		vDir = vRight * 1.f + vLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_N:
+		vDir = vLook;
+
+
+		break;
+
+	case STATE_DIRECTION_S:
+		vDir = vLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_W:
+		vDir = vRight * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_E:
+		vDir = vRight * 1.f;
+
+		break;
+
+	default:
+		break;
+	}
+
+
+	pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+
+
+	vDir.y = 0.f;
+
+	if (!vDir.Is_Zero())
+		pMyPhysicsCom->Set_Dir(vDir);
+
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+
+}
+
+
 
 _float CState::Get_TargetLook_Length(CUnit* pOwner)
 {
