@@ -32,7 +32,7 @@ HRESULT CRun_AI_TG_Warrior_Begin::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 
-
+	m_fAIMyLength = 1.5f;
 
     return S_OK;
 }
@@ -52,11 +52,17 @@ void CRun_AI_TG_Warrior_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 STATE_TYPE CRun_AI_TG_Warrior_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-	CUnit* pUnit = pOwner->Get_TargetUnit();
+	//CUnit* pUnit = pOwner->Get_TargetUnit();
 
-	pOwner->Set_LookToTarget();
+	//pOwner->Set_LookToTarget();
 
-	Move_Direction_Loop_AI(pOwner);
+	//_float fLength = Move_Direction_Loop_AI(pOwner);
+
+	if (Get_Length(pOwner) < m_fAIMyLength)
+		return m_iAINextState;
+	
+
+	DoMove_AI(pOwner, pAnimator);
 
 
     return __super::Tick(pOwner, pAnimator);

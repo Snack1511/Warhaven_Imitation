@@ -24,7 +24,7 @@ HRESULT CStop_Archer::Initialize()
 	m_fAnimSpeed = 2.f;
 
 
-	m_iStateChangeKeyFrame = 15;
+	m_iStateChangeKeyFrame = 0;
 	
 	//m_fMaxSpeed = 4.f;
 

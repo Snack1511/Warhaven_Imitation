@@ -24,12 +24,11 @@ HRESULT CBounce_Player::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 50;
+	m_iStateChangeKeyFrame = 99;
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 5.f;
 	m_fMaxSpeed = 2.f;
-	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
     return S_OK;
 }

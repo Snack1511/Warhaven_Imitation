@@ -66,12 +66,24 @@ void CAI_TG_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType
     /* OwnerÀÇ Animator Set Idle·Î */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
 
+    m_iRand = random(0, 2);
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CAI_TG_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Get_CurAnimFrame() > 43)
+    {
+        if (m_iRand != 0)
+        {
+            pOwner->Set_LookToTarget();
+            return AI_STATE_GUARD_BEGIN_WARRIOR;
+        }
+    }
+        
+
 
     return __super::Tick(pOwner, pAnimator);
 }

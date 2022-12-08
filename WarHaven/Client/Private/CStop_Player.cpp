@@ -32,7 +32,7 @@ HRESULT CStop_Player::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
-	m_iStateChangeKeyFrame = 15;
+	m_iStateChangeKeyFrame = 0;
 	
 	//m_fMaxSpeed = 4.f;
 

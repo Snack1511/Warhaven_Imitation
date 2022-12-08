@@ -114,7 +114,6 @@ protected:
 
 	_uint				m_iStateChangeKeyFrame = 0;
 
-
 	_float				m_fETCCurTime = 0.f; // 건설, 점령 수리 등에 사용 
 	_float				m_fETCCoolTime = 0.f; // 건설, 점령 수리 등에 사용 
 
@@ -146,6 +145,11 @@ protected:
 	_float				m_fDirectionAnimSpeed[STATE_DIRECTION_END];
 
 	_int				m_iStateForcePushIndex = 0;
+
+
+protected:
+	_float				m_fAIMyLength = 0.f; // AI -> Player Length 비교 시 사용
+	STATE_TYPE			m_iAINextState = STATE_END; // AI return 사용 용이하게 변수로 만듦
 
 
 protected:
@@ -183,9 +187,13 @@ protected:
 
 	/* AI 용도*/
 protected:
+	_float	Get_Length(CUnit* pOwner);
+
 	_float	Move_Direction_Loop_AI(CUnit* pOwner);
 
 	_float	Get_TargetLook_Length(CUnit* pOwner);
+
+	void	DoMove_AI(CUnit* pOwner, CAnimator* pAnimator);
 
 protected:
 	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bBackStep = false);

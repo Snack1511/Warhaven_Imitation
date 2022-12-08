@@ -52,6 +52,8 @@ HRESULT CRun_AI_TG_Warrior_Begin_R::Initialize()
    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 24;
 
    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 25;
+
+   m_iAINextState = AI_STATE_ATTACK_HORIZONTALMIDDLE_R;
     
 
     return S_OK;

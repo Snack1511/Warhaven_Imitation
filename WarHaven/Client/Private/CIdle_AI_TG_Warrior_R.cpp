@@ -71,7 +71,10 @@ void CIdle_AI_TG_Warrior_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
         ePrevType == AI_STATE_TG_STINGHIT_WARRIOR ||
         ePrevType == AI_STATE_TG_FLYHIT_WARRIOR
         )
+    {
+        m_iRand = random(0, 2);
         fwaitCurTime = 20.f;
+    }
 
     if (ePrevType == AI_STATE_RUNBEGIN_WARRIOR_L ||
         ePrevType == AI_STATE_RUNBEGIN_WARRIOR_R 
@@ -89,9 +92,11 @@ STATE_TYPE CIdle_AI_TG_Warrior_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     fwaitCurTime += fDT(0);
 
-    if(fwaitCurTime > fwaitCoolTime)
-        return AI_STATE_RUNBEGIN_WARRIOR_R;
-
+    if (fwaitCurTime < fwaitCoolTime + 1.f)
+    {
+        if (fwaitCurTime > fwaitCoolTime)
+            return AI_STATE_WALK_WARRIOR_R;
+    }
 
     CUnit* pUnit = pOwner->Get_TargetUnit();
 
@@ -104,8 +109,22 @@ STATE_TYPE CIdle_AI_TG_Warrior_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     _float fLength = vLook.Length();
 
+
+
     if (fLength < 3.f)
+    {
         return AI_STATE_RUNBEGIN_WARRIOR_R;
+    }
+    else if (fLength < 2.f)
+    {
+        if ((_uint)fwaitCurTime == 20)
+        {
+            if (m_iRand == 0)
+                return AI_STATE_ATTACK_HORIZONTALMIDDLE_R;
+            else if (m_iRand == 1)
+                return AI_STATE_GUARD_BEGIN_WARRIOR;
+        }
+    }
 
 
     return __super::Tick(pOwner, pAnimator);

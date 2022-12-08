@@ -68,7 +68,15 @@ void CIdle_AI_TG_Warrior_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
         ePrevType == AI_STATE_TG_STINGHIT_WARRIOR ||
         ePrevType == AI_STATE_TG_FLYHIT_WARRIOR
         )
+    {
+        m_iRand = random(0, 2);
         fwaitCurTime = 20.f;
+    }
+
+    if (ePrevType == AI_STATE_RUNBEGIN_WARRIOR_L ||
+        ePrevType == AI_STATE_RUNBEGIN_WARRIOR_R
+        )
+        fwaitCurTime = 0.4f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -77,6 +85,12 @@ STATE_TYPE CIdle_AI_TG_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     fwaitCurTime += fDT(0);
 
+    if (fwaitCurTime < fwaitCoolTime + 1.f)
+    {
+        if (fwaitCurTime > fwaitCoolTime)
+            return AI_STATE_WALK_WARRIOR_L;
+    }
+
     CUnit* pUnit = pOwner->Get_TargetUnit();
 
 
@@ -84,16 +98,25 @@ STATE_TYPE CIdle_AI_TG_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     _float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
 
+    pMyTransform->Set_LerpLook(vLook.Normalize(), m_fMyMaxLerp);
+
     _float fLength = vLook.Length();
 
-    if (fwaitCurTime > fwaitCoolTime)
-        return AI_STATE_RUNBEGIN_WARRIOR_L;
 
     if (fLength < 3.f)
-        return AI_STATE_RUNBEGIN_WARRIOR_R;
-
-
-    pMyTransform->Set_LerpLook(vLook.Normalize(), m_fMyMaxLerp);
+    {
+        return AI_STATE_RUNBEGIN_WARRIOR_L;
+    }
+    else if (fLength < 2.f)
+    {
+        if ((_uint)fwaitCurTime == 20)
+        {
+            if (m_iRand == 0)
+                return AI_STATE_ATTACK_HORIZONTALMIDDLE_L;
+            else if (m_iRand == 1)
+                return AI_STATE_GUARD_BEGIN_WARRIOR;
+        }
+    }
 
     return __super::Tick(pOwner, pAnimator);
 

@@ -41,18 +41,19 @@ HRESULT CRun_AI_TG_Warrior_Begin_L::Initialize()
     m_vecAdjState.push_back(AI_STATE_ATTACK_HORIZONTALMIDDLE_L);
 
 
-   m_iDirectionAnimIndex[STATE_DIRECTION_E] = 10;
+    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 10;
 
-   m_iDirectionAnimIndex[STATE_DIRECTION_N] = 11;
-   m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 12;
-   m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 13;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 11;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 12;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 13;
 
-   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 14;
-   m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 15;
-   m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 16;
+    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 14;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 15;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 16;
 
-   m_iDirectionAnimIndex[STATE_DIRECTION_W] = 17;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 17;
     
+    m_iAINextState = AI_STATE_ATTACK_HORIZONTALMIDDLE_L;
 
     return S_OK;
 }
