@@ -368,6 +368,7 @@ static float LightDiffuse[3] = { 0.f };
 static float LightAmbient[3] = { 0.f };
 static float LightSpecular[3] = { 0.f };
 static bool LightFlagOpt[4] = { false };
+static _float fIncreaseScale = 1.0f;
 #pragma endregion
 
 #pragma region 라이트 컨트롤함수
@@ -430,9 +431,14 @@ void CWindow_Map::Func_LightControl()
         ImGui::Text("Light Type");
         Make_Combo("##Light_TypeList", m_arrLightTypeCombo, &m_iLightTypeIndex, bind(&CWindow_Map::Set_LightType, this));
         ImGui::Spacing();
+
+        ImGui::Text("Increase Value");
+        ImGui::SliderFloat("##SliderIncreaseValue", &fIncreaseScale, 0.001f, 100.f, "%.3f");
+        ImGui::InputFloat("##InputIncreaseValue", &fIncreaseScale);
+        ImGui::Spacing();
         //3. 위치
         ImGui::Text("Light Pos");
-        if (ImGui::DragFloat3("##Light_Pos", LightPos))
+        if (ImGui::DragFloat3("##Light_Pos", LightPos, fIncreaseScale))
         {
             Set_LightPos(LightPos);
         }
@@ -440,7 +446,7 @@ void CWindow_Map::Func_LightControl()
 
         //4. 방향
         ImGui::Text("Light Dir");
-        if (ImGui::DragFloat3("##Light_Dir", LightDir))
+        if (ImGui::DragFloat3("##Light_Dir", LightDir, fIncreaseScale))
         {
             Set_LightDir(LightDir);
         }
@@ -452,7 +458,7 @@ void CWindow_Map::Func_LightControl()
         {
             LightRange = 0.f;
         }
-        if (ImGui::DragFloat("##Light_Range", &LightRange, 0.1f, 0.0f, 0.f, "%.1f"))
+        if (ImGui::DragFloat("##Light_Range", &LightRange, fIncreaseScale, 0.0f, 0.f, "%.1f"))
         {
             Set_LightRange(LightRange);
         }
@@ -464,7 +470,7 @@ void CWindow_Map::Func_LightControl()
             {
                 LightRandomRange = 0.f;
             }
-            if (ImGui::DragFloat("##Light RandomRange", &LightRandomRange, 0.1f, 0.0f, 0.f, "%.1f"))
+            if (ImGui::DragFloat("##Light RandomRange", &LightRandomRange, fIncreaseScale, 0.0f, 0.f, "%.1f"))
             {
                 Set_LightRandomRange(LightRandomRange);
             }
@@ -822,7 +828,7 @@ void CWindow_Map::Load_TerrainData(string FilePath)
     }
     CDrawable_Terrain* pTerrain = nullptr;
     wstring strPath = CFunctor::To_Wstring(FilePath);
-    pTerrain = CDrawable_Terrain::Create(strPath.c_str());
+    pTerrain = CDrawable_Terrain::Create(strPath.c_str(), true);
     if (nullptr == pTerrain)
         assert(0);
     CREATE_GAMEOBJECT(pTerrain, GROUP_DEFAULT);
@@ -1043,17 +1049,99 @@ void CWindow_Map::Load_InstanceData(string FilePath)
 }
 void CWindow_Map::Save_NavGroup(string BasePath, string SaveName)
 {
+
 }
 void CWindow_Map::Load_NavGroup(string FilePath)
 {
 }
 void CWindow_Map::Save_LightGroup(string BasePath, string SaveName)
 {
+    string SaveFullPath = BasePath;
+    SaveFullPath += SaveName;
+    SaveFullPath += ".LightData";
+    ofstream	writeFile(SaveFullPath, ios::binary);
+
+    if (!writeFile.is_open())
+    {
+        Call_MsgBox(L"SSave 실패 ??!?!");
+        assert(0);
+    }
 
 
+    _uint LightDescNums = _uint(m_LightDescs.size());
+    writeFile.write((char*)&LightDescNums, sizeof(_uint));
+    for (_uint i = 0; i < LightDescNums; ++i)
+    {
+        _int LightTagLength= _int(get<0>(m_LightDescs[i]).length()) + 1;
+        writeFile.write((char*)&LightTagLength, sizeof(_int));
+        char strPath[MAXCHAR];
+        strcpy_s(strPath, sizeof(char) * MAXCHAR, get<0>(m_LightDescs[0]).c_str());
+        writeFile.write(strPath, sizeof(char) * LightTagLength);
+
+        LIGHTDESC tDesc = get<1>(m_LightDescs[i]);
+
+        writeFile.write((char*)&tDesc.eType, sizeof(_uint));
+        writeFile.write((char*)&tDesc.vPosition, sizeof(_float4));
+        writeFile.write((char*)&tDesc.vDirection, sizeof(_float4));
+        writeFile.write((char*)&tDesc.fRange, sizeof(_float));
+        writeFile.write((char*)&tDesc.fRandomRange, sizeof(_float));
+        writeFile.write((char*)&tDesc.vDiffuse, sizeof(_float4));
+        writeFile.write((char*)&tDesc.vAmbient, sizeof(_float4));
+        writeFile.write((char*)&tDesc.vSpecular, sizeof(_float4));
+        writeFile.write((char*)&tDesc.LightOpt, sizeof(char));
+
+    }
+
+    writeFile.close();
 }
 void CWindow_Map::Load_LightGroup(string FilePath)
 {
+    GAMEINSTANCE->Clear_Lights();
+    m_LightDescs.clear();
+    string LoadFullPath = FilePath;
+    ifstream	readFile(LoadFullPath, ios::binary);
+
+    if (!readFile.is_open())
+    {
+        Call_MsgBox(L"Load 실패 ??!?!");
+        assert(0);
+    }
+    if (readFile.eof()) {
+        Call_MsgBox(L"Light - 저장된 데이터 없음");
+        return;
+    }
+    char strPath[MAXCHAR];
+    _uint LightDescLength = 0;
+    readFile.read((char*)&LightDescLength, sizeof(_uint));
+    for (_uint i = 0; i < LightDescLength; ++i)
+    {
+        _int LightTagLength = 0;
+        readFile.read((char*)&LightTagLength, sizeof(_int));
+        char strPath[MAXCHAR];
+        readFile.read(strPath, sizeof(char) * LightTagLength);
+        string LightTag = strPath;
+
+
+
+        LIGHTDESC tData;
+        readFile.read((char*)&tData.eType, sizeof(_uint));
+        readFile.read((char*)&tData.vPosition, sizeof(_float4));
+        readFile.read((char*)&tData.vDirection, sizeof(_float4));
+        readFile.read((char*)&tData.fRange, sizeof(_float));
+        readFile.read((char*)&tData.fRandomRange, sizeof(_float));
+        readFile.read((char*)&tData.vDiffuse, sizeof(_float4));
+        readFile.read((char*)&tData.vAmbient, sizeof(_float4));
+        readFile.read((char*)&tData.vSpecular, sizeof(_float4));
+        readFile.read((char*)&tData.LightOpt, sizeof(char));
+
+
+        m_LightDescs.push_back(make_tuple(LightTag, tData));
+        if (FAILED(GAMEINSTANCE->Add_Light(tData)))
+        {
+            assert(0);
+        }
+    }
+    readFile.close();
 }
 #pragma endregion
 
@@ -1210,7 +1298,7 @@ void CWindow_Map::Generate_Terrain()
         DELETE_GAMEOBJECT(m_pCurTerrain);
         m_pCurTerrain = nullptr;
     }
-    CDrawable_Terrain* pTerrain = CDrawable_Terrain::Create(m_CurTerrainData.iNumVerticesX, m_CurTerrainData.iNumVerticesZ);
+    CDrawable_Terrain* pTerrain = CDrawable_Terrain::Create(m_CurTerrainData.iNumVerticesX, m_CurTerrainData.iNumVerticesZ, true);
     CREATE_GAMEOBJECT(pTerrain, GROUP_DEFAULT);
     m_pCurTerrain = pTerrain;
     MTT_DATA::Terrain_TUPLE TupleData = m_pCurTerrain->Get_TerrainData();

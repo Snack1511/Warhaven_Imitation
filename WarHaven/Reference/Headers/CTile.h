@@ -38,6 +38,12 @@ public:
 		eTileFlags_Stair = (1 << 2),
 	};
 
+	const char* FlagOption_Display[3]
+	{
+		"BLOCKED",
+		"DEFAULT"
+		"STAIR"
+	};
 private:
 	CTile();
 	~CTile();
@@ -46,6 +52,7 @@ public:
 	static CTile* Create(_float4 vCenterPos, _uint iIndex, CTileLayer* pLayer);
 
 public:
+	_uint	Get_TileFlag() { return m_eTileFlag; }
 	void	Set_TileFlag(_uint eFlag);
 	void	Add_TileFlag(eTileFlags eFlag);
 	void	Remove_TileFlag(eTileFlags eFlag);

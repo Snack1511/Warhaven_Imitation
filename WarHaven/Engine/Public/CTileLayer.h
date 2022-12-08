@@ -28,6 +28,7 @@ public:
 	//타일단위 최단거리 탐색용
 	_bool Get_Route_TileBase(_uint iCurrent_TileIdx, _uint iTarget_TileIdx, list<CTile*>& OutBestList);
 	_bool Get_Route_NearStair(_uint iCurrent_TileIdx, _uint& OutStairIndex, list<CTile*>& OutBestList);
+
 private:
 	_bool Bake_OpenCloseList(NODELIST& rhsOpenTileList, NODELIST& rhsCloseTileList, CTile* pEndTile);
 	void Bake_BestList(list<CTile*>& OutBestList, NODELIST& pOpenTileList, NODELIST& pCloseTileList, CTile* pStart, CTile* pEnd);

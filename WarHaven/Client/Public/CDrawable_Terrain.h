@@ -10,8 +10,9 @@ protected:
 	CDrawable_Terrain();
     virtual ~CDrawable_Terrain();
 public:
-	static CDrawable_Terrain* Create(_uint iNumVerticesX, _uint iNumVerticesZ);
-	static CDrawable_Terrain* Create(const _tchar* pFilePath);
+	static CDrawable_Terrain* Create(_uint iNumVerticesX, _uint iNumVerticesZ, _bool bTool = false);
+	//static CDrawable_Terrain* Create(_uint iNumVerticesX, _uint iNumVerticesZ);
+	static CDrawable_Terrain* Create(const _tchar* pFilePath, _bool bTool = false);
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
@@ -48,6 +49,7 @@ private:
 	_int m_iBGIndex = 0;
 	_int m_iSourIndex = 0;
 	_int m_iDestIndex = 0;
+	_bool m_bTool = false;
 };
 
 END
