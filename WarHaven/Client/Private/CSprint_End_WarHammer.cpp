@@ -70,6 +70,9 @@ HRESULT CSprint_End_WarHammer::Initialize()
 	m_fMaxSpeed = 10.f;
 	m_fMyAccel = 10.f;
 
+    Add_KeyFrame(13, 111);
+    Add_KeyFrame(27, 222);
+
 
     return S_OK;
 }
@@ -85,9 +88,12 @@ void CSprint_End_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
 
+    //Physics_Setting(pOwner->Get_Status().fWalkSpeed, pOwner);
 	//최대속도 설정
+
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
-	pMyPhysicsCom->Set_SpeedasMax();
+    pMyPhysicsCom->Set_SpeedasMax();
+    pMyPhysicsCom->Set_Accel(m_fMyAccel);
     pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -124,4 +130,19 @@ STATE_TYPE CSprint_End_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* pAni
         return STATE_SPRINT_END_WARHAMMER;
 
     return STATE_END;
+}
+
+void CSprint_End_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 111:
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    case 222:
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    default:
+        break;
+    }
 }

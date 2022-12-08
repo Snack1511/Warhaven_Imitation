@@ -969,6 +969,9 @@ void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 void CUnit::Effect_Fall(_float fFallPower)
 {
 	/* ÂøÁö ÀÌÆåÆ® */
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Fall_Particle", m_pTransform->Get_World(WORLD_POS));
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", this, m_pTransform->Get_World(WORLD_POS));
+
 }
 
 void CUnit::Effect_HeroToDefaultUnit(CUnit* pOwner)

@@ -44,15 +44,18 @@ HRESULT CSkyBox::Initialize()
 void CSkyBox::My_Tick()
 {
 #ifdef _DEBUG
-    if (KEY(K, TAP))
+    if (KEY(CTRL, HOLD))
     {
         static _uint g_iIdx = 0;
-        GET_COMPONENT(CTexture)->Set_CurTextureIndex(g_iIdx++);
-    }
-    if (KEY(L, TAP))
-    {
-        static _uint g_iIdx = 0;
-        GET_COMPONENT(CTexture)->Set_CurTextureIndex(g_iIdx--);
+
+        if (KEY(K, TAP))  
+            GET_COMPONENT(CTexture)->Set_CurTextureIndex(++g_iIdx);
+        
+        if (KEY(L, TAP))
+        {
+           if (0 < g_iIdx)
+                GET_COMPONENT(CTexture)->Set_CurTextureIndex(--g_iIdx);
+        }
     }
 #endif // _DEBUG
 

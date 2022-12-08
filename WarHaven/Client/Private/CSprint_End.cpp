@@ -64,7 +64,8 @@ HRESULT CSprint_End::Initialize()
 	m_fMaxSpeed = 10.f;
 	m_fMyAccel = 10.f;
 
-
+    Add_KeyFrame(18, 222);
+    Add_KeyFrame(29, 333);
     return S_OK;
 }
 
@@ -91,6 +92,8 @@ void CSprint_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
 	pMyPhysicsCom->Set_SpeedasMax();
     pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 0.5f;
+
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -125,4 +128,19 @@ STATE_TYPE CSprint_End::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
         return STATE_SPRINT_END_PLAYER;
 
     return STATE_END;
+}
+
+void CSprint_End::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 222:
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    case 333:
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    default:
+        break;
+    }
 }

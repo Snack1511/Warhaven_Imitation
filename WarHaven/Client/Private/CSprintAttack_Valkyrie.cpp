@@ -55,6 +55,8 @@ HRESULT CSprintAttack_Valkyrie::Initialize()
 	Add_KeyFrame(20, 0);
 	Add_KeyFrame(32, 1);
 
+	Add_KeyFrame(65, 111);
+	Add_KeyFrame(74, 222);
 
     return S_OK;
 }
@@ -130,7 +132,7 @@ void	CSprintAttack_Valkyrie::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 	}
 
 	//Attack Done
-	break;
+		break;
 	case 1:
 	{
 		pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
@@ -147,7 +149,13 @@ void	CSprintAttack_Valkyrie::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimato
 		pOwner->TurnOn_TrailEffect(false);
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	}
-
+		break;
+	case 111:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+		break;
+	case 222:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+		break;
 
 	default:
 		break;

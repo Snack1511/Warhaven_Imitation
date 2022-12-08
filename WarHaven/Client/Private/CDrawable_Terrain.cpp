@@ -25,9 +25,10 @@ CDrawable_Terrain::~CDrawable_Terrain()
 {
 }
 
-CDrawable_Terrain* CDrawable_Terrain::Create(_uint iNumVerticesX, _uint iNumVerticesZ)
+CDrawable_Terrain* CDrawable_Terrain::Create(_uint iNumVerticesX, _uint iNumVerticesZ, _bool bTool)
 {
     CDrawable_Terrain* pInstance = new CDrawable_Terrain;
+    pInstance->m_bTool = bTool;
     if (FAILED(pInstance->SetUp_TerrainMesh(iNumVerticesX, iNumVerticesZ)))
     {
         Call_MsgBox(L"Failed to SetUp_TerrainMesh : CDrawable_Terrain");
@@ -57,9 +58,10 @@ CDrawable_Terrain* CDrawable_Terrain::Create(_uint iNumVerticesX, _uint iNumVert
     return pInstance;
 }
 
-CDrawable_Terrain* CDrawable_Terrain::Create(const _tchar* pFilePath)
+CDrawable_Terrain* CDrawable_Terrain::Create(const _tchar* pFilePath, _bool bTool)
 {
     CDrawable_Terrain* pInstance = new CDrawable_Terrain;
+    pInstance->m_bTool = bTool;
 
     if (FAILED(pInstance->SetUp_TerrainMesh(pFilePath)))
     {
@@ -153,9 +155,12 @@ HRESULT CDrawable_Terrain::Start()
     pCol->Initialize();
     Add_Component(pCol);
 
-    m_pTerrainMesh->ClearPhysX();
-    m_pTerrainMesh->Memory_Save();
 
+    if (!m_bTool) 
+    {
+        m_pTerrainMesh->ClearPhysX();
+        m_pTerrainMesh->Memory_Save();
+    }
     return S_OK;
 }
 
