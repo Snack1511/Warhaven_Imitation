@@ -41,20 +41,44 @@ void CUI_Dead::OnEnable()
 
 	wstring wstrUnitName = m_pTargetInfo->Get_Player()->Get_PlayerName();
 	m_pDeadUI[DU_EnemyName]->Set_FontText(wstrUnitName);
-	for (int i = 0; i < DU_End; ++i)
-	{
-		Enable_Fade(m_pDeadUI[i], 1.f);
-	}
+
+	Fadenable_DeadUI();
 }
 
 void CUI_Dead::OnDisable()
 {
 	__super::OnDisable();
+
+	SetActive_DeadUI(false);
+	SetActive_RevivalUI(false);
 }
 
-void CUI_Dead::Enable_DeadUI()
+void CUI_Dead::Toggle_DeadUI(_bool value)
 {
-	ENABLE_GAMEOBJECT(this);
+	if (value == true)
+	{
+		ENABLE_GAMEOBJECT(this);
+	}
+	else
+	{
+		DISABLE_GAMEOBJECT(this);
+	}
+}
+
+void CUI_Dead::SetActive_DeadUI(_bool value)
+{
+	for (int i = 0; i < DU_End; ++i)
+	{
+		m_pDeadUI[i]->SetActive(value);
+	}
+}
+
+void CUI_Dead::SetActive_RevivalUI(_bool value)
+{
+	for (int i = 0; i < RU_End; ++i)
+	{
+		m_pRevivalUI[i]->SetActive(value);
+	}
 }
 
 void CUI_Dead::My_Tick()
@@ -68,49 +92,44 @@ void CUI_Dead::My_Tick()
 		{
 			m_fAccTime = 0.f;
 
-			for (int i = 0; i < DU_End; ++i)
-			{
-				Disable_Fade(m_pDeadUI[i], 1.f);
-			}
-
-			// for (int i = 0; i < RU_End; ++i)
-			// {
-			// 	ENABLE_GAMEOBJECT(m_pRevivalUI[i]);
-			// }
+			SetActive_DeadUI(false);
+			SetActive_RevivalUI(true);
 
 			PLAYER->Get_FollowCam()->Set_FollowTarget(PLAYER);
 		}
 	}
 
-	//if (m_pRevivalUI[RU_Bar])
-	//{
-	//	if (!m_bAbleRevival)
-	//	{
-	//		if (!m_pRevivalUI[RU_Bar]->Is_Valid())
-	//		{
-	//			ENABLE_GAMEOBJECT(m_pRevivalUI[RU_Bar]);
-	//		}
-	//
-	//		m_bAbleRevival = true;
-	//
-	//		m_pRevivalUI[RU_Bar]->Set_ScaleX(306.f);
-	//		m_pRevivalUI[RU_Bar]->DoScaleX(-305.f, m_fRevivalTime);
-	//	}
-	//
-	//	_float fScaleX = m_pRevivalUI[RU_Bar]->Get_Scale().x;
-	//	cout << fScaleX << endl;
-	//	if (fScaleX <= 1.f)
-	//	{
-	//		m_bAbleRevival = false;
-	//
-	//		for (int i = 0; i < RU_End; ++i)
-	//		{
-	//			DISABLE_GAMEOBJECT(m_pRevivalUI[i]);
-	//		}
-	//
-	//		DISABLE_GAMEOBJECT(this);
-	//	}
-	//}
+	if (m_pRevivalUI[RU_Bar]->Is_Valid())
+	{
+		_float fMinusColorValue = 1.f / m_fRevivalTime * fDT(0);
+
+		m_vGaugeColor.y -= fMinusColorValue;
+		if (m_vGaugeColor.y < 0.f)
+			m_vGaugeColor.y = 0.f;
+
+		m_vGaugeColor.z -= fMinusColorValue;
+		if (m_vGaugeColor.z < 0.f)
+			m_vGaugeColor.z = 0.f;
+
+		m_pRevivalUI[RU_Bar]->Set_Color(m_vGaugeColor);
+
+		if (!m_bAbleRevival)
+		{
+			m_bAbleRevival = true;
+			m_pRevivalUI[RU_Bar]->Lerp_ScaleX(306.f, 0.f, m_fRevivalTime);
+		}
+		else
+		{
+			_float fScaleX = m_pRevivalUI[RU_Bar]->Get_Scale().x;
+			if (fScaleX < 0.1f)
+			{
+				m_bAbleRevival = false;
+
+				SetActive_RevivalUI(true);
+				Toggle_DeadUI(false);
+			}
+		}
+	}
 }
 
 void CUI_Dead::My_LateTick()
@@ -167,6 +186,14 @@ void CUI_Dead::Set_FadeDeadUI()
 	for (int i = 0; i < DU_End; ++i)
 	{
 		GET_COMPONENT_FROM(m_pDeadUI[i], CFader)->Get_FadeDesc() = tFadeDesc;
+	}
+}
+
+void CUI_Dead::Fadenable_DeadUI()
+{
+	for (int i = 0; i < DU_End; ++i)
+	{
+		Enable_Fade(m_pDeadUI[i], 1.f);
 	}
 }
 

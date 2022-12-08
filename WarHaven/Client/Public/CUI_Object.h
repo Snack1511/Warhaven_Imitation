@@ -63,6 +63,8 @@ public:	// Lerp
 	void Lerp_PosX(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_PosY(_float fStart, _float fEnd, _float fDuration);
 
+	void DoMove(_float fPosX, _float fPosY, _float fDuration);
+
 	void DoMoveY(_float fMoveValue, _float fDuration);
 	void DoMoveX(_float fMoveValue, _float fDuration);
 
@@ -73,6 +75,7 @@ public:	// Lerp
 
 public:
 	void Set_FadeDesc(_float fDuration);
+	void Set_FadeDesc(_float fFadeIn, _float fFadeOut);
 
 private:
 	wstring m_wstrName;
@@ -98,9 +101,19 @@ private:	// Etc
 	_bool m_bIsMultiTex = false;
 	_bool m_bIsInMouse = false;
 
-private:	// Lerp
+private:	// DoMove
+	_bool m_bIsDoMove = false;
+
 	_float4 m_vOriginPos;
+	_float m_fGoalPosX = 0.f;
+	_float m_fGoalPosY = 0.f;
+
 	_float m_fMoveAccTime = 0.f;
+	_float m_fMoveDuration = 0.f;
+
+private:	// Lerp
+	_float m_fMoveXAccTime = 0.f;
+	_float m_fMoveYAccTime = 0.f;
 	_bool m_bIsDoMoveY = false;
 	_bool m_bIsDoMoveX = false;
 
@@ -109,7 +122,8 @@ private:	// Lerp
 	_bool m_bIsDoScale = false;
 	_bool m_bIsDoScaleX = false;
 
-	_float m_fMoveDuration = 0.f;
+	_float m_fMoveDurationX = 0.f;
+	_float m_fMoveDurationY = 0.f;
 	_float m_fScaleDuration = 0.f;
 
 	_float m_fMoveValue = 0.f;

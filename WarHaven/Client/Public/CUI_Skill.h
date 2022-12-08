@@ -41,6 +41,9 @@ private:
 	_uint m_iPrvClass = -1;
 	_uint m_iCurClass = 0;
 
+	_bool m_bTickDisable = false;
+	_bool m_bLateTickEnable = false;
+
 private:
 	enum SkillUI { SU_BG, SU_Icon, SU_Key, SU_End };
 
@@ -93,6 +96,7 @@ private:
 
 private:
 	virtual void My_Tick() override;
+	virtual void My_LateTick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 

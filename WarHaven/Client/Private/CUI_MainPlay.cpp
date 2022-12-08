@@ -403,12 +403,12 @@ void CUI_MainPlay::Create_ModeBG()
 {
 	m_pBG = CUI_Object::Create();
 	m_pBG->Set_Scale(1280.f, 720.f);
-	m_pBG->Set_Sort(0.9f);
+	m_pBG->Set_Sort(0.49f);
 	m_pBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/T_LobbyBG2.dds"));
 
 	m_pTextModeSelect = CUI_Object::Create();
 	m_pTextModeSelect->Set_Pos(-470.f, 230.f);
-	m_pTextModeSelect->Set_Sort(0.85f);
+	m_pTextModeSelect->Set_Sort(0.48f);
 	m_pTextModeSelect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 	m_pTextModeSelect->Set_FontRender(true);
 	m_pTextModeSelect->Set_FontStyle(true);
@@ -419,7 +419,7 @@ void CUI_MainPlay::Create_ModeBG()
 	m_pEscKey = CUI_Object::Create();
 	m_pEscKey->Set_Pos(-600.f, -330.f);
 	m_pEscKey->Set_Scale(36.f, 28.f);
-	m_pEscKey->Set_Sort(0.85f);
+	m_pEscKey->Set_Sort(0.48f);
 	m_pEscKey->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/Black/Special_Esc.png"));
 	m_pEscKey->Set_FontRender(true);
 	m_pEscKey->Set_FontStyle(true);
@@ -430,7 +430,7 @@ void CUI_MainPlay::Create_ModeBG()
 	m_pLine = CUI_Object::Create();
 	m_pLine->Set_Pos(0.f, -200.f);
 	m_pLine->Set_Scale(1500.f, 20.f);
-	m_pLine->Set_Sort(0.85f);
+	m_pLine->Set_Sort(0.48f);
 	m_pLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_LineDeco.png"));
 
 	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
@@ -450,7 +450,7 @@ void CUI_MainPlay::Create_StageBtn()
 {
 	m_pPrototypeStageBtn = CUI_Object::Create();
 	m_pPrototypeStageBtn->Set_Scale(216.f, 340.f);
-	m_pPrototypeStageBtn->Set_Sort(0.85f);
+	m_pPrototypeStageBtn->Set_Sort(0.48f);
 	m_pPrototypeStageBtn->Set_MouseTarget(true);
 	m_pPrototypeStageBtn->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/Enable_Stage1.dds"));
 
@@ -549,7 +549,7 @@ void CUI_MainPlay::Create_StageHighlight()
 {
 	m_pStageHighlight = CUI_Object::Create();
 	m_pStageHighlight->Set_Scale(216.f, 340.f);
-	m_pStageHighlight->Set_Sort(0.8f);
+	m_pStageHighlight->Set_Sort(0.47f);
 	m_pStageHighlight->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_GradientSmall2.dds"));
 	m_pStageHighlight->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
 
@@ -566,7 +566,7 @@ void CUI_MainPlay::Create_StageHighlight()
 
 	m_pStageSelectRect = CUI_Object::Create();
 	m_pStageSelectRect->Set_Scale(230.f, 355.f);
-	m_pStageSelectRect->Set_Sort(0.75f);
+	m_pStageSelectRect->Set_Sort(0.48f);
 	m_pStageSelectRect->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/ModeWindow/T_2pxStrokeBox.png"));
 
 	m_pStageSelectRect->Set_IsSlice(true);

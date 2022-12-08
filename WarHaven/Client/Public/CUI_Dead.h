@@ -18,9 +18,12 @@ public:
 	virtual void OnDisable() override;
 
 public:
-	void Enable_DeadUI();
+	void Toggle_DeadUI(_bool value);
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo) { m_pTargetInfo = pTargetInfo; }
+
+	void SetActive_DeadUI(_bool value);
+	void SetActive_RevivalUI(_bool value);
 
 private:
 	virtual void My_Tick() override;
@@ -32,16 +35,19 @@ private:
 
 	_float m_fDeadUIEnableTime = 5.f;
 
+	_float4 m_vGaugeColor = _float4(1.f, 1.f, 1.f, 1.f);
+
 private:
 	void Create_DeadUI();
 	void Set_FadeDeadUI();
 
+	void Fadenable_DeadUI();
+
 private:
 	enum RevivalIO { RU_BG, RU_Edge, RU_Bar, RU_Text, RU_Giving, RU_End };
-
 	CUI_Object* m_pRevivalUI[RU_End];
 
-	_float m_fRevivalTime = 1.f;
+	_float m_fRevivalTime = 5.f;
 	_bool m_bAbleRevival = false;
 
 private:

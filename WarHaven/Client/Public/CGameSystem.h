@@ -69,9 +69,6 @@ public:	// Paden
 
 	CTeamConnector* Get_Team(eTEAM_TYPE eEnum) { return m_pTeamConnector[(_uint)eEnum]; }
 
-
-
-
 public: /* Position Table */
 	HRESULT					Load_Position(string strFileKey);
 	_float4					Find_Position(string strPositionKey);

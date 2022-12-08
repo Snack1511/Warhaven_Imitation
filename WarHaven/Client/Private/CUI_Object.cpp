@@ -140,13 +140,25 @@ void CUI_Object::Lerp_PosY(_float fStart, _float fEnd, _float fDuration)
 	m_fAccScale = m_fEnd > m_fStart ? true : false;
 }
 
+void CUI_Object::DoMove(_float fPosX, _float fPosY, _float fDuration)
+{
+	m_bIsDoMove = true;
+
+	m_vOriginPos = Get_Pos();
+
+	m_fGoalPosX = fPosX;
+	m_fGoalPosY = fPosY;
+
+	m_fMoveDuration = fDuration;
+}
+
 void CUI_Object::DoMoveY(_float fMoveValue, _float fDuration)
 {
 	m_bIsDoMoveY = true;
 
 	m_vOriginPos = Get_Pos();
 	m_fMoveValue = fMoveValue;
-	m_fMoveDuration = fDuration;
+	m_fMoveDurationY = fDuration;
 }
 
 void CUI_Object::DoMoveX(_float fMoveValue, _float fDuration)
@@ -155,7 +167,7 @@ void CUI_Object::DoMoveX(_float fMoveValue, _float fDuration)
 
 	m_vOriginPos = Get_Pos();
 	m_fMoveValue = fMoveValue;
-	m_fMoveDuration = fDuration;
+	m_fMoveDurationX = fDuration;
 }
 
 void CUI_Object::DoScale(_float fScaleValue, _float fDuration)
@@ -200,6 +212,26 @@ void CUI_Object::Set_FadeDesc(_float fDuration)
 
 	tFadeDesc.fFadeOutStartTime = 0.f;
 	tFadeDesc.fFadeOutTime = fDuration;
+
+	GET_COMPONENT_FROM(this, CFader)->Get_FadeDesc() = tFadeDesc;
+}
+
+void CUI_Object::Set_FadeDesc(_float fFadeIn, _float fFadeOut)
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = fFadeIn;
+
+	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = fFadeOut;
 
 	GET_COMPONENT_FROM(this, CFader)->Get_FadeDesc() = tFadeDesc;
 }
@@ -387,41 +419,68 @@ void CUI_Object::Lerp_Position()
 
 void CUI_Object::DoMove()
 {
+	if (m_bIsDoMove)
+	{
+		_float fDisPosX = fabs(m_vOriginPos.x - m_fGoalPosX);
+		_float fDisPosY = fabs(m_vOriginPos.y - m_fGoalPosY);
+
+		fDisPosX = (m_vOriginPos.x > m_fGoalPosX) ? -fDisPosX : fDisPosX;
+		fDisPosY = (m_vOriginPos.y > m_fGoalPosY) ? -fDisPosY : fDisPosY;
+
+		_float fMoveValueX = (fDisPosX / m_fMoveDuration) * fDT(0);
+		_float fMoveValueY = (fDisPosY / m_fMoveDuration) * fDT(0);
+
+		_float4 vMovePos = _float4(fMoveValueX, fMoveValueY, 0.f);
+		_float4 vSetPos = Get_Pos() + vMovePos;
+
+		Set_Pos(vSetPos);
+
+		m_fMoveAccTime += fDT(0);
+		if (m_fMoveAccTime > m_fMoveDuration)
+		{
+			Set_Pos(m_fGoalPosX, m_fGoalPosY);
+
+			m_fMoveAccTime = 0.f;
+			m_bIsDoMove = false;
+		}
+	}
+
 	if (m_bIsDoMoveY)
 	{
-		m_fMoveAccTime += fDT(0);
+		m_fMoveYAccTime += fDT(0);
 
 		_float fCurPosY = Get_PosY();
-		_float fMoveValue = (m_fMoveValue / m_fMoveDuration) * fDT(0);
+		_float fMoveValue = (m_fMoveValue / m_fMoveDurationY) * fDT(0);
 		_float fResultPos = fCurPosY + fMoveValue;
 
 		Set_PosY(fResultPos);
 
-		if (m_fMoveAccTime >= m_fMoveDuration)
+		if (m_fMoveYAccTime >= m_fMoveDurationY)
 		{
 			_float fResultPosY = m_vOriginPos.y + m_fMoveValue;
 			Set_PosY(fResultPosY);
 
-			m_fMoveAccTime = 0.f;
+			m_fMoveYAccTime = 0.f;
 			m_bIsDoMoveY = false;
 		}
 	}
-	else if (m_bIsDoMoveX)
+
+	if (m_bIsDoMoveX)
 	{
-		m_fMoveAccTime += fDT(0);
+		m_fMoveXAccTime += fDT(0);
 
 		_float fCurPosX = Get_PosX();
-		_float fMoveValue = (m_fMoveValue / m_fMoveDuration) * fDT(0);
+		_float fMoveValue = (m_fMoveValue / m_fMoveDurationX) * fDT(0);
 		_float fResultPos = fCurPosX + fMoveValue;
 
 		Set_PosX(fResultPos);
 
-		if (m_fMoveAccTime >= m_fMoveDuration)
+		if (m_fMoveXAccTime >= m_fMoveDurationX)
 		{
 			_float fResultPosY = m_vOriginPos.x + m_fMoveValue;
 			Set_PosX(fResultPosY);
 
-			m_fMoveAccTime = 0.f;
+			m_fMoveXAccTime = 0.f;
 			m_bIsDoMoveX = false;
 		}
 	}

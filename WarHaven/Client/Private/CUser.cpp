@@ -33,6 +33,7 @@
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
 #include "CUI_Training.h"
+#include "CUI_Paden.h"
 #include "CUI_Dead.h"
 
 #include "CUI_Cursor.h"
@@ -287,6 +288,11 @@ void CUser::Transform_SkillUI(_uint iClass)
 	m_pUI_Skill->Transform_SkillUI(iClass);
 }
 
+void CUser::Interat_StrongHoldUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
+{
+	m_pUI_Paden->Interact_StrongHoldUI(strPadenPointKey, iTeamType, iTriggerState);
+}
+
 void CUser::On_EnterLevel()
 {
 	DISABLE_GAMEOBJECT(m_pCursor);
@@ -328,6 +334,12 @@ void CUser::On_EnterStageLevel()
 		CREATE_GAMEOBJECT(m_pUI_Training, GROUP_UI);
 	}
 
+	if (!m_pUI_Paden)
+	{
+		m_pUI_Paden = CUI_Paden::Create();
+		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
+	}
+
 	if (!m_pUI_Dead)
 	{
 		m_pUI_Dead = CUI_Dead::Create();
@@ -347,6 +359,7 @@ void CUser::On_ExitStageLevel()
 	for (_uint i = 0; i < 5; ++i)
 		m_pUI_Damage[i] = nullptr;
 
+	m_pUI_Paden = nullptr;
 	m_pUI_Training = nullptr;
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -396,9 +409,9 @@ void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
 }
 
-void CUser::Enable_DeadUI()
+void CUser::Toggle_DeadUI(_bool value)
 {
-	m_pUI_Dead->Enable_DeadUI();
+	m_pUI_Dead->Toggle_DeadUI(value);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

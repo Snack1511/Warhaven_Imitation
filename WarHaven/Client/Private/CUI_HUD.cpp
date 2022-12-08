@@ -63,7 +63,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 
 HRESULT CUI_HUD::Start()
 {
-	//Bind_Btn();
+	Bind_Btn();
 	Bind_Shader();
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
@@ -157,6 +157,11 @@ void CUI_HUD::Active_CharacterWindow()
 			pPlayer->Change_UnitClass(m_eCurClass);
 			pPlayer->Get_CurrentUnit()->On_Respawn();
 
+			if (CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->AbleHero())
+			{
+				CUser::Get_Instance()->Turn_HeroGaugeFire(true);
+			}
+
 			Set_HUD(m_eCurClass);
 		}
 
@@ -164,6 +169,7 @@ void CUI_HUD::Active_CharacterWindow()
 
 		else if (KEY(T, TAP) && KEY(CTRL, HOLD))
 		{
+			CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 			SetActive_HUD(false);
 			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
 		}
@@ -288,7 +294,7 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 
 void CUI_HUD::Bind_Btn()
 {
-	/*for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		if (m_pArrOperSelectUI[ST_BG][i])
 			m_pArrOperSelectUI[ST_BG][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_SelectBG, this, i);
@@ -298,7 +304,7 @@ void CUI_HUD::Bind_Btn()
 	{
 		if (m_pArrOperPointUI[PT_Point][i])
 			m_pArrOperPointUI[PT_Point][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Point, this, i);
-	}*/
+	}
 }
 
 
@@ -946,8 +952,6 @@ void CUI_HUD::Update_HeorTransformGauge()
 	{
 		if (m_pHeroTransformUI[HT_Bar]->Is_Valid())
 		{
-			cout << m_fHeroTransformGaugeRatio << endl;
-
 			m_fHeroTransformValue += fDT(0);
 			m_fHeroTransformGaugeRatio = m_fHeroTransformValue / m_fMaxHeroTransformValue;
 
