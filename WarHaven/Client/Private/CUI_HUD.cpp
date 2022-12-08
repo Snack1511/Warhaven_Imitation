@@ -178,6 +178,7 @@ void CUI_HUD::Active_CharacterWindow()
 
 		else if (KEY(T, TAP))
 		{
+			CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 			SetActive_HUD(false);
 			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
 		}
