@@ -46,7 +46,7 @@ HRESULT CValkyrie_Counter::Initialize()
 	//m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 
 	//m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
-
+	 
 	m_iStateChangeKeyFrame = 9999;
 
 	m_fInterPolationTime = 0.1f;

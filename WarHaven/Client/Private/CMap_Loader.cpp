@@ -253,6 +253,7 @@ HRESULT CMap_Loader::SetUp_NavData(ifstream& rhsReadFile, string& strPath)
 
 HRESULT CMap_Loader::SetUp_LightData(ifstream& rhsReadFile, string& strPath)
 {
+
     return S_OK;
 }
 

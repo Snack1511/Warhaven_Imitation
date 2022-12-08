@@ -378,7 +378,7 @@ void CWindow_Map::Func_LightControl()
         for (_uint i = 0; i < m_LightDescs.size(); ++i)
         {
             _bool bSelect = false;
-            if (i = m_iCurSelectLight)
+            if (i == m_iCurSelectLight)
             {
                 bSelect = true;
             }
@@ -1049,6 +1049,8 @@ void CWindow_Map::Load_NavGroup(string FilePath)
 }
 void CWindow_Map::Save_LightGroup(string BasePath, string SaveName)
 {
+
+
 }
 void CWindow_Map::Load_LightGroup(string FilePath)
 {
