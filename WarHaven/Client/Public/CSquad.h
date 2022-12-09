@@ -33,7 +33,7 @@ public:
 	void		Make_LeaderPlayer();
 	void		Clear_All() { m_pLeaderPlayer = nullptr; m_mapPlayers.clear(); }
 	void	SetUp_OutlineType_SquadMember();
-
+	CPlayer* Get_LeaderPlayer() { return m_pLeaderPlayer; }
 
 private:
 	CPlayer* m_pLeaderPlayer = nullptr;

@@ -25,6 +25,7 @@ class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
 class CUI_UnitHUD;
+class CAIController;
 
 class CPlayer final : public CGameObject
 {
@@ -72,6 +73,11 @@ public:
 	/* Initialize_Prototype */
 public:
 	void Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData);
+	/*Collision*/
+public:
+	virtual void	Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
+	virtual void	Player_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
+	virtual void	Player_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 
 	/* Start */
 public:
@@ -113,6 +119,8 @@ public:
 	void	Enable_OnStart() { m_bEnableOnStart = true; }
 
 	void	Set_UnitType(_uint eUnitType) { m_iUnitType = eUnitType; }
+
+	HRESULT SetUp_Collider();
 
 public:
 	// CGameObject을(를) 통해 상속됨
@@ -164,6 +172,9 @@ private: /* 킬뎃과 플레이어 정보 */
 	_bool m_bIsMainPlayer = false;
 	_bool m_bIsLeaderPlayer = false;
 
+private: /*AI 추가용*/
+	CAIController* m_pAIController = nullptr;
+
 
 private:
 	//어떤 타입인지(적, 샌드백)
@@ -202,8 +213,8 @@ private:
 
 	CLASS_TYPE		m_ePrevClass = CLASS_END;
 	CLASS_TYPE		m_eCurrentClass = CLASS_TYPE::CLASS_END;
-
-
+private:
+	CCollider_Sphere* m_pSightRangeCollider = nullptr;
 private:
 	CUI_UnitHUD* m_pUnitHUD = nullptr;
 

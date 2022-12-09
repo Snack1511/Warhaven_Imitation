@@ -150,4 +150,42 @@ namespace Engine
 		}
 	}
 
+	static void Make_Dump(string strClassName, string strMessage) 
+	{
+		ofstream writeFile;
+
+		time_t timer;
+		struct tm* t;
+		timer = time(NULL); // 1970년 1월 1일 0시 0분 0초부터 시작하여 현재까지의 초
+		localtime_s(t, &timer);
+		string strDumpPath = "../../Log/Log_";
+		strDumpPath += strClassName;
+		strDumpPath += ".txt";
+
+
+		string strWriteMsg = "[";
+		strWriteMsg += to_string((t->tm_year + 1900));
+		strWriteMsg += "/";
+		strWriteMsg += to_string((t->tm_mon + 1));
+		strWriteMsg += "/";
+		strWriteMsg += to_string((t->tm_mday));
+		strWriteMsg += " ";
+		strWriteMsg += to_string((t->tm_hour));
+		strWriteMsg += ":";
+		strWriteMsg += to_string((t->tm_min));
+		strWriteMsg += ":";
+		strWriteMsg += to_string((t->tm_sec));
+		strWriteMsg += "] - ";
+		strWriteMsg += strMessage;
+		strWriteMsg += "\0";
+
+		writeFile.open(strDumpPath.c_str());
+		if(!writeFile.is_open())
+		{
+			assert(0);
+		}
+		writeFile.seekp(writeFile._Seekend);
+		writeFile.write(strWriteMsg.c_str(), strWriteMsg.length());
+	}
+
 }

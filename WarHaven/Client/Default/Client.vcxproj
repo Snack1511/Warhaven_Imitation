@@ -187,6 +187,8 @@
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_textedit.h" />
     <ClInclude Include="..\..\Reference\Headers\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
+    <ClInclude Include="..\Public\CAIController.h" />
+    <ClInclude Include="..\Public\CAIPersonality.h" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
     <ClInclude Include="..\Public\CAI_TG_StingHit.h" />
@@ -204,6 +206,7 @@
     <ClInclude Include="..\Public\CArcher_Shoot_Poison.h" />
     <ClInclude Include="..\Public\CArcher_Shoot_Sniping.h" />
     <ClInclude Include="..\Public\CArcher_Shoot.h" />
+    <ClInclude Include="..\Public\CBehavior.h" />
     <ClInclude Include="..\Public\CBounce_AI_TG_Warrior.h" />
     <ClInclude Include="..\Public\CBounce_AI_TG_Warrior_L.h" />
     <ClInclude Include="..\Public\CBounce_AI_TG_Warrior_R.h" />
@@ -349,6 +352,7 @@
     <ClInclude Include="..\Public\CJump_SpearMan_Land_R.h" />
     <ClInclude Include="..\Public\CJump_SpearMan_R.h" />
     <ClInclude Include="..\public\CMapColliders.h" />
+    <ClInclude Include="..\Public\CPersonality_Default.h" />
     <ClInclude Include="..\public\CPlayerInfo.h" />
     <ClInclude Include="..\public\CPlayerInfo_Default.h" />
     <ClInclude Include="..\public\CPlayerInfo_Leader.h" />
@@ -414,6 +418,7 @@
     <ClInclude Include="..\Public\CStop_Paladin_R.h" />
     <ClInclude Include="..\Public\CSwitchLtoR_Paladin.h" />
     <ClInclude Include="..\Public\CSwitchRtoL_Paladin.h" />
+    <ClInclude Include="..\Public\CTable_Conditions.h" />
     <ClInclude Include="..\public\CTeamConnector.h" />
     <ClInclude Include="..\Public\CSpearMan_Attack_Sting.h" />
     <ClInclude Include="..\Public\CSpearMan_BackStep.h" />
@@ -687,6 +692,8 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\CAIController.cpp" />
+    <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
     <ClCompile Include="..\Private\CAI_TG_StingHit.cpp" />
     <ClCompile Include="..\Private\CAI_TG_FlyHit.cpp" />
@@ -703,6 +710,7 @@
     <ClCompile Include="..\Private\CArcher_Shoot_Poison.cpp" />
     <ClCompile Include="..\Private\CArcher_Shoot_Sniping.cpp" />
     <ClCompile Include="..\Private\CArcher_Shoot.cpp" />
+    <ClCompile Include="..\Private\CBehavior.cpp" />
     <ClCompile Include="..\Private\CBounce_AI_TG_Warrior.cpp" />
     <ClCompile Include="..\Private\CBounce_AI_TG_Warrior_L.cpp" />
     <ClCompile Include="..\Private\CBounce_AI_TG_Warrior_R.cpp" />
@@ -849,6 +857,7 @@
     <ClCompile Include="..\Private\CJump_SpearMan_Land_R.cpp" />
     <ClCompile Include="..\Private\CJump_SpearMan_R.cpp" />
     <ClCompile Include="..\private\CMapColliders.cpp" />
+    <ClCompile Include="..\Private\CPersonality_Default.cpp" />
     <ClCompile Include="..\private\CPlayerInfo.cpp" />
     <ClCompile Include="..\private\CPlayerInfo_Default.cpp" />
     <ClCompile Include="..\private\CPlayerInfo_Leader.cpp" />
@@ -914,6 +923,7 @@
     <ClCompile Include="..\Private\CStop_Paladin_R.cpp" />
     <ClCompile Include="..\Private\CSwitchLtoR_Paladin.cpp" />
     <ClCompile Include="..\Private\CSwitchRtoL_Paladin.cpp" />
+    <ClCompile Include="..\Private\CTable_Conditions.cpp" />
     <ClCompile Include="..\private\CTeamConnector.cpp" />
     <ClCompile Include="..\Private\CSpearMan_BackStep.cpp" />
     <ClCompile Include="..\Private\CSpearMan_SpecialGuard.cpp" />

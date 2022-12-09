@@ -32,7 +32,7 @@ BEGIN(Client)
 class CTeamConnector;
 class CSquad;
 class CPlayer;
-
+class CAIPersonality;
 class CPlayerInfo abstract
 {
 
@@ -62,8 +62,7 @@ protected:
 
 public:
 	/* 레벨 로딩시 이 함수를 통해서 Player를 만들어냄 */
-	CPlayer* Make_Player();
-
+	CPlayer* Make_Player(CAIPersonality* pPersonality = nullptr);
 public:
 	CPlayer* Get_Player() { return m_pMyPlayer; }
 	eTEAM_TYPE	Get_TeamType() { return m_eTeamType; }
@@ -98,6 +97,9 @@ protected:
 	CSquad* m_pMySquad = nullptr;
 	CTeamConnector* m_pMyTeam = nullptr;
 
+protected:
+	/*AI들 전용 변수*/
+	CAIPersonality* m_pPersonality = nullptr;
 protected:
 	eTEAM_TYPE	m_eTeamType = eTEAM_TYPE::eBLUE;
 	CLASS_TYPE	m_eCurChosenClass = WARRIOR;
