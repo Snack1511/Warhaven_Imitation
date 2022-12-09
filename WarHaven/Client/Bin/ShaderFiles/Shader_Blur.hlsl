@@ -105,14 +105,15 @@ PS_OUT	PS_RADIALBLUR_MAIN(PS_DOWNSCALE_IN In)
 
 	int iMaxNumSamples = 6;
 	int iNumSamples = 5;
-	float fMaxLength = 0.35f;
-
 	float2 vDirection = In.vTexUV - center;
+	/*float fMaxLength = 0.35f;
+
+	
 
 	float fLength = length(vDirection);
 
 	if (fLength < fMaxLength)
-		iNumSamples = 1;
+		iNumSamples = 1;*/
 
 	//max까지는 1로가고
 	//max부터 0.707 까지는 점차 늘으나게

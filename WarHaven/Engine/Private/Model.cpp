@@ -1263,21 +1263,21 @@ HRESULT CModel::SetUp_AnimModel_LOD()
 	{
 		for (auto elem : vecMCTemp)
 		{
-			if (elem.first == 0 || elem.first == 4 || elem.first == 5)
-				continue;
-
-			m_wstrModelFilePath = elem.second->m_wstrFilePath;
-			//이전꺼랑 같으면 넘기기
-			if (m_wstrModelFilePath == wstrPrevPath)
+			if (elem.first == 1 || elem.first == 2 || elem.first == 3)
 			{
-				continue;
-			}
+				m_wstrModelFilePath = elem.second->m_wstrFilePath;
+				//이전꺼랑 같으면 넘기기
+				if (m_wstrModelFilePath == wstrPrevPath)
+				{
+					continue;
+				}
 
-			wstrPrevPath = m_wstrModelFilePath;
-			if (FAILED(Load_Anim_LOD((eLOD_LEVEL)i, elem.first)))
-			{
-				m_bLOD = false;
-				return S_OK;
+				wstrPrevPath = m_wstrModelFilePath;
+				if (FAILED(Load_Anim_LOD((eLOD_LEVEL)i, elem.first)))
+				{
+					m_bLOD = false;
+					return S_OK;
+				}
 			}
 		}
 

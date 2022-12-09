@@ -272,6 +272,67 @@ _bool CPicking_Manager::Is_Picked(CMesh* pRenderer, _uint3* pOutPickedIndex, _fl
 	return false;
 }
 
+_bool CPicking_Manager::Is_Picked(CMesh* pMesh, _float4 vStartPos, _float4 _vRayDir, _float4* pOut, _float4* pOutNormal)
+{
+	CTransform* pTransform = pMesh->Get_Owner()->Get_Transform();
+	_float4x4	matWorld = pTransform->Get_WorldMatrix();
+	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, matWorld.XMLoad());
+
+	_vector			vRayPos, vRayDir;
+
+	vRayPos = XMVector3TransformCoord(XMLoadFloat4(&vStartPos), WorldMatrixInv);
+	vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat4(&_vRayDir), WorldMatrixInv));
+
+	_uint			iNumFaces = pMesh->Get_NumPrimitive();
+	const _float3* pVerticesPos = pMesh->Get_VerticesPos();
+	_uint			iIndexSize = pMesh->Get_IndexSize();
+
+	_float		fDist, fMin = 9999.f;
+
+	for (_uint i = 0; i < iNumFaces; ++i)
+	{
+		_uint3		iIndices = pMesh->Get_Indices(i);
+
+		_vector		vVec0 = XMLoadFloat3(&pVerticesPos[iIndices._1]);
+		GXMVECTOR	vVec1 = XMLoadFloat3(&pVerticesPos[iIndices._2]);
+		HXMVECTOR	vVec2 = XMLoadFloat3(&pVerticesPos[iIndices._3]);
+
+		if (true == TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
+		{
+			_float4 V1, V2;
+			_float4 vOutNormal, vPickedPos;
+			_float4x4 worldMat = matWorld;
+
+			V1 = (vVec0 - vVec1);
+			V2 = (vVec2 - vVec1);
+
+			vOutNormal = XMVector3Cross(V1.XMLoad(), V2.XMLoad());
+			vOutNormal = vOutNormal.MultiplyNormal(worldMat);
+			vOutNormal.Normalize();
+			vPickedPos = vRayPos + XMVector3Normalize(vRayDir) * fDist;
+
+			_float4 vRayPos = _float4(m_vRayPos.x, m_vRayPos.y, m_vRayPos.z, 1.f);
+
+			_float fDistance = (vRayPos - vPickedPos).Length();
+
+			if (fMin > fDistance)
+			{
+				*pOutNormal = vOutNormal;
+				*pOut = vPickedPos.MultiplyCoord(matWorld);
+
+				fMin = fDistance;
+			}
+		}
+	}
+
+	if (fMin != 9999.f)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 _bool CPicking_Manager::Is_Picked(CGameObject* pGameObject, _float4* pOut, _float4* pOutNormal)
 {
 	Compute_WorldRay();

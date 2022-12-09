@@ -9,14 +9,20 @@ class ENGINE_DLL CTileLayer
 private:
 	CTileLayer();
 	~CTileLayer();
+
 public:
 	//F = G + H
 	enum NodeDataFlag{Node_NodeTile, Node_ParentTile, Node_GCost, Node_HCost, Node_FCost};
 	//NodeTile, ParentTile, GCost, HCost, FCost
 	typedef tuple<CTile*, CTile*, _uint, _uint, _uint> NODE;
 	typedef list<NODE> NODELIST;
+
 public:
 	static CTileLayer* Create(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iLayerIndex);
+
+public:
+	_uint	Get_LayerIndex() { return m_iLayerIndex; }
+	void	Set_StandardY(_float fStandardY) { m_fStandardY = fStandardY; }
 
 public:
 	HRESULT	Initialize();
@@ -36,6 +42,7 @@ private:
 	_bool Check_EndTile(NODELIST& rhsOpenList, NODELIST& rhsCloseList, NODE& SelectNode,  CTile* pEndTile);
 	_bool Pop_FindNode(NODELIST& TileList, CTile* pSearchTile, NODE& OutTargetNode);
 	_float Get_TileDistance(CTile* pSourTile, CTile* pDestTile);
+
 private:
 	vector<CTile*>	m_vecTiles;
 
@@ -44,6 +51,8 @@ private:
 
 	/* 타일의 한 변의 길이 (타일은 무조건 정사각형) */
 	_float		m_fTileSize = 0.f;
+
+	_float		m_fStandardY = 0.f;
 
 private:
 	/* 이 레이어의 인덱스 ( 몇 층 인지 ) */

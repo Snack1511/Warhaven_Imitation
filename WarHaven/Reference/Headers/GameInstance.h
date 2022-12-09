@@ -150,11 +150,17 @@ public: /* For Picking_Manager */
 	_bool	Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4* pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _float4* pOut, _uint* pOutIndex, _float4* pOutNormal = nullptr);
 
+	_bool	Is_Picked(CMesh* pRenderer, _float4 vStartPos, _float4 vRayDir, _float4* pOut, _float4* pOutNormal = nullptr);
+
 
 public: /* For Tile_Manager */
 	HRESULT		Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iNumLayers);
+
 	void		Set_Tile_WorldMatrix(_float4x4 matWorld);
 	void		Set_Tile_WorldPos(_float4 vWorldPos);
+	void		Set_StandardY(_uint iLayerIndex, _float fStandardY);
+	_float		Get_StandardY(_uint iLayerIndex);
+
 	void		Clear_AllTiles();
 	_uint		Find_TileIndex(_float4 vPosition);
 	HRESULT		Render_Tiles();

@@ -51,6 +51,22 @@ void CTile_Manager::Set_WorldPos(_float4 vPos)
 	m_matWorldInv.Inverse();
 }
 
+void CTile_Manager::Set_StandardY(_uint iLayerIndex, _float fStandardY)
+{
+	if (iLayerIndex >= m_vecLayers.size())
+		return;
+
+	m_vecLayers[iLayerIndex]->Set_StandardY(fStandardY);
+}
+
+_float CTile_Manager::Get_StandardY(_uint iLayerIndex)
+{
+	if (iLayerIndex >= m_vecLayers.size())
+		return 0.f;
+
+	return m_vecLayers[iLayerIndex]->m_fStandardY;
+}
+
 _uint CTile_Manager::Find_Index(_float4 vPosition)
 {
 	if (m_vecLayers.empty())

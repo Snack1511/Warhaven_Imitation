@@ -116,6 +116,7 @@ namespace Client
 		GROUP_USER,
 		GROUP_CAMERA,
 		GROUP_TRIGGER,
+		GROUP_PHYSX,
 
 		GROUP_END = GR_END
 	};

@@ -101,7 +101,7 @@ void CCameraCollider::Late_Tick()
 		CUtility_PhysX::To_PxVec3(vDir),
 		m_pCurrentShape->getGeometry().any(),
 		m_pCurrentHitActor->getGlobalPose(),
-		3.f, PxHitFlag::ePOSITION, 1, &hitInfo
+		3.f, PxHitFlag::ePOSITION | PxHitFlag::eNORMAL, 1, &hitInfo
 	);
 
 	if (hitCount > 0)

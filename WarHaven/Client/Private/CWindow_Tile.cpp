@@ -21,6 +21,8 @@ CWindow_Tile::CWindow_Tile()
 
 CWindow_Tile::~CWindow_Tile()
 {
+	SAFE_DELETE_ARRAY(m_bRenderTile);
+
 }
 
 CWindow_Tile* CWindow_Tile::Create()
@@ -68,6 +70,12 @@ void CWindow_Tile::Tick()
 
 			for (auto& elem : m_vecTileDebugger)
 			{
+				if (!m_bRenderTile[iPlusIndex])
+				{
+					iPlusIndex++;
+					continue;
+				}
+
 				if (GAMEINSTANCE->Is_Picked_Mesh(elem->m_pTerrainMesh, &iIndex, &vOutPos))
 				{
 					vOutPos = vOutPos.MultiplyCoord(m_vecTileDebugger[iPlusIndex]->Get_Transform()->Get_WorldMatrix());
@@ -140,48 +148,83 @@ HRESULT CWindow_Tile::Render()
 				CREATE_GAMEOBJECT(m_vecTileDebugger.back(), GROUP_DEBUG);
 			}
 
+			SAFE_DELETE_ARRAY(m_bRenderTile);
+			m_bRenderTile = new _bool[iNumLayers];
+			for (_uint i = 0; i < iNumLayers; ++i)
+				m_bRenderTile[i] = true;
+
+			m_iNumTilesX = iNumTilesX;
+			m_iNumTilesZ = iNumTilesZ;
+			m_fTileSize = fTileSize;
+			m_iCurSelectLayer = 0;
+			m_iCurSelectNeighbor = 0;
+			m_bSelectNeighbor = false;
+			m_iCurSelectTileIndex = 0;
+			m_pSelectTile = nullptr;
+
 			Call_MsgBox(L"Generate Success");
 
 		}
 	}
 	
-	static _bool bRenderTile = true;
 
-	if (ImGui::RadioButton("RENDER_TILE", bRenderTile))
-	{
-		m_bRenderTile = !m_bRenderTile;
-		bRenderTile = m_bRenderTile;
 
-		if (m_bRenderTile)
-		{
-			for (auto& elem : m_vecTileDebugger)
-				ENABLE_GAMEOBJECT(elem);
-		}
-		else
-		{
-			for (auto& elem : m_vecTileDebugger)
-				DISABLE_GAMEOBJECT(elem);
-		}
-	}
+	
+
+
 
 	if (ImGui::CollapsingHeader("SetUp_Layers")) 
 	{
 		if (!m_vecTileDebugger.empty())
 		{
+			if (ImGui::Button("SHOOT_RAY"))
+			{
+				On_ShootRay();
+			}
+
 			_float4 vWorldPos = GAMEINSTANCE->Get_TileWorldPos();
 
-
-			// 1. Layer 사이 Y 값
-			if (ImGui::DragFloat("Step Y", &m_fStepY, 0.1f, 0.1f, 100.f, "%.2f"))
+			for (_int i = (m_vecTileDebugger.size() - 1); i >= 0; --i)
 			{
-				for (_uint i = 0; i < m_vecTileDebugger.size(); ++i)
+				string strTemp = "RENDER_LAYER(";
+				strTemp += to_string(i);
+				strTemp += ")";
+
+				if (ImGui::RadioButton(strTemp.c_str(), m_bRenderTile[i]))
 				{
-					_float4 vPos = vWorldPos;
-					vPos.y += i * m_fStepY;
-					m_vecTileDebugger[i]->Get_Transform()->Set_World(WORLD_POS, vPos);
+					m_bRenderTile[i] = !m_bRenderTile[i];
+
+					if (m_bRenderTile[i])
+					{
+						ENABLE_GAMEOBJECT(m_vecTileDebugger[i]);
+					}
+					else
+					{
+						DISABLE_GAMEOBJECT(m_vecTileDebugger[i]);
+					}
+				}
+
+				ImGui::SameLine();
+
+				/* 높이값 처리 */
+				strTemp = "Standard Y(";
+				strTemp += to_string(i);
+				strTemp += ")";
+				_float fCurY = GAMEINSTANCE->Get_StandardY(i);
+				if (ImGui::SliderFloat(strTemp.c_str(), &fCurY, -10.f, 50.f, "%.2f"))
+				{
+					GAMEINSTANCE->Set_StandardY(i, fCurY);
 				}
 			}
 
+			static _float fStepY = 0.f;
+			if (ImGui::SliderFloat("StepY", &fStepY, 0.f, 20.f, "%.2f"))
+			{
+				for (_uint i = 0; i < m_vecTileDebugger.size(); ++i)
+				{
+					GAMEINSTANCE->Set_StandardY(i, i * fStepY);
+				}
+			}
 
 
 
@@ -191,20 +234,19 @@ HRESULT CWindow_Tile::Render()
 
 			memcpy(vPosition, &vWorldPos, sizeof(_float3));
 
-
 			if (ImGui::DragFloat3("Position", vPosition, 0.1f, -999.f, 999.f, "%.1f"))
 			{
 				memcpy(&vWorldPos, vPosition, sizeof(_float3));
-
-				for (_uint i = 0; i < m_vecTileDebugger.size(); ++i)
-				{
-					_float4 vPos = vWorldPos;
-					vPos.y += i * m_fStepY;
-					m_vecTileDebugger[i]->Get_Transform()->Set_World(WORLD_POS, vPos);
-				}
-
 				GAMEINSTANCE->Set_Tile_WorldPos(vWorldPos);
 
+			}
+
+			for (_uint i = 0; i < m_vecTileDebugger.size(); ++i)
+			{
+				_float4 vPos = vWorldPos;
+				_float fCurY = GAMEINSTANCE->Get_StandardY(i);
+				vPos.y += fCurY;
+				m_vecTileDebugger[i]->Get_Transform()->Set_World(WORLD_POS, vPos);
 			}
 		}
 	}
@@ -218,7 +260,6 @@ HRESULT CWindow_Tile::Render()
 		ImGui::SameLine();
 		if (ImGui::Button("Save"))
 		{
-
 			SetUp_DataFiles(m_DataDirectory.c_str());
 		}
 		string PreviewData = (m_FileDatas.empty()) ? "" : get<SL_FileName>(m_FileDatas[m_iFileDataIndex]);
@@ -290,7 +331,7 @@ void CWindow_Tile::Control_SelectTile()
 	{
 		string SelectLayer = to_string(m_iCurSelectLayer);
 		string SelectIndex = to_string(m_iCurSelectTileIndex);
-		_float4 vPos = m_pSelectTile->Get_CenterPos();
+		_float4 vPos = m_pSelectTile->Get_LocalCenterPos();
 		string SelectCenterPosX = to_string(vPos.x);
 		string SelectCenterPosY = to_string(vPos.y);
 		string SelectCenterPosZ = to_string(vPos.z);
@@ -306,7 +347,7 @@ void CWindow_Tile::Control_SelectTile()
 
 		ImGui::Spacing();
 
-		ImGui::Text("CenterPos : ");
+		ImGui::Text("LocalCenterPos : ");
 		ImGui::SameLine();
 		ImGui::Text(SelectCenterPosX.c_str(), "%.2f");
 		ImGui::SameLine();
@@ -426,11 +467,18 @@ void CWindow_Tile::Control_SelectTile()
 		string strSelect = (m_bSelectNeighbor) ? "Select Neighbor" : "UnSelect Neighbor";
 		ImGui::Text(strSelect.c_str());
 
-		ImVec2 ButtonSize = ImVec2(25.f, 25.f);
+		ImVec2 ButtonSize = ImVec2(50.f, 50.f);
 		string ButtonLabel = "";
-		
-		ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_LeftTop));
+
+		if (m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_LeftTop))
+		{
+			ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_LeftTop));
+			ButtonLabel += "/";
+			ButtonLabel += to_string(m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_LeftTop)->Get_CurLayerIndex());
+		}
 		ButtonLabel += "##LT";
+
+		
 		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
 		{
 			if (m_iCurSelectNeighbor == CTile::eNeighborFlags_LeftTop && m_bSelectNeighbor == true)
@@ -446,7 +494,12 @@ void CWindow_Tile::Control_SelectTile()
 		}
 		ImGui::SameLine();
 
-		ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_Top));
+		if (m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_Top))
+		{
+			ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_Top));
+			ButtonLabel += "/";
+			ButtonLabel += to_string(m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_Top)->Get_CurLayerIndex());
+		}
 		ButtonLabel += "##T";
 		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
 		{
@@ -462,8 +515,12 @@ void CWindow_Tile::Control_SelectTile()
 			}
 		}
 		ImGui::SameLine();
-		
-		ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_RightTop));
+		if (m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_RightTop))
+		{
+			ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_RightTop));
+			ButtonLabel += "/";
+			ButtonLabel += to_string(m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_RightTop)->Get_CurLayerIndex());
+		}
 		ButtonLabel += "##RT";
 		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
 		{
@@ -479,7 +536,12 @@ void CWindow_Tile::Control_SelectTile()
 			}
 		}
 
-		ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_Left));
+		if (m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_Left))
+		{
+			ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_Left));
+			ButtonLabel += "/";
+			ButtonLabel += to_string(m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_Left)->Get_CurLayerIndex());
+		}
 		ButtonLabel += "##L";
 		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
 		{
@@ -503,7 +565,12 @@ void CWindow_Tile::Control_SelectTile()
 		}
 		ImGui::SameLine();
 
-		ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_Right));
+		if (m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_Right))
+		{
+			ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_Right));
+			ButtonLabel += "/";
+			ButtonLabel += to_string(m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_Right)->Get_CurLayerIndex());
+		}
 		ButtonLabel += "##R";
 		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
 		{
@@ -519,7 +586,12 @@ void CWindow_Tile::Control_SelectTile()
 			}
 		}
 
-		ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_LeftBottom));
+		if (m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_LeftBottom))
+		{
+			ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_LeftBottom));
+			ButtonLabel += "/";
+			ButtonLabel += to_string(m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_LeftBottom)->Get_CurLayerIndex());
+		}
 		ButtonLabel += "##LB";
 		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
 		{
@@ -536,7 +608,12 @@ void CWindow_Tile::Control_SelectTile()
 		}
 		ImGui::SameLine();
 
-		ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_Bottom));
+		if (m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_Bottom))
+		{
+			ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_Bottom));
+			ButtonLabel += "/";
+			ButtonLabel += to_string(m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_Bottom)->Get_CurLayerIndex());
+		}
 		ButtonLabel += "##B";
 		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
 		{
@@ -553,7 +630,12 @@ void CWindow_Tile::Control_SelectTile()
 		}
 		ImGui::SameLine();
 
-		ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_RightBottom));
+		if (m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_RightBottom))
+		{
+			ButtonLabel = to_string(m_pSelectTile->Get_NeighborIndex(CTile::eNeighborFlags_RightBottom));
+			ButtonLabel += "/";
+			ButtonLabel += to_string(m_pSelectTile->Get_AdjTile(CTile::eNeighborFlags_RightBottom)->Get_CurLayerIndex());
+		}
 		ButtonLabel += "##RB";
 		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
 		{
@@ -570,12 +652,15 @@ void CWindow_Tile::Control_SelectTile()
 		}
 		
 
-		if (m_bSelectNeighbor) {
+		if (m_bSelectNeighbor)
+		{
 			if (ImGui::Button("Set_Null"))
 			{
 				m_pSelectTile->Set_Neighbor(m_iCurSelectNeighbor, nullptr);
 				m_bSelectNeighbor = false;
 			}
+
+
 		}
 	}
 }
@@ -606,16 +691,323 @@ void CWindow_Tile::Create_SubWindow(const char* szWindowName, const ImVec2& Pos,
 
 void CWindow_Tile::On_Picking(_uint iLayerIndex, _float4 vPickedPos)
 {
+	/* 기존꺼 알파 지우기 */
+	m_vecTileDebugger[m_iCurSelectLayer]->Set_TileAlpha(m_iCurSelectTileIndex, 0.5f);
+
 	m_iCurSelectTileIndex = GAMEINSTANCE->Find_TileIndex(vPickedPos);
 	m_iCurSelectLayer = iLayerIndex;
 	CTile* pTile = GAMEINSTANCE->Find_Tile(iLayerIndex, m_iCurSelectTileIndex);
 
 	//pTile->Set_TileFlag(CTile::eTileFlags_Default);
-	m_vecTileDebugger[iLayerIndex]->Set_TileColor(m_iCurSelectTileIndex, _float4(0.f, 1.f, 0.f));
+	m_vecTileDebugger[m_iCurSelectLayer]->Set_TileAlpha(m_iCurSelectTileIndex, 1.f);
 	
 	m_pSelectTile = pTile;
+}
+
+void CWindow_Tile::On_ShootRay()
+{
+	/* 아래부터 위로 Ray 쏘기 */
+	Find_Terrain();
+
+	//1. 0층부터
+
+	for (_uint i = 0; i < m_vecTileDebugger.size(); ++i)
+	{
+		if (FAILED(ShootRay_Layer(i)))
+			return;
+
+		m_vecTileDebugger[i]->Initialize();
+	}
 
 
+	/* 다 쐈으면 쌍방 연결 */
+	for (_uint i = 0; i < m_vecTileDebugger.size(); ++i)
+	{
+		if (FAILED(ReConnect_Tiles(i)))
+			return;
+	}
+
+
+	Call_MsgBox(L"SHOOT DONE");
+
+}
+
+HRESULT CWindow_Tile::ShootRay_FirstFloor()
+{
+	
+	return S_OK;
+
+}
+
+HRESULT CWindow_Tile::ShootRay_Layer(_uint iLayerIndex)
+{
+	_float4x4 matWorld = m_vecTileDebugger[iLayerIndex]->m_pTransform->Get_WorldMatrix();
+	_float4 vRayDir = _float4(0.f, -1.f, 0.f, 0.f);
+
+	_float fDownStandardY = -999.f;
+
+	if (iLayerIndex > 0)
+	{
+		fDownStandardY = m_vecTileDebugger[iLayerIndex - 1]->Get_Transform()->Get_World(WORLD_POS).y;
+	}
+
+
+	for (_uint i = 0; i < m_iNumTilesZ; ++i)
+	{
+		for (_uint j = 0; j < m_iNumTilesX; ++j)
+		{
+
+			_uint iCurTileIndex = i * m_iNumTilesX + j;
+			CTile* pCurTile = GAMEINSTANCE->Find_Tile(iLayerIndex, iCurTileIndex);
+
+			if (!pCurTile)
+			{
+				Call_MsgBox_Index(L"타일을 못찾음 뭔가 이상함 Index : ", iCurTileIndex);
+				return E_FAIL;
+			}
+
+			_float4 vCenterPos = pCurTile->Get_LocalCenterPos().MultiplyCoord(matWorld);
+
+			_bool bTerrainHit = false;
+			_bool bBoxHit = false;
+
+			/* 일단 터레인한테 쏘고 */
+			_float4 vHitPos, vBoxHitNormal, vBoxHitPos;
+
+			bTerrainHit = ShootRay_ToTerrain(vCenterPos, vRayDir, vHitPos);
+			if (bTerrainHit)
+			{
+				//0. HitPos들이 DownStandardY보다 작으면 걍 무효
+				if (vHitPos.y < fDownStandardY)
+				{
+					bTerrainHit = false;
+				}
+			}
+
+			bBoxHit = ShootRay_ToBoxes(vCenterPos, vRayDir, vBoxHitPos, vBoxHitNormal);
+			if (bBoxHit)
+			{
+				//0. HitPos들이 DownStandardY보다 작으면 걍 무효
+				if (vBoxHitPos.y < fDownStandardY)
+				{
+					bBoxHit = false;
+				}
+			}
+
+			//1. Terrain도 없고 Cube도 없다
+			if (!bTerrainHit)
+			{
+				if (!bBoxHit)
+				{
+					pCurTile->Set_WorldCenterPos(_float4(0.f, -999.f, 0.f));
+					pCurTile->Set_TileFlag(CTile::eTileFlags_None);
+				}
+				else
+				{
+					//2. Terrain없지만 Cube는 있따
+
+					//
+					pCurTile->Set_WorldCenterPos(vBoxHitPos);
+					pCurTile->Set_TileFlag(CTile::eTileFlags_Default);
+				}
+			}
+			else
+			{
+				//3. Terrain 있고 Cube 없다
+				if (!bBoxHit)
+				{
+					pCurTile->Set_WorldCenterPos(vHitPos);
+					pCurTile->Set_TileFlag(CTile::eTileFlags_Default);
+				}
+				else
+				{
+					//4. Terrain있고 Cube도 있어
+					
+					//4-1. 박스가 더 높이 있다 : 박스가 더 높이 있따는건 막힌 길이란 뜻인디
+					if (vBoxHitPos.y > vHitPos.y)
+					{
+						//막혀있는 경우임
+						pCurTile->Set_TileFlag(CTile::eTileFlags_Blocked);
+						pCurTile->Set_WorldCenterPos(vBoxHitPos);
+					}
+					else
+					{
+						//4-2. 박스가 더 낮게 있다 : Terrain 아래 깔린 박스이므로 무시하믄 댐
+						pCurTile->Set_WorldCenterPos(vHitPos);
+						pCurTile->Set_TileFlag(CTile::eTileFlags_Default);
+					}
+
+				}
+			}
+
+
+
+		}
+	}
+
+
+	
+
+
+
+	return S_OK;
+}
+
+HRESULT CWindow_Tile::ReConnect_Tiles(_uint iLayerIndex)
+{
+
+	for (_uint i = 0; i < m_iNumTilesZ; ++i)
+	{
+		for (_uint j = 0; j < m_iNumTilesX; ++j)
+		{
+
+			_uint iCurTileIndex = i * m_iNumTilesX + j;
+			CTile* pCurTile = GAMEINSTANCE->Find_Tile(iLayerIndex, iCurTileIndex);
+
+			if (!pCurTile)
+			{
+				Call_MsgBox_Index(L"타일을 못찾음 뭔가 이상함 Index : ", iCurTileIndex);
+				return E_FAIL;
+			}
+
+			if (!pCurTile->Is_ValidTile())
+			{
+				/*바로 위 아래 레이어의 같은 인덱스를 조사.*/
+				CTile* pUpTile = GAMEINSTANCE->Find_Tile(iLayerIndex + 1, iCurTileIndex);
+				CTile* pDownTile = GAMEINSTANCE->Find_Tile(iLayerIndex - 1, iCurTileIndex);
+
+				if (pUpTile && pUpTile->Is_ValidTile())
+				{
+					pCurTile->Switch_AllAdjTiles_To(pUpTile);
+				}
+
+				if (pDownTile && pDownTile->Is_ValidTile())
+				{
+					pCurTile->Switch_AllAdjTiles_To(pDownTile);
+				}
+			}
+
+		}
+	}
+
+	return S_OK;
+}
+
+_bool CWindow_Tile::ShootRay_ToTerrain(_float4 vStartPos, _float4 vRayDir, _float4& vOutPos)
+{
+	_float4 vPickedPos, vPickedNormal;
+
+	if (GAMEINSTANCE->Is_Picked(m_pMeshTerrain, vStartPos, vRayDir, &vPickedPos, &vPickedNormal))
+	{
+		vOutPos = vPickedPos;
+		return true;
+	}
+
+	return false;
+}
+
+_bool CWindow_Tile::ShootRay_ToBoxes(_float4 vStartPos, _float4 vRayDir, _float4& vOutPos, _float4& vOutNormal)
+{
+	list<CGameObject*>	m_BoxLists = GAMEINSTANCE->Get_ObjGroup(GROUP_PHYSX);
+
+	_float4 vPickedPos, vPickedNormal, vFinalPickedPos = ZERO_VECTOR;
+	_float fDist = 999999.f;
+
+	for (auto& elem : m_BoxLists)
+	{
+		CMesh* pMesh = GET_COMPONENT_FROM(elem, CMesh);
+
+		if (GAMEINSTANCE->Is_Picked(pMesh, vStartPos, vRayDir, &vPickedPos, &vPickedNormal))
+		{
+			_float fNewDist = (vStartPos - vPickedPos).Length();
+
+			if (fNewDist < fDist)
+			{
+				fDist = fNewDist;
+				vOutPos = vPickedPos;
+				vOutNormal = vPickedNormal;
+			}
+		}
+	}
+
+	if (fDist < 999999.f)
+		return true;
+
+
+	return false;
+}
+
+void CWindow_Tile::Find_Terrain()
+{
+	list<CGameObject*>& DefaultList = GAMEINSTANCE->Get_ObjGroup(GROUP_DEFAULT);
+
+	for (auto& elem : DefaultList)
+	{
+		list<CComponent*> MeshList = elem->Get_Component<CMesh>();
+		if (MeshList.empty())
+			continue;
+
+		m_pMeshTerrain = dynamic_cast<CMesh_Terrain*>(MeshList.front());
+
+		if (!m_pMeshTerrain)
+			continue;
+		else
+			break;
+	}
+
+	if (!m_pMeshTerrain)
+	{
+		list<CGameObject*>& DefaultList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
+
+		for (auto& elem : DefaultList)
+		{
+			list<CComponent*> MeshList = elem->Get_Component<CMesh>();
+			if (MeshList.empty())
+				continue;
+
+			m_pMeshTerrain = dynamic_cast<CMesh_Terrain*>(MeshList.front());
+
+			if (!m_pMeshTerrain)
+				continue;
+			else
+				break;
+		}
+	}
+}
+
+void CWindow_Tile::Save_All(string strKey)
+{
+	if (m_vecTileDebugger.empty())
+		return;
+
+	string strPath = m_DataDirectory;
+	strPath  += "/";
+	strPath += strKey;
+	strPath += ".bin";
+
+	ofstream	writeFile(strPath, ios::binary);
+
+
+	if (!writeFile.is_open())
+	{
+		Call_MsgBox(L"SSave 실패 ??!?!");
+		return;
+	}
+
+	_int iNumLayers = m_vecTileDebugger.size();
+
+	writeFile.write((char*)&m_iNumTilesX, sizeof(_uint));
+	writeFile.write((char*)&m_iNumTilesZ, sizeof(_uint));
+	writeFile.write((char*)&iNumLayers, sizeof(_uint));
+	writeFile.write((char*)&m_fTileSize, sizeof(_float));
+
+	
+
+	
+}
+
+void CWindow_Tile::Load_All(string strKey)
+{
 }
 
 void CWindow_Tile::On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos)

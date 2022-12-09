@@ -21,6 +21,8 @@ public:
 public:
 	void		Set_WorldMatrix(_float4x4 matWorld);
 	void		Set_WorldPos(_float4 vPos);
+	void		Set_StandardY(_uint iLayerIndex, _float fStandardY);
+	_float		Get_StandardY(_uint iLayerIndex);
 	_uint		Find_Index(_float4 vPosition);
 	CTile*		Find_Tile(_uint iLayer, _uint iIndex);
 
@@ -40,8 +42,6 @@ public:
 
 	*/
 	_bool Get_Route(_int iCurLayer, _int StartIndex, _int iTargetLayer, _int TargetIndex, list<CTile*>& pOutRoute);
-
-
 	
 private:
 	/* 레이어 단위로 들고 있음. */

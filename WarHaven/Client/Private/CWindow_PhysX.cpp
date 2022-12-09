@@ -339,7 +339,7 @@ void CWindow_PhysX::Update_CreateMode()
 				CDebugObject::Create(tTransform)
 			);
 
-			CREATE_GAMEOBJECT(m_pDebugBoxes.back(), GROUP_DEBUG);
+			CREATE_GAMEOBJECT(m_pDebugBoxes.back(), GROUP_PHYSX);
 		}
 
 	}
@@ -458,7 +458,7 @@ void CWindow_PhysX::Load_Data()
 			CDebugObject::Create(tTransform, vScale)
 		);
 
-		CREATE_GAMEOBJECT(m_pDebugBoxes.back(), GROUP_DEBUG);
+		CREATE_GAMEOBJECT(m_pDebugBoxes.back(), GROUP_PHYSX);
 	}
 
 	readFile.close();

@@ -32,6 +32,9 @@ public:
 	_bool	Is_Picked(CMesh* pRenderer, _float4*	pOut, _float4* pOutNormal = nullptr);
 	_bool	Is_Picked(CMesh* pRenderer, _uint3* pOutPickedIndex, _float4*	pOut,  _float4* pOutNormal = nullptr);
 
+
+	_bool	Is_Picked(CMesh* pRenderer, _float4 vStartPos, _float4 vRayDir, _float4* pOut, _float4* pOutNormal = nullptr);
+
 private:
 	list<pair<_float, CMesh*>>	m_PickingMeshes;
 	GRAPHICDESC		m_GraphicDesc;

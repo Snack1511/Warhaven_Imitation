@@ -27,6 +27,7 @@ public:
 
 public:
 	void	Set_TileColor(_uint iTileIndex, _float4 vColor);
+	void	Set_TileAlpha(_uint iTileIndex, _float fAlpha);
 
 private:
 	_uint		m_iMyLayerIndex = 0;

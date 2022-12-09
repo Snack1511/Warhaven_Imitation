@@ -571,6 +571,7 @@ void CUnit::OnEnable()
 		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));
 
 	m_bRespawn = false;
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 }
 
 void CUnit::OnDisable()

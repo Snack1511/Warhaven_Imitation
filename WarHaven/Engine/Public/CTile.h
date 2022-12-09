@@ -73,14 +73,28 @@ public:
 
 	void	Bake_Neighbor(eNeighborFlags NeighborFlag, CTile* pNeighborTile);
 	_uint	Get_GCost();
-	_float4 Get_CenterPos() { return m_vCenterPos; }
+	_float4 Get_LocalCenterPos() { return m_vCenterPos; }
+
+	_float4 Get_WorldCenterPos() { return m_vCenterWorldPos; }
+	void Set_WorldCenterPos(_float4 vWorldCenterPos) { m_vCenterWorldPos = vWorldCenterPos; }
+
+	CTile* Get_AdjTile(eNeighborFlags eDirection) { return m_arrAdjTiles[eDirection]; }
+	_uint	Get_CurLayerIndex();
+
+public:
+	void	Switch_AllAdjTiles_To(CTile* pOtherTile);
+	CTile** Find_ThisTileP(CTile* pTile);
+	void	Switch_Tile(CTile* pFindTile, CTile* pNewTile);
 
 public:
 	_int Get_NeighborIndex(_uint NeighborDir);
 	void Set_Neighbor(_uint NeighborDir, CTile* pTile);
+
+
 public:
 	/* 유효한 타일인 지 (갈 수 있는 타일인지)*/
 	_bool	Is_ValidTile();
+	_bool	Check_TileFlag(eTileFlags eTileFlag);
 
 private:
 	/* 인접 타일 */
@@ -88,6 +102,8 @@ private:
 
 	/* 타일의 중앙 포지션 */
 	_float4			m_vCenterPos = ZERO_VECTOR;
+
+	_float4			m_vCenterWorldPos = ZERO_VECTOR;
 	_uint			m_iIndex = 0;
 	
 	/* 타일 플래그 */
