@@ -358,6 +358,8 @@ HRESULT CUnit_WarHammer::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
+	Set_ShaderNoSpec(L"SK_Engineer1002_Helm_50");
+
 	return S_OK;
 }
 

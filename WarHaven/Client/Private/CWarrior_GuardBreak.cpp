@@ -36,7 +36,7 @@ CWarrior_GuardBreak* CWarrior_GuardBreak::Create()
 }
 HRESULT CWarrior_GuardBreak::Initialize()
 {
-    m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
+    m_tHitInfo.eHitType = HIT_TYPE::eUP;
     m_tHitInfo.fKnockBackPower = 1.f;
     m_tHitInfo.fJumpPower = 0.f;
     m_tHitInfo.bGuardBreak = true;

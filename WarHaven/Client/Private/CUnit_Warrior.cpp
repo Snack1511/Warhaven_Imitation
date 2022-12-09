@@ -327,14 +327,17 @@ HRESULT CUnit_Warrior::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
-	for (_uint i = 0; i < MODEL_PART_END; ++i)
-	{
-		_int iTemp = 0;
-		iTemp = m_tModelData.strModelPaths[i].find(L"SK_Warrior_Helmet_Rabbit_50");
+	Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
 
-		if (iTemp > 0)
-			m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
-	}
+	//for (_uint i = 0; i < MODEL_PART_END; ++i)
+	//{
+	//	_int iTemp = 0;
+	//	iTemp = m_tModelData.strModelPaths[i].find(L"SK_Warrior_Helmet_Rabbit_50");
+
+	//	if (iTemp > 0)
+	//		m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
+	//}
+
 
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
@@ -345,7 +348,6 @@ HRESULT CUnit_Warrior::Initialize()
 HRESULT CUnit_Warrior::Start()
 {
 	__super::Start();
-	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
 	SetUp_TrailEffect(
 		_float4(0.f, 0.f, -165.f, 1.f),	//Weapon Low

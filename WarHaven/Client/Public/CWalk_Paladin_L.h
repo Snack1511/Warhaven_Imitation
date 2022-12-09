@@ -24,17 +24,6 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-private:
-	_bool	Change_Walk_Position(_uint iAnimIndex, ANIM_TYPE eAnimType)
-	{
-		if (m_iAnimIndex == iAnimIndex && m_eAnimType == eAnimType)
-			return false;
-
-		m_iAnimIndex = iAnimIndex;
-		m_eAnimType = eAnimType;
-
-		return true;
-	}
 
 };
 

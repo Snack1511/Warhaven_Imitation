@@ -34,7 +34,7 @@ HRESULT CWalk_Paladin_L::Initialize()
 
 
     m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
-    m_iAnimIndex = 30;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 31;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_WALK_PALADIN_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
@@ -56,14 +56,14 @@ HRESULT CWalk_Paladin_L::Initialize()
 
 
 	// 알파벳 순 애니메이션 정렬
-    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 29;
-    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 30;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 31;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 32;
-    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 33;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 34;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
-    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 36;
+    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 30;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 31;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 32;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 33;
+    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 34;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 37;
 
 
 

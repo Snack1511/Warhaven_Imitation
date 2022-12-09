@@ -53,6 +53,16 @@ _float4 CResource_Material::Check_FileName(string strName)
 		//m_tMatDesc.TexturePaths[aiTextureType_DIFFUSE_ROUGHNESS] = "../bin/resources/textures/materials/T_Faceparts_base_coptes.dds";
 
 	}
+	/* Fiona */
+	else if (strName == "MI_Fiona001_A00_HairSmall")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_Hair_B.dds";
+	}
+	else if (strName == "MI_Fiona001_A00_HairLarge")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_Hair_B.dds";
+	}
+
 	else if (strName == "MI_Fiona001_A00_HairLarge")
 	{
 		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
@@ -71,6 +81,34 @@ _float4 CResource_Material::Check_FileName(string strName)
 		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_HairProp_B.dds";
 
 	}
+	else if (strName == "MI_Fiona_01_Helm")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_helmet_B.dds";
+
+	}
+	else if (strName == "MI_Fiona_01_Cloth")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_Body_B.dds";
+
+	}
+	else if (strName == "MI_Fiona_01_Cape")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_Body_B.dds";
+
+	}
+	//else if (strName == "MI_Fiona_01_Face")
+	//{
+	//	//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+	//	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Fiona_01_Body_B.dds";
+
+	//}
+
+	
+
+	/* Warrior */
 	else if (strName == "MI_Warrior0001_Beard02_A00")
 	{
 		vReturnColor = _float4(0.015625f, 0.00441f, 0.003061f, 1.f);
@@ -150,6 +188,8 @@ _float4 CResource_Material::Check_FileName(string strName)
 	{
 		vReturnColor = 2.f;
 	}
+
+
 	/*else if ((_int)(m_tMatDesc.TexturePaths[1].find("Tree")) > 0)
 	{
 		vReturnColor = 2.f;
@@ -162,6 +202,39 @@ _float4 CResource_Material::Check_FileName(string strName)
 	{
 		vReturnColor = 2.f;
 	}*/
+
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/M_Eye_Occlusion")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	}
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Warrior0001_Eye_Occlusion_A00")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	}
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Engineer0001_EyeOcc_A00")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	}
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Engineer0000_Eyeocc_A00")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	}
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_EyeOcclusion_Fiona")
+	{
+	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	}
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Eye_Fiona")
+	{
+	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	}
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_EyeOcclusion_Paladin")
+	{
+	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	}
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Engineer0001_EyeOcc_A00")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_EyeIrIis_Brown_B.dds";
+	}
 
 	
 	return vReturnColor;

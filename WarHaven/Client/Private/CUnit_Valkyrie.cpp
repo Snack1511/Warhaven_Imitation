@@ -439,6 +439,8 @@ HRESULT CUnit_Valkyrie::Initialize()
 	__super::Initialize();
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
+	Set_ShaderNoSpec(L"SK_Flona_Helm_50");
+
 	return S_OK;
 }
 

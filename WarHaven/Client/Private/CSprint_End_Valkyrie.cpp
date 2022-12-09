@@ -45,18 +45,23 @@ HRESULT CSprint_End_Valkyrie::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
+    
     
     m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
-    m_vecAdjState.push_back(STATE_RUN_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_RUNBEGIN_VALKYRIE_R);
 
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R);
     m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_L);
 
+    m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
+    m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
+    m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
+
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 
 
 
@@ -64,8 +69,7 @@ HRESULT CSprint_End_Valkyrie::Initialize()
 	m_fMaxSpeed = 10.f;
 	m_fMyAccel = 10.f;
 
-    Add_KeyFrame(10, 222);
-    Add_KeyFrame(28, 333);
+
     return S_OK;
 }
 
@@ -119,19 +123,4 @@ STATE_TYPE CSprint_End_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAnim
         return STATE_SPRINT_END_VALKYRIE;
 
     return STATE_END;
-}
-
-void CSprint_End_Valkyrie::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
-{
-    switch (iSequence)
-    {
-    case 222:
-        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-        break;
-    case 333:
-        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-        break;
-    default:
-        break;
-    }
 }

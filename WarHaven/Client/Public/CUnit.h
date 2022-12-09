@@ -331,6 +331,7 @@ public:
 	virtual void	Effect_HeroToDefaultUnit(CUnit* pOwner);
 
 protected:
+	void	Set_ShaderNoSpec(const _tchar* pModelPath);
 
 private:
 	void	On_InitSetting();

@@ -86,12 +86,13 @@ STATE_TYPE CInstall_Begin_WarHammer::Check_Condition(CUnit* pOwner, CAnimator* p
 
 	// R을 누르면 임시로 보일 수 있게 설정
 	if (KEY(R, TAP))
-		m_bSkillR_Trigger = true;
+		pOwner->Get_SkillTrigger().bSkillRTrigger = !pOwner->Get_SkillTrigger().bSkillRTrigger;
 
 	// R을 눌렀던 상태에서 LButtion 을 누르면 만약 바리게이트 설치할 개수가 남아 있다면 바리게이트 위치를 설정하고 상태를 바꾼다.
-	if (m_bSkillR_Trigger && KEY(LBUTTON, TAP) && PWarHammer->Get_Size() > 0)
+	if (pOwner->Get_SkillTrigger().bSkillRTrigger && KEY(LBUTTON, TAP) && PWarHammer->Get_Size() > 0)
 	{
 		PWarHammer->Set_BarricadeMatrix();
+		pOwner->Get_SkillTrigger().bSkillRTrigger = false;
 		return m_eStateType;
 	}
    

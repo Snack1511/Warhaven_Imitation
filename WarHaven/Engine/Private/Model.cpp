@@ -257,10 +257,35 @@ void CModel::Change_Texture(_uint iModelPart, _uint iTextureIndex, wstring wstrF
 
 void CModel::Set_ShaderPass(_uint iModelPart, _uint iShaderPass)
 {
+	//for (auto& elem : m_MeshContainers)
+	//{
+	//	if (elem.first == iModelPart)
+	//		elem.second->Set_CurPass(iShaderPass);
+	//}
+
 	for (auto& elem : m_MeshContainers)
 	{
 		if (elem.first == iModelPart)
+		{
 			elem.second->Set_CurPass(iShaderPass);
+
+		}
+
+		if (m_bLOD)
+		{
+			//만약 나머지 값이 그거면
+			for (_uint i = 0; i < 3; ++i)
+			{
+				_uint iNewPartType = elem.first % 10;
+
+				if (iNewPartType == iModelPart)
+					elem.second->Set_CurPass(iShaderPass);
+
+			}
+		}
+
+
+
 	}
 }
 

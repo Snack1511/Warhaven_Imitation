@@ -170,7 +170,7 @@ void CPlayerInfo::Set_CustomHead_Warrior(eCUSTOM_HEAD eHeadEnum)
 	switch (eHeadEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
-		m_tPlayerSetUpData.wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0005_Helmet_A00_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0004_Helmet_A00_30.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
 		m_tPlayerSetUpData.wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0002_Helmet_A00_50.fbx";
@@ -220,13 +220,17 @@ void	CPlayerInfo::Set_CustomHead_Paladin(eCUSTOM_HEAD eHeadEnum)
 	switch (eHeadEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
-		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladian0001_Helmet_A00_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin0001_Helmet_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
-		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladian0001_Helmet_A00_50.fbx";
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/a.fbx";
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Event001_Helmet_A00_20.fbx";
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin0001_Helmet_A00_50.fbx";
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin0011_Helmet_A00_20.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin_Helm_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
-		//m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Warrior_Helmet_Rabbit_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin_Helm_50.fbx";
 		break;
 	default:
 		break;
@@ -237,10 +241,13 @@ void	CPlayerInfo::Set_CustomBody_Paladin(eCUSTOM_BODY eBodyEnum)
 	switch (eBodyEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
-		m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladian0001_Body_A00_50.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladin0001_Body_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
-		m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladian0001_Body_A00_50.fbx";
+		//m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladin0001_Body_A00_50.fbx";
+		//m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladin0006_Body_A00_20.fbx";
+		//m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladin0005_Body_A00_20.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladin0011_Body_A00_20.fbx";
 		break;
 
 	default:
@@ -273,7 +280,7 @@ void	CPlayerInfo::Set_CustomHead_Arhcer(eCUSTOM_HEAD eHeadEnum)
 		m_tPlayerSetUpData.wstrHelmetMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/head/SK_Archer0001_Helmet_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
-		//m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Warrior_Helmet_Rabbit_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[ARCHER] = L"../bin/resources/meshes/characters/warrior/head/SK_Archer1002_Helm_50.fbx";
 		break;
 	default:
 		break;
@@ -318,10 +325,11 @@ void CPlayerInfo::Set_CustomHead_Engineer(eCUSTOM_HEAD eHeadEnum)
 		m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0004_Helmet_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
-		m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0001_Helmet_A00_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0008_Helmet_A00_20.fbx";
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer0006_Helmet_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
-		//m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Warrior_Helmet_Rabbit_50.fbx";
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/head/SK_Engineer1002_Helm_50.fbx";
 		break;
 	default:
 		break;
@@ -336,7 +344,9 @@ void CPlayerInfo::Set_CustomBody_Engineer(eCUSTOM_BODY eBodyEnum)
 		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0004_Body_A00_30.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
-		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx";
+		//m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx";
+		//m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0006_Body_A00_20.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0008_Body_A00_20.fbx";
 		break;
 
 	default:
@@ -368,10 +378,16 @@ void CPlayerInfo::Set_CustomHead_Fiona(eCUSTOM_HEAD eHeadEnum)
 		m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/head/SK_Fiona0004_Helmet_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
-		m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/head/SK_Fiona0004_Helmet_A00_50.fbx";
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/head/SK_Fiona0004_Helmet_A00_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/head/SK_Fiona0001_Helmet_A00_20.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
+		
 		//m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/head/SK_Fiona0004_Helmet_A00_50.fbx";
+
+
+		// Åä³¢¸ðÀÚ ¸Ó¸®Ä«¶ô ¾ÈµÊ
+		m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/head/SK_Flona_Helm_50.fbx";
 		break;
 	default:
 		break;
@@ -386,7 +402,8 @@ void CPlayerInfo::Set_CustomBody_Fiona(eCUSTOM_BODY eBodyEnum)
 		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0004_Body_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
-		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0004_Body_A00_50.fbx";
+		//m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0004_Body_A00_50.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0001_Body_A00.fbx";
 		break;
 
 	default:
