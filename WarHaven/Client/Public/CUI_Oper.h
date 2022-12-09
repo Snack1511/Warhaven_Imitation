@@ -46,8 +46,12 @@ private:	// 텍스트 이미지
 	enum TextImg { Text_Oper1, Text_Oper2, Text_SelectPoint, Text_End };
 	CUI_Object* m_pTextImg[Text_End];
 
+	enum TargetText { TargetText_BG, TargetText_Icon, TargetText_End};
+	CUI_Object* m_pTargetText[TargetText_End];
+
 private:
 	void Create_TextImg();
+	void Create_TargetText();
 
 private:	// 작전회의 배경
 	enum OperBG { OB_BG, OB_Smoke, OB_Black, OB_End };

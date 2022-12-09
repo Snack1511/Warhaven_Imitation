@@ -28,6 +28,7 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_StrongHoldUI();
 	Create_StrongHoldEffect();
 	Create_OperTimer();
+	Create_TargetText();
 
 	return S_OK;
 }
@@ -361,6 +362,44 @@ void CUI_Oper::Create_TextImg()
 
 		CREATE_GAMEOBJECT(m_pTextImg[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pTextImg[i]);
+	}
+}
+
+void CUI_Oper::Create_TargetText()
+{
+	for (int i = 0; i < TargetText_End; ++i)
+	{
+		m_pTargetText[i] = CUI_Object::Create();
+
+		if (i == TargetText_BG)
+		{
+			m_pTargetText[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Briefing/T_BriefingBox.dds"));
+
+			m_pTargetText[i]->Set_PosY(245.f);
+			m_pTargetText[i]->Set_Scale(160.f, 25.f);
+			m_pTargetText[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.6f));
+			m_pTargetText[i]->Set_Sort(0.5f);
+		}
+		else if (i == TargetText_Icon)
+		{
+			GET_COMPONENT_FROM(m_pTargetText[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pTargetText[i], "/Oper/Briefing", "Icon");
+
+			m_pTargetText[i]->Set_Sort(0.49f);
+			m_pTargetText[i]->Set_Pos(-45.f, 246.f);
+			m_pTargetText[i]->Set_Scale(32.f);
+			m_pTargetText[i]->Set_Color(_float4(0.6f, 0.6f, 0.6f, 1.f));
+
+			m_pTargetText[i]->Set_FontRender(true);
+			m_pTargetText[i]->Set_FontStyle(true);
+			m_pTargetText[i]->Set_FontOffset(10.f, -10.f);
+			m_pTargetText[i]->Set_FontScale(0.2f);
+			m_pTargetText[i]->Set_FontColor(_float4(_float4(0.6f, 0.6f, 0.6f, 1.f)));
+			m_pTargetText[i]->Set_FontText(TEXT("공격 목표 없음"));
+		}
+
+		CREATE_GAMEOBJECT(m_pTargetText[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pTargetText[i]);
 	}
 }
 

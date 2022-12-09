@@ -41,7 +41,6 @@ private:
 
 private:
 	void Create_CharacterWindow();
-
 	void Active_CharacterWindow();
 
 public:
@@ -55,7 +54,7 @@ public:
 	void Set_HUD(CLASS_TYPE eClass);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
-	
+
 	void SetActive_OperUI(_bool value);
 
 	void SetActive_OxenJumpText(_bool value);
@@ -124,8 +123,10 @@ private:
 	void Create_OxenJumpText();
 
 private:
-
 	CUI_Object* m_pPlayerNameText = nullptr;
+
+private:
+	void Create_PlayerNameText();
 
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;
 
@@ -149,7 +150,6 @@ private:
 
 	void Update_HeorTransformGauge();
 
-	void Create_PlayerNameText();
 };
 
 END
