@@ -293,6 +293,11 @@ void CUser::Interat_StrongHoldUI(string strPadenPointKey, _uint iTeamType, _uint
 	m_pUI_Paden->Interact_StrongHoldUI(strPadenPointKey, iTeamType, iTriggerState);
 }
 
+void CUser::SetActive_PadenUI(_bool value)
+{
+	m_pUI_Paden->SetActive(value);
+}
+
 void CUser::On_EnterLevel()
 {
 	DISABLE_GAMEOBJECT(m_pCursor);
@@ -338,6 +343,7 @@ void CUser::On_EnterStageLevel()
 	{
 		m_pUI_Paden = CUI_Paden::Create();
 		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Paden);
 	}
 
 	if (!m_pUI_Dead)

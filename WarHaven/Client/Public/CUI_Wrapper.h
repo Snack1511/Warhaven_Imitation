@@ -26,6 +26,8 @@ public:
 	virtual void	On_PointExitEvent(const _uint& iEventNum);
 	virtual void	On_ButtonClickEvent(const _uint& iEventNum);
 
+public:
+	void SetActive(_bool value);
 
 protected:
 	wstring	m_wstrName;

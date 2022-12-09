@@ -216,7 +216,7 @@ void CUI_Object::Set_FadeDesc(_float fDuration)
 	GET_COMPONENT_FROM(this, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
-void CUI_Object::Set_FadeDesc(_float fFadeIn, _float fFadeOut)
+void CUI_Object::Set_FadeDesc(_float fFadeIn, _float fFadeOut, _bool bAutoFadeOut)
 {
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
@@ -225,7 +225,7 @@ void CUI_Object::Set_FadeDesc(_float fFadeIn, _float fFadeOut)
 	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
 
 	tFadeDesc.bFadeInFlag = FADE_NONE;
-	tFadeDesc.bFadeOutFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = bAutoFadeOut ? FADE_TIME : FADE_NONE;
 
 	tFadeDesc.fFadeInStartTime = 0.f;
 	tFadeDesc.fFadeInTime = fFadeIn;

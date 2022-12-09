@@ -20,8 +20,6 @@ HRESULT CUI_Paden::Start()
 {
 	__super::Start();
 
-	Init_StrongHoldUI();
-
 	Bind_Shader();
 
 	m_pInGameTimer->SetActive(true);

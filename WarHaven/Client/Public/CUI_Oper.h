@@ -31,10 +31,11 @@ private:
 
 private:
 	void Progress_Oper();
+	void Enable_StrongHoldUI();
 
 private:	// 텍스트 이미지
-	enum TextImg { TI_Oper1, TI_Oper2, TI_SelectPoint, TI_End };
-	CUI_Object* m_pTextImg[TI_End];
+	enum TextImg { Text_Oper1, Text_Oper2, Text_SelectPoint, Text_End };
+	CUI_Object* m_pTextImg[Text_End];
 
 private:
 	void Create_TextImg();
@@ -72,6 +73,33 @@ private:	// 작전회의 캐릭터 선택 창
 private:
 	void Create_OperCharacterSelect();
 	void Init_OperCharacterSelect();
+
+private:
+	enum TeamIconUI { Team_Icon, Team_Outline, Team_End };
+
+	CUI_Object* m_pTeamIcon[Team_End];
+	CUI_Object* m_pArrTeamIcon[Team_End][2];
+
+	_float4 m_vColorBlue = _float4(0.f, 0.8f, 1.f, 1.f);
+	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.f, 1.f);
+
+private:
+	void Create_TeamIcon();
+	void Init_TeamIcon();
+
+private:
+	enum StrongHoldPoint { SP_BG, SP_Outline, SP_Icon, SP_TEXT, SP_End };
+	CUI_Object* m_pStrongHoldUI[SP_End];
+	CUI_Object* m_pArrStrongHoldUI[SP_End][3];
+
+	CUI_Object* m_pStrongHoldEffect = nullptr;
+	CUI_Object* m_pArrStrongHoldEffect[4];
+
+private:
+	void Create_StrongHoldUI();
+	void Create_StrongHoldEffect();
+	void Init_StrongHoldUI();
+	void StrongHoldEffect();
 };
 
 END
