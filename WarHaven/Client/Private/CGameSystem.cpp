@@ -577,6 +577,7 @@ HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyOb
     if (FAILED(On_ReadyPlayers_Stage(vecReadyObjects)))
         return E_FAIL;
 
+
 #ifdef _DEBUG
     cout << "플레이어 생성 후 팀 분류 완료." << endl;
 #endif // _DEBUG
@@ -756,17 +757,20 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 
     //1. 메인 거점
     ADD_TRIGGER("Paden_Trigger_A", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
-    CDominion_Effect* pDominionEffect_A = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), _float4(-0.8f, 2.f, -0.3f));
+    CDominion_Effect* pDominionEffect_A = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), _float4(-0.8f, 2.f, -0.3f),
+        (_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
     READY_GAMEOBJECT(pDominionEffect_A, GROUP_EFFECT);
     TRIGGER_PADEN("Paden_Trigger_A")->Set_DominionEffect(pDominionEffect_A);
 
     ADD_TRIGGER("Paden_Trigger_R", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
-    CDominion_Effect* pDominionEffect_R = CDominion_Effect::Create(_float4(0.8f, 0.8f, 0.8f), _float4(48.6f, 5.5f, -0.f));
+    CDominion_Effect* pDominionEffect_R = CDominion_Effect::Create(_float4(0.8f, 0.8f, 0.8f), _float4(48.6f, 5.5f, -0.f),
+        (_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
     READY_GAMEOBJECT(pDominionEffect_R, GROUP_EFFECT);
     TRIGGER_PADEN("Paden_Trigger_R")->Set_DominionEffect(pDominionEffect_R);
 
     ADD_TRIGGER("Paden_Trigger_C", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
-    CDominion_Effect* pDominionEffect_C = CDominion_Effect::Create(_float4(1.f, 1.f, 1.f), _float4(-61.8f, 20.4f, 0.2f));
+    CDominion_Effect* pDominionEffect_C = CDominion_Effect::Create(_float4(1.f, 1.f, 1.f), _float4(-61.8f, 20.4f, 0.2f),
+        (_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
     READY_GAMEOBJECT(pDominionEffect_C, GROUP_EFFECT);
     TRIGGER_PADEN("Paden_Trigger_C")->Set_DominionEffect(pDominionEffect_C);
 
@@ -950,6 +954,12 @@ void CGameSystem::On_StartGame()
         elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
       
     }
+
+    //if(m_pTeamConnector[0]->m_bIsMainPlayerTeam)
+    //    TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
+    //else
+    //    TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]); //Test
+
 
 
 }

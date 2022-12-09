@@ -2,13 +2,15 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+
 BEGIN(Engine)
 class CShader;
 END
 
 BEGIN(Client)
-class CTeamConnector;
 
+class CTeamConnector;
+class CTrigger_Paden;
 class CDominion_Effect final
 	: public CGameObject
 {
@@ -19,7 +21,7 @@ private:
 	virtual ~CDominion_Effect();
 
 public:
-	static CDominion_Effect* Create(_float4 vScale, _float4 vPos);
+	static CDominion_Effect* Create(_float4 vScale, _float4 vPos, _uint iTriggerType);
 
 public:
 	virtual void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
@@ -36,6 +38,8 @@ public:
 	virtual void My_LateTick() override;
 
 private:
+	_uint m_iTriggerType;
+	list<CGameObject*> m_Aura;
 	wstring m_wstrPath;
 
 	_float4	m_vEffectFlag = SH_EFFECT_DEFAULT;

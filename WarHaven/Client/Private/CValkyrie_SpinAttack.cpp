@@ -88,7 +88,7 @@ STATE_TYPE CValkyrie_SpinAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CValkyrie_SpinAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->TurnOn_TrailEffect(true);
+	pOwner->TurnOn_TrailEffect(false);
 
 	pOwner->Enable_GroggyCollider(false);
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;

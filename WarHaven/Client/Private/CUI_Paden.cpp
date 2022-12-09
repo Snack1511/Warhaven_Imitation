@@ -153,14 +153,14 @@ void CUI_Paden::My_Tick()
 		m_pInGameTimer->Set_FontText(szTemp);
 	}
 
-	if (KEY(Z, TAP))
-	{
-		Interact_StrongHoldUI("Paden_Trigger_A", 3, 0);
-	}
-	else if (KEY(C, TAP))
-	{
-		Interact_StrongHoldUI("Paden_Trigger_A", 3, 1);
-	}
+	//if (KEY(Z, TAP))
+	//{
+	//	Interact_StrongHoldUI("Paden_Trigger_A", 3, 0);
+	//}
+	//else if (KEY(C, TAP))
+	//{
+	//	Interact_StrongHoldUI("Paden_Trigger_A", 3, 1);
+	//}
 }
 
 void CUI_Paden::OnEnable()

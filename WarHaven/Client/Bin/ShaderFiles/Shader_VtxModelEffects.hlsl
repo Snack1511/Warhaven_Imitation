@@ -340,6 +340,40 @@ PS_OUT PS_MAIN_DOMINION(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_AURA(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vEffectFlag = g_vFlag;
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
+
+	//DiffuseTexture : Color
+	//g_MaskTexture : AlphaMap
+
+	vector vMtrlDiffuse = g_MaskTexture.Sample(DefaultSampler, float2(In.vTexUV.x * g_fColorPower, In.vTexUV.y * g_fDissolvePower));
+	Out.vDiffuse.a = vMtrlDiffuse.r;
+
+	In.vTexUV.x += g_fUVPlusX;
+	In.vTexUV.y += g_fUVPlusY;
+
+	vector vColor = g_DiffuseTexture.Sample(DefaultSampler, float2(In.vTexUV.x * g_fColorPower, In.vTexUV.y * g_fDissolvePower));
+
+	Out.vDiffuse.a *= vColor.r;
+
+	Out.vDiffuse.a *= g_fAlpha;
+
+	if (Out.vDiffuse.a <= 0.05f)
+		discard;
+
+	Out.vDiffuse.xyz = vColor.xyz;
+	Out.vDiffuse.xyz += g_vPlusColor.xyz;
+
+	Out.vEffectDiffuse = Out.vDiffuse;
+	Out.vGlowFlag = g_vGlowFlag;
+
+	return Out;
+}
+
 technique11 DefaultTechnique
 {
 	pass Default
@@ -414,5 +448,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_DOMINION();
+	}
+
+	pass AURA
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_None);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_AURA();
 	}
 }

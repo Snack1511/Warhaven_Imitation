@@ -69,6 +69,9 @@ public:
 	void		Set_ColliderOn(_float fRadius, COL_GROUP_CLIENT eColType);
 	void		Set_FadeInStartTime(_float fTime) { m_fFadeInStartTime = fTime; }
 
+public:
+	void		Start_FadeOut() { m_fFadeTimeAcc += 99999.f; }
+
 
 	//회전하는건 버리고
 	//노이즈 텍스쳐 사용하는 패스도 만들고 (사라질때 디솔브)
