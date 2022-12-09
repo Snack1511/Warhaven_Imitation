@@ -69,7 +69,10 @@ void CGameObject::Set_Enable(_bool bEnable)
 _bool CGameObject::Is_Valid(CGameObject* pInstance)
 {
 	if (!pInstance)
+	{
+		Call_MsgBox(TEXT("pInstance is Nullptr"));
 		return false;
+	}
 
 	return pInstance->Is_Valid();
 }

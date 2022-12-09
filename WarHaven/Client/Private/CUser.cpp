@@ -343,6 +343,7 @@ void CUser::On_EnterStageLevel()
 	if (!m_pUI_Dead)
 	{
 		m_pUI_Dead = CUI_Dead::Create();
+
 		CREATE_GAMEOBJECT(m_pUI_Dead, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Dead);
 	}
@@ -355,6 +356,7 @@ void CUser::On_ExitStageLevel()
 {
 	m_pBloodOverlay = nullptr;
 	m_pUI_HUD = nullptr;
+	m_pUI_Dead = nullptr;
 
 	for (_uint i = 0; i < 5; ++i)
 		m_pUI_Damage[i] = nullptr;
@@ -411,7 +413,17 @@ void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 
 void CUser::Toggle_DeadUI(_bool value)
 {
-	m_pUI_Dead->Toggle_DeadUI(value);
+	if (!m_pUI_Dead)
+	{
+		Call_MsgBox(TEXT("m_pUI_Dead is nullptr"));
+
+		return;
+	}
+
+	if (!CGameObject::Is_Valid(m_pUI_Dead))
+	{
+		m_pUI_Dead->Toggle_DeadUI(value);
+	}
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

@@ -68,7 +68,7 @@ HRESULT CUI_HUD::Start()
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		SetActive_HUD(true);
+		// SetActive_HUD(true);
 
 		if (m_pClassChangeText)
 			m_pClassChangeText->SetActive(true);
@@ -178,6 +178,7 @@ void CUI_HUD::Active_CharacterWindow()
 
 		else if (KEY(T, TAP))
 		{
+			CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 			SetActive_HUD(false);
 			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
 		}

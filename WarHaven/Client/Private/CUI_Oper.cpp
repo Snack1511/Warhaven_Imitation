@@ -4,6 +4,7 @@
 #include "CUI_Renderer.h"
 #include "Texture.h"
 #include "Loading_Manager.h"
+#include "CUser.h"
 
 CUI_Oper::CUI_Oper()
 {
@@ -15,11 +16,12 @@ CUI_Oper::~CUI_Oper()
 
 HRESULT CUI_Oper::Initialize_Prototype()
 {
+	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+
+	Create_TextImg();
 	Create_OperBG();
 	Create_OperProfile();
 	Create_OperCharacterSelect();
-
-	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
 	return S_OK;
 }
@@ -27,6 +29,10 @@ HRESULT CUI_Oper::Initialize_Prototype()
 HRESULT CUI_Oper::Start()
 {
 	Init_OperCharacterSelect();
+
+	CUser::Get_Instance()->SetActive_HUD(false);
+
+	SetActive_OperBG(true);
 
 	return S_OK;
 }
@@ -41,8 +47,6 @@ void CUI_Oper::My_Tick()
 void CUI_Oper::OnEnable()
 {
 	__super::OnEnable();
-
-	m_pOperBG[OB_Black]->SetActive(true);
 }
 
 void CUI_Oper::OnDisable()
@@ -74,7 +78,7 @@ void CUI_Oper::Progress_Oper()
 	if (!m_bIsBriefing)
 	{
 		m_bIsBriefing = true;
-		m_pOperBG[OB_Black]->DoScale(-2596.f, 0.3f);
+		m_pOperBG[OB_BG]->DoScale(-2596.f, 0.3f);
 	}
 	else
 	{
@@ -101,11 +105,8 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
-				/*if (!m_pOperTextImg->Is_Valid())
-				{
-					Enable_Fade(m_pOperTextImg, fDuration);
-					m_pOperTextImg->DoScale(-512.f, fDuration);
-				}*/
+				Enable_Fade(m_pTextImg[TI_Oper1], 0.3f);
+				m_pTextImg[TI_Oper1]->DoScale(-512.f, 0.3f);
 			}
 
 			break;
@@ -117,8 +118,8 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
-				//m_pOperTextImg->DoMoveY(200.f, 0.3f);
-				//m_pOperTextImg->DoScale(-256.f, 0.3f);
+				m_pTextImg[TI_Oper1]->DoMoveY(200.f, 0.3f);
+				m_pTextImg[TI_Oper1]->DoScale(-256.f, 0.3f);
 
 				for (int i = 0; i < 4; ++i)
 				{
@@ -136,14 +137,27 @@ void CUI_Oper::Progress_Oper()
 				m_iOperProgress++;
 
 				Disable_Fade(m_pOperBG[OB_BG], 0.3f);
-				//Disable_Fade(m_pOperTextImg, 0.3f);
-				//Disable_Fade(m_pSquardTextImg, 0.3f);
+				Disable_Fade(m_pTextImg[TI_Oper1], 0.3f);
 
 				for (int i = 0; i < 4; ++i)
 				{
 					Disable_Fade(m_pArrOperProfile[i], 0.3f);
 				}
 			}
+
+			break;
+
+		case 4:
+
+			for (int i = 0; i < TI_End; ++i)
+			{
+				for (int j = 0; j < 2; ++j)
+				{
+					Enable_Fade(m_pArrTeamIcon[i][j], 0.3f);
+				}
+			}
+
+			// Enable_OperPointUI();
 
 			break;
 		}
@@ -164,7 +178,7 @@ void CUI_Oper::Create_OperBG()
 			switch (m_eLoadLevel)
 			{
 			case LEVEL_TEST:
-				m_pOperBG[i]->Set_PosY(205.f);
+				m_pOperBG[i]->Set_PosY(200.f);
 				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
 				break;
 
@@ -384,4 +398,26 @@ void CUI_Oper::Init_OperCharacterSelect()
 
 	m_pArrCharacterPort[CP_Class][5]->Set_FontText(TEXT("¿öÇØ¸Ó"));
 	m_pArrCharacterPort[CP_Class][5]->Set_Pos(fTopPosIconX, -fTopPosY);
+}
+
+void CUI_Oper::Create_TextImg()
+{
+	for (int i = 0; i < TI_End; ++i)
+	{
+		m_pTextImg[i] = CUI_Object::Create();
+
+		if (i == TI_Oper1)
+		{
+			m_pTextImg[i]->Set_FadeDesc(0.3f);
+
+			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting.png"));
+
+			m_pTextImg[i]->Set_PosY(50.f);
+			m_pTextImg[i]->Set_Scale(1024.f);
+			m_pTextImg[i]->Set_Sort(0.49f);
+		}
+
+		CREATE_GAMEOBJECT(m_pTextImg[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pTextImg[i]);
+	}
 }
