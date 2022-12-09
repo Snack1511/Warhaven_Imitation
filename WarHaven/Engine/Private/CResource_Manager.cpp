@@ -125,15 +125,18 @@ void CResource_Manager::Save_Memory()
 	}
 	m_mapModelData.clear();
 
-	for (auto& elem : m_mapResources)
+	for (auto iter = m_mapResources.begin(); iter != m_mapResources.end();)
 	{
-		CResource_Animation* pResourceAnim = dynamic_cast<CResource_Animation*>(elem.second);
-		if (pResourceAnim)
-			continue;
+		CResource_Animation* pResourceAnim = dynamic_cast<CResource_Animation*>(iter->second);
 
-		SAFE_DELETE(elem.second);
+		if (pResourceAnim)
+			++iter;
+		else
+		{
+			SAFE_DELETE(iter->second);
+			iter = m_mapResources.erase(iter);
+		}
 	}
-	m_mapResources.clear();
 }
 
 MODEL_DATA* CResource_Manager::Find_ModelData(wstring wstrFilePath)
