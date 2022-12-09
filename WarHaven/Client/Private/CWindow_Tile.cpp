@@ -51,6 +51,9 @@ HRESULT CWindow_Tile::Initialize()
 
 void CWindow_Tile::Tick()
 {
+	if (m_bHoverWindow)
+		return;
+
 	if (KEY(Q, HOLD))
 	{
 		if (KEY(LBUTTON, TAP))
@@ -83,7 +86,10 @@ void CWindow_Tile::Tick()
 			if (vFinalPos.y > -999.f)
 			{
 				vFinalPos = vFinalPos.MultiplyCoord(m_vecTileDebugger[iCurIndex]->Get_Transform()->Get_WorldMatrix());
-				On_Picking(iCurIndex, vFinalPos);
+				if (!m_bSelectNeighvor)
+					On_Picking(iCurIndex, vFinalPos);
+				else
+					On_Pick_Neighvor(iCurIndex, vFinalPos);
 
 
 			}
@@ -281,11 +287,12 @@ void CWindow_Tile::Control_SelectTile()
 {
 	if (ImGui::CollapsingHeader("Tile Info"))
 	{
-		string SelectLayer = to_string(0);
-		string SelectIndex = to_string(0);
-		string SelectCenterPosX = to_string(0.f);
-		string SelectCenterPosY = to_string(0.f);
-		string SelectCenterPosZ = to_string(0.f);
+		string SelectLayer = to_string(m_iCurSelectLayer);
+		string SelectIndex = to_string(m_iCurSelectTileIndex);
+		_float4 vPos = m_pSelectTile->Get_CenterPos();
+		string SelectCenterPosX = to_string(vPos.x);
+		string SelectCenterPosY = to_string(vPos.y);
+		string SelectCenterPosZ = to_string(vPos.z);
 
 
 		ImGui::Text("Layer : ");
@@ -313,6 +320,9 @@ void CWindow_Tile::Control_SelectTile()
 
 	if (ImGui::CollapsingHeader("Flag Info"))
 	{
+		ImGui::Text("Selected");
+		ImGui::SameLine();
+		ImGui::Text("UnSelected");
 		if(ImGui::ListBoxHeader("##SelectFlagListBox", ImVec2(80.f, 100.f)))
 		{
 			_uint Flag = 0;
@@ -370,36 +380,34 @@ void CWindow_Tile::Control_SelectTile()
 			Flag = ~(m_pSelectTile->Get_TileFlag());
 			if (Flag ^ CTile::eTileFlags_None)
 			{
-				ImGui::Selectable(m_pSelectTile->FlagOption_Display[0]);
-			}
-			else
-			{
-				if (Flag ^ CTile::eTileFlags_Blocked)
+				if (ImGui::Selectable(m_pSelectTile->FlagOption_Display[0]))
 				{
-					if (ImGui::Selectable(m_pSelectTile->FlagOption_Display[1]))
-					{
-						m_pSelectTile->Add_TileFlag(CTile::eTileFlags_Blocked);
-						Flag &= (CTile::eTileFlags_Blocked);
-					}
+					m_pSelectTile->Set_TileFlag(CTile::eTileFlags_None);
+					Flag = (CTile::eTileFlags_None);
 				}
-				else
+			}
+			if (Flag & CTile::eTileFlags_Blocked)
+			{
+				if (ImGui::Selectable(m_pSelectTile->FlagOption_Display[1]))
 				{
-					if (Flag ^ CTile::eTileFlags_Default)
-					{
-						if (ImGui::Selectable(m_pSelectTile->FlagOption_Display[2]))
-						{
-							m_pSelectTile->Add_TileFlag(CTile::eTileFlags_Default);
-							Flag &= (CTile::eTileFlags_Default);
-						}
-					}
-					if (Flag ^ CTile::eTileFlags_Stair)
-					{
-						if (ImGui::Selectable(m_pSelectTile->FlagOption_Display[3]))
-						{
-							m_pSelectTile->Add_TileFlag(CTile::eTileFlags_Stair);
-							Flag &= (CTile::eTileFlags_Stair);
-						}
-					}
+					m_pSelectTile->Add_TileFlag(CTile::eTileFlags_Blocked);
+					Flag = (CTile::eTileFlags_Blocked);
+				}
+			}
+			if (Flag & CTile::eTileFlags_Default)
+			{
+				if (ImGui::Selectable(m_pSelectTile->FlagOption_Display[2]))
+				{
+					m_pSelectTile->Add_TileFlag(CTile::eTileFlags_Default);
+					Flag &= (CTile::eTileFlags_Default);
+				}
+			}
+			if (Flag & CTile::eTileFlags_Stair)
+			{
+				if (ImGui::Selectable(m_pSelectTile->FlagOption_Display[3]))
+				{
+					m_pSelectTile->Add_TileFlag(CTile::eTileFlags_Stair);
+					Flag &= (CTile::eTileFlags_Stair);
 				}
 			}
 
@@ -410,7 +418,164 @@ void CWindow_Tile::Control_SelectTile()
 
 	if(ImGui::CollapsingHeader("Neighvor Info"))
 	{
+		ImGui::Text("CurSelectNeighvor : ");
+		ImGui::SameLine();
+		ImGui::Text(m_pSelectTile->Neighvor_Display[m_iCurSelectNeighvor]);
 
+		string strSelect = (m_bSelectNeighvor) ? "Select Neighvor" : "UnSelect Neighvor";
+		ImGui::Text(strSelect.c_str());
+
+		ImVec2 ButtonSize = ImVec2(25.f, 25.f);
+		string ButtonLabel = "";
+		
+		ButtonLabel = to_string(m_pSelectTile->Get_NeighvorIndex(CTile::eNeighvorFlags_LeftTop));
+		ButtonLabel += "##LT";
+		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
+		{
+			if (m_iCurSelectNeighvor == CTile::eNeighvorFlags_LeftTop && m_bSelectNeighvor == true)
+			{
+				m_iCurSelectNeighvor = 0;
+				m_bSelectNeighvor = false;
+			}
+			else
+			{
+				m_iCurSelectNeighvor = CTile::eNeighvorFlags_LeftTop;
+				m_bSelectNeighvor = true;
+			}
+		}
+		ImGui::SameLine();
+
+		ButtonLabel = to_string(m_pSelectTile->Get_NeighvorIndex(CTile::eNeighvorFlags_Top));
+		ButtonLabel += "##T";
+		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
+		{
+			if (m_iCurSelectNeighvor == CTile::eNeighvorFlags_Top && m_bSelectNeighvor == true)
+			{
+				m_iCurSelectNeighvor = 0;
+				m_bSelectNeighvor = false;
+			}
+			else
+			{
+				m_iCurSelectNeighvor = CTile::eNeighvorFlags_Top;
+				m_bSelectNeighvor = true;
+			}
+		}
+		ImGui::SameLine();
+		
+		ButtonLabel = to_string(m_pSelectTile->Get_NeighvorIndex(CTile::eNeighvorFlags_RightTop));
+		ButtonLabel += "##RT";
+		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
+		{
+			if (m_iCurSelectNeighvor == CTile::eNeighvorFlags_RightTop && m_bSelectNeighvor == true)
+			{
+				m_iCurSelectNeighvor = 0;
+				m_bSelectNeighvor = false;
+			}
+			else
+			{
+				m_iCurSelectNeighvor = CTile::eNeighvorFlags_RightTop;
+				m_bSelectNeighvor = true;
+			}
+		}
+
+		ButtonLabel = to_string(m_pSelectTile->Get_NeighvorIndex(CTile::eNeighvorFlags_Left));
+		ButtonLabel += "##L";
+		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
+		{
+			if (m_iCurSelectNeighvor == CTile::eNeighvorFlags_Left && m_bSelectNeighvor == true)
+			{
+				m_iCurSelectNeighvor = 0;
+				m_bSelectNeighvor = false;
+			}
+			else
+			{
+				m_iCurSelectNeighvor = CTile::eNeighvorFlags_Left;
+				m_bSelectNeighvor = true;
+			}
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("##NONEButton", ButtonSize))
+		{
+			m_iCurSelectNeighvor = 0;
+			m_bSelectNeighvor = false;
+		}
+		ImGui::SameLine();
+
+		ButtonLabel = to_string(m_pSelectTile->Get_NeighvorIndex(CTile::eNeighvorFlags_Right));
+		ButtonLabel += "##R";
+		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
+		{
+			if (m_iCurSelectNeighvor == CTile::eNeighvorFlags_Right && m_bSelectNeighvor == true)
+			{
+				m_iCurSelectNeighvor = 0;
+				m_bSelectNeighvor = false;
+			}
+			else
+			{
+				m_iCurSelectNeighvor = CTile::eNeighvorFlags_Right;
+				m_bSelectNeighvor = true;
+			}
+		}
+
+		ButtonLabel = to_string(m_pSelectTile->Get_NeighvorIndex(CTile::eNeighvorFlags_LeftBottom));
+		ButtonLabel += "##LB";
+		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
+		{
+			if (m_iCurSelectNeighvor == CTile::eNeighvorFlags_LeftBottom && m_bSelectNeighvor == true)
+			{
+				m_iCurSelectNeighvor = 0;
+				m_bSelectNeighvor = false;
+			}
+			else
+			{
+				m_iCurSelectNeighvor = CTile::eNeighvorFlags_LeftBottom;
+				m_bSelectNeighvor = true;
+			}
+		}
+		ImGui::SameLine();
+
+		ButtonLabel = to_string(m_pSelectTile->Get_NeighvorIndex(CTile::eNeighvorFlags_Bottom));
+		ButtonLabel += "##B";
+		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
+		{
+			if (m_iCurSelectNeighvor == CTile::eNeighvorFlags_Bottom && m_bSelectNeighvor == true)
+			{
+				m_iCurSelectNeighvor = 0;
+				m_bSelectNeighvor = false;
+			}
+			else
+			{
+				m_iCurSelectNeighvor = CTile::eNeighvorFlags_Bottom;
+				m_bSelectNeighvor = true;
+			}
+		}
+		ImGui::SameLine();
+
+		ButtonLabel = to_string(m_pSelectTile->Get_NeighvorIndex(CTile::eNeighvorFlags_RightBottom));
+		ButtonLabel += "##RB";
+		if (ImGui::Button(ButtonLabel.c_str(), ButtonSize))
+		{
+			if (m_iCurSelectNeighvor == CTile::eNeighvorFlags_RightBottom && m_bSelectNeighvor == true)
+			{
+				m_iCurSelectNeighvor = 0;
+				m_bSelectNeighvor = false;
+			}
+			else
+			{
+				m_iCurSelectNeighvor = CTile::eNeighvorFlags_RightBottom;
+				m_bSelectNeighvor = true;
+			}
+		}
+		
+
+		if (m_bSelectNeighvor) {
+			if (ImGui::Button("Set_Null"))
+			{
+				m_pSelectTile->Set_Neighvor(m_iCurSelectNeighvor, nullptr);
+				m_bSelectNeighvor = false;
+			}
+		}
 	}
 }
 
@@ -440,11 +605,26 @@ void CWindow_Tile::Create_SubWindow(const char* szWindowName, const ImVec2& Pos,
 
 void CWindow_Tile::On_Picking(_uint iLayerIndex, _float4 vPickedPos)
 {
-	_uint iCurTileIndex = GAMEINSTANCE->Find_TileIndex(vPickedPos);
-	CTile* pTile = GAMEINSTANCE->Find_Tile(iLayerIndex, iCurTileIndex);
+	m_iCurSelectTileIndex = GAMEINSTANCE->Find_TileIndex(vPickedPos);
+	m_iCurSelectLayer = iLayerIndex;
+	CTile* pTile = GAMEINSTANCE->Find_Tile(iLayerIndex, m_iCurSelectTileIndex);
 
 	//pTile->Set_TileFlag(CTile::eTileFlags_Default);
-	m_vecTileDebugger[iLayerIndex]->Set_TileColor(iCurTileIndex, _float4(0.f, 1.f, 0.f));
+	m_vecTileDebugger[iLayerIndex]->Set_TileColor(m_iCurSelectTileIndex, _float4(0.f, 1.f, 0.f));
+	
 	m_pSelectTile = pTile;
-	//여기서 피킹 안됨..
+
+
+}
+
+void CWindow_Tile::On_Pick_Neighvor(_uint iLayerIndex, _float4 vPickedPos)
+{
+	if (nullptr == m_pSelectTile)
+		return;
+
+	_int TileIndex = GAMEINSTANCE->Find_TileIndex(vPickedPos);
+	CTile* pTile = GAMEINSTANCE->Find_Tile(iLayerIndex, TileIndex);
+	m_pSelectTile->Set_Neighvor(m_iCurSelectNeighvor, pTile);
+
+	m_bSelectNeighvor = false;
 }
