@@ -3,6 +3,8 @@
 
 BEGIN(Client)
 
+class CTrigger;
+
 class CLevel_Paden final : public CLevel_Stage
 {
 private:
@@ -21,6 +23,11 @@ public:
 	virtual void Late_Tick() override;
 	virtual HRESULT Render() override;
 	virtual HRESULT Exit() override;
+
+private:
+	CTrigger* m_pPadenTrigger_A = nullptr;
+	CTrigger* m_pPadenTrigger_R = nullptr;
+	CTrigger* m_pPadenTrigger_C = nullptr;
 };
 
 END

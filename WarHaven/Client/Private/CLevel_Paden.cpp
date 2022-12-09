@@ -13,6 +13,9 @@
 
 // JJ
 #include "CUI_Oper.h"
+#include "CTrigger.h"
+#include "Transform.h"
+#include "CUser.h"
 
 CLevel_Paden::CLevel_Paden()
 {

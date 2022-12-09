@@ -41,6 +41,7 @@ private:
 private:
 	void Progress_Oper();
 	void Enable_StrongHoldUI();
+	void End_Oper();
 
 private:	// 텍스트 이미지
 	enum TextImg { Text_Oper1, Text_Oper2, Text_SelectPoint, Text_End };
@@ -112,7 +113,7 @@ private:
 	void Create_StrongHoldUI();
 	void Create_StrongHoldEffect();
 	void Init_StrongHoldUI();
-	void StrongHoldEffect();
+	void Init_StrongHoldEffect();
 
 private:	// 작전회의 타이머
 	enum TimerUI { TU_BG, TU_Bar, TU_End };

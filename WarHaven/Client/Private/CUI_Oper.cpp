@@ -30,6 +30,11 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_OperTimer();
 	Create_TargetText();
 
+	Init_CharacterSelect();
+	Init_TeamIcon();
+	Init_StrongHoldUI();
+	Init_StrongHoldEffect();
+
 	return S_OK;
 }
 
@@ -38,11 +43,6 @@ HRESULT CUI_Oper::Start()
 	__super::Start();
 
 	Bind_Shader();
-
-	Init_CharacterSelect();
-	Init_TeamIcon();
-	Init_StrongHoldUI();
-	StrongHoldEffect();
 
 	CUser::Get_Instance()->SetActive_HUD(false);
 
@@ -269,21 +269,7 @@ void CUI_Oper::Progress_Oper()
 			{
 				m_fOperTime = 0.f;
 
-				// 검정 화면 페이드인아웃
-
-				switch (m_eLoadLevel)
-				{
-				case Client::LEVEL_PADEN:
-					CGameSystem::Get_Instance()->On_StartGame();
-					break;
-				case Client::LEVEL_HWARA:
-					CGameSystem::Get_Instance()->On_StartGame();
-					break;
-				}
-
-				CUser::Get_Instance()->SetActive_HUD(true);
-
-				DISABLE_GAMEOBJECT(this);
+				End_Oper();
 			}
 		}
 	}
@@ -323,6 +309,26 @@ void CUI_Oper::Enable_StrongHoldUI()
 			break;
 		}
 	}
+}
+
+void CUI_Oper::End_Oper()
+{
+	// 검정 화면 페이드인아웃
+
+	switch (m_eLoadLevel)
+	{
+	case Client::LEVEL_PADEN:
+		CGameSystem::Get_Instance()->On_StartGame();
+		break;
+	case Client::LEVEL_HWARA:
+		CGameSystem::Get_Instance()->On_StartGame();
+		break;
+	}
+
+	CUser::Get_Instance()->SetActive_PadenUI(true);
+	CUser::Get_Instance()->SetActive_HUD(true);
+
+	DISABLE_GAMEOBJECT(this);
 }
 
 void CUI_Oper::Create_TextImg()
@@ -834,7 +840,14 @@ void CUI_Oper::Init_StrongHoldUI()
 		{
 			for (int j = 0; j < 2; ++j)
 			{
-				GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(j);
+				if (j == 0)
+				{
+					GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(j);
+				}
+				else
+				{
+					GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(1);
+				}
 			}
 		}
 
@@ -866,7 +879,7 @@ void CUI_Oper::Init_StrongHoldUI()
 	}
 }
 
-void CUI_Oper::StrongHoldEffect()
+void CUI_Oper::Init_StrongHoldEffect()
 {
 	switch (m_eLoadLevel)
 	{

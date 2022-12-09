@@ -136,11 +136,21 @@ void CTrigger_Paden::My_Tick()
 	else
 		m_fConqueredTimeAcc = 0.f;
 
+	// 플레이어와 거리가 제일 가까운 트리거만
+	// 혹은 목표로 지정한 트리거만 나침반으로 표시
 
-
-
-
-
+	if (m_strTriggerName == "Paden_Trigger_A")
+	{
+		CUser::Get_Instance()->Set_ProjStrongHoldUI(0, m_pTransform);
+	}
+	else if (m_strTriggerName == "Paden_Trigger_R")
+	{
+		CUser::Get_Instance()->Set_ProjStrongHoldUI(1, m_pTransform);
+	}
+	else if(m_strTriggerName == "Paden_Trigger_C")
+	{
+		CUser::Get_Instance()->Set_ProjStrongHoldUI(2, m_pTransform);
+	}
 }
 
 void CTrigger_Paden::Update_Conquered()

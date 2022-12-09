@@ -293,6 +293,16 @@ void CUser::Interat_StrongHoldUI(string strPadenPointKey, _uint iTeamType, _uint
 	m_pUI_Paden->Interact_StrongHoldUI(strPadenPointKey, iTeamType, iTriggerState);
 }
 
+void CUser::Set_TeamScore(_uint iTeamType, _uint iScore)
+{
+	m_pUI_Paden->Set_ScoreNum(iTeamType, iScore);
+}
+
+void CUser::Set_ProjStrongHoldUI(_uint iPointIdx, CTransform* pTransform)
+{
+	m_pUI_Paden->Set_Proj_StrongHoldUI(iPointIdx, pTransform);
+}
+
 void CUser::SetActive_PadenUI(_bool value)
 {
 	m_pUI_Paden->SetActive(value);

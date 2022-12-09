@@ -96,6 +96,9 @@ public:
 public:		// ÆÄµ§
 	void Interat_StrongHoldUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
 
+	void Set_TeamScore(_uint iTeamType, _uint iScore);
+	void Set_ProjStrongHoldUI(_uint iPointIdx, CTransform* pTransform);
+
 	void SetActive_PadenUI(_bool value);
 
 public:
