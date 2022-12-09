@@ -40,14 +40,14 @@ HRESULT CTileLayer::Initialize()
 	
 	_uint	m_iTotalTileNum = m_iNumTilesX * m_iNumTilesZ;
 	_float4 vCenterPos = ZERO_VECTOR;
-
+    _float fOffset = 0.f;//m_fTileSize * 0.5f;
 	for (_uint i = 0; i < m_iNumTilesZ; ++i)
 	{
-		vCenterPos.z += m_fTileSize * (_float)i;
+		vCenterPos.z = (m_fTileSize * (_float)i ) + fOffset;
 
 		for (_uint j = 0; j < m_iNumTilesX; ++j)
 		{
-			vCenterPos.x += m_fTileSize * (_float)j;
+			vCenterPos.x = (m_fTileSize * (_float)j) + fOffset;
 
 			_uint iCurIndex = j + (i * m_iNumTilesX);
 			CTile* pTile = CTile::Create(vCenterPos, iCurIndex, this);
