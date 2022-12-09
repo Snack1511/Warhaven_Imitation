@@ -50,8 +50,12 @@ private:	/*세이브 로드 관련 변수..*/
 	_uint m_iFileDataIndex = 0;
 private:
 	CTile* m_pSelectTile = nullptr;
+	_uint m_iCurSelectTileIndex = 0;
+	_uint m_iCurSelectLayer = 0;
+	_uint m_iCurSelectNeighvor = 0;
+	_bool m_bSelectNeighvor = false;
 private:
 	void		On_Picking(_uint iLayerIndex, _float4 vPickedPos);
-
+	void		On_Pick_Neighvor(_uint iLayerIndex, _float4 vPickedPos);
 };
 END
