@@ -360,9 +360,7 @@ void CWindow_Map::SetUp_CurPickingGroup()
 static float LightPos[3] = { 0.f };
 static float LightDir[3] = { 0.f };
 static float LightRange = 0.f;
-static float LightOriginRange = 0.f;
 static float LightRandomRange = 0.f;
-static float LightTime = 999999.f;
 static float LightOffset[3] = { 0.f };
 static float LightDiffuse[3] = { 0.f };
 static float LightAmbient[3] = { 0.f };
@@ -393,8 +391,9 @@ void CWindow_Map::Func_LightControl()
         ImGui::EndListBox();
     }
 
-    if (!m_LightDescs.empty())
+    if (!m_LightDescs.empty() && _uint(m_LightDescs.size()) > m_iCurSelectLight)
     {
+        
         LIGHTDESC tData = get<1>(m_LightDescs[m_iCurSelectLight]);
 
         memcpy_s(&m_iLightTypeIndex, sizeof(_int), &tData.eType, sizeof(_int));
@@ -577,6 +576,7 @@ void CWindow_Map::Add_Light()
     {
         assert(0);
     }
+    m_iCurSelectLight++;
 }
 void CWindow_Map::Delete_Light()
 {
@@ -592,7 +592,9 @@ void CWindow_Map::Delete_Light()
         CmpIndex++;
     }
     m_LightDescs.erase(iter);
-    GAMEINSTANCE->Remove_Light(LightIndex);
+    GAMEINSTANCE->Remove_Light(LightIndex + m_iLightPadding);
+    if (_int(m_LightDescs.size()) <= m_iCurSelectLight)
+        m_iCurSelectLight =(m_LightDescs.empty()) ? 0 :  _int(m_LightDescs.size()) - 1;
 }
 void CWindow_Map::Clone_Light()
 {
@@ -605,6 +607,7 @@ void CWindow_Map::Clone_Light()
     {
         assert(0);
     }
+    m_iCurSelectLight++;
 }
 
 void CWindow_Map::Set_LightTag(string strTag)
@@ -1119,9 +1122,10 @@ void CWindow_Map::Save_LightGroup(string BasePath, string SaveName)
 }
 void CWindow_Map::Load_LightGroup(string FilePath)
 {
-    //for(_int i = 0; i < m_LightDescs.size(); ++i)
-    //    GAMEINSTANCE->Pop_Light();
+    for(_int i = 0; i < m_LightDescs.size(); ++i)
+        GAMEINSTANCE->Pop_Light();
     m_LightDescs.clear();
+    m_iLightPadding = _uint(GAMEINSTANCE->Get_LightSize());
     string LoadFullPath = FilePath;
     ifstream	readFile(LoadFullPath, ios::binary);
 
