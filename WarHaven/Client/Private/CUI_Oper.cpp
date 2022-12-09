@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "Loading_Manager.h"
 #include "CUser.h"
+#include "CShader.h"
 
 CUI_Oper::CUI_Oper()
 {
@@ -21,17 +22,22 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_TextImg();
 	Create_OperBG();
 	Create_OperProfile();
-	Create_OperCharacterSelect();
+	Create_CharacterSelect();
 	Create_TeamIcon();
 	Create_StrongHoldUI();
 	Create_StrongHoldEffect();
+	Create_OperTimer();
 
 	return S_OK;
 }
 
 HRESULT CUI_Oper::Start()
 {
-	Init_OperCharacterSelect();
+	__super::Start();
+
+	Bind_Shader();
+
+	Init_CharacterSelect();
 	Init_TeamIcon();
 	Init_StrongHoldUI();
 	StrongHoldEffect();
@@ -43,9 +49,24 @@ HRESULT CUI_Oper::Start()
 	return S_OK;
 }
 
+void CUI_Oper::Set_Shader_Smoke(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fSmokeUV, sizeof(_float));
+}
+
+void CUI_Oper::Set_Shader_Timer(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fTimerRatio, sizeof(_float));
+}
+
 void CUI_Oper::My_Tick()
 {
 	__super::My_Tick();
+
+	if (m_pOperBG[OB_Smoke]->Is_Valid())
+	{
+		m_fSmokeUV += fDT(0) * 0.01f;
+	}
 
 	Progress_Oper();
 }
@@ -90,10 +111,8 @@ void CUI_Oper::Progress_Oper()
 	{
 		m_fAccTime += fDT(0);
 
-		switch (m_iOperProgress)
+		if (m_iOperProgress == 0)
 		{
-		case 0:
-
 			if (m_fAccTime > 0.5f)
 			{
 				m_fAccTime = 0.f;
@@ -101,11 +120,9 @@ void CUI_Oper::Progress_Oper()
 
 				Enable_Fade(m_pOperBG[OB_Black], 0.15f);
 			}
-
-			break;
-
-		case 1:
-
+		}
+		else if (m_iOperProgress == 1)
+		{
 			if (m_fAccTime > 0.3f)
 			{
 				m_fAccTime = 0.f;
@@ -114,11 +131,9 @@ void CUI_Oper::Progress_Oper()
 				Enable_Fade(m_pTextImg[Text_Oper1], 0.3f);
 				m_pTextImg[Text_Oper1]->DoScale(-512.f, 0.3f);
 			}
-
-			break;
-
-		case 2:
-
+		}
+		else if (m_iOperProgress == 2)
+		{
 			if (m_fAccTime > 1.f)
 			{
 				m_fAccTime = 0.f;
@@ -132,11 +147,9 @@ void CUI_Oper::Progress_Oper()
 					Enable_Fade(m_pArrOperProfile[i], 0.3f);
 				}
 			}
-
-			break;
-
-		case 3:
-
+		}
+		else if (m_iOperProgress == 3)
+		{
 			if (m_fAccTime > 3.f)
 			{
 				m_fAccTime = 0.f;
@@ -150,12 +163,9 @@ void CUI_Oper::Progress_Oper()
 					Disable_Fade(m_pArrOperProfile[i], 0.3f);
 				}
 			}
-
-			break;
-
-		case 4:
-
-			m_fAccTime = 0.f;
+		}
+		else if (m_iOperProgress == 4)
+		{
 			m_iOperProgress++;
 
 			for (int i = 0; i < Team_End; ++i)
@@ -167,12 +177,9 @@ void CUI_Oper::Progress_Oper()
 			}
 
 			Enable_StrongHoldUI();
-
-			break;
-
-		case 5:
-
-			m_fAccTime = 0.f;
+		}
+		else if (m_iOperProgress == 5)
+		{
 			m_iOperProgress++;
 
 			for (int i = 0; i < 2; ++i)
@@ -180,11 +187,9 @@ void CUI_Oper::Progress_Oper()
 				Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
 				m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
 			}
-
-			break;
-
-		case 6:
-
+		}
+		else if (m_iOperProgress == 6)
+		{
 			if (m_fAccTime > 0.5f)
 			{
 				m_fAccTime = 0.f;
@@ -196,8 +201,71 @@ void CUI_Oper::Progress_Oper()
 					m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
 				}
 			}
+		}
+		else if (m_iOperProgress == 7)
+		{
+			if (m_fAccTime > 1.f)
+			{
+				m_fAccTime = 0.f;
+				m_iOperProgress++;
 
-			break;
+				_float fDuration = 0.3f;
+				for (int i = 0; i < 2; ++i)
+				{
+					Enable_Fade(m_pArrCharacterSideBG[i], fDuration);
+				}
+
+				m_pArrCharacterSideBG[0]->DoMoveX(50.f, fDuration);
+				m_pArrCharacterSideBG[1]->DoMoveX(-50.f, fDuration);
+
+				for (int i = 0; i < CP_End; ++i)
+				{
+					for (int j = 0; j < 6; ++j)
+					{
+						Enable_Fade(m_pArrCharacterPort[i][j], fDuration);
+						m_pArrCharacterPort[i][j]->DoMoveX(50.f, fDuration);
+					}
+				}
+
+				Enable_Fade(m_pTextImg[Text_Oper2], fDuration);
+				Enable_Fade(m_pTextImg[Text_SelectPoint], fDuration);
+
+				for (int i = 0; i < TU_End; ++i)
+				{
+					m_fOperTime = m_fMaxOperTime;
+					Enable_Fade(m_pTimer[i], fDuration);
+				}
+
+				/*for (int i = 0; i < ST_End; ++i)
+				{
+					m_pArrOperSelectUI[i][0]->DoScale(10.f, fDuration);
+				}
+
+				Enable_Fade(m_pOperMapIcon, fDuration);
+				Enable_Fade(m_pOperMapBG, fDuration);
+				Enable_Fade(m_pArrTargetPoint[0], fDuration);
+
+
+
+				for (int i = 0; i < BU_End; ++i)
+				{
+					Enable_Fade(m_pBriefingUI[i], fDuration);
+				}*/
+			}
+		}
+		else if (m_iOperProgress == 8)
+		{
+			_tchar  szTemp[MAX_STR] = {};
+			swprintf_s(szTemp, TEXT("%04.1f"), m_fOperTime);
+			m_pTimer[TU_Bar]->Set_FontText(szTemp);
+
+			m_fTimerRatio = m_fOperTime / m_fMaxOperTime;
+			m_fOperTime -= fDT(0);
+			if (m_fOperTime < 0.f)
+			{
+				m_fOperTime = 0.f;
+				//On_OperTimeOver();
+			}
 		}
 	}
 }
@@ -244,14 +312,30 @@ void CUI_Oper::Create_TextImg()
 	{
 		m_pTextImg[i] = CUI_Object::Create();
 
+		m_pTextImg[i]->Set_FadeDesc(0.3f);
+
 		if (i == Text_Oper1)
 		{
-			m_pTextImg[i]->Set_FadeDesc(0.3f);
-
 			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting.png"));
 
 			m_pTextImg[i]->Set_PosY(50.f);
 			m_pTextImg[i]->Set_Scale(1024.f);
+			m_pTextImg[i]->Set_Sort(0.49f);
+		}
+		else if (i == Text_Oper2)
+		{
+			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting2.png"));
+
+			m_pTextImg[i]->Set_PosY(305.f);
+			m_pTextImg[i]->Set_Scale(155.f, 50.f);
+			m_pTextImg[i]->Set_Sort(0.49f);
+		}
+		else if (i == Text_SelectPoint)
+		{
+			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperText.png"));
+
+			m_pTextImg[i]->Set_PosY(-250.f);
+			m_pTextImg[i]->Set_Scale(287.f, 50.f);
 			m_pTextImg[i]->Set_Sort(0.49f);
 		}
 
@@ -341,34 +425,33 @@ void CUI_Oper::Create_OperProfile()
 	}
 }
 
-void CUI_Oper::Create_OperCharacterSelect()
+void CUI_Oper::Create_CharacterSelect()
 {
-	m_pOperSideBG = CUI_Object::Create();
+	m_CharacterSideBG = CUI_Object::Create();
 
-	m_pOperSideBG->Set_FadeDesc(0.3f);
+	m_CharacterSideBG->Set_FadeDesc(0.3f);
 
-	m_pOperSideBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_ScrollBG.png"));
+	m_CharacterSideBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_ScrollBG.png"));
+	m_CharacterSideBG->Set_Scale(250.f, 753.f);
+	m_CharacterSideBG->Set_Sort(0.49f);
 
-	m_pOperSideBG->Set_Scale(250.f, 753.f);
-	m_pOperSideBG->Set_Sort(0.49f);
-
-	CREATE_GAMEOBJECT(m_pOperSideBG, GROUP_UI);
-	DELETE_GAMEOBJECT(m_pOperSideBG);
+	CREATE_GAMEOBJECT(m_CharacterSideBG, GROUP_UI);
+	DELETE_GAMEOBJECT(m_CharacterSideBG);
 
 	for (int i = 0; i < 2; ++i)
 	{
-		m_pArrOperSideBG[i] = m_pOperSideBG->Clone();
+		m_pArrCharacterSideBG[i] = m_CharacterSideBG->Clone();
 
 		_float fPosX = -565 + (i * 1130.f);
-		m_pArrOperSideBG[i]->Set_PosX(fPosX);
+		m_pArrCharacterSideBG[i]->Set_PosX(fPosX);
 
 		if (i == 1)
 		{
-			m_pArrOperSideBG[i]->Set_RotationZ(180.f);
+			m_pArrCharacterSideBG[i]->Set_RotationZ(180.f);
 		}
 
-		CREATE_GAMEOBJECT(m_pArrOperSideBG[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_pArrOperSideBG[i]);
+		CREATE_GAMEOBJECT(m_pArrCharacterSideBG[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pArrCharacterSideBG[i]);
 	}
 
 	for (int i = 0; i < CP_End; ++i)
@@ -437,9 +520,8 @@ void CUI_Oper::Create_OperCharacterSelect()
 	}
 }
 
-void CUI_Oper::Init_OperCharacterSelect()
+void CUI_Oper::Init_CharacterSelect()
 {
-
 	_float fTopPosY = 250.f;
 	_float fMidPosY = 150.f;
 	_float fBotPosY = 50.f;
@@ -731,4 +813,43 @@ void CUI_Oper::StrongHoldEffect()
 	case LEVEL_HWARA:
 		break;
 	}
+}
+
+void CUI_Oper::Create_OperTimer()
+{
+	for (int i = 0; i < TU_End; ++i)
+	{
+		m_pTimer[i] = CUI_Object::Create();
+
+		m_pTimer[i]->Set_PosY(275.f);
+		m_pTimer[i]->Set_Scale(242.f, 10.f);
+
+		if (i == TU_BG)
+		{
+			m_pTimer[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarBG.png"));
+			m_pTimer[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.5f));
+			m_pTimer[i]->Set_Sort(0.49f);
+		}
+		else if (TU_Bar)
+		{
+			GET_COMPONENT_FROM(m_pTimer[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
+
+			m_pTimer[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarGrey.dds"));
+
+			m_pTimer[i]->Set_Sort(0.48f);
+			m_pTimer[i]->Set_FontRender(true);
+			m_pTimer[i]->Set_FontStyle(true);
+			m_pTimer[i]->Set_FontOffset(-22.f, -13.f);
+			m_pTimer[i]->Set_FontScale(0.25f);
+		}
+
+		CREATE_GAMEOBJECT(m_pTimer[i], RENDER_UI);
+		DISABLE_GAMEOBJECT(m_pTimer[i]);
+	}
+}
+
+void CUI_Oper::Bind_Shader()
+{
+	GET_COMPONENT_FROM(m_pOperBG[OB_Smoke], CShader)->CallBack_SetRawValues += bind(&CUI_Oper::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pTimer[TU_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_Oper::Set_Shader_Timer, this, placeholders::_1, "g_fValue");
 }
