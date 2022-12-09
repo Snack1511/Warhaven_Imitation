@@ -147,21 +147,9 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 void CUnit_Valkyrie::On_Die()
 {
-	__super::On_Die();
-
-	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
-
-	//_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
-	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
-
-	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_R_WP1")->Get_BoneMatrix();
-	_float4 vBonePos = matWeapon.XMLoad().r[3];
-	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
-
-
-	Add_DeathStones(CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeadBody_Fiona", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
-
-	m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"FionaDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
+	m_pOwnerPlayer->On_FinishHero();
+	m_pOwnerPlayer->Get_CurrentUnit()->On_Die();
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 }
 
 void CUnit_Valkyrie::TurnOn_ValkyrieTrail(_bool bOn)
@@ -573,9 +561,7 @@ void CUnit_Valkyrie::My_Tick()
 
 void CUnit_Valkyrie::My_LateTick()
 {
-
-	if (KEY(NUM8, TAP))
-		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(20.f, 2.f, 20.f));
+	__super::My_LateTick();
 
 }
 
