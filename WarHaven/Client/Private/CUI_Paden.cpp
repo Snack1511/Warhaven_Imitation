@@ -57,11 +57,14 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 	}
 
 	reverse(m_vecCurScore[m_eTeamType].begin(), m_vecCurScore[m_eTeamType].end());
-		
+
 	// 100 99 로 빠지면 앞에 두개 채워지고 뒤에 제거
 
 	for (int i = 0; i < 3; ++i)
 	{
+		if (i >= m_vecPrvScore[m_eTeamType].size() || i >= m_vecCurScore[m_eTeamType].size())
+			return;
+
 		if (m_vecPrvScore[m_eTeamType][i] != m_vecCurScore[m_eTeamType][i])
 		{
 			m_iChangeNumIdx = i;
@@ -69,7 +72,7 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 			m_bIsChangeNum = true;
 			m_bIsDisableNum = true;
 		}
-	}	
+	}
 }
 
 void CUI_Paden::Set_Proj_StrongHoldUI(_uint iPointIdx, CTransform* pTransform)
