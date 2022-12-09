@@ -14,17 +14,17 @@ class ENGINE_DLL CTile final
 	friend class CTileLayer;
 
 public:
-	enum eNeighvorFlags 
+	enum eNeighborFlags 
 	{
-		eNeighvorFlags_LeftTop,
-		eNeighvorFlags_Top,
-		eNeighvorFlags_RightTop,
-		eNeighvorFlags_Right,
-		eNeighvorFlags_RightBottom,
-		eNeighvorFlags_Bottom,
-		eNeighvorFlags_LeftBottom,
-		eNeighvorFlags_Left,
-		eNeighvorFlags_END,
+		eNeighborFlags_LeftTop,
+		eNeighborFlags_Top,
+		eNeighborFlags_RightTop,
+		eNeighborFlags_Right,
+		eNeighborFlags_RightBottom,
+		eNeighborFlags_Bottom,
+		eNeighborFlags_LeftBottom,
+		eNeighborFlags_Left,
+		eNeighborFlags_END,
 	};
 
 	enum eTileFlags
@@ -46,7 +46,7 @@ public:
 		"STAIR"
 	};
 
-	const char* Neighvor_Display[8]
+	const char* Neighbor_Display[8]
 	{
 		"Left Top",
 		"Top",
@@ -71,13 +71,13 @@ public:
 	void	Add_TileFlag(eTileFlags eFlag);
 	void	Remove_TileFlag(eTileFlags eFlag);
 
-	void	Bake_Neighvor(eNeighvorFlags NeighvorFlag, CTile* pNeighvorTile);
+	void	Bake_Neighbor(eNeighborFlags NeighborFlag, CTile* pNeighborTile);
 	_uint	Get_GCost();
 	_float4 Get_CenterPos() { return m_vCenterPos; }
 
 public:
-	_int Get_NeighvorIndex(_uint NeighvorDir);
-	void Set_Neighvor(_uint NeighvorDir, CTile* pTile);
+	_int Get_NeighborIndex(_uint NeighborDir);
+	void Set_Neighbor(_uint NeighborDir, CTile* pTile);
 public:
 	/* 유효한 타일인 지 (갈 수 있는 타일인지)*/
 	_bool	Is_ValidTile();

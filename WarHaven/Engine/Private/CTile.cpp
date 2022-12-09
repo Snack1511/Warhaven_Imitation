@@ -37,9 +37,9 @@ void CTile::Remove_TileFlag(eTileFlags eFlag)
 	m_eTileFlag &= ~eFlag;
 }
 
-void CTile::Bake_Neighvor(eNeighvorFlags NeighvorFlag, CTile* pNeighvorTile)
+void CTile::Bake_Neighbor(eNeighborFlags NeighborFlag, CTile* pNeighborTile)
 {
-	m_arrAdjTiles[_uint(NeighvorFlag)] = pNeighvorTile;
+	m_arrAdjTiles[_uint(NeighborFlag)] = pNeighborTile;
 }
 
 _uint CTile::Get_GCost()
@@ -49,28 +49,28 @@ _uint CTile::Get_GCost()
 	return iReturnGCost;
 }
 
-_int CTile::Get_NeighvorIndex(_uint NeighvorDir)
+_int CTile::Get_NeighborIndex(_uint NeighborDir)
 {
-	if (nullptr == m_arrAdjTiles[NeighvorDir])
+	if (nullptr == m_arrAdjTiles[NeighborDir])
 		return -1;
 	else
-		return m_arrAdjTiles[NeighvorDir]->m_iIndex;
+		return m_arrAdjTiles[NeighborDir]->m_iIndex;
 }
 
-void CTile::Set_Neighvor(_uint NeighvorDir, CTile* pTile)
+void CTile::Set_Neighbor(_uint NeighborDir, CTile* pTile)
 {
-	_uint MyDirFromNeighvor = (NeighvorDir + 4) % 8;
+	_uint MyDirFromNeighbor = (NeighborDir + 4) % 8;
 	
-	if (m_arrAdjTiles[NeighvorDir] == pTile)
+	if (m_arrAdjTiles[NeighborDir] == pTile)
 		return;
 
-	if (nullptr != m_arrAdjTiles[NeighvorDir])
-		m_arrAdjTiles[NeighvorDir]->m_arrAdjTiles[MyDirFromNeighvor] = nullptr;//자신 연결 끊기
+	if (nullptr != m_arrAdjTiles[NeighborDir])
+		m_arrAdjTiles[NeighborDir]->m_arrAdjTiles[MyDirFromNeighbor] = nullptr;//자신 연결 끊기
 
-	m_arrAdjTiles[NeighvorDir] = pTile;//내 이웃 업데이트
+	m_arrAdjTiles[NeighborDir] = pTile;//내 이웃 업데이트
 
 	if (nullptr != pTile)
-		pTile->Set_Neighvor(MyDirFromNeighvor, this);//새 이웃의 위치에 나 집어넣기
+		pTile->Set_Neighbor(MyDirFromNeighbor, this);//새 이웃의 위치에 나 집어넣기
 }
 
 _bool CTile::Is_ValidTile()

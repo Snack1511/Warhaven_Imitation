@@ -499,15 +499,13 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumVerticesX, _uint iNumVerticesZ)
 
 HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumTilesX, _uint iNumTilesZ, _float fSize)
 {
-	m_iNumVerticesX = iNumTilesX * 2;
-	m_iNumVerticesZ = iNumTilesZ * 2;
-
+	m_iNumVerticesX = iNumTilesX + 1;
+	m_iNumVerticesZ = iNumTilesZ + 1;
 
 #pragma region VERTEXBUFFER
 	m_iStride = sizeof(VTXNORTEX);
 
 	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
-
 	m_iNumVertexBuffers = 1;
 
 
@@ -516,62 +514,20 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumTilesX, _uint iNumTilesZ, _float 
 	VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
 
-	for (_uint i = 0; i < iNumTilesZ; ++i)
+	for (_uint i = 0; i < m_iNumVerticesZ; ++i)
 	{
-		for (_uint j = 0; j < iNumTilesX; ++j)
+		for (_uint j = 0; j < m_iNumVerticesX; ++j)
 		{
-			_float3 vCenterPos = _float3((_float)j * fSize, 0.f, (_float)i * fSize);
-			_uint	iIndexLT = (i * 2 * iNumTilesX) + (j * 2) + iNumTilesX * 2;
-			_uint	iIndexLB = (i * 2 * iNumTilesX) + (j * 2);
-			_uint	iIndexRT = iIndexLT + 1;
-			_uint	iIndexRB = iIndexLB + 1;
+			_uint	iIndex = i * m_iNumVerticesX + j;
 
-			_float3 vLTPadding = _float3(-fSize * 0.5f, 0, fSize * 0.5f);
-			_float3 vLBPadding = _float3(-fSize * 0.5f, 0, -fSize * 0.5f);
+			pVertices[iIndex].vPosition = m_pVerticesPos[iIndex] = _float3((_float)j * fSize, 0.f, (_float)i * fSize);
+			pVertices[iIndex].vNormal = _float3(0.0f, 0.0f, 0.f);
 
-			_float3 vRTPadding = _float3(fSize * 0.5f, 0, fSize * 0.5f);
-			_float3 vRBPadding = _float3(fSize * 0.5f, 0, -fSize * 0.5f);
+			//j³ª i°¡ Â¦¼ö¸é 0 È¦¼ö¸é 1
 
-			//ÀÎµ¦½º¸¶´Ù 4°³¾¿ Âï¾îÁà¾ßÇÔ
-			
-			_vector xCenter = XMLoadFloat3(&vCenterPos);
-			
-			_vector xLTPadding = XMLoadFloat3(&vLTPadding);
-			_vector xLBPadding = XMLoadFloat3(&vLBPadding);
-
-			_vector xRTPadding = XMLoadFloat3(&vRTPadding);
-			_vector xRBPadding = XMLoadFloat3(&vRBPadding);
-
-			_vector xLTVertex = xCenter + xLTPadding;
-			_vector xLBVertex = xCenter + xLBPadding;
-			_vector xRTVertex = xCenter + xRTPadding;
-			_vector xRBVertex = xCenter + xRBPadding;
-
-			XMStoreFloat3(&pVertices[iIndexLT].vPosition, xLTVertex);
-			XMStoreFloat3(&pVertices[iIndexLB].vPosition, xLBVertex);
-			XMStoreFloat3(&pVertices[iIndexRT].vPosition, xRTVertex);
-			XMStoreFloat3(&pVertices[iIndexRB].vPosition, xRBVertex);
-
-			m_pVerticesPos[iIndexLT] = pVertices[iIndexLT].vPosition;
-			m_pVerticesPos[iIndexLB] = pVertices[iIndexLB].vPosition;
-			m_pVerticesPos[iIndexRT] = pVertices[iIndexRT].vPosition;
-			m_pVerticesPos[iIndexRB] = pVertices[iIndexRB].vPosition;
-
-
-			//pVertices[iIndex].vPosition = m_pVerticesPos[iIndex] = _float3((_float)j * fSize, 0.f, (_float)i * fSize);
-			//pVertices[iIndex].vNormal = _float3(0.0f, 0.0f, 0.f);
-			//pVertices[iIndex].vTexUV = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
-			_float4 InitColor = _float4(0.f, 1.f, 0.f, 1.f);
-			pVertices[iIndexLT].vColor = InitColor;
-			pVertices[iIndexLB].vColor = InitColor;
-			pVertices[iIndexRT].vColor = InitColor;
-			pVertices[iIndexRB].vColor = InitColor;
-
-			m_pVerticesColor[iIndexLT] = pVertices[iIndexLT].vColor;
-			m_pVerticesColor[iIndexLB] = pVertices[iIndexLB].vColor;
-			m_pVerticesColor[iIndexRT] = pVertices[iIndexRT].vColor;
-			m_pVerticesColor[iIndexRB] = pVertices[iIndexRB].vColor;
-
+			pVertices[iIndex].vTexUV.x = j % 2;
+			pVertices[iIndex].vTexUV.y = i % 2;
+			pVertices[iIndex].vColor = m_pVerticesColor[iIndex] = _float4(0.f, 1.f, 0.f, 0.5f);
 		}
 	}
 
@@ -579,7 +535,7 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumTilesX, _uint iNumTilesZ, _float 
 
 #pragma region INDEXBUFFER
 	m_iIndicesStride = sizeof(FACEINDICES32);
-	m_iNumPrimitive = iNumTilesX * iNumTilesZ * 2;
+	m_iNumPrimitive = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
 	m_iNumIndices = 3 * m_iNumPrimitive;
 	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
 	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -590,29 +546,51 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumTilesX, _uint iNumTilesZ, _float 
 
 	_ulong		dwNumFaces = 0;
 
-	for (_uint i = 0; i < iNumTilesZ; ++i)
+	for (_uint i = 0; i < m_iNumVerticesZ - 1; ++i)
 	{
-		for (_uint j = 0; j < iNumTilesX; ++j)
+		for (_uint j = 0; j < m_iNumVerticesX - 1; ++j)
 		{
-			_uint	iIndex = (i * iNumTilesX * 2) + j * 2;
+			_uint	iIndex = i * m_iNumVerticesX + j;
 
-			_uint	iIndexLT = iIndex + iNumTilesX * 2;
-			_uint	iIndexLB = iIndex;
-			_uint	iIndexRT = iIndexLT + 1;
-			_uint	iIndexRB = iIndexLB + 1;
+			_uint	iIndices[] = {
+				iIndex + m_iNumVerticesX,
+				iIndex + m_iNumVerticesX + 1,
+				iIndex + 1,
+				iIndex
+			};
 
-			pIndices[dwNumFaces]._1 = iIndexLB;
-			pIndices[dwNumFaces]._2 = iIndexLT;
-			pIndices[dwNumFaces]._3 = iIndexRT;
+			pIndices[dwNumFaces]._1 = iIndices[0];
+			pIndices[dwNumFaces]._2 = iIndices[1];
+			pIndices[dwNumFaces]._3 = iIndices[2];
 
+			_vector		vSour, vDest, vNormal;
 
+			vSour = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition) - XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vPosition);
+			vDest = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vPosition) - XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition);
+			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
+
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal,
+				XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal,
+				XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal,
+				XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal) + vNormal);
 			++dwNumFaces;
 
-			pIndices[dwNumFaces]._1 = iIndexLB;
-			pIndices[dwNumFaces]._2 = iIndexRT;
-			pIndices[dwNumFaces]._3 = iIndexRB;
+			pIndices[dwNumFaces]._1 = iIndices[0];
+			pIndices[dwNumFaces]._2 = iIndices[2];
+			pIndices[dwNumFaces]._3 = iIndices[3];
 
+			vSour = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition) - XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vPosition);
+			vDest = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vPosition) - XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition);
+			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
 
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal,
+				XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal,
+				XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal,
+				XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal) + vNormal);
 			++dwNumFaces;
 		}
 	}

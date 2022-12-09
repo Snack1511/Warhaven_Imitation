@@ -20,7 +20,7 @@ public:
 
 public:
 	HRESULT	Initialize();
-	HRESULT SetUp_NeighvorTile();
+	HRESULT SetUp_NeighborTile();
 
 	HRESULT	Render();
 	void	Release();

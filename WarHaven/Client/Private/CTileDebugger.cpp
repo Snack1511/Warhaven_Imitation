@@ -48,7 +48,7 @@ HRESULT CTileDebugger::Initialize_Prototype()
     pShader->Initialize();
     Add_Component(pShader);
 
-    CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_NAVIGATION);
+    CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_ALPHA, VTXNOR_PASS_NAVIGATION);
     Add_Component(pRenderer);
 
     return S_OK;
@@ -82,14 +82,14 @@ HRESULT CTileDebugger::Initialize()
 
             _float4 vColor;
             if (pTile->Is_ValidTile())
-                vColor = _float4(0.f, 1.f, 0.f, 1.f);
+                vColor = _float4(0.f, 1.f, 0.f, 0.5f);
             else
-                vColor = _float4(1.f, 0.f, 0.f, 1.f);
+                vColor = _float4(1.f, 0.f, 0.f, 0.5f);
 
 
             //타일 기준으로 모서리 점들 4개 검출
-            _uint	iIndexLT = (i * 2 * m_iNumTilesX) + j * 2 + m_iNumTilesX * 2;
-            _uint	iIndexLB = (i * 2 * m_iNumTilesX) + j * 2;
+            _uint	iIndexLT = (i * iNumVerticesX) + j + iNumVerticesX;
+            _uint	iIndexLB = (i * iNumVerticesX) + j;
             _uint	iIndexRT = iIndexLT + 1;
             _uint	iIndexRB = iIndexLB + 1;
 
@@ -117,8 +117,15 @@ void CTileDebugger::Set_TileColor(_uint iTileIndex, _float4 vColor)
 {
     _float4* pVerticesColor = m_pTerrainMesh->Get_VerticesColor();
 
-    _uint	iIndexLT = iTileIndex * 2 + m_iNumTilesX * 2;
-    _uint	iIndexLB = iTileIndex * 2;
+    //타일 주변 4개의 버텍스를 찾기 위해선
+    _uint iCurIndexZ = iTileIndex / m_iNumTilesX;
+    _uint iCurIndexX = iTileIndex % m_iNumTilesX;
+
+    _uint iNumVerticesX = m_iNumTilesX + 1;
+    _uint iNumVerticesZ = m_iNumTilesZ + 1;
+
+    _uint	iIndexLT = (iCurIndexZ * iNumVerticesX) + iCurIndexX + iNumVerticesX;
+    _uint	iIndexLB = (iCurIndexZ * iNumVerticesX) + iCurIndexX;
     _uint	iIndexRT = iIndexLT + 1;
     _uint	iIndexRB = iIndexLB + 1;
 

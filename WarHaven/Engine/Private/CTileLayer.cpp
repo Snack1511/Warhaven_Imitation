@@ -57,12 +57,12 @@ HRESULT CTileLayer::Initialize()
 		
 	}
 
-    if (FAILED(SetUp_NeighvorTile()))
+    if (FAILED(SetUp_NeighborTile()))
         assert(0);
 	return S_OK;
 }
 
-HRESULT CTileLayer::SetUp_NeighvorTile()
+HRESULT CTileLayer::SetUp_NeighborTile()
 {
     for (_int i = 0; i < m_iNumTilesZ; ++i)
     {
@@ -76,90 +76,90 @@ HRESULT CTileLayer::SetUp_NeighvorTile()
             _bool bRight = (j == m_iNumTilesX - 1);
 
             CTile* pCurTile = m_vecTiles[TileIndex];
-            CTile* pNeighvorTile = nullptr;
+            CTile* pNeighborTile = nullptr;
 
             if (nullptr == pCurTile)
                 assert(0);
 
             //ÁÂ»ó --> N + width - 1
             if (bTop || bLeft)
-                pNeighvorTile = nullptr;
+                pNeighborTile = nullptr;
             else
             {
                 _uint NeighborIndex = TileIndex + m_iNumTilesX - 1;
-                pNeighvorTile = m_vecTiles[NeighborIndex];
+                pNeighborTile = m_vecTiles[NeighborIndex];
             }
-            pCurTile->Bake_Neighvor(CTile::eNeighvorFlags_LeftTop, pNeighvorTile);
+            pCurTile->Bake_Neighbor(CTile::eNeighborFlags_LeftTop, pNeighborTile);
 
             //»ó -->  N + width
             if (bTop)
-                pNeighvorTile = nullptr;
+                pNeighborTile = nullptr;
             else
             {
                 _uint NeighborIndex = TileIndex + m_iNumTilesX;
-                pNeighvorTile = m_vecTiles[NeighborIndex];
+                pNeighborTile = m_vecTiles[NeighborIndex];
             }
-            pCurTile->Bake_Neighvor(CTile::eNeighvorFlags_Top, pNeighvorTile);
+            pCurTile->Bake_Neighbor(CTile::eNeighborFlags_Top, pNeighborTile);
 
             //¿ì»ó --> N + width + 1
             if (bTop || bRight)
-                pNeighvorTile = nullptr;
+                pNeighborTile = nullptr;
             else
             {
                 _uint NeighborIndex = TileIndex + m_iNumTilesX + 1;
-                pNeighvorTile = m_vecTiles[NeighborIndex];
+                pNeighborTile = m_vecTiles[NeighborIndex];
             }
-            pCurTile->Bake_Neighvor(CTile::eNeighvorFlags_RightTop, pNeighvorTile);
+            pCurTile->Bake_Neighbor(CTile::eNeighborFlags_RightTop, pNeighborTile);
 
             //¿ì --> N + 1
             if (bRight)
-                 pNeighvorTile = nullptr;
+                 pNeighborTile = nullptr;
             else
             {
                 _uint NeighborIndex = TileIndex + 1;
-                pNeighvorTile = m_vecTiles[NeighborIndex];
+                pNeighborTile = m_vecTiles[NeighborIndex];
             }
-            pCurTile->Bake_Neighvor(CTile::eNeighvorFlags_Right, pNeighvorTile);
+            pCurTile->Bake_Neighbor(CTile::eNeighborFlags_Right, pNeighborTile);
 
             //¿ìÇÏ --> N - width + 1
             if (bBottom || bRight)
-                 pNeighvorTile = nullptr;
+                 pNeighborTile = nullptr;
             else
             {
                 _uint NeighborIndex = TileIndex - m_iNumTilesX + 1;
-                pNeighvorTile = m_vecTiles[NeighborIndex];
+                pNeighborTile = m_vecTiles[NeighborIndex];
             }
-            pCurTile->Bake_Neighvor(CTile::eNeighvorFlags_RightBottom, pNeighvorTile);
+            pCurTile->Bake_Neighbor(CTile::eNeighborFlags_RightBottom, pNeighborTile);
 
             //ÇÏ --> N - width
             if (bBottom)
-                 pNeighvorTile = nullptr;
+                 pNeighborTile = nullptr;
             else
             {
                 _uint NeighborIndex = TileIndex - m_iNumTilesX;
-                pNeighvorTile = m_vecTiles[NeighborIndex];
+                pNeighborTile = m_vecTiles[NeighborIndex];
             }
-            pCurTile->Bake_Neighvor(CTile::eNeighvorFlags_Bottom, pNeighvorTile);
+            pCurTile->Bake_Neighbor(CTile::eNeighborFlags_Bottom, pNeighborTile);
 
             //ÁÂÇÏ --> N - width -1
             if (bBottom || bLeft)
-                pNeighvorTile = nullptr;
+                pNeighborTile = nullptr;
             else
             {
                 _uint NeighborIndex = TileIndex - m_iNumTilesX - 1;
-                pNeighvorTile = m_vecTiles[NeighborIndex];
+                pNeighborTile = m_vecTiles[NeighborIndex];
             }
-            pCurTile->Bake_Neighvor(CTile::eNeighvorFlags_LeftBottom, pNeighvorTile);
+            pCurTile->Bake_Neighbor(CTile::eNeighborFlags_LeftBottom, pNeighborTile);
 
             //ÁÂ --> N - 1
             if (bLeft)
-                 pNeighvorTile = nullptr;
+                 pNeighborTile = nullptr;
             else
             {
                 _uint NeighborIndex = TileIndex - 1;
-                pNeighvorTile = m_vecTiles[NeighborIndex];
+                pNeighborTile = m_vecTiles[NeighborIndex];
             }
-            pCurTile->Bake_Neighvor(CTile::eNeighvorFlags_Left, pNeighvorTile);
+            pCurTile->Bake_Neighbor(CTile::eNeighborFlags_Left, pNeighborTile);
 
         }
     }
@@ -284,7 +284,7 @@ _bool CTileLayer::Check_EndTile(NODELIST& rhsOpenList, NODELIST& rhsCloseList, N
     CTile* pSelectTile = get<Node_NodeTile>(SelectNode);
     _uint Select_GCost = get<Node_GCost>(SelectNode);
     CTile* pNeigvorTile = nullptr;
-    for (_uint i = 0; i < CTile::eNeighvorFlags_END; ++i)
+    for (_uint i = 0; i < CTile::eNeighborFlags_END; ++i)
     {
         CTile* pNeigvorTile = pSelectTile->m_arrAdjTiles[i];
         if (nullptr == pNeigvorTile)

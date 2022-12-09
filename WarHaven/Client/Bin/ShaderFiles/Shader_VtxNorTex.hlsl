@@ -37,6 +37,7 @@ texture2D g_DiffArray[TEXTURESIZE];
 //Texture2DArray g_DiffArray;//[TEXTURESIZE];
 
 
+
 struct VS_DEFAULT_IN
 {
 	float3		vPosition : POSITION;
@@ -51,6 +52,7 @@ struct VS_DEFAULT_OUT
 	float4		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
 	float4		vColor : TEXCOORD1;
+	float4		vProjPos : TEXCOORD2;
 };
 
 VS_DEFAULT_OUT VS_DEFAULT_MAIN(VS_DEFAULT_IN In)
@@ -62,40 +64,16 @@ VS_DEFAULT_OUT VS_DEFAULT_MAIN(VS_DEFAULT_IN In)
 	matWV = mul(g_WorldMatrix, g_ViewMatrix);
 	matWVP = mul(matWV, g_ProjMatrix);
 
-	In.vPosition.y += 0.1f;
+	//In.vPosition.y += 0.1f;
 	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
 	Out.vTexUV = In.vTexUV;
 	Out.vNormal = mul(vector(In.vNormal, 0.f), g_WorldMatrix);
 	Out.vColor = In.vColor;
+	Out.vProjPos = Out.vPosition;
 
 	return Out;
 }
 
-struct PS_OUT
-{
-	vector		vColor : SV_TARGET0;
-};
-
-
-
-PS_OUT PS_DEFAULT_MAIN(VS_DEFAULT_OUT In)
-{
-	PS_OUT		Out = (PS_OUT)0;
-
-	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
-	return Out;
-}
-
-PS_OUT PS_NAVIGATION_MAIN(VS_DEFAULT_OUT In)
-{
-	PS_OUT		Out = (PS_OUT)0;
-	Out.vColor = In.vColor;
-	Out.vColor.a = 1;
-
-
-	return Out;
-}
 struct VS_OUT_LIGHT
 {
 	float4		vPosition : SV_POSITION;
@@ -125,6 +103,49 @@ struct PS_LIGHTOUT
 	vector		vOutlineFlag : SV_TARGET4;
 	vector		vRimLightFlag : SV_TARGET5;
 };
+
+struct PS_NAVI_OUT
+{
+	vector		vDiffuse : SV_TARGET0;
+	vector		vDepth : SV_TARGET1;
+	vector		vEffectFlag : SV_TARGET2;
+	vector		vEffectDiffuse : SV_TARGET3;
+	vector		vGlowFlag : SV_TARGET4;
+};
+
+
+
+PS_LIGHTOUT PS_DEFAULT_MAIN(VS_DEFAULT_OUT In)
+{
+	PS_LIGHTOUT		Out = (PS_LIGHTOUT)0;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	return Out;
+}
+
+PS_NAVI_OUT PS_NAVIGATION_MAIN(VS_DEFAULT_OUT In)
+{
+	PS_NAVI_OUT		Out = (PS_NAVI_OUT)0;
+
+	Out.vDiffuse = In.vColor;
+
+	//간격마다 찐하게 주고싶은데..
+	if (In.vTexUV.x >= 0.98f ||
+		In.vTexUV.y >= 0.98f ||
+		In.vTexUV.x <= 0.02f ||
+		In.vTexUV.y <= 0.02f
+		)
+	Out.vDiffuse.xyz = 0.f;
+
+
+	Out.vEffectDiffuse = Out.vDiffuse;
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
+
+
+	return Out;
+}
+
 
 VS_OUT_LIGHT VS_MAIN_NORMAL(VS_DEFAULT_IN In)
 {
@@ -236,9 +257,9 @@ technique11 DefaultTechnique
 
 	pass Navigation
 	{
-		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_WireFrame);
+		SetRasterizerState(RS_None);
 
 		VertexShader = compile vs_5_0 VS_DEFAULT_MAIN();
 		GeometryShader = NULL;
