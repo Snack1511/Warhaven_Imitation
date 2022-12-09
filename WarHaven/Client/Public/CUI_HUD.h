@@ -150,8 +150,6 @@ private:
 	void Update_HeorTransformGauge();
 
 	void Create_PlayerNameText();
-
-	void On_OperTimeOver();
 };
 
 END

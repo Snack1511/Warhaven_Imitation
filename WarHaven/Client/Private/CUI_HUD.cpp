@@ -542,18 +542,6 @@ void CUI_HUD::Update_HeorTransformGauge()
 	}
 }
 
-void CUI_HUD::On_OperTimeOver()
-{
-	/* 작전회의 시간 모두 지나가고 호출되는 함수 */
-
-	//1. 검은화면 fade in out
-
-	//검은화면 fade in 되면 아래 호출 (임시로 적어놈)
-	CGameSystem::Get_Instance()->On_StartGame();
-
-	SetActive_HUD(true);
-}
-
 void CUI_HUD::Create_OperMap()
 {
 	m_pOperMapIcon = CUI_Object::Create();

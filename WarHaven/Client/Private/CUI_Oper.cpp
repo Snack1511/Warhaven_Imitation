@@ -6,6 +6,7 @@
 #include "Loading_Manager.h"
 #include "CUser.h"
 #include "CShader.h"
+#include "CGameSystem.h"
 
 CUI_Oper::CUI_Oper()
 {
@@ -44,7 +45,7 @@ HRESULT CUI_Oper::Start()
 
 	CUser::Get_Instance()->SetActive_HUD(false);
 
-	SetActive_OperBG(true);
+	SetActive_BG(true);
 
 	return S_OK;
 }
@@ -80,11 +81,13 @@ void CUI_Oper::OnDisable()
 {
 	__super::OnDisable();
 
-	SetActive_OperBG(false);
-	SetActive_OperProfile(false);
+	for (auto iter : m_pOperList)
+	{
+		iter->SetActive(false);
+	}
 }
 
-void CUI_Oper::SetActive_OperBG(_bool value)
+void CUI_Oper::SetActive_BG(_bool value)
 {
 	for (int i = 0; i < OB_End; ++i)
 	{
@@ -92,7 +95,7 @@ void CUI_Oper::SetActive_OperBG(_bool value)
 	}
 }
 
-void CUI_Oper::SetActive_OperProfile(_bool value)
+void CUI_Oper::SetActive_Profile(_bool value)
 {
 	for (int i = 0; i < 4; ++i)
 	{
@@ -264,7 +267,22 @@ void CUI_Oper::Progress_Oper()
 			if (m_fOperTime < 0.f)
 			{
 				m_fOperTime = 0.f;
-				//On_OperTimeOver();
+
+				// 검정 화면 페이드인아웃
+
+				switch (m_eLoadLevel)
+				{
+				case Client::LEVEL_PADEN:
+					CGameSystem::Get_Instance()->On_StartGame();
+					break;
+				case Client::LEVEL_HWARA:
+					CGameSystem::Get_Instance()->On_StartGame();
+					break;
+				}
+
+				CUser::Get_Instance()->SetActive_HUD(true);
+
+				DISABLE_GAMEOBJECT(this);
 			}
 		}
 	}
@@ -339,6 +357,8 @@ void CUI_Oper::Create_TextImg()
 			m_pTextImg[i]->Set_Sort(0.49f);
 		}
 
+		m_pOperList.push_back(m_pTextImg[i]);
+
 		CREATE_GAMEOBJECT(m_pTextImg[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pTextImg[i]);
 	}
@@ -393,6 +413,8 @@ void CUI_Oper::Create_OperBG()
 			m_pOperBG[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.9f));
 		}
 
+		m_pOperList.push_back(m_pOperBG[i]);
+
 		CREATE_GAMEOBJECT(m_pOperBG[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pOperBG[i]);
 	}
@@ -419,6 +441,8 @@ void CUI_Oper::Create_OperProfile()
 
 		_float fPosX = -375.f + (i * 250.f);
 		m_pArrOperProfile[i]->Set_PosX(fPosX);
+
+		m_pOperList.push_back(m_pArrOperProfile[i]);
 
 		CREATE_GAMEOBJECT(m_pArrOperProfile[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pArrOperProfile[i]);
@@ -449,6 +473,8 @@ void CUI_Oper::Create_CharacterSelect()
 		{
 			m_pArrCharacterSideBG[i]->Set_RotationZ(180.f);
 		}
+
+		m_pOperList.push_back(m_pArrCharacterSideBG[i]);
 
 		CREATE_GAMEOBJECT(m_pArrCharacterSideBG[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pArrCharacterSideBG[i]);
@@ -513,6 +539,8 @@ void CUI_Oper::Create_CharacterSelect()
 			{
 				GET_COMPONENT_FROM(m_pArrCharacterPort[CP_Class][j], CTexture)->Set_CurTextureIndex(j);
 			}
+
+			m_pOperList.push_back(m_pArrCharacterPort[i][j]);
 
 			CREATE_GAMEOBJECT(m_pArrCharacterPort[i][j], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrCharacterPort[i][j]);
@@ -625,6 +653,8 @@ void CUI_Oper::Create_TeamIcon()
 				}
 			}
 
+			m_pOperList.push_back(m_pArrTeamIcon[i][j]);
+
 			CREATE_GAMEOBJECT(m_pArrTeamIcon[i][j], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrTeamIcon[i][j]);
 		}
@@ -708,6 +738,8 @@ void CUI_Oper::Create_StrongHoldUI()
 		{
 			m_pArrStrongHoldUI[i][j] = m_pStrongHoldUI[i]->Clone();
 
+			m_pOperList.push_back(m_pArrStrongHoldUI[i][j]);
+
 			CREATE_GAMEOBJECT(m_pArrStrongHoldUI[i][j], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[i][j]);
 		}
@@ -732,6 +764,8 @@ void CUI_Oper::Create_StrongHoldEffect()
 	for (int i = 0; i < 4; ++i)
 	{
 		m_pArrStrongHoldEffect[i] = m_pStrongHoldEffect->Clone();
+
+		m_pOperList.push_back(m_pArrStrongHoldEffect[i]);
 
 		CREATE_GAMEOBJECT(m_pArrStrongHoldEffect[i], RENDER_UI);
 		DISABLE_GAMEOBJECT(m_pArrStrongHoldEffect[i]);
@@ -842,6 +876,8 @@ void CUI_Oper::Create_OperTimer()
 			m_pTimer[i]->Set_FontOffset(-22.f, -13.f);
 			m_pTimer[i]->Set_FontScale(0.25f);
 		}
+
+		m_pOperList.push_back(m_pTimer[i]);
 
 		CREATE_GAMEOBJECT(m_pTimer[i], RENDER_UI);
 		DISABLE_GAMEOBJECT(m_pTimer[i]);

@@ -21,8 +21,8 @@ public:
 	virtual void Set_Shader_Timer(CShader* pShader, const char* pConstName);
 
 public:
-	void SetActive_OperBG(_bool value);
-	void SetActive_OperProfile(_bool value);
+	void SetActive_BG(_bool value);
+	void SetActive_Profile(_bool value);
 
 private:
 	virtual void My_Tick() override;
@@ -34,6 +34,9 @@ private:
 
 	_bool m_bIsBriefing = false;
 	_uint m_iOperProgress = 0;
+
+private:
+	list<CUI_Object*> m_pOperList;
 
 private:
 	void Progress_Oper();
