@@ -38,11 +38,25 @@ public:
 		eTileFlags_Stair = (1 << 2),
 	};
 
-	const char* FlagOption_Display[3]
+	const char* FlagOption_Display[4]
 	{
+		"NONE",
 		"BLOCKED",
-		"DEFAULT"
+		"DEFAULT",
 		"STAIR"
+	};
+
+	const char* Neighvor_Display[8]
+	{
+		"Left Top",
+		"Top",
+		"Right Top",
+		"Right",
+		"Right Bottom",
+		"Bottom",
+		"Left Bottom",
+		"Left",
+
 	};
 private:
 	CTile();
@@ -59,6 +73,11 @@ public:
 
 	void	Bake_Neighvor(eNeighvorFlags NeighvorFlag, CTile* pNeighvorTile);
 	_uint	Get_GCost();
+	_float4 Get_CenterPos() { return m_vCenterPos; }
+
+public:
+	_int Get_NeighvorIndex(_uint NeighvorDir);
+	void Set_Neighvor(_uint NeighvorDir, CTile* pTile);
 public:
 	/* 유효한 타일인 지 (갈 수 있는 타일인지)*/
 	_bool	Is_ValidTile();
