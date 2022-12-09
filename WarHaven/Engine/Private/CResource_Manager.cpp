@@ -588,16 +588,19 @@ void CResource_Manager::Release()
 	{
 		SAFE_DELETE(elem.second);
 	}
+	m_mapModelData.clear();
 
 	for (auto& elem : m_mapResources)
 	{
 		SAFE_DELETE(elem.second);
 	}
+	m_mapResources.clear();
 
 	for (auto& elem : m_mapTextures)
 	{
 		elem.second.Reset();
 	}
+	m_mapTextures.clear();
 }
 
 CResource* CResource_Manager::Find_Resource(wstring strResourceKey)

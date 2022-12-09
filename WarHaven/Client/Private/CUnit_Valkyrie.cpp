@@ -148,9 +148,11 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 void CUnit_Valkyrie::On_Die()
 {
 	__super::On_Die();
+
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 
-	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
+	//_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
+	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
 
 	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_R_WP1")->Get_BoneMatrix();
 	_float4 vBonePos = matWeapon.XMLoad().r[3];
@@ -159,8 +161,7 @@ void CUnit_Valkyrie::On_Die()
 
 	Add_DeathStones(CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeadBody_Fiona", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 
-	vPos.y += 1.f;
-	m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle(L"FionaDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
+	m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"FionaDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
 }
 
 void CUnit_Valkyrie::TurnOn_ValkyrieTrail(_bool bOn)
