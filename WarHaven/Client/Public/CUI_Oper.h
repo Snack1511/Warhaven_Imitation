@@ -72,11 +72,6 @@ private:	// 작전회의 캐릭터 선택 창
 private:
 	void Create_OperCharacterSelect();
 	void Init_OperCharacterSelect();
-
-private:
-	enum TeamIcon { TI_Icon, TI_Outline, TI_End };
-	CUI_Object* m_pTeamIcon[TI_End];
-	CUI_Object* m_pArrTeamIcon[TI_End][2];
 };
 
 END

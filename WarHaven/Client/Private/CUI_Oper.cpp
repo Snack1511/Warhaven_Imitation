@@ -153,7 +153,7 @@ void CUI_Oper::Progress_Oper()
 			{
 				for (int j = 0; j < 2; ++j)
 				{
-					Enable_Fade(m_pArrTeamIcon[i][j], 0.3f);
+					//Enable_Fade(m_pArrTeamIcon[i][j], 0.3f);
 				}
 			}
 
