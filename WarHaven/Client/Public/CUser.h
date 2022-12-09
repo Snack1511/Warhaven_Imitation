@@ -40,8 +40,8 @@ public:
 
 public:
 	void		Set_Player(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
-	CPlayer*	Get_PlayerObejects() { return m_pPlayer; }
-	CUnit*		Get_Player();
+	CPlayer* Get_PlayerObejects() { return m_pPlayer; }
+	CUnit* Get_Player();
 	void		Set_MainPlayerInfo(CPlayerInfo* pPlayerInfo) { m_pPlayerInfo = pPlayerInfo; }
 	CPlayerInfo* Get_MainPlayerInfo() { return m_pPlayerInfo; }
 
@@ -96,6 +96,11 @@ public:
 public:		// ÆÄµ§
 	void Interat_StrongHoldUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
 
+	void Set_TeamScore(_uint iTeamType, _uint iScore);
+	void Set_ProjStrongHoldUI(_uint iPointIdx, CTransform* pTransform);
+
+	void SetActive_PadenUI(_bool value);
+
 public:
 	void On_EnterLevel();
 	void On_ExitLevel();
@@ -107,7 +112,7 @@ public:
 	void SetActive_OxenJumpText(_bool value);
 	void SetActive_HeroTransformGauge(_bool value);
 
-	_bool Is_OnHeroGauge(); 
+	_bool Is_OnHeroGauge();
 
 	void Enable_DamageFont(_uint eType, _float fDmg);
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);

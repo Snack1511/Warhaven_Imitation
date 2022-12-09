@@ -75,7 +75,7 @@ public:	// Lerp
 
 public:
 	void Set_FadeDesc(_float fDuration);
-	void Set_FadeDesc(_float fFadeIn, _float fFadeOut);
+	void Set_FadeDesc(_float fFadeIn, _float fFadeOut, _bool bAutoFade = false);
 
 private:
 	wstring m_wstrName;

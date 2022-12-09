@@ -73,9 +73,11 @@ public:
 
 	_uint	Get_UnitType() { return m_iUnitType; }
 
+	wstring Get_PlayerName() { return m_tPlayerInfo.wstrName; }
+
 public:
 	/* 커스텀 추가될 때마다 여기 enum 추가해서 넣어놓기 */
-	enum class eCUSTOM_HEAD{eDEFAULT, eHEAD1, eRABBIT};
+	enum class eCUSTOM_HEAD { eDEFAULT, eHEAD1, eRABBIT };
 	void	Set_CustomHead(CLASS_TYPE eClassType, eCUSTOM_HEAD eHeadEnum);
 
 	enum class eCUSTOM_BODY { eDEFAULT, eBODY1 };
@@ -109,7 +111,7 @@ protected:
 	_bool	m_bIsMainPlayer = false;
 
 	_uint	m_iUnitType = 0;
-	
+
 protected:
 	/* 이 안에 있는 클래스중 하나를 랜덤으로 선택해서 플레이 한다. */
 	vector<CLASS_TYPE>		m_vecPrefClassType;

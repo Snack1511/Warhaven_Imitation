@@ -41,7 +41,6 @@ private:
 
 private:
 	void Create_CharacterWindow();
-
 	void Active_CharacterWindow();
 
 public:
@@ -49,15 +48,13 @@ public:
 	virtual void On_PointDown_Point(const _uint& iEventNum);
 
 public:
-	virtual void Set_Shader_Smoke(CShader* pShader, const char* pConstName);
-	virtual void Set_Shader_Timer(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName);
 
 public:
 	void Set_HUD(CLASS_TYPE eClass);
 	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
 
-	
+
 	void SetActive_OperUI(_bool value);
 
 	void SetActive_OxenJumpText(_bool value);
@@ -71,38 +68,6 @@ private:
 	CLASS_TYPE m_eCurClass;
 	CLASS_TYPE m_ePrvClass;
 
-private:	// 작전회의
-	CUI_Object* m_pOperWindow = nullptr;
-	CUI_Object* m_pSmokeBG = nullptr;
-	CUI_Object* m_pOperBlackBG = nullptr;
-
-	CUI_Object* m_pOperTextImg = nullptr;
-	CUI_Object* m_pOperTextImg2 = nullptr;
-	CUI_Object* m_pSquardTextImg = nullptr;
-
-	CUI_Object* m_pOperProfile = nullptr;
-	CUI_Object* m_pArrOperProfile[4];
-
-	CUI_Object* m_pOperSideBG = nullptr;
-	CUI_Object* m_pArrOperSideBG[2];
-
-private:
-	void Create_OperWindow(LEVEL_TYPE_CLIENT eLoadLevel);
-	void Create_OperProfile();
-	void Create_OperSideBG();
-
-private:	// 작전회의 캐릭터 선택 창
-	enum OperSelectType { ST_Char, ST_Port, ST_BG, ST_Icon, ST_End };
-
-	CUI_Object* m_pOperSelectUI[ST_End];
-	CUI_Object* m_pArrOperSelectUI[ST_End][6];
-
-	_uint m_iCurSelectEventNum = 0;
-	_uint m_iPrvSelectEventNum = 0;
-
-private:
-	void Create_OperSelectCharacter();
-
 private:
 	CUI_Object* m_pOperMapIcon = nullptr;
 	CUI_Object* m_pOperMapBG = nullptr;
@@ -110,32 +75,12 @@ private:
 private:
 	void Create_OperMap();
 
-private:	// 작전회의 팀 아이콘
-	enum TeamUI { TU_Icon, TU_Outline, TU_End };
-
-	CUI_Object* m_pTeamUI[TU_End];
-	CUI_Object* m_pArrTeamUI[TU_End][2];
-
-private:
-	void Create_TeamUI();
-
 private:	// 작전회의 거점 아이콘
-	enum OperPointType { PT_Point, PT_Gauge, PT_Icon, PT_Text, PT_End };
-
-	CUI_Object* m_pOperPointUI[PT_End];
-	CUI_Object* m_pArrOperPointUI[PT_End][3];
-
-	CUI_Object* m_pOperAttackPointText = nullptr;
-
 	CUI_Object* m_pTargetPoint = nullptr;
 	CUI_Object* m_pArrTargetPoint[2];
 
-	CUI_Object* m_pOperPointCircleEffect = nullptr;
-	CUI_Object* m_pArrOperPointCircleEffect[4];
-
 private:
 	void Create_OperPoint();
-	void Create_OperPointEffect();
 
 private:	// 작전회의 타이머
 	enum OperTimerType { TT_BG, TT_Bar, TT_End };
@@ -147,13 +92,6 @@ private:	// 작전회의 타이머
 
 private:
 	void Create_OperTimer();
-
-private:	// 작전회의 목표 설정 글자
-	enum BriefingUI { BU_BG, BU_Icon, BU_End };
-	CUI_Object* m_pBriefingUI[BU_End];
-
-private:
-	void Create_BriefingUI();
 
 private:
 	_uint m_iOperWindowCnt = 0;
@@ -178,8 +116,10 @@ private:
 	void Create_OxenJumpText();
 
 private:
-
 	CUI_Object* m_pPlayerNameText = nullptr;
+
+private:
+	void Create_PlayerNameText();
 
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;
 
@@ -203,15 +143,6 @@ private:
 
 	void Update_HeorTransformGauge();
 
-private:	// 작전 회의
-	void Update_OperWindow();
-	void Enable_OperPointUI();
-
-
-	void Create_PlayerNameText();
-
-	void	On_OperTimeOver();
-	void	Disable_AllOperUIs();
 };
 
 END
