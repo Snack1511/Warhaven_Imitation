@@ -60,15 +60,16 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 		
 	// 100 99 로 빠지면 앞에 두개 채워지고 뒤에 제거
 
-	for (int i = 0; i < m_vecCurScore[m_eTeamType].size(); ++i)
+	for (int i = 0; i < 3; ++i)
 	{
 		if (m_vecPrvScore[m_eTeamType][i] != m_vecCurScore[m_eTeamType][i])
 		{
 			m_iChangeNumIdx = i;
+
 			m_bIsChangeNum = true;
 			m_bIsDisableNum = true;
 		}
-	}
+	}	
 }
 
 void CUI_Paden::Set_Proj_StrongHoldUI(_uint iPointIdx, CTransform* pTransform)
@@ -213,7 +214,7 @@ void CUI_Paden::My_Tick()
 		{
 			m_bIsDisableNum = false;
 
-			Disable_Fade(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx], 0.25f);
+			//Disable_Fade(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx], 0.25f);
 
 			m_bIsEnableNum = true;
 		}
@@ -374,7 +375,7 @@ void CUI_Paden::Create_ScoreNum()
 			m_pArrScoreNum[j][i]->Set_PosX(fPosX);
 
 			CREATE_GAMEOBJECT(m_pArrScoreNum[j][i], GROUP_UI);
-			// DISABLE_GAMEOBJECT(m_pArrScoreNum[j][i]);
+			DISABLE_GAMEOBJECT(m_pArrScoreNum[j][i]);
 		}
 	}
 }
