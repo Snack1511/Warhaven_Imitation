@@ -1939,6 +1939,21 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Paden">
       <UniqueIdentifier>{9a4e9623-274f-488e-bac7-57c15002dc12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\03. Component\06. AI">
+      <UniqueIdentifier>{b980cf9a-24f4-4e89-8ae2-d008b8c2feaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\06. AI\Personality">
+      <UniqueIdentifier>{54801ad7-d951-4ee3-a65d-31bda63317bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\06. AI\Personality\00. Default">
+      <UniqueIdentifier>{9083e5c4-985b-43cc-a527-dcd3080b8973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\06. AI\Table_CheckBehavior">
+      <UniqueIdentifier>{921b456f-d77e-426c-b40b-bffe0c831d16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\06. AI\Behavior">
+      <UniqueIdentifier>{e1b117db-8535-437c-9106-7bd9cf5006c1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Oper">
       <UniqueIdentifier>{5dec1cd7-cce1-461a-9e2c-769502ad5e81}</UniqueIdentifier>
     </Filter>
@@ -3432,6 +3447,21 @@
     <ClInclude Include="..\Public\CUI_Paden.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Paden</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAIController.h">
+      <Filter>03. Instances\03. Component\06. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAIPersonality.h">
+      <Filter>03. Instances\03. Component\06. AI\Personality</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPersonality_Default.h">
+      <Filter>03. Instances\03. Component\06. AI\Personality\00. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTable_Conditions.h">
+      <Filter>03. Instances\03. Component\06. AI\Table_CheckBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBehavior.h">
+      <Filter>03. Instances\03. Component\06. AI\Behavior</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CUI_Oper.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Oper</Filter>
     </ClInclude>
@@ -4905,6 +4935,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Paden.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Paden</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAIController.cpp">
+      <Filter>03. Instances\03. Component\06. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAIPersonality.cpp">
+      <Filter>03. Instances\03. Component\06. AI\Personality</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPersonality_Default.cpp">
+      <Filter>03. Instances\03. Component\06. AI\Personality\00. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTable_Conditions.cpp">
+      <Filter>03. Instances\03. Component\06. AI\Table_CheckBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBehavior.cpp">
+      <Filter>03. Instances\03. Component\06. AI\Behavior</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Oper.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Oper</Filter>

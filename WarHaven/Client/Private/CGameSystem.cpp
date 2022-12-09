@@ -24,6 +24,11 @@
 
 #include "CDominion_Effect.h"
 
+#pragma region AI 성향
+#include "CTable_Conditions.h"
+#include "CPersonality_Default.h"
+#pragma endregion AI 성향
+
 IMPLEMENT_SINGLETON(CGameSystem);
 
 
@@ -45,6 +50,7 @@ HRESULT CGameSystem::Initialize()
 #define SAFE_CREATE(name, className) name = className::Create(); if (!name) return E_FAIL;
 
 	SAFE_CREATE(m_pPositionTable, CPositionTable);
+	SAFE_CREATE(m_pConditionTable, CTable_Conditions);
 
 	if (FAILED(m_pPositionTable->Load_Position("BootCamp")))
 	{
@@ -61,6 +67,12 @@ HRESULT CGameSystem::Initialize()
     if (FAILED(SetUp_AllPlayerInfos()))
     {
         Call_MsgBox(L"Failed to SetUp_AllPlayerInfos : CGameSystem");
+        return E_FAIL;
+    }
+
+    if (FAILED(SetUp_AllAIPersonality()))
+    {
+        Call_MsgBox(L"Failed to SetUp_AllAIPersonality : CGameSystem");
         return E_FAIL;
     }
 
@@ -83,8 +95,13 @@ void CGameSystem::Release()
     {
         SAFE_DELETE(elem.second);
     }
-
     m_mapAllPlayers.clear();
+
+    for (auto& elem : m_mapAllAIPersonality)
+    {
+        Safe_Release(elem.second);
+    }
+    m_mapAllAIPersonality.clear();
 }
 
 HRESULT CGameSystem::On_ExitLevel()
@@ -116,21 +133,21 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-    for (_uint i = 0; i < 0; ++i)
+    for (_uint i = 0; i < 1; ++i)
     {
         vPlayerPos.z += 3.f;
         vPlayerPos.x += 1.f;
 
         CPlayer* pEnemy = nullptr;
 
-        pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"));
+        pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"), true);
         pEnemy->Set_OutlineType(CPlayer::eENEMY);
         pEnemy->Set_Postion(vPlayerPos);
         pEnemy->Set_TargetPlayer(pUserPlayer);
         pEnemy->Enable_OnStart();
         pEnemy->SetUp_UnitColliders(false);
 
-        pEnemy->Reserve_State(AI_STATE_IDLE_WARRIOR_L);
+        pEnemy->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
         READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
     }
 
@@ -1055,14 +1072,33 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
     return S_OK;
 }
 
-CPlayer* CGameSystem::SetUp_Player(_hashcode hcName)
+HRESULT CGameSystem::SetUp_AllAIPersonality()
 {
-    auto iter = m_mapAllPlayers.find(hcName);
+    CAIPersonality* pPersonality = CPersonality_Default::Create(m_pConditionTable);
+    m_mapAllAIPersonality.emplace(Convert_ToHash(pPersonality->m_tPersonalDesc.strPersonalityName), pPersonality);
+    return S_OK;
+}
 
-    if (iter == m_mapAllPlayers.end())
+CPlayer* CGameSystem::SetUp_Player(_hashcode hcName, _bool bAI, _hashcode hcPersonalityHash)
+{
+    auto PlayerInfoIter = m_mapAllPlayers.find(hcName);
+
+    if (PlayerInfoIter == m_mapAllPlayers.end())
         return nullptr;
 
-    return iter->second->Make_Player();
+    if (bAI) 
+    {
+        auto PersonalityIter = m_mapAllAIPersonality.find(hcPersonalityHash);
+
+        if (PersonalityIter == m_mapAllAIPersonality.end())
+            return nullptr;
+
+        return PlayerInfoIter->second->Make_Player(PersonalityIter->second);
+    }
+    else 
+    {
+        return PlayerInfoIter->second->Make_Player();
+    }
 }
 
 HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()

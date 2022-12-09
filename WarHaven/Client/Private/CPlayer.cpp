@@ -60,6 +60,10 @@
 #include "CUI_HeroGauge.h"
 #include "CUI_Skill.h"
 
+#pragma region AI 추가용
+#include "CAIController.h"
+#include "CAIPersonality.h"
+#pragma endregion AI 추가용
 CPlayer::CPlayer()
 {
 }
@@ -230,6 +234,20 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_iChangeHeroAnimIndex[ENGINEER] = 62;
 }
 
+void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
+{
+	m_pAIController->m_NearObjectList.push_back(pOtherObj);
+}
+void CPlayer::Player_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
+{
+	m_pAIController->m_NearObjectList.push_back(pOtherObj);
+}
+void CPlayer::Player_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType) 
+{
+
+}
+
+
 HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
 {
 	m_pFollowCam = CCamera_Follow::Create(nullptr, nullptr);
@@ -250,7 +268,6 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 
 	if (eClassType >= CT_DEFAULT_END)
 		m_bIsHero = true;
-
 
 	m_ePrevClass = m_eCurrentClass;
 
@@ -394,6 +411,18 @@ HRESULT CPlayer::Initialize_Prototype()
 	if (!m_pMyPlayerInfo)
 		return E_FAIL;
 
+#pragma region AI컴포넌트 추가용 구문
+	if (nullptr != m_pMyPlayerInfo->m_pPersonality)
+	{
+		if (m_pMyPlayerInfo->m_bIsMainPlayer)
+			assert(0);//메인플레이어는 Personality가 할당되면 안됩니다
+
+		CAIController* pAIComponent = CAIController::Create(m_pMyPlayerInfo->m_pPersonality);
+		m_pAIController = pAIComponent;
+		Add_Component(pAIComponent);
+	}
+#pragma endregion AI컴포넌트 추가용 구문
+
 
 	Set_FollowCam(m_pMyPlayerInfo->m_tPlayerInfo.wstrCamName);
 
@@ -502,6 +531,10 @@ HRESULT CPlayer::Start()
 	}
 
 
+	CallBack_CollisionEnter += bind(&CPlayer::Player_CollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+	CallBack_CollisionStay += bind(&CPlayer::Player_CollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
+	CallBack_CollisionExit += bind(&CPlayer::Player_CollisionExit, this, placeholders::_1, placeholders::_2, placeholders::_3);
+
 
 	return S_OK;
 }
@@ -514,6 +547,20 @@ void CPlayer::OnEnable()
 void CPlayer::OnDisable()
 {
 	__super::OnDisable();
+}
+
+HRESULT CPlayer::SetUp_Collider()
+{
+	m_pSightRangeCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 
+		m_pMyPlayerInfo->m_pPersonality->m_tPersonalDesc.fSIghtRadius, 
+		COL_SIGHTRANGE, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
+
+	if (!m_pSightRangeCollider)
+		return E_FAIL;
+
+	Add_Component(m_pSightRangeCollider);
+
+	return S_OK;
 }
 
 void CPlayer::On_Die()
@@ -623,6 +670,12 @@ void CPlayer::My_LateTick()
 	{
 		Frustum_UnitHUD();
 		TransformProjection();
+	}
+
+	if (nullptr != m_pCurrentUnit)
+	{
+		_float4 vUnitPosition = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+		m_pTransform->Set_World(WORLD_POS, vUnitPosition);
 	}
 
 	if (!m_bIsMainPlayer)

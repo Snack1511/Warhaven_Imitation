@@ -54,5 +54,22 @@ namespace Client
 		wstring	strModelPaths[MODEL_PART_END];
 		string	strRefBoneName[MODEL_PART_END];
 	};
+
+	struct BEHAVIOR_DESC
+	{
+		_uint iStateType = 0;
+
+		void* pTriggerPtr = nullptr;
+		void* pAlliesPlayer = nullptr;
+		void* pEnemyPlayer = nullptr;
+
+		_float fDelayTime = 0.f;
+
+		_float fPriorityWeight = 0.f;
+
+		eBehaviorType eCurType;
+		eBehaviorType ePrevType;
+
+	};
 }
 

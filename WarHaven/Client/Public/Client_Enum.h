@@ -98,6 +98,8 @@ namespace Client
 
 		COL_WALL,
 
+		COL_SIGHTRANGE = 24,
+
 		COL_END = 32,
 	};
 
@@ -902,5 +904,11 @@ namespace Client
 		CURVE_ROTATION,
 		CURVE_END,
 	};
+	enum class eBehaviorType
+	{
+		ePatrol,
+		eFollow,
+		eAttack,
+		eCNT
+	};
 }
-

@@ -14,6 +14,8 @@ class CPlayer;
 class CPlayerInfo;
 class CTrigger;
 class CTeamConnector;
+class CAIPersonality;
+class CTable_Conditions;
 
 class CGameSystem
 {
@@ -79,7 +81,7 @@ public:
 
 private:
 	CPositionTable* m_pPositionTable = nullptr;
-
+	CTable_Conditions* m_pConditionTable = nullptr;
 private:
 	/* 스테이지 진입시 팀이 만들어진다 */
 	CTeamConnector* m_pTeamConnector[_uint(eTEAM_TYPE::eCOUNT)] = {};
@@ -90,15 +92,20 @@ private:
 	/* 모든 플레이어 정보를 미리 만들어놓고 그 정보를 토대로 Player 생성하는 방식 */
 	map<_hashcode, CPlayerInfo*>	m_mapAllPlayers;
 
+private:	
+	/* 모든 AI의 성향들을 미리 만들어놓고 그 정보를 토대로 Player 생성 후 AI컴포넌트를 붙여주는 방식 */
+	map<_hashcode, CAIPersonality*>	m_mapAllAIPersonality;
+
 private:
 	/* 트리거 (거점)을 map으로 들고 있기. */
 	map<_hashcode, CTrigger*>	m_mapAllTriggers;
 
 private:
 	HRESULT					SetUp_AllPlayerInfos();
+	HRESULT					SetUp_AllAIPersonality();
 
 private:
-	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
+	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo, _bool bAI = false, _hashcode hcPersonalityHash = Convert_ToHash(wstring(L"Default_Personal")));
 	HRESULT					SetUp_DefaultLight_BootCamp();
 
 private:

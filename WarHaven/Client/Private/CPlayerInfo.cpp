@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "CPlayerInfo.h"
+#include "CAIPersonality.h"
 
 #include "UsefulHeaders.h"
-
 CPlayerInfo::CPlayerInfo()
 {
 }
@@ -11,13 +11,15 @@ CPlayerInfo::~CPlayerInfo()
 {
 }
 
-CPlayer* CPlayerInfo::Make_Player()
+CPlayer* CPlayerInfo::Make_Player(CAIPersonality* pPersonality)
 {
 	if (!Can_Make_Player(m_tPlayerInfo))
 	{
 		Call_MsgBox(L"Not Valid PlayerInfo :: CPlayerInfo");
 		return nullptr;
 	}
+
+	m_pPersonality = pPersonality;
 
 	CPlayer* pPlayer = CPlayer::Create(this);
 	if (m_bIsMainPlayer)
