@@ -124,7 +124,9 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
     _float4 vPlayerPos = _float4(10.f, 3.f, 10.f);
 
     CPlayer* pUserPlayer = nullptr;
+    
 
+    //pUserPlayer->Get_DefaultReserveStateIndex
     pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
     pUserPlayer->Set_Postion(vPlayerPos);
     pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
@@ -133,7 +135,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-    for (_uint i = 0; i < 1; ++i)
+    for (_uint i = 0; i < 0; ++i)
     {
         vPlayerPos.z += 3.f;
         vPlayerPos.x += 1.f;

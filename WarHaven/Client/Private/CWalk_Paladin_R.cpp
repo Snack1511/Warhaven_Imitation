@@ -55,14 +55,14 @@ HRESULT CWalk_Paladin_R::Initialize()
 
 
 	// 알파벳 순 애니메이션 정렬
-    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 29;
-    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 30;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 31;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 32;
-    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 33;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 34;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
-    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 36;
+    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 30;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 31;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 32;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 33;
+    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 34;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 37;
     
     
     

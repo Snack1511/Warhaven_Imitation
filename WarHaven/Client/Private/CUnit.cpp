@@ -552,6 +552,7 @@ HRESULT CUnit::Start()
 
 	/* PASS */
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
+	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
 
 
 	return S_OK;
@@ -869,6 +870,7 @@ HRESULT CUnit::SetUp_Model(const UNIT_MODEL_DATA& tData)
 			if (FAILED(pModel->Add_Model(tData.strModelPaths[i], i)))
 				return E_FAIL;
 		}
+
 	}
 
 	pModel->Enable_ModelParts(0, false);
@@ -981,6 +983,20 @@ void CUnit::Effect_HeroToDefaultUnit(CUnit* pOwner)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
 }
 
+void CUnit::Set_ShaderNoSpec(const _tchar* pModelPath)
+{
+	for (_uint i = 0; i < MODEL_PART_END; ++i)
+	{
+		_int iTemp = 0;
+		iTemp = m_tModelData.strModelPaths[i].find(pModelPath);
+
+		if (iTemp > 0)
+			m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
+	}
+
+}
+
+
 void CUnit::On_InitSetting()
 {
 	for (_uint i = 0; i < UNITCOLLIDER_END; ++i)
@@ -1069,7 +1085,6 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 		break;
 		//상대방 GuardBreak가 들어온 경우
 	case COL_BLUEGUARDBREAK:
-		break;
 	case COL_REDGUARDBREAK:
 		//1. 이펙트
 		//2. 나와 적 상태 변경

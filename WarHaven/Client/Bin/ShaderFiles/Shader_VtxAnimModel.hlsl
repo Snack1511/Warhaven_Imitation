@@ -143,6 +143,9 @@ PS_OUT PS_MAIN(PS_IN In)
 
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (Out.vDiffuse.a < 0.1f)
+		discard;
 	Out.vDiffuse *= g_vColor;
 
 	/*float fTemp = Out.vDiffuse.x + Out.vDiffuse.y + Out.vDiffuse.z;
@@ -172,7 +175,10 @@ PS_OUT PS_FACE_MAIN(PS_IN In)
 
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vDiffuse *= g_vColor;
+	Out.vDiffuse += g_vColor;
+
+	if (Out.vDiffuse.a < 0.1f)
+		discard;
 	/*Out.vDiffuse *= saturate(g_NoiseTexture.Sample(DefaultSampler, In.vTexUV) * 0.9f);
 	Out.vDiffuse *= 1.25f;*/
 	Out.vDiffuse.a = 1.f;
@@ -310,8 +316,8 @@ PS_OUT PS_NORMAL_MAIN(PS_IN_NORMAL In)
 	 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (Out.vDiffuse.a < 0.1f)
-		discard;
+	/*if (Out.vDiffuse.a < 0.1f)
+		discard;*/
 
 	Out.vDiffuse *= g_vColor;
 	//Out.vDiffuse *= g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fNoiseScale);
@@ -347,7 +353,48 @@ PS_OUT PS_NORMAL_MAIN(PS_IN_NORMAL In)
 	return Out;
 }
 
+PS_OUT PS_NORMAL_MAIN_FACE(PS_IN_NORMAL In)
+{
+	PS_OUT		Out = (PS_OUT)0;
 
+	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vDiffuse *= g_vColor;
+
+	if (Out.vDiffuse.r < 0.01f && g_vColor.a >= 1.f)
+		discard;
+
+	//Out.vDiffuse *= g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_fNoiseScale);
+	//Out.vDiffuse *= 2.f;
+	Out.vDiffuse.a = 1.f;
+
+	float fDistance = length(In.vWorldPos - g_vCamPosition);
+
+	/* 0 ~ 1 */
+	float3		vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV * 1.f).xyz;
+
+	/* -1 ~ 1 */
+	vPixelNormal = normalize(vPixelNormal * 2.f - 1.f) * 1.f;
+
+	if (vPixelNormal.b < 0.1f)
+		vPixelNormal *= -1.f;
+
+	float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
+
+	vPixelNormal = mul(vPixelNormal, WorldMatrix);
+
+	Out.vNormal = normalize(vector(vPixelNormal * 0.5f + 0.5f, 0.f));
+
+
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 0.f);
+
+	Out.vFlag = g_vFlag;
+	Out.vOutLineFlag = g_vOutLineFlag;
+	Out.vRimLightFlag = g_vRimLightFlag;
+
+
+
+	return Out;
+}
 
 /* CASCADE SHADOWING */
 
@@ -440,9 +487,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_Default);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+		VertexShader = compile vs_5_0 VS_NORMAL_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_FACE_MAIN();
+		PixelShader = compile ps_5_0 PS_NORMAL_MAIN_FACE();
 	}
 
 	pass Eye

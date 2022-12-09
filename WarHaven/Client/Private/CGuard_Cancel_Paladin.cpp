@@ -31,8 +31,8 @@ CGuard_Cancel_Paladin* CGuard_Cancel_Paladin::Create()
 HRESULT CGuard_Cancel_Paladin::Initialize()
 {
 	m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
-	m_iAnimIndex = 47;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-	m_eStateType = STATE_GUARD_CANCEL_VALKYRIE;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+	m_iAnimIndex = 40;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	m_eStateType = STATE_GUARD_CANCEL_PALADIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
@@ -42,18 +42,19 @@ HRESULT CGuard_Cancel_Paladin::Initialize()
 
 	m_iStateChangeKeyFrame = 75;
 
-    m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
-    m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
-    m_vecAdjState.push_back(STATE_RUN_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_IDLE_PALADIN_R);
+    m_vecAdjState.push_back(STATE_WALK_PALADIN_R);
+    m_vecAdjState.push_back(STATE_RUN_PALADIN_R);
 
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-    m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
-    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
-    m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
+    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
+    //m_vecAdjState.push_back(STATE_ATTACK_STING_PALADIN_R);
+    //m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
 
-    m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
-    m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
-    m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
+
+    //m_vecAdjState.push_back(STATE_COUNTER_PALADIN);
+    //m_vecAdjState.push_back(STATE_SPINATTACK_PALADIN);
+    //m_vecAdjState.push_back(STATE_SHIELDATTACK_PALADIN);
 
     return S_OK;
 }

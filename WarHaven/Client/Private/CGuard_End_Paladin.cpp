@@ -31,7 +31,7 @@ CGuard_End_Paladin* CGuard_End_Paladin::Create()
 HRESULT CGuard_End_Paladin::Initialize()
 {
 	m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
-	m_iAnimIndex = 46;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	m_iAnimIndex = 39;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_GUARD_END_VALKYRIE;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	// 선형 보간 시간

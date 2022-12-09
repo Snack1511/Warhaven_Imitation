@@ -287,17 +287,25 @@ HRESULT CUnit_Paladin::Initialize_Prototype()
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
 
-	m_fCoolTime[SKILL1] = 3.f;
+	m_fCoolTime[SKILL1] = 7.f;
 	m_fCoolTime[SKILL2] = 5.f;
-	m_fCoolTime[SKILL3] = 0.f;
+	m_fCoolTime[SKILL3] = 3.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 
 	m_fCoolAcc[SKILL3] = 0.f;
 
 
-	m_tUnitStatus.eClass = WARRIOR;
-
+	m_tUnitStatus.eClass = PALADIN;
+	m_tUnitStatus.fDashAttackSpeed *= 0.9f;
+	m_tUnitStatus.fSprintAttackSpeed *= 0.9f;
+	m_tUnitStatus.fSprintJumpSpeed *= 0.8f;
+	m_tUnitStatus.fSprintSpeed *= 0.7f;
+	m_tUnitStatus.fRunSpeed *= 0.6f;
+	m_tUnitStatus.fWalkSpeed *= 0.7f;
+	m_tUnitStatus.fRunBeginSpeed *= 0.8f;
+	m_tUnitStatus.fJumpPower *= 0.9f;
+	m_tUnitStatus.fGuardDashSpeed *= 0.8f;
 
 
 	return S_OK;
@@ -342,6 +350,9 @@ HRESULT CUnit_Paladin::Start()
 		10,
 		"0B_R_WP1"
 	);
+
+	_float4x4 matTrans = XMMatrixRotationZ(XMConvertToRadians(270.f));
+	m_pModelCom->Set_TransformMatrix(MODEL_PART_WEAPON_L, matTrans);
 
 	return S_OK;
 }
