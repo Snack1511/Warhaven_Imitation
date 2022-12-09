@@ -480,7 +480,7 @@ void CWindow_Map::Func_LightControl()
         {
             LightRange = 0.f;
         }
-        if (ImGui::DragFloat("##Light_Range", &LightRange, fIncreaseScale, 0.0f, 0.f, "%.1f"))
+        if (ImGui::DragFloat("##Light_Range", &LightRange, fIncreaseScale, 0.0f, 0.f, "%.3f"))
         {
             Set_LightRange(LightRange);
         }
@@ -492,7 +492,7 @@ void CWindow_Map::Func_LightControl()
             {
                 LightRandomRange = 0.f;
             }
-            if (ImGui::DragFloat("##Light RandomRange", &LightRandomRange, fIncreaseScale, 0.0f, 0.f, "%.1f"))
+            if (ImGui::DragFloat("##Light RandomRange", &LightRandomRange, fIncreaseScale, 0.0f, 0.f, "%.3f"))
             {
                 Set_LightRandomRange(LightRandomRange);
             }
@@ -667,9 +667,13 @@ void CWindow_Map::Set_LightRange(float fRange)
         return;
 
     get<1>(m_LightDescs[m_iCurSelectLight]).fRange = fRange;
+    get<1>(m_LightDescs[m_iCurSelectLight]).fOriginRange = fRange;
     CLight* pLight = GAMEINSTANCE->Get_Light(m_iCurSelectLight + m_iLightPadding);
     if (pLight != nullptr)
+    {
         pLight->Get_LightDesc_Modify().fRange = get<1>(m_LightDescs[m_iCurSelectLight]).fRange;
+        pLight->Get_LightDesc_Modify().fOriginRange = get<1>(m_LightDescs[m_iCurSelectLight]).fOriginRange;
+    }
 }
 
 void CWindow_Map::Set_LightRandomRange(float fRandomRange)
@@ -2302,22 +2306,22 @@ HRESULT CWindow_Map::SetUp_Cameras()
 
 void CWindow_Map::Select_Camera()
 {
-    if (KEY(NUM1, TAP))
-    {
-        Change_Camera(CAM_RIGHT);
-    }
-    if (KEY(NUM2, TAP))
-    {
-        Change_Camera(CAM_UP);
-    }
-    if (KEY(NUM3, TAP))
-    {
-        Change_Camera(CAM_LOOK);
-    }
-    if (KEY(NUM4, TAP))
-    {
-        Change_Camera(CAM_FREE);
-    }
+    //if (KEY(NUM1, TAP))
+    //{
+    //    Change_Camera(CAM_RIGHT);
+    //}
+    //if (KEY(NUM2, TAP))
+    //{
+    //    Change_Camera(CAM_UP);
+    //}
+    //if (KEY(NUM3, TAP))
+    //{
+    //    Change_Camera(CAM_LOOK);
+    //}
+    //if (KEY(NUM4, TAP))
+    //{
+    //    Change_Camera(CAM_FREE);
+    //}
 }
 
 void CWindow_Map::Change_Camera(_int Index)
