@@ -47,6 +47,7 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 	m_vecPrvScore[m_eTeamType] = m_vecCurScore[m_eTeamType];
 
 	m_vecCurScore[m_eTeamType].clear();
+
 	while (iScore != 0)
 	{
 		_uint iDigitDmg = iScore % 10;
@@ -55,7 +56,9 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 		iScore /= 10;
 	}
 
-	sort(m_vecCurScore[m_eTeamType].begin(), m_vecCurScore[m_eTeamType].end(), greater<_uint>());
+	reverse(m_vecCurScore[m_eTeamType].begin(), m_vecCurScore[m_eTeamType].end());
+		
+	// 100 99 로 빠지면 앞에 두개 채워지고 뒤에 제거
 
 	for (int i = 0; i < m_vecCurScore[m_eTeamType].size(); ++i)
 	{
@@ -97,9 +100,6 @@ void CUI_Paden::SetActive_ScoreNum(_bool value)
 {
 	for (int i = 0; i < Team_End; ++i)
 	{
-		if (value == true)
-			Set_ScoreNum(i, 100);
-
 		for (int j = 0; j < Num_End; ++j)
 		{
 			m_pArrScoreNum[i][j]->SetActive(value);
@@ -197,13 +197,22 @@ void CUI_Paden::My_Tick()
 		m_pInGameTimer->Set_FontText(szTemp);
 	}
 
+	if (KEY(X, TAP))
+	{
+		m_iScore--;
+	}
+
+	for (int i = 0; i < Team_End; ++i)
+	{
+		Set_ScoreNum(i, m_iScore);
+	}
+
 	if (m_bIsChangeNum)
 	{
 		if (m_bIsDisableNum)
 		{
 			m_bIsDisableNum = false;
 
-			m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx]->DoMoveY(-5.f, 0.25f);
 			Disable_Fade(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx], 0.25f);
 
 			m_bIsEnableNum = true;
@@ -218,7 +227,6 @@ void CUI_Paden::My_Tick()
 				GET_COMPONENT_FROM(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx], CTexture)->Set_CurTextureIndex(m_vecCurScore[m_eTeamType][m_iChangeNumIdx]);
 
 				Enable_Fade(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx], 0.25f);
-				m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx]->Lerp_PosY(328.f, 323.f, 0.25f);
 
 				m_bIsEnableNum = false;
 				m_bIsChangeNum = false;
@@ -366,7 +374,7 @@ void CUI_Paden::Create_ScoreNum()
 			m_pArrScoreNum[j][i]->Set_PosX(fPosX);
 
 			CREATE_GAMEOBJECT(m_pArrScoreNum[j][i], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pArrScoreNum[j][i]);
+			// DISABLE_GAMEOBJECT(m_pArrScoreNum[j][i]);
 		}
 	}
 }
@@ -375,8 +383,8 @@ void CUI_Paden::Init_ScoreVector()
 {
 	for (int i = 0; i < Team_End; ++i)
 	{
-		m_vecPrvScore[i] = { 9,9,9 };
-		m_vecCurScore[i] = { 9,9,9 };
+		m_vecPrvScore[i] = { 0 };
+		m_vecCurScore[i] = { 0 };
 	}
 }
 

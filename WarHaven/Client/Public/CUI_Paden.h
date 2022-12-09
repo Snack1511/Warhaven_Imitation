@@ -56,6 +56,8 @@ private:	// 각 팀별 스코어
 	_bool m_bIsDisableNum = false;
 	_bool m_bIsEnableNum = false;
 
+	_uint m_iScore = 100;
+
 private:
 	void Create_ScoreNum();
 	void Init_ScoreVector();
