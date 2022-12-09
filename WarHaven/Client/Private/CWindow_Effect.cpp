@@ -447,6 +447,8 @@ void CWindow_Effect::Show_EffectTab()
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_BORDER;
 			if (ImGui::Selectable("LIGHTNING", &bSelect[VTXEFFECT_PASS_LIGHTNING]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_LIGHTNING;
+			if (ImGui::Selectable("AURA", &bSelect[VTXEFFECT_PASS_AURA]))
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_AURA;
 
 			pModelCom->Set_ShaderPassToAll(pCurEffect->m_iPassType);
 

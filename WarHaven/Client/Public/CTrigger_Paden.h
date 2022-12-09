@@ -31,6 +31,7 @@ public:
 public:
 	void		Add_RespawnPositions(_float4 vPosition) { m_vRespawnPositions.push_back(vPosition); };
 	void		Set_DominionEffect(CDominion_Effect* pDominion) { m_pDominionEffect = pDominion; }
+	CDominion_Effect* Get_DominionEffect() { return m_pDominionEffect; }
 
 public:
 	_float4		Get_RespawnPosition();

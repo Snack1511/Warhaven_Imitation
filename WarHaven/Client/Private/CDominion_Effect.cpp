@@ -5,8 +5,10 @@
 #include "Model.h"
 #include "CShader.h"
 #include "UsefulHeaders.h"
+#include "CEffect.h"
 
 #include "CTeamConnector.h"
+#include "CTrigger_Paden.h"
 
 CDominion_Effect::CDominion_Effect()
 {
@@ -16,10 +18,11 @@ CDominion_Effect::~CDominion_Effect()
 {
 }
 
-CDominion_Effect* CDominion_Effect::Create(_float4 vScale, _float4 vPos)
+CDominion_Effect* CDominion_Effect::Create(_float4 vScale, _float4 vPos, _uint iTriggerType)
 {
 	CDominion_Effect* pInstance = new CDominion_Effect;
 
+	pInstance->m_iTriggerType = iTriggerType;
 	pInstance->m_pTransform->Set_Scale(vScale);
 	pInstance->m_pTransform->Set_World(WORLD_POS, vPos);
 	pInstance->m_pTransform->Make_WorldMatrix();
@@ -53,10 +56,61 @@ void CDominion_Effect::Set_DominionColor(CTeamConnector* pConqueredTeam)
 		m_vPlusColor = _float4(1.f, 1.f, 1.f);
 
 	else if (pConqueredTeam->IsMainPlayerTeam()) //파란색
+	{
+		/*기존에 있던 이펙트 페이드 아웃*/
+		for (auto& elem : m_Aura)
+		{
+			static_cast<CEffect*>(elem)->Start_FadeOut();
+		}
+		m_Aura.clear();
+
+		switch ((CTrigger_Paden::ePADEN_TRIGGER_TYPE)m_iTriggerType)
+		{
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART:
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_C", m_pTransform->Get_World(WORLD_POS));
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCNT:
+			break;
+		default:
+			break;
+		}
+
 		m_vPlusColor = _float4(0.3f, 0.7f, 1.f);
+	}
 
 	else if (!pConqueredTeam->IsMainPlayerTeam()) //빨간색
+	{
+		for (auto& elem : m_Aura)
+		{
+			static_cast<CEffect*>(elem)->Start_FadeOut();
+		}
+		m_Aura.clear();
+
+		switch ((CTrigger_Paden::ePADEN_TRIGGER_TYPE)m_iTriggerType)
+		{
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART:
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"RedAura_C", m_pTransform->Get_World(WORLD_POS));
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCNT:
+			break;
+		default:
+			break;
+		}
+
 		m_vPlusColor = _float4(1.f, 0.f, 0.f);
+	}
 
 }
 
@@ -117,6 +171,8 @@ HRESULT CDominion_Effect::Start()
 
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CDominion_Effect::Set_ShaderResource, this, placeholders::_1, placeholders::_2);
 
+
+	
 	return S_OK;
 }
 
