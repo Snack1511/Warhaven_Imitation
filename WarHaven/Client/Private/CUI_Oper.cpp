@@ -371,6 +371,8 @@ void CUI_Oper::Create_TargetText()
 	{
 		m_pTargetText[i] = CUI_Object::Create();
 
+		m_pTargetText[i]->Set_FadeDesc(0.3f);
+
 		if (i == TargetText_BG)
 		{
 			m_pTargetText[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Briefing/T_BriefingBox.dds"));
@@ -397,6 +399,8 @@ void CUI_Oper::Create_TargetText()
 			m_pTargetText[i]->Set_FontColor(_float4(_float4(0.6f, 0.6f, 0.6f, 1.f)));
 			m_pTargetText[i]->Set_FontText(TEXT("공격 목표 없음"));
 		}
+
+		m_pOperList.push_back(m_pTargetText[i]);
 
 		CREATE_GAMEOBJECT(m_pTargetText[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pTargetText[i]);
@@ -893,6 +897,8 @@ void CUI_Oper::Create_OperTimer()
 	for (int i = 0; i < TU_End; ++i)
 	{
 		m_pTimer[i] = CUI_Object::Create();
+
+		m_pTimer[i]->Set_FadeDesc(0.3f);
 
 		m_pTimer[i]->Set_PosY(275.f);
 		m_pTimer[i]->Set_Scale(242.f, 10.f);

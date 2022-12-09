@@ -93,13 +93,6 @@ private:	// 작전회의 타이머
 private:
 	void Create_OperTimer();
 
-private:	// 작전회의 목표 설정 글자
-	enum BriefingUI { BU_BG, BU_Icon, BU_End };
-	CUI_Object* m_pBriefingUI[BU_End];
-
-private:
-	void Create_BriefingUI();
-
 private:
 	_uint m_iOperWindowCnt = 0;
 	_float m_fSmokeUV = 0.f;

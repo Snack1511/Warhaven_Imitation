@@ -12,6 +12,7 @@
 #include "CSkyBox.h"
 
 // JJ
+#include "CUI_Oper.h"
 
 CLevel_Paden::CLevel_Paden()
 {
@@ -54,9 +55,12 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Paden::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 
 	//주석 걸어논거 풀어서 써라 또 여따 TerrainOnly적지말고
-	CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
-	//CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
+	//CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
+	CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
 	m_fLoadingFinish = 0.5f;
+
+	CUI_Oper* pUI_Oper = CUI_Oper::Create();
+	Ready_GameObject(pUI_Oper, GROUP_UI);
 
 	/* GameSystem */
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyPaden(m_vecGameObjects)))
@@ -75,8 +79,8 @@ HRESULT CLevel_Paden::Enter()
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterStage()))
 		return E_FAIL;
 
-	if (FAILED(CGameSystem::Get_Instance()->Paden_EnvironmentEffect()))
-		return E_FAIL;
+	/*if (FAILED(CGameSystem::Get_Instance()->Paden_EnvironmentEffect()))
+		return E_FAIL;*/
 
 	return S_OK;
 }

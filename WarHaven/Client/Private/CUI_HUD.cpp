@@ -19,6 +19,7 @@
 #include "Easing_Utillity.h"
 #include "Functor.h"
 
+#include "CPlayerInfo.h"
 #include "CPlayer.h"
 #include "CUI_Cursor.h"
 #include "Loading_Manager.h"
@@ -53,10 +54,6 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	{
 		Create_CharacterWindow();
 	}
-	else
-	{
-
-	}
 
 	return S_OK;
 }
@@ -75,8 +72,8 @@ HRESULT CUI_HUD::Start()
 	}
 	else
 	{
-		Set_FadeOperSelectChaderUI();
-		SetActive_OperUI(true);
+		//Set_FadeOperSelectChaderUI();
+		//SetActive_OperUI(true);
 	}
 
 	__super::Start();
@@ -297,40 +294,6 @@ void CUI_HUD::Bind_Btn()
 	//}
 }
 
-
-
-void CUI_HUD::Create_BriefingUI()
-{
-	for (int i = 0; i < BU_End; ++i)
-	{
-		m_pBriefingUI[i] = CUI_Object::Create();
-
-		CREATE_GAMEOBJECT(m_pBriefingUI[i], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pBriefingUI[i]);
-	}
-
-	m_pBriefingUI[BU_BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Briefing/T_BriefingBox.dds"));
-	m_pBriefingUI[BU_BG]->Set_PosY(245.f);
-	m_pBriefingUI[BU_BG]->Set_Scale(160.f, 25.f);
-	m_pBriefingUI[BU_BG]->Set_Color(_float4(0.f, 0.f, 0.f, 0.6f));
-	m_pBriefingUI[BU_BG]->Set_Sort(0.5f);
-
-	GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Remove_Texture(0);
-	Read_Texture(m_pBriefingUI[BU_Icon], "/Oper/Briefing", "Icon");
-
-	m_pBriefingUI[BU_Icon]->Set_Sort(0.49f);
-	m_pBriefingUI[BU_Icon]->Set_Pos(-45.f, 246.f);
-	m_pBriefingUI[BU_Icon]->Set_Scale(32.f);
-	m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.6f, 0.6f, 0.6f, 1.f));
-
-	m_pBriefingUI[BU_Icon]->Set_FontRender(true);
-	m_pBriefingUI[BU_Icon]->Set_FontStyle(true);
-	m_pBriefingUI[BU_Icon]->Set_FontOffset(10.f, -10.f);
-	m_pBriefingUI[BU_Icon]->Set_FontScale(0.2f);
-	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(_float4(0.6f, 0.6f, 0.6f, 1.f)));
-	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("공격 목표 없음"));
-}
-
 void CUI_HUD::Set_FadePortHighlight()
 {
 	FADEDESC tFadeDesc;
@@ -428,7 +391,7 @@ void CUI_HUD::Create_PlayerNameText()
 	m_pPlayerNameText->Set_FontScale(0.25f);
 	m_pPlayerNameText->Set_FontOffset(13.f, -13.f);
 
-	wstring wstrPlayerName = CUser::Get_Instance()->Get_Player()->Get_OwnerPlayer()->Get_PlayerName();
+	wstring wstrPlayerName = CUser::Get_Instance()->Get_MainPlayerInfo()->Get_PlayerName();
 	m_pPlayerNameText->Set_FontText(wstrPlayerName);
 
 	CREATE_GAMEOBJECT(m_pPlayerNameText, GROUP_UI);
@@ -483,16 +446,6 @@ void CUI_HUD::Set_FadeOperSelectChaderUI()
 	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
 
 	GET_COMPONENT_FROM(m_pTargetPoint, CFader)->Get_FadeDesc() = tFadeDesc;
-
-	for (int i = 0; i < TT_End; ++i)
-	{
-		GET_COMPONENT_FROM(m_pOperTimer[i], CFader)->Get_FadeDesc() = tFadeDesc;
-	}
-
-	for (int i = 0; i < BU_End; ++i)
-	{
-		GET_COMPONENT_FROM(m_pBriefingUI[i], CFader)->Get_FadeDesc() = tFadeDesc;
-	}
 }
 
 void CUI_HUD::Create_HeroTransformUI()
