@@ -142,7 +142,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
 		CPlayer* pEnemy = nullptr;
 
-        pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"), true);
+        pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"), false);
         pEnemy->Set_OutlineType(CPlayer::eENEMY);
         pEnemy->Set_Postion(vPlayerPos);
         pEnemy->Set_TargetPlayer(pUserPlayer);

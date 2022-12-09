@@ -868,7 +868,7 @@ void CUI_Oper::Init_StrongHoldUI()
 		{
 			for (int j = 0; j < 3; ++j)
 			{
-				GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][i], CTexture)->Set_CurTextureIndex(j);
+				GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(j);
 			}
 		}
 
