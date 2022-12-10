@@ -298,6 +298,11 @@ void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _flo
 	m_pUI_Paden->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
 }
 
+void CUser::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
+{
+	m_pUI_Paden->Set_Score(iTeamType, iScore, iMaxScore);
+}
+
 void CUser::Set_TeamScore(_uint iTeamType, _uint iScore)
 {
 	m_pUI_Paden->Set_ScoreNum(iTeamType, iScore);
@@ -305,7 +310,7 @@ void CUser::Set_TeamScore(_uint iTeamType, _uint iScore)
 
 void CUser::Set_PointUI_TransformProj(_uint iPointIdx, CTransform* pTransform)
 {
-	m_pUI_Paden->Set_Proj_StrongHoldUI(iPointIdx, pTransform);
+	m_pUI_Paden->Set_PointUI_TransformProjection(iPointIdx, pTransform);
 }
 
 void CUser::Conquest_PointUI(string strPointName, _uint iTeamType)

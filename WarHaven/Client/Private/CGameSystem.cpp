@@ -87,11 +87,11 @@ void CGameSystem::Release()
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 		SAFE_DELETE(m_pTeamConnector[i]);
 
-    for (auto& elem : m_mapAllPlayers)
-    {
-        SAFE_DELETE(elem.second);
-    }
-    m_mapAllPlayers.clear();
+	for (auto& elem : m_mapAllPlayers)
+	{
+		SAFE_DELETE(elem.second);
+	}
+	m_mapAllPlayers.clear();
 }
 
 HRESULT CGameSystem::On_ExitLevel()
@@ -113,17 +113,17 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 {
 	_float4 vPlayerPos = _float4(10.f, 3.f, 10.f);
 
-    CPlayer* pUserPlayer = nullptr;
-    
+	CPlayer* pUserPlayer = nullptr;
 
-    //pUserPlayer->Get_DefaultReserveStateIndex
-    pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
-    pUserPlayer->Set_Postion(vPlayerPos);
-    pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
-    pUserPlayer->SetUp_UnitColliders(true);
-    pUserPlayer->Enable_OnStart();
-    CUser::Get_Instance()->Set_Player(pUserPlayer);
-    READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
+
+	//pUserPlayer->Get_DefaultReserveStateIndex
+	pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
+	pUserPlayer->Set_Postion(vPlayerPos);
+	pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
+	pUserPlayer->SetUp_UnitColliders(true);
+	pUserPlayer->Enable_OnStart();
+	CUser::Get_Instance()->Set_Player(pUserPlayer);
+	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
 	for (_uint i = 0; i < 0; ++i)
 	{
@@ -132,16 +132,16 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
 		CPlayer* pEnemy = nullptr;
 
-        pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"));
-        pEnemy->Set_OutlineType(CPlayer::eENEMY);
-        pEnemy->Set_Postion(vPlayerPos);
-        pEnemy->Set_TargetPlayer(pUserPlayer);
-        pEnemy->Enable_OnStart();
-        pEnemy->SetUp_UnitColliders(false);
+		pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"));
+		pEnemy->Set_OutlineType(CPlayer::eENEMY);
+		pEnemy->Set_Postion(vPlayerPos);
+		pEnemy->Set_TargetPlayer(pUserPlayer);
+		pEnemy->Enable_OnStart();
+		pEnemy->SetUp_UnitColliders(false);
 
-        pEnemy->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
-        READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
-    }
+		pEnemy->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
+		READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
+	}
 
 
 
@@ -764,24 +764,24 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 	/*TRIGGER_PADEN("Paden_RedTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->IsMainPlayerTeam());
 	TRIGGER_PADEN("Paden_BlueTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->IsMainPlayerTeam());*/
 
-    //1. 메인 거점
-    ADD_TRIGGER("Paden_Trigger_A", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
-    CDominion_Effect* pDominionEffect_A = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), _float4(-0.8f, 2.f, -0.3f),
-        (_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
-    READY_GAMEOBJECT(pDominionEffect_A, GROUP_EFFECT);
-    TRIGGER_PADEN("Paden_Trigger_A")->Set_DominionEffect(pDominionEffect_A);
+	//1. 메인 거점
+	ADD_TRIGGER("Paden_Trigger_A", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
+	CDominion_Effect* pDominionEffect_A = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), _float4(-0.8f, 2.f, -0.3f),
+		(_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
+	READY_GAMEOBJECT(pDominionEffect_A, GROUP_EFFECT);
+	TRIGGER_PADEN("Paden_Trigger_A")->Set_DominionEffect(pDominionEffect_A);
 
-    ADD_TRIGGER("Paden_Trigger_R", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
-    CDominion_Effect* pDominionEffect_R = CDominion_Effect::Create(_float4(0.8f, 0.8f, 0.8f), _float4(48.6f, 5.5f, -0.f),
-        (_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
-    READY_GAMEOBJECT(pDominionEffect_R, GROUP_EFFECT);
-    TRIGGER_PADEN("Paden_Trigger_R")->Set_DominionEffect(pDominionEffect_R);
+	ADD_TRIGGER("Paden_Trigger_R", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
+	CDominion_Effect* pDominionEffect_R = CDominion_Effect::Create(_float4(0.8f, 0.8f, 0.8f), _float4(48.6f, 5.5f, -0.f),
+		(_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
+	READY_GAMEOBJECT(pDominionEffect_R, GROUP_EFFECT);
+	TRIGGER_PADEN("Paden_Trigger_R")->Set_DominionEffect(pDominionEffect_R);
 
-    ADD_TRIGGER("Paden_Trigger_C", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
-    CDominion_Effect* pDominionEffect_C = CDominion_Effect::Create(_float4(1.f, 1.f, 1.f), _float4(-61.8f, 20.4f, 0.2f),
-        (_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
-    READY_GAMEOBJECT(pDominionEffect_C, GROUP_EFFECT);
-    TRIGGER_PADEN("Paden_Trigger_C")->Set_DominionEffect(pDominionEffect_C);
+	ADD_TRIGGER("Paden_Trigger_C", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
+	CDominion_Effect* pDominionEffect_C = CDominion_Effect::Create(_float4(1.f, 1.f, 1.f), _float4(-61.8f, 20.4f, 0.2f),
+		(_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
+	READY_GAMEOBJECT(pDominionEffect_C, GROUP_EFFECT);
+	TRIGGER_PADEN("Paden_Trigger_C")->Set_DominionEffect(pDominionEffect_C);
 
 
 
@@ -861,6 +861,7 @@ HRESULT CGameSystem::On_Update_Paden()
 	//점령한 거점 확인해서 점수 깎기
 
 	CTeamConnector* pMinusScoreTeam = nullptr;
+
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 	{
 		if (m_pTeamConnector[i]->Has_MainTrigger())
@@ -878,19 +879,20 @@ HRESULT CGameSystem::On_Update_Paden()
 	if (pMinusScoreTeam)
 	{
 		m_fScoreAcc += fDT(0);
+
+		_uint iTeamType = (_uint)pMinusScoreTeam->Get_TeamType();
+		_uint iScore = pMinusScoreTeam->m_iScore;
+		_uint iMaxScore = pMinusScoreTeam->m_iMaxScore;
+
+		CUser::Get_Instance()->Set_Score(iTeamType, iScore, iMaxScore);
+		CUser::Get_Instance()->Set_TeamScore(iTeamType, iScore);
+
 		if (m_fScoreAcc >= m_fScoreMinusTime)
 		{
 			m_fScoreAcc = 0.f;
 
 			if (!pMinusScoreTeam->Minus_Score())
 				On_FinishGame();
-			else
-			{
-				_uint iTeamType = (_uint)pMinusScoreTeam->Get_TeamType();
-				_uint iScore = pMinusScoreTeam->m_iScore;
-
-				CUser::Get_Instance()->Set_TeamScore(iTeamType, iScore);
-			}
 		}
 	}
 
@@ -967,10 +969,10 @@ void CGameSystem::On_StartGame()
 
 	}
 
-    //if(m_pTeamConnector[0]->m_bIsMainPlayerTeam)
-    //    TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
-    //else
-    //    TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]); //Test
+	//if(m_pTeamConnector[0]->m_bIsMainPlayerTeam)
+	//    TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
+	//else
+	//    TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]); //Test
 
 
 
@@ -1093,18 +1095,18 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
 	ADD_SANDBACKINFO(L"EnemyFinal");
 
 
-    return S_OK;
+	return S_OK;
 }
 
 
 CPlayer* CGameSystem::SetUp_Player(_hashcode hcName)
 {
-    auto PlayerInfoIter = m_mapAllPlayers.find(hcName);
+	auto PlayerInfoIter = m_mapAllPlayers.find(hcName);
 
-    if (PlayerInfoIter == m_mapAllPlayers.end())
-        return nullptr;
+	if (PlayerInfoIter == m_mapAllPlayers.end())
+		return nullptr;
 
-    return PlayerInfoIter->second->Make_Player();
+	return PlayerInfoIter->second->Make_Player();
 }
 
 HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()

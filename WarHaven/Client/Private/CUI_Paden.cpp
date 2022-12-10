@@ -26,11 +26,6 @@ HRESULT CUI_Paden::Start()
 
 	Bind_Shader();
 
-	m_pInGameTimer->SetActive(true);
-	SetActive_ScoreGauge(true);
-	SetActive_ScoreNum(true);
-	SetActive_PointUI(true);
-
 	return S_OK;
 }
 
@@ -52,17 +47,11 @@ void CUI_Paden::Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName
 void CUI_Paden::Set_Shader_ScoreGauge_Red(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Red], sizeof(_float));
-
-	_bool bIsGaugeFlip = true;
-	pShader->Set_RawValue("bFlip", &bIsGaugeFlip, sizeof(_bool));
 }
 
 void CUI_Paden::Set_Shader_ScoreGauge_Blue(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Blue], sizeof(_float));
-
-	_bool bIsGaugeFlip = false;
-	pShader->Set_RawValue("bFlip", &bIsGaugeFlip, sizeof(_bool));
 }
 
 void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
@@ -87,6 +76,11 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 	}
 }
 
+void CUI_Paden::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
+{
+	m_fScoreRatio[iTeamType] = 1 - (iScore / iMaxScore);
+}
+
 void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
 	_float fConquestRatio = 1 - (fConquestTime / fMaxConquestTime);
@@ -94,20 +88,20 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 	if (strPadenPointKey == "Paden_Trigger_A")
 	{
 		m_fConquestRatio[Point_A] = fConquestRatio;
-	}
 
-	if (strPadenPointKey == "Paden_Trigger_R")
+		cout << m_fConquestRatio[Point_A] << endl;
+	}
+	else if (strPadenPointKey == "Paden_Trigger_R")
 	{
 		m_fConquestRatio[Point_R] = fConquestRatio;
 	}
-
-	if (strPadenPointKey == "Paden_Trigger_C")
+	else if (strPadenPointKey == "Paden_Trigger_C")
 	{
 		m_fConquestRatio[Point_C] = fConquestRatio;
 	}
 }
 
-void CUI_Paden::Set_Proj_StrongHoldUI(_uint iPointIdx, CTransform* pTransform)
+void CUI_Paden::Set_PointUI_TransformProjection(_uint iPointIdx, CTransform* pTransform)
 {
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
 	vNewPos.y += 2.f;
@@ -160,7 +154,7 @@ void CUI_Paden::SetActive_PointUI(_bool value)
 
 void CUI_Paden::Conquest_PointUI(string strPointName, _uint iTeamType)
 {
-	_float4 vColor; 
+	_float4 vColor;
 
 	switch (iTeamType)
 	{
@@ -172,7 +166,7 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _uint iTeamType)
 		vColor = m_vColorBlue;
 		break;
 	}
-	
+
 	for (int i = 0; i < PU_Text; ++i)
 	{
 		if (strPointName == "Paden_Trigger_A")
@@ -195,7 +189,7 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _uint iTeamType)
 
 void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
-	_float fDuration = 0.1f;
+	_float fDuration = 0.3f;
 
 	for (int i = 0; i < PU_End; ++i)
 	{
@@ -271,8 +265,6 @@ void CUI_Paden::My_Tick()
 	__super::My_Tick();
 
 	Update_InGameTimer();
-
-
 
 	if (m_bIsChangeNum)
 	{
@@ -581,7 +573,4 @@ void CUI_Paden::Bind_Shader()
 
 	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_C], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrProjPointUI[PU_Gauge][Point_C], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
-
-	GET_COMPONENT_FROM(m_pArrScoreGauge[Gauge_Bar][Team_Red], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_ScoreGauge_Red, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_pArrScoreGauge[Gauge_Bar][Team_Blue], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_ScoreGauge_Blue, this, placeholders::_1, "g_fValue");
 }
