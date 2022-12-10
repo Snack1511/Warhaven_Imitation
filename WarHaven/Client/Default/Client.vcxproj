@@ -352,6 +352,7 @@
     <ClInclude Include="..\Public\CJump_SpearMan_Land_R.h" />
     <ClInclude Include="..\Public\CJump_SpearMan_R.h" />
     <ClInclude Include="..\public\CMapColliders.h" />
+    <ClInclude Include="..\public\CPath.h" />
     <ClInclude Include="..\Public\CPersonality_Default.h" />
     <ClInclude Include="..\public\CPlayerInfo.h" />
     <ClInclude Include="..\public\CPlayerInfo_Default.h" />
@@ -668,6 +669,7 @@
     <ClInclude Include="..\Public\CWindow_Effect.h" />
     <ClInclude Include="..\public\CWindow_Level.h" />
     <ClInclude Include="..\Public\CWindow_Map.h" />
+    <ClInclude Include="..\public\CWindow_Path.h" />
     <ClInclude Include="..\public\CWindow_PhysX.h" />
     <ClInclude Include="..\public\CWindow_Position.h" />
     <ClInclude Include="..\public\CWindow_Select.h" />
@@ -857,6 +859,7 @@
     <ClCompile Include="..\Private\CJump_SpearMan_Land_R.cpp" />
     <ClCompile Include="..\Private\CJump_SpearMan_R.cpp" />
     <ClCompile Include="..\private\CMapColliders.cpp" />
+    <ClCompile Include="..\private\CPath.cpp" />
     <ClCompile Include="..\Private\CPersonality_Default.cpp" />
     <ClCompile Include="..\private\CPlayerInfo.cpp" />
     <ClCompile Include="..\private\CPlayerInfo_Default.cpp" />
@@ -1169,6 +1172,7 @@
     <ClCompile Include="..\Private\CWindow_Effect.cpp" />
     <ClCompile Include="..\private\CWindow_Level.cpp" />
     <ClCompile Include="..\Private\CWindow_Map.cpp" />
+    <ClCompile Include="..\private\CWindow_Path.cpp" />
     <ClCompile Include="..\private\CWindow_PhysX.cpp" />
     <ClCompile Include="..\private\CWindow_Position.cpp" />
     <ClCompile Include="..\private\CWindow_Select.cpp" />

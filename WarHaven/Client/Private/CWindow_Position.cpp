@@ -253,7 +253,6 @@ void CWindow_Position::Update_CreateMode()
 		{
 			PxTransform tTransform;
 			ZeroMemory(&tTransform, sizeof(PxTransform));
-			vPos = vPos.MultiplyCoord(m_pMeshTerrain->Get_Owner()->Get_Transform()->Get_WorldMatrix());
 			tTransform.p.x = vPos.x;
 			tTransform.p.y = vPos.y;
 			tTransform.p.z = vPos.z;

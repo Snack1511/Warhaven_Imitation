@@ -174,7 +174,7 @@ private: /* 킬뎃과 플레이어 정보 */
 
 private: /*AI 추가용*/
 	CAIController* m_pAIController = nullptr;
-
+	
 
 private:
 	//어떤 타입인지(적, 샌드백)
@@ -213,8 +213,10 @@ private:
 
 	CLASS_TYPE		m_ePrevClass = CLASS_END;
 	CLASS_TYPE		m_eCurrentClass = CLASS_TYPE::CLASS_END;
+
 private:
 	CCollider_Sphere* m_pSightRangeCollider = nullptr;
+
 private:
 	CUI_UnitHUD* m_pUnitHUD = nullptr;
 

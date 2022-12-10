@@ -121,6 +121,21 @@ HRESULT CDebugObject::Start()
 	return S_OK;
 }
 
+void CDebugObject::Set_Green()
+{
+	m_vFontColor = _float4(0.f, 1.f, 0.f, 1.f);
+}
+
+void CDebugObject::Set_Red()
+{
+	m_vFontColor = _float4(1.f, 0.f, 0.f, 1.f);
+}
+
+void CDebugObject::Set_Blue()
+{
+	m_vFontColor = _float4(0.f, 0.f, 1.f, 1.f);
+}
+
 HRESULT CDebugObject::SetUp_PhysXCollider(_float4 vPos, _float4 vScale, _float4 vAngle)
 {
 	CPhysXCollider::PHYSXCOLLIDERDESC		tPhysXColliderDesc;

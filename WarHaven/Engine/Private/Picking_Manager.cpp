@@ -65,7 +65,7 @@ _bool CPicking_Manager::Is_Picked(list<CGameObject*>& GameObjectList, _float4* p
 			{
 				//Local Point -> World Point
 				_float4x4 WorldMat = pGameObject->Get_Transform()->Get_WorldMatrix();
-				_float4 WorldPickPos = vPickedPos.MultiplyCoord(WorldMat);
+				_float4 WorldPickPos = vPickedPos;
 
 				fDist = (WorldPickPos - vViewPos).Length();
 				if (fMin > fDist)
@@ -152,8 +152,7 @@ _bool CPicking_Manager::Is_Picked(CMesh* pMesh, _float4* pOut, _float4* pOutNorm
 {
 	CTransform* pTransform = pMesh->Get_Owner()->Get_Transform();
 	_float4x4	matWorld = pTransform->Get_WorldMatrix();
-	_matrix		WorldMatrixInv = matWorld.Inverse().XMLoad();
-	matWorld.Inverse();
+	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, matWorld.XMLoad());
 
 	_vector			vRayPos, vRayDir;
 
@@ -195,7 +194,7 @@ _bool CPicking_Manager::Is_Picked(CMesh* pMesh, _float4* pOut, _float4* pOutNorm
 			if (fMin > fDistance)
 			{
 				*pOutNormal = vOutNormal;
-				*pOut = vPickedPos;
+				*pOut = vPickedPos.MultiplyCoord(matWorld);
 
 				fMin = fDistance;
 			}

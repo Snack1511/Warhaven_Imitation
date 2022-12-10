@@ -36,6 +36,11 @@ public:
 	virtual HRESULT	Initialize() override;
 	virtual HRESULT	Start() override;
 
+public:
+	void		Set_Green();
+	void		Set_Red();
+	void		Set_Blue();
+
 private:
 	_float4		m_vAngles = ZERO_VECTOR;
 	_float4		m_vFontColor = _float4(0.f, 1.f, 0.f, 1.f);

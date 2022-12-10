@@ -78,7 +78,6 @@ void CWindow_Tile::Tick()
 
 				if (GAMEINSTANCE->Is_Picked_Mesh(elem->m_pTerrainMesh, &iIndex, &vOutPos))
 				{
-					vOutPos = vOutPos.MultiplyCoord(m_vecTileDebugger[iPlusIndex]->Get_Transform()->Get_WorldMatrix());
 
 					if (vOutPos.y > vFinalPos.y)
 					{

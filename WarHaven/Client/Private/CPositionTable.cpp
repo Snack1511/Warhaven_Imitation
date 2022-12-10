@@ -4,6 +4,8 @@
 #include "UsefulHeaders.h"
 #include "CUtility_File.h"
 
+#include "CPath.h"
+
 CPositionTable::CPositionTable()
 {
 }
@@ -33,6 +35,10 @@ HRESULT CPositionTable::Initialize()
 
 void CPositionTable::Release()
 {
+	for (auto& elem : m_mapPathes)
+	{
+		SAFE_DELETE(elem.second);
+	}
 }
 
 _float4 CPositionTable::Find_Position(string strPositionKey)
@@ -44,6 +50,17 @@ _float4 CPositionTable::Find_Position(string strPositionKey)
 
 	return iter->second;
 }
+
+CPath* CPositionTable::Find_Path(string strPathKey)
+{
+	auto iter = m_mapPathes.find(Convert_ToHash(strPathKey));
+
+	if (iter == m_mapPathes.end())
+		return nullptr;
+
+	return iter->second;
+}
+
 
 HRESULT CPositionTable::Load_Position(string strFileKey)
 {
@@ -77,6 +94,21 @@ HRESULT CPositionTable::Load_Position(string strFileKey)
 	}
 
 	readFile.close();
+
+	return S_OK;
+}
+
+HRESULT CPositionTable::Load_Path(string strFileKey)
+{
+	if (Find_Path(strFileKey))
+		return S_OK;
+
+	CPath* pPath = CPath::Create(strFileKey);
+
+	if (!pPath)
+		return E_FAIL;
+
+	m_mapPathes.emplace(Convert_ToHash(strFileKey), pPath);
 
 	return S_OK;
 }

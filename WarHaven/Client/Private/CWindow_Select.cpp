@@ -85,6 +85,10 @@ HRESULT CWindow_Select::Render()
 	{
 		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_TILE);
 	}
+	if (ImGui::Button("PATH Tool"))
+	{
+		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_PATH);
+	}
 	ImGui::Spacing();
 
 	__super::End();

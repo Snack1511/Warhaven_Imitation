@@ -16,6 +16,7 @@
 #include "CWindow_Position.h"
 #include "CWindow_Level.h"
 #include "CWindow_Tile.h"
+#include "CWindow_Path.h"
 
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
@@ -77,6 +78,7 @@ HRESULT CImGui_Manager::Initialize()
 	m_arrWindows[IMGUI_POSITION] = CWindow_Position::Create();
 	m_arrWindows[IMGUI_LEVEL] = CWindow_Level::Create();
 	m_arrWindows[IMGUI_TILE] = CWindow_Tile::Create();
+	m_arrWindows[IMGUI_PATH] = CWindow_Path::Create();
 #pragma endregion 윈도우 등록
 
 	return S_OK;

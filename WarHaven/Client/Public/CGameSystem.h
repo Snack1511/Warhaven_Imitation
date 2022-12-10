@@ -92,6 +92,7 @@ public:
 private:
 	CPositionTable* m_pPositionTable = nullptr;
 	CTable_Conditions* m_pConditionTable = nullptr;
+
 private:
 	/* 스테이지 진입시 팀이 만들어진다 */
 	CTeamConnector* m_pTeamConnector[_uint(eTEAM_TYPE::eCOUNT)] = {};
@@ -105,6 +106,10 @@ private:
 private:
 	/* 트리거 (거점)을 map으로 들고 있기. */
 	map<_hashcode, CTrigger*>	m_mapAllTriggers;
+
+private:
+	/* 트리거 (거점)을 map으로 들고 있기. */
+	map<_hashcode, CPath*>	m_mapAllTriggers;
 
 private:
 	HRESULT					SetUp_AllPlayerInfos();

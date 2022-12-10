@@ -23,6 +23,7 @@ public:
 		IMGUI_POSITION,
 		IMGUI_LEVEL,
 		IMGUI_TILE,
+		IMGUI_PATH,
 		IMGUI_END
 	};
 

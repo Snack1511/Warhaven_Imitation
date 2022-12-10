@@ -2014,8 +2014,8 @@ _bool CWindow_Map::Calculate_Pick()
         if (GAMEINSTANCE->Is_Picked_Mesh(m_PickTargetMesh, &m_i3PickedIndex, &OutPos, &OutNorm))
         {
 
-            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), OwnerMat.XMLoad());
-            m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
+            _float4 OutLocalPos = OutPos.MultiplyCoord(OwnerMat.Inverse());
+            m_OutDatas = make_tuple(OutPos, OutLocalPos, OutNorm);
             bPicked = true;
             switch (m_ePickingType)
             {
@@ -2048,8 +2048,8 @@ _bool CWindow_Map::Calculate_Pick()
             return bPicked;
         if (GAMEINSTANCE->Is_Picked_Mesh(m_PickTargetMesh, &m_i3PickedIndex, &OutPos, &OutNorm))
         {
-            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), OwnerMat.XMLoad());
-            m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
+            _float4 OutLocalPos = OutPos.MultiplyCoord(OwnerMat.Inverse());
+            m_OutDatas = make_tuple(OutPos, OutLocalPos, OutNorm);
             bPicked = true;
             switch (m_ePickingType)
             {
@@ -2083,8 +2083,8 @@ _bool CWindow_Map::Calculate_Pick()
             return bPicked;
         if (GAMEINSTANCE->Is_Picked_Mesh(m_PickTargetMesh, &m_i3PickedIndex, &OutPos, &OutNorm))
         {
-            _float4 OutWorldPos = XMVector3TransformCoord(OutPos.XMLoad(), OwnerMat.XMLoad());
-            m_OutDatas = make_tuple(OutWorldPos, OutPos, OutNorm);
+            _float4 OutLocalPos = OutPos.MultiplyCoord(OwnerMat.Inverse());
+            m_OutDatas = make_tuple(OutPos, OutLocalPos, OutNorm);
             bPicked = true;
             switch (m_ePickingType)
             {

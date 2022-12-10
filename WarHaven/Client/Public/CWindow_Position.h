@@ -9,6 +9,7 @@ END
 BEGIN(Client)
 
 class CDebugObject;
+class CPath;
 
 class CWindow_Position final
 	: public CImGui_Window
