@@ -29,8 +29,6 @@ public:
 private:
 	char				m_szFileName[MIN_STR] = {};
 
-	
-
 	vector<pair<string, _float4>>				m_vecPosition;
 	vector<CDebugObject*>						m_pDebugBoxes;
 
