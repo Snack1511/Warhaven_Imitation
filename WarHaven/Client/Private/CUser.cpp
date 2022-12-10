@@ -303,9 +303,14 @@ void CUser::Set_TeamScore(_uint iTeamType, _uint iScore)
 	m_pUI_Paden->Set_ScoreNum(iTeamType, iScore);
 }
 
-void CUser::Set_ProjStrongHoldUI(_uint iPointIdx, CTransform* pTransform)
+void CUser::Set_PointUI_TransformProj(_uint iPointIdx, CTransform* pTransform)
 {
 	m_pUI_Paden->Set_Proj_StrongHoldUI(iPointIdx, pTransform);
+}
+
+void CUser::Conquest_PointUI(string strPointName, _uint iTeamType)
+{
+	m_pUI_Paden->Conquest_PointUI(strPointName, iTeamType);
 }
 
 void CUser::SetActive_PadenUI(_bool value)

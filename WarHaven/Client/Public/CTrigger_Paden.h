@@ -39,28 +39,29 @@ public:
 	ePADEN_TRIGGER_TYPE	Get_TriggerType() { return m_eTriggerType; }
 	void	Set_TriggerType(ePADEN_TRIGGER_TYPE eEnum) { m_eTriggerType = eEnum; }
 
-
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Start() override;
 
 private:
 	ePADEN_TRIGGER_TYPE	m_eTriggerType = ePADEN_TRIGGER_TYPE::eSTART;
-	string			m_strTriggerName;
+	string				m_strTriggerName;
+
+	eTEAM_TYPE			m_eTeamType = eTEAM_TYPE::eCOUNT;
 
 	/* 양 팀중 몇명이 트리거 안에 들어있는지 확인 */
-	_uint			m_iTeamCnt[(_uint)eTEAM_TYPE::eCOUNT] = {};
+	_uint				m_iTeamCnt[(_uint)eTEAM_TYPE::eCOUNT] = {};
 	//list<CPlayer*>	m_pAdjPlayers[(_uint)eTEAM_TYPE::eCOUNT];
 
 	/* 리스폰 시에 이 포인트에서 front로 생성 */
-	list<_float4>	m_vRespawnPositions;
+	list<_float4>		m_vRespawnPositions;
 
 private:
-	CTeamConnector* m_pConqueredTeam = nullptr;
+	CTeamConnector*		m_pConqueredTeam = nullptr;
 
-	_float			m_fConqueredTimeAcc = 0.f;
-	_float			m_fConqueredTime = 5.f;
-	CDominion_Effect* m_pDominionEffect = nullptr;
+	_float				m_fConqueredTimeAcc = 0.f;
+	_float				m_fConqueredTime = 5.f;
+	CDominion_Effect*	m_pDominionEffect = nullptr;
 
 private:
 	virtual void My_Tick();

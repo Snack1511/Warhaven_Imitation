@@ -96,7 +96,6 @@ void CUI_Paden::Set_Proj_StrongHoldUI(_uint iPointIdx, CTransform* pTransform)
 		if (i == PU_Text)
 		{
 			m_pArrProjPointUI[iPointIdx][i]->Set_PosX(vNewPos.x);
-
 			continue;
 		}
 
@@ -138,9 +137,44 @@ void CUI_Paden::SetActive_PointUI(_bool value)
 	}
 }
 
+void CUI_Paden::Conquest_PointUI(string strPointName, _uint iTeamType)
+{
+	_float4 vColor; 
+
+	switch (iTeamType)
+	{
+	case 13:
+		vColor = m_vColorRed;
+		break;
+
+	case 3:
+		vColor = m_vColorBlue;
+		break;
+	}
+	
+	for (int i = 0; i < PU_Text; ++i)
+	{
+		if (strPointName == "Paden_Trigger_A")
+		{
+			m_pArrPointUI[Point_A][i]->Set_Color(vColor);
+			m_pArrProjPointUI[Point_A][i]->Set_Color(vColor);
+		}
+		else if (strPointName == "Paden_Trigger_R")
+		{
+			m_pArrPointUI[Point_R][i]->Set_Color(vColor);
+			m_pArrProjPointUI[Point_R][i]->Set_Color(vColor);
+		}
+		else if (strPointName == "Paden_Trigger_C")
+		{
+			m_pArrPointUI[Point_C][i]->Set_Color(vColor);
+			m_pArrProjPointUI[Point_C][i]->Set_Color(vColor);
+		}
+	}
+}
+
 void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
-	_float fDuration = 0.3f;
+	_float fDuration = 0.1f;
 
 	for (int i = 0; i < PU_End; ++i)
 	{
@@ -177,17 +211,17 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
 				m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
-				m_pArrPointUI[Point_A][i]->DoMove(m_fMainPointUIPosX, m_fPointUIPosY, fDuration);
+				m_pArrPointUI[Point_A][i]->DoMove(-50.f, m_fPointUIPosY, fDuration);
 			}
 			else if (strPadenPointKey == "Paden_Trigger_R")
 			{
 				m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
-				m_pArrPointUI[Point_R][i]->DoMove(m_fMainPointUIPosX, m_fPointUIPosY, fDuration);
+				m_pArrPointUI[Point_R][i]->DoMove(0.f, m_fPointUIPosY, fDuration);
 			}
 			else if (strPadenPointKey == "Paden_Trigger_C")
 			{
 				m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
-				m_pArrPointUI[Point_C][i]->DoMove(m_fMainPointUIPosX, m_fPointUIPosY, fDuration);
+				m_pArrPointUI[Point_C][i]->DoMove(50.f, m_fPointUIPosY, fDuration);
 			}
 
 			break;
@@ -201,10 +235,12 @@ void CUI_Paden::Set_PointGauge_Color(_uint iTeamType, PointName ePointName)
 	{
 	case 3:
 		m_pArrPointUI[ePointName][PU_Gauge]->Set_Color(m_vColorBlue);
+		m_pArrProjPointUI[ePointName][PU_Gauge]->Set_Color(m_vColorBlue);
 		break;
 
 	case 13:
 		m_pArrPointUI[ePointName][PU_Gauge]->Set_Color(m_vColorRed);
+		m_pArrProjPointUI[ePointName][PU_Gauge]->Set_Color(m_vColorRed);
 		break;
 	}
 }

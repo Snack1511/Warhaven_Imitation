@@ -6,6 +6,9 @@ BEGIN(Client)
 
 class CUI_Paden : public CUI_Wrapper
 {
+private:
+	enum TriggerState { TS_Enter, TS_Exit, TS_End };
+
 	DECLARE_PROTOTYPE(CUI_Paden);
 	DECLARE_GAMEOBJECT(CUI_Paden);
 
@@ -20,17 +23,15 @@ public:
 
 public:
 	void Set_ScoreNum(_uint iTeamType, _uint iScore);
-
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
-
 	void Set_Proj_StrongHoldUI(_uint iPointIdx, CTransform* pTransform);
 
 	void SetActive_ScoreNum(_bool value);
 	void SetActive_ScoreGauge(_bool value);
 	void SetActive_PointUI(_bool value);
 
-public:
-	enum TriggerState { TS_Enter, TS_Exit, TS_End };
+	void Conquest_PointUI(string strPointName, _uint iTeamType);
+
 	void Interact_PointUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
 
 private:
@@ -109,11 +110,10 @@ private:
 	_float4 m_vColorGauge = _float4(0.5f, 0.5f, 0.5f, 0.5f);
 	_float4 m_vColorOutline = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
-	_float4 m_vColorBlue = _float4(0.1f, 0.6f, 1.9f, 0.5f);
-	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.063f, 0.5f);
+	_float4 m_vColorBlue = _float4(0.1f, 0.6f, 1.f, 0.9f);
+	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.1f, 0.9f);
 
 	_float m_fPointUIPosY = 260.f;
-	_float m_fMainPointUIPosX = -50.f;
 
 private:
 	void Bind_Shader();
