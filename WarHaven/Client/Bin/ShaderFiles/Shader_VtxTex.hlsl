@@ -416,6 +416,9 @@ PS_OUT PS_VerticalGauge(PS_IN In)
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
+    Out.vColor *= g_vColor;
+    Out.vColor.w *= g_fAlpha;
+    
     if (In.vTexUV.y < g_fValue)
         discard;
     
@@ -428,6 +431,9 @@ PS_OUT PS_HorizontalGauge(PS_IN In)
     Out.vFlag = g_vFlag;
 
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor *= g_vColor;
+    Out.vColor.w *= g_fAlpha;
     
     if (In.vTexUV.x > g_fValue)
         discard;

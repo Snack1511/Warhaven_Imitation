@@ -30,11 +30,12 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 	}
 
 	// 상단 유아이 하이라이트
-	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, eOtherColType, 0);
+	CUser::Get_Instance()->Interat_PointUI(m_strTriggerName, eOtherColType, 0);
 }
 
 void CTrigger_Paden::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
+	CUser::Get_Instance()->Set_ConquestTime(m_fConqueredTimeAcc, m_fConqueredTime);
 }
 
 void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -50,7 +51,7 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 	}
 
 	// 상단 유아이 원위치
-	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, 99, 1);
+	CUser::Get_Instance()->Interat_PointUI(m_strTriggerName, 99, 1);
 }
 
 CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum)
@@ -147,7 +148,7 @@ void CTrigger_Paden::My_Tick()
 	{
 		CUser::Get_Instance()->Set_ProjStrongHoldUI(1, m_pTransform);
 	}
-	else if(m_strTriggerName == "Paden_Trigger_C")
+	else if (m_strTriggerName == "Paden_Trigger_C")
 	{
 		CUser::Get_Instance()->Set_ProjStrongHoldUI(2, m_pTransform);
 	}

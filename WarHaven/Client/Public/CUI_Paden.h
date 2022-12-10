@@ -14,23 +14,24 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	virtual void Set_Shader_MainPointGauge(CShader* pShader, const char* pConstName);
-	virtual void Set_Shader_RespawnPointGauge(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_PointGauge_A(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_PointGauge_R(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName);
 
 public:
 	void Set_ScoreNum(_uint iTeamType, _uint iScore);
 
+	void Set_ConquestTime(_float fConquestTime, _float fMaxConquestTime);
+
 	void Set_Proj_StrongHoldUI(_uint iPointIdx, CTransform* pTransform);
 
-	void SetActive_StrongHoldGauge(_bool value);
 	void SetActive_ScoreNum(_bool value);
-	void SetActive_TopPointUI(_bool value);
-	void SetActive_ProjStrongHoldUI(_bool value);
+	void SetActive_ScoreGauge(_bool value);
+	void SetActive_PointUI(_bool value);
 
 public:
 	enum TriggerState { TS_Enter, TS_Exit, TS_End };
-	void Interact_StrongHoldUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
-	void Set_StrongHoldUI_Color(_uint iTeamType);
+	void Interact_PointUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
 
 private:
 	virtual void My_Tick() override;
@@ -40,6 +41,12 @@ private:
 private:
 	CUI_Object* m_pInGameTimer = nullptr;
 
+	_float m_fInGameTime = 1800.f;
+
+private:
+	void Create_InGameTimer();
+	void Update_InGameTimer();
+
 private:	// 각 팀별 스코어
 	enum TeamType { Team_Red, Team_Blue, Team_End };
 	TeamType m_eTeamType = Team_End;
@@ -47,9 +54,6 @@ private:	// 각 팀별 스코어
 	enum ScoreGaugeNum { Num0, Num1, Num2, Num_End };
 	CUI_Object* m_pScoreNum[Num_End];
 	CUI_Object* m_pArrScoreNum[Team_End][Num_End];
-
-	vector<_uint> m_vecPrvScore[Team_End];
-	vector<_uint> m_vecCurScore[Team_End];
 
 	_uint m_iPrvScore[Team_End][3];
 	_uint m_iCurvScore[Team_End][3];
@@ -59,50 +63,53 @@ private:	// 각 팀별 스코어
 	_bool m_bIsDisableNum = false;
 	_bool m_bIsEnableNum = false;
 
-	_uint m_iScore = 100;
+	_uint m_iMaxScore = 100;
+	_uint m_iCurScore = 100;
+	_float m_fScoreRatio = 0.f;
 
 private:
 	void Create_ScoreNum();
-	void Init_ScoreVector();
 
 private:
-	enum StrongHoldGauge { Gauge_BG, Gauge_Bar, Gauge_Icon, Gauge_End };
-	enum TopPointUI { SU_BG, SU_Gauge, SU_Outline, SU_Icon, SU_End };
-	enum ProjPointUI { PP_BG, PP_Gauge, PP_Outline, PP_Icon, PP_End };
+	enum ScoreGauge { Gauge_BG, Gauge_Bar, Gauge_Icon, Gauge_End };
 
-	CUI_Object* m_pStrongHoldGauge[Gauge_End];
-	CUI_Object* m_pArrStrongHoldGauge[Gauge_End][2];
+	CUI_Object* m_pScoreGauge[Gauge_End];
+	CUI_Object* m_pArrScoreGauge[Gauge_End][2];
 
+private:
+	void Create_ScoreGauge();
 
-	CUI_Object* m_pStrongHoldUI[SU_End];
-	CUI_Object* m_pArrStrongHoldUI[SU_End][3];
+private:
+	enum PointUI { PU_Point, PU_Gauge, PU_Text, PU_End };
+	enum PointName { Point_A, Point_R, Point_C, Point_End };
 
-	CUI_Object* m_pProj_StrongHoldUI[PP_End];
-	CUI_Object* m_pArrProj_StrongHoldUI[PP_End][3];
+	CUI_Object* m_pPointUI[PU_End];
+	CUI_Object* m_pArrPointUI[Point_End][PU_End];
 
+	_float m_fMaxConquestTime = 0.f;
+	_float m_fConquestTime = 0.f;
+	_float m_fConquestRatio[Point_End] = { 0.f };
+
+private:
+	void Create_PointUI();
+	void Init_PointUI();
+
+	void Set_PointTextPosY();
+
+	void Set_PointGauge_Color(_uint iTeamType, PointName ePointName);
+
+private:
 	_float4 m_vColorBG = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	_float4 m_vColorGauge = _float4(1.f, 1.f, 1.f, 0.1f);
+	_float4 m_vColorGauge = _float4(0.5f, 0.5f, 0.5f, 0.5f);
 	_float4 m_vColorOutline = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
 	_float4 m_vColorBlue = _float4(0.1f, 0.6f, 1.9f, 0.5f);
 	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.063f, 0.5f);
 
-	_float m_fInGameTime = 1800.f;
-
 	_float m_fGaugeNumFadeSpeed = 0.3f;
 
 	_float m_fPointUIPosY = 260.f;
 	_float m_fMainPointUIPosX = -50.f;
-
-	_float m_fGaugeRatio[3] = { 0.5f };
-
-private:
-	void Create_InGameTimer();
-	void Create_StrongHoldGauge();
-	void Create_StrongHoldUI();
-	void Create_Proj_StrongHoldUI();
-
-	void Init_StrongHoldUI();
 
 private:
 	void Bind_Shader();

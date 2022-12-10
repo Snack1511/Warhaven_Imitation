@@ -5,17 +5,17 @@
 #include "CUI_Renderer.h"
 #include <CUtility_Transform.h>
 #include "CShader.h"
+#include "Loading_Manager.h"
 
 HRESULT CUI_Paden::Initialize_Prototype()
 {
 	Create_InGameTimer();
-	Create_StrongHoldGauge();
-	Create_ScoreNum();
-	Create_StrongHoldUI();
-	Create_Proj_StrongHoldUI();
 
-	Init_StrongHoldUI();
-	Init_ScoreVector();
+	Create_ScoreNum();
+	Create_ScoreGauge();
+
+	Create_PointUI();
+	Init_PointUI();
 
 	return S_OK;
 }
@@ -26,17 +26,27 @@ HRESULT CUI_Paden::Start()
 
 	Bind_Shader();
 
+	m_pInGameTimer->SetActive(true);
+	SetActive_ScoreGauge(true);
+	SetActive_ScoreNum(true);
+	SetActive_PointUI(true);
+
 	return S_OK;
 }
 
-void CUI_Paden::Set_Shader_MainPointGauge(CShader* pShader, const char* pConstName)
+void CUI_Paden::Set_Shader_PointGauge_A(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fGaugeRatio[0], sizeof(_float));
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));
 }
 
-void CUI_Paden::Set_Shader_RespawnPointGauge(CShader* pShader, const char* pConstName)
+void CUI_Paden::Set_Shader_PointGauge_R(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fGaugeRatio[1], sizeof(_float));
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_R], sizeof(_float));
+}
+
+void CUI_Paden::Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
 }
 
 void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
@@ -51,11 +61,6 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 		m_iCurvScore[m_eTeamType][i] = iDigitDmg;
 		iScore /= 10;
 
-		// 100
-		// 001
-
-
-
 		if (m_iPrvScore[m_eTeamType][i] != m_iCurvScore[m_eTeamType][i])
 		{
 			m_iChangeNumIdx[i] = i;
@@ -66,27 +71,30 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 	}
 }
 
+void CUI_Paden::Set_ConquestTime(_float fConquestTime, _float fMaxConquestTime)
+{
+	m_fConquestTime = fConquestTime;
+	m_fMaxConquestTime = fMaxConquestTime;
+}
+
 void CUI_Paden::Set_Proj_StrongHoldUI(_uint iPointIdx, CTransform* pTransform)
 {
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
 	vNewPos.y += 1.f;
 
-	for (int i = 0; i < PP_End; ++i)
+	/*for (int i = 0; i < PP_End; ++i)
 	{
-		if (!m_pArrProj_StrongHoldUI[i][iPointIdx])
-			return;
-
 		m_pArrProj_StrongHoldUI[i][iPointIdx]->Set_Pos(vNewPos);
-	}
+	}*/
 }
 
-void CUI_Paden::SetActive_StrongHoldGauge(_bool value)
+void CUI_Paden::SetActive_ScoreGauge(_bool value)
 {
 	for (int i = 0; i < Gauge_End; ++i)
 	{
 		for (int j = 0; j < 2; ++j)
 		{
-			m_pArrStrongHoldGauge[i][j]->SetActive(value);
+			m_pArrScoreGauge[i][j]->SetActive(value);
 		}
 	}
 }
@@ -102,33 +110,22 @@ void CUI_Paden::SetActive_ScoreNum(_bool value)
 	}
 }
 
-void CUI_Paden::SetActive_TopPointUI(_bool value)
+void CUI_Paden::SetActive_PointUI(_bool value)
 {
-	for (int i = 0; i < SU_End; ++i)
+	for (int i = 0; i < Point_End; ++i)
 	{
-		for (int j = 0; j < 3; ++j)
+		for (int j = 0; j < PU_End; ++j)
 		{
-			m_pArrStrongHoldUI[i][j]->SetActive(value);
+			m_pArrPointUI[i][j]->SetActive(value);
 		}
 	}
 }
 
-void CUI_Paden::SetActive_ProjStrongHoldUI(_bool value)
+void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
-	for (int i = 0; i < PP_End; ++i)
-	{
-		for (int j = 0; j < 3; ++j)
-		{
-			m_pArrProj_StrongHoldUI[i][j]->SetActive(value);
-		}
-	}
-}
+	_float fDuration = 0.3f;
 
-void CUI_Paden::Interact_StrongHoldUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
-{
-	_float fDuration = 0.5f;
-
-	for (int i = 0; i < SU_End; ++i)
+	for (int i = 0; i < PU_End; ++i)
 	{
 		switch (iTriggerState)
 		{
@@ -136,10 +133,24 @@ void CUI_Paden::Interact_StrongHoldUI(string strPadenPointKey, _uint iTeamType, 
 
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
-				m_pArrStrongHoldUI[i][0]->DoScale(10.f, fDuration);
-				m_pArrStrongHoldUI[i][0]->DoMove(0.f, 200.f, fDuration);
+				m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
+				m_pArrPointUI[Point_A][i]->DoMove(0.f, 200.f, fDuration);
 
-				Set_StrongHoldUI_Color(iTeamType);
+				Set_PointGauge_Color(iTeamType, Point_A);
+			}
+			else if (strPadenPointKey == "Paden_Trigger_R")
+			{
+				m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
+				m_pArrPointUI[Point_R][i]->DoMove(0.f, 200.f, fDuration);
+
+				Set_PointGauge_Color(iTeamType, Point_R);
+			}
+			else if (strPadenPointKey == "Paden_Trigger_C")
+			{
+				m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
+				m_pArrPointUI[Point_C][i]->DoMove(0.f, 200.f, fDuration);
+
+				Set_PointGauge_Color(iTeamType, Point_C);
 			}
 
 			break;
@@ -148,8 +159,18 @@ void CUI_Paden::Interact_StrongHoldUI(string strPadenPointKey, _uint iTeamType, 
 
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
-				m_pArrStrongHoldUI[i][0]->DoScale(-10.f, fDuration);
-				m_pArrStrongHoldUI[i][0]->DoMove(m_fMainPointUIPosX, m_fPointUIPosY, fDuration);
+				m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
+				m_pArrPointUI[Point_A][i]->DoMove(m_fMainPointUIPosX, m_fPointUIPosY, fDuration);
+			}
+			else if (strPadenPointKey == "Paden_Trigger_R")
+			{
+				m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
+				m_pArrPointUI[Point_R][i]->DoMove(m_fMainPointUIPosX, m_fPointUIPosY, fDuration);
+			}
+			else if (strPadenPointKey == "Paden_Trigger_C")
+			{
+				m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
+				m_pArrPointUI[Point_C][i]->DoMove(m_fMainPointUIPosX, m_fPointUIPosY, fDuration);
 			}
 
 			break;
@@ -157,16 +178,16 @@ void CUI_Paden::Interact_StrongHoldUI(string strPadenPointKey, _uint iTeamType, 
 	}
 }
 
-void CUI_Paden::Set_StrongHoldUI_Color(_uint iTeamType)
+void CUI_Paden::Set_PointGauge_Color(_uint iTeamType, PointName ePointName)
 {
 	switch (iTeamType)
 	{
 	case 3:
-		m_pArrStrongHoldUI[SU_Gauge][0]->Set_Color(m_vColorBlue);
+		m_pArrPointUI[ePointName][PU_Gauge]->Set_Color(m_vColorBlue);
 		break;
 
 	case 13:
-		m_pArrStrongHoldUI[SU_Gauge][0]->Set_Color(m_vColorRed);
+		m_pArrPointUI[ePointName][PU_Gauge]->Set_Color(m_vColorRed);
 		break;
 	}
 }
@@ -175,31 +196,29 @@ void CUI_Paden::My_Tick()
 {
 	__super::My_Tick();
 
-	if (m_fInGameTime < 0.f)
-	{
-		cout << "게임 종료" << endl;
-		m_fInGameTime = 0.f;
-	}
-	else
-	{
-		m_fInGameTime -= fDT(0);
+	Update_InGameTimer();
 
-		_uint iMin = m_fInGameTime / 60.f;
-		_uint iSec = (_uint)m_fInGameTime % 60;
+	Set_PointTextPosY();
 
-		_tchar  szTemp[MAX_STR] = {};
-		swprintf_s(szTemp, TEXT("%02d:%02d"), iMin, iSec);
-		m_pInGameTimer->Set_FontText(szTemp);
+	for (int i = 0; i < Point_End; ++i)
+	{
+		_float fConquestRatio = m_fConquestTime / m_fMaxConquestTime;
+		if (m_fConquestTime >= m_fMaxConquestTime)
+			fConquestRatio = 1.f;
+
+		m_fConquestRatio[i] = 1 - fConquestRatio;
+
+		cout << i << " : " << m_fConquestRatio[i] << endl;
 	}
 
 	if (KEY(X, TAP))
 	{
-		m_iScore--;
+		m_iCurScore--;
 	}
 
 	for (int i = 0; i < Team_End; ++i)
 	{
-		Set_ScoreNum(i, m_iScore);
+		Set_ScoreNum(i, m_iCurScore);
 	}
 
 	if (m_bIsChangeNum)
@@ -237,10 +256,9 @@ void CUI_Paden::OnEnable()
 	__super::OnEnable();
 
 	m_pInGameTimer->SetActive(true);
-	SetActive_StrongHoldGauge(true);
+	SetActive_ScoreGauge(true);
 	SetActive_ScoreNum(true);
-	SetActive_TopPointUI(true);
-	SetActive_ProjStrongHoldUI(true);
+	SetActive_PointUI(true);
 }
 
 void CUI_Paden::OnDisable()
@@ -248,10 +266,9 @@ void CUI_Paden::OnDisable()
 	__super::OnDisable();
 
 	m_pInGameTimer->SetActive(false);
-	SetActive_StrongHoldGauge(false);
+	SetActive_ScoreGauge(false);
 	SetActive_ScoreNum(false);
-	SetActive_TopPointUI(false);
-	SetActive_ProjStrongHoldUI(false);
+	SetActive_PointUI(false);
 }
 
 void CUI_Paden::Create_InGameTimer()
@@ -272,74 +289,22 @@ void CUI_Paden::Create_InGameTimer()
 	DISABLE_GAMEOBJECT(m_pInGameTimer);
 }
 
-void CUI_Paden::Create_StrongHoldGauge()
+void CUI_Paden::Update_InGameTimer()
 {
-	for (int i = 0; i < Gauge_End; ++i)
+	if (m_fInGameTime < 0.f)
 	{
-		m_pStrongHoldGauge[i] = CUI_Object::Create();
+		m_fInGameTime = 0.f;
+	}
+	else
+	{
+		m_fInGameTime -= fDT(0);
 
-		if (i < Gauge_Icon)
-		{
-			m_pStrongHoldGauge[i]->Set_PosY(300.f);
-			m_pStrongHoldGauge[i]->Set_Scale(150.f, 5.f);
+		_uint iMin = m_fInGameTime / 60.f;
+		_uint iSec = (_uint)m_fInGameTime % 60;
 
-			if (i == Gauge_BG)
-			{
-				m_pStrongHoldGauge[i]->Set_Sort(0.5f);
-			}
-			else if (i == Gauge_Bar)
-			{
-				GET_COMPONENT_FROM(m_pStrongHoldGauge[i], CTexture)->Remove_Texture(0);
-				Read_Texture(m_pStrongHoldGauge[i], "/Paden/TopGauge", "Bar");
-
-				m_pStrongHoldGauge[i]->Set_Sort(0.49f);
-			}
-		}
-		else
-		{
-			if (i == Gauge_Icon)
-			{
-				GET_COMPONENT_FROM(m_pStrongHoldGauge[i], CTexture)->Remove_Texture(0);
-				Read_Texture(m_pStrongHoldGauge[i], "/Paden", "Team");
-
-				m_pStrongHoldGauge[i]->Set_Sort(0.5f);
-
-				m_pStrongHoldGauge[i]->Set_PosY(325);
-				m_pStrongHoldGauge[i]->Set_Scale(32.f);
-			}
-		}
-
-		CREATE_GAMEOBJECT(m_pStrongHoldGauge[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_pStrongHoldGauge[i]);
-
-		for (int j = 0; j < 2; ++j)
-		{
-			m_pArrStrongHoldGauge[i][j] = m_pStrongHoldGauge[i]->Clone();
-
-			if (i < Gauge_Icon)
-			{
-				_float fPosX = -125 + (j * 250.f);
-				m_pArrStrongHoldGauge[i][j]->Set_PosX(fPosX);
-
-				if (i == Gauge_Bar)
-				{
-					GET_COMPONENT_FROM(m_pArrStrongHoldGauge[i][j], CTexture)->Set_CurTextureIndex(j);
-				}
-			}
-			else
-			{
-				if (i == Gauge_Icon)
-				{
-					GET_COMPONENT_FROM(m_pArrStrongHoldGauge[i][j], CTexture)->Set_CurTextureIndex(j);
-
-					_float fPosX = -60.f + (j * 120.f);
-					m_pArrStrongHoldGauge[i][j]->Set_PosX(fPosX);
-				}
-			}
-
-			CREATE_GAMEOBJECT(m_pArrStrongHoldGauge[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pArrStrongHoldGauge[i][j]);
-		}
+		_tchar  szTemp[MAX_STR] = {};
+		swprintf_s(szTemp, TEXT("%02d:%02d"), iMin, iSec);
+		m_pInGameTimer->Set_FontText(szTemp);
 	}
 }
 
@@ -376,120 +341,166 @@ void CUI_Paden::Create_ScoreNum()
 	}
 }
 
-void CUI_Paden::Init_ScoreVector()
+void CUI_Paden::Create_ScoreGauge()
 {
-	for (int i = 0; i < Team_End; ++i)
+	for (int i = 0; i < Gauge_End; ++i)
 	{
-		m_vecPrvScore[i] = { 0 };
-		m_vecCurScore[i] = { 0 };
-	}
-}
+		m_pScoreGauge[i] = CUI_Object::Create();
 
-void CUI_Paden::Create_StrongHoldUI()
-{
-	for (int i = 0; i < SU_End; ++i)
-	{
-		m_pStrongHoldUI[i] = CUI_Object::Create();
-
-		m_pStrongHoldUI[i]->Set_PosY(m_fPointUIPosY);
-
-		if (i == SU_BG)
+		if (i < Gauge_Icon)
 		{
-			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pStrongHoldUI[i], "/Paden", "Gauge");
-			m_pStrongHoldUI[i]->Set_Color(m_vColorBG);
+			m_pScoreGauge[i]->Set_PosY(300.f);
+			m_pScoreGauge[i]->Set_Scale(150.f, 5.f);
 
-			m_pStrongHoldUI[i]->Set_Scale(28.f);
-			m_pStrongHoldUI[i]->Set_Sort(0.5f);
-		}
-		else if (i == SU_Gauge)
-		{
-			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
-
-			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pStrongHoldUI[i], "/Paden", "Gauge");
-			m_pStrongHoldUI[i]->Set_Color(m_vColorGauge);
-
-			m_pStrongHoldUI[i]->Set_Scale(25.f);
-			m_pStrongHoldUI[i]->Set_Sort(0.49f);
-
-			m_pStrongHoldUI[i]->Set_FontRender(true);
-			m_pStrongHoldUI[i]->Set_FontStyle(true);
-			m_pStrongHoldUI[i]->Set_FontCenter(true);
-			m_pStrongHoldUI[i]->Set_FontScale(0.25f);
-			m_pStrongHoldUI[i]->Set_FontOffset(5.5f, 4.5f);
-		}
-		else if (SU_Outline)
-		{
-			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pStrongHoldUI[i], "/Paden", "Outline");
-			m_pStrongHoldUI[i]->Set_Color(m_vColorOutline);
-
-			m_pStrongHoldUI[i]->Set_Scale(33.f);
-			m_pStrongHoldUI[i]->Set_Sort(0.48f);
-		}
-		else if (SU_Icon)
-		{
-			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Paden/PointIcon_Join.dds"));
-			m_pStrongHoldUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
-
-			m_pStrongHoldUI[i]->Set_Scale(22.f);
-			m_pStrongHoldUI[i]->Set_Sort(0.f);
-		}
-
-		CREATE_GAMEOBJECT(m_pStrongHoldUI[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_pStrongHoldUI[i]);
-
-		for (int j = 0; j < 3; ++j)
-		{
-			m_pArrStrongHoldUI[i][j] = m_pStrongHoldUI[i]->Clone();
-
-			_float fPosX = -50.f + (j * 50.f);
-			m_pArrStrongHoldUI[i][j]->Set_PosX(fPosX);
-
-			if (j == 0)
+			if (i == Gauge_BG)
 			{
-				GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(j);
+				m_pScoreGauge[i]->Set_Sort(0.5f);
+			}
+			else if (i == Gauge_Bar)
+			{
+				GET_COMPONENT_FROM(m_pScoreGauge[i], CTexture)->Remove_Texture(0);
+				Read_Texture(m_pScoreGauge[i], "/Paden/TopGauge", "Bar");
+
+				m_pScoreGauge[i]->Set_Sort(0.49f);
+			}
+		}
+		else
+		{
+			if (i == Gauge_Icon)
+			{
+				GET_COMPONENT_FROM(m_pScoreGauge[i], CTexture)->Remove_Texture(0);
+				Read_Texture(m_pScoreGauge[i], "/Paden", "Team");
+
+				m_pScoreGauge[i]->Set_Sort(0.5f);
+
+				m_pScoreGauge[i]->Set_PosY(325);
+				m_pScoreGauge[i]->Set_Scale(32.f);
+			}
+		}
+
+		CREATE_GAMEOBJECT(m_pScoreGauge[i], GROUP_UI);
+		DELETE_GAMEOBJECT(m_pScoreGauge[i]);
+
+		for (int j = 0; j < 2; ++j)
+		{
+			m_pArrScoreGauge[i][j] = m_pScoreGauge[i]->Clone();
+
+			if (i < Gauge_Icon)
+			{
+				_float fPosX = -125 + (j * 250.f);
+				m_pArrScoreGauge[i][j]->Set_PosX(fPosX);
+
+				if (i == Gauge_Bar)
+				{
+					GET_COMPONENT_FROM(m_pArrScoreGauge[i][j], CTexture)->Set_CurTextureIndex(j);
+				}
 			}
 			else
 			{
-				GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(1);
+				if (i == Gauge_Icon)
+				{
+					GET_COMPONENT_FROM(m_pArrScoreGauge[i][j], CTexture)->Set_CurTextureIndex(j);
+
+					_float fPosX = -60.f + (j * 120.f);
+					m_pArrScoreGauge[i][j]->Set_PosX(fPosX);
+				}
 			}
 
-			CREATE_GAMEOBJECT(m_pArrStrongHoldUI[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[i][j]);
+			CREATE_GAMEOBJECT(m_pArrScoreGauge[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrScoreGauge[i][j]);
 		}
 	}
 }
 
-void CUI_Paden::Init_StrongHoldUI()
+void CUI_Paden::Create_PointUI()
 {
-	m_pArrStrongHoldUI[SU_Gauge][0]->Set_FontText(TEXT("A"));
-	m_pArrStrongHoldUI[SU_Gauge][1]->Set_FontText(TEXT("R"));
-	m_pArrStrongHoldUI[SU_Gauge][2]->Set_FontText(TEXT("C"));
+	for (int i = 0; i < PU_End; ++i)
+	{
+		m_pPointUI[i] = CUI_Object::Create();
+
+		m_pPointUI[i]->Set_PosY(m_fPointUIPosY);
+
+		if (i == PU_Point)
+		{
+			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pPointUI[i], "/Paden", "Point");
+			m_pPointUI[i]->Set_Color(m_vColorOutline);
+
+			m_pPointUI[i]->Set_Scale(40.f);
+			m_pPointUI[i]->Set_Sort(0.5f);
+		}
+		else if (i == PU_Gauge)
+		{
+			GET_COMPONENT_FROM(m_pPointUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
+
+			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pPointUI[i], "/Paden", "Gauge");
+			m_pPointUI[i]->Set_Color(m_vColorGauge);
+
+			m_pPointUI[i]->Set_Scale(30.f);
+			m_pPointUI[i]->Set_Sort(0.49f);
+		}
+		else if (i == PU_Text)
+		{
+			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pPointUI[i], "/Paden/Text", "Text");
+
+			m_pPointUI[i]->Set_Scale(50.f);
+			m_pPointUI[i]->Set_Sort(0.48f);
+		}
+
+		CREATE_GAMEOBJECT(m_pPointUI[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPointUI[i]);
+
+		for (int j = 0; j < Point_End; ++j)
+		{
+			m_pArrPointUI[j][i] = m_pPointUI[i]->Clone();
+
+			_float fPosX = -50.f + (j * 50.f);
+			m_pArrPointUI[j][i]->Set_PosX(fPosX);
+
+			CREATE_GAMEOBJECT(m_pArrPointUI[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrPointUI[j][i]);
+		}
+	}
 }
 
-void CUI_Paden::Create_Proj_StrongHoldUI()
+void CUI_Paden::Init_PointUI()
 {
-	for (int i = 0; i < PP_End; ++i)
+	for (int i = 0; i < Point_End; ++i)
 	{
-		m_pProj_StrongHoldUI[i] = CUI_Object::Create();
-
-		CREATE_GAMEOBJECT(m_pProj_StrongHoldUI[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_pProj_StrongHoldUI[i]);
-
-		for (int j = 0; j < 3; ++j)
+		for (int j = 0; j < PU_End; ++j)
 		{
-			m_pArrProj_StrongHoldUI[i][j] = m_pProj_StrongHoldUI[i]->Clone();
+			if (i == Point_A)
+			{
+				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+			}
+			else
+			{
+				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
 
-			CREATE_GAMEOBJECT(m_pArrProj_StrongHoldUI[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pArrProj_StrongHoldUI[i][j]);
+				if (j == PU_Gauge)
+				{
+					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+				}
+			}
 		}
+	}
+}
+
+void CUI_Paden::Set_PointTextPosY()
+{
+	for (int i = 0; i < Point_End; ++i)
+	{
+		_float fPosY = m_pArrPointUI[i][PU_Point]->Get_PosY();
+		_float fTextPosY = fPosY - 2.5f;
+		m_pArrPointUI[i][PU_Text]->Set_PosY(fTextPosY);
 	}
 }
 
 void CUI_Paden::Bind_Shader()
 {
-	GET_COMPONENT_FROM(m_pArrStrongHoldUI[SU_Gauge][0], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_MainPointGauge, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_pArrStrongHoldUI[SU_Gauge][1], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_RespawnPointGauge, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_A], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_A, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_R], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_R, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_C], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 }

@@ -288,9 +288,14 @@ void CUser::Transform_SkillUI(_uint iClass)
 	m_pUI_Skill->Transform_SkillUI(iClass);
 }
 
-void CUser::Interat_StrongHoldUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
+void CUser::Interat_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
-	m_pUI_Paden->Interact_StrongHoldUI(strPadenPointKey, iTeamType, iTriggerState);
+	m_pUI_Paden->Interact_PointUI(strPadenPointKey, iTeamType, iTriggerState);
+}
+
+void CUser::Set_ConquestTime(_float fConquestTime, _float fMaxConquestTime)
+{
+	m_pUI_Paden->Set_ConquestTime(fConquestTime, fMaxConquestTime);
 }
 
 void CUser::Set_TeamScore(_uint iTeamType, _uint iScore)
@@ -352,6 +357,7 @@ void CUser::On_EnterStageLevel()
 	if (!m_pUI_Paden)
 	{
 		m_pUI_Paden = CUI_Paden::Create();
+		
 		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Paden);
 	}
