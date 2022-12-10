@@ -1,6 +1,7 @@
 #pragma once
 namespace Client
 {
+
 	struct FADEDESC
 	{
 		enum FADE_STYLE
@@ -57,11 +58,11 @@ namespace Client
 
 	struct BEHAVIOR_DESC
 	{
-		_uint iStateType = 0;
+		class CPath* pCurPath = nullptr;
 
-		void* pTriggerPtr = nullptr;
-		void* pAlliesPlayer = nullptr;
-		void* pEnemyPlayer = nullptr;
+		class CTrigger* pTriggerPtr = nullptr;
+		class CPlayer* pAlliesPlayer = nullptr;
+		class CPlayer* pEnemyPlayer = nullptr;
 
 		_float fDelayTime = 0.f;
 

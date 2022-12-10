@@ -115,6 +115,7 @@ private:
     list<CPlayer*> m_NearAlliesList;
     list<CPlayer*> m_NearEnemyList;
     list<CTrigger*> m_NearTriggerList;
+
     /* 현재 타고 있는 경로*/
     CPath* m_pCurPath = nullptr;
 };

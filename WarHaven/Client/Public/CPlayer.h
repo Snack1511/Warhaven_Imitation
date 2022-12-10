@@ -150,7 +150,7 @@ public:
 	_bool	IsLeaderPlayer() { return m_bIsLeaderPlayer; }
 
 	_float& Get_Gauge() { return m_fGauge; }
-
+	const BEHAVIOR_DESC& Get_BehaviorDesc() { return m_tCurBehaviorDesc; }
 
 
 public:
@@ -162,8 +162,10 @@ public:
 	CTeamConnector* Get_Team() { return m_pMyTeam; }
 	CSquad* Get_Squad() { return m_pMySquad; }
 	OUTLINETYPE Get_OutlineType() {		return m_eOutlineType;	}
+
 public:
 	void On_ChangeBehavior(BEHAVIOR_DESC* pBehavior);
+
 private:
 	_bool	m_bEnableOnStart = false;
 
@@ -177,7 +179,7 @@ private: /* 킬뎃과 플레이어 정보 */
 
 private: /*AI 추가용*/
 	CAIController* m_pAIController = nullptr;
-	
+	BEHAVIOR_DESC	m_tCurBehaviorDesc;
 
 private:
 	//어떤 타입인지(적, 샌드백)
