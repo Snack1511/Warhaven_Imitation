@@ -24,6 +24,8 @@
 
 #include "CDominion_Effect.h"
 
+#include "CPath.h"
+
 #pragma region AI ¼ºÇâ
 #include "CTable_Conditions.h"
 #include "CPersonality_Default.h"
@@ -68,6 +70,11 @@ HRESULT CGameSystem::Initialize()
 	if (FAILED(SetUp_AllPlayerInfos()))
 	{
 		Call_MsgBox(L"Failed to SetUp_AllPlayerInfos : CGameSystem");
+		return E_FAIL;
+	}
+	if (FAILED(SetUp_AllPathes()))
+	{
+		Call_MsgBox(L"Failed to SetUp_AllPathes : CGameSystem");
 		return E_FAIL;
 	}
 
@@ -1094,6 +1101,36 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
 
 
     return S_OK;
+}
+
+HRESULT CGameSystem::SetUp_AllPathes()
+{
+
+	for (filesystem::directory_iterator FileIter("../Bin/Data/GameSystem/Pathes/");
+			FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("\\") + 1;
+		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+
+		if (!entry.is_directory())
+		{
+			_int iFindExt = (int)strFileName.rfind(".");// +1;
+			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			string HashKey = strFileName.substr(0, strFileName.length() - iFindExt);
+			CPath* pPath = CPath::Create(strFullPath);
+			if(nullptr != pPath)
+				m_mapAllPathes.emplace(Convert_ToHash(CFunctor::To_Wstring(HashKey)),pPath);
+		}
+
+	}
+	return S_OK;
 }
 
 

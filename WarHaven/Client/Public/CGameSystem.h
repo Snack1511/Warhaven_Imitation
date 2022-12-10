@@ -17,7 +17,7 @@ class CTeamConnector;
 class CAIPersonality;
 class CTable_Conditions;
 class CBehavior;
-
+class CPath;
 class CGameSystem
 {
 	DECLARE_SINGLETON(CGameSystem)
@@ -109,15 +109,14 @@ private:
 
 private:
 	/* 트리거 (거점)을 map으로 들고 있기. */
-	map<_hashcode, CPath*>	m_mapAllTriggers;
+	map<_hashcode, CPath*>	m_mapAllPathes;
 
 private:
 	HRESULT					SetUp_AllPlayerInfos();
-
+	HRESULT					SetUp_AllPathes();
 private:
 	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();
-
 private:
 
 
