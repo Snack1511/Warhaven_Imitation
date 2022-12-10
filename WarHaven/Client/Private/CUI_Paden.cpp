@@ -72,32 +72,17 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 
 	if (strPadenPointKey == "Paden_Trigger_A")
 	{
-		m_fConquestTime[Point_A] = fConquestTime;
-		m_fMaxConquestTime[Point_A] = fMaxConquestTime;
 		m_fConquestRatio[Point_A] = fConquestRatio;
-
-		cout << Point_A << " : " << fConquestTime << " : " << fMaxConquestTime << endl;
-		cout << Point_A << " : " << m_fConquestRatio[Point_A] << endl;
 	}
 
 	if (strPadenPointKey == "Paden_Trigger_R")
 	{
-		m_fConquestTime[Point_R] = fConquestTime;
-		m_fMaxConquestTime[Point_R] = fMaxConquestTime;
 		m_fConquestRatio[Point_R] = fConquestRatio;
-
-		cout << Point_R << " : " << fConquestTime << " : " << fMaxConquestTime << endl;
-		cout << Point_R << " : " << m_fConquestRatio[Point_R] << endl;
 	}
 
 	if (strPadenPointKey == "Paden_Trigger_C")
 	{
-		m_fConquestTime[Point_C] = fConquestTime;
-		m_fMaxConquestTime[Point_C] = fMaxConquestTime;
 		m_fConquestRatio[Point_C] = fConquestRatio;
-
-		cout << Point_C << " : " << fConquestTime << " : " << fMaxConquestTime << endl;
-		cout << Point_C << " : " << m_fConquestRatio[Point_C] << endl;
 	}
 }
 
