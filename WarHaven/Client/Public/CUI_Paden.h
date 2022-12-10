@@ -21,6 +21,9 @@ public:
 	virtual void Set_Shader_PointGauge_R(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName);
 
+	virtual void Set_Shader_ScoreGauge_Red(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_ScoreGauge_Blue(CShader* pShader, const char* pConstName);
+
 public:
 	void Set_ScoreNum(_uint iTeamType, _uint iScore);
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
@@ -67,9 +70,7 @@ private:	// 각 팀별 스코어
 	_bool m_bIsDisableNum = false;
 	_bool m_bIsEnableNum = false;
 
-	_uint m_iMaxScore = 100;
-	_uint m_iCurScore = 100;
-	_float m_fScoreRatio = 0.f;
+	_float m_fScoreRatio[Team_End] = { 1 - 0.7, 0.7f };
 
 private:
 	void Create_ScoreNum();
@@ -78,7 +79,7 @@ private:
 	enum ScoreGauge { Gauge_BG, Gauge_Bar, Gauge_Icon, Gauge_End };
 
 	CUI_Object* m_pScoreGauge[Gauge_End];
-	CUI_Object* m_pArrScoreGauge[Gauge_End][2];
+	CUI_Object* m_pArrScoreGauge[Gauge_End][Team_End];
 
 private:
 	void Create_ScoreGauge();

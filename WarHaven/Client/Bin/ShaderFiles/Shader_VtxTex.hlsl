@@ -17,6 +17,7 @@ vector g_vFlag;
 vector g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 float g_fValue;
+bool bFlip;
 
 float g_fHpRatio;
 float g_fHeroGaugeRatio;
@@ -435,8 +436,16 @@ PS_OUT PS_HorizontalGauge(PS_IN In)
     Out.vColor *= g_vColor;
     Out.vColor.w *= g_fAlpha;
     
-    if (In.vTexUV.x > g_fValue)
-        discard;
+    if (bFlip)
+    {
+        if (In.vTexUV.x < g_fValue)
+            discard;
+    }
+    else
+    {
+        if (In.vTexUV.x > g_fValue)
+            discard;
+    }
     
     return Out;
 }

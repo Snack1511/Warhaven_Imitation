@@ -26,6 +26,11 @@ HRESULT CUI_Paden::Start()
 
 	Bind_Shader();
 
+	m_pInGameTimer->SetActive(true);
+	SetActive_ScoreGauge(true);
+	SetActive_ScoreNum(true);
+	SetActive_PointUI(true);
+
 	return S_OK;
 }
 
@@ -42,6 +47,22 @@ void CUI_Paden::Set_Shader_PointGauge_R(CShader* pShader, const char* pConstName
 void CUI_Paden::Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
+}
+
+void CUI_Paden::Set_Shader_ScoreGauge_Red(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Red], sizeof(_float));
+
+	_bool bIsGaugeFlip = true;
+	pShader->Set_RawValue("bFlip", &bIsGaugeFlip, sizeof(_bool));
+}
+
+void CUI_Paden::Set_Shader_ScoreGauge_Blue(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Blue], sizeof(_float));
+
+	_bool bIsGaugeFlip = false;
+	pShader->Set_RawValue("bFlip", &bIsGaugeFlip, sizeof(_bool));
 }
 
 void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
@@ -251,6 +272,8 @@ void CUI_Paden::My_Tick()
 
 	Update_InGameTimer();
 
+
+
 	if (m_bIsChangeNum)
 	{
 		if (m_bIsDisableNum)
@@ -395,6 +418,8 @@ void CUI_Paden::Create_ScoreGauge()
 			}
 			else if (i == Gauge_Bar)
 			{
+				GET_COMPONENT_FROM(m_pScoreGauge[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
+
 				GET_COMPONENT_FROM(m_pScoreGauge[i], CTexture)->Remove_Texture(0);
 				Read_Texture(m_pScoreGauge[i], "/Paden/TopGauge", "Bar");
 
@@ -556,4 +581,7 @@ void CUI_Paden::Bind_Shader()
 
 	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_C], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrProjPointUI[PU_Gauge][Point_C], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
+
+	GET_COMPONENT_FROM(m_pArrScoreGauge[Gauge_Bar][Team_Red], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_ScoreGauge_Red, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrScoreGauge[Gauge_Bar][Team_Blue], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_ScoreGauge_Blue, this, placeholders::_1, "g_fValue");
 }
