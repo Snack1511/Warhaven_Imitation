@@ -3,6 +3,8 @@
 
 BEGIN(Client)
 
+class CAIController;
+
 class CPath
 {
 	DECLARE_PROTOTYPE(CPath);
@@ -10,12 +12,12 @@ class CPath
 private:
 	CPath();
 	~CPath();
-	friend class CPlayer;
+	friend class CAIController;
 	friend class CWindow_Path;
-	friend class CPositionTable;
+	friend class CGameSystem;
 
 public:
-	static CPath* Create(string wstrKey);
+	static CPath* Create(string strKey);
 
 public:
 	HRESULT	Initialize();
@@ -28,6 +30,8 @@ public:
 	_float4	Find_NearestPosition();
 
 private:
+	CAIController* m_pOwnerController = nullptr;
+
 	string		m_strName;
 
 	/* 진행해야 될 경로 */

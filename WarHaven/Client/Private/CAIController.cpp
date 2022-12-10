@@ -7,6 +7,9 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "CBehavior.h"
+
+#include "CPath.h"
+
 CAIController::CAIController(_uint iGroupID)
 	: CComponent(iGroupID)
 {
@@ -126,7 +129,7 @@ void CAIController::Late_Tick()
 
 void CAIController::Release()
 {
-
+	SAFE_DELETE(m_pCurPath);
 }
 
 void CAIController::OnEnable()
@@ -141,6 +144,13 @@ void CAIController::OnDisable()
 
 void CAIController::Ready_Controller()
 {
+	/* 현재 타고 있는 Path 갱신 */
+
+	if (m_pCurPath)
+	{
+		m_pCurPath->Update_CurrentIndex(m_pOwnerPlayer->Get_WorldPos());
+	}
+
 	for (auto& Value : m_NearObjectList)
 	{
 		CPlayer* pPlayer = static_cast<CPlayer*>(Value);

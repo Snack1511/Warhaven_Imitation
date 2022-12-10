@@ -36,7 +36,6 @@ private:
 		vector<CDebugObject*>	vecLineBox;
 		_bool	bSelected = false;
 		_uint	iCurSelectedPositionIdx = 99999;
-
 	};
 
 	vector<PATH_DESC>	m_vecPathDesc;
@@ -57,5 +56,6 @@ private:
 	void	Create_NewPath();
 
 	void	ReMake_Lines(_uint iCurPathIndex);
+	void	Load_AllPathes();
 };
 END

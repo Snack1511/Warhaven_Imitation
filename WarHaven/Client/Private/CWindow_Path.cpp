@@ -82,6 +82,9 @@ HRESULT CWindow_Path::Render()
 	if (FAILED(__super::Begin()))
 		return E_FAIL;
 
+	if (ImGui::Button("Load_All"))
+		Load_AllPathes();
+
 	/* list box */
 	if (ImGui::CollapsingHeader("- PATH LIST -"))
 	{
@@ -183,8 +186,6 @@ HRESULT CWindow_Path::Render()
 							++iter;
 
 						m_vecPathDesc[m_iCurSelectedIndex].pPath->m_vecPositions.erase(iter);
-
-
 
 						DELETE_GAMEOBJECT(m_vecPathDesc[m_iCurSelectedIndex].vecDebugBoxes[m_vecPathDesc[m_iCurSelectedIndex].iCurSelectedPositionIdx]);
 						auto iter2 = m_vecPathDesc[m_iCurSelectedIndex].vecDebugBoxes.begin();
@@ -462,5 +463,35 @@ void CWindow_Path::ReMake_Lines(_uint iCurPathIndex)
 		pDebugLine->Get_Transform()->Set_Look(vDir);
 		CREATE_GAMEOBJECT(pDebugLine, GROUP_PROP);
 		m_vecPathDesc[m_iCurSelectedIndex].vecLineBox.push_back(pDebugLine);
+	}
+}
+
+void CWindow_Path::Load_AllPathes()
+{
+	for (auto& elem : m_vecPathDesc)
+		SAFE_DELETE(elem.pPath);
+	m_vecPathDesc.clear();
+
+	map<_hashcode, CPath*>	mapPathes = CGameSystem::Get_Instance()->Get_AllPathes();
+
+	_uint iPlusIndex = 0;
+	for (auto& elem : mapPathes)
+	{
+		PATH_DESC	tDesc;
+
+		tDesc.pPath = elem.second->Clone();
+		
+		for (_uint i = 0; i < tDesc.pPath->m_iNumPositions; ++i)
+		{
+			//debugbox »ý¼º
+			CDebugObject* pDebugObject = CDebugObject::Create(tDesc.pPath->m_vecPositions[i]);
+			pDebugObject->Initialize();
+			pDebugObject->Set_Green();
+			CREATE_GAMEOBJECT(pDebugObject, GROUP_DEBUG);
+			tDesc.vecDebugBoxes.push_back(pDebugObject);
+		}
+
+		m_vecPathDesc.push_back(tDesc);
+		ReMake_Lines(iPlusIndex++);
 	}
 }

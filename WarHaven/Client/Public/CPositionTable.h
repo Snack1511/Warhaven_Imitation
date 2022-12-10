@@ -27,17 +27,14 @@ public:
 
 public:
 	HRESULT					Load_Position(string strFileKey);
-	HRESULT					Load_Path(string strFileKey);
 
 public:
 	_float4					Find_Position(string strPositionKey);
 	void					Add_Position(string strPositionKey, _float4 vPosition);
 
-	CPath*					Find_Path(string strPathKey);
 
 private:
 	map<_hashcode, _float4>	m_mapPosition;
-	map<_hashcode, CPath*>	m_mapPathes;
 };
 
 END

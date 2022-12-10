@@ -332,6 +332,11 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 	}
 }
 
+_float4 CPlayer::Get_WorldPos()
+{
+	return m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+}
+
 void CPlayer::Reserve_State(_uint eState)
 {
 	m_pCurrentUnit->Reserve_State(STATE_TYPE(eState));

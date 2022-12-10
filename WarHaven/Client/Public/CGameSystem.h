@@ -17,6 +17,8 @@ class CTeamConnector;
 class CAIPersonality;
 class CTable_Conditions;
 class CBehavior;
+class CPath;
+class CAIController;
 
 class CGameSystem
 {
@@ -50,9 +52,6 @@ public: /* BootCamp */
 
 	HRESULT					BootCamp_EnvironmentEffect();
 
-
-
-
 public:	// Paden
 	HRESULT					On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 
@@ -79,12 +78,15 @@ public: /* Position Table */
 
 public: /* Behavior Table */
 	CTable_Conditions* Get_BXTable() { return m_pConditionTable; }
-	CBehavior* Clone_Behavior(wstring wstrBXKey);
+	CBehavior*		Clone_Behavior(wstring wstrBXKey);
 
+public: /* Pathes */
+	CPath*			Find_Path(string strPathKey);
+	CPath*			Clone_Path(string strPathKey, CAIController* pOwnerController);
+	map<_hashcode, CPath*>& Get_AllPathes() { return m_mapAllPathes; }
 
 public:	
 	CTrigger*					Find_Trigger(string strTriggerKey);
-
 
 public:
 	CPlayerInfo* Find_PlayerInfo(_hashcode hcCode);
@@ -108,8 +110,8 @@ private:
 	map<_hashcode, CTrigger*>	m_mapAllTriggers;
 
 private:
-	/* 트리거 (거점)을 map으로 들고 있기. */
-	map<_hashcode, CPath*>	m_mapAllTriggers;
+	/* Path들 map으로 들고 있기. */
+	map<_hashcode, CPath*>	m_mapAllPathes;
 
 private:
 	HRESULT					SetUp_AllPlayerInfos();

@@ -52,9 +52,11 @@
 
 */
 BEGIN(Engine)
+
 class CGameObject;
 class CTile;
 class CTileLayer;
+
 END
 
 BEGIN(Client)
@@ -64,6 +66,7 @@ class CPlayer;
 class CAIPersonality;
 class CBehavior;
 class CTrigger;
+class CPath;
 
 class CAIController :
     public CComponent
@@ -76,6 +79,7 @@ private:
     CAIController(_uint iGroupID);
     CAIController(const CAIController& rhs);
     virtual ~CAIController();
+
 public:
     static CAIController* Create(CAIPersonality* pPersonality);
 
@@ -90,17 +94,25 @@ public:
 
     virtual void OnEnable() override;
     virtual void OnDisable() override;
+
 public:
     void Ready_Controller();
+
 private:
     CPlayer* m_pOwnerPlayer = nullptr;
     CAIPersonality* m_pPersonality = nullptr;
     list<CGameObject*> m_NearObjectList;
+   
+    CBehavior* m_pCurrentBehavior = nullptr;
+    list<CBehavior*> m_BehaviorList;
+
+private:
+    /* AI 판단에 필요한 정보들 */
     list<CPlayer*> m_NearAlliesList;
     list<CPlayer*> m_NearEnemyList;
     list<CTrigger*> m_NearTriggerList;
-    CBehavior* m_pCurrentBehavior = nullptr;
-    list<CBehavior*> m_BehaviorList;
+    /* 현재 타고 있는 경로*/
+    CPath* m_pCurPath = nullptr;
 };
 
 END

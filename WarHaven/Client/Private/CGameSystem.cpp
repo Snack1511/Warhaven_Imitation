@@ -24,6 +24,8 @@
 
 #include "CDominion_Effect.h"
 
+#include "CPath.h"
+
 #pragma region AI ¼ºÇâ
 #include "CTable_Conditions.h"
 #include "CPersonality_Default.h"
@@ -92,6 +94,12 @@ void CGameSystem::Release()
         SAFE_DELETE(elem.second);
     }
     m_mapAllPlayers.clear();
+
+	for (auto& elem : m_mapAllPathes)
+	{
+		SAFE_DELETE(elem.second);
+	}
+	m_mapAllPathes.clear();
 }
 
 HRESULT CGameSystem::On_ExitLevel()
@@ -1001,6 +1009,29 @@ CBehavior* CGameSystem::Clone_Behavior(wstring wstrBXKey)
 	CBehavior* pBX = m_pConditionTable->Find_Behavior(wstrBXKey);
 	if (pBX)
 		return pBX->Clone();
+
+	return nullptr;
+}
+
+CPath* CGameSystem::Find_Path(string strPathKey)
+{
+	auto iter = m_mapAllPathes.find(Convert_ToHash(strPathKey));
+
+	if (iter == m_mapAllPathes.end())
+		return nullptr;
+
+	return iter->second;
+}
+
+CPath* CGameSystem::Clone_Path(string strPathKey, CAIController* pOwnerController)
+{
+	CPath* pPath = Find_Path(strPathKey);
+	if (pPath)
+	{
+		pPath = pPath->Clone();
+		pPath->m_pOwnerController = pOwnerController;
+		return pPath;
+	}
 
 	return nullptr;
 }

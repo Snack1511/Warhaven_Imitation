@@ -100,6 +100,8 @@ public:
 	void	Respawn_Unit(_float4 vPos, CLASS_TYPE eClass);
 
 public:
+	_float4	Get_WorldPos();
+
 	_uint	Get_ChangeHeroIndex(_uint eClass) { return m_iChangeHeroAnimIndex[eClass]; }
 	_uint	Get_DefaultReserveStateIndex(_uint eClass) { return m_iReserveStateDefault[eClass]; }
 

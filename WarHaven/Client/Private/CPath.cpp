@@ -38,7 +38,7 @@ HRESULT CPath::Initialize()
     if (!readFile.is_open())
     {
         Call_MsgBox(L"Load ½ÇÆÐ ??!?! : CPath");
-        return;
+        return E_FAIL;
     }
 
     readFile.read((char*)&m_iNumPositions, sizeof(_uint));
@@ -66,6 +66,8 @@ void CPath::Release()
 
 _float4 CPath::Get_CurDir()
 {
+    
+
     return _float4();
 }
 
