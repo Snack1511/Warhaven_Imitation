@@ -46,14 +46,15 @@ private:
 private:
     void Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_Winning(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    //void Check_EmptyEnemyInTerritory(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_Losing(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_LowHealthPoint(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-
 private:
     void  Select_Leader(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
-    //void  Select_NearEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_NearEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_NearAllies(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_NearTrigger(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     //void  Select_LowHealthEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
-    //void  Select_NearTrigger(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
 
 private:
     map<_hashcode, function<void(_bool&, CPlayer*, CAIController*)>> m_OtherConditions;

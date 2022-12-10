@@ -90,7 +90,10 @@ void CAIController::Tick()
 		}
 	}
 
-
+	if (nullptr == pNextBehavior)
+	{
+		m_pPersonality->Get_Patrol();
+	}
 
 	if(m_pCurrentBehavior != pNextBehavior)
 	{
@@ -101,9 +104,11 @@ void CAIController::Tick()
 
 		pBehaviorDesc->eCurType = pNextBehavior->Get_BehaviorType();
 		m_pCurrentBehavior = pNextBehavior;
+		
+		m_pOwnerPlayer->On_ChangeBehavior(pBehaviorDesc);
 
-		m_pOwnerPlayer->Set_TargetPlayer(reinterpret_cast<CPlayer*>(pBehaviorDesc->pAlliesPlayer));
-		m_pOwnerPlayer->Reserve_State(pBehaviorDesc->iStateType);
+		//m_pOwnerPlayer->Set_TargetPlayer(reinterpret_cast<CPlayer*>(pBehaviorDesc->pAlliesPlayer));
+		//m_pOwnerPlayer->Reserve_State(pBehaviorDesc->iStateType);
 
 	}
 	//NextBehavior = 조건판단

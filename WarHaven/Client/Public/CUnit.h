@@ -351,6 +351,8 @@ protected:
 
 public:
 	void	Start_Reborn();
+	//AI가 Behavior를 변경할 때 호출
+	virtual void On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
 
 
 	/* 상태 체크 함수 */
@@ -359,7 +361,6 @@ private:
 	void		On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo);
 	//내가 가드했을 떄 들어오는 함수
 	void		On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo);
-
 
 	/* 딱 체력 0된 시점에 호출되는 함수 */
 	void		On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos);

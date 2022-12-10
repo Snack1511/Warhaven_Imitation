@@ -187,6 +187,28 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 		
 }
 
+void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
+{
+	if (nullptr == pBehaviorDesc)
+		assert(0);
+
+	switch (pBehaviorDesc->eCurType)
+	{
+	case eBehaviorType::ePatrol:
+		//상태변경
+		break;
+	case eBehaviorType::eFollow:
+		//상태변경
+		break;
+	case eBehaviorType::eAttack:
+		//상태변경
+		break;
+	default:
+		assert(0);
+		break;
+	}
+}
+
 void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	__super::Effect_Hit(pOtherUnit, vHitPos);

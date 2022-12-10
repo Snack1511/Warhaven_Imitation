@@ -91,6 +91,10 @@ public:
     virtual void OnEnable() override;
     virtual void OnDisable() override;
 public:
+    list<CPlayer*> Get_NearAllies() { return m_NearAlliesList; }
+    list<CPlayer*> Get_NearEnemy() { return m_NearEnemyList; }
+    list<CTrigger*> Get_NearTrigger() { return m_NearTriggerList; }
+public:
     void Ready_Controller();
 private:
     CPlayer* m_pOwnerPlayer = nullptr;

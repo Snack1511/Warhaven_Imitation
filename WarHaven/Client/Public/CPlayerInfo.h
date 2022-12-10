@@ -129,7 +129,7 @@ protected:
 	_bool	Can_Make_Player(const PLAYER_INFO& tInfo);
 
 protected:
-	HRESULT	SetUp_AIPersonality();
+	virtual HRESULT	SetUp_AIPersonality();
 
 private:
 	void	Set_CustomHead_Warrior(eCUSTOM_HEAD eHeadEnum);

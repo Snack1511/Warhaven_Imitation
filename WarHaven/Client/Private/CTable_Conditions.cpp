@@ -72,6 +72,8 @@ HRESULT CTable_Conditions::SetUp_Behaviors()
 {
     CBehavior* pBehavior = nullptr; 
     Add_Behavior(pBehavior, wstring(L"Follow"), eBehaviorType::eFollow);
+    Add_Behavior(pBehavior, wstring(L"Patrol"), eBehaviorType::ePatrol);
+    Add_Behavior(pBehavior, wstring(L"Attack"), eBehaviorType::eAttack);
 
     return S_OK;
 }
@@ -162,9 +164,63 @@ void CTable_Conditions::Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlaye
     OutCondition = true;
 }
 
+
 void CTable_Conditions::Select_Leader(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
     //OutDesc->pAlliesPlayer = pPlayer->Get_Squad()->Get_LeaderPlayer();
     OutDesc->pAlliesPlayer = PLAYER;
 }
+
+void CTable_Conditions::Select_NearEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+{
+    _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+
+    list<CPlayer*> Enemies = pAIController->Get_NearEnemy();
+    Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
+        {
+            _float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            _float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+                return true;
+            else return false;
+        });
+
+    OutDesc->pTriggerPtr = Enemies.front();
+}
+
+void CTable_Conditions::Select_NearAllies(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+{
+    _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+
+    list<CPlayer*> Allies = pAIController->Get_NearAllies();
+    Allies.sort([&MyPositoin](auto& Sour, auto& Dest)
+        {
+            _float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            _float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+                return true;
+            else return false;
+        });
+
+    OutDesc->pAlliesPlayer = Allies.front();
+}
+
+void CTable_Conditions::Select_NearTrigger(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+{
+    _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+
+    list<CTrigger*> Triggers = pAIController->Get_NearTrigger();
+    Triggers.sort([&MyPositoin](auto& Sour, auto& Dest)
+        {
+            _float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            _float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+                return true;
+            else return false;
+        });
+
+    OutDesc->pEnemyPlayer = Triggers.front();
+}
+
+
 

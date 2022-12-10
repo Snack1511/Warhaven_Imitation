@@ -1948,14 +1948,14 @@
     <Filter Include="03. Instances\03. Component\06. AI\Personality\00. Default">
       <UniqueIdentifier>{9083e5c4-985b-43cc-a527-dcd3080b8973}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\03. Component\06. AI\Table_CheckBehavior">
-      <UniqueIdentifier>{921b456f-d77e-426c-b40b-bffe0c831d16}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\03. Component\06. AI\Behavior">
       <UniqueIdentifier>{e1b117db-8535-437c-9106-7bd9cf5006c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Oper">
       <UniqueIdentifier>{5dec1cd7-cce1-461a-9e2c-769502ad5e81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\06. AI\Table_Conditions">
+      <UniqueIdentifier>{921b456f-d77e-426c-b40b-bffe0c831d16}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -3457,7 +3457,7 @@
       <Filter>03. Instances\03. Component\06. AI\Personality\00. Default</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTable_Conditions.h">
-      <Filter>03. Instances\03. Component\06. AI\Table_CheckBehavior</Filter>
+      <Filter>03. Instances\03. Component\06. AI\Table_Conditions</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBehavior.h">
       <Filter>03. Instances\03. Component\06. AI\Behavior</Filter>
@@ -4946,7 +4946,7 @@
       <Filter>03. Instances\03. Component\06. AI\Personality\00. Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTable_Conditions.cpp">
-      <Filter>03. Instances\03. Component\06. AI\Table_CheckBehavior</Filter>
+      <Filter>03. Instances\03. Component\06. AI\Table_Conditions</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBehavior.cpp">
       <Filter>03. Instances\03. Component\06. AI\Behavior</Filter>
