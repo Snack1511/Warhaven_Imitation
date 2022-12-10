@@ -7,6 +7,7 @@
 #include "CUser.h"
 #include "CShader.h"
 #include "CGameSystem.h"
+#include "CPlayerInfo.h"
 
 CUI_Oper::CUI_Oper()
 {
@@ -40,13 +41,14 @@ HRESULT CUI_Oper::Initialize_Prototype()
 
 HRESULT CUI_Oper::Start()
 {
-	__super::Start();
-
 	Bind_Shader();
+	Bind_Btn();
 
 	CUser::Get_Instance()->SetActive_HUD(false);
 
 	SetActive_BG(true);
+
+	__super::Start();
 
 	return S_OK;
 }
@@ -59,6 +61,39 @@ void CUI_Oper::Set_Shader_Smoke(CShader* pShader, const char* pConstName)
 void CUI_Oper::Set_Shader_Timer(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fTimerRatio, sizeof(_float));
+}
+
+void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
+{
+	m_iPrvSelectEventNum = m_iCurSelectEventNum;
+	m_iCurSelectEventNum = iEventNum;
+
+	if (m_iPrvSelectEventNum == iEventNum)
+		return;
+
+	for (int i = 0; i < CP_End; ++i)
+	{
+		m_pArrCharacterPort[i][m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
+		m_pArrCharacterPort[i][iEventNum]->DoScale(10.f, 0.1f);
+	}
+
+	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
+}
+
+void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
+{
+	//DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
+	//
+	//_float4 vPos = m_pArrOperPointUI[PT_Point][iEventNum]->Get_Pos();
+	//m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
+	//
+	//GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Set_CurTextureIndex(1);
+	//m_pBriefingUI[BU_Icon]->Set_Scale(20.f, 15.f);
+	//m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.f, 0.6f, 0.f, 1.f));
+	//m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
+	//m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
+	//
+	//ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 }
 
 void CUI_Oper::My_Tick()
@@ -537,7 +572,6 @@ void CUI_Oper::Create_CharacterSelect()
 
 		if (i == CP_PortBG)
 		{
-
 			m_pCharacterPort[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBG.dds"));
 
 			m_pCharacterPort[i]->Set_Scale(65.f);
@@ -946,4 +980,17 @@ void CUI_Oper::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pOperBG[OB_Smoke], CShader)->CallBack_SetRawValues += bind(&CUI_Oper::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pTimer[TU_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_Oper::Set_Shader_Timer, this, placeholders::_1, "g_fValue");
+}
+
+void CUI_Oper::Bind_Btn()
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pArrCharacterPort[CP_SelectBG][i]->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_SelectBG, this, i);
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		// m_pArrStrongHoldUI[SP_BG][i]->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_Point, this, i);
+	}
 }

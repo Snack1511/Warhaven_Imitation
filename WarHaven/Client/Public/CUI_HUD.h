@@ -44,10 +44,6 @@ private:
 	void Active_CharacterWindow();
 
 public:
-	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
-	virtual void On_PointDown_Point(const _uint& iEventNum);
-
-public:
 	virtual void Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName);
 
 public:

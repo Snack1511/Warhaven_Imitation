@@ -73,12 +73,16 @@ void CButton::Start()
 	__super::Start();
 
 	m_pOwnerUI = static_cast<CUI_Object*>(m_pOwner);
-
-	Set_Rect();
 }
 
 void CButton::Tick()
 {
+	if (!m_bSetRect)
+	{
+		Set_Rect();
+		m_bSetRect = true;
+	}
+
 	GetCursorPos(&m_ptMouse);
 	ScreenToClient(g_hWnd, &m_ptMouse);
 }

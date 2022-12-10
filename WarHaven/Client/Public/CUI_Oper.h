@@ -21,6 +21,10 @@ public:
 	virtual void Set_Shader_Timer(CShader* pShader, const char* pConstName);
 
 public:
+	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
+	virtual void On_PointDown_StrongHoldPoint(const _uint& iEventNum);
+
+public:
 	void SetActive_BG(_bool value);
 	void SetActive_Profile(_bool value);
 
@@ -119,7 +123,7 @@ private:	// 작전회의 타이머
 	enum TimerUI { TU_BG, TU_Bar, TU_End };
 	CUI_Object* m_pTimer[TU_End];
 
-	_float m_fMaxOperTime = 3.f;
+	_float m_fMaxOperTime = 30.f;
 	_float m_fOperTime = 0.f;
 	_float m_fTimerRatio = 1.f;
 
@@ -128,6 +132,7 @@ private:
 
 private:
 	void Bind_Shader();
+	void Bind_Btn();
 };
 
 END
