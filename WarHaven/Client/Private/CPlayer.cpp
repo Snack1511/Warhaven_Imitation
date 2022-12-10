@@ -70,7 +70,7 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
-
+	//m_DeadLights.clear();
 }
 
 CPlayer* CPlayer::Create(CPlayerInfo* pPlayerInfo)

@@ -112,6 +112,7 @@ private:
 	_float4		Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDelta);
 	_bool		FrustumCheck(_uint iIndex);
 	void		Sort_Particle(_uint iFinalNumInstance);
+	void		Bone_Controll();
 
 };
 

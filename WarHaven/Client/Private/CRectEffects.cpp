@@ -469,7 +469,8 @@ HRESULT CRectEffects::Initialize()
 		if (m_pFollowTarget)
 		{
 			m_pRefBone = GET_COMPONENT_FROM(m_pFollowTarget, CModel)->Find_HierarchyNode(m_strBoneName.c_str());
-			Stick_RefBone();
+
+			Bone_Controll();
 		}
 	}
 	
@@ -778,14 +779,13 @@ void CRectEffects::OnEnable()
 	m_bLoopControl = m_bLoop;
 	//시작위치
 
-
+	Bone_Controll();
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
 		Reset_Instance(i);
 	}
 
-	Stick_RefBone();
 }
 
 _bool CRectEffects::Fade_Lerp(_uint iIndex)
@@ -890,16 +890,9 @@ void CRectEffects::Dead_Instance(_uint iIndex)
 {
 	if (m_bLoopControl)
 	{
-		if (m_fLoopTime == 0)
+		if (m_fLoopTime <= 0.f)
 		{
 			Reset_Instance(iIndex);
-
-			if (!m_pRefBone)
-				return;
-			_float4 vPos = m_vOffsetPos;
-			_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
-			vPos = vPos.MultiplyCoord(matBone).Normalize();
-			m_pDatas[iIndex].RectInstance.vTranslation = vPos;
 		}
 		else if (m_fLoopTimeAcc <= m_fLoopTime)
 			Reset_Instance(iIndex);
@@ -1201,6 +1194,17 @@ void CRectEffects::Sort_Particle(_uint iFinalNumInstance)
 		});
 }
 
+void CRectEffects::Bone_Controll()
+{
+	if (m_bLoopControl && (0.f >= m_fLoopTime) && m_pRefBone && !m_bKeepSticked) //무한루프이고, 달린 뼈가 있을때
+	{
+		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
+	}
+	else
+		Stick_RefBone();
+}
+
+
 void CRectEffects::Stick_RefBone()
 {
 	if (!m_pRefBone)
@@ -1213,7 +1217,7 @@ void CRectEffects::Stick_RefBone()
 	vPos = vPos.MultiplyCoord(matBone);
 	m_pTransform->Set_World(WORLD_POS, vPos);
 
-	m_pTransform->Make_WorldMatrix();
+	m_pTransform->Make_WorldMatrix(); 
 }
 
 
@@ -1230,6 +1234,13 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	if (m_bLoopControl)
 	{
 		m_pDatas[iIndex].InstancingData.fSpeed = m_pDatas[iIndex].InstancingData.fOriginSpeed;
+
+		if ((0.f >= m_fLoopTime) && m_pRefBone && !m_bKeepSticked)
+		{
+			_float4 vPos = m_vOffsetPos;
+			_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
+			m_pDatas[iIndex].RectInstance.vTranslation = vPos.MultiplyCoord(matBone);
+		}
 	}
 
 	m_pDatas[iIndex].InstancingData.vColor.w = 0.f;

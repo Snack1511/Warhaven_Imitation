@@ -704,11 +704,27 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke_Right"), "KillSmoke_Right")))
 		return E_FAIL;
+	
+
+	/*Transform*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HenshinFlare"), "HenshinFlare")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HenshinParticle"), "HenshinParticle")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"UnHenshin"), "UnHenshin")))
+		return E_FAIL;
+
+		/*valkyrie*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Wing"), "Wing")))
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Shield_Attack"), "Shield_Attack")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Shield_Flare"), "Shield_Flare")))
 		return E_FAIL;
-
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"FionaParring"), "FionaParring")))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FionaParring"), Convert_ToHash(L"FionaParring_Mesh_0"))))
+		return E_FAIL;
 
 	/*environment*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"TrainigRoomSmoke"), "TrainigRoomSmoke")))
@@ -729,16 +745,7 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"ash"), "ash")))
 		return E_FAIL;
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HenshinFlare"), "HenshinFlare")))
-		return E_FAIL;
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HenshinParticle"), "HenshinParticle")))
-		return E_FAIL;
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"UnHenshin"), "UnHenshin")))
-		return E_FAIL;
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"FionaParring"), "FionaParring")))
-		return E_FAIL; 
-	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FionaParring"), Convert_ToHash(L"FionaParring_Mesh_0"))))
-		return E_FAIL;		
+		
 
 	/* Dead Body */
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Warrior"), Convert_ToHash(L"WarriorDead_Slice0"))))
