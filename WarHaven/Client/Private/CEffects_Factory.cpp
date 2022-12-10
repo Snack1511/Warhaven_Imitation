@@ -791,7 +791,15 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 
 	/*Dominion Aura*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BlueAura_A"), "BlueAura_A")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BlueAura_R"), "BlueAura_R")))
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"BlueAura_C"), "BlueAura_C")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"RedAura_A"), "RedAura_A")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"RedAura_R"), "RedAura_R")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"RedAura_C"), "RedAura_C")))
 		return E_FAIL;

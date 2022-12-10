@@ -155,7 +155,7 @@ namespace Engine
 		ofstream writeFile;
 
 		time_t timer;
-		struct tm* t;
+		struct tm* t = nullptr;
 		timer = time(NULL); // 1970년 1월 1일 0시 0분 0초부터 시작하여 현재까지의 초
 		localtime_s(t, &timer);
 		string strDumpPath = "../../Log/Log_";

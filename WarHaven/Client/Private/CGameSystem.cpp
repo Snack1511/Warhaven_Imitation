@@ -977,10 +977,19 @@ void CGameSystem::On_StartGame()
 
 	}
 
-    //if(m_pTeamConnector[0]->m_bIsMainPlayerTeam)
-    //    TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
-    //else
-    //    TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]); //Test
+	/*점령 이펙트 테스트코드*/
+	//if (m_pTeamConnector[0]->m_bIsMainPlayerTeam)
+	//{
+	//	TRIGGER_PADEN("Paden_Trigger_A")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
+	//	TRIGGER_PADEN("Paden_Trigger_R")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
+ //       TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
+	//}
+	//else
+	//{
+	//	TRIGGER_PADEN("Paden_Trigger_A")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]);
+	//	TRIGGER_PADEN("Paden_Trigger_R")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]);
+ //       TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]);
+	//}
 
 
 
