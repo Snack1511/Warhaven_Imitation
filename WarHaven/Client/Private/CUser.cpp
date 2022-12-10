@@ -293,9 +293,9 @@ void CUser::Interat_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTri
 	m_pUI_Paden->Interact_PointUI(strPadenPointKey, iTeamType, iTriggerState);
 }
 
-void CUser::Set_ConquestTime(_float fConquestTime, _float fMaxConquestTime)
+void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
-	m_pUI_Paden->Set_ConquestTime(fConquestTime, fMaxConquestTime);
+	m_pUI_Paden->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
 }
 
 void CUser::Set_TeamScore(_uint iTeamType, _uint iScore)

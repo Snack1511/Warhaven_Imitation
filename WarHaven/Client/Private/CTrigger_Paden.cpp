@@ -35,7 +35,6 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 
 void CTrigger_Paden::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
-	CUser::Get_Instance()->Set_ConquestTime(m_fConqueredTimeAcc, m_fConqueredTime);
 }
 
 void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -119,6 +118,8 @@ void CTrigger_Paden::My_Tick()
 	if (m_eTriggerType == ePADEN_TRIGGER_TYPE::eSTART)
 		return;
 
+	CUser::Get_Instance()->Set_ConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
+
 	//1. 둘 중 한쪽만 0일 때
 	if (m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE] != m_iTeamCnt[(_uint)eTEAM_TYPE::eRED])
 	{
@@ -139,7 +140,7 @@ void CTrigger_Paden::My_Tick()
 
 	// 플레이어와 거리가 제일 가까운 트리거만
 	// 혹은 목표로 지정한 트리거만 나침반으로 표시
-
+	
 	if (m_strTriggerName == "Paden_Trigger_A")
 	{
 		CUser::Get_Instance()->Set_ProjStrongHoldUI(0, m_pTransform);

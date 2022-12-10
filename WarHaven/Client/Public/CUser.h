@@ -95,7 +95,7 @@ public:
 
 public:		// ÆÄµ§
 	void Interat_PointUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
-	void Set_ConquestTime(_float fConquestTime, _float fMaxConquestTime);
+	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	
 	void Set_TeamScore(_uint iTeamType, _uint iScore);
 	void Set_ProjStrongHoldUI(_uint iPointIdx, CTransform* pTransform);

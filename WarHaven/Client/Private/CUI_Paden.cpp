@@ -26,11 +26,6 @@ HRESULT CUI_Paden::Start()
 
 	Bind_Shader();
 
-	m_pInGameTimer->SetActive(true);
-	SetActive_ScoreGauge(true);
-	SetActive_ScoreNum(true);
-	SetActive_PointUI(true);
-
 	return S_OK;
 }
 
@@ -71,21 +66,57 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 	}
 }
 
-void CUI_Paden::Set_ConquestTime(_float fConquestTime, _float fMaxConquestTime)
+void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
-	m_fConquestTime = fConquestTime;
-	m_fMaxConquestTime = fMaxConquestTime;
+	_float fConquestRatio = 1 - (fConquestTime / fMaxConquestTime);
+
+	if (strPadenPointKey == "Paden_Trigger_A")
+	{
+		m_fConquestTime[Point_A] = fConquestTime;
+		m_fMaxConquestTime[Point_A] = fMaxConquestTime;
+		m_fConquestRatio[Point_A] = fConquestRatio;
+
+		cout << Point_A << " : " << fConquestTime << " : " << fMaxConquestTime << endl;
+		cout << Point_A << " : " << m_fConquestRatio[Point_A] << endl;
+	}
+
+	if (strPadenPointKey == "Paden_Trigger_R")
+	{
+		m_fConquestTime[Point_R] = fConquestTime;
+		m_fMaxConquestTime[Point_R] = fMaxConquestTime;
+		m_fConquestRatio[Point_R] = fConquestRatio;
+
+		cout << Point_R << " : " << fConquestTime << " : " << fMaxConquestTime << endl;
+		cout << Point_R << " : " << m_fConquestRatio[Point_R] << endl;
+	}
+
+	if (strPadenPointKey == "Paden_Trigger_C")
+	{
+		m_fConquestTime[Point_C] = fConquestTime;
+		m_fMaxConquestTime[Point_C] = fMaxConquestTime;
+		m_fConquestRatio[Point_C] = fConquestRatio;
+
+		cout << Point_C << " : " << fConquestTime << " : " << fMaxConquestTime << endl;
+		cout << Point_C << " : " << m_fConquestRatio[Point_C] << endl;
+	}
 }
 
 void CUI_Paden::Set_Proj_StrongHoldUI(_uint iPointIdx, CTransform* pTransform)
 {
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
-	vNewPos.y += 1.f;
+	vNewPos.y += 2.f;
 
-	/*for (int i = 0; i < PP_End; ++i)
+	for (int i = 0; i < PU_End; ++i)
 	{
-		m_pArrProj_StrongHoldUI[i][iPointIdx]->Set_Pos(vNewPos);
-	}*/
+		if (i == PU_Text)
+		{
+			m_pArrProjPointUI[iPointIdx][i]->Set_PosX(vNewPos.x);
+
+			continue;
+		}
+
+		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vNewPos);
+	}
 }
 
 void CUI_Paden::SetActive_ScoreGauge(_bool value)
@@ -117,6 +148,7 @@ void CUI_Paden::SetActive_PointUI(_bool value)
 		for (int j = 0; j < PU_End; ++j)
 		{
 			m_pArrPointUI[i][j]->SetActive(value);
+			m_pArrProjPointUI[i][j]->SetActive(value);
 		}
 	}
 }
@@ -198,27 +230,6 @@ void CUI_Paden::My_Tick()
 
 	Update_InGameTimer();
 
-	Set_PointTextPosY();
-
-	for (int i = 0; i < Point_End; ++i)
-	{
-		_float fConquestRatio = m_fConquestTime / m_fMaxConquestTime;
-		if (m_fConquestTime >= m_fMaxConquestTime)
-			fConquestRatio = 1.f;
-
-		m_fConquestRatio[i] = 1 - fConquestRatio;
-	}
-
-	if (KEY(X, TAP))
-	{
-		m_iCurScore--;
-	}
-
-	for (int i = 0; i < Team_End; ++i)
-	{
-		Set_ScoreNum(i, m_iCurScore);
-	}
-
 	if (m_bIsChangeNum)
 	{
 		if (m_bIsDisableNum)
@@ -247,6 +258,13 @@ void CUI_Paden::My_Tick()
 			}
 		}
 	}
+}
+
+void CUI_Paden::My_LateTick()
+{
+	__super::My_LateTick();
+
+	Set_PointTextPosY();
 }
 
 void CUI_Paden::OnEnable()
@@ -453,12 +471,16 @@ void CUI_Paden::Create_PointUI()
 		for (int j = 0; j < Point_End; ++j)
 		{
 			m_pArrPointUI[j][i] = m_pPointUI[i]->Clone();
+			m_pArrProjPointUI[j][i] = m_pPointUI[i]->Clone();
 
 			_float fPosX = -50.f + (j * 50.f);
 			m_pArrPointUI[j][i]->Set_PosX(fPosX);
 
 			CREATE_GAMEOBJECT(m_pArrPointUI[j][i], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrPointUI[j][i]);
+
+			CREATE_GAMEOBJECT(m_pArrProjPointUI[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrProjPointUI[j][i]);
 		}
 	}
 }
@@ -472,14 +494,17 @@ void CUI_Paden::Init_PointUI()
 			if (i == Point_A)
 			{
 				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+				GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
 			}
 			else
 			{
 				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+				GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
 
 				if (j == PU_Gauge)
 				{
 					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
 				}
 			}
 		}
@@ -493,12 +518,21 @@ void CUI_Paden::Set_PointTextPosY()
 		_float fPosY = m_pArrPointUI[i][PU_Point]->Get_PosY();
 		_float fTextPosY = fPosY - 2.5f;
 		m_pArrPointUI[i][PU_Text]->Set_PosY(fTextPosY);
+
+		_float fProjPos = m_pArrProjPointUI[i][PU_Point]->Get_PosY();
+		_float fTextProjPosY = fProjPos - 2.5f;
+		m_pArrProjPointUI[i][PU_Text]->Set_PosY(fTextProjPosY);
 	}
 }
 
 void CUI_Paden::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_A], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_A, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrProjPointUI[PU_Gauge][Point_A], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_A, this, placeholders::_1, "g_fValue");
+
 	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_R], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_R, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrProjPointUI[PU_Gauge][Point_R], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_R, this, placeholders::_1, "g_fValue");
+
 	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_C], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrProjPointUI[PU_Gauge][Point_C], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 }
