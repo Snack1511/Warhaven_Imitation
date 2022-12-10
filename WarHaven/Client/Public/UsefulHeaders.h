@@ -25,3 +25,6 @@
 
 #include "Camera.h"
 #include "CPlayer.h"
+
+#include "CGameSystem.h"
+#include "CTable_Conditions.h"

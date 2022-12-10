@@ -17,6 +17,7 @@ CTable_Conditions::CTable_Conditions()
 
 CTable_Conditions::~CTable_Conditions()
 {
+    Release();
 }
 
 CTable_Conditions* CTable_Conditions::Create()
@@ -26,15 +27,16 @@ CTable_Conditions* CTable_Conditions::Create()
     if (FAILED(pInstance->Initialize()))
     {
         Call_MsgBox(L"Failed to Initialize : CTable_Conditions");
-        Safe_Release(pInstance);
+        SAFE_DELETE(pInstance);
     }
 
     return pInstance;
 }
 
-DWORD CTable_Conditions::Release()
+void CTable_Conditions::Release()
 {
-    return 0;
+    for (auto& elem : m_mapAllBehaviors)
+        SAFE_DELETE(elem.second);
 }
 
 #define Add_Condition(ConditionContainer, strFunctionName, Function)\

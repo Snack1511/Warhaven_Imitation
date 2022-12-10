@@ -62,7 +62,8 @@ protected:
 
 public:
 	/* 레벨 로딩시 이 함수를 통해서 Player를 만들어냄 */
-	CPlayer* Make_Player(CAIPersonality* pPersonality = nullptr);
+	CPlayer* Make_Player();
+
 public:
 	CPlayer* Get_Player() { return m_pMyPlayer; }
 	eTEAM_TYPE	Get_TeamType() { return m_eTeamType; }
@@ -92,6 +93,7 @@ public:
 
 public:
 	virtual HRESULT	Initialize() PURE;
+	virtual void Release();
 
 protected:
 	/* GameObject들 포인터 */
@@ -102,6 +104,8 @@ protected:
 protected:
 	/*AI들 전용 변수*/
 	CAIPersonality* m_pPersonality = nullptr;
+
+
 protected:
 	eTEAM_TYPE	m_eTeamType = eTEAM_TYPE::eBLUE;
 	CLASS_TYPE	m_eCurChosenClass = WARRIOR;
@@ -123,6 +127,9 @@ protected:
 protected:
 	/* Player 클래스 만들기 전에 세팅된 정보들이 유효한지 확인 */
 	_bool	Can_Make_Player(const PLAYER_INFO& tInfo);
+
+protected:
+	HRESULT	SetUp_AIPersonality();
 
 private:
 	void	Set_CustomHead_Warrior(eCUSTOM_HEAD eHeadEnum);

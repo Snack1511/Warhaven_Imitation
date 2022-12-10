@@ -27,6 +27,7 @@
 #pragma region AI 성향
 #include "CTable_Conditions.h"
 #include "CPersonality_Default.h"
+#include "CBehavior.h"
 #pragma endregion AI 성향
 
 IMPLEMENT_SINGLETON(CGameSystem);
@@ -70,12 +71,6 @@ HRESULT CGameSystem::Initialize()
 		return E_FAIL;
 	}
 
-    if (FAILED(SetUp_AllAIPersonality()))
-    {
-        Call_MsgBox(L"Failed to SetUp_AllAIPersonality : CGameSystem");
-        return E_FAIL;
-    }
-
 	return S_OK;
 }
 
@@ -87,6 +82,7 @@ HRESULT CGameSystem::Tick()
 void CGameSystem::Release()
 {
 	SAFE_DELETE(m_pPositionTable);
+	SAFE_DELETE(m_pConditionTable);
 
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 		SAFE_DELETE(m_pTeamConnector[i]);
@@ -96,12 +92,6 @@ void CGameSystem::Release()
         SAFE_DELETE(elem.second);
     }
     m_mapAllPlayers.clear();
-
-    for (auto& elem : m_mapAllAIPersonality)
-    {
-        Safe_Release(elem.second);
-    }
-    m_mapAllAIPersonality.clear();
 }
 
 HRESULT CGameSystem::On_ExitLevel()
@@ -142,7 +132,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
 		CPlayer* pEnemy = nullptr;
 
-        pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"), false);
+        pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"));
         pEnemy->Set_OutlineType(CPlayer::eENEMY);
         pEnemy->Set_Postion(vPlayerPos);
         pEnemy->Set_TargetPlayer(pUserPlayer);
@@ -1006,6 +996,15 @@ void CGameSystem::Add_Position(string wstrPositionKey, _float4 vPosition)
 	m_pPositionTable->Add_Position(wstrPositionKey, vPosition);
 }
 
+CBehavior* CGameSystem::Clone_Behavior(wstring wstrBXKey)
+{
+	CBehavior* pBX = m_pConditionTable->Find_Behavior(wstrBXKey);
+	if (pBX)
+		return pBX->Clone();
+
+	return nullptr;
+}
+
 CTrigger* CGameSystem::Find_Trigger(string strTriggerKey)
 {
 	auto iter = m_mapAllTriggers.find(Convert_ToHash(strTriggerKey));
@@ -1097,33 +1096,15 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
     return S_OK;
 }
 
-HRESULT CGameSystem::SetUp_AllAIPersonality()
-{
-    CAIPersonality* pPersonality = CPersonality_Default::Create(m_pConditionTable);
-    m_mapAllAIPersonality.emplace(Convert_ToHash(pPersonality->m_tPersonalDesc.strPersonalityName), pPersonality);
-    return S_OK;
-}
 
-CPlayer* CGameSystem::SetUp_Player(_hashcode hcName, _bool bAI, _hashcode hcPersonalityHash)
+CPlayer* CGameSystem::SetUp_Player(_hashcode hcName)
 {
     auto PlayerInfoIter = m_mapAllPlayers.find(hcName);
 
     if (PlayerInfoIter == m_mapAllPlayers.end())
         return nullptr;
 
-    if (bAI) 
-    {
-        auto PersonalityIter = m_mapAllAIPersonality.find(hcPersonalityHash);
-
-        if (PersonalityIter == m_mapAllAIPersonality.end())
-            return nullptr;
-
-        return PlayerInfoIter->second->Make_Player(PersonalityIter->second);
-    }
-    else 
-    {
-        return PlayerInfoIter->second->Make_Player();
-    }
+    return PlayerInfoIter->second->Make_Player();
 }
 
 HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()

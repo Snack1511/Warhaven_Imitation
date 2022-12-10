@@ -3,23 +3,25 @@
 #include "CAIPersonality.h"
 
 #include "UsefulHeaders.h"
+
+#include "CPersonality_Default.h"
+
 CPlayerInfo::CPlayerInfo()
 {
 }
 
 CPlayerInfo::~CPlayerInfo()
 {
+	Release();
 }
 
-CPlayer* CPlayerInfo::Make_Player(CAIPersonality* pPersonality)
+CPlayer* CPlayerInfo::Make_Player()
 {
 	if (!Can_Make_Player(m_tPlayerInfo))
 	{
 		Call_MsgBox(L"Not Valid PlayerInfo :: CPlayerInfo");
 		return nullptr;
 	}
-
-	m_pPersonality = pPersonality;
 
 	CPlayer* pPlayer = CPlayer::Create(this);
 	if (m_bIsMainPlayer)
@@ -154,6 +156,11 @@ CLASS_TYPE CPlayerInfo::Choose_Character()
 	return m_eCurChosenClass = m_vecPrefClassType[iRand];
 }
 
+void CPlayerInfo::Release()
+{
+	SAFE_DELETE(m_pPersonality);
+}
+
 
 _bool CPlayerInfo::Can_Make_Player(const PLAYER_INFO& tInfo)
 {
@@ -167,12 +174,23 @@ _bool CPlayerInfo::Can_Make_Player(const PLAYER_INFO& tInfo)
 	return true;
 }
 
+HRESULT CPlayerInfo::SetUp_AIPersonality()
+{
+	CAIPersonality* pPersonality = CPersonality_Default::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	m_pPersonality = pPersonality;
+
+	if (!m_pPersonality)
+		return E_FAIL;
+
+	return S_OK;
+}
+
 void CPlayerInfo::Set_CustomHead_Warrior(eCUSTOM_HEAD eHeadEnum)
 {
 	switch (eHeadEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
-		m_tPlayerSetUpData.wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0004_Helmet_A00_30.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0005_Helmet_A00_30.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
 		m_tPlayerSetUpData.wstrHelmetMeshPath[WARRIOR] = L"../bin/resources/meshes/characters/warrior/head/SK_Warrior0002_Helmet_A00_50.fbx";
