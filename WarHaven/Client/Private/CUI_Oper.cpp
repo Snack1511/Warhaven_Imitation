@@ -266,6 +266,11 @@ void CUI_Oper::Progress_Oper()
 					}
 				}
 
+				for (int i = 0; i < CP_End; ++i)
+				{
+					m_pArrCharacterPort[i][0]->DoScale(10.f, fDuration);
+				}
+
 				Enable_Fade(m_pTextImg[Text_Oper2], fDuration);
 				Enable_Fade(m_pTextImg[Text_SelectPoint], fDuration);
 
