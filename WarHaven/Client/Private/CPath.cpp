@@ -29,7 +29,7 @@ CPath* CPath::Create(string strKey)
 HRESULT CPath::Initialize()
 {
     /* Load Path */
-    string    strPath = "../bin/resources/data/gamesystem/pathes/";
+    string    strPath = "../bin/data/gamesystem/pathes/";
     strPath += m_strName;
     strPath += ".bin";
 
@@ -80,7 +80,7 @@ void CPath::Save_CurPath()
 {
     m_iNumPositions = m_vecPositions.size();
     /* Save Path */
-    string    strPath = "../bin/resources/data/gamesystem/pathes/";
+    string    strPath = "../bin/data/gamesystem/pathes/";
     strPath += m_strName;
     strPath += ".bin";
 

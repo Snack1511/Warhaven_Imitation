@@ -132,7 +132,7 @@ HRESULT CWindow_Path::Render()
 			static char	szName[MIN_STR];
 			strcpy_s(szName, m_vecPathDesc[m_iCurSelectedIndex].pPath->m_strName.c_str());
 
-			if (ImGui::InputText("Name", szName, sizeof(szName)))
+			if (ImGui::InputText("Name", szName, sizeof(szName), ImGuiInputTextFlags_EnterReturnsTrue))
 			{
 				m_vecPathDesc[m_iCurSelectedIndex].pPath->m_strName = szName;
 			}
@@ -448,8 +448,8 @@ void CWindow_Path::ReMake_Lines(_uint iCurPathIndex)
 	{
 		//ÀÌÀü²¨¶û ÇöÀç²¨¸¦ ¿¬°á¾²
 
-		_float4 vPrevPos = m_vecPathDesc[m_iCurSelectedIndex].vecDebugBoxes[i-1]->Get_Transform()->Get_World(WORLD_POS);
-		_float4 vCurPos = m_vecPathDesc[m_iCurSelectedIndex].vecDebugBoxes[i]->Get_Transform()->Get_World(WORLD_POS);
+		_float4 vPrevPos = m_vecPathDesc[iCurPathIndex].vecDebugBoxes[i-1]->Get_Transform()->Get_World(WORLD_POS);
+		_float4 vCurPos = m_vecPathDesc[iCurPathIndex].vecDebugBoxes[i]->Get_Transform()->Get_World(WORLD_POS);
 
 		_float4 vDir = (vCurPos - vPrevPos);
 		_float fLength = vDir.Length();
@@ -462,7 +462,7 @@ void CWindow_Path::ReMake_Lines(_uint iCurPathIndex)
 		pDebugLine->Set_Blue();
 		pDebugLine->Get_Transform()->Set_Look(vDir);
 		CREATE_GAMEOBJECT(pDebugLine, GROUP_PROP);
-		m_vecPathDesc[m_iCurSelectedIndex].vecLineBox.push_back(pDebugLine);
+		m_vecPathDesc[iCurPathIndex].vecLineBox.push_back(pDebugLine);
 	}
 }
 

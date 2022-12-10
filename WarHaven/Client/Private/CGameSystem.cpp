@@ -1144,7 +1144,7 @@ HRESULT CGameSystem::SetUp_AllPathes()
 		string strFullPath;
 		strFullPath.assign(wstrPath.begin(), wstrPath.end());
 
-		_int iFind = (_int)strFullPath.rfind("\\") + 1;
+		_int iFind = (_int)strFullPath.rfind("/") + 1;
 		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
 
 
@@ -1152,10 +1152,10 @@ HRESULT CGameSystem::SetUp_AllPathes()
 		{
 			_int iFindExt = (int)strFileName.rfind(".");// +1;
 			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
-			string HashKey = strFileName.substr(0, strFileName.length() - iFindExt);
-			CPath* pPath = CPath::Create(strFullPath);
+			string HashKey = strFileName.substr(0, iFindExt);
+			CPath* pPath = CPath::Create(HashKey);
 			if(nullptr != pPath)
-				m_mapAllPathes.emplace(Convert_ToHash(CFunctor::To_Wstring(HashKey)),pPath);
+				m_mapAllPathes.emplace(Convert_ToHash(HashKey),pPath);
 		}
 
 	}
