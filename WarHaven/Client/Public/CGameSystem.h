@@ -115,11 +115,10 @@ private:
 
 private:
 	HRESULT					SetUp_AllPlayerInfos();
-
+	HRESULT					SetUp_AllPathes();
 private:
 	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();
-
 private:
 
 
