@@ -19,6 +19,7 @@ CBehavior::CBehavior(const CBehavior& rhs)
 
 CBehavior::~CBehavior()
 {
+    Release();
 }
 
 CBehavior* CBehavior::Create(eBehaviorType BehaviorType, CTable_Conditions* pTable)
@@ -27,15 +28,14 @@ CBehavior* CBehavior::Create(eBehaviorType BehaviorType, CTable_Conditions* pTab
     if (FAILED(pInstance->Initialize_Prototype()))
     {
         Call_MsgBox(L"Failed to Initialize_Prototype : CBehavior");
-        Safe_Release(pInstance);
+        SAFE_DELETE(pInstance);
     }
     return pInstance;
 }
 
-DWORD CBehavior::Release()
+void CBehavior::Release()
 {
-    Safe_Delete(m_pBehaviorDesc);
-    return 0;
+    SAFE_DELETE(m_pBehaviorDesc);
 }
 
 HRESULT CBehavior::Initialize_Prototype()

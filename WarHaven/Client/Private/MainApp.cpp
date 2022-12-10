@@ -21,6 +21,8 @@
 #include "CGameSystem.h"
 #include "CUI_Cursor.h"
 
+#include "CTable_Conditions.h"
+
 IMPLEMENT_SINGLETON(CMainApp);
 
 CMainApp::CMainApp()

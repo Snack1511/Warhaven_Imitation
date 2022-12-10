@@ -13,12 +13,16 @@
 
 
 BEGIN(Client)
+
 class CPlayer;
 class CAIController;
 class CBehavior;
 class CTable_Conditions;
+
 class CAIPersonality abstract
 {
+	friend class CPlayerInfo;
+
 public:
 	//전체 행동패턴에 영향
 	enum eMainPersonality
@@ -88,6 +92,7 @@ public:
 
 		//팀업 시 영향
 		eCoopPersonality eCoopPersonality = eCoop_Default;
+
 	}PersonalDesc;
 
 public:
@@ -100,25 +105,32 @@ public:
 	typedef vector<CDelegate<_bool&, void*>> ConditionContainer;
 	typedef vector<map<_hashcode, _uint>> ConditionsIndices;
 	typedef CDelegate<_bool&, void*> Condition;
+
 protected:
 	CAIPersonality(CTable_Conditions* pConditionTable);
 	virtual ~CAIPersonality();
+
 public:
 	virtual HRESULT Initailize();
-	virtual DWORD Release();
+	virtual void Release();
+
 public:
 	_float Get_Delay();
 	_float Get_Range();
 	_float Get_CheckedHP();
 	list<CBehavior*> Get_BehaviorList() { return m_BehaviorList; }
+
 public:
 	//목적 행동시 거쳐야 할 조건들..
 	//CDelegate<_bool&> CallBack_CheckBehavior;
+
 protected:
 	//Personality클래스에서 셋팅해줘야 할 정보들..
 	PersonalDesc m_tPersonalDesc;
 
 	CTable_Conditions* m_pConditionTable = nullptr;
+
+	/* Clone으로 받아온 복제품들 */
 	list<CBehavior*> m_BehaviorList;
 
 };

@@ -18,11 +18,10 @@ HRESULT CAIPersonality::Initailize()
 	return S_OK;
 }
 
-DWORD CAIPersonality::Release()
+void CAIPersonality::Release()
 {
-	for (auto& value : m_BehaviorList)
-		Safe_Release(value);
-	return 0;
+	for (auto& elem : m_BehaviorList)
+		SAFE_DELETE(elem);
 }
 
 
