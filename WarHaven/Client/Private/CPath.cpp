@@ -56,8 +56,22 @@ HRESULT CPath::Initialize()
     return S_OK;
 }
 
+void CPath::Update_CurrentIndex(_float4 vCurrentPos)
+{
+}
+
 void CPath::Release()
 {
+}
+
+_float4 CPath::Get_CurDir()
+{
+    return _float4();
+}
+
+_float4 CPath::Find_NearestPosition()
+{
+    return _float4();
 }
 
 void CPath::Save_CurPath()

@@ -2,6 +2,7 @@
 #include "Client_Defines.h"
 
 BEGIN(Client)
+
 class CPath
 {
 	DECLARE_PROTOTYPE(CPath);
@@ -18,7 +19,13 @@ public:
 
 public:
 	HRESULT	Initialize();
+	/* 플레이어 위치 던져주면 인덱스 갱신 함 */
+	void	Update_CurrentIndex(_float4 vCurrentPos);
 	void	Release();
+
+public:
+	_float4	Get_CurDir();
+	_float4	Find_NearestPosition();
 
 private:
 	string		m_strName;
