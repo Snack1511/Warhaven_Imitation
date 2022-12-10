@@ -44,14 +44,20 @@ void CUI_Paden::Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName
 	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
 }
 
-void CUI_Paden::Set_Shader_ScoreGauge_Red(CShader* pShader, const char* pConstName)
+void CUI_Paden::Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Red], sizeof(_float));
+
+	_bool bFlip = true;
+	pShader->Set_RawValue("bFlip", &bFlip, sizeof(_bool));
 }
 
-void CUI_Paden::Set_Shader_ScoreGauge_Blue(CShader* pShader, const char* pConstName)
+void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Blue], sizeof(_float));
+
+	_bool bFlip = false;
+	pShader->Set_RawValue("bFlip", &bFlip, sizeof(_bool));
 }
 
 void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
@@ -78,18 +84,19 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 
 void CUI_Paden::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 {
-	m_fScoreRatio[iTeamType] = 1 - (iScore / iMaxScore);
+	m_fScoreRatio[iTeamType] = ((_float)iScore / (_float)iMaxScore);
+
+	cout << "Red : " << m_fScoreRatio[Team_Red] << endl;
+	cout << "Blue : " << m_fScoreRatio[Team_Blue] << endl;
 }
 
 void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
-	_float fConquestRatio = 1 - (fConquestTime / fMaxConquestTime);
+	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
 
 	if (strPadenPointKey == "Paden_Trigger_A")
 	{
 		m_fConquestRatio[Point_A] = fConquestRatio;
-
-		cout << m_fConquestRatio[Point_A] << endl;
 	}
 	else if (strPadenPointKey == "Paden_Trigger_R")
 	{
@@ -101,7 +108,7 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 	}
 }
 
-void CUI_Paden::Set_PointUI_TransformProjection(_uint iPointIdx, CTransform* pTransform)
+void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform)
 {
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
 	vNewPos.y += 2.f;
@@ -122,7 +129,7 @@ void CUI_Paden::SetActive_ScoreGauge(_bool value)
 {
 	for (int i = 0; i < Gauge_End; ++i)
 	{
-		for (int j = 0; j < 2; ++j)
+		for (int j = 0; j < Team_End; ++j)
 		{
 			m_pArrScoreGauge[i][j]->SetActive(value);
 		}
@@ -378,7 +385,7 @@ void CUI_Paden::Create_ScoreNum()
 		m_pScoreNum[i]->Set_FadeDesc(m_fGaugeNumFadeSpeed);
 
 		CREATE_GAMEOBJECT(m_pScoreNum[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_pScoreNum[i]);
+		DISABLE_GAMEOBJECT(m_pScoreNum[i]);
 
 		for (int j = 0; j < Team_End; ++j)
 		{
@@ -433,9 +440,9 @@ void CUI_Paden::Create_ScoreGauge()
 		}
 
 		CREATE_GAMEOBJECT(m_pScoreGauge[i], GROUP_UI);
-		DELETE_GAMEOBJECT(m_pScoreGauge[i]);
+		DISABLE_GAMEOBJECT(m_pScoreGauge[i]);
 
-		for (int j = 0; j < 2; ++j)
+		for (int j = 0; j < Team_End; ++j)
 		{
 			m_pArrScoreGauge[i][j] = m_pScoreGauge[i]->Clone();
 
@@ -565,12 +572,16 @@ void CUI_Paden::Set_PointTextPosY()
 
 void CUI_Paden::Bind_Shader()
 {
-	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_A], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_A, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_pArrProjPointUI[PU_Gauge][Point_A], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_A, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrScoreGauge[Gauge_Bar][Team_Red], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_SocreGauge_Red, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrScoreGauge[Gauge_Bar][Team_Blue], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_SocreGauge_Blue, this, placeholders::_1, "g_fValue");
 
-	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_R], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_R, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_pArrProjPointUI[PU_Gauge][Point_R], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_R, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrPointUI[Point_A][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_A, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_A][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_A, this, placeholders::_1, "g_fValue");
 
-	GET_COMPONENT_FROM(m_pArrPointUI[PU_Gauge][Point_C], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
-	GET_COMPONENT_FROM(m_pArrProjPointUI[PU_Gauge][Point_C], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrPointUI[Point_R][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_R, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_R][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_R, this, placeholders::_1, "g_fValue");
+
+	GET_COMPONENT_FROM(m_pArrPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
+
 }

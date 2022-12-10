@@ -16,14 +16,14 @@ CRenderer::CRenderer(_uint iGroupID)
 {
 }
 
-CRenderer::CRenderer(const CRenderer& _origin)
-	: CComponent(_origin)
-	, m_eRenderGroup(_origin.m_eRenderGroup)
-	, m_iCurPass(_origin.m_iCurPass)
-	, m_vOffsetPos(_origin.m_vOffsetPos)
-	, m_vFinalPos(_origin.m_vFinalPos)
-{
-}
+//CRenderer::CRenderer(const CRenderer& _origin)
+//	: CComponent(_origin)
+//	, m_eRenderGroup(_origin.m_eRenderGroup)
+//	, m_iCurPass(_origin.m_iCurPass)
+//	, m_vOffsetPos(_origin.m_vOffsetPos)
+//	, m_vFinalPos(_origin.m_vFinalPos)
+//{
+//}
 
 
 CRenderer::~CRenderer()

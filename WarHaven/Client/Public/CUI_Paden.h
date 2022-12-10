@@ -21,12 +21,12 @@ public:
 	virtual void Set_Shader_PointGauge_R(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName);
 
-	virtual void Set_Shader_ScoreGauge_Red(CShader* pShader, const char* pConstName);
-	virtual void Set_Shader_ScoreGauge_Blue(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstName);
 
 public:
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
-	void Set_PointUI_TransformProjection(_uint iPointIdx, CTransform* pTransform);
+	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform);
 
 	void Set_ScoreNum(_uint iTeamType, _uint iScore);
 	void Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore);
@@ -72,7 +72,7 @@ private:	// 각 팀별 스코어
 	_bool m_bIsDisableNum = false;
 	_bool m_bIsEnableNum = false;
 
-	_float m_fScoreRatio[Team_End] = { 0.7, 0.7f };
+	_float m_fScoreRatio[Team_End];
 
 private:
 	void Create_ScoreNum();
