@@ -30,12 +30,18 @@ HRESULT CState_Patrol_Default_Warrior::Initialize()
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 1.f;
 	
+	m_iIdleDelay = 30;
+
 
     return S_OK;
 }
 
 void CState_Patrol_Default_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	
+	if (pAnimator->Is_CurAnimFinished())
+		m_iRand = random(0, 5);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

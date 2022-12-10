@@ -2,13 +2,13 @@
 #include "CState_Patrol_Walk.h"
 
 BEGIN(Client)
-class CState_Patrol_Default_Warrior abstract
+class CState_Patrol_Walk_Warrior abstract
 	: public CState_Patrol_Walk
 {
 
 protected:
-	CState_Patrol_Default_Warrior();
-	virtual ~CState_Patrol_Default_Warrior();
+	CState_Patrol_Walk_Warrior();
+	virtual ~CState_Patrol_Walk_Warrior();
 
 public:
 	// CState을(를) 통해 상속됨

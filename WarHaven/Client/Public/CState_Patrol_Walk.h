@@ -2,13 +2,13 @@
 #include "CState_Patrol.h"
 
 BEGIN(Client)
-class CState_Patrol_Default abstract
+class CState_Patrol_Walk abstract
 	: public CState_Patrol
 {
 
 protected:
-	CState_Patrol_Default();
-	virtual ~CState_Patrol_Default();
+	CState_Patrol_Walk();
+	virtual ~CState_Patrol_Walk();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -19,6 +19,9 @@ public:
 
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+
+protected:
+	_uint m_iWalkDelay = 0;
 
 };
 

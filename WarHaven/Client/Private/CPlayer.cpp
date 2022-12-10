@@ -359,13 +359,13 @@ void CPlayer::SetUp_UnitColliders(_bool bBlueTeam)
 void CPlayer::SetUp_UnitHitStates()
 {
 
-	if (m_bIsMainPlayer)
-		m_iUnitType = 0;
-	else
-	{
-		if (m_iUnitType != (_uint)CUnit::UNIT_TYPE::eSandbag)
-			m_iUnitType = (_uint)CUnit::UNIT_TYPE::eAI_TG;
-	}
+	//if (m_bIsMainPlayer)
+	//	m_iUnitType = 0;
+	//else
+	//{
+	//	if (m_iUnitType != (_uint)CUnit::UNIT_TYPE::eSandbag)
+	//		m_iUnitType = (_uint)CUnit::UNIT_TYPE::eAI_TG;
+	//}
 
 	for (int i = 0; i < CLASS_END; ++i)
 	{

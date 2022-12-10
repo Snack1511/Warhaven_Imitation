@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CState_Patrol_Default_Warrior.h"
+#include "CState_Patrol_Switch_Warrior.h"
 
 #include "UsefulHeaders.h"
 
@@ -9,15 +9,15 @@
 
 #include "CUser.h"
 
-CState_Patrol_Default_Warrior::CState_Patrol_Default_Warrior()
+CState_Patrol_Switch_Warrior::CState_Patrol_Switch_Warrior()
 {
 }
 
-CState_Patrol_Default_Warrior::~CState_Patrol_Default_Warrior()
+CState_Patrol_Switch_Warrior::~CState_Patrol_Switch_Warrior()
 {
 }
 
-HRESULT CState_Patrol_Default_Warrior::Initialize()
+HRESULT CState_Patrol_Switch_Warrior::Initialize()
 {
 	__super::Initialize();
 
@@ -34,23 +34,40 @@ HRESULT CState_Patrol_Default_Warrior::Initialize()
     return S_OK;
 }
 
-void CState_Patrol_Default_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CState_Patrol_Switch_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	//if (ePrevType == AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L ||
+	//	ePrevType == AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R)
+	//{
+	//	m_bAttack = true;
+	//	m_fAnimSpeed = 5.f;
+	//	m_iAINextState = ePrevType;
+	//}
+
+	//if (pAnimator->Is_CurAnimFinished())
+	//	return m_iAINextState;
+
+//protected:
+//	_bool	m_bAttack = false;
+
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
-STATE_TYPE CState_Patrol_Default_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
+STATE_TYPE CState_Patrol_Switch_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+
     return __super::Tick(pOwner, pAnimator);
 }
 
-void CState_Patrol_Default_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
+void CState_Patrol_Switch_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	__super::Exit(pOwner, pAnimator);
     /* 할거없음 */
 }
 
-STATE_TYPE CState_Patrol_Default_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
+STATE_TYPE CState_Patrol_Switch_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return STATE_END;
 }

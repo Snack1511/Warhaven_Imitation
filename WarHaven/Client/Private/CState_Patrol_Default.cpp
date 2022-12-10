@@ -31,10 +31,6 @@ void CState_Patrol_Default::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CState_Patrol_Default::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	Move_Direction_Loop(pOwner, pAnimator, 0.05f);
-
-
-
     return __super::Tick(pOwner, pAnimator);
 }
 

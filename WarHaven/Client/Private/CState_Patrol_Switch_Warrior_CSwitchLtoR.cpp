@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CSwitchLtoR.h"
+#include "CState_Patrol_Switch_Warrior_CSwitchLtoR.h"
 
 #include "GameInstance.h"
 #include "Functor.h"
@@ -13,31 +13,33 @@
 #include "Model.h"
 #include "CColorController.h"
 
-CSwitchLtoR::CSwitchLtoR()
+CState_Patrol_Switch_Warrior_CSwitchLtoR::CState_Patrol_Switch_Warrior_CSwitchLtoR()
 {
 }
 
-CSwitchLtoR::~CSwitchLtoR()
+CState_Patrol_Switch_Warrior_CSwitchLtoR::~CState_Patrol_Switch_Warrior_CSwitchLtoR()
 {
 }
 
-CSwitchLtoR* CSwitchLtoR::Create()
+CState_Patrol_Switch_Warrior_CSwitchLtoR* CState_Patrol_Switch_Warrior_CSwitchLtoR::Create()
 {
-    CSwitchLtoR* pInstance = new CSwitchLtoR();
+    CState_Patrol_Switch_Warrior_CSwitchLtoR* pInstance = new CState_Patrol_Switch_Warrior_CSwitchLtoR();
 
     if (FAILED(pInstance->Initialize()))
     {
-        Call_MsgBox(L"Failed to Initialize : CSwitchLtoR");
+        Call_MsgBox(L"Failed to Initialize : CState_Patrol_Switch_Warrior_CSwitchLtoR");
         SAFE_DELETE(pInstance);
     }
 
     return pInstance;
 }
-HRESULT CSwitchLtoR::Initialize()
+HRESULT CState_Patrol_Switch_Warrior_CSwitchLtoR::Initialize()
 {
+    __super::Initialize();
+
     m_eAnimType = ANIM_BASE_L;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 27;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_SWITCH_L_TO_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = AI_STATE_DEAFULT_SWITCH_L_TO_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     m_iStateChangeKeyFrame = 20;
 
@@ -47,49 +49,29 @@ HRESULT CSwitchLtoR::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 3.5f;
 
-	m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
-
-	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
-
 
     return S_OK;
 }
 
-void CSwitchLtoR::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CState_Patrol_Switch_Warrior_CSwitchLtoR::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    
-
-
-
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
-STATE_TYPE CSwitchLtoR::Tick(CUnit* pOwner, CAnimator* pAnimator)
+STATE_TYPE CState_Patrol_Switch_Warrior_CSwitchLtoR::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (KEY(LBUTTON, TAP))
-		return STATE_ATTACK_HORIZONTALMIDDLE_R;
+    if (pAnimator->Is_CurAnimFinished())
+        return AI_STATE_DEAFULT_IDLE_WARRIOR_R;
 
     return __super::Tick(pOwner, pAnimator);
 }
 
-void CSwitchLtoR::Exit(CUnit* pOwner, CAnimator* pAnimator)
+void CState_Patrol_Switch_Warrior_CSwitchLtoR::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+    __super::Exit(pOwner, pAnimator);
 }
 
-STATE_TYPE CSwitchLtoR::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
+STATE_TYPE CState_Patrol_Switch_Warrior_CSwitchLtoR::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Idle로 오는 조건
-    1. 현재 진행중인 애니메이션이 끝났을 때
-    */
-
-    if (CUser::Get_Instance()->Get_LastKey() == KEY::CTRL)
-        return m_eStateType;
-
     return STATE_END;
 }

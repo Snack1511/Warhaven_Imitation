@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CGameObject;
+class CTransform;
 END
 
 BEGIN(Client)

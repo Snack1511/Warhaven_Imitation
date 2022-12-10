@@ -139,8 +139,9 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
         pEnemy->Enable_OnStart();
         pEnemy->SetUp_UnitColliders(false);
 
-        pEnemy->Reserve_State(AI_STATE_DEAFULT_IDLE_WARRIOR_R);
-		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_TG);
+		// AI_STATE_DEAFULT_IDLE_WARRIOR_R
+        pEnemy->Reserve_State(AI_STATE_COMBAT_RUN_WARRIOR_R);
+		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
 
         READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
     }

@@ -387,18 +387,6 @@
 #include "CSprintAttack_Paladin_Begin.h"
 #include "CSprintAttack_Paladin.h"
 
-//#include "CValkyrie_Attack_HorizontalDown_L.h"
-//#include "CValkyrie_Attack_HorizontalDown_R.h"
-//#include "CValkyrie_Attack_HorizontalMiddle_L.h"
-//#include "CValkyrie_Attack_HorizontalMiddle_R.h"
-//#include "CValkyrie_Attack_HorizontalUp_L.h"
-//#include "CValkyrie_Attack_HorizontalUp_R.h"
-
-//#include "CValkyrie_Attack_Sting_L.h"
-//#include "CValkyrie_Attack_Sting_R.h"
-//#include "CValkyrie_Attack_VerticalCut.h"
-
-
 #include "CGuard_Begin_Paladin.h"
 #include "CGuard_Loop_Paladin.h"
 #include "CGuard_End_Paladin.h"
@@ -412,10 +400,6 @@
 #include "CHit_Groggy_Paladin.h"
 #include "CHit_Sting_Paladin.h"
 #include "CHit_Fly_Paladin.h"
-
-//#include "CValkyrie_Counter.h"
-//#include "CValkyrie_SpinAttack.h"
-//#include "CValkyrie_ShieldAttack.h"
 
 
 #pragma endregion 
@@ -485,12 +469,48 @@
 #include "CAI_TG_Groggy.h"
 
 
+#pragma region Patrol_Warrior
+
 #include "CState_Patrol_Default_Warrior_L.h"
 #include "CState_Patrol_Default_Warrior_R.h"
-//#include "CRun_AI_Default_Warrior_Begin_L.h"
-//#include "CRun_AI_Default_Warrior_Begin_R.h"
-//#include "CRun_AI_Default_Warrior_L.h"
-//#include "CRun_AI_Default_Warrior_R.h"
+#include "CState_Patrol_Switch_Warrior_CSwitchRtoL.h"
+#include "CState_Patrol_Switch_Warrior_CSwitchLtoR.h"
+#include "CState_Patrol_Walk_Warrior_L.h"
+#include "CState_Patrol_Walk_Warrior_R.h"
+
+#pragma endregion 
+
+#pragma region Combat_Warrior
+
+#include "CState_Combat_Run_Warrior_L.h"
+#include "CState_Combat_Run_Warrior_R.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Warrior_L.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Warrior_R.h"
+#include "CState_Common_Bounce_Warrior_L.h"
+#include "CState_Common_Bounce_Warrior_R.h"
+
+
+
+
+
+
+#pragma endregion
+
+#pragma region Common_Warrior
+
+#include "CState_Common_Hit_Warrior.h"
+#include "CState_Common_GuardHit_Warrior.h"
+#include "CState_Common_Groggy_Warrior.h"
+#include "CState_Common_Sting_Warrior.h"
+#include "CState_Common_FlyHit_Warrior.h"
+
+#pragma endregion
+
+
+
+
+
+
 
 IMPLEMENT_SINGLETON(CState_Manager);
 
@@ -1083,10 +1103,24 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_DEAFULT_IDLE_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();
 	m_arrStates[AI_STATE_DEAFULT_IDLE_WARRIOR_R] = CState_Patrol_Default_Warrior_R::Create();
 
-	//m_arrStates[AI_STATE_DEAFULT_RUNBEGIN_WARRIOR_L] = CRun_AI_Default_Warrior_Begin_L::Create();
-	//m_arrStates[AI_STATE_DEAFULT_RUNBEGIN_WARRIOR_R] = CRun_AI_Default_Warrior_Begin_R::Create();
-	//m_arrStates[AI_STATE_DEAFULT_RUN_WARRIOR_L] = CRun_AI_Default_Warrior_L::Create();
-	//m_arrStates[AI_STATE_DEAFULT_RUN_WARRIOR_R] = CRun_AI_Default_Warrior_R::Create();
+	m_arrStates[AI_STATE_DEAFULT_SWITCH_R_TO_L] = CState_Patrol_Switch_Warrior_CSwitchRtoL::Create();
+	m_arrStates[AI_STATE_DEAFULT_SWITCH_L_TO_R] = CState_Patrol_Switch_Warrior_CSwitchLtoR::Create();
+	m_arrStates[AI_STATE_DEAFULT_WALK_WARRIOR_L] = CState_Patrol_Walk_Warrior_L::Create();
+	m_arrStates[AI_STATE_DEAFULT_WALK_WARRIOR_R] = CState_Patrol_Walk_Warrior_R::Create();
+
+	m_arrStates[AI_STATE_COMBAT_RUN_WARRIOR_L] = CState_Combat_Run_Warrior_L::Create();
+	m_arrStates[AI_STATE_COMBAT_RUN_WARRIOR_R] = CState_Combat_Run_Warrior_R::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L] = CState_Combat_Attack_HorizontalMiddle_Warrior_L::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R] = CState_Combat_Attack_HorizontalMiddle_Warrior_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_BOUNCE_WARRIOR_L] = CState_Common_Bounce_Warrior_L::Create();
+	m_arrStates[AI_STATE_COMMON_BOUNCE_WARRIOR_R] = CState_Common_Bounce_Warrior_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_HIT_WARRIOR] = CState_Common_Hit_Warrior::Create();
+	m_arrStates[AI_STATE_COMMON_GUARDHIT_WARRIOR] = CState_Common_GuardHit_Warrior::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_WARRIOR] = CState_Common_Groggy_Warrior::Create();
+	m_arrStates[AI_STATE_COMMON_STINGHIT_WARRIOR] = CState_Common_Sting_Warrior::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_WARRIOR] = CState_Common_FlyHit_Warrior::Create();
 
 }
 

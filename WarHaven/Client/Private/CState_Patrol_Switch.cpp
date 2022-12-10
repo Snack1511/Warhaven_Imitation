@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CState_Patrol_Default.h"
+#include "CState_Patrol_Switch.h"
 
 #include "UsefulHeaders.h"
 
@@ -9,41 +9,37 @@
 
 #include "CUser.h"
 
-CState_Patrol_Default::CState_Patrol_Default()
+CState_Patrol_Switch::CState_Patrol_Switch()
 {
 }
 
-CState_Patrol_Default::~CState_Patrol_Default()
+CState_Patrol_Switch::~CState_Patrol_Switch()
 {
 }
 
-HRESULT CState_Patrol_Default::Initialize()
+HRESULT CState_Patrol_Switch::Initialize()
 {
     __super::Initialize();
 
     return S_OK;
 }
 
-void CState_Patrol_Default::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CState_Patrol_Switch::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
-STATE_TYPE CState_Patrol_Default::Tick(CUnit* pOwner, CAnimator* pAnimator)
+STATE_TYPE CState_Patrol_Switch::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	Move_Direction_Loop(pOwner, pAnimator, 0.05f);
-
-
-
     return __super::Tick(pOwner, pAnimator);
 }
 
-void CState_Patrol_Default::Exit(CUnit* pOwner, CAnimator* pAnimator)
+void CState_Patrol_Switch::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+    __super::Exit(pOwner, pAnimator);
 }
 
-STATE_TYPE CState_Patrol_Default::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
+STATE_TYPE CState_Patrol_Switch::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return STATE_END;
 }

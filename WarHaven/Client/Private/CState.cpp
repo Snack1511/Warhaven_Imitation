@@ -388,6 +388,51 @@ void CState::Follow_MouseLook_Turn(CUnit* pOwner)
 	pOwner->Get_Transform()->Set_LerpLook(vCamLook, 0.4f);
 }
 
+void CState::Set_Direction_Four_AI(_int& iDirectionRand)
+{
+	switch (iDirectionRand)
+	{
+	case STATE_DIRECTION_NW:
+	case STATE_DIRECTION_SW:
+
+		iDirectionRand = STATE_DIRECTION_NW;
+		break;
+
+	case STATE_DIRECTION_N:
+	case STATE_DIRECTION_S:
+
+		iDirectionRand = STATE_DIRECTION_N;
+
+		break;
+
+	case STATE_DIRECTION_NE:
+	case STATE_DIRECTION_SE:
+
+		iDirectionRand = STATE_DIRECTION_NE;
+		break;
+
+	case STATE_DIRECTION_E:
+	
+
+		iDirectionRand = STATE_DIRECTION_E;
+
+		break;
+
+	
+	case STATE_DIRECTION_W:
+
+		iDirectionRand = STATE_DIRECTION_W;
+
+		break;
+
+
+	default:
+		break;
+	}
+}
+
+
+
 _float	CState::Get_Length(CUnit* pOwner)
 {
 	CUnit* pUnit = pOwner->Get_TargetUnit();
@@ -512,6 +557,100 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 
 	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 
+}
+
+void CState::DoMove_AI_NoTarget(CUnit* pOwner, CAnimator* pAnimator)
+{
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+	_float4 vRightDir;
+	_float4 vLookDir;
+
+	_float4 vLook, vRight;
+
+	pOwner->Get_FollowCamLook();
+
+	if (m_vAIRandLook.x > 0.f && m_vAIRandLook.y > 0.f && m_vAIRandLook.z > 0.f)
+	{
+		vLook = m_vAIRandLook;
+		vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT); //GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+	}
+	else
+	{
+		vLook = pOwner->Get_FollowCamLook();
+		vRight = pOwner->Get_FollowCamRight(); //GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+	}
+
+
+
+	vLook.y = 0.f;
+	vRight.y = 0.f;
+
+	//Dir : 실제 이동방향
+	_float4 vDir;
+
+	switch (m_iDirectionRand)
+	{
+	case STATE_DIRECTION_NW:
+		vDir = vRight * -1.f + vLook;
+
+		break;
+
+	case STATE_DIRECTION_NE:
+		vDir = vRight * 1.f + vLook * 1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_SW:
+		vDir = vRight * -1.f + vLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_SE:
+
+		vDir = vRight * 1.f + vLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_N:
+		vDir = vLook;
+
+
+		break;
+
+	case STATE_DIRECTION_S:
+		vDir = vLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_W:
+		vDir = vRight * -1.f;
+
+		break;
+
+	case STATE_DIRECTION_E:
+		vDir = vRight;
+
+
+		break;
+
+	default:
+		break;
+	}
+
+	vDir.y = 0.f;
+
+	pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+
+	if (!vDir.Is_Zero())
+		pMyPhysicsCom->Set_Dir(vDir);
+
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
 }
 
 

@@ -2,13 +2,13 @@
 #include "CState_Patrol.h"
 
 BEGIN(Client)
-class CState_Patrol_Default abstract
+class CState_Patrol_Switch abstract
 	: public CState_Patrol
 {
 
 protected:
-	CState_Patrol_Default();
-	virtual ~CState_Patrol_Default();
+	CState_Patrol_Switch();
+	virtual ~CState_Patrol_Switch();
 
 public:
 	// CState을(를) 통해 상속됨
