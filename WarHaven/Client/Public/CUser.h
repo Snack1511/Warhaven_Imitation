@@ -23,7 +23,9 @@ class CUI_Portrait;
 class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
+class CUI_UnitHUD;
 
+class CUI_Oper;
 class CUI_Paden;
 
 class CUser
@@ -101,9 +103,12 @@ public:		// ÆÄµ§
 	void Conquest_PointUI(string strPointName, _uint iTeamType);
 
 	void Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore);
-	void Set_TeamScore(_uint iTeamType, _uint iScore);
 
 	void SetActive_PadenUI(_bool value);
+
+public:		// ºê¸®ÇÎ
+	void Set_Respawn(_bool value);
+	void SetActive_OperUI(_bool value);
 
 public:
 	void On_EnterLevel();
@@ -130,6 +135,7 @@ private:
 	CUI_HpBar* m_pUI_HP = nullptr;
 	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
 	CUI_Skill* m_pUI_Skill = nullptr;
+	CUI_Oper* m_pUI_Oper = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

@@ -125,7 +125,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 0; ++i)
+	for (_uint i = 0; i < 1; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
@@ -862,8 +862,20 @@ HRESULT CGameSystem::On_Update_Paden()
 
 	CTeamConnector* pMinusScoreTeam = nullptr;
 
+	// °¢ ÆÀÀÇ Ä¿³ØÅÍ °¡Á®¿À±â
+
+	
+
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 	{
+		_uint iTeamType = (_uint)m_pTeamConnector[i]->Get_TeamType();
+		_uint iScore = m_pTeamConnector[i]->m_iScore;
+		_uint iMaxScore = m_pTeamConnector[i]->m_iMaxScore;
+
+		CUser::Get_Instance()->Set_Score(iTeamType, iScore, iMaxScore);
+
+		cout << i << " : " << iScore << ", " << iMaxScore << endl;
+
 		if (m_pTeamConnector[i]->Has_MainTrigger())
 		{
 			_int j = 0;
@@ -879,13 +891,6 @@ HRESULT CGameSystem::On_Update_Paden()
 	if (pMinusScoreTeam)
 	{
 		m_fScoreAcc += fDT(0);
-
-		_uint iTeamType = (_uint)pMinusScoreTeam->Get_TeamType();
-		_uint iScore = pMinusScoreTeam->m_iScore;
-		_uint iMaxScore = pMinusScoreTeam->m_iMaxScore;
-
-		CUser::Get_Instance()->Set_Score(iTeamType, iScore, iMaxScore);
-		CUser::Get_Instance()->Set_TeamScore(iTeamType, iScore);
 
 		if (m_fScoreAcc >= m_fScoreMinusTime)
 		{

@@ -35,6 +35,7 @@
 #include "CUI_Training.h"
 #include "CUI_Paden.h"
 #include "CUI_Dead.h"
+#include "CUI_Oper.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -303,11 +304,6 @@ void CUser::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 	m_pUI_Paden->Set_Score(iTeamType, iScore, iMaxScore);
 }
 
-void CUser::Set_TeamScore(_uint iTeamType, _uint iScore)
-{
-	m_pUI_Paden->Set_ScoreNum(iTeamType, iScore);
-}
-
 void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform)
 {
 	m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform);
@@ -321,6 +317,16 @@ void CUser::Conquest_PointUI(string strPointName, _uint iTeamType)
 void CUser::SetActive_PadenUI(_bool value)
 {
 	m_pUI_Paden->SetActive(value);
+}
+
+void CUser::Set_Respawn(_bool value)
+{
+	m_pUI_Oper->Set_Respawn(value);
+}
+
+void CUser::SetActive_OperUI(_bool value)
+{
+	m_pUI_Oper->SetActive(value);
 }
 
 void CUser::On_EnterLevel()
@@ -380,6 +386,14 @@ void CUser::On_EnterStageLevel()
 		DISABLE_GAMEOBJECT(m_pUI_Dead);
 	}
 
+	if (!m_pUI_Oper)
+	{
+		m_pUI_Oper = CUI_Oper::Create();
+
+		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Oper);
+	}
+
 	SetUp_BloodOverlay();
 	SetUp_HeroGaugeFire();
 }
@@ -393,6 +407,7 @@ void CUser::On_ExitStageLevel()
 	for (_uint i = 0; i < 5; ++i)
 		m_pUI_Damage[i] = nullptr;
 
+	m_pUI_Oper = nullptr;
 	m_pUI_Paden = nullptr;
 	m_pUI_Training = nullptr;
 	m_pPlayer = nullptr;

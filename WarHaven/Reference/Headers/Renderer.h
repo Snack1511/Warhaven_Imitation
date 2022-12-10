@@ -14,7 +14,7 @@ class ENGINE_DLL CRenderer
 
 protected:
 	CRenderer(_uint iGroupID);
-	//CRenderer(const CRenderer& _origin);
+	CRenderer(const CRenderer& _origin);
 	virtual ~CRenderer();
 
 public:

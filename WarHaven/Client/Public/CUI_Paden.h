@@ -28,7 +28,6 @@ public:
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform);
 
-	void Set_ScoreNum(_uint iTeamType, _uint iScore);
 	void Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore);
 
 	void SetActive_ScoreNum(_bool value);
@@ -46,6 +45,10 @@ private:
 	virtual void OnDisable() override;
 
 private:
+	enum TeamType { Team_Red, Team_Blue, Team_End };
+	TeamType m_eTeamType = Team_End;
+
+private:
 	CUI_Object* m_pInGameTimer = nullptr;
 
 	_float m_fInGameTime = 1800.f;
@@ -54,18 +57,17 @@ private:
 	void Create_InGameTimer();
 	void Update_InGameTimer();
 
-private:	// 각 팀별 스코어
-	enum TeamType { Team_Red, Team_Blue, Team_End };
-	TeamType m_eTeamType = Team_End;
-
+private:
 	enum ScoreGaugeNum { Num0, Num1, Num2, Num_End };
 	CUI_Object* m_pScoreNum[Num_End];
 	CUI_Object* m_pArrScoreNum[Team_End][Num_End];
 
-	_float m_fGaugeNumFadeSpeed = 0.3f;
+	_float m_fGaugeNumFadeSpeed = 0.25f;
 
-	_uint m_iPrvScore[Team_End][3];
-	_uint m_iCurvScore[Team_End][3];
+	_uint m_iScore[Team_End];
+
+	_uint m_iPrvScore[Team_End][Num_End];
+	_uint m_iCurvScore[Team_End][Num_End];
 
 	_uint m_iChangeNumIdx[3] = { 0 };
 	_bool m_bIsChangeNum = false;
@@ -76,6 +78,7 @@ private:	// 각 팀별 스코어
 
 private:
 	void Create_ScoreNum();
+	void Update_Score();
 
 private:
 	enum ScoreGauge { Gauge_BG, Gauge_Bar, Gauge_Icon, Gauge_End };

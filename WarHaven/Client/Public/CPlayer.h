@@ -237,6 +237,7 @@ private:
 private:
 	void Create_UnitHUD();
 	void Enable_UnitHUD();
+	void Disable_UnitHUD();
 
 	void Frustum_UnitHUD();
 	void TransformProjection();

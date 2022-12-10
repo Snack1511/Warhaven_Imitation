@@ -26,6 +26,8 @@ HRESULT CUI_Paden::Start()
 
 	Bind_Shader();
 
+	OnEnable();
+
 	return S_OK;
 }
 
@@ -46,6 +48,7 @@ void CUI_Paden::Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName
 
 void CUI_Paden::Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName)
 {
+	m_fScoreRatio[Team_Red] = 1 - m_fScoreRatio[Team_Red];
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Red], sizeof(_float));
 
 	_bool bFlip = true;
@@ -60,34 +63,13 @@ void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstN
 	pShader->Set_RawValue("bFlip", &bFlip, sizeof(_bool));
 }
 
-void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
+void CUI_Paden::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 {
 	m_eTeamType = (TeamType)iTeamType;
 
-	for (int i = 2; i >= 0; --i)
-	{
-		m_iPrvScore[m_eTeamType][i] = m_iCurvScore[m_eTeamType][i];
+	m_iScore[m_eTeamType] = iScore;
 
-		_uint iDigitDmg = iScore % 10;
-		m_iCurvScore[m_eTeamType][i] = iDigitDmg;
-		iScore /= 10;
-
-		if (m_iPrvScore[m_eTeamType][i] != m_iCurvScore[m_eTeamType][i])
-		{
-			m_iChangeNumIdx[i] = i;
-
-			m_bIsChangeNum = true;
-			m_bIsDisableNum = true;
-		}
-	}
-}
-
-void CUI_Paden::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
-{
-	m_fScoreRatio[iTeamType] = ((_float)iScore / (_float)iMaxScore);
-
-	cout << "Red : " << m_fScoreRatio[Team_Red] << endl;
-	cout << "Blue : " << m_fScoreRatio[Team_Blue] << endl;
+	m_fScoreRatio[m_eTeamType] = (_float)iScore / (_float)iMaxScore;
 }
 
 void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
@@ -273,6 +255,21 @@ void CUI_Paden::My_Tick()
 
 	Update_InGameTimer();
 
+	Update_Score();
+
+	static _uint iScore = 100;
+	if (KEY(Z, TAP))
+	{
+		iScore--;
+	}
+
+	for (int i = 0; i < Team_End; ++i)
+	{
+		cout << i << " : " << m_iScore[i] << endl;
+
+		Set_Score(i, iScore, 100);
+	}
+
 	if (m_bIsChangeNum)
 	{
 		if (m_bIsDisableNum)
@@ -396,6 +393,40 @@ void CUI_Paden::Create_ScoreNum()
 
 			CREATE_GAMEOBJECT(m_pArrScoreNum[j][i], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrScoreNum[j][i]);
+		}
+	}
+}
+
+void CUI_Paden::Update_Score()
+{
+	// 100 10 자리 숫자가 0이 되면 disable
+
+	// 100 점을 받고
+	// 해당 점수를 1 0 0 저장
+
+	// 해당 하는 숫자를 idx로 지정 텍스처 불러오기
+
+	// 100 이 불러와짐
+	
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_iPrvScore[m_eTeamType][i] = m_iCurvScore[m_eTeamType][i];
+
+		while (m_iScore[m_eTeamType] != 0)
+		{
+			_uint iDigitDmg = m_iScore[m_eTeamType] % 10;
+			m_iCurvScore[m_eTeamType][i] = iDigitDmg;
+
+			m_iScore[m_eTeamType] /= 10;
+		}
+
+		if (m_iPrvScore[m_eTeamType][i] != m_iCurvScore[m_eTeamType][i])
+		{
+			m_iChangeNumIdx[i] = i;
+
+			m_bIsChangeNum = true;
+			m_bIsDisableNum = true;
 		}
 	}
 }

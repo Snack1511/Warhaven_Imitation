@@ -30,6 +30,7 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_StrongHoldEffect();
 	Create_OperTimer();
 	Create_TargetText();
+	Create_RespawnBtn();
 
 	Init_CharacterSelect();
 	Init_TeamIcon();
@@ -111,6 +112,8 @@ void CUI_Oper::My_Tick()
 void CUI_Oper::OnEnable()
 {
 	__super::OnEnable();
+
+	SetActive_BG(true);
 }
 
 void CUI_Oper::OnDisable()
@@ -145,6 +148,26 @@ void CUI_Oper::Progress_Oper()
 	{
 		m_bIsBriefing = true;
 		m_pOperBG[OB_BG]->DoScale(-2596.f, 0.3f);
+	}
+
+	if (m_bIsRespawn)
+	{
+		if (m_iOperRespawn == 0)
+		{
+			m_iOperRespawn++;
+
+			Enable_Fade(m_pRespawnBtn, 0.3f);
+
+			for (int i = 0; i < Team_End; ++i)
+			{
+				for (int j = 0; j < 2; ++j)
+				{
+					Enable_Fade(m_pArrTeamIcon[i][j], 0.3f);
+				}
+			}
+
+			Enable_StrongHoldUI();
+		}
 	}
 	else
 	{
@@ -942,6 +965,30 @@ void CUI_Oper::Init_StrongHoldEffect()
 	case LEVEL_HWARA:
 		break;
 	}
+}
+
+void CUI_Oper::Create_RespawnBtn()
+{
+	m_pRespawnBtn = CUI_Object::Create();
+
+	m_pRespawnBtn->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_TimeAnnounceBox.png"));
+
+	m_pRespawnBtn->Set_FadeDesc(0.3f);
+
+	m_pRespawnBtn->Set_Sort(0.50f);
+	m_pRespawnBtn->Set_PosY(-275.f);
+	m_pRespawnBtn->Set_Scale(200.f, 60.f);
+
+	m_pRespawnBtn->Set_FontRender(true);
+	m_pRespawnBtn->Set_FontStyle(true);
+	m_pRespawnBtn->Set_FontCenter(true);
+	m_pRespawnBtn->Set_FontOffset(5.f, 3.f);
+	m_pRespawnBtn->Set_FontScale(0.25f);
+	m_pRespawnBtn->Set_FontText(TEXT("선택한 거점에서 합류"));
+	m_pRespawnBtn->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
+
+	CREATE_GAMEOBJECT(m_pRespawnBtn, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pRespawnBtn);
 }
 
 void CUI_Oper::Create_OperTimer()
