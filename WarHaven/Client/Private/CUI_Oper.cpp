@@ -130,8 +130,8 @@ void CUI_Oper::OnDisable()
 {
 	__super::OnDisable();
 
-
 	m_pRespawnBtn->SetActive(false);
+
 	for (auto iter : m_pOperList)
 	{
 		iter->SetActive(false);
