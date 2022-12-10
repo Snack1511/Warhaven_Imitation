@@ -166,8 +166,17 @@ HRESULT CWindow_Path::Render()
 
 					if (m_vecPathDesc[m_iCurSelectedIndex].iCurSelectedPositionIdx >= m_vecPathDesc[m_iCurSelectedIndex].pPath->m_iNumPositions)
 					{
-						m_vecPathDesc[m_iCurSelectedIndex].iCurSelectedPositionIdx = m_vecPathDesc[m_iCurSelectedIndex].pPath->m_iNumPositions - 1;
-						m_vecPathDesc[m_iCurSelectedIndex].vecDebugBoxes[m_vecPathDesc[m_iCurSelectedIndex].iCurSelectedPositionIdx]->Set_Red();
+						if (m_vecPathDesc[m_iCurSelectedIndex].vecDebugBoxes.empty())
+						{
+							m_vecPathDesc[m_iCurSelectedIndex].iCurSelectedPositionIdx = 99999;
+						}
+						else
+						{
+							m_vecPathDesc[m_iCurSelectedIndex].iCurSelectedPositionIdx = m_vecPathDesc[m_iCurSelectedIndex].pPath->m_iNumPositions - 1;
+							m_vecPathDesc[m_iCurSelectedIndex].vecDebugBoxes[m_vecPathDesc[m_iCurSelectedIndex].iCurSelectedPositionIdx]->Set_Red();
+						}
+
+						
 					}
 				}
 			}
