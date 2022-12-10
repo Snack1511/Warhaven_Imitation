@@ -4,6 +4,9 @@
 #include "CPlayer.h"
 #include "CUnit.h"
 
+#include "UsefulHeaders.h"
+#include "CPersonality_Default.h"
+
 CPlayerInfo_Default::CPlayerInfo_Default()
 {
 }
@@ -39,6 +42,20 @@ HRESULT CPlayerInfo_Default::Initialize()
 
 	m_vecPrefClassType.push_back(WARRIOR);
 
+	if (FAILED(SetUp_AIPersonality()))
+	{
+		return E_FAIL;
+	}
+	return S_OK;
+}
+
+HRESULT CPlayerInfo_Default::SetUp_AIPersonality()
+{
+	CAIPersonality* pPersonality = CPersonality_Default::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	m_pPersonality = pPersonality;
+
+	if (!m_pPersonality)
+		return E_FAIL;
 
 	return S_OK;
 }

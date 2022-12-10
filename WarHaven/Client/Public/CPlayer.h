@@ -162,7 +162,8 @@ public:
 	CTeamConnector* Get_Team() { return m_pMyTeam; }
 	CSquad* Get_Squad() { return m_pMySquad; }
 	OUTLINETYPE Get_OutlineType() {		return m_eOutlineType;	}
-
+public:
+	void On_ChangeBehavior(BEHAVIOR_DESC* pBehavior);
 private:
 	_bool	m_bEnableOnStart = false;
 

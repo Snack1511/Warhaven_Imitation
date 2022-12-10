@@ -119,7 +119,7 @@ public:
 	_float Get_Range();
 	_float Get_CheckedHP();
 	list<CBehavior*> Get_BehaviorList() { return m_BehaviorList; }
-
+	CBehavior* Get_Patrol() { return m_pPatrolBehavior; }
 public:
 	//목적 행동시 거쳐야 할 조건들..
 	//CDelegate<_bool&> CallBack_CheckBehavior;
@@ -132,6 +132,7 @@ protected:
 
 	/* Clone으로 받아온 복제품들 */
 	list<CBehavior*> m_BehaviorList;
+	CBehavior* m_pPatrolBehavior = nullptr;
 
 };
 

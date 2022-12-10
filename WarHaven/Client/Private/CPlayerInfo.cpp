@@ -4,7 +4,7 @@
 
 #include "UsefulHeaders.h"
 
-#include "CPersonality_Default.h"
+//#include "CPersonality_Default.h"
 
 CPlayerInfo::CPlayerInfo()
 {
@@ -176,11 +176,11 @@ _bool CPlayerInfo::Can_Make_Player(const PLAYER_INFO& tInfo)
 
 HRESULT CPlayerInfo::SetUp_AIPersonality()
 {
-	CAIPersonality* pPersonality = CPersonality_Default::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	/*CAIPersonality* pPersonality = CPersonality_Default::Create(CGameSystem::Get_Instance()->Get_BXTable());
 	m_pPersonality = pPersonality;
 
 	if (!m_pPersonality)
-		return E_FAIL;
+		return E_FAIL;*/
 
 	return S_OK;
 }

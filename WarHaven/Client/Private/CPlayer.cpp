@@ -730,6 +730,10 @@ void CPlayer::Update_HP()
 {
 	CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fHP, m_pCurrentUnit->Get_Status().fMaxHP);
 }
+void CPlayer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
+{
+	m_pCurrentUnit->On_ChangeBehavior(pBehaviorDesc);
+}
 void CPlayer::Update_HeroGauge()
 {
 	if (!CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge)->Is_Valid())

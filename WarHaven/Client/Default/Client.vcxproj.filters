@@ -1948,9 +1948,6 @@
     <Filter Include="03. Instances\03. Component\06. AI\Personality\00. Default">
       <UniqueIdentifier>{9083e5c4-985b-43cc-a527-dcd3080b8973}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\03. Component\06. AI\Table_CheckBehavior">
-      <UniqueIdentifier>{921b456f-d77e-426c-b40b-bffe0c831d16}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\03. Component\06. AI\Behavior">
       <UniqueIdentifier>{e1b117db-8535-437c-9106-7bd9cf5006c1}</UniqueIdentifier>
     </Filter>
@@ -1962,6 +1959,9 @@
     </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Path">
       <UniqueIdentifier>{8940a6ad-175a-405e-b118-8e017f6c5e49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\06. AI\Table_Conditions">
+      <UniqueIdentifier>{921b456f-d77e-426c-b40b-bffe0c831d16}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -3463,7 +3463,7 @@
       <Filter>03. Instances\03. Component\06. AI\Personality\00. Default</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTable_Conditions.h">
-      <Filter>03. Instances\03. Component\06. AI\Table_CheckBehavior</Filter>
+      <Filter>03. Instances\03. Component\06. AI\Table_Conditions</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBehavior.h">
       <Filter>03. Instances\03. Component\06. AI\Behavior</Filter>
@@ -4958,7 +4958,7 @@
       <Filter>03. Instances\03. Component\06. AI\Personality\00. Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTable_Conditions.cpp">
-      <Filter>03. Instances\03. Component\06. AI\Table_CheckBehavior</Filter>
+      <Filter>03. Instances\03. Component\06. AI\Table_Conditions</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBehavior.cpp">
       <Filter>03. Instances\03. Component\06. AI\Behavior</Filter>

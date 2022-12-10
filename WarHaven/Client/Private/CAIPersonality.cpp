@@ -22,6 +22,8 @@ void CAIPersonality::Release()
 {
 	for (auto& elem : m_BehaviorList)
 		SAFE_DELETE(elem);
+
+	SAFE_DELETE(m_pPatrolBehavior);
 }
 
 

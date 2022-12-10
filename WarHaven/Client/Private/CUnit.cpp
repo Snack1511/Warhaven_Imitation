@@ -1054,6 +1054,11 @@ void CUnit::Start_Reborn()
 	}
 }
 
+void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
+{
+	//¹º°¡...ÀÏ¾î³²..
+}
+
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)
 {
 	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
