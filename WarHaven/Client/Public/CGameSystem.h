@@ -16,6 +16,7 @@ class CTrigger;
 class CTeamConnector;
 class CAIPersonality;
 class CTable_Conditions;
+class CBehavior;
 
 class CGameSystem
 {
@@ -76,6 +77,11 @@ public: /* Position Table */
 	_float4					Find_Position(string strPositionKey);
 	void					Add_Position(string strPositionKey, _float4 vPosition);
 
+public: /* Behavior Table */
+	CTable_Conditions* Get_BXTable() { return m_pConditionTable; }
+	CBehavior* Clone_Behavior(wstring wstrBXKey);
+
+
 public:	
 	CTrigger*					Find_Trigger(string strTriggerKey);
 
@@ -96,20 +102,15 @@ private:
 	/* 모든 플레이어 정보를 미리 만들어놓고 그 정보를 토대로 Player 생성하는 방식 */
 	map<_hashcode, CPlayerInfo*>	m_mapAllPlayers;
 
-private:	
-	/* 모든 AI의 성향들을 미리 만들어놓고 그 정보를 토대로 Player 생성 후 AI컴포넌트를 붙여주는 방식 */
-	map<_hashcode, CAIPersonality*>	m_mapAllAIPersonality;
-
 private:
 	/* 트리거 (거점)을 map으로 들고 있기. */
 	map<_hashcode, CTrigger*>	m_mapAllTriggers;
 
 private:
 	HRESULT					SetUp_AllPlayerInfos();
-	HRESULT					SetUp_AllAIPersonality();
 
 private:
-	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo, _bool bAI = false, _hashcode hcPersonalityHash = Convert_ToHash(wstring(L"Default_Personal")));
+	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();
 
 private:
