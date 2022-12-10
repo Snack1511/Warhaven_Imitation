@@ -615,6 +615,11 @@ void CPlayer::On_Reborn()
 	CUser::Get_Instance()->SetActive_HUD(true);
 }
 
+void CPlayer::SetActive_UnitHUD(_bool value)
+{
+	m_pUnitHUD->SetActive(value);
+}
+
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
 {
 	m_eTeamType = eTeamType;

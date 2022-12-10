@@ -149,7 +149,7 @@ public:
 
 	_float& Get_Gauge() { return m_fGauge; }
 
-
+	void SetActive_UnitHUD(_bool value);
 
 public:
 	void	Set_Squad(CSquad* pSquad) { m_pMySquad = pSquad; }
@@ -237,7 +237,6 @@ private:
 private:
 	void Create_UnitHUD();
 	void Enable_UnitHUD();
-	void Disable_UnitHUD();
 
 	void Frustum_UnitHUD();
 	void TransformProjection();

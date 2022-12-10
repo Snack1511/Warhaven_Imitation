@@ -97,6 +97,16 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 	//ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 }
 
+void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
+{
+	m_bIsRespawn = false;
+
+	CUser::Get_Instance()->SetActive_PadenUI(true);
+	CUser::Get_Instance()->SetActive_HUD(true);
+
+	DISABLE_GAMEOBJECT(this);
+}
+
 void CUI_Oper::My_Tick()
 {
 	__super::My_Tick();
@@ -120,6 +130,8 @@ void CUI_Oper::OnDisable()
 {
 	__super::OnDisable();
 
+
+	m_pRespawnBtn->SetActive(false);
 	for (auto iter : m_pOperList)
 	{
 		iter->SetActive(false);
@@ -975,6 +987,8 @@ void CUI_Oper::Create_RespawnBtn()
 
 	m_pRespawnBtn->Set_FadeDesc(0.3f);
 
+	m_pRespawnBtn->Set_MouseTarget(true);
+
 	m_pRespawnBtn->Set_Sort(0.50f);
 	m_pRespawnBtn->Set_PosY(-275.f);
 	m_pRespawnBtn->Set_Scale(200.f, 60.f);
@@ -1045,4 +1059,6 @@ void CUI_Oper::Bind_Btn()
 	{
 		// m_pArrStrongHoldUI[SP_BG][i]->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_Point, this, i);
 	}
+
+	m_pRespawnBtn->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_RespawnBtn, this, 0);
 }

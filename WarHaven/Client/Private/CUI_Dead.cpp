@@ -128,6 +128,8 @@ void CUI_Dead::My_Tick()
 				SetActive_RevivalUI(true);
 				Toggle_DeadUI(false);
 
+				CUser::Get_Instance()->SetActive_UnitHUD(false);
+
 				CUser::Get_Instance()->Set_Respawn(true);
 				CUser::Get_Instance()->SetActive_OperUI(true);
 			}

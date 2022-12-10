@@ -24,6 +24,8 @@ public:
 	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
 	virtual void On_PointDown_StrongHoldPoint(const _uint& iEventNum);
 
+	virtual void On_PointDown_RespawnBtn(const _uint& iEventNum);
+
 public:
 	void Set_Respawn(_bool value) { m_bIsRespawn = value; }
 

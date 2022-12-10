@@ -23,7 +23,6 @@ class CUI_Portrait;
 class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
-class CUI_UnitHUD;
 
 class CUI_Oper;
 class CUI_Paden;
@@ -93,6 +92,7 @@ public:
 	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
 
 	void SetActive_HUD(_bool value);
+	void SetActive_UnitHUD(_bool value);
 	void Transform_SkillUI(_uint iClass);
 
 public:		// ÆÄµ§
