@@ -58,17 +58,33 @@ HRESULT CPath::Initialize()
 
 void CPath::Update_CurrentIndex(_float4 vCurrentPos)
 {
+    if (m_iCurIndex >= m_iNumPositions)
+    {
+        m_iCurIndex = m_iNumPositions;
+        return;
+    }
+
+    _float4 vTargetPos = m_vecPositions[m_iCurIndex];
+    
+    _float fLength = (vCurrentPos - vTargetPos).Length();
+
+    if (fLength < 0.1f)
+        m_iCurIndex++;
 }
 
 void CPath::Release()
 {
 }
 
-_float4 CPath::Get_CurDir()
+_float4 CPath::Get_CurDir(_float4 vCurrentPos)
 {
-    
+    if (m_iCurIndex == m_iNumPositions)
+        return ZERO_VECTOR;
 
-    return _float4();
+    _float4 vDir = m_vecPositions[m_iCurIndex] - vCurrentPos;
+    vDir.y = 0.f;
+
+    return vDir.Normalize();
 }
 
 _float4 CPath::Find_NearestPosition()

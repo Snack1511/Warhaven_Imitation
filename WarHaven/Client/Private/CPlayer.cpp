@@ -324,7 +324,10 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 	m_pCurrentUnit->On_Respawn();
 
 	if (!m_bIsMainPlayer)
+	{
 		ENABLE_GAMEOBJECT(m_pUnitHUD);
+		//Path 갱신
+	}
 
 	for (auto& elem : m_DeadLights)
 	{

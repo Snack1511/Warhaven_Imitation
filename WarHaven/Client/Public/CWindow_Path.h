@@ -54,6 +54,7 @@ private:
 private:
 	void	Create_DebugObject(_float4 vPos);
 	void	Create_NewPath();
+	void	Deleted_SelectedPath();
 
 	void	ReMake_Lines(_uint iCurPathIndex);
 	void	Load_AllPathes();

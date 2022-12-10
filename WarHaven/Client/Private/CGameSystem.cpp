@@ -30,6 +30,7 @@
 #include "CTable_Conditions.h"
 #include "CPersonality_Default.h"
 #include "CBehavior.h"
+#include "CAIController.h"
 #pragma endregion AI 성향
 
 IMPLEMENT_SINGLETON(CGameSystem);
@@ -100,11 +101,15 @@ void CGameSystem::Release()
     }
     m_mapAllPlayers.clear();
 
-	for (auto& elem : m_mapAllPathes)
+	for (_uint i = 0; i < eSTAGE_CNT; ++i)
 	{
-		SAFE_DELETE(elem.second);
+		for (auto& elem : m_mapAllPathes[i])
+		{
+			SAFE_DELETE(elem.second);
+		}
+		m_mapAllPathes[i].clear();
 	}
-	m_mapAllPathes.clear();
+	
 }
 
 HRESULT CGameSystem::On_ExitLevel()
@@ -1020,12 +1025,15 @@ CBehavior* CGameSystem::Clone_Behavior(wstring wstrBXKey)
 
 CPath* CGameSystem::Find_Path(string strPathKey)
 {
-	auto iter = m_mapAllPathes.find(Convert_ToHash(strPathKey));
+	for (_uint i = 0; i < eSTAGE_CNT; ++i)
+	{
+		auto iter = m_mapAllPathes[i].find(Convert_ToHash(strPathKey));
 
-	if (iter == m_mapAllPathes.end())
-		return nullptr;
-
-	return iter->second;
+		if (iter != m_mapAllPathes[i].end())
+			return iter->second;
+	}
+	
+	return nullptr;
 }
 
 CPath* CGameSystem::Clone_Path(string strPathKey, CAIController* pOwnerController)
@@ -1036,6 +1044,49 @@ CPath* CGameSystem::Clone_Path(string strPathKey, CAIController* pOwnerControlle
 		pPath = pPath->Clone();
 		pPath->m_pOwnerController = pOwnerController;
 		return pPath;
+	}
+
+	return nullptr;
+}
+
+CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eSTAGE_TYPE eStageType, eTEAM_TYPE eTeamType)
+{
+	string strFindKey;
+
+	switch (eTeamType)
+	{
+	case Client::eTEAM_TYPE::eRED:
+		strFindKey = "RedTeam";
+		break;
+
+	case Client::eTEAM_TYPE::eBLUE:
+		strFindKey = "BlueTeam";
+		break;
+
+	case Client::eTEAM_TYPE::eCOUNT:
+		break;
+	default:
+		break;
+	}
+
+	_uint iSize = m_mapAllPathes[eStageType].size() - 1;
+
+	_int iRandIndex = random(0, iSize);
+	
+	for (auto& elem : m_mapAllPathes[eStageType])
+	{
+		/* FindKey 들어간 이름이면 */
+		if ((_int)elem.second->m_strName.find(strFindKey) > 0)
+		{
+			if (iRandIndex == 0)
+			{
+				CPath* pClonePath = elem.second->Clone();
+				pOwnerController->Set_NewPath(pClonePath);
+				return pClonePath;
+			}
+
+			iRandIndex--;
+		}
 	}
 
 	return nullptr;
@@ -1153,9 +1204,19 @@ HRESULT CGameSystem::SetUp_AllPathes()
 			_int iFindExt = (int)strFileName.rfind(".");// +1;
 			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
 			string HashKey = strFileName.substr(0, iFindExt);
+
 			CPath* pPath = CPath::Create(HashKey);
+
+			eSTAGE_TYPE	eType = eSTAGE_CNT;
+
+			if ((_int)HashKey.find("Paden") > 0)
+				eType = eSTAGE_PADEN;
+
+			if (eType == eSTAGE_CNT)
+				continue;
+
 			if(nullptr != pPath)
-				m_mapAllPathes.emplace(Convert_ToHash(HashKey),pPath);
+				m_mapAllPathes[eType].emplace(Convert_ToHash(HashKey), pPath);
 		}
 
 	}

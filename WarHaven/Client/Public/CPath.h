@@ -21,13 +21,17 @@ public:
 
 public:
 	HRESULT	Initialize();
+
 	/* 플레이어 위치 던져주면 인덱스 갱신 함 */
 	void	Update_CurrentIndex(_float4 vCurrentPos);
 	void	Release();
 
 public:
-	_float4	Get_CurDir();
+	/* CurIndex 의 위치로 향하는 방향 return 해줌. y값 제거 */
+	_float4	Get_CurDir(_float4 vCurrentPos);
 	_float4	Find_NearestPosition();
+	/* 경로 끝에 도달했는지 여부 */
+	_bool	Is_Arrived() { return (m_iCurIndex == m_iNumPositions) ? true : false; }
 
 private:
 	CAIController* m_pOwnerController = nullptr;
@@ -38,6 +42,7 @@ private:
 	vector<_float4>	m_vecPositions;
 	
 	_uint			m_iNumPositions = 0;
+
 	_uint			m_iCurIndex = 0;
 
 private:

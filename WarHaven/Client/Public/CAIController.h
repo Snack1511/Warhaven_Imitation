@@ -71,10 +71,11 @@ class CPath;
 class CAIController :
     public CComponent
 {
-
     DECLARE_PROTOTYPE(CAIController)
+
 public:
     friend class CPlayer;
+
 private:
     CAIController(_uint iGroupID);
     CAIController(const CAIController& rhs);
@@ -99,8 +100,10 @@ public:
     list<CPlayer*> Get_NearAllies() { return m_NearAlliesList; }
     list<CPlayer*> Get_NearEnemy() { return m_NearEnemyList; }
     list<CTrigger*> Get_NearTrigger() { return m_NearTriggerList; }
+
 public:
     void Ready_Controller();
+    void    Set_NewPath(CPath* pPath);
 
 private:
     CPlayer* m_pOwnerPlayer = nullptr;

@@ -175,3 +175,10 @@ void CAIController::Ready_Controller()
 	}
 
 }
+
+void CAIController::Set_NewPath(CPath* pPath)
+{
+	SAFE_DELETE(m_pCurPath);
+	m_pCurPath = pPath;
+	m_pCurPath->m_pOwnerController = this;
+}

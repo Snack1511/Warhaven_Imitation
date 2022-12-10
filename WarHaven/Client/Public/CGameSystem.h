@@ -22,11 +22,16 @@ class CAIController;
 
 class CGameSystem
 {
+public:
+	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_CNT};
+
 	DECLARE_SINGLETON(CGameSystem)
 
 private:
 	CGameSystem();
 	~CGameSystem();
+
+	friend class CWindow_Path;
 
 public:
 	HRESULT					Initialize();
@@ -83,7 +88,8 @@ public: /* Behavior Table */
 public: /* Pathes */
 	CPath*			Find_Path(string strPathKey);
 	CPath*			Clone_Path(string strPathKey, CAIController* pOwnerController);
-	map<_hashcode, CPath*>& Get_AllPathes() { return m_mapAllPathes; }
+
+	CPath*			Clone_RandomStartPath(CAIController* pOwnerController, eSTAGE_TYPE eStageType, eTEAM_TYPE eTeamType);
 
 public:	
 	CTrigger*					Find_Trigger(string strTriggerKey);
@@ -111,11 +117,12 @@ private:
 
 private:
 	/* Path들 map으로 들고 있기. */
-	map<_hashcode, CPath*>	m_mapAllPathes;
+	map<_hashcode, CPath*>	m_mapAllPathes[eSTAGE_CNT];
 
 private:
 	HRESULT					SetUp_AllPlayerInfos();
 	HRESULT					SetUp_AllPathes();
+
 private:
 	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();

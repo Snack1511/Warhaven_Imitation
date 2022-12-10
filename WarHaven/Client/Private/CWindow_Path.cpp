@@ -70,10 +70,6 @@ void CWindow_Path::Tick()
 				Update_SelectMode();
 		}
 
-		
-
-
-
 	}
 }
 
@@ -90,6 +86,9 @@ HRESULT CWindow_Path::Render()
 	{
 		if (ImGui::Button("Create New Path"))
 			Create_NewPath();
+
+		if (ImGui::Button("Delete Selected Path"))
+			Deleted_SelectedPath();
 
 		for (_uint i = 0; i < m_vecPathDesc.size(); ++i)
 		{
@@ -436,6 +435,31 @@ void CWindow_Path::Create_NewPath()
 	m_vecPathDesc.push_back(tDesc);
 }
 
+void CWindow_Path::Deleted_SelectedPath()
+{
+	if (m_iCurSelectedIndex == 99999)
+		return;
+
+	auto iter = m_vecPathDesc.begin();
+
+	for (_uint i = 0; i < m_iCurSelectedIndex; ++i)
+		++iter;
+
+	for (auto& elem : m_vecPathDesc[m_iCurSelectedIndex].vecDebugBoxes)
+	{
+		DELETE_GAMEOBJECT(elem);
+	}
+
+	for (auto& elem : m_vecPathDesc[m_iCurSelectedIndex].vecLineBox)
+	{
+		DELETE_GAMEOBJECT(elem);
+	}
+
+	SAFE_DELETE(m_vecPathDesc[m_iCurSelectedIndex].pPath);
+	m_vecPathDesc.erase(iter);
+	m_iCurSelectedIndex = 99999;
+}
+
 void CWindow_Path::ReMake_Lines(_uint iCurPathIndex)
 {
 	//다 지우고 다시 연결
@@ -470,28 +494,32 @@ void CWindow_Path::Load_AllPathes()
 {
 	for (auto& elem : m_vecPathDesc)
 		SAFE_DELETE(elem.pPath);
+
 	m_vecPathDesc.clear();
 
-	map<_hashcode, CPath*>	mapPathes = CGameSystem::Get_Instance()->Get_AllPathes();
 
 	_uint iPlusIndex = 0;
-	for (auto& elem : mapPathes)
+	for (_uint j = 0; j < CGameSystem::eSTAGE_CNT; ++j)
 	{
-		PATH_DESC	tDesc;
-
-		tDesc.pPath = elem.second->Clone();
-		
-		for (_uint i = 0; i < tDesc.pPath->m_iNumPositions; ++i)
+		for (auto& elem : CGameSystem::Get_Instance()->m_mapAllPathes[j])
 		{
-			//debugbox 생성
-			CDebugObject* pDebugObject = CDebugObject::Create(tDesc.pPath->m_vecPositions[i]);
-			pDebugObject->Initialize();
-			pDebugObject->Set_Green();
-			CREATE_GAMEOBJECT(pDebugObject, GROUP_DEBUG);
-			tDesc.vecDebugBoxes.push_back(pDebugObject);
-		}
+			PATH_DESC	tDesc;
 
-		m_vecPathDesc.push_back(tDesc);
-		ReMake_Lines(iPlusIndex++);
+			tDesc.pPath = elem.second->Clone();
+
+			for (_uint i = 0; i < tDesc.pPath->m_iNumPositions; ++i)
+			{
+				//debugbox 생성
+				CDebugObject* pDebugObject = CDebugObject::Create(tDesc.pPath->m_vecPositions[i]);
+				pDebugObject->Initialize();
+				pDebugObject->Set_Green();
+				CREATE_GAMEOBJECT(pDebugObject, GROUP_DEBUG);
+				tDesc.vecDebugBoxes.push_back(pDebugObject);
+			}
+
+			m_vecPathDesc.push_back(tDesc);
+			ReMake_Lines(iPlusIndex++);
+		}
 	}
+	
 }
