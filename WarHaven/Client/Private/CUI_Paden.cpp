@@ -207,8 +207,6 @@ void CUI_Paden::My_Tick()
 			fConquestRatio = 1.f;
 
 		m_fConquestRatio[i] = 1 - fConquestRatio;
-
-		cout << i << " : " << m_fConquestRatio[i] << endl;
 	}
 
 	if (KEY(X, TAP))
