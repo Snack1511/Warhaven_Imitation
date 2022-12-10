@@ -484,6 +484,14 @@
 #include "CAI_TG_FlyHit.h"
 #include "CAI_TG_Groggy.h"
 
+
+#include "CState_Patrol_Default_Warrior_L.h"
+#include "CState_Patrol_Default_Warrior_R.h"
+//#include "CRun_AI_Default_Warrior_Begin_L.h"
+//#include "CRun_AI_Default_Warrior_Begin_R.h"
+//#include "CRun_AI_Default_Warrior_L.h"
+//#include "CRun_AI_Default_Warrior_R.h"
+
 IMPLEMENT_SINGLETON(CState_Manager);
 
 CState_Manager::CState_Manager()
@@ -1069,7 +1077,17 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_TG_FLYHIT_WARRIOR] = CAI_TG_FlyHit::Create();
 
 
-	//CRun_AI_TG_FlyHit
+	m_arrStates[AI_STATE_IDLE_WARRIOR_L] = CIdle_AI_TG_Warrior_L::Create();
+	
+
+	m_arrStates[AI_STATE_DEAFULT_IDLE_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();
+	m_arrStates[AI_STATE_DEAFULT_IDLE_WARRIOR_R] = CState_Patrol_Default_Warrior_R::Create();
+
+	//m_arrStates[AI_STATE_DEAFULT_RUNBEGIN_WARRIOR_L] = CRun_AI_Default_Warrior_Begin_L::Create();
+	//m_arrStates[AI_STATE_DEAFULT_RUNBEGIN_WARRIOR_R] = CRun_AI_Default_Warrior_Begin_R::Create();
+	//m_arrStates[AI_STATE_DEAFULT_RUN_WARRIOR_L] = CRun_AI_Default_Warrior_L::Create();
+	//m_arrStates[AI_STATE_DEAFULT_RUN_WARRIOR_R] = CRun_AI_Default_Warrior_R::Create();
+
 }
 
 void CState_Manager::Spear_State()

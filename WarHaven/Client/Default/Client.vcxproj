@@ -293,6 +293,8 @@
     <ClInclude Include="..\Public\CIdle_Archer_R.h" />
     <ClInclude Include="..\Public\CIdle_Paladin_L.h" />
     <ClInclude Include="..\Public\CIdle_Paladin_R.h" />
+    <ClInclude Include="..\Public\CState_Patrol_Default_Warrior_L.h" />
+    <ClInclude Include="..\Public\CState_Patrol_Default_Warrior_R.h" />
     <ClInclude Include="..\Public\CJump_Archer.h" />
     <ClInclude Include="..\Public\CJump_Archer_Fall_L.h" />
     <ClInclude Include="..\Public\CJump_Archer_Fall_R.h" />
@@ -359,11 +361,14 @@
     <ClInclude Include="..\public\CPlayerInfo_Main.h" />
     <ClInclude Include="..\public\CPlayerInfo_SandBack.h" />
     <ClInclude Include="..\public\CPositionTable.h" />
+    <ClInclude Include="..\Public\CRun_AI_Default_Warrior.h" />
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior.h" />
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_Begin.h" />
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_Begin_L.h" />
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_Begin_R.h" />
+    <ClInclude Include="..\Public\CRun_AI_Default_Warrior_L.h" />
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_L.h" />
+    <ClInclude Include="..\Public\CRun_AI_Default_Warrior_R.h" />
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_R.h" />
     <ClInclude Include="..\Public\CRun_Archer.h" />
     <ClInclude Include="..\Public\CRun_Archer_Begin.h" />
@@ -410,6 +415,8 @@
     <ClInclude Include="..\Public\CSprint_Loop_Archer.h" />
     <ClInclude Include="..\Public\CSprint_Loop_Paladin.h" />
     <ClInclude Include="..\public\CSquad.h" />
+    <ClInclude Include="..\Public\CState_Patrol_Default_Warrior.h" />
+    <ClInclude Include="..\Public\CState_Patrol_Default.h" />
     <ClInclude Include="..\Public\CStop_Archer.h" />
     <ClInclude Include="..\Public\CStop_Archer_L.h" />
     <ClInclude Include="..\Public\CStop_Archer_R.h" />
@@ -489,6 +496,7 @@
     <ClInclude Include="..\Public\CWalk_Paladin.h" />
     <ClInclude Include="..\Public\CWalk_Paladin_L.h" />
     <ClInclude Include="..\Public\CWalk_Paladin_R.h" />
+    <ClInclude Include="..\Public\CState_Patrol.h" />
     <ClInclude Include="..\Public\CWalk_Valkyrie.h" />
     <ClInclude Include="..\Public\CWalk_Valkyrie_L.h" />
     <ClInclude Include="..\Public\CWalk_WarHammer_L.h" />
@@ -798,6 +806,8 @@
     <ClCompile Include="..\Private\CIdle_Archer_R.cpp" />
     <ClCompile Include="..\Private\CIdle_Paladin_L.cpp" />
     <ClCompile Include="..\Private\CIdle_Paladin_R.cpp" />
+    <ClCompile Include="..\Private\CState_Patrol_Default_Warrior_L.cpp" />
+    <ClCompile Include="..\Private\CState_Patrol_Default_Warrior_R.cpp" />
     <ClCompile Include="..\Private\CJump_Archer.cpp" />
     <ClCompile Include="..\Private\CJump_Archer_Fall_L.cpp" />
     <ClCompile Include="..\Private\CJump_Archer_Fall_R.cpp" />
@@ -864,11 +874,14 @@
     <ClCompile Include="..\private\CPlayerInfo_Main.cpp" />
     <ClCompile Include="..\private\CPlayerInfo_SandBack.cpp" />
     <ClCompile Include="..\private\CPositionTable.cpp" />
+    <ClCompile Include="..\Private\CRun_AI_Default_Warrior.cpp" />
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior.cpp" />
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_Begin.cpp" />
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_Begin_L.cpp" />
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_Begin_R.cpp" />
+    <ClCompile Include="..\Private\CRun_AI_Default_Warrior_L.cpp" />
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_L.cpp" />
+    <ClCompile Include="..\Private\CRun_AI_Default_Warrior_R.cpp" />
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_R.cpp" />
     <ClCompile Include="..\Private\CRun_Archer.cpp" />
     <ClCompile Include="..\Private\CRun_Archer_Begin.cpp" />
@@ -915,6 +928,8 @@
     <ClCompile Include="..\Private\CSprint_Loop_Archer.cpp" />
     <ClCompile Include="..\Private\CSprint_Loop_Paladin.cpp" />
     <ClCompile Include="..\private\CSquad.cpp" />
+    <ClCompile Include="..\Private\CState_Patrol_Default_Warrior.cpp" />
+    <ClCompile Include="..\Private\CState_Patrol_Default.cpp" />
     <ClCompile Include="..\Private\CStop_Archer.cpp" />
     <ClCompile Include="..\Private\CStop_Archer_L.cpp" />
     <ClCompile Include="..\Private\CStop_Archer_R.cpp" />
@@ -993,6 +1008,7 @@
     <ClCompile Include="..\Private\CWalk_Paladin.cpp" />
     <ClCompile Include="..\Private\CWalk_Paladin_L.cpp" />
     <ClCompile Include="..\Private\CWalk_Paladin_R.cpp" />
+    <ClCompile Include="..\Private\CState_Patrol.cpp" />
     <ClCompile Include="..\Private\CWalk_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CWalk_Valkyrie_L.cpp" />
     <ClCompile Include="..\Private\CWalk_WarHammer_L.cpp" />

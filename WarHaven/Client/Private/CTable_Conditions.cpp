@@ -71,6 +71,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 HRESULT CTable_Conditions::SetUp_Behaviors()
 {
     CBehavior* pBehavior = nullptr; 
+    //Add_Behavior(pBehavior, wstring(L"ePatrol"), eBehaviorType::ePatrol);
     Add_Behavior(pBehavior, wstring(L"Follow"), eBehaviorType::eFollow);
 
     return S_OK;

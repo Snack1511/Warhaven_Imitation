@@ -125,7 +125,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
     CUser::Get_Instance()->Set_Player(pUserPlayer);
     READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 0; ++i)
+	for (_uint i = 0; i < 1; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
@@ -139,7 +139,9 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
         pEnemy->Enable_OnStart();
         pEnemy->SetUp_UnitColliders(false);
 
-        pEnemy->Reserve_State(STATE_IDLE_WARRIOR_R_AI_ENEMY);
+        pEnemy->Reserve_State(AI_STATE_DEAFULT_IDLE_WARRIOR_R);
+		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_TG);
+
         READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
     }
 

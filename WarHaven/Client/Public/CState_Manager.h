@@ -34,7 +34,6 @@ private:
 
 	void Valkyrie_State();
 	
-
 	void Warrior_SandBagState();
 	void Warrior_State_AI();
 

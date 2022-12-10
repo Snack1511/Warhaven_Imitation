@@ -26,6 +26,7 @@ class CScript_FollowCam;
 class CCamera_Follow;
 class CUI_UnitHUD;
 class CAIController;
+class CBehavior;
 
 class CPlayer final : public CGameObject
 {
@@ -148,7 +149,8 @@ public:
 	_bool	IsLeaderPlayer() { return m_bIsLeaderPlayer; }
 
 	_float& Get_Gauge() { return m_fGauge; }
-
+	
+	CBehavior* Get_Behavior();
 
 
 public:
