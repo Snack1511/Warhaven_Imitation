@@ -891,7 +891,16 @@ void CRectEffects::Dead_Instance(_uint iIndex)
 	if (m_bLoopControl)
 	{
 		if (m_fLoopTime == 0)
+		{
 			Reset_Instance(iIndex);
+
+			if (!m_pRefBone)
+				return;
+			_float4 vPos = m_vOffsetPos;
+			_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
+			vPos = vPos.MultiplyCoord(matBone).Normalize();
+			m_pDatas[iIndex].RectInstance.vTranslation = vPos;
+		}
 		else if (m_fLoopTimeAcc <= m_fLoopTime)
 			Reset_Instance(iIndex);
 		else if (m_fLoopTimeAcc > m_fLoopTime)
