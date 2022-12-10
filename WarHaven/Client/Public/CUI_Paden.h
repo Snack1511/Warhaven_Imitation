@@ -51,7 +51,10 @@ private:	// 각 팀별 스코어
 	vector<_uint> m_vecPrvScore[Team_End];
 	vector<_uint> m_vecCurScore[Team_End];
 
-	_uint m_iChangeNumIdx = 0;
+	_uint m_iPrvScore[Team_End][3];
+	_uint m_iCurvScore[Team_End][3];
+
+	_uint m_iChangeNumIdx[3] = { 0 };
 	_bool m_bIsChangeNum = false;
 	_bool m_bIsDisableNum = false;
 	_bool m_bIsEnableNum = false;

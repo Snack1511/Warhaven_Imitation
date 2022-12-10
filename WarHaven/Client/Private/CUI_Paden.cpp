@@ -43,31 +43,22 @@ void CUI_Paden::Set_ScoreNum(_uint iTeamType, _uint iScore)
 {
 	m_eTeamType = (TeamType)iTeamType;
 
-	m_vecPrvScore[m_eTeamType].clear();
-	m_vecPrvScore[m_eTeamType] = m_vecCurScore[m_eTeamType];
-
-	m_vecCurScore[m_eTeamType].clear();
-
-	while (iScore != 0)
+	for (int i = 2; i >= 0; --i)
 	{
+		m_iPrvScore[m_eTeamType][i] = m_iCurvScore[m_eTeamType][i];
+
 		_uint iDigitDmg = iScore % 10;
-		m_vecCurScore[m_eTeamType].push_back(iDigitDmg);
-
+		m_iCurvScore[m_eTeamType][i] = iDigitDmg;
 		iScore /= 10;
-	}
 
-	reverse(m_vecCurScore[m_eTeamType].begin(), m_vecCurScore[m_eTeamType].end());
+		// 100
+		// 001
 
-	// 100 99 로 빠지면 앞에 두개 채워지고 뒤에 제거
 
-	for (int i = 0; i < 3; ++i)
-	{
-		if (i >= m_vecPrvScore[m_eTeamType].size() || i >= m_vecCurScore[m_eTeamType].size())
-			return;
 
-		if (m_vecPrvScore[m_eTeamType][i] != m_vecCurScore[m_eTeamType][i])
+		if (m_iPrvScore[m_eTeamType][i] != m_iCurvScore[m_eTeamType][i])
 		{
-			m_iChangeNumIdx = i;
+			m_iChangeNumIdx[i] = i;
 
 			m_bIsChangeNum = true;
 			m_bIsDisableNum = true;
@@ -228,9 +219,11 @@ void CUI_Paden::My_Tick()
 			{
 				m_fAccTime = 0.f;
 
-				GET_COMPONENT_FROM(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx], CTexture)->Set_CurTextureIndex(m_vecCurScore[m_eTeamType][m_iChangeNumIdx]);
-
-				Enable_Fade(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx], 0.25f);
+				for (int i = 0; i < 3; ++i)
+				{
+					GET_COMPONENT_FROM(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx[i]], CTexture)->Set_CurTextureIndex(m_iCurvScore[m_eTeamType][m_iChangeNumIdx[i]]);
+					Enable_Fade(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx[i]], 0.25f);
+				}
 
 				m_bIsEnableNum = false;
 				m_bIsChangeNum = false;
