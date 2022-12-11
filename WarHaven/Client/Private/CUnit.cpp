@@ -994,7 +994,7 @@ void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _floa
 	LightDesc.vPosition = vPos;
 	LightDesc.fRange = fRange;
 	LightDesc.fRandomRange = fRandomRange;
-	LightDesc.fLightTime = fDuration;
+	LightDesc.fLightTime = 0.05f;
 	LightDesc.vDiffuse = Diffuse;
 	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f);
