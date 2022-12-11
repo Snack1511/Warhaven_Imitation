@@ -12,7 +12,6 @@ CWindow_Level::CWindow_Level()
 
 CWindow_Level::~CWindow_Level()
 {
-	CGame_Manager_HR::Get_Instance()->Destroy_Instance();
 }
 
 CWindow_Level* CWindow_Level::Create()

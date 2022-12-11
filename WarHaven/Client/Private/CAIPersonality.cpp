@@ -10,6 +10,7 @@ CAIPersonality::CAIPersonality(CTable_Conditions* pConditionTable)
 
 CAIPersonality::~CAIPersonality()
 {
+	Release();
 }
 
 HRESULT CAIPersonality::Initailize()

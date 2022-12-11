@@ -22,7 +22,8 @@
 #include "CUI_Cursor.h"
 
 #include "CTable_Conditions.h"
-
+#include "CGame_Manager_HR.h"
+#include "CGame_Manager_MJ.h"
 IMPLEMENT_SINGLETON(CMainApp);
 
 CMainApp::CMainApp()
@@ -65,7 +66,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(CState_Manager::Get_Instance()->Initialize()))
 		return E_FAIL;
 
-	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_MAINMENU)))
+	if (FAILED(CLoading_Manager::Get_Instance()->Reserve_Load_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
 	//Sound
@@ -130,6 +131,8 @@ void CMainApp::Release()
 	
 	CLoading_Manager::Get_Instance()->Destroy_Instance();
 	CUser::Get_Instance()->Destroy_Instance();
+	CGame_Manager_HR::Get_Instance()->Destroy_Instance();
+	CGame_Manager_MJ::Get_Instance()->Destroy_Instance();
 
 	CGameSystem::Get_Instance()->Destroy_Instance();
 
@@ -240,8 +243,7 @@ HRESULT CMainApp::SetUp_Statics()
 	DISABLE_GAMEOBJECT(pFreeCam);
 	CGameInstance::Get_Instance()->Add_Camera(L"FreeCam", pFreeCam);
 
-	if (FAILED(m_pGameInstance->Add_Font(L"DefaultFont", L"../bin/resources/fonts/128.spritefont")))
-		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -293,6 +295,9 @@ HRESULT CMainApp::SetUp_Font()
 		return E_FAIL;
 
 	if (FAILED(CGameInstance::Get_Instance()->Add_Font(TEXT("War_Bold"), TEXT("../Bin/Resources/Fonts/WarHavenBold.spritefont"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Font(L"DefaultFont", L"../bin/resources/fonts/128.spritefont")))
 		return E_FAIL;
 
 	return S_OK;

@@ -590,6 +590,10 @@ void CPlayer::On_Die()
 
 void CPlayer::On_RealDie()
 {
+	/* 이 함수가 소생 이펙트 켜지는 곳임 */
+
+	//소생 UI
+
 	m_bDieDelay = false;
 	m_fDieDelayAcc = 0.f;
 	m_bDie = true;

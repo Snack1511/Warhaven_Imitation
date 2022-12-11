@@ -46,7 +46,6 @@ CWindow_Map::~CWindow_Map()
     }
     m_InstanceMap.clear();
 
-    CGame_Manager_MJ::Destroy_Instance();
 }
 
 CWindow_Map* CWindow_Map::Create()

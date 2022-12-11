@@ -519,11 +519,6 @@
 #pragma endregion
 
 
-
-
-
-
-
 IMPLEMENT_SINGLETON(CState_Manager);
 
 CState_Manager::CState_Manager()
@@ -1109,8 +1104,6 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_TG_FLYHIT_WARRIOR] = CAI_TG_FlyHit::Create();
 
 	//---------------------------------------------------------------------------------//
-
-	m_arrStates[AI_STATE_IDLE_WARRIOR_L] = CIdle_AI_TG_Warrior_L::Create();
 	
 
 	m_arrStates[AI_STATE_PATROL_IDLE_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();

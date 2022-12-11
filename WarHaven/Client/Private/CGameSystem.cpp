@@ -73,6 +73,7 @@ HRESULT CGameSystem::Initialize()
 		Call_MsgBox(L"Failed to SetUp_AllPlayerInfos : CGameSystem");
 		return E_FAIL;
 	}
+
 	if (FAILED(SetUp_AllPathes()))
 	{
 		Call_MsgBox(L"Failed to SetUp_AllPathes : CGameSystem");
@@ -143,7 +144,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 1; ++i)
+	for (_uint i = 0; i < 0; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
@@ -1228,14 +1229,22 @@ HRESULT CGameSystem::SetUp_AllPathes()
 
 			eSTAGE_TYPE	eType = eSTAGE_CNT;
 
-			if ((_int)HashKey.find("Paden") > 0)
+
+			_int iFindKey = HashKey.find("Paden");
+
+			if (iFindKey >= 0)
 				eType = eSTAGE_PADEN;
 
 			if (eType == eSTAGE_CNT)
+			{
+				SAFE_DELETE(pPath);
 				continue;
+			}
 
-			if(nullptr != pPath)
+			if (nullptr != pPath)
 				m_mapAllPathes[eType].emplace(Convert_ToHash(HashKey), pPath);
+			else
+				return E_FAIL;
 		}
 
 	}
