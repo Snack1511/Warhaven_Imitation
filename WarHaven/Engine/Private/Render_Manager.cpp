@@ -218,7 +218,7 @@ HRESULT CRender_Manager::Initialize()
 #pragma region RENDERTARGETS
 
 	/* For.Target_Diffuse */
-	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_Diffuse"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.027f, 0.1215f, 0.3254f, 0.f))))
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_Diffuse"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.5f, 0.5f, 0.5f, 0.f))))
 		return E_FAIL;
 
 	/* For.Target_Diffuse */
@@ -781,10 +781,14 @@ HRESULT CRender_Manager::Render()
 
 	if (FAILED(Render_RimLight()))
 		return E_FAIL;
+
 	
+
 	//RimLight, Outline, Lights, Shadow, DOF
 	if (FAILED(Render_ForwardBlend()))
 		return E_FAIL;
+
+	
 
 	if (FAILED(Render_ForwardBloom()))
 		return E_FAIL;
@@ -792,14 +796,14 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_Outline()))
 		return E_FAIL;
 
-	
+	//DOF
+	if (FAILED(Render_DOF()))
+		return E_FAIL;
 
 	if (FAILED(Render_BloomBlend()))
 		return E_FAIL;
 
-	//Blur For Outline
-	if (FAILED(Render_Blur()))
-		return E_FAIL;
+	
 
 
 	if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources()))
@@ -838,8 +842,12 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_FinalBlend()))
 		return E_FAIL;
 
+	
+
 	if (FAILED(Render_PostEffect()))
 		return E_FAIL;
+
+	
 
 	if (FAILED(Render_MotionBlur()))
 		return E_FAIL;
@@ -1263,11 +1271,10 @@ HRESULT CRender_Manager::Render_ForwardBlend()
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_ShadowTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ShadowBlur")))))
 		return E_FAIL;
 
-	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BlurTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_VerticalBlur")))))
-		return E_FAIL;
-
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_RimLightTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_RimLight")))))
 		return E_FAIL;
+
+	
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -1294,6 +1301,9 @@ HRESULT CRender_Manager::Render_BloomBlend()
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BloomTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ForwardBloomBlur")))))
 		return E_FAIL;
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BloomOriginTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ForwardBloom")))))
+		return E_FAIL;
+	// DOF
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BlurTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_VerticalBlur")))))
 		return E_FAIL;
 
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -1391,16 +1401,18 @@ HRESULT CRender_Manager::Bake_Shadow()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_Blur()
+HRESULT CRender_Manager::Render_DOF()
 {
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_DownScaleAcc"))))
 		return E_FAIL;
 
 	//1. 다운 샘플링
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Diffuse")))))
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
 		return E_FAIL;
-	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_DownScaleWorldMatrix, sizeof(_float4x4));
 	m_vecShader[SHADER_BLUR]->Begin(0);
+
 	m_pMeshRect->Render();
 
 	//2. 수평블러
@@ -1428,7 +1440,7 @@ HRESULT CRender_Manager::Render_Blur()
 		return E_FAIL;
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_HorizonBlur")))))
 		return E_FAIL;
-	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_UpScaleWorldMatrix, sizeof(_float4x4));
 
 	m_vecShader[SHADER_BLUR]->Begin(1);
 
@@ -1726,6 +1738,9 @@ HRESULT CRender_Manager::Render_PostEffect()
 
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
 		return E_FAIL;
+
+
+	
 
 	//7. Distortion
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DistortionTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Distortion")))))

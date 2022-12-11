@@ -137,8 +137,6 @@ void CAIController::Early_Tick()
 void CAIController::Tick()
 {
 
-	
-
 
 }
 

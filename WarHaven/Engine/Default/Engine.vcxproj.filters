@@ -495,7 +495,9 @@
     <ClCompile Include="..\private\CTileLayer.cpp">
       <Filter>02. Singleton\02. Design\20. Tile_Manager\Layer</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CMesh_HDRRect.cpp" />
+    <ClCompile Include="..\private\CMesh_HDRRect.cpp">
+      <Filter>03. Instances\03. Component\10. Mesh\Mesh_Rect\CMesh_HDRRect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -1314,7 +1316,9 @@
     <ClInclude Include="..\public\CTileLayer.h">
       <Filter>02. Singleton\02. Design\20. Tile_Manager\Layer</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CMesh_HDRRect.h" />
+    <ClInclude Include="..\public\CMesh_HDRRect.h">
+      <Filter>03. Instances\03. Component\10. Mesh\Mesh_Rect\CMesh_HDRRect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">

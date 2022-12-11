@@ -253,7 +253,9 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	vector			vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
 
+
 	Out.vColor = vDiffuse * vShade;
+
 
 
 	//Shadow
@@ -278,26 +280,6 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 			Out.vColor += vSpecular;
 	}
 
-	//DOF
-	//if (Out.vColor.a > 0.f && vDepthDesc.y > 0.002f)
-	//{
-	//	//멀수록 강해짐
-	//	float fRatio = min((vDepthDesc.y - 0.002f) / 0.15f, 1.f);
-
-	//	vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
-
-	//	fRatio *= 0.8f;
-	//	//fRatio = pow(fRatio, 1.5f);
-
-	//	Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
-	//	Out.vColor.r += 0.5f * fRatio;
-	//	Out.vColor.g += (0.5f * fRatio);
-	//	Out.vColor.b += (0.5f * fRatio);
-
-	//}
-
-	
-
 
 
 	if (Out.vColor.a <= 0.f)
@@ -306,10 +288,8 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 		Out.vColor = vSkyDesc;
 		//Out.vColor.a = 0.1f;
 	}
-
-
-
 	
+	Out.vColor.a = 1.f;
 
 	//
 
@@ -356,6 +336,34 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 	float4		vBloom = pow(pow(abs(vBloomDesc), fPower) + pow(abs(vBloomOriginDesc), fPower), 1.f / fPower);
 
 	Out.vColor = vDefaultDesc;
+
+
+	//DOF
+	if (g_bBilateral)
+	{
+		/* 멀수록 Ratio가 강하게 */
+
+		//if (vDepthDesc.y < 0.9f)
+		{
+			float		fMaxDepth = 0.1f;
+
+			float fRatio = pow(saturate(vDepthDesc.y / fMaxDepth), 1.5f);
+
+
+			//멀수록 강해짐
+
+			vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
+
+			Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
+
+			//Out.vColor.xyz += (fRatio * 0.3f);
+		}
+
+	}
+
+
+
+
 	//if (vBloomOriginDesc.a > 0.f)
 	Out.vColor.xyz += vBloom.xyz;
 
@@ -370,6 +378,8 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 		//if (vOutlineDesc.a + 0.1f < vDepthDesc.y)
 			Out.vColor.xyz = Out.vColor.xyz * 0.5f + vOutlineDesc * 0.5f;
 	}
+
+
 
 
 	
@@ -471,11 +481,6 @@ PS_OUT PS_MAIN_FINALBLEND(PS_IN In)
 	Out.vColor.xyz += vBloom.xyz * ((vBloom.a));
 
 
-
-	
-
-
-
 	if (Out.vColor.a <= 0.f)
 		discard;
 
@@ -553,54 +558,56 @@ PS_OUT PS_MAIN_POSTEFFECT(PS_IN In)
 
 
 
-
-
-	if (g_bBilateral)
-	{
-		float3 c = g_Texture.Sample(DefaultSampler, In.vTexUV).xyz;
-
-		//declare stuff
-		const int kSize = (MSIZE - 1) / 2;
-		float kernel[MSIZE];
-		float3 final_colour = 0;
-
-		//create the 1-D kernel
-		float Z = 0.0;
-		for (int j = 0; j <= kSize; ++j)
-		{
-			kernel[kSize + j] = kernel[kSize - j] = normpdf(float(j), SIGMA);
-		}
-
-
-		float3 cc;
-		float factor;
-		float bZ = 1.0 / normpdf(0.0, BSIGMA);
-
-		float2 fResolution = float2(1280.f, 720.f);
-		//read out the texels
-		for (int i = -kSize; i <= kSize; ++i)
-		{
-			for (int j = -kSize; j <= kSize; ++j)
-			{
-
-				float2 vPlusUV = float2 (i, j) / fResolution.xy;
-				cc = g_Texture.Sample(ShadowSampler, (In.vTexUV + vPlusUV)).xyz;
-
-				factor = normpdf3(cc - c, BSIGMA) * bZ * kernel[kSize + j] * kernel[kSize + i];
-				Z += factor;
-				final_colour += factor * cc;
-
-			}
-		}
-
-
-		Out.vColor = float4(final_colour / Z, 1.0);
+	
+		 
+	
 
 
 
 
 
-	}
+
+	//if (g_bBilateral)
+	//{
+	//	float3 c = g_Texture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+	//	//declare stuff
+	//	const int kSize = (MSIZE - 1) / 2;
+	//	float kernel[MSIZE];
+	//	float3 final_colour = 0;
+
+	//	//create the 1-D kernel
+	//	float Z = 0.0;
+	//	for (int j = 0; j <= kSize; ++j)
+	//	{
+	//		kernel[kSize + j] = kernel[kSize - j] = normpdf(float(j), SIGMA);
+	//	}
+
+
+	//	float3 cc;
+	//	float factor;
+	//	float bZ = 1.0 / normpdf(0.0, BSIGMA);
+
+	//	float2 fResolution = float2(1280.f, 720.f);
+	//	//read out the texels
+	//	for (int i = -kSize; i <= kSize; ++i)
+	//	{
+	//		for (int j = -kSize; j <= kSize; ++j)
+	//		{
+
+	//			float2 vPlusUV = float2 (i, j) / fResolution.xy;
+	//			cc = g_Texture.Sample(ShadowSampler, (In.vTexUV + vPlusUV)).xyz;
+
+	//			factor = normpdf3(cc - c, BSIGMA) * bZ * kernel[kSize + j] * kernel[kSize + i];
+	//			Z += factor;
+	//			final_colour += factor * cc;
+
+	//		}
+	//	}
+
+
+	//	Out.vColor = float4(final_colour / Z, 1.0);
+	//}
 
 
 

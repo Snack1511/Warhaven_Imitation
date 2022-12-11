@@ -118,7 +118,7 @@ private:
 	HRESULT	Render_AlphaGroup();
 	HRESULT	Render_Distortion();
 
-	HRESULT	Render_Blur();
+	HRESULT	Render_DOF();
 
 	HRESULT	Render_Glow();
 	HRESULT	Render_Bloom();
