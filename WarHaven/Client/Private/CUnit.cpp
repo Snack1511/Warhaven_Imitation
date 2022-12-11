@@ -960,9 +960,10 @@ void CUnit::My_LateTick()
 
 void CUnit::Effect_Parring(_float4 vHitPos)
 {
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
+	/*CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);*/
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Parring_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 }
 
 void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)

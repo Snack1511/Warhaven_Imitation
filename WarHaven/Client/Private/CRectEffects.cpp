@@ -1252,6 +1252,19 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 		{
 			_float4 vPos = m_vOffsetPos;
 			_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
+
+			_float	fStartDistance = m_tCreateData.fStartDistance + frandom(-m_tCreateData.fStartDistanceRange, m_tCreateData.fStartDistanceRange);
+
+			_float4 vStartDir = _float4(
+				frandom(-m_tCreateData.vStartDirRange.x, m_tCreateData.vStartDirRange.x),
+				frandom(-m_tCreateData.vStartDirRange.y, m_tCreateData.vStartDirRange.y),
+				frandom(-m_tCreateData.vStartDirRange.z, m_tCreateData.vStartDirRange.z),
+				0.f);
+
+			vStartDir += m_tCreateData.vStartDir;
+			vStartDir.Normalize();
+
+			vPos += vStartDir * fStartDistance;
 			m_pDatas[iIndex].RectInstance.vTranslation = vPos.MultiplyCoord(matBone);
 		}
 	}
