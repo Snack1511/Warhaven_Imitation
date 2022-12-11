@@ -1004,7 +1004,7 @@ void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _floa
 
 void CUnit::Effect_Parring(_float4 vHitPos)
 {
-	Create_Light(vHitPos, 5.f, 0.f, 1.f, RGB(255, 255, 255));
+	Create_Light(vHitPos, 3.f, 0.f, 0.05f, RGB(255, 255, 255));
 	/*CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);*/
