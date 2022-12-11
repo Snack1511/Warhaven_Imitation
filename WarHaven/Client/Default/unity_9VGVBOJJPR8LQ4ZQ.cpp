@@ -29,6 +29,9 @@
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CAI_SandBack_WarHammer.cpp"
 
 
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Walk_Warrior.cpp"
+
+
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Jump_Warrior_L.cpp"
 
 
@@ -41,6 +44,9 @@
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Jump_Warrior.cpp"
 
 
+#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Walk.cpp"
+
+
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Sprint_Warrior.cpp"
 
 
@@ -51,10 +57,4 @@
 
 
 #include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Sprint_Warrior_Begin.cpp"
-
-
-#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Sprint_Warrior_End.cpp"
-
-
-#include "C:\C++\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Sprint_Warrior_Loop.cpp"
 
