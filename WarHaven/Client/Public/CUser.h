@@ -103,6 +103,9 @@ public:		// ÆÄµ§
 
 	void Conquest_PointUI(string strPointName, _uint iTeamType);
 
+	void Set_TargetPointPos(_uint iTargetIdx);
+	void SetActive_TargetPoint(_bool value);
+
 	void Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore);
 
 	void SetActive_PadenUI(_bool value);

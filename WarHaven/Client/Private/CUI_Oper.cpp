@@ -99,6 +99,7 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
 	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
 
+	CUser::Get_Instance()->Set_TargetPointPos(iEventNum);
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
@@ -389,6 +390,8 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 
 				DISABLE_GAMEOBJECT(this);
+
+				CUser::Get_Instance()->SetActive_TargetPoint(true);
 			}
 		}
 	}

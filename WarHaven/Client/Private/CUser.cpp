@@ -288,6 +288,16 @@ void CUser::Conquest_PointUI(string strPointName, _uint iTeamType)
 	m_pUI_Paden->Conquest_PointUI(strPointName, iTeamType);
 }
 
+void CUser::Set_TargetPointPos(_uint iTargetIdx)
+{
+	m_pUI_Paden->Set_TargetPointPos(iTargetIdx);
+}
+
+void CUser::SetActive_TargetPoint(_bool value)
+{
+	m_pUI_Paden->SetActive_TargetPoint(value);
+}
+
 void CUser::SetActive_PadenUI(_bool value)
 {
 	m_pUI_Paden->SetActive(value);
