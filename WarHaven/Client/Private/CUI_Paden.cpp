@@ -65,11 +65,11 @@ void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstN
 
 void CUI_Paden::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 {
-	m_eTeamType = (TeamType)iTeamType;
+	m_iScore[iTeamType] = iScore;
 
-	m_iScore[m_eTeamType] = iScore;
+	m_fScoreRatio[iTeamType] = (_float)iScore / (_float)iMaxScore;
 
-	m_fScoreRatio[m_eTeamType] = (_float)iScore / (_float)iMaxScore;
+	cout << iTeamType << " : " << m_fScoreRatio[iTeamType] << endl;
 }
 
 void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
@@ -255,46 +255,45 @@ void CUI_Paden::My_Tick()
 
 	Update_InGameTimer();
 
-	Update_Score();
-
 	static _uint iScore = 100;
 	if (KEY(Z, TAP))
-	{
 		iScore--;
-	}
 
+	Set_Score(Team_Red, iScore, 100);
+	Set_Score(Team_Blue, iScore, 100);
+
+	// 현재 스코어 이미지로 표시
 	for (int i = 0; i < Team_End; ++i)
 	{
-		cout << i << " : " << m_iScore[i] << endl;
+		m_vecPrvScore[i].clear();
 
-		Set_Score(i, iScore, 100);
-	}
-
-	if (m_bIsChangeNum)
-	{
-		if (m_bIsDisableNum)
+		if (!m_vecCurScore[i].empty())
 		{
-			m_bIsDisableNum = false;
-
-			//Disable_Fade(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx], 0.25f);
-
-			m_bIsEnableNum = true;
+			m_vecPrvScore[i] = m_vecCurScore[i];
 		}
-		else if (m_bIsEnableNum)
+
+		m_vecCurScore[i].clear();
+		while (m_iRemainderCnt[i] < 3)
 		{
-			m_fAccTime += fDT(0);
-			if (m_fAccTime > 0.25f)
+			_uint iDigitNum = m_iScore[i] % 10;
+			m_vecCurScore[i].push_back(iDigitNum);
+			m_iScore[i] /= 10;
+
+			m_iRemainderCnt[i]++;
+		}
+
+		m_iRemainderCnt[i] = 0;
+		reverse(m_vecCurScore[i].begin(), m_vecCurScore[i].end());
+
+		for (int j = 0; j < Num_End; ++j)
+		{
+			if (m_vecPrvScore[i].empty())
+				return;
+
+			if (m_vecPrvScore[i][j] != m_vecCurScore[i][j])
 			{
-				m_fAccTime = 0.f;
-
-				for (int i = 0; i < 3; ++i)
-				{
-					GET_COMPONENT_FROM(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx[i]], CTexture)->Set_CurTextureIndex(m_iCurvScore[m_eTeamType][m_iChangeNumIdx[i]]);
-					Enable_Fade(m_pArrScoreNum[m_eTeamType][m_iChangeNumIdx[i]], 0.25f);
-				}
-
-				m_bIsEnableNum = false;
-				m_bIsChangeNum = false;
+				GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Set_CurTextureIndex(m_vecCurScore[i][j]);
+				Enable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
 			}
 		}
 	}
@@ -366,33 +365,31 @@ void CUI_Paden::Update_InGameTimer()
 
 void CUI_Paden::Create_ScoreNum()
 {
-	for (int i = 0; i < Num_End; ++i)
+	m_pScoreNum = CUI_Object::Create();
+
+	GET_COMPONENT_FROM(m_pScoreNum, CTexture)->Remove_Texture(0);
+	Read_Texture(m_pScoreNum, "/Number", "Num");
+
+	m_pScoreNum->Set_FadeDesc(m_fScoreFadeSpeed);
+
+	m_pScoreNum->Set_PosY(323.f);
+	m_pScoreNum->Set_Scale(35.f, 41.f);
+	m_pScoreNum->Set_Sort(0.5f);
+
+	CREATE_GAMEOBJECT(m_pScoreNum, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pScoreNum);
+
+	for (int i = 0; i < Team_End; ++i)
 	{
-		m_pScoreNum[i] = CUI_Object::Create();
-
-		m_pScoreNum[i]->Set_FadeDesc(0.25f, 0.25f, true);
-
-		GET_COMPONENT_FROM(m_pScoreNum[i], CTexture)->Remove_Texture(0);
-		Read_Texture(m_pScoreNum[i], "/Number", "Num");
-
-		m_pScoreNum[i]->Set_PosY(323.f);
-		m_pScoreNum[i]->Set_Scale(35.f, 41.f);
-		m_pScoreNum[i]->Set_Sort(0.5f);
-
-		m_pScoreNum[i]->Set_FadeDesc(m_fGaugeNumFadeSpeed);
-
-		CREATE_GAMEOBJECT(m_pScoreNum[i], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pScoreNum[i]);
-
-		for (int j = 0; j < Team_End; ++j)
+		for (int j = 0; j < Num_End; ++j)
 		{
-			m_pArrScoreNum[j][i] = m_pScoreNum[i]->Clone();
+			m_pArrScoreNum[i][j] = m_pScoreNum->Clone();
 
-			_float fPosX = -112.f + (i * 12.f) + (j * 200.f);
-			m_pArrScoreNum[j][i]->Set_PosX(fPosX);
+			_float fPosX = -112.f + (j * 12.f) + (i * 200.f);
+			m_pArrScoreNum[i][j]->Set_PosX(fPosX);
 
-			CREATE_GAMEOBJECT(m_pArrScoreNum[j][i], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pArrScoreNum[j][i]);
+			CREATE_GAMEOBJECT(m_pArrScoreNum[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrScoreNum[i][j]);
 		}
 	}
 }
@@ -407,28 +404,6 @@ void CUI_Paden::Update_Score()
 	// 해당 하는 숫자를 idx로 지정 텍스처 불러오기
 
 	// 100 이 불러와짐
-	
-
-	for (int i = 0; i < 3; ++i)
-	{
-		m_iPrvScore[m_eTeamType][i] = m_iCurvScore[m_eTeamType][i];
-
-		while (m_iScore[m_eTeamType] != 0)
-		{
-			_uint iDigitDmg = m_iScore[m_eTeamType] % 10;
-			m_iCurvScore[m_eTeamType][i] = iDigitDmg;
-
-			m_iScore[m_eTeamType] /= 10;
-		}
-
-		if (m_iPrvScore[m_eTeamType][i] != m_iCurvScore[m_eTeamType][i])
-		{
-			m_iChangeNumIdx[i] = i;
-
-			m_bIsChangeNum = true;
-			m_bIsDisableNum = true;
-		}
-	}
 }
 
 void CUI_Paden::Create_ScoreGauge()

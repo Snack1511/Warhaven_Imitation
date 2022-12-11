@@ -59,22 +59,19 @@ private:
 
 private:
 	enum ScoreGaugeNum { Num0, Num1, Num2, Num_End };
-	CUI_Object* m_pScoreNum[Num_End];
+
+	CUI_Object* m_pScoreNum = nullptr;
 	CUI_Object* m_pArrScoreNum[Team_End][Num_End];
 
-	_float m_fGaugeNumFadeSpeed = 0.25f;
+	_float m_fScoreFadeSpeed = 0.25f;
+	_float m_fScoreRatio[Team_End];
 
 	_uint m_iScore[Team_End];
 
-	_uint m_iPrvScore[Team_End][Num_End];
-	_uint m_iCurvScore[Team_End][Num_End];
+	_uint m_iRemainderCnt[Team_End];
 
-	_uint m_iChangeNumIdx[3] = { 0 };
-	_bool m_bIsChangeNum = false;
-	_bool m_bIsDisableNum = false;
-	_bool m_bIsEnableNum = false;
-
-	_float m_fScoreRatio[Team_End];
+	vector<_uint> m_vecPrvScore[Team_End];
+	vector<_uint> m_vecCurScore[Team_End];
 
 private:
 	void Create_ScoreNum();
