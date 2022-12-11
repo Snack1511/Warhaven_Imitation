@@ -15,6 +15,7 @@ private:
 	friend class CAIController;
 	friend class CWindow_Path;
 	friend class CGameSystem;
+	friend class CPlayer;
 
 public:
 	static CPath* Create(string strKey);

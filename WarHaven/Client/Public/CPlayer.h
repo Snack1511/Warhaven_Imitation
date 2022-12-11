@@ -124,6 +124,7 @@ public:
 
 	HRESULT SetUp_Collider();
 
+
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype();
@@ -138,6 +139,13 @@ public:
 	/* 죽고나서 5초 딜레이까지 지나고 들어오는 함수 */
 	void	On_RealDie();
 	void	On_Reborn();
+public:
+	/*True일 때 리스폰 대기시간 끝ㄴ*/
+	_bool	Is_EndRevivalTime();
+	/*죽고 터졌을 때 부터 True*/
+	_bool	Is_Died();
+	/*부활 가능할 때 True*/
+	_bool	Is_AbleRevival();
 
 public:
 	void	Set_TargetPlayer(CPlayer* pTargetPlayer) { m_pTargetPlayer = pTargetPlayer; }
@@ -219,6 +227,10 @@ private:
 	/* 죽어있는 상태 */
 	_bool	m_bDie = false;
 
+	/*부활 가능할 경우 True*/
+	_bool	m_bAbleRevival = false;
+	_float		m_fRevivalAcc = 0.f;
+	_float		m_fMaxRevivalTime = 5.f;
 private:
 	CUnit* m_pCurrentUnit = nullptr;
 	CCamera_Follow* m_pFollowCam = nullptr;
@@ -273,5 +285,6 @@ private:
 
 private:
 	void	Update_DieDelay();
+	void	Check_AbleRevival();
 };
 END

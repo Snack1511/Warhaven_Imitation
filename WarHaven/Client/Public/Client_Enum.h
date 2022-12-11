@@ -975,6 +975,8 @@ namespace Client
 		eFollow,
 		eAttack,
 		ePathNavigation,
+		eResurrect,
+		eChange,
 		eCNT
 	};
 }

@@ -90,14 +90,14 @@ public: /* Pathes */
 	CPath*			Find_Path(string strPathKey);
 	CPath*			Clone_Path(string strPathKey, CAIController* pOwnerController);
 
-	CPath*			Clone_RandomStartPath(CAIController* pOwnerController, eSTAGE_TYPE eStageType, eTEAM_TYPE eTeamType);
+	CPath*			Clone_RandomStartPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
 
 public:	
 	CTrigger*					Find_Trigger(string strTriggerKey);
 
 public:
 	CPlayerInfo* Find_PlayerInfo(_hashcode hcCode);
-
+	eSTAGE_TYPE m_eCurStageType = eSTAGE_TYPE::eSTAGE_CNT;
 private:
 	CPositionTable* m_pPositionTable = nullptr;
 	CTable_Conditions* m_pConditionTable = nullptr;

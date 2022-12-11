@@ -123,8 +123,10 @@ void CAIController::Early_Tick()
 			*/
 
 
+#ifdef _DEBUG
 		cout << "CurUnitName - " << CFunctor::To_String(m_pOwnerPlayer->Get_PlayerName()).c_str() << endl;
 		cout << "CurBehavior - " << CFunctor::To_String(m_pCurrentBehavior->Get_BehaviorName()).c_str() << endl;
+#endif // _DEBUG
 		m_fTimeAcc = 0.f;
 
 
@@ -135,7 +137,10 @@ void CAIController::Early_Tick()
 
 void CAIController::Tick()
 {
-
+	//if (m_pOwnerPlayer->Is_Died() && m_pOwnerPlayer->Is_EndRevivalTime())
+	//{
+	//	//
+	//}
 
 }
 
@@ -148,7 +153,7 @@ void CAIController::Late_Tick()
 
 void CAIController::Release()
 {
-	SAFE_DELETE(m_pCurPath);
+	//SAFE_DELETE(m_pCurPath);
 }
 
 void CAIController::OnEnable()
@@ -190,7 +195,6 @@ void CAIController::Ready_Controller()
 
 void CAIController::Set_NewPath(CPath* pPath)
 {
-	SAFE_DELETE(m_pCurPath);
 	m_pCurPath = pPath;
 	m_pCurPath->m_pOwnerController = this;
 }
