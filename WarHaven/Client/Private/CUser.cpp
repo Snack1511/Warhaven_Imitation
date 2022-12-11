@@ -259,6 +259,11 @@ void CUser::SetActive_UnitHUD(_bool value)
 	m_pPlayer->SetActive_UnitHUD(value);
 }
 
+void CUser::SetActive_AbleHeroText(_bool value)
+{
+	m_pUI_HeroGauge->SetActive_AbleHeroText(value);
+}
+
 void CUser::Transform_SkillUI(_uint iClass)
 {
 	m_pUI_Skill->Transform_SkillUI(iClass);

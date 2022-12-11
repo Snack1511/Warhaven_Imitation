@@ -94,6 +94,7 @@ public:
 
 	void SetActive_HUD(_bool value);
 	void SetActive_UnitHUD(_bool value);
+	void SetActive_AbleHeroText(_bool value);
 	void Transform_SkillUI(_uint iClass);
 
 public:		// ÆÄµ§

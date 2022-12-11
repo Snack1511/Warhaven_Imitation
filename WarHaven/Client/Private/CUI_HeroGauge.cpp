@@ -16,6 +16,7 @@ CUI_HeroGauge::~CUI_HeroGauge()
 HRESULT CUI_HeroGauge::Initialize_Prototype()
 {
 	Create_HeroGauge();
+	Create_AbleHeroText();
 
 	return S_OK;
 }
@@ -62,6 +63,11 @@ void CUI_HeroGauge::SetActive_HeroGauge(_bool value)
 	}
 }
 
+void CUI_HeroGauge::SetActive_AbleHeroText(_bool value)
+{
+	Enable_Fade(m_pAbleHeroText, 0.15f);
+}
+
 void CUI_HeroGauge::Create_HeroGauge()
 {
 	for (int i = 0; i < HG_End; ++i)
@@ -100,6 +106,22 @@ void CUI_HeroGauge::Create_HeroGauge()
 		CREATE_GAMEOBJECT(m_pHeroGauge[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pHeroGauge[i]);
 	}
+}
+
+void CUI_HeroGauge::Create_AbleHeroText()
+{
+	m_pAbleHeroText = CUI_Object::Create();
+
+	m_pAbleHeroText->Set_FadeDesc(0.15f, 0.65f, true);
+
+	m_pAbleHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HeroGauge/AbleHeroText.png"));
+
+	m_pAbleHeroText->Set_PosY(-100.f);
+	m_pAbleHeroText->Set_Scale(100.f, 38.f);
+	m_pAbleHeroText->Set_Sort(0.5f);
+
+	CREATE_GAMEOBJECT(m_pAbleHeroText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pAbleHeroText);
 }
 
 void CUI_HeroGauge::My_Tick()
