@@ -75,8 +75,6 @@ void CAIController::Early_Tick()
 		BEHAVIOR_DESC* pCurCheckBehaviorDesc = nullptr;
 		pCurCheckBehaviorDesc = Value->Check_Condition(bPassCondition, m_pOwnerPlayer, this);
 
-
-
 		/* false가 return 되었따 */
 		if (!bPassCondition)
 			continue;
@@ -123,10 +121,12 @@ void CAIController::Early_Tick()
 
 		cout << "CurUnitName - " << CFunctor::To_String(m_pOwnerPlayer->Get_PlayerName()).c_str() << endl;
 		cout << "CurBehavior - " << CFunctor::To_String(m_pCurrentBehavior->Get_BehaviorName()).c_str() << endl;
-		m_pOwnerPlayer->On_ChangeBehavior(pBehaviorDescTemp);
 		m_fTimeAcc = 0.f;
 
+
 	}
+
+	m_pOwnerPlayer->On_ChangeBehavior(pBehaviorDescTemp);
 
 }
 

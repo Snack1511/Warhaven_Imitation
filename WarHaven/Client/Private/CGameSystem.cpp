@@ -140,7 +140,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	pUserPlayer->Set_Postion(vPlayerPos);
 	pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
 	pUserPlayer->SetUp_UnitColliders(true);
-	//pUserPlayer->Enable_OnStart();
+	pUserPlayer->Enable_OnStart();
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
@@ -621,7 +621,7 @@ HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyOb
 	cout << "트리거 생성 완료." << endl;
 #endif // _DEBUG
 
-	SetUp_DefaultLight_BootCamp();
+	SetUp_DefaultLight_Paden();
 
 	return S_OK;
 }
@@ -1284,6 +1284,24 @@ HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()
 	LightDesc.fRange = 1500.f;
 	LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
 	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::SetUp_DefaultLight_Paden()
+{
+	/* Default Light */
+	LIGHTDESC			LightDesc;
+
+	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.vPosition = _float4(100.f, 200.f, 100.f, 1.f);
+	LightDesc.fRange = 1500.f;
+	LightDesc.vDiffuse = _float4(1.5f, 0.8f, 0.4f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))

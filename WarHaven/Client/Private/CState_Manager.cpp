@@ -1166,10 +1166,10 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_PathNavigation_Jump_Warrior_R::Create();
 
 
-	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR] = CState_PathNavigation_Run_Warrior_L::Create();
+	/*m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR] = CState_PathNavigation_Run_Warrior_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR] = CState_PathNavigation_Run_Warrior_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_PathNavigation_Run_Warrior_R::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_PathNavigation_Run_Warrior_R::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_PathNavigation_Run_Warrior_R::Create();*/
 
 #pragma endregion
 
@@ -1213,11 +1213,11 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_COMMON_STINGHIT_WARRIOR] = CState_Common_Sting_Warrior::Create();
 	m_arrStates[AI_STATE_COMMON_FLYHIT_WARRIOR] = CState_Common_FlyHit_Warrior::Create();
 
-	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR] = CState_Common_GuardHit_Warrior::Create();
+	/*m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR] = CState_Common_GuardHit_Warrior::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_WARRIOR] = CState_Common_GuardHit_Warrior::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR] = CState_Common_Groggy_Warrior::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_Common_Sting_Warrior::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_Common_FlyHit_Warrior::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_Common_FlyHit_Warrior::Create();*/
 
 
 #pragma endregion

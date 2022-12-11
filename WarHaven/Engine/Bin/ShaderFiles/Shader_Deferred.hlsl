@@ -343,7 +343,7 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 	{
 		/* 멀수록 Ratio가 강하게 */
 
-		//if (vDepthDesc.y < 0.9f)
+		if (vDepthDesc.y < 0.9f)
 		{
 			float		fMaxDepth = 0.1f;
 
@@ -560,7 +560,12 @@ PS_OUT PS_MAIN_POSTEFFECT(PS_IN In)
 
 	
 		 
-	
+	if (g_bBilateral)
+	{
+		/*const float A = 2.51, B = 0.03, C = 2.43, D = 0.59, E = 0.14;
+		Out.vColor = saturate((Out.vColor * (A * Out.vColor + B)) / (Out.vColor * (C * Out.vColor + D) + E));
+		Out.vColor.w = 1;*/
+	}
 
 
 

@@ -127,6 +127,33 @@ HRESULT CLight_Manager::Load_Lights(wstring wstrPath)
 
 void CLight_Manager::Update_Lights()
 {
+	if (KEY(Y, TAP))
+		m_Lights.back()->m_LightDesc.vDiffuse.x += 0.05f;
+	if (KEY(H, TAP))
+		m_Lights.back()->m_LightDesc.vDiffuse.x -= 0.05f;
+	if (KEY(U, TAP))
+		m_Lights.back()->m_LightDesc.vDiffuse.y += 0.05f;
+	if (KEY(J, TAP))
+		m_Lights.back()->m_LightDesc.vDiffuse.y -= 0.05f;
+	if (KEY(I, TAP))
+		m_Lights.back()->m_LightDesc.vDiffuse.z += 0.05f;
+	if (KEY(K, TAP))
+		m_Lights.back()->m_LightDesc.vDiffuse.z -= 0.05f;
+	if (KEY(O, TAP))
+	{
+		wstring wstrTemp = L"R : ";
+		wstrTemp += to_wstring(m_Lights.back()->m_LightDesc.vDiffuse.x);
+		wstrTemp += L" G : ";
+		wstrTemp += to_wstring(m_Lights.back()->m_LightDesc.vDiffuse.y);
+		wstrTemp += L" B : ";
+		wstrTemp += to_wstring(m_Lights.back()->m_LightDesc.vDiffuse.z);
+		MessageBox(0, wstrTemp.c_str(), TEXT("DIFFUSE"), MB_OK);
+
+	}
+
+
+
+
 	for (auto iter = m_Lights.begin(); iter != m_Lights.end();)
 	{
 		CLight* pLight = *iter;
