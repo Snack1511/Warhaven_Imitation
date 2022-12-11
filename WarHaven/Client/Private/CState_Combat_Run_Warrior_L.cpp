@@ -71,19 +71,28 @@ STATE_TYPE CState_Combat_Run_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimator
         case 1:
         case 2:
         case 3:
-        case 4:
-        case 5:
+
 
             return m_iAINextState;
 
-        case 7:
-        case 6:
+        case 4:
+        case 5:
+
 
             if (m_ePreStateType != AI_STATE_COMBAT_GUARDBEGIN_WARRIOR)
                 return AI_STATE_COMBAT_GUARDBEGIN_WARRIOR;
             else
                 return m_eStateType;
 
+
+        case 7:
+        case 6:
+
+            if (pOwner->Can_Use(CUnit::SKILL1))
+                return AI_STATE_COMBAT_GUARDBREAK_WARRIOR;
+
+            else
+                return AI_STATE_COMBAT_GUARDBEGIN_WARRIOR;
 
         default:
             break;

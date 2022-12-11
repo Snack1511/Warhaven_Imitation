@@ -3801,6 +3801,9 @@
     <ClInclude Include="..\Public\CState_Combat_GuardDash_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\04. Dash</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardBreak_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\02. GuardBreak</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5427,6 +5430,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_GuardDash_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\04. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardBreak_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\02. GuardBreak</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

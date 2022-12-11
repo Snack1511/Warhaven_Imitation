@@ -495,6 +495,8 @@
 #include "CState_Combat_Oxen_Cancel_Warrior.h"
 #include "CState_Combat_Oxen_Loop_Attack_Warrior.h"
 
+#include "CState_Combat_GuardBreak_Warrior.h"
+
 #include "CState_Combat_GuardBegin_Warrior.h"
 #include "CState_Combat_GuardLoop_Warrior.h"
 #include "CState_Combat_GuardEnd_Warrior.h"
@@ -1137,6 +1139,8 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_COMBAT_GUARDCANCEL_WARRIOR] = CState_Combat_GuardCancel_Warrior::Create();
 
 
+	m_arrStates[AI_STATE_COMBAT_GUARDBREAK_WARRIOR] = CState_Combat_GuardBreak_Warrior::Create();
+	
 	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L] = CState_Combat_Attack_HorizontalMiddle_Warrior_L::Create();
 	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R] = CState_Combat_Attack_HorizontalMiddle_Warrior_R::Create();
 

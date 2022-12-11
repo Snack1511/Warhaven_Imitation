@@ -168,8 +168,6 @@ void CState_Combat_Oxen_Loop_Attack_Warrior::Exit(CUnit* pOwner, CAnimator* pAni
 	pOwner->Enable_FlyAttackCollider(false);
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
     pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
-
-    CUser::Get_Instance()->SetActive_OxenJumpText(false);
 }
 
 STATE_TYPE CState_Combat_Oxen_Loop_Attack_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

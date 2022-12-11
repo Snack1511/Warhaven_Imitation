@@ -60,7 +60,7 @@ STATE_TYPE CState_Combat_GuardBegin_Warrior::Tick(CUnit* pOwner, CAnimator* pAni
 
     pOwner->Set_LookToTarget();
 
-    if (m_iRand != 0)
+    if (m_iRand == 0)
     {
         if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
         {

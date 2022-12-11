@@ -699,6 +699,7 @@
     <ClInclude Include="..\Public\CBounce_Player_L.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_Sting_L.h" />
     <ClInclude Include="..\Public\CSpearMan_GuardBreak.h" />
+    <ClInclude Include="..\Public\CState_Combat_GuardBreak_Warrior.h" />
     <ClInclude Include="..\Public\CWarrior_GuardBreak.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalUp_L.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalUp_R.h" />
@@ -1248,6 +1249,7 @@
     <ClCompile Include="..\Private\CWarrior_Attack_VerticalCut.cpp" />
     <ClCompile Include="..\Private\CBounce_Player_L.cpp" />
     <ClCompile Include="..\Private\CSpearMan_GuardBreak.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_GuardBreak_Warrior.cpp" />
     <ClCompile Include="..\Private\CWarrior_GuardBreak.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Oxen_Begin_Warrior.cpp" />
     <ClCompile Include="..\Private\CWarrior_Oxen_Begin.cpp" />

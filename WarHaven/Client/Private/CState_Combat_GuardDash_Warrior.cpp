@@ -57,6 +57,8 @@ void CState_Combat_GuardDash_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator,
 
 	m_iRand = random(0, 1);
 
+	m_fAIMyLength = 2.5f;
+
 	if (m_iRand == 0)
 	{
 		m_iAnimIndex = m_iDirectionAnimIndex[STATE_DIRECTION_W];
@@ -78,13 +80,21 @@ void CState_Combat_GuardDash_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator,
 
 STATE_TYPE CState_Combat_GuardDash_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
+
+
+	if (Get_TargetLook_Length(pOwner) < m_fAIMyLength)
 	{
-		if (m_bRight)
-			return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
-		else
-			return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L;
+	
+		if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
+		{
+			if (m_bRight)
+				return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
+			else
+				return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L;
+		}
 	}
+	else
+		return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
 
 	Follow_MouseLook(pOwner);
 
