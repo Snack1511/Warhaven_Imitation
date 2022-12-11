@@ -90,5 +90,5 @@ void CBehavior::SetUp_StateType(_uint iStateType)
     if (nullptr == m_pBehaviorDesc)
         assert(0);
 
-    m_pBehaviorDesc->iStateType = iStateType;
+    //m_pBehaviorDesc->iStateType = iStateType;
 }

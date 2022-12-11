@@ -168,7 +168,7 @@ void CTable_Conditions::Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlaye
 void CTable_Conditions::Select_Leader(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
     //OutDesc->pAlliesPlayer = pPlayer->Get_Squad()->Get_LeaderPlayer();
-    OutDesc->pAlliesPlayer = PLAYER;
+    //OutDesc->pAlliesPlayer = PLAYER;
 }
 
 void CTable_Conditions::Select_NearEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
@@ -184,8 +184,7 @@ void CTable_Conditions::Select_NearEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlay
                 return true;
             else return false;
         });
-
-    OutDesc->pTriggerPtr = Enemies.front();
+    OutDesc->pEnemyPlayer = Enemies.front();
 }
 
 void CTable_Conditions::Select_NearAllies(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
@@ -212,14 +211,14 @@ void CTable_Conditions::Select_NearTrigger(BEHAVIOR_DESC*& OutDesc, CPlayer* pPl
     list<CTrigger*> Triggers = pAIController->Get_NearTrigger();
     Triggers.sort([&MyPositoin](auto& Sour, auto& Dest)
         {
-            _float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-            _float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            _float4 SourPosition = Sour->Get_Transform()->Get_World(WORLD_POS);
+            _float4 DestPosition = Dest->Get_Transform()->Get_World(WORLD_POS);
             if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
                 return true;
             else return false;
         });
+    OutDesc->pTriggerPtr = Triggers.front();
 
-    OutDesc->pEnemyPlayer = Triggers.front();
 }
 
 
