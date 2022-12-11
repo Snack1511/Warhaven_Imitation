@@ -6,6 +6,9 @@
 #include <CUtility_Transform.h>
 #include "CShader.h"
 #include "Loading_Manager.h"
+#include "CUser.h"
+#include "CPlayer.h"
+#include "CUnit.h"
 
 HRESULT CUI_Paden::Initialize_Prototype()
 {
@@ -193,6 +196,8 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 {
 	_float fDuration = 0.3f;
 
+	_bool bIsMainPlayer = CUser::Get_Instance()->Get_Player()->Is_MainPlayer();
+
 	for (int i = 0; i < PU_End; ++i)
 	{
 		switch (iTriggerState)
@@ -201,22 +206,31 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
-				m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
-				m_pArrPointUI[Point_A][i]->DoMove(0.f, 200.f, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
+					m_pArrPointUI[Point_A][i]->DoMove(0.f, 200.f, fDuration);
+				}
 
 				Set_PointGauge_Color(iTeamType, Point_A);
 			}
 			else if (strPadenPointKey == "Paden_Trigger_R")
 			{
-				m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
-				m_pArrPointUI[Point_R][i]->DoMove(0.f, 200.f, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
+					m_pArrPointUI[Point_R][i]->DoMove(0.f, 200.f, fDuration);
+				}
 
 				Set_PointGauge_Color(iTeamType, Point_R);
 			}
 			else if (strPadenPointKey == "Paden_Trigger_C")
 			{
-				m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
-				m_pArrPointUI[Point_C][i]->DoMove(0.f, 200.f, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
+					m_pArrPointUI[Point_C][i]->DoMove(0.f, 200.f, fDuration);
+				}
 
 				Set_PointGauge_Color(iTeamType, Point_C);
 			}
@@ -227,18 +241,27 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
-				m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
-				m_pArrPointUI[Point_A][i]->DoMove(-50.f, m_fPointUIPosY, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
+					m_pArrPointUI[Point_A][i]->DoMove(-50.f, m_fPointUIPosY, fDuration);
+				}
 			}
 			else if (strPadenPointKey == "Paden_Trigger_R")
 			{
-				m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
-				m_pArrPointUI[Point_R][i]->DoMove(0.f, m_fPointUIPosY, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
+					m_pArrPointUI[Point_R][i]->DoMove(0.f, m_fPointUIPosY, fDuration);
+				}
 			}
 			else if (strPadenPointKey == "Paden_Trigger_C")
 			{
-				m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
-				m_pArrPointUI[Point_C][i]->DoMove(50.f, m_fPointUIPosY, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
+					m_pArrPointUI[Point_C][i]->DoMove(50.f, m_fPointUIPosY, fDuration);
+				}
 			}
 
 			break;
