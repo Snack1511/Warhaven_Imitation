@@ -232,8 +232,9 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		assert(0);
 		break;
 	}
+
 	if (eNewState != STATE_END)
-		Enter_State(eNewState);
+		m_eReserveState = eNewState;
 }
 
 void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)

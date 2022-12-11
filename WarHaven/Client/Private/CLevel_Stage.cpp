@@ -81,8 +81,8 @@ HRESULT CLevel_Stage::Enter()
 	__super::Enter();
 
 	CUser::Get_Instance()->On_EnterStageLevel();
-
 	LEVEL_TYPE_CLIENT eLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+
 	if (eLevel != LEVEL_BOOTCAMP)
 	{
 		CUser::Get_Instance()->On_EnterLevel();
@@ -100,6 +100,7 @@ void CLevel_Stage::Tick()
 	if (!m_bStaticShadowBake)
 	{
 		m_fDealyAcc += fDT(0);
+
 		if (m_fDealyAcc >= m_fDelayTime)
 		{
 			list<CGameObject*> ObjList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
@@ -110,7 +111,7 @@ void CLevel_Stage::Tick()
 
 			}
 
-			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, 400.f);
+			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, m_vCenterPos, m_fDistance);
 			m_bStaticShadowBake = true;
 			GAMEINSTANCE->Save_Memory();
 

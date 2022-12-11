@@ -25,7 +25,10 @@ public:
 	virtual HRESULT OnExit() override;
 	virtual HRESULT Exit() override;
 
-private:
+protected:
+	_float4 m_vCenterPos;
+	_float	m_fDistance = 400.f;
+
 	_bool	m_bStaticShadowBake = false;
 	_float	m_fDealyAcc = 0.f;
 	_float	m_fDelayTime = 0.1f;

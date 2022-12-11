@@ -266,7 +266,6 @@ public:
 	enum class UNIT_TYPE { ePlayer, eSandbag, eAI_TG, eAI_Default, eAI_Panden, eAI_Gela, eAI_Hwara, eUNIT_TYPE_END };
 	virtual void SetUp_HitStates(UNIT_TYPE eUnitType);
 
-
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
 
@@ -292,6 +291,7 @@ protected:
 
 	UNIT_STATUS		m_tUnitStatus;
 	STATE_TYPE		m_eCurState = STATE_END;
+	STATE_TYPE		m_eReserveState = STATE_END;
 
 	CState* m_pCurState = nullptr;
 

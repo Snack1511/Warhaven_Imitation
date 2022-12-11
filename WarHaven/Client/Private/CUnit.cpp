@@ -931,8 +931,19 @@ void CUnit::My_Tick()
 		return;
 	}
 
+	if (m_eReserveState != STATE_END)
+	{
+		if (m_pCurState->m_iStateChangeKeyFrame <= m_pAnimator->Get_CurAnimFrame())
+		{
+			Enter_State(m_eReserveState);
+			m_eReserveState = STATE_END;
+		}
+	}
+
 	STATE_TYPE eNewState = STATE_END;
 	eNewState = m_pCurState->Tick(this, m_pAnimator);
+
+
 
 	if (STATE_END != eNewState)
 	{

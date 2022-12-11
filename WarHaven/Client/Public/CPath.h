@@ -31,7 +31,7 @@ public:
 	_float4	Get_CurDir(_float4 vCurrentPos);
 	_float4	Get_LatestPosition();
 	/* 경로 끝에 도달했는지 여부 */
-	_bool	Is_Arrived() { return (m_iCurIndex == m_iNumPositions) ? true : false; }
+	_bool	Is_Arrived() { return (m_iCurIndex == (m_iNumPositions-1)) ? true : false; }
 
 private:
 	CAIController* m_pOwnerController = nullptr;

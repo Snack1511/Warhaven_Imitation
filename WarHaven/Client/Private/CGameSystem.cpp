@@ -140,11 +140,11 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	pUserPlayer->Set_Postion(vPlayerPos);
 	pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
 	pUserPlayer->SetUp_UnitColliders(true);
-	pUserPlayer->Enable_OnStart();
+	//pUserPlayer->Enable_OnStart();
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 1; ++i)
+	for (_uint i = 0; i < 0; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;

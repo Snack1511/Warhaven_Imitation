@@ -42,7 +42,7 @@ void CCollision_Manager::Tick()
 	{
 		for (auto iter = m_pColliderList[i].begin(); iter != m_pColliderList[i].end();)
 		{
-			if (!(*iter)->Is_Valid())
+			if (!(*iter)->Is_Valid() )//|| !(*iter)->Get_Owner()->Is_Valid())
 			{
 				iter = m_pColliderList[i].erase(iter);
 			}
@@ -236,7 +236,8 @@ void CCollision_Manager::Collider_GroupUpdate(const _uint& _eLeft, const _uint& 
 			}
 			else // 이전 프레임에 충돌 x
 			{
-				if (!(*LeftIter)->Is_Valid() || !(*RightIter)->Is_Valid()) // 둘중 하나가 유효하지 않을 경우
+				if (!(*LeftIter)->Is_Valid() || !(*RightIter)->Is_Valid() ||
+					!(*LeftIter)->Get_Owner()->Is_Valid() || !(*RightIter)->Get_Owner()->Is_Valid()) // 둘중 하나가 유효하지 않을 경우
 					continue;
 				else // 둘 다 유효
 				{

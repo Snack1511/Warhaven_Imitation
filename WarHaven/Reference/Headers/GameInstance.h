@@ -119,7 +119,7 @@ public: /* For.PhysX_Manager*/
 	void			End_PhysScene();
 
 public:	/* For. Render_Manager */
-	void	Bake_StaticShadow(vector <CGameObject*>& MapList, _float fDistance);
+	void	Bake_StaticShadow(vector <CGameObject*>& MapList, _float4 vCenterPos, _float fDistance);
 	void	Start_RadialBlur(_float fTargetPower);
 	void	Stop_RadialBlur();
 

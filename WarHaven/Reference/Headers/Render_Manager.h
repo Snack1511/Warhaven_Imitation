@@ -36,13 +36,15 @@ public:
 	void	Stop_GrayScale();
 
 public:
-	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fDistance);
+	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance);
 
 public:
 	HRESULT		Initialize();
 	void		Update();
 	HRESULT		Render();
 	void		Release();
+
+	
 
 private:
 	list<CRenderer*>							m_Renderers[RENDER_END];

@@ -44,6 +44,7 @@ texture2D	g_DistortionTexture;
 texture2D	g_FogTexture;
 texture2D	g_RimLightTexture;
 
+bool		g_bBilateral;
 
 float		g_fWinCX = 1280.f;
 float		g_fWinCY = 720.f;
@@ -512,6 +513,20 @@ PS_OUT PS_MAIN_FINALBLEND(PS_IN In)
 	return Out;
 }
 
+float normpdf(in float x, in float sigma)
+{
+	return 0.39894 * exp(-0.5 * x * x / (sigma * sigma)) / sigma;
+}
+
+float normpdf3(in float3 v, in float sigma)
+{
+	return 0.39894 * exp(-0.5 * dot(v, v) / (sigma * sigma)) / sigma;
+}
+
+#define SIGMA 10.0
+#define BSIGMA 0.1
+#define MSIZE 15
+
 PS_OUT PS_MAIN_POSTEFFECT(PS_IN In)
 {
 	PS_OUT			Out = (PS_OUT)Out;
@@ -535,6 +550,67 @@ PS_OUT PS_MAIN_POSTEFFECT(PS_IN In)
 
 
 	Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexUV);
+
+
+
+
+
+	if (g_bBilateral)
+	{
+		float3 c = g_Texture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+		//declare stuff
+		const int kSize = (MSIZE - 1) / 2;
+		float kernel[MSIZE];
+		float3 final_colour = 0;
+
+		//create the 1-D kernel
+		float Z = 0.0;
+		for (int j = 0; j <= kSize; ++j)
+		{
+			kernel[kSize + j] = kernel[kSize - j] = normpdf(float(j), SIGMA);
+		}
+
+
+		float3 cc;
+		float factor;
+		float bZ = 1.0 / normpdf(0.0, BSIGMA);
+
+		float2 fResolution = float2(1280.f, 720.f);
+		//read out the texels
+		for (int i = -kSize; i <= kSize; ++i)
+		{
+			for (int j = -kSize; j <= kSize; ++j)
+			{
+
+				float2 vPlusUV = float2 (i, j) / fResolution.xy;
+				cc = g_Texture.Sample(ShadowSampler, (In.vTexUV + vPlusUV)).xyz;
+
+				factor = normpdf3(cc - c, BSIGMA) * bZ * kernel[kSize + j] * kernel[kSize + i];
+				Z += factor;
+				final_colour += factor * cc;
+
+			}
+		}
+
+
+		Out.vColor = float4(final_colour / Z, 1.0);
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+
 
 
 	if (Out.vColor.a <= 0.f)

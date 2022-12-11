@@ -259,6 +259,9 @@
     <Filter Include="02. Singleton\02. Design\20. Tile_Manager\Layer">
       <UniqueIdentifier>{0bc5941a-5a21-4b4b-83ef-8273a70b6283}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\03. Component\10. Mesh\Mesh_Rect\CMesh_HDRRect">
+      <UniqueIdentifier>{7ed05260-2141-4fe1-802a-665157783fcb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
@@ -492,6 +495,7 @@
     <ClCompile Include="..\private\CTileLayer.cpp">
       <Filter>02. Singleton\02. Design\20. Tile_Manager\Layer</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\CMesh_HDRRect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -1310,6 +1314,7 @@
     <ClInclude Include="..\public\CTileLayer.h">
       <Filter>02. Singleton\02. Design\20. Tile_Manager\Layer</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CMesh_HDRRect.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">

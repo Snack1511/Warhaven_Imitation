@@ -194,6 +194,7 @@
     <ClCompile Include="..\private\CLight_Manager.cpp" />
     <ClCompile Include="..\private\CMesh.cpp" />
     <ClCompile Include="..\private\CMesh_Cube.cpp" />
+    <ClCompile Include="..\private\CMesh_HDRRect.cpp" />
     <ClCompile Include="..\private\CMesh_Rect.cpp" />
     <ClCompile Include="..\private\CMesh_Terrain.cpp" />
     <ClCompile Include="..\private\CModel_Renderer.cpp" />
@@ -273,6 +274,7 @@
     <ClInclude Include="..\public\CLight_Manager.h" />
     <ClInclude Include="..\public\CMesh.h" />
     <ClInclude Include="..\public\CMesh_Cube.h" />
+    <ClInclude Include="..\public\CMesh_HDRRect.h" />
     <ClInclude Include="..\public\CMesh_Rect.h" />
     <ClInclude Include="..\public\CMesh_Terrain.h" />
     <ClInclude Include="..\public\CModel_Renderer.h" />

@@ -91,7 +91,7 @@ void CRender_Manager::Stop_GrayScale()
 	m_bGrayScale = false;
 }
 
-void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fDistance)
+void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance)
 {
 	m_ShadowViewMatrix.Identity();
 	_float4 vLook = _float4(-1.f, -2.f, -1.f, 0.f).Normalize();
@@ -104,7 +104,7 @@ void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float fD
 	vUp = vLook.Cross(vRight);
 	*((_float4*)&m_ShadowViewMatrix.m[1]) = vUp;
 
-	_float4 vPos = _float4(0.f, 0.f, -50.f) + vLook * -1.f * fDistance;
+	_float4 vPos = vCenterPos + vLook * -1.f * fDistance;
 	vPos.w = 1.f;
 
 	*((_float4*)&m_ShadowViewMatrix.m[3]) = vPos;
@@ -149,9 +149,9 @@ HRESULT CRender_Manager::Initialize()
 	D3D11_TEXTURE2D_DESC	TextureDesc;
 	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
 
-	TextureDesc.Width = 4000;
+	TextureDesc.Width = 8000;
 	//TextureDesc.Width = 1280;
-	_float fRatio = 4000.f / 1280.f;
+	_float fRatio = (_float)TextureDesc.Width / 1280.f;
 	TextureDesc.Height = (_uint)(ViewPortDesc.Height * fRatio);
 	//TextureDesc.Height = 720;
 	TextureDesc.MipLevels = 1;
@@ -1717,6 +1717,7 @@ HRESULT CRender_Manager::Render_PostEffect()
 {
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_PostEffectAcc"))))
 		return E_FAIL;
+
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_Texture", m_pTarget_Manager->Get_SRV(TEXT("Target_FinalBlend")))))
 		return E_FAIL;
 
@@ -1729,6 +1730,15 @@ HRESULT CRender_Manager::Render_PostEffect()
 	//7. Distortion
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DistortionTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Distortion")))))
 		return E_FAIL;
+
+	//bool
+	static _bool g_bBilateral = false;
+
+	if (KEY(F8, TAP))
+		g_bBilateral = !g_bBilateral;
+
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_bBilateral", &g_bBilateral, sizeof(_bool));
+
 
 	m_vecShader[SHADER_DEFERRED]->Begin(6);
 

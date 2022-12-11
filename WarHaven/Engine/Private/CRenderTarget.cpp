@@ -57,7 +57,7 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eForm
 		return E_FAIL;
 
 
-
+	
 
 
 	return S_OK;

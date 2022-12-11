@@ -168,6 +168,7 @@ public:
 
 public:
 	void On_ChangeBehavior(BEHAVIOR_DESC* pBehavior);
+
 private:
 	_bool	m_bEnableOnStart = false;
 
