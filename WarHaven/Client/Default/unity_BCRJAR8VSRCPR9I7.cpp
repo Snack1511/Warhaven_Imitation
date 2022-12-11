@@ -1,13 +1,4 @@
 
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CSwitchRtoL.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSword_Effect.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTerrain.cpp"
-
-
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTestObject.cpp"
 
 
@@ -57,4 +48,13 @@
 
 
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Object.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Portrait.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Skill.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Wrapper.cpp"
 

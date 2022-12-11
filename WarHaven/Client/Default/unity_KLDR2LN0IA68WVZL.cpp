@@ -1,13 +1,4 @@
 
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CScript_FollowCam.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CScript_Freecam.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CSkyBox.cpp"
-
-
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSlide_Loop_Player.cpp"
 
 
@@ -57,4 +48,13 @@
 
 
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSwitchLtoR.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CSwitchRtoL.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSword_Effect.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTerrain.cpp"
 

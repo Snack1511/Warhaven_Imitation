@@ -78,16 +78,14 @@ void CState_Hit::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 void CState_Hit::Face_Check(CUnit* pOwner)
 {
-        if (m_tHitInfo.bFace)
-        {
-            if (m_tHitInfo.eHitType == HIT_TYPE::eLEFT)
-                m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
+    if (m_tHitInfo.bFace)
+    {
+        if (m_tHitInfo.eHitType == HIT_TYPE::eLEFT)
+            m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
 
-            else  if (m_tHitInfo.eHitType == HIT_TYPE::eRIGHT)
-                m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
-        } 
-
-
+        else  if (m_tHitInfo.eHitType == HIT_TYPE::eRIGHT)
+            m_tHitInfo.eHitType = HIT_TYPE::eLEFT;
+    } 
 }
 
 void CState_Hit::Fly_State()

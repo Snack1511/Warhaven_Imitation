@@ -2191,6 +2191,60 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior\02. Left">
       <UniqueIdentifier>{98d1cdec-2a76-4d8b-b358-0583d79582f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run">
+      <UniqueIdentifier>{1bb83bdb-b4ea-4b13-98ae-2fbfcecddbdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint">
+      <UniqueIdentifier>{2b5465ea-c7af-4a77-aef2-e9cbf550f1f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump">
+      <UniqueIdentifier>{5ca6e357-d25a-4041-8d30-48d7e7b5868f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior">
+      <UniqueIdentifier>{17f7f319-0d92-4acf-ab41-dc2ed5f13563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior\01. Right">
+      <UniqueIdentifier>{c1066928-81df-4308-985c-588cacbc41cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior\02. Left">
+      <UniqueIdentifier>{2b9f8df5-c6a1-456e-8523-cd0bfb9db750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\NoPattern">
+      <UniqueIdentifier>{f90a15a6-dcb0-4e3b-9ad8-1e90de2af196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior">
+      <UniqueIdentifier>{19e199a8-5588-480e-907d-b5a0ab2479d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\03. End">
+      <UniqueIdentifier>{dbe8ca7a-45f9-4130-9882-796122b984b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\01. Jump">
+      <UniqueIdentifier>{66ce821b-0389-49fc-b4b4-d38aec50206b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\02. Run">
+      <UniqueIdentifier>{72e324d3-dbfc-4c5e-a3fa-0f9bfdae97d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\02. Run\02. Loop">
+      <UniqueIdentifier>{dadd7ff7-7d04-4678-89f3-db5852a4d504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\02. Run\01. Begin">
+      <UniqueIdentifier>{a15e2a16-d340-4fee-9836-de4d4eb21a2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\01. Jump\01. Jump">
+      <UniqueIdentifier>{b4eb9889-c7b1-4cc7-8601-ba32c30c19f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\01. Jump\02. Fall">
+      <UniqueIdentifier>{6613b778-9848-44ae-9503-cda33d4764e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior">
+      <UniqueIdentifier>{0d48db4c-c337-41b5-a396-b2f8f6e4f06c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\01. Right">
+      <UniqueIdentifier>{34d254a5-f336-4030-8687-b062f8b1251b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\02. Left">
+      <UniqueIdentifier>{71869083-ba22-4ede-a1ad-f132d09fdbf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3846,7 +3900,7 @@
     <ClInclude Include="..\public\CWindow_Path.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Path</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CState_PathNavigation.h">
+    <ClInclude Include="..\public\CState_PathNavigation_Test.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Common_Fall_Warrior_L.h">
@@ -3872,6 +3926,57 @@
     </ClInclude>
     <ClInclude Include="..\Public\CState_Common_Fall_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_NoPattern.h">
+      <Filter>02. Design\06. State_Manager\States\NoPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Warrior_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Warrior_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Warrior_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Warrior_Jump.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\01. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Warrior_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\01. Right</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -5509,7 +5614,7 @@
     <ClCompile Include="..\private\CWindow_Path.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Path</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CState_PathNavigation.cpp">
+    <ClCompile Include="..\private\CState_PathNavigation_Test.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Common_Fall_Warrior_L.cpp">
@@ -5535,6 +5640,57 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Common_Fall_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_NoPattern.cpp">
+      <Filter>02. Design\06. State_Manager\States\NoPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Warrior_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Warrior_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Warrior_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Warrior_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Warrior_Jump.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\01. Warrior\01. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\01. Right</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

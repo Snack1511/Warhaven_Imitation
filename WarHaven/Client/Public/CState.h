@@ -130,7 +130,8 @@ protected:
 
 	_bool				m_bAIMove = false;
 	_bool				m_bAIAttack = false;
-
+	
+	_float				m_fRand = 0.f;
 	_uint				m_iRand = 0;
 	_int				m_iDirectionRand = 0;
 
@@ -148,6 +149,7 @@ protected:
 
 
 protected:
+	_float				m_fAIDelayTime = 0.f;
 	_float				m_fAIMyLength = 0.f; // AI -> Player Length 비교 시 사용
 	STATE_TYPE			m_iAINextState = STATE_END; // AI return 사용 용이하게 변수로 만듦
 
@@ -191,7 +193,7 @@ protected:
 
 	/* AI 용도*/
 protected:
-	void	Set_Direction_Four_AI(_int& iDirectionRand);
+	void	Set_Direction_Front_AI(_int& iDirectionRand);
 
 	_float	Get_Length(CUnit* pOwner);
 
@@ -226,6 +228,8 @@ protected:
 	_float	m_fSoundLoopTime = 0.1f;
 
 	_bool	m_bRight = true;
+
+	_float	m_fDelayTime = 0.f;
 
 
 protected:

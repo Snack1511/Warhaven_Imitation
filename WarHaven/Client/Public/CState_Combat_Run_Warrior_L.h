@@ -7,7 +7,7 @@ class CState_Combat_Run_Warrior_L
 {
 	DECLARE_STATE(CState_Combat_Run_Warrior_L);
 
-protected:
+private:
 	CState_Combat_Run_Warrior_L();
 	virtual ~CState_Combat_Run_Warrior_L();
 

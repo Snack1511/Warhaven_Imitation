@@ -39,7 +39,7 @@ void CState_Combat_Run_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 	m_iRand = rand() % 8;
 	m_iDirectionRand = rand() % 8;
 
-	Set_Direction_Four_AI(m_iDirectionRand);
+	Set_Direction_Front_AI(m_iDirectionRand);
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 	m_iAnimIndex = m_iDirectionAnimIndex[m_iDirectionRand];
 

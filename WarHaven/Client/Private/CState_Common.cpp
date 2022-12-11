@@ -38,7 +38,9 @@ STATE_TYPE CState_Common::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CState_Common::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+    m_ePreStateType = STATE_END;
 
+    __super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CState_Common::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

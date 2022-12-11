@@ -64,8 +64,6 @@ void CState_Common_Hit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Hit_State(pOwner);
 
-    /* Owner의 Animator Set Idle로 */
-    //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
 
     m_iRand = random(0, 2);
 
@@ -99,42 +97,16 @@ STATE_TYPE CState_Common_Hit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
         
     }
 
-    if(m_iRand == 0)
-         
-
-
-    //
-    //if (pAnimator->Get_CurAnimFrame() > 43)
-    //{
-    //    if (m_iRand != 0)
-    //    {
-    //        pOwner->Set_LookToTarget();
-    //        return AI_STATE_DEAFULT_IDLE_WARRIOR_R;
-    //    }
-    //}
-        
-    if (pAnimator->Is_CurAnimFinished())
-        return m_ePreStateType;
-
-
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_Common_Hit_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    __super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CState_Common_Hit_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Idle로 오는 조건
-    1. 현재 진행중인 애니메이션이 끝났을 때
-    */
-
-    //if (pAnimator->Is_CurAnimFinished())
-    //    return m_eStateType;
-
-
     return STATE_END;
 }

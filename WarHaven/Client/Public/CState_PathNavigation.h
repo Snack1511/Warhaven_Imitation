@@ -2,17 +2,13 @@
 #include "CState.h"
 
 BEGIN(Client)
-class CState_PathNavigation
+class CState_PathNavigation abstract
 	: public CState
 {
-	DECLARE_STATE(CState_PathNavigation);
 
 protected:
 	CState_PathNavigation();
 	virtual ~CState_PathNavigation();
-
-public:
-	static CState_PathNavigation* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -21,9 +17,9 @@ public:
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
-private:
+protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence) {};
 };
 
 END
