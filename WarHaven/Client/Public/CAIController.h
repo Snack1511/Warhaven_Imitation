@@ -98,14 +98,15 @@ public:
     virtual void OnDisable() override;
 
 public:
-    list<CPlayer*> Get_NearAllies() { return m_NearAlliesList; }
-    list<CPlayer*> Get_NearEnemy() { return m_NearEnemyList; }
+    list<CPlayer*>& Get_NearAllies() { return m_NearAlliesList; }
+    list<CPlayer*>& Get_NearEnemy() { return m_NearEnemyList; }
     list<CTrigger*> Get_NearTrigger() { return m_NearTriggerList; }
 
 public:
     void Ready_Controller();
     void    Set_NewPath(CPath* pPath);
-
+public:
+    CAIPersonality* Get_Personality() { return m_pPersonality; }
 private:
     CPlayer* m_pOwnerPlayer = nullptr;
     CAIPersonality* m_pPersonality = nullptr;

@@ -29,7 +29,7 @@ public:
 public:
 	/* CurIndex 의 위치로 향하는 방향 return 해줌. y값 제거 */
 	_float4	Get_CurDir(_float4 vCurrentPos);
-	_float4	Find_NearestPosition();
+	_float4	Get_LatestPosition();
 	/* 경로 끝에 도달했는지 여부 */
 	_bool	Is_Arrived() { return (m_iCurIndex == m_iNumPositions) ? true : false; }
 

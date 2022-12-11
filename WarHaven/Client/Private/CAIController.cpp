@@ -94,7 +94,7 @@ void CAIController::Early_Tick()
 			continue;
 		}
 
-		if (pCurCheckBehaviorDesc->fPriorityWeight >= pBehaviorDescTemp->fPriorityWeight)
+		if (pCurCheckBehaviorDesc->iPriorityScore >= pBehaviorDescTemp->iPriorityScore)
 		{
 			pBehaviorDescTemp = pCurCheckBehaviorDesc;
 			pNextBehavior = Value;

@@ -220,6 +220,7 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
+		eNewState = AI_STATE_COMBAT_DEAFULT_WARRIOR_L;
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경

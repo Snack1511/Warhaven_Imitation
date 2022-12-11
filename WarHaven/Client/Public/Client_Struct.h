@@ -65,7 +65,7 @@ namespace Client
 
 		_float fDelayTime = 0.f;
 
-		_float fPriorityWeight = 0.f;
+		_int iPriorityScore = 0;
 
 		eBehaviorType eCurType;
 		eBehaviorType ePrevType;

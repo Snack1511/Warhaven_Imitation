@@ -121,6 +121,7 @@ public:
 	list<CBehavior*> Get_BehaviorList() { return m_BehaviorList; }
 	CBehavior* Get_Patrol() { return m_pPatrolBehavior; }
 public:
+	_float Get_LimitRouteDistance();
 	//목적 행동시 거쳐야 할 조건들..
 	//CDelegate<_bool&> CallBack_CheckBehavior;
 

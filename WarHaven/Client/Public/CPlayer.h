@@ -168,7 +168,6 @@ public:
 
 public:
 	void On_ChangeBehavior(BEHAVIOR_DESC* pBehavior);
-
 private:
 	_bool	m_bEnableOnStart = false;
 
@@ -188,7 +187,7 @@ private: /*AI 추가용*/
 
 public:
 	CPath* Get_CurPath() { return m_pCurPath; }
-
+	_float4 Get_LookDir();
 private:
 	//어떤 타입인지(적, 샌드백)
 	_uint	m_iUnitType = 0;

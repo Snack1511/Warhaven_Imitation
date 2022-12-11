@@ -12,6 +12,7 @@
 #include "CBehavior.h"
 #include "CUser.h"
 #include "CPath.h"
+#include "CPlayer.h"
 CTable_Conditions::CTable_Conditions()
 {
 }
@@ -67,8 +68,13 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 {
     Add_WhyCondition(m_OtherConditions, wstring(L"Check_FarAwayLeader"), Check_FarAwayLeader);
     Add_WhyCondition(m_OtherConditions, wstring(L"Check_PathArrived"), Check_PathArrived);
+    Add_WhyCondition(m_OtherConditions, wstring(L"Check_FarAwayRoute"), Check_FarAwayRoute);
+    Add_WhyCondition(m_OtherConditions, wstring(L"Check_NearFromRoute"), Check_NearFromRoute);
+    Add_WhyCondition(m_OtherConditions, wstring(L"Check_LookEnemy"), Check_LookEnemy);
 
     Add_WhatCondition(m_WhatConditions, wstring(L"Select_Leader"), Select_Leader);
+    Add_WhatCondition(m_WhatConditions, wstring(L"Select_NearEnemy"), Select_NearEnemy);
+    Add_WhatCondition(m_WhatConditions, wstring(L"Select_NearRouteEnemy"), Select_NearEnemy);
     Add_WhatCondition(m_WhatConditions, wstring(L"Empty"), EmptyWhatCondition);
     return S_OK;
 }
@@ -147,31 +153,14 @@ CBehavior* CTable_Conditions::Find_Behavior(wstring strBehavior)
         string strMsg = "Not Found : ";
         strMsg += CFunctor::To_String(ConditionName);
         strMsg += " - Find_Behavior()";
-        Make_Dump(typeid(CTable_Conditions).name(), strMsg);
+        Make_Dump(string("CTable_Condition"), strMsg);
         return nullptr;
     }
 }
+#define CHECK_EMPTY(listname) if (listname.empty()) {OutCondition = false; return;}
 
 void CTable_Conditions::Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
-    //OutCondition = false;
-    //CPlayer* m_pLeader = pPlayer->Get_Squad()->Get_LeaderPlayer();
-    //if (m_pLeader)
-    //{
-    //    if (m_pLeader->Is_Valid())
-    //    {
-    //        _float4 LeaderPos = m_pLeader->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-    //        _float4 MyPos = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-
-    //        if ((LeaderPos - MyPos).Length() < 3.f);
-    //        {
-    //            OutCondition = true;
-    //        }
-
-    //    }
- 
-    //}
-
     OutCondition = true;
 }
 
@@ -185,6 +174,66 @@ void CTable_Conditions::Check_PathArrived(_bool& OutCondition, CPlayer* pPlayer,
     OutCondition = !pPlayer->Get_CurPath()->Is_Arrived();
 }
 
+void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    //플레이어 Look방향 반원
+    _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+
+    list<CPlayer*>& Enemies = pAIController->Get_NearEnemy();
+    CHECK_EMPTY(Enemies);
+    Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
+        {
+            _float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            _float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
+                return true;
+            else return false;
+        });
+
+    for (auto& Value : Enemies)
+    {
+        _float4 vTargetPosition = Value->Get_WorldPos();
+        _float4 vDir = (vTargetPosition - MyPositoin).Normalize();
+        _float4 vMyLook = pPlayer->Get_LookDir();
+
+        _float DotDir = vMyLook.Dot(vDir);
+
+        Enemies.remove_if([&DotDir](auto& EnemyValue)
+            {
+                if (DotDir < 0.f)
+                    return true;
+                else return false;
+            });
+    }
+
+    OutCondition = true;
+
+}
+
+void CTable_Conditions::Check_FarAwayRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    OutCondition = false;
+    _float4 vNearestPosition = pPlayer->Get_CurPath()->Get_LatestPosition();
+    _float4 vMyPosition = pPlayer->Get_WorldPos();
+
+    if ((vNearestPosition - vMyPosition).Length() > pAIController->Get_Personality()->Get_LimitRouteDistance())
+    {
+        OutCondition = true;
+    }
+}
+
+void CTable_Conditions::Check_NearFromRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    OutCondition = false;
+    _float4 vNearestPosition = pPlayer->Get_CurPath()->Get_LatestPosition();
+    _float4 vMyPosition = pPlayer->Get_WorldPos();
+
+    if ((vNearestPosition - vMyPosition).Length() <= pAIController->Get_Personality()->Get_LimitRouteDistance())
+    {
+        OutCondition = true;
+    }
+}
+
 
 void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
@@ -194,7 +243,7 @@ void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDe
     OutCondition = true;
 }
 
-#define CHECK_EMPTY(listname) if (listname.empty()) {OutCondition = false; return;}
+
 
 void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
@@ -260,4 +309,36 @@ void CTable_Conditions::Select_NearTrigger(_bool& OutCondition, BEHAVIOR_DESC*& 
 
     OutCondition = true;
 
+}
+
+void CTable_Conditions::Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+{
+    OutCondition = false;
+    _float4 vNearestPosition = pPlayer->Get_CurPath()->Get_LatestPosition();
+    _float4 vMyPosition = pPlayer->Get_WorldPos();
+    list<CPlayer*> Enemies = pAIController->Get_NearEnemy();
+
+    CHECK_EMPTY(Enemies);
+
+    Enemies.sort([&vMyPosition](auto& Sour, auto& Dest)
+        {
+            _float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            _float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+            if ((SourPosition - vMyPosition).Length() > (DestPosition - vMyPosition).Length())
+                return true;
+            else return false;
+        });
+
+    _float4 vEnemyPosition = Enemies.front()->Get_WorldPos();
+
+    if ((vNearestPosition - vEnemyPosition).Length() <= pAIController->Get_Personality()->Get_LimitRouteDistance())
+    {
+        OutCondition = true;
+        OutDesc->pEnemyPlayer = Enemies.front();
+    }
+    else
+    {
+        OutCondition = false;
+        OutDesc->pEnemyPlayer = nullptr;
+    }
 }

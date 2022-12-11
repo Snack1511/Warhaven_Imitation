@@ -72,6 +72,11 @@ void CBehavior::Add_OtherCondition(wstring strOtherConditionName)
     Callback_OtherCondition += m_pConditionTable->Find_OtherCondition(strOtherConditionName);
 }
 
+void CBehavior::Set_Priority(_int iPriorityScore)
+{
+    m_pBehaviorDesc->iPriorityScore = iPriorityScore;
+}
+
 BEHAVIOR_DESC* CBehavior::Check_Condition(_bool& bOut , CPlayer* pPlayer, CAIController* pAIController)
 {
     //1. OtherCondition Á¶»ç

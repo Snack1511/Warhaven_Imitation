@@ -35,6 +35,8 @@ public:
 	void Add_WhatCondition(wstring strWhatConditionName);
 	void Add_OtherCondition(wstring strOtherConditionName);
 
+	void Set_Priority(_int iPriorityScore);
+
 	BEHAVIOR_DESC* Check_Condition(_bool& bOut, CPlayer* pPlayer, CAIController* pAIController);
 
 	eBehaviorType Get_BehaviorType() { return m_eBehaviorType; }

@@ -86,3 +86,8 @@ _float CAIPersonality::Get_CheckedHP()
 	return fReturnRange;
 }
 
+_float CAIPersonality::Get_LimitRouteDistance()
+{
+	return m_tPersonalDesc.fSIghtRadius;
+}
+

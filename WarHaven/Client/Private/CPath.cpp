@@ -87,9 +87,9 @@ _float4 CPath::Get_CurDir(_float4 vCurrentPos)
     return vDir.Normalize();
 }
 
-_float4 CPath::Find_NearestPosition()
+_float4 CPath::Get_LatestPosition()
 {
-    return _float4();
+    return m_vecPositions[m_iCurIndex];
 }
 
 void CPath::Save_CurPath()

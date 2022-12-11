@@ -48,12 +48,22 @@ HRESULT CPersonality_Default::Initailize()
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Patrol"))->Clone();
 	pBehavior->Initialize();
+	pBehavior->Set_Priority(0);
 	m_pPatrolBehavior = pBehavior;
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PathNavigation"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_PathArrived"));
 	pBehavior->Add_WhatCondition(wstring(L"Empty"));
 	pBehavior->Initialize();
+	pBehavior->Set_Priority(1);
+	m_BehaviorList.push_back(pBehavior);
+
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Attack"))->Clone();
+	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
+	pBehavior->Add_OtherCondition(wstring(L"Check_NearFromRoute"));
+	pBehavior->Add_WhatCondition(wstring(L"Select_NearRouteEnemy"));
+	pBehavior->Initialize();
+	pBehavior->Set_Priority(2);
 	m_BehaviorList.push_back(pBehavior);
 
 	//m_BehaviorList.push_back(pBehavior);

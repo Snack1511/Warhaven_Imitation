@@ -769,6 +769,12 @@ void CPlayer::Set_NewPath(CPath* pPath)
 	m_pCurPath = pPath;
 }
 
+
+_float4 CPlayer::Get_LookDir()
+{
+	return m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+}
+
 void CPlayer::Update_HeroGauge()
 {
 	if (!CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge)->Is_Valid())
