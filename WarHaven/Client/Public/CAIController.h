@@ -114,7 +114,7 @@ private:
    
     CBehavior* m_pCurrentBehavior = nullptr;
     list<CBehavior*> m_BehaviorList;
-
+    
 private:
     /* AI 판단에 필요한 정보들 */
     list<CPlayer*> m_NearAlliesList;

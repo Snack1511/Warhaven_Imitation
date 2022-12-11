@@ -7,7 +7,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "CBehavior.h"
-
+#include "Functor.h"
 #include "CPath.h"
 
 CAIController::CAIController(_uint iGroupID)
@@ -110,28 +110,24 @@ void CAIController::Early_Tick()
 	}
 
 	if (!m_pCurrentBehavior || m_pCurrentBehavior != pNextBehavior)
-	{/*
+	{
+		/*
 		if (nullptr != m_pCurrentBehavior)
 			pBehaviorDesc->ePrevType = m_pCurrentBehavior->Get_BehaviorType();
 		else
-			pBehaviorDesc->ePrevType = eBehaviorType::ePatrol;*/
+			pBehaviorDesc->ePrevType = eBehaviorType::ePatrol;
+			*/
 
 		pBehaviorDescTemp->eCurType = pNextBehavior->Get_BehaviorType();
 		m_pCurrentBehavior = pNextBehavior;
 
+		cout << "CurUnitName - " << CFunctor::To_String(m_pOwnerPlayer->Get_PlayerName()).c_str() << endl;
+		cout << "CurBehavior - " << CFunctor::To_String(m_pCurrentBehavior->Get_BehaviorName()).c_str() << endl;
 		m_pOwnerPlayer->On_ChangeBehavior(pBehaviorDescTemp);
-
-		//m_pOwnerPlayer->Set_TargetPlayer(reinterpret_cast<CPlayer*>(pBehaviorDesc->pAlliesPlayer));
-		//m_pOwnerPlayer->Reserve_State(pBehaviorDesc->iStateType);
+		m_fNaviAccTime = 0.f;
 
 	}
-	//NextBehavior = 조건판단
-	//if(CurBehavior ? NextBehavior )
-	// 
-	// {
-		//CurBehavior = NextBehavior;
-		//UnitStateUpdate
-	//}
+
 }
 
 void CAIController::Tick()
@@ -184,6 +180,10 @@ void CAIController::Ready_Controller()
 
 		}
 	}
+
+	//m_NearTriggerList.sort();
+	//m_NearAlliesList.sort();
+	//m_NearEnemyList.sort();
 
 }
 

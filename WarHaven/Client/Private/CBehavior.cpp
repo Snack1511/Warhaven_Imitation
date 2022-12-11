@@ -12,6 +12,7 @@ CBehavior::CBehavior(eBehaviorType BehaviorType, CTable_Conditions* pTable)
 CBehavior::CBehavior(const CBehavior& rhs)
     : m_eBehaviorType(rhs.m_eBehaviorType)
     , m_pConditionTable(rhs.m_pConditionTable)
+    , m_strDebugBehaviorName(rhs.m_strDebugBehaviorName)
     , Callback_WhatCondition(rhs.Callback_WhatCondition)
     , Callback_OtherCondition(rhs.Callback_OtherCondition)
 {

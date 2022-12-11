@@ -29,6 +29,8 @@ CPlayer* CPlayerInfo::Make_Player()
 
 	m_pMyPlayer = pPlayer;
 
+	m_pMyPlayer->Set_UnitType(m_iUnitType);
+
 	return pPlayer;
 }
 

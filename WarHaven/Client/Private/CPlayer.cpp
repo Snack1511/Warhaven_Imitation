@@ -618,7 +618,8 @@ void CPlayer::On_RealDie()
 	/* 이 함수가 소생 이펙트 켜지는 곳임 */
 
 	//소생 
-	CUser::Get_Instance()->Toggle_DeadUI(true, true);
+	if(m_bIsMainPlayer)
+		CUser::Get_Instance()->Toggle_DeadUI(true, true);
 
 	m_bDieDelay = false;
 	m_fDieDelayAcc = 0.f;
@@ -693,11 +694,7 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 
 void CPlayer::My_Tick()
 {
-	//if (m_pAIController)
-	//{
-	//	m_pAIController->m_pPersonality;
-	//}
-
+	
 	//공통으로 업데이트 되어야 하는것
 
 	m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());

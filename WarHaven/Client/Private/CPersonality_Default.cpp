@@ -30,7 +30,7 @@ HRESULT CPersonality_Default::Initailize()
 	m_tPersonalDesc.strPersonalityName = wstring(L"Default_Personal");
 	m_tPersonalDesc.fChangeDelayTime = 0.01f;
 	m_tPersonalDesc.fDelayWeight = 0.0f;
-	m_tPersonalDesc.fSIghtRadius = 3.0f;
+	m_tPersonalDesc.fSIghtRadius = 10.0f;
 	m_tPersonalDesc.fSightRadiusWeight = 0.0f;
 	m_tPersonalDesc.fCheckedHP = 30.f;
 	m_tPersonalDesc.fHPWeight = 0.f;
@@ -61,7 +61,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Attack"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
 	pBehavior->Add_OtherCondition(wstring(L"Check_NearFromRoute"));
-	pBehavior->Add_WhatCondition(wstring(L"Select_NearRouteEnemy"));
+	pBehavior->Add_WhatCondition(wstring(L"Select_NearEnemy"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(2);
 	m_BehaviorList.push_back(pBehavior);

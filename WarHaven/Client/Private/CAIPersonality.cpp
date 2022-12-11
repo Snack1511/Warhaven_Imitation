@@ -88,6 +88,7 @@ _float CAIPersonality::Get_CheckedHP()
 
 _float CAIPersonality::Get_LimitRouteDistance()
 {
-	return m_tPersonalDesc.fSIghtRadius;
+	
+	return Get_Range() * 5.f / m_tPersonalDesc.fSIghtRadius;
 }
 
