@@ -51,7 +51,7 @@ public:
 
 private:
 	_float4 m_vTrailShader;
-	CGameObject* m_pWingParticle = nullptr;
+	list<CGameObject*> m_TransformParticles;
 
 	CTrailEffect* m_pValkyrieTrail_R = nullptr;
 	CTrailEffect* m_pValkyrieTrail_R2 = nullptr;
