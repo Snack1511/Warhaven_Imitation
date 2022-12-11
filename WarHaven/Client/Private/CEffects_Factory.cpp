@@ -807,6 +807,9 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FishBarrelParticle"), Convert_ToHash(L"FishParticle_5"))))
 		return E_FAIL;
 
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"BarrelParticle"), Convert_ToHash(L"WoodenLog_2"))))
+		return E_FAIL;
+
 	/*Stone spark particle*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StoneSpark"), "StoneSpark")))
 		return E_FAIL;
@@ -962,7 +965,7 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 
 	wstrName = L"FishParticle_5";
 	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
-		L"../bin/resources/meshes/map/environments/structure/wood/Plank11/SM_Structure_Wood_Plank01a.fbx", iWoodLogNumInstance, wstrName, fWoodDensity, fWoodLifeTime
+		L"../bin/resources/meshes/map/environments/structure/wood/Plank22/SM_Structure_Wood_Plank01a.fbx", iWoodLogNumInstance, wstrName, fWoodDensity, fWoodLifeTime
 	))))
 		return E_FAIL;
 
