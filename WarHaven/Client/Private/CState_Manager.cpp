@@ -471,7 +471,9 @@
 #include "CAI_TG_Groggy.h"
 
 
-#pragma region Patrol_Warrior
+
+
+#pragma region Patrol
 
 #include "CState_Patrol_Default_Warrior_L.h"
 #include "CState_Patrol_Default_Warrior_R.h"
@@ -482,7 +484,7 @@
 
 #pragma endregion 
 
-#pragma region Combat_Warrior
+#pragma region Combat
 
 #include "CState_Combat_Run_Warrior_L.h"
 #include "CState_Combat_Run_Warrior_R.h"
@@ -510,13 +512,19 @@
 
 #pragma endregion
 
-#pragma region Common_Warrior
+#pragma region Common
 
 #include "CState_Common_Hit_Warrior.h"
 #include "CState_Common_GuardHit_Warrior.h"
 #include "CState_Common_Groggy_Warrior.h"
 #include "CState_Common_Sting_Warrior.h"
 #include "CState_Common_FlyHit_Warrior.h"
+
+#include "CState_Common_Land_Warrior_L.h"
+#include "CState_Common_Land_Warrior_R.h"
+#include "CState_Common_Fall_Warrior_L.h"
+#include "CState_Common_Fall_Warrior_R.h"
+
 
 #pragma endregion
 
@@ -1107,9 +1115,8 @@ void CState_Manager::Warrior_State_AI()
 
 	//---------------------------------------------------------------------------------//
 	
-
-	m_arrStates[AI_STATE_PATROL_IDLE_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();
-	m_arrStates[AI_STATE_PATROL_IDLE_WARRIOR_R] = CState_Patrol_Default_Warrior_R::Create();
+	m_arrStates[AI_STATE_PATROL_DEAFULT_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();
+	m_arrStates[AI_STATE_PATROL_DEAFULT_WARRIOR_R] = CState_Patrol_Default_Warrior_R::Create();
 						 
 	m_arrStates[AI_STATE_PATROL_SWITCH_R_TO_L] = CState_Patrol_Switch_Warrior_CSwitchRtoL::Create();
 	m_arrStates[AI_STATE_PATROL_SWITCH_L_TO_R] = CState_Patrol_Switch_Warrior_CSwitchLtoR::Create();
@@ -1129,7 +1136,6 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_COMBAT_OXEN_END_WARRIOR] = CState_Combat_Oxen_Cancel_Warrior::Create();
 
 
-
 	m_arrStates[AI_STATE_COMBAT_GUARDBEGIN_WARRIOR] = CState_Combat_GuardBegin_Warrior::Create();
 	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_WARRIOR] = CState_Combat_GuardLoop_Warrior::Create();
 	m_arrStates[AI_STATE_COMBAT_GUARDDASH_WARRIOR] = CState_Combat_GuardDash_Warrior::Create();
@@ -1141,6 +1147,11 @@ void CState_Manager::Warrior_State_AI()
 	
 	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L] = CState_Combat_Attack_HorizontalMiddle_Warrior_L::Create();
 	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R] = CState_Combat_Attack_HorizontalMiddle_Warrior_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_FALL_WARRIOR_L] = CState_Common_Fall_Warrior_L::Create();
+	m_arrStates[AI_STATE_COMMON_FALL_WARRIOR_R] = CState_Common_Fall_Warrior_R::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_WARRIOR_L] = CState_Common_Land_Warrior_L::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_WARRIOR_R] = CState_Common_Land_Warrior_R::Create();
 
 	m_arrStates[AI_STATE_COMMON_BOUNCE_WARRIOR_L] = CState_Common_Bounce_Warrior_L::Create();
 	m_arrStates[AI_STATE_COMMON_BOUNCE_WARRIOR_R] = CState_Common_Bounce_Warrior_R::Create();

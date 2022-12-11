@@ -60,6 +60,11 @@ HRESULT CState_Common_Groggy_Warrior::Initialize()
 
 void CState_Common_Groggy_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    if (!pData)
+    {
+        __super::Enter(pOwner, pAnimator, ePrevType, pData);
+        return;
+    }
 
     /* 날 때린놈의 hit info를 받았다. */
     m_tHitInfo = *((HIT_INFO*)(pData));
@@ -72,14 +77,14 @@ STATE_TYPE CState_Common_Groggy_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimato
 {
 
     if(pAnimator->Is_CurAnimFinished())
-        return m_ePreStateType;
+        return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_Common_Groggy_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    __super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CState_Common_Groggy_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

@@ -69,29 +69,22 @@ void CState_Common_FlyHit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 STATE_TYPE CState_Common_FlyHit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Get_CurAnimFrame() > m_tHitInfo.iLandKeyFrame)
-        return m_ePreStateType;//STATE_FALL_WARRIOR_R_AI_ENEMY;
+        return AI_STATE_COMMON_FALL_WARRIOR_R;//STATE_FALL_WARRIOR_R_AI_ENEMY;
 
 
     if (pAnimator->Is_CurAnimFinished())
-        return m_ePreStateType;
+        return AI_STATE_COMMON_FALL_WARRIOR_R;
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_Common_FlyHit_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    __super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CState_Common_FlyHit_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Idle로 오는 조건
-    1. 현재 진행중인 애니메이션이 끝났을 때
-    */
-
-    //if (pAnimator->Is_CurAnimFinished())
-    //    return m_eStateType;
-
 
     return STATE_END;
 }

@@ -213,7 +213,7 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_IDLE_WARRIOR_L;
+		eNewState = AI_STATE_PATROL_DEAFULT_WARRIOR_R;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
