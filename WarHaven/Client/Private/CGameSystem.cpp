@@ -146,7 +146,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
 	for (_uint i = 0; i < 0; ++i)
 	{
-		vPlayerPos.z += 3.f;
+		vPlayerPos.z += 10.f;
 		vPlayerPos.x += 1.f;
 
 		CPlayer* pEnemy = nullptr;
@@ -165,7 +165,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
         READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
     }
 
-
+	
 
 	SetUp_DefaultLight_BootCamp();
 
@@ -622,6 +622,10 @@ HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyOb
 #endif // _DEBUG
 
 	SetUp_DefaultLight_Paden();
+	if (FAILED(On_ReadyDestructible_Paden(vecReadyObjects)))
+		return E_FAIL;
+	
+
 
 	return S_OK;
 }
@@ -806,6 +810,131 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 	TRIGGER_PADEN("Paden_Trigger_C")->Set_DominionEffect(pDominionEffect_C);
 
 
+
+
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+
+	CDestructible* pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
+		L"FishBarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	_float4 vPos = Find_Position("Barrel_0");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+
+	pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
+		L"FishBarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	vPos = Find_Position("Barrel_1");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+
+	pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
+		L"FishBarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	vPos = Find_Position("Barrel_2");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+	pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
+		L"FishBarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	vPos = Find_Position("Barrel_3");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+	pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
+		L"FishBarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	vPos = Find_Position("Barrel_4");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+
+	pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel04a_Lod1.fbx",
+		L"BarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	vPos = Find_Position("Barrel_5");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+
+	pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel04a_Lod1.fbx",
+		L"BarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	vPos = Find_Position("Barrel_6");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+
+	pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel04a_Lod1.fbx",
+		L"BarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	vPos = Find_Position("Barrel_7");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+
+	pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel04a_Lod1.fbx",
+		L"BarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	vPos = Find_Position("Barrel_8");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+
+	pDestructible = CDestructible::Create(
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel04a_Lod1.fbx",
+		L"BarrelParticle",
+		L"WoodenHitParticle",
+		1
+	);
+	vPos = Find_Position("Barrel_9");
+	pDestructible->Set_Position(vPos);
+	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
 
 
 

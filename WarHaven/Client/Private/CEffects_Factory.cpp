@@ -647,7 +647,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SparkMesh"), "SparkMesh")))
 		return E_FAIL;
 
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HItSmokeParticle"), "HItSmokeParticle")))
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Parring_Particle"), "Parring_Particle")))
+		return E_FAIL;
+
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSmokeParticle"), "HitSmokeParticle")))
 		return E_FAIL;
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SoilParticle_R_Foot"), "SoilParticle_R_Foot")))
@@ -713,10 +716,11 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"UnHenshin"), "UnHenshin")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Transform_Particle"), "Transform_Particle")))
+		return E_FAIL;
+
 
 		/*valkyrie*/
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Wing"), "Wing")))
-		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Shield_Attack"), "Shield_Attack")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Shield_Flare"), "Shield_Flare")))
@@ -787,6 +791,25 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"WoodenHitParticle"), Convert_ToHash(L"WoodenParticle_0"))))
 		return E_FAIL;
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"WoodenHitParticle"), Convert_ToHash(L"WoodenParticle_1"))))
+		return E_FAIL;
+
+	/*fish*/
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FishBarrelParticle"), Convert_ToHash(L"FishParticle_0"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FishBarrelParticle"), Convert_ToHash(L"FishParticle_1"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FishBarrelParticle"), Convert_ToHash(L"FishParticle_2"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FishBarrelParticle"), Convert_ToHash(L"FishParticle_3"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FishBarrelParticle"), Convert_ToHash(L"FishParticle_4"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FishBarrelParticle"), Convert_ToHash(L"FishParticle_5"))))
+		return E_FAIL;
+
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"BarrelParticle"), Convert_ToHash(L"WoodenLog_2"))))
+		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"BarrelParticle"), Convert_ToHash(L"FishParticle_5"))))
 		return E_FAIL;
 
 	/*Stone spark particle*/
@@ -906,13 +929,49 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 	/* ================ Wood ================ */
 
 
+	/* ================ fishbarrel ================ */
 
+	_uint iFishNumInstance = 5;
+	_float fFishDensity = 500.f;
+	_float fFishLifeTime = 10.f;
 
+	wstrName = L"FishParticle_0";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/Map/Environments/Prop/Etc/SM_Prop_Etc_Fish01a.fbx", iFishNumInstance, wstrName, fFishDensity, fFishLifeTime
+	))))
+		return E_FAIL;
 
+	wstrName = L"FishParticle_1";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/Map/Environments/Prop/Etc/SM_Prop_Etc_Fish02a.fbx", iFishNumInstance, wstrName, fFishDensity, fFishLifeTime
+	))))
+		return E_FAIL;
 
+	wstrName = L"FishParticle_2";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/Map/Environments/Prop/Etc/SM_Prop_Etc_Fish03a.fbx", iFishNumInstance, wstrName, fFishDensity, fFishLifeTime
+	))))
+		return E_FAIL;
 
+	wstrName = L"FishParticle_3";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/Map/Environments/Prop/Etc/SM_Prop_Etc_Fish04a.fbx", iFishNumInstance, wstrName, fFishDensity, fFishLifeTime
+	))))
+		return E_FAIL;
 
+	wstrName = L"FishParticle_4";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/Map/Environments/Prop/Etc/SM_Prop_Etc_Fish05a.fbx", iFishNumInstance, wstrName, fFishDensity, fFishLifeTime
+	))))
+		return E_FAIL;
 
+	wstrName = L"FishParticle_5";
+	if (FAILED(Add_Effect(Convert_ToHash(wstrName.c_str()), CMesh_Particle::Create(
+		L"../bin/resources/meshes/map/environments/structure/wood/Plank22/SM_Structure_Wood_Plank01a.fbx", iWoodLogNumInstance, wstrName, fWoodDensity, fWoodLifeTime
+	))))
+		return E_FAIL;
+
+	/**/
 
 	/*===================== Warrior =====================*/
 

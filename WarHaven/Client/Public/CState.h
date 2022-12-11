@@ -94,6 +94,7 @@ protected:
 	void Re_Enter(CUnit* pOwner, CAnimator* pAnimator, _float fInterpolationTime = -1.f, _float fAnimSpeed = -1.f);
 
 protected:
+	void Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fDuration, _float4 Diffuse);
 	virtual void Hit_GroundEffect(CUnit* pOwner);
 
 protected:

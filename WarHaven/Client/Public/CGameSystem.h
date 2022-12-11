@@ -65,6 +65,7 @@ public:	// Paden
 	
 	/* 파덴 스테이지 거점 세팅 */
 	HRESULT					On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
 	HRESULT					On_EnterStage();
 	HRESULT					On_Update_Paden();
 

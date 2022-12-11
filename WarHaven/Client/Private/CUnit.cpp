@@ -96,6 +96,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	UNIT_STATUS& tOtherStatus = pOtherUnit->Get_Status();
 
+	if (!pOtherUnit->Get_CurStateP()) //ÆÄµ§ °ÅÁ¡ Áß¾Ó null Ã¼Å©
+		return;
+
 	CState::HIT_INFO tOtherHitInfo = pOtherUnit->Get_CurStateP()->Get_HitInfo();
 
 	tOtherHitInfo.vDir = (m_pTransform->Get_World(WORLD_POS) - vHitPos);
@@ -983,11 +986,29 @@ void CUnit::My_LateTick()
 
 }
 
+void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fDuration, _float4 Diffuse)
+{
+	LIGHTDESC			LightDesc;
+
+	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.vPosition = vPos;
+	LightDesc.fRange = fRange;
+	LightDesc.fRandomRange = fRandomRange;
+	LightDesc.fLightTime = fDuration;
+	LightDesc.vDiffuse = Diffuse;
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f);
+
+	GAMEINSTANCE->Add_Light(LightDesc);
+}
+
 void CUnit::Effect_Parring(_float4 vHitPos)
 {
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
+	Create_Light(vHitPos, 5.f, 0.f, 1.f, RGB(255, 255, 255));
+	/*CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);*/
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Parring_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 }
 
 void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)

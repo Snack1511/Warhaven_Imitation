@@ -70,9 +70,11 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			}
 			else
 			{
+				Create_Light(vHitPos, 3.f, 0.f, 0.05f, RGB(255, 80, 80));
+
 				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), pOwner->Get_HitMatrix());
 				return m_eBounceState;
 			}
 
@@ -111,12 +113,28 @@ void CState::Re_Enter(CUnit* pOwner, CAnimator* pAnimator, _float fInterpolation
     Enter(pOwner, pAnimator, m_eStateType);
 }
 
+void CState::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fDuration, _float4 Diffuse)
+{
+	LIGHTDESC			LightDesc;
+
+	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.vPosition = vPos;
+	LightDesc.fRange = fRange;
+	LightDesc.fRandomRange = fRandomRange;
+	LightDesc.fLightTime = fDuration;
+	LightDesc.vDiffuse = Diffuse;
+	LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f);
+
+	GAMEINSTANCE->Add_Light(LightDesc);
+}
+
 void CState::Hit_GroundEffect(CUnit* pOwner)
 {
 	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
 
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), pOwner->Get_HitMatrix());
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), pOwner->Get_HitMatrix());
 
 	if (STATE_WARRIOR_OXEN_LOOPATTACK == pOwner->Get_CurState())
 	{

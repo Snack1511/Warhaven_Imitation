@@ -24,7 +24,7 @@ CUnit_Valkyrie::CUnit_Valkyrie()
 
 CUnit_Valkyrie::~CUnit_Valkyrie()
 {
-	m_pWingParticle = nullptr; 
+	m_TransformParticles.clear();
 }
 
 CUnit_Valkyrie* CUnit_Valkyrie::Create(const UNIT_MODEL_DATA& tUnitModelData)
@@ -549,9 +549,11 @@ void CUnit_Valkyrie::OnEnable()
 {
 	TurnOn_ValkyrieTrail(true);
 
-	m_pWingParticle = nullptr;
-	m_pWingParticle = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Wing_0"), this, m_pTransform->Get_World(WORLD_POS));
-	
+	m_TransformParticles.clear();
+
+	m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this,
+		m_pTransform->Get_World(WORLD_POS));
+
 	__super::OnEnable();
 }
 
@@ -559,10 +561,13 @@ void CUnit_Valkyrie::OnDisable()
 {
 	TurnOn_ValkyrieTrail(false);
 
-	if(m_pWingParticle)
-		static_cast<CRectEffects*>(m_pWingParticle)->Set_LoopControlfalse();
+	if (!m_TransformParticles.empty())
+	{
+		for(auto& elem : m_TransformParticles)
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+	}
 
-	m_pWingParticle = nullptr;
+	m_TransformParticles.clear();
 	
 	__super::OnDisable();
 }

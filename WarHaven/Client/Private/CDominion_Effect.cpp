@@ -16,6 +16,7 @@ CDominion_Effect::CDominion_Effect()
 
 CDominion_Effect::~CDominion_Effect()
 {
+	m_Aura.clear();
 }
 
 CDominion_Effect* CDominion_Effect::Create(_float4 vScale, _float4 vPos, _uint iTriggerType)
