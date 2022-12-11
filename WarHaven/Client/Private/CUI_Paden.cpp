@@ -527,7 +527,7 @@ void CUI_Paden::Create_PointUI()
 			m_pPointUI[i]->Set_Color(m_vColorGauge);
 
 			m_pPointUI[i]->Set_Scale(30.f);
-			m_pPointUI[i]->Set_Sort(0.49f);
+			m_pPointUI[i]->Set_Sort(0.51f);
 		}
 		else if (i == PU_Text)
 		{
