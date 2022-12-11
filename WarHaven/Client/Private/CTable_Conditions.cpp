@@ -41,14 +41,14 @@ void CTable_Conditions::Release()
         SAFE_DELETE(elem.second);
 }
 
-#define Add_WhyCondition(ConditionContainer, strFunctionName, Function)\
-ConditionContainer.emplace(\
+#define Add_WhyCondition(strFunctionName, Function)\
+m_OtherConditions.emplace(\
 Convert_ToHash(strFunctionName),\
 bind(&CTable_Conditions::Function,\
     this, placeholders::_1, placeholders::_2, placeholders::_3))
 
-#define Add_WhatCondition(ConditionContainer, strFunctionName, Function)\
-ConditionContainer.emplace(\
+#define Add_WhatCondition(strFunctionName, Function)\
+m_WhatConditions.emplace(\
 Convert_ToHash(strFunctionName),\
 bind(&CTable_Conditions::Function,\
     this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4))
@@ -66,16 +66,20 @@ HRESULT CTable_Conditions::Initialize()
 
 HRESULT CTable_Conditions::SetUp_Conditions()
 {
-    Add_WhyCondition(m_OtherConditions, wstring(L"Check_FarAwayLeader"), Check_FarAwayLeader);
-    Add_WhyCondition(m_OtherConditions, wstring(L"Check_PathArrived"), Check_PathArrived);
-    Add_WhyCondition(m_OtherConditions, wstring(L"Check_FarAwayRoute"), Check_FarAwayRoute);
-    Add_WhyCondition(m_OtherConditions, wstring(L"Check_NearFromRoute"), Check_NearFromRoute);
-    Add_WhyCondition(m_OtherConditions, wstring(L"Check_LookEnemy"), Check_LookEnemy);
+    Add_WhyCondition(wstring(L"EmptyOtherCondition"), EmptyOtherCondition);
+    Add_WhyCondition(wstring(L"Check_FarAwayLeader"), Check_FarAwayLeader);
+    Add_WhyCondition(wstring(L"Check_PathArrived"), Check_PathArrived);
+    Add_WhyCondition(wstring(L"Check_FarAwayRoute"), Check_FarAwayRoute);
+    Add_WhyCondition(wstring(L"Check_NearFromRoute"), Check_NearFromRoute);
+    Add_WhyCondition(wstring(L"Check_LookEnemy"), Check_LookEnemy);
+    Add_WhyCondition(wstring(L"Check_DeadAllies"), Check_DeadAllies);
+    Add_WhyCondition(wstring(L"Check_AbleHero"), Check_AbleHero);
 
-    Add_WhatCondition(m_WhatConditions, wstring(L"Select_Leader"), Select_Leader);
-    Add_WhatCondition(m_WhatConditions, wstring(L"Select_NearEnemy"), Select_NearEnemy);
-    Add_WhatCondition(m_WhatConditions, wstring(L"Select_NearRouteEnemy"), Select_NearEnemy);
-    Add_WhatCondition(m_WhatConditions, wstring(L"Empty"), EmptyWhatCondition);
+    Add_WhatCondition(wstring(L"EmptyWhatCondition"), EmptyWhatCondition);
+    Add_WhatCondition(wstring(L"Select_Leader"), Select_Leader);
+    Add_WhatCondition(wstring(L"Select_NearEnemy"), Select_NearEnemy);
+    Add_WhatCondition(wstring(L"Select_NearAllies"), Select_NearAllies);
+    Add_WhatCondition(wstring(L"Select_NearRouteEnemy"), Select_NearEnemy);
     return S_OK;
 }
 
@@ -92,6 +96,8 @@ HRESULT CTable_Conditions::SetUp_Behaviors()
     Add_Behavior(pBehavior, wstring(L"Patrol"), eBehaviorType::ePatrol);
     Add_Behavior(pBehavior, wstring(L"Attack"), eBehaviorType::eAttack);
     Add_Behavior(pBehavior, wstring(L"PathNavigation"), eBehaviorType::ePathNavigation);
+    Add_Behavior(pBehavior, wstring(L"Resurrect"), eBehaviorType::eResurrect);
+    Add_Behavior(pBehavior, wstring(L"Change"), eBehaviorType::eChange);
 
     return S_OK;
 }
@@ -186,15 +192,25 @@ void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, C
     for (auto iter = Enemies.begin(); iter != Enemies.end();)
     {
         //적이 죽은지 확인 --> 죽었으면 삭제
-        if (RemovePlayer(!((*iter)->Get_CurrentUnit()->Is_Valid()), Enemies, iter)) 
+        _bool bEnemyDead = (*iter)->Is_Died();
+        if (RemovePlayer(bEnemyDead, Enemies, iter))
         {
             continue;
         }
         else
         {
             _float4 vTargetPosition = (*iter)->Get_WorldPos();
+
+            _float YDiff = vTargetPosition.y - MyPositoin.y;
+            _bool IsDifferentY = (1.f < (YDiff * YDiff));
+            if (RemovePlayer(IsDifferentY, Enemies, iter))
+                continue;
+
+            MyPositoin.y = 0.f;
+            vTargetPosition.y = 0.f;
+
             _float4 vDist = (vTargetPosition - MyPositoin);
-            if (1.f < vDist.Length())
+            if (pAIController->Get_Personality()->Get_LimitRouteDistance() < vDist.Length())
             {
                 _float4 vDir = vDist.Normalize();
                 _float4 vMyLook = pPlayer->Get_LookDir();
@@ -251,6 +267,64 @@ void CTable_Conditions::Check_NearFromRoute(_bool& OutCondition, CPlayer* pPlaye
     {
         OutCondition = true;
     }
+}
+
+void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    //플레이어 Look방향 반원
+    _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+
+    list<CPlayer*>& Enemies = pAIController->Get_NearAllies();
+    CHECK_EMPTY(Enemies);
+
+    for (auto iter = Enemies.begin(); iter != Enemies.end();)
+    {
+        _bool bAlliesDead = ((*iter)->Is_Died());
+        _bool bRevival = !((*iter)->Is_EndRevivalTime());
+        //돌이 안됬거나 부활 가능한 아군이 아니면 삭제
+        if (RemovePlayer(!bAlliesDead || !bRevival, Enemies, iter))
+        {
+            continue;
+        }
+        else
+        {
+            _float4 vTargetPosition = (*iter)->Get_WorldPos();
+
+            _float YDiff = vTargetPosition.y - MyPositoin.y;
+            _bool IsDifferentY = (1.f < (YDiff * YDiff));
+            if (RemovePlayer(IsDifferentY, Enemies, iter))
+                continue;
+
+            MyPositoin.y = 0.f;
+            vTargetPosition.y = 0.f;
+
+            _float4 vDist = (vTargetPosition - MyPositoin);
+            if (pAIController->Get_Personality()->Get_LimitRouteDistance() < vDist.Length())
+            {
+                _float4 vDir = vDist.Normalize();
+                _float4 vMyLook = pPlayer->Get_LookDir();
+
+                _float DotDir = vMyLook.Dot(vDir);
+
+                //1보다 떨어진 돌이 된 아군이 정면에 있는지 확인 --> 없으면 삭제 --> 못본거
+                if (RemovePlayer((DotDir < 0.f), Enemies, iter))
+                    continue;
+            }
+        }
+        iter++;
+
+    }
+
+    OutCondition = true;
+}
+
+void CTable_Conditions::Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    if (pPlayer->AbleHero())
+        OutCondition = true;
+    else
+        OutCondition = false;;
+
 }
 
 

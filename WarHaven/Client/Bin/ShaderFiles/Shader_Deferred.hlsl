@@ -347,7 +347,7 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 		{
 			float		fMaxDepth = 0.1f;
 
-			float fRatio = pow(saturate(vDepthDesc.y / fMaxDepth), 1.5f);
+			float fRatio = saturate(vDepthDesc.y / fMaxDepth);
 
 
 			//멀수록 강해짐

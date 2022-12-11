@@ -62,6 +62,8 @@
 
 #include "CGameSystem.h"
 
+#include "CPath.h"
+
 #pragma region AI 추가용
 #include "CAIController.h"
 #include "CAIPersonality.h"
@@ -326,6 +328,8 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 	}
 
 	m_bDie = false;
+	m_bAbleRevival = false;
+	m_fRevivalAcc = 0.f;
 	Change_UnitClass(eClass);
 
 	Set_Postion(vPos);
@@ -337,7 +341,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 		ENABLE_GAMEOBJECT(m_pUnitHUD);
 		//Path 갱신
 
-		Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, CGameSystem::eSTAGE_PADEN, m_pMyTeam->Get_TeamType()));
+		Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
 
 	}
 
@@ -613,6 +617,21 @@ void CPlayer::On_Die()
 	}
 }
 
+_bool CPlayer::Is_EndRevivalTime()
+{
+	return (m_fRevivalAcc >= m_fMaxRevivalTime);
+}
+
+_bool	CPlayer::Is_Died() 
+{
+	return (m_bDie || m_bDieDelay);
+}
+
+_bool CPlayer::Is_AbleRevival() 
+{
+	return m_bAbleRevival;
+}
+
 void CPlayer::On_RealDie()
 {
 	/* 이 함수가 소생 이펙트 켜지는 곳임 */
@@ -624,6 +643,7 @@ void CPlayer::On_RealDie()
 	m_bDieDelay = false;
 	m_fDieDelayAcc = 0.f;
 	m_bDie = true;
+	m_bAbleRevival = true;
 
 	m_DeadLights.clear();
 
@@ -702,6 +722,8 @@ void CPlayer::My_Tick()
 	Update_HeroGauge();
 
 	Update_DieDelay();
+
+	Check_AbleRevival();
 
 	if (!m_bIsMainPlayer)
 		return;
@@ -875,6 +897,37 @@ void CPlayer::Update_DieDelay()
 		if (m_fDieDelayAcc >= m_fDieCoolTime)
 		{
 			On_RealDie();
+		}
+	}
+}
+
+void CPlayer::Check_AbleRevival()
+{
+	if (m_bAbleRevival)
+	{
+		m_fRevivalAcc += fDT(0);
+		if (m_fRevivalAcc >= m_fMaxRevivalTime)
+		{
+			//리스폰..
+			if (m_bIsMainPlayer)
+			{
+			}
+			else
+			{
+				if (m_bIsLeaderPlayer)
+					Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
+				else
+				{
+					CPath* pPath = m_pMySquad->Get_LeaderPlayer()->Get_CurPath();
+					if (nullptr == pPath)
+						pPath = CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType());
+					Set_NewPath(pPath->Clone());
+				}
+
+				_float4 vStartPos = m_pMyTeam->Find_RespawnPosition_Start();
+				Respawn_Unit(vStartPos, m_eCurrentClass);
+			}
+
 		}
 	}
 }

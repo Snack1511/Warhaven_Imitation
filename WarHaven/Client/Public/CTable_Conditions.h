@@ -49,6 +49,8 @@ private:
     void Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_FarAwayRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_NearFromRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_Winning(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_EmptyEnemyInTerritory(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_Losing(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);

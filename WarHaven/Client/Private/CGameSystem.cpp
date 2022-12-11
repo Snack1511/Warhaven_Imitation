@@ -212,7 +212,6 @@ HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecRead
 		return E_FAIL;
 	}
 
-
 	return S_OK;
 }
 
@@ -604,6 +603,8 @@ HRESULT CGameSystem::BootCamp_EnvironmentEffect()
 
 HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
+	m_eCurStageType = eSTAGE_PADEN;
+
 	/* 플레이어 모두 생성해서 분류까지 완료 */
 	if (FAILED(On_ReadyPlayers_Stage(vecReadyObjects)))
 		return E_FAIL;
@@ -622,6 +623,8 @@ HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyOb
 #endif // _DEBUG
 
 	SetUp_DefaultLight_BootCamp();
+
+
 
 	return S_OK;
 }
@@ -1073,7 +1076,7 @@ CPath* CGameSystem::Clone_Path(string strPathKey, CAIController* pOwnerControlle
 	return nullptr;
 }
 
-CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eSTAGE_TYPE eStageType, eTEAM_TYPE eTeamType)
+CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType)
 {
 	if (!pOwnerController)
 		return nullptr;
@@ -1098,13 +1101,13 @@ CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eSTAG
 
 
 
-	_uint iSize = m_mapAllPathes[eStageType].size() - 1;
+	_uint iSize = m_mapAllPathes[m_eCurStageType].size() - 1;
 
 	iSize /= 2;
 
 	_int iRandIndex = random(0, iSize);
 	
-	for (auto& elem : m_mapAllPathes[eStageType])
+	for (auto& elem : m_mapAllPathes[m_eCurStageType])
 	{
 		/* FindKey 들어간 이름이면 */
 		if ((_int)elem.second->m_strName.find(strFindKey) >= 0)

@@ -53,18 +53,35 @@ HRESULT CPersonality_Default::Initailize()
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PathNavigation"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_PathArrived"));
-	pBehavior->Add_WhatCondition(wstring(L"Empty"));
+	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(1);
 	m_BehaviorList.push_back(pBehavior);
 
+	//pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Resurrect"))->Clone();
+	//pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
+	//pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
+	//pBehavior->Initialize();
+	//pBehavior->Set_Priority(2);
+	//m_BehaviorList.push_back(pBehavior);
+
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Attack"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
-	pBehavior->Add_OtherCondition(wstring(L"Check_NearFromRoute"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearEnemy"));
+	//pBehavior->Add_OtherCondition(wstring(L"Check_NearFromRoute"));
 	pBehavior->Initialize();
-	pBehavior->Set_Priority(2);
+	pBehavior->Set_Priority(3);
 	m_BehaviorList.push_back(pBehavior);
+
+	//pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
+	//pBehavior->Add_OtherCondition(wstring(L"Check_AbleHero"));
+	//pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
+	//pBehavior->Initialize();
+	//pBehavior->Set_Priority(4);
+	//m_BehaviorList.push_back(pBehavior);
+
+
+
 
 	//m_BehaviorList.push_back(pBehavior);
 // 
