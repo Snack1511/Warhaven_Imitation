@@ -375,6 +375,7 @@ void CUI_Paden::Update_Score()
 	// 해당 하는 숫자를 idx로 지정 텍스처 불러오기
 
 	// 100 이 불러와짐
+
 	for (int i = 0; i < Team_End; ++i)
 	{
 		m_vecPrvScore[i].clear();
