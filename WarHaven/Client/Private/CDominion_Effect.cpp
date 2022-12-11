@@ -66,22 +66,20 @@ void CDominion_Effect::Set_DominionColor(CTeamConnector* pConqueredTeam)
 
 		switch ((CTrigger_Paden::ePADEN_TRIGGER_TYPE)m_iTriggerType)
 		{
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART:
-			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_A", m_pTransform->Get_World(WORLD_POS));
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_R", m_pTransform->Get_World(WORLD_POS));
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_C", m_pTransform->Get_World(WORLD_POS));
-			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCNT:
 			break;
 		default:
 			break;
 		}
 
-		m_vPlusColor = _float4(0.3f, 0.7f, 1.f);
+		m_vPlusColor = _float4(0.6f, 1.f, 1.f);
 	}
 
 	else if (!pConqueredTeam->IsMainPlayerTeam()) //»¡°£»ö
@@ -94,16 +92,14 @@ void CDominion_Effect::Set_DominionColor(CTeamConnector* pConqueredTeam)
 
 		switch ((CTrigger_Paden::ePADEN_TRIGGER_TYPE)m_iTriggerType)
 		{
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART:
-			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"RedAura_A", m_pTransform->Get_World(WORLD_POS));
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"RedAura_R", m_pTransform->Get_World(WORLD_POS));
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"RedAura_C", m_pTransform->Get_World(WORLD_POS));
-			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCNT:
 			break;
 		default:
 			break;

@@ -65,7 +65,7 @@ HRESULT CUI_HUD::Start()
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		// SetActive_HUD(true);
+		SetActive_HUD(true);
 
 		if (m_pClassChangeText)
 			m_pClassChangeText->SetActive(true);

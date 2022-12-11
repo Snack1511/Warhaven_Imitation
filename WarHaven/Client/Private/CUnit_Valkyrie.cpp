@@ -14,7 +14,7 @@
 
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
-
+#include "CRectEffects.h"
 #include "HIerarchyNode.h"
 
 
@@ -24,6 +24,7 @@ CUnit_Valkyrie::CUnit_Valkyrie()
 
 CUnit_Valkyrie::~CUnit_Valkyrie()
 {
+	m_pWingParticle = nullptr; 
 }
 
 CUnit_Valkyrie* CUnit_Valkyrie::Create(const UNIT_MODEL_DATA& tUnitModelData)
@@ -533,7 +534,7 @@ HRESULT CUnit_Valkyrie::Start()
 		"0B_L_Chain02"
 	);
 
-	//m_pModelCom->Set_RimLightFlag(_float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 1.f));
+	m_pModelCom->Set_RimLightFlag(_float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 1.f));
 
 
 
@@ -547,12 +548,22 @@ HRESULT CUnit_Valkyrie::Start()
 void CUnit_Valkyrie::OnEnable()
 {
 	TurnOn_ValkyrieTrail(true);
+
+	m_pWingParticle = nullptr;
+	m_pWingParticle = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Wing_0"), this, m_pTransform->Get_World(WORLD_POS));
+	
 	__super::OnEnable();
 }
 
 void CUnit_Valkyrie::OnDisable()
 {
 	TurnOn_ValkyrieTrail(false);
+
+	if(m_pWingParticle)
+		static_cast<CRectEffects*>(m_pWingParticle)->Set_LoopControlfalse();
+
+	m_pWingParticle = nullptr;
+	
 	__super::OnDisable();
 }
 
