@@ -34,14 +34,14 @@ public:
 public:
 	void Add_WhatCondition(wstring strWhatConditionName);
 	void Add_OtherCondition(wstring strOtherConditionName);
-
 	void Set_Priority(_int iPriorityScore);
 
 	BEHAVIOR_DESC* Check_Condition(_bool& bOut, CPlayer* pPlayer, CAIController* pAIController);
 
 	eBehaviorType Get_BehaviorType() { return m_eBehaviorType; }
 	BEHAVIOR_DESC* Get_BehaviorDesc() { return m_pBehaviorDesc; }
-
+	wstring Get_BehaviorName() { return m_strDebugBehaviorName; }
+	void Set_BehaviorName(wstring strDebugNames) { m_strDebugBehaviorName = strDebugNames; }
 public:
 	//타겟과 관련된 조건검사
 	CDelegate <_bool&, BEHAVIOR_DESC* & , CPlayer*, CAIController*>Callback_WhatCondition;
@@ -53,6 +53,6 @@ private:
 	eBehaviorType m_eBehaviorType = eBehaviorType::ePatrol;
 	_uint m_iStateType = 0;
 	CTable_Conditions* m_pConditionTable = nullptr;
-
+	wstring m_strDebugBehaviorName;
 };
 END

@@ -81,6 +81,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 
 #define Add_Behavior(pBehaviorObject, strBehaviorName, BehaviorType)\
     pBehaviorObject = CBehavior::Create(BehaviorType, this);\
+    pBehaviorObject->Set_BehaviorName(strBehaviorName);\
     m_mapAllBehaviors.emplace(Convert_ToHash(strBehaviorName), pBehavior);
 
 HRESULT CTable_Conditions::SetUp_Behaviors()
@@ -184,19 +185,30 @@ void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, C
 
     for (auto iter = Enemies.begin(); iter != Enemies.end();)
     {
-        _float4 vTargetPosition = (*iter)->Get_WorldPos();
-        _float4 vDir = (vTargetPosition - MyPositoin).Normalize();
-        _float4 vMyLook = pPlayer->Get_LookDir();
-
-        _float DotDir = vMyLook.Dot(vDir);
-
-        if (DotDir < 0.f)
-            iter = Enemies.erase(iter);
+        //적이 죽은지 확인 --> 죽었으면 삭제
+        if (RemovePlayer(!((*iter)->Get_CurrentUnit()->Is_Valid()), Enemies, iter)) 
+        {
+            continue;
+        }
         else
-            ++iter;
+        {
+            _float4 vTargetPosition = (*iter)->Get_WorldPos();
+            _float4 vDist = (vTargetPosition - MyPositoin);
+            if (1.f < vDist.Length())
+            {
+                _float4 vDir = vDist.Normalize();
+                _float4 vMyLook = pPlayer->Get_LookDir();
+
+                _float DotDir = vMyLook.Dot(vDir);
+
+                //1보다 떨어진 적이 정면에 있는지 확인 --> 없으면 삭제 --> 못본거
+                if (RemovePlayer((DotDir < 0.f), Enemies, iter))
+                    continue;
+            }
+        }
+        iter++;
+
     }
-
-
 
     OutCondition = true;
 
@@ -223,8 +235,17 @@ void CTable_Conditions::Check_NearFromRoute(_bool& OutCondition, CPlayer* pPlaye
     if (!pPlayer->Get_CurPath())
         return;
 
+    if (pPlayer->Get_CurPath()->Is_Arrived())
+    {
+        OutCondition = true;
+        return;
+    }
+
     _float4 vLatestPosition = pPlayer->Get_CurPath()->Get_LatestPosition();
     _float4 vMyPosition = pPlayer->Get_WorldPos();
+
+    vLatestPosition.y = 0;
+    vMyPosition.y = 0;
 
     if ((vLatestPosition - vMyPosition).Length() <= pAIController->Get_Personality()->Get_LimitRouteDistance())
     {
@@ -341,4 +362,13 @@ void CTable_Conditions::Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC
         OutCondition = false;
         OutDesc->pEnemyPlayer = nullptr;
     }
+}
+
+_bool CTable_Conditions::RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter)
+{
+    if (bFlag)
+        rhsIter = PlayerList.erase(rhsIter);
+
+    return bFlag;
+
 }

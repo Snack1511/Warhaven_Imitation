@@ -172,7 +172,7 @@ void CTrigger_Paden::Update_Conquered()
 
 #ifdef _DEBUG
 
-	cout << m_strTriggerName << " : " << m_fConqueredTimeAcc << endl;
+	//cout << m_strTriggerName << " : " << m_fConqueredTimeAcc << endl;
 
 #endif // _DEBUG
 
