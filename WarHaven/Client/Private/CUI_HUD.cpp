@@ -262,7 +262,7 @@ void CUI_HUD::Create_OxenJumpText()
 {
 	m_pOxenJumpText = CUI_Object::Create();
 
-	m_pOxenJumpText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/T_WhiteSpaceKeyIcon.png"));
+	m_pOxenJumpText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/White/T_WhiteSpaceKeyIcon.png"));
 
 	m_pOxenJumpText->Set_PosY(-50.f);
 	m_pOxenJumpText->Set_Scale(20.f);

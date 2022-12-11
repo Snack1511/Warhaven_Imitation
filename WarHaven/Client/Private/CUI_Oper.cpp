@@ -86,19 +86,19 @@ void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
 
 void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 {
-	DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
+	// DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 	
-	_float4 vPos = m_pArrStrongHoldUI[SP_Outline][iEventNum]->Get_Pos();
+	_float4 vPos = m_pArrStrongHoldUI[SP_BG][iEventNum]->Get_Pos();
 	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
 
-	
+	Enable_Fade(m_pArrTargetPoint[1], 0.3f);
+
 	GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Set_CurTextureIndex(1);
 	m_pBriefingUI[BU_Icon]->Set_Scale(20.f, 15.f);
 	m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.f, 0.6f, 0.f, 1.f));
 	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
 	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
 
-	ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
