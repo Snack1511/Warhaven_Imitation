@@ -191,10 +191,12 @@
     <ClInclude Include="..\Public\CAIPersonality.h" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Warrior.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior_L.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior_R.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior.h" />
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Warrior.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Warrior_Jump.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Warrior_Fall.h" />
@@ -558,6 +560,8 @@
     <ClInclude Include="..\Public\CState_Patrol.h" />
     <ClInclude Include="..\Public\CState_Patrol_Walk_Warrior_L.h" />
     <ClInclude Include="..\Public\CState_Patrol_Walk_Warrior_R.h" />
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Warrior_L.h" />
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Warrior_R.h" />
     <ClInclude Include="..\Public\CWalk_Valkyrie.h" />
     <ClInclude Include="..\Public\CWalk_Valkyrie_L.h" />
     <ClInclude Include="..\Public\CWalk_WarHammer_L.h" />
@@ -585,6 +589,7 @@
     <ClInclude Include="..\Public\CWarHammer_Attack_VerticalAttack_R.h" />
     <ClInclude Include="..\Public\CWarHammer_Attack_VerticalAttack.h" />
     <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalDown.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Warrior.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalDown.h" />
     <ClInclude Include="..\Public\CWarHammer_Attack_HorizontalMiddle.h" />
     <ClInclude Include="..\Public\CAI_CWarrior_Attack_HorizontalMiddle.h" />
@@ -592,6 +597,8 @@
     <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalDown_R.h" />
     <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalMiddle.h" />
     <ClInclude Include="..\Public\CAI_TG_Warrior_Attack_HorizontalMiddle.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Warrior_L.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Warrior_R.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalMiddle.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalDown_L.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalDown_R.h" />
@@ -607,6 +614,7 @@
     <ClInclude Include="..\Public\CAI_TG_Warrior_Attack_HorizontalMiddle_L.h" />
     <ClInclude Include="..\Public\CAI_TG_Warrior_Attack_HorizontalMiddle_R.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalMiddle_Master.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Warrior.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_HorizontalUp.h" />
     <ClInclude Include="..\Public\CBounce_Player_R.h" />
     <ClInclude Include="..\public\CCamera_Default.h" />
@@ -717,11 +725,14 @@
     <ClInclude Include="..\Public\CValkyrie_Attack_HorizontalUp_R.h" />
     <ClInclude Include="..\Public\CValkyrie_Attack_Sting_L.h" />
     <ClInclude Include="..\Public\CValkyrie_Attack_Sting_R.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Warrior_L.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Warrior_R.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_Sting_R.h" />
     <ClInclude Include="..\Public\CHit_Player.h" />
     <ClInclude Include="..\Public\CWarHammer_Attack_VerticalAttack_L.h" />
     <ClInclude Include="..\Public\CValkyrie_Attack_VerticalCut.h" />
     <ClInclude Include="..\Public\CArcher_Attack_Begin.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Warrior_VerticalCut.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_VerticalCut.h" />
     <ClInclude Include="..\Public\CBounce_Player_L.h" />
     <ClInclude Include="..\Public\CWarrior_Attack_Sting_L.h" />
@@ -770,10 +781,12 @@
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Warrior.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior_L.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior_R.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior.cpp" />
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Warrior.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Warrior_Fall.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Warrior_Jump.cpp" />
@@ -1137,6 +1150,8 @@
     <ClCompile Include="..\Private\CState_Patrol.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Walk_Warrior_L.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Walk_Warrior_R.cpp" />
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Warrior_L.cpp" />
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Warrior_R.cpp" />
     <ClCompile Include="..\Private\CWalk_Valkyrie.cpp" />
     <ClCompile Include="..\Private\CWalk_Valkyrie_L.cpp" />
     <ClCompile Include="..\Private\CWalk_WarHammer_L.cpp" />
@@ -1164,6 +1179,7 @@
     <ClCompile Include="..\Private\CWarHammer_Attack_VerticalAttack_R.cpp" />
     <ClCompile Include="..\Private\CWarHammer_Attack_VerticalAttack.cpp" />
     <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalDown.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Warrior.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalDown.cpp" />
     <ClCompile Include="..\Private\CWarHammer_Attack_HorizontalMiddle.cpp" />
     <ClCompile Include="..\Private\CAI_CWarrior_Attack_HorizontalMiddle.cpp" />
@@ -1171,6 +1187,8 @@
     <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalDown_R.cpp" />
     <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalMiddle.cpp" />
     <ClCompile Include="..\Private\CAI_TG_Warrior_Attack_HorizontalMiddle.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Warrior_L.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Warrior_R.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalMiddle.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalDown_L.cpp" />
     <ClCompile Include="..\Private\CStop_Player_L.cpp" />
@@ -1188,9 +1206,12 @@
     <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalUp_L.cpp" />
     <ClCompile Include="..\Private\CAI_TG_Warrior_Attack_HorizontalMiddle_R.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalMiddle_Master.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Warrior.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Warrior_L.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalUp_L.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalMiddle_R.cpp" />
     <ClCompile Include="..\Private\CValkyrie_Attack_HorizontalUp_R.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Warrior_R.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalUp_R.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_HorizontalUp.cpp" />
     <ClCompile Include="..\Private\CBounce_Player_R.cpp" />
@@ -1301,6 +1322,7 @@
     <ClCompile Include="..\Private\CWarHammer_Attack_VerticalAttack_L.cpp" />
     <ClCompile Include="..\Private\CValkyrie_Attack_VerticalCut.cpp" />
     <ClCompile Include="..\Private\CArcher_Attack_Begin.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Attack_Warrior_VerticalCut.cpp" />
     <ClCompile Include="..\Private\CWarrior_Attack_VerticalCut.cpp" />
     <ClCompile Include="..\Private\CBounce_Player_L.cpp" />
     <ClCompile Include="..\Private\CSpearMan_GuardBreak.cpp" />

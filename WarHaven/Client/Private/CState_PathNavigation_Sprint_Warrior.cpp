@@ -23,6 +23,8 @@ HRESULT CState_PathNavigation_Sprint_Warrior::Initialize()
 {
 	__super::Initialize();
 
+	m_eJumpFallStateType = AI_STATE_COMMON_FALL_WARRIOR_R;
+
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
 

@@ -42,6 +42,9 @@ void CState_Common_Fall::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Common_Fall::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pOwner->Is_Air())
+        return m_eStateType;
+
     return STATE_END;
 }
 

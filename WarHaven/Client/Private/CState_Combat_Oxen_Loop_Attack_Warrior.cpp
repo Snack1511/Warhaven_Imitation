@@ -65,7 +65,7 @@ HRESULT CState_Combat_Oxen_Loop_Attack_Warrior::Initialize()
 
 void CState_Combat_Oxen_Loop_Attack_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    m_iRand = random(0, 1);
+    m_iRand = random(0, 3);
     m_iDirectionRand = STATE_DIRECTION_N;
 
     pOwner->On_Use(CUnit::SKILL2);
@@ -146,9 +146,11 @@ STATE_TYPE CState_Combat_Oxen_Loop_Attack_Warrior::Tick(CUnit* pOwner, CAnimator
         switch (m_iRand)
         {
         case 0:
+        case 2:
             return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L;
 
         case 1:
+        case 3:
             return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
 
         default:

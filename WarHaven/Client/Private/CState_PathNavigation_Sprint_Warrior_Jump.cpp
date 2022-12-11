@@ -8,6 +8,8 @@
 
 #include "CUser.h"
 
+#include "UsefulHeaders.h"
+
 CState_PathNavigation_Sprint_Warrior_Jump::CState_PathNavigation_Sprint_Warrior_Jump()
 {
 }
@@ -46,15 +48,24 @@ HRESULT CState_PathNavigation_Sprint_Warrior_Jump::Initialize()
 
 void CState_PathNavigation_Sprint_Warrior_Jump::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    m_iDirectionRand = STATE_DIRECTION_N;
+
+    m_vAIRandLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_PathNavigation_Sprint_Warrior_Jump::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_PATHNAVIGATION_SPRINTLOOP_WARRIOR;
+    {
+        STATE_TYPE eNewState = pOwner->Get_DefaultState();
+        return eNewState;
+    }
 
-    return __super::Tick(pOwner, pAnimator);
+    DoMove_AI_NoTarget(pOwner, pAnimator);
+
+    return CState::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Sprint_Warrior_Jump::Exit(CUnit* pOwner, CAnimator* pAnimator)

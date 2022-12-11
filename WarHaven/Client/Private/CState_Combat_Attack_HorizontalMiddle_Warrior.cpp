@@ -28,13 +28,15 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Warrior::Initialize()
 
 	Add_KeyFrame(30, 1);
 	Add_KeyFrame(50, 2);
-	Add_KeyFrame(m_iShortDashIndex, 999);
+	Add_KeyFrame(40, 999);
 
 	return S_OK;
 }
 
 void CState_Combat_Attack_HorizontalMiddle_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_BounceState(m_eBounceState);
+
 	pOwner->On_Attack(this);
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;

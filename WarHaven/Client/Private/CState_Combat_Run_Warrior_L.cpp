@@ -65,15 +65,24 @@ STATE_TYPE CState_Combat_Run_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimator
 
     if (Get_TargetLook_Length(pOwner) < m_fAIMyLength)
     {
+
         switch (m_iRand)
         {
         case 0:
+
+            return AI_STATE_COMBAT_HORIZONTALUP_WARRIOR_L;
+
         case 1:
+
+            return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L;
+
         case 2:
+
+            return AI_STATE_COMBAT_HORIZONTALDOWN_WARRIOR_L;
+
         case 3:
 
-
-            return m_iAINextState;
+            return AI_STATE_COMBAT_VERTICALCUT_WARRIOR;
 
         case 4:
         case 5:

@@ -47,19 +47,43 @@ HRESULT CState_PathNavigation_Sprint_Warrior_Loop::Initialize()
 void CState_PathNavigation_Sprint_Warrior_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     m_fRand = frandom(1.f, 8.f);
-    m_iRand = random(0, 1);
+    m_iRand = random(0, 5);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_PathNavigation_Sprint_Warrior_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
     if (m_fAIDelayTime > m_fRand)
     {
-        if(m_iRand == 0)
+        switch (m_iRand)
+        {
+        case 0:
+        case 1:
+        case 2:
+           
+            m_iRand = random(0, 5);
+
+            break;
+
+        case 3:
+
             return AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
-        else
+
+
+        case 4:
+
             return AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR;
+
+        default:
+
+            m_iRand = random(0, 5);
+
+            break;
+        }
+
+            
     }
 
     return __super::Tick(pOwner, pAnimator);

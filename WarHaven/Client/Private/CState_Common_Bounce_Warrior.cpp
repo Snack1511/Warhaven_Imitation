@@ -53,9 +53,9 @@ void CState_Common_Bounce_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 	switch (ePrevType)
 	{
-	case Client::AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
-	//case Client::STATE_ATTACK_HORIZONTALMIDDLE_L:
-//	case Client::STATE_ATTACK_HORIZONTALDOWN_L:
+	case Client::AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L:
+	case Client::AI_STATE_COMBAT_HORIZONTALDOWN_WARRIOR_L:
+	case Client::AI_STATE_COMBAT_HORIZONTALUP_WARRIOR_L:
 
 
 		m_eAnimType = ANIM_ATTACK;     
@@ -69,9 +69,9 @@ void CState_Common_Bounce_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 		m_iAnimIndex = 17;
 		break;
 
-	//case Client::STATE_ATTACK_HORIZONTALUP_R:
-	case Client::AI_STATE_ATTACK_HORIZONTALMIDDLE_R:
-//	case Client::STATE_ATTACK_HORIZONTALDOWN_R:
+	case Client::AI_STATE_COMBAT_HORIZONTALUP_WARRIOR_R:
+	case Client::AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R:
+	case Client::AI_STATE_COMBAT_HORIZONTALDOWN_WARRIOR_R:
 
 		m_eAnimType = ANIM_ATTACK;
 		m_iAnimIndex = 18;
@@ -79,13 +79,12 @@ void CState_Common_Bounce_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 		break;
 
-	//case Client::STATE_ATTACK_VERTICALCUT:
+	case Client::AI_STATE_COMBAT_VERTICALCUT_WARRIOR:
 
+		m_eAnimType = ANIM_ATTACK;
+		m_iAnimIndex = 19;
 
-	//	m_eAnimType = ANIM_ATTACK;
-	//	m_iAnimIndex = 19;
-
-	//	break;
+		break;
 
 	default:
 		break;

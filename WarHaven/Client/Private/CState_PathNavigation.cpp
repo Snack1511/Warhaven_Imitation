@@ -21,6 +21,9 @@ CState_PathNavigation::~CState_PathNavigation()
 
 HRESULT CState_PathNavigation::Initialize()
 {
+	if(m_eJumpFallStateType != STATE_END)
+		m_vecAdjState.push_back(m_eJumpFallStateType);
+
     return S_OK;
 }
 
@@ -31,6 +34,7 @@ void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
 	m_fAIDelayTime += fDT(0);
 
 	CPath* pCurPath = pOwner->Get_CurPath();
