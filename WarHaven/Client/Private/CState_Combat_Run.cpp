@@ -26,6 +26,8 @@ HRESULT CState_Combat_Run::Initialize()
 
 void CState_Combat_Run::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    m_ePreStateType = ePrevType;
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -36,6 +38,8 @@ STATE_TYPE CState_Combat_Run::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CState_Combat_Run::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+    m_ePreStateType = STATE_END;
+
     __super::Exit(pOwner, pAnimator);
 }
 

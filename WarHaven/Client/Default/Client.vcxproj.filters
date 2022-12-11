@@ -2110,6 +2110,51 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior\01. Right">
       <UniqueIdentifier>{2ef209f6-ba78-4dcc-aaab-b25685491cfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen">
+      <UniqueIdentifier>{7982067d-7d6f-4bdb-a933-da3d7479c05f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\02. GuardBreak">
+      <UniqueIdentifier>{d34a0753-097b-4b61-9d81-b5ea1efba5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\01. Begin">
+      <UniqueIdentifier>{21d59548-3068-4680-ba68-2d67d9f7016b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\02. End">
+      <UniqueIdentifier>{d6ca6ad9-9d0a-4ce4-8c6b-aaf8b7e42318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop">
+      <UniqueIdentifier>{ad01dae7-b78e-4946-9f43-37ae9257528a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\01. Loop">
+      <UniqueIdentifier>{61c0101e-9359-4624-b856-5146a2f247b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\02. Attack">
+      <UniqueIdentifier>{79374f44-fd8f-4bd7-baf3-802b08b29373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard">
+      <UniqueIdentifier>{f7398595-c766-473e-bfeb-9cc5962a6b62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel">
+      <UniqueIdentifier>{985dbfdb-3f05-4a74-9b67-ae43ea2a4b4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\01. Warrior">
+      <UniqueIdentifier>{4a2c65c4-0471-4fb2-9807-e54cde89e265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior">
+      <UniqueIdentifier>{04a6cbfe-0af1-44dd-9885-7d4db8b5f2ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\04. Dash">
+      <UniqueIdentifier>{e1450c8a-1f27-41f0-b6ff-738e0b124d5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End">
+      <UniqueIdentifier>{c40c40c7-3368-46e6-a223-38d4e5ff40d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin">
+      <UniqueIdentifier>{53510634-02f2-43ff-9348-e8ee911182c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\02. Loop">
+      <UniqueIdentifier>{4293ec90-789b-42d3-af70-33c1d620bf57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3729,6 +3774,33 @@
     <ClInclude Include="..\Public\CState_Common_Sting_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Oxen_Cancel_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\02. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Oxen_Begin_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Oxen_Loop_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\01. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Oxen_Loop_Attack_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\02. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardBegin_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardCancel_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardEnd_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardLoop_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardDash_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\04. Dash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5328,6 +5400,33 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Common_Sting_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Oxen_Begin_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Oxen_Cancel_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\02. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Oxen_Loop_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\01. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Oxen_Loop_Attack_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\02. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardBegin_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardCancel_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardEnd_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardLoop_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardDash_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\04. Dash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

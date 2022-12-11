@@ -22,7 +22,7 @@ protected:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
 protected:
-	_uint m_iAttackDelay = 0;
+	_uint m_iShortDashIndex = 0;
 
 };
 

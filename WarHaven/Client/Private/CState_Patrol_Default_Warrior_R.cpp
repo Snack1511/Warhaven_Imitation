@@ -40,7 +40,7 @@ HRESULT CState_Patrol_Default_Warrior_R::Initialize()
 
     m_eAnimType = ANIM_BASE_R;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 11;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = AI_STATE_DEAFULT_IDLE_WARRIOR_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = AI_STATE_PATROL_IDLE_WARRIOR_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     m_iIdleDelay = 10;
 
@@ -49,7 +49,7 @@ HRESULT CState_Patrol_Default_Warrior_R::Initialize()
 
 void CState_Patrol_Default_Warrior_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    if (ePrevType == AI_STATE_DEAFULT_SWITCH_L_TO_R)
+    if (ePrevType == AI_STATE_PATROL_SWITCH_L_TO_R)
     {
         m_iIdleDelay = 2;
         m_fInterPolationTime = 0.f;
@@ -64,17 +64,17 @@ STATE_TYPE CState_Patrol_Default_Warrior_R::Tick(CUnit* pOwner, CAnimator* pAnim
         if (pAnimator->Get_CurAnimFrame() > m_iIdleDelay)
         {
             if (m_iRand == 1)
-                return AI_STATE_DEAFULT_SWITCH_R_TO_L;
+                return AI_STATE_PATROL_SWITCH_R_TO_L;
             else
-                return AI_STATE_DEAFULT_WALK_WARRIOR_R;
+                return AI_STATE_PATROL_WALK_WARRIOR_R;
         }
     }
     else
     {
         if (m_iRand == 1)
-            return AI_STATE_DEAFULT_SWITCH_R_TO_L;
+            return AI_STATE_PATROL_SWITCH_R_TO_L;
         else
-            return AI_STATE_DEAFULT_WALK_WARRIOR_R;
+            return AI_STATE_PATROL_WALK_WARRIOR_R;
     }
 
     return __super::Tick(pOwner, pAnimator);

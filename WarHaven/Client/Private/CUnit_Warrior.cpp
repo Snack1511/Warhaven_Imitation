@@ -180,7 +180,7 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
 		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
+		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_WARRIOR;
 		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_WARRIOR;
 		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;

@@ -35,7 +35,7 @@ HRESULT CState_Combat_Run_Warrior_R::Initialize()
 
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 27;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = AI_STATE_COMBAT_RUN_WARRIOR_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = AI_STATE_COMBAT_DEAFULT_WARRIOR_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     m_iStateChangeKeyFrame = 0;
@@ -54,6 +54,7 @@ HRESULT CState_Combat_Run_Warrior_R::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 30;
 
+    m_iAINextState = AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
 
     return S_OK;
 }
@@ -65,17 +66,33 @@ void CState_Combat_Run_Warrior_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 STATE_TYPE CState_Combat_Run_Warrior_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (Get_Length(pOwner) < 1.5f)
-        return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
+    if (Get_TargetLook_Length(pOwner) < m_fAIMyLength)
+    {
+        switch (m_iRand)
+        {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+
+            return m_iAINextState;
+
+        case 7:
+        case 6:
 
 
-    //if (pAnimator->Is_CurAnimFinished())
-    //{
-    //    if (m_iRand == 0)
-    //        return AI_STATE_DEAFULT_IDLE_WARRIOR_R;
-    //    else
-    //        --m_iRand;
-    //}
+            if (m_ePreStateType != AI_STATE_COMBAT_GUARDBEGIN_WARRIOR)
+                return AI_STATE_COMBAT_GUARDBEGIN_WARRIOR;
+            else
+                return m_eStateType;
+
+        default:
+            break;
+        }
+    }
+
 
 
     return __super::Tick(pOwner, pAnimator);

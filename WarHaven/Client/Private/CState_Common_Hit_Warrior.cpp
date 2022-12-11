@@ -50,6 +50,9 @@ HRESULT CState_Common_Hit_Warrior::Initialize()
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
+
+    m_iStateChangeKeyFrame = 20;
+
     m_fAnimSpeed = 2.f;
     
     return S_OK;
@@ -72,6 +75,33 @@ void CState_Common_Hit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CState_Common_Hit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
+    {
+        switch (m_iRand)
+        {
+        case 0:
+
+            return AI_STATE_COMBAT_GUARDDASH_WARRIOR;
+
+        case 1:
+
+            return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
+
+
+        case 2:
+
+            return AI_STATE_COMBAT_GUARDBEGIN_WARRIOR;
+
+
+        default:
+            break;
+        }
+        
+    }
+
+    if(m_iRand == 0)
+         
+
 
     //
     //if (pAnimator->Get_CurAnimFrame() > 43)

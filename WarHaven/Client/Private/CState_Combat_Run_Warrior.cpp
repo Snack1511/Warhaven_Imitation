@@ -36,7 +36,7 @@ HRESULT CState_Combat_Run_Warrior::Initialize()
 
 void CState_Combat_Run_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_iRand = rand() % 2;
+	m_iRand = rand() % 8;
 	m_iDirectionRand = rand() % 8;
 
 	Set_Direction_Four_AI(m_iDirectionRand);
@@ -45,7 +45,9 @@ void CState_Combat_Run_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 	m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
 
-	m_iRunDelay = 25;
+	m_iStateChangeKeyFrame = 25;
+
+	m_fAIMyLength = 2.5f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -54,22 +56,41 @@ STATE_TYPE CState_Combat_Run_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	_uint iFrame = pAnimator->Get_CurAnimFrame() + 1;
 
-	if (m_iDirectionRand % 3 == 0)
+	switch (m_iDirectionRand)
 	{
-		if (iFrame == m_iRunDelay)
-		{
+	case 0:
+	case 1:
+	case 2:
+
+		if (iFrame == m_iStateChangeKeyFrame)
 			return m_eStateType;
-		}
-	}
-	else if (m_iDirectionRand % 2 == 0)
-	{
-		if (iFrame == _uint(m_iRunDelay * 1.5f))
-		{
+
+		break;
+
+	case 3:
+	case 4:
+	case 5:
+	case 6:
+
+		if (iFrame == _uint(_float(m_iStateChangeKeyFrame) * 1.5f))
 			return m_eStateType;
-		}
+
+		break;
+
+	case 7:
+
+		if (pOwner->Can_Use(CUnit::SKILL2))
+			return AI_STATE_COMBAT_OXEN_LOOPATTACK_WARRIOR;
+
+		else if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
+			return m_eStateType;
+
+		break;
+
+	default:
+		break;
 	}
-	//else
-	//	return AI_STATE_DEAFULT_IDLE_WARRIOR_R;
+
 
 	DoMove_AI(pOwner, pAnimator);
 

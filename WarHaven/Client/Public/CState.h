@@ -158,6 +158,8 @@ protected:
 		/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
 	STATE_TYPE			m_eBounceState = STATE_END;
 
+	STATE_TYPE			m_ePreStateType = STATE_END;
+
 
 protected:
 	/* 공격, 피격 정보
@@ -203,6 +205,8 @@ protected:
 protected:
 	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bBackStep = false);
 	void	Physics_Setting_Right(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bRight = true);
+
+	void	Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bRight = true);
 
 
 

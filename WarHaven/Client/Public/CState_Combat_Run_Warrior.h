@@ -17,8 +17,15 @@ public:
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
+
+//protected:
+//	void	Target_Near_ChangeState(_uint );
+
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+
+
+
 
 };
 

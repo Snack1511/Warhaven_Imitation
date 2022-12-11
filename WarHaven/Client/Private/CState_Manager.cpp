@@ -490,7 +490,17 @@
 #include "CState_Common_Bounce_Warrior_R.h"
 
 
+#include "CState_Combat_Oxen_Begin_Warrior.h"
+#include "CState_Combat_Oxen_Loop_Warrior.h"
+#include "CState_Combat_Oxen_Cancel_Warrior.h"
+#include "CState_Combat_Oxen_Loop_Attack_Warrior.h"
 
+#include "CState_Combat_GuardBegin_Warrior.h"
+#include "CState_Combat_GuardLoop_Warrior.h"
+#include "CState_Combat_GuardEnd_Warrior.h"
+#include "CState_Combat_GuardDash_Warrior.h"
+
+#include "CState_Combat_GuardCancel_Warrior.h"
 
 
 
@@ -1096,20 +1106,37 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_TG_STINGHIT_WARRIOR] = CAI_TG_StingHit::Create();
 	m_arrStates[AI_STATE_TG_FLYHIT_WARRIOR] = CAI_TG_FlyHit::Create();
 
+	//---------------------------------------------------------------------------------//
 
 	m_arrStates[AI_STATE_IDLE_WARRIOR_L] = CIdle_AI_TG_Warrior_L::Create();
 	
 
-	m_arrStates[AI_STATE_DEAFULT_IDLE_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();
-	m_arrStates[AI_STATE_DEAFULT_IDLE_WARRIOR_R] = CState_Patrol_Default_Warrior_R::Create();
+	m_arrStates[AI_STATE_PATROL_IDLE_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();
+	m_arrStates[AI_STATE_PATROL_IDLE_WARRIOR_R] = CState_Patrol_Default_Warrior_R::Create();
+						 
+	m_arrStates[AI_STATE_PATROL_SWITCH_R_TO_L] = CState_Patrol_Switch_Warrior_CSwitchRtoL::Create();
+	m_arrStates[AI_STATE_PATROL_SWITCH_L_TO_R] = CState_Patrol_Switch_Warrior_CSwitchLtoR::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_WARRIOR_L] = CState_Patrol_Walk_Warrior_L::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_WARRIOR_R] = CState_Patrol_Walk_Warrior_R::Create();
 
-	m_arrStates[AI_STATE_DEAFULT_SWITCH_R_TO_L] = CState_Patrol_Switch_Warrior_CSwitchRtoL::Create();
-	m_arrStates[AI_STATE_DEAFULT_SWITCH_L_TO_R] = CState_Patrol_Switch_Warrior_CSwitchLtoR::Create();
-	m_arrStates[AI_STATE_DEAFULT_WALK_WARRIOR_L] = CState_Patrol_Walk_Warrior_L::Create();
-	m_arrStates[AI_STATE_DEAFULT_WALK_WARRIOR_R] = CState_Patrol_Walk_Warrior_R::Create();
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_WARRIOR_L] = CState_Combat_Run_Warrior_L::Create();
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_WARRIOR_R] = CState_Combat_Run_Warrior_R::Create();
+	
 
-	m_arrStates[AI_STATE_COMBAT_RUN_WARRIOR_L] = CState_Combat_Run_Warrior_L::Create();
-	m_arrStates[AI_STATE_COMBAT_RUN_WARRIOR_R] = CState_Combat_Run_Warrior_R::Create();
+	m_arrStates[AI_STATE_COMBAT_OXEN_BEGIN_WARRIOR] = CState_Combat_Oxen_Begin_Warrior::Create();
+	m_arrStates[AI_STATE_COMBAT_OXEN_LOOP_WARRIOR] = CState_Combat_Oxen_Loop_Warrior::Create();
+	m_arrStates[AI_STATE_COMBAT_OXEN_LOOPATTACK_WARRIOR] = CState_Combat_Oxen_Loop_Attack_Warrior::Create();
+	m_arrStates[AI_STATE_COMBAT_OXEN_END_WARRIOR] = CState_Combat_Oxen_Cancel_Warrior::Create();
+
+
+
+	m_arrStates[AI_STATE_COMBAT_GUARDBEGIN_WARRIOR] = CState_Combat_GuardBegin_Warrior::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_WARRIOR] = CState_Combat_GuardLoop_Warrior::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDDASH_WARRIOR] = CState_Combat_GuardDash_Warrior::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDEND_WARRIOR] = CState_Combat_GuardEnd_Warrior::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDCANCEL_WARRIOR] = CState_Combat_GuardCancel_Warrior::Create();
+
+
 	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L] = CState_Combat_Attack_HorizontalMiddle_Warrior_L::Create();
 	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R] = CState_Combat_Attack_HorizontalMiddle_Warrior_R::Create();
 

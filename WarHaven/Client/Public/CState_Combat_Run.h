@@ -21,7 +21,7 @@ protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
 protected:
-	_uint m_iRunDelay = 0;
+	
 
 };
 
