@@ -128,7 +128,7 @@ public:
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
-	void Toggle_DeadUI(_bool value);
+	void Toggle_DeadUI(_bool value, _bool isFall = false);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;

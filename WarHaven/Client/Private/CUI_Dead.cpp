@@ -39,10 +39,17 @@ void CUI_Dead::OnEnable()
 {
 	__super::OnEnable();
 
-	wstring wstrUnitName = m_pTargetInfo->Get_Player()->Get_PlayerName();
-	m_pDeadUI[DU_EnemyName]->Set_FontText(wstrUnitName);
+	if (!m_bIsFall)
+	{
+		wstring wstrUnitName = m_pTargetInfo->Get_Player()->Get_PlayerName();
+		m_pDeadUI[DU_EnemyName]->Set_FontText(wstrUnitName);
 
-	Fadenable_DeadUI();
+		Fadenable_DeadUI();
+	}
+	else
+	{
+		SetActive_RevivalUI(true);
+	}
 }
 
 void CUI_Dead::OnDisable()
@@ -53,8 +60,10 @@ void CUI_Dead::OnDisable()
 	SetActive_RevivalUI(false);
 }
 
-void CUI_Dead::Toggle_DeadUI(_bool value)
+void CUI_Dead::Toggle_DeadUI(_bool value, _bool isFall)
 {
+	m_bIsFall = isFall;
+
 	if (value == true)
 	{
 		ENABLE_GAMEOBJECT(this);
@@ -85,9 +94,10 @@ void CUI_Dead::My_Tick()
 {
 	__super::My_Tick();
 
-	if (Is_Valid())
+	if (!m_bIsFall)
 	{
 		m_fAccTime += fDT(0);
+
 		if (m_fAccTime > m_fDeadUIEnableTime)
 		{
 			m_fAccTime = 0.f;
@@ -124,6 +134,7 @@ void CUI_Dead::My_Tick()
 			if (fScaleX < 0.1f)
 			{
 				m_bAbleRevival = false;
+				m_bIsFall = false;
 
 				SetActive_RevivalUI(true);
 				Toggle_DeadUI(false);

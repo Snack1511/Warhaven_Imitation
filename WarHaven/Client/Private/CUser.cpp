@@ -347,7 +347,7 @@ void CUser::On_EnterStageLevel()
 	if (!m_pUI_Paden)
 	{
 		m_pUI_Paden = CUI_Paden::Create();
-		
+
 		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Paden);
 	}
@@ -432,7 +432,7 @@ void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
 }
 
-void CUser::Toggle_DeadUI(_bool value)
+void CUser::Toggle_DeadUI(_bool value, _bool isFall)
 {
 	if (!m_pUI_Dead)
 	{
@@ -443,7 +443,7 @@ void CUser::Toggle_DeadUI(_bool value)
 
 	if (!CGameObject::Is_Valid(m_pUI_Dead))
 	{
-		m_pUI_Dead->Toggle_DeadUI(value);
+		m_pUI_Dead->Toggle_DeadUI(value, isFall);
 	}
 }
 

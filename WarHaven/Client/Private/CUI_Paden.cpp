@@ -78,10 +78,7 @@ void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstN
 void CUI_Paden::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 {
 	m_iScore[iTeamType] = iScore;
-
 	m_fScoreRatio[iTeamType] = (_float)iScore / (_float)iMaxScore;
-
-	cout << iTeamType << " : " << m_fScoreRatio[iTeamType] << endl;
 }
 
 void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
@@ -266,59 +263,7 @@ void CUI_Paden::My_Tick()
 	__super::My_Tick();
 
 	Update_InGameTimer();
-
-	static _uint iScore = 100;
-	if (KEY(Z, TAP))
-		iScore--;
-
-	Set_Score(Team_Red, iScore, 100);
-	Set_Score(Team_Blue, iScore, 100);
-
-	// 현재 스코어 이미지로 표시
-	for (int i = 0; i < Team_End; ++i)
-	{
-		m_vecPrvScore[i].clear();
-
-		if (!m_vecCurScore[i].empty())
-		{
-			m_vecPrvScore[i] = m_vecCurScore[i];
-		}
-
-		m_vecCurScore[i].clear();
-		while (m_iRemainderCnt[i] < 3)
-		{
-			_uint iDigitNum = m_iScore[i] % 10;
-			m_vecCurScore[i].push_back(iDigitNum);
-			m_iScore[i] /= 10;
-
-			m_iRemainderCnt[i]++;
-		}
-
-		m_iRemainderCnt[i] = 0;
-		reverse(m_vecCurScore[i].begin(), m_vecCurScore[i].end());
-
-		for (int j = 0; j < Num_End; ++j)
-		{
-			if (m_vecPrvScore[i].empty())
-				return;
-
-			if (m_vecPrvScore[i][j] != m_vecCurScore[i][j])
-			{
-				GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Set_CurTextureIndex(m_vecCurScore[i][j]);
-
-				if (j < Num2)
-				{
-					_uint iTextureNum = GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Get_CurTextureIndex();
-					if (iTextureNum == 0)
-					{
-						Disable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
-					}
-				}
-
-				Enable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
-			}
-		}
-	}
+	Update_Score();
 }
 
 void CUI_Paden::My_LateTick()
@@ -426,6 +371,50 @@ void CUI_Paden::Update_Score()
 	// 해당 하는 숫자를 idx로 지정 텍스처 불러오기
 
 	// 100 이 불러와짐
+	for (int i = 0; i < Team_End; ++i)
+	{
+		m_vecPrvScore[i].clear();
+
+		if (!m_vecCurScore[i].empty())
+		{
+			m_vecPrvScore[i] = m_vecCurScore[i];
+		}
+
+		m_vecCurScore[i].clear();
+		while (m_iRemainderCnt[i] < 3)
+		{
+			_uint iDigitNum = m_iScore[i] % 10;
+			m_vecCurScore[i].push_back(iDigitNum);
+			m_iScore[i] /= 10;
+
+			m_iRemainderCnt[i]++;
+		}
+
+		m_iRemainderCnt[i] = 0;
+		reverse(m_vecCurScore[i].begin(), m_vecCurScore[i].end());
+
+		for (int j = 0; j < Num_End; ++j)
+		{
+			if (m_vecPrvScore[i].empty())
+				return;
+
+			if (m_vecPrvScore[i][j] != m_vecCurScore[i][j])
+			{
+				GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Set_CurTextureIndex(m_vecCurScore[i][j]);
+
+				if (j < Num2)
+				{
+					_uint iTextureNum = GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Get_CurTextureIndex();
+					if (iTextureNum == 0)
+					{
+						Disable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
+					}
+				}
+
+				Enable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
+			}
+		}
+	}
 }
 
 void CUI_Paden::Create_ScoreGauge()
