@@ -31,7 +31,8 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_OperTimer();
 	Create_TargetText();
 	Create_RespawnBtn();
-
+	Create_TargetPoint();
+	Create_BriefingUI();
 	Create_BlackImg();
 
 	Init_CharacterSelect();
@@ -85,18 +86,19 @@ void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
 
 void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 {
-	//DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
-	//
-	//_float4 vPos = m_pArrOperPointUI[PT_Point][iEventNum]->Get_Pos();
-	//m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
-	//
-	//GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Set_CurTextureIndex(1);
-	//m_pBriefingUI[BU_Icon]->Set_Scale(20.f, 15.f);
-	//m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.f, 0.6f, 0.f, 1.f));
-	//m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
-	//m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
-	//
-	//ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
+	DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
+	
+	_float4 vPos = m_pArrStrongHoldUI[SP_Outline][iEventNum]->Get_Pos();
+	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
+
+	
+	GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Set_CurTextureIndex(1);
+	m_pBriefingUI[BU_Icon]->Set_Scale(20.f, 15.f);
+	m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.f, 0.6f, 0.f, 1.f));
+	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
+	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
+
+	ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
@@ -317,21 +319,15 @@ void CUI_Oper::Progress_Oper()
 					Enable_Fade(m_pTimer[i], fDuration);
 				}
 
-				/*for (int i = 0; i < ST_End; ++i)
-				{
-					m_pArrOperSelectUI[i][0]->DoScale(10.f, fDuration);
-				}
-
-				Enable_Fade(m_pOperMapIcon, fDuration);
-				Enable_Fade(m_pOperMapBG, fDuration);
 				Enable_Fade(m_pArrTargetPoint[0], fDuration);
 
-
-
+				//Enable_Fade(m_pOperMapIcon, fDuration);
+				//Enable_Fade(m_pOperMapBG, fDuration);
+				
 				for (int i = 0; i < BU_End; ++i)
 				{
 					Enable_Fade(m_pBriefingUI[i], fDuration);
-				}*/
+				}
 			}
 		}
 		else if (m_iOperProgress == 8)
@@ -1090,6 +1086,77 @@ void CUI_Oper::Create_BlackImg()
 	DISABLE_GAMEOBJECT(m_pBlackImg);
 }
 
+void CUI_Oper::Create_TargetPoint()
+{
+	m_pTargetPoint = CUI_Object::Create();
+
+	m_pTargetPoint->Set_FadeDesc(0.3f);
+
+	m_pTargetPoint->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_PingGreenLeader.dds"));
+	m_pTargetPoint->Set_Pos(-45.f, -300.f);
+	m_pTargetPoint->Set_Sort(0.47f);
+
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pArrTargetPoint[i] = m_pTargetPoint->Clone();
+
+		if (i == 0)
+		{
+			m_pArrTargetPoint[0]->Set_Scale(30.f);
+			m_pArrTargetPoint[0]->Set_FontRender(true);
+			m_pArrTargetPoint[0]->Set_FontStyle(true);
+			m_pArrTargetPoint[0]->Set_FontOffset(20.f, -13.f);
+			m_pArrTargetPoint[0]->Set_FontScale(0.25f);
+
+			m_pArrTargetPoint[0]->Set_FontText(TEXT("공격 목표"));
+		}
+		else if (i == 1)
+		{
+			m_pArrTargetPoint[1]->Set_Scale(32.f);
+		}
+
+		m_pOperList.push_back(m_pArrTargetPoint[i]);
+
+		CREATE_GAMEOBJECT(m_pArrTargetPoint[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pArrTargetPoint[i]);
+	}
+}
+
+void CUI_Oper::Create_BriefingUI()
+{
+	for (int i = 0; i < BU_End; ++i)
+	{
+		m_pBriefingUI[i] = CUI_Object::Create();
+
+		m_pOperList.push_back(m_pBriefingUI[i]);
+
+		CREATE_GAMEOBJECT(m_pBriefingUI[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pBriefingUI[i]);
+	}
+
+	m_pBriefingUI[BU_BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Briefing/T_BriefingBox.dds"));
+	m_pBriefingUI[BU_BG]->Set_PosY(245.f);
+	m_pBriefingUI[BU_BG]->Set_Scale(160.f, 25.f);
+	m_pBriefingUI[BU_BG]->Set_Color(_float4(0.f, 0.f, 0.f, 0.6f));
+	m_pBriefingUI[BU_BG]->Set_Sort(0.5f);
+
+	GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Remove_Texture(0);
+	Read_Texture(m_pBriefingUI[BU_Icon], "/Oper/Briefing", "Icon");
+
+	m_pBriefingUI[BU_Icon]->Set_Sort(0.49f);
+	m_pBriefingUI[BU_Icon]->Set_Pos(-45.f, 246.f);
+	m_pBriefingUI[BU_Icon]->Set_Scale(32.f);
+	m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.6f, 0.6f, 0.6f, 1.f));
+
+	m_pBriefingUI[BU_Icon]->Set_FontRender(true);
+	m_pBriefingUI[BU_Icon]->Set_FontStyle(true);
+	m_pBriefingUI[BU_Icon]->Set_FontOffset(10.f, -10.f);
+	m_pBriefingUI[BU_Icon]->Set_FontScale(0.2f);
+	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(_float4(0.6f, 0.6f, 0.6f, 1.f)));
+	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("공격 목표 없음"));
+
+}
+
 void CUI_Oper::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pOperBG[OB_Smoke], CShader)->CallBack_SetRawValues += bind(&CUI_Oper::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
@@ -1105,7 +1172,7 @@ void CUI_Oper::Bind_Btn()
 
 	for (int i = 0; i < 3; ++i)
 	{
-		// m_pArrStrongHoldUI[SP_BG][i]->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_Point, this, i);
+		m_pArrStrongHoldUI[SP_Outline][i]->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_StrongHoldPoint, this, i);
 	}
 
 	m_pRespawnBtn->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_RespawnBtn, this, 0);

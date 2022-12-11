@@ -916,7 +916,10 @@ void CUnit::My_Tick()
 			m_fCoolAcc[i] = 0.f;
 		}
 
-		CUser::Get_Instance()->Set_SkillCoolTime(i, m_fCoolAcc[i], m_fCoolTime[i]);
+		if (m_bIsMainPlayer)
+		{
+			CUser::Get_Instance()->Set_SkillCoolTime(i, m_fCoolAcc[i], m_fCoolTime[i]);
+		}
 	}
 
 

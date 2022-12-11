@@ -235,26 +235,6 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 	dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Set_SkillUI(m_eCurClass);
 }
 
-void CUI_HUD::Set_FadePortHighlight()
-{
-	FADEDESC tFadeDesc;
-	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
-	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-
-	tFadeDesc.bFadeInFlag = FADE_NONE;
-	tFadeDesc.bFadeOutFlag = FADE_NONE;
-
-	tFadeDesc.fFadeInStartTime = 0.f;
-	tFadeDesc.fFadeInTime = 0.3f;
-
-	tFadeDesc.fFadeOutStartTime = 0.f;
-	tFadeDesc.fFadeOutTime = 0.3f;
-
-	GET_COMPONENT_FROM(m_pInactiveHeroText, CFader)->Get_FadeDesc() = tFadeDesc;
-}
-
 void CUI_HUD::Create_ClassChangeText()
 {
 	m_pClassChangeText = CUI_Object::Create();
@@ -325,6 +305,8 @@ void CUI_HUD::Create_InactiveHeroText()
 {
 	m_pInactiveHeroText = CUI_Object::Create();
 
+	m_pInactiveHeroText->Set_FadeDesc(0.3f);
+
 	m_pInactiveHeroText->Set_Scale(20.f);
 	m_pInactiveHeroText->Set_Pos(445.f, -191.f);
 	m_pInactiveHeroText->Set_Sort(0.85f);
@@ -352,24 +334,22 @@ void CUI_HUD::Bind_Shader()
 	}
 }
 
-void CUI_HUD::Set_FadeOperSelectChaderUI()
-{
-	FADEDESC tFadeDesc;
-	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
-	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-	tFadeDesc.bFadeInFlag = FADE_NONE;
-	tFadeDesc.bFadeOutFlag = FADE_NONE;
-	tFadeDesc.fFadeInStartTime = 0.f;
-	tFadeDesc.fFadeInTime = 0.3f;
-	tFadeDesc.fFadeOutStartTime = 0.f;
-	tFadeDesc.fFadeOutTime = 0.3f;
-
-	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
-	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
-
-	GET_COMPONENT_FROM(m_pTargetPoint, CFader)->Get_FadeDesc() = tFadeDesc;
-}
+//void CUI_HUD::Set_FadeOperSelectChaderUI()
+//{
+//	FADEDESC tFadeDesc;
+//	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+//	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+//	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+//	tFadeDesc.bFadeInFlag = FADE_NONE;
+//	tFadeDesc.bFadeOutFlag = FADE_NONE;
+//	tFadeDesc.fFadeInStartTime = 0.f;
+//	tFadeDesc.fFadeInTime = 0.3f;
+//	tFadeDesc.fFadeOutStartTime = 0.f;
+//	tFadeDesc.fFadeOutTime = 0.3f;
+//
+//	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
+//	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
+//}
 
 void CUI_HUD::Create_HeroTransformUI()
 {
@@ -442,64 +422,4 @@ void CUI_HUD::Create_OperMap()
 
 	CREATE_GAMEOBJECT(m_pOperMapBG, RENDER_UI);
 	DISABLE_GAMEOBJECT(m_pOperMapBG);
-}
-
-void CUI_HUD::Create_OperPoint()
-{
-
-#pragma region Etc
-
-	m_pTargetPoint = CUI_Object::Create();
-	m_pTargetPoint->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_PingGreenLeader.dds"));
-	m_pTargetPoint->Set_Pos(-45.f, -300.f);
-	m_pTargetPoint->Set_Sort(0.47f);
-
-	for (int i = 0; i < 2; ++i)
-	{
-		m_pArrTargetPoint[i] = m_pTargetPoint->Clone();
-
-		CREATE_GAMEOBJECT(m_pArrTargetPoint[i], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pArrTargetPoint[i]);
-	}
-
-	m_pArrTargetPoint[0]->Set_Scale(30.f);
-	m_pArrTargetPoint[0]->Set_FontRender(true);
-	m_pArrTargetPoint[0]->Set_FontStyle(true);
-	m_pArrTargetPoint[0]->Set_FontOffset(20.f, -13.f);
-	m_pArrTargetPoint[0]->Set_FontScale(0.25f);
-	m_pArrTargetPoint[0]->Set_FontText(TEXT("공격 목표"));
-
-	m_pArrTargetPoint[1]->Set_Scale(32.f);
-
-	CREATE_GAMEOBJECT(m_pTargetPoint, RENDER_UI);
-	DELETE_GAMEOBJECT(m_pTargetPoint);
-
-#pragma endregion
-}
-
-void CUI_HUD::Create_OperTimer()
-{
-	for (int i = 0; i < TT_End; ++i)
-	{
-		m_pOperTimer[i] = CUI_Object::Create();
-
-		m_pOperTimer[i]->Set_PosY(275.f);
-		m_pOperTimer[i]->Set_Scale(242.f, 10.f);
-
-		CREATE_GAMEOBJECT(m_pOperTimer[i], RENDER_UI);
-		DISABLE_GAMEOBJECT(m_pOperTimer[i]);
-	}
-
-	m_pOperTimer[TT_BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarBG.png"));
-	m_pOperTimer[TT_BG]->Set_Color(_float4(0.f, 0.f, 0.f, 0.5f));
-	m_pOperTimer[TT_BG]->Set_Sort(0.49f);
-
-	m_pOperTimer[TT_Bar]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarGrey.dds"));
-	m_pOperTimer[TT_Bar]->Set_Sort(0.48f);
-	m_pOperTimer[TT_Bar]->Set_FontRender(true);
-	m_pOperTimer[TT_Bar]->Set_FontStyle(true);
-	m_pOperTimer[TT_Bar]->Set_FontOffset(-22.f, -13.f);
-	m_pOperTimer[TT_Bar]->Set_FontScale(0.25f);
-
-	GET_COMPONENT_FROM(m_pOperTimer[TT_Bar], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
 }
