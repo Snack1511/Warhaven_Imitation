@@ -878,8 +878,8 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 
 
 	pDestructible = CDestructible::Create(
-		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
-		L"FishBarrelParticle",
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel02a_rope.fbx",
+		L"WoodenDestroyParticle",
 		L"WoodenHitParticle",
 		1
 	);
@@ -890,8 +890,8 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 
 
 	pDestructible = CDestructible::Create(
-		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
-		L"FishBarrelParticle",
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel02a_rope.fbx",
+		L"WoodenDestroyParticle",
 		L"WoodenHitParticle",
 		1
 	);
@@ -902,8 +902,8 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 
 
 	pDestructible = CDestructible::Create(
-		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
-		L"FishBarrelParticle",
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel02a_rope.fbx",
+		L"WoodenDestroyParticle",
 		L"WoodenHitParticle",
 		1
 	);
@@ -914,8 +914,8 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 
 
 	pDestructible = CDestructible::Create(
-		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
-		L"FishBarrelParticle",
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel02a_rope.fbx",
+		L"WoodenDestroyParticle",
 		L"WoodenHitParticle",
 		1
 	);
@@ -926,8 +926,8 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 
 
 	pDestructible = CDestructible::Create(
-		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
-		L"FishBarrelParticle",
+		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel02a_rope.fbx",
+		L"WoodenDestroyParticle",
 		L"WoodenHitParticle",
 		1
 	);

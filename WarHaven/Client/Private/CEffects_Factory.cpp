@@ -966,6 +966,8 @@ HRESULT CEffects_Factory::SetUp_StoneParticles()
 	))))
 		return E_FAIL;
 
+	/**/
+
 	/*===================== Warrior =====================*/
 
 	_float fDeadBodyDensity = 10.f;
