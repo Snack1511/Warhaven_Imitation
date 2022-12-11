@@ -58,7 +58,7 @@ HRESULT CPath::Initialize()
 
 void CPath::Update_CurrentIndex(_float4 vCurrentPos)
 {
-    if (m_iCurIndex >= (m_iNumPositions - 1))
+    if (m_iCurIndex >= (m_iNumPositions))
     {
         m_iCurIndex = m_iNumPositions - 1;
         return;
