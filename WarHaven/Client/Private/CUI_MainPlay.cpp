@@ -115,7 +115,8 @@ void CUI_MainPlay::On_PointEnter_PlayBtn(const _uint& iEventNum)
 
 	m_pBtnHightlight->Set_Pos(fPosX, vPos.y);
 	m_pBtnHightlight->Set_Scale(vScale.x * 3.f, 500.f);
-	m_pTarget->Lerp_PosX(vPos.x, vPos.x + 20.f, fDuration);
+
+	m_pTarget->DoMove_Target(fDuration, 0);
 
 	m_pPlayBtnMouseEnterLineArr[iEventNum]->Set_PosY(vPos.y - 3.5f);
 	m_pPlayBtnMouseEnterLineArr[iEventNum]->Lerp_ScaleY(4.f, vScale.y - 22.f, fDuration);
@@ -130,7 +131,7 @@ void CUI_MainPlay::On_PointExit_Start(const _uint& iEventNum)
 
 	_float fDuration = 0.2f;
 
-	m_pPlayBtnUI[0]->Lerp_PosX(vPos.x, -500.f, fDuration);
+	m_pPlayBtnUI[0]->DoMove_Origin(fDuration, 0);
 
 	_float fCurScaleY = m_pPlayBtnMouseEnterLineArr[0]->Get_Scale().y;
 	m_pPlayBtnMouseEnterLineArr[0]->Lerp_ScaleY(fCurScaleY, 4.f, fDuration);
@@ -144,7 +145,7 @@ void CUI_MainPlay::On_PointExit_Mode(const _uint& iEventNum)
 
 	_float fDuration = 0.2f;
 
-	m_pPlayBtnUI[1]->Lerp_PosX(vPos.x, -535.f, fDuration);
+	m_pPlayBtnUI[1]->DoMove_Origin(fDuration, 0);
 
 	_float fCurScaleY = m_pPlayBtnMouseEnterLineArr[1]->Get_Scale().y;
 
@@ -387,12 +388,23 @@ void CUI_MainPlay::Create_PlayBtn()
 	}
 
 	m_pPlayBtnUI[0]->Set_Pos(-500.f, 180.f);
+
+	_float4 vOrigin0 = _float4(-500.f, 180.f,0.f);
+	_float4 vTarget0= _float4(-480.f, 180.f,0.f);
+
+	m_pPlayBtnUI[0]->Set_LerpPos(vOrigin0, vTarget0);
+
 	m_pPlayBtnUI[0]->Set_Scale(200.f, 64.f);
 	m_pPlayBtnUI[0]->Set_FontText(TEXT("게임 시작"));
 	m_pPlayBtnUI[0]->Set_FontScale(0.7f);
 	m_pPlayBtnUI[0]->Set_FontOffset(-100.f, -35.f);
 
 	m_pPlayBtnUI[1]->Set_Pos(-535.f, 100.f);
+
+	_float4 vOrigin1 = _float4(-535.f, 100.f, 0.f);
+	_float4 vTarget1 = _float4(-515.f, 100.f, 0.f);
+	m_pPlayBtnUI[1]->Set_LerpPos(vOrigin1, vTarget1);
+
 	m_pPlayBtnUI[1]->Set_Scale(128.f, 40.f);
 	m_pPlayBtnUI[1]->Set_FontText(TEXT("맵 변경"));
 	m_pPlayBtnUI[1]->Set_FontScale(0.4f);

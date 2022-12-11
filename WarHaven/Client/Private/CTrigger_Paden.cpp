@@ -25,14 +25,18 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 	if (eOtherColType == COL_BLUETEAM)
 	{
 		++m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE];
+
+		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
+		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, eOtherColType, 0);
 	}
 	else if (eOtherColType == COL_REDTEAM)
 	{
 		++m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
+
+		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
+		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, eOtherColType, 0);
 	}
 
-	// 상단 유아이 하이라이트
-	CUser::Get_Instance()->Interat_PointUI(m_strTriggerName, eOtherColType, 0);
 }
 
 void CTrigger_Paden::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -45,14 +49,18 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 	if (eOtherColType == COL_BLUETEAM)
 	{
 		--m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE];
+
+		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
+		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, 99, 1);
 	}
 	else if (eOtherColType == COL_REDTEAM)
 	{
 		--m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
+
+		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
+		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, 99, 1);
 	}
 
-	// 상단 유아이 원위치
-	CUser::Get_Instance()->Interat_PointUI(m_strTriggerName, 99, 1);
 }
 
 CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum)

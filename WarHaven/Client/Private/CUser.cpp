@@ -36,6 +36,7 @@
 #include "CUI_Paden.h"
 #include "CUI_Dead.h"
 #include "CUI_Oper.h"
+#include "CUI_EscMenu.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -263,9 +264,9 @@ void CUser::Transform_SkillUI(_uint iClass)
 	m_pUI_Skill->Transform_SkillUI(iClass);
 }
 
-void CUser::Interat_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
+void CUser::Interat_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
-	m_pUI_Paden->Interact_PointUI(strPadenPointKey, iTeamType, iTriggerState);
+	m_pUI_Paden->Interact_PointUI(bIsMainPlayer, strPadenPointKey, iTeamType, iTriggerState);
 }
 
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
@@ -288,6 +289,16 @@ void CUser::Conquest_PointUI(string strPointName, _uint iTeamType)
 	m_pUI_Paden->Conquest_PointUI(strPointName, iTeamType);
 }
 
+void CUser::Set_TargetPointPos(_uint iTargetIdx)
+{
+	m_pUI_Paden->Set_TargetPointPos(iTargetIdx);
+}
+
+void CUser::SetActive_TargetPoint(_bool value)
+{
+	m_pUI_Paden->SetActive_TargetPoint(value);
+}
+
 void CUser::SetActive_PadenUI(_bool value)
 {
 	m_pUI_Paden->SetActive(value);
@@ -301,6 +312,11 @@ void CUser::Set_Respawn(_bool value)
 void CUser::SetActive_OperUI(_bool value)
 {
 	m_pUI_Oper->SetActive(value);
+}
+
+void CUser::SetActive_EscMenu(_bool value)
+{
+	m_pUI_Esc->SetActive_EscMenu(value);
 }
 
 void CUser::On_EnterLevel()
@@ -322,6 +338,14 @@ void CUser::On_EnterStageLevel()
 
 		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Oper);
+	}
+
+	if (!m_pUI_Esc)
+	{
+		m_pUI_Esc = CUI_EscMenu::Create();
+
+		CREATE_GAMEOBJECT(m_pUI_Esc, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Esc);
 	}
 
 	if (!m_pUI_HUD)

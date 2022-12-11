@@ -108,7 +108,7 @@ CEasing_Utillity::~CEasing_Utillity()
 
 _float4 CEasing_Utillity::Linear(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime)
 {
-	return _float4((vTargetPoint - vStartPoint) * fPassedTime / fTotalTime + vStartPoint);
+	return _float4((vTargetPoint - vStartPoint) * (fPassedTime / fTotalTime) + vStartPoint);
 }
 
 _float4 CEasing_Utillity::QuadIn(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime)

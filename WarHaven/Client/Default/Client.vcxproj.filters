@@ -2164,6 +2164,9 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation">
       <UniqueIdentifier>{b3ff1aec-eaed-4af4-bd39-32b867026909}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Esc">
+      <UniqueIdentifier>{06238b51-0e22-4607-951e-17ddf4ce21b2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump">
       <UniqueIdentifier>{c4d07a4e-48e3-4c1d-96d2-24060b6734e0}</UniqueIdentifier>
     </Filter>
@@ -3930,6 +3933,9 @@
     <ClInclude Include="..\Public\CState_PathNavigation.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_EscMenu.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Esc</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CState_PathNavigation_Run_Warrior_L.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior\02. Left</Filter>
     </ClInclude>
@@ -5643,6 +5649,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_PathNavigation.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_EscMenu.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Esc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_PathNavigation_Run_Warrior_L.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\01. Warrior\02. Left</Filter>

@@ -20,6 +20,8 @@ HRESULT CUI_Paden::Initialize_Prototype()
 	Create_PointUI();
 	Init_PointUI();
 
+	Create_TargetPointUI();
+
 	return S_OK;
 }
 
@@ -82,6 +84,13 @@ void CUI_Paden::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 {
 	m_iScore[iTeamType] = iScore;
 	m_fScoreRatio[iTeamType] = (_float)iScore / (_float)iMaxScore;
+}
+
+void CUI_Paden::Set_TargetPointPos(_uint iTargetIdx)
+{
+	m_eTargetPoint = (PointName)iTargetIdx;
+
+	m_bSetTargetPoint = true;
 }
 
 void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
@@ -157,6 +166,14 @@ void CUI_Paden::SetActive_PointUI(_bool value)
 	}
 }
 
+void CUI_Paden::SetActive_TargetPoint(_bool value)
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pArrTargetPoint[i]->SetActive(true);
+	}
+}
+
 void CUI_Paden::Conquest_PointUI(string strPointName, _uint iTeamType)
 {
 	_float4 vColor;
@@ -192,11 +209,9 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _uint iTeamType)
 	}
 }
 
-void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
+void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
 	_float fDuration = 0.3f;
-
-	_bool bIsMainPlayer = CUser::Get_Instance()->Get_Player()->Is_MainPlayer();
 
 	for (int i = 0; i < PU_End; ++i)
 	{
@@ -208,8 +223,14 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 			{
 				if (bIsMainPlayer)
 				{
+					m_pArrProjPointUI[Point_A][i]->SetActive(false);
+
 					m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
-					m_pArrPointUI[Point_A][i]->DoMove(0.f, 200.f, fDuration);
+
+					_float4 vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
+					vPos.x = 0.f;
+					vPos.y = 200.f;
+					m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0.f);
 				}
 
 				Set_PointGauge_Color(iTeamType, Point_A);
@@ -218,8 +239,14 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 			{
 				if (bIsMainPlayer)
 				{
+					m_pArrProjPointUI[Point_R][i]->SetActive(false);
+
 					m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
-					m_pArrPointUI[Point_R][i]->DoMove(0.f, 200.f, fDuration);
+
+					_float4 vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
+					vPos.x = 0.f;
+					vPos.y = 200.f;
+					m_pArrPointUI[Point_R][i]->DoMove(vPos, fDuration, 0.f);
 				}
 
 				Set_PointGauge_Color(iTeamType, Point_R);
@@ -228,8 +255,14 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 			{
 				if (bIsMainPlayer)
 				{
+					m_pArrProjPointUI[Point_C][i]->SetActive(false);
+
 					m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
-					m_pArrPointUI[Point_C][i]->DoMove(0.f, 200.f, fDuration);
+
+					_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+					vPos.x = 0.f;
+					vPos.y = 200.f;
+					m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0.f);
 				}
 
 				Set_PointGauge_Color(iTeamType, Point_C);
@@ -243,24 +276,42 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 			{
 				if (bIsMainPlayer)
 				{
+					m_pArrProjPointUI[Point_A][i]->SetActive(true);
+
 					m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
-					m_pArrPointUI[Point_A][i]->DoMove(-50.f, m_fPointUIPosY, fDuration);
+
+					_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+					vPos.x -= 50.f;
+					vPos.y = m_fPointUIPosY;
+					m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0);
 				}
 			}
 			else if (strPadenPointKey == "Paden_Trigger_R")
 			{
 				if (bIsMainPlayer)
 				{
+					m_pArrProjPointUI[Point_R][i]->SetActive(true);
+					// m_pArrTargetPoint[1]
+
 					m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
-					m_pArrPointUI[Point_R][i]->DoMove(0.f, m_fPointUIPosY, fDuration);
+
+					_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+					vPos.y = m_fPointUIPosY;
+					m_pArrPointUI[Point_R][i]->DoMove(vPos, fDuration, 0);
 				}
 			}
 			else if (strPadenPointKey == "Paden_Trigger_C")
 			{
 				if (bIsMainPlayer)
 				{
+					m_pArrProjPointUI[Point_C][i]->SetActive(true);
+
 					m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
-					m_pArrPointUI[Point_C][i]->DoMove(50.f, m_fPointUIPosY, fDuration);
+
+					_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+					vPos.x += 50.f;
+					vPos.y = m_fPointUIPosY;
+					m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0);
 				}
 			}
 
@@ -298,6 +349,7 @@ void CUI_Paden::My_LateTick()
 	__super::My_LateTick();
 
 	Set_PointTextPosY();
+	Set_TargetPointPos();
 }
 
 void CUI_Paden::OnEnable()
@@ -608,6 +660,27 @@ void CUI_Paden::Set_PointTextPosY()
 	}
 }
 
+void CUI_Paden::Create_TargetPointUI()
+{
+	m_pTargetPoint = CUI_Object::Create();
+
+	m_pTargetPoint->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_PingGreenLeader.dds"));
+
+	m_pTargetPoint->Set_Scale(32.f);
+	m_pTargetPoint->Set_Sort(0.45f);
+
+	CREATE_GAMEOBJECT(m_pTargetPoint, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pTargetPoint);
+
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pArrTargetPoint[i] = m_pTargetPoint->Clone();
+
+		CREATE_GAMEOBJECT(m_pArrTargetPoint[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pArrTargetPoint[i]);
+	}
+}
+
 void CUI_Paden::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pArrScoreGauge[Gauge_Bar][Team_Red], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_SocreGauge_Red, this, placeholders::_1, "g_fValue");
@@ -622,4 +695,19 @@ void CUI_Paden::Bind_Shader()
 	GET_COMPONENT_FROM(m_pArrPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 
+}
+
+void CUI_Paden::Set_TargetPointPos()
+{
+	if (m_bSetTargetPoint)
+	{
+		_float4 vPointPos = m_pArrPointUI[m_eTargetPoint][PU_Point]->Get_Pos();
+		vPointPos.y += 20.f;
+
+		_float4 vProjPointPos = m_pArrProjPointUI[m_eTargetPoint][PU_Point]->Get_Pos();
+		vProjPointPos.y += 20.f;
+
+		m_pArrTargetPoint[0]->Set_Pos(vPointPos);
+		m_pArrTargetPoint[1]->Set_Pos(vProjPointPos);
+	}
 }

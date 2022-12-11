@@ -30,13 +30,16 @@ public:
 
 	void Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore);
 
+	void Set_TargetPointPos(_uint iTargetIdx);
+
 	void SetActive_ScoreNum(_bool value);
 	void SetActive_ScoreGauge(_bool value);
 	void SetActive_PointUI(_bool value);
+	void SetActive_TargetPoint(_bool value);
 
 	void Conquest_PointUI(string strPointName, _uint iTeamType);
 
-	void Interact_PointUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
+	void Interact_PointUI(_bool bIsMainPlayer, string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
 
 private:
 	virtual void My_Tick() override;
@@ -101,10 +104,22 @@ private:
 	_float m_fConquestRatio[Point_End];
 
 private:
+	CUI_Object* m_pTargetPoint = nullptr;
+	CUI_Object* m_pArrTargetPoint[2];
+
+	PointName m_eTargetPoint = PointName::Point_End;
+
+	_bool m_bSetTargetPoint = false;
+
+private:
+	void Create_TargetPointUI();
+
+private:
 	void Create_PointUI();
 	void Init_PointUI();
 
 	void Set_PointTextPosY();
+	void Set_TargetPointPos();
 
 	void Set_PointGauge_Color(_uint iTeamType, PointName ePointName);
 

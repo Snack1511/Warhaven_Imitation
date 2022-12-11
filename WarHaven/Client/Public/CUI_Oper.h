@@ -129,9 +129,12 @@ private:	// 작전회의 타이머
 	enum TimerUI { TU_BG, TU_Bar, TU_End };
 	CUI_Object* m_pTimer[TU_End];
 
-	_float m_fMaxOperTime = 3.f;
+	_float m_fMaxOperTime = 5.f;
 	_float m_fOperTime = 0.f;
 	_float m_fTimerRatio = 1.f;
+
+private:
+	void Create_OperTimer();
 
 private:	// 합류 버튼
 	CUI_Object* m_pRespawnBtn = nullptr;
@@ -140,12 +143,24 @@ private:
 	void Create_RespawnBtn();
 
 private:
-	void Create_OperTimer();
+	CUI_Object* m_pBlackImg = nullptr;
 
 private:
-	CUI_Object* m_pBlackImg = nullptr;	
-
 	void Create_BlackImg();
+
+private:
+	CUI_Object* m_pTargetPoint = nullptr;
+	CUI_Object* m_pArrTargetPoint[2];
+
+private:
+	void Create_TargetPoint();
+
+private:
+	enum BriefingUI { BU_BG, BU_Icon, BU_End };
+	CUI_Object* m_pBriefingUI[BU_End];
+
+private:
+	void Create_BriefingUI();
 
 private:
 	void Bind_Shader();

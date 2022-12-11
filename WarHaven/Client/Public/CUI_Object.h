@@ -60,13 +60,10 @@ public:	// Lerp
 	void Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration);
 
-	void Lerp_PosX(_float fStart, _float fEnd, _float fDuration);
-	void Lerp_PosY(_float fStart, _float fEnd, _float fDuration);
-
-	void DoMove(_float fPosX, _float fPosY, _float fDuration);
-
-	void DoMoveY(_float fMoveValue, _float fDuration);
-	void DoMoveX(_float fMoveValue, _float fDuration);
+	enum eMOVE_TYPE {LINEAR, QUADOUT};
+	void DoMove(_float4 vLerpTargetPos, _float fDuration, _uint eMoveType = LINEAR);
+	void DoMove_Target(_float fDuration, _uint eMoveType = LINEAR);
+	void DoMove_Origin(_float fDuration, _uint eMoveType = LINEAR);
 
 	void DoScale(_float fScaleValue, _float fDuration);
 	void DoScaleX(_float fScaleValue, _float fDuration);
@@ -102,11 +99,8 @@ private:	// Etc
 	_bool m_bIsInMouse = false;
 
 private:	// DoMove
+	eMOVE_TYPE m_eMoveType = LINEAR;
 	_bool m_bIsDoMove = false;
-
-	_float4 m_vOriginPos;
-	_float m_fGoalPosX = 0.f;
-	_float m_fGoalPosY = 0.f;
 
 	_float m_fMoveAccTime = 0.f;
 	_float m_fMoveDuration = 0.f;
@@ -150,7 +144,6 @@ private:
 private:
 	void RenderText();
 	void Lerp_Scale();
-	void Lerp_Position();
 	void DoMove();
 	void DoScale();
 	void Fade_Font();

@@ -6,6 +6,7 @@ BEGIN(Client)
 
 class CUnit;
 class CUI_CharacterWindow;
+class CUI_EscMenu;
 
 class CUI_HUD : public CUI_Wrapper
 {
@@ -43,6 +44,12 @@ private:
 	void Create_CharacterWindow();
 	void Active_CharacterWindow();
 
+private:
+	CUI_EscMenu* m_pUI_EscMenu = nullptr;
+
+private:
+	void Create_EscMenu();
+
 public:
 	virtual void Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName);
 
@@ -73,21 +80,6 @@ private:	// 작전회의 거점 아이콘
 
 private:
 	void Create_OperPoint();
-
-private:	// 작전회의 타이머
-	enum OperTimerType { TT_BG, TT_Bar, TT_End };
-	CUI_Object* m_pOperTimer[TT_End];
-
-	_float m_fMaxOperTime = 3.f;
-	_float m_fOperTime = 0.f;
-	_float m_fTimerRatio = 1.f;
-
-private:
-	void Create_OperTimer();
-
-private:
-	_uint m_iOperWindowCnt = 0;
-	_float m_fSmokeUV = 0.f;
 
 private:	// 캐릭터 변경 알림
 	CUI_Object* m_pClassChangeText = nullptr;
@@ -129,11 +121,7 @@ private:
 private:
 	void Bind_Shader();
 
-	void Set_FadePortHighlight();
-	void Set_FadeOperSelectChaderUI();
-
 	void Update_HeorTransformGauge();
-
 };
 
 END
