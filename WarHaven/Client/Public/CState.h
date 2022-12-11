@@ -151,10 +151,14 @@ protected:
 	_float				m_fAIMyLength = 0.f; // AI -> Player Length 비교 시 사용
 	STATE_TYPE			m_iAINextState = STATE_END; // AI return 사용 용이하게 변수로 만듦
 
+	_float4				m_vAIRandLook;
+
 
 protected:
 		/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
-		STATE_TYPE			m_eBounceState = STATE_END;
+	STATE_TYPE			m_eBounceState = STATE_END;
+
+	STATE_TYPE			m_ePreStateType = STATE_END;
 
 
 protected:
@@ -187,6 +191,8 @@ protected:
 
 	/* AI 용도*/
 protected:
+	void	Set_Direction_Four_AI(_int& iDirectionRand);
+
 	_float	Get_Length(CUnit* pOwner);
 
 	_float	Move_Direction_Loop_AI(CUnit* pOwner);
@@ -194,10 +200,13 @@ protected:
 	_float	Get_TargetLook_Length(CUnit* pOwner);
 
 	void	DoMove_AI(CUnit* pOwner, CAnimator* pAnimator);
+	void	DoMove_AI_NoTarget(CUnit* pOwner, CAnimator* pAnimator);
 
 protected:
 	void	Physics_Setting(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bBackStep = false);
 	void	Physics_Setting_Right(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bRight = true);
+
+	void	Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax = true, _bool bRight = true);
 
 
 

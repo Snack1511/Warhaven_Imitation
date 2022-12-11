@@ -52,7 +52,7 @@ HRESULT CAI_SandBack_Hit::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
-    m_vecAdjState.push_back(STATE_IDLE_WARRIOR_R_AI_ENEMY);
+    m_vecAdjState.push_back(STATE_IDLE_WARRIOR_L_AI_ENEMY);
     
 
     return S_OK;

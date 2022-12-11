@@ -24,10 +24,6 @@ HRESULT CAI_TG_Warrior_Attack_HorizontalMiddle::Initialize()
 	m_tHitInfo.fKnockBackPower = 2.f;
 	m_tHitInfo.fJumpPower = 0.f;
 
-	//m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
-	//m_iAnimIndex = 6;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-	//m_eStateType = STATE_ATTACK_HORIZONTALUP_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
-
 	m_fInterPolationTime = 0.1f;
 
 	m_iStopIndex = 30;
@@ -36,27 +32,11 @@ HRESULT CAI_TG_Warrior_Attack_HorizontalMiddle::Initialize()
 	Add_KeyFrame(m_iStopIndex, 1);
 	Add_KeyFrame(50, 2);
 
-	//m_vecAdjState.push_back(STATE_IDLE_PLAYER_R);
-	//m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-	//m_vecAdjState.push_back(STATE_RUN_PLAYER_R);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	//m_vecAdjState.push_back(STATE_BOUNCE_PLAYER_L);
-
-
-//	m_eAnimLeftorRight = ANIM_BASE_L;
 	m_iIdle_Index = 3;
 	m_iLandRightIndex = 17;
 	m_iLandLeftIndex = 9;
 	m_iJumpFallRightIndex = 10;
 	m_iJumpFallLeftIndex = 1;
-
 
 	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 18;
 	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 19;

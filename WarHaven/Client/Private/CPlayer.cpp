@@ -367,13 +367,13 @@ void CPlayer::SetUp_UnitColliders(_bool bBlueTeam)
 void CPlayer::SetUp_UnitHitStates()
 {
 
-	if (m_bIsMainPlayer)
-		m_iUnitType = 0;
-	else
-	{
-		if (m_iUnitType != (_uint)CUnit::UNIT_TYPE::eSandbag)
-			m_iUnitType = (_uint)CUnit::UNIT_TYPE::eAI_TG;
-	}
+	//if (m_bIsMainPlayer)
+	//	m_iUnitType = 0;
+	//else
+	//{
+	//	if (m_iUnitType != (_uint)CUnit::UNIT_TYPE::eSandbag)
+	//		m_iUnitType = (_uint)CUnit::UNIT_TYPE::eAI_TG;
+	//}
 
 	for (int i = 0; i < CLASS_END; ++i)
 	{
@@ -623,6 +623,11 @@ void CPlayer::On_Reborn()
 	CUser::Get_Instance()->SetActive_HUD(true);
 }
 
+CBehavior* CPlayer::Get_Behavior()
+{
+	return m_pAIController->m_pCurrentBehavior;
+}
+
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
 {
 	m_eTeamType = eTeamType;
@@ -658,6 +663,11 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 
 void CPlayer::My_Tick()
 {
+	//if (m_pAIController)
+	//{
+	//	m_pAIController->m_pPersonality;
+	//}
+
 	//공통으로 업데이트 되어야 하는것
 
 	m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());

@@ -43,7 +43,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Initialize();
 	pBehavior->Add_OtherCondition(wstring(L"Check_FarAwayLeader"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_Leader"));
-	pBehavior->SetUp_StateType(STATE_IDLE_WARRIOR_L_AI_ENEMY);
+	pBehavior->SetUp_StateType(AI_STATE_PATROL_IDLE_WARRIOR_R);
 	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Patrol"))->Clone();

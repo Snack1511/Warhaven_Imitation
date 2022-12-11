@@ -1231,90 +1231,6 @@
     <Filter Include="03. Instances\03. Component\05. Button">
       <UniqueIdentifier>{13c9e04c-abf4-4339-a894-abeec00a6f76}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag">
-      <UniqueIdentifier>{d5cfaa72-49ec-4028-a145-4bca00467100}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior">
-      <UniqueIdentifier>{8ec62479-198b-449a-8efa-03be67f4c5b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test">
-      <UniqueIdentifier>{b6d5aaab-a069-43cb-8835-ea350d37d2b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\01. Idle">
-      <UniqueIdentifier>{34419a80-8324-4899-8368-38f70c74d24a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\01. Idle\02. Left">
-      <UniqueIdentifier>{9ade192c-0a8c-4634-9326-7403699b39dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\01. Idle\01. Right">
-      <UniqueIdentifier>{e4c5a156-f615-4d19-b205-c11bdac7c742}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack">
-      <UniqueIdentifier>{9bad3513-0bc8-4fe4-8fa0-004f9eface17}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack\HorizontalMiddle">
-      <UniqueIdentifier>{40f299bd-ceb4-411a-8c75-5907d08a9be1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack\HorizontalMiddle\01. Right">
-      <UniqueIdentifier>{62ca9225-f52a-45b7-aafb-b2809b3d2fd0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack\HorizontalMiddle\02. Left">
-      <UniqueIdentifier>{fdcd7fb3-fba1-4517-b7d0-dcb2357286a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard">
-      <UniqueIdentifier>{f1b2235f-64c9-4b50-a6a1-49c751b9f6fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\01. Begin">
-      <UniqueIdentifier>{d53332b5-841a-4995-b1bf-3dd11f1f0ba7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\02. Loop">
-      <UniqueIdentifier>{cf00a5e6-6eea-42cc-b731-1c4c87c13fac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\03. End">
-      <UniqueIdentifier>{ca1b9115-bee1-4310-b256-a64616cdaf76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\04. Cancel">
-      <UniqueIdentifier>{23407b96-8b7c-4247-a44d-9c132b0d2850}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit">
-      <UniqueIdentifier>{081522a9-348f-4cf0-aca5-3fe147352ce0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\01. GuardHit">
-      <UniqueIdentifier>{2663df3d-1d07-445a-b2b9-6b89ed1be8e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\00. Hit">
-      <UniqueIdentifier>{43499238-8c4a-43d4-bd6b-3eec68398ecb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\02. Groggy">
-      <UniqueIdentifier>{ec0bad91-2b15-4844-9664-51cc13ee4554}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\03. Sting">
-      <UniqueIdentifier>{502d551c-dadb-4383-ac0d-a5f38450c311}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\04. GuardCancel">
-      <UniqueIdentifier>{18d5e94e-2344-4ebf-882c-261641eb6046}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\05. Fly">
-      <UniqueIdentifier>{4fe5729a-b531-41da-a4a6-45527beabd35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump">
-      <UniqueIdentifier>{5fb412b1-f33d-4db7-ada4-0e6d6c8bf6d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\03. Land">
-      <UniqueIdentifier>{506a4fa6-1823-4486-831d-757d390cdecc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\02. Fall">
-      <UniqueIdentifier>{52d4a6ae-7fd4-4df6-9444-6081012ec559}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\10. Bounce">
-      <UniqueIdentifier>{1c58a2b1-edb4-4bf1-9d44-aec925727d6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\10. Bounce\01. Right">
-      <UniqueIdentifier>{36be589d-8f7b-4f59-9d61-526df35ec97a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\10. Bounce\02. Left">
-      <UniqueIdentifier>{8101fcab-d46c-413b-bc08-c5e230aa4cf7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\04. Attack\01. Warrior\01. Attack\HorizontalMiddle\02. Left">
       <UniqueIdentifier>{a7f1c4d0-8564-44f1-90ca-ef7301f9d562}</UniqueIdentifier>
     </Filter>
@@ -1359,108 +1275,6 @@
     </Filter>
     <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Level">
       <UniqueIdentifier>{6ff99d2b-2bd7-4d08-ae69-0d99c7bb9fab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground">
-      <UniqueIdentifier>{ff115549-6bf2-4209-bd2f-9528a8219595}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior">
-      <UniqueIdentifier>{e798bf7c-63ea-42c7-9a93-df1241bd44c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\01. Idle">
-      <UniqueIdentifier>{87152c64-5c5f-4eee-a313-c69a54b5e69e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\01. Idle\01. Right">
-      <UniqueIdentifier>{f0356212-e523-47df-a9a1-3268406c9f48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\01. Idle\02. Left">
-      <UniqueIdentifier>{fbc98e3b-7dce-4519-aab1-d07b7f8eb823}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Bounce">
-      <UniqueIdentifier>{4988a450-47cb-4510-a3db-030d3c4f1f8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Bounce\02. Left">
-      <UniqueIdentifier>{ffd08430-e325-447b-98c2-1c765dcce5b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Bounce\01. RIght">
-      <UniqueIdentifier>{3931d00d-628f-4a29-9a85-650e88d60a08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard">
-      <UniqueIdentifier>{a5382918-4615-495d-963f-16eeb29673ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\01. Begin">
-      <UniqueIdentifier>{92c8248b-d50d-4c24-8c52-9cbbcd29fdfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\02. Loop">
-      <UniqueIdentifier>{d037ecc3-e356-4643-80ab-4fab44e0856f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\03. End">
-      <UniqueIdentifier>{fcb2d80c-42f3-4fc8-8df7-40137715bdb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\04. Cancel">
-      <UniqueIdentifier>{596fc6cb-155e-4de2-9c0e-23f882b26bcd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run">
-      <UniqueIdentifier>{faca00dc-b48d-48c3-b616-88e501917637}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\01. Begin">
-      <UniqueIdentifier>{71346e7e-63d0-4c6c-b0c1-9f17ff190214}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\01. Begin\01. RIght">
-      <UniqueIdentifier>{ab742715-3df8-4cca-8d4a-b12051847a12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\01. Begin\02. Left">
-      <UniqueIdentifier>{fb37101e-5f49-4348-8a7c-f5af9d7d3f3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\02. Loop">
-      <UniqueIdentifier>{c283acbb-42f5-44bc-9dde-c2b9402b4014}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\02. Loop\01. RIght">
-      <UniqueIdentifier>{a87ae681-b1fc-4b34-945a-234d6874e850}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\02. Loop\02. Left">
-      <UniqueIdentifier>{a7663d1e-6764-42f3-95c0-a03e775e3cb8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack">
-      <UniqueIdentifier>{75cb5cbd-974f-42ad-8a5d-70e9bfae4319}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack\HorizontalMiddle">
-      <UniqueIdentifier>{4cce53d0-be4d-492e-b593-3431854b9455}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack\HorizontalMiddle\01. Right">
-      <UniqueIdentifier>{277c6c5d-dfff-471f-9adf-fe08de69679a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack\HorizontalMiddle\02. Left">
-      <UniqueIdentifier>{8e8e044c-b330-41d5-910a-21c913e65db9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit">
-      <UniqueIdentifier>{66eea3ae-52b7-499c-a2b4-2f3a0efab71e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\00. Hit">
-      <UniqueIdentifier>{f3eeea2e-60dc-468e-ac4a-ba63c3f71b11}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\01. GuardHit">
-      <UniqueIdentifier>{6a6b5c25-e58a-4775-80bf-50d0d92e7cbc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\02. Groggy">
-      <UniqueIdentifier>{1bf710e0-99d8-4db7-8332-d515ec04debe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\03. Sting">
-      <UniqueIdentifier>{8786981e-b325-47df-af93-17731d5819a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\04. GuardCancel">
-      <UniqueIdentifier>{af3ea27f-e036-464f-8ca2-e6b8cc78a3fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\05. Fly">
-      <UniqueIdentifier>{17fbc9e9-c141-439f-91dd-07af985e4e9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk">
-      <UniqueIdentifier>{a3ea67e4-387b-4516-81ff-a600b5a099a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk\01. Right">
-      <UniqueIdentifier>{482f4393-9e85-46fe-b84d-1a3c11408e9b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk\02. Left">
-      <UniqueIdentifier>{0b7a9ffa-dd9e-4777-80b8-f41fd1479661}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\01. Level\03. Level_Main">
       <UniqueIdentifier>{fd28c482-61c9-4553-9fba-4b645532e423}</UniqueIdentifier>
@@ -1521,12 +1335,6 @@
     </Filter>
     <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\08. Guard\05. Cancel">
       <UniqueIdentifier>{3dc9a0b2-c04c-4b19-8e87-87aff8f3c09d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer">
-      <UniqueIdentifier>{70a4c7af-eda9-4c77-89e4-1027bb476a88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer\01. Idle">
-      <UniqueIdentifier>{0555db5b-2862-4eab-b507-d86f96f0051b}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\08. Effect\07. Dominion_Effect">
       <UniqueIdentifier>{c6451077-b720-4845-bb58-1324bc71fd00}</UniqueIdentifier>
@@ -1953,6 +1761,396 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Oper">
       <UniqueIdentifier>{5dec1cd7-cce1-461a-9e2c-769502ad5e81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior">
+      <UniqueIdentifier>{13ff7cee-29ac-45e8-9678-a48fa5e093c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol">
+      <UniqueIdentifier>{4113b70b-5bac-4b39-ab61-16bb7dcf9e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default">
+      <UniqueIdentifier>{a462a594-ccc3-4a79-89a3-ec512618fde5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior">
+      <UniqueIdentifier>{adec6314-f62e-4f9e-8476-dda500ede6d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior\01. Right">
+      <UniqueIdentifier>{926d384d-0cd2-45d0-a0d2-82fe73222951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior\02. Left">
+      <UniqueIdentifier>{51f11776-380d-4bb6-8904-aad72881a4cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch">
+      <UniqueIdentifier>{a9b143b3-c1f9-4475-bcd5-21d0135b1f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior">
+      <UniqueIdentifier>{f78e9e5f-2bf2-465a-9520-e272bfe44e98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior\01. Right">
+      <UniqueIdentifier>{2350f3ae-4c6b-4ad4-9278-75e22aa64cc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior\02. Left">
+      <UniqueIdentifier>{68bbe311-36b6-4e93-b504-f9a98b051054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk">
+      <UniqueIdentifier>{8dddb020-7d45-4c25-9c7b-db020b0b3354}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\01. Warrior">
+      <UniqueIdentifier>{da57934d-cc45-4fd1-83b7-02c12e0ec9d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\01. Warrior\01. Right">
+      <UniqueIdentifier>{2c55a43e-fdc7-47a0-92ac-d8e921b6cd2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\01. Warrior\02. Left">
+      <UniqueIdentifier>{ae83aa78-e30f-4a5f-9368-856e6749ee4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag">
+      <UniqueIdentifier>{d5cfaa72-49ec-4028-a145-4bca00467100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior">
+      <UniqueIdentifier>{8ec62479-198b-449a-8efa-03be67f4c5b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback">
+      <UniqueIdentifier>{b6d5aaab-a069-43cb-8835-ea350d37d2b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\01. Idle">
+      <UniqueIdentifier>{34419a80-8324-4899-8368-38f70c74d24a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\01. Idle\02. Left">
+      <UniqueIdentifier>{9ade192c-0a8c-4634-9326-7403699b39dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\01. Idle\01. Right">
+      <UniqueIdentifier>{e4c5a156-f615-4d19-b205-c11bdac7c742}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack">
+      <UniqueIdentifier>{9bad3513-0bc8-4fe4-8fa0-004f9eface17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack\HorizontalMiddle">
+      <UniqueIdentifier>{40f299bd-ceb4-411a-8c75-5907d08a9be1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack\HorizontalMiddle\01. Right">
+      <UniqueIdentifier>{62ca9225-f52a-45b7-aafb-b2809b3d2fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack\HorizontalMiddle\02. Left">
+      <UniqueIdentifier>{fdcd7fb3-fba1-4517-b7d0-dcb2357286a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard">
+      <UniqueIdentifier>{f1b2235f-64c9-4b50-a6a1-49c751b9f6fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\01. Begin">
+      <UniqueIdentifier>{d53332b5-841a-4995-b1bf-3dd11f1f0ba7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\02. Loop">
+      <UniqueIdentifier>{cf00a5e6-6eea-42cc-b731-1c4c87c13fac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\03. End">
+      <UniqueIdentifier>{ca1b9115-bee1-4310-b256-a64616cdaf76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\04. Cancel">
+      <UniqueIdentifier>{23407b96-8b7c-4247-a44d-9c132b0d2850}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit">
+      <UniqueIdentifier>{081522a9-348f-4cf0-aca5-3fe147352ce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\01. GuardHit">
+      <UniqueIdentifier>{2663df3d-1d07-445a-b2b9-6b89ed1be8e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\00. Hit">
+      <UniqueIdentifier>{43499238-8c4a-43d4-bd6b-3eec68398ecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\02. Groggy">
+      <UniqueIdentifier>{ec0bad91-2b15-4844-9664-51cc13ee4554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\03. Sting">
+      <UniqueIdentifier>{502d551c-dadb-4383-ac0d-a5f38450c311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\04. GuardCancel">
+      <UniqueIdentifier>{18d5e94e-2344-4ebf-882c-261641eb6046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\05. Fly">
+      <UniqueIdentifier>{4fe5729a-b531-41da-a4a6-45527beabd35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump">
+      <UniqueIdentifier>{5fb412b1-f33d-4db7-ada4-0e6d6c8bf6d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\03. Land">
+      <UniqueIdentifier>{506a4fa6-1823-4486-831d-757d390cdecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\02. Fall">
+      <UniqueIdentifier>{52d4a6ae-7fd4-4df6-9444-6081012ec559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\10. Bounce">
+      <UniqueIdentifier>{1c58a2b1-edb4-4bf1-9d44-aec925727d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\10. Bounce\01. Right">
+      <UniqueIdentifier>{36be589d-8f7b-4f59-9d61-526df35ec97a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\10. Bounce\02. Left">
+      <UniqueIdentifier>{8101fcab-d46c-413b-bc08-c5e230aa4cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer">
+      <UniqueIdentifier>{70a4c7af-eda9-4c77-89e4-1027bb476a88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Sandbag\WarHammer\01. Idle">
+      <UniqueIdentifier>{0555db5b-2862-4eab-b507-d86f96f0051b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground">
+      <UniqueIdentifier>{ff115549-6bf2-4209-bd2f-9528a8219595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior">
+      <UniqueIdentifier>{e798bf7c-63ea-42c7-9a93-df1241bd44c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\01. Idle">
+      <UniqueIdentifier>{87152c64-5c5f-4eee-a313-c69a54b5e69e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\01. Idle\01. Right">
+      <UniqueIdentifier>{f0356212-e523-47df-a9a1-3268406c9f48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\01. Idle\02. Left">
+      <UniqueIdentifier>{fbc98e3b-7dce-4519-aab1-d07b7f8eb823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk">
+      <UniqueIdentifier>{a3ea67e4-387b-4516-81ff-a600b5a099a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk\01. Right">
+      <UniqueIdentifier>{482f4393-9e85-46fe-b84d-1a3c11408e9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk\02. Left">
+      <UniqueIdentifier>{0b7a9ffa-dd9e-4777-80b8-f41fd1479661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run">
+      <UniqueIdentifier>{faca00dc-b48d-48c3-b616-88e501917637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\01. Begin">
+      <UniqueIdentifier>{71346e7e-63d0-4c6c-b0c1-9f17ff190214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\01. Begin\01. RIght">
+      <UniqueIdentifier>{ab742715-3df8-4cca-8d4a-b12051847a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\01. Begin\02. Left">
+      <UniqueIdentifier>{fb37101e-5f49-4348-8a7c-f5af9d7d3f3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\02. Loop">
+      <UniqueIdentifier>{c283acbb-42f5-44bc-9dde-c2b9402b4014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\02. Loop\01. RIght">
+      <UniqueIdentifier>{a87ae681-b1fc-4b34-945a-234d6874e850}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\02. Loop\02. Left">
+      <UniqueIdentifier>{a7663d1e-6764-42f3-95c0-a03e775e3cb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit">
+      <UniqueIdentifier>{66eea3ae-52b7-499c-a2b4-2f3a0efab71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\00. Hit">
+      <UniqueIdentifier>{f3eeea2e-60dc-468e-ac4a-ba63c3f71b11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\01. GuardHit">
+      <UniqueIdentifier>{6a6b5c25-e58a-4775-80bf-50d0d92e7cbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\02. Groggy">
+      <UniqueIdentifier>{1bf710e0-99d8-4db7-8332-d515ec04debe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\03. Sting">
+      <UniqueIdentifier>{8786981e-b325-47df-af93-17731d5819a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\04. GuardCancel">
+      <UniqueIdentifier>{af3ea27f-e036-464f-8ca2-e6b8cc78a3fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\05. Fly">
+      <UniqueIdentifier>{17fbc9e9-c141-439f-91dd-07af985e4e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack">
+      <UniqueIdentifier>{75cb5cbd-974f-42ad-8a5d-70e9bfae4319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack\HorizontalMiddle">
+      <UniqueIdentifier>{4cce53d0-be4d-492e-b593-3431854b9455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack\HorizontalMiddle\01. Right">
+      <UniqueIdentifier>{277c6c5d-dfff-471f-9adf-fe08de69679a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack\HorizontalMiddle\02. Left">
+      <UniqueIdentifier>{8e8e044c-b330-41d5-910a-21c913e65db9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard">
+      <UniqueIdentifier>{a5382918-4615-495d-963f-16eeb29673ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\01. Begin">
+      <UniqueIdentifier>{92c8248b-d50d-4c24-8c52-9cbbcd29fdfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\02. Loop">
+      <UniqueIdentifier>{d037ecc3-e356-4643-80ab-4fab44e0856f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\03. End">
+      <UniqueIdentifier>{fcb2d80c-42f3-4fc8-8df7-40137715bdb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\04. Cancel">
+      <UniqueIdentifier>{596fc6cb-155e-4de2-9c0e-23f882b26bcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\06. Bounce">
+      <UniqueIdentifier>{4988a450-47cb-4510-a3db-030d3c4f1f8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\06. Bounce\02. Left">
+      <UniqueIdentifier>{ffd08430-e325-447b-98c2-1c765dcce5b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\06. Bounce\01. RIght">
+      <UniqueIdentifier>{3931d00d-628f-4a29-9a85-650e88d60a08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat">
+      <UniqueIdentifier>{e3c0e5c7-dcda-40b9-98f8-0659d6b5378e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill">
+      <UniqueIdentifier>{daf8d0da-4aa3-44a0-8b8e-3703e8c941e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ">
+      <UniqueIdentifier>{91689caf-81ab-4b80-b71d-1a0cdc64ed1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior">
+      <UniqueIdentifier>{c9d72383-7a7a-43de-858f-d9afba3d7419}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE">
+      <UniqueIdentifier>{51335da9-b6b2-4211-9389-b5172dff41fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\01. Warrior">
+      <UniqueIdentifier>{16efa1aa-c9fa-49dc-8238-42b63355a611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR">
+      <UniqueIdentifier>{bee4c77f-9a92-4385-9ef9-a006879a8272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack">
+      <UniqueIdentifier>{26635496-5fbd-42e4-a44e-a34c4b073ce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior">
+      <UniqueIdentifier>{d5c14729-53c8-410b-b44d-7e936d188234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal">
+      <UniqueIdentifier>{07d5f20d-daa7-442a-be76-fe85571c5336}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\01. Up">
+      <UniqueIdentifier>{88a6e87b-62b1-429e-b72a-1a62e2652022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\01. Up\01. Right">
+      <UniqueIdentifier>{4ade8167-dadf-429f-b5c8-dab964e7b5f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\01. Up\02. Left">
+      <UniqueIdentifier>{58649bdb-181d-4c6f-8d40-2a48bab31b03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\02. Middle">
+      <UniqueIdentifier>{57a7d542-beaa-4b3b-b2c0-9da4a3dafa41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\02. Middle\01. Right">
+      <UniqueIdentifier>{2d07a416-b7a6-4bcb-ac8e-5809e38b44e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\02. Middle\02. Left">
+      <UniqueIdentifier>{0c36acf5-689f-4b53-a4ef-8973d338065e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\03. Down">
+      <UniqueIdentifier>{e924f01b-d47a-4e69-bdc0-d63276fe065a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\03. Down\01. Right">
+      <UniqueIdentifier>{62d328e3-6951-4030-96c7-66f2c31402fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\03. Down\02. Left">
+      <UniqueIdentifier>{f7e1bc87-49b0-4184-9419-9296b8124296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\02. Sprint">
+      <UniqueIdentifier>{ebecd3e2-cf2f-4442-92db-05156028f5d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default">
+      <UniqueIdentifier>{34940b4a-8e0e-49b9-a9a6-62783276fa3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\01. Warrior">
+      <UniqueIdentifier>{c0bedfb2-75ec-49b1-ae44-f97cdca354bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\01. Warrior\01. Right">
+      <UniqueIdentifier>{337ee128-a040-4f55-b8a9-298ff53542aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\01. Warrior\02. Left">
+      <UniqueIdentifier>{dfb9ee28-6c71-406c-8b9d-1b8b604646d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\04. Walk">
+      <UniqueIdentifier>{05c285b1-f7cb-4639-a621-31b68147cc5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard">
+      <UniqueIdentifier>{64cbe8e6-4c0b-4bc4-8a05-f7881f5acc3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common">
+      <UniqueIdentifier>{09f9f85d-8080-4c74-92d9-252bd655f4bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit">
+      <UniqueIdentifier>{7247e39e-8065-439e-983a-d0887761dd55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit">
+      <UniqueIdentifier>{b6c4e339-1f4c-4c84-a207-0724be6ae3c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit">
+      <UniqueIdentifier>{519ae85f-d62d-46ae-83de-2d1e6d5348fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy">
+      <UniqueIdentifier>{76f21793-5289-4472-b995-d3f1e4739dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting">
+      <UniqueIdentifier>{d606c83a-c5e4-4070-813d-2c225da78e35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly">
+      <UniqueIdentifier>{548595f4-91a2-457f-97dd-a4a0620312cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce">
+      <UniqueIdentifier>{6b0d90a1-d37b-4cae-8f23-3f487c2ff56c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior">
+      <UniqueIdentifier>{a8f57deb-5db2-4547-83ed-924395ae0526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior\02. Left">
+      <UniqueIdentifier>{56139134-378d-47e6-a818-c37e01508ff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior\01. Right">
+      <UniqueIdentifier>{2ef209f6-ba78-4dcc-aaab-b25685491cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen">
+      <UniqueIdentifier>{7982067d-7d6f-4bdb-a933-da3d7479c05f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\02. GuardBreak">
+      <UniqueIdentifier>{d34a0753-097b-4b61-9d81-b5ea1efba5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\01. Begin">
+      <UniqueIdentifier>{21d59548-3068-4680-ba68-2d67d9f7016b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\02. End">
+      <UniqueIdentifier>{d6ca6ad9-9d0a-4ce4-8c6b-aaf8b7e42318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop">
+      <UniqueIdentifier>{ad01dae7-b78e-4946-9f43-37ae9257528a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\01. Loop">
+      <UniqueIdentifier>{61c0101e-9359-4624-b856-5146a2f247b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\02. Attack">
+      <UniqueIdentifier>{79374f44-fd8f-4bd7-baf3-802b08b29373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard">
+      <UniqueIdentifier>{f7398595-c766-473e-bfeb-9cc5962a6b62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel">
+      <UniqueIdentifier>{985dbfdb-3f05-4a74-9b67-ae43ea2a4b4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\01. Warrior">
+      <UniqueIdentifier>{4a2c65c4-0471-4fb2-9807-e54cde89e265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior">
+      <UniqueIdentifier>{04a6cbfe-0af1-44dd-9885-7d4db8b5f2ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\04. Dash">
+      <UniqueIdentifier>{e1450c8a-1f27-41f0-b6ff-738e0b124d5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End">
+      <UniqueIdentifier>{c40c40c7-3368-46e6-a223-38d4e5ff40d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin">
+      <UniqueIdentifier>{53510634-02f2-43ff-9348-e8ee911182c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\02. Loop">
+      <UniqueIdentifier>{4293ec90-789b-42d3-af70-33c1d620bf57}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Instances\02. GameObject\99. Player\Path">
       <UniqueIdentifier>{70442842-0086-4d8f-b28f-e1e3ef6b7fa5}</UniqueIdentifier>
@@ -2791,49 +2989,49 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\02. Counter</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CAI_SandBack.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\01. Idle\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\01. Idle\01. Right</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_SandBack_L.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\01. Idle\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\01. Idle\02. Left</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CHit_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\00. Hit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_CWarrior_Attack_HorizontalMiddle.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack\HorizontalMiddle</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack\HorizontalMiddle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_CWarrior_Attack_HorizontalMiddle_L.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack\HorizontalMiddle\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack\HorizontalMiddle\02. Left</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_CWarrior_Attack_HorizontalMiddle_R.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack\HorizontalMiddle\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack\HorizontalMiddle\01. Right</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGuard_Cancel_Warrior_AI.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\04. Cancel</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\04. Cancel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGuard_Begin_Player_Warrior_AI.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\01. Begin</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGuard_Loop_Warrior_AI.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\02. Loop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGuard_End_Test_AI.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\03. End</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\03. End</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CAI_SandBack_Hit.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\00. Hit</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\00. Hit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_SandBack_GuardHit.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\01. GuardHit</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\01. GuardHit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_SandBack_Groggy.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\02. Groggy</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\02. Groggy</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_SandBack_StingHit.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\03. Sting</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\03. Sting</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_SandBack_GuardCancel.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\04. GuardCancel</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\04. GuardCancel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CHit_GuardHit_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\01. GuardHit</Filter>
@@ -2848,31 +3046,31 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\04. GuardCancel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_SandBack_FlyHit.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\05. Fly</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\05. Fly</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CMapColliders.h">
       <Filter>03. Instances\02. GameObject\06. Map\MapColliders</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_L.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\02. Fall</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\02. Fall</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CJump_Warrior_AI_Fall_R.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\02. Fall</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\02. Fall</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CJump_Warrior_AI_Land_L.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\03. Land</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\03. Land</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CJump_Warrior_AI_Land_R.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\03. Land</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\03. Land</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBounce_Warrior_AI.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\10. Bounce</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\10. Bounce</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBounce_Warrior_AI_L.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\10. Bounce\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\10. Bounce\02. Left</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBounce_Warrior_AI_R.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\10. Bounce\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\10. Bounce\01. Right</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CHit_Fly_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\05. FlyHit</Filter>
@@ -3016,52 +3214,52 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\01. Idle\01. Right</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGuard_Begin_AI_TG_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\01. Begin</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBounce_AI_TG_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Bounce</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\06. Bounce</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGuard_End_AI_TG_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\03. End</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\03. End</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGuard_Loop_AI_TG_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\02. Loop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGuard_Cancel_AI_TG_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\04. Cancel</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\04. Cancel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_Begin.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\01. Begin</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_L.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\02. Loop\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\02. Loop\02. Left</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_R.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\02. Loop\01. RIght</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\02. Loop\01. RIght</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\02. Loop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_Begin_R.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\01. Begin\01. RIght</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\01. Begin\01. RIght</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRun_AI_TG_Warrior_Begin_L.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\01. Begin\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\01. Begin\02. Left</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBounce_AI_TG_Warrior_L.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Bounce\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\06. Bounce\02. Left</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBounce_AI_TG_Warrior_R.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Bounce\01. RIght</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\06. Bounce\01. RIght</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_TG_Warrior_Attack_HorizontalMiddle.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack\HorizontalMiddle</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack\HorizontalMiddle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_TG_Warrior_Attack_HorizontalMiddle_L.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack\HorizontalMiddle\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack\HorizontalMiddle\02. Left</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_TG_Warrior_Attack_HorizontalMiddle_R.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack\HorizontalMiddle\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack\HorizontalMiddle\01. Right</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_AI_Warrior_Blendable.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior</Filter>
@@ -3082,19 +3280,19 @@
       <Filter>03. Instances\01. Level\04. Level_Stage\Paden</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_TG_Groggy.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\02. Groggy</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\02. Groggy</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_TG_FlyHit.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\05. Fly</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\05. Fly</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_TG_GuardHit.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\01. GuardHit</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\01. GuardHit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_TG_Hit.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\00. Hit</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\00. Hit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAI_TG_StingHit.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\03. Sting</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\03. Sting</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWalk_AI_TG_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk</Filter>
@@ -3470,6 +3668,147 @@
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Oper.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Oper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Warrior_CSwitchLtoR.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Warrior_CSwitchRtoL.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillE.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillR.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\02. Middle\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\02. Middle\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Run.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Run_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Run_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Run_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\02. Middle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_GuardHit_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Sting_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Oxen_Cancel_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\02. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Oxen_Begin_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Oxen_Loop_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\01. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Oxen_Loop_Attack_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\02. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardBegin_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardCancel_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardEnd_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardLoop_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardDash_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\04. Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardBreak_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\02. GuardBreak</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CPath.h">
       <Filter>03. Instances\02. GameObject\99. Player\Path</Filter>
@@ -4286,49 +4625,49 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\04. Valkyrie\04. Attack\02. Counter</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CAI_SandBack.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\01. Idle\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\01. Idle\01. Right</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_SandBack_L.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\01. Idle\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\01. Idle\02. Left</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CHit_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\00. Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_CWarrior_Attack_HorizontalMiddle.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack\HorizontalMiddle</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack\HorizontalMiddle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_CWarrior_Attack_HorizontalMiddle_L.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack\HorizontalMiddle\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack\HorizontalMiddle\02. Left</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_CWarrior_Attack_HorizontalMiddle_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\03. Attack\HorizontalMiddle\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\03. Attack\HorizontalMiddle\01. Right</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Cancel_Warrior_AI.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\04. Cancel</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\04. Cancel</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Begin_Player_Warrior_AI.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\01. Begin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Loop_Warrior_AI.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\02. Loop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_End_Test_AI.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\90. Guard\03. End</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\90. Guard\03. End</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CAI_SandBack_Hit.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\00. Hit</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\00. Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_SandBack_GuardHit.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\01. GuardHit</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\01. GuardHit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_SandBack_StingHit.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\03. Sting</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\03. Sting</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_SandBack_Groggy.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\02. Groggy</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\02. Groggy</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_SandBack_GuardCancel.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\04. GuardCancel</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\04. GuardCancel</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Cancel_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\04. GuardCancel</Filter>
@@ -4343,31 +4682,31 @@
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\03. Sting</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_SandBack_FlyHit.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\99. Hit\05. Fly</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\99. Hit\05. Fly</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CMapColliders.cpp">
       <Filter>03. Instances\02. GameObject\06. Map\MapColliders</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_L.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\02. Fall</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\02. Fall</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CJump_Warrior_AI_Fall_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\02. Fall</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\02. Fall</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CJump_Warrior_AI_Land_L.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\03. Land</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\03. Land</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CJump_Warrior_AI_Land_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\05. Jump\03. Land</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\05. Jump\03. Land</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_Warrior_AI.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\10. Bounce</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\10. Bounce</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_Warrior_AI_L.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\10. Bounce\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\10. Bounce\02. Left</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_Warrior_AI_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Test\10. Bounce\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Sandbag\Warrior\Sandback\10. Bounce\01. Right</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CHit_Fly_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\09. Hit\05. FlyHit</Filter>
@@ -4514,52 +4853,52 @@
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\01. Idle\01. Right</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Begin_AI_TG_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\01. Begin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_AI_TG_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Bounce</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\06. Bounce</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_End_AI_TG_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\03. End</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\03. End</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Loop_AI_TG_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\02. Loop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGuard_Cancel_AI_TG_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Guard\04. Cancel</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\05. Guard\04. Cancel</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_Begin.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\01. Begin</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\01. Begin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_L.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\02. Loop\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\02. Loop\02. Left</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\02. Loop\01. RIght</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\02. Loop\01. RIght</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\02. Loop</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\02. Loop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_Begin_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\01. Begin\01. RIght</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\01. Begin\01. RIght</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRun_AI_TG_Warrior_Begin_L.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\66. Run\01. Begin\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\03. Run\01. Begin\02. Left</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_AI_TG_Warrior_L.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Bounce\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\06. Bounce\02. Left</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_AI_TG_Warrior_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Bounce\01. RIght</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\06. Bounce\01. RIght</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_TG_Warrior_Attack_HorizontalMiddle.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack\HorizontalMiddle</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack\HorizontalMiddle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_TG_Warrior_Attack_HorizontalMiddle_L.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack\HorizontalMiddle\02. Left</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack\HorizontalMiddle\02. Left</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_TG_Warrior_Attack_HorizontalMiddle_R.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Attack\HorizontalMiddle\01. Right</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\04. Attack\HorizontalMiddle\01. Right</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_AI_Warrior_Blendable.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior</Filter>
@@ -4580,19 +4919,19 @@
       <Filter>03. Instances\01. Level\04. Level_Stage\Paden</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_TG_Groggy.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\02. Groggy</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\02. Groggy</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_TG_FlyHit.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\05. Fly</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\05. Fly</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_TG_GuardHit.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\01. GuardHit</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\01. GuardHit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_TG_Hit.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\00. Hit</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\00. Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAI_TG_StingHit.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\88. Hit\03. Sting</Filter>
+      <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\99. Hit\03. Sting</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWalk_AI_TG_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\AI_Training_Ground\AI_TG_Warrior\02. Walk</Filter>
@@ -4965,6 +5304,147 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Oper.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Oper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Warrior_CSwitchRtoL.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Warrior_CSwitchLtoR.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillE.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillR.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\02. Middle\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\02. Middle\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Run.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Run_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Run_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Run_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\02. Middle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_GuardHit_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Sting_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Oxen_Begin_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Oxen_Cancel_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\02. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Oxen_Loop_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\01. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Oxen_Loop_Attack_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\03. Loop\02. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardBegin_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardCancel_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardEnd_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardLoop_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardDash_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\04. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardBreak_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\02. GuardBreak</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CPath.cpp">
       <Filter>03. Instances\02. GameObject\99. Player\Path</Filter>
