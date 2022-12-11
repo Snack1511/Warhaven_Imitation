@@ -1108,6 +1108,10 @@ void CUI_Oper::Create_TargetPoint()
 	m_pTargetPoint->Set_Pos(-45.f, -300.f);
 	m_pTargetPoint->Set_Sort(0.47f);
 
+	CREATE_GAMEOBJECT(m_pTargetPoint, GROUP_UI);
+	DELETE_GAMEOBJECT(m_pTargetPoint);
+
+
 	for (int i = 0; i < 2; ++i)
 	{
 		m_pArrTargetPoint[i] = m_pTargetPoint->Clone();

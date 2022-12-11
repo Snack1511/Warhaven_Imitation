@@ -340,13 +340,13 @@ void CUser::On_EnterStageLevel()
 		DISABLE_GAMEOBJECT(m_pUI_Oper);
 	}
 
-	if (!m_pUI_Esc)
+	/*if (!m_pUI_Esc)
 	{
 		m_pUI_Esc = CUI_EscMenu::Create();
 
 		CREATE_GAMEOBJECT(m_pUI_Esc, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Esc);
-	}
+	}*/
 
 	if (!m_pUI_HUD)
 	{
@@ -376,13 +376,13 @@ void CUser::On_EnterStageLevel()
 		CREATE_GAMEOBJECT(m_pUI_Training, GROUP_UI);
 	}
 
-	if (!m_pUI_Paden)
+	/*if (!m_pUI_Paden)
 	{
 		m_pUI_Paden = CUI_Paden::Create();
 
 		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Paden);
-	}
+	}*/
 
 	if (!m_pUI_Dead)
 	{

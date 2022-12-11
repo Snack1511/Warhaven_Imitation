@@ -50,7 +50,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_InactiveHeroText();
 	Create_OxenJumpText();
 	Create_HeroTransformUI();
-	Create_EscMenu();
+	//Create_EscMenu();
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
