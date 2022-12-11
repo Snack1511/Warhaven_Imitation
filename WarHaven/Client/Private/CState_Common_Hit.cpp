@@ -31,6 +31,9 @@ void CState_Common_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 STATE_TYPE CState_Common_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return m_ePreStateType;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

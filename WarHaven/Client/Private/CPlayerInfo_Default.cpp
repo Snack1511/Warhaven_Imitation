@@ -52,6 +52,8 @@ HRESULT CPlayerInfo_Default::SetUp_AIPersonality()
 	CAIPersonality* pPersonality = CPersonality_Default::Create(CGameSystem::Get_Instance()->Get_BXTable());
 	m_pPersonality = pPersonality;
 
+	m_iUnitType = (_uint)CUnit::UNIT_TYPE::eAI_Default;
+
 	if (!m_pPersonality)
 		return E_FAIL;
 

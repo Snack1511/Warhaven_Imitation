@@ -388,7 +388,8 @@ void CState::Follow_MouseLook_Turn(CUnit* pOwner)
 	pOwner->Get_Transform()->Set_LerpLook(vCamLook, 0.4f);
 }
 
-void CState::Set_Direction_Four_AI(_int& iDirectionRand)
+
+void CState::Set_Direction_Front_AI(_int& iDirectionRand)
 {
 	switch (iDirectionRand)
 	{

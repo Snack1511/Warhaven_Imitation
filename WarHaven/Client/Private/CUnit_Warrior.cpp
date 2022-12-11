@@ -226,14 +226,19 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경
-		eNewState = AI_STATE_PATHNAVIGATION_RUN_WARRIOR_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R;
 		break;
 	default:
 		assert(0);
 		break;
 	}
+
 	if (eNewState != STATE_END)
+	{
+		m_eDefaultState = eNewState;
 		Enter_State(eNewState);
+	}
+		
 }
 
 void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)

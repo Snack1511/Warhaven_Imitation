@@ -76,7 +76,7 @@ STATE_TYPE CState_Common_Sting_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator
 
 void CState_Common_Sting_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    __super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CState_Common_Sting_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

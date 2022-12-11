@@ -89,13 +89,5 @@ void CState_Common_Groggy_Warrior::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Common_Groggy_Warrior::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Idle로 오는 조건
-    1. 현재 진행중인 애니메이션이 끝났을 때
-    */
-
-    //if (pAnimator->Is_CurAnimFinished())
-    //    return m_eStateType;
-
-
     return STATE_END;
 }

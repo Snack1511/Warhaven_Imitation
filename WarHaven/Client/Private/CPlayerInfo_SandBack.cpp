@@ -42,7 +42,7 @@ HRESULT CPlayerInfo_SandBack::Initialize()
 	else
 		m_vecPrefClassType.push_back(WARRIOR);
 
-	m_iUnitType = 1;
+	m_iUnitType = (_uint)CUnit::UNIT_TYPE::eSandbag;
 
 	return S_OK;
 }

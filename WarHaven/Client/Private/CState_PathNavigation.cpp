@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "CState_PathNavigation.h"
 
-#include "GameInstance.h"
+#include "UsefulHeaders.h"
+
 
 #include "CAnimator.h"
 #include "CUnit.h"
@@ -9,8 +10,6 @@
 #include "CUser.h"
 
 #include "CPath.h"
-
-#include "UsefulHeaders.h"
 
 CState_PathNavigation::CState_PathNavigation()
 {
@@ -20,81 +19,50 @@ CState_PathNavigation::~CState_PathNavigation()
 {
 }
 
-CState_PathNavigation* CState_PathNavigation::Create()
-{
-    CState_PathNavigation* pInstance = new CState_PathNavigation();
-
-    if (FAILED(pInstance->Initialize()))
-    {
-        Call_MsgBox(L"Failed to Initialize : CState_PathNavigation");
-        SAFE_DELETE(pInstance);
-    }
-
-    return pInstance;
-}
 HRESULT CState_PathNavigation::Initialize()
 {
-
-    //__super::Initialize();
-
-    m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
-    m_iAnimIndex = 39;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = AI_STATE_PATHNAVIGATION_RUN_WARRIOR_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
-    m_iStateChangeKeyFrame = 0;
-    m_fAnimSpeed = 2.5f;
-
-
-    // 알파벳 순 애니메이션 정렬
-    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 38;
-    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 39;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 40;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 41;
-    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 42;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 43;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
-    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 45;
-
-
     return S_OK;
 }
 
-void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
+void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fWalkSpeed);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    CPath* pCurPath = pOwner->Get_CurPath();
+	m_fAIDelayTime += fDT(0);
 
-    if (!pCurPath)
-    {
-        assert(0);
-        return STATE_END;
-    }
+	CPath* pCurPath = pOwner->Get_CurPath();
 
-    /* 따라가면 대 */
-    _float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+	if (!pCurPath)
+	{
+		assert(0);
+		return STATE_END;
+	}
 
-    _float4 vDir = pCurPath->Get_CurDir(pOwner->Get_Transform()->Get_World(WORLD_POS));
+	/* 따라가면 대 */
+	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
 
-    pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
-    pOwner->Get_PhysicsCom()->Set_Dir(vDir);
-    pOwner->Get_PhysicsCom()->Set_Accel(100.f);
+	_float4 vDir = pCurPath->Get_CurDir(pOwner->Get_Transform()->Get_World(WORLD_POS));
 
-    
-    pCurPath->Update_CurrentIndex(vCurPos);
+	pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
+	pOwner->Get_PhysicsCom()->Set_Dir(vDir);
+	pOwner->Get_PhysicsCom()->Set_Accel(100.f);
+
+
+	pCurPath->Update_CurrentIndex(vCurPos);
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-   // __super::Exit(pOwner, pAnimator);
+ 
 }
 
 STATE_TYPE CState_PathNavigation::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return STATE_END;
 }
+

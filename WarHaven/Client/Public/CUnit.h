@@ -171,6 +171,8 @@ public:
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState* Get_CurStateP() { return m_pCurState; }
 
+	STATE_TYPE Get_DefaultState() { return m_eDefaultState; }
+
 	SKILL_TRIGGER& Get_SkillTrigger() { 
 		return m_tSkillTrigger; 
 	}
@@ -291,7 +293,10 @@ protected:
 	CPhysics* m_pPhysics = nullptr;
 
 	UNIT_STATUS		m_tUnitStatus;
+	
 	STATE_TYPE		m_eCurState = STATE_END;
+
+	STATE_TYPE		m_eDefaultState = STATE_END;
 
 	CState* m_pCurState = nullptr;
 
@@ -314,6 +319,7 @@ protected:
 	_uint			m_iDefaultType = 0;
 	_float			m_fHitDelayAcc = 0.f;
 	_float			m_fHitDelayTime = 0.15f;
+
 
 protected:
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,

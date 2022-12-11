@@ -9,6 +9,7 @@ BEGIN(Client)
 class CTable_Conditions;
 class CTrigger;
 class CPlayer;
+class CAIController;
 
 class CBehavior
 {
