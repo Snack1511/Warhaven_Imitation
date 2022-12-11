@@ -234,13 +234,7 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	}
 
 	if (eNewState != STATE_END)
-		
-}
-
-	{
-		
 		m_eReserveState = eNewState;
-	}
 		
 }
 

@@ -155,6 +155,12 @@ public:
 	BEHAVIOR_DESC* Get_BehaviorDesc() { return m_pCurBehaviorDesc; }
 	void Set_BehaviorDesc(BEHAVIOR_DESC* pCurBehaviorDesc) { m_pCurBehaviorDesc = pCurBehaviorDesc; }
 
+	void Reserve_BehaviorDesc(BEHAVIOR_DESC* pReserveBehaviorDesc) {
+		m_pReserveBehaviorDesc = pReserveBehaviorDesc;
+	}
+
+	void On_RealChangeBehavior();
+
 
 public:
 	void	Set_Squad(CSquad* pSquad) { m_pMySquad = pSquad; }
@@ -182,7 +188,10 @@ private: /* 킬뎃과 플레이어 정보 */
 
 private: /*AI 추가용*/
 	CAIController* m_pAIController = nullptr;
+
 	BEHAVIOR_DESC*	m_pCurBehaviorDesc = nullptr;
+	BEHAVIOR_DESC*	m_pReserveBehaviorDesc = nullptr;
+
 	CPath* m_pCurPath = nullptr;
 	void	Set_NewPath(CPath* pPath);
 

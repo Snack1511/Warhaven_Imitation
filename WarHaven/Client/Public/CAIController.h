@@ -105,8 +105,10 @@ public:
 public:
     void Ready_Controller();
     void    Set_NewPath(CPath* pPath);
+
 public:
     CAIPersonality* Get_Personality() { return m_pPersonality; }
+
 private:
     CPlayer* m_pOwnerPlayer = nullptr;
     CAIPersonality* m_pPersonality = nullptr;
@@ -123,6 +125,10 @@ private:
 
     /* 현재 타고 있는 경로*/
     CPath* m_pCurPath = nullptr;
+
+private:
+    /* 현재 Behavior가 어느 시간동안 진행되고 있는 지 체크 용도 */
+    _float  m_fTimeAcc = 0.f;
 };
 
 END

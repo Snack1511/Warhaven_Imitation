@@ -124,7 +124,7 @@ void CAIController::Early_Tick()
 		cout << "CurUnitName - " << CFunctor::To_String(m_pOwnerPlayer->Get_PlayerName()).c_str() << endl;
 		cout << "CurBehavior - " << CFunctor::To_String(m_pCurrentBehavior->Get_BehaviorName()).c_str() << endl;
 		m_pOwnerPlayer->On_ChangeBehavior(pBehaviorDescTemp);
-		m_fNaviAccTime = 0.f;
+		m_fTimeAcc = 0.f;
 
 	}
 

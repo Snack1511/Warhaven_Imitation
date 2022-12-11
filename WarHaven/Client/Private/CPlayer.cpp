@@ -241,14 +241,14 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 
 void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-	if (m_pCurrentUnit == pOtherObj)
+	if (!pOtherObj->Is_Valid() || m_pCurrentUnit == pOtherObj)
 		return;
 
 	m_pAIController->m_NearObjectList.push_back(pOtherObj);
 }
 void CPlayer::Player_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
-	if (m_pCurrentUnit == pOtherObj)
+	if (!pOtherObj->Is_Valid() || m_pCurrentUnit == pOtherObj)
 		return;
 
 	m_pAIController->m_NearObjectList.push_back(pOtherObj);
@@ -641,7 +641,8 @@ void CPlayer::On_RealDie()
 
 void CPlayer::On_Reborn()
 {
-	GAMEINSTANCE->Stop_GrayScale();
+	if (m_bIsMainPlayer)
+		GAMEINSTANCE->Stop_GrayScale();
 
 	for (auto& elem : m_DeadLights)
 	{
@@ -651,12 +652,18 @@ void CPlayer::On_Reborn()
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[m_eCurrentClass]);
 	m_bDie = false;
 
-	CUser::Get_Instance()->SetActive_HUD(true);
+	if (m_bIsMainPlayer)
+		CUser::Get_Instance()->SetActive_HUD(true);
 }
 
 void CPlayer::SetActive_UnitHUD(_bool value)
 {
 	m_pUnitHUD->SetActive(value);
+}
+
+void CPlayer::On_RealChangeBehavior()
+{
+	m_pCurBehaviorDesc = m_pReserveBehaviorDesc;
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)

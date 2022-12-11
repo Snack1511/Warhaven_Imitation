@@ -936,7 +936,9 @@ void CUnit::My_Tick()
 		if (m_pCurState->m_iStateChangeKeyFrame <= m_pAnimator->Get_CurAnimFrame())
 		{
 			Enter_State(m_eReserveState);
+			m_eDefaultState = m_eReserveState;
 			m_eReserveState = STATE_END;
+			m_pOwnerPlayer->On_RealChangeBehavior();
 		}
 	}
 
@@ -1073,7 +1075,9 @@ void CUnit::Start_Reborn()
 void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
 	//뭔가...일어남..
-	m_pOwnerPlayer->Set_BehaviorDesc(pBehaviorDesc);
+	m_pOwnerPlayer->Reserve_BehaviorDesc(pBehaviorDesc);
+
+
 	//CPlayer* pTargetPlayer = nullptr;
 	////테스트
 	//if (nullptr != pBehaviorDesc->pAlliesPlayer)

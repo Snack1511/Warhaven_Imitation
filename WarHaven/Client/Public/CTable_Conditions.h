@@ -49,10 +49,12 @@ private:
     void Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_FarAwayRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_NearFromRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+
     //void Check_Winning(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_EmptyEnemyInTerritory(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_Losing(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_LowHealthPoint(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+
 private:
     void  Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);

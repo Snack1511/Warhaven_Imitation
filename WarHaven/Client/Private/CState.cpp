@@ -660,6 +660,9 @@ _float CState::Get_TargetLook_Length(CUnit* pOwner)
 {
 	CUnit* pUnit = pOwner->Get_TargetUnit();
 
+	if (!pUnit)
+		return 0.f;
+
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
 
 	return vLook.Length();

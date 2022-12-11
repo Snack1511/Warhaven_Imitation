@@ -60,7 +60,7 @@ HRESULT CPersonality_Default::Initailize()
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Attack"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
-	pBehavior->Add_OtherCondition(wstring(L"Check_NearFromRoute"));
+	//pBehavior->Add_OtherCondition(wstring(L"Check_NearFromRoute"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearEnemy"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(2);
