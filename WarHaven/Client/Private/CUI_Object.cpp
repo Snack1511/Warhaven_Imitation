@@ -9,6 +9,8 @@
 #include "CButton.h"
 #include "CFader.h"
 
+#include "Easing_Utillity.h"
+
 CUI_Object::CUI_Object()
 {
 }
@@ -145,11 +147,13 @@ void CUI_Object::DoMove(_float fPosX, _float fPosY, _float fDuration)
 	m_bIsDoMove = true;
 
 	m_vOriginPos = Get_Pos();
+	//m_vOriginPos = m_pTransform->Get_World(WORLD_POS);
 
 	m_fGoalPosX = fPosX;
 	m_fGoalPosY = fPosY;
 
 	m_fMoveDuration = fDuration;
+	m_fMoveAccTime = 0.f;
 }
 
 void CUI_Object::DoMoveY(_float fMoveValue, _float fDuration)
@@ -177,6 +181,7 @@ void CUI_Object::DoScale(_float fScaleValue, _float fDuration)
 	m_vOriginScale = Get_Scale();
 	m_fScaleValue = fScaleValue;
 	m_fScaleDuration = fDuration;
+	m_fScaleAccTime = 0.f;
 }
 
 void CUI_Object::DoScaleX(_float fScaleValue, _float fDuration)
@@ -421,7 +426,28 @@ void CUI_Object::DoMove()
 {
 	if (m_bIsDoMove)
 	{
-		_float fDisPosX = fabs(m_vOriginPos.x - m_fGoalPosX);
+		m_fMoveAccTime += fDT(0);
+		if (m_fMoveAccTime > m_fMoveDuration)
+		{
+			Set_Pos(m_fGoalPosX, m_fGoalPosY);
+
+			m_fMoveAccTime = 0.f;
+			m_bIsDoMove = false;
+			return;
+		}
+
+		_float4 vGoalPos = m_vOriginPos;
+		vGoalPos.x = m_fGoalPosX;
+		vGoalPos.y = m_fGoalPosY;
+
+
+		_float4 vResult = CEasing_Utillity::QuadOut(m_vOriginPos, vGoalPos, m_fMoveAccTime, m_fMoveDuration);
+		Set_Pos(vResult);
+
+
+
+
+		/*_float fDisPosX = fabs(m_vOriginPos.x - m_fGoalPosX);
 		_float fDisPosY = fabs(m_vOriginPos.y - m_fGoalPosY);
 
 		fDisPosX = (m_vOriginPos.x > m_fGoalPosX) ? -fDisPosX : fDisPosX;
@@ -433,16 +459,9 @@ void CUI_Object::DoMove()
 		_float4 vMovePos = _float4(fMoveValueX, fMoveValueY, 0.f);
 		_float4 vSetPos = Get_Pos() + vMovePos;
 
-		Set_Pos(vSetPos);
+		Set_Pos(vSetPos);*/
 
-		m_fMoveAccTime += fDT(0);
-		if (m_fMoveAccTime > m_fMoveDuration)
-		{
-			Set_Pos(m_fGoalPosX, m_fGoalPosY);
-
-			m_fMoveAccTime = 0.f;
-			m_bIsDoMove = false;
-		}
+		
 	}
 
 	if (m_bIsDoMoveY)
