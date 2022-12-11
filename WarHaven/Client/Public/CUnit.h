@@ -114,6 +114,8 @@ public: /* Physics */
 	_bool		Is_Air();
 	void		Set_DirAsLook();
 	void		Set_LookToTarget();
+
+
 public:
 	void	Set_ShaderResource(CShader* pShader, const char* pConstantName);
 	void	Set_Passes(VTXANIM_PASS_TYPE ePassType);
@@ -159,6 +161,8 @@ public:
 
 
 public:
+	class CPath* Get_CurPath();
+
 	UNIT_STATUS& Get_Status() { return m_tUnitStatus; }
 	CPhysics* Get_PhysicsCom() { return m_pPhysics; }
 

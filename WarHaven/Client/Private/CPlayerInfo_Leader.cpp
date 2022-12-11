@@ -4,6 +4,8 @@
 #include "CPlayer.h"
 #include "CUnit.h"
 
+#include "CPersonality_Default.h"
+
 CPlayerInfo_Leader::CPlayerInfo_Leader()
 {
 }
@@ -43,6 +45,19 @@ HRESULT CPlayerInfo_Leader::Initialize()
 
 	m_tPlayerInfo.iLevel = 20;
 
+	if (FAILED(SetUp_AIPersonality()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPlayerInfo_Leader::SetUp_AIPersonality()
+{
+	CAIPersonality* pPersonality = CPersonality_Default::Create(CGameSystem::Get_Instance()->Get_BXTable());
+	m_pPersonality = pPersonality;
+
+	if (!m_pPersonality)
+		return E_FAIL;
 
 	return S_OK;
 }

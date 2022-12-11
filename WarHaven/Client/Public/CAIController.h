@@ -89,6 +89,7 @@ public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize() override;
     virtual void Start() override;
+    virtual void Early_Tick() override;
     virtual void Tick() override;
     virtual void Late_Tick() override;
     virtual void Release() override;

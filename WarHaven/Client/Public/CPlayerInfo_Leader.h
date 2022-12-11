@@ -14,6 +14,7 @@ public:
 
 public:
 	virtual HRESULT	Initialize();
+	virtual HRESULT SetUp_AIPersonality();
 
 };
 

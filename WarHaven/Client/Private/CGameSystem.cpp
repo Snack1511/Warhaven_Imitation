@@ -970,10 +970,10 @@ void CGameSystem::On_StartGame()
 			continue;
 
 
-		if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
-			continue;
+		/*if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+			continue;*/
 
-		/*  if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+		 /* if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
 		  {
 			  bTemp = !bTemp;
 
@@ -1071,6 +1071,9 @@ CPath* CGameSystem::Clone_Path(string strPathKey, CAIController* pOwnerControlle
 
 CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eSTAGE_TYPE eStageType, eTEAM_TYPE eTeamType)
 {
+	if (!pOwnerController)
+		return nullptr;
+
 	string strFindKey;
 
 	switch (eTeamType)
@@ -1089,23 +1092,28 @@ CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eSTAG
 		break;
 	}
 
+
+
 	_uint iSize = m_mapAllPathes[eStageType].size() - 1;
+
+	iSize /= 2;
 
 	_int iRandIndex = random(0, iSize);
 	
 	for (auto& elem : m_mapAllPathes[eStageType])
 	{
 		/* FindKey 들어간 이름이면 */
-		if ((_int)elem.second->m_strName.find(strFindKey) > 0)
+		if ((_int)elem.second->m_strName.find(strFindKey) >= 0)
 		{
+
 			if (iRandIndex == 0)
 			{
 				CPath* pClonePath = elem.second->Clone();
 				pOwnerController->Set_NewPath(pClonePath);
 				return pClonePath;
 			}
-
 			iRandIndex--;
+
 		}
 	}
 

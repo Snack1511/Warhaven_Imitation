@@ -62,53 +62,64 @@ void CAIController::Start()
 
 }
 
-void CAIController::Tick()
+void CAIController::Early_Tick()
 {
-
 	Ready_Controller();
 
 	CBehavior* pNextBehavior = nullptr;
-	BEHAVIOR_DESC* pBehaviorDesc = nullptr;
+	BEHAVIOR_DESC* pBehaviorDescTemp = nullptr;
+
 	for (auto& Value : m_BehaviorList)
 	{
 		_bool bPassCondition = false;
 		BEHAVIOR_DESC* pCurCheckBehaviorDesc = nullptr;
 		pCurCheckBehaviorDesc = Value->Check_Condition(bPassCondition, m_pOwnerPlayer, this);
+
+
+
+		/* false가 return 되었따 */
 		if (!bPassCondition)
 			continue;
-		if (nullptr == pBehaviorDesc)
+
+		if (!pCurCheckBehaviorDesc)
 		{
-			pBehaviorDesc = pCurCheckBehaviorDesc;
+			assert(0);
+			continue;
+		}
+
+		if (!pBehaviorDescTemp)
+		{
+			pBehaviorDescTemp = pCurCheckBehaviorDesc;
+			pNextBehavior = Value;
+			continue;
+		}
+
+		if (pCurCheckBehaviorDesc->fPriorityWeight >= pBehaviorDescTemp->fPriorityWeight)
+		{
+			pBehaviorDescTemp = pCurCheckBehaviorDesc;
 			pNextBehavior = Value;
 		}
-		else {
-			if (nullptr != pCurCheckBehaviorDesc)
-			{
-				if (pCurCheckBehaviorDesc->fPriorityWeight > pBehaviorDesc->fPriorityWeight)
-				{
-					pBehaviorDesc = pCurCheckBehaviorDesc;
-					pNextBehavior = Value;
-				}
-			}
-		}
 	}
+
+	/* For문 끝 */
 
 	if (nullptr == pNextBehavior)
 	{
-		m_pPersonality->Get_Patrol();
+		pNextBehavior = m_pPersonality->Get_Patrol();
+		pBehaviorDescTemp = pNextBehavior->Get_BehaviorDesc();
 	}
 
-	if(m_pCurrentBehavior != pNextBehavior)
-	{
-		if(nullptr != m_pCurrentBehavior)
+	if (!m_pCurrentBehavior || m_pCurrentBehavior != pNextBehavior)
+	{/*
+		if (nullptr != m_pCurrentBehavior)
 			pBehaviorDesc->ePrevType = m_pCurrentBehavior->Get_BehaviorType();
 		else
-			pBehaviorDesc->ePrevType = eBehaviorType::ePatrol;
+			pBehaviorDesc->ePrevType = eBehaviorType::ePatrol;*/
 
-		pBehaviorDesc->eCurType = pNextBehavior->Get_BehaviorType();
+		pBehaviorDescTemp->eCurType = pNextBehavior->Get_BehaviorType();
 		m_pCurrentBehavior = pNextBehavior;
-		
-		m_pOwnerPlayer->On_ChangeBehavior(pBehaviorDesc);
+
+		m_pOwnerPlayer->On_ChangeBehavior(pBehaviorDescTemp);
 
 		//m_pOwnerPlayer->Set_TargetPlayer(reinterpret_cast<CPlayer*>(pBehaviorDesc->pAlliesPlayer));
 		//m_pOwnerPlayer->Reserve_State(pBehaviorDesc->iStateType);
@@ -121,6 +132,12 @@ void CAIController::Tick()
 		//CurBehavior = NextBehavior;
 		//UnitStateUpdate
 	//}
+}
+
+void CAIController::Tick()
+{
+
+	
 
 
 }

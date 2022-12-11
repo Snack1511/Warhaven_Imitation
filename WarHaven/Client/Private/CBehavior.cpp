@@ -74,21 +74,17 @@ void CBehavior::Add_OtherCondition(wstring strOtherConditionName)
 
 BEHAVIOR_DESC* CBehavior::Check_Condition(_bool& bOut , CPlayer* pPlayer, CAIController* pAIController)
 {
+    //1. OtherCondition 조사
     Callback_OtherCondition(bOut, pPlayer, pAIController);
-    if (bOut)
-    {
-        Callback_WhatCondition(m_pBehaviorDesc, pPlayer, pAIController);
 
-        return m_pBehaviorDesc;
-    }
-    else
+    if (!bOut)
         return nullptr;
-}
 
-void CBehavior::SetUp_StateType(_uint iStateType)
-{
-    if (nullptr == m_pBehaviorDesc)
-        assert(0);
+    //2. WhatCondition 조사
+    Callback_WhatCondition(bOut, m_pBehaviorDesc, pPlayer, pAIController);
 
-    //m_pBehaviorDesc->iStateType = iStateType;
+    if (!bOut)
+        return nullptr;
+
+    return m_pBehaviorDesc;
 }

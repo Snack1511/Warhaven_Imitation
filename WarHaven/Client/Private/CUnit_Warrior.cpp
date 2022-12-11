@@ -202,13 +202,18 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
+	__super::On_ChangeBehavior(pBehaviorDesc);
+
 	if (nullptr == pBehaviorDesc)
 		assert(0);
+
+	STATE_TYPE	eNewState = STATE_END;
 
 	switch (pBehaviorDesc->eCurType)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
+		eNewState = AI_STATE_PATROL_IDLE_WARRIOR_L;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
@@ -216,10 +221,16 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	case eBehaviorType::eAttack:
 		//상태변경
 		break;
+	case eBehaviorType::ePathNavigation:
+		//상태변경
+		eNewState = AI_STATE_PATHNAVIGATION_RUN_WARRIOR_R;
+		break;
 	default:
 		assert(0);
 		break;
 	}
+	if (eNewState != STATE_END)
+		Enter_State(eNewState);
 }
 
 void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)

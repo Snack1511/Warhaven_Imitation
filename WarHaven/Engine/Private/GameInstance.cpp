@@ -96,6 +96,9 @@ HRESULT CGameInstance::Tick_Engine( )
 	m_pInputDevice->SetUp_DeviceStates();
 
 	/* Object */
+	m_pComponentManager->Early_Tick();
+
+
 	m_pLevelManager->Tick();
 	m_pObjectManager->Tick_GameObjects();
 	m_pComponentManager->Tick();

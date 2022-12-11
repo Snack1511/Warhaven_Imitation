@@ -11,6 +11,7 @@
 #include "CSquad.h"
 #include "CBehavior.h"
 #include "CUser.h"
+#include "CPath.h"
 CTable_Conditions::CTable_Conditions()
 {
 }
@@ -39,11 +40,17 @@ void CTable_Conditions::Release()
         SAFE_DELETE(elem.second);
 }
 
-#define Add_Condition(ConditionContainer, strFunctionName, Function)\
+#define Add_WhyCondition(ConditionContainer, strFunctionName, Function)\
 ConditionContainer.emplace(\
 Convert_ToHash(strFunctionName),\
 bind(&CTable_Conditions::Function,\
     this, placeholders::_1, placeholders::_2, placeholders::_3))
+
+#define Add_WhatCondition(ConditionContainer, strFunctionName, Function)\
+ConditionContainer.emplace(\
+Convert_ToHash(strFunctionName),\
+bind(&CTable_Conditions::Function,\
+    this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4))
 
 HRESULT CTable_Conditions::Initialize()
 {
@@ -58,9 +65,11 @@ HRESULT CTable_Conditions::Initialize()
 
 HRESULT CTable_Conditions::SetUp_Conditions()
 {
-    Add_Condition(m_OtherConditions, wstring(L"Check_FarAwayLeader"), Check_FarAwayLeader);
+    Add_WhyCondition(m_OtherConditions, wstring(L"Check_FarAwayLeader"), Check_FarAwayLeader);
+    Add_WhyCondition(m_OtherConditions, wstring(L"Check_PathArrived"), Check_PathArrived);
 
-    Add_Condition(m_WhatConditions, wstring(L"Select_Leader"), Select_Leader);
+    Add_WhatCondition(m_WhatConditions, wstring(L"Select_Leader"), Select_Leader);
+    Add_WhatCondition(m_WhatConditions, wstring(L"Empty"), EmptyWhatCondition);
     return S_OK;
 }
 
@@ -75,6 +84,7 @@ HRESULT CTable_Conditions::SetUp_Behaviors()
     Add_Behavior(pBehavior, wstring(L"Follow"), eBehaviorType::eFollow);
     Add_Behavior(pBehavior, wstring(L"Patrol"), eBehaviorType::ePatrol);
     Add_Behavior(pBehavior, wstring(L"Attack"), eBehaviorType::eAttack);
+    Add_Behavior(pBehavior, wstring(L"PathNavigation"), eBehaviorType::ePathNavigation);
 
     return S_OK;
 }
@@ -100,7 +110,7 @@ function<void(_bool&, CPlayer*, CAIController*)> CTable_Conditions::Find_OtherCo
     }
 }
 
-function<void(BEHAVIOR_DESC*&, CPlayer*, CAIController*)> CTable_Conditions::Find_WhatCondition(wstring strConditionName)
+function<void(_bool&, BEHAVIOR_DESC*&, CPlayer*, CAIController*)> CTable_Conditions::Find_WhatCondition(wstring strConditionName)
 {
     try {
         _hashcode hsConditionName = Convert_ToHash(strConditionName);
@@ -117,7 +127,7 @@ function<void(BEHAVIOR_DESC*&, CPlayer*, CAIController*)> CTable_Conditions::Fin
         strMsg += CFunctor::To_String(ConditionName);
         strMsg += " - Find_WhatCondition()";
         Make_Dump(typeid(CTable_Conditions).name(), strMsg);
-        return bind(&CTable_Conditions::EmptyWhatCondition, this, placeholders::_1, placeholders::_2, placeholders::_3);
+        return bind(&CTable_Conditions::EmptyWhatCondition, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
     }
 }
 
@@ -165,18 +175,35 @@ void CTable_Conditions::Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlaye
     OutCondition = true;
 }
 
+void CTable_Conditions::Check_PathArrived(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    if (!pPlayer->Get_CurPath())
+    {
+        OutCondition = false;
+        return;
+    }
+    OutCondition = !pPlayer->Get_CurPath()->Is_Arrived();
+}
 
-void CTable_Conditions::Select_Leader(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+
+void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
     //OutDesc->pAlliesPlayer = pPlayer->Get_Squad()->Get_LeaderPlayer();
     //OutDesc->pAlliesPlayer = PLAYER;
+
+    OutCondition = true;
 }
 
-void CTable_Conditions::Select_NearEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+#define CHECK_EMPTY(listname) if (listname.empty()) {OutCondition = false; return;}
+
+void CTable_Conditions::Select_NearEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
     _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
     list<CPlayer*> Enemies = pAIController->Get_NearEnemy();
+
+    CHECK_EMPTY(Enemies);
+
     Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
         {
             _float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
@@ -186,13 +213,18 @@ void CTable_Conditions::Select_NearEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlay
             else return false;
         });
     OutDesc->pEnemyPlayer = Enemies.front();
+
+    OutCondition = true;
+
 }
 
-void CTable_Conditions::Select_NearAllies(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+void CTable_Conditions::Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
     _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
     list<CPlayer*> Allies = pAIController->Get_NearAllies();
+    CHECK_EMPTY(Allies);
+
     Allies.sort([&MyPositoin](auto& Sour, auto& Dest)
         {
             _float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
@@ -203,13 +235,18 @@ void CTable_Conditions::Select_NearAllies(BEHAVIOR_DESC*& OutDesc, CPlayer* pPla
         });
 
     OutDesc->pAlliesPlayer = Allies.front();
+
+    OutCondition = true;
+
 }
 
-void CTable_Conditions::Select_NearTrigger(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+void CTable_Conditions::Select_NearTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
     _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
     list<CTrigger*> Triggers = pAIController->Get_NearTrigger();
+    CHECK_EMPTY(Triggers);
+
     Triggers.sort([&MyPositoin](auto& Sour, auto& Dest)
         {
             _float4 SourPosition = Sour->Get_Transform()->Get_World(WORLD_POS);
@@ -218,9 +255,9 @@ void CTable_Conditions::Select_NearTrigger(BEHAVIOR_DESC*& OutDesc, CPlayer* pPl
                 return true;
             else return false;
         });
+
     OutDesc->pTriggerPtr = Triggers.front();
 
+    OutCondition = true;
+
 }
-
-
-

@@ -35,6 +35,7 @@ public:
 	virtual	HRESULT	Initialize_Prototype() PURE;
 	virtual	HRESULT	Initialize() PURE;
 	virtual void	Start() { OnEnable(); }
+	virtual void	Early_Tick() {};
 	virtual void	Tick() PURE;
 	virtual void	Late_Tick() PURE;
 	virtual void	Final_Tick() {};

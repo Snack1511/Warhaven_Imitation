@@ -438,6 +438,8 @@
 #include "CHit_Sting_Valkyrie.h"
 #include "CHit_Fly_Valkyrie.h"
 
+#include "CState_PathNavigation.h"
+
 #include "CIdle_AI_TG_Warrior_L.h"
 #include "CIdle_AI_TG_Warrior_R.h"
 
@@ -1113,6 +1115,9 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_PATROL_SWITCH_L_TO_R] = CState_Patrol_Switch_Warrior_CSwitchLtoR::Create();
 	m_arrStates[AI_STATE_PATROL_WALK_WARRIOR_L] = CState_Patrol_Walk_Warrior_L::Create();
 	m_arrStates[AI_STATE_PATROL_WALK_WARRIOR_R] = CState_Patrol_Walk_Warrior_R::Create();
+
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_RUN_WARRIOR_R] = CState_PathNavigation::Create();
 
 	m_arrStates[AI_STATE_COMBAT_DEAFULT_WARRIOR_L] = CState_Combat_Run_Warrior_L::Create();
 	m_arrStates[AI_STATE_COMBAT_DEAFULT_WARRIOR_R] = CState_Combat_Run_Warrior_R::Create();

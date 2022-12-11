@@ -60,6 +60,8 @@
 #include "CUI_HeroGauge.h"
 #include "CUI_Skill.h"
 
+#include "CGameSystem.h"
+
 #pragma region AI 추가용
 #include "CAIController.h"
 #include "CAIPersonality.h"
@@ -71,6 +73,7 @@ CPlayer::CPlayer()
 CPlayer::~CPlayer()
 {
 	//m_DeadLights.clear();
+	SAFE_DELETE(m_pCurPath);
 }
 
 CPlayer* CPlayer::Create(CPlayerInfo* pPlayerInfo)
@@ -327,6 +330,9 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 	{
 		ENABLE_GAMEOBJECT(m_pUnitHUD);
 		//Path 갱신
+
+		Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, CGameSystem::eSTAGE_PADEN, m_pMyTeam->Get_TeamType()));
+
 	}
 
 	for (auto& elem : m_DeadLights)
@@ -428,9 +434,16 @@ HRESULT CPlayer::Initialize_Prototype()
 			assert(0);//메인플레이어는 Personality가 할당되면 안됩니다
 
 		CAIController* pAIComponent = CAIController::Create(m_pMyPlayerInfo->m_pPersonality);
+		
+		if (!pAIComponent)
+			return E_FAIL;
+
 		m_pAIController = pAIComponent;
 		Add_Component(pAIComponent);
 	}
+
+	if (!m_pMyPlayerInfo->m_bIsMainPlayer && !m_pAIController)
+		return E_FAIL;
 #pragma endregion AI컴포넌트 추가용 구문
 
 
@@ -583,9 +596,6 @@ void CPlayer::On_Die()
 	{
 
 	}
-
-
-
 }
 
 void CPlayer::On_RealDie()
@@ -747,10 +757,18 @@ void CPlayer::Update_HP()
 {
 	CUser::Get_Instance()->Set_HP(m_pCurrentUnit->Get_Status().fHP, m_pCurrentUnit->Get_Status().fMaxHP);
 }
+
 void CPlayer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
 	m_pCurrentUnit->On_ChangeBehavior(pBehaviorDesc);
 }
+
+void CPlayer::Set_NewPath(CPath* pPath)
+{
+	SAFE_DELETE(m_pCurPath);
+	m_pCurPath = pPath;
+}
+
 void CPlayer::Update_HeroGauge()
 {
 	if (!CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge)->Is_Valid())

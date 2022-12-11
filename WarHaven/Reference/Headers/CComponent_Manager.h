@@ -19,6 +19,7 @@ public:
 	void	Clear_All();
 
 public:
+	void	Early_Tick();
 	void	Tick();
 	void	Late_Tick();
 	void	Final_Tick();

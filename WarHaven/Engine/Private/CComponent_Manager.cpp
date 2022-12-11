@@ -35,7 +35,7 @@ void CComponent_Manager::Clear_All()
 		m_Components[i].clear();
 }
 
-void CComponent_Manager::Tick()
+void CComponent_Manager::Early_Tick()
 {
 	for (_uint i = 0; i < COM_GROUP_END; ++i)
 	{
@@ -47,9 +47,21 @@ void CComponent_Manager::Tick()
 			}
 			else
 			{
-				(*ComIter)->Tick();
+				(*ComIter)->Early_Tick();
 				++ComIter;
 			}
+		}
+	}
+}
+
+void CComponent_Manager::Tick()
+{
+	for (_uint i = 0; i < COM_GROUP_END; ++i)
+	{
+		for (auto& pComponent : m_Components[i])
+		{
+			if (pComponent->Is_Valid())
+				pComponent->Tick();
 		}
 	}
 }

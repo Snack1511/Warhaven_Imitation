@@ -2161,6 +2161,9 @@
     <Filter Include="03. Instances\03. Component\06. AI\Table_Conditions">
       <UniqueIdentifier>{921b456f-d77e-426c-b40b-bffe0c831d16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation">
+      <UniqueIdentifier>{b3ff1aec-eaed-4af4-bd39-32b867026909}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3816,6 +3819,9 @@
     <ClInclude Include="..\public\CWindow_Path.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Path</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CState_PathNavigation.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5451,6 +5457,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CWindow_Path.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Path</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CState_PathNavigation.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -58,7 +58,6 @@ namespace Client
 
 	struct BEHAVIOR_DESC
 	{
-		class CPath* pCurPath = nullptr;
 
 		class CTrigger* pTriggerPtr = nullptr;
 		class CPlayer* pAlliesPlayer = nullptr;

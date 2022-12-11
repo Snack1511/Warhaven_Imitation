@@ -380,6 +380,11 @@ _bool CUnit::Is_Weapon_R_CCT_Collision()
 	return m_pWeaponCollider_R->Is_CCT_Collision();
 }
 
+CPath* CUnit::Get_CurPath()
+{
+	return m_pOwnerPlayer->Get_CurPath();
+}
+
 CUnit* CUnit::Get_TargetUnit()
 {
 	if (!m_pOwnerPlayer->Get_TargetPlayer())
@@ -1057,6 +1062,7 @@ void CUnit::Start_Reborn()
 void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
 	//¹º°¡...ÀÏ¾î³²..
+	m_pOwnerPlayer->Set_BehaviorDesc(pBehaviorDesc);
 }
 
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)

@@ -27,6 +27,7 @@ class CCamera_Follow;
 class CUI_UnitHUD;
 class CAIController;
 class CBehavior;
+class CPath;
 
 class CPlayer final : public CGameObject
 {
@@ -110,8 +111,6 @@ public:
 	CLASS_TYPE Get_PrevClass() { return m_ePrevClass; }
 	CLASS_TYPE Get_CurClass() { return m_eCurrentClass; }
 
-
-
 	void Set_MainPlayer();
 	void Set_LeaderPlayer() { m_bIsLeaderPlayer = true; }
 
@@ -153,8 +152,8 @@ public:
 	_float& Get_Gauge() { return m_fGauge; }
 
 	void SetActive_UnitHUD(_bool value);
-	
-	const BEHAVIOR_DESC& Get_BehaviorDesc() { return m_tCurBehaviorDesc; }
+	BEHAVIOR_DESC* Get_BehaviorDesc() { return m_pCurBehaviorDesc; }
+	void Set_BehaviorDesc(BEHAVIOR_DESC* pCurBehaviorDesc) { m_pCurBehaviorDesc = pCurBehaviorDesc; }
 
 
 public:
@@ -183,17 +182,20 @@ private: /* 킬뎃과 플레이어 정보 */
 
 private: /*AI 추가용*/
 	CAIController* m_pAIController = nullptr;
-	BEHAVIOR_DESC	m_tCurBehaviorDesc;
+	BEHAVIOR_DESC*	m_pCurBehaviorDesc = nullptr;
+	CPath* m_pCurPath = nullptr;
+	void	Set_NewPath(CPath* pPath);
+
+public:
+	CPath* Get_CurPath() { return m_pCurPath; }
 
 private:
 	//어떤 타입인지(적, 샌드백)
 	_uint	m_iUnitType = 0;
 
-
 private:
 	//어느 진영인지
 	eTEAM_TYPE	m_eTeamType = eTEAM_TYPE::eBLUE;
-
 	OUTLINETYPE m_eOutlineType = OUTLINETYPE::eEnd;
 
 private:

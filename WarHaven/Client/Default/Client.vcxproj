@@ -318,6 +318,7 @@
     <ClInclude Include="..\Public\CState_Combat_Attack_Warrior.h" />
     <ClInclude Include="..\Public\CState_Combat_Run.h" />
     <ClInclude Include="..\Public\CState_Combat_Run_Warrior.h" />
+    <ClInclude Include="..\public\CState_PathNavigation.h" />
     <ClInclude Include="..\Public\CState_Patrol_Walk_Warrior.h" />
     <ClInclude Include="..\Public\CState_Patrol_Switch_Warrior.h" />
     <ClInclude Include="..\Public\CState_Patrol_Default_Warrior_L.h" />
@@ -872,6 +873,7 @@
     <ClCompile Include="..\Private\CState_Combat_Attack_Warrior.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Run.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Run_Warrior.cpp" />
+    <ClCompile Include="..\private\CState_PathNavigation.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Walk_Warrior.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Switch_Warrior.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Walk.cpp" />
