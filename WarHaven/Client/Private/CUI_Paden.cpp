@@ -367,15 +367,6 @@ void CUI_Paden::Create_ScoreNum()
 
 void CUI_Paden::Update_Score()
 {
-	// 100 10 자리 숫자가 0이 되면 disable
-
-	// 100 점을 받고
-	// 해당 점수를 1 0 0 저장
-
-	// 해당 하는 숫자를 idx로 지정 텍스처 불러오기
-
-	// 100 이 불러와짐
-
 	for (int i = 0; i < Team_End; ++i)
 	{
 		m_vecPrvScore[i].clear();
@@ -435,6 +426,8 @@ void CUI_Paden::Create_ScoreGauge()
 
 			if (i == Gauge_BG)
 			{
+				m_pScoreGauge[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.5f));
+
 				m_pScoreGauge[i]->Set_Sort(0.5f);
 			}
 			else if (i == Gauge_Bar)

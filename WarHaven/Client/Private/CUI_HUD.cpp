@@ -64,12 +64,7 @@ HRESULT CUI_HUD::Start()
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		SetActive_HUD(false);
-
-		if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
-		{
-			SetActive_HUD(true);
-		}
+		SetActive_HUD(true);
 
 		if (m_pClassChangeText)
 			m_pClassChangeText->SetActive(true);
@@ -213,11 +208,6 @@ _bool CUI_HUD::Is_OnHeroGauge()
 	return m_pPlayerNameText->Is_Valid();
 }
 
-void CUI_HUD::Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime)
-{
-	//dynamic_cast<CUI_Skill*>(m_pWrap[Skill])->Set_CoolTime(iSkillType, fCoolTime, fMaxCoolTime);
-}
-
 void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 {
 	m_ePrvClass = m_eCurClass;
@@ -307,24 +297,6 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
-}
-
-void CUI_HUD::SetActive_OperUI(_bool value)
-{
-	//if (value == true)
-	//{
-	//	ENABLE_GAMEOBJECT(m_pOperWindow);
-	//	ENABLE_GAMEOBJECT(m_pSmokeBG);
-	//
-	//	m_pOperWindow->DoScale(-2596.f, 0.3f);
-	//}
-	//else
-	//{
-	//	DISABLE_GAMEOBJECT(CUser::Get_Instance()->Get_Cursor());
-	//
-	//	DISABLE_GAMEOBJECT(m_pOperWindow);
-	//	DISABLE_GAMEOBJECT(m_pOperTextImg);
-	//}
 }
 
 void CUI_HUD::Create_PlayerNameText()

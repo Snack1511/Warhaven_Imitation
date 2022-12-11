@@ -316,6 +316,14 @@ void CUser::On_ExitLevel()
 
 void CUser::On_EnterStageLevel()
 {
+	if (!m_pUI_Oper)
+	{
+		m_pUI_Oper = CUI_Oper::Create();
+
+		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Oper);
+	}
+
 	if (!m_pUI_HUD)
 	{
 		m_pUI_HUD = CUI_HUD::Create();
@@ -358,14 +366,6 @@ void CUser::On_EnterStageLevel()
 
 		CREATE_GAMEOBJECT(m_pUI_Dead, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Dead);
-	}
-
-	if (!m_pUI_Oper)
-	{
-		m_pUI_Oper = CUI_Oper::Create();
-
-		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pUI_Oper);
 	}
 
 	SetUp_BloodOverlay();
