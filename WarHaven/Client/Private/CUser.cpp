@@ -278,9 +278,9 @@ void CUser::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 	m_pUI_Paden->Set_Score(iTeamType, iScore, iMaxScore);
 }
 
-void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform)
+void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
-	m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform);
+	m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform, isInFrustum);
 }
 
 void CUser::Conquest_PointUI(string strPointName, _uint iTeamType)
@@ -316,6 +316,14 @@ void CUser::On_ExitLevel()
 
 void CUser::On_EnterStageLevel()
 {
+	if (!m_pUI_Oper)
+	{
+		m_pUI_Oper = CUI_Oper::Create();
+
+		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Oper);
+	}
+
 	if (!m_pUI_HUD)
 	{
 		m_pUI_HUD = CUI_HUD::Create();
@@ -347,7 +355,7 @@ void CUser::On_EnterStageLevel()
 	if (!m_pUI_Paden)
 	{
 		m_pUI_Paden = CUI_Paden::Create();
-		
+
 		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Paden);
 	}
@@ -358,14 +366,6 @@ void CUser::On_EnterStageLevel()
 
 		CREATE_GAMEOBJECT(m_pUI_Dead, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Dead);
-	}
-
-	if (!m_pUI_Oper)
-	{
-		m_pUI_Oper = CUI_Oper::Create();
-
-		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pUI_Oper);
 	}
 
 	SetUp_BloodOverlay();
@@ -432,7 +432,7 @@ void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
 }
 
-void CUser::Toggle_DeadUI(_bool value)
+void CUser::Toggle_DeadUI(_bool value, _bool isFall)
 {
 	if (!m_pUI_Dead)
 	{
@@ -443,7 +443,7 @@ void CUser::Toggle_DeadUI(_bool value)
 
 	if (!CGameObject::Is_Valid(m_pUI_Dead))
 	{
-		m_pUI_Dead->Toggle_DeadUI(value);
+		m_pUI_Dead->Toggle_DeadUI(value, isFall);
 	}
 }
 

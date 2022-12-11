@@ -129,7 +129,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		L"",
 	};
 
-	
+
 	wstring wstrModeWeapon_L[CLASS_END] =
 	{
 	L"",
@@ -141,7 +141,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	L"../bin/resources/meshes/Weapons/Valkyrie_Shield/SK_WP_HeaterShield0001_A00_30.fbx",
 	L"",
 	L"",
-	L"", 
+	L"",
 	};
 
 	wstring wstrModeBody[CLASS_END];
@@ -247,7 +247,7 @@ void CPlayer::Player_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherCo
 {
 	m_pAIController->m_NearObjectList.push_back(pOtherObj);
 }
-void CPlayer::Player_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType) 
+void CPlayer::Player_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
 
 }
@@ -306,7 +306,7 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		CUser::Get_Instance()->Set_HeroPort(1);
 		CUser::Get_Instance()->Transform_SkillUI(m_eCurrentClass);
 	}
-	
+
 	return S_OK;
 }
 
@@ -574,8 +574,8 @@ void CPlayer::OnDisable()
 
 HRESULT CPlayer::SetUp_Collider()
 {
-	m_pSightRangeCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 
-		m_pMyPlayerInfo->m_pPersonality->m_tPersonalDesc.fSIghtRadius, 
+	m_pSightRangeCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM,
+		m_pMyPlayerInfo->m_pPersonality->m_tPersonalDesc.fSIghtRadius,
 		COL_SIGHTRANGE, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
 
 	if (!m_pSightRangeCollider)
@@ -602,7 +602,8 @@ void CPlayer::On_RealDie()
 {
 	/* 이 함수가 소생 이펙트 켜지는 곳임 */
 
-	//소생 UI
+	//소생 
+	CUser::Get_Instance()->Toggle_DeadUI(true, true);
 
 	m_bDieDelay = false;
 	m_fDieDelayAcc = 0.f;
@@ -871,7 +872,6 @@ void CPlayer::Enable_UnitHUD()
 	CREATE_GAMEOBJECT(m_pUnitHUD, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pUnitHUD);
 }
-
 
 void CPlayer::Frustum_UnitHUD()
 {

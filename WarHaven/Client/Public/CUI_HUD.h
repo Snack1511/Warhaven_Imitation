@@ -48,10 +48,6 @@ public:
 
 public:
 	void Set_HUD(CLASS_TYPE eClass);
-	void Set_SkillCoolTime(_uint iSkillType, _float fCoolTime, _float fMaxCoolTime);
-
-
-	void SetActive_OperUI(_bool value);
 
 	void SetActive_OxenJumpText(_bool value);
 	void SetActive_HeroTransformGauge(_bool value);
@@ -131,7 +127,6 @@ private:
 	void Create_HeroTransformUI();
 
 private:
-	void Bind_Btn();
 	void Bind_Shader();
 
 	void Set_FadePortHighlight();

@@ -32,6 +32,8 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_TargetText();
 	Create_RespawnBtn();
 
+	Create_BlackImg();
+
 	Init_CharacterSelect();
 	Init_TeamIcon();
 	Init_StrongHoldUI();
@@ -343,8 +345,54 @@ void CUI_Oper::Progress_Oper()
 			if (m_fOperTime < 0.f)
 			{
 				m_fOperTime = 0.f;
+				m_iOperProgress++;
+			}
+		}
+		else if (m_iOperProgress == 9)
+		{
+			m_fAccTime = 0.f;
+			m_iOperProgress++;
 
-				End_Oper();
+			Enable_Fade(m_pBlackImg, 0.3f);
+		}
+		else if (m_iOperProgress == 10)
+		{
+			if (m_fAccTime > 0.3f)
+			{
+				m_fAccTime = 0.f;
+				m_iOperProgress++;
+
+				for (auto iter : m_pOperList)
+				{
+					iter->SetActive(false);
+				}
+
+				switch (m_eLoadLevel)
+				{
+				case Client::LEVEL_PADEN:
+					CGameSystem::Get_Instance()->On_StartGame();
+					break;
+				case Client::LEVEL_HWARA:
+					CGameSystem::Get_Instance()->On_StartGame();
+					break;
+				}
+
+				CUser::Get_Instance()->SetActive_PadenUI(true);
+				CUser::Get_Instance()->SetActive_HUD(true);
+			}
+		}
+		else if (m_iOperProgress == 11)
+		{
+			m_iOperProgress++;
+			Disable_Fade(m_pBlackImg, 0.3f);
+		}
+		else if (m_iOperProgress == 12)
+		{
+			if (m_fAccTime > 0.3f)
+			{
+				m_fAccTime = 0.f;
+
+				DISABLE_GAMEOBJECT(this);
 			}
 		}
 	}
@@ -392,26 +440,6 @@ void CUI_Oper::Enable_StrongHoldUI()
 			break;
 		}
 	}
-}
-
-void CUI_Oper::End_Oper()
-{
-	// 검정 화면 페이드인아웃
-
-	switch (m_eLoadLevel)
-	{
-	case Client::LEVEL_PADEN:
-		CGameSystem::Get_Instance()->On_StartGame();
-		break;
-	case Client::LEVEL_HWARA:
-		CGameSystem::Get_Instance()->On_StartGame();
-		break;
-	}
-
-	CUser::Get_Instance()->SetActive_PadenUI(true);
-	CUser::Get_Instance()->SetActive_HUD(true);
-
-	DISABLE_GAMEOBJECT(this);
 }
 
 void CUI_Oper::Create_TextImg()
@@ -1048,6 +1076,18 @@ void CUI_Oper::Create_OperTimer()
 		CREATE_GAMEOBJECT(m_pTimer[i], RENDER_UI);
 		DISABLE_GAMEOBJECT(m_pTimer[i]);
 	}
+}
+
+void CUI_Oper::Create_BlackImg()
+{
+	m_pBlackImg = CUI_Object::Create();
+	m_pBlackImg->Set_Texture(TEXT("../Bin/Resources/Textures/Black.png"));
+	m_pBlackImg->Set_Sort(0.f);
+	m_pBlackImg->Set_Scale(1280.f, 720.f);
+	m_pBlackImg->Set_FadeDesc(0.3f);
+
+	CREATE_GAMEOBJECT(m_pBlackImg, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pBlackImg);
 }
 
 void CUI_Oper::Bind_Shader()

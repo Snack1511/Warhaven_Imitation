@@ -52,7 +52,6 @@ private:
 private:
 	void Progress_Oper();
 	void Enable_StrongHoldUI();
-	void End_Oper();
 
 private:	// 텍스트 이미지
 	enum TextImg { Text_Oper1, Text_Oper2, Text_SelectPoint, Text_End };
@@ -142,6 +141,11 @@ private:
 
 private:
 	void Create_OperTimer();
+
+private:
+	CUI_Object* m_pBlackImg = nullptr;	
+
+	void Create_BlackImg();
 
 private:
 	void Bind_Shader();

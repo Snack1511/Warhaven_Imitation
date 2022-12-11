@@ -18,7 +18,7 @@ public:
 	virtual void OnDisable() override;
 
 public:
-	void Toggle_DeadUI(_bool value);
+	void Toggle_DeadUI(_bool value, _bool isFall = false);
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo) { m_pTargetInfo = pTargetInfo; }
 
@@ -36,6 +36,8 @@ private:
 	_float m_fDeadUIEnableTime = 5.f;
 
 	_float4 m_vGaugeColor = _float4(1.f, 1.f, 1.f, 1.f);
+
+	_bool m_bIsFall = false;
 
 private:
 	void Create_DeadUI();

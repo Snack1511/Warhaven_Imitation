@@ -75,7 +75,6 @@ CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, eP
 	return pInstance;
 }
 
-
 _float4 CTrigger_Paden::Get_RespawnPosition()
 {
 	_float4 vPos = m_vRespawnPositions.front();
@@ -141,17 +140,20 @@ void CTrigger_Paden::My_Tick()
 	// 플레이어와 거리가 제일 가까운 트리거만
 	// 혹은 목표로 지정한 트리거만 나침반으로 표시
 
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	_bool isIsFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
+
 	if (m_strTriggerName == "Paden_Trigger_A")
 	{
-		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform);
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
 	}
 	else if (m_strTriggerName == "Paden_Trigger_R")
 	{
-		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(1, m_pTransform);
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(1, m_pTransform, isIsFrustum);
 	}
 	else if (m_strTriggerName == "Paden_Trigger_C")
 	{
-		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform);
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
 	}
 }
 

@@ -6,6 +6,9 @@
 #include <CUtility_Transform.h>
 #include "CShader.h"
 #include "Loading_Manager.h"
+#include "CUser.h"
+#include "CPlayer.h"
+#include "CUnit.h"
 
 HRESULT CUI_Paden::Initialize_Prototype()
 {
@@ -78,10 +81,7 @@ void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstN
 void CUI_Paden::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 {
 	m_iScore[iTeamType] = iScore;
-
 	m_fScoreRatio[iTeamType] = (_float)iScore / (_float)iMaxScore;
-
-	cout << iTeamType << " : " << m_fScoreRatio[iTeamType] << endl;
 }
 
 void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
@@ -102,13 +102,17 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 	}
 }
 
-void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform)
+void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
 	vNewPos.y += 2.f;
 
 	for (int i = 0; i < PU_End; ++i)
 	{
+		m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
+		if (!m_pArrProjPointUI[iPointIdx][i]->Is_Valid())
+			return;
+
 		if (i == PU_Text)
 		{
 			m_pArrProjPointUI[iPointIdx][i]->Set_PosX(vNewPos.x);
@@ -192,6 +196,8 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 {
 	_float fDuration = 0.3f;
 
+	_bool bIsMainPlayer = CUser::Get_Instance()->Get_Player()->Is_MainPlayer();
+
 	for (int i = 0; i < PU_End; ++i)
 	{
 		switch (iTriggerState)
@@ -200,22 +206,31 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
-				m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
-				m_pArrPointUI[Point_A][i]->DoMove(0.f, 200.f, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
+					m_pArrPointUI[Point_A][i]->DoMove(0.f, 200.f, fDuration);
+				}
 
 				Set_PointGauge_Color(iTeamType, Point_A);
 			}
 			else if (strPadenPointKey == "Paden_Trigger_R")
 			{
-				m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
-				m_pArrPointUI[Point_R][i]->DoMove(0.f, 200.f, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
+					m_pArrPointUI[Point_R][i]->DoMove(0.f, 200.f, fDuration);
+				}
 
 				Set_PointGauge_Color(iTeamType, Point_R);
 			}
 			else if (strPadenPointKey == "Paden_Trigger_C")
 			{
-				m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
-				m_pArrPointUI[Point_C][i]->DoMove(0.f, 200.f, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
+					m_pArrPointUI[Point_C][i]->DoMove(0.f, 200.f, fDuration);
+				}
 
 				Set_PointGauge_Color(iTeamType, Point_C);
 			}
@@ -226,18 +241,27 @@ void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint
 
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
-				m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
-				m_pArrPointUI[Point_A][i]->DoMove(-50.f, m_fPointUIPosY, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
+					m_pArrPointUI[Point_A][i]->DoMove(-50.f, m_fPointUIPosY, fDuration);
+				}
 			}
 			else if (strPadenPointKey == "Paden_Trigger_R")
 			{
-				m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
-				m_pArrPointUI[Point_R][i]->DoMove(0.f, m_fPointUIPosY, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
+					m_pArrPointUI[Point_R][i]->DoMove(0.f, m_fPointUIPosY, fDuration);
+				}
 			}
 			else if (strPadenPointKey == "Paden_Trigger_C")
 			{
-				m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
-				m_pArrPointUI[Point_C][i]->DoMove(50.f, m_fPointUIPosY, fDuration);
+				if (bIsMainPlayer)
+				{
+					m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
+					m_pArrPointUI[Point_C][i]->DoMove(50.f, m_fPointUIPosY, fDuration);
+				}
 			}
 
 			break;
@@ -266,59 +290,7 @@ void CUI_Paden::My_Tick()
 	__super::My_Tick();
 
 	Update_InGameTimer();
-
-	static _uint iScore = 100;
-	if (KEY(Z, TAP))
-		iScore--;
-
-	Set_Score(Team_Red, iScore, 100);
-	Set_Score(Team_Blue, iScore, 100);
-
-	// 현재 스코어 이미지로 표시
-	for (int i = 0; i < Team_End; ++i)
-	{
-		m_vecPrvScore[i].clear();
-
-		if (!m_vecCurScore[i].empty())
-		{
-			m_vecPrvScore[i] = m_vecCurScore[i];
-		}
-
-		m_vecCurScore[i].clear();
-		while (m_iRemainderCnt[i] < 3)
-		{
-			_uint iDigitNum = m_iScore[i] % 10;
-			m_vecCurScore[i].push_back(iDigitNum);
-			m_iScore[i] /= 10;
-
-			m_iRemainderCnt[i]++;
-		}
-
-		m_iRemainderCnt[i] = 0;
-		reverse(m_vecCurScore[i].begin(), m_vecCurScore[i].end());
-
-		for (int j = 0; j < Num_End; ++j)
-		{
-			if (m_vecPrvScore[i].empty())
-				return;
-
-			if (m_vecPrvScore[i][j] != m_vecCurScore[i][j])
-			{
-				GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Set_CurTextureIndex(m_vecCurScore[i][j]);
-
-				if (j < Num2)
-				{
-					_uint iTextureNum = GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Get_CurTextureIndex();
-					if (iTextureNum == 0)
-					{
-						Disable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
-					}
-				}
-
-				Enable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
-			}
-		}
-	}
+	Update_Score();
 }
 
 void CUI_Paden::My_LateTick()
@@ -418,14 +390,50 @@ void CUI_Paden::Create_ScoreNum()
 
 void CUI_Paden::Update_Score()
 {
-	// 100 10 자리 숫자가 0이 되면 disable
+	for (int i = 0; i < Team_End; ++i)
+	{
+		m_vecPrvScore[i].clear();
 
-	// 100 점을 받고
-	// 해당 점수를 1 0 0 저장
+		if (!m_vecCurScore[i].empty())
+		{
+			m_vecPrvScore[i] = m_vecCurScore[i];
+		}
 
-	// 해당 하는 숫자를 idx로 지정 텍스처 불러오기
+		m_vecCurScore[i].clear();
+		while (m_iRemainderCnt[i] < 3)
+		{
+			_uint iDigitNum = m_iScore[i] % 10;
+			m_vecCurScore[i].push_back(iDigitNum);
+			m_iScore[i] /= 10;
 
-	// 100 이 불러와짐
+			m_iRemainderCnt[i]++;
+		}
+
+		m_iRemainderCnt[i] = 0;
+		reverse(m_vecCurScore[i].begin(), m_vecCurScore[i].end());
+
+		for (int j = 0; j < Num_End; ++j)
+		{
+			if (m_vecPrvScore[i].empty())
+				return;
+
+			if (m_vecPrvScore[i][j] != m_vecCurScore[i][j])
+			{
+				GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Set_CurTextureIndex(m_vecCurScore[i][j]);
+
+				if (j < Num2)
+				{
+					_uint iTextureNum = GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Get_CurTextureIndex();
+					if (iTextureNum == 0)
+					{
+						Disable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
+					}
+				}
+
+				Enable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
+			}
+		}
+	}
 }
 
 void CUI_Paden::Create_ScoreGauge()
@@ -441,6 +449,8 @@ void CUI_Paden::Create_ScoreGauge()
 
 			if (i == Gauge_BG)
 			{
+				m_pScoreGauge[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.5f));
+
 				m_pScoreGauge[i]->Set_Sort(0.5f);
 			}
 			else if (i == Gauge_Bar)

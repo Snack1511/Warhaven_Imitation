@@ -890,13 +890,17 @@ HRESULT CGameSystem::On_Update_Paden()
 
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 	{
-		_uint iTeamType = (_uint)m_pTeamConnector[i]->Get_TeamType();
-		_uint iScore = m_pTeamConnector[i]->m_iScore;
-		_uint iMaxScore = m_pTeamConnector[i]->m_iMaxScore;
+		_uint iRedTeam = (_uint)m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Get_TeamType();
+		_uint iBlueScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_iScore;
+		_uint iBlueMaxScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_iMaxScore;
 
-		CUser::Get_Instance()->Set_Score(iTeamType, iScore, iMaxScore);
+		CUser::Get_Instance()->Set_Score(iRedTeam, iBlueScore, iBlueMaxScore);
 
-		cout << i << " : " << iScore << ", " << iMaxScore << endl;
+		_uint iBlueTeam = (_uint)m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Get_TeamType();
+		_uint iRedScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->m_iScore;
+		_uint iRedMaxScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->m_iMaxScore;
+
+		CUser::Get_Instance()->Set_Score(iBlueTeam, iRedScore, iRedMaxScore);
 
 		if (m_pTeamConnector[i]->Has_MainTrigger())
 		{
