@@ -163,6 +163,7 @@ void CUI_Object::DoMoveY(_float fMoveValue, _float fDuration)
 	m_vOriginPos = Get_Pos();
 	m_fMoveValue = fMoveValue;
 	m_fMoveDurationY = fDuration;
+	m_fMoveYAccTime = 0.f;
 }
 
 void CUI_Object::DoMoveX(_float fMoveValue, _float fDuration)
@@ -172,6 +173,7 @@ void CUI_Object::DoMoveX(_float fMoveValue, _float fDuration)
 	m_vOriginPos = Get_Pos();
 	m_fMoveValue = fMoveValue;
 	m_fMoveDurationX = fDuration;
+	m_fMoveXAccTime = 0.f;
 }
 
 void CUI_Object::DoScale(_float fScaleValue, _float fDuration)
@@ -191,6 +193,7 @@ void CUI_Object::DoScaleX(_float fScaleValue, _float fDuration)
 	m_vOriginScale.x = Get_Scale().x;
 	m_fScaleValue = fScaleValue;
 	m_fScaleDuration = fDuration;
+	m_fScaleAccTime = 0.f;
 }
 
 void CUI_Object::Fade_Font(_bool value, _float fDuration)
@@ -443,9 +446,6 @@ void CUI_Object::DoMove()
 
 		_float4 vResult = CEasing_Utillity::QuadOut(m_vOriginPos, vGoalPos, m_fMoveAccTime, m_fMoveDuration);
 		Set_Pos(vResult);
-
-
-
 
 		/*_float fDisPosX = fabs(m_vOriginPos.x - m_fGoalPosX);
 		_float fDisPosY = fabs(m_vOriginPos.y - m_fGoalPosY);
