@@ -62,5 +62,5 @@ void CState_Common_Fall_Warrior_R::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Common_Fall_Warrior_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    return STATE_END;
+    return __super::Check_Condition(pOwner, pAnimator);
 }

@@ -162,6 +162,7 @@ protected:
 	STATE_TYPE			m_eBounceState = STATE_END;
 
 	STATE_TYPE			m_ePreStateType = STATE_END;
+	STATE_TYPE			m_eJumpFallStateType = STATE_END;
 
 
 protected:

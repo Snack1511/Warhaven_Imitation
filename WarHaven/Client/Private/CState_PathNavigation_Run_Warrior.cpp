@@ -42,31 +42,54 @@ void CState_PathNavigation_Run_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimato
 
 	m_iStateChangeKeyFrame = 25;
 
+	m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR;
+
+	m_fRand = frandom(0.2f, 0.5f);
+	m_iRand = random(0, 5);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_PathNavigation_Run_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-	CPath* pCurPath = pOwner->Get_CurPath();
-
-	if (!pCurPath)
+	if (m_fAIDelayTime > m_fRand)
 	{
-		assert(0);
-		return STATE_END;
+		switch (m_iRand)
+		{
+		case 0:
+		case 1:
+		case 2:
+
+			return m_eSprintBeginState;
+
+
+		case 3:
+
+			return m_iAINextState;
+
+		case 4:
+
+			if(pAnimator->Is_CurAnimFinished())
+				return m_eStateType;
+
+			break;
+
+		case 5:
+
+			return m_eWalkState;
+
+			break;
+
+		default:
+			return m_iAINextState;
+
+		}
+
+			
 	}
 
-	/* 따라가면 대 */
-	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
 
-	_float4 vDir = pCurPath->Get_CurDir(pOwner->Get_Transform()->Get_World(WORLD_POS));
-
-	pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
-	pOwner->Get_PhysicsCom()->Set_Dir(vDir);
-	pOwner->Get_PhysicsCom()->Set_Accel(100.f);
-
-
-	pCurPath->Update_CurrentIndex(vCurPos);
 
     return __super::Tick(pOwner, pAnimator);
 }

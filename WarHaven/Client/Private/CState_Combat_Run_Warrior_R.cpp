@@ -54,7 +54,6 @@ HRESULT CState_Combat_Run_Warrior_R::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 30;
 
-    m_iAINextState = AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
 
     return S_OK;
 }
@@ -68,14 +67,22 @@ STATE_TYPE CState_Combat_Run_Warrior_R::Tick(CUnit* pOwner, CAnimator* pAnimator
 {
     if (Get_TargetLook_Length(pOwner) < m_fAIMyLength)
     {
+
         switch (m_iRand)
         {
         case 0:
+            
+            return AI_STATE_COMBAT_HORIZONTALUP_WARRIOR_R;
+
         case 1:
         case 2:
-        case 3:
 
-            return m_iAINextState;
+            return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
+
+       
+        case 3:
+            return AI_STATE_COMBAT_HORIZONTALDOWN_WARRIOR_R;
+
 
         case 4:
         case 5:

@@ -30,8 +30,6 @@ CState_Combat_Attack_HorizontalMiddle_Warrior_L* CState_Combat_Attack_Horizontal
 }
 HRESULT CState_Combat_Attack_HorizontalMiddle_Warrior_L::Initialize()
 {
-    __super::Initialize();
-
     m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
     m_tHitInfo.fKnockBackPower = 1.f;
     m_tHitInfo.fJumpPower = 0.f;
@@ -44,7 +42,9 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Warrior_L::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
-    return S_OK;
+    m_eBounceState = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
+
+    return __super::Initialize();
 }
 
 void CState_Combat_Attack_HorizontalMiddle_Warrior_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

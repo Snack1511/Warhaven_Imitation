@@ -490,10 +490,18 @@
 
 #include "CState_Combat_Run_Warrior_L.h"
 #include "CState_Combat_Run_Warrior_R.h"
-#include "CState_Combat_Attack_HorizontalMiddle_Warrior_L.h"
-#include "CState_Combat_Attack_HorizontalMiddle_Warrior_R.h"
+
 #include "CState_Common_Bounce_Warrior_L.h"
 #include "CState_Common_Bounce_Warrior_R.h"
+
+#include "CState_Combat_Attack_HorizontalUp_Warrior_L.h"
+#include "CState_Combat_Attack_HorizontalUp_Warrior_R.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Warrior_L.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Warrior_R.h"
+#include "CState_Combat_Attack_HorizontalDown_Warrior_L.h"
+#include "CState_Combat_Attack_HorizontalDown_Warrior_R.h"
+#include "CState_Combat_Attack_Warrior_VerticalCut.h"
+
 
 
 #include "CState_Combat_Oxen_Begin_Warrior.h"
@@ -518,6 +526,9 @@
 
 #include "CState_PathNavigation_Run_Warrior_L.h"
 #include "CState_PathNavigation_Run_Warrior_R.h"
+
+#include "CState_PathNavigation_Walk_Warrior_L.h"
+#include "CState_PathNavigation_Walk_Warrior_R.h"
 
 #include "CState_PathNavigation_Sprint_Warrior_Begin.h"
 #include "CState_PathNavigation_Sprint_Warrior_Loop.h"
@@ -1156,20 +1167,18 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_L] = CState_PathNavigation_Run_Warrior_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R] = CState_PathNavigation_Run_Warrior_R::Create();
 
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_WARRIOR_L] = CState_PathNavigation_Walk_Warrior_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_WARRIOR_R] = CState_PathNavigation_Walk_Warrior_R::Create();
+
 	
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR] = CState_PathNavigation_Sprint_Warrior_Begin::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_WARRIOR] = CState_PathNavigation_Sprint_Warrior_Loop::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR] = CState_PathNavigation_Sprint_Warrior_End::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR] = CState_PathNavigation_Sprint_Warrior_Jump::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_WARRIOR] = CState_PathNavigation_Sprint_Warrior_Fall::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_PathNavigation_Jump_Warrior_L::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_PathNavigation_Jump_Warrior_R::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_PathNavigation_Jump_Warrior_R::Create();
-
-
-	/*m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR] = CState_PathNavigation_Run_Warrior_L::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR] = CState_PathNavigation_Run_Warrior_L::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_PathNavigation_Run_Warrior_R::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_PathNavigation_Run_Warrior_R::Create();*/
 
 #pragma endregion
 
@@ -1190,15 +1199,23 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_COMBAT_GUARDEND_WARRIOR] = CState_Combat_GuardEnd_Warrior::Create();
 	m_arrStates[AI_STATE_COMBAT_GUARDCANCEL_WARRIOR] = CState_Combat_GuardCancel_Warrior::Create();
 
-
 	m_arrStates[AI_STATE_COMBAT_GUARDBREAK_WARRIOR] = CState_Combat_GuardBreak_Warrior::Create();
 	
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALUP_WARRIOR_L] = CState_Combat_Attack_HorizontalUp_Warrior_L::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALUP_WARRIOR_R] = CState_Combat_Attack_HorizontalUp_Warrior_R::Create();
+
 	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L] = CState_Combat_Attack_HorizontalMiddle_Warrior_L::Create();
 	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R] = CState_Combat_Attack_HorizontalMiddle_Warrior_R::Create();
+
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALDOWN_WARRIOR_L] = CState_Combat_Attack_HorizontalDown_Warrior_L::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALDOWN_WARRIOR_R] = CState_Combat_Attack_HorizontalDown_Warrior_R::Create();
+
+	m_arrStates[AI_STATE_COMBAT_VERTICALCUT_WARRIOR] = CState_Combat_Attack_Warrior_VerticalCut::Create();
 
 #pragma endregion
 
 #pragma region Common
+
 	m_arrStates[AI_STATE_COMMON_FALL_WARRIOR_L] = CState_Common_Fall_Warrior_L::Create();
 	m_arrStates[AI_STATE_COMMON_FALL_WARRIOR_R] = CState_Common_Fall_Warrior_R::Create();
 	m_arrStates[AI_STATE_COMMON_LAND_WARRIOR_L] = CState_Common_Land_Warrior_L::Create();
@@ -1212,13 +1229,6 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_COMMON_GROGGYHIT_WARRIOR] = CState_Common_Groggy_Warrior::Create();
 	m_arrStates[AI_STATE_COMMON_STINGHIT_WARRIOR] = CState_Common_Sting_Warrior::Create();
 	m_arrStates[AI_STATE_COMMON_FLYHIT_WARRIOR] = CState_Common_FlyHit_Warrior::Create();
-
-	/*m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR] = CState_Common_GuardHit_Warrior::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_WARRIOR] = CState_Common_GuardHit_Warrior::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR] = CState_Common_Groggy_Warrior::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_Common_Sting_Warrior::Create();
-	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_Common_FlyHit_Warrior::Create();*/
-
 
 #pragma endregion
 

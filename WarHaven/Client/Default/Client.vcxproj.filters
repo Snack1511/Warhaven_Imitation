@@ -2248,6 +2248,24 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\02. Left">
       <UniqueIdentifier>{71869083-ba22-4ede-a1ad-f132d09fdbf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk">
+      <UniqueIdentifier>{25a5e656-7a70-4a7c-9372-83ed63b65bdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\99. Test">
+      <UniqueIdentifier>{6ccdca39-5a8a-40f9-8382-6868c2dffa6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\01. Warrior">
+      <UniqueIdentifier>{09fe5387-40b0-415c-b1bb-a42b3bbbf427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\01. Warrior\02. Left">
+      <UniqueIdentifier>{c34d3819-fc50-4d5a-9947-420aceace0f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\01. Warrior\01. Right">
+      <UniqueIdentifier>{d0985cd9-7773-46a5-b22e-023a9d50d491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical">
+      <UniqueIdentifier>{ab224c01-45b6-4906-b251-95ba075a600e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3903,9 +3921,6 @@
     <ClInclude Include="..\public\CWindow_Path.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Path</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CState_PathNavigation_Test.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CState_Common_Fall_Warrior_L.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior\02. Left</Filter>
     </ClInclude>
@@ -3983,6 +3998,42 @@
     </ClInclude>
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior_R.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CState_PathNavigation_Test.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\99. Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\03. Down</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\01. Up</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\01. Up\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\01. Up\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\03. Down\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\03. Down\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Warrior_VerticalCut.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -5620,9 +5671,6 @@
     <ClCompile Include="..\private\CWindow_Path.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\08. Window_Path</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CState_PathNavigation_Test.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CState_Common_Fall_Warrior_L.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior\02. Left</Filter>
     </ClCompile>
@@ -5700,6 +5748,42 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior_R.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CState_PathNavigation_Test.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\99. Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\03. Down</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\01. Up</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\01. Up\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\01. Up\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\03. Down\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\01. Horizontal\03. Down\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Warrior_VerticalCut.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

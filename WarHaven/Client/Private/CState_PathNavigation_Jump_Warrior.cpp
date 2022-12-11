@@ -38,13 +38,18 @@ HRESULT CState_PathNavigation_Jump_Warrior::Initialize()
 
 void CState_PathNavigation_Jump_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {	
-	m_iAnimIndex = iPlaceJumpAnimIndex;
+	m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
+
+	Set_Direction_Front_AI(m_iDirectionRand);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_PathNavigation_Jump_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+	DoMove_AI_NoTarget(pOwner, pAnimator);
+
     return __super::Tick(pOwner, pAnimator);
 }
 

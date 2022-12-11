@@ -52,6 +52,9 @@ HRESULT CState_PathNavigation_Run_Warrior_R::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 44;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 30;
 
+    m_iAINextState = AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R;
+    m_eJumpFallStateType = AI_STATE_COMMON_FALL_WARRIOR_R;
+    m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_WARRIOR_R;
 
     return S_OK;
 }

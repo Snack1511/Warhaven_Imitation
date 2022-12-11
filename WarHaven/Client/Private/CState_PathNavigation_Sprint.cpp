@@ -21,6 +21,7 @@ HRESULT CState_PathNavigation_Sprint::Initialize()
 {
     __super::Initialize();
 
+
     return S_OK;
 }
 
@@ -45,4 +46,5 @@ STATE_TYPE CState_PathNavigation_Sprint::Check_Condition(CUnit* pOwner, CAnimato
 {
     return STATE_END;
 }
+
 
