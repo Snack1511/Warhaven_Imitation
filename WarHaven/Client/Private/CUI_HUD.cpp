@@ -62,14 +62,10 @@ HRESULT CUI_HUD::Start()
 {
 	Bind_Shader();
 
+	SetActive_HUD(true);
+
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		SetActive_HUD(false);
-
-		if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
-		{
-			SetActive_HUD(true);
-		}
 
 		if (m_pClassChangeText)
 			m_pClassChangeText->SetActive(true);

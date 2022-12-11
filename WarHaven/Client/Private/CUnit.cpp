@@ -96,6 +96,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	UNIT_STATUS& tOtherStatus = pOtherUnit->Get_Status();
 
+	if (!pOtherUnit->Get_CurStateP()) //파덴 거점 중앙 null 체크
+		return;
+
 	CState::HIT_INFO tOtherHitInfo = pOtherUnit->Get_CurStateP()->Get_HitInfo();
 
 	tOtherHitInfo.vDir = (m_pTransform->Get_World(WORLD_POS) - vHitPos);
@@ -959,7 +962,7 @@ void CUnit::Effect_Parring(_float4 vHitPos)
 {
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HItSmokeParticle_0"), vHitPos);
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);
 }
 
 void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
@@ -1056,7 +1059,7 @@ void CUnit::Start_Reborn()
 
 void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
-	//뭔가...일어남..
+	//몬가...일어남..
 }
 
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)

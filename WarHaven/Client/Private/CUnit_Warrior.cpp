@@ -244,14 +244,17 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	case STATE_ATTACK_HORIZONTALMIDDLE_L:
 	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
 	case AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
+	case AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_HORIZONTALDOWN_L:
 	case STATE_SPRINTATTACK_PLAYER:
+	case AI_STATE_COMBAT_GUARDBREAK_WARRIOR:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
 		break;
 
+	case AI_STATE_COMBAT_OXEN_LOOPATTACK_WARRIOR:
 	case STATE_WARRIOR_OXEN_LOOPATTACK:
 	case STATE_ATTACK_HORIZONTALUP_R:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
@@ -260,6 +263,7 @@ void CUnit_Warrior::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	case STATE_ATTACK_HORIZONTALMIDDLE_R:
 	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
 	case AI_STATE_ATTACK_HORIZONTALMIDDLE_R:
+	case AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R:
 			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
 			break;
 
