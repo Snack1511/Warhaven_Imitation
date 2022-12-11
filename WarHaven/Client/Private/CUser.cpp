@@ -36,6 +36,7 @@
 #include "CUI_Paden.h"
 #include "CUI_Dead.h"
 #include "CUI_Oper.h"
+#include "CUI_EscMenu.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -313,6 +314,11 @@ void CUser::SetActive_OperUI(_bool value)
 	m_pUI_Oper->SetActive(value);
 }
 
+void CUser::SetActive_EscMenu(_bool value)
+{
+	m_pUI_Esc->SetActive_EscMenu(value);
+}
+
 void CUser::On_EnterLevel()
 {
 	DISABLE_GAMEOBJECT(m_pCursor);
@@ -332,6 +338,14 @@ void CUser::On_EnterStageLevel()
 
 		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Oper);
+	}
+
+	if (!m_pUI_Esc)
+	{
+		m_pUI_Esc = CUI_EscMenu::Create();
+
+		CREATE_GAMEOBJECT(m_pUI_Esc, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Esc);
 	}
 
 	if (!m_pUI_HUD)

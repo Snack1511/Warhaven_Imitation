@@ -130,6 +130,12 @@ void CUI::Set_PosY(_float fY)
 	Get_Transform()->Make_WorldMatrix();
 }
 
+void CUI::Set_LerpPos(_float4 vOrigin, _float4 vTarget)
+{
+	m_vRealOriginPos = vOrigin;
+	m_vRealTargetPos = vTarget;
+}
+
 void CUI::Set_Scale(_float value)
 {
 	m_vScale = value;

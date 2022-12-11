@@ -24,6 +24,7 @@ class CUI_Portrait;
 class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
+class CUI_EscMenu;
 
 class CUI_Oper;
 class CUI_Paden;
@@ -114,6 +115,9 @@ public:		// ºê¸®ÇÎ
 	void Set_Respawn(_bool value);
 	void SetActive_OperUI(_bool value);
 
+public:		// Esc
+	void SetActive_EscMenu(_bool value);
+
 public:
 	void On_EnterLevel();
 	void On_ExitLevel();
@@ -140,6 +144,7 @@ private:
 	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
 	CUI_Skill* m_pUI_Skill = nullptr;
 	CUI_Oper* m_pUI_Oper = nullptr;
+	CUI_EscMenu* m_pUI_Esc = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

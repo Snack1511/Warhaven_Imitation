@@ -26,6 +26,7 @@
 #include "CUI_Renderer.h"
 
 #include "CUI_CharacterWindow.h"
+#include "CUI_EscMenu.h"
 
 #include "CGameSystem.h"
 
@@ -49,6 +50,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_InactiveHeroText();
 	Create_OxenJumpText();
 	Create_HeroTransformUI();
+	Create_EscMenu();
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
@@ -84,6 +86,19 @@ void CUI_HUD::My_Tick()
 	Update_HeorTransformGauge();
 
 	Active_CharacterWindow();
+
+	if (KEY(ESC, TAP))
+	{
+		_bool bEscActive = m_pUI_EscMenu->Is_Valid();
+		if (!bEscActive)
+		{
+			m_pUI_EscMenu->SetActive(true);
+		}
+		else
+		{
+			m_pUI_EscMenu->SetActive(false);
+		}
+	}
 }
 
 CUI_Wrapper* CUI_HUD::Get_HUD(_uint eHUD)
@@ -176,6 +191,14 @@ void CUI_HUD::Active_CharacterWindow()
 #endif
 
 	}
+}
+
+void CUI_HUD::Create_EscMenu()
+{
+	m_pUI_EscMenu = CUI_EscMenu::Create();
+
+	CREATE_GAMEOBJECT(m_pUI_EscMenu, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pUI_EscMenu);
 }
 
 void CUI_HUD::Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName)

@@ -120,60 +120,26 @@ void CUI_Object::Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration)
 	Set_ScaleY(m_fStart);
 }
 
-void CUI_Object::Lerp_PosX(_float fStart, _float fEnd, _float fDuration)
-{
-	m_bLerpPosX = true;
-
-	m_fStart = fStart;
-	m_fEnd = fEnd;
-	m_fDuration = fDuration;
-
-	m_fAccScale = m_fEnd > m_fStart ? true : false;
-}
-
-void CUI_Object::Lerp_PosY(_float fStart, _float fEnd, _float fDuration)
-{
-	m_bLerpPosY = true;
-
-	m_fStart = fStart;
-	m_fEnd = fEnd;
-	m_fDuration = fDuration;
-
-	m_fAccScale = m_fEnd > m_fStart ? true : false;
-}
-
-void CUI_Object::DoMove(_float fPosX, _float fPosY, _float fDuration)
+void CUI_Object::DoMove(_float4 vLerpTargetPos, _float fDuration, _uint eMoveType)
 {
 	m_bIsDoMove = true;
 
-	m_vOriginPos = Get_Pos();
-	//m_vOriginPos = m_pTransform->Get_World(WORLD_POS);
-
-	m_fGoalPosX = fPosX;
-	m_fGoalPosY = fPosY;
+	m_vLerpStartPos = Get_Pos();
+	m_vLerpTargetPos = vLerpTargetPos;
+	m_eMoveType = (eMOVE_TYPE)eMoveType;
 
 	m_fMoveDuration = fDuration;
 	m_fMoveAccTime = 0.f;
 }
 
-void CUI_Object::DoMoveY(_float fMoveValue, _float fDuration)
+void CUI_Object::DoMove_Origin(_float fDuration, _uint eMoveType)
 {
-	m_bIsDoMoveY = true;
-
-	m_vOriginPos = Get_Pos();
-	m_fMoveValue = fMoveValue;
-	m_fMoveDurationY = fDuration;
-	m_fMoveYAccTime = 0.f;
+	DoMove(m_vRealOriginPos, fDuration, eMoveType);
 }
 
-void CUI_Object::DoMoveX(_float fMoveValue, _float fDuration)
+void CUI_Object::DoMove_Target(_float fDuration, _uint eMoveType)
 {
-	m_bIsDoMoveX = true;
-
-	m_vOriginPos = Get_Pos();
-	m_fMoveValue = fMoveValue;
-	m_fMoveDurationX = fDuration;
-	m_fMoveXAccTime = 0.f;
+	DoMove(m_vRealTargetPos, fDuration, eMoveType);
 }
 
 void CUI_Object::DoScale(_float fScaleValue, _float fDuration)
@@ -261,7 +227,6 @@ void CUI_Object::My_Tick()
 	RenderText();
 
 	Lerp_Scale();
-	Lerp_Position();
 
 	DoMove();
 	DoScale();
@@ -388,51 +353,6 @@ void CUI_Object::Lerp_Scale()
 	}
 }
 
-void CUI_Object::Lerp_Position()
-{
-	if (m_bLerpPosX)
-	{
-		m_fAccTime += fDT(0);
-
-		_float fCurPos = Get_PosX();
-		_float fMoveValue = m_fEnd - m_fStart;
-		_float fMoveSpeed = (fMoveValue / m_fDuration) * fDT(0);
-
-		_float fResultPos = fCurPos + fMoveSpeed;
-
-		_float vResult = CEasing_Utillity::ElasticEaseOut(fCurPos, fResultPos, m_fMoveYAccTime, m_fMoveDurationY);
-
-		Set_PosX(vResult);
-
-		if (m_fAccTime >= m_fDuration)
-		{
-			m_fAccTime = 0.f;
-			m_bLerpPosX = false;
-		}
-	}
-
-	if (m_bLerpPosY)
-	{
-		m_fAccTime += fDT(0);
-
-		_float fCurPos = Get_PosY();
-		_float fMoveValue = m_fEnd - m_fStart;
-		_float fMoveSpeed = (fMoveValue / m_fDuration) * fDT(0);
-
-		_float fResultPos = fCurPos + fMoveSpeed;
-
-		_float vResult = CEasing_Utillity::ElasticEaseOut(fCurPos, fResultPos, m_fMoveYAccTime, m_fMoveDurationY);
-
-		Set_PosY(vResult);
-
-		if (m_fAccTime >= m_fDuration)
-		{
-			m_fAccTime = 0.f;
-			m_bLerpPosY = false;
-		}
-	}
-}
-
 void CUI_Object::DoMove()
 {
 	if (m_bIsDoMove)
@@ -440,76 +360,30 @@ void CUI_Object::DoMove()
 		m_fMoveAccTime += fDT(0);
 		if (m_fMoveAccTime > m_fMoveDuration)
 		{
-			Set_Pos(m_fGoalPosX, m_fGoalPosY);
+			Set_Pos(m_vLerpTargetPos);
 
 			m_fMoveAccTime = 0.f;
 			m_bIsDoMove = false;
 			return;
 		}
 
-		_float4 vGoalPos = m_vOriginPos;
-		vGoalPos.x = m_fGoalPosX;
-		vGoalPos.y = m_fGoalPosY;
 
-		_float4 vResult = CEasing_Utillity::QuadOut(m_vOriginPos, vGoalPos, m_fMoveAccTime, m_fMoveDuration);
+		_float4 vResult;
+		
+		switch (m_eMoveType)
+		{
+		case Client::CUI_Object::LINEAR:
+			vResult = CEasing_Utillity::Linear(m_vLerpStartPos, m_vLerpTargetPos, m_fMoveAccTime, m_fMoveDuration);
+			break;
+		case Client::CUI_Object::QUADOUT:
+			vResult = CEasing_Utillity::QuadOut(m_vLerpStartPos, m_vLerpTargetPos, m_fMoveAccTime, m_fMoveDuration);
+			break; 
+		default:
+			break;
+		}
+		
+		
 		Set_Pos(vResult);
-
-		/*_float fDisPosX = fabs(m_vOriginPos.x - m_fGoalPosX);
-		_float fDisPosY = fabs(m_vOriginPos.y - m_fGoalPosY);
-
-		fDisPosX = (m_vOriginPos.x > m_fGoalPosX) ? -fDisPosX : fDisPosX;
-		fDisPosY = (m_vOriginPos.y > m_fGoalPosY) ? -fDisPosY : fDisPosY;
-
-		_float fMoveValueX = (fDisPosX / m_fMoveDuration) * fDT(0);
-		_float fMoveValueY = (fDisPosY / m_fMoveDuration) * fDT(0);
-
-		_float4 vMovePos = _float4(fMoveValueX, fMoveValueY, 0.f);
-		_float4 vSetPos = Get_Pos() + vMovePos;
-
-		Set_Pos(vSetPos);*/		
-	}
-
-	if (m_bIsDoMoveY)
-	{
-		m_fMoveYAccTime += fDT(0);
-
-		_float fCurPosY = Get_PosY();
-		_float fMoveValue = (m_fMoveValue / m_fMoveDurationY) * fDT(0);
-		_float fResultPos = fCurPosY + fMoveValue;
-
-		_float vResult = CEasing_Utillity::ElasticEaseOut(fCurPosY, fResultPos, m_fMoveYAccTime, m_fMoveDurationY);
-
-		Set_PosY(vResult);
-
-		if (m_fMoveYAccTime >= m_fMoveDurationY)
-		{
-			// _float fResultPosY = m_vOriginPos.y + m_fMoveValue;
-			Set_PosY(vResult);
-
-			m_fMoveYAccTime = 0.f;
-			m_bIsDoMoveY = false;
-		}
-	}
-
-	if (m_bIsDoMoveX)
-	{
-		m_fMoveXAccTime += fDT(0);
-
-		_float fCurPosX = Get_PosX();
-		_float fMoveValue = (m_fMoveValue / m_fMoveDurationX) * fDT(0);
-		_float fResultPos = fCurPosX + fMoveValue;
-
-		_float vResult = CEasing_Utillity::ElasticEaseOut(fCurPosX, fResultPos, m_fMoveXAccTime, m_fMoveDurationX);
-		Set_PosX(vResult);
-
-		if (m_fMoveXAccTime >= m_fMoveDurationX)
-		{
-			// _float fResultPosY = m_vOriginPos.x + m_fMoveValue;
-			Set_PosX(vResult);
-
-			m_fMoveXAccTime = 0.f;
-			m_bIsDoMoveX = false;
-		}
 	}
 }
 

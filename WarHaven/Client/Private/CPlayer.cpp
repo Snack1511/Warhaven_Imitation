@@ -442,8 +442,6 @@ HRESULT CPlayer::Initialize_Prototype()
 		Add_Component(pAIComponent);
 	}
 
-	if (!m_pMyPlayerInfo->m_bIsMainPlayer && !m_pAIController)
-		return E_FAIL;
 #pragma endregion AI컴포넌트 추가용 구문
 
 

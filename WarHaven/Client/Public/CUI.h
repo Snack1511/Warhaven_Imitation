@@ -35,6 +35,8 @@ public:
 	void Set_PosX(_float fX);
 	void Set_PosY(_float fY);
 
+	void Set_LerpPos(_float4 vOrigin, _float4 vTarget);
+
 public:
 	_float4 Get_Scale() { return m_vScale; }
 
@@ -86,6 +88,14 @@ public:
 
 protected:
 	_float4		m_vUIShaderFlag = SH_UI_NONE;
+
+protected:
+	_float4 m_vRealOriginPos;
+
+	_float4 m_vLerpStartPos;
+	_float4 m_vLerpTargetPos;
+
+	_float4 m_vRealTargetPos;
 
 protected:
 	_float4 m_vPosition;

@@ -87,7 +87,7 @@ void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
 void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 {
 	// DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
-	
+
 	_float4 vPos = m_pArrStrongHoldUI[SP_BG][iEventNum]->Get_Pos();
 	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
 
@@ -218,7 +218,9 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
-				m_pTextImg[Text_Oper1]->DoMoveY(200.f, 0.3f);
+				_float4 vPos = m_pTextImg[Text_Oper1]->Get_Pos();
+				vPos.y += 200.f;
+				m_pTextImg[Text_Oper1]->DoMove(vPos, 0.3f, 0);
 				m_pTextImg[Text_Oper1]->DoScale(-256.f, 0.3f);
 
 				for (int i = 0; i < 4; ++i)
@@ -294,15 +296,22 @@ void CUI_Oper::Progress_Oper()
 					Enable_Fade(m_pArrCharacterSideBG[i], fDuration);
 				}
 
-				m_pArrCharacterSideBG[0]->DoMoveX(50.f, fDuration);
-				m_pArrCharacterSideBG[1]->DoMoveX(-50.f, fDuration);
+				_float4 vPos0 = m_pArrCharacterSideBG[0]->Get_Pos();
+				vPos0.x += 50.f;
+				m_pArrCharacterSideBG[0]->DoMove(vPos0, fDuration, 0);
+
+				_float4 vPos1 = m_pArrCharacterSideBG[1]->Get_Pos();
+				vPos1.x -= 50.f;
+				m_pArrCharacterSideBG[1]->DoMove(vPos1, fDuration, 0);
 
 				for (int i = 0; i < CP_End; ++i)
 				{
 					for (int j = 0; j < 6; ++j)
 					{
 						Enable_Fade(m_pArrCharacterPort[i][j], fDuration);
-						m_pArrCharacterPort[i][j]->DoMoveX(50.f, fDuration);
+						_float4 vPos = m_pArrCharacterPort[i][j]->Get_Pos();
+						vPos.x += 50.f;
+						m_pArrCharacterPort[i][j]->DoMove(vPos, fDuration, 0);
 					}
 				}
 
@@ -324,7 +333,7 @@ void CUI_Oper::Progress_Oper()
 
 				//Enable_Fade(m_pOperMapIcon, fDuration);
 				//Enable_Fade(m_pOperMapBG, fDuration);
-				
+
 				for (int i = 0; i < BU_End; ++i)
 				{
 					Enable_Fade(m_pBriefingUI[i], fDuration);

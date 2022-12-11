@@ -49,6 +49,7 @@
 // JJ
 #include "CUI_Oper.h"
 #include "CUI_Paden.h"
+#include "CUI_EscMenu.h"
 
 CLevel_Test::CLevel_Test()
 {
@@ -89,8 +90,11 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	pDrawableTerrain->Initialize();
 	Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
-	CUI_Oper* pUI_Oper = CUI_Oper::Create();
-	Ready_GameObject(pUI_Oper, GROUP_UI);
+	//CUI_EscMenu* pUI_Esc = CUI_EscMenu::Create();
+	//Ready_GameObject(pUI_Esc, GROUP_UI);
+
+	//CUI_Oper* pUI_Oper = CUI_Oper::Create();
+	//Ready_GameObject(pUI_Oper, GROUP_UI);
 
 	//CUI_Paden* pUI_Paden = CUI_Paden::Create();
 	//Ready_GameObject(pUI_Paden, GROUP_UI);

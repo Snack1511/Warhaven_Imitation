@@ -6,6 +6,7 @@ BEGIN(Client)
 
 class CUnit;
 class CUI_CharacterWindow;
+class CUI_EscMenu;
 
 class CUI_HUD : public CUI_Wrapper
 {
@@ -42,6 +43,12 @@ private:
 private:
 	void Create_CharacterWindow();
 	void Active_CharacterWindow();
+
+private:
+	CUI_EscMenu* m_pUI_EscMenu = nullptr;
+
+private:
+	void Create_EscMenu();
 
 public:
 	virtual void Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName);
