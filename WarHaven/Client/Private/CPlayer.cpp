@@ -450,8 +450,6 @@ HRESULT CPlayer::Initialize_Prototype()
 		Add_Component(pAIComponent);
 	}
 
-	if (!m_pMyPlayerInfo->m_bIsMainPlayer && !m_pAIController)
-		return E_FAIL;
 #pragma endregion AI컴포넌트 추가용 구문
 
 
@@ -586,6 +584,9 @@ void CPlayer::OnDisable()
 HRESULT CPlayer::SetUp_Collider()
 {
 	if (m_bIsMainPlayer)
+		return S_OK;
+
+	if (!m_pMyPlayerInfo->m_pPersonality)
 		return S_OK;
 
 	m_pSightRangeCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 
