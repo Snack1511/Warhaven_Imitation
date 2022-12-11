@@ -809,6 +809,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"BarrelParticle"), Convert_ToHash(L"WoodenLog_2"))))
 		return E_FAIL;
+	if (FAILED(Add_MultiEffects(Convert_ToHash(L"BarrelParticle"), Convert_ToHash(L"FishParticle_5"))))
+		return E_FAIL;
 
 	/*Stone spark particle*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StoneSpark"), "StoneSpark")))

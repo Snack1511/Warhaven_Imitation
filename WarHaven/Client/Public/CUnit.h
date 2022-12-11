@@ -324,6 +324,7 @@ protected:
 	virtual void My_LateTick() override;
 
 protected:
+	void Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fDuration, _float4 Diffuse);
 	virtual void	Effect_Parring(_float4 vHitPos);
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos);
 	virtual void	Effect_Fall(_float fFallPower);
