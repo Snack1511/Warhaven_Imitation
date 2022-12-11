@@ -68,7 +68,7 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
     
     _float fLength = (vCurrentPos - vTargetPos).Length();
 
-    if (fLength < 0.1f)
+    if (fLength < 10.f * fDT(0))
         m_iCurIndex++;
 }
 
