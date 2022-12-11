@@ -73,6 +73,8 @@ private:
 	_bool m_bCurState = false;
 	_bool m_bPrvState = false;
 
+	_bool m_bSetRect = false;
+
 private:
 	virtual void Release() override;
 

@@ -7,6 +7,7 @@
 #include "CUser.h"
 #include "CShader.h"
 #include "CGameSystem.h"
+#include "CPlayerInfo.h"
 
 CUI_Oper::CUI_Oper()
 {
@@ -29,6 +30,7 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_StrongHoldEffect();
 	Create_OperTimer();
 	Create_TargetText();
+	Create_RespawnBtn();
 
 	Init_CharacterSelect();
 	Init_TeamIcon();
@@ -40,13 +42,14 @@ HRESULT CUI_Oper::Initialize_Prototype()
 
 HRESULT CUI_Oper::Start()
 {
-	__super::Start();
-
 	Bind_Shader();
+	Bind_Btn();
 
 	CUser::Get_Instance()->SetActive_HUD(false);
 
 	SetActive_BG(true);
+
+	__super::Start();
 
 	return S_OK;
 }
@@ -59,6 +62,50 @@ void CUI_Oper::Set_Shader_Smoke(CShader* pShader, const char* pConstName)
 void CUI_Oper::Set_Shader_Timer(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fTimerRatio, sizeof(_float));
+}
+
+void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
+{
+	m_iPrvSelectEventNum = m_iCurSelectEventNum;
+	m_iCurSelectEventNum = iEventNum;
+
+	if (m_iPrvSelectEventNum == iEventNum)
+		return;
+
+	for (int i = 0; i < CP_End; ++i)
+	{
+		m_pArrCharacterPort[i][m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
+		m_pArrCharacterPort[i][iEventNum]->DoScale(10.f, 0.1f);
+	}
+
+	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
+}
+
+void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
+{
+	//DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
+	//
+	//_float4 vPos = m_pArrOperPointUI[PT_Point][iEventNum]->Get_Pos();
+	//m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
+	//
+	//GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Set_CurTextureIndex(1);
+	//m_pBriefingUI[BU_Icon]->Set_Scale(20.f, 15.f);
+	//m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.f, 0.6f, 0.f, 1.f));
+	//m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
+	//m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
+	//
+	//ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
+}
+
+void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
+{
+	m_bIsRespawn = false;
+	m_iOperRespawn = 0;
+
+	CUser::Get_Instance()->SetActive_PadenUI(true);
+	CUser::Get_Instance()->SetActive_HUD(true);
+
+	DISABLE_GAMEOBJECT(this);
 }
 
 void CUI_Oper::My_Tick()
@@ -76,12 +123,15 @@ void CUI_Oper::My_Tick()
 void CUI_Oper::OnEnable()
 {
 	__super::OnEnable();
+
+	SetActive_BG(true);
 }
 
 void CUI_Oper::OnDisable()
 {
 	__super::OnDisable();
 
+	m_pRespawnBtn->SetActive(false);
 	for (auto iter : m_pOperList)
 	{
 		iter->SetActive(false);
@@ -110,6 +160,26 @@ void CUI_Oper::Progress_Oper()
 	{
 		m_bIsBriefing = true;
 		m_pOperBG[OB_BG]->DoScale(-2596.f, 0.3f);
+	}
+
+	if (m_bIsRespawn)
+	{
+		if (m_iOperRespawn == 0)
+		{
+			m_iOperRespawn++;
+
+			Enable_Fade(m_pRespawnBtn, 0.3f);
+
+			for (int i = 0; i < Team_End; ++i)
+			{
+				for (int j = 0; j < 2; ++j)
+				{
+					Enable_Fade(m_pArrTeamIcon[i][j], 0.3f);
+				}
+			}
+
+			Enable_StrongHoldUI();
+		}
 	}
 	else
 	{
@@ -231,6 +301,11 @@ void CUI_Oper::Progress_Oper()
 					}
 				}
 
+				for (int i = 0; i < CP_End; ++i)
+				{
+					m_pArrCharacterPort[i][0]->DoScale(10.f, fDuration);
+				}
+
 				Enable_Fade(m_pTextImg[Text_Oper2], fDuration);
 				Enable_Fade(m_pTextImg[Text_SelectPoint], fDuration);
 
@@ -277,6 +352,14 @@ void CUI_Oper::Progress_Oper()
 
 void CUI_Oper::Enable_StrongHoldUI()
 {
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pArrStrongHoldUI[SP_BG][i]->Set_Scale(115.f);
+		m_pArrStrongHoldUI[SP_Outline][i]->Set_Scale(120.f);
+		m_pArrStrongHoldUI[SP_Icon][i]->Set_Scale(115.f);
+		m_pArrStrongHoldUI[SP_TEXT][i]->Set_Scale(140.f);
+	}
+
 	for (int i = 0; i < SP_End; ++i)
 	{
 		switch (m_eLoadLevel)
@@ -537,7 +620,6 @@ void CUI_Oper::Create_CharacterSelect()
 
 		if (i == CP_PortBG)
 		{
-
 			m_pCharacterPort[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBG.dds"));
 
 			m_pCharacterPort[i]->Set_Scale(65.f);
@@ -905,6 +987,32 @@ void CUI_Oper::Init_StrongHoldEffect()
 	}
 }
 
+void CUI_Oper::Create_RespawnBtn()
+{
+	m_pRespawnBtn = CUI_Object::Create();
+
+	m_pRespawnBtn->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_TimeAnnounceBox.png"));
+
+	m_pRespawnBtn->Set_FadeDesc(0.3f);
+
+	m_pRespawnBtn->Set_MouseTarget(true);
+
+	m_pRespawnBtn->Set_Sort(0.50f);
+	m_pRespawnBtn->Set_PosY(-275.f);
+	m_pRespawnBtn->Set_Scale(200.f, 60.f);
+
+	m_pRespawnBtn->Set_FontRender(true);
+	m_pRespawnBtn->Set_FontStyle(true);
+	m_pRespawnBtn->Set_FontCenter(true);
+	m_pRespawnBtn->Set_FontOffset(5.f, 3.f);
+	m_pRespawnBtn->Set_FontScale(0.25f);
+	m_pRespawnBtn->Set_FontText(TEXT("선택한 거점에서 합류"));
+	m_pRespawnBtn->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
+
+	CREATE_GAMEOBJECT(m_pRespawnBtn, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pRespawnBtn);
+}
+
 void CUI_Oper::Create_OperTimer()
 {
 	for (int i = 0; i < TU_End; ++i)
@@ -946,4 +1054,19 @@ void CUI_Oper::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pOperBG[OB_Smoke], CShader)->CallBack_SetRawValues += bind(&CUI_Oper::Set_Shader_Smoke, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pTimer[TU_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_Oper::Set_Shader_Timer, this, placeholders::_1, "g_fValue");
+}
+
+void CUI_Oper::Bind_Btn()
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		m_pArrCharacterPort[CP_SelectBG][i]->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_SelectBG, this, i);
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		// m_pArrStrongHoldUI[SP_BG][i]->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_Point, this, i);
+	}
+
+	m_pRespawnBtn->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_RespawnBtn, this, 0);
 }

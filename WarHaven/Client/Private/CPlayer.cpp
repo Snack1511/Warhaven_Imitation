@@ -623,9 +623,9 @@ void CPlayer::On_Reborn()
 	CUser::Get_Instance()->SetActive_HUD(true);
 }
 
-CBehavior* CPlayer::Get_Behavior()
+void CPlayer::SetActive_UnitHUD(_bool value)
 {
-	return m_pAIController->m_pCurrentBehavior;
+	m_pUnitHUD->SetActive(value);
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)

@@ -35,6 +35,7 @@
 #include "CUI_Training.h"
 #include "CUI_Paden.h"
 #include "CUI_Dead.h"
+#include "CUI_Oper.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -136,37 +137,6 @@ void CUser::KeyInput_FPSSetter()
 		}
 		CGameInstance::Get_Instance()->Set_FPSLimitTIme(dCurFPSLimit);
 
-	}
-
-	if (KEY(Z, TAP))
-	{
-		if (!m_pCursor)
-		{
-			cout << "마우스 없음" << endl;
-		}
-		else
-		{
-			cout << "마우스 활성화" << endl;
-			if (!m_pCursor->Is_Valid())
-			{
-				ENABLE_GAMEOBJECT(m_pCursor);
-			}
-		}
-	}
-	else if (KEY(X, TAP))
-	{
-		if (!m_pCursor)
-		{
-			cout << "마우스 없음" << endl;
-		}
-		else
-		{
-			cout << "마우스 비활성화" << endl;
-			if (m_pCursor->Is_Valid())
-			{
-				DISABLE_GAMEOBJECT(m_pCursor);
-			}
-		}
 	}
 }
 
@@ -283,29 +253,54 @@ void CUser::SetActive_HUD(_bool value)
 	m_pUI_HUD->SetActive_HUD(value);
 }
 
+void CUser::SetActive_UnitHUD(_bool value)
+{
+	m_pPlayer->SetActive_UnitHUD(value);
+}
+
 void CUser::Transform_SkillUI(_uint iClass)
 {
 	m_pUI_Skill->Transform_SkillUI(iClass);
 }
 
-void CUser::Interat_StrongHoldUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
+void CUser::Interat_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
-	m_pUI_Paden->Interact_StrongHoldUI(strPadenPointKey, iTeamType, iTriggerState);
+	m_pUI_Paden->Interact_PointUI(strPadenPointKey, iTeamType, iTriggerState);
 }
 
-void CUser::Set_TeamScore(_uint iTeamType, _uint iScore)
+void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
-	m_pUI_Paden->Set_ScoreNum(iTeamType, iScore);
+	m_pUI_Paden->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
 }
 
-void CUser::Set_ProjStrongHoldUI(_uint iPointIdx, CTransform* pTransform)
+void CUser::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 {
-	m_pUI_Paden->Set_Proj_StrongHoldUI(iPointIdx, pTransform);
+	m_pUI_Paden->Set_Score(iTeamType, iScore, iMaxScore);
+}
+
+void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform)
+{
+	m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform);
+}
+
+void CUser::Conquest_PointUI(string strPointName, _uint iTeamType)
+{
+	m_pUI_Paden->Conquest_PointUI(strPointName, iTeamType);
 }
 
 void CUser::SetActive_PadenUI(_bool value)
 {
 	m_pUI_Paden->SetActive(value);
+}
+
+void CUser::Set_Respawn(_bool value)
+{
+	m_pUI_Oper->Set_Respawn(value);
+}
+
+void CUser::SetActive_OperUI(_bool value)
+{
+	m_pUI_Oper->SetActive(value);
 }
 
 void CUser::On_EnterLevel()
@@ -352,6 +347,7 @@ void CUser::On_EnterStageLevel()
 	if (!m_pUI_Paden)
 	{
 		m_pUI_Paden = CUI_Paden::Create();
+		
 		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Paden);
 	}
@@ -362,6 +358,14 @@ void CUser::On_EnterStageLevel()
 
 		CREATE_GAMEOBJECT(m_pUI_Dead, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Dead);
+	}
+
+	if (!m_pUI_Oper)
+	{
+		m_pUI_Oper = CUI_Oper::Create();
+
+		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Oper);
 	}
 
 	SetUp_BloodOverlay();
@@ -377,6 +381,7 @@ void CUser::On_ExitStageLevel()
 	for (_uint i = 0; i < 5; ++i)
 		m_pUI_Damage[i] = nullptr;
 
+	m_pUI_Oper = nullptr;
 	m_pUI_Paden = nullptr;
 	m_pUI_Training = nullptr;
 	m_pPlayer = nullptr;

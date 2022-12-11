@@ -60,20 +60,19 @@ HRESULT CUI_HUD::Initialize_Prototype()
 
 HRESULT CUI_HUD::Start()
 {
-	Bind_Btn();
 	Bind_Shader();
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
-		SetActive_HUD(true);
+		SetActive_HUD(false);
+
+		if (m_eLoadLevel == LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+		{
+			SetActive_HUD(true);
+		}
 
 		if (m_pClassChangeText)
 			m_pClassChangeText->SetActive(true);
-	}
-	else
-	{
-		//Set_FadeOperSelectChaderUI();
-		//SetActive_OperUI(true);
 	}
 
 	__super::Start();
@@ -184,39 +183,6 @@ void CUI_HUD::Active_CharacterWindow()
 	}
 }
 
-void CUI_HUD::On_PointDown_SelectBG(const _uint& iEventNum)
-{
-	// m_iPrvSelectEventNum = m_iCurSelectEventNum;
-	// m_iCurSelectEventNum = iEventNum;
-	// 
-	// if (m_iPrvSelectEventNum == iEventNum)
-	// 	return;
-	// 
-	// for (int i = 0; i < ST_End; ++i)
-	// {
-	// 	m_pArrOperSelectUI[i][m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
-	// 	m_pArrOperSelectUI[i][iEventNum]->DoScale(10.f, 0.1f);
-	// }
-	// 
-	// CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
-}
-
-void CUI_HUD::On_PointDown_Point(const _uint& iEventNum)
-{
-	//DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
-	//
-	//_float4 vPos = m_pArrOperPointUI[PT_Point][iEventNum]->Get_Pos();
-	//m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
-	//
-	//GET_COMPONENT_FROM(m_pBriefingUI[BU_Icon], CTexture)->Set_CurTextureIndex(1);
-	//m_pBriefingUI[BU_Icon]->Set_Scale(20.f, 15.f);
-	//m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.f, 0.6f, 0.f, 1.f));
-	//m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
-	//m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
-	//
-	//ENABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
-}
-
 void CUI_HUD::Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fHeroTransformGaugeRatio, sizeof(_float));
@@ -277,21 +243,6 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 	dynamic_cast<CUI_Crosshair*>(m_pHUD[HUD_Crosshair])->Set_Crosshair(m_eCurClass);
 	dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_UserPort(m_eCurClass);
 	dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Set_SkillUI(m_eCurClass);
-}
-
-void CUI_HUD::Bind_Btn()
-{
-	//for (int i = 0; i < 6; ++i)
-	//{
-	//	if (m_pArrOperSelectUI[ST_BG][i])
-	//		m_pArrOperSelectUI[ST_BG][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_SelectBG, this, i);
-	//}
-	//
-	//for (int i = 0; i < 3; ++i)
-	//{
-	//	if (m_pArrOperPointUI[PT_Point][i])
-	//		m_pArrOperPointUI[PT_Point][i]->CallBack_PointDown += bind(&CUI_HUD::On_PointDown_Point, this, i);
-	//}
 }
 
 void CUI_HUD::Set_FadePortHighlight()

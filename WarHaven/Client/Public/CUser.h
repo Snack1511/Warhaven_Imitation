@@ -25,6 +25,7 @@ class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
 
+class CUI_Oper;
 class CUI_Paden;
 
 class CUser
@@ -92,15 +93,23 @@ public:
 	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
 
 	void SetActive_HUD(_bool value);
+	void SetActive_UnitHUD(_bool value);
 	void Transform_SkillUI(_uint iClass);
 
 public:		// ÆÄµ§
-	void Interat_StrongHoldUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
+	void Interat_PointUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
+	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
+	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform);
 
-	void Set_TeamScore(_uint iTeamType, _uint iScore);
-	void Set_ProjStrongHoldUI(_uint iPointIdx, CTransform* pTransform);
+	void Conquest_PointUI(string strPointName, _uint iTeamType);
+
+	void Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore);
 
 	void SetActive_PadenUI(_bool value);
+
+public:		// ºê¸®ÇÎ
+	void Set_Respawn(_bool value);
+	void SetActive_OperUI(_bool value);
 
 public:
 	void On_EnterLevel();
@@ -127,6 +136,7 @@ private:
 	CUI_HpBar* m_pUI_HP = nullptr;
 	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
 	CUI_Skill* m_pUI_Skill = nullptr;
+	CUI_Oper* m_pUI_Oper = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

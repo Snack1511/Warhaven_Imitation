@@ -19,6 +19,8 @@ CTrigger_Paden::~CTrigger_Paden()
 
 void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	m_eTeamType = (eTEAM_TYPE)eOtherColType;
+
 	//1. 충돌한 대상이 어느 팀인지 체크
 	if (eOtherColType == COL_BLUETEAM)
 	{
@@ -30,7 +32,7 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 	}
 
 	// 상단 유아이 하이라이트
-	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, eOtherColType, 0);
+	CUser::Get_Instance()->Interat_PointUI(m_strTriggerName, eOtherColType, 0);
 }
 
 void CTrigger_Paden::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -50,7 +52,7 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 	}
 
 	// 상단 유아이 원위치
-	CUser::Get_Instance()->Interat_StrongHoldUI(m_strTriggerName, 99, 1);
+	CUser::Get_Instance()->Interat_PointUI(m_strTriggerName, 99, 1);
 }
 
 CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum)
@@ -101,8 +103,6 @@ HRESULT CTrigger_Paden::Initialize_Prototype()
 		m_vRespawnPositions.push_back(vNewPos);
 	}
 
-
-
 	return __super::Initialize_Prototype();
 }
 
@@ -117,6 +117,8 @@ void CTrigger_Paden::My_Tick()
 {
 	if (m_eTriggerType == ePADEN_TRIGGER_TYPE::eSTART)
 		return;
+
+	CUser::Get_Instance()->Set_ConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
 
 	//1. 둘 중 한쪽만 0일 때
 	if (m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE] != m_iTeamCnt[(_uint)eTEAM_TYPE::eRED])
@@ -141,15 +143,15 @@ void CTrigger_Paden::My_Tick()
 
 	if (m_strTriggerName == "Paden_Trigger_A")
 	{
-		CUser::Get_Instance()->Set_ProjStrongHoldUI(0, m_pTransform);
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform);
 	}
 	else if (m_strTriggerName == "Paden_Trigger_R")
 	{
-		CUser::Get_Instance()->Set_ProjStrongHoldUI(1, m_pTransform);
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(1, m_pTransform);
 	}
-	else if(m_strTriggerName == "Paden_Trigger_C")
+	else if (m_strTriggerName == "Paden_Trigger_C")
 	{
-		CUser::Get_Instance()->Set_ProjStrongHoldUI(2, m_pTransform);
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform);
 	}
 }
 
@@ -172,9 +174,11 @@ void CTrigger_Paden::Update_Conquered()
 
 #endif // _DEBUG
 
-
 	if (m_fConqueredTimeAcc >= m_fConqueredTime)
 	{
+		// 점령당한 거점 색깔 점령한 팀 색으로 변경
+		CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, (_uint)m_eTeamType);
+
 		//이전 주인이 있었으면 거기서 trigger 빼기
 		if (m_pConqueredTeam)
 			m_pConqueredTeam->Erase_Trigger(m_strTriggerName);
@@ -188,14 +192,20 @@ void CTrigger_Paden::Update_Conquered()
 		m_pDominionEffect->Set_DominionColor(m_pConqueredTeam);
 
 		m_pConqueredTeam->Add_Trigger(this);
+
 #ifdef _DEBUG
+
 		string strName = "BLUE";
+
 		if (m_pConqueredTeam->Get_TeamType() == eTEAM_TYPE::eRED)
 			strName = "RED";
 
 		cout << m_strTriggerName << " : 점령 완료 by " << strName << endl;
+
 		if (m_pConqueredTeam->IsMainPlayerTeam())
+
 			cout << m_strTriggerName << " 메인플레이어 팀 점령 " << endl;
+
 #endif // _DEBUG
 
 		m_fConqueredTimeAcc = 0.f;

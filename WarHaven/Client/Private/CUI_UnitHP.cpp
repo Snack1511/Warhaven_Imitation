@@ -17,14 +17,14 @@ HRESULT CUI_UnitHP::Initialize_Prototype()
 	}
 
 	m_pUnitHP[BG]->Set_Color(_float4(0.f, 0.f, 0.f));
-	m_pUnitHP[BG]->Set_Sort(0.5f);
+	m_pUnitHP[BG]->Set_Sort(0.6f);
 	m_pUnitHP[BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HPBarBG.png"));
 
 	m_pUnitHP[BackGauge]->Set_Color(_float4(0.5f, 0.5f, 0.5f));
-	m_pUnitHP[BackGauge]->Set_Sort(0.4f);
+	m_pUnitHP[BackGauge]->Set_Sort(0.59f);
 	m_pUnitHP[BackGauge]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HPBarGrey.dds"));
 
-	m_pUnitHP[Gauge]->Set_Sort(0.3f);
+	m_pUnitHP[Gauge]->Set_Sort(0.58f);
 	m_pUnitHP[Gauge]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HPBarGrey.dds"));
 
 	GET_COMPONENT_FROM(m_pUnitHP[Gauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HealthGauge);

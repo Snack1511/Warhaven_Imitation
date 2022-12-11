@@ -21,6 +21,14 @@ public:
 	virtual void Set_Shader_Timer(CShader* pShader, const char* pConstName);
 
 public:
+	virtual void On_PointDown_SelectBG(const _uint& iEventNum);
+	virtual void On_PointDown_StrongHoldPoint(const _uint& iEventNum);
+
+	virtual void On_PointDown_RespawnBtn(const _uint& iEventNum);
+
+public:
+	void Set_Respawn(_bool value) { m_bIsRespawn = value; }
+
 	void SetActive_BG(_bool value);
 	void SetActive_Profile(_bool value);
 
@@ -34,6 +42,9 @@ private:
 
 	_bool m_bIsBriefing = false;
 	_uint m_iOperProgress = 0;
+	_uint m_iOperRespawn = 0;
+
+	_bool m_bIsRespawn = false;
 
 private:
 	list<CUI_Object*> m_pOperList;
@@ -47,7 +58,7 @@ private:	// 텍스트 이미지
 	enum TextImg { Text_Oper1, Text_Oper2, Text_SelectPoint, Text_End };
 	CUI_Object* m_pTextImg[Text_End];
 
-	enum TargetText { TargetText_BG, TargetText_Icon, TargetText_End};
+	enum TargetText { TargetText_BG, TargetText_Icon, TargetText_End };
 	CUI_Object* m_pTargetText[TargetText_End];
 
 private:
@@ -123,11 +134,18 @@ private:	// 작전회의 타이머
 	_float m_fOperTime = 0.f;
 	_float m_fTimerRatio = 1.f;
 
+private:	// 합류 버튼
+	CUI_Object* m_pRespawnBtn = nullptr;
+
+private:
+	void Create_RespawnBtn();
+
 private:
 	void Create_OperTimer();
 
 private:
 	void Bind_Shader();
+	void Bind_Btn();
 };
 
 END

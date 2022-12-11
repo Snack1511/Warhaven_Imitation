@@ -151,6 +151,8 @@ public:
 	_bool	IsLeaderPlayer() { return m_bIsLeaderPlayer; }
 
 	_float& Get_Gauge() { return m_fGauge; }
+
+	void SetActive_UnitHUD(_bool value);
 	
 	const BEHAVIOR_DESC& Get_BehaviorDesc() { return m_tCurBehaviorDesc; }
 
