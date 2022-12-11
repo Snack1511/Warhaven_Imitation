@@ -1,4 +1,22 @@
 
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Wrapper.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CUnit.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUnit_Spearman.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CUnit_Warrior.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CUser.cpp"
+
+
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CUtility_Transform.cpp"
+
+
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CWalk_Player.cpp"
 
 
@@ -39,22 +57,4 @@
 
 
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBounce_Player_L.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSpearMan_GuardBreak.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_GuardBreak_Warrior.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWarrior_GuardBreak.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_Oxen_Begin_Warrior.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWarrior_Oxen_Begin.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_Oxen_Cancel_Warrior.cpp"
 

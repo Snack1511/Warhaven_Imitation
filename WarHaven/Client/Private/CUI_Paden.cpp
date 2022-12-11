@@ -224,6 +224,7 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _
 				if (bIsMainPlayer)
 				{
 					m_pArrProjPointUI[Point_A][i]->SetActive(false);
+					m_pArrTargetPoint[1]->SetActive(false);
 
 					m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
 
@@ -240,6 +241,7 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _
 				if (bIsMainPlayer)
 				{
 					m_pArrProjPointUI[Point_R][i]->SetActive(false);
+					m_pArrTargetPoint[1]->SetActive(false);
 
 					m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
 
@@ -256,6 +258,7 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _
 				if (bIsMainPlayer)
 				{
 					m_pArrProjPointUI[Point_C][i]->SetActive(false);
+					m_pArrTargetPoint[1]->SetActive(false);
 
 					m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
 
@@ -277,13 +280,14 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _
 				if (bIsMainPlayer)
 				{
 					m_pArrProjPointUI[Point_A][i]->SetActive(true);
+					m_pArrTargetPoint[1]->SetActive(true);
 
 					m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
 
-					_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+					_float4 vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
 					vPos.x -= 50.f;
 					vPos.y = m_fPointUIPosY;
-					m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0);
+					m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0);
 				}
 			}
 			else if (strPadenPointKey == "Paden_Trigger_R")
@@ -291,11 +295,11 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _
 				if (bIsMainPlayer)
 				{
 					m_pArrProjPointUI[Point_R][i]->SetActive(true);
-					// m_pArrTargetPoint[1]
+					m_pArrTargetPoint[1]->SetActive(true);
 
 					m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
 
-					_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+					_float4 vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
 					vPos.y = m_fPointUIPosY;
 					m_pArrPointUI[Point_R][i]->DoMove(vPos, fDuration, 0);
 				}
@@ -305,6 +309,7 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _
 				if (bIsMainPlayer)
 				{
 					m_pArrProjPointUI[Point_C][i]->SetActive(true);
+					m_pArrTargetPoint[1]->SetActive(true);
 
 					m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
 
