@@ -398,7 +398,11 @@ void CUI_Object::Lerp_Position()
 		_float fMoveValue = m_fEnd - m_fStart;
 		_float fMoveSpeed = (fMoveValue / m_fDuration) * fDT(0);
 
-		Set_PosX(fCurPos + fMoveSpeed);
+		_float fResultPos = fCurPos + fMoveSpeed;
+
+		_float vResult = CEasing_Utillity::ElasticEaseOut(fCurPos, fResultPos, m_fMoveYAccTime, m_fMoveDurationY);
+
+		Set_PosX(vResult);
 
 		if (m_fAccTime >= m_fDuration)
 		{
@@ -415,7 +419,11 @@ void CUI_Object::Lerp_Position()
 		_float fMoveValue = m_fEnd - m_fStart;
 		_float fMoveSpeed = (fMoveValue / m_fDuration) * fDT(0);
 
-		Set_PosY(fCurPos + fMoveSpeed);
+		_float fResultPos = fCurPos + fMoveSpeed;
+
+		_float vResult = CEasing_Utillity::ElasticEaseOut(fCurPos, fResultPos, m_fMoveYAccTime, m_fMoveDurationY);
+
+		Set_PosY(vResult);
 
 		if (m_fAccTime >= m_fDuration)
 		{
@@ -443,7 +451,6 @@ void CUI_Object::DoMove()
 		vGoalPos.x = m_fGoalPosX;
 		vGoalPos.y = m_fGoalPosY;
 
-
 		_float4 vResult = CEasing_Utillity::QuadOut(m_vOriginPos, vGoalPos, m_fMoveAccTime, m_fMoveDuration);
 		Set_Pos(vResult);
 
@@ -459,9 +466,7 @@ void CUI_Object::DoMove()
 		_float4 vMovePos = _float4(fMoveValueX, fMoveValueY, 0.f);
 		_float4 vSetPos = Get_Pos() + vMovePos;
 
-		Set_Pos(vSetPos);*/
-
-		
+		Set_Pos(vSetPos);*/		
 	}
 
 	if (m_bIsDoMoveY)
@@ -472,12 +477,14 @@ void CUI_Object::DoMove()
 		_float fMoveValue = (m_fMoveValue / m_fMoveDurationY) * fDT(0);
 		_float fResultPos = fCurPosY + fMoveValue;
 
-		Set_PosY(fResultPos);
+		_float vResult = CEasing_Utillity::ElasticEaseOut(fCurPosY, fResultPos, m_fMoveYAccTime, m_fMoveDurationY);
+
+		Set_PosY(vResult);
 
 		if (m_fMoveYAccTime >= m_fMoveDurationY)
 		{
-			_float fResultPosY = m_vOriginPos.y + m_fMoveValue;
-			Set_PosY(fResultPosY);
+			// _float fResultPosY = m_vOriginPos.y + m_fMoveValue;
+			Set_PosY(vResult);
 
 			m_fMoveYAccTime = 0.f;
 			m_bIsDoMoveY = false;
@@ -492,12 +499,13 @@ void CUI_Object::DoMove()
 		_float fMoveValue = (m_fMoveValue / m_fMoveDurationX) * fDT(0);
 		_float fResultPos = fCurPosX + fMoveValue;
 
-		Set_PosX(fResultPos);
+		_float vResult = CEasing_Utillity::ElasticEaseOut(fCurPosX, fResultPos, m_fMoveXAccTime, m_fMoveDurationX);
+		Set_PosX(vResult);
 
 		if (m_fMoveXAccTime >= m_fMoveDurationX)
 		{
-			_float fResultPosY = m_vOriginPos.x + m_fMoveValue;
-			Set_PosX(fResultPosY);
+			// _float fResultPosY = m_vOriginPos.x + m_fMoveValue;
+			Set_PosX(vResult);
 
 			m_fMoveXAccTime = 0.f;
 			m_bIsDoMoveX = false;
@@ -552,14 +560,15 @@ void CUI_Object::DoScale()
 
 		_float fScaleValueX = (m_fScaleValue / m_fScaleDuration) * fDT(0);
 
-		vCurScaleX += fScaleValueX;
+		_float fResultScale = vCurScaleX += fScaleValueX;
 
-		Set_ScaleX(vCurScaleX);
+		_float vResult = CEasing_Utillity::ElasticEaseOut(vCurScaleX, fResultScale, m_fScaleAccTime, m_fScaleDuration);
+		Set_ScaleX(vResult);
 
 		if (m_fScaleAccTime >= m_fScaleDuration)
 		{
-			_float fResultScaleX = m_vOriginScale.x + m_fScaleValue;
-			Set_ScaleX(fResultScaleX);
+			// _float fResultScaleX = m_vOriginScale.x + m_fScaleValue;
+			Set_ScaleX(vResult);
 
 			m_fScaleAccTime = 0.f;
 			m_bIsDoScaleX = false;

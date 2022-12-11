@@ -192,11 +192,9 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _uint iTeamType)
 	}
 }
 
-void CUI_Paden::Interact_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
+void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
 	_float fDuration = 0.3f;
-
-	_bool bIsMainPlayer = CUser::Get_Instance()->Get_Player()->Is_MainPlayer();
 
 	for (int i = 0; i < PU_End; ++i)
 	{

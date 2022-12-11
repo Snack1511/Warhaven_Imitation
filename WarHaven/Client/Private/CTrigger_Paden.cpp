@@ -31,8 +31,8 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		++m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 	}
 
-	// 상단 유아이 하이라이트
-	CUser::Get_Instance()->Interat_PointUI(m_strTriggerName, eOtherColType, 0);
+	_bool bIsMainPlayer = static_cast<CPlayer*>(pOtherObj)->IsMainPlayer();
+	CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, eOtherColType, 0);
 }
 
 void CTrigger_Paden::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -51,8 +51,8 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 		--m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 	}
 
-	// 상단 유아이 원위치
-	CUser::Get_Instance()->Interat_PointUI(m_strTriggerName, 99, 1);
+	_bool bIsMainPlayer = static_cast<CPlayer*>(pOtherObj)->IsMainPlayer();
+	CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, 99, 1);
 }
 
 CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum)

@@ -263,9 +263,9 @@ void CUser::Transform_SkillUI(_uint iClass)
 	m_pUI_Skill->Transform_SkillUI(iClass);
 }
 
-void CUser::Interat_PointUI(string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
+void CUser::Interat_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
 {
-	m_pUI_Paden->Interact_PointUI(strPadenPointKey, iTeamType, iTriggerState);
+	m_pUI_Paden->Interact_PointUI(bIsMainPlayer, strPadenPointKey, iTeamType, iTriggerState);
 }
 
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)

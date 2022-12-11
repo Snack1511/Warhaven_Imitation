@@ -97,7 +97,7 @@ public:
 	void Transform_SkillUI(_uint iClass);
 
 public:		// ÆÄµ§
-	void Interat_PointUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
+	void Interat_PointUI(_bool bIsMainPlayer, string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
