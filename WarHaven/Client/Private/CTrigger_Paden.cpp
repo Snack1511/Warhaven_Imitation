@@ -31,7 +31,7 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		++m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 	}
 
-	_bool bIsMainPlayer = static_cast<CPlayer*>(pOtherObj)->IsMainPlayer();
+	_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
 	CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, eOtherColType, 0);
 }
 
