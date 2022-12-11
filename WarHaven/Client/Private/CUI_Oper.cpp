@@ -100,6 +100,7 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 {
 	m_bIsRespawn = false;
+	m_iOperRespawn = 0;
 
 	CUser::Get_Instance()->SetActive_PadenUI(true);
 	CUser::Get_Instance()->SetActive_HUD(true);
@@ -131,7 +132,6 @@ void CUI_Oper::OnDisable()
 	__super::OnDisable();
 
 	m_pRespawnBtn->SetActive(false);
-
 	for (auto iter : m_pOperList)
 	{
 		iter->SetActive(false);
@@ -352,6 +352,14 @@ void CUI_Oper::Progress_Oper()
 
 void CUI_Oper::Enable_StrongHoldUI()
 {
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pArrStrongHoldUI[SP_BG][i]->Set_Scale(115.f);
+		m_pArrStrongHoldUI[SP_Outline][i]->Set_Scale(120.f);
+		m_pArrStrongHoldUI[SP_Icon][i]->Set_Scale(115.f);
+		m_pArrStrongHoldUI[SP_TEXT][i]->Set_Scale(140.f);
+	}
+
 	for (int i = 0; i < SP_End; ++i)
 	{
 		switch (m_eLoadLevel)

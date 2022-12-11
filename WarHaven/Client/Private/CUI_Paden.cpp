@@ -26,6 +26,18 @@ HRESULT CUI_Paden::Start()
 
 	Bind_Shader();
 
+	for (int i = 0; i < Team_End; ++i)
+	{
+		GET_COMPONENT_FROM(m_pArrScoreNum[i][0], CTexture)->Set_CurTextureIndex(1);
+		GET_COMPONENT_FROM(m_pArrScoreNum[i][1], CTexture)->Set_CurTextureIndex(0);
+		GET_COMPONENT_FROM(m_pArrScoreNum[i][2], CTexture)->Set_CurTextureIndex(0);
+
+		for (int j = 0; j < Num_End; ++j)
+		{
+			Enable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
+		}
+	}
+
 	OnEnable();
 
 	return S_OK;
@@ -293,6 +305,16 @@ void CUI_Paden::My_Tick()
 			if (m_vecPrvScore[i][j] != m_vecCurScore[i][j])
 			{
 				GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Set_CurTextureIndex(m_vecCurScore[i][j]);
+
+				if (j < Num2)
+				{
+					_uint iTextureNum = GET_COMPONENT_FROM(m_pArrScoreNum[i][j], CTexture)->Get_CurTextureIndex();
+					if (iTextureNum == 0)
+					{
+						Disable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
+					}
+				}
+
 				Enable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
 			}
 		}
