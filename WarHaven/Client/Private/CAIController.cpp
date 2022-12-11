@@ -166,27 +166,21 @@ void CAIController::OnDisable()
 
 void CAIController::Ready_Controller()
 {
-	/* 현재 타고 있는 Path 갱신 */
-
-	if (m_pCurPath)
-	{
-		m_pCurPath->Update_CurrentIndex(m_pOwnerPlayer->Get_WorldPos());
-	}
-
 	for (auto& Value : m_NearObjectList)
 	{
-		CPlayer* pPlayer = static_cast<CPlayer*>(Value);
-		CTrigger* pTrigger = static_cast<CTrigger*>(Value);
+		CUnit* pUnit = dynamic_cast<CUnit*>(Value);
+		CTrigger* pTrigger = dynamic_cast<CTrigger*>(Value);
+
 		if (nullptr != pTrigger)
 		{
 			m_NearTriggerList.push_back(pTrigger);
 		}
-		else if (nullptr != pPlayer)
+		else if (nullptr != pUnit)
 		{
-			if(pPlayer->Get_Team() == m_pOwnerPlayer->Get_Team())
-				m_NearAlliesList.push_back(pPlayer);
+			if(pUnit->Get_OwnerPlayer()->Get_Team() == m_pOwnerPlayer->Get_Team())
+				m_NearAlliesList.push_back(pUnit->Get_OwnerPlayer());
 			else
-				m_NearEnemyList.push_back(pPlayer);
+				m_NearEnemyList.push_back(pUnit->Get_OwnerPlayer());
 
 		}
 	}

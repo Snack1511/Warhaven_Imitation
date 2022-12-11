@@ -241,10 +241,16 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 
 void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	if (m_pCurrentUnit == pOtherObj)
+		return;
+
 	m_pAIController->m_NearObjectList.push_back(pOtherObj);
 }
 void CPlayer::Player_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
+	if (m_pCurrentUnit == pOtherObj)
+		return;
+
 	m_pAIController->m_NearObjectList.push_back(pOtherObj);
 }
 void CPlayer::Player_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType) 
@@ -427,6 +433,8 @@ HRESULT CPlayer::Initialize_Prototype()
 	if (!m_pMyPlayerInfo)
 		return E_FAIL;
 
+	m_bIsMainPlayer = m_pMyPlayerInfo->m_bIsMainPlayer;
+
 #pragma region AI컴포넌트 추가용 구문
 	if (nullptr != m_pMyPlayerInfo->m_pPersonality)
 	{
@@ -494,6 +502,9 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 
 	Create_UnitHUD();
+
+	if (FAILED(SetUp_Collider()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -574,6 +585,9 @@ void CPlayer::OnDisable()
 
 HRESULT CPlayer::SetUp_Collider()
 {
+	if (m_bIsMainPlayer)
+		return S_OK;
+
 	m_pSightRangeCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 
 		m_pMyPlayerInfo->m_pPersonality->m_tPersonalDesc.fSIghtRadius, 
 		COL_SIGHTRANGE, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
@@ -772,7 +786,7 @@ void CPlayer::Set_NewPath(CPath* pPath)
 
 _float4 CPlayer::Get_LookDir()
 {
-	return m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+	return m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
 }
 
 void CPlayer::Update_HeroGauge()

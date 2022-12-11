@@ -1063,17 +1063,17 @@ void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
 	//뭔가...일어남..
 	m_pOwnerPlayer->Set_BehaviorDesc(pBehaviorDesc);
-	CPlayer* pTargetPlayer = nullptr;
-	//테스트
-	if (nullptr != pBehaviorDesc->pAlliesPlayer)
-	{
-		pTargetPlayer = pBehaviorDesc->pAlliesPlayer;
-	}
-	else if (nullptr != pBehaviorDesc->pEnemyPlayer)
-	{
-		pTargetPlayer = pBehaviorDesc->pEnemyPlayer;
-	}
-	m_pOwnerPlayer->Set_TargetPlayer(pTargetPlayer);
+	//CPlayer* pTargetPlayer = nullptr;
+	////테스트
+	//if (nullptr != pBehaviorDesc->pAlliesPlayer)
+	//{
+	//	pTargetPlayer = pBehaviorDesc->pAlliesPlayer;
+	//}
+	//else if (nullptr != pBehaviorDesc->pEnemyPlayer)
+	//{
+	//	pTargetPlayer = pBehaviorDesc->pEnemyPlayer;
+	//}
+	//m_pOwnerPlayer->Set_TargetPlayer(pTargetPlayer);
 
 }
 

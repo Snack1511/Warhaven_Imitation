@@ -181,30 +181,22 @@ void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, C
 
     list<CPlayer*>& Enemies = pAIController->Get_NearEnemy();
     CHECK_EMPTY(Enemies);
-    Enemies.sort([&MyPositoin](auto& Sour, auto& Dest)
-        {
-            _float4 SourPosition = Sour->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-            _float4 DestPosition = Dest->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
-            if ((SourPosition - MyPositoin).Length() > (DestPosition - MyPositoin).Length())
-                return true;
-            else return false;
-        });
 
-    for (auto& Value : Enemies)
+    for (auto iter = Enemies.begin(); iter != Enemies.end();)
     {
-        _float4 vTargetPosition = Value->Get_WorldPos();
+        _float4 vTargetPosition = (*iter)->Get_WorldPos();
         _float4 vDir = (vTargetPosition - MyPositoin).Normalize();
         _float4 vMyLook = pPlayer->Get_LookDir();
 
         _float DotDir = vMyLook.Dot(vDir);
 
-        Enemies.remove_if([&DotDir](auto& EnemyValue)
-            {
-                if (DotDir < 0.f)
-                    return true;
-                else return false;
-            });
+        if (DotDir < 0.f)
+            iter = Enemies.erase(iter);
+        else
+            ++iter;
     }
+
+
 
     OutCondition = true;
 
@@ -213,6 +205,8 @@ void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, C
 void CTable_Conditions::Check_FarAwayRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
     OutCondition = false;
+    if (!pPlayer->Get_CurPath())
+        return;
     _float4 vNearestPosition = pPlayer->Get_CurPath()->Get_LatestPosition();
     _float4 vMyPosition = pPlayer->Get_WorldPos();
 
@@ -225,10 +219,14 @@ void CTable_Conditions::Check_FarAwayRoute(_bool& OutCondition, CPlayer* pPlayer
 void CTable_Conditions::Check_NearFromRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
     OutCondition = false;
-    _float4 vNearestPosition = pPlayer->Get_CurPath()->Get_LatestPosition();
+
+    if (!pPlayer->Get_CurPath())
+        return;
+
+    _float4 vLatestPosition = pPlayer->Get_CurPath()->Get_LatestPosition();
     _float4 vMyPosition = pPlayer->Get_WorldPos();
 
-    if ((vNearestPosition - vMyPosition).Length() <= pAIController->Get_Personality()->Get_LimitRouteDistance())
+    if ((vLatestPosition - vMyPosition).Length() <= pAIController->Get_Personality()->Get_LimitRouteDistance())
     {
         OutCondition = true;
     }
@@ -314,6 +312,8 @@ void CTable_Conditions::Select_NearTrigger(_bool& OutCondition, BEHAVIOR_DESC*& 
 void CTable_Conditions::Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {
     OutCondition = false;
+    if (!pPlayer->Get_CurPath())
+        return;
     _float4 vNearestPosition = pPlayer->Get_CurPath()->Get_LatestPosition();
     _float4 vMyPosition = pPlayer->Get_WorldPos();
     list<CPlayer*> Enemies = pAIController->Get_NearEnemy();
