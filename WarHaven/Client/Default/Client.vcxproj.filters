@@ -2164,6 +2164,33 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation">
       <UniqueIdentifier>{b3ff1aec-eaed-4af4-bd39-32b867026909}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump">
+      <UniqueIdentifier>{c4d07a4e-48e3-4c1d-96d2-24060b6734e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall">
+      <UniqueIdentifier>{1a2111ac-3179-4472-affa-bb23557cf9f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land">
+      <UniqueIdentifier>{d4a2bf19-67d8-438b-8893-ed7f79339959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior">
+      <UniqueIdentifier>{087f300b-c207-4a21-b101-13609f7c4130}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior">
+      <UniqueIdentifier>{d73beba8-998f-4798-927f-7c3e1b1cab13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior\01. Right">
+      <UniqueIdentifier>{afeddec0-f1e0-465a-a6bb-40fac96c355c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior\02. Left">
+      <UniqueIdentifier>{b1af46a9-d5e2-4736-a056-494df3c23c5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior\01. Right">
+      <UniqueIdentifier>{674d99f7-7cd9-4189-b91d-d5edc844b6e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior\02. Left">
+      <UniqueIdentifier>{98d1cdec-2a76-4d8b-b358-0583d79582f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3822,6 +3849,30 @@
     <ClInclude Include="..\public\CState_PathNavigation.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5460,6 +5511,30 @@
     </ClCompile>
     <ClCompile Include="..\private\CState_PathNavigation.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\01. Warrior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

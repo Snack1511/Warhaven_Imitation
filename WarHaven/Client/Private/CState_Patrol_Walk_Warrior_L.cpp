@@ -64,7 +64,7 @@ STATE_TYPE CState_Patrol_Walk_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimato
     if (pAnimator->Is_CurAnimFinished())
     {
         if (m_iRand == 0)
-            return AI_STATE_PATROL_IDLE_WARRIOR_L;
+            return AI_STATE_PATROL_DEAFULT_WARRIOR_L;
         else
             --m_iRand;
     }

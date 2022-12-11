@@ -62,7 +62,7 @@ void CState_Patrol_Switch_Warrior_CSwitchRtoL::Enter(CUnit* pOwner, CAnimator* p
 STATE_TYPE CState_Patrol_Switch_Warrior_CSwitchRtoL::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_PATROL_IDLE_WARRIOR_L;
+        return AI_STATE_PATROL_DEAFULT_WARRIOR_L;
 
     return __super::Tick(pOwner, pAnimator);
 }
