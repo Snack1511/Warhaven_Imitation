@@ -855,7 +855,6 @@ void CPlayer::Enable_UnitHUD()
 	DISABLE_GAMEOBJECT(m_pUnitHUD);
 }
 
-
 void CPlayer::Frustum_UnitHUD()
 {
 	if (!m_pCurrentUnit->Is_Valid())

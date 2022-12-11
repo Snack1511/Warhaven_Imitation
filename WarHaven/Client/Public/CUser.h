@@ -99,7 +99,7 @@ public:
 public:		// ÆÄµ§
 	void Interat_PointUI(string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
-	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform);
+	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
 	void Conquest_PointUI(string strPointName, _uint iTeamType);
 

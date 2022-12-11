@@ -278,9 +278,9 @@ void CUser::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 	m_pUI_Paden->Set_Score(iTeamType, iScore, iMaxScore);
 }
 
-void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform)
+void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
-	m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform);
+	m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform, isInFrustum);
 }
 
 void CUser::Conquest_PointUI(string strPointName, _uint iTeamType)

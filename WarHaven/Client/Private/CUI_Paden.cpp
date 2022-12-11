@@ -99,13 +99,17 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 	}
 }
 
-void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform)
+void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
 	vNewPos.y += 2.f;
 
 	for (int i = 0; i < PU_End; ++i)
 	{
+		m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
+		if (!m_pArrProjPointUI[iPointIdx][i]->Is_Valid())
+			return;
+
 		if (i == PU_Text)
 		{
 			m_pArrProjPointUI[iPointIdx][i]->Set_PosX(vNewPos.x);

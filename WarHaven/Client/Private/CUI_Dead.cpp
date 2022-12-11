@@ -84,6 +84,8 @@ void CUI_Dead::SetActive_DeadUI(_bool value)
 
 void CUI_Dead::SetActive_RevivalUI(_bool value)
 {
+	m_pRevivalUI[RU_Bar]->Set_Color(m_vGaugeColor);
+
 	for (int i = 0; i < RU_End; ++i)
 	{
 		m_pRevivalUI[i]->SetActive(value);
