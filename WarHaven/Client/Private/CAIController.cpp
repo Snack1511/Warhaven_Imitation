@@ -107,6 +107,12 @@ void CAIController::Early_Tick()
 		pBehaviorDescTemp = pNextBehavior->Get_BehaviorDesc();
 	}
 
+	/* 무지성 CHange */
+	pBehaviorDescTemp->eCurType = pNextBehavior->Get_BehaviorType();
+	m_pOwnerPlayer->On_ChangeBehavior(pBehaviorDescTemp);
+	m_pCurrentBehavior = pNextBehavior;
+
+	/* Behavior가 딱 바뀐 시점에는 cout과 시간 갱신 정도만 */
 	if (!m_pCurrentBehavior || m_pCurrentBehavior != pNextBehavior)
 	{
 		/*
@@ -116,8 +122,6 @@ void CAIController::Early_Tick()
 			pBehaviorDesc->ePrevType = eBehaviorType::ePatrol;
 			*/
 
-		pBehaviorDescTemp->eCurType = pNextBehavior->Get_BehaviorType();
-		m_pCurrentBehavior = pNextBehavior;
 
 		cout << "CurUnitName - " << CFunctor::To_String(m_pOwnerPlayer->Get_PlayerName()).c_str() << endl;
 		cout << "CurBehavior - " << CFunctor::To_String(m_pCurrentBehavior->Get_BehaviorName()).c_str() << endl;
@@ -126,7 +130,6 @@ void CAIController::Early_Tick()
 
 	}
 
-	m_pOwnerPlayer->On_ChangeBehavior(pBehaviorDescTemp);
 
 }
 

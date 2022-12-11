@@ -253,7 +253,6 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	vector			vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
 
-
 	Out.vColor = vDiffuse * vShade;
 
 
@@ -264,7 +263,7 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	Out.vColor *= vShadowDesc;
 #endif
 
-	Out.vColor *= 1.2f;
+	Out.vColor *= 2.2f;
 
 	//RimLight
 	vector			vRimLightDesc = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
@@ -276,7 +275,7 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 	if (vSpecular.r < 1.f)
 	{
-		if (dot(Out.vColor.xyz, float3(0.333f, 0.333f, 0.333f)) > 0.5f)
+		if (dot((vDiffuse.xyz * vShadowDesc.xyz), float3(0.333f, 0.333f, 0.333f)) > 0.5f)
 			Out.vColor += vSpecular;
 	}
 

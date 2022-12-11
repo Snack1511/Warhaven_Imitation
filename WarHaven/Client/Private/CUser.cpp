@@ -376,13 +376,13 @@ void CUser::On_EnterStageLevel()
 		CREATE_GAMEOBJECT(m_pUI_Training, GROUP_UI);
 	}
 
-	/*if (!m_pUI_Paden)
+	if (!m_pUI_Paden)
 	{
 		m_pUI_Paden = CUI_Paden::Create();
 
 		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Paden);
-	}*/
+	}
 
 	if (!m_pUI_Dead)
 	{

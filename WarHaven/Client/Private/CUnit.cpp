@@ -936,18 +936,19 @@ void CUnit::My_Tick()
 
 	if (m_eReserveState != STATE_END)
 	{
-			if (m_pCurState->m_iStateChangeKeyFrame <= m_pAnimator->Get_CurAnimFrame())
+		if (m_pCurState->m_iStateChangeKeyFrame <= m_pAnimator->Get_CurAnimFrame())
+		{
+			if (m_eReserveState != m_eDefaultState)
 			{
-				if (m_eReserveState != m_eDefaultState)
-				{
-					Enter_State(m_eReserveState);
-					m_eDefaultState = m_eReserveState;
-					m_eReserveState = STATE_END;
-				}
-				
-				m_pOwnerPlayer->On_RealChangeBehavior();
-
+				Enter_State(m_eReserveState);
+				m_eDefaultState = m_eReserveState;
+				m_eReserveState = STATE_END;
 			}
+			
+			/* BehaviorDesc는 갱신하기 */
+			m_pOwnerPlayer->On_RealChangeBehavior();
+
+		}
 
 	}
 

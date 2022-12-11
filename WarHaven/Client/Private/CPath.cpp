@@ -2,7 +2,7 @@
 #include "CPath.h"
 
 #include "UsefulHeaders.h"
-
+#include "CAIController.h"
 CPath::CPath()
 {
 }
@@ -67,8 +67,13 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
     _float4 vTargetPos = m_vecPositions[m_iCurIndex];
     
     _float fLength = (vCurrentPos - vTargetPos).Length();
+    _float fCurSpeed = 0.1f;
 
-    if (fLength < 10.f * fDT(0))
+    if (m_pOwnerController)
+        fCurSpeed = GET_COMPONENT_FROM(m_pOwnerController->Get_OwnerPlayer()->Get_CurrentUnit(), CPhysics)->Get_Physics().fSpeed * fDT(0);
+
+
+    if (fLength < fCurSpeed + fDT(0))
         m_iCurIndex++;
 }
 

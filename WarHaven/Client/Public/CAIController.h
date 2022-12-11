@@ -108,7 +108,7 @@ public:
 
 public:
     CAIPersonality* Get_Personality() { return m_pPersonality; }
-
+    CPlayer* Get_OwnerPlayer() { return m_pOwnerPlayer; }
 private:
     CPlayer* m_pOwnerPlayer = nullptr;
     CAIPersonality* m_pPersonality = nullptr;
