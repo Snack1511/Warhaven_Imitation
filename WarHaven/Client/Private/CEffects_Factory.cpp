@@ -713,10 +713,11 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"UnHenshin"), "UnHenshin")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Transform_Particle"), "Transform_Particle")))
+		return E_FAIL;
+
 
 		/*valkyrie*/
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Wing"), "Wing")))
-		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Shield_Attack"), "Shield_Attack")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Shield_Flare"), "Shield_Flare")))
