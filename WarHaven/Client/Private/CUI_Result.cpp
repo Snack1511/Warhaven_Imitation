@@ -3,6 +3,7 @@
 #include "CUI_Object.h"
 #include "Texture.h"
 #include "Easing_Utillity.h"
+#include "CUser.h"
 
 CUI_Result::CUI_Result()
 {
@@ -23,13 +24,13 @@ HRESULT CUI_Result::Start()
 {
 	__super::Start();
 
-	SetActive_Result(0, true);
-
 	return S_OK;
 }
 
 void CUI_Result::SetActive_Result(_uint iResult, _bool value)
 {
+	CUser::Get_Instance()->SetActive_PadenUI(false);
+
 	GET_COMPONENT_FROM(m_pResultUI[Result_BG], CTexture)->Set_CurTextureIndex(iResult);
 
 	GET_COMPONENT_FROM(m_pResultUI[Result_Text0], CTexture)->Set_CurTextureIndex(iResult);

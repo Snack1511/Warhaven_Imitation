@@ -415,6 +415,14 @@ void CUser::On_EnterStageLevel()
 			CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pUI_Paden);
 		}
+
+		if (!m_pUI_Result)
+		{
+			m_pUI_Result = CUI_Result::Create();
+
+			CREATE_GAMEOBJECT(m_pUI_Result, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pUI_Result);
+		}
 	}
 
 	SetUp_BloodOverlay();
