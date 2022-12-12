@@ -95,7 +95,6 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 {
 	// DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 
-	m_bSelectTargetPoint = true;
 
 	_float4 vPos = m_pArrStrongHoldUI[SP_BG][iEventNum]->Get_Pos();
 	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
@@ -108,7 +107,9 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(0.f, 0.6f, 0.f, 1.f));
 	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
 
-	CUser::Get_Instance()->Set_TargetPointPos(iEventNum);
+	m_bSelectTargetPoint = true;
+	if (m_bSelectTargetPoint)
+		CUser::Get_Instance()->Set_TargetPointPos(iEventNum);
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
@@ -430,7 +431,8 @@ void CUI_Oper::Progress_Oper()
 
 				DISABLE_GAMEOBJECT(this);
 
-				CUser::Get_Instance()->SetActive_TargetPoint(true);
+				if (m_bSelectTargetPoint)
+					CUser::Get_Instance()->SetActive_TargetPoint(true);
 
 				CUser::Get_Instance()->Set_FixCursor(true);
 				CUser::Get_Instance()->SetActive_Cursor(false);

@@ -321,9 +321,6 @@ void CUser::Set_TargetPointPos(_uint iTargetIdx)
 
 void CUser::SetActive_TargetPoint(_bool value)
 {
-	if (m_pUI_Oper->Get_SelectTargetPoint() == false)
-		return;
-
 	m_pUI_Paden->SetActive_TargetPoint(value);
 }
 

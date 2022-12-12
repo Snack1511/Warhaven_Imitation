@@ -102,11 +102,29 @@ void CUI_UnitHUD::My_Tick()
 			}
 			else
 			{
+				m_pUnitNameText->Set_Scale(8.f);
+
 				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 0)
 				{
 					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(0);
 				}
 			}
+
+			if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+			{
+				if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+				{
+					m_pUnitNameText->Set_Color(m_vColorLightGreen);
+				}
+				else
+				{
+					m_pUnitNameText->Set_Color(m_vColorBlue);
+				}
+			}
+			else
+			{
+				m_pUnitNameText->Set_Color(m_vColorRed);
+			}			
 		}
 
 		if (m_pUnitNameText->Get_FontRender())
@@ -141,35 +159,22 @@ void CUI_UnitHUD::My_Tick()
 
 		if (m_pOwner->IsMainPlayer())
 		{
-			if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 1)
+			if (m_pOwner->Get_CurrentUnit()->Get_OwnerPlayer()->IsHero())
 			{
-				m_pUnitNameText->Set_Scale(m_fLeaderIconScale);
-				m_pUnitNameText->Set_Color(m_vColorGreen);
+				m_pUnitNameText->Set_Color(m_vColorOrigin);
+				m_pUnitNameText->Set_Scale(m_fHeroIconScale);
 
-				GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
+				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 2)
+					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(2);
 			}
-		}
-
-		_bool bHero = m_pOwner->Get_CurrentUnit()->Get_OwnerPlayer()->IsHero();
-		if (bHero)
-		{
-			if (m_pOwner->Get_Team())
+			else
 			{
-				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 1)
 				{
-					m_pUnitNameText->Set_Color(m_vColorOrigin);
-					m_pUnitNameText->Set_Scale(m_fHeroIconScale);
+					m_pUnitNameText->Set_Scale(m_fLeaderIconScale);
+					m_pUnitNameText->Set_Color(m_vColorGreen);
 
-					if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 2)
-						GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(2);
-				}
-				else
-				{
-					m_pUnitNameText->Set_Color(m_vColorOrigin);
-					m_pUnitNameText->Set_Scale(m_fHeroIconScale);
-
-					if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 3)
-						GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(3);
+					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
 				}
 			}
 		}
@@ -256,17 +261,17 @@ void CUI_UnitHUD::Init_UnitNameText()
 
 void CUI_UnitHUD::Set_LeaderIcon()
 {
-	
+
 }
 
 void CUI_UnitHUD::Set_IconColor()
 {
-	
+
 }
 
 void CUI_UnitHUD::Set_HeroIcon()
 {
-	
+
 }
 
 void CUI_UnitHUD::SetActive_UnitHP(_bool value)

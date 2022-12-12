@@ -339,7 +339,7 @@ void CUI_Paden::My_LateTick()
 	__super::My_LateTick();
 
 	Set_PointTextPosY();
-	Set_TargetPointPos();
+	Update_TargetPointPos();
 }
 
 void CUI_Paden::OnEnable()
@@ -687,7 +687,7 @@ void CUI_Paden::Bind_Shader()
 
 }
 
-void CUI_Paden::Set_TargetPointPos()
+void CUI_Paden::Update_TargetPointPos()
 {
 	if (m_bSetTargetPoint)
 	{

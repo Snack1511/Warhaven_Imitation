@@ -120,7 +120,7 @@ private:
 	void Init_PointUI();
 
 	void Set_PointTextPosY();
-	void Set_TargetPointPos();
+	void Update_TargetPointPos();
 
 	void Set_PointGauge_Color(_bool bIsMainPlayerTeam, PointName ePointName);
 
