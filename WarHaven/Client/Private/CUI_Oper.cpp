@@ -218,6 +218,38 @@ void CUI_Oper::Progress_Oper()
 			}
 
 			Enable_StrongHoldUI();
+
+			_float fDuration = 0.3f;
+			for (int i = 0; i < 2; ++i)
+			{
+				Enable_Fade(m_pArrCharacterSideBG[i], fDuration);
+			}
+
+			_float4 vPos0 = m_pArrCharacterSideBG[0]->Get_Pos();
+			vPos0.x += 50.f;
+			m_pArrCharacterSideBG[0]->DoMove(vPos0, fDuration, 0);
+
+			_float4 vPos1 = m_pArrCharacterSideBG[1]->Get_Pos();
+			vPos1.x -= 50.f;
+			m_pArrCharacterSideBG[1]->DoMove(vPos1, fDuration, 0);
+
+			for (int i = 0; i < CP_End; ++i)
+			{
+				for (int j = 0; j < 6; ++j)
+				{
+					Enable_Fade(m_pArrCharacterPort[i][j], fDuration);
+					_float4 vPos = m_pArrCharacterPort[i][j]->Get_Pos();
+					vPos.x += 50.f;
+					m_pArrCharacterPort[i][j]->DoMove(vPos, fDuration, 0);
+				}
+			}
+
+			for (int i = 0; i < CP_End; ++i)
+			{
+				m_pArrCharacterPort[i][0]->DoScale(10.f, fDuration);
+			}
+
+
 		}
 	}
 	else

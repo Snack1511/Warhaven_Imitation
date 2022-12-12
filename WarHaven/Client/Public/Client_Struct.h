@@ -37,19 +37,6 @@ namespace Client
 
 
 
-	struct UNIT_STATUS
-	{
-		_float fHP = 100.f;
-		_float fMaxHP = 100.f;
-		_float fRunSpeed = 7.5f;
-		_float fRunBeginSpeed = 11.f;
-		_float fWalkSpeed = 2.f;
-		_float fDashSpeed = 16.f;
-		_float fWallJumpSpeed = 15.f;
-		_float fWireSpeed = 25.f;
-		_float fJumpPower = 6.5f;
-	};
-
 	struct UNIT_MODEL_DATA
 	{
 		wstring	strModelPaths[MODEL_PART_END];

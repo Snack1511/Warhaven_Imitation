@@ -348,7 +348,7 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 
 		if (vDepthDesc.y < 0.9f)
 		{
-			float		fMaxDepth = 0.7f;
+			float		fMaxDepth = 0.15f;
 
 			float fRatio = saturate(vDepthDesc.y / fMaxDepth);
 

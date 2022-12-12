@@ -148,25 +148,25 @@ void CState_Hit::Guard_State(CUnit* pOwner)
     {
     case HIT_TYPE::eLEFT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_L];
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_R];
 
         break;
 
     case HIT_TYPE::eRIGHT:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_R];
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_L];
 
         break;
 
     case HIT_TYPE::eUP:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_F];
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_TOP];
 
         break;
 
     case HIT_TYPE::eDOWN:
         m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_TOP];
+        m_iAnimIndex = m_iGuardIndex[GUARD_STATE_F];
 
         break;
 

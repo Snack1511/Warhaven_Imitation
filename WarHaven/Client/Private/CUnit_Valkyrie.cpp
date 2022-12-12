@@ -207,6 +207,8 @@ void CUnit_Valkyrie::On_Die()
 {
 	m_pOwnerPlayer->On_FinishHero();
 	m_pOwnerPlayer->Get_CurrentUnit()->On_Die();
+	m_bDie = false;
+	m_fDeadTimeAcc = 0.f;
 	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 }
 

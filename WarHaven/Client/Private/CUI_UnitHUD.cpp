@@ -110,7 +110,7 @@ void CUI_UnitHUD::My_Tick()
 				}
 			}
 
-			if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+			if (m_pOwner->Get_Team() && m_pOwner->Get_Team()->IsMainPlayerTeam())
 			{
 				if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
 				{

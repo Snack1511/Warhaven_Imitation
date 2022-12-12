@@ -1033,26 +1033,19 @@ HRESULT CGameSystem::On_Update_Paden()
 
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 	{
-		_uint iBlueTeam = 0;
-		_uint iRedTeam = 0;
-
 		if (m_pTeamConnector[i]->IsMainPlayerTeam())
 		{
-			iBlueTeam = (_uint)m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Get_TeamType();
+			_uint iBlueScore = m_pTeamConnector[i]->m_iScore;
+			_uint iBlueMaxScore = m_pTeamConnector[i]->m_iMaxScore;
 
-			_uint iRedScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->m_iScore;
-			_uint iRedMaxScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->m_iMaxScore;
-
-			CUser::Get_Instance()->Set_Score(iBlueTeam, iRedScore, iRedMaxScore);
+			CUser::Get_Instance()->Set_Score(0, iBlueScore, iBlueMaxScore);
 		}
 		else
 		{
-			iRedTeam = (_uint)m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Get_TeamType();
-			_uint iBlueScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_iScore;
-			_uint iBlueMaxScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_iMaxScore;
+			_uint iRedScore = m_pTeamConnector[i]->m_iScore;
+			_uint iRedMaxScore = m_pTeamConnector[i]->m_iMaxScore;
 
-
-			CUser::Get_Instance()->Set_Score(iRedTeam, iBlueScore, iBlueMaxScore);
+			CUser::Get_Instance()->Set_Score(1, iRedScore, iRedMaxScore);
 		}
 
 		if (m_pTeamConnector[i]->Has_MainTrigger())
@@ -1077,6 +1070,7 @@ HRESULT CGameSystem::On_Update_Paden()
 
 			if (!pMinusScoreTeam->Minus_Score())
 				On_FinishGame(pMinusScoreTeam);
+
 		}
 	}
 

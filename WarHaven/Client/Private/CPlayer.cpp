@@ -1006,6 +1006,9 @@ void CPlayer::Update_HeroGauge()
 
 		_float fGaugeSpeed = fDT(0) * 0.1f;
 
+		if (m_bIsMainPlayer)
+			fGaugeSpeed *= 200.f;
+
 		if (!m_bIsHero) //CChangeHero_Player
 		{
 			if (m_bAlive)
@@ -1021,7 +1024,7 @@ void CPlayer::Update_HeroGauge()
 		}
 		else //변신 중일때 
 		{	
-			m_fGauge -= fGaugeSpeed * 2.f; // 인게임속도2.f 
+			m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
 
 			if (m_bIsMainPlayer)
 			{

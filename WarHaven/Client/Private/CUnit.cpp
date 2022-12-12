@@ -291,9 +291,6 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 {
 #define HEADSHOTRATIO 1.5f
 #define GUARDSUCCESS 0.1f
-	_float fDmg = m_tUnitStatus.fAttackDamage * m_pCurState->Get_DamagePumping()
-		* ((bHeadShot) ? HEADSHOTRATIO : 1.f)
-		* ((bGuard) ? GUARDSUCCESS : 1.f);
 
 	//헤드샷이면 1.5배
 

@@ -212,13 +212,13 @@ _bool CColorController::Fade_Time(COLORDESC& tColorDesc)
 _bool CColorController::Fade_KeyFrame(COLORDESC& tColorDesc)
 {
 	/* AnimIndex°¡ ÀüÀÌ¶û ´Ù¸£¸é °Á false return*/
-	_uint iCurIndex = m_pTargetAnimator->Get_CurAnimIndex();
+	/*_uint iCurIndex = m_pTargetAnimator->Get_CurAnimIndex();
 	if (iCurIndex != tColorDesc.iOriginAnimIndex)
 	{
 		m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
 
 		return false;
-	}
+	}*/
 
 	_uint iCurFrame = m_pTargetAnimator->Get_CurAnimFrame();
 	
