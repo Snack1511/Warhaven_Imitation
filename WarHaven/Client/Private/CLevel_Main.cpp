@@ -72,9 +72,9 @@ HRESULT CLevel_Main::Enter()
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(-999.f, -999.f, -999.f);
-	LightDesc.vPosition.y += 1.f;
-	LightDesc.vPosition.z += 2.f;
-	LightDesc.vPosition.x += 0.f;
+	LightDesc.vPosition.y += 2.f;
+	LightDesc.vPosition.z -= 2.f;
+	LightDesc.vPosition.x += 0.5f;
 	LightDesc.fRange = 30.f;
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
@@ -84,7 +84,7 @@ HRESULT CLevel_Main::Enter()
 		return E_FAIL;
 
 
-	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	/*LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(-999.f, -999.f, -999.f);
 	LightDesc.vPosition.y += 1.f;
 	LightDesc.vPosition.z -= 1.f;
@@ -95,7 +95,7 @@ HRESULT CLevel_Main::Enter()
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 
 

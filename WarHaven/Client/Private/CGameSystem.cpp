@@ -1251,11 +1251,15 @@ CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eTEAM
 		break;
 	}
 
+	_uint iSize = 0;
 
-
-	_uint iSize = m_mapAllPathes[m_eCurStageType].size() - 1;
-
-	iSize /= 2;
+	for (auto& elem : m_mapAllPathes[m_eCurStageType])
+	{
+		if ((_int)elem.second->m_strName.find(strFindKey) >= 0)
+		{
+			iSize++;
+		}
+	}
 
 	_int iRandIndex = random(0, iSize);
 	
@@ -1437,8 +1441,8 @@ HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(100.f, 200.f, 50.f, 1.f);
 	LightDesc.fRange = 1500.f;
-	LightDesc.vDiffuse = _float4(0.45f, 0.45f, 0.45f, 1.f);
-	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
+	LightDesc.vDiffuse = _float4(0.5f, 0.5f, 0.5f, 1.f);
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))

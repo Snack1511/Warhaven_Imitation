@@ -845,7 +845,7 @@ void CPlayer::Update_HeroGauge()
 
 		if (!m_bIsHero) //CChangeHero_Player
 		{
-			m_fGauge += fGaugeSpeed * 20.f;
+			m_fGauge += fGaugeSpeed * 0.1f;
 			if (m_fGauge > m_fMaxGauge)
 			{
 				// 화신 텍스트 등장
@@ -940,9 +940,16 @@ void CPlayer::Check_AbleRevival()
 				else
 				{
 					CPath* pPath = m_pMySquad->Get_LeaderPlayer()->Get_CurPath();
+
 					if (nullptr == pPath)
+					{
 						pPath = CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType());
-					Set_NewPath(pPath->Clone());
+						Set_NewPath(pPath);
+					}
+					else
+						Set_NewPath(pPath->Clone());
+
+
 				}
 
 				_float4 vStartPos = m_pMyTeam->Find_RespawnPosition_Start();
