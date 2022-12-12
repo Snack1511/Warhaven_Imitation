@@ -38,6 +38,9 @@ public:
 
 	_uint	Get_CurIndex() { return m_iCurIndex; }
 	_uint	Get_PrevIndex() { return m_iPrevIndex; }
+	_float4 Get_FrontPosition();
+	void	Init_Indices();
+	string Get_PathName();
 private:
 	CAIController* m_pOwnerController = nullptr;
 

@@ -1130,13 +1130,13 @@ void CGameSystem::On_StartGame()
 
 
 		//// 반만 생성
-		//if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
-		//{
-		//	bTemp = !bTemp;
+		if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+		{
+			bTemp = !bTemp;
 
-		//	if (bTemp)
-		//		continue;
-		//}
+			if (bTemp)
+				continue;
+		}
 
 
 		/* ai들은 랜덤 선택 함수 호출 */
@@ -1270,34 +1270,56 @@ CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eTEAM
 
 	_uint iSize = 0;
 
+
+	vector<CPath*> PathVector;
+
 	for (auto& elem : m_mapAllPathes[m_eCurStageType])
 	{
 		if ((_int)elem.second->m_strName.find(strFindKey) >= 0)
 		{
-			iSize++;
+			//iSize++;
+			PathVector.push_back(elem.second);
 		}
 	}
 
-	_int iRandIndex = random(0, iSize-1);
-	
+	_int iRandIndex = random(0, _uint(PathVector.size()) - 1);
+
+	CPath* pClonePath = nullptr;
+	if (nullptr == PathVector[iRandIndex])
+		assert(0);
+
+	pClonePath  = PathVector[iRandIndex]->Clone();
+
+	if (nullptr == pClonePath)
+		assert(0);
+
+	pOwnerController->Set_NewPath(pClonePath);
+	return pClonePath;
+}
+
+CPath* CGameSystem::Get_NearPath(_float4 vPosition)
+{
+	CPath* pReturnPath = nullptr;
+	_float fMinLength = 9999999.f;
 	for (auto& elem : m_mapAllPathes[m_eCurStageType])
 	{
-		/* FindKey 들어간 이름이면 */
-		if ((_int)elem.second->m_strName.find(strFindKey) >= 0)
+		CPath* pPath = elem.second;
+		_float4 vPathStartPosition = pPath->Get_FrontPosition();
+
+		if (fabsf(vPathStartPosition.y - vPosition.y) > 2.f)
+			continue;
+
+		_float LengthDiff = (vPathStartPosition - vPosition).Length();
+
+		if (LengthDiff < 5.f 
+			&& LengthDiff < fMinLength)
 		{
-
-			if (iRandIndex == 0)
-			{
-				CPath* pClonePath = elem.second->Clone();
-				pOwnerController->Set_NewPath(pClonePath);
-				return pClonePath;
-			}
-			iRandIndex--;
-
+			pReturnPath = pPath;
+			fMinLength = LengthDiff;
 		}
-	}
 
-	return nullptr;
+	}
+	return pReturnPath;
 }
 
 CTrigger* CGameSystem::Find_Trigger(string strTriggerKey)

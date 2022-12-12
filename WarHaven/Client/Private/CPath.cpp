@@ -53,6 +53,8 @@ HRESULT CPath::Initialize()
 
     readFile.close();
 
+    m_iPrevIndex = m_iNumPositions - 1;
+
     return S_OK;
 }
 
@@ -69,9 +71,12 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
     _float fLength = (vCurrentPos - vTargetPos).Length();
     _float fCurSpeed = 0.1f;
 
-    if (m_pOwnerController)
+    if (m_pOwnerController) 
+    {
         fCurSpeed = GET_COMPONENT_FROM(m_pOwnerController->Get_OwnerPlayer()->Get_CurrentUnit(), CPhysics)->Get_Physics().fSpeed * fDT(0);
-
+    }
+    
+    m_iPrevIndex = m_iCurIndex;
 
     if (fLength < fCurSpeed + 3.f * fDT(0))
         m_iCurIndex++;
@@ -95,6 +100,29 @@ _float4 CPath::Get_CurDir(_float4 vCurrentPos)
 _float4 CPath::Get_LatestPosition()
 {
     return m_vecPositions[m_iCurIndex];
+}
+
+_float4 CPath::Get_FrontPosition()
+{
+    if (m_vecPositions.empty())
+    {
+        _uint size = _uint(m_vecPositions.size());
+        assert(size);
+        return ZERO_VECTOR;
+    }
+    return m_vecPositions.front();
+}
+
+void CPath::Init_Indices()
+{
+    m_iPrevIndex = m_iNumPositions - 1;
+    m_iCurIndex = 0;
+}
+
+string CPath::Get_PathName()
+{
+    
+    return m_strName;
 }
 
 void CPath::Save_CurPath()

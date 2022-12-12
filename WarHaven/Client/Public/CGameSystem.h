@@ -90,7 +90,7 @@ public: /* Pathes */
 	CPath*			Clone_Path(string strPathKey, CAIController* pOwnerController);
 
 	CPath*			Clone_RandomStartPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
-
+	CPath* Get_NearPath(_float4 vPosition);
 public:	
 	CTrigger*					Find_Trigger(string strTriggerKey);
 

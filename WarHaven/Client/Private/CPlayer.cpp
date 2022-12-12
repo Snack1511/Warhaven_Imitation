@@ -774,6 +774,15 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 		
 }
 
+void CPlayer::Change_NearPath()
+{
+	_float4 vUnitPosition = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+	CPath* pPath = CGameSystem::Get_Instance()->Get_NearPath(vUnitPosition);
+	if (nullptr == pPath)
+		return;
+	Set_NewPath(pPath->Clone());
+}
+
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
 {
 	m_eTeamType = eTeamType;
@@ -898,6 +907,8 @@ void CPlayer::Set_NewPath(CPath* pPath)
 {
 	SAFE_DELETE(m_pCurPath);
 	m_pCurPath = pPath;
+	if(m_pCurPath)
+		m_pCurPath->Init_Indices();
 }
 
 

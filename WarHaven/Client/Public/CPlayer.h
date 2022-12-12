@@ -188,7 +188,7 @@ public:
 
 public:
 	void On_ChangeBehavior(BEHAVIOR_DESC* pBehavior);
-
+	void Change_NearPath();
 private:
 	_bool	m_bEnableOnStart = false;
 
