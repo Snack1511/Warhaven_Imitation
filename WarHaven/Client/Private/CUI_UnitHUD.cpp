@@ -66,9 +66,74 @@ void CUI_UnitHUD::My_Tick()
 	{
 		m_vOffset = _float4(0.f, 1.9f, 0.f);
 
-		Set_HeroIcon();
-		Set_LeaderIcon();
-		Set_IconColor();
+		_bool bHero = m_pOwner->Get_CurrentUnit()->Get_OwnerPlayer()->IsHero();
+		if (bHero)
+		{
+			if (m_pOwner->Get_Team())
+			{
+				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+				{
+					m_pUnitNameText->Set_Color(m_vColorOrigin);
+					m_pUnitNameText->Set_Scale(m_fHeroIconScale);
+
+					if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 2)
+						GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(2);
+				}
+				else
+				{
+					m_pUnitNameText->Set_Color(m_vColorOrigin);
+					m_pUnitNameText->Set_Scale(m_fHeroIconScale);
+
+					if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 3)
+						GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(3);
+				}
+			}
+		}
+		else
+		{
+			if (m_pOwner->IsLeaderPlayer())
+			{
+				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 1)
+				{
+					m_pUnitNameText->Set_Scale(m_fLeaderIconScale);
+
+					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
+				}
+			}
+			else
+			{
+				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 0)
+				{
+					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(0);
+				}
+			}
+		}
+
+		if (m_pUnitNameText->Get_FontRender())
+		{
+			m_pUnitNameText->Set_FontRender(false);
+
+			if (m_pOwner->Get_Team())
+			{
+				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+				{
+					if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						m_pUnitNameText->Set_Color(m_vColorLightGreen);
+					}
+					else
+					{
+						m_pUnitNameText->Set_Color(m_vColorBlue);
+					}
+				}
+				else
+				{
+					m_pUnitNameText->Set_Color(m_vColorRed);
+				}
+			}
+
+			SetActive_UnitHP(false);
+		}
 	}
 	else
 	{
@@ -85,7 +150,29 @@ void CUI_UnitHUD::My_Tick()
 			}
 		}
 
-		Set_HeroIcon();
+		_bool bHero = m_pOwner->Get_CurrentUnit()->Get_OwnerPlayer()->IsHero();
+		if (bHero)
+		{
+			if (m_pOwner->Get_Team())
+			{
+				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+				{
+					m_pUnitNameText->Set_Color(m_vColorOrigin);
+					m_pUnitNameText->Set_Scale(m_fHeroIconScale);
+
+					if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 2)
+						GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(2);
+				}
+				else
+				{
+					m_pUnitNameText->Set_Color(m_vColorOrigin);
+					m_pUnitNameText->Set_Scale(m_fHeroIconScale);
+
+					if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 3)
+						GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(3);
+				}
+			}
+		}
 
 		if (m_pOwner->IsMainPlayer())
 			return;
@@ -169,106 +256,17 @@ void CUI_UnitHUD::Init_UnitNameText()
 
 void CUI_UnitHUD::Set_LeaderIcon()
 {
-	if (m_pOwner->IsLeaderPlayer())
-	{
-		if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 1)
-		{
-			m_pUnitNameText->Set_Scale(m_fLeaderIconScale);
-
-			GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(1);
-		}
-	}
-	else
-	{
-		if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 0)
-		{
-			GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(0);
-		}
-	}
+	
 }
 
 void CUI_UnitHUD::Set_IconColor()
 {
-	if (m_pUnitNameText->Get_FontRender())
-	{
-		m_pUnitNameText->Set_FontRender(false);
-
-		if (m_pOwner->Get_Team())
-		{
-			if (m_pOwner->Get_Team()->IsMainPlayerTeam())
-			{
-				if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
-				{
-					m_pUnitNameText->Set_Color(m_vColorLightGreen);
-				}
-				else
-				{
-					m_pUnitNameText->Set_Color(m_vColorBlue);
-				}
-			}
-			else
-			{
-				m_pUnitNameText->Set_Color(m_vColorRed);
-			}
-		}
-
-		SetActive_UnitHP(false);
-	}
+	
 }
 
 void CUI_UnitHUD::Set_HeroIcon()
 {
-	_bool bHero = m_pOwner->Get_CurrentUnit()->Get_OwnerPlayer()->IsHero();
-	if (!bHero)
-	{
-		if (m_pOwner->Get_Team())
-		{
-			if (m_pOwner->Get_Team()->IsMainPlayerTeam())
-			{
-				if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
-				{
-					m_pUnitNameText->Set_Color(m_vColorLightGreen);
-					m_pUnitNameText->Set_Scale(8.f);
-				}
-				else
-				{
-					m_pUnitNameText->Set_Color(m_vColorBlue);
-					m_pUnitNameText->Set_Scale(8.f);
-				}
-			}
-			else
-			{
-				m_pUnitNameText->Set_Color(m_vColorRed);
-				m_pUnitNameText->Set_Scale(8.f);
-			}
-		}
-	}
-	else
-	{
-		if (m_pOwner->Get_Team())
-		{
-			if (m_pOwner->Get_Team()->IsMainPlayerTeam())
-			{
-				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 2)
-				{
-					m_pUnitNameText->Set_Color(m_vColorOrigin);
-					m_pUnitNameText->Set_Scale(m_fHeroIconScale);
-
-					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(2);
-				}
-			}
-			else
-			{
-				if (GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Get_CurTextureIndex() != 3)
-				{
-					m_pUnitNameText->Set_Color(m_vColorOrigin);
-					m_pUnitNameText->Set_Scale(m_fHeroIconScale);
-
-					GET_COMPONENT_FROM(m_pUnitNameText, CTexture)->Set_CurTextureIndex(3);
-				}
-			}
-		}
-	}	
+	
 }
 
 void CUI_UnitHUD::SetActive_UnitHP(_bool value)
