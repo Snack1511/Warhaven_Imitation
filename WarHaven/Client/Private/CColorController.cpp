@@ -36,11 +36,14 @@ HRESULT CColorController::Add_ColorControll(const COLORDESC& tColorDesc)
 {
 	m_ColorDesclist.push_back(tColorDesc);
 
-	m_ColorDesclist.back().iOriginAnimIndex = m_pTargetAnimator->Get_CurAnimIndex();
 
 	if (!m_pTargetAnimator)
 		if (tColorDesc.eFadeStyle == KEYFRAME)
 			return E_FAIL;
+
+	if (tColorDesc.eFadeStyle == KEYFRAME)
+		m_ColorDesclist.back().iOriginAnimIndex = m_pTargetAnimator->Get_CurAnimIndex();
+
 	
 	return S_OK;
 }

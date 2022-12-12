@@ -296,9 +296,9 @@ void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransf
 	m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform, isInFrustum);
 }
 
-void CUser::Conquest_PointUI(string strPointName, _uint iTeamType)
+void CUser::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 {
-	m_pUI_Paden->Conquest_PointUI(strPointName, iTeamType);
+	m_pUI_Paden->Conquest_PointUI(strPointName, bIsMainPlayerTeam);
 }
 
 void CUser::Set_TargetPointPos(_uint iTargetIdx)
@@ -513,10 +513,11 @@ void CUser::Toggle_DeadUI(_bool value, _bool isFall)
 		m_pUI_Dead->Toggle_DeadUI(value, isFall);
 	}
 }
-
-void CUser::Enable_ConquestPopup(wstring Text)
+void CUser::Enable_Popup(_uint iPopupType)
 {
-	m_pUI_Popup->Enable_ConquestPopup(Text);
+	if (m_pUI_Popup)
+		m_pUI_Popup->Enable_Popup((CUI_Popup::ePOPUP_TYPE)iPopupType);
+
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

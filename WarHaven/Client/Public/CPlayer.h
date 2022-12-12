@@ -173,6 +173,8 @@ public:
 	void On_RealChangeBehavior();
 	void On_FinishGame(CTeamConnector* pLoseTeam);
 
+	void On_ScoreKDA_Kill(CPlayer* pOtherPlayer);
+
 
 public:
 	void	Set_Squad(CSquad* pSquad) { m_pMySquad = pSquad; }
@@ -268,6 +270,10 @@ private:	// 화신 게이지
 private:
 	list<CGameObject*>	m_DeadLights;
 
+	private:
+		_float	m_fKillStreakTimeAcc = 0.f;
+		_float	m_fKillStreakTime = 5.f;
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -282,6 +288,7 @@ private:
 private:
 	void Update_HP();
 	void Update_HeroGauge();
+	void Update_KDA();
 	void On_AbleHero();
 	public: void On_FinishHero();
 

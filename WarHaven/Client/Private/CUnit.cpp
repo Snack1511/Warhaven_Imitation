@@ -1315,6 +1315,7 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hit_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 
 	// 데드에 넘겨주기	
+	pOtherUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(m_pOwnerPlayer);
 
 	if (m_bIsMainPlayer)
 	{

@@ -17,7 +17,17 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	void Enable_ConquestPopup(wstring Text);
+	enum ePOPUP_TYPE {
+		eConquest,
+		eKILL,
+		eKILL2,
+		eKILL3,
+		eKILL4,
+		eCNT
+	};
+
+	void Enable_Popup(ePOPUP_TYPE ePopupType);
+	void Enable_ConquestPopup(wstring Text, _uint iIconIndex);
 
 private:
 	virtual void OnEnable() override;

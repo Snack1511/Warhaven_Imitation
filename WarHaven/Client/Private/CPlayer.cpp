@@ -24,7 +24,7 @@
 #include "CTrailBuffer.h"
 
 #include "CTeamConnector.h"
-
+#include "CUI_Popup.h"
 #include "CScript_FollowCam.h"
 
 #include "MeshContainer.h"
@@ -740,6 +740,31 @@ void CPlayer::On_FinishGame(CTeamConnector* pLoseTeam)
 
 }
 
+void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
+{
+	m_fKillStreakTimeAcc = 0.f;
+
+	m_tKdaStat.iCurKillCount++;
+	m_tKdaStat.iKillStreak++;
+	m_tKdaStat.iTotalKillCount++;
+
+
+
+	if (m_bIsMainPlayer)
+	{
+		if (m_tKdaStat.iKillStreak == 1)
+		{
+			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL);
+		}
+		else if (m_tKdaStat.iKillStreak == 2)
+		{
+			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL2);
+		}
+	}
+	
+		
+}
+
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
 {
 	m_eTeamType = eTeamType;
@@ -775,13 +800,6 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 
 void CPlayer::My_Tick()
 {
-	if (m_bIsMainPlayer)
-	{
-		if (KEY(H, TAP))
-		{
-			CUser::Get_Instance()->Enable_ConquestPopup(L"2연속 처치");
-		}
-	}
 	//공통으로 업데이트 되어야 하는것
 
 	m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());
@@ -791,6 +809,8 @@ void CPlayer::My_Tick()
 	Update_DieDelay();
 
 	Check_AbleRevival();
+
+	Update_KDA();
 
 	if (!m_bIsMainPlayer)
 		return;
@@ -921,6 +941,20 @@ void CPlayer::Update_HeroGauge()
 			{
 				On_FinishHero();
 			}
+		}
+	}
+}
+
+void CPlayer::Update_KDA()
+{
+	if (m_tKdaStat.iKillStreak > 0)
+	{
+		m_fKillStreakTimeAcc += fDT(0);
+
+		if (m_fKillStreakTimeAcc >= m_fKillStreakTime)
+		{
+			m_fKillStreakTimeAcc = 0.f;
+			m_tKdaStat.iKillStreak = 0;
 		}
 	}
 }

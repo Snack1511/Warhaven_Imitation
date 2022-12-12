@@ -8,7 +8,7 @@
 #include "CPlayer.h"
 
 #include "CDominion_Effect.h"
-
+#include "CUI_Popup.h"
 CTrigger_Paden::CTrigger_Paden()
 {
 }
@@ -206,12 +206,12 @@ void CTrigger_Paden::Update_Conquered()
 		if (m_pConqueredTeam->IsMainPlayerTeam())
 		{
 			CUser::Get_Instance()->SetActive_TargetPoint(false);
-			CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, (_uint)eTEAM_TYPE::eRED);
-			CUser::Get_Instance()->Enable_ConquestPopup(TEXT("거점 점령"));
+			CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, m_pConqueredTeam->IsMainPlayerTeam());
+			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eConquest);
 		}
 		else
 		{
-			CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, (_uint)eTEAM_TYPE::eBLUE);
+			CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, m_pConqueredTeam->IsMainPlayerTeam());
 		}
 
 		m_pConqueredTeam->Add_Trigger(this);

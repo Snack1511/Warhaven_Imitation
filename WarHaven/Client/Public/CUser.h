@@ -108,7 +108,7 @@ public:		// ÆÄµ§
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
-	void Conquest_PointUI(string strPointName, _uint iTeamType);
+	void Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam);
 
 	void Set_TargetPointPos(_uint iTargetIdx);
 	void SetActive_TargetPoint(_bool value);
@@ -142,7 +142,7 @@ public:
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
 
 public:		// ¾Ë¸²
-	void Enable_ConquestPopup(wstring Text = TEXT(""));
+	void Enable_Popup(_uint iPopupType);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
