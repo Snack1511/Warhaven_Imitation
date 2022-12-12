@@ -88,7 +88,7 @@ HRESULT CLevel_Stage::Enter()
 		CUser::Get_Instance()->On_EnterLevel();
 	}
 
-	//CEffects_Factory::Get_Instance()->On_EnterLevel();
+	CEffects_Factory::Get_Instance()->On_EnterLevel();
 
 	GAMEINSTANCE->Begin_PhysScene();
 

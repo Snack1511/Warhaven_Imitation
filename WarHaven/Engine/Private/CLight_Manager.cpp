@@ -153,6 +153,39 @@ void CLight_Manager::Update_Lights()
 
 	}*/
 
+	/*if (KEY(Y, HOLD))
+		m_Lights.back()->m_LightDesc.vPosition.x += 0.05f;
+	if (KEY(H, HOLD))
+		m_Lights.back()->m_LightDesc.vPosition.x -= 0.05f;
+	if (KEY(U, HOLD))
+		m_Lights.back()->m_LightDesc.vPosition.y += 0.05f;
+	if (KEY(J, HOLD))
+		m_Lights.back()->m_LightDesc.vPosition.y -= 0.05f;
+	if (KEY(I, HOLD))
+		m_Lights.back()->m_LightDesc.vPosition.z += 0.05f;
+	if (KEY(K, HOLD))
+		m_Lights.back()->m_LightDesc.vPosition.z -= 0.05f;
+	if (KEY(O, TAP))
+	{
+		wstring wstrTemp = L"R : ";
+		wstrTemp += to_wstring(m_Lights.back()->m_LightDesc.vPosition.x);
+		wstrTemp += L" G : ";
+		wstrTemp += to_wstring(m_Lights.back()->m_LightDesc.vPosition.y);
+		wstrTemp += L" B : ";
+		wstrTemp += to_wstring(m_Lights.back()->m_LightDesc.vPosition.z);
+		MessageBox(0, wstrTemp.c_str(), TEXT("DIFFUSE"), MB_OK);
+
+	}
+	_float4 vPosition;
+	if (!m_Lights.empty())
+	{
+		vPosition = m_Lights.back()->m_LightDesc.vPosition;
+		vPosition += 999.f;
+
+		cout << "R : " << vPosition.x << " G : " << vPosition.y << " B : " << vPosition.z << endl;
+	}*/
+
+
 
 
 

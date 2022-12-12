@@ -48,6 +48,7 @@ public:
 	CUnit* Get_Player();
 	void		Set_MainPlayerInfo(CPlayerInfo* pPlayerInfo) { m_pPlayerInfo = pPlayerInfo; }
 	CPlayerInfo* Get_MainPlayerInfo() { return m_pPlayerInfo; }
+	LEVEL_TYPE_CLIENT	Get_CurLevel() { return m_eLoadLevel; }
 
 
 	void		Set_FixCursor(_bool bEnable) { m_bFixCursor = bEnable;  ::ShowCursor(!bEnable); }

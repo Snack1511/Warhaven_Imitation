@@ -391,7 +391,6 @@ void CPlayerInfo::Set_CustomWeapon_Engineer(eCUSTOM_WEAPON eWeaponEnum)
 		break;
 	}
 
-	m_tPlayerSetUpData.wstrWeaponMeshPath[ENGINEER] = L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx";
 }
 
 void CPlayerInfo::Set_CustomHead_Fiona(eCUSTOM_HEAD eHeadEnum)

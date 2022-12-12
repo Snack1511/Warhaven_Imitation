@@ -302,6 +302,8 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
 	Set_Postion(vPos);
 	m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
+	m_pCurrentUnit->Get_Transform()->Make_WorldMatrix();
+
 
 	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
 
@@ -947,6 +949,11 @@ void CPlayer::Update_DieDelay()
 
 void CPlayer::Check_AbleRevival()
 {
+	if (!m_pAIController || !m_bIsMainPlayer)
+	{
+		return;
+	}
+
 	if (m_bAbleRevival)
 	{
 		m_fRevivalAcc += fDT(0);
@@ -958,6 +965,8 @@ void CPlayer::Check_AbleRevival()
 			}
 			else
 			{
+				
+
 				if (m_bIsLeaderPlayer)
 					Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
 				else

@@ -105,11 +105,14 @@ void CUI_Dead::My_Tick()
 			m_fAccTime = 0.f;
 
 			SetActive_DeadUI(false);
+			
 			SetActive_RevivalUI(true);
 
 			PLAYER->Get_FollowCam()->Set_FollowTarget(PLAYER);
 		}
 	}
+
+
 
 	if (m_pRevivalUI[RU_Bar]->Is_Valid())
 	{

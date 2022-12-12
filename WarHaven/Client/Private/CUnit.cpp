@@ -1178,8 +1178,18 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 
 	if (!bDie)
 	{
-		On_DieBegin(pOtherUnit, vHitPos);
-		Enter_State(m_tHitType.eHitState, pHitInfo);
+		// ºÎÆ®Ä·ÇÁ¿¡¼± ¾ÈÁ×°Ô
+		if (m_bIsMainPlayer && CUser::Get_Instance()->Get_CurLevel() == LEVEL_BOOTCAMP)
+			m_tUnitStatus.fHP = 1.f;
+		else
+		{
+
+			On_DieBegin(pOtherUnit, vHitPos);
+			Enter_State(m_tHitType.eHitState, pHitInfo);
+
+		}
+		
+
 
 		return;
 	}
