@@ -9,6 +9,7 @@
 #include "CBehavior.h"
 #include "Functor.h"
 #include "CPath.h"
+#include  "CGameSystem.h"
 
 CAIController::CAIController(_uint iGroupID)
 	: CComponent(iGroupID)
@@ -126,6 +127,8 @@ void CAIController::Early_Tick()
 #ifdef _DEBUG
 		cout << "CurUnitName - " << CFunctor::To_String(m_pOwnerPlayer->Get_PlayerName()).c_str() << endl;
 		cout << "CurBehavior - " << CFunctor::To_String(m_pCurrentBehavior->Get_BehaviorName()).c_str() << endl;
+		if(m_pCurPath)
+			cout << "CurPath - " << m_pCurPath->Get_PathName().c_str() << endl;
 #endif // _DEBUG
 		m_fTimeAcc = 0.f;
 
@@ -138,7 +141,7 @@ void CAIController::Early_Tick()
 void CAIController::Tick()
 {
 	//¿¬»ê·® ¸¹À¸¸é »©¾ßµÊ;;
-	//m_pCurrentBehavior->Callback_BehaviorTick(m_pOwnerPlayer, this);
+	m_pCurrentBehavior->Callback_BehaviorTick(m_pOwnerPlayer, this);
 	
 
 }
@@ -207,5 +210,5 @@ _bool CAIController::Is_LongTimeRemain(eBehaviorType eBhavior)
 
 void CAIController::Change_NearPath()
 {
-	int a = 0;
+	m_pOwnerPlayer->Change_NearPath();
 }

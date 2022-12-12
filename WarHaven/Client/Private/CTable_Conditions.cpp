@@ -517,48 +517,60 @@ void CTable_Conditions::Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC
 //패트롤 틱..
 void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController)
 {
+    CAIPersonality* pPersonality = pAIController->Get_Personality();
+
     //패트롤에 머무른 시간 확인 --> 초기 설정치보다 넘은 경우
-    CPath* pPath = pAIController->Get_CurPath();
+    CPath* pPath = pPlayer->Get_CurPath();
     //pPath가 nullptr --> 패스 할당 못받음 --> 맨처음 시작단계..
     if (nullptr == pPath) 
+        return;   
+    if (nullptr == pPersonality)
         return;
 
-    if (pAIController->Get_Personality()->Is_LongTimeRemain(eBehaviorType::ePatrol)) 
+    if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePatrol))
     {
-        pAIController->Get_CurPath()->Set_Arrived(); // 강제로 마지막 인덱스로..
-        if (pAIController->Get_CurPath()->Is_Arrived())//도착 여부 확인..
+        pPath->Set_Arrived(); // 강제로 마지막 인덱스로..
+        if (pPath->Is_Arrived())//도착 여부 확인..
         {
             //경로 업데이트 구문 호출..
             pAIController->Change_NearPath();
             //patrolRemainTime초기화..
-            pAIController->Get_Personality()->Init_RemainTime(eBehaviorType::ePatrol);
+            pPersonality->Init_RemainTime(eBehaviorType::ePatrol);
         }
     }
     else
     {
         //아닐경우 PatrolRemainTime 계산..
-        pAIController->Get_Personality()->Update_RemainTime(eBehaviorType::ePatrol);
+        pPersonality->Update_RemainTime(eBehaviorType::ePatrol);
     }
 }
 
 //네비의 틱..
 void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController)
 {
-    _uint CurIndex = pAIController->Get_CurPath()->Get_CurIndex();
-    _uint PrevIndex = pAIController->Get_CurPath()->Get_PrevIndex();
+    CAIPersonality* pPersonality = pAIController->Get_Personality();
+    CPath* pPath = pPlayer->Get_CurPath();
+
+    if (nullptr == pPath)
+        return;
+    if (nullptr == pPersonality)
+        return;
+
+    _uint CurIndex = pPath->Get_CurIndex();
+    _uint PrevIndex = pPath->Get_PrevIndex();
 
     if (PrevIndex == CurIndex) 
     {
-        pAIController->Get_Personality()->Update_RemainTime(eBehaviorType::ePathNavigation);
+        pPersonality->Update_RemainTime(eBehaviorType::ePathNavigation);
     }//같은 인덱스일 경우 네비 비해비어의 RemainTime체크 시작
     else
     {
-        pAIController->Get_Personality()->Init_RemainTime(eBehaviorType::ePathNavigation);
+        pPersonality->Init_RemainTime(eBehaviorType::ePathNavigation);
     }//아닐 경우 네비 비해비어의 RemainTime초기화
     
-    if (pAIController->Get_Personality()->Is_LongTimeRemain(eBehaviorType::ePathNavigation))
+    if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePathNavigation))
     {
-        pAIController->Get_CurPath()->Set_Arrived();
+        pPath->Set_Arrived();
     }//네비의 RemainTime이 초기 설정된 시간을 넘긴 경우 강제로 마지막 인덱스로 변경 
      //     --> 초기 설정시간은 Personality에 기술..
 }
