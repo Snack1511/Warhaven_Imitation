@@ -37,6 +37,13 @@ CMainApp::~CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
+#ifdef _DEBUG
+	ShowCursor(true);
+#else
+	ShowCursor(false);
+#endif // _DEBUG
+
+
 	m_pGameInstance = CGameInstance::Get_Instance();
 
 	if (nullptr == m_pGameInstance)

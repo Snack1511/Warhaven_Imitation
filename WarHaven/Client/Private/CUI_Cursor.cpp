@@ -48,8 +48,6 @@ void CUI_Cursor::My_Tick()
 {
 	__super::My_Tick();
 
-	ShowCursor(false);
-
 	GetCursorPos(&m_ptMouse);
 	ScreenToClient(g_hWnd, &m_ptMouse);
 
