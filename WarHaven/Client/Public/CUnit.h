@@ -339,7 +339,8 @@ protected:
 	virtual void	Effect_Fall(_float fFallPower);
 public:
 	void Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration,
-		_float fFadeOutTime, _float4 Diffuse);
+		_float fFadeOutTime, _float4 Diffuse, LIGHTDESC::EASING_TYPE eInEasingType = LIGHTDESC::EASING_TYPE::EAS_Linear,
+		LIGHTDESC::EASING_TYPE eOutEasingType = LIGHTDESC::EASING_TYPE::EAS_Linear);
 	virtual void	Effect_HeroToDefaultUnit(CUnit* pOwner);
 
 protected:

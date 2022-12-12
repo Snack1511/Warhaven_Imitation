@@ -986,28 +986,37 @@ void CUnit::My_LateTick()
 
 }
 
-void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange,_float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse)
+void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange,_float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse,
+	LIGHTDESC::EASING_TYPE eInType, LIGHTDESC::EASING_TYPE eOutType)
 {
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.eFadeType = tagLightDesc::FADEIN;
+
 	LightDesc.vPosition = vPos;
 	LightDesc.fRange = fRange;
 	LightDesc.fRandomRange = fRandomRange;
+
 	LightDesc.fLightFadeInTime = fFadeInTime;
 	LightDesc.fLightTime = fDuration;
 	LightDesc.fLightFadeOutTime = fFadeOutTime;
+
 	LightDesc.vTargetDiffuse = Diffuse;
 	LightDesc.vTargetAmbient = _float4(0.2f, 0.2f, 0.2f);
 	LightDesc.vTargetSpecular = _float4(1.f, 1.f, 1.f);
+
+	LightDesc.eInEasingType = eInType;
+	LightDesc.eOutEasingType = eOutType;
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 }
 
 void CUnit::Effect_Parring(_float4 vHitPos)
 {
-	Create_Light(vHitPos, 3.f, 0.f, 0.02f, 0.f, 0.03f, RGB(255, 255, 255));
+	Create_Light(vHitPos, 2.5f, 0.f, 0.f, 0.f, 1.f, RGB(255, 140, 40),
+		LIGHTDESC::EASING_TYPE::EAS_ElasticEaseIn, 
+		LIGHTDESC::EASING_TYPE::EAS_ElasticEaseOut);
 	/*CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);*/

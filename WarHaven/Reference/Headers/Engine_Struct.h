@@ -363,8 +363,41 @@ namespace Engine
 	{
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
 		enum FADETYPE { FADEIN, FADEOUTREADY, FADEOUT, FADE_END};
+		enum EASING_TYPE
+		{
+			EAS_Linear,
+			EAS_QuadIn,
+			EAS_QuadOut,
+			EAS_QuadInOut,
+			EAS_CubicIn,
+			EAS_CubicOut,
+			EAS_CubicInOut,
+			EAS_QuarticIn,
+			EAS_QuarticOut,
+			EAS_QuarticInOut,
+			EAS_QuinticIn,
+			EAS_QuinticOut,
+			EAS_QuinticInOut,
+			EAS_SinIn,
+			EAS_sinfOut,
+			EAS_sinfInOut,
+			EAS_ExpoIn,
+			EAS_ExpoOut,
+			EAS_ExpoInOut,
+			EAS_CircularIn,
+			EAS_CircularOut,
+			EAS_CircularInOut,
+			EAS_ElasticEaseIn,
+			EAS_ElasticEaseOut,
+			EAS_ElasticEaseInOut,
+			EAS_BounceEaseIn,
+			EAS_BounceEaseOut,
+			EAS_END
+		};
 		TYPE			eType = TYPE_END;
 		FADETYPE		eFadeType = FADEOUTREADY;
+		EASING_TYPE		eInEasingType = EAS_Linear;
+		EASING_TYPE		eOutEasingType = EAS_Linear;
 		XMFLOAT4		vDirection;
 
 		XMFLOAT4		vPosition;

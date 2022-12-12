@@ -172,7 +172,7 @@ void CUnit_WarHammer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	/*_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
 	_float fHitDist = m_pTransform->Get_World(WORLD_POS)*/
-
+	
 	//pOtherUnit : 맞은 쪽
 
 	//때리는 사람 기준으로 나와야함
@@ -212,6 +212,7 @@ void CUnit_WarHammer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		break;
 	}
 
+	Create_Light(vHitPos, 3.f, 0.f, 0.02f, 0.f, 0.03f, RGB(255, 255, 255));
 }
 
 void CUnit_WarHammer::On_Die()

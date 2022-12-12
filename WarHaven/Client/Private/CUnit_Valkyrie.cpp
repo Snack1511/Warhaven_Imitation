@@ -534,7 +534,7 @@ HRESULT CUnit_Valkyrie::Start()
 		"0B_L_Chain02"
 	);
 
-	m_pModelCom->Set_RimLightFlag(_float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 1.f));
+	m_pModelCom->Set_RimLightFlag(RGB(255, 140, 42));
 
 
 
@@ -556,7 +556,9 @@ void CUnit_Valkyrie::OnEnable()
 
 	vPos.y += 0.5f;
 
-	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 1.f, RGB(255, 140, 40));
+	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 1.f, RGB(255, 140, 40), 
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn, 
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
 
 	__super::OnEnable();
 }
@@ -575,7 +577,9 @@ void CUnit_Valkyrie::OnDisable()
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;
-	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.5f, RGB(255, 255, 255));
+	Create_Light(vPos, 2.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255), 
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn, 
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
 	
 	__super::OnDisable();
 }
