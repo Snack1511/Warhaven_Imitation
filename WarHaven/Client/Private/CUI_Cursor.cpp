@@ -40,12 +40,15 @@ HRESULT CUI_Cursor::Start()
 {
 	__super::Start();
 
+
 	return S_OK;
 }
 
 void CUI_Cursor::My_Tick()
 {
 	__super::My_Tick();
+
+	ShowCursor(false);
 
 	GetCursorPos(&m_ptMouse);
 	ScreenToClient(g_hWnd, &m_ptMouse);
@@ -70,6 +73,16 @@ void CUI_Cursor::My_Tick()
 			GET_COMPONENT(CTexture)->Set_CurTextureIndex(0);
 		}
 	}
+}
+
+void CUI_Cursor::OnEnable()
+{
+	__super::OnEnable();
+}
+
+void CUI_Cursor::OnDisable()
+{
+	__super::OnDisable();
 }
 
 void CUI_Cursor::Set_Mouse(MouseType eType)

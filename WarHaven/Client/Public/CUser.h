@@ -95,7 +95,9 @@ public:
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
 	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
 
-	void SetActive_Result(_bool value);
+	void SetActive_Cursor(_bool value);
+
+	void SetActive_Result(_uint iResult, _bool value);
 	void SetActive_HUD(_bool value);
 	void SetActive_UnitHUD(_bool value);
 	void SetActive_AbleHeroText(_bool value);

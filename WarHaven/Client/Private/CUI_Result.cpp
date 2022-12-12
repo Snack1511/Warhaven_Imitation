@@ -22,13 +22,15 @@ HRESULT CUI_Result::Start()
 {
 	__super::Start();
 
-	SetActive_Result(true);
+	SetActive_Result(1, true);
 
 	return S_OK;
 }
 
-void CUI_Result::SetActive_Result(_bool value)
+void CUI_Result::SetActive_Result(_uint iResult, _bool value)
 {
+	GET_COMPONENT_FROM(m_pResultUI[Result_BG], CTexture)->Set_CurTextureIndex(iResult);
+
 	for (int i = 0; i < Result_End; ++i)
 	{
 		if (value == true)
@@ -42,11 +44,17 @@ void CUI_Result::SetActive_Result(_bool value)
 	}
 }
 
+void CUI_Result::SetActive_Result(_bool value)
+{
+	for (int i = 0; i < Result_End; ++i)
+	{
+		m_pResultUI[i]->SetActive(value);
+	}
+}
+
 void CUI_Result::My_Tick()
 {
 	__super::My_Tick();
-
-
 }
 
 void CUI_Result::OnEnable()

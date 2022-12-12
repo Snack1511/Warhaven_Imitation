@@ -17,6 +17,8 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	// 0 ¹«½ÂºÎ, 1 ½Â¸®, 2 ÆÐ¹è
+	void SetActive_Result(_uint iResult, _bool value);
 	void SetActive_Result(_bool value);
 
 private:

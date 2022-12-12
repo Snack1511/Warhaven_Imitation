@@ -105,6 +105,7 @@ void CUI_CharacterWindow::On_PointerDown(const _uint& iEventNum)
 
 void CUI_CharacterWindow::SetActive_CharacterWindow(_bool value)
 {
+	CUser::Get_Instance()->SetActive_Cursor(value);
 	CUser::Get_Instance()->Set_FixCursor(!value);
 
 	m_pBG->SetActive(value);
@@ -276,12 +277,16 @@ void CUI_CharacterWindow::OnEnable()
 {
 	__super::OnEnable();
 
+	CUser::Get_Instance()->SetActive_Cursor(true);
+
 	SetActive_CharacterWindow(true);
 }
 
 void CUI_CharacterWindow::OnDisable()
 {
 	__super::OnDisable();
+
+	CUser::Get_Instance()->SetActive_Cursor(false);
 
 	SetActive_CharacterWindow(false);
 }

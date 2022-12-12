@@ -251,9 +251,9 @@ void CUser::Set_HeroGauge(_float fCurValue, _float fMaxValue)
 	m_pUI_HeroGauge->Set_HeroGauge(fCurValue, fMaxValue);
 }
 
-void CUser::SetActive_Result(_bool value)
+void CUser::SetActive_Result(_uint iResult, _bool value)
 {
-	m_pUI_Result->SetActive_Result(value);
+	m_pUI_Result->SetActive_Result(iResult, value);
 }
 
 void CUser::SetActive_HUD(_bool value)
@@ -471,6 +471,11 @@ void CUser::Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSk
 		return;
 
 	m_pUI_Skill->Set_SkillCoolTime(iSkillIdx, fSkillCoolTime, fSkillMaxCoolTime);
+}
+
+void CUser::SetActive_Cursor(_bool value)
+{
+	static_cast<CUI_Cursor*> (m_pCursor)->SetActive_Mouse(value);
 }
 
 void CUser::Enable_DamageFont(_uint eType, _float fDmg)
