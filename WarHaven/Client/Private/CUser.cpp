@@ -41,6 +41,7 @@
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
+#include "CUI_AbleHeroFire.h"
 
 #include "CGameSystem.h"
 #include "CUI_Result.h"
@@ -195,10 +196,13 @@ void CUser::SetUp_HeroGaugeFire()
 		return;
 
 	m_pFire = CUI_Animation::Create();
+	m_pUVFire = CUI_AbleHeroFire::Create();
 
 	CREATE_GAMEOBJECT(m_pFire, GROUP_UI);
+	CREATE_GAMEOBJECT(m_pUVFire, GROUP_UI);
 
 	DISABLE_GAMEOBJECT(m_pFire);
+	DISABLE_GAMEOBJECT(m_pUVFire);
 }
 
 void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
@@ -221,6 +225,7 @@ void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
 	{
 		ENABLE_GAMEOBJECT(m_pFire);
 		m_pFire->Trun_UIAnimation(tAniminfo);
+		ENABLE_GAMEOBJECT(m_pUVFire);
 	}
 	else
 		DISABLE_GAMEOBJECT(m_pFire);

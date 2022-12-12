@@ -14,6 +14,7 @@ class CPlayerInfo;
 class CUI_Damage;
 class CUI_Training;
 class CUI_Animation;
+class CUI_AbleHeroFire;
 class CUI_Dead;
 class CPlayerInfo;
 
@@ -162,7 +163,7 @@ private:
 	CUI_Paden* m_pUI_Paden = nullptr;
 
 	CUI_Animation* m_pFire = nullptr;
-
+	CUI_AbleHeroFire* m_pUVFire = nullptr;
 	CUI_Dead* m_pUI_Dead = nullptr;
 
 	CUI_Damage* m_pUI_Damage[5];

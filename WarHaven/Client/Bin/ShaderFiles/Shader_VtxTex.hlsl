@@ -12,6 +12,7 @@ float g_fProgress = 1.0f;
 float g_fProgressY = 0.4f;
 
 float4 g_vColor;
+float4 g_vPlusColor;
 
 vector g_vFlag;
 vector g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
@@ -40,6 +41,9 @@ int g_iWidthSize;
 int g_iHeightSize;
 float g_fRowX;
 float g_fColY;
+
+float g_fUVPlusX;
+float g_fUVPlusY;
 
 float g_fTimeAcc;
 
@@ -912,6 +916,34 @@ PS_DISTORTION_OUT PS_MAIN_DISTORTION(VS_TRAIL_OUT In)
     return Out;
 }
 
+PS_OUT PS_UVFIRE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    //mask
+    vector vMtrlDiffuse = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vColor.a = vMtrlDiffuse.r;
+
+    In.vTexUV.x += g_fUVPlusX;
+    In.vTexUV.y += g_fUVPlusY;
+
+    vector vDiff = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+    Out.vColor.a *= vDiff.r;
+
+    Out.vColor.a *= g_fAlpha;
+
+    if (Out.vColor.a <= 0.01f)
+        discard;
+
+    Out.vColor.xyz = vDiff.xyz;
+    Out.vColor.xyz += g_vPlusColor.xyz;
+
+    Out.vFlag = g_vFlag;
+
+    return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -1135,4 +1167,17 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_DISTORTION();
     }
+
+    pass UVFIRE
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_None);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_UVFIRE();
+    }
+
+    
 }
