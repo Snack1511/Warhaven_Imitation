@@ -80,6 +80,19 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
 
     if (fLength < fCurSpeed + 3.f * fDT(0))
         m_iCurIndex++;
+
+    if (m_pOwnerController)
+    {
+        _float4 vCurrentPos = m_pOwnerController->Get_OwnerPlayer()->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
+        
+        vCurrentPos.y = 0.f;
+        m_vPrevPos.y = 0.f;
+
+        _float fMoveDistance = (vCurrentPos - m_vPrevPos).Length();
+        m_fMoveAcc += fMoveDistance;
+
+        m_vPrevPos = vCurrentPos;
+    }
 }
 
 void CPath::Release()

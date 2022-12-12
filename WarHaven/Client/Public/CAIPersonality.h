@@ -96,6 +96,11 @@ public:
 		//행동별 최대로 머무를 시간
 		_float fRemainMaxTime[_uint(eBehaviorType::eCNT)] = { 0.f };
 
+		// 비볐는지 체크 용도
+		_float fMinMoveAcc[_uint(eBehaviorType::eCNT)] = { 0.f };
+
+		
+
 	}PersonalDesc;
 
 public:
@@ -126,6 +131,11 @@ public:
 	_bool Is_LongTimeRemain(eBehaviorType eBhavior);
 	void Update_RemainTime(eBehaviorType eBhavior);
 	void Init_RemainTime(eBehaviorType eBhavior);
+
+public:
+	/* CurMove가 더 작으면 True */
+	_bool	Check_LessMoveAcc(eBehaviorType eBhavior, _float fCurMoveAcc);
+
 public:
 	_float Get_LimitRouteDistance();
 	//목적 행동시 거쳐야 할 조건들..

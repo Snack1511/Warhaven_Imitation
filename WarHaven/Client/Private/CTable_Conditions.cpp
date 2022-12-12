@@ -556,23 +556,25 @@ void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIContro
     if (nullptr == pPersonality)
         return;
 
-    _uint CurIndex = pPath->Get_CurIndex();
-    _uint PrevIndex = pPath->Get_PrevIndex();
+    pPersonality->Update_RemainTime(eBehaviorType::ePathNavigation);
 
-    if (PrevIndex == CurIndex) 
-    {
-        pPersonality->Update_RemainTime(eBehaviorType::ePathNavigation);
-    }//같은 인덱스일 경우 네비 비해비어의 RemainTime체크 시작
-    else
-    {
-        pPersonality->Init_RemainTime(eBehaviorType::ePathNavigation);
-    }//아닐 경우 네비 비해비어의 RemainTime초기화
-    
     if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePathNavigation))
     {
-        pPath->Set_Arrived();
-    }//네비의 RemainTime이 초기 설정된 시간을 넘긴 경우 강제로 마지막 인덱스로 변경 
-     //     --> 초기 설정시간은 Personality에 기술..
+        //누적량 체크
+        if (pPersonality->Check_LessMoveAcc(eBehaviorType::ePathNavigation, pPath->Get_MoveAcc()))
+        {
+            _float fLength = fabsf(pPlayer->Get_WorldPos().y - pPath->Get_CurY());
+
+            if (fLength > 1.f)
+                pPath->Set_Arrived();
+
+
+        }
+
+        pPath->Init_MoveAcc();
+        pPersonality->Init_RemainTime(eBehaviorType::ePathNavigation);
+    }
+
 }
 
 _bool CTable_Conditions::RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter)

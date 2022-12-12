@@ -752,6 +752,8 @@ HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& ve
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_eTeamType = eTEAM_TYPE::eBLUE;
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->SetUp_TeamType();
 
+	pUserPlayer->Set_MainPlayerStartPath(0);
+
 #ifdef _DEBUG
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 	{
@@ -1118,26 +1120,12 @@ void CGameSystem::On_StartGame()
 	//1. 모든 플레이어들 시작 위치에서 생성
 	_bool   bTemp = false;
 
+	/* 리더 먼저 */
 	for (auto& elem : m_mapAllPlayers)
 	{
-		/* sandback들은 건너 뛰기 */
-		if (dynamic_cast<CPlayerInfo_SandBack*>(elem.second))
+		/* Leader가 아니면 건너 뛰기 */
+		if (!dynamic_cast<CPlayerInfo_Leader*>(elem.second) && !dynamic_cast<CPlayerInfo_Main*>(elem.second))
 			continue;
-
-
-		/*if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
-			continue;*/
-
-
-		//// 반만 생성
-		/*if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
-		{
-			bTemp = !bTemp;
-
-			if (bTemp)
-				continue;
-		}*/
-
 
 		/* ai들은 랜덤 선택 함수 호출 */
 		if (!elem.second->m_bIsMainPlayer)
@@ -1145,27 +1133,26 @@ void CGameSystem::On_StartGame()
 
 
 		/* 자기 진영에서 포지션 가져오기 */
-
-
 		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
-
 		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
 
 	}
 
-	/*점령 이펙트 테스트코드*/
-	//if (m_pTeamConnector[0]->m_bIsMainPlayerTeam)
-	//{
-	//	TRIGGER_PADEN("Paden_Trigger_A")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
-	//	TRIGGER_PADEN("Paden_Trigger_R")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
- //       TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[1]);
-	//}
-	//else
-	//{
-	//	TRIGGER_PADEN("Paden_Trigger_A")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]);
-	//	TRIGGER_PADEN("Paden_Trigger_R")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]);
- //       TRIGGER_PADEN("Paden_Trigger_C")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[0]);
-	//}
+	/* Default 애덜 */
+	for (auto& elem : m_mapAllPlayers)
+	{
+		/* Default가 아니면 건너 뛰기 */
+		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
+			continue;
+
+		/* ai들은 랜덤 선택 함수 호출 */
+		elem.second->Choose_Character();
+
+		/* 자기 진영에서 포지션 가져오기 */
+		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
+		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+
+	}
 
 
 
@@ -1306,7 +1293,7 @@ CPath* CGameSystem::Get_NearPath(_float4 vPosition)
 		CPath* pPath = elem.second;
 		_float4 vPathStartPosition = pPath->Get_FrontPosition();
 
-		if (fabsf(vPathStartPosition.y - vPosition.y) > 2.f)
+		if (fabsf(vPathStartPosition.y - vPosition.y) > 1.5f)
 			continue;
 
 		_float LengthDiff = (vPathStartPosition - vPosition).Length();
@@ -1314,6 +1301,9 @@ CPath* CGameSystem::Get_NearPath(_float4 vPosition)
 
 		if (LengthDiff < fMinLength)
 		{
+
+
+
 			pReturnPath = pPath;
 			fMinLength = LengthDiff;
 		}

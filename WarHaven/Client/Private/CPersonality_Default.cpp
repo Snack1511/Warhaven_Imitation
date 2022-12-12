@@ -39,7 +39,10 @@ HRESULT CPersonality_Default::Initailize()
 	m_tPersonalDesc.eFightPersonality = eFight_Default;
 	m_tPersonalDesc.eCoopPersonality = eCoop_Default;
 	m_tPersonalDesc.fRemainMaxTime[_uint(eBehaviorType::ePatrol)] = 5.f;
-	m_tPersonalDesc.fRemainMaxTime[_uint(eBehaviorType::ePathNavigation)] = 3.f;
+
+	m_tPersonalDesc.fRemainMaxTime[_uint(eBehaviorType::ePathNavigation)] = 1.f;
+	/* °Å¸® */
+	m_tPersonalDesc.fMinMoveAcc[_uint(eBehaviorType::ePathNavigation)] = 1.f;
 
 	CBehavior* pBehavior = nullptr;
 	/* pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Follow"))->Clone();

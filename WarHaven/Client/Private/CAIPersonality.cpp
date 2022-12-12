@@ -102,6 +102,12 @@ void CAIPersonality::Init_RemainTime(eBehaviorType eBhavior)
 	m_fRemainAccTime[_uint(eBhavior)] = 0.f;
 }
 
+_bool CAIPersonality::Check_LessMoveAcc(eBehaviorType eBhavior, _float fCurMoveAcc)
+{
+
+	return (m_tPersonalDesc.fMinMoveAcc[_uint(eBhavior)] >= fCurMoveAcc);
+}
+
 
 _float CAIPersonality::Get_LimitRouteDistance()
 {

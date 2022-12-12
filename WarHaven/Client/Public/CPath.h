@@ -28,6 +28,8 @@ public:
 	void	Release();
 
 public:
+	_float Get_CurY() { return m_vecPositions[m_iCurIndex].y; }
+
 	/* CurIndex 의 위치로 향하는 방향 return 해줌. y값 제거 */
 	_float4	Get_CurDir(_float4 vCurrentPos);
 	_float4	Get_LatestPosition();
@@ -41,6 +43,10 @@ public:
 	_float4 Get_FrontPosition();
 	void	Init_Indices();
 	string Get_PathName();
+
+	_float	Get_MoveAcc() { return m_fMoveAcc; }
+	void	Init_MoveAcc() { m_fMoveAcc = 0.f; }
+
 private:
 	CAIController* m_pOwnerController = nullptr;
 
@@ -53,6 +59,10 @@ private:
 
 	_uint			m_iCurIndex = 0;
 	_uint			m_iPrevIndex = 0;
+
+private: /* 이동량 누적용 */
+	_float4			m_vPrevPos = ZERO_VECTOR;
+	_float			m_fMoveAcc = 0.f;
 
 private:
 	void	Save_CurPath();

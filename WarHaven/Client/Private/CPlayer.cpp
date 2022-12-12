@@ -348,6 +348,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 	if (!m_bIsMainPlayer)
 	{
 		ENABLE_GAMEOBJECT(m_pUnitHUD);
+
 		//Path 갱신
 
 		if (m_bIsLeaderPlayer)
@@ -466,6 +467,8 @@ void CPlayer::Set_MainPlayer()
 
 		m_pAllUnitClass[i]->Set_MainPlayer();
 	}
+
+
 }
 
 
@@ -755,6 +758,9 @@ void CPlayer::On_FinishGame(CTeamConnector* pLoseTeam)
 	/* 상태 접근 */
 	m_pCurrentUnit->On_FinishGame((m_pMyTeam == pLoseTeam) ? false : true);
 
+	if (m_pAIController)
+		DISABLE_COMPONENT(m_pAIController);
+
 }
 
 void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
@@ -917,6 +923,8 @@ void CPlayer::Set_NewPath(CPath* pPath)
 	m_pCurPath = pPath;
 	if(m_pCurPath)
 		m_pCurPath->Init_Indices();
+
+	m_pCurPath->m_vPrevPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 }
 
 
