@@ -191,6 +191,7 @@
     <ClInclude Include="..\Public\CAIPersonality.h" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
+    <ClInclude Include="..\public\CMainMenuUnit.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Walk_Warrior.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior_L.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior_R.h" />
@@ -782,6 +783,7 @@
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
+    <ClCompile Include="..\private\CMainMenuUnit.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Walk_Warrior.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior_L.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior_R.cpp" />

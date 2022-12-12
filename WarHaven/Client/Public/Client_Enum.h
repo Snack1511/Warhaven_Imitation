@@ -953,8 +953,6 @@ namespace Client
 			AI_STATE_COMMON_LAND_WARRIOR_R,
 
 
-				
-
 #pragma endregion
 
 

@@ -2266,6 +2266,9 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical">
       <UniqueIdentifier>{ab224c01-45b6-4906-b251-95ba075a600e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\00. MainMenuUnit">
+      <UniqueIdentifier>{c96f4cc2-c302-4e0c-a4ab-07cf0c9f356e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -4035,6 +4038,9 @@
     <ClInclude Include="..\Public\CState_Combat_Attack_Warrior_VerticalCut.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CMainMenuUnit.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\00. MainMenuUnit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5784,6 +5790,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Attack_Warrior_VerticalCut.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CMainMenuUnit.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\00. MainMenuUnit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
