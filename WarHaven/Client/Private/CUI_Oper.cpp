@@ -88,6 +88,8 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 {
 	// DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 
+	m_bSelectTargetPoint = true;
+
 	_float4 vPos = m_pArrStrongHoldUI[SP_BG][iEventNum]->Get_Pos();
 	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
 

@@ -25,6 +25,7 @@ class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
 
+class CUI_Popup;
 class CUI_Oper;
 class CUI_Paden;
 
@@ -98,7 +99,7 @@ public:
 	void Transform_SkillUI(_uint iClass);
 
 public:		// ÆÄµ§
-	void Interat_PointUI(_bool bIsMainPlayer, string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
+	void Interat_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, string wstrPadenPointKey, _uint iTriggerState);
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
@@ -114,6 +115,7 @@ public:		// ÆÄµ§
 public:		// ºê¸®ÇÎ
 	void Set_Respawn(_bool value);
 	void SetActive_OperUI(_bool value);
+	_bool Get_SelectTargetPoint();
 
 public:
 	void On_EnterLevel();
@@ -134,6 +136,9 @@ public:
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
 
+public:		// ¾Ë¸²
+	void Enable_ConquestPopup(wstring Text = TEXT(""));
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -141,6 +146,7 @@ private:
 	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
 	CUI_Skill* m_pUI_Skill = nullptr;
 	CUI_Oper* m_pUI_Oper = nullptr;
+	CUI_Popup* m_pUI_Popup = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

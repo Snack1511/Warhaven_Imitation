@@ -96,11 +96,11 @@ void CGameSystem::Release()
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 		SAFE_DELETE(m_pTeamConnector[i]);
 
-    for (auto& elem : m_mapAllPlayers)
-    {
-        SAFE_DELETE(elem.second);
-    }
-    m_mapAllPlayers.clear();
+	for (auto& elem : m_mapAllPlayers)
+	{
+		SAFE_DELETE(elem.second);
+	}
+	m_mapAllPlayers.clear();
 
 	for (_uint i = 0; i < eSTAGE_CNT; ++i)
 	{
@@ -110,7 +110,7 @@ void CGameSystem::Release()
 		}
 		m_mapAllPathes[i].clear();
 	}
-	
+
 }
 
 HRESULT CGameSystem::On_ExitLevel()
@@ -159,11 +159,11 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		pEnemy->SetUp_UnitColliders(false);
 
 		// AI_STATE_DEAFULT_IDLE_WARRIOR_R
-        pEnemy->Reserve_State(AI_STATE_COMBAT_DEAFULT_WARRIOR_R);
+		pEnemy->Reserve_State(AI_STATE_COMBAT_DEAFULT_WARRIOR_R);
 		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
 
-        READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
-    }
+		READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
+	}
 
 
 
@@ -886,21 +886,31 @@ HRESULT CGameSystem::On_Update_Paden()
 
 	// 각 팀의 커넥터 가져오기
 
-	
+
 
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 	{
-		_uint iRedTeam = (_uint)m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Get_TeamType();
-		_uint iBlueScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_iScore;
-		_uint iBlueMaxScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_iMaxScore;
+		_uint iBlueTeam = 0;
+		_uint iRedTeam = 0;
 
-		CUser::Get_Instance()->Set_Score(iRedTeam, iBlueScore, iBlueMaxScore);
+		if (m_pTeamConnector[i]->IsMainPlayerTeam())
+		{
+			iBlueTeam = (_uint)m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Get_TeamType();
 
-		_uint iBlueTeam = (_uint)m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Get_TeamType();
-		_uint iRedScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->m_iScore;
-		_uint iRedMaxScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->m_iMaxScore;
+			_uint iRedScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->m_iScore;
+			_uint iRedMaxScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->m_iMaxScore;
 
-		CUser::Get_Instance()->Set_Score(iBlueTeam, iRedScore, iRedMaxScore);
+			CUser::Get_Instance()->Set_Score(iBlueTeam, iRedScore, iRedMaxScore);
+		}
+		else
+		{
+			iRedTeam = (_uint)m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Get_TeamType();
+			_uint iBlueScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_iScore;
+			_uint iBlueMaxScore = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->m_iMaxScore;
+
+
+			CUser::Get_Instance()->Set_Score(iRedTeam, iBlueScore, iBlueMaxScore);
+		}
 
 		if (m_pTeamConnector[i]->Has_MainTrigger())
 		{
@@ -977,16 +987,16 @@ void CGameSystem::On_StartGame()
 		/*if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
 			continue;*/
 
-		  if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
-		  {
-			  bTemp = !bTemp;
+		if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+		{
+			bTemp = !bTemp;
 
-			  if (bTemp)
-				  continue;
-		  }
+			if (bTemp)
+				continue;
+		}
 
 
-		  /* ai들은 랜덤 선택 함수 호출 */
+		/* ai들은 랜덤 선택 함수 호출 */
 		if (!elem.second->m_bIsMainPlayer)
 			elem.second->Choose_Character();
 
@@ -1056,7 +1066,7 @@ CPath* CGameSystem::Find_Path(string strPathKey)
 		if (iter != m_mapAllPathes[i].end())
 			return iter->second;
 	}
-	
+
 	return nullptr;
 }
 
@@ -1103,7 +1113,7 @@ CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eSTAG
 	iSize /= 2;
 
 	_int iRandIndex = random(0, iSize);
-	
+
 	for (auto& elem : m_mapAllPathes[eStageType])
 	{
 		/* FindKey 들어간 이름이면 */
@@ -1212,14 +1222,14 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
 	ADD_SANDBACKINFO(L"EnemyFinal");
 
 
-    return S_OK;
+	return S_OK;
 }
 
 HRESULT CGameSystem::SetUp_AllPathes()
 {
 
 	for (filesystem::directory_iterator FileIter("../Bin/Data/GameSystem/Pathes/");
-			FileIter != filesystem::end(FileIter); ++FileIter)
+		FileIter != filesystem::end(FileIter); ++FileIter)
 	{
 		const filesystem::directory_entry& entry = *FileIter;
 

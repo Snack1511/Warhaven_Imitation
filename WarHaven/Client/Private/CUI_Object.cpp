@@ -190,7 +190,7 @@ void CUI_Object::Set_FadeDesc(_float fDuration)
 	GET_COMPONENT_FROM(this, CFader)->Get_FadeDesc() = tFadeDesc;
 }
 
-void CUI_Object::Set_FadeDesc(_float fFadeIn, _float fFadeOut, _bool bAutoFadeOut)
+void CUI_Object::Set_FadeDesc(_float fFadeIn, _float fFadeOut, _bool bAutoFade)
 {
 	FADEDESC tFadeDesc;
 	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
@@ -199,12 +199,32 @@ void CUI_Object::Set_FadeDesc(_float fFadeIn, _float fFadeOut, _bool bAutoFadeOu
 	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
 
 	tFadeDesc.bFadeInFlag = FADE_NONE;
-	tFadeDesc.bFadeOutFlag = bAutoFadeOut ? FADE_TIME : FADE_NONE;
+	tFadeDesc.bFadeOutFlag = bAutoFade ? FADE_TIME : FADE_NONE;
 
 	tFadeDesc.fFadeInStartTime = 0.f;
 	tFadeDesc.fFadeInTime = fFadeIn;
 
 	tFadeDesc.fFadeOutStartTime = 0.f;
+	tFadeDesc.fFadeOutTime = fFadeOut;
+
+	GET_COMPONENT_FROM(this, CFader)->Get_FadeDesc() = tFadeDesc;
+}
+
+void CUI_Object::Set_FadeDesc(_float fFadeIn, _float fFadeOut, _float fDuration, _bool bAutoFade)
+{
+	FADEDESC tFadeDesc;
+	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+
+	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+
+	tFadeDesc.bFadeInFlag = FADE_NONE;
+	tFadeDesc.bFadeOutFlag = bAutoFade ? FADE_TIME : FADE_NONE;
+
+	tFadeDesc.fFadeInStartTime = 0.f;
+	tFadeDesc.fFadeInTime = fFadeIn;
+
+	tFadeDesc.fFadeOutStartTime = fDuration;
 	tFadeDesc.fFadeOutTime = fFadeOut;
 
 	GET_COMPONENT_FROM(this, CFader)->Get_FadeDesc() = tFadeDesc;

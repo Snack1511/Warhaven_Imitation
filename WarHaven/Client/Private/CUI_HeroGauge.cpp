@@ -112,7 +112,7 @@ void CUI_HeroGauge::Create_AbleHeroText()
 {
 	m_pAbleHeroText = CUI_Object::Create();
 
-	m_pAbleHeroText->Set_FadeDesc(0.15f, 0.65f, true);
+	m_pAbleHeroText->Set_FadeDesc(0.15f, 0.15f, 1.f, true);
 
 	m_pAbleHeroText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HeroGauge/AbleHeroText.png"));
 

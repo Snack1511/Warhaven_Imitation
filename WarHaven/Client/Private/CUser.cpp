@@ -37,6 +37,7 @@
 #include "CUI_Dead.h"
 #include "CUI_Oper.h"
 #include "CUI_EscMenu.h"
+#include "CUI_Popup.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -269,9 +270,9 @@ void CUser::Transform_SkillUI(_uint iClass)
 	m_pUI_Skill->Transform_SkillUI(iClass);
 }
 
-void CUser::Interat_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
+void CUser::Interat_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, string strPadenPointKey, _uint iTriggerState)
 {
-	m_pUI_Paden->Interact_PointUI(bIsMainPlayer, strPadenPointKey, iTeamType, iTriggerState);
+	m_pUI_Paden->Interact_PointUI(bIsMainPlayer, bIsMainPlayerTeam, strPadenPointKey, iTriggerState);
 }
 
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
@@ -301,6 +302,9 @@ void CUser::Set_TargetPointPos(_uint iTargetIdx)
 
 void CUser::SetActive_TargetPoint(_bool value)
 {
+	if (m_pUI_Oper->Get_SelectTargetPoint() == false)
+		return;
+
 	m_pUI_Paden->SetActive_TargetPoint(value);
 }
 
@@ -317,6 +321,11 @@ void CUser::Set_Respawn(_bool value)
 void CUser::SetActive_OperUI(_bool value)
 {
 	m_pUI_Oper->SetActive(value);
+}
+
+_bool CUser::Get_SelectTargetPoint()
+{
+	return m_pUI_Oper->Get_SelectTargetPoint();
 }
 
 void CUser::On_EnterLevel()
@@ -362,14 +371,20 @@ void CUser::On_EnterStageLevel()
 		CREATE_GAMEOBJECT(m_pUI_Training, GROUP_UI);
 	}
 
-
-
 	if (!m_pUI_Dead)
 	{
 		m_pUI_Dead = CUI_Dead::Create();
 
 		CREATE_GAMEOBJECT(m_pUI_Dead, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Dead);
+	}
+
+	if (!m_pUI_Popup)
+	{
+		m_pUI_Popup = CUI_Popup::Create();
+
+		CREATE_GAMEOBJECT(m_pUI_Popup, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Popup);
 	}
 
 	if (m_eLoadLevel > LEVEL_BOOTCAMP)
@@ -481,6 +496,11 @@ void CUser::Toggle_DeadUI(_bool value, _bool isFall)
 	{
 		m_pUI_Dead->Toggle_DeadUI(value, isFall);
 	}
+}
+
+void CUser::Enable_ConquestPopup(wstring Text)
+{
+	m_pUI_Popup->Enable_ConquestPopup(Text);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

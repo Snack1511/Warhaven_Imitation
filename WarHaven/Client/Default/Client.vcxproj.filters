@@ -2248,6 +2248,9 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\02. Left">
       <UniqueIdentifier>{71869083-ba22-4ede-a1ad-f132d09fdbf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Popup">
+      <UniqueIdentifier>{9305b997-be95-4583-92ed-37cae9ff1213}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3984,6 +3987,9 @@
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Warrior_R.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\01. Right</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Popup.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Popup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5700,6 +5706,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Warrior_R.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Popup.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Popup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,9 @@ public:
 	virtual void On_PointDown_RespawnBtn(const _uint& iEventNum);
 
 public:
+	_bool Get_SelectTargetPoint() { return m_bSelectTargetPoint; }
+
+public:
 	void Set_Respawn(_bool value) { m_bIsRespawn = value; }
 
 	void SetActive_BG(_bool value);
@@ -153,6 +156,8 @@ private:
 private:
 	CUI_Object* m_pTargetPoint = nullptr;
 	CUI_Object* m_pArrTargetPoint[2];
+
+	_bool m_bSelectTargetPoint = false;
 
 private:
 	void Create_TargetPoint();
