@@ -58,12 +58,10 @@ void CState_PathNavigation_Sprint_Fiona_Jump::Enter(CUnit* pOwner, CAnimator* pA
 STATE_TYPE CState_PathNavigation_Sprint_Fiona_Jump::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
-    {
-        if (!pOwner->Is_Air())
-            return AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
-        else
-            return AI_STATE_COMMON_FALL_FIONA_R;
-    }
+        return AI_STATE_COMMON_FALL_FIONA_R;
+
+       if (!pOwner->Is_Air())
+           return AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
 
     return CState::Tick(pOwner, pAnimator);
 }

@@ -57,14 +57,12 @@ void CState_PathNavigation_Sprint_Warrior_Jump::Enter(CUnit* pOwner, CAnimator* 
 
 STATE_TYPE CState_PathNavigation_Sprint_Warrior_Jump::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pAnimator->Is_CurAnimFinished())
-    {
-        if (!pOwner->Is_Air())
-            return AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
-        else
-            return AI_STATE_COMMON_FALL_WARRIOR_R;
 
-    }
+    if (pAnimator->Is_CurAnimFinished())
+        return AI_STATE_COMMON_FALL_WARRIOR_R;
+
+    if (!pOwner->Is_Air())
+        return AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
 
     return CState::Tick(pOwner, pAnimator);
 }
