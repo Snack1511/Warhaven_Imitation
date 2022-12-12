@@ -112,12 +112,11 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 	m_bSelectTargetPoint = true;
 	if (m_bSelectTargetPoint)
 		CUser::Get_Instance()->Set_TargetPointPos(iEventNum);
-	CUser::Get_Instance()->Set_TargetPointPos(iEventNum);
 
 	// a, r, c
 	PLAYER->Get_OwnerPlayer()->Set_MainPlayerStartPath(iEventNum);
 
-
+	
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
