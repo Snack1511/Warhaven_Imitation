@@ -309,13 +309,19 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 
 	GAMEINSTANCE->Stop_GrayScale();
 
-	CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
-
-	if (m_eCurrentClass > ENGINEER)
+	if (m_bIsMainPlayer)
 	{
-		CUser::Get_Instance()->Set_HeroPort(1);
+		CUser::Get_Instance()->Set_HUD(m_eCurrentClass);
 		CUser::Get_Instance()->Transform_SkillUI(m_eCurrentClass);
+
+		if (m_eCurrentClass > ENGINEER)
+		{
+			CUser::Get_Instance()->Set_HeroPort(1);
+		}
 	}
+	
+
+	
 
 	return S_OK;
 }
@@ -708,6 +714,14 @@ void CPlayer::On_Reborn()
 		CUser::Get_Instance()->SetActive_HUD(true);
 }
 
+void CPlayer::On_PlusGauge(_float fGauge)
+{
+	m_fGauge += fGauge;
+
+	if (m_fGauge >= m_fMaxGauge)
+		m_fGauge = m_fMaxGauge;
+}
+
 void CPlayer::SetActive_UnitHUD(_bool value)
 {
 	m_pUnitHUD->SetActive(value);
@@ -866,17 +880,20 @@ void CPlayer::Update_HeroGauge()
 	if (!m_bAbleHero) //CChangeHero_Player, HUD
 	{
 
-		_float fGaugeSpeed = fDT(0);
+		_float fGaugeSpeed = 0.2f * fDT(0);
 
 		if (!m_bIsHero) //CChangeHero_Player
 		{
-			m_fGauge += fGaugeSpeed * 20.f;
+			if (m_bAlive)
+				m_fGauge += fGaugeSpeed;
+
 			if (m_fGauge > m_fMaxGauge)
 			{
-				// 화신 텍스트 등장
-				CUser::Get_Instance()->SetActive_AbleHeroText(true);
+				m_fGauge = m_fMaxGauge;
+
 				On_AbleHero();
 			}
+
 		}
 		else //변신 중일때 
 		{	
@@ -903,6 +920,7 @@ void CPlayer::On_AbleHero()
 	{
 		CUser::Get_Instance()->Set_HeroPort(0);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(true);
+		CUser::Get_Instance()->SetActive_AbleHeroText(true);
 	}
 }
 
@@ -949,7 +967,7 @@ void CPlayer::Update_DieDelay()
 
 void CPlayer::Check_AbleRevival()
 {
-	if (!m_pAIController || !m_bIsMainPlayer)
+	if (!m_pAIController && !m_bIsMainPlayer)
 	{
 		return;
 	}

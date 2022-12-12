@@ -153,13 +153,11 @@ STATE_TYPE CChangeHero_Player::Set_HeroType(CUnit* pOwner, CLASS_TYPE eClass)
 	//henshin particle
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinParticle", pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
 
-	pOwner->Get_OwnerPlayer()->IsHero() = true;
 
 	_uint iIndex = (_uint)eClass;
 	pOwner->On_ChangeToHero(iIndex);
 
 
-	pOwner->Get_OwnerPlayer()->AbleHero() = false;
 
 	return m_eStateType;
 }

@@ -311,9 +311,15 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDm
 		}
 	}
 
+	if (pOtherUnit)
+		pOtherUnit->m_pOwnerPlayer->On_PlusGauge(1.f);
+
 	if (m_tUnitStatus.fHP <= 0.f)
 	{
 		m_tUnitStatus.fHP = 0.f;
+		if (pOtherUnit)
+			pOtherUnit->m_pOwnerPlayer->On_PlusGauge(5.f);
+
 		return false;
 	}
 	else if (m_tUnitStatus.fHP >= m_tUnitStatus.fMaxHP)
@@ -777,6 +783,10 @@ void CUnit::SetUp_HitStates(UNIT_TYPE eUnitType)
 void CUnit::On_ChangeToHero(_uint iIndex)
 {
 	m_pOwnerPlayer->Change_UnitClass((CLASS_TYPE)iIndex);
+	m_pOwnerPlayer->AbleHero() = false;
+	m_pOwnerPlayer->IsHero() = true;
+
+
 }
 
 _float4 CUnit::Get_FollowCamLook()

@@ -207,11 +207,17 @@ CBehavior* CTable_Conditions::Find_Behavior(wstring strBehavior)
 
 void CTable_Conditions::Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
+    if (OutCondition == false)
+        return;
+
     OutCondition = true;
 }
 
 void CTable_Conditions::Check_PathArrived(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
+    if (OutCondition == false)
+        return;
+
     if (!pPlayer->Get_CurPath())
     {
         OutCondition = false;
@@ -222,6 +228,9 @@ void CTable_Conditions::Check_PathArrived(_bool& OutCondition, CPlayer* pPlayer,
 
 void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
+    if (OutCondition == false)
+        return;
+
     //플레이어 Look방향 반원
     _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
@@ -271,6 +280,9 @@ void CTable_Conditions::Check_LookEnemy(_bool& OutCondition, CPlayer* pPlayer, C
 
 void CTable_Conditions::Check_FarAwayRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
+    if (OutCondition == false)
+        return;
+
     OutCondition = false;
     if (!pPlayer->Get_CurPath())
         return;
@@ -285,6 +297,9 @@ void CTable_Conditions::Check_FarAwayRoute(_bool& OutCondition, CPlayer* pPlayer
 
 void CTable_Conditions::Check_NearFromRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
+    if (OutCondition == false)
+        return;
+
     OutCondition = false;
 
     if (!pPlayer->Get_CurPath())
@@ -310,6 +325,10 @@ void CTable_Conditions::Check_NearFromRoute(_bool& OutCondition, CPlayer* pPlaye
 
 void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
+    if (OutCondition == false)
+        return;
+
+
     //플레이어 Look방향 반원
     _float4 MyPositoin = pPlayer->Get_CurrentUnit()->Get_Transform()->Get_World(WORLD_POS);
 
@@ -359,6 +378,9 @@ void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, 
 
 void CTable_Conditions::Check_AttackBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
+    if (OutCondition == false)
+        return;
+
     OutCondition = false;
     CBehavior* pBehavior = pAIController->Get_CurBehavior();
     if (nullptr != pBehavior) 
@@ -371,6 +393,9 @@ void CTable_Conditions::Check_AttackBehavior(_bool& OutCondition, CPlayer* pPlay
 
 void CTable_Conditions::Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
+    if (OutCondition == false)
+        return;
+
     if (pPlayer->AbleHero())
         OutCondition = true;
     else

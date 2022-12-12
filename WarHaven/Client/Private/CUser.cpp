@@ -321,17 +321,22 @@ void CUser::SetActive_PadenUI(_bool value)
 
 void CUser::Set_Respawn(_bool value)
 {
-	m_pUI_Oper->Set_Respawn(value);
+	if (m_pUI_Oper)
+		m_pUI_Oper->Set_Respawn(value);
 }
 
 void CUser::SetActive_OperUI(_bool value)
 {
-	m_pUI_Oper->SetActive(value);
+	if (m_pUI_Oper)
+		m_pUI_Oper->SetActive(value);
 }
 
 _bool CUser::Get_SelectTargetPoint()
 {
-	return m_pUI_Oper->Get_SelectTargetPoint();
+	if (m_pUI_Oper)
+		return m_pUI_Oper->Get_SelectTargetPoint();
+
+	return false;
 }
 
 void CUser::On_EnterLevel()

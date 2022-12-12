@@ -119,11 +119,8 @@ public:
 	wstring Get_PlayerName() { return m_pMyPlayerInfo->m_tPlayerInfo.wstrName; }
 	_uint	Get_Level() { return m_pMyPlayerInfo->m_tPlayerInfo.iLevel; }
 	CPlayerInfo* Get_PlayerInfo() { return m_pMyPlayerInfo; }
-
 	void	Enable_OnStart() { m_bEnableOnStart = true; }
-
 	void	Set_UnitType(_uint eUnitType) { m_iUnitType = eUnitType; }
-
 	HRESULT SetUp_Collider();
 
 
@@ -138,9 +135,13 @@ public:
 public:
 	/* 죽어서 돌 되자마자 들어오는 함수*/
 	void	On_Die();
+
 	/* 죽고나서 5초 딜레이까지 지나고 들어오는 함수 */
 	void	On_RealDie();
 	void	On_Reborn();
+
+	void	On_PlusGauge(_float fGauge);
+
 public:
 	/*True일 때 리스폰 대기시간 끝ㄴ*/
 	_bool	Is_EndRevivalTime();
@@ -282,6 +283,7 @@ private:
 	void Update_HeroGauge();
 	void On_AbleHero();
 	public: void On_FinishHero();
+
 private:
 	void On_FinishHero_KeyInput();
 

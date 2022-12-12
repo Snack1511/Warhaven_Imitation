@@ -45,6 +45,7 @@ private:
     void EmptyOtherCondition(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController) { OutCondition = true; }
     void EmptyWhatCondition(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController) { OutCondition = true; }
     void EmptyBehaviorTick(CPlayer* pPlayer, CAIController* pAIController) { }
+
 private:
     void Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_PathArrived(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);

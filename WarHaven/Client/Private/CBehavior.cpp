@@ -89,9 +89,10 @@ void CBehavior::Set_Priority(_int iPriorityScore)
 BEHAVIOR_DESC* CBehavior::Check_Condition(_bool& bOut , CPlayer* pPlayer, CAIController* pAIController)
 {
     //1. OtherCondition 조사
-    Callback_OtherCondition(bOut, pPlayer, pAIController);
+    _bool bOtherCondition = true;
+    Callback_OtherCondition(bOtherCondition, pPlayer, pAIController);
 
-    if (!bOut)
+    if (!bOtherCondition)
         return nullptr;
 
     //2. WhatCondition 조사
