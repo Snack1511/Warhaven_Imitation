@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CState_Manager.h"
 
+#include "CState_Victory.h"
+#include "CState_Defeat.h"
+
 #include "CIdle_Player_R.h"
 #include "CIdle_Player_L.h"
 
@@ -674,6 +677,9 @@ HRESULT CState_Manager::Initialize()
 {
 	m_arrStates[NO_PATTERN] = CState_NoPattern::Create();
 	m_arrStates[AI_STATE_COMMON_CHANGE_HERO] = CState_Common_ChangeHero_AI::Create();
+
+	m_arrStates[STATE_VICTORY] = CState_Victory::Create();
+	m_arrStates[STATE_DEFEAT] = CState_Defeat::Create();
 
 
 	Spear_State();

@@ -30,8 +30,8 @@ CState_Combat_GuardBegin_Fiona* CState_Combat_GuardBegin_Fiona::Create()
 }
 HRESULT CState_Combat_GuardBegin_Fiona::Initialize()
 {
-	m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
-	m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
+	m_iAnimIndex = 2;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = AI_STATE_COMBAT_GUARDBEGIN_FIONA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	// 선형 보간 시간

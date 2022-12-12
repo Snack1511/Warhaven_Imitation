@@ -23,13 +23,20 @@ HRESULT CState_Patrol_Walk_Fiona::Initialize()
 
 	m_fMyMaxLerp = 1.2f;
 	m_fMyAccel = 100.f;
-
-	// 선형 보간 시간
-	m_fInterPolationTime = 0.1f;
-
-	// 애니메이션의 전체 속도를 올려준다.
-	m_fAnimSpeed = 1.f;
 	
+
+	m_iStateChangeKeyFrame = 0;
+
+	m_fAnimSpeed = 2.5f;
+
+	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 29;
+	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 30;
+	m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 31;
+	m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 32;
+	m_iDirectionAnimIndex[STATE_DIRECTION_S] = 33;
+	m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 34;
+	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
+	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 36;
 
     return S_OK;
 }

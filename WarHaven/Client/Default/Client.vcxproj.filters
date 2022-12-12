@@ -2680,6 +2680,12 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\00. MainMenuUnit">
       <UniqueIdentifier>{c96f4cc2-c302-4e0c-a4ab-07cf0c9f356e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Victory">
+      <UniqueIdentifier>{55fab814-cb46-4c01-8aeb-c0c17e727427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Defeat">
+      <UniqueIdentifier>{a011a0c2-7b06-4645-9ca5-5da21321cb62}</UniqueIdentifier>
+    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire\CUI_AbleHero">
       <UniqueIdentifier>{2fedf2a8-03f6-40db-83be-55665aad9601}</UniqueIdentifier>
     </Filter>
@@ -4821,6 +4827,12 @@
     <ClInclude Include="..\public\CMainMenuUnit.h">
       <Filter>03. Instances\02. GameObject\02. Unit\00. MainMenuUnit</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_Victory.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Victory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Defeat.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Defeat</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CUI_AbleHeroFire.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire\CUI_AbleHero</Filter>
     </ClInclude>
@@ -6939,6 +6951,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CMainMenuUnit.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\00. MainMenuUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Victory.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Victory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Defeat.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Defeat</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_AbleHeroFire.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire\CUI_AbleHero</Filter>

@@ -312,13 +312,13 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDm
 	}
 
 	if (pOtherUnit)
-		pOtherUnit->m_pOwnerPlayer->On_PlusGauge(50.f);
+		pOtherUnit->m_pOwnerPlayer->On_PlusGauge(30.f);
 
 	if (m_tUnitStatus.fHP <= 0.f)
 	{
 		m_tUnitStatus.fHP = 0.f;
 		if (pOtherUnit)
-			pOtherUnit->m_pOwnerPlayer->On_PlusGauge(50.f);
+			pOtherUnit->m_pOwnerPlayer->On_PlusGauge(30.f);
 
 		return false;
 	}

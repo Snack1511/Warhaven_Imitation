@@ -37,6 +37,8 @@ void CState_Common_Fall_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 STATE_TYPE CState_Common_Fall_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+
     return __super::Tick(pOwner, pAnimator);
 }
 

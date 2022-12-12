@@ -54,7 +54,7 @@ HRESULT CState_Combat_SkillQ_AirSpike_End::Initialize()
 	Add_KeyFrame(30, 1);
 	Add_KeyFrame(45, 2);
 
-	return S_OK;
+	return __super::Initialize();
 }
 
 void CState_Combat_SkillQ_AirSpike_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

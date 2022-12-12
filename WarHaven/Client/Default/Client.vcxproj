@@ -248,6 +248,7 @@
     <ClInclude Include="..\Public\CState_Common_Land_Engineer_R.h" />
     <ClInclude Include="..\Public\CState_Common_Sting_Engineer.h" />
     <ClInclude Include="..\Public\CState_Common_Sting_Fiona.h" />
+    <ClInclude Include="..\Public\CState_Defeat.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Fiona.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Engineer.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Fiona_L.h" />
@@ -582,6 +583,7 @@
     <ClInclude Include="..\Public\CState_Combat_Run_Warrior_R.h" />
     <ClInclude Include="..\Public\CState_Patrol_Walk_Engineer_L.h" />
     <ClInclude Include="..\Public\CState_Patrol_Walk_Engineer_R.h" />
+    <ClInclude Include="..\Public\CState_Victory.h" />
     <ClInclude Include="..\Public\CStop_Archer.h" />
     <ClInclude Include="..\Public\CStop_Archer_L.h" />
     <ClInclude Include="..\Public\CStop_Archer_R.h" />
@@ -959,6 +961,7 @@
     <ClCompile Include="..\Private\CState_Common_Land_Engineer_R.cpp" />
     <ClCompile Include="..\Private\CState_Common_Sting_Engineer.cpp" />
     <ClCompile Include="..\Private\CState_Common_Sting_Fiona.cpp" />
+    <ClCompile Include="..\Private\CState_Defeat.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Fiona.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Engineer.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Fiona_L.cpp" />
@@ -1294,6 +1297,7 @@
     <ClCompile Include="..\Private\CState_Combat_Run_Warrior_R.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Walk_Engineer_L.cpp" />
     <ClCompile Include="..\Private\CState_Patrol_Walk_Engineer_R.cpp" />
+    <ClCompile Include="..\Private\CState_Victory.cpp" />
     <ClCompile Include="..\Private\CStop_Archer.cpp" />
     <ClCompile Include="..\Private\CStop_Archer_L.cpp" />
     <ClCompile Include="..\Private\CStop_Archer_R.cpp" />
