@@ -155,5 +155,8 @@ private:
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
+
+private:
+	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;
 };
 END

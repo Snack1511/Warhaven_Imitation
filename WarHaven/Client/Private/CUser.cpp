@@ -332,13 +332,7 @@ void CUser::On_ExitLevel()
 
 void CUser::On_EnterStageLevel()
 {
-	if (!m_pUI_Oper)
-	{
-		m_pUI_Oper = CUI_Oper::Create();
-
-		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pUI_Oper);
-	}
+	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
 	if (!m_pUI_HUD)
 	{
@@ -368,13 +362,7 @@ void CUser::On_EnterStageLevel()
 		CREATE_GAMEOBJECT(m_pUI_Training, GROUP_UI);
 	}
 
-	if (!m_pUI_Paden)
-	{
-		m_pUI_Paden = CUI_Paden::Create();
 
-		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pUI_Paden);
-	}
 
 	if (!m_pUI_Dead)
 	{
@@ -384,6 +372,25 @@ void CUser::On_EnterStageLevel()
 		DISABLE_GAMEOBJECT(m_pUI_Dead);
 	}
 
+	if (m_eLoadLevel > LEVEL_BOOTCAMP)
+	{
+		if (!m_pUI_Oper)
+		{
+			m_pUI_Oper = CUI_Oper::Create();
+
+			CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pUI_Oper);
+		}
+
+		if (!m_pUI_Paden)
+		{
+			m_pUI_Paden = CUI_Paden::Create();
+
+			CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pUI_Paden);
+		}
+	}
+
 	SetUp_BloodOverlay();
 	SetUp_HeroGaugeFire();
 }
@@ -391,15 +398,28 @@ void CUser::On_EnterStageLevel()
 void CUser::On_ExitStageLevel()
 {
 	m_pBloodOverlay = nullptr;
-	m_pUI_HUD = nullptr;
-	m_pUI_Dead = nullptr;
+
+	if (m_pUI_HUD)
+		m_pUI_HUD = nullptr;
+
+	if (m_pUI_Dead)
+		m_pUI_Dead = nullptr;
 
 	for (_uint i = 0; i < 5; ++i)
-		m_pUI_Damage[i] = nullptr;
+	{
+		if (m_pUI_Damage[i])
+			m_pUI_Damage[i] = nullptr;
+	}
 
-	m_pUI_Oper = nullptr;
-	m_pUI_Paden = nullptr;
-	m_pUI_Training = nullptr;
+	if (m_pUI_Oper)
+		m_pUI_Oper = nullptr;
+
+	if (m_pUI_Paden)
+		m_pUI_Paden = nullptr;
+
+	if (m_pUI_Training)
+		m_pUI_Training = nullptr;
+
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
 }
