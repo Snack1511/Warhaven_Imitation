@@ -21,8 +21,11 @@ public:
 	virtual HRESULT	Start();
 
 	virtual void My_Tick();
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 public:
+	void SetActive_Mouse(_bool value);
 	MouseType Get_MouseType() { return m_eType; };
 	void Set_Mouse(MouseType eType);
 
@@ -34,7 +37,6 @@ private:
 	MouseType m_eType = MouseType::TYPE_END;
 
 private:
-	void SetActive_Mouse(_bool value);
 };
 
 END

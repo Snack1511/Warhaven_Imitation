@@ -21,6 +21,8 @@ HRESULT CUI_Oper::Initialize_Prototype()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
+	ShowCursor(false);
+
 	Create_TextImg();
 	Create_OperBG();
 	Create_OperProfile();
@@ -53,6 +55,9 @@ HRESULT CUI_Oper::Start()
 	SetActive_BG(true);
 
 	__super::Start();
+
+	CUser::Get_Instance()->Set_FixCursor(false);
+	CUser::Get_Instance()->SetActive_Cursor(true);
 
 	return S_OK;
 }
@@ -410,6 +415,8 @@ void CUI_Oper::Progress_Oper()
 				DISABLE_GAMEOBJECT(this);
 
 				CUser::Get_Instance()->SetActive_TargetPoint(true);
+
+				CUser::Get_Instance()->Fix_CursorPosToCenter();
 			}
 		}
 	}
