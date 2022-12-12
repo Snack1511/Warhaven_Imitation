@@ -3,6 +3,7 @@
 #include "CAIController.h"
 #include "CTable_Conditions.h"
 #include "CBehavior.h"
+#include "GameInstance.h"
 CAIPersonality::CAIPersonality(CTable_Conditions* pConditionTable)
 	:m_pConditionTable(pConditionTable)
 {
@@ -85,6 +86,22 @@ _float CAIPersonality::Get_CheckedHP()
 
 	return fReturnRange;
 }
+
+_bool CAIPersonality::Is_LongTimeRemain(eBehaviorType eBhavior)
+{
+	return m_tPersonalDesc.fRemainMaxTime[_uint(eBhavior)] <= m_fRemainAccTime[_uint(eBhavior)];
+}
+
+void CAIPersonality::Update_RemainTime(eBehaviorType eBhavior)
+{
+	m_fRemainAccTime[_uint(eBhavior)] += fDT(0);
+}
+
+void CAIPersonality::Init_RemainTime(eBehaviorType eBhavior)
+{
+	m_fRemainAccTime[_uint(eBhavior)] = 0.f;
+}
+
 
 _float CAIPersonality::Get_LimitRouteDistance()
 {

@@ -38,6 +38,7 @@ HRESULT CPersonality_Default::Initailize()
 	m_tPersonalDesc.eMainPerosnality = eMain_Default;
 	m_tPersonalDesc.eFightPersonality = eFight_Default;
 	m_tPersonalDesc.eCoopPersonality = eCoop_Default;
+	m_tPersonalDesc.fRemainMaxTime[_uint(eBehaviorType::ePatrol)] = 5.f;
 
 	CBehavior* pBehavior = nullptr;
 	/* pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Follow"))->Clone();
@@ -48,7 +49,7 @@ HRESULT CPersonality_Default::Initailize()
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Patrol"))->Clone();
 	pBehavior->Initialize();
-	pBehavior->Add_BehaviorTick(wstring(L"Callback_Tick_Update_Path"));
+	pBehavior->Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"));
 	pBehavior->Set_Priority(0);
 	m_pPatrolBehavior = pBehavior;
 
@@ -76,6 +77,7 @@ HRESULT CPersonality_Default::Initailize()
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_AbleHero"));
+	pBehavior->Add_OtherCondition(wstring(L"Check_AttackBehavior"));
 	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(4);
