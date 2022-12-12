@@ -986,25 +986,28 @@ void CUnit::My_LateTick()
 
 }
 
-void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fDuration, _float4 Diffuse)
+void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange,_float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse)
 {
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.eFadeType = tagLightDesc::FADEIN;
 	LightDesc.vPosition = vPos;
 	LightDesc.fRange = fRange;
 	LightDesc.fRandomRange = fRandomRange;
+	LightDesc.fLightFadeInTime = fFadeInTime;
 	LightDesc.fLightTime = fDuration;
-	LightDesc.vDiffuse = Diffuse;
-	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f);
+	LightDesc.fLightFadeOutTime = fFadeOutTime;
+	LightDesc.vTargetDiffuse = Diffuse;
+	LightDesc.vTargetAmbient = _float4(0.2f, 0.2f, 0.2f);
+	LightDesc.vTargetSpecular = _float4(1.f, 1.f, 1.f);
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 }
 
 void CUnit::Effect_Parring(_float4 vHitPos)
 {
-	Create_Light(vHitPos, 3.f, 0.f, 0.05f, RGB(255, 255, 255));
+	Create_Light(vHitPos, 3.f, 0.f, 0.02f, 0.f, 0.03f, RGB(255, 255, 255));
 	/*CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), vHitPos);*/

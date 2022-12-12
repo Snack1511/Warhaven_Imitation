@@ -548,11 +548,15 @@ HRESULT CUnit_Valkyrie::Start()
 void CUnit_Valkyrie::OnEnable()
 {
 	TurnOn_ValkyrieTrail(true);
-
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	
 	m_TransformParticles.clear();
 
-	m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this,
-		m_pTransform->Get_World(WORLD_POS));
+	m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, vPos);
+
+	vPos.y += 0.5f;
+
+	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 1.f, RGB(255, 140, 40));
 
 	__super::OnEnable();
 }
@@ -568,6 +572,10 @@ void CUnit_Valkyrie::OnDisable()
 	}
 
 	m_TransformParticles.clear();
+
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
+	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.5f, RGB(255, 255, 255));
 	
 	__super::OnDisable();
 }

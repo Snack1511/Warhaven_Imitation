@@ -362,9 +362,9 @@ namespace Engine
 	typedef struct tagLightDesc
 	{
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
-
+		enum FADETYPE { FADEIN, FADEOUTREADY, FADEOUT, FADE_END};
 		TYPE			eType = TYPE_END;
-
+		FADETYPE		eFadeType = FADEOUTREADY;
 		XMFLOAT4		vDirection;
 
 		XMFLOAT4		vPosition;
@@ -372,14 +372,20 @@ namespace Engine
 		float			fOriginRange;
 		float			fRandomRange = 0.f;
 
-		XMFLOAT4		vDiffuse;
-		XMFLOAT4		vAmbient;
-		XMFLOAT4		vSpecular;
+		XMFLOAT4		vDiffuse = {};
+		XMFLOAT4		vTargetDiffuse = {};
+		XMFLOAT4		vAmbient = {};
+		XMFLOAT4		vTargetAmbient = {};
+		XMFLOAT4		vSpecular = {};
+		XMFLOAT4		vTargetSpecular = {};
 
 		char			LightOpt = 0;//임시변수 --> 뭔가 특수하게 플래그를 줄 경우..
 		//라이트 수명
 		float			fLightAcc = 0.f;
+		float			fLightFadeInTime = 0.f;
 		float			fLightTime = 999999.f;
+		float			fLightFadeOutTime = 0.f;
+
 		class CGameObject* pOwner = nullptr;
 		XMFLOAT4		vOffset = { 0.f, 0.f, 0.f, 1.f };
 

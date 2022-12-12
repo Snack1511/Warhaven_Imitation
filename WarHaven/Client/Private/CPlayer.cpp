@@ -829,8 +829,7 @@ void CPlayer::Update_HeroGauge()
 			{
 				On_FinishHero_KeyInput();
 			}
-
-			if (m_fGauge <= 0.f)
+			else if(0 >= m_fGauge)
 			{
 				On_FinishHero();
 			}
@@ -869,6 +868,11 @@ void CPlayer::On_FinishHero_KeyInput()
 {
 	//if(KEY(CTRL, HOLD)) //1번 자주눌러서 막음
 	if (KEY(NUM1, TAP))
+	{
+		On_FinishHero();
+	}
+	
+	else if (0 >= m_fGauge)
 	{
 		On_FinishHero();
 	}

@@ -6,6 +6,8 @@
 
 #include "GameObject.h"
 #include "Transform.h"
+#include "Easing_Utillity.h"
+
 IMPLEMENT_SINGLETON(CLight_Manager)
 
 CLight_Manager::CLight_Manager()
@@ -200,19 +202,70 @@ void CLight_Manager::Update_Lights()
 		{
 			pLight->m_LightDesc.fLightAcc += fDT(0);
 
-			if (pLight->m_LightDesc.fLightAcc > pLight->m_LightDesc.fLightTime)
+			switch (pLight->m_LightDesc.eFadeType)
 			{
-				SAFE_DELETE(pLight);
-				iter = m_Lights.erase(iter);
-				continue;
+			case LIGHTDESC::FADEIN:
+				if (pLight->m_LightDesc.fLightAcc >= pLight->m_LightDesc.fLightFadeInTime)
+				{
+					pLight->m_LightDesc.fLightAcc = 0.f;
+					pLight->m_LightDesc.eFadeType = LIGHTDESC::FADEOUTREADY;
+				}
+				else
+				{
+					_float4 vFadeDiff = XMLoadFloat4(&pLight->m_LightDesc.vTargetDiffuse);
+					_float4 vFadeAmbi = XMLoadFloat4(&pLight->m_LightDesc.vTargetAmbient);
+					_float4 vFadeSpec = XMLoadFloat4(&pLight->m_LightDesc.vTargetSpecular);
+					_float4 vFaintLight = XMVectorSet(0.001f, 0.001f, 0.001f, 1.f);
+
+					pLight->m_LightDesc.vDiffuse = CEasing_Utillity::QuinticInOut(vFaintLight, vFadeDiff, pLight->m_LightDesc.fLightAcc, pLight->m_LightDesc.fLightFadeInTime);
+					pLight->m_LightDesc.vAmbient = CEasing_Utillity::QuinticInOut(vFaintLight, vFadeAmbi, pLight->m_LightDesc.fLightAcc, pLight->m_LightDesc.fLightFadeInTime);
+					pLight->m_LightDesc.vSpecular = CEasing_Utillity::QuinticInOut(vFaintLight, vFadeSpec, pLight->m_LightDesc.fLightAcc, pLight->m_LightDesc.fLightFadeInTime);
+				}
+				break;
+
+			case LIGHTDESC::FADEOUTREADY:
+				if (pLight->m_LightDesc.fLightAcc >= pLight->m_LightDesc.fLightTime)
+				{
+					pLight->m_LightDesc.fLightAcc = 0.f;
+					pLight->m_LightDesc.eFadeType = LIGHTDESC::FADEOUT;
+
+					if ((0.f < pLight->m_LightDesc.vTargetDiffuse.x) && (0.f < pLight->m_LightDesc.vTargetDiffuse.y) &&
+						(0.f < pLight->m_LightDesc.vTargetDiffuse.z))
+					{
+						pLight->m_LightDesc.vDiffuse = pLight->m_LightDesc.vTargetDiffuse;
+						pLight->m_LightDesc.vAmbient = pLight->m_LightDesc.vTargetAmbient;
+						pLight->m_LightDesc.vSpecular = pLight->m_LightDesc.vTargetSpecular;
+					}
+				}
+				break;
+
+			case LIGHTDESC::FADEOUT:
+				if (pLight->m_LightDesc.fLightAcc >= pLight->m_LightDesc.fLightFadeOutTime)
+				{
+					pLight->m_LightDesc.fLightAcc = 0.f;
+					SAFE_DELETE(pLight);
+					iter = m_Lights.erase(iter);
+					continue;
+				}
+				else
+				{
+					_float4 vFadeDiff = XMLoadFloat4(&pLight->m_LightDesc.vTargetDiffuse);
+					_float4 vFadeAmbi = XMLoadFloat4(&pLight->m_LightDesc.vTargetAmbient);
+					_float4 vFadeSpec = XMLoadFloat4(&pLight->m_LightDesc.vTargetSpecular);
+					_float4 vFaintLight = XMVectorSet(0.001f, 0.001f, 0.001f, 1.f);
+
+					pLight->m_LightDesc.vDiffuse = CEasing_Utillity::QuinticInOut(vFadeDiff, vFaintLight, pLight->m_LightDesc.fLightAcc, pLight->m_LightDesc.fLightFadeOutTime);
+					pLight->m_LightDesc.vAmbient = CEasing_Utillity::QuinticInOut(vFadeAmbi, vFaintLight, pLight->m_LightDesc.fLightAcc, pLight->m_LightDesc.fLightFadeOutTime);
+					pLight->m_LightDesc.vSpecular = CEasing_Utillity::QuinticInOut(vFadeSpec, vFaintLight, pLight->m_LightDesc.fLightAcc, pLight->m_LightDesc.fLightFadeOutTime);
+				}
+				break;
 			}
-			else
-			{
-				++iter;
-				continue;
-			}
-		}
 			
+		}
+
+
+		++iter;
+
 
 	}
 
