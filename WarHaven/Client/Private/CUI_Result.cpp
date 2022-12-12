@@ -22,17 +22,45 @@ HRESULT CUI_Result::Start()
 {
 	__super::Start();
 
+	SetActive_Result(true);
+
 	return S_OK;
+}
+
+void CUI_Result::SetActive_Result(_bool value)
+{
+	for (int i = 0; i < Result_End; ++i)
+	{
+		if (value == true)
+		{
+			Enable_Fade(m_pResultUI[i], 0.3f);
+		}
+		else
+		{
+			Disable_Fade(m_pResultUI[i], 0.3f);
+		}
+	}
+}
+
+void CUI_Result::My_Tick()
+{
+	__super::My_Tick();
+
+
 }
 
 void CUI_Result::OnEnable()
 {
 	__super::OnEnable();
+
+	SetActive_Result(true);
 }
 
 void CUI_Result::OnDisable()
 {
 	__super::OnDisable();
+
+	SetActive_Result(false);
 }
 
 void CUI_Result::Create_ResultUI()

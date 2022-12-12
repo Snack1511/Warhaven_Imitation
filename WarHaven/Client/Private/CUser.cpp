@@ -43,6 +43,7 @@
 #include "CUI_Animation.h"
 
 #include "CGameSystem.h"
+#include "CUI_Result.h"
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -248,6 +249,11 @@ void CUser::Set_HP(_float fCurValue, _float fMaxValue)
 void CUser::Set_HeroGauge(_float fCurValue, _float fMaxValue)
 {
 	m_pUI_HeroGauge->Set_HeroGauge(fCurValue, fMaxValue);
+}
+
+void CUser::SetActive_Result(_bool value)
+{
+	m_pUI_Result->SetActive_Result(value);
 }
 
 void CUser::SetActive_HUD(_bool value)

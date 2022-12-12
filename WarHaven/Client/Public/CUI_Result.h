@@ -16,12 +16,15 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual HRESULT	Start();
 
+public:
+	void SetActive_Result(_bool value);
+
 private:
+	virtual void My_Tick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
 private:
-	// 배경	 글자 백그라운드 0 1	 글자 0 1	 라인
 	enum ResultUI 
 	{ 
 		Result_BG, 

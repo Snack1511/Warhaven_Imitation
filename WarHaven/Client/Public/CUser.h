@@ -25,6 +25,7 @@ class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
 
+class CUI_Result;
 class CUI_Popup;
 class CUI_Oper;
 class CUI_Paden;
@@ -93,6 +94,7 @@ public:
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
 	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
 
+	void SetActive_Result(_bool value);
 	void SetActive_HUD(_bool value);
 	void SetActive_UnitHUD(_bool value);
 	void SetActive_AbleHeroText(_bool value);
@@ -147,6 +149,7 @@ private:
 	CUI_Skill* m_pUI_Skill = nullptr;
 	CUI_Oper* m_pUI_Oper = nullptr;
 	CUI_Popup* m_pUI_Popup = nullptr;
+	CUI_Result* m_pUI_Result = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
