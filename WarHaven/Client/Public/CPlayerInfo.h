@@ -72,6 +72,7 @@ public:
 	void	Set_TeamConnector(CTeamConnector* pTeam) { m_pMyTeam = pTeam; }
 	void	Set_ChosenClass(CLASS_TYPE eEnum) { m_eCurChosenClass = eEnum; }
 
+	CLASS_TYPE	Get_ChonsenClass() { return m_eCurChosenClass; }
 	_uint	Get_UnitType() { return m_iUnitType; }
 
 	wstring Get_PlayerName() { return m_tPlayerInfo.wstrName; }

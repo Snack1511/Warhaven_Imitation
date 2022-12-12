@@ -382,7 +382,7 @@ void CMesh_Particle::Update_Reverse()
 	{
 		if (m_vecMatrices[0].size() == 3)
 		{
-			if (m_pRebornUnit)
+			if (m_pRebornUnit && m_pRebornUnit->Is_MainPlayer())
 				GAMEINSTANCE->Stop_GrayScale();
 		}
 

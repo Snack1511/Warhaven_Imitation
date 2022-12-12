@@ -1158,18 +1158,10 @@ void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	m_pOwnerPlayer->Reserve_BehaviorDesc(pBehaviorDesc);
 
 
-	//CPlayer* pTargetPlayer = nullptr;
-	////Å×½ºÆ®
-	//if (nullptr != pBehaviorDesc->pAlliesPlayer)
-	//{
-	//	pTargetPlayer = pBehaviorDesc->pAlliesPlayer;
-	//}
-	//else if (nullptr != pBehaviorDesc->pEnemyPlayer)
-	//{
-	//	pTargetPlayer = pBehaviorDesc->pEnemyPlayer;
-	//}
-	//m_pOwnerPlayer->Set_TargetPlayer(pTargetPlayer);
+}
 
+void CUnit::On_FinishGame(_bool bWin)
+{
 }
 
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)
@@ -1195,12 +1187,10 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 
 			On_DieBegin(pOtherUnit, vHitPos);
 			Enter_State(m_tHitType.eHitState, pHitInfo);
+			return;
 
 		}
 		
-
-
-		return;
 	}
 
 	pOtherUnit->Effect_Hit(this, vHitPos);
@@ -1267,11 +1257,9 @@ void CUnit::On_GuardHit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos,
 
 	if (!bDie)
 	{
-		On_DieBegin(pOtherUnit, vHitPos);
-		Enter_State(m_tHitType.eHitState, pHitInfo);
-
-		return;
+		m_tUnitStatus.fHP = 1.f;
 	}
+
 
 	switch (iOtherColType)
 	{

@@ -24,7 +24,7 @@ private:
 	virtual void OnDisable() override;
 
 private:
-	enum ConquestPopup{ CP_Line, CP_Blur, CP_BG, CP_End };
+	enum ConquestPopup{ CP_Line, CP_Blur, CP_BG, CP_ICON, CP_End };
 	CUI_Object* m_pConquestPopup[CP_End];
 
 private:

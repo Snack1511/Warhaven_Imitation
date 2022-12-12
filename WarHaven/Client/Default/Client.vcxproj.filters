@@ -2680,6 +2680,9 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\00. MainMenuUnit">
       <UniqueIdentifier>{c96f4cc2-c302-4e0c-a4ab-07cf0c9f356e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\UI_">
+      <UniqueIdentifier>{ba722f63-001b-474c-83cd-5d30a5d0deaa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

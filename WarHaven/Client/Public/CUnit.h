@@ -225,6 +225,7 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
+
 protected:
 	//PhysX 용 충돌체
 	CPhysXCharacter* m_pPhysXCharacter = nullptr;
@@ -368,6 +369,7 @@ public:
 	void	Start_Reborn();
 	//AI가 Behavior를 변경할 때 호출
 	virtual void On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
+	virtual void On_FinishGame(_bool bWin);
 
 
 	/* 상태 체크 함수 */

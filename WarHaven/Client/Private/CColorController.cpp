@@ -36,6 +36,7 @@ HRESULT CColorController::Add_ColorControll(const COLORDESC& tColorDesc)
 {
 	m_ColorDesclist.push_back(tColorDesc);
 
+	m_ColorDesclist.back().iOriginAnimIndex = m_pTargetAnimator->Get_CurAnimIndex();
 
 	if (!m_pTargetAnimator)
 		if (tColorDesc.eFadeStyle == KEYFRAME)
@@ -207,6 +208,15 @@ _bool CColorController::Fade_Time(COLORDESC& tColorDesc)
 
 _bool CColorController::Fade_KeyFrame(COLORDESC& tColorDesc)
 {
+	/* AnimIndex°¡ ÀüÀÌ¶û ´Ù¸£¸é °Á false return*/
+	_uint iCurIndex = m_pTargetAnimator->Get_CurAnimIndex();
+	if (iCurIndex != tColorDesc.iOriginAnimIndex)
+	{
+		m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
+
+		return false;
+	}
+
 	_uint iCurFrame = m_pTargetAnimator->Get_CurAnimFrame();
 	
 	tColorDesc.fFadeTimeAcc += fDT(0);

@@ -171,6 +171,7 @@ public:
 	}
 
 	void On_RealChangeBehavior();
+	void On_FinishGame(CTeamConnector* pLoseTeam);
 
 
 public:

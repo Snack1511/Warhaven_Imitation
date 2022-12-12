@@ -9,6 +9,8 @@
 #include "CGameSystem.h"
 #include "CPlayerInfo.h"
 
+#include "CPlayer.h"
+#include "CTeamConnector.h"
 CUI_Oper::CUI_Oper()
 {
 }
@@ -118,6 +120,14 @@ void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 	CUser::Get_Instance()->SetActive_HUD(true);
 
 	DISABLE_GAMEOBJECT(this);
+
+
+	/* ºÎÈ° */
+	CPlayer* pMainPlayer = CUser::Get_Instance()->Get_MainPlayerInfo()->Get_Player();
+	_float4 vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition_Start();
+
+	pMainPlayer->Respawn_Unit(vStartPos, CUser::Get_Instance()->Get_MainPlayerInfo()->Get_ChonsenClass());
+
 }
 
 void CUI_Oper::My_Tick()

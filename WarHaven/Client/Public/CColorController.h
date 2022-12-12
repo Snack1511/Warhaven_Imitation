@@ -45,6 +45,11 @@ public:
 		_uint iMeshPartType;
 		_uint iStartKeyFrame = 0;
 		_uint iEndKeyFrame = 0;
+
+		_uint	iOriginAnimIndex = 0;
+
+		
+
 	};
 
 public:

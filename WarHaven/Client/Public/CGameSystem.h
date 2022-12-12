@@ -24,7 +24,6 @@ class CGameSystem
 {
 public:
 	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_CNT};
-
 	DECLARE_SINGLETON(CGameSystem)
 
 private:
