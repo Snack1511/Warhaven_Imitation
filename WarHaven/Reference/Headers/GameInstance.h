@@ -129,6 +129,10 @@ public:	/* For. Render_Manager */
 	void	Start_GrayScale(_float fTargetPower);
 	void	Stop_GrayScale();
 
+
+	void	Start_DarkScreen(_float fTime);
+	void	Stop_DarkScreen(_float fTime);
+
 public:	/* For. Object_Manager */
 	template <typename T>
 	T* Get_StaticObj()

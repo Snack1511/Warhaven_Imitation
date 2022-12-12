@@ -135,6 +135,7 @@ void CUI_Dead::My_Tick()
 		}
 		else
 		{
+			/* Oper UI 다시 띄우는 곳 */
 			_float fScaleX = m_pRevivalUI[RU_Bar]->Get_Scale().x;
 			if (fScaleX < 0.1f)
 			{
@@ -151,6 +152,7 @@ void CUI_Dead::My_Tick()
 
 				CUser::Get_Instance()->Set_FixCursor(false);
 				CUser::Get_Instance()->SetActive_Cursor(true);
+				GAMEINSTANCE->Change_Camera(L"DefaultCam");
 			} 
 		}
 	}

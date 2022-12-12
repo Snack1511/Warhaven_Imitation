@@ -435,6 +435,16 @@ void CGameInstance::Stop_GrayScale()
 	m_pRenderManager->Stop_GrayScale();
 }
 
+void CGameInstance::Start_DarkScreen(_float fTime)
+{
+	m_pRenderManager->Start_DarkScreen(fTime);
+}
+
+void CGameInstance::Stop_DarkScreen(_float fTime)
+{
+	m_pRenderManager->Stop_DarkScreen(fTime);
+}
+
 list<CGameObject*>& CGameInstance::Get_ObjGroup(const _uint& iGroupIdx)
 {
 	return m_pObjectManager->Get_ObjGroup(iGroupIdx);

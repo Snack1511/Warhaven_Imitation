@@ -312,13 +312,13 @@ _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDm
 	}
 
 	if (pOtherUnit)
-		pOtherUnit->m_pOwnerPlayer->On_PlusGauge(30.f);
+		pOtherUnit->m_pOwnerPlayer->On_PlusGauge(3.f);
 
 	if (m_tUnitStatus.fHP <= 0.f)
 	{
 		m_tUnitStatus.fHP = 0.f;
 		if (pOtherUnit)
-			pOtherUnit->m_pOwnerPlayer->On_PlusGauge(30.f);
+			pOtherUnit->m_pOwnerPlayer->On_PlusGauge(10.f);
 
 		return false;
 	}
@@ -1162,6 +1162,8 @@ void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 
 void CUnit::On_FinishGame(_bool bWin)
 {
+	Enter_State((bWin) ? STATE_VICTORY : STATE_DEFEAT);
+
 }
 
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)

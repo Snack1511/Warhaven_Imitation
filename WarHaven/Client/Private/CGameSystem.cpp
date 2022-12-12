@@ -1179,7 +1179,7 @@ void CGameSystem::On_FinishGame(CTeamConnector* pTeamConnector)
 		CPlayer* pPlayer = elem.second->Get_Player();
 		if (pPlayer)
 		{
-			//pPlayer->On_FinishGame();
+			pPlayer->On_FinishGame(pTeamConnector);
 		}
 	}
 
@@ -1278,7 +1278,7 @@ CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eTEAM
 		}
 	}
 
-	_int iRandIndex = random(0, iSize);
+	_int iRandIndex = random(0, iSize-1);
 	
 	for (auto& elem : m_mapAllPathes[m_eCurStageType])
 	{

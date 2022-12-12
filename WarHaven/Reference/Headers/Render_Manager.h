@@ -35,6 +35,9 @@ public:
 	void	Start_GrayScale(_float fTargetPower);
 	void	Stop_GrayScale();
 
+	void	Start_DarkScreen(_float fTime);
+	void	Stop_DarkScreen(_float fTime);
+
 public:
 	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance);
 
@@ -86,6 +89,11 @@ private:
 	_bool	m_bGrayScale = false;
 	_float	m_fGrayScalePower = 0.f;
 	_float	m_fGrayScaleTargetPower = 0.f;
+
+private:
+	_bool	m_bDarkScreen = false;
+	_float	m_fDarkScreenAcc = 0.f;
+	_float	m_fDarkScreenTime = 0.f;
 
 
 #ifdef _DEBUG

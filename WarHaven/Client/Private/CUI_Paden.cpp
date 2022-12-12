@@ -180,11 +180,11 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 
 	if (bIsMainPlayerTeam)
 	{
-		vColor = m_vColorRed;
+		vColor = m_vColorBlue;
 	}
 	else
 	{
-		vColor = m_vColorBlue;
+		vColor = m_vColorRed;
 	}
 
 	for (int i = 0; i < PU_Text; ++i)
@@ -207,7 +207,7 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 	}
 }
 
-void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, string strPadenPointKey, _uint iTriggerState)
+void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 {
 	_float fDuration = 0.3f;
 
@@ -219,45 +219,31 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, s
 
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
-				if (bIsMainPlayer)
-				{
-					m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
 
-					_float4 vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
-					vPos.x = 0.f;
-					vPos.y = 200.f;
-					m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0.f);
-				}
+				m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
 
-				Set_PointGauge_Color(bIsMainPlayerTeam, Point_A);
+				_float4 vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
+				vPos.x = 0.f;
+				vPos.y = 200.f;
+				m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0.f);
 			}
 			else if (strPadenPointKey == "Paden_Trigger_R")
 			{
-				if (bIsMainPlayer)
-				{
-					m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
+				m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
 
-					_float4 vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
-					vPos.x = 0.f;
-					vPos.y = 200.f;
-					m_pArrPointUI[Point_R][i]->DoMove(vPos, fDuration, 0.f);
-				}
-
-				Set_PointGauge_Color(bIsMainPlayerTeam, Point_R);
+				_float4 vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
+				vPos.x = 0.f;
+				vPos.y = 200.f;
+				m_pArrPointUI[Point_R][i]->DoMove(vPos, fDuration, 0.f);
 			}
 			else if (strPadenPointKey == "Paden_Trigger_C")
 			{
-				if (bIsMainPlayer)
-				{
-					m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
+				m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
 
-					_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
-					vPos.x = 0.f;
-					vPos.y = 200.f;
-					m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0.f);
-				}
-
-				Set_PointGauge_Color(bIsMainPlayerTeam, Point_C);
+				_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+				vPos.x = 0.f;
+				vPos.y = 200.f;
+				m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0.f);
 			}
 
 			break;
@@ -266,47 +252,62 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, s
 
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
-				if (bIsMainPlayer)
-				{
-					m_pArrProjPointUI[Point_A][i]->SetActive(true);
+				m_pArrProjPointUI[Point_A][i]->SetActive(true);
 
-					m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
+				m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
 
-					_float4 vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
-					vPos.x -= 50.f;
-					vPos.y = m_fPointUIPosY;
-					m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0);
-				}
+				_float4 vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
+				vPos.x -= 50.f;
+				vPos.y = m_fPointUIPosY;
+				m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0);
+
 			}
 			else if (strPadenPointKey == "Paden_Trigger_R")
 			{
-				if (bIsMainPlayer)
-				{
-					m_pArrProjPointUI[Point_R][i]->SetActive(true);
+				m_pArrProjPointUI[Point_R][i]->SetActive(true);
 
-					m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
+				m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
 
-					_float4 vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
-					vPos.y = m_fPointUIPosY;
-					m_pArrPointUI[Point_R][i]->DoMove(vPos, fDuration, 0);
-				}
+				_float4 vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
+				vPos.y = m_fPointUIPosY;
+				m_pArrPointUI[Point_R][i]->DoMove(vPos, fDuration, 0);
+
 			}
 			else if (strPadenPointKey == "Paden_Trigger_C")
 			{
-				if (bIsMainPlayer)
-				{
-					m_pArrProjPointUI[Point_C][i]->SetActive(true);
+				m_pArrProjPointUI[Point_C][i]->SetActive(true);
 
-					m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
+				m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
 
-					_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
-					vPos.x += 50.f;
-					vPos.y = m_fPointUIPosY;
-					m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0);
-				}
+				_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
+				vPos.x += 50.f;
+				vPos.y = m_fPointUIPosY;
+				m_pArrPointUI[Point_C][i]->DoMove(vPos, fDuration, 0);
+
 			}
 
 			break;
+		}
+	}
+}
+
+void CUI_Paden::Interact_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKey)
+{
+	_float fDuration = 0.3f;
+
+	for (int i = 0; i < PU_End; ++i)
+	{
+		if (strPadenPointKey == "Paden_Trigger_A")
+		{
+			Set_PointGauge_Color(bIsMainPlayerTeam, Point_A);
+		}
+		else if (strPadenPointKey == "Paden_Trigger_R")
+		{
+			Set_PointGauge_Color(bIsMainPlayerTeam, Point_R);
+		}
+		else if (strPadenPointKey == "Paden_Trigger_C")
+		{
+			Set_PointGauge_Color(bIsMainPlayerTeam, Point_C);
 		}
 	}
 }

@@ -39,7 +39,8 @@ public:
 
 	void Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam);
 
-	void Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, string wstrPadenPointKey, _uint iTriggerState);
+	void Interact_PointUI(_bool bIsMainPlayerTeam, string wstrPadenPointKey);
+	void Move_PointUI(string wstrPadenPointKey, _uint iTriggerState);
 
 private:
 	virtual void My_Tick() override;

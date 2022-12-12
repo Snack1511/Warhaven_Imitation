@@ -91,6 +91,20 @@ void CRender_Manager::Stop_GrayScale()
 	m_bGrayScale = false;
 }
 
+void CRender_Manager::Start_DarkScreen(_float fTime)
+{
+	m_fDarkScreenAcc = 0.f;
+	m_bDarkScreen = true;
+	m_fDarkScreenTime = fTime;
+}
+
+void CRender_Manager::Stop_DarkScreen(_float fTime)
+{
+	m_fDarkScreenAcc = fTime;
+	m_fDarkScreenTime = fTime;
+	m_bDarkScreen = false;
+}
+
 void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance)
 {
 	m_ShadowViewMatrix.Identity();
@@ -728,6 +742,23 @@ void CRender_Manager::Update()
 			m_fGrayScalePower = 0.f;
 
 	}
+
+	if (m_bDarkScreen)
+	{
+		if (m_fDarkScreenAcc < m_fDarkScreenTime)
+			m_fDarkScreenAcc += fDT(0);
+		else
+			m_fDarkScreenAcc = m_fDarkScreenTime;
+	}
+	else
+	{
+		if (m_fDarkScreenAcc > 0.f)
+			m_fDarkScreenAcc -= fDT(0);
+		else
+			m_fDarkScreenAcc = 0.f;
+
+	}
+
 }
 
 HRESULT CRender_Manager::Render()
@@ -2065,6 +2096,17 @@ HRESULT CRender_Manager::Render_UIBlend(const _tchar* pRenderTargetName)
 		return E_FAIL;
 
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+
+	_float fRatio;
+	
+
+	if (m_fDarkScreenTime <= 0.f)
+		fRatio = 0.f;
+	else
+		fRatio = (m_fDarkScreenAcc / m_fDarkScreenTime);
+
+
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_fDarkScreen", &fRatio, sizeof(_float));
 
 	m_vecShader[SHADER_DEFERRED]->Begin(8);
 

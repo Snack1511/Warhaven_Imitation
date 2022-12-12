@@ -130,6 +130,7 @@ void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 	_float4 vStartPos = pMainPlayer->Get_Team()->Find_RespawnPosition_Start();
 
 	pMainPlayer->Respawn_Unit(vStartPos, CUser::Get_Instance()->Get_MainPlayerInfo()->Get_ChonsenClass());
+	GAMEINSTANCE->Change_Camera(L"PlayerCam");
 
 }
 
@@ -417,6 +418,7 @@ void CUI_Oper::Progress_Oper()
 		else if (m_iOperProgress == 11)
 		{
 			m_iOperProgress++;
+			GAMEINSTANCE->Stop_DarkScreen(1.f);
 			Disable_Fade(m_pBlackImg, 0.3f);
 		}
 		else if (m_iOperProgress == 12)
@@ -424,6 +426,7 @@ void CUI_Oper::Progress_Oper()
 			if (m_fAccTime > 0.3f)
 			{
 				m_fAccTime = 0.f;
+
 
 				DISABLE_GAMEOBJECT(this);
 

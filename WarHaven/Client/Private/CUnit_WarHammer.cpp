@@ -199,7 +199,6 @@ void CUnit_WarHammer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	case eBehaviorType::eAttack:
 		//상태변경
 		eNewState = AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
-		m_pOwnerPlayer->Set_TargetPlayer(pBehaviorDesc->pEnemyPlayer);
 
 		break;
 	case eBehaviorType::ePathNavigation:

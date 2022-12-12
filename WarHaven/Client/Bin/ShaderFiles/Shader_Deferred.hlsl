@@ -49,6 +49,10 @@ bool		g_bBilateral;
 float		g_fWinCX = 1280.f;
 float		g_fWinCY = 720.f;
 float		g_fCoord[3] = { -1.f, 0.f, 1.f };
+
+
+float		g_fDarkScreen = 0.f;
+
 float		g_fLaplacianMask[9] = {
 	-1,-1, -1,
 	-1, 8, -1,
@@ -338,13 +342,13 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 
 
 	//DOF
-	if (g_bBilateral)
+	//if (g_bBilateral)
 	{
 		/* 멀수록 Ratio가 강하게 */
 
 		if (vDepthDesc.y < 0.9f)
 		{
-			float		fMaxDepth = 0.1f;
+			float		fMaxDepth = 0.7f;
 
 			float fRatio = saturate(vDepthDesc.y / fMaxDepth);
 
@@ -650,6 +654,13 @@ PS_OUT PS_MAIN_UIBLEND(PS_IN In)
 	Out.vColor.xyz = vUIDesc.xyz * vUIDesc.a + (vDefaultDesc * (1.f - vUIDesc.a));
 	//UI 블룸 추가
 	Out.vColor.xyz += vBloom.xyz;
+
+
+	/* 어둡게 하기 */
+	Out.vColor.xyz *= saturate(1.f - g_fDarkScreen);
+
+
+
 	Out.vColor.a = 1;
 
 

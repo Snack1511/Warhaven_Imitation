@@ -73,7 +73,7 @@ void CPath::Update_CurrentIndex(_float4 vCurrentPos)
         fCurSpeed = GET_COMPONENT_FROM(m_pOwnerController->Get_OwnerPlayer()->Get_CurrentUnit(), CPhysics)->Get_Physics().fSpeed * fDT(0);
 
 
-    if (fLength < fCurSpeed + fDT(0))
+    if (fLength < fCurSpeed + 3.f * fDT(0))
         m_iCurIndex++;
 }
 

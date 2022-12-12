@@ -12,6 +12,8 @@
 #include "Transform.h"
 #include "Loading_Manager.h"
 
+#include "CFadeDark.h"
+
 #include "CPlayer.h"
 
 #include "CEffects_Factory.h"
@@ -281,10 +283,16 @@ void CUser::Transform_SkillUI(_uint iClass)
 	m_pUI_Skill->Transform_SkillUI(iClass);
 }
 
-void CUser::Interat_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, string strPadenPointKey, _uint iTriggerState)
+void CUser::Interat_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKey)
 {
-	m_pUI_Paden->Interact_PointUI(bIsMainPlayer, bIsMainPlayerTeam, strPadenPointKey, iTriggerState);
+	m_pUI_Paden->Interact_PointUI(bIsMainPlayerTeam, strPadenPointKey);
 }
+
+void CUser::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
+{
+	m_pUI_Paden->Move_PointUI(strPadenPointKey, iTriggerState);
+}
+
 
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
@@ -358,6 +366,12 @@ void CUser::On_ExitLevel()
 void CUser::On_EnterStageLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+
+	if (!m_pFadeDark)
+	{
+		m_pFadeDark = CFadeDark::Create();
+		CREATE_GAMEOBJECT(m_pFadeDark, GROUP_UI);
+	}
 
 	if (!m_pUI_HUD)
 	{
@@ -461,6 +475,10 @@ void CUser::On_ExitStageLevel()
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
+	m_pUI_Popup = nullptr;
+	m_pUI_Result = nullptr;
+
+	m_pFadeDark = nullptr;
 }
 
 void CUser::Set_HUD(CLASS_TYPE eClass)
@@ -531,6 +549,12 @@ void CUser::Enable_Popup(_uint iPopupType)
 	if (m_pUI_Popup)
 		m_pUI_Popup->Enable_Popup((CUI_Popup::ePOPUP_TYPE)iPopupType);
 
+}
+
+void CUser::Start_FadeDark(_float fFadeInTime, _float fFadeOutStartTime, _float fFadeOutTime)
+{
+	if (m_pFadeDark)
+		m_pFadeDark->Start_Fade(fFadeInTime, fFadeOutStartTime, fFadeOutTime);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

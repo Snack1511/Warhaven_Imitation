@@ -191,6 +191,7 @@
     <ClInclude Include="..\Public\CAIPersonality.h" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
+    <ClInclude Include="..\public\CFadeDark.h" />
     <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Fiona.h" />
     <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Fiona.h" />
     <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Fiona.h" />
@@ -907,6 +908,7 @@
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
+    <ClCompile Include="..\private\CFadeDark.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Fiona.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Fiona.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Fiona.cpp" />

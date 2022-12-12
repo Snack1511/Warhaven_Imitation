@@ -731,6 +731,15 @@ void CPlayer::SetActive_UnitHUD(_bool value)
 void CPlayer::On_RealChangeBehavior()
 {
 	m_pCurBehaviorDesc = m_pReserveBehaviorDesc;
+
+	switch (m_pCurBehaviorDesc->eCurType)
+	{
+	case eBehaviorType::eAttack:
+		m_pTargetPlayer = m_pCurBehaviorDesc->pEnemyPlayer;
+		break;
+	default:
+		break;
+	}
 }
 
 void CPlayer::On_FinishGame(CTeamConnector* pLoseTeam)

@@ -27,16 +27,17 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		++m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE];
 
 		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
-		_bool bisMainTeam = static_cast<CUnit*>(pOtherObj)->Get_OwnerPlayer()->Get_Team()->IsMainPlayerTeam();
-		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, bisMainTeam, m_strTriggerName, 0);
+		if (bIsMainPlayer)
+			CUser::Get_Instance()->Move_PointUI(m_strTriggerName, 0);
+
 	}
 	else if (eOtherColType == COL_REDTEAM)
 	{
 		++m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 
 		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
-		_bool bisMainTeam = static_cast<CUnit*>(pOtherObj)->Get_OwnerPlayer()->Get_Team()->IsMainPlayerTeam();
-		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, bisMainTeam, m_strTriggerName, 0);
+		if (bIsMainPlayer)
+			CUser::Get_Instance()->Move_PointUI(m_strTriggerName, 0);
 	}
 
 }
@@ -53,16 +54,16 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 		--m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE];
 
 		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
-		_bool bisMainTeam = static_cast<CUnit*>(pOtherObj)->Get_OwnerPlayer()->Get_Team()->IsMainPlayerTeam();
-		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, bisMainTeam, m_strTriggerName, 1);
+		if (bIsMainPlayer)
+			CUser::Get_Instance()->Move_PointUI(m_strTriggerName, 1);
 	}
 	else if (eOtherColType == COL_REDTEAM)
 	{
 		--m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 
 		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
-		_bool bisMainTeam = static_cast<CUnit*>(pOtherObj)->Get_OwnerPlayer()->Get_Team()->IsMainPlayerTeam();
-		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, bisMainTeam, m_strTriggerName, 1);
+		if (bIsMainPlayer)
+			CUser::Get_Instance()->Move_PointUI(m_strTriggerName, 1);
 	}
 }
 
@@ -141,6 +142,7 @@ void CTrigger_Paden::My_Tick()
 		}
 	}
 
+	m_bUpdateStart = true;
 
 	//2. 그 외에는 시간 줄기
 	if (m_fConqueredTimeAcc > 0.f)
@@ -177,6 +179,24 @@ void CTrigger_Paden::Update_Conquered()
 		if (m_iTeamCnt[(_uint)m_pConqueredTeam->Get_TeamType()] > 0)
 			return;
 	}
+
+	if (m_bUpdateStart)
+	{
+		m_bUpdateStart = false;
+
+		/* blue가많은지 red가 많은지 알아야함 */
+		_bool bMainPlayerTeam = false;
+		if (m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE] > m_iTeamCnt[(_uint)eTEAM_TYPE::eRED])
+			bMainPlayerTeam = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE)->IsMainPlayerTeam();
+		else
+			bMainPlayerTeam = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eRED)->IsMainPlayerTeam();
+
+		CUser::Get_Instance()->Interat_PointUI(bMainPlayerTeam, m_strTriggerName);
+
+	}
+
+
+
 
 	_float fConquerSpeed = max(m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE], m_iTeamCnt[(_uint)eTEAM_TYPE::eRED]) * 0.5f;
 	m_fConqueredTimeAcc += fDT(0) * fConquerSpeed;

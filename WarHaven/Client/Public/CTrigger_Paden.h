@@ -64,6 +64,9 @@ private:
 	CDominion_Effect*	m_pDominionEffect = nullptr;
 
 private:
+	_bool				m_bUpdateStart = false;
+
+private:
 	virtual void My_Tick();
 	void	Update_Conquered();
 
