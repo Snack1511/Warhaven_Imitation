@@ -847,6 +847,8 @@ void CPlayer::Update_HeroGauge()
 			m_fGauge += fGaugeSpeed * 20.f;
 			if (m_fGauge > m_fMaxGauge)
 			{
+				// 화신 텍스트 등장
+				CUser::Get_Instance()->SetActive_AbleHeroText(true);
 				On_AbleHero();
 			}
 		}

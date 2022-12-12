@@ -27,14 +27,16 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		++m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE];
 
 		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
-		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, eOtherColType, 0);
+		_bool bisMainTeam = static_cast<CUnit*>(pOtherObj)->Get_OwnerPlayer()->Get_Team()->IsMainPlayerTeam();
+		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, bisMainTeam, m_strTriggerName, 0);
 	}
 	else if (eOtherColType == COL_REDTEAM)
 	{
 		++m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 
 		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
-		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, eOtherColType, 0);
+		_bool bisMainTeam = static_cast<CUnit*>(pOtherObj)->Get_OwnerPlayer()->Get_Team()->IsMainPlayerTeam();
+		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, bisMainTeam, m_strTriggerName, 0);
 	}
 
 }
@@ -51,16 +53,17 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 		--m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE];
 
 		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
-		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, 99, 1);
+		_bool bisMainTeam = static_cast<CUnit*>(pOtherObj)->Get_OwnerPlayer()->Get_Team()->IsMainPlayerTeam();
+		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, bisMainTeam, m_strTriggerName, 1);
 	}
 	else if (eOtherColType == COL_REDTEAM)
 	{
 		--m_iTeamCnt[(_uint)eTEAM_TYPE::eRED];
 
 		_bool bIsMainPlayer = static_cast<CUnit*>(pOtherObj)->Is_MainPlayer();
-		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, m_strTriggerName, 99, 1);
+		_bool bisMainTeam = static_cast<CUnit*>(pOtherObj)->Get_OwnerPlayer()->Get_Team()->IsMainPlayerTeam();
+		CUser::Get_Instance()->Interat_PointUI(bIsMainPlayer, bisMainTeam, m_strTriggerName, 1);
 	}
-
 }
 
 CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum)
@@ -187,7 +190,6 @@ void CTrigger_Paden::Update_Conquered()
 	if (m_fConqueredTimeAcc >= m_fConqueredTime)
 	{
 		// 점령당한 거점 색깔 점령한 팀 색으로 변경
-		CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, (_uint)m_eTeamType);
 
 		//이전 주인이 있었으면 거기서 trigger 빼기
 		if (m_pConqueredTeam)
@@ -200,6 +202,17 @@ void CTrigger_Paden::Update_Conquered()
 			m_pConqueredTeam = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eRED);
 
 		m_pDominionEffect->Set_DominionColor(m_pConqueredTeam);
+
+		if (m_pConqueredTeam->IsMainPlayerTeam())
+		{
+			CUser::Get_Instance()->SetActive_TargetPoint(false);
+			CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, (_uint)eTEAM_TYPE::eRED);
+			CUser::Get_Instance()->Enable_ConquestPopup(TEXT("거점 점령"));
+		}
+		else
+		{
+			CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, (_uint)eTEAM_TYPE::eBLUE);
+		}
 
 		m_pConqueredTeam->Add_Trigger(this);
 
@@ -219,6 +232,6 @@ void CTrigger_Paden::Update_Conquered()
 #endif // _DEBUG
 
 		m_fConqueredTimeAcc = 0.f;
-	}
+		}
 
-}
+	}

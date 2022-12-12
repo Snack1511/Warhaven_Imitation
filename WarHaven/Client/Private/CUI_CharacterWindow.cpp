@@ -62,11 +62,11 @@ void CUI_CharacterWindow::On_PointerDown(const _uint& iEventNum)
 	for (int i = 0; i < CU_Line; ++i)
 	{
 		_float4 vPrvPos = m_pArrCharacterUI[i][m_iPrvEventNum]->Get_Pos();
-		vPrvPos.x -= 10.f;
+		vPrvPos.y -= 10.f;
 		m_pArrCharacterUI[i][m_iPrvEventNum]->DoMove(vPrvPos, fDuration, 0);
 
-		_float4 vCurPos = m_pArrCharacterUI[i][m_iPrvEventNum]->Get_Pos();
-		vCurPos.x += 10.f;
+		_float4 vCurPos = m_pArrCharacterUI[i][iEventNum]->Get_Pos();
+		vCurPos.y += 10.f;
 		m_pArrCharacterUI[i][iEventNum]->DoMove(vCurPos, fDuration, 0);
 	}
 

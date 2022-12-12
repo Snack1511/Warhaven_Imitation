@@ -24,8 +24,9 @@ class CUI_Portrait;
 class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
-class CUI_EscMenu;
 
+class CUI_Result;
+class CUI_Popup;
 class CUI_Oper;
 class CUI_Paden;
 
@@ -93,12 +94,14 @@ public:
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
 	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
 
+	void SetActive_Result(_bool value);
 	void SetActive_HUD(_bool value);
 	void SetActive_UnitHUD(_bool value);
+	void SetActive_AbleHeroText(_bool value);
 	void Transform_SkillUI(_uint iClass);
 
 public:		// ÆÄµ§
-	void Interat_PointUI(_bool bIsMainPlayer, string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
+	void Interat_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, string wstrPadenPointKey, _uint iTriggerState);
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
@@ -114,9 +117,7 @@ public:		// ÆÄµ§
 public:		// ºê¸®ÇÎ
 	void Set_Respawn(_bool value);
 	void SetActive_OperUI(_bool value);
-
-public:		// Esc
-	void SetActive_EscMenu(_bool value);
+	_bool Get_SelectTargetPoint();
 
 public:
 	void On_EnterLevel();
@@ -137,6 +138,9 @@ public:
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
 
+public:		// ¾Ë¸²
+	void Enable_ConquestPopup(wstring Text = TEXT(""));
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -144,7 +148,8 @@ private:
 	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
 	CUI_Skill* m_pUI_Skill = nullptr;
 	CUI_Oper* m_pUI_Oper = nullptr;
-	CUI_EscMenu* m_pUI_Esc = nullptr;
+	CUI_Popup* m_pUI_Popup = nullptr;
+	CUI_Result* m_pUI_Result = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
@@ -159,5 +164,8 @@ private:
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
+
+private:
+	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;
 };
 END

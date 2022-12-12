@@ -37,11 +37,13 @@
 #include "CUI_Dead.h"
 #include "CUI_Oper.h"
 #include "CUI_EscMenu.h"
+#include "CUI_Popup.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
 
 #include "CGameSystem.h"
+#include "CUI_Result.h"
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -249,6 +251,11 @@ void CUser::Set_HeroGauge(_float fCurValue, _float fMaxValue)
 	m_pUI_HeroGauge->Set_HeroGauge(fCurValue, fMaxValue);
 }
 
+void CUser::SetActive_Result(_bool value)
+{
+	m_pUI_Result->SetActive_Result(value);
+}
+
 void CUser::SetActive_HUD(_bool value)
 {
 	m_pUI_HUD->SetActive_HUD(value);
@@ -259,14 +266,19 @@ void CUser::SetActive_UnitHUD(_bool value)
 	m_pPlayer->SetActive_UnitHUD(value);
 }
 
+void CUser::SetActive_AbleHeroText(_bool value)
+{
+	m_pUI_HeroGauge->SetActive_AbleHeroText(value);
+}
+
 void CUser::Transform_SkillUI(_uint iClass)
 {
 	m_pUI_Skill->Transform_SkillUI(iClass);
 }
 
-void CUser::Interat_PointUI(_bool bIsMainPlayer, string strPadenPointKey, _uint iTeamType, _uint iTriggerState)
+void CUser::Interat_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, string strPadenPointKey, _uint iTriggerState)
 {
-	m_pUI_Paden->Interact_PointUI(bIsMainPlayer, strPadenPointKey, iTeamType, iTriggerState);
+	m_pUI_Paden->Interact_PointUI(bIsMainPlayer, bIsMainPlayerTeam, strPadenPointKey, iTriggerState);
 }
 
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
@@ -296,6 +308,9 @@ void CUser::Set_TargetPointPos(_uint iTargetIdx)
 
 void CUser::SetActive_TargetPoint(_bool value)
 {
+	if (m_pUI_Oper->Get_SelectTargetPoint() == false)
+		return;
+
 	m_pUI_Paden->SetActive_TargetPoint(value);
 }
 
@@ -314,9 +329,9 @@ void CUser::SetActive_OperUI(_bool value)
 	m_pUI_Oper->SetActive(value);
 }
 
-void CUser::SetActive_EscMenu(_bool value)
+_bool CUser::Get_SelectTargetPoint()
 {
-	m_pUI_Esc->SetActive_EscMenu(value);
+	return m_pUI_Oper->Get_SelectTargetPoint();
 }
 
 void CUser::On_EnterLevel()
@@ -332,21 +347,7 @@ void CUser::On_ExitLevel()
 
 void CUser::On_EnterStageLevel()
 {
-	if (!m_pUI_Oper)
-	{
-		m_pUI_Oper = CUI_Oper::Create();
-
-		CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pUI_Oper);
-	}
-
-	/*if (!m_pUI_Esc)
-	{
-		m_pUI_Esc = CUI_EscMenu::Create();
-
-		CREATE_GAMEOBJECT(m_pUI_Esc, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pUI_Esc);
-	}*/
+	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
 	if (!m_pUI_HUD)
 	{
@@ -376,20 +377,39 @@ void CUser::On_EnterStageLevel()
 		CREATE_GAMEOBJECT(m_pUI_Training, GROUP_UI);
 	}
 
-	if (!m_pUI_Paden)
-	{
-		m_pUI_Paden = CUI_Paden::Create();
-
-		CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pUI_Paden);
-	}
-
 	if (!m_pUI_Dead)
 	{
 		m_pUI_Dead = CUI_Dead::Create();
 
 		CREATE_GAMEOBJECT(m_pUI_Dead, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Dead);
+	}
+
+	if (!m_pUI_Popup)
+	{
+		m_pUI_Popup = CUI_Popup::Create();
+
+		CREATE_GAMEOBJECT(m_pUI_Popup, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pUI_Popup);
+	}
+
+	if (m_eLoadLevel > LEVEL_BOOTCAMP)
+	{
+		if (!m_pUI_Oper)
+		{
+			m_pUI_Oper = CUI_Oper::Create();
+
+			CREATE_GAMEOBJECT(m_pUI_Oper, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pUI_Oper);
+		}
+
+		if (!m_pUI_Paden)
+		{
+			m_pUI_Paden = CUI_Paden::Create();
+
+			CREATE_GAMEOBJECT(m_pUI_Paden, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pUI_Paden);
+		}
 	}
 
 	SetUp_BloodOverlay();
@@ -399,15 +419,28 @@ void CUser::On_EnterStageLevel()
 void CUser::On_ExitStageLevel()
 {
 	m_pBloodOverlay = nullptr;
-	m_pUI_HUD = nullptr;
-	m_pUI_Dead = nullptr;
+
+	if (m_pUI_HUD)
+		m_pUI_HUD = nullptr;
+
+	if (m_pUI_Dead)
+		m_pUI_Dead = nullptr;
 
 	for (_uint i = 0; i < 5; ++i)
-		m_pUI_Damage[i] = nullptr;
+	{
+		if (m_pUI_Damage[i])
+			m_pUI_Damage[i] = nullptr;
+	}
 
-	m_pUI_Oper = nullptr;
-	m_pUI_Paden = nullptr;
-	m_pUI_Training = nullptr;
+	if (m_pUI_Oper)
+		m_pUI_Oper = nullptr;
+
+	if (m_pUI_Paden)
+		m_pUI_Paden = nullptr;
+
+	if (m_pUI_Training)
+		m_pUI_Training = nullptr;
+
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
 }
@@ -469,6 +502,11 @@ void CUser::Toggle_DeadUI(_bool value, _bool isFall)
 	{
 		m_pUI_Dead->Toggle_DeadUI(value, isFall);
 	}
+}
+
+void CUser::Enable_ConquestPopup(wstring Text)
+{
+	m_pUI_Popup->Enable_ConquestPopup(Text);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

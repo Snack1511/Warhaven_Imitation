@@ -51,7 +51,7 @@ void CUI_EscMenu::OnDisable()
 {
 	__super::OnDisable();
 
-	SetActive_EscMenu(false);
+	Fadisable_EscMenu();
 }
 
 void CUI_EscMenu::Bind_Btn()
@@ -112,5 +112,13 @@ void CUI_EscMenu::Fadenable_EscMenu()
 	for (auto& iter : m_pEscList)
 	{
 		Enable_Fade(iter, 0.3f);
+	}
+}
+
+void CUI_EscMenu::Fadisable_EscMenu()
+{
+	for (auto& iter : m_pEscList)
+	{
+		Disable_Fade(iter, 0.3f);
 	}
 }

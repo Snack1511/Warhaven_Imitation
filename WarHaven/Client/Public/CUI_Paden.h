@@ -37,9 +37,9 @@ public:
 	void SetActive_PointUI(_bool value);
 	void SetActive_TargetPoint(_bool value);
 
-	void Conquest_PointUI(string strPointName, _uint iTeamType);
+	void Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam);
 
-	void Interact_PointUI(_bool bIsMainPlayer, string wstrPadenPointKey, _uint iTeamType, _uint iTriggerState);
+	void Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, string wstrPadenPointKey, _uint iTriggerState);
 
 private:
 	virtual void My_Tick() override;
@@ -103,13 +103,13 @@ private:
 	_float m_fMaxConquestTime[Point_End];
 	_float m_fConquestRatio[Point_End];
 
+	_bool m_bSetTargetPoint = false;
+
 private:
 	CUI_Object* m_pTargetPoint = nullptr;
 	CUI_Object* m_pArrTargetPoint[2];
 
 	PointName m_eTargetPoint = PointName::Point_End;
-
-	_bool m_bSetTargetPoint = false;
 
 private:
 	void Create_TargetPointUI();
@@ -121,7 +121,7 @@ private:
 	void Set_PointTextPosY();
 	void Set_TargetPointPos();
 
-	void Set_PointGauge_Color(_uint iTeamType, PointName ePointName);
+	void Set_PointGauge_Color(_bool bIsMainPlayerTeam, PointName ePointName);
 
 private:
 	_float4 m_vColorBG = _float4(0.3f, 0.3f, 0.3f, 1.f);

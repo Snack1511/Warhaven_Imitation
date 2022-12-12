@@ -24,10 +24,13 @@ public:
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
 
 	void SetActive_HeroGauge(_bool value);
+	void SetActive_AbleHeroText(_bool value);
 
 private:
 	enum HeroGauge { HG_BG, HG_Gauge, HG_Text, HG_End };
 	CUI_Object* m_pHeroGauge[HG_End];
+
+	CUI_Object* m_pAbleHeroText = nullptr;
 
 	_float m_fCurHeroGauge = 0.f;
 	_float m_fMaxHeroGauge = 0.f;
@@ -37,6 +40,7 @@ private:
 
 private:
 	void Create_HeroGauge();
+	void Create_AbleHeroText();
 
 private:
 	virtual void My_Tick() override;

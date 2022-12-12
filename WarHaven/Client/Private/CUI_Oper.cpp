@@ -88,6 +88,8 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 {
 	// DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
 
+	m_bSelectTargetPoint = true;
+
 	_float4 vPos = m_pArrStrongHoldUI[SP_BG][iEventNum]->Get_Pos();
 	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
 
@@ -145,6 +147,7 @@ void CUI_Oper::OnDisable()
 
 void CUI_Oper::SetActive_BG(_bool value)
 {
+	m_pRealMap->SetActive(value);
 	for (int i = 0; i < OB_End; ++i)
 	{
 		m_pOperBG[i]->SetActive(value);
@@ -164,6 +167,12 @@ void CUI_Oper::Progress_Oper()
 	if (!m_bIsBriefing)
 	{
 		m_bIsBriefing = true;
+
+		if (m_pRealMap)
+		{
+			m_pRealMap->DoScale(-3096.f, 0.3f);
+		}
+
 		m_pOperBG[OB_BG]->DoScale(-2596.f, 0.3f);
 	}
 
@@ -263,7 +272,7 @@ void CUI_Oper::Progress_Oper()
 		{
 			m_iOperProgress++;
 
-			for (int i = 0; i < 2; ++i)
+			for (int i = 0; i < 3; ++i)
 			{
 				Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
 				m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
@@ -276,7 +285,7 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
-				for (int i = 2; i < 4; ++i)
+				for (int i = 3; i < 6; ++i)
 				{
 					Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
 					m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
@@ -408,7 +417,7 @@ void CUI_Oper::Progress_Oper()
 
 void CUI_Oper::Enable_StrongHoldUI()
 {
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
 		m_pArrStrongHoldUI[SP_BG][i]->Set_Scale(115.f);
 		m_pArrStrongHoldUI[SP_Outline][i]->Set_Scale(120.f);
@@ -420,27 +429,16 @@ void CUI_Oper::Enable_StrongHoldUI()
 	{
 		switch (m_eLoadLevel)
 		{
-		case LEVEL_TEST:
-
-			for (int j = 0; j < 2; ++j)
-			{
-				Enable_Fade(m_pArrStrongHoldUI[i][j], 0.3f);
-				m_pArrStrongHoldUI[i][j]->DoScale(-70.f, 0.3f);
-			}
-
-			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[SP_Icon][0]);
-
-			break;
-
 		case LEVEL_PADEN:
 
-			for (int j = 0; j < 2; ++j)
+			for (int j = 0; j < 3; ++j)
 			{
 				Enable_Fade(m_pArrStrongHoldUI[i][j], 0.3f);
 				m_pArrStrongHoldUI[i][j]->DoScale(-70.f, 0.3f);
 			}
 
 			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[SP_Icon][0]);
+			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[SP_Icon][2]);
 
 			break;
 
@@ -534,6 +532,25 @@ void CUI_Oper::Create_TargetText()
 
 void CUI_Oper::Create_OperBG()
 {
+	switch (m_eLoadLevel)
+	{
+	case Client::LEVEL_PADEN:
+
+		m_pRealMap = CUI_Object::Create();
+
+		m_pRealMap->Set_Scale(4096.f);
+		m_pRealMap->Set_PosY(45.f);
+		m_pRealMap->Set_Sort(0.515f);
+		m_pRealMap->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
+
+		m_pOperList.push_back(m_pRealMap);
+
+		CREATE_GAMEOBJECT(m_pRealMap, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pRealMap);
+
+		break;
+	}
+
 	for (int i = 0; i < OB_End; ++i)
 	{
 		m_pOperBG[i] = CUI_Object::Create();
@@ -548,6 +565,8 @@ void CUI_Oper::Create_OperBG()
 			case LEVEL_TEST:
 				m_pOperBG[i]->Set_PosY(205.f);
 				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
+
+
 				break;
 
 			case Client::LEVEL_PADEN:
@@ -866,7 +885,7 @@ void CUI_Oper::Create_StrongHoldUI()
 			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pStrongHoldUI[i], "/Oper", "PointGauge");
 
-			m_pStrongHoldUI[i]->Set_Scale(115.f);
+			m_pStrongHoldUI[i]->Set_Scale(50.f);
 			m_pStrongHoldUI[i]->Set_Sort(0.49f);
 			m_pStrongHoldUI[i]->Set_Color(_float4(0.4f, 0.4f, 0.4f, 1.f));
 		}
@@ -928,7 +947,7 @@ void CUI_Oper::Create_StrongHoldEffect()
 	CREATE_GAMEOBJECT(m_pStrongHoldEffect, RENDER_UI);
 	DELETE_GAMEOBJECT(m_pStrongHoldEffect);
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		m_pArrStrongHoldEffect[i] = m_pStrongHoldEffect->Clone();
 
@@ -943,44 +962,21 @@ void CUI_Oper::Init_StrongHoldUI()
 {
 	switch (m_eLoadLevel)
 	{
-	case LEVEL_TEST:
-
-		m_pArrStrongHoldUI[SP_BG][0]->Set_PosY(132.f);
-		m_pArrStrongHoldUI[SP_Outline][0]->Set_PosY(133.f);
-		m_pArrStrongHoldUI[SP_TEXT][0]->Set_PosY(128.f);
-
-		m_pArrStrongHoldUI[SP_BG][1]->Set_PosY(-161.f);
-		m_pArrStrongHoldUI[SP_Outline][1]->Set_PosY(-161.f);
-		m_pArrStrongHoldUI[SP_Icon][1]->Set_PosY(-161.f);
-		m_pArrStrongHoldUI[SP_TEXT][1]->Set_PosY(-166.f);
-
-		for (int i = 0; i < SP_End; ++i)
-		{
-			for (int j = 0; j < 2; ++j)
-			{
-				if (j == 0)
-				{
-					GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(j);
-				}
-				else
-				{
-					GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(1);
-				}
-			}
-		}
-
-		break;
-
 	case LEVEL_PADEN:
 
-		m_pArrStrongHoldUI[SP_BG][0]->Set_PosY(132.f);
-		m_pArrStrongHoldUI[SP_Outline][0]->Set_PosY(133.f);
-		m_pArrStrongHoldUI[SP_TEXT][0]->Set_PosY(128.f);
+		m_pArrStrongHoldUI[SP_BG][0]->Set_PosY(-4.f);
+		m_pArrStrongHoldUI[SP_Outline][0]->Set_PosY(-3.f);
+		m_pArrStrongHoldUI[SP_TEXT][0]->Set_PosY(-8.f);
 
-		m_pArrStrongHoldUI[SP_BG][1]->Set_PosY(-161.f);
-		m_pArrStrongHoldUI[SP_Outline][1]->Set_PosY(-161.f);
-		m_pArrStrongHoldUI[SP_Icon][1]->Set_PosY(-161.f);
-		m_pArrStrongHoldUI[SP_TEXT][1]->Set_PosY(-166.f);
+		m_pArrStrongHoldUI[SP_BG][1]->Set_PosY(-195.f);
+		m_pArrStrongHoldUI[SP_Outline][1]->Set_PosY(-195.f);
+		m_pArrStrongHoldUI[SP_Icon][1]->Set_PosY(-195.f);
+		m_pArrStrongHoldUI[SP_TEXT][1]->Set_PosY(-200.f);
+
+		m_pArrStrongHoldUI[SP_BG][2]->Set_PosY(170.f);
+		m_pArrStrongHoldUI[SP_Outline][2]->Set_PosY(170.f);
+		m_pArrStrongHoldUI[SP_Icon][2]->Set_PosY(170.f);
+		m_pArrStrongHoldUI[SP_TEXT][2]->Set_PosY(166.f);
 
 		for (int i = 0; i < SP_End; ++i)
 		{
@@ -1001,20 +997,13 @@ void CUI_Oper::Init_StrongHoldEffect()
 {
 	switch (m_eLoadLevel)
 	{
-	case LEVEL_TEST:
-
-		m_pArrStrongHoldEffect[0]->Set_PosY(133.f);
-		m_pArrStrongHoldEffect[1]->Set_PosY(-161.f);
-		m_pArrStrongHoldEffect[2]->Set_PosY(133.f);
-		m_pArrStrongHoldEffect[3]->Set_PosY(-161.f);
-
-		break;
-
 	case LEVEL_PADEN:
-		m_pArrStrongHoldEffect[0]->Set_PosY(133.f);
-		m_pArrStrongHoldEffect[1]->Set_PosY(-161.f);
-		m_pArrStrongHoldEffect[2]->Set_PosY(133.f);
-		m_pArrStrongHoldEffect[3]->Set_PosY(-161.f);
+		m_pArrStrongHoldEffect[0]->Set_PosY(-4.f);
+		m_pArrStrongHoldEffect[1]->Set_PosY(-195.f);
+		m_pArrStrongHoldEffect[2]->Set_PosY(170.f);
+		m_pArrStrongHoldEffect[3]->Set_PosY(-4.f);
+		m_pArrStrongHoldEffect[4]->Set_PosY(-195.f);
+		m_pArrStrongHoldEffect[5]->Set_PosY(170.f);
 
 		break;
 

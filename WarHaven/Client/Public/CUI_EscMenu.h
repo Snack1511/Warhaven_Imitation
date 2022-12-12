@@ -39,6 +39,7 @@ private:
 private:
 	void Create_EscMenu();
 	void Fadenable_EscMenu();
+	void Fadisable_EscMenu();
 };
 
 END
