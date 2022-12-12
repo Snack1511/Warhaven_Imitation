@@ -23,6 +23,11 @@ public:
 		eKILL2,
 		eKILL3,
 		eKILL4,
+		eBURGERKING,
+		eCONQUESTKING,
+		eHEADHUNTER,
+		eGLOWKILL,
+		eKILLELITE,
 		eCNT
 	};
 

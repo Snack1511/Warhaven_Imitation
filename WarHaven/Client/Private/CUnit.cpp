@@ -1163,7 +1163,7 @@ void CUnit::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 void CUnit::On_FinishGame(_bool bWin)
 {
 	Enter_State((bWin) ? STATE_VICTORY : STATE_DEFEAT);
-
+	m_eReserveState = STATE_END;
 }
 
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)

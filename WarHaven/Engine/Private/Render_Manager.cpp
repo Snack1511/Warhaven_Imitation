@@ -1499,13 +1499,28 @@ HRESULT CRender_Manager::Render_Group(RENDER_GROUP eGroup)
 
 void CRender_Manager::Sort_AlphaList()
 {
-	_float4 vCamPos = CCamera_Manager::Get_Instance()->Get_ViewPos();
+	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCamLook();
+	//vCamPos *= 1500.f;
+
 
 	for (auto& elem : m_pAlphaRenderers)
 	{
+		//노말라이즈한 룩이랑
+		/*_float4 vNormalLook;
+		vNormalLook = elem.second->Get_Owner()->Get_Transform()->Get_World(WORLD_LOOK);
+		vNormalLook.Normalize();*/
+
 		_float4 vMyPos = elem.second->Get_WorldPosition();
-		_float fDistance = (vMyPos - vCamPos).Length();
-		elem.first = fDistance;
+
+		//카메라위치에서 내위치 뺸 벡터를
+		_float4 vVector;
+		vVector = (XMLoadFloat4(&vMyPos) - vCamPos.XMLoad());
+
+		//내적
+		_float fDist1 = vCamLook.Dot(vVector);
+
+		elem.first = fDist1;
 	}
 
 	m_pAlphaRenderers.sort(greater<pair<_float, CRenderer*>>());

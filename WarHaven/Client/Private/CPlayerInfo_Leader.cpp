@@ -36,11 +36,29 @@ HRESULT CPlayerInfo_Leader::Initialize()
 	static _int g_LeaderCnt = 0;
 	m_tPlayerInfo.wstrCamName = L"LeaderCam_";
 	m_tPlayerInfo.wstrCamName += to_wstring(g_LeaderCnt);
-	m_tPlayerInfo.wstrName = L"Leader_";
+
+
+	m_tPlayerInfo.wstrName = L"Leader_Player";
 	m_tPlayerInfo.wstrName += to_wstring(g_LeaderCnt++);
 
-	m_vecPrefClassType.push_back(WARRIOR);
-	m_vecPrefClassType.push_back(ENGINEER);
+	if (g_LeaderCnt == 3)
+	{
+		m_tPlayerInfo.wstrName = L"Jusin_Burger";
+		m_vecPrefClassType.push_back(ENGINEER);
+	}
+	else if (g_LeaderCnt == 2)
+	{
+		m_tPlayerInfo.wstrName = L"너네선비형";
+		m_vecPrefClassType.push_back(WARRIOR);
+
+	}
+	else
+	{
+		m_vecPrefClassType.push_back(WARRIOR);
+		m_vecPrefClassType.push_back(ENGINEER);
+
+	}
+
 
 
 

@@ -349,7 +349,8 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 	{
 		ENABLE_GAMEOBJECT(m_pUnitHUD);
 
-		//Path 갱신
+		//Path 갱신 + 캐릭터 재선택
+		m_pMyPlayerInfo->Choose_Character();
 
 		if (m_bIsLeaderPlayer)
 		{
@@ -775,13 +776,33 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 
 	if (m_bIsMainPlayer)
 	{
-		if (m_tKdaStat.iKillStreak == 1)
+		if (pOtherPlayer->Get_PlayerName() == L"Jusin_Burger")
+		{
+			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eBURGERKING);
+		}
+		else if (m_tKdaStat.iHeadShotKillCount == 3)
+		{
+			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eHEADHUNTER);
+		}
+		else if (pOtherPlayer->Get_CurClass() >= CLASS_TYPE::FIONA)
+		{
+			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILLELITE);
+		}
+		else if (m_tKdaStat.iKillStreak == 1)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL);
 		}
 		else if (m_tKdaStat.iKillStreak == 2)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL2);
+		}
+		else if (m_tKdaStat.iKillStreak == 3)
+		{
+			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL3);
+		}
+		else if (m_tKdaStat.iKillStreak >= 4)
+		{
+			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL4);
 		}
 	}
 	

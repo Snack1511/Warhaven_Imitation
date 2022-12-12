@@ -57,8 +57,19 @@ void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 		Enable_ConquestPopup(L"2연속 처치", ePopupType);
 		break;
 	case Client::CUI_Popup::eKILL3:
+		Enable_ConquestPopup(L"3연속 처치", ePopupType);
 		break;
 	case Client::CUI_Popup::eKILL4:
+		Enable_ConquestPopup(L"전장의 화신", ePopupType);
+		break;
+	case Client::CUI_Popup::eBURGERKING:
+		Enable_ConquestPopup(L"버거킹", ePopupType);
+		break;
+	case Client::CUI_Popup::eHEADHUNTER:
+		Enable_ConquestPopup(L"헤드 헌터", ePopupType);
+		break;
+	case Client::CUI_Popup::eKILLELITE:
+		Enable_ConquestPopup(L"영웅 처치", ePopupType);
 		break;
 	case Client::CUI_Popup::eCNT:
 		break;

@@ -1363,19 +1363,14 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
 	}
 
 	/* 분대장급 AI들 */
-#define ADD_LEADERINFO(name) pPlayerInfo = CPlayerInfo_Leader::Create();\
-    pPlayerInfo->m_tPlayerInfo.wstrName = name;\
-    pPlayerInfo->m_tPlayerInfo.wstrCamName = pPlayerInfo->m_tPlayerInfo.wstrName;\
-    pPlayerInfo->m_tPlayerInfo.wstrCamName += L"_Cam";\
+#define ADD_LEADERINFO pPlayerInfo = CPlayerInfo_Leader::Create();\
     m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);
 
 
 	_uint iLeaderCnt = 0;
 	for (_uint i = 0; i < 3; ++i)
 	{
-		wstring wstrName = L"LeaderPlayer_";
-		wstrName += to_wstring(iLeaderCnt++);
-		ADD_LEADERINFO(wstrName);
+		ADD_LEADERINFO;
 	}
 
 

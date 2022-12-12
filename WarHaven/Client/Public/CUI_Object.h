@@ -23,6 +23,7 @@ public:
 public:
 	// 멀티 텍스쳐
 	void Set_Texture(const _tchar* pFilePath);
+	void Set_TextureIndex(_uint iIndex);
 	virtual void SetUp_ShaderResource(CShader* pShader, const char* pConstName);
 
 public:

@@ -84,6 +84,8 @@ private:	// 작전회의 프로필
 
 private:
 	void Create_OperProfile();
+	void Set_OperProfile();
+
 
 private:	// 작전회의 캐릭터 선택 창
 	CUI_Object* m_CharacterSideBG = nullptr;

@@ -11,6 +11,7 @@
 
 #include "CPlayer.h"
 #include "CTeamConnector.h"
+#include "CSquad.h"
 
 #include "CUnit.h"
 CUI_Oper::CUI_Oper()
@@ -96,7 +97,6 @@ void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
 void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 {
 	// DISABLE_GAMEOBJECT(m_pArrTargetPoint[1]);
-
 
 	_float4 vPos = m_pArrStrongHoldUI[SP_BG][iEventNum]->Get_Pos();
 	m_pArrTargetPoint[1]->Set_Pos(vPos.x, vPos.y + 20.f);
@@ -259,6 +259,8 @@ void CUI_Oper::Progress_Oper()
 				m_pTextImg[Text_Oper1]->DoMove(vPos, 0.3f, 0);
 				m_pTextImg[Text_Oper1]->DoScale(-256.f, 0.3f);
 
+				Set_OperProfile();
+
 				for (int i = 0; i < 4; ++i)
 				{
 					Enable_Fade(m_pArrOperProfile[i], 0.3f);
@@ -267,7 +269,7 @@ void CUI_Oper::Progress_Oper()
 		}
 		else if (m_iOperProgress == 3)
 		{
-			if (m_fAccTime > 3.f)
+			if (m_fAccTime > 4.f)
 			{
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
@@ -647,10 +649,21 @@ void CUI_Oper::Create_OperProfile()
 	m_pOperProfile->Set_FadeDesc(0.5f, 0.3f);
 
 	// 각 캐릭터에 해당하는 이미지 파일 불러오기
-	m_pOperProfile->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultArcher.dds"));
+	m_pOperProfile->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultWarrior.dds"));
+	GET_COMPONENT_FROM(m_pOperProfile, CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultSpearman.dds");
+	GET_COMPONENT_FROM(m_pOperProfile, CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultArcher.dds");
+	GET_COMPONENT_FROM(m_pOperProfile, CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultPaladin.dds");
+	GET_COMPONENT_FROM(m_pOperProfile, CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultPriest.dds");
+	GET_COMPONENT_FROM(m_pOperProfile, CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultEngineer.dds");
 
 	m_pOperProfile->Set_Scale(156.f, 350.f);
 	m_pOperProfile->Set_Sort(0.49f);
+	m_pOperProfile->Set_FontRender(true);
+	m_pOperProfile->Set_FontStyle(true);
+	m_pOperProfile->Set_FontOffset(0.f, 150.f);
+	m_pOperProfile->Set_FontScale(0.2f);
+	m_pOperProfile->Set_FontCenter(true);
+	GET_COMPONENT_FROM(m_pOperProfile, CUI_Renderer)->Set_Pass(VTXTEX_PASS_PROFILE);
 
 	CREATE_GAMEOBJECT(m_pOperProfile, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pOperProfile);
@@ -666,6 +679,20 @@ void CUI_Oper::Create_OperProfile()
 
 		CREATE_GAMEOBJECT(m_pArrOperProfile[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pArrOperProfile[i]);
+	}
+}
+
+void CUI_Oper::Set_OperProfile()
+{
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+
+	auto iter = mapPlayers.begin();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		m_pArrOperProfile[i]->Set_TextureIndex(iter->second->Get_PlayerInfo()->Choose_Character());
+		m_pArrOperProfile[i]->Set_FontText(iter->second->Get_PlayerName());
+		++iter;
 	}
 }
 

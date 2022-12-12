@@ -35,6 +35,8 @@ public:
 	void	SetUp_OutlineType_SquadMember();
 	CPlayer* Get_LeaderPlayer() { return m_pLeaderPlayer; }
 
+	map<_hashcode, CPlayer*>	Get_AllPlayers() { return m_mapPlayers; };
+
 private:
 	CPlayer* m_pLeaderPlayer = nullptr;
 

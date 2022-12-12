@@ -69,6 +69,11 @@ void CUI_Object::Set_Texture(const _tchar* pFilePath)
 	}
 }
 
+void CUI_Object::Set_TextureIndex(_uint iIndex)
+{
+	GET_COMPONENT(CTexture)->Set_CurTextureIndex(iIndex);
+}
+
 void CUI_Object::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 {
 	__super::SetUp_ShaderResource(pShader, pConstName);
