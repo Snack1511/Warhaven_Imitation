@@ -13,20 +13,26 @@ CUI_Result::~CUI_Result()
 
 HRESULT CUI_Result::Initialize_Prototype()
 {
+	Create_ResultUI();
+
 	return S_OK;
 }
 
 HRESULT CUI_Result::Start()
 {
+	__super::Start();
+
 	return S_OK;
 }
 
 void CUI_Result::OnEnable()
 {
+	__super::OnEnable();
 }
 
 void CUI_Result::OnDisable()
 {
+	__super::OnDisable();
 }
 
 void CUI_Result::Create_ResultUI()

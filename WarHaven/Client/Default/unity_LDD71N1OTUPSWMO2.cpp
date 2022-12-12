@@ -1,4 +1,7 @@
 
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_UnitHUD.cpp"
+
+
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUnit_Archer.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Patrol_Walk_Warrior_R.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWalk_Valkyrie.cpp"
 

@@ -1,4 +1,7 @@
 
+#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_Player_Land_L.cpp"
+
+
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_Player_Land_R.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CScript_FixedCam.cpp"
-
-
-#include "C:\Users\korea\OneDrive\Desktop\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CScript_FollowCam.cpp"
 
