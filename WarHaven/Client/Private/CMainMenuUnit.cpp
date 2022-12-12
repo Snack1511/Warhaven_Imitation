@@ -112,7 +112,7 @@ HRESULT CMainMenuUnit::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
-	Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
+	//Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
@@ -126,9 +126,6 @@ HRESULT CMainMenuUnit::Start()
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
 
-
-
-
 	/* Warrior Idle */
 	m_pAnimator->Set_CurAnimIndex(ANIM_BASE_R, 11, ANIM_DIVIDE::eDEFAULT);
 	m_pAnimator->Set_InterpolationTime(ANIM_BASE_R, 11, 0.1f);
@@ -136,6 +133,7 @@ HRESULT CMainMenuUnit::Start()
 
 	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
 	_float4 vMyPos = vCamPos + GAMEINSTANCE->Get_CurCamLook() * 0.8f;
+	//_float4 vMyPos = vCamPos + GAMEINSTANCE->Get_CurCamLook() * 3.f;
 	vMyPos.x += 0.2f;
 	vMyPos.y -= 1.4f;
 	m_pTransform->Set_World(WORLD_POS, vMyPos);

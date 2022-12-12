@@ -11,6 +11,8 @@
 
 #include "CMainMenuUnit.h"
 
+#include "CEffects_Factory.h"
+
 CLevel_Main::CLevel_Main()
 {
 }
@@ -43,6 +45,8 @@ HRESULT CLevel_Main::SetUp_Prototypes()
 
 HRESULT CLevel_Main::Enter()
 {
+	//CEffects_Factory::Get_Instance()->On_EnterLevel();
+
 	CUI_LobbyBG* pUI_Lobby = CUI_LobbyBG::Create();
 	Ready_GameObject(pUI_Lobby, GROUP_UI);
 
@@ -62,6 +66,8 @@ HRESULT CLevel_Main::Enter()
 
 	};
 
+	tData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
+
 	CMainMenuUnit* pMainMenuUnit = CMainMenuUnit::Create(tData);
 	if (!pMainMenuUnit)
 		return E_FAIL;
@@ -72,16 +78,20 @@ HRESULT CLevel_Main::Enter()
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(-999.f, -999.f, -999.f);
-	LightDesc.vPosition.y += 2.f;
-	LightDesc.vPosition.z -= 2.f;
-	LightDesc.vPosition.x += 0.5f;
-	LightDesc.fRange = 30.f;
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vPosition.x += 15.2f;
+	LightDesc.vPosition.y += 16.8f;
+	LightDesc.vPosition.z += -4.4f;
+	LightDesc.fRange = 1000.f;
+	LightDesc.vDiffuse = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
+	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
 		return E_FAIL;
+
+	vector<CGameObject*> vecTemp;
+
+	GAMEINSTANCE->Bake_StaticShadow(vecTemp, _float4(-999.f, -999.f, -999.f), 10.f);
 
 
 	/*LightDesc.eType = tagLightDesc::TYPE_POINT;
@@ -100,6 +110,9 @@ HRESULT CLevel_Main::Enter()
 
 
 	__super::Enter();
+
+	GAMEINSTANCE->Save_Memory();
+
 
 	return S_OK;
 }
