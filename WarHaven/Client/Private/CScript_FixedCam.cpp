@@ -47,7 +47,7 @@ void CScript_FixedCam::Tick()
 {
 	if (KEY(TAB, TAP))
 	{
-		ShowCursor(true);
+		//ShowCursor(true);
 		CUser::Get_Instance()->Set_FixCursor(false);
 
 	}

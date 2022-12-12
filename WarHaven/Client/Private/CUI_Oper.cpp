@@ -26,8 +26,6 @@ HRESULT CUI_Oper::Initialize_Prototype()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
-	ShowCursor(false);
-
 	Create_TextImg();
 	Create_OperBG();
 	Create_OperProfile();

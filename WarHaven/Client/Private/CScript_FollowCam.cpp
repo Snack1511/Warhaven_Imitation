@@ -286,7 +286,7 @@ void CScript_FollowCam::Start()
 		Call_MsgBox(L"No Owner In FollowCam");
 		m_pOwner = GAMEINSTANCE->Find_Camera(L"PlayerCam");
 	}
-	ShowCursor(true); // 툴에서 커서 안보여서 true로 바꿔놓음
+	//ShowCursor(true); // 툴에서 커서 안보여서 true로 바꿔놓음
 
 }
 
@@ -296,10 +296,10 @@ void CScript_FollowCam::Tick()
 	{
 		m_bMouseVisible = !m_bMouseVisible;
 
-		if (!m_bMouseVisible)
-			ShowCursor(false);
-		else
-			ShowCursor(true);
+		//if (!m_bMouseVisible)
+		//	ShowCursor(false);
+		//else
+		//	ShowCursor(true);
 
 
 		CUser::Get_Instance()->Set_FixCursor(!m_bMouseVisible);

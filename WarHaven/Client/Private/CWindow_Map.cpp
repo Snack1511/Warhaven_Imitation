@@ -100,6 +100,7 @@ HRESULT CWindow_Map::Initialize()
 
 void CWindow_Map::Tick()
 {
+
     _bool bPicked = false;
     Select_Camera();
 
