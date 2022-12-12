@@ -675,6 +675,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		/*slash*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSpark"), "HitSpark")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Hit_Particle"), "Hit_Particle")))
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_D"), "HitSlash_D"))) //down
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_Right"), "HitSlash_Right"))) //right
