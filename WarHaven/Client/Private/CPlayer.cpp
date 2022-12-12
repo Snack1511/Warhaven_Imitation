@@ -243,6 +243,9 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 
 void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	if (eMyColType == COL_REVIVE)
+		return;
+
 	if (!pOtherObj->Is_Valid() || m_pCurrentUnit == pOtherObj)
 		return;
 
@@ -251,6 +254,9 @@ void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherC
 }
 void CPlayer::Player_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
+	if (eMyColType == COL_REVIVE)
+		return;
+
 	if (!pOtherObj->Is_Valid() || m_pCurrentUnit == pOtherObj)
 		return;
 
@@ -259,6 +265,8 @@ void CPlayer::Player_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherCo
 void CPlayer::Player_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
 
+	if (eMyColType == COL_REVIVE)
+		return;
 }
 
 
@@ -645,7 +653,7 @@ void CPlayer::OnDisable()
 HRESULT CPlayer::SetUp_Collider()
 {
 	m_pReviveCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM,
-		0.5f,
+		1.5f,
 		COL_REVIVE, _float4(0.f, 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
 
 	if (!m_pReviveCollider)
@@ -756,6 +764,12 @@ void CPlayer::On_Reborn()
 		CUser::Get_Instance()->SetActive_HUD(true);
 
 	m_bReborn = true;
+}
+
+void CPlayer::Start_Reborn()
+{
+	m_bAbleRevival = false;
+	m_fRevivalAcc = 0.f;
 }
 
 void CPlayer::On_PlusGauge(_float fGauge)

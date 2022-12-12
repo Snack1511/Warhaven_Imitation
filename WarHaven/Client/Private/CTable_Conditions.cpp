@@ -566,7 +566,7 @@ void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIContro
         {
             _float fLength = fabsf(pPlayer->Get_WorldPos().y - pPath->Get_CurY());
 
-            if (fLength > 1.f)
+            if (fLength > 1.5f)
                 pPath->Set_Arrived();
 
 

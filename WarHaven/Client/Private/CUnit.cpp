@@ -1157,6 +1157,8 @@ void CUnit::Add_DeathStones(const list<CGameObject*>& StoneParticleList)
 
 void CUnit::Start_Reborn()
 {
+	m_pOwnerPlayer->Start_Reborn();
+
 	static_cast<CMesh_Particle*>(m_DeathStones.front())->Start_Reverse(this);
 
 	for (auto& elem : m_DeathStones)

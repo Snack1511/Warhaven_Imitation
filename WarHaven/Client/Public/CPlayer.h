@@ -139,6 +139,7 @@ public:
 	/* 죽고나서 5초 딜레이까지 지나고 들어오는 함수 */
 	void	On_RealDie();
 	void	On_Reborn();
+	void	Start_Reborn();
 
 	void	On_PlusGauge(_float fGauge);
 

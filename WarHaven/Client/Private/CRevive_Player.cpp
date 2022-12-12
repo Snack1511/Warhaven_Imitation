@@ -45,8 +45,6 @@ HRESULT CRevive_Player::Initialize()
     m_iAnimIndex = 28;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_REVIVE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_vecAdjState.push_back(STATE_WALK_PLAYER_R);
-    m_vecAdjState.push_back(STATE_RUN_BEGIN_PLAYER_R);
 
     m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
 
@@ -85,6 +83,8 @@ HRESULT CRevive_Player::Initialize()
 void CRevive_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     pOwner->Get_RevivalPlayer()->Get_CurrentUnit()->Start_Reborn();
+
+
     _float4 vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
     _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
     _float4 vDir = vPos - vMyPos;
@@ -98,12 +98,6 @@ STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
     switch (m_eCurPhase)
     {
     case Client::CRevive_Player::BEGIN:
-       /* if (KEY(F, NONE))
-        {
-            m_eCurPhase = PHASE_END;
-            m_iAnimIndex = 30;
-            __super::Enter(pOwner, pAnimator, m_eStateType);
-        }*/
 
         if (pAnimator->Is_CurAnimFinished())
         {
@@ -114,19 +108,13 @@ STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
         break;
     case Client::CRevive_Player::LOOP:
-       /* if (KEY(F, NONE))
-        {
-            m_eCurPhase = PHASE_END;
-            m_iAnimIndex = 30;
-            __super::Enter(pOwner, pAnimator, m_eStateType);
-        }*/
-
-        if (pAnimator->Is_CurAnimFinished())
+        if (KEY(F, NONE))
         {
             m_eCurPhase = PHASE_END;
             m_iAnimIndex = 30;
             __super::Enter(pOwner, pAnimator, m_eStateType);
         }
+
         break;
     case Client::CRevive_Player::PHASE_END:
         if (pAnimator->Is_CurAnimFinished())
