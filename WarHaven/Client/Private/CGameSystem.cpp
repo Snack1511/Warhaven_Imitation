@@ -1174,6 +1174,15 @@ void CGameSystem::On_StartGame()
 void CGameSystem::On_FinishGame(CTeamConnector* pTeamConnector)
 {
 	//한쪽 점수가 0이 되면 끝
+	for (auto& elem : m_mapAllPlayers)
+	{
+		CPlayer* pPlayer = elem.second->Get_Player();
+		if (pPlayer)
+		{
+			//pPlayer->On_FinishGame();
+		}
+	}
+
 	if (pTeamConnector->IsMainPlayerTeam())
 	{
 		// 패배
@@ -1183,17 +1192,6 @@ void CGameSystem::On_FinishGame(CTeamConnector* pTeamConnector)
 	{
 		// 승리
 		CUser::Get_Instance()->SetActive_Result(0, true);
-	}
-}
-
-
-	for (auto& elem : m_mapAllPlayers)
-	{
-		CPlayer* pPlayer = elem.second->Get_Player();
-		if (pPlayer)
-		{
-			//pPlayer->On_FinishGame();
-		}
 	}
 }
 
