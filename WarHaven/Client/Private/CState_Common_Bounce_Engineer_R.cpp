@@ -44,7 +44,7 @@ HRESULT CState_Common_Bounce_Engineer_R::Initialize()
 
 void CState_Common_Bounce_Engineer_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	if (ePrevType == AI_STATE_PATROL_SWITCH_R_TO_L)
+	if (ePrevType == AI_STATE_PATROL_ENGINEER_SWITCH_R_TO_L)
 	{
 		m_fAnimSpeed = 2.3f;
 	}

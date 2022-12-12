@@ -72,8 +72,8 @@ void CUnit_Valkyrie::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.7f, _float4(0.f, 0.5f, 0.f),eHitBoxGuard },
-		{0.7f, _float4(0.f, 1.2f, 0.f),eHitBoxGuard },
+		{1.1f, _float4(0.f, 0.5f, 0.f),eHitBoxGuard },
+		{1.1, _float4(0.f, 1.2f, 0.f),eHitBoxGuard },
 	};
 
 
@@ -142,13 +142,13 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_VALKYRIE_L;
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_FIONA;
+		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_FIONA;
+		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDBEGIN_FIONA;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_FIONA;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_FIONA;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_FIONA;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_FIONA_L;
 		break;
 
 	default:

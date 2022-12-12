@@ -213,6 +213,7 @@ void CUnit_WarHammer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 
 	case eBehaviorType::eChange:
 		//상태변경
+		eNewState = AI_STATE_COMMON_CHANGE_HERO;
 		break;
 	default:
 		assert(0);

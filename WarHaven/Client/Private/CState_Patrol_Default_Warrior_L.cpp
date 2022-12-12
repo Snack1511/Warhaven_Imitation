@@ -48,7 +48,7 @@ HRESULT CState_Patrol_Default_Warrior_L::Initialize()
 void CState_Patrol_Default_Warrior_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
  
-    if (ePrevType == AI_STATE_PATROL_SWITCH_R_TO_L)
+    if (ePrevType == AI_STATE_PATROL_WARRIOR_SWITCH_R_TO_L)
     {
         m_iIdleDelay = 2;
         m_fInterPolationTime = 0.f;
@@ -65,7 +65,7 @@ STATE_TYPE CState_Patrol_Default_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnim
         if (pAnimator->Get_CurAnimFrame() > m_iIdleDelay)
         {
             if(m_iRand == 1)
-                return AI_STATE_PATROL_SWITCH_L_TO_R;
+                return AI_STATE_PATROL_WARRIOR_SWITCH_L_TO_R;
             else
                 return AI_STATE_PATROL_WALK_WARRIOR_L; 
         }
@@ -73,7 +73,7 @@ STATE_TYPE CState_Patrol_Default_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnim
     else
     {
         if (m_iRand == 1)
-            return AI_STATE_PATROL_SWITCH_L_TO_R;
+            return AI_STATE_PATROL_WARRIOR_SWITCH_L_TO_R;
         else
             return AI_STATE_PATROL_WALK_WARRIOR_L;
     }

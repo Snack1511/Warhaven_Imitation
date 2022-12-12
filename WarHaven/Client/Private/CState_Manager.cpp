@@ -491,6 +491,14 @@
 #include "CState_Patrol_Walk_Engineer_R.h"
 
 
+#include "CState_Patrol_Default_Fiona_L.h"
+#include "CState_Patrol_Default_Fiona_R.h"
+#include "CState_Patrol_Switch_Fiona_CSwitchRtoL.h"
+#include "CState_Patrol_Switch_Fiona_CSwitchLtoR.h"
+#include "CState_Patrol_Walk_Fiona_L.h"
+#include "CState_Patrol_Walk_Fiona_R.h"
+
+
 
 #pragma endregion 
 
@@ -498,10 +506,6 @@
 
 #include "CState_Combat_Run_Warrior_L.h"
 #include "CState_Combat_Run_Warrior_R.h"
-
-#include "CState_Common_Bounce_Warrior_L.h"
-#include "CState_Common_Bounce_Warrior_R.h"
-
 #include "CState_Combat_Attack_HorizontalUp_Warrior_L.h"
 #include "CState_Combat_Attack_HorizontalUp_Warrior_R.h"
 #include "CState_Combat_Attack_HorizontalMiddle_Warrior_L.h"
@@ -509,42 +513,55 @@
 #include "CState_Combat_Attack_HorizontalDown_Warrior_L.h"
 #include "CState_Combat_Attack_HorizontalDown_Warrior_R.h"
 #include "CState_Combat_Attack_Warrior_VerticalCut.h"
-
 #include "CState_Combat_Oxen_Begin_Warrior.h"
 #include "CState_Combat_Oxen_Loop_Warrior.h"
 #include "CState_Combat_Oxen_Cancel_Warrior.h"
 #include "CState_Combat_Oxen_Loop_Attack_Warrior.h"
-
 #include "CState_Combat_GuardBreak_Warrior.h"
-
 #include "CState_Combat_GuardBegin_Warrior.h"
 #include "CState_Combat_GuardLoop_Warrior.h"
 #include "CState_Combat_GuardEnd_Warrior.h"
 #include "CState_Combat_GuardDash_Warrior.h"
-
 #include "CState_Combat_GuardCancel_Warrior.h"
 
 
 #include "CState_Combat_Default_Engineer_L.h"
 #include "CState_Combat_Default_Engineer_R.h"
-
 #include "CState_Combat_SkillQ_AirSpike_Begin.h"
 #include "CState_Combat_SkillQ_AirSpike_Loop.h"
 #include "CState_Combat_SkillQ_AirSpike_End.h"
-
 #include "CState_Combat_GuardBegin_Engineer.h"
 #include "CState_Combat_GuardLoop_Engineer.h"
 #include "CState_Combat_GuardDash_Engineer.h"
 #include "CState_Combat_GuardEnd_Engineer.h"
 #include "CState_Combat_GuardCancel_Engineer.h"
-
-
 #include "CState_Combat_SkillE_Engineer_GroggyAttack.h"
 #include "CState_Combat_Attack_HorizontalMiddle_Engineer_L.h"
 #include "CState_Combat_Attack_HorizontalMiddle_Engineer_R.h"
 #include "CState_Combat_Attack_VerticalCut_Engineer_L.h"
 #include "CState_Combat_Attack_VerticalCut_Engineer_R.h"
 
+
+#include "CState_Combat_Default_Fiona_L.h"
+#include "CState_Combat_Default_Fiona_R.h"
+
+#include "CState_Combat_SkillQ_Counter_Fiona.h"
+#include "CState_Combat_SkillE_ShieldAttack_Fiona.h"
+#include "CState_Combat_SkillR_SpinAttack_Fiona.h"
+
+#include "CState_Combat_GuardBegin_Fiona.h"
+#include "CState_Combat_GuardLoop_Fiona.h"
+#include "CState_Combat_GuardDash_Fiona.h"
+#include "CState_Combat_GuardEnd_Fiona.h"
+#include "CState_Combat_GuardCancel_Fiona.h"
+
+#include "CState_Combat_Attack_HorizontalUp_Fiona_L.h"
+#include "CState_Combat_Attack_HorizontalUp_Fiona_R.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Fiona_L.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Fiona_R.h"
+#include "CState_Combat_Attack_HorizontalDown_Fiona_L.h"
+#include "CState_Combat_Attack_HorizontalDown_Fiona_R.h"
+#include "CState_Combat_Attack_VerticalCut_Fiona.h"
 
 
 #pragma endregion
@@ -553,51 +570,61 @@
 
 #include "CState_PathNavigation_Run_Warrior_L.h"
 #include "CState_PathNavigation_Run_Warrior_R.h"
-
 #include "CState_PathNavigation_Walk_Warrior_L.h"
 #include "CState_PathNavigation_Walk_Warrior_R.h"
-
 #include "CState_PathNavigation_Sprint_Warrior_Begin.h"
 #include "CState_PathNavigation_Sprint_Warrior_Loop.h"
 #include "CState_PathNavigation_Sprint_Warrior_End.h"
 #include "CState_PathNavigation_Sprint_Warrior_Fall.h"
 #include "CState_PathNavigation_Sprint_Warrior_Jump.h"
-
 #include "CState_PathNavigation_Jump_Warrior_L.h"
 #include "CState_PathNavigation_Jump_Warrior_R.h"
 
-//=========================================================
 
 #include "CState_PathNavigation_Run_Engineer_L.h"
 #include "CState_PathNavigation_Run_Engineer_R.h"
-
 #include "CState_PathNavigation_Walk_Engineer_L.h"
 #include "CState_PathNavigation_Walk_Engineer_R.h"
-
 #include "CState_PathNavigation_Sprint_Engineer_Begin.h"
 #include "CState_PathNavigation_Sprint_Engineer_Loop.h"
 #include "CState_PathNavigation_Sprint_Engineer_End.h"
 #include "CState_PathNavigation_Sprint_Engineer_Fall.h"
 #include "CState_PathNavigation_Sprint_Engineer_Jump.h"
-
 #include "CState_PathNavigation_Jump_Engineer_L.h"
 #include "CState_PathNavigation_Jump_Engineer_R.h"
+
+
+#include "CState_PathNavigation_Default_Fiona_L.h"
+#include "CState_PathNavigation_Default_Fiona_R.h"
+#include "CState_PathNavigation_Walk_Fiona_L.h"
+#include "CState_PathNavigation_Walk_Fiona_R.h"
+#include "CState_PathNavigation_Sprint_Fiona_Begin.h"
+#include "CState_PathNavigation_Sprint_Fiona_Loop.h"
+#include "CState_PathNavigation_Sprint_Fiona_End.h"
+#include "CState_PathNavigation_Sprint_Fiona_Fall.h"
+#include "CState_PathNavigation_Sprint_Fiona_Jump.h"
+#include "CState_PathNavigation_Jump_Fiona_L.h"
+#include "CState_PathNavigation_Jump_Fiona_R.h"
 
 
 #pragma endregion
 
 #pragma region Common
 
+#include "CState_Common_ChangeHero_AI.h"
+
+
 #include "CState_Common_Hit_Warrior.h"
 #include "CState_Common_GuardHit_Warrior.h"
 #include "CState_Common_Groggy_Warrior.h"
 #include "CState_Common_Sting_Warrior.h"
 #include "CState_Common_FlyHit_Warrior.h"
-
 #include "CState_Common_Land_Warrior_L.h"
 #include "CState_Common_Land_Warrior_R.h"
 #include "CState_Common_Fall_Warrior_L.h"
 #include "CState_Common_Fall_Warrior_R.h"
+#include "CState_Common_Bounce_Warrior_L.h"
+#include "CState_Common_Bounce_Warrior_R.h"
 
 
 #include "CState_Common_Hit_Engineer.h"
@@ -605,16 +632,25 @@
 #include "CState_Common_Groggy_Engineer.h"
 #include "CState_Common_Sting_Engineer.h"
 #include "CState_Common_FlyHit_Engineer.h"
-
-
-
 #include "CState_Common_Fall_Engineer_L.h"
 #include "CState_Common_Fall_Engineer_R.h"
 #include "CState_Common_Land_Engineer_L.h"
 #include "CState_Common_Land_Engineer_R.h"
-
 #include "CState_Common_Bounce_Engineer_L.h"
 #include "CState_Common_Bounce_Engineer_R.h"
+
+
+#include "CState_Common_Land_Fiona_L.h"
+#include "CState_Common_Land_Fiona_R.h"
+#include "CState_Common_Fall_Fiona_L.h"
+#include "CState_Common_Fall_Fiona_R.h"
+#include "CState_Common_Hit_Fiona.h"
+#include "CState_Common_GuardHit_Fiona.h"
+#include "CState_Common_Groggy_Fiona.h"
+#include "CState_Common_Sting_Fiona.h"
+#include "CState_Common_FlyHit_Fiona.h"
+#include "CState_Common_Bounce_Fiona_L.h"
+#include "CState_Common_Bounce_Fiona_R.h"
 
 #pragma endregion
 
@@ -637,6 +673,7 @@ CState_Manager::~CState_Manager()
 HRESULT CState_Manager::Initialize()
 {
 	m_arrStates[NO_PATTERN] = CState_NoPattern::Create();
+	m_arrStates[AI_STATE_COMMON_CHANGE_HERO] = CState_Common_ChangeHero_AI::Create();
 
 
 	Spear_State();
@@ -655,6 +692,7 @@ HRESULT CState_Manager::Initialize()
 	
 	Warrior_State_AI();
 	WarHammer_State_AI();
+	Valkyrie_State_AI();
 
 
 
@@ -1215,8 +1253,8 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_PATROL_DEAFULT_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();
 	m_arrStates[AI_STATE_PATROL_DEAFULT_WARRIOR_R] = CState_Patrol_Default_Warrior_R::Create();
 						 
-	m_arrStates[AI_STATE_PATROL_SWITCH_R_TO_L] = CState_Patrol_Switch_Warrior_CSwitchRtoL::Create();
-	m_arrStates[AI_STATE_PATROL_SWITCH_L_TO_R] = CState_Patrol_Switch_Warrior_CSwitchLtoR::Create();
+	m_arrStates[AI_STATE_PATROL_WARRIOR_SWITCH_R_TO_L] = CState_Patrol_Switch_Warrior_CSwitchRtoL::Create();
+	m_arrStates[AI_STATE_PATROL_WARRIOR_SWITCH_L_TO_R] = CState_Patrol_Switch_Warrior_CSwitchLtoR::Create();
 	m_arrStates[AI_STATE_PATROL_WALK_WARRIOR_L] = CState_Patrol_Walk_Warrior_L::Create();
 	m_arrStates[AI_STATE_PATROL_WALK_WARRIOR_R] = CState_Patrol_Walk_Warrior_R::Create();
 
@@ -1361,8 +1399,6 @@ void CState_Manager::WarHammer_State_AI()
 #pragma endregion
 
 
-
-
 #pragma region Common
 
 	m_arrStates[AI_STATE_COMMON_FALL_ENGINEER_L] = CState_Common_Fall_Engineer_L::Create();
@@ -1386,6 +1422,136 @@ void CState_Manager::WarHammer_State_AI()
 
 void CState_Manager::Valkyrie_State_AI()
 {
+
+	
+
+
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEAFULT_FIONA_L] = CState_Patrol_Default_Fiona_L::Create();
+	m_arrStates[AI_STATE_PATROL_DEAFULT_FIONA_R] = CState_Patrol_Default_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_PATROL_FIONA_SWITCH_R_TO_L] = CState_Patrol_Switch_Fiona_CSwitchRtoL::Create();
+	m_arrStates[AI_STATE_PATROL_FIONA_SWITCH_L_TO_R] = CState_Patrol_Switch_Fiona_CSwitchLtoR::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_FIONA_L] = CState_Patrol_Walk_Fiona_L::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_FIONA_R] = CState_Patrol_Walk_Fiona_R::Create();
+
+#pragma endregion
+
+
+#pragma region PathNavi
+
+
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_FIONA_L] = CState_PathNavigation_Default_Fiona_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_FIONA_R] = CState_PathNavigation_Default_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_FIONA_L] = CState_PathNavigation_Walk_Fiona_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_FIONA_R] = CState_PathNavigation_Walk_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_FIONA] = CState_PathNavigation_Sprint_Fiona_Begin::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_FIONA] = CState_PathNavigation_Sprint_Fiona_Loop::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA] = CState_PathNavigation_Sprint_Fiona_End::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_FIONA] = CState_PathNavigation_Sprint_Fiona_Jump::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_FIONA] = CState_PathNavigation_Sprint_Fiona_Fall::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_FIONA_L] = CState_PathNavigation_Jump_Fiona_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_FIONA_R] = CState_PathNavigation_Jump_Fiona_R::Create();
+
+#pragma endregion
+
+#pragma region Combat
+
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_FIONA_L] = CState_Combat_Default_Fiona_L::Create();
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_FIONA_R] = CState_Combat_Default_Fiona_R::Create();
+
+	
+	m_arrStates[AI_STATE_COMBAT_COUNTER_FIONA] = CState_Combat_SkillQ_Counter_Fiona::Create();
+	m_arrStates[AI_STATE_COMBAT_SHIELDATTACK_FIONA] = CState_Combat_SkillE_ShieldAttack_Fiona::Create();
+	m_arrStates[AI_STATE_COMBAT_SPINATTACK_FIONA] = CState_Combat_SkillR_SpinAttack_Fiona::Create();
+
+	m_arrStates[AI_STATE_COMBAT_GUARDBEGIN_FIONA] = CState_Combat_GuardBegin_Fiona::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_FIONA] = CState_Combat_GuardLoop_Fiona::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDDASH_FIONA] = CState_Combat_GuardDash_Fiona::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDEND_FIONA] = CState_Combat_GuardEnd_Fiona::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDCANCEL_FIONA] = CState_Combat_GuardCancel_Fiona::Create();
+
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALUP_FIONA_L] = CState_Combat_Attack_HorizontalUp_Fiona_L::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALUP_FIONA_R] = CState_Combat_Attack_HorizontalUp_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_L] = CState_Combat_Attack_HorizontalMiddle_Fiona_L::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_R] = CState_Combat_Attack_HorizontalMiddle_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALDOWN_FIONA_L] = CState_Combat_Attack_HorizontalDown_Fiona_L::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALDOWN_FIONA_R] = CState_Combat_Attack_HorizontalDown_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_COMBAT_VERTICALCUT_FIONA] = CState_Combat_Attack_VerticalCut_Fiona::Create();
+
+
+
+#pragma endregion
+
+#pragma region Common
+
+	m_arrStates[AI_STATE_COMMON_FALL_FIONA_L] = CState_Common_Fall_Fiona_L::Create();
+	m_arrStates[AI_STATE_COMMON_FALL_FIONA_R] = CState_Common_Fall_Fiona_R::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_FIONA_L] = CState_Common_Land_Fiona_L::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_FIONA_R] = CState_Common_Land_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_BOUNCE_FIONA_L] = CState_Common_Bounce_Fiona_L::Create();
+	m_arrStates[AI_STATE_COMMON_BOUNCE_FIONA_R] = CState_Common_Bounce_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_HIT_FIONA] = CState_Common_Hit_Fiona::Create();
+	m_arrStates[AI_STATE_COMMON_GUARDHIT_FIONA] = CState_Common_GuardHit_Fiona::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_FIONA] = CState_Common_Groggy_Fiona::Create();
+	m_arrStates[AI_STATE_COMMON_STINGHIT_FIONA] = CState_Common_Sting_Fiona::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_FIONA] = CState_Common_FlyHit_Fiona::Create();
+
+#pragma endregion
+
+
+
+
+	//	STATE_ATTACK_VERTICALCUT_VALKYRIE
+
+	//m_arrStates[STATE_ATTACK_HORIZONTALUP_VALKYRIE_L] = CValkyrie_Attack_HorizontalUp_L::Create();
+	//m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L] = CValkyrie_Attack_HorizontalMiddle_L::Create();
+	//m_arrStates[STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L] = CValkyrie_Attack_HorizontalDown_L::Create();
+	//m_arrStates[STATE_ATTACK_STING_VALKYRIE_L] = CValkyrie_Attack_Sting_L::Create();
+
+	//m_arrStates[STATE_ATTACK_HORIZONTALUP_VALKYRIE_R] = CValkyrie_Attack_HorizontalUp_R::Create();
+	//m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R] = CValkyrie_Attack_HorizontalMiddle_R::Create();
+	//m_arrStates[STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R] = CValkyrie_Attack_HorizontalDown_R::Create();
+	//m_arrStates[STATE_ATTACK_STING_VALKYRIE_R] = CValkyrie_Attack_Sting_R::Create();
+
+	//m_arrStates[STATE_ATTACK_VERTICALCUT_VALKYRIE] = CValkyrie_Attack_VerticalCut::Create();
+
+	//m_arrStates[STATE_BOUNCE_VALKYRIE_L] = CBounce_Valkyrie_L::Create();
+	//m_arrStates[STATE_BOUNCE_VALKYRIE_R] = CBounce_Valkyrie_R::Create();
+
+	//m_arrStates[STATE_GUARD_BEGIN_VALKYRIE] = CGuard_Begin_Valkyrie::Create();
+	//m_arrStates[STATE_GUARD_LOOP_VALKYRIE] = CGuard_Loop_Valkyrie::Create();
+	//m_arrStates[STATE_GUARD_END_VALKYRIE] = CGuard_End_Valkyrie::Create();
+	//m_arrStates[STATE_GUARD_CANCEL_VALKYRIE] = CGuard_Cancel_Valkyrie::Create();
+	//m_arrStates[STATE_GUARDDASH_VALKYRIE] = CGuard_Dash_Valkyrie::Create();
+
+
+	//m_arrStates[STATE_SWITCH_R_TO_L_VALKYRIE] = CSwitchLtoR_Valkyrie::Create();
+	//m_arrStates[STATE_SWITCH_L_TO_R_VALKYRIE] = CSwitchRtoL_Valkyrie::Create();
+
+
+	//m_arrStates[STATE_COUNTER_VALKYRIE] = CValkyrie_Counter::Create();
+	//m_arrStates[STATE_SHIELDATTACK_VALKYRIE] = CValkyrie_ShieldAttack::Create();
+	//m_arrStates[STATE_SPINATTACK_VALKYRIE] = CValkyrie_SpinAttack::Create();
+
+
+	//m_arrStates[STATE_HIT_VALKYRIE] = CHit_Valkyrie::Create();
+	//m_arrStates[STATE_GUARDHIT_VALKYRIE] = CHit_GuardHit_Valkyrie::Create();
+	//m_arrStates[STATE_GROGGYHIT_VALKYRIE] = CHit_Groggy_Valkyrie::Create();
+	//m_arrStates[STATE_STINGHIT_VALKYRIE] = CHit_Sting_Valkyrie::Create();
+	//m_arrStates[STATE_FLYHIT_VALKYRIE] = CHit_Fly_Valkyrie::Create();
+
+
 
 }
 

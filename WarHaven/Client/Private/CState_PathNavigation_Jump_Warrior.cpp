@@ -44,8 +44,6 @@ void CState_PathNavigation_Jump_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimat
 STATE_TYPE CState_PathNavigation_Jump_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-	DoMove_AI_NoTarget(pOwner, pAnimator);
-
     return __super::Tick(pOwner, pAnimator);
 }
 
