@@ -1,4 +1,19 @@
 
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBounce_SpearMan.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CCharge_WarHammer.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CCharge_WarHammer_Front_L.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CCharge_WarHammer_Front_R.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CGuard_Begin_Player_Warrior_AI.cpp"
+
+
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CGuard_Cancel_Warrior_AI.cpp"
 
 
@@ -42,19 +57,4 @@
 
 
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Sting_Archer.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Sting_Paladin.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Sting_Valkyrie.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Archer.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Valkyrie.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_WarHammer.cpp"
 

@@ -56,6 +56,9 @@ bind(&CTable_Conditions::Function,\
 HRESULT CTable_Conditions::Initialize()
 {
     if (FAILED(SetUp_Conditions()))
+        return E_FAIL;    
+    
+    if (FAILED(SetUp_BehaviorTick()))
         return E_FAIL;
 
     if (FAILED(SetUp_Behaviors()))
@@ -80,6 +83,20 @@ HRESULT CTable_Conditions::SetUp_Conditions()
     Add_WhatCondition(wstring(L"Select_NearEnemy"), Select_NearEnemy);
     Add_WhatCondition(wstring(L"Select_NearAllies"), Select_NearAllies);
     Add_WhatCondition(wstring(L"Select_NearRouteEnemy"), Select_NearEnemy);
+    return S_OK;
+}
+
+#define Add_BehaviorTick(strBehaviorTickName, BehaviorTick)\
+    m_BehaviorTick.emplace(\
+    Convert_ToHash(strBehaviorTickName),\
+    bind(&CTable_Conditions::BehaviorTick,\
+        this, placeholders::_1, placeholders::_2))
+HRESULT CTable_Conditions::SetUp_BehaviorTick()
+{
+    Add_BehaviorTick(wstring(L"EmptyBehaviorTick"), EmptyBehaviorTick);
+    Add_BehaviorTick(wstring(L"Callback_Tick_Update_Path"), Callback_Tick_Update_Path);
+    Add_BehaviorTick(wstring(L"Callback_Tick_Check_NaviTime"), Callback_Tick_Check_NaviTime);
+
     return S_OK;
 }
 
@@ -141,6 +158,27 @@ function<void(_bool&, BEHAVIOR_DESC*&, CPlayer*, CAIController*)> CTable_Conditi
         strMsg += " - Find_WhatCondition()";
         Make_Dump(typeid(CTable_Conditions).name(), strMsg);
         return bind(&CTable_Conditions::EmptyWhatCondition, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+    }
+}
+
+function<void(CPlayer*, CAIController*)> CTable_Conditions::Find_BehaviorTick(wstring strConditionName)
+{
+    try {
+        _hashcode hsConditionName = Convert_ToHash(strConditionName);
+
+        auto BehaviorIter = m_BehaviorTick.find(hsConditionName);
+
+        if (m_BehaviorTick.end() == BehaviorIter)
+            throw strConditionName;
+        return BehaviorIter->second;
+    }
+    catch (wstring ConditionName)
+    {
+        string strMsg = "Not Found : ";
+        strMsg += CFunctor::To_String(ConditionName);
+        strMsg += " - Find_BehaviorTick()";
+        Make_Dump(string("CTable_Condition"), strMsg);
+        return nullptr;
     }
 }
 
@@ -436,6 +474,16 @@ void CTable_Conditions::Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC
         OutCondition = false;
         OutDesc->pEnemyPlayer = nullptr;
     }
+}
+
+void CTable_Conditions::Callback_Tick_Update_Path(CPlayer* pPlayer, CAIController* pAIController)
+{
+
+
+}
+
+void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController)
+{
 }
 
 _bool CTable_Conditions::RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter)

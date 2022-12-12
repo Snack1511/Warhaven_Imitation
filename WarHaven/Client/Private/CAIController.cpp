@@ -137,10 +137,9 @@ void CAIController::Early_Tick()
 
 void CAIController::Tick()
 {
-	//if (m_pOwnerPlayer->Is_Died() && m_pOwnerPlayer->Is_EndRevivalTime())
-	//{
-	//	//
-	//}
+	//¿¬»ê·® ¸¹À¸¸é »©¾ßµÊ;;
+	//m_pCurrentBehavior->Callback_BehaviorTick(m_pOwnerPlayer, this);
+	
 
 }
 

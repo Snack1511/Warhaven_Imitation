@@ -1,22 +1,4 @@
 
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Main.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_MainPlay.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Object.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Portrait.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Skill.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Wrapper.cpp"
-
-
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CUnit.cpp"
 
 
@@ -57,4 +39,22 @@
 
 
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CHit_Player.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWarHammer_Attack_VerticalAttack_L.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CValkyrie_Attack_VerticalCut.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Attack_Begin.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWarrior_Attack_VerticalCut.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBounce_Player_L.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSpearMan_GuardBreak.cpp"
 

@@ -1,22 +1,4 @@
 
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStructure.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStructure_Instance.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSwitchLtoR.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CSwitchRtoL.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSword_Effect.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTerrain.cpp"
-
-
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTestObject.cpp"
 
 
@@ -57,4 +39,22 @@
 
 
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Logo.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Main.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_MainPlay.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Object.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Portrait.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Skill.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUI_Wrapper.cpp"
 
