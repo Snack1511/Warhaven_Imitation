@@ -2272,6 +2272,411 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical">
       <UniqueIdentifier>{ab224c01-45b6-4906-b251-95ba075a600e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer">
+      <UniqueIdentifier>{a0a1ffb9-a43e-40fd-a830-d180c4e0cfc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona">
+      <UniqueIdentifier>{ca80c1e6-de65-4a91-8199-72346b3dc143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal">
+      <UniqueIdentifier>{a2eb5a41-78cf-43dd-bcf6-258aedb0ffb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical">
+      <UniqueIdentifier>{613929bc-148e-471b-b944-8b9fed03cdd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\02. Sprint">
+      <UniqueIdentifier>{1f3872ef-8e72-41fa-9b60-fb82a576db3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\01. Right">
+      <UniqueIdentifier>{16ff838f-97ed-4e2b-9345-a57610c63789}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\02. Left">
+      <UniqueIdentifier>{b01d33e0-ad0f-4b65-9a02-4991d886ae50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer">
+      <UniqueIdentifier>{c6e8acf8-9533-43ec-bfc3-9454c5edd6b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\01. Right">
+      <UniqueIdentifier>{2b5bfe76-2c55-4304-8d0f-195c45e33fbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\02. Left">
+      <UniqueIdentifier>{223d59d7-7984-48e6-b4a1-5918bbc7fb55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer">
+      <UniqueIdentifier>{c15c70d7-f43b-4e07-9bf6-0e82aab5f465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer">
+      <UniqueIdentifier>{38bcf6fe-b527-4989-82d0-87337efe31f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer">
+      <UniqueIdentifier>{6ae7df8c-9627-4494-bed9-a839d5a0a639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\01. Right">
+      <UniqueIdentifier>{a47c6275-1875-4cc8-b186-fe7cb6d6b6de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\01. Right">
+      <UniqueIdentifier>{d374f4eb-e4cf-4b66-bfeb-5424fe322c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\01. Right">
+      <UniqueIdentifier>{cd4561ab-4866-49d9-a1ab-974667443fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\02. Left">
+      <UniqueIdentifier>{2c1a17b3-24a6-4837-adbf-035fdbd046bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\02. Left">
+      <UniqueIdentifier>{d6cca426-1232-4c4f-b056-0fef51df8873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\02. Left">
+      <UniqueIdentifier>{aeced3ac-3c3c-4cb9-82fa-7744770d0d24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer">
+      <UniqueIdentifier>{018578a9-33a2-4d32-bb82-5ec93e8a938b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer">
+      <UniqueIdentifier>{ba2a1797-1396-43cb-a31f-4e0fe04a70ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer">
+      <UniqueIdentifier>{8c777582-e4da-40ee-8b4b-5353ed08c855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer">
+      <UniqueIdentifier>{df264af0-a360-4288-852a-c52be05a15c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\02. Left">
+      <UniqueIdentifier>{5b90321d-f694-4c48-be5e-9d95b1f347bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\01. Right">
+      <UniqueIdentifier>{6882c970-8793-4619-88d8-c7d5c01d1db4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\01. Right">
+      <UniqueIdentifier>{0ba7a3c9-7c54-45fc-a9d2-d48061d95794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\01. Right">
+      <UniqueIdentifier>{fbaf8742-65ca-442f-b2c5-3c2f284f60b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\02. Left">
+      <UniqueIdentifier>{e34bc986-793a-4fb6-87e0-722a55d1b6e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump">
+      <UniqueIdentifier>{d8fadb52-980e-49ed-88e7-6cbc77a99c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run">
+      <UniqueIdentifier>{f12c9649-e8fa-43f3-871b-a7da723ffb69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\03. End">
+      <UniqueIdentifier>{d279a902-4d04-42f8-9f17-dff8a546da33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\01. Jump">
+      <UniqueIdentifier>{bdc8b967-c228-488b-a2bf-1376a986e0bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\02. Fall">
+      <UniqueIdentifier>{4b188ef5-d04c-4056-aaef-9d0f683d182b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\01. Begin">
+      <UniqueIdentifier>{f2a08c89-3583-4f88-b8a7-7aa622bdc242}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\02. Loop">
+      <UniqueIdentifier>{b354638c-8c16-4c1d-9a2f-adcf4b9b3874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\02. Left">
+      <UniqueIdentifier>{8aa6475f-cc64-487b-b423-5513642776f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\01. Warrior">
+      <UniqueIdentifier>{9cdc2382-777d-4e68-9318-eca875b39ed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\02. Engineer">
+      <UniqueIdentifier>{491cf81a-ce42-43b7-b154-5464af7c2f1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\01. Warrior">
+      <UniqueIdentifier>{28cf876c-bc39-4820-8eab-f2d9a96668ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\01. Warrior">
+      <UniqueIdentifier>{c4f2c006-08e8-40f2-acf6-9cd75b2067ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\01. Warrior">
+      <UniqueIdentifier>{818cadde-0122-48e2-8ab1-cec7f30c2c68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\01. Warrior">
+      <UniqueIdentifier>{1286639f-f60c-448d-a1b8-1425b8d2f506}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\02. Engineer">
+      <UniqueIdentifier>{491b0ea6-cf5e-448a-8446-e90318ed34b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\02. Engineer">
+      <UniqueIdentifier>{73ddb37d-e38b-4dc8-a1ed-d0a10dad018d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\02. Engineer">
+      <UniqueIdentifier>{bf143436-7359-48fe-88f3-916625118b6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\02. Engineer">
+      <UniqueIdentifier>{81a3969c-7a0a-4f26-9a53-d9b83602f15a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer">
+      <UniqueIdentifier>{a963b55e-83a2-4f41-9df8-3a6a5adf2732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer">
+      <UniqueIdentifier>{c62f6366-db7f-4e92-becf-53464ee83172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\01. Right">
+      <UniqueIdentifier>{9d4eeb6b-a8fe-4845-90ba-d1806867edd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\01. Right">
+      <UniqueIdentifier>{65af12b0-772a-4fb3-bdda-ce09646780e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\02. Left">
+      <UniqueIdentifier>{9d41879b-be5c-4a06-9b55-8a7c1ebdf4d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\02. Left">
+      <UniqueIdentifier>{1512443d-b89f-42ab-920a-d10f1936a24f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer">
+      <UniqueIdentifier>{8a7953d6-2ce1-4c27-91ea-acf98d546855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\01. Right">
+      <UniqueIdentifier>{5fbd2e9f-5eb9-4d5a-ba1a-cdec3100f7f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\02. Left">
+      <UniqueIdentifier>{ada8fbc9-581d-4841-987d-1658aca21787}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\01. Right">
+      <UniqueIdentifier>{3e1545e5-a0de-42cf-a4e5-97f410c866ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\02. Left">
+      <UniqueIdentifier>{dca0039f-fef8-4227-b12d-cd297295a0cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer">
+      <UniqueIdentifier>{73fc5f65-cfcd-4ff3-b8a6-cc438a8b1c58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\02. Engineer">
+      <UniqueIdentifier>{546cb536-a3ef-490d-86c3-f722799ba113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\02. Engineer\GroggyAttack">
+      <UniqueIdentifier>{d15538f6-bd73-4c4c-8990-9af9fd894a6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike">
+      <UniqueIdentifier>{22482ab7-af87-485a-a798-1e45941b2f0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\01. Begin">
+      <UniqueIdentifier>{e35c6114-b290-4e9e-b431-9cb25422d31e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\02. Loop">
+      <UniqueIdentifier>{895884fe-099a-4070-990e-b7b9bcd2f23d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\03. End">
+      <UniqueIdentifier>{0af5ecac-dcf9-4d49-a5b9-bb5eef48f8c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\02. Engineer">
+      <UniqueIdentifier>{a68f4a26-4989-4881-bfbd-2b987a802209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer">
+      <UniqueIdentifier>{6f82906a-d108-459d-aa88-6e31504c5df8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\01. Begin">
+      <UniqueIdentifier>{ffd505e9-a079-423f-a05b-a83f8ac0c275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\02. Loop">
+      <UniqueIdentifier>{4333621a-a765-4048-9c0f-3ec0606679e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\03. End">
+      <UniqueIdentifier>{102dd614-ec61-4524-aeca-b0eae19165f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\04. Dash">
+      <UniqueIdentifier>{939d1b18-a261-44f9-9aab-aae642884c98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\03. Fiona">
+      <UniqueIdentifier>{46f6e29a-4ce4-4731-b403-261ebbbb1411}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\03. Fiona\01. Right">
+      <UniqueIdentifier>{54d2e097-3d3d-463f-93bf-0f2de8ff0894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\03. Fiona\02. Left">
+      <UniqueIdentifier>{d34b7c23-1d7a-4c12-96fb-7c4ee7412860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\03. Fiona">
+      <UniqueIdentifier>{62364c95-a73f-4904-adcf-0340b2f64e39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\03. Fiona\01. Right">
+      <UniqueIdentifier>{111a4617-0c05-41b1-b8ec-34cc01ee514c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\03. Fiona\02. Left">
+      <UniqueIdentifier>{afbdea97-abd8-4241-a303-df2e7c1ab213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\03. Fiona">
+      <UniqueIdentifier>{2381459a-6311-45e8-821c-63d60a405856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\03. Fiona\01. Right">
+      <UniqueIdentifier>{2b936220-5d78-40f7-a3af-8fbfc7b498b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\03. Fiona\02. Left">
+      <UniqueIdentifier>{4d26ba2c-3c4d-4946-bb6a-23e0f1458d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\03. Fiona">
+      <UniqueIdentifier>{51d3a6c5-6955-4b40-9e05-5eedf90084f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\03. Fiona">
+      <UniqueIdentifier>{28ad7bad-c41f-49fe-979c-809b807ea0a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\03. Fiona">
+      <UniqueIdentifier>{408aaf42-04bf-41ac-9585-d941753b5ad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\03. Fiona">
+      <UniqueIdentifier>{6cc80842-62a9-4f25-880d-f02ada490759}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\03. Fiona">
+      <UniqueIdentifier>{f826f48a-4e9b-47c0-a131-9a754ca65757}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\03. Fiona">
+      <UniqueIdentifier>{ce3d87b1-cb9a-4ce1-962f-3eb58d1aa894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\03. Fiona\01. Right">
+      <UniqueIdentifier>{cd2cfb2f-975a-4c44-95a7-04ff3d242768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\03. Fiona\02. Left">
+      <UniqueIdentifier>{69b6417f-205f-49b3-b0f1-9f7ff8e27f29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\03. Fiona">
+      <UniqueIdentifier>{e8bcd322-05b7-4d66-86a3-5be8d3dc09e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\03. Fiona\01. Right">
+      <UniqueIdentifier>{1f714246-3824-476b-8b51-0d799c053dbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\03. Fiona\02. Left">
+      <UniqueIdentifier>{7f9469ca-6fc8-404d-90ba-56bc3454858b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\03. Fiona">
+      <UniqueIdentifier>{c4ac8c84-4629-4765-9c82-25a9e75ab6ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\03. Fiona\01. Right">
+      <UniqueIdentifier>{6096fc8d-b568-4468-8647-0a7e44d64f1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\03. Fiona\02. Left">
+      <UniqueIdentifier>{ebe243b7-000e-4119-abf8-f9aa12e748bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\03. Fiona">
+      <UniqueIdentifier>{0645be70-861b-4307-a580-b2a2fccc02c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\03. Fiona">
+      <UniqueIdentifier>{a15c9d2d-b46b-46b2-a6c4-19a0a4957898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona">
+      <UniqueIdentifier>{17824166-2bc9-45e8-b0ae-31993ab68e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\03. Fiona">
+      <UniqueIdentifier>{4c945157-e60e-4443-a8ee-46375a424937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\03. Fiona\01. Right">
+      <UniqueIdentifier>{ed7263ad-0f98-46e8-ac1c-8adf1fa7c8e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\03. Fiona\02. Left">
+      <UniqueIdentifier>{156f66d3-6f4c-4973-ab37-9f2b2c9b651e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\03. Fiona\01. Right">
+      <UniqueIdentifier>{a7ec9a30-4365-4f4a-8fcc-bfeea58082b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\03. Fiona\02. Left">
+      <UniqueIdentifier>{436365b8-93ec-4822-9c32-411d53a16a0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\01. Jump">
+      <UniqueIdentifier>{96ae1125-99d0-462e-a56e-8e168f519b4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\02. Run">
+      <UniqueIdentifier>{ecbc56cf-3f19-4d26-8dbd-f54e2c21a036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\03. End">
+      <UniqueIdentifier>{f78f1873-3dba-4941-9343-7c952be6f9ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\02. Run\01. Begin">
+      <UniqueIdentifier>{029a8d3e-2214-4725-9eb6-2b134a5690e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\02. Run\02. Loop">
+      <UniqueIdentifier>{f0371baf-5b0d-435a-85c6-e53cc621e151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\01. Jump\01. Jump">
+      <UniqueIdentifier>{5119bb63-0ad7-4c70-bc15-2dcb76825c39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\01. Jump\02. Fall">
+      <UniqueIdentifier>{492086bc-aa98-44de-97a2-bf085b04f368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\03. Fiona\01. Right">
+      <UniqueIdentifier>{b097ffc1-b01b-4aa6-bd8f-fdc3f5dc4171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\03. Fiona\02. Left">
+      <UniqueIdentifier>{3d5943c8-9696-4baf-a268-223e244c0ccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\05. Transform">
+      <UniqueIdentifier>{94a11f7d-5cb0-4474-ab6d-4ffaec60e3ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\03. Fiona">
+      <UniqueIdentifier>{ab808b44-e6cb-44d0-8d00-31b271408f91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\03. Fiona\01. Right">
+      <UniqueIdentifier>{2bb757e1-2391-4b8c-bb10-a03a3963f579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\03. Fiona\02. Left">
+      <UniqueIdentifier>{ee8741e2-49a8-43ed-908b-d51786cc0f1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\03. Fiona">
+      <UniqueIdentifier>{0ca60afc-078d-4c02-be7c-ada1d1c759d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. Fiona">
+      <UniqueIdentifier>{f2bc622f-c22a-4700-8a7a-c7ab8621759d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\03. Fiona">
+      <UniqueIdentifier>{af27d291-44b7-46f9-925a-08d122845e26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\03. Fiona">
+      <UniqueIdentifier>{8e4a4793-5db4-4fd4-b7fd-a48f02fa7ed1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona">
+      <UniqueIdentifier>{3ecfdaab-b415-41e0-94ab-be9c02c21613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\01. Begin">
+      <UniqueIdentifier>{c4e44dbe-0f0d-4dad-bfdd-9ef01f1be102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\02. Loop">
+      <UniqueIdentifier>{9c580a19-c185-4f93-bc6d-5ecebd68b4cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\03. End">
+      <UniqueIdentifier>{f6ba7100-4748-446a-bb44-a199681c2c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\04. Dash">
+      <UniqueIdentifier>{031fcb5d-c50c-419b-9905-1c26c04412e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal">
+      <UniqueIdentifier>{4e9cf4d5-3373-4bfc-9368-96635d9cbb46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\02. Sprint">
+      <UniqueIdentifier>{c0ea119f-0e2e-46b4-81cf-d66899b63773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\03. Vertical">
+      <UniqueIdentifier>{39f692e4-7f6f-40d3-b963-db5940d0c756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\01. Up">
+      <UniqueIdentifier>{92754299-cf33-438e-87f9-69a0b5f98bb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\02. Middle">
+      <UniqueIdentifier>{534d51fa-6b86-44f6-950c-7d15b6f1df51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\03. Down">
+      <UniqueIdentifier>{2bc38b42-6fc9-4961-8ece-8fd1cd926414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\01. Up\01. Right">
+      <UniqueIdentifier>{533221cc-1c56-4765-a14c-a5a5bbcb9a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\02. Middle\01. Right">
+      <UniqueIdentifier>{f2965d60-d32e-416f-a8a5-6a42327c0829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\03. Down\01. Right">
+      <UniqueIdentifier>{a3bcffa7-776b-4e75-a2bd-dfe45e7cc252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\01. Up\02. Left">
+      <UniqueIdentifier>{d1f0d2e7-6a22-4e3b-be49-435e41e608b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\02. Middle\02. Left">
+      <UniqueIdentifier>{c804fad4-855f-4a7c-a883-c2fcbfa749bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\03. Down\02. Left">
+      <UniqueIdentifier>{9d598c85-6b49-41f5-a9d0-d500d28ca4ec}</UniqueIdentifier>
+    </Filter>
     <Filter Include="03. Instances\02. GameObject\02. Unit\00. MainMenuUnit">
       <UniqueIdentifier>{c96f4cc2-c302-4e0c-a4ab-07cf0c9f356e}</UniqueIdentifier>
     </Filter>
@@ -3879,21 +4284,6 @@
     <ClInclude Include="..\Public\CState_Common_Hit.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_FlyHit_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_Groggy_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_GuardHit_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_Hit_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_Sting_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_Oxen_Cancel_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\02. End</Filter>
     </ClInclude>
@@ -3908,9 +4298,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_GuardBegin_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Combat_GuardCancel_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_GuardEnd_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End</Filter>
@@ -4049,6 +4436,381 @@
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_Attack_Warrior_VerticalCut.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Engineer_CSwitchRtoL.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Engineer_CSwitchLtoR.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_Jump.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Sting_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_GuardHit_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Sting_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_GuardHit_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_VerticalCut_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_VerticalCut_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_VerticalCut_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_AirSpike_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_AirSpike_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_AirSpike_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillE_Engineer_GroggyAttack.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\02. Engineer\GroggyAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardCancel_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardCancel_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardDash_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\04. Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardEnd_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardLoop_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardBegin_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Fiona_CSwitchLtoR.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Fiona_CSwitchRtoL.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Sting_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_GuardHit_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Default_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Default_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Default_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Fiona_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Fiona_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Fiona_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Fiona_Jump.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\01. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Fiona_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_ChangeHero_AI.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\05. Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Counter_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillE_ShieldAttack_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillR_SpinAttack_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardCancel_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardBegin_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardDash_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\04. Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardEnd_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardLoop_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\03. Down\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\03. Down\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\02. Middle\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\02. Middle\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\01. Up\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\01. Up\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalDown_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\03. Down</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\02. Middle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\01. Up</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_VerticalCut_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\03. Vertical</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CMainMenuUnit.h">
       <Filter>03. Instances\02. GameObject\02. Unit\00. MainMenuUnit</Filter>
@@ -5590,9 +6352,6 @@
     <ClCompile Include="..\Private\CState_Combat_SkillE.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CState_Combat_SkillQ.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillR.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR</Filter>
     </ClCompile>
@@ -5638,21 +6397,6 @@
     <ClCompile Include="..\Private\CState_Common_Hit.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_FlyHit_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_Groggy_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_GuardHit_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_Hit_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_Sting_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Oxen_Begin_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\01. Begin</Filter>
     </ClCompile>
@@ -5667,9 +6411,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_GuardBegin_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Combat_GuardCancel_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_GuardEnd_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End</Filter>
@@ -5808,6 +6549,384 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Attack_Warrior_VerticalCut.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Engineer_CSwitchRtoL.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Engineer_CSwitchLtoR.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_Jump.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Sting_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_GuardHit_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Sting_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_GuardHit_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_VerticalCut_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_VerticalCut_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_VerticalCut_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_AirSpike_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_AirSpike_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_AirSpike_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillE_Engineer_GroggyAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\02. Engineer\GroggyAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardCancel_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardCancel_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardDash_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\04. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardEnd_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardLoop_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardBegin_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Fiona_CSwitchRtoL.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Fiona_CSwitchLtoR.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Sting_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_GuardHit_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Default_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Default_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Default_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Fiona_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Fiona_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Fiona_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Fiona_Jump.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\01. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Fiona_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_ChangeHero_AI.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\05. Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Counter_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillE_ShieldAttack_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillR_SpinAttack_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardCancel_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardBegin_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardDash_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\04. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardEnd_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardLoop_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\03. Fiona\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\03. Down\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\03. Down\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\02. Middle\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\02. Middle\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\01. Up\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\01. Up\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalDown_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\03. Down</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\02. Middle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\01. Horizontal\01. Up</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_VerticalCut_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona\03. Vertical</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CMainMenuUnit.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\00. MainMenuUnit</Filter>

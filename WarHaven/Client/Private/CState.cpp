@@ -729,6 +729,37 @@ void	CState::Physics_Setting_Right(_float fSpeed, CUnit* pOwner, _bool bSpeedasM
 	if (bSpeedasMax)
 		pMyPhysicsCom->Set_SpeedasMax();
 }
+void CState::Physics_Setting_AI(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _bool bBackStep)
+{
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+
+
+	CUnit* pUnit = pOwner->Get_TargetUnit();
+
+	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+	
+	vLook.y = 0.f;
+
+
+	//1인자 룩 (안에서 Normalize 함), 2인자 러프에 걸리는 최대시간
+	pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
+
+	if (bBackStep)
+		vLook *= -1.f;
+
+	//실제 움직이는 방향
+	pMyPhysicsCom->Set_Dir(vLook);
+
+	//최대속도 설정
+
+	pMyPhysicsCom->Set_MaxSpeed(fSpeed);
+
+	if (bSpeedasMax)
+		pMyPhysicsCom->Set_SpeedasMax();
+}
+
+
 
 void CState::Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax, _bool bRight)
 {

@@ -161,9 +161,68 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
 		break;
 
+
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_ENGINEER;
+		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_ENGINEER;
+		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_ENGINEER;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_ENGINEER;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_ENGINEER;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_ENGINEER;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_ENGINEER_L;
+		break;
+
 	default:
 		break;
 	}
+}
+
+
+void CUnit_WarHammer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
+{
+	__super::On_ChangeBehavior(pBehaviorDesc);
+
+	if (nullptr == pBehaviorDesc)
+		assert(0);
+
+	STATE_TYPE	eNewState = STATE_END;
+
+	switch (pBehaviorDesc->eCurType)
+	{
+	case eBehaviorType::ePatrol:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEAFULT_ENGINEER_R;
+		break;
+	case eBehaviorType::eFollow:
+		//상태변경
+		break;
+	case eBehaviorType::eAttack:
+		//상태변경
+		eNewState = AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+		m_pOwnerPlayer->Set_TargetPlayer(pBehaviorDesc->pEnemyPlayer);
+
+		break;
+	case eBehaviorType::ePathNavigation:
+		//상태변경
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_ENGINEER_R;
+		break;
+
+	case eBehaviorType::eResurrect:
+		//상태변경
+		break;
+
+	case eBehaviorType::eChange:
+		//상태변경
+		eNewState = AI_STATE_COMMON_CHANGE_HERO;
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	if (eNewState != STATE_END)
+		m_eReserveState = eNewState;
+
 }
 
 void CUnit_WarHammer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
@@ -179,12 +238,14 @@ void CUnit_WarHammer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
 
-	if (STATE_GROGGYATTACK_WARHAMMER != m_eCurState)
+	if (STATE_GROGGYATTACK_WARHAMMER != m_eCurState ||
+		AI_STATE_COMBAT_GROGGYATTACK_ENGINEER != m_eCurState)
 	{
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSpark", vHitPos, matWorld);
 	}
 
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"StoneSpark_1"), vHitPos, matWorld);
+
 
 	switch (m_eCurState)
 	{
@@ -192,11 +253,16 @@ void CUnit_WarHammer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_D", vHitPos, matWorld);
 		break;
 	case STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L:
+	case AI_STATE_COMBAT_HORIZONTALMIDDLE_ENGINEER_L:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_Left", vHitPos, matWorld);
 		break;
 	case STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R:
+	case AI_STATE_COMBAT_HORIZONTALMIDDLE_ENGINEER_R:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_Right", vHitPos, matWorld);
 		break;
+
+	case AI_STATE_COMBAT_VERTICALCUT_ENGINEER_L:
+	case AI_STATE_COMBAT_VERTICALCUT_ENGINEER_R:
 	case STATE_VERTICALATTACK_WARHAMMER_L:
 	case STATE_VERTICALATTACK_WARHAMMER_R:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_D", vHitPos, matWorld);
@@ -206,6 +272,7 @@ void CUnit_WarHammer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Heading", vHitPos, matWorld);
 		break;
 	case STATE_GROGGYATTACK_WARHAMMER: 
+	case AI_STATE_COMBAT_GROGGYATTACK_ENGINEER:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Heading", vHitPos, matWorld);
 		break;
 	case STATE_AIRSPIKE_END_WARHAMMER:
@@ -321,7 +388,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_tUnitStatus.fDashAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintJumpSpeed *= 0.8f;
-	m_tUnitStatus.fSprintSpeed *= 0.7f;
+	m_tUnitStatus.fSprintSpeed *= 0.85f;
 	m_tUnitStatus.fRunSpeed *= 0.6f;
 	m_tUnitStatus.fWalkSpeed *= 0.7f;
 	m_tUnitStatus.fRunBeginSpeed *= 0.8f;
@@ -330,7 +397,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 
 
 	m_fCoolTime[SKILL1] = 0.f;
-	m_fCoolTime[SKILL2] = 4.f;
+	m_fCoolTime[SKILL2] = 8.f;
 	m_fCoolTime[SKILL3] = 5.f;
 
 	//Enable_ModelParts(3, false);

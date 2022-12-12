@@ -840,6 +840,7 @@ void CPlayer::Update_HeroGauge()
 
 	if (!m_bAbleHero) //CChangeHero_Player, HUD
 	{
+
 		_float fGaugeSpeed = fDT(0);
 
 		if (!m_bIsHero) //CChangeHero_Player
@@ -853,7 +854,7 @@ void CPlayer::Update_HeroGauge()
 			}
 		}
 		else //변신 중일때 
-		{
+		{	
 			m_fGauge -= fGaugeSpeed * 2.f; // 인게임속도2.f 
 
 			if (m_bIsMainPlayer)

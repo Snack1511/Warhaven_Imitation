@@ -20,8 +20,6 @@ public:
 protected:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
-protected:
-	_uint m_iWalkDelay = 0;
 
 };
 

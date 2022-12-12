@@ -70,7 +70,8 @@ void CValkyrie_SpinAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 {
 	pOwner->TurnOn_TrailEffect(true);
 
-	if (ePrevType != STATE_GUARDHIT_VALKYRIE)
+	if (ePrevType != STATE_GUARDHIT_VALKYRIE ||
+		ePrevType != STATE_GUARD_CANCEL_VALKYRIE)
 	{
 		pOwner->On_Use(CUnit::SKILL1);
 		m_fInterPolationTime = 0.1f;

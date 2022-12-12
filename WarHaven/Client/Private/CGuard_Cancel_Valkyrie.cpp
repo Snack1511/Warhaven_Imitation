@@ -60,13 +60,16 @@ HRESULT CGuard_Cancel_Valkyrie::Initialize()
 
 void CGuard_Cancel_Valkyrie::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    if (ePrevType == STATE_COUNTER_VALKYRIE)
+        m_bAttackTrigger = true;
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CGuard_Cancel_Valkyrie::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	// 가드 상태에서도 움직일 수 있도록 설정한다.
-
+    if (m_bAttackTrigger)
+        return STATE_SPINATTACK_VALKYRIE;
 
     return __super::Tick(pOwner, pAnimator);
 

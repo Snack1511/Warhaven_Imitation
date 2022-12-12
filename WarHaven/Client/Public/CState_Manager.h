@@ -35,7 +35,11 @@ private:
 	void Valkyrie_State();
 	
 	void Warrior_SandBagState();
+	
+	
 	void Warrior_State_AI();
+	void WarHammer_State_AI();
+	void Valkyrie_State_AI();
 
 	void Spear_State();
 

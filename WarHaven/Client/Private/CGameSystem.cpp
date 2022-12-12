@@ -1130,13 +1130,15 @@ void CGameSystem::On_StartGame()
 		/*if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
 			continue;*/
 
-		 /* if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
-		  {
-			  bTemp = !bTemp;
 
-			  if (bTemp)
-				  continue;
-		  }*/
+		//// 반만 생성
+		//if (!dynamic_cast<CPlayerInfo_Main*>(elem.second))
+		//{
+		//	bTemp = !bTemp;
+
+		//	if (bTemp)
+		//		continue;
+		//}
 
 
 		/* ai들은 랜덤 선택 함수 호출 */

@@ -80,7 +80,7 @@ void CWarHammer_AirSpike_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
-	Physics_Setting(0.1, pOwner);
+	Physics_Setting(0.1f, pOwner);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

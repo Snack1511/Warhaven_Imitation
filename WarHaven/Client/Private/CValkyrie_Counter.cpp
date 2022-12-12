@@ -37,15 +37,6 @@ HRESULT CValkyrie_Counter::Initialize()
 	m_iAnimIndex = 15;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_COUNTER_VALKYRIE;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-	//m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
-	//m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
-	//m_vecAdjState.push_back(STATE_RUNBEGIN_VALKYRIE_R);
-	//m_vecAdjState.push_back(STATE_JUMP_VALKYRIE_R);
-
-	//m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
-	//m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
-
-	//m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 	 
 	m_iStateChangeKeyFrame = 9999;
 
@@ -56,24 +47,6 @@ HRESULT CValkyrie_Counter::Initialize()
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 0.5f;
 
-
-
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f * 0.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f * 0.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f * 0.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f * 0.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f * 0.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f  * 0.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f * 0.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f * 0.5f;
-
-
-	/*나중에 추가*/
-	//m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
-	//m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-	//m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
 
 	Add_KeyFrame(1, 333);
 

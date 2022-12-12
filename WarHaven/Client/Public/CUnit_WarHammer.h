@@ -20,6 +20,7 @@ public:
 public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
 	virtual void	SetUp_HitStates(UNIT_TYPE eUnitType);
+	virtual void	On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
 
 
 public:

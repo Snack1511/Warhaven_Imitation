@@ -79,6 +79,9 @@ void CHit_Groggy_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CHit_Groggy_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_PLAYER_R;
+
     if (m_bMoveTrigger)
 		DoMove(Get_Direction(), pOwner);
 

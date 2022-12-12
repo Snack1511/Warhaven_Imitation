@@ -55,6 +55,9 @@ void CState_Combat_Attack_HorizontalUp_Warrior_L::Enter(CUnit* pOwner, CAnimator
 
 STATE_TYPE CState_Combat_Attack_HorizontalUp_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		return AI_STATE_COMBAT_DEAFULT_WARRIOR_L;
+
 	return __super::Tick(pOwner, pAnimator);
 }
 

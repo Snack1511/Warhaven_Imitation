@@ -30,7 +30,6 @@ HRESULT CState_Combat_Attack_HorizontalDown_Warrior::Initialize()
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 10.f;
 
-
 	Add_KeyFrame(40, 1);
 	Add_KeyFrame(50, 2);
 	Add_KeyFrame(45, 999);
