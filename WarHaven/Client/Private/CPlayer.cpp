@@ -367,6 +367,27 @@ void CPlayer::Set_Unit_ReserveState(_uint eClassType, _uint eState)
 	m_iReserveStateDefault[eClassType] = eState;
 }
 
+void CPlayer::SetUp_ReserveState()
+{
+
+	CUnit::UNIT_TYPE m_eType = CUnit::UNIT_TYPE(m_iUnitType);
+
+
+	switch (m_eType)
+	{
+	case CUnit::UNIT_TYPE::eAI_Default:
+
+		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEAFULT_FIONA_R;
+
+		break;
+
+
+	default:
+		break;
+	}
+	
+}
+
 void CPlayer::SetUp_UnitColliders(_bool bBlueTeam)
 {
 	for (int i = 0; i < CLASS_END; ++i)
@@ -522,6 +543,8 @@ HRESULT CPlayer::Start()
 {
 	__super::Start();
 
+
+	SetUp_ReserveState();
 	SetUp_UnitHitStates();
 
 	for (int i = 0; i < CLASS_END; ++i)
@@ -845,7 +868,7 @@ void CPlayer::Update_HeroGauge()
 
 		if (!m_bIsHero) //CChangeHero_Player
 		{
-			m_fGauge += fGaugeSpeed * 0.1f;
+			m_fGauge += fGaugeSpeed * 20.f;
 			if (m_fGauge > m_fMaxGauge)
 			{
 				// 화신 텍스트 등장

@@ -1,4 +1,7 @@
 
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_GuardBegin_Warrior.cpp"
+
+
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_GuardCancel_Warrior.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Common_Bounce_Warrior_R.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Common_Bounce_Warrior.cpp"
 

@@ -66,6 +66,9 @@ void CState_Combat_SkillR_SpinAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pAni
 
 STATE_TYPE CState_Combat_SkillR_SpinAttack_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+
 	return __super::Tick(pOwner, pAnimator);
 }
 
@@ -94,14 +97,14 @@ void CState_Combat_SkillR_SpinAttack_Fiona::On_KeyFrameEvent(CUnit* pOwner, CAni
 
 		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
-		Physics_Setting(m_fMaxSpeed, pOwner);
+		Physics_Setting_AI(m_fMaxSpeed, pOwner);
 
 		m_bAttackTrigger = true;
 		pOwner->Enable_GroggyCollider(true);
 		break;
 
 	case 1:
-		Physics_Setting(0.f, pOwner);
+		Physics_Setting_AI(0.f, pOwner);
 
 		m_bAttackTrigger = false;
 		pOwner->Enable_GroggyCollider(false);

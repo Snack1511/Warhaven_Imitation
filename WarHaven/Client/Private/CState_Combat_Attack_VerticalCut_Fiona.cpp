@@ -68,12 +68,16 @@ void CState_Combat_Attack_VerticalCut_Fiona::Enter(CUnit* pOwner, CAnimator* pAn
 
 STATE_TYPE CState_Combat_Attack_VerticalCut_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    STATE_TYPE eRandState = Enter_RandomState(pOwner, pAnimator);
+
+    if (eRandState != STATE_END)
+        return eRandState;
+
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_Combat_Attack_VerticalCut_Fiona::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
 
     //Exit에선 무조건 남겨놔야함
     pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);

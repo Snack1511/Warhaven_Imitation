@@ -157,6 +157,53 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 }
 
+void CUnit_Valkyrie::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
+{
+	__super::On_ChangeBehavior(pBehaviorDesc);
+
+	if (nullptr == pBehaviorDesc)
+		assert(0);
+
+	STATE_TYPE	eNewState = STATE_END;
+
+	switch (pBehaviorDesc->eCurType)
+	{
+	case eBehaviorType::ePatrol:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEAFULT_FIONA_R;
+		break;
+	case eBehaviorType::eFollow:
+		//상태변경
+		break;
+	case eBehaviorType::eAttack:
+		//상태변경
+		eNewState = AI_STATE_COMBAT_DEAFULT_FIONA_R;
+		m_pOwnerPlayer->Set_TargetPlayer(pBehaviorDesc->pEnemyPlayer);
+
+		break;
+	case eBehaviorType::ePathNavigation:
+		//상태변경
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_FIONA_R;
+		break;
+
+	case eBehaviorType::eResurrect:
+		//상태변경
+		break;
+
+	case eBehaviorType::eChange:
+		//상태변경
+		eNewState = AI_STATE_COMMON_CHANGE_HERO;
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	if (eNewState != STATE_END)
+		m_eReserveState = eNewState;
+
+}
+
 void CUnit_Valkyrie::On_Die()
 {
 	m_pOwnerPlayer->On_FinishHero();

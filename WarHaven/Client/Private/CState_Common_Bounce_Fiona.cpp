@@ -42,50 +42,49 @@ void CState_Common_Bounce_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), pOwner->Get_HitMatrix());
+
+
+
+	pOwner->Get_PhysicsCom()->Set_Speed(0.f);
+
+
 	switch (ePrevType)
 	{
-	case Client::STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L:
-	case Client::STATE_CHARGEATTACK_WARHAMMER_L:
-	case Client::STATE_ATTACK_STING_WARHAMMER_L:
+	case Client::AI_STATE_COMBAT_HORIZONTALUP_FIONA_L:
+	case Client::AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_L:
+	case Client::AI_STATE_COMBAT_HORIZONTALDOWN_FIONA_L:
 
-		m_iStateChangeKeyFrame = 74;
+
 		m_eAnimType = ANIM_BASE_L;
 		m_iAnimIndex = 0;
-		m_eStateType = STATE_BOUNCE_WARHAMMER_L;
+		m_eStateType = AI_STATE_COMMON_BOUNCE_FIONA_L;
 
 		break;
 
-	case Client::STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R:
-	case Client::STATE_CHARGEATTACK_WARHAMMER_R:
-	case Client::STATE_ATTACK_STING_WARHAMMER_R:
+	case Client::STATE_SPRINTATTACK_VALKYRIE:
+		m_eAnimType = ANIM_BASE_L;
+		m_iAnimIndex = 37;
+		m_eStateType = STATE_BOUNCE_VALKYRIE_L;
 
-		m_iStateChangeKeyFrame = 60;
+		break;
+
+	case Client::AI_STATE_COMBAT_HORIZONTALUP_FIONA_R:
+	case Client::AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_R:
+	case Client::AI_STATE_COMBAT_HORIZONTALDOWN_FIONA_R:
+
 		m_eAnimType = ANIM_BASE_R;
-		m_iAnimIndex = 10;
-		m_eStateType = STATE_BOUNCE_WARHAMMER_R;
+		m_iAnimIndex = 0;
+		m_eStateType = AI_STATE_COMMON_BOUNCE_FIONA_R;
 
 		break;
 
-		// RF
-	case Client::STATE_VERTICALATTACK_WARHAMMER_R:
-	case Client::STATE_CHARGEATTACK_FRONT_WARHAMMER_R:
+	case Client::AI_STATE_COMBAT_VERTICALCUT_FIONA:
 
-		m_iStateChangeKeyFrame = 50;
-		m_eAnimType = ANIM_BASE_L;
-		m_iAnimIndex = 38;
-		m_eStateType = STATE_BOUNCE_WARHAMMER_L;
 
-		break;
+		m_eAnimType = ANIM_BASE_R;
+		m_iAnimIndex = 37;
+		m_eStateType = AI_STATE_COMMON_BOUNCE_FIONA_R;
 
-		//LF
-	case Client::STATE_SPRINTATTACK_WARHAMMER:
-	case Client::STATE_VERTICALATTACK_WARHAMMER_L:
-	case Client::STATE_CHARGEATTACK_FRONT_WARHAMMER_L:
-
-		m_iStateChangeKeyFrame = 50;
-		m_eAnimType = ANIM_BASE_L;
-		m_iAnimIndex = 38;
-		m_eStateType = STATE_BOUNCE_WARHAMMER_L;
 
 		break;
 

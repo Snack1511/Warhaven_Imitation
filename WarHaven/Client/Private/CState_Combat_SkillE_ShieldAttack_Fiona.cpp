@@ -52,10 +52,7 @@ HRESULT CState_Combat_SkillE_ShieldAttack_Fiona::Initialize()
 	Add_KeyFrame(25, 0);
 	Add_KeyFrame(32, 1);
 	Add_KeyFrame(50, 2);
-	Add_KeyFrame(32, 444);
 
-
-	// return __super::Initialize();
 	return S_OK;
 }
 
@@ -65,7 +62,7 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pA
 
 	pOwner->Get_OwnerPlayer()->Get_Gauge() -= 15.f;
 
-	Physics_Setting(0.f, pOwner, true);
+	Physics_Setting_AI(0.f, pOwner, true);
 
 	CColorController::COLORDESC tColorDesc;
 	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
@@ -91,8 +88,8 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pA
 
 STATE_TYPE CState_Combat_SkillE_ShieldAttack_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	Follow_MouseLook(pOwner);
-	pOwner->Set_DirAsLook();
+	if (pAnimator->Is_CurAnimFinished())
+		return AI_STATE_COMBAT_DEAFULT_FIONA_R;
 
 	if(m_bMoveTrigger)
 		pOwner->Get_PhysicsCom()->Set_Accel(m_fMyAccel);
@@ -121,7 +118,7 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::On_KeyFrameEvent(CUnit* pOwner, CA
 
 		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
-		Physics_Setting(m_fMaxSpeed, pOwner);
+		Physics_Setting_AI(m_fMaxSpeed, pOwner);
 
 		m_bAttackTrigger = true;
 
@@ -140,16 +137,11 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::On_KeyFrameEvent(CUnit* pOwner, CA
 		break;
 
 	case 2:
-		Physics_Setting(0.f, pOwner);
+		Physics_Setting_AI(0.f, pOwner);
 
 		m_bMoveTrigger = false;
 		break;
-	case 444:
-		pOwner->Shake_Camera(6.f, 0.6f);
 
-		CEffects_Factory::Get_Instance()->Create_MultiEffects((L"Shield_Attack"), pOwner,
-			pOwner->Get_Transform()->Get_World(WORLD_POS));
-		break;
 	default:
 		break;
 	}

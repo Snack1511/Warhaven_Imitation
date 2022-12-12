@@ -91,6 +91,8 @@ public:
 
 	void	Set_Unit_ReserveState(_uint eClassType, _uint eState);
 
+
+	void	SetUp_ReserveState();
 	void	SetUp_UnitColliders(_bool bBlueTeam);
 	void	SetUp_UnitHitStates();
 

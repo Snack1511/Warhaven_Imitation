@@ -59,8 +59,6 @@ STATE_TYPE CState_Combat_Attack_HorizontalMiddle_Fiona_L::Tick(CUnit* pOwner, CA
 void CState_Combat_Attack_HorizontalMiddle_Fiona_L::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	__super::Exit(pOwner, pAnimator);
-
-
 }
 
 STATE_TYPE CState_Combat_Attack_HorizontalMiddle_Fiona_L::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

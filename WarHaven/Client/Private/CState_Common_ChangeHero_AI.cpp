@@ -54,13 +54,6 @@ void CState_Common_ChangeHero_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 	m_iAnimIndex = pPlayer->Get_ChangeHeroIndex(eDefaultType);
 
-	// 히어로 변신 게이지 활성화
-	CUser::Get_Instance()->SetActive_HeroTransformGauge(true);
-
-	/*가운데 집중 블러, 색수차 키기*/
-	GAMEINSTANCE->Start_RadialBlur(0.015f);
-	GAMEINSTANCE->Start_ChromaticAberration(30.f);
-
 	/* 히트박스 끄기 */
 	pOwner->Enable_HitBoxColliders(false);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
@@ -88,10 +81,6 @@ STATE_TYPE CState_Common_ChangeHero_AI::Tick(CUnit* pOwner, CAnimator* pAnimator
 		}
 
 		Set_HeroType(pOwner, m_eChangeClassType);
-
-		pOwner->Shake_Camera(8.f, 1.f);
-		GAMEINSTANCE->Stop_RadialBlur();
-		GAMEINSTANCE->Stop_ChromaticAberration();
 
 		return STATE_END;
 	}

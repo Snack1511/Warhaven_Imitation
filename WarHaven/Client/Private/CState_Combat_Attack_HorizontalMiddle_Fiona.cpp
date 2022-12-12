@@ -28,6 +28,8 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Fiona::Initialize()
 	m_fAnimSpeed = 2.5f;
 
 
+	m_iStateChangeKeyFrame = 60;
+
 	Add_KeyFrame(30, 1);
 	Add_KeyFrame(50, 2);
 	Add_KeyFrame(40, 999);
@@ -45,11 +47,18 @@ void CState_Combat_Attack_HorizontalMiddle_Fiona::Enter(CUnit* pOwner, CAnimator
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
+	
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_Combat_Attack_HorizontalMiddle_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	STATE_TYPE eRandState = Enter_RandomState(pOwner, pAnimator);
+
+	if (eRandState != STATE_END)
+		return eRandState;
+
 	return __super::Tick(pOwner, pAnimator);
 }
 

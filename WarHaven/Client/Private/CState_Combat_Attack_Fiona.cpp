@@ -21,21 +21,16 @@ HRESULT CState_Combat_Attack_Fiona::Initialize()
 {
 	__super::Initialize();
 
-	m_fMyMaxLerp = 1.2f;
+	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
-
-	// 선형 보간 시간
-	m_fInterPolationTime = 0.1f;
-
-	// 애니메이션의 전체 속도를 올려준다.
-	m_fAnimSpeed = 1.f;
-
 
     return S_OK;
 }
 
 void CState_Combat_Attack_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	m_iRand = random(0, 7);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -93,4 +88,96 @@ void CState_Combat_Attack_Fiona::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAni
 		break;
 	}
 }
+
+STATE_TYPE CState_Combat_Attack_Fiona::Enter_RandomState(CUnit* pOwner, CAnimator* pAnimator)
+{
+	if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
+	{
+		if (Get_TargetLook_Length(pOwner) > 3.f)
+		{
+			// pOwner->Get_OwnerPlayer()->Get_Gauge()
+
+			
+
+			switch (m_iRand)
+			{
+			case 0:
+
+				m_iRand = random(0, 1);
+
+				if (m_iRand == 0)
+					return AI_STATE_COMBAT_HORIZONTALUP_FIONA_L;
+				else
+					return AI_STATE_COMBAT_HORIZONTALUP_FIONA_R;
+
+
+			case 1:
+
+
+				m_iRand = random(0, 1);
+
+				if (m_iRand == 0)
+					return AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_L;
+				else								 
+					return AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_R;
+			
+			case 2:
+
+				m_iRand = random(0, 1);
+
+				if (m_iRand == 0)
+					return AI_STATE_COMBAT_HORIZONTALDOWN_FIONA_L;
+				else
+					return AI_STATE_COMBAT_HORIZONTALDOWN_FIONA_R;
+
+			case 3:
+
+				return AI_STATE_COMBAT_VERTICALCUT_FIONA;
+
+			case 4:
+
+				return AI_STATE_COMBAT_GUARDBEGIN_FIONA;
+
+			case 5:
+
+				if (pOwner->Get_OwnerPlayer()->Get_Gauge() > 17.f)
+					return AI_STATE_COMBAT_SHIELDATTACK_FIONA;
+				
+				else
+					return AI_STATE_COMBAT_GUARDBEGIN_FIONA;
+
+			case 6:
+
+				if (pOwner->Can_Use(CUnit::SKILL1))
+					return AI_STATE_COMBAT_SHIELDATTACK_FIONA;
+
+				else
+					return AI_STATE_COMBAT_GUARDBEGIN_FIONA;
+
+			case 7:
+
+				if (pOwner->Can_Use(CUnit::SKILL3))
+					return AI_STATE_COMBAT_SHIELDATTACK_FIONA;
+
+				else
+					return AI_STATE_COMBAT_GUARDBEGIN_FIONA;
+
+
+			default:
+
+				return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+
+				break;
+			}
+
+		}
+		else
+			return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+
+	}
+
+	return STATE_END;
+}
+
+
 

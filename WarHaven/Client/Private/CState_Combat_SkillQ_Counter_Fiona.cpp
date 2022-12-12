@@ -35,10 +35,10 @@ HRESULT CState_Combat_SkillQ_Counter_Fiona::Initialize()
 {
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
 	m_iAnimIndex = 15;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-	m_eStateType = STATE_COUNTER_VALKYRIE;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+	m_eStateType = AI_STATE_COMBAT_COUNTER_FIONA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	 
-	m_iStateChangeKeyFrame = 9999;
+	m_iStateChangeKeyFrame = 30;
 
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.7f;
@@ -58,16 +58,11 @@ void CState_Combat_SkillQ_Counter_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimat
 {
 	pOwner->Enable_GuardCollider(true);
 
-
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_Combat_SkillQ_Counter_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	// 나중에 Hit 됬을 때 Change 하도록 변환
-	if (m_bAttackTrigger)
-		return AI_STATE_COMBAT_SPINATTACK_FIONA;
-
 	if (pAnimator->Is_CurAnimFinished())
 		return AI_STATE_COMBAT_DEAFULT_FIONA_R;
 

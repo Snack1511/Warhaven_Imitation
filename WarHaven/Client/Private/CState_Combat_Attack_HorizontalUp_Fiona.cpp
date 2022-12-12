@@ -53,6 +53,11 @@ void CState_Combat_Attack_HorizontalUp_Fiona::Enter(CUnit* pOwner, CAnimator* pA
 
 STATE_TYPE CState_Combat_Attack_HorizontalUp_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	STATE_TYPE eRandState = Enter_RandomState(pOwner, pAnimator);
+
+	if (eRandState != STATE_END)
+		return eRandState;
+
 	return __super::Tick(pOwner, pAnimator);
 }
 
