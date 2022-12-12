@@ -96,6 +96,7 @@ void CUI_Result::Create_ResultUI()
 		case Result_TextBG1:
 
 			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_BgHero3.dds"));
+
 			m_pResultUI[i]->Set_PosY(350.f);
 			m_pResultUI[i]->Set_Scale(750.f);
 			m_pResultUI[i]->Set_Sort(0.19f);
