@@ -1076,7 +1076,7 @@ HRESULT CGameSystem::On_Update_Paden()
 			m_fScoreAcc = 0.f;
 
 			if (!pMinusScoreTeam->Minus_Score())
-				On_FinishGame();
+				On_FinishGame(pMinusScoreTeam);
 		}
 	}
 
@@ -1173,9 +1173,19 @@ void CGameSystem::On_StartGame()
 
 }
 
-void CGameSystem::On_FinishGame()
+void CGameSystem::On_FinishGame(CTeamConnector* pTeamConnector)
 {
 	//한쪽 점수가 0이 되면 끝
+	if (pTeamConnector->IsMainPlayerTeam())
+	{
+		// 패배
+		CUser::Get_Instance()->SetActive_Result(1, true);
+	}
+	else
+	{
+		// 승리
+		CUser::Get_Instance()->SetActive_Result(0, true);
+	}
 }
 
 HRESULT CGameSystem::Load_Position(string strFileKey)

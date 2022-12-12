@@ -221,9 +221,6 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, s
 			{
 				if (bIsMainPlayer)
 				{
-					m_pArrProjPointUI[Point_A][i]->SetActive(false);
-					m_pArrTargetPoint[1]->SetActive(false);
-
 					m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
 
 					_float4 vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
@@ -238,9 +235,6 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, s
 			{
 				if (bIsMainPlayer)
 				{
-					m_pArrProjPointUI[Point_R][i]->SetActive(false);
-					m_pArrTargetPoint[1]->SetActive(false);
-
 					m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
 
 					_float4 vPos = m_pArrPointUI[Point_R][i]->Get_Pos();
@@ -255,9 +249,6 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, s
 			{
 				if (bIsMainPlayer)
 				{
-					m_pArrProjPointUI[Point_C][i]->SetActive(false);
-					m_pArrTargetPoint[1]->SetActive(false);
-
 					m_pArrPointUI[Point_C][i]->DoScale(10.f, fDuration);
 
 					_float4 vPos = m_pArrPointUI[Point_C][i]->Get_Pos();
@@ -277,9 +268,6 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, s
 			{
 				if (bIsMainPlayer)
 				{
-					if (CUser::Get_Instance()->Get_SelectTargetPoint())
-						m_pArrTargetPoint[1]->SetActive(true);
-
 					m_pArrProjPointUI[Point_A][i]->SetActive(true);
 
 					m_pArrPointUI[Point_A][i]->DoScale(-10.f, fDuration);
@@ -294,9 +282,6 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, s
 			{
 				if (bIsMainPlayer)
 				{
-					if (CUser::Get_Instance()->Get_SelectTargetPoint())
-						m_pArrTargetPoint[1]->SetActive(true);
-
 					m_pArrProjPointUI[Point_R][i]->SetActive(true);
 
 					m_pArrPointUI[Point_R][i]->DoScale(-10.f, fDuration);
@@ -310,9 +295,6 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayer, _bool bIsMainPlayerTeam, s
 			{
 				if (bIsMainPlayer)
 				{
-					if (CUser::Get_Instance()->Get_SelectTargetPoint())
-						m_pArrTargetPoint[1]->SetActive(true);
-
 					m_pArrProjPointUI[Point_C][i]->SetActive(true);
 
 					m_pArrPointUI[Point_C][i]->DoScale(-10.f, fDuration);
@@ -585,7 +567,7 @@ void CUI_Paden::Create_PointUI()
 			m_pPointUI[i]->Set_Color(m_vColorOutline);
 
 			m_pPointUI[i]->Set_Scale(40.f);
-			m_pPointUI[i]->Set_Sort(0.5f);
+			m_pPointUI[i]->Set_Sort(0.55f);
 		}
 		else if (i == PU_Gauge)
 		{
@@ -596,7 +578,7 @@ void CUI_Paden::Create_PointUI()
 			m_pPointUI[i]->Set_Color(m_vColorGauge);
 
 			m_pPointUI[i]->Set_Scale(30.f);
-			m_pPointUI[i]->Set_Sort(0.51f);
+			m_pPointUI[i]->Set_Sort(0.54f);
 		}
 		else if (i == PU_Text)
 		{
@@ -604,7 +586,7 @@ void CUI_Paden::Create_PointUI()
 			Read_Texture(m_pPointUI[i], "/Paden/Text", "Text");
 
 			m_pPointUI[i]->Set_Scale(50.f);
-			m_pPointUI[i]->Set_Sort(0.48f);
+			m_pPointUI[i]->Set_Sort(0.53f);
 		}
 
 		CREATE_GAMEOBJECT(m_pPointUI[i], GROUP_UI);

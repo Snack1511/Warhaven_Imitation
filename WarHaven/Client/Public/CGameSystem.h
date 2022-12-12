@@ -73,7 +73,7 @@ public:	// Paden
 
 	/* 작전회의 끝나고 모두 생성시키기 */
 	void					On_StartGame();
-	void					On_FinishGame();
+	void					On_FinishGame(CTeamConnector* pTeamConnector);
 
 	CTeamConnector* Get_Team(eTEAM_TYPE eEnum) { return m_pTeamConnector[(_uint)eEnum]; }
 

@@ -2,6 +2,7 @@
 #include "CUI_Object.h"
 #include "GameInstance.h"
 #include "Loading_Manager.h"
+#include "CUser.h"
 
 CUI_EscMenu::CUI_EscMenu()
 {
@@ -44,12 +45,22 @@ void CUI_EscMenu::OnEnable()
 {
 	__super::OnEnable();
 
+	CUser::Get_Instance()->SetActive_HUD(false);
+
+	CUser::Get_Instance()->Set_FixCursor(false);
+	CUser::Get_Instance()->SetActive_Cursor(true);
+
 	Fadenable_EscMenu();
 }
 
 void CUI_EscMenu::OnDisable()
 {
 	__super::OnDisable();
+
+	CUser::Get_Instance()->SetActive_HUD(true);
+
+	CUser::Get_Instance()->Set_FixCursor(true);
+	CUser::Get_Instance()->SetActive_Cursor(false);
 
 	Fadisable_EscMenu();
 }

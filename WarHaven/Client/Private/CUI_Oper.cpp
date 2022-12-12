@@ -114,6 +114,9 @@ void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 	m_bIsRespawn = false;
 	m_iOperRespawn = 0;
 
+	CUser::Get_Instance()->Set_FixCursor(true);
+	CUser::Get_Instance()->SetActive_Cursor(false);
+
 	CUser::Get_Instance()->SetActive_PadenUI(true);
 	CUser::Get_Instance()->SetActive_HUD(true);
 
@@ -416,7 +419,8 @@ void CUI_Oper::Progress_Oper()
 
 				CUser::Get_Instance()->SetActive_TargetPoint(true);
 
-				CUser::Get_Instance()->Fix_CursorPosToCenter();
+				CUser::Get_Instance()->Set_FixCursor(true);
+				CUser::Get_Instance()->SetActive_Cursor(false);
 			}
 		}
 	}

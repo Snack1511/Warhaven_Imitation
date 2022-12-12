@@ -40,6 +40,10 @@ private:
 
 	CUI_Object* m_pResultUI[Result_End];
 
+	_bool m_bLerpLine = false;
+	_bool m_bLerpText0 = false;
+	_bool m_bLerpText1 = false;
+
 private:
 	void Create_ResultUI();
 };

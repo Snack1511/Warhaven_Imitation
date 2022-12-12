@@ -148,6 +148,9 @@ void CUI_Dead::My_Tick()
 
 				CUser::Get_Instance()->Set_Respawn(true);
 				CUser::Get_Instance()->SetActive_OperUI(true);
+
+				CUser::Get_Instance()->Set_FixCursor(false);
+				CUser::Get_Instance()->SetActive_Cursor(true);
 			} 
 		}
 	}

@@ -220,9 +220,7 @@ void CUI_UnitHUD::Set_HeroIcon()
 {
 	_bool bHero = m_pOwner->Get_CurrentUnit()->Get_OwnerPlayer()->IsHero();
 	if (!bHero)
-	{
 		return;
-	}
 
 	if (m_pOwner->Get_Team())
 	{
