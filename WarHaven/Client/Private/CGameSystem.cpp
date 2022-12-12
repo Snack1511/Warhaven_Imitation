@@ -1029,8 +1029,6 @@ HRESULT CGameSystem::On_Update_Paden()
 
 	// 각 팀의 커넥터 가져오기
 
-
-
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 	{
 		_uint iBlueTeam = 0;
