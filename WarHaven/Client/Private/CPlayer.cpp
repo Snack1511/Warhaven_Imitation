@@ -247,6 +247,7 @@ void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherC
 		return;
 
 	m_pAIController->m_NearObjectList.push_back(pOtherObj);
+
 }
 void CPlayer::Player_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
@@ -295,6 +296,10 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
 	}
 
+	if (m_eCurrentClass >= FIONA)
+	{
+		m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
+	}
 
 	m_pCurrentUnit = m_pAllUnitClass[eClassType];
 	ENABLE_GAMEOBJECT(m_pCurrentUnit);
@@ -350,24 +355,32 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 		ENABLE_GAMEOBJECT(m_pUnitHUD);
 
 		//Path 갱신 + 캐릭터 재선택
-		m_pMyPlayerInfo->Choose_Character();
+		if (!m_bReborn)
+		{
+			m_pMyPlayerInfo->Choose_Character();
 
-		if (m_bIsLeaderPlayer)
-		{
-			Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
-			m_strStartPath = m_pCurPath->m_strName;
+			if (m_bIsLeaderPlayer)
+			{
+				Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
+				m_strStartPath = m_pCurPath->m_strName;
+			}
+			else
+			{
+				Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController));
+			}
 		}
-		else
-		{
-			Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController));
-		}
+		
 
 	}
+	m_bReborn = false;
 
 	for (auto& elem : m_DeadLights)
 	{
 		static_cast<CRectEffects*>(elem)->Set_LoopControlfalse();
 	}
+
+	if (m_pReviveCollider)
+	DISABLE_COMPONENT(m_pReviveCollider);
 }
 
 _float4 CPlayer::Get_WorldPos()
@@ -631,6 +644,15 @@ void CPlayer::OnDisable()
 
 HRESULT CPlayer::SetUp_Collider()
 {
+	m_pReviveCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM,
+		0.5f,
+		COL_REVIVE, _float4(0.f, 0.5f, 0.f), DEFAULT_TRANS_MATRIX);
+
+	if (!m_pReviveCollider)
+		return E_FAIL;
+
+	Add_Component(m_pReviveCollider);
+
 	if (m_bIsMainPlayer)
 		return S_OK;
 
@@ -645,6 +667,8 @@ HRESULT CPlayer::SetUp_Collider()
 		return E_FAIL;
 
 	Add_Component(m_pSightRangeCollider);
+	
+	
 
 	return S_OK;
 }
@@ -679,6 +703,8 @@ _bool CPlayer::Is_AbleRevival()
 void CPlayer::On_RealDie()
 {
 	/* 이 함수가 소생 이펙트 켜지는 곳임 */
+	if (m_pReviveCollider)
+		ENABLE_COMPONENT(m_pReviveCollider);
 
 	//소생 
 	if (m_bIsMainPlayer)
@@ -715,6 +741,9 @@ void CPlayer::On_Reborn()
 	if (m_bIsMainPlayer)
 		GAMEINSTANCE->Stop_GrayScale();
 
+	m_bAbleRevival = false;
+	m_fRevivalAcc = 0.f;
+
 	for (auto& elem : m_DeadLights)
 	{
 		static_cast<CRectEffects*>(elem)->Set_LoopControlfalse();
@@ -725,6 +754,8 @@ void CPlayer::On_Reborn()
 
 	if (m_bIsMainPlayer)
 		CUser::Get_Instance()->SetActive_HUD(true);
+
+	m_bReborn = true;
 }
 
 void CPlayer::On_PlusGauge(_float fGauge)
@@ -895,37 +926,6 @@ void CPlayer::My_LateTick()
 		m_pCurrentUnit->Start_Reborn();
 	}
 
-	static _float4 vRimLightFlag = _float4(0.f, 0.f, 1.f, 0.01f);
-
-	if (KEY(UP, TAP))
-	{
-		vRimLightFlag.w += 0.01f;
-		for (_uint i = 0; i < CLASS_END; ++i)
-		{
-			if (m_pAllUnitClass[i])
-			{
-				GET_COMPONENT_FROM(m_pAllUnitClass[i], CModel)->Set_RimLightFlag(vRimLightFlag);
-
-			}
-		}
-		cout << vRimLightFlag.w << endl;
-
-	}
-
-	if (KEY(DOWN, TAP))
-	{
-		vRimLightFlag.w -= 0.01f;
-		for (_uint i = 0; i < CLASS_END; ++i)
-		{
-			if (m_pAllUnitClass[i])
-			{
-				GET_COMPONENT_FROM(m_pAllUnitClass[i], CModel)->Set_RimLightFlag(vRimLightFlag);
-
-			}
-		}
-		cout << vRimLightFlag.w << endl;
-
-	}
 }
 
 void CPlayer::Update_HP()
@@ -990,7 +990,7 @@ void CPlayer::Update_HeroGauge()
 	if (!m_bAbleHero) //CChangeHero_Player, HUD
 	{
 
-		_float fGaugeSpeed = fDT(0);
+		_float fGaugeSpeed = fDT(0) * 0.1f;
 
 		if (!m_bIsHero) //CChangeHero_Player
 		{

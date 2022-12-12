@@ -79,10 +79,10 @@ public:
 
 public:
 	/* 커스텀 추가될 때마다 여기 enum 추가해서 넣어놓기 */
-	enum class eCUSTOM_HEAD { eDEFAULT, eHEAD1, eRABBIT };
+	enum class eCUSTOM_HEAD { eDEFAULT, eHEAD1, eHEAD2, eRABBIT };
 	void	Set_CustomHead(CLASS_TYPE eClassType, eCUSTOM_HEAD eHeadEnum);
 
-	enum class eCUSTOM_BODY { eDEFAULT, eBODY1 };
+	enum class eCUSTOM_BODY { eDEFAULT, eBODY1, eBODY2 };
 	void	Set_CustomBody(CLASS_TYPE eClassType, eCUSTOM_BODY eBodyEnum);
 
 	enum class eCUSTOM_WEAPON { eDEFAULT, eWEAPON1 };

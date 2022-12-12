@@ -2695,6 +2695,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\FadeDark">
       <UniqueIdentifier>{e619fc9a-86d4-4dd8-9a35-c054a950d77f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive">
+      <UniqueIdentifier>{bef207b3-d8b8-4453-babd-496a4118894b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -4842,6 +4845,9 @@
     <ClInclude Include="..\public\CFadeDark.h">
       <Filter>03. Instances\02. GameObject\01. UI\FadeDark</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CRevive_Player.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -6969,6 +6975,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CFadeDark.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\FadeDark</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CRevive_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

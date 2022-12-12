@@ -54,7 +54,11 @@ public:
 	LEVEL_TYPE_CLIENT	Get_CurLevel() { return m_eLoadLevel; }
 
 
-	void		Set_FixCursor(_bool bEnable) { m_bFixCursor = bEnable;  ::ShowCursor(!bEnable); }
+	void		Set_FixCursor(_bool bEnable) { m_bFixCursor = bEnable; 
+#ifdef _DEBUG
+	::ShowCursor(!bEnable);
+#endif 
+	}
 
 	CUI_Cursor* Get_Cursor() { return m_pCursor; }
 	void		Set_Cursor(CUI_Cursor* pCursor) { m_pCursor = pCursor; }

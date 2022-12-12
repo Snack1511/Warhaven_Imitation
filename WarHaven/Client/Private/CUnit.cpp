@@ -64,6 +64,16 @@ CUnit::~CUnit()
 
 void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	if (eOtherColType == COL_REVIVE)
+	{
+		m_pAdjRevivalPlayer = static_cast<CPlayer*>(pOtherObj);
+		if (m_pAdjRevivalPlayer->Get_Team() != m_pOwnerPlayer->Get_Team())
+			m_pAdjRevivalPlayer = nullptr;
+
+		return;
+	}
+
+
 	if (!pOtherObj)
 	{
 		//³«µ©
@@ -152,6 +162,12 @@ void CUnit::Unit_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColTyp
 
 void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
+	if (eOtherColType == COL_REVIVE)
+	{
+		if (static_cast<CPlayer*>(pOtherObj)->Get_Team() == m_pOwnerPlayer->Get_Team())
+			m_pAdjRevivalPlayer = nullptr;
+		
+	}
 }
 
 _bool CUnit::Is_Air()
@@ -234,8 +250,8 @@ void CUnit::On_Respawn()
 void CUnit::On_Reborn()
 {
 	ENABLE_GAMEOBJECT(this);
-	On_Respawn();
 	m_pOwnerPlayer->On_Reborn();
+	On_Respawn();
 }
 
 void CUnit::On_Die()

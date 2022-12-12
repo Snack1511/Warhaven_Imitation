@@ -70,6 +70,7 @@ namespace Client
 		COL_TRIGGER,
 
 		COL_BODY,
+		COL_REVIVE,
 
 		COL_BLUETEAM,
 		COL_BLUEHITBOX_HEAD,
@@ -98,7 +99,7 @@ namespace Client
 
 		COL_WALL,
 
-		COL_SIGHTRANGE = 24,
+		COL_SIGHTRANGE,
 
 		COL_END = 32,
 	};
@@ -330,6 +331,9 @@ namespace Client
 //
 //		/* Bounece */
 		STATE_BOUNCE_PLAYER_R,
+
+		/* Revive */
+		STATE_REVIVE_PLAYER,
 //
 //
 //#pragma endregion

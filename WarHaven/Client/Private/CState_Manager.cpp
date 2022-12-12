@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CState_Manager.h"
 
+#include "CRevive_Player.h"
+
 #include "CState_Victory.h"
 #include "CState_Defeat.h"
 
@@ -722,6 +724,8 @@ void CState_Manager::Warrior_State()
 
 	m_arrStates[STATE_IDLE_PLAYER_L] = CIdle_Player_L::Create();
 	m_arrStates[STATE_IDLE_PLAYER_R] = CIdle_Player_R::Create();
+
+	m_arrStates[STATE_REVIVE_PLAYER] = CRevive_Player::Create();
 
 	m_arrStates[STATE_SWITCH_R_TO_L] = CSwitchRtoL::Create();
 	m_arrStates[STATE_SWITCH_L_TO_R] = CSwitchLtoR::Create();

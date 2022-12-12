@@ -56,6 +56,13 @@ HRESULT CPlayerInfo_Leader::Initialize()
 	}
 	else
 	{
+		m_tPlayerInfo.wstrName = L"¼Û·Î¹Î";
+
+		for (_uint i = 0; i < CLASS_END; ++i)
+		{
+			Set_CustomHead((CLASS_TYPE)i, eCUSTOM_HEAD::eHEAD2);
+			Set_CustomBody((CLASS_TYPE)i, eCUSTOM_BODY::eBODY2);
+		}
 		m_vecPrefClassType.push_back(WARRIOR);
 		m_vecPrefClassType.push_back(ENGINEER);
 

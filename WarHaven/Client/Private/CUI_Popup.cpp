@@ -30,25 +30,9 @@ void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 	switch (ePopupType)
 	{
 	case Client::CUI_Popup::eConquest:
-		
-	{
-		for (int i = 0; i < CP_End; ++i)
-		{
-			m_pConquestPopup[i]->Set_FadeDesc(0.2f, 0.2f, 1.f, true);
-		}
+		Enable_ConquestPopup(L"거점 점령", ePopupType);
 
-		_bool bIsFontRender = m_pConquestPopup[CP_BG]->Get_FontRender();
-		if (bIsFontRender)
-			m_pConquestPopup[CP_BG]->Set_FontText(L"거점 점령");
-
-		for (int i = 0; i < CP_ICON; ++i)
-		{
-			Enable_Fade(m_pConquestPopup[i], 0.15f);
-		}
-	}
-		
-
-		return;
+		break;
 	case Client::CUI_Popup::eKILL:
 		Enable_ConquestPopup(L"적 처치", ePopupType);
 		break;
@@ -160,12 +144,12 @@ void CUI_Popup::Create_ConquestPopup()
 
 		case CP_ICON:
 
-			m_pConquestPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/Kill_0.png"));
+			m_pConquestPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_GlowFoothold.dds"));
+			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/Kill_0.png"));
 			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/Kill_2.png"));
 			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/Kill_3.png"));
 			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/Kill_4.png"));
 			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_GlowBlock.dds"));
-			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_GlowFoothold.dds"));
 			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_GlowHeadshot.dds"));
 			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_GlowKill.dds"));
 			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_GlowKIllElite.dds"));
@@ -181,7 +165,7 @@ void CUI_Popup::Create_ConquestPopup()
 			m_pConquestPopup[i]->Set_FontRender(true);
 			m_pConquestPopup[i]->Set_FontStyle(true);
 			m_pConquestPopup[i]->Set_FontCenter(true);
-			m_pConquestPopup[i]->Set_FontOffset(3.f, 75.f);
+			m_pConquestPopup[i]->Set_FontOffset(3.f, 70.f);
 			m_pConquestPopup[i]->Set_FontScale(0.3f);
 
 			break;

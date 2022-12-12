@@ -52,7 +52,6 @@ HRESULT CIdle_Player_R::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.f;
 
-    m_vecAdjState.push_back(STATE_CHARGETEST);
 
     m_vecAdjState.push_back(STATE_SWITCH_R_TO_L);
     

@@ -269,9 +269,12 @@ public:
 	enum class UNIT_TYPE { ePlayer, eSandbag, eAI_TG, eAI_Default, eAI_Panden, eAI_Gela, eAI_Hwara, eUNIT_TYPE_END };
 	virtual void SetUp_HitStates(UNIT_TYPE eUnitType);
 
+	public:
+		CPlayer* Get_RevivalPlayer() { return m_pAdjRevivalPlayer; }
+
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
-
+	CPlayer* m_pAdjRevivalPlayer = nullptr;
 
 protected:
 	// ¾ê°¡ max

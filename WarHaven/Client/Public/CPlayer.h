@@ -237,6 +237,7 @@ private:
 	_bool	m_bDie = false;
 
 	/*부활 가능할 경우 True*/
+	_bool	m_bReborn = false;
 	_bool	m_bAbleRevival = false;
 	_float		m_fRevivalAcc = 0.f;
 	_float		m_fMaxRevivalTime = 5.f;
@@ -257,6 +258,7 @@ private:
 
 private:
 	CCollider_Sphere* m_pSightRangeCollider = nullptr;
+	CCollider_Sphere* m_pReviveCollider = nullptr;
 
 private:
 	CUI_UnitHUD* m_pUnitHUD = nullptr;
