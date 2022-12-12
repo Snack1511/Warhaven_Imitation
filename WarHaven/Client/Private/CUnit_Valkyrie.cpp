@@ -408,7 +408,8 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	m_tUnitStatus.fDashAttackSpeed = 4.f;
 
 	m_tUnitStatus.eClass = FIONA;
-	m_tUnitStatus.fHP = 100000.f;
+	m_tUnitStatus.fHP = 500.f;
+	m_tUnitStatus.fMaxHP = 500.f;
 
 	m_tUnitStatus.fRunSpeed *= 0.8f;
 
@@ -534,7 +535,7 @@ HRESULT CUnit_Valkyrie::Start()
 		"0B_L_Chain02"
 	);
 
-	m_pModelCom->Set_RimLightFlag(_float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 1.f));
+	m_pModelCom->Set_RimLightFlag(RGB(255, 140, 42));
 
 
 
@@ -548,11 +549,19 @@ HRESULT CUnit_Valkyrie::Start()
 void CUnit_Valkyrie::OnEnable()
 {
 	TurnOn_ValkyrieTrail(true);
-
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	
 	m_TransformParticles.clear();
 
-	m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this,
-		m_pTransform->Get_World(WORLD_POS));
+	m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, vPos);
+
+	vPos.y += 0.5f;
+
+	Create_Light(vPos, 5.f, 0.f, 0.f, 0.f, 1.5f, RGB(255, 140, 40), 
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn, 
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 
 	__super::OnEnable();
 }
@@ -568,6 +577,12 @@ void CUnit_Valkyrie::OnDisable()
 	}
 
 	m_TransformParticles.clear();
+
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
+	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255), 
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn, 
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
 	
 	__super::OnDisable();
 }

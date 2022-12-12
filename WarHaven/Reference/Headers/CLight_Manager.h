@@ -27,6 +27,10 @@ public:
 	void	Update_Lights();
 
 private:
+	void Select_InEasingType(CLight* pLight, _float4 vDiffuse, _float4 vAmbient, _float4 vSpecular, _float fTimeAcc, _float fTime);
+	void Select_OutEasingType(CLight* pLight, _float4 vDiffuse, _float4 vAmbient, _float4 vSpecular, _float fTimeAcc, _float fTime);
+
+private:
 	list<class CLight*>				m_Lights;
 	list<LIGHTDESC>				m_ReservedLights;
 	typedef list<class CLight*>		LIGHTS;
