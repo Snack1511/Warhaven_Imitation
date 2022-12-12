@@ -175,29 +175,83 @@ void CLight_Manager::Update_Lights()
 
 			pLight->m_LightDesc.fLightAcc += fDT(0);
 
-			if (pLight->m_LightDesc.fLightAcc > pLight->m_LightDesc.fLightTime)
+			switch (pLight->m_LightDesc.eFadeType)
 			{
-				SAFE_DELETE(pLight);
-				iter = m_Lights.erase(iter);
-				continue;
-			}
-			else
-			{
-				if (!pLight->m_LightDesc.pOwner->Is_Valid())
+			case LIGHTDESC::FADEIN:
+				if (pLight->m_LightDesc.fLightAcc >= pLight->m_LightDesc.fLightFadeInTime)
 				{
-					SAFE_DELETE(pLight);
-					iter = m_Lights.erase(iter);
-					continue;
+					pLight->m_LightDesc.fLightAcc = 0.f;
+					pLight->m_LightDesc.eFadeType = LIGHTDESC::FADEOUTREADY;
 				}
 				else
 				{
-					++iter;
-					continue;
+					_float4 vFadeDiff = XMLoadFloat4(&pLight->m_LightDesc.vTargetDiffuse);
+					_float4 vFadeAmbi = XMLoadFloat4(&pLight->m_LightDesc.vTargetAmbient);
+					_float4 vFadeSpec = XMLoadFloat4(&pLight->m_LightDesc.vTargetSpecular);
+
+					Select_InEasingType(pLight, vFadeDiff, vFadeAmbi, vFadeSpec,
+						pLight->m_LightDesc.fLightAcc, pLight->m_LightDesc.fLightFadeInTime);
 				}
+				break;
+
+			case LIGHTDESC::FADEOUTREADY:
+				if (pLight->m_LightDesc.fLightAcc >= pLight->m_LightDesc.fLightTime)
+				{
+					pLight->m_LightDesc.fLightAcc = 0.f;
+					pLight->m_LightDesc.eFadeType = LIGHTDESC::FADEOUT;
+
+					if ((0.f < pLight->m_LightDesc.vTargetDiffuse.x) && (0.f < pLight->m_LightDesc.vTargetDiffuse.y) &&
+						(0.f < pLight->m_LightDesc.vTargetDiffuse.z))
+					{
+						pLight->m_LightDesc.vDiffuse = pLight->m_LightDesc.vTargetDiffuse;
+						pLight->m_LightDesc.vAmbient = pLight->m_LightDesc.vTargetAmbient;
+						pLight->m_LightDesc.vSpecular = pLight->m_LightDesc.vTargetSpecular;
+					}
+				}
+				break;
+
+			case LIGHTDESC::FADEOUT:
+				if (pLight->m_LightDesc.fLightAcc >= pLight->m_LightDesc.fLightFadeOutTime)
+				{
+					pLight->m_LightDesc.fLightAcc = 0.f;
+
+					if (!pLight->m_LightDesc.bLoop)
+					{
+						SAFE_DELETE(pLight);
+						iter = m_Lights.erase(iter);
+						continue;
+					}
+					else
+					{
+						pLight->m_LightDesc.eFadeType = LIGHTDESC::FADEIN;
+					}
+				}
+				else
+				{
+					_float4 vFadeDiff = XMLoadFloat4(&pLight->m_LightDesc.vTargetDiffuse);
+					_float4 vFadeAmbi = XMLoadFloat4(&pLight->m_LightDesc.vTargetAmbient);
+					_float4 vFadeSpec = XMLoadFloat4(&pLight->m_LightDesc.vTargetSpecular);
+
+					Select_OutEasingType(pLight, vFadeDiff, vFadeAmbi, vFadeSpec,
+						pLight->m_LightDesc.fLightAcc, pLight->m_LightDesc.fLightFadeOutTime);
+
+				}
+				break;
 			}
 
-			
+			if (!pLight->m_LightDesc.pOwner->Is_Valid())
+			{
+					SAFE_DELETE(pLight);
+					iter = m_Lights.erase(iter);
+					continue;
+			}
+			else
+			{
+				++iter;
+				continue;
+			}
 		}
+
 		else
 		{
 			pLight->m_LightDesc.fLightAcc += fDT(0);

@@ -577,10 +577,13 @@ void CUnit::OnEnable()
 	On_InitSetting();
 
 	if (m_bRespawn)
+	{
 		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));
+		Create_Light(this, _float4(0.f, 0.5f, 0.f), 5.f, 0.f, 1.f, 1.f, 1.f, RGB(255, 160, 50), false);
+		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
+	}
 
 	m_bRespawn = false;
-	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 }
 
 void CUnit::OnDisable()
@@ -1008,6 +1011,31 @@ void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange,_float
 
 	LightDesc.eInEasingType = eInType;
 	LightDesc.eOutEasingType = eOutType;
+
+	GAMEINSTANCE->Add_Light(LightDesc);
+}
+
+void CUnit::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _float fRandomRange,
+	_float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse, _bool bLoop)
+{
+	LIGHTDESC			LightDesc;
+
+	LightDesc.eType = tagLightDesc::TYPE_POINT;
+
+	LightDesc.pOwner = pOwner;
+	LightDesc.vOffset = vOffset;
+	LightDesc.fRange = fRange;
+	LightDesc.fRandomRange = fRandomRange;
+
+	LightDesc.fLightFadeInTime = fFadeInTime;
+	LightDesc.fLightTime = fDuration;
+	LightDesc.fLightFadeOutTime = fFadeOutTime;
+
+	LightDesc.vTargetDiffuse = Diffuse;
+	LightDesc.vTargetAmbient = _float4(0.2f, 0.2f, 0.2f);
+	LightDesc.vTargetSpecular = _float4(1.f, 1.f, 1.f);
+
+	LightDesc.bLoop = bLoop;
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 }

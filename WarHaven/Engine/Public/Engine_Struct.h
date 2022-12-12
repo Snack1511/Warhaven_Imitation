@@ -419,6 +419,8 @@ namespace Engine
 		float			fLightTime = 999999.f;
 		float			fLightFadeOutTime = 0.f;
 
+		bool			bLoop = false;
+
 		class CGameObject* pOwner = nullptr;
 		XMFLOAT4		vOffset = { 0.f, 0.f, 0.f, 1.f };
 

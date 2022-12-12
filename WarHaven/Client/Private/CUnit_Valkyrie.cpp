@@ -408,7 +408,8 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	m_tUnitStatus.fDashAttackSpeed = 4.f;
 
 	m_tUnitStatus.eClass = FIONA;
-	m_tUnitStatus.fHP = 100000.f;
+	m_tUnitStatus.fHP = 500.f;
+	m_tUnitStatus.fMaxHP = 500.f;
 
 	m_tUnitStatus.fRunSpeed *= 0.8f;
 
@@ -556,9 +557,11 @@ void CUnit_Valkyrie::OnEnable()
 
 	vPos.y += 0.5f;
 
-	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 1.f, RGB(255, 140, 40), 
+	Create_Light(vPos, 5.f, 0.f, 0.f, 0.f, 1.5f, RGB(255, 140, 40), 
 		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn, 
 		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 
 	__super::OnEnable();
 }
@@ -577,7 +580,7 @@ void CUnit_Valkyrie::OnDisable()
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;
-	Create_Light(vPos, 2.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255), 
+	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255), 
 		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn, 
 		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
 	

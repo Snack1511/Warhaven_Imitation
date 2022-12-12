@@ -72,7 +72,7 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
-	//m_DeadLights.clear();
+	m_DeadLights.clear();
 	SAFE_DELETE(m_pCurPath);
 }
 
@@ -630,11 +630,18 @@ void CPlayer::On_RealDie()
 	if (m_pMyTeam)
 	{
 		if (m_pMyTeam->IsMainPlayerTeam())
+		{
 			m_DeadLights = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
+			m_pCurrentUnit->Create_Light(m_DeadLights.back(), _float4(0.f, 0.5f, 0.f), 5.f, 0.f, 0.5f, 0.f, 0.5f, RGB(255, 160, 50), true);
+		}
 
+		
 	}
 	else if (m_bIsMainPlayer)
+	{
 		m_DeadLights = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
+		m_pCurrentUnit->Create_Light(m_DeadLights.back(), _float4(0.f, 0.5f, 0.f), 5.f, 0.f, 0.5f, 0.f, 0.5f, RGB(255, 160, 50), true);
+	}
 
 
 }
