@@ -11,6 +11,8 @@
 
 #include "CPlayer.h"
 #include "CTeamConnector.h"
+
+#include "CUnit.h"
 CUI_Oper::CUI_Oper()
 {
 }
@@ -109,6 +111,11 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("목표 설정 완료"));
 
 	CUser::Get_Instance()->Set_TargetPointPos(iEventNum);
+
+	// a, r, c
+	PLAYER->Get_OwnerPlayer()->Set_MainPlayerStartPath(iEventNum);
+
+
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)

@@ -367,11 +367,6 @@ void CUser::On_EnterStageLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
-	if (!m_pFadeDark)
-	{
-		m_pFadeDark = CFadeDark::Create();
-		CREATE_GAMEOBJECT(m_pFadeDark, GROUP_UI);
-	}
 
 	if (!m_pUI_HUD)
 	{
@@ -477,8 +472,6 @@ void CUser::On_ExitStageLevel()
 	m_pFire = nullptr;
 	m_pUI_Popup = nullptr;
 	m_pUI_Result = nullptr;
-
-	m_pFadeDark = nullptr;
 }
 
 void CUser::Set_HUD(CLASS_TYPE eClass)
@@ -549,12 +542,6 @@ void CUser::Enable_Popup(_uint iPopupType)
 	if (m_pUI_Popup)
 		m_pUI_Popup->Enable_Popup((CUI_Popup::ePOPUP_TYPE)iPopupType);
 
-}
-
-void CUser::Start_FadeDark(_float fFadeInTime, _float fFadeOutStartTime, _float fFadeOutTime)
-{
-	if (m_pFadeDark)
-		m_pFadeDark->Start_Fade(fFadeInTime, fFadeOutStartTime, fFadeOutTime);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

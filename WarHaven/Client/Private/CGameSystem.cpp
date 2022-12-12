@@ -1311,8 +1311,8 @@ CPath* CGameSystem::Get_NearPath(_float4 vPosition)
 
 		_float LengthDiff = (vPathStartPosition - vPosition).Length();
 
-		if (LengthDiff < 5.f 
-			&& LengthDiff < fMinLength)
+
+		if (LengthDiff < fMinLength)
 		{
 			pReturnPath = pPath;
 			fMinLength = LengthDiff;

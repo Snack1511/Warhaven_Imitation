@@ -206,10 +206,13 @@ private: /*AI Ãß°¡¿ë*/
 	BEHAVIOR_DESC*	m_pCurBehaviorDesc = nullptr;
 	BEHAVIOR_DESC*	m_pReserveBehaviorDesc = nullptr;
 
+	string m_strStartPath;
 	CPath* m_pCurPath = nullptr;
 	void	Set_NewPath(CPath* pPath);
+	
 
 public:
+	void Set_MainPlayerStartPath(_uint iTriggerType);
 	CPath* Get_CurPath() { return m_pCurPath; }
 	_float4 Get_LookDir();
 private:

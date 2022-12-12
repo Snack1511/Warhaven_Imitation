@@ -350,7 +350,15 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 		ENABLE_GAMEOBJECT(m_pUnitHUD);
 		//Path 갱신
 
-		Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
+		if (m_bIsLeaderPlayer)
+		{
+			Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
+			m_strStartPath = m_pCurPath->m_strName;
+		}
+		else
+		{
+			Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController));
+		}
 
 	}
 
@@ -917,6 +925,25 @@ _float4 CPlayer::Get_LookDir()
 	return m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
 }
 
+void CPlayer::Set_MainPlayerStartPath(_uint iTriggerType)
+{
+	switch (iTriggerType)
+	{
+	case 0:
+		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
+		break;
+	case 1:
+		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Respawn_0") : ("Paden_RedTeam_Respawn_0");
+		break;
+	case 2:
+		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Cannon_0") : ("Paden_RedTeam_Cannon_0");
+		break;
+	default:
+		break;
+	}
+
+}
+
 void CPlayer::Update_HeroGauge()
 {
 	if (!CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge)->Is_Valid())
@@ -939,7 +966,7 @@ void CPlayer::Update_HeroGauge()
 		if (!m_bIsHero) //CChangeHero_Player
 		{
 			if (m_bAlive)
-				m_fGauge += fGaugeSpeed * 20.f;
+				m_fGauge += fGaugeSpeed;
 
 			if (m_fGauge > m_fMaxGauge)
 			{

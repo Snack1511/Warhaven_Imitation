@@ -150,9 +150,6 @@ public:
 public:		// ¾Ë¸²
 	void Enable_Popup(_uint iPopupType);
 
-public:
-	void	Start_FadeDark(_float fFadeInTime, _float fFadeOutStartTime, _float fFadeOutTime);
-
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -176,8 +173,6 @@ private:
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
-
-	CFadeDark* m_pFadeDark = nullptr;
 
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;
