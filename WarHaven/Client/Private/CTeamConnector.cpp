@@ -164,7 +164,7 @@ _bool CTeamConnector::Minus_Score()
 
 HRESULT CTeamConnector::On_EnterPaden()
 {
-    m_iScore = 100;
+    m_iScore = m_iMaxScore;
 
 
 

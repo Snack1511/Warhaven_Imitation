@@ -100,8 +100,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	//CUI_Paden* pUI_Paden = CUI_Paden::Create();
 	//Ready_GameObject(pUI_Paden, GROUP_UI);
 
-	//CUI_Result* pUI_Result = CUI_Result::Create();
-	//Ready_GameObject(pUI_Result, GROUP_UI);
+	// CUI_Result* pUI_Result = CUI_Result::Create();
+	// Ready_GameObject(pUI_Result, GROUP_UI);
 
 	/* GameSystem */
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyTest(m_vecGameObjects)))
