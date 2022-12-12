@@ -553,6 +553,7 @@ void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIContro
 
     if (nullptr == pPath)
         return;
+
     if (nullptr == pPersonality)
         return;
 
