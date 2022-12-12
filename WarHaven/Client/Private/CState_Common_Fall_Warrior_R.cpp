@@ -52,6 +52,10 @@ void CState_Common_Fall_Warrior_R::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CState_Common_Fall_Warrior_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if ((!pOwner->Is_Air()))
+        return AI_STATE_COMMON_LAND_WARRIOR_R;
+
+
     return __super::Tick(pOwner, pAnimator);
 }
 

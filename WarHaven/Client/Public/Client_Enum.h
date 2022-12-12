@@ -304,6 +304,9 @@ namespace Client
 	{
 		NO_PATTERN, // ลอม๘ดู.
 
+		STATE_VICTORY,
+		STATE_DEFEAT,
+
 
 #pragma region Warrior
 //#pragma region Base_R

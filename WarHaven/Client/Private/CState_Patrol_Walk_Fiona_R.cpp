@@ -31,30 +31,11 @@ CState_Patrol_Walk_Fiona_R* CState_Patrol_Walk_Fiona_R::Create()
 HRESULT CState_Patrol_Walk_Fiona_R::Initialize()
 {
 
-    __super::Initialize();
-
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 30;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATROL_WALK_FIONA_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-
-    m_iStateChangeKeyFrame = 0;
-
-
-    m_fAnimSpeed = 2.5f;
-
-
-	// 알파벳 순 애니메이션 정렬
-    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 40;
-    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 41;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 42;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 43;
-    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 44;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 45;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 46;
-    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 47;
-
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_Patrol_Walk_Fiona_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)

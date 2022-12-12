@@ -27,9 +27,13 @@ public:
 	virtual STATE_TYPE	Tick(CUnit* pOwner, CAnimator* pAnimator);
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
+	virtual void OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos) override;
+
+
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
+
 };
 
 END

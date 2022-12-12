@@ -97,8 +97,6 @@ STATE_TYPE CState_Combat_Attack_Fiona::Enter_RandomState(CUnit* pOwner, CAnimato
 		{
 			// pOwner->Get_OwnerPlayer()->Get_Gauge()
 
-			
-
 			switch (m_iRand)
 			{
 			case 0:

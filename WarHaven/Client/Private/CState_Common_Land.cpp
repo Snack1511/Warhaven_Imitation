@@ -36,24 +36,12 @@ void CState_Common_Land::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
-    //switch (ePrevType)
-    //{
-    //case Client::STATE_SPRINT_JUMP_PLAYER:
-    //case Client::STATE_SPRINT_JUMPFALL_PLAYER:
-    //    pOwner->Enter_State(STATE_SPRINT_END_PLAYER);
-    //    return;
-
-    //    break;
-    //default:
-    //    break;
-    //}
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_Common_Land::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pAnimator->Is_CurAnimFinished())
+    if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
     {
         STATE_TYPE eNewState = pOwner->Get_DefaultState();
         return eNewState;

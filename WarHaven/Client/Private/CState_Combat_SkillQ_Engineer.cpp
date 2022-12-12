@@ -21,7 +21,7 @@ HRESULT CState_Combat_SkillQ_Engineer::Initialize()
 {
     __super::Initialize();
 
-    
+    m_iStateChangeKeyFrame = 99;
 
     return S_OK;
 }
@@ -30,6 +30,7 @@ void CState_Combat_SkillQ_Engineer::Enter(CUnit* pOwner, CAnimator* pAnimator, S
 {
     m_iDirectionRand = STATE_DIRECTION_N;
 
+    
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

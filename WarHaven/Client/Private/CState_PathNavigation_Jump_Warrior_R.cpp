@@ -8,6 +8,7 @@
 
 #include "CUser.h"
 
+
 CState_PathNavigation_Jump_Warrior_R::CState_PathNavigation_Jump_Warrior_R()
 {
 }
@@ -63,6 +64,7 @@ HRESULT CState_PathNavigation_Jump_Warrior_R::Initialize()
 
 void CState_PathNavigation_Jump_Warrior_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+ 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

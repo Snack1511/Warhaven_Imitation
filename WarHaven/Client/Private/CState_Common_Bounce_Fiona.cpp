@@ -61,12 +61,6 @@ void CState_Common_Bounce_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 		break;
 
-	case Client::STATE_SPRINTATTACK_VALKYRIE:
-		m_eAnimType = ANIM_BASE_L;
-		m_iAnimIndex = 37;
-		m_eStateType = STATE_BOUNCE_VALKYRIE_L;
-
-		break;
 
 	case Client::AI_STATE_COMBAT_HORIZONTALUP_FIONA_R:
 	case Client::AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_R:
@@ -80,11 +74,9 @@ void CState_Common_Bounce_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 	case Client::AI_STATE_COMBAT_VERTICALCUT_FIONA:
 
-
 		m_eAnimType = ANIM_BASE_R;
 		m_iAnimIndex = 37;
 		m_eStateType = AI_STATE_COMMON_BOUNCE_FIONA_R;
-
 
 		break;
 

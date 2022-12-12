@@ -37,7 +37,7 @@ HRESULT CState_PathNavigation_Sprint_Warrior_Begin::Initialize()
     m_iAnimIndex = 55;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_WARRIOR;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_iStateChangeKeyFrame = 0;
+    m_iStateChangeKeyFrame = 99;
 
     m_fAnimSpeed = 2.5f;
 

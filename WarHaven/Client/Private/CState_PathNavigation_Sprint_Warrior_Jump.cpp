@@ -39,7 +39,7 @@ HRESULT CState_PathNavigation_Sprint_Warrior_Jump::Initialize()
     m_iAnimIndex = 58;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_iStateChangeKeyFrame = 0;
+    m_iStateChangeKeyFrame = 99;
 
     m_fAnimSpeed = 2.5f;
 
@@ -47,10 +47,10 @@ HRESULT CState_PathNavigation_Sprint_Warrior_Jump::Initialize()
 }
 
 void CState_PathNavigation_Sprint_Warrior_Jump::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
-{
+{                  
     m_iDirectionRand = STATE_DIRECTION_N;
 
-    m_vAIRandLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+    pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -59,11 +59,12 @@ STATE_TYPE CState_PathNavigation_Sprint_Warrior_Jump::Tick(CUnit* pOwner, CAnima
 {
     if (pAnimator->Is_CurAnimFinished())
     {
-        STATE_TYPE eNewState = pOwner->Get_DefaultState();
-        return eNewState;
-    }
+        if (!pOwner->Is_Air())
+            return AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+        else
+            return AI_STATE_COMMON_FALL_WARRIOR_R;
 
-    DoMove_AI_NoTarget(pOwner, pAnimator);
+    }
 
     return CState::Tick(pOwner, pAnimator);
 }

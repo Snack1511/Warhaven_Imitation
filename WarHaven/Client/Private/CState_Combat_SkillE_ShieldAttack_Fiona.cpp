@@ -58,6 +58,8 @@ HRESULT CState_Combat_SkillE_ShieldAttack_Fiona::Initialize()
 
 void CState_Combat_SkillE_ShieldAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->CallBack_CollisionEnter += bind(&CState_Combat_SkillE_ShieldAttack_Fiona::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+
 	pOwner->On_Use(CUnit::SKILL2);
 
 	pOwner->Get_OwnerPlayer()->Get_Gauge() -= 15.f;
@@ -94,11 +96,16 @@ STATE_TYPE CState_Combat_SkillE_ShieldAttack_Fiona::Tick(CUnit* pOwner, CAnimato
 	if(m_bMoveTrigger)
 		pOwner->Get_PhysicsCom()->Set_Accel(m_fMyAccel);
 
+	if (!m_bAttackTrigger && m_bHit)
+		return AI_STATE_COMBAT_HORIZONTALDOWN_FIONA_R;
+
 	return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_Combat_SkillE_ShieldAttack_Fiona::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->CallBack_CollisionEnter -= bind(&CState_Combat_SkillE_ShieldAttack_Fiona::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+
 	pOwner->Enable_UnitCollider(CUnit::GUARDBREAK_R, false);
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
@@ -106,6 +113,17 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::Exit(CUnit* pOwner, CAnimator* pAn
 STATE_TYPE CState_Combat_SkillE_ShieldAttack_Fiona::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 	return STATE_END;
+}
+
+
+void CState_Combat_SkillE_ShieldAttack_Fiona::OnCollisionEnter(CGameObject* pOtherObject, const _uint& iOtherColType, const _uint& iMyColType, _float4 vHitPos)
+{
+	// m_iRand
+	if (iOtherColType == COL_REDHITBOX_BODY || iOtherColType == COL_REDHITBOX_HEAD ||
+		iOtherColType == COL_BLUEHITBOX_BODY || iOtherColType == COL_BLUEHITBOX_HEAD)
+	{
+		m_bHit = true;
+	}
 }
 
 void CState_Combat_SkillE_ShieldAttack_Fiona::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
