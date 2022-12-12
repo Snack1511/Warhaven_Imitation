@@ -41,11 +41,6 @@ HRESULT CState_PathNavigation_Jump_Warrior_R::Initialize()
 
     m_iStateChangeKeyFrame = 0;
 
-    // 선형 보간 시간
-    m_fInterPolationTime = 0.05f;
-
-    // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 1.f;
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 13;
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 14;

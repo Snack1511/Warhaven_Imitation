@@ -1,5 +1,5 @@
 #pragma once
-#include "CState_Common_Land.h"
+#include "CState_Common_Land_Warrior.h"
 
 BEGIN(Engine)
 class CAnimator;
@@ -7,7 +7,7 @@ END
  
 BEGIN(Client)
 class CState_Common_Land_Warrior_R
-	: public CState_Common_Land
+	: public CState_Common_Land_Warrior
 {
 	DECLARE_STATE(CState_Common_Land_Warrior_R);
 

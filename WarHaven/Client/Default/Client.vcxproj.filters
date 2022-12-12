@@ -2266,6 +2266,216 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical">
       <UniqueIdentifier>{ab224c01-45b6-4906-b251-95ba075a600e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer">
+      <UniqueIdentifier>{a0a1ffb9-a43e-40fd-a830-d180c4e0cfc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\03. Fiona">
+      <UniqueIdentifier>{ca80c1e6-de65-4a91-8199-72346b3dc143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal">
+      <UniqueIdentifier>{a2eb5a41-78cf-43dd-bcf6-258aedb0ffb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical">
+      <UniqueIdentifier>{613929bc-148e-471b-b944-8b9fed03cdd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\02. Sprint">
+      <UniqueIdentifier>{1f3872ef-8e72-41fa-9b60-fb82a576db3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\01. Right">
+      <UniqueIdentifier>{16ff838f-97ed-4e2b-9345-a57610c63789}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\02. Left">
+      <UniqueIdentifier>{b01d33e0-ad0f-4b65-9a02-4991d886ae50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer">
+      <UniqueIdentifier>{c6e8acf8-9533-43ec-bfc3-9454c5edd6b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\01. Right">
+      <UniqueIdentifier>{2b5bfe76-2c55-4304-8d0f-195c45e33fbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\02. Left">
+      <UniqueIdentifier>{223d59d7-7984-48e6-b4a1-5918bbc7fb55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer">
+      <UniqueIdentifier>{c15c70d7-f43b-4e07-9bf6-0e82aab5f465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer">
+      <UniqueIdentifier>{38bcf6fe-b527-4989-82d0-87337efe31f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer">
+      <UniqueIdentifier>{6ae7df8c-9627-4494-bed9-a839d5a0a639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\01. Right">
+      <UniqueIdentifier>{a47c6275-1875-4cc8-b186-fe7cb6d6b6de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\01. Right">
+      <UniqueIdentifier>{d374f4eb-e4cf-4b66-bfeb-5424fe322c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\01. Right">
+      <UniqueIdentifier>{cd4561ab-4866-49d9-a1ab-974667443fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\02. Left">
+      <UniqueIdentifier>{2c1a17b3-24a6-4837-adbf-035fdbd046bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\02. Left">
+      <UniqueIdentifier>{d6cca426-1232-4c4f-b056-0fef51df8873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\02. Left">
+      <UniqueIdentifier>{aeced3ac-3c3c-4cb9-82fa-7744770d0d24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer">
+      <UniqueIdentifier>{018578a9-33a2-4d32-bb82-5ec93e8a938b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer">
+      <UniqueIdentifier>{ba2a1797-1396-43cb-a31f-4e0fe04a70ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer">
+      <UniqueIdentifier>{8c777582-e4da-40ee-8b4b-5353ed08c855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer">
+      <UniqueIdentifier>{df264af0-a360-4288-852a-c52be05a15c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\02. Left">
+      <UniqueIdentifier>{5b90321d-f694-4c48-be5e-9d95b1f347bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\01. Right">
+      <UniqueIdentifier>{6882c970-8793-4619-88d8-c7d5c01d1db4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\01. Right">
+      <UniqueIdentifier>{0ba7a3c9-7c54-45fc-a9d2-d48061d95794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\01. Right">
+      <UniqueIdentifier>{fbaf8742-65ca-442f-b2c5-3c2f284f60b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\02. Left">
+      <UniqueIdentifier>{e34bc986-793a-4fb6-87e0-722a55d1b6e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump">
+      <UniqueIdentifier>{d8fadb52-980e-49ed-88e7-6cbc77a99c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run">
+      <UniqueIdentifier>{f12c9649-e8fa-43f3-871b-a7da723ffb69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\03. End">
+      <UniqueIdentifier>{d279a902-4d04-42f8-9f17-dff8a546da33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\01. Jump">
+      <UniqueIdentifier>{bdc8b967-c228-488b-a2bf-1376a986e0bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\02. Fall">
+      <UniqueIdentifier>{4b188ef5-d04c-4056-aaef-9d0f683d182b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\01. Begin">
+      <UniqueIdentifier>{f2a08c89-3583-4f88-b8a7-7aa622bdc242}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\02. Loop">
+      <UniqueIdentifier>{b354638c-8c16-4c1d-9a2f-adcf4b9b3874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\02. Left">
+      <UniqueIdentifier>{8aa6475f-cc64-487b-b423-5513642776f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\01. Warrior">
+      <UniqueIdentifier>{9cdc2382-777d-4e68-9318-eca875b39ed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\02. Engineer">
+      <UniqueIdentifier>{491cf81a-ce42-43b7-b154-5464af7c2f1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\01. Warrior">
+      <UniqueIdentifier>{28cf876c-bc39-4820-8eab-f2d9a96668ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\01. Warrior">
+      <UniqueIdentifier>{c4f2c006-08e8-40f2-acf6-9cd75b2067ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\01. Warrior">
+      <UniqueIdentifier>{818cadde-0122-48e2-8ab1-cec7f30c2c68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\01. Warrior">
+      <UniqueIdentifier>{1286639f-f60c-448d-a1b8-1425b8d2f506}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\02. Engineer">
+      <UniqueIdentifier>{491b0ea6-cf5e-448a-8446-e90318ed34b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\02. Engineer">
+      <UniqueIdentifier>{73ddb37d-e38b-4dc8-a1ed-d0a10dad018d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\02. Engineer">
+      <UniqueIdentifier>{bf143436-7359-48fe-88f3-916625118b6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\02. Engineer">
+      <UniqueIdentifier>{81a3969c-7a0a-4f26-9a53-d9b83602f15a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer">
+      <UniqueIdentifier>{a963b55e-83a2-4f41-9df8-3a6a5adf2732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer">
+      <UniqueIdentifier>{c62f6366-db7f-4e92-becf-53464ee83172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\01. Right">
+      <UniqueIdentifier>{9d4eeb6b-a8fe-4845-90ba-d1806867edd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\01. Right">
+      <UniqueIdentifier>{65af12b0-772a-4fb3-bdda-ce09646780e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\02. Left">
+      <UniqueIdentifier>{9d41879b-be5c-4a06-9b55-8a7c1ebdf4d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\02. Left">
+      <UniqueIdentifier>{1512443d-b89f-42ab-920a-d10f1936a24f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer">
+      <UniqueIdentifier>{8a7953d6-2ce1-4c27-91ea-acf98d546855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\01. Right">
+      <UniqueIdentifier>{5fbd2e9f-5eb9-4d5a-ba1a-cdec3100f7f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\02. Left">
+      <UniqueIdentifier>{ada8fbc9-581d-4841-987d-1658aca21787}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\01. Right">
+      <UniqueIdentifier>{3e1545e5-a0de-42cf-a4e5-97f410c866ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\02. Left">
+      <UniqueIdentifier>{dca0039f-fef8-4227-b12d-cd297295a0cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer">
+      <UniqueIdentifier>{73fc5f65-cfcd-4ff3-b8a6-cc438a8b1c58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\02. Engineer">
+      <UniqueIdentifier>{546cb536-a3ef-490d-86c3-f722799ba113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\02. Engineer\GroggyAttack">
+      <UniqueIdentifier>{d15538f6-bd73-4c4c-8990-9af9fd894a6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike">
+      <UniqueIdentifier>{22482ab7-af87-485a-a798-1e45941b2f0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\01. Begin">
+      <UniqueIdentifier>{e35c6114-b290-4e9e-b431-9cb25422d31e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\02. Loop">
+      <UniqueIdentifier>{895884fe-099a-4070-990e-b7b9bcd2f23d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\03. End">
+      <UniqueIdentifier>{0af5ecac-dcf9-4d49-a5b9-bb5eef48f8c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\02. Engineer">
+      <UniqueIdentifier>{a68f4a26-4989-4881-bfbd-2b987a802209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer">
+      <UniqueIdentifier>{6f82906a-d108-459d-aa88-6e31504c5df8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\01. Begin">
+      <UniqueIdentifier>{ffd505e9-a079-423f-a05b-a83f8ac0c275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\02. Loop">
+      <UniqueIdentifier>{4333621a-a765-4048-9c0f-3ec0606679e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\03. End">
+      <UniqueIdentifier>{102dd614-ec61-4524-aeca-b0eae19165f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\04. Dash">
+      <UniqueIdentifier>{939d1b18-a261-44f9-9aab-aae642884c98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -3870,21 +4080,6 @@
     <ClInclude Include="..\Public\CState_Common_Hit.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_FlyHit_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_Groggy_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_GuardHit_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_Hit_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Common_Sting_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_Oxen_Cancel_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\02. End</Filter>
     </ClInclude>
@@ -3899,9 +4094,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_GuardBegin_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CState_Combat_GuardCancel_Warrior.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_GuardEnd_Warrior.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End</Filter>
@@ -4034,6 +4226,198 @@
     </ClInclude>
     <ClInclude Include="..\Public\CState_Combat_Attack_Warrior_VerticalCut.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalMiddle_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Engineer_CSwitchRtoL.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Engineer_CSwitchLtoR.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Walk_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_Jump.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Engineer_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Sting_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_GuardHit_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Sting_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_GuardHit_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_VerticalCut_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_VerticalCut_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_VerticalCut_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_AirSpike_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_AirSpike_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_AirSpike_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillQ_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_SkillE_Engineer_GroggyAttack.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\02. Engineer\GroggyAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardCancel_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardCancel_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardDash_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\04. Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardEnd_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardLoop_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_GuardBegin_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\01. Begin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -5572,9 +5956,6 @@
     <ClCompile Include="..\Private\CState_Combat_SkillE.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CState_Combat_SkillQ.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_SkillR.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR</Filter>
     </ClCompile>
@@ -5620,21 +6001,6 @@
     <ClCompile Include="..\Private\CState_Common_Hit.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_FlyHit_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_Groggy_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_GuardHit_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_Hit_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Common_Sting_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Oxen_Begin_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\01. Warrior\01. Oxen\01. Begin</Filter>
     </ClCompile>
@@ -5649,9 +6015,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_GuardBegin_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\01. Begin</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Combat_GuardCancel_Warrior.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_GuardEnd_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\01. Warrior\03. End</Filter>
@@ -5784,6 +6147,201 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Attack_Warrior_VerticalCut.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\01. Warrior\03. Vertical</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\01. Horizontal\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Engineer_CSwitchRtoL.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Engineer_CSwitchLtoR.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Walk_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_Jump.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\01. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Engineer_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\02. Engineer\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Sting_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_GuardHit_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Sting_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_GuardHit_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_VerticalCut_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_VerticalCut_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_VerticalCut_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\02. Engineer\03. Vertical\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_AirSpike_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_AirSpike_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_AirSpike_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer\AirSpike\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillQ.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_SkillE_Engineer_GroggyAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\02. Engineer\GroggyAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardCancel_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardCancel_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardDash_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\04. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardEnd_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardLoop_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_GuardBegin_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\02. Engineer\01. Begin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -122,7 +122,7 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 		m_tHitType.eHitState = STATE_HIT_VALKYRIE;
 		m_tHitType.eGuardState = STATE_GUARDHIT_VALKYRIE;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_VALKYRIE;
 		m_tHitType.eGroggyState = STATE_GROGGYHIT_VALKYRIE;
 		m_tHitType.eStingHitState = STATE_STINGHIT_VALKYRIE;
 		m_tHitType.eFlyState = STATE_FLYHIT_VALKYRIE;
@@ -131,6 +131,17 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 	case Client::CUnit::UNIT_TYPE::eAI_TG:
 	case Client::CUnit::UNIT_TYPE::eSandbag:
+		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
+		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
+		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
+		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
+		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.eBounce = STATE_BOUNCE_VALKYRIE_L;
+		break;
+
+
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
 		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
 		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
 		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;

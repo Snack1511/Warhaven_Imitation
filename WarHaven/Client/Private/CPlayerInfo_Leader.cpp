@@ -40,6 +40,7 @@ HRESULT CPlayerInfo_Leader::Initialize()
 	m_tPlayerInfo.wstrName += to_wstring(g_LeaderCnt++);
 
 	m_vecPrefClassType.push_back(WARRIOR);
+	m_vecPrefClassType.push_back(ENGINEER);
 
 
 

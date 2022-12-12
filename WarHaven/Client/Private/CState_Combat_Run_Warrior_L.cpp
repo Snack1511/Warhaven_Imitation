@@ -73,16 +73,13 @@ STATE_TYPE CState_Combat_Run_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimator
             return AI_STATE_COMBAT_HORIZONTALUP_WARRIOR_L;
 
         case 1:
+        case 2:
 
             return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L;
 
-        case 2:
-
-            return AI_STATE_COMBAT_HORIZONTALDOWN_WARRIOR_L;
-
         case 3:
 
-            return AI_STATE_COMBAT_VERTICALCUT_WARRIOR;
+            return AI_STATE_COMBAT_HORIZONTALDOWN_WARRIOR_L;
 
         case 4:
         case 5:

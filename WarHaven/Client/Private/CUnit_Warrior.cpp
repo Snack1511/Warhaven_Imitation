@@ -153,7 +153,7 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
 		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARRIOR;
 		m_tHitType.eStingHitState = STATE_STINGHIT_WARRIOR;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
+		m_tHitType.eFlyState = STATE_FLYHIT_WARRIOR;
 		m_tHitType.eBounce = STATE_BOUNCE_PLAYER_L;
 		break;
 
@@ -368,7 +368,7 @@ HRESULT CUnit_Warrior::Initialize_Prototype()
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
 
-	m_fCoolTime[SKILL1] = 3.f;
+	m_fCoolTime[SKILL1] = 6.f;
 	m_fCoolTime[SKILL2] = 5.f;
 	m_fCoolTime[SKILL3] = 0.f;
 
@@ -391,17 +391,6 @@ HRESULT CUnit_Warrior::Initialize()
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
 	Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
-
-	//for (_uint i = 0; i < MODEL_PART_END; ++i)
-	//{
-	//	_int iTemp = 0;
-	//	iTemp = m_tModelData.strModelPaths[i].find(L"SK_Warrior_Helmet_Rabbit_50");
-
-	//	if (iTemp > 0)
-	//		m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
-	//}
-
-
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 

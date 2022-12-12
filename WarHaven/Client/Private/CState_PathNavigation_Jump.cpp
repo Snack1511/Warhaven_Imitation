@@ -26,12 +26,19 @@ HRESULT CState_PathNavigation_Jump::Initialize()
 
 void CState_PathNavigation_Jump::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
+
+    Set_Direction_Front_AI(m_iDirectionRand);
+
+    m_iAnimIndex = m_iDirectionAnimIndex[m_iDirectionRand];
+
     m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fSprintSpeed);
     pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
     pOwner->Get_PhysicsCom()->Set_SpeedasMax();
     pOwner->Get_PhysicsCom()->Set_Jump(pOwner->Get_Status().fJumpPower);
+
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

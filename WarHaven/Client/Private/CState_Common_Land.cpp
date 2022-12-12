@@ -53,11 +53,12 @@ void CState_Common_Land::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 STATE_TYPE CState_Common_Land::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
+    if(!pOwner->Is_Air())
     {
         STATE_TYPE eNewState = pOwner->Get_DefaultState();
         return eNewState;
     }
+
 
     return __super::Tick(pOwner, pAnimator);
 }

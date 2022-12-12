@@ -27,7 +27,7 @@ HRESULT CState_PathNavigation_Jump_Warrior::Initialize()
 	m_fMyAccel = 100.f;
 
 	// 선형 보간 시간
-	m_fInterPolationTime = 0.1f;
+	m_fInterPolationTime = 0.05f;
 
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 1.f;
@@ -38,10 +38,6 @@ HRESULT CState_PathNavigation_Jump_Warrior::Initialize()
 
 void CState_PathNavigation_Jump_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {	
-	m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
-
-	Set_Direction_Front_AI(m_iDirectionRand);
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

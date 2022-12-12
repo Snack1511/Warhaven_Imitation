@@ -483,6 +483,14 @@
 #include "CState_Patrol_Walk_Warrior_R.h"
 
 
+#include "CState_Patrol_Default_Engineer_L.h"
+#include "CState_Patrol_Default_Engineer_R.h"
+#include "CState_Patrol_Switch_Engineer_CSwitchRtoL.h"
+#include "CState_Patrol_Switch_Engineer_CSwitchLtoR.h"
+#include "CState_Patrol_Walk_Engineer_L.h"
+#include "CState_Patrol_Walk_Engineer_R.h"
+
+
 
 #pragma endregion 
 
@@ -502,8 +510,6 @@
 #include "CState_Combat_Attack_HorizontalDown_Warrior_R.h"
 #include "CState_Combat_Attack_Warrior_VerticalCut.h"
 
-
-
 #include "CState_Combat_Oxen_Begin_Warrior.h"
 #include "CState_Combat_Oxen_Loop_Warrior.h"
 #include "CState_Combat_Oxen_Cancel_Warrior.h"
@@ -517,6 +523,27 @@
 #include "CState_Combat_GuardDash_Warrior.h"
 
 #include "CState_Combat_GuardCancel_Warrior.h"
+
+
+#include "CState_Combat_Default_Engineer_L.h"
+#include "CState_Combat_Default_Engineer_R.h"
+
+#include "CState_Combat_SkillQ_AirSpike_Begin.h"
+#include "CState_Combat_SkillQ_AirSpike_Loop.h"
+#include "CState_Combat_SkillQ_AirSpike_End.h"
+
+#include "CState_Combat_GuardBegin_Engineer.h"
+#include "CState_Combat_GuardLoop_Engineer.h"
+#include "CState_Combat_GuardDash_Engineer.h"
+#include "CState_Combat_GuardEnd_Engineer.h"
+#include "CState_Combat_GuardCancel_Engineer.h"
+
+
+#include "CState_Combat_SkillE_Engineer_GroggyAttack.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Engineer_L.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Engineer_R.h"
+#include "CState_Combat_Attack_VerticalCut_Engineer_L.h"
+#include "CState_Combat_Attack_VerticalCut_Engineer_R.h"
 
 
 
@@ -539,9 +566,22 @@
 #include "CState_PathNavigation_Jump_Warrior_L.h"
 #include "CState_PathNavigation_Jump_Warrior_R.h"
 
+//=========================================================
 
-//#include "CState_Common_Groggy_Warrior.h"
-//#include "CState_Common_Sting_Warrior.h"
+#include "CState_PathNavigation_Run_Engineer_L.h"
+#include "CState_PathNavigation_Run_Engineer_R.h"
+
+#include "CState_PathNavigation_Walk_Engineer_L.h"
+#include "CState_PathNavigation_Walk_Engineer_R.h"
+
+#include "CState_PathNavigation_Sprint_Engineer_Begin.h"
+#include "CState_PathNavigation_Sprint_Engineer_Loop.h"
+#include "CState_PathNavigation_Sprint_Engineer_End.h"
+#include "CState_PathNavigation_Sprint_Engineer_Fall.h"
+#include "CState_PathNavigation_Sprint_Engineer_Jump.h"
+
+#include "CState_PathNavigation_Jump_Engineer_L.h"
+#include "CState_PathNavigation_Jump_Engineer_R.h"
 
 
 #pragma endregion
@@ -559,10 +599,26 @@
 #include "CState_Common_Fall_Warrior_L.h"
 #include "CState_Common_Fall_Warrior_R.h"
 
-#include "CState_NoPattern.h"
+
+#include "CState_Common_Hit_Engineer.h"
+#include "CState_Common_GuardHit_Engineer.h"
+#include "CState_Common_Groggy_Engineer.h"
+#include "CState_Common_Sting_Engineer.h"
+#include "CState_Common_FlyHit_Engineer.h"
+
+
+
+#include "CState_Common_Fall_Engineer_L.h"
+#include "CState_Common_Fall_Engineer_R.h"
+#include "CState_Common_Land_Engineer_L.h"
+#include "CState_Common_Land_Engineer_R.h"
+
+#include "CState_Common_Bounce_Engineer_L.h"
+#include "CState_Common_Bounce_Engineer_R.h"
 
 #pragma endregion
 
+#include "CState_NoPattern.h"
 
 IMPLEMENT_SINGLETON(CState_Manager);
 
@@ -582,6 +638,7 @@ HRESULT CState_Manager::Initialize()
 {
 	m_arrStates[NO_PATTERN] = CState_NoPattern::Create();
 
+
 	Spear_State();
 
 	// 기본
@@ -595,7 +652,9 @@ HRESULT CState_Manager::Initialize()
 
 	// AI 기본
 	Warrior_SandBagState();
+	
 	Warrior_State_AI();
+	WarHammer_State_AI();
 
 
 
@@ -1177,7 +1236,7 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR] = CState_PathNavigation_Sprint_Warrior_Jump::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_WARRIOR] = CState_PathNavigation_Sprint_Warrior_Fall::Create();
 
-	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_PathNavigation_Jump_Warrior_R::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_PathNavigation_Jump_Warrior_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_PathNavigation_Jump_Warrior_R::Create();
 
 #pragma endregion
@@ -1233,6 +1292,103 @@ void CState_Manager::Warrior_State_AI()
 #pragma endregion
 
 }
+
+void CState_Manager::WarHammer_State_AI()
+{
+
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEAFULT_ENGINEER_L] = CState_Patrol_Default_Engineer_L::Create();
+	m_arrStates[AI_STATE_PATROL_DEAFULT_ENGINEER_R] = CState_Patrol_Default_Engineer_R::Create();
+
+	m_arrStates[AI_STATE_PATROL_ENGINEER_SWITCH_R_TO_L] = CState_Patrol_Switch_Engineer_CSwitchRtoL::Create();
+	m_arrStates[AI_STATE_PATROL_ENGINEER_SWITCH_L_TO_R] = CState_Patrol_Switch_Engineer_CSwitchLtoR::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_ENGINEER_L] = CState_Patrol_Walk_Engineer_L::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_ENGINEER_R] = CState_Patrol_Walk_Engineer_R::Create();
+
+#pragma endregion
+
+
+
+#pragma region PathNavi
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ENGINEER_L] = CState_PathNavigation_Run_Engineer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ENGINEER_R] = CState_PathNavigation_Run_Engineer_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ENGINEER_L] = CState_PathNavigation_Walk_Engineer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ENGINEER_R] = CState_PathNavigation_Walk_Engineer_R::Create();
+
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_ENGINEER] = CState_PathNavigation_Sprint_Engineer_Begin::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_ENGINEER] = CState_PathNavigation_Sprint_Engineer_Loop::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER] = CState_PathNavigation_Sprint_Engineer_End::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_ENGINEER] = CState_PathNavigation_Sprint_Engineer_Jump::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER] = CState_PathNavigation_Sprint_Engineer_Fall::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ENGINEER_L] = CState_PathNavigation_Jump_Engineer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ENGINEER_R] = CState_PathNavigation_Jump_Engineer_R::Create();
+
+#pragma endregion
+
+
+#pragma region Combat
+
+
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_ENGINEER_L] = CState_Combat_Default_Engineer_L::Create();
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_ENGINEER_R] = CState_Combat_Default_Engineer_R::Create();
+
+
+	m_arrStates[AI_STATE_COMBAT_AIRSPIKE_BEGIN_ENGINEER] = CState_Combat_SkillQ_AirSpike_Begin::Create();
+	m_arrStates[AI_STATE_COMBAT_AIRSPIKE_LOOP_ENGINEER] = CState_Combat_SkillQ_AirSpike_Loop::Create();
+	m_arrStates[AI_STATE_COMBAT_AIRSPIKE_END_ENGINEER] = CState_Combat_SkillQ_AirSpike_End::Create();
+
+	m_arrStates[AI_STATE_COMBAT_GUARDBEGIN_ENGINEER] = CState_Combat_GuardBegin_Engineer::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_ENGINEER] = CState_Combat_GuardLoop_Engineer::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDDASH_ENGINEER] = CState_Combat_GuardDash_Engineer::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDEND_ENGINEER] = CState_Combat_GuardEnd_Engineer::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDCANCEL_ENGINEER] = CState_Combat_GuardCancel_Engineer::Create();
+
+	m_arrStates[AI_STATE_COMBAT_GROGGYATTACK_ENGINEER] = CState_Combat_SkillE_Engineer_GroggyAttack::Create();
+
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_ENGINEER_L] = CState_Combat_Attack_HorizontalMiddle_Engineer_L::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_ENGINEER_R] = CState_Combat_Attack_HorizontalMiddle_Engineer_R::Create();
+
+	m_arrStates[AI_STATE_COMBAT_VERTICALCUT_ENGINEER_L] = CState_Combat_Attack_VerticalCut_Engineer_L::Create();
+	m_arrStates[AI_STATE_COMBAT_VERTICALCUT_ENGINEER_R] = CState_Combat_Attack_VerticalCut_Engineer_R::Create();
+
+
+
+#pragma endregion
+
+
+
+
+#pragma region Common
+
+	m_arrStates[AI_STATE_COMMON_FALL_ENGINEER_L] = CState_Common_Fall_Engineer_L::Create();
+	m_arrStates[AI_STATE_COMMON_FALL_ENGINEER_R] = CState_Common_Fall_Engineer_R::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_ENGINEER_L] = CState_Common_Land_Engineer_L::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_ENGINEER_R] = CState_Common_Land_Engineer_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_BOUNCE_ENGINEER_L] = CState_Common_Bounce_Engineer_L::Create();
+	m_arrStates[AI_STATE_COMMON_BOUNCE_ENGINEER_R] = CState_Common_Bounce_Engineer_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_HIT_ENGINEER] = CState_Common_Hit_Engineer::Create();
+	m_arrStates[AI_STATE_COMMON_GUARDHIT_ENGINEER] = CState_Common_GuardHit_Engineer::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_ENGINEER] = CState_Common_Groggy_Engineer::Create();
+	m_arrStates[AI_STATE_COMMON_STINGHIT_ENGINEER] = CState_Common_Sting_Engineer::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_ENGINEER] = CState_Common_FlyHit_Engineer::Create();
+
+#pragma endregion
+
+
+}
+
+void CState_Manager::Valkyrie_State_AI()
+{
+
+}
+
 
 void CState_Manager::Spear_State()
 {
