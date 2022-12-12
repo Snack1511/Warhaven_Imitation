@@ -1054,8 +1054,7 @@ void CUnit::Effect_Parring(_float4 vHitPos)
 void CUnit::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	//공통으로 나와야하는 이펙트
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmallSparkParticle", pOtherUnit, vHitPos);
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSpark", pOtherUnit, vHitPos);
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hit_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 }
 
 void CUnit::Effect_Fall(_float fFallPower)
@@ -1305,6 +1304,7 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	m_bDie = true;
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StoneSpark", vHitPos);
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hit_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 
 	// 데드에 넘겨주기	
 

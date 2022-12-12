@@ -737,7 +737,7 @@ void CPlayer::My_Tick()
 
 	Update_DieDelay();
 
-	Check_AbleRevival();
+	//Check_AbleRevival();
 
 	if (!m_bIsMainPlayer)
 		return;
