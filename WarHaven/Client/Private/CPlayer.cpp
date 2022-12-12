@@ -914,12 +914,12 @@ void CPlayer::Update_HeroGauge()
 	if (!m_bAbleHero) //CChangeHero_Player, HUD
 	{
 
-		_float fGaugeSpeed = 0.2f * fDT(0);
+		_float fGaugeSpeed = fDT(0);
 
 		if (!m_bIsHero) //CChangeHero_Player
 		{
 			if (m_bAlive)
-				m_fGauge += fGaugeSpeed;
+				m_fGauge += fGaugeSpeed * 20.f;
 
 			if (m_fGauge > m_fMaxGauge)
 			{
@@ -968,6 +968,7 @@ void CPlayer::On_AbleHero()
 	{
 		CUser::Get_Instance()->Set_HeroPort(0);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(true);
+
 		CUser::Get_Instance()->SetActive_AbleHeroText(true);
 	}
 }
