@@ -118,9 +118,8 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 
 	for (int i = 0; i < PU_End; ++i)
 	{
+		m_pArrTargetPoint[1]->SetActive(isInFrustum);
 		m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
-		if (!m_pArrProjPointUI[iPointIdx][i]->Is_Valid())
-			return;
 
 		if (i == PU_Text)
 		{
@@ -219,7 +218,6 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 
 			if (strPadenPointKey == "Paden_Trigger_A")
 			{
-
 				m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
 
 				_float4 vPos = m_pArrPointUI[Point_A][i]->Get_Pos();
@@ -339,7 +337,7 @@ void CUI_Paden::My_LateTick()
 	__super::My_LateTick();
 
 	Set_PointTextPosY();
-	Set_TargetPointPos();
+	Update_TargetPointPos();
 }
 
 void CUI_Paden::OnEnable()
@@ -687,7 +685,7 @@ void CUI_Paden::Bind_Shader()
 
 }
 
-void CUI_Paden::Set_TargetPointPos()
+void CUI_Paden::Update_TargetPointPos()
 {
 	if (m_bSetTargetPoint)
 	{

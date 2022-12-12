@@ -225,7 +225,6 @@ void CTrigger_Paden::Update_Conquered()
 
 		if (m_pConqueredTeam->IsMainPlayerTeam())
 		{
-			CUser::Get_Instance()->SetActive_TargetPoint(false);
 			CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, m_pConqueredTeam->IsMainPlayerTeam());
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eConquest);
 		}
