@@ -50,6 +50,8 @@ HRESULT CPlayerInfo_Leader::Initialize()
 	{
 		m_tPlayerInfo.wstrName = L"너네선비형";
 		m_vecPrefClassType.push_back(WARRIOR);
+		Set_CustomHead(WARRIOR, eCUSTOM_HEAD::eRABBIT);
+		Set_CustomBody(WARRIOR, eCUSTOM_BODY::eBODY1);
 
 	}
 	else
