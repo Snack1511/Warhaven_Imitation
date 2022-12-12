@@ -1,4 +1,16 @@
 
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Swap.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Attack_Begin_Poison.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Attack_Begin_Sniping.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Attack_Cancel.cpp"
+
+
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Shoot_Poison.cpp"
 
 
@@ -6,6 +18,9 @@
 
 
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Shoot.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBehavior.cpp"
 
 
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBounce_AI_TG_Warrior.cpp"
@@ -42,19 +57,4 @@
 
 
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBounce_Valkyrie_L.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBounce_Valkyrie_R.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CGame_Manager_HR.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CGuard_Begin_AI_TG_Warrior.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CGuard_Begin_Paladin.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CGuard_Begin_Valkyrie.cpp"
 

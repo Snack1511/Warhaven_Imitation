@@ -35,6 +35,7 @@ public:
 public:
 	void Add_WhatCondition(wstring strWhatConditionName);
 	void Add_OtherCondition(wstring strOtherConditionName);
+	void Add_BehaviorTick(wstring strBehaviorTickName);
 	void Set_Priority(_int iPriorityScore);
 
 	BEHAVIOR_DESC* Check_Condition(_bool& bOut, CPlayer* pPlayer, CAIController* pAIController);
@@ -48,6 +49,8 @@ public:
 	CDelegate <_bool&, BEHAVIOR_DESC* & , CPlayer*, CAIController*>Callback_WhatCondition;
 	//타겟 이외의 모든 것에 대한 조건검사
 	CDelegate<_bool&, CPlayer*, CAIController*>  Callback_OtherCondition;
+	/*비해비어 틱*/
+	CDelegate<CPlayer*, CAIController*> Callback_BehaviorTick;
 
 private:
 	BEHAVIOR_DESC* m_pBehaviorDesc = nullptr;

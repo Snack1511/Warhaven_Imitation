@@ -48,12 +48,14 @@ HRESULT CPersonality_Default::Initailize()
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Patrol"))->Clone();
 	pBehavior->Initialize();
+	pBehavior->Add_BehaviorTick(wstring(L"Callback_Tick_Update_Path"));
 	pBehavior->Set_Priority(0);
 	m_pPatrolBehavior = pBehavior;
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PathNavigation"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_PathArrived"));
 	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
+	pBehavior->Add_BehaviorTick(wstring(L"Callback_Tick_Check_NaviTime"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(1);
 	m_BehaviorList.push_back(pBehavior);
@@ -68,17 +70,16 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Attack"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearEnemy"));
-	//pBehavior->Add_OtherCondition(wstring(L"Check_NearFromRoute"));
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(3);
 	m_BehaviorList.push_back(pBehavior);
 
-	//pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
-	//pBehavior->Add_OtherCondition(wstring(L"Check_AbleHero"));
-	//pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
-	//pBehavior->Initialize();
-	//pBehavior->Set_Priority(4);
-	//m_BehaviorList.push_back(pBehavior);
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Change"))->Clone();
+	pBehavior->Add_OtherCondition(wstring(L"Check_AbleHero"));
+	pBehavior->Add_WhatCondition(wstring(L"EmptyWhatCondition"));
+	pBehavior->Initialize();
+	pBehavior->Set_Priority(4);
+	m_BehaviorList.push_back(pBehavior);
 
 
 

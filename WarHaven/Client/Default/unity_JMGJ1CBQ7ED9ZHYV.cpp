@@ -1,22 +1,4 @@
 
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_Player_L.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_Player_R.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CScript_FixedCam.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CScript_FollowCam.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CScript_Freecam.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CSkyBox.cpp"
-
-
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSlide_Loop_Player.cpp"
 
 
@@ -57,4 +39,22 @@
 
 
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CState_Manager.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStructure.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStructure_Instance.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSwitchLtoR.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CSwitchRtoL.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSword_Effect.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CTerrain.cpp"
 

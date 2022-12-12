@@ -1,4 +1,10 @@
 
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_AI_TG_Warrior_Begin_R.cpp"
+
+
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_AI_TG_Warrior_L.cpp"
+
+
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_AI_TG_Warrior_R.cpp"
 
 
@@ -51,10 +57,4 @@
 
 
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_Valkyrie_Begin_L.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_WarHammer_Begin_L.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CRun_Valkyrie_Begin_R.cpp"
 

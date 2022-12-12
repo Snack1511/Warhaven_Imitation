@@ -73,6 +73,14 @@ void CBehavior::Add_OtherCondition(wstring strOtherConditionName)
     Callback_OtherCondition += m_pConditionTable->Find_OtherCondition(strOtherConditionName);
 }
 
+void CBehavior::Add_BehaviorTick(wstring strBehaviorTickName)
+{
+    if (nullptr == m_pConditionTable)
+        return;
+
+    Callback_BehaviorTick += m_pConditionTable->Find_BehaviorTick(strBehaviorTickName);
+}
+
 void CBehavior::Set_Priority(_int iPriorityScore)
 {
     m_pBehaviorDesc->iPriorityScore = iPriorityScore;
