@@ -50,7 +50,7 @@ public:
 		eCoop_Selfish,		//이기적인
 	};
 
-	enum eBehaviorType 
+	enum ePurposeType 
 	{
 		eBehavior_Move,
 		eBehavior_Attack,
@@ -93,6 +93,9 @@ public:
 		//팀업 시 영향
 		eCoopPersonality eCoopPersonality = eCoop_Default;
 
+		//행동별 최대로 머무를 시간
+		_float fRemainMaxTime[_uint(eBehaviorType::eCNT)] = { 0.f };
+
 	}PersonalDesc;
 
 public:
@@ -120,6 +123,9 @@ public:
 	_float Get_CheckedHP();
 	list<CBehavior*> Get_BehaviorList() { return m_BehaviorList; }
 	CBehavior* Get_Patrol() { return m_pPatrolBehavior; }
+	_bool Is_LongTimeRemain(eBehaviorType eBhavior);
+	void Update_RemainTime(eBehaviorType eBhavior);
+	void Init_RemainTime(eBehaviorType eBhavior);
 public:
 	_float Get_LimitRouteDistance();
 	//목적 행동시 거쳐야 할 조건들..
@@ -134,6 +140,9 @@ protected:
 	/* Clone으로 받아온 복제품들 */
 	list<CBehavior*> m_BehaviorList;
 	CBehavior* m_pPatrolBehavior = nullptr;
+	_float m_fRemainAccTime[_uint(eBehaviorType::eCNT)] = { 0.f };
+	_float m_fRemainPathIndexAccTime = 0.f;
+	_float m_fMaxRemainPathIndexTime = 5.f;
 
 };
 

@@ -62,11 +62,11 @@ HRESULT CLevel_Main::Enter()
 
 	};
 
-	CMainMenuUnit* pMainMenuUnit = CMainMenuUnit::Create(tData);
-	if (!pMainMenuUnit)
-		return E_FAIL;
-	pMainMenuUnit->Initialize();
-	Ready_GameObject(pMainMenuUnit, GROUP_PLAYER);
+	//CMainMenuUnit* pMainMenuUnit = CMainMenuUnit::Create(tData);
+	//if (!pMainMenuUnit)
+	//	return E_FAIL;
+	//pMainMenuUnit->Initialize();
+	//Ready_GameObject(pMainMenuUnit, GROUP_PLAYER);
 
 	LIGHTDESC			LightDesc;
 

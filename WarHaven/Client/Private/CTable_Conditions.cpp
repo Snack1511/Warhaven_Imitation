@@ -76,6 +76,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
     Add_WhyCondition(wstring(L"Check_NearFromRoute"), Check_NearFromRoute);
     Add_WhyCondition(wstring(L"Check_LookEnemy"), Check_LookEnemy);
     Add_WhyCondition(wstring(L"Check_DeadAllies"), Check_DeadAllies);
+    Add_WhyCondition(wstring(L"Check_AttackBehavior"), Check_AttackBehavior);
     Add_WhyCondition(wstring(L"Check_AbleHero"), Check_AbleHero);
 
     Add_WhatCondition(wstring(L"EmptyWhatCondition"), EmptyWhatCondition);
@@ -94,7 +95,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
 HRESULT CTable_Conditions::SetUp_BehaviorTick()
 {
     Add_BehaviorTick(wstring(L"EmptyBehaviorTick"), EmptyBehaviorTick);
-    Add_BehaviorTick(wstring(L"Callback_Tick_Update_Path"), Callback_Tick_Update_Path);
+    Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"), Callback_Tick_UpdatePatrol);
     Add_BehaviorTick(wstring(L"Callback_Tick_Check_NaviTime"), Callback_Tick_Check_NaviTime);
 
     return S_OK;
@@ -356,6 +357,18 @@ void CTable_Conditions::Check_DeadAllies(_bool& OutCondition, CPlayer* pPlayer, 
     OutCondition = true;
 }
 
+void CTable_Conditions::Check_AttackBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    OutCondition = false;
+    CBehavior* pBehavior = pAIController->Get_CurBehavior();
+    if (nullptr != pBehavior) 
+    {
+        if (pBehavior->Get_BehaviorType() == eBehaviorType::eAttack)
+            OutCondition = true;
+    }
+
+}
+
 void CTable_Conditions::Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
     if (pPlayer->AbleHero())
@@ -476,14 +489,53 @@ void CTable_Conditions::Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC
     }
 }
 
-void CTable_Conditions::Callback_Tick_Update_Path(CPlayer* pPlayer, CAIController* pAIController)
+//패트롤 틱..
+void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController)
 {
+    //패트롤에 머무른 시간 확인 --> 초기 설정치보다 넘은 경우
+    CPath* pPath = pAIController->Get_CurPath();
+    //pPath가 nullptr --> 패스 할당 못받음 --> 맨처음 시작단계..
+    if (nullptr == pPath) 
+        return;
 
-
+    if (pAIController->Get_Personality()->Is_LongTimeRemain(eBehaviorType::ePatrol)) 
+    {
+        pAIController->Get_CurPath()->Set_Arrived(); // 강제로 마지막 인덱스로..
+        if (pAIController->Get_CurPath()->Is_Arrived())//도착 여부 확인..
+        {
+            //경로 업데이트 구문 호출..
+            pAIController->Change_NearPath();
+            //patrolRemainTime초기화..
+            pAIController->Get_Personality()->Init_RemainTime(eBehaviorType::ePatrol);
+        }
+    }
+    else
+    {
+        //아닐경우 PatrolRemainTime 계산..
+        pAIController->Get_Personality()->Update_RemainTime(eBehaviorType::ePatrol);
+    }
 }
 
+//네비의 틱..
 void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController)
 {
+    _uint CurIndex = pAIController->Get_CurPath()->Get_CurIndex();
+    _uint PrevIndex = pAIController->Get_CurPath()->Get_PrevIndex();
+
+    if (PrevIndex == CurIndex) 
+    {
+        pAIController->Get_Personality()->Update_RemainTime(eBehaviorType::ePathNavigation);
+    }//같은 인덱스일 경우 네비 비해비어의 RemainTime체크 시작
+    else
+    {
+        pAIController->Get_Personality()->Init_RemainTime(eBehaviorType::ePathNavigation);
+    }//아닐 경우 네비 비해비어의 RemainTime초기화
+    
+    if (pAIController->Get_Personality()->Is_LongTimeRemain(eBehaviorType::ePathNavigation))
+    {
+        pAIController->Get_CurPath()->Set_Arrived();
+    }//네비의 RemainTime이 초기 설정된 시간을 넘긴 경우 강제로 마지막 인덱스로 변경 
+     //     --> 초기 설정시간은 Personality에 기술..
 }
 
 _bool CTable_Conditions::RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter)

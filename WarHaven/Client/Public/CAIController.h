@@ -75,7 +75,6 @@ class CAIController :
 
 public:
     friend class CPlayer;
-
 private:
     CAIController(_uint iGroupID);
     CAIController(const CAIController& rhs);
@@ -83,7 +82,6 @@ private:
 
 public:
     static CAIController* Create(CAIPersonality* pPersonality);
-
 public:
     // CComponent을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
@@ -109,6 +107,10 @@ public:
 public:
     CAIPersonality* Get_Personality() { return m_pPersonality; }
     CPlayer* Get_OwnerPlayer() { return m_pOwnerPlayer; }
+    CBehavior* Get_CurBehavior() { return m_pCurrentBehavior; }
+    CPath* Get_CurPath() { return m_pCurPath; }
+    _bool Is_LongTimeRemain(eBehaviorType eBhavior);
+    void Change_NearPath();
 private:
     CPlayer* m_pOwnerPlayer = nullptr;
     CAIPersonality* m_pPersonality = nullptr;
@@ -125,7 +127,9 @@ private:
 
     /* 현재 타고 있는 경로*/
     CPath* m_pCurPath = nullptr;
-
+    
+    /*머무르는 경우 TRUE*/
+    
 private:
     /* 현재 Behavior가 어느 시간동안 진행되고 있는 지 체크 용도 */
     _float  m_fTimeAcc = 0.f;

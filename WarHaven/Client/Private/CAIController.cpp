@@ -197,3 +197,15 @@ void CAIController::Set_NewPath(CPath* pPath)
 	m_pCurPath = pPath;
 	m_pCurPath->m_pOwnerController = this;
 }
+
+_bool CAIController::Is_LongTimeRemain(eBehaviorType eBhavior)
+{
+	if (nullptr == m_pPersonality)
+		return false;
+	return m_pPersonality->Is_LongTimeRemain(eBhavior);
+}
+
+void CAIController::Change_NearPath()
+{
+	int a = 0;
+}
