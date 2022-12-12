@@ -261,6 +261,10 @@ void CAnimator::Start()
 	}
 }
 
+#define CATCH_NULLANIM(Data, Msg)\
+	if (nullptr == Data)\
+		throw Msg;
+
 void CAnimator::Tick()
 {
 	//Action이 있고 Cycle이 BodyLower면 Blend On
@@ -268,43 +272,51 @@ void CAnimator::Tick()
 	//Action없으면 Cycle만 업뎃
 
 
-
 	_bool bBlend = false;
-	if (m_pActionAnimation)
-	{
-		if (m_pCycleAnimation->Get_AnimDivideType() == ANIM_DIVIDE::eBODYLOWER)
+	try {
+		if (m_pActionAnimation)
 		{
-			bBlend = m_bOnBlend = true;
+			if (m_pCycleAnimation->Get_AnimDivideType() == ANIM_DIVIDE::eBODYLOWER)
+			{
+				bBlend = m_bOnBlend = true;
+				CATCH_NULLANIM(m_pActionAnimation, string("pActionAnimation Is Null"));
+				if (!m_pActionAnimation->Update_Matrices(bBlend))
+					m_pActionAnimation = nullptr;
 
-			if (!m_pActionAnimation->Update_Matrices(bBlend))
-				m_pActionAnimation = nullptr;
+				m_pCycleAnimation->Update_Matrices(bBlend);
 
-			m_pCycleAnimation->Update_Matrices(bBlend);
+
+			}
+			else
+			{
+				CATCH_NULLANIM(m_pActionAnimation, string("pActionAnimation Is Null"));
+				if (!m_pActionAnimation->Update_Matrices(bBlend))
+					m_pActionAnimation = nullptr;
+
+				if (m_bOnBlend)
+				{
+					m_bOnBlend = false;
+					CATCH_NULLANIM(m_pActionAnimation, string("pActionAnimation Is Null"));
+					m_pActionAnimation->OnStartBlending();
+
+				}
+			}
 
 
 		}
 		else
 		{
-			if (!m_pActionAnimation->Update_Matrices(bBlend))
-				m_pActionAnimation = nullptr;
+			m_pCycleAnimation->Update_Matrices(bBlend);
 
-			if (m_bOnBlend)
-			{
-				m_bOnBlend = false;
-				m_pActionAnimation->OnStartBlending();
-
-			}
 		}
 
-		
 	}
-	else
+	catch (string Msg)
 	{
+		Make_Dump(string("CAnimator_Log"), Msg);
+		assert(0);
 		m_pCycleAnimation->Update_Matrices(bBlend);
-
 	}
-
-
 }
 
 void CAnimator::Late_Tick()
