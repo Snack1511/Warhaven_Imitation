@@ -16,7 +16,7 @@ CUI_HeroGauge::~CUI_HeroGauge()
 HRESULT CUI_HeroGauge::Initialize_Prototype()
 {
 	Create_HeroGauge();
-	Create_GlowLine();
+	//Create_GlowLine();
 	Create_AbleHeroText();
 
 	return S_OK;
@@ -155,7 +155,7 @@ void CUI_HeroGauge::My_Tick()
 	m_pHeroGauge[HG_Text]->Set_FontText(szTemp);
 	m_fHeroGaugeRatio = 1 - m_fHeroGaugeRatio;
 
-	Update_GlowLinePosY();
+	//Update_GlowLinePosY();
 }
 
 void CUI_HeroGauge::OnEnable()
@@ -163,7 +163,7 @@ void CUI_HeroGauge::OnEnable()
 	__super::OnEnable();
 
 	SetActive_HeroGauge(true);
-	m_pGlowLine->SetActive(true);
+	//m_pGlowLine->SetActive(true);
 }
 
 void CUI_HeroGauge::OnDisable()
@@ -171,7 +171,7 @@ void CUI_HeroGauge::OnDisable()
 	__super::OnDisable();
 
 	SetActive_HeroGauge(false);
-	m_pGlowLine->SetActive(false);
+	//m_pGlowLine->SetActive(false);
 }
 
 void CUI_HeroGauge::Set_Pass()
