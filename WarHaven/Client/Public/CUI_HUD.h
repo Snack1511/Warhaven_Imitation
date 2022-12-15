@@ -35,6 +35,7 @@ public:
 	void SetActive_HeroTransformGauge(_bool value);
 
 	void SetActive_SquardInfo(_bool value);
+	void Enable_KillText(wstring text);
 
 public:
 	CUI_Wrapper* Get_HUD(_uint eHUD);
@@ -78,11 +79,13 @@ private:
 	CUI_Object* m_pClassChangeText = nullptr;
 	CUI_Object* m_pInactiveHeroText = nullptr;
 	CUI_Object* m_pOxenJumpText = nullptr;
+	CUI_Object* m_pKillNameText = nullptr;
 
 private:
 	void Create_ClassChangeText();
 	void Create_InactiveHeroText();
 	void Create_OxenJumpText();
+	void Create_KillNameText();
 
 private:
 	CUI_Object* m_pPlayerNameText = nullptr;

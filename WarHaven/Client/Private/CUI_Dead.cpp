@@ -84,6 +84,7 @@ void CUI_Dead::SetActive_DeadUI(_bool value)
 
 void CUI_Dead::SetActive_RevivalUI(_bool value)
 {
+	m_vGaugeColor = _float4(1.f, 1.f, 1.f, 1.f);
 	m_pRevivalUI[RU_Bar]->Set_Color(m_vGaugeColor);
 
 	for (int i = 0; i < RU_End; ++i)
@@ -105,7 +106,7 @@ void CUI_Dead::My_Tick()
 			m_fAccTime = 0.f;
 
 			SetActive_DeadUI(false);
-			
+
 			SetActive_RevivalUI(true);
 
 			PLAYER->Get_FollowCam()->Set_FollowTarget(PLAYER);
@@ -153,7 +154,7 @@ void CUI_Dead::My_Tick()
 				CUser::Get_Instance()->Set_FixCursor(false);
 				CUser::Get_Instance()->SetActive_Cursor(true);
 				GAMEINSTANCE->Change_Camera(L"DefaultCam");
-			} 
+			}
 		}
 	}
 }

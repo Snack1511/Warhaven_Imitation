@@ -166,7 +166,7 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 	{
 		if (static_cast<CPlayer*>(pOtherObj)->Get_Team() == m_pOwnerPlayer->Get_Team())
 			m_pAdjRevivalPlayer = nullptr;
-		
+
 	}
 }
 
@@ -973,7 +973,7 @@ void CUnit::My_Tick()
 				m_eDefaultState = m_eReserveState;
 				m_eReserveState = STATE_END;
 			}
-			
+
 			/* BehaviorDesc는 갱신하기 */
 			m_pOwnerPlayer->On_RealChangeBehavior();
 
@@ -1012,7 +1012,7 @@ void CUnit::My_LateTick()
 
 }
 
-void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange,_float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse,
+void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse,
 	LIGHTDESC::EASING_TYPE eInType, LIGHTDESC::EASING_TYPE eOutType)
 {
 	LIGHTDESC			LightDesc;
@@ -1066,7 +1066,7 @@ void CUnit::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _f
 void CUnit::Effect_Parring(_float4 vHitPos)
 {
 	Create_Light(vHitPos, 2.5f, 0.f, 0.f, 0.f, 1.f, RGB(255, 140, 40),
-		LIGHTDESC::EASING_TYPE::EAS_ElasticEaseIn, 
+		LIGHTDESC::EASING_TYPE::EAS_ElasticEaseIn,
 		LIGHTDESC::EASING_TYPE::EAS_ElasticEaseOut);
 	/*CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), vHitPos);
@@ -1207,7 +1207,7 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 			return;
 
 		}
-		
+
 	}
 
 	pOtherUnit->Effect_Hit(this, vHitPos);
@@ -1343,6 +1343,11 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 		CUser::Get_Instance()->Toggle_DeadUI(true);
 
 		m_pFollowCam->Set_FollowTarget(pOtherUnit);
+	}
+	else
+	{
+		wstring otherName = m_pOwnerPlayer->Get_PlayerInfo()->Get_PlayerName();
+		CUser::Get_Instance()->Enable_KillText(otherName);
 	}
 }
 
