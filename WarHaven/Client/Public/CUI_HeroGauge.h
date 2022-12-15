@@ -29,7 +29,7 @@ public:
 private:
 	enum HeroGauge { HG_BG, HG_Gauge, HG_Text, HG_End };
 	CUI_Object* m_pHeroGauge[HG_End];
-
+	CUI_Object* m_pGlowLine = nullptr;
 	CUI_Object* m_pAbleHeroText = nullptr;
 
 	_float m_fCurHeroGauge = 0.f;
@@ -40,6 +40,7 @@ private:
 
 private:
 	void Create_HeroGauge();
+	void Create_GlowLine();
 	void Create_AbleHeroText();
 
 private:
@@ -50,6 +51,8 @@ private:
 private:
 	void Set_Pass();
 	void Bind_Shader();
+
+	void Update_GlowLinePosY();
 };
 
 END

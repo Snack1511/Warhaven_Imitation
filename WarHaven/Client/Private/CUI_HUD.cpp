@@ -279,7 +279,8 @@ HpBar.pos.x - HpBar.size / 2 + HPBarSizeRatio * »çÀÌÁî
 void CUI_HUD::Enable_KillText(wstring text)
 {
 	m_pKillNameText->Set_FontText(text);
-	Enable_Fade(m_pKillNameText, 0.15f);
+
+	Enable_Fade(m_pKillNameText, 0.3f);
 }
 
 _bool CUI_HUD::Is_OnHeroGauge()

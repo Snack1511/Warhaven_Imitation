@@ -269,6 +269,7 @@ namespace Client
 		VTXTEX_PASS_UI_VerticalGauge,
 		VTXTEX_PASS_UI_HorizontalGauge,
 		VTXTEX_PASS_UI_OperSmoke,
+		VTXTEX_PASS_UI_GlowLine,
 
 		VTXTEX_PASS_ALPHA,
 		VTXTEX_PASS_TRAIL,

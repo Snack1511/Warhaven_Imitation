@@ -16,6 +16,7 @@ CUI_HeroGauge::~CUI_HeroGauge()
 HRESULT CUI_HeroGauge::Initialize_Prototype()
 {
 	Create_HeroGauge();
+	Create_GlowLine();
 	Create_AbleHeroText();
 
 	return S_OK;
@@ -108,6 +109,23 @@ void CUI_HeroGauge::Create_HeroGauge()
 	}
 }
 
+void CUI_HeroGauge::Create_GlowLine()
+{
+	m_pGlowLine = CUI_Object::Create();
+
+	GET_COMPONENT_FROM(m_pGlowLine, CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_GlowLine);
+
+	// m_pGlowLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HeroGauge/T_Pattern_49.dds"));
+	m_pGlowLine->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HeroGauge/T_AdditiveLineSmall.dds"));
+
+	m_pGlowLine->Set_PosX(550.f);
+	m_pGlowLine->Set_Scale(100.f, 50.f);
+	m_pGlowLine->Set_Sort(0.5f);
+
+	CREATE_GAMEOBJECT(m_pGlowLine, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pGlowLine);
+}
+
 void CUI_HeroGauge::Create_AbleHeroText()
 {
 	m_pAbleHeroText = CUI_Object::Create();
@@ -136,6 +154,8 @@ void CUI_HeroGauge::My_Tick()
 	swprintf_s(szTemp, TEXT("%.f%%"), m_fHeroGaugeRatio * 100.f);
 	m_pHeroGauge[HG_Text]->Set_FontText(szTemp);
 	m_fHeroGaugeRatio = 1 - m_fHeroGaugeRatio;
+
+	Update_GlowLinePosY();
 }
 
 void CUI_HeroGauge::OnEnable()
@@ -143,6 +163,7 @@ void CUI_HeroGauge::OnEnable()
 	__super::OnEnable();
 
 	SetActive_HeroGauge(true);
+	m_pGlowLine->SetActive(true);
 }
 
 void CUI_HeroGauge::OnDisable()
@@ -150,6 +171,7 @@ void CUI_HeroGauge::OnDisable()
 	__super::OnDisable();
 
 	SetActive_HeroGauge(false);
+	m_pGlowLine->SetActive(false);
 }
 
 void CUI_HeroGauge::Set_Pass()
@@ -162,4 +184,21 @@ void CUI_HeroGauge::Bind_Shader()
 	m_pHeroGauge[HG_Gauge]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
 
 	GET_COMPONENT_FROM(m_pHeroGauge[HG_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_HeroGauge::Set_Shader_Gauge, this, placeholders::_1, "g_fHeroGaugeRatio");
+}
+
+void CUI_HeroGauge::Update_GlowLinePosY()
+{
+	_float fPosY = m_pHeroGauge[HG_Gauge]->Get_PosY();
+
+	_float fScaleY = m_pHeroGauge[HG_Gauge]->Get_Scale().y;
+
+	_float fHalfScaleY = (fScaleY * 0.5f);
+
+	_float fGlowLinePosY = fPosY - fHalfScaleY;
+
+	_float fRatio = fScaleY / 100.f;
+
+	_float fReulstPosY = fGlowLinePosY + (fRatio * fScaleY) * (1 - m_fHeroGaugeRatio);
+
+	m_pGlowLine->Set_PosY(fReulstPosY);
 }

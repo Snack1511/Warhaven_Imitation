@@ -81,6 +81,8 @@ private:
 	CUI_Object* m_pOxenJumpText = nullptr;
 	CUI_Object* m_pKillNameText = nullptr;
 
+	_uint m_iKillCount = 0;
+
 private:
 	void Create_ClassChangeText();
 	void Create_InactiveHeroText();
