@@ -12,6 +12,9 @@
 #include "Loading_Manager.h"
 #include "Easing_Utillity.h"
 
+CUI_MainPlay::Select_Map CUI_MainPlay::m_eStage = Select_Map::Training;
+wstring CUI_MainPlay::m_wstrModeText = TEXT("¸Ê - ÈÆ·Ã¼Ò");
+
 CUI_MainPlay::CUI_MainPlay()
 {
 }
@@ -218,7 +221,10 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 			Enable_StageClickRect(vPos);
 
 			m_eStage = Select_Map::Paden;
-			m_pStageNameRect->Set_FontText(TEXT("¸Ê - ÆÄµ§"));
+
+			m_wstrModeText = TEXT("¸Ê - ÆÄµ§");
+			m_pStageNameRect->Set_FontText(m_wstrModeText);
+
 		}
 		else if (iTextureNum == 1)
 		{
@@ -233,7 +239,9 @@ void CUI_MainPlay::On_PointDown_Stage(const _uint& iEventNum)
 			Enable_StageClickRect(vPos);
 
 			m_eStage = Select_Map::Training;
-			m_pStageNameRect->Set_FontText(TEXT("¸Ê - ÈÆ·Ã¼Ò"));
+
+			m_wstrModeText = TEXT("¸Ê - ÈÆ·Ã¼Ò");
+			m_pStageNameRect->Set_FontText(m_wstrModeText);
 		}
 	}
 }
@@ -627,7 +635,7 @@ void CUI_MainPlay::Create_StageNameRect()
 	m_pStageNameRect->Set_FontOffset(-30.f, -11.f);
 	m_pStageNameRect->Set_FontScale(0.2f);
 	m_pStageNameRect->Set_FontColor(m_vFontColor);
-	m_pStageNameRect->Set_FontText(TEXT("¸Ê - ÈÆ·Ã¼Ò"));
+	m_pStageNameRect->Set_FontText(m_wstrModeText);
 
 	CREATE_GAMEOBJECT(m_pStageNameRect, GROUP_UI);
 }
