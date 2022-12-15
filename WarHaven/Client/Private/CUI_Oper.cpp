@@ -30,6 +30,7 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_OperBG();
 	Create_OperProfile();
 	Create_CharacterSelect();
+	Create_LeftIcon();
 	Create_TeamIcon();
 	Create_StrongHoldUI();
 	Create_StrongHoldEffect();
@@ -56,6 +57,7 @@ HRESULT CUI_Oper::Start()
 	CUser::Get_Instance()->SetActive_HUD(false);
 
 	SetActive_BG(true);
+	SetActive_LeftIcon(true);
 
 	__super::Start();
 
@@ -114,7 +116,7 @@ void CUI_Oper::On_PointDown_StrongHoldPoint(const _uint& iEventNum)
 	// a, r, c
 	PLAYER->Get_OwnerPlayer()->Set_MainPlayerStartPath(iEventNum);
 
-	
+
 }
 
 void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
@@ -184,6 +186,17 @@ void CUI_Oper::SetActive_Profile(_bool value)
 	for (int i = 0; i < 4; ++i)
 	{
 		m_pArrOperProfile[i]->SetActive(value);
+	}
+}
+
+void CUI_Oper::SetActive_LeftIcon(_bool value)
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < Left_End; ++j)
+		{
+			m_pArrLeftUI[i][j]->SetActive(value);
+		}
 	}
 }
 
@@ -381,6 +394,20 @@ void CUI_Oper::Progress_Oper()
 						vPos.x += 50.f;
 						m_pArrCharacterPort[i][j]->DoMove(vPos, fDuration, 0);
 					}
+				}
+
+				for (int i = 0; i < 4; ++i)
+				{
+					for (int j = 0; j < Left_End; ++j)
+					{
+						Enable_Fade(m_pArrLeftUI[i][j], fDuration);
+
+						_float4 vPos = m_pArrLeftUI[i][j]->Get_Pos();
+						vPos.x -= 50.f;
+						m_pArrLeftUI[i][j]->DoMove(vPos, fDuration, 0);
+					}
+
+					m_pArrLeftUI[i][Left_Icon]->Set_FontRender(true);
 				}
 
 				for (int i = 0; i < CP_End; ++i)
@@ -630,8 +657,6 @@ void CUI_Oper::Create_OperBG()
 			case LEVEL_TEST:
 				m_pOperBG[i]->Set_PosY(205.f);
 				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
-
-
 				break;
 
 			case Client::LEVEL_PADEN:
@@ -720,8 +745,18 @@ void CUI_Oper::Set_OperProfile()
 
 	for (int i = 0; i < 4; ++i)
 	{
-		m_pArrOperProfile[i]->Set_TextureIndex(iter->second->Get_PlayerInfo()->Choose_Character());
-		m_pArrOperProfile[i]->Set_FontText(iter->second->Get_PlayerName());
+		_uint iTextureNum = iter->second->Get_PlayerInfo()->Choose_Character();
+		wstring wstrPlayerName = iter->second->Get_PlayerName();
+
+		m_pArrOperProfile[i]->Set_TextureIndex(iTextureNum);
+		m_pArrOperProfile[i]->Set_FontText(wstrPlayerName);
+
+		if (i > 0)
+		{
+			m_pArrLeftUI[i][Left_Icon]->Set_TextureIndex(iTextureNum + 1);
+			m_pArrLeftUI[i][Left_Icon]->Set_FontText(wstrPlayerName);
+		}
+
 		++iter;
 	}
 }
@@ -824,6 +859,94 @@ void CUI_Oper::Create_CharacterSelect()
 	}
 }
 
+void CUI_Oper::Create_LeftIcon()
+{
+	for (int i = 0; i < Left_End; ++i)
+	{
+		m_pLeftUI[i] = CUI_Object::Create();
+
+		m_pLeftUI[i]->Set_FadeDesc(0.3f);
+
+		switch (i)
+		{
+		case Left_BG:
+
+			m_pLeftUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SwitchHandle.png"));
+			GET_COMPONENT_FROM(m_pLeftUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBGSmall.dds"));
+
+			m_pLeftUI[i]->Set_Scale(65.f);
+			m_pLeftUI[i]->Set_Sort(0.48f);
+
+			break;
+
+		case Left_Icon:
+
+			m_pLeftUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_MapIcon2.dds"));
+			Read_Texture(m_pLeftUI[i], "/HUD/Portrait", "Class");
+
+			m_pLeftUI[i]->Set_Scale(65.f);
+			m_pLeftUI[i]->Set_Sort(0.47f);
+
+			m_pLeftUI[i]->Set_FontStyle(true);
+			m_pLeftUI[i]->Set_FontCenter(true);
+
+			m_pLeftUI[i]->Set_FontOffset(-100.f, 3.f);
+			m_pLeftUI[i]->Set_FontScale(0.25f);
+
+			break;
+
+		case Left_Num:
+
+			GET_COMPONENT_FROM(m_pLeftUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pLeftUI[i], "/Oper", "Num");
+			
+			m_pLeftUI[i]->Set_Scale(24.f);
+			m_pLeftUI[i]->Set_Sort(0.46f);
+
+			break;
+
+		case Left_SelectBG:
+
+			m_pLeftUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SelectedBG.png"));
+
+			m_pLeftUI[i]->Set_Scale(213.f, 65.f);
+			m_pLeftUI[i]->Set_RotationZ(180.f);
+			m_pLeftUI[i]->Set_Sort(0.49f);
+
+			break;
+		}
+
+		CREATE_GAMEOBJECT(m_pLeftUI[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pLeftUI[i]);
+
+		for (int j = 0; j < 4; ++j)
+		{
+			m_pArrLeftUI[j][i] = m_pLeftUI[i]->Clone();
+
+			CREATE_GAMEOBJECT(m_pArrLeftUI[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrLeftUI[j][i]);
+		}
+	}
+
+	for (int i = 0; i < 4; ++i)
+	{
+		if (i == 0)
+		{
+			m_pArrLeftUI[i][Left_Icon]->Set_Scale(55.f);
+
+			m_pArrLeftUI[i][Left_Icon]->Set_FontText(TEXT("지도"));
+
+			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_BG], CTexture)->Set_CurTextureIndex(0);
+			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_Icon], CTexture)->Set_CurTextureIndex(0);
+		}
+		else
+		{
+			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_BG], CTexture)->Set_CurTextureIndex(1);
+			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_Num], CTexture)->Set_CurTextureIndex(i);
+		}
+	}
+}
+
 void CUI_Oper::Init_CharacterSelect()
 {
 	_float fTopPosY = 250.f;
@@ -865,21 +988,39 @@ void CUI_Oper::Init_CharacterSelect()
 
 	m_pArrCharacterPort[CP_Class][0]->Set_FontText(TEXT("블레이드"));
 	m_pArrCharacterPort[CP_Class][0]->Set_Pos(fTopPosIconX, fTopPosY);
-
 	m_pArrCharacterPort[CP_Class][1]->Set_FontText(TEXT("스파이크"));
 	m_pArrCharacterPort[CP_Class][1]->Set_Pos(fMidPosIconX, fMidPosY);
-
 	m_pArrCharacterPort[CP_Class][2]->Set_FontText(TEXT("아치"));
 	m_pArrCharacterPort[CP_Class][2]->Set_Pos(fBotPosIconX, fBotPosY);
-
 	m_pArrCharacterPort[CP_Class][3]->Set_FontText(TEXT("가디언"));
 	m_pArrCharacterPort[CP_Class][3]->Set_Pos(fBotPosIconX, -fBotPosY);
-
 	m_pArrCharacterPort[CP_Class][4]->Set_FontText(TEXT("스모크"));
 	m_pArrCharacterPort[CP_Class][4]->Set_Pos(fMidPosIconX, -fMidPosY);
-
 	m_pArrCharacterPort[CP_Class][5]->Set_FontText(TEXT("워해머"));
 	m_pArrCharacterPort[CP_Class][5]->Set_Pos(fTopPosIconX, -fTopPosY);
+
+	m_pArrLeftUI[0][Left_SelectBG]->Set_Pos(515.f, 150.f);
+	m_pArrLeftUI[1][Left_SelectBG]->Set_Pos(530.f, 50.f);
+	m_pArrLeftUI[2][Left_SelectBG]->Set_Pos(530.f, -50.f);
+	m_pArrLeftUI[3][Left_SelectBG]->Set_Pos(515.f, -150.f);
+
+	m_pArrLeftUI[0][Left_BG]->Set_Pos(-fMidPosCharX, fMidPosY);
+	m_pArrLeftUI[1][Left_BG]->Set_Pos(-fBotPosCharX, fBotPosY);
+	m_pArrLeftUI[2][Left_BG]->Set_Pos(-fBotPosCharX, -fBotPosY);
+	m_pArrLeftUI[3][Left_BG]->Set_Pos(-fMidPosCharX, -fMidPosY);
+
+	m_pArrLeftUI[0][Left_Icon]->Set_Pos(-fMidPosCharX, fMidPosY);
+	m_pArrLeftUI[1][Left_Icon]->Set_Pos(-fBotPosCharX, fBotPosY);
+	m_pArrLeftUI[2][Left_Icon]->Set_Pos(-fBotPosCharX, -fBotPosY);
+	m_pArrLeftUI[3][Left_Icon]->Set_Pos(-fMidPosCharX, -fMidPosY);
+
+	for (int i = 1; i < 4; ++i)
+	{
+		_float4 vPos = m_pArrLeftUI[i][Left_Icon]->Get_Pos();
+		vPos.x += 20.f;
+		vPos.y -= 20.f;
+		m_pArrLeftUI[i][Left_Num]->Set_Pos(vPos);
+	}
 }
 
 void CUI_Oper::Create_TeamIcon()
@@ -1272,3 +1413,21 @@ void CUI_Oper::Bind_Btn()
 
 	m_pRespawnBtn->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_RespawnBtn, this, 0);
 }
+
+
+//void CUI_HUD::Set_FadeOperSelectChaderUI()
+//{
+//	FADEDESC tFadeDesc;
+//	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
+//	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
+//	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
+//	tFadeDesc.bFadeInFlag = FADE_NONE;
+//	tFadeDesc.bFadeOutFlag = FADE_NONE;
+//	tFadeDesc.fFadeInStartTime = 0.f;
+//	tFadeDesc.fFadeInTime = 0.3f;
+//	tFadeDesc.fFadeOutStartTime = 0.f;
+//	tFadeDesc.fFadeOutTime = 0.3f;
+//
+//	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
+//	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
+//}

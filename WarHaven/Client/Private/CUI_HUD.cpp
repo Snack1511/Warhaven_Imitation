@@ -358,23 +358,6 @@ void CUI_HUD::Bind_Shader()
 	}
 }
 
-//void CUI_HUD::Set_FadeOperSelectChaderUI()
-//{
-//	FADEDESC tFadeDesc;
-//	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-//	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
-//	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-//	tFadeDesc.bFadeInFlag = FADE_NONE;
-//	tFadeDesc.bFadeOutFlag = FADE_NONE;
-//	tFadeDesc.fFadeInStartTime = 0.f;
-//	tFadeDesc.fFadeInTime = 0.3f;
-//	tFadeDesc.fFadeOutStartTime = 0.f;
-//	tFadeDesc.fFadeOutTime = 0.3f;
-//
-//	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
-//	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
-//}
-
 void CUI_HUD::Create_HeroTransformUI()
 {
 	for (int i = 0; i < HT_End; ++i)
