@@ -766,7 +766,7 @@ void CUI_Oper::Create_ProfileInfo()
 	m_pPositionText->Set_FontCenter(true);
 	m_pPositionText->Set_FontScale(0.3f);
 	m_pPositionText->Set_FontOffset(7.f, 5.f);
-		
+
 	m_pPositionText->Set_FadeDesc(0.3f);
 
 	for (int i = 0; i < 4; ++i)
@@ -783,6 +783,7 @@ void CUI_Oper::Create_ProfileInfo()
 		else
 		{
 			m_pArrPositionText[i]->Set_FontText(TEXT("ºÐ´ë¿ø"));
+			m_pArrPositionText[i]->Set_FontColor(_float4(0.2f, 0.4f, 0.2f));
 		}
 
 		CREATE_GAMEOBJECT(m_pArrPositionText[i], GROUP_UI);
