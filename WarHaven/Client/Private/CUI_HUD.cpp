@@ -434,7 +434,7 @@ void CUI_HUD::Create_KillNameText()
 	m_pKillNameText->Set_FontRender(true);
 	m_pKillNameText->Set_FontStyle(true);
 	m_pKillNameText->Set_FontCenter(true);
-	m_pKillNameText->Set_FontScale(0.3f);
+	m_pKillNameText->Set_FontScale(0.45f);
 	m_pKillNameText->Set_FontOffset(-140.f, -3.5f);
 	m_pKillNameText->Set_FontColor(_float4(1.f, 0.2f, 0.2f, 1.f));
 

@@ -1346,8 +1346,11 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 	else
 	{
-		wstring otherName = m_pOwnerPlayer->Get_PlayerInfo()->Get_PlayerName();
-		CUser::Get_Instance()->Enable_KillText(otherName);
+		if (pOtherUnit->m_bIsMainPlayer)
+		{
+			wstring otherName = m_pOwnerPlayer->Get_PlayerInfo()->Get_PlayerName();
+			CUser::Get_Instance()->Enable_KillText(otherName);
+		}
 	}
 }
 

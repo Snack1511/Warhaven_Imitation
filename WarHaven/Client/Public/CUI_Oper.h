@@ -53,6 +53,8 @@ private:
 private:
 	list<CUI_Object*> m_pOperList;
 
+	_float m_fDisableProfileTime = 4.f;
+
 private:
 	void Progress_Oper();
 	void Enable_StrongHoldUI();
@@ -82,6 +84,11 @@ private:
 private:	// 작전회의 프로필
 	CUI_Object* m_pOperProfile = nullptr;
 	CUI_Object* m_pArrOperProfile[4];
+
+	CUI_Object* m_pPositionText = nullptr;
+	CUI_Object* m_pArrPositionText[4];
+
+	CUI_Object* m_pMarkMeText = nullptr;
 
 private:
 	void Create_OperProfile();

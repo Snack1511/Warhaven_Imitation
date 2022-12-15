@@ -314,7 +314,7 @@ void CUI_Oper::Progress_Oper()
 		}
 		else if (m_iOperProgress == 3)
 		{
-			if (m_fAccTime > 4.f)
+			if (m_fAccTime > m_fDisableProfileTime)
 			{
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
@@ -741,6 +741,12 @@ void CUI_Oper::Create_OperProfile()
 		CREATE_GAMEOBJECT(m_pArrOperProfile[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pArrOperProfile[i]);
 	}
+
+	m_pPositionText = CUI_Object::Create();
+	m_pMarkMeText = CUI_Object::Create();
+
+	m_pOperList.push_back(m_pPositionText);
+	m_pOperList.push_back(m_pMarkMeText);
 }
 
 void CUI_Oper::Set_OperProfile()
