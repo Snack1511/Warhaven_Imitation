@@ -1,5 +1,8 @@
 #pragma once
 #include "Client_Defines.h"
+
+#define KOR u8
+
 BEGIN(Engine)
 class CGameObject;
 class CTransform;
@@ -80,6 +83,7 @@ public:
 	enum GroupTuple {Tuple_GroupName, Tuple_SelectFlag};
 	typedef vector<tuple<string, bool>> GroupingArr;
 public:
+	enum eNameTuple { Tuple_ObjectName, Tuple_IndexList };
 	typedef tuple<string, list<_int>> ObjectNameTuple;
 	typedef vector<tuple<string, list<_int>>> ObjectNameTupleArr;
 	typedef map<size_t, vector<tuple<string, list<_int>>>> OBJECTGROUPINGMAP;
@@ -99,7 +103,7 @@ public:
 	void Func_Grouping();
 	void Func_FBXList();
 	void Func_ObjectList();
-	void Func_GroupControl();
+	void Func_SelectedObject_NameBase();
 	void Func_ObjectControl();
 
 	void Func_PickStart();
@@ -138,11 +142,12 @@ public:
 	void Delete_ObjectNamingMap(string strSearchObejctName, list<_int>& IndexList);
 	void Delete_Object(map<size_t, vector<CGameObject*>>::iterator& ObjectIter, list<_int> IndexList);
 	void Delete_Data(map<size_t, vector<MTO_DATA>>::iterator& DataIter, list<_int> IndexList);
+
 	void Delete_Object(vector<CGameObject*>& rhsObjectGroup, _int TargetIndex);
 	void Delete_Data(vector<MTO_DATA>& rhsDataGroup, _int TargetIndex);
 
 	void Clear_SameNameObject(string ObjectName, _int NameIndexInGroup);
-	void Clear_ObjectGroup(string ObjectGroupName);
+	//void Clear_ObjectGroup(string ObjectGroupName);
 	void Clear_SameNameInGroup(string ObjectGroupName, _int NameIndexInGroup);
 	void Clear_AllDatas();
 
@@ -156,7 +161,7 @@ private:
 	void Show_GroupMatrix();
 	void Show_ObjectData();
 	void Set_ControlSpeed(_float* fMoveSpeed, _float* fRotateSpeed, _float* fScaleSpeed);
-
+	void Show_ControlInfo(string ScaleInfo, string RotateInfo, string MoveInfo);
 	//void Control_Group();
 
 	void Select_DataControlFlag();
@@ -208,8 +213,9 @@ private:
 	_bool Find_ObjectGroupingName(size_t GroupNameHashNum, map<size_t, vector<tuple<string, list<_int>>>>::iterator& OutGroupingName);
 	_bool Find_ObjectDatas(string strObjectName, map<size_t, vector<CGameObject*>>::iterator& OutObjectIter, map<size_t, vector<MTO_DATA>>::iterator& OutDataIter);
 private:
-	void Clone();
-
+	void Place_Clone();
+	void Clone_SamePosition();
+	CStructure* Clone_Object(_float4 vObjectPosition, _float4 vObjectCompDir, MTO_DATA tData);
 private:
 	CWindow_Map* m_pMapTool = nullptr;
 private:
