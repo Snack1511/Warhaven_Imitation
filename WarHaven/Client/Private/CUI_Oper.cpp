@@ -57,7 +57,6 @@ HRESULT CUI_Oper::Start()
 	CUser::Get_Instance()->SetActive_HUD(false);
 
 	SetActive_BG(true);
-	SetActive_LeftIcon(true);
 
 	__super::Start();
 
@@ -198,6 +197,8 @@ void CUI_Oper::SetActive_LeftIcon(_bool value)
 			m_pArrLeftUI[i][j]->SetActive(value);
 		}
 	}
+
+	m_pArrLeftUI[0][Left_Num]->SetActive(false);
 }
 
 void CUI_Oper::Progress_Oper()
@@ -480,6 +481,7 @@ void CUI_Oper::Progress_Oper()
 
 				CUser::Get_Instance()->SetActive_PadenUI(true);
 				CUser::Get_Instance()->SetActive_HUD(true);
+				CUser::Get_Instance()->SetActive_SquardInfo(true);
 			}
 		}
 		else if (m_iOperProgress == 11)
@@ -494,11 +496,11 @@ void CUI_Oper::Progress_Oper()
 			{
 				m_fAccTime = 0.f;
 
-
 				DISABLE_GAMEOBJECT(this);
 
 				if (m_bSelectTargetPoint)
 					CUser::Get_Instance()->SetActive_TargetPoint(true);
+
 
 				CUser::Get_Instance()->Set_FixCursor(true);
 				CUser::Get_Instance()->SetActive_Cursor(false);
@@ -923,6 +925,8 @@ void CUI_Oper::Create_LeftIcon()
 		{
 			m_pArrLeftUI[j][i] = m_pLeftUI[i]->Clone();
 
+			m_pOperList.push_back(m_pArrLeftUI[j][i]);
+
 			CREATE_GAMEOBJECT(m_pArrLeftUI[j][i], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrLeftUI[j][i]);
 		}
@@ -932,7 +936,7 @@ void CUI_Oper::Create_LeftIcon()
 	{
 		if (i == 0)
 		{
-			m_pArrLeftUI[i][Left_Icon]->Set_Scale(55.f);
+			m_pArrLeftUI[i][Left_Icon]->Set_Scale(32.f);
 
 			m_pArrLeftUI[i][Left_Icon]->Set_FontText(TEXT("Áöµµ"));
 

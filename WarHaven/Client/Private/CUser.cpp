@@ -258,6 +258,11 @@ void CUser::Set_HeroGauge(_float fCurValue, _float fMaxValue)
 	m_pUI_HeroGauge->Set_HeroGauge(fCurValue, fMaxValue);
 }
 
+void CUser::SetActive_SquardInfo(_bool value)
+{
+	m_pUI_HUD->SetActive_SquardInfo(value);
+}
+
 void CUser::SetActive_Result(_uint iResult, _bool value)
 {
 	m_pUI_Result->SetActive_Result(iResult, value);

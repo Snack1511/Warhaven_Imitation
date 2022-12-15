@@ -104,6 +104,7 @@ public:
 
 	void SetActive_Cursor(_bool value);
 
+	void SetActive_SquardInfo(_bool value);
 	void SetActive_Result(_uint iResult, _bool value);
 	void SetActive_HUD(_bool value);
 	void SetActive_UnitHUD(_bool value);
