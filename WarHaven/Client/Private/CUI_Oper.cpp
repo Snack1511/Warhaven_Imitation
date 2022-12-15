@@ -29,6 +29,7 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_TextImg();
 	Create_OperBG();
 	Create_OperProfile();
+	Create_ProfileInfo();
 	Create_CharacterSelect();
 	Create_LeftIcon();
 	Create_TeamIcon();
@@ -309,7 +310,10 @@ void CUI_Oper::Progress_Oper()
 				for (int i = 0; i < 4; ++i)
 				{
 					Enable_Fade(m_pArrOperProfile[i], 0.3f);
+					Enable_Fade(m_pArrPositionText[i], 0.3f);
 				}
+
+				Enable_Fade(m_pMarkMeText, 0.3f);
 			}
 		}
 		else if (m_iOperProgress == 3)
@@ -321,10 +325,12 @@ void CUI_Oper::Progress_Oper()
 
 				Disable_Fade(m_pOperBG[OB_Black], 0.3f);
 				Disable_Fade(m_pTextImg[Text_Oper1], 0.3f);
+				Disable_Fade(m_pMarkMeText, 0.3f);
 
 				for (int i = 0; i < 4; ++i)
 				{
 					Disable_Fade(m_pArrOperProfile[i], 0.3f);
+					Disable_Fade(m_pArrPositionText[i], 0.3f);
 				}
 			}
 		}
@@ -709,7 +715,6 @@ void CUI_Oper::Create_OperProfile()
 
 	m_pOperProfile->Set_FadeDesc(0.5f, 0.3f);
 
-	// 각 캐릭터에 해당하는 이미지 파일 불러오기
 	m_pOperProfile->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultWarrior.dds"));
 	GET_COMPONENT_FROM(m_pOperProfile, CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultSpearman.dds");
 	GET_COMPONENT_FROM(m_pOperProfile, CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultArcher.dds");
@@ -747,6 +752,62 @@ void CUI_Oper::Create_OperProfile()
 
 	m_pOperList.push_back(m_pPositionText);
 	m_pOperList.push_back(m_pMarkMeText);
+}
+
+void CUI_Oper::Create_ProfileInfo()
+{
+	m_pPositionText = CUI_Object::Create();
+
+	GET_COMPONENT_FROM(m_pPositionText, CTexture)->Remove_Texture(0);
+
+	m_pPositionText->Set_PosY(-230.f);
+	m_pPositionText->Set_FontRender(true);
+	m_pPositionText->Set_FontStyle(true);
+	m_pPositionText->Set_FontCenter(true);
+	m_pPositionText->Set_FontScale(0.3f);
+	m_pPositionText->Set_FontOffset(7.f, 5.f);
+		
+	m_pPositionText->Set_FadeDesc(0.3f);
+
+	for (int i = 0; i < 4; ++i)
+	{
+		m_pArrPositionText[i] = m_pPositionText->Clone();
+
+		_float fPosX = -375.f + (i * 250.f);
+		m_pArrPositionText[i]->Set_PosX(fPosX);
+
+		if (i == 0)
+		{
+			m_pArrPositionText[i]->Set_FontText(TEXT("분대장"));
+		}
+		else
+		{
+			m_pArrPositionText[i]->Set_FontText(TEXT("분대원"));
+		}
+
+		CREATE_GAMEOBJECT(m_pArrPositionText[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pArrPositionText[i]);
+	}
+
+	m_pMarkMeText = CUI_Object::Create();
+
+	GET_COMPONENT_FROM(m_pMarkMeText, CTexture)->Remove_Texture(0);
+
+	m_pMarkMeText->Set_Pos(-375.f, -200.f);
+	m_pMarkMeText->Set_FontRender(true);
+	m_pMarkMeText->Set_FontStyle(true);
+	m_pMarkMeText->Set_FontCenter(true);
+	m_pMarkMeText->Set_FontScale(0.3f);
+	m_pMarkMeText->Set_FontOffset(7.f, 5.f);
+	m_pMarkMeText->Set_FontText(TEXT("나"));
+
+	m_pMarkMeText->Set_FadeDesc(0.3f);
+
+	CREATE_GAMEOBJECT(m_pPositionText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pPositionText);
+
+	CREATE_GAMEOBJECT(m_pMarkMeText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pMarkMeText);
 }
 
 void CUI_Oper::Set_OperProfile()
@@ -911,7 +972,7 @@ void CUI_Oper::Create_LeftIcon()
 
 			GET_COMPONENT_FROM(m_pLeftUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pLeftUI[i], "/Oper", "Num");
-			
+
 			m_pLeftUI[i]->Set_Scale(24.f);
 			m_pLeftUI[i]->Set_Sort(0.46f);
 

@@ -92,6 +92,7 @@ private:	// 작전회의 프로필
 
 private:
 	void Create_OperProfile();
+	void Create_ProfileInfo();
 	void Set_OperProfile();
 
 
