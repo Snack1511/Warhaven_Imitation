@@ -157,7 +157,7 @@ void CUI_Popup::Create_ConquestPopup()
 			GET_COMPONENT_FROM(m_pConquestPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_HighValueTargetPlayer.dds"));
 
 
-			m_pConquestPopup[i]->Set_PosY(210.f);
+			m_pConquestPopup[i]->Set_PosY(200.f);
 
 			m_pConquestPopup[i]->Set_Scale(60.f);
 			m_pConquestPopup[i]->Set_Sort(0.53f);

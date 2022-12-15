@@ -11,6 +11,8 @@ END
 
 BEGIN(Client)
 
+class CUnit;
+
 class CColorController 
 	: public CComponent
 {
@@ -46,7 +48,7 @@ public:
 		_uint iStartKeyFrame = 0;
 		_uint iEndKeyFrame = 0;
 
-		_uint	iOriginAnimIndex = 0;
+		_uint	iOriginState = 0;
 
 		
 
@@ -80,6 +82,7 @@ public:
 private:
 	CModel* m_pTargetModel = nullptr;
 	CAnimator* m_pTargetAnimator = nullptr;
+	CUnit* m_pOwnerUnit = nullptr;
 
 private:
 	_float4 m_vOriginColor[MODEL_PART_END] = {};

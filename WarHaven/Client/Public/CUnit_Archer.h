@@ -3,6 +3,8 @@
 
 BEGIN(Client)
 
+class CAnimWeapon;
+
 class CUnit_Archer
 	: public CUnit
 {
@@ -35,6 +37,7 @@ public:
 	virtual void OnDisable() override;
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+
 
 };
 

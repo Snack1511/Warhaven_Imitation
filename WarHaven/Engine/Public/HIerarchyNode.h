@@ -76,8 +76,6 @@ public:
 	HRESULT Initialize(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, ANIM_DIVIDE eBoneType);
 	void Update_CombinedTransformationMatrix();
 
-	void	Release();
-
 private:
 	//애니메이션 분리용
 	_bool		m_bLocked = false;

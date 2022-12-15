@@ -22,6 +22,7 @@ class CTrailEffect;
 class CScript_FollowCam;
 class CCamera_Follow;
 class CPlayer;
+class CAnimWeapon;
 
 class CUnit abstract : public CGameObject
 {
@@ -362,17 +363,23 @@ protected:
 	_float		m_fDeadTimeAcc = 0.f;
 	_float		m_fDeadTime = 0.05f;
 
-
-
 protected:
 	list<CGameObject*>	m_DeathStones;
 	void	Add_DeathStones(const list<CGameObject*>& StoneParticleList);
 
 public:
 	void	Start_Reborn();
+
 	//AI가 Behavior를 변경할 때 호출
 	virtual void On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
 	virtual void On_FinishGame(_bool bWin);
+
+protected:
+	CAnimWeapon* m_pAnimWeapon = nullptr;
+
+public:
+	void	Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
+
 
 
 	/* 상태 체크 함수 */

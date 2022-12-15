@@ -13,7 +13,6 @@ CHierarchyNode::CHierarchyNode()
 
 CHierarchyNode::~CHierarchyNode()
 {
-	Release();
 }
 
 CHierarchyNode* CHierarchyNode::Create(CResource_Bone* pResource, CHierarchyNode* pParent, _uint iDepth, ANIM_DIVIDE eBoneType)
@@ -103,7 +102,9 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 
 	strcpy_s(m_szName, pResource->Get_Name().c_str());
 
-	if (pResource->Get_Name() == "Root")
+	if (pResource->Get_Name() == "Root" ||
+		pResource->Get_Name() == "1B_LongBow_Root"
+		)
 		m_bMoveNode = true;
 
 	if (pResource->Get_Name() == "0B_L_Thigh" || pResource->Get_Name() == "0B_R_Thigh")
@@ -172,85 +173,21 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 
 void CHierarchyNode::Update_CombinedTransformationMatrix()
 {
-	if (m_bMoveNode) {
-		//루트노드일 떄 해야대는거
-		//1. 현재 컴바인드매트릭스 받아서 저장함
+	if (m_pParent)
+	{
 		XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix)
 			// 부모의 CombinedMatrix 를 가져와 내 Transform 이랑 곱해서 나의 Combined 를 만듦.
-			* XMLoadFloat4x4(&m_pParent->m_SendCombinedTransformationMatrix));
-
-		//2. 이전 컴바인드매트릭스랑 현재꺼 비교해서 이동값 구함
-
-		//_matrix CurMat = XMLoadFloat4x4(&m_CombinedTransformationMatrix);
-		//_matrix PreMat = XMLoadFloat4x4(&m_PrevCombinedTransformationMatrix);
-		//_float4 vMove = CurMat.r[3] - PreMat.r[3];
-		//_float fMoveLength = vMove.Length() * 0.01f;
-
-		//if (fMoveLength < 0.5f)
-		//{
-
-		//	_float4 vPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
-		//	m_pOwner->Get_Transform()->Set_World(WORLD_POS, vPos + (m_pOwner->Get_Transform()->Get_World(WORLD_LOOK) * fMoveLength ));
-		//}
-
-
-
-		XMStoreFloat4x4(&m_SendCombinedTransformationMatrix, XMLoadFloat4x4(&m_CombinedTransformationMatrix));
-
-		//3. 던져줄 컴바인드매트릭스 갱신
-		for (int i = 0; i < 3; ++i)
-		{
-			m_SendCombinedTransformationMatrix.m[3][i] = 0.f;
-		}
-
-		m_SendCombinedTransformationMatrix.m[3][3] = 1.f;
-
-
-
-		m_PrevCombinedTransformationMatrix = m_CombinedTransformationMatrix;
+			* XMLoadFloat4x4(&m_pParent->m_CombinedTransformationMatrix));
 	}
 	else
 	{
-		if (nullptr == m_pParent)
-		{
-			m_CombinedTransformationMatrix = m_TransformationMatrix;
-			m_SendCombinedTransformationMatrix = m_CombinedTransformationMatrix;
-
-		}
-
-		else
-		{
-			
-			//얘는 루트노ㅓ드가 아니라니까?
-			if (m_pParent->m_bMoveNode)
-			{
-				int a = 0;
-			
-
-			}
-				
-			XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix)
-				// 부모의 CombinedMatrix 를 가져와 내 Transform 이랑 곱해서 나의 Combined 를 만듦.
-				* XMLoadFloat4x4(&m_pParent->m_SendCombinedTransformationMatrix));
-
-			m_SendCombinedTransformationMatrix = m_CombinedTransformationMatrix;
-
-		}
+		m_CombinedTransformationMatrix = m_TransformationMatrix;
 	}
 
-	
-
-	//if (nullptr == m_pParent)
-	//m_CombinedTransformationMatrix = m_TransformationMatrix;
-	//	
-	//else
-	//XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix)
-	//	// 부모의 CombinedMatrix 를 가져와 내 Transform 이랑 곱해서 
-	//	* XMLoadFloat4x4(&m_pParent->m_CombinedTransformationMatrix));
+	if (m_bMoveNode) 
+	{
+		//루트노드일 떄 해야대는거
+		//3. 포지션 0 으로
+		ZeroMemory(&m_CombinedTransformationMatrix.m[3], sizeof(_float3));
+	}
 }
-
-void CHierarchyNode::Release()
-{
-	
-}
-

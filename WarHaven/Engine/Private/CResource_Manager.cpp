@@ -110,6 +110,7 @@ void CResource_Manager::Clear_Resources()
 
 void CResource_Manager::Save_Memory()
 {
+#ifdef MEMORY_SAVE
 	for (auto iter = m_mapTextures.begin(); iter != m_mapTextures.end();)
 	{
 		ULONG dwCnt = iter->second.Reset();
@@ -118,6 +119,7 @@ void CResource_Manager::Save_Memory()
 		else
 			++iter;
 	}
+#endif
 
 	for (auto& elem : m_mapModelData)
 	{

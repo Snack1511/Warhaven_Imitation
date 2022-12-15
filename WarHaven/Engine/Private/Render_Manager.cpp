@@ -105,6 +105,12 @@ void CRender_Manager::Stop_DarkScreen(_float fTime)
 	m_bDarkScreen = false;
 }
 
+void CRender_Manager::Start_MotionBlur(_float fTime)
+{
+	m_bMotionBlur = true;
+	m_fMotionBlurAcc = fTime;
+}
+
 void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance)
 {
 	m_ShadowViewMatrix.Identity();
@@ -759,6 +765,19 @@ void CRender_Manager::Update()
 
 	}
 
+	if (m_bMotionBlur)
+	{
+		if (m_fMotionBlurAcc > 0.f)
+		{
+			m_fMotionBlurAcc -= fDT(0);
+		}
+		else
+		{
+			m_bMotionBlur = false;
+		}
+	}
+	
+
 }
 
 HRESULT CRender_Manager::Render()
@@ -878,12 +897,15 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_PostEffect()))
 		return E_FAIL;
 
-	
+	wstring wstrRenderTargetName = L"Target_PostEffect";
 
-	if (FAILED(Render_MotionBlur()))
-		return E_FAIL;
+	if (m_bMotionBlur)
+	{
+		if (FAILED(Render_MotionBlur(wstrRenderTargetName.c_str())))
+			return E_FAIL;
 
-	wstring wstrRenderTargetName = L"Target_MotionBlur";
+		wstrRenderTargetName = L"Target_MotionBlur";
+	}
 
 	if (m_fChromaticAberrationPower > 0.f)
 	{
@@ -1792,13 +1814,7 @@ HRESULT CRender_Manager::Render_PostEffect()
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DistortionTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Distortion")))))
 		return E_FAIL;
 
-	//bool
-	static _bool g_bBilateral = false;
-
-	if (KEY(F8, TAP))
-		g_bBilateral = !g_bBilateral;
-
-	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_bBilateral", &g_bBilateral, sizeof(_bool));
+	
 
 
 	m_vecShader[SHADER_DEFERRED]->Begin(6);
@@ -1895,7 +1911,7 @@ HRESULT CRender_Manager::Render_FinalBlend()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_MotionBlur()
+HRESULT CRender_Manager::Render_MotionBlur(const _tchar* pRenderTargetName)
 {
 	//1. 모션블러 텍스쳐 굽기
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_MotionBlurAcc"))))
@@ -1904,7 +1920,7 @@ HRESULT CRender_Manager::Render_MotionBlur()
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
 		return E_FAIL;
 
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_PostEffect")))))
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(pRenderTargetName))))
 		return E_FAIL;
 
 	//이전 행렬 던지기
@@ -1931,7 +1947,9 @@ HRESULT CRender_Manager::Render_MotionBlur()
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fRadialPower, sizeof(_float));
 
+	//bool
 
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_bMotionBlur", &m_bMotionBlur, sizeof(_bool));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(5)))
 		return E_FAIL;

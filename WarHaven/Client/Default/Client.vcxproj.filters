@@ -2698,6 +2698,12 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive">
       <UniqueIdentifier>{bef207b3-d8b8-4453-babd-496a4118894b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon">
+      <UniqueIdentifier>{9e4f6444-3584-49e1-9fc8-8129483c1157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile">
+      <UniqueIdentifier>{1aaa6b96-3866-40f8-b9fd-09b3c145c597}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -4848,6 +4854,12 @@
     <ClInclude Include="..\public\CRevive_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CAnimWeapon.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CProjectile.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -6978,6 +6990,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CRevive_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CAnimWeapon.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CProjectile.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

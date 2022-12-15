@@ -657,4 +657,11 @@ void CUnit_Valkyrie::My_LateTick()
 
 }
 
+void CUnit_Valkyrie::On_FinishGame(_bool bWin)
+{
+	/* 변신 해제 */
+	m_pOwnerPlayer->On_FinishHero();
+	m_pOwnerPlayer->Get_CurrentUnit()->On_FinishGame(bWin);
+}
+
 

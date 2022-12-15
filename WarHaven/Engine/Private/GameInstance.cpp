@@ -445,6 +445,11 @@ void CGameInstance::Stop_DarkScreen(_float fTime)
 	m_pRenderManager->Stop_DarkScreen(fTime);
 }
 
+void CGameInstance::Start_MotionBlur(_float fTime)
+{
+	m_pRenderManager->Start_MotionBlur(fTime);
+}
+
 list<CGameObject*>& CGameInstance::Get_ObjGroup(const _uint& iGroupIdx)
 {
 	return m_pObjectManager->Get_ObjGroup(iGroupIdx);

@@ -44,6 +44,8 @@
 
 #include "CUtility_Transform.h"
 
+#include "CAnimWeapon.h"
+
 #include "CUser.h"
 #include "CUI_Wrapper.h"
 #include "CUI_UnitHUD.h"
@@ -603,11 +605,17 @@ void CUnit::OnEnable()
 	}
 
 	m_bRespawn = false;
+
+
+	if (m_pAnimWeapon)
+		ENABLE_GAMEOBJECT(m_pAnimWeapon);
 }
 
 void CUnit::OnDisable()
 {
 	__super::OnDisable();
+	if (m_pAnimWeapon)
+		DISABLE_GAMEOBJECT(m_pAnimWeapon);
 }
 
 
@@ -1179,6 +1187,14 @@ void CUnit::On_FinishGame(_bool bWin)
 {
 	Enter_State((bWin) ? STATE_VICTORY : STATE_DEFEAT);
 	m_eReserveState = STATE_END;
+}
+
+void CUnit::Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed)
+{
+	if (!m_pAnimWeapon)
+		return;
+
+	m_pAnimWeapon->Set_AnimIndex(iAnimIndex, fInterpolateTime, fAnimSpeed);
 }
 
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)

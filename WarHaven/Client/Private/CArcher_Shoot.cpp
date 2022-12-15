@@ -14,6 +14,8 @@
 
 #include "CCamera_Follow.h"
 
+#include "CAnimWeapon.h"
+
 
 CArcher_Shoot::CArcher_Shoot()
 {
@@ -155,6 +157,8 @@ HRESULT CArcher_Shoot::Initialize()
 
 void CArcher_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLAUNCH, m_fInterPolationTime, m_fAnimSpeed);
+
 	pOwner->Get_Status().fRunSpeed = 4.f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -174,6 +178,8 @@ STATE_TYPE CArcher_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CArcher_Shoot::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
+
 	__super::Exit(pOwner, pAnimator);
 }
 

@@ -14,6 +14,8 @@
 
 #include "CCamera_Follow.h"
 
+#include "CAnimWeapon.h"
+
 
 CArcher_Attack_Begin::CArcher_Attack_Begin()
 {
@@ -168,6 +170,7 @@ void CArcher_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 {
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, m_fInterPolationTime, m_fAnimSpeed);
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -197,6 +200,8 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CArcher_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     //Exit에선 무조건 남겨놔야함
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
+
     pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }

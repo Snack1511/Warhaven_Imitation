@@ -14,6 +14,8 @@
 
 #include "CCamera_Follow.h"
 
+#include "CAnimWeapon.h"
+
 
 CArcher_Aiming::CArcher_Aiming()
 {
@@ -175,6 +177,8 @@ HRESULT CArcher_Aiming::Initialize()
 
 void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, m_fInterPolationTime, m_fAnimSpeed);
+
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
 	if (ePrevType == STATE_ATTACK_AIMING_ARCHER)
@@ -201,6 +205,7 @@ STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CArcher_Aiming::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     /* 할거없음 */
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
 
     //Exit에선 무조건 남겨놔야함
     pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);

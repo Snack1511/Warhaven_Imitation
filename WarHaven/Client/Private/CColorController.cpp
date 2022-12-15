@@ -10,6 +10,8 @@
 #include "Model.h"
 #include "CAnimator.h"
 
+#include "CUnit.h"
+
 CColorController::CColorController(_uint iGroupIdx)
 	:CComponent(iGroupIdx)
 {
@@ -41,8 +43,8 @@ HRESULT CColorController::Add_ColorControll(const COLORDESC& tColorDesc)
 		if (tColorDesc.eFadeStyle == KEYFRAME)
 			return E_FAIL;
 
-	if (tColorDesc.eFadeStyle == KEYFRAME)
-		m_ColorDesclist.back().iOriginAnimIndex = m_pTargetAnimator->Get_CurAnimIndex();
+
+	m_ColorDesclist.back().iOriginState = m_pOwnerUnit->Get_CurState();
 
 	
 	return S_OK;
@@ -71,6 +73,8 @@ void CColorController::Start()
 
 	if(TYPE_ANIM == m_pTargetModel->Get_ModelType())
 		m_pTargetAnimator = GET_COMPONENT_FROM(m_pOwner, CAnimator);
+
+	m_pOwnerUnit = dynamic_cast<CUnit*>(m_pOwner);
 }
 
 void CColorController::Tick()
@@ -115,6 +119,15 @@ void CColorController::OnDead()
 
 _bool CColorController::LerpColor(COLORDESC& tColorDesc)
 {
+	if (m_pOwnerUnit)
+	{
+		if (tColorDesc.iOriginState != m_pOwnerUnit->Get_CurState())
+		{
+			m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
+			return false;
+		}
+	}
+
 	switch (tColorDesc.eFadeStyle)
 	{
 	case Client::CColorController::TIME:
@@ -211,14 +224,7 @@ _bool CColorController::Fade_Time(COLORDESC& tColorDesc)
 
 _bool CColorController::Fade_KeyFrame(COLORDESC& tColorDesc)
 {
-	/* AnimIndex°¡ ÀüÀÌ¶û ´Ù¸£¸é °Á false return*/
-	/*_uint iCurIndex = m_pTargetAnimator->Get_CurAnimIndex();
-	if (iCurIndex != tColorDesc.iOriginAnimIndex)
-	{
-		m_pTargetModel->Set_RimLightFlag(tColorDesc.iMeshPartType, m_vOriginColor[tColorDesc.iMeshPartType]);
 
-		return false;
-	}*/
 
 	_uint iCurFrame = m_pTargetAnimator->Get_CurAnimFrame();
 	

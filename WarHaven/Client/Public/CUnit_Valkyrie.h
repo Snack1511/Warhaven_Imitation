@@ -50,6 +50,10 @@ public:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 
+public:
+	virtual void On_FinishGame(_bool bWin);
+
+
 private:
 	_float4 m_vTrailShader;
 	list<CGameObject*> m_TransformParticles;

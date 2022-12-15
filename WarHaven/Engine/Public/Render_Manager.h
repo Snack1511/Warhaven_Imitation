@@ -38,6 +38,8 @@ public:
 	void	Start_DarkScreen(_float fTime);
 	void	Stop_DarkScreen(_float fTime);
 
+	void	Start_MotionBlur(_float fTime);
+
 public:
 	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance);
 
@@ -95,6 +97,9 @@ private:
 	_float	m_fDarkScreenAcc = 0.f;
 	_float	m_fDarkScreenTime = 0.f;
 
+private:
+	_bool	m_bMotionBlur = false;
+	_float	m_fMotionBlurAcc = 0.f;
 
 #ifdef _DEBUG
 private:
@@ -134,7 +139,7 @@ private:
 	HRESULT	Render_PostEffect();
 	HRESULT	Render_SSD();
 	HRESULT	Render_FinalBlend();
-	HRESULT Render_MotionBlur();
+	HRESULT Render_MotionBlur(const _tchar* pRenderTargetName);
 	HRESULT	Render_RadialBlur(const _tchar* pRenderTargetName);
 	HRESULT	Render_ChromaticAberration(const _tchar* pRenderTargetName);
 	HRESULT	Render_GrayScale(const _tchar* pRenderTargetName);

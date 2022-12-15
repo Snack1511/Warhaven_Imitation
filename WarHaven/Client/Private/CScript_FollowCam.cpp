@@ -53,6 +53,8 @@ void CScript_FollowCam::Start_ShakingCamera(_float fPower, _float fTime)
 			return;
 	}
 
+	GAMEINSTANCE->Start_MotionBlur(fTime);
+
 	m_fShakingPower = fPower;
 	m_fShakingTime = fTime;
 	m_fShakingTimeAcc = 0.f;

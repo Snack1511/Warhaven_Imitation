@@ -136,7 +136,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	{
 	L"",
 	L"",
-	L"../bin/resources/meshes/weapons/longBow/SK_WP_LongBow0005_A00.fbx",
+	L"../bin/resources/meshes/weapons/longBow/SM_Bolt.fbx",
 	L"../bin/resources/meshes/Weapons/KiteShield/SM_WP_KiteShield0001_A00.fbx",
 	L"",
 	L"",	// ENGINEER
@@ -189,11 +189,13 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		}
 	}
 
+	tModelData[ARCHER].strRefBoneName[MODEL_PART_WEAPON_L] = "0B_R_WP1";
+
 	m_pAllUnitClass[WARRIOR] = CUnit_Warrior::Create(tModelData[WARRIOR]);
 	m_pAllUnitClass[ENGINEER] = CUnit_WarHammer::Create(tModelData[ENGINEER]);
 	m_pAllUnitClass[FIONA] = CUnit_Valkyrie::Create(tModelData[FIONA]);
 	//m_pAllUnitClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
-	//m_pAllUnitClass[ARCHER] = CUnit_Archer::Create(tModelData[ARCHER]);
+	m_pAllUnitClass[ARCHER] = CUnit_Archer::Create(tModelData[ARCHER]);
 	m_pAllUnitClass[PALADIN] = CUnit_Paladin::Create(tModelData[PALADIN]);
 	//m_pAllUnitClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
 
@@ -230,6 +232,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 
 	/* 변신 후 예약된 클래스 */
 	m_iReserveStateDefault[WARRIOR] = STATE_IDLE_PLAYER_R;
+	m_iReserveStateDefault[ARCHER] = STATE_IDLE_ARCHER_R;
 	m_iReserveStateDefault[ENGINEER] = STATE_IDLE_WARHAMMER_R;
 	m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
 	m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;

@@ -34,6 +34,8 @@ float		g_fTimeDelta = 0.f;
 
 float		g_fShaderPower = 0.f;
 
+bool		g_bMotionBlur = false;
+
 
 sampler DefaultSampler = sampler_state
 {
@@ -178,6 +180,12 @@ PS_OUT	PS_GRAYSCALE_MAIN(PS_DOWNSCALE_IN In)
 PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
+
+	if (!g_bMotionBlur)
+	{
+		Out.vColor = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
+		return Out;
+	}
 
 	//현재 뷰포트 포지션과
 	//같은 월드포지션에 이전 VP매트릭스를 곱해서 이전 뷰포트 위치얻기

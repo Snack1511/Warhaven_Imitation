@@ -14,6 +14,8 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CAnimWeapon.h"
+
 CUnit_Archer::CUnit_Archer()
 {
 }
@@ -267,7 +269,7 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 0.9f;
+	tDesc.fHeight = 0.5f;
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.2f;
 	// Ä® ºÙÀÏ »À
@@ -294,6 +296,17 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 
 	m_tUnitStatus.eClass = ARCHER;
+
+
+	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_LongBow_01.fbx",
+		L"../bin/resources/meshes/weapons/longbow/LongBow_Anim.fbx", this, "0B_L_WP1");
+
+	if (!m_pAnimWeapon)
+		return E_FAIL;
+
+	m_pAnimWeapon->Initialize();
+
+
 
 
 
@@ -324,6 +337,10 @@ HRESULT CUnit_Archer::Initialize()
 HRESULT CUnit_Archer::Start()
 {
 	__super::Start();
+
+	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pAnimWeapon);
+
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
 	SetUp_TrailEffect(
@@ -339,6 +356,9 @@ HRESULT CUnit_Archer::Start()
 		10,
 		"0B_R_WP1"
 	);
+
+	_float4x4 matTrans = XMMatrixRotationY(XMConvertToRadians(270.0f));
+	m_pModelCom->Set_TransformMatrix(MODEL_PART_WEAPON_L, matTrans);
 
 	return S_OK;
 }
@@ -361,17 +381,4 @@ void CUnit_Archer::My_Tick()
 void CUnit_Archer::My_LateTick()
 {
 	__super::My_LateTick();
-
-
-	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
-		return;
-
-	if (KEY(NUM8, TAP))
-		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 2.f, 0.f));
-		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
-
-	/*if (KEY(SPACE, TAP))
-	{
-		m_pPhysics->Set_Jump(7.f);
-	}*/
 }
