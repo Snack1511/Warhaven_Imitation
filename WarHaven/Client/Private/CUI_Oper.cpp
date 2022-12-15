@@ -401,6 +401,12 @@ void CUI_Oper::Progress_Oper()
 				{
 					for (int j = 0; j < Left_End; ++j)
 					{
+						if (j == Left_Num)
+						{
+							if (i == 0)
+								continue;
+						}
+
 						Enable_Fade(m_pArrLeftUI[i][j], fDuration);
 
 						_float4 vPos = m_pArrLeftUI[i][j]->Get_Pos();
