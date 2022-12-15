@@ -180,7 +180,6 @@ void CUI_Dead::Create_DeadUI()
 	m_pDeadUI[DU_Profile]->Set_Scale(222.f, 500.f);
 
 	GET_COMPONENT_FROM(m_pDeadUI[DU_EnemyName], CTexture)->Remove_Texture(0);
-	Read_Texture(m_pDeadUI[DU_EnemyName], "/Dead", "Tier");
 
 	m_pDeadUI[DU_EnemyName]->Set_PosY(-200.f);
 	m_pDeadUI[DU_EnemyName]->Set_Scale(100.f);

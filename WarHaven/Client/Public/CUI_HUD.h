@@ -73,7 +73,6 @@ private:
 
 private:
 	void Create_SquardInfo();
-	void Set_SquardInfo();
 
 private:
 	CUI_Object* m_pClassChangeText = nullptr;

@@ -128,6 +128,7 @@ void CUI_Oper::On_PointDown_RespawnBtn(const _uint& iEventNum)
 
 	CUser::Get_Instance()->SetActive_PadenUI(true);
 	CUser::Get_Instance()->SetActive_HUD(true);
+	CUser::Get_Instance()->SetActive_SquardInfo(true);
 
 	DISABLE_GAMEOBJECT(this);
 
@@ -432,9 +433,6 @@ void CUI_Oper::Progress_Oper()
 				}
 
 				Enable_Fade(m_pArrTargetPoint[0], fDuration);
-
-				//Enable_Fade(m_pOperMapIcon, fDuration);
-				//Enable_Fade(m_pOperMapBG, fDuration);
 
 				for (int i = 0; i < BU_End; ++i)
 				{

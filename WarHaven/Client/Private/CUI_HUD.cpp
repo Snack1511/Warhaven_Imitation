@@ -233,7 +233,35 @@ void CUI_HUD::SetActive_HeroTransformGauge(_bool value)
 
 void CUI_HUD::SetActive_SquardInfo(_bool value)
 {
-	Set_SquardInfo();
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+
+	auto iter = mapPlayers.begin();
+
+	vector<CPlayer*> vecPlayer;
+	for (auto& iter : mapPlayers)
+	{
+		vecPlayer.push_back(iter.second);
+	}
+
+	for (int i = 1; i < vecPlayer.size(); ++i)
+	{
+		_uint iTextureNum = vecPlayer[i]->Get_PlayerInfo()->Choose_Character();
+		wstring wstrPlayerName = vecPlayer[i]->Get_PlayerName();
+
+		_uint iIdx = (i - 1);
+
+		m_pArrSquardInfo[iIdx][Squard_Port]->Set_TextureIndex(iTextureNum);
+		m_pArrSquardInfo[iIdx][Squard_Num]->Set_TextureIndex(i);
+		m_pArrSquardInfo[iIdx][Squard_Num]->Set_FontText(wstrPlayerName);
+
+		for (int j = 0; j < Squard_End; ++j)
+		{
+			_float fPosY = -165.f - (iIdx * 35.f);
+			m_pArrSquardInfo[iIdx][j]->Set_PosY(fPosY);
+
+			m_pArrSquardInfo[iIdx][j]->SetActive(value);
+		}
+	}
 }
 
 _bool CUI_HUD::Is_OnHeroGauge()
@@ -325,39 +353,6 @@ void CUI_HUD::Create_SquardInfo()
 
 			CREATE_GAMEOBJECT(m_pArrSquardInfo[j][i], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrSquardInfo[j][i]);
-		}
-	}
-}
-
-void CUI_HUD::Set_SquardInfo()
-{
-	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
-
-	auto iter = mapPlayers.begin();
-
-	vector<CPlayer*> vecPlayer;
-	for (auto& iter : mapPlayers)
-	{
-		vecPlayer.push_back(iter.second);
-	}
-
-	for (int i = 1; i < vecPlayer.size(); ++i)
-	{
-		_uint iTextureNum = vecPlayer[i]->Get_PlayerInfo()->Choose_Character();
-		wstring wstrPlayerName = vecPlayer[i]->Get_PlayerName();
-
-		_uint iIdx = (i - 1);
-
-		m_pArrSquardInfo[iIdx][Squard_Port]->Set_TextureIndex(iTextureNum);
-		m_pArrSquardInfo[iIdx][Squard_Num]->Set_TextureIndex(i);
-		m_pArrSquardInfo[iIdx][Squard_Num]->Set_FontText(wstrPlayerName);
-
-		for (int j = 0; j < Squard_End; ++j)
-		{
-			_float fPosY = -165.f - (iIdx * 35.f);
-			m_pArrSquardInfo[iIdx][j]->Set_PosY(fPosY);
-
-			m_pArrSquardInfo[iIdx][j]->SetActive(true);
 		}
 	}
 }
