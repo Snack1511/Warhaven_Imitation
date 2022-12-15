@@ -26,8 +26,10 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Warrior::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 
+	m_iStopIndex = 50;
+
 	Add_KeyFrame(30, 1);
-	Add_KeyFrame(50, 2);
+	Add_KeyFrame(m_iStopIndex, 2);
 	Add_KeyFrame(40, 999);
 
 	return S_OK;

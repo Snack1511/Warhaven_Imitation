@@ -40,13 +40,13 @@ HRESULT CStop_Paladin_R::Initialize()
 	m_eStateType = STATE_STOP_PALADIN_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-	m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
-	m_vecAdjState.push_back(STATE_WALK_VALKYRIE_R);
-	m_vecAdjState.push_back(STATE_RUNBEGIN_VALKYRIE_R);
+	m_vecAdjState.push_back(STATE_IDLE_PALADIN_R);
+	m_vecAdjState.push_back(STATE_WALK_PALADIN_R);
+	m_vecAdjState.push_back(STATE_RUNBEGIN_PALADIN_R);
 
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_R);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_R);
 
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 23;
@@ -75,7 +75,7 @@ void CStop_Paladin_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 STATE_TYPE CStop_Paladin_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	//if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
-		//return STATE_RUN_BEGIN_VALKYRIE_R;
+		//return STATE_RUN_BEGIN_PALADIN_R;
 
 
 	return __super::Tick(pOwner, pAnimator);
@@ -94,7 +94,7 @@ STATE_TYPE CStop_Paladin_R::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 	return __super::Check_Condition(pOwner, pAnimator);
 
-	/* VALKYRIE가 Attack 으로 오는 조건
+	/* PALADIN가 Attack 으로 오는 조건
 	1.  Run 에서 WASD 키를 누르지 않았다면
 	*/
 

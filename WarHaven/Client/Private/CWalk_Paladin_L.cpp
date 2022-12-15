@@ -47,10 +47,7 @@ HRESULT CWalk_Paladin_L::Initialize()
     m_vecAdjState.push_back(STATE_JUMP_PALADIN_L);
     m_vecAdjState.push_back(STATE_RUN_PALADIN_L);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_PALADIN_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L);
 
 
 

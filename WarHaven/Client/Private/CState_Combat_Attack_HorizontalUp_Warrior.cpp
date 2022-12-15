@@ -30,8 +30,10 @@ HRESULT CState_Combat_Attack_HorizontalUp_Warrior::Initialize()
 	m_fMaxSpeed = 0.8f;
 
 
+	m_iStopIndex = 58;
+
 	Add_KeyFrame(38, 1);
-	Add_KeyFrame(58, 2);
+	Add_KeyFrame(m_iStopIndex, 2);
 
     return S_OK;
 }

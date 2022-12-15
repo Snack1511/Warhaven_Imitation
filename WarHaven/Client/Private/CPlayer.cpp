@@ -235,7 +235,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
 
 
-	/* ���� �ִϸ��̼� Index */
+	/* 변신 Index */
 	m_iChangeHeroAnimIndex[WARRIOR] = 62;
 	m_iChangeHeroAnimIndex[PALADIN] = 41;
 	m_iChangeHeroAnimIndex[ENGINEER] = 62;

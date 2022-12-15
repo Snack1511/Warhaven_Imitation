@@ -49,8 +49,10 @@ HRESULT CState_Combat_Attack_VerticalCut_Fiona::Initialize()
 
     m_iStateChangeKeyFrame = 57;
    
+    m_iStopIndex = 37;
+
 	Add_KeyFrame(29, 1);
-	Add_KeyFrame(37, 2);
+	Add_KeyFrame(m_iStopIndex, 2);
 	Add_KeyFrame(30, 999);
 	Add_KeyFrame(35, 998);
 

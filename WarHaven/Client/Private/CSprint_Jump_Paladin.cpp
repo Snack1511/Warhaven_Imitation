@@ -31,7 +31,7 @@ CSprint_Jump_Paladin* CSprint_Jump_Paladin::Create()
 HRESULT CSprint_Jump_Paladin::Initialize()
 {
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
-    m_iAnimIndex = 49;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 48;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_SPRINT_JUMP_PALADIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	m_fMyMaxLerp = 0.4f;
@@ -45,19 +45,12 @@ HRESULT CSprint_Jump_Paladin::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
-    // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
-    //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    //m_vecAdjState.push_back(STATE_SILDING);
-    //m_vecAdjState.push_back(STATE_RUN);
-    //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
     m_vecAdjState.push_back(STATE_SPRINT_JUMPFALL_PALADIN);
     m_vecAdjState.push_back(STATE_JUMP_LAND_PALADIN_R);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
 
 
     return S_OK;

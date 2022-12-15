@@ -43,12 +43,7 @@ HRESULT CRun_Paladin_L::Initialize()
     m_vecAdjState.push_back(STATE_WALK_PALADIN_L);
     m_vecAdjState.push_back(STATE_JUMP_PALADIN_L);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_PALADIN_L);
-
-    // 15
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L);
 
 
 
@@ -58,9 +53,9 @@ HRESULT CRun_Paladin_L::Initialize()
    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 20;
    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 21;
 
-   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 33;
-   m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 34;
-   m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
+   m_iDirectionAnimIndex[STATE_DIRECTION_S] = 34;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
+   m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
 
    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
 

@@ -35,16 +35,16 @@ HRESULT CRun_Paladin_Begin_R::Initialize()
 
     m_eAnimType = ANIM_BASE_R;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 11;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_RUNBEGIN_VALKYRIE_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = STATE_RUNBEGIN_PALADIN_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-    m_vecAdjState.push_back(STATE_SWITCH_L_TO_R_VALKYRIE);
-    m_vecAdjState.push_back(STATE_JUMP_VALKYRIE_R);
+    m_vecAdjState.push_back(STATE_SWITCH_L_TO_R_PALADIN);
+    m_vecAdjState.push_back(STATE_JUMP_PALADIN_R);
 
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_VALKYRIE_R);
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R);
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R);
-    m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
+    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_R);
+    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
+    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_R);
+    //m_vecAdjState.push_back(STATE_ATTACK_STING_PALADIN_R);
 
    m_iDirectionAnimIndex[STATE_DIRECTION_E] = 10;
 
@@ -73,12 +73,12 @@ STATE_TYPE CRun_Paladin_Begin_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (KEY(SPACE, TAP))
     {
-        return STATE_JUMP_VALKYRIE_R;
+        return STATE_JUMP_PALADIN_R;
     }
 
 
 	if (pAnimator->Is_CurAnimFinished())
-		return STATE_RUN_VALKYRIE_R;
+		return STATE_RUN_PALADIN_R;
 
     if (
         KEY(W, NONE) &&
@@ -89,7 +89,7 @@ STATE_TYPE CRun_Paladin_Begin_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
     {
         _uint* pInt = new _uint;
         *pInt = m_iCurDirection;
-        pOwner->Enter_State(STATE_STOP_VALKYRIE_R, (void*)pInt);
+        pOwner->Enter_State(STATE_STOP_PALADIN_R, (void*)pInt);
         return STATE_END;
 
     }

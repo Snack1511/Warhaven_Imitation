@@ -33,7 +33,7 @@ CSprintAttack_Paladin* CSprintAttack_Paladin::Create()
 HRESULT CSprintAttack_Paladin::Initialize()
 {
 	m_eAnimType = ANIM_ATTACK;          // 애니메이션의 메쉬타입
-	m_iAnimIndex = 19;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	m_iAnimIndex = 17;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_SPRINTATTACK_PALADIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	m_fMyMaxLerp = 0.4f;

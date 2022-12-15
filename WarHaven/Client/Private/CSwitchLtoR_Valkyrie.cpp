@@ -85,14 +85,14 @@ void CSwitchLtoR_Valkyrie::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CSwitchLtoR_Valkyrie::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
-	//	return STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R;
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_VALKYRIE_R;
 
- //   if (CUser::Get_Instance()->Get_LastKey() == KEY::V)
- //       return STATE_CHARGE_FRONT_VALKYRIE_R;
+    if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
+        return STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R;
 
- //   if (MOUSE_MOVE(MMS_WHEEL) > 0)
- //       return STATE_VERTICALATTACK_VALKYRIE_R;
+    if (MOUSE_MOVE(MMS_WHEEL) > 0)
+        return STATE_ATTACK_VERTICALCUT_VALKYRIE;
 
     return __super::Tick(pOwner, pAnimator);
 }

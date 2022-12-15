@@ -2698,6 +2698,51 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive">
       <UniqueIdentifier>{bef207b3-d8b8-4453-babd-496a4118894b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default">
+      <UniqueIdentifier>{e6ad7e73-ddd9-4335-804f-02600e82f4b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\04. ShieldSlam">
+      <UniqueIdentifier>{b36aae68-cb5b-48d9-87e1-a5a413624abb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle">
+      <UniqueIdentifier>{db622709-1b1d-4f1f-a8df-a1a175fa8cf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\02. Vertical">
+      <UniqueIdentifier>{20c1a66b-56e8-4183-a823-ebe0c770508f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle\01. Right">
+      <UniqueIdentifier>{3b83241f-dd6f-411f-80d4-f1ca0699bb8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle\02. Left">
+      <UniqueIdentifier>{e2cb8c51-2d74-42d5-8b42-0cb80215df64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall">
+      <UniqueIdentifier>{2a6893a3-5fc3-4b9a-a485-d041d1665be6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush">
+      <UniqueIdentifier>{ead31919-14fe-4d27-941d-78eded0f2718}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\01. Begin">
+      <UniqueIdentifier>{a378b980-ab04-42d6-97ec-eef91c9f8b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\02. Loop">
+      <UniqueIdentifier>{564c97d0-9b44-4b00-b06a-631f17351443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\03. End">
+      <UniqueIdentifier>{7d51007d-362c-4400-b3c6-52e259a85c0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\04. Hit">
+      <UniqueIdentifier>{07a4ee0d-0627-44f3-8647-45170e28c888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\01. Begin">
+      <UniqueIdentifier>{02e8733e-a254-443f-9d20-956c88d028fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\02. Loop">
+      <UniqueIdentifier>{54d7908f-1e7d-439f-b3ec-2300c8bffc06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\03. End">
+      <UniqueIdentifier>{450034d2-1d3c-4ed2-bd56-6b575156c6ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -4137,9 +4182,6 @@
     <ClInclude Include="..\Public\CRun_Paladin_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\03. Run\02. Loop\01. Right</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CJump_Paladin.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\05. Jump\01. Begin</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CJump_Paladin_L.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\05. Jump\01. Begin\02. Left</Filter>
     </ClInclude>
@@ -4847,6 +4889,45 @@
     </ClInclude>
     <ClInclude Include="..\public\CRevive_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_Attack_HorizontalMiddle.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_Attack_HorizontalMiddle_L.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_Attack_HorizontalMiddle_R.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_Attack_VerticalAttack.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\02. Vertical</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Paladin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\05. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_Attack_ShieldSlam.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\04. ShieldSlam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_Rush_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_Rush_End.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_Rush_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_ShieldWall_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_ShieldWall_End.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_ShieldWall_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPaladin_ShieldWall_Hit.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\04. Hit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -6978,6 +7059,42 @@
     </ClCompile>
     <ClCompile Include="..\private\CRevive_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_Attack_HorizontalMiddle.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_Attack_HorizontalMiddle_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_Attack_HorizontalMiddle_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_Attack_VerticalAttack.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\02. Vertical</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_Attack_ShieldSlam.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\04. ShieldSlam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_Rush_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_Rush_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_Rush_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_ShieldWall_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_ShieldWall_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_ShieldWall_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPaladin_ShieldWall_Hit.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\04. Hit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

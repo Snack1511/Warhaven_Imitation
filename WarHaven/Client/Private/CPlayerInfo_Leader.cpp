@@ -6,6 +6,8 @@
 
 #include "CPersonality_Default.h"
 
+#include "CGameSystem.h"
+
 CPlayerInfo_Leader::CPlayerInfo_Leader()
 {
 }

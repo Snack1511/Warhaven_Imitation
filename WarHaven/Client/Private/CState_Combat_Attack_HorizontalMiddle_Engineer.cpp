@@ -32,9 +32,10 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Engineer::Initialize()
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 0.5f;
 
+	m_iStopIndex = 80;
 
 	Add_KeyFrame(58, 1);
-	Add_KeyFrame(80, 2);
+	Add_KeyFrame(m_iStopIndex, 2);
 	Add_KeyFrame(69, 999);
 
 	return __super::Initialize();

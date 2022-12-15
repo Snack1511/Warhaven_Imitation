@@ -35,6 +35,8 @@ HRESULT CState_NoPattern::Initialize()
 
 void CState_NoPattern::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    assert(0);
+
     ePrevType = m_ePreStateType;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

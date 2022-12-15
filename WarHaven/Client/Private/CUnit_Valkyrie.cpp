@@ -149,6 +149,8 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_FIONA;
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_FIONA;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_FIONA_L;
+
+		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_FIONA_R;
 		break;
 
 	default:
@@ -246,32 +248,40 @@ void CUnit_Valkyrie::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	switch (m_eCurState)
 	{
 	case STATE_ATTACK_HORIZONTALUP_VALKYRIE_L:
+	case AI_STATE_COMBAT_HORIZONTALUP_FIONA_L:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L:
+	case AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_L:
 	case STATE_SPINATTACK_VALKYRIE:
+	case AI_STATE_COMBAT_SPINATTACK_FIONA:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L:
+	case AI_STATE_COMBAT_HORIZONTALDOWN_FIONA_L:
 	case STATE_SPRINTATTACK_VALKYRIE:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_HORIZONTALUP_VALKYRIE_R:
+	case AI_STATE_COMBAT_HORIZONTALUP_FIONA_R:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R:
+	case AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_R:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R:
+	case AI_STATE_COMBAT_HORIZONTALDOWN_FIONA_R:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
 		break;
 
 	case STATE_ATTACK_VERTICALCUT_VALKYRIE:
+	case AI_STATE_COMBAT_VERTICALCUT_FIONA:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
 		break;
 
@@ -438,9 +448,9 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 0.9f;
+	tDesc.fHeight = 1.1f;
 	// Ä® µÎ²²
-	tDesc.fRadius = 0.1f;
+	tDesc.fRadius = 0.15f;
 	// Ä® ºÙÀÏ »À
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 
