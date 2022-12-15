@@ -97,6 +97,7 @@ public:
 	static _float4 BounceEaseOut(_float4 vStartPoint, _float4 vTargetPoint, _float fPassedTime, _float fTotalTime);
 
 public:
+	static _float Linear(_float fStartVlue, _float fTargetValue, _float fPassedTime, _float fTotalTime);
 	static _float SinIn(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime);
 	static _float sinfOut(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime);
 	static _float sinfInOut(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime);

@@ -41,6 +41,7 @@ HRESULT CMainApp::Initialize()
 	ShowCursor(true);
 #else
 	ShowCursor(false);
+	ShowCursor(true);
 #endif // _DEBUG
 
 

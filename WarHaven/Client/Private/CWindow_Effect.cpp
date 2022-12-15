@@ -948,6 +948,8 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR;
 			if (ImGui::Selectable("UVTEXTURESELECT", &bSelect[VTXRECTINSTANCE_PASS_UVTEXTURESELECT]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_UVTEXTURESELECT;
+			if (ImGui::Selectable("UVCOLORSELECT", &bSelect[VTXRECTINSTANCE_PASS_UVCOLORSELECT]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_UVCOLORSELECT;
 			if (ImGui::Selectable("FLARE", &bSelect[VTXRECTINSTANCE_PASS_FLARE]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_FLARE;
 			
@@ -1361,6 +1363,8 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_LINEAR;
 			if (ImGui::Selectable("ROTATION", &bCurveSelect[CURVE_ROTATION]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_ROTATION;
+			if (ImGui::Selectable("CAMROT", &bCurveSelect[CURVE_CAMROT]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CAMROT;
 			if (ImGui::Selectable("SINE", &bCurveSelect[CURVE_SIN]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SIN;
 			if (ImGui::Selectable("SPRAL", &bCurveSelect[CURVE_SPIRAL]))
