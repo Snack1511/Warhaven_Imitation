@@ -197,7 +197,7 @@ void CUI_KillLog::Init_VictimTextPos(wstring Text)
 {
 	m_pVictim[Kill_Name]->Set_FontText(Text);
 
-	_float fTextHalfSize = (Text.size() * 0.5f) * m_fTextPt;
+	_float fTextHalfSize = (Text.size() * 0.5f) * 10.f;
 
 	_float fMaxPosX = 640.f - Text.size();
 	_float fVictimPosX = fMaxPosX - fTextHalfSize;
@@ -206,20 +206,20 @@ void CUI_KillLog::Init_VictimTextPos(wstring Text)
 
 	_float IconPos = fVictimPosX - fTextHalfSize;
 
-	m_pVictim[Kill_Icon]->Set_PosX(IconPos - m_fIconBlank);
-	m_pDeadByIcon->Set_PosX(m_pVictim[Kill_Icon]->Get_PosX() - m_fWhitespace);
-	m_pAttacker[Kill_Icon]->Set_PosX(m_pDeadByIcon->Get_PosX() - m_fWhitespace);
+	m_pVictim[Kill_Icon]->Set_PosX(IconPos - 30.f);
+	m_pDeadByIcon->Set_PosX(m_pVictim[Kill_Icon]->Get_PosX() - 35.f);
+	m_pAttacker[Kill_Icon]->Set_PosX(m_pDeadByIcon->Get_PosX() - 35.f);
 }
 
 void CUI_KillLog::Init_AttackerTextPos(wstring Text)
 {
 	m_pAttacker[Kill_Name]->Set_FontText(Text);
 
-	_float fTextHalfSize = (Text.size() * 0.5f) * m_fTextPt;
+	_float fTextHalfSize = (Text.size() * 0.5f) * 10.f;
 
 	_float fPosX = m_pAttacker[Kill_Icon]->Get_PosX();
 
-	_float fBenchmarkPosX = fPosX - m_fIconBlank;
+	_float fBenchmarkPosX = fPosX - 35.f;
 	_float fAttackerPosX = fBenchmarkPosX - fTextHalfSize;
 
 	m_pAttacker[Kill_Name]->Set_PosX(fAttackerPosX);

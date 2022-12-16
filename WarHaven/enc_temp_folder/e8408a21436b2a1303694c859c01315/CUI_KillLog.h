@@ -52,8 +52,6 @@ private:
 	_float4 vColorGreen = _float4(0.f, 0.4f, 0.2f, 1.f);
 
 	_float4 vDeadByPos;
-	_float m_fTextPt = 10.f
-	_float m_fIconBlank = 20.f;
 	_float m_fWhitespace = 35.f;
 
 private:
