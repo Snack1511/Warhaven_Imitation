@@ -21,15 +21,13 @@ HRESULT CWalk_Paladin::Initialize()
 {
     m_fInterPolationTime = 0.2f;
 
-
-	////m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
-    /*나중에 추가*/
-    //m_vecAdjState.push_back(STATE_COUNTER_PALADIN);
-    //m_vecAdjState.push_back(STATE_SHIELDATTACK_PALADIN);
-    //m_vecAdjState.push_back(STATE_SPINATTACK_PALADIN);
-    //m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
+
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
+    m_vecAdjState.push_back(STATE_SHIELDWALL_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
@@ -73,31 +71,20 @@ void CWalk_Paladin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CWalk_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Walk로 오는 조건
-    1. 
-    */
 
-
-        // 천천히 
-        if (KEY(C, HOLD))
+    if (KEY(C, HOLD))
+    {
+        // 걸어간다.
+        if (KEY(W, HOLD) ||
+            KEY(A, HOLD) ||
+            KEY(S, HOLD) ||
+            KEY(D, HOLD))
         {
-            // 걸어간다.
-            if (KEY(W, HOLD) ||
-                KEY(A, HOLD) ||
-                KEY(S, HOLD) ||
-                KEY(D, HOLD))
-            {
 
-                return m_eStateType;
-            }
-
+            return m_eStateType;
         }
-        //CTRL 로 바꾸셈.
-      
-      
 
-   
-
+    }
 
     return STATE_END;
 }

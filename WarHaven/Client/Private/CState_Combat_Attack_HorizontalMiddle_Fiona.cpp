@@ -30,6 +30,8 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Fiona::Initialize()
 
 	m_iStateChangeKeyFrame = 60;
 
+	m_iStopIndex = 50;
+
 	Add_KeyFrame(30, 1);
 	Add_KeyFrame(50, 2);
 	Add_KeyFrame(40, 999);

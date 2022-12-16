@@ -9,6 +9,8 @@
 
 #include "CUser.h"
 
+#include "CColorController.h"
+
 CState_Combat_Attack::CState_Combat_Attack()
 {
 }
@@ -26,6 +28,23 @@ HRESULT CState_Combat_Attack::Initialize()
 
 void CState_Combat_Attack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 1.f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	//tColorDesc.vTargetColor *= 1.1f;
+	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+	tColorDesc.iStartKeyFrame = 2;
+	tColorDesc.iEndKeyFrame = m_iStopIndex; // 프레임 맞춰놓음
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

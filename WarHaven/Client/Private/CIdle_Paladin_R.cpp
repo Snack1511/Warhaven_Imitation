@@ -55,6 +55,7 @@ HRESULT CIdle_Paladin_R::Initialize()
     m_fAnimSpeed = 1.f;
 
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 
     m_vecAdjState.push_back(STATE_SWITCH_R_TO_L_PALADIN);
 
@@ -62,18 +63,14 @@ HRESULT CIdle_Paladin_R::Initialize()
     m_vecAdjState.push_back(STATE_JUMP_PALADIN_R);
     m_vecAdjState.push_back(STATE_RUNBEGIN_PALADIN_R);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
 
-    ///*나중에 추가*/
-    //m_vecAdjState.push_back(STATE_COUNTER_PALADIN);
-    //m_vecAdjState.push_back(STATE_SHIELDATTACK_PALADIN);
-    //m_vecAdjState.push_back(STATE_SPINATTACK_PALADIN);
+    m_vecAdjState.push_back(STATE_SHIELDWALL_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
+    
 
 
 

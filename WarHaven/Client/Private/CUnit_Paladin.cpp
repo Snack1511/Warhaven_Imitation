@@ -71,31 +71,23 @@ void CUnit_Paladin::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_BLUEATTACK : COL_REDATTACK;
 	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_BLUEGUARDBREAK : COL_REDGUARDBREAK;
 	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_BLUEFLYATTACK : COL_REDFLYATTACK;
+	COL_GROUP_CLIENT	eFlyGuardBreakAttack = (bPlayer) ? COL_BLUEFLYATTACKGUARDBREAK : COL_REDFLYATTACKGUARDBREAK;
 
-
-
-	//CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
-	//{
-	//	//Radius,	vOffsetPos.		eColType
-	//	{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
-	//	{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
-	//};
 
 	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
-		{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
+		{0.6f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxBody },
+		{0.7f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxBody },
 	};
 
-	//SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_COM"));
 	SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
 
 	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.7f, _float4(0.f, 0.5f, 0.f),eHitBoxGuard },
-		{0.7f, _float4(0.f, 1.2f, 0.f),eHitBoxGuard },
+		{0.9f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxGuard },
+		{0.9f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
 	};
 
 	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
@@ -109,64 +101,155 @@ void CUnit_Paladin::SetUp_Colliders(_bool bPlayer)
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
 
 
-	const _uint iWeaponSphereNum = 6;
+	const _uint iWeaponSphereNum = 8;
+
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
 	{
 		tWeaponUnitColDesc[i].fRadius = 0.2f;
-		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
-		tWeaponUnitColDesc[i].eColType = eAttack;
+		tWeaponUnitColDesc[i].vOffsetPos.z = -10.f * _float(i);
+		tWeaponUnitColDesc[i].eColType = (_uint)eAttack;
 	}
+
+	tWeaponUnitColDesc[iWeaponSphereNum - 1].fRadius = 0.4f;
 
 	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = eGuardBreak;
+		tWeaponUnitColDesc[i].eColType = (_uint)eGuardBreak;
 
-	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = eFlyAttack;
+	const _uint iShieldSphereNum = 25;
 
-	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+	_uint iDivide = 5;
+
+	iDivide = iShieldSphereNum / iDivide;
+
+	CUnit::UNIT_COLLIDERDESC tShieldUnitColDesc[iShieldSphereNum];
+
+	for (_uint i = 0; i < iDivide; ++i)
+	{
+		_float fOffSetY = -10.f;
+
+		fOffSetY += (5.f * i);
+
+
+		for (_uint j = 0; j < iDivide; ++j)
+		{
+			_float fOffSetX = -10.f;
+
+			fOffSetX += (5.f * j);
+
+			_int iIndex = i * (iDivide) + j;
+
+			tShieldUnitColDesc[iIndex].fRadius = 0.4f;
+			tShieldUnitColDesc[iIndex].vOffsetPos.x = fOffSetX * (j + 1);
+			tShieldUnitColDesc[iIndex].vOffsetPos.z = fOffSetY * (i + 1);
+			tShieldUnitColDesc[iIndex].eColType = (_uint)eFlyGuardBreakAttack;
+		}
+
+	}
+
+	// 방패 돌진 스킬
+	SetUp_UnitCollider(CUnit::GROGGY, tShieldUnitColDesc, iShieldSphereNum, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
+
+	for (_uint i = 0; i < iShieldSphereNum; ++i)
+		tShieldUnitColDesc[i].eColType = (_uint)eFlyAttack;
+
+	// 휠 스킬
+	SetUp_UnitCollider(CUnit::FLYATTACK, tShieldUnitColDesc, iShieldSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
+
 	
 
+	tUnitColDesc[0].fRadius = 1.3f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 1.3f, 0.f);
+	tUnitColDesc[0].eColType = eGuardBreak;
+
+	// 방패 찍기 스킬
+	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false);
 
 }
 
-void	CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
+void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
 
 	switch (eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
-		m_tHitType.eHitState = STATE_HIT_WARHAMMER;
-		m_tHitType.eGuardState = STATE_GUARDHIT_WARHAMMER;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARHAMMER;
-		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARHAMMER;
-		m_tHitType.eStingHitState = STATE_STINGHIT_WARHAMMER;
-		m_tHitType.eFlyState = STATE_FLYHIT_WARHAMMER;
-		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
+		m_tHitType.eHitState = STATE_HIT_PALADIN;
+		m_tHitType.eGuardState = STATE_GUARDHIT_PALADIN;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PALADIN;
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_PALADIN;
+		m_tHitType.eStingHitState = STATE_STINGHIT_PALADIN;
+		m_tHitType.eFlyState = STATE_FLYHIT_PALADIN;
+		m_tHitType.eBounce = STATE_BOUNCE_PALADIN_L;
 		break;
 
-	case Client::CUnit::UNIT_TYPE::eAI_TG:
-	case Client::CUnit::UNIT_TYPE::eSandbag:
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
+	
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
+
+		
+		//m_eDefault = AI_COMBAT
+
+		break;
+
+		
+
 		break;
 
 	default:
 		break;
 	}
 		
+}
+
+void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
+{
+	__super::On_ChangeBehavior(pBehaviorDesc);
+
+	if (nullptr == pBehaviorDesc)
+		assert(0);
+
+	STATE_TYPE	eNewState = STATE_END;
+
+	switch (pBehaviorDesc->eCurType)
+	{
+	case eBehaviorType::ePatrol:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		break;
+	case eBehaviorType::eFollow:
+		//상태변경
+		break;
+	case eBehaviorType::eAttack:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+
+		break;
+	case eBehaviorType::ePathNavigation:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		break;
+
+	case eBehaviorType::eResurrect:
+		//상태변경
+		break;
+
+	case eBehaviorType::eChange:
+		//상태변경
+		eNewState = AI_STATE_COMMON_CHANGE_HERO;
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	if (eNewState != STATE_END)
+		m_eReserveState = eNewState;
+
 }
 
 void CUnit_Paladin::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
@@ -184,49 +267,22 @@ void CUnit_Paladin::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	switch (m_eCurState)
 	{
-	case STATE_ATTACK_HORIZONTALUP_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, matWorld);
+	case STATE_SPRINTATTACK_PALADIN:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_D", vHitPos, matWorld);
+		break;
+	case STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_Left", vHitPos, matWorld);
+		break;
+	case STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_Right", vHitPos, matWorld);
 		break;
 
-	case STATE_ATTACK_HORIZONTALMIDDLE_L:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
-	case AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_HORIZONTALDOWN_L:
-	case STATE_SPRINTATTACK_PLAYER:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
-		break;
-
-	case STATE_WARRIOR_OXEN_LOOPATTACK:
-	case STATE_ATTACK_HORIZONTALUP_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_HORIZONTALMIDDLE_R:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
-	case AI_STATE_ATTACK_HORIZONTALMIDDLE_R:
-			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
-			break;
-
-	case STATE_ATTACK_HORIZONTALDOWN_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_VERTICALCUT:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_STING_PLAYER_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_STING_PLAYER_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
+	case STATE_ATTACK_VERTICALCUT_PALADIN:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Smash_D", vHitPos, matWorld);
 		break;
 
 	default:
+
 		break;
 
 	}
@@ -275,7 +331,7 @@ HRESULT CUnit_Paladin::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// 칼 길이
-	tDesc.fHeight = 0.9f;
+	tDesc.fHeight = 0.6f;
 	// 칼 두께
 	tDesc.fRadius = 0.2f;
 	// 칼 붙일 뼈
@@ -287,9 +343,9 @@ HRESULT CUnit_Paladin::Initialize_Prototype()
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
 
-	m_fCoolTime[SKILL1] = 7.f;
-	m_fCoolTime[SKILL2] = 5.f;
-	m_fCoolTime[SKILL3] = 3.f;
+	m_fCoolTime[SKILL1] = 3.f;
+	m_fCoolTime[SKILL2] = 10.f;
+	m_fCoolTime[SKILL3] = 10.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 
@@ -300,9 +356,9 @@ HRESULT CUnit_Paladin::Initialize_Prototype()
 	m_tUnitStatus.fDashAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintJumpSpeed *= 0.8f;
-	m_tUnitStatus.fSprintSpeed *= 0.7f;
-	m_tUnitStatus.fRunSpeed *= 0.6f;
-	m_tUnitStatus.fWalkSpeed *= 0.7f;
+	m_tUnitStatus.fSprintSpeed *= 0.75f;
+	m_tUnitStatus.fRunSpeed *= 0.75f;
+	m_tUnitStatus.fWalkSpeed *= 0.8f;
 	m_tUnitStatus.fRunBeginSpeed *= 0.8f;
 	m_tUnitStatus.fJumpPower *= 0.9f;
 	m_tUnitStatus.fGuardDashSpeed *= 0.8f;
@@ -317,15 +373,7 @@ HRESULT CUnit_Paladin::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
-	for (_uint i = 0; i < MODEL_PART_END; ++i)
-	{
-		_int iTemp = 0;
-		iTemp = m_tModelData.strModelPaths[i].find(L"SK_Warrior_Helmet_Rabbit_50");
-
-		if (iTemp > 0)
-			m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
-	}
-
+	//Set_ShaderNoSpec(L"SK_Engineer1002_Helm_50");
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 

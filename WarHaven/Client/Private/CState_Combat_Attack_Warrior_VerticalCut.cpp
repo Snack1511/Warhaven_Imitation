@@ -49,8 +49,10 @@ HRESULT CState_Combat_Attack_Warrior_VerticalCut::Initialize()
     m_iStateChangeKeyFrame = 70;
     
 
+    m_iStopIndex = 50;
+
 	Add_KeyFrame(33, 1);
-	Add_KeyFrame(50, 2);
+	Add_KeyFrame(m_iStopIndex, 2);
 
 	m_eBounceState = AI_STATE_COMMON_BOUNCE_WARRIOR_R;
 

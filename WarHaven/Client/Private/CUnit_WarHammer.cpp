@@ -170,6 +170,9 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_ENGINEER;
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_ENGINEER;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_ENGINEER_L;
+
+		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+
 		break;
 
 	default:
@@ -387,9 +390,9 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_tUnitStatus.fDashAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintJumpSpeed *= 0.8f;
-	m_tUnitStatus.fSprintSpeed *= 0.85f;
-	m_tUnitStatus.fRunSpeed *= 0.6f;
-	m_tUnitStatus.fWalkSpeed *= 0.7f;
+	m_tUnitStatus.fSprintSpeed *= 0.75f;
+	m_tUnitStatus.fRunSpeed *= 0.75f;
+	m_tUnitStatus.fWalkSpeed *= 0.8f;
 	m_tUnitStatus.fRunBeginSpeed *= 0.8f;
 	m_tUnitStatus.fJumpPower *= 0.9f;
 	m_tUnitStatus.fGuardDashSpeed *= 0.8f;

@@ -39,6 +39,7 @@ void CState_Combat_Attack_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 	if(ePrevType == AI_STATE_COMBAT_OXEN_LOOPATTACK_WARRIOR)
 		pOwner->Get_Status().fShortDashSpeed = 0.f;
 
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

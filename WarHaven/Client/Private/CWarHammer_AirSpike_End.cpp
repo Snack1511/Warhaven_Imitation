@@ -34,7 +34,7 @@ CWarHammer_AirSpike_End* CWarHammer_AirSpike_End::Create()
 HRESULT CWarHammer_AirSpike_End::Initialize()
 {
 	m_tHitInfo.eHitType = HIT_TYPE::eUP;
-	m_tHitInfo.fKnockBackPower = 3.f;
+	m_tHitInfo.fKnockBackPower = 1.5f;
 	m_tHitInfo.fJumpPower = 4.2f;
 	m_tHitInfo.bFly = true;
 	m_tHitInfo.iLandKeyFrame = 35;

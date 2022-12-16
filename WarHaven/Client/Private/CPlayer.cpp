@@ -238,7 +238,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
 
 
-	/* ���� �ִϸ��̼� Index */
+	/* 변신 Index */
 	m_iChangeHeroAnimIndex[WARRIOR] = 62;
 	m_iChangeHeroAnimIndex[PALADIN] = 41;
 	m_iChangeHeroAnimIndex[ENGINEER] = 62;
@@ -420,7 +420,10 @@ void CPlayer::SetUp_ReserveState()
 	{
 	case CUnit::UNIT_TYPE::eAI_Default:
 
+		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEAFULT_WARRIOR_R;
+		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEAFULT_ENGINEER_R;
 		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEAFULT_FIONA_R;
+		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEAFULT_PALADIN_R;
 
 		break;
 

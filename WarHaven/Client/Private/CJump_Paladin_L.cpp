@@ -50,11 +50,8 @@ HRESULT CJump_Paladin_L::Initialize()
     m_vecAdjState.push_back(STATE_JUMPFALL_PALADIN_L);
     m_vecAdjState.push_back(STATE_JUMP_LAND_PALADIN_L);
     
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_PALADIN_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
  
     m_iDirectionAnimIndex[STATE_DIRECTION_E] = 5;
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 6;

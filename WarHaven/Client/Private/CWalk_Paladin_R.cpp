@@ -34,7 +34,7 @@ HRESULT CWalk_Paladin_R::Initialize()
     __super::Initialize();
 
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
-    m_iAnimIndex = 41;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 31;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_WALK_PALADIN_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
@@ -47,10 +47,7 @@ HRESULT CWalk_Paladin_R::Initialize()
     m_vecAdjState.push_back(STATE_JUMP_PALADIN_R);
     m_vecAdjState.push_back(STATE_RUN_PALADIN_R);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_PALADIN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
 
 
 

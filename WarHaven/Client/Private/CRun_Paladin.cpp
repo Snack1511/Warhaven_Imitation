@@ -21,13 +21,13 @@ HRESULT CRun_Paladin::Initialize()
 
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
-	/*나중에 추가*/
-	//m_vecAdjState.push_back(STATE_COUNTER_PALADIN);
-	//m_vecAdjState.push_back(STATE_SHIELDATTACK_PALADIN);
-	//m_vecAdjState.push_back(STATE_SPINATTACK_PALADIN);
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.8f;
+	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
+	m_vecAdjState.push_back(STATE_SHIELDWALL_BEGIN_PALADIN);
+	m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
+	m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
+
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.5f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.5f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.5f;

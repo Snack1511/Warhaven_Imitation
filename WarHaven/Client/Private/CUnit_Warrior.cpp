@@ -186,6 +186,8 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
 
+		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+
 		break;
 
 		

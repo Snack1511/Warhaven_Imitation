@@ -30,12 +30,12 @@ HRESULT CBounce_Paladin::Initialize()
 	m_fMyAccel = 5.f;
 	m_fMaxSpeed = 2.f;
 	
-	m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
-	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
+	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 
-	m_vecAdjState.push_back(STATE_COUNTER_VALKYRIE);
-	m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
-	m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
+	//m_vecAdjState.push_back(STATE_COUNTER_PALADIN);
+	//m_vecAdjState.push_back(STATE_SHIELDATTACK_PALADIN);
+	//m_vecAdjState.push_back(STATE_SPINATTACK_PALADIN);
 
     return S_OK;
 }
@@ -55,47 +55,47 @@ void CBounce_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 
 	pOwner->Get_PhysicsCom()->Set_Speed(0.f);
 
-	switch (ePrevType)
-	{
-	case Client::STATE_ATTACK_HORIZONTALUP_VALKYRIE_L:
-	case Client::STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L:
-	case Client::STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_L:
+	//switch (ePrevType)
+	//{
+	//case Client::STATE_ATTACK_HORIZONTALUP_PALADIN_L:
+	//case Client::STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L:
+	//case Client::STATE_ATTACK_HORIZONTALDOWN_PALADIN_L:
 
 
-		m_eAnimType = ANIM_BASE_L;
-		m_iAnimIndex = 0;    
-		m_eStateType = STATE_BOUNCE_VALKYRIE_L;
-
-		break;
-
-	case Client::STATE_SPRINTATTACK_VALKYRIE:
-		m_eAnimType = ANIM_BASE_L;
-		m_iAnimIndex = 37;
-		m_eStateType = STATE_BOUNCE_VALKYRIE_L;
-		
-		break;
-
-	case Client::STATE_ATTACK_HORIZONTALUP_VALKYRIE_R:
-	case Client::STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_R:
-	case Client::STATE_ATTACK_HORIZONTALDOWN_VALKYRIE_R:
-
-		m_eAnimType = ANIM_BASE_R;
-		m_iAnimIndex = 0;
-		m_eStateType = STATE_BOUNCE_VALKYRIE_R;
-
-		break;
-
-	//case Client::STATE_ATTACK_VERTICALCUT:
-
-
-	//	m_eAnimType = ANIM_ATTACK;
-	//	m_iAnimIndex = 19;
+	//	m_eAnimType = ANIM_BASE_L;
+	//	m_iAnimIndex = 0;    
+	//	m_eStateType = STATE_BOUNCE_PALADIN_L;
 
 	//	break;
 
-	default:
-		break;
-	}
+	//case Client::STATE_SPRINTATTACK_PALADIN:
+	//	m_eAnimType = ANIM_BASE_L;
+	//	m_iAnimIndex = 37;
+	//	m_eStateType = STATE_BOUNCE_PALADIN_L;
+	//	
+	//	break;
+
+	//case Client::STATE_ATTACK_HORIZONTALUP_PALADIN_R:
+	//case Client::STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R:
+	//case Client::STATE_ATTACK_HORIZONTALDOWN_PALADIN_R:
+
+	//	m_eAnimType = ANIM_BASE_R;
+	//	m_iAnimIndex = 0;
+	//	m_eStateType = STATE_BOUNCE_PALADIN_R;
+
+	//	break;
+
+	////case Client::STATE_ATTACK_VERTICALCUT:
+
+
+	////	m_eAnimType = ANIM_ATTACK;
+	////	m_iAnimIndex = 19;
+
+	////	break;
+
+	//default:
+	//	break;
+	//}
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

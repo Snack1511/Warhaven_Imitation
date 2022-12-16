@@ -77,6 +77,9 @@ void CSwitchRtoL_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CSwitchRtoL_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_WARHAMMER_L;
+
 	if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
 		return STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_L;
 

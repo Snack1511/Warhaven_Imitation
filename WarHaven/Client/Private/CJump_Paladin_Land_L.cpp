@@ -41,17 +41,20 @@ HRESULT CJump_Paladin_Land_L::Initialize()
 //	m_vecAdjState.push_back(STATE_SWITCH_L_TO_R);
 
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 
 	m_vecAdjState.push_back(STATE_IDLE_PALADIN_L);
 	m_vecAdjState.push_back(STATE_WALK_PALADIN_L);
 	m_vecAdjState.push_back(STATE_RUN_PALADIN_L);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_L);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_PALADIN_L);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
 
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_SHIELDWALL_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
+
+
 
     
 

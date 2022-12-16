@@ -73,31 +73,20 @@ void CWalk_Valkyrie::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CWalk_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Walk로 오는 조건
-    1. 
-    */
 
-
-        // 천천히 
-        if (KEY(C, HOLD))
+    if (KEY(C, HOLD))
+    {
+        // 걸어간다.
+        if (KEY(W, HOLD) ||
+            KEY(A, HOLD) ||
+            KEY(S, HOLD) ||
+            KEY(D, HOLD))
         {
-            // 걸어간다.
-            if (KEY(W, HOLD) ||
-                KEY(A, HOLD) ||
-                KEY(S, HOLD) ||
-                KEY(D, HOLD))
-            {
 
-                return m_eStateType;
-            }
-
+            return m_eStateType;
         }
-        //CTRL 로 바꾸셈.
-      
-      
 
-   
-
+    }
 
     return STATE_END;
 }

@@ -36,7 +36,7 @@ HRESULT CHit_Groggy_Paladin::Initialize()
     
     m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 9;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_GROGGYHIT_VALKYRIE;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = STATE_GROGGYHIT_PALADIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     // 선형 보간 시간
@@ -50,12 +50,16 @@ HRESULT CHit_Groggy_Paladin::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 105;
     
-    m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);
- //   m_vecAdjState.push_back(STATE_WALK_WARHAMMER_R);
- //   m_vecAdjState.push_back(STATE_RUN_WARHAMMER_R);
- //   m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_WARHAMMER_R);
- //   m_vecAdjState.push_back(STATE_VERTICALATTACK_WARHAMMER_R);
+    m_vecAdjState.push_back(STATE_IDLE_PALADIN_R);
+    m_vecAdjState.push_back(STATE_WALK_PALADIN_R);
+    m_vecAdjState.push_back(STATE_RUN_PALADIN_R);
+    m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
+
+    m_vecAdjState.push_back(STATE_SHIELDWALL_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
     m_fMyAccel = 10.f;
     m_fMyMaxLerp = 10.f;

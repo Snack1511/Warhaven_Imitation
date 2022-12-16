@@ -32,10 +32,12 @@ HRESULT CState_Combat_Attack_HorizontalDown_Fiona::Initialize()
 
 	m_fMyAccel = 10.f;
 	m_fMyMaxLerp = 10.f;
+	
+	m_iStopIndex = 50;
 
 
 	Add_KeyFrame(40, 1);
-	Add_KeyFrame(50, 2);
+	Add_KeyFrame(m_iStopIndex, 2);
 	Add_KeyFrame(45, 999);
 	Add_KeyFrame(55, 998);
 

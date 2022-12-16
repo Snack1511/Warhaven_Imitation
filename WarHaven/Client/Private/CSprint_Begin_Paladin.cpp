@@ -35,7 +35,7 @@ HRESULT CSprint_Begin_Paladin::Initialize()
     m_eStateType = STATE_SPRINT_BEGIN_PALADIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	m_fMyMaxLerp = 0.4f;
-	m_fMyAccel = 10.F;
+	m_fMyAccel = 10.f;
 
     m_iStateChangeKeyFrame = 20;
 
@@ -43,7 +43,7 @@ HRESULT CSprint_Begin_Paladin::Initialize()
     m_fInterPolationTime = 0.15f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.3f;
+    m_fAnimSpeed = 3.f;
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
@@ -55,10 +55,12 @@ HRESULT CSprint_Begin_Paladin::Initialize()
 
     m_vecAdjState.push_back(STATE_SPRINT_JUMP_PALADIN);
 
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_PALADIN_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_PALADIN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R);
+    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
+
+    m_vecAdjState.push_back(STATE_SHIELDWALL_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
+    m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
 
 	Add_KeyFrame(10, 0);
@@ -68,7 +70,7 @@ HRESULT CSprint_Begin_Paladin::Initialize()
 
 void CSprint_Begin_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	Physics_Setting(pOwner->Get_Status().fSprintSpeed * 0.8f, pOwner, false);
+	Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, false);
 
 
 	if (ePrevType == STATE_RUNBEGIN_PALADIN_L || ePrevType == STATE_RUNBEGIN_PALADIN_R)
