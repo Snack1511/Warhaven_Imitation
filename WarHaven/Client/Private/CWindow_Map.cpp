@@ -95,6 +95,13 @@ HRESULT CWindow_Map::Initialize()
         return E_FAIL;
 
     m_OutDatas = make_tuple(_float4(0.f, 0.f, 0.f, 1.f), _float4(0.f, 0.f, 0.f, 1.f), _float4(0.f, 0.f, 0.f, 0.f));
+
+    ImGuiIO& io = ImGui::GetIO();
+    //D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Fonts\ImGuiFonts
+    io.Fonts->AddFontDefault();
+    m_pKorFont = io.Fonts->AddFontFromFileTTF("../Bin/Resources/Fonts/ImGuiFonts/NanumGothic.ttf", 13.f, nullptr, io.Fonts->GetGlyphRangesKorean());
+    if (nullptr == m_pKorFont)
+        assert(0);
     return S_OK;
 }
 
@@ -130,11 +137,13 @@ HRESULT CWindow_Map::Render()
     ImVec2 vDataControlPos = ImVec2(vPannelSize.x, vPannelSize.y * 3);
     ImVec2 vLightControlPos = ImVec2(vPannelSize.x, vPannelSize.y * 4);
 
+    ImGui::PushFont(m_pKorFont);
+
     if (FAILED(__super::Begin()))
         return E_FAIL;
 
     ImGui::Text("MapTool");
-
+    On_ToolTip(u8"맵 툴을 거치는 모든 설정들은 맵툴로 저장이 됨\n로드시에도 한번에 불러옴");
     //파일 컨트롤
     Func_FileControl();
 
@@ -158,7 +167,8 @@ HRESULT CWindow_Map::Render()
     // 
     //조건 필요.. 
 
-    ImGui::Checkbox("Enable LightControl", &m_bLightControl);
+    ImGui::Checkbox(u8"조명배치 ", &m_bLightControl);
+    On_ToolTip(u8"체크시 조명배치 툴 켜짐");
     if (m_bLightControl)
     {
         if (-1 == m_iLightPadding)
@@ -167,7 +177,7 @@ HRESULT CWindow_Map::Render()
     }
     __super::End();
 
-
+    ImGui::PopFont();
     return S_OK;
 }
 
@@ -257,7 +267,7 @@ void CWindow_Map::Func_FileControl()
     {
         //m_bTerrainPick = true;
     }
-    if (ImGui::CollapsingHeader("SetUp Terrain", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    if (ImGui::CollapsingHeader(u8"터레인 셋팅", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         ImGui::Text("VertX : ");
         ImGui::SameLine();
@@ -267,7 +277,6 @@ void CWindow_Map::Func_FileControl()
             iTerrainVerticalX = (iTerrainVerticalX < 0) ? 0 : iTerrainVerticalX;
             m_CurTerrainData.iNumVerticesX = iTerrainVerticalX;
         }
-        ImGui::SameLine();
         ImGui::Text("VertZ : ");
         ImGui::SameLine();
         _int iTerrainVerticalZ = m_CurTerrainData.iNumVerticesZ;
@@ -276,8 +285,7 @@ void CWindow_Map::Func_FileControl()
             iTerrainVerticalZ = (iTerrainVerticalZ < 0) ? 0 : iTerrainVerticalZ;
             m_CurTerrainData.iNumVerticesZ = iTerrainVerticalZ;
         }
-        ImGui::Text("SelectTileTexture");
-        if (ImGui::Button("Generate!"))
+        if (ImGui::Button(u8"생성!"))
         {
             Generate_Terrain();
         }
@@ -286,6 +294,8 @@ void CWindow_Map::Func_FileControl()
     m_pObjectController->Func_Grouping();
     m_pObjectController->Func_FBXList();
     m_pObjectController->Func_ObjectList();
+    m_pObjectController->Func_SelectedObject_NameBase();
+
     m_pObjectController->Func_SetUpCollider();
 
 
@@ -372,6 +382,8 @@ static _float fIncreaseScale = 1.0f;
 #pragma region 라이트 컨트롤함수
 void CWindow_Map::Func_LightControl()
 {
+    On_ToolTip(u8"== 사용법 ==\n1. 추가버튼 클릭\n2. 리스트박스에서 선택되었는지 확인\n3. 입맛대로 변경");
+
     if (ImGui::BeginListBox("##LightListBox"))
     {
         for (_uint i = 0; i < m_LightDescs.size(); ++i)
@@ -410,18 +422,18 @@ void CWindow_Map::Func_LightControl()
     }
     //해당 그룹 소속 빛 정보 리스트
     //빛 추가
-    if (ImGui::Button("Add Light"))
+    if (ImGui::Button(u8"추가"))
     {
         Add_Light();
     }
     ImGui::SameLine();
     //빛 제거
-    if (ImGui::Button("Delete Light"))
+    if (ImGui::Button(u8"제거"))
     {
         Delete_Light();
     }
     ImGui::SameLine();
-    if (ImGui::Button("Clone Light"))
+    if (ImGui::Button(u8"복사"))
     {
         Clone_Light();
     }
@@ -430,9 +442,10 @@ void CWindow_Map::Func_LightControl()
     ImGui::SameLine();
     ImGui::Text(to_string(m_iCurSelectLight).c_str());
 
-    if (ImGui::CollapsingHeader("Light Default", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    if (ImGui::CollapsingHeader(u8"기본정보", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         ImGui::Text("Light Tag");
+        On_ToolTip(u8"툴 내 확인용 --> 크게 신경쓸 필요X");
         char szTagName[MAXCHAR] = "";
         if (m_iCurSelectLight >= 0 && m_iCurSelectLight < _int(m_LightDescs.size()))
         {
@@ -450,16 +463,16 @@ void CWindow_Map::Func_LightControl()
 
 
         //2. 빛 종류
-        ImGui::Text("Light Type");
+        ImGui::Text(u8"조명 타입");
         Make_Combo("##Light_TypeList", m_arrLightTypeCombo, &m_iLightTypeIndex, bind(&CWindow_Map::Set_LightType, this));
         ImGui::Spacing();
 
-        ImGui::Text("Increase Value");
+        ImGui::Text(u8"드래그시 변화량");
         ImGui::SliderFloat("##SliderIncreaseValue", &fIncreaseScale, 0.001f, 100.f, "%.3f");
         ImGui::InputFloat("##InputIncreaseValue", &fIncreaseScale);
         ImGui::Spacing();
         //3. 위치
-        ImGui::Text("Light Pos");
+        ImGui::Text(u8"위치");
         if (ImGui::DragFloat3("##Light_Pos", LightPos, fIncreaseScale))
         {
             Set_LightPos(LightPos);
@@ -467,7 +480,7 @@ void CWindow_Map::Func_LightControl()
         ImGui::Spacing();
 
         //4. 방향
-        ImGui::Text("Light Dir");
+        ImGui::Text(u8"방향");
         if (ImGui::DragFloat3("##Light_Dir", LightDir, fIncreaseScale))
         {
             Set_LightDir(LightDir);
@@ -475,7 +488,7 @@ void CWindow_Map::Func_LightControl()
         ImGui::Spacing();
 
         //5. 범위
-        ImGui::Text("Light Range");
+        ImGui::Text(u8"범위");
         if (0.f >= LightRange)
         {
             LightRange = 0.f;
@@ -487,7 +500,8 @@ void CWindow_Map::Func_LightControl()
         if (ImGui::CollapsingHeader("RandomRange"))
         {
 
-            ImGui::Text("Light RandomRange");
+            ImGui::Text(u8"랜덤범위");
+            On_ToolTip(u8"깜박임에 영향");
             if (0.f >= LightRandomRange)
             {
                 LightRandomRange = 0.f;
@@ -501,7 +515,7 @@ void CWindow_Map::Func_LightControl()
 
     }
 
-    if (ImGui::CollapsingHeader("Light Color", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    if (ImGui::CollapsingHeader(u8"색 설정", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         //6. 디퓨즈
         ImGui::Text("Light Diffuse");
@@ -2464,6 +2478,18 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
     }
 
     return false;
+}
+
+void CWindow_Map::On_ToolTip(string strContext)
+{
+    ImGui::SameLine();
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text(strContext.c_str());
+        ImGui::EndTooltip();
+    }
 }
 
 

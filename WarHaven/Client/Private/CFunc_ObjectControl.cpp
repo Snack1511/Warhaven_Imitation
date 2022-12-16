@@ -38,32 +38,43 @@ void CFunc_ObjectControl::Destroy()
 static char szMeshGroupNameBuf[MAXCHAR] = "";
 void CFunc_ObjectControl::Func_Grouping()
 {
-    if (ImGui::CollapsingHeader("Object Grouping", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    if (ImGui::CollapsingHeader(u8"그룹 설정", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         //그룹 이름
         string DebugMeshGroupName = szMeshGroupNameBuf;
-        m_pMapTool->DebugData("MeshGroupName", DebugMeshGroupName);
+        m_pMapTool->DebugData(u8"오브젝트 그룹 명", DebugMeshGroupName);
+        m_pMapTool->DebugData(u8"선택된 메시 명", m_CurSelectedMeshName);
         ImGui::InputText("##GroupNameInput", szMeshGroupNameBuf, sizeof(char) * MAXCHAR);
-        if (ImGui::Button("Add MeshGroup"))
+        if (ImGui::Button(u8"그룹 추가"))
         {
             Add_ObjectGroup(szMeshGroupNameBuf);
         }
         ImGui::SameLine();
-        if (ImGui::Button("Delete MeshGroup"))
+        if (ImGui::Button(u8"그룹 제거"))
         {
             Delete_ObjectGroup(szMeshGroupNameBuf);
         }
-        if (ImGui::Checkbox("GroupControl", &m_bGroupControl))
-        {
 
-        }
+        if (ImGui::Button(u8"그룹 내 같은 오브젝트 전체 제거"))
+        {
+            Clear_SameNameInGroup(
+                get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]), m_iCurSelectObjecNametIndex);
+            m_pCurSelectObjectGroup = nullptr;
+            m_pCurSelectDataGroup = nullptr;
+            Confirm_Data();
+            m_iCurSelectObjecNametIndex = 0;
+        }//그룹내에 같은 오브젝트들 삭제
+        m_pMapTool->On_ToolTip(u8"현재 그룹에서 동일 이름을 가진 오브젝트 제거");
+
+        ImGui::Checkbox("GroupControl", &m_bGroupControl);
+        m_pMapTool->On_ToolTip(u8"그룹 단위 컨트롤 시 선택");
     }
     ImGui::Spacing();
 }
 
 void CFunc_ObjectControl::Func_FBXList()
 {
-    if (ImGui::CollapsingHeader("FBX Files List", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+    if (ImGui::CollapsingHeader(u8"FBX 리스트", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         //파일 탐색 트리노드
         if (ImGui::BeginListBox("##FBX_Files_List", ImVec2(360.f, 200.f)))
@@ -71,16 +82,39 @@ void CFunc_ObjectControl::Func_FBXList()
             m_pMapTool->Show_TreeData(m_pMeshRoot, bind(&CFunc_ObjectControl::Routine_MeshSelect, this, placeholders::_1));
             ImGui::EndListBox();
         }
-        m_pMapTool->DebugData("CurSelectedMeshFilePath", m_CurSelectedMeshFilePath);
-        m_pMapTool->DebugData("SelectedMeshName", m_CurSelectedMeshName);
+        m_pMapTool->DebugData(u8"선택된 메시 경로", m_CurSelectedMeshFilePath);
+        m_pMapTool->DebugData(u8"선택된 메시 명", m_CurSelectedMeshName);
         ImGui::Spacing();
+
+        if (ImGui::Button(u8"오브젝트 추가"))
+        {
+            Func_AddObject();
+            SetUp_CurSelectObject();
+
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(u8"오브젝트 제거"))
+        {
+            Func_DeleteOBject();
+            SetUp_CurSelectObject();
+        }
+        ImGui::Spacing();
+        ImGui::Spacing();
+        ImGui::Spacing();
+        ImGui::Spacing();
+        if (ImGui::Button(u8"HLOD 추가"))
+        {
+            Add_HLOD();
+        }
+        m_pMapTool->On_ToolTip(u8"F7입력시 켜고 끌 수 있음");
     }
     ImGui::Spacing();
 }
 
 void CFunc_ObjectControl::Func_ObjectList()
 {
-    if (ImGui::CollapsingHeader("Grouping Object List", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
+
+    if (ImGui::CollapsingHeader(u8"그룹핑된 리스트", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         //해당 이름을 가진 탭
         if (ImGui::BeginTabBar("##AddObject TabBar"))
@@ -90,7 +124,7 @@ void CFunc_ObjectControl::Func_ObjectList()
                 if (ImGui::BeginTabItem(get<Tuple_GroupName>(m_GroupingInfo[i]).c_str()))
                 {
                     //리스트 업데이트
-                    ImGui::Text("GroupList");
+                    ImGui::Text(u8"그룹 리스트");
                     if (ImGui::BeginListBox("##TabGroupList", ImVec2(360.f, 200.f)))
                     {
                         m_SelectObjectGroupIndex = i;
@@ -148,7 +182,7 @@ void CFunc_ObjectControl::Func_ObjectList()
                 if((*m_pCurSelectGroupingNameArr).size() <= m_iCurSelectObjecNametIndex)
                     m_iCurSelectObjecNametIndex = 0;
 
-                string ListBoxTitleData = "ObjectList : ";
+                string ListBoxTitleData = u8"그룹명 : ";
                 ListBoxTitleData += get<0>((*m_pCurSelectGroupingNameArr)[m_iCurSelectObjecNametIndex]).c_str();
                 ImGui::Text(ListBoxTitleData.c_str());
                 if (ImGui::BeginListBox("##TabObjectList", ImVec2(360.f, 200.f)))
@@ -174,109 +208,21 @@ void CFunc_ObjectControl::Func_ObjectList()
                 }
             }
         }
-    }
-    if (ImGui::CollapsingHeader("Add Object List", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
-    {
-        if (ImGui::BeginListBox("##AddObjectList", ImVec2(360.f, 200.f)))
-        {
-            if (nullptr != m_pCurSelectObjectGroup)
-            {
-                for (_uint i = 0; i < _uint(m_pCurSelectObjectGroup->size()); ++i)
-                {
-                    if ((*m_pCurSelectObjectGroup)[i] != nullptr&&(*m_pCurSelectObjectGroup)[i]->Is_Valid())
-                    {
-                        _bool bSelect = false;
-                        if (m_iCurSelectObjectIndex == i)
-                        {
-                            bSelect = true;
-                        }
-                        if (ImGui::Selectable(to_string(i).c_str(), bSelect))
-                        {
-                            m_iCurSelectObjectIndex = i;
-                            SetUp_CurSelectObject();
-                        }
-                    }
-                }
-            }
-            ImGui::EndListBox();
-        }
-    }
-    ImGui::Spacing();
-    if (ImGui::Button("Add Object"))
-    {
-        Func_AddObject();
-        SetUp_CurSelectObject();
 
     }
-    ImGui::SameLine();
-    if (ImGui::Button("Delete Object"))
-    {
-        Func_DeleteOBject();
-        SetUp_CurSelectObject();
-    }
-    ImGui::Spacing();
-    if (ImGui::Button("Clear NameGroup"))
-    {
-        Clear_SameNameObject(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]), m_iCurSelectObjecNametIndex);
-        m_pCurSelectObjectGroup = nullptr;
-        m_pCurSelectDataGroup = nullptr;
-        Confirm_Data();
-        m_iCurSelectObjecNametIndex = 0;
-    }//같은 이름을 모든 오브젝트 삭제
-    ImGui::Spacing();
-    if (ImGui::Button("Clear NameGroup In SelectGroup"))
-    {
-        Clear_SameNameInGroup(
-            get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]), m_iCurSelectObjecNametIndex);
-        m_pCurSelectObjectGroup = nullptr;
-        m_pCurSelectDataGroup = nullptr;
-        Confirm_Data();
-        m_iCurSelectObjecNametIndex = 0;
-    }//그룹내에 같은 오브젝트들 삭제
-    ImGui::SameLine();
-    if (ImGui::Button("Clear MeshGroup"))
-    {
-        m_pCurSelectObjectGroup = nullptr;
-        m_pCurSelectDataGroup = nullptr;
-        Clear_ObjectGroup(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
-        m_iCurSelectObjecNametIndex = 0;
-        m_SelectObjectGroupIndex = 0;
-        Confirm_Data();
-    }//그룹 삭제
-    ImGui::Spacing();
-    if (ImGui::Button("Merge"))
-    {
-        string CurSelectGroupName = string(get< Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
-        size_t Hashnum = Convert_ToHash(CurSelectGroupName);
-        OBJECTGROUPINGMAP::iterator NamingGroup;
-        Find_ObjectGroupingName(Hashnum, NamingGroup);
-        string strSelectObjectName = get<0>(NamingGroup->second[m_iCurSelectObjecNametIndex]);
-        Merge_Object(strSelectObjectName);
-        Confirm_Data();
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Split"))
-    {
-        string CurSelectGroupName = string(get< Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
-        size_t Hashnum = Convert_ToHash(CurSelectGroupName);
-        OBJECTGROUPINGMAP::iterator NamingGroup;
-        Find_ObjectGroupingName(Hashnum, NamingGroup);
-        string strSelectObjectName = get<0>(NamingGroup->second[m_iCurSelectObjecNametIndex]);
-        Split_Object(strSelectObjectName);
-        Confirm_Data();
-    }
+    //ImGui::SameLine();
+    //if (ImGui::Button("Clear MeshGroup"))
+    //{
+    //    m_pCurSelectObjectGroup = nullptr;
+    //    m_pCurSelectDataGroup = nullptr;
+    //    Clear_ObjectGroup(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+    //    m_iCurSelectObjecNametIndex = 0;
+    //    m_SelectObjectGroupIndex = 0;
+    //    Confirm_Data();
+    //}//그룹 삭제
+    //ImGui::Spacing();
 
-    if (ImGui::Button("Merge All"))
-    {
-        Merge_All();
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Split All"))
-    {
-        Split_All();
-    }
-    ImGui::Spacing();
-    if (ImGui::CollapsingHeader("Group Copy"))
+    if (ImGui::CollapsingHeader(u8"그룹단위 복사"))
     {
         char szFromGroup[MAXCHAR] = "";
         strcpy_s(szFromGroup, strFromeGroup.c_str());
@@ -290,6 +236,7 @@ void CFunc_ObjectControl::Func_ObjectList()
         {
             strFromeGroup = szFromGroup;
         }
+        m_pMapTool->On_ToolTip(u8"복사할 원본 그룹");
 
         ImGui::Text("To : ");
         ImGui::SameLine();
@@ -297,6 +244,7 @@ void CFunc_ObjectControl::Func_ObjectList()
         {
             strToGroup = szToGroup;
         }
+        m_pMapTool->On_ToolTip(u8"복사할 목표 그룹");
 
         if (ImGui::Button("Clone"))
         {
@@ -304,9 +252,20 @@ void CFunc_ObjectControl::Func_ObjectList()
         }//새로 생성
     }
     ImGui::Spacing(); 
-    if (ImGui::CollapsingHeader("Group Control"))
+    if (ImGui::CollapsingHeader(u8"그룹단위 컨트롤"))
     {
-        if (ImGui::BeginCombo("##ControlGroupSelectCombo", get<0>(m_GroupingInfo[m_iSelectedControlGroup]).c_str()))
+        m_pMapTool->On_ToolTip(u8"앵커위치를 무조건 설정해 줘야함\n앵커를 기준으로 모든 정보가 변경");
+        m_pMapTool->On_ToolTip(u8"== 사용법 ==\n1. 앵커 위치 설정\n2. 정보 변경\n3. Update 버튼 클릭");
+        string strPreviewData = "";
+        if (m_GroupingInfo.empty())
+        {
+            strPreviewData = u8"그룹 없음";
+        }
+        else
+        {
+            strPreviewData = get<Tuple_GroupName>(m_GroupingInfo[m_iSelectedControlGroup]);
+        }
+        if (ImGui::BeginCombo("##ControlGroupSelectCombo", strPreviewData.c_str()))
         {
             for (_uint i = 0; i < m_GroupingInfo.size(); ++i)
             {
@@ -315,16 +274,16 @@ void CFunc_ObjectControl::Func_ObjectList()
                 {
                     bSelect = true;
                 }
-                if (ImGui::Selectable(get<0>(m_GroupingInfo[i]).c_str(), bSelect))
+                if (ImGui::Selectable(get<Tuple_GroupName>(m_GroupingInfo[i]).c_str(), bSelect))
                 {
                     if (!m_ObjectOriginMatrixlist.empty())
                     {
-                        ObjectNameTupleArr& PrevSelectObjectVector = Get_TupleArr(get<0>(m_GroupingInfo[m_iSelectedControlGroup]).c_str());
+                        ObjectNameTupleArr& PrevSelectObjectVector = Get_TupleArr(get<Tuple_GroupName>(m_GroupingInfo[m_iSelectedControlGroup]).c_str());
                         for (auto& Value : PrevSelectObjectVector)
                         {
-                            size_t NameHash = Convert_ToHash(get<0>(Value));
+                            size_t NameHash = Convert_ToHash(get<Tuple_ObjectName>(Value));
                             ObjectArr& rhsObject = m_ObjectNamingGroupMap[NameHash];
-                            for (auto& ObjectListElem : get<1>(Value))
+                            for (auto& ObjectListElem : get<Tuple_IndexList>(Value))
                             {
                                 _int Index = ObjectListElem;
                                 SetUp_Matrix(rhsObject[Index], m_ObjectOriginMatrixlist.front());
@@ -334,12 +293,12 @@ void CFunc_ObjectControl::Func_ObjectList()
                     }
                     m_iSelectedControlGroup = i;
                     m_ObjectOriginMatrixlist.clear();
-                    ObjectNameTupleArr& SelectObjectVector = Get_TupleArr(get<0>(m_GroupingInfo[i]).c_str());
+                    ObjectNameTupleArr& SelectObjectVector = Get_TupleArr(get<Tuple_GroupName>(m_GroupingInfo[i]).c_str());
                     for (auto& Value : SelectObjectVector)
                     {
-                        size_t NameHash = Convert_ToHash(get<0>(Value));
+                        size_t NameHash = Convert_ToHash(get<Tuple_ObjectName>(Value));
                         ObjectArr& rhsObject = m_ObjectNamingGroupMap[NameHash];
-                        for (auto& ObjectListElem : get<1>(Value))
+                        for (auto& ObjectListElem : get<Tuple_IndexList>(Value))
                         {
                             _int Index = ObjectListElem;
 
@@ -349,10 +308,9 @@ void CFunc_ObjectControl::Func_ObjectList()
                     }
                 }
             }
+
             ImGui::EndCombo();
         }
-
-
         string strPickInfo = "";
         if (!m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_ANCHOR))
         {
@@ -378,9 +336,14 @@ void CFunc_ObjectControl::Func_ObjectList()
         static _float ImGuiGroupMoveDragSpeed = 0.01f;
         if (ImGui::CollapsingHeader("Group Move"))
         {
+            m_pMapTool->On_ToolTip(u8"모든 오브젝트들이 앵커를 부모로 삼아 이동");
+            ImGui::Text("MoveValue : ");
+            ImGui::SameLine();
             ImGui::SliderFloat("##ImGuiGroupMoveDragSpeed", &ImGuiGroupMoveDragSpeed, 0.01f, 50.f, "%.2f");
 
             m_AnchorPos = m_matPickedAnchor.XMLoad().r[3];
+            ImGui::Text("X : ");
+            ImGui::SameLine();
             if (ImGui::DragFloat("##InputXPos", &m_AnchorPos.x, ImGuiGroupMoveDragSpeed))
             {
                 _matrix TmpMat = m_matPickedAnchor.XMLoad();
@@ -388,6 +351,8 @@ void CFunc_ObjectControl::Func_ObjectList()
                 m_matPickedAnchor = TmpMat;
                 Update_GroupMatrixForAnchor();
             }
+            ImGui::Text("Y : ");
+            ImGui::SameLine();
             if (ImGui::DragFloat("##InputYPos", &m_AnchorPos.y, ImGuiGroupMoveDragSpeed))
             {
                 _matrix TmpMat = m_matPickedAnchor.XMLoad();
@@ -395,6 +360,8 @@ void CFunc_ObjectControl::Func_ObjectList()
                 m_matPickedAnchor = TmpMat;
                 Update_GroupMatrixForAnchor();
             }
+            ImGui::Text("Z : ");
+            ImGui::SameLine();
             if (ImGui::DragFloat("##InputZPos", &m_AnchorPos.z, ImGuiGroupMoveDragSpeed))
             {
                 _matrix TmpMat = m_matPickedAnchor.XMLoad();
@@ -403,9 +370,17 @@ void CFunc_ObjectControl::Func_ObjectList()
                 Update_GroupMatrixForAnchor();
             }
         }
+        static _float ImGuiGroupRotateDragSpeed = 0.01f;
         if (ImGui::CollapsingHeader("Group Rotate"))
         {
-            if (ImGui::DragFloat("##InputXAngle", &m_AnchorRot.x, 0.01f))
+            m_pMapTool->On_ToolTip(u8"모든 오브젝트들이 앵커를 부모로 삼아 공전");
+            ImGui::Text("RotateValue : ");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##ImGuiGroupRotateDragSpeed", &ImGuiGroupRotateDragSpeed, 0.01f, 50.f, "%.2f");
+
+            ImGui::Text("X : ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("##InputXAngle", &m_AnchorRot.x, ImGuiGroupRotateDragSpeed))
             {
                 if (m_AnchorRot.x >= 360.f)
                 {
@@ -435,7 +410,9 @@ void CFunc_ObjectControl::Func_ObjectList()
 
                 Update_GroupMatrixForAnchor();
             }
-            if (ImGui::DragFloat("##InputYAngle", &m_AnchorRot.y), 0.01f)
+            ImGui::Text("Y : ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("##InputYAngle", &m_AnchorRot.y), ImGuiGroupRotateDragSpeed)
             {
                 if (m_AnchorRot.y >= 360.f)
                 {
@@ -464,7 +441,9 @@ void CFunc_ObjectControl::Func_ObjectList()
 
                 Update_GroupMatrixForAnchor();
             }
-            if (ImGui::DragFloat("##InputZAngle", &m_AnchorRot.z, 0.01f))
+            ImGui::Text("Z : ");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("##InputZAngle", &m_AnchorRot.z, ImGuiGroupRotateDragSpeed))
             {
                 if (m_AnchorRot.z >= 360.f)
                 {
@@ -498,6 +477,7 @@ void CFunc_ObjectControl::Func_ObjectList()
         {
             Update_GroupObject();
         }
+        m_pMapTool->On_ToolTip(u8"모든 정보가 변경되었다면 해당 버튼을 눌러 모든 오브젝트한태 적용");
         //Confirm()
     }
     ImGui::Spacing();
@@ -505,11 +485,6 @@ void CFunc_ObjectControl::Func_ObjectList()
 
     ImGui::Spacing();
     ImGui::Spacing();
-    ImGui::Spacing();
-    if (ImGui::Button("ADD HLOD"))
-    {
-        Add_HLOD();
-    }
     if (!m_GroupingInfo.empty())
     {
         if (m_GroupingInfo.size() <= m_SelectObjectGroupIndex)
@@ -524,42 +499,88 @@ void CFunc_ObjectControl::Func_ObjectList()
     ImGui::Spacing();
 }
 
-void CFunc_ObjectControl::Func_GroupControl()
+void CFunc_ObjectControl::Func_SelectedObject_NameBase()
 {
-    string strPickInfo = "";
-    if (!m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_ANCHOR))
+    if (ImGui::CollapsingHeader(u8"같은 이름의 오브젝트들", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
-        strPickInfo = "Use_Picking";
-    }
-    else
-    {
-        strPickInfo = "Unuse_Picking";
-    }
-    if (ImGui::Button(strPickInfo.c_str()))
-    {
-        if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_ANCHOR))
+        m_pMapTool->DebugData(u8"선택된 메시 명", m_CurSelectedMeshName);
+        if (ImGui::BeginListBox("##AddObjectList", ImVec2(360.f, 200.f)))
         {
-            m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_NONE);
+            if (nullptr != m_pCurSelectObjectGroup)
+            {
+                for (_uint i = 0; i < _uint(m_pCurSelectObjectGroup->size()); ++i)
+                {
+                    if ((*m_pCurSelectObjectGroup)[i] != nullptr && (*m_pCurSelectObjectGroup)[i]->Is_Valid())
+                    {
+                        _bool bSelect = false;
+                        if (m_iCurSelectObjectIndex == i)
+                        {
+                            bSelect = true;
+                        }
+                        if (ImGui::Selectable(to_string(i).c_str(), bSelect))
+                        {
+                            m_iCurSelectObjectIndex = i;
+                            SetUp_CurSelectObject();
+                        }
+                    }
+                }
+            }
+            ImGui::EndListBox();
         }
-        else
+        if (ImGui::Button(u8"해당 오브젝트 전체 제거"))
         {
-            m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_ANCHOR);
+            if (!m_GroupingInfo.empty() && _uint(m_GroupingInfo.size()) > m_SelectObjectGroupIndex)
+            {
+                Clear_SameNameObject(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]), m_iCurSelectObjecNametIndex);
+                m_pCurSelectObjectGroup = nullptr;
+                m_pCurSelectDataGroup = nullptr;
+                Confirm_Data();
+                m_iCurSelectObjecNametIndex = 0;
+            }
+        }//같은 이름의 모든 오브젝트 삭제
+        m_pMapTool->On_ToolTip(u8"전체 그룹에서 동일 이름을 가진 오브젝트 제거");
+        ImGui::Spacing();
+
+        if (ImGui::Button(u8"병합"))
+        {
+            string CurSelectGroupName = string(get< Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+            size_t Hashnum = Convert_ToHash(CurSelectGroupName);
+            OBJECTGROUPINGMAP::iterator NamingGroup;
+            Find_ObjectGroupingName(Hashnum, NamingGroup);
+            string strSelectObjectName = get<0>(NamingGroup->second[m_iCurSelectObjecNametIndex]);
+            Merge_Object(strSelectObjectName);
+            Confirm_Data();
         }
-    }
-    ImGui::Spacing();
+        m_pMapTool->On_ToolTip(u8"같은 이름의 오브젝트들 병합");
+        ImGui::SameLine();
+        if (ImGui::Button(u8"분할"))
+        {
+            string CurSelectGroupName = string(get< Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
+            size_t Hashnum = Convert_ToHash(CurSelectGroupName);
+            OBJECTGROUPINGMAP::iterator NamingGroup;
+            Find_ObjectGroupingName(Hashnum, NamingGroup);
+            string strSelectObjectName = get<0>(NamingGroup->second[m_iCurSelectObjecNametIndex]);
+            Split_Object(strSelectObjectName);
+            Confirm_Data();
+        }
+        m_pMapTool->On_ToolTip(u8"병합된 오브젝트와 같은 이름의 오브젝트들로 분할");
 
-    if (ImGui::Button("Confirm"))
-    {
-        m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_NONE);
-        Confirm_Group();
+        if (ImGui::Button(u8"전체 병합"))
+        {
+            Merge_All();
+        }
+        ImGui::SameLine();
+        m_pMapTool->On_ToolTip(u8"모든 오브젝트들을 이름별로 묶어서 병합");
+        if (ImGui::Button(u8"전체 분할"))
+        {
+            Split_All();
+        }
+        m_pMapTool->On_ToolTip(u8"병합된 오브젝트들을 이름별로 분할");
+        ImGui::Spacing();
     }
 
-    if (ImGui::CollapsingHeader("Group Matrix(Read-Only)", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
-    {
-        Show_GroupMatrix();
-    }
-    ImGui::Spacing();
 }
+
 
 void CFunc_ObjectControl::Func_ObjectControl()
 {
@@ -626,19 +647,8 @@ void CFunc_ObjectControl::Func_ObjectControl()
         }
     }
     ImGui::Spacing();
-
-    switch (m_eControlType)
-    {
-    case CONTROL_SCALING:
-        ImGui::Text("MODE : SCALING");
-        break;
-    case CONTROL_ROTATE:
-        ImGui::Text("MODE : ROTATE");
-        break;
-    case CONTROL_MOVE:
-        ImGui::Text("MODE : MOVE");
-        break;
-    }
+    Show_ControlInfo("MODE : SCALING", "MODE : ROTATE", "MODE : MOVE");
+    m_pMapTool->On_ToolTip(u8"Z : Move\nX :Rotate\nC : Scaling");
     ImGui::Spacing();
 
     if (ImGui::Button("Confirm"))
@@ -646,6 +656,13 @@ void CFunc_ObjectControl::Func_ObjectControl()
         m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_NONE);
         Confirm_Data();
     }
+    m_pMapTool->On_ToolTip(u8"클릭시 선택해제");
+    ImGui::Spacing();
+    if (ImGui::Button("Clone"))
+    {
+        Clone_SamePosition();
+    }
+    m_pMapTool->On_ToolTip(u8"클릭시 해당 위치에 복사");
     ImGui::Spacing();
 
     if (ImGui::CollapsingHeader("Object Matrix(Read-Only)", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
@@ -1121,7 +1138,7 @@ CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, string Me
         ObjectNameTupleArr::iterator NameIter = find_if(SelectGroupIter->second.begin(), SelectGroupIter->second.end(),
             [&ObjectName](ObjectNameTupleArr::value_type& Value)
             {
-                if (ObjectName == get<0>(Value))
+                if (ObjectName == get<Tuple_ObjectName>(Value))
                     return true;
                 else
                     return false;
@@ -1130,11 +1147,11 @@ CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, string Me
         if (SelectGroupIter->second.end() == NameIter)
         {
             SelectGroupIter->second.push_back(make_tuple(ObjectName, list<_int>()));
-            pIndexList = &(get<1>(SelectGroupIter->second.back()));
+            pIndexList = &(get<Tuple_IndexList>(SelectGroupIter->second.back()));
         }
         else
         {
-            pIndexList = &(get<1>(*NameIter));
+            pIndexList = &(get<Tuple_IndexList>(*NameIter));
         }
 
     }
@@ -1158,10 +1175,17 @@ CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, string Me
         Find_ObjectDatas(ObjectName, ObjMapIter, DataMapIter);
     }
 
+
     CStructure* pStructure = Add_Object(ObjectName, ObjMapIter->second, Meshpath);
     Add_Data(ObjectName, DataMapIter->second, Meshpath);
 
     pIndexList->push_back(_int(ObjMapIter->second.size()) - 1);
+    
+    m_pCurSelectObjectGroup = &ObjMapIter->second;
+    m_iCurSelectObjectIndex = (_int(ObjMapIter->second.size()) <= 1) ? 0 : _int(ObjMapIter->second.size()) - 1;
+    SetUp_CurSelectObject();
+
+
     return pStructure;
 }
 
@@ -1471,23 +1495,22 @@ void CFunc_ObjectControl::Clear_SameNameObject(string ObjectGroupName, _int Name
     }
 }
 
-void CFunc_ObjectControl::Clear_ObjectGroup(string ObjectGroupName)
-{
-    size_t GroupHash = Convert_ToHash(ObjectGroupName);
-    OBJECTGROUPINGMAP::iterator ObjectGroupIter;
-    _bool bFindGroupingName = Find_ObjectGroupingName(GroupHash, ObjectGroupIter);
-    if (bFindGroupingName)
-    {
-        for (ObjectNameTupleArr::value_type& Value : ObjectGroupIter->second)
-        {
-            Delete_ObjectNamingMap(get<0>(Value), get<1>(Value));
-
-        }
-        ObjectGroupIter->second.clear();
-        m_ObjectNameGroupingMap.erase(ObjectGroupIter);
-        
-    }
-}
+//void CFunc_ObjectControl::Clear_ObjectGroup(string ObjectGroupName)
+//{
+//    size_t GroupHash = Convert_ToHash(ObjectGroupName);
+//    OBJECTGROUPINGMAP::iterator ObjectGroupIter;
+//    _bool bFindGroupingName = Find_ObjectGroupingName(GroupHash, ObjectGroupIter);
+//    if (bFindGroupingName)
+//    {
+//        for (ObjectNameTupleArr::value_type& Value : ObjectGroupIter->second)
+//        {
+//            Delete_ObjectNamingMap(get<0>(Value), get<1>(Value));
+//        }
+//        ObjectGroupIter->second.clear();
+//        Confirm_Data();
+//        
+//    }
+//}
 void CFunc_ObjectControl::Clear_SameNameInGroup(string ObjectGroupName, _int NameIndexInGroup)
 {
     size_t GroupHash = Convert_ToHash(ObjectGroupName);
@@ -1495,8 +1518,8 @@ void CFunc_ObjectControl::Clear_SameNameInGroup(string ObjectGroupName, _int Nam
     _bool bFindGroupingName = Find_ObjectGroupingName(GroupHash, ObjectGroupIter);
     if (bFindGroupingName)
     {
-        string ObjectName = get<0>(ObjectGroupIter->second[NameIndexInGroup]);
-        list<_int> ObjectIndexList = get<1>(ObjectGroupIter->second[NameIndexInGroup]);
+        string ObjectName = get<Tuple_ObjectName>(ObjectGroupIter->second[NameIndexInGroup]);
+        list<_int> ObjectIndexList = get<Tuple_IndexList>(ObjectGroupIter->second[NameIndexInGroup]);
         Delete_ObjectNamingMap(ObjectName, ObjectIndexList);
 
         ObjectNameTupleArr::iterator GroupArrIter = ObjectGroupIter->second.begin();
@@ -1520,7 +1543,7 @@ void CFunc_ObjectControl::Func_PickStart()
 {
     if (m_pMapTool->Is_CurPickMode(CWindow_Map::PICK_CLONE))
     {
-        Clone();
+        Place_Clone();
     }
 }
 
@@ -1621,6 +1644,7 @@ void CFunc_ObjectControl::Func_AddObject()
     }
 
 }
+
 void CFunc_ObjectControl::Func_DeleteOBject()
 {
     string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
@@ -1648,9 +1672,9 @@ void CFunc_ObjectControl::Func_DeleteOBject()
 
         if (GroupingNameIter != GroupingIter->second.end())
         {
-            CurSelectName = get<0>((*GroupingNameIter));
-            get<1>(*GroupingNameIter).remove(m_iCurSelectObjectIndex);
-            if (get<1>(*GroupingNameIter).empty())
+            CurSelectName = get<Tuple_ObjectName>((*GroupingNameIter));
+            get<Tuple_IndexList>(*GroupingNameIter).remove(m_iCurSelectObjectIndex);
+            if (get<Tuple_IndexList>(*GroupingNameIter).empty())
             {
                 GroupingIter->second.erase(GroupingNameIter);
             }
@@ -1709,6 +1733,15 @@ void CFunc_ObjectControl::Set_ControlSpeed(_float* fMoveSpeed, _float* fRotateSp
     ImGui::Text("Move : ");
     ImGui::SameLine();
     ImGui::SliderFloat("##Group Move Speed", fMoveSpeed, 0.1f, 50.f, "%.1f");
+    ImGui::Spacing();
+    ImGui::Spacing();
+    ImGui::Spacing();
+
+    Show_ControlInfo("MODE : SCALING", "MODE : ROTATE", "MODE : MOVE");
+    Show_ControlInfo(
+        u8"X축 : Insert/Delete\nY축 : End/Home\nZ축 : PageUp/Down", 
+        u8"X축 : Home/End\nY축 : Delete/PageDown\nZ축 : Insert/PageUp",
+        u8"X축 : Insert/Delete\nY축 : Home/End\nZ축 : PageUp/Down");
 }
 
 //void CFunc_ObjectControl::Control_Group()
@@ -2109,7 +2142,6 @@ void CFunc_ObjectControl::Delete_Data(vector<MTO_DATA>& rhsDataGroup, _int Targe
     }
 }
 
-
 void CFunc_ObjectControl::Position_Object()
 {
     if (nullptr == m_pObjTransform)
@@ -2331,6 +2363,23 @@ void CFunc_ObjectControl::Save_ObjectGroup(string BasePath, string SaveName)
                 writeFile.write((char*)&SaveIndex, sizeof(_uint));
             }
         }
+    }
+}
+
+void CFunc_ObjectControl::Show_ControlInfo(string ScaleInfo, string RotateInfo, string MoveInfo)
+{
+
+    switch (m_eControlType)
+    {
+    case CONTROL_SCALING:
+        ImGui::Text(ScaleInfo.c_str());
+        break;
+    case CONTROL_ROTATE:
+        ImGui::Text(RotateInfo.c_str());
+        break;
+    case CONTROL_MOVE:
+        ImGui::Text(MoveInfo.c_str());
+        break;
     }
 }
 
@@ -2865,7 +2914,7 @@ void CFunc_ObjectControl::Update_GroupMatrixForAnchor()
 {
     if (m_ObjectOriginMatrixlist.empty())
         return;
-    ObjectNameTupleArr& SelectObjectVector = Get_TupleArr(get<0>(m_GroupingInfo[m_iSelectedControlGroup]).c_str());
+    ObjectNameTupleArr& SelectObjectVector = Get_TupleArr(get<Tuple_ObjectName>(m_GroupingInfo[m_iSelectedControlGroup]).c_str());
     list<_float4x4>::iterator OriginMatIter = m_ObjectOriginMatrixlist.begin();
     for (auto& Value : SelectObjectVector)
     {
@@ -2887,13 +2936,13 @@ void CFunc_ObjectControl::Update_GroupObject()
     {
         return;
     }
-    ObjectNameTupleArr& SelectObjectVector = Get_TupleArr(get<0>(m_GroupingInfo[m_iSelectedControlGroup]).c_str());
+    ObjectNameTupleArr& SelectObjectVector = Get_TupleArr(get<Tuple_ObjectName>(m_GroupingInfo[m_iSelectedControlGroup]).c_str());
     list<_float4x4>::iterator OriginMatIter = m_ObjectOriginMatrixlist.begin();
     for (auto& Value : SelectObjectVector)
     {
-        size_t NameHash = Convert_ToHash(get<0>(Value));
+        size_t NameHash = Convert_ToHash(get<Tuple_ObjectName>(Value));
         DataArr& rhsDatas = m_DataNamingGroupMap[NameHash];
-        for (auto& ObjectListElem : get<1>(Value))
+        for (auto& ObjectListElem : get<Tuple_IndexList>(Value))
         {
             _int Index = ObjectListElem;
             _float4x4 GroupingMat = (*OriginMatIter);
@@ -2972,7 +3021,7 @@ _bool CFunc_ObjectControl::Find_ObjectDatas(string strObjectName, map<size_t, ve
     return true;
 }
 
-void CFunc_ObjectControl::Clone()
+void CFunc_ObjectControl::Place_Clone()
 {
     if (m_eCloneDir == CLONE_END)
         assert(0);
@@ -2997,15 +3046,48 @@ void CFunc_ObjectControl::Clone()
 
     _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
     MTO_DATA tData = (*m_pCurSelectData);
-    _matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
-    WorldMat.r[3] = OutPos.XMLoad();
-    tData.ObjectStateMatrix = WorldMat;
-    string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
-    Add_ObjectNamingMap(strGroupName, tData);
+    Clone_Object(OutPos, m_vCompDir, tData);
+    //_matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
+    //WorldMat.r[3] = OutPos.XMLoad();
+    //tData.ObjectStateMatrix = WorldMat;
+    //string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
+    //Add_ObjectNamingMap(strGroupName, tData);
 
 }
 
+void CFunc_ObjectControl::Clone_SamePosition()
+{
+    if (nullptr == m_pObjTransform || nullptr == m_pCurSelectGameObject || nullptr == m_pCurSelectData)
+    {
+        m_eCloneDir = CLONE_NONE;
+        return;
+    }
+    _float4 ObjectPosition = m_pObjTransform->Get_World(WORLD_POS);
+    MTO_DATA tData = (*m_pCurSelectData);
+    Clone_Object(ObjectPosition, _float4(0.f, 1.f, 0.f, 0.f), tData);
+    //_matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
+    //WorldMat.r[3] = ObjectPosition.XMLoad();
+    //tData.ObjectStateMatrix = WorldMat;
+    //string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
+    //Add_ObjectNamingMap(strGroupName, tData);
+}
 
+CStructure* CFunc_ObjectControl::Clone_Object(_float4 vObjectPosition, _float4 vObjectCompDir, MTO_DATA tData)
+{
+    CStructure* pReturnStructure = nullptr;
+
+    _float4 CloningPosition = vObjectPosition;
+    MTO_DATA CloningData = tData;
+
+    _matrix WorldMat = CloningData.ObjectStateMatrix.XMLoad();
+    WorldMat.r[3] = CloningPosition.XMLoad();
+    CloningData.ObjectStateMatrix = WorldMat;
+
+    string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
+    pReturnStructure = Add_ObjectNamingMap(strGroupName, CloningData);
+
+    return pReturnStructure;
+}
 
 void CFunc_ObjectControl::Add_HLOD()
 {

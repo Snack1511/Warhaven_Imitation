@@ -232,7 +232,8 @@ private:
 private:
 	_bool Calculate_Pick();
 
-
+public:
+	void		On_ToolTip(string strContext);
 #pragma region Private 기타 함수
 	void		Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Map&)> func);
 	_bool		Make_Combo(const char* szLabel, vector<tuple<char*, bool>>& szDataArr, int* pCurIndex, function<void()> SelectFunction);
@@ -253,6 +254,8 @@ private:
 	void		Set_BrushInform();
 	_bool		Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _float4& OutLocalPos, _float4& OutNormal);
 	void		EmptyFunction() {}
+
+
 #pragma endregion
 
 #pragma region Value 파일컨트롤
@@ -344,10 +347,11 @@ private:
 #pragma endregion
 
 
-	private:
-		_float	m_fTimeDelay = 0.1f;
-		_float	m_fDelayTimeAcc = 0.f;
+private:
+	_float	m_fTimeDelay = 0.1f;
+	_float	m_fDelayTimeAcc = 0.f;
 
-
+private:
+	ImFont* m_pKorFont = nullptr;
 };
 END
