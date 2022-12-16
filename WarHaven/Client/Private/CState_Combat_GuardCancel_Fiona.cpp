@@ -64,7 +64,7 @@ STATE_TYPE CState_Combat_GuardCancel_Fiona::Tick(CUnit* pOwner, CAnimator* pAnim
         if (m_ePreStateType != STATE_END)
             return m_ePreStateType;
         else
-            return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+            return AI_STATE_COMBAT_DEFAULT_FIONA_R;
     }
 
     return __super::Tick(pOwner, pAnimator);

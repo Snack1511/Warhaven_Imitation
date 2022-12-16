@@ -65,7 +65,7 @@ void CState_Combat_SkillE_Paladin_ShieldWall_End::Enter(CUnit* pOwner, CAnimator
 STATE_TYPE CState_Combat_SkillE_Paladin_ShieldWall_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
-		return AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+		return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 	DoMove_AI(pOwner, pAnimator);
 

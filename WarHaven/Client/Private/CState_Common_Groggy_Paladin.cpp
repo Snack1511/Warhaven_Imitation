@@ -82,7 +82,7 @@ STATE_TYPE CState_Common_Groggy_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimato
         return AI_STATE_COMBAT_SHIELDWALL_HIT_PALADIN;
 
     if(pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+        return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
     return __super::Tick(pOwner, pAnimator);
 }

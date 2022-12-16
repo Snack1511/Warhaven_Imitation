@@ -58,7 +58,7 @@ STATE_TYPE CState_Combat_GuardCancel_Warrior::Tick(CUnit* pOwner, CAnimator* pAn
         if (m_ePreStateType != STATE_END)
             return m_ePreStateType;
         else
-            return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+            return AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
     }
 
     return __super::Tick(pOwner, pAnimator);

@@ -201,7 +201,7 @@ void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_PALADIN_L;
 		
 
-		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 
 		break;
@@ -236,7 +236,7 @@ void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+		eNewState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 		break;
 	case eBehaviorType::ePathNavigation:

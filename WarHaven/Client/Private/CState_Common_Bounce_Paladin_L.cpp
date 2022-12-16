@@ -53,7 +53,7 @@ void CState_Common_Bounce_Paladin_L::Enter(CUnit* pOwner, CAnimator* pAnimator, 
 STATE_TYPE CState_Common_Bounce_Paladin_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEAFULT_PALADIN_L;
+        return AI_STATE_COMBAT_DEFAULT_PALADIN_L;
 
     return __super::Tick(pOwner, pAnimator);
 }

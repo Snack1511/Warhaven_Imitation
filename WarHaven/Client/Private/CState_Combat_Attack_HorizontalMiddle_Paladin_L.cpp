@@ -43,7 +43,7 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Paladin_L::Initialize()
 
 	m_eBounceState = AI_STATE_COMMON_BOUNCE_PALADIN_L;
 
-	m_iAINextState = AI_STATE_COMBAT_DEAFULT_PALADIN_L;
+	m_iAINextState = AI_STATE_COMBAT_DEFAULT_PALADIN_L;
 
 	return __super::Initialize();
 }

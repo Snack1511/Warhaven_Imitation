@@ -95,7 +95,7 @@ STATE_TYPE CState_Common_Hit_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
         //    break;
         //}
         
-        return AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+        return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
     }
 

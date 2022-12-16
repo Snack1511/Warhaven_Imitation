@@ -66,7 +66,7 @@ void CState_Combat_SkillQ_Paladin_Rush_End::Enter(CUnit* pOwner, CAnimator* pAni
 STATE_TYPE CState_Combat_SkillQ_Paladin_Rush_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
-		return AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+		return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 	CUnit* pUnit = pOwner->Get_TargetUnit();
 

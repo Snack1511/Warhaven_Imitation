@@ -53,7 +53,7 @@ void CState_Combat_GuardEnd_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, 
 STATE_TYPE CState_Combat_GuardEnd_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Get_CurAnimFrame() < m_iStateChangeKeyFrame)
-        return AI_STATE_COMBAT_DEAFULT_PALADIN_L;
+        return AI_STATE_COMBAT_DEFAULT_PALADIN_L;
 
     return __super::Tick(pOwner, pAnimator);
 }

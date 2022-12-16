@@ -140,14 +140,14 @@ STATE_TYPE CState_Combat_Attack_Paladin::Enter_RandomState(CUnit* pOwner, CAnima
 
 			default:
 
-				return AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+				return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 				break;
 			}
 
 		}
 		else
-			return AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+			return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 	}
 

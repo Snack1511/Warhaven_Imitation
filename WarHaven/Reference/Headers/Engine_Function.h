@@ -183,10 +183,13 @@ namespace Engine
 		writeFile.open(strDumpPath.c_str());
 		if(!writeFile.is_open())
 		{
-			assert(0);
+			Call_MsgBox(wstring(strMessage.begin(), strMessage.end()).c_str());
+			writeFile.close();
+			return;
 		}
 		writeFile.seekp(writeFile._Seekend);
 		writeFile.write(strWriteMsg.c_str(), strWriteMsg.length());
+		writeFile.close();
 	}
 
 }

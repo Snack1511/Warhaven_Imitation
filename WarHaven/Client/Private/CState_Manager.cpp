@@ -1617,8 +1617,8 @@ void CState_Manager::Paladin_State_AI()
 #pragma region Combat
 
 
-	m_arrStates[AI_STATE_COMBAT_DEAFULT_PALADIN_L] = CState_Combat_Default_Paladin_L::Create();
-	m_arrStates[AI_STATE_COMBAT_DEAFULT_PALADIN_R] = CState_Combat_Default_Paladin_R::Create();
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_PALADIN_L] = CState_Combat_Default_Paladin_L::Create();
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_PALADIN_R] = CState_Combat_Default_Paladin_R::Create();
 
 	m_arrStates[AI_STATE_COMBAT_GUARDBEGIN_PALADIN] = CState_Combat_GuardBegin_Paladin::Create();
 	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_PALADIN] = CState_Combat_GuardLoop_Paladin::Create();

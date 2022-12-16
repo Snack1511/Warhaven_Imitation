@@ -65,7 +65,7 @@ STATE_TYPE CState_Combat_GuardBegin_Paladin::Tick(CUnit* pOwner, CAnimator* pAni
         if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
         {
             if (Get_TargetLook_Length(pOwner) > 3.f)
-               return AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+               return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
             else
                 return AI_STATE_COMBAT_HORIZONTALMIDDLE_PALADIN_R;

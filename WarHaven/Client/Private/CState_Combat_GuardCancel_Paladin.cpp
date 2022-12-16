@@ -59,7 +59,7 @@ STATE_TYPE CState_Combat_GuardCancel_Paladin::Tick(CUnit* pOwner, CAnimator* pAn
         if (m_ePreStateType != STATE_END)
             return m_ePreStateType;
         else
-            return AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+            return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
     }
         
 
