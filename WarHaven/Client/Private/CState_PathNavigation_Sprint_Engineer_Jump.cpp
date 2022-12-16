@@ -59,11 +59,11 @@ STATE_TYPE CState_PathNavigation_Sprint_Engineer_Jump::Tick(CUnit* pOwner, CAnim
 {
     if (pAnimator->Is_CurAnimFinished())
     {
-        return AI_STATE_COMMON_FALL_ENGINEER_R;
+        return AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER;
     }
 
-        if (!pOwner->Is_Air())
-            return AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
+    if (!pOwner->Is_Air())
+        return AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
 
 
     return CState::Tick(pOwner, pAnimator);

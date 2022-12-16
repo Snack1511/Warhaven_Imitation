@@ -148,12 +148,8 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	{
 		vPlayerPos.z += 10.f;
 		vPlayerPos.x += 1.f;
-
-		//m_pMyPlayerInfo->Choose_Character();
-
+					
 		CPlayer* pEnemy = nullptr;
-
-		//pEnemy->Get_PlayerInfo()->Set_ChosenClass(PALADIN);
 
 		pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"));
 		pEnemy->Set_OutlineType(CPlayer::eENEMY);

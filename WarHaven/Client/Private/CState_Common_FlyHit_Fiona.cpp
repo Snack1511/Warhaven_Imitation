@@ -60,6 +60,9 @@ void CState_Common_FlyHit_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 {
     /* 날 때린놈의 hit info를 받았다. */
 
+    if (ePrevType == AI_STATE_COMBAT_COUNTER_FIONA)
+        m_bAttackTrigger = true;
+
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Fly_State();
 
@@ -68,6 +71,9 @@ void CState_Common_FlyHit_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 STATE_TYPE CState_Common_FlyHit_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_bAttackTrigger)
+        return AI_STATE_COMBAT_SPINATTACK_FIONA;
+
     if (pAnimator->Get_CurAnimFrame() > m_tHitInfo.iLandKeyFrame)
         return AI_STATE_COMMON_FALL_FIONA_R;//STATE_FALL_FIONA_R_AI_ENEMY;
 

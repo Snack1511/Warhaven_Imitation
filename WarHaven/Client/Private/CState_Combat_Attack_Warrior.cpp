@@ -69,14 +69,6 @@ void CState_Combat_Attack_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pA
 		m_fMyMaxLerp = 0.01f;
 		pOwner->Set_LookToTarget();
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, true);
-		break;
-
-	case 2:
-		m_bAttackTrigger = false;
-		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
-		break;
-
-	case 999:
 
 		if (!pOwner->Is_Air())
 		{
@@ -85,6 +77,20 @@ void CState_Combat_Attack_Warrior::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pA
 			pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
 			pOwner->Get_PhysicsCom()->Set_Dir(pOwner->Get_Transform()->Get_World(WORLD_LOOK));
 		}
+
+		break;
+
+	case 2:
+		m_bAttackTrigger = false;
+		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+
+		Physics_Setting_AI(0.1f, pOwner);
+			
+		break;
+
+	case 999:
+
+		
 
 		break;
 

@@ -147,7 +147,7 @@ STATE_TYPE CState_Combat_Attack_Fiona::Enter_RandomState(CUnit* pOwner, CAnimato
 			case 6:
 
 				if (pOwner->Can_Use(CUnit::SKILL1))
-					return AI_STATE_COMBAT_SHIELDATTACK_FIONA;
+					return AI_STATE_COMBAT_SPINATTACK_FIONA;
 
 				else
 					return AI_STATE_COMBAT_GUARDBEGIN_FIONA;
@@ -155,7 +155,7 @@ STATE_TYPE CState_Combat_Attack_Fiona::Enter_RandomState(CUnit* pOwner, CAnimato
 			case 7:
 
 				if (pOwner->Can_Use(CUnit::SKILL3))
-					return AI_STATE_COMBAT_SHIELDATTACK_FIONA;
+					return AI_STATE_COMBAT_COUNTER_FIONA;
 
 				else
 					return AI_STATE_COMBAT_GUARDBEGIN_FIONA;

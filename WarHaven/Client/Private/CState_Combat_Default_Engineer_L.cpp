@@ -92,7 +92,7 @@ STATE_TYPE CState_Combat_Default_Engineer_L::Tick(CUnit* pOwner, CAnimator* pAni
         case 7:
         case 6:
 
-            if (pOwner->Can_Use(CUnit::SKILL1))
+            if (pOwner->Can_Use(CUnit::SKILL2))
                 return AI_STATE_COMBAT_GROGGYATTACK_ENGINEER;
 
             else

@@ -23,7 +23,7 @@ HRESULT CState_PathNavigation_Sprint_Engineer::Initialize()
 {
 	__super::Initialize();
 
-	m_eJumpFallStateType = AI_STATE_COMMON_FALL_ENGINEER_R;
+	m_eStateType = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER;
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;

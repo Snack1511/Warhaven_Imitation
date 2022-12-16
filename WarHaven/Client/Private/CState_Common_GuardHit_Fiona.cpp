@@ -63,7 +63,8 @@ void CState_Common_GuardHit_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Guard_State(pOwner);
 
-    if (ePrevType == AI_STATE_COMBAT_COUNTER_FIONA)
+    if (ePrevType == AI_STATE_COMBAT_COUNTER_FIONA ||
+        ePrevType == m_eStateType)
         m_bAttackTrigger = true;
 
     /* Owner¿« Animator Set Idle∑Œ */

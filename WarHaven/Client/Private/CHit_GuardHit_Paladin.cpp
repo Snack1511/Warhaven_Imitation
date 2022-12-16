@@ -81,6 +81,7 @@ void CHit_GuardHit_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
         m_bMoveTrigger = false;
 
 
+
     if (ePrevType == STATE_SHIELDWALL_LOOP_PALADIN ||
         ePrevType == STATE_SHIELDWALL_HIT_PALADIN)
     {
@@ -113,22 +114,10 @@ STATE_TYPE CHit_GuardHit_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CHit_GuardHit_Paladin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 
 }
 
 STATE_TYPE CHit_GuardHit_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* PALADIN가 Attack 으로 오는 조건
-    1.  LBuutton 을 이용해 공격한다.
-    */
-    //if (KEY(CTRL, NONE))
-    //{
-    //    if (CUser::Get_Instance()->Get_LastKey() == KEY::LBUTTON)
-    //    {
-    //        return m_eStateType;
-    //    }
-    //}
-   
     return STATE_END;
 }

@@ -38,6 +38,8 @@ HRESULT CPaladin_Attack_ShieldSlam::Initialize()
 	m_tHitInfo.eHitType = HIT_TYPE::eRIGHT;
 	m_tHitInfo.fKnockBackPower = 1.f;
 	m_tHitInfo.fJumpPower = 3.f;
+	m_tHitInfo.iLandKeyFrame = 20;
+	m_tHitInfo.bFly = true;
 	
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
 	m_iAnimIndex = 15;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)

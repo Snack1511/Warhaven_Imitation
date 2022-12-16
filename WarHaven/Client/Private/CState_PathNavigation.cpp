@@ -29,13 +29,25 @@ HRESULT CState_PathNavigation::Initialize()
 
 void CState_PathNavigation::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	m_vOriPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 
+
 	m_fAIDelayTime += fDT(0);
+
+	// 만약에 계속 낀다면 이 로직 한번 사용해보세요.
+	if (m_fAIDelayTime > 2.f)
+	{
+		//_float fLength = m_vOriPos.Length() - pOwner->Get_Transform()->Get_World(WORLD_POS).Length();
+
+		//if (fabs(fLength) < 1.2f)
+		//	return m_eWalkState;
+	}
 
 	CPath* pCurPath = pOwner->Get_CurPath();
 

@@ -34,9 +34,10 @@ void CState_Combat_Default_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 		m_fInterPolationTime = 0.f;
 
 	m_iRand = random(0, 7);
-	m_iDirectionRand = random(0, 7);
+	m_iDirectionRand = STATE_DIRECTION_N;//random(0, 7);
 
-	Set_Direction_Front_AI(m_iDirectionRand);
+	
+	//Set_Direction_Front_AI(m_iDirectionRand);
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 	m_iAnimIndex = m_iDirectionAnimIndex[m_iDirectionRand];
 
