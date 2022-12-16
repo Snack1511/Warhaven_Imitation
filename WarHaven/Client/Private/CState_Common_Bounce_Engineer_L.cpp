@@ -53,7 +53,7 @@ void CState_Common_Bounce_Engineer_L::Enter(CUnit* pOwner, CAnimator* pAnimator,
 STATE_TYPE CState_Common_Bounce_Engineer_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEAFULT_ENGINEER_L;
+        return AI_STATE_COMBAT_DEFAULT_ENGINEER_L;
 
     return __super::Tick(pOwner, pAnimator);
 }

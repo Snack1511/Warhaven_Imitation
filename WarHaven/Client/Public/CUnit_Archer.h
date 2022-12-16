@@ -4,6 +4,7 @@
 BEGIN(Client)
 
 class CAnimWeapon;
+class CProjectile;
 
 class CUnit_Archer
 	: public CUnit
@@ -29,6 +30,12 @@ protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
 public:
+	void			Create_DefaultArrow();
+	void			Change_ArrowPhase(_uint iPhase);
+	void			Shoot_Arrow();
+
+
+public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize() override;
@@ -37,6 +44,9 @@ public:
 	virtual void OnDisable() override;
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+
+private:
+	CProjectile* m_pCurArrow = nullptr;
 
 
 };

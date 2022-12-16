@@ -43,7 +43,7 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Engineer_L::Initialize()
 
 	m_eBounceState = AI_STATE_COMMON_BOUNCE_ENGINEER_L;
 
-	m_iAINextState = AI_STATE_COMBAT_DEAFULT_ENGINEER_L;
+	m_iAINextState = AI_STATE_COMBAT_DEFAULT_ENGINEER_L;
 
 	return __super::Initialize();
 }

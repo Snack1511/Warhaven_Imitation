@@ -1284,8 +1284,8 @@ void CState_Manager::Warrior_State_AI()
 	//---------------------------------------------------------------------------------//
 	
 #pragma region Patrol
-	m_arrStates[AI_STATE_PATROL_DEAFULT_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();
-	m_arrStates[AI_STATE_PATROL_DEAFULT_WARRIOR_R] = CState_Patrol_Default_Warrior_R::Create();
+	m_arrStates[AI_STATE_PATROL_DEFAULT_WARRIOR_L] = CState_Patrol_Default_Warrior_L::Create();
+	m_arrStates[AI_STATE_PATROL_DEFAULT_WARRIOR_R] = CState_Patrol_Default_Warrior_R::Create();
 						 
 	m_arrStates[AI_STATE_PATROL_WARRIOR_SWITCH_R_TO_L] = CState_Patrol_Switch_Warrior_CSwitchRtoL::Create();
 	m_arrStates[AI_STATE_PATROL_WARRIOR_SWITCH_L_TO_R] = CState_Patrol_Switch_Warrior_CSwitchLtoR::Create();
@@ -1314,8 +1314,8 @@ void CState_Manager::Warrior_State_AI()
 #pragma endregion
 
 #pragma region Combat
-	m_arrStates[AI_STATE_COMBAT_DEAFULT_WARRIOR_L] = CState_Combat_Run_Warrior_L::Create();
-	m_arrStates[AI_STATE_COMBAT_DEAFULT_WARRIOR_R] = CState_Combat_Run_Warrior_R::Create();
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_WARRIOR_L] = CState_Combat_Run_Warrior_L::Create();
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_WARRIOR_R] = CState_Combat_Run_Warrior_R::Create();
 	
 
 	m_arrStates[AI_STATE_COMBAT_OXEN_BEGIN_WARRIOR] = CState_Combat_Oxen_Begin_Warrior::Create();
@@ -1370,8 +1370,8 @@ void CState_Manager::WarHammer_State_AI()
 
 #pragma region Patrol
 
-	m_arrStates[AI_STATE_PATROL_DEAFULT_ENGINEER_L] = CState_Patrol_Default_Engineer_L::Create();
-	m_arrStates[AI_STATE_PATROL_DEAFULT_ENGINEER_R] = CState_Patrol_Default_Engineer_R::Create();
+	m_arrStates[AI_STATE_PATROL_DEFAULT_ENGINEER_L] = CState_Patrol_Default_Engineer_L::Create();
+	m_arrStates[AI_STATE_PATROL_DEFAULT_ENGINEER_R] = CState_Patrol_Default_Engineer_R::Create();
 
 	m_arrStates[AI_STATE_PATROL_ENGINEER_SWITCH_R_TO_L] = CState_Patrol_Switch_Engineer_CSwitchRtoL::Create();
 	m_arrStates[AI_STATE_PATROL_ENGINEER_SWITCH_L_TO_R] = CState_Patrol_Switch_Engineer_CSwitchLtoR::Create();
@@ -1406,8 +1406,8 @@ void CState_Manager::WarHammer_State_AI()
 #pragma region Combat
 
 
-	m_arrStates[AI_STATE_COMBAT_DEAFULT_ENGINEER_L] = CState_Combat_Default_Engineer_L::Create();
-	m_arrStates[AI_STATE_COMBAT_DEAFULT_ENGINEER_R] = CState_Combat_Default_Engineer_R::Create();
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_ENGINEER_L] = CState_Combat_Default_Engineer_L::Create();
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_ENGINEER_R] = CState_Combat_Default_Engineer_R::Create();
 
 
 	m_arrStates[AI_STATE_COMBAT_AIRSPIKE_BEGIN_ENGINEER] = CState_Combat_SkillQ_AirSpike_Begin::Create();
@@ -1460,8 +1460,8 @@ void CState_Manager::Valkyrie_State_AI()
 
 #pragma region Patrol
 
-	m_arrStates[AI_STATE_PATROL_DEAFULT_FIONA_L] = CState_Patrol_Default_Fiona_L::Create();
-	m_arrStates[AI_STATE_PATROL_DEAFULT_FIONA_R] = CState_Patrol_Default_Fiona_R::Create();
+	m_arrStates[AI_STATE_PATROL_DEFAULT_FIONA_L] = CState_Patrol_Default_Fiona_L::Create();
+	m_arrStates[AI_STATE_PATROL_DEFAULT_FIONA_R] = CState_Patrol_Default_Fiona_R::Create();
 
 	m_arrStates[AI_STATE_PATROL_FIONA_SWITCH_R_TO_L] = CState_Patrol_Switch_Fiona_CSwitchRtoL::Create();
 	m_arrStates[AI_STATE_PATROL_FIONA_SWITCH_L_TO_R] = CState_Patrol_Switch_Fiona_CSwitchLtoR::Create();
@@ -1494,8 +1494,8 @@ void CState_Manager::Valkyrie_State_AI()
 
 #pragma region Combat
 
-	m_arrStates[AI_STATE_COMBAT_DEAFULT_FIONA_L] = CState_Combat_Default_Fiona_L::Create();
-	m_arrStates[AI_STATE_COMBAT_DEAFULT_FIONA_R] = CState_Combat_Default_Fiona_R::Create();
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_FIONA_L] = CState_Combat_Default_Fiona_L::Create();
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_FIONA_R] = CState_Combat_Default_Fiona_R::Create();
 
 	
 	m_arrStates[AI_STATE_COMBAT_COUNTER_FIONA] = CState_Combat_SkillQ_Counter_Fiona::Create();
@@ -1550,8 +1550,8 @@ void CState_Manager::Paladin_State_AI()
 
 #pragma region Patrol
 
-	m_arrStates[AI_STATE_PATROL_DEAFULT_PALADIN_L] = CState_Patrol_Default_Paladin_L::Create();
-	m_arrStates[AI_STATE_PATROL_DEAFULT_PALADIN_R] = CState_Patrol_Default_Paladin_R::Create();
+	m_arrStates[AI_STATE_PATROL_DEFAULT_PALADIN_L] = CState_Patrol_Default_Paladin_L::Create();
+	m_arrStates[AI_STATE_PATROL_DEFAULT_PALADIN_R] = CState_Patrol_Default_Paladin_R::Create();
 
 	m_arrStates[AI_STATE_PATROL_PALADIN_SWITCH_R_TO_L] = CState_Patrol_Switch_Paladin_CSwitchRtoL::Create();
 	m_arrStates[AI_STATE_PATROL_PALADIN_SWITCH_L_TO_R] = CState_Patrol_Switch_Paladin_CSwitchLtoR::Create();

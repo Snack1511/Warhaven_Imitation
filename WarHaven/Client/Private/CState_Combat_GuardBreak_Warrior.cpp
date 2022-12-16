@@ -95,7 +95,7 @@ STATE_TYPE CState_Combat_GuardBreak_Warrior::Tick(CUnit* pOwner, CAnimator* pAni
         return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
 
     if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
-        return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+        return AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 
     DoMove_AI(pOwner, pAnimator);
 

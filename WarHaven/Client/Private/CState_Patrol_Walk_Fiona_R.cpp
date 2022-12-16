@@ -48,7 +48,7 @@ STATE_TYPE CState_Patrol_Walk_Fiona_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
     if (pAnimator->Is_CurAnimFinished())
     {
         if (m_iRand == 0)
-            return AI_STATE_PATROL_DEAFULT_FIONA_R;
+            return AI_STATE_PATROL_DEFAULT_FIONA_R;
         else
             --m_iRand;
     }

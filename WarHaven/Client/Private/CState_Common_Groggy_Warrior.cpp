@@ -77,7 +77,7 @@ STATE_TYPE CState_Common_Groggy_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimato
 {
 
     if(pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+        return AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 
     return __super::Tick(pOwner, pAnimator);
 }

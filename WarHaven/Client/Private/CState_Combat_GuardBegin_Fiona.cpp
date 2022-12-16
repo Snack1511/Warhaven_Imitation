@@ -65,7 +65,7 @@ STATE_TYPE CState_Combat_GuardBegin_Fiona::Tick(CUnit* pOwner, CAnimator* pAnima
         if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
         {
             if (Get_TargetLook_Length(pOwner) > 3.f)
-               return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+               return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
             else
                 return AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_R;

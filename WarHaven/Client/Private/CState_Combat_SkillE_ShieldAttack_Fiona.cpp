@@ -91,7 +91,7 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pA
 STATE_TYPE CState_Combat_SkillE_ShieldAttack_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (pAnimator->Is_CurAnimFinished())
-		return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+		return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
 	if(m_bMoveTrigger)
 		pOwner->Get_PhysicsCom()->Set_Accel(m_fMyAccel);

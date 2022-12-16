@@ -219,19 +219,19 @@ void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_PALADIN_R;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_PALADIN_R;
 
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_PALADIN_R;
 		break;
 
 	case eBehaviorType::eResurrect:

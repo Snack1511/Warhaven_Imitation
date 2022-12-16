@@ -186,7 +186,7 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
 
-		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 
 		break;
 
@@ -215,14 +215,14 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEAFULT_WARRIOR_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_COMBAT_DEAFULT_WARRIOR_L;
+		eNewState = AI_STATE_COMBAT_DEFAULT_WARRIOR_L;
 
 		break;
 	case eBehaviorType::ePathNavigation:

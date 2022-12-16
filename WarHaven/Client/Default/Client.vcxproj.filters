@@ -2821,6 +2821,12 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile">
       <UniqueIdentifier>{1aaa6b96-3866-40f8-b9fd-09b3c145c597}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\01. DefaultArrow">
+      <UniqueIdentifier>{ef7f16fa-97c1-4d1a-b84d-8e477aa2c494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\02. PurpleArrow">
+      <UniqueIdentifier>{25dde520-c4a3-46dd-a95b-59655b11eca1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5040,6 +5046,9 @@
     <ClInclude Include="..\public\CProjectile.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CDefaultArrow.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\01. DefaultArrow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -7239,6 +7248,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CProjectile.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CDefaultArrow.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\01. DefaultArrow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

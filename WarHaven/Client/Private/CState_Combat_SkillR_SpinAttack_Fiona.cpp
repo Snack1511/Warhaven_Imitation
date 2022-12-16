@@ -67,7 +67,7 @@ void CState_Combat_SkillR_SpinAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pAni
 STATE_TYPE CState_Combat_SkillR_SpinAttack_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (pAnimator->Is_CurAnimFinished())
-		return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+		return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
 	return __super::Tick(pOwner, pAnimator);
 }

@@ -53,7 +53,7 @@ HRESULT CAnimWeapon::Initialize_Prototype()
 	pShader->Initialize();
 	Add_Component(pShader);
 
-	CModel_Renderer* pRenderer = CModel_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXMODEL_PASS_NORMALMAPPING
+	CModel_Renderer* pRenderer = CModel_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXANIM_PASS_NORMAL
 		, _float4(0.f, 0.f, 0.f, 1.f));
 	pRenderer->Initialize();
 	Add_Component<CRenderer>(pRenderer);

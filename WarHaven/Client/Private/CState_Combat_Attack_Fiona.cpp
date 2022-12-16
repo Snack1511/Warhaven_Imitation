@@ -163,14 +163,14 @@ STATE_TYPE CState_Combat_Attack_Fiona::Enter_RandomState(CUnit* pOwner, CAnimato
 
 			default:
 
-				return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+				return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
 				break;
 			}
 
 		}
 		else
-			return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+			return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
 	}
 

@@ -57,7 +57,7 @@ void CState_Combat_GuardLoop_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator,
 STATE_TYPE CState_Combat_GuardLoop_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (Get_TargetLook_Length(pOwner) > 3.f)
-        return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+        return AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 
     pOwner->Set_LookToTarget();
 
@@ -80,7 +80,7 @@ STATE_TYPE CState_Combat_GuardLoop_Warrior::Tick(CUnit* pOwner, CAnimator* pAnim
     case 2:
 
         if(pAnimator->Is_CurAnimFinished())
-            return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+            return AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 
         break;
 

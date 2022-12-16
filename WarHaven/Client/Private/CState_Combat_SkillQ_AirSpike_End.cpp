@@ -74,7 +74,7 @@ void CState_Combat_SkillQ_AirSpike_End::Enter(CUnit* pOwner, CAnimator* pAnimato
 STATE_TYPE CState_Combat_SkillQ_AirSpike_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (pAnimator->Is_CurAnimFinished())
-		return AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+		return AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 
 
 	if (m_bHit && m_bKeyInputable)

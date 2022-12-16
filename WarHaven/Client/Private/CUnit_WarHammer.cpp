@@ -171,7 +171,7 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_ENGINEER;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_ENGINEER_L;
 
-		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 
 		break;
 
@@ -194,14 +194,14 @@ void CUnit_WarHammer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEAFULT_ENGINEER_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+		eNewState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 
 		break;
 	case eBehaviorType::ePathNavigation:

@@ -64,7 +64,7 @@ void CState_Combat_SkillQ_Counter_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimat
 STATE_TYPE CState_Combat_SkillQ_Counter_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (pAnimator->Is_CurAnimFinished())
-		return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+		return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
 	return __super::Tick(pOwner, pAnimator);
 }

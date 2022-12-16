@@ -62,7 +62,7 @@ void CState_Patrol_Switch_Paladin_CSwitchRtoL::Enter(CUnit* pOwner, CAnimator* p
 STATE_TYPE CState_Patrol_Switch_Paladin_CSwitchRtoL::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_PATROL_DEAFULT_PALADIN_L;
+        return AI_STATE_PATROL_DEFAULT_PALADIN_L;
 
     return __super::Tick(pOwner, pAnimator);
 }

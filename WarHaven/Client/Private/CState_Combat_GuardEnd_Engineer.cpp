@@ -53,7 +53,7 @@ void CState_Combat_GuardEnd_Engineer::Enter(CUnit* pOwner, CAnimator* pAnimator,
 STATE_TYPE CState_Combat_GuardEnd_Engineer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Get_CurAnimFrame() < m_iStateChangeKeyFrame)
-        return AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+        return AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 
 	// 가드 상태에서도 움직일 수 있도록 설정한다.
 

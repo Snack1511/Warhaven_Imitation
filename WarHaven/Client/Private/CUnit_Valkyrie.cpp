@@ -150,7 +150,7 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_FIONA;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_FIONA_L;
 
-		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_FIONA_R;
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 		break;
 
 	default:
@@ -172,14 +172,14 @@ void CUnit_Valkyrie::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEAFULT_FIONA_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_FIONA_R;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_COMBAT_DEAFULT_FIONA_R;
+		eNewState = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
 		break;
 	case eBehaviorType::ePathNavigation:

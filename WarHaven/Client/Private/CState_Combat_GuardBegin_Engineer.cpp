@@ -65,7 +65,7 @@ STATE_TYPE CState_Combat_GuardBegin_Engineer::Tick(CUnit* pOwner, CAnimator* pAn
         if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
         {
             if (Get_TargetLook_Length(pOwner) > 3.f)
-               return AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+               return AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 
             else
                 return AI_STATE_COMBAT_HORIZONTALMIDDLE_ENGINEER_R;

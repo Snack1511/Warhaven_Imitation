@@ -94,7 +94,7 @@ STATE_TYPE CState_Combat_GuardDash_Warrior::Tick(CUnit* pOwner, CAnimator* pAnim
 		}
 	}
 	else
-		return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+		return AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 
 	Follow_MouseLook(pOwner);
 

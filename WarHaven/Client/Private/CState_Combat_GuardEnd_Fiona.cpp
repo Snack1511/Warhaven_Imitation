@@ -53,7 +53,7 @@ void CState_Combat_GuardEnd_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 STATE_TYPE CState_Combat_GuardEnd_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Get_CurAnimFrame() < m_iStateChangeKeyFrame)
-        return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+        return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
 	// 가드 상태에서도 움직일 수 있도록 설정한다.
 

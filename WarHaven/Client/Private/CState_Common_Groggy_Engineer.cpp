@@ -77,7 +77,7 @@ STATE_TYPE CState_Common_Groggy_Engineer::Tick(CUnit* pOwner, CAnimator* pAnimat
 {
 
     if(pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+        return AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 
     return __super::Tick(pOwner, pAnimator);
 }

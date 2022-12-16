@@ -133,7 +133,7 @@ void CState_Combat_Oxen_Loop_Attack_Warrior::Enter(CUnit* pOwner, CAnimator* pAn
 STATE_TYPE CState_Combat_Oxen_Loop_Attack_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+        return AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 
     DoMove_AI(pOwner, pAnimator);
 

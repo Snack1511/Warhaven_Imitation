@@ -67,7 +67,7 @@ STATE_TYPE CState_Patrol_Walk_Engineer_R::Tick(CUnit* pOwner, CAnimator* pAnimat
     if (pAnimator->Is_CurAnimFinished())
     {
         if (m_iRand == 0)
-            return AI_STATE_PATROL_DEAFULT_ENGINEER_R;
+            return AI_STATE_PATROL_DEFAULT_ENGINEER_R;
         else
             --m_iRand;
     }

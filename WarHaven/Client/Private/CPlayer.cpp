@@ -136,7 +136,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	{
 	L"",
 	L"",
-	L"../bin/resources/meshes/weapons/longBow/SM_Bolt.fbx",
+	L"",
 	L"../bin/resources/meshes/Weapons/KiteShield/SM_WP_KiteShield0001_A00.fbx",
 	L"",
 	L"",	// ENGINEER
@@ -189,7 +189,6 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		}
 	}
 
-	tModelData[ARCHER].strRefBoneName[MODEL_PART_WEAPON_L] = "0B_R_WP1";
 
 	m_pAllUnitClass[WARRIOR] = CUnit_Warrior::Create(tModelData[WARRIOR]);
 	m_pAllUnitClass[ENGINEER] = CUnit_WarHammer::Create(tModelData[ENGINEER]);
@@ -420,10 +419,10 @@ void CPlayer::SetUp_ReserveState()
 	{
 	case CUnit::UNIT_TYPE::eAI_Default:
 
-		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEAFULT_WARRIOR_R;
-		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEAFULT_ENGINEER_R;
-		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEAFULT_FIONA_R;
-		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
+		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
+		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEFAULT_FIONA_R;
+		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
 
 		break;
 

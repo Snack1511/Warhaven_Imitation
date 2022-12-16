@@ -43,7 +43,7 @@ HRESULT CState_Combat_Attack_VerticalCut_Engineer_R::Initialize()
 
 	m_eBounceState = AI_STATE_COMMON_BOUNCE_ENGINEER_R;
 	
-	m_iAINextState = AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+	m_iAINextState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 	
 	return __super::Initialize();
 }

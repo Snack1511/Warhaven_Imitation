@@ -16,6 +16,8 @@
 
 #include "CAnimWeapon.h"
 
+#include "CProjectile.h"
+
 CUnit_Archer::CUnit_Archer()
 {
 }
@@ -226,6 +228,26 @@ void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 }
 
+void CUnit_Archer::Create_DefaultArrow()
+{
+
+}
+
+void CUnit_Archer::Change_ArrowPhase(_uint iPhase)
+{
+	if (!m_pCurArrow)
+		return;
+
+	m_pCurArrow->On_ChangePhase(CProjectile::ePROJECTILE_PHASE(iPhase));
+}
+
+void CUnit_Archer::Shoot_Arrow()
+{
+
+	if (!m_pCurArrow)
+		return;
+}
+
 HRESULT CUnit_Archer::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -357,8 +379,6 @@ HRESULT CUnit_Archer::Start()
 		"0B_R_WP1"
 	);
 
-	_float4x4 matTrans = XMMatrixRotationY(XMConvertToRadians(270.0f));
-	m_pModelCom->Set_TransformMatrix(MODEL_PART_WEAPON_L, matTrans);
 
 	return S_OK;
 }

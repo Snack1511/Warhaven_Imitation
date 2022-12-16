@@ -49,7 +49,7 @@ STATE_TYPE CState_Patrol_Walk_Paladin_L::Tick(CUnit* pOwner, CAnimator* pAnimato
     if (pAnimator->Is_CurAnimFinished())
     {
         if (m_iRand == 0)
-            return AI_STATE_PATROL_DEAFULT_PALADIN_L;
+            return AI_STATE_PATROL_DEFAULT_PALADIN_L;
         else
             --m_iRand;
     }

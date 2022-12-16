@@ -62,7 +62,7 @@ void CState_Patrol_Switch_Engineer_CSwitchRtoL::Enter(CUnit* pOwner, CAnimator* 
 STATE_TYPE CState_Patrol_Switch_Engineer_CSwitchRtoL::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_PATROL_DEAFULT_ENGINEER_L;
+        return AI_STATE_PATROL_DEFAULT_ENGINEER_L;
 
     return __super::Tick(pOwner, pAnimator);
 }

@@ -53,7 +53,7 @@ void CState_Common_Bounce_Warrior_L::Enter(CUnit* pOwner, CAnimator* pAnimator, 
 STATE_TYPE CState_Common_Bounce_Warrior_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEAFULT_WARRIOR_L;
+        return AI_STATE_COMBAT_DEFAULT_WARRIOR_L;
 
     return __super::Tick(pOwner, pAnimator);
 }

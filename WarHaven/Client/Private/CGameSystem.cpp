@@ -162,8 +162,8 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		pEnemy->Enable_OnStart();
 		pEnemy->SetUp_UnitColliders(false);
 
-		// AI_STATE_DEAFULT_IDLE_WARRIOR_R
-		pEnemy->Reserve_State(AI_STATE_PATROL_DEAFULT_WARRIOR_R);
+		// AI_STATE_DEFAULT_IDLE_WARRIOR_R
+		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_WARRIOR_R);
 		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
 
 		READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
@@ -1355,7 +1355,7 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
 	_uint iDefaultCnt = 0;
 	for (_uint i = 0; i < 12; ++i)
 	{
-		wstring wstrName = L"DeafultPlayer_";
+		wstring wstrName = L"DefaultPlayer_";
 		wstrName += to_wstring(iDefaultCnt++);
 		ADD_DEFAULTINFO(wstrName);
 	}

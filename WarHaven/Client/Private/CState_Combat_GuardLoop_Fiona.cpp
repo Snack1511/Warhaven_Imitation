@@ -57,7 +57,7 @@ void CState_Combat_GuardLoop_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, S
 STATE_TYPE CState_Combat_GuardLoop_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (Get_TargetLook_Length(pOwner) > 3.5f)
-        return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+        return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
     pOwner->Set_LookToTarget();
 
@@ -80,7 +80,7 @@ STATE_TYPE CState_Combat_GuardLoop_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimat
     case 2:
 
         if(pAnimator->Is_CurAnimFinished())
-            return AI_STATE_COMBAT_DEAFULT_FIONA_R;
+            return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
         break;
 

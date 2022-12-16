@@ -101,7 +101,7 @@ STATE_TYPE CState_Combat_GuardDash_Engineer::Tick(CUnit* pOwner, CAnimator* pAni
 		}
 	}
 	else
-		return AI_STATE_COMBAT_DEAFULT_ENGINEER_R;
+		return AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 
 
     return __super::Tick(pOwner, pAnimator);
