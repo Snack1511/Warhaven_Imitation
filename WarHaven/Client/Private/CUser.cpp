@@ -54,10 +54,10 @@ IMPLEMENT_SINGLETON(CUser);
 CUser::CUser()
 {
 }
+
 CUser::~CUser()
 {
 }
-
 
 HRESULT CUser::Initialize()
 {
@@ -86,13 +86,10 @@ void CUser::Tick()
 	}
 }
 
-
-
 CUnit* CUser::Get_Player()
 {
 	return m_pPlayer->Get_CurrentUnit();
 }
-
 
 void CUser::Fix_CursorPosToCenter()
 {
@@ -105,9 +102,7 @@ void CUser::Fix_CursorPosToCenter()
 		}
 		else
 			GAMEINSTANCE->Change_Camera(L"FreeCam");
-
 	}
-
 
 	if (GetFocus() != g_hWnd || !m_bFixCursor)
 		return;
@@ -232,7 +227,6 @@ void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
 	tAniminfo.vPos = _float2(550.f, -270.f);
 	tAniminfo.vScale = _float2(120.f, 120.f);
 
-
 	if (bTurnOn)
 	{
 		ENABLE_GAMEOBJECT(m_pFire);
@@ -307,7 +301,6 @@ void CUser::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 {
 	m_pUI_Paden->Move_PointUI(strPadenPointKey, iTriggerState);
 }
-
 
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
@@ -423,12 +416,15 @@ void CUser::On_EnterStageLevel()
 		DISABLE_GAMEOBJECT(m_pUI_Popup);
 	}
 
-	if (!m_pKillLog)
+	if (!m_pKillLog[0])
 	{
-		m_pKillLog = CUI_KillLog::Create();
+		for (int i = 0; i < 5; ++i)
+		{
+			m_pKillLog[i] = CUI_KillLog::Create();
 
-		CREATE_GAMEOBJECT(m_pKillLog, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pKillLog);
+			CREATE_GAMEOBJECT(m_pKillLog[i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pKillLog[i]);
+		}
 	}
 
 	if (m_eLoadLevel > LEVEL_BOOTCAMP)
@@ -478,6 +474,12 @@ void CUser::On_ExitStageLevel()
 			m_pUI_Damage[i] = nullptr;
 	}
 
+	for (_uint i = 0; i < 5; ++i)
+	{
+		if (m_pKillLog[i])
+			m_pKillLog[i] = nullptr;
+	}
+
 	if (m_pUI_Oper)
 		m_pUI_Oper = nullptr;
 
@@ -486,9 +488,6 @@ void CUser::On_ExitStageLevel()
 
 	if (m_pUI_Training)
 		m_pUI_Training = nullptr;
-
-	if (m_pKillLog)
-		m_pKillLog = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -540,6 +539,28 @@ void CUser::Enable_DamageFont(_uint eType, _float fDmg)
 	}
 }
 
+void CUser::Set_LogName(CPlayer* attacker, CPlayer* victim)
+{
+	m_pKillLog[m_iKillLogIdx]->Set_LogName(attacker, victim);
+}
+
+void CUser::Set_LogCount()
+{
+	m_pKillLog[m_iKillLogIdx]->Set_LogCount(m_iKillLogIdx);
+}
+
+void CUser::Enable_KillUI(_uint iType)
+{
+	m_pKillLog[m_iKillLogIdx]->SetActive(true);
+	m_pKillLog[m_iKillLogIdx]->Enable_KillUI(iType);
+
+	m_iKillLogIdx++;
+	if (m_iKillLogIdx > 4)
+	{
+		m_iKillLogIdx = 0;
+	}
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
@@ -563,17 +584,6 @@ void CUser::Enable_Popup(_uint iPopupType)
 {
 	if (m_pUI_Popup)
 		m_pUI_Popup->Enable_Popup((CUI_Popup::ePOPUP_TYPE)iPopupType);
-}
-
-void CUser::Set_LogName(CPlayer* attacker, CPlayer* victim)
-{
-	m_pKillLog->Set_LogName(attacker, victim);
-}
-
-void CUser::Enable_KillUI(_uint iType)
-{
-	m_pKillLog->SetActive(true);
-	m_pKillLog->Enable_KillUI(iType);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

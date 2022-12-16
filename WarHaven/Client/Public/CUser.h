@@ -117,7 +117,6 @@ public:		// 파덴
 	void Interat_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKey);
 	void Move_PointUI(string wstrPadenPointKey, _uint iTriggerState);
 
-
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
@@ -159,6 +158,7 @@ public:		// 알림
 
 public:	// 킬로그
 	void Set_LogName(CPlayer* attacker, CPlayer* victim);
+	void Set_LogCount();
 	void Enable_KillUI(_uint iType);
 
 private:
@@ -170,7 +170,6 @@ private:
 	CUI_Oper* m_pUI_Oper = nullptr;
 	CUI_Popup* m_pUI_Popup = nullptr;
 	CUI_Result* m_pUI_Result = nullptr;
-	CUI_KillLog* m_pKillLog = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
@@ -185,6 +184,9 @@ private:
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
+
+	CUI_KillLog* m_pKillLog[5];
+	_uint m_iKillLogIdx = 0;
 
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;

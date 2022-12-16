@@ -5,6 +5,9 @@
 #include "CTeamConnector.h"
 #include "Texture.h"
 
+_uint CUI_KillLog::m_iPrvLogCount = 0;
+_uint CUI_KillLog::m_iCurLogCount = 0;
+
 CUI_KillLog::CUI_KillLog()
 {
 }
@@ -116,17 +119,58 @@ void CUI_KillLog::Enable_KillUI(_uint eKillType)
 	}
 }
 
+void CUI_KillLog::Set_LogCount(_uint iLogCount)
+{
+	m_iPrvLogCount = m_iCurLogCount;
+	m_iCurLogCount = iLogCount;
+
+	if (iLogCount > 0)
+	{
+		if (m_iPrvLogCount != iLogCount)
+		{
+			for (int i = 0; i < Text_End; ++i)
+			{
+				_float4 vPos = m_pKillText[i]->Get_Pos();
+				vPos.y += 50.f;
+				m_pKillText[i]->DoMove(vPos, 0.5f, 0);
+			}
+
+			for (int i = 0; i < Kill_End; ++i)
+			{
+				_float4 vPos = m_pDeadByIcon->Get_Pos();
+				vPos.y += 50.f;
+				m_pDeadByIcon->DoMove(vPos, 0.5f, 0);
+			}
+		}
+	}
+}
+
 void CUI_KillLog::My_Tick()
 {
 	__super::My_Tick();
 
-	_float4 vDeadByPos = m_pDeadByIcon->Get_Pos();
+	switch (m_eKillType)
+	{
+	case Client::CUI_KillLog::UT_Kill:
+	{
+		_float4 vDeadByPos = m_pKillText[Text_Name]->Get_Pos();
+		m_pKillText[Text_Kill]->Set_PosY(vDeadByPos.y);
+	}
+		break;
 
-	m_pAttacker[Kill_Icon]->Set_Pos(vDeadByPos.x - 35.f, vDeadByPos.y);
-	m_pVictim[Kill_Icon]->Set_Pos(vDeadByPos.x + 35.f, vDeadByPos.y);
+	case Client::CUI_KillLog::UT_Log:
+	{
+		_float4 vDeadByPos = m_pDeadByIcon->Get_Pos();
 
-	m_pVictim[Kill_Name]->Set_PosY(vDeadByPos.y);
-	m_pAttacker[Kill_Name]->Set_PosY(vDeadByPos.y);
+		m_pAttacker[Kill_Icon]->Set_Pos(vDeadByPos.x - 35.f, vDeadByPos.y);
+		m_pVictim[Kill_Icon]->Set_Pos(vDeadByPos.x + 35.f, vDeadByPos.y);
+
+		m_pVictim[Kill_Name]->Set_PosY(vDeadByPos.y);
+		m_pAttacker[Kill_Name]->Set_PosY(vDeadByPos.y);
+	}
+	break;
+	}
+
 
 	if (!m_bIsDisable)
 	{
@@ -164,6 +208,9 @@ void CUI_KillLog::My_Tick()
 void CUI_KillLog::OnEnable()
 {
 	__super::OnEnable();
+
+	m_pDeadByIcon->Set_PosY(m_fKillLogPosY);
+	m_pKillText[Text_Name]->Set_PosY(m_fKillTextPosY);
 }
 
 void CUI_KillLog::OnDisable()
@@ -266,8 +313,6 @@ void CUI_KillLog::Create_KillText()
 	{
 		m_pKillText[i] = CUI_Object::Create();
 
-		m_pKillText[i]->Set_PosY(-100.f);
-
 		switch (i)
 		{
 		case Text_Name:
@@ -308,7 +353,7 @@ void CUI_KillLog::Create_KillLog()
 	Read_Texture(m_pDeadByIcon, "/KillLog", "DeadBy");
 
 	m_pDeadByIcon->Set_Scale(30.f);
-	m_pDeadByIcon->Set_Pos(450.f, 250.f);
+	m_pDeadByIcon->Set_PosX(450.f);
 	m_pDeadByIcon->Set_Sort(0.5f);
 
 	CREATE_GAMEOBJECT(m_pDeadByIcon, GROUP_UI);

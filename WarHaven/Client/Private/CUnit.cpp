@@ -1368,6 +1368,7 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	else
 	{
 		CUser::Get_Instance()->Set_LogName(pOtherUnit->Get_OwnerPlayer(), m_pOwnerPlayer);
+		CUser::Get_Instance()->Set_LogCount();
 
 		CUser::Get_Instance()->Enable_KillUI(1);
 

@@ -26,8 +26,7 @@ public:
 
 	void Enable_KillUI(_uint eKillType);
 
-	// void SetActive_KillText(_bool value);
-	// void SetActive_KillLog(_bool value);
+	void Set_LogCount(_uint iLogCount);
 
 private:
 	virtual void My_Tick() override;
@@ -39,16 +38,18 @@ private:
 
 	void Init_VictimText(wstring Text);
 	void Init_AttackerText(wstring Text);
-
 	void Init_KillText(wstring Text);
 
 private:
 	UI_Type m_eKillType = UI_Type::UT_End;
 
-	_float m_fDisableTime = 2.f;
+	_float m_fDisableTime = 20000.f;
 	_float m_fFadeTime = 0.3f;
 
 	_bool m_bIsDisable = false;
+
+	_float m_fKillLogPosY = 250.f;
+	_float m_fKillTextPosY = -100.f;
 
 	_float4 vColorRed = _float4(0.75f, 0.2f, 0.2f, 1.f);
 	_float4 vColorBlue = _float4(0.15f, 0.5f, 0.6f, 1.f);
@@ -58,6 +59,9 @@ private:
 	_float m_fTextPt = 10.f;
 	_float m_fIconBlank = 20.f;
 	_float m_fWhitespace = 35.f;
+
+	static _uint m_iPrvLogCount;
+	static _uint m_iCurLogCount;
 
 private:
 	enum KillLog { Kill_Icon, Kill_Name, Kill_End };
