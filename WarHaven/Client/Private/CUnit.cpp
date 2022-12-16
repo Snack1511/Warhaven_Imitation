@@ -1363,10 +1363,13 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 	else
 	{
+		// 킬로그
+
 		if (pOtherUnit->m_bIsMainPlayer)
 		{
+			// 처치한 적
 			wstring otherName = m_pOwnerPlayer->Get_PlayerInfo()->Get_PlayerName();
-			CUser::Get_Instance()->Enable_KillText(otherName);
+			
 		}
 	}
 }

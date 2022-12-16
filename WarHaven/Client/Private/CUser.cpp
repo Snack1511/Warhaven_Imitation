@@ -238,11 +238,6 @@ CUI_Wrapper* CUser::Get_HUD(_uint eHUD)
 	return m_pUI_HUD->Get_HUD(eHUD);
 }
 
-void CUser::Enable_KillText(wstring Text)
-{
-	m_pUI_HUD->Enable_KillText(Text);
-}
-
 void CUser::Set_UserPort(_uint iClass)
 {
 	m_pUI_Portrait->Set_UserPort(iClass);
