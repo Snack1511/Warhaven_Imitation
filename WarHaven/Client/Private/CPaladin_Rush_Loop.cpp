@@ -75,7 +75,7 @@ void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
-}
+} 
 
 STATE_TYPE CPaladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
