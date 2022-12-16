@@ -526,6 +526,13 @@
 #include "CState_Patrol_Walk_Fiona_L.h"
 #include "CState_Patrol_Walk_Fiona_R.h"
 
+#include "CState_Patrol_Default_Paladin_L.h"
+#include "CState_Patrol_Default_Paladin_R.h"
+#include "CState_Patrol_Switch_Paladin_CSwitchRtoL.h"
+#include "CState_Patrol_Switch_Paladin_CSwitchLtoR.h"
+#include "CState_Patrol_Walk_Paladin_L.h"
+#include "CState_Patrol_Walk_Paladin_R.h"
+
 
 
 #pragma endregion 
@@ -724,7 +731,7 @@ HRESULT CState_Manager::Initialize()
 	Warrior_State_AI();
 	WarHammer_State_AI();
 	Valkyrie_State_AI();
-
+	Paladin_State_AI();
 
 
 	for (_uint i = 0; i < STATE_END; ++i)
@@ -1450,8 +1457,6 @@ void CState_Manager::WarHammer_State_AI()
 void CState_Manager::Valkyrie_State_AI()
 {
 
-	
-
 
 #pragma region Patrol
 
@@ -1536,6 +1541,24 @@ void CState_Manager::Valkyrie_State_AI()
 
 #pragma endregion
 
+
+
+}
+
+void CState_Manager::Paladin_State_AI()
+{
+
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEAFULT_PALADIN_L] = CState_Patrol_Default_Paladin_L::Create();
+	m_arrStates[AI_STATE_PATROL_DEAFULT_PALADIN_R] = CState_Patrol_Default_Paladin_R::Create();
+
+	m_arrStates[AI_STATE_PATROL_PALADIN_SWITCH_R_TO_L] = CState_Patrol_Switch_Paladin_CSwitchRtoL::Create();
+	m_arrStates[AI_STATE_PATROL_PALADIN_SWITCH_L_TO_R] = CState_Patrol_Switch_Paladin_CSwitchLtoR::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_PALADIN_L] = CState_Patrol_Walk_Paladin_L::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_PALADIN_R] = CState_Patrol_Walk_Paladin_R::Create();
+
+#pragma endregion
 
 
 }

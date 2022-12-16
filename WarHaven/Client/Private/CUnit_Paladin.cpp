@@ -173,7 +173,7 @@ void CUnit_Paladin::SetUp_Colliders(_bool bPlayer)
 
 }
 
-void	CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
+void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
 
 	switch (eUnitType)
@@ -191,6 +191,9 @@ void	CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 	
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
+		
+		//m_eDefault = AI_COMBAT
+
 		break;
 
 		
@@ -201,6 +204,52 @@ void	CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 		break;
 	}
 		
+}
+
+void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
+{
+	__super::On_ChangeBehavior(pBehaviorDesc);
+
+	if (nullptr == pBehaviorDesc)
+		assert(0);
+
+	STATE_TYPE	eNewState = STATE_END;
+
+	switch (pBehaviorDesc->eCurType)
+	{
+	case eBehaviorType::ePatrol:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		break;
+	case eBehaviorType::eFollow:
+		//상태변경
+		break;
+	case eBehaviorType::eAttack:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+
+		break;
+	case eBehaviorType::ePathNavigation:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		break;
+
+	case eBehaviorType::eResurrect:
+		//상태변경
+		break;
+
+	case eBehaviorType::eChange:
+		//상태변경
+		eNewState = AI_STATE_COMMON_CHANGE_HERO;
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	if (eNewState != STATE_END)
+		m_eReserveState = eNewState;
+
 }
 
 void CUnit_Paladin::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)

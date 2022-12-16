@@ -2743,6 +2743,78 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\02. Rush\03. End">
       <UniqueIdentifier>{450034d2-1d3c-4ed2-bd56-6b575156c6ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\04. Paladin">
+      <UniqueIdentifier>{5712c833-e44b-414f-bbd7-0f4085028646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\04. Paladin">
+      <UniqueIdentifier>{4ee39d24-8d3e-4e89-8496-036ffe0dd273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\04. Paladin">
+      <UniqueIdentifier>{0b038b5e-2994-43a6-bfa8-69332de1bcb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\04. Paladin">
+      <UniqueIdentifier>{3af7cab1-2135-4578-a0a0-4d012e18d7b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\04. Paladin">
+      <UniqueIdentifier>{7fcba7af-b851-46de-a9e4-7613ceb83907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\04. Paladin">
+      <UniqueIdentifier>{cf4b848c-22b0-4601-9b5d-b75ab85c33a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\04. Paladin">
+      <UniqueIdentifier>{b7982b78-cfa8-43ed-955e-3a0683bcb15f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\04. Paladin">
+      <UniqueIdentifier>{92d16d16-4a0b-4b69-939b-54ee3af59c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\04. Paladin">
+      <UniqueIdentifier>{a98818f5-f7ce-4330-ad10-8632344b98b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\04. Paladin">
+      <UniqueIdentifier>{ea0215e4-c2d2-4194-b2c7-ce58e158fb7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\04. Paladin">
+      <UniqueIdentifier>{7f40ec0d-f1c2-4a71-a06b-e48c5e521649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\04. Paladin">
+      <UniqueIdentifier>{4186fa2a-d37b-4503-a613-8d55bb962cb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\04. Paladin">
+      <UniqueIdentifier>{2f656048-2874-44df-b62e-c3bda944f655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\04. Paladin">
+      <UniqueIdentifier>{3a833937-e132-4de5-9cdb-961c57cfb9a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\04. Walk\04. Paladin">
+      <UniqueIdentifier>{d3ef2e24-29a8-4a8d-bcf3-bb2e5a5ef848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\04. Paladin">
+      <UniqueIdentifier>{8efa75ea-5d93-45c9-b553-3637d22a7d84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\04. Paladin">
+      <UniqueIdentifier>{c180f3ac-f4fd-4566-a3eb-3e0ae930106d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\04. Paladin">
+      <UniqueIdentifier>{a6735374-deee-47ca-9b68-27e689950add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\04. Paladin\01. Right">
+      <UniqueIdentifier>{93e7fd80-90b9-4e08-9e45-972ad6da8542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\04. Paladin\02. Left">
+      <UniqueIdentifier>{93ddd358-a1aa-4c10-a0b7-6970671ba7e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\04. Paladin\01. Right">
+      <UniqueIdentifier>{4a5c12e1-3098-40c2-9a53-1707c6fa9977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\04. Paladin\02. Left">
+      <UniqueIdentifier>{1908b5a0-dfe9-4064-b306-705e4ddb27ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\04. Paladin\01. Right">
+      <UniqueIdentifier>{c24668f2-21bf-4350-9b50-285a63c89ef1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\04. Paladin\02. Left">
+      <UniqueIdentifier>{ede5337b-73d4-441e-a9a1-beddc984cfa3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -4263,9 +4335,6 @@
     <ClInclude Include="..\Public\CState_Patrol_Default_Warrior_L.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\01. Warrior\02. Left</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CState_Patrol_Walk.h">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CState_Patrol_Switch.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch</Filter>
     </ClInclude>
@@ -4928,6 +4997,36 @@
     </ClInclude>
     <ClInclude Include="..\Public\CPaladin_ShieldWall_Hit.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\04. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Paladin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\04. Paladin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Paladin_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\04. Paladin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Paladin_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\04. Paladin\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Paladin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\04. Paladin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Paladin_CSwitchLtoR.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\04. Paladin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Switch_Paladin_CSwitchRtoL.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\04. Paladin\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Paladin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\04. Paladin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Paladin_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\04. Paladin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Paladin_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\04. Paladin\01. Right</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -6436,9 +6535,6 @@
     <ClCompile Include="..\Private\CState_Patrol_Switch.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CState_Patrol_Walk.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CState_Patrol_Switch_Warrior.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\01. Warrior</Filter>
     </ClCompile>
@@ -7095,6 +7191,36 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPaladin_ShieldWall_Hit.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\03. ShieldWall\04. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Paladin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\04. Paladin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Paladin_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\04. Paladin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Paladin_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\04. Paladin\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Paladin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\04. Paladin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Paladin_CSwitchLtoR.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\04. Paladin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Switch_Paladin_CSwitchRtoL.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\02. Switch\04. Paladin\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Paladin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\04. Paladin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Paladin_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\04. Paladin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Paladin_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\04. Paladin\01. Right</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

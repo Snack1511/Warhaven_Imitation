@@ -40,6 +40,7 @@ private:
 	void Warrior_State_AI();
 	void WarHammer_State_AI();
 	void Valkyrie_State_AI();
+	void Paladin_State_AI();
 
 	void Spear_State();
 

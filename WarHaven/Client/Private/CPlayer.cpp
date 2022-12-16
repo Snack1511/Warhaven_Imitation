@@ -417,7 +417,10 @@ void CPlayer::SetUp_ReserveState()
 	{
 	case CUnit::UNIT_TYPE::eAI_Default:
 
+		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEAFULT_WARRIOR_R;
+		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEAFULT_ENGINEER_R;
 		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEAFULT_FIONA_R;
+		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEAFULT_PALADIN_R;
 
 		break;
 
