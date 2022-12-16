@@ -40,6 +40,7 @@
 #include "CUI_Oper.h"
 #include "CUI_EscMenu.h"
 #include "CUI_Popup.h"
+#include "CUI_KillLog.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -53,10 +54,10 @@ IMPLEMENT_SINGLETON(CUser);
 CUser::CUser()
 {
 }
+
 CUser::~CUser()
 {
 }
-
 
 HRESULT CUser::Initialize()
 {
@@ -74,15 +75,21 @@ HRESULT CUser::Initialize()
 void CUser::Tick()
 {
 	Fix_CursorPosToCenter();
+
+	if (KEY(TAB, TAP))
+	{
+		static _bool bShowCursor = false;
+
+		bShowCursor = !bShowCursor;
+
+		ShowCursor(bShowCursor);
+	}
 }
-
-
 
 CUnit* CUser::Get_Player()
 {
 	return m_pPlayer->Get_CurrentUnit();
 }
-
 
 void CUser::Fix_CursorPosToCenter()
 {
@@ -95,9 +102,7 @@ void CUser::Fix_CursorPosToCenter()
 		}
 		else
 			GAMEINSTANCE->Change_Camera(L"FreeCam");
-
 	}
-
 
 	if (GetFocus() != g_hWnd || !m_bFixCursor)
 		return;
@@ -222,7 +227,6 @@ void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
 	tAniminfo.vPos = _float2(550.f, -270.f);
 	tAniminfo.vScale = _float2(120.f, 120.f);
 
-
 	if (bTurnOn)
 	{
 		ENABLE_GAMEOBJECT(m_pFire);
@@ -240,11 +244,6 @@ void CUser::Turn_AbleHeroFire()
 CUI_Wrapper* CUser::Get_HUD(_uint eHUD)
 {
 	return m_pUI_HUD->Get_HUD(eHUD);
-}
-
-void CUser::Enable_KillText(wstring Text)
-{
-	m_pUI_HUD->Enable_KillText(Text);
 }
 
 void CUser::Set_UserPort(_uint iClass)
@@ -306,7 +305,6 @@ void CUser::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 {
 	m_pUI_Paden->Move_PointUI(strPadenPointKey, iTriggerState);
 }
-
 
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
@@ -378,7 +376,6 @@ void CUser::On_EnterStageLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
-
 	if (!m_pUI_HUD)
 	{
 		m_pUI_HUD = CUI_HUD::Create();
@@ -421,6 +418,17 @@ void CUser::On_EnterStageLevel()
 
 		CREATE_GAMEOBJECT(m_pUI_Popup, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Popup);
+	}
+
+	if (!m_pKillLog[0])
+	{
+		for (int i = 0; i < 5; ++i)
+		{
+			m_pKillLog[i] = CUI_KillLog::Create();
+
+			CREATE_GAMEOBJECT(m_pKillLog[i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pKillLog[i]);
+		}
 	}
 
 	if (m_eLoadLevel > LEVEL_BOOTCAMP)
@@ -468,6 +476,12 @@ void CUser::On_ExitStageLevel()
 	{
 		if (m_pUI_Damage[i])
 			m_pUI_Damage[i] = nullptr;
+	}
+
+	for (_uint i = 0; i < 5; ++i)
+	{
+		if (m_pKillLog[i])
+			m_pKillLog[i] = nullptr;
 	}
 
 	if (m_pUI_Oper)
@@ -529,6 +543,28 @@ void CUser::Enable_DamageFont(_uint eType, _float fDmg)
 	}
 }
 
+void CUser::Set_LogName(CPlayer* attacker, CPlayer* victim)
+{
+	m_pKillLog[m_iKillLogIdx]->Set_LogName(attacker, victim);
+}
+
+void CUser::Set_LogCount()
+{
+	m_pKillLog[m_iKillLogIdx]->Set_LogCount(m_iKillLogIdx);
+}
+
+void CUser::Enable_KillUI(_uint iType)
+{
+	m_pKillLog[m_iKillLogIdx]->SetActive(true);
+	m_pKillLog[m_iKillLogIdx]->Enable_KillUI(iType);
+
+	m_iKillLogIdx++;
+	if (m_iKillLogIdx > 4)
+	{
+		m_iKillLogIdx = 0;
+	}
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
@@ -552,7 +588,6 @@ void CUser::Enable_Popup(_uint iPopupType)
 {
 	if (m_pUI_Popup)
 		m_pUI_Popup->Enable_Popup((CUI_Popup::ePOPUP_TYPE)iPopupType);
-
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

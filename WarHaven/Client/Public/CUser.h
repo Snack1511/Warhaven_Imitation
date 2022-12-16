@@ -26,6 +26,7 @@ class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
 
+class CUI_KillLog;
 class CUI_Result;
 class CUI_Popup;
 class CUI_Oper;
@@ -54,9 +55,10 @@ public:
 	LEVEL_TYPE_CLIENT	Get_CurLevel() { return m_eLoadLevel; }
 
 
-	void		Set_FixCursor(_bool bEnable) { m_bFixCursor = bEnable; 
+	void		Set_FixCursor(_bool bEnable) {
+		m_bFixCursor = bEnable;
 #ifdef _DEBUG
-	::ShowCursor(!bEnable);
+		::ShowCursor(!bEnable);
 #endif 
 	}
 
@@ -97,8 +99,6 @@ public:
 public:
 	CUI_Wrapper* Get_HUD(_uint eHUD);
 
-	void Enable_KillText(wstring Text);
-
 	void Set_UserPort(_uint iClass);
 	void Set_HeroPort(_uint iType);
 	void Set_HP(_float fCurValue, _float fMaxValue);
@@ -117,7 +117,6 @@ public:
 public:		// 파덴
 	void Interat_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKey);
 	void Move_PointUI(string wstrPadenPointKey, _uint iTriggerState);
-
 
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
@@ -158,6 +157,11 @@ public:
 public:		// 알림
 	void Enable_Popup(_uint iPopupType);
 
+public:	// 킬로그
+	void Set_LogName(CPlayer* attacker, CPlayer* victim);
+	void Set_LogCount();
+	void Enable_KillUI(_uint iType);
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -181,6 +185,9 @@ private:
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
+
+	CUI_KillLog* m_pKillLog[5];
+	_uint m_iKillLogIdx = 0;
 
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;

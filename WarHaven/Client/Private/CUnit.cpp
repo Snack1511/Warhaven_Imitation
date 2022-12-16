@@ -51,6 +51,7 @@
 #include "CUI_UnitHUD.h"
 
 #include "CColorController.h"
+#include "CTeamConnector.h"
 
 #define PHYSX_ON
 
@@ -311,6 +312,9 @@ _float CUnit::Calculate_Damage(_bool bHeadShot, _bool bGuard)
 
 _bool CUnit::On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot, _uint iDmgType)
 {
+	if (bHeadShot)
+		m_pOwnerPlayer->Set_DeadByHeadshot(bHeadShot);
+
 	m_tUnitStatus.fHP += fHp;
 
 	/*데미지 표시*/
@@ -1363,10 +1367,14 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 	else
 	{
+		CUser::Get_Instance()->Set_LogName(pOtherUnit->Get_OwnerPlayer(), m_pOwnerPlayer);
+		CUser::Get_Instance()->Set_LogCount();
+
+		CUser::Get_Instance()->Enable_KillUI(1);
+
 		if (pOtherUnit->m_bIsMainPlayer)
 		{
-			wstring otherName = m_pOwnerPlayer->Get_PlayerInfo()->Get_PlayerName();
-			CUser::Get_Instance()->Enable_KillText(otherName);
+			CUser::Get_Instance()->Enable_KillUI(0);
 		}
 	}
 }

@@ -52,7 +52,6 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_OxenJumpText();
 	Create_HeroTransformUI();
 	Create_EscMenu();
-	Create_KillNameText();
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
@@ -234,6 +233,9 @@ void CUI_HUD::SetActive_HeroTransformGauge(_bool value)
 
 void CUI_HUD::SetActive_SquardInfo(_bool value)
 {
+	if (m_eLoadLevel < LEVEL_PADEN)
+		return;
+
 	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
 
 	auto iter = mapPlayers.begin();
@@ -263,24 +265,6 @@ void CUI_HUD::SetActive_SquardInfo(_bool value)
 			m_pArrSquardInfo[iIdx][j]->SetActive(value);
 		}
 	}
-}
-
-/*
-
-체력바의 왼쪽 위치 + 체력바 길이 사이즈의 비율 -> 깜빡이 위치.
-
-_float HPBarsizeRatio = HpBar.size / 100.f; -> 체력바 사이즈 1%
-
-//왼쪽 구하기 + 비율 사이즈 구하기.
-HpBar.pos.x - HpBar.size / 2 + HPBarSizeRatio * 사이즈
-
-*/
-
-void CUI_HUD::Enable_KillText(wstring text)
-{
-	m_pKillNameText->Set_FontText(text);
-
-	Enable_Fade(m_pKillNameText, 0.3f);
 }
 
 _bool CUI_HUD::Is_OnHeroGauge()
@@ -418,29 +402,6 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
-}
-
-void CUI_HUD::Create_KillNameText()
-{
-	m_pKillNameText = CUI_Object::Create();
-
-	m_pKillNameText->Set_FadeDesc(0.3f, 0.3f, 5.f, true);
-
-	m_pKillNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Kill.png"));
-
-	m_pKillNameText->Set_Pos(140.f, -100.f);
-	m_pKillNameText->Set_Scale(87.f, 60.f);
-	m_pKillNameText->Set_Sort(0.5f);
-
-	m_pKillNameText->Set_FontRender(true);
-	m_pKillNameText->Set_FontStyle(true);
-	m_pKillNameText->Set_FontCenter(true);
-	m_pKillNameText->Set_FontScale(0.45f);
-	m_pKillNameText->Set_FontOffset(-140.f, -3.5f);
-	m_pKillNameText->Set_FontColor(_float4(1.f, 0.2f, 0.2f, 1.f));
-
-	CREATE_GAMEOBJECT(m_pKillNameText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pKillNameText);
 }
 
 void CUI_HUD::Create_PlayerNameText()

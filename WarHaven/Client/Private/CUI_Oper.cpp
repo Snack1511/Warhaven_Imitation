@@ -560,29 +560,34 @@ void CUI_Oper::Create_TextImg()
 
 		m_pTextImg[i]->Set_FadeDesc(0.3f);
 
-		if (i == Text_Oper1)
+		switch (i)
 		{
-			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting.png"));
+		case Text_Oper1:
 
+			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting.png"));
 			m_pTextImg[i]->Set_PosY(50.f);
 			m_pTextImg[i]->Set_Scale(1024.f);
 			m_pTextImg[i]->Set_Sort(0.49f);
-		}
-		else if (i == Text_Oper2)
-		{
-			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting2.png"));
 
+			break;
+
+		case Text_Oper2:
+
+			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting2.png"));
 			m_pTextImg[i]->Set_PosY(305.f);
 			m_pTextImg[i]->Set_Scale(155.f, 50.f);
 			m_pTextImg[i]->Set_Sort(0.49f);
-		}
-		else if (i == Text_SelectPoint)
-		{
-			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperText.png"));
 
+			break;
+
+		case Text_SelectPoint:
+
+			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperText.png"));
 			m_pTextImg[i]->Set_PosY(-250.f);
 			m_pTextImg[i]->Set_Scale(287.f, 50.f);
 			m_pTextImg[i]->Set_Sort(0.49f);
+
+			break;
 		}
 
 		m_pOperList.push_back(m_pTextImg[i]);
@@ -600,17 +605,20 @@ void CUI_Oper::Create_TargetText()
 
 		m_pTargetText[i]->Set_FadeDesc(0.3f);
 
-		if (i == TargetText_BG)
+		switch (i)
 		{
-			m_pTargetText[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Briefing/T_BriefingBox.dds"));
+		case TargetText_BG:
 
+			m_pTargetText[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Briefing/T_BriefingBox.dds"));
 			m_pTargetText[i]->Set_PosY(245.f);
 			m_pTargetText[i]->Set_Scale(160.f, 25.f);
 			m_pTargetText[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.6f));
 			m_pTargetText[i]->Set_Sort(0.5f);
-		}
-		else if (i == TargetText_Icon)
-		{
+
+			break;
+
+		case TargetText_Icon:
+
 			GET_COMPONENT_FROM(m_pTargetText[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pTargetText[i], "/Oper/Briefing", "Icon");
 
@@ -625,6 +633,8 @@ void CUI_Oper::Create_TargetText()
 			m_pTargetText[i]->Set_FontScale(0.2f);
 			m_pTargetText[i]->Set_FontColor(_float4(_float4(0.6f, 0.6f, 0.6f, 1.f)));
 			m_pTargetText[i]->Set_FontText(TEXT("공격 목표 없음"));
+
+			break;
 		}
 
 		m_pOperList.push_back(m_pTargetText[i]);
@@ -659,8 +669,10 @@ void CUI_Oper::Create_OperBG()
 	{
 		m_pOperBG[i] = CUI_Object::Create();
 
-		if (i == OB_BG)
+		switch (i)
 		{
+		case OB_BG:
+
 			m_pOperBG[i]->Set_Scale(4096.f);
 			m_pOperBG[i]->Set_Sort(0.52f);
 
@@ -675,31 +687,34 @@ void CUI_Oper::Create_OperBG()
 				m_pOperBG[i]->Set_PosY(205.f);
 				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapPaden.dds"));
 				break;
+
 			case Client::LEVEL_HWARA:
 				m_pOperBG[i]->Set_PosY(205.f);
 				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapHwara.dds"));
 				break;
 			}
-		}
-		else if (i == OB_Smoke)
-		{
-			GET_COMPONENT_FROM(m_pOperBG[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_OperSmoke);
 
+			break;
+
+		case OB_Smoke:
+
+			GET_COMPONENT_FROM(m_pOperBG[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_OperSmoke);
 			m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_soft_smoke.dds"));
 			m_pOperBG[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Oper/T_Noise_02.dds"));
-
 			m_pOperBG[i]->Set_Scale(4096.f);
 			m_pOperBG[i]->Set_Sort(0.51f);
-		}
-		else if (i == OB_Black)
-		{
+
+			break;
+
+		case OB_Black:
+
 			m_pOperBG[i]->Set_FadeDesc(0.15f, 0.3f);
-
 			m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/Black.png"));
-
 			m_pOperBG[i]->Set_Scale(1280.f);
 			m_pOperBG[i]->Set_Sort(0.5f);
 			m_pOperBG[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.9f));
+
+			break;
 		}
 
 		m_pOperList.push_back(m_pOperBG[i]);
@@ -872,41 +887,38 @@ void CUI_Oper::Create_CharacterSelect()
 
 		m_pCharacterPort[i]->Set_FadeDesc(0.3f);
 
-		if (i == CP_PortBG)
+		switch (i)
 		{
+		case CP_PortBG:
 			m_pCharacterPort[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBG.dds"));
-
 			m_pCharacterPort[i]->Set_Scale(65.f);
 			m_pCharacterPort[i]->Set_Sort(0.48f);
-		}
-		else if (i == CP_Port)
-		{
+			break;
+
+		case CP_Port:
 			GET_COMPONENT_FROM(m_pCharacterPort[CP_Port], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pCharacterPort[CP_Port], "/HUD/Portrait", "Class");
-
 			m_pCharacterPort[CP_Port]->Set_Scale(65.f);
 			m_pCharacterPort[CP_Port]->Set_Sort(0.47f);
-		}
-		else if (i == CP_SelectBG)
-		{
-			m_pCharacterPort[CP_SelectBG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SelectedBG.png"));
+			break;
 
+		case CP_SelectBG:
+			m_pCharacterPort[CP_SelectBG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SelectedBG.png"));
 			m_pCharacterPort[CP_SelectBG]->Set_Scale(213.f, 65.f);
 			m_pCharacterPort[CP_SelectBG]->Set_Sort(0.49f);
 			m_pCharacterPort[CP_SelectBG]->Set_MouseTarget(true);
-		}
-		else if (i == CP_Class)
-		{
+			break;
+
+		case CP_Class:
 			GET_COMPONENT_FROM(m_pCharacterPort[CP_Class], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pCharacterPort[CP_Class], "/Oper", "Class");
-
 			m_pCharacterPort[CP_Class]->Set_Scale(32.f);
 			m_pCharacterPort[CP_Class]->Set_Sort(0.48f);
-
 			m_pCharacterPort[CP_Class]->Set_FontRender(true);
 			m_pCharacterPort[CP_Class]->Set_FontStyle(true);
 			m_pCharacterPort[CP_Class]->Set_FontOffset(20.f, -15.f);
 			m_pCharacterPort[CP_Class]->Set_FontScale(0.3f);
+			break;
 		}
 
 		CREATE_GAMEOBJECT(m_pCharacterPort[i], GROUP_UI);
@@ -916,13 +928,14 @@ void CUI_Oper::Create_CharacterSelect()
 		{
 			m_pArrCharacterPort[i][j] = m_pCharacterPort[i]->Clone();
 
-			if (i == CP_Port)
+			switch (i)
 			{
+			case CP_Port:
 				GET_COMPONENT_FROM(m_pArrCharacterPort[CP_Port][j], CTexture)->Set_CurTextureIndex(j);
-			}
-			else if (i == CP_Class)
-			{
+				break;
+			case CP_Class:
 				GET_COMPONENT_FROM(m_pArrCharacterPort[CP_Class][j], CTexture)->Set_CurTextureIndex(j);
+				break;
 			}
 
 			m_pOperList.push_back(m_pArrCharacterPort[i][j]);
@@ -1011,6 +1024,7 @@ void CUI_Oper::Create_LeftIcon()
 			m_pArrLeftUI[i][Left_Icon]->Set_Scale(32.f);
 
 			m_pArrLeftUI[i][Left_Icon]->Set_FontText(TEXT("지도"));
+			m_pArrLeftUI[i][Left_Icon]->Set_FontOffset(-50.f, 3.f);
 
 			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_BG], CTexture)->Set_CurTextureIndex(0);
 			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_Icon], CTexture)->Set_CurTextureIndex(0);
@@ -1107,20 +1121,20 @@ void CUI_Oper::Create_TeamIcon()
 
 		m_pTeamIcon[i]->Set_FadeDesc(0.3f);
 
-		if (i == Team_Icon)
+		switch (i)
 		{
+		case Team_Icon:
 			GET_COMPONENT_FROM(m_pTeamIcon[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pTeamIcon[i], "/Oper/Team", "Circle");
-
 			m_pTeamIcon[i]->Set_Scale(35.f);
 			m_pTeamIcon[i]->Set_Sort(0.5f);
-		}
-		else if (i == Team_Outline)
-		{
-			m_pTeamIcon[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/PointOutline1.dds"));
+			break;
 
+		case Team_Outline:
+			m_pTeamIcon[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/PointOutline1.dds"));
 			m_pTeamIcon[i]->Set_Scale(40.f);
 			m_pTeamIcon[i]->Set_Sort(0.49f);
+			break;
 		}
 
 		CREATE_GAMEOBJECT(m_pTeamIcon[i], GROUP_UI);
@@ -1130,19 +1144,22 @@ void CUI_Oper::Create_TeamIcon()
 		{
 			m_pArrTeamIcon[i][j] = m_pTeamIcon[i]->Clone();
 
-			if (i == Team_Icon)
+			switch (i)
 			{
+			case Team_Icon:
 				GET_COMPONENT_FROM(m_pArrTeamIcon[i][j], CTexture)->Set_CurTextureIndex(j);
-			}
-			else if (i == Team_Outline)
-			{
-				if (j == 0)
+				break;
+			case Team_Outline:
+
+				switch (j)
 				{
+				case 0:
 					m_pArrTeamIcon[i][j]->Set_Color(m_vColorBlue);
-				}
-				else if (j == 1)
-				{
+					break;
+
+				case 1:
 					m_pArrTeamIcon[i][j]->Set_Color(m_vColorRed);
+					break;
 				}
 			}
 
@@ -1187,41 +1204,39 @@ void CUI_Oper::Create_StrongHoldUI()
 
 		m_pStrongHoldUI[i]->Set_FadeDesc(0.3f);
 
-		if (i == SP_BG)
+		switch (i)
 		{
+		case SP_BG:
 			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pStrongHoldUI[i], "/Oper", "PointGauge");
-
 			m_pStrongHoldUI[i]->Set_Scale(50.f);
 			m_pStrongHoldUI[i]->Set_Sort(0.49f);
 			m_pStrongHoldUI[i]->Set_Color(_float4(0.4f, 0.4f, 0.4f, 1.f));
-		}
-		else if (i == SP_Outline)
-		{
+			break;
+
+		case SP_Outline:
 			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pStrongHoldUI[i], "/Oper", "PointOutline");
-
 			m_pStrongHoldUI[i]->Set_Scale(120.f);
 			m_pStrongHoldUI[i]->Set_Sort(0.48f);
 			m_pStrongHoldUI[i]->Set_Color(_float4(0.9f, 0.9f, 0.9f, 0.5f));
 			m_pStrongHoldUI[i]->Set_MouseTarget(true);
-		}
-		else if (i == SP_Icon)
-		{
+			break;
+
+		case SP_Icon:
 			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pStrongHoldUI[i], "/Oper", "PointIcon");
-
 			m_pStrongHoldUI[i]->Set_Scale(115.f);
 			m_pStrongHoldUI[i]->Set_Sort(0.485f);
 			m_pStrongHoldUI[i]->Set_Color(_float4(0.7f, 0.7f, 0.7f, 1.f));
-		}
-		else if (i == SP_TEXT)
-		{
+			break;
+
+		case SP_TEXT:
 			GET_COMPONENT_FROM(m_pStrongHoldUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pStrongHoldUI[i], "/Oper", "PointText");
-
 			m_pStrongHoldUI[i]->Set_Scale(140.f);
 			m_pStrongHoldUI[i]->Set_Sort(0.48f);
+			break;
 		}
 
 		CREATE_GAMEOBJECT(m_pStrongHoldUI[i], GROUP_UI);
@@ -1356,23 +1371,23 @@ void CUI_Oper::Create_OperTimer()
 		m_pTimer[i]->Set_PosY(275.f);
 		m_pTimer[i]->Set_Scale(242.f, 10.f);
 
-		if (i == TU_BG)
+		switch (i)
 		{
+		case TU_BG:
 			m_pTimer[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarBG.png"));
 			m_pTimer[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.5f));
 			m_pTimer[i]->Set_Sort(0.49f);
-		}
-		else if (TU_Bar)
-		{
+			break;
+
+		case TU_Bar:
 			GET_COMPONENT_FROM(m_pTimer[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
-
 			m_pTimer[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/HpBar/T_HPBarGrey.dds"));
-
 			m_pTimer[i]->Set_Sort(0.48f);
 			m_pTimer[i]->Set_FontRender(true);
 			m_pTimer[i]->Set_FontStyle(true);
 			m_pTimer[i]->Set_FontOffset(-22.f, -13.f);
 			m_pTimer[i]->Set_FontScale(0.25f);
+			break;
 		}
 
 		m_pOperList.push_back(m_pTimer[i]);
@@ -1412,8 +1427,9 @@ void CUI_Oper::Create_TargetPoint()
 	{
 		m_pArrTargetPoint[i] = m_pTargetPoint->Clone();
 
-		if (i == 0)
+		switch (i)
 		{
+		case 0:
 			m_pArrTargetPoint[0]->Set_Scale(30.f);
 			m_pArrTargetPoint[0]->Set_FontRender(true);
 			m_pArrTargetPoint[0]->Set_FontStyle(true);
@@ -1421,10 +1437,11 @@ void CUI_Oper::Create_TargetPoint()
 			m_pArrTargetPoint[0]->Set_FontScale(0.25f);
 
 			m_pArrTargetPoint[0]->Set_FontText(TEXT("공격 목표"));
-		}
-		else if (i == 1)
-		{
+			break;
+
+		case 1:
 			m_pArrTargetPoint[1]->Set_Scale(32.f);
+			break;
 		}
 
 		m_pOperList.push_back(m_pArrTargetPoint[i]);
@@ -1489,21 +1506,3 @@ void CUI_Oper::Bind_Btn()
 
 	m_pRespawnBtn->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_RespawnBtn, this, 0);
 }
-
-
-//void CUI_HUD::Set_FadeOperSelectChaderUI()
-//{
-//	FADEDESC tFadeDesc;
-//	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-//	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
-//	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-//	tFadeDesc.bFadeInFlag = FADE_NONE;
-//	tFadeDesc.bFadeOutFlag = FADE_NONE;
-//	tFadeDesc.fFadeInStartTime = 0.f;
-//	tFadeDesc.fFadeInTime = 0.3f;
-//	tFadeDesc.fFadeOutStartTime = 0.f;
-//	tFadeDesc.fFadeOutTime = 0.3f;
-//
-//	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
-//	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
-//}

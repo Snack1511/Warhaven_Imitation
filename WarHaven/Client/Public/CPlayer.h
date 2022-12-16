@@ -185,13 +185,19 @@ public:
 
 	CTeamConnector* Get_Team() { return m_pMyTeam; }
 	CSquad* Get_Squad() { return m_pMySquad; }
-	OUTLINETYPE Get_OutlineType() {		return m_eOutlineType;	}
+	OUTLINETYPE Get_OutlineType() { return m_eOutlineType; }
 
 public:
 	void On_ChangeBehavior(BEHAVIOR_DESC* pBehavior);
 	void Change_NearPath();
+
+public:
+	_bool IsDeadByHeadshot() { return m_bisDeadByHeadshot; }
+	void Set_DeadByHeadshot(_bool value) { m_bisDeadByHeadshot = value; }
+
 private:
 	_bool	m_bEnableOnStart = false;
+	_bool	m_bisDeadByHeadshot = false;
 
 private: /* 킬뎃과 플레이어 정보 */
 	KDA_STAT	m_tKdaStat;
@@ -204,13 +210,13 @@ private: /* 킬뎃과 플레이어 정보 */
 private: /*AI 추가용*/
 	CAIController* m_pAIController = nullptr;
 
-	BEHAVIOR_DESC*	m_pCurBehaviorDesc = nullptr;
-	BEHAVIOR_DESC*	m_pReserveBehaviorDesc = nullptr;
+	BEHAVIOR_DESC* m_pCurBehaviorDesc = nullptr;
+	BEHAVIOR_DESC* m_pReserveBehaviorDesc = nullptr;
 
 	string m_strStartPath;
 	CPath* m_pCurPath = nullptr;
 	void	Set_NewPath(CPath* pPath);
-	
+
 
 public:
 	void Set_MainPlayerStartPath(_uint iTriggerType);
@@ -277,9 +283,9 @@ private:	// 화신 게이지
 private:
 	list<CGameObject*>	m_DeadLights;
 
-	private:
-		_float	m_fKillStreakTimeAcc = 0.f;
-		_float	m_fKillStreakTime = 5.f;
+private:
+	_float	m_fKillStreakTimeAcc = 0.f;
+	_float	m_fKillStreakTime = 5.f;
 
 private:
 	virtual void My_Tick() override;
@@ -297,7 +303,7 @@ private:
 	void Update_HeroGauge();
 	void Update_KDA();
 	void On_AbleHero();
-	public: void On_FinishHero();
+public: void On_FinishHero();
 
 private:
 	void On_FinishHero_KeyInput();
