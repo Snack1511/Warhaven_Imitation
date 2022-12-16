@@ -35,9 +35,12 @@ private:
 	virtual void OnDisable() override;
 
 	void SetActiv_KillLog(_bool value);
+	void SetActiv_KillText(_bool value);
 
-	void Init_VictimTextPos(wstring Text);
-	void Init_AttackerTextPos(wstring Text);
+	void Init_VictimText(wstring Text);
+	void Init_AttackerText(wstring Text);
+
+	void Init_KillText(wstring Text);
 
 private:
 	UI_Type m_eKillType = UI_Type::UT_End;
@@ -52,7 +55,7 @@ private:
 	_float4 vColorGreen = _float4(0.f, 0.4f, 0.2f, 1.f);
 
 	_float4 vDeadByPos;
-	_float m_fTextPt = 10.f
+	_float m_fTextPt = 10.f;
 	_float m_fIconBlank = 20.f;
 	_float m_fWhitespace = 35.f;
 
@@ -64,7 +67,8 @@ private:
 	CUI_Object* m_pVictim[Kill_End];
 
 private:
-	CUI_Object* m_pKillText = nullptr;
+	enum KillText { Text_Name, Text_Kill, Text_End };
+	CUI_Object* m_pKillText[Text_End];
 
 private:
 	void Create_KillText();

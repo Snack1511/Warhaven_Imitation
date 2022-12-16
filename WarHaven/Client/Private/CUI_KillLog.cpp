@@ -35,17 +35,16 @@ HRESULT CUI_KillLog::Start()
 
 void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
 {
-	// 글자 하나에 10pt
-
 	wstring attackerName = attacker->Get_PlayerInfo()->Get_PlayerName();
-
 	wstring victimName = victim->Get_PlayerInfo()->Get_PlayerName();
 
-	m_pKillText->Set_FontText(attackerName);
-	m_pKillText->Set_FontColor(vColorRed);
+	Init_KillText(victimName);
 
-	Init_VictimTextPos(victimName);
-	Init_AttackerTextPos(attackerName);
+	Init_VictimText(victimName);
+	Init_AttackerText(attackerName);
+
+	if (!attacker->Get_Team())
+		return;
 
 	_bool bIsAttackerTeam = attacker->Get_Team()->IsMainPlayerTeam();
 	if (bIsAttackerTeam)
@@ -105,7 +104,7 @@ void CUI_KillLog::Enable_KillUI(_uint eKillType)
 	{
 	case Client::CUI_KillLog::UT_Kill:
 
-		Enable_Fade(m_pKillText, m_fFadeTime);
+		SetActiv_KillText(true);
 
 		break;
 
@@ -141,7 +140,7 @@ void CUI_KillLog::My_Tick()
 			{
 			case Client::CUI_KillLog::UT_Kill:
 
-				Disable_Fade(m_pKillText, m_fFadeTime);
+				SetActiv_KillText(false);
 
 				break;
 			case Client::CUI_KillLog::UT_Log:
@@ -193,7 +192,22 @@ void CUI_KillLog::SetActiv_KillLog(_bool value)
 	}
 }
 
-void CUI_KillLog::Init_VictimTextPos(wstring Text)
+void CUI_KillLog::SetActiv_KillText(_bool value)
+{
+	for (int i = 0; i < Text_End; ++i)
+	{
+		if (value == true)
+		{
+			Enable_Fade(m_pKillText[i], m_fFadeTime);
+		}
+		else
+		{
+			Disable_Fade(m_pKillText[i], m_fFadeTime);
+		}
+	}
+}
+
+void CUI_KillLog::Init_VictimText(wstring Text)
 {
 	m_pVictim[Kill_Name]->Set_FontText(Text);
 
@@ -211,7 +225,7 @@ void CUI_KillLog::Init_VictimTextPos(wstring Text)
 	m_pAttacker[Kill_Icon]->Set_PosX(m_pDeadByIcon->Get_PosX() - m_fWhitespace);
 }
 
-void CUI_KillLog::Init_AttackerTextPos(wstring Text)
+void CUI_KillLog::Init_AttackerText(wstring Text)
 {
 	m_pAttacker[Kill_Name]->Set_FontText(Text);
 
@@ -225,26 +239,63 @@ void CUI_KillLog::Init_AttackerTextPos(wstring Text)
 	m_pAttacker[Kill_Name]->Set_PosX(fAttackerPosX);
 }
 
+void CUI_KillLog::Init_KillText(wstring Text)
+{
+	m_pKillText[Text_Name]->Set_FontText(Text);
+	m_pKillText[Text_Name]->Set_FontColor(vColorRed);
+
+	_float fTextHalfSize = (Text.size() * 0.5f) * m_fTextPt;
+
+	_float fPosX = m_pKillText[Text_Name]->Get_PosX();
+
+	_float fBenchmarkPosX = fPosX + fTextHalfSize;
+	_float fAttackerPosX = fBenchmarkPosX + m_fWhitespace;
+
+	cout << fBenchmarkPosX << endl;
+	cout << fAttackerPosX << endl;
+
+	m_pKillText[Text_Kill]->Set_PosX(fAttackerPosX);
+
+	cout << m_pKillText[Text_Name]->Get_PosX() << endl;
+	cout << m_pKillText[Text_Kill]->Get_PosX() << endl;
+}
+
 void CUI_KillLog::Create_KillText()
 {
-	m_pKillText = CUI_Object::Create();
+	for (int i = 0; i < Text_End; ++i)
+	{
+		m_pKillText[i] = CUI_Object::Create();
 
-	m_pKillText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Kill.png"));
+		m_pKillText[i]->Set_PosY(-100.f);
 
-	m_pKillText->Set_FadeDesc(m_fFadeTime);
-	m_pKillText->Set_Pos(110.f, -100.f);
-	m_pKillText->Set_Scale(70.f, 48.f);
-	m_pKillText->Set_Sort(0.5f);
+		switch (i)
+		{
+		case Text_Name:
 
-	m_pKillText->Set_FontRender(true);
-	m_pKillText->Set_FontStyle(true);
-	m_pKillText->Set_FontCenter(true);
-	m_pKillText->Set_FontScale(0.3f);
-	m_pKillText->Set_FontOffset(-110.f, -0.5f);
-	m_pKillText->Set_FontColor(_float4(1.f, 0.f, 0.f, 1.f));
+			m_pKillText[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
-	CREATE_GAMEOBJECT(m_pKillText, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pKillText);
+			m_pKillText[i]->Set_FontRender(true);
+			m_pKillText[i]->Set_FontStyle(true);
+			m_pKillText[i]->Set_FontCenter(true);
+			m_pKillText[i]->Set_FontScale(0.3f);
+			m_pKillText[i]->Set_FontOffset(0.f, -0.5f);
+			m_pKillText[i]->Set_FontColor(_float4(1.f, 0.f, 0.f, 1.f));
+
+			break;
+
+		case Text_Kill:
+
+			m_pKillText[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Kill.png"));
+
+			m_pKillText[i]->Set_Scale(70.f, 48.f);
+			m_pKillText[i]->Set_Sort(0.5f);
+
+			break;
+		}
+
+		CREATE_GAMEOBJECT(m_pKillText[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pKillText[i]);
+	}
 }
 
 void CUI_KillLog::Create_KillLog()
