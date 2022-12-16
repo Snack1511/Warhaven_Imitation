@@ -58,8 +58,11 @@ HRESULT CHit_Fly_Paladin::Initialize()
 
 void CHit_Fly_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    /* 날 때린놈의 hit info를 받았다. */
+    if (ePrevType == STATE_SHIELDWALL_LOOP_PALADIN ||
+        ePrevType == STATE_SHIELDWALL_HIT_PALADIN)
+        m_bAttackTrigger = true;
 
+    /* 날 때린놈의 hit info를 받았다. */
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Fly_State();
 
@@ -71,6 +74,9 @@ void CHit_Fly_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 STATE_TYPE CHit_Fly_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_bAttackTrigger)
+        return AI_STATE_COMBAT_SHIELDWALL_HIT_PALADIN;
+
 	if (pAnimator->Get_CurAnimFrame() > m_tHitInfo.iLandKeyFrame)
 		return STATE_JUMPFALL_PALADIN_R;
 

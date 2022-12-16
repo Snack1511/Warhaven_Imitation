@@ -145,7 +145,7 @@ void CUnit_Paladin::SetUp_Colliders(_bool bPlayer)
 
 			_int iIndex = i * (iDivide) + j;
 
-			tShieldUnitColDesc[iIndex].fRadius = 0.4f;
+			tShieldUnitColDesc[iIndex].fRadius = 0.5f;
 			tShieldUnitColDesc[iIndex].vOffsetPos.x = fOffSetX * (j + 1);
 			tShieldUnitColDesc[iIndex].vOffsetPos.z = fOffSetY * (i + 1);
 			tShieldUnitColDesc[iIndex].eColType = (_uint)eFlyGuardBreakAttack;
@@ -189,10 +189,20 @@ void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 		break;
 
 	
-	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_PALADIN;
+		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_PALADIN;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_PALADIN;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_PALADIN;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_PALADIN;
+
+		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_PALADIN;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_PALADIN_L;
 		
-		//m_eDefault = AI_COMBAT
+
+		m_eDefaultState = AI_STATE_COMBAT_DEAFULT_PALADIN_R;
+
 
 		break;
 
@@ -226,12 +236,12 @@ void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		eNewState = AI_STATE_COMBAT_DEAFULT_PALADIN_R;
 
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEAFULT_PALADIN_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_PALADIN_R;
 		break;
 
 	case eBehaviorType::eResurrect:
@@ -373,7 +383,7 @@ HRESULT CUnit_Paladin::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
-	//Set_ShaderNoSpec(L"SK_Engineer1002_Helm_50");
+	Set_ShaderNoSpec(L"SK_Paladin_Helm_50");
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 

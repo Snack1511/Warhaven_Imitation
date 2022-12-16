@@ -54,7 +54,12 @@ STATE_TYPE CState_Combat_GuardCancel_Warrior::Tick(CUnit* pOwner, CAnimator* pAn
 {
 	// 가드 상태에서도 움직일 수 있도록 설정한다.
     if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
-        return m_ePreStateType;
+    {
+        if (m_ePreStateType != STATE_END)
+            return m_ePreStateType;
+        else
+            return AI_STATE_COMBAT_DEAFULT_WARRIOR_R;
+    }
 
     return __super::Tick(pOwner, pAnimator);
 }

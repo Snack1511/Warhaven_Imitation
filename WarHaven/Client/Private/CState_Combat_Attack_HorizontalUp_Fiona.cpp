@@ -36,8 +36,8 @@ HRESULT CState_Combat_Attack_HorizontalUp_Fiona::Initialize()
 
 	Add_KeyFrame(34, 1);
 	Add_KeyFrame(m_iStopIndex, 2);
-	Add_KeyFrame(35, 999);
-	Add_KeyFrame(42, 998);
+	Add_KeyFrame(34, 999);
+	Add_KeyFrame(m_iStopIndex, 998);
 
     return S_OK;
 }

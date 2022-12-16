@@ -394,7 +394,7 @@
 
 #include "CPaladin_Attack_HorizontalMiddle_L.h"
 #include "CPaladin_Attack_HorizontalMiddle_R.h"
-#include "CPaladin_Attack_VerticalAttack.h"
+#include "CPaladin_Attack_VerticalCut.h"
 
 #include "CPaladin_Rush_Begin.h"
 #include "CPaladin_Rush_Loop.h"
@@ -579,17 +579,14 @@
 
 #include "CState_Combat_Default_Fiona_L.h"
 #include "CState_Combat_Default_Fiona_R.h"
-
 #include "CState_Combat_SkillQ_Counter_Fiona.h"
 #include "CState_Combat_SkillE_ShieldAttack_Fiona.h"
 #include "CState_Combat_SkillR_SpinAttack_Fiona.h"
-
 #include "CState_Combat_GuardBegin_Fiona.h"
 #include "CState_Combat_GuardLoop_Fiona.h"
 #include "CState_Combat_GuardDash_Fiona.h"
 #include "CState_Combat_GuardEnd_Fiona.h"
 #include "CState_Combat_GuardCancel_Fiona.h"
-
 #include "CState_Combat_Attack_HorizontalUp_Fiona_L.h"
 #include "CState_Combat_Attack_HorizontalUp_Fiona_R.h"
 #include "CState_Combat_Attack_HorizontalMiddle_Fiona_L.h"
@@ -597,6 +594,38 @@
 #include "CState_Combat_Attack_HorizontalDown_Fiona_L.h"
 #include "CState_Combat_Attack_HorizontalDown_Fiona_R.h"
 #include "CState_Combat_Attack_VerticalCut_Fiona.h"
+
+
+
+#include "CState_Combat_Default_Paladin_L.h"
+#include "CState_Combat_Default_Paladin_R.h"
+#include "CState_Combat_SkillQ_Paladin_Rush_Begin.h"
+#include "CState_Combat_SkillQ_Paladin_Rush_Loop.h"
+#include "CState_Combat_SkillQ_Paladin_Rush_End.h"
+#include "CState_Combat_SkillQ_Paladin_Rush_Begin.h"
+#include "CState_Combat_SkillQ_Paladin_Rush_Loop.h"
+#include "CState_Combat_SkillQ_Paladin_Rush_End.h"
+#include "CState_Combat_SkillE_Paladin_ShieldWall_Begin.h"
+#include "CState_Combat_SkillE_Paladin_ShieldWall_Loop.h"
+#include "CState_Combat_SkillE_Paladin_ShieldWall_End.h"
+#include "CState_Combat_SkillE_Paladin_ShieldWall_Hit.h"
+#include "CState_Combat_GuardBegin_Paladin.h"
+#include "CState_Combat_GuardLoop_Paladin.h"
+#include "CState_Combat_GuardEnd_Paladin.h"
+#include "CState_Combat_GuardCancel_Paladin.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Paladin_L.h"
+#include "CState_Combat_Attack_HorizontalMiddle_Paladin_R.h"
+#include "CState_Combat_Attack_VerticalCut_Paladin.h"
+
+
+
+
+
+
+
+#include "CState_Combat_SkillR_Paladin_ShieldSlam.h"
+
+
 
 
 #pragma endregion
@@ -640,6 +669,18 @@
 #include "CState_PathNavigation_Sprint_Fiona_Jump.h"
 #include "CState_PathNavigation_Jump_Fiona_L.h"
 #include "CState_PathNavigation_Jump_Fiona_R.h"
+
+#include "CState_PathNavigation_Default_Paladin_L.h"
+#include "CState_PathNavigation_Default_Paladin_R.h"
+#include "CState_PathNavigation_Walk_Paladin_L.h"
+#include "CState_PathNavigation_Walk_Paladin_R.h"
+#include "CState_PathNavigation_Sprint_Paladin_Begin.h"
+#include "CState_PathNavigation_Sprint_Paladin_Loop.h"
+#include "CState_PathNavigation_Sprint_Paladin_End.h"
+#include "CState_PathNavigation_Sprint_Paladin_Fall.h"
+#include "CState_PathNavigation_Sprint_Paladin_Jump.h"
+#include "CState_PathNavigation_Jump_Paladin_L.h"
+#include "CState_PathNavigation_Jump_Paladin_R.h"
 
 
 #pragma endregion
@@ -686,6 +727,20 @@
 #include "CState_Common_FlyHit_Fiona.h"
 #include "CState_Common_Bounce_Fiona_L.h"
 #include "CState_Common_Bounce_Fiona_R.h"
+
+
+#include "CState_Common_Land_Paladin_L.h"
+#include "CState_Common_Land_Paladin_R.h"
+#include "CState_Common_Fall_Paladin_L.h"
+#include "CState_Common_Fall_Paladin_R.h"
+#include "CState_Common_Hit_Paladin.h"
+#include "CState_Common_GuardHit_Paladin.h"
+#include "CState_Common_Groggy_Paladin.h"
+#include "CState_Common_Sting_Paladin.h"
+#include "CState_Common_FlyHit_Paladin.h"
+#include "CState_Common_Bounce_Paladin_L.h"
+#include "CState_Common_Bounce_Paladin_R.h"
+
 
 #pragma endregion
 
@@ -1081,7 +1136,7 @@ void CState_Manager::Paladin_State()
 
 	m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L] = CPaladin_Attack_HorizontalMiddle_L::Create();
 	m_arrStates[STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R] = CPaladin_Attack_HorizontalMiddle_R::Create();
-	m_arrStates[STATE_ATTACK_VERTICALCUT_PALADIN] = CPaladin_Attack_VerticalAttack::Create();
+	m_arrStates[STATE_ATTACK_VERTICALCUT_PALADIN] = CPaladin_Attack_VerticalCut::Create();
 	
 	 
 	m_arrStates[STATE_RUSH_BEGIN_PALADIN] = CPaladin_Rush_Begin::Create();
@@ -1547,7 +1602,6 @@ void CState_Manager::Valkyrie_State_AI()
 
 void CState_Manager::Paladin_State_AI()
 {
-
 #pragma region Patrol
 
 	m_arrStates[AI_STATE_PATROL_DEAFULT_PALADIN_L] = CState_Patrol_Default_Paladin_L::Create();
@@ -1559,6 +1613,76 @@ void CState_Manager::Paladin_State_AI()
 	m_arrStates[AI_STATE_PATROL_WALK_PALADIN_R] = CState_Patrol_Walk_Paladin_R::Create();
 
 #pragma endregion
+
+#pragma region Combat
+
+
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_PALADIN_L] = CState_Combat_Default_Paladin_L::Create();
+	m_arrStates[AI_STATE_COMBAT_DEAFULT_PALADIN_R] = CState_Combat_Default_Paladin_R::Create();
+
+	m_arrStates[AI_STATE_COMBAT_GUARDBEGIN_PALADIN] = CState_Combat_GuardBegin_Paladin::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_PALADIN] = CState_Combat_GuardLoop_Paladin::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDEND_PALADIN] = CState_Combat_GuardEnd_Paladin::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDCANCEL_PALADIN] = CState_Combat_GuardCancel_Paladin::Create();
+
+	m_arrStates[AI_STATE_COMBAT_SHIELDWALL_BEGIN_PALADIN] = CState_Combat_SkillE_Paladin_ShieldWall_Begin::Create();
+	m_arrStates[AI_STATE_COMBAT_SHIELDWALL_LOOP_PALADIN] = CState_Combat_SkillE_Paladin_ShieldWall_Loop::Create();
+	m_arrStates[AI_STATE_COMBAT_SHIELDWALL_END_PALADIN] = CState_Combat_SkillE_Paladin_ShieldWall_End::Create();
+	m_arrStates[AI_STATE_COMBAT_SHIELDWALL_HIT_PALADIN] = CState_Combat_SkillE_Paladin_ShieldWall_Hit::Create();
+
+	m_arrStates[AI_STATE_COMBAT_RUSH_BEGIN_PALADIN] = CState_Combat_SkillQ_Paladin_Rush_Begin::Create();
+	m_arrStates[AI_STATE_COMBAT_RUSH_LOOP_PALADIN] = CState_Combat_SkillQ_Paladin_Rush_Loop::Create();
+	m_arrStates[AI_STATE_COMBAT_RUSH_END_PALADIN] = CState_Combat_SkillQ_Paladin_Rush_End::Create();
+
+	m_arrStates[AI_STATE_COMBAT_SHIELDSLAM_PALADIN] = CState_Combat_SkillR_Paladin_ShieldSlam::Create();
+
+	m_arrStates[AI_STATE_COMBAT_VERTICALCUT_PALADIN] = CState_Combat_Attack_VerticalCut_Paladin::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_PALADIN_L] = CState_Combat_Attack_HorizontalMiddle_Paladin_L::Create();
+	m_arrStates[AI_STATE_COMBAT_HORIZONTALMIDDLE_PALADIN_R] = CState_Combat_Attack_HorizontalMiddle_Paladin_R::Create();
+
+
+#pragma endregion
+
+#pragma region PathNavigation
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_PALADIN_L] = CState_PathNavigation_Default_Paladin_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_PALADIN_R] = CState_PathNavigation_Default_Paladin_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_PALADIN_L] = CState_PathNavigation_Walk_Paladin_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_PALADIN_R] = CState_PathNavigation_Walk_Paladin_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PALADIN] = CState_PathNavigation_Sprint_Paladin_Begin::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_PALADIN] = CState_PathNavigation_Sprint_Paladin_Loop::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN] = CState_PathNavigation_Sprint_Paladin_End::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_PALADIN] = CState_PathNavigation_Sprint_Paladin_Jump::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PALADIN] = CState_PathNavigation_Sprint_Paladin_Fall::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_PALADIN_L] = CState_PathNavigation_Jump_Paladin_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_PALADIN_R] = CState_PathNavigation_Jump_Paladin_R::Create();
+
+#pragma endregion
+
+#pragma region Common
+
+	if (false)
+		int a = 0;
+
+	m_arrStates[AI_STATE_COMMON_FALL_PALADIN_L] = CState_Common_Fall_Paladin_L::Create();
+	m_arrStates[AI_STATE_COMMON_FALL_PALADIN_R] = CState_Common_Fall_Paladin_R::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_PALADIN_L] = CState_Common_Land_Paladin_L::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_PALADIN_R] = CState_Common_Land_Paladin_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_BOUNCE_PALADIN_L] = CState_Common_Bounce_Paladin_L::Create();
+	m_arrStates[AI_STATE_COMMON_BOUNCE_PALADIN_R] = CState_Common_Bounce_Paladin_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_HIT_PALADIN] = CState_Common_Hit_Paladin::Create();
+	m_arrStates[AI_STATE_COMMON_GUARDHIT_PALADIN] = CState_Common_GuardHit_Paladin::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_PALADIN] = CState_Common_Groggy_Paladin::Create();
+	m_arrStates[AI_STATE_COMMON_STINGHIT_PALADIN] = CState_Common_Sting_Paladin::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_PALADIN] = CState_Common_FlyHit_Paladin::Create();
+
+#pragma endregion
+
 
 
 }

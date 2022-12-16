@@ -55,6 +55,10 @@ HRESULT CHit_Sting_Paladin::Initialize()
 
 void CHit_Sting_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    if (ePrevType == STATE_SHIELDWALL_LOOP_PALADIN ||
+        ePrevType == STATE_SHIELDWALL_HIT_PALADIN)
+        m_bAttackTrigger = true;
+
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Sting_State(pOwner);
 

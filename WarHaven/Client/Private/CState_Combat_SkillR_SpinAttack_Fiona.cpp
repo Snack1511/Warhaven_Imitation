@@ -53,7 +53,10 @@ void CState_Combat_SkillR_SpinAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pAni
 	pOwner->TurnOn_TrailEffect(true);
 
 	if (ePrevType != AI_STATE_COMBAT_GUARDCANCEL_FIONA ||
-		ePrevType != AI_STATE_COMMON_GUARDHIT_FIONA)
+		ePrevType != AI_STATE_COMMON_GUARDHIT_FIONA ||
+		ePrevType != AI_STATE_COMMON_GROGGYHIT_FIONA ||
+		ePrevType != AI_STATE_COMMON_FLYHIT_FIONA ||
+		ePrevType != AI_STATE_COMMON_HIT_FIONA)
 	{
 		pOwner->On_Use(CUnit::SKILL1);
 		m_fInterPolationTime = 0.1f;

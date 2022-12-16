@@ -579,7 +579,6 @@ void CState::DoMove_AI_NoTarget(CUnit* pOwner, CAnimator* pAnimator)
 
 	_float4 vLook, vRight;
 
-	pOwner->Get_FollowCamLook();
 
 	if (m_vAIRandLook.x > 0.f && m_vAIRandLook.y > 0.f && m_vAIRandLook.z > 0.f)
 	{
@@ -658,6 +657,7 @@ void CState::DoMove_AI_NoTarget(CUnit* pOwner, CAnimator* pAnimator)
 	pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
 	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
 
+	
 	if (!vDir.Is_Zero())
 		pMyPhysicsCom->Set_Dir(vDir);
 

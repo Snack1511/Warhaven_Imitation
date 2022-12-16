@@ -55,33 +55,6 @@ HRESULT CPaladin_ShieldWall_Begin::Initialize()
 
 void CPaladin_ShieldWall_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	CColorController::COLORDESC tColorDesc;
-	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
-
-	tColorDesc.eFadeStyle = CColorController::TIME;
-	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.4f;
-	tColorDesc.fFadeOutStartTime = 1.f;
-	tColorDesc.fFadeOutTime = 0.4f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
-	tColorDesc.iMeshPartType = MODEL_PART_WEAPON_L;
-
-	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
-
-	tColorDesc.eFadeStyle = CColorController::TIME;
-	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.2f;
-	tColorDesc.fFadeOutStartTime = 1.f;
-	tColorDesc.fFadeOutTime = 0.2f;
-	tColorDesc.vTargetColor = _float4(1.f, 1.f, 1.f, 0.5f);
-
-	tColorDesc.iMeshPartType = MODEL_PART_BODY;
-
-	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
-
-	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
-	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
-
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

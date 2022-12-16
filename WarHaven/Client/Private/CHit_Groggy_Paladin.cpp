@@ -70,6 +70,10 @@ HRESULT CHit_Groggy_Paladin::Initialize()
 
 void CHit_Groggy_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    if (ePrevType == STATE_SHIELDWALL_LOOP_PALADIN ||
+        ePrevType == STATE_SHIELDWALL_HIT_PALADIN)
+        m_bAttackTrigger = true;
+
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Groggy_State(pOwner);
 
@@ -79,6 +83,9 @@ void CHit_Groggy_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CHit_Groggy_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_bAttackTrigger)
+        return AI_STATE_COMBAT_SHIELDWALL_HIT_PALADIN;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

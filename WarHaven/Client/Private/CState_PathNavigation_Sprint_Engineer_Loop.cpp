@@ -41,12 +41,14 @@ HRESULT CState_PathNavigation_Sprint_Engineer_Loop::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+    m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_ENGINEER_R;
+
     return S_OK;
 }
 
 void CState_PathNavigation_Sprint_Engineer_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    m_fRand = frandom(1.f, 8.f);
+    m_fRand = frandom(2.1f, 8.f);
     m_iRand = random(0, 5);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
