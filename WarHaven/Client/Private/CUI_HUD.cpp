@@ -29,6 +29,7 @@
 #include "CUI_EscMenu.h"
 
 #include "CGameSystem.h"
+#include "CSquad.h"
 
 
 CUI_HUD::CUI_HUD()
@@ -51,10 +52,15 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	Create_OxenJumpText();
 	Create_HeroTransformUI();
 	Create_EscMenu();
+	Create_KillNameText();
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
 		Create_CharacterWindow();
+	}
+	else
+	{
+		Create_SquardInfo();
 	}
 
 	return S_OK;
@@ -63,7 +69,6 @@ HRESULT CUI_HUD::Initialize_Prototype()
 HRESULT CUI_HUD::Start()
 {
 	Bind_Shader();
-
 
 	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
 	{
@@ -227,6 +232,57 @@ void CUI_HUD::SetActive_HeroTransformGauge(_bool value)
 	}
 }
 
+void CUI_HUD::SetActive_SquardInfo(_bool value)
+{
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+
+	auto iter = mapPlayers.begin();
+
+	vector<CPlayer*> vecPlayer;
+	for (auto& iter : mapPlayers)
+	{
+		vecPlayer.push_back(iter.second);
+	}
+
+	for (int i = 1; i < vecPlayer.size(); ++i)
+	{
+		_uint iTextureNum = vecPlayer[i]->Get_PlayerInfo()->Choose_Character();
+		wstring wstrPlayerName = vecPlayer[i]->Get_PlayerName();
+
+		_uint iIdx = (i - 1);
+
+		m_pArrSquardInfo[iIdx][Squard_Port]->Set_TextureIndex(iTextureNum);
+		m_pArrSquardInfo[iIdx][Squard_Num]->Set_TextureIndex(i);
+		m_pArrSquardInfo[iIdx][Squard_Num]->Set_FontText(wstrPlayerName);
+
+		for (int j = 0; j < Squard_End; ++j)
+		{
+			_float fPosY = -165.f - (iIdx * 35.f);
+			m_pArrSquardInfo[iIdx][j]->Set_PosY(fPosY);
+
+			m_pArrSquardInfo[iIdx][j]->SetActive(value);
+		}
+	}
+}
+
+/*
+
+체력바의 왼쪽 위치 + 체력바 길이 사이즈의 비율 -> 깜빡이 위치.
+
+_float HPBarsizeRatio = HpBar.size / 100.f; -> 체력바 사이즈 1%
+
+//왼쪽 구하기 + 비율 사이즈 구하기.
+HpBar.pos.x - HpBar.size / 2 + HPBarSizeRatio * 사이즈
+
+*/
+
+void CUI_HUD::Enable_KillText(wstring text)
+{
+	m_pKillNameText->Set_FontText(text);
+
+	Enable_Fade(m_pKillNameText, 0.3f);
+}
+
 _bool CUI_HUD::Is_OnHeroGauge()
 {
 	return m_pPlayerNameText->Is_Valid();
@@ -257,6 +313,67 @@ void CUI_HUD::Set_HUD(CLASS_TYPE eClass)
 	dynamic_cast<CUI_Crosshair*>(m_pHUD[HUD_Crosshair])->Set_Crosshair(m_eCurClass);
 	dynamic_cast<CUI_Portrait*>(m_pHUD[HUD_Port])->Set_UserPort(m_eCurClass);
 	dynamic_cast<CUI_Skill*>(m_pHUD[HUD_Skill])->Set_SkillUI(m_eCurClass);
+}
+
+void CUI_HUD::Create_SquardInfo()
+{
+	for (int i = 0; i < Squard_End; ++i)
+	{
+		m_pSquardInfo[i] = CUI_Object::Create();
+
+		m_pSquardInfo[i]->Set_PosX(-595.f);
+
+		switch (i)
+		{
+		case Squard_BG:
+
+			m_pSquardInfo[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBGSmall.dds"));
+
+			m_pSquardInfo[i]->Set_Scale(32.f);
+			m_pSquardInfo[i]->Set_Sort(0.5f);
+
+			break;
+
+		case Squard_Port:
+
+			GET_COMPONENT_FROM(m_pSquardInfo[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pSquardInfo[i], "/HUD/Portrait", "Class");
+
+			m_pSquardInfo[i]->Set_Scale(32.f);
+			m_pSquardInfo[i]->Set_Sort(0.5f);
+
+			break;
+
+		case Squard_Num:
+
+			GET_COMPONENT_FROM(m_pSquardInfo[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pSquardInfo[i], "/Oper", "Num");
+
+			m_pSquardInfo[i]->Set_PosX(-565.f);
+			m_pSquardInfo[i]->Set_Scale(16.f);
+			m_pSquardInfo[i]->Set_Sort(0.5f);
+
+			m_pSquardInfo[i]->Set_FontRender(true);
+			m_pSquardInfo[i]->Set_FontStyle(true);
+			m_pSquardInfo[i]->Set_FontCenter(true);
+
+			m_pSquardInfo[i]->Set_FontOffset(80.f, 4.5f);
+			m_pSquardInfo[i]->Set_FontScale(0.2f);
+
+			break;
+		}
+
+		CREATE_GAMEOBJECT(m_pSquardInfo[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSquardInfo[i]);
+
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrSquardInfo[j][i] = m_pSquardInfo[i]->Clone();
+
+			CREATE_GAMEOBJECT(m_pArrSquardInfo[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrSquardInfo[j][i]);
+		}
+	}
 }
 
 void CUI_HUD::Create_ClassChangeText()
@@ -301,6 +418,29 @@ void CUI_HUD::Create_OxenJumpText()
 
 	CREATE_GAMEOBJECT(m_pOxenJumpText, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pOxenJumpText);
+}
+
+void CUI_HUD::Create_KillNameText()
+{
+	m_pKillNameText = CUI_Object::Create();
+
+	m_pKillNameText->Set_FadeDesc(0.3f, 0.3f, 5.f, true);
+
+	m_pKillNameText->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Kill.png"));
+
+	m_pKillNameText->Set_Pos(140.f, -100.f);
+	m_pKillNameText->Set_Scale(87.f, 60.f);
+	m_pKillNameText->Set_Sort(0.5f);
+
+	m_pKillNameText->Set_FontRender(true);
+	m_pKillNameText->Set_FontStyle(true);
+	m_pKillNameText->Set_FontCenter(true);
+	m_pKillNameText->Set_FontScale(0.45f);
+	m_pKillNameText->Set_FontOffset(-140.f, -3.5f);
+	m_pKillNameText->Set_FontColor(_float4(1.f, 0.2f, 0.2f, 1.f));
+
+	CREATE_GAMEOBJECT(m_pKillNameText, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pKillNameText);
 }
 
 void CUI_HUD::Create_PlayerNameText()
@@ -358,23 +498,6 @@ void CUI_HUD::Bind_Shader()
 	}
 }
 
-//void CUI_HUD::Set_FadeOperSelectChaderUI()
-//{
-//	FADEDESC tFadeDesc;
-//	ZeroMemory(&tFadeDesc, sizeof(FADEDESC));
-//	tFadeDesc.eFadeOutType = FADEDESC::FADEOUT_DISABLE;
-//	tFadeDesc.eFadeStyle = FADEDESC::FADE_STYLE_DEFAULT;
-//	tFadeDesc.bFadeInFlag = FADE_NONE;
-//	tFadeDesc.bFadeOutFlag = FADE_NONE;
-//	tFadeDesc.fFadeInStartTime = 0.f;
-//	tFadeDesc.fFadeInTime = 0.3f;
-//	tFadeDesc.fFadeOutStartTime = 0.f;
-//	tFadeDesc.fFadeOutTime = 0.3f;
-//
-//	GET_COMPONENT_FROM(m_pOperMapIcon, CFader)->Get_FadeDesc() = tFadeDesc;
-//	GET_COMPONENT_FROM(m_pOperMapBG, CFader)->Get_FadeDesc() = tFadeDesc;
-//}
-
 void CUI_HUD::Create_HeroTransformUI()
 {
 	for (int i = 0; i < HT_End; ++i)
@@ -420,30 +543,4 @@ void CUI_HUD::Update_HeorTransformGauge()
 			}
 		}
 	}
-}
-
-void CUI_HUD::Create_OperMap()
-{
-	m_pOperMapIcon = CUI_Object::Create();
-	m_pOperMapIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_MapIcon2.dds"));
-	m_pOperMapIcon->Set_Pos(540.f, 150.f);
-	m_pOperMapIcon->Set_Scale(32.f);
-	m_pOperMapIcon->Set_Sort(0.47f);
-	m_pOperMapIcon->Set_FontRender(true);
-	m_pOperMapIcon->Set_FontStyle(true);
-	m_pOperMapIcon->Set_FontOffset(-100.f, -15.f);
-	m_pOperMapIcon->Set_FontScale(0.3f);
-	m_pOperMapIcon->Set_FontText(TEXT("지도"));
-
-	m_pOperMapBG = CUI_Object::Create();
-	m_pOperMapBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SwitchHandle.png"));
-	m_pOperMapBG->Set_Sort(0.48f);
-	m_pOperMapBG->Set_Scale(65.f);
-	m_pOperMapBG->Set_Pos(540.f, 150.f);
-
-	CREATE_GAMEOBJECT(m_pOperMapIcon, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pOperMapIcon);
-
-	CREATE_GAMEOBJECT(m_pOperMapBG, RENDER_UI);
-	DISABLE_GAMEOBJECT(m_pOperMapBG);
 }

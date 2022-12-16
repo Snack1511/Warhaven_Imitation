@@ -96,6 +96,8 @@ public:
 public:
 	CUI_Wrapper* Get_HUD(_uint eHUD);
 
+	void Enable_KillText(wstring Text);
+
 	void Set_UserPort(_uint iClass);
 	void Set_HeroPort(_uint iType);
 	void Set_HP(_float fCurValue, _float fMaxValue);
@@ -104,6 +106,7 @@ public:
 
 	void SetActive_Cursor(_bool value);
 
+	void SetActive_SquardInfo(_bool value);
 	void SetActive_Result(_uint iResult, _bool value);
 	void SetActive_HUD(_bool value);
 	void SetActive_UnitHUD(_bool value);

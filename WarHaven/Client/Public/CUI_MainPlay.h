@@ -68,7 +68,8 @@ private:
 
 	CUI_Object* m_pSelectTextRect = nullptr;
 
-	Select_Map m_eStage = Select_Map::Training;
+	static Select_Map m_eStage;
+	static wstring m_wstrModeText;
 
 private:
 	CUI_Object* m_pTarget = nullptr;

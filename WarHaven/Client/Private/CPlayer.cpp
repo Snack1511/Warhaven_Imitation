@@ -767,7 +767,10 @@ void CPlayer::On_Reborn()
 	m_bDie = false;
 
 	if (m_bIsMainPlayer)
+	{
 		CUser::Get_Instance()->SetActive_HUD(true);
+		CUser::Get_Instance()->SetActive_SquardInfo(true);
+	}
 
 	m_bReborn = true;
 }

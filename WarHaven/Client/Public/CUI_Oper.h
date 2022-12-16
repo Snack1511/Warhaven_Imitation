@@ -34,6 +34,7 @@ public:
 
 	void SetActive_BG(_bool value);
 	void SetActive_Profile(_bool value);
+	void SetActive_LeftIcon(_bool value);
 
 private:
 	virtual void My_Tick() override;
@@ -51,6 +52,8 @@ private:
 
 private:
 	list<CUI_Object*> m_pOperList;
+
+	_float m_fDisableProfileTime = 4.f;
 
 private:
 	void Progress_Oper();
@@ -82,8 +85,14 @@ private:	// 작전회의 프로필
 	CUI_Object* m_pOperProfile = nullptr;
 	CUI_Object* m_pArrOperProfile[4];
 
+	CUI_Object* m_pPositionText = nullptr;
+	CUI_Object* m_pArrPositionText[4];
+
+	CUI_Object* m_pMarkMeText = nullptr;
+
 private:
 	void Create_OperProfile();
+	void Create_ProfileInfo();
 	void Set_OperProfile();
 
 
@@ -95,14 +104,16 @@ private:	// 작전회의 캐릭터 선택 창
 	CUI_Object* m_pCharacterPort[CP_End];
 	CUI_Object* m_pArrCharacterPort[CP_End][6];
 
-	enum SideMapIcon { Map_BG, Map_Icon, Map_SelectBG, Map_End };
-	CUI_Object* m_pSideMapUI[Map_End];
+	enum LeftIcon { Left_BG, Left_Icon, Left_SelectBG, Left_Num, Left_End };
+	CUI_Object* m_pLeftUI[Left_End];
+	CUI_Object* m_pArrLeftUI[4][Left_End];
 
 	_uint m_iCurSelectEventNum = 0;
 	_uint m_iPrvSelectEventNum = 0;
 
 private:
 	void Create_CharacterSelect();
+	void Create_LeftIcon();
 	void Init_CharacterSelect();
 
 private:

@@ -26,10 +26,19 @@ public:
 	virtual void My_Tick();
 
 public:
-	CUI_Wrapper* Get_HUD(_uint eHUD);
+	virtual void Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName);
+
+	void SetActive_HUD(_bool value);
+	void Set_HUD(CLASS_TYPE eClass);
+
+	void SetActive_OxenJumpText(_bool value);
+	void SetActive_HeroTransformGauge(_bool value);
+
+	void SetActive_SquardInfo(_bool value);
+	void Enable_KillText(wstring text);
 
 public:
-	void SetActive_HUD(_bool value);
+	CUI_Wrapper* Get_HUD(_uint eHUD);
 
 private:
 	CUI_Wrapper* m_pHUD[HUD_End];
@@ -51,15 +60,6 @@ private:
 	void Create_EscMenu();
 
 public:
-	virtual void Set_Shader_HeroTransformGauge(CShader* pShader, const char* pConstName);
-
-public:
-	void Set_HUD(CLASS_TYPE eClass);
-
-	void SetActive_OxenJumpText(_bool value);
-	void SetActive_HeroTransformGauge(_bool value);
-
-public:
 	_bool Is_OnHeroGauge();
 
 private:
@@ -68,36 +68,26 @@ private:
 	CLASS_TYPE m_ePrvClass;
 
 private:
-	CUI_Object* m_pOperMapIcon = nullptr;
-	CUI_Object* m_pOperMapBG = nullptr;
+	enum SquardInfo { Squard_BG, Squard_Port, Squard_Num, Squard_End };
+	CUI_Object* m_pSquardInfo[Squard_End];
+	CUI_Object* m_pArrSquardInfo[3][Squard_End];
 
 private:
-	void Create_OperMap();
-
-private:	// 작전회의 거점 아이콘
-	CUI_Object* m_pTargetPoint = nullptr;
-	CUI_Object* m_pArrTargetPoint[2];
+	void Create_SquardInfo();
 
 private:
-	void Create_OperPoint();
-
-private:	// 캐릭터 변경 알림
 	CUI_Object* m_pClassChangeText = nullptr;
+	CUI_Object* m_pInactiveHeroText = nullptr;
+	CUI_Object* m_pOxenJumpText = nullptr;
+	CUI_Object* m_pKillNameText = nullptr;
+
+	_uint m_iKillCount = 0;
 
 private:
 	void Create_ClassChangeText();
-
-private:	// 히어로 해제 알림
-	CUI_Object* m_pInactiveHeroText = nullptr;
-
-private:
 	void Create_InactiveHeroText();
-
-private:	// 황소베기 점프 안내
-	CUI_Object* m_pOxenJumpText = nullptr;
-
-private:
 	void Create_OxenJumpText();
+	void Create_KillNameText();
 
 private:
 	CUI_Object* m_pPlayerNameText = nullptr;
