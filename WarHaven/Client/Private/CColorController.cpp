@@ -43,8 +43,8 @@ HRESULT CColorController::Add_ColorControll(const COLORDESC& tColorDesc)
 		if (tColorDesc.eFadeStyle == KEYFRAME)
 			return E_FAIL;
 
-
-	m_ColorDesclist.back().iOriginState = m_pOwnerUnit->Get_CurState();
+	if (m_pOwnerUnit)
+		m_ColorDesclist.back().iOriginState = m_pOwnerUnit->Get_CurState();
 
 	
 	return S_OK;
@@ -224,8 +224,6 @@ _bool CColorController::Fade_Time(COLORDESC& tColorDesc)
 
 _bool CColorController::Fade_KeyFrame(COLORDESC& tColorDesc)
 {
-
-
 	_uint iCurFrame = m_pTargetAnimator->Get_CurAnimFrame();
 	
 	tColorDesc.fFadeTimeAcc += fDT(0);
