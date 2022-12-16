@@ -432,7 +432,7 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 
 	case 1000:
 		/*effect*/
-		if(WARRIOR == pOwner->Get_Status().eClass)
+		if(WARRIOR == pOwner->Get_Status().eClass || FIONA == pOwner->Get_Status().eClass)
 			if (!pOwner->Is_Air())
 				Create_SoilEffect();
 

@@ -69,7 +69,8 @@ HRESULT CSprint_End_Valkyrie::Initialize()
 	m_fMaxSpeed = 10.f;
 	m_fMyAccel = 10.f;
 
-
+    Add_KeyFrame(7, 222);
+    Add_KeyFrame(30, 333);
     return S_OK;
 }
 
@@ -123,4 +124,19 @@ STATE_TYPE CSprint_End_Valkyrie::Check_Condition(CUnit* pOwner, CAnimator* pAnim
         return STATE_SPRINT_END_VALKYRIE;
 
     return STATE_END;
+}
+
+void CSprint_End_Valkyrie::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 222:
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    case 333:
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    default:
+        break;
+    }
 }
