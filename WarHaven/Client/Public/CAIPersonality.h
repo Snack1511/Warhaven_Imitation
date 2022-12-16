@@ -19,7 +19,7 @@ class CAIController;
 class CBehavior;
 class CTable_Conditions;
 
-class CAIPersonality abstract
+class CAIPersonality
 {
 	friend class CPlayerInfo;
 
@@ -104,8 +104,6 @@ public:
 	}PersonalDesc;
 
 public:
-
-public:
 	friend class CGameSystem;
 	friend class CPlayer;
 	friend class CAIController;
@@ -114,6 +112,8 @@ public:
 	typedef vector<map<_hashcode, _uint>> ConditionsIndices;
 	typedef CDelegate<_bool&, void*> Condition;
 
+public:
+	static CAIPersonality* Create(wstring strPersonalityName, CTable_Conditions* pConditionTable);
 protected:
 	CAIPersonality(CTable_Conditions* pConditionTable);
 	virtual ~CAIPersonality();
@@ -121,16 +121,20 @@ protected:
 public:
 	virtual HRESULT Initailize();
 	virtual void Release();
-
+public:
+	HRESULT SetUp_PersonalityName(wstring strPersonalityName);
 public:
 	_float Get_Delay();
 	_float Get_Range();
 	_float Get_CheckedHP();
-	list<CBehavior*> Get_BehaviorList() { return m_BehaviorList; }
+	list<CBehavior*>& Get_BehaviorList() { return m_BehaviorList; }
 	CBehavior* Get_Patrol() { return m_pPatrolBehavior; }
 	_bool Is_LongTimeRemain(eBehaviorType eBhavior);
 	void Update_RemainTime(eBehaviorType eBhavior);
 	void Init_RemainTime(eBehaviorType eBhavior);
+public:
+	void Set_PersonalityName(wstring strPersonalityName) { m_tPersonalDesc.strPersonalityName = strPersonalityName; }
+	wstring Get_PersonalityName() { return m_tPersonalDesc.strPersonalityName; }
 
 public:
 	/* CurMove가 더 작으면 True */

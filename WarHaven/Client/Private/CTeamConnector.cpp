@@ -29,6 +29,13 @@ CTeamConnector* CTeamConnector::Create(list<CSquad*> SquadList)
     return pInstance;
 }
 
+CTeamConnector* CTeamConnector::Create(list<CSquad*> SquadList, eTEAM_TYPE eTeamType)
+{
+    CTeamConnector* pInstance = CTeamConnector::Create(SquadList);
+    pInstance->m_eTeamType = eTeamType;
+    return pInstance;
+}
+
 HRESULT CTeamConnector::Initialize()
 {
     if (m_SquadList.size() < 2)
@@ -169,6 +176,13 @@ HRESULT CTeamConnector::On_EnterPaden()
 
 
     return S_OK;
+}
+
+CSquad* CTeamConnector::Add_Squad()
+{
+    CSquad* pSquad = CSquad::Create(this);
+    m_SquadList.push_back(pSquad);
+    return pSquad;
 }
 
 void CTeamConnector::Release()

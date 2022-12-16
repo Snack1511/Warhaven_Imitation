@@ -24,6 +24,7 @@ public:
 		IMGUI_LEVEL,
 		IMGUI_TILE,
 		IMGUI_PATH,
+		IMGUI_AI,
 		IMGUI_END
 	};
 
@@ -36,7 +37,11 @@ private:
 public:
 	void	Enable_Window(IMGUI_WINDOW_TYPE eType, _bool bEnable);
 	void	Turn_Window(IMGUI_WINDOW_TYPE eType);
-
+public:
+	void Push_KorFont();
+	void Pop_Font();
+public:
+	void		On_ToolTip(string strContext, string strToolTip = "(?)", _bool bSameLine = true);
 public:
 	HRESULT Initialize();
 	void	Tick();
@@ -46,7 +51,8 @@ private:
 	CImGui_Window* m_arrWindows[IMGUI_END];
 
 	_bool m_bIsInit = false;
-
+private:
+	ImFont* m_pKorFont = nullptr;
 private:
 	void Release();
 };

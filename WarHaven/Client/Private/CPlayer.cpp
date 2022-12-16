@@ -686,6 +686,27 @@ HRESULT CPlayer::SetUp_Collider()
 	return S_OK;
 }
 
+CAIPersonality* CPlayer::Get_Personality()
+{
+	if (nullptr == m_pMyPlayerInfo)
+		return nullptr;
+	if (nullptr == m_pMyPlayerInfo->m_pPersonality)
+		return nullptr;
+	return m_pMyPlayerInfo->m_pPersonality;
+}
+
+void CPlayer::Set_Personality(CAIPersonality* pPersonality) 
+{
+	if (nullptr != m_pAIController) 
+	{
+		if (nullptr != pPersonality)
+		{
+			m_pMyPlayerInfo->Set_Personality(pPersonality);
+			m_pAIController->Set_Personality(pPersonality);
+		}
+	}//Personality가 필요한 애들만.. --> AIController가 null이다 == AI가 아니거나 State에 의존하는 AI다
+}
+
 void CPlayer::On_Die()
 {
 	//m_bDie = true;
@@ -993,6 +1014,18 @@ void CPlayer::Set_MainPlayerStartPath(_uint iTriggerType)
 		break;
 	}
 
+}
+
+_float4 CPlayer::Get_SquadDir()
+{
+	_float4 vDir = m_pMySquad->Get_LeaderPlayer()->Get_LookDir();
+	//스쿼드 위치를 가져와서 현재 월드 포지션이랑 뺸 뒤의 방향을 던져주는 식으로..
+	return vDir;
+}
+
+CPath* CPlayer::Get_CurPath() 
+{
+	return m_pCurPath; 
 }
 
 void CPlayer::Update_HeroGauge()

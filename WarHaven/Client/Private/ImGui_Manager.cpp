@@ -17,6 +17,7 @@
 #include "CWindow_Level.h"
 #include "CWindow_Tile.h"
 #include "CWindow_Path.h"
+#include "CWindow_AI.h"
 
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
@@ -44,6 +45,29 @@ void CImGui_Manager::Turn_Window(IMGUI_WINDOW_TYPE eType)
 	m_arrWindows[eType]->Set_Enable(bEnable);
 }
 
+void CImGui_Manager::Push_KorFont()
+{
+	ImGui::PushFont(m_pKorFont);
+}
+
+void CImGui_Manager::Pop_Font()
+{
+	ImGui::PopFont();
+}
+
+void CImGui_Manager::On_ToolTip(string strContext, string strToolTip, _bool bSameLine)
+{
+	if(bSameLine)
+		ImGui::SameLine();
+	ImGui::TextDisabled(strToolTip.c_str());
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::Text(strContext.c_str());
+		ImGui::EndTooltip();
+	}
+}
+
 HRESULT CImGui_Manager::Initialize()
 {
 	if (m_bIsInit)
@@ -59,6 +83,11 @@ HRESULT CImGui_Manager::Initialize()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	//D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Fonts\ImGuiFonts
+	io.Fonts->AddFontDefault();
+	m_pKorFont = io.Fonts->AddFontFromFileTTF("../Bin/Resources/Fonts/ImGuiFonts/NanumGothic.ttf", 13.f, nullptr, io.Fonts->GetGlyphRangesKorean());
+	
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -79,6 +108,7 @@ HRESULT CImGui_Manager::Initialize()
 	m_arrWindows[IMGUI_LEVEL] = CWindow_Level::Create();
 	m_arrWindows[IMGUI_TILE] = CWindow_Tile::Create();
 	m_arrWindows[IMGUI_PATH] = CWindow_Path::Create();
+	m_arrWindows[IMGUI_AI] = CWindow_AI::Create();
 #pragma endregion 윈도우 등록
 
 	return S_OK;

@@ -901,6 +901,7 @@
     <ClInclude Include="..\Public\CWarrior_Oxen_Loop.h" />
     <ClInclude Include="..\Public\CState_Combat_Oxen_Loop_Attack_Warrior.h" />
     <ClInclude Include="..\Public\CWarrior_Oxen_Loop_Attack.h" />
+    <ClInclude Include="..\Public\CWindow_AI.h" />
     <ClInclude Include="..\public\CWindow_Default.h" />
     <ClInclude Include="..\Public\CWindow_Effect.h" />
     <ClInclude Include="..\public\CWindow_Level.h" />
@@ -1640,6 +1641,7 @@
     <ClCompile Include="..\Private\CWarrior_Oxen_Loop.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Oxen_Loop_Attack_Warrior.cpp" />
     <ClCompile Include="..\Private\CWarrior_Oxen_Loop_Attack.cpp" />
+    <ClCompile Include="..\Private\CWindow_AI.cpp" />
     <ClCompile Include="..\Private\CWindow_Default.cpp" />
     <ClCompile Include="..\Private\CWindow_Effect.cpp" />
     <ClCompile Include="..\private\CWindow_Level.cpp" />

@@ -23,6 +23,9 @@ public:
 	static CSquad* Create(CPlayer* pLeaderPlayer, CPlayer* pPlayer_0
 		, CPlayer* pPlayer_1, CPlayer* pPlayer_2);
 
+	//툴 전용 생성 함수(CTeamConnector->Add_Squad())에서 사용하는 함수
+	static CSquad* Create(CTeamConnector* pConnector);
+
 public:
 	HRESULT	Initialize();
 
@@ -35,8 +38,11 @@ public:
 	void	SetUp_OutlineType_SquadMember();
 	CPlayer* Get_LeaderPlayer() { return m_pLeaderPlayer; }
 
-	map<_hashcode, CPlayer*>	Get_AllPlayers() { return m_mapPlayers; };
-
+	//map<_hashcode, CPlayer*>	Get_AllPlayers() { return m_mapPlayers; };
+	map<_hashcode, CPlayer*>&	Get_AllPlayers() { return m_mapPlayers; };
+public:/* 툴 전용 생성 삭제..*/
+	void Add_EmptyPlayer(_bool bLeader, CPlayer* pPlayer);
+	void Delete_EmptyPlayer(CPlayer* pPlayer);
 private:
 	CPlayer* m_pLeaderPlayer = nullptr;
 

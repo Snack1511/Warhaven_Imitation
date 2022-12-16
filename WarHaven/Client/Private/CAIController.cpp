@@ -201,6 +201,11 @@ void CAIController::Set_NewPath(CPath* pPath)
 	m_pCurPath->m_pOwnerController = this;
 }
 
+void CAIController::Set_Personality(CAIPersonality* pPersonality)
+{
+	m_pPersonality = pPersonality;
+}
+
 _bool CAIController::Is_LongTimeRemain(eBehaviorType eBhavior)
 {
 	if (nullptr == m_pPersonality)
