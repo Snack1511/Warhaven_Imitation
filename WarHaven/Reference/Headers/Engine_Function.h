@@ -155,26 +155,27 @@ namespace Engine
 		ofstream writeFile;
 
 		time_t timer;
-		struct tm* t = nullptr;
+		struct tm t;
+		ZeroMemory(&t, sizeof(tm));
 		timer = time(NULL); // 1970년 1월 1일 0시 0분 0초부터 시작하여 현재까지의 초
-		localtime_s(t, &timer);
+		localtime_s(&t, &timer);
 		string strDumpPath = "../../Log/Log_";
 		strDumpPath += strClassName;
 		strDumpPath += ".txt";
 
 
 		string strWriteMsg = "[";
-		strWriteMsg += to_string((t->tm_year + 1900));
+		strWriteMsg += to_string((t.tm_year + 1900));
 		strWriteMsg += "/";
-		strWriteMsg += to_string((t->tm_mon + 1));
+		strWriteMsg += to_string((t.tm_mon + 1));
 		strWriteMsg += "/";
-		strWriteMsg += to_string((t->tm_mday));
+		strWriteMsg += to_string((t.tm_mday));
 		strWriteMsg += " ";
-		strWriteMsg += to_string((t->tm_hour));
+		strWriteMsg += to_string((t.tm_hour));
 		strWriteMsg += ":";
-		strWriteMsg += to_string((t->tm_min));
+		strWriteMsg += to_string((t.tm_min));
 		strWriteMsg += ":";
-		strWriteMsg += to_string((t->tm_sec));
+		strWriteMsg += to_string((t.tm_sec));
 		strWriteMsg += "] - ";
 		strWriteMsg += strMessage;
 		strWriteMsg += "\0";
