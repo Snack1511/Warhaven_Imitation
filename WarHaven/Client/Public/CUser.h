@@ -26,6 +26,7 @@ class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
 
+class CUI_KillLog;
 class CUI_Result;
 class CUI_Popup;
 class CUI_Oper;
@@ -54,9 +55,10 @@ public:
 	LEVEL_TYPE_CLIENT	Get_CurLevel() { return m_eLoadLevel; }
 
 
-	void		Set_FixCursor(_bool bEnable) { m_bFixCursor = bEnable; 
+	void		Set_FixCursor(_bool bEnable) {
+		m_bFixCursor = bEnable;
 #ifdef _DEBUG
-	::ShowCursor(!bEnable);
+		::ShowCursor(!bEnable);
 #endif 
 	}
 
@@ -155,6 +157,10 @@ public:
 public:		// 알림
 	void Enable_Popup(_uint iPopupType);
 
+public:	// 킬로그
+	void Set_LogName(CPlayer* attacker, CPlayer* victim);
+	void Enable_KillUI(_uint iType);
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -164,6 +170,7 @@ private:
 	CUI_Oper* m_pUI_Oper = nullptr;
 	CUI_Popup* m_pUI_Popup = nullptr;
 	CUI_Result* m_pUI_Result = nullptr;
+	CUI_KillLog* m_pKillLog = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

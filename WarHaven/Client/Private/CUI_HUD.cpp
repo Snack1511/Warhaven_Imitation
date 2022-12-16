@@ -233,6 +233,9 @@ void CUI_HUD::SetActive_HeroTransformGauge(_bool value)
 
 void CUI_HUD::SetActive_SquardInfo(_bool value)
 {
+	if (m_eLoadLevel < LEVEL_PADEN)
+		return;
+
 	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
 
 	auto iter = mapPlayers.begin();

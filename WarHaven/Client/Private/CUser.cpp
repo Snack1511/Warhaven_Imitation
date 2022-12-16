@@ -40,6 +40,7 @@
 #include "CUI_Oper.h"
 #include "CUI_EscMenu.h"
 #include "CUI_Popup.h"
+#include "CUI_KillLog.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -74,6 +75,15 @@ HRESULT CUser::Initialize()
 void CUser::Tick()
 {
 	Fix_CursorPosToCenter();
+
+	if (KEY(TAB, TAP))
+	{
+		static _bool bShowCursor = false;
+
+		bShowCursor = !bShowCursor;
+
+		ShowCursor(bShowCursor);
+	}
 }
 
 
@@ -369,7 +379,6 @@ void CUser::On_EnterStageLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
-
 	if (!m_pUI_HUD)
 	{
 		m_pUI_HUD = CUI_HUD::Create();
@@ -412,6 +421,14 @@ void CUser::On_EnterStageLevel()
 
 		CREATE_GAMEOBJECT(m_pUI_Popup, GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pUI_Popup);
+	}
+
+	if (!m_pKillLog)
+	{
+		m_pKillLog = CUI_KillLog::Create();
+
+		CREATE_GAMEOBJECT(m_pKillLog, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pKillLog);
 	}
 
 	if (m_eLoadLevel > LEVEL_BOOTCAMP)
@@ -469,6 +486,9 @@ void CUser::On_ExitStageLevel()
 
 	if (m_pUI_Training)
 		m_pUI_Training = nullptr;
+
+	if (m_pKillLog)
+		m_pKillLog = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -543,7 +563,17 @@ void CUser::Enable_Popup(_uint iPopupType)
 {
 	if (m_pUI_Popup)
 		m_pUI_Popup->Enable_Popup((CUI_Popup::ePOPUP_TYPE)iPopupType);
+}
 
+void CUser::Set_LogName(CPlayer* attacker, CPlayer* victim)
+{
+	m_pKillLog->Set_LogName(attacker, victim);
+}
+
+void CUser::Enable_KillUI(_uint iType)
+{
+	m_pKillLog->SetActive(true);
+	m_pKillLog->Enable_KillUI(iType);
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
