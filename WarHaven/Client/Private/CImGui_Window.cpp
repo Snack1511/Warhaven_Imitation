@@ -9,6 +9,17 @@ CImGui_Window::~CImGui_Window()
 {
 }
 
+void CImGui_Window::Set_Enable(_bool bEnable)
+{
+	if (m_bEnable != bEnable)
+	{
+		if (bEnable)
+			On_Enable();
+		else
+			On_Disable();
+		m_bEnable = bEnable;
+	}
+}
 HRESULT CImGui_Window::SetUp_ImGuiDESC(string _strName, const ImVec2& _vWindowSize, ImGuiWindowFlags _eWindowFlags)
 {
 	m_tImGuiDESC.strName = _strName;

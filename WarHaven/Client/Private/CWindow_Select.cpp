@@ -89,6 +89,10 @@ HRESULT CWindow_Select::Render()
 	{
 		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_PATH);
 	}
+	if (ImGui::Button("AI Tool"))
+	{
+		CImGui_Manager::Get_Instance()->Turn_Window(CImGui_Manager::IMGUI_AI);
+	}
 	ImGui::Spacing();
 
 	__super::End();

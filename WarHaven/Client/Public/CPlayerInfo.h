@@ -95,7 +95,12 @@ public:
 public:
 	virtual HRESULT	Initialize() PURE;
 	virtual void Release();
-
+public:
+	/* 
+		외부에서 AI설정을 변경하는 용도	
+		AI툴에서 사용하기 위해 생성 
+	*/
+	void Set_Personality(CAIPersonality* pPersonality);
 protected:
 	/* GameObject들 포인터 */
 	CPlayer* m_pMyPlayer = nullptr;

@@ -232,8 +232,6 @@ private:
 private:
 	_bool Calculate_Pick();
 
-public:
-	void		On_ToolTip(string strContext);
 #pragma region Private 기타 함수
 	void		Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Map&)> func);
 	_bool		Make_Combo(const char* szLabel, vector<tuple<char*, bool>>& szDataArr, int* pCurIndex, function<void()> SelectFunction);
@@ -351,7 +349,5 @@ private:
 	_float	m_fTimeDelay = 0.1f;
 	_float	m_fDelayTimeAcc = 0.f;
 
-private:
-	ImFont* m_pKorFont = nullptr;
 };
 END

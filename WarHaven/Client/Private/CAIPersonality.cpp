@@ -4,6 +4,21 @@
 #include "CTable_Conditions.h"
 #include "CBehavior.h"
 #include "GameInstance.h"
+CAIPersonality* CAIPersonality::Create(wstring strPersonalityName, CTable_Conditions* pConditionTable)
+{
+	CAIPersonality* pInstance = new CAIPersonality(pConditionTable);
+	if (FAILED(pInstance->Initailize()))
+	{
+		Call_MsgBox(L"Failed to Initialize : CAIPersonality");
+		SAFE_DELETE(pInstance);
+	}
+	if (FAILED(pInstance->SetUp_PersonalityName(strPersonalityName)))
+	{
+		Call_MsgBox(L"Failed to SetUp_PersonalityName : CAIPersonality");
+		SAFE_DELETE(pInstance);
+	}
+	return pInstance;
+}
 CAIPersonality::CAIPersonality(CTable_Conditions* pConditionTable)
 	:m_pConditionTable(pConditionTable)
 {
@@ -16,7 +31,44 @@ CAIPersonality::~CAIPersonality()
 
 HRESULT CAIPersonality::Initailize()
 {
+	//해시 저장용
+	m_tPersonalDesc.strPersonalityName = wstring(L"");
 
+	//상태전환시 딜레이용
+	m_tPersonalDesc.fChangeDelayTime = 0.01f;
+
+	//상태 전환시 딜레이 가중치용 --> 합연산
+	m_tPersonalDesc.fDelayWeight = 0.f;
+
+	//목표 인식 범위
+	m_tPersonalDesc.fSIghtRadius = 30.f;
+
+	//인식범위 가중치용 --> 합연산
+	m_tPersonalDesc.fSightRadiusWeight = 0.f;
+
+	//확인할 HP
+	m_tPersonalDesc.fCheckedHP = 30.f;
+
+	//확인 할 HP의 가중치용 --> 합연산
+	m_tPersonalDesc.fHPWeight = 0.f;
+
+	//MainPersonality레벨 --> 곱연산으로 가중치 붙음
+	m_tPersonalDesc.iMainPersonalityLevel = 1;
+
+	//확률 계산시 전체적인 선택에 영향을 줄 메인 성향
+	m_tPersonalDesc.eMainPerosnality = eMain_END;
+
+	//유닛 선택및 전투시 영향
+	m_tPersonalDesc.eFightPersonality = eFight_Default;
+
+	//팀업 시 영향
+	m_tPersonalDesc.eCoopPersonality = eCoop_Default;
+
+	//행동별 최대로 머무를 시간
+	ZeroMemory(m_tPersonalDesc.fRemainMaxTime, sizeof(_float) * _uint(eBehaviorType::eCNT));
+
+	// 비볐는지 체크 용도
+	ZeroMemory(m_tPersonalDesc.fMinMoveAcc, sizeof(_float) * _uint(eBehaviorType::eCNT));
 	return S_OK;
 }
 
@@ -26,6 +78,12 @@ void CAIPersonality::Release()
 		SAFE_DELETE(elem);
 
 	SAFE_DELETE(m_pPatrolBehavior);
+}
+
+HRESULT CAIPersonality::SetUp_PersonalityName(wstring strPersonalityName)
+{
+	m_tPersonalDesc.strPersonalityName = strPersonalityName;
+	return S_OK;
 }
 
 

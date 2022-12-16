@@ -163,6 +163,16 @@ void CPlayerInfo::Release()
 	SAFE_DELETE(m_pPersonality);
 }
 
+void CPlayerInfo::Set_Personality(CAIPersonality* pPersonality)
+{
+	if (nullptr != pPersonality)
+	{
+		SAFE_DELETE(m_pPersonality);
+		m_pPersonality = pPersonality;
+	}
+
+}
+
 
 _bool CPlayerInfo::Can_Make_Player(const PLAYER_INFO& tInfo)
 {

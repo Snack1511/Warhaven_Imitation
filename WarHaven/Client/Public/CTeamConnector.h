@@ -21,6 +21,7 @@ private:
 
 public:
 	static CTeamConnector* Create(list<CSquad*> SquadList);
+	static CTeamConnector* Create(list<CSquad*> SquadList, eTEAM_TYPE eTeamType);
 
 public:
 	HRESULT	Initialize();
@@ -42,11 +43,13 @@ public:
 	_bool	IsMainPlayerTeam() { return m_bIsMainPlayerTeam; }
 	_bool	Minus_Score();
 	_bool	Has_MainTrigger() { return m_bHasMainTrigger; }
-
+	list<CSquad*>& Get_SquadList() { return m_SquadList; }
 public:
 	/* 파덴 진입시 호출 */
 	HRESULT	On_EnterPaden();
-
+public: 
+	/* 툴 전용 생성 삭제 함수 */
+	CSquad* Add_Squad();
 public:
 	void	Release();
 

@@ -21,6 +21,7 @@
 
 #include "CFunc_ObjectControl.h"
 #include "CLight.h"
+#include "ImGui_Manager.h"
 CWindow_Map::CWindow_Map()
 {
     m_CurTerrainData.Initialize();
@@ -96,12 +97,6 @@ HRESULT CWindow_Map::Initialize()
 
     m_OutDatas = make_tuple(_float4(0.f, 0.f, 0.f, 1.f), _float4(0.f, 0.f, 0.f, 1.f), _float4(0.f, 0.f, 0.f, 0.f));
 
-    ImGuiIO& io = ImGui::GetIO();
-    //D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Resources\Fonts\ImGuiFonts
-    io.Fonts->AddFontDefault();
-    m_pKorFont = io.Fonts->AddFontFromFileTTF("../Bin/Resources/Fonts/ImGuiFonts/NanumGothic.ttf", 13.f, nullptr, io.Fonts->GetGlyphRangesKorean());
-    if (nullptr == m_pKorFont)
-        assert(0);
     return S_OK;
 }
 
@@ -137,13 +132,13 @@ HRESULT CWindow_Map::Render()
     ImVec2 vDataControlPos = ImVec2(vPannelSize.x, vPannelSize.y * 3);
     ImVec2 vLightControlPos = ImVec2(vPannelSize.x, vPannelSize.y * 4);
 
-    ImGui::PushFont(m_pKorFont);
+    CImGui_Manager::Get_Instance()->Push_KorFont();
 
     if (FAILED(__super::Begin()))
         return E_FAIL;
 
     ImGui::Text("MapTool");
-    On_ToolTip(u8"맵 툴을 거치는 모든 설정들은 맵툴로 저장이 됨\n로드시에도 한번에 불러옴");
+    CImGui_Manager::Get_Instance()->On_ToolTip(u8"맵 툴을 거치는 모든 설정들은 맵툴로 저장이 됨\n로드시에도 한번에 불러옴", u8"필독");
     //파일 컨트롤
     Func_FileControl();
 
@@ -168,7 +163,7 @@ HRESULT CWindow_Map::Render()
     //조건 필요.. 
 
     ImGui::Checkbox(u8"조명배치 ", &m_bLightControl);
-    On_ToolTip(u8"체크시 조명배치 툴 켜짐");
+    CImGui_Manager::Get_Instance()->On_ToolTip(u8"체크시 조명배치 툴 켜짐");
     if (m_bLightControl)
     {
         if (-1 == m_iLightPadding)
@@ -177,7 +172,7 @@ HRESULT CWindow_Map::Render()
     }
     __super::End();
 
-    ImGui::PopFont();
+    CImGui_Manager::Get_Instance()->Pop_Font();
     return S_OK;
 }
 
@@ -382,7 +377,7 @@ static _float fIncreaseScale = 1.0f;
 #pragma region 라이트 컨트롤함수
 void CWindow_Map::Func_LightControl()
 {
-    On_ToolTip(u8"== 사용법 ==\n1. 추가버튼 클릭\n2. 리스트박스에서 선택되었는지 확인\n3. 입맛대로 변경");
+    CImGui_Manager::Get_Instance()->On_ToolTip(u8"== 사용법 ==\n1. 추가버튼 클릭\n2. 리스트박스에서 선택되었는지 확인\n3. 입맛대로 변경",u8"도움말");
 
     if (ImGui::BeginListBox("##LightListBox"))
     {
@@ -445,7 +440,7 @@ void CWindow_Map::Func_LightControl()
     if (ImGui::CollapsingHeader(u8"기본정보", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
         ImGui::Text("Light Tag");
-        On_ToolTip(u8"툴 내 확인용 --> 크게 신경쓸 필요X");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"툴 내 확인용 --> 크게 신경쓸 필요X");
         char szTagName[MAXCHAR] = "";
         if (m_iCurSelectLight >= 0 && m_iCurSelectLight < _int(m_LightDescs.size()))
         {
@@ -501,7 +496,7 @@ void CWindow_Map::Func_LightControl()
         {
 
             ImGui::Text(u8"랜덤범위");
-            On_ToolTip(u8"깜박임에 영향");
+            CImGui_Manager::Get_Instance()->On_ToolTip(u8"깜박임에 영향");
             if (0.f >= LightRandomRange)
             {
                 LightRandomRange = 0.f;
@@ -1284,6 +1279,7 @@ void CWindow_Map::Func_TerrainControl()
         else
             m_ePickingType = PICK_TERRAINVERT;
     }
+
     ImGui::Spacing();
 
     if (PICK_TERRAINTEX != m_ePickingType)
@@ -1304,16 +1300,16 @@ void CWindow_Map::Func_TerrainControl()
     }
     ImGui::Spacing();
 
-    ImGui::Text("CurPickedIndex(Ready - Only)");
+    ImGui::Text(u8"현재 픽킹된 인덱스(Ready - Only)");
     ImGui::InputInt3("##CurPickedIndex", (int*)&m_i3PickedIndex, ImGuiInputTextFlags_ReadOnly);
     ImGui::Spacing();
-    ImGui::Text("CurPickedWorldPos(Ready - Only)");
+    ImGui::Text(u8"현재 피킹된 월드좌표(Ready - Only)");
     ImGui::InputFloat4("##CurPickedWorld", (float*)&get<PICK_OUTPOS>(m_OutDatas), "%.2f", ImGuiInputTextFlags_ReadOnly);
     ImGui::Spacing();
-    ImGui::Text("CurPickedLocalPos(Ready - Only)");
+    ImGui::Text(u8"현재 피킹된 터레인의 로컬좌표(Ready - Only)");
     ImGui::InputFloat4("##CurPickedLocal",  (float*)&get<PICK_OUTLOCALPOS>(m_OutDatas), "%.2f", ImGuiInputTextFlags_ReadOnly);
     ImGui::Spacing();
-    ImGui::Text("CurPickedNormal(Ready - Only)");
+    ImGui::Text(u8"현재 피킹된 정점의 노멀(Ready - Only)");
     ImGui::InputFloat4("##CurPickedNormal",  (float*)&get<PICK_OUTNORM>(m_OutDatas), "%.2f", ImGuiInputTextFlags_ReadOnly);
     ImGui::Spacing();
 
@@ -1382,8 +1378,6 @@ void CWindow_Map::Change_TileTexture()
         VertsList.clear();
         m_pCurTerrain->Update_Vertices();
         m_pCurTerrain->Update_Texture(m_iSourIndex, m_iDestIndex, m_iBGIndex);
-        //m_pCurTerrain->Update_Texture(m_iDestIndex);
-
     }
 
 }
@@ -1440,10 +1434,6 @@ void CWindow_Map::Edit_TerrainTex()
             }
             ImGui::EndCombo();
         }
-        //if (ImGui::SliderFloat("##BGRate", &m_vTileTypeFlag.x, 0.f, 1.f, "%.4f"))
-        //{
-        //    m_vTileTypeFlag.Normalize();
-        //}
         ImGui::Spacing();
         ImGui::Text("Select SourTex");
         if (ImGui::BeginCombo("##SourCombo", m_curSelectSourTextureName.c_str()))
@@ -1484,10 +1474,6 @@ void CWindow_Map::Edit_TerrainTex()
             }
             ImGui::EndCombo();
         }
-        //if (ImGui::SliderFloat("##DestRate", &m_vTileTypeFlag.z, 0.f, 1.f, "%.4f"))
-        //{
-        //    m_vTileTypeFlag.Normalize();
-        //}
         ImGui::Spacing();
         if (ImGui::RadioButton("##Active SourTex", &m_iTileIndexFlag, 0))
         {
@@ -2115,6 +2101,7 @@ _bool CWindow_Map::Calculate_Pick()
 
 
 #pragma region 기타 기능 함수
+
 void CWindow_Map::Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Map&)> func)
 {
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
@@ -2480,17 +2467,6 @@ _bool CWindow_Map::Picked_VertList(list<_uint>& VertsList, _float4 vPosition, _f
     return false;
 }
 
-void CWindow_Map::On_ToolTip(string strContext)
-{
-    ImGui::SameLine();
-    ImGui::TextDisabled("(?)");
-    if (ImGui::IsItemHovered())
-    {
-        ImGui::BeginTooltip();
-        ImGui::Text(strContext.c_str());
-        ImGui::EndTooltip();
-    }
-}
 
 
 #pragma endregion

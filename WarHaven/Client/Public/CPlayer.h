@@ -122,8 +122,8 @@ public:
 	void	Enable_OnStart() { m_bEnableOnStart = true; }
 	void	Set_UnitType(_uint eUnitType) { m_iUnitType = eUnitType; }
 	HRESULT SetUp_Collider();
-
-
+	CAIPersonality* Get_Personality();
+	void Set_Personality(CAIPersonality* pPersonality);
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype();
@@ -214,8 +214,9 @@ private: /*AI 추가용*/
 
 public:
 	void Set_MainPlayerStartPath(_uint iTriggerType);
-	CPath* Get_CurPath() { return m_pCurPath; }
+	CPath* Get_CurPath();
 	_float4 Get_LookDir();
+	_float4 Get_SquadDir();
 private:
 	//어떤 타입인지(적, 샌드백)
 	_uint	m_iUnitType = 0;

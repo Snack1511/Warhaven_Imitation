@@ -11,6 +11,7 @@
 
 #include "Functor.h"
 #include "CStructure_Instance.h"
+#include "ImGui_Manager.h"
 
 CFunc_ObjectControl::CFunc_ObjectControl()
 {
@@ -64,10 +65,10 @@ void CFunc_ObjectControl::Func_Grouping()
             Confirm_Data();
             m_iCurSelectObjecNametIndex = 0;
         }//그룹내에 같은 오브젝트들 삭제
-        m_pMapTool->On_ToolTip(u8"현재 그룹에서 동일 이름을 가진 오브젝트 제거");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"현재 그룹에서 동일 이름을 가진 오브젝트 제거");
 
         ImGui::Checkbox("GroupControl", &m_bGroupControl);
-        m_pMapTool->On_ToolTip(u8"그룹 단위 컨트롤 시 선택");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"그룹 단위 컨트롤 시 선택");
     }
     ImGui::Spacing();
 }
@@ -106,7 +107,7 @@ void CFunc_ObjectControl::Func_FBXList()
         {
             Add_HLOD();
         }
-        m_pMapTool->On_ToolTip(u8"F7입력시 켜고 끌 수 있음");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"F7입력시 켜고 끌 수 있음");
     }
     ImGui::Spacing();
 }
@@ -236,7 +237,7 @@ void CFunc_ObjectControl::Func_ObjectList()
         {
             strFromeGroup = szFromGroup;
         }
-        m_pMapTool->On_ToolTip(u8"복사할 원본 그룹");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"복사할 원본 그룹");
 
         ImGui::Text("To : ");
         ImGui::SameLine();
@@ -244,7 +245,7 @@ void CFunc_ObjectControl::Func_ObjectList()
         {
             strToGroup = szToGroup;
         }
-        m_pMapTool->On_ToolTip(u8"복사할 목표 그룹");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"복사할 목표 그룹");
 
         if (ImGui::Button("Clone"))
         {
@@ -254,8 +255,8 @@ void CFunc_ObjectControl::Func_ObjectList()
     ImGui::Spacing(); 
     if (ImGui::CollapsingHeader(u8"그룹단위 컨트롤"))
     {
-        m_pMapTool->On_ToolTip(u8"앵커위치를 무조건 설정해 줘야함\n앵커를 기준으로 모든 정보가 변경");
-        m_pMapTool->On_ToolTip(u8"== 사용법 ==\n1. 앵커 위치 설정\n2. 정보 변경\n3. Update 버튼 클릭");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"앵커위치를 무조건 설정해 줘야함\n앵커를 기준으로 모든 정보가 변경",u8"필독", false);
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"== 사용법 ==\n1. 앵커 위치 설정\n2. 정보 변경\n3. Update 버튼 클릭", u8"도움말", false);
         string strPreviewData = "";
         if (m_GroupingInfo.empty())
         {
@@ -336,7 +337,7 @@ void CFunc_ObjectControl::Func_ObjectList()
         static _float ImGuiGroupMoveDragSpeed = 0.01f;
         if (ImGui::CollapsingHeader("Group Move"))
         {
-            m_pMapTool->On_ToolTip(u8"모든 오브젝트들이 앵커를 부모로 삼아 이동");
+            CImGui_Manager::Get_Instance()->On_ToolTip(u8"모든 오브젝트들이 앵커를 부모로 삼아 이동");
             ImGui::Text("MoveValue : ");
             ImGui::SameLine();
             ImGui::SliderFloat("##ImGuiGroupMoveDragSpeed", &ImGuiGroupMoveDragSpeed, 0.01f, 50.f, "%.2f");
@@ -373,7 +374,7 @@ void CFunc_ObjectControl::Func_ObjectList()
         static _float ImGuiGroupRotateDragSpeed = 0.01f;
         if (ImGui::CollapsingHeader("Group Rotate"))
         {
-            m_pMapTool->On_ToolTip(u8"모든 오브젝트들이 앵커를 부모로 삼아 공전");
+            CImGui_Manager::Get_Instance()->On_ToolTip(u8"모든 오브젝트들이 앵커를 부모로 삼아 공전");
             ImGui::Text("RotateValue : ");
             ImGui::SameLine();
             ImGui::SliderFloat("##ImGuiGroupRotateDragSpeed", &ImGuiGroupRotateDragSpeed, 0.01f, 50.f, "%.2f");
@@ -477,7 +478,7 @@ void CFunc_ObjectControl::Func_ObjectList()
         {
             Update_GroupObject();
         }
-        m_pMapTool->On_ToolTip(u8"모든 정보가 변경되었다면 해당 버튼을 눌러 모든 오브젝트한태 적용");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"모든 정보가 변경되었다면 해당 버튼을 눌러 모든 오브젝트한태 적용");
         //Confirm()
     }
     ImGui::Spacing();
@@ -538,7 +539,7 @@ void CFunc_ObjectControl::Func_SelectedObject_NameBase()
                 m_iCurSelectObjecNametIndex = 0;
             }
         }//같은 이름의 모든 오브젝트 삭제
-        m_pMapTool->On_ToolTip(u8"전체 그룹에서 동일 이름을 가진 오브젝트 제거");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"전체 그룹에서 동일 이름을 가진 오브젝트 제거");
         ImGui::Spacing();
 
         if (ImGui::Button(u8"병합"))
@@ -551,7 +552,7 @@ void CFunc_ObjectControl::Func_SelectedObject_NameBase()
             Merge_Object(strSelectObjectName);
             Confirm_Data();
         }
-        m_pMapTool->On_ToolTip(u8"같은 이름의 오브젝트들 병합");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"같은 이름의 오브젝트들 병합");
         ImGui::SameLine();
         if (ImGui::Button(u8"분할"))
         {
@@ -563,19 +564,19 @@ void CFunc_ObjectControl::Func_SelectedObject_NameBase()
             Split_Object(strSelectObjectName);
             Confirm_Data();
         }
-        m_pMapTool->On_ToolTip(u8"병합된 오브젝트와 같은 이름의 오브젝트들로 분할");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"병합된 오브젝트와 같은 이름의 오브젝트들로 분할");
 
         if (ImGui::Button(u8"전체 병합"))
         {
             Merge_All();
         }
         ImGui::SameLine();
-        m_pMapTool->On_ToolTip(u8"모든 오브젝트들을 이름별로 묶어서 병합");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"모든 오브젝트들을 이름별로 묶어서 병합");
         if (ImGui::Button(u8"전체 분할"))
         {
             Split_All();
         }
-        m_pMapTool->On_ToolTip(u8"병합된 오브젝트들을 이름별로 분할");
+        CImGui_Manager::Get_Instance()->On_ToolTip(u8"병합된 오브젝트들을 이름별로 분할");
         ImGui::Spacing();
     }
 
@@ -648,7 +649,7 @@ void CFunc_ObjectControl::Func_ObjectControl()
     }
     ImGui::Spacing();
     Show_ControlInfo("MODE : SCALING", "MODE : ROTATE", "MODE : MOVE");
-    m_pMapTool->On_ToolTip(u8"Z : Move\nX :Rotate\nC : Scaling");
+    CImGui_Manager::Get_Instance()->On_ToolTip(u8"Z : Move\nX :Rotate\nC : Scaling", u8"조작 키", false);
     ImGui::Spacing();
 
     if (ImGui::Button("Confirm"))
@@ -656,13 +657,13 @@ void CFunc_ObjectControl::Func_ObjectControl()
         m_pMapTool->Change_CurPickMode(CWindow_Map::PICK_NONE);
         Confirm_Data();
     }
-    m_pMapTool->On_ToolTip(u8"클릭시 선택해제");
+    CImGui_Manager::Get_Instance()->On_ToolTip(u8"클릭시 선택해제");
     ImGui::Spacing();
     if (ImGui::Button("Clone"))
     {
         Clone_SamePosition();
     }
-    m_pMapTool->On_ToolTip(u8"클릭시 해당 위치에 복사");
+    CImGui_Manager::Get_Instance()->On_ToolTip(u8"클릭시 해당 위치에 복사");
     ImGui::Spacing();
 
     if (ImGui::CollapsingHeader("Object Matrix(Read-Only)", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))

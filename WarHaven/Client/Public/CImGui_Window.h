@@ -21,9 +21,10 @@ protected:
 	virtual ~CImGui_Window();
 
 public:
-	void			Set_Enable(_bool bEnable) { m_bEnable = bEnable; }
+	void			Set_Enable(_bool bEnable);
 	_bool			Is_Enable() { return m_bEnable; }
-
+	virtual void	On_Enable() {}
+	virtual void	On_Disable() {}
 public:
 	virtual HRESULT	Initialize() PURE;
 	virtual void	Tick() PURE;

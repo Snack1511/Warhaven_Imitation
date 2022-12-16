@@ -103,7 +103,7 @@ public:
 public:
     void Ready_Controller();
     void    Set_NewPath(CPath* pPath);
-
+    void    Set_Personality(CAIPersonality* pPersonality);
 public:
     CAIPersonality* Get_Personality() { return m_pPersonality; }
     CPlayer* Get_OwnerPlayer() { return m_pOwnerPlayer; }

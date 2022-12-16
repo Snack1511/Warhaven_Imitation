@@ -2821,6 +2821,9 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile">
       <UniqueIdentifier>{1aaa6b96-3866-40f8-b9fd-09b3c145c597}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\05. ImGui_Manager\ImGui_Window\10. Window_AI">
+      <UniqueIdentifier>{5c7dbdc3-7ce2-42b2-a538-7b2f0c8ed5e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5040,6 +5043,9 @@
     <ClInclude Include="..\public\CProjectile.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CWindow_AI.h">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\10. Window_AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -7239,6 +7245,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CProjectile.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWindow_AI.cpp">
+      <Filter>02. Design\05. ImGui_Manager\ImGui_Window\10. Window_AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
