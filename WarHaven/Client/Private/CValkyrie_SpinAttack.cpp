@@ -62,6 +62,8 @@ HRESULT CValkyrie_SpinAttack::Initialize()
 
 	Add_KeyFrame(12, 0);
 	Add_KeyFrame(39, 1);
+	Add_KeyFrame(38, 222);
+	Add_KeyFrame(40, 333);
 
 	return S_OK;
 }
@@ -134,6 +136,13 @@ void CValkyrie_SpinAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 
 		m_bAttackTrigger = false;
 		pOwner->Enable_GroggyCollider(false);
+		break;
+
+	case 222:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+		break;
+	case 333:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
 		break;
 
 	default:

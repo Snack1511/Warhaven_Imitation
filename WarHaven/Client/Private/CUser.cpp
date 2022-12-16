@@ -227,10 +227,14 @@ void CUser::Turn_HeroGaugeFire(_bool bTurnOn)
 	{
 		ENABLE_GAMEOBJECT(m_pFire);
 		m_pFire->Trun_UIAnimation(tAniminfo);
-		ENABLE_GAMEOBJECT(m_pUVFire);
 	}
 	else
 		DISABLE_GAMEOBJECT(m_pFire);
+}
+
+void CUser::Turn_AbleHeroFire()
+{
+	ENABLE_GAMEOBJECT(m_pUVFire); //화신 가능 UV미는 불꽃 이미지
 }
 
 CUI_Wrapper* CUser::Get_HUD(_uint eHUD)

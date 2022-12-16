@@ -92,6 +92,7 @@ public:
 	void Turn_BloodOverLay(_float fHpRatio);
 	void SetUp_HeroGaugeFire();
 	void Turn_HeroGaugeFire(_bool bTurnOn);
+	void Turn_AbleHeroFire();
 
 public:
 	CUI_Wrapper* Get_HUD(_uint eHUD);

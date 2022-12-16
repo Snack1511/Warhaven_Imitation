@@ -1102,6 +1102,7 @@ void CPlayer::On_AbleHero()
 	{
 		CUser::Get_Instance()->Set_HeroPort(0);
 		CUser::Get_Instance()->Turn_HeroGaugeFire(true);
+		CUser::Get_Instance()->Turn_AbleHeroFire();
 		CUser::Get_Instance()->SetActive_AbleHeroText(true);
 	}
 }

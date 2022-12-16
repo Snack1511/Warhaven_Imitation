@@ -673,6 +673,11 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Fall_Particle"), "Fall_Particle")))
 		return E_FAIL;
 
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"ShieldCharge"), "ShieldCharge")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"ShieldWall"), "ShieldWall")))
+		return E_FAIL;
+
 	/*Hit effect*/
 		/*slash*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSpark"), "HitSpark")))

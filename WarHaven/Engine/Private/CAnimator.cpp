@@ -279,6 +279,7 @@ void CAnimator::Tick()
 			if (m_pCycleAnimation->Get_AnimDivideType() == ANIM_DIVIDE::eBODYLOWER)
 			{
 				bBlend = m_bOnBlend = true;
+
 				CATCH_NULLANIM(m_pActionAnimation, string("pActionAnimation Is Null"));
 				if (!m_pActionAnimation->Update_Matrices(bBlend))
 					m_pActionAnimation = nullptr;
@@ -291,8 +292,13 @@ void CAnimator::Tick()
 			{
 				CATCH_NULLANIM(m_pActionAnimation, string("pActionAnimation Is Null"));
 				if (!m_pActionAnimation->Update_Matrices(bBlend))
+				{
+					//여기서 m_bOnBlend가 true인 상태로 넘어가서 문제생김
+					//Update_Matrices 인자로 들어가는 bBlend가 맞는지,
+					//else문이 빠진건지,
+					//m_bOnBlend가 그대로 가야 하는건지 확인점
 					m_pActionAnimation = nullptr;
-
+				}
 				if (m_bOnBlend)
 				{
 					m_bOnBlend = false;
@@ -314,7 +320,7 @@ void CAnimator::Tick()
 	catch (string Msg)
 	{
 		Make_Dump(string("CAnimator_Log"), Msg);
-		assert(0);
+		//assert(0);
 		m_pCycleAnimation->Update_Matrices(bBlend);
 	}
 }

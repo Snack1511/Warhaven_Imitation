@@ -48,7 +48,8 @@ HRESULT CPaladin_ShieldWall_Begin::Initialize()
 
 	Add_KeyFrame(30, 1);
 	Add_KeyFrame(35, 2);
-
+	//Add_KeyFrame(, 222);
+	
 
 	return S_OK;
 }
@@ -123,6 +124,8 @@ void CPaladin_ShieldWall_Begin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnim
 	{
 	case 1:
 		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
+		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ShieldWall_0"), pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+
 		break;
 	case 2:
 		pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
