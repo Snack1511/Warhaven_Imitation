@@ -17,6 +17,7 @@
 #include "CAnimWeapon.h"
 
 #include "CProjectile.h"
+#include "CDefaultArrow.h"
 
 CUnit_Archer::CUnit_Archer()
 {
@@ -230,7 +231,28 @@ void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 void CUnit_Archer::Create_DefaultArrow()
 {
+	if (m_pCurArrow) 
+		DISABLE_GAMEOBJECT(m_pCurArrow);
 
+	CGameObject* pGameObject = nullptr;
+
+	if (m_mapProjectilePool[HASHCODE(CDefaultArrow)].empty())
+	{
+		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CDefaultArrow));
+		//없으면 새로 집어넣음
+		pGameObject->Initialize();
+		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+		static_cast<CProjectile*>(pGameObject)->Reset(this);
+	}
+	else
+	{
+		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CDefaultArrow)].front();
+		pEffect->Reset(this);
+		m_mapProjectilePool[HASHCODE(CDefaultArrow)].pop_front();
+		pGameObject = pEffect;
+	}
+
+	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
 }
 
 void CUnit_Archer::Change_ArrowPhase(_uint iPhase)
@@ -243,9 +265,16 @@ void CUnit_Archer::Change_ArrowPhase(_uint iPhase)
 
 void CUnit_Archer::Shoot_Arrow()
 {
-
 	if (!m_pCurArrow)
 		return;
+
+	m_pCurArrow->On_ShootProjectile();
+	m_pCurArrow = nullptr;
+}
+
+void CUnit_Archer::Collect_Arrow(_hashcode _hcCode, CProjectile* pEffect)
+{
+	m_mapProjectilePool[_hcCode].push_back(pEffect);
 }
 
 HRESULT CUnit_Archer::Initialize_Prototype()
@@ -329,6 +358,11 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 	m_pAnimWeapon->Initialize();
 
 
+	if (!GAMEINSTANCE->Clone_GameObject(HASHCODE(CDefaultArrow)))
+	{
+		if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CDefaultArrow::Create(), HASHCODE(CDefaultArrow))))
+			return E_FAIL;
+	}
 
 
 

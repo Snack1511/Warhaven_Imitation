@@ -34,6 +34,8 @@ public:
 	void			Change_ArrowPhase(_uint iPhase);
 	void			Shoot_Arrow();
 
+public:
+	void	Collect_Arrow(_hashcode _hcCode, CProjectile* pEffect);
 
 public:
 	// CGameObject을(를) 통해 상속됨
@@ -46,6 +48,7 @@ public:
 	virtual void My_LateTick() override;
 
 private:
+	map<_hashcode, list<CProjectile*>>	m_mapProjectilePool;
 	CProjectile* m_pCurArrow = nullptr;
 
 

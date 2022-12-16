@@ -18,6 +18,8 @@
 
 #include "CMesh_Particle.h"
 
+#include "CDefaultArrow.h"
+
 IMPLEMENT_SINGLETON(CEffects_Factory);
 
 CEffects_Factory::CEffects_Factory()

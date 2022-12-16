@@ -1,5 +1,6 @@
 #pragma once
-#include "CEffect.h"
+#include "Client_Defines.h"
+#include "GameObject.h"
 
 BEGIN(Engine)
 class CHierarchyNode;
@@ -8,7 +9,7 @@ END
 BEGIN(Client)
 class CUnit;
 class CProjectile abstract
-	: public CEffect
+	: public CGameObject
 {
 protected:
 	CProjectile();
@@ -20,13 +21,14 @@ public:
 	virtual void	Projectile_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
 
 public:
-	virtual void		Reset(CGameObject* pGameObject) override;
+	void		Reset(CGameObject* pGameObject);
 
 
 public:
-	virtual HRESULT	Initialize_Protoype();
+	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize();
 	virtual HRESULT	Start();
+
 
 public:
 	enum ePROJECTILE_PHASE { eSTART, eLOOP, eSHOOT, eHIT, eEND };

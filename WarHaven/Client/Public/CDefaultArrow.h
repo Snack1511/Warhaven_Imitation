@@ -7,14 +7,17 @@ class CDefaultArrow
 	: public CProjectile
 {
 	DECLARE_PROTOTYPE(CDefaultArrow);
-	DECLARE_GAMEOBJECT(CDefaultArrow);
 
 private:
 	CDefaultArrow();
 	virtual ~CDefaultArrow();
 
 public:
-	virtual HRESULT	Initialize_Protoype() override;
+	static CDefaultArrow* Create();
+
+public:
+	virtual HRESULT	Initialize_Prototype() override;
+	virtual void	OnDisable() override;
 
 
 };

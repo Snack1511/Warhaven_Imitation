@@ -16,6 +16,8 @@
 
 #include "CAnimWeapon.h"
 
+#include "CUnit_Archer.h"
+
 
 CArcher_Shoot::CArcher_Shoot()
 {
@@ -161,6 +163,9 @@ void CArcher_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 	pOwner->Get_Status().fRunSpeed = 4.f;
 
+	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
+	
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -179,6 +184,7 @@ STATE_TYPE CArcher_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CArcher_Shoot::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
+	static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
 
 	__super::Exit(pOwner, pAnimator);
 }

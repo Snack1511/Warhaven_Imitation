@@ -8,6 +8,8 @@
 
 #include "CColorController.h"
 
+#include "CUnit_Archer.h"
+
 CProjectile::CProjectile()
 {
 }
@@ -46,10 +48,10 @@ void CProjectile::Reset(CGameObject* pGameObject)
 	
 }
 
-HRESULT CProjectile::Initialize_Protoype()
+HRESULT CProjectile::Initialize_Prototype()
 {
 	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXMODEL,
-		VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
+		VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements);
 	pShader->Initialize();
 	Add_Component(pShader);
 
@@ -69,8 +71,6 @@ HRESULT CProjectile::Initialize_Protoype()
 
 	Add_Component(pCController);
 	
-
-
 	return S_OK;
 }
 
@@ -81,6 +81,8 @@ HRESULT CProjectile::Initialize()
 
 HRESULT CProjectile::Start()
 {
+	__super::Start();
+
 	CallBack_CollisionEnter += bind(&CProjectile::Projectile_CollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 	CallBack_CollisionStay += bind(&CProjectile::Projectile_CollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 	CallBack_CollisionExit += bind(&CProjectile::Projectile_CollisionExit, this, placeholders::_1, placeholders::_2, placeholders::_3);
@@ -90,6 +92,7 @@ HRESULT CProjectile::Start()
 
     return S_OK;
 }
+
 
 void CProjectile::On_ShootProjectile()
 {
@@ -138,17 +141,20 @@ HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 	_float4x4 matIdentity;
 	matIdentity.Identity();
 
-	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, wstrModelFilePath,
-		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(90.0f)) * XMMatrixRotationX(XMConvertToRadians(90.0f))
+	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, wstrModelFilePath,
+		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(0.0f)) * XMMatrixRotationX(XMConvertToRadians(0.0f))
 	);
-	pModel->Add_Model(wstrModelFilePath, 1);
+
+	if (!pModel)
+		return E_FAIL;
+
 	pModel->Initialize();
 	Add_Component(pModel);
 	pModel->Set_ShaderFlag(SH_LIGHT_BLOOM);
-	pModel->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
+	pModel->Set_ShaderPassToAll(VTXMODEL_PASS_NORMALMAPPING);
 
 	
-
+	return S_OK;
 
 }
 

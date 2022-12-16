@@ -66,7 +66,9 @@ CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFileP
 
 	if (FAILED(pInstance->SetUp_Model(eType, wstrModelFilePath, TransformMatrix, 0)))
 	{
-		Call_MsgBox(L"Failed to SetUp_Model : CModel");
+		wstring wstrFilePath = L"Failed to SetUp_Model : CModel / ";
+		wstrFilePath += wstrModelFilePath;
+		Call_MsgBox(wstrFilePath.c_str());
 		SAFE_DELETE(pInstance);
 		return nullptr;
 	}
@@ -89,14 +91,19 @@ CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFileP
 
 	if (FAILED(pInstance->SetUp_InstancingModel(eType, wstrModelFilePath, wstrInstanceFilePath, TransformMatrix, 0)))
 	{
-		Call_MsgBox(L"Failed to SetUp_Model : CModel");
+		wstring wstrFilePath = L"Failed to SetUp_InstancingModel : CModel / ";
+		wstrFilePath += wstrModelFilePath;
+		Call_MsgBox(wstrFilePath.c_str());
 		SAFE_DELETE(pInstance);
 		return nullptr;
 	}
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		Call_MsgBox(L"Failed to Initialize_Prototype : CModel");
+
+		wstring wstrFilePath = L"Failed to Initialize_Prototype : CModel / ";
+		wstrFilePath += wstrModelFilePath;
+		Call_MsgBox(wstrFilePath.c_str());
 		SAFE_DELETE(pInstance);
 	}
 
@@ -112,14 +119,20 @@ CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFileP
 
 	if (FAILED(pInstance->SetUp_InstancingModel(eType, wstrModelFilePath, iNumInstance, TransformMatrix, 0)))
 	{
-		Call_MsgBox(L"Failed to SetUp_Model : CModel");
+
+		wstring wstrFilePath = L"Failed to SetUp_Model : CModel / ";
+		wstrFilePath += wstrModelFilePath;
+		Call_MsgBox(wstrFilePath.c_str());
 		SAFE_DELETE(pInstance);
 		return nullptr;
 	}
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		Call_MsgBox(L"Failed to Initialize_Prototype : CModel");
+
+		wstring wstrFilePath = L"Failed to Initialize_Prototype : CModel / ";
+		wstrFilePath += wstrModelFilePath;
+		Call_MsgBox(wstrFilePath.c_str());
 		SAFE_DELETE(pInstance);
 	}
 
@@ -145,14 +158,18 @@ CModel* CModel::Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFileP
 
 	if (FAILED(pInstance->SetUp_InstancingModel(eType, wstrModelFilePath, iNumInstance, pInstanceData, TransformMatrix, 0)))
 	{
-		Call_MsgBox(L"Failed to SetUp_Model : CModel");
+		wstring wstrFilePath = L"Failed to SetUp_InstancingModel : CModel / ";
+		wstrFilePath += wstrModelFilePath;
+		Call_MsgBox(wstrFilePath.c_str());
 		SAFE_DELETE(pInstance);
 		return nullptr;
 	}
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		Call_MsgBox(L"Failed to Initialize_Prototype : CModel");
+		wstring wstrFilePath = L"Failed to Initialize_Prototype : CModel / ";
+		wstrFilePath += wstrModelFilePath;
+		Call_MsgBox(wstrFilePath.c_str());
 		SAFE_DELETE(pInstance);
 	}
 

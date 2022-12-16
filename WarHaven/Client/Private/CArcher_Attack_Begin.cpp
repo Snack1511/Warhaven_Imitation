@@ -13,7 +13,8 @@
 #include "CColorController.h"
 
 #include "CCamera_Follow.h"
-
+#include "CUnit_Archer.h"
+#include "CDefaultArrow.h"
 #include "CAnimWeapon.h"
 
 
@@ -201,6 +202,7 @@ void CArcher_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     //Exit에선 무조건 남겨놔야함
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
+	static_cast<CUnit_Archer*>(pOwner)->Change_ArrowPhase(CProjectile::ePROJECTILE_PHASE::eLOOP);
 
     pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
