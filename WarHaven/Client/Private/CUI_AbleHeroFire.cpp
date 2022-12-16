@@ -17,17 +17,16 @@ HRESULT CUI_AbleHeroFire::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 
-	SetTexture(TEXT("../Bin/Resources/Textures/Effects/WarHaven/Texture/T_Pattern_45.dds")); //diff
+	SetTexture(TEXT("../Bin/Resources/Textures/Effects/WarHaven/Texture/T_Pattern_16.dds")); //diff
 	SetTexture(TEXT("../Bin/Resources/Textures/Effects/WarHaven/Texture/T_Glow_08.dds")); //noise ->mask
 	
 	GET_COMPONENT(CUI_Renderer)->Set_Pass(VTXTEX_PASS_UVFIRE);
 	m_fUVSpeedX = 0.f;
 	m_fUVSpeedY = 2.f;
-	m_vColor = RGB(0, 0, 0);
-	m_vPlusColor = RGB(255, 80, 30);
+	m_vPlusColor = RGB(0, -80, -100);
 
 	m_fScale = 200.f;
-	m_fTargetScale = 75.f;
+	m_fTargetScale = 70.f;
 
 	Set_Pos(0.f, -100.f);
 	Set_Scale(m_fScale, m_fScale);
@@ -96,7 +95,7 @@ void CUI_AbleHeroFire::My_Tick()
 	if (m_fTargetScale < m_fScale)
 	{
 		m_fTimeAcc += fDT(0);
-		m_fScale = CEasing_Utillity::ElasticEaseOut(m_fScale, m_fTargetScale, m_fTimeAcc, 0.5f);
+		m_fScale = CEasing_Utillity::Linear(m_fScale, m_fTargetScale, m_fTimeAcc, 1.f);
 	}
 	else
 	{

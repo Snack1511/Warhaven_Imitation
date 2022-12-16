@@ -166,16 +166,16 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	}
 
 
-	CDestructible* pDestructible = CDestructible::Create(
+	/*CDestructible* pDestructible = CDestructible::Create(
 		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
 		L"FishBarrelParticle",
 		L"WoodenHitParticle",
 		1
 	);
-	_float4 vPos = _float4(10, 0, 10);
+	_float4 vPos = _float4(10, 0, 15);
 	pDestructible->Set_Position(vPos);
 	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
-	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));*/
 	
 
 	SetUp_DefaultLight_BootCamp();
@@ -959,7 +959,7 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 
 HRESULT CGameSystem::On_EnterStage()
 {
-
+	     
 
 	/* 모든 플레이어들 유닛 일단 꺼놓기 */
 	//for (auto& elem : m_mapAllPlayers)

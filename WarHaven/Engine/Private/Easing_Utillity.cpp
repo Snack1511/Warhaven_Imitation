@@ -300,6 +300,11 @@ _float4 CEasing_Utillity::BounceEaseOut(_float4 vStartPoint, _float4 vTargetPoin
 		return _float4((vTargetPoint - vStartPoint) * (7.5625f * (fPassedTime -= (2.625f / 2.75f)) * fPassedTime + .984375f) + vStartPoint);
 }
 
+_float CEasing_Utillity::Linear(_float fStartVlue, _float fTargetValue, _float fPassedTime, _float fTotalTime)
+{
+	return ((fTargetValue - fStartVlue) * (fPassedTime / fTotalTime) + fStartVlue);
+}
+
 _float CEasing_Utillity::SinIn(_float vStartValue, _float vTargetValue, _float fPassedTime, _float fTotalTime)
 {
 	return ((vTargetValue - vStartValue) * -cosf(fPassedTime / fTotalTime * (PI / 2)) + (vTargetValue - vStartValue) + vStartValue);
