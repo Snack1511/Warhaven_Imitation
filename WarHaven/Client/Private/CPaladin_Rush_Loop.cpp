@@ -9,6 +9,7 @@
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "CColorController.h"
+#include "CRectEffects.h"
 
 
 CPaladin_Rush_Loop::CPaladin_Rush_Loop()
@@ -48,6 +49,8 @@ HRESULT CPaladin_Rush_Loop::Initialize()
 
 	m_vecAdjState.push_back(STATE_RUSH_END_PALADIN);
 
+	Add_KeyFrame(29, 222);
+	
 	return S_OK;
 }
 
@@ -62,6 +65,13 @@ void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
 	Physics_Setting(m_fMaxSpeed, pOwner);
+
+	m_RushEffects.clear();
+
+	m_RushEffects = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"ShieldCharge",
+		pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+
+	pOwner->Create_Light(m_RushEffects.front(), _float4(0.f, 0.f, 0.f), 3.f, 0.f, 0.07f, 0.f, 0.07f, RGB(80, 80, 80), true);
 
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -88,6 +98,13 @@ STATE_TYPE CPaladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CPaladin_Rush_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	for (auto& elem : m_RushEffects)
+	{
+		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+	}
+	m_RushEffects.clear();
+	
+
 	pOwner->Enable_GuardCollider(false);
 	pOwner->Enable_GroggyCollider(false);
 }
@@ -95,4 +112,9 @@ void CPaladin_Rush_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CPaladin_Rush_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 	return STATE_END;
+}
+
+void CPaladin_Rush_Loop::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+
 }

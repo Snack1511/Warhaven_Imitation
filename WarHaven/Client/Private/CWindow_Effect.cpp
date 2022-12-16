@@ -35,6 +35,7 @@ CWindow_Effect::CWindow_Effect()
 
 CWindow_Effect::~CWindow_Effect()
 {
+	m_vecEffects.clear();
 }
 
 CWindow_Effect* CWindow_Effect::Create()
