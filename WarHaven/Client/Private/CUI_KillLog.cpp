@@ -96,6 +96,11 @@ void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
 	GET_COMPONENT_FROM(m_pDeadByIcon, CTexture)->Set_CurTextureIndex(IsDeadByHeadshot);
 }
 
+void CUI_KillLog::Set_KillLogType(_uint iKillType)
+{
+	m_eKillType = (UI_Type)iKillType;
+}
+
 void CUI_KillLog::Enable_KillUI(_uint eKillType)
 {
 	m_eKillType = (UI_Type)eKillType;
@@ -118,19 +123,24 @@ void CUI_KillLog::Enable_KillUI(_uint eKillType)
 
 void CUI_KillLog::MoveUp_KillLog()
 {
-	for (int i = 0; i < Text_End; ++i)
+	if (m_eKillType == UT_Log)
 	{
-		_float4 vPos = m_pKillText[i]->Get_Pos();
-		vPos.y += 50.f;
-		m_pKillText[i]->DoMove(vPos, 0.5f, 0);
+		for (int i = 0; i < Kill_End; ++i)
+		{
+			_float4 vPos = m_pDeadByIcon->Get_Pos();
+			vPos.y += 50.f;
+			m_pDeadByIcon->DoMove(vPos, 0.5f, 0);
+		}
 	}
-
-	for (int i = 0; i < Kill_End; ++i)
+	else
 	{
-		_float4 vPos = m_pDeadByIcon->Get_Pos();
-		vPos.y += 50.f;
-		m_pDeadByIcon->DoMove(vPos, 0.5f, 0);
-	}
+		for (int i = 0; i < Text_End; ++i)
+		{
+			_float4 vPos = m_pKillText[i]->Get_Pos();
+			vPos.y += 50.f;
+			m_pKillText[i]->DoMove(vPos, 0.5f, 0);
+		}
+	}	
 }
 
 void CUI_KillLog::My_Tick()
@@ -196,19 +206,21 @@ void CUI_KillLog::My_Tick()
 void CUI_KillLog::OnEnable()
 {
 	__super::OnEnable();
-	
-	cout << m_eKillType << endl;
 
 	switch (m_eKillType)
 	{
 	case Client::CUI_KillLog::UT_Kill:
 		m_pKillText[Text_Name]->Set_PosY(m_fKillTextPosY);
-		cout << "처치한 이름 : " << m_pKillText[Text_Name]->Get_PosY() << endl;
+
+		Enable_KillUI(m_eKillType);
+
 		break;
 
 	case Client::CUI_KillLog::UT_Log:
 		m_pDeadByIcon->Set_PosY(m_fKillLogPosY);
-		cout << "데드아이콘 : " << m_pDeadByIcon->Get_PosY() << endl;
+
+		Enable_KillUI(m_eKillType);
+
 		break;
 	}
 }

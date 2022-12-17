@@ -23,10 +23,9 @@ public:
 
 public:
 	void Set_LogName(CPlayer* attacker, CPlayer* victim);
+	void Set_KillLogType(_uint iKillType);
 
 	void Enable_KillUI(_uint eKillType);
-
-	void Set_LogCount(_uint iLogCount);
 
 	void MoveUp_KillLog();
 

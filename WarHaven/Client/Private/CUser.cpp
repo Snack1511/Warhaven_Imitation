@@ -553,8 +553,11 @@ void CUser::Enable_KillUI(_uint iType)
 	m_iPrvKillLogIdx = m_iCurKillLogIdx;
 	m_iCurKillLogIdx = m_iKillLogIdx;
 
+	m_iPrvLogType = m_iCurLogType;
+	m_iCurLogType = iType;
+
+	m_pKillLog[m_iKillLogIdx]->Set_KillLogType(iType);
 	m_pKillLog[m_iKillLogIdx]->SetActive(true);
-	m_pKillLog[m_iKillLogIdx]->Enable_KillUI(iType);
 
 	m_iKillLogIdx++;
 	if (m_iKillLogIdx > 4)
@@ -562,7 +565,10 @@ void CUser::Enable_KillUI(_uint iType)
 		m_iKillLogIdx = 0;
 	}
 
-	if (m_iPrvKillLogIdx == m_iKillLogIdx)
+	if (m_iPrvKillLogIdx == m_iCurKillLogIdx)
+		return;
+
+	if (m_iPrvLogType != m_iCurLogType)
 		return;
 
 	m_pKillLog[m_iPrvKillLogIdx]->MoveUp_KillLog();

@@ -192,6 +192,9 @@ private:
 	int m_iPrvKillLogIdx = -1;
 	int m_iCurKillLogIdx = 0;
 
+	int m_iPrvLogType = -1;
+	int m_iCurLogType = 0;
+
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;
 };
