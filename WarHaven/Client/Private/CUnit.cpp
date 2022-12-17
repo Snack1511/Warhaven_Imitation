@@ -457,12 +457,13 @@ void CUnit::Enter_State(STATE_TYPE eType, void* pData)
 
 	SAFE_DELETE(m_pCurState);
 
+	STATE_TYPE ePrevType = m_eCurState;
+	m_eCurState = eType;
 
 
 	m_pCurState = CState_Manager::Get_Instance()->Get_State(eType)->Clone();
 
-	m_pCurState->Enter(this, m_pAnimator, m_eCurState, pData);
-	m_eCurState = eType;
+	m_pCurState->Enter(this, m_pAnimator, ePrevType, pData);
 
 }
 
