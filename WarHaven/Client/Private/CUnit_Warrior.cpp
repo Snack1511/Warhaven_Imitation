@@ -185,9 +185,6 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
-
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-
 		break;
 
 		
@@ -200,6 +197,34 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 	}
 
 		
+}
+
+void CUnit_Warrior::SetUp_ReserveState(UNIT_TYPE eUnitType)
+{
+	switch (eUnitType)
+	{
+	case Client::CUnit::UNIT_TYPE::ePlayer:
+
+		m_eDefaultState = STATE_IDLE_PLAYER_R;
+		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
+
+		break;
+
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
+
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+
+		break;
+
+
+
+	case Client::CUnit::UNIT_TYPE::eUNIT_TYPE_END:
+		break;
+
+	default:
+		break;
+	}
 }
 
 void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
@@ -232,7 +257,7 @@ void CUnit_Warrior::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 
 	case eBehaviorType::eResurrect:
 		//상태변경
-
+		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
 
 	case eBehaviorType::eChange:

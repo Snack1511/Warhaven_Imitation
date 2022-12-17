@@ -88,7 +88,8 @@ STATE_TYPE CSlide_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
     if (m_iAnimIndex == 34 && pAnimator->Is_CurAnimFinished())
     {
-   //     return STATE_WALK_PLAYER;
+        STATE_TYPE eDeafultState = pOwner->Get_DefaultState();
+        return eDeafultState;
     }
         
 

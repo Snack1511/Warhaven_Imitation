@@ -53,7 +53,9 @@ void CRun_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
-    
+	if (ePrevType == STATE_ATTACK_BEGIN_ARCHER)
+		int a = 0;
+
 	if (ePrevType == STATE_RUN_ARCHER_R || ePrevType == STATE_RUN_ARCHER_L)
 	{
 		m_fInterPolationTime = 0.f;

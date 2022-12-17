@@ -450,6 +450,34 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 	}
 }
 
+void	CState_Blendable::BlendableTick_Loop(CUnit* pOwner, CAnimator* pAnimator)
+{
+
+	if (pOwner->Is_MainPlayer())
+	{
+		if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
+		{
+			if (m_eAnimLeftorRight == ANIM_BASE_L)
+			{
+				Move_Cycle(pAnimator, m_iWalkLeftAnimIndex, m_eAnimLeftorRight);
+			}
+			else
+			{
+				Move_Cycle(pAnimator, m_iWalkRightAnimIndex, m_eAnimLeftorRight);
+			}
+
+		}
+		else
+		{
+			pAnimator->Set_CurAnimIndex(m_eIdleState, m_iAnimIndex, ANIM_DIVIDE::eBODYLOWER);
+			pAnimator->Set_AnimSpeed(m_eIdleState, m_iAnimIndex, m_fMaxSpeed);
+			pAnimator->Set_InterpolationTime(m_eIdleState, m_iAnimIndex, m_fInterPolationTime);
+		}
+
+		Follow_MouseLook_Turn(pOwner);
+	}
+}
+
 void CState_Blendable::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 {
 	m_eEnum = eEnum;

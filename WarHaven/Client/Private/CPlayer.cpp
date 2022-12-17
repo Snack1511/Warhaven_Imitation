@@ -194,7 +194,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_pAllUnitClass[ENGINEER] = CUnit_WarHammer::Create(tModelData[ENGINEER]);
 	m_pAllUnitClass[FIONA] = CUnit_Valkyrie::Create(tModelData[FIONA]);
 	//m_pAllUnitClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
-//	m_pAllUnitClass[ARCHER] = CUnit_Archer::Create(tModelData[ARCHER]);
+	m_pAllUnitClass[ARCHER] = CUnit_Archer::Create(tModelData[ARCHER]);
 	m_pAllUnitClass[PALADIN] = CUnit_Paladin::Create(tModelData[PALADIN]);
 	//m_pAllUnitClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
 
@@ -229,17 +229,12 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 
 	}
 
-	/* 변신 후 예약된 클래스 */
-	m_iReserveStateDefault[WARRIOR] = STATE_IDLE_PLAYER_R;
-//	m_iReserveStateDefault[ARCHER] = STATE_IDLE_ARCHER_R;
-	m_iReserveStateDefault[ENGINEER] = STATE_IDLE_WARHAMMER_R;
-	m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
-	m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
 
 
 	/* 변신 Index */
 	m_iChangeHeroAnimIndex[WARRIOR] = 62;
 	m_iChangeHeroAnimIndex[PALADIN] = 41;
+	m_iChangeHeroAnimIndex[ARCHER] = 53;
 	m_iChangeHeroAnimIndex[ENGINEER] = 62;
 }
 
@@ -414,12 +409,31 @@ void CPlayer::SetUp_ReserveState()
 
 	CUnit::UNIT_TYPE m_eType = CUnit::UNIT_TYPE(m_iUnitType);
 
+	for (int i = 0; i < CLASS_END; ++i)
+	{
+		if (m_pAllUnitClass[i] == nullptr)
+			continue;
+
+		m_pAllUnitClass[i]->SetUp_ReserveState(m_eType);
+	}
+
 
 	switch (m_eType)
 	{
+
+	case CUnit::UNIT_TYPE::ePlayer:
+
+		m_iReserveStateDefault[WARRIOR] = STATE_IDLE_PLAYER_R;
+		m_iReserveStateDefault[ARCHER] = STATE_IDLE_ARCHER_R;
+		m_iReserveStateDefault[ENGINEER] = STATE_IDLE_WARHAMMER_R;
+		m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
+		m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
+		break;
+
 	case CUnit::UNIT_TYPE::eAI_Default:
 
 		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
+		//	m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
 		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEFAULT_FIONA_R;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
@@ -443,6 +457,7 @@ void CPlayer::SetUp_UnitColliders(_bool bBlueTeam)
 		m_pAllUnitClass[i]->SetUp_Colliders(bBlueTeam);
 	}
 
+	SetUp_ReserveState();
 }
 
 
@@ -542,7 +557,7 @@ HRESULT CPlayer::Initialize_Prototype()
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
-		//m_eCurrentClass = ENGINEER;
+		m_eCurrentClass = ARCHER;
 		break;
 	case Client::PALADIN:
 		//Set_CustomWeapon_Paladin(eWeaponEnum);

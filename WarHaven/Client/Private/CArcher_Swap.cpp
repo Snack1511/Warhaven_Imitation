@@ -166,21 +166,17 @@ HRESULT CArcher_Swap::Initialize()
 
 void CArcher_Swap::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	// pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Swap::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	// pOwner->Set_BounceState(STATE_BOUNCE_ARCHER_R);
 
-	if (pAnimator->Is_CurAnimFinished())
-		return STATE_IDLE_ARCHER_R;
+	_float fKeyFrame = 30;
 
 	if (KEY(LBUTTON, HOLD))
 	{
-		if(pAnimator->Get_CurAnimFrame() > 30)
+		if (pAnimator->Get_CurAnimFrame() > fKeyFrame)
 			return STATE_ATTACK_BEGIN_POISION_ARCHER;
 	}
 

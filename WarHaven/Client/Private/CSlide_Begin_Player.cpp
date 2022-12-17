@@ -44,17 +44,12 @@ HRESULT CSlide_Begin_Player::Initialize()
     m_fAnimSpeed = 2.5f;
 
 
-    m_vecAdjState.push_back(STATE_SLIDE_LOOP_PLAYER);
-
-
     return S_OK;
 }
 
 void CSlide_Begin_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
-
 }
 
 STATE_TYPE CSlide_Begin_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -69,12 +64,6 @@ void CSlide_Begin_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CSlide_Begin_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-    if (KEY(J, TAP))
-    {
-        return m_eStateType;
-    }
-
     return STATE_END;
 }
 

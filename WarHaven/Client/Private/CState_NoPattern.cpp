@@ -35,9 +35,9 @@ HRESULT CState_NoPattern::Initialize()
 
 void CState_NoPattern::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    Call_MsgBox(L"Check_Condition_Error");
+    m_ePreStateType = ePrevType;
     assert(0);
-
-    ePrevType = m_ePreStateType;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

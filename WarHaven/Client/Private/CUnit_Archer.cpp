@@ -133,7 +133,7 @@ void CUnit_Archer::SetUp_Colliders(_bool bPlayer)
 
 }
 
-void	CUnit_Archer::SetUp_HitStates(UNIT_TYPE eUnitType)
+void CUnit_Archer::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
 
 	switch (eUnitType)
@@ -146,6 +146,8 @@ void	CUnit_Archer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eStingHitState = STATE_STINGHIT_ARCHER;
 		m_tHitType.eFlyState = STATE_FLYHIT_ARCHER;
 		m_tHitType.eBounce = STATE_BOUNCE_ARCHER;
+
+
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_TG:
@@ -163,6 +165,39 @@ void	CUnit_Archer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		break;
 	}
 		
+}
+
+void CUnit_Archer::SetUp_ReserveState(UNIT_TYPE eUnitType)
+{
+	switch (eUnitType)
+	{
+	case Client::CUnit::UNIT_TYPE::ePlayer:
+
+
+		m_eSprintEndState = STATE_SPRINT_END_ARCHER;
+
+		break;
+
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
+
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+
+		break;
+
+
+
+	case Client::CUnit::UNIT_TYPE::eUNIT_TYPE_END:
+		break;
+
+	default:
+		break;
+	}
+}
+
+void CUnit_Archer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
+{
+
 }
 
 void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)

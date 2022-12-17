@@ -49,7 +49,7 @@ HRESULT CArcher_Attack_Begin::Initialize()
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
     m_fAnimSpeed = 2.3f;
-    m_iStateChangeKeyFrame = 0;
+    m_iStateChangeKeyFrame = 999;
     
 	//m_vecAdjState.push_back(STATE_IDLE_ARCHER_L);
 	//m_vecAdjState.push_back(STATE_RUN_ARCHER_L);
@@ -81,25 +81,23 @@ HRESULT CArcher_Attack_Begin::Initialize()
 	m_iJumpFallRightIndex = 10;
 	m_iJumpFallLeftIndex = 0;
 
+	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 28;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 29;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 30;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 31;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 32;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 33;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 34;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 35;
 
-	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 17;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 18;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 19;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 20;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 34;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 35;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 36;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 21;
-	
-	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 26;
-	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 27;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 28;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 29;
+	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 38;
+	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 41;
 	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 42;
 	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 43;
 	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 44;
-	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 30;
-
+	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 45;
 
 	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 38;
 	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 39;
@@ -143,14 +141,14 @@ HRESULT CArcher_Attack_Begin::Initialize()
 	m_eLandState = STATE_ATTACK_AIMING_ARCHER;
 	m_eFallState = STATE_ATTACK_AIMING_ARCHER;
 	m_eRunState = STATE_ATTACK_AIMING_ARCHER;
-	m_eIdleState = STATE_ATTACK_AIMING_ARCHER;
-	m_eBounceState = STATE_BOUNCE_ARCHER;
+	m_eIdleState = STATE_IDLE_ARCHER_R;
+	m_eBounceState = STATE_ATTACK_AIMING_ARCHER;
 
 	//m_eWalkState = STATE_WALK_ARCHER_R;
 	//m_eJumpState = STATE_JUMP_ARCHER_R;
 	//m_eLandState = STATE_JUMP_LAND_ARCHER_R;
 	//m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	//m_eRunState = STATE_RUN_ARCHER_R;
+	//m_eRunState = STATE_WALK_ARCHER_R;
 	//m_eIdleState = STATE_IDLE_ARCHER_R;
 	//m_eBounceState = STATE_WALK_ARCHER_R;
 
@@ -169,10 +167,18 @@ HRESULT CArcher_Attack_Begin::Initialize()
 
 void CArcher_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+
+	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
+
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, m_fInterPolationTime, m_fAnimSpeed);
 
+	if (ePrevType != STATE_IDLE_ARCHER_R)
+	{
+		int a = 0;
+	}
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -181,7 +187,7 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	// pOwner->Set_BounceState(STATE_BOUNCE_ARCHER_R);
 
-	if (pAnimator->Is_CurAnimFinished())
+	if (pAnimator->Get_CurAnimFrame() > 100)
 		return STATE_ATTACK_AIMING_ARCHER;
 
 	if (KEY(LBUTTON, AWAY))
@@ -195,7 +201,9 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(15.f));
 
-    return __super::Tick(pOwner, pAnimator);
+	BlendableTick_Loop(pOwner, pAnimator);
+
+    return CState::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)

@@ -1,11 +1,6 @@
 #include "stdafx.h"
 #include "CState_Manager.h"
 
-#include "CRevive_Player.h"
-
-#include "CState_Victory.h"
-#include "CState_Defeat.h"
-
 #include "CIdle_Player_R.h"
 #include "CIdle_Player_L.h"
 
@@ -744,7 +739,26 @@
 
 #pragma endregion
 
+#pragma region Error
+
 #include "CState_NoPattern.h"
+
+#pragma endregion
+
+
+#pragma region ETC
+
+#include "CRevive_Player.h"
+#include "CState_Victory.h"
+#include "CState_Defeat.h"
+#include "CState_Common_Revive_AI.h"
+
+#include "CState_Common_Slide_Begin_AI.h"
+#include "CState_Common_Slide_Loop_AI.h"
+#include "CState_Common_Slide_End_AI.h"
+
+#pragma endregion
+
 
 IMPLEMENT_SINGLETON(CState_Manager);
 
@@ -767,6 +781,12 @@ HRESULT CState_Manager::Initialize()
 
 	m_arrStates[STATE_VICTORY] = CState_Victory::Create();
 	m_arrStates[STATE_DEFEAT] = CState_Defeat::Create();
+	m_arrStates[AI_STATE_COMMON_REVIVE_AI] = CState_Common_Revive_AI::Create();
+
+	m_arrStates[AI_STATE_COMMON_SLIDEBEGIN_AI] = CState_Common_Slide_Begin_AI::Create();
+	m_arrStates[AI_STATE_COMMON_SLIDELOOP_AI] = CState_Common_Slide_Loop_AI::Create();
+	m_arrStates[AI_STATE_COMMON_SLIDEEND_AI] = CState_Common_Slide_End_AI::Create();
+
 
 
 	Spear_State();

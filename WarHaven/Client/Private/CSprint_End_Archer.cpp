@@ -88,15 +88,10 @@ void CSprint_End_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 STATE_TYPE CSprint_End_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pOwner->Is_Air())
-        return STATE_SPRINT_JUMPFALL_ARCHER;
-
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 
 
-
     return __super::Tick(pOwner, pAnimator);
-
 }
 
 void CSprint_End_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)

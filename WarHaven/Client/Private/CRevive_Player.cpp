@@ -119,7 +119,8 @@ STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
     case Client::CRevive_Player::PHASE_END:
         if (pAnimator->Is_CurAnimFinished())
         {
-            return STATE_IDLE_PLAYER_R;
+            STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+            return eDefaultState;
         }
         break;
     default:

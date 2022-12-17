@@ -2683,9 +2683,6 @@
     <Filter Include="02. Design\06. State_Manager\States\05. ETC\Victory">
       <UniqueIdentifier>{55fab814-cb46-4c01-8aeb-c0c17e727427}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Defeat">
-      <UniqueIdentifier>{a011a0c2-7b06-4645-9ca5-5da21321cb62}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire\CUI_AbleHero">
       <UniqueIdentifier>{2fedf2a8-03f6-40db-83be-55665aad9601}</UniqueIdentifier>
     </Filter>
@@ -2958,6 +2955,51 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\02. PurpleArrow">
       <UniqueIdentifier>{25dde520-c4a3-46dd-a95b-59655b11eca1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\03. WarHammer\12. Revive">
+      <UniqueIdentifier>{c9b4be9f-3c05-4291-b9ce-b75c356afe3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\04. Valkyrie\11. Revive">
+      <UniqueIdentifier>{85cad648-b2d7-402c-b48f-dd71c76dd3b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\06. Paladin\12. Revive">
+      <UniqueIdentifier>{9df54791-7d12-4a51-921e-0c01d45891c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\12. Revive">
+      <UniqueIdentifier>{78d3fd62-3637-4813-acd0-6e76d9611d0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Slide">
+      <UniqueIdentifier>{c265116e-72be-4553-8f91-1c6bf768888a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Slide\01. Begin">
+      <UniqueIdentifier>{aab8b043-c0e1-42df-a39e-3f37142dd720}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Slide\02. Loop">
+      <UniqueIdentifier>{03b7c511-ae8c-4b89-bb54-86f79e37b31d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Slide\03. End">
+      <UniqueIdentifier>{8e789c71-861d-44bc-96af-3c03412078b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Defeat">
+      <UniqueIdentifier>{a011a0c2-7b06-4645-9ca5-5da21321cb62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Revive">
+      <UniqueIdentifier>{20837387-b356-4f9c-9ad0-beca3301c616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\06. Revive">
+      <UniqueIdentifier>{51ca07b4-b890-4089-a203-f8d029c37430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide">
+      <UniqueIdentifier>{7a76e9c0-168b-4959-ad1a-aaa2df58f2e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\01. Begin">
+      <UniqueIdentifier>{344f8904-9b0b-48db-955d-4c4dddd5f0b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\02. Loop">
+      <UniqueIdentifier>{bc924fae-bd51-4767-bcee-3c5ef95a7620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\03. End">
+      <UniqueIdentifier>{c04437f6-7be0-4324-b04f-532e9d0eb839}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -3281,15 +3323,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\CSprint_Jump_Fall_Player.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\07. Sprint\01. Jump\02. Fall</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CSlide_Begin_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\06. Sliding\01. Begin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CSlide_Loop_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\06. Sliding\02. Loop</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CSlide_End_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\06. Sliding\03. End</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CJump_Player_Land_R.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\05. Jump\03. Land\01. Right</Filter>
@@ -5100,9 +5133,6 @@
     <ClInclude Include="..\public\CFadeDark.h">
       <Filter>03. Instances\02. GameObject\01. UI\FadeDark</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CRevive_Player.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CPaladin_Attack_HorizontalMiddle.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle</Filter>
     </ClInclude>
@@ -5336,6 +5366,30 @@
     </ClInclude>
     <ClInclude Include="..\public\CDefaultArrow.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\01. DefaultArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSlide_Begin_Player.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Slide\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSlide_Loop_Player.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Slide\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSlide_End_Player.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Slide\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CRevive_Player.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Revive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Revive_AI.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\06. Revive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Slide_End_AI.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Slide_Begin_AI.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Slide_Loop_AI.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\02. Loop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -5646,15 +5700,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CSprint_Jump_Fall_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\07. Sprint\01. Jump\02. Fall</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CSlide_Loop_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\06. Sliding\02. Loop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CSlide_Begin_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\06. Sliding\01. Begin</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CSlide_End_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\06. Sliding\03. End</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CJump_Player_Land_R.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\05. Jump\03. Land\01. Right</Filter>
@@ -7462,9 +7507,6 @@
     <ClCompile Include="..\private\CFadeDark.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\FadeDark</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CRevive_Player.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\01. Warrior\12. Revive</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CPaladin_Attack_HorizontalMiddle.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\06. Paladin\04. Attack\01. Default\01. HorizontalMiddle</Filter>
     </ClCompile>
@@ -7695,6 +7737,30 @@
     </ClCompile>
     <ClCompile Include="..\private\CDefaultArrow.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\01. DefaultArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSlide_Begin_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Slide\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSlide_Loop_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Slide\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSlide_End_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Slide\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CRevive_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Revive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Revive_AI.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\06. Revive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Slide_End_AI.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Slide_Loop_AI.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Slide_Begin_AI.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\01. Begin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

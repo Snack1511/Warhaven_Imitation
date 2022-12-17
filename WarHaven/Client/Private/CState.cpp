@@ -94,13 +94,6 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
     {
         eType = CState_Manager::Get_Instance()->Get_State(elem)->Check_Condition(pOwner, pAnimator);
 
-		// 여기에 걸리면 elem 의 Check_Condition 의 마지막에 return 을 안줬다는 소리.
-		if (eType == NO_PATTERN)
-		{
-			Call_MsgBox(L"Check_Condition_Error");
-			assert(0);
-		}
-
         if (eType != STATE_END)
             break;
     }

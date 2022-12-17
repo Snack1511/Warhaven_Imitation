@@ -53,6 +53,7 @@ public:
 		_float fSprintJumpSpeed = 10.F;
 		_float fSprintSpeed = 7.f;
 		_float fJumpPower = 4.5f;
+		_float fStoreSpeed = 0.f; // 저장할 스피트 값 입력
 
 
 		_float	fAttackDamage = 50.f;
@@ -172,7 +173,8 @@ public:
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState* Get_CurStateP() { return m_pCurState; }
 
-	STATE_TYPE Get_DefaultState() { return m_eDefaultState; }
+	const STATE_TYPE& Get_DefaultState() { return m_eDefaultState; }
+	const STATE_TYPE& Get_SprintEndState() { return m_eSprintEndState; }
 
 	SKILL_TRIGGER& Get_SkillTrigger() { 
 		return m_tSkillTrigger; 
@@ -273,6 +275,9 @@ public:
 	public:
 		CPlayer* Get_RevivalPlayer() { return m_pAdjRevivalPlayer; }
 
+public:
+	virtual void SetUp_ReserveState(UNIT_TYPE eUnitType) {};
+
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
 	CPlayer* m_pAdjRevivalPlayer = nullptr;
@@ -302,6 +307,7 @@ protected:
 	STATE_TYPE		m_eReserveState = STATE_END;
 
 	STATE_TYPE		m_eDefaultState = STATE_END;
+	STATE_TYPE		m_eSprintEndState = STATE_END;
 
 	CState* m_pCurState = nullptr;
 
@@ -379,6 +385,7 @@ protected:
 
 public:
 	void	Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
+	void	Set_AnimWeaponFrame(_uint iChangeFrame);
 
 
 
