@@ -52,6 +52,8 @@ HRESULT CState_Common_FlyHit_Warrior::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 3.f;
 
+    m_iStateChangeKeyFrame = 99;
+
 
     return S_OK;
 }

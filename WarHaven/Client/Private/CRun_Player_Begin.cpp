@@ -23,6 +23,7 @@ HRESULT CRun_Player_Begin::Initialize()
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
+	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
 	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 
 

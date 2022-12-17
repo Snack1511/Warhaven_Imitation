@@ -10,6 +10,7 @@
 #include "CSword_Effect.h"
 #include "CColorController.h"
 
+#include "CRectEffects.h"
 
 CState_Combat_SkillQ_Paladin_Rush_Loop::CState_Combat_SkillQ_Paladin_Rush_Loop()
 {
@@ -55,6 +56,13 @@ HRESULT CState_Combat_SkillQ_Paladin_Rush_Loop::Initialize()
 
 void CState_Combat_SkillQ_Paladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	if (ePrevType == AI_STATE_COMMON_GUARDHIT_PALADIN)
+	{
+		m_bAttackTrigger = true;
+		__super::Enter(pOwner, pAnimator, ePrevType, pData);
+		return;
+	}
+
 	pOwner->On_Use(CUnit::SKILL3);
 
 	m_iDirectionRand = STATE_DIRECTION_N;
@@ -93,6 +101,13 @@ void CState_Combat_SkillQ_Paladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAn
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
+	m_RushEffects.clear();
+
+	m_RushEffects = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"ShieldCharge",
+		pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+
+	pOwner->Create_Light(m_RushEffects.front(), _float4(0.f, 0.f, 0.f), 3.f, 0.f, 0.07f, 0.f, 0.07f, RGB(80, 80, 80), true);
+
 
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
@@ -104,6 +119,9 @@ void CState_Combat_SkillQ_Paladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAn
 
 STATE_TYPE CState_Combat_SkillQ_Paladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (m_bAttackTrigger)
+		return AI_STATE_COMBAT_RUSH_END_PALADIN;
+
 	m_fTimeAcc += fDT(0);
 
 	if (m_fTimeAcc > 2.5f)
@@ -116,6 +134,12 @@ STATE_TYPE CState_Combat_SkillQ_Paladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator
 
 void CState_Combat_SkillQ_Paladin_Rush_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	for (auto& elem : m_RushEffects)
+	{
+		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+	}
+	m_RushEffects.clear();
+
 	pOwner->Enable_GuardCollider(false);
 	pOwner->Enable_GroggyCollider(false);
 }

@@ -96,7 +96,6 @@ void CIdle_Paladin_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 
 STATE_TYPE CIdle_Paladin_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
     return __super::Tick(pOwner, pAnimator);
 }
 

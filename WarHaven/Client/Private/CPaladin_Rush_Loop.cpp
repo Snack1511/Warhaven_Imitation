@@ -54,8 +54,15 @@ HRESULT CPaladin_Rush_Loop::Initialize()
 	return S_OK;
 }
 
-void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	if (ePrevType == STATE_GUARDHIT_PALADIN)
+	{
+		m_bAttackTrigger = true;
+		__super::Enter(pOwner, pAnimator, ePrevType, pData);
+		return;
+	}
+
 	pOwner->Enable_GuardCollider(true);
 	pOwner->Enable_GroggyCollider(true);
 
@@ -108,6 +115,9 @@ void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 STATE_TYPE CPaladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (m_bAttackTrigger)
+		return STATE_RUSH_END_PALADIN;
+
 	m_fTimeAcc += fDT(0);
 
 	if (m_fTimeAcc > 5.f)

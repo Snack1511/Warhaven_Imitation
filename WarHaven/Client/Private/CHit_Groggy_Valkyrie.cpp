@@ -75,6 +75,9 @@ void CHit_Groggy_Valkyrie::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CHit_Groggy_Valkyrie::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_VALKYRIE_R;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

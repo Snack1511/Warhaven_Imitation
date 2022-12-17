@@ -72,6 +72,9 @@ void CJump_Archer_Land_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 STATE_TYPE CJump_Archer_Land_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_ARCHER_L;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

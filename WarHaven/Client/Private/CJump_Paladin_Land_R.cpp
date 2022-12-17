@@ -85,6 +85,9 @@ void CJump_Paladin_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CJump_Paladin_Land_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_PALADIN_R;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

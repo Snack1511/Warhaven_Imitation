@@ -448,7 +448,7 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 1.1f;
+	tDesc.fHeight = 0.7f;
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.15f;
 	// Ä® ºÙÀÏ »À

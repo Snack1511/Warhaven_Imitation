@@ -127,10 +127,6 @@ HRESULT CPaladin_Attack_HorizontalMiddle::Initialize()
 
 void CPaladin_Attack_HorizontalMiddle::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HammerFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HammerFlare_1"), pOwner,
-		pOwner->Get_Transform()->Get_World(WORLD_POS)); //test
-
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

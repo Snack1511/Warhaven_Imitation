@@ -75,6 +75,9 @@ void CHit_Groggy_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 STATE_TYPE CHit_Groggy_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_ARCHER_R;
+
     return __super::Tick(pOwner, pAnimator);
 }
 
