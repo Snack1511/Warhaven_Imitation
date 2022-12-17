@@ -80,7 +80,8 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	if (!pOtherObj)
 	{
 		//낙뎀
-		On_FallDamage(vHitPos.x);
+		On_FallDamage(vHitPos.w);
+		On_Sliding(vHitPos);
 	}
 
 	/* 충돌한 대상이 Unit이 아니면 Return */
@@ -382,6 +383,29 @@ void CUnit::On_FallDamage(_float fFallPower)
 	{
 		CUser::Get_Instance()->Turn_BloodOverLay(m_tUnitStatus.fHP / m_tUnitStatus.fMaxHP);
 	}
+}
+
+void CUnit::On_Sliding(_float4 vHitNormal)
+{
+	//if (!m_bIsMainPlayer)
+		return;
+
+	vHitNormal.w = 0.f;
+	
+	/* 1. up과 내적 */
+	
+	_float4 vUp = _float4(0.f, 1.f, 0.f, 0.f);
+	_float fDot = vUp.Dot(vHitNormal);
+
+	//1이면 그냥 땅 0.5면 45도 0이면 벽
+
+	if (fDot > 0.4f && fDot < 0.6f)
+	{
+		Enter_State(STATE_SLIDE_BEGIN_PLAYER);
+	}
+	else if (fDot > 0.9f)
+		Enter_State(STATE_SLIDE_END_PLAYER);
+
 }
 
 void CUnit::On_Attack(CState* pState)

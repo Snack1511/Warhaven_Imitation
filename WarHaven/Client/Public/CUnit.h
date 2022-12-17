@@ -143,6 +143,7 @@ public:
 	_float			Calculate_Damage(_bool bHeadShot, _bool bGuard);
 	virtual _bool	On_PlusHp(_float fHp, CUnit* pOtherUnit, _bool bHeadShot = false, _uint iDmgType = 2);
 	void	On_FallDamage(_float fFallPower);
+	void	On_Sliding(_float4 vHitNormal);
 
 public:
 	_bool		Can_Use(COOL_TYPE eType) { if (eType < COOL_END && m_fCoolAcc[eType] <= 0.f) return true; return false; }

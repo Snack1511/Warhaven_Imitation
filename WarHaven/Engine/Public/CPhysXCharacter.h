@@ -63,6 +63,7 @@ protected:
 	_bool				m_bColGround = false;
 
 protected:
+	_float4			m_vHitNormal;
 	_float			m_fTimeAcc = 0.f;
 	_float			m_fColTime = 0.1f;
 

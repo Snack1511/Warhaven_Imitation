@@ -65,7 +65,7 @@ void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
 		//닿은 곳 노말이랑
 		//010 을 내적
 
-		_float4 vNormal = CUtility_PhysX::To_Vector(hit.worldNormal);
+		_float4 vNormal = m_vHitNormal = CUtility_PhysX::To_Vector(hit.worldNormal);
 		_float4 vUp = _float4(0.f, 1.f, 0.f, 0.f);
 
 		vNormal.Normalize();
@@ -141,7 +141,8 @@ void CPhysXCharacter::Tick()
 		{
 			if (fFallPower < 0.f)
 			{
-				m_pOwner->CallBack_CollisionEnter(nullptr, 0, 0, _float4(fFallPower, 0.f, 0.f));
+				m_vHitNormal.w = fFallPower;
+				m_pOwner->CallBack_CollisionEnter(nullptr, 0, 0, m_vHitNormal);
 			}
 		}
 

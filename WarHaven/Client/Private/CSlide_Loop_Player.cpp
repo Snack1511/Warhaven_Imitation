@@ -8,6 +8,8 @@
 
 #include "CUser.h"
 
+#include "Physics.h"
+
 CSlide_Loop_Player::CSlide_Loop_Player()
 {
 }
@@ -45,7 +47,7 @@ HRESULT CSlide_Loop_Player::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_vecAdjState.push_back(STATE_SLIDE_END_PLAYER);
+    //m_vecAdjState.push_back(STATE_SLIDE_END_PLAYER);
 
 
     return S_OK;
@@ -59,6 +61,9 @@ void CSlide_Loop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
     else
         m_fInterPolationTime = 0.1f;
 
+    pOwner->Get_PhysicsCom()->Set_MaxSpeed(10.f);
+
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
 }
@@ -67,7 +72,7 @@ STATE_TYPE CSlide_Loop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     // 상호작용 해야함.
 
-
+    pOwner->Get_PhysicsCom()->Set_Accel(30.f);
 
 
     return __super::Tick(pOwner, pAnimator);
