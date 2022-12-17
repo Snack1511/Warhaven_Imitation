@@ -5,9 +5,6 @@
 #include "CTeamConnector.h"
 #include "Texture.h"
 
-_uint CUI_KillLog::m_iPrvLogCount = 0;
-_uint CUI_KillLog::m_iCurLogCount = 0;
-
 CUI_KillLog::CUI_KillLog()
 {
 }
@@ -34,6 +31,25 @@ HRESULT CUI_KillLog::Start()
 	__super::Start();
 
 	return S_OK;
+}
+
+
+void CUI_KillLog::Set_OriginPosY()
+{
+	switch (m_eKillType)
+	{
+	case Client::CUI_KillLog::UT_Kill:
+
+		m_pKillText[Text_Name]->Set_PosY(m_fKillTextPosY);
+
+		break;
+
+	case Client::CUI_KillLog::UT_Log:
+
+		m_pDeadByIcon->Set_PosY(m_fKillLogPosY);
+
+		break;
+	}
 }
 
 void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
@@ -99,6 +115,11 @@ void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
 	GET_COMPONENT_FROM(m_pDeadByIcon, CTexture)->Set_CurTextureIndex(IsDeadByHeadshot);
 }
 
+void CUI_KillLog::Set_KillLogType(_uint iKillType)
+{
+	m_eKillType = (UI_Type)iKillType;
+}
+
 void CUI_KillLog::Enable_KillUI(_uint eKillType)
 {
 	m_eKillType = (UI_Type)eKillType;
@@ -107,42 +128,38 @@ void CUI_KillLog::Enable_KillUI(_uint eKillType)
 	{
 	case Client::CUI_KillLog::UT_Kill:
 
-		SetActiv_KillText(true);
+		SetActive_KillText(true);
 
 		break;
 
 	case Client::CUI_KillLog::UT_Log:
 
-		SetActiv_KillLog(true);
+		SetActive_KillLog(true);
 
 		break;
 	}
 }
 
-void CUI_KillLog::Set_LogCount(_uint iLogCount)
+void CUI_KillLog::MoveUp_KillLog()
 {
-	m_iPrvLogCount = m_iCurLogCount;
-	m_iCurLogCount = iLogCount;
-
-	if (iLogCount > 0)
+	if (m_eKillType == UT_Log)
 	{
-		if (m_iPrvLogCount != iLogCount)
+		for (int i = 0; i < Kill_End; ++i)
 		{
-			for (int i = 0; i < Text_End; ++i)
-			{
-				_float4 vPos = m_pKillText[i]->Get_Pos();
-				vPos.y += 50.f;
-				m_pKillText[i]->DoMove(vPos, 0.5f, 0);
-			}
-
-			for (int i = 0; i < Kill_End; ++i)
-			{
-				_float4 vPos = m_pDeadByIcon->Get_Pos();
-				vPos.y += 50.f;
-				m_pDeadByIcon->DoMove(vPos, 0.5f, 0);
-			}
+			_float4 vPos = m_pDeadByIcon->Get_Pos();
+			vPos.y += 50.f;
+			m_pDeadByIcon->DoMove(vPos, 0.5f, 0);
 		}
 	}
+	else
+	{
+		for (int i = 0; i < Text_End; ++i)
+		{
+			_float4 vPos = m_pKillText[i]->Get_Pos();
+			vPos.y += 50.f;
+			m_pKillText[i]->DoMove(vPos, 0.5f, 0);
+		}
+	}	
 }
 
 void CUI_KillLog::My_Tick()
@@ -156,7 +173,7 @@ void CUI_KillLog::My_Tick()
 		_float4 vDeadByPos = m_pKillText[Text_Name]->Get_Pos();
 		m_pKillText[Text_Kill]->Set_PosY(vDeadByPos.y);
 	}
-		break;
+	break;
 
 	case Client::CUI_KillLog::UT_Log:
 	{
@@ -184,12 +201,12 @@ void CUI_KillLog::My_Tick()
 			{
 			case Client::CUI_KillLog::UT_Kill:
 
-				SetActiv_KillText(false);
+				SetActive_KillText(false);
 
 				break;
 			case Client::CUI_KillLog::UT_Log:
 
-				SetActiv_KillLog(false);
+				SetActive_KillLog(false);
 
 				break;
 			}
@@ -209,8 +226,20 @@ void CUI_KillLog::OnEnable()
 {
 	__super::OnEnable();
 
-	m_pDeadByIcon->Set_PosY(m_fKillLogPosY);
-	m_pKillText[Text_Name]->Set_PosY(m_fKillTextPosY);
+	switch (m_eKillType)
+	{
+	case Client::CUI_KillLog::UT_Kill:
+
+		Enable_KillUI(m_eKillType);
+
+		break;
+
+	case Client::CUI_KillLog::UT_Log:
+
+		Enable_KillUI(m_eKillType);
+
+		break;
+	}
 }
 
 void CUI_KillLog::OnDisable()
@@ -220,7 +249,7 @@ void CUI_KillLog::OnDisable()
 	m_bIsDisable = false;
 }
 
-void CUI_KillLog::SetActiv_KillLog(_bool value)
+void CUI_KillLog::SetActive_KillLog(_bool value)
 {
 	for (int i = 0; i < Kill_End; ++i)
 	{
@@ -239,7 +268,7 @@ void CUI_KillLog::SetActiv_KillLog(_bool value)
 	}
 }
 
-void CUI_KillLog::SetActiv_KillText(_bool value)
+void CUI_KillLog::SetActive_KillText(_bool value)
 {
 	for (int i = 0; i < Text_End; ++i)
 	{
@@ -298,9 +327,6 @@ void CUI_KillLog::Init_KillText(wstring Text)
 	_float fBenchmarkPosX = fPosX + fTextHalfSize;
 	_float fAttackerPosX = fBenchmarkPosX + m_fWhitespace;
 
-	cout << fBenchmarkPosX << endl;
-	cout << fAttackerPosX << endl;
-
 	m_pKillText[Text_Kill]->Set_PosX(fAttackerPosX);
 
 	cout << m_pKillText[Text_Name]->Get_PosX() << endl;
@@ -312,6 +338,8 @@ void CUI_KillLog::Create_KillText()
 	for (int i = 0; i < Text_End; ++i)
 	{
 		m_pKillText[i] = CUI_Object::Create();
+
+		m_pKillText[i]->Set_FadeDesc(m_fFadeTime);
 
 		switch (i)
 		{

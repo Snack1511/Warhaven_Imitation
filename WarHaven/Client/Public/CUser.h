@@ -159,7 +159,6 @@ public:		// 알림
 
 public:	// 킬로그
 	void Set_LogName(CPlayer* attacker, CPlayer* victim);
-	void Set_LogCount();
 	void Enable_KillUI(_uint iType);
 
 private:
@@ -186,8 +185,18 @@ private:
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
 
+private:	// KillLog
+	list<CUI_KillLog*> m_pKillLogList;
+
 	CUI_KillLog* m_pKillLog[5];
+
 	_uint m_iKillLogIdx = 0;
+
+	int m_iPrvKillLogIdx = -1;
+	int m_iCurKillLogIdx = 0;
+
+	int m_iPrvLogType = -1;
+	int m_iCurLogType = 0;
 
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;

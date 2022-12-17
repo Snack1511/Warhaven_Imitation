@@ -22,19 +22,21 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	void Set_OriginPosY();
 	void Set_LogName(CPlayer* attacker, CPlayer* victim);
+	void Set_KillLogType(_uint iKillType);
 
 	void Enable_KillUI(_uint eKillType);
 
-	void Set_LogCount(_uint iLogCount);
+	void MoveUp_KillLog();
 
 private:
 	virtual void My_Tick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
-	void SetActiv_KillLog(_bool value);
-	void SetActiv_KillText(_bool value);
+	void SetActive_KillLog(_bool value);
+	void SetActive_KillText(_bool value);
 
 	void Init_VictimText(wstring Text);
 	void Init_AttackerText(wstring Text);
@@ -43,7 +45,7 @@ private:
 private:
 	UI_Type m_eKillType = UI_Type::UT_End;
 
-	_float m_fDisableTime = 20000.f;
+	_float m_fDisableTime = 5.f;
 	_float m_fFadeTime = 0.3f;
 
 	_bool m_bIsDisable = false;
@@ -59,9 +61,6 @@ private:
 	_float m_fTextPt = 10.f;
 	_float m_fIconBlank = 20.f;
 	_float m_fWhitespace = 35.f;
-
-	static _uint m_iPrvLogCount;
-	static _uint m_iCurLogCount;
 
 private:
 	enum KillLog { Kill_Icon, Kill_Name, Kill_End };
