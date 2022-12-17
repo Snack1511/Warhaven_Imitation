@@ -5,9 +5,6 @@
 #include "CTeamConnector.h"
 #include "Texture.h"
 
-_uint CUI_KillLog::m_iPrvLogCount = 0;
-_uint CUI_KillLog::m_iCurLogCount = 0;
-
 CUI_KillLog::CUI_KillLog()
 {
 }
@@ -119,29 +116,20 @@ void CUI_KillLog::Enable_KillUI(_uint eKillType)
 	}
 }
 
-void CUI_KillLog::Set_LogCount(_uint iLogCount)
+void CUI_KillLog::MoveUp_KillLog()
 {
-	m_iPrvLogCount = m_iCurLogCount;
-	m_iCurLogCount = iLogCount;
-
-	if (iLogCount > 0)
+	for (int i = 0; i < Text_End; ++i)
 	{
-		if (m_iPrvLogCount != iLogCount)
-		{
-			for (int i = 0; i < Text_End; ++i)
-			{
-				_float4 vPos = m_pKillText[i]->Get_Pos();
-				vPos.y += 50.f;
-				m_pKillText[i]->DoMove(vPos, 0.5f, 0);
-			}
+		_float4 vPos = m_pKillText[i]->Get_Pos();
+		vPos.y += 50.f;
+		m_pKillText[i]->DoMove(vPos, 0.5f, 0);
+	}
 
-			for (int i = 0; i < Kill_End; ++i)
-			{
-				_float4 vPos = m_pDeadByIcon->Get_Pos();
-				vPos.y += 50.f;
-				m_pDeadByIcon->DoMove(vPos, 0.5f, 0);
-			}
-		}
+	for (int i = 0; i < Kill_End; ++i)
+	{
+		_float4 vPos = m_pDeadByIcon->Get_Pos();
+		vPos.y += 50.f;
+		m_pDeadByIcon->DoMove(vPos, 0.5f, 0);
 	}
 }
 
@@ -156,7 +144,7 @@ void CUI_KillLog::My_Tick()
 		_float4 vDeadByPos = m_pKillText[Text_Name]->Get_Pos();
 		m_pKillText[Text_Kill]->Set_PosY(vDeadByPos.y);
 	}
-		break;
+	break;
 
 	case Client::CUI_KillLog::UT_Log:
 	{
@@ -208,9 +196,21 @@ void CUI_KillLog::My_Tick()
 void CUI_KillLog::OnEnable()
 {
 	__super::OnEnable();
+	
+	cout << m_eKillType << endl;
 
-	m_pDeadByIcon->Set_PosY(m_fKillLogPosY);
-	m_pKillText[Text_Name]->Set_PosY(m_fKillTextPosY);
+	switch (m_eKillType)
+	{
+	case Client::CUI_KillLog::UT_Kill:
+		m_pKillText[Text_Name]->Set_PosY(m_fKillTextPosY);
+		cout << "처치한 이름 : " << m_pKillText[Text_Name]->Get_PosY() << endl;
+		break;
+
+	case Client::CUI_KillLog::UT_Log:
+		m_pDeadByIcon->Set_PosY(m_fKillLogPosY);
+		cout << "데드아이콘 : " << m_pDeadByIcon->Get_PosY() << endl;
+		break;
+	}
 }
 
 void CUI_KillLog::OnDisable()
@@ -298,13 +298,7 @@ void CUI_KillLog::Init_KillText(wstring Text)
 	_float fBenchmarkPosX = fPosX + fTextHalfSize;
 	_float fAttackerPosX = fBenchmarkPosX + m_fWhitespace;
 
-	cout << fBenchmarkPosX << endl;
-	cout << fAttackerPosX << endl;
-
 	m_pKillText[Text_Kill]->Set_PosX(fAttackerPosX);
-
-	cout << m_pKillText[Text_Name]->Get_PosX() << endl;
-	cout << m_pKillText[Text_Kill]->Get_PosX() << endl;
 }
 
 void CUI_KillLog::Create_KillText()

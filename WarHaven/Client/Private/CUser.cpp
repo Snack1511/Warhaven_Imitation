@@ -548,13 +548,11 @@ void CUser::Set_LogName(CPlayer* attacker, CPlayer* victim)
 	m_pKillLog[m_iKillLogIdx]->Set_LogName(attacker, victim);
 }
 
-void CUser::Set_LogCount()
-{
-	m_pKillLog[m_iKillLogIdx]->Set_LogCount(m_iKillLogIdx);
-}
-
 void CUser::Enable_KillUI(_uint iType)
 {
+	m_iPrvKillLogIdx = m_iCurKillLogIdx;
+	m_iCurKillLogIdx = m_iKillLogIdx;
+
 	m_pKillLog[m_iKillLogIdx]->SetActive(true);
 	m_pKillLog[m_iKillLogIdx]->Enable_KillUI(iType);
 
@@ -563,6 +561,11 @@ void CUser::Enable_KillUI(_uint iType)
 	{
 		m_iKillLogIdx = 0;
 	}
+
+	if (m_iPrvKillLogIdx == m_iKillLogIdx)
+		return;
+
+	m_pKillLog[m_iPrvKillLogIdx]->MoveUp_KillLog();
 }
 
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)

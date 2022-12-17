@@ -28,6 +28,8 @@ public:
 
 	void Set_LogCount(_uint iLogCount);
 
+	void MoveUp_KillLog();
+
 private:
 	virtual void My_Tick() override;
 	virtual void OnEnable() override;
@@ -43,7 +45,7 @@ private:
 private:
 	UI_Type m_eKillType = UI_Type::UT_End;
 
-	_float m_fDisableTime = 20000.f;
+	_float m_fDisableTime = 2.f;
 	_float m_fFadeTime = 0.3f;
 
 	_bool m_bIsDisable = false;
@@ -59,9 +61,6 @@ private:
 	_float m_fTextPt = 10.f;
 	_float m_fIconBlank = 20.f;
 	_float m_fWhitespace = 35.f;
-
-	static _uint m_iPrvLogCount;
-	static _uint m_iCurLogCount;
 
 private:
 	enum KillLog { Kill_Icon, Kill_Name, Kill_End };
