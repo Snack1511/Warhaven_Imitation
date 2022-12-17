@@ -953,6 +953,8 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_UVCOLORSELECT;
 			if (ImGui::Selectable("FLARE", &bSelect[VTXRECTINSTANCE_PASS_FLARE]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_FLARE;
+			if (ImGui::Selectable("COLORPOWERDECREASE", &bSelect[VTXRECTINSTANCE_PASS_COLORPOWERDECREASE]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_COLORPOWERDECREASE;
 			
 			
 			pRenderer->Set_Pass(pCurEffect->m_iPassType);

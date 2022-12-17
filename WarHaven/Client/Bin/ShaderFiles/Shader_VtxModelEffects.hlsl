@@ -106,13 +106,13 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 	In.vTexUV.y += g_fUVPlusY;
 	vector vMtrlDiffuse = g_MaskTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vDiffuse.a = vMtrlDiffuse.r;
+	Out.vDiffuse.a = vMtrlDiffuse.a;
 	Out.vDiffuse.a *= g_fAlpha;
 
 	if (Out.vDiffuse.a <= 0.05f)
 		discard;
 
-	Out.vDiffuse.xyz = vColor.xyz;
+	Out.vDiffuse.xyz = vMtrlDiffuse.xyz;
 	Out.vDiffuse.xyz += g_vPlusColor.xyz;
 	Out.vDiffuse.xyz *= g_fColorPower;
 

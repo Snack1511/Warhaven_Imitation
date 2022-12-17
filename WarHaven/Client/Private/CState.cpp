@@ -133,7 +133,7 @@ void CState::Hit_GroundEffect(CUnit* pOwner)
 		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Oxen_smoke_0"), pOwner->Get_HitPos());
 	}
 
-	if (CLASS_TYPE::ENGINEER == pOwner->Get_Status().eClass)
+	else if (CLASS_TYPE::ENGINEER == pOwner->Get_Status().eClass)
 	{
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", pOwner->Get_HitPos());
 	}
