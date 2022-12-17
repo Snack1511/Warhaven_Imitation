@@ -36,7 +36,6 @@ CSquad* CSquad::Create(CTeamConnector* pConnector)
 {
 	CSquad* pSquad = new CSquad;
 	pSquad->m_pMyTeam = pConnector;
-
 	return pSquad;
 }
 

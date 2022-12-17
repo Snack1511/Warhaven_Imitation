@@ -33,6 +33,7 @@ void CWindow_AI::On_Enable()
 {
     m_pTeamConnector[_uint(eTEAM_TYPE::eRED)] = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eRED);
     m_pTeamConnector[_uint(eTEAM_TYPE::eBLUE)] = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE);
+    m_pVecPlayerInfoName = CGameSystem::Get_Instance()->GetPtr_PlayerInfoNames();
 }
 
 HRESULT CWindow_AI::Initialize()
@@ -221,11 +222,11 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
                 string strLeaderName = CFunctor::To_String(pSquadLeader->Get_PlayerName());
                 if (pCurSelectPlayer == pSquadLeader)
                 {
+                    pSquad = SquadValue;
                     bSelectLeader = true;
                 }
                 if (ImGui::Selectable(strLeaderName.c_str(), bSelectLeader))
                 {
-                    pSquad = SquadValue;
                     pCurSelectPlayer = pSquadLeader;
                     m_pCurSelectPlayer = pSquadLeader;
                 }//리더 먼저 출력
@@ -238,12 +239,12 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
                     _bool bSelect = false;
                     if (pCurSelectPlayer == PlayerValue.second)
                     {
+                        pSquad = SquadValue;
                         bSelect = true;
                     }
                     string strPlayerName = CFunctor::To_String(PlayerValue.second->Get_PlayerName());
                     if (ImGui::Selectable(strPlayerName.c_str(), bSelect))
                     {
-                        pSquad = SquadValue;
                         pCurSelectPlayer = PlayerValue.second;
                         m_pCurSelectPlayer = PlayerValue.second;
                     }
@@ -253,16 +254,66 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
         }
         ImGui::EndListBox();
     }
+    string strPreviewName = "";
+    if (nullptr == m_pVecPlayerInfoName)
+        strPreviewName = "N/A";
+    else if (m_pVecPlayerInfoName->empty())
+    {
+        strPreviewName = "N/V";
+        m_iCurPlayerNameIndex = 0;
+    }
+    else if (m_iCurPlayerNameIndex >= _uint(m_pVecPlayerInfoName->size()))
+    {
+        m_iCurPlayerNameIndex = _uint(m_pVecPlayerInfoName->size()) - 1;
+        strPreviewName = u8"";
+        strPreviewName += CFunctor::To_String((*m_pVecPlayerInfoName)[m_iCurPlayerNameIndex]);
+    }
+    else {
+        strPreviewName = u8"";
+        strPreviewName += CFunctor::To_String((*m_pVecPlayerInfoName)[m_iCurPlayerNameIndex]);
+    }
+    if (ImGui::BeginCombo("##SelectPlayerInfoName", strPreviewName.c_str()))
+    {
+        if (nullptr != m_pVecPlayerInfoName) 
+        {
+            for (_uint i = 0; i < _uint(m_pVecPlayerInfoName->size()); ++i)
+            {
+                _bool bSelect = false;
+                if (m_iCurPlayerNameIndex == i)
+                {
+                    bSelect = true;
+                }
+                string strName = u8"";
+                strName += CFunctor::To_String((*m_pVecPlayerInfoName)[i]).c_str();
+                if (ImGui::Selectable(strName.c_str(), bSelect))
+                {
+                    m_iCurPlayerNameIndex = i;
+                }
+            }
+        }
+        ImGui::EndCombo();
+    }
+    wstring strPlayerInfoName = L"";
+    if (nullptr == m_pVecPlayerInfoName 
+        || m_pVecPlayerInfoName->empty() 
+        || m_iCurPlayerNameIndex >= _uint(m_pVecPlayerInfoName->size()))
+    {
+        strPlayerInfoName = L"";
+    }
+    else {
+        strPlayerInfoName = (*m_pVecPlayerInfoName)[m_iCurPlayerNameIndex];
+    }
+
     if (ImGui::Button(u8"분대장 추가"))
     {
-        pCurSelectPlayer = Add_Player(true, pSquad, eTeamType);
+        pCurSelectPlayer = Add_Player(true, strPlayerInfoName, pSquad, eTeamType);
         m_pCurSelectPlayer = pCurSelectPlayer;
 
     }
     ImGui::SameLine();
     if (ImGui::Button(u8"분대원 추가"))
     {
-        pCurSelectPlayer = Add_Player(false, pSquad, eTeamType);
+        pCurSelectPlayer = Add_Player(false, strPlayerInfoName, pSquad, eTeamType);
         m_pCurSelectPlayer = pCurSelectPlayer;
     }
     if (ImGui::Button(u8"삭제"))
@@ -355,7 +406,7 @@ void CWindow_AI::Add_Team(eTEAM_TYPE eTeamType)
     m_pTeamConnector[(_uint)eTeamType] = CTeamConnector::Create(list<CSquad*>(), eTeamType);
 }
 
-CPlayer* CWindow_AI::Add_Player(_bool bLeader, CSquad* pSquad, eTEAM_TYPE eTeamType)
+CPlayer* CWindow_AI::Add_Player(_bool bLeader, wstring strPlayerInfoName, CSquad* pSquad, eTEAM_TYPE eTeamType)
 {
     if (nullptr == m_pTeamConnector[_uint(eTeamType)])
         return nullptr;
@@ -368,9 +419,14 @@ CPlayer* CWindow_AI::Add_Player(_bool bLeader, CSquad* pSquad, eTEAM_TYPE eTeamT
     if (nullptr == pSelectSquad)
         return nullptr;
 
-    CPlayer* pPlayer = nullptr;//플레이어 생성
 
-    pSquad->Add_EmptyPlayer(bLeader, pPlayer);
+    CPlayerInfo* pPlayerInfo = CGameSystem::Get_Instance()->Find_PlayerInfo(Convert_ToHash(strPlayerInfoName));
+    if (nullptr == pPlayerInfo)
+        return nullptr;
+    CPlayer* pPlayer = nullptr;//플레이어 생성
+    pPlayer = pPlayerInfo->Make_Player();
+    pPlayer->Set_Unit_ReserveState(WARRIOR, STATE_IDLE_WARRIOR_R_AI_ENEMY);
+    pSelectSquad->Add_EmptyPlayer(bLeader, pPlayer);
     pPlayer->Get_PlayerInfo()->Set_Squad(pSquad);
     pPlayer->Get_PlayerInfo()->Set_TeamConnector(m_pTeamConnector[_uint(eTeamType)]);
     pPlayer->Get_PlayerInfo()->Set_TeamType(eTeamType);

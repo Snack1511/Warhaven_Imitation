@@ -96,6 +96,7 @@ public:
 
 public:
 	CPlayerInfo* Find_PlayerInfo(_hashcode hcCode);
+	vector<wstring>* GetPtr_PlayerInfoNames() { return &m_vecPlayerInfoNames; }
 	eSTAGE_TYPE m_eCurStageType = eSTAGE_TYPE::eSTAGE_CNT;
 private:
 	CPositionTable* m_pPositionTable = nullptr;
@@ -110,7 +111,7 @@ private:
 private:
 	/* 모든 플레이어 정보를 미리 만들어놓고 그 정보를 토대로 Player 생성하는 방식 */
 	map<_hashcode, CPlayerInfo*>	m_mapAllPlayers;
-
+	vector<wstring>					m_vecPlayerInfoNames;
 private:
 	/* 트리거 (거점)을 map으로 들고 있기. */
 	map<_hashcode, CTrigger*>	m_mapAllTriggers;

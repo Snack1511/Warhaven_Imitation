@@ -31,7 +31,9 @@ CTeamConnector* CTeamConnector::Create(list<CSquad*> SquadList)
 
 CTeamConnector* CTeamConnector::Create(list<CSquad*> SquadList, eTEAM_TYPE eTeamType)
 {
-    CTeamConnector* pInstance = CTeamConnector::Create(SquadList);
+    CTeamConnector* pInstance = new CTeamConnector;
+
+    pInstance->m_SquadList = SquadList;
     pInstance->m_eTeamType = eTeamType;
     return pInstance;
 }
