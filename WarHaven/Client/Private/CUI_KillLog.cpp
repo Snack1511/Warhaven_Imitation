@@ -33,6 +33,7 @@ HRESULT CUI_KillLog::Start()
 	return S_OK;
 }
 
+
 void CUI_KillLog::Set_OriginPosY()
 {
 	switch (m_eKillType)
@@ -327,6 +328,9 @@ void CUI_KillLog::Init_KillText(wstring Text)
 	_float fAttackerPosX = fBenchmarkPosX + m_fWhitespace;
 
 	m_pKillText[Text_Kill]->Set_PosX(fAttackerPosX);
+
+	cout << m_pKillText[Text_Name]->Get_PosX() << endl;
+	cout << m_pKillText[Text_Kill]->Get_PosX() << endl;
 }
 
 void CUI_KillLog::Create_KillText()
@@ -334,6 +338,8 @@ void CUI_KillLog::Create_KillText()
 	for (int i = 0; i < Text_End; ++i)
 	{
 		m_pKillText[i] = CUI_Object::Create();
+
+		m_pKillText[i]->Set_FadeDesc(m_fFadeTime);
 
 		switch (i)
 		{
