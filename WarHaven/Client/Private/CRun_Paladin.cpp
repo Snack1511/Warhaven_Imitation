@@ -60,6 +60,8 @@ void CRun_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	{
 		m_fInterPolationTime = 0.f;
 	}
+	else
+		m_fInterPolationTime = 0.1f;
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

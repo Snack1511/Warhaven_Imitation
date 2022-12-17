@@ -59,6 +59,13 @@ void CSprint_Jump_Fall_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 
 STATE_TYPE CSprint_Jump_Fall_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (!pOwner->Is_Air())
+    {
+        STATE_TYPE eSprintEndState = pOwner->Get_SprintEndState();
+        return eSprintEndState;
+    }
+
+
     Follow_MouseLook(pOwner);
 
     return __super::Tick(pOwner, pAnimator);

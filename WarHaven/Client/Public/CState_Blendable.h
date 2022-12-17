@@ -88,6 +88,9 @@ protected:
 protected:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
+protected:
+	void	BlendableTick_Loop(CUnit* pOwner, CAnimator* pAnimator);
+
 private:
 	/*사전 설정 아니고, 안에서 쓰는 것*/
 	Enum				m_eEnum = Enum::eIDLE;

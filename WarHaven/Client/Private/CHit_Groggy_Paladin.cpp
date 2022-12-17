@@ -86,6 +86,9 @@ STATE_TYPE CHit_Groggy_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
     if (m_bAttackTrigger)
         return AI_STATE_COMBAT_SHIELDWALL_HIT_PALADIN;
 
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_PALADIN_R;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

@@ -85,6 +85,9 @@ void CJump_Valkyrie_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CJump_Valkyrie_Land_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_VALKYRIE_L;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

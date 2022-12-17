@@ -65,7 +65,6 @@ void CSlide_Loop_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
-
 }
 
 STATE_TYPE CSlide_Loop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -73,7 +72,6 @@ STATE_TYPE CSlide_Loop_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
     // 상호작용 해야함.
 
     pOwner->Get_PhysicsCom()->Set_Accel(30.f);
-
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -85,15 +83,9 @@ void CSlide_Loop_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CSlide_Loop_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* Player가 Walk로 오는 조건
-    1. CTRL 을 누르지 않은 상태
-    2. WASD 를 누른 상태
-    */
     
-    if (pAnimator->Is_CurAnimFinished())
-        return m_eStateType;
-
-   
+    //if (pAnimator->Is_CurAnimFinished())
+    //    return m_eStateType;
 
 
     return STATE_END;

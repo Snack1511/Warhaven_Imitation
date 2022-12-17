@@ -30,6 +30,7 @@ HRESULT CWalk_Player::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
+    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
     m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 
 

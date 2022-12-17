@@ -22,8 +22,6 @@ HRESULT CRun_Player::Initialize()
 
     m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
-
-    m_vecAdjState.push_back(STATE_SLIDE_BEGIN_PLAYER);
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);

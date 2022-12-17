@@ -457,11 +457,12 @@ void CUnit::Enter_State(STATE_TYPE eType, void* pData)
 
 	SAFE_DELETE(m_pCurState);
 
-	m_eCurState = eType;
+
 
 	m_pCurState = CState_Manager::Get_Instance()->Get_State(eType)->Clone();
 
 	m_pCurState->Enter(this, m_pAnimator, m_eCurState, pData);
+	m_eCurState = eType;
 
 }
 
@@ -1225,6 +1226,16 @@ void CUnit::Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _floa
 
 	m_pAnimWeapon->Set_AnimIndex(iAnimIndex, fInterpolateTime, fAnimSpeed);
 }
+
+void CUnit::Set_AnimWeaponFrame(_uint iChangeFrame) 
+{
+	if (!m_pAnimWeapon)
+		return;
+
+	GET_COMPONENT_FROM(m_pAnimWeapon, CAnimator)->Set_CurFrame(iChangeFrame);
+}
+
+
 
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)
 {

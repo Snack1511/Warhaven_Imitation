@@ -53,23 +53,7 @@ HRESULT CArcher_Aiming::Initialize()
     // 선형 보간 시간
     m_fInterPolationTime = 0.f;
     m_fAnimSpeed = 2.3f;
-    m_iStateChangeKeyFrame = 0;
-    
-
-	
-	m_vecAdjState.push_back(STATE_ATTACK_SHOOT_ARCHER);
-
-	//m_vecAdjState.push_back(STATE_IDLE_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_RUN_ARCHER_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	//m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
-
+    m_iStateChangeKeyFrame = 999;
 
 	//Add_KeyFrame(36, 0);
 
@@ -151,14 +135,14 @@ HRESULT CArcher_Aiming::Initialize()
 	m_eLandState = STATE_ATTACK_AIMING_ARCHER;
 	m_eFallState = STATE_ATTACK_AIMING_ARCHER;
 	m_eRunState = STATE_ATTACK_AIMING_ARCHER;
-	m_eIdleState = STATE_ATTACK_AIMING_ARCHER;
+	m_eIdleState = STATE_IDLE_ARCHER_R;
 	m_eBounceState = STATE_BOUNCE_ARCHER;
 
 	//m_eWalkState = STATE_WALK_ARCHER_R;
 	//m_eJumpState = STATE_JUMP_ARCHER_R;
 	//m_eLandState = STATE_JUMP_LAND_ARCHER_R;
 	//m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	//m_eRunState = STATE_RUN_ARCHER_R;
+	//m_eRunState = STATE_WALK_ARCHER_R;
 	//m_eIdleState = STATE_IDLE_ARCHER_R;
 	//m_eBounceState = STATE_WALK_ARCHER_R;
 
@@ -175,39 +159,46 @@ HRESULT CArcher_Aiming::Initialize()
     return __super::Initialize();
 }
 
-void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, m_fInterPolationTime, m_fAnimSpeed);
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
-	if (ePrevType == STATE_ATTACK_AIMING_ARCHER)
-		m_fInterPolationTime = 0.1f;
+	if (ePrevType == m_eStateType)
+	{		
+		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, FLT_MAX, FLT_MAX);
+		pOwner->Set_AnimWeaponFrame(102);
+	}
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	if (ePrevType == STATE_ATTACK_BEGIN_ARCHER)
+	{
+		m_fAnimSpeed = FLT_MIN;
+		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
+	}
+
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (pAnimator->Is_CurAnimFinished())
-		return STATE_ATTACK_AIMING_ARCHER;
+
+	if (KEY(LBUTTON, AWAY))
+		return STATE_ATTACK_SHOOT_ARCHER;
+		
+	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(15.f));
+
+	BlendableTick_Loop(pOwner, pAnimator);
 
 
-	Follow_MouseLook(pOwner);
-	pOwner->Set_DirAsLook();
-
-
-	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(15.f));// ->Start_FOVLerp();
-
-    return __super::Tick(pOwner, pAnimator);
+	return CState::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Aiming::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
-	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
-
     //Exit에선 무조건 남겨놔야함
+
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
+
     pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }

@@ -93,7 +93,6 @@ void CIdle_Valkyrie_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 STATE_TYPE CIdle_Valkyrie_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     return __super::Tick(pOwner, pAnimator);
-
 }
 
 void CIdle_Valkyrie_L::Exit(CUnit* pOwner, CAnimator* pAnimator)

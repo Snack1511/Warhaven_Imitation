@@ -127,6 +127,9 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eStingHitState = STATE_STINGHIT_VALKYRIE;
 		m_tHitType.eFlyState = STATE_FLYHIT_VALKYRIE;
 		m_tHitType.eBounce = STATE_BOUNCE_VALKYRIE_L;
+
+		m_eSprintEndState = STATE_SPRINT_END_VALKYRIE;
+
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_TG:
@@ -159,6 +162,34 @@ void CUnit_Valkyrie::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 }
 
+void CUnit_Valkyrie::SetUp_ReserveState(UNIT_TYPE eUnitType)
+{
+	switch (eUnitType)
+	{
+	case Client::CUnit::UNIT_TYPE::ePlayer:
+
+		m_eDefaultState = STATE_IDLE_VALKYRIE_R;
+		m_eSprintEndState = STATE_SPRINT_END_VALKYRIE;
+
+		break;
+
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
+
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_FIONA_R;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
+
+		break;
+
+
+
+	case Client::CUnit::UNIT_TYPE::eUNIT_TYPE_END:
+		break;
+
+	default:
+		break;
+	}
+}
+
 void CUnit_Valkyrie::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
 	__super::On_ChangeBehavior(pBehaviorDesc);
@@ -189,6 +220,7 @@ void CUnit_Valkyrie::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 
 	case eBehaviorType::eResurrect:
 		//»óÅÂº¯°æ
+		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
 
 	case eBehaviorType::eChange:
@@ -448,7 +480,7 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 1.1f;
+	tDesc.fHeight = 0.7f;
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.15f;
 	// Ä® ºÙÀÏ »À

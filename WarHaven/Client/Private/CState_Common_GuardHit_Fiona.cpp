@@ -52,7 +52,7 @@ HRESULT CState_Common_GuardHit_Fiona::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
-    
+    m_iStateChangeKeyFrame = 99;
 
     return S_OK;
 }

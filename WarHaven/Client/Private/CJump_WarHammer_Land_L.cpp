@@ -67,6 +67,9 @@ void CJump_WarHammer_Land_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 
 STATE_TYPE CJump_WarHammer_Land_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_WARHAMMER_L;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

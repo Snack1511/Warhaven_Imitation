@@ -50,8 +50,8 @@ void CState_PathNavigation_Sprint_Warrior_Fall::Enter(CUnit* pOwner, CAnimator* 
 
 STATE_TYPE CState_PathNavigation_Sprint_Warrior_Fall::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pAnimator->Is_CurAnimFinished())
-        return AI_STATE_PATHNAVIGATION_SPRINTLOOP_WARRIOR;
+    if (!pOwner->Is_Air())
+        return AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
 
     return __super::Tick(pOwner, pAnimator);
 }

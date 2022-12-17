@@ -25,6 +25,8 @@ public:
 public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
 	virtual void	SetUp_HitStates(UNIT_TYPE eUnitType);
+	virtual void	SetUp_ReserveState(UNIT_TYPE eUnitType);
+	virtual void	On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
 
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;

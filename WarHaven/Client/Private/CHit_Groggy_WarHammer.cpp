@@ -75,6 +75,9 @@ void CHit_Groggy_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CHit_Groggy_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_WARHAMMER_R;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

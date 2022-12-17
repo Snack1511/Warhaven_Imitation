@@ -30,6 +30,9 @@ public:
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 	
+private:
+	list<CGameObject*> m_RushEffects;
+
 };
 
 END

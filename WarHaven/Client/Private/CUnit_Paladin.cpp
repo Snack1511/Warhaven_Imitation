@@ -153,6 +153,8 @@ void CUnit_Paladin::SetUp_Colliders(_bool bPlayer)
 
 	}
 
+	// 그로기 플라이어택 가드 브레이크 모두 FlyAttack 으로 사용하기 때문에 사용에 유의
+
 	// 방패 돌진 스킬
 	SetUp_UnitCollider(CUnit::GROGGY, tShieldUnitColDesc, iShieldSphereNum, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
 
@@ -162,11 +164,10 @@ void CUnit_Paladin::SetUp_Colliders(_bool bPlayer)
 	// 휠 스킬
 	SetUp_UnitCollider(CUnit::FLYATTACK, tShieldUnitColDesc, iShieldSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
 
-	
 
 	tUnitColDesc[0].fRadius = 1.3f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 1.3f, 0.f);
-	tUnitColDesc[0].eColType = eGuardBreak;
+	tUnitColDesc[0].eColType = eFlyGuardBreakAttack;
 
 	// 방패 찍기 스킬
 	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false);
@@ -186,6 +187,9 @@ void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eStingHitState = STATE_STINGHIT_PALADIN;
 		m_tHitType.eFlyState = STATE_FLYHIT_PALADIN;
 		m_tHitType.eBounce = STATE_BOUNCE_PALADIN_L;
+
+		m_eSprintEndState = STATE_SPRINT_END_PALADIN; 
+
 		break;
 
 	
@@ -214,6 +218,34 @@ void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 		break;
 	}
 		
+}
+
+void CUnit_Paladin::SetUp_ReserveState(UNIT_TYPE eUnitType)
+{
+	switch (eUnitType)
+	{
+	case Client::CUnit::UNIT_TYPE::ePlayer:
+
+		m_eDefaultState = STATE_IDLE_PALADIN_R;
+		m_eSprintEndState = STATE_SPRINT_END_PALADIN;
+
+		break;
+
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
+
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN;
+
+		break;
+
+
+
+	case Client::CUnit::UNIT_TYPE::eUNIT_TYPE_END:
+		break;
+
+	default:
+		break;
+	}
 }
 
 void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
@@ -246,6 +278,7 @@ void CUnit_Paladin::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 
 	case eBehaviorType::eResurrect:
 		//상태변경
+		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
 
 	case eBehaviorType::eChange:
@@ -341,14 +374,14 @@ HRESULT CUnit_Paladin::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// 칼 길이
-	tDesc.fHeight = 0.6f;
+	tDesc.fHeight = 0.4f;
 	// 칼 두께
 	tDesc.fRadius = 0.2f;
 	// 칼 붙일 뼈
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 
 	//칼 오프셋(로컬)
-	tDesc.vOffset = _float4(0.f, 0.f, -100.f);
+	tDesc.vOffset = _float4(0.f, 0.f, -50.f);
 
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
@@ -396,10 +429,12 @@ HRESULT CUnit_Paladin::Start()
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
 	SetUp_TrailEffect(
-		_float4(0.f, 0.f, -168.f, 1.f),	//Weapon Low
-		_float4(0.f, 0.f, -171.f, 1.f),	//Weapon High
-		_float4(0.f, -1.5f, -169.5f, 1.f), //Left
-		_float4(0.f, 1.5f, -169.5f, 1.f), //Right
+		//_float4(0.f, 0.f, -168.f, 1.f),	//Weapon Low
+		//_float4(0.f, 0.f, -171.f, 1.f),	//Weapon High
+		_float4(0.f, 0.f, -84.f, 1.f),	//Weapon Low
+		_float4(0.f, 0.f, -85.5f, 1.f),	//Weapon High
+		_float4(0.f, -1.5f, -84.f, 1.f), //Left
+		_float4(0.f, 1.5f, -85.5f, 1.f), //Right
 		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
 		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
 		0.f,

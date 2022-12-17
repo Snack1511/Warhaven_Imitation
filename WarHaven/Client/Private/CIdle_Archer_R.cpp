@@ -80,7 +80,6 @@ void CIdle_Archer_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 STATE_TYPE CIdle_Archer_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
     return __super::Tick(pOwner, pAnimator);
 }
 

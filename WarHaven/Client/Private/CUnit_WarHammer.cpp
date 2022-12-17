@@ -148,6 +148,9 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eStingHitState = STATE_STINGHIT_WARHAMMER;
 		m_tHitType.eFlyState = STATE_FLYHIT_WARHAMMER;
 		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
+
+		m_eSprintEndState = STATE_SPRINT_END_WARHAMMER;
+
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_TG:
@@ -172,6 +175,7 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_ENGINEER_L;
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
+		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
 
 		break;
 
@@ -180,6 +184,33 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 	}
 }
 
+void CUnit_WarHammer::SetUp_ReserveState(UNIT_TYPE eUnitType)
+{
+	switch (eUnitType)
+	{
+	case Client::CUnit::UNIT_TYPE::ePlayer:
+
+		m_eDefaultState = STATE_IDLE_WARHAMMER_R;
+		m_eSprintEndState = STATE_SPRINT_END_WARHAMMER;
+
+		break;
+
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
+
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
+
+		break;
+
+
+
+	case Client::CUnit::UNIT_TYPE::eUNIT_TYPE_END:
+		break;
+
+	default:
+		break;
+	}
+}
 
 void CUnit_WarHammer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
@@ -211,6 +242,7 @@ void CUnit_WarHammer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 
 	case eBehaviorType::eResurrect:
 		//상태변경
+		eNewState = AI_STATE_COMMON_REVIVE_AI;
 		break;
 
 	case eBehaviorType::eChange:

@@ -57,6 +57,7 @@ HRESULT CArcher_Shoot::Initialize()
     m_fAnimSpeed = 2.3f;
     m_iStateChangeKeyFrame = 0;
     
+
 	m_vecAdjState.push_back(STATE_GUARD_ARCHER);
 	m_vecAdjState.push_back(STATE_ATTACK_SWING_ARCHER);
 
@@ -171,10 +172,9 @@ void CArcher_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 STATE_TYPE CArcher_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	// pOwner->Set_BounceState(STATE_BOUNCE_ARCHER_R);
 
-	//if (pAnimator->Is_CurAnimFinished())
-	//	return STATE_ATTACK_SWAP_ARCHER;
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_IDLE_ARCHER_R;
 
 	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(45.f));
 
