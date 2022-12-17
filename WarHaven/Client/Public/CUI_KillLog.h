@@ -45,7 +45,7 @@ private:
 private:
 	UI_Type m_eKillType = UI_Type::UT_End;
 
-	_float m_fDisableTime = 2000.f;
+	_float m_fDisableTime = 5.f;
 	_float m_fFadeTime = 0.3f;
 
 	_bool m_bIsDisable = false;

@@ -550,6 +550,9 @@ void CUser::Set_LogName(CPlayer* attacker, CPlayer* victim)
 
 void CUser::Enable_KillUI(_uint iType)
 {
+	m_iPrvKillLogIdx = m_iCurKillLogIdx;
+	m_iCurKillLogIdx = m_iKillLogIdx;
+
 	m_pKillLog[m_iKillLogIdx]->Set_KillLogType(iType);
 	m_pKillLog[m_iKillLogIdx]->Set_OriginPosY();
 	m_pKillLog[m_iKillLogIdx]->SetActive(true);
@@ -558,7 +561,13 @@ void CUser::Enable_KillUI(_uint iType)
 
 	m_iKillLogIdx++;
 	if (m_iKillLogIdx > 4)
+	{
+		m_pKillLogList.pop_front();
 		m_iKillLogIdx = 0;
+	}
+
+	//if (m_iPrvKillLogIdx == m_iCurKillLogIdx)
+	//	return;
 
 	if (m_pKillLogList.size() > 0)
 	{
