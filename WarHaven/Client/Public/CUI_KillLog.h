@@ -22,6 +22,7 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	void Set_OriginPosY();
 	void Set_LogName(CPlayer* attacker, CPlayer* victim);
 	void Set_KillLogType(_uint iKillType);
 
@@ -34,8 +35,8 @@ private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
-	void SetActiv_KillLog(_bool value);
-	void SetActiv_KillText(_bool value);
+	void SetActive_KillLog(_bool value);
+	void SetActive_KillText(_bool value);
 
 	void Init_VictimText(wstring Text);
 	void Init_AttackerText(wstring Text);
@@ -44,7 +45,7 @@ private:
 private:
 	UI_Type m_eKillType = UI_Type::UT_End;
 
-	_float m_fDisableTime = 2.f;
+	_float m_fDisableTime = 2000.f;
 	_float m_fFadeTime = 0.3f;
 
 	_bool m_bIsDisable = false;

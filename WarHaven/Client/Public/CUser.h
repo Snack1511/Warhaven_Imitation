@@ -185,6 +185,9 @@ private:
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
 
+private:	// KillLog
+	list<CUI_KillLog*> m_pKillLogList;
+
 	CUI_KillLog* m_pKillLog[5];
 
 	_uint m_iKillLogIdx = 0;

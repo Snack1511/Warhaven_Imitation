@@ -33,6 +33,24 @@ HRESULT CUI_KillLog::Start()
 	return S_OK;
 }
 
+void CUI_KillLog::Set_OriginPosY()
+{
+	switch (m_eKillType)
+	{
+	case Client::CUI_KillLog::UT_Kill:
+
+		m_pKillText[Text_Name]->Set_PosY(m_fKillTextPosY);
+
+		break;
+
+	case Client::CUI_KillLog::UT_Log:
+
+		m_pDeadByIcon->Set_PosY(m_fKillLogPosY);
+
+		break;
+	}
+}
+
 void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
 {
 	wstring attackerName = attacker->Get_PlayerInfo()->Get_PlayerName();
@@ -109,13 +127,13 @@ void CUI_KillLog::Enable_KillUI(_uint eKillType)
 	{
 	case Client::CUI_KillLog::UT_Kill:
 
-		SetActiv_KillText(true);
+		SetActive_KillText(true);
 
 		break;
 
 	case Client::CUI_KillLog::UT_Log:
 
-		SetActiv_KillLog(true);
+		SetActive_KillLog(true);
 
 		break;
 	}
@@ -182,12 +200,12 @@ void CUI_KillLog::My_Tick()
 			{
 			case Client::CUI_KillLog::UT_Kill:
 
-				SetActiv_KillText(false);
+				SetActive_KillText(false);
 
 				break;
 			case Client::CUI_KillLog::UT_Log:
 
-				SetActiv_KillLog(false);
+				SetActive_KillLog(false);
 
 				break;
 			}
@@ -210,14 +228,12 @@ void CUI_KillLog::OnEnable()
 	switch (m_eKillType)
 	{
 	case Client::CUI_KillLog::UT_Kill:
-		m_pKillText[Text_Name]->Set_PosY(m_fKillTextPosY);
 
 		Enable_KillUI(m_eKillType);
 
 		break;
 
 	case Client::CUI_KillLog::UT_Log:
-		m_pDeadByIcon->Set_PosY(m_fKillLogPosY);
 
 		Enable_KillUI(m_eKillType);
 
@@ -232,7 +248,7 @@ void CUI_KillLog::OnDisable()
 	m_bIsDisable = false;
 }
 
-void CUI_KillLog::SetActiv_KillLog(_bool value)
+void CUI_KillLog::SetActive_KillLog(_bool value)
 {
 	for (int i = 0; i < Kill_End; ++i)
 	{
@@ -251,7 +267,7 @@ void CUI_KillLog::SetActiv_KillLog(_bool value)
 	}
 }
 
-void CUI_KillLog::SetActiv_KillText(_bool value)
+void CUI_KillLog::SetActive_KillText(_bool value)
 {
 	for (int i = 0; i < Text_End; ++i)
 	{
