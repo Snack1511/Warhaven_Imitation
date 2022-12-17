@@ -134,7 +134,9 @@ HRESULT CCamera_Follow::Start()
 
 HRESULT CCamera_Follow::SetUp_Components(CGameObject* pTarget, CCell* pStartCell)
 {
-	Add_Component(CScript_FollowCam::Create(CP_BEFORE_NAVIGATION, pTarget));
+	CScript_FollowCam* pFollowCamScript = CScript_FollowCam::Create(CP_BEFORE_NAVIGATION, pTarget);
+	Add_Component(pFollowCamScript);
+	m_pFollowScript = pFollowCamScript;
 	CPhysics* pPhyscisCom = CPhysics::Create(0);
 	Add_Component(pPhyscisCom);
 	m_pParent = pTarget;

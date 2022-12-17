@@ -1346,7 +1346,8 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
     pPlayerInfo->m_tPlayerInfo.wstrName = name;\
     pPlayerInfo->m_tPlayerInfo.wstrCamName = pPlayerInfo->m_tPlayerInfo.wstrName;\
     pPlayerInfo->m_tPlayerInfo.wstrCamName += L"_Cam";\
-    m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);
+    m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);\
+	m_vecPlayerInfoNames.push_back(pPlayerInfo->m_tPlayerInfo.wstrName)
 
 	_uint iDefaultCnt = 0;
 	for (_uint i = 0; i < 12; ++i)
@@ -1358,8 +1359,8 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
 
 	/* 분대장급 AI들 */
 #define ADD_LEADERINFO pPlayerInfo = CPlayerInfo_Leader::Create();\
-    m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);
-
+    m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);\
+	m_vecPlayerInfoNames.push_back(pPlayerInfo->m_tPlayerInfo.wstrName)
 
 	_uint iLeaderCnt = 0;
 	for (_uint i = 0; i < 3; ++i)
@@ -1376,7 +1377,8 @@ HRESULT CGameSystem::SetUp_AllPlayerInfos()
     pPlayerInfo->m_tPlayerInfo.wstrName = name;\
     pPlayerInfo->m_tPlayerInfo.wstrCamName = pPlayerInfo->m_tPlayerInfo.wstrName;\
     pPlayerInfo->m_tPlayerInfo.wstrCamName += L"_Cam";\
-    m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);
+    m_mapAllPlayers.emplace(Convert_ToHash(pPlayerInfo->m_tPlayerInfo.wstrName), pPlayerInfo);\
+	m_vecPlayerInfoNames.push_back(pPlayerInfo->m_tPlayerInfo.wstrName)
 
 	ADD_SANDBACKINFO(L"TestEnemy");
 	ADD_SANDBACKINFO(L"EnemyTrio_0");
