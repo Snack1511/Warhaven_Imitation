@@ -32,6 +32,7 @@ private:
 
 	void Init_VictimText(wstring Text);
 	void Init_AttackerText(wstring Text);
+	void Init_DeadByBG();
 
 private:
 	_uint	m_iCurIndex = 0;
@@ -39,11 +40,12 @@ private:
 	_float	m_fStepY = 25.f;
 	_float	m_fFullSizeX = 0.f;
 
+	_float m_fDeadBGLeftX = 0.f;
+
 private:
+	_bool m_bIsDisable = false;
 	_float m_fDisableTime = 5.f;
 	_float m_fFadeTime = 0.3f;
-
-	_bool m_bIsDisable = false;
 
 	_float4 vColorRed = _float4(0.75f, 0.2f, 0.2f, 1.f);
 	_float4 vColorBlue = _float4(0.15f, 0.5f, 0.6f, 1.f);
@@ -53,9 +55,10 @@ private:
 	_float m_fTextBlank = 15.f;
 
 private:
-	enum KillLog { Kill_Icon, Kill_Name, Kill_End };
+	enum DeadBy { Dead_BG, Dead_Icon, Dead_End };
+	CUI_Object* m_pDeadIcon[Dead_End];
 
-	CUI_Object* m_pDeadByIcon = nullptr;
+	enum KillLog { Kill_Icon, Kill_Name, Kill_End };
 	CUI_Object* m_pAttacker[Kill_End];
 	CUI_Object* m_pVictim[Kill_End];
 

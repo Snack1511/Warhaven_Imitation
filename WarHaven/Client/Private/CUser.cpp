@@ -434,17 +434,6 @@ void CUser::On_EnterStageLevel()
 		m_pKillLogList.clear();
 	}
 
-	if (!m_pKillName[0])
-	{
-		for (int i = 0; i < 3; ++i)
-		{
-			m_pKillName[i] = CUI_KillName::Create();
-
-			CREATE_GAMEOBJECT(m_pKillName[i], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pKillName[i]);
-		}
-	}
-
 	if (m_eLoadLevel > LEVEL_BOOTCAMP)
 	{
 		if (!m_pUI_Oper)
@@ -498,12 +487,6 @@ void CUser::On_ExitStageLevel()
 			m_pKillLog[i] = nullptr;
 	}
 	m_pKillLogList.clear();
-
-	for (_uint i = 0; i < 3; ++i)
-	{
-		if (m_pKillName[i])
-			m_pKillName[i] = nullptr;
-	}
 
 	if (m_pUI_Oper)
 		m_pUI_Oper = nullptr;

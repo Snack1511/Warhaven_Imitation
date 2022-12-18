@@ -1419,7 +1419,7 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 		if (pOtherUnit->m_bIsMainPlayer)
 		{
 			wstring wstrEnermyName = m_pOwnerPlayer->Get_PlayerName();
-			CUser::Get_Instance()->Enable_KillName(wstrEnermyName);
+			//CUser::Get_Instance()->Enable_KillName(wstrEnermyName);
 		}
 	}
 }
