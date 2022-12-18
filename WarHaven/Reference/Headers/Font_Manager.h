@@ -14,6 +14,7 @@ private:
 public:
 	HRESULT Add_Font(const _tchar* pFontTag, const _tchar* pFontFilePath);
 	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale, _bool bCenter);
+	_float Get_FontSize(const _tchar* pFontTag, const _tchar* pString, _float fScale);
 
 private:
 	map<_hashcode, class CCustomFont*>			m_Fonts;

@@ -423,13 +423,15 @@ void CUser::On_EnterStageLevel()
 
 	if (!m_pKillLog[0])
 	{
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 10; ++i)
 		{
 			m_pKillLog[i] = CUI_KillLog::Create();
 
 			CREATE_GAMEOBJECT(m_pKillLog[i], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pKillLog[i]);
 		}
+
+		m_pKillLogList.clear();
 	}
 
 	if (!m_pKillName[0])
@@ -492,6 +494,8 @@ void CUser::On_ExitStageLevel()
 		if (m_pKillLog[i])
 			m_pKillLog[i] = nullptr;
 	}
+
+	m_pKillLogList.clear();
 
 	for (_uint i = 0; i < 3; ++i)
 	{
@@ -558,34 +562,24 @@ void CUser::Enable_DamageFont(_uint eType, _float fDmg)
 	}
 }
 
-void CUser::Set_LogName(CPlayer* attacker, CPlayer* victim)
+void CUser::Add_KillLog(CPlayer* attacker, CPlayer* victim)
 {
-	m_pKillLog[m_iKillLogIdx]->Set_LogName(attacker, victim);
-}
+	CUI_KillLog* pCurKillLog = m_pKillLog[m_iKillLogIdx++];
 
-void CUser::Enable_KillLog()
-{
-	m_iPrvKillLogIdx = m_iCurKillLogIdx;
-	m_iCurKillLogIdx = m_iKillLogIdx;
-
-	m_pKillLog[m_iKillLogIdx]->Set_OriginPosY();
-	m_pKillLog[m_iKillLogIdx]->SetActive(true);
-
-	m_pKillLogList.push_back(m_pKillLog[m_iKillLogIdx]);
-
-	m_iKillLogIdx++;
-	if (m_iKillLogIdx > 4)
-	{
-		m_pKillLogList.pop_front();
+	if (m_iKillLogIdx >= 10)
 		m_iKillLogIdx = 0;
-	}
 
-	if (m_pKillLogList.size() > 0)
+	pCurKillLog->Set_LogName(attacker, victim);
+
+	m_pKillLogList.push_front(pCurKillLog);
+
+	if (m_pKillLogList.size() > 10)
+		m_pKillLogList.pop_back();
+
+	_uint iIndex = 0;
+	for (auto& elem : m_pKillLogList)
 	{
-		for (auto& iter : m_pKillLogList)
-		{
-			iter->MoveUp_KillLog();
-		}
+		elem->Set_KillLogIndex(iIndex++);
 	}
 }
 
@@ -612,6 +606,19 @@ void CUser::Enable_KillName(wstring enermyName)
 		{
 			// iter->MoveUp_KillLog();
 		}
+	}
+}
+
+void CUser::Update_KillLog()
+{
+	for (auto iter = m_pKillLogList.begin(); iter != m_pKillLogList.end();)
+	{
+		if (!(*iter)->Is_Valid())
+		{
+			iter = m_pKillLogList.erase(iter);
+		}
+		else
+			++iter;
 	}
 }
 

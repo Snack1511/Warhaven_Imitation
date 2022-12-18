@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "GameInstance.h"
 
+
 CUI_Renderer::CUI_Renderer(_uint iGroupID)
 	: CRenderer(iGroupID)
 {
@@ -85,6 +86,13 @@ HRESULT CUI_Renderer::Render()
 void CUI_Renderer::Release()
 {
 	__super::Release();
+}
+
+_float CUI_Renderer::Get_CurFontSize()
+{
+	wstring wstrFontTag = (m_bIsBold) ? TEXT("WarKR_Bold") : TEXT("WarKR_Regular");
+
+	return CFont_Manager::Get_Instance()->Get_FontSize(wstrFontTag.c_str(), m_wstrText.c_str(), m_fFontScale);
 }
 
 void CUI_Renderer::Set_Text(_bool value, wstring wstrText, _float4 vOffset, _float4 vColor, _float fScale, _bool bCenter)

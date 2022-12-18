@@ -78,13 +78,9 @@ void CUI_Wrapper::On_ButtonClickEvent(const _uint& iEventNum)
 void CUI_Wrapper::SetActive(_bool value)
 {
 	if (value == true)
-	{
 		ENABLE_GAMEOBJECT(this);
-	}
 	else
-	{
 		DISABLE_GAMEOBJECT(this);
-	}
 }
 
 void CUI_Wrapper::My_Tick()

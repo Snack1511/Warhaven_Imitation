@@ -28,6 +28,7 @@ public:
 
 public:
 	void		Set_Pass(const _uint& iCurPass) { m_iCurPass = iCurPass; }
+	_float		Get_CurFontSize();
 
 public:
 	enum FontSort { Left, Center, Right, SortEnd };

@@ -159,10 +159,14 @@ public:		// 알림
 	void Enable_Popup(_uint iPopupType);
 
 public:	// 킬로그
-	void Set_LogName(CPlayer* attacker, CPlayer* victim);
-	void Enable_KillLog();
+	void Add_KillLog(CPlayer* attacker, CPlayer* victim);
+
+
+
 
 	void Enable_KillName(wstring enermyName);
+
+	void Update_KillLog();
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
@@ -190,11 +194,9 @@ private:
 
 private:	// KillLog
 	list<CUI_KillLog*> m_pKillLogList;
-	CUI_KillLog* m_pKillLog[5];
-
+	CUI_KillLog* m_pKillLog[10];
 	_uint m_iKillLogIdx = 0;
-	int m_iPrvKillLogIdx = -1;
-	int m_iCurKillLogIdx = 0;
+
 
 private:
 	list<CUI_KillName*> m_pKillNameList;

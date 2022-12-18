@@ -20,6 +20,7 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	void Set_KillLogIndex(_uint iIndex) { m_iCurIndex = iIndex; }
 	void Set_OriginPosY();
 	void Set_LogName(CPlayer* attacker, CPlayer* victim);
 
@@ -36,6 +37,12 @@ private:
 
 	void Init_VictimText(wstring Text);
 	void Init_AttackerText(wstring Text);
+
+private:
+	_uint	m_iCurIndex = 0;
+	_float4	m_vStartPosition = _float4(600.f, 330.f, 0.5f, 1.f);
+	_float	m_fStepY = 25.f;
+	_float	m_fFullSizeX = 0.f;
 
 private:
 	_float m_fDisableTime = 5.f;

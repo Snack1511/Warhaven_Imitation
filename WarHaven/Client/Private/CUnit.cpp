@@ -70,8 +70,12 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	if (eOtherColType == COL_REVIVE)
 	{
 		m_pAdjRevivalPlayer = static_cast<CPlayer*>(pOtherObj);
+
 		if (m_pAdjRevivalPlayer->Get_Team() != m_pOwnerPlayer->Get_Team())
 			m_pAdjRevivalPlayer = nullptr;
+
+		if (m_pAdjRevivalPlayer)
+			//UI ON
 
 		return;
 	}
@@ -169,7 +173,11 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 	if (eOtherColType == COL_REVIVE)
 	{
 		if (static_cast<CPlayer*>(pOtherObj)->Get_Team() == m_pOwnerPlayer->Get_Team())
+		{
 			m_pAdjRevivalPlayer = nullptr;
+
+			//UI Off
+		}
 
 	}
 }
@@ -1391,6 +1399,9 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	// 데드에 넘겨주기	
 	pOtherUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(m_pOwnerPlayer);
 
+	CUser::Get_Instance()->Add_KillLog(pOtherUnit->Get_OwnerPlayer(), m_pOwnerPlayer);
+
+
 	if (m_bIsMainPlayer)
 	{
 		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
@@ -1403,8 +1414,7 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 	else
 	{
-		CUser::Get_Instance()->Set_LogName(pOtherUnit->Get_OwnerPlayer(), m_pOwnerPlayer);
-		CUser::Get_Instance()->Enable_KillLog();
+
 
 		if (pOtherUnit->m_bIsMainPlayer)
 		{

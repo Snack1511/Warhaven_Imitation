@@ -41,7 +41,7 @@ public:	// Font
 	_bool Get_FontStyle() { return m_bIsBold; }
 	void Set_FontStyle(_bool value) { m_bIsBold = value; }
 	wstring Get_FontText() { return m_wstrText; }
-	void Set_FontText(wstring szText) { m_wstrText = szText; }
+	void Set_FontText(wstring szText);
 	_float4 Get_FontOffset() { return m_vOffset; }
 	void Set_FontOffset(_float fX, _float fY);
 	_float4 Get_FontColor() { return m_vFontColor; }
@@ -51,6 +51,8 @@ public:	// Font
 
 	_bool Get_FontCenter() { return m_bIsCenter; }
 	void Set_FontCenter(_bool value) { m_bIsCenter = value; }
+
+	_float	Get_FontSizeX();
 
 public:	// Button
 	_bool Get_IsClick() { return m_bIsClick; }

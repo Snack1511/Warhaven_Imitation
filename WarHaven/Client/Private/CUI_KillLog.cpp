@@ -5,6 +5,8 @@
 #include "CTeamConnector.h"
 #include "Texture.h"
 
+#include "CUI_Renderer.h"
+
 CUI_KillLog::CUI_KillLog()
 {
 }
@@ -29,6 +31,13 @@ HRESULT CUI_KillLog::Start()
 {
 	__super::Start();
 
+	for (_uint i = 0; i < Kill_End; ++i)
+	{
+		m_pAttacker[i]->Set_Pos(m_vStartPosition);
+		m_pVictim[i]->Set_Pos(m_vStartPosition);
+	}
+	m_pDeadByIcon->Set_Pos(m_vStartPosition);
+
 	return S_OK;
 }
 
@@ -40,6 +49,11 @@ void CUI_KillLog::Set_OriginPosY()
 
 void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
 {
+	m_fAccTime = 0.f;
+
+	ENABLE_GAMEOBJECT(this);
+	//SetActive_KillLog(true);
+
 	wstring attackerName = attacker->Get_PlayerInfo()->Get_PlayerName();
 	wstring victimName = victim->Get_PlayerInfo()->Get_PlayerName();
 
@@ -97,6 +111,8 @@ void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
 
 	_bool IsDeadByHeadshot = victim->IsDeadByHeadshot();
 	GET_COMPONENT_FROM(m_pDeadByIcon, CTexture)->Set_CurTextureIndex(IsDeadByHeadshot);
+
+
 }
 
 void CUI_KillLog::Enable_KillUI()
@@ -118,13 +134,27 @@ void CUI_KillLog::My_Tick()
 {
 	__super::My_Tick();
 
-	_float4 vDeadByPos = m_pDeadByIcon->Get_Pos();
+	_float4 vTargetPos = m_vStartPosition;
+	vTargetPos.y -= (m_fStepY * (_float)m_iCurIndex);
+	
+	_float fCurPosY = m_pDeadByIcon->Get_PosY();
 
-	m_pAttacker[Kill_Icon]->Set_Pos(vDeadByPos.x - 35.f, vDeadByPos.y);
-	m_pVictim[Kill_Icon]->Set_Pos(vDeadByPos.x + 35.f, vDeadByPos.y);
+	if (fCurPosY > vTargetPos.y)
+	{
+		fCurPosY -= fDT(0) * m_fStepY * 2.f;
 
-	m_pVictim[Kill_Name]->Set_PosY(vDeadByPos.y);
-	m_pAttacker[Kill_Name]->Set_PosY(vDeadByPos.y);
+		if (fCurPosY < vTargetPos.y)
+			fCurPosY = vTargetPos.y;
+	}
+
+	m_pDeadByIcon->Set_PosY(fCurPosY);
+
+	for (_uint i = 0; i < Kill_End; ++i)
+	{
+		m_pVictim[i]->Set_PosY(fCurPosY);
+		m_pAttacker[i]->Set_PosY(fCurPosY);
+	}
+
 
 	if (!m_bIsDisable)
 	{
@@ -142,7 +172,8 @@ void CUI_KillLog::My_Tick()
 		m_fAccTime += fDT(0);
 		if (m_fAccTime > m_fFadeTime)
 		{
-			this->SetActive(false);
+			m_fAccTime = 0.f;
+			SetActive(false);
 		}
 	}
 }
@@ -184,32 +215,27 @@ void CUI_KillLog::Init_VictimText(wstring Text)
 {
 	m_pVictim[Kill_Name]->Set_FontText(Text);
 
-	_float fTextHalfSize = (Text.size() * 0.5f) * m_fTextPt;
-
-	_float fMaxPosX = 640.f - Text.size();
-	_float fVictimPosX = fMaxPosX - fTextHalfSize;
-
+	_float fTextHalfSize = m_pVictim[Kill_Name]->Get_FontSizeX() * 0.5f;
+	_float fVictimPosX = m_vStartPosition.x - fTextHalfSize;
 	m_pVictim[Kill_Name]->Set_PosX(fVictimPosX);
 
-	_float IconPos = fVictimPosX - m_fTextPt;
+	_float IconPos = fVictimPosX - fTextHalfSize - m_fIconBlank;
+	m_pVictim[Kill_Icon]->Set_PosX(IconPos);
 
-	m_pVictim[Kill_Icon]->Set_PosX(IconPos - m_fIconBlank);
-	m_pDeadByIcon->Set_PosX(m_pVictim[Kill_Icon]->Get_PosX() - m_fWhitespace);
-	m_pAttacker[Kill_Icon]->Set_PosX(m_pDeadByIcon->Get_PosX() - m_fWhitespace);
+	m_pDeadByIcon->Set_PosX(IconPos - m_fIconBlank);
 }
 
 void CUI_KillLog::Init_AttackerText(wstring Text)
 {
+	_float fAttackerIconPosX = m_pDeadByIcon->Get_PosX() - m_fIconBlank;
+	m_pAttacker[Kill_Icon]->Set_PosX(fAttackerIconPosX);
+
+
 	m_pAttacker[Kill_Name]->Set_FontText(Text);
+	_float fTextHalfSize = m_pAttacker[Kill_Name]->Get_FontSizeX() * 0.5f;
+	_float fAttackerNamePos = fAttackerIconPosX - m_fIconBlank - fTextHalfSize;
 
-	_float fTextHalfSize = (Text.size() * 0.5f) * m_fTextPt;
-
-	_float fPosX = m_pAttacker[Kill_Icon]->Get_PosX();
-
-	_float fBenchmarkPosX = fPosX - m_fIconBlank;
-	_float fAttackerPosX = fBenchmarkPosX - m_fTextPt;
-
-	m_pAttacker[Kill_Name]->Set_PosX(fAttackerPosX);
+	m_pAttacker[Kill_Name]->Set_PosX(fAttackerNamePos);
 }
 
 void CUI_KillLog::Create_KillLog()
