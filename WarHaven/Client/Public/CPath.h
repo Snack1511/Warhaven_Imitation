@@ -36,7 +36,7 @@ public:
 	/* 경로 끝에 도달했는지 여부 */
 	_bool	Is_Arrived() { return (m_iCurIndex == (m_iNumPositions-1)) ? true : false; }
 	/* 외부에서 경로 끝에 도달했다고 강제로 바꿔주는 구문 ex) 너무 오래 같은 인덱스일 경우..*/
-	void	Set_Arrived() { m_iCurIndex = m_iNumPositions - 1; }
+	void	Set_Arrived();
 
 	_uint	Get_CurIndex() { return m_iCurIndex; }
 	_uint	Get_PrevIndex() { return m_iPrevIndex; }

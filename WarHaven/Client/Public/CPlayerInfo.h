@@ -76,7 +76,7 @@ public:
 	_uint	Get_UnitType() { return m_iUnitType; }
 
 	wstring Get_PlayerName() { return m_tPlayerInfo.wstrName; }
-
+	wstring Get_LookAtCamName() { return m_tPlayerInfo.wstrCamName; }
 public:
 	/* 커스텀 추가될 때마다 여기 enum 추가해서 넣어놓기 */
 	enum class eCUSTOM_HEAD { eDEFAULT, eHEAD1, eHEAD2, eRABBIT };

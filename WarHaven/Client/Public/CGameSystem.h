@@ -106,7 +106,8 @@ private:
 	/* 스테이지 진입시 팀이 만들어진다 */
 	CTeamConnector* m_pTeamConnector[_uint(eTEAM_TYPE::eCOUNT)] = {};
 	_float			m_fScoreAcc = 0.f;
-	_float			m_fScoreMinusTime = 1.5f;
+	_float			m_fScoreMinusTime = 100.5f;
+	//_float			m_fScoreMinusTime = 1.5f;
 
 private:
 	/* 모든 플레이어 정보를 미리 만들어놓고 그 정보를 토대로 Player 생성하는 방식 */

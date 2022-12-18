@@ -7,6 +7,8 @@
 #include "CTeamConnector.h"
 #include "CSquad.h"
 #include "CGameSystem.h"
+#include "CTable_Conditions.h"
+#include "GameInstance.h"
 
 CWindow_AI::CWindow_AI()
 {
@@ -31,9 +33,20 @@ CWindow_AI* CWindow_AI::Create()
 
 void CWindow_AI::On_Enable()
 {
+#ifndef _DEBUG
+    ShowCursor(true);
+#endif
     m_pTeamConnector[_uint(eTEAM_TYPE::eRED)] = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eRED);
     m_pTeamConnector[_uint(eTEAM_TYPE::eBLUE)] = CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE);
     m_pVecPlayerInfoName = CGameSystem::Get_Instance()->GetPtr_PlayerInfoNames();
+    m_pTableCondition = CGameSystem::Get_Instance()->Get_BXTable();
+}
+
+void CWindow_AI::On_Disable()
+{
+#ifndef _DEBUG
+    ShowCursor(false);
+#endif
 }
 
 HRESULT CWindow_AI::Initialize()
@@ -54,6 +67,9 @@ HRESULT CWindow_AI::Render()
 
     if (FAILED(__super::Begin()))
         return E_FAIL;
+
+    m_bHoverWindow = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)
+        || ImGui::IsAnyItemHovered();
 
     ImGui::Text("AI_Tool");
     CImGui_Manager::Get_Instance()->On_ToolTip(u8"AI 툴");
@@ -152,15 +168,12 @@ void CWindow_AI::Func_AISetting()
         ListUp_Behaviors("##BehaviorList", vBehaviorSize, m_pCurSelectPersonality->Get_BehaviorList());
     }
     //행동조건 설정
-    if (ImGui::CollapsingHeader(u8"조건 리스트")) 
+    if (nullptr != m_pCurSelectBehavior)
     {
-        ListUp_BehaviorConditions("##Conditions", vBehaviorSize, m_pCurSelectBehavior);
+        Create_SubWindow(u8"조건 설정", ImVec2(0.f, 0.f), vBehaviorSize, bind(&CWindow_AI::Func_ChangeBehavior, this));
     }
-    //행동 변수설정
-    if (ImGui::CollapsingHeader(u8"행동 정의")) 
-    {
-        Func_ChangeBehavior(m_pCurSelectBehavior);
-    }
+
+
 }
 
 void CWindow_AI::ListUp_RedPlayer(const ImVec2& Size)
@@ -229,6 +242,7 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
                 {
                     pCurSelectPlayer = pSquadLeader;
                     m_pCurSelectPlayer = pSquadLeader;
+                    GAMEINSTANCE->Change_Camera(pCurSelectPlayer->Get_PlayerInfo()->Get_LookAtCamName());
                 }//리더 먼저 출력
 
                 for (auto& PlayerValue : PlayerMap)
@@ -247,6 +261,7 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
                     {
                         pCurSelectPlayer = PlayerValue.second;
                         m_pCurSelectPlayer = PlayerValue.second;
+                        GAMEINSTANCE->Change_Camera(pCurSelectPlayer->Get_PlayerInfo()->Get_LookAtCamName());
                     }
                 }//나머지 분대원들 출력
                 ImGui::TreePop();
@@ -347,8 +362,16 @@ void CWindow_AI::ListUp_Behaviors(const char* ListID, const ImVec2& Size, list<C
     }
 }
 
-void CWindow_AI::ListUp_BehaviorConditions(const char* ListID, const ImVec2& Size, CBehavior* pBehavior)
+
+
+void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* ListID, const ImVec2& Size, CBehavior* pBehavior, wstring& rhsConditionName, _uint iConditionType)
 {
+    ImGui::Text(szListName);
+    if (nullptr == m_pTableCondition) 
+    {
+        ImGui::Text(u8"조건 테이블 못찾음");
+        return;
+    }
     if (nullptr == pBehavior)
     {
         if (ImGui::BeginListBox(ListID, Size))
@@ -359,37 +382,83 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* ListID, const ImVec2& Siz
     }
     else
     {
+        vector<wstring>& rhsConditionNameVector = pBehavior->Get_ConditionNames(CBehavior::eConditionType(iConditionType));
         if (ImGui::BeginListBox(ListID, Size))
         {
-            if (/*조건리스트사이즈 == 0*/true)
+            if (rhsConditionNameVector.empty())
             {
                 ImGui::Text(u8"조건 없음");
             }
             else
             {
+                for (auto& Name : rhsConditionNameVector)
+                {
+                    _bool bSelect = false;
+                    if (rhsConditionName == Name)
+                        bSelect = true;
+
+                    if (ImGui::Selectable(CFunctor::To_String(Name).c_str(), bSelect))
+                    {
+                        rhsConditionName = Name;
+                    }
+                }
                 //조건 이름 가져오기..
+
             }
 
             ImGui::EndListBox();
         }
     }
-    if (ImGui::Button(u8"조건 추가"));
+    
+    vector<wstring>& rhsConditionTable = m_pTableCondition->Get_ConditionNames(iConditionType);
+    string StrConditionTableListName = ListID;
+    StrConditionTableListName += "_ConditionTable";
+    ImGui::Text(u8"조건테이블");
+    if (ImGui::BeginListBox(StrConditionTableListName.c_str(), Size))
     {
-    }
-    ImGui::SameLine();
-    if (ImGui::Button(u8"조건 제거"))
-    {
+        if (rhsConditionTable.empty())
+        {
+            ImGui::Text(u8"조건 없음");
+        }
+        else
+        {
+            for (auto& Name : rhsConditionTable)
+            {
+                if (ImGui::Selectable(CFunctor::To_String(Name).c_str()))
+                {
+                    m_pCurSelectBehavior->Add_Condition(Name, CBehavior::eConditionType(iConditionType));
+                }
+            }
+            //조건 이름 가져오기..
 
+        }
+        ImGui::EndListBox();
     }
     if (ImGui::Button(u8"조건 초기화")) 
     {
+        pBehavior->Clear_Condition(CBehavior::eConditionType(iConditionType));
     }
 }
 
-void CWindow_AI::Func_ChangeBehavior(CBehavior* pBehavior)
+void CWindow_AI::Func_ChangeBehavior()
 {
+    //비해비어 조건 변경
     if (nullptr == m_pCurSelectBehavior)
         return;
+    ImVec2 vBehaviorSize = ImVec2(m_vMainWndSize.x, 0.f);
+    if (ImGui::CollapsingHeader(u8"조건 리스트"))
+    {
+        ListUp_BehaviorConditions("WhenCondition", "##WhenConditions",
+            vBehaviorSize, m_pCurSelectBehavior,
+            m_strCurSelectWhenCondition,
+            _uint(CBehavior::eConditionType::eWhen));
+
+        ListUp_BehaviorConditions("WhatCondition", "##WhatConditions",
+            vBehaviorSize, m_pCurSelectBehavior,
+            m_strCurSelectWhatCondition, 
+            _uint(CBehavior::eConditionType::eWhat));
+    }
+
 }
 
 void CWindow_AI::Display_Data(string strTitle, string strData, const ImVec4& vTitleColor, const ImVec4& vDataColor)
@@ -488,4 +557,24 @@ void CWindow_AI::Update_Personality()
 
     m_pCurSelectPlayer->Set_Personality(m_pCurSelectPersonality);
 }
+void CWindow_AI::Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_AI&)> func)
+{
+    const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
 
+    ImVec2 ViewPos(main_viewport->WorkPos);
+    ImVec2 ViewSize(main_viewport->WorkSize);
+    bool Open = true;
+    ImGuiWindowFlags WindowFlags
+        = ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysHorizontalScrollbar
+        | ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysVerticalScrollbar
+        | ImGuiWindowFlags_AlwaysAutoResize;
+
+    //ImGui::SetNextWindowPos(ImVec2(ViewSize.x - Pos.x, ViewPos.y + Pos.y));
+    //ImGui::SetNextWindowSize(Size);
+
+    ImGui::Begin(szWindowName, &Open, WindowFlags);
+    //&& ImGui::IsMouseClicked(ImGuiMouseButton_Left);
+
+    func(*this);
+    ImGui::End();
+}

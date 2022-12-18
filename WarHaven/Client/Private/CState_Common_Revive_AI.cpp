@@ -72,7 +72,10 @@ void CState_Common_Revive_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
     }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/221218_민제
     _float4 vDir = vPos - vMyPos;
     pOwner->Get_Transform()->Set_LerpLook(vDir.Normalize(), 0.4f);
 

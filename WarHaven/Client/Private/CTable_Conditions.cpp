@@ -47,13 +47,15 @@ void CTable_Conditions::Release()
 m_OtherConditions.emplace(\
 Convert_ToHash(strFunctionName),\
 bind(&CTable_Conditions::Function,\
-    this, placeholders::_1, placeholders::_2, placeholders::_3))
+    this, placeholders::_1, placeholders::_2, placeholders::_3));\
+m_vecStrConditionName[_uint(CBehavior::eConditionType::eWhen)].push_back(strFunctionName)
 
 #define Add_WhatCondition(strFunctionName, Function)\
 m_WhatConditions.emplace(\
 Convert_ToHash(strFunctionName),\
 bind(&CTable_Conditions::Function,\
-    this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4))
+    this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4));\
+m_vecStrConditionName[_uint(CBehavior::eConditionType::eWhat)].push_back(strFunctionName)
 
 HRESULT CTable_Conditions::Initialize()
 {
@@ -93,7 +95,8 @@ HRESULT CTable_Conditions::SetUp_Conditions()
     m_BehaviorTick.emplace(\
     Convert_ToHash(strBehaviorTickName),\
     bind(&CTable_Conditions::BehaviorTick,\
-        this, placeholders::_1, placeholders::_2))
+        this, placeholders::_1, placeholders::_2));\
+m_vecBehaviorTick.push_back(strBehaviorTickName);
 HRESULT CTable_Conditions::SetUp_BehaviorTick()
 {
     Add_BehaviorTick(wstring(L"EmptyBehaviorTick"), EmptyBehaviorTick);
@@ -204,6 +207,14 @@ CBehavior* CTable_Conditions::Find_Behavior(wstring strBehavior)
         Make_Dump(string("CTable_Condition"), strMsg);
         return nullptr;
     }
+}
+vector<wstring>& CTable_Conditions::Get_ConditionNames(_uint iConditionType)
+{
+    return m_vecStrConditionName[iConditionType];
+}
+vector<wstring>& CTable_Conditions::Get_BehaviorTickNames()
+{
+    return m_vecBehaviorTick;
 }
 #define CHECK_EMPTY(listname) if (listname.empty()) {OutCondition = false; return;}
 

@@ -398,7 +398,7 @@ void CPlayer::Reserve_State(_uint eState)
 	m_pCurrentUnit->Reserve_State(STATE_TYPE(eState));
 
 }
-
+ 
 void CPlayer::Set_Unit_ReserveState(_uint eClassType, _uint eState)
 {
 	m_iReserveStateDefault[eClassType] = eState;
@@ -463,15 +463,6 @@ void CPlayer::SetUp_UnitColliders(_bool bBlueTeam)
 
 void CPlayer::SetUp_UnitHitStates()
 {
-
-	//if (m_bIsMainPlayer)
-	//	m_iUnitType = 0;
-	//else
-	//{
-	//	if (m_iUnitType != (_uint)CUnit::UNIT_TYPE::eSandbag)
-	//		m_iUnitType = (_uint)CUnit::UNIT_TYPE::eAI_TG;
-	//}
-
 	for (int i = 0; i < CLASS_END; ++i)
 	{
 		if (m_pAllUnitClass[i] == nullptr)

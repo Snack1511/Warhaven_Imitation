@@ -39,7 +39,8 @@ public:
     function<void(_bool&, BEHAVIOR_DESC*&, CPlayer*, CAIController*)> Find_WhatCondition(wstring strConditionName);
     function<void(CPlayer*, CAIController*)> Find_BehaviorTick(wstring strConditionName);
     CBehavior* Find_Behavior(wstring strBehavior);
-
+    vector<wstring>& Get_ConditionNames(_uint iConditionType);
+    vector<wstring>& Get_BehaviorTickNames();
 private:
     /* 잘못된 조건명 입력 시 들어감ㅇㅇ*/
     void EmptyOtherCondition(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController) { OutCondition = true; }
@@ -78,6 +79,8 @@ private:
     map<_hashcode, function<void(_bool&, BEHAVIOR_DESC*&, CPlayer*, CAIController*)>> m_WhatConditions;
     map<_hashcode, function<void(CPlayer*, CAIController*)>> m_BehaviorTick;
     map<_hashcode, CBehavior*> m_mapAllBehaviors;
+    vector<wstring> m_vecStrConditionName[2];
+    vector<wstring> m_vecBehaviorTick;
 
 };
 END
