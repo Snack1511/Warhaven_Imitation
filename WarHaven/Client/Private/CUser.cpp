@@ -87,6 +87,7 @@ void CUser::Tick()
 	}
 
 	Update_KillLog();
+	Update_KillName();
 }
 
 CUnit* CUser::Get_Player()
@@ -398,6 +399,11 @@ void CUser::On_EnterStageLevel()
 
 			CREATE_GAMEOBJECT(m_pUI_Damage[i], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pUI_Damage[i]);
+
+			m_pKillName[i] = CUI_KillName::Create();
+
+			CREATE_GAMEOBJECT(m_pKillName[i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pKillName[i]);
 		}
 	}
 
@@ -482,7 +488,11 @@ void CUser::On_ExitStageLevel()
 		if (m_pUI_Damage[i])
 			m_pUI_Damage[i] = nullptr;
 
+		if (m_pKillName[i])
+			m_pKillName[i] = nullptr;
 	}
+	m_pKillNameList.clear();
+
 	for (int i = 0; i < 10; ++i)
 	{
 		if (m_pKillLog[i])
@@ -577,6 +587,40 @@ void CUser::Update_KillLog()
 		if (!(*iter)->Is_Valid())
 		{
 			iter = m_pKillLogList.erase(iter);
+		}
+		else
+			++iter;
+	}
+}
+
+void CUser::Add_KillName(wstring wstrEnermyName)
+{
+	CUI_KillName* pCurKillName = m_pKillName[m_iKillNameIdx++];
+
+	if (m_iKillNameIdx >= 5)
+		m_iKillNameIdx = 0;
+
+	pCurKillName->Set_KillName(wstrEnermyName);
+
+	m_pKillNameList.push_front(pCurKillName);
+
+	if (m_pKillNameList.size() > 5)
+		m_pKillNameList.pop_back();
+
+	_uint iIndex = 0;
+	for (auto& elem : m_pKillNameList)
+	{
+		elem->Set_Index(iIndex++);
+	}
+}
+
+void CUser::Update_KillName()
+{
+	for (auto iter = m_pKillNameList.begin(); iter != m_pKillNameList.end();)
+	{
+		if (!(*iter)->Is_Valid())
+		{
+			iter = m_pKillNameList.erase(iter);
 		}
 		else
 			++iter;

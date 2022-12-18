@@ -37,7 +37,8 @@ HRESULT CUI_KillLog::Start()
 		m_pVictim[i]->Set_Pos(m_vStartPosition);
 	}
 
-	m_pDeadIcon[Dead_Icon]->Set_Pos(m_vStartPosition);
+	for (int i = 0; i < Dead_End; ++i)
+		m_pDeadIcon[i]->Set_Pos(m_vStartPosition);
 
 	return S_OK;
 }
@@ -45,6 +46,8 @@ HRESULT CUI_KillLog::Start()
 void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
 {
 	m_fAccTime = 0.f;
+
+	m_pDeadIcon[Dead_Icon]->Set_PosY(m_vStartPosition.y);
 
 	ENABLE_GAMEOBJECT(this);
 	//SetActive_KillLog(true);
@@ -227,15 +230,15 @@ void CUI_KillLog::Init_AttackerText(wstring Text)
 
 	m_pAttacker[Kill_Name]->Set_PosX(fAttackerNamePos);
 
-	m_fDeadBGLeftX = fAttackerNamePos - fTextHalfSize - m_fTextBlank;
+	m_fDeadBGLeftX = fAttackerNamePos - fTextHalfSize;
 }
 
 void CUI_KillLog::Init_DeadByBG()
 {
-	_float fScaleDeadBGX = fabs(m_vStartPosition.x - m_fDeadBGLeftX);
+	_float fScaleDeadBGX = fabs(m_vStartPosition.x - m_fDeadBGLeftX) * 1.1f;
 
-	_float fPosX = m_pDeadIcon[Dead_Icon]->Get_PosX();
-	m_pDeadIcon[Dead_BG]->Set_PosX(fPosX + 5.f);
+	_float fPosX = (m_vStartPosition.x + m_fDeadBGLeftX) * 0.5f;
+	m_pDeadIcon[Dead_BG]->Set_PosX(fPosX);
 
 	m_pDeadIcon[Dead_BG]->Set_ScaleX(fScaleDeadBGX);
 }

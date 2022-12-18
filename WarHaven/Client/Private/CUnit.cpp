@@ -1401,7 +1401,6 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 
 	CUser::Get_Instance()->Add_KillLog(pOtherUnit->Get_OwnerPlayer(), m_pOwnerPlayer);
 
-
 	if (m_bIsMainPlayer)
 	{
 		CUser::Get_Instance()->Turn_HeroGaugeFire(false);
@@ -1414,12 +1413,10 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 	else
 	{
-
-
 		if (pOtherUnit->m_bIsMainPlayer)
 		{
 			wstring wstrEnermyName = m_pOwnerPlayer->Get_PlayerName();
-			//CUser::Get_Instance()->Enable_KillName(wstrEnermyName);
+			CUser::Get_Instance()->Add_KillName(wstrEnermyName);
 		}
 	}
 }

@@ -162,6 +162,9 @@ public:	// Å³·Î±×
 	void Add_KillLog(CPlayer* attacker, CPlayer* victim);
 	void Update_KillLog();
 
+	void Add_KillName(wstring wstrEnermyName);
+	void Update_KillName();
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -193,12 +196,8 @@ private:	// KillLog
 
 private:
 	list<CUI_KillName*> m_pKillNameList;
-
-	CUI_KillName* m_pKillName[3];
-
+	CUI_KillName* m_pKillName[5];
 	_uint m_iKillNameIdx = 0;
-	int m_iPrvKillNameIdx = -1;
-	int m_iCurKillNameIdx = 0;
 
 
 private:
