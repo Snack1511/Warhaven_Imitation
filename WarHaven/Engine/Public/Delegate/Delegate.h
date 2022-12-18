@@ -70,6 +70,16 @@ public:
 		functions.clear();
 	}
 
+	bool Empty()
+	{
+		return functions.empty();
+	}
+
+	size_t Size()
+	{
+		return functions.size();
+	}
+
 
 private:
 	std::list<std::function<void(ARGS...)>> functions;

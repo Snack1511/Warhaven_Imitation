@@ -70,7 +70,7 @@ public:
 		functions.clear();
 	}
 
-	bool Empty() 
+	bool Empty()
 	{
 		return functions.empty();
 	}
@@ -79,6 +79,7 @@ public:
 	{
 		return functions.size();
 	}
+
 
 private:
 	std::list<std::function<void(ARGS...)>> functions;
