@@ -108,7 +108,7 @@ STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
         break;
     case Client::CRevive_Player::LOOP:
-        if (KEY(F, NONE))
+        if (m_fTimeAcc >= 4.f)
         {
             m_eCurPhase = PHASE_END;
             m_iAnimIndex = 30;

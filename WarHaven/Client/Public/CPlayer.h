@@ -248,7 +248,7 @@ private:
 	_bool	m_bReborn = false;
 	_bool	m_bAbleRevival = false;
 	_float		m_fRevivalAcc = 0.f;
-	_float		m_fMaxRevivalTime = 5.f;
+	_float		m_fMaxRevivalTime = 10.f;
 private:
 	CUnit* m_pCurrentUnit = nullptr;
 	CCamera_Follow* m_pFollowCam = nullptr;

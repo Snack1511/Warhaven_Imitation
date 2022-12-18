@@ -976,14 +976,6 @@ void CPlayer::My_LateTick()
 		m_pTransform->Set_World(WORLD_POS, vUnitPosition);
 	}
 
-	if (!m_bIsMainPlayer)
-		return;
-
-	if (m_bDie && KEY(ENTER, TAP))
-	{
-		m_pCurrentUnit->Start_Reborn();
-	}
-
 }
 
 void CPlayer::Update_HP()
@@ -1175,34 +1167,29 @@ void CPlayer::Check_AbleRevival()
 		m_fRevivalAcc += fDT(0);
 		if (m_fRevivalAcc >= m_fMaxRevivalTime)
 		{
-			//리스폰..
-			if (m_bIsMainPlayer)
-			{
-			}
+			/*if (m_bIsLeaderPlayer)
+				Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
 			else
 			{
-				
+				CPath* pPath = m_pMySquad->Get_LeaderPlayer()->Get_CurPath();
 
-				if (m_bIsLeaderPlayer)
-					Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
-				else
+				if (nullptr == pPath)
 				{
-					CPath* pPath = m_pMySquad->Get_LeaderPlayer()->Get_CurPath();
-
-					if (nullptr == pPath)
-					{
-						pPath = CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType());
-						Set_NewPath(pPath);
-					}
-					else
-						Set_NewPath(pPath->Clone());
-
-
+					pPath = CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType());
+					Set_NewPath(pPath);
 				}
+				else
+					Set_NewPath(pPath->Clone());
 
+
+			}*/
+			if (!m_bIsMainPlayer)
+			{
 				_float4 vStartPos = m_pMyTeam->Find_RespawnPosition_Start();
 				Respawn_Unit(vStartPos, m_eCurrentClass);
 			}
+			
+
 
 		}
 	}
