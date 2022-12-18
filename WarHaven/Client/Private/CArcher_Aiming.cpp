@@ -74,24 +74,23 @@ HRESULT CArcher_Aiming::Initialize()
 	m_iJumpFallLeftIndex = 0;
 
 
-	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 17;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 18;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 19;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 20;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 34;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 35;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 36;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 21;
-	
-	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 26;
-	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 27;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 28;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 29;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 28;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 29;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 30;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 31;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 32;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 33;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 34;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 35;
+
+	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 38;
+	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 41;
 	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 42;
 	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 43;
 	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 44;
-	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 30;
-
+	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 45;
 
 	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 38;
 	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 39;
@@ -130,31 +129,31 @@ HRESULT CArcher_Aiming::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 
-	m_eWalkState = STATE_ATTACK_AIMING_ARCHER;
-	m_eJumpState = STATE_ATTACK_AIMING_ARCHER;
-	m_eLandState = STATE_ATTACK_AIMING_ARCHER;
-	m_eFallState = STATE_ATTACK_AIMING_ARCHER;
-	m_eRunState = STATE_ATTACK_AIMING_ARCHER;
-	m_eIdleState = STATE_IDLE_ARCHER_R;
-	m_eBounceState = STATE_BOUNCE_ARCHER;
-
-	//m_eWalkState = STATE_WALK_ARCHER_R;
-	//m_eJumpState = STATE_JUMP_ARCHER_R;
+	//m_eWalkState = STATE_ATTACK_AIMING_ARCHER;
+	//m_eJumpState = STATE_ATTACK_AIMING_ARCHER;
 	//m_eLandState = STATE_JUMP_LAND_ARCHER_R;
-	//m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	//m_eRunState = STATE_WALK_ARCHER_R;
+	//m_eFallState = STATE_ATTACK_AIMING_ARCHER;
+	//m_eRunState = STATE_ATTACK_AIMING_ARCHER;
 	//m_eIdleState = STATE_IDLE_ARCHER_R;
-	//m_eBounceState = STATE_WALK_ARCHER_R;
+	//m_eBounceState = STATE_BOUNCE_ARCHER;
+
+	m_eWalkState = STATE_WALK_ARCHER_R;
+	m_eJumpState = STATE_JUMP_ARCHER_R;
+	m_eLandState = STATE_JUMP_LAND_ARCHER_R;
+	m_eFallState = STATE_JUMPFALL_ARCHER_R;
+	m_eRunState = STATE_WALK_ARCHER_R;
+	m_eIdleState = STATE_IDLE_ARCHER_R;
+	m_eBounceState = STATE_WALK_ARCHER_R;
 
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.25f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 0.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.5f;
 
     return __super::Initialize();
 }
@@ -163,9 +162,11 @@ void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 {
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+	
 
 	if (ePrevType == m_eStateType)
 	{		
+		
 		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, FLT_MAX, FLT_MAX);
 		pOwner->Set_AnimWeaponFrame(102);
 	}

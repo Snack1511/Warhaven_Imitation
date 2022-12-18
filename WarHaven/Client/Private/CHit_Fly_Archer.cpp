@@ -58,6 +58,9 @@ HRESULT CHit_Fly_Archer::Initialize()
 
 void CHit_Fly_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
+    pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
+
     /* 날 때린놈의 hit info를 받았다. */
 
     m_tHitInfo = *((HIT_INFO*)(pData));

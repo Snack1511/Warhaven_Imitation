@@ -58,20 +58,21 @@ HRESULT CState_Common_Revive_AI::Initialize()
 void CState_Common_Revive_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
     CPlayer* pAbjPlayer = pOwner->Get_RevivalPlayer();
-    
+    _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+    _float4 vPos = vMyPos;
     if (pAbjPlayer)
     {
         pAbjPlayer->Get_CurrentUnit()->Start_Reborn();
+        vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
     }
     else
     {
         m_eCurPhase = DANCE;
         m_iAnimIndex = 9;
     }
-        
 
-    _float4 vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
-    _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+
+
     _float4 vDir = vPos - vMyPos;
     pOwner->Get_Transform()->Set_LerpLook(vDir.Normalize(), 0.4f);
 

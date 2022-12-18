@@ -21,6 +21,8 @@ HRESULT CJump_Paladin::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 20.f;
 
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_PALADIN);
 
     return S_OK;

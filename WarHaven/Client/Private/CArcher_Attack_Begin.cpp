@@ -68,8 +68,8 @@ HRESULT CArcher_Attack_Begin::Initialize()
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
 
-	//Add_KeyFrame(33, 1);
-	//Add_KeyFrame(50, 2);
+	Add_KeyFrame(30, 1);
+	Add_KeyFrame(90, 2);
 
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */
@@ -136,13 +136,13 @@ HRESULT CArcher_Attack_Begin::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 
-	m_eWalkState = STATE_ATTACK_AIMING_ARCHER;
-	m_eJumpState = STATE_ATTACK_AIMING_ARCHER;
-	m_eLandState = STATE_ATTACK_AIMING_ARCHER;
-	m_eFallState = STATE_ATTACK_AIMING_ARCHER;
-	m_eRunState = STATE_ATTACK_AIMING_ARCHER;
+	m_eWalkState = STATE_WALK_ARCHER_R;
+	m_eJumpState = STATE_JUMP_ARCHER_R;
+	m_eLandState = STATE_JUMP_LAND_ARCHER_R;
+	m_eFallState = STATE_JUMPFALL_ARCHER_R;
+	m_eRunState = STATE_WALK_ARCHER_R;
 	m_eIdleState = STATE_IDLE_ARCHER_R;
-	m_eBounceState = STATE_ATTACK_AIMING_ARCHER;
+	m_eBounceState = STATE_WALK_ARCHER_R;
 
 	//m_eWalkState = STATE_WALK_ARCHER_R;
 	//m_eJumpState = STATE_JUMP_ARCHER_R;
@@ -169,16 +169,16 @@ void CArcher_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 {
 
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
-	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
+	pOwner->Get_Status().fBackStepSpeed = pOwner->Get_Status().fWalkSpeed;
+	
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed * 0.35f;
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fRunSpeed;
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, m_fInterPolationTime, m_fAnimSpeed);
 
-	if (ePrevType != STATE_IDLE_ARCHER_R)
-	{
-		int a = 0;
-	}
+	m_bMoveTrigger = false;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -187,12 +187,12 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	// pOwner->Set_BounceState(STATE_BOUNCE_ARCHER_R);
 
-	if (pAnimator->Get_CurAnimFrame() > 100)
+	if (m_bMoveTrigger)
 		return STATE_ATTACK_AIMING_ARCHER;
 
 	if (KEY(LBUTTON, AWAY))
 	{
-		if(pAnimator->Get_CurAnimFrame() > 30)
+		if(m_bAttackTrigger)
 			return STATE_ATTACK_SHOOT_ARCHER;
 		else 
 			return STATE_ATTACK_CANCEL_ARCHER;
@@ -210,7 +210,6 @@ void CArcher_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     //Exit에선 무조건 남겨놔야함
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
-	static_cast<CUnit_Archer*>(pOwner)->Change_ArrowPhase(CProjectile::ePROJECTILE_PHASE::eLOOP);
 
     pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
@@ -238,23 +237,19 @@ void CArcher_Attack_Begin::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimato
 	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
 
-	//switch (iSequence)
-	//{
+	switch (iSequence)
+	{
 
-	//case 1:
-	//	
+	case 1:
+		m_bAttackTrigger = true;
+		break;
 
-	//	m_bAttackTrigger = true;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
+	case 2:
+		m_bMoveTrigger = true;
+		break;
 
-	//case 2:
-	//	m_bAttackTrigger = false;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//default:
-	//	break;
-	//}
+	default:
+		break;
+	}
 
 }

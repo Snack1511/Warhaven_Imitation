@@ -19,6 +19,8 @@ CRun_Paladin::~CRun_Paladin()
 HRESULT CRun_Paladin::Initialize()
 {
 
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 

@@ -76,6 +76,12 @@ void CState_Common_GuardHit_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CState_Common_GuardHit_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
+
     if (m_bAttackTrigger)
         return AI_STATE_COMBAT_SPINATTACK_FIONA;
 

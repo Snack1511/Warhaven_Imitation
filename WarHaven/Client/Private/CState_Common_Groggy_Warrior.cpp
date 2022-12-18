@@ -75,9 +75,11 @@ void CState_Common_Groggy_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CState_Common_Groggy_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-    if(pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
 
     return __super::Tick(pOwner, pAnimator);
 }

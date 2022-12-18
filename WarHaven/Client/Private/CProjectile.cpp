@@ -20,6 +20,7 @@ CProjectile::~CProjectile()
 
 void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	int a = 0;
 }
 
 void CProjectile::Projectile_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -45,7 +46,8 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 	GET_COMPONENT(CPhysics)->Set_Speed(0.f);
 	On_ChangePhase(eSTART);
-	
+	ENABLE_GAMEOBJECT(this);
+
 }
 
 HRESULT CProjectile::Initialize_Prototype()
@@ -98,12 +100,13 @@ void CProjectile::On_ShootProjectile()
 {
 
 
-	_float4 vLook = m_pTransform->Get_World(WORLD_LOOK);
+	_float4 vLook = m_pOwnerUnit->Get_FollowCamLook(); //m_pCurStickBone->Get_BoneMatrix().XMLoad().r[0];//->Get_Transform()->Get_World(WORLD_LOOK);
 	GET_COMPONENT(CPhysics)->Set_Dir(vLook);
 	GET_COMPONENT(CPhysics)->Set_SpeedasMax();
 	ENABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 
 	On_ChangePhase(eSHOOT);
+
 
 	
 }
@@ -141,8 +144,9 @@ HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 	_float4x4 matIdentity;
 	matIdentity.Identity();
 
+	// 회전각 인자 만들어주기.
 	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, wstrModelFilePath,
-		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(0.0f)) * XMMatrixRotationX(XMConvertToRadians(0.0f))
+		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(270.f)) * XMMatrixRotationX(XMConvertToRadians(90.0f))
 	);
 
 	if (!pModel)
@@ -160,7 +164,7 @@ HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 
 HRESULT CProjectile::SetUp_Colliders(COL_GROUP_CLIENT eColType)
 {
-	_float fRadius = 0.1f;
+	_float fRadius = 1.f;
 	_float4 vOffsetPos = ZERO_VECTOR;
 	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, eColType, vOffsetPos, DEFAULT_TRANS_MATRIX);
 	vOffsetPos.z += fRadius;
@@ -170,6 +174,7 @@ HRESULT CProjectile::SetUp_Colliders(COL_GROUP_CLIENT eColType)
 	vOffsetPos.z += fRadius;
 	pCollider->Add_Collider(fRadius, vOffsetPos);
 	Add_Component(pCollider);
+
 
 
 	return S_OK;
@@ -190,6 +195,26 @@ void CProjectile::My_LateTick()
 		m_pTransform->Get_Transform().matMyWorld = matBone;
 
 		m_pTransform->Make_WorldMatrix();
+	}
+	else
+	{
+
+		//if (vShootLook != ZERO_VECTOR)
+		//{
+		//	CTransform* pMyTransform = Get_Transform();
+		//	CPhysics* pMyPhysicsCom = m_pOwnerUnit->Get_PhysicsCom();
+
+		//	Get_Transform()->Set_LerpLook(vShootLook, 0.4f);
+
+		//	m_pPhysics->Set_MaxSpeed(m_fMaxSpeed);
+
+		//	if (!vShootLook.Is_Zero())
+		//		m_pPhysics->Set_Dir(vShootLook);
+
+		//	m_pPhysics->Set_Accel(20.f);
+		//}
+
+		
 	}
 	
 }

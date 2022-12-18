@@ -10,6 +10,7 @@
 #include "CSword_Effect.h"
 #include "CColorController.h"
 
+#include "CUnit_Archer.h"
 
 CArcher_ClawAttack::CArcher_ClawAttack()
 {
@@ -42,7 +43,7 @@ HRESULT CArcher_ClawAttack::Initialize()
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.3f;
-	m_iStateChangeKeyFrame = 100;
+	m_iStateChangeKeyFrame = 70;
 
 	m_vecAdjState.push_back(STATE_IDLE_ARCHER_R);
 	m_vecAdjState.push_back(STATE_WALK_ARCHER_R);
@@ -63,6 +64,7 @@ HRESULT CArcher_ClawAttack::Initialize()
 
 	Add_KeyFrame(41, 1);
 	Add_KeyFrame(m_iAttackEndIndex, 2);
+	Add_KeyFrame(100, 3);
 
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */
@@ -156,6 +158,11 @@ void CArcher_ClawAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
 	pOwner->On_Use(CUnit::SKILL1);
 
+	m_bMoveTrigger = false;
+
+	static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(false);
+
+
 	pOwner->Set_BounceState(STATE_BOUNCE_ARCHER);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -163,11 +170,19 @@ void CArcher_ClawAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 STATE_TYPE CArcher_ClawAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (m_bMoveTrigger || pAnimator->Is_CurAnimFinished())
+	{
+		STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+		return eDefaultState;
+	}
+
 	return __super::Tick(pOwner, pAnimator);
 }
 
 void CArcher_ClawAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(true);
+
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
@@ -177,11 +192,6 @@ STATE_TYPE CArcher_ClawAttack::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 	if(!pOwner->Can_Use(CUnit::SKILL1))
 		return STATE_END;
 
-	//return __super::Check_Condition(pOwner, pAnimator);
-
-	/* VALKYRIE가 Attack 으로 오는 조건
-	1.  LBuutton 을 이용해 공격한다.
-	*/
 	if (MOUSE_MOVE(MMS_WHEEL) < 0)
 	{
 		return m_eStateType;
@@ -205,6 +215,10 @@ void CArcher_ClawAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, c
 		m_bAttackTrigger = false;
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 		break;
+
+	case 3:
+		m_bMoveTrigger = true;
+
 
 	default:
 		break;

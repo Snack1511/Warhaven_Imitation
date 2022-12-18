@@ -32,7 +32,11 @@ protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
 public:
+	void			Enable_Arrow(_bool bEnable);
+
+public:
 	void			Create_DefaultArrow();
+	void			Create_PurpleArrow();
 	void			Change_ArrowPhase(_uint iPhase);
 	void			Shoot_Arrow();
 

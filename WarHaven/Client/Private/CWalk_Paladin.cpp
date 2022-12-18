@@ -21,6 +21,8 @@ HRESULT CWalk_Paladin::Initialize()
 {
     m_fInterPolationTime = 0.2f;
 
+    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 

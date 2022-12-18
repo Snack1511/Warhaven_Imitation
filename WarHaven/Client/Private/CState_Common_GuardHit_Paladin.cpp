@@ -72,6 +72,12 @@ void CState_Common_GuardHit_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, 
 
 STATE_TYPE CState_Common_GuardHit_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
+
     if (m_bAttackTrigger)
         return AI_STATE_COMBAT_SHIELDWALL_HIT_PALADIN;
 
