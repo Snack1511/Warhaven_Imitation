@@ -115,6 +115,11 @@ _float4 CPath::Get_LatestPosition()
     return m_vecPositions[m_iCurIndex];
 }
 
+void CPath::Set_Arrived()
+{
+    m_iCurIndex = m_iNumPositions - 1;
+    m_iPrevIndex = m_iCurIndex - 1;
+}
 _float4 CPath::Get_FrontPosition()
 {
     if (m_vecPositions.empty())

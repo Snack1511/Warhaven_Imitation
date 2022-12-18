@@ -17,7 +17,13 @@ class CBehavior
 	friend class CTable_Conditions;
 
 	DECLARE_PROTOTYPE(CBehavior)
-
+public:
+	enum class eConditionType
+	{
+		eWhen,
+		eWhat,
+		eCount,
+	};
 protected:
 	CBehavior(eBehaviorType BehaviorType, CTable_Conditions* pTable);
 	CBehavior(const CBehavior& rhs);
@@ -35,8 +41,11 @@ public:
 public:
 	void Add_WhatCondition(wstring strWhatConditionName);
 	void Add_OtherCondition(wstring strOtherConditionName);
+	void Add_Condition(wstring strConditionName, eConditionType eType);
 	void Add_BehaviorTick(wstring strBehaviorTickName);
 	void Set_Priority(_int iPriorityScore);
+
+	void Clear_Condition(eConditionType eType);
 
 	BEHAVIOR_DESC* Check_Condition(_bool& bOut, CPlayer* pPlayer, CAIController* pAIController);
 
@@ -44,6 +53,8 @@ public:
 	BEHAVIOR_DESC* Get_BehaviorDesc() { return m_pBehaviorDesc; }
 	wstring Get_BehaviorName() { return m_strDebugBehaviorName; }
 	void Set_BehaviorName(wstring strDebugNames) { m_strDebugBehaviorName = strDebugNames; }
+	vector<wstring>& Get_ConditionNames(eConditionType eType);
+	vector<wstring>& Get_BehaviorTickNames();
 public:
 	//타겟과 관련된 조건검사
 	CDelegate <_bool&, BEHAVIOR_DESC* & , CPlayer*, CAIController*>Callback_WhatCondition;
@@ -53,6 +64,8 @@ public:
 	CDelegate<CPlayer*, CAIController*> Callback_BehaviorTick;
 
 private:
+	vector<wstring> m_strConditionName[_uint(eConditionType::eCount)];
+	vector<wstring> m_strBehaviorTickName;
 	BEHAVIOR_DESC* m_pBehaviorDesc = nullptr;
 	eBehaviorType m_eBehaviorType = eBehaviorType::ePatrol;
 	_uint m_iStateType = 0;
