@@ -41,12 +41,6 @@ HRESULT CUI_KillLog::Start()
 	return S_OK;
 }
 
-
-void CUI_KillLog::Set_OriginPosY()
-{
-	m_pDeadByIcon->Set_PosY(m_fKillLogPosY);
-}
-
 void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
 {
 	m_fAccTime = 0.f;
@@ -111,23 +105,6 @@ void CUI_KillLog::Set_LogName(CPlayer* attacker, CPlayer* victim)
 
 	_bool IsDeadByHeadshot = victim->IsDeadByHeadshot();
 	GET_COMPONENT_FROM(m_pDeadByIcon, CTexture)->Set_CurTextureIndex(IsDeadByHeadshot);
-
-
-}
-
-void CUI_KillLog::Enable_KillUI()
-{
-	SetActive_KillLog(true);
-}
-
-void CUI_KillLog::MoveUp_KillLog()
-{
-	if (!m_pDeadByIcon)
-		return;
-
-	_float4 vPos = m_pDeadByIcon->Get_Pos();
-	vPos.y += 35.f;
-	m_pDeadByIcon->DoMove(vPos, 0.5f, 0);
 }
 
 void CUI_KillLog::My_Tick()
@@ -182,7 +159,7 @@ void CUI_KillLog::OnEnable()
 {
 	__super::OnEnable();
 
-	Enable_KillUI();
+	SetActive_KillLog(true);
 }
 
 void CUI_KillLog::OnDisable()
@@ -219,7 +196,7 @@ void CUI_KillLog::Init_VictimText(wstring Text)
 	_float fVictimPosX = m_vStartPosition.x - fTextHalfSize;
 	m_pVictim[Kill_Name]->Set_PosX(fVictimPosX);
 
-	_float IconPos = fVictimPosX - fTextHalfSize - m_fIconBlank;
+	_float IconPos = fVictimPosX - fTextHalfSize - m_fTextBlank;
 	m_pVictim[Kill_Icon]->Set_PosX(IconPos);
 
 	m_pDeadByIcon->Set_PosX(IconPos - m_fIconBlank);
@@ -230,10 +207,9 @@ void CUI_KillLog::Init_AttackerText(wstring Text)
 	_float fAttackerIconPosX = m_pDeadByIcon->Get_PosX() - m_fIconBlank;
 	m_pAttacker[Kill_Icon]->Set_PosX(fAttackerIconPosX);
 
-
 	m_pAttacker[Kill_Name]->Set_FontText(Text);
 	_float fTextHalfSize = m_pAttacker[Kill_Name]->Get_FontSizeX() * 0.5f;
-	_float fAttackerNamePos = fAttackerIconPosX - m_fIconBlank - fTextHalfSize;
+	_float fAttackerNamePos = fAttackerIconPosX - m_fTextBlank - fTextHalfSize;
 
 	m_pAttacker[Kill_Name]->Set_PosX(fAttackerNamePos);
 }

@@ -21,12 +21,7 @@ public:
 
 public:
 	void Set_KillLogIndex(_uint iIndex) { m_iCurIndex = iIndex; }
-	void Set_OriginPosY();
 	void Set_LogName(CPlayer* attacker, CPlayer* victim);
-
-	void Enable_KillUI();
-
-	void MoveUp_KillLog();
 
 private:
 	virtual void My_Tick() override;
@@ -50,16 +45,12 @@ private:
 
 	_bool m_bIsDisable = false;
 
-	_float m_fKillLogPosY = 250.f;
-
 	_float4 vColorRed = _float4(0.75f, 0.2f, 0.2f, 1.f);
 	_float4 vColorBlue = _float4(0.15f, 0.5f, 0.6f, 1.f);
 	_float4 vColorGreen = _float4(0.f, 0.4f, 0.2f, 1.f);
 
-	_float4 vDeadByPos;
-	_float m_fTextPt = 8.f;
 	_float m_fIconBlank = 20.f;
-	_float m_fWhitespace = 20.f;
+	_float m_fTextBlank = 15.f;
 
 private:
 	enum KillLog { Kill_Icon, Kill_Name, Kill_End };

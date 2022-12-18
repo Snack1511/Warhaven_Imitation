@@ -491,10 +491,12 @@ void CUser::On_ExitStageLevel()
 		if (m_pUI_Damage[i])
 			m_pUI_Damage[i] = nullptr;
 
+	}
+	for (int i = 0; i < 10; ++i)
+	{
 		if (m_pKillLog[i])
 			m_pKillLog[i] = nullptr;
 	}
-
 	m_pKillLogList.clear();
 
 	for (_uint i = 0; i < 3; ++i)

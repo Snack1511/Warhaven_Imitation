@@ -197,7 +197,6 @@ private:	// KillLog
 	CUI_KillLog* m_pKillLog[10];
 	_uint m_iKillLogIdx = 0;
 
-
 private:
 	list<CUI_KillName*> m_pKillNameList;
 
