@@ -160,12 +160,6 @@ public:		// 알림
 
 public:	// 킬로그
 	void Add_KillLog(CPlayer* attacker, CPlayer* victim);
-
-
-
-
-	void Enable_KillName(wstring enermyName);
-
 	void Update_KillLog();
 
 private:

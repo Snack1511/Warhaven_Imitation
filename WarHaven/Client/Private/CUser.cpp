@@ -85,6 +85,8 @@ void CUser::Tick()
 
 		ShowCursor(bShowCursor);
 	}
+
+	Update_KillLog();
 }
 
 CUnit* CUser::Get_Player()
@@ -565,32 +567,6 @@ void CUser::Add_KillLog(CPlayer* attacker, CPlayer* victim)
 	for (auto& elem : m_pKillLogList)
 	{
 		elem->Set_KillLogIndex(iIndex++);
-	}
-}
-
-void CUser::Enable_KillName(wstring enermyName)
-{
-	m_iPrvKillNameIdx = m_iCurKillNameIdx;
-	m_iCurKillNameIdx = m_iKillNameIdx;
-
-	m_pKillName[m_iKillNameIdx]->Set_OriginPosY();
-	m_pKillName[m_iKillNameIdx]->Enable_KillName(enermyName);
-
-	m_pKillNameList.push_back(m_pKillName[m_iKillNameIdx]);
-
-	m_iKillNameIdx++;
-	if (m_iKillNameIdx > 4)
-	{
-		m_pKillNameList.pop_front();
-		m_iKillNameIdx = 0;
-	}
-
-	if (m_pKillNameList.size() > 0)
-	{
-		for (auto& iter : m_pKillNameList)
-		{
-			// iter->MoveUp_KillLog();
-		}
 	}
 }
 

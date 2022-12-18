@@ -235,7 +235,7 @@ void CUI_KillLog::Init_DeadByBG()
 	_float fScaleDeadBGX = fabs(m_vStartPosition.x - m_fDeadBGLeftX);
 
 	_float fPosX = m_pDeadIcon[Dead_Icon]->Get_PosX();
-	m_pDeadIcon[Dead_BG]->Set_PosX(fPosX + 5.5f);
+	m_pDeadIcon[Dead_BG]->Set_PosX(fPosX + 5.f);
 
 	m_pDeadIcon[Dead_BG]->Set_ScaleX(fScaleDeadBGX);
 }
