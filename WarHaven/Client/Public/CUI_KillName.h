@@ -29,8 +29,8 @@ private:
 private:
 	_uint m_iIndex = 0;
 
-	_float4	m_vStartPosition = _float4(0.f, -100.f, 0.5f, 1.f);
-	_float	m_fStepY = 30.f;
+	_float4	m_vStartPosition = _float4(0.f, -150.f, 0.5f, 1.f);
+	_float	m_fStepY = 25.f;
 
 	_bool m_bIsDisable = false;
 	_float m_fDisableTime = 3.f;

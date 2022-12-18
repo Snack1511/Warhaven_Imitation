@@ -129,7 +129,7 @@ void CUI_KillName::Create_KillNameUI()
 		case Text_Kill:
 
 			m_pKillNameUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Kill.png"));
-			m_pKillNameUI[i]->Set_Scale(70.f, 48.f);
+			m_pKillNameUI[i]->Set_Scale(66.f, 44.f);
 			m_pKillNameUI[i]->Set_Sort(0.5f);
 
 			break;
