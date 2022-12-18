@@ -82,19 +82,25 @@ HRESULT CRevive_Player::Initialize()
 
 void CRevive_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    pOwner->Get_RevivalPlayer()->Get_CurrentUnit()->Start_Reborn();
+    if (pOwner->Get_RevivalPlayer())
+    {
+        pOwner->Get_RevivalPlayer()->Get_CurrentUnit()->Start_Reborn();
 
 
-    _float4 vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
-    _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-    _float4 vDir = vPos - vMyPos;
-    pOwner->Get_Transform()->Set_LerpLook(vDir.Normalize(), 0.4f);
+        _float4 vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
+        _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+        _float4 vDir = vPos - vMyPos;
+        pOwner->Get_Transform()->Set_LerpLook(vDir.Normalize(), 0.4f);
+    }
+   
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    m_fTimeAcc += fDT();
+
     switch (m_eCurPhase)
     {
     case Client::CRevive_Player::BEGIN:
@@ -102,7 +108,7 @@ STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         if (pAnimator->Is_CurAnimFinished())
         {
             m_eCurPhase = LOOP;
-            m_iAnimIndex = 29;
+            m_iAnimIndex = 30;
             __super::Enter(pOwner, pAnimator, m_eStateType);
         }
 
@@ -111,7 +117,7 @@ STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         if (m_fTimeAcc >= 4.f)
         {
             m_eCurPhase = PHASE_END;
-            m_iAnimIndex = 30;
+            m_iAnimIndex = 29;
             __super::Enter(pOwner, pAnimator, m_eStateType);
         }
 
@@ -144,6 +150,7 @@ STATE_TYPE CRevive_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     /* Player가 Idle로 오는 조건
     1. 현재 진행중인 애니메이션이 끝났을 때
     */
+
     if (pOwner->Get_RevivalPlayer())
     {
         if (KEY(F, TAP))

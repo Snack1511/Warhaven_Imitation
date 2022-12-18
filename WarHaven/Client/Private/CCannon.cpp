@@ -61,7 +61,8 @@ HRESULT CCannon::Initialize_Prototype()
 	pModel->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
 
-	CCollider_Sphere* pCollider = CCollider_Sphere::Create(0, 3.f, COL_CANNON, _float4(0.f, 1.f, 0.f), DEFAULT_TRANS_MATRIX);
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(0, 2.f, COL_CANNON, _float4(0.f, 1.f, 0.f), DEFAULT_TRANS_MATRIX);
+	pCollider->Initialize();
 	Add_Component(pCollider);
 
 
@@ -84,8 +85,17 @@ HRESULT CCannon::Start()
     return S_OK;
 }
 
+_float4 CCannon::Get_ControlPos()
+{
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos -= m_pTransform->Get_World(WORLD_LOOK) * 1.f;
+	vPos.y += 1.f;
+	return vPos;
+}
+
 void CCannon::Control_Cannon(CPlayer* pPlayer)
 {
+	m_pCurOwnerPlayer = pPlayer;
 }
 
 void CCannon::Shoot_Cannon()

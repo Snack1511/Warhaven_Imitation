@@ -195,6 +195,7 @@
     <ClInclude Include="..\public\CCannon.h" />
     <ClInclude Include="..\public\CDefaultArrow.h" />
     <ClInclude Include="..\public\CFadeDark.h" />
+    <ClInclude Include="..\public\CState_Cannon_Player.h" />
     <ClInclude Include="..\Public\CState_Common_Slide_Begin_AI.h" />
     <ClInclude Include="..\Public\CState_Common_Slide_End_AI.h" />
     <ClInclude Include="..\Public\CState_Common_Slide_Loop_AI.h" />
@@ -994,6 +995,7 @@
     <ClCompile Include="..\private\CCannon.cpp" />
     <ClCompile Include="..\private\CDefaultArrow.cpp" />
     <ClCompile Include="..\private\CFadeDark.cpp" />
+    <ClCompile Include="..\private\CState_Cannon_Player.cpp" />
     <ClCompile Include="..\Private\CState_Common_Slide_Begin_AI.cpp" />
     <ClCompile Include="..\Private\CState_Common_Slide_End_AI.cpp" />
     <ClCompile Include="..\Private\CState_Common_Slide_Loop_AI.cpp" />

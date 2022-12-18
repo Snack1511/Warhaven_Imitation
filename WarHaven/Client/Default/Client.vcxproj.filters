@@ -3004,6 +3004,9 @@
     <Filter Include="03. Instances\02. GameObject\12. Cannon">
       <UniqueIdentifier>{4d46a422-4230-4fa7-aea9-46a96ccf6de2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Cannon">
+      <UniqueIdentifier>{b71a58be-def7-4c40-91c0-42611b86a169}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5397,6 +5400,9 @@
     <ClInclude Include="..\public\CCannon.h">
       <Filter>03. Instances\02. GameObject\12. Cannon</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CState_Cannon_Player.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Cannon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -7770,6 +7776,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CCannon.cpp">
       <Filter>03. Instances\02. GameObject\12. Cannon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CState_Cannon_Player.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Cannon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

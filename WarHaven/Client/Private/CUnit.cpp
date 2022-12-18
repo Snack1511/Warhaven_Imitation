@@ -70,7 +70,13 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 {
 	if (eOtherColType == COL_REVIVE)
 	{
+		if (pOtherObj == m_pOwnerPlayer)
+			return;
+
 		m_pAdjRevivalPlayer = static_cast<CPlayer*>(pOtherObj);
+
+
+
 		if (m_pAdjRevivalPlayer->Get_Team() != m_pOwnerPlayer->Get_Team())
 			m_pAdjRevivalPlayer = nullptr;
 
@@ -173,6 +179,9 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 {
 	if (eOtherColType == COL_REVIVE)
 	{
+		if (pOtherObj == m_pOwnerPlayer)
+			return;
+
 		if (static_cast<CPlayer*>(pOtherObj)->Get_Team() == m_pOwnerPlayer->Get_Team())
 			m_pAdjRevivalPlayer = nullptr;
 

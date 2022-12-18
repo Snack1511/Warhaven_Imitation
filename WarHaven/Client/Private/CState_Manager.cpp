@@ -402,6 +402,7 @@
 
 #include "CPaladin_Attack_ShieldSlam.h"
 
+#include "CState_Cannon_Player.h"
 
 #include "CGuard_Begin_Paladin.h"
 #include "CGuard_Loop_Paladin.h"
@@ -781,6 +782,7 @@ HRESULT CState_Manager::Initialize()
 
 	m_arrStates[STATE_VICTORY] = CState_Victory::Create();
 	m_arrStates[STATE_DEFEAT] = CState_Defeat::Create();
+	m_arrStates[STATE_CANNON_PLAYER] = CState_Cannon_Player::Create();
 	m_arrStates[AI_STATE_COMMON_REVIVE_AI] = CState_Common_Revive_AI::Create();
 
 	m_arrStates[AI_STATE_COMMON_SLIDEBEGIN_AI] = CState_Common_Slide_Begin_AI::Create();

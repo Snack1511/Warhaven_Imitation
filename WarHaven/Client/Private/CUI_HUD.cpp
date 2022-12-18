@@ -158,7 +158,8 @@ void CUI_HUD::Active_CharacterWindow()
 {
 	if (m_pUI_CharacterWindow)
 	{
-		if (KEY(F, TAP))
+
+		if (KEY(F, TAP) && m_pHUD[0]->Is_Valid())
 		{
 			m_pUI_CharacterWindow->SetActive_CharacterWindow(false);
 			SetActive_HUD(true);

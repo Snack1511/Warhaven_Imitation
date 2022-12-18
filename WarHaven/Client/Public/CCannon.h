@@ -34,6 +34,7 @@ public:
 	virtual HRESULT Start() override;
 
 public:
+	_float4		Get_ControlPos();
 	void		Control_Cannon(CPlayer* pPlayer);
 	void		Shoot_Cannon();
 

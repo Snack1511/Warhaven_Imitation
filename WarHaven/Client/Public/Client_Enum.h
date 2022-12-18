@@ -310,6 +310,7 @@ namespace Client
 	{
 		NO_PATTERN, // ลอม๘ดู.
 
+		STATE_CANNON_PLAYER,
 		STATE_VICTORY,
 		STATE_DEFEAT,
 		AI_STATE_COMMON_REVIVE_AI,
