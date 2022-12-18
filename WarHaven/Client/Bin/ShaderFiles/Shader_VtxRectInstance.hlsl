@@ -24,7 +24,7 @@ float		g_fDiscardPower = 0.01f;
 
 vector		g_vPlusColor;
 float		g_fColorPower;
-
+float		g_fColorPowerControl;
 
 struct VS_IN
 {
@@ -567,9 +567,9 @@ PS_OUT PS_COLORPOWER_DECREASE(PS_IN In)
 		Out.vDiffuse.xyz = In.vColor.xyz;
 
 	Out.vDiffuse.xyz += g_vPlusColor.xyz;
-	Out.vDiffuse.xyz *= (g_fColorPower * In.vColor.a);
+	Out.vDiffuse.xyz *= g_fColorPowerControl;
 
-	//Out.vDiffuse.a *= In.vColor.a;
+	Out.vDiffuse.a *= In.vColor.a;
 
 	if (Out.vDiffuse.a < g_fDiscardPower)
 		discard;

@@ -22,6 +22,7 @@
 #include "CInstanceMesh.h"
 #include "CUtility_File.h"
 #include "Functor.h"
+#include "Easing_Utillity.h"
 
 #include "HIerarchyNode.h"
 #include "CUser.h"
@@ -184,8 +185,10 @@ void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 		pShader->Set_RawValue("g_iHeightSize", &m_iHeightSize, sizeof(_uint));
 		pShader->Set_RawValue("g_bBlackBG", &m_bBlackBackGround, sizeof(_bool));
 		pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
+
 	}
 
+	pShader->Set_RawValue("g_fColorPowerControl", &m_fColorPowerControl, sizeof(_float));
 	pShader->Set_RawValue("g_fDiscardPower", &m_fDiscardPower, sizeof(_float));
 
 	__super::Set_ShaderResource(pShader, pConstantName);
@@ -257,6 +260,7 @@ HRESULT CRectEffects::Initialize()
 	m_fTimeAcc = 0.f;
 	m_iNumDead = 0;
 	m_bLoopControl = m_bLoop;
+	m_fColorPowerControl = m_fColorPower;
 	//m_bSorting = true;
 
 	GET_COMPONENT(CRenderer)->Set_Pass(m_iPassType);
@@ -801,6 +805,7 @@ void CRectEffects::OnEnable()
 	m_fTimeAcc = 0.f;
 	m_fLoopTimeAcc = 0.f;
 	m_bLoopControl = m_bLoop;
+	m_fColorPowerControl = m_fColorPower;
 	//시작위치
 
 	Bone_Controll();
@@ -867,6 +872,11 @@ _bool CRectEffects::Fade_Lerp(_uint iIndex)
 			m_pDatas[iIndex].InstancingData.eCurFadeType = INSTANCING_DATA::FADEOUT;
 			m_pDatas[iIndex].InstancingData.vOriginScale = m_pDatas[iIndex].InstancingData.vScale = m_pDatas[iIndex].InstancingData.vFadeInTargetScale;
 			m_pDatas[iIndex].InstancingData.fOriginAlpha = m_pDatas[iIndex].InstancingData.vColor.w = m_pDatas[iIndex].InstancingData.fTargetAlpha;
+		}
+		else if(CURVE_CAMROT == m_eCurveType)
+		{
+			m_fColorPowerControl = CEasing_Utillity::SinIn(m_fColorPowerControl, 0.f,
+				m_pDatas[iIndex].InstancingData.fTimeAcc, m_pDatas[iIndex].InstancingData.fFadeOutStartTime * 0.8f);
 		}
 
 		break;
