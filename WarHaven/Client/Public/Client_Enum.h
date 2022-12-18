@@ -98,6 +98,7 @@ namespace Client
 		COL_REDTHROW,
 
 		COL_WALL,
+		COL_CANNON,
 
 		COL_SIGHTRANGE,
 

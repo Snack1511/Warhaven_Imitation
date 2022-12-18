@@ -26,6 +26,8 @@
 
 #include "CPath.h"
 
+#include "CCannon.h"
+
 #pragma region AI ¼ºÇâ
 #include "CTable_Conditions.h"
 #include "CPersonality_Default.h"
@@ -165,6 +167,13 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);
 	}
 
+	CCannon* pCannon = CCannon::Create();
+	_float4 vPos = Find_Position("Paden_Trigger_C");
+	vPos.y -= 0.4f;
+	vPos.x += 5.5f;
+	pCannon->Get_Transform()->Set_World(WORLD_POS, vPos);
+	pCannon->Get_Transform()->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pCannon, GROUP_PROP));
 
 	/*CDestructible* pDestructible = CDestructible::Create(
 		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
@@ -951,6 +960,16 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 	pDestructible->Set_Position(vPos);
 	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
 	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+
+
+
+	CCannon* pCannon = CCannon::Create();
+	vPos = Find_Position("Paden_Trigger_C");
+	vPos.y -= 0.4f;
+	vPos.x += 5.5f;
+	pCannon->Get_Transform()->Set_World(WORLD_POS, vPos);
+	pCannon->Get_Transform()->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+	vecReadyObjects.push_back(make_pair(pCannon, GROUP_PROP));
 
 
 

@@ -21,6 +21,7 @@
 #include "CAnimator.h"
 #include "CNavigation.h"
 #include "CCell.h"
+#include "CCannon.h"
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
@@ -74,6 +75,10 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 			m_pAdjRevivalPlayer = nullptr;
 
 		return;
+	}
+	else if (eOtherColType == COL_CANNON)
+	{
+		m_pAdjCannon = static_cast<CCannon*>(pOtherObj);
 	}
 
 
@@ -171,6 +176,11 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 		if (static_cast<CPlayer*>(pOtherObj)->Get_Team() == m_pOwnerPlayer->Get_Team())
 			m_pAdjRevivalPlayer = nullptr;
 
+	}
+
+	else if (eOtherColType == COL_CANNON)
+	{
+		m_pAdjCannon = nullptr;
 	}
 }
 

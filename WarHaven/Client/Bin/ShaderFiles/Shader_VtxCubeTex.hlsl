@@ -113,7 +113,7 @@ PS_DEBUG_OUT PS_DEBUG_MAIN(PS_DEBUG_IN In)
 	In.vTexUV.x += 1;
 	In.vTexUV.x *= 0.5;
 
-	Out.vDiffuse = g_vColor * (In.vTexUV.x);
+	Out.vDiffuse = g_vColor * (In.vTexUV.x) * 0.5f;
 	Out.vDiffuse.a = 1.f;
 
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);

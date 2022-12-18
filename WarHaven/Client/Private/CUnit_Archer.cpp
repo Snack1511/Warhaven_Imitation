@@ -392,12 +392,14 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	m_pAnimWeapon->Initialize();
 
-
-	if (!GAMEINSTANCE->Clone_GameObject(HASHCODE(CDefaultArrow)))
+	
+	if (!GAMEINSTANCE->Find_GameObject_Prototype<CDefaultArrow>())
 	{
 		if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CDefaultArrow::Create(), HASHCODE(CDefaultArrow))))
 			return E_FAIL;
 	}
+	else
+		
 
 
 

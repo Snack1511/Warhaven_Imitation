@@ -3001,6 +3001,9 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\03. End">
       <UniqueIdentifier>{c04437f6-7be0-4324-b04f-532e9d0eb839}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\12. Cannon">
+      <UniqueIdentifier>{4d46a422-4230-4fa7-aea9-46a96ccf6de2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5391,6 +5394,9 @@
     <ClInclude Include="..\Public\CState_Common_Slide_Loop_AI.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\02. Loop</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CCannon.h">
+      <Filter>03. Instances\02. GameObject\12. Cannon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -7761,6 +7767,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Common_Slide_Begin_AI.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CCannon.cpp">
+      <Filter>03. Instances\02. GameObject\12. Cannon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

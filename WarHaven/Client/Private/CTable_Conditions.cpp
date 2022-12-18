@@ -39,6 +39,8 @@ void CTable_Conditions::Release()
 {
     for (auto& elem : m_mapAllBehaviors)
         SAFE_DELETE(elem.second);
+
+    m_mapAllBehaviors.clear();
 }
 
 #define Add_WhyCondition(strFunctionName, Function)\

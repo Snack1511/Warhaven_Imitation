@@ -57,9 +57,9 @@ public:
 
 	void		Set_FixCursor(_bool bEnable) {
 		m_bFixCursor = bEnable;
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		::ShowCursor(!bEnable);
-#endif 
+//#endif 
 	}
 
 	CUI_Cursor* Get_Cursor() { return m_pCursor; }

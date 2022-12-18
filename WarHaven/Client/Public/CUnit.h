@@ -23,6 +23,7 @@ class CScript_FollowCam;
 class CCamera_Follow;
 class CPlayer;
 class CAnimWeapon;
+class CCannon;
 
 class CUnit abstract : public CGameObject
 {
@@ -273,8 +274,9 @@ public:
 	enum class UNIT_TYPE { ePlayer, eSandbag, eAI_TG, eAI_Default, eAI_Panden, eAI_Gela, eAI_Hwara, eUNIT_TYPE_END };
 	virtual void SetUp_HitStates(UNIT_TYPE eUnitType);
 
-	public:
-		CPlayer* Get_RevivalPlayer() { return m_pAdjRevivalPlayer; }
+public:
+	CPlayer* Get_RevivalPlayer() { return m_pAdjRevivalPlayer; }
+	CCannon* Get_AdjCannon() { return m_pAdjCannon; }
 
 public:
 	virtual void SetUp_ReserveState(UNIT_TYPE eUnitType) {};
@@ -282,6 +284,8 @@ public:
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
 	CPlayer* m_pAdjRevivalPlayer = nullptr;
+
+	CCannon* m_pAdjCannon = nullptr;
 
 protected:
 	// ¾ê°¡ max

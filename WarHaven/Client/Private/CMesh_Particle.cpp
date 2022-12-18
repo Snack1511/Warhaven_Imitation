@@ -490,17 +490,22 @@ void CMesh_Particle::Update_NodeSave()
 	
 	if (m_fReverseAcc >= m_fReverseTime)
 	{
-
 		if (m_vecMatrices[0].size() < 40)
 		{
-
 			m_fReverseAcc = 0.f;
 			for (_uint i = 0; i < m_iNumInstance; ++i)
 			{
 				m_vecMatrices[i].push_back(m_pInstanceMatrices[i]);
 			}
+		}
+		else if (!m_vecRigidDynamics.empty())
+		{
+			for (_uint i = 0; i < m_vecRigidDynamics.size(); ++i)
+			{
+				Safe_release(m_vecRigidDynamics[i]);
+			}
 
-
+			m_vecRigidDynamics.clear();
 		}
 
 	}
