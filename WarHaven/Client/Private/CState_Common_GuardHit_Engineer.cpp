@@ -69,6 +69,13 @@ void CState_Common_GuardHit_Engineer::Enter(CUnit* pOwner, CAnimator* pAnimator,
 
 STATE_TYPE CState_Common_GuardHit_Engineer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
+
     if (pAnimator->Get_CurAnimFrame() > 10)
         return AI_STATE_COMBAT_HORIZONTALMIDDLE_ENGINEER_R;
 

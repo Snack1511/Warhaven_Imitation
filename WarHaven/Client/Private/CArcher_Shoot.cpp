@@ -15,8 +15,11 @@
 #include "CCamera_Follow.h"
 
 #include "CAnimWeapon.h"
+#include "CProjectile.h"
 
 #include "CUnit_Archer.h"
+
+
 
 
 CArcher_Shoot::CArcher_Shoot()
@@ -66,7 +69,7 @@ HRESULT CArcher_Shoot::Initialize()
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
 
-	//Add_KeyFrame(33, 1);
+	Add_KeyFrame(32, 1);
 	//Add_KeyFrame(50, 2);
 
 	//Vertical은 전부 Land로 맞춤
@@ -146,14 +149,14 @@ HRESULT CArcher_Shoot::Initialize()
 	m_eBounceState = STATE_BOUNCE_ARCHER;
 
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.5f;
 
     return __super::Initialize();
 }
@@ -162,10 +165,10 @@ void CArcher_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 {
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLAUNCH, m_fInterPolationTime, m_fAnimSpeed);
 
-	pOwner->Get_Status().fRunSpeed = 4.f;
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
 
 	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
-	
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -184,6 +187,7 @@ STATE_TYPE CArcher_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CArcher_Shoot::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
+	
 	static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
 
 	__super::Exit(pOwner, pAnimator);
@@ -203,23 +207,16 @@ void CArcher_Shoot::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, cons
 	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
 
-	//switch (iSequence)
-	//{
+	switch (iSequence)
+	{
 
-	//case 1:
-	//	
+	case 1:
+		static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
+		m_bAttackTrigger = true;
+		break;
 
-	//	m_bAttackTrigger = true;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//case 2:
-	//	m_bAttackTrigger = false;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//default:
-	//	break;
-	//}
+	default:
+		break;
+	}
 
 }

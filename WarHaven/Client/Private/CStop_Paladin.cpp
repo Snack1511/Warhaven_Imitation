@@ -24,6 +24,8 @@ HRESULT CStop_Paladin::Initialize()
 	m_fAnimSpeed = 2.f;
 
 	/*나중에 추가*/
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 

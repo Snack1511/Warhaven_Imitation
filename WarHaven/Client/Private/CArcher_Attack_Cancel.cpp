@@ -14,6 +14,9 @@
 
 #include "CCamera_Follow.h"
 
+#include "CUnit_Archer.h"
+#include "CProjectile.h"
+
 
 CArcher_Attack_Cancel::CArcher_Attack_Cancel()
 {
@@ -157,7 +160,9 @@ HRESULT CArcher_Attack_Cancel::Initialize()
 
 void CArcher_Attack_Cancel::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->Get_Status().fRunSpeed = 4.f;
+
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 

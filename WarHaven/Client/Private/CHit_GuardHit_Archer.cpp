@@ -77,6 +77,8 @@ HRESULT CHit_GuardHit_Archer::Initialize()
 
 void CHit_GuardHit_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
+    pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
 
     m_bMoveTrigger = false;
 

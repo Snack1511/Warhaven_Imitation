@@ -33,7 +33,7 @@ HRESULT CDefaultArrow::Initialize_Prototype()
 
     if (FAILED(SetUp_Colliders(COL_BLUEATTACK)))
         return E_FAIL;
-    
+
 
     return CProjectile::Initialize_Prototype();
 }

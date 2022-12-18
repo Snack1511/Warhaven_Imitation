@@ -455,27 +455,62 @@ void	CState_Blendable::BlendableTick_Loop(CUnit* pOwner, CAnimator* pAnimator)
 
 	if (pOwner->Is_MainPlayer())
 	{
-		if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
+		switch (m_eEnum)
 		{
-			if (m_eAnimLeftorRight == ANIM_BASE_L)
-			{
-				Move_Cycle(pAnimator, m_iWalkLeftAnimIndex, m_eAnimLeftorRight);
-			}
-			else
-			{
-				Move_Cycle(pAnimator, m_iWalkRightAnimIndex, m_eAnimLeftorRight);
-			}
+		case Client::CState_Blendable::Enum::eWALK:
+			Update_Walk(pOwner, pAnimator);
 
-		}
-		else
-		{
-			pAnimator->Set_CurAnimIndex(m_eIdleState, m_iAnimIndex, ANIM_DIVIDE::eBODYLOWER);
-			pAnimator->Set_AnimSpeed(m_eIdleState, m_iAnimIndex, m_fMaxSpeed);
-			pAnimator->Set_InterpolationTime(m_eIdleState, m_iAnimIndex, m_fInterPolationTime);
+			break;
+		case Client::CState_Blendable::Enum::eRUN:
+			Update_Run(pOwner, pAnimator);
+
+			break;
+		case Client::CState_Blendable::Enum::eJUMP:
+			Update_Jump(pOwner, pAnimator);
+
+			break;
+		case Client::CState_Blendable::Enum::eFALL:
+			Update_Fall(pOwner, pAnimator);
+
+			break;
+		case Client::CState_Blendable::Enum::eLAND:
+			Update_Land(pOwner, pAnimator);
+
+			break;
+		case Client::CState_Blendable::Enum::eIDLE:
+			Update_Idle(pOwner, pAnimator);
+
+			break;
+		default:
+			break;
 		}
 
 		Follow_MouseLook_Turn(pOwner);
 	}
+
+	//if (pOwner->Is_MainPlayer())
+	//{
+	//	if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
+	//	{
+	//		if (m_eAnimLeftorRight == ANIM_BASE_L)
+	//		{
+	//			Move_Cycle(pAnimator, m_iWalkLeftAnimIndex, m_eAnimLeftorRight);
+	//		}
+	//		else
+	//		{
+	//			Move_Cycle(pAnimator, m_iWalkRightAnimIndex, m_eAnimLeftorRight);
+	//		}
+
+	//	}
+	//	else
+	//	{
+	//		pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index, ANIM_DIVIDE::eBODYLOWER);
+	//		pAnimator->Set_AnimSpeed(m_eAnimLeftorRight, m_iIdle_Index, 2.f);
+	//		pAnimator->Set_InterpolationTime(m_eAnimLeftorRight, m_iIdle_Index, 0.1f);
+	//	}
+
+	//	Follow_MouseLook_Turn(pOwner);
+	//}
 }
 
 void CState_Blendable::On_EnumChange(Enum eEnum, CAnimator* pAnimator)

@@ -54,6 +54,8 @@ HRESULT CIdle_Paladin_R::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.f;
 
+    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+    
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 

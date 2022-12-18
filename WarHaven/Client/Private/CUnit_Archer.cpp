@@ -264,6 +264,14 @@ void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 }
 
+void CUnit_Archer::Enable_Arrow(_bool bEnable)
+{
+	if (bEnable)
+		ENABLE_GAMEOBJECT(m_pCurArrow);
+	else
+		DISABLE_GAMEOBJECT(m_pCurArrow);
+}
+
 void CUnit_Archer::Create_DefaultArrow()
 {
 	if (m_pCurArrow) 
@@ -288,6 +296,10 @@ void CUnit_Archer::Create_DefaultArrow()
 	}
 
 	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
+}
+
+void CUnit_Archer::Create_PurpleArrow()
+{
 }
 
 void CUnit_Archer::Change_ArrowPhase(_uint iPhase)
@@ -359,7 +371,7 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.2f;
 	// Ä® ºÙÀÏ »À
-	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
+	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1");
 
 	//Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
 	tDesc.vOffset = _float4(0.f, 0.f, -100.f);
@@ -384,6 +396,7 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 	m_tUnitStatus.eClass = ARCHER;
 
 
+
 	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_LongBow_01.fbx",
 		L"../bin/resources/meshes/weapons/longbow/LongBow_Anim.fbx", this, "0B_L_WP1");
 
@@ -398,6 +411,12 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 		if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CDefaultArrow::Create(), HASHCODE(CDefaultArrow))))
 			return E_FAIL;
 	}
+
+	//if (!GAMEINSTANCE->Clone_GameObject(HASHCODE(CPur)))
+	//{
+	//	if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CDefaultArrow::Create(), HASHCODE(CDefaultArrow))))
+	//		return E_FAIL;
+	//}
 
 
 
@@ -431,6 +450,8 @@ HRESULT CUnit_Archer::Start()
 
 	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimWeapon);
+
+	Create_DefaultArrow();
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 

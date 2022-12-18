@@ -81,8 +81,11 @@ STATE_TYPE CState_Common_Groggy_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimato
     if (m_bAttackTrigger)
         return AI_STATE_COMBAT_SHIELDWALL_HIT_PALADIN;
 
-    if(pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
 
     return __super::Tick(pOwner, pAnimator);
 }

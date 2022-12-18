@@ -73,6 +73,12 @@ void CState_Common_Hit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CState_Common_Hit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
+
     if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
     {
         switch (m_iRand)

@@ -156,7 +156,8 @@ void CArcher_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 {
 	pOwner->On_Use(CUnit::SKILL3);
 
-	pOwner->Get_Status().fRunSpeed = 4.f;
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

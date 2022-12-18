@@ -51,7 +51,7 @@ HRESULT CState_Common_Hit_Paladin::Initialize()
 
     // 애니메이션의 전체 속도를 올려준다.
 
-    m_iStateChangeKeyFrame = 20;
+    m_iStateChangeKeyFrame = 30;
 
     m_fAnimSpeed = 2.f;
     
@@ -73,30 +73,16 @@ void CState_Common_Hit_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CState_Common_Hit_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
+
     if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
     {
-        //switch (m_iRand)
-        //{
-        //case 0:
-
-        //    return AI_STATE_COMBAT_GUARDDASH_RRIOR;
-
-        //case 1:
-
-        //    return AI_STATE_COMBAT_HORIZONTALMIDDLE_ARRIOR_R;
-
-
-        //case 2:
-
-        //    return AI_STATE_COMBAT_GUARDBEGIN_WARROR;
-
-
-        //default:
-        //    break;
-        //}
-        
-        return AI_STATE_COMBAT_DEFAULT_PALADIN_R;
-
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
     }
 
 

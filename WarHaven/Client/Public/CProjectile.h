@@ -41,7 +41,8 @@ protected:
 	CHierarchyNode* m_pLeftHandBone = nullptr;
 	CHierarchyNode* m_pCurStickBone = nullptr;
 
-	_float4 vHitOffsetPos = ZERO_VECTOR;
+	_float4 m_vHitOffsetPos = ZERO_VECTOR;
+	_float4 m_vShootLook = ZERO_VECTOR;
 
 protected:
 	_float	m_fMaxSpeed = 50.f;

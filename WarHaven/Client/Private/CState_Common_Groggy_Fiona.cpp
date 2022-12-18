@@ -78,12 +78,14 @@ void CState_Common_Groggy_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 STATE_TYPE CState_Common_Groggy_Fiona::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
 
     if (m_bAttackTrigger)
         return AI_STATE_COMBAT_SPINATTACK_FIONA;
-
-    if(pAnimator->Is_CurAnimFinished())
-        return AI_STATE_COMBAT_DEFAULT_FIONA_R;
 
     return __super::Tick(pOwner, pAnimator);
 }
