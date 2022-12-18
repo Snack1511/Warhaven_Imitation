@@ -161,7 +161,9 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		pEnemy->SetUp_UnitColliders(false);
 
 		// AI_STATE_DEFAULT_IDLE_WARRIOR_R
-		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_WARRIOR_R);
+		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_WARRIOR_R);
+		// 테스트용 샌드백
+		pEnemy->Reserve_State(STATE_IDLE_WARRIOR_L_AI_ENEMY);
 		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
 
 		READY_GAMEOBJECT(pEnemy, GROUP_ENEMY);

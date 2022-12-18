@@ -86,6 +86,13 @@ HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, con
 	return S_OK;
 }
 
+_float CCustomFont::Get_FontSize(const _tchar* pString, _float fScale)
+{
+	XMVECTOR size = m_pFont->MeasureString(pString) * fScale;
+
+	return size.m128_f32[0];
+}
+
 
 
 

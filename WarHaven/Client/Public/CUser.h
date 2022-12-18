@@ -26,6 +26,7 @@ class CUI_HpBar;
 class CUI_HeroGauge;
 class CUI_Skill;
 
+class CUI_KillName;
 class CUI_KillLog;
 class CUI_Result;
 class CUI_Popup;
@@ -158,8 +159,11 @@ public:		// 알림
 	void Enable_Popup(_uint iPopupType);
 
 public:	// 킬로그
-	void Set_LogName(CPlayer* attacker, CPlayer* victim);
-	void Enable_KillUI(_uint iType);
+	void Add_KillLog(CPlayer* attacker, CPlayer* victim);
+	void Update_KillLog();
+
+	void Add_KillName(wstring wstrEnermyName);
+	void Update_KillName();
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
@@ -187,16 +191,14 @@ private:
 
 private:	// KillLog
 	list<CUI_KillLog*> m_pKillLogList;
-
-	CUI_KillLog* m_pKillLog[5];
-
+	CUI_KillLog* m_pKillLog[10];
 	_uint m_iKillLogIdx = 0;
 
-	int m_iPrvKillLogIdx = -1;
-	int m_iCurKillLogIdx = 0;
+private:
+	list<CUI_KillName*> m_pKillNameList;
+	CUI_KillName* m_pKillName[5];
+	_uint m_iKillNameIdx = 0;
 
-	int m_iPrvLogType = -1;
-	int m_iCurLogType = 0;
 
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;

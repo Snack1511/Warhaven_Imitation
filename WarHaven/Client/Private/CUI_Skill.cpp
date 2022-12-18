@@ -81,6 +81,29 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 
 		break;
 
+	case ARCHER:
+
+		m_iIndex = 3;
+		m_iSkillNum = 5;
+
+		Set_KeyIcon(0, 57);
+		Set_KeyIcon(1, 17);
+		Set_KeyIcon(2, 29);
+
+		break;
+
+	case PALADIN:
+
+		m_iIndex = 3;
+		m_iSkillNum = 8;
+
+		Set_KeyIcon(0, 58);
+		Set_KeyIcon(1, 17);
+		Set_KeyIcon(2, 29);
+
+
+		break;
+
 	case ENGINEER:
 
 		m_iIndex = 3;

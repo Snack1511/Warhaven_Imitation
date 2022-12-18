@@ -37,20 +37,22 @@ public:
 
 public:	// Font
 	_bool Get_FontRender() { return m_bIsRenderText; }
-	void Set_FontRender(_bool value) { m_bIsRenderText = value; }
+	void Set_FontRender(_bool value);
 	_bool Get_FontStyle() { return m_bIsBold; }
-	void Set_FontStyle(_bool value) { m_bIsBold = value; }
+	void Set_FontStyle(_bool value);
 	wstring Get_FontText() { return m_wstrText; }
-	void Set_FontText(wstring szText) { m_wstrText = szText; }
+	void Set_FontText(wstring szText);
 	_float4 Get_FontOffset() { return m_vOffset; }
 	void Set_FontOffset(_float fX, _float fY);
 	_float4 Get_FontColor() { return m_vFontColor; }
-	void Set_FontColor(_float4 vColor) { m_vFontColor = vColor; }
+	void Set_FontColor(_float4 vColor);
 	_float Get_FontScale() { return m_fFontScale; }
-	void Set_FontScale(_float fValue) { m_fFontScale = fValue; }
+	void Set_FontScale(_float fValue);
 
 	_bool Get_FontCenter() { return m_bIsCenter; }
-	void Set_FontCenter(_bool value) { m_bIsCenter = value; }
+	void Set_FontCenter(_bool value);
+
+	_float	Get_FontSizeX();
 
 public:	// Button
 	_bool Get_IsClick() { return m_bIsClick; }

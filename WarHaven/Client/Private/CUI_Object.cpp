@@ -47,7 +47,7 @@ HRESULT CUI_Object::Initialize()
 HRESULT CUI_Object::Start()
 {
 	__super::Start();
-
+	RenderText();
 	return S_OK;
 }
 
@@ -79,11 +79,54 @@ void CUI_Object::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 	__super::SetUp_ShaderResource(pShader, pConstName);
 }
 
+void CUI_Object::Set_FontRender(_bool value)
+{ 
+	m_bIsRenderText = value;
+	RenderText();
+}
+
+void CUI_Object::Set_FontStyle(_bool value)
+{
+	m_bIsBold = value;
+	RenderText();
+}
+
+void CUI_Object::Set_FontText(wstring szText)
+{
+	m_wstrText = szText;
+	RenderText();
+}
+
 void CUI_Object::Set_FontOffset(_float fX, _float fY)
 {
 	m_vOffset.x = fX;
 	m_vOffset.y = fY;
 	m_vOffset.z = 0.f;
+
+	RenderText();
+}
+
+void CUI_Object::Set_FontColor(_float4 vColor)
+{
+	m_vFontColor = vColor;
+	RenderText();
+}
+
+void CUI_Object::Set_FontScale(_float fValue)
+{
+	m_fFontScale = fValue;
+	RenderText();
+}
+
+void CUI_Object::Set_FontCenter(_bool value)
+{
+	m_bIsCenter = value;
+	RenderText();
+}
+
+_float CUI_Object::Get_FontSizeX()
+{
+	return GET_COMPONENT(CUI_Renderer)->Get_CurFontSize();
 }
 
 void CUI_Object::Lerp_Scale(_float fStart, _float fEnd, _float fDuration)
@@ -238,6 +281,8 @@ void CUI_Object::Set_FadeDesc(_float fFadeIn, _float fFadeOut, _float fDuration,
 void CUI_Object::OnEnable()
 {
 	__super::OnEnable();
+
+	RenderText();
 }
 
 void CUI_Object::OnDisable()
@@ -248,8 +293,6 @@ void CUI_Object::OnDisable()
 void CUI_Object::My_Tick()
 {
 	__super::My_Tick();
-
-	RenderText();
 
 	Lerp_Scale();
 

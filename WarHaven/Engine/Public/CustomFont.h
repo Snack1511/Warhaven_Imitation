@@ -16,6 +16,7 @@ public:
 public:
 	HRESULT Initialize(const _tchar* pFontFilePath);
 	HRESULT Render(const _tchar* pString, const _float2& vPosition, const _float4& vColor, _float fScale, _bool bCenter);
+	_float		Get_FontSize(const _tchar* pString, _float fScale);
 
 private:
 	SpriteBatch*				m_pBatch = nullptr;
