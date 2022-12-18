@@ -3001,6 +3001,12 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\03. End">
       <UniqueIdentifier>{c04437f6-7be0-4324-b04f-532e9d0eb839}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Kill\Log">
+      <UniqueIdentifier>{4956649a-bc37-46ef-9c64-6077b5c86a17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Kill\Name">
+      <UniqueIdentifier>{a1fd9b8d-8de7-4beb-9120-4571fbb73954}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5358,9 +5364,6 @@
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Paladin_R.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\04. Paladin\01. Right</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_KillLog.h">
-      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Kill</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CWindow_AI.h">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\10. Window_AI</Filter>
     </ClInclude>
@@ -5390,6 +5393,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\CState_Common_Slide_Loop_AI.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_KillLog.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Kill\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_KillName.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Kill\Name</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -7729,9 +7738,6 @@
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Paladin_R.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\04. Paladin\01. Right</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_KillLog.cpp">
-      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Kill</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CWindow_AI.cpp">
       <Filter>02. Design\05. ImGui_Manager\ImGui_Window\10. Window_AI</Filter>
     </ClCompile>
@@ -7761,6 +7767,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Common_Slide_Begin_AI.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\07. Slide\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_KillLog.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Kill\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_KillName.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Kill\Name</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

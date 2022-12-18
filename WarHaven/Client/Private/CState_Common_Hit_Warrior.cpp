@@ -60,6 +60,9 @@ HRESULT CState_Common_Hit_Warrior::Initialize()
 
 void CState_Common_Hit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    if (m_eStateType == ePrevType)
+        return;
+
     /* 날 때린놈의 hit info를 받았다. */
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Hit_State(pOwner);
@@ -73,6 +76,8 @@ void CState_Common_Hit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CState_Common_Hit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    return m_eStateType;
+
     if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
     {
         switch (m_iRand)

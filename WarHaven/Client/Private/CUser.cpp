@@ -41,6 +41,7 @@
 #include "CUI_EscMenu.h"
 #include "CUI_Popup.h"
 #include "CUI_KillLog.h"
+#include "CUI_KillName.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -431,6 +432,17 @@ void CUser::On_EnterStageLevel()
 		}
 	}
 
+	if (!m_pKillName[0])
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			m_pKillName[i] = CUI_KillName::Create();
+
+			CREATE_GAMEOBJECT(m_pKillName[i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pKillName[i]);
+		}
+	}
+
 	if (m_eLoadLevel > LEVEL_BOOTCAMP)
 	{
 		if (!m_pUI_Oper)
@@ -476,12 +488,15 @@ void CUser::On_ExitStageLevel()
 	{
 		if (m_pUI_Damage[i])
 			m_pUI_Damage[i] = nullptr;
-	}
 
-	for (_uint i = 0; i < 5; ++i)
-	{
 		if (m_pKillLog[i])
 			m_pKillLog[i] = nullptr;
+	}
+
+	for (_uint i = 0; i < 3; ++i)
+	{
+		if (m_pKillName[i])
+			m_pKillName[i] = nullptr;
 	}
 
 	if (m_pUI_Oper)
@@ -548,12 +563,11 @@ void CUser::Set_LogName(CPlayer* attacker, CPlayer* victim)
 	m_pKillLog[m_iKillLogIdx]->Set_LogName(attacker, victim);
 }
 
-void CUser::Enable_KillUI(_uint iType)
+void CUser::Enable_KillLog()
 {
 	m_iPrvKillLogIdx = m_iCurKillLogIdx;
 	m_iCurKillLogIdx = m_iKillLogIdx;
 
-	m_pKillLog[m_iKillLogIdx]->Set_KillLogType(iType);
 	m_pKillLog[m_iKillLogIdx]->Set_OriginPosY();
 	m_pKillLog[m_iKillLogIdx]->SetActive(true);
 
@@ -566,14 +580,37 @@ void CUser::Enable_KillUI(_uint iType)
 		m_iKillLogIdx = 0;
 	}
 
-	//if (m_iPrvKillLogIdx == m_iCurKillLogIdx)
-	//	return;
-
 	if (m_pKillLogList.size() > 0)
 	{
 		for (auto& iter : m_pKillLogList)
 		{
 			iter->MoveUp_KillLog();
+		}
+	}
+}
+
+void CUser::Enable_KillName(wstring enermyName)
+{
+	m_iPrvKillNameIdx = m_iCurKillNameIdx;
+	m_iCurKillNameIdx = m_iKillNameIdx;
+
+	m_pKillName[m_iKillNameIdx]->Set_OriginPosY();
+	m_pKillName[m_iKillNameIdx]->Enable_KillName(enermyName);
+
+	m_pKillNameList.push_back(m_pKillName[m_iKillNameIdx]);
+
+	m_iKillNameIdx++;
+	if (m_iKillNameIdx > 4)
+	{
+		m_pKillNameList.pop_front();
+		m_iKillNameIdx = 0;
+	}
+
+	if (m_pKillNameList.size() > 0)
+	{
+		for (auto& iter : m_pKillNameList)
+		{
+			// iter->MoveUp_KillLog();
 		}
 	}
 }

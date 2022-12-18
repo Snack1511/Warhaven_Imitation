@@ -717,6 +717,7 @@
     <ClInclude Include="..\Public\CUI_Dead.h" />
     <ClInclude Include="..\Public\CUI_EscMenu.h" />
     <ClInclude Include="..\Public\CUI_KillLog.h" />
+    <ClInclude Include="..\Public\CUI_KillName.h" />
     <ClInclude Include="..\Public\CUI_Oper.h" />
     <ClInclude Include="..\Public\CUI_Paden.h" />
     <ClInclude Include="..\Public\CUI_Popup.h" />
@@ -1512,6 +1513,7 @@
     <ClCompile Include="..\Private\CUI_Dead.cpp" />
     <ClCompile Include="..\Private\CUI_EscMenu.cpp" />
     <ClCompile Include="..\Private\CUI_KillLog.cpp" />
+    <ClCompile Include="..\Private\CUI_KillName.cpp" />
     <ClCompile Include="..\Private\CUI_Oper.cpp" />
     <ClCompile Include="..\Private\CUI_Paden.cpp" />
     <ClCompile Include="..\Private\CUI_Popup.cpp" />

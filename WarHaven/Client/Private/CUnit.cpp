@@ -1404,11 +1404,12 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	else
 	{
 		CUser::Get_Instance()->Set_LogName(pOtherUnit->Get_OwnerPlayer(), m_pOwnerPlayer);
-		CUser::Get_Instance()->Enable_KillUI(1);
+		CUser::Get_Instance()->Enable_KillLog();
 
 		if (pOtherUnit->m_bIsMainPlayer)
 		{
-			CUser::Get_Instance()->Enable_KillUI(0);
+			wstring wstrEnermyName = m_pOwnerPlayer->Get_PlayerName();
+			CUser::Get_Instance()->Enable_KillName(wstrEnermyName);
 		}
 	}
 }
