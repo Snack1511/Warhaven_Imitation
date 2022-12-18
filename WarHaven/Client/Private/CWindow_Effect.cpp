@@ -1529,7 +1529,8 @@ void CWindow_Effect::Save_CurEffect()
 		if (pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATION || pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHA
 			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE 
 			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR
-			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT)
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVCOLORSELECT)
 			m_vecEffects[m_iCurrentIdx].iEffectType = 2;
 		else
 			m_vecEffects[m_iCurrentIdx].iEffectType = 1;

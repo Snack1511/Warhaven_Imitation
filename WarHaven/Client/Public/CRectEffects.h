@@ -85,6 +85,7 @@ private:
 	_bool		m_bBlackBackGround = false;
 	_bool		m_bPlayOnce = false;
 	_float		m_fDiscardPower = 0.01f;
+	_float		m_fColorPowerControl = 0.f;
 
 	string		m_strBoneName = "";
 	_bool		m_bKeepSticked = false;
