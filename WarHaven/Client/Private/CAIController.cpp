@@ -70,6 +70,12 @@ void CAIController::Early_Tick()
 	CBehavior* pNextBehavior = nullptr;
 	BEHAVIOR_DESC* pBehaviorDescTemp = nullptr;
 
+	if (m_pPersonality->Is_UpdateList())
+	{
+		m_BehaviorList = m_pPersonality->Get_BehaviorList();
+		m_pPersonality->Complete_Update();
+	}
+
 	for (auto& Value : m_BehaviorList)
 	{
 		_bool bPassCondition = false;
@@ -216,4 +222,9 @@ _bool CAIController::Is_LongTimeRemain(eBehaviorType eBhavior)
 void CAIController::Change_NearPath()
 {
 	m_pOwnerPlayer->Change_NearPath();
+}
+
+void CAIController::Set_BehaviorList(list<CBehavior*>& BehaviorList)
+{
+	m_BehaviorList = BehaviorList;
 }
