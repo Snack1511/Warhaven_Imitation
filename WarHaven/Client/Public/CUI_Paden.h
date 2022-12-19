@@ -4,6 +4,8 @@
 
 BEGIN(Client)
 
+class CTeamConnector;
+
 class CUI_Paden : public CUI_Wrapper
 {
 private:
@@ -28,7 +30,7 @@ public:
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
-	void Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore);
+	void Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam);
 
 	void Set_TargetPointPos(_uint iTargetIdx);
 
@@ -42,6 +44,8 @@ public:
 	void Interact_PointUI(_bool bIsMainPlayerTeam, string wstrPadenPointKey);
 	void Move_PointUI(string wstrPadenPointKey, _uint iTriggerState);
 
+	void Enable_Popup(_uint iIndex);
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -51,6 +55,9 @@ private:
 private:
 	enum TeamType { Team_Red, Team_Blue, Team_End };
 	TeamType m_eTeamType = Team_End;
+
+	CTeamConnector* m_pAllyTeam = nullptr;
+	CTeamConnector* m_pEnemyTeam = nullptr;
 
 private:
 	CUI_Object* m_pInGameTimer = nullptr;
@@ -114,6 +121,14 @@ private:
 
 private:
 	void Create_TargetPointUI();
+
+private:
+	CUI_Object* m_pPopupUI = nullptr;
+
+	_bool m_bShowStartPopup = false;
+
+private:
+	void Create_Popup();
 
 private:
 	void Create_PointUI();

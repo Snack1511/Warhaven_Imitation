@@ -36,6 +36,7 @@ private:
 private:
 	void Create_Crosshair();
 	void Set_DefaultCrosshair();
+	void Set_ArcherCrosshair();
 
 private:
 	enum ArrowUI { AU_BG, AU_Arrow, AU_End };

@@ -33,6 +33,8 @@ class CUI_Popup;
 class CUI_Oper;
 class CUI_Paden;
 
+class CTeamConnector;
+
 class CFadeDark;
 
 class CUser
@@ -130,7 +132,7 @@ public:		// ÆÄµ§
 	void Set_TargetPointPos(_uint iTargetIdx);
 	void SetActive_TargetPoint(_bool value);
 
-	void Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore);
+	void Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam);
 
 	void SetActive_PadenUI(_bool value);
 
@@ -165,7 +167,7 @@ public:	// Å³·Î±×
 	void Add_KillLog(CPlayer* attacker, CPlayer* victim);
 	void Update_KillLog();
 
-	void Add_KillName(wstring wstrEnermyName);
+	void Add_KillName(wstring wstrEnemyName);
 	void Update_KillName();
 
 private:

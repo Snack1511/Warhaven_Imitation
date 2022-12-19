@@ -150,7 +150,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	{
 		vPlayerPos.z += 10.f;
 		vPlayerPos.x += 1.f;
-					
+
 		CPlayer* pEnemy = nullptr;
 
 		pEnemy = SetUp_Player(Convert_ToHash(L"TestEnemy"));
@@ -187,7 +187,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	pDestructible->Set_Position(vPos);
 	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
 	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));*/
-	
+
 
 	SetUp_DefaultLight_BootCamp();
 
@@ -647,7 +647,7 @@ HRESULT CGameSystem::On_ReadyPaden(vector<pair<CGameObject*, _uint>>& vecReadyOb
 	SetUp_DefaultLight_Paden();
 	if (FAILED(On_ReadyDestructible_Paden(vecReadyObjects)))
 		return E_FAIL;
-	
+
 
 
 
@@ -980,7 +980,21 @@ HRESULT CGameSystem::On_ReadyDestructible_Paden(vector<pair<CGameObject*, _uint>
 
 HRESULT CGameSystem::On_EnterStage()
 {
-	     
+	CTeamConnector* pAllyTeam = nullptr;
+	CTeamConnector* pEnemyTeam = nullptr;
+	
+	if (m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->IsMainPlayerTeam())
+	{
+		pAllyTeam = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE];
+		pEnemyTeam = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED];
+	}
+	else
+	{
+		pAllyTeam = m_pTeamConnector[(_uint)eTEAM_TYPE::eRED];
+		pEnemyTeam = m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE];
+	}
+	
+	CUser::Get_Instance()->Set_Team(pAllyTeam, pEnemyTeam);
 
 	/* ∏µÁ «√∑π¿ÃæÓµÈ ¿Ø¥÷ ¿œ¥‹ ≤®≥ı±‚ */
 	//for (auto& elem : m_mapAllPlayers)
@@ -1038,9 +1052,6 @@ HRESULT CGameSystem::Paden_EnvironmentEffect()
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_25"), _float4(-12.7f, 23.1f, -25.4f));
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Paden_Smoke_26"), _float4(-50.8f, 4.6f, 19.8f));
 
-
-
-
 	return S_OK;
 }
 
@@ -1051,24 +1062,8 @@ HRESULT CGameSystem::On_Update_Paden()
 	CTeamConnector* pMinusScoreTeam = nullptr;
 
 	// ∞¢ ∆¿¿« ƒø≥ÿ≈Õ ∞°¡Æø¿±‚
-
 	for (_uint i = 0; i < (_uint)eTEAM_TYPE::eCOUNT; ++i)
 	{
-		if (m_pTeamConnector[i]->IsMainPlayerTeam())
-		{
-			_uint iBlueScore = m_pTeamConnector[i]->m_iScore;
-			_uint iBlueMaxScore = m_pTeamConnector[i]->m_iMaxScore;
-
-			CUser::Get_Instance()->Set_Score(0, iBlueScore, iBlueMaxScore);
-		}
-		else
-		{
-			_uint iRedScore = m_pTeamConnector[i]->m_iScore;
-			_uint iRedMaxScore = m_pTeamConnector[i]->m_iMaxScore;
-
-			CUser::Get_Instance()->Set_Score(1, iRedScore, iRedMaxScore);
-		}
-
 		if (m_pTeamConnector[i]->Has_MainTrigger())
 		{
 			_int j = 0;
@@ -1077,6 +1072,9 @@ HRESULT CGameSystem::On_Update_Paden()
 
 			//π›¥Î¬  ∆¿¿Ã ±¿œ ∆¿
 			pMinusScoreTeam = m_pTeamConnector[j];
+
+			cout << m_pTeamConnector[j]->m_iScore << endl;
+
 			break;
 		}
 	}
@@ -1290,7 +1288,7 @@ CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eTEAM
 	if (nullptr == PathVector[iRandIndex])
 		assert(0);
 
-	pClonePath  = PathVector[iRandIndex]->Clone();
+	pClonePath = PathVector[iRandIndex]->Clone();
 
 	if (nullptr == pClonePath)
 		assert(0);
