@@ -4,12 +4,14 @@
 #include "UsefulHeaders.h"
 
 #include "CUnit_Archer.h"
+#include "CRectEffects.h"
 
 CDefaultArrow::CDefaultArrow()
 {
 }
 CDefaultArrow::~CDefaultArrow()
 {
+	//m_Test.clear();
 }
 
 CDefaultArrow* CDefaultArrow::Create()
@@ -24,6 +26,15 @@ CDefaultArrow* CDefaultArrow::Create()
 	}
 
 	return pInstance;
+}
+
+HRESULT CDefaultArrow::Start()
+{
+	__super::Start();
+
+	//m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest", this, m_pTransform->Get_World(WORLD_POS));
+
+	return S_OK;
 }
 
 HRESULT CDefaultArrow::Initialize_Prototype()

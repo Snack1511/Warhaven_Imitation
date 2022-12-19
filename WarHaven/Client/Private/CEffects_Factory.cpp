@@ -684,6 +684,9 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"ShieldWall"), "ShieldWall")))
 		return E_FAIL;
 
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cannon_Ground"), "Cannon_Ground")))
+		return E_FAIL;
+
 	/*Hit effect*/
 		/*slash*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSpark"), "HitSpark")))
@@ -721,6 +724,12 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"KillSmoke_Right"), "KillSmoke_Right")))
+		return E_FAIL;
+
+		/*cat*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"PoisonTest"), "PoisonTest")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Addiction"), "Addiction")))
 		return E_FAIL;
 	
 

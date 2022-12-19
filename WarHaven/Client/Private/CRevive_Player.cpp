@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "CRevive_Player.h"
 
-
-#include "CAnimator.h"
 #include "CUnit.h"
+#include "CAnimator.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
@@ -82,10 +81,11 @@ HRESULT CRevive_Player::Initialize()
 
 void CRevive_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    
     if (pOwner->Get_RevivalPlayer())
     {
         pOwner->Get_RevivalPlayer()->Get_CurrentUnit()->Start_Reborn();
-
+        
 
         _float4 vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
         _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
