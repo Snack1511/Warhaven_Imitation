@@ -213,7 +213,7 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	/* =================================== */
 	_float4 vCamLook = pOwner->Get_FollowCamLook();
-	_float4x4 matRotY = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), ToRadian(10.f));
+	_float4x4 matRotY = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), ToRadian(5.f));
 	_float4x4 matRotX = XMMatrixRotationAxis(pOwner->Get_FollowCamRight().XMLoad(), ToRadian(5.f));
 	vCamLook = vCamLook.MultiplyNormal(matRotY);
 	vCamLook = vCamLook.MultiplyNormal(matRotX);

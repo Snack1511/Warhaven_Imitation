@@ -108,7 +108,7 @@ HRESULT CImGui_Manager::Initialize()
 	m_arrWindows[IMGUI_LEVEL] = CWindow_Level::Create();
 	m_arrWindows[IMGUI_TILE] = CWindow_Tile::Create();
 	m_arrWindows[IMGUI_PATH] = CWindow_Path::Create();
-	//m_arrWindows[IMGUI_AI] = CWindow_AI::Create();
+	m_arrWindows[IMGUI_AI] = CWindow_AI::Create();
 #pragma endregion 윈도우 등록
 
 	return S_OK;

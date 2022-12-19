@@ -83,8 +83,8 @@ HRESULT CLevel_Paden::Enter()
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterStage()))
 		return E_FAIL;
 
-	//if (FAILED(CGameSystem::Get_Instance()->Paden_EnvironmentEffect()))
-	//	return E_FAIL;
+	/*if (FAILED(CGameSystem::Get_Instance()->Paden_EnvironmentEffect()))
+		return E_FAIL;*/
 
 	return S_OK;
 }
