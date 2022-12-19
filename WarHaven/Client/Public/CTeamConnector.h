@@ -53,6 +53,10 @@ public:
 public:
 	void	Release();
 
+public:
+	_uint Get_Score() { return m_iScore; }
+	_uint Get_MaxScore() { return m_iMaxScore; }
+
 private:
 	eTEAM_TYPE		m_eTeamType = eTEAM_TYPE::eBLUE;
 	_bool			m_bIsMainPlayerTeam = false;

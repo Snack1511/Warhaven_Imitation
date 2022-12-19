@@ -315,9 +315,9 @@ void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _flo
 	m_pUI_Paden->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
 }
 
-void CUser::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
+void CUser::Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam)
 {
-	m_pUI_Paden->Set_Score(iTeamType, iScore, iMaxScore);
+	m_pUI_Paden->Set_Team(pAllyTeam, pEnemyTeam);
 }
 
 void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
@@ -593,14 +593,14 @@ void CUser::Update_KillLog()
 	}
 }
 
-void CUser::Add_KillName(wstring wstrEnermyName)
+void CUser::Add_KillName(wstring wstrEnemyName)
 {
 	CUI_KillName* pCurKillName = m_pKillName[m_iKillNameIdx++];
 
 	if (m_iKillNameIdx >= 5)
 		m_iKillNameIdx = 0;
 
-	pCurKillName->Set_KillName(wstrEnermyName);
+	pCurKillName->Set_KillName(wstrEnemyName);
 
 	m_pKillNameList.push_front(pCurKillName);
 

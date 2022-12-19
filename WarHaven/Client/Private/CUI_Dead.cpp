@@ -194,7 +194,7 @@ void CUI_Dead::Create_DeadUI()
 	m_pDeadUI[DU_EnemyName]->Set_FontCenter(true);
 	m_pDeadUI[DU_EnemyName]->Set_FontScale(0.5f);
 
-	m_pDeadUI[DU_KillText]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Dead/KillEnermy.png"));
+	m_pDeadUI[DU_KillText]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Dead/KillEnemy.png"));
 	m_pDeadUI[DU_KillText]->Set_PosY(-150.f);
 	m_pDeadUI[DU_KillText]->Set_Scale(172.f, 50.f);
 	m_pDeadUI[DU_KillText]->Set_Color(_float4(0.9f, 0.f, 0.f, 1.f));
