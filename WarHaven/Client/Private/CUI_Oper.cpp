@@ -523,7 +523,6 @@ void CUI_Oper::Progress_Oper()
 				if (m_bSelectTargetPoint)
 					CUser::Get_Instance()->SetActive_TargetPoint(true);
 
-
 				CUser::Get_Instance()->Set_FixCursor(true);
 				CUser::Get_Instance()->SetActive_Cursor(false);
 			}
@@ -781,10 +780,10 @@ void CUI_Oper::Create_OperProfile()
 	m_pOperList.push_back(m_pMarkMeText);
 
 	CREATE_GAMEOBJECT(m_pPositionText, GROUP_UI);
-	DELETE_GAMEOBJECT(m_pPositionText);
+	DISABLE_GAMEOBJECT(m_pPositionText);
 
 	CREATE_GAMEOBJECT(m_pMarkMeText, GROUP_UI);
-	DELETE_GAMEOBJECT(m_pMarkMeText);
+	DISABLE_GAMEOBJECT(m_pMarkMeText);
 }
 
 void CUI_Oper::Create_ProfileInfo()

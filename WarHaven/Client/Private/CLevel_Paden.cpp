@@ -64,9 +64,6 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 	CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
 	m_fLoadingFinish = 0.5f;
 
-	CUI_Oper* pUI_Oper = CUI_Oper::Create();
-	Ready_GameObject(pUI_Oper, GROUP_UI);
-
 	/* GameSystem */
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyPaden(m_vecGameObjects)))
 		return E_FAIL;
@@ -80,6 +77,8 @@ HRESULT CLevel_Paden::Enter()
 {
 	if (FAILED(__super::Enter()))
 		return E_FAIL;
+
+	CUser::Get_Instance()->SetActive_OperUI(true);
 
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterStage()))
 		return E_FAIL;
