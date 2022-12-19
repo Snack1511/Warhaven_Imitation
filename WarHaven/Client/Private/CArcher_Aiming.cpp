@@ -16,6 +16,8 @@
 
 #include "CAnimWeapon.h"
 #include "HIerarchyNode.h"
+#include "CProjectile.h"
+#include "CUnit_Archer.h"
 
 CArcher_Aiming::CArcher_Aiming()
 {
@@ -221,12 +223,20 @@ STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	m_pCoreBone->Set_PrevMatrix(matOffset);
 
+	_float4 vHitPos;
+	if (Check_ArrowRay(&vHitPos))
+	{
+		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
+		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
+	}
 
 	return CState::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Aiming::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CUser::Get_Instance()->Set_CrossHairPos(_float4(0.f, 0.f, 0.3f, 1.f));
+
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
 
     //Exit에선 무조건 남겨놔야함
@@ -276,4 +286,18 @@ void CArcher_Aiming::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, con
 	//	break;
 	//}
 
+}
+
+_bool CArcher_Aiming::Check_ArrowRay(_float4* pOutPos)
+{
+	_float4 vStartPos = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_ArrowHeadPos();
+	_float4 vDir = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_Transform()->Get_World(WORLD_RIGHT);
+	_float fMaxDistance = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_MaxDistance();
+
+	_float4 vFinalHitPos;
+
+	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, vStartPos, vDir, fMaxDistance))
+		*pOutPos = vFinalHitPos;
+
+	return true;
 }

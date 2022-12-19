@@ -42,7 +42,7 @@ public:
 
 public:
 	void	Collect_Arrow(_hashcode _hcCode, CProjectile* pEffect);
-
+	CProjectile* Get_CurArrow() { return m_pCurArrow; }
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;

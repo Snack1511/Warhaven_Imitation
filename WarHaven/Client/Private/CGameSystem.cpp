@@ -1154,20 +1154,20 @@ void CGameSystem::On_StartGame()
 	}
 
 	/* Default 애덜 */
-	for (auto& elem : m_mapAllPlayers)
-	{
-		/* Default가 아니면 건너 뛰기 */
-		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
-			continue;
+	//for (auto& elem : m_mapAllPlayers)
+	//{
+	//	/* Default가 아니면 건너 뛰기 */
+	//	if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
+	//		continue;
 
-		/* ai들은 랜덤 선택 함수 호출 */
-		elem.second->Choose_Character();
+	//	/* ai들은 랜덤 선택 함수 호출 */
+	//	elem.second->Choose_Character();
 
-		/* 자기 진영에서 포지션 가져오기 */
-		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
-		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+	//	/* 자기 진영에서 포지션 가져오기 */
+	//	_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
+	//	elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
 
-	}
+	//}
 
 
 

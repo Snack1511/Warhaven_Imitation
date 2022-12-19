@@ -91,6 +91,9 @@ private:
 	list<KEY>		m_KeyCommands;
 
 public:
+	void	Set_CrossHairPos(_float4 vPosition);
+
+public:
 	void SetUp_BloodOverlay();
 	void Turn_BloodOverLay(_float fHpRatio);
 	void SetUp_HeroGaugeFire();

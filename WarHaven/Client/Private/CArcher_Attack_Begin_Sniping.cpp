@@ -150,6 +150,7 @@ void CArcher_Attack_Begin_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 {
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMMAX);
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -179,6 +180,8 @@ STATE_TYPE CArcher_Attack_Begin_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimato
 void CArcher_Attack_Begin_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     //Exit에선 무조건 남겨놔야함
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+
     pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }

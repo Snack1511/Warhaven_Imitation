@@ -16,7 +16,7 @@
 #include "CUnit_Archer.h"
 #include "CDefaultArrow.h"
 #include "CAnimWeapon.h"
-
+#include "CUtility_PhysX.h"
 #include "HIerarchyNode.h"
 
 CArcher_Attack_Begin::CArcher_Attack_Begin()
@@ -185,6 +185,7 @@ void CArcher_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 	m_bMoveTrigger = false;
 
+
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
 
 
@@ -210,12 +211,12 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	BlendableTick_Loop(pOwner, pAnimator, false);
 
+	/* =================================== */
 	_float4 vCamLook = pOwner->Get_FollowCamLook();
 	_float4x4 matRotY = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), ToRadian(10.f));
 	_float4x4 matRotX = XMMatrixRotationAxis(pOwner->Get_FollowCamRight().XMLoad(), ToRadian(5.f));
 	vCamLook = vCamLook.MultiplyNormal(matRotY);
 	vCamLook = vCamLook.MultiplyNormal(matRotX);
-
 
 	/* 위 아래만 꺾어줘야함 */
 	_float4x4 matOffset;
@@ -236,8 +237,16 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->Get_Transform()->Set_Look(vCamLookNoY);
 
 	m_pCoreBone->Set_PrevMatrix(matOffset);
+	/* =================================== */
 
-
+	
+	/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
+	_float4 vHitPos;
+	if (Check_ArrowRay(&vHitPos))
+	{
+		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
+		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
+	}
 
 
     return CState::Tick(pOwner, pAnimator);
@@ -245,6 +254,9 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CArcher_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CUser::Get_Instance()->Set_CrossHairPos(_float4(0.f, 0.f, 0.3f, 1.f));
+
+
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
 
 	_float4x4 matOffset;
@@ -278,10 +290,8 @@ void CArcher_Attack_Begin::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimato
 {
 	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
-
 	switch (iSequence)
 	{
-
 	case 1:
 		m_bAttackTrigger = true;
 		break;
@@ -293,5 +303,18 @@ void CArcher_Attack_Begin::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimato
 	default:
 		break;
 	}
+}
 
+_bool CArcher_Attack_Begin::Check_ArrowRay(_float4* pOutPos)
+{
+	_float4 vStartPos = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_ArrowHeadPos();
+	_float4 vDir = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_Transform()->Get_World(WORLD_RIGHT);
+	_float fMaxDistance = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_MaxDistance();
+
+	_float4 vFinalHitPos;
+
+	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, vStartPos, vDir, fMaxDistance))
+		*pOutPos = vFinalHitPos;
+	
+	return true;
 }

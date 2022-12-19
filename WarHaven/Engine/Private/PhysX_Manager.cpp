@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "GameObject.h"
+#include "CUtility_PhysX.h"
 
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
@@ -83,6 +84,8 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 	PxSceneDesc sceneDesc(m_pPhysics->getTolerancesScale());
 	sceneDesc.gravity = Gravity;
 
+	m_listAllStatics.clear();
+	
 
 	/* GPU SETTING */
 
@@ -139,6 +142,7 @@ HRESULT CPhysX_Manager::Delete_Scene(Scene eScene)
 	m_pDispatcher->release();
 	m_pDispatcher = nullptr;
 
+	m_listAllStatics.clear();
 
 	return S_OK;
 }
@@ -191,6 +195,7 @@ PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform
 	}
 
 	m_pCurScene->addActor(*pStatic);
+	m_listAllStatics.push_back(pStatic);
 
 	return pStatic;
 }
@@ -465,5 +470,55 @@ void CPhysX_Manager::Release()
 	
 	Safe_release(m_pFoundation);
 
+}
+
+_bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
+{
+	_float fMinDist = 9999.f;
+	_float4 vFinalHitPos = vStartPos + vStartDir * fMaxDistance;
+
+
+	for (auto& elem : m_listAllStatics)
+	{
+		//staticÀÌ¶û ´êÀ¸¸é ÀÌ³à¼®ÇÑÅ× ray ½÷¼­ À§Ä¡ º¸Á¤
+		PxRaycastHit hitInfo;
+		PxShape* pCurShape = nullptr;
+		elem->getShapes(&pCurShape, sizeof(PxShape));
+
+		/* ÀýµÎÃ¼ */
+		_float4 vCenterPos = CUtility_PhysX::To_Vector(elem->getGlobalPose().p);
+		_float fRadius = sqrtf(pow(pCurShape->getGeometry().box().halfExtents.x, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.y, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.z, 2.f));
+
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCenterPos.XMLoad(), fRadius))
+		{
+			continue;
+		}
+
+		PxU32 hitCount = PxGeometryQuery::raycast(
+			CUtility_PhysX::To_PxVec3(vStartPos),
+			CUtility_PhysX::To_PxVec3(vStartDir),
+			pCurShape->getGeometry().any(),
+			elem->getGlobalPose(),
+			fMaxDistance, PxHitFlag::ePOSITION, 1, &hitInfo
+		);
+
+		if (hitCount > 0)
+		{
+			_float4 vHitPos = CUtility_PhysX::To_Vector(hitInfo.position);
+			_float fLength = (vHitPos - vStartPos).Length();
+
+			if (fLength < fMinDist)
+			{
+				fMinDist = fLength;
+				vFinalHitPos = vHitPos;
+			}
+
+		}
+	}
+
+	/* GROUP_PLAYER °Ë»ç */
+
+	*pOutPos = vFinalHitPos;
+	return true;
 }
 

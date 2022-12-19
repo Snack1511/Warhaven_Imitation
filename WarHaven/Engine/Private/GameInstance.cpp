@@ -339,6 +339,16 @@ ComPtr<ID3D11ShaderResourceView> CGameInstance::Get_Texture(wstring wstrFilePath
 	return m_pResourceManager->Get_Texture(wstrFilePath);
 }
 
+list<PxRigidStatic*>& CGameInstance::Get_AllStaticActors()
+{
+	return m_pPhysXManager->Get_AllStaticActors();
+}
+
+_bool CGameInstance::Shoot_RaytoStaticActors(_float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
+{
+	return m_pPhysXManager->Shoot_RaytoStaticActors(pOutPos, vStartPos, vStartDir, fMaxDistance);
+}
+
 void CGameInstance::Create_ConvexMesh(_float3* pVertices, _uint iNumVertices, void* pIndices, _uint iNumPrimitive, PxConvexMesh** ppOut)
 {
 	m_pPhysXManager->Create_ConvexMesh(pVertices, iNumPrimitive, pIndices, iNumPrimitive, ppOut);

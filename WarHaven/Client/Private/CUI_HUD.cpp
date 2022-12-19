@@ -273,6 +273,11 @@ void CUI_HUD::SetActive_SquardInfo(_bool value)
 	}
 }
 
+void CUI_HUD::Set_Crosshair_Pos(_float4 vPosition)
+{
+	static_cast<CUI_Crosshair*>(m_pHUD[HUD_Crosshair])->Set_Position(vPosition);
+}
+
 _bool CUI_HUD::Is_OnHeroGauge()
 {
 	return m_pPlayerNameText->Is_Valid();

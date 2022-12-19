@@ -104,6 +104,8 @@ void CResource_Manager::Clear_Resources()
 			++iter;
 	}
 
+	m_mapTextures.clear();
+
 	m_mapModelData.clear();
 	m_mapResources.clear();
 }

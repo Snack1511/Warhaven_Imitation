@@ -189,23 +189,27 @@ void CBoneCollider::OnEnable()
 {
 	__super::OnEnable();
 
-
-	if (m_bStart)
+	if (m_pPxController)
 	{
-		_float4x4 BoneMatrix;
-		BoneMatrix = m_tColliderDesc.pRefBone->Get_BoneMatrix();
-		_float4 vPos = m_tColliderDesc.vOffset.MultiplyCoord(BoneMatrix);
-		m_pPxController->setPosition(CUtility_PhysX::To_PxExtendedVec3(vPos));
-		m_vPrevPos = vPos;
+		if (m_bStart)
+		{
+			_float4x4 BoneMatrix;
+			BoneMatrix = m_tColliderDesc.pRefBone->Get_BoneMatrix();
+			_float4 vPos = m_tColliderDesc.vOffset.MultiplyCoord(BoneMatrix);
+			m_pPxController->setPosition(CUtility_PhysX::To_PxExtendedVec3(vPos));
+			m_vPrevPos = vPos;
+		}
+
+		m_bCollision = false;
+		m_bStart = true;
 	}
-	m_bCollision = false;
-	m_bStart = true;
+	
+
 
 }
 
 void CBoneCollider::OnDisable()
 {
 	__super::OnDisable();
-	m_pPxController->setPosition(PxExtendedVec3(-999.f, -999.f, -999.f));
 
 }

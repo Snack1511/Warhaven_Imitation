@@ -115,6 +115,14 @@ void CUI_Crosshair::SetActive_LancerUI(_bool value)
 	}
 }
 
+void CUI_Crosshair::Set_Position(_float4 vPos)
+{
+	for (int i = 0; i < CU_End; ++i)
+	{
+		m_pCrosshair[i]->Set_Pos(vPos);
+	}
+}
+
 void CUI_Crosshair::Create_Crosshair()
 {
 	for (int i = 0; i < CU_End; ++i)

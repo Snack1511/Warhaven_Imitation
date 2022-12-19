@@ -23,6 +23,8 @@ public:
 	void SetActive_Crosshair(_bool value);
 	void SetActive_ArrowUI(_bool value);
 	void SetActive_LancerUI(_bool value);
+	
+	void	Set_Position(_float4 vPos);
 
 private:
 	_uint m_iClassIndex = 0;

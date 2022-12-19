@@ -136,6 +136,21 @@ _float4 CUtility_Transform::Get_ProjPos(CTransform* pTransform, _float4 vOffsetP
 	return vPos;
 }
 
+_float4 CUtility_Transform::Get_ProjPos(_float4 vPosition)
+{
+	_float4 vPos = vPosition;
+	_float4x4 matVP = GAMEINSTANCE->Get_CurViewMatrix() * GAMEINSTANCE->Get_CurProjMatrix();
+
+	vPos = vPos.MultiplyCoord(matVP);
+
+	vPos.x *= g_iWinCX * 0.5f;
+	vPos.y *= g_iWinCY * 0.5f;
+	vPos.z = 0.1f;
+	vPos.w = 1.f;
+
+	return vPos;
+}
+
 _float4 CUtility_Transform::Get_Dir_2D(CTransform* pFrom, CTransform* pTo)
 {
 	_float4 vDir = (pTo->Get_World(WORLD_POS) - pFrom->Get_World(WORLD_POS));

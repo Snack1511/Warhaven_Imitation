@@ -180,6 +180,12 @@ void CUser::Time_Slow()
 		GAMEINSTANCE->Set_TimeSpeed(0, 1.f);
 }
 
+void CUser::Set_CrossHairPos(_float4 vPosition)
+{
+	if (m_pUI_HUD)
+		m_pUI_HUD->Set_Crosshair_Pos(vPosition);
+}
+
 void CUser::SetUp_BloodOverlay()
 {
 	if (m_pBloodOverlay)
@@ -302,47 +308,56 @@ void CUser::Transform_SkillUI(_uint iClass)
 
 void CUser::Interat_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKey)
 {
-	m_pUI_Paden->Interact_PointUI(bIsMainPlayerTeam, strPadenPointKey);
+	if (m_pUI_Paden)
+		m_pUI_Paden->Interact_PointUI(bIsMainPlayerTeam, strPadenPointKey);
 }
 
 void CUser::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 {
-	m_pUI_Paden->Move_PointUI(strPadenPointKey, iTriggerState);
+	if (m_pUI_Paden)
+		m_pUI_Paden->Move_PointUI(strPadenPointKey, iTriggerState);
 }
 
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
+	if (m_pUI_Paden)
 	m_pUI_Paden->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
 }
 
 void CUser::Set_Score(_uint iTeamType, _uint iScore, _uint iMaxScore)
 {
-	m_pUI_Paden->Set_Score(iTeamType, iScore, iMaxScore);
+	if (m_pUI_Paden)
+		m_pUI_Paden->Set_Score(iTeamType, iScore, iMaxScore);
 }
 
 void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
-	m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform, isInFrustum);
+	if (m_pUI_Paden)
+		m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform, isInFrustum);
 }
 
 void CUser::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 {
-	m_pUI_Paden->Conquest_PointUI(strPointName, bIsMainPlayerTeam);
+	if (m_pUI_Paden)
+		m_pUI_Paden->Conquest_PointUI(strPointName, bIsMainPlayerTeam);
 }
 
 void CUser::Set_TargetPointPos(_uint iTargetIdx)
 {
-	m_pUI_Paden->Set_TargetPointPos(iTargetIdx);
+	if (m_pUI_Paden)
+		m_pUI_Paden->Set_TargetPointPos(iTargetIdx);
 }
 
 void CUser::SetActive_TargetPoint(_bool value)
 {
-	m_pUI_Paden->SetActive_TargetPoint(value);
+	if (m_pUI_Paden)
+		m_pUI_Paden->SetActive_TargetPoint(value);
 }
 
 void CUser::SetActive_PadenUI(_bool value)
 {
-	m_pUI_Paden->SetActive(value);
+	if (m_pUI_Paden)
+		m_pUI_Paden->SetActive(value);
 }
 
 void CUser::Set_Respawn(_bool value)
@@ -442,7 +457,7 @@ void CUser::On_EnterStageLevel()
 		m_pKillLogList.clear();
 	}
 
-	if (m_eLoadLevel > LEVEL_BOOTCAMP)
+	if (m_eLoadLevel > LEVEL_PADEN)
 	{
 		if (!m_pUI_Oper)
 		{

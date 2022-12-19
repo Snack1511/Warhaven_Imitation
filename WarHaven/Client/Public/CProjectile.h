@@ -23,8 +23,8 @@ public:
 
 public:
 	void		Reset(CGameObject* pGameObject);
-
-
+	_float4		Get_ArrowHeadPos();
+	_float		Get_MaxDistance() { return m_fMaxDistance; }
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize();
@@ -46,10 +46,12 @@ protected:
 	CHierarchyNode* m_pCurStickBone = nullptr;
 
 	_float4 m_vStartPosition = ZERO_VECTOR;
+	_float4 m_vArrowHeadPos = ZERO_VECTOR;
 
 	CGameObject* m_pHitUnit = nullptr;
 	_float4x4 m_matHitOffset;
 
+	
 protected:
 	_float	m_fMaxSpeed = 50.f;
 	_float	m_fLoopTimeAcc = 0.f;

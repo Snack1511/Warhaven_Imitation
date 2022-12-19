@@ -25,11 +25,14 @@ CProjectile::CProjectile(const CProjectile& _origin)
 	, m_pConvexMesh(_origin.m_pConvexMesh)
 	, m_hcCode(_origin.m_hcCode)
 	, m_fMaxDistance(_origin.m_fMaxDistance)
+	, m_vArrowHeadPos(_origin.m_vArrowHeadPos)
 {
 }
 
 CProjectile::~CProjectile()
 {
+	if (!m_bCloned)
+		Safe_release(m_pConvexMesh);
 }
 
 void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
@@ -89,6 +92,11 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 }
 
+_float4 CProjectile::Get_ArrowHeadPos()
+{
+	return m_vArrowHeadPos.MultiplyCoord(m_pTransform->Get_WorldMatrix());
+}
+
 HRESULT CProjectile::Initialize_Prototype()
 {
 	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXMODEL,
@@ -141,8 +149,6 @@ HRESULT CProjectile::Start()
 
 void CProjectile::On_ShootProjectile()
 {
-
-
 	_float4 vLook = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK);
 
 	vLook = m_pTransform->Get_World(WORLD_RIGHT);
@@ -151,6 +157,9 @@ void CProjectile::On_ShootProjectile()
 	On_ChangePhase(eSHOOT);
 
 	m_vStartPosition = m_pTransform->Get_World(WORLD_POS);
+
+
+
 	/* PhysX */
 	PxTransform tTransform;
 	ZeroMemory(&tTransform, sizeof(PxTransform));
@@ -248,17 +257,18 @@ HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 
 HRESULT CProjectile::SetUp_Colliders(COL_GROUP_CLIENT eColType)
 {
-	_float fRadius = 0.27f;
+	_float fRadius = 0.25f;
 	_float4 vOffsetPos = ZERO_VECTOR;
+	vOffsetPos.x += fRadius;
+	vOffsetPos.x += fRadius;
+	vOffsetPos.x += fRadius;
+
 	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, eColType, vOffsetPos, DEFAULT_TRANS_MATRIX);
 	vOffsetPos.x += fRadius;
 	pCollider->Add_Collider(fRadius, vOffsetPos);
 	vOffsetPos.x += fRadius;
 	pCollider->Add_Collider(fRadius, vOffsetPos);
-	vOffsetPos.x += fRadius;
-	pCollider->Add_Collider(fRadius, vOffsetPos);
-	vOffsetPos.x += fRadius;
-	pCollider->Add_Collider(fRadius, vOffsetPos);
+
 	Add_Component(pCollider);
 
 	m_pCollider = pCollider;
@@ -337,7 +347,7 @@ void CProjectile::My_LateTick()
 			DISABLE_GAMEOBJECT(this);
 
 		_float4x4 matCurWorld = m_pCurStickBone->Get_BoneMatrix();
-		matCurWorld *= m_matHitOffset;
+		matCurWorld = m_matHitOffset * matCurWorld;
 
 		m_pTransform->Get_Transform().matMyWorld = matCurWorld;
 		m_pTransform->Make_WorldMatrix();
@@ -374,6 +384,12 @@ void CProjectile::Hit_Unit(CGameObject* pHitUnit)
 	m_pCurStickBone = GET_COMPONENT_FROM(pHitUnit, CModel)->Find_HierarchyNode("0B_COM");
 	
 	//맞은 순간에 worldmat과 맞은 놈의 월드 inverse
-	_float4x4 matWorldInv = pHitUnit->Get_Transform()->Get_WorldMatrix().Inverse();
+	_float4x4 matWorldInv = m_pCurStickBone->Get_BoneMatrix().Inverse();
 	m_matHitOffset = m_pTransform->Get_WorldMatrix() * matWorldInv;
+
+	/**((_float4*)&m_matHitOffset.m[0]) = ((_float4*)&m_matHitOffset.m[0])->Normalize();
+	*((_float4*)&m_matHitOffset.m[1]) = ((_float4*)&m_matHitOffset.m[1])->Normalize();
+	*((_float4*)&m_matHitOffset.m[2]) = ((_float4*)&m_matHitOffset.m[2])->Normalize();*/
+
+	 
 }

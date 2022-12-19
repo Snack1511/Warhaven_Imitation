@@ -123,18 +123,21 @@ void CCameraCollider::OnEnable()
 {
 	__super::OnEnable();
 
-	if (m_bStart)
+	if (m_pPxController)
 	{
-		_float4 vPos = m_tColliderDesc.vOffset.MultiplyCoord(m_pOwner->Get_Transform()->Get_WorldMatrix());
+		if (m_bStart)
+		{
+			_float4 vPos = m_tColliderDesc.vOffset.MultiplyCoord(m_pOwner->Get_Transform()->Get_WorldMatrix());
 
-		m_pPxController->setPosition(CUtility_PhysX::To_PxExtendedVec3(vPos));
+			m_pPxController->setPosition(CUtility_PhysX::To_PxExtendedVec3(vPos));
+		}
+		m_bStart = true;
 	}
-	m_bStart = true;
+	
 
 }
 
 void CCameraCollider::OnDisable()
 {
 	__super::OnDisable();
-	m_pPxController->setPosition(PxExtendedVec3(-999.f, -999.f, -999.f));
 }

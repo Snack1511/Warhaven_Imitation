@@ -36,6 +36,8 @@ public:
 
 	void SetActive_SquardInfo(_bool value);
 
+	void Set_Crosshair_Pos(_float4 vPosition);
+
 public:
 	CUI_Wrapper* Get_HUD(_uint eHUD);
 
@@ -60,6 +62,9 @@ private:
 
 public:
 	_bool Is_OnHeroGauge();
+
+private:
+	_float4	m_vOriginCrosshairPos = ZERO_VECTOR;
 
 private:
 	CUnit::UNIT_STATUS m_tStatus;

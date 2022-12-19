@@ -36,6 +36,12 @@ HRESULT CEffects_Factory::Initialize()
 	if(FAILED(Add_Effect(HASHCODE(CSword_Effect), CSword_Effect::Create())))
 		return E_FAIL;
 
+	if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CDefaultArrow::Create(), HASHCODE(CDefaultArrow))))
+		return E_FAIL;
+
+	/*if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CDefaultArrow::Create(), HASHCODE(CDefaultArrow))))
+		return E_FAIL;*/
+
 	if (FAILED(SetUp_StoneParticles()))
 		return E_FAIL;
 

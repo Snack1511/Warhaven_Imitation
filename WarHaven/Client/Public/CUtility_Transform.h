@@ -18,6 +18,7 @@ public:
 	static _float4  LookAt(CTransform* pTransform, _float4 vPos, _bool bNoY = false);
 
 	static _float4	Get_ProjPos(CTransform* pTransform, _float4 vOffsetPos = ZERO_VECTOR);
+	static _float4	Get_ProjPos(_float4 vPosition);
 
 	static _float4 Get_Dir_2D(CTransform* pFrom, CTransform* pTo);
 

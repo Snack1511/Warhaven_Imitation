@@ -39,7 +39,8 @@ CPhysXCharacter* CPhysXCharacter::Create(_uint iGroupID, const PHYSXCCTDESC& tPh
 
 void CPhysXCharacter::Set_Position(_float4 vPos)
 {
-	m_pPxController->setFootPosition(CUtility_PhysX::To_PxExtendedVec3(vPos));
+	if (m_pPxController)
+		m_pPxController->setFootPosition(CUtility_PhysX::To_PxExtendedVec3(vPos));
 }
 
 void CPhysXCharacter::onShapeHit(const PxControllerShapeHit& hit)
@@ -193,11 +194,17 @@ void CPhysXCharacter::OnEnable()
 {
 	__super::OnEnable();
 	//m_tControllerFilters = m_tControllerFiltersOrigin;
+	if (!m_pPxController)
+	{
+		CPhysX_Manager::Get_Instance()->Create_CapsuleController(m_tPhysXCCTDESC.fRadius, m_tPhysXCCTDESC.fHeight, &m_pPxController, this);
+		m_pPxController->setFootPosition(CUtility_PhysX::To_PxExtendedVec3(m_pOwner->Get_Transform()->Get_World(WORLD_POS)));
+	}
 }
 
 void CPhysXCharacter::OnDisable()
 {
 	__super::OnDisable();
+	Safe_release(m_pPxController);
 
 	//m_pPxController->getActor()->
 	//m_tControllerFiltersOrigin = m_tControllerFilters;
