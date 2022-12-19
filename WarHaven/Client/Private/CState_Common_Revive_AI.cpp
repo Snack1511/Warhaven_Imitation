@@ -50,48 +50,59 @@ HRESULT CState_Common_Revive_AI::Initialize()
 
     m_iStateChangeKeyFrame = 99;
 
-    m_fAIMyLength = 2.f;
+    m_fAIMyLength = 1.5f;
 
     return S_OK;
 }
 
 void CState_Common_Revive_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    CPlayer* pAbjPlayer = pOwner->Get_RevivalPlayer();
+    if (ePrevType != m_ePreStateType && pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
+    {
+        m_iAnimIndex = 20;
+    }
+
+    m_pAbjPlayer = pOwner->Get_RevivalPlayer();
 
     _float4 vMyPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-    _float4 vPos = vMyPos;
+    m_vPos = vMyPos;
+    _float4 vDir;
 
-    if (pAbjPlayer)
+
+    if (m_pAbjPlayer)
     {
-        pAbjPlayer->Get_CurrentUnit()->Start_Reborn();
-        vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
+        static_cast<CPlayer*>(m_pAbjPlayer)->Get_CurrentUnit()->Start_Reborn();
+        m_vPos = pOwner->Get_RevivalPlayer()->Get_WorldPos();
+        vDir = m_vPos - vMyPos;
+
     }
     else
     {
         m_eCurPhase = DANCE;
         m_iAnimIndex = 9;
+        vDir = _float4(1.f, 0.f, 0.f);
     }
 
 
-    _float4 vDir = vPos - vMyPos;
-    pOwner->Get_Transform()->Set_LerpLook(vDir.Normalize(), 0.4f);
+    pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    // 만약 사거리 앞에 적이 가까이 붙어있다면 부활을 풀고 공격을 해야겠죠? 어떻게 해야할까요..
+    m_fTimeAcc += fDT(0);
 
     switch (m_eCurPhase)
     {
     case Client::CState_Common_Revive_AI::DANCE:
-        if (pAnimator->Is_CurAnimFinished())
+
+        if (pAnimator->Get_CurAnimFrame() > 40)
         {
             STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
             return eDefaultState;
         }
+
 
         break;
 
@@ -100,17 +111,40 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
         if (pAnimator->Is_CurAnimFinished())
         {
             m_eCurPhase = LOOP;
-            m_iAnimIndex = 29;
-            __super::Enter(pOwner, pAnimator, m_eStateType);
+
+            if (pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
+                m_iAnimIndex = 22;
+            else
+                m_iAnimIndex = 30;
+            
+            CState::Enter(pOwner, pAnimator, (STATE_TYPE)m_eCurPhase);
         }
 
         break;
     case Client::CState_Common_Revive_AI::LOOP:
-        if (KEY(F, NONE))
+        if (m_fTimeAcc >= 4.f)
         {
             m_eCurPhase = PHASE_END;
-            m_iAnimIndex = 30;
-            __super::Enter(pOwner, pAnimator, m_eStateType);
+
+            if (pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
+                m_iAnimIndex = 21;
+            else
+                m_iAnimIndex = 29;
+            
+            // 이거 해야 부활함.. 왜? 그리고 DeadStone 없으면 터짐. 
+            //if(m_pAbjPlayer)
+            //    static_cast<CPlayer*>(m_pAbjPlayer)->Respawn_Unit(m_vPos, static_cast<CPlayer*>(m_pAbjPlayer)->Get_CurClass());
+
+            CState::Enter(pOwner, pAnimator, m_ePreStateType);
+        }
+        else
+        {
+            if (!m_pAbjPlayer)
+            {
+                m_eCurPhase = PHASE_END;
+                m_iAnimIndex = 29;
+                CState::Enter(pOwner, pAnimator, m_ePreStateType);
+            }
         }
 
         break;
@@ -131,7 +165,7 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CState_Common_Revive_AI::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+    __super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CState_Common_Revive_AI::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

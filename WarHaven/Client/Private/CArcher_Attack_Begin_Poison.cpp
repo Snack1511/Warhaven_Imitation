@@ -13,7 +13,7 @@
 #include "CColorController.h"
 
 #include "CCamera_Follow.h"
-
+#include "CAnimWeapon.h"
 
 CArcher_Attack_Begin_Poison::CArcher_Attack_Begin_Poison()
 {
@@ -43,35 +43,19 @@ HRESULT CArcher_Attack_Begin_Poison::Initialize()
     m_iAnimIndex = 1;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_ATTACK_BEGIN_POISION_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    // 선형 보간 시간
-    m_fInterPolationTime = 0.1f;
-    m_fAnimSpeed = 2.3f;
-    m_iStateChangeKeyFrame = 0;
-    
-	//m_vecAdjState.push_back(STATE_IDLE_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_RUN_ARCHER_L);
+	// 선형 보간 시간
+	m_fInterPolationTime = 0.1f;
+	m_fAnimSpeed = 2.3f;
+	m_iStateChangeKeyFrame = 0;
 
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
+	m_iStopIndex = 0;
+	m_iAttackEndIndex = 0;
 
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	//m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
+	Add_KeyFrame(30, 1);
+	Add_KeyFrame(90, 2);
 
-
-	//Add_KeyFrame(36, 0);
-
-	m_iStopIndex = 33;
-	m_iAttackEndIndex = 50;
-
-	Add_KeyFrame(33, 1);
-	Add_KeyFrame(50, 2);
-
-	//Vertical은 전부 Land로 맞춤
-	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
-	
+
 	m_iIdle_Index = 11;
 	m_iLandRightIndex = 17;
 	m_iLandLeftIndex = 8;
@@ -79,24 +63,23 @@ HRESULT CArcher_Attack_Begin_Poison::Initialize()
 	m_iJumpFallLeftIndex = 0;
 
 
-	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 17;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 18;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 19;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 20;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 34;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 35;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 36;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 21;
-	
-	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 26;
-	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 27;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 28;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 29;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 28;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 29;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 30;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 31;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 32;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 33;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 34;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 35;
+
+	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 38;
+	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 41;
 	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 42;
 	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 43;
 	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 44;
-	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 30;
-
+	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 45;
 
 	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 38;
 	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 39;
@@ -135,21 +118,13 @@ HRESULT CArcher_Attack_Begin_Poison::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 
-	m_eWalkState = STATE_ATTACK_AIMING_ARCHER;
-	m_eJumpState = STATE_ATTACK_AIMING_ARCHER;
-	m_eLandState = STATE_ATTACK_AIMING_ARCHER;
-	m_eFallState = STATE_ATTACK_AIMING_ARCHER;
-	m_eRunState = STATE_ATTACK_AIMING_ARCHER;
-	m_eIdleState = STATE_ATTACK_AIMING_ARCHER;
-	m_eBounceState = STATE_BOUNCE_ARCHER;
-
-	//m_eWalkState = STATE_WALK_ARCHER_R;
-	//m_eJumpState = STATE_JUMP_ARCHER_R;
-	//m_eLandState = STATE_JUMP_LAND_ARCHER_R;
-	//m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	//m_eRunState = STATE_RUN_ARCHER_R;
-	//m_eIdleState = STATE_IDLE_ARCHER_R;
-	//m_eBounceState = STATE_WALK_ARCHER_R;
+	m_eWalkState = STATE_WALK_ARCHER_R;
+	m_eJumpState = STATE_JUMP_ARCHER_R;
+	m_eLandState = STATE_WALK_ARCHER_R;
+	m_eFallState = STATE_JUMPFALL_ARCHER_R;
+	m_eRunState = STATE_WALK_ARCHER_R;
+	m_eIdleState = STATE_IDLE_ARCHER_R;
+	m_eBounceState = STATE_WALK_ARCHER_R;
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.f;
@@ -161,32 +136,40 @@ HRESULT CArcher_Attack_Begin_Poison::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 0.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 0.8f;
 
+	m_bLandMove = true;
+
     return __super::Initialize();
 }
 
 void CArcher_Attack_Begin_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
+	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
+	pOwner->Get_Status().fBackStepSpeed = pOwner->Get_Status().fWalkSpeed;
 
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed * 0.35f;
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fRunSpeed;
 
+	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, m_fInterPolationTime, m_fAnimSpeed);
+
+	m_bMoveTrigger = false;
+
+	CState::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Attack_Begin_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	// pOwner->Set_BounceState(STATE_BOUNCE_ARCHER_R);
-
-	if (pAnimator->Is_CurAnimFinished())
+	
+	if (m_bMoveTrigger)
 		return STATE_ATTACK_AIMING_POISION_ARCHER;
 
 	if (KEY(LBUTTON, AWAY))
 	{
-		if(pAnimator->Get_CurAnimFrame() > 30)
+		if (m_bAttackTrigger)
 			return STATE_ATTACK_SHOOT_POISION_ARCHER;
-		else 
+		else
 			return STATE_ATTACK_CANCEL_ARCHER;
-
 	}
 
 	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(15.f));
@@ -215,6 +198,12 @@ STATE_TYPE CArcher_Attack_Begin_Poison::Check_Condition(CUnit* pOwner, CAnimator
 			pOwner->Get_SkillTrigger().bSkillQTrigger = false;
 			return STATE_SWAP_ARCHER;
 		}
+		else if (pOwner->Get_SkillTrigger().bSkillETrigger)
+		{
+			pOwner->Get_SkillTrigger().bSkillETrigger = false;
+			pOwner->Get_SkillTrigger().bSkillQTrigger = false;
+			return STATE_SWAP_ARCHER;
+		}
 	}
 		
 	if (pOwner->Get_SkillTrigger().bSkillETrigger && !pOwner->Get_SkillTrigger().bSkillQTrigger)
@@ -231,24 +220,19 @@ void CArcher_Attack_Begin_Poison::On_KeyFrameEvent(CUnit * pOwner, CAnimator * p
 {
 	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
+	switch (iSequence)
+	{
 
-	//switch (iSequence)
-	//{
+	case 1:
+		m_bAttackTrigger = true;
+		break;
 
-	//case 1:
-	//	
+	case 2:
+		m_bMoveTrigger = true;
+		break;
 
-	//	m_bAttackTrigger = true;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//case 2:
-	//	m_bAttackTrigger = false;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//default:
-	//	break;
-	//}
+	default:
+		break;
+	}
 
 }

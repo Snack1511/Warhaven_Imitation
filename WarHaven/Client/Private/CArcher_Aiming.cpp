@@ -55,16 +55,10 @@ HRESULT CArcher_Aiming::Initialize()
     m_fAnimSpeed = 2.3f;
     m_iStateChangeKeyFrame = 999;
 
-	//Add_KeyFrame(36, 0);
 
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
 
-	//Add_KeyFrame(33, 1);
-	//Add_KeyFrame(50, 2);
-
-	//Vertical은 전부 Land로 맞춤
-	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
 	
 	m_iIdle_Index = 11;
@@ -129,17 +123,9 @@ HRESULT CArcher_Aiming::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 
-	//m_eWalkState = STATE_ATTACK_AIMING_ARCHER;
-	//m_eJumpState = STATE_ATTACK_AIMING_ARCHER;
-	//m_eLandState = STATE_JUMP_LAND_ARCHER_R;
-	//m_eFallState = STATE_ATTACK_AIMING_ARCHER;
-	//m_eRunState = STATE_ATTACK_AIMING_ARCHER;
-	//m_eIdleState = STATE_IDLE_ARCHER_R;
-	//m_eBounceState = STATE_BOUNCE_ARCHER;
-
 	m_eWalkState = STATE_WALK_ARCHER_R;
 	m_eJumpState = STATE_JUMP_ARCHER_R;
-	m_eLandState = STATE_JUMP_LAND_ARCHER_R;
+	m_eLandState = STATE_WALK_ARCHER_R;
 	m_eFallState = STATE_JUMPFALL_ARCHER_R;
 	m_eRunState = STATE_WALK_ARCHER_R;
 	m_eIdleState = STATE_IDLE_ARCHER_R;
@@ -154,6 +140,8 @@ HRESULT CArcher_Aiming::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.5f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.5f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.5f;
+
+	m_bLandMove = true;
 
     return __super::Initialize();
 }
@@ -177,7 +165,9 @@ void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
 	}
 
-	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+
+	CState::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -219,25 +209,5 @@ STATE_TYPE CArcher_Aiming::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 void CArcher_Aiming::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
 	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
-
-
-	//switch (iSequence)
-	//{
-
-	//case 1:
-	//	
-
-	//	m_bAttackTrigger = true;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//case 2:
-	//	m_bAttackTrigger = false;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//default:
-	//	break;
-	//}
 
 }

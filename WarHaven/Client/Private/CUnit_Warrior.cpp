@@ -85,8 +85,8 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
-		{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
+		{0.6f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.f, 0.f), (_uint)eHitBoxBody },
 	};
 
 	//SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_COM"));
@@ -95,8 +95,8 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.7f, _float4(0.f, 0.5f, 0.f),eHitBoxGuard },
-		{0.7f, _float4(0.f, 1.2f, 0.f),eHitBoxGuard },
+		{0.7f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxGuard },
+		{0.7f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
 	};
 
 	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
@@ -104,7 +104,7 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 
 	tUnitColDesc[0].fRadius = 0.4f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = eHitBoxHead;
+	tUnitColDesc[0].eColType = (_uint)eHitBoxHead;
 
 
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
@@ -118,19 +118,19 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 	{
 		tWeaponUnitColDesc[i].fRadius = 0.2f;
 		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
-		tWeaponUnitColDesc[i].eColType = eAttack;
+		tWeaponUnitColDesc[i].eColType = (_uint)eAttack;
 	}
 
 	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = eGuardBreak;
+		tWeaponUnitColDesc[i].eColType = (_uint)eGuardBreak;
 
 	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = eFlyAttack;
+		tWeaponUnitColDesc[i].eColType = (_uint)eFlyAttack;
 
 	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 	
@@ -187,6 +187,17 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
 		break;
 
+
+	case Client::CUnit::UNIT_TYPE::eAI_idiot:
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
+		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_WARRIOR;
+		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_WARRIOR;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_WARRIOR;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
+		break;
+
 		
 
 	case Client::CUnit::UNIT_TYPE::eUNIT_TYPE_END:
@@ -211,6 +222,13 @@ void CUnit_Warrior::SetUp_ReserveState(UNIT_TYPE eUnitType)
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
+
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+
+		break;
+
+	case Client::CUnit::UNIT_TYPE::eAI_idiot:
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;

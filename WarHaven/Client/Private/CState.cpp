@@ -573,7 +573,7 @@ void CState::DoMove_AI_NoTarget(CUnit* pOwner, CAnimator* pAnimator)
 	_float4 vLook, vRight;
 
 
-	if (m_vAIRandLook.x > 0.f && m_vAIRandLook.y > 0.f && m_vAIRandLook.z > 0.f)
+	if (m_vAIRandLook.x >= 0.f && m_vAIRandLook.y >= 0.f && m_vAIRandLook.z >= 0.f)
 	{
 		vLook = m_vAIRandLook;
 		vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT); //GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
@@ -581,7 +581,7 @@ void CState::DoMove_AI_NoTarget(CUnit* pOwner, CAnimator* pAnimator)
 	else
 	{
 		vLook = pOwner->Get_FollowCamLook();
-		vRight = pOwner->Get_FollowCamRight(); //GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+		vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT); //GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
 	}
 
 

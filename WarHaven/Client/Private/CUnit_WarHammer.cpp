@@ -62,8 +62,8 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),	eHitBoxBody },
-		{0.6f, _float4(0.f, 1.f, 0.f),	eHitBoxBody },
+		{0.6f, _float4(0.f, 0.5f, 0.f),	(_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.f, 0.f),	(_uint)eHitBoxBody },
 	};
 
 
@@ -72,7 +72,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 
 	tUnitColDesc[0].fRadius = 0.4f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = eHitBoxHead;
+	tUnitColDesc[0].eColType = (_uint)eHitBoxHead;
 
 
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
@@ -92,7 +92,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 
 			tWeaponUnitColDesc[i - 1].fRadius = tWeaponUnitColDesc[i].fRadius;
 			tWeaponUnitColDesc[i - 1].vOffsetPos = tWeaponUnitColDesc[i].vOffsetPos;
-			tWeaponUnitColDesc[i - 1].eColType = tWeaponUnitColDesc[i].eColType;
+			tWeaponUnitColDesc[i - 1].eColType = (_uint)tWeaponUnitColDesc[i].eColType;
 
 			tWeaponUnitColDesc[i].vOffsetPos.x -= 10.f;
 			tWeaponUnitColDesc[i - 1].vOffsetPos.x += 20.f;
@@ -102,7 +102,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 		{
 			tWeaponUnitColDesc[i].fRadius = 0.2f;
 			tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
-			tWeaponUnitColDesc[i].eColType = eAttack;
+			tWeaponUnitColDesc[i].eColType = (_uint)eAttack;
 		}
 	}
 
@@ -112,8 +112,8 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.7f, _float4(0.f, 0.5f, 0.f), eHitBoxGuard },
-		{0.7f, _float4(0.f, 1.2f, 0.f), eHitBoxGuard },
+		{0.7f, _float4(0.f, 0.5f, 0.f), (_uint)eHitBoxGuard },
+		{0.7f, _float4(0.f, 1.2f, 0.f), (_uint)eHitBoxGuard },
 	};
 
 	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
@@ -122,8 +122,8 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tGroggyColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),	eGroggy },
-		{0.6f, _float4(0.f, 1.f, 0.f),	eGroggy },
+		{0.6f, _float4(0.f, 0.5f, 0.f),	(_uint)eGroggy },
+		{0.6f, _float4(0.f, 1.f, 0.f),	(_uint)eGroggy },
 	};
 
 	SetUp_UnitCollider(CUnit::GROGGY, tGroggyColDesc, 2, DEFAULT_TRANS_MATRIX, false);
@@ -131,7 +131,7 @@ void CUnit_WarHammer::SetUp_Colliders(_bool bPlayer)
 
 	tUnitColDesc[0].fRadius = 2.f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = eFlyAttack;
+	tUnitColDesc[0].eColType = (_uint)eFlyAttack;
 
 	SetUp_UnitCollider(CUnit::FLYATTACK, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false);
 }

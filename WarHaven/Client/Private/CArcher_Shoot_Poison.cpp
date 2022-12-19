@@ -13,7 +13,8 @@
 #include "CColorController.h"
 
 #include "CCamera_Follow.h"
-
+#include "CUnit_Archer.h"
+#include "CAnimWeapon.h"
 
 CArcher_Shoot_Poison::CArcher_Shoot_Poison()
 {
@@ -56,24 +57,20 @@ HRESULT CArcher_Shoot_Poison::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_ARCHER);
 	m_vecAdjState.push_back(STATE_ATTACK_SWING_ARCHER);
 
-	//Add_KeyFrame(36, 0);
-
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
 
-	//Add_KeyFrame(33, 1);
-	//Add_KeyFrame(50, 2);
+	Add_KeyFrame(32, 1);
 
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
-	
+
 	m_iIdle_Index = 11;
 	m_iLandRightIndex = 17;
 	m_iLandLeftIndex = 8;
 	m_iJumpFallRightIndex = 10;
 	m_iJumpFallLeftIndex = 0;
-
 
 	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 17;
 	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 18;
@@ -83,7 +80,7 @@ HRESULT CArcher_Shoot_Poison::Initialize()
 	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 35;
 	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 36;
 	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 21;
-	
+
 	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 26;
 	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 27;
 	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 28;
@@ -134,11 +131,11 @@ HRESULT CArcher_Shoot_Poison::Initialize()
 
 	m_eWalkState = STATE_WALK_ARCHER_R;
 	m_eJumpState = STATE_JUMP_ARCHER_R;
-	m_eLandState = STATE_JUMP_LAND_ARCHER_R;
+	m_eLandState = STATE_WALK_ARCHER_R;
 	m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	m_eRunState = STATE_RUN_ARCHER_R;
+	m_eRunState = STATE_WALK_ARCHER_R;
 	m_eIdleState = STATE_IDLE_ARCHER_R;
-	m_eBounceState = STATE_BOUNCE_ARCHER;
+	m_eBounceState = STATE_WALK_ARCHER_R;
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
@@ -150,6 +147,8 @@ HRESULT CArcher_Shoot_Poison::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+	m_bLandMove = true;
+
     return __super::Initialize();
 }
 
@@ -157,8 +156,12 @@ void CArcher_Shoot_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 {
 	pOwner->On_Use(CUnit::SKILL2);
 
-	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
-	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLAUNCH, m_fInterPolationTime, m_fAnimSpeed);
+
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed * 0.7f;
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed * 0.7f;
+
+	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -178,8 +181,15 @@ STATE_TYPE CArcher_Shoot_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CArcher_Shoot_Poison::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Get_SkillTrigger().bSkillETrigger = false;
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
 
-    //Exit에선 무조건 남겨놔야함
+	if (!m_bAttackTrigger)
+		static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
+
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
+
+	
 	__super::Exit(pOwner, pAnimator);
 }
 
@@ -197,23 +207,16 @@ void CArcher_Shoot_Poison::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimato
 	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
 
-	//switch (iSequence)
-	//{
+	switch (iSequence)
+	{
 
-	//case 1:
-	//	
+	case 1:
+		static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
+		m_bAttackTrigger = true;
+		break;
 
-	//	m_bAttackTrigger = true;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//case 2:
-	//	m_bAttackTrigger = false;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//default:
-	//	break;
-	//}
+	default:
+		break;
+	}
 
 }

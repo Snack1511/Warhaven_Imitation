@@ -84,6 +84,9 @@ protected:
 	/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
 	STATE_TYPE			m_eIdleState = STATE_END;
 
+	/*Land 시 움직일 수 있도록 설정*/
+	_bool	m_bLandMove = false;
+
 
 protected:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);

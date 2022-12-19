@@ -35,8 +35,12 @@ public:
 	void			Enable_Arrow(_bool bEnable);
 
 public:
+	void			Set_ColorController(_uint iMeshPartType);
+
+public:
 	void			Create_DefaultArrow();
 	void			Create_PurpleArrow();
+	void			Create_SnipeArrow(_hashcode _hsCArrowCode);
 	void			Change_ArrowPhase(_uint iPhase);
 	void			Shoot_Arrow();
 

@@ -40,16 +40,16 @@ HRESULT CState_Combat_SkillE_Paladin_ShieldWall_Loop::Initialize()
 	m_fInterPolationTime = 0.f;
 	m_fAnimSpeed = 2.5f;
 
-	m_fMyMaxLerp = 0.4f;
+	m_fMyMaxLerp = 1.2f;
 
-	m_iStateChangeKeyFrame = 0;
+	m_iStateChangeKeyFrame = 99;
 
 	return S_OK;
 }
 
 void CState_Combat_SkillE_Paladin_ShieldWall_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_fRand = frandom(0.5, 5.f);
+	m_fRand = frandom(0.5, 3.f);
 
 	pOwner->Enable_GuardCollider(true);
 
@@ -88,12 +88,13 @@ void CState_Combat_SkillE_Paladin_ShieldWall_Loop::Enter(CUnit* pOwner, CAnimato
 
 STATE_TYPE CState_Combat_SkillE_Paladin_ShieldWall_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CUnit* pUnit = pOwner->Get_TargetUnit();
+
 	m_fTimeAcc += fDT(0);
 
-	if (m_fTimeAcc > m_fRand)
+	if (!pUnit || m_fTimeAcc > m_fRand)
 		return AI_STATE_COMBAT_SHIELDWALL_END_PALADIN;
-
-	CUnit* pUnit = pOwner->Get_TargetUnit();
+	
 	CTransform* pMyTransform = pOwner->Get_Transform();
 
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);

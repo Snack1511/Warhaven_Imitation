@@ -50,7 +50,7 @@ HRESULT CState_Combat_SkillQ_Paladin_Rush_Begin::Initialize()
 
 void CState_Combat_SkillQ_Paladin_Rush_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_fMyMaxLerp = 1.f;
+	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
 	m_fMaxSpeed = pOwner->Get_Status().fSprintJumpSpeed;

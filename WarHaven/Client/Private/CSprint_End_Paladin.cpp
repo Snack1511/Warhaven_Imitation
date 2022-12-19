@@ -44,8 +44,6 @@ HRESULT CSprint_End_Paladin::Initialize()
 
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
-    //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
@@ -61,6 +59,8 @@ HRESULT CSprint_End_Paladin::Initialize()
     m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
+    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
 
 
 	m_fMyMaxLerp = 0.4f;
@@ -94,6 +94,9 @@ STATE_TYPE CSprint_End_Paladin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pOwner->Is_Air())
         return STATE_SPRINT_JUMPFALL_PALADIN;
+
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_PALADIN_R;
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 

@@ -19,6 +19,9 @@
 #include "CProjectile.h"
 #include "CDefaultArrow.h"
 
+#include "CCollider_Sphere.h"
+#include "CColorController.h"
+
 CUnit_Archer::CUnit_Archer()
 {
 }
@@ -89,8 +92,8 @@ void CUnit_Archer::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
-		{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
+		{0.6f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.f, 0.f), (_uint)eHitBoxBody },
 	};
 
 	SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
@@ -98,8 +101,8 @@ void CUnit_Archer::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.7f, _float4(0.f, 0.5f, 0.f),eHitBoxGuard },
-		{0.7f, _float4(0.f, 1.2f, 0.f),eHitBoxGuard },
+		{0.7f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxGuard },
+		{0.7f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
 	};
 
 	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
@@ -107,7 +110,7 @@ void CUnit_Archer::SetUp_Colliders(_bool bPlayer)
 
 	tUnitColDesc[0].fRadius = 0.4f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = eHitBoxHead;
+	tUnitColDesc[0].eColType = (_uint)eHitBoxHead;
 
 
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
@@ -118,8 +121,8 @@ void CUnit_Archer::SetUp_Colliders(_bool bPlayer)
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum] = 
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.4f, _float4(0.f, 5.f, 0.f),	eAttack },
-		{0.4f, _float4(0.f, 0.f, 0.f),	eAttack },
+		{0.4f, _float4(0.f, 5.f, 0.f),	(_uint)eAttack },
+		{0.4f, _float4(0.f, 0.f, 0.f),	(_uint)eAttack },
 	};
 
 
@@ -173,7 +176,7 @@ void CUnit_Archer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 
-
+		m_eDefaultState = STATE_IDLE_ARCHER_R;
 		m_eSprintEndState = STATE_SPRINT_END_ARCHER;
 
 		break;
@@ -272,6 +275,26 @@ void CUnit_Archer::Enable_Arrow(_bool bEnable)
 		DISABLE_GAMEOBJECT(m_pCurArrow);
 }
 
+void CUnit_Archer::Set_ColorController(_uint iMeshPartType)
+{
+	if (!m_pCurArrow)
+		return;
+
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 9999.f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	//tColorDesc.vTargetColor *= 1.1f;
+	tColorDesc.iMeshPartType = iMeshPartType;
+
+	GET_COMPONENT_FROM(m_pCurArrow, CColorController)->Add_ColorControll(tColorDesc);
+}
+
 void CUnit_Archer::Create_DefaultArrow()
 {
 	if (m_pCurArrow) 
@@ -293,6 +316,7 @@ void CUnit_Archer::Create_DefaultArrow()
 		pEffect->Reset(this);
 		m_mapProjectilePool[HASHCODE(CDefaultArrow)].pop_front();
 		pGameObject = pEffect;
+		DISABLE_COMPONENT(GET_COMPONENT_FROM(pEffect, CCollider_Sphere));
 	}
 
 	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
@@ -300,7 +324,59 @@ void CUnit_Archer::Create_DefaultArrow()
 
 void CUnit_Archer::Create_PurpleArrow()
 {
+	if (m_pCurArrow)
+		DISABLE_GAMEOBJECT(m_pCurArrow);
+
+	CGameObject* pGameObject = nullptr;
+
+	if (m_mapProjectilePool[HASHCODE(CDefaultArrow)].empty())
+	{
+		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CDefaultArrow));
+		//없으면 새로 집어넣음
+		pGameObject->Initialize();
+		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+		static_cast<CProjectile*>(pGameObject)->Reset(this);
+	}
+	else
+	{
+		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CDefaultArrow)].front();
+		pEffect->Reset(this);
+		m_mapProjectilePool[HASHCODE(CDefaultArrow)].pop_front();
+		pGameObject = pEffect;
+		DISABLE_COMPONENT(GET_COMPONENT_FROM(pEffect, CCollider_Sphere));
+	}
+
+	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
 }
+
+void CUnit_Archer::Create_SnipeArrow(_hashcode _hsCArrowCode)
+{
+	if (m_pCurArrow)
+		DISABLE_GAMEOBJECT(m_pCurArrow);
+
+	CGameObject* pGameObject = nullptr;
+
+	if (m_mapProjectilePool[_hsCArrowCode].empty())
+	{
+		pGameObject = GAMEINSTANCE->Clone_GameObject(_hsCArrowCode);
+		//없으면 새로 집어넣음
+		pGameObject->Initialize();
+		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+		static_cast<CProjectile*>(pGameObject)->Reset(this);
+	}
+	else
+	{
+		CProjectile* pEffect = m_mapProjectilePool[_hsCArrowCode].front();
+		pEffect->Reset(this);
+		m_mapProjectilePool[_hsCArrowCode].pop_front();
+		pGameObject = pEffect;
+		DISABLE_COMPONENT(GET_COMPONENT_FROM(pEffect, CCollider_Sphere));
+	}
+
+	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
+}
+
+
 
 void CUnit_Archer::Change_ArrowPhase(_uint iPhase)
 {
@@ -367,21 +443,25 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// 칼 길이
-	tDesc.fHeight = 0.5f;
+	tDesc.fHeight = 0.1f;
 	// 칼 두께
-	tDesc.fRadius = 0.2f;
+	tDesc.fRadius = 0.1f;
 	// 칼 붙일 뼈
-	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1");
+	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 
 	//칼 오프셋(로컬)
-	tDesc.vOffset = _float4(0.f, 0.f, -100.f);
+	tDesc.vOffset = _float4(0.f, 0.f, -10.f);
 
 	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
 	Add_Component(m_pWeaponCollider_R);
 
 
-	//GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1")->Set_OffsetMatrix(DefaultMatrix);
-	//GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1")->Set_OffsetMatrix(DefaultMatrix);
+	////GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1")->Set_OffsetMatrix(DefaultMatrix);
+	//_float4x4 HierarchyNodeMat = GET_COMPONENT(CModel)->Find_HierarchyNode("Root")->Get_TransformationMatrix();
+	//HierarchyNodeMat.m[3][2] += 100.f;
+
+
+	//GET_COMPONENT(CModel)->Find_HierarchyNode("Root")->Set_TransformationMatrix(HierarchyNodeMat);
 
 
 	m_fCoolTime[SKILL1] = 3.f;
@@ -411,7 +491,6 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 		if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CDefaultArrow::Create(), HASHCODE(CDefaultArrow))))
 			return E_FAIL;
 	}
-	else
 		
 
 	//if (!GAMEINSTANCE->Clone_GameObject(HASHCODE(CPur)))
@@ -431,14 +510,7 @@ HRESULT CUnit_Archer::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
-	for (_uint i = 0; i < MODEL_PART_END; ++i)
-	{
-		_int iTemp = 0;
-		iTemp = m_tModelData.strModelPaths[i].find(L"SK_Warrior_Helmet_Rabbit_50");
-
-		if (iTemp > 0)
-			m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
-	}
+	Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
 
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
@@ -458,10 +530,10 @@ HRESULT CUnit_Archer::Start()
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
 	SetUp_TrailEffect(
-		_float4(0.f, 0.f, -168.f, 1.f),	//Weapon Low
-		_float4(0.f, 0.f, -171.f, 1.f),	//Weapon High
-		_float4(0.f, -1.5f, -169.5f, 1.f), //Left
-		_float4(0.f, 1.5f, -169.5f, 1.f), //Right
+		_float4(0.f, 0.f, -10.f, 1.f),	//Weapon Low
+		_float4(0.f, 0.f, -11.f, 1.f),	//Weapon High
+		_float4(0.f, -1.5f, -10.f, 1.f), //Left
+		_float4(0.f, 1.5f, -10.f, 1.f), //Right
 		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
 		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
 		0.f,

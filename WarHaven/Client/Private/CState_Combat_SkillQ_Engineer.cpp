@@ -30,6 +30,8 @@ void CState_Combat_SkillQ_Engineer::Enter(CUnit* pOwner, CAnimator* pAnimator, S
 {
     m_iDirectionRand = STATE_DIRECTION_N;
 
+    m_vAIRandLook = _float4(0.f, 0.f, 0.f);
+
     
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

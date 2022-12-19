@@ -149,7 +149,7 @@ void CPlayerInfo::Set_CustomWeapon(CLASS_TYPE eClassType, eCUSTOM_WEAPON eWeapon
 
 CLASS_TYPE CPlayerInfo::Choose_Character()
 {
-	_uint iSize = m_vecPrefClassType.size();
+	_uint iSize = (_uint)m_vecPrefClassType.size();
 
 	_uint iRand = random(0, iSize - 1);
 

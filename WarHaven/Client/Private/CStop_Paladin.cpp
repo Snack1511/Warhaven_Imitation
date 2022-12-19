@@ -23,15 +23,12 @@ HRESULT CStop_Paladin::Initialize()
 	m_fInterPolationTime = 0.05f;
 	m_fAnimSpeed = 2.f;
 
-	/*나중에 추가*/
-	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
-
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 
-	//m_vecAdjState.push_back(STATE_COUNTER_PALADIN);
-	//m_vecAdjState.push_back(STATE_SHIELDATTACK_PALADIN);
-	//m_vecAdjState.push_back(STATE_SPINATTACK_PALADIN);
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+
 
 	m_iStateChangeKeyFrame = 0;
 

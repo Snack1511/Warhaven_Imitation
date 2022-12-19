@@ -50,6 +50,7 @@ void CState_Combat_SkillQ_AirSpike_Loop::Enter(CUnit* pOwner, CAnimator* pAnimat
 	m_fMyAccel = 10.f;
 
 	m_fMaxSpeed = pOwner->Get_Status().fSprintJumpSpeed;
+
 	Physics_Setting_AI(m_fMaxSpeed, pOwner);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

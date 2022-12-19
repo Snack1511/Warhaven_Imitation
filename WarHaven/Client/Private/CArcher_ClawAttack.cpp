@@ -11,6 +11,7 @@
 #include "CColorController.h"
 
 #include "CUnit_Archer.h"
+#include "CProjectile.h"
 
 CArcher_ClawAttack::CArcher_ClawAttack()
 {
@@ -65,6 +66,7 @@ HRESULT CArcher_ClawAttack::Initialize()
 	Add_KeyFrame(41, 1);
 	Add_KeyFrame(m_iAttackEndIndex, 2);
 	Add_KeyFrame(100, 3);
+	Add_KeyFrame(30, 4);
 
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */
@@ -160,8 +162,8 @@ void CArcher_ClawAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	m_bMoveTrigger = false;
 
-	static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(false);
-
+	// static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(false);
+	static_cast<CUnit_Archer*>(pOwner)->Change_ArrowPhase((_uint)CProjectile::eLOOP);
 
 	pOwner->Set_BounceState(STATE_BOUNCE_ARCHER);
 
@@ -170,18 +172,25 @@ void CArcher_ClawAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 STATE_TYPE CArcher_ClawAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (m_bMoveTrigger || pAnimator->Is_CurAnimFinished())
-	{
-		STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
-		return eDefaultState;
-	}
+	if (m_bMoveTrigger)
+		return m_eIdleState;
+
+	if(pAnimator->Is_CurAnimFinished())
+		return m_eIdleState;
 
 	return __super::Tick(pOwner, pAnimator);
 }
 
 void CArcher_ClawAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(true);
+	/*CModel* pModel = GET_COMPONENT_FROM(pOwner, CModel);
+	_float4x4 vOffSetMatrix = pModel->Get_TransformationMatrix();
+	vOffSetMatrix.XMLoad().r[3].m128_f32[0] -= 1.f;
+	pModel->Set_TransformMatrix(MODEL_PART_WEAPON, vOffSetMatrix);*/
+
+
+	// static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(true);
+	static_cast<CUnit_Archer*>(pOwner)->Change_ArrowPhase((_uint)CProjectile::eSTART);
 
 	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
@@ -204,6 +213,9 @@ void CArcher_ClawAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, c
 {
 	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
+	CModel* pModel = GET_COMPONENT_FROM(pOwner, CModel);
+	_float4x4 vOffSetMatrix = pModel->Get_TransformationMatrix();
+
 	switch (iSequence)
 	{
 	case 1:
@@ -218,7 +230,12 @@ void CArcher_ClawAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, c
 
 	case 3:
 		m_bMoveTrigger = true;
+		break;
 
+	case 4:
+		
+		//vOffSetMatrix.XMLoad().r[3].m128_f32[0] += 1.f;
+		//pModel->Set_TransformMatrix(MODEL_PART_WEAPON, vOffSetMatrix);
 
 	default:
 		break;

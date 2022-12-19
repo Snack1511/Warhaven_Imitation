@@ -30,6 +30,7 @@ HRESULT CRun_Archer::Initialize()
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
 
 	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
@@ -53,8 +54,6 @@ void CRun_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
-	if (ePrevType == STATE_ATTACK_BEGIN_ARCHER)
-		int a = 0;
 
 	if (ePrevType == STATE_RUN_ARCHER_R || ePrevType == STATE_RUN_ARCHER_L)
 	{

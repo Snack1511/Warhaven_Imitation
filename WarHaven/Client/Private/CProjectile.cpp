@@ -196,25 +196,5 @@ void CProjectile::My_LateTick()
 
 		m_pTransform->Make_WorldMatrix();
 	}
-	else
-	{
 
-		//if (vShootLook != ZERO_VECTOR)
-		//{
-		//	CTransform* pMyTransform = Get_Transform();
-		//	CPhysics* pMyPhysicsCom = m_pOwnerUnit->Get_PhysicsCom();
-
-		//	Get_Transform()->Set_LerpLook(vShootLook, 0.4f);
-
-		//	m_pPhysics->Set_MaxSpeed(m_fMaxSpeed);
-
-		//	if (!vShootLook.Is_Zero())
-		//		m_pPhysics->Set_Dir(vShootLook);
-
-		//	m_pPhysics->Set_Accel(20.f);
-		//}
-
-		
-	}
-	
 }

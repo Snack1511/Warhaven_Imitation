@@ -51,19 +51,6 @@ HRESULT CArcher_Attack_Begin::Initialize()
     m_fAnimSpeed = 2.3f;
     m_iStateChangeKeyFrame = 999;
     
-	//m_vecAdjState.push_back(STATE_IDLE_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_RUN_ARCHER_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	//m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
-
-
-	//Add_KeyFrame(36, 0);
 
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
@@ -71,8 +58,6 @@ HRESULT CArcher_Attack_Begin::Initialize()
 	Add_KeyFrame(30, 1);
 	Add_KeyFrame(90, 2);
 
-	//Vertical은 전부 Land로 맞춤
-	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
 	
 	m_iIdle_Index = 11;
@@ -138,19 +123,11 @@ HRESULT CArcher_Attack_Begin::Initialize()
 
 	m_eWalkState = STATE_WALK_ARCHER_R;
 	m_eJumpState = STATE_JUMP_ARCHER_R;
-	m_eLandState = STATE_JUMP_LAND_ARCHER_R;
+	m_eLandState = STATE_WALK_ARCHER_R;
 	m_eFallState = STATE_JUMPFALL_ARCHER_R;
 	m_eRunState = STATE_WALK_ARCHER_R;
 	m_eIdleState = STATE_IDLE_ARCHER_R;
 	m_eBounceState = STATE_WALK_ARCHER_R;
-
-	//m_eWalkState = STATE_WALK_ARCHER_R;
-	//m_eJumpState = STATE_JUMP_ARCHER_R;
-	//m_eLandState = STATE_JUMP_LAND_ARCHER_R;
-	//m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	//m_eRunState = STATE_WALK_ARCHER_R;
-	//m_eIdleState = STATE_IDLE_ARCHER_R;
-	//m_eBounceState = STATE_WALK_ARCHER_R;
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.f;
@@ -161,6 +138,8 @@ HRESULT CArcher_Attack_Begin::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 0.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 0.8f;
+
+	m_bLandMove = true;
 
     return __super::Initialize();
 }
@@ -180,7 +159,7 @@ void CArcher_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 	m_bMoveTrigger = false;
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+    CState::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)

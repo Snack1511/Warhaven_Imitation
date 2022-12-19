@@ -14,6 +14,8 @@
 #include "Model.h"
 #include "CColorController.h"
 
+#include "CPlayer.h"
+
 #include "CUtility_Transform.h"
 
 CState_Common_Hit_Warrior::CState_Common_Hit_Warrior()
@@ -60,8 +62,13 @@ HRESULT CState_Common_Hit_Warrior::Initialize()
 
 void CState_Common_Hit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    if (m_eStateType == ePrevType)
+    if ((_uint)CUnit::UNIT_TYPE::eAI_idiot == pOwner->Get_OwnerPlayer()->Get_UnitType())
+    {
+        m_bHit = true;
         return;
+    }
+        
+
 
     /* 날 때린놈의 hit info를 받았다. */
     m_tHitInfo = *((HIT_INFO*)(pData));
@@ -76,6 +83,9 @@ void CState_Common_Hit_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CState_Common_Hit_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_bHit)
+        return STATE_END;
+
     if (pAnimator->Is_CurAnimFinished())
     {
         STATE_TYPE eDefaultState = pOwner->Get_DefaultState();

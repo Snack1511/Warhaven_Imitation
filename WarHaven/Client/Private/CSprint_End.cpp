@@ -102,6 +102,10 @@ STATE_TYPE CSprint_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pOwner->Is_Air())
         return STATE_SPRINT_JUMPFALL_PLAYER;
+
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_PLAYER_R;
+
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 
 

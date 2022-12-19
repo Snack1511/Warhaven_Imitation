@@ -13,6 +13,9 @@
 #include "CColorController.h"
 
 #include "CCamera_Follow.h"
+#include "CUnit_Archer.h"
+
+#include "CDefaultArrow.h"
 
 
 CArcher_Swap::CArcher_Swap()
@@ -47,26 +50,14 @@ HRESULT CArcher_Swap::Initialize()
     m_fInterPolationTime = 0.1f;
     m_fAnimSpeed = 2.3f;
     m_iStateChangeKeyFrame = 0;
-    
-	//m_vecAdjState.push_back(STATE_IDLE_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_RUN_ARCHER_L);
 
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	//m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
-
-
-	//Add_KeyFrame(36, 0);
 
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
 
-	//Add_KeyFrame(33, 1);
-	//Add_KeyFrame(50, 2);
+	Add_KeyFrame(11, 1);
+	Add_KeyFrame(30, 2);
+
 
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */
@@ -166,43 +157,52 @@ HRESULT CArcher_Swap::Initialize()
 
 void CArcher_Swap::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+    CState::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Swap::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
-	_float fKeyFrame = 30;
-
-	if (KEY(LBUTTON, HOLD))
+	if (pAnimator->Is_CurAnimFinished())
 	{
-		if (pAnimator->Get_CurAnimFrame() > fKeyFrame)
-			return STATE_ATTACK_BEGIN_POISION_ARCHER;
+		STATE_TYPE eDeafultState = pOwner->Get_DefaultState();
+		return eDeafultState;
 	}
+
+	if (m_bKeyInputable)
+	{
+		if (KEY(LBUTTON, HOLD))
+		{
+			if (pOwner->Get_SkillTrigger().bSkillQTrigger)
+				return STATE_ATTACK_BEGIN_SNIPING_ARCHER;
+
+			else if (pOwner->Get_SkillTrigger().bSkillETrigger)
+				return STATE_ATTACK_BEGIN_POISION_ARCHER;
+
+			else
+				return STATE_ATTACK_BEGIN_ARCHER;
+			
+		}
+	}
+
+
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Swap::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (!m_bAttackTrigger)
+		Choice_Arrow(pOwner);
+		
+
     //Exit에선 무조건 남겨놔야함
 	__super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CArcher_Swap::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* ARCHER가 Attack 으로 오는 조건
-    1. CTRL + LBuutton 을 이용해 공격한다.
-    */
-   
-
-	if (!pOwner->Get_SkillTrigger().bSkillQTrigger && !pOwner->Get_SkillTrigger().bSkillETrigger)
-	{
-		if (KEY(LBUTTON, TAP))
-			return m_eStateType;
-	}
-
-
+	// Attack_Begin Sniping, Attack_Begin Poison Check_Condition 쪽에서 전부 처리
     return STATE_END;
 }
 
@@ -211,23 +211,36 @@ void CArcher_Swap::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const
 	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
 
-	//switch (iSequence)
-	//{
+	switch (iSequence)
+	{
 
-	//case 1:
-	//	
+	case 1:
+		
+		m_bAttackTrigger = true;
+		Choice_Arrow(pOwner);
+		break;
 
-	//	m_bAttackTrigger = true;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
+	case 2:
+		m_bKeyInputable = true;
+		break;
 
-	//case 2:
-	//	m_bAttackTrigger = false;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
 
-	//default:
-	//	break;
-	//}
+	default:
+		break;
+	}
 
+}
+
+void CArcher_Swap::Choice_Arrow(CUnit* pOwner)
+{
+	if (pOwner->Get_SkillTrigger().bSkillQTrigger)
+	{
+		static_cast<CUnit_Archer*>(pOwner)->Create_SnipeArrow(HASHCODE(CDefaultArrow)); // 스나이핑 화살이 나올 수 있도록 설정
+		static_cast<CUnit_Archer*>(pOwner)->Set_ColorController(MODEL_PART_SKEL);
+	}
+	else if (pOwner->Get_SkillTrigger().bSkillETrigger)
+	{
+		static_cast<CUnit_Archer*>(pOwner)->Create_PurpleArrow(); // 포이즌 화살이 나올 수 있도록 설정
+	}
+		
 }
