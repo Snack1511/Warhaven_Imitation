@@ -1372,6 +1372,8 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SPIRAL;
 			if (ImGui::Selectable("CURVECHARGE", &bCurveSelect[CURVE_CHARGE]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CHARGE;
+			if (ImGui::Selectable("CIRCLE", &bCurveSelect[CURVE_CIRCLE]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CIRCLE;
 
 
 			

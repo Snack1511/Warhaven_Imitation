@@ -1391,6 +1391,26 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 			vPos = CEasing_Utillity::Linear(vPos, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS), m_pDatas[iIdx].InstancingData.fMovingAcc,
 				m_pDatas[iIdx].InstancingData.fFadeInTime + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);
 		}
+		break;
+
+	case Client::CURVE_CIRCLE:
+		fSpeed = m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc;
+
+		fX = m_pDatas[iIdx].InstancingData.fCurvePower *
+			sinf(fSpeed * PI * 0.5f);
+
+		fY = m_pDatas[iIdx].InstancingData.fCurvePower *
+			cosf(-1.f * fSpeed * PI * 0.5f);
+
+		vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x * fTimeDelta;
+		vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y * fTimeDelta;
+		vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z * fTimeDelta;
+
+		vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x * fTimeDelta;
+		vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y * fTimeDelta;
+		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z * fTimeDelta;
+		break;
+
 	default:
 		break;
 	}
