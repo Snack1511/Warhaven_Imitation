@@ -270,7 +270,11 @@ HRESULT CRectEffects::Initialize()
 		m_pDatas[i].InstancingData.eCurFadeType = INSTANCING_DATA::FADEINREADY;
 
 		_float4 vStartPos;
-		vStartPos = _float4(0.f, 0.f, 0.f, 1.f);
+
+		if (m_pFollowTarget)
+			vStartPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+		else
+			vStartPos = _float4(0.f, 0.f, 0.f, 1.f);
 
 		_float4 vStartDir = _float4(
 			frandom(-m_tCreateData.vStartDirRange.x, m_tCreateData.vStartDirRange.x),
@@ -690,17 +694,7 @@ void CRectEffects::My_Tick()
 				vRotUp = vUp.MultiplyNormal(matRot);
 
 			}
-			else if (CURVE_CAMROT == m_eCurveType)
-			{
-
-				_float4x4 matRot;
-
-				matRot = XMMatrixRotationAxis(vCamLook.XMLoad(), ToRadian(m_tCreateData.fCurveAngle));
-
-				vRotLook = vLook.MultiplyNormal(matRot);
-				vRotRight = vRight.MultiplyNormal(matRot);
-				vRotUp = vUp.MultiplyNormal(matRot);
-			}
+			
 
 
 			//m_pDatas[i].InstancingData.vScale = _float4(0.1f, 0.1f, 0.1f, 1.f);
@@ -883,11 +877,6 @@ _bool CRectEffects::Fade_Lerp(_uint iIndex)
 			m_pDatas[iIndex].InstancingData.vOriginScale = m_pDatas[iIndex].InstancingData.vScale = m_pDatas[iIndex].InstancingData.vFadeInTargetScale;
 			m_pDatas[iIndex].InstancingData.fOriginAlpha = m_pDatas[iIndex].InstancingData.vColor.w = m_pDatas[iIndex].InstancingData.fTargetAlpha;
 		}
-		else if(CURVE_CAMROT == m_eCurveType)
-		{
-			m_fColorPowerControl = CEasing_Utillity::SinIn(m_fColorPowerControl, 0.f,
-				m_pDatas[iIndex].InstancingData.fTimeAcc, m_pDatas[iIndex].InstancingData.fFadeOutStartTime * 0.8f);
-		}
 
 		break;
 
@@ -977,27 +966,7 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 	if (m_tCreateData.iOffsetPositionCount > 0)
 	{
 		_uint iCurIndex = iIndex / (m_tCreateData.iNumInstance / m_tCreateData.iOffsetPositionCount);
-		if (CURVE_CAMROT == m_eCurveType)
-		{
-			_float4	vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-			_float4 vLook;
-
-			vLook = vCamLook * -1.f;
-			vLook.y = 0.f;
-			vLook.Normalize();
-
-			_float4 vUp = { 0.f, 1.f, 0.f };
-
-			vUp.Normalize();
-			_float4 vRight = vUp.Cross(vLook.Normalize());
-
-			vStartPos += vRight * m_tCreateData.pOffsetPositions[iCurIndex].x;
-			vStartPos += vUp * m_tCreateData.pOffsetPositions[iCurIndex].y;
-			vStartPos += vLook * m_tCreateData.pOffsetPositions[iCurIndex].z;
-
-		}
-		else
-			vStartPos += m_tCreateData.pOffsetPositions[iCurIndex];
+		vStartPos += m_tCreateData.pOffsetPositions[iCurIndex];
 	}
 
 	/*	if (m_bFollowParticle)
@@ -1417,8 +1386,11 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 
 		break;
 	case Client::CURVE_CHARGE:
-		vPos = CEasing_Utillity::CircularIn(vPos, ZERO_VECTOR, m_pDatas[iIdx].InstancingData.fMovingAcc,
-			m_pDatas[iIdx].InstancingData.fFadeInTime  + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);
+		if (m_pFollowTarget)
+		{
+			vPos = CEasing_Utillity::Linear(vPos, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS), m_pDatas[iIdx].InstancingData.fMovingAcc,
+				m_pDatas[iIdx].InstancingData.fFadeInTime + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);
+		}
 	default:
 		break;
 	}
