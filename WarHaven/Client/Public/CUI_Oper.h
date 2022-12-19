@@ -167,6 +167,15 @@ private:
 	void Create_BlackImg();
 
 private:
+	enum PointInfo { Info_BG, Info_Icon, Info_End };
+	CUI_Object* m_pPointInfo[Info_End];
+	CUI_Object* m_pArrPointInfo[3][Info_End];
+
+private:
+	void Create_PointInfo();
+	void Init_PointInfo();
+
+private:
 	CUI_Object* m_pTargetPoint = nullptr;
 	CUI_Object* m_pArrTargetPoint[2];
 

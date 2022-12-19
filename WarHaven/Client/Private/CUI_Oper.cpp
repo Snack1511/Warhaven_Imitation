@@ -41,11 +41,7 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_TargetPoint();
 	Create_BriefingUI();
 	Create_BlackImg();
-
-	Init_CharacterSelect();
-	Init_TeamIcon();
-	Init_StrongHoldUI();
-	Init_StrongHoldEffect();
+	Create_PointInfo();
 
 	return S_OK;
 }
@@ -56,6 +52,12 @@ HRESULT CUI_Oper::Start()
 	Bind_Btn();
 
 	CUser::Get_Instance()->SetActive_HUD(false);
+
+	Init_CharacterSelect();
+	Init_TeamIcon();
+	Init_StrongHoldUI();
+	Init_StrongHoldEffect();
+	Init_PointInfo();
 
 	SetActive_BG(true);
 
@@ -346,6 +348,14 @@ void CUI_Oper::Progress_Oper()
 				}
 			}
 
+			for (int i = 0; i < 3; ++i)
+			{
+				for (int j = 0; j < Info_End; ++j)
+				{
+					Enable_Fade(m_pArrPointInfo[i][j], 0.3f);
+				}
+			}
+
 			Enable_StrongHoldUI();
 		}
 		else if (m_iOperProgress == 5)
@@ -574,7 +584,7 @@ void CUI_Oper::Create_TextImg()
 		case Text_Oper2:
 
 			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperMeeting2.png"));
-			m_pTextImg[i]->Set_PosY(305.f);
+			m_pTextImg[i]->Set_PosY(330.f);
 			m_pTextImg[i]->Set_Scale(155.f, 50.f);
 			m_pTextImg[i]->Set_Sort(0.49f);
 
@@ -583,7 +593,7 @@ void CUI_Oper::Create_TextImg()
 		case Text_SelectPoint:
 
 			m_pTextImg[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/OperText.png"));
-			m_pTextImg[i]->Set_PosY(-250.f);
+			m_pTextImg[i]->Set_PosY(-285.f);
 			m_pTextImg[i]->Set_Scale(287.f, 50.f);
 			m_pTextImg[i]->Set_Sort(0.49f);
 
@@ -1024,7 +1034,7 @@ void CUI_Oper::Create_LeftIcon()
 			m_pArrLeftUI[i][Left_Icon]->Set_Scale(32.f);
 
 			m_pArrLeftUI[i][Left_Icon]->Set_FontText(TEXT("지도"));
-			m_pArrLeftUI[i][Left_Icon]->Set_FontOffset(-50.f, 3.f);
+			m_pArrLeftUI[i][Left_Icon]->Set_FontOffset(-75.f, 3.f);
 
 			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_BG], CTexture)->Set_CurTextureIndex(0);
 			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_Icon], CTexture)->Set_CurTextureIndex(0);
@@ -1295,10 +1305,10 @@ void CUI_Oper::Init_StrongHoldUI()
 		m_pArrStrongHoldUI[SP_Icon][1]->Set_PosY(-195.f);
 		m_pArrStrongHoldUI[SP_TEXT][1]->Set_PosY(-200.f);
 
-		m_pArrStrongHoldUI[SP_BG][2]->Set_PosY(170.f);
-		m_pArrStrongHoldUI[SP_Outline][2]->Set_PosY(170.f);
-		m_pArrStrongHoldUI[SP_Icon][2]->Set_PosY(170.f);
-		m_pArrStrongHoldUI[SP_TEXT][2]->Set_PosY(166.f);
+		m_pArrStrongHoldUI[SP_BG][2]->Set_PosY(220.f);
+		m_pArrStrongHoldUI[SP_Outline][2]->Set_PosY(220.f);
+		m_pArrStrongHoldUI[SP_Icon][2]->Set_PosY(220.f);
+		m_pArrStrongHoldUI[SP_TEXT][2]->Set_PosY(216.f);
 
 		for (int i = 0; i < SP_End; ++i)
 		{
@@ -1322,10 +1332,10 @@ void CUI_Oper::Init_StrongHoldEffect()
 	case LEVEL_PADEN:
 		m_pArrStrongHoldEffect[0]->Set_PosY(-4.f);
 		m_pArrStrongHoldEffect[1]->Set_PosY(-195.f);
-		m_pArrStrongHoldEffect[2]->Set_PosY(170.f);
+		m_pArrStrongHoldEffect[2]->Set_PosY(220.f);
 		m_pArrStrongHoldEffect[3]->Set_PosY(-4.f);
 		m_pArrStrongHoldEffect[4]->Set_PosY(-195.f);
-		m_pArrStrongHoldEffect[5]->Set_PosY(170.f);
+		m_pArrStrongHoldEffect[5]->Set_PosY(220.f);
 
 		break;
 
@@ -1368,7 +1378,7 @@ void CUI_Oper::Create_OperTimer()
 
 		m_pTimer[i]->Set_FadeDesc(0.3f);
 
-		m_pTimer[i]->Set_PosY(275.f);
+		m_pTimer[i]->Set_PosY(300.f);
 		m_pTimer[i]->Set_Scale(242.f, 10.f);
 
 		switch (i)
@@ -1409,6 +1419,121 @@ void CUI_Oper::Create_BlackImg()
 	DISABLE_GAMEOBJECT(m_pBlackImg);
 }
 
+void CUI_Oper::Create_PointInfo()
+{
+	for (int i = 0; i < Info_End; ++i)
+	{
+		m_pPointInfo[i] = CUI_Object::Create();
+
+		m_pPointInfo[i]->Set_FadeDesc(0.3f);
+
+		switch (i)
+		{
+		case Info_BG:
+
+			m_pPointInfo[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_GradientBG2.dds"));
+			m_pPointInfo[i]->Set_Color(_float4(0.9f, 0.9f, 0.9f, 0.5f));
+
+			m_pPointInfo[i]->Set_ScaleY(20.f);
+			m_pPointInfo[i]->Set_Sort(0.47f);
+
+			break;
+
+		case Info_Icon:
+
+			GET_COMPONENT_FROM(m_pPointInfo[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pPointInfo[i], "/Oper", "PointIcon");
+
+			m_pPointInfo[i]->Set_Scale(20.f);
+			m_pPointInfo[i]->Set_Sort(0.46f);
+
+			m_pPointInfo[i]->Set_FontRender(true);
+			// m_pPointInfo[i]->Set_FontStyle(true);
+			// m_pPointInfo[i]->Set_FontCenter(true);
+			m_pPointInfo[i]->Set_FontScale(0.2f);
+
+			break;
+		}
+
+		CREATE_GAMEOBJECT(m_pPointInfo[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPointInfo[i]);
+
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrPointInfo[j][i] = m_pPointInfo[i]->Clone();
+
+			m_pOperList.push_back(m_pArrPointInfo[j][i]);
+
+			CREATE_GAMEOBJECT(m_pArrPointInfo[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrPointInfo[j][i]);
+		}
+	}
+}
+
+void CUI_Oper::Init_PointInfo()
+{
+	_float fOffsetX = 10.f;
+	_float fOffsetY = -10.5f;
+
+	_float fFontSizeX = 0.f;
+	_float fFontScaleX = 0.f;
+	_float fInfoBGSizeX = 0.f;
+
+	_float fInfoBGMag = 1.8f;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		GET_COMPONENT_FROM(m_pArrPointInfo[i][Info_Icon], CTexture)->Set_CurTextureIndex(i);
+
+		switch (i)
+		{
+		case 0:
+			m_pArrPointInfo[i][Info_Icon]->Set_FontText(TEXT("적 군사력 감소"));
+			m_pArrPointInfo[i][Info_Icon]->Set_FontOffset(fOffsetX, fOffsetY);
+
+			fFontScaleX = m_pArrPointInfo[i][Info_Icon]->Get_Scale().x;
+			fFontSizeX = m_pArrPointInfo[i][Info_Icon]->Get_FontSizeX();
+			fInfoBGSizeX = fFontSizeX + fFontScaleX + fOffsetX;
+
+			m_pArrPointInfo[i][Info_BG]->Set_ScaleX(fFontSizeX * fInfoBGMag);
+			m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+
+			break;
+
+		case 1:
+			m_pArrPointInfo[i][Info_Icon]->Set_FontText(TEXT("합류 가능"));
+			m_pArrPointInfo[i][Info_Icon]->Set_FontOffset(fOffsetX, fOffsetY);
+
+			fFontScaleX = m_pArrPointInfo[i][Info_Icon]->Get_Scale().x;
+			fFontSizeX = m_pArrPointInfo[i][Info_Icon]->Get_FontSizeX();
+			fInfoBGSizeX = fFontSizeX + fFontScaleX + fOffsetX;
+
+			m_pArrPointInfo[i][Info_BG]->Set_ScaleX(fFontSizeX * fInfoBGMag);
+			m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			break;
+
+		case 2:
+			m_pArrPointInfo[i][Info_Icon]->Set_FontText(TEXT("대포 사용 가능"));
+			m_pArrPointInfo[i][Info_Icon]->Set_FontOffset(fOffsetX, fOffsetY);
+
+			fFontScaleX = m_pArrPointInfo[i][Info_Icon]->Get_Scale().x;
+			fFontSizeX = m_pArrPointInfo[i][Info_Icon]->Get_FontSizeX();
+			fInfoBGSizeX = fFontSizeX + fFontScaleX + fOffsetX;
+
+			m_pArrPointInfo[i][Info_BG]->Set_ScaleX(fFontSizeX * fInfoBGMag);
+			m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			break;
+		}
+	}
+
+	for (int i = 0; i < Info_End; ++i)
+	{
+		m_pArrPointInfo[0][i]->Set_PosY(-4.f - 40.f);
+		m_pArrPointInfo[1][i]->Set_PosY(-195.f - 40.f);
+		m_pArrPointInfo[2][i]->Set_PosY(220.f - 40.f);
+	}
+}
+
 void CUI_Oper::Create_TargetPoint()
 {
 	m_pTargetPoint = CUI_Object::Create();
@@ -1416,7 +1541,7 @@ void CUI_Oper::Create_TargetPoint()
 	m_pTargetPoint->Set_FadeDesc(0.3f);
 
 	m_pTargetPoint->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_PingGreenLeader.dds"));
-	m_pTargetPoint->Set_Pos(-45.f, -300.f);
+	m_pTargetPoint->Set_Pos(-45.f, -330.f);
 	m_pTargetPoint->Set_Sort(0.47f);
 
 	CREATE_GAMEOBJECT(m_pTargetPoint, GROUP_UI);
@@ -1464,7 +1589,7 @@ void CUI_Oper::Create_BriefingUI()
 	}
 
 	m_pBriefingUI[BU_BG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/Briefing/T_BriefingBox.dds"));
-	m_pBriefingUI[BU_BG]->Set_PosY(245.f);
+	m_pBriefingUI[BU_BG]->Set_PosY(275.f);
 	m_pBriefingUI[BU_BG]->Set_Scale(160.f, 25.f);
 	m_pBriefingUI[BU_BG]->Set_Color(_float4(0.f, 0.f, 0.f, 0.6f));
 	m_pBriefingUI[BU_BG]->Set_Sort(0.5f);
@@ -1473,7 +1598,7 @@ void CUI_Oper::Create_BriefingUI()
 	Read_Texture(m_pBriefingUI[BU_Icon], "/Oper/Briefing", "Icon");
 
 	m_pBriefingUI[BU_Icon]->Set_Sort(0.49f);
-	m_pBriefingUI[BU_Icon]->Set_Pos(-45.f, 246.f);
+	m_pBriefingUI[BU_Icon]->Set_Pos(-45.f, 276.f);
 	m_pBriefingUI[BU_Icon]->Set_Scale(32.f);
 	m_pBriefingUI[BU_Icon]->Set_Color(_float4(0.6f, 0.6f, 0.6f, 1.f));
 
