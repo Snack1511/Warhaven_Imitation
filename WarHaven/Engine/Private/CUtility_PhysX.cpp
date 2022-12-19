@@ -10,6 +10,11 @@ PxExtendedVec3 CUtility_PhysX::To_PxExtendedVec3(_float4 vVector)
 	return PxExtendedVec3(vVector.x, vVector.y, vVector.z);
 }
 
+PxQuat CUtility_PhysX::To_PxQuat(_float4 vQuat)
+{
+	return PxQuat(vQuat.x, vQuat.y, vQuat.z, vQuat.w);
+}
+
 _float4x4 CUtility_PhysX::To_Matrix(PxTransform& pxTransform)
 {
 	XMMATRIX	QuaternionMatrix;

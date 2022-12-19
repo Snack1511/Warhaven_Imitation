@@ -17,7 +17,6 @@ public:
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;
-	virtual void	OnDisable() override;
 
 
 };

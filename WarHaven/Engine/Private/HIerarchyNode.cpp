@@ -151,10 +151,7 @@ HRESULT CHierarchyNode::Initialize(CResource_Bone* pResource, CHierarchyNode* pP
 		XMMatrixTranspose(XMLoadFloat4x4(&m_TransformationMatrix)));
 
 	XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_CurCombinedTransformationMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_PrevCombinedTransformationMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_SendCombinedTransformationMatrix, XMMatrixIdentity());
-	
+	m_PrevMatrix.Identity();
 
 	vector<CResource_Bone*>& vecChildrenBones = pResource->Get_ChildrenBones();
 
@@ -175,9 +172,8 @@ void CHierarchyNode::Update_CombinedTransformationMatrix()
 {
 	if (m_pParent)
 	{
-		XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix)
-			// 부모의 CombinedMatrix 를 가져와 내 Transform 이랑 곱해서 나의 Combined 를 만듦.
-			* XMLoadFloat4x4(&m_pParent->m_CombinedTransformationMatrix));
+		m_CombinedTransformationMatrix = m_PrevMatrix * m_TransformationMatrix * m_pParent->m_CombinedTransformationMatrix;
+		
 	}
 	else
 	{

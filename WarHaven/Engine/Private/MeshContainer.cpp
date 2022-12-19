@@ -139,6 +139,7 @@ void CMeshContainer::SetUp_BoneMatrices(class CShader* pShader, const char* pCon
 		for (auto& pBone : m_Bones)
 		{
 			XMStoreFloat4x4(&BoneMatrices[iIndex++], XMMatrixTranspose(m_PrevTransformMatrix.XMLoad() * pBone->Get_OffsetMatrix() * pBone->Get_CombinedMatrix() * m_TransformMatrix.XMLoad()));
+			
 		}
 	}
 

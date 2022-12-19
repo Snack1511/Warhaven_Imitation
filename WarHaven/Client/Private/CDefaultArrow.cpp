@@ -34,14 +34,7 @@ HRESULT CDefaultArrow::Initialize_Prototype()
     if (FAILED(SetUp_Colliders(COL_BLUEATTACK)))
         return E_FAIL;
 
+	m_hcCode = HASHCODE(CDefaultArrow);
 
     return CProjectile::Initialize_Prototype();
-}
-
-void CDefaultArrow::OnDisable()
-{
-	__super::OnDisable();
-
-	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(HASHCODE(CDefaultArrow), this);
-
 }

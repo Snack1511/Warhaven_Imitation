@@ -13,6 +13,7 @@ class CProjectile abstract
 {
 protected:
 	CProjectile();
+	CProjectile(const CProjectile& _origin);
 	virtual ~CProjectile();
 
 public:
@@ -31,9 +32,12 @@ public:
 
 
 public:
-	enum ePROJECTILE_PHASE { eSTART, eLOOP, eSHOOT, eHIT, eEND };
+	enum ePROJECTILE_PHASE { eSTART, eLOOP, eSHOOT, eHIT, eSTICK, eEND };
 	void		On_ShootProjectile();
 	void			On_ChangePhase(ePROJECTILE_PHASE eNextPhase);
+
+protected:
+	_hashcode	m_hcCode = 0;
 
 protected:
 	CUnit* m_pOwnerUnit = nullptr;
@@ -41,13 +45,16 @@ protected:
 	CHierarchyNode* m_pLeftHandBone = nullptr;
 	CHierarchyNode* m_pCurStickBone = nullptr;
 
-	_float4 m_vHitOffsetPos = ZERO_VECTOR;
-	_float4 m_vShootLook = ZERO_VECTOR;
+	_float4 m_vStartPosition = ZERO_VECTOR;
+
+	CGameObject* m_pHitUnit = nullptr;
+	_float4x4 m_matHitOffset;
 
 protected:
 	_float	m_fMaxSpeed = 50.f;
 	_float	m_fLoopTimeAcc = 0.f;
 	_float	m_fMaxLoopTime = 3.f;
+	_float	m_fMaxDistance = 50.f;
 
 protected:
 	ePROJECTILE_PHASE	m_eCurPhase = eSTART;
@@ -59,6 +66,16 @@ protected:
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
+
+protected:
+	void	Hit_Unit(CGameObject* pHitUnit);
+
+private:
+	_bool	m_bCloned = false;
+	PxConvexMesh* m_pConvexMesh = nullptr;
+	PxRigidDynamic* m_pActor = nullptr;
 };
 
 END

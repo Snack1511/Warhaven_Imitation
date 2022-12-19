@@ -262,6 +262,9 @@
     <Filter Include="03. Instances\03. Component\10. Mesh\Mesh_Rect\CMesh_HDRRect">
       <UniqueIdentifier>{7ed05260-2141-4fe1-802a-665157783fcb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Singleton\02. Design\19. PhysX_Manager\Proj">
+      <UniqueIdentifier>{48e5bf50-28d5-4f3d-bc40-6330dd212cb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">

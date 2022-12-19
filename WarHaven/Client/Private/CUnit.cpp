@@ -554,7 +554,7 @@ HRESULT CUnit::Initialize_Prototype()
 	//PhysX캐릭터 : 캐릭터 본체
 	CPhysXCharacter::PHYSXCCTDESC tDesc;
 
-	tDesc.fRadius = 0.25f;
+	tDesc.fRadius = 0.3f;
 	tDesc.fHeight = 1.5f;
 
 	CPhysXCharacter* pPhysXCharacter = CPhysXCharacter::Create(CP_BEFORE_TRANSFORM, tDesc);
@@ -1219,6 +1219,9 @@ void CUnit::Add_DeathStones(const list<CGameObject*>& StoneParticleList)
 
 void CUnit::Start_Reborn()
 {
+	if (!m_pOwnerPlayer->Is_AbleRevival())
+		return;
+
 	m_pOwnerPlayer->Start_Reborn();
 
 	static_cast<CMesh_Particle*>(m_DeathStones.front())->Start_Reverse(this);

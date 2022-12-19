@@ -123,7 +123,12 @@ void CUI_KillLog::My_Tick()
 
 	if (fCurPosY > vTargetPos.y)
 	{
-		fCurPosY -= fDT(0) * m_fStepY * 2.f;
+		_float fLessLength = fabsf(vTargetPos.y - fCurPosY);
+		_float fSpeed = fDT(0) * m_fStepY * 2.f;
+
+		fSpeed = max(fSpeed * fLessLength, fSpeed);
+
+		fCurPosY -= fSpeed;
 
 		if (fCurPosY < vTargetPos.y)
 			fCurPosY = vTargetPos.y;

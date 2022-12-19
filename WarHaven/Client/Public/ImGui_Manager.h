@@ -24,7 +24,7 @@ public:
 		IMGUI_LEVEL,
 		IMGUI_TILE,
 		IMGUI_PATH,
-		IMGUI_AI,
+		//IMGUI_AI,
 		IMGUI_END
 	};
 

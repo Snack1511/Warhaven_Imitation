@@ -75,12 +75,6 @@ void CScript_FollowCam::Synchronize_Position()
 
 void CScript_FollowCam::Start_LerpType(CAMERA_LERP_TYPE eType)
 {
-	if (m_eCurrentLerpType >= CAMERA_LERP_FINISHATTACK)
-	{
-		//러프 아직 안끝났으면
-		if (m_bCameraMoving)
-			return;
-	}
 
 	if (!m_pFollowTarget)
 		return;
@@ -100,22 +94,7 @@ void CScript_FollowCam::Start_LerpType(CAMERA_LERP_TYPE eType)
 	m_vOriginOffset =	m_vCurrentOffset;
 	m_vOriginLook = m_pOwner->Get_Transform()->Get_World(WORLD_LOOK);
 	m_vTargetLook = m_pFollowTarget->Get_Transform()->Get_World(WORLD_LOOK);
-	if (eType == CAMERA_LERP_FINISHATTACKDOWN)
-	{
-		m_vTargetLook += _float4(0.f, -1.3f, 0.f, 0.f);
-		m_vTargetLook.Normalize();
-	}
-	else if (eType == CAMERA_LERP_FINISHATTACKUP)
-	{
-		m_vTargetLook += _float4(0.f, 0.6f, 0.f, 0.f);
-		m_vTargetLook.Normalize();
-	}
-	else if (eType == CAMERA_LERP_FINISHATTACKBACK)
-	{
-		m_vTargetLook *= -1.f;
-		m_vTargetLook += _float4(0.f, -0.2f, 0.f, 0.f);
-		m_vTargetLook.Normalize();
-	}
+
 	m_fOriginDistance = m_fCurrentDistance;
 
 	//가까우면 0, 멀면 최대가 1
@@ -173,93 +152,13 @@ HRESULT CScript_FollowCam::Initialize()
 {
 	m_arrLerpDesc[CAMERA_LERP_SPRINT].vTargetOffset.x = 0.f;
 
+	//m_arrLerpDesc[CAMERA_LERP_ZOOM].vTargetOffset.y *= 1.2f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOM].fTargetDistance *= 0.6f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOM].fMaxDistance *= 0.5f;
 
-	m_arrLerpDesc[CAMERA_LERP_DASH].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 2.f;
-	//m_arrLerpDesc[CAMERA_LERP_DASH].fMaxDistance = 0.1f;
-	//m_arrLerpDesc[CAMERA_LERP_DASH].fCameraDirectingLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.3f;
-	m_arrLerpDesc[CAMERA_LERP_DASH].fCameraDistanceLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX] = m_arrLerpDesc[CAMERA_LERP_ZOOM];
+	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX].fTargetDistance *= 0.2f;
 
-	m_arrLerpDesc[CAMERA_LERP_BACKDASH].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 1.5f;
-
-	m_arrLerpDesc[CAMERA_LERP_LEFT].vTargetOffset.x = m_tDefaultDesc.vDefaultOffset.x - 1.f;
-	m_arrLerpDesc[CAMERA_LERP_RIGHT].vTargetOffset.x = m_tDefaultDesc.vDefaultOffset.x + 1.f;
-
-	//m_arrLerpDesc[CAMERA_LERP_RUN].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 1.3f;
-
-	m_arrLerpDesc[CAMERA_LERP_WALLJUMP].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 2.f;
-	m_arrLerpDesc[CAMERA_LERP_WALLJUMP].vTargetOffset.x = 0.f;
-	//m_arrLerpDesc[CAMERA_LERP_WALLJUMP].vTargetOffset.y = m_tDefaultDesc.vDefaultOffset.y - 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_WALLJUMP].fCameraDirectingLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_WALLJUMP].bCameraMove = true;
-
-	m_arrLerpDesc[CAMERA_LERP_DASH].fCameraDistanceLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_QUICKDEFAULT].fCameraDistanceLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.3f;
-	//m_arrLerpDesc[CAMERA_LERP_WALLJUMP].fMaxDistance = 0.2f;
-
-	m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 0.55f;
-	m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT].vTargetOffset.x = m_tDefaultDesc.vDefaultOffset.x + 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT].vTargetOffset.y = m_tDefaultDesc.vDefaultOffset.y - 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT].fCameraDirectingLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT].fCameraDistanceLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT].bCameraMove = true;
-	//m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT].fMaxDistance = 0.2f;
-
-	m_arrLerpDesc[CAMERA_LERP_ZOOM_LEFT] = m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT];
-	m_arrLerpDesc[CAMERA_LERP_ZOOM_LEFT].vTargetOffset.x *= -1.f;
-
-	m_arrLerpDesc[CAMERA_LERP_WIRE] = m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT];
-	m_arrLerpDesc[CAMERA_LERP_WIRE].bCameraMove = false;
-
-	m_arrLerpDesc[CAMERA_LERP_MINIZOOMRIGHT] = m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT];
-	m_arrLerpDesc[CAMERA_LERP_MINIZOOMRIGHT].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 0.75f;
-	m_arrLerpDesc[CAMERA_LERP_MINIZOOMRIGHT].vTargetOffset.x = m_tDefaultDesc.vDefaultOffset.x + 0.35f;
-	m_arrLerpDesc[CAMERA_LERP_MINIZOOMRIGHT].bCameraMove = false;
-
-
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACK] = m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT];
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACK].fCameraDirectingLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACK].fCameraDistanceLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKBACK] = m_arrLerpDesc[CAMERA_LERP_FINISHATTACK];
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKBACK].fCameraDirectingLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.7f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKBACK].vTargetOffset.x = m_tDefaultDesc.vDefaultOffset.x + 0.3f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKBACK].vTargetOffset.y = m_tDefaultDesc.vDefaultOffset.y - 0.6f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKBACK].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 0.7f;
-
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKFALL] = m_arrLerpDesc[CAMERA_LERP_FINISHATTACK];
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKFALL].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 1.2f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKFALL].vTargetOffset = m_tDefaultDesc.vDefaultOffset;
-
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKDOWN] = m_arrLerpDesc[CAMERA_LERP_FINISHATTACK];
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKDOWN].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKDOWN].vTargetOffset.x -= 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKDOWN].vTargetOffset.z -= 1.5f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKDOWN].vTargetOffset.y += 1.f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKDOWN].fCameraDirectingLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKDOWN].fCameraOffsetLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-
-
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKUP] = m_arrLerpDesc[CAMERA_LERP_FINISHATTACKDOWN];
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKUP].vTargetOffset = m_tDefaultDesc.vDefaultOffset;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKUP].vTargetOffset.x += 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKUP].vTargetOffset.z = 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKUP].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_FINISHATTACKUP].fCameraDistanceLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-
-	m_arrLerpDesc[CAMERA_LERP_KO].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 0.3f;
-	m_arrLerpDesc[CAMERA_LERP_KO].fCameraOffsetLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.3f;
-	m_arrLerpDesc[CAMERA_LERP_KO].fCameraDistanceLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.3f;
-
-	m_arrLerpDesc[CAMERA_LERP_HITHARD] = m_arrLerpDesc[CAMERA_LERP_FINISHATTACK];
-	m_arrLerpDesc[CAMERA_LERP_HITHARD].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 1.5f;
-
-	m_arrLerpDesc[CAMERA_LERP_ZOOM_RIGHT].bCameraMove = false;
-
-
-	m_arrLerpDesc[CAMERA_LERP_NIGHTGUY].fTargetDistance = m_tDefaultDesc.fDefaultDistance * 1.3f;
-	m_arrLerpDesc[CAMERA_LERP_NIGHTGUY].vTargetOffset = _float4(0.f, 1.5f, 0.f, 1.f);
-	m_arrLerpDesc[CAMERA_LERP_NIGHTGUY].fCameraOffsetLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
-	m_arrLerpDesc[CAMERA_LERP_NIGHTGUY].fCameraDistanceLerpTime = m_tDefaultDesc.fDefaultLerpTime * 0.5f;
 
 
 	return S_OK;
@@ -394,8 +293,8 @@ void CScript_FollowCam::Update_CameraByMouse()
 	CTransform* pTransform = m_pOwner->Get_Transform();
 
 	//마우스 이동에 따라 회전
-	_float fTurnSpeedX = ((_float)MOUSE_MOVE(MMS_X)) * MOUSE_DPI_X;
-	_float fTurnSpeedY = ((_float)MOUSE_MOVE(MMS_Y)) * MOUSE_DPI_Y;
+	_float fTurnSpeedX = ((_float)MOUSE_MOVE(MMS_X)) * MOUSE_DPI_X * 0.5f;
+	_float fTurnSpeedY = ((_float)MOUSE_MOVE(MMS_Y)) * MOUSE_DPI_Y * 0.5f;
 
 
 	m_vOriginLook = CUtility_Transform::Turn_ByAngle(m_vOriginLook, pTransform->Get_MyWorld(WORLD_RIGHT), fTurnSpeedY);

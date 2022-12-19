@@ -29,9 +29,9 @@ CMesh_Particle::CMesh_Particle(const CMesh_Particle& _origin)
 
 
 	/* ÇÇÁ÷½º ±Á±â */
-	PxTransform tTransform;
+	/*PxTransform tTransform;
 	ZeroMemory(&tTransform, sizeof(tTransform));
-	tTransform.q.w = 1.f;
+	tTransform.q.w = 1.f;*/
 
 	/*for (_uint i = 0; i < m_iNumInstance; ++i)
 	{

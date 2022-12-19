@@ -194,7 +194,6 @@ public:
 public:
 	_bool IsDeadByHeadshot() { return m_bisDeadByHeadshot; }
 	void Set_DeadByHeadshot(_bool value) { m_bisDeadByHeadshot = value; }
-
 private:
 	_bool	m_bEnableOnStart = false;
 	_bool	m_bisDeadByHeadshot = false;
@@ -223,6 +222,8 @@ public:
 	CPath* Get_CurPath();
 	_float4 Get_LookDir();
 	_float4 Get_SquadDir();
+
+
 private:
 	//어떤 타입인지(적, 샌드백)
 	_uint	m_iUnitType = 0;

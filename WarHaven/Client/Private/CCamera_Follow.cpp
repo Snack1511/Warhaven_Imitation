@@ -59,8 +59,8 @@ void CCamera_Follow::Create_CamCollider()
 		return;
 
 	CCameraCollider::BONECOLLIDERDESC tDesc;
-	tDesc.fHeight = 0.1f;
-	tDesc.fRadius = 0.1f;
+	tDesc.fHeight = 0.05f;
+	tDesc.fRadius = 0.05f;
 	tDesc.vOffset = ZERO_VECTOR;
 	CCameraCollider* pPhysXCollider = CCameraCollider::Create(CP_BEFORE_RENDERER, tDesc);
 	pPhysXCollider->Initialize();

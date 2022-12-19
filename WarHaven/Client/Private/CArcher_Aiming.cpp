@@ -15,7 +15,7 @@
 #include "CCamera_Follow.h"
 
 #include "CAnimWeapon.h"
-
+#include "HIerarchyNode.h"
 
 CArcher_Aiming::CArcher_Aiming()
 {
@@ -160,6 +160,10 @@ HRESULT CArcher_Aiming::Initialize()
 
 void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+	m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
+
+	if (!m_pCoreBone)
+		assert(0);
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 	
@@ -177,18 +181,45 @@ void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
 	}
 
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
 	if (KEY(LBUTTON, AWAY))
 		return STATE_ATTACK_SHOOT_ARCHER;
 		
-	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(15.f));
 
-	BlendableTick_Loop(pOwner, pAnimator);
+	BlendableTick_Loop(pOwner, pAnimator, false);
+
+	_float4 vCamLook = pOwner->Get_FollowCamLook();
+	_float4x4 matRotY = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), ToRadian(10.f));
+	_float4x4 matRotX = XMMatrixRotationAxis(pOwner->Get_FollowCamRight().XMLoad(), ToRadian(5.f));
+	vCamLook = vCamLook.MultiplyNormal(matRotY);
+	vCamLook = vCamLook.MultiplyNormal(matRotX);
+
+
+	/* 위 아래만 꺾어줘야함 */
+	_float4x4 matOffset;
+
+	_float4 vCamLookNoY = vCamLook;
+	vCamLookNoY.y = 0.f;
+	vCamLookNoY.Normalize();
+
+	_float fDot = vCamLook.Dot(vCamLookNoY);
+	_float fRadian = acosf(fDot);
+
+	if (vCamLook.y < 0.f)
+		fRadian *= -1.f;
+
+	matOffset = XMMatrixRotationAxis(_float4(0.f, -1.f, 0.f, 0.f).XMLoad(), fRadian);
+
+	pOwner->Get_Transform()->Set_NoLerp();
+	pOwner->Get_Transform()->Set_Look(vCamLookNoY);
+
+	m_pCoreBone->Set_PrevMatrix(matOffset);
 
 
 	return CState::Tick(pOwner, pAnimator);
@@ -196,7 +227,12 @@ STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CArcher_Aiming::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+
     //Exit에선 무조건 남겨놔야함
+	_float4x4 matOffset;
+	matOffset.Identity();
+	m_pCoreBone->Set_PrevMatrix(matOffset);
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 

@@ -17,6 +17,7 @@
 #include "CDefaultArrow.h"
 #include "CAnimWeapon.h"
 
+#include "HIerarchyNode.h"
 
 CArcher_Attack_Begin::CArcher_Attack_Begin()
 {
@@ -167,6 +168,10 @@ HRESULT CArcher_Attack_Begin::Initialize()
 
 void CArcher_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
+
+	if (!m_pCoreBone)
+		assert(0);
 
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
 	pOwner->Get_Status().fBackStepSpeed = pOwner->Get_Status().fWalkSpeed;
@@ -179,6 +184,9 @@ void CArcher_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, m_fInterPolationTime, m_fAnimSpeed);
 
 	m_bMoveTrigger = false;
+
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -199,15 +207,49 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	}
 
-	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(15.f));
 
-	BlendableTick_Loop(pOwner, pAnimator);
+	BlendableTick_Loop(pOwner, pAnimator, false);
+
+	_float4 vCamLook = pOwner->Get_FollowCamLook();
+	_float4x4 matRotY = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), ToRadian(10.f));
+	_float4x4 matRotX = XMMatrixRotationAxis(pOwner->Get_FollowCamRight().XMLoad(), ToRadian(5.f));
+	vCamLook = vCamLook.MultiplyNormal(matRotY);
+	vCamLook = vCamLook.MultiplyNormal(matRotX);
+
+
+	/* 위 아래만 꺾어줘야함 */
+	_float4x4 matOffset;
+
+	_float4 vCamLookNoY = vCamLook;
+	vCamLookNoY.y = 0.f;
+	vCamLookNoY.Normalize();
+
+	_float fDot = vCamLook.Dot(vCamLookNoY);
+	_float fRadian = acosf(fDot);
+
+	if (vCamLook.y < 0.f)
+		fRadian *= -1.f;
+
+	matOffset = XMMatrixRotationAxis(_float4(0.f, -1.f, 0.f, 0.f).XMLoad(), fRadian);
+
+	pOwner->Get_Transform()->Set_NoLerp();
+	pOwner->Get_Transform()->Set_Look(vCamLookNoY);
+
+	m_pCoreBone->Set_PrevMatrix(matOffset);
+
+
+
 
     return CState::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+
+	_float4x4 matOffset;
+	matOffset.Identity();
+	m_pCoreBone->Set_PrevMatrix(matOffset);
     //Exit에선 무조건 남겨놔야함
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
 

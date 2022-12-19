@@ -55,6 +55,7 @@ public:
 
 public:
 	void				Set_LerpLook(_float4 vLook, _float fMaxLerpTime);
+	void				Set_NoLerp() { m_bLerp = false; }
 
 public:
 	// CComponent을(를) 통해 상속됨

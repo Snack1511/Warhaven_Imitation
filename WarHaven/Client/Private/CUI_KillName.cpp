@@ -61,7 +61,13 @@ void CUI_KillName::My_Tick()
 	_float fCurPosY = m_pKillNameUI[Text_Name]->Get_PosY();
 	if (fCurPosY < vTargetPos.y)
 	{
-		fCurPosY += (m_fStepY * 2.f) * fDT(0);
+		_float fLessLength = fabsf(vTargetPos.y - fCurPosY);
+		_float fSpeed = fDT(0) * m_fStepY * 2.f;
+
+		fSpeed = max(fSpeed * fLessLength, fSpeed);
+
+		fCurPosY += fSpeed;
+
 		if (fCurPosY > vTargetPos.y)
 			fCurPosY = vTargetPos.y;
 	}

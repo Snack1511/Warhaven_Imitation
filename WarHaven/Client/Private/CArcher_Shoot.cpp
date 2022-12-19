@@ -179,7 +179,6 @@ STATE_TYPE CArcher_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (pAnimator->Is_CurAnimFinished())
 		return STATE_IDLE_ARCHER_R;
 
-	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(45.f));
 
     return __super::Tick(pOwner, pAnimator);
 }

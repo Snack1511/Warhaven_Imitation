@@ -10,7 +10,21 @@
 
 #include "CUnit_Archer.h"
 
+#include "CTeamConnector.h"
+#include "CUtility_PhysX.h"
 CProjectile::CProjectile()
+{
+}
+
+CProjectile::CProjectile(const CProjectile& _origin)
+	: CGameObject(_origin)
+	, m_fMaxSpeed(_origin.m_fMaxSpeed)
+	, m_fLoopTimeAcc(_origin.m_fLoopTimeAcc)
+	, m_fMaxLoopTime(_origin.m_fMaxLoopTime)
+	, m_bCloned(true)
+	, m_pConvexMesh(_origin.m_pConvexMesh)
+	, m_hcCode(_origin.m_hcCode)
+	, m_fMaxDistance(_origin.m_fMaxDistance)
 {
 }
 
@@ -20,19 +34,30 @@ CProjectile::~CProjectile()
 
 void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-	int a = 0;
+
+
+	m_pOwnerUnit->CallBack_CollisionEnter(pOtherObj, eOtherColType, eMyColType, vHitPos);
+	pOtherObj->CallBack_CollisionEnter(m_pOwnerUnit, eMyColType, eOtherColType, vHitPos);
+
+	Hit_Unit(pOtherObj);
 }
 
 void CProjectile::Projectile_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
+	m_pOwnerUnit->CallBack_CollisionStay(pOtherObj, eOtherColType, eMyColType);
+	pOtherObj->CallBack_CollisionStay(m_pOwnerUnit, eMyColType, eOtherColType);
 }
 
 void CProjectile::Projectile_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
+	m_pOwnerUnit->CallBack_CollisionExit(pOtherObj, eOtherColType, eMyColType);
+	pOtherObj->CallBack_CollisionExit(m_pOwnerUnit, eMyColType, eOtherColType);
 }
 
 void CProjectile::Reset(CGameObject* pGameObject)
 {
+	m_pCollider = GET_COMPONENT(CCollider_Sphere);
+
 	m_pOwnerUnit = static_cast<CUnit*>(pGameObject);
 
 	m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_L_WP1");
@@ -44,9 +69,23 @@ void CProjectile::Reset(CGameObject* pGameObject)
 	if (!m_pRightHandBone)
 		assert(0);
 
-	GET_COMPONENT(CPhysics)->Set_Speed(0.f);
 	On_ChangePhase(eSTART);
 	ENABLE_GAMEOBJECT(this);
+
+	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
+		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+	else
+	{
+		if (m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType() == eTEAM_TYPE::eBLUE)
+			m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		else
+			m_pCollider->Set_ColIndex(COL_REDATTACK);
+	}
+
+	
+
+
+	
 
 }
 
@@ -62,9 +101,6 @@ HRESULT CProjectile::Initialize_Prototype()
 	pRenderer->Initialize();
 	Add_Component<CRenderer>(pRenderer);
 
-	CPhysics* pPhysics = CPhysics::Create(CP_BEFORE_TRANSFORM);
-	pPhysics->Set_MaxSpeed(m_fMaxSpeed);
-	Add_Component(pPhysics);
 
 	CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
 
@@ -72,6 +108,13 @@ HRESULT CProjectile::Initialize_Prototype()
 		return E_FAIL;
 
 	Add_Component(pCController);
+
+	if (FAILED(SetUp_Colliders(COL_BLUEATTACK)))
+		return E_FAIL;
+
+
+	
+
 	
 	return S_OK;
 }
@@ -88,7 +131,7 @@ HRESULT CProjectile::Start()
 	CallBack_CollisionEnter += bind(&CProjectile::Projectile_CollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 	CallBack_CollisionStay += bind(&CProjectile::Projectile_CollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 	CallBack_CollisionExit += bind(&CProjectile::Projectile_CollisionExit, this, placeholders::_1, placeholders::_2, placeholders::_3);
-
+	 
 
 	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 
@@ -100,15 +143,32 @@ void CProjectile::On_ShootProjectile()
 {
 
 
-	_float4 vLook = m_pOwnerUnit->Get_FollowCamLook(); //m_pCurStickBone->Get_BoneMatrix().XMLoad().r[0];//->Get_Transform()->Get_World(WORLD_LOOK);
-	GET_COMPONENT(CPhysics)->Set_Dir(vLook);
-	GET_COMPONENT(CPhysics)->Set_SpeedasMax();
+	_float4 vLook = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK);
+
+	vLook = m_pTransform->Get_World(WORLD_RIGHT);
 	ENABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 
 	On_ChangePhase(eSHOOT);
 
+	m_vStartPosition = m_pTransform->Get_World(WORLD_POS);
+	/* PhysX */
+	PxTransform tTransform;
+	ZeroMemory(&tTransform, sizeof(PxTransform));
 
-	
+	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
+	vCurPos += m_pTransform->Get_World(WORLD_RIGHT) * 2.5f;
+
+	tTransform.p = CUtility_PhysX::To_PxVec3(vCurPos);
+	tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
+
+	PxRigidDynamic* pActor = nullptr;
+	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 2.f);
+	_float4 vDir = m_pTransform->Get_World(WORLD_RIGHT);
+	vDir *= 50.f;
+	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
+	m_pActor = pActor;
+		
+
 }
 
 void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
@@ -125,11 +185,15 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		m_pCurStickBone = m_pLeftHandBone;
 		break;
 	case Client::CProjectile::eSHOOT:
+		ENABLE_COMPONENT(m_pCollider);
 		m_pCurStickBone = nullptr;
 		break;
 	case Client::CProjectile::eHIT:
-		DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
+		DISABLE_COMPONENT(m_pCollider);
 		break;
+	case eSTICK:
+		DISABLE_COMPONENT(m_pCollider);
+		Safe_release(m_pActor);
 	case Client::CProjectile::eEND:
 		break;
 	default:
@@ -157,6 +221,26 @@ HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 	pModel->Set_ShaderFlag(SH_LIGHT_BLOOM);
 	pModel->Set_ShaderPassToAll(VTXMODEL_PASS_NORMALMAPPING);
 
+
+	/* PhysX */
+	CMeshContainer* pMesh = (pModel->Get_MeshContainers().front().second);
+
+	FACEINDICES32* pIndices = pMesh->CMesh::Get_Indices();
+	_uint iNumPrimitive = pMesh->Get_NumPrimitive();
+
+	_uint iNumVertices = pMesh->Get_NumVertices();
+	_float3* pVerticesPos = pMesh->Get_VerticesPos();
+
+	GAMEINSTANCE->Create_ConvexMesh(
+		pVerticesPos,
+		iNumVertices,
+		pIndices,
+		iNumPrimitive,
+		&m_pConvexMesh);
+
+	if (!m_pConvexMesh)
+		return E_FAIL;
+
 	
 	return S_OK;
 
@@ -164,17 +248,26 @@ HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 
 HRESULT CProjectile::SetUp_Colliders(COL_GROUP_CLIENT eColType)
 {
-	_float fRadius = 1.f;
+	_float fRadius = 0.27f;
 	_float4 vOffsetPos = ZERO_VECTOR;
 	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, eColType, vOffsetPos, DEFAULT_TRANS_MATRIX);
-	vOffsetPos.z += fRadius;
+	vOffsetPos.x += fRadius;
 	pCollider->Add_Collider(fRadius, vOffsetPos);
-	vOffsetPos.z += fRadius;
+	vOffsetPos.x += fRadius;
 	pCollider->Add_Collider(fRadius, vOffsetPos);
-	vOffsetPos.z += fRadius;
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x += fRadius;
 	pCollider->Add_Collider(fRadius, vOffsetPos);
 	Add_Component(pCollider);
 
+	m_pCollider = pCollider;
+
+	if (!m_pCollider)
+		return E_FAIL;
+
+
+	
 
 
 	return S_OK;
@@ -187,34 +280,100 @@ void CProjectile::My_Tick()
 void CProjectile::My_LateTick()
 {
 
-	/* »À¿¡ ºÙÀÌ±Í */
-	if (m_pCurStickBone)
+	switch (m_eCurPhase)
 	{
-		_float4x4		matBone = m_pCurStickBone->Get_BoneMatrix();
+	case Client::CProjectile::eSTART:
+	case Client::CProjectile::eLOOP:
+		if (m_pCurStickBone)
+		{
+			_float4x4		matBone = m_pCurStickBone->Get_BoneMatrix();
 
-		m_pTransform->Get_Transform().matMyWorld = matBone;
+			m_pTransform->Get_Transform().matMyWorld = matBone;
+
+			m_pTransform->Make_WorldMatrix();
+		}
+		break;
+	case Client::CProjectile::eSHOOT:
+	{
+		/* PhysX µû¶ó°¡±â */
+		PxTransform tTransform = m_pActor->getGlobalPose();
+		_float4x4 matPhysX = CUtility_PhysX::To_Matrix(tTransform);
+		m_pTransform->Get_Transform().matMyWorld = matPhysX;
 
 		m_pTransform->Make_WorldMatrix();
+
+		_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
+
+		if (fPower < 40.f)
+			On_ChangePhase(eHIT);
+
+		_float fLength = (m_vStartPosition - m_pTransform->Get_World(WORLD_POS)).Length();
+
+		if (fLength > m_fMaxDistance)
+			DISABLE_GAMEOBJECT(this);
 	}
-	else
+		break;
+	case Client::CProjectile::eHIT:
+		/* ¶¥¿¡ ¶³¾îÁ³À» ‹š */
 	{
+		/* PhysX µû¶ó°¡±â */
+		PxTransform tTransform = m_pActor->getGlobalPose();
+		_float4x4 matPhysX = CUtility_PhysX::To_Matrix(tTransform);
+		m_pTransform->Get_Transform().matMyWorld = matPhysX;
 
-		//if (vShootLook != ZERO_VECTOR)
-		//{
-		//	CTransform* pMyTransform = Get_Transform();
-		//	CPhysics* pMyPhysicsCom = m_pOwnerUnit->Get_PhysicsCom();
+		m_pTransform->Make_WorldMatrix();
 
-		//	Get_Transform()->Set_LerpLook(vShootLook, 0.4f);
+		m_fLoopTimeAcc += fDT(0);
+		if (m_fLoopTimeAcc >= m_fMaxLoopTime)
+		{
+			DISABLE_GAMEOBJECT(this);
+		}
+	}
+		break;
+	case Client::CProjectile::eSTICK:
+		/* Unit¿¡ ²ÈÈû */
+	{
+		if (!m_pHitUnit->Is_Valid())
+			DISABLE_GAMEOBJECT(this);
 
-		//	m_pPhysics->Set_MaxSpeed(m_fMaxSpeed);
+		_float4x4 matCurWorld = m_pCurStickBone->Get_BoneMatrix();
+		matCurWorld *= m_matHitOffset;
 
-		//	if (!vShootLook.Is_Zero())
-		//		m_pPhysics->Set_Dir(vShootLook);
-
-		//	m_pPhysics->Set_Accel(20.f);
-		//}
-
-		
+		m_pTransform->Get_Transform().matMyWorld = matCurWorld;
+		m_pTransform->Make_WorldMatrix();
+	}
+		break;
+	case Client::CProjectile::eEND:
+		break;
+	default:
+		break;
 	}
 	
+}
+
+void CProjectile::OnEnable()
+{
+	__super::OnEnable();
+	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
+}
+
+void CProjectile::OnDisable()
+{
+	__super::OnDisable();
+
+	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
+	Safe_release(m_pActor);
+	m_fLoopTimeAcc = 0.f;
+
+}
+
+void CProjectile::Hit_Unit(CGameObject* pHitUnit)
+{
+	m_pHitUnit = pHitUnit;
+	On_ChangePhase(eSTICK);
+	m_pCurStickBone = GET_COMPONENT_FROM(pHitUnit, CModel)->Find_HierarchyNode("0B_COM");
+	
+	//¸ÂÀº ¼ø°£¿¡ worldmat°ú ¸ÂÀº ³ðÀÇ ¿ùµå inverse
+	_float4x4 matWorldInv = pHitUnit->Get_Transform()->Get_WorldMatrix().Inverse();
+	m_matHitOffset = m_pTransform->Get_WorldMatrix() * matWorldInv;
 }

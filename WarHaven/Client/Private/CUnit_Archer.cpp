@@ -365,19 +365,19 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	Add_Component(pAnimator);
 
-	CBoneCollider::BONECOLLIDERDESC tDesc;
-	// Ä® ±æÀÌ
-	tDesc.fHeight = 0.5f;
-	// Ä® µÎ²²
-	tDesc.fRadius = 0.2f;
-	// Ä® ºÙÀÏ »À
-	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1");
+	//CBoneCollider::BONECOLLIDERDESC tDesc;
+	//// Ä® ±æÀÌ
+	//tDesc.fHeight = 0.5f;
+	//// Ä® µÎ²²
+	//tDesc.fRadius = 0.2f;
+	//// Ä® ºÙÀÏ »À
+	//tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1");
 
-	//Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
-	tDesc.vOffset = _float4(0.f, 0.f, -100.f);
+	////Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
+	//tDesc.vOffset = _float4(0.f, 0.f, -100.f);
 
-	m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
-	Add_Component(m_pWeaponCollider_R);
+	//m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
+	//Add_Component(m_pWeaponCollider_R);
 
 
 	//GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1")->Set_OffsetMatrix(DefaultMatrix);
@@ -441,7 +441,6 @@ HRESULT CUnit_Archer::Initialize()
 	}
 
 
-	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
 	return S_OK;
 }
@@ -453,7 +452,6 @@ HRESULT CUnit_Archer::Start()
 	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimWeapon);
 
-	Create_DefaultArrow();
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
@@ -478,6 +476,8 @@ HRESULT CUnit_Archer::Start()
 void CUnit_Archer::OnEnable()
 {
 	__super::OnEnable();
+	Create_DefaultArrow();
+
 }
 
 void CUnit_Archer::OnDisable()

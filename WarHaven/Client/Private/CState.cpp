@@ -351,8 +351,8 @@ _uint CState::DoMove(_uint iDirection, CUnit* pOwner)
 	}
 
 	vDir.y = 0.f;
-
 	pMyTransform->Set_LerpLook(vCamLook, m_fMyMaxLerp);
+
 
 	if (iDirection == STATE_DIRECTION_S || 
 		iDirection == STATE_DIRECTION_SW ||
