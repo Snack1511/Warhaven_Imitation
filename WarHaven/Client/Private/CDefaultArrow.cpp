@@ -11,7 +11,7 @@ CDefaultArrow::CDefaultArrow()
 }
 CDefaultArrow::~CDefaultArrow()
 {
-	m_Test.clear();
+	//m_Test.clear();
 }
 
 CDefaultArrow* CDefaultArrow::Create()

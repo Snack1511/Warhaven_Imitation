@@ -491,7 +491,7 @@ HRESULT CRectEffects::Initialize()
 		}
 	}
 
-	if (m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
+	else if (m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
@@ -815,7 +815,7 @@ void CRectEffects::OnEnable()
 
 	Bone_Controll();
 
-	if (m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
+	if (!m_pRefBone && m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
@@ -1299,28 +1299,29 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 	{
 		m_pDatas[iIndex].InstancingData.fSpeed = m_pDatas[iIndex].InstancingData.fOriginSpeed;
 
-		if ((0.f >= m_fLoopTime) && m_pRefBone && !m_bKeepSticked)
+		if ((0.f >= m_fLoopTime) && !m_bKeepSticked)
 		{
-			_float4 vPos = m_vOffsetPos;
-			_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
+			if (m_pRefBone)
+			{
+				_float4 vPos = m_vOffsetPos;
+				_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
 
-			_float	fStartDistance = m_tCreateData.fStartDistance + frandom(-m_tCreateData.fStartDistanceRange, m_tCreateData.fStartDistanceRange);
+				_float	fStartDistance = m_tCreateData.fStartDistance + frandom(-m_tCreateData.fStartDistanceRange, m_tCreateData.fStartDistanceRange);
 
-			_float4 vStartDir = _float4(
-				frandom(-m_tCreateData.vStartDirRange.x, m_tCreateData.vStartDirRange.x),
-				frandom(-m_tCreateData.vStartDirRange.y, m_tCreateData.vStartDirRange.y),
-				frandom(-m_tCreateData.vStartDirRange.z, m_tCreateData.vStartDirRange.z),
-				0.f);
+				_float4 vStartDir = _float4(
+					frandom(-m_tCreateData.vStartDirRange.x, m_tCreateData.vStartDirRange.x),
+					frandom(-m_tCreateData.vStartDirRange.y, m_tCreateData.vStartDirRange.y),
+					frandom(-m_tCreateData.vStartDirRange.z, m_tCreateData.vStartDirRange.z),
+					0.f);
 
-			vStartDir += m_tCreateData.vStartDir;
-			vStartDir.Normalize();
+				vStartDir += m_tCreateData.vStartDir;
+				vStartDir.Normalize();
 
-			vPos += vStartDir * fStartDistance;
-			m_pDatas[iIndex].RectInstance.vTranslation = vPos.MultiplyCoord(matBone);
-		}
-
-		else if (m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
-		{
+				vPos += vStartDir * fStartDistance;
+				m_pDatas[iIndex].RectInstance.vTranslation = vPos.MultiplyCoord(matBone);
+			}
+			else if(m_pFollowTarget)
+			{
 				_float4 vPos = m_vOffsetPos;
 				_float4x4 matFollow = m_pFollowTarget->Get_Transform()->Get_WorldMatrix();
 
@@ -1337,6 +1338,7 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 
 				vPos += vStartDir * fStartDistance;
 				m_pDatas[iIndex].RectInstance.vTranslation = vPos.MultiplyCoord(matFollow);
+			}
 		}
 		
 	}
