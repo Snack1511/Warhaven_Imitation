@@ -68,12 +68,6 @@ private:
 	_float m_fDisablePosY = 320.f;
 	_float m_fEnablePosY = 326.f;
 
-	_uint m_ii = 0;
-	_uint m_ij = 0;
-
-	_bool m_bIsDisable = false;
-	_bool m_bIsEnable = false;
-
 private:
 	void Create_InGameTimer();
 	void Update_InGameTimer();
