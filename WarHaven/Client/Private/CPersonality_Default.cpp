@@ -28,21 +28,21 @@ HRESULT CPersonality_Default::Initailize()
 {
 	//PersonalDesc셋팅
 	m_tPersonalDesc.strPersonalityName = wstring(L"Default_Personal");
-	m_tPersonalDesc.fChangeDelayTime = 0.01f;
-	m_tPersonalDesc.fDelayWeight = 0.0f;
-	m_tPersonalDesc.fSIghtRadius = 10.0f;
-	m_tPersonalDesc.fSightRadiusWeight = 0.0f;
-	m_tPersonalDesc.fCheckedHP = 30.f;
-	m_tPersonalDesc.fHPWeight = 0.f;
-	m_tPersonalDesc.iMainPersonalityLevel = 1;
-	m_tPersonalDesc.eMainPerosnality = eMain_Default;
-	m_tPersonalDesc.eFightPersonality = eFight_Default;
-	m_tPersonalDesc.eCoopPersonality = eCoop_Default;
-	m_tPersonalDesc.fRemainMaxTime[_uint(eBehaviorType::ePatrol)] = 5.f;
+	m_tPersonalDesc.tPersonalityData.fChangeDelayTime = 0.01f;
+	m_tPersonalDesc.tPersonalityData.fDelayWeight = 0.0f;
+	m_tPersonalDesc.tPersonalityData.fSIghtRadius = 10.0f;
+	m_tPersonalDesc.tPersonalityData.fSightRadiusWeight = 0.0f;
+	m_tPersonalDesc.tPersonalityData.fCheckedHP = 30.f;
+	m_tPersonalDesc.tPersonalityData.fHPWeight = 0.f;
+	m_tPersonalDesc.tPersonalityData.iMainPersonalityLevel = 1;
+	m_tPersonalDesc.tPersonalityData.eMainPerosnality = eMain_Default;
+	m_tPersonalDesc.tPersonalityData.eFightPersonality = eFight_Default;
+	m_tPersonalDesc.tPersonalityData.eCoopPersonality = eCoop_Default;
+	m_tPersonalDesc.tPersonalityData.fRemainMaxTime[_uint(eBehaviorType::ePatrol)] = 5.f;
 
-	m_tPersonalDesc.fRemainMaxTime[_uint(eBehaviorType::ePathNavigation)] = 1.f;
+	m_tPersonalDesc.tPersonalityData.fRemainMaxTime[_uint(eBehaviorType::ePathNavigation)] = 1.f;
 	/* 거리 */
-	m_tPersonalDesc.fMinMoveAcc[_uint(eBehaviorType::ePathNavigation)] = 1.f;
+	m_tPersonalDesc.tPersonalityData.fMinMoveAcc[_uint(eBehaviorType::ePathNavigation)] = 1.f;
 
 	CBehavior* pBehavior = nullptr;
 	/* pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Follow"))->Clone();

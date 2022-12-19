@@ -124,6 +124,7 @@ public:
 	HRESULT SetUp_Collider();
 	CAIPersonality* Get_Personality();
 	void Set_Personality(CAIPersonality* pPersonality);
+	CBehavior* Get_CurBehavior();
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype();

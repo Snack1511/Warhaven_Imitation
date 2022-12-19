@@ -111,6 +111,7 @@ public:
     CPath* Get_CurPath() { return m_pCurPath; }
     _bool Is_LongTimeRemain(eBehaviorType eBhavior);
     void Change_NearPath();
+    void Set_BehaviorList(list<CBehavior*>& BehaviorList);
 private:
     CPlayer* m_pOwnerPlayer = nullptr;
     CAIPersonality* m_pPersonality = nullptr;

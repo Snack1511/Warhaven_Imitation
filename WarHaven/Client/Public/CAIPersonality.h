@@ -58,11 +58,10 @@ public:
 	};
 
 public:
-	typedef struct tPersonalityDescription
+
+
+	typedef struct tPersonalityData
 	{
-		//해시 저장용
-		wstring strPersonalityName;
-		
 		//상태전환시 딜레이용
 		_float fChangeDelayTime = 0.01f;
 
@@ -86,7 +85,7 @@ public:
 
 		//확률 계산시 전체적인 선택에 영향을 줄 메인 성향
 		eMainPersonality eMainPerosnality = eMain_END;
-		
+
 		//유닛 선택및 전투시 영향
 		eFightPersonality eFightPersonality = eFight_Default;
 
@@ -99,10 +98,18 @@ public:
 		// 비볐는지 체크 용도
 		_float fMinMoveAcc[_uint(eBehaviorType::eCNT)] = { 0.f };
 
-		
+
+
+	}PersonalData;
+	typedef struct tPersonalityDescription
+	{
+		//해시 저장용
+		wstring strPersonalityName;
+		PersonalData tPersonalityData;
+
+
 
 	}PersonalDesc;
-
 public:
 	friend class CGameSystem;
 	friend class CPlayer;
@@ -113,7 +120,12 @@ public:
 	typedef CDelegate<_bool&, void*> Condition;
 
 public:
+	static CAIPersonality* Create(CTable_Conditions* pConditionTable);
 	static CAIPersonality* Create(wstring strPersonalityName, CTable_Conditions* pConditionTable);
+public:
+	void Load(wstring strPersonalityName);
+	void Save();
+
 protected:
 	CAIPersonality(CTable_Conditions* pConditionTable);
 	virtual ~CAIPersonality();
@@ -132,6 +144,14 @@ public:
 	_bool Is_LongTimeRemain(eBehaviorType eBhavior);
 	void Update_RemainTime(eBehaviorType eBhavior);
 	void Init_RemainTime(eBehaviorType eBhavior);
+public:
+	CBehavior* Add_Behavior(wstring strBehaviorName);
+	void Delete_Behavior(CBehavior* pBehavior);
+	void Clear_Behavior();
+	CBehavior* Get_LastBehavior();
+	void Sort_BehaviorWithPriority();
+	void Complete_Update();
+	_bool Is_UpdateList() { return m_bBehaviorListUpdateFlag; }
 public:
 	void Set_PersonalityName(wstring strPersonalityName) { m_tPersonalDesc.strPersonalityName = strPersonalityName; }
 	wstring Get_PersonalityName() { return m_tPersonalDesc.strPersonalityName; }
@@ -157,6 +177,7 @@ protected:
 	_float m_fRemainAccTime[_uint(eBehaviorType::eCNT)] = { 0.f };
 	_float m_fRemainPathIndexAccTime = 0.f;
 	_float m_fMaxRemainPathIndexTime = 5.f;
+	_bool m_bBehaviorListUpdateFlag = false;
 
 };
 

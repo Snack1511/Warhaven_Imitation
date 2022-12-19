@@ -67,6 +67,7 @@
 #pragma region AI 추가용
 #include "CAIController.h"
 #include "CAIPersonality.h"
+#include "CBehavior.h"
 #pragma endregion AI 추가용
 CPlayer::CPlayer()
 {
@@ -679,7 +680,7 @@ HRESULT CPlayer::SetUp_Collider()
 		return S_OK;
 
 	m_pSightRangeCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 
-		m_pMyPlayerInfo->m_pPersonality->m_tPersonalDesc.fSIghtRadius, 
+		m_pMyPlayerInfo->m_pPersonality->m_tPersonalDesc.tPersonalityData.fSIghtRadius, 
 		COL_SIGHTRANGE, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
 
 	if (!m_pSightRangeCollider)
@@ -711,6 +712,16 @@ void CPlayer::Set_Personality(CAIPersonality* pPersonality)
 			m_pAIController->Set_Personality(pPersonality);
 		}
 	}//Personality가 필요한 애들만.. --> AIController가 null이다 == AI가 아니거나 State에 의존하는 AI다
+}
+
+CBehavior* CPlayer::Get_CurBehavior()
+{
+	if (nullptr == m_pAIController)
+		return nullptr;
+	CBehavior* pBehavior = m_pAIController->Get_CurBehavior();
+	return pBehavior;
+
+
 }
 
 void CPlayer::On_Die()

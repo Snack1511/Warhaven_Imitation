@@ -95,7 +95,6 @@ HRESULT CWindow_AI::Render()
         Func_AISetting();
     }
 
-
     __super::End();
 
     CImGui_Manager::Get_Instance()->Pop_Font();
@@ -161,6 +160,10 @@ void CWindow_AI::Func_AISetting()
     if (nullptr == m_pCurSelectPersonality)
         return;
 
+    CBehavior* pBehavior = m_pCurSelectPlayer->Get_CurBehavior();
+    wstring strBehaviorName = pBehavior->Get_BehaviorName();
+    Display_Data(string(u8"현재 행동"), CFunctor::To_String(strBehaviorName));
+    
     //행동 리스트 보기
     ImVec2 vBehaviorSize = ImVec2(m_vMainWndSize.x, 0.f);
     if (ImGui::CollapsingHeader(u8"행동 리스트")) 
@@ -170,7 +173,8 @@ void CWindow_AI::Func_AISetting()
     //행동조건 설정
     if (nullptr != m_pCurSelectBehavior)
     {
-        Create_SubWindow(u8"조건 설정", ImVec2(0.f, 0.f), vBehaviorSize, bind(&CWindow_AI::Func_ChangeBehavior, this));
+        Create_SubWindow(u8"행동 수치 설정", ImVec2(0.f, 0.f), vBehaviorSize, bind(&CWindow_AI::Func_ChangeBehavior, this));
+        Create_SubWindow(u8"조건 설정", ImVec2(0.f, 0.f), vBehaviorSize, bind(&CWindow_AI::Func_ChangeBehaviorCondition, this));
     }
 
 
@@ -340,6 +344,11 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
 
 void CWindow_AI::ListUp_Behaviors(const char* ListID, const ImVec2& Size, list<CBehavior*>& BehaviorList)
 {
+    if (nullptr == m_pCurSelectPersonality) 
+    {
+        ImGui::Text(u8"Personality없음");
+        return;
+    }
     if (ImGui::BeginListBox(ListID, Size))
     {
         for (auto& Value : BehaviorList)
@@ -350,15 +359,64 @@ void CWindow_AI::ListUp_Behaviors(const char* ListID, const ImVec2& Size, list<C
                 bSelect = true;
             }
             string strBehaviorName = CFunctor::To_String(Value->Get_BehaviorName());
-            if (ImGui::Selectable(strBehaviorName.c_str(), bSelect))
+            if (ImGui::Selectable(strBehaviorName.c_str(), bSelect, ImGuiSelectableFlags_AllowDoubleClick))
             {
-                if (bSelect)
+                if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_::ImGuiMouseButton_Left))
+                {
+                    m_pCurSelectPersonality->Delete_Behavior(m_pCurSelectBehavior);
                     m_pCurSelectBehavior = nullptr;
-                else
-                    m_pCurSelectBehavior = Value;
+                    m_strCurSelectWhenCondition = L"";
+                    m_strCurSelectWhatCondition = L"";
+                    m_pCurSelectPersonality->Sort_BehaviorWithPriority();
+                    break;
+                }
+                else {
+                    if (bSelect)
+                    {
+                        m_pCurSelectBehavior = nullptr;
+                    }
+                    else
+                        m_pCurSelectBehavior = Value;
+
+                }
+
+
+                //더블 클릭시 행동 제거..
             }
         }
         ImGui::EndListBox();
+    }
+
+    //행동 테이블에서 행동 추가
+    vector<wstring>& rhsBehaviorNames = m_pTableCondition->Get_BehaviorNames();
+    string StrConditionTableListName = ListID;
+    StrConditionTableListName += "_Table";
+    ImGui::Text(u8"행동테이블");
+    if (ImGui::BeginListBox(StrConditionTableListName.c_str(), Size))
+    {
+        if (rhsBehaviorNames.empty())
+        {
+            ImGui::Text(u8"행동 없음");
+        }
+        else
+        {
+            for (auto& Name : rhsBehaviorNames)
+            {
+                if (ImGui::Selectable(CFunctor::To_String(Name).c_str()))
+                {
+                    CBehavior* pBehavior = m_pCurSelectPersonality->Add_Behavior(Name);
+                    m_pCurSelectPersonality->Sort_BehaviorWithPriority();
+                    m_pCurSelectBehavior = pBehavior;
+                }
+            }
+            //조건 이름 가져오기..
+
+        }
+        ImGui::EndListBox();
+    }
+    if (ImGui::Button(u8"행동 초기화"))
+    {
+        m_pCurSelectPersonality->Clear_Behavior();
     }
 }
 
@@ -400,11 +458,18 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
                     if (ImGui::Selectable(CFunctor::To_String(Name).c_str(), bSelect))
                     {
                         rhsConditionName = Name;
+                        m_pCurSelectBehavior->Delete_Condition(rhsConditionName, CBehavior::eConditionType(iConditionType));
                     }
+                    //m_CurSelectIncludeCondition.strConditionName = rhsConditionName;
+                    //lstrcpy(m_CurSelectIncludeCondition.szConditionName, Name.c_str());
+                    //m_CurSelectIncludeCondition.iConditionType = iConditionType;
+                    //m_CurSelectIncludeCondition.pBehavior = pBehavior;
+                    //On_DragTarget("Include_Condition", &m_CurSelectIncludeCondition, sizeof(DraggingData), CFunctor::To_String(rhsConditionName).c_str());
                 }
                 //조건 이름 가져오기..
 
             }
+            On_DropTarget("Exclude_Condition", sizeof(DraggingData), bind(&CWindow_AI::Add_Condition, this, placeholders::_1));
 
             ImGui::EndListBox();
         }
@@ -428,6 +493,10 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
                 {
                     m_pCurSelectBehavior->Add_Condition(Name, CBehavior::eConditionType(iConditionType));
                 }
+                //lstrcpy(m_CurSelectIncludeCondition.szConditionName, Name.c_str());
+                //m_CurSelectExcludeCondition.iConditionType = iConditionType;
+                //m_CurSelectExcludeCondition.pBehavior = pBehavior;
+                //On_DragTarget("Exclude_Condition", &m_CurSelectExcludeCondition, sizeof(DraggingData), CFunctor::To_String(Name).c_str());
             }
             //조건 이름 가져오기..
 
@@ -441,6 +510,25 @@ void CWindow_AI::ListUp_BehaviorConditions(const char* szListName, const char* L
 }
 
 void CWindow_AI::Func_ChangeBehavior()
+{
+    if (nullptr == m_pCurSelectPersonality)
+        return;
+    if (nullptr == m_pCurSelectBehavior)
+        return;
+
+    _int iPriority = m_pCurSelectBehavior->Get_Priority();
+    ImGui::Text(u8"현재 행동의 우선순위 : ");
+    if (ImGui::InputInt("##InputPriority", &iPriority))
+    {
+        if (iPriority < 0)
+            iPriority = 0;
+
+        m_pCurSelectBehavior->Set_Priority(iPriority);
+        m_pCurSelectPersonality->Sort_BehaviorWithPriority();
+    }
+}
+
+void CWindow_AI::Func_ChangeBehaviorCondition()
 {
     //비해비어 조건 변경
     if (nullptr == m_pCurSelectBehavior)
@@ -515,7 +603,9 @@ void CWindow_AI::Delete_Player(CPlayer* pSelectPlayer, CSquad* pSquad)
 CAIPersonality* CWindow_AI::Create_Personality(string strPersonalityName)
 {
     //Personality생성 루틴
-    CAIPersonality* pPersonality = nullptr;
+    if (nullptr == m_pTableCondition)
+        return nullptr;
+    CAIPersonality* pPersonality = CAIPersonality::Create(CFunctor::To_Wstring(strPersonalityName), m_pTableCondition);
     return pPersonality;
 }
 
@@ -523,13 +613,15 @@ void CWindow_AI::Save_Personality(CAIPersonality* pCurSelectPersonality)
 {
     if (nullptr == pCurSelectPersonality)
         return;
+    pCurSelectPersonality->Save();
     //pCurSelectPersonality--> Save루틴
 }
 
 CAIPersonality* CWindow_AI::Load_Personality(string strLoadName)
 {
     //Personality로드 루틴
-    CAIPersonality* pPersonality = nullptr;
+    CAIPersonality* pPersonality = CAIPersonality::Create(m_pTableCondition);
+    pPersonality->Load(CFunctor::To_Wstring(strLoadName));
     return pPersonality;
 }
 
@@ -577,4 +669,62 @@ void CWindow_AI::Create_SubWindow(const char* szWindowName, const ImVec2& Pos, c
 
     func(*this);
     ImGui::End();
+}
+
+void CWindow_AI::On_DragTarget(const char* DataType, void* TargetData, size_t size, const char* DataToolTip)
+{
+    ImGuiDragDropFlags src_flags = 0;
+    src_flags |= ImGuiDragDropFlags_SourceNoDisableHover;     // Keep the source displayed as hovered
+    src_flags |= ImGuiDragDropFlags_SourceNoHoldToOpenOthers; // Because our dragging is local, we disable the feature of opening foreign treenodes/tabs while dragging
+    //src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
+    if (ImGui::BeginDragDropSource(src_flags))
+    {
+        if (!(src_flags & ImGuiDragDropFlags_SourceNoPreviewTooltip))
+            ImGui::Text(DataToolTip);
+        ImGui::SetDragDropPayload(DataType, TargetData, size);
+        ImGui::EndDragDropSource();
+    }
+}
+
+void CWindow_AI::On_DropTarget(const char* DataType, size_t size, const function<void(const ImGuiPayload*)>& func)
+{
+    ImGui::Selectable("+##EmptySelectable");
+    if (ImGui::BeginDragDropTarget())
+    {
+        ImGuiDragDropFlags target_flags = 0;
+        //target_flags |= ImGuiDragDropFlags_AcceptBeforeDelivery;    // Don't wait until the delivery (release mouse button on a target) to do something
+        target_flags |= ImGuiDragDropFlags_AcceptNoDrawDefaultRect; // Don't display the yellow rectangle
+        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(DataType, target_flags);
+        if (payload)
+        {
+            func(payload);
+        }
+        ImGui::EndDragDropTarget();
+    }
+}
+
+void CWindow_AI::Add_Condition(const ImGuiPayload* pPayload)
+{
+    if (nullptr == pPayload)
+        return;
+
+    if (nullptr == pPayload->Data)
+        return;
+
+
+    DraggingData _DraggingData;// = reinterpret_cast<TupleCondition*>(pPayload->Data);
+
+
+    memcpy_s(&_DraggingData, sizeof(DraggingData), pPayload->Data, sizeof(DraggingData));
+
+    //wstring strConditionName = _DraggingData.strConditionName;
+    wstring strConditionName = _DraggingData.szConditionName;
+    _uint iConditionType = _DraggingData.iConditionType;
+    CBehavior* pBehavior = _DraggingData.pBehavior;
+
+    if (nullptr == pBehavior)
+        return;
+
+    pBehavior->Add_Condition(strConditionName, CBehavior::eConditionType(iConditionType));
+
 }

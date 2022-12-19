@@ -44,6 +44,11 @@ public:
 	void Add_Condition(wstring strConditionName, eConditionType eType);
 	void Add_BehaviorTick(wstring strBehaviorTickName);
 	void Set_Priority(_int iPriorityScore);
+	_uint Get_Priority();
+
+	void Delete_WhatCondition(wstring strWhatConditionName);
+	void Delete_OtherCondition(wstring strOtherConditionName);
+	void Delete_Condition(wstring strConditionName, eConditionType eType);
 
 	void Clear_Condition(eConditionType eType);
 
