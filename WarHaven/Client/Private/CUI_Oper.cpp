@@ -28,7 +28,9 @@ HRESULT CUI_Oper::Initialize_Prototype()
 
 	Create_TextImg();
 	Create_OperBG();
+
 	Create_OperProfile();
+
 	Create_ProfileInfo();
 	Create_CharacterSelect();
 	Create_LeftIcon();
@@ -777,6 +779,12 @@ void CUI_Oper::Create_OperProfile()
 
 	m_pOperList.push_back(m_pPositionText);
 	m_pOperList.push_back(m_pMarkMeText);
+
+	CREATE_GAMEOBJECT(m_pPositionText, GROUP_UI);
+	DELETE_GAMEOBJECT(m_pPositionText);
+
+	CREATE_GAMEOBJECT(m_pMarkMeText, GROUP_UI);
+	DELETE_GAMEOBJECT(m_pMarkMeText);
 }
 
 void CUI_Oper::Create_ProfileInfo()
