@@ -1372,6 +1372,8 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SIN;
 			if (ImGui::Selectable("SPRAL", &bCurveSelect[CURVE_SPIRAL]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SPIRAL;
+			if (ImGui::Selectable("NOBONEFOLLOW", &bCurveSelect[NO_BONEFOLLOW]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = NO_BONEFOLLOW;
 
 
 			

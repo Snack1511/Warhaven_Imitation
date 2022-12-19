@@ -490,6 +490,11 @@ HRESULT CRectEffects::Initialize()
 			Bone_Controll();
 		}
 	}
+
+	if (m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
+	{
+		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
+	}
 	
 
 
@@ -809,6 +814,11 @@ void CRectEffects::OnEnable()
 	//시작위치
 
 	Bone_Controll();
+
+	if (m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
+	{
+		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
+	}
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
@@ -1308,6 +1318,27 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 			vPos += vStartDir * fStartDistance;
 			m_pDatas[iIndex].RectInstance.vTranslation = vPos.MultiplyCoord(matBone);
 		}
+
+		else if (m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
+		{
+				_float4 vPos = m_vOffsetPos;
+				_float4x4 matFollow = m_pFollowTarget->Get_Transform()->Get_WorldMatrix();
+
+				_float	fStartDistance = m_tCreateData.fStartDistance + frandom(-m_tCreateData.fStartDistanceRange, m_tCreateData.fStartDistanceRange);
+
+				_float4 vStartDir = _float4(
+					frandom(-m_tCreateData.vStartDirRange.x, m_tCreateData.vStartDirRange.x),
+					frandom(-m_tCreateData.vStartDirRange.y, m_tCreateData.vStartDirRange.y),
+					frandom(-m_tCreateData.vStartDirRange.z, m_tCreateData.vStartDirRange.z),
+					0.f);
+
+				vStartDir += m_tCreateData.vStartDir;
+				vStartDir.Normalize();
+
+				vPos += vStartDir * fStartDistance;
+				m_pDatas[iIndex].RectInstance.vTranslation = vPos.MultiplyCoord(matFollow);
+		}
+		
 	}
 
 	m_pDatas[iIndex].InstancingData.vColor.w = 0.f;
