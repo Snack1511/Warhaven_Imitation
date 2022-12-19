@@ -22,6 +22,8 @@ HRESULT CUI_Paden::Initialize_Prototype()
 
 	Create_TargetPointUI();
 
+	Create_Popup();
+
 	return S_OK;
 }
 
@@ -289,6 +291,12 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 	}
 }
 
+void CUI_Paden::Enable_Popup(_uint iIndex)
+{
+	GET_COMPONENT_FROM(m_pPopupUI, CTexture)->Set_CurTextureIndex(iIndex);
+	Enable_Fade(m_pPopupUI, 0.3f);
+}
+
 void CUI_Paden::Interact_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKey)
 {
 	_float fDuration = 0.3f;
@@ -330,6 +338,8 @@ void CUI_Paden::My_Tick()
 
 	Update_InGameTimer();
 	Update_Score();
+
+
 }
 
 void CUI_Paden::My_LateTick()
@@ -394,6 +404,18 @@ void CUI_Paden::Update_InGameTimer()
 		_tchar  szTemp[MAX_STR] = {};
 		swprintf_s(szTemp, TEXT("%02d:%02d"), iMin, iSec);
 		m_pInGameTimer->Set_FontText(szTemp);
+
+		if (iMin >= 29)
+		{
+			if (iSec < 57)
+			{
+				if (!m_bShowStartPopup)
+				{
+					m_bShowStartPopup = true;
+					Enable_Popup(0);
+				}
+			}
+		}
 	}
 }
 
@@ -683,6 +705,22 @@ void CUI_Paden::Bind_Shader()
 	GET_COMPONENT_FROM(m_pArrPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 
+}
+
+void CUI_Paden::Create_Popup()
+{
+	m_pPopupUI = CUI_Object::Create();
+
+	m_pPopupUI->Set_FadeDesc(0.3f, 0.3f, 3.f, true);
+
+	GET_COMPONENT_FROM(m_pPopupUI, CTexture)->Remove_Texture(0);
+	Read_Texture(m_pPopupUI, "/Paden/Popup", "Popup");
+
+	m_pPopupUI->Set_Scale(437.f, 90.f);
+	m_pPopupUI->Set_PosY(175.f);
+
+	CREATE_GAMEOBJECT(m_pPopupUI, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pPopupUI);
 }
 
 void CUI_Paden::Update_TargetPointPos()

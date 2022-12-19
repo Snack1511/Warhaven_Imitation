@@ -42,6 +42,8 @@ public:
 	void Interact_PointUI(_bool bIsMainPlayerTeam, string wstrPadenPointKey);
 	void Move_PointUI(string wstrPadenPointKey, _uint iTriggerState);
 
+	void Enable_Popup(_uint iIndex);
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -114,6 +116,14 @@ private:
 
 private:
 	void Create_TargetPointUI();
+
+private:
+	CUI_Object* m_pPopupUI = nullptr;
+
+	_bool m_bShowStartPopup = false;
+
+private:
+	void Create_Popup();
 
 private:
 	void Create_PointUI();
