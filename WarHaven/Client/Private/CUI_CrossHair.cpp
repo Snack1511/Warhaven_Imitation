@@ -41,9 +41,19 @@ void CUI_Crosshair::Set_Crosshair(_uint iClass)
 {
 	m_iClassIndex = iClass;
 
-	if (m_iClassIndex == WARRIOR || m_iClassIndex == ENGINEER)
+	switch (m_iClassIndex)
 	{
+	case WARRIOR:
 		Set_DefaultCrosshair();
+		break;
+
+	case ARCHER:
+		Set_ArcherCrosshair();
+		break;
+
+	case ENGINEER:
+		Set_DefaultCrosshair();
+		break;
 	}
 
 	Set_ArrowUI();
@@ -146,6 +156,12 @@ void CUI_Crosshair::Set_DefaultCrosshair()
 {
 	GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(0);
 	GET_COMPONENT_FROM(m_pCrosshair[CU_Outline], CTexture)->Set_CurTextureIndex(0);
+}
+
+void CUI_Crosshair::Set_ArcherCrosshair()
+{
+	GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(0);
+	GET_COMPONENT_FROM(m_pCrosshair[CU_Outline], CTexture)->Set_CurTextureIndex(1);
 }
 
 void CUI_Crosshair::Create_ArrowUI()
