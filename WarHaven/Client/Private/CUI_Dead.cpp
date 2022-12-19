@@ -41,6 +41,10 @@ void CUI_Dead::OnEnable()
 
 	if (!m_bIsFall)
 	{
+		CLASS_TYPE eUnitClass = m_pTargetInfo->Get_ChonsenClass();
+
+		GET_COMPONENT_FROM(m_pDeadUI[DU_Profile], CTexture)->Set_CurTextureIndex((_uint)eUnitClass);
+
 		wstring wstrUnitName = m_pTargetInfo->Get_Player()->Get_PlayerName();
 		m_pDeadUI[DU_EnemyName]->Set_FontText(wstrUnitName);
 
