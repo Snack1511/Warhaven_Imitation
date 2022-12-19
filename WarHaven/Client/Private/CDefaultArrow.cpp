@@ -53,8 +53,9 @@ void CDefaultArrow::OnEnable()
 {
 	__super::OnEnable();
 
-	//if(m_Test.empty())
-	//	m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest", this, m_pTransform->Get_World(WORLD_POS));
+	/*if(m_Test.empty())
+		m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest", this, m_pTransform->Get_World(WORLD_POS));*/
+
 
 }
 

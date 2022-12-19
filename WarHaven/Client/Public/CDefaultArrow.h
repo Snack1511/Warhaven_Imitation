@@ -26,6 +26,8 @@ public:
 
 private:
 	list<CGameObject*> m_Test;
+	_bool m_bShot = false;
+	_float m_fTick = 0.f;
 
 
 };

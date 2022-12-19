@@ -1416,6 +1416,9 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 		vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z * fTimeDelta;
 
 		break;
+	case Client::CURVE_CHARGE:
+		vPos = CEasing_Utillity::CircularIn(vPos, ZERO_VECTOR, m_pDatas[iIdx].InstancingData.fMovingAcc,
+			m_pDatas[iIdx].InstancingData.fFadeInTime  + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);
 	default:
 		break;
 	}

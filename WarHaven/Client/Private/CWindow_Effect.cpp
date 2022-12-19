@@ -1372,8 +1372,8 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SIN;
 			if (ImGui::Selectable("SPRAL", &bCurveSelect[CURVE_SPIRAL]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SPIRAL;
-			if (ImGui::Selectable("NOBONEFOLLOW", &bCurveSelect[NO_BONEFOLLOW]))
-				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = NO_BONEFOLLOW;
+			if (ImGui::Selectable("CURVECHARGE", &bCurveSelect[CURVE_CHARGE]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CHARGE;
 
 
 			
@@ -1394,6 +1394,17 @@ void CWindow_Effect::Show_ParticleTab()
 			}
 			if (ImGui::InputFloat("fCurveAngleRange", &tCurData.fCurveAngleRange))
 			{
+			}
+
+			_float	vOffset[3] = { static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.x,
+					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.y, static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.z };
+
+			if (ImGui::InputFloat3("vOffSetPos", vOffset, "%.2f"))
+			{
+				static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.x = vOffset[0];
+				static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.y = vOffset[1];
+				static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.z = vOffset[2];
+				static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.w = 1.f;
 			}
 
 			_bool bStickBone = false;
@@ -1437,16 +1448,7 @@ void CWindow_Effect::Show_ParticleTab()
 					static_cast<CRectEffects*>(pCurEffect)->m_pRefBone = pNode;
 
 				}
-				_float	vOffset[3] = { static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.x,
-					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.y, static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.z };
-
-				if (ImGui::InputFloat3("vOffSetPos", vOffset, "%.2f"))
-				{
-					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.x = vOffset[0];
-					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.y = vOffset[1];
-					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.z = vOffset[2];
-					static_cast<CRectEffects*>(pCurEffect)->m_vOffsetPos.w = 1.f;
-				}
+				
 
 
 			}
