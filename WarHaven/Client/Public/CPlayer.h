@@ -112,6 +112,7 @@ public:
 	CUnit* Get_CurrentUnit() { return m_pCurrentUnit; }
 	CLASS_TYPE Get_PrevClass() { return m_ePrevClass; }
 	CLASS_TYPE Get_CurClass() { return m_eCurrentClass; }
+	STATE_TYPE	Get_UnitType() { return (STATE_TYPE)m_iUnitType; }
 
 	void Set_MainPlayer();
 	void Set_LeaderPlayer() { m_bIsLeaderPlayer = true; }

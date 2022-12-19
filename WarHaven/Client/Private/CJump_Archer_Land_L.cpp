@@ -30,10 +30,10 @@ HRESULT CJump_Archer_Land_L::Initialize()
     m_iAnimIndex = 8;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_JUMP_LAND_ARCHER_L;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-    m_iStateChangeKeyFrame = 25;
+    m_iStateChangeKeyFrame = 0;
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.1f;
+    m_fInterPolationTime = 0.15f;
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
@@ -53,6 +53,9 @@ HRESULT CJump_Archer_Land_L::Initialize()
 
 void CJump_Archer_Land_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
+    Physics_Setting(m_fMaxSpeed, pOwner);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
     pAnimator->Set_CurFrame(10);
 }

@@ -473,6 +473,9 @@ void	CState_Blendable::BlendableTick_Loop(CUnit* pOwner, CAnimator* pAnimator, _
 
 			break;
 		case Client::CState_Blendable::Enum::eLAND:
+			if(m_bLandMove)
+				DoMove(Get_Direction(), pOwner);
+
 			Update_Land(pOwner, pAnimator);
 
 			break;

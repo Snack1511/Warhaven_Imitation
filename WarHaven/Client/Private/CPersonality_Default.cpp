@@ -65,12 +65,12 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Set_Priority(1);
 	m_BehaviorList.push_back(pBehavior);
 
-	/*pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Resurrect"))->Clone();
+	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Resurrect"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
 	pBehavior->Initialize();
-	pBehavior->Set_Priority(2);
-	m_BehaviorList.push_back(pBehavior);*/
+	pBehavior->Set_Priority(5);
+	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Attack"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_LookEnemy"));
@@ -86,6 +86,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Initialize();
 	pBehavior->Set_Priority(4);
 	m_BehaviorList.push_back(pBehavior);
+
 
 
 

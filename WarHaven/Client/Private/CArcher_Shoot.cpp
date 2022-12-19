@@ -64,16 +64,11 @@ HRESULT CArcher_Shoot::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_ARCHER);
 	m_vecAdjState.push_back(STATE_ATTACK_SWING_ARCHER);
 
-	//Add_KeyFrame(36, 0);
-
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
 
 	Add_KeyFrame(32, 1);
-	//Add_KeyFrame(50, 2);
 
-	//Vertical은 전부 Land로 맞춤
-	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
 	
 	m_iIdle_Index = 11;
@@ -142,11 +137,11 @@ HRESULT CArcher_Shoot::Initialize()
 
 	m_eWalkState = STATE_WALK_ARCHER_R;
 	m_eJumpState = STATE_JUMP_ARCHER_R;
-	m_eLandState = STATE_JUMP_LAND_ARCHER_R;
+	m_eLandState = STATE_WALK_ARCHER_R;
 	m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	m_eRunState = STATE_RUN_ARCHER_R;
+	m_eRunState = STATE_WALK_ARCHER_R;
 	m_eIdleState = STATE_IDLE_ARCHER_R;
-	m_eBounceState = STATE_BOUNCE_ARCHER;
+	m_eBounceState = STATE_WALK_ARCHER_R;
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.5f;
@@ -158,6 +153,8 @@ HRESULT CArcher_Shoot::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.5f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.5f;
 
+	m_bLandMove = true;
+
     return __super::Initialize();
 }
 
@@ -165,8 +162,8 @@ void CArcher_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 {
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLAUNCH, m_fInterPolationTime, m_fAnimSpeed);
 
-	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
-	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed * 0.7f;
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed * 0.7f;
 
 	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
 
@@ -186,8 +183,12 @@ STATE_TYPE CArcher_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CArcher_Shoot::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
-	
-	static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
+
+	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
+	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
+
+	if(!m_bAttackTrigger)
+		static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
 
 	__super::Exit(pOwner, pAnimator);
 }

@@ -45,7 +45,7 @@ HRESULT CState_Combat_SkillQ_Paladin_Rush_Loop::Initialize()
 	m_iAnimIndex = 24;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = AI_STATE_COMBAT_RUSH_LOOP_PALADIN;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
-	m_fMyMaxLerp = 1.2f;
+	m_fMyMaxLerp = 0.1f;
 	m_fMyAccel = 10.f;
 
 	m_fInterPolationTime = 0.f;
@@ -66,8 +66,16 @@ void CState_Combat_SkillQ_Paladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAn
 	pOwner->On_Use(CUnit::SKILL3);
 
 	m_iDirectionRand = STATE_DIRECTION_N;
-	m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
+	//m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
 
+
+	CUnit* pUnit = pOwner->Get_TargetUnit();
+
+	if(!pUnit)
+		m_vAIRandLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+	
+	else
+		m_vAIRandLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
 
 	pOwner->Enable_GuardCollider(true);
 	pOwner->Enable_GroggyCollider(true);
@@ -129,7 +137,7 @@ STATE_TYPE CState_Combat_SkillQ_Paladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator
 
 	DoMove_AI_NoTarget(pOwner, pAnimator);
 
-	return __super::Tick(pOwner, pAnimator);
+	return CState_Combat_SkillQ::Tick(pOwner, pAnimator);
 }
 
 void CState_Combat_SkillQ_Paladin_Rush_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)

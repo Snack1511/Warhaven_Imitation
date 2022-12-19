@@ -57,7 +57,8 @@ HRESULT CSprint_End_Archer::Initialize()
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
 
-
+    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMaxSpeed = 10.f;
@@ -90,6 +91,9 @@ STATE_TYPE CSprint_End_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 
+
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_ARCHER_R;
 
     return __super::Tick(pOwner, pAnimator);
 }

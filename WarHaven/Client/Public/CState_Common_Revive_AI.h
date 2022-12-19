@@ -30,6 +30,8 @@ public:
 
 private:
 	PHASE	m_eCurPhase = BEGIN;
+	_float4 m_vPos;
+	CGameObject* m_pAbjPlayer = nullptr;
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;

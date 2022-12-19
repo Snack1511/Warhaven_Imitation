@@ -42,6 +42,7 @@ HRESULT CWalk_WarHammer::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
     m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
 
 
 	m_fMyMaxLerp = 0.4f;

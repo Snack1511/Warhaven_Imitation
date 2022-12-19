@@ -4,6 +4,7 @@
 #include "UsefulHeaders.h"
 
 #include "HIerarchyNode.h"
+#include "CColorController.h"
 
 CAnimWeapon::CAnimWeapon()
 {
@@ -45,6 +46,7 @@ void CAnimWeapon::Set_AnimIndex(_uint iAnimIndex, _float fInterpolateTime, _floa
 	m_pAnimator->Set_InterpolationTime(0, iAnimIndex, fInterpolateTime);
 	m_pAnimator->Set_AnimSpeed(0, iAnimIndex, fAnimSpeed);
 }
+
 
 HRESULT CAnimWeapon::Initialize_Prototype()
 {

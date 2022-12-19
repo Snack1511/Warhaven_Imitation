@@ -64,6 +64,8 @@ HRESULT CSprint_End_WarHammer::Initialize()
     m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
     m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
+    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 
 
 	m_fMyMaxLerp = 0.4f;
@@ -103,6 +105,9 @@ STATE_TYPE CSprint_End_WarHammer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pOwner->Is_Air())
         return STATE_SPRINT_JUMPFALL_WARHAMMER;
+
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_WARHAMMER_R;
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 

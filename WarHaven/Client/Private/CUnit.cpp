@@ -1164,7 +1164,7 @@ void CUnit::Set_ShaderNoSpec(const _tchar* pModelPath)
 	for (_uint i = 0; i < MODEL_PART_END; ++i)
 	{
 		_int iTemp = 0;
-		iTemp = m_tModelData.strModelPaths[i].find(pModelPath);
+		iTemp = (_int)m_tModelData.strModelPaths[i].find(pModelPath);
 
 		if (iTemp > 0)
 			m_pModelCom->Set_ShaderFlag(i, SH_LIGHT_NOSPEC);
@@ -1256,6 +1256,7 @@ void CUnit::Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _floa
 
 	m_pAnimWeapon->Set_AnimIndex(iAnimIndex, fInterpolateTime, fAnimSpeed);
 }
+
 
 void CUnit::Set_AnimWeaponFrame(_uint iChangeFrame) 
 {

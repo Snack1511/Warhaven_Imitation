@@ -48,6 +48,8 @@ HRESULT CState_Combat_SkillE_Paladin_ShieldWall_Begin::Initialize()
 	
 	m_fMyMaxLerp = 1.2f;
 
+	m_iStateChangeKeyFrame = 99;
+
 
 	Add_KeyFrame(30, 1);
 	Add_KeyFrame(35, 2);

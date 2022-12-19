@@ -19,8 +19,6 @@ CRun_Paladin::~CRun_Paladin()
 HRESULT CRun_Paladin::Initialize()
 {
 
-	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
-
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 
@@ -28,6 +26,9 @@ HRESULT CRun_Paladin::Initialize()
 	m_vecAdjState.push_back(STATE_SHIELDWALL_BEGIN_PALADIN);
 	m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
 	m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
+
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.5f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.8f;

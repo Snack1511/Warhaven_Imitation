@@ -99,7 +99,7 @@ void CRevive_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    m_fTimeAcc += fDT();
+    m_fTimeAcc += fDT(0);
 
     switch (m_eCurPhase)
     {

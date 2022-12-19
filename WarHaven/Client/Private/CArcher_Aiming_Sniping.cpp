@@ -13,6 +13,7 @@
 #include "CColorController.h"
 
 #include "CCamera_Follow.h"
+#include "CAnimWeapon.h"
 
 
 CArcher_Aiming_Sniping::CArcher_Aiming_Sniping()
@@ -54,31 +55,11 @@ HRESULT CArcher_Aiming_Sniping::Initialize()
     m_iStateChangeKeyFrame = 0;
     
 
-	
 	m_vecAdjState.push_back(STATE_ATTACK_SHOOT_SNIPING_ARCHER);
-
-	//m_vecAdjState.push_back(STATE_IDLE_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_RUN_ARCHER_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_L);
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-	//m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
-
-
-	//Add_KeyFrame(36, 0);
 
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
 
-	//Add_KeyFrame(33, 1);
-	//Add_KeyFrame(50, 2);
-
-	//Vertical은 전부 Land로 맞춤
-	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
 	
 	m_iIdle_Index = 11;
@@ -88,24 +69,23 @@ HRESULT CArcher_Aiming_Sniping::Initialize()
 	m_iJumpFallLeftIndex = 0;
 
 
-	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 17;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 18;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 19;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 20;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 34;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 35;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 36;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 21;
-	
-	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 26;
-	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 27;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 28;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 29;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 28;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 29;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 30;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 31;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 32;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 33;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 34;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 35;
+
+	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 38;
+	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 41;
 	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 42;
 	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 43;
 	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 44;
-	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 30;
-
+	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 45;
 
 	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 38;
 	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 39;
@@ -144,23 +124,25 @@ HRESULT CArcher_Aiming_Sniping::Initialize()
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
 	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 
-	m_eWalkState = STATE_ATTACK_AIMING_SNIPING_ARCHER;
-	m_eJumpState = STATE_ATTACK_AIMING_SNIPING_ARCHER;
-	m_eLandState = STATE_ATTACK_AIMING_SNIPING_ARCHER;
-	m_eFallState = STATE_ATTACK_AIMING_SNIPING_ARCHER;
-	m_eRunState = STATE_ATTACK_AIMING_SNIPING_ARCHER;
-	m_eIdleState = STATE_ATTACK_AIMING_SNIPING_ARCHER;
-	m_eBounceState = STATE_BOUNCE_ARCHER;
+	m_eWalkState = STATE_WALK_ARCHER_R;
+	m_eJumpState = STATE_JUMP_ARCHER_R;
+	m_eLandState = STATE_WALK_ARCHER_R;
+	m_eFallState = STATE_JUMPFALL_ARCHER_R;
+	m_eRunState = STATE_WALK_ARCHER_R;
+	m_eIdleState = STATE_IDLE_ARCHER_R;
+	m_eBounceState = STATE_WALK_ARCHER_R;
 
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.5f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.5f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.5f;
+
+	m_bLandMove = true;
 
     return __super::Initialize();
 }
@@ -169,10 +151,24 @@ void CArcher_Aiming_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 {
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
+
+	if (ePrevType == m_eStateType)
+	{
+
+		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, FLT_MAX, FLT_MAX);
+		pOwner->Set_AnimWeaponFrame(102);
+	}
+
+	if (ePrevType == STATE_ATTACK_BEGIN_SNIPING_ARCHER)
+	{
+		m_fAnimSpeed = FLT_MIN;
+		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
+	}
+
 	if (ePrevType == STATE_ATTACK_AIMING_SNIPING_ARCHER)
 		m_fInterPolationTime = 0.f;
 
-	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+	CState::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Aiming_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -180,56 +176,26 @@ STATE_TYPE CArcher_Aiming_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (pAnimator->Is_CurAnimFinished())
 		return STATE_ATTACK_AIMING_SNIPING_ARCHER;
 
+	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(5.f));
+
+	BlendableTick_Loop(pOwner, pAnimator);
 
 
-	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(5.f));// ->Start_FOVLerp();
 
-    return __super::Tick(pOwner, pAnimator);
+	return CState::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Aiming_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
-
-    //Exit에선 무조건 남겨놔야함
-    //pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CArcher_Aiming_Sniping::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* ARCHER가 Attack 으로 오는 조건
-    1. CTRL + LBuutton 을 이용해 공격한다.
-    */
-   
-    //if (KEY(LBUTTON, HOLD))
-    //    return m_eStateType;
-
     return STATE_END;
 }
 
 void CArcher_Aiming_Sniping::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
 	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
-
-
-	//switch (iSequence)
-	//{
-
-	//case 1:
-	//	
-
-	//	m_bAttackTrigger = true;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//case 2:
-	//	m_bAttackTrigger = false;
-	//	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, m_bAttackTrigger);
-	//	break;
-
-	//default:
-	//	break;
-	//}
-
 }

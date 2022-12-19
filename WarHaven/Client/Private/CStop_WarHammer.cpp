@@ -29,6 +29,9 @@ HRESULT CStop_WarHammer::Initialize()
 	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
 	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
+	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+
 	m_iStateChangeKeyFrame = 0;
 
     return S_OK;

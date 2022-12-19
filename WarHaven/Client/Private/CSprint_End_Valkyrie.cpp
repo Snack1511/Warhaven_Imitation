@@ -64,6 +64,8 @@ HRESULT CSprint_End_Valkyrie::Initialize()
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 
 
+    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMaxSpeed = 10.f;
@@ -97,6 +99,9 @@ STATE_TYPE CSprint_End_Valkyrie::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pOwner->Is_Air())
         return STATE_SPRINT_JUMPFALL_VALKYRIE;
+
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_VALKYRIE_R;
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 

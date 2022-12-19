@@ -26,6 +26,7 @@ HRESULT CRun_Archer_Begin::Initialize()
 
 
 	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
 
 
     m_iStateChangeKeyFrame = 0;

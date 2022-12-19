@@ -73,7 +73,7 @@ void CUnit_Valkyrie::SetUp_Colliders(_bool bPlayer)
 	{
 		//Radius,	vOffsetPos.		eColType
 		{1.1f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxGuard },
-		{1.1, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
+		{1.1f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
 	};
 
 

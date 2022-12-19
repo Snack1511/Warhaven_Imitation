@@ -33,7 +33,7 @@ public:
 		_bool	bGuardBreak = false;
 		_bool	bFly = false;
 
-		_int	iLandKeyFrame = 0;
+		_uint	iLandKeyFrame = 0;
 
 		HIT_TYPE	eHitType = HIT_TYPE::eEND;
 

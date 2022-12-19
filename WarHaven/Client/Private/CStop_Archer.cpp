@@ -26,6 +26,9 @@ HRESULT CStop_Archer::Initialize()
 
 	m_iStateChangeKeyFrame = 0;
 	
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+
 	//m_fMaxSpeed = 4.f;
 
 

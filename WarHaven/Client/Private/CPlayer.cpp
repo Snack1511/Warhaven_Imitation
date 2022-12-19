@@ -194,7 +194,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_pAllUnitClass[ENGINEER] = CUnit_WarHammer::Create(tModelData[ENGINEER]);
 	m_pAllUnitClass[FIONA] = CUnit_Valkyrie::Create(tModelData[FIONA]);
 	//m_pAllUnitClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
-	m_pAllUnitClass[ARCHER] = CUnit_Archer::Create(tModelData[ARCHER]);
+	//m_pAllUnitClass[ARCHER] = CUnit_Archer::Create(tModelData[ARCHER]);
 	m_pAllUnitClass[PALADIN] = CUnit_Paladin::Create(tModelData[PALADIN]);
 	//m_pAllUnitClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
 
@@ -437,6 +437,16 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
 		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEFAULT_FIONA_R;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
+
+		break;
+
+	case CUnit::UNIT_TYPE::eAI_idiot:
+
+		m_iReserveStateDefault[WARRIOR] = AI_STATE_COMMON_HIT_WARRIOR;
+		//	m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		m_iReserveStateDefault[ENGINEER] = AI_STATE_COMMON_HIT_WARRIOR;
+		m_iReserveStateDefault[FIONA] = AI_STATE_COMMON_HIT_WARRIOR;
+		m_iReserveStateDefault[PALADIN] = AI_STATE_COMMON_HIT_WARRIOR;
 
 		break;
 
@@ -933,6 +943,16 @@ void CPlayer::Set_OutlineType(OUTLINETYPE eOutlineType)
 
 void CPlayer::My_Tick()
 {
+	if (!m_bIsMainPlayer)
+	{
+		if (KEY(J, TAP))
+		{
+			m_pCurrentUnit->Get_Status().fHP = 0.f;
+			m_pCurrentUnit->Teleport_Unit(_float4(0.f, 20.f, 0.f));
+		}
+	}
+
+
 	//공통으로 업데이트 되어야 하는것
 
 	m_pUnitHUD->Set_UnitStatus(m_pCurrentUnit->Get_Status());
