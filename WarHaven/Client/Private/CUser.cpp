@@ -327,7 +327,7 @@ void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _flo
 void CUser::Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam)
 {
 	if (m_pUI_Paden)
-		m_pUI_Paden->Set_Score(iTeamType, iScore, iMaxScore);
+	m_pUI_Paden->Set_Team(pAllyTeam, pEnemyTeam);
 }
 
 void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
