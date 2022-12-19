@@ -64,10 +64,6 @@ private:
 
 	_float m_fInGameTime = 1800.f;
 
-	_float m_fOriginPosY = 323.f;
-	_float m_fDisablePosY = 320.f;
-	_float m_fEnablePosY = 326.f;
-
 private:
 	void Create_InGameTimer();
 	void Update_InGameTimer();

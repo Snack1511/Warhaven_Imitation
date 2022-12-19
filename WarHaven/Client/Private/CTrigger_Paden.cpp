@@ -131,6 +131,24 @@ void CTrigger_Paden::My_Tick()
 
 	CUser::Get_Instance()->Set_ConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
 
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	_bool isIsFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
+
+	switch (m_eTriggerType)
+	{
+	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
+		break;
+
+	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(1, m_pTransform, isIsFrustum);
+		break;
+
+	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
+		break;
+	}
+
 	//1. 둘 중 한쪽만 0일 때
 	if (m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE] != m_iTeamCnt[(_uint)eTEAM_TYPE::eRED])
 	{
@@ -148,26 +166,7 @@ void CTrigger_Paden::My_Tick()
 	if (m_fConqueredTimeAcc > 0.f)
 		m_fConqueredTimeAcc -= fDT(0);
 	else
-		m_fConqueredTimeAcc = 0.f;
-
-	// 플레이어와 거리가 제일 가까운 트리거만
-	// 혹은 목표로 지정한 트리거만 나침반으로 표시
-
-	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-	_bool isIsFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
-
-	if (m_strTriggerName == "Paden_Trigger_A")
-	{
-		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
-	}
-	else if (m_strTriggerName == "Paden_Trigger_R")
-	{
-		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(1, m_pTransform, isIsFrustum);
-	}
-	else if (m_strTriggerName == "Paden_Trigger_C")
-	{
-		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
-	}
+		m_fConqueredTimeAcc = 0.f;	
 }
 
 void CTrigger_Paden::Update_Conquered()
