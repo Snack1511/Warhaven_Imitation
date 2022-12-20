@@ -111,7 +111,7 @@ void CWindow_AI::On_Grouping(const char* GroupName, const ImVec2& Size, const fu
 
 void CWindow_AI::Func_PlayerSetting()
 {
-    string strPlayerName = (m_pCurSelectPlayer) ? CFunctor::To_String(m_pCurSelectPlayer->Get_PlayerName()) : u8"N/V";
+    string strPlayerName = (m_pCurSelectPlayer) ? CFunctor::To_String_UTF8(m_pCurSelectPlayer->Get_PlayerName()) : u8"N/V";
     Display_Data(u8"플레이어 이름", strPlayerName);
 
     if (nullptr == m_pCurSelectPlayer)
@@ -238,12 +238,12 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
             if(nullptr == pSquadLeader)
                 continue;
 
-            string SquadName = CFunctor::To_String(pSquadLeader->Get_PlayerName());
+            string SquadName = CFunctor::To_String_UTF8(pSquadLeader->Get_PlayerName());
             SquadName += "_Squad";
 
             if (ImGui::TreeNodeEx(SquadName.c_str(), ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Selected))
             {
-                string strLeaderName = CFunctor::To_String(pSquadLeader->Get_PlayerName());
+                string strLeaderName = CFunctor::To_String_UTF8(pSquadLeader->Get_PlayerName());
                 if (pCurSelectPlayer == pSquadLeader)
                 {
                     pSquad = SquadValue;
@@ -267,7 +267,7 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
                         pSquad = SquadValue;
                         bSelect = true;
                     }
-                    string strPlayerName = CFunctor::To_String(PlayerValue.second->Get_PlayerName());
+                    string strPlayerName = CFunctor::To_String_UTF8(PlayerValue.second->Get_PlayerName());
                     if (ImGui::Selectable(strPlayerName.c_str(), bSelect))
                     {
                         pCurSelectPlayer = PlayerValue.second;
@@ -291,12 +291,10 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
     else if (m_iCurPlayerNameIndex >= _uint(m_pVecPlayerInfoName->size()))
     {
         m_iCurPlayerNameIndex = _uint(m_pVecPlayerInfoName->size()) - 1;
-        strPreviewName = u8"";
-        strPreviewName += CFunctor::To_String((*m_pVecPlayerInfoName)[m_iCurPlayerNameIndex]);
+        strPreviewName = CFunctor::To_String_UTF8((*m_pVecPlayerInfoName)[m_iCurPlayerNameIndex]);
     }
     else {
-        strPreviewName = u8"";
-        strPreviewName += CFunctor::To_String((*m_pVecPlayerInfoName)[m_iCurPlayerNameIndex]);
+        strPreviewName = CFunctor::To_String_UTF8((*m_pVecPlayerInfoName)[m_iCurPlayerNameIndex]);
     }
     if (ImGui::BeginCombo("##SelectPlayerInfoName", strPreviewName.c_str()))
     {
@@ -309,8 +307,7 @@ void CWindow_AI::ListUp_Player(const char* ListID, const ImVec2& Size, CPlayer*&
                 {
                     bSelect = true;
                 }
-                string strName = u8"";
-                strName += CFunctor::To_String((*m_pVecPlayerInfoName)[i]).c_str();
+                string strName = CFunctor::To_String_UTF8((*m_pVecPlayerInfoName)[i]);
                 if (ImGui::Selectable(strName.c_str(), bSelect))
                 {
                     m_iCurPlayerNameIndex = i;
