@@ -121,7 +121,7 @@ void CState::Hit_GroundEffect(CUnit* pOwner)
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), pOwner->Get_HitMatrix());
 
-	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Ground", pOwner->Get_HitPos());
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Ground", pOwner->Get_HitPos());
 
 	if (STATE_WARRIOR_OXEN_LOOPATTACK == pOwner->Get_CurState())
 	{
