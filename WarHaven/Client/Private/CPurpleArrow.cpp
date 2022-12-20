@@ -67,7 +67,7 @@ HRESULT CPurpleArrow::Initialize_Prototype()
 	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
 
 	m_fMaxPoisonTime = 0.2f;
-	m_fDamage = 10.f;
+	m_fDamage = -10.f;
 
     return CProjectile::Initialize_Prototype();
 }

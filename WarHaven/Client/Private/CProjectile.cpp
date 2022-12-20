@@ -163,7 +163,7 @@ void CProjectile::On_ShootProjectile()
 	ZeroMemory(&tTransform, sizeof(PxTransform));
 
 	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
-	vCurPos += m_pTransform->Get_World(WORLD_RIGHT) * 2.f;
+	vCurPos += m_pTransform->Get_World(WORLD_RIGHT) * 2.5f;
 
 	tTransform.p = CUtility_PhysX::To_PxVec3(vCurPos);
 	tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
