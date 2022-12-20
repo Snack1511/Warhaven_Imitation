@@ -50,7 +50,8 @@ public:
 
 public:
 	list<PxRigidStatic*>& Get_AllStaticActors() { return m_listAllStatics; }
-	_bool					Shoot_RaytoStaticActors(_float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance);
+	_bool					Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance);
+	_bool					Shoot_RaytoControllers(list<PxController*>& listControllers, _float fMinDist, _float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance);
 
 public:
 	// Transform 에는 (float3)위치와 (float4)쿼터니온이 들어간다.

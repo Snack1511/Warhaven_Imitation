@@ -11,6 +11,10 @@
 #include "HIerarchyNode.h"
 #include "CAnimWeapon.h"
 
+#include "CPhysXCharacter.h"
+
+#include "CProjectile.h"
+
 CAttack_Archer::CAttack_Archer()
 {
 }
@@ -94,9 +98,9 @@ void CAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 void CAttack_Archer::Exit(CUnit * pOwner, CAnimator * pAnimator)
 {
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
-
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
+	Exit_Aiming(pOwner);
 }
 
 STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -143,7 +147,7 @@ STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	/* =================================== */
 	_float4 vCamLook = pOwner->Get_FollowCamLook();
 	_float4x4 matRotY = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), ToRadian(3.5f));
-	_float4x4 matRotX = XMMatrixRotationAxis(pOwner->Get_FollowCamRight().XMLoad(), ToRadian(3.5f));
+	_float4x4 matRotX = XMMatrixRotationAxis(pOwner->Get_FollowCamRight().XMLoad(), ToRadian(8.f));
 	vCamLook = vCamLook.MultiplyNormal(matRotY);
 	vCamLook = vCamLook.MultiplyNormal(matRotX);
 
@@ -562,9 +566,42 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos)
 	_float4 vDir = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_Transform()->Get_World(WORLD_RIGHT);
 	_float fMaxDistance = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_MaxDistance();
 
+	_float fMinDist;
 	_float4 vFinalHitPos;
 
-	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, vStartPos, vDir, fMaxDistance))
+	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
+		*pOutPos = vFinalHitPos;
+
+	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
+	list<PxController*> listPxControllers;
+	for (auto& elem : listPlayers)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
+		if (!pPlayer)
+			continue;
+
+		if (!pPlayer->Is_Valid())
+			continue;
+
+		CUnit* pUnit = pPlayer->Get_CurrentUnit();
+
+		if (!pUnit->Is_Valid())
+			continue;
+
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 1.5f))
+			continue;
+
+		CPhysXCharacter* pPhysXCom = GET_COMPONENT_FROM(pUnit, CPhysXCharacter);
+
+		PxController* pController = pPhysXCom->Get_PxController();
+
+		if (!pController)
+			continue;
+
+		listPxControllers.push_back(pController);
+	}
+
+	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
 		*pOutPos = vFinalHitPos;
 
 	return true;

@@ -2,6 +2,7 @@
 #include "CState.h"
 
 BEGIN(Engine)
+class CHierarchyNode;
 END
 
 BEGIN(Client)

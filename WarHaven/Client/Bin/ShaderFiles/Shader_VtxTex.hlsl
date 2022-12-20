@@ -44,6 +44,7 @@ float g_fColY;
 
 float g_fUVPlusX;
 float g_fUVPlusY;
+float g_fUVPower;
 
 float g_fTimeAcc;
 
@@ -91,6 +92,22 @@ VS_TRAIL_OUT VS_TRAIL_MAIN(VS_IN In)
     matrix matWV, matWVP;
 
     matWV = g_ViewMatrix;
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+    Out.vTexUV = In.vTexUV;
+    Out.vProjPos = Out.vPosition;
+
+    return Out;
+}
+
+VS_TRAIL_OUT VS_TRAIL_UI_MAIN(VS_IN In)
+{
+    VS_TRAIL_OUT Out = (VS_TRAIL_OUT)0;
+
+    matrix matWV, matWVP;
+
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
 
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
@@ -869,6 +886,34 @@ PS_EFFECT_OUT PS_TRAIL_MAIN(VS_TRAIL_OUT In)
     return Out;
 }
 
+
+PS_EFFECT_OUT PS_TRAIL_UI_MAIN(VS_TRAIL_OUT In)
+{
+    PS_EFFECT_OUT Out = (PS_EFFECT_OUT)0;
+
+    In.vTexUV.x = 1.f - In.vTexUV.x;
+    //Mask
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vDiffuse.a = Out.vDiffuse.r;
+
+
+    In.vTexUV.x = 1.f - In.vTexUV.x;
+    //In.vTexUV.y *= 5.f;
+    Out.vDiffuse.xyz = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+    Out.vDiffuse *= g_vColor;
+
+    if (Out.vDiffuse.a < 0.05f)
+        discard;
+
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);
+    Out.vFlag = g_vFlag;
+    Out.vGlowFlag = g_vGlowFlag;
+    Out.vEffectDiffuse = Out.vDiffuse;
+
+    return Out;
+}
+
 PS_EFFECT_OUT PS_FOOTTRAIL_MAIN(VS_TRAIL_OUT In)
 {
     PS_EFFECT_OUT Out = (PS_EFFECT_OUT) 0;
@@ -1315,5 +1360,15 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_PROFILE();
     }
 
+    pass TRAIL_UI
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_None);
+
+        VertexShader = compile vs_5_0 VS_TRAIL_UI_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_TRAIL_UI_MAIN();
+    }
     
 }

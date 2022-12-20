@@ -30,7 +30,7 @@ public:
 
 public:
 	void	Set_Position(_float4 vPos);
-
+	PxController* Get_PxController() { return m_pPxController; }
 
 public: /* Character Controller CallBack */
 	virtual void onShapeHit(const PxControllerShapeHit& hit);

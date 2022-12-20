@@ -73,7 +73,7 @@ protected:
 	virtual void OnDisable() override;
 
 protected:
-	void	Hit_Unit(CGameObject* pHitUnit);
+	void	Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos);
 
 private:
 	_bool	m_bCloned = false;

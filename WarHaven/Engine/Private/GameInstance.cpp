@@ -344,9 +344,14 @@ list<PxRigidStatic*>& CGameInstance::Get_AllStaticActors()
 	return m_pPhysXManager->Get_AllStaticActors();
 }
 
-_bool CGameInstance::Shoot_RaytoStaticActors(_float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
+_bool CGameInstance::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
 {
-	return m_pPhysXManager->Shoot_RaytoStaticActors(pOutPos, vStartPos, vStartDir, fMaxDistance);
+	return m_pPhysXManager->Shoot_RaytoStaticActors(pOutPos, pMinDist, vStartPos, vStartDir, fMaxDistance);
+}
+
+_bool CGameInstance::Shoot_RaytoControllers(list<PxController*>& listControllers, _float fMinDist, _float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
+{
+	return m_pPhysXManager->Shoot_RaytoControllers(listControllers, fMinDist, pOutPos, vStartPos, vStartDir, fMaxDistance);
 }
 
 void CGameInstance::Create_ConvexMesh(_float3* pVertices, _uint iNumVertices, void* pIndices, _uint iNumPrimitive, PxConvexMesh** ppOut)

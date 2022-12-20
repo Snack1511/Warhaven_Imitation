@@ -104,7 +104,8 @@ public:/* For.Resource_Manager*/
 
 public: /* For.PhysX_Manager*/
 	list<PxRigidStatic*>& Get_AllStaticActors();
-	_bool					Shoot_RaytoStaticActors(_float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance);
+	_bool					Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance);
+	_bool					Shoot_RaytoControllers(list<PxController*>& listControllers, _float fMinDist, _float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance);
 
 	void			Create_ConvexMesh(_float3* pVertices, _uint iNumVertices,
 		void* pIndices, _uint iNumPrimitive, PxConvexMesh** ppOut);

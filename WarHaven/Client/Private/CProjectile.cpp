@@ -42,7 +42,7 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 	m_pOwnerUnit->CallBack_CollisionEnter(pOtherObj, eOtherColType, eMyColType, vHitPos);
 	pOtherObj->CallBack_CollisionEnter(m_pOwnerUnit, eMyColType, eOtherColType, vHitPos);
 
-	Hit_Unit(pOtherObj);
+	Hit_Unit(pOtherObj, vHitPos);
 }
 
 void CProjectile::Projectile_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
@@ -377,8 +377,16 @@ void CProjectile::OnDisable()
 
 }
 
-void CProjectile::Hit_Unit(CGameObject* pHitUnit)
+void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
 {
+	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
+	_float4 vDir = (Get_ArrowHeadPos() - vHitPos);
+	vCurPos -= vDir * 0.5f;
+
+	m_pTransform->Set_World(WORLD_POS, vCurPos);
+	m_pTransform->Make_WorldMatrix();
+
+
 	m_pHitUnit = pHitUnit;
 	On_ChangePhase(eSTICK);
 	m_pCurStickBone = GET_COMPONENT_FROM(pHitUnit, CModel)->Find_HierarchyNode("0B_COM");

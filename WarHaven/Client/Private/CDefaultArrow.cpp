@@ -46,7 +46,7 @@ HRESULT CDefaultArrow::Initialize_Prototype()
         return E_FAIL;
 
 	m_hcCode = HASHCODE(CDefaultArrow);
-	m_vArrowHeadPos = _float4(2.f, 0.f, 0.f);
+	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
 
     return CProjectile::Initialize_Prototype();
 }

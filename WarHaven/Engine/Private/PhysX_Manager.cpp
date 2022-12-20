@@ -472,7 +472,7 @@ void CPhysX_Manager::Release()
 
 }
 
-_bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
+_bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
 {
 	_float fMinDist = 9999.f;
 	_float4 vFinalHitPos = vStartPos + vStartDir * fMaxDistance;
@@ -499,6 +499,48 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float4 vStartPo
 			CUtility_PhysX::To_PxVec3(vStartDir),
 			pCurShape->getGeometry().any(),
 			elem->getGlobalPose(),
+			fMaxDistance, PxHitFlag::ePOSITION, 1, &hitInfo
+		);
+
+		if (hitCount > 0)
+		{
+			_float4 vHitPos = CUtility_PhysX::To_Vector(hitInfo.position);
+			_float fLength = (vHitPos - vStartPos).Length();
+
+			if (fLength < fMinDist)
+			{
+				fMinDist = fLength;
+				vFinalHitPos = vHitPos;
+			}
+
+		}
+	}
+
+	/* GROUP_PLAYER °Ë»ç */
+
+	*pOutPos = vFinalHitPos;
+	*pMinDist = fMinDist;
+
+	return true;
+}
+
+_bool CPhysX_Manager::Shoot_RaytoControllers(list<PxController*>& listControllers, _float fMinDist, _float4* pOutPos, _float4 vStartPos, _float4 vStartDir, _float fMaxDistance)
+{
+	_float4 vFinalHitPos = *pOutPos;
+
+
+	for (auto& elem : listControllers)
+	{
+		//staticÀÌ¶û ´êÀ¸¸é ÀÌ³à¼®ÇÑÅ× ray ½÷¼­ À§Ä¡ º¸Á¤
+		PxRaycastHit hitInfo;
+		PxShape* pCurShape = nullptr;
+		elem->getActor()->getShapes(&pCurShape, sizeof(PxShape));
+
+		PxU32 hitCount = PxGeometryQuery::raycast(
+			CUtility_PhysX::To_PxVec3(vStartPos),
+			CUtility_PhysX::To_PxVec3(vStartDir),
+			pCurShape->getGeometry().any(),
+			elem->getActor()->getGlobalPose(),
 			fMaxDistance, PxHitFlag::ePOSITION, 1, &hitInfo
 		);
 

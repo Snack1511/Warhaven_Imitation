@@ -6,6 +6,8 @@
 #include "CUnit_Archer.h"
 #include "CRectEffects.h"
 
+#include "CColorController.h"
+
 CPurpleArrow::CPurpleArrow()
 {
 }
@@ -34,6 +36,20 @@ HRESULT CPurpleArrow::Start()
 
 	m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest", this, m_pTransform->Get_World(WORLD_POS));
 
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 9999.f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = _float4((255.f / 255.f), (42.f / 255.f), (42.f / 255.f), 0.1f);
+	//tColorDesc.vTargetColor *= 1.1f;
+	tColorDesc.iMeshPartType = MODEL_PART_SKEL;
+
+	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
+
 	return S_OK;
 }
 
@@ -46,7 +62,7 @@ HRESULT CPurpleArrow::Initialize_Prototype()
         return E_FAIL;
 
 	m_hcCode = HASHCODE(CPurpleArrow);
-	m_vArrowHeadPos = _float4(2.f, 0.f, 0.f);
+	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
 
 	m_fMaxLoopTime = 0.2f;
 	m_fDamage = -10.f;

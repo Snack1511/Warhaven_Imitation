@@ -3016,6 +3016,12 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\03. SnipeArrow">
       <UniqueIdentifier>{918df7c0-d969-4db0-8eee-82d55e44254c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\08. Effect\02. UI_Trail">
+      <UniqueIdentifier>{098a8863-6763-4899-a3ce-55d08317ecff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\03. TrailBuffer\CustomTrail">
+      <UniqueIdentifier>{955ab60d-eaf8-441a-9812-452981da9ab8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5424,6 +5430,12 @@
     <ClInclude Include="..\Public\CSnipeArrow.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\03. SnipeArrow</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CUI_Trail.h">
+      <Filter>03. Instances\02. GameObject\08. Effect\02. UI_Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CCustomTrail.h">
+      <Filter>03. Instances\03. Component\03. TrailBuffer\CustomTrail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -7812,6 +7824,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CSnipeArrow.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\03. SnipeArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CUI_Trail.cpp">
+      <Filter>03. Instances\02. GameObject\08. Effect\02. UI_Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CCustomTrail.cpp">
+      <Filter>03. Instances\03. Component\03. TrailBuffer\CustomTrail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
