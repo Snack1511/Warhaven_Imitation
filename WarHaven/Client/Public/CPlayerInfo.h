@@ -26,6 +26,12 @@ return pInstance;\
 //GameSystem은 16개의 Player Info를 들고있따.
 //스테이지 진입 시 섞어서 매칭해준다.
 
+#define WARRIOR_TH
+#define ARCHER_TH
+#define FIONA_TH
+//#define PALADIN_TH
+#define ENGINEER_TH
+
 
 BEGIN(Client)
 

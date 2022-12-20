@@ -26,6 +26,7 @@ CProjectile::CProjectile(const CProjectile& _origin)
 	, m_hcCode(_origin.m_hcCode)
 	, m_fMaxDistance(_origin.m_fMaxDistance)
 	, m_vArrowHeadPos(_origin.m_vArrowHeadPos)
+	, m_fDamage(_origin.m_fDamage)
 {
 }
 

@@ -154,6 +154,17 @@ HRESULT CArcher_Shoot_Poison::Initialize()
 
 void CArcher_Shoot_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	if (ePrevType == STATE_ATTACK_BEGIN_POISION_ARCHER)
+		m_fDamagePumping = 0.7f;
+
+	_bool bBounce = false;
+
+	if (ePrevType == STATE_BOUNCE_ARCHER)
+	{
+		bBounce = true;
+		m_fInterPolationTime = 0.f;
+	}
+
 	pOwner->On_Use(CUnit::SKILL2);
 
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLAUNCH, m_fInterPolationTime, m_fAnimSpeed);
@@ -166,6 +177,9 @@ void CArcher_Shoot_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
     
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	if (bBounce)
+		pAnimator->Set_CurFrame(pOwner->Get_PreAnimIndex());
 }
 
 STATE_TYPE CArcher_Shoot_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)

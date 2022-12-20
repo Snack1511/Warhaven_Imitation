@@ -40,9 +40,19 @@ HRESULT CPlayerInfo_Default::Initialize()
 	m_tPlayerInfo.wstrName = L"Default_";
 	m_tPlayerInfo.wstrName += to_wstring(g_iDefaultCnt++);
 
-	m_vecPrefClassType.push_back(WARRIOR);
+
+
+#ifdef ENGINEER_TH
 	m_vecPrefClassType.push_back(ENGINEER);
-	//m_vecPrefClassType.push_back(PALADIN);	
+#endif // WARRIOR_TH
+
+#ifdef WARRIOR_TH
+	m_vecPrefClassType.push_back(WARRIOR);
+#endif // WARRIOR_TH
+
+#ifdef PALADIN_TH
+	m_vecPrefClassType.push_back(PALADIN);
+#endif // WARRIOR_TH
 
 	if (FAILED(SetUp_AIPersonality()))
 		return E_FAIL;

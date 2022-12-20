@@ -1105,6 +1105,56 @@ void CState_Manager::Archer_State()
 	m_arrStates[STATE_FLYHIT_ARCHER] = CHit_Fly_Archer::Create();
 
 
+	//switch (i)
+	//{
+	//case 0:
+	//	strKey = "EnemyTrio_1";
+	//	wstrInfoKey = L"EnemyTrio_0";
+	//	eEnemyState = SANDBAG_STATE_IDLE_WARHAMMER_R;
+
+	//	break;
+	//case 1:
+	//	strKey = "EnemyTrio_2";
+	//	wstrInfoKey = L"EnemyTrio_1";
+	//	eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
+
+	//	break;
+	//case 2:
+	//	strKey = "q";
+	//	wstrInfoKey = L"EnemyTrio_2";
+	//	eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
+	//	break;
+	//case 3:
+	//	strKey = "EnemyHall";
+	//	wstrInfoKey = L"EnemyHall";
+	//	break;
+	//case 4:
+	//	strKey = "EnemyBlock";
+	//	wstrInfoKey = L"EnemyBlock";
+	//	eEnemyState = STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY;
+	//	break;
+	//case 5:
+	//	strKey = "EnemyHeadShot";
+	//	wstrInfoKey = L"EnemyHeadShot";
+	//	eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
+	//	break;
+	//case 6:
+	//	strKey = "EnemyGuardBreak";
+	//	wstrInfoKey = L"EnemyGuardBreak";
+	//	eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY;
+
+	//	break;
+
+	//case 7:
+	//	strKey = "EnemyFinal";
+	//	wstrInfoKey = L"EnemyFinal";
+	//	eEnemyState = AI_STATE_IDLE_WARRIOR_L;
+
+	//	break;
+
+	//default:
+	//	break;
+	//}
 
 }
 void CState_Manager::Paladin_State()

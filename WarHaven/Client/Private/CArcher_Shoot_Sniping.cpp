@@ -157,6 +157,17 @@ HRESULT CArcher_Shoot_Sniping::Initialize()
 
 void CArcher_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	if (ePrevType == STATE_BOUNCE_ARCHER)
+		m_fInterPolationTime = 0.f;
+
+	_bool bBounce = false;
+
+	if (ePrevType == STATE_BOUNCE_ARCHER)
+	{
+		bBounce = true;
+		m_fInterPolationTime = 0.f;
+	}
+
 	pOwner->On_Use(CUnit::SKILL3);
 
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLAUNCH, m_fInterPolationTime, m_fAnimSpeed);
@@ -168,6 +179,9 @@ void CArcher_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	if (bBounce)
+		pAnimator->Set_CurFrame(pOwner->Get_PreAnimIndex());
 }
 
 STATE_TYPE CArcher_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)

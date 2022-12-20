@@ -69,6 +69,10 @@
 #include "CAIPersonality.h"
 #include "CBehavior.h"
 #pragma endregion AI 추가용
+
+
+
+
 CPlayer::CPlayer()
 {
 }
@@ -191,12 +195,26 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	}
 
 
+
+#ifdef WARRIOR_TH
 	m_pAllUnitClass[WARRIOR] = CUnit_Warrior::Create(tModelData[WARRIOR]);
+#endif
+
+#ifdef ENGINEER_TH
 	m_pAllUnitClass[ENGINEER] = CUnit_WarHammer::Create(tModelData[ENGINEER]);
+#endif
 	m_pAllUnitClass[FIONA] = CUnit_Valkyrie::Create(tModelData[FIONA]);
 	//m_pAllUnitClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
+
+#ifdef ARCHER_TH
 	m_pAllUnitClass[ARCHER] = CUnit_Archer::Create(tModelData[ARCHER]);
+#endif
+
+
+#ifdef PALADIN_TH
 	m_pAllUnitClass[PALADIN] = CUnit_Paladin::Create(tModelData[PALADIN]);
+#endif	
+
 	//m_pAllUnitClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
 
 

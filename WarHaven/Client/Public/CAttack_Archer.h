@@ -96,10 +96,12 @@ protected:
 protected:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
+	/* Attack_Begin 에서만 사용 */
 	void				Enter_Attack_Begin(CUnit* pOwner);
-	void				Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, _uint eCamLerpType);
 
-	void				Exit_Aiming(CUnit* pOwner);
+	/* Aiming 에서만 사용 */
+	void				Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, _uint eCamLerpType);
+	void				Exit_Aiming(CUnit* pOwner, CAnimator* pAnimator);
 
 private:
 	/*사전 설정 아니고, 안에서 쓰는 것*/

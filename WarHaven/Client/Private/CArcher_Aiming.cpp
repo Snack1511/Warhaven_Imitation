@@ -165,7 +165,7 @@ STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CArcher_Aiming::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {	
-	__super::Exit_Aiming(pOwner);
+	__super::Exit_Aiming(pOwner, pAnimator);
 	__super::Exit(pOwner, pAnimator);
 }
 

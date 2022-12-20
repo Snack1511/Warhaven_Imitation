@@ -87,11 +87,7 @@ void CAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 	if (!m_pCoreBone)
 		assert(0);
-	else
-	{
 
-
-	}
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 
@@ -100,7 +96,7 @@ void CAttack_Archer::Exit(CUnit * pOwner, CAnimator * pAnimator)
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-	Exit_Aiming(pOwner);
+	//Exit_Aiming(pOwner);
 }
 
 STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -309,7 +305,8 @@ STATE_TYPE CAttack_Archer::Update_Land(CUnit* pOwner, CAnimator* pAnimator)
 {
 	//Move(Get_Direction(), pOwner);
 
-	if (pAnimator->Is_CurAnimFinished())
+
+	if (m_bLandMove || pAnimator->Is_CurAnimFinished())
 		On_EnumChange(Enum::eIDLE, pAnimator);
 
 	if (pAnimator->Is_ActionFinished())
@@ -478,13 +475,13 @@ void CAttack_Archer::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 		
 		if (iDirection != STATE_DIRECTION_END)
 		{
-			_uint iWalkAnimIndex = pOwner->Get_PreAnimIndex();
-			_uint iMyMaxAnimIndex = 40;
+			//_uint iWalkAnimIndex = pOwner->Get_PreAnimIndex();
+			//_uint iMyMaxAnimIndex = 40;
 
-			while (iMyMaxAnimIndex < iWalkAnimIndex)
-				iWalkAnimIndex -= 15;
+			//while (iMyMaxAnimIndex < iWalkAnimIndex)
+			//	iWalkAnimIndex -= 15;
 
-			pAnimator->Set_CurFrame(iWalkAnimIndex);
+			//pAnimator->Set_CurFrame(iWalkAnimIndex);
 		}
 			
 
@@ -494,13 +491,14 @@ void CAttack_Archer::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE(eCamLerpType));
 }
 
-void CAttack_Archer::Exit_Aiming(CUnit* pOwner)
+void CAttack_Archer::Exit_Aiming(CUnit* pOwner, CAnimator* pAnimator)
 {
 	_float4x4 matOffset;
 	matOffset.Identity();
 	m_pCoreBone->Set_PrevMatrix(matOffset);
 	static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat() = matOffset;
 
+	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
 
 	CUser::Get_Instance()->Set_CrossHairPos(_float4(0.f, 0.f, 0.3f, 1.f));
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);

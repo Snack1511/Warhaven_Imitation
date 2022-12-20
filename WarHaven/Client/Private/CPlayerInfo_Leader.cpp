@@ -46,12 +46,20 @@ HRESULT CPlayerInfo_Leader::Initialize()
 	if (g_LeaderCnt == 3)
 	{
 		m_tPlayerInfo.wstrName = L"Jusin_Burger";
+
+#ifdef ENGINEER_TH
 		m_vecPrefClassType.push_back(ENGINEER);
+#endif // WARRIOR_TH
+
 	}
 	else if (g_LeaderCnt == 2)
 	{
 		m_tPlayerInfo.wstrName = L"너네선비형";
+
+#ifdef WARRIOR_TH
 		m_vecPrefClassType.push_back(WARRIOR);
+#endif // WARRIOR_TH
+
 		Set_CustomHead(WARRIOR, eCUSTOM_HEAD::eRABBIT);
 		Set_CustomBody(WARRIOR, eCUSTOM_BODY::eBODY1);
 
@@ -65,8 +73,18 @@ HRESULT CPlayerInfo_Leader::Initialize()
 			Set_CustomHead((CLASS_TYPE)i, eCUSTOM_HEAD::eHEAD2);
 			Set_CustomBody((CLASS_TYPE)i, eCUSTOM_BODY::eBODY2);
 		}
+
+
+#ifdef WARRIOR_TH
 		m_vecPrefClassType.push_back(WARRIOR);
+#endif // WARRIOR_TH
+
+
+#ifdef ENGINEER_TH
 		m_vecPrefClassType.push_back(ENGINEER);
+#endif // ENGINEER_TH
+
+		
 
 	}
 
