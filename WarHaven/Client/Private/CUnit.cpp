@@ -81,7 +81,10 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 			m_pAdjRevivalPlayer = nullptr;
 
 		if (m_pAdjRevivalPlayer)
+		{
 			//UI ON
+			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
+		}
 
 		return;
 	}
@@ -190,6 +193,7 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 			m_pAdjRevivalPlayer = nullptr;
 
 			//UI Off
+			CUser::Get_Instance()->SetAcitve_ReviveUI(false);
 		}
 
 	}
@@ -414,12 +418,12 @@ void CUnit::On_FallDamage(_float fFallPower)
 void CUnit::On_Sliding(_float4 vHitNormal)
 {
 	//if (!m_bIsMainPlayer)
-		return;
+	return;
 
 	vHitNormal.w = 0.f;
-	
+
 	/* 1. up°ú ³»Àû */
-	
+
 	_float4 vUp = _float4(0.f, 1.f, 0.f, 0.f);
 	_float fDot = vUp.Dot(vHitNormal);
 
@@ -836,7 +840,7 @@ void CUnit::SetUp_UnitCollider(UNITCOLLIDER ePartType, UNIT_COLLIDERDESC* arrCol
 	if (m_pUnitCollider[ePartType])
 		return;
 
-	m_pUnitCollider[ePartType]  = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, arrColliderDesc[0].fRadius, arrColliderDesc[0].eColType, arrColliderDesc[0].vOffsetPos,
+	m_pUnitCollider[ePartType] = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, arrColliderDesc[0].fRadius, arrColliderDesc[0].eColType, arrColliderDesc[0].vOffsetPos,
 		matTransformation, pRefBone);
 
 	if (!m_pUnitCollider[ePartType])
@@ -1073,8 +1077,14 @@ void CUnit::My_LateTick()
 		}
 	}
 
+	if (!m_bIsMainPlayer)
+	{
+		_bool isAbleRevive = Get_OwnerPlayer()->Is_AbleRevival();
+		if (isAbleRevive)
+			CUser::Get_Instance()->Set_ReviveUI_Pos(m_pTransform);
 
-
+		CUser::Get_Instance()->SetAcitve_ReviveUI(isAbleRevive);
+	}
 }
 
 void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse,
@@ -1258,7 +1268,7 @@ void CUnit::Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _floa
 }
 
 
-void CUnit::Set_AnimWeaponFrame(_uint iChangeFrame) 
+void CUnit::Set_AnimWeaponFrame(_uint iChangeFrame)
 {
 	if (!m_pAnimWeapon)
 		return;

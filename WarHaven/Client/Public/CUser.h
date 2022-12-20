@@ -32,6 +32,7 @@ class CUI_Result;
 class CUI_Popup;
 class CUI_Oper;
 class CUI_Paden;
+class CUI_Revive;
 
 class CTeamConnector;
 
@@ -174,6 +175,10 @@ public:	// 킬로그
 	void Add_KillName(wstring wstrEnemyName);
 	void Update_KillName();
 
+public:	// 소생
+	void SetAcitve_ReviveUI(_bool value);
+	void Set_ReviveUI_Pos(CTransform* pReviveUnitTransform);
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -183,6 +188,7 @@ private:
 	CUI_Oper* m_pUI_Oper = nullptr;
 	CUI_Popup* m_pUI_Popup = nullptr;
 	CUI_Result* m_pUI_Result = nullptr;
+	CUI_Revive* m_pReviveUI = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

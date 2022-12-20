@@ -42,6 +42,7 @@
 #include "CUI_Popup.h"
 #include "CUI_KillLog.h"
 #include "CUI_KillName.h"
+#include "CUI_Revive.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -487,6 +488,14 @@ void CUser::On_EnterStageLevel()
 			CREATE_GAMEOBJECT(m_pUI_Result, GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pUI_Result);
 		}
+
+		if (!m_pReviveUI)
+		{
+			m_pReviveUI = CUI_Revive::Create();
+
+			CREATE_GAMEOBJECT(m_pReviveUI, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pReviveUI);
+		}
 	}
 
 	SetUp_BloodOverlay();
@@ -528,6 +537,9 @@ void CUser::On_ExitStageLevel()
 
 	if (m_pUI_Training)
 		m_pUI_Training = nullptr;
+
+	if (m_pReviveUI)
+		m_pReviveUI = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -645,6 +657,16 @@ void CUser::Update_KillName()
 		else
 			++iter;
 	}
+}
+
+void CUser::SetAcitve_ReviveUI(_bool value)
+{
+	m_pReviveUI->SetActive(value);
+}
+
+void CUser::Set_ReviveUI_Pos(CTransform* pReviveUnitTransform)
+{
+	m_pReviveUI->Set_Position(pReviveUnitTransform);
 }
 
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)

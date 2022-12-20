@@ -3022,6 +3022,9 @@
     <Filter Include="03. Instances\03. Component\03. TrailBuffer\CustomTrail">
       <UniqueIdentifier>{955ab60d-eaf8-441a-9812-452981da9ab8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Revive">
+      <UniqueIdentifier>{c3a6a230-e39a-46c0-95c1-a06f62d828f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5436,6 +5439,9 @@
     <ClInclude Include="..\public\CCustomTrail.h">
       <Filter>03. Instances\03. Component\03. TrailBuffer\CustomTrail</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Revive.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Revive</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -7830,6 +7836,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CCustomTrail.cpp">
       <Filter>03. Instances\03. Component\03. TrailBuffer\CustomTrail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Revive.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Revive</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

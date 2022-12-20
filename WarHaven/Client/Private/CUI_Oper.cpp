@@ -263,13 +263,6 @@ void CUI_Oper::Progress_Oper()
 					m_pArrCharacterPort[i][j]->DoMove(vPos, fDuration, 0);
 				}
 			}
-
-			for (int i = 0; i < CP_End; ++i)
-			{
-				m_pArrCharacterPort[i][0]->DoScale(10.f, fDuration);
-			}
-
-
 		}
 	}
 	else
