@@ -1081,7 +1081,11 @@ void CUnit::My_LateTick()
 	{
 		_bool isAbleRevive = Get_OwnerPlayer()->Is_AbleRevival();
 		if (isAbleRevive)
+		{
 			CUser::Get_Instance()->Set_ReviveUI_Pos(m_pTransform);
+
+			cout << "부활 가능 상태" << endl;
+		}
 
 		CUser::Get_Instance()->SetAcitve_ReviveUI(isAbleRevive);
 	}

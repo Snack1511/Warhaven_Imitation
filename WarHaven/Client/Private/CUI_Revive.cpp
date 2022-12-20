@@ -52,11 +52,15 @@ void CUI_Revive::My_LateTick()
 void CUI_Revive::OnEnable()
 {
 	__super::OnEnable();
+
+	m_pReviveIcon->SetActive(true);
 }
 
 void CUI_Revive::OnDisable()
 {
 	__super::OnDisable();
+
+	m_pReviveIcon->SetActive(false);
 }
 
 void CUI_Revive::Create_ReviveIcon()
