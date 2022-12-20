@@ -43,6 +43,13 @@ CCustomTrail* CCustomTrail::Create(_uint iGroupIdx, _uint iTriCnt)
 	return pInstance;
 }
 
+_uint3 CCustomTrail::Get_Indices(_uint iIndex) const
+{
+	return _uint3(((FACEINDICES16*)m_pIndices)[iIndex]._1,
+		((FACEINDICES16*)m_pIndices)[iIndex]._2,
+		((FACEINDICES16*)m_pIndices)[iIndex]._3);
+}
+
 HRESULT CCustomTrail::Initialize_Prototype()
 {
 #pragma region VERTEXBUFFER

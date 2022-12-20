@@ -24,9 +24,6 @@ public:
 public:
 	virtual _uint3 Get_Indices(_uint iIndex) const override;
 
-	void	Set_TrailOn();
-	void	Set_TrailOff();
-
 public:
 	void	ReMap_TrailBuffers(list<_float4>& NodesList, _float fWide);
 

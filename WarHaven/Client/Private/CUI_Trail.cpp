@@ -52,17 +52,6 @@ void CUI_Trail::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 	pShader->Set_RawValue("g_fUVPower", &m_fUVPower, sizeof(_float4));
 }
 
-void CUI_Trail::TurnOn_TrailEffect(_bool bTrunOn)
-{
-	if (!m_pCustomTrailCom)
-		return;
-
-	if (bTrunOn)
-		m_pCustomTrailCom->Set_TrailOn();
-	else
-		m_pCustomTrailCom->Set_TrailOff();
-
-}
 
 void CUI_Trail::Add_Node(const _float4& vNode)
 {

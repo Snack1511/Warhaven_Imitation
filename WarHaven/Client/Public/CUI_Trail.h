@@ -30,9 +30,6 @@ public:
 	void	Set_EffectFlag(_float4 vEffectFlag) { m_vShaderFlag = vEffectFlag; }
 
 public:
-	void TurnOn_TrailEffect(_bool bTrunOn);
-
-public:
 	void Add_Node(const _float4& vNode);
 	void Clear_Nodes() { m_ListNodes.clear(); };
 	void ReMap_TrailBuffers();
