@@ -24,6 +24,8 @@
 #include "CCollider_Sphere.h"
 #include "CColorController.h"
 
+#include "CUI_Trail.h"
+
 CUnit_Archer::CUnit_Archer()
 {
 }
@@ -277,6 +279,25 @@ void CUnit_Archer::Enable_Arrow(_bool bEnable)
 		DISABLE_GAMEOBJECT(m_pCurArrow);
 }
 
+void CUnit_Archer::Enable_Trail(_bool bEnable)
+{
+	if (bEnable)
+		ENABLE_GAMEOBJECT(m_pUI_Trail);
+	else
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
+}
+
+void CUnit_Archer::ReMap_Trail(_float4 vTargetPos)
+{
+	m_pUI_Trail->Clear_Nodes();
+
+	_float4 vHandPos = m_pModelCom->Get_BoneMatrix("0B_R_WP1").XMLoad().r[3];
+	m_pUI_Trail->Add_Node(vHandPos);
+	m_pUI_Trail->Add_Node(vTargetPos);
+	m_pUI_Trail->ReMap_TrailBuffers();
+
+}
+
 void CUnit_Archer::Set_ColorController(_uint iMeshPartType)
 {
 	if (!m_pCurArrow)
@@ -442,28 +463,6 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	Add_Component(pAnimator);
 
-	//CBoneCollider::BONECOLLIDERDESC tDesc;
-	//// Ä® ±æÀÌ
-	//tDesc.fHeight = 0.5f;
-	//// Ä® µÎ²²
-	//tDesc.fRadius = 0.2f;
-	//// Ä® ºÙÀÏ »À
-	//tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1");
-
-	////Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
-	//tDesc.vOffset = _float4(0.f, 0.f, -100.f);
-
-	//m_pWeaponCollider_R = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
-	//Add_Component(m_pWeaponCollider_R);
-
-
-	////GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1")->Set_OffsetMatrix(DefaultMatrix);
-	//_float4x4 HierarchyNodeMat = GET_COMPONENT(CModel)->Find_HierarchyNode("Root")->Get_TransformationMatrix();
-	//HierarchyNodeMat.m[3][2] += 100.f;
-
-
-	//GET_COMPONENT(CModel)->Find_HierarchyNode("Root")->Set_TransformationMatrix(HierarchyNodeMat);
-
 
 	m_fCoolTime[SKILL1] = 3.f;
 	m_fCoolTime[SKILL2] = 5.f;
@@ -476,8 +475,6 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	m_tUnitStatus.eClass = ARCHER;
 
-
-
 	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_LongBow_01.fbx",
 		L"../bin/resources/meshes/weapons/longbow/LongBow_Anim.fbx", this, "0B_L_WP1");
 
@@ -486,8 +483,17 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	m_pAnimWeapon->Initialize();
 
-	
 
+	/* UI_TRAIL */
+	CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
+		L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
+		L"../bin/resources/textures/effects/warhaven/textures/T_ArrowUI_01_FX.dds"
+	);
+
+	if (!pUI_Trail)
+		return E_FAIL;
+
+	m_pUI_Trail = pUI_Trail;
 
 
 	return S_OK;
@@ -512,6 +518,8 @@ HRESULT CUnit_Archer::Start()
 
 	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimWeapon);
+	CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
+	DISABLE_GAMEOBJECT(m_pUI_Trail);
 
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
@@ -544,6 +552,8 @@ void CUnit_Archer::OnEnable()
 void CUnit_Archer::OnDisable()
 {
 	__super::OnDisable();
+	if (m_pCurArrow)
+		DISABLE_GAMEOBJECT(m_pCurArrow);
 }
 
 void CUnit_Archer::My_Tick()

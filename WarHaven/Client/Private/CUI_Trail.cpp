@@ -60,11 +60,12 @@ void CUI_Trail::Add_Node(const _float4& vNode)
 
 void CUI_Trail::ReMap_TrailBuffers()
 {
+	m_pCustomTrailCom->ReMap_TrailBuffers(m_ListNodes, m_fWide);
 }
 
 HRESULT CUI_Trail::Initialize_Prototype()
 {
-	Add_Component(CRenderer::Create(CP_RENDERER, RENDER_ALPHA, VTXTEX_PASS_TRAIL));
+	Add_Component(CRenderer::Create(CP_RENDERER, RENDER_ALPHA, VTXTEX_PASS_UITRAIL));
 
 	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXTEX, VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 	pShader->Initialize();
@@ -99,9 +100,16 @@ HRESULT CUI_Trail::SetUp_TrailEffect(_uint iGroupIdx, _uint iTriCnt, _float fWid
 	m_pCustomTrailCom = pCustomTrail;
 	Add_Component<CMesh>(m_pCustomTrailCom);
 
+	Add_Component(CTexture::Create(0, wstrMaskMapPath.c_str(), 1));
+	Add_Component(CTexture::Create(0, wstrColorMapPath.c_str(), 1));
+
 	return S_OK;
 }
 
 void CUI_Trail::My_LateTick()
 {
+	m_fCurUV += m_fUVSpeed * fDT(0);
+
+	if (m_fCurUV > 1.f)
+		m_fCurUV = 0.f;
 }

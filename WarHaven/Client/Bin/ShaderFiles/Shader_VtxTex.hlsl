@@ -891,19 +891,21 @@ PS_EFFECT_OUT PS_TRAIL_UI_MAIN(VS_TRAIL_OUT In)
 {
     PS_EFFECT_OUT Out = (PS_EFFECT_OUT)0;
 
+    In.vTexUV.x += g_fUVPlusX;
     In.vTexUV.x = 1.f - In.vTexUV.x;
+    In.vTexUV.x *= g_fUVPower;
+
     //Mask
-    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, float2(In.vTexUV.y, In.vTexUV.x));
     Out.vDiffuse.a = Out.vDiffuse.r;
 
 
-    In.vTexUV.x = 1.f - In.vTexUV.x;
-    //In.vTexUV.y *= 5.f;
     Out.vDiffuse.xyz = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
 
     Out.vDiffuse *= g_vColor;
 
-    if (Out.vDiffuse.a < 0.05f)
+    if (Out.vDiffuse.a < 0.02f)
         discard;
 
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.f, 0.f, 0.f);

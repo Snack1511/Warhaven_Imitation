@@ -92,6 +92,9 @@ void CAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 
 	}
+
+	static_cast<CUnit_Archer*>(pOwner)->Enable_Trail(true);
+
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 
@@ -101,6 +104,8 @@ void CAttack_Archer::Exit(CUnit * pOwner, CAnimator * pAnimator)
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	Exit_Aiming(pOwner);
+	static_cast<CUnit_Archer*>(pOwner)->Enable_Trail(false);
+
 }
 
 STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -183,6 +188,10 @@ STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
 		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
 	}
+
+	static_cast<CUnit_Archer*>(pOwner)->ReMap_Trail(vHitPos);
+
+
 
 	return __super::Tick(pOwner, pAnimator);
 }

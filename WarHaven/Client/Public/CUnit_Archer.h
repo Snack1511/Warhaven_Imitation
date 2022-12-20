@@ -5,6 +5,7 @@ BEGIN(Client)
 
 class CAnimWeapon;
 class CProjectile;
+class CUI_Trail;
 
 class CUnit_Archer
 	: public CUnit
@@ -33,6 +34,8 @@ protected:
 
 public:
 	void			Enable_Arrow(_bool bEnable);
+	void			Enable_Trail(_bool bEnable);
+	void			ReMap_Trail(_float4 vTargetPos);
 
 public:
 	void			Set_ColorController(_uint iMeshPartType);
@@ -49,6 +52,7 @@ public:
 public:
 	void	Collect_Arrow(_hashcode _hcCode, CProjectile* pEffect);
 	CProjectile* Get_CurArrow() { return m_pCurArrow; }
+
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
@@ -64,7 +68,7 @@ private:
 	CProjectile* m_pCurArrow = nullptr;
 
 	_float4x4	m_CoreMat;
-
+	CUI_Trail* m_pUI_Trail = nullptr;
 
 };
 

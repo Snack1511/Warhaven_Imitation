@@ -51,7 +51,9 @@ protected:
 private:
 	list<_float4>	m_ListNodes;
 	_float		m_fUVSpeed = 0.f;
+
 	_float		m_fUVPower = 0.f;
+
 	_float		m_fCurUV = 0.f;
 	_float		m_fWide = 0.f;
 
@@ -63,6 +65,7 @@ private:
 private:
 	CCustomTrail* m_pCustomTrailCom = nullptr;
 	_float		m_fTimeAcc = 0.f;
+
 
 };
 

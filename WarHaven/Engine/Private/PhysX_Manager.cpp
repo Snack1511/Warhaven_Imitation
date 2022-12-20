@@ -485,6 +485,9 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 		PxShape* pCurShape = nullptr;
 		elem->getShapes(&pCurShape, sizeof(PxShape));
 
+		if (pCurShape->getGeometryType() != PxGeometryType::eBOX)
+			continue;
+
 		/* ÀýµÎÃ¼ */
 		_float4 vCenterPos = CUtility_PhysX::To_Vector(elem->getGlobalPose().p);
 		_float fRadius = sqrtf(pow(pCurShape->getGeometry().box().halfExtents.x, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.y, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.z, 2.f));
