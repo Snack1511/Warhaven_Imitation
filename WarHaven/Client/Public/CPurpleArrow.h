@@ -23,6 +23,8 @@ public:
 private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
+	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType); // 필요하다면 가상함수.
+
 
 private:
 	list<CGameObject*> m_Test;
@@ -34,6 +36,10 @@ private:
 
 	_uint m_iTickCnt = 0;
 	_uint m_iMaxTickCnt = 5;
+
+private:
+	virtual void Set_ColliderType(eTEAM_TYPE eTeamType);
+
 };
 
 END

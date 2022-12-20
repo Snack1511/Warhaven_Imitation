@@ -8,6 +8,8 @@
 
 #include "CColorController.h"
 
+#include "CCollider_Sphere.h"
+
 CPurpleArrow::CPurpleArrow()
 {
 }
@@ -93,6 +95,37 @@ void CPurpleArrow::OnDisable()
 	m_Test.clear();
 }
 
+HRESULT CPurpleArrow::SetUp_Colliders(COL_GROUP_CLIENT eColType)
+{
+	_float fRadius = 0.25f;
+	_float4 vOffsetPos = ZERO_VECTOR;
+
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, eColType, vOffsetPos, DEFAULT_TRANS_MATRIX);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius * 2.f, vOffsetPos);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius * 2.f, vOffsetPos);
+
+	Add_Component(pCollider);
+
+	m_pCollider = pCollider;
+
+	if (!m_pCollider)
+		return E_FAIL;
+
+
+
+
+
+	return S_OK;
+}
+
 void CPurpleArrow::My_Tick()
 {
 	__super::My_Tick();
@@ -111,4 +144,12 @@ void CPurpleArrow::My_Tick()
 			m_fCurPoisonTime = 0.f;
 		}
 	}
+}
+
+void CPurpleArrow::Set_ColliderType(eTEAM_TYPE eTeamType)
+{
+	if (eTeamType == eTEAM_TYPE::eBLUE)
+		m_pCollider->Set_ColIndex(COL_BLUEGUARDBREAK);
+	else
+		m_pCollider->Set_ColIndex(COL_REDGUARDBREAK);
 }

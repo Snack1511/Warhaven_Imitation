@@ -75,14 +75,12 @@ void CProjectile::Reset(CGameObject* pGameObject)
 	On_ChangePhase(eSTART);
 	ENABLE_GAMEOBJECT(this);
 
+
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
 		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
 	else
 	{
-		if (m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType() == eTEAM_TYPE::eBLUE)
-			m_pCollider->Set_ColIndex(COL_BLUEATTACK);
-		else
-			m_pCollider->Set_ColIndex(COL_REDATTACK);
+		Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
 	}
 
 	
@@ -165,13 +163,13 @@ void CProjectile::On_ShootProjectile()
 	ZeroMemory(&tTransform, sizeof(PxTransform));
 
 	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
-	vCurPos += m_pTransform->Get_World(WORLD_RIGHT) * 2.5f;
+	vCurPos += m_pTransform->Get_World(WORLD_RIGHT) * 2.f;
 
 	tTransform.p = CUtility_PhysX::To_PxVec3(vCurPos);
 	tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
 
 	PxRigidDynamic* pActor = nullptr;
-	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 2.f);
+	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 1.5f);
 	_float4 vDir = m_pTransform->Get_World(WORLD_RIGHT);
 	vDir *= 50.f;
 	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
@@ -320,7 +318,7 @@ void CProjectile::My_LateTick()
 
 		_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
 
-		if (fPower < 40.f)
+		if (fPower < 25.f)
 			On_ChangePhase(eHIT);
 
 		_float fLength = (m_vStartPosition - m_pTransform->Get_World(WORLD_POS)).Length();
@@ -406,4 +404,12 @@ void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
 	*((_float4*)&m_matHitOffset.m[2]) = ((_float4*)&m_matHitOffset.m[2])->Normalize();*/
 
 	 
+}
+
+void CProjectile::Set_ColliderType(eTEAM_TYPE eTeamType)
+{
+	if (eTeamType == eTEAM_TYPE::eBLUE)
+		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+	else
+		m_pCollider->Set_ColIndex(COL_REDATTACK);
 }

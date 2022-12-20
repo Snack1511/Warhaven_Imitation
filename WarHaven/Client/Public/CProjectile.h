@@ -25,6 +25,7 @@ public:
 	void		Reset(CGameObject* pGameObject);
 	_float4		Get_ArrowHeadPos();
 	_float		Get_MaxDistance() { return m_fMaxDistance; }
+
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize();
@@ -79,6 +80,9 @@ private:
 	_bool	m_bCloned = false;
 	PxConvexMesh* m_pConvexMesh = nullptr;
 	PxRigidDynamic* m_pActor = nullptr;
+
+private:
+	virtual void Set_ColliderType(eTEAM_TYPE eTeamType);
 };
 
 END

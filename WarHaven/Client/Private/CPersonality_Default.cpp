@@ -67,7 +67,7 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Add_OtherCondition(wstring(L"Check_DeadAllies"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_NearAllies"));
 	pBehavior->Initialize();
-	pBehavior->Set_Priority(5);
+	pBehavior->Set_Priority(2);
 	m_BehaviorList.push_back(pBehavior);
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Attack"))->Clone();

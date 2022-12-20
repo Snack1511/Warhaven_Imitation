@@ -318,7 +318,6 @@ void CUnit_Archer::Create_DefaultArrow()
 		pEffect->Reset(this);
 		m_mapProjectilePool[HASHCODE(CDefaultArrow)].pop_front();
 		pGameObject = pEffect;
-		DISABLE_COMPONENT(GET_COMPONENT_FROM(pEffect, CCollider_Sphere));
 	}
 
 	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
@@ -347,7 +346,6 @@ void CUnit_Archer::Create_PurpleArrow()
 		pEffect->Reset(this);
 		m_mapProjectilePool[HASHCODE(CPurpleArrow)].pop_front();
 		pGameObject = pEffect;
-		DISABLE_COMPONENT(GET_COMPONENT_FROM(pEffect, CCollider_Sphere));
 	}
 
 	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
@@ -374,7 +372,6 @@ void CUnit_Archer::Create_SnipeArrow()
 		pEffect->Reset(this);
 		m_mapProjectilePool[HASHCODE(CSnipeArrow)].pop_front();
 		pGameObject = pEffect;
-		DISABLE_COMPONENT(GET_COMPONENT_FROM(pEffect, CCollider_Sphere));
 	}
 
 	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
