@@ -984,7 +984,6 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 		m_pDatas[iIndex].InstancingData.vDir = vDir;
 
 		_float4 vUpDir = { 0.f, 1.f, 0.f };
-
 		if ((vDir.y < 1.1f && vDir.y > 0.9f) ||
 			(vDir.y > -1.1f && vDir.y < -0.9f)
 			)
