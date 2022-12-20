@@ -818,7 +818,8 @@ void CState::Physics_Setting_AI(_float fSpeed, CUnit* pOwner, _bool bSpeedasMax,
 
 
 	CUnit* pUnit = pOwner->Get_TargetUnit();
-
+	if (!pUnit)
+		return;
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
 	
 	vLook.y = 0.f;
@@ -849,6 +850,8 @@ void CState::Physics_Setting_Right_AI(_float fSpeed, CUnit* pOwner, _bool bSpeed
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
 	CUnit* pUnit = pOwner->Get_TargetUnit();
+	if (!pUnit)
+		return;
 
 	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);

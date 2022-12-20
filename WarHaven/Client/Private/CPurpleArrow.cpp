@@ -66,8 +66,8 @@ HRESULT CPurpleArrow::Initialize_Prototype()
 	m_hcCode = HASHCODE(CPurpleArrow);
 	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
 
-	m_fMaxPoisonTime = 0.2f;
-	m_fDamage = -10.f;
+	m_fMaxPoisonTime = 0.3f;
+	m_fDamage = -5.f;
 
     return CProjectile::Initialize_Prototype();
 }
@@ -93,6 +93,7 @@ void CPurpleArrow::OnDisable()
 	}
 
 	m_Test.clear();
+	m_iTickCnt = 0;
 }
 
 HRESULT CPurpleArrow::SetUp_Colliders(COL_GROUP_CLIENT eColType)
@@ -132,16 +133,23 @@ void CPurpleArrow::My_Tick()
 	
 	if (m_eCurPhase == eSTICK)
 	{
-		if (m_iTickCnt == m_iMaxTickCnt)
-			return;
+		
 
 		m_fCurPoisonTime += fDT(0);
 	
 		if (m_fCurPoisonTime > m_fMaxPoisonTime)
 		{
-			static_cast<CUnit*>(m_pHitUnit)->On_PlusHp(m_fDamage, m_pOwnerUnit, false);
-			++m_iTickCnt;
-			m_fCurPoisonTime = 0.f;
+			if (m_iTickCnt == m_iMaxTickCnt)
+				DISABLE_GAMEOBJECT(this);
+			else
+			{
+				static_cast<CUnit*>(m_pHitUnit)->On_PlusHp(m_fDamage, m_pOwnerUnit, false);
+				++m_iTickCnt;
+				m_fCurPoisonTime = 0.f;
+			}
+
+
+			
 		}
 	}
 }
