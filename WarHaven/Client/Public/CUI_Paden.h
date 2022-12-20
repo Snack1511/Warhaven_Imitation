@@ -30,6 +30,8 @@ public:
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
+	void Set_TargetTransform(CTransform* pTargetTransform);
+
 	void Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam);
 
 	void Set_TargetPointPos(_uint iTargetIdx);
@@ -51,6 +53,12 @@ private:
 	virtual void My_LateTick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
+
+private:
+	void Update_Indicator();
+
+private:
+	CTransform* m_pTargetTransform = nullptr;
 
 private:
 	enum TeamType { Team_Red, Team_Blue, Team_End };

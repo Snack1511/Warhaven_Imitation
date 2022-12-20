@@ -10,6 +10,8 @@
 #include "CPlayer.h"
 #include "CUnit.h"
 #include "CTeamConnector.h"
+#include "Transform.h"
+#include "Camera.h"
 
 HRESULT CUI_Paden::Initialize_Prototype()
 {
@@ -117,12 +119,18 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
-	vNewPos.y += 2.f;
+	vNewPos.y += 5.f;
+
+	if (m_bSetTargetPoint)
+		m_pArrTargetPoint[1]->SetActive(isInFrustum);
+
+	if (m_eTargetPoint == PointName::Point_End)
+		return;
 
 	for (int i = 0; i < PU_End; ++i)
 	{
-		m_pArrTargetPoint[1]->SetActive(isInFrustum);
 		m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
+		m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
 
 		if (i == PU_Text)
 		{
@@ -132,6 +140,14 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 
 		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vNewPos);
 	}
+}
+
+void CUI_Paden::Set_TargetTransform(CTransform* pTargetTransform)
+{
+	if (!m_bSetTargetPoint)
+		return;
+
+	m_pTargetTransform = pTargetTransform;
 }
 
 void CUI_Paden::SetActive_ScoreGauge(_bool value)
@@ -347,6 +363,7 @@ void CUI_Paden::My_LateTick()
 
 	Set_PointTextPosY();
 	Update_TargetPointPos();
+	Update_Indicator();
 }
 
 void CUI_Paden::OnEnable()
@@ -367,6 +384,39 @@ void CUI_Paden::OnDisable()
 	SetActive_ScoreGauge(false);
 	SetActive_ScoreNum(false);
 	SetActive_PointUI(false);
+}
+
+void CUI_Paden::Update_Indicator()
+{
+	if (!m_pTargetTransform)
+		return;
+
+	// 카메라 위치
+	_float4 vCamPos = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_POS);
+	// 타겟 위치
+	_float4 vTargetPos = m_pTargetTransform->Get_World(WORLD_POS);
+
+	_float4 vCamTargetDir = vTargetPos - vCamPos;
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+
+	_float4 vOriginPos = (vCamLook * vCamTargetDir.Dot(vCamLook)) + vCamPos;
+
+	_float4 vOriginTargetDir = vTargetPos - vOriginPos;
+	_float4 vOriginTargetDirNor = vOriginTargetDir.Normalize();
+
+	_float4 vIndicatorPos = vOriginTargetDirNor;
+	// _float4 vOffset = _float4(600.f, 300.f, 0.f, 1.f);
+
+
+	// vIndicatorPos = CUtility_Transform::Get_ProjPos(vOriginTargetDirNor);
+
+	for (int i = 0; i < PU_End; ++i)
+	{
+		m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(vIndicatorPos);
+
+		if (i == PU_Text)
+			m_pArrProjPointUI[m_eTargetPoint][i]->Set_PosY(vIndicatorPos.y - 2.5f);
+	}
 }
 
 void CUI_Paden::Create_InGameTimer()
