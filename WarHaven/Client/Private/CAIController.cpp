@@ -147,7 +147,8 @@ void CAIController::Early_Tick()
 void CAIController::Tick()
 {
 	//¿¬»ê·® ¸¹À¸¸é »©¾ßµÊ;;
-	m_pCurrentBehavior->Callback_BehaviorTick(m_pOwnerPlayer, this);
+	if(m_pCurrentBehavior)
+		m_pCurrentBehavior->Callback_BehaviorTick(m_pOwnerPlayer, this);
 	
 
 }
@@ -210,6 +211,10 @@ void CAIController::Set_NewPath(CPath* pPath)
 void CAIController::Set_Personality(CAIPersonality* pPersonality)
 {
 	m_pPersonality = pPersonality;
+	m_pCurrentBehavior = nullptr;
+	if (pPersonality)
+		m_BehaviorList = m_pPersonality->Get_BehaviorList();
+	else m_BehaviorList.clear();
 }
 
 _bool CAIController::Is_LongTimeRemain(eBehaviorType eBhavior)

@@ -12,6 +12,11 @@ CAIPersonality* CAIPersonality::Create(CTable_Conditions* pConditionTable)
 		Call_MsgBox(L"Failed to Initialize : CAIPersonality");
 		SAFE_DELETE(pInstance);
 	}
+	if (FAILED(pInstance->SetUp_PatrolBehavior()))
+	{
+		Call_MsgBox(L"Failed to SetUp_PatrolBehavior : CAIPersonality");
+		SAFE_DELETE(pInstance);
+	}
 	if (FAILED(pInstance->SetUp_PersonalityName(wstring(L"Empty_Personlity"))))
 	{
 		Call_MsgBox(L"Failed to SetUp_PersonalityName : CAIPersonality");
@@ -69,16 +74,14 @@ void CAIPersonality::Load(wstring strPersonalityName)
 		readFile.read(szName, sizeof(char)* iBehaviorNameLenght);
 		string strName = szName;
 
-		_uint iPriority = 0;
-		readFile.read((char*)&iPriority, sizeof(_uint));
+		//_uint iPriority = 0;
+		//readFile.read((char*)&iPriority, sizeof(_uint));
 
-		CBehavior* pBehavior = nullptr;
-		pBehavior = m_pConditionTable->Find_Behavior(CFunctor::To_Wstring(strName))->Clone();
-		pBehavior->Initialize();
-		pBehavior->Set_Priority(iPriority);
-		m_BehaviorList.push_back(pBehavior);
+		CBehavior* pBehavior = CBehavior::Load(CFunctor::To_Wstring(strName), m_pConditionTable);
+		if(pBehavior)
+			m_BehaviorList.push_back(pBehavior);
 	}
-
+	readFile.close();
 }
 void CAIPersonality::Save()
 {
@@ -104,8 +107,11 @@ void CAIPersonality::Save()
 
 	for (auto& ListValue : m_BehaviorList)
 	{
-		string strName = CFunctor::To_String(ListValue->Get_BehaviorName());
-		_uint iPriority = ListValue->Get_Priority();
+		wstring wstrName = m_tPersonalDesc.strPersonalityName;
+		wstrName += L"_";
+		wstrName += ListValue->Get_BehaviorName();
+
+		string strName = CFunctor::To_String(wstrName);
 
 		_uint iBehaviorNameLenght = _uint(strName.length()) + 1;
 		writeFile.write((char*)&iBehaviorNameLenght, sizeof(_uint));
@@ -114,9 +120,12 @@ void CAIPersonality::Save()
 		strcat_s(szName, sizeof(char) * MAXCHAR, strName.c_str());
 		strcat_s(szName, sizeof(char) * MAXCHAR, "\0");
 		writeFile.write(szName, sizeof(char)* iBehaviorNameLenght);
+		
 
-		writeFile.write((char*)&iPriority, sizeof(_uint));
+		ListValue->Save(wstrName);
+
 	}
+	writeFile.close();
 }
 CAIPersonality::CAIPersonality(CTable_Conditions* pConditionTable)
 	:m_pConditionTable(pConditionTable)
@@ -168,6 +177,7 @@ HRESULT CAIPersonality::Initailize()
 
 	// 비볐는지 체크 용도
 	ZeroMemory(m_tPersonalDesc.tPersonalityData.fMinMoveAcc, sizeof(_float) * _uint(eBehaviorType::eCNT));
+
 	return S_OK;
 }
 
@@ -182,6 +192,20 @@ void CAIPersonality::Release()
 HRESULT CAIPersonality::SetUp_PersonalityName(wstring strPersonalityName)
 {
 	m_tPersonalDesc.strPersonalityName = strPersonalityName;
+	return S_OK;
+}
+
+HRESULT CAIPersonality::SetUp_PatrolBehavior()
+{
+	if (nullptr == m_pPatrolBehavior)
+	{
+		CBehavior* pBehavior = nullptr;
+		pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Patrol"))->Clone();
+		pBehavior->Initialize();
+		pBehavior->Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"));
+		pBehavior->Set_Priority(0);
+		m_pPatrolBehavior = pBehavior;
+	}
 	return S_OK;
 }
 

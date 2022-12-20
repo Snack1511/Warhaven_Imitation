@@ -50,12 +50,10 @@ HRESULT CPersonality_Default::Initailize()
 	pBehavior->Add_OtherCondition(wstring(L"Check_FarAwayLeader"));
 	pBehavior->Add_WhatCondition(wstring(L"Select_Leader"));
 	m_BehaviorList.push_back(pBehavior);*/
-
-	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"Patrol"))->Clone();
-	pBehavior->Initialize();
-	pBehavior->Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"));
-	pBehavior->Set_Priority(0);
-	m_pPatrolBehavior = pBehavior;
+	if (FAILED(SetUp_PatrolBehavior()))
+	{
+		assert(0);
+	}
 
 	pBehavior = m_pConditionTable->Find_Behavior(wstring(L"PathNavigation"))->Clone();
 	pBehavior->Add_OtherCondition(wstring(L"Check_PathArrived"));

@@ -2,6 +2,7 @@
 #include "CPlayer.h"
 #include "CTrigger.h"
 #include "CAIController.h"
+#include "Functor.h"
 CBehavior::CBehavior(eBehaviorType BehaviorType, CTable_Conditions* pTable)
     : m_eBehaviorType(BehaviorType)
     , m_pConditionTable(pTable)
@@ -32,6 +33,127 @@ CBehavior* CBehavior::Create(eBehaviorType BehaviorType, CTable_Conditions* pTab
         SAFE_DELETE(pInstance);
     }
     return pInstance;
+}
+
+CBehavior* CBehavior::Load(wstring strSaveName, CTable_Conditions* pTable)
+{
+    string strPath = "../bin/Data/GameSystem/Behavior/";
+    strPath += CFunctor::To_String(strSaveName);
+    strPath += ".bin";
+
+    ifstream readFile;
+    readFile.open(strPath, ios::binary);
+
+    if (!readFile.is_open())
+    {
+        wstring strData = strSaveName;
+        strData += L"_Load Failed";
+        Call_MsgBox(strData.c_str());
+        return nullptr;
+    }
+
+
+    //eBehaviorType
+    _uint iBehaviorType = 0;
+    readFile.read((char*)&iBehaviorType, sizeof(_uint));
+
+    //Priority
+    _uint iPriority = 0;
+    readFile.read((char*)&iPriority, sizeof(_uint));
+
+    CBehavior* pBehavior = CBehavior::Create(eBehaviorType(iBehaviorType), pTable);
+    pBehavior->Initialize();
+    pBehavior->Set_Priority(iPriority);
+
+    //OtherCondition
+    pBehavior->Load_Functions(readFile, bind(&CBehavior::Add_OtherCondition, pBehavior, placeholders::_1));
+
+    //WhatCondition
+    pBehavior->Load_Functions(readFile, bind(&CBehavior::Add_WhatCondition, pBehavior, placeholders::_1));
+
+    //BehaviorTick
+    pBehavior->Load_Functions(readFile, bind(&CBehavior::Add_BehaviorTick, pBehavior, placeholders::_1));
+
+    _uint iFind = strSaveName.rfind(L"_");
+    wstring strDebugName = strSaveName.substr(iFind + 1, strSaveName.length());
+    pBehavior->Set_BehaviorName(strDebugName);
+
+    readFile.close();
+
+    return pBehavior;
+}
+
+void CBehavior::Save(wstring wstrSaveName)
+{
+    ofstream writeFile;
+    //D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Data\GameSystem\Behavior
+    string strSaveName = CFunctor::To_String(wstrSaveName);
+
+    string strPath = "../bin/Data/GameSystem/Behavior/";
+    strPath += strSaveName;
+    strPath += ".bin";
+    writeFile.open(strPath, ios::binary);
+
+    if (!writeFile.is_open())
+    {
+        wstring strData = CFunctor::To_Wstring(strSaveName);
+        strData += L"_Save Failed";
+        Call_MsgBox(strData.c_str());
+        return;
+    }
+
+    //eBehaviorType
+    _uint iBehaviorType = _uint(m_eBehaviorType);
+    writeFile.write((char*)&iBehaviorType, sizeof(_uint));
+
+
+    //Priority
+    _uint iPriority = Get_Priority();
+    writeFile.write((char*)&iPriority, sizeof(_uint));
+
+    //OtherCondition
+    Save_Functions(writeFile, m_strConditionName[_uint(eConditionType::eWhen)]);
+
+    //WhatCondition
+    Save_Functions(writeFile, m_strConditionName[_uint(eConditionType::eWhat)]);
+
+    //BehaviorTick
+    Save_Functions(writeFile, m_strBehaviorTickName);
+    writeFile.close();
+}
+
+void CBehavior::Save_Functions(ofstream& rhsWriteFile, vector<wstring>& rhsDatas)
+{
+    _uint iFunctionSize = _uint(rhsDatas.size());
+    rhsWriteFile.write((char*)&iFunctionSize, sizeof(_uint));
+    for (auto& ConditionName : rhsDatas)
+    {
+        string strName = CFunctor::To_String(ConditionName);
+
+        _uint iNameLength = _uint(strName.length()) + 1;
+        rhsWriteFile.write((char*)&iNameLength, sizeof(_uint));
+
+        char szName[MAXCHAR] = "";
+        strcat_s(szName, sizeof(char) * MAXCHAR, strName.c_str());
+        strcat_s(szName, sizeof(char) * MAXCHAR, "\0");
+        rhsWriteFile.write(szName, sizeof(char) * iNameLength);
+    }
+}
+
+void CBehavior::Load_Functions(ifstream& rhsReadFile, const function<void(wstring)>& Func)
+{
+    _uint OtherConditionSize = 0;
+    rhsReadFile.read((char*)&OtherConditionSize, sizeof(_uint));
+    for (_uint i = 0; i < OtherConditionSize; ++i)
+    {
+        _uint iLenght = 0;
+        rhsReadFile.read((char*)&iLenght, sizeof(_uint));
+        char szName[MAXCHAR] = "";
+        rhsReadFile.read(szName, sizeof(char) * iLenght);
+        string strName = szName;
+
+        Func(CFunctor::To_Wstring(strName));
+    }
 }
 
 void CBehavior::Release()

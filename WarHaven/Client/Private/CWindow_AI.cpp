@@ -161,8 +161,15 @@ void CWindow_AI::Func_AISetting()
         return;
 
     CBehavior* pBehavior = m_pCurSelectPlayer->Get_CurBehavior();
-    wstring strBehaviorName = pBehavior->Get_BehaviorName();
-    Display_Data(string(u8"현재 행동"), CFunctor::To_String(strBehaviorName));
+    string strBehaviorName;
+    if (pBehavior) {
+        strBehaviorName = CFunctor::To_String(pBehavior->Get_BehaviorName());
+    }
+    else
+    {
+        strBehaviorName = u8"행동 없음";
+    }
+    Display_Data(string(u8"현재 행동"), strBehaviorName.c_str());
     
     //행동 리스트 보기
     ImVec2 vBehaviorSize = ImVec2(m_vMainWndSize.x, 0.f);
@@ -605,7 +612,8 @@ CAIPersonality* CWindow_AI::Create_Personality(string strPersonalityName)
     //Personality생성 루틴
     if (nullptr == m_pTableCondition)
         return nullptr;
-    CAIPersonality* pPersonality = CAIPersonality::Create(CFunctor::To_Wstring(strPersonalityName), m_pTableCondition);
+    CAIPersonality* pPersonality = CAIPersonality::Create(m_pTableCondition);
+
     return pPersonality;
 }
 
