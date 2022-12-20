@@ -63,6 +63,20 @@ string CFunctor::To_String(wstring wstrText)
 	return string(wstrText.begin(), wstrText.end());
 }
 
+string CFunctor::To_String_UTF8(wstring wstrText)
+{
+	string utf8 = u8"";
+	wchar_t strUniCode[MAXCHAR] = L"";
+	lstrcpy(strUniCode, wstrText.c_str());
+	char szUtf8[MAXCHAR] = "";
+	WideCharToMultiByte(
+		CP_UTF8,
+		WC_ERR_INVALID_CHARS,
+		strUniCode, sizeof(wchar_t) * MAXCHAR, szUtf8, sizeof(char) * MAXCHAR, nullptr, nullptr);
+	utf8 = szUtf8;
+	return utf8;
+}
+
 wstring CFunctor::To_Wstring(string wstrText)
 {
 	return wstring(wstrText.begin(), wstrText.end());
