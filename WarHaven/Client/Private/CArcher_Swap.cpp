@@ -237,7 +237,7 @@ void CArcher_Swap::Choice_Arrow(CUnit* pOwner)
 {
 	if (pOwner->Get_SkillTrigger().bSkillQTrigger)
 	{
-		static_cast<CUnit_Archer*>(pOwner)->Create_SnipeArrow(HASHCODE(CSnipeArrow)); // 스나이핑 화살이 나올 수 있도록 설정
+		static_cast<CUnit_Archer*>(pOwner)->Create_SnipeArrow(); // 스나이핑 화살이 나올 수 있도록 설정
 		//static_cast<CUnit_Archer*>(pOwner)->Set_ColorController(MODEL_PART_SKEL);
 	}
 	else if (pOwner->Get_SkillTrigger().bSkillETrigger)

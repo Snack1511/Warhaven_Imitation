@@ -30,8 +30,8 @@ CGuard_Cancel_Archer* CGuard_Cancel_Archer::Create()
 }
 HRESULT CGuard_Cancel_Archer::Initialize()
 {
-	m_eAnimType = ANIM_BASE_L;          // 애니메이션의 메쉬타입
-	m_iAnimIndex = 47;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
+	m_iAnimIndex = 2;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_GUARD_CANCEL_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	// 선형 보간 시간

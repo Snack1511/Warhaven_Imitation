@@ -64,10 +64,33 @@ HRESULT CPurpleArrow::Initialize_Prototype()
 	m_hcCode = HASHCODE(CPurpleArrow);
 	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
 
-	m_fMaxLoopTime = 0.2f;
-	m_fDamage = -10.f;
+	m_fMaxPoisonTime = 0.2f;
+	m_fDamage = 10.f;
 
     return CProjectile::Initialize_Prototype();
+}
+
+
+void CPurpleArrow::OnEnable()
+{
+	__super::OnEnable();
+
+	if(m_Test.empty())
+		m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest", this, m_pTransform->Get_World(WORLD_POS));
+
+}
+
+
+void CPurpleArrow::OnDisable()
+{
+	__super::OnDisable();
+
+	for (auto& elem : m_Test)
+	{
+		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+	}
+
+	m_Test.clear();
 }
 
 void CPurpleArrow::My_Tick()
@@ -76,29 +99,16 @@ void CPurpleArrow::My_Tick()
 	
 	if (m_eCurPhase == eSTICK)
 	{
-		m_fLoopTimeAcc += fDT(0);
+		if (m_iTickCnt == m_iMaxTickCnt)
+			return;
+
+		m_fCurPoisonTime += fDT(0);
 	
-		if (m_fLoopTimeAcc > m_fMaxLoopTime)
+		if (m_fCurPoisonTime > m_fMaxPoisonTime)
 		{
-			_float4 vOtherDir = m_pHitUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
-
-			_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
-
-			_bool bFace = false;
-
-			//양수면 앞임.
-			if (vCurLook.Dot(vOtherDir) > 0.f)
-				bFace = true;
-			else
-				bFace = false;
-
-			_float fDamage = m_fDamage;
-
-			if (bFace)
-				fDamage *= 2.f;
-
-			static_cast<CUnit*>(m_pHitUnit)->On_PlusHp(fDamage, m_pOwnerUnit, bFace);
+			static_cast<CUnit*>(m_pHitUnit)->On_PlusHp(m_fDamage, m_pOwnerUnit, false);
 			++m_iTickCnt;
+			m_fCurPoisonTime = 0.f;
 		}
 	}
 }

@@ -259,11 +259,17 @@ HRESULT CProjectile::SetUp_Colliders(COL_GROUP_CLIENT eColType)
 {
 	_float fRadius = 0.25f;
 	_float4 vOffsetPos = ZERO_VECTOR;
-	vOffsetPos.x += fRadius;
-	vOffsetPos.x += fRadius;
-	vOffsetPos.x += fRadius;
+	//vOffsetPos.z += fRadius;
+	//vOffsetPos.z += fRadius;
+	//vOffsetPos.z += fRadius;
 
 	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, eColType, vOffsetPos, DEFAULT_TRANS_MATRIX);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
 	vOffsetPos.x += fRadius;
 	pCollider->Add_Collider(fRadius, vOffsetPos);
 	vOffsetPos.x += fRadius;

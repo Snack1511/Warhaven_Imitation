@@ -144,6 +144,8 @@ HRESULT CArcher_Aiming_Sniping::Initialize()
 
 	m_bLandMove = true;
 
+	m_fDamagePumping = 4.f;
+
     return __super::Initialize();
 }
 
