@@ -148,43 +148,21 @@ HRESULT CArcher_Aiming_Poison::Initialize()
 
 void CArcher_Aiming_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
-
-
-	if (ePrevType == m_eStateType)
-	{
-
-		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, FLT_MAX, FLT_MAX);
-		pOwner->Set_AnimWeaponFrame(102);
-	}
-
-	if (ePrevType == STATE_ATTACK_BEGIN_POISION_ARCHER)
-	{
-		m_fAnimSpeed = FLT_MIN;
-		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
-	}
-
-	if (ePrevType == STATE_ATTACK_BEGIN_POISION_ARCHER)
-		m_fInterPolationTime = 0.f;
-
-    CState::Enter(pOwner, pAnimator, ePrevType, pData);
+	__super::Enter_Aiming(pOwner, pAnimator, ePrevType, CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_ZOOM);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Aiming_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (pAnimator->Is_CurAnimFinished())
-		return STATE_ATTACK_BEGIN_POISION_ARCHER;
+	if (KEY(LBUTTON, AWAY))
+		return STATE_ATTACK_SHOOT_POISION_ARCHER;
 
-	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(15.f));
-
-	BlendableTick_Loop(pOwner, pAnimator);
-
-
-	return CState::Tick(pOwner, pAnimator);
+	return __super::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Aiming_Poison::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	__super::Exit_Aiming(pOwner);
 	__super::Exit(pOwner, pAnimator);
 }
 
@@ -195,6 +173,6 @@ STATE_TYPE CArcher_Aiming_Poison::Check_Condition(CUnit* pOwner, CAnimator* pAni
 
 void CArcher_Aiming_Poison::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
-	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+	 __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
 }

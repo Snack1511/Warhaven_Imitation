@@ -57,6 +57,7 @@ protected:
 	_float	m_fLoopTimeAcc = 0.f;
 	_float	m_fMaxLoopTime = 3.f;
 	_float	m_fMaxDistance = 50.f;
+	_float	m_fDamage = 0.f;
 
 protected:
 	ePROJECTILE_PHASE	m_eCurPhase = eSTART;

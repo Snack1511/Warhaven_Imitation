@@ -163,7 +163,9 @@ void CArcher_Shoot_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
 
-    __super::Enter(pOwner, pAnimator, ePrevType, pData);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
+    
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Shoot_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)

@@ -15,6 +15,8 @@
 #include "CCamera_Follow.h"
 
 #include "CAnimWeapon.h"
+#include "CUnit_Archer.h"
+#include "HIerarchyNode.h"
 
 
 CArcher_Attack_Begin_Sniping::CArcher_Attack_Begin_Sniping()
@@ -145,21 +147,9 @@ HRESULT CArcher_Attack_Begin_Sniping::Initialize()
 
 void CArcher_Attack_Begin_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
-	pOwner->Get_Status().fBackStepSpeed = pOwner->Get_Status().fWalkSpeed;
-
-	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed * 0.35f;
-	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fRunSpeed;
-
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
-
-	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, m_fInterPolationTime, m_fAnimSpeed);
-
+	__super::Enter_Attack_Begin(pOwner);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMMAX);
-	m_bMoveTrigger = false;
-
-
-	CState::Enter(pOwner, pAnimator, ePrevType, pData);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Attack_Begin_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -176,21 +166,14 @@ STATE_TYPE CArcher_Attack_Begin_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimato
 			return STATE_ATTACK_CANCEL_ARCHER;
 	}
 
-	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(5.f));
-
-	BlendableTick_Loop(pOwner, pAnimator);
-
-	return CState::Tick(pOwner, pAnimator);
+	return __super::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Attack_Begin_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    //Exit에선 무조건 남겨놔야함
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+	Prevent_Oneframe(pOwner);
+	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
 
-	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
-
-    pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
 
@@ -233,7 +216,7 @@ STATE_TYPE CArcher_Attack_Begin_Sniping::Check_Condition(CUnit* pOwner, CAnimato
 
 void CArcher_Attack_Begin_Sniping::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
-	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+	 __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
 
 	switch (iSequence)

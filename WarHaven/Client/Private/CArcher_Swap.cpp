@@ -16,6 +16,8 @@
 #include "CUnit_Archer.h"
 
 #include "CDefaultArrow.h"
+#include "CPurpleArrow.h"
+#include "CSnipeArrow.h"
 
 
 CArcher_Swap::CArcher_Swap()
@@ -235,12 +237,16 @@ void CArcher_Swap::Choice_Arrow(CUnit* pOwner)
 {
 	if (pOwner->Get_SkillTrigger().bSkillQTrigger)
 	{
-		static_cast<CUnit_Archer*>(pOwner)->Create_SnipeArrow(HASHCODE(CDefaultArrow)); // 스나이핑 화살이 나올 수 있도록 설정
-		static_cast<CUnit_Archer*>(pOwner)->Set_ColorController(MODEL_PART_SKEL);
+		static_cast<CUnit_Archer*>(pOwner)->Create_SnipeArrow(HASHCODE(CSnipeArrow)); // 스나이핑 화살이 나올 수 있도록 설정
+		//static_cast<CUnit_Archer*>(pOwner)->Set_ColorController(MODEL_PART_SKEL);
 	}
 	else if (pOwner->Get_SkillTrigger().bSkillETrigger)
 	{
 		static_cast<CUnit_Archer*>(pOwner)->Create_PurpleArrow(); // 포이즌 화살이 나올 수 있도록 설정
+	}
+	else
+	{
+		static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
 	}
 		
 }

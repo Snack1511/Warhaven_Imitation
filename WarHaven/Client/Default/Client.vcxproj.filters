@@ -3013,6 +3013,9 @@
     <Filter Include="02. Design\06. State_Manager\States\05. ETC\Cannon">
       <UniqueIdentifier>{b71a58be-def7-4c40-91c0-42611b86a169}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\03. SnipeArrow">
+      <UniqueIdentifier>{918df7c0-d969-4db0-8eee-82d55e44254c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5412,6 +5415,15 @@
     <ClInclude Include="..\public\CState_Cannon_Player.h">
       <Filter>02. Design\06. State_Manager\States\05. ETC\Cannon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAttack_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPurpleArrow.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\02. PurpleArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSnipeArrow.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\03. SnipeArrow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -7791,6 +7803,15 @@
     </ClCompile>
     <ClCompile Include="..\private\CState_Cannon_Player.cpp">
       <Filter>02. Design\06. State_Manager\States\05. ETC\Cannon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAttack_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPurpleArrow.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\02. PurpleArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSnipeArrow.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\03. SnipeArrow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

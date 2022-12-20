@@ -393,6 +393,86 @@ void CState::Follow_MouseLook_Turn(CUnit* pOwner)
 	pOwner->Get_Transform()->Set_LerpLook(vCamLook, 0.4f);
 }
 
+void CState::Prevent_Oneframe(CUnit* pOwner)
+{
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+	_float4 vRightDir;
+	_float4 vLookDir;
+
+	_float4 vCamLook, vCamRight;
+
+	pOwner->Get_FollowCamLook();
+	vCamLook = pOwner->Get_FollowCamLook();
+	vCamRight = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+
+	vCamLook.y = 0.f;
+
+	//Dir : 실제 이동방향
+	_float4 vDir;
+	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
+	_float4 vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
+
+	switch (Get_Direction())
+	{
+	case STATE_DIRECTION_NW:
+		vDir = vCamRight * -1.f + vCamLook;
+
+		break;
+
+	case STATE_DIRECTION_NE:
+		vDir = vCamRight * 1.f + vCamLook * 1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_SW:
+		vDir = vCamRight * -1.f + vCamLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_SE:
+
+		vDir = vCamRight * 1.f + vCamLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_N:
+		vDir = vCamLook;
+
+
+		break;
+
+	case STATE_DIRECTION_S:
+		vDir = vCamLook * -1.f;
+
+
+		break;
+
+	case STATE_DIRECTION_W:
+		vDir = vCamRight * -1.f;
+
+		break;
+
+	case STATE_DIRECTION_E:
+		vDir = vCamRight * 1.f;
+
+
+
+		break;
+
+	default:
+		break;
+	}
+
+	vDir.y = 0.f;
+	pMyPhysicsCom->Set_MaxSpeed(m_fMaxSpeed);
+	pMyPhysicsCom->Set_Accel(m_fMyAccel);
+}
+
+
 
 void CState::Set_Direction_Front_AI(_int& iDirectionRand)
 {

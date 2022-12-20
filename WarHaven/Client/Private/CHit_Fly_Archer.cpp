@@ -13,6 +13,7 @@
 #include "Animation.h"
 #include "Model.h"
 #include "CColorController.h"
+#include "CScript_FollowCam.h"
 
 #include "CUtility_Transform.h"
 
@@ -58,6 +59,8 @@ HRESULT CHit_Fly_Archer::Initialize()
 
 void CHit_Fly_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
+
     pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
     pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
 

@@ -37,6 +37,8 @@ public:
 public:
 	void			Set_ColorController(_uint iMeshPartType);
 
+	_float4x4& Get_CoreMat() { return m_CoreMat; }
+
 public:
 	void			Create_DefaultArrow();
 	void			Create_PurpleArrow();
@@ -60,6 +62,8 @@ public:
 private:
 	map<_hashcode, list<CProjectile*>>	m_mapProjectilePool;
 	CProjectile* m_pCurArrow = nullptr;
+
+	_float4x4	m_CoreMat;
 
 
 };

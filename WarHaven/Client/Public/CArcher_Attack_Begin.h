@@ -1,5 +1,5 @@
 #pragma once
-#include "CState_Blendable.h"
+#include "CAttack_Archer.h"
 
 
 BEGIN(Engine)
@@ -10,7 +10,7 @@ BEGIN(Client)
 class CColorController;
 
 class CArcher_Attack_Begin
-	: public CState_Blendable
+	: public CAttack_Archer
 {
 	DECLARE_STATE(CArcher_Attack_Begin);
 
@@ -29,12 +29,8 @@ public:
 	virtual void Exit(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
-	CHierarchyNode* m_pCoreBone = nullptr;
-
-private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 	virtual		void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
-	_bool	Check_ArrowRay(_float4* pOutPos);
 
 };
 

@@ -19,6 +19,8 @@
 #include "CMesh_Particle.h"
 
 #include "CDefaultArrow.h"
+#include "CPurpleArrow.h"
+#include "CSnipeArrow.h"
 
 IMPLEMENT_SINGLETON(CEffects_Factory);
 
@@ -39,8 +41,12 @@ HRESULT CEffects_Factory::Initialize()
 	if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CDefaultArrow::Create(), HASHCODE(CDefaultArrow))))
 		return E_FAIL;
 
-	/*if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CDefaultArrow::Create(), HASHCODE(CDefaultArrow))))
-		return E_FAIL;*/
+	if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CSnipeArrow::Create(), HASHCODE(CSnipeArrow))))
+		return E_FAIL;
+	
+	if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CPurpleArrow::Create(), HASHCODE(CPurpleArrow))))
+		return E_FAIL;
+
 
 	if (FAILED(SetUp_StoneParticles()))
 		return E_FAIL;

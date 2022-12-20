@@ -167,6 +167,8 @@ void CArcher_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 
 	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
 
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

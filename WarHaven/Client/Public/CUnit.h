@@ -195,6 +195,8 @@ public:
 	_float4	Get_FollowCamLook_Turn();
 	_float4	Get_FollowCamRight();
 
+	_uint& Get_PreAnimIndex() { return m_iPreAnimIndex; } // 상하체 애니메이션 튀는것을 위한 함수
+
 public:
 	void TurnOn_TrailEffect(_bool bOn);
 
@@ -315,6 +317,9 @@ protected:
 	STATE_TYPE		m_eSprintEndState = STATE_END;
 
 	CState* m_pCurState = nullptr;
+
+protected:
+	_uint m_iPreAnimIndex = 0;
 
 protected:
 	_bool m_bControlable = true;

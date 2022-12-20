@@ -191,6 +191,7 @@ protected:
 	void	Follow_MouseLook(CUnit* pOwner);
 	void	Follow_MouseLook_Turn(CUnit* pOwner);
 
+	void	Prevent_Oneframe(CUnit* pOwner);
 
 	/* AI ¿ëµµ*/
 protected:

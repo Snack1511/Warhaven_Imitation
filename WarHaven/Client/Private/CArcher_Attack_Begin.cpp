@@ -147,33 +147,12 @@ HRESULT CArcher_Attack_Begin::Initialize()
 
 void CArcher_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
-
-	if (!m_pCoreBone)
-		assert(0);
-
-	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
-	pOwner->Get_Status().fBackStepSpeed = pOwner->Get_Status().fWalkSpeed;
-	
-	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed * 0.35f;
-	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fRunSpeed;
-
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
-
-	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, m_fInterPolationTime, m_fAnimSpeed);
-
-	m_bMoveTrigger = false;
-
-
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
-
-
-    CState::Enter(pOwner, pAnimator, ePrevType, pData);
+	__super::Enter_Attack_Begin(pOwner);
+    __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	// pOwner->Set_BounceState(STATE_BOUNCE_ARCHER_R);
 
 	if (m_bMoveTrigger)
 		return STATE_ATTACK_AIMING_ARCHER;
@@ -186,88 +165,31 @@ STATE_TYPE CArcher_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			return STATE_ATTACK_CANCEL_ARCHER;
 
 	}
-
-
-	BlendableTick_Loop(pOwner, pAnimator, false);
-
-	/* =================================== */
-	_float4 vCamLook = pOwner->Get_FollowCamLook();
-	_float4x4 matRotY = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), ToRadian(5.f));
-	_float4x4 matRotX = XMMatrixRotationAxis(pOwner->Get_FollowCamRight().XMLoad(), ToRadian(5.f));
-	vCamLook = vCamLook.MultiplyNormal(matRotY);
-	vCamLook = vCamLook.MultiplyNormal(matRotX);
-
-	/* 위 아래만 꺾어줘야함 */
-	_float4x4 matOffset;
-
-	_float4 vCamLookNoY = vCamLook;
-	vCamLookNoY.y = 0.f;
-	vCamLookNoY.Normalize();
-
-	_float fDot = vCamLook.Dot(vCamLookNoY);
-	_float fRadian = acosf(fDot);
-
-	if (vCamLook.y < 0.f)
-		fRadian *= -1.f;
-
-	matOffset = XMMatrixRotationAxis(_float4(0.f, -1.f, 0.f, 0.f).XMLoad(), fRadian);
-
-	pOwner->Get_Transform()->Set_NoLerp();
-	pOwner->Get_Transform()->Set_Look(vCamLookNoY);
-
-	m_pCoreBone->Set_PrevMatrix(matOffset);
-	/* =================================== */
-
-	
-	/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
-	_float4 vHitPos;
-	if (Check_ArrowRay(&vHitPos))
-	{
-		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
-		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
-	}
-
-
-    return CState::Tick(pOwner, pAnimator);
+    return __super::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	CUser::Get_Instance()->Set_CrossHairPos(_float4(0.f, 0.f, 0.3f, 1.f));
+	Prevent_Oneframe(pOwner);
+	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
 
-
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
-
-	_float4x4 matOffset;
-	matOffset.Identity();
-	m_pCoreBone->Set_PrevMatrix(matOffset);
-    //Exit에선 무조건 남겨놔야함
-	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
-
-    pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
 
 STATE_TYPE CArcher_Attack_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* ARCHER가 Attack 으로 오는 조건
-    1. CTRL + LBuutton 을 이용해 공격한다.
-    */
-   
-
 	if (!pOwner->Get_SkillTrigger().bSkillQTrigger && !pOwner->Get_SkillTrigger().bSkillETrigger)
 	{
 		if (KEY(LBUTTON, TAP))
 			return m_eStateType;
 	}
 
-
     return STATE_END;
 }
 
 void CArcher_Attack_Begin::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
-	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+	__super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
 	switch (iSequence)
 	{
@@ -282,18 +204,4 @@ void CArcher_Attack_Begin::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimato
 	default:
 		break;
 	}
-}
-
-_bool CArcher_Attack_Begin::Check_ArrowRay(_float4* pOutPos)
-{
-	_float4 vStartPos = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_ArrowHeadPos();
-	_float4 vDir = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_Transform()->Get_World(WORLD_RIGHT);
-	_float fMaxDistance = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_MaxDistance();
-
-	_float4 vFinalHitPos;
-
-	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, vStartPos, vDir, fMaxDistance))
-		*pOutPos = vFinalHitPos;
-	
-	return true;
 }

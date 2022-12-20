@@ -18,6 +18,8 @@
 
 #include "CProjectile.h"
 #include "CDefaultArrow.h"
+#include "CPurpleArrow.h"
+#include "CSnipeArrow.h"
 
 #include "CCollider_Sphere.h"
 #include "CColorController.h"
@@ -329,9 +331,11 @@ void CUnit_Archer::Create_PurpleArrow()
 
 	CGameObject* pGameObject = nullptr;
 
-	if (m_mapProjectilePool[HASHCODE(CDefaultArrow)].empty())
+
+
+	if (m_mapProjectilePool[HASHCODE(CPurpleArrow)].empty())
 	{
-		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CDefaultArrow));
+		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CPurpleArrow));
 		//없으면 새로 집어넣음
 		pGameObject->Initialize();
 		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
@@ -339,9 +343,9 @@ void CUnit_Archer::Create_PurpleArrow()
 	}
 	else
 	{
-		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CDefaultArrow)].front();
+		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CPurpleArrow)].front();
 		pEffect->Reset(this);
-		m_mapProjectilePool[HASHCODE(CDefaultArrow)].pop_front();
+		m_mapProjectilePool[HASHCODE(CPurpleArrow)].pop_front();
 		pGameObject = pEffect;
 		DISABLE_COMPONENT(GET_COMPONENT_FROM(pEffect, CCollider_Sphere));
 	}

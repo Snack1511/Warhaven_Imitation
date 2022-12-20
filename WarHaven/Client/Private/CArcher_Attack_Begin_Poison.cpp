@@ -14,6 +14,8 @@
 
 #include "CCamera_Follow.h"
 #include "CAnimWeapon.h"
+#include "CUnit_Archer.h"
+#include "HIerarchyNode.h"
 
 CArcher_Attack_Begin_Poison::CArcher_Attack_Begin_Poison()
 {
@@ -143,19 +145,8 @@ HRESULT CArcher_Attack_Begin_Poison::Initialize()
 
 void CArcher_Attack_Begin_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
-	pOwner->Get_Status().fBackStepSpeed = pOwner->Get_Status().fWalkSpeed;
-
-	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed * 0.35f;
-	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fRunSpeed;
-
-	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
-
-	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKBEGIN, m_fInterPolationTime, m_fAnimSpeed);
-
-	m_bMoveTrigger = false;
-
-	CState::Enter(pOwner, pAnimator, ePrevType, pData);
+	__super::Enter_Attack_Begin(pOwner);
+	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CArcher_Attack_Begin_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -172,15 +163,15 @@ STATE_TYPE CArcher_Attack_Begin_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator
 			return STATE_ATTACK_CANCEL_ARCHER;
 	}
 
-	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(15.f));
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Attack_Begin_Poison::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    //Exit에선 무조건 남겨놔야함
-    pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+	Prevent_Oneframe(pOwner);
+	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
+
 	__super::Exit(pOwner, pAnimator);
 }
 
@@ -218,7 +209,7 @@ STATE_TYPE CArcher_Attack_Begin_Poison::Check_Condition(CUnit* pOwner, CAnimator
 
 void CArcher_Attack_Begin_Poison::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pAnimator, const KEYFRAME_EVENT & tKeyFrameEvent, _uint iSequence)
 {
-	// __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
+	 __super::On_KeyFrameEvent(pOwner, pAnimator, tKeyFrameEvent, iSequence);
 
 	switch (iSequence)
 	{

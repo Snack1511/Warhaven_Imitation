@@ -188,6 +188,8 @@ void CArcher_Shoot_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
 
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
+
 	if (!m_bAttackTrigger)
 		static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
 
