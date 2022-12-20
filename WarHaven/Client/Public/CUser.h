@@ -129,6 +129,7 @@ public:		// ÆÄµ§
 
 	void Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam);
 
+	void Set_TargetTransform(CTransform* pTargetTransform);
 	void Set_TargetPointPos(_uint iTargetIdx);
 	void SetActive_TargetPoint(_bool value);
 

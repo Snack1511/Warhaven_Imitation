@@ -133,7 +133,6 @@ void CTrigger_Paden::My_Tick()
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	_bool isIsFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
-
 	switch (m_eTriggerType)
 	{
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
@@ -166,7 +165,7 @@ void CTrigger_Paden::My_Tick()
 	if (m_fConqueredTimeAcc > 0.f)
 		m_fConqueredTimeAcc -= fDT(0);
 	else
-		m_fConqueredTimeAcc = 0.f;	
+		m_fConqueredTimeAcc = 0.f;
 }
 
 void CTrigger_Paden::Update_Conquered()
@@ -250,6 +249,6 @@ void CTrigger_Paden::Update_Conquered()
 #endif // _DEBUG
 
 		m_fConqueredTimeAcc = 0.f;
-		}
-
 	}
+
+}

@@ -10,6 +10,8 @@
 #include "CPlayer.h"
 #include "CUnit.h"
 #include "CTeamConnector.h"
+#include "Transform.h"
+#include "Camera.h"
 
 HRESULT CUI_Paden::Initialize_Prototype()
 {
@@ -116,22 +118,61 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 
 void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
-	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
-	vNewPos.y += 2.f;
-
-	for (int i = 0; i < PU_End; ++i)
+	if (isInFrustum)
 	{
-		m_pArrTargetPoint[1]->SetActive(isInFrustum);
-		m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
+		_float4 vPointPos = CUtility_Transform::Get_ProjPos(pTransform);
+		vPointPos.y += 5.f;
 
-		if (i == PU_Text)
+		if (m_bSetTargetPoint)
+			m_pArrTargetPoint[1]->SetActive(true);
+
+		for (int i = 0; i < PU_End; ++i)
 		{
-			m_pArrProjPointUI[iPointIdx][i]->Set_PosX(vNewPos.x);
-			continue;
-		}
+			m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vPointPos);
 
-		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vNewPos);
+			m_pArrProjPointUI[iPointIdx][i]->SetActive(true);
+		}
 	}
+	else
+	{
+		if (m_bSetTargetPoint)
+			m_pArrTargetPoint[1]->SetActive(false);
+
+		for (int i = 0; i < PU_End; ++i)
+			m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
+
+		if (m_eTargetPoint == Point_End)
+			return;
+
+		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
+
+		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
+		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
+
+		_float4 vCamTargetDir = vTargetPos - vCamPos;
+		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK).Normalize();
+
+		_float4 vOriginPos = vCamPos + (vCamLook * vCamTargetDir.Dot(vCamLook));
+
+		_float4 vOriginTargetDir = vTargetPos - vOriginPos;
+
+		_float4 vIndicatorPos = vCamPos + vCamLook + vOriginTargetDir;
+		// vIndicatorPos = CUtility_Transform::Get_ProjPos(vIndicatorPos);
+
+		for (int i = 0; i < PU_End; ++i)
+		{
+			m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(vIndicatorPos);
+			m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
+		}
+	}
+}
+
+void CUI_Paden::Set_TargetTransform(CTransform* pTargetTransform)
+{
+	if (!m_bSetTargetPoint)
+		return;
+
+	m_pTargetTransform = pTargetTransform;
 }
 
 void CUI_Paden::SetActive_ScoreGauge(_bool value)
@@ -347,6 +388,8 @@ void CUI_Paden::My_LateTick()
 
 	Set_PointTextPosY();
 	Update_TargetPointPos();
+
+	cout << m_eTargetPoint << endl;
 }
 
 void CUI_Paden::OnEnable()
@@ -660,6 +703,7 @@ void CUI_Paden::Init_PointUI()
 				if (j == PU_Gauge)
 				{
 					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
 				}
 			}
 		}

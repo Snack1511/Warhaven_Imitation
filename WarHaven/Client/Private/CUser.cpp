@@ -342,6 +342,11 @@ void CUser::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 		m_pUI_Paden->Conquest_PointUI(strPointName, bIsMainPlayerTeam);
 }
 
+void CUser::Set_TargetTransform(CTransform* pTargetTransform)
+{
+	m_pUI_Paden->Set_TargetTransform(pTargetTransform);
+}
+
 void CUser::Set_TargetPointPos(_uint iTargetIdx)
 {
 	if (m_pUI_Paden)
