@@ -135,6 +135,7 @@ public:
 	virtual void Release();
 public:
 	HRESULT SetUp_PersonalityName(wstring strPersonalityName);
+	HRESULT SetUp_PatrolBehavior();
 public:
 	_float Get_Delay();
 	_float Get_Range();

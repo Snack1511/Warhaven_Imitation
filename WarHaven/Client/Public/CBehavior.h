@@ -32,12 +32,16 @@ protected:
 public:
 	static CBehavior* Create(eBehaviorType BehaviorType, CTable_Conditions* pTable);
 	void Release();
-
+public:
+	static CBehavior* Load(wstring strSaveName, CTable_Conditions* pTable);
+	void Save(wstring strPersonalityName);
+public:
+	void Save_Functions(ofstream& rhsWriteFile, vector<wstring>& rhsDatas);
+	void Load_Functions(ifstream& rhsReadFile, const function<void(wstring)>& Func);
 public:
 	HRESULT Initialize_Prototype();
 	HRESULT Initialize();
 	HRESULT Start();
-
 public:
 	void Add_WhatCondition(wstring strWhatConditionName);
 	void Add_OtherCondition(wstring strOtherConditionName);
