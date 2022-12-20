@@ -152,6 +152,8 @@ void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 {
 	__super::Enter_Aiming(pOwner, pAnimator, ePrevType, CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_ZOOM);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	
 }
 
 STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)

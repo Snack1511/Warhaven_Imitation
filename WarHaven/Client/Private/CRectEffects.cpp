@@ -975,32 +975,22 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 	vStartDir = vStartDir.MultiplyNormal(m_matTrans).Normalize();
 	vStartRight = vStartRight.MultiplyNormal(m_matTrans).Normalize();
 
+	
+
+	m_pDatas[iIndex].RectInstance.vTranslation = vStartPos;
+	m_pDatas[iIndex].InstancingData.vDir = vStartDir;
+	m_pDatas[iIndex].InstancingData.vRight = vStartRight;
+
+
 	if ((CURVE_CHARGE == m_eCurveType) && m_pFollowTarget)
 	{
 
 		_float4 vTargetPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
-		_float4 vDir = (vTargetPos + vStartPos) - vTargetPos;
+
 		m_pDatas[iIndex].RectInstance.vTranslation = vTargetPos + vStartPos;
-		m_pDatas[iIndex].InstancingData.vDir = vDir;
 
-		_float4 vUpDir = { 0.f, 1.f, 0.f };
-		if ((vDir.y < 1.1f && vDir.y > 0.9f) ||
-			(vDir.y > -1.1f && vDir.y < -0.9f)
-			)
-			vUpDir = _float4(0.f, 0.f, 1.f, 0.f);
-
-		vUpDir.Normalize();
-		m_pDatas[iIndex].InstancingData.vStartPureLocalRight = vUpDir.Cross(vDir);
 
 	}
-	else
-	{
-		m_pDatas[iIndex].RectInstance.vTranslation = vStartPos;
-		m_pDatas[iIndex].InstancingData.vDir = vStartDir;
-		m_pDatas[iIndex].InstancingData.vRight = vStartRight;
-	}
-
-	
 
 	//회전시켜놓기
 
@@ -1411,6 +1401,8 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 		{
 			vPos = CEasing_Utillity::Linear(vPos, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS), m_pDatas[iIdx].InstancingData.fMovingAcc,
 				m_pDatas[iIdx].InstancingData.fFadeInTime + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);
+
+			//m_pDatas[iIdx].InstancingData.vDir = vPos - m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
 		}
 		break;
 
