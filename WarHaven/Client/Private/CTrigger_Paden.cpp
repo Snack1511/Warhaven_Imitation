@@ -133,22 +133,6 @@ void CTrigger_Paden::My_Tick()
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	_bool isIsFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
-	if (!isIsFrustum)
-	{
-		switch (m_eTriggerType)
-		{
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
-			CUser::Get_Instance()->Set_TargetTransform(m_pTransform);
-			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
-			CUser::Get_Instance()->Set_TargetTransform(m_pTransform);
-			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
-			CUser::Get_Instance()->Set_TargetTransform(m_pTransform);
-			break;
-		}
-	}
-
 	switch (m_eTriggerType)
 	{
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
