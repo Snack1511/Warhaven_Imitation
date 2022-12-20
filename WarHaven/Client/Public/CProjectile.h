@@ -64,7 +64,7 @@ protected:
 
 protected:
 	HRESULT	SetUp_Projectile(wstring wstrModelFilePath);
-	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType);
+	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType); // 필요하다면 가상함수.
 
 protected:
 	virtual void My_Tick() override;

@@ -353,16 +353,16 @@ void CUnit_Archer::Create_PurpleArrow()
 	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
 }
 
-void CUnit_Archer::Create_SnipeArrow(_hashcode _hsCArrowCode)
+void CUnit_Archer::Create_SnipeArrow()
 {
 	if (m_pCurArrow)
 		DISABLE_GAMEOBJECT(m_pCurArrow);
 
 	CGameObject* pGameObject = nullptr;
 
-	if (m_mapProjectilePool[_hsCArrowCode].empty())
+	if (m_mapProjectilePool[HASHCODE(CSnipeArrow)].empty())
 	{
-		pGameObject = GAMEINSTANCE->Clone_GameObject(_hsCArrowCode);
+		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CSnipeArrow));
 		//없으면 새로 집어넣음
 		pGameObject->Initialize();
 		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
@@ -370,9 +370,9 @@ void CUnit_Archer::Create_SnipeArrow(_hashcode _hsCArrowCode)
 	}
 	else
 	{
-		CProjectile* pEffect = m_mapProjectilePool[_hsCArrowCode].front();
+		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CSnipeArrow)].front();
 		pEffect->Reset(this);
-		m_mapProjectilePool[_hsCArrowCode].pop_front();
+		m_mapProjectilePool[HASHCODE(CSnipeArrow)].pop_front();
 		pGameObject = pEffect;
 		DISABLE_COMPONENT(GET_COMPONENT_FROM(pEffect, CCollider_Sphere));
 	}

@@ -133,7 +133,7 @@ void CUnit_Warrior::SetUp_Colliders(_bool bPlayer)
 		tWeaponUnitColDesc[i].eColType = (_uint)eFlyAttack;
 
 	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-	
+
 
 
 }
@@ -196,6 +196,8 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
+		m_tUnitStatus.fMaxHP = 100000.f;
+		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 		break;
 
 		

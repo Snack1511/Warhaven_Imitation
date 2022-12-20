@@ -42,7 +42,7 @@ public:
 public:
 	void			Create_DefaultArrow();
 	void			Create_PurpleArrow();
-	void			Create_SnipeArrow(_hashcode _hsCArrowCode);
+	void			Create_SnipeArrow();
 	void			Change_ArrowPhase(_uint iPhase);
 	void			Shoot_Arrow();
 
