@@ -78,6 +78,13 @@ void CUI_Dead::Toggle_DeadUI(_bool value, _bool isFall)
 	}
 }
 
+void CUI_Dead::Disable_RevivalUI()
+{
+	SetActive_RevivalUI(false);
+
+	m_bAbleRevival = false;
+}
+
 void CUI_Dead::SetActive_DeadUI(_bool value)
 {
 	for (int i = 0; i < DU_End; ++i)

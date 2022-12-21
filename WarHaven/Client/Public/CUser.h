@@ -165,6 +165,7 @@ public:
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
+	void Disable_RevivalUI();
 
 public:		// ¾Ë¸²
 	void Enable_Popup(_uint iPopupType);

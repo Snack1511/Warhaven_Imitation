@@ -151,6 +151,8 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
     case Client::CState_Common_Revive_AI::PHASE_END:
         if (pAnimator->Is_CurAnimFinished())
         {
+            CUser::Get_Instance()->Disable_RevivalUI();
+
             STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
             return eDefaultState;
         }

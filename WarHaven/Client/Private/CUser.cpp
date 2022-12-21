@@ -705,6 +705,10 @@ void CUser::Toggle_DeadUI(_bool value, _bool isFall)
 		m_pUI_Dead->Toggle_DeadUI(value, isFall);
 	}
 }
+void CUser::Disable_RevivalUI()
+{
+	m_pUI_Dead->Disable_RevivalUI();
+}
 void CUser::Enable_Popup(_uint iPopupType)
 {
 	if (m_pUI_Popup)
