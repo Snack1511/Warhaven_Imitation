@@ -281,6 +281,9 @@ void CUnit_Archer::Enable_Arrow(_bool bEnable)
 
 void CUnit_Archer::Enable_Trail(_bool bEnable)
 {
+	if (!m_pUI_Trail)
+		return;
+
 	if (bEnable)
 		ENABLE_GAMEOBJECT(m_pUI_Trail);
 	else
@@ -289,6 +292,9 @@ void CUnit_Archer::Enable_Trail(_bool bEnable)
 
 void CUnit_Archer::ReMap_Trail(_float4 vTargetPos)
 {
+	if (!m_pUI_Trail)
+		return;
+
 	m_pUI_Trail->Clear_Nodes();
 
 	_float4 vHandPos = m_pModelCom->Get_BoneMatrix("0B_R_WP1").XMLoad().r[3];
@@ -484,16 +490,8 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 	m_pAnimWeapon->Initialize();
 
 
-	/* UI_TRAIL */
-	CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
-		L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
-		L"../bin/resources/textures/effects/warhaven/textures/T_ArrowUI_01_FX.dds"
-	);
-
-	if (!pUI_Trail)
-		return E_FAIL;
-
-	m_pUI_Trail = pUI_Trail;
+	
+	
 
 
 	return S_OK;
@@ -507,6 +505,19 @@ HRESULT CUnit_Archer::Initialize()
 
 	Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
 
+	/* UI_TRAIL */
+	if (m_pOwnerPlayer->IsMainPlayer())
+	{
+		CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
+			L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
+			L"../bin/resources/textures/White.png"
+		);
+
+		if (!pUI_Trail)
+			return E_FAIL;
+
+		m_pUI_Trail = pUI_Trail;
+	}
 
 
 	return S_OK;
@@ -518,8 +529,13 @@ HRESULT CUnit_Archer::Start()
 
 	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimWeapon);
-	CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
-	DISABLE_GAMEOBJECT(m_pUI_Trail);
+
+	if (m_pUI_Trail)
+	{
+		CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
+	}
+	
 
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);

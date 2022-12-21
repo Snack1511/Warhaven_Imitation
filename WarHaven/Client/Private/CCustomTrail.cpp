@@ -205,8 +205,8 @@ void CCustomTrail::ReMap_TrailBuffers(list<_float4>& NodesList, _float fWide)
 	
 	for (_uint i = iVertexIndex; i < m_iNumVertices; i += 2)
 	{
-		((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[iVertexIndex].vPosition;
-		((VTXTEX*)SubResource.pData)[i+1].vPosition = ((VTXTEX*)SubResource.pData)[iVertexIndex+1].vPosition;
+		((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[iVertexIndex-2].vPosition;
+		((VTXTEX*)SubResource.pData)[i+1].vPosition = ((VTXTEX*)SubResource.pData)[iVertexIndex-1].vPosition;
 	}
 
 	DEVICE_CONTEXT->Unmap(m_pVB.Get(), 0);

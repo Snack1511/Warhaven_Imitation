@@ -469,6 +469,7 @@ void CPhysX_Manager::Release()
 	
 	
 	Safe_release(m_pFoundation);
+	m_listAllStatics.clear();
 
 }
 
@@ -480,22 +481,30 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 
 	for (auto& elem : m_listAllStatics)
 	{
+		if (!elem || !elem->isReleasable())
+			continue;
+
 		//static이랑 닿으면 이녀석한테 ray 쏴서 위치 보정
 		PxRaycastHit hitInfo;
 		PxShape* pCurShape = nullptr;
 		elem->getShapes(&pCurShape, sizeof(PxShape));
 
-		if (pCurShape->getGeometryType() != PxGeometryType::eBOX)
+		if (!pCurShape)
 			continue;
 
-		/* 절두체 */
-		_float4 vCenterPos = CUtility_PhysX::To_Vector(elem->getGlobalPose().p);
-		_float fRadius = sqrtf(pow(pCurShape->getGeometry().box().halfExtents.x, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.y, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.z, 2.f));
-
-		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCenterPos.XMLoad(), fRadius))
+		if (pCurShape->getGeometryType() == PxGeometryType::eBOX)
 		{
-			continue;
+			/* 절두체 */
+			_float4 vCenterPos = CUtility_PhysX::To_Vector(elem->getGlobalPose().p);
+			_float fRadius = sqrtf(pow(pCurShape->getGeometry().box().halfExtents.x, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.y, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.z, 2.f));
+
+			if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCenterPos.XMLoad(), fRadius))
+			{
+				continue;
+			}
 		}
+
+		
 
 		PxU32 hitCount = PxGeometryQuery::raycast(
 			CUtility_PhysX::To_PxVec3(vStartPos),

@@ -64,6 +64,8 @@
 
 #include "CPath.h"
 
+#include "CUI_Trail.h"
+
 #pragma region AI 추가용
 #include "CAIController.h"
 #include "CAIPersonality.h"
@@ -210,6 +212,8 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		}
 		else
 		{
+			m_pAllUnitClass[i]->Set_OwnerPlayer(this);
+
 			if (FAILED(m_pAllUnitClass[i]->Initialize()))
 			{
 				Call_MsgBox_Index(L"Failed to Initialize Unit / Index : ", i);
@@ -217,7 +221,6 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 
 			}
 
-			m_pAllUnitClass[i]->Set_OwnerPlayer(this);
 
 			if (!m_pFollowCam)
 			{
@@ -375,9 +378,37 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 				Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController));
 			}
 		}
-		
-
 	}
+	else
+	{
+		//메인플레이어 path에다가 트레일 UI 깔아보기
+		if (m_pUI_Trail)
+		{
+
+			CPath* pPath = CGameSystem::Get_Instance()->Find_Path(m_strStartPath);
+			if (pPath)
+			{
+				m_pUI_Trail->Clear_Nodes();
+				vPos.y += 0.1f;
+				m_pUI_Trail->Add_Node(vPos);
+
+				vector<_float4>& vecPositions = pPath->Get_vecPositions();
+				for (auto& elem : vecPositions)
+				{
+					_float4 vNode = elem;
+					vNode.y += 0.1f;
+					m_pUI_Trail->Add_Node(vNode);
+
+				}
+
+				ENABLE_GAMEOBJECT(m_pUI_Trail);
+				m_pUI_Trail->ReMap_TrailBuffers();
+			}
+			
+		}
+	}
+
+
 	m_bReborn = false;
 
 	for (auto& elem : m_DeadLights)
@@ -593,6 +624,20 @@ HRESULT CPlayer::Initialize_Prototype()
 	if (FAILED(SetUp_Collider()))
 		return E_FAIL;
 
+	/* UI_TRAIL */
+	if (m_bIsMainPlayer)
+	{
+		CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 100, 0.35f, -0.05f, 100.f, ZERO_VECTOR, _float4(0.2f, 1.f, 0.2f, 1.f),
+			L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
+			L"../bin/resources/textures/White.png"
+		);
+
+		if (!pUI_Trail)
+			return E_FAIL;
+
+		m_pUI_Trail = pUI_Trail;
+	}
+
 	return S_OK;
 }
 
@@ -658,6 +703,12 @@ HRESULT CPlayer::Start()
 	CallBack_CollisionStay += bind(&CPlayer::Player_CollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
 	CallBack_CollisionExit += bind(&CPlayer::Player_CollisionExit, this, placeholders::_1, placeholders::_2, placeholders::_3);
 
+
+	if (m_pUI_Trail)
+	{
+		CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
+	}
 
 	return S_OK;
 }

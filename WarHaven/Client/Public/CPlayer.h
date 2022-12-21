@@ -291,6 +291,10 @@ private:
 	_float	m_fKillStreakTime = 5.f;
 
 private:
+	class CUI_Trail* m_pUI_Trail = nullptr;
+
+
+private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
 

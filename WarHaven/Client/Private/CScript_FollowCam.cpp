@@ -154,12 +154,12 @@ HRESULT CScript_FollowCam::Initialize()
 
 	//m_arrLerpDesc[CAMERA_LERP_ZOOM].vTargetOffset.y *= 1.2f;
 	m_arrLerpDesc[CAMERA_LERP_ZOOM].fTargetDistance *= 0.6f;
-	m_arrLerpDesc[CAMERA_LERP_ZOOM].fMaxDistance *= 0.5f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOM].fMaxDistance *= 0.4f;
 
 
 	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX] = m_arrLerpDesc[CAMERA_LERP_ZOOM];
 	/* °Å¸® */
-	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX].fTargetDistance *= 0.5f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX].fTargetDistance *= 0.2f;
 
 
 

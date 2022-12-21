@@ -602,7 +602,7 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos)
 
 		CPhysXCharacter* pPhysXCom = GET_COMPONENT_FROM(pUnit, CPhysXCharacter);
 
-		PxController* pController = pPhysXCom->Get_PxController();
+		PxController* pController = pPhysXCom->Get_PxController(); 
 
 		if (!pController)
 			continue;
@@ -611,7 +611,16 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos)
 	}
 
 	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
+	{
+		if (*pOutPos != vFinalHitPos)
+		{
+			//Å©·Î½ºÇì¾î »¡°²°Ô.
+		}
+
 		*pOutPos = vFinalHitPos;
+
+	}
+
 
 	return true;
 }
