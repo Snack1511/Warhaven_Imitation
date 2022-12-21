@@ -778,7 +778,7 @@ void CUI_Paden::Create_Popup()
 	GET_COMPONENT_FROM(m_pPopupUI, CTexture)->Remove_Texture(0);
 	Read_Texture(m_pPopupUI, "/Paden/Popup", "Popup");
 
-	m_pPopupUI->Set_Scale(437.f, 90.f);
+	m_pPopupUI->Set_Scale(340.f, 70.f);
 	m_pPopupUI->Set_PosY(175.f);
 
 	CREATE_GAMEOBJECT(m_pPopupUI, GROUP_UI);
