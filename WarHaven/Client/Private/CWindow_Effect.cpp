@@ -217,7 +217,8 @@ void CWindow_Effect::Show_MainList()
 					else
 						matTrans = PLAYER->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
 
-					elem.pEffect->Reset(PLAYER->Get_Transform()->Get_World(WORLD_POS), matTrans);
+					if(!static_cast<CRectEffects*>(elem.pEffect)->m_bLoop)
+						elem.pEffect->Reset(PLAYER->Get_Transform()->Get_World(WORLD_POS), matTrans);
 				}
 
 			}
