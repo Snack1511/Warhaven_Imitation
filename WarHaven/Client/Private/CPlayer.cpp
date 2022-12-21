@@ -347,6 +347,8 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 		return;
 	}
 
+	CUser::Get_Instance()->SetAcitve_ReviveUI(false);
+
 	m_bDie = false;
 	m_bAbleRevival = false;
 	m_fRevivalAcc = 0.f;
@@ -738,13 +740,7 @@ void CPlayer::On_Die()
 {
 	//m_bDie = true;
 	DISABLE_GAMEOBJECT(m_pUnitHUD);
-	m_bDieDelay = true;
-
-	if (!m_bIsMainPlayer)
-	{
-		if (Get_Team()->IsMainPlayerTeam())
-			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
-	}
+	m_bDieDelay = true;	
 
 	if (m_bIsMainPlayer)
 	{
@@ -777,12 +773,19 @@ void CPlayer::On_RealDie()
 	if (m_bIsMainPlayer)
 		CUser::Get_Instance()->Toggle_DeadUI(true, true);
 
-	CUser::Get_Instance()->SetAcitve_ReviveUI(false);
-
 	m_bDieDelay = false;
 	m_fDieDelayAcc = 0.f;
 	m_bDie = true;
 	m_bAbleRevival = true;
+
+	if (!m_bIsMainPlayer)
+	{
+		if (Get_Team()->IsMainPlayerTeam())
+		{
+			CUser::Get_Instance()->Set_ClassIcon(this);
+			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
+		}
+	}
 
 	m_DeadLights.clear();
 

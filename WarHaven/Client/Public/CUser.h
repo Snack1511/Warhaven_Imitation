@@ -178,6 +178,8 @@ public:	// 킬로그
 public:	// 소생
 	void SetAcitve_ReviveUI(_bool value);
 	void Set_ReviveUI_Pos(CTransform* pReviveUnitTransform);
+	void Set_ReviveIcon(_uint iIconIdx);
+	void Set_ClassIcon(CPlayer* pDeadPlayer);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;

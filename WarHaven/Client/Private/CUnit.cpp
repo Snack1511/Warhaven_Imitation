@@ -83,7 +83,8 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		if (m_pAdjRevivalPlayer)
 		{
 			//UI ON
-			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
+			if (m_bIsMainPlayer)
+				CUser::Get_Instance()->Set_ReviveIcon(1);
 		}
 
 		return;
@@ -193,7 +194,8 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 			m_pAdjRevivalPlayer = nullptr;
 
 			// UI Off
-			CUser::Get_Instance()->SetAcitve_ReviveUI(false);
+			if (m_bIsMainPlayer)
+				CUser::Get_Instance()->Set_ReviveIcon(0);
 		}
 
 	}
