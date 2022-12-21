@@ -654,7 +654,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"BigSparkParticle"), Convert_ToHash(L"SparkMesh_1"))))
 		return E_FAIL;
-	if (FAILED(Add_MultiEffects(Convert_ToHash(L"charge"), Convert_ToHash(L"charge"))))
+	
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Charge"), "Crow_Charge")))
 		return E_FAIL;
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SkillLightParticle"), "SkillLightParticle")))
