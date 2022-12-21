@@ -177,7 +177,7 @@ void CHierarchyNode::Update_CombinedTransformationMatrix()
 	}
 	else
 	{
-		m_CombinedTransformationMatrix = m_TransformationMatrix;
+		m_CombinedTransformationMatrix = m_PrevMatrix * m_TransformationMatrix;
 	}
 
 	if (m_bMoveNode) 

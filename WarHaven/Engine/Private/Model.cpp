@@ -651,10 +651,9 @@ void CModel::Final_Tick()
 		//1.일단 절두체
 		_float4 vWorldPos = m_pOwner->Get_Transform()->Get_World(WORLD_POS);
 		vWorldPos.y += 0.6f;
-		_float fRange = 2.f;
 
 		//절두체에 없으면 
-		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vWorldPos.XMLoad(), fRange))
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vWorldPos.XMLoad(), m_fAnimModelRadius))
 		{
 			//다끄기
 			for (_uint i = 0; i < m_iNumMeshContainers; ++i)

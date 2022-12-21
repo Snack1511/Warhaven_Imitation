@@ -4,11 +4,13 @@
 
 BEGIN(Engine)
 class CAnimator;
+class CHierarchyNode;
 END
 
 BEGIN(Client)
 
 class CPlayer;
+class CCamera_Follow;
 
 class CCannon
 	: public CGameObject
@@ -36,14 +38,28 @@ public:
 public:
 	_float4		Get_ControlPos();
 	void		Control_Cannon(CPlayer* pPlayer);
+	void		Exit_Cannon();
 	void		Shoot_Cannon();
+	_bool		Can_ControlCannon(CPlayer* pPlayer);
 
 private:
 	CPlayer* m_pCurOwnerPlayer = nullptr;
 	CAnimator* m_pAnimator = nullptr;
+	CCamera_Follow* m_pCannonCam = nullptr;
+
+	CHierarchyNode* m_pBonePitch = nullptr;
+
+private:
+	_float		m_fCannonMoveSpeed = 0.4f;
+	_float		m_fCurPitch = 0.f;
+	_float		m_fCurYaw = 0.f;
+
+private:
+	_float		Lerp_Position(_float fCurPosition, _float fTargetPosition, _float fRange);
 
 private:
 	virtual void My_Tick() override;
+	virtual void My_LateTick() override;
 	
 
 };

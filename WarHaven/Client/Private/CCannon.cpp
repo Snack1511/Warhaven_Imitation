@@ -2,8 +2,15 @@
 #include "CCannon.h"
 
 #include "UsefulHeaders.h"
-
+#include "CCamera_Follow.h"
+#include "CScript_FollowCam.h"
 #include "CCollider_Sphere.h"
+
+#include "CCameraCollider.h"
+
+#include "CTeamConnector.h"
+
+#include "HIerarchyNode.h"
 
 CCannon::CCannon()
 {
@@ -48,9 +55,10 @@ HRESULT CCannon::Initialize_Prototype()
 	matIdentity.Identity();
 
 	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, L"../bin/resources/meshes/map/accessories/Cannon_30.fbx",
-		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(0.0f)) * XMMatrixRotationZ(XMConvertToRadians(0.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f)));
+		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(270.0f)) * XMMatrixRotationZ(XMConvertToRadians(0.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f)));
 
 	pModel->Add_Model(L"../bin/resources/meshes/map/accessories/Cannon_30.fbx", 1);
+	pModel->Set_AnimModelRadius(4.f);
 	pModel->Initialize();
 	Add_Component(pModel);
 
@@ -59,11 +67,19 @@ HRESULT CCannon::Initialize_Prototype()
 
 	pModel->Set_ShaderFlag(SH_LIGHT_BLOOM);
 	pModel->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
+	
+	m_pBonePitch = pModel->Find_HierarchyNode("0B_Cannon_Pitch");
+	if (!m_pBonePitch)
+		return E_FAIL;
 
 
 	CCollider_Sphere* pCollider = CCollider_Sphere::Create(0, 2.f, COL_CANNON, _float4(0.f, 1.f, 0.f), DEFAULT_TRANS_MATRIX);
 	pCollider->Initialize();
 	Add_Component(pCollider);
+
+
+	
+
 
 
 	return S_OK;
@@ -78,9 +94,22 @@ HRESULT CCannon::Start()
 {
 	__super::Start();
 
+	m_pCannonCam = CCamera_Follow::Create(this, nullptr);
+	m_pCannonCam->Initialize();
+	_float4 vPos = m_pTransform->Get_MyWorld(WORLD_POS);
+	vPos.y += 3.5f;
+	m_pCannonCam->Get_Transform()->Set_World(WORLD_POS, vPos);
+	_float4 vLook = m_pTransform->Get_MyWorld(WORLD_LOOK);
+	m_pCannonCam->Get_Transform()->Set_Look(vLook);
+	m_pCannonCam->Get_Transform()->Make_WorldMatrix();
+	CREATE_GAMEOBJECT(m_pCannonCam, GROUP_CAMERA);
+	GAMEINSTANCE->Add_Camera_Level(L"CannonCam", m_pCannonCam);
+	DISABLE_GAMEOBJECT(m_pCannonCam);
+
+
 	m_pAnimator->Set_CurAnimIndex(0, 0);
 	m_pAnimator->Set_InterpolationTime(0, 0, 0.1f);
-	m_pAnimator->Set_AnimSpeed(0, 0, 1.f);
+	m_pAnimator->Set_AnimSpeed(0, 0, 0.f);
 
     return S_OK;
 }
@@ -88,20 +117,75 @@ HRESULT CCannon::Start()
 _float4 CCannon::Get_ControlPos()
 {
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-	vPos -= m_pTransform->Get_World(WORLD_LOOK) * 1.f;
+	vPos -= m_pTransform->Get_World(WORLD_LOOK) * 1.4f;
 	vPos.y += 1.f;
+
+
+
 	return vPos;
 }
 
 void CCannon::Control_Cannon(CPlayer* pPlayer)
 {
 	m_pCurOwnerPlayer = pPlayer;
+	if (pPlayer->IsMainPlayer())
+	{
+		GET_COMPONENT_FROM(m_pCannonCam, CScript_FollowCam)->Start_LerpType(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_CANNON);
+		GAMEINSTANCE->Change_Camera(L"CannonCam");
+	}
+}
+
+void CCannon::Exit_Cannon()
+{
+	if (m_pCurOwnerPlayer->IsMainPlayer())
+	{
+		GAMEINSTANCE->Change_Camera(L"PlayerCam");
+	}
+	m_pCurOwnerPlayer = nullptr;
+
 }
 
 void CCannon::Shoot_Cannon()
 {
 	m_pAnimator->Set_CurAnimIndex(0, 0);
 	m_pAnimator->Set_InterpolationTime(0, 0, 0.1f);
+	m_pAnimator->Set_AnimSpeed(0,0,1.f);
+
+
+	_float4x4 BoneMatrix = m_pBonePitch->Get_BoneMatrix();
+	_float4 vFirePos = BoneMatrix.XMLoad().r[3];
+	_float4 vBoneLook = BoneMatrix.XMLoad().r[0];
+	vFirePos += vBoneLook * 450.f;
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Parring_Particle", vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+
+}
+
+_bool CCannon::Can_ControlCannon(CPlayer* pPlayer)
+{
+	if (pPlayer->Get_Team()->Has_CannonTrigger() && !m_pCurOwnerPlayer)
+		return true;
+
+	return false;
+}
+
+_float CCannon::Lerp_Position(_float fCurPosition, _float fTargetPosition, _float fRange)
+{
+	_float fLength = fTargetPosition - fCurPosition;
+	_float fSign = 1.f;
+
+	if (fLength < 0.f)
+	{
+		fSign = -1.f;
+		fLength *= -1.f;
+	}
+
+	if (fLength < fRange * fDT(0))
+		return -9999.f;
+
+	_float fResult = (fCurPosition + fDT(0) * m_fCannonMoveSpeed * fSign);
+
+
+	return fResult;
 }
 
 void CCannon::My_Tick()
@@ -111,4 +195,81 @@ void CCannon::My_Tick()
 
 	if (!m_pCurOwnerPlayer->Get_CurrentUnit()->Is_Valid())
 		return;
+
+	if (KEY(LBUTTON, TAP))
+	{
+		Shoot_Cannon();
+	}
+
+	if (m_pAnimator->Is_CurAnimFinished())
+	{
+		m_pAnimator->Set_CurAnimIndex(0, 0);
+		m_pAnimator->Set_InterpolationTime(0, 0, 0.1f);
+		m_pAnimator->Set_AnimSpeed(0, 0, 0.f);
+	}
+
+}
+
+void CCannon::My_LateTick()
+{
+	if (!m_pCurOwnerPlayer)
+		return;
+
+	if (!m_pCurOwnerPlayer->Get_CurrentUnit()->Is_Valid())
+		return;
+
+	if (GET_COMPONENT_FROM(m_pCannonCam, CCameraCollider)->Is_Valid())
+		DISABLE_COMPONENT(GET_COMPONENT_FROM(m_pCannonCam, CCameraCollider));
+
+
+	/* 위 아래만 꺾어줘야함 */
+
+	_float4x4 matOffset;
+	_float4 vCurCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+
+	m_fCannonMoveSpeed;
+
+	/* Radian 값으로 보간을 하자. */
+	_float fTargetPitch, fTargetYaw;
+	_float fRange = m_fCannonMoveSpeed * 1.5f;
+
+	_float4 vCamLookNoY = vCurCamLook;
+	vCamLookNoY.y = 0.f;
+	vCamLookNoY.Normalize();
+	_float fDot = vCurCamLook.Dot(vCamLookNoY);
+	fTargetPitch = acosf(fDot);
+
+	if (vCurCamLook.y < 0.f)
+		fTargetPitch *= -1.f;
+
+
+	_float fNewPitch = Lerp_Position(m_fCurPitch, fTargetPitch, fRange);
+	if (fNewPitch > -9998.f)
+		m_fCurPitch = fNewPitch;
+
+	
+
+	matOffset = XMMatrixRotationAxis(m_pTransform->Get_World(WORLD_UP).XMLoad(), m_fCurPitch);
+
+
+
+
+	/* 좌우 */
+	fDot = vCamLookNoY.Dot(m_pTransform->Get_World(WORLD_LOOK));
+	fTargetYaw = acosf(fDot);
+	if (vCurCamLook.z > 0.f)
+		fTargetYaw *= -1.f;
+
+	_float fNewYaw = Lerp_Position(m_fCurYaw, fTargetYaw, fRange);
+	if (fNewYaw > -9998.f)
+		m_fCurYaw = fNewYaw;
+
+	
+
+	matOffset = matOffset.XMLoad() * XMMatrixRotationAxis(m_pTransform->Get_World(WORLD_RIGHT).XMLoad(), m_fCurYaw);
+
+
+	//Pitch : x축, 위 아래
+	m_pBonePitch->Set_PrevMatrix(matOffset);
+
 }

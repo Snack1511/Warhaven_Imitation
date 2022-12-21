@@ -304,6 +304,7 @@ void CUnit::On_Die()
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"KillSmoke_Right", vPos, vCamMatrix);
 
 	DISABLE_GAMEOBJECT(this);
+	
 
 	if (m_pCurState)
 	{
@@ -673,6 +674,8 @@ void CUnit::OnDisable()
 	__super::OnDisable();
 	if (m_pAnimWeapon)
 		DISABLE_GAMEOBJECT(m_pAnimWeapon);
+
+	
 }
 
 
@@ -862,9 +865,9 @@ void CUnit::On_ChangeToHero(_uint iIndex)
 {
 	m_pOwnerPlayer->Change_UnitClass((CLASS_TYPE)iIndex);
 	m_pOwnerPlayer->AbleHero() = false;
-	m_pOwnerPlayer->IsHero() = true;
 
-
+	if (m_pCurState)
+		m_pCurState->Exit(this, m_pAnimator);
 }
 
 _float4 CUnit::Get_FollowCamLook()

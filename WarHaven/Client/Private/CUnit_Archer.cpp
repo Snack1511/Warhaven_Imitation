@@ -472,7 +472,7 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	m_fCoolTime[SKILL1] = 3.f;
 	m_fCoolTime[SKILL2] = 5.f;
-	m_fCoolTime[SKILL3] = 60.f;
+	m_fCoolTime[SKILL3] = 3.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 
@@ -481,8 +481,8 @@ HRESULT CUnit_Archer::Initialize_Prototype()
 
 	m_tUnitStatus.eClass = ARCHER;
 
-	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_LongBow_01.fbx",
-		L"../bin/resources/meshes/weapons/longbow/LongBow_Anim.fbx", this, "0B_L_WP1");
+	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_WP_LongBow0005_A00_30.fbx",
+		L"../bin/resources/meshes/weapons/longbow/LongBow_Anim2.fbx", this, "0B_L_WP1");
 
 	if (!m_pAnimWeapon)
 		return E_FAIL;

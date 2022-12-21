@@ -264,10 +264,18 @@ MODEL_DATA* CResource_Manager::Create_DatFile(wstring wstrFilePath, MODEL_TYPE e
 	{
 		writeFile.write((char*)&pAIScene->mNumAnimations, sizeof(_uint));
 
-		for (_uint i = 1; i < pAIScene->mNumAnimations; ++i)
+		if (pAIScene->mNumAnimations == 1)
 		{
-			Save_Anim(pAIScene->mAnimations[i], &writeFile);
+			Save_Anim(pAIScene->mAnimations[0], &writeFile);
 		}
+		else
+		{
+			for (_uint i = 1; i < pAIScene->mNumAnimations; ++i)
+			{
+				Save_Anim(pAIScene->mAnimations[i], &writeFile);
+			}
+		}
+		
 	}
 	else
 	{

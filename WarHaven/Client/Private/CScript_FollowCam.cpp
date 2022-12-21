@@ -153,13 +153,23 @@ HRESULT CScript_FollowCam::Initialize()
 	m_arrLerpDesc[CAMERA_LERP_SPRINT].vTargetOffset.x = 0.f;
 
 	//m_arrLerpDesc[CAMERA_LERP_ZOOM].vTargetOffset.y *= 1.2f;
-	m_arrLerpDesc[CAMERA_LERP_ZOOM].fTargetDistance *= 0.6f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOM].fTargetDistance *= 0.5f;
 	m_arrLerpDesc[CAMERA_LERP_ZOOM].fMaxDistance *= 0.4f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOM].fCameraDistanceLerpTime *= 0.5f;
 
 
 	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX] = m_arrLerpDesc[CAMERA_LERP_ZOOM];
 	/* °Å¸® */
-	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX].fTargetDistance *= 0.2f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX].fTargetDistance *= 0.7f;
+
+
+	m_arrLerpDesc[CAMERA_LERP_CANNON].fTargetDistance = 0.5f;
+	m_arrLerpDesc[CAMERA_LERP_CANNON].vTargetOffset.x = 0.f;
+	m_arrLerpDesc[CAMERA_LERP_CANNON].vTargetOffset.z = 0.f;
+	m_arrLerpDesc[CAMERA_LERP_CANNON].vTargetOffset.y = 3.5f;
+	m_arrLerpDesc[CAMERA_LERP_CANNON].fMaxDistance *= 0.4f;
+	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraDistanceLerpTime *= 0.2f;
+	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraOffsetLerpTime *= 0.2f;
 
 
 
@@ -278,7 +288,7 @@ void CScript_FollowCam::OnEnable()
 {
 	__super::OnEnable();
 	//DISABLE_COMPONENT(m_pPhyscisCom);
-	Start_LerpType(CAMERA_LERP_DEFAULT);
+	Start_LerpType(m_eCurrentLerpType);
 
 }
 

@@ -17,6 +17,7 @@
 #include "Transform.h"
 #include "CUser.h"
 
+
 CLevel_Paden::CLevel_Paden()
 {
 }
@@ -59,9 +60,13 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Paden::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 
-	//주석 걸어논거 풀어서 써라 또 여따 TerrainOnly적지말고
-	CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
-	//CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
+#ifdef _DEBUG
+		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
+#else
+		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
+
+#endif
+
 	m_fLoadingFinish = 0.5f;
 
 	/* GameSystem */
@@ -83,8 +88,14 @@ HRESULT CLevel_Paden::Enter()
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterStage()))
 		return E_FAIL;
 
+#ifdef _DEBUG
+#else
 	if (FAILED(CGameSystem::Get_Instance()->Paden_EnvironmentEffect()))
 		return E_FAIL;
+
+#endif 
+
+
 
 	return S_OK;
 }

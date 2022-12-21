@@ -152,6 +152,8 @@ void CArcher_Attack_Begin_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 	__super::Enter_Attack_Begin(pOwner);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMMAX);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+
+	GAMEINSTANCE->Start_RadialBlur(0.01f);
 }
 
 STATE_TYPE CArcher_Attack_Begin_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -173,6 +175,8 @@ STATE_TYPE CArcher_Attack_Begin_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimato
 
 void CArcher_Attack_Begin_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	GAMEINSTANCE->Stop_RadialBlur();
+
 	Prevent_Oneframe(pOwner);
 	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
 

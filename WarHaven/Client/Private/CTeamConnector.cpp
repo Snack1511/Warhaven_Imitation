@@ -106,9 +106,12 @@ CPlayer* CTeamConnector::Find_Player(wstring wstrName)
 void CTeamConnector::Add_Trigger(CTrigger* pTrigger)
 {
     m_OurTriggers.push_back(pTrigger);
-    if (static_cast<CTrigger_Paden*>(pTrigger)->Get_TriggerType() == CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN)
+
+    CTrigger_Paden::ePADEN_TRIGGER_TYPE eType = static_cast<CTrigger_Paden*>(pTrigger)->Get_TriggerType();
+
+    if (eType != CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART)
     {
-        m_bHasMainTrigger = true;
+        m_bHasTrigger[(_uint)eType - 1] = true;
     }
 }
 
@@ -119,8 +122,12 @@ void CTeamConnector::Erase_Trigger(string strTriggerKey)
     {
         if (static_cast<CTrigger_Paden*>(*iter)->Get_TriggerName() == strTriggerKey)
         {
-            if (static_cast<CTrigger_Paden*>(*iter)->Get_TriggerType() == CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN)
-                m_bHasMainTrigger = false;
+            CTrigger_Paden::ePADEN_TRIGGER_TYPE eType = static_cast<CTrigger_Paden*>(*iter)->Get_TriggerType();
+
+            if (eType != CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART)
+            {
+                m_bHasTrigger[(_uint)eType] = true;
+            }
 
             iter = m_OurTriggers.erase(iter);
             break;

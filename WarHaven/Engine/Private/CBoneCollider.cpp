@@ -187,7 +187,14 @@ void CBoneCollider::Late_Tick()
 
 void CBoneCollider::OnEnable()
 {
-	__super::OnEnable();
+	CComponent::OnEnable();
+
+	if (!m_pPxController)
+	{
+		CPhysX_Manager::Get_Instance()->Create_CapsuleController(m_tColliderDesc.fRadius, m_tColliderDesc.fHeight, &m_pPxController, this);
+		m_pPxController->setPosition(CUtility_PhysX::To_PxExtendedVec3(m_pOwner->Get_Transform()->Get_World(WORLD_POS)));
+	}
+
 
 	if (m_pPxController)
 	{

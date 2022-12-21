@@ -153,6 +153,8 @@ void CArcher_Aiming_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TY
 {
 	__super::Enter_Aiming(pOwner, pAnimator, ePrevType, CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_ZOOMMAX);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+	GAMEINSTANCE->Start_RadialBlur(0.01f);
+
 }
 
 STATE_TYPE CArcher_Aiming_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -167,6 +169,8 @@ void CArcher_Aiming_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	__super::Exit_Aiming(pOwner);
 	__super::Exit(pOwner, pAnimator);
+	GAMEINSTANCE->Stop_RadialBlur();
+
 }
 
 STATE_TYPE CArcher_Aiming_Sniping::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

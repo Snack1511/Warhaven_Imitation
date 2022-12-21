@@ -292,6 +292,7 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 	if (eClassType >= CT_DEFAULT_END)
 		m_bIsHero = true;
 
+
 	m_ePrevClass = m_eCurrentClass;
 
 	m_eCurrentClass = eClassType;
@@ -370,8 +371,12 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 
 			if (m_bIsLeaderPlayer)
 			{
-				Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
-				m_strStartPath = m_pCurPath->m_strName;
+				/*Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
+				m_strStartPath = m_pCurPath->m_strName;*/
+
+				m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
+				Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_strStartPath, m_pAIController));
+
 			}
 			else
 			{
@@ -386,13 +391,24 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 		{
 
 			CPath* pPath = CGameSystem::Get_Instance()->Find_Path(m_strStartPath);
+
+
 			if (pPath)
 			{
 				m_pUI_Trail->Clear_Nodes();
 				vPos.y += 0.1f;
 				m_pUI_Trail->Add_Node(vPos);
 
+
 				vector<_float4>& vecPositions = pPath->Get_vecPositions();
+
+				_float4 vLook = vecPositions.front() - vPos;
+				
+				m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
+				m_pCurrentUnit->Get_Transform()->Make_WorldMatrix();
+				m_pFollowCam->Get_Transform()->Set_Look(vLook);
+				m_pFollowCam->Get_Transform()->Make_WorldMatrix();
+
 				for (auto& elem : vecPositions)
 				{
 					_float4 vNode = elem;

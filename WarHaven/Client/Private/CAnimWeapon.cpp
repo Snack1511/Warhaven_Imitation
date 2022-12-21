@@ -92,7 +92,7 @@ HRESULT CAnimWeapon::SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFile
 	matIdentity.Identity();
 
 	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, wstrModelFilePath,
-		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(90.0f)) * XMMatrixRotationX(XMConvertToRadians(90.0f))
+		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(270.0f)) * XMMatrixRotationX(XMConvertToRadians(90.0f))
 	);
 	pModel->Add_Model(wstrModelFilePath, 1);
 	pModel->Initialize();

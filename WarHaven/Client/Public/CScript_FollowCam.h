@@ -48,6 +48,7 @@ public:
 		CAMERA_LERP_SPRINT,
 		CAMERA_LERP_ZOOM,
 		CAMERA_LERP_ZOOMMAX,
+		CAMERA_LERP_CANNON,
 
 		CAMERA_LERP_END, 
 	};
@@ -109,7 +110,7 @@ private:
 	CGameObject*			m_pFollowTarget = nullptr;
 	CNavigation*			m_pTargetsNavi = nullptr;
 	LERPDESC				m_arrLerpDesc[CAMERA_LERP_END];
-	CAMERA_LERP_TYPE		m_eCurrentLerpType = CAMERA_LERP_END;
+	CAMERA_LERP_TYPE		m_eCurrentLerpType = CAMERA_LERP_DEFAULT;
 
 	DEFAULTFOLLOWDESC		m_tDefaultDesc;
 

@@ -317,7 +317,7 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 
 	//경사진 슬로프만나면 어떻게 할 지
 	tCCT.nonWalkableMode = PxControllerNonWalkableMode::ePREVENT_CLIMBING_AND_FORCE_SLIDING;
-	tCCT.slopeLimit = cosf(ToRadian(55.f));
+	tCCT.slopeLimit = cosf(ToRadian(50.f));
 
 	//tCCT.invisibleWallHeight = 0.6f;
 	if (!tCCT.isValid())

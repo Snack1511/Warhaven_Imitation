@@ -73,6 +73,7 @@ void CState_Cannon_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
         pOwner->Teleport_Unit(pCannon->Get_ControlPos());
     }
 
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -86,8 +87,9 @@ STATE_TYPE CState_Cannon_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CState_Cannon_Player::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+
     /* 할거없음 */
-    pOwner->Get_AdjCannon()->Control_Cannon(nullptr);
+    pOwner->Get_AdjCannon()->Exit_Cannon();
 }
 
 STATE_TYPE CState_Cannon_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -97,10 +99,14 @@ STATE_TYPE CState_Cannon_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnim
     */
     if (pOwner->Get_AdjCannon())
     {
-        if (KEY(F, TAP))
+        if (pOwner->Get_AdjCannon()->Can_ControlCannon(pOwner->Get_OwnerPlayer()))
         {
-            return m_eStateType;
+            if (KEY(F, TAP))
+            {
+                return m_eStateType;
+            }
         }
+       
     }
 
     return STATE_END;

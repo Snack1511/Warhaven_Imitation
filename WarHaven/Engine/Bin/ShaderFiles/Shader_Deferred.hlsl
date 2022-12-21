@@ -281,6 +281,7 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	{
 		if (dot((vDiffuse.xyz * vShadowDesc.xyz), float3(0.333f, 0.333f, 0.333f)) > 0.5f)
 			Out.vColor += vSpecular;
+
 	}
 
 

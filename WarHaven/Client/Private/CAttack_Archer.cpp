@@ -460,6 +460,7 @@ void CAttack_Archer::Enter_Attack_Begin(CUnit* pOwner)
 	m_bMoveTrigger = false;
 
 
+	//pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_CANNON);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
 
 }

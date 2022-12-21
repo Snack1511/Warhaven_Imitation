@@ -58,6 +58,8 @@ public:
 	void	Set_ShaderFlag(_float4 vFlag);
 	void	Set_ShaderFlag(_uint iMeshPartType, _float4 vFlag);
 
+	void	Set_AnimModelRadius(_float fRadius) { m_fAnimModelRadius = fRadius; }
+
 	void	Set_ShaderColor(_uint iMeshPartType, _float4 vColor);
 
 	void	Set_OutlineFlag(_float4 vOutlineFlag);
@@ -139,6 +141,8 @@ protected:
 
 	_float4* m_pInstancingCenterPos = nullptr;
 	_float* m_pInstancingMaxRange = nullptr;
+
+	_float	m_fAnimModelRadius = 2.f;
 
 
 protected:
