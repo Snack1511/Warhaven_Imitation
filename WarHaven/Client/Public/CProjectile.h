@@ -52,7 +52,8 @@ protected:
 	CGameObject* m_pHitUnit = nullptr;
 	_float4x4 m_matHitOffset;
 
-	
+	// 100
+
 protected:
 	_float	m_fMaxSpeed = 50.f;
 	_float	m_fLoopTimeAcc = 0.f;

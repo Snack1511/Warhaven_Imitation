@@ -193,11 +193,14 @@ void CAttack_Archer::Exit(CUnit * pOwner, CAnimator * pAnimator)
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-	//Exit_Aiming(pOwner);
 }
 
 STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (KEY(LBUTTON, AWAY))
+		m_bKeyInput = true;
+
+
 	if (pOwner->Is_MainPlayer())
 	{
 		switch (m_eEnum)
@@ -544,6 +547,7 @@ void CAttack_Archer::Enter_Attack_Begin(CUnit* pOwner)
 
 	m_bMoveTrigger = false;
 
+	m_iMinCancelAnimIndex = 30;
 
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
 

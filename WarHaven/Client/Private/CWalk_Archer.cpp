@@ -8,6 +8,7 @@
 #include "CUnit.h"
 
 #include "CUser.h"
+#include "CAnimWeapon.h"
 
 CWalk_Archer::CWalk_Archer()
 {
@@ -64,6 +65,7 @@ void CWalk_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 {
     /* OwnerÀÇ Animator Set Idle·Î */
 	m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
+    pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

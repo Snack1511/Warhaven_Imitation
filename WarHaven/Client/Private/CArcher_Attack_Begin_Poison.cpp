@@ -48,7 +48,7 @@ HRESULT CArcher_Attack_Begin_Poison::Initialize()
 	m_fAnimSpeed = 2.3f;
 	m_iStateChangeKeyFrame = 0;
 
-	Add_KeyFrame(30, 1);
+	Add_KeyFrame(31, 1);
 	Add_KeyFrame(90, 2);
 
     return __super::Initialize();
@@ -62,17 +62,24 @@ void CArcher_Attack_Begin_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 STATE_TYPE CArcher_Attack_Begin_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	
+	if (KEY(LBUTTON, AWAY))
+		m_bKeyInputable = true;
+
 	if (m_bMoveTrigger)
 		return STATE_ATTACK_AIMING_POISION_ARCHER;
 
-	if (KEY(LBUTTON, AWAY))
+
+	if (m_bKeyInput)
 	{
-		if (m_bAttackTrigger)
-			return STATE_ATTACK_SHOOT_POISION_ARCHER;
-		else
-			return STATE_ATTACK_CANCEL_ARCHER;
+		if (pAnimator->Get_CurAnimFrame() > m_iMinCancelAnimIndex)
+		{
+			if (!m_bKeyInputable || m_bAttackTrigger)
+				return STATE_ATTACK_SHOOT_POISION_ARCHER;
+			else
+				return STATE_ATTACK_CANCEL_ARCHER;
+		}
 	}
+
 
 
     return __super::Tick(pOwner, pAnimator);
@@ -81,6 +88,7 @@ STATE_TYPE CArcher_Attack_Begin_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator
 void CArcher_Attack_Begin_Poison::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	Prevent_Oneframe(pOwner);
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
 	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
 
 	__super::Exit(pOwner, pAnimator);

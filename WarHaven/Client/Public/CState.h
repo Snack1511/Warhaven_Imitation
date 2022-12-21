@@ -37,6 +37,8 @@ public:
 
 		HIT_TYPE	eHitType = HIT_TYPE::eEND;
 
+		CUnit* pOtherUnit = nullptr;
+
 	};
 
 public:

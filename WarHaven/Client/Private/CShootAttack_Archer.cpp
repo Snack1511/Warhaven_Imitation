@@ -127,9 +127,9 @@ HRESULT CShootAttack_Archer::Initialize()
 
 	m_eWalkState = STATE_WALK_ARCHER_R;
 	m_eJumpState = STATE_JUMP_ARCHER_R;
-	m_eLandState = STATE_WALK_ARCHER_R;
+	m_eLandState = STATE_RUN_ARCHER_R;
 	m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	m_eRunState = STATE_WALK_ARCHER_R;
+	m_eRunState = STATE_RUN_ARCHER_R;
 	m_eIdleState = STATE_IDLE_ARCHER_R;
 	m_eBounceState = STATE_WALK_ARCHER_R;
 
@@ -143,7 +143,7 @@ HRESULT CShootAttack_Archer::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
-	m_bLandMove = true;
+	m_bSmootMoveLoop = true;
 
     return __super::Initialize();
 }

@@ -67,6 +67,9 @@ STATE_TYPE CArcher_Aiming_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (KEY(LBUTTON, AWAY))
 		return STATE_ATTACK_SHOOT_SNIPING_ARCHER;
 
+    if (KEY(RBUTTON, TAP))
+        return STATE_ATTACK_CANCEL_ARCHER;
+
 	return __super::Tick(pOwner, pAnimator);
 }
 

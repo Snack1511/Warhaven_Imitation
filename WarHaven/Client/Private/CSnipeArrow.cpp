@@ -62,5 +62,9 @@ HRESULT CSnipeArrow::Initialize_Prototype()
 	m_hcCode = HASHCODE(CSnipeArrow);
 	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
 
+	m_fMaxSpeed = 60.f;
+	m_fMaxDistance = 100.f;
+
+
     return CProjectile::Initialize_Prototype();
 }

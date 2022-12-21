@@ -37,12 +37,19 @@ HRESULT CPlayerInfo_SandBack::Initialize()
 	m_tPlayerInfo.wstrName = L"SandBack_";
 	m_tPlayerInfo.wstrName += to_wstring(g_SandBackCnt++);
 
+
+	
+
 	if(g_SandBackCnt < 3 && g_SandBackCnt % 2 == 0)
 		m_vecPrefClassType.push_back(ENGINEER);
 	else
-		m_vecPrefClassType.push_back(WARRIOR);
+	{
+		m_vecPrefClassType.push_back(PALADIN);
+		//m_vecPrefClassType.push_back(ARCHER);
+		//m_vecPrefClassType.push_back(WARRIOR);
+	}
 
-	m_iUnitType = ((_uint)CUnit::UNIT_TYPE::eSandbag);
+	//m_iUnitType = ((_uint)CUnit::UNIT_TYPE::eSandbag);
 
 
 	return S_OK;

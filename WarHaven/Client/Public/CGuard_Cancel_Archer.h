@@ -1,9 +1,9 @@
 #pragma once
-#include "CState.h"
+#include "CState_Blendable.h"
 
 BEGIN(Client)
 class CGuard_Cancel_Archer
-	: public CState
+	: public CState_Blendable
 {
 	DECLARE_STATE(CGuard_Cancel_Archer);
 

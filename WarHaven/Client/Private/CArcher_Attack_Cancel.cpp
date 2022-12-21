@@ -16,7 +16,7 @@
 
 #include "CUnit_Archer.h"
 #include "CProjectile.h"
-
+#include "CAnimWeapon.h"
 
 CArcher_Attack_Cancel::CArcher_Attack_Cancel()
 {
@@ -155,12 +155,15 @@ HRESULT CArcher_Attack_Cancel::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+	m_bSmootMoveLoop = true;
+
     return __super::Initialize();
 }
 
 void CArcher_Attack_Cancel::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKCANCEL, m_fInterPolationTime, m_fAnimSpeed);
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;
@@ -172,15 +175,14 @@ void CArcher_Attack_Cancel::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CArcher_Attack_Cancel::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Get_FollowCam()->Start_FOVLerp(XMConvertToRadians(45.f));
-
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CArcher_Attack_Cancel::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
+
     //Exit에선 무조건 남겨놔야함
-    pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
 

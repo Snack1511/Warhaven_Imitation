@@ -1,10 +1,6 @@
 #pragma once
 #include "CState_Hit.h"
 
-BEGIN(Engine)
-END
-
-
 BEGIN(Client)
 class CAI_SandBack_StingHit
 	: public CState_Hit
@@ -30,6 +26,7 @@ private:
 
 private:
 	_bool	bTest = false; 
+
 
 };
 

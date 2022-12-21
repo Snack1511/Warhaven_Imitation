@@ -41,8 +41,11 @@ private:
 	void WarHammer_State_AI();
 	void Valkyrie_State_AI();
 	void Paladin_State_AI();
+	void Archer_State_AI();
 
 	void Spear_State();
+
+
 
 private:
 	CState* m_arrStates[STATE_END] = {};

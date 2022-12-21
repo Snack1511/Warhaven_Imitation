@@ -3031,6 +3031,63 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\99. Parent\02. Shoot">
       <UniqueIdentifier>{83a8c56c-16e4-437a-a9b3-1f51f45214fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\05. Archer">
+      <UniqueIdentifier>{e9ad3a46-1e92-4bb4-a715-ad8fc4263f22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\05. Archer">
+      <UniqueIdentifier>{99e4cde2-2a14-49cc-ab47-fa1ef3129ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\05. Archer\01. Right">
+      <UniqueIdentifier>{c697536e-6cfe-4d65-a270-070eaae302f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\05. Archer\02. Left">
+      <UniqueIdentifier>{15a07da5-15cb-4eeb-86f8-01f123ca92fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\05. Archer\02. Left">
+      <UniqueIdentifier>{277d481c-7761-4a7d-8575-4ebaac85d0a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\05. Archer\01. Right">
+      <UniqueIdentifier>{333c5d75-345b-4535-b0ed-e11fb015770b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\05. Archer">
+      <UniqueIdentifier>{c95250a9-9b03-4028-bc12-1393c91301fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\05. Archer">
+      <UniqueIdentifier>{cfe9abd0-3213-4d87-ba2f-f36bb44e4290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\05. Archer">
+      <UniqueIdentifier>{acd28c81-4801-4e30-92ab-73cfb771b813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\05. Archer">
+      <UniqueIdentifier>{73819184-fc52-42c9-b12b-0164230d6f3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\05. Archer">
+      <UniqueIdentifier>{45edba44-4535-4c6b-8e95-9f8090571549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\05. Archer">
+      <UniqueIdentifier>{addaa2f5-aec8-46ee-9c37-3d521faa98ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\05. Archer">
+      <UniqueIdentifier>{db8704d5-534b-4ba9-a0be-96cf8ad59c2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\05. Archer">
+      <UniqueIdentifier>{53e05aee-6770-45d7-a151-1325aade0d73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\03. Guard\Cancel\05. Archer">
+      <UniqueIdentifier>{529c8c2f-a3f1-43c7-bb44-53621a23f94c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\05. Archer\01. Right">
+      <UniqueIdentifier>{64e1f528-8c0d-43aa-a953-ba7fc181cf7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\05. Archer\02. Left">
+      <UniqueIdentifier>{8798774e-ec99-44de-94ec-8a19e7f2167b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\05. Archer\01. Right">
+      <UniqueIdentifier>{b3349fd7-07b0-4bd3-b4eb-87d032568223}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\05. Archer\02. Left">
+      <UniqueIdentifier>{012bf6a2-e4ed-423b-917e-427b82984613}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5448,6 +5505,60 @@
     <ClInclude Include="..\Public\CShootAttack_Archer.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\99. Parent\02. Shoot</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Default_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Walk_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_FlyHit_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Sting_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Hit_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Groggy_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_GuardHit_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Land_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Fall_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Common_Bounce_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\05. Archer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -7845,6 +7956,60 @@
     </ClCompile>
     <ClCompile Include="..\Private\CShootAttack_Archer.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\99. Parent\02. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Default_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\01. Default\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Walk_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\03. Walk\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_FlyHit_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\04. Fly\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Sting_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\03. Sting\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Hit_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\00. Hit\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Groggy_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\02. Groggy\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_GuardHit_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\01. Hit\01. GuardHit\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Land_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\02. Land\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Fall_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\04. Jump\01. Fall\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Common_Bounce_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Common\02. Bounce\05. Archer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

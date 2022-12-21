@@ -49,12 +49,12 @@ public:
 		_float fShortDashSpeed = 8.f;
 		_float fDashAttackSpeed = 16.f;
 		_float fWallJumpSpeed = 15.f;
-		_float fBackStepSpeed = 30.f;
+		_float fBackStepSpeed = 1.8f;
 		_float fSprintAttackSpeed = 11.F;
 		_float fSprintJumpSpeed = 10.F;
 		_float fSprintSpeed = 7.f;
 		_float fJumpPower = 4.5f;
-		_float fStoreSpeed = 0.f; // 저장할 스피트 값 입력
+		_float fStoreSpeed = 4.f; // 저장할 스피트 값 입력
 
 
 		_float	fAttackDamage = 50.f;

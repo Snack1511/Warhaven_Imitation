@@ -42,17 +42,21 @@ HRESULT CPlayerInfo_Default::Initialize()
 
 
 
-#ifdef ENGINEER_TH
-	m_vecPrefClassType.push_back(ENGINEER);
-#endif // WARRIOR_TH
+//#ifdef ENGINEER_TH
+//	m_vecPrefClassType.push_back(ENGINEER);
+//#endif // WARRIOR_TH
+//
+//#ifdef WARRIOR_TH
+//	m_vecPrefClassType.push_back(WARRIOR);
+//#endif // WARRIOR_TH
+//
+//#ifdef PALADIN_TH
+//	m_vecPrefClassType.push_back(PALADIN);
+//#endif // WARRIOR_TH
 
-#ifdef WARRIOR_TH
-	m_vecPrefClassType.push_back(WARRIOR);
-#endif // WARRIOR_TH
-
-#ifdef PALADIN_TH
-	m_vecPrefClassType.push_back(PALADIN);
-#endif // WARRIOR_TH
+#ifdef ARCHER_TH
+	m_vecPrefClassType.push_back(ARCHER);
+#endif // ARCHER_TH
 
 	if (FAILED(SetUp_AIPersonality()))
 		return E_FAIL;

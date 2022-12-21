@@ -10,6 +10,8 @@
 
 #include "CCollider_Sphere.h"
 
+#include "CState.h"
+
 CPurpleArrow::CPurpleArrow()
 {
 }
@@ -68,6 +70,9 @@ HRESULT CPurpleArrow::Initialize_Prototype()
 
 	m_fMaxPoisonTime = 0.3f;
 	m_fDamage = -5.f;
+
+	m_fMaxSpeed = 40.f;
+	m_fMaxDistance = 70.f;
 
     return CProjectile::Initialize_Prototype();
 }
@@ -133,20 +138,45 @@ void CPurpleArrow::My_Tick()
 	
 	if (m_eCurPhase == eSTICK)
 	{
-		
+		CUnit* pUnit = static_cast<CUnit*>(m_pHitUnit);
 
 		m_fCurPoisonTime += fDT(0);
 	
 		if (m_fCurPoisonTime > m_fMaxPoisonTime)
 		{
+
 			if (m_iTickCnt == m_iMaxTickCnt)
+			{
+				CState::HIT_INFO tHitInfo;
+				ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
+
+				tHitInfo.eHitType = CState::HIT_TYPE::eUP;
+				tHitInfo.fKnockBackPower = 3.f;
+				tHitInfo.fJumpPower = 0.f;
+
+				pUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false);
+				pUnit->Enter_State(pUnit->Get_HitType().eGroggyState, &tHitInfo);
+				
+				if (pUnit->Get_Status().fHP < 0.f)
+					pUnit->On_Die();
+				
 				DISABLE_GAMEOBJECT(this);
+			}
+				
 			else
 			{
-				static_cast<CUnit*>(m_pHitUnit)->On_PlusHp(m_fDamage, m_pOwnerUnit, false);
+				pUnit->On_PlusHp(m_fDamage, m_pOwnerUnit, false, 9999);
+				
+				if (pUnit->Get_Status().fHP < 0.f)
+				{
+					pUnit->On_Die();
+					DISABLE_GAMEOBJECT(this);
+				}
+				
 				++m_iTickCnt;
 				m_fCurPoisonTime = 0.f;
 			}
+
 
 
 			

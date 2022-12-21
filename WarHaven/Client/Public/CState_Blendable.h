@@ -84,8 +84,10 @@ protected:
 	/*애니메이션 끝나고 돌아갈 상태 ENUM 값*/
 	STATE_TYPE			m_eIdleState = STATE_END;
 
-	/*Land 시 움직일 수 있도록 설정*/
-	_bool	m_bLandMove = false;
+	/* Loop 용 특별 변수 점프하면서 바로 움직이거나 Fall 상태에서 움직일 때 사용! RunSpeed의 속도를 따라감*/
+	_bool	m_bSmootMoveLoop = false;
+	STATE_DIRECTION m_ePreDirection;
+	
 
 
 protected:

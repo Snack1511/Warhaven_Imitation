@@ -529,6 +529,12 @@
 #include "CState_Patrol_Walk_Paladin_L.h"
 #include "CState_Patrol_Walk_Paladin_R.h"
 
+#include "CState_Patrol_Default_Archer_L.h"
+#include "CState_Patrol_Default_Archer_R.h"
+#include "CState_Patrol_Walk_Archer_L.h"
+#include "CState_Patrol_Walk_Archer_R.h"
+
+
 
 
 #pragma endregion 
@@ -737,6 +743,18 @@
 #include "CState_Common_Bounce_Paladin_L.h"
 #include "CState_Common_Bounce_Paladin_R.h"
 
+#include "CState_Common_Land_Archer_L.h"
+#include "CState_Common_Land_Archer_R.h"
+#include "CState_Common_Fall_Archer_L.h"
+#include "CState_Common_Fall_Archer_R.h"
+#include "CState_Common_Hit_Archer.h"
+#include "CState_Common_GuardHit_Archer.h"
+#include "CState_Common_Groggy_Archer.h"
+#include "CState_Common_Sting_Archer.h"
+#include "CState_Common_FlyHit_Archer.h"
+#include "CState_Common_Bounce_Archer.h"
+
+
 
 #pragma endregion
 
@@ -809,6 +827,7 @@ HRESULT CState_Manager::Initialize()
 	WarHammer_State_AI();
 	Valkyrie_State_AI();
 	Paladin_State_AI();
+	Archer_State_AI();
 
 
 	for (_uint i = 0; i < STATE_END; ++i)
@@ -1736,9 +1755,6 @@ void CState_Manager::Paladin_State_AI()
 
 #pragma region Common
 
-	if (false)
-		int a = 0;
-
 	m_arrStates[AI_STATE_COMMON_FALL_PALADIN_L] = CState_Common_Fall_Paladin_L::Create();
 	m_arrStates[AI_STATE_COMMON_FALL_PALADIN_R] = CState_Common_Fall_Paladin_R::Create();
 	m_arrStates[AI_STATE_COMMON_LAND_PALADIN_L] = CState_Common_Land_Paladin_L::Create();
@@ -1755,6 +1771,42 @@ void CState_Manager::Paladin_State_AI()
 
 #pragma endregion
 
+
+
+}
+
+void CState_Manager::Archer_State_AI()
+{
+	// юс╫ц 
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_ARCHER_R] = CState_Patrol_Default_Archer_R::Create();
+	
+
+
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEFAULT_ARCHER_L] = CState_Patrol_Default_Archer_L::Create();
+	m_arrStates[AI_STATE_PATROL_DEFAULT_ARCHER_R] = CState_Patrol_Default_Archer_R::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_ARCHER_L] = CState_Patrol_Walk_Archer_L::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_ARCHER_R] = CState_Patrol_Walk_Archer_R::Create();
+
+#pragma endregion
+
+#pragma region Common
+
+	m_arrStates[AI_STATE_COMMON_FALL_ARCHER_L] = CState_Common_Fall_Archer_L::Create();
+	m_arrStates[AI_STATE_COMMON_FALL_ARCHER_R] = CState_Common_Fall_Archer_R::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_ARCHER_L] = CState_Common_Land_Archer_L::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_ARCHER_R] = CState_Common_Land_Archer_R::Create();
+
+	m_arrStates[AI_STATE_COMMON_BOUNCE_ARCHER] = CState_Common_Bounce_Archer::Create();
+
+	m_arrStates[AI_STATE_COMMON_HIT_ARCHER] = CState_Common_Hit_Archer::Create();
+	m_arrStates[AI_STATE_COMMON_GUARDHIT_ARCHER] = CState_Common_GuardHit_Archer::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_ARCHER] = CState_Common_Groggy_Archer::Create();
+	m_arrStates[AI_STATE_COMMON_STINGHIT_ARCHER] = CState_Common_Sting_Archer::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_ARCHER] = CState_Common_FlyHit_Archer::Create();
+
+#pragma endregion
 
 
 }
