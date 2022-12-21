@@ -45,26 +45,6 @@ HRESULT CRevive_Player::Initialize()
     m_eStateType = STATE_REVIVE_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-    m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
-
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-    m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
-
-    m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
-
-    m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
-
-    m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
-
-
-
-    m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
-    m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
-
-
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
     m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 

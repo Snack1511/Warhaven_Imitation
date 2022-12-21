@@ -534,6 +534,9 @@ _float CState::Move_Direction_Loop_AI(CUnit* pOwner)
 {
 	CUnit* pUnit = pOwner->Get_TargetUnit();
 
+	if (!pUnit)
+		return 0.f;
+
 	CTransform* pMyTransform = pOwner->Get_Transform();
 
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
@@ -561,6 +564,8 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
 	CUnit* pUnit = pOwner->Get_TargetUnit();
+	if (!pUnit)
+		return;
 
 
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);

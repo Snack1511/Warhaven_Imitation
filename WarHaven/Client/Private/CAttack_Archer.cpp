@@ -185,7 +185,6 @@ void CAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 	if (!m_pCoreBone)
 		assert(0);
 
-	}
 
 	static_cast<CUnit_Archer*>(pOwner)->Enable_Trail(true);
 
@@ -197,7 +196,7 @@ void CAttack_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-	Exit_Aiming(pOwner);
+	Exit_Aiming(pOwner, pAnimator);
 	static_cast<CUnit_Archer*>(pOwner)->Enable_Trail(false);
 
 }

@@ -203,7 +203,7 @@ void CProjectile::On_ShootProjectile()
 	PxRigidDynamic* pActor = nullptr;
 	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 1.5f);
 	_float4 vDir = m_pTransform->Get_World(WORLD_RIGHT);
-	vDir *= 50.f;
+	vDir *= m_fMaxSpeed;
 	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
 	m_pActor = pActor;
 		
