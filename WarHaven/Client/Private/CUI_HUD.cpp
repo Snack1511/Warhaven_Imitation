@@ -107,7 +107,8 @@ void CUI_HUD::My_Tick()
 
 	if (KEY(Z, TAP))
 	{
-		CUser::Get_Instance()->Add_KillName(TEXT("Test"));
+		CUser::Get_Instance()->Toggle_DeadUI(true, true);
+		// CUser::Get_Instance()->Add_KillName(TEXT("Test"));
 	}
 }
 

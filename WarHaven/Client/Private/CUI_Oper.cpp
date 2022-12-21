@@ -163,6 +163,8 @@ void CUI_Oper::OnEnable()
 {
 	__super::OnEnable();
 
+	Return_SidePos();
+
 	SetActive_BG(true);
 }
 
@@ -207,6 +209,17 @@ void CUI_Oper::SetActive_LeftIcon(_bool value)
 	m_pArrLeftUI[0][Left_Num]->SetActive(false);
 }
 
+void CUI_Oper::Return_SidePos()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		_float fPosX = -565 + (i * 1130.f);
+		m_pArrCharacterSideBG[i]->Set_PosX(fPosX);
+	}
+
+	Init_CharacterSelect();
+}
+
 void CUI_Oper::Progress_Oper()
 {
 	if (!m_bIsBriefing)
@@ -248,11 +261,11 @@ void CUI_Oper::Progress_Oper()
 			_float4 vPos0 = m_pArrCharacterSideBG[0]->Get_Pos();
 			vPos0.x += 50.f;
 			m_pArrCharacterSideBG[0]->DoMove(vPos0, fDuration, 0);
-
+			
 			_float4 vPos1 = m_pArrCharacterSideBG[1]->Get_Pos();
 			vPos1.x -= 50.f;
 			m_pArrCharacterSideBG[1]->DoMove(vPos1, fDuration, 0);
-
+			
 			for (int i = 0; i < CP_End; ++i)
 			{
 				for (int j = 0; j < 6; ++j)
@@ -492,7 +505,7 @@ void CUI_Oper::Progress_Oper()
 				case Client::LEVEL_HWARA:
 					CGameSystem::Get_Instance()->On_StartGame();
 					break;
-				}
+				}				
 
 				CUser::Get_Instance()->SetActive_PadenUI(true);
 				CUser::Get_Instance()->SetActive_HUD(true);

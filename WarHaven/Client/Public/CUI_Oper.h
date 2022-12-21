@@ -56,6 +56,9 @@ private:
 	_float m_fDisableProfileTime = 4.f;
 
 private:
+	void Return_SidePos();
+
+private:
 	void Progress_Oper();
 	void Enable_StrongHoldUI();
 

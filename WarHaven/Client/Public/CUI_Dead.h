@@ -49,7 +49,7 @@ private:
 	enum RevivalIO { RU_BG, RU_Edge, RU_Bar, RU_Text, RU_Giving, RU_End };
 	CUI_Object* m_pRevivalUI[RU_End];
 
-	_float m_fRevivalTime = 10.f;
+	_float m_fRevivalTime = 1.f;
 	_bool m_bAbleRevival = false;
 
 private:

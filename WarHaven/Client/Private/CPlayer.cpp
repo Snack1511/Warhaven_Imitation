@@ -742,6 +742,15 @@ void CPlayer::On_Die()
 	DISABLE_GAMEOBJECT(m_pUnitHUD);
 	m_bDieDelay = true;	
 
+	if (!m_bIsMainPlayer)
+	{
+		if (Get_Team()->IsMainPlayerTeam())
+		{
+			CUser::Get_Instance()->Set_ClassIcon(this);
+			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
+		}
+	}
+
 	if (m_bIsMainPlayer)
 	{
 
@@ -777,15 +786,6 @@ void CPlayer::On_RealDie()
 	m_fDieDelayAcc = 0.f;
 	m_bDie = true;
 	m_bAbleRevival = true;
-
-	if (!m_bIsMainPlayer)
-	{
-		if (Get_Team()->IsMainPlayerTeam())
-		{
-			CUser::Get_Instance()->Set_ClassIcon(this);
-			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
-		}
-	}
 
 	m_DeadLights.clear();
 
