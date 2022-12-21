@@ -195,17 +195,18 @@ void CUI_Crosshair::Create_ArrowUI()
 		m_pArrowUI[i] = CUI_Object::Create();
 
 		m_pArrowUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Arrow.png"));
-		m_pArrowUI[i]->Set_Scale(100.f);
 
 		if (i == AU_BG)
 		{
 			m_pArrowUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.6f));
 			m_pArrowUI[i]->Set_Sort(0.5f);
+			m_pArrowUI[i]->Set_Scale(100.f);
 		}
 		else if (i == AU_Arrow)
 		{
-			m_pArrowUI[i]->Set_Color(m_vArrowColor);
+			m_pArrowUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.f));
 			m_pArrowUI[i]->Set_Sort(0.49f);
+			m_pArrowUI[i]->Set_Scale(130.f);
 		}
 
 		CREATE_GAMEOBJECT(m_pArrowUI[i], GROUP_UI);
@@ -274,19 +275,7 @@ void CUI_Crosshair::Charge_Arrow()
 
 			m_bIsCharge = true;
 
-			for (int i = 0; i < 3; ++i)
-			{
-				m_pArrArrowUI[AU_BG][i]->SetActive(true);
-			}
-			m_pArrArrowUI[AU_Arrow][m_iChargeCount]->SetActive(true);
-
-			cout << m_iChargeCount << endl;
-
-			m_iChargeCount++;
-			if (m_iChargeCount > 2)
-				m_iChargeCount = 2;
-
-			//SetActive_ArrowUI(true);
+			SetActive_ArrowUI(true);
 		}
 		else
 		{
@@ -297,14 +286,29 @@ void CUI_Crosshair::Charge_Arrow()
 
 				if (m_bIsChargeWait)
 				{
-					cout << "차지 대기 비활성화" << endl;
+					if (m_iChargeCount > 2)
+					{
+						for (int i = 0; i < 3; ++i)
+						{
+							m_pArrArrowUI[AU_Arrow][i]->Set_Color(_float4(1.f, 0.f, 0.f, 1.f));
+							// m_pArrArrowUI[AU_Arrow][i]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+						}
+
+						return;
+					}
+
 					m_bIsChargeWait = false;
 					m_bIsCharge = false;
 				}
 				else
 				{
-					cout << "차지 대기 활성화" << endl;
 					m_bIsChargeWait = true;
+
+					if (m_iChargeCount > 2)
+						return;
+
+					m_pArrArrowUI[AU_Arrow][m_iChargeCount]->DoScale(-30.f, fDuration);
+					m_pArrArrowUI[AU_Arrow][m_iChargeCount++]->Set_Color(m_vArrowColor);
 
 					Rotate_Arrow(fAngle, fDuration);
 				}
@@ -313,13 +317,16 @@ void CUI_Crosshair::Charge_Arrow()
 	}
 	else
 	{
-		SetActive_ArrowUI(false);
+		for (int i = 0; i < 3; ++i)
+			m_pArrArrowUI[AU_Arrow][i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.f));
 
 		m_bIsCharge = false;
 		m_bIsChargeWait = false;
 		m_iChargeCount = 0;
 
 		m_fAccTime = 0.f;
+
+		SetActive_ArrowUI(false);
 	}
 }
 
