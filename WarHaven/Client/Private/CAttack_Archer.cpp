@@ -605,7 +605,11 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos)
 	{
 		if (*pOutPos != vFinalHitPos)
 		{
-			// 크로스헤어 빨간색
+			CUser::Get_Instance()->Set_ArcherPoint(true);
+		}
+		else
+		{
+			CUser::Get_Instance()->Set_ArcherPoint(false);
 		}
 
 		*pOutPos = vFinalHitPos;

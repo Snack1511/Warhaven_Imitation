@@ -26,6 +26,8 @@ public:
 	
 	void	Set_Position(_float4 vPos);
 
+	void Set_ArcherPoint(_bool value);
+
 private:
 	_uint m_iClassIndex = 0;
 
@@ -47,9 +49,14 @@ private:
 
 	_uint m_iArrowIndex = 0;
 
+	_bool bCharge = false;
+	_bool bChargeWait = false;
+
 private:
 	void Create_ArrowUI();
 	void Set_ArrowUI();
+
+	void Rotate_Arrow();
 
 private:
 	enum LancerUI { LU_BG, LU_Gauge, LU_Full, LU_End };
@@ -60,6 +67,7 @@ private:
 	void Create_LancerUI();
 
 private:
+	virtual void My_Tick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 };

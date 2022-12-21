@@ -63,13 +63,15 @@ public:	// Lerp
 	void Lerp_ScaleX(_float fStart, _float fEnd, _float fDuration);
 	void Lerp_ScaleY(_float fStart, _float fEnd, _float fDuration);
 
-	enum eMOVE_TYPE {LINEAR, QUADOUT};
+	enum eMOVE_TYPE { LINEAR, QUADOUT };
 	void DoMove(_float4 vLerpTargetPos, _float fDuration, _uint eMoveType = LINEAR);
 	void DoMove_Target(_float fDuration, _uint eMoveType = LINEAR);
 	void DoMove_Origin(_float fDuration, _uint eMoveType = LINEAR);
 
 	void DoScale(_float fScaleValue, _float fDuration);
 	void DoScaleX(_float fScaleValue, _float fDuration);
+
+	void DoRotate(_float fValue, _float fDuration, _uint eMoveType = LINEAR);
 
 	void Fade_Font(_bool value, _float fDuration);
 
@@ -108,6 +110,15 @@ private:	// DoMove
 
 	_float m_fMoveAccTime = 0.f;
 	_float m_fMoveDuration = 0.f;
+
+private: // DoRotate
+	_bool m_bIsDoRotate = false;
+
+	_float m_fStartRotValue = 0.f;
+	_float m_fTargetRotValue = 0.f;
+
+	_float m_fRotAccTime = 0.f;
+	_float m_fRotDuration = 0.f;
 
 private:	// Lerp
 	_float m_fMoveXAccTime = 0.f;
@@ -150,6 +161,7 @@ private:
 	void Lerp_Scale();
 	void DoMove();
 	void DoScale();
+	void DoRotate();
 	void Fade_Font();
 
 private:

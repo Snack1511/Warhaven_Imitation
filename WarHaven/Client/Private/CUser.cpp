@@ -31,6 +31,7 @@
 #include "CUI_HpBar.h"	
 #include "CUI_HeroGauge.h"
 #include "CUI_Skill.h"
+#include "CUI_CrossHair.h"
 
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
@@ -410,6 +411,7 @@ void CUser::On_EnterStageLevel()
 		m_pUI_HP = static_cast<CUI_HpBar*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HP));
 		m_pUI_HeroGauge = static_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
 		m_pUI_Skill = static_cast<CUI_Skill*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Skill));
+		m_pUI_Crosshair = static_cast<CUI_Crosshair*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Crosshair));
 	}
 
 	if (!m_pUI_Damage[0])
@@ -677,6 +679,11 @@ void CUser::Set_ReviveIcon(_uint iIconIdx)
 void CUser::Set_ClassIcon(CPlayer* pDeadPlayer)
 {
 	m_pReviveUI->Set_ClassIcon(pDeadPlayer);
+}
+
+void CUser::Set_ArcherPoint(_bool value)
+{
+	m_pUI_Crosshair->Set_ArcherPoint(value);
 }
 
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)

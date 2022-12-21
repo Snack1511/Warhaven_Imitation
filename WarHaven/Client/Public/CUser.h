@@ -24,6 +24,7 @@ class CUI_HUD;
 class CUI_Portrait;
 class CUI_HpBar;
 class CUI_HeroGauge;
+class CUI_Crosshair;
 class CUI_Skill;
 
 class CUI_KillName;
@@ -181,11 +182,15 @@ public:	// 소생
 	void Set_ReviveIcon(_uint iIconIdx);
 	void Set_ClassIcon(CPlayer* pDeadPlayer);
 
+public:	// 크로스헤어
+	void Set_ArcherPoint(_bool value);
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
 	CUI_HpBar* m_pUI_HP = nullptr;
 	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
+	CUI_Crosshair* m_pUI_Crosshair = nullptr;
 	CUI_Skill* m_pUI_Skill = nullptr;
 	CUI_Oper* m_pUI_Oper = nullptr;
 	CUI_Popup* m_pUI_Popup = nullptr;

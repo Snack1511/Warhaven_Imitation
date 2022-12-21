@@ -7,6 +7,7 @@
 #include "CUI_Renderer.h"
 #include "CShader.h"
 #include "Renderer.h"
+#include "Easing_Utillity.h"
 
 CUI_Crosshair::CUI_Crosshair()
 {
@@ -133,6 +134,23 @@ void CUI_Crosshair::Set_Position(_float4 vPos)
 	}
 }
 
+void CUI_Crosshair::Set_ArcherPoint(_bool value)
+{
+	if (m_iClassIndex != ARCHER)
+		return;
+
+	if (value == true)
+	{
+		m_pCrosshair[CU_Point]->Set_Color(_float4(0.8f, 0.2f, 0.2f, 1.f));
+		GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(1);
+	}
+	else
+	{
+		m_pCrosshair[CU_Point]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
+		GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(0);
+	}
+}
+
 void CUI_Crosshair::Create_Crosshair()
 {
 	for (int i = 0; i < CU_End; ++i)
@@ -241,6 +259,69 @@ void CUI_Crosshair::Set_ArrowUI()
 	}
 }
 
+void CUI_Crosshair::Rotate_Arrow()
+{
+	if (m_iClassIndex != ARCHER)
+		return;
+
+	_float fDuration = 3.f / (_float)m_iArrowIndex;
+	_float fRadius = 360.f / (_float)m_iArrowIndex;
+
+	if (KEY(LBUTTON, HOLD))
+	{
+		if (!bCharge)
+		{
+			if (bChargeWait)
+				return;
+
+			bCharge = true;
+
+			for (int i = 0; i < AU_End; ++i)
+			{
+				for (int j = 0; j < m_iArrowIndex; ++j)
+				{
+					if (!m_pArrArrowUI[i][j]->Is_Valid())
+						m_pArrArrowUI[i][j]->SetActive(true);
+				}
+			}
+		}
+		else
+		{
+			m_fAccTime += fDT(0);
+
+			cout << m_fAccTime << endl;
+
+			if (m_fAccTime > 1.f)
+			{
+				m_fAccTime = 0.f;
+
+				if (bChargeWait)
+				{
+					bChargeWait = false;
+				}
+				else
+				{
+					bChargeWait = true;
+
+					for (int i = 0; i < AU_End; ++i)
+					{
+						for (int j = 0; j < m_iArrowIndex; ++j)
+						{
+							m_pArrArrowUI[i][j]->DoRotate(fRadius, fDuration);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		bCharge = false;
+		bChargeWait = false;
+		m_fAccTime = 0.f;
+	}
+}
+
 void CUI_Crosshair::Create_LancerUI()
 {
 	for (int i = 0; i < LU_End; ++i)
@@ -277,6 +358,13 @@ void CUI_Crosshair::Create_LancerUI()
 			DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
 		}
 	}
+}
+
+void CUI_Crosshair::My_Tick()
+{
+	__super::My_Tick();
+
+	Rotate_Arrow();
 }
 
 void CUI_Crosshair::OnEnable()

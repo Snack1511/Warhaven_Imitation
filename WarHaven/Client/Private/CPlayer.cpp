@@ -744,6 +744,9 @@ void CPlayer::On_Die()
 
 	if (!m_bIsMainPlayer)
 	{
+		if (!Get_Team())
+			return;
+
 		if (Get_Team()->IsMainPlayerTeam())
 		{
 			CUser::Get_Instance()->Set_ClassIcon(this);
