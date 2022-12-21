@@ -69,10 +69,6 @@ void CWarrior_Oxen_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
     pOwner->TurnOn_TrailEffect(true);
 
-    _float4 vPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
-
-    CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Charge", pOwner, vPos);
-
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

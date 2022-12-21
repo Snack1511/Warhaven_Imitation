@@ -495,7 +495,7 @@ HRESULT CRectEffects::Initialize()
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
-	else if (CURVE_CHARGE == m_eCurveType)
+	else if (CURVE_CIRCLE == m_eCurveType || CURVE_CHARGE == m_eCurveType)
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
@@ -813,7 +813,7 @@ void CRectEffects::OnEnable()
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
-	else if (CURVE_CHARGE == m_eCurveType)
+	else if (CURVE_CIRCLE == m_eCurveType || CURVE_CHARGE == m_eCurveType)
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
@@ -1413,19 +1413,24 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 		break;
 
 	case Client::CURVE_CIRCLE:
-		/*if (m_pFollowTarget)
-		{
-			fX = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).x + m_pDatas[iIdx].InstancingData.fCurvePower *
-				cosf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc);
 
-			fY = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).y - m_pDatas[iIdx].InstancingData.fCurvePower *
-				sinf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc);
+		//if (m_pFollowTarget)
+		//{
+		//	fX = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).x + m_pDatas[iIdx].InstancingData.fCurvePower *
+		//		cosf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc);
 
-			vPos.x = fX;
-			vPos.y = fY;
-			vPos.z = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).z;
+		//	fY = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).y - m_pDatas[iIdx].InstancingData.fCurvePower *
+		//		sinf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc);
 
-		}*/
+		//	vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x * fTimeDelta;
+		//	vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y * fTimeDelta;
+		//	vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z * fTimeDelta;
+
+		//	vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x * fTimeDelta;
+		//	vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y * fTimeDelta;
+		//	vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z * fTimeDelta;
+
+		//}
 
 		break;
 
