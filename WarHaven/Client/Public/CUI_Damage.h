@@ -33,8 +33,8 @@ private:
 
 private:
 	_float4 m_vColorWhite = _float4(1.f, 1.f, 1.f, 1.f);
-	_float4 m_vColorGray = _float4(0.9f, 0.9f, 0.9f, 0.9f);
-	_float4 m_vColorRed = _float4(0.9f, 0.f, 0.f, 1.f);
+	_float4 m_vColorGray = _float4(0.8f, 0.8f, 0.8f, 1.f);
+	_float4 m_vColorRed = _float4(0.8f, 0.2f, 0.2f, 1.f);
 
 	_float2 m_vFontScale = _float2(60.f, 71.f);
 	_float m_vHeadShotScale = 70.f;

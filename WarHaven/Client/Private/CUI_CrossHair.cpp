@@ -7,6 +7,7 @@
 #include "CUI_Renderer.h"
 #include "CShader.h"
 #include "Renderer.h"
+#include "Easing_Utillity.h"
 
 CUI_Crosshair::CUI_Crosshair()
 {
@@ -79,23 +80,13 @@ void CUI_Crosshair::SetActive_Crosshair(_bool value)
 
 void CUI_Crosshair::SetActive_ArrowUI(_bool value)
 {
-	if (value == true)
+	for (int i = 0; i < AU_End; ++i)
 	{
-		for (int i = 0; i < AU_End; ++i)
+		for (int j = 0; j < m_iArrowIndex; ++j)
 		{
-			for (int j = 0; j < m_iArrowIndex; ++j)
+			if (m_pArrArrowUI[i][j]->Is_Valid() == !value)
 			{
-				ENABLE_GAMEOBJECT(m_pArrArrowUI[i][j]);
-			}
-		}
-	}
-	else
-	{
-		for (int i = 0; i < AU_End; ++i)
-		{
-			for (int j = 0; j < m_iArrowIndex; ++j)
-			{
-				DISABLE_GAMEOBJECT(m_pArrArrowUI[i][j]);
+				m_pArrArrowUI[i][j]->SetActive(value);
 			}
 		}
 	}
@@ -130,6 +121,31 @@ void CUI_Crosshair::Set_Position(_float4 vPos)
 	for (int i = 0; i < CU_End; ++i)
 	{
 		m_pCrosshair[i]->Set_Pos(vPos);
+	}
+
+	for (int i = 0; i < AU_End; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrArrowUI[i][j]->Set_Pos(vPos);
+		}
+	}
+}
+
+void CUI_Crosshair::Set_ArcherPoint(_bool value)
+{
+	if (m_iClassIndex != ARCHER)
+		return;
+
+	if (value == true)
+	{
+		m_pCrosshair[CU_Point]->Set_Color(_float4(0.8f, 0.2f, 0.2f, 1.f));
+		GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(1);
+	}
+	else
+	{
+		m_pCrosshair[CU_Point]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
+		GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(0);
 	}
 }
 
@@ -179,17 +195,18 @@ void CUI_Crosshair::Create_ArrowUI()
 		m_pArrowUI[i] = CUI_Object::Create();
 
 		m_pArrowUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Arrow.png"));
-		m_pArrowUI[i]->Set_Scale(100.f);
 
 		if (i == AU_BG)
 		{
 			m_pArrowUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.6f));
 			m_pArrowUI[i]->Set_Sort(0.5f);
+			m_pArrowUI[i]->Set_Scale(100.f);
 		}
 		else if (i == AU_Arrow)
 		{
-			m_pArrowUI[i]->Set_Color(m_vArrowColor);
+			m_pArrowUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.f));
 			m_pArrowUI[i]->Set_Sort(0.49f);
+			m_pArrowUI[i]->Set_Scale(130.f);
 		}
 
 		CREATE_GAMEOBJECT(m_pArrowUI[i], GROUP_UI);
@@ -241,6 +258,92 @@ void CUI_Crosshair::Set_ArrowUI()
 	}
 }
 
+void CUI_Crosshair::Charge_Arrow()
+{
+	if (m_iClassIndex != ARCHER)
+		return;
+
+	_float fDuration = 3.f / (_float)m_iArrowIndex;
+	_float fAngle = 360.f / (_float)m_iArrowIndex;
+
+	if (KEY(LBUTTON, HOLD))
+	{
+		if (!m_bIsCharge)
+		{
+			if (m_bIsChargeWait)
+				return;
+
+			m_bIsCharge = true;
+
+			SetActive_ArrowUI(true);
+		}
+		else
+		{
+			m_fAccTime += fDT(0);
+			if (m_fAccTime > 1.f)
+			{
+				m_fAccTime = 0.f;
+
+				if (m_bIsChargeWait)
+				{
+					if (m_iChargeCount > 2)
+					{
+						for (int i = 0; i < 3; ++i)
+						{
+							m_pArrArrowUI[AU_Arrow][i]->Set_Color(_float4(1.f, 0.f, 0.f, 1.f));
+							// m_pArrArrowUI[AU_Arrow][i]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+						}
+
+						return;
+					}
+
+					m_bIsChargeWait = false;
+					m_bIsCharge = false;
+				}
+				else
+				{
+					m_bIsChargeWait = true;
+
+					if (m_iChargeCount > 2)
+						return;
+
+					m_pArrArrowUI[AU_Arrow][m_iChargeCount]->DoScale(-30.f, fDuration);
+					m_pArrArrowUI[AU_Arrow][m_iChargeCount++]->Set_Color(m_vArrowColor);
+
+					Rotate_Arrow(fAngle, fDuration);
+				}
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			m_pArrArrowUI[AU_Arrow][i]->Set_Scale(130.f);
+			m_pArrArrowUI[AU_Arrow][i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.f));
+		}
+
+		m_bIsCharge = false;
+		m_bIsChargeWait = false;
+		m_iChargeCount = 0;
+
+		m_fAccTime = 0.f;
+
+		SetActive_ArrowUI(false);
+	}
+}
+
+void CUI_Crosshair::Rotate_Arrow(_float fAngle, _float fDuration)
+{
+	for (int i = 0; i < AU_End; ++i)
+	{
+		for (int j = 0; j < m_iArrowIndex; ++j)
+		{
+			m_pArrArrowUI[i][j]->DoRotate(fAngle, fDuration);
+		}
+	}
+}
+
 void CUI_Crosshair::Create_LancerUI()
 {
 	for (int i = 0; i < LU_End; ++i)
@@ -277,6 +380,13 @@ void CUI_Crosshair::Create_LancerUI()
 			DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
 		}
 	}
+}
+
+void CUI_Crosshair::My_Tick()
+{
+	__super::My_Tick();
+
+	Charge_Arrow();
 }
 
 void CUI_Crosshair::OnEnable()

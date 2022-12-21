@@ -20,6 +20,8 @@ public:
 public:
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
 
+	void Disable_RevivalUI();
+
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo) { m_pTargetInfo = pTargetInfo; }
 
 	void SetActive_DeadUI(_bool value);
@@ -49,7 +51,7 @@ private:
 	enum RevivalIO { RU_BG, RU_Edge, RU_Bar, RU_Text, RU_Giving, RU_End };
 	CUI_Object* m_pRevivalUI[RU_End];
 
-	_float m_fRevivalTime = 10.f;
+	_float m_fRevivalTime = 5.f;
 	_bool m_bAbleRevival = false;
 
 private:

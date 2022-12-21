@@ -131,6 +131,9 @@ void CUI_Damage::OnEnable()
 
 void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
 {
+	if (eIcon > Default)
+		return;
+
 	m_iDamageValue = (_uint)(fDmg * -1.f);
 	m_eDamageIcon = (DamageIcon)eIcon;
 

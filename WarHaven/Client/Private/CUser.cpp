@@ -31,6 +31,7 @@
 #include "CUI_HpBar.h"	
 #include "CUI_HeroGauge.h"
 #include "CUI_Skill.h"
+#include "CUI_CrossHair.h"
 
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
@@ -42,6 +43,7 @@
 #include "CUI_Popup.h"
 #include "CUI_KillLog.h"
 #include "CUI_KillName.h"
+#include "CUI_Revive.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -321,13 +323,13 @@ void CUser::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
 	if (m_pUI_Paden)
-	m_pUI_Paden->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
+		m_pUI_Paden->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
 }
 
 void CUser::Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam)
 {
 	if (m_pUI_Paden)
-	m_pUI_Paden->Set_Team(pAllyTeam, pEnemyTeam);
+		m_pUI_Paden->Set_Team(pAllyTeam, pEnemyTeam);
 }
 
 void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
@@ -409,6 +411,7 @@ void CUser::On_EnterStageLevel()
 		m_pUI_HP = static_cast<CUI_HpBar*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HP));
 		m_pUI_HeroGauge = static_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
 		m_pUI_Skill = static_cast<CUI_Skill*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Skill));
+		m_pUI_Crosshair = static_cast<CUI_Crosshair*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Crosshair));
 	}
 
 	if (!m_pUI_Damage[0])
@@ -487,6 +490,14 @@ void CUser::On_EnterStageLevel()
 			CREATE_GAMEOBJECT(m_pUI_Result, GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pUI_Result);
 		}
+
+		if (!m_pReviveUI)
+		{
+			m_pReviveUI = CUI_Revive::Create();
+
+			CREATE_GAMEOBJECT(m_pReviveUI, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pReviveUI);
+		}
 	}
 
 	SetUp_BloodOverlay();
@@ -528,6 +539,9 @@ void CUser::On_ExitStageLevel()
 
 	if (m_pUI_Training)
 		m_pUI_Training = nullptr;
+
+	if (m_pReviveUI)
+		m_pReviveUI = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -647,6 +661,31 @@ void CUser::Update_KillName()
 	}
 }
 
+void CUser::SetAcitve_ReviveUI(_bool value)
+{
+	m_pReviveUI->SetActive(value);
+}
+
+void CUser::Set_ReviveUI_Pos(CTransform* pReviveUnitTransform)
+{
+	m_pReviveUI->Set_RevivePos(pReviveUnitTransform);
+}
+
+void CUser::Set_ReviveIcon(_uint iIconIdx)
+{
+	m_pReviveUI->Set_ReviveIcon(iIconIdx);
+}
+
+void CUser::Set_ClassIcon(CPlayer* pDeadPlayer)
+{
+	m_pReviveUI->Set_ClassIcon(pDeadPlayer);
+}
+
+void CUser::Set_ArcherPoint(_bool value)
+{
+	m_pUI_Crosshair->Set_ArcherPoint(value);
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
@@ -665,6 +704,10 @@ void CUser::Toggle_DeadUI(_bool value, _bool isFall)
 	{
 		m_pUI_Dead->Toggle_DeadUI(value, isFall);
 	}
+}
+void CUser::Disable_RevivalUI()
+{
+	m_pUI_Dead->Disable_RevivalUI();
 }
 void CUser::Enable_Popup(_uint iPopupType)
 {

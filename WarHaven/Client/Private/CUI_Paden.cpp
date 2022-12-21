@@ -135,35 +135,45 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 	}
 	else
 	{
-		if (m_bSetTargetPoint)
-			m_pArrTargetPoint[1]->SetActive(false);
-
 		for (int i = 0; i < PU_End; ++i)
 			m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
 
 		if (m_eTargetPoint == Point_End)
 			return;
 
-		//CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
+		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
 
-		//_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
-		//_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
+		// 카메라
+		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
+		// 목표
+		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
 
-		//_float4 vCamTargetDir = vTargetPos - vCamPos;
-		//_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK).Normalize();
+		// 카메라 목표 방향
+		_float4 vCamTargetDir = vTargetPos - vCamPos;
+		// 카메라 룩
+		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK).Normalize();
 
-		//_float4 vOriginPos = vCamPos + (vCamLook * vCamTargetDir.Dot(vCamLook));
+		// 카메라가 바라보는 룩 방향의 위치
+		_float4 vOriginPos = vCamPos + (vCamLook * vCamTargetDir.Dot(vCamLook));
 
-		//_float4 vOriginTargetDir = vTargetPos - vOriginPos;
+		// 위에 녀석의 타겟 방향
+		_float4 vOriginTargetDir = vTargetPos - vOriginPos;
+		vOriginTargetDir = vOriginTargetDir.Normalize();
 
-		//_float4 vIndicatorPos = vCamPos + vCamLook + vOriginTargetDir;
-		//// vIndicatorPos = CUtility_Transform::Get_ProjPos(vIndicatorPos);
+		// 화살표 위치
+		_float4 vIndicatorPos = vCamPos + vCamLook + vOriginTargetDir;
 
-		//for (int i = 0; i < PU_End; ++i)
-		//{
-		//	m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(vIndicatorPos);
-		//	m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
-		//}
+		// 투영변환
+		// vIndicatorPos = CUtility_Transform::Get_ProjPos(vIndicatorPos);
+
+		if (m_bSetTargetPoint)
+			m_pArrTargetPoint[1]->Set_Pos(vIndicatorPos);
+
+		for (int i = 0; i < PU_End; ++i)
+		{
+			m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(vIndicatorPos);
+			m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
+		}
 	}
 }
 
@@ -388,8 +398,6 @@ void CUI_Paden::My_LateTick()
 
 	Set_PointTextPosY();
 	Update_TargetPointPos();
-
-	cout << m_eTargetPoint << endl;
 }
 
 void CUI_Paden::OnEnable()
@@ -770,7 +778,7 @@ void CUI_Paden::Create_Popup()
 	GET_COMPONENT_FROM(m_pPopupUI, CTexture)->Remove_Texture(0);
 	Read_Texture(m_pPopupUI, "/Paden/Popup", "Popup");
 
-	m_pPopupUI->Set_Scale(437.f, 90.f);
+	m_pPopupUI->Set_Scale(340.f, 70.f);
 	m_pPopupUI->Set_PosY(175.f);
 
 	CREATE_GAMEOBJECT(m_pPopupUI, GROUP_UI);

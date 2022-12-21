@@ -78,6 +78,13 @@ void CUI_Dead::Toggle_DeadUI(_bool value, _bool isFall)
 	}
 }
 
+void CUI_Dead::Disable_RevivalUI()
+{
+	SetActive_RevivalUI(false);
+
+	m_bAbleRevival = false;
+}
+
 void CUI_Dead::SetActive_DeadUI(_bool value)
 {
 	for (int i = 0; i < DU_End; ++i)
@@ -197,7 +204,7 @@ void CUI_Dead::Create_DeadUI()
 	m_pDeadUI[DU_KillText]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Dead/KillEnemy.png"));
 	m_pDeadUI[DU_KillText]->Set_PosY(-150.f);
 	m_pDeadUI[DU_KillText]->Set_Scale(172.f, 50.f);
-	m_pDeadUI[DU_KillText]->Set_Color(_float4(0.9f, 0.f, 0.f, 1.f));
+	m_pDeadUI[DU_KillText]->Set_Color(_float4(0.8f, 0.2f, 0.2f, 1.f));
 }
 
 void CUI_Dead::Set_FadeDeadUI()

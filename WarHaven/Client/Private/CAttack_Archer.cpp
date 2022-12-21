@@ -81,7 +81,7 @@ void	CAttack_Archer::OnCollisionStay(CGameObject* pOtherObject, const _uint& iOt
 {
 }
 
-void CAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData )
+void CAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
 	m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
 
@@ -98,7 +98,7 @@ void CAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 
-void CAttack_Archer::Exit(CUnit * pOwner, CAnimator * pAnimator)
+void CAttack_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
 	pAnimator->Stop_ActionAnim();
@@ -175,7 +175,7 @@ STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->Get_Transform()->Set_Look(vCamLookNoY);
 
 	m_pCoreBone->Set_PrevMatrix(matOffset);
-	
+
 	static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat() = matOffset;
 
 	/* =================================== */
@@ -224,7 +224,7 @@ STATE_TYPE CAttack_Archer::Update_Walk(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		//Move(Get_Direction(), pOwner);
 
-		
+
 	}
 
 	if (pAnimator->Is_ActionFinished())
@@ -239,7 +239,7 @@ STATE_TYPE CAttack_Archer::Update_Walk(CUnit* pOwner, CAnimator* pAnimator)
 		On_EnumChange(Enum::eJUMP, pAnimator);
 	}
 
-	
+
 	return eType;
 }
 
@@ -271,7 +271,7 @@ STATE_TYPE CAttack_Archer::Update_Run(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		//Move(Get_Direction(), pOwner);
 
-		
+
 	}
 
 	if (pAnimator->Is_ActionFinished())
@@ -348,7 +348,7 @@ STATE_TYPE CAttack_Archer::Update_Idle(CUnit* pOwner, CAnimator* pAnimator)
 	}
 	else if (KEY(SPACE, TAP))
 		On_EnumChange(Enum::eJUMP, pAnimator);
-	
+
 	else
 		if (pAnimator->Is_ActionFinished())
 			return m_eIdleState;
@@ -374,7 +374,7 @@ void CAttack_Archer::Move_Cycle(CAnimator* pAnimator, _uint* arrDirectionAnimInd
 
 	//현재실행중인애만 다르면 댐
 
-	if (m_iAnimIndex != arrDirectionAnimIndices[iDirection] )//|| pAnimator->Get_CurCycleAnimIndex() != arrDirectionAnimIndices[iDirection])
+	if (m_iAnimIndex != arrDirectionAnimIndices[iDirection])//|| pAnimator->Get_CurCycleAnimIndex() != arrDirectionAnimIndices[iDirection])
 	{
 		m_iAnimIndex = arrDirectionAnimIndices[iDirection];
 
@@ -391,49 +391,49 @@ void CAttack_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const
 {
 	switch (iSequence)
 	{
-	//case 998:
+		//case 998:
 
-	//	m_bAfterEffect = true;
-	//	m_bHitEffect = true;
-	//	pOwner->TurnOn_TrailEffect(true);
+		//	m_bAfterEffect = true;
+		//	m_bHitEffect = true;
+		//	pOwner->TurnOn_TrailEffect(true);
 
-	//	/* dash Front */
-	//	if (!pOwner->Is_Air())
-	//	{
-	//		pOwner->Set_DirAsLook();
-	//		pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed);
-	//		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
-	//		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
-	//		
-	//	}
+		//	/* dash Front */
+		//	if (!pOwner->Is_Air())
+		//	{
+		//		pOwner->Set_DirAsLook();
+		//		pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed);
+		//		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
+		//		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
+		//		
+		//	}
 
-	//	
+		//	
 
-	//	m_bBlendable = false;
-	//	if (m_eEnum == Enum::eWALK || m_eEnum == Enum::eRUN)
-	//	pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
+		//	m_bBlendable = false;
+		//	if (m_eEnum == Enum::eWALK || m_eEnum == Enum::eRUN)
+		//	pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
 
-	//	break;
+		//	break;
 
-	//case 999:
+		//case 999:
 
-	//	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-	//	m_bAfterEffect = false;
-	//	m_bBlood = false;
-	//	pOwner->TurnOn_TrailEffect(false);
+		//	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
+		//	m_bAfterEffect = false;
+		//	m_bBlood = false;
+		//	pOwner->TurnOn_TrailEffect(false);
 
-	//	//m_bBlendable = true;
-	//	if (m_eAnimLeftorRight == ANIM_BASE_L)
-	//		m_eAnimLeftorRight = ANIM_BASE_R;
-	//	else
-	//		m_eAnimLeftorRight = ANIM_BASE_L;
+		//	//m_bBlendable = true;
+		//	if (m_eAnimLeftorRight == ANIM_BASE_L)
+		//		m_eAnimLeftorRight = ANIM_BASE_R;
+		//	else
+		//		m_eAnimLeftorRight = ANIM_BASE_L;
 
 
-	//	break;
+		//	break;
 
 	case 1000:
 		/*effect*/
-		if(ARCHER == pOwner->Get_Status().eClass)
+		if (ARCHER == pOwner->Get_Status().eClass)
 			if (!pOwner->Is_Air())
 				Create_SoilEffect();
 
@@ -469,7 +469,7 @@ void CAttack_Archer::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 {
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
-	
+
 
 	if (ePrevType == m_eStateType)
 	{
@@ -478,14 +478,14 @@ void CAttack_Archer::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 		pOwner->Set_AnimWeaponFrame(102);
 	}
 
-	if (ePrevType == STATE_ATTACK_BEGIN_ARCHER			||
-		ePrevType == STATE_ATTACK_BEGIN_POISION_ARCHER	|| 
+	if (ePrevType == STATE_ATTACK_BEGIN_ARCHER ||
+		ePrevType == STATE_ATTACK_BEGIN_POISION_ARCHER ||
 		ePrevType == STATE_ATTACK_BEGIN_SNIPING_ARCHER)
 	{
 		m_fAnimSpeed = FLT_MIN;
 
 		_uint iDirection = Get_Direction();
-		
+
 		if (iDirection != STATE_DIRECTION_END)
 		{
 			_uint iWalkAnimIndex = pOwner->Get_PreAnimIndex();
@@ -496,7 +496,7 @@ void CAttack_Archer::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 			pAnimator->Set_CurFrame(iWalkAnimIndex);
 		}
-			
+
 
 		pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
 	}
@@ -541,7 +541,7 @@ void CAttack_Archer::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 			else
 				pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iJumpRightAnimIndex[iDirection], ANIM_DIVIDE::eBODYLOWER);
 		}
-		
+
 
 		break;
 	case Client::CAttack_Archer::Enum::eFALL:
@@ -615,13 +615,14 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos)
 	{
 		if (*pOutPos != vFinalHitPos)
 		{
-			//크로스헤어 빨갛게.
+			CUser::Get_Instance()->Set_ArcherPoint(true);
+		}
+		else
+		{
+			CUser::Get_Instance()->Set_ArcherPoint(false);
 		}
 
 		*pOutPos = vFinalHitPos;
-
 	}
-
-
 	return true;
 }

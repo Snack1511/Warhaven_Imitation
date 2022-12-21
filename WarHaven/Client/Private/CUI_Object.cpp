@@ -80,7 +80,7 @@ void CUI_Object::SetUp_ShaderResource(CShader* pShader, const char* pConstName)
 }
 
 void CUI_Object::Set_FontRender(_bool value)
-{ 
+{
 	m_bIsRenderText = value;
 	RenderText();
 }
@@ -210,6 +210,19 @@ void CUI_Object::DoScaleX(_float fScaleValue, _float fDuration)
 	m_fScaleAccTime = 0.f;
 }
 
+void CUI_Object::DoRotate(_float fValue, _float fDuration, _uint eMoveType)
+{
+	m_bIsDoRotate = true;
+
+	m_fStartRotValue = Get_RotationValue();
+	m_fTargetRotValue = m_fStartRotValue + fValue;
+
+	m_fRotAccTime = 0.f;
+	m_fRotDuration = fDuration;
+
+	m_eMoveType = (eMOVE_TYPE)eMoveType;
+}
+
 void CUI_Object::Fade_Font(_bool value, _float fDuration)
 {
 	m_bIsFontFade = true;
@@ -298,6 +311,7 @@ void CUI_Object::My_Tick()
 
 	DoMove();
 	DoScale();
+	DoRotate();
 
 	Fade_Font();
 }
@@ -437,7 +451,7 @@ void CUI_Object::DoMove()
 
 
 		_float4 vResult;
-		
+
 		switch (m_eMoveType)
 		{
 		case Client::CUI_Object::LINEAR:
@@ -445,12 +459,12 @@ void CUI_Object::DoMove()
 			break;
 		case Client::CUI_Object::QUADOUT:
 			vResult = CEasing_Utillity::QuadOut(m_vLerpStartPos, m_vLerpTargetPos, m_fMoveAccTime, m_fMoveDuration);
-			break; 
+			break;
 		default:
 			break;
 		}
-		
-		
+
+
 		Set_Pos(vResult);
 	}
 }
@@ -515,6 +529,34 @@ void CUI_Object::DoScale()
 			m_fScaleAccTime = 0.f;
 			m_bIsDoScaleX = false;
 		}
+	}
+}
+
+void CUI_Object::DoRotate()
+{
+	if (m_bIsDoRotate)
+	{
+		m_fRotAccTime += fDT(0);
+		if (m_fRotAccTime > m_fRotDuration)
+		{
+			m_fRotAccTime = 0.f;
+			m_bIsDoRotate = false;
+
+			Set_RotationZ(m_fTargetRotValue);
+
+			return;
+		}
+
+		_float fResultRot = 0.f;
+
+		switch (m_eMoveType)
+		{
+		case Client::CUI_Object::LINEAR:
+			fResultRot = CEasing_Utillity::Linear(m_fStartRotValue, m_fTargetRotValue, m_fRotAccTime, m_fRotDuration);
+			break;
+		}
+
+		Set_RotationZ(fResultRot);
 	}
 }
 

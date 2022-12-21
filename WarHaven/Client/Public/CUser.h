@@ -24,6 +24,7 @@ class CUI_HUD;
 class CUI_Portrait;
 class CUI_HpBar;
 class CUI_HeroGauge;
+class CUI_Crosshair;
 class CUI_Skill;
 
 class CUI_KillName;
@@ -32,6 +33,7 @@ class CUI_Result;
 class CUI_Popup;
 class CUI_Oper;
 class CUI_Paden;
+class CUI_Revive;
 
 class CTeamConnector;
 
@@ -163,6 +165,7 @@ public:
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
+	void Disable_RevivalUI();
 
 public:		// 알림
 	void Enable_Popup(_uint iPopupType);
@@ -174,15 +177,26 @@ public:	// 킬로그
 	void Add_KillName(wstring wstrEnemyName);
 	void Update_KillName();
 
+public:	// 소생
+	void SetAcitve_ReviveUI(_bool value);
+	void Set_ReviveUI_Pos(CTransform* pReviveUnitTransform);
+	void Set_ReviveIcon(_uint iIconIdx);
+	void Set_ClassIcon(CPlayer* pDeadPlayer);
+
+public:	// 크로스헤어
+	void Set_ArcherPoint(_bool value);
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
 	CUI_HpBar* m_pUI_HP = nullptr;
 	CUI_HeroGauge* m_pUI_HeroGauge = nullptr;
+	CUI_Crosshair* m_pUI_Crosshair = nullptr;
 	CUI_Skill* m_pUI_Skill = nullptr;
 	CUI_Oper* m_pUI_Oper = nullptr;
 	CUI_Popup* m_pUI_Popup = nullptr;
 	CUI_Result* m_pUI_Result = nullptr;
+	CUI_Revive* m_pReviveUI = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
