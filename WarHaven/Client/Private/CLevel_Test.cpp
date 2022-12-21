@@ -79,7 +79,7 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	if (FAILED(__super::SetUp_Prototypes()))
 		return E_FAIL;
 
-	CSkyBox* pSkyBox = CSkyBox::Create(6);
+	CSkyBox* pSkyBox = CSkyBox::Create(4);
 	if (FAILED(pSkyBox->Initialize()))
 		return E_FAIL;
 	Ready_GameObject(pSkyBox, GROUP_DEFAULT);

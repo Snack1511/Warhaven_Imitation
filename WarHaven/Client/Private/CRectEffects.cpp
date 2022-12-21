@@ -294,11 +294,10 @@ HRESULT CRectEffects::Initialize()
 
 		_float	fStartDistance = m_tCreateData.fStartDistance + frandom(-m_tCreateData.fStartDistanceRange, m_tCreateData.fStartDistanceRange);
 
-		vStartPos += vStartDir * fStartDistance;
+		vStartPos = vStartDir * fStartDistance;
 
 		m_pDatas[i].InstancingData.vStartPureLocalPos = vStartPos;
 		m_pDatas[i].InstancingData.vStartPureLocalDir = vMoveDir;
-
 
 
 		_float4 vUpDir = { 0.f, 1.f, 0.f };
@@ -496,6 +495,10 @@ HRESULT CRectEffects::Initialize()
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
+	else if (CURVE_CIRCLE == m_eCurveType || CURVE_CHARGE == m_eCurveType)
+	{
+		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
+	}
 	
 
 
@@ -674,7 +677,7 @@ void CRectEffects::My_Tick()
 				vRotUp = vUp.MultiplyNormal(matRot);
 			}
 
-			if (CURVE_ROTATION == m_eCurveType)
+			else if (CURVE_ROTATION == m_eCurveType)
 			{
 
 				vRight = m_matTrans.XMLoad().r[0];
@@ -807,6 +810,10 @@ void CRectEffects::OnEnable()
 	Bone_Controll();
 
 	if (!m_pRefBone && m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
+	{
+		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
+	}
+	else if (CURVE_CIRCLE == m_eCurveType || CURVE_CHARGE == m_eCurveType)
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
@@ -975,32 +982,20 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 	vStartDir = vStartDir.MultiplyNormal(m_matTrans).Normalize();
 	vStartRight = vStartRight.MultiplyNormal(m_matTrans).Normalize();
 
+	
+
+	m_pDatas[iIndex].RectInstance.vTranslation = vStartPos;
+	m_pDatas[iIndex].InstancingData.vDir = vStartDir;
+	m_pDatas[iIndex].InstancingData.vRight = vStartRight;
+
+
 	if ((CURVE_CHARGE == m_eCurveType) && m_pFollowTarget)
 	{
-
 		_float4 vTargetPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
-		_float4 vDir = (vTargetPos + vStartPos) - vTargetPos;
+
 		m_pDatas[iIndex].RectInstance.vTranslation = vTargetPos + vStartPos;
-		m_pDatas[iIndex].InstancingData.vDir = vDir;
-
-		_float4 vUpDir = { 0.f, 1.f, 0.f };
-		if ((vDir.y < 1.1f && vDir.y > 0.9f) ||
-			(vDir.y > -1.1f && vDir.y < -0.9f)
-			)
-			vUpDir = _float4(0.f, 0.f, 1.f, 0.f);
-
-		vUpDir.Normalize();
-		m_pDatas[iIndex].InstancingData.vStartPureLocalRight = vUpDir.Cross(vDir);
-
-	}
-	else
-	{
-		m_pDatas[iIndex].RectInstance.vTranslation = vStartPos;
-		m_pDatas[iIndex].InstancingData.vDir = vStartDir;
-		m_pDatas[iIndex].InstancingData.vRight = vStartRight;
 	}
 
-	
 
 	//회전시켜놓기
 
@@ -1409,25 +1404,33 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 	case Client::CURVE_CHARGE:
 		if (m_pFollowTarget)
 		{
-			vPos = CEasing_Utillity::Linear(vPos, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS), m_pDatas[iIdx].InstancingData.fMovingAcc,
-				m_pDatas[iIdx].InstancingData.fFadeInTime + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);
+			//vPos = CEasing_Utillity::Linear(vPos, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS), m_pDatas[iIdx].InstancingData.fMovingAcc,
+			//	m_pDatas[iIdx].InstancingData.fFadeInTime + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);
+
+			_float4 vTarget = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS) - vPos;
+			m_pDatas[iIdx].InstancingData.vDir = vTarget;
 		}
 		break;
 
 	case Client::CURVE_CIRCLE:
-		/*if (m_pFollowTarget)
-		{
-			fX = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).x + m_pDatas[iIdx].InstancingData.fCurvePower *
-				cosf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc);
 
-			fY = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).y - m_pDatas[iIdx].InstancingData.fCurvePower *
-				sinf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc);
+		//if (m_pFollowTarget)
+		//{
+		//	fX = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).x + m_pDatas[iIdx].InstancingData.fCurvePower *
+		//		cosf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc);
 
-			vPos.x = fX;
-			vPos.y = fY;
-			vPos.z = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).z;
+		//	fY = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).y - m_pDatas[iIdx].InstancingData.fCurvePower *
+		//		sinf(m_pDatas[iIdx].InstancingData.fCurveFrequency * m_pDatas[iIdx].InstancingData.fMovingAcc);
 
-		}*/
+		//	vPos.x += fX * m_pDatas[iIdx].InstancingData.vDir.x * fTimeDelta;
+		//	vPos.y += fX * m_pDatas[iIdx].InstancingData.vDir.y * fTimeDelta;
+		//	vPos.z += fX * m_pDatas[iIdx].InstancingData.vDir.z * fTimeDelta;
+
+		//	vPos.x += fY * m_pDatas[iIdx].InstancingData.vRight.x * fTimeDelta;
+		//	vPos.y += fY * m_pDatas[iIdx].InstancingData.vRight.y * fTimeDelta;
+		//	vPos.z += fY * m_pDatas[iIdx].InstancingData.vRight.z * fTimeDelta;
+
+		//}
 
 		break;
 
