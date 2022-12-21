@@ -1085,7 +1085,7 @@ void CPlayer::Set_MainPlayerStartPath(_uint iTriggerType)
 		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
 		break;
 	case 1:
-		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Respawn_0") : ("Paden_RedTeam_Respawn_0");
+		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Respawn_1") : ("Paden_RedTeam_Respawn_1");
 		break;
 	case 2:
 		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Cannon_0") : ("Paden_RedTeam_Cannon_0");
