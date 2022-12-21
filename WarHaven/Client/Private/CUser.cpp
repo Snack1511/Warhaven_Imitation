@@ -322,13 +322,13 @@ void CUser::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 void CUser::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
 	if (m_pUI_Paden)
-	m_pUI_Paden->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
+		m_pUI_Paden->Set_ConquestTime(strPadenPointKey, fConquestTime, fMaxConquestTime);
 }
 
 void CUser::Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam)
 {
 	if (m_pUI_Paden)
-	m_pUI_Paden->Set_Team(pAllyTeam, pEnemyTeam);
+		m_pUI_Paden->Set_Team(pAllyTeam, pEnemyTeam);
 }
 
 void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
@@ -661,7 +661,16 @@ void CUser::Update_KillName()
 
 void CUser::SetAcitve_ReviveUI(_bool value)
 {
-	m_pReviveUI->SetActive(value);
+	if (value == true)
+	{
+		if (!m_pReviveUI->Is_Valid())
+			m_pReviveUI->SetActive(true);
+	}
+	else
+	{
+		if (m_pReviveUI->Is_Valid())
+			m_pReviveUI->SetActive(false);
+	}
 }
 
 void CUser::Set_ReviveUI_Pos(CTransform* pReviveUnitTransform)

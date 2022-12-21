@@ -398,8 +398,6 @@ void CUI_Paden::My_LateTick()
 
 	Set_PointTextPosY();
 	Update_TargetPointPos();
-
-	cout << m_eTargetPoint << endl;
 }
 
 void CUI_Paden::OnEnable()

@@ -331,9 +331,9 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 			CUser::Get_Instance()->Set_HeroPort(1);
 		}
 	}
-	
 
-	
+
+
 
 	return S_OK;
 }
@@ -375,7 +375,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 				Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController));
 			}
 		}
-		
+
 
 	}
 	m_bReborn = false;
@@ -386,7 +386,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 	}
 
 	if (m_pReviveCollider)
-	DISABLE_COMPONENT(m_pReviveCollider);
+		DISABLE_COMPONENT(m_pReviveCollider);
 }
 
 _float4 CPlayer::Get_WorldPos()
@@ -399,7 +399,7 @@ void CPlayer::Reserve_State(_uint eState)
 	m_pCurrentUnit->Reserve_State(STATE_TYPE(eState));
 
 }
- 
+
 void CPlayer::Set_Unit_ReserveState(_uint eClassType, _uint eState)
 {
 	m_iReserveStateDefault[eClassType] = eState;
@@ -455,7 +455,7 @@ void CPlayer::SetUp_ReserveState()
 	default:
 		break;
 	}
-	
+
 }
 
 void CPlayer::SetUp_UnitColliders(_bool bBlueTeam)
@@ -531,7 +531,7 @@ HRESULT CPlayer::Initialize_Prototype()
 			assert(0);//메인플레이어는 Personality가 할당되면 안됩니다
 
 		CAIController* pAIComponent = CAIController::Create(m_pMyPlayerInfo->m_pPersonality);
-		
+
 		if (!pAIComponent)
 			return E_FAIL;
 
@@ -689,16 +689,16 @@ HRESULT CPlayer::SetUp_Collider()
 	if (!m_pMyPlayerInfo->m_pPersonality)
 		return S_OK;
 
-	m_pSightRangeCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 
-		m_pMyPlayerInfo->m_pPersonality->m_tPersonalDesc.tPersonalityData.fSIghtRadius, 
+	m_pSightRangeCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM,
+		m_pMyPlayerInfo->m_pPersonality->m_tPersonalDesc.tPersonalityData.fSIghtRadius,
 		COL_SIGHTRANGE, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
 
 	if (!m_pSightRangeCollider)
 		return E_FAIL;
 
 	Add_Component(m_pSightRangeCollider);
-	
-	
+
+
 
 	return S_OK;
 }
@@ -712,9 +712,9 @@ CAIPersonality* CPlayer::Get_Personality()
 	return m_pMyPlayerInfo->m_pPersonality;
 }
 
-void CPlayer::Set_Personality(CAIPersonality* pPersonality) 
+void CPlayer::Set_Personality(CAIPersonality* pPersonality)
 {
-	if (nullptr != m_pAIController) 
+	if (nullptr != m_pAIController)
 	{
 		if (nullptr != pPersonality)
 		{
@@ -740,6 +740,12 @@ void CPlayer::On_Die()
 	DISABLE_GAMEOBJECT(m_pUnitHUD);
 	m_bDieDelay = true;
 
+	if (!m_bIsMainPlayer)
+	{
+		if (Get_Team()->IsMainPlayerTeam())
+			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
+	}
+
 	if (m_bIsMainPlayer)
 	{
 
@@ -751,12 +757,12 @@ _bool CPlayer::Is_EndRevivalTime()
 	return (m_fRevivalAcc >= m_fMaxRevivalTime);
 }
 
-_bool	CPlayer::Is_Died() 
+_bool	CPlayer::Is_Died()
 {
 	return (m_bDie || m_bDieDelay);
 }
 
-_bool CPlayer::Is_AbleRevival() 
+_bool CPlayer::Is_AbleRevival()
 {
 	return m_bAbleRevival;
 }
@@ -770,6 +776,8 @@ void CPlayer::On_RealDie()
 	//소생 
 	if (m_bIsMainPlayer)
 		CUser::Get_Instance()->Toggle_DeadUI(true, true);
+
+	CUser::Get_Instance()->SetAcitve_ReviveUI(false);
 
 	m_bDieDelay = false;
 	m_fDieDelayAcc = 0.f;
@@ -786,7 +794,7 @@ void CPlayer::On_RealDie()
 			m_pCurrentUnit->Create_Light(m_DeadLights.back(), _float4(0.f, 0.5f, 0.f), 5.f, 0.f, 0.5f, 0.f, 0.5f, RGB(255, 160, 50), true);
 		}
 
-		
+
 	}
 	else if (m_bIsMainPlayer)
 	{
@@ -906,8 +914,8 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL4);
 		}
 	}
-	
-		
+
+
 }
 
 void CPlayer::Change_NearPath()
@@ -1014,7 +1022,7 @@ void CPlayer::Set_NewPath(CPath* pPath)
 {
 	SAFE_DELETE(m_pCurPath);
 	m_pCurPath = pPath;
-	if(m_pCurPath)
+	if (m_pCurPath)
 		m_pCurPath->Init_Indices();
 
 	m_pCurPath->m_vPrevPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
@@ -1052,9 +1060,9 @@ _float4 CPlayer::Get_SquadDir()
 	return vDir;
 }
 
-CPath* CPlayer::Get_CurPath() 
+CPath* CPlayer::Get_CurPath()
 {
-	return m_pCurPath; 
+	return m_pCurPath;
 }
 
 void CPlayer::Update_HeroGauge()
@@ -1093,14 +1101,14 @@ void CPlayer::Update_HeroGauge()
 
 		}
 		else //변신 중일때 
-		{	
+		{
 			m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
 
 			if (m_bIsMainPlayer)
 			{
 				On_FinishHero_KeyInput();
 			}
-			else if(0 >= m_fGauge)
+			else if (0 >= m_fGauge)
 			{
 				On_FinishHero();
 			}
@@ -1158,7 +1166,7 @@ void CPlayer::On_FinishHero_KeyInput()
 	{
 		On_FinishHero();
 	}
-	
+
 	else if (0 >= m_fGauge)
 	{
 		On_FinishHero();
@@ -1170,6 +1178,9 @@ void CPlayer::Update_DieDelay()
 	if (m_bDieDelay)
 	{
 		m_fDieDelayAcc += fDT(0);
+
+		CUser::Get_Instance()->Set_ReviveUI_Pos(m_pTransform);
+
 		if (m_fDieDelayAcc >= m_fDieCoolTime)
 		{
 			On_RealDie();
@@ -1210,7 +1221,7 @@ void CPlayer::Check_AbleRevival()
 				_float4 vStartPos = m_pMyTeam->Find_RespawnPosition_Start();
 				Respawn_Unit(vStartPos, m_eCurrentClass);
 			}
-			
+
 
 
 		}

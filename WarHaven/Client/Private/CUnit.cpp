@@ -192,12 +192,11 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 		{
 			m_pAdjRevivalPlayer = nullptr;
 
-			//UI Off
+			// UI Off
 			CUser::Get_Instance()->SetAcitve_ReviveUI(false);
 		}
 
 	}
-
 	else if (eOtherColType == COL_CANNON)
 	{
 		m_pAdjCannon = nullptr;
@@ -1075,19 +1074,6 @@ void CUnit::My_LateTick()
 		{
 			On_Die();
 		}
-	}
-
-	if (!m_bIsMainPlayer)
-	{
-		_bool isAbleRevive = Get_OwnerPlayer()->Is_AbleRevival();
-		if (isAbleRevive)
-		{
-			CUser::Get_Instance()->Set_ReviveUI_Pos(m_pTransform);
-
-			cout << "부활 가능 상태" << endl;
-		}
-
-		CUser::Get_Instance()->SetAcitve_ReviveUI(isAbleRevive);
 	}
 }
 

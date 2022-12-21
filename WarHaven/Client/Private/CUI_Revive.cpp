@@ -34,7 +34,8 @@ HRESULT CUI_Revive::Start()
 void CUI_Revive::Set_Position(CTransform* pReviveUnitTransform)
 {
 	_float4 vReviveUnitPos = CUtility_Transform::Get_ProjPos(pReviveUnitTransform);
-	vReviveUnitPos.y += 5.f;
+	vReviveUnitPos.x -= 15.f;
+	vReviveUnitPos.y += 10.f;
 
 	m_pReviveIcon->Set_Pos(vReviveUnitPos);
 }
@@ -67,7 +68,7 @@ void CUI_Revive::Create_ReviveIcon()
 {
 	m_pReviveIcon = CUI_Object::Create();
 
-	m_pReviveIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/White/T_WhiteEKeyIcon.png"));
+	m_pReviveIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/White/T_WhiteFKeyIcon.dds"));
 
 	m_pReviveIcon->Set_Scale(20.f);
 
@@ -75,7 +76,7 @@ void CUI_Revive::Create_ReviveIcon()
 	m_pReviveIcon->Set_FontStyle(true);
 	m_pReviveIcon->Set_FontCenter(true);
 
-	m_pReviveIcon->Set_FontOffset(50.f, 3.f);
+	m_pReviveIcon->Set_FontOffset(30.f, 3.f);
 	m_pReviveIcon->Set_FontScale(0.2f);
 
 	m_pReviveIcon->Set_FontText(TEXT("¼Ò»ý"));
