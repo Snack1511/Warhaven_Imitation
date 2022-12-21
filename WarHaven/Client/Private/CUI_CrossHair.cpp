@@ -80,23 +80,13 @@ void CUI_Crosshair::SetActive_Crosshair(_bool value)
 
 void CUI_Crosshair::SetActive_ArrowUI(_bool value)
 {
-	if (value == true)
+	for (int i = 0; i < AU_End; ++i)
 	{
-		for (int i = 0; i < AU_End; ++i)
+		for (int j = 0; j < m_iArrowIndex; ++j)
 		{
-			for (int j = 0; j < m_iArrowIndex; ++j)
+			if (m_pArrArrowUI[i][j]->Is_Valid() == !value)
 			{
-				ENABLE_GAMEOBJECT(m_pArrArrowUI[i][j]);
-			}
-		}
-	}
-	else
-	{
-		for (int i = 0; i < AU_End; ++i)
-		{
-			for (int j = 0; j < m_iArrowIndex; ++j)
-			{
-				DISABLE_GAMEOBJECT(m_pArrArrowUI[i][j]);
+				m_pArrArrowUI[i][j]->SetActive(value);
 			}
 		}
 	}
@@ -131,6 +121,14 @@ void CUI_Crosshair::Set_Position(_float4 vPos)
 	for (int i = 0; i < CU_End; ++i)
 	{
 		m_pCrosshair[i]->Set_Pos(vPos);
+	}
+
+	for (int i = 0; i < AU_End; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrArrowUI[i][j]->Set_Pos(vPos);
+		}
 	}
 }
 
@@ -259,66 +257,80 @@ void CUI_Crosshair::Set_ArrowUI()
 	}
 }
 
-void CUI_Crosshair::Rotate_Arrow()
+void CUI_Crosshair::Charge_Arrow()
 {
 	if (m_iClassIndex != ARCHER)
 		return;
 
 	_float fDuration = 3.f / (_float)m_iArrowIndex;
-	_float fRadius = 360.f / (_float)m_iArrowIndex;
+	_float fAngle = 360.f / (_float)m_iArrowIndex;
 
 	if (KEY(LBUTTON, HOLD))
 	{
-		if (!bCharge)
+		if (!m_bIsCharge)
 		{
-			if (bChargeWait)
+			if (m_bIsChargeWait)
 				return;
 
-			bCharge = true;
+			m_bIsCharge = true;
 
-			for (int i = 0; i < AU_End; ++i)
+			for (int i = 0; i < 3; ++i)
 			{
-				for (int j = 0; j < m_iArrowIndex; ++j)
-				{
-					if (!m_pArrArrowUI[i][j]->Is_Valid())
-						m_pArrArrowUI[i][j]->SetActive(true);
-				}
+				m_pArrArrowUI[AU_BG][i]->SetActive(true);
 			}
+			m_pArrArrowUI[AU_Arrow][m_iChargeCount]->SetActive(true);
+
+			cout << m_iChargeCount << endl;
+
+			m_iChargeCount++;
+			if (m_iChargeCount > 2)
+				m_iChargeCount = 2;
+
+			//SetActive_ArrowUI(true);
 		}
 		else
 		{
 			m_fAccTime += fDT(0);
-
-			cout << m_fAccTime << endl;
-
 			if (m_fAccTime > 1.f)
 			{
 				m_fAccTime = 0.f;
 
-				if (bChargeWait)
+				if (m_bIsChargeWait)
 				{
-					bChargeWait = false;
+					cout << "차지 대기 비활성화" << endl;
+					m_bIsChargeWait = false;
+					m_bIsCharge = false;
 				}
 				else
 				{
-					bChargeWait = true;
+					cout << "차지 대기 활성화" << endl;
+					m_bIsChargeWait = true;
 
-					for (int i = 0; i < AU_End; ++i)
-					{
-						for (int j = 0; j < m_iArrowIndex; ++j)
-						{
-							m_pArrArrowUI[i][j]->DoRotate(fRadius, fDuration);
-						}
-					}
+					Rotate_Arrow(fAngle, fDuration);
 				}
 			}
 		}
 	}
 	else
 	{
-		bCharge = false;
-		bChargeWait = false;
+		SetActive_ArrowUI(false);
+
+		m_bIsCharge = false;
+		m_bIsChargeWait = false;
+		m_iChargeCount = 0;
+
 		m_fAccTime = 0.f;
+	}
+}
+
+void CUI_Crosshair::Rotate_Arrow(_float fAngle, _float fDuration)
+{
+	for (int i = 0; i < AU_End; ++i)
+	{
+		for (int j = 0; j < m_iArrowIndex; ++j)
+		{
+			m_pArrArrowUI[i][j]->DoRotate(fAngle, fDuration);
+		}
 	}
 }
 
@@ -364,7 +376,7 @@ void CUI_Crosshair::My_Tick()
 {
 	__super::My_Tick();
 
-	Rotate_Arrow();
+	Charge_Arrow();
 }
 
 void CUI_Crosshair::OnEnable()

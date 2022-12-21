@@ -24,7 +24,7 @@ public:
 	void SetActive_ArrowUI(_bool value);
 	void SetActive_LancerUI(_bool value);
 	
-	void	Set_Position(_float4 vPos);
+	void Set_Position(_float4 vPos);
 
 	void Set_ArcherPoint(_bool value);
 
@@ -49,14 +49,17 @@ private:
 
 	_uint m_iArrowIndex = 0;
 
-	_bool bCharge = false;
-	_bool bChargeWait = false;
+	_bool m_bIsCharge = false;
+	_bool m_bIsChargeWait = false;
+
+	_uint m_iChargeCount = 0;
 
 private:
 	void Create_ArrowUI();
 	void Set_ArrowUI();
 
-	void Rotate_Arrow();
+	void Charge_Arrow();
+	void Rotate_Arrow(_float fAngle, _float fDuration);
 
 private:
 	enum LancerUI { LU_BG, LU_Gauge, LU_Full, LU_End };
