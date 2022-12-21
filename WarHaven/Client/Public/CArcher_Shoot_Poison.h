@@ -1,11 +1,11 @@
 #pragma once
-#include "CState_Blendable.h"
+#include "CShootAttack_Archer.h"
 
 BEGIN(Client)
 class CColorController;
 
 class CArcher_Shoot_Poison
-	: public CState_Blendable
+	: public CShootAttack_Archer
 {
 	DECLARE_STATE(CArcher_Shoot_Poison);
 

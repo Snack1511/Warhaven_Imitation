@@ -51,8 +51,6 @@ HRESULT CWarrior_Attack_HorizontalMiddle::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
-	m_fDamagePumping = 999.f;
-
 	return __super::Initialize();
 
 }

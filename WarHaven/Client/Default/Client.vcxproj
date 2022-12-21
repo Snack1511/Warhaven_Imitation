@@ -192,6 +192,7 @@
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
     <ClInclude Include="..\public\CAnimWeapon.h" />
+    <ClInclude Include="..\Public\CShootAttack_Archer.h" />
     <ClInclude Include="..\public\CCannon.h" />
     <ClInclude Include="..\public\CCustomTrail.h" />
     <ClInclude Include="..\Public\CSnipeArrow.h" />
@@ -998,6 +999,7 @@
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
     <ClCompile Include="..\private\CAnimWeapon.cpp" />
+    <ClCompile Include="..\Private\CShootAttack_Archer.cpp" />
     <ClCompile Include="..\private\CCannon.cpp" />
     <ClCompile Include="..\private\CCustomTrail.cpp" />
     <ClCompile Include="..\Private\CSnipeArrow.cpp" />

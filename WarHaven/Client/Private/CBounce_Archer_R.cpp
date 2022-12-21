@@ -38,6 +38,8 @@ HRESULT CBounce_Archer_R::Initialize()
     m_iAnimIndex = 9;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_BOUNCE_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
+    m_fAnimSpeed = 2.5f;
+
     m_iStateChangeKeyFrame = 60;
 
     m_vecAdjState.push_back(STATE_IDLE_ARCHER_R);
@@ -69,6 +71,9 @@ void CBounce_Archer_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 STATE_TYPE CBounce_Archer_R::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (pAnimator->Is_CurAnimFinished())
+        return STATE_IDLE_ARCHER_R;
+
     if (m_bAttackTrigger)
         return m_ePreStateType;
 

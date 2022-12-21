@@ -25,6 +25,101 @@ CAttack_Archer::~CAttack_Archer()
 
 HRESULT CAttack_Archer::Initialize()
 {
+
+	m_tHitInfo.eHitType = HIT_TYPE::eUP;
+	m_tHitInfo.fKnockBackPower = 1.f;
+	m_tHitInfo.fJumpPower = 0.f;
+	m_tHitInfo.bFace = false;
+
+	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
+
+	m_iStopIndex = 0;
+	m_iAttackEndIndex = 0;
+
+
+	m_eAnimLeftorRight = ANIM_BASE_R;
+
+	m_iIdle_Index = 11;
+	m_iLandRightIndex = 17;
+	m_iLandLeftIndex = 8;
+	m_iJumpFallRightIndex = 10;
+	m_iJumpFallLeftIndex = 0;
+
+	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 28;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 29;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 30;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 31;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 32;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 33;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 34;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 35;
+
+	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 38;
+	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 41;
+	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 45;
+
+	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 38;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 39;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_NE] = 40;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_NW] = 41;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_S] = 42;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_SE] = 43;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_SW] = 44;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_W] = 45;
+
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_E] = 28;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_N] = 29;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NE] = 30;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NW] = 31;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_S] = 32;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SE] = 33;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SW] = 34;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_W] = 35;
+
+
+	m_iJumpRightAnimIndex[STATE_DIRECTION_E] = 13;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_N] = 14;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_S] = 15;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_W] = 16;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_NW] = 12;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_NE] = 99;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_SE] = 99;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_SW] = 99;
+
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_E] = 4;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_N] = 5;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_S] = 6;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_W] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NW] = 3;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NE] = 99;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
+
+	m_eWalkState = STATE_WALK_ARCHER_R;
+	m_eJumpState = STATE_JUMP_ARCHER_R;
+	m_eLandState = STATE_WALK_ARCHER_R;
+	m_eFallState = STATE_JUMPFALL_ARCHER_R;
+	m_eRunState = STATE_WALK_ARCHER_R;
+	m_eIdleState = STATE_IDLE_ARCHER_R;
+	m_eBounceState = STATE_WALK_ARCHER_R;
+
+
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.25f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 0.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 0.8f;
+
+	m_bLandMove = true;
+
 #define INDEXCHECK(index) if (index >= 9999) return E_FAIL;
 
 	INDEXCHECK(m_iIdle_Index);
@@ -58,6 +153,8 @@ HRESULT CAttack_Archer::Initialize()
 			)
 			return E_FAIL;
 	}
+
+	
 
 
 	/* Blend Stop Event*/

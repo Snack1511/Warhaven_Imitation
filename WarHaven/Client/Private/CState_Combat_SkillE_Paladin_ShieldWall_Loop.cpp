@@ -98,6 +98,7 @@ STATE_TYPE CState_Combat_SkillE_Paladin_ShieldWall_Loop::Tick(CUnit* pOwner, CAn
 	CTransform* pMyTransform = pOwner->Get_Transform();
 
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+	vLook.y = 0.f;
 	pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
 
 	return __super::Tick(pOwner, pAnimator);

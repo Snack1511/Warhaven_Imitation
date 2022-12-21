@@ -41,6 +41,8 @@ HRESULT CState_PathNavigation_Sprint_Engineer_Begin::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+    m_fInterPolationTime = 0.1f;
+
     return S_OK;
 }
 

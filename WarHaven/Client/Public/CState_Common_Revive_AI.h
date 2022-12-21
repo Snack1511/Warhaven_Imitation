@@ -16,7 +16,7 @@ private:
 	CState_Common_Revive_AI();
 	virtual ~CState_Common_Revive_AI();
 
-	enum PHASE {BEGIN, LOOP, PHASE_END, DANCE};
+	enum PHASE {BEGIN, LOOP, PHASE_END, DANCE, PHASE_NONE};
 
 public:
 	static CState_Common_Revive_AI* Create();

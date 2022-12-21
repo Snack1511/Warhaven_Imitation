@@ -41,6 +41,7 @@ HRESULT CPaladin_Rush_Begin::Initialize()
 	m_fAnimSpeed = 2.5f;
 
 	m_fMyAccel = 100.f;
+	m_iStateChangeKeyFrame = 99;
 
 	Add_KeyFrame(50, 0);
 

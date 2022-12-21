@@ -41,6 +41,8 @@ HRESULT CState_PathNavigation_Sprint_Engineer_Loop::Initialize()
 
     m_fAnimSpeed = 2.5f;
 
+    m_fInterPolationTime = 0.f;
+
     m_eWalkState = AI_STATE_PATHNAVIGATION_WALK_ENGINEER_R;
 
     return S_OK;

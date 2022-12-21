@@ -5443,7 +5443,10 @@
       <Filter>03. Instances\03. Component\03. TrailBuffer\CustomTrail</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CAttack_Archer.h">
-      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\99. Parent</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\99. Parent\01. Attack_and_Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CShootAttack_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\99. Parent\02. Shoot</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -7838,7 +7841,10 @@
       <Filter>03. Instances\03. Component\03. TrailBuffer\CustomTrail</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAttack_Archer.cpp">
-      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\99. Parent</Filter>
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\99. Parent\01. Attack_and_Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CShootAttack_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\05. Archer\04. Attack\99. Parent\02. Shoot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -78,8 +78,18 @@ void CState_Common_Revive_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
     }
     else
     {
-        m_eCurPhase = DANCE;
-        m_iAnimIndex = 9;
+        m_iRand = random(0, 2);
+
+        if (m_iRand == 0)
+        {
+            m_eCurPhase = DANCE;
+            m_iAnimIndex = 9;
+        }
+        else
+        {
+            m_eCurPhase = PHASE_NONE;
+        }
+
         vDir = _float4(1.f, 0.f, 0.f);
     }
 
@@ -93,13 +103,21 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     m_fTimeAcc += fDT(0);
 
+    STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+
     switch (m_eCurPhase)
     {
+    case Client::CState_Common_Revive_AI::PHASE_NONE:
+
+        
+        return eDefaultState;
+        break;
+
+
     case Client::CState_Common_Revive_AI::DANCE:
 
-        if (pAnimator->Get_CurAnimFrame() > 40)
+        if (pAnimator->Is_CurAnimFinished())
         {
-            STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
             return eDefaultState;
         }
 
@@ -131,7 +149,7 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
             else
                 m_iAnimIndex = 29;
             
-            // 이거 해야 부활함.. 왜? 그리고 DeadStone 없으면 터짐. 
+            // 만약 부활이 되지 않는다면 이 코드의 주석을 해제하세요..
             //if(m_pAbjPlayer)
             //    static_cast<CPlayer*>(m_pAbjPlayer)->Respawn_Unit(m_vPos, static_cast<CPlayer*>(m_pAbjPlayer)->Get_CurClass());
 
@@ -151,7 +169,6 @@ STATE_TYPE CState_Common_Revive_AI::Tick(CUnit* pOwner, CAnimator* pAnimator)
     case Client::CState_Common_Revive_AI::PHASE_END:
         if (pAnimator->Is_CurAnimFinished())
         {
-            STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
             return eDefaultState;
         }
         break;

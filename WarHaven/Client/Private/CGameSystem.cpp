@@ -273,13 +273,13 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
 		case 1:
 			strKey = "EnemyTrio_2";
 			wstrInfoKey = L"EnemyTrio_1";
-			eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY; // STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY  가드 테스트용
+			eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY; // STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY  가드 테스트용
 
 			break;
 		case 2:
 			strKey = "q";
 			wstrInfoKey = L"EnemyTrio_2";
-			eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
+			eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY; // STATE_IDLE_WARRIOR_R_AI_ENEMY
 			break;
 		case 3:
 			strKey = "EnemyHall";
