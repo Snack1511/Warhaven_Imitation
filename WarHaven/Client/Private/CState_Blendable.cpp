@@ -264,6 +264,13 @@ STATE_TYPE CState_Blendable::Update_Jump(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Blendable::Update_Fall(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (m_bSmootMoveLoop)
+	{
+		m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
+		DoMove(m_ePreDirection, pOwner);
+	}
+		
+
 	if (!pOwner->Is_Air())
 		On_EnumChange(Enum::eLAND, pAnimator);
 
@@ -275,7 +282,9 @@ STATE_TYPE CState_Blendable::Update_Fall(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Blendable::Update_Land(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//Move(Get_Direction(), pOwner);
+
+	if(m_bSmootMoveLoop)
+		On_EnumChange(Enum::eRUN, pAnimator);
 
 	if (pAnimator->Is_CurAnimFinished())
 		On_EnumChange(Enum::eIDLE, pAnimator);
@@ -473,9 +482,6 @@ void	CState_Blendable::BlendableTick_Loop(CUnit* pOwner, CAnimator* pAnimator, _
 
 			break;
 		case Client::CState_Blendable::Enum::eLAND:
-			if(m_bLandMove)
-				DoMove(Get_Direction(), pOwner);
-
 			Update_Land(pOwner, pAnimator);
 
 			break;
@@ -525,6 +531,8 @@ void CState_Blendable::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 		else
 			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iJumpFallRightIndex, ANIM_DIVIDE::eBODYLOWER);
 
+		m_ePreDirection = (STATE_DIRECTION)Get_Direction();
+		
 		break;
 	case Client::CState_Blendable::Enum::eLAND:
 		m_fMaxSpeed = m_pOwner->Get_Status().fWalkSpeed;

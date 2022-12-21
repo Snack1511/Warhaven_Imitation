@@ -7,6 +7,7 @@
 #include "CUnit.h"
 
 #include "CUser.h"
+#include "CAnimWeapon.h"
 
 CRun_Archer::CRun_Archer()
 {
@@ -54,6 +55,8 @@ void CRun_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
+
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
 
 
 	if (ePrevType == STATE_RUN_ARCHER_R || ePrevType == STATE_RUN_ARCHER_L)

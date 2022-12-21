@@ -1,5 +1,5 @@
 #pragma once
-#include "CBounce_Valkyrie.h"
+#include "CState.h"
 
 BEGIN(Engine)
 END
@@ -8,7 +8,7 @@ BEGIN(Client)
 class CColorController;
 
 class CBounce_Archer_R
-	: public CBounce_Valkyrie
+	: public CState
 {
 	DECLARE_STATE(CBounce_Archer_R);
 

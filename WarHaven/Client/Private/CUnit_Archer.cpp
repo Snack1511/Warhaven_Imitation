@@ -67,9 +67,9 @@ void CUnit_Archer::On_Die()
 	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
 
 
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Warrior", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Archer", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 	vPos.y += 1.f;
-	CEffects_Factory::Get_Instance()->Create_MeshParticle(L"WarriorDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"ArcherDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 
 }
 
@@ -157,15 +157,14 @@ void CUnit_Archer::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 		break;
 
-	case Client::CUnit::UNIT_TYPE::eAI_TG:
-	case Client::CUnit::UNIT_TYPE::eSandbag:
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
+	case Client::CUnit::UNIT_TYPE::eAI_Default:
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_ARCHER;
+		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_ARCHER;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_ARCHER; // 이거 아직 안함.
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_ARCHER;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_ARCHER;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_ARCHER;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_ARCHER;
 		break;
 
 	default:
@@ -187,8 +186,8 @@ void CUnit_Archer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eDefaultState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		m_eSprintEndState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
 
 		break;
 
@@ -204,7 +203,48 @@ void CUnit_Archer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 void CUnit_Archer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 {
+	__super::On_ChangeBehavior(pBehaviorDesc);
 
+	if (nullptr == pBehaviorDesc)
+		assert(0);
+
+	STATE_TYPE	eNewState = STATE_END;
+
+	switch (pBehaviorDesc->eCurType)
+	{
+	case eBehaviorType::ePatrol:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		break;
+	case eBehaviorType::eFollow:
+		//상태변경
+		break;
+	case eBehaviorType::eAttack:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+
+		break;
+	case eBehaviorType::ePathNavigation:
+		//상태변경
+		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		break;
+
+	case eBehaviorType::eResurrect:
+		//상태변경
+		eNewState = AI_STATE_COMMON_REVIVE_AI;
+		break;
+
+	case eBehaviorType::eChange:
+		//상태변경
+		eNewState = AI_STATE_COMMON_CHANGE_HERO;
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	if (eNewState != STATE_END)
+		m_eReserveState = eNewState;
 }
 
 void CUnit_Archer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
@@ -519,6 +559,8 @@ HRESULT CUnit_Archer::Initialize()
 		m_pUI_Trail = pUI_Trail;
 	}
 
+	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pAnimWeapon);
 
 	return S_OK;
 }
@@ -527,8 +569,7 @@ HRESULT CUnit_Archer::Start()
 {
 	__super::Start();
 
-	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
-	DISABLE_GAMEOBJECT(m_pAnimWeapon);
+	ENABLE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 
 	if (m_pUI_Trail)
 	{

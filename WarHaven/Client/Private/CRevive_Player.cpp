@@ -81,7 +81,12 @@ HRESULT CRevive_Player::Initialize()
 
 void CRevive_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    
+    if (ePrevType != m_ePreStateType && pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
+    {
+        m_iAnimIndex = 20;
+    }
+
+
     if (pOwner->Get_RevivalPlayer())
     {
         pOwner->Get_RevivalPlayer()->Get_CurrentUnit()->Start_Reborn();
@@ -108,7 +113,12 @@ STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         if (pAnimator->Is_CurAnimFinished())
         {
             m_eCurPhase = LOOP;
-            m_iAnimIndex = 30;
+
+            if (pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
+                m_iAnimIndex = 22;
+            else
+                m_iAnimIndex = 30;
+
             __super::Enter(pOwner, pAnimator, m_eStateType);
         }
 
@@ -117,7 +127,12 @@ STATE_TYPE CRevive_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
         if (m_fTimeAcc >= 4.f)
         {
             m_eCurPhase = PHASE_END;
-            m_iAnimIndex = 29;
+
+            if (pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
+                m_iAnimIndex = 21;
+            else
+                m_iAnimIndex = 29;
+
             __super::Enter(pOwner, pAnimator, m_eStateType);
         }
 

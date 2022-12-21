@@ -55,9 +55,9 @@ void CUnit_Paladin::On_Die()
 	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
 
 
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Warrior", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Paladin", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 	vPos.y += 1.f;
-	CEffects_Factory::Get_Instance()->Create_MeshParticle(L"WarriorDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"ArcherDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 
 }
 

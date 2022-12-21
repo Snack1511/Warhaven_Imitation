@@ -160,13 +160,19 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		pEnemy->Enable_OnStart();
 		pEnemy->SetUp_UnitColliders(false);
 
+		// 기본 코드
 		// AI_STATE_DEFAULT_IDLE_WARRIOR_R
 		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_WARRIOR_R);
+		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
+
 		// 테스트용 샌드백
-		pEnemy->Reserve_State(STATE_IDLE_WARRIOR_L_AI_ENEMY);
+		//pEnemy->Reserve_State(STATE_IDLE_WARRIOR_L_AI_ENEMY);
 		// AI 바보만드는 코드
-		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_idiot);
-		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
+		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_idiot);
+
+		// 궁수 테스트
+		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_ARCHER_R);
+		
 
 		READY_GAMEOBJECT(pEnemy, GROUP_PLAYER);
 	}
@@ -273,13 +279,13 @@ HRESULT CGameSystem::On_ReadyPlayers_BootCamp(vector<pair<CGameObject*, _uint>>&
 		case 1:
 			strKey = "EnemyTrio_2";
 			wstrInfoKey = L"EnemyTrio_1";
-			eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
+			eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY; // STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY  가드 테스트용
 
 			break;
 		case 2:
 			strKey = "q";
 			wstrInfoKey = L"EnemyTrio_2";
-			eEnemyState = STATE_IDLE_WARRIOR_R_AI_ENEMY;
+			eEnemyState = STATE_GUARD_BEGIN_WARRIOR_AI_ENEMY; // STATE_IDLE_WARRIOR_R_AI_ENEMY
 			break;
 		case 3:
 			strKey = "EnemyHall";

@@ -89,6 +89,8 @@ protected:
 	_bool	m_bLandMove = false;
 	_bool	m_bCam = true;
 
+	_uint	m_iKeyAwayAnimIndex = 0; // 뗄 때 애니메이션 인덱스
+	_uint	m_iMinCancelAnimIndex = 0;  // 애니메이션 바뀌는 최소값
 
 protected:
 	CHierarchyNode* m_pCoreBone = nullptr;
@@ -96,10 +98,13 @@ protected:
 protected:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
+	/* Attack_Begin 에서만 사용 */
 	void				Enter_Attack_Begin(CUnit* pOwner);
-	void				Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, _uint eCamLerpType);
 
-	void				Exit_Aiming(CUnit* pOwner);
+	/* Aiming 에서만 사용 */
+	void				Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, _uint eCamLerpType);
+	void				Exit_Aiming(CUnit* pOwner, CAnimator* pAnimator);
+
 
 private:
 	/*사전 설정 아니고, 안에서 쓰는 것*/

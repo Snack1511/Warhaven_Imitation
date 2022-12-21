@@ -26,6 +26,7 @@ CProjectile::CProjectile(const CProjectile& _origin)
 	, m_hcCode(_origin.m_hcCode)
 	, m_fMaxDistance(_origin.m_fMaxDistance)
 	, m_vArrowHeadPos(_origin.m_vArrowHeadPos)
+	, m_fDamage(_origin.m_fDamage)
 {
 }
 
@@ -37,12 +38,43 @@ CProjectile::~CProjectile()
 
 void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	if (COL_PROJECTILECATCH == eOtherColType)
+	{
+		////COL_PROJECTILECATCH
+		//if()
 
+		//if (m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType() == eTEAM_TYPE::eRED)
+		//{
+		//	COL_GROUP_CLIENT eOtherColliderType = (COL_GROUP_CLIENT)eOtherColType;
 
-	m_pOwnerUnit->CallBack_CollisionEnter(pOtherObj, eOtherColType, eMyColType, vHitPos);
-	pOtherObj->CallBack_CollisionEnter(m_pOwnerUnit, eMyColType, eOtherColType, vHitPos);
+		//	switch ()
+		//	{
+		//	default:
+		//		break;
+		//	}
 
-	Hit_Unit(pOtherObj, vHitPos);
+		//	m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+
+		//	switch (switch_on)
+		//	{
+		//	default:
+		//		break;
+		//	}
+		//}
+		//	
+		//else
+		//{
+		//	Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
+		//}
+	}
+	else
+	{
+		m_pOwnerUnit->CallBack_CollisionEnter(pOtherObj, eOtherColType, eMyColType, vHitPos);
+		pOtherObj->CallBack_CollisionEnter(m_pOwnerUnit, eMyColType, eOtherColType, vHitPos);
+
+		Hit_Unit(pOtherObj, vHitPos);
+	}
+
 }
 
 void CProjectile::Projectile_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)

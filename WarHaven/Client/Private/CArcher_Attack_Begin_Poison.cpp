@@ -39,8 +39,6 @@ CArcher_Attack_Begin_Poison* CArcher_Attack_Begin_Poison::Create()
 }
 HRESULT CArcher_Attack_Begin_Poison::Initialize()
 {
-	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
-
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 1;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_ATTACK_BEGIN_POISION_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
@@ -50,95 +48,8 @@ HRESULT CArcher_Attack_Begin_Poison::Initialize()
 	m_fAnimSpeed = 2.3f;
 	m_iStateChangeKeyFrame = 0;
 
-	m_iStopIndex = 0;
-	m_iAttackEndIndex = 0;
-
-	Add_KeyFrame(30, 1);
+	Add_KeyFrame(31, 1);
 	Add_KeyFrame(90, 2);
-
-	m_eAnimLeftorRight = ANIM_BASE_R;
-
-	m_iIdle_Index = 11;
-	m_iLandRightIndex = 17;
-	m_iLandLeftIndex = 8;
-	m_iJumpFallRightIndex = 10;
-	m_iJumpFallLeftIndex = 0;
-
-
-	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 28;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 29;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 30;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 31;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 32;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 33;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 34;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 35;
-
-	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 38;
-	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 39;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 40;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 41;
-	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 42;
-	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 43;
-	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 44;
-	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 45;
-
-	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 38;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 39;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_NE] = 40;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_NW] = 41;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_S] = 42;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_SE] = 43;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_SW] = 44;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_W] = 45;
-
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_E] = 28;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_N] = 29;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_NE] = 30;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_NW] = 31;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_S] = 32;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_SE] = 33;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_SW] = 34;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_W] = 35;
-
-
-	m_iJumpRightAnimIndex[STATE_DIRECTION_E] = 13;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_N] = 14;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_S] = 15;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_W] = 16;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_NW] = 12;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_NE] = 99;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_SE] = 99;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_SW] = 99;
-
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_E] = 4;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_N] = 5;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_S] = 6;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_W] = 7;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_NW] = 3;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_NE] = 99;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
-
-	m_eWalkState = STATE_WALK_ARCHER_R;
-	m_eJumpState = STATE_JUMP_ARCHER_R;
-	m_eLandState = STATE_WALK_ARCHER_R;
-	m_eFallState = STATE_JUMPFALL_ARCHER_R;
-	m_eRunState = STATE_WALK_ARCHER_R;
-	m_eIdleState = STATE_IDLE_ARCHER_R;
-	m_eBounceState = STATE_WALK_ARCHER_R;
-
-
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.25f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 0.8f;
-
-	m_bLandMove = true;
 
     return __super::Initialize();
 }
@@ -151,17 +62,24 @@ void CArcher_Attack_Begin_Poison::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 STATE_TYPE CArcher_Attack_Begin_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	
+	if (KEY(LBUTTON, AWAY))
+		m_bKeyInputable = true;
+
 	if (m_bMoveTrigger)
 		return STATE_ATTACK_AIMING_POISION_ARCHER;
 
-	if (KEY(LBUTTON, AWAY))
+
+	if (m_bKeyInput)
 	{
-		if (m_bAttackTrigger)
-			return STATE_ATTACK_SHOOT_POISION_ARCHER;
-		else
-			return STATE_ATTACK_CANCEL_ARCHER;
+		if (pAnimator->Get_CurAnimFrame() > m_iMinCancelAnimIndex)
+		{
+			if (!m_bKeyInputable || m_bAttackTrigger)
+				return STATE_ATTACK_SHOOT_POISION_ARCHER;
+			else
+				return STATE_ATTACK_CANCEL_ARCHER;
+		}
 	}
+
 
 
     return __super::Tick(pOwner, pAnimator);
@@ -170,6 +88,7 @@ STATE_TYPE CArcher_Attack_Begin_Poison::Tick(CUnit* pOwner, CAnimator* pAnimator
 void CArcher_Attack_Begin_Poison::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	Prevent_Oneframe(pOwner);
+	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
 	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
 
 	__super::Exit(pOwner, pAnimator);

@@ -136,6 +136,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir = (m_pTransform->Get_World(WORLD_POS) - vHitPos);
 	tOtherHitInfo.vDir.y = 0.f;
 	tOtherHitInfo.vDir.Normalize();
+	//tOtherHitInfo.pOtherUnit = pOtherUnit;
 
 	//상대 위치 계산
 	_float4 vOtherDir = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
@@ -1007,6 +1008,7 @@ HRESULT CUnit::SetUp_Navigation(CCell* pStartCell)
 
 void CUnit::My_Tick()
 {
+
 	for (_int i = 0; i < COOL_END; ++i)
 	{
 		if (m_fCoolAcc[i] > 0.f)
@@ -1290,12 +1292,24 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	{
 		// 부트캠프에선 안죽게
 		if (m_bIsMainPlayer && CUser::Get_Instance()->Get_CurLevel() == LEVEL_BOOTCAMP)
+		{
 			m_tUnitStatus.fHP = 1.f;
+		}
 		else
 		{
+			//if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
+			//{
+			//	Enter_State(m_tHitType.eStingHitState, pHitInfo);
+			//}
+			//else
+			//{
+			//	On_DieBegin(pOtherUnit, vHitPos);
+			//	Enter_State(m_tHitType.eHitState, pHitInfo);
+			//}
 
 			On_DieBegin(pOtherUnit, vHitPos);
 			Enter_State(m_tHitType.eHitState, pHitInfo);
+
 			return;
 
 		}

@@ -78,7 +78,7 @@ void CAI_SandBack_StingHit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CAI_SandBack_StingHit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    
 
     return __super::Tick(pOwner, pAnimator);
 }

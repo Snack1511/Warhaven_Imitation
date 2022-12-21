@@ -47,6 +47,8 @@ HRESULT CPaladin_Rush_Loop::Initialize()
 	m_fInterPolationTime = 0.f;
 	m_fAnimSpeed = 1.8f;
 
+	m_iStateChangeKeyFrame = 99;
+
 	m_vecAdjState.push_back(STATE_RUSH_END_PALADIN);
 
 	Add_KeyFrame(29, 222);
