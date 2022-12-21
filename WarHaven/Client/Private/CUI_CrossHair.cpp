@@ -318,7 +318,10 @@ void CUI_Crosshair::Charge_Arrow()
 	else
 	{
 		for (int i = 0; i < 3; ++i)
+		{
+			m_pArrArrowUI[AU_Arrow][i]->Set_Scale(130.f);
 			m_pArrArrowUI[AU_Arrow][i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.f));
+		}
 
 		m_bIsCharge = false;
 		m_bIsChargeWait = false;
