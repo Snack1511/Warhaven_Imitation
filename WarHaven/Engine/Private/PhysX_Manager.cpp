@@ -478,16 +478,27 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 	_float fMinDist = 9999.f;
 	_float4 vFinalHitPos = vStartPos + vStartDir * fMaxDistance;
 
+	_uint iNumActors = 0;
+	iNumActors = m_pCurScene->getNbActors(PxActorTypeFlag::eRIGID_STATIC);
 
-	for (auto& elem : m_listAllStatics)
+	PxActor** pActors = nullptr;
+
+	m_pCurScene->getActors(PxActorTypeFlag::eRIGID_STATIC, pActors, sizeof(PxActor*) * iNumActors);
+
+	for (_uint i = 0; i < iNumActors; ++i)
 	{
-		if (!elem || !elem->isReleasable())
+
+		PxRigidStatic* pCurActor = pActors[i]->is<PxRigidStatic>();
+		if (!pCurActor)
+			continue;
+
+		if (pCurActor->getType() != PxActorType::eRIGID_STATIC)
 			continue;
 
 		//staticÀÌ¶û ´êÀ¸¸é ÀÌ³à¼®ÇÑÅ× ray ½÷¼­ À§Ä¡ º¸Á¤
 		PxRaycastHit hitInfo;
 		PxShape* pCurShape = nullptr;
-		elem->getShapes(&pCurShape, sizeof(PxShape));
+		pCurActor->getShapes(&pCurShape, sizeof(PxShape));
 
 		if (!pCurShape)
 			continue;
@@ -495,7 +506,7 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 		if (pCurShape->getGeometryType() == PxGeometryType::eBOX)
 		{
 			/* ÀýµÎÃ¼ */
-			_float4 vCenterPos = CUtility_PhysX::To_Vector(elem->getGlobalPose().p);
+			_float4 vCenterPos = CUtility_PhysX::To_Vector(pCurActor->getGlobalPose().p);
 			_float fRadius = sqrtf(pow(pCurShape->getGeometry().box().halfExtents.x, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.y, 2.f) + pow(pCurShape->getGeometry().box().halfExtents.z, 2.f));
 
 			if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vCenterPos.XMLoad(), fRadius))
@@ -504,13 +515,13 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 			}
 		}
 
-		
+
 
 		PxU32 hitCount = PxGeometryQuery::raycast(
 			CUtility_PhysX::To_PxVec3(vStartPos),
 			CUtility_PhysX::To_PxVec3(vStartDir),
 			pCurShape->getGeometry().any(),
-			elem->getGlobalPose(),
+			pCurActor->getGlobalPose(),
 			fMaxDistance, PxHitFlag::ePOSITION, 1, &hitInfo
 		);
 

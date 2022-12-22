@@ -8128,20 +8128,23 @@
     <ClCompile Include="..\Private\CState_Combat_Default_Archer_R.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer\01. Right</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CState_Combat_Attack_Archer.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\01. Attack</Filter>
+    <ClCompile Include="..\private\CCannonBall.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CState_Combat_Shoot_Archer.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\02. Shoot</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Begin.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
+    <ClCompile Include="..\private\CCannonBoom.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall\CannonBoom</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Begin_Poison.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Begin_Sniping.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\01. Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Aiming.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\02. Aiming</Filter>
@@ -8152,20 +8155,17 @@
     <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Aiming_Sniping.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\02. Aiming</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Shoot_Sniping.cpp">
-      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Shoot.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Shoot_Poison.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CCannonBall.cpp">
-      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall</Filter>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Shoot_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CCannonBoom.cpp">
-      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall\CannonBoom</Filter>
+    <ClCompile Include="..\Private\CState_Combat_Shoot_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\02. Shoot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

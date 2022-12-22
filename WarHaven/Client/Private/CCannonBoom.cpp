@@ -51,7 +51,7 @@ void CCannonBoom::Boom_CollisionExit(CGameObject* pOtherObj, const _uint& eOther
 
 HRESULT CCannonBoom::Initialize_Prototype()
 {
-	m_pColliderCom = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 5.f, COL_BLUEFLYATTACKGUARDBREAK, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
+	m_pColliderCom = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 6.f, COL_BLUEFLYATTACKGUARDBREAK, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
 	m_pColliderCom->Initialize();
 	Add_Component(m_pColliderCom);
 	return S_OK;
