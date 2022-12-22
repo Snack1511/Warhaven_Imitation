@@ -6,6 +6,8 @@
 #include "CUnit_Archer.h"
 #include "CRectEffects.h"
 
+
+
 CDefaultArrow::CDefaultArrow()
 {
 }
@@ -43,8 +45,19 @@ HRESULT CDefaultArrow::Initialize_Prototype()
     if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/longbow/SM_Bolt.fbx")))
         return E_FAIL;
 
-    if (FAILED(SetUp_Colliders(COL_BLUEATTACK)))
-        return E_FAIL;
+#ifdef TESTLEVEL_AI_PROJECTILE
+
+
+	if (FAILED(SetUp_Colliders(COL_REDATTACK)))
+		return E_FAIL;
+
+#else
+
+	if (FAILED(SetUp_Colliders(COL_BLUEATTACK)))
+		return E_FAIL;
+
+#endif // TESTLEVEL_AI_PROJECTILE
+
 
 	m_hcCode = HASHCODE(CDefaultArrow);
 	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);

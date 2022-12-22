@@ -150,6 +150,14 @@ HRESULT CShootAttack_Archer::Initialize()
 
 void CShootAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP1)
+		m_fDamagePumping = 1.f;
+	else if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP2)
+		m_fDamagePumping = 1.2f;
+	else if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP3)
+		m_fDamagePumping = 1.5f;
+
+
 	if (ePrevType == STATE_ATTACK_BEGIN_POISION_ARCHER ||
 		ePrevType == STATE_ATTACK_BEGIN_SNIPING_ARCHER ||
 		ePrevType == STATE_ATTACK_BEGIN_ARCHER)
@@ -204,6 +212,8 @@ void CShootAttack_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
 	
+	pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP_END;
+
 	__super::Exit(pOwner, pAnimator);
 }
 

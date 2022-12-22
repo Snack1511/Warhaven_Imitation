@@ -182,6 +182,8 @@ void CArcher_Attack_Cancel::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
 
+	pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP_END;
+
     //Exit에선 무조건 남겨놔야함
 	__super::Exit(pOwner, pAnimator);
 }

@@ -62,8 +62,18 @@ HRESULT CPurpleArrow::Initialize_Prototype()
     if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/longbow/SM_Bolt_Poison.fbx")))
         return E_FAIL;
 
-    if (FAILED(SetUp_Colliders(COL_BLUEFLYATTACKGUARDBREAK)))
-        return E_FAIL;
+#ifdef TESTLEVEL_AI_PROJECTILE
+
+
+	if (FAILED(SetUp_Colliders(COL_REDGUARDBREAK)))
+		return E_FAIL;
+
+#else
+
+	if (FAILED(SetUp_Colliders(COL_BLUEGUARDBREAK)))
+		return E_FAIL;
+
+#endif // TESTLEVEL_AI_PROJECTILE
 
 	m_hcCode = HASHCODE(CPurpleArrow);
 	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
@@ -73,6 +83,7 @@ HRESULT CPurpleArrow::Initialize_Prototype()
 
 	m_fMaxSpeed = 40.f;
 	m_fMaxDistance = 70.f;
+
 
     return CProjectile::Initialize_Prototype();
 }
@@ -157,9 +168,9 @@ void CPurpleArrow::My_Tick()
 				pUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false);
 				pUnit->Enter_State(pUnit->Get_HitType().eGroggyState, &tHitInfo);
 				
-				if (pUnit->Get_Status().fHP < 0.f)
+		/*		if (pUnit->Get_Status().fHP < 0.f)
 					pUnit->On_Die();
-				
+		*/		
 				DISABLE_GAMEOBJECT(this);
 			}
 				
@@ -169,7 +180,7 @@ void CPurpleArrow::My_Tick()
 				
 				if (pUnit->Get_Status().fHP < 0.f)
 				{
-					pUnit->On_Die();
+					//pUnit->On_Die();
 					DISABLE_GAMEOBJECT(this);
 				}
 				

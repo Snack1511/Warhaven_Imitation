@@ -2,6 +2,8 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 
+//#define TESTLEVEL_AI_PROJECTILE
+
 BEGIN(Engine)
 class CHierarchyNode;
 END

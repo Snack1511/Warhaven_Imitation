@@ -618,14 +618,22 @@
 #include "CState_Combat_Attack_HorizontalMiddle_Paladin_L.h"
 #include "CState_Combat_Attack_HorizontalMiddle_Paladin_R.h"
 #include "CState_Combat_Attack_VerticalCut_Paladin.h"
-
-
-
-
-
-
-
 #include "CState_Combat_SkillR_Paladin_ShieldSlam.h"
+
+
+#include "CState_Combat_Default_Archer_L.h"
+#include "CState_Combat_Default_Archer_R.h"
+#include "CState_Combat_Attack_Archer_Begin.h"
+#include "CState_Combat_Attack_Archer_Aiming.h"
+#include "CState_Combat_Attack_Archer_Shoot.h"
+#include "CState_Combat_Attack_Archer_Begin_Poison.h"
+#include "CState_Combat_Attack_Archer_Aiming_Poison.h"
+#include "CState_Combat_Attack_Archer_Shoot_Poison.h"
+#include "CState_Combat_Attack_Archer_Begin_Sniping.h"
+#include "CState_Combat_Attack_Archer_Aiming_Sniping.h"
+#include "CState_Combat_Attack_Archer_Shoot_Sniping.h"
+
+
 
 
 
@@ -1777,9 +1785,6 @@ void CState_Manager::Paladin_State_AI()
 
 void CState_Manager::Archer_State_AI()
 {
-	// юс╫ц 
-	m_arrStates[AI_STATE_COMBAT_DEFAULT_ARCHER_R] = CState_Patrol_Default_Archer_R::Create();
-	
 
 
 #pragma region Patrol
@@ -1788,6 +1793,31 @@ void CState_Manager::Archer_State_AI()
 	m_arrStates[AI_STATE_PATROL_DEFAULT_ARCHER_R] = CState_Patrol_Default_Archer_R::Create();
 	m_arrStates[AI_STATE_PATROL_WALK_ARCHER_L] = CState_Patrol_Walk_Archer_L::Create();
 	m_arrStates[AI_STATE_PATROL_WALK_ARCHER_R] = CState_Patrol_Walk_Archer_R::Create();
+
+#pragma endregion
+
+#pragma region Combat
+
+
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_ARCHER_L] = CState_Combat_Default_Archer_L::Create();
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_ARCHER_R] = CState_Combat_Default_Archer_R::Create();
+
+
+	m_arrStates[AI_STATE_COMBAT_ATTACK_BEGIN_ARCHER] = CState_Combat_Attack_Archer_Begin::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_AIMING_ARCHER] = CState_Combat_Attack_Archer_Aiming::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_SHOOT_ARCHER] = CState_Combat_Attack_Archer_Shoot::Create();
+
+	m_arrStates[AI_STATE_COMBAT_ATTACK_BEGIN_POISION_ARCHER] = CState_Combat_Attack_Archer_Begin_Poison::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_AIMING_POISION_ARCHER] = CState_Combat_Attack_Archer_Aiming_Poison::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_SHOOT_POISION_ARCHER] = CState_Combat_Attack_Archer_Shoot_Poison::Create();
+
+	m_arrStates[AI_STATE_COMBAT_ATTACK_BEGIN_SNIPING_ARCHER] = CState_Combat_Attack_Archer_Begin_Sniping::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_AIMING_SNIPING_ARCHER] = CState_Combat_Attack_Archer_Aiming_Sniping::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_SHOOT_SNIPING_ARCHER] = CState_Combat_Attack_Archer_Shoot_Sniping::Create();
+
+	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_ARCHER] = CState_Combat_Attack_Archer_Begin::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_SWING_ARCHER] = CState_Combat_Attack_Archer_Begin::Create();
+	m_arrStates[AI_STATE_COMBAT_STATE_SWAP_ARCHER] = CState_Combat_Attack_Archer_Begin::Create();
 
 #pragma endregion
 

@@ -180,6 +180,8 @@ void	CAttack_Archer::OnCollisionStay(CGameObject* pOtherObject, const _uint& iOt
 
 void CAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
+	m_fMaxTime = 3.f;
+
 	m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
 
 	if (!m_pCoreBone)
@@ -196,13 +198,31 @@ void CAttack_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-	Exit_Aiming(pOwner, pAnimator);
+	//Exit_Aiming(pOwner, pAnimator); // 이거 있으면 안되는데 자꾸 들어감.
 	static_cast<CUnit_Archer*>(pOwner)->Enable_Trail(false);
 
 }
 
 STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (m_bAiming)
+	{
+		if (m_fTimeAcc < m_fMaxTime)
+		{
+			m_fTimeAcc += fDT(0);
+
+			if (m_fTimeAcc > m_fMaxTime / 3.f)
+				pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP1;
+
+			else if (m_fTimeAcc > m_fMaxTime / 1.5f)
+				pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP2;
+		}
+		else
+			pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP3;
+
+	}
+
+
 	if (KEY(LBUTTON, AWAY))
 		m_bKeyInput = true;
 
@@ -568,6 +588,7 @@ void CAttack_Archer::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 {
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
+	m_bAiming = true;
 
 
 	if (ePrevType == m_eStateType)

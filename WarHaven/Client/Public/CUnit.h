@@ -29,9 +29,14 @@ class CUnit abstract : public CGameObject
 {
 
 public:
+	enum UNIT_CHARGESTEP { UNIT_CHARGESTEP1, UNIT_CHARGESTEP2, UNIT_CHARGESTEP3, UNIT_CHARGESTEP_END }; // 차지 늘어나면 점점 늘리기
+
+public:
 	struct UNIT_STATUS
 	{
 		CLASS_TYPE	eClass = WARRIOR;
+		UNIT_CHARGESTEP		eChargeType = UNIT_CHARGESTEP_END; // 마지막에 사용했다면 UNIT_CHARGESTEP_END 로 초기화 시켜주세요.
+
 
 		_float		fCamPower = 3.f;
 		_float		fCamTime = 0.5f;

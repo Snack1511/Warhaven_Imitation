@@ -3091,6 +3091,51 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Revive">
       <UniqueIdentifier>{c3a6a230-e39a-46c0-95c1-a06f62d828f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer">
+      <UniqueIdentifier>{b72ebb3f-6124-4aa4-abdd-8c89b7ed921e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer">
+      <UniqueIdentifier>{a1c7b9f1-0f7d-4064-88f4-06dacb3aee3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\01. SkillQ\05. Archer">
+      <UniqueIdentifier>{631a3869-d23a-4f6d-bd9f-2cf4cd10afbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\02. SkillE\05. Archer">
+      <UniqueIdentifier>{cd2e07b4-7ba8-44f9-bdf9-72fa515ab955}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\03. Skill\03. SkillR\05. Archer">
+      <UniqueIdentifier>{6a20d7b2-5b3f-49fd-955e-f760c5e5bd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\05. Guard\05. Archer">
+      <UniqueIdentifier>{0df59c1e-cbbf-48e2-a1d2-d92a1a2293fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer\01. Right">
+      <UniqueIdentifier>{eba44288-a867-4c13-a64b-3947460ccc53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer\02. Left">
+      <UniqueIdentifier>{baac6232-837f-4de6-9a1d-dabceb4d8887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default">
+      <UniqueIdentifier>{4128f693-080b-43f1-a649-17152dbbf704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin">
+      <UniqueIdentifier>{8c17c5dd-8ee0-4ef0-9098-dad43aa83532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\02. Aiming">
+      <UniqueIdentifier>{88029d55-bd0a-4630-b63b-4dbcb97b3cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot">
+      <UniqueIdentifier>{0fec6f42-c3fd-4459-bb40-0d54d42cc103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent">
+      <UniqueIdentifier>{ae95e2a8-e26d-4374-abd7-2b95c4aee671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\01. Attack">
+      <UniqueIdentifier>{8432e625-3675-4794-8ffc-db1bbad4d2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\02. Shoot">
+      <UniqueIdentifier>{d5c5bb08-55c9-4775-9d56-d2c93e2108a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5565,6 +5610,48 @@
     <ClInclude Include="..\Public\CUI_Revive.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Revive</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Default_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\01. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Shoot_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\02. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Begin_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Begin_Poison.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Aiming.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\02. Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Aiming_Poison.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\02. Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Aiming_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\02. Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Shoot.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Shoot_Poison.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Shoot_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8019,6 +8106,48 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Revive.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Revive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Default_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\01. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Shoot_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\02. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Begin_Poison.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Begin_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Aiming.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\02. Aiming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Aiming_Poison.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\02. Aiming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Aiming_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\02. Aiming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Shoot_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Shoot.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Combat_Attack_Archer_Shoot_Poison.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\01. Default\03. Shoot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

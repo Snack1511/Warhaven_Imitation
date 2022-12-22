@@ -88,6 +88,7 @@ protected:
 	/*Land 시 움직일 수 있도록 설정*/
 	_bool	m_bLandMove = false;
 	_bool	m_bCam = true;
+	_bool	m_bAiming = true;
 
 	_uint	m_iKeyAwayAnimIndex = 0; // 뗄 때 애니메이션 인덱스
 	_uint	m_iMinCancelAnimIndex = 0;  // 애니메이션 바뀌는 최소값
