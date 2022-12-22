@@ -11,13 +11,14 @@ END
 BEGIN(Client)
 
 class CUnit;
+class CUI_Revive;
 
 class CUI_UnitHUD : public CUI_Wrapper
 {
 	DECLARE_PROTOTYPE(CUI_UnitHUD);
 	DECLARE_GAMEOBJECT(CUI_UnitHUD);
 
-	enum UnitUI { UI_Hp, UI_End };
+	enum UnitUI { UI_Hp, UI_Revive, UI_End };
 
 public:
 	virtual	HRESULT	Initialize_Prototype();
@@ -29,11 +30,18 @@ public:
 	virtual void My_LateTick() override;
 
 public:
+	CUI_Revive* Get_ReviveUI(); 
+
 	void Set_ProjPos(CTransform* pTransform);
 	void Set_UnitStatus(CUnit::UNIT_STATUS tStatus) { m_tStatus = tStatus; }
 	void Set_UnitDis(_float fDis) { m_fUnitDis = fDis; }
 
 	void Set_OwnerPlayer(CPlayer* pOwner) { m_pOwner = pOwner; }
+
+	void Enable_RevivalUI();
+	void Disable_RevivalUI();
+
+	void Set_RevivalIcon(_uint iIconIdx);
 
 private:
 	CUI_Wrapper* m_pUnitUI[UI_End];
@@ -62,10 +70,6 @@ private:
 	void Create_UnitHUD();
 
 	void Init_UnitNameText();
-
-	void Set_LeaderIcon();
-	void Set_IconColor();
-	void Set_HeroIcon();
 
 private:
 	void SetActive_UnitHP(_bool value);

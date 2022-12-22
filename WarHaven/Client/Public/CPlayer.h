@@ -225,6 +225,8 @@ public:
 	_float4 Get_LookDir();
 	_float4 Get_SquadDir();
 
+public:
+	CUI_UnitHUD* Get_UnitHUD() { return m_pUnitHUD; }
 
 private:
 	//어떤 타입인지(적, 샌드백)
@@ -238,8 +240,8 @@ private:
 private:
 	CPlayer* m_pTargetPlayer = nullptr;
 
-	public:
-		_bool IsDieDlay() { return m_bDieDelay; }
+public:
+	_bool IsDieDlay() { return m_bDieDelay; }
 
 private:
 	/* 돌 되고나서 5초 딜레이 후 진짜 죽는 상태로 감 */

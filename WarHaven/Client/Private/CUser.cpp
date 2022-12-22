@@ -667,47 +667,6 @@ void CUser::Update_KillName()
 	}
 }
 
-void CUser::SetAcitve_ReviveUI(_bool value)
-{
-	if (m_pReviveUI[m_iReviveIdx])
-	{
-		m_pReviveUI[m_iReviveIdx]->SetActive(value);
-
-		if (value == true)
-		{
-			m_pReviveUI[m_iReviveIdx]->Set_ReviveIndex(m_iReviveIdx);
-
-			m_iReviveIdx++;
-			if (m_iReviveIdx > 6)
-				m_iReviveIdx = 0;
-		}
-	}
-}
-
-void CUser::Set_ReviveUnitTransform(CTransform* pReviveUnitTransform)
-{
-	if (m_pReviveUI[m_iReviveIdx])
-		m_pReviveUI[m_iReviveIdx]->Set_ReviveUnitTransform(pReviveUnitTransform);
-}
-
-void CUser::Set_ReviveIcon(_uint iIconIdx)
-{
-	if (m_pReviveUI[m_iReviveIdx])
-		m_pReviveUI[m_iReviveIdx]->Set_ReviveIcon(iIconIdx);
-}
-
-void CUser::Set_ClassIcon(CPlayer* pDeadPlayer)
-{
-	if (m_pReviveUI[m_iReviveIdx])
-		m_pReviveUI[m_iReviveIdx]->Set_ClassIcon(pDeadPlayer);
-}
-
-void CUser::Set_ReviveIndex(_uint iIndex)
-{
-	if (m_pReviveUI[m_iReviveIdx])
-		m_pReviveUI[m_iReviveIdx]->Set_ReviveIndex(m_iReviveIdx);
-}
-
 void CUser::Set_ArcherPoint(_bool value)
 {
 	m_pUI_Crosshair->Set_ArcherPoint(value);

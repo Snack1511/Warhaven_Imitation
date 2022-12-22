@@ -28,8 +28,6 @@ public:
 	void Set_ReviveIcon(_uint iIconIndex);
 	void Set_ClassIcon(CPlayer* pDeadPlayer);
 
-	void Set_ReviveIndex(_uint iIndex) { m_iIndex = iIndex; }
-
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;

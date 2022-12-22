@@ -385,7 +385,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 
 		if (Get_Team()->IsMainPlayerTeam())
 		{
-			CUser::Get_Instance()->SetAcitve_ReviveUI(false);
+			m_pUnitHUD->Disable_RevivalUI();
 		}
 
 		//Path 갱신 + 캐릭터 재선택
@@ -873,9 +873,7 @@ void CPlayer::On_RealDie()
 	{
 		if (Get_Team()->IsMainPlayerTeam())
 		{
-			CUser::Get_Instance()->Set_ReviveUnitTransform(m_pTransform);
-			CUser::Get_Instance()->Set_ClassIcon(this);
-			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
+			m_pUnitHUD->Enable_RevivalUI();
 		}
 	}
 
@@ -921,6 +919,13 @@ void CPlayer::On_Reborn()
 	{
 		CUser::Get_Instance()->SetActive_HUD(true);
 		CUser::Get_Instance()->SetActive_SquardInfo(true);
+	}
+	else
+	{
+		if (Get_Team()->IsMainPlayerTeam())
+		{
+			m_pUnitHUD->Disable_RevivalUI();
+		}
 	}
 
 	m_bReborn = true;

@@ -68,16 +68,11 @@ void CUI_Revive::My_LateTick()
 	__super::My_LateTick();
 
 	Update_Pos();
-
-	m_fAccTime += fDT(0);
-	cout << m_iIndex << " : " << m_fAccTime << endl;
 }
 
 void CUI_Revive::OnEnable()
 {
 	__super::OnEnable();
-
-	cout << m_iIndex << " : 활성화" << endl;
 
 	m_fAccTime = 0.f;
 
@@ -90,8 +85,6 @@ void CUI_Revive::OnEnable()
 void CUI_Revive::OnDisable()
 {
 	__super::OnDisable();
-
-	cout << m_iIndex << " : 비활성화" << endl;
 
 	m_pReviveIcon->SetActive(false);
 
