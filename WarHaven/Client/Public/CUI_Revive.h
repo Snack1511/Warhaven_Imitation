@@ -20,7 +20,10 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	void Set_RevivePos(CTransform* pReviveUnitTransform);
+	void Set_ReviveUnitTransform(CTransform* pReviveUnitTransform)
+	{
+		m_pReviveUnitTransform = pReviveUnitTransform;
+	}
 
 	void Set_ReviveIcon(_uint iIconIndex);
 	void Set_ClassIcon(CPlayer* pDeadPlayer);
@@ -34,12 +37,17 @@ private:
 	virtual void OnDisable() override;
 
 private:
+	void Update_Pos();
+
+private:
 	CUI_Object* m_pReviveIcon = nullptr;
 
 	enum ClassIcon { Class_BG, Class_Icon, Class_End };
 	CUI_Object* m_pClassIcon[Class_End];
 
 	_uint m_iIndex = 0;
+
+	CTransform* m_pReviveUnitTransform = nullptr;
 
 private:
 	void Create_ReviveIcon();

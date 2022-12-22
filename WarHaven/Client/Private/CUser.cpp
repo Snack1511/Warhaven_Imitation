@@ -671,19 +671,23 @@ void CUser::SetAcitve_ReviveUI(_bool value)
 {
 	if (m_pReviveUI[m_iReviveIdx])
 	{
-		m_pReviveUI[m_iReviveIdx]->Set_ReviveIndex(m_iReviveIdx);
 		m_pReviveUI[m_iReviveIdx]->SetActive(value);
-	}
 
-	m_iReviveIdx++;
-	if (m_iReviveIdx > 6)
-		m_iReviveIdx = 0;
+		if (value == true)
+		{
+			m_pReviveUI[m_iReviveIdx]->Set_ReviveIndex(m_iReviveIdx);
+
+			m_iReviveIdx++;
+			if (m_iReviveIdx > 6)
+				m_iReviveIdx = 0;
+		}
+	}
 }
 
-void CUser::Set_ReviveUI_Pos(CTransform* pReviveUnitTransform)
+void CUser::Set_ReviveUnitTransform(CTransform* pReviveUnitTransform)
 {
 	if (m_pReviveUI[m_iReviveIdx])
-		m_pReviveUI[m_iReviveIdx]->Set_RevivePos(pReviveUnitTransform);
+		m_pReviveUI[m_iReviveIdx]->Set_ReviveUnitTransform(pReviveUnitTransform);
 }
 
 void CUser::Set_ReviveIcon(_uint iIconIdx)
