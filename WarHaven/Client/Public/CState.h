@@ -111,6 +111,7 @@ protected:
 	_float				m_fInterPolationTime = 0.1f;
 
 	_float				m_fTimeAcc = 0.f;
+	_float				m_fMaxTime = 0.f;
 
 	_bool				m_bExecuted = false;
 
@@ -198,6 +199,7 @@ protected:
 	/* AI ¿ëµµ*/
 protected:
 	void	Set_Direction_Front_AI(_int& iDirectionRand);
+	void	Set_Direction_Back_AI(_int& iDirectionRand);
 
 	_float	Get_Length(CUnit* pOwner);
 

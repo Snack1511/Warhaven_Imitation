@@ -97,6 +97,7 @@ void CArcher_Attack_Begin_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 	Prevent_Oneframe(pOwner);
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
 	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
 
 	__super::Exit(pOwner, pAnimator);

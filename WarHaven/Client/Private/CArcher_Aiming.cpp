@@ -63,6 +63,7 @@ void CArcher_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
 STATE_TYPE CArcher_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+  
 	if (KEY(LBUTTON, AWAY))
 		return STATE_ATTACK_SHOOT_ARCHER;
 

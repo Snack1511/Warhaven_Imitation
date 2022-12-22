@@ -517,6 +517,49 @@ void CState::Set_Direction_Front_AI(_int& iDirectionRand)
 	}
 }
 
+void CState::Set_Direction_Back_AI(_int& iDirectionRand)
+{
+	switch (iDirectionRand)
+	{
+	case STATE_DIRECTION_NW:
+	case STATE_DIRECTION_SW:
+
+		iDirectionRand = STATE_DIRECTION_SW;
+		break;
+
+	case STATE_DIRECTION_N:
+	case STATE_DIRECTION_S:
+
+		iDirectionRand = STATE_DIRECTION_S;
+
+		break;
+
+	case STATE_DIRECTION_NE:
+	case STATE_DIRECTION_SE:
+
+		iDirectionRand = STATE_DIRECTION_SE;
+		break;
+
+	case STATE_DIRECTION_E:
+
+
+		iDirectionRand = STATE_DIRECTION_E;
+
+		break;
+
+
+	case STATE_DIRECTION_W:
+
+		iDirectionRand = STATE_DIRECTION_W;
+
+		break;
+
+
+	default:
+		break;
+	}
+}
+
 
 
 _float	CState::Get_Length(CUnit* pOwner)
@@ -566,6 +609,7 @@ void CState::DoMove_AI(CUnit* pOwner, CAnimator* pAnimator)
 	CUnit* pUnit = pOwner->Get_TargetUnit();
 	if (!pUnit)
 		return;
+
 
 
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);

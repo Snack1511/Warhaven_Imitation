@@ -192,6 +192,17 @@
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
     <ClInclude Include="..\public\CAnimWeapon.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Shoot.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Shoot_Poison.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Shoot_Sniping.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Aiming.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Aiming_Poison.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Aiming_Sniping.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Begin.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Begin_Poison.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer_Begin_Sniping.h" />
+    <ClInclude Include="..\Public\CState_Combat_Shoot_Archer.h" />
+    <ClInclude Include="..\Public\CState_Combat_Attack_Archer.h" />
     <ClInclude Include="..\public\CCannonBall.h" />
     <ClInclude Include="..\public\CCannonBoom.h" />
     <ClInclude Include="..\Public\CShootAttack_Archer.h" />
@@ -203,6 +214,9 @@
     <ClInclude Include="..\public\CFadeDark.h" />
     <ClInclude Include="..\Public\CAttack_Archer.h" />
     <ClInclude Include="..\public\CState_Cannon_Player.h" />
+    <ClInclude Include="..\Public\CState_Combat_Default_Archer.h" />
+    <ClInclude Include="..\Public\CState_Combat_Default_Archer_L.h" />
+    <ClInclude Include="..\Public\CState_Combat_Default_Archer_R.h" />
     <ClInclude Include="..\Public\CState_Common_Bounce_Archer.h" />
     <ClInclude Include="..\Public\CState_Common_Fall_Archer.h" />
     <ClInclude Include="..\Public\CState_Common_Fall_Archer_L.h" />
@@ -1031,6 +1045,9 @@
     <ClCompile Include="..\private\CFadeDark.cpp" />
     <ClCompile Include="..\Private\CAttack_Archer.cpp" />
     <ClCompile Include="..\private\CState_Cannon_Player.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Default_Archer.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Default_Archer_L.cpp" />
+    <ClCompile Include="..\Private\CState_Combat_Default_Archer_R.cpp" />
     <ClCompile Include="..\Private\CState_Common_Bounce_Archer.cpp" />
     <ClCompile Include="..\Private\CState_Common_Fall_Archer.cpp" />
     <ClCompile Include="..\Private\CState_Common_Fall_Archer_L.cpp" />
