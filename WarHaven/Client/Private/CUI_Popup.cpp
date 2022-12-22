@@ -14,6 +14,7 @@ CUI_Popup::~CUI_Popup()
 HRESULT CUI_Popup::Initialize_Prototype()
 {
 	Create_ConquestPopup();
+	Create_KillPopup();
 
 	return S_OK;
 }
@@ -33,16 +34,16 @@ void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 		Enable_ConquestPopup(L"거점 점령", ePopupType);
 		break;
 	case Client::CUI_Popup::eKILL:
-		Enable_ConquestPopup(L"적 처치", ePopupType);
+		Enable_KillPopup(L"적 처치", ePopupType);
 		break;
 	case Client::CUI_Popup::eKILL2:
-		Enable_ConquestPopup(L"2연속 처치", ePopupType);
+		Enable_KillPopup(L"2연속 처치", ePopupType);
 		break;
 	case Client::CUI_Popup::eKILL3:
-		Enable_ConquestPopup(L"3연속 처치", ePopupType);
+		Enable_KillPopup(L"3연속 처치", ePopupType);
 		break;
 	case Client::CUI_Popup::eKILL4:
-		Enable_ConquestPopup(L"전장의 화신", ePopupType);
+		Enable_KillPopup(L"전장의 화신", ePopupType);
 		break;
 	case Client::CUI_Popup::eBURGERKING:
 		Enable_ConquestPopup(L"버거킹", ePopupType);
@@ -61,7 +62,7 @@ void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 
 	for (int i = 0; i < CP_End; ++i)
 	{
-		m_pConquestPopup[i]->Set_FadeDesc(0.3f, 0.3f, 2.f, true);
+		m_pConquestPopup[i]->Set_FadeDesc(m_fFadeTime, m_fFadeTime, m_fEnableTime, true);
 	}
 }
 
@@ -75,7 +76,21 @@ void CUI_Popup::Enable_ConquestPopup(wstring Text, _uint iIconIndex)
 
 	for (int i = 0; i < CP_End; ++i)
 	{
-		Enable_Fade(m_pConquestPopup[i], 1.f);
+		Enable_Fade(m_pConquestPopup[i], m_fFadeTime);
+	}
+}
+
+void CUI_Popup::Enable_KillPopup(wstring Text, _uint iIconIndex)
+{
+	_bool bIsFontRender = m_pKillPopup[Kill_Icon]->Get_FontRender();
+	if (bIsFontRender)
+		m_pKillPopup[Kill_Icon]->Set_FontText(Text);
+
+	GET_COMPONENT_FROM(m_pKillPopup[Kill_Icon], CTexture)->Set_CurTextureIndex(iIconIndex);
+
+	for (int i = 0; i < Kill_End; ++i)
+	{
+		Enable_Fade(m_pKillPopup[i], m_fFadeTime);
 	}
 }
 
@@ -166,5 +181,55 @@ void CUI_Popup::Create_ConquestPopup()
 
 		CREATE_GAMEOBJECT(m_pConquestPopup[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pConquestPopup[i]);
+	}
+}
+
+void CUI_Popup::Create_KillPopup()
+{
+	for (int i = 0; i < Kill_End; ++i)
+	{
+		m_pKillPopup[i] = CUI_Object::Create();
+
+		m_pKillPopup[i]->Set_FadeDesc(m_fFadeTime, m_fFadeTime, m_fEnableTime, true);
+
+		m_pKillPopup[i]->Set_UIShaderFlag(SH_UI_BLOOM);
+
+		switch (i)
+		{
+		case Kill_Icon:
+
+			m_pKillPopup[i]->Set_Sort(0.49f);
+
+			GET_COMPONENT_FROM(m_pKillPopup[i], CTexture)->Remove_Texture(0);
+			GET_COMPONENT_FROM(m_pKillPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/Kill_0.png"));
+			GET_COMPONENT_FROM(m_pKillPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/Kill_2.png"));
+			GET_COMPONENT_FROM(m_pKillPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/Kill_3.png"));
+			GET_COMPONENT_FROM(m_pKillPopup[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/Kill_4.png"));
+
+			m_pKillPopup[i]->Set_PosY(155.f);
+			m_pKillPopup[i]->Set_Scale(160.f, 116.f);
+
+			m_pKillPopup[i]->Set_FontRender(true);
+			m_pKillPopup[i]->Set_FontStyle(true);
+			m_pKillPopup[i]->Set_FontCenter(true);
+			m_pKillPopup[i]->Set_FontOffset(5.f, 70.f);
+			m_pKillPopup[i]->Set_FontScale(0.3f);
+
+			break;
+
+		case Kill_Line:
+
+			m_pKillPopup[i]->Set_Sort(0.5f);
+
+			m_pKillPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_PopupLine.png"));
+
+			m_pKillPopup[i]->Set_PosY(111.f);
+			m_pKillPopup[i]->Set_Scale(300.f, 100.f);
+
+			break;
+		}
+
+		CREATE_GAMEOBJECT(m_pKillPopup[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pKillPopup[i]);
 	}
 }
