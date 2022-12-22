@@ -37,6 +37,7 @@ void CCannonBall::Shoot_Cannon(CPlayer* pOwnerPlayer, _float4 vShootPos, _float4
 	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
 	//pActor->addTorque(CUtility_PhysX::To_PxVec3(vDir));
 	m_pActor = pActor;
+
 }
 
 HRESULT CCannonBall::Initialize_Prototype()

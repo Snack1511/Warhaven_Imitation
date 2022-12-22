@@ -13,6 +13,10 @@
 #include "CTeamConnector.h"
 #include "CUtility_PhysX.h"
 
+#include "CTrailEffect.h"
+
+#include "CTrailBuffer.h"
+
 
 CProjectile::CProjectile()
 {
@@ -190,6 +194,12 @@ void CProjectile::On_ShootProjectile()
 
 	m_vStartPosition = m_pTransform->Get_World(WORLD_POS);
 
+	if (m_pTrailEffect)
+	{
+		m_pTrailEffect->TurnOn_TrailEffect(true);
+		m_pTrailEffect2->TurnOn_TrailEffect(true);
+	}
+
 
 
 	/* PhysX */
@@ -208,7 +218,8 @@ void CProjectile::On_ShootProjectile()
 	vDir *= m_fMaxSpeed;
 	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
 	m_pActor = pActor;
-		
+	
+
 
 }
 
@@ -231,9 +242,19 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		break;
 	case Client::CProjectile::eHIT:
 		DISABLE_COMPONENT(m_pCollider);
+		if (m_pTrailEffect)
+		{
+			m_pTrailEffect->TurnOn_TrailEffect(false);
+			m_pTrailEffect2->TurnOn_TrailEffect(false);
+		}
 		break;
 	case eSTICK:
 		DISABLE_COMPONENT(m_pCollider);
+		if (m_pTrailEffect)
+		{
+			m_pTrailEffect->TurnOn_TrailEffect(false);
+			m_pTrailEffect2->TurnOn_TrailEffect(false);
+		}
 		Safe_release(m_pActor);
 	case Client::CProjectile::eEND:
 		break;
@@ -242,6 +263,29 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 	}
 
 	m_eCurPhase = eNextPhase;
+}
+
+void CProjectile::SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount)
+{
+	m_pTrailEffect = CTrailEffect::Create(0, iTrailCount, vWeaponLow, vWeaponHigh,
+		nullptr, m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pTrailEffect2 = CTrailEffect::Create(0, iTrailCount, vWeaponLeft, vWeaponRight,
+		nullptr, m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pTrailEffect)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrailEffect, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrailEffect, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pTrailEffect2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrailEffect2, CMesh))->Set_NoCurve();
+
+	m_pTrailEffect->TurnOn_TrailEffect(false);
+	m_pTrailEffect2->TurnOn_TrailEffect(false);
 }
 
 HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
@@ -412,6 +456,11 @@ void CProjectile::OnDisable()
 	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
 	Safe_release(m_pActor);
 	m_fLoopTimeAcc = 0.f;
+	if (m_pTrailEffect)
+	{
+		m_pTrailEffect->TurnOn_TrailEffect(false);
+		m_pTrailEffect2->TurnOn_TrailEffect(false);
+	}
 
 }
 

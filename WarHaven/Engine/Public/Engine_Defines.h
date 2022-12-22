@@ -6,6 +6,9 @@
 #pragma warning (disable : 26812)
 #pragma warning (disable : 4049)
 #pragma warning (disable : 4217)
+#pragma warning (disable : 4275)
+#pragma warning (disable : 4584)
+#pragma warning (disable : 4244)
 
 #include <d3d11.h>
 #include <DirectXMath.h>

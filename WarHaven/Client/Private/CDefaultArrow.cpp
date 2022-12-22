@@ -34,6 +34,18 @@ HRESULT CDefaultArrow::Start()
 {
 	__super::Start();
 
+	SetUp_TrailEffect(
+		_float4(0.f, -0.15f, 0.f, 1.f),	//Weapon Low
+		_float4(0.f, 0.15f, 0.f, 1.f),	//Weapon High
+		_float4(-0.15f, 0.f, 0.f, 1.f), //Left
+		_float4(0.15f, 0.f, 0.f, 1.f), //Right
+		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
+		_float4(1.f, 0.1f, 0.1f, 0.4f), //vColor
+		0.f,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		40
+	);
 
 
 	return S_OK;
@@ -60,6 +72,8 @@ HRESULT CDefaultArrow::Initialize_Prototype()
 
 	m_hcCode = HASHCODE(CDefaultArrow);
 	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
+
+	
 
     return CProjectile::Initialize_Prototype();
 }

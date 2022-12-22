@@ -1825,6 +1825,7 @@ HRESULT CRender_Manager::Render_PostEffect()
 
 
 
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 
 

@@ -10,6 +10,7 @@ END
 
 BEGIN(Client)
 class CUnit;
+class CTrailEffect;
 class CProjectile abstract
 	: public CGameObject
 {
@@ -68,6 +69,12 @@ protected:
 	ePROJECTILE_PHASE	m_eCurPhase = eSTART;
 
 protected:
+	CTrailEffect* m_pTrailEffect = nullptr;
+	CTrailEffect* m_pTrailEffect2 = nullptr;
+
+protected:
+	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount);
 	HRESULT	SetUp_Projectile(wstring wstrModelFilePath);
 	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType); // 필요하다면 가상함수.
 

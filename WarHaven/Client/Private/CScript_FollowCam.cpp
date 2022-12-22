@@ -115,6 +115,8 @@ void CScript_FollowCam::Start_LerpType(CAMERA_LERP_TYPE eType)
 
 void CScript_FollowCam::Start_FOVLerp(_float fTargetFOV)
 {
+	return;
+
 	m_bFOVLerping = true;
 	m_fFOVTimeAcc = 0.f;
 	m_fOriginFOV = static_cast<CCamera*>(m_pOwner)->Get_Proj().fFOV;
@@ -160,7 +162,7 @@ HRESULT CScript_FollowCam::Initialize()
 
 	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX] = m_arrLerpDesc[CAMERA_LERP_ZOOM];
 	/* °Å¸® */
-	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX].fTargetDistance *= 0.7f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOMMAX].fTargetDistance *= 0.2f;
 
 
 	m_arrLerpDesc[CAMERA_LERP_CANNON].fTargetDistance = 0.5f;
@@ -168,8 +170,8 @@ HRESULT CScript_FollowCam::Initialize()
 	m_arrLerpDesc[CAMERA_LERP_CANNON].vTargetOffset.z = 0.f;
 	m_arrLerpDesc[CAMERA_LERP_CANNON].vTargetOffset.y = 3.5f;
 	m_arrLerpDesc[CAMERA_LERP_CANNON].fMaxDistance *= 0.4f;
-	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraDistanceLerpTime *= 0.2f;
-	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraOffsetLerpTime *= 0.2f;
+	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraDistanceLerpTime *= 0.1f;
+	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraOffsetLerpTime *= 0.1f;
 
 
 

@@ -304,9 +304,10 @@ STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
 		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
+		static_cast<CUnit_Archer*>(pOwner)->ReMap_Trail(vHitPos);
+
 	}
 
-	static_cast<CUnit_Archer*>(pOwner)->ReMap_Trail(vHitPos);
 
 
 
@@ -693,6 +694,9 @@ void CAttack_Archer::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 
 _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos)
 {
+	if (!static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow())
+		return false;
+
 	_float4 vStartPos = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_ArrowHeadPos();
 	_float4 vDir = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_Transform()->Get_World(WORLD_RIGHT);
 	_float fMaxDistance = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_MaxDistance();

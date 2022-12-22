@@ -48,6 +48,20 @@ HRESULT CSnipeArrow::Start()
 
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 
+
+	SetUp_TrailEffect(
+		_float4(0.f, -0.2f, 0.f, 1.f),	//Weapon Low
+		_float4(0.f, 0.2f, 0.f, 1.f),	//Weapon High
+		_float4(-0.2f, 0.f, 0.f, 1.f), //Left
+		_float4(0.2f, 0.f, 0.f, 1.f), //Right
+		_float4(1.f, 1.f, 0.f, 0.05f), // GlowFlag
+		_float4(1.f, 0.8f, 0.1f, 0.4f), //vColor
+		0.f,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		100
+	);
+
 	return S_OK;
 }
 

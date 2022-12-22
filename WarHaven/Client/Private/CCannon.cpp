@@ -12,6 +12,8 @@
 
 #include "HIerarchyNode.h"
 #include "CCannonBall.h"
+
+#include "CUI_Trail.h"
 CCannon::CCannon()
 {
 }
@@ -82,8 +84,17 @@ HRESULT CCannon::Initialize_Prototype()
 
 	m_pCannonBall = CCannonBall::Create();
 	m_pCannonBall->Initialize();
-	
 
+	
+	CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 4, 0.2f, -0.1f, 3.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
+		L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
+		L"../bin/resources/textures/White.png"
+	);
+
+	if (!pUI_Trail)
+		return E_FAIL;
+
+	m_pUI_Trail = pUI_Trail;
 
 	return S_OK;
 }
@@ -98,14 +109,23 @@ HRESULT CCannon::Start()
 {
 	__super::Start();
 
+	if (m_pUI_Trail)
+	{
+		CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
+	}
+
 	m_pCannonCam = CCamera_Follow::Create(this, nullptr);
 	m_pCannonCam->Initialize();
+
 	_float4 vPos = m_pTransform->Get_MyWorld(WORLD_POS);
 	vPos.y += 3.5f;
 	m_pCannonCam->Get_Transform()->Set_World(WORLD_POS, vPos);
+
 	_float4 vLook = m_pTransform->Get_MyWorld(WORLD_LOOK);
 	m_pCannonCam->Get_Transform()->Set_Look(vLook);
 	m_pCannonCam->Get_Transform()->Make_WorldMatrix();
+
 	CREATE_GAMEOBJECT(m_pCannonCam, GROUP_CAMERA);
 	GAMEINSTANCE->Add_Camera_Level(L"CannonCam", m_pCannonCam);
 	DISABLE_GAMEOBJECT(m_pCannonCam);
@@ -140,6 +160,8 @@ void CCannon::Control_Cannon(CPlayer* pPlayer)
 		GET_COMPONENT_FROM(m_pCannonCam, CScript_FollowCam)->Start_LerpType(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_CANNON);
 		GAMEINSTANCE->Change_Camera(L"CannonCam");
 	}
+
+	ENABLE_GAMEOBJECT(m_pUI_Trail);
 }
 
 void CCannon::Exit_Cannon()
@@ -149,6 +171,9 @@ void CCannon::Exit_Cannon()
 		GAMEINSTANCE->Change_Camera(L"PlayerCam");
 	}
 	m_pCurOwnerPlayer = nullptr;
+
+	DISABLE_GAMEOBJECT(m_pUI_Trail);
+
 
 }
 
@@ -271,12 +296,7 @@ void CCannon::My_LateTick()
 	if (fNewPitch > -9998.f)
 		m_fCurPitch = fNewPitch;
 
-	
-
 	matOffset = XMMatrixRotationAxis(m_pTransform->Get_World(WORLD_UP).XMLoad(), m_fCurPitch);
-
-
-
 
 	/* 좌우 */
 	fDot = vCamLookNoY.Dot(m_pTransform->Get_World(WORLD_LOOK));
@@ -295,5 +315,23 @@ void CCannon::My_LateTick()
 
 	//Pitch : x축, 위 아래
 	m_pBonePitch->Set_PrevMatrix(matOffset);
+
+	
+	_float4x4 BoneMatrix = m_pBonePitch->Get_BoneMatrix();
+	_float4 vFirePos = BoneMatrix.XMLoad().r[3];
+	_float4 vBoneLook = BoneMatrix.XMLoad().r[0];
+	vFirePos += vBoneLook * 500.f;
+	
+	m_pUI_Trail->Clear_Nodes();
+	m_pUI_Trail->Add_Node(vFirePos);
+
+	vBoneLook.Normalize();
+	vFirePos += vBoneLook * 2.f;
+	m_pUI_Trail->Add_Node(vFirePos);
+
+	vFirePos += vBoneLook * 2.f;
+	m_pUI_Trail->Add_Node(vFirePos);
+
+	m_pUI_Trail->ReMap_TrailBuffers();
 
 }

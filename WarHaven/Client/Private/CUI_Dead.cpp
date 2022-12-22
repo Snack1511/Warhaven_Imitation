@@ -128,6 +128,27 @@ void CUI_Dead::My_Tick()
 
 	if (m_pRevivalUI[RU_Bar]->Is_Valid())
 	{
+		if (KEY(RBUTTON, TAP))
+		{
+			m_bAbleRevival = false;
+			m_bIsFall = false;
+
+			SetActive_RevivalUI(true);
+			Toggle_DeadUI(false);
+
+			CUser::Get_Instance()->SetActive_UnitHUD(false);
+
+			CUser::Get_Instance()->Set_Respawn(true);
+			CUser::Get_Instance()->SetActive_OperUI(true);
+
+			CUser::Get_Instance()->Set_FixCursor(false);
+			CUser::Get_Instance()->SetActive_Cursor(true);
+			GAMEINSTANCE->Change_Camera(L"DefaultCam");
+
+			return;
+		}
+
+
 		_float fMinusColorValue = 1.f / m_fRevivalTime * fDT(0);
 
 		m_vGaugeColor.y -= fMinusColorValue;

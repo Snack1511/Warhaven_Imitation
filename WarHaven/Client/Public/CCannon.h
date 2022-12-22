@@ -12,6 +12,7 @@ BEGIN(Client)
 class CPlayer;
 class CCamera_Follow;
 class CCannonBall;
+class CUI_Trail;
 
 class CCannon
 	: public CGameObject
@@ -22,8 +23,6 @@ class CCannon
 private:
 	CCannon();
 	virtual ~CCannon();
-
-
 
 public:
 	virtual void	Cannon_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
@@ -59,6 +58,9 @@ private:
 	_float		m_fCannonCoolAcc = 0.f;
 	_float		m_fCannonCoolTime = 3.f;
 	CCannonBall* m_pCannonBall = nullptr;
+
+private:
+	CUI_Trail* m_pUI_Trail = nullptr;
 
 private:
 	_float		Lerp_Position(_float fCurPosition, _float fTargetPosition, _float fRange);
