@@ -118,27 +118,41 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 
 void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
-	if (isInFrustum)
+	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
+	vNewPos.y += 5.f;
+
+	for (int i = 0; i < PU_End; ++i)
 	{
-		_float4 vPointPos = CUtility_Transform::Get_ProjPos(pTransform);
-		vPointPos.y += 5.f;
+		m_pArrTargetPoint[1]->SetActive(isInFrustum);
+		m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
 
-		if (m_bSetTargetPoint)
-			m_pArrTargetPoint[1]->SetActive(true);
-
-		for (int i = 0; i < PU_End; ++i)
-		{
-			m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vPointPos);
-
-			m_pArrProjPointUI[iPointIdx][i]->SetActive(true);
-		}
+		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vPointPos);
 	}
+
+	//if (isInFrustum)
+	//{
+	//	_float4 vPointPos = CUtility_Transform::Get_ProjPos(pTransform);
+	//	vPointPos.y += 5.f;
+
+	//	if (m_bSetTargetPoint)
+	//		m_pArrTargetPoint[1]->SetActive(true);
+
+	//	for (int i = 0; i < PU_End; ++i)
+	//	{
+	//		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vPointPos);
+
+	//		m_pArrProjPointUI[iPointIdx][i]->SetActive(true);
+	//	}
+	//}
 	//else
 	//{
 	//	for (int i = 0; i < PU_End; ++i)
 	//		m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
 
-	//	if (m_eTargetPoint == Point_End)
+	//	if (m_pArrTargetPoint[1]->Is_Valid())
+	//		m_pArrTargetPoint[1]->SetActive(false);
+
+	//	// if (m_eTargetPoint == Point_End)
 	//		return;
 
 	//	CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
