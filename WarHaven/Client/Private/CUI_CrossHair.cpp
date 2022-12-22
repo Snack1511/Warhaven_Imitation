@@ -263,7 +263,9 @@ void CUI_Crosshair::Charge_Arrow()
 	if (m_iClassIndex != ARCHER)
 		return;
 
-	_float fDuration = 3.f / (_float)m_iArrowIndex;
+	_float fChargeWaitTime = 0.3f;
+	_float fRotateTime = fChargeWaitTime / (_float)m_iArrowIndex;
+	_float fScaleTime = 0.1f;
 	_float fAngle = 360.f / (_float)m_iArrowIndex;
 
 	if (KEY(LBUTTON, HOLD))
@@ -280,7 +282,7 @@ void CUI_Crosshair::Charge_Arrow()
 		else
 		{
 			m_fAccTime += fDT(0);
-			if (m_fAccTime > 1.f)
+			if (m_fAccTime > fChargeWaitTime)
 			{
 				m_fAccTime = 0.f;
 
@@ -291,11 +293,12 @@ void CUI_Crosshair::Charge_Arrow()
 						for (int i = 0; i < 3; ++i)
 						{
 							m_pArrArrowUI[AU_Arrow][i]->Set_Color(_float4(1.f, 0.f, 0.f, 1.f));
-							// m_pArrArrowUI[AU_Arrow][i]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
 						}
 
 						return;
 					}
+
+					Rotate_Arrow(fAngle, fRotateTime);
 
 					m_bIsChargeWait = false;
 					m_bIsCharge = false;
@@ -307,10 +310,8 @@ void CUI_Crosshair::Charge_Arrow()
 					if (m_iChargeCount > 2)
 						return;
 
-					m_pArrArrowUI[AU_Arrow][m_iChargeCount]->DoScale(-30.f, fDuration);
+					m_pArrArrowUI[AU_Arrow][m_iChargeCount]->DoScale(-30.f, fScaleTime);
 					m_pArrArrowUI[AU_Arrow][m_iChargeCount++]->Set_Color(m_vArrowColor);
-
-					Rotate_Arrow(fAngle, fDuration);
 				}
 			}
 		}
@@ -329,6 +330,7 @@ void CUI_Crosshair::Charge_Arrow()
 
 		m_fAccTime = 0.f;
 
+		Set_ArrowUI();
 		SetActive_ArrowUI(false);
 	}
 }

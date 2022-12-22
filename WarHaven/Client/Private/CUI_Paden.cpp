@@ -118,63 +118,69 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 
 void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
-	if (isInFrustum)
+	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
+	vNewPos.y += 5.f;
+
+	for (int i = 0; i < PU_End; ++i)
 	{
-		_float4 vPointPos = CUtility_Transform::Get_ProjPos(pTransform);
-		vPointPos.y += 5.f;
+		m_pArrTargetPoint[1]->SetActive(isInFrustum);
+		m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
 
-		if (m_bSetTargetPoint)
-			m_pArrTargetPoint[1]->SetActive(true);
-
-		for (int i = 0; i < PU_End; ++i)
-		{
-			m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vPointPos);
-
-			m_pArrProjPointUI[iPointIdx][i]->SetActive(true);
-		}
+		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vPointPos);
 	}
-	else
-	{
-		for (int i = 0; i < PU_End; ++i)
-			m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
 
-		if (m_eTargetPoint == Point_End)
-			return;
+	//if (isInFrustum)
+	//{
+	//	_float4 vPointPos = CUtility_Transform::Get_ProjPos(pTransform);
+	//	vPointPos.y += 5.f;
 
-		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
+	//	if (m_bSetTargetPoint)
+	//		m_pArrTargetPoint[1]->SetActive(true);
 
-		// 카메라
-		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
-		// 목표
-		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
+	//	for (int i = 0; i < PU_End; ++i)
+	//	{
+	//		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vPointPos);
 
-		// 카메라 목표 방향
-		_float4 vCamTargetDir = vTargetPos - vCamPos;
-		// 카메라 룩
-		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK).Normalize();
+	//		m_pArrProjPointUI[iPointIdx][i]->SetActive(true);
+	//	}
+	//}
+	//else
+	//{
+	//	for (int i = 0; i < PU_End; ++i)
+	//		m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
 
-		// 카메라가 바라보는 룩 방향의 위치
-		_float4 vOriginPos = vCamPos + (vCamLook * vCamTargetDir.Dot(vCamLook));
+	//	if (m_pArrTargetPoint[1]->Is_Valid())
+	//		m_pArrTargetPoint[1]->SetActive(false);
 
-		// 위에 녀석의 타겟 방향
-		_float4 vOriginTargetDir = vTargetPos - vOriginPos;
-		vOriginTargetDir = vOriginTargetDir.Normalize();
+	//	// if (m_eTargetPoint == Point_End)
+	//		return;
 
-		// 화살표 위치
-		_float4 vIndicatorPos = vCamPos + vCamLook + vOriginTargetDir;
+	//	CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
 
-		// 투영변환
-		// vIndicatorPos = CUtility_Transform::Get_ProjPos(vIndicatorPos);
+	//	_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
+	//	_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
 
-		if (m_bSetTargetPoint)
-			m_pArrTargetPoint[1]->Set_Pos(vIndicatorPos);
+	//	_float4 vCamTargetDir = vTargetPos - vCamPos;
+	//	_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK).Normalize();
 
-		for (int i = 0; i < PU_End; ++i)
-		{
-			m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(vIndicatorPos);
-			m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
-		}
-	}
+	//	_float4 vOriginPos = vCamPos + (vCamLook * vCamTargetDir.Dot(vCamLook));
+
+	//	_float4 vOriginTargetDir = vTargetPos - vOriginPos;
+	//	vOriginTargetDir = vOriginTargetDir.Normalize();
+
+	//	_float4 vIndicatorPos = vCamPos + vCamLook + vOriginTargetDir;
+
+	//	// vIndicatorPos = CUtility_Transform::Get_ProjPos(vIndicatorPos); 
+
+	//	if (m_bSetTargetPoint)
+	//		m_pArrTargetPoint[1]->Set_Pos(vIndicatorPos);
+
+	//	for (int i = 0; i < PU_End; ++i)
+	//	{
+	//		m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(vIndicatorPos);
+	//		m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
+	//	}
+	//}
 }
 
 void CUI_Paden::Set_TargetTransform(CTransform* pTargetTransform)

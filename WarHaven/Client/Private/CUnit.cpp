@@ -75,8 +75,6 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 		m_pAdjRevivalPlayer = static_cast<CPlayer*>(pOtherObj);
 
-
-
 		if (m_pAdjRevivalPlayer->Get_Team() != m_pOwnerPlayer->Get_Team())
 			m_pAdjRevivalPlayer = nullptr;
 
