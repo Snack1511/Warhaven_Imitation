@@ -52,8 +52,7 @@ void CState_Combat_Attack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 	//m_fMatRotXRadian = frandom(4.f, 12.f);
 
 	m_fMatRotYRadian = frandom(-3.5f, 3.5f);
-	m_fMatRotXRadian = frandom(-2.5f, 2.5f);
-
+	m_fMatRotXRadian = 8.f;
 
 	m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
 

@@ -45,6 +45,7 @@
 #include "CUnit_Valkyrie.h"
 #include "CUnit_Paladin.h"
 #include "CUnit_Archer.h"
+#include "CUnit_Qanda.h"
 
 #include "CUser.h"
 
@@ -119,7 +120,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		L"",
 		L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx",
 		L"../bin/resources/meshes/Characters/Valkyrie/Valkyrie.fbx",
-		L"",
+		L"../bin/resources/meshes/Characters/Qanda/Qanda.fbx",
 		L"",
 		L"",
 	};
@@ -133,11 +134,12 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		L"",
 		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00_50.fbx",
 		L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx",
-		L"",
+		L"../bin/resources/meshes/Characters/Qanda/Head/SK_Qanda0001_Face_A00_50.fbx",
 		L"",
 		L"",
 	};
 
+	//L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
 
 	wstring wstrModeWeapon_L[CLASS_END] =
 	{
@@ -205,8 +207,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 #ifdef ENGINEER_TH
 	m_pAllUnitClass[ENGINEER] = CUnit_WarHammer::Create(tModelData[ENGINEER]);
 #endif
-	m_pAllUnitClass[FIONA] = CUnit_Valkyrie::Create(tModelData[FIONA]);
-	//m_pAllUnitClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
+
 
 #ifdef ARCHER_TH
 	m_pAllUnitClass[ARCHER] = CUnit_Archer::Create(tModelData[ARCHER]);
@@ -216,6 +217,10 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 #ifdef PALADIN_TH
 	m_pAllUnitClass[PALADIN] = CUnit_Paladin::Create(tModelData[PALADIN]);
 #endif	
+
+	m_pAllUnitClass[FIONA] = CUnit_Valkyrie::Create(tModelData[FIONA]);
+	m_pAllUnitClass[QANDA] = CUnit_Qanda::Create(tModelData[QANDA]);
+	//m_pAllUnitClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
 
 	//m_pAllUnitClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
 
@@ -497,6 +502,7 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[ENGINEER] = STATE_IDLE_WARHAMMER_R;
 		m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
 		m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
+		m_iReserveStateDefault[QANDA] = STATE_IDLE_VALKYRIE_R;
 		break;
 
 	case CUnit::UNIT_TYPE::eAI_Default:
