@@ -11,6 +11,7 @@ BEGIN(Client)
 
 class CPlayer;
 class CCamera_Follow;
+class CCannonBall;
 
 class CCannon
 	: public CGameObject
@@ -53,6 +54,11 @@ private:
 	_float		m_fCannonMoveSpeed = 0.4f;
 	_float		m_fCurPitch = 0.f;
 	_float		m_fCurYaw = 0.f;
+
+private:
+	_float		m_fCannonCoolAcc = 0.f;
+	_float		m_fCannonCoolTime = 3.f;
+	CCannonBall* m_pCannonBall = nullptr;
 
 private:
 	_float		Lerp_Position(_float fCurPosition, _float fTargetPosition, _float fRange);

@@ -11,7 +11,7 @@
 #include "CTeamConnector.h"
 
 #include "HIerarchyNode.h"
-
+#include "CCannonBall.h"
 CCannon::CCannon()
 {
 }
@@ -80,6 +80,9 @@ HRESULT CCannon::Initialize_Prototype()
 
 	
 
+	m_pCannonBall = CCannonBall::Create();
+	m_pCannonBall->Initialize();
+	
 
 
 	return S_OK;
@@ -87,6 +90,7 @@ HRESULT CCannon::Initialize_Prototype()
 
 HRESULT CCannon::Initialize()
 {
+
     return S_OK;
 }
 
@@ -110,6 +114,9 @@ HRESULT CCannon::Start()
 	m_pAnimator->Set_CurAnimIndex(0, 0);
 	m_pAnimator->Set_InterpolationTime(0, 0, 0.1f);
 	m_pAnimator->Set_AnimSpeed(0, 0, 0.f);
+
+	CREATE_GAMEOBJECT(m_pCannonBall, GROUP_EFFECT);
+	DISABLE_GAMEOBJECT(m_pCannonBall);
 
     return S_OK;
 }
@@ -147,6 +154,14 @@ void CCannon::Exit_Cannon()
 
 void CCannon::Shoot_Cannon()
 {
+	if (m_fCannonCoolAcc > 0.f)
+		return;
+
+	m_pCannonCam->Start_ShakingCamera(0.8f, 0.5f);
+
+	m_fCannonCoolAcc = m_fCannonCoolTime;
+
+
 	m_pAnimator->Set_CurAnimIndex(0, 0);
 	m_pAnimator->Set_InterpolationTime(0, 0, 0.1f);
 	m_pAnimator->Set_AnimSpeed(0,0,1.f);
@@ -155,8 +170,10 @@ void CCannon::Shoot_Cannon()
 	_float4x4 BoneMatrix = m_pBonePitch->Get_BoneMatrix();
 	_float4 vFirePos = BoneMatrix.XMLoad().r[3];
 	_float4 vBoneLook = BoneMatrix.XMLoad().r[0];
-	vFirePos += vBoneLook * 450.f;
+	vFirePos += vBoneLook * 500.f;
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Parring_Particle", vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+
+	m_pCannonBall->Shoot_Cannon(m_pCurOwnerPlayer, vFirePos, vBoneLook);
 
 }
 
@@ -195,6 +212,13 @@ void CCannon::My_Tick()
 
 	if (!m_pCurOwnerPlayer->Get_CurrentUnit()->Is_Valid())
 		return;
+
+	if (m_fCannonCoolAcc > 0.f)
+		m_fCannonCoolAcc -= fDT(0);
+	else
+		m_fCannonCoolAcc = 0.f;
+
+
 
 	if (KEY(LBUTTON, TAP))
 	{

@@ -59,6 +59,8 @@ HRESULT CPurpleArrow::Start()
 
 HRESULT CPurpleArrow::Initialize_Prototype()
 {
+	m_bFrontPhysX = true;
+
     if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/longbow/SM_Bolt_Poison.fbx")))
         return E_FAIL;
 

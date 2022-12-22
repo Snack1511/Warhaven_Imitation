@@ -22,6 +22,8 @@
 #include "CPurpleArrow.h"
 #include "CSnipeArrow.h"
 
+#include "CCannonBall.h"
+
 IMPLEMENT_SINGLETON(CEffects_Factory);
 
 CEffects_Factory::CEffects_Factory()

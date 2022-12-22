@@ -34,7 +34,7 @@ HRESULT CAnimation::Set_HierarchyNodes(CModel* pModel)
 	for (auto& elem : m_Channels)
 	{
 		if (FAILED(elem->Set_HierarchyNode(pModel)))
-			return E_FAIL;
+			continue;
 	}
 
 	return S_OK;

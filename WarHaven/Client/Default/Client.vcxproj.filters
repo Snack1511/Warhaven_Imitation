@@ -3091,6 +3091,12 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Revive">
       <UniqueIdentifier>{c3a6a230-e39a-46c0-95c1-a06f62d828f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall">
+      <UniqueIdentifier>{98d3b525-1d72-4de6-98c5-2580cec9fa75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall\CannonBoom">
+      <UniqueIdentifier>{33fd186f-35b5-4f47-b94a-5f03fd7cd9b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5565,6 +5571,12 @@
     <ClInclude Include="..\Public\CUI_Revive.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Revive</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CCannonBall.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CCannonBoom.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall\CannonBoom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8019,6 +8031,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Revive.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Revive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CCannonBall.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CCannonBoom.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall\CannonBoom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

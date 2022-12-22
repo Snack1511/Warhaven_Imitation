@@ -262,7 +262,7 @@ HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 
 
 	/* PhysX */
-	CMeshContainer* pMesh = (pModel->Get_MeshContainers().front().second);
+	CMeshContainer* pMesh = (m_bFrontPhysX) ? (pModel->Get_MeshContainers().front().second) : (pModel->Get_MeshContainers().back().second);
 
 	FACEINDICES32* pIndices = pMesh->CMesh::Get_Indices();
 	_uint iNumPrimitive = pMesh->Get_NumPrimitive();

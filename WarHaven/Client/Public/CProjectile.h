@@ -53,6 +53,7 @@ protected:
 	_float4x4 m_matHitOffset;
 
 	// 100
+	_bool		m_bFrontPhysX = false;
 
 protected:
 	_float	m_fMaxSpeed = 50.f;

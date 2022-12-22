@@ -244,7 +244,7 @@ void CAnimator::Start()
 			if (FAILED(pAnim->Set_HierarchyNodes(pModelCom)))
 			{
 				Call_MsgBox(L"Failed to Set_HierarchyNodes : CAnimator");
-				return;
+				continue;
 			}
 		}
 		
