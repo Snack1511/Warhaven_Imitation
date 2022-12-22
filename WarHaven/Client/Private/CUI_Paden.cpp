@@ -126,7 +126,7 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		m_pArrTargetPoint[1]->SetActive(isInFrustum);
 		m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
 
-		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vPointPos);
+		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vNewPos);
 	}
 
 	//if (isInFrustum)
