@@ -328,7 +328,7 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 
 	tCCT.reportCallback = pUserData;
 
-
+	tCCT.userData = ppOut;
 	*ppOut = m_pPxControllerManager->createController(tCCT);
 }
 
