@@ -67,6 +67,7 @@ HRESULT CSprint_End_Paladin::Initialize()
 	m_fMaxSpeed = 10.f;
 	m_fMyAccel = 10.f;
 
+    Add_KeyFrame(15, 111);
 
     return S_OK;
 }
@@ -124,4 +125,16 @@ STATE_TYPE CSprint_End_Paladin::Check_Condition(CUnit* pOwner, CAnimator* pAnima
         return STATE_SPRINT_END_PALADIN;
 
     return STATE_END;
+}
+void	CSprint_End_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 111:
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    default:
+        break;
+    }
+
 }

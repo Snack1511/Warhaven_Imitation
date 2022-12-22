@@ -30,6 +30,7 @@
 /* Glow*/
 #define	GLOW_CHAKRA(power)		_float4(0.f, 0.5f, 1.f, power)
 #define RGB(R, G, B)			_float4(R/255.f, G/255.f, B/255.f)
+#define RGBA(R, G, B, A)			_float4(R/255.f, G/255.f, B/255.f, A) //Alpha°ªÀº 0~1
 
 #define	DECLARE_STATE(classname) public:\
 classname* Clone() {return new classname(*this);}

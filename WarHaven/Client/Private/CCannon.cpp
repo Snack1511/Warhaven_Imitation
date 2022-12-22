@@ -156,7 +156,7 @@ void CCannon::Shoot_Cannon()
 	_float4 vFirePos = BoneMatrix.XMLoad().r[3];
 	_float4 vBoneLook = BoneMatrix.XMLoad().r[0];
 	vFirePos += vBoneLook * 450.f;
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Parring_Particle", vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Shoot", vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 
 }
 
