@@ -263,7 +263,7 @@ void CUI_Crosshair::Charge_Arrow()
 	if (m_iClassIndex != ARCHER)
 		return;
 
-	_float fChargeWaitTime = 0.5f;
+	_float fChargeWaitTime = 0.3f;
 	_float fRotateTime = fChargeWaitTime / (_float)m_iArrowIndex;
 	_float fScaleTime = 0.1f;
 	_float fAngle = 360.f / (_float)m_iArrowIndex;

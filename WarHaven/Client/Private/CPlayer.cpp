@@ -369,7 +369,8 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 		return;
 	}
 
-	CUser::Get_Instance()->SetAcitve_ReviveUI(false);
+	if (!m_bIsMainPlayer)
+		CUser::Get_Instance()->SetAcitve_ReviveUI(false);
 
 	m_bDie = false;
 	m_bAbleRevival = false;
@@ -423,7 +424,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 				vector<_float4>& vecPositions = pPath->Get_vecPositions();
 
 				_float4 vLook = vecPositions.front() - vPos;
-				
+
 				m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
 				m_pCurrentUnit->Get_Transform()->Make_WorldMatrix();
 				m_pFollowCam->Get_Transform()->Set_Look(vLook);
@@ -440,7 +441,7 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 				ENABLE_GAMEOBJECT(m_pUI_Trail);
 				m_pUI_Trail->ReMap_TrailBuffers();
 			}
-			
+
 		}
 	}
 
@@ -825,7 +826,7 @@ void CPlayer::On_Die()
 {
 	//m_bDie = true;
 	DISABLE_GAMEOBJECT(m_pUnitHUD);
-	m_bDieDelay = true;	
+	m_bDieDelay = true;
 
 	if (!m_bIsMainPlayer)
 	{
@@ -1075,7 +1076,18 @@ void CPlayer::My_Tick()
 	Update_KDA();
 
 	if (!m_bIsMainPlayer)
+	{
+		if (m_pCurrentUnit->Get_Status().fHP > 0.f)
+		{
+			CUser::Get_Instance()->SetAcitve_ReviveUI(false);
+		}
+		else
+		{
+			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
+		}
+
 		return;
+	}
 
 	Update_HP();
 }
@@ -1088,6 +1100,11 @@ void CPlayer::My_LateTick()
 	{
 		Frustum_UnitHUD();
 		TransformProjection();
+	}
+	else
+	{
+		if (!m_bIsMainPlayer)
+			CUser::Get_Instance()->Set_ReviveUI_Pos(m_pTransform);
 	}
 
 	if (nullptr != m_pCurrentUnit)
@@ -1268,9 +1285,6 @@ void CPlayer::Update_DieDelay()
 	if (m_bDieDelay)
 	{
 		m_fDieDelayAcc += fDT(0);
-
-		CUser::Get_Instance()->Set_ReviveUI_Pos(m_pTransform);
-
 		if (m_fDieDelayAcc >= m_fDieCoolTime)
 		{
 			On_RealDie();

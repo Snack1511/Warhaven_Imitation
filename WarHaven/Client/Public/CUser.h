@@ -182,6 +182,7 @@ public:	// 家积
 	void Set_ReviveUI_Pos(CTransform* pReviveUnitTransform);
 	void Set_ReviveIcon(_uint iIconIdx);
 	void Set_ClassIcon(CPlayer* pDeadPlayer);
+	void Set_ReviveIndex(_uint iIndex);
 
 public:	// 农肺胶庆绢
 	void Set_ArcherPoint(_bool value);
@@ -196,7 +197,10 @@ private:
 	CUI_Oper* m_pUI_Oper = nullptr;
 	CUI_Popup* m_pUI_Popup = nullptr;
 	CUI_Result* m_pUI_Result = nullptr;
-	CUI_Revive* m_pReviveUI = nullptr;
+
+private:	// 家积
+	CUI_Revive* m_pReviveUI[7];
+	_uint m_iReviveIdx = 0;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

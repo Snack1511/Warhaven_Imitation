@@ -491,12 +491,15 @@ void CUser::On_EnterStageLevel()
 			DISABLE_GAMEOBJECT(m_pUI_Result);
 		}
 
-		if (!m_pReviveUI)
+		if (!m_pReviveUI[0])
 		{
-			m_pReviveUI = CUI_Revive::Create();
+			for (int i = 0; i < 7; ++i)
+			{
+				m_pReviveUI[i] = CUI_Revive::Create();
 
-			CREATE_GAMEOBJECT(m_pReviveUI, GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pReviveUI);
+				CREATE_GAMEOBJECT(m_pReviveUI[i], GROUP_UI);
+				DISABLE_GAMEOBJECT(m_pReviveUI[i]);
+			}
 		}
 	}
 
@@ -540,8 +543,11 @@ void CUser::On_ExitStageLevel()
 	if (m_pUI_Training)
 		m_pUI_Training = nullptr;
 
-	if (m_pReviveUI)
-		m_pReviveUI = nullptr;
+	for (int i = 0; i < 7; ++i)
+	{
+		if (m_pReviveUI[i])
+			m_pReviveUI[i] = nullptr;
+	}
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -663,26 +669,39 @@ void CUser::Update_KillName()
 
 void CUser::SetAcitve_ReviveUI(_bool value)
 {
-	if (m_pReviveUI)
-		m_pReviveUI->SetActive(value);
+	if (m_pReviveUI[m_iReviveIdx])
+	{
+		m_pReviveUI[m_iReviveIdx]->Set_ReviveIndex(m_iReviveIdx);
+		m_pReviveUI[m_iReviveIdx]->SetActive(value);
+	}
+
+	m_iReviveIdx++;
+	if (m_iReviveIdx > 6)
+		m_iReviveIdx = 0;
 }
 
 void CUser::Set_ReviveUI_Pos(CTransform* pReviveUnitTransform)
 {
-	if (m_pReviveUI)
-		m_pReviveUI->Set_RevivePos(pReviveUnitTransform);
+	if (m_pReviveUI[m_iReviveIdx])
+		m_pReviveUI[m_iReviveIdx]->Set_RevivePos(pReviveUnitTransform);
 }
 
 void CUser::Set_ReviveIcon(_uint iIconIdx)
 {
-	if (m_pReviveUI)
-		m_pReviveUI->Set_ReviveIcon(iIconIdx);
+	if (m_pReviveUI[m_iReviveIdx])
+		m_pReviveUI[m_iReviveIdx]->Set_ReviveIcon(iIconIdx);
 }
 
 void CUser::Set_ClassIcon(CPlayer* pDeadPlayer)
 {
-	if (m_pReviveUI)
-		m_pReviveUI->Set_ClassIcon(pDeadPlayer);
+	if (m_pReviveUI[m_iReviveIdx])
+		m_pReviveUI[m_iReviveIdx]->Set_ClassIcon(pDeadPlayer);
+}
+
+void CUser::Set_ReviveIndex(_uint iIndex)
+{
+	if (m_pReviveUI[m_iReviveIdx])
+		m_pReviveUI[m_iReviveIdx]->Set_ReviveIndex(m_iReviveIdx);
 }
 
 void CUser::Set_ArcherPoint(_bool value)

@@ -25,6 +25,8 @@ public:
 	void Set_ReviveIcon(_uint iIconIndex);
 	void Set_ClassIcon(CPlayer* pDeadPlayer);
 
+	void Set_ReviveIndex(_uint iIndex) { m_iIndex = iIndex; }
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -36,6 +38,8 @@ private:
 
 	enum ClassIcon { Class_BG, Class_Icon, Class_End };
 	CUI_Object* m_pClassIcon[Class_End];
+
+	_uint m_iIndex = 0;
 
 private:
 	void Create_ReviveIcon();
