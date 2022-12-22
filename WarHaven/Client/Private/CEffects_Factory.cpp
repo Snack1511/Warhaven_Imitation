@@ -654,9 +654,6 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"BigSparkParticle"), Convert_ToHash(L"SparkMesh_1"))))
 		return E_FAIL;
-	
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Charge"), "Crow_Charge")))
-		return E_FAIL;
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SkillLightParticle"), "SkillLightParticle")))
 		return E_FAIL;
@@ -682,9 +679,6 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"SmashSoilParticle"), "SmashSoilParticle")))
 		return E_FAIL;
 
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Oxen_Smoke"), "Oxen_Smoke")))
-		return E_FAIL;
-
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Fall_Particle"), "Fall_Particle")))
 		return E_FAIL;
 
@@ -692,6 +686,7 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"ShieldWall"), "ShieldWall")))
 		return E_FAIL;
+
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cannon_Shoot"), "Cannon_Shoot")))
 		return E_FAIL;
@@ -719,6 +714,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HitSlash_LU"), "HitSlash_LU"))) //Left up
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"StingBlood"), "StingBlood")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Oxen_Smoke"), "Oxen_Smoke")))
 		return E_FAIL;
 		/*smash*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Smash_Right"), "Smash_Right")))
@@ -763,6 +760,11 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"FionaParring"), "FionaParring")))
 		return E_FAIL;
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FionaParring"), Convert_ToHash(L"FionaParring_Mesh_0"))))
+		return E_FAIL;
+		/*Quanda*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Charge"), "Crow_Charge")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Dodge"), "Dodge")))
 		return E_FAIL;
 
 	/*environment*/

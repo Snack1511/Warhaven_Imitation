@@ -33,7 +33,7 @@ HRESULT CDefaultArrow::Start()
 	__super::Start();
 
 
-	//m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest", this, m_pTransform->Get_World(WORLD_POS));
+	m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Dodge", this, m_pTransform->Get_World(WORLD_POS));
 
 	return S_OK;
 }
