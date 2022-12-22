@@ -66,6 +66,7 @@ HRESULT CPaladin_Rush_End::Initialize()
 	m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
 	m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
+	Add_KeyFrame(12, 111);
 
 	return S_OK;
 }
@@ -104,4 +105,13 @@ STATE_TYPE CPaladin_Rush_End::Check_Condition(CUnit* pOwner, CAnimator* pAnimato
 
 void CPaladin_Rush_End::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
+	switch (iSequence)
+	{
+	case 111:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+		break;
+	default:
+		break;
+	}
 }

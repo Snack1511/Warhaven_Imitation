@@ -54,6 +54,8 @@ HRESULT CSprintAttack_Paladin::Initialize()
 
 	Add_KeyFrame(20, 0);
 	Add_KeyFrame(32, 1);
+	Add_KeyFrame(30, 111);
+	Add_KeyFrame(42, 222);
 
 
     return S_OK;
@@ -133,6 +135,7 @@ void	CSprintAttack_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator
 	break;
 	case 1:
 	{
+
 		pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
 		pMyPhysicsCom->Set_SpeedasMax();
 
@@ -147,8 +150,13 @@ void	CSprintAttack_Paladin::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator
 		pOwner->TurnOn_TrailEffect(false);
 		pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	}
-
-
+		break;
+	case 111:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+		break;
+	case 222:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+		break;
 	default:
 		break;
 	}
