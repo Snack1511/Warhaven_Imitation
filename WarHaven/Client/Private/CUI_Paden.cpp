@@ -133,40 +133,40 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 			m_pArrProjPointUI[iPointIdx][i]->SetActive(true);
 		}
 	}
-	else
-	{
-		for (int i = 0; i < PU_End; ++i)
-			m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
+	//else
+	//{
+	//	for (int i = 0; i < PU_End; ++i)
+	//		m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
 
-		if (m_eTargetPoint == Point_End)
-			return;
+	//	if (m_eTargetPoint == Point_End)
+	//		return;
 
-		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
+	//	CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
 
-		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
-		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
+	//	_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
+	//	_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
 
-		_float4 vCamTargetDir = vTargetPos - vCamPos;
-		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK).Normalize();
+	//	_float4 vCamTargetDir = vTargetPos - vCamPos;
+	//	_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK).Normalize();
 
-		_float4 vOriginPos = vCamPos + (vCamLook * vCamTargetDir.Dot(vCamLook));
+	//	_float4 vOriginPos = vCamPos + (vCamLook * vCamTargetDir.Dot(vCamLook));
 
-		_float4 vOriginTargetDir = vTargetPos - vOriginPos;
-		vOriginTargetDir = vOriginTargetDir.Normalize();
+	//	_float4 vOriginTargetDir = vTargetPos - vOriginPos;
+	//	vOriginTargetDir = vOriginTargetDir.Normalize();
 
-		_float4 vIndicatorPos = vCamPos + vCamLook + vOriginTargetDir;
+	//	_float4 vIndicatorPos = vCamPos + vCamLook + vOriginTargetDir;
 
-		// vIndicatorPos = CUtility_Transform::Get_ProjPos(vIndicatorPos); 
+	//	// vIndicatorPos = CUtility_Transform::Get_ProjPos(vIndicatorPos); 
 
-		if (m_bSetTargetPoint)
-			m_pArrTargetPoint[1]->Set_Pos(vIndicatorPos);
+	//	if (m_bSetTargetPoint)
+	//		m_pArrTargetPoint[1]->Set_Pos(vIndicatorPos);
 
-		for (int i = 0; i < PU_End; ++i)
-		{
-			m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(vIndicatorPos);
-			m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
-		}
-	}
+	//	for (int i = 0; i < PU_End; ++i)
+	//	{
+	//		m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(vIndicatorPos);
+	//		m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
+	//	}
+	//}
 }
 
 void CUI_Paden::Set_TargetTransform(CTransform* pTargetTransform)
