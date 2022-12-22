@@ -143,28 +143,20 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 
 		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
 
-		// 카메라
 		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
-		// 목표
 		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
 
-		// 카메라 목표 방향
 		_float4 vCamTargetDir = vTargetPos - vCamPos;
-		// 카메라 룩
 		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK).Normalize();
 
-		// 카메라가 바라보는 룩 방향의 위치
 		_float4 vOriginPos = vCamPos + (vCamLook * vCamTargetDir.Dot(vCamLook));
 
-		// 위에 녀석의 타겟 방향
 		_float4 vOriginTargetDir = vTargetPos - vOriginPos;
 		vOriginTargetDir = vOriginTargetDir.Normalize();
 
-		// 화살표 위치
 		_float4 vIndicatorPos = vCamPos + vCamLook + vOriginTargetDir;
 
-		// 투영변환
-		// vIndicatorPos = CUtility_Transform::Get_ProjPos(vIndicatorPos);
+		// vIndicatorPos = CUtility_Transform::Get_ProjPos(vIndicatorPos); 
 
 		if (m_bSetTargetPoint)
 			m_pArrTargetPoint[1]->Set_Pos(vIndicatorPos);

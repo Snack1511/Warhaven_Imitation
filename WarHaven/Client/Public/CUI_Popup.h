@@ -17,12 +17,10 @@ public:
 	virtual HRESULT	Start();
 
 public:
-	enum ePOPUP_TYPE {
+	enum ePOPUP_TYPE
+	{
 		eConquest,
-		eKILL,
-		eKILL2,
-		eKILL3,
-		eKILL4,
+		eKILL, eKILL2, eKILL3, eKILL4,
 		eBURGERKING,
 		eHEADHUNTER,
 		eGLOWKILL,
@@ -38,7 +36,7 @@ private:
 	virtual void OnDisable() override;
 
 private:
-	enum ConquestPopup{ CP_Line, CP_Blur, CP_BG, CP_ICON, CP_End };
+	enum ConquestPopup { CP_Line, CP_Blur, CP_BG, CP_ICON, CP_End };
 	CUI_Object* m_pConquestPopup[CP_End];
 
 private:

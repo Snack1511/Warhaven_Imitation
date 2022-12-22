@@ -663,22 +663,26 @@ void CUser::Update_KillName()
 
 void CUser::SetAcitve_ReviveUI(_bool value)
 {
-	m_pReviveUI->SetActive(value);
+	if (m_pReviveUI)
+		m_pReviveUI->SetActive(value);
 }
 
 void CUser::Set_ReviveUI_Pos(CTransform* pReviveUnitTransform)
 {
-	m_pReviveUI->Set_RevivePos(pReviveUnitTransform);
+	if (m_pReviveUI)
+		m_pReviveUI->Set_RevivePos(pReviveUnitTransform);
 }
 
 void CUser::Set_ReviveIcon(_uint iIconIdx)
 {
-	m_pReviveUI->Set_ReviveIcon(iIconIdx);
+	if (m_pReviveUI)
+		m_pReviveUI->Set_ReviveIcon(iIconIdx);
 }
 
 void CUser::Set_ClassIcon(CPlayer* pDeadPlayer)
 {
-	m_pReviveUI->Set_ClassIcon(pDeadPlayer);
+	if (m_pReviveUI)
+		m_pReviveUI->Set_ClassIcon(pDeadPlayer);
 }
 
 void CUser::Set_ArcherPoint(_bool value)

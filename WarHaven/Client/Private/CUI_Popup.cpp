@@ -31,12 +31,10 @@ void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 	{
 	case Client::CUI_Popup::eConquest:
 		Enable_ConquestPopup(L"거점 점령", ePopupType);
-
 		break;
 	case Client::CUI_Popup::eKILL:
 		Enable_ConquestPopup(L"적 처치", ePopupType);
 		break;
-
 	case Client::CUI_Popup::eKILL2:
 		Enable_ConquestPopup(L"2연속 처치", ePopupType);
 		break;
