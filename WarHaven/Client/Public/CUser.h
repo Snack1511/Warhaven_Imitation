@@ -167,7 +167,7 @@ public:
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
 	void Disable_RevivalUI();
 
-public:		// 알림
+public:	
 	void Enable_Popup(_uint iPopupType);
 
 public:	// 킬로그
@@ -176,13 +176,6 @@ public:	// 킬로그
 
 	void Add_KillName(wstring wstrEnemyName);
 	void Update_KillName();
-
-public:	// 소생
-	void SetAcitve_ReviveUI(_bool value);
-	void Set_ReviveUI_Pos(CTransform* pReviveUnitTransform);
-	void Set_ReviveIcon(_uint iIconIdx);
-	void Set_ClassIcon(CPlayer* pDeadPlayer);
-	void Set_ReviveIndex(_uint iIndex);
 
 public:	// 크로스헤어
 	void Set_ArcherPoint(_bool value);

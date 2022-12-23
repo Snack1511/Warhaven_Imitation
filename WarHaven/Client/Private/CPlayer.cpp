@@ -374,8 +374,6 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 		return;
 	}
 
-	if (!m_bIsMainPlayer)
-		CUser::Get_Instance()->SetAcitve_ReviveUI(false);
 
 	m_bDie = false;
 	m_bAbleRevival = false;
@@ -389,6 +387,11 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 	if (!m_bIsMainPlayer)
 	{
 		ENABLE_GAMEOBJECT(m_pUnitHUD);
+
+		if (Get_Team()->IsMainPlayerTeam())
+		{
+			m_pUnitHUD->Disable_RevivalUI();
+		}
 
 		//Path 갱신 + 캐릭터 재선택
 		if (!m_bReborn)
@@ -838,12 +841,6 @@ void CPlayer::On_Die()
 	{
 		if (!Get_Team())
 			return;
-
-		if (Get_Team()->IsMainPlayerTeam())
-		{
-			CUser::Get_Instance()->Set_ClassIcon(this);
-			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
-		}
 	}
 
 	if (m_bIsMainPlayer)
@@ -875,12 +872,21 @@ void CPlayer::On_RealDie()
 
 	//소생 
 	if (m_bIsMainPlayer)
+	{
 		CUser::Get_Instance()->Toggle_DeadUI(true, true);
+	}
+	else
+	{
+		if (Get_Team()->IsMainPlayerTeam())
+		{
+			m_pUnitHUD->Enable_RevivalUI();
+		}
+	}
 
 	m_bDieDelay = false;
 	m_fDieDelayAcc = 0.f;
 	m_bDie = true;
-	m_bAbleRevival = true;
+	m_bAbleRevival = true;	
 
 	m_DeadLights.clear();
 
@@ -891,16 +897,12 @@ void CPlayer::On_RealDie()
 			m_DeadLights = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
 			m_pCurrentUnit->Create_Light(m_DeadLights.back(), _float4(0.f, 0.5f, 0.f), 5.f, 0.f, 0.5f, 0.f, 0.5f, RGB(255, 160, 50), true);
 		}
-
-
 	}
 	else if (m_bIsMainPlayer)
 	{
 		m_DeadLights = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"DeadLight", m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));
 		m_pCurrentUnit->Create_Light(m_DeadLights.back(), _float4(0.f, 0.5f, 0.f), 5.f, 0.f, 0.5f, 0.f, 0.5f, RGB(255, 160, 50), true);
 	}
-
-
 }
 
 void CPlayer::On_Reborn()
@@ -923,6 +925,13 @@ void CPlayer::On_Reborn()
 	{
 		CUser::Get_Instance()->SetActive_HUD(true);
 		CUser::Get_Instance()->SetActive_SquardInfo(true);
+	}
+	else
+	{
+		if (Get_Team()->IsMainPlayerTeam())
+		{
+			m_pUnitHUD->Disable_RevivalUI();
+		}
 	}
 
 	m_bReborn = true;
@@ -979,8 +988,6 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 	m_tKdaStat.iKillStreak++;
 	m_tKdaStat.iTotalKillCount++;
 
-
-
 	if (m_bIsMainPlayer)
 	{
 		if (pOtherPlayer->Get_PlayerName() == L"Jusin_Burger")
@@ -1012,8 +1019,6 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL4);
 		}
 	}
-
-
 }
 
 void CPlayer::Change_NearPath()
@@ -1082,18 +1087,7 @@ void CPlayer::My_Tick()
 	Update_KDA();
 
 	if (!m_bIsMainPlayer)
-	{
-		if (m_pCurrentUnit->Get_Status().fHP > 0.f)
-		{
-			CUser::Get_Instance()->SetAcitve_ReviveUI(false);
-		}
-		else
-		{
-			CUser::Get_Instance()->SetAcitve_ReviveUI(true);
-		}
-
 		return;
-	}
 
 	Update_HP();
 }
@@ -1106,11 +1100,6 @@ void CPlayer::My_LateTick()
 	{
 		Frustum_UnitHUD();
 		TransformProjection();
-	}
-	else
-	{
-		if (!m_bIsMainPlayer)
-			CUser::Get_Instance()->Set_ReviveUI_Pos(m_pTransform);
 	}
 
 	if (nullptr != m_pCurrentUnit)

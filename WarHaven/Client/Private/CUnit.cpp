@@ -50,6 +50,7 @@
 #include "CUser.h"
 #include "CUI_Wrapper.h"
 #include "CUI_UnitHUD.h"
+#include "CUI_Revive.h"
 
 #include "CColorController.h"
 #include "CTeamConnector.h"
@@ -82,7 +83,9 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 		{
 			//UI ON
 			if (m_bIsMainPlayer)
-				CUser::Get_Instance()->Set_ReviveIcon(1);
+			{
+				m_pOwnerPlayer->Get_UnitHUD()->Get_ReviveUI()->Set_ReviveIcon(1);
+			}
 		}
 
 		return;
@@ -194,7 +197,9 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 
 			// UI Off
 			if (m_bIsMainPlayer)
-				CUser::Get_Instance()->Set_ReviveIcon(0);
+			{
+				m_pOwnerPlayer->Get_UnitHUD()->Get_ReviveUI()->Set_ReviveIcon(0);
+			}
 		}
 
 	}

@@ -35,19 +35,6 @@ HRESULT CUI_Revive::Start()
 	return S_OK;
 }
 
-void CUI_Revive::Set_RevivePos(CTransform* pReviveUnitTransform)
-{
-	_float4 vReviveUnitPos = CUtility_Transform::Get_ProjPos(pReviveUnitTransform);
-
-	for (int i = 0; i < Class_End; ++i)
-		m_pClassIcon[i]->Set_Pos(vReviveUnitPos);
-
-	vReviveUnitPos.x -= 15.f;
-	vReviveUnitPos.y += 35.f;
-
-	m_pReviveIcon->Set_Pos(vReviveUnitPos);
-}
-
 void CUI_Revive::Set_ReviveIcon(_uint iIconIndex)
 {
 	m_pReviveIcon->Set_TextureIndex(iIconIndex);
@@ -80,15 +67,12 @@ void CUI_Revive::My_LateTick()
 {
 	__super::My_LateTick();
 
-	m_fAccTime += fDT(0);
-	cout << m_iIndex << " : " << m_fAccTime << endl;
+	Update_Pos();
 }
 
 void CUI_Revive::OnEnable()
 {
 	__super::OnEnable();
-
-	cout << m_iIndex << " : 활성화" << endl;
 
 	m_fAccTime = 0.f;
 
@@ -102,12 +86,23 @@ void CUI_Revive::OnDisable()
 {
 	__super::OnDisable();
 
-	cout << m_iIndex << " : 비활성화" << endl;
-
 	m_pReviveIcon->SetActive(false);
 
 	for (int i = 0; i < Class_End; ++i)
 		m_pClassIcon[i]->SetActive(false);
+}
+
+void CUI_Revive::Update_Pos()
+{
+	_float4 vReviveUnitPos = CUtility_Transform::Get_ProjPos(m_pReviveUnitTransform);
+
+	for (int i = 0; i < Class_End; ++i)
+		m_pClassIcon[i]->Set_Pos(vReviveUnitPos);
+
+	vReviveUnitPos.x -= 15.f;
+	vReviveUnitPos.y += 35.f;
+
+	m_pReviveIcon->Set_Pos(vReviveUnitPos);
 }
 
 void CUI_Revive::Create_ReviveIcon()

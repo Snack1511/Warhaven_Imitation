@@ -12,6 +12,7 @@
 #include "CUser.h"
 #include "CPlayer.h"
 #include "CTeamConnector.h"
+#include "CUI_Revive.h"
 
 HRESULT CUI_UnitHUD::Initialize_Prototype()
 {
@@ -124,7 +125,7 @@ void CUI_UnitHUD::My_Tick()
 			else
 			{
 				m_pUnitNameText->Set_Color(m_vColorRed);
-			}			
+			}
 		}
 
 		if (m_pUnitNameText->Get_FontRender())
@@ -204,6 +205,11 @@ void CUI_UnitHUD::My_LateTick()
 	__super::My_LateTick();
 }
 
+CUI_Revive* CUI_UnitHUD::Get_ReviveUI()
+{
+	return static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
+}
+
 void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 {
 	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform, m_vOffset);
@@ -213,10 +219,30 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_ProjPos(pTransform);
 }
 
+void CUI_UnitHUD::Enable_RevivalUI()
+{
+	CUI_Revive* pRevivalUI = static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
+
+	pRevivalUI->Set_ReviveUnitTransform(m_pOwner->Get_Transform());
+	pRevivalUI->Set_ClassIcon(m_pOwner);
+	pRevivalUI->SetActive(true);
+}
+
+void CUI_UnitHUD::Disable_RevivalUI()
+{
+	m_pUnitUI[UI_Revive]->SetActive(false);
+}
+
+void CUI_UnitHUD::Set_RevivalIcon(_uint iIconIdx)
+{
+	static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive])->Set_ReviveIcon(iIconIdx);
+}
+
 void CUI_UnitHUD::Create_UnitHUD()
 {
 	m_pUnitNameText = CUI_Object::Create();
 	m_pUnitUI[UI_Hp] = CUI_UnitHP::Create();
+	m_pUnitUI[UI_Revive] = CUI_Revive::Create();
 }
 
 void CUI_UnitHUD::Init_UnitNameText()
@@ -257,21 +283,6 @@ void CUI_UnitHUD::Init_UnitNameText()
 	m_pUnitNameText->Set_FontText(wstrUnitName);
 
 	CREATE_GAMEOBJECT(m_pUnitNameText, GROUP_UI);
-}
-
-void CUI_UnitHUD::Set_LeaderIcon()
-{
-
-}
-
-void CUI_UnitHUD::Set_IconColor()
-{
-
-}
-
-void CUI_UnitHUD::Set_HeroIcon()
-{
-
 }
 
 void CUI_UnitHUD::SetActive_UnitHP(_bool value)
