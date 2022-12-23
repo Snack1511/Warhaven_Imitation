@@ -3145,6 +3145,9 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\Qanda">
       <UniqueIdentifier>{78c42618-de01-4adb-94ec-54f53a7c0bb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Interact">
+      <UniqueIdentifier>{de86ebc1-ef9a-472e-b64f-a03385c540a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5670,6 +5673,9 @@
     <ClInclude Include="..\Public\CUnit_Qanda.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Qanda</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Interact.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Interact</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8175,6 +8181,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_Qanda.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Interact.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Interact</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -92,6 +92,15 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	else if (eOtherColType == COL_CANNON)
 	{
 		m_pAdjCannon = static_cast<CCannon*>(pOtherObj);
+
+		if (m_bIsMainPlayer)
+		{
+			CUser::Get_Instance()->Set_InteractKey(32);
+			CUser::Get_Instance()->Set_InteractText(TEXT("»ç¿ë"));
+			CUser::Get_Instance()->Set_InteractTarget(m_pAdjCannon);
+
+			CUser::Get_Instance()->SetActive_InteractUI(true);
+		}
 	}
 
 
@@ -207,6 +216,12 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 	}
 	else if (eOtherColType == COL_CANNON)
 	{
+		if (!m_pAdjCannon)
+			return;
+
+		if (m_bIsMainPlayer)
+			CUser::Get_Instance()->SetActive_InteractUI(false);
+
 		m_pAdjCannon = nullptr;
 	}
 }

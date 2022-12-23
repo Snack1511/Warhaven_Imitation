@@ -34,6 +34,7 @@ class CUI_Popup;
 class CUI_Oper;
 class CUI_Paden;
 class CUI_Revive;
+class CUI_Interact;
 
 class CTeamConnector;
 
@@ -167,7 +168,7 @@ public:
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
 	void Disable_RevivalUI();
 
-public:	
+public:
 	void Enable_Popup(_uint iPopupType);
 
 public:	// 킬로그
@@ -179,6 +180,12 @@ public:	// 킬로그
 
 public:	// 크로스헤어
 	void Set_ArcherPoint(_bool value);
+
+public:	// 상호작용
+	void SetActive_InteractUI(_bool value);
+	void Set_InteractKey(_uint iKeyIndex);
+	void Set_InteractText(wstring wstrText);
+	void Set_InteractTarget(CGameObject* pInteractTarget);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
@@ -194,6 +201,9 @@ private:
 private:	// 소생
 	CUI_Revive* m_pReviveUI[7];
 	_uint m_iReviveIdx = 0;
+
+private:	// 상호작용
+	CUI_Interact* m_pInteractUI = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
