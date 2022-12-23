@@ -104,12 +104,6 @@ void CUI_HUD::My_Tick()
 			m_pUI_EscMenu->SetActive(false);
 		}
 	}
-
-	if (KEY(Z, TAP))
-	{
-		CUser::Get_Instance()->Toggle_DeadUI(true, true);
-		// CUser::Get_Instance()->Add_KillName(TEXT("Test"));
-	}
 }
 
 CUI_Wrapper* CUI_HUD::Get_HUD(_uint eHUD)

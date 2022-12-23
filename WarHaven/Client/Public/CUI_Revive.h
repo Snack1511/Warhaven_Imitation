@@ -4,6 +4,7 @@
 BEGIN(Client)
 
 class CPlayer;
+class CUnit;
 
 class CUI_Revive : public CUI_Wrapper
 {

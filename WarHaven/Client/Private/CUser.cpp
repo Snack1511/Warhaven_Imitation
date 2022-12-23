@@ -44,6 +44,7 @@
 #include "CUI_KillLog.h"
 #include "CUI_KillName.h"
 #include "CUI_Revive.h"
+#include "CUI_UnitHUD.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
