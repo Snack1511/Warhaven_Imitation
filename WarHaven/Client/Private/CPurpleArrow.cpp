@@ -172,6 +172,9 @@ void CPurpleArrow::My_Tick()
 				if (pUnit->Get_Status().fHP <= 0.f)
 					pUnit->On_Die();
 				
+				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Poison_End",
+					pUnit, pUnit->Get_Transform()->Get_World(WORLD_POS));
+
 				DISABLE_GAMEOBJECT(this);
 			}
 				

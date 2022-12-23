@@ -955,6 +955,8 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_FLARE;
 			if (ImGui::Selectable("COLORPOWERDECREASE", &bSelect[VTXRECTINSTANCE_PASS_COLORPOWERDECREASE]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_COLORPOWERDECREASE;
+			if (ImGui::Selectable("ANIMATION_ZFALSE", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONZFALSE]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONZFALSE;
 			
 			
 			pRenderer->Set_Pass(pCurEffect->m_iPassType);
@@ -1534,7 +1536,8 @@ void CWindow_Effect::Save_CurEffect()
 			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE 
 			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR
 			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT
-			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVCOLORSELECT)
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVCOLORSELECT
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONZFALSE)
 			m_vecEffects[m_iCurrentIdx].iEffectType = 2;
 		else
 			m_vecEffects[m_iCurrentIdx].iEffectType = 1;
