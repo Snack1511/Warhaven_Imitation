@@ -31,8 +31,8 @@ CSprint_Jump_Qanda* CSprint_Jump_Qanda::Create()
 HRESULT CSprint_Jump_Qanda::Initialize()
 {
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
-    m_iAnimIndex = 50;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_SPRINT_JUMP_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_iAnimIndex = 35;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_eStateType = STATE_SPRINT_JUMP_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
@@ -48,12 +48,11 @@ HRESULT CSprint_Jump_Qanda::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_vecAdjState.push_back(STATE_SPRINT_JUMPFALL_ARCHER);
-    m_vecAdjState.push_back(STATE_JUMP_LAND_ARCHER_R);
+    m_vecAdjState.push_back(STATE_SPRINT_JUMPFALL_QANDA);
+    m_vecAdjState.push_back(STATE_JUMP_LAND_QANDA);
 
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_ARCHER);
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_SNIPING_ARCHER);
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_POISION_ARCHER);
+    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_QANDA);
+    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_SNIPING_QANDA);
 
 
     return S_OK;
@@ -138,7 +137,7 @@ void CSprint_Jump_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CSprint_Jump_Qanda::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* ARCHER가 Sprint로 오는 조건
+    /* QANDA가 Sprint로 오는 조건
     1. 쉬프트를 누른 상태에서 점프한다.
     */
 

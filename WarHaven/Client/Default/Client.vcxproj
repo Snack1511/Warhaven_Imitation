@@ -192,6 +192,12 @@
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
     <ClInclude Include="..\public\CAnimWeapon.h" />
+    <ClInclude Include="..\Public\CQanda_Aiming.h" />
+    <ClInclude Include="..\Public\CQanda_Attack_Begin.h" />
+    <ClInclude Include="..\Public\CQanda_Shoot.h" />
+    <ClInclude Include="..\Public\CAttack_Qanda.h" />
+    <ClInclude Include="..\Public\CQandaMeteor.h" />
+    <ClInclude Include="..\Public\CQandaCrow.h" />
     <ClInclude Include="..\Public\CGuard_Cancel_Qanda.h" />
     <ClInclude Include="..\Public\CGuard_Loop_Qanda.h" />
     <ClInclude Include="..\Public\CHit_Qanda.h" />
@@ -203,8 +209,8 @@
     <ClInclude Include="..\Public\CJump_Archer_Fall_Qanda.h" />
     <ClInclude Include="..\Public\CJump_Archer_Land_Qanda.h" />
     <ClInclude Include="..\Public\CJump_Qanda.h" />
-    <ClInclude Include="..\Public\CRun_Qanda_Begin.h" />
     <ClInclude Include="..\Public\CRun_Qanda.h" />
+    <ClInclude Include="..\Public\CShootAttack_Qanda.h" />
     <ClInclude Include="..\Public\CSprint_Begin_Qanda.h" />
     <ClInclude Include="..\Public\CSprint_End_Qanda.h" />
     <ClInclude Include="..\Public\CSprint_Jump_Qanda.h" />
@@ -1055,8 +1061,14 @@
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
     <ClCompile Include="..\private\CAnimWeapon.cpp" />
+    <ClCompile Include="..\Private\CQanda_Aiming.cpp" />
+    <ClCompile Include="..\Private\CQanda_Attack_Begin.cpp" />
+    <ClCompile Include="..\Private\CQanda_Shoot.cpp" />
+    <ClCompile Include="..\Private\CAttack_Qanda.cpp" />
     <ClCompile Include="..\private\CCannonBall.cpp" />
     <ClCompile Include="..\private\CCannonBoom.cpp" />
+    <ClCompile Include="..\Private\CQandaMeteor.cpp" />
+    <ClCompile Include="..\Private\CQandaCrow.cpp" />
     <ClCompile Include="..\Private\CGuard_Cancel_Qanda.cpp" />
     <ClCompile Include="..\Private\CGuard_Loop_Qanda.cpp" />
     <ClCompile Include="..\Private\CHit_Qanda.cpp" />
@@ -1068,8 +1080,8 @@
     <ClCompile Include="..\Private\CJump_Archer_Fall_Qanda.cpp" />
     <ClCompile Include="..\Private\CJump_Archer_Land_Qanda.cpp" />
     <ClCompile Include="..\Private\CJump_Qanda.cpp" />
-    <ClCompile Include="..\Private\CRun_Qanda_Begin.cpp" />
     <ClCompile Include="..\Private\CRun_Qanda.cpp" />
+    <ClCompile Include="..\Private\CShootAttack_Qanda.cpp" />
     <ClCompile Include="..\Private\CShootAttack_Archer.cpp" />
     <ClCompile Include="..\private\CCannon.cpp" />
     <ClCompile Include="..\private\CCustomTrail.cpp" />

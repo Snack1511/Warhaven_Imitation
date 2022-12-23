@@ -505,7 +505,7 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[ENGINEER] = STATE_IDLE_WARHAMMER_R;
 		m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
 		m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
-		m_iReserveStateDefault[QANDA] = STATE_IDLE_VALKYRIE_R;
+		m_iReserveStateDefault[QANDA] = STATE_IDLE_QANDA;
 		break;
 
 	case CUnit::UNIT_TYPE::eAI_Default:

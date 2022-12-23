@@ -31,8 +31,8 @@ CSprint_End_Qanda* CSprint_End_Qanda::Create()
 HRESULT CSprint_End_Qanda::Initialize()
 {
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
-    m_iAnimIndex = 48;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_SPRINT_END_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_iAnimIndex = 33;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_eStateType = STATE_SPRINT_END_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     m_iStateChangeKeyFrame = 30;
 
@@ -45,17 +45,15 @@ HRESULT CSprint_End_Qanda::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    //m_vecAdjState.push_back(STATE_GUARD_BEGIN_ARCHER);
-    
-    m_vecAdjState.push_back(STATE_IDLE_ARCHER_R);
-    m_vecAdjState.push_back(STATE_WALK_ARCHER_R);
-    m_vecAdjState.push_back(STATE_RUN_ARCHER_R);
+    m_vecAdjState.push_back(STATE_GUARD_QANDA);
+    m_vecAdjState.push_back(STATE_IDLE_QANDA);
+    m_vecAdjState.push_back(STATE_WALK_QANDA);
+    m_vecAdjState.push_back(STATE_RUN_QANDA);
 
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_ARCHER);
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_SNIPING_ARCHER);
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_POISION_ARCHER);
+    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_QANDA);
+    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_SNIPING_QANDA);
 
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_QANDA);
 
     Init_CommonState_Player();
 
@@ -69,7 +67,7 @@ HRESULT CSprint_End_Qanda::Initialize()
 
 void CSprint_End_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    if (ePrevType == STATE_SPRINT_LOOP_ARCHER)
+    if (ePrevType == STATE_SPRINT_LOOP_QANDA)
         m_fInterPolationTime = 0.f;
     else
         m_fInterPolationTime = 0.05f;
@@ -92,7 +90,7 @@ STATE_TYPE CSprint_End_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom(); 
 
     if (pAnimator->Is_CurAnimFinished())
-        return STATE_IDLE_ARCHER_R;
+        return STATE_IDLE_QANDA;
 
     return __super::Tick(pOwner, pAnimator);
 }
@@ -106,13 +104,13 @@ void CSprint_End_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CSprint_End_Qanda::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* ARCHER가 Sprint로 오는 조건
+    /* QANDA가 Sprint로 오는 조건
     1. 쉬프트를 누른 상태에서 움직인다.
     */
     // 만약 쉬프트키 나 W 를 해제했을 시
     if (KEY(LSHIFT, NONE) ||
         (KEY(W, NONE) && KEY(A, NONE) && KEY(S, NONE) && KEY(D, NONE)))
-        return STATE_SPRINT_END_ARCHER;
+        return STATE_SPRINT_END_QANDA;
 
     return STATE_END;
 }

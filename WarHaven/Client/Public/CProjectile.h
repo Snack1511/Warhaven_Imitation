@@ -76,7 +76,9 @@ protected:
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
 		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount);
 	HRESULT	SetUp_Projectile(wstring wstrModelFilePath);
-	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType); // 필요하다면 가상함수.
+	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType); 
+	HRESULT	SetUp_Collider(COL_GROUP_CLIENT eColType, _float fRadian);
+
 
 protected:
 	virtual void My_Tick() override;

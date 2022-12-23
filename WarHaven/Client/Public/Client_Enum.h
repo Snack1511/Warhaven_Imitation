@@ -851,7 +851,6 @@ namespace Client
 			/* Base_R */
 			STATE_IDLE_QANDA,
 			STATE_WALK_QANDA,
-			STATE_RUNBEGIN_QANDA,
 			STATE_RUN_QANDA,
 
 			STATE_JUMP_QANDA,

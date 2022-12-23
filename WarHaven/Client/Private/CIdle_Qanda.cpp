@@ -14,6 +14,7 @@
 
 #include "UsefulHeaders.h"
 
+
 CIdle_Qanda::CIdle_Qanda()
 {
 }
@@ -42,8 +43,8 @@ HRESULT CIdle_Qanda::Initialize()
   //  __super::Initialize();
 
     m_eAnimType = ANIM_BASE_R;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 11;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_IDLE_ARCHER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_iAnimIndex = 1;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_eStateType = STATE_IDLE_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     
     // 선형 보간 시간
@@ -52,20 +53,18 @@ HRESULT CIdle_Qanda::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.f;
 
-    m_vecAdjState.push_back(STATE_WALK_ARCHER_R);
-    m_vecAdjState.push_back(STATE_RUNBEGIN_ARCHER_R);
+    m_vecAdjState.push_back(STATE_WALK_QANDA);
+    m_vecAdjState.push_back(STATE_RUN_QANDA);
 
-    m_vecAdjState.push_back(STATE_JUMP_ARCHER_R);
+    m_vecAdjState.push_back(STATE_JUMP_QANDA);
 
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_ARCHER);
+    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_QANDA);
+    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_SNIPING_QANDA);
 
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_ARCHER);
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_SNIPING_ARCHER);
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_POISION_ARCHER);
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_QANDA);
 
-    m_vecAdjState.push_back(STATE_GUARD_ARCHER);
-    m_vecAdjState.push_back(STATE_ATTACK_SWING_ARCHER);
+    m_vecAdjState.push_back(STATE_GUARD_QANDA);
+    m_vecAdjState.push_back(STATE_SHADOWSTEP_QANDA);
 
     Init_CommonState_Hero_Player();
 
@@ -75,7 +74,7 @@ HRESULT CIdle_Qanda::Initialize()
 void CIdle_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     /* Owner의 Animator Set Idle로 */
-    pOwner->Set_AnimWeaponIndex(0, m_fInterPolationTime, m_fAnimSpeed);
+    pOwner->Set_AnimWeaponIndex(10, m_fInterPolationTime, m_fAnimSpeed);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -86,7 +85,7 @@ STATE_TYPE CIdle_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CIdle_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+
 }
 
 STATE_TYPE CIdle_Qanda::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

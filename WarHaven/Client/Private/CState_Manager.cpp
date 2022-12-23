@@ -426,7 +426,6 @@
 
 #include "CIdle_Qanda.h"
 #include "CWalk_Qanda.h"
-#include "CRun_Qanda_Begin.h"
 #include "CRun_Qanda.h"
 #include "CJump_Qanda.h"
 #include "CJump_Archer_Fall_Qanda.h"
@@ -442,9 +441,9 @@
 
 
 // 스킬, 평타
-//#include "CPaladin_ShieldWall_Begin.h"
-//#include "CPaladin_ShieldWall_Loop.h"
-//#include "CPaladin_ShieldWall_End.h"
+#include "CQanda_Attack_Begin.h"
+#include "CQanda_Aiming.h"
+#include "CQanda_Shoot.h"
 //
 //#include "CPaladin_ShieldWall_Begin.h"
 //#include "CPaladin_ShieldWall_Loop.h"
@@ -1422,9 +1421,6 @@ void CState_Manager::Qanda_State()
 	/* Walk */
 	m_arrStates[STATE_WALK_QANDA] = CWalk_Qanda::Create();
 
-	/* RunBegin */
-	m_arrStates[STATE_RUNBEGIN_QANDA] = CRun_Qanda_Begin::Create();
-
 	/* Run */
 	m_arrStates[STATE_RUN_QANDA] = CRun_Qanda::Create();
 
@@ -1446,14 +1442,15 @@ void CState_Manager::Qanda_State()
 
 	m_arrStates[STATE_SPRINT_JUMP_QANDA] = CSprint_Jump_Qanda::Create();
 
+	m_arrStates[STATE_ATTACK_BEGIN_QANDA] = CQanda_Attack_Begin::Create(); 
+	m_arrStates[STATE_ATTACK_AIMING_QANDA] = CQanda_Aiming::Create();
+	m_arrStates[STATE_ATTACK_SHOOT_QANDA] = CQanda_Shoot::Create();
 
-	m_arrStates[STATE_ATTACK_AIMING_QANDA] = CValkyrie_Attack_HorizontalUp_L::Create();
-	m_arrStates[STATE_ATTACK_BEGIN_QANDA] = CValkyrie_Attack_HorizontalMiddle_L::Create();
-	m_arrStates[STATE_ATTACK_SHOOT_QANDA] = CValkyrie_Attack_HorizontalDown_L::Create();
-
-	m_arrStates[STATE_ATTACK_AIMING_SNIPING_QANDA] = CValkyrie_Attack_HorizontalUp_R::Create();
-	m_arrStates[STATE_ATTACK_BEGIN_SNIPING_QANDA] = CValkyrie_Attack_HorizontalMiddle_R::Create();
-	m_arrStates[STATE_ATTACK_SHOOT_SNIPING_QANDA] = CValkyrie_Attack_HorizontalDown_R::Create();
+	// 수정ㄱㄱ
+	m_arrStates[STATE_ATTACK_BEGIN_SNIPING_QANDA] = CState_Combat_Attack_Archer_Aiming_Poison::Create();
+	m_arrStates[STATE_ATTACK_AIMING_SNIPING_QANDA] = CState_Combat_Attack_Archer_Aiming_Poison::Create();
+	m_arrStates[STATE_ATTACK_SHOOT_SNIPING_QANDA] = CState_Combat_Attack_Archer_Aiming_Poison::Create();
+	//
 
 	m_arrStates[STATE_ATTACK_CANCEL_QANDA] = CGuard_Cancel_Valkyrie::Create();
 

@@ -1276,6 +1276,16 @@ void CUnit::Set_AnimWeaponFrame(_uint iChangeFrame)
 	GET_COMPONENT_FROM(m_pAnimWeapon, CAnimator)->Set_CurFrame(iChangeFrame);
 }
 
+_float4x4& CUnit::Use_OwnerBoneOffset()
+{
+	_float4x4 vMatrix = XMMatrixIdentity();
+
+	if (!m_pAnimWeapon)
+		return vMatrix;
+
+	return m_pAnimWeapon->Use_OwnerBoneOffset();
+}
+
 
 
 void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void* pHitInfo)

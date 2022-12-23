@@ -20,8 +20,8 @@ CJump_Archer_Fall_Qanda::~CJump_Archer_Fall_Qanda()
 HRESULT CJump_Archer_Fall_Qanda::Initialize()
 {
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
-    m_iAnimIndex = 10;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_JUMPFALL_ARCHER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_eStateType = STATE_JUMPFALL_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     m_iStateChangeKeyFrame = 0;
@@ -37,10 +37,10 @@ HRESULT CJump_Archer_Fall_Qanda::Initialize()
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     //m_vecAdjState.push_back(STATE_IDLE_ARCHER);
 
-    m_vecAdjState.push_back(STATE_JUMP_LAND_ARCHER_R);
+    m_vecAdjState.push_back(STATE_JUMP_LAND_QANDA);
     m_vecAdjState.push_back(STATE_ATTACK_BEGIN_ARCHER);
 
-  /*  m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_R);
+  /*  m_vecAdjState.push_back(STATE_ATTACK_STING_QANDA);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
@@ -69,7 +69,7 @@ CJump_Archer_Fall_Qanda* CJump_Archer_Fall_Qanda::Create()
 
 void CJump_Archer_Fall_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    if (ePrevType == STATE_JUMP_ARCHER_R)
+    if (ePrevType == STATE_JUMP_QANDA)
         m_fInterPolationTime = 0.05f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -79,7 +79,7 @@ STATE_TYPE CJump_Archer_Fall_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     // 땅에 닿았을 시 
     if (!pOwner->Get_PhysicsCom()->Get_Physics().bAir)
-        return STATE_JUMP_LAND_ARCHER_R;
+        return STATE_JUMP_LAND_QANDA;
 
     return __super::Tick(pOwner, pAnimator);
 }

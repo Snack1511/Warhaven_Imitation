@@ -21,6 +21,8 @@
 #include "CDefaultArrow.h"
 #include "CPurpleArrow.h"
 #include "CSnipeArrow.h"
+#include "CQandaMeteor.h"
+#include "CQandaCrow.h"
 
 #include "CCannonBall.h"
 
@@ -49,6 +51,11 @@ HRESULT CEffects_Factory::Initialize()
 	if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CPurpleArrow::Create(), HASHCODE(CPurpleArrow))))
 		return E_FAIL;
 
+	if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CQandaCrow::Create(), HASHCODE(CQandaCrow))))
+		return E_FAIL;
+
+	if (FAILED(GAMEINSTANCE->Add_GameObject_Prototype(CQandaMeteor::Create(), HASHCODE(CQandaMeteor))))
+		return E_FAIL;
 
 	if (FAILED(SetUp_StoneParticles()))
 		return E_FAIL;

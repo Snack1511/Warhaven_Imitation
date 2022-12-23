@@ -33,8 +33,8 @@ HRESULT CJump_Qanda::Initialize()
 {
 
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
-    m_iAnimIndex = 12;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_JUMP_ARCHER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_iAnimIndex = 3;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_eStateType = STATE_JUMP_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     m_iStateChangeKeyFrame = 0;
@@ -58,28 +58,28 @@ HRESULT CJump_Qanda::Initialize()
     //m_vecAdjState.push_back(STATE_DASH);
     //m_vecAdjState.push_back(STATE_WALK);
 
-    m_vecAdjState.push_back(STATE_JUMPFALL_ARCHER_R);
-    m_vecAdjState.push_back(STATE_JUMP_LAND_ARCHER_R);
+    m_vecAdjState.push_back(STATE_JUMPFALL_QANDA);
+    m_vecAdjState.push_back(STATE_JUMP_LAND_QANDA);
 
-   /* m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_R);
+   /* m_vecAdjState.push_back(STATE_ATTACK_STING_QANDA);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
     m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);*/
 
 
-	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 13;
-    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 14;
-    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 15;
-    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 16;
+	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 3;
+    m_iDirectionAnimIndex[STATE_DIRECTION_N] = 4;
+    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 5;
+    m_iDirectionAnimIndex[STATE_DIRECTION_W] = 6;
 
-    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 14;
-    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 14;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 15;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 15;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 4;
+    m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 4;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 5;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 5;
 
 
-	iPlaceJumpAnimIndex = 12;
+	iPlaceJumpAnimIndex = 2;
 
 
     return S_OK;

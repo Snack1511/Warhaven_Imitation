@@ -135,6 +135,12 @@ STATE_TYPE CState_Combat_SkillQ_Paladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator
 	if (m_fTimeAcc > 2.5f)
 		return AI_STATE_COMBAT_RUSH_END_PALADIN;
 
+	CTransform* pMyTransform = pOwner->Get_Transform();
+	CPhysics* m_pPhysics = pOwner->Get_PhysicsCom();
+
+	pMyTransform->Set_LerpLook(m_vAIRandLook, m_fMyMaxLerp);
+	m_pPhysics->Set_Dir(m_vAIRandLook);
+
 	DoMove_AI_NoTarget(pOwner, pAnimator);
 
 	return CState_Combat_SkillQ::Tick(pOwner, pAnimator);

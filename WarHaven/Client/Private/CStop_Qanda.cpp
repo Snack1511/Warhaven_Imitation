@@ -34,32 +34,33 @@ CStop_Qanda* CStop_Qanda::Create()
 HRESULT CStop_Qanda::Initialize()
 {
 	m_eAnimType = ANIM_BASE_R;            // 애니메이션의 메쉬타입
-	m_iAnimIndex = 32;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-	m_eStateType = STATE_STOP_ARCHER_R;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+	m_iAnimIndex = 14;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+	m_eStateType = STATE_STOP_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-	m_vecAdjState.push_back(STATE_IDLE_ARCHER_R);
-	m_vecAdjState.push_back(STATE_WALK_ARCHER_R);
-	m_vecAdjState.push_back(STATE_RUNBEGIN_ARCHER_R);
+	m_vecAdjState.push_back(STATE_IDLE_QANDA);
+	m_vecAdjState.push_back(STATE_WALK_QANDA);
+	m_vecAdjState.push_back(STATE_RUN_QANDA);
+	m_vecAdjState.push_back(STATE_GUARD_QANDA);
 
 	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
 	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
 	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_R);
+	//m_vecAdjState.push_back(STATE_ATTACK_STING_QANDA);
 
 	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
-	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 33;
+	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 13;
 
-	m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 34;
-	m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 34;
-	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 34;
+	m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 14;
+	m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 14;
+	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 14;
 
-	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
-	m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
-	m_iDirectionAnimIndex[STATE_DIRECTION_S] = 35;
+	m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 15;
+	m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 15;
+	m_iDirectionAnimIndex[STATE_DIRECTION_S] = 15;
 
-	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 36;
+	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 16;
 
 
 	return S_OK;

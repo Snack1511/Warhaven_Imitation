@@ -31,8 +31,8 @@ CSprint_Jump_Fall_Qanda* CSprint_Jump_Fall_Qanda::Create()
 HRESULT CSprint_Jump_Fall_Qanda::Initialize()
 {
     m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
-    m_iAnimIndex = 49;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_SPRINT_JUMPFALL_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_iAnimIndex = 34;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_eStateType = STATE_SPRINT_JUMPFALL_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     m_iStateChangeKeyFrame = 0;
 
@@ -43,8 +43,8 @@ HRESULT CSprint_Jump_Fall_Qanda::Initialize()
     m_fAnimSpeed = 2.f;
 
 
-    m_vecAdjState.push_back(STATE_JUMP_LAND_ARCHER_R);
-    m_vecAdjState.push_back(STATE_SPRINT_END_ARCHER);
+    m_vecAdjState.push_back(STATE_JUMP_LAND_QANDA);
+    m_vecAdjState.push_back(STATE_SPRINT_END_QANDA);
 
 
     return S_OK;
@@ -79,7 +79,7 @@ void CSprint_Jump_Fall_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CSprint_Jump_Fall_Qanda::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* ARCHER가 Sprint로 오는 조건
+    /* QANDA가 Sprint로 오는 조건
     1. 쉬프트를 누른 상태에서 점프한다.
     */
     if (pAnimator->Is_CurAnimFinished())

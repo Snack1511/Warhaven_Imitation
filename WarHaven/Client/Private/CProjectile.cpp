@@ -185,7 +185,6 @@ HRESULT CProjectile::Start()
 
 void CProjectile::On_ShootProjectile()
 {
-
 	ENABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 
 	On_ChangePhase(eSHOOT);
@@ -362,6 +361,23 @@ HRESULT CProjectile::SetUp_Colliders(COL_GROUP_CLIENT eColType)
 
 	return S_OK;
 }
+
+HRESULT	CProjectile::SetUp_Collider(COL_GROUP_CLIENT eColType, _float fRadian)
+{
+	_float4 vOffsetPos = ZERO_VECTOR;
+
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadian, eColType, vOffsetPos, DEFAULT_TRANS_MATRIX);
+
+	Add_Component(pCollider);
+
+	m_pCollider = pCollider;
+
+	if (!m_pCollider)
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 void CProjectile::My_Tick()
 {
