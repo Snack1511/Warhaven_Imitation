@@ -160,7 +160,7 @@ void CCannonBall::OnEnable()
 {
 	__super::OnEnable();
 	
-
+	Create_Light(this, ZERO_VECTOR, 20.f, 0.f, 1.f, 0.f, 15.f, RGB(255, 0, 0), true);
 }
 
 void CCannonBall::OnDisable()
@@ -168,6 +168,30 @@ void CCannonBall::OnDisable()
 	__super::OnDisable();
 	Safe_release(m_pActor);
 
+}
+
+void CCannonBall::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse, _bool bLoop)
+{
+	LIGHTDESC			LightDesc;
+
+	LightDesc.eType = tagLightDesc::TYPE_POINT;
+
+	LightDesc.pOwner = pOwner;
+	LightDesc.vOffset = vOffset;
+	LightDesc.fRange = fRange;
+	LightDesc.fRandomRange = fRandomRange;
+
+	LightDesc.fLightFadeInTime = fFadeInTime;
+	LightDesc.fLightTime = fDuration;
+	LightDesc.fLightFadeOutTime = fFadeOutTime;
+
+	LightDesc.vTargetDiffuse = Diffuse;
+	LightDesc.vTargetAmbient = _float4(0.2f, 0.2f, 0.2f);
+	LightDesc.vTargetSpecular = _float4(1.f, 1.f, 1.f);
+
+	LightDesc.bLoop = bLoop;
+
+	GAMEINSTANCE->Add_Light(LightDesc);
 }
 
 void CCannonBall::On_Boom()
