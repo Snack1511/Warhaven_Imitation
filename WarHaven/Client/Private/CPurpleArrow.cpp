@@ -38,8 +38,6 @@ HRESULT CPurpleArrow::Start()
 {
 	__super::Start();
 
-	m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest", this, m_pTransform->Get_World(WORLD_POS));
-
 	CColorController::COLORDESC tColorDesc;
 	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
@@ -90,14 +88,13 @@ HRESULT CPurpleArrow::Initialize_Prototype()
     return CProjectile::Initialize_Prototype();
 }
 
-
 void CPurpleArrow::OnEnable()
 {
 	__super::OnEnable();
 
-	if(m_Test.empty())
-		m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest", this, m_pTransform->Get_World(WORLD_POS));
-
+	m_bPoison = true;
+	m_bAddiction = true;
+	m_Addiction.clear();
 }
 
 
@@ -105,12 +102,8 @@ void CPurpleArrow::OnDisable()
 {
 	__super::OnDisable();
 
-	for (auto& elem : m_Test)
-	{
-		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
-	}
+	Clear_Addiction();
 
-	m_Test.clear();
 	m_iTickCnt = 0;
 }
 
@@ -138,16 +131,22 @@ HRESULT CPurpleArrow::SetUp_Colliders(COL_GROUP_CLIENT eColType)
 	if (!m_pCollider)
 		return E_FAIL;
 
-
-
-
-
 	return S_OK;
 }
 
 void CPurpleArrow::My_Tick()
 {
 	__super::My_Tick();
+
+	if (m_bPoison)
+	{
+		if (m_Test.empty())
+		{
+			m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest",
+				this, m_pTransform->Get_World(WORLD_POS)); //OnEnable 에서 생성시 마지막 위치에 이펙트가 보임
+		}
+		m_bPoison = false;
+	}
 	
 	if (m_eCurPhase == eSTICK)
 	{
@@ -170,22 +169,24 @@ void CPurpleArrow::My_Tick()
 				pUnit->On_PlusHp(m_fDamage * 5.f, m_pOwnerUnit, false);
 				pUnit->Enter_State(pUnit->Get_HitType().eGroggyState, &tHitInfo);
 				
-		/*		if (pUnit->Get_Status().fHP < 0.f)
+				if (pUnit->Get_Status().fHP <= 0.f)
 					pUnit->On_Die();
-		*/		
+				
 				DISABLE_GAMEOBJECT(this);
 			}
 				
 			else
 			{
 				pUnit->On_PlusHp(m_fDamage, m_pOwnerUnit, false, 9999);
+
+				AddictionEffect(pUnit);
 				
-				if (pUnit->Get_Status().fHP < 0.f)
+				if (pUnit->Get_Status().fHP <= 0.f)
 				{
-					//pUnit->On_Die();
+					pUnit->On_Die();
 					DISABLE_GAMEOBJECT(this);
 				}
-				
+
 				++m_iTickCnt;
 				m_fCurPoisonTime = 0.f;
 			}
@@ -203,4 +204,38 @@ void CPurpleArrow::Set_ColliderType(eTEAM_TYPE eTeamType)
 		m_pCollider->Set_ColIndex(COL_BLUEGUARDBREAK);
 	else
 		m_pCollider->Set_ColIndex(COL_REDGUARDBREAK);
+}
+
+void CPurpleArrow::AddictionEffect(CUnit* pUnit)
+{
+
+	if (m_bAddiction)
+	{
+		for (auto& elem : m_Test)
+		{
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut(); //기존 독이펙트 제거 후
+		}
+		m_Test.clear();
+	
+
+		m_Addiction = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Addiction",
+			pUnit, pUnit->Get_Transform()->Get_World(WORLD_POS)); //중독이펙트 
+
+		m_bAddiction = false;
+	}
+}
+
+void CPurpleArrow::Clear_Addiction()
+{
+	for (auto& elem : m_Addiction)
+	{
+		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+	}
+	m_Addiction.clear();
+
+	for (auto& elem : m_Test)
+	{
+		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+	}
+	m_Test.clear();
 }

@@ -28,7 +28,9 @@ private:
 
 private:
 	list<CGameObject*> m_Test;
-	_bool m_bShot = false;
+	list<CGameObject*> m_Addiction;
+	_bool m_bPoison = true;
+	_bool m_bAddiction = true;
 	_float m_fTick = 0.f;
 
 	_float m_fCurPoisonTime = 0.f;
@@ -39,6 +41,8 @@ private:
 
 private:
 	virtual void Set_ColliderType(eTEAM_TYPE eTeamType);
+	void AddictionEffect(CUnit* pUnit);
+	void Clear_Addiction();
 
 };
 
