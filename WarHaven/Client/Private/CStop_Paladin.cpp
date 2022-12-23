@@ -26,8 +26,7 @@ HRESULT CStop_Paladin::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PALADIN);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PALADIN);
 
-	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
-	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+	Init_CommonState_Player();
 
 
 	m_iStateChangeKeyFrame = 0;

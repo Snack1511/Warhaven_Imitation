@@ -59,6 +59,7 @@ HRESULT CHit_Player::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_R);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
+    Init_CommonState_Player();
 
     m_fMyAccel = 1.f;
     m_fMyMaxLerp = 10.f;

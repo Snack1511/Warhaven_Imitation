@@ -51,7 +51,7 @@ HRESULT CGuard_Loop_Archer::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_SWING_ARCHER);
 
-	
+	Init_CommonState_Player();
 
 	// 애니메이션의 전체 속도를 올려준다.
 	m_fAnimSpeed = 2.f;

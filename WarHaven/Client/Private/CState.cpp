@@ -114,6 +114,35 @@ void CState::Re_Enter(CUnit* pOwner, CAnimator* pAnimator, _float fInterpolation
     Enter(pOwner, pAnimator, m_eStateType);
 }
 
+void CState::Init_CommonState_Player()
+{
+	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_CANNON_PLAYER);
+	//m_vecAdjState.push_back(STATE_TRANSFORM);
+}
+
+void CState::Init_CommonState_Hero_Player()
+{
+	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+	m_vecAdjState.push_back(STATE_CANNON_PLAYER);
+	//m_vecAdjState.push_back(STATE_TRANSFORM);
+}
+
+void CState::Init_CommonState_AI()
+{
+	//m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+	//m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	//m_vecAdjState.push_back(STATE_CANNON_PLAYER);
+	//m_vecAdjState.push_back(STATE_TRANSFORM);
+}
+
+
+void CState::Init_CommonState_Hero_AI()
+{
+
+}
+
 void CState::Hit_GroundEffect(CUnit* pOwner)
 {
 	pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);

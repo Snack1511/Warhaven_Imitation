@@ -27,7 +27,7 @@ HRESULT CRun_Valkyrie::Initialize()
 	m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
 
-	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+	Init_CommonState_Hero_Player();
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.8f;

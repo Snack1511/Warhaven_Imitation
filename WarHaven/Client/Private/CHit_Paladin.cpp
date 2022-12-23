@@ -61,6 +61,7 @@ HRESULT CHit_Paladin::Initialize()
     m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
+    Init_CommonState_Player();
 
     m_fMyAccel = 1.f;
     m_fMyMaxLerp = 10.f;

@@ -67,8 +67,7 @@ HRESULT CIdle_Archer_R::Initialize()
     m_vecAdjState.push_back(STATE_GUARD_ARCHER);
     m_vecAdjState.push_back(STATE_ATTACK_SWING_ARCHER);
 
-    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
-    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+    Init_CommonState_Player();
 
     return S_OK;
 }

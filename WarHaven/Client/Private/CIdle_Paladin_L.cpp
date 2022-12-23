@@ -72,8 +72,7 @@ HRESULT CIdle_Paladin_L::Initialize()
     m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
-    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
-    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+    Init_CommonState_Player();
 
 
     return S_OK;

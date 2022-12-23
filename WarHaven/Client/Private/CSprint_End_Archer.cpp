@@ -57,8 +57,7 @@ HRESULT CSprint_End_Archer::Initialize()
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
 
-    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
-    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+    Init_CommonState_Player();
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMaxSpeed = 10.f;

@@ -58,6 +58,7 @@ HRESULT CJump_Paladin_Land_R::Initialize()
     m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
+    Init_CommonState_Player();
 
     return S_OK;
 }

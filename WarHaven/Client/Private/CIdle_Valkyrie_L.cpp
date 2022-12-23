@@ -77,7 +77,7 @@ HRESULT CIdle_Valkyrie_L::Initialize()
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
-    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+    Init_CommonState_Hero_Player();
 
     return S_OK;
 }

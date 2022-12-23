@@ -30,9 +30,7 @@ HRESULT CRun_Archer::Initialize()
 
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_ARCHER);
 
-	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
-	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
-	m_vecAdjState.push_back(STATE_CANNON_PLAYER);
+	Init_CommonState_Player();
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;

@@ -569,7 +569,7 @@ HRESULT CUnit_Archer::Start()
 {
 	__super::Start();
 
-	ENABLE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+	ENABLE_GAMEOBJECT(m_pAnimWeapon);
 
 	if (m_pUI_Trail)
 	{

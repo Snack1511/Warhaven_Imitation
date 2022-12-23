@@ -33,7 +33,8 @@ private:
 	void Paladin_State();
 
 	void Valkyrie_State();
-	
+	void Qanda_State();
+
 	void Warrior_SandBagState();
 	
 	

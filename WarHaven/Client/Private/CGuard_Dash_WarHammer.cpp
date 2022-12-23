@@ -67,6 +67,8 @@ HRESULT CGuard_Dash_WarHammer::Initialize()
 
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_WARHAMMER);
 
+	Init_CommonState_Player();
+
 
     return S_OK;
 }

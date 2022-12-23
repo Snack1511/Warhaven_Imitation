@@ -53,6 +53,8 @@ HRESULT CGuard_End_Paladin::Initialize()
     m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
+    Init_CommonState_Player();
+
     return S_OK;
 }
 

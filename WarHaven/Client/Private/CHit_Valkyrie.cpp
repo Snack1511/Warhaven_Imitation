@@ -56,6 +56,7 @@ HRESULT CHit_Valkyrie::Initialize()
     //m_vecAdjState.push_back(STATE_ATTACK_STING_VALKYRIE_R);
     //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_R);
 
+    Init_CommonState_Hero_Player();
 
     m_fMyAccel = 1.f;
     m_fMyMaxLerp = 10.f;

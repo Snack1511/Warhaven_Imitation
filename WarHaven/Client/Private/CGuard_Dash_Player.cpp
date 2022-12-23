@@ -64,6 +64,8 @@ HRESULT CGuard_Dash_Player::Initialize()
 	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
 
+	Init_CommonState_Player();
+
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 2;
 	m_iDirectionAnimIndex[STATE_DIRECTION_W] = 3;
 

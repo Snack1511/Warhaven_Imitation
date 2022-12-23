@@ -31,7 +31,7 @@ HRESULT CStop_Valkyrie::Initialize()
 	m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 
-	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+	Init_CommonState_Hero_Player();
 
 	m_iStateChangeKeyFrame = 0;
 

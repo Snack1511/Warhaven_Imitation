@@ -185,9 +185,7 @@ HRESULT CProjectile::Start()
 
 void CProjectile::On_ShootProjectile()
 {
-	_float4 vLook = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK);
 
-	vLook = m_pTransform->Get_World(WORLD_RIGHT);
 	ENABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 
 	On_ChangePhase(eSHOOT);

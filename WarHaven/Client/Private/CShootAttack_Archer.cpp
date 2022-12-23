@@ -165,9 +165,7 @@ void CShootAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 	_bool bBounce = false;
 
-	if (ePrevType == STATE_ATTACK_BEGIN_POISION_ARCHER ||
-		ePrevType == STATE_ATTACK_BEGIN_SNIPING_ARCHER ||
-		ePrevType == STATE_ATTACK_BEGIN_ARCHER)
+	if (ePrevType == STATE_BOUNCE_ARCHER)
 	{
 		bBounce = true;
 		m_fInterPolationTime = 0.f;

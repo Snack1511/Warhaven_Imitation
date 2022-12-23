@@ -106,7 +106,12 @@ _float4 CResource_Material::Check_FileName(string strName)
 
 	//}
 
-	
+	else if (strName == "MI_Hair_Qanda")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Qanda_Hair01_B.dds";
+
+	}
 
 	/* Warrior */
 	else if (strName == "MI_Warrior0001_Beard02_A00")

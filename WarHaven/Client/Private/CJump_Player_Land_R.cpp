@@ -61,6 +61,8 @@ HRESULT CJump_Player_Land_R::Initialize()
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
+    Init_CommonState_Player();
+
 
     return S_OK;
 }

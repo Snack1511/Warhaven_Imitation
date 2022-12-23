@@ -55,7 +55,7 @@ HRESULT CJump_Paladin_Land_L::Initialize()
     m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
 
-
+    Init_CommonState_Player();
     
 
 

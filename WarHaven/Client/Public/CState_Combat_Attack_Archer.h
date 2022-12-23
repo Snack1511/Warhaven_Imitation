@@ -33,7 +33,7 @@ protected:
 
 
 protected:
-	CHierarchyNode* m_pCoreBone = nullptr;
+	//CHierarchyNode* m_pCoreBone = nullptr;
 
 protected:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
