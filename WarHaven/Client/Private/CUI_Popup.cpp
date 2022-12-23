@@ -192,7 +192,7 @@ void CUI_Popup::Create_KillPopup()
 
 		m_pKillPopup[i]->Set_FadeDesc(m_fFadeTime, m_fFadeTime, m_fEnableTime, true);
 
-		m_pKillPopup[i]->Set_UIShaderFlag(SH_UI_BLOOM);
+		m_pKillPopup[i]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
 
 		switch (i)
 		{
