@@ -877,6 +877,9 @@ void CPlayer::On_RealDie()
 	}
 	else
 	{
+		if (!Get_Team())
+			return;
+
 		if (Get_Team()->IsMainPlayerTeam())
 		{
 			m_pUnitHUD->Enable_RevivalUI();
@@ -1002,19 +1005,19 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILLELITE);
 		}
-		else if (m_tKdaStat.iKillStreak == 1)
+		else if (m_tKdaStat.iKillStreak == 2)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL);
 		}
-		else if (m_tKdaStat.iKillStreak == 2)
+		else if (m_tKdaStat.iKillStreak == 3)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL2);
 		}
-		else if (m_tKdaStat.iKillStreak == 3)
+		else if (m_tKdaStat.iKillStreak == 4)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL3);
 		}
-		else if (m_tKdaStat.iKillStreak >= 4)
+		else if (m_tKdaStat.iKillStreak >= 5)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL4);
 		}

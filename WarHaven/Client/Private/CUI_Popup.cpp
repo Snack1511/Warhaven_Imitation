@@ -34,13 +34,13 @@ void CUI_Popup::Enable_Popup(ePOPUP_TYPE ePopupType)
 		Enable_ConquestPopup(L"거점 점령", ePopupType);
 		break;
 	case Client::CUI_Popup::eKILL:
-		Enable_KillPopup(L"적 처치", ePopupType);
-		break;
-	case Client::CUI_Popup::eKILL2:
 		Enable_KillPopup(L"2연속 처치", ePopupType);
 		break;
-	case Client::CUI_Popup::eKILL3:
+	case Client::CUI_Popup::eKILL2:
 		Enable_KillPopup(L"3연속 처치", ePopupType);
+		break;
+	case Client::CUI_Popup::eKILL3:
+		Enable_KillPopup(L"4연속 처치", ePopupType);
 		break;
 	case Client::CUI_Popup::eKILL4:
 		Enable_KillPopup(L"전장의 화신", ePopupType);
