@@ -190,15 +190,18 @@ void CUnit::Unit_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColTyp
 		if (pOtherObj == m_pOwnerPlayer)
 			return;
 
+		// UI Off
+		if (m_bIsMainPlayer)
+		{
+			if (!m_pAdjRevivalPlayer)
+				return;
+
+			m_pAdjRevivalPlayer->Get_UnitHUD()->Get_ReviveUI()->Set_ReviveIcon(0);
+		}
+
 		if (static_cast<CPlayer*>(pOtherObj)->Get_Team() == m_pOwnerPlayer->Get_Team())
 		{
 			m_pAdjRevivalPlayer = nullptr;
-
-			// UI Off
-			if (m_bIsMainPlayer)
-			{
-				m_pAdjRevivalPlayer->Get_UnitHUD()->Get_ReviveUI()->Set_ReviveIcon(0);
-			}
 		}
 
 	}
