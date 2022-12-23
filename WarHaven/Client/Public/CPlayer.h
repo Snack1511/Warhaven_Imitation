@@ -293,7 +293,7 @@ private:
 
 private:
 	_float	m_fKillStreakTimeAcc = 0.f;
-	_float	m_fKillStreakTime = 500.f;
+	_float	m_fKillStreakTime = 5.f;
 
 private:
 	class CUI_Trail* m_pUI_Trail = nullptr;
