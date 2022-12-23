@@ -58,6 +58,7 @@ void CPlayerInfo::Set_CustomHead(CLASS_TYPE eClassType, eCUSTOM_HEAD eHeadEnum)
 		Set_CustomHead_Fiona(eHeadEnum);
 		break;
 	case Client::QANDA:
+		Set_CustomHead_Qanda(eHeadEnum);
 		break;
 	case Client::HOEDT:
 		break;
@@ -98,6 +99,7 @@ void CPlayerInfo::Set_CustomBody(CLASS_TYPE eClassType, eCUSTOM_BODY eBodyEnum)
 		Set_CustomBody_Fiona(eBodyEnum);
 		break;
 	case Client::QANDA:
+		Set_CustomBody_Qanda(eBodyEnum);
 		break;
 	case Client::HOEDT:
 		break;
@@ -135,6 +137,7 @@ void CPlayerInfo::Set_CustomWeapon(CLASS_TYPE eClassType, eCUSTOM_WEAPON eWeapon
 		Set_CustomWeapon_Fiona(eWeaponEnum);
 		break;
 	case Client::QANDA:
+		Set_CustomWeapon_Qanda(eWeaponEnum);
 		break;
 	case Client::HOEDT:
 		break;
@@ -476,6 +479,61 @@ void CPlayerInfo::Set_CustomWeapon_Fiona(eCUSTOM_WEAPON eWeaponEnum)
 		break;
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
 		m_tPlayerSetUpData.wstrWeaponMeshPath[FIONA] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00_30_4.fbx";
+		break;
+
+	default:
+		break;
+	}
+}
+
+void CPlayerInfo::Set_CustomHead_Qanda(eCUSTOM_HEAD eHeadEnum)
+{
+	switch (eHeadEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[QANDA] = L"../bin/resources/meshes/characters/Qanda/head/SK_Qanda0001_Helmet_A00_20.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/head/SK_Fiona0004_Helmet_A00_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[QANDA] = L"../bin/resources/meshes/characters/Qanda/head/SK_Qanda0001_Helmet_A00_20.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
+
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/head/SK_Fiona0004_Helmet_A00_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[QANDA] = L"../bin/resources/meshes/characters/Qanda/head/SK_Qanda0001_Helmet_A00_20.fbx";
+		break;
+	default:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[QANDA] = L"../bin/resources/meshes/characters/Qanda/head/SK_Qanda0001_Helmet_A00_20.fbx";
+		break;
+	}
+}
+void CPlayerInfo::Set_CustomBody_Qanda(eCUSTOM_BODY eBodyEnum)
+{
+	switch (eBodyEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
+		m_tPlayerSetUpData.wstrBodyMeshPath[QANDA] = L"../bin/resources/meshes/characters/Qanda/body/SK_Qanda0001_Body_A00_20.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
+		//m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0004_Body_A00_50.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[QANDA] = L"../bin/resources/meshes/characters/Qanda/body/SK_Qanda0001_Body_A00_20.fbx";
+		break;
+
+	default:
+		m_tPlayerSetUpData.wstrBodyMeshPath[QANDA] = L"../bin/resources/meshes/characters/Qanda/body/SK_Qanda0001_Body_A00_20.fbx";
+		break;
+	}
+
+}
+void CPlayerInfo::Set_CustomWeapon_Qanda(eCUSTOM_WEAPON eWeaponEnum)
+{
+	switch (eWeaponEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eDEFAULT:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00_30_4.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00_30_4.fbx";
 		break;
 
 	default:

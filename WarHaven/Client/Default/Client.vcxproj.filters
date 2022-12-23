@@ -3142,6 +3142,9 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall\CannonBoom">
       <UniqueIdentifier>{33fd186f-35b5-4f47-b94a-5f03fd7cd9b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Qanda">
+      <UniqueIdentifier>{78c42618-de01-4adb-94ec-54f53a7c0bb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5664,6 +5667,9 @@
     <ClInclude Include="..\public\CCannonBoom.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\CannonBall\CannonBoom</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Qanda.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Qanda</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8166,6 +8172,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Shoot_Archer.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\02. Attack\05. Archer\99. Parent\02. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Qanda.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Qanda</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

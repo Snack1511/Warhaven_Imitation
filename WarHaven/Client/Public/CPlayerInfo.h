@@ -32,7 +32,7 @@ return pInstance;\
 #define FIONA_TH
 #define PALADIN_TH
 #define ENGINEER_TH 
-
+#define Qanda_TH
 
 BEGIN(Client)
 
@@ -164,6 +164,10 @@ private:
 	void	Set_CustomHead_Fiona(eCUSTOM_HEAD eHeadEnum);
 	void	Set_CustomBody_Fiona(eCUSTOM_BODY eBodyEnum);
 	void	Set_CustomWeapon_Fiona(eCUSTOM_WEAPON eWeaponEnum);
+
+	void	Set_CustomHead_Qanda(eCUSTOM_HEAD eHeadEnum);
+	void	Set_CustomBody_Qanda(eCUSTOM_BODY eBodyEnum);
+	void	Set_CustomWeapon_Qanda(eCUSTOM_WEAPON eWeaponEnum);
 
 };
 
