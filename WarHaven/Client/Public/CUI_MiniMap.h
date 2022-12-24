@@ -33,10 +33,22 @@ private:
 	CUI_Object* m_pArrMiniMapPoint[Point_End][MP_End];
 
 private:
+	_float m_pPointOutlineScale = 20.f;
+	_float m_pPointGaugeScale = 15.f;
+	_float m_pPointTextScale = 25.f;
+
+	_float4 m_vColorOutline = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	_float4 m_vColorGauge = _float4(0.5f, 0.5f, 0.5f, 0.5f);
+
+	_float4 m_vColorBlue = _float4(0.1f, 0.6f, 1.f, 0.9f);
+	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.1f, 0.9f);
+
+private:
 	void Create_MiniMap();
 	void Create_MiniMapPoint();
 
 	void Init_MiniMap();
+	void Init_MiniMapPoint();
 };
 
 END
