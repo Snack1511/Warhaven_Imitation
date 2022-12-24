@@ -107,6 +107,15 @@ void CFunc_ObjectControl::Func_FBXList()
         {
             Add_HLOD();
         }
+        ImGui::SameLine();
+        if (ImGui::Button(u8"HLOD 비우기"))
+        {
+            for (auto& elem : m_pHLODList)
+            {
+                DELETE_GAMEOBJECT(elem);
+            }
+            m_pHLODList.clear();
+        }
         CImGui_Manager::Get_Instance()->On_ToolTip(u8"F7입력시 켜고 끌 수 있음");
     }
     ImGui::Spacing();
@@ -3092,11 +3101,6 @@ CStructure* CFunc_ObjectControl::Clone_Object(_float4 vObjectPosition, _float4 v
 
 void CFunc_ObjectControl::Add_HLOD()
 {
-    for (auto& elem : m_pHLODList)
-    {
-        DELETE_GAMEOBJECT(elem);
-    }
-    m_pHLODList.clear();
 
     _int NameIndex = 0;
     for (vector<string>::value_type& Value : m_vecSelectedMeshFilePath)

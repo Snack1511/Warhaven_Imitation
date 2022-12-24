@@ -347,21 +347,21 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 	{
 		/* 멀수록 Ratio가 강하게 */
 
-		if (vDepthDesc.y < 0.9f)
-		{
-			float		fMaxDepth = 0.15f;
+		//if (vDepthDesc.y < 0.9f)
+		//{
+		//	float		fMaxDepth = 0.15f;
 
-			float fRatio = saturate(vDepthDesc.y / fMaxDepth);
+		//	float fRatio = saturate(vDepthDesc.y / fMaxDepth);
 
 
-			//멀수록 강해짐
+		//	//멀수록 강해짐
 
-			vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
+		//	vector			vBlurDesc = g_BlurTexture.Sample(DefaultSampler, In.vTexUV);
 
-			Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
+		//	Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
 
-			//Out.vColor.xyz += (fRatio * 0.3f);
-		}
+		//	//Out.vColor.xyz += (fRatio * 0.3f);
+		//}
 
 	}
 

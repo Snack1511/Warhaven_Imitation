@@ -182,25 +182,12 @@ void CUI_HUD::Active_CharacterWindow()
 			Set_HUD(m_eCurClass);
 		}
 
-#ifdef _DEBUG
-
 		else if (KEY(T, TAP) && KEY(CTRL, HOLD))
 		{
 			CUser::Get_Instance()->Turn_HeroGaugeFire(false);
 			SetActive_HUD(false);
 			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
 		}
-
-#else
-
-		else if (KEY(T, TAP))
-		{
-			CUser::Get_Instance()->Turn_HeroGaugeFire(false);
-			SetActive_HUD(false);
-			m_pUI_CharacterWindow->SetActive_CharacterWindow(true);
-		}
-
-#endif
 
 	}
 }

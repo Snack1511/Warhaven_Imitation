@@ -40,7 +40,7 @@ HRESULT CMainApp::Initialize()
 #ifdef _DEBUG
 	ShowCursor(true);
 #else
-	ShowCursor(false);
+	//ShowCursor(false);
 #endif // _DEBUG
 
 

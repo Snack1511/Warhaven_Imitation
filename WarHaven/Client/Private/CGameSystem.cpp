@@ -177,26 +177,6 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		READY_GAMEOBJECT(pEnemy, GROUP_PLAYER);
 	}
 
-	CCannon* pCannon = CCannon::Create();
-	_float4 vPos = Find_Position("Paden_Trigger_C");
-	vPos.y -= 0.4f;
-	vPos.x += 5.5f;
-	pCannon->Get_Transform()->Set_World(WORLD_POS, vPos);
-	pCannon->Get_Transform()->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
-	vecReadyObjects.push_back(make_pair(pCannon, GROUP_PROP));
-
-	/*CDestructible* pDestructible = CDestructible::Create(
-		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
-		L"FishBarrelParticle",
-		L"WoodenHitParticle",
-		1
-	);
-	_float4 vPos = _float4(10, 0, 15);
-	pDestructible->Set_Position(vPos);
-	pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
-	vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));*/
-
-
 	SetUp_DefaultLight_BootCamp();
 
 	return S_OK;
