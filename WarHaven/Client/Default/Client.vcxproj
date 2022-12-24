@@ -760,6 +760,7 @@
     <ClInclude Include="..\Public\CUI_Interact.h" />
     <ClInclude Include="..\Public\CUI_KillLog.h" />
     <ClInclude Include="..\Public\CUI_KillName.h" />
+    <ClInclude Include="..\Public\CUI_MiniMap.h" />
     <ClInclude Include="..\Public\CUI_Oper.h" />
     <ClInclude Include="..\Public\CUI_Paden.h" />
     <ClInclude Include="..\Public\CUI_Popup.h" />
@@ -1601,6 +1602,7 @@
     <ClCompile Include="..\Private\CUI_Interact.cpp" />
     <ClCompile Include="..\Private\CUI_KillLog.cpp" />
     <ClCompile Include="..\Private\CUI_KillName.cpp" />
+    <ClCompile Include="..\Private\CUI_MiniMap.cpp" />
     <ClCompile Include="..\Private\CUI_Oper.cpp" />
     <ClCompile Include="..\Private\CUI_Paden.cpp" />
     <ClCompile Include="..\Private\CUI_Popup.cpp" />

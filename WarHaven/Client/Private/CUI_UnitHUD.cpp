@@ -198,7 +198,6 @@ void CUI_UnitHUD::My_Tick()
 			SetActive_UnitHP(true);
 		}
 	}
-
 }
 
 void CUI_UnitHUD::My_LateTick()

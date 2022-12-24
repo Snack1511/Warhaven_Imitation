@@ -163,6 +163,8 @@ void CUI_Oper::OnEnable()
 {
 	__super::OnEnable();
 
+	CUser::Get_Instance()->SetActive_MiniMap(false);
+
 	Return_SidePos();
 
 	SetActive_BG(true);
@@ -171,6 +173,8 @@ void CUI_Oper::OnEnable()
 void CUI_Oper::OnDisable()
 {
 	__super::OnDisable();
+
+	CUser::Get_Instance()->SetActive_MiniMap(true);
 
 	m_pRespawnBtn->SetActive(false);
 	for (auto iter : m_pOperList)

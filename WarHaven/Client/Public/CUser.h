@@ -35,6 +35,7 @@ class CUI_Oper;
 class CUI_Paden;
 class CUI_Revive;
 class CUI_Interact;
+class CUI_MiniMap;
 
 class CTeamConnector;
 
@@ -164,6 +165,8 @@ public:
 	void Enable_DamageFont(_uint eType, _float fDmg);
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
+	void SetActive_MiniMap(_bool value);
+
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
 	void Disable_RevivalUI();
@@ -215,6 +218,8 @@ private:
 	CUI_Animation* m_pFire = nullptr;
 	CUI_AbleHeroFire* m_pUVFire = nullptr;
 	CUI_Dead* m_pUI_Dead = nullptr;
+
+	CUI_MiniMap* m_pMiniMap = nullptr;
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;

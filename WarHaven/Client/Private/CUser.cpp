@@ -46,6 +46,7 @@
 #include "CUI_Revive.h"
 #include "CUI_UnitHUD.h"
 #include "CUI_Interact.h"
+#include "CUI_MiniMap.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -500,6 +501,14 @@ void CUser::On_EnterStageLevel()
 			CREATE_GAMEOBJECT(m_pInteractUI, GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pInteractUI);
 		}
+
+		if (!m_pMiniMap)
+		{
+			m_pMiniMap = CUI_MiniMap::Create();
+
+			CREATE_GAMEOBJECT(m_pMiniMap, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pMiniMap);
+		}
 	}
 
 	SetUp_BloodOverlay();
@@ -544,6 +553,9 @@ void CUser::On_ExitStageLevel()
 
 	if (m_pInteractUI)
 		m_pInteractUI = nullptr;
+
+	if (m_pMiniMap)
+		m_pMiniMap = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -730,5 +742,11 @@ void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
 	{
 		m_pUI_Training->Disable_Popup();
 	}
+}
+
+void CUser::SetActive_MiniMap(_bool value)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->SetActive_MiniMap(value);
 }
 
