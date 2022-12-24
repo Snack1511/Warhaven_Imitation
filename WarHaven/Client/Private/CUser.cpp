@@ -341,6 +341,12 @@ void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransf
 		m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform, isInFrustum);
 }
 
+void CUser::Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_ConquestTime(iPoinIdx, fConquestTime, fMaxConquestTime);
+}
+
 void CUser::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 {
 	if (m_pUI_Paden)

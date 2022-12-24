@@ -137,14 +137,17 @@ void CTrigger_Paden::My_Tick()
 	{
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
+		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(1, m_pTransform, isIsFrustum);
+		CUser::Get_Instance()->Set_MiniMapConquestTime(1, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
+		CUser::Get_Instance()->Set_MiniMapConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 	}
 

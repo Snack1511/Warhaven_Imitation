@@ -4,6 +4,7 @@
 #include "Loading_Manager.h"
 #include "Texture.h"
 #include "CUI_Renderer.h"
+#include "CShader.h"
 
 HRESULT CUI_MiniMap::Initialize_Prototype()
 {
@@ -26,6 +27,9 @@ HRESULT CUI_MiniMap::Start()
 
 	Init_MiniMap();
 	Init_MiniMapPoint();
+
+
+	Bind_Shader();
 
 	return S_OK;
 }
@@ -53,6 +57,42 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 	}
 }
 
+void CUI_MiniMap::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime)
+{
+	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+
+	switch (iPointIdx)
+	{
+	case 0:
+		m_fConquestRatio[Point_A] = fConquestRatio;
+		cout << "Point_A : " << m_fConquestRatio[Point_A] << endl;
+		break;
+	case 1:
+		m_fConquestRatio[Point_R] = fConquestRatio;
+		cout << "Point_R : " << m_fConquestRatio[Point_R] << endl;
+		break;
+	case 2:
+		m_fConquestRatio[Point_C] = fConquestRatio;
+		cout << "Point_C : " << m_fConquestRatio[Point_C] << endl;
+		break;
+	}
+}
+
+void CUI_MiniMap::Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));
+}
+
+void CUI_MiniMap::Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_R], sizeof(_float));
+}
+
+void CUI_MiniMap::Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
+}
+
 void CUI_MiniMap::OnEnable()
 {
 	__super::OnEnable();
@@ -65,6 +105,13 @@ void CUI_MiniMap::OnDisable()
 	__super::OnDisable();
 
 	SetActive_MiniMap(false);
+}
+
+void CUI_MiniMap::Bind_Shader()
+{
+	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_A][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointA, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_R][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointR, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrMiniMapPoint[Point_C][MP_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_MiniMap::Set_Shader_Guage_PointC, this, placeholders::_1, "g_fValue");
 }
 
 void CUI_MiniMap::Create_MiniMap()

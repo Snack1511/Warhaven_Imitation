@@ -18,19 +18,33 @@ public:
 public:
 	void SetActive_MiniMap(_bool value);
 
+	void Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
+
+public:
+	virtual void Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName);
+
 private:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
+
+	void Bind_Shader();
 
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_END;
 
 	CUI_Object* m_pMiniMap = nullptr;
 
-	enum MiniMapPoint { MP_Outline, MP_Gauge, MP_Text, MP_End };
 	enum Point { Point_A, Point_R, Point_C, Point_End };
+	enum MiniMapPoint { MP_Outline, MP_Gauge, MP_Text, MP_End };
+
 	CUI_Object* m_pMiniMapPoint[MP_End];
 	CUI_Object* m_pArrMiniMapPoint[Point_End][MP_End];
+
+	_float m_fConquestTime[Point_End];
+	_float m_fMaxConquestTime[Point_End];
+	_float m_fConquestRatio[Point_End];
 
 private:
 	_float m_pPointOutlineScale = 20.f;

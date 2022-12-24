@@ -134,6 +134,8 @@ public:		// ÆÄµ§
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
+	void Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float fMaxConquestTime);
+
 	void Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam);
 
 	void Set_TargetTransform(CTransform* pTargetTransform);
