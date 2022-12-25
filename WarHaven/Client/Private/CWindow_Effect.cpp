@@ -28,6 +28,7 @@
 #include "CUser.h"
 
 #include "CRectEffects.h"
+#include "CGameSystem.h"
 
 CWindow_Effect::CWindow_Effect()
 {
@@ -1374,8 +1375,8 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SPIRAL;
 			if (ImGui::Selectable("CHARGE", &bCurveSelect[CURVE_CHARGE]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CHARGE;
-			if (ImGui::Selectable("CIRCLE", &bCurveSelect[CURVE_CIRCLE]))
-				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CIRCLE;
+			if (ImGui::Selectable("FOLLOWTARGET", &bCurveSelect[FOLLOWTARGET]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = FOLLOWTARGET;
 
 
 			
@@ -1445,6 +1446,12 @@ void CWindow_Effect::Show_ParticleTab()
 						CModel)->Find_HierarchyNode(m_szRefBoneName);
 					
 					if (!pNode)
+					{
+						static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget = CGameSystem::Get_Instance()->Get_Cannon();
+						pNode = GET_COMPONENT_FROM(static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget,
+							CModel)->Find_HierarchyNode(m_szRefBoneName);
+					}
+					if(!pNode)
 						return;
 
 					static_cast<CRectEffects*>(pCurEffect)->m_pRefBone = pNode;

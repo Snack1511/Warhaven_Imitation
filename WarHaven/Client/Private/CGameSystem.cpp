@@ -185,6 +185,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	pCannon->Get_Transform()->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
 	vecReadyObjects.push_back(make_pair(pCannon, GROUP_PROP));
 
+	m_pCannon = pCannon;
 	/*CDestructible* pDestructible = CDestructible::Create(
 		L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
 		L"FishBarrelParticle",

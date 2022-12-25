@@ -497,7 +497,7 @@ HRESULT CRectEffects::Initialize()
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
-	else if (CURVE_CIRCLE == m_eCurveType || CURVE_CHARGE == m_eCurveType)
+	else if (CURVE_CIRCLE == m_eCurveType || CURVE_CHARGE == m_eCurveType || FOLLOWTARGET == m_eCurveType)
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
@@ -859,6 +859,26 @@ _bool CRectEffects::Fade_Lerp(_uint iIndex)
 			m_pDatas[iIndex].InstancingData.eCurFadeType = INSTANCING_DATA::FADEOUTREADY;
 			m_pDatas[iIndex].InstancingData.vScale = m_pDatas[iIndex].InstancingData.vFadeInTargetScale;
 			m_pDatas[iIndex].InstancingData.vColor.w = m_pDatas[iIndex].InstancingData.fTargetAlpha;
+
+			if (FOLLOWTARGET == m_eCurveType)
+		{
+			_float4 vPos = m_vOffsetPos;
+			_float4x4 matFollow = m_pRefBone->Get_BoneMatrix();
+
+			_float	fStartDistance = m_tCreateData.fStartDistance + frandom(-m_tCreateData.fStartDistanceRange, m_tCreateData.fStartDistanceRange);
+
+			_float4 vStartDir = _float4(
+				frandom(-m_tCreateData.vStartDirRange.x, m_tCreateData.vStartDirRange.x),
+				frandom(-m_tCreateData.vStartDirRange.y, m_tCreateData.vStartDirRange.y),
+				frandom(-m_tCreateData.vStartDirRange.z, m_tCreateData.vStartDirRange.z),
+				0.f);
+
+			vStartDir += m_tCreateData.vStartDir;
+			vStartDir.Normalize();
+
+			vPos += vStartDir * fStartDistance;
+			m_pDatas[iIndex].RectInstance.vTranslation = vPos.MultiplyCoord(matFollow);
+		}
 		}
 		else
 		{
@@ -1253,6 +1273,8 @@ void CRectEffects::Bone_Controll()
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
+	else if(FOLLOWTARGET == m_eCurveType)
+		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	else
 		Stick_RefBone();
 }
@@ -1329,6 +1351,7 @@ void CRectEffects::Reset_Instance(_uint iIndex)
 				m_pDatas[iIndex].RectInstance.vTranslation = vPos.MultiplyCoord(matFollow);
 			}
 		}
+		
 		
 	}
 

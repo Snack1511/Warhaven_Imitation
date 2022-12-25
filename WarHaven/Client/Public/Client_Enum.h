@@ -1234,6 +1234,7 @@ namespace Client
 		CURVE_ROTATION,
 		CURVE_CHARGE,
 		CURVE_CIRCLE,
+		FOLLOWTARGET,
 		CURVE_END,
 	};
 	enum class eBehaviorType
