@@ -5,11 +5,15 @@
 #include "Texture.h"
 #include "CUI_Renderer.h"
 #include "CShader.h"
+#include "CUser.h"
+#include "CPlayer.h"
+#include "CPlayerInfo.h"
 
 HRESULT CUI_MiniMap::Initialize_Prototype()
 {
 	Create_MiniMap();
 	Create_MiniMapPoint();
+	Create_PlayerIcon();
 
 	return S_OK;
 }
@@ -27,7 +31,7 @@ HRESULT CUI_MiniMap::Start()
 
 	Init_MiniMap();
 	Init_MiniMapPoint();
-
+	Init_PlayerIcon();
 
 	Bind_Shader();
 
@@ -54,6 +58,11 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 		{
 			m_pArrMiniMapPoint[i][j]->SetActive(value);
 		}
+	}
+
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pPlayerIcon[i]->SetActive(value);
 	}
 }
 
@@ -179,7 +188,7 @@ void CUI_MiniMap::Create_MiniMapPoint()
 			m_pMiniMapPoint[i]->Set_Color(m_vColorGauge);
 
 			m_pMiniMapPoint[i]->Set_Scale(m_pPointGaugeScale);
-			m_pMiniMapPoint[i]->Set_Sort(0.49f);
+			m_pMiniMapPoint[i]->Set_Sort(0.51f);
 
 			break;
 
@@ -189,7 +198,7 @@ void CUI_MiniMap::Create_MiniMapPoint()
 			Read_Texture(m_pMiniMapPoint[i], "/Paden/Text", "Text");
 
 			m_pMiniMapPoint[i]->Set_Scale(m_pPointTextScale);
-			m_pMiniMapPoint[i]->Set_Sort(0.48f);
+			m_pMiniMapPoint[i]->Set_Sort(0.49f);
 
 			break;
 		}
@@ -205,6 +214,22 @@ void CUI_MiniMap::Create_MiniMapPoint()
 			DISABLE_GAMEOBJECT(m_pArrMiniMapPoint[j][i]);
 		}
 	}
+}
+
+void CUI_MiniMap::Create_PlayerIcon()
+{
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pPlayerIcon[i] = CUI_Object::Create();
+
+		m_pPlayerIcon[0]->Set_Sort(0.48f);
+
+		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPlayerIcon[i]);
+	}
+
+	m_pPlayerIcon[0]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/MiniMap/T_MinimapPlayerIcon.dds"));
+	m_pPlayerIcon[0]->Set_Scale(20.f);
 }
 
 void CUI_MiniMap::Init_MiniMap()
@@ -258,6 +283,38 @@ void CUI_MiniMap::Init_MiniMapPoint()
 		}
 
 		break;
+
+	case Client::LEVEL_HWARA:
+		break;
+	}
+}
+
+void CUI_MiniMap::Init_PlayerIcon()
+{
+	switch (m_eLoadLevel)
+	{
+	case Client::LEVEL_PADEN:
+	{
+		// 플레이어가 생성된 위치에 따라 아이콘 생성 위치 지정
+		// 플레이어는 기본적으로 c 거점을 등지고 서있으니 룩벡터를 다르게 지정해서 똑같이 이동시키자
+
+		_uint iTeamType = (_uint)CUser::Get_Instance()->Get_MainPlayerInfo()->Get_TeamType();
+		switch (iTeamType)
+		{
+		case 0:	// Red
+
+			m_pPlayerIcon[0]->Set_Pos(-550.f, 280.f);
+
+			break;
+
+		case 1:	// Blue
+
+			m_pPlayerIcon[0]->Set_Pos(-450.f, 280.f);
+
+			break;
+		}
+	}
+	break;
 
 	case Client::LEVEL_HWARA:
 		break;

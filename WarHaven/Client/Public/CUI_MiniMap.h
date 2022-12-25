@@ -44,11 +44,12 @@ private:
 	CUI_Object* m_pMiniMapPoint[MP_End];
 	CUI_Object* m_pArrMiniMapPoint[Point_End][MP_End];
 
+	CUI_Object* m_pPlayerIcon[8];
+
 	_float m_fConquestTime[Point_End];
 	_float m_fMaxConquestTime[Point_End];
 	_float m_fConquestRatio[Point_End];
 
-private:
 	_float m_pPointOutlineScale = 20.f;
 	_float m_pPointGaugeScale = 15.f;
 	_float m_pPointTextScale = 25.f;
@@ -62,9 +63,11 @@ private:
 private:
 	void Create_MiniMap();
 	void Create_MiniMapPoint();
+	void Create_PlayerIcon();
 
 	void Init_MiniMap();
 	void Init_MiniMapPoint();
+	void Init_PlayerIcon();
 };
 
 END
