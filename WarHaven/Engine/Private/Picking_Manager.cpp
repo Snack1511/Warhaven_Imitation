@@ -213,13 +213,13 @@ _bool CPicking_Manager::Is_Picked(CMesh* pRenderer, _uint3* pOutPickedIndex, _fl
 {
 	CTransform* pTransform = pRenderer->Get_Owner()->Get_Transform();
 	_float4x4	matWorld = pTransform->Get_WorldMatrix();
-	_matrix		WorldMatrixInv = matWorld.Inverse().XMLoad();
-	matWorld.Inverse();
+	_float4x4	WorldMatrixInv = matWorld;
+	WorldMatrixInv.Inverse();
 
 	_vector			vRayPos, vRayDir;
 
-	vRayPos = XMVector3TransformCoord(XMLoadFloat3(&m_vRayPos), WorldMatrixInv);
-	vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&m_vRayDir), WorldMatrixInv));
+	vRayPos = XMVector3TransformCoord(XMLoadFloat3(&m_vRayPos), WorldMatrixInv.XMLoad());
+	vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&m_vRayDir), WorldMatrixInv.XMLoad()));
 
 	_uint			iNumFaces = pRenderer->Get_NumPrimitive();
 	const _float3* pVerticesPos = pRenderer->Get_VerticesPos();
@@ -239,13 +239,12 @@ _bool CPicking_Manager::Is_Picked(CMesh* pRenderer, _uint3* pOutPickedIndex, _fl
 		{
 			_float4 V1, V2;
 			_float4 vOutNormal, vPickedPos;
-			_float4x4 worldMat = matWorld;
 
 			V1 = (vVec0 - vVec1);
 			V2 = (vVec2 - vVec1);
 
 			vOutNormal = XMVector3Cross(V1.XMLoad(), V2.XMLoad());
-			vOutNormal = vOutNormal.MultiplyNormal(worldMat);
+			vOutNormal = vOutNormal.MultiplyNormal(matWorld);
 			vOutNormal.Normalize();
 			vPickedPos = vRayPos + XMVector3Normalize(vRayDir) * fDist;
 
@@ -256,7 +255,7 @@ _bool CPicking_Manager::Is_Picked(CMesh* pRenderer, _uint3* pOutPickedIndex, _fl
 			if (fMin > fDistance)
 			{
 				*pOutNormal = vOutNormal;
-				*pOut = vPickedPos;
+				*pOut = vPickedPos.MultiplyCoord(matWorld);
 				memcpy_s(pOutPickedIndex, sizeof(_uint3), &iIndices, sizeof(_uint3));
 				fMin = fDistance;
 			}
