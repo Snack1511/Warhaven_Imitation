@@ -12,8 +12,6 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
-	virtual void My_Tick() override;
-	virtual void My_LateTick() override;
 
 public:
 	void SetActive_MiniMap(_bool value);
@@ -28,6 +26,8 @@ public:
 	virtual void Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName);
 
 private:
+	virtual void My_Tick() override;
+	virtual void My_LateTick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 

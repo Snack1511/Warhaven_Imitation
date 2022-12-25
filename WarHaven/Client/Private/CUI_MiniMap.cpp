@@ -8,6 +8,8 @@
 #include "CUser.h"
 #include "CPlayer.h"
 #include "CPlayerInfo.h"
+#include "CUtility_Transform.h"
+#include "CUnit.h"
 
 HRESULT CUI_MiniMap::Initialize_Prototype()
 {
@@ -38,16 +40,6 @@ HRESULT CUI_MiniMap::Start()
 	return S_OK;
 }
 
-void CUI_MiniMap::My_Tick()
-{
-	__super::My_Tick();
-}
-
-void CUI_MiniMap::My_LateTick()
-{
-	__super::My_LateTick();
-}
-
 void CUI_MiniMap::SetActive_MiniMap(_bool value)
 {
 	m_pMiniMap->SetActive(value);
@@ -74,15 +66,12 @@ void CUI_MiniMap::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float
 	{
 	case 0:
 		m_fConquestRatio[Point_A] = fConquestRatio;
-		cout << "Point_A : " << m_fConquestRatio[Point_A] << endl;
 		break;
 	case 1:
 		m_fConquestRatio[Point_R] = fConquestRatio;
-		cout << "Point_R : " << m_fConquestRatio[Point_R] << endl;
 		break;
 	case 2:
 		m_fConquestRatio[Point_C] = fConquestRatio;
-		cout << "Point_C : " << m_fConquestRatio[Point_C] << endl;
 		break;
 	}
 }
@@ -123,6 +112,31 @@ void CUI_MiniMap::Set_Shader_Guage_PointR(CShader* pShader, const char* pConstNa
 void CUI_MiniMap::Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
+}
+
+void CUI_MiniMap::My_Tick()
+{
+	__super::My_Tick();
+
+	cout << "¹Ì´Ï¸Ê Æ½" << endl;
+}
+
+void CUI_MiniMap::My_LateTick()
+{
+	__super::My_LateTick();
+
+	cout << "¹Ì´Ï¸Ê ·¹ÀÌÆ®Æ½" << endl;
+
+	CUnit* pPlayer = CUser::Get_Instance()->Get_Player();
+	_bool isMainPlayer = pPlayer->Is_MainPlayer();
+	if (isMainPlayer)
+	{
+		_float4 vPlayerPos = CUtility_Transform::Get_ProjPos(pPlayer->Get_Transform());
+
+		cout << vPlayerPos.x << ", " << vPlayerPos.y << endl;
+
+		m_pPlayerIcon[0]->Set_Pos(vPlayerPos);
+	}
 }
 
 void CUI_MiniMap::OnEnable()
