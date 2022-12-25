@@ -8,6 +8,8 @@
 
 #include "CCollider_Sphere.h"
 
+#include "Transform.h"
+
 
 CQandaMeteor::CQandaMeteor()
 {
@@ -82,11 +84,23 @@ HRESULT CQandaMeteor::Initialize_Prototype()
 void CQandaMeteor::My_Tick()
 {
 	__super::My_Tick();
+
+	if (!m_Shoot)
+	{
+		_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS);
+
+		Get_Transform()->Set_World(WORLD_LOOK, vLook);
+		m_Shoot = true;
+	}
+
+
 }
 
 void CQandaMeteor::OnEnable()
 {
 	__super::OnEnable();
+
+	m_Shoot = false;
 }
 void CQandaMeteor::OnDisable()
 {

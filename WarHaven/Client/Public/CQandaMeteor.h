@@ -26,6 +26,10 @@ public:
 
 private:
 	list<CGameObject*> m_EffectTest;
+	_bool				m_Shoot = false;
+
+	//_float m_fMaxColliderTime = 1.f;
+	//_float m_fCurColliderTime = 0.f;
 
 };
 

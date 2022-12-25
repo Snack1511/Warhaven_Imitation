@@ -29,6 +29,8 @@ public:
 	_float4		Get_ArrowHeadPos();
 	_float		Get_MaxDistance() { return m_fMaxDistance; }
 
+	void		Set_TargetUnit(CUnit* pTargetUnit) { m_pTargetUnit = pTargetUnit; }
+
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize();
@@ -45,6 +47,7 @@ protected:
 
 protected:
 	CUnit* m_pOwnerUnit = nullptr;
+	CUnit* m_pTargetUnit = nullptr;
 	CHierarchyNode* m_pRightHandBone = nullptr;
 	CHierarchyNode* m_pLeftHandBone = nullptr;
 	CHierarchyNode* m_pCurStickBone = nullptr;
@@ -64,6 +67,10 @@ protected:
 	_float	m_fMaxLoopTime = 3.f;
 	_float	m_fMaxDistance = 50.f;
 	_float	m_fDamage = 0.f;
+
+protected:
+	string m_szMainBoneName = "0B_R_WP1";
+	string m_szSubBoneName = "0B_L_WP1";
 
 protected:
 	ePROJECTILE_PHASE	m_eCurPhase = eSTART;

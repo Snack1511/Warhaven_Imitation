@@ -440,15 +440,15 @@
 #include "CSprint_Jump_Fall_Qanda.h"
 
 
-// 스킬, 평타
 #include "CQanda_Attack_Begin.h"
 #include "CQanda_Aiming.h"
 #include "CQanda_Shoot.h"
-//
-//#include "CPaladin_ShieldWall_Begin.h"
-//#include "CPaladin_ShieldWall_Loop.h"
-//#include "CPaladin_ShieldWall_End.h"
+#include "CQanda_Attack_Begin_Sniping.h"
+#include "CQanda_Aiming_Sniping.h"
+#include "CQanda_Shoot_Sniping.h"
 
+#include "CQanda_Attack_Cancel.h"
+#include "CQanda_ShadowStep.h"
 
 #include "CGuard_Loop_Qanda.h"
 #include "CGuard_Cancel_Qanda.h"
@@ -1446,15 +1446,14 @@ void CState_Manager::Qanda_State()
 	m_arrStates[STATE_ATTACK_AIMING_QANDA] = CQanda_Aiming::Create();
 	m_arrStates[STATE_ATTACK_SHOOT_QANDA] = CQanda_Shoot::Create();
 
-	// 수정ㄱㄱ
-	m_arrStates[STATE_ATTACK_BEGIN_SNIPING_QANDA] = CState_Combat_Attack_Archer_Aiming_Poison::Create();
-	m_arrStates[STATE_ATTACK_AIMING_SNIPING_QANDA] = CState_Combat_Attack_Archer_Aiming_Poison::Create();
-	m_arrStates[STATE_ATTACK_SHOOT_SNIPING_QANDA] = CState_Combat_Attack_Archer_Aiming_Poison::Create();
-	//
 
-	m_arrStates[STATE_ATTACK_CANCEL_QANDA] = CGuard_Cancel_Valkyrie::Create();
+	m_arrStates[STATE_ATTACK_BEGIN_SNIPING_QANDA] = CQanda_Attack_Begin_Sniping::Create();
+	m_arrStates[STATE_ATTACK_AIMING_SNIPING_QANDA] = CQanda_Aiming_Sniping::Create();
+	m_arrStates[STATE_ATTACK_SHOOT_SNIPING_QANDA] = CQanda_Shoot_Sniping::Create();
 
-	m_arrStates[STATE_SHADOWSTEP_QANDA] = CValkyrie_Attack_Sting_L::Create();
+	m_arrStates[STATE_ATTACK_CANCEL_QANDA] = CQanda_Attack_Cancel::Create();
+
+	m_arrStates[STATE_SHADOWSTEP_QANDA] = CQanda_ShadowStep::Create();
 
 
 

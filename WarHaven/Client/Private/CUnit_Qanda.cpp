@@ -399,28 +399,28 @@ void CUnit_Qanda::Create_Crow()
 
 void CUnit_Qanda::Create_Meteor()
 {
-	if (m_pMeteor)
-		DISABLE_GAMEOBJECT(m_pMeteor);
+	//if (m_pMeteor)
+	//	DISABLE_GAMEOBJECT(m_pMeteor);
 
-	CGameObject* pGameObject = nullptr;
+	//CGameObject* pGameObject = nullptr;
 
-	if (m_mapProjectilePool[HASHCODE(CQandaMeteor)].empty())
-	{
-		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaMeteor));
-		//없으면 새로 집어넣음
-		pGameObject->Initialize();
-		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
-		static_cast<CProjectile*>(pGameObject)->Reset(this);
-	}
-	else
-	{
-		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaMeteor)].front();
-		pEffect->Reset(this);
-		m_mapProjectilePool[HASHCODE(CQandaMeteor)].pop_front();
-		pGameObject = pEffect;
-	}
+	//if (m_mapProjectilePool[HASHCODE(CQandaMeteor)].empty())
+	//{
+	//	pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaMeteor));
+	//	//없으면 새로 집어넣음
+	//	pGameObject->Initialize();
+	//	CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+	//	static_cast<CProjectile*>(pGameObject)->Reset(this);
+	//}
+	//else
+	//{
+	//	CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaMeteor)].front();
+	//	pEffect->Reset(this);
+	//	m_mapProjectilePool[HASHCODE(CQandaMeteor)].pop_front();
+	//	pGameObject = pEffect;
+	//}
 
-	m_pMeteor = static_cast<CProjectile*>(pGameObject);
+	//m_pMeteor = static_cast<CProjectile*>(pGameObject);
 }
 
 
@@ -438,7 +438,9 @@ void CUnit_Qanda::Shoot_Crow()
 	if (!m_pCrow)
 		return;
 
+	ENABLE_COMPONENT(GET_COMPONENT_FROM(m_pCrow, CModel));
 	m_pCrow->On_ShootProjectile();
+	m_pCrow->Get_Transform()->Set_World(WORLD_POS, Get_Transform()->Get_World(WORLD_POS));
 	m_pCrow = nullptr;
 }
 

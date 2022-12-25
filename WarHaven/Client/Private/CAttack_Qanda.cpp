@@ -160,6 +160,9 @@ void CAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevS
 	if (!static_cast<CUnit_Qanda*>(pOwner)->Get_Crow())
 		static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
 
+	//DISABLE_COMPONENT(GET_COMPONENT_FROM(static_cast<CUnit_Qanda*>(pOwner)->Get_Crow(), CModel));
+
+
 	static_cast<CUnit_Qanda*>(pOwner)->Enable_Trail(true);
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
@@ -197,6 +200,7 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (KEY(LBUTTON, AWAY))
 		m_bKeyInput = true;
 
+	_uint iDirection = Get_Direction();
 
 	if (pOwner->Is_MainPlayer())
 	{
@@ -212,17 +216,28 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			break;
 		case Client::CAttack_Qanda::Enum::eJUMP:
 			Update_Jump(pOwner, pAnimator);
+			DoMove(iDirection, pOwner);
 
 			break;
 		case Client::CAttack_Qanda::Enum::eFALL:
 			Update_Fall(pOwner, pAnimator);
+			DoMove(iDirection, pOwner);
+				
 
 			break;
 		case Client::CAttack_Qanda::Enum::eLAND:
 			if (m_bLandMove)
-				DoMove(Get_Direction(), pOwner);
+			{
+				DoMove(iDirection, pOwner);
 
-			Update_Land(pOwner, pAnimator);
+				if(iDirection == STATE_DIRECTION_END)
+					Update_Idle(pOwner, pAnimator);
+				else
+					Update_Walk(pOwner, pAnimator);
+			}
+				
+			else
+				Update_Land(pOwner, pAnimator);
 
 			break;
 		case Client::CAttack_Qanda::Enum::eIDLE:
@@ -279,11 +294,21 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	}
 
-	if (pAnimator->Is_CurAnimFinished())
+	if (pAnimator->Get_CurAnimFrame() >= 160)
 	{
-		pAnimator->Set_CurFrame(0);
-		pAnimator->Set_CurAnimIndex(m_eAnimType, m_iAnimIndex, m_eAnimDivide);
+		pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP3;
+		return STATE_ATTACK_SHOOT_QANDA;
 	}
+
+	//if (pAnimator->Get_CurAnimFrame() >= 60)
+	//{
+	//	//_uint iFrame = pAnimator->Get_CurAnimFrame();
+	//	////m_eAnimDivide = ANIM_DIVIDE::eBODYLOWER;
+	//	//pAnimator->Set_CurFrame(0);
+	//	pAnimator->Set_CurAnimIndex(ANIM_BASE_R, m_iWalkRightAnimIndex[Get_Direction()], ANIM_DIVIDE::eBODYLOWER);
+	//	//pAnimator->Set_CurFrame(iFrame);
+	//	//	return m_eStateType;
+	//}
 		
 
 	return __super::Tick(pOwner, pAnimator);
@@ -532,7 +557,6 @@ void CAttack_Qanda::Enter_Attack_Begin(CUnit* pOwner)
 
 	m_iMinCancelAnimIndex = 30;
 
-	//pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_CANNON);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
 
 }
@@ -542,6 +566,11 @@ void CAttack_Qanda::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
 	m_bAiming = true;
+	if (ePrevType == m_eStateType)
+	{
+
+	}
+
 
 	pOwner->Set_AnimWeaponIndex(17, 0.f, m_fAnimSpeed);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE(eCamLerpType));
@@ -555,6 +584,7 @@ void CAttack_Qanda::Exit_Aiming(CUnit* pOwner, CAnimator* pAnimator)
 	static_cast<CUnit_Qanda*>(pOwner)->Get_CoreMat() = matOffset;
 
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
+	//ENABLE_COMPONENT(GET_COMPONENT_FROM(static_cast<CUnit_Qanda*>(pOwner)->Get_Crow(), CModel));
 
 	CUser::Get_Instance()->Set_CrossHairPos(_float4(0.f, 0.f, 0.3f, 1.f));
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
@@ -596,7 +626,7 @@ void CAttack_Qanda::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 		break;
 
 	case Client::CAttack_Qanda::Enum::eIDLE:
-		pAnimator->Set_CurAnimIndex(ANIM_BASE_R, m_iIdle_Index);
+		pAnimator->Set_CurAnimIndex(ANIM_BASE_R, m_iIdle_Index, ANIM_DIVIDE::eBODYLOWER);
 		break;
 	default:
 		break;

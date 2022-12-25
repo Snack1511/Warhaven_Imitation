@@ -7,7 +7,7 @@
 #include "CRectEffects.h"
 
 #include "CCollider_Sphere.h"
-
+#include "Model.h"
 
 CQandaCrow::CQandaCrow()
 {
@@ -66,14 +66,15 @@ HRESULT CQandaCrow::Initialize_Prototype()
 #else
 
 
-
-	if (FAILED(SetUp_Collider(COL_BLUEFLYATTACKGUARDBREAK, 2.f)))
+	if (FAILED(SetUp_Colliders(COL_BLUEFLYATTACKGUARDBREAK)))
 		return E_FAIL;
 
 #endif // TESTLEVEL_AI_PROJECTILE
 
+	// m_pUnitCollider[ePartType]->Add_Collider(arrColliderDesc[i].fRadius, arrColliderDesc[i].vOffsetPos);
 
 	m_hcCode = HASHCODE(CQandaCrow);
+	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
 
 
     return CProjectile::Initialize_Prototype();
@@ -89,8 +90,8 @@ void CQandaCrow::My_Tick()
 
 		if (!m_bShoot)
 		{
-			m_pOwnerUnit->Enable_FlyAttackCollider(true);
-			m_pOwnerUnit->Enable_FlyAttackCollider(true);
+			//m_pOwnerUnit->Enable_FlyAttackCollider(true);
+			//m_pOwnerUnit->Enable_FlyAttackCollider(true);
 			m_bShoot = true;
 		}
 		else
@@ -98,8 +99,9 @@ void CQandaCrow::My_Tick()
 			if (m_fCurColliderTime > m_fMaxColliderTime)
 			{
 				m_fCurColliderTime = -9999.f;
-				m_pOwnerUnit->Enable_FlyAttackCollider(false);
-				m_pOwnerUnit->Enable_FlyAttackCollider(false);
+				DISABLE_GAMEOBJECT(this);
+				//m_pOwnerUnit->Enable_FlyAttackCollider(false);
+				//m_pOwnerUnit->Enable_FlyAttackCollider(false);
 			}
 			
 		}
@@ -112,6 +114,9 @@ void CQandaCrow::My_Tick()
 void CQandaCrow::OnEnable()
 {
 	__super::OnEnable();
+	DISABLE_COMPONENT(GET_COMPONENT(CModel));
+
+	//On_ShootProjectile();
 
 	m_fCurColliderTime = 0.f;
 	m_bShoot = false;

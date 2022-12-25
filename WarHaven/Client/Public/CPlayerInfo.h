@@ -31,7 +31,7 @@ return pInstance;\
 #define ARCHER_TH
 //#define FIONA_TH
 //#define PALADIN_TH
-//#define ENGINEER_TH 
+#define ENGINEER_TH 
 #define Qanda_TH
 
 BEGIN(Client)

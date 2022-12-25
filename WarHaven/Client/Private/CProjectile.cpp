@@ -9,6 +9,7 @@
 #include "CColorController.h"
 
 #include "CUnit_Archer.h"
+#include "CUnit_Qanda.h"
 
 #include "CTeamConnector.h"
 #include "CUtility_PhysX.h"
@@ -101,8 +102,11 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 	m_pOwnerUnit = static_cast<CUnit*>(pGameObject);
 
-	m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_L_WP1");
-	m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_R_WP1");
+	const char* pLeftBoneName = m_szMainBoneName.c_str();
+	const char* pRightBoneName = m_szSubBoneName.c_str();
+
+	m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pLeftBoneName);
+	m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pRightBoneName);
 
 	if (!m_pLeftHandBone)
 		assert(0);
@@ -468,6 +472,8 @@ void CProjectile::OnDisable()
 	__super::OnDisable();
 
 	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
+	static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
+
 	Safe_release(m_pActor);
 	m_fLoopTimeAcc = 0.f;
 	if (m_pTrailEffect)

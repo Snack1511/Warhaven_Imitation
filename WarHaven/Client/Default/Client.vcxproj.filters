@@ -5880,6 +5880,21 @@
     <ClInclude Include="..\Public\CQanda_Shoot.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\03. Shoot</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Attack_Begin_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Shoot_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Aiming_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\02. Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_ShadowStep.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\03. ShadowStep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Attack_Cancel.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\04. Cancel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8463,6 +8478,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\CQanda_Shoot.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Attack_Begin_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Shoot_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Aiming_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\02. Aiming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_ShadowStep.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\03. ShadowStep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Attack_Cancel.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\04. Cancel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

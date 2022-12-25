@@ -47,14 +47,13 @@ HRESULT CQanda_Attack_Begin::Initialize()
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
-    m_fAnimSpeed = 2.3f;
+    m_fAnimSpeed = 1.3f;
     m_iStateChangeKeyFrame = 999;
    
+	m_iAnimFrame = 35;
 
-	Add_KeyFrame(31, 1);
-	Add_KeyFrame(90, 2);
-
-
+	Add_KeyFrame(10, 1);
+	Add_KeyFrame(m_iAnimFrame, 2);
 
     return __super::Initialize();
 }
@@ -70,7 +69,7 @@ STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (KEY(LBUTTON, AWAY))
 		m_bKeyInputable = true;
 
-	if (pAnimator->Is_CurAnimFinished())
+	if (pAnimator->Get_CurAnimFrame() > m_iAnimFrame)
 		return STATE_ATTACK_AIMING_QANDA;
 
 	if (m_bKeyInput)
@@ -89,7 +88,8 @@ STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	Prevent_Oneframe(pOwner);
+	//Prevent_Oneframe(pOwner);
+	//Prevent_Oneframe(pOwner);
 	pOwner->Set_AnimWeaponIndex(16, 0.f, m_fAnimSpeed);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
 	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Qanda*>(pOwner)->Get_CoreMat());

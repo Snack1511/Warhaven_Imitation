@@ -65,7 +65,7 @@ public:
 private:
 	map<_hashcode, list<CProjectile*>>	m_mapProjectilePool;
 	CProjectile* m_pCrow = nullptr;
-	CProjectile* m_pMeteor = nullptr;
+	list<CProjectile*> m_pMeteor = { nullptr };
 
 	_float4x4	m_CoreMat;
 	CUI_Trail* m_pUI_Trail = nullptr;

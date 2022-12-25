@@ -15,7 +15,7 @@
 #include "CCamera_Follow.h"
 #include "CUnit_Qanda.h"
 #include "CAnimWeapon.h"
-
+#include "CUnit_Archer.h"
 CShootAttack_Qanda::CShootAttack_Qanda()
 {
 }
@@ -171,8 +171,9 @@ void CShootAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed * 0.7f;
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed * 0.7f;
 
+	//static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
 	static_cast<CUnit_Qanda*>(pOwner)->Shoot_Crow();
-	static_cast<CUnit_Qanda*>(pOwner)->Enable_AnimWeapon(false);
+	//static_cast<CUnit_Qanda*>(pOwner)->Enable_AnimWeapon(false);
 
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
     
