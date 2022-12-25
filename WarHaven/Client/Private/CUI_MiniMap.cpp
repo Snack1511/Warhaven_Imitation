@@ -78,6 +78,29 @@ void CUI_MiniMap::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float
 	}
 }
 
+void CUI_MiniMap::Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx)
+{
+	if (IsMainTeam)
+	{
+		m_pArrMiniMapPoint[iPointIdx][MP_Gauge]->Set_Color(m_vColorBlue);
+	}
+	else
+	{
+		m_pArrMiniMapPoint[iPointIdx][MP_Gauge]->Set_Color(m_vColorRed);
+	}
+}
+
+void CUI_MiniMap::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
+{
+	_float4 vColor;
+	vColor = IsMainTeam ? m_vColorBlue : m_vColorRed;
+
+	for (int i = 0; i < MP_Text; ++i)
+	{
+		m_pArrMiniMapPoint[iPoinIdx][i]->Set_Color(vColor);
+	}
+}
+
 void CUI_MiniMap::Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));

@@ -347,6 +347,18 @@ void CUser::Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float
 		m_pMiniMap->Set_ConquestTime(iPoinIdx, fConquestTime, fMaxConquestTime);
 }
 
+void CUser::Set_MiniMapGaugeColor(_bool IsMainTeam, _uint iPointIdx)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_GaugeColor(IsMainTeam, iPointIdx);
+}
+
+void CUser::Set_MiniMapPointColor(_bool IsMainTeam, _uint iPointIdx)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_PointColor(IsMainTeam, iPointIdx);
+}
+
 void CUser::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 {
 	if (m_pUI_Paden)

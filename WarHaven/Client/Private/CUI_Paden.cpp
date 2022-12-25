@@ -667,7 +667,7 @@ void CUI_Paden::Create_PointUI()
 			m_pPointUI[i]->Set_Color(m_vColorGauge);
 
 			m_pPointUI[i]->Set_Scale(30.f);
-			m_pPointUI[i]->Set_Sort(0.54f);
+			m_pPointUI[i]->Set_Sort(0.56f);
 		}
 		else if (i == PU_Text)
 		{
@@ -675,7 +675,7 @@ void CUI_Paden::Create_PointUI()
 			Read_Texture(m_pPointUI[i], "/Paden/Text", "Text");
 
 			m_pPointUI[i]->Set_Scale(50.f);
-			m_pPointUI[i]->Set_Sort(0.53f);
+			m_pPointUI[i]->Set_Sort(0.54f);
 		}
 
 		CREATE_GAMEOBJECT(m_pPointUI[i], GROUP_UI);

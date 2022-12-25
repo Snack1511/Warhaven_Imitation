@@ -135,6 +135,8 @@ public:		// ÆÄµ§
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
 	void Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float fMaxConquestTime);
+	void Set_MiniMapGaugeColor(_bool IsMainTeam, _uint iPointIdx);
+	void Set_MiniMapPointColor(_bool IsMainTeam, _uint iPointIdx);
 
 	void Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam);
 
