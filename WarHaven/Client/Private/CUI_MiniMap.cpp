@@ -121,7 +121,8 @@ void CUI_MiniMap::Set_Player(CPlayer* pPlayer)
 	_bool isMainPlayer = pPlayer->IsMainPlayer();
 	if (isMainPlayer)
 	{
-		m_pPlayerIcon[0]->Set_TextureIndex(0);
+		//m_pPlayerIcon[0]->Set_TextureIndex(0);
+		m_pPlayers[0] = pPlayer;
 		m_pPlayerTransform[0] = pPlayer->Get_Transform();
 	}
 	else
@@ -131,7 +132,8 @@ void CUI_MiniMap::Set_Player(CPlayer* pPlayer)
 			if (m_iMainSquadIdx > m_iMainSquadMaxIdx)
 				return;
 
-			m_pPlayerIcon[m_iMainSquadIdx]->Set_TextureIndex(m_iMainSquadIdx);
+			m_pPlayers[m_iMainSquadIdx] = pPlayer;
+			//m_pPlayerIcon[m_iMainSquadIdx]->Set_TextureIndex(m_iMainSquadIdx);
 			m_pPlayerTransform[m_iMainSquadIdx] = pPlayer->Get_Transform();
 
 			m_iMainSquadIdx++;
@@ -141,7 +143,8 @@ void CUI_MiniMap::Set_Player(CPlayer* pPlayer)
 			if (m_iMainTeamIdx > m_iMainTeamMaxIdx)
 				return;
 
-			m_pPlayerIcon[m_iMainTeamIdx]->Set_TextureIndex(0);
+			m_pPlayers[m_iMainTeamIdx] = pPlayer;
+			//m_pPlayerIcon[m_iMainTeamIdx]->Set_TextureIndex(0);
 			m_pPlayerTransform[m_iMainTeamIdx] = pPlayer->Get_Transform();
 
 			m_iMainTeamIdx++;
@@ -152,6 +155,33 @@ void CUI_MiniMap::Set_Player(CPlayer* pPlayer)
 void CUI_MiniMap::My_Tick()
 {
 	__super::My_Tick();
+
+	for (int i = 0; i < 8; ++i)
+	{
+		_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
+		if (fHP <= 0.f)
+		{
+			m_pPlayerIcon[i]->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
+		}
+		else
+		{
+			if (m_pPlayers[i]->IsMainPlayer())
+			{
+				m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
+			}
+			else
+			{
+				if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+				{
+					m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
+				}
+				else
+				{
+					m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+				}
+			}
+		}
+	}
 }
 
 void CUI_MiniMap::My_LateTick()
@@ -269,14 +299,22 @@ void CUI_MiniMap::Create_PlayerIcon()
 		GET_COMPONENT_FROM(m_pPlayerIcon[i], CTexture)->Remove_Texture(0);
 		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "PlayerIcon");
 
-		if (i < 5)
+		if (i == 0)
 		{
 			m_pPlayerIcon[i]->Set_Scale(20.f);
 		}
 		else
 		{
 			m_pPlayerIcon[i]->Set_Scale(15.f);
-			m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+
+			if (i < 4)
+			{
+				m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
+			}
+			else
+			{
+				m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+			}
 		}
 
 		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);
@@ -292,7 +330,6 @@ void CUI_MiniMap::Init_MiniMap()
 
 		m_pMiniMap->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/MiniMap/T_MinimapPadenBlack.dds"));
 		m_pMiniMap->Set_Pos(-500.f, 250.f);
-		//m_pMiniMap->Set_RotationZ(180.f);
 		m_pMiniMap->Set_Scale(250.f);
 
 		break;

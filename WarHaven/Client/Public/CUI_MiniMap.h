@@ -50,6 +50,7 @@ private:
 private:
 	CUI_Object* m_pPlayerIcon[8];
 
+	CPlayer* m_pPlayers[8];
 	CTransform* m_pPlayerTransform[8];
 
 	_uint m_iMainSquadIdx = 1;
