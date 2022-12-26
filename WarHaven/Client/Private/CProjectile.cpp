@@ -473,9 +473,6 @@ void CProjectile::OnDisable()
 {
 	__super::OnDisable();
 
-	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
-	static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
-
 	Safe_release(m_pActor);
 	m_fLoopTimeAcc = 0.f;
 	if (m_pTrailEffect)

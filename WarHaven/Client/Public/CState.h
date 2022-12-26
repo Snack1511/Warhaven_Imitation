@@ -26,6 +26,7 @@ public:
 		_float4 vLook = ZERO_VECTOR;
 
 		_bool	bHeadShot = false;
+		_bool	bNoneHeadAttack = false;
 
 		_bool	bFace = false;
 		_bool	bSting = false;

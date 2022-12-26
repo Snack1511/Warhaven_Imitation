@@ -10,6 +10,7 @@
 
 #include "Transform.h"
 
+#include "CUnit_Qanda.h"
 
 CQandaMeteor::CQandaMeteor()
 {
@@ -107,5 +108,6 @@ void CQandaMeteor::OnEnable()
 }
 void CQandaMeteor::OnDisable()
 {
+	static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
 	__super::OnDisable();
 }

@@ -3,7 +3,7 @@
 
 #include "UsefulHeaders.h"
 
-#include "CUnit_Archer.h"
+#include "CUnit_Qanda.h"
 #include "CRectEffects.h"
 
 #include "CCollider_Sphere.h"
@@ -57,20 +57,20 @@ HRESULT CQandaCrow::Initialize_Prototype()
     //if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_50.fbx")))
     //    return E_FAIL;
 
-
 	if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/longbow/SM_Bolt.fbx")))
 		return E_FAIL;
 
 #ifdef TESTLEVEL_AI_PROJECTILE
 
 
-	if (FAILED(SetUp_Collider(COL_REDFLYATTACKGUARDBREAK, 2.f)))
+	if (FAILED(SetUp_Collider(COL_REDFLYATTACKGUARDBREAK, 0.8f)))
 		return E_FAIL;
 
 #else
 
-	if (FAILED(SetUp_Collider(COL_BLUEFLYATTACKGUARDBREAK, 2.f)))
+	if (FAILED(SetUp_Collider(COL_BLUEFLYATTACKGUARDBREAK, 0.8f)))
 		return E_FAIL;
+
 
 	//if (FAILED(SetUp_Colliders(COL_BLUEFLYATTACKGUARDBREAK)))
 	//	return E_FAIL;
@@ -82,9 +82,17 @@ HRESULT CQandaCrow::Initialize_Prototype()
 	m_hcCode = HASHCODE(CQandaCrow);
 	m_vArrowHeadPos = _float4(1.2f, 0.f, 0.f);
 
-	m_szMainBoneName = "0B_L_Hat_02";
-	m_szSubBoneName = "0B_L_Hat_02";
+	m_fMaxSpeed = 30.f;
+	m_fMaxDistance = 200.f;
 
+	//m_szMainBoneName = "0B_L_Hat_02";
+	//m_szSubBoneName = "0B_L_Hat_02";
+
+	m_szMainBoneName = "0B_R_Hand";
+	m_szSubBoneName = "0B_R_Hand";
+
+	//m_szMainBoneName = "0B_COM";
+	//m_szSubBoneName = "0B_COM";
 
     return CProjectile::Initialize_Prototype();
 }
@@ -97,21 +105,24 @@ void CQandaCrow::My_Tick()
 	{
 		m_fCurColliderTime += fDT(0);
 
+		if (m_fCurColliderTime > m_fMaxColliderTime)
+		{
+			m_fCurColliderTime = -9999.f;
+			//static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
+			DISABLE_GAMEOBJECT(this);
+		}
+
 		if (!m_bShoot)
 		{
 			ENABLE_COMPONENT(m_pCollider);
-			//m_pOwnerUnit->Enable_FlyAttackCollider(true);
-			//m_pOwnerUnit->Enable_FlyAttackCollider(true);
 			m_bShoot = true;
 		}
 		else
 		{
-			if (m_fCurColliderTime > m_fMaxColliderTime)
+			if (!m_bCollider)
 			{
-				m_fCurColliderTime = -9999.f;
-				//m_pOwnerUnit->Enable_FlyAttackCollider(false);
-				//m_pOwnerUnit->Enable_FlyAttackCollider(false);
 				DISABLE_COMPONENT(m_pCollider);
+				m_bCollider = true;
 			}
 			
 		}
@@ -123,29 +134,20 @@ void CQandaCrow::My_Tick()
 
 void CQandaCrow::OnEnable()
 {
+	
 	__super::OnEnable();
 	//DISABLE_COMPONENT(GET_COMPONENT(CModel));
 
 	//On_ShootProjectile();
-	m_szMainBoneName = "0B_L_Hat_02";
-	m_szSubBoneName = "0B_L_Hat_02";
 
-	//m_szMainBoneName = "0B_COM";
-	//m_szSubBoneName = "0B_COM";
-
-	m_szMainBoneName = "0B_R_Hand";
-	m_szSubBoneName = "0B_R_Hand";
-
-
-	/**((_float4*)&m_matHitOffset.m[0]) = ((_float4*)&m_matHitOffset.m[0])->Normalize();
-*((_float4*)&m_matHitOffset.m[1]) = ((_float4*)&m_matHitOffset.m[1])->Normalize();
-*((_float4*)&m_matHitOffset.m[2]) = ((_float4*)&m_matHitOffset.m[2])->Normalize();*/
 
 	m_fCurColliderTime = 0.f;
 	m_bShoot = false;
+	m_bCollider = false;
 }
 void CQandaCrow::OnDisable()
 {
+	static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
 	__super::OnDisable();
 }
 

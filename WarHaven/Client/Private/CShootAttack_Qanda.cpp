@@ -15,7 +15,7 @@
 #include "CCamera_Follow.h"
 #include "CUnit_Qanda.h"
 #include "CAnimWeapon.h"
-#include "CUnit_Archer.h"
+
 CShootAttack_Qanda::CShootAttack_Qanda()
 {
 }
@@ -43,6 +43,7 @@ HRESULT CShootAttack_Qanda::Initialize()
 	m_tHitInfo.fJumpPower = 3.f;
 	m_tHitInfo.iLandKeyFrame = 60;
 	m_tHitInfo.bFly = true;
+	m_tHitInfo.bNoneHeadAttack = true;
 
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 

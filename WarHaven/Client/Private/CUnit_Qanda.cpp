@@ -25,6 +25,8 @@
 
 #include "CUI_Trail.h"
 
+#include "CState.h"
+
 CUnit_Qanda::CUnit_Qanda()
 {
 }
@@ -579,6 +581,19 @@ void CUnit_Qanda::OnDisable()
 
 void CUnit_Qanda::My_Tick()
 {
+	CState::HIT_INFO tHitInfo;
+	ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
+
+	tHitInfo.eHitType = CState::HIT_TYPE::eUP;
+	tHitInfo.fKnockBackPower = 1.f;
+	tHitInfo.fJumpPower = 3.f;
+	tHitInfo.bFly = true;
+	tHitInfo.iLandKeyFrame = 60;
+	tHitInfo.bNoneHeadAttack = true;
+
+	m_pCurState->Get_HitInfo() = tHitInfo;
+
+
 	__super::My_Tick();
 }
 
