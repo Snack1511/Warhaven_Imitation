@@ -359,6 +359,12 @@ void CUser::Set_MiniMapPointColor(_bool IsMainTeam, _uint iPointIdx)
 		m_pMiniMap->Set_PointColor(IsMainTeam, iPointIdx);
 }
 
+void CUser::Set_MiniMapPlayer(CPlayer* pPlayer)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_Player(pPlayer);
+}
+
 void CUser::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 {
 	if (m_pUI_Paden)
@@ -525,7 +531,7 @@ void CUser::On_EnterStageLevel()
 			m_pMiniMap = CUI_MiniMap::Create();
 
 			CREATE_GAMEOBJECT(m_pMiniMap, GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pMiniMap);
+			// DISABLE_GAMEOBJECT(m_pMiniMap);
 		}
 	}
 

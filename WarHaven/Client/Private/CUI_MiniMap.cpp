@@ -10,6 +10,9 @@
 #include "CPlayerInfo.h"
 #include "CUtility_Transform.h"
 #include "CUnit.h"
+#include "Transform.h"
+#include "CTeamConnector.h"
+#include "Functor.h"
 
 HRESULT CUI_MiniMap::Initialize_Prototype()
 {
@@ -17,11 +20,6 @@ HRESULT CUI_MiniMap::Initialize_Prototype()
 	Create_MiniMapPoint();
 	Create_PlayerIcon();
 
-	return S_OK;
-}
-
-HRESULT CUI_MiniMap::Initialize()
-{
 	return S_OK;
 }
 
@@ -38,6 +36,21 @@ HRESULT CUI_MiniMap::Start()
 	Bind_Shader();
 
 	return S_OK;
+}
+
+void CUI_MiniMap::Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));
+}
+
+void CUI_MiniMap::Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_R], sizeof(_float));
+}
+
+void CUI_MiniMap::Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
 }
 
 void CUI_MiniMap::SetActive_MiniMap(_bool value)
@@ -99,44 +112,61 @@ void CUI_MiniMap::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 	}
 }
 
-void CUI_MiniMap::Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName)
+void CUI_MiniMap::Set_Player(CPlayer* pPlayer)
 {
-	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));
-}
+	_bool isMainTeam = pPlayer->Get_Team()->IsMainPlayerTeam();
+	if (!isMainTeam)
+		return;
 
-void CUI_MiniMap::Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName)
-{
-	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_R], sizeof(_float));
-}
+	_bool isMainPlayer = pPlayer->IsMainPlayer();
+	if (isMainPlayer)
+	{
+		m_pPlayerTransform[0] = pPlayer->Get_Transform();
+	}
+	else
+	{
+		if (pPlayer->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+		{
+			if (m_iMainSquadIdx > m_iMainSquadMaxIdx)
+				return;
 
-void CUI_MiniMap::Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName)
-{
-	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
+			m_pPlayerTransform[m_iMainSquadIdx++] = pPlayer->Get_Transform();
+		}
+		else
+		{
+			if (m_iMainTeamIdx > m_iMainTeamMaxIdx)
+				return;
+
+			m_pPlayerTransform[m_iMainTeamIdx++] = pPlayer->Get_Transform();
+		}
+	}
+
+	cout << CFunctor::To_String(pPlayer->Get_PlayerName()) << endl;
 }
 
 void CUI_MiniMap::My_Tick()
 {
 	__super::My_Tick();
-
-	cout << "¹Ì´Ï¸Ê Æ½" << endl;
 }
 
 void CUI_MiniMap::My_LateTick()
 {
 	__super::My_LateTick();
 
-	cout << "¹Ì´Ï¸Ê ·¹ÀÌÆ®Æ½" << endl;
-
-	CUnit* pPlayer = CUser::Get_Instance()->Get_Player();
-	_bool isMainPlayer = pPlayer->Is_MainPlayer();
-	if (isMainPlayer)
+	for (int i = 0; i < 8; ++i)
 	{
-		_float4 vPlayerPos = CUtility_Transform::Get_ProjPos(pPlayer->Get_Transform());
-
-		cout << vPlayerPos.x << ", " << vPlayerPos.y << endl;
-
-		m_pPlayerIcon[0]->Set_Pos(vPlayerPos);
+		_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
+		m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
 	}
+
+	//_float4 vPos = m_pPlayerTransform[0]->Get_World(WORLD_POS);
+
+	//_float fIconPosY = (vPos.x * 0.5f);
+
+	// cout << "º¯È¯ À§Ä¡ : X : " << -vPos.z << ", Z : " << fIconPosY << endl;
+
+	//m_pPlayerIcon->Set_Pos(-vPos.z, -fIconPosY);
+	//m_pPlayerIcon[0]->Set_Pos(vPos.z, vPos.x);
 }
 
 void CUI_MiniMap::OnEnable()
@@ -236,14 +266,31 @@ void CUI_MiniMap::Create_PlayerIcon()
 	{
 		m_pPlayerIcon[i] = CUI_Object::Create();
 
-		m_pPlayerIcon[0]->Set_Sort(0.48f);
+		m_pPlayerIcon[i]->Set_Sort(0.48f);
+
+		m_pPlayerIcon[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/MiniMap/T_MinimapPlayerIcon.dds"));
+
+		if (i == 0)
+		{
+			m_pPlayerIcon[i]->Set_Scale(20.f);
+		}
+		else
+		{
+			m_pPlayerIcon[i]->Set_Scale(15.f);
+
+			if (i < 4)
+			{
+				m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
+			}
+			else
+			{
+				m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+			}
+		}
 
 		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pPlayerIcon[i]);
 	}
-
-	m_pPlayerIcon[0]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/MiniMap/T_MinimapPlayerIcon.dds"));
-	m_pPlayerIcon[0]->Set_Scale(20.f);
 }
 
 void CUI_MiniMap::Init_MiniMap()
@@ -253,7 +300,8 @@ void CUI_MiniMap::Init_MiniMap()
 	case Client::LEVEL_PADEN:
 
 		m_pMiniMap->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/MiniMap/T_MinimapPadenBlack.dds"));
-		m_pMiniMap->Set_Pos(-500.f, 250.f);
+		//m_pMiniMap->Set_Pos(-500.f, 250.f);
+		//m_pMiniMap->Set_RotationZ(180.f);
 		m_pMiniMap->Set_Scale(250.f);
 
 		break;
@@ -317,13 +365,15 @@ void CUI_MiniMap::Init_PlayerIcon()
 		{
 		case 0:	// Red
 
-			m_pPlayerIcon[0]->Set_Pos(-550.f, 280.f);
+			//m_pPlayerIcon->Set_Pos(-550.f, 280.f);
+			m_pPlayerIcon[0]->Set_Color(m_vColorRed);
 
 			break;
 
 		case 1:	// Blue
 
-			m_pPlayerIcon[0]->Set_Pos(-450.f, 280.f);
+			//m_pPlayerIcon->Set_Pos(-450.f, 280.f);
+			m_pPlayerIcon[0]->Set_Color(m_vColorBlue);
 
 			break;
 		}

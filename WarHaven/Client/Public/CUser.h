@@ -137,6 +137,7 @@ public:		// ÆÄµ§
 	void Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float fMaxConquestTime);
 	void Set_MiniMapGaugeColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_MiniMapPointColor(_bool IsMainTeam, _uint iPointIdx);
+	void Set_MiniMapPlayer(CPlayer* pPlayer);
 
 	void Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam);
 

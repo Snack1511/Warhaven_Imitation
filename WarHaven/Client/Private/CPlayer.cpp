@@ -719,6 +719,9 @@ HRESULT CPlayer::Start()
 	/* hud 생성 */
 	Enable_UnitHUD();
 
+	// 미니맵에 트랜스폼 할당
+	CUser::Get_Instance()->Set_MiniMapPlayer(this);
+
 	if (m_pCurrentUnit)
 	{
 		if (m_bEnableOnStart)
@@ -889,7 +892,7 @@ void CPlayer::On_RealDie()
 	m_bDieDelay = false;
 	m_fDieDelayAcc = 0.f;
 	m_bDie = true;
-	m_bAbleRevival = true;	
+	m_bAbleRevival = true;
 
 	m_DeadLights.clear();
 
@@ -1098,6 +1101,12 @@ void CPlayer::My_Tick()
 void CPlayer::My_LateTick()
 {
 	//공통으로 업데이트 되어야 하는것
+
+
+	if (Get_Team()->IsMainPlayerTeam())
+	{
+
+	}
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{
