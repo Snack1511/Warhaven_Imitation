@@ -13,6 +13,7 @@
 #include "Transform.h"
 #include "CTeamConnector.h"
 #include "Functor.h"
+#include "CSquad.h"
 
 HRESULT CUI_MiniMap::Initialize_Prototype()
 {
@@ -31,7 +32,6 @@ HRESULT CUI_MiniMap::Start()
 
 	Init_MiniMap();
 	Init_MiniMapPoint();
-	Init_PlayerIcon();
 
 	Bind_Shader();
 
@@ -121,6 +121,7 @@ void CUI_MiniMap::Set_Player(CPlayer* pPlayer)
 	_bool isMainPlayer = pPlayer->IsMainPlayer();
 	if (isMainPlayer)
 	{
+		m_pPlayerIcon[0]->Set_TextureIndex(0);
 		m_pPlayerTransform[0] = pPlayer->Get_Transform();
 	}
 	else
@@ -130,18 +131,22 @@ void CUI_MiniMap::Set_Player(CPlayer* pPlayer)
 			if (m_iMainSquadIdx > m_iMainSquadMaxIdx)
 				return;
 
-			m_pPlayerTransform[m_iMainSquadIdx++] = pPlayer->Get_Transform();
+			m_pPlayerIcon[m_iMainSquadIdx]->Set_TextureIndex(m_iMainSquadIdx);
+			m_pPlayerTransform[m_iMainSquadIdx] = pPlayer->Get_Transform();
+
+			m_iMainSquadIdx++;
 		}
 		else
 		{
 			if (m_iMainTeamIdx > m_iMainTeamMaxIdx)
 				return;
 
-			m_pPlayerTransform[m_iMainTeamIdx++] = pPlayer->Get_Transform();
+			m_pPlayerIcon[m_iMainTeamIdx]->Set_TextureIndex(0);
+			m_pPlayerTransform[m_iMainTeamIdx] = pPlayer->Get_Transform();
+
+			m_iMainTeamIdx++;
 		}
 	}
-
-	cout << CFunctor::To_String(pPlayer->Get_PlayerName()) << endl;
 }
 
 void CUI_MiniMap::My_Tick()
@@ -156,17 +161,10 @@ void CUI_MiniMap::My_LateTick()
 	for (int i = 0; i < 8; ++i)
 	{
 		_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
+		vPos.x += m_fIconOffsetX;
+		vPos.z += m_fIconOffsetY;
 		m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
 	}
-
-	//_float4 vPos = m_pPlayerTransform[0]->Get_World(WORLD_POS);
-
-	//_float fIconPosY = (vPos.x * 0.5f);
-
-	// cout << "변환 위치 : X : " << -vPos.z << ", Z : " << fIconPosY << endl;
-
-	//m_pPlayerIcon->Set_Pos(-vPos.z, -fIconPosY);
-	//m_pPlayerIcon[0]->Set_Pos(vPos.z, vPos.x);
 }
 
 void CUI_MiniMap::OnEnable()
@@ -268,24 +266,17 @@ void CUI_MiniMap::Create_PlayerIcon()
 
 		m_pPlayerIcon[i]->Set_Sort(0.48f);
 
-		m_pPlayerIcon[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/MiniMap/T_MinimapPlayerIcon.dds"));
+		GET_COMPONENT_FROM(m_pPlayerIcon[i], CTexture)->Remove_Texture(0);
+		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "PlayerIcon");
 
-		if (i == 0)
+		if (i < 5)
 		{
 			m_pPlayerIcon[i]->Set_Scale(20.f);
 		}
 		else
 		{
 			m_pPlayerIcon[i]->Set_Scale(15.f);
-
-			if (i < 4)
-			{
-				m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
-			}
-			else
-			{
-				m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
-			}
+			m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
 		}
 
 		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);
@@ -300,7 +291,7 @@ void CUI_MiniMap::Init_MiniMap()
 	case Client::LEVEL_PADEN:
 
 		m_pMiniMap->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/MiniMap/T_MinimapPadenBlack.dds"));
-		//m_pMiniMap->Set_Pos(-500.f, 250.f);
+		m_pMiniMap->Set_Pos(-500.f, 250.f);
 		//m_pMiniMap->Set_RotationZ(180.f);
 		m_pMiniMap->Set_Scale(250.f);
 
@@ -345,40 +336,6 @@ void CUI_MiniMap::Init_MiniMapPoint()
 		}
 
 		break;
-
-	case Client::LEVEL_HWARA:
-		break;
-	}
-}
-
-void CUI_MiniMap::Init_PlayerIcon()
-{
-	switch (m_eLoadLevel)
-	{
-	case Client::LEVEL_PADEN:
-	{
-		// 플레이어가 생성된 위치에 따라 아이콘 생성 위치 지정
-		// 플레이어는 기본적으로 c 거점을 등지고 서있으니 룩벡터를 다르게 지정해서 똑같이 이동시키자
-
-		_uint iTeamType = (_uint)CUser::Get_Instance()->Get_MainPlayerInfo()->Get_TeamType();
-		switch (iTeamType)
-		{
-		case 0:	// Red
-
-			//m_pPlayerIcon->Set_Pos(-550.f, 280.f);
-			m_pPlayerIcon[0]->Set_Color(m_vColorRed);
-
-			break;
-
-		case 1:	// Blue
-
-			//m_pPlayerIcon->Set_Pos(-450.f, 280.f);
-			m_pPlayerIcon[0]->Set_Color(m_vColorBlue);
-
-			break;
-		}
-	}
-	break;
 
 	case Client::LEVEL_HWARA:
 		break;

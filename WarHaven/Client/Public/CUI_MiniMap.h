@@ -58,6 +58,9 @@ private:
 	_uint m_iMainTeamIdx = 4;
 	_uint m_iMainTeamMaxIdx = 8;
 
+	_float m_fIconOffsetX = -240.f;
+	_float m_fIconOffsetY = -500.f;
+
 private:
 	_float m_fConquestTime[Point_End];
 	_float m_fMaxConquestTime[Point_End];
@@ -81,7 +84,6 @@ private:
 
 	void Init_MiniMap();
 	void Init_MiniMapPoint();
-	void Init_PlayerIcon();
 };
 
 END
