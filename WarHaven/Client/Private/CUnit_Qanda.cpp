@@ -66,9 +66,9 @@ void CUnit_Qanda::On_Die()
 	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
 
 
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Archer", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_QANDA", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 	vPos.y += 1.f;
-	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"ArcherDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"QANDADead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 
 }
 
@@ -145,25 +145,25 @@ void CUnit_Qanda::SetUp_HitStates(UNIT_TYPE eUnitType)
 	switch (eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
-		m_tHitType.eHitState = STATE_HIT_ARCHER;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ARCHER;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_ARCHER;
-		m_tHitType.eGroggyState = STATE_GROGGYHIT_ARCHER;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ARCHER;
-		m_tHitType.eFlyState = STATE_FLYHIT_ARCHER;
-		m_tHitType.eBounce = STATE_BOUNCE_ARCHER;
+		m_tHitType.eHitState = STATE_HIT_QANDA;
+		m_tHitType.eGuardState = STATE_GUARDHIT_QANDA;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_QANDA;
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_QANDA;
+		m_tHitType.eStingHitState = STATE_STINGHIT_QANDA;
+		m_tHitType.eFlyState = STATE_FLYHIT_QANDA;
+		m_tHitType.eBounce = STATE_HIT_QANDA;
 
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_ARCHER;
-		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_ARCHER;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_ARCHER; // 이거 아직 안함.
-		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_ARCHER;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_ARCHER;
-		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_ARCHER;
-		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_ARCHER;
+		//m_tHitType.eHitState = AI_STATE_COMMON_HIT_QANDA;
+		//m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_QANDA;
+		//m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_QANDA; // 이거 아직 안함.
+		//m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_QANDA;
+		//m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_QANDA;
+		//m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_QANDA;
+		//m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_QANDA;
 		break;
 
 	default:
@@ -185,8 +185,8 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
-		m_eSprintEndState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		//m_eDefaultState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
+		//m_eSprintEndState = AI_STATE_PATROL_DEFAULT_QANDA_R;
 
 		break;
 
@@ -213,19 +213,19 @@ void CUnit_Qanda::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+	//	eNewState = AI_STATE_PATROL_DEFAULT_QANDA_R;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
+	//	eNewState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
 
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+	//	eNewState = AI_STATE_PATROL_DEFAULT_QANDA_R;
 		break;
 
 	case eBehaviorType::eResurrect:
@@ -288,9 +288,6 @@ void CUnit_Qanda::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
 			break;
 
-	case STATE_ATTACK_SWING_ARCHER:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
-		break;
 
 	case STATE_ATTACK_VERTICALCUT:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
@@ -500,7 +497,7 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 	m_fCoolAcc[SKILL3] = 0.f;
 
 
-	m_tUnitStatus.eClass = ARCHER;
+	m_tUnitStatus.eClass = QANDA;
 
 	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
 		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_C_Hat_02");

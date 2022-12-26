@@ -34,6 +34,8 @@ CProjectile::CProjectile(const CProjectile& _origin)
 	, m_fMaxDistance(_origin.m_fMaxDistance)
 	, m_vArrowHeadPos(_origin.m_vArrowHeadPos)
 	, m_fDamage(_origin.m_fDamage)
+	, m_szMainBoneName(_origin.m_szMainBoneName)
+	, m_szSubBoneName(_origin.m_szSubBoneName)
 {
 }
 

@@ -551,7 +551,7 @@ void CAttack_Qanda::Enter_Attack_Begin(CUnit* pOwner)
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
 
-	pOwner->Set_AnimWeaponIndex(15, m_fInterPolationTime, m_fAnimSpeed);
+	pOwner->Set_AnimWeaponIndex(14, m_fInterPolationTime, m_fAnimSpeed);
 
 	m_bMoveTrigger = false;
 
@@ -572,7 +572,7 @@ void CAttack_Qanda::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	}
 
 
-	pOwner->Set_AnimWeaponIndex(17, 0.f, m_fAnimSpeed);
+	pOwner->Set_AnimWeaponIndex(16, 0.f, m_fAnimSpeed);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE(eCamLerpType));
 }
 

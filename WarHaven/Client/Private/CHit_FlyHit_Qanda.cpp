@@ -45,7 +45,7 @@ HRESULT CHit_FlyHit_Qanda::Initialize()
 
     m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
     m_iAnimIndex = m_iFlyHitIndex;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_FLYHIT_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = STATE_FLYHIT_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     // 선형 보간 시간
     m_fInterPolationTime = 0.1f;
@@ -78,7 +78,7 @@ void CHit_FlyHit_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 STATE_TYPE CHit_FlyHit_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (pAnimator->Get_CurAnimFrame() > m_tHitInfo.iLandKeyFrame)
-		return STATE_JUMPFALL_ARCHER_R;
+		return STATE_JUMPFALL_QANDA;
 
     return __super::Tick(pOwner, pAnimator);
 }

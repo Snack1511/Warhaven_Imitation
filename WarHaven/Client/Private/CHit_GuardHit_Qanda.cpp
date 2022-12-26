@@ -36,7 +36,7 @@ HRESULT CHit_GuardHit_Qanda::Initialize()
     
     m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 9;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_GUARDHIT_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = STATE_GUARDHIT_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     // 선형 보간 시간
@@ -51,21 +51,21 @@ HRESULT CHit_GuardHit_Qanda::Initialize()
     m_iStateChangeKeyFrame = 20;
 
   
-    m_vecAdjState.push_back(STATE_IDLE_ARCHER_R);
-    m_vecAdjState.push_back(STATE_WALK_ARCHER_R);
-    m_vecAdjState.push_back(STATE_RUN_ARCHER_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_ARCHER_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_ARCHER);
-    //m_vecAdjState.push_back(STATE_GUARD_BEGIN_ARCHER);
+    m_vecAdjState.push_back(STATE_IDLE_QANDA);
+    m_vecAdjState.push_back(STATE_WALK_QANDA);
+    m_vecAdjState.push_back(STATE_RUN_QANDA);
+    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_QANDA);
+    //m_vecAdjState.push_back(STATE_ATTACK_STING_QANDA);
+    //m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_QANDA);
+    //m_vecAdjState.push_back(STATE_GUARD_BEGIN_QANDA);
 
-    //m_vecAdjState.push_back(STATE_COUNTER_ARCHER);
-    //m_vecAdjState.push_back(STATE_SPINATTACK_ARCHER);
-    //m_vecAdjState.push_back(STATE_SHIELDATTACK_ARCHER);
-    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_ARCHER_R);
-    //m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_R);
-    //m_vecAdjState.push_back(STATE_VERTICALATTACK_ARCHER_R);
-    //m_vecAdjState.push_back(STATE_GUARD_BEGIN_ARCHER);
+    //m_vecAdjState.push_back(STATE_COUNTER_QANDA);
+    //m_vecAdjState.push_back(STATE_SPINATTACK_QANDA);
+    //m_vecAdjState.push_back(STATE_SHIELDATTACK_QANDA);
+    //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_QANDA);
+    //m_vecAdjState.push_back(STATE_ATTACK_STING_QANDA);
+    //m_vecAdjState.push_back(STATE_VERTICALATTACK_QANDA);
+    //m_vecAdjState.push_back(STATE_GUARD_BEGIN_QANDA);
 
 
     m_fMyAccel = 10.f;
@@ -105,7 +105,7 @@ void CHit_GuardHit_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CHit_GuardHit_Qanda::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* ARCHER가 Attack 으로 오는 조건
+    /* QANDA가 Attack 으로 오는 조건
     1.  LBuutton 을 이용해 공격한다.
     */
     //if (KEY(CTRL, NONE))
