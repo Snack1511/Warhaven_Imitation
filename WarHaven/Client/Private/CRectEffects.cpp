@@ -497,7 +497,7 @@ HRESULT CRectEffects::Initialize()
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
-	else if (CURVE_CIRCLE == m_eCurveType || CURVE_CHARGE == m_eCurveType || FOLLOWTARGET == m_eCurveType)
+	else if (CURVE_CIRCLE == m_eCurveType || CURVE_CHARGE == m_eCurveType || CANNON_BONE == m_eCurveType)
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
@@ -860,7 +860,7 @@ _bool CRectEffects::Fade_Lerp(_uint iIndex)
 			m_pDatas[iIndex].InstancingData.vScale = m_pDatas[iIndex].InstancingData.vFadeInTargetScale;
 			m_pDatas[iIndex].InstancingData.vColor.w = m_pDatas[iIndex].InstancingData.fTargetAlpha;
 
-			if (FOLLOWTARGET == m_eCurveType)
+			if ((CANNON_BONE == m_eCurveType) && m_pRefBone)
 		{
 			_float4 vPos = m_vOffsetPos;
 			_float4x4 matFollow = m_pRefBone->Get_BoneMatrix();
@@ -1273,11 +1273,11 @@ void CRectEffects::Bone_Controll()
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
-	else if(FOLLOWTARGET == m_eCurveType)
+	else if(CANNON_BONE == m_eCurveType)
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	else
 		Stick_RefBone();
-}
+}	
 
 
 void CRectEffects::Stick_RefBone()
