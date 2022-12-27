@@ -44,6 +44,9 @@
 #include "CUI_KillLog.h"
 #include "CUI_KillName.h"
 #include "CUI_Revive.h"
+#include "CUI_UnitHUD.h"
+#include "CUI_Interact.h"
+#include "CUI_MiniMap.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -338,6 +341,30 @@ void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransf
 		m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform, isInFrustum);
 }
 
+void CUser::Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_ConquestTime(iPoinIdx, fConquestTime, fMaxConquestTime);
+}
+
+void CUser::Set_MiniMapGaugeColor(_bool IsMainTeam, _uint iPointIdx)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_GaugeColor(IsMainTeam, iPointIdx);
+}
+
+void CUser::Set_MiniMapPointColor(_bool IsMainTeam, _uint iPointIdx)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_PointColor(IsMainTeam, iPointIdx);
+}
+
+void CUser::Set_MiniMapPlayer(CPlayer* pPlayer)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->Set_Player(pPlayer);
+}
+
 void CUser::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 {
 	if (m_pUI_Paden)
@@ -491,15 +518,20 @@ void CUser::On_EnterStageLevel()
 			DISABLE_GAMEOBJECT(m_pUI_Result);
 		}
 
-		if (!m_pReviveUI[0])
+		if (!m_pInteractUI)
 		{
-			for (int i = 0; i < 7; ++i)
-			{
-				m_pReviveUI[i] = CUI_Revive::Create();
+			m_pInteractUI = CUI_Interact::Create();
 
-				CREATE_GAMEOBJECT(m_pReviveUI[i], GROUP_UI);
-				DISABLE_GAMEOBJECT(m_pReviveUI[i]);
-			}
+			CREATE_GAMEOBJECT(m_pInteractUI, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pInteractUI);
+		}
+
+		if (!m_pMiniMap)
+		{
+			m_pMiniMap = CUI_MiniMap::Create();
+
+			CREATE_GAMEOBJECT(m_pMiniMap, GROUP_UI);
+			// DISABLE_GAMEOBJECT(m_pMiniMap);
 		}
 	}
 
@@ -543,11 +575,11 @@ void CUser::On_ExitStageLevel()
 	if (m_pUI_Training)
 		m_pUI_Training = nullptr;
 
-	for (int i = 0; i < 7; ++i)
-	{
-		if (m_pReviveUI[i])
-			m_pReviveUI[i] = nullptr;
-	}
+	if (m_pInteractUI)
+		m_pInteractUI = nullptr;
+
+	if (m_pMiniMap)
+		m_pMiniMap = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -672,6 +704,26 @@ void CUser::Set_ArcherPoint(_bool value)
 	m_pUI_Crosshair->Set_ArcherPoint(value);
 }
 
+void CUser::SetActive_InteractUI(_bool value)
+{
+	m_pInteractUI->SetActive(value);
+}
+
+void CUser::Set_InteractKey(_uint iKeyIndex)
+{
+	m_pInteractUI->Set_InteractKey(iKeyIndex);
+}
+
+void CUser::Set_InteractText(wstring wstrText)
+{
+	m_pInteractUI->Set_InteractText(wstrText);
+}
+
+void CUser::Set_InteractTarget(CGameObject* pInteractTarget)
+{
+	m_pInteractUI->Set_InteractTarget(pInteractTarget);
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
@@ -714,5 +766,11 @@ void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
 	{
 		m_pUI_Training->Disable_Popup();
 	}
+}
+
+void CUser::SetActive_MiniMap(_bool value)
+{
+	if (m_pMiniMap)
+		m_pMiniMap->SetActive_MiniMap(value);
 }
 

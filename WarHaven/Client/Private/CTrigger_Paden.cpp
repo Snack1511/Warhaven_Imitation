@@ -137,14 +137,17 @@ void CTrigger_Paden::My_Tick()
 	{
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
+		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(1, m_pTransform, isIsFrustum);
+		CUser::Get_Instance()->Set_MiniMapConquestTime(1, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
+		CUser::Get_Instance()->Set_MiniMapConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 	}
 
@@ -191,6 +194,19 @@ void CTrigger_Paden::Update_Conquered()
 
 		CUser::Get_Instance()->Interat_PointUI(bMainPlayerTeam, m_strTriggerName);
 
+		switch (m_eTriggerType)
+		{
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 0);
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 1);
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 2);
+			break;
+		}
+
 	}
 
 
@@ -221,14 +237,25 @@ void CTrigger_Paden::Update_Conquered()
 
 		m_pDominionEffect->Set_DominionColor(m_pConqueredTeam);
 
-		if (m_pConqueredTeam->IsMainPlayerTeam())
+		_bool IsMainPlayerTeam = m_pConqueredTeam->IsMainPlayerTeam();
+		if (IsMainPlayerTeam)
 		{
-			CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, m_pConqueredTeam->IsMainPlayerTeam());
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eConquest);
 		}
-		else
+
+		CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, IsMainPlayerTeam);
+
+		switch (m_eTriggerType)
 		{
-			CUser::Get_Instance()->Conquest_PointUI(m_strTriggerName, m_pConqueredTeam->IsMainPlayerTeam());
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 0);
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 1);
+			break;
+		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 2);
+			break;
 		}
 
 		m_pConqueredTeam->Add_Trigger(this);

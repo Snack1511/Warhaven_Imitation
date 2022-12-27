@@ -13,6 +13,7 @@
 #include "CPlayer.h"
 #include "CTeamConnector.h"
 #include "CUI_Revive.h"
+#include "Functor.h"
 
 HRESULT CUI_UnitHUD::Initialize_Prototype()
 {
@@ -197,7 +198,6 @@ void CUI_UnitHUD::My_Tick()
 			SetActive_UnitHP(true);
 		}
 	}
-
 }
 
 void CUI_UnitHUD::My_LateTick()
@@ -222,6 +222,8 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 void CUI_UnitHUD::Enable_RevivalUI()
 {
 	CUI_Revive* pRevivalUI = static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
+
+	cout << CFunctor::To_String(m_pOwner->Get_PlayerName());
 
 	pRevivalUI->Set_ReviveUnitTransform(m_pOwner->Get_Transform());
 	pRevivalUI->Set_ClassIcon(m_pOwner);

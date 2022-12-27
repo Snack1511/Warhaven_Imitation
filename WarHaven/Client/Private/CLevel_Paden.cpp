@@ -16,6 +16,7 @@
 #include "CTrigger.h"
 #include "Transform.h"
 #include "CUser.h"
+#include "CUI_MiniMap.h"
 
 
 CLevel_Paden::CLevel_Paden()

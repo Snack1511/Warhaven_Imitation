@@ -3322,6 +3322,12 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\11. Bounce">
       <UniqueIdentifier>{cd78a4ed-ac55-4c24-9644-41286be314d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Interact">
+      <UniqueIdentifier>{de86ebc1-ef9a-472e-b64f-a03385c540a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\MiniMap">
+      <UniqueIdentifier>{17007632-30ec-492f-9374-c162376a1669}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -5946,6 +5952,12 @@
     <ClInclude Include="..\Public\CUnit_Lancer.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Lancer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Interact.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Interact</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_MiniMap.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\MiniMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8550,6 +8562,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_Lancer.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Lancer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Interact.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Interact</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_MiniMap.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\MiniMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

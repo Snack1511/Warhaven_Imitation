@@ -735,6 +735,9 @@ HRESULT CPlayer::Start()
 	/* hud 생성 */
 	Enable_UnitHUD();
 
+	// 미니맵에 트랜스폼 할당
+	CUser::Get_Instance()->Set_MiniMapPlayer(this);
+
 	if (m_pCurrentUnit)
 	{
 		if (m_bEnableOnStart)
@@ -893,6 +896,9 @@ void CPlayer::On_RealDie()
 	}
 	else
 	{
+		if (!Get_Team())
+			return;
+
 		if (Get_Team()->IsMainPlayerTeam())
 		{
 			m_pUnitHUD->Enable_RevivalUI();
@@ -902,7 +908,7 @@ void CPlayer::On_RealDie()
 	m_bDieDelay = false;
 	m_fDieDelayAcc = 0.f;
 	m_bDie = true;
-	m_bAbleRevival = true;	
+	m_bAbleRevival = true;
 
 	m_DeadLights.clear();
 
@@ -1018,19 +1024,19 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILLELITE);
 		}
-		else if (m_tKdaStat.iKillStreak == 1)
+		else if (m_tKdaStat.iKillStreak == 2)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL);
 		}
-		else if (m_tKdaStat.iKillStreak == 2)
+		else if (m_tKdaStat.iKillStreak == 3)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL2);
 		}
-		else if (m_tKdaStat.iKillStreak == 3)
+		else if (m_tKdaStat.iKillStreak == 4)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL3);
 		}
-		else if (m_tKdaStat.iKillStreak >= 4)
+		else if (m_tKdaStat.iKillStreak >= 5)
 		{
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL4);
 		}
@@ -1111,6 +1117,12 @@ void CPlayer::My_Tick()
 void CPlayer::My_LateTick()
 {
 	//공통으로 업데이트 되어야 하는것
+
+
+	if (Get_Team()->IsMainPlayerTeam())
+	{
+
+	}
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{

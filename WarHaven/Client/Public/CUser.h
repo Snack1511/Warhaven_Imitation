@@ -34,6 +34,8 @@ class CUI_Popup;
 class CUI_Oper;
 class CUI_Paden;
 class CUI_Revive;
+class CUI_Interact;
+class CUI_MiniMap;
 
 class CTeamConnector;
 
@@ -132,6 +134,11 @@ public:		// 파덴
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
 
+	void Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float fMaxConquestTime);
+	void Set_MiniMapGaugeColor(_bool IsMainTeam, _uint iPointIdx);
+	void Set_MiniMapPointColor(_bool IsMainTeam, _uint iPointIdx);
+	void Set_MiniMapPlayer(CPlayer* pPlayer);
+
 	void Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam);
 
 	void Set_TargetTransform(CTransform* pTargetTransform);
@@ -163,11 +170,13 @@ public:
 	void Enable_DamageFont(_uint eType, _float fDmg);
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
+	void SetActive_MiniMap(_bool value);
+
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
 	void Disable_RevivalUI();
 
-public:	
+public:
 	void Enable_Popup(_uint iPopupType);
 
 public:	// 킬로그
@@ -179,6 +188,12 @@ public:	// 킬로그
 
 public:	// 크로스헤어
 	void Set_ArcherPoint(_bool value);
+
+public:	// 상호작용
+	void SetActive_InteractUI(_bool value);
+	void Set_InteractKey(_uint iKeyIndex);
+	void Set_InteractText(wstring wstrText);
+	void Set_InteractTarget(CGameObject* pInteractTarget);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
@@ -195,6 +210,9 @@ private:	// 소생
 	CUI_Revive* m_pReviveUI[7];
 	_uint m_iReviveIdx = 0;
 
+private:	// 상호작용
+	CUI_Interact* m_pInteractUI = nullptr;
+
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;
 	CUI_Cursor* m_pCursor = nullptr;
@@ -205,6 +223,8 @@ private:
 	CUI_Animation* m_pFire = nullptr;
 	CUI_AbleHeroFire* m_pUVFire = nullptr;
 	CUI_Dead* m_pUI_Dead = nullptr;
+
+	CUI_MiniMap* m_pMiniMap = nullptr;
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
