@@ -79,9 +79,7 @@ void CState_Combat_Shoot_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 	_bool bBounce = false;
 
-	if (ePrevType == AI_STATE_COMBAT_ATTACK_BEGIN_ARCHER ||
-		ePrevType == AI_STATE_COMBAT_ATTACK_BEGIN_POISION_ARCHER ||
-		ePrevType == AI_STATE_COMBAT_ATTACK_BEGIN_SNIPING_ARCHER)
+	if (ePrevType == AI_STATE_COMMON_BOUNCE_ARCHER)
 	{
 		bBounce = true;
 		m_fInterPolationTime = 0.f;
@@ -94,11 +92,11 @@ void CState_Combat_Shoot_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
 
-	_float4x4 matOffset;
-	matOffset.Identity();
-	CHierarchyNode* pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
-	pCoreBone->Set_PrevMatrix(matOffset);
-	static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat() = matOffset;
+	//_float4x4 matOffset;
+	//matOffset.Identity();
+	//CHierarchyNode* pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
+	//pCoreBone->Set_PrevMatrix(matOffset);
+	//static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat() = matOffset;
 
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
     
@@ -107,7 +105,7 @@ void CState_Combat_Shoot_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 		pAnimator->Set_CurFrame(pOwner->Get_PreAnimIndex());
 	}
 
-	__super::Enter(pOwner, pAnimator, ePrevType, pData);
+	CState_Combat::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CState_Combat_Shoot_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)

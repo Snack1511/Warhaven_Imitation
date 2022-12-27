@@ -77,3 +77,12 @@ HRESULT CDefaultArrow::Initialize_Prototype()
 
     return CProjectile::Initialize_Prototype();
 }
+
+void CDefaultArrow::OnDisable()
+{
+	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
+	__super::OnDisable();
+}
+
+
+

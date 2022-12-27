@@ -56,6 +56,8 @@ HRESULT CGuard_Dash_Valkyrie::Initialize()
 	m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
 	m_vecAdjState.push_back(STATE_SHIELDATTACK_VALKYRIE);
 
+	Init_CommonState_Hero_Player();
+
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 48;
 	m_iDirectionAnimIndex[STATE_DIRECTION_N] = 49;
 	m_iDirectionAnimIndex[STATE_DIRECTION_S] = 50;

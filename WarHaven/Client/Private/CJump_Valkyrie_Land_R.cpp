@@ -57,6 +57,7 @@ HRESULT CJump_Valkyrie_Land_R::Initialize()
 
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_VALKYRIE);
 
+    Init_CommonState_Hero_Player();
 
 
     return S_OK;

@@ -64,7 +64,7 @@ HRESULT CSprint_End_Valkyrie::Initialize()
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_VALKYRIE);
 
 
-    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+    Init_CommonState_Hero_Player();
 
 
 	m_fMyMaxLerp = 0.4f;

@@ -55,6 +55,7 @@ HRESULT CHit_Archer::Initialize()
     //m_vecAdjState.push_back(STATE_ATTACK_STING_ARCHER_R);
     //m_vecAdjState.push_back(STATE_VERTICALATTACK_ARCHER_R);
 
+    Init_CommonState_Player();
 
     m_fMyAccel = 1.f;
     m_fMyMaxLerp = 10.f;

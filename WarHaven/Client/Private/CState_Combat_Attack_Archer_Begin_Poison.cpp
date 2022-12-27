@@ -85,7 +85,7 @@ STATE_TYPE CState_Combat_Attack_Archer_Begin_Poison::Tick(CUnit* pOwner, CAnimat
 void CState_Combat_Attack_Archer_Begin_Poison::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
-	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
+	//m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
 
 	__super::Exit(pOwner, pAnimator);
 }

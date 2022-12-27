@@ -402,6 +402,7 @@ public:
 	void	Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 	void	Set_AnimWeaponFrame(_uint iChangeFrame);
 
+	_float4x4& Use_OwnerBoneOffset();
 
 
 	/* 상태 체크 함수 */

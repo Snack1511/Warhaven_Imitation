@@ -59,8 +59,7 @@ HRESULT CSprint_End_Paladin::Initialize()
     m_vecAdjState.push_back(STATE_RUSH_BEGIN_PALADIN);
     m_vecAdjState.push_back(STATE_SHIELDSLAM_PALADIN);
 
-    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
-    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+    Init_CommonState_Player();
 
 
 	m_fMyMaxLerp = 0.4f;

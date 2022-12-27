@@ -26,6 +26,7 @@ public:
 		_float4 vLook = ZERO_VECTOR;
 
 		_bool	bHeadShot = false;
+		_bool	bNoneHeadAttack = false;
 
 		_bool	bFace = false;
 		_bool	bSting = false;
@@ -94,6 +95,12 @@ public:
 
 protected:
 	void Re_Enter(CUnit* pOwner, CAnimator* pAnimator, _float fInterpolationTime = -1.f, _float fAnimSpeed = -1.f);
+
+protected:
+	void Init_CommonState_Player();
+	void Init_CommonState_Hero_Player();
+	void Init_CommonState_AI();
+	void Init_CommonState_Hero_AI();
 
 protected:
 	virtual void Hit_GroundEffect(CUnit* pOwner);

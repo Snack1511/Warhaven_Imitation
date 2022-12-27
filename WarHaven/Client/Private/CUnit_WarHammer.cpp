@@ -422,7 +422,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	m_tUnitStatus.fDashAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintAttackSpeed *= 0.9f;
 	m_tUnitStatus.fSprintJumpSpeed *= 0.8f;
-	m_tUnitStatus.fSprintSpeed *= 0.75f;
+	m_tUnitStatus.fSprintSpeed *= 0.85f;
 	m_tUnitStatus.fRunSpeed *= 0.75f;
 	m_tUnitStatus.fWalkSpeed *= 0.8f;
 	m_tUnitStatus.fRunBeginSpeed *= 0.8f;

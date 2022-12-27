@@ -137,12 +137,14 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir = (m_pTransform->Get_World(WORLD_POS) - vHitPos);
 	tOtherHitInfo.vDir.y = 0.f;
 	tOtherHitInfo.vDir.Normalize();
+	
 	//tOtherHitInfo.pOtherUnit = pOtherUnit;
 
 	//상대 위치 계산
 	_float4 vOtherDir = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
 
 	_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+
 
 	//양수면 앞임.
 	if (vCurLook.Dot(vOtherDir) > 0.f)
@@ -168,7 +170,11 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 
 	case COL_BLUEHITBOX_HEAD:
 	case COL_REDHITBOX_HEAD:
-		tOtherHitInfo.bHeadShot = true;
+		if(!tOtherHitInfo.bNoneHeadAttack)
+			tOtherHitInfo.bHeadShot = true;
+		else
+			tOtherHitInfo.bHeadShot = false;
+
 		On_Hit(pOtherUnit, eOtherColType, vHitPos, &tOtherHitInfo);
 		break;
 
@@ -1274,6 +1280,16 @@ void CUnit::Set_AnimWeaponFrame(_uint iChangeFrame)
 		return;
 
 	GET_COMPONENT_FROM(m_pAnimWeapon, CAnimator)->Set_CurFrame(iChangeFrame);
+}
+
+_float4x4& CUnit::Use_OwnerBoneOffset()
+{
+	_float4x4 vMatrix = XMMatrixIdentity();
+
+	if (!m_pAnimWeapon)
+		return vMatrix;
+
+	return m_pAnimWeapon->Use_OwnerBoneOffset();
 }
 
 

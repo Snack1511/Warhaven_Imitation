@@ -29,6 +29,8 @@ public:
 	_float4		Get_ArrowHeadPos();
 	_float		Get_MaxDistance() { return m_fMaxDistance; }
 
+	void		Set_TargetUnit(CUnit* pTargetUnit) { m_pTargetUnit = pTargetUnit; }
+
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize();
@@ -45,6 +47,7 @@ protected:
 
 protected:
 	CUnit* m_pOwnerUnit = nullptr;
+	CUnit* m_pTargetUnit = nullptr;
 	CHierarchyNode* m_pRightHandBone = nullptr;
 	CHierarchyNode* m_pLeftHandBone = nullptr;
 	CHierarchyNode* m_pCurStickBone = nullptr;
@@ -66,6 +69,10 @@ protected:
 	_float	m_fDamage = 0.f;
 
 protected:
+	string m_szMainBoneName = "0B_R_WP1";
+	string m_szSubBoneName = "0B_L_WP1";
+
+protected:
 	ePROJECTILE_PHASE	m_eCurPhase = eSTART;
 
 protected:
@@ -76,7 +83,9 @@ protected:
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
 		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount);
 	HRESULT	SetUp_Projectile(wstring wstrModelFilePath);
-	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType); // 필요하다면 가상함수.
+	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType); 
+	HRESULT	SetUp_Collider(COL_GROUP_CLIENT eColType, _float fRadian);
+
 
 protected:
 	virtual void My_Tick() override;

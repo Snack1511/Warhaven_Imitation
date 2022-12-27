@@ -31,7 +31,7 @@ HRESULT CWalk_Valkyrie::Initialize()
     m_vecAdjState.push_back(STATE_SPINATTACK_VALKYRIE);
     m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT_VALKYRIE);
 
-    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
+    Init_CommonState_Hero_Player();
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;

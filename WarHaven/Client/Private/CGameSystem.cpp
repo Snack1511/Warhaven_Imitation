@@ -171,7 +171,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_idiot);
 
 		// ±Ã¼ö Å×½ºÆ®
-		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_ARCHER_R);
+		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_ARCHER_R);
 		
 
 		READY_GAMEOBJECT(pEnemy, GROUP_PLAYER);

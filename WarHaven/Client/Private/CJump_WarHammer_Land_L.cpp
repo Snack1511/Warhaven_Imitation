@@ -53,7 +53,7 @@ HRESULT CJump_WarHammer_Land_L::Initialize()
     m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
     m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
     
-
+    Init_CommonState_Player();
 
     return S_OK;
 }

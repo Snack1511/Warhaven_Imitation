@@ -59,6 +59,8 @@ HRESULT CSprint_End::Initialize()
     m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
     m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
 
+    Init_CommonState_Player();
+
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMaxSpeed = 10.f;

@@ -56,7 +56,7 @@ HRESULT CJump_Player_Land_L::Initialize()
 	m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 	m_vecAdjState.push_back(STATE_WARRIOR_GUARDBREAK);
     
-
+    Init_CommonState_Player();
 
     return S_OK;
 }

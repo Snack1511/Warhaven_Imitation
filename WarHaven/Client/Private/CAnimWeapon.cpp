@@ -39,9 +39,6 @@ CAnimWeapon* CAnimWeapon::Create(wstring wstrModelFilePath, wstring wstrAnimFile
 
 void CAnimWeapon::Set_AnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed)
 {
-	if (iAnimIndex >= eCNT)
-		return;
-
 	m_pAnimator->Set_CurAnimIndex(0, iAnimIndex);
 	m_pAnimator->Set_InterpolationTime(0, iAnimIndex, fInterpolateTime);
 	m_pAnimator->Set_AnimSpeed(0, iAnimIndex, fAnimSpeed);
@@ -66,6 +63,8 @@ HRESULT CAnimWeapon::Initialize_Prototype()
 
 HRESULT CAnimWeapon::Initialize()
 {
+	XMStoreFloat4x4(&m_OwnerBoneOffsetMatrix, XMMatrixIdentity());
+
 	//__super::Initialize();
 
     return S_OK;
@@ -112,7 +111,7 @@ void CAnimWeapon::Late_Tick()
 {
 	_float4x4		matBone = m_pOwnerBone->Get_BoneMatrix();
 	
-	m_pTransform->Get_Transform().matMyWorld = matBone;
+	m_pTransform->Get_Transform().matMyWorld = matBone * m_OwnerBoneOffsetMatrix;
 
 	m_pTransform->Make_WorldMatrix();
 }

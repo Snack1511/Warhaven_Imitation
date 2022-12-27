@@ -17,14 +17,15 @@
 #include "CAnimWeapon.h"
 
 #include "CProjectile.h"
-#include "CDefaultArrow.h"
-#include "CPurpleArrow.h"
-#include "CSnipeArrow.h"
+#include "CQandaCrow.h"
+#include "CQandaMeteor.h"
 
 #include "CCollider_Sphere.h"
 #include "CColorController.h"
 
 #include "CUI_Trail.h"
+
+#include "CState.h"
 
 CUnit_Qanda::CUnit_Qanda()
 {
@@ -67,9 +68,9 @@ void CUnit_Qanda::On_Die()
 	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
 
 
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_Archer", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_QANDA", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 	vPos.y += 1.f;
-	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"ArcherDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"QANDADead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 
 }
 
@@ -146,25 +147,25 @@ void CUnit_Qanda::SetUp_HitStates(UNIT_TYPE eUnitType)
 	switch (eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
-		m_tHitType.eHitState = STATE_HIT_ARCHER;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ARCHER;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_ARCHER;
-		m_tHitType.eGroggyState = STATE_GROGGYHIT_ARCHER;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ARCHER;
-		m_tHitType.eFlyState = STATE_FLYHIT_ARCHER;
-		m_tHitType.eBounce = STATE_BOUNCE_ARCHER;
+		m_tHitType.eHitState = STATE_HIT_QANDA;
+		m_tHitType.eGuardState = STATE_GUARDHIT_QANDA;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_QANDA;
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_QANDA;
+		m_tHitType.eStingHitState = STATE_STINGHIT_QANDA;
+		m_tHitType.eFlyState = STATE_FLYHIT_QANDA;
+		m_tHitType.eBounce = STATE_HIT_QANDA;
 
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_ARCHER;
-		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_ARCHER;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_ARCHER; // 이거 아직 안함.
-		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_ARCHER;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_ARCHER;
-		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_ARCHER;
-		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_ARCHER;
+		//m_tHitType.eHitState = AI_STATE_COMMON_HIT_QANDA;
+		//m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_QANDA;
+		//m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_QANDA; // 이거 아직 안함.
+		//m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_QANDA;
+		//m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_QANDA;
+		//m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_QANDA;
+		//m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_QANDA;
 		break;
 
 	default:
@@ -179,15 +180,15 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 
-		m_eDefaultState = STATE_IDLE_ARCHER_R;
-		m_eSprintEndState = STATE_SPRINT_END_ARCHER;
+		m_eDefaultState = STATE_IDLE_QANDA;
+		m_eSprintEndState = STATE_SPRINT_END_QANDA;
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
-		m_eSprintEndState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		//m_eDefaultState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
+		//m_eSprintEndState = AI_STATE_PATROL_DEFAULT_QANDA_R;
 
 		break;
 
@@ -214,19 +215,19 @@ void CUnit_Qanda::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+	//	eNewState = AI_STATE_PATROL_DEFAULT_QANDA_R;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
+	//	eNewState = AI_STATE_COMBAT_DEFAULT_QANDA_R;
 
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+	//	eNewState = AI_STATE_PATROL_DEFAULT_QANDA_R;
 		break;
 
 	case eBehaviorType::eResurrect:
@@ -289,9 +290,6 @@ void CUnit_Qanda::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
 			break;
 
-	case STATE_ATTACK_SWING_ARCHER:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
-		break;
 
 	case STATE_ATTACK_VERTICALCUT:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
@@ -311,12 +309,12 @@ void CUnit_Qanda::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 }
 
-void CUnit_Qanda::Enable_Arrow(_bool bEnable)
+void CUnit_Qanda::Enable_Crow(_bool bEnable)
 {
 	if (bEnable)
-		ENABLE_GAMEOBJECT(m_pCurArrow);
+		ENABLE_GAMEOBJECT(m_pCrow);
 	else
-		DISABLE_GAMEOBJECT(m_pCurArrow);
+		DISABLE_GAMEOBJECT(m_pCrow);
 }
 
 void CUnit_Qanda::Enable_Trail(_bool bEnable)
@@ -329,6 +327,14 @@ void CUnit_Qanda::Enable_Trail(_bool bEnable)
 	else
 		DISABLE_GAMEOBJECT(m_pUI_Trail);
 }
+void CUnit_Qanda::Enable_AnimWeapon(_bool bEnable)
+{
+	if (bEnable)
+		ENABLE_GAMEOBJECT(m_pAnimWeapon);
+	else
+		DISABLE_GAMEOBJECT(m_pAnimWeapon);
+}
+
 
 void CUnit_Qanda::ReMap_Trail(_float4 vTargetPos)
 {
@@ -346,7 +352,7 @@ void CUnit_Qanda::ReMap_Trail(_float4 vTargetPos)
 
 void CUnit_Qanda::Set_ColorController(_uint iMeshPartType)
 {
-	if (!m_pCurArrow)
+	if (!m_pCrow)
 		return;
 
 	CColorController::COLORDESC tColorDesc;
@@ -361,19 +367,19 @@ void CUnit_Qanda::Set_ColorController(_uint iMeshPartType)
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = iMeshPartType;
 
-	GET_COMPONENT_FROM(m_pCurArrow, CColorController)->Add_ColorControll(tColorDesc);
+	GET_COMPONENT_FROM(m_pCrow, CColorController)->Add_ColorControll(tColorDesc);
 }
 
-void CUnit_Qanda::Create_DefaultArrow()
+void CUnit_Qanda::Create_Crow()
 {
-	if (m_pCurArrow) 
-		DISABLE_GAMEOBJECT(m_pCurArrow);
+	if (m_pCrow) 
+		DISABLE_GAMEOBJECT(m_pCrow);
 
 	CGameObject* pGameObject = nullptr;
 
-	if (m_mapProjectilePool[HASHCODE(CDefaultArrow)].empty())
+	if (m_mapProjectilePool[HASHCODE(CQandaCrow)].empty())
 	{
-		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CDefaultArrow));
+		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaCrow));
 		//없으면 새로 집어넣음
 		pGameObject->Initialize();
 		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
@@ -381,61 +387,63 @@ void CUnit_Qanda::Create_DefaultArrow()
 	}
 	else
 	{
-		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CDefaultArrow)].front();
+		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaCrow)].front();
 		pEffect->Reset(this);
-		m_mapProjectilePool[HASHCODE(CDefaultArrow)].pop_front();
+		m_mapProjectilePool[HASHCODE(CQandaCrow)].pop_front();
 		pGameObject = pEffect;
 	}
 
-	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
+	m_pCrow = static_cast<CProjectile*>(pGameObject);
 }
 
-void CUnit_Qanda::Create_SnipeArrow()
+void CUnit_Qanda::Create_Meteor()
 {
-	if (m_pCurArrow)
-		DISABLE_GAMEOBJECT(m_pCurArrow);
+	//if (m_pMeteor)
+	//	DISABLE_GAMEOBJECT(m_pMeteor);
 
-	CGameObject* pGameObject = nullptr;
+	//CGameObject* pGameObject = nullptr;
 
-	if (m_mapProjectilePool[HASHCODE(CSnipeArrow)].empty())
-	{
-		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CSnipeArrow));
-		//없으면 새로 집어넣음
-		pGameObject->Initialize();
-		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
-		static_cast<CProjectile*>(pGameObject)->Reset(this);
-	}
-	else
-	{
-		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CSnipeArrow)].front();
-		pEffect->Reset(this);
-		m_mapProjectilePool[HASHCODE(CSnipeArrow)].pop_front();
-		pGameObject = pEffect;
-	}
+	//if (m_mapProjectilePool[HASHCODE(CQandaMeteor)].empty())
+	//{
+	//	pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaMeteor));
+	//	//없으면 새로 집어넣음
+	//	pGameObject->Initialize();
+	//	CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+	//	static_cast<CProjectile*>(pGameObject)->Reset(this);
+	//}
+	//else
+	//{
+	//	CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaMeteor)].front();
+	//	pEffect->Reset(this);
+	//	m_mapProjectilePool[HASHCODE(CQandaMeteor)].pop_front();
+	//	pGameObject = pEffect;
+	//}
 
-	m_pCurArrow = static_cast<CProjectile*>(pGameObject);
+	//m_pMeteor = static_cast<CProjectile*>(pGameObject);
 }
 
 
 
-void CUnit_Qanda::Change_ArrowPhase(_uint iPhase)
+void CUnit_Qanda::Change_CrowPhase(_uint iPhase)
 {
-	if (!m_pCurArrow)
+	if (!m_pCrow)
 		return;
 
-	m_pCurArrow->On_ChangePhase(CProjectile::ePROJECTILE_PHASE(iPhase));
+	m_pCrow->On_ChangePhase(CProjectile::ePROJECTILE_PHASE(iPhase));
 }
 
-void CUnit_Qanda::Shoot_Arrow()
+void CUnit_Qanda::Shoot_Crow()
 {
-	if (!m_pCurArrow)
+	if (!m_pCrow)
 		return;
 
-	m_pCurArrow->On_ShootProjectile();
-	m_pCurArrow = nullptr;
+	ENABLE_COMPONENT(GET_COMPONENT_FROM(m_pCrow, CModel));
+	m_pCrow->On_ShootProjectile();
+	m_pCrow->Get_Transform()->Set_World(WORLD_POS, Get_Transform()->Get_World(WORLD_POS));
+	m_pCrow = nullptr;
 }
 
-void CUnit_Qanda::Collect_Arrow(_hashcode _hcCode, CProjectile* pEffect)
+void CUnit_Qanda::Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect)
 {
 	m_mapProjectilePool[_hcCode].push_back(pEffect);
 }
@@ -491,21 +499,19 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 	m_fCoolAcc[SKILL3] = 0.f;
 
 
-	m_tUnitStatus.eClass = ARCHER;
+	m_tUnitStatus.eClass = QANDA;
 
-	//m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_30.fbx",
-	//	L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_L_WP1");
+	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
+		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_C_Hat_02");
 
 	//m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_WP_LongBow0005_A00_30.fbx",
 	//	L"../bin/resources/meshes/weapons/longbow/LongBow_Anim2.fbx", this, "0B_L_WP1");
 
-	//if (!m_pAnimWeapon)
-	//	return E_FAIL;
+	if (!m_pAnimWeapon)
+		return E_FAIL;
 
-	//m_pAnimWeapon->Initialize();
-
-
-	
+	m_pAnimWeapon->Initialize();
+	m_tUnitStatus.fRunSpeed *= 0.95f;
 	
 
 
@@ -518,13 +524,13 @@ HRESULT CUnit_Qanda::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
-	Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
+	//Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
 
 	/* UI_TRAIL */
 	if (m_pOwnerPlayer->IsMainPlayer())
 	{
 		//CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
-		//	L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
+		//	L"../bin/resources/textures/effects/warhaven/texture/T_CrowUI_01_FX.dds",
 		//	L"../bin/resources/textures/White.png"
 		//);
 
@@ -534,8 +540,8 @@ HRESULT CUnit_Qanda::Initialize()
 		//m_pUI_Trail = pUI_Trail;
 	}
 
-	//CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
-	//DISABLE_GAMEOBJECT(m_pAnimWeapon);
+	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pAnimWeapon);
 
 	return S_OK;
 }
@@ -544,7 +550,7 @@ HRESULT CUnit_Qanda::Start()
 {
 	__super::Start();
 
-//	ENABLE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+	ENABLE_GAMEOBJECT(m_pAnimWeapon);
 
 	//if (m_pUI_Trail)
 	//{
@@ -553,22 +559,7 @@ HRESULT CUnit_Qanda::Start()
 	//}
 	
 
-
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
-
-	SetUp_TrailEffect(
-		_float4(0.f, 0.f, -10.f, 1.f),	//Weapon Low
-		_float4(0.f, 0.f, -11.f, 1.f),	//Weapon High
-		_float4(0.f, -1.5f, -10.f, 1.f), //Left
-		_float4(0.f, 1.5f, -10.f, 1.f), //Right
-		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
-		_float4(1.f, 0.1f, 0.1f, 0.25f), //vColor
-		0.f,
-		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds",
-		L"../bin/resources/Texture/Effects/WarHaven/T_EFF_Blur_05_M.dds",
-		10,
-		"0B_R_WP1"
-	);
 
 
 	return S_OK;
@@ -577,19 +568,32 @@ HRESULT CUnit_Qanda::Start()
 void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
-	//Create_DefaultArrow();
+	//Create_DefaultCrow();
 
 }
 
 void CUnit_Qanda::OnDisable()
 {
 	__super::OnDisable();
-	//if (m_pCurArrow)
-	//	DISABLE_GAMEOBJECT(m_pCurArrow);
+	//if (m_pCrow)
+	//	DISABLE_GAMEOBJECT(m_pCrow);
 }
 
 void CUnit_Qanda::My_Tick()
 {
+	CState::HIT_INFO tHitInfo;
+	ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
+
+	tHitInfo.eHitType = CState::HIT_TYPE::eUP;
+	tHitInfo.fKnockBackPower = 1.f;
+	tHitInfo.fJumpPower = 3.f;
+	tHitInfo.bFly = true;
+	tHitInfo.iLandKeyFrame = 60;
+	tHitInfo.bNoneHeadAttack = true;
+
+	m_pCurState->Get_HitInfo() = tHitInfo;
+
+
 	__super::My_Tick();
 }
 

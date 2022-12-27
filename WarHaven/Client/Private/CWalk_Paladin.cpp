@@ -41,6 +41,7 @@ HRESULT CWalk_Paladin::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+    Init_CommonState_Player();
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;

@@ -43,10 +43,10 @@ HRESULT CJump_Archer_Land_R::Initialize()
     
 	m_vecAdjState.push_back(STATE_IDLE_ARCHER_R);
 	m_vecAdjState.push_back(STATE_WALK_ARCHER_R);
-
 	m_vecAdjState.push_back(STATE_RUN_ARCHER_R);
 
-    m_vecAdjState.push_back(STATE_ATTACK_BEGIN_ARCHER);
+
+    Init_CommonState_Player();
 
     return S_OK;
 }

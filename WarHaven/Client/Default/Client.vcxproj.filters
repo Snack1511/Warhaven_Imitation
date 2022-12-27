@@ -1174,9 +1174,6 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit">
       <UniqueIdentifier>{5ace4eb0-2e8b-4956-9a87-e813c988962b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
-      <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\02. Unit\Spearman">
       <UniqueIdentifier>{587217d8-7c7c-428a-90b4-4e365c31490e}</UniqueIdentifier>
     </Filter>
@@ -3144,6 +3141,186 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\02. Unit\Qanda">
       <UniqueIdentifier>{78c42618-de01-4adb-94ec-54f53a7c0bb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda">
+      <UniqueIdentifier>{0a74de90-132a-40fa-8f30-d7aaeb849bcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\01. Idle">
+      <UniqueIdentifier>{8cfdcdf0-d198-4631-b2d2-90d6fc559435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\02. Walk">
+      <UniqueIdentifier>{6b4ef6c1-313c-4698-ba06-1b2bf157a0c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\03. Run">
+      <UniqueIdentifier>{3d551cb4-471a-4d39-afd6-7d09aa685b69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack">
+      <UniqueIdentifier>{0c890127-6776-40bf-aee9-8ee537f50734}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump">
+      <UniqueIdentifier>{130d48ab-3aaa-4e06-b133-46702579d4f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint">
+      <UniqueIdentifier>{a1f73f68-f981-4e88-bb58-65bf9f101ac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\07. Guard">
+      <UniqueIdentifier>{0b4c72d6-512a-4cfd-b8f2-5b3b4ca1b792}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit">
+      <UniqueIdentifier>{8ae2abec-dba0-48d7-b478-ef7cc737a0d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\09. Stop">
+      <UniqueIdentifier>{03f5d489-216c-4c60-ab80-f2158b2c459d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\10. Bounce">
+      <UniqueIdentifier>{1ef5c820-e072-4940-b15b-8cd68796ebd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default">
+      <UniqueIdentifier>{72811914-5f01-450a-8519-6d93f94d376a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping">
+      <UniqueIdentifier>{e7bca519-9f20-4891-9ea9-ed4d2e108ddc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\03. ShadowStep">
+      <UniqueIdentifier>{2e136119-d24e-4f2b-9472-76f188623f85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\04. Cancel">
+      <UniqueIdentifier>{fa4b4910-f7b8-4ab5-b3ae-12952849a761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump\01. Jump">
+      <UniqueIdentifier>{cfa67669-7194-41f7-b063-0525acd5fd6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump\02. Fall">
+      <UniqueIdentifier>{18187e0d-3351-4ddf-8b3f-af98697fabfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump\03. Land">
+      <UniqueIdentifier>{51051899-944d-4ebf-b82d-5407233d2293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\01. Jump">
+      <UniqueIdentifier>{ca9a21d0-5076-429d-a094-2558af277bbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\01. Jump\01. Begin">
+      <UniqueIdentifier>{e2bd3ace-ec4a-4650-84e0-8c886e14cfda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\01. Jump\02. Fall">
+      <UniqueIdentifier>{99240393-5405-4fc9-b0cf-2d1f3f5780a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\02. Run">
+      <UniqueIdentifier>{06649ba8-2865-4bf1-a0f2-ea38dbf68240}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\02. Run\01. Begin">
+      <UniqueIdentifier>{47a5d0f2-af06-419d-8879-b950342d421d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\02. Run\02. Loop">
+      <UniqueIdentifier>{e479eaf2-59bf-4491-8b30-4c35c1501c31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\03. End">
+      <UniqueIdentifier>{a702641b-610e-4128-8481-8bd563c95efa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\07. Guard\01. Guard">
+      <UniqueIdentifier>{60c96c91-9527-454a-b32e-786402051deb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\07. Guard\02. Cancel">
+      <UniqueIdentifier>{687f48d3-307a-4dd6-b1c3-4b745921ecd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\00. Hit">
+      <UniqueIdentifier>{f77b3413-fb65-470c-84a9-890cc4201e62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\01. GuardHit">
+      <UniqueIdentifier>{2a5f4f88-d63a-4b7e-b6b1-59095d8ab94b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\02. Groggy">
+      <UniqueIdentifier>{150051be-1620-4b71-aa6d-c400651be60e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\03. Sting">
+      <UniqueIdentifier>{100aa835-dccb-4f38-8aa4-5a40f3ee152d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\04. GuardCancel">
+      <UniqueIdentifier>{f83a6a26-f6a7-4960-865d-77b7c7f216de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\05. FlyHit">
+      <UniqueIdentifier>{7790527b-26d3-4c27-ad3c-8d2fdfa1546f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\99. Parent">
+      <UniqueIdentifier>{f480298e-3833-4c39-807c-8414cce0f554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\99. Parent\01. Attack_and_Begin">
+      <UniqueIdentifier>{ea1da8f9-3d96-4ffb-aa8d-f672d3b90013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\99. Parent\02. Shoot">
+      <UniqueIdentifier>{9d1cc261-83cd-4131-aa82-1afc65f3f4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\01. Begin">
+      <UniqueIdentifier>{9e2344d1-a516-43d8-9fd7-4c200cf5d16c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\01. Begin">
+      <UniqueIdentifier>{42758401-7f0d-4483-8ca8-e41f509ce6fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\02. Aiming">
+      <UniqueIdentifier>{c777e9c1-e95d-4a85-b690-71187c00b774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\02. Aiming">
+      <UniqueIdentifier>{330e3b4d-65c0-4f05-9766-ef2d3ef8aa7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\03. Shoot">
+      <UniqueIdentifier>{60feb983-4f61-4161-90d9-211c11362e7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\03. Shoot">
+      <UniqueIdentifier>{29651990-5686-4208-88fd-91d8e6ab661c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\04. Crow">
+      <UniqueIdentifier>{6ed04d50-2651-48f9-89dc-1d029469534c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\05. QandaMeteor">
+      <UniqueIdentifier>{8227b85d-a44b-421c-a57f-68d977a8081c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Priest">
+      <UniqueIdentifier>{03ce8bf5-880f-4448-88d5-324620460ae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Lancer">
+      <UniqueIdentifier>{6cb73202-ad3f-4d23-8bd8-9e6527f2dd7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
+      <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest">
+      <UniqueIdentifier>{e5c7b5d0-afb3-4680-bb9a-1706a40f5614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer">
+      <UniqueIdentifier>{19370e65-5fae-4176-ac7f-9c32a84b1094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\01. Idle">
+      <UniqueIdentifier>{bbde19fc-5db7-43aa-ae69-616d7d15b423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\02. Walk">
+      <UniqueIdentifier>{29f4d695-ef42-42ce-a4d0-0e7ec429f808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\03. Run">
+      <UniqueIdentifier>{69896755-b741-4eaf-944a-cdc944587ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack">
+      <UniqueIdentifier>{f5162428-0941-484c-a17d-6a48be6f76b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump">
+      <UniqueIdentifier>{27f61c32-a017-40d4-8610-b6111ee92760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\06. Sliding">
+      <UniqueIdentifier>{48b9f733-800d-400c-8696-be947806462f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint">
+      <UniqueIdentifier>{ad0caabc-d088-4f2d-af8b-c70475c957f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\08. Guard">
+      <UniqueIdentifier>{63ff2688-2ee3-4e39-a0bc-b2327b623fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit">
+      <UniqueIdentifier>{9a7021db-97b2-461a-b2b2-f76dbab8c863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\10. Stop">
+      <UniqueIdentifier>{b105f378-65c5-43f5-8dcc-ac19fc898258}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\11. Bounce">
+      <UniqueIdentifier>{cd78a4ed-ac55-4c24-9644-41286be314d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -5670,6 +5847,105 @@
     <ClInclude Include="..\Public\CUnit_Qanda.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Qanda</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\01. Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWalk_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\02. Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Archer_Fall_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Archer_Land_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump\03. Land</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\01. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Jump_Fall_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Begin_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_Loop_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSprint_End_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Loop_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\07. Guard\01. Guard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGuard_Cancel_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\07. Guard\02. Cancel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\00. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_FlyHit_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\05. FlyHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Groggy_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\02. Groggy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_GuardHit_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\01. GuardHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Sting_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\03. Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\09. Stop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\03. Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAttack_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\99. Parent\01. Attack_and_Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CShootAttack_Qanda.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\99. Parent\02. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQandaCrow.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\04. Crow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQandaMeteor.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\05. QandaMeteor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Attack_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Aiming.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\02. Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Shoot.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Attack_Begin_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Shoot_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\03. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Aiming_Sniping.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\02. Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_ShadowStep.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\03. ShadowStep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQanda_Attack_Cancel.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\04. Cancel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Priest.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Lancer.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Lancer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8175,6 +8451,105 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_Qanda.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Qanda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\01. Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWalk_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\02. Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Archer_Fall_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Archer_Land_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\05. Jump\03. Land</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\01. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Jump_Fall_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Begin_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_Loop_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSprint_End_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\06. Sprint\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Loop_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\07. Guard\01. Guard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGuard_Cancel_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\07. Guard\02. Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\00. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_FlyHit_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\05. FlyHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Groggy_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\02. Groggy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_GuardHit_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\01. GuardHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Sting_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\08. Hit\03. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\09. Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\03. Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAttack_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\99. Parent\01. Attack_and_Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CShootAttack_Qanda.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\99. Parent\02. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQandaCrow.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\04. Crow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQandaMeteor.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\05. QandaMeteor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Attack_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Aiming.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\02. Aiming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Shoot.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\01. Default\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Attack_Begin_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Shoot_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\03. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Aiming_Sniping.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\02. Sniping\02. Aiming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_ShadowStep.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\03. ShadowStep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQanda_Attack_Cancel.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\04. Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Priest.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Lancer.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Lancer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

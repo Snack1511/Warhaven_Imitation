@@ -54,6 +54,8 @@ HRESULT CGuard_End_WarHammer::Initialize()
 	m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_WARHAMMER_R);
 	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
+	Init_CommonState_Player();
+
     return S_OK;
 }
 

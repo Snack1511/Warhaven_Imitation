@@ -187,6 +187,8 @@ void CAttack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 	if (!m_pCoreBone)
 		assert(0);
 
+	if (!static_cast<CUnit_Archer*>(pOwner)->Get_CurArrow())
+		static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
 
 	static_cast<CUnit_Archer*>(pOwner)->Enable_Trail(true);
 

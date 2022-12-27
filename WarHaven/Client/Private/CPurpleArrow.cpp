@@ -100,6 +100,7 @@ void CPurpleArrow::OnEnable()
 
 void CPurpleArrow::OnDisable()
 {
+	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
 	__super::OnDisable();
 
 	Clear_Addiction();

@@ -25,9 +25,7 @@ HRESULT CRun_WarHammer_Begin::Initialize()
 	m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
 	m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
-	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
-	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
-
+	Init_CommonState_Player();
 
     m_iStateChangeKeyFrame = 0;
 

@@ -64,8 +64,7 @@ HRESULT CSprint_End_WarHammer::Initialize()
     m_vecAdjState.push_back(STATE_AIRSPIKE_BEGIN_WARHAMMER);
     m_vecAdjState.push_back(STATE_INSTALL_BEIGN_WARHAMMER);
 
-    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
-    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+    Init_CommonState_Player();
 
 
 	m_fMyMaxLerp = 0.4f;

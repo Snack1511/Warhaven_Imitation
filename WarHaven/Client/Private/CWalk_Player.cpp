@@ -27,11 +27,11 @@ HRESULT CWalk_Player::Initialize()
     m_vecAdjState.push_back(STATE_WARRIOR_OXEN_BEGIN);
 
 	m_vecAdjState.push_back(STATE_GUARD_BEGIN_PLAYER);
+    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 
-    m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
-    m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+
 
 
 	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
@@ -43,7 +43,9 @@ HRESULT CWalk_Player::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
+    
+
+    Init_CommonState_Player();
 
 
 	m_fMyMaxLerp = 0.4f;

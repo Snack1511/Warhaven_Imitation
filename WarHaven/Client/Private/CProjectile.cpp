@@ -9,6 +9,7 @@
 #include "CColorController.h"
 
 #include "CUnit_Archer.h"
+#include "CUnit_Qanda.h"
 
 #include "CTeamConnector.h"
 #include "CUtility_PhysX.h"
@@ -33,6 +34,8 @@ CProjectile::CProjectile(const CProjectile& _origin)
 	, m_fMaxDistance(_origin.m_fMaxDistance)
 	, m_vArrowHeadPos(_origin.m_vArrowHeadPos)
 	, m_fDamage(_origin.m_fDamage)
+	, m_szMainBoneName(_origin.m_szMainBoneName)
+	, m_szSubBoneName(_origin.m_szSubBoneName)
 {
 }
 
@@ -44,7 +47,7 @@ CProjectile::~CProjectile()
 
 void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-	if (COL_PROJECTILECATCH == eOtherColType)
+	if (COL_REDPROJECTILECATCH == eOtherColType)
 	{
 		////COL_PROJECTILECATCH
 		//if()
@@ -72,6 +75,10 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		//{
 		//	Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
 		//}
+	}
+	else if (COL_BLUEPROJECTILECATCH == eOtherColType)
+	{
+
 	}
 	else
 	{
@@ -101,8 +108,11 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 	m_pOwnerUnit = static_cast<CUnit*>(pGameObject);
 
-	m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_L_WP1");
-	m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_R_WP1");
+	const char* pLeftBoneName = m_szMainBoneName.c_str();
+	const char* pRightBoneName = m_szSubBoneName.c_str();
+
+	m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pLeftBoneName);
+	m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pRightBoneName);
 
 	if (!m_pLeftHandBone)
 		assert(0);
@@ -185,9 +195,6 @@ HRESULT CProjectile::Start()
 
 void CProjectile::On_ShootProjectile()
 {
-	_float4 vLook = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK);
-
-	vLook = m_pTransform->Get_World(WORLD_RIGHT);
 	ENABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 
 	On_ChangePhase(eSHOOT);
@@ -365,6 +372,23 @@ HRESULT CProjectile::SetUp_Colliders(COL_GROUP_CLIENT eColType)
 	return S_OK;
 }
 
+HRESULT	CProjectile::SetUp_Collider(COL_GROUP_CLIENT eColType, _float fRadian)
+{
+	_float4 vOffsetPos = ZERO_VECTOR;
+
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadian, eColType, vOffsetPos, DEFAULT_TRANS_MATRIX);
+
+	Add_Component(pCollider);
+
+	m_pCollider = pCollider;
+
+	if (!m_pCollider)
+		return E_FAIL;
+
+	return S_OK;
+}
+
+
 void CProjectile::My_Tick()
 {
 }
@@ -453,7 +477,6 @@ void CProjectile::OnDisable()
 {
 	__super::OnDisable();
 
-	static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
 	Safe_release(m_pActor);
 	m_fLoopTimeAcc = 0.f;
 	if (m_pTrailEffect)

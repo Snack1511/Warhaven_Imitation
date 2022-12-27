@@ -423,6 +423,45 @@
 
 #pragma region Qanda
 
+
+#include "CIdle_Qanda.h"
+#include "CWalk_Qanda.h"
+#include "CRun_Qanda.h"
+#include "CJump_Qanda.h"
+#include "CJump_Archer_Fall_Qanda.h"
+#include "CJump_Archer_Land_Qanda.h"
+#include "CStop_Qanda.h"
+
+#include "CSprint_Begin_Qanda.h"
+#include "CSprint_Loop_Qanda.h"
+#include "CSprint_End_Qanda.h"
+
+#include "CSprint_Jump_Qanda.h"
+#include "CSprint_Jump_Fall_Qanda.h"
+
+
+#include "CQanda_Attack_Begin.h"
+#include "CQanda_Aiming.h"
+#include "CQanda_Shoot.h"
+#include "CQanda_Attack_Begin_Sniping.h"
+#include "CQanda_Aiming_Sniping.h"
+#include "CQanda_Shoot_Sniping.h"
+
+#include "CQanda_Attack_Cancel.h"
+#include "CQanda_ShadowStep.h"
+
+#include "CGuard_Loop_Qanda.h"
+#include "CGuard_Cancel_Qanda.h"
+
+#include "CHit_Qanda.h"
+#include "CHit_GuardHit_Qanda.h"
+#include "CHit_Groggy_Qanda.h"
+#include "CHit_Sting_Qanda.h"
+#include "CHit_FlyHit_Qanda.h"
+
+
+
+
 #pragma endregion 
 
 
@@ -806,15 +845,21 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[NO_PATTERN] = CState_NoPattern::Create();
 	m_arrStates[AI_STATE_COMMON_CHANGE_HERO] = CState_Common_ChangeHero_AI::Create();
 
+
+
+	m_arrStates[STATE_REVIVE_PLAYER] = CRevive_Player::Create();
+	m_arrStates[STATE_CHANGE_PLAYER] = CChangeHero_Player::Create();
 	m_arrStates[STATE_VICTORY] = CState_Victory::Create();
 	m_arrStates[STATE_DEFEAT] = CState_Defeat::Create();
 	m_arrStates[STATE_CANNON_PLAYER] = CState_Cannon_Player::Create();
-	m_arrStates[AI_STATE_COMMON_REVIVE_AI] = CState_Common_Revive_AI::Create();
+	m_arrStates[STATE_TRANSFORM] = CState_Victory::Create();
 
+
+	m_arrStates[AI_STATE_COMMON_REVIVE_AI] = CState_Common_Revive_AI::Create();
 	m_arrStates[AI_STATE_COMMON_SLIDEBEGIN_AI] = CState_Common_Slide_Begin_AI::Create();
 	m_arrStates[AI_STATE_COMMON_SLIDELOOP_AI] = CState_Common_Slide_Loop_AI::Create();
 	m_arrStates[AI_STATE_COMMON_SLIDEEND_AI] = CState_Common_Slide_End_AI::Create();
-
+	m_arrStates[AI_STATE_COMMON_TRANSFORM_AI] = CState_Victory::Create();
 
 
 	Spear_State();
@@ -827,6 +872,7 @@ HRESULT CState_Manager::Initialize()
 
 	// ¿µ¿õ
 	Valkyrie_State();
+	Qanda_State();
 
 	// AI ±âº»
 	Warrior_SandBagState();
@@ -858,8 +904,6 @@ void CState_Manager::Warrior_State()
 
 	m_arrStates[STATE_IDLE_PLAYER_L] = CIdle_Player_L::Create();
 	m_arrStates[STATE_IDLE_PLAYER_R] = CIdle_Player_R::Create();
-
-	m_arrStates[STATE_REVIVE_PLAYER] = CRevive_Player::Create();
 
 	m_arrStates[STATE_SWITCH_R_TO_L] = CSwitchRtoL::Create();
 	m_arrStates[STATE_SWITCH_L_TO_R] = CSwitchLtoR::Create();
@@ -950,7 +994,6 @@ void CState_Manager::Warrior_State()
 	/* Charge Test */
 	m_arrStates[STATE_CHARGETEST] = CChargeTest::Create();
 
-	m_arrStates[STATE_CHANGE_PLAYER] = CChangeHero_Player::Create();
 
 
 
@@ -1279,6 +1322,11 @@ void CState_Manager::Paladin_State()
 
 }
 
+void CState_Manager::Priest_State()
+{
+
+}
+
 void CState_Manager::Valkyrie_State()
 {
 	/* Idle */
@@ -1367,6 +1415,75 @@ void CState_Manager::Valkyrie_State()
 		
 		
 }
+
+void CState_Manager::Qanda_State()
+{
+
+
+	/* Idle */
+	m_arrStates[STATE_IDLE_QANDA] = CIdle_Qanda::Create();
+
+	/* Walk */
+	m_arrStates[STATE_WALK_QANDA] = CWalk_Qanda::Create();
+
+	/* Run */
+	m_arrStates[STATE_RUN_QANDA] = CRun_Qanda::Create();
+
+	/* Jump */
+	m_arrStates[STATE_JUMP_QANDA] = CJump_Qanda::Create();
+	m_arrStates[STATE_JUMPFALL_QANDA] = CJump_Archer_Fall_Qanda::Create();
+	m_arrStates[STATE_JUMP_LAND_QANDA] = CJump_Archer_Land_Qanda::Create();
+
+
+	/* Stop */
+	m_arrStates[STATE_STOP_QANDA] = CStop_Qanda::Create();
+
+	/* Sprint */
+	m_arrStates[STATE_SPRINT_BEGIN_QANDA] = CSprint_Begin_Qanda::Create();
+	m_arrStates[STATE_SPRINT_LOOP_QANDA] = CSprint_Loop_Qanda::Create();
+	m_arrStates[STATE_SPRINT_END_QANDA] = CSprint_End_Qanda::Create();
+
+	m_arrStates[STATE_SPRINT_JUMPFALL_QANDA] = CSprint_Jump_Fall_Qanda::Create();
+
+	m_arrStates[STATE_SPRINT_JUMP_QANDA] = CSprint_Jump_Qanda::Create();
+
+	m_arrStates[STATE_ATTACK_BEGIN_QANDA] = CQanda_Attack_Begin::Create(); 
+	m_arrStates[STATE_ATTACK_AIMING_QANDA] = CQanda_Aiming::Create();
+	m_arrStates[STATE_ATTACK_SHOOT_QANDA] = CQanda_Shoot::Create();
+
+
+	m_arrStates[STATE_ATTACK_BEGIN_SNIPING_QANDA] = CQanda_Attack_Begin_Sniping::Create();
+	m_arrStates[STATE_ATTACK_AIMING_SNIPING_QANDA] = CQanda_Aiming_Sniping::Create();
+	m_arrStates[STATE_ATTACK_SHOOT_SNIPING_QANDA] = CQanda_Shoot_Sniping::Create();
+
+	m_arrStates[STATE_ATTACK_CANCEL_QANDA] = CQanda_Attack_Cancel::Create();
+
+	m_arrStates[STATE_SHADOWSTEP_QANDA] = CQanda_ShadowStep::Create();
+
+
+
+	m_arrStates[STATE_GUARD_QANDA] = CGuard_Loop_Qanda::Create();
+	m_arrStates[STATE_GUARD_CANCEL_QANDA] = CGuard_Cancel_Qanda::Create();
+
+
+
+
+	m_arrStates[STATE_HIT_QANDA] = CHit_Qanda::Create();
+	m_arrStates[STATE_GUARDHIT_QANDA] = CHit_GuardHit_Qanda::Create();
+	m_arrStates[STATE_GROGGYHIT_QANDA] = CHit_Groggy_Qanda::Create();
+	m_arrStates[STATE_STINGHIT_QANDA] = CHit_Sting_Qanda::Create();
+	m_arrStates[STATE_FLYHIT_QANDA] = CHit_FlyHit_Qanda::Create();
+
+	/* Base_R */
+
+}
+
+
+void CState_Manager::Lancer_State()
+{
+
+}
+
 
 void CState_Manager::Warrior_SandBagState()
 {
@@ -1815,9 +1932,9 @@ void CState_Manager::Archer_State_AI()
 	m_arrStates[AI_STATE_COMBAT_ATTACK_AIMING_SNIPING_ARCHER] = CState_Combat_Attack_Archer_Aiming_Sniping::Create();
 	m_arrStates[AI_STATE_COMBAT_ATTACK_SHOOT_SNIPING_ARCHER] = CState_Combat_Attack_Archer_Shoot_Sniping::Create();
 
-	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_ARCHER] = CState_Combat_Attack_Archer_Begin::Create();
-	m_arrStates[AI_STATE_COMBAT_ATTACK_SWING_ARCHER] = CState_Combat_Attack_Archer_Begin::Create();
-	m_arrStates[AI_STATE_COMBAT_STATE_SWAP_ARCHER] = CState_Combat_Attack_Archer_Begin::Create();
+	m_arrStates[AI_STATE_COMBAT_GUARDLOOP_ARCHER] = CState_Combat_Default_Archer_R::Create();
+	m_arrStates[AI_STATE_COMBAT_ATTACK_SWING_ARCHER] = CState_Combat_Default_Archer_R::Create();
+	m_arrStates[AI_STATE_COMBAT_STATE_SWAP_ARCHER] = CState_Combat_Default_Archer_R::Create();
 
 #pragma endregion
 
@@ -1840,6 +1957,22 @@ void CState_Manager::Archer_State_AI()
 
 
 }
+
+void CState_Manager::Qanda_State_AI()
+{
+
+}
+
+void CState_Manager::Priest_State_AI()
+{
+
+}
+
+void CState_Manager::Lancer_State_AI()
+{
+
+}
+
 
 
 void CState_Manager::Spear_State()

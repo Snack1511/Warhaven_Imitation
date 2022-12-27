@@ -51,13 +51,13 @@ void CState_Combat_Attack_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 	//m_fMatRotYRadian = frandom(0.f, 7.f);
 	//m_fMatRotXRadian = frandom(4.f, 12.f);
 
-	m_fMatRotYRadian = frandom(-3.5f, 3.5f);
-	m_fMatRotXRadian = 8.f;
+	m_fMatRotYRadian = 3.5f;
+	m_fMatRotXRadian = frandom(7.f, 9.f);
 
-	m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
+	//m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
 
-	if (!m_pCoreBone)
-		assert(0);
+	//if (!m_pCoreBone)
+	//	assert(0);
 
 	CState_Combat::Enter(pOwner, pAnimator, ePrevStateType);
 }
@@ -167,9 +167,6 @@ void CState_Combat_Attack_Archer::Enter_Attack_Begin(CUnit* pOwner)
 	else if (m_iRand == 1)
 		m_bKeyInput = true;
 
-
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
-
 }
 
 void CState_Combat_Attack_Archer::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType)
@@ -229,41 +226,7 @@ void CState_Combat_Attack_Archer::Enter_Aiming(CUnit* pOwner, CAnimator* pAnimat
 
 void CState_Combat_Attack_Archer::Exit_Aiming(CUnit* pOwner, CAnimator* pAnimator)
 {
-	_float4 vCamLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
-	_float4 vCamRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
-
-	_float4x4 matRotY = XMMatrixRotationAxis(_float4(0.f, 1.f, 0.f, 0.f).XMLoad(), ToRadian(m_fMatRotYRadian));
-	_float4x4 matRotX = XMMatrixRotationAxis(pOwner->Get_FollowCamRight().XMLoad(), ToRadian(m_fMatRotXRadian));
-	vCamLook = vCamLook.MultiplyNormal(matRotY);
-	vCamLook = vCamLook.MultiplyNormal(matRotX);
-
-	/* À§ ¾Æ·¡¸¸ ²ª¾îÁà¾ßÇÔ */
-	_float4x4 matOffset;
-
-	_float4 vCamLookNoY = vCamLook;
-	vCamLookNoY.y = 0.f;
-	vCamLookNoY.Normalize();
-
-	_float fDot = vCamLook.Dot(vCamLookNoY);
-	_float fRadian = acosf(fDot);
-
-	if (vCamLook.y < 0.f)
-		fRadian *= -1.f;
-
-	matOffset = XMMatrixRotationAxis(_float4(0.f, -1.f, 0.f, 0.f).XMLoad(), fRadian);
-
-	pOwner->Get_Transform()->Set_NoLerp();
-	pOwner->Get_Transform()->Set_Look(vCamLookNoY);
-
-	m_pCoreBone->Set_PrevMatrix(matOffset);
-
-	static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat() = matOffset;
-
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
-
-	CUser::Get_Instance()->Set_CrossHairPos(_float4(0.f, 0.f, 0.3f, 1.f));
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
-
 }
 
 _bool CState_Combat_Attack_Archer::Check_ArrowRay(_float4* pOutPos)

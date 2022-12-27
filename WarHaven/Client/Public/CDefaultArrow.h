@@ -18,6 +18,8 @@ public:
 public:
 	virtual HRESULT Start() override;
 	virtual HRESULT	Initialize_Prototype() override;
+	
+	virtual void OnDisable() override;
 
 private:
 	list<CGameObject*> m_Test;

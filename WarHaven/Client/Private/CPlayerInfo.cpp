@@ -50,6 +50,7 @@ void CPlayerInfo::Set_CustomHead(CLASS_TYPE eClassType, eCUSTOM_HEAD eHeadEnum)
 		Set_CustomHead_Paladin(eHeadEnum);
 		break;
 	case Client::PRIEST:
+		Set_CustomHead_Priest(eHeadEnum);
 		break;
 	case Client::ENGINEER:
 		Set_CustomHead_Engineer(eHeadEnum);
@@ -63,6 +64,7 @@ void CPlayerInfo::Set_CustomHead(CLASS_TYPE eClassType, eCUSTOM_HEAD eHeadEnum)
 	case Client::HOEDT:
 		break;
 	case Client::LANCER:
+		Set_CustomHead_Lancer(eHeadEnum);
 		break;
 	case Client::CLASS_END:
 		break;
@@ -91,6 +93,7 @@ void CPlayerInfo::Set_CustomBody(CLASS_TYPE eClassType, eCUSTOM_BODY eBodyEnum)
 		Set_CustomBody_Paladin(eBodyEnum);
 		break;
 	case Client::PRIEST:
+		Set_CustomBody_Priest(eBodyEnum);
 		break;
 	case Client::ENGINEER:
 		Set_CustomBody_Engineer(eBodyEnum);
@@ -104,6 +107,7 @@ void CPlayerInfo::Set_CustomBody(CLASS_TYPE eClassType, eCUSTOM_BODY eBodyEnum)
 	case Client::HOEDT:
 		break;
 	case Client::LANCER:
+		Set_CustomBody_Lancer(eBodyEnum);
 		break;
 	case Client::CLASS_END:
 		break;
@@ -129,6 +133,7 @@ void CPlayerInfo::Set_CustomWeapon(CLASS_TYPE eClassType, eCUSTOM_WEAPON eWeapon
 		Set_CustomWeapon_Paladin(eWeaponEnum);
 		break;
 	case Client::PRIEST:
+		Set_CustomWeapon_Priest(eWeaponEnum);
 		break;
 	case Client::ENGINEER:
 		Set_CustomWeapon_Engineer(eWeaponEnum);
@@ -142,6 +147,7 @@ void CPlayerInfo::Set_CustomWeapon(CLASS_TYPE eClassType, eCUSTOM_WEAPON eWeapon
 	case Client::HOEDT:
 		break;
 	case Client::LANCER:
+		Set_CustomWeapon_Lancer(eWeaponEnum);
 		break;
 	case Client::CLASS_END:
 		break;
@@ -530,10 +536,115 @@ void CPlayerInfo::Set_CustomWeapon_Qanda(eCUSTOM_WEAPON eWeaponEnum)
 	switch (eWeaponEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eDEFAULT:
-		m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00_30_4.fbx";
+		m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Cane/SK_Priest_Staff_30.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
-		m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Valkyrie_Sword/SM_WP_Sword0001_A00_30_4.fbx";
+		m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Cane/SK_Priest_Staff_30.fbx";
+		break;
+
+	default:
+		break;
+	}
+}
+
+void CPlayerInfo::Set_CustomHead_Priest(eCUSTOM_HEAD eHeadEnum)
+{
+	switch (eHeadEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/head/SK_Priest0001_Helm_A00_40.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/Priest/head/SK_Priest0010_Helm_A00_20.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/head/SK_Priest0001_Helm_A00_40.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
+
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/Priest/head/SK_Priest0010_Helm_A00_20.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/head/SK_Priest0001_Helm_A00_40.fbx";
+		break;
+	default:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/head/SK_Priest0001_Helm_A00_40.fbx";
+		break;
+	}
+}
+void CPlayerInfo::Set_CustomBody_Priest(eCUSTOM_BODY eBodyEnum)
+{
+	switch (eBodyEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
+		m_tPlayerSetUpData.wstrBodyMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/body/SK_Priest0001_Body_A00_10.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
+		//m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/Priest/body/SK_Priest0010_Body_A00_20.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/body/SK_Priest0001_Body_A00_10.fbx";
+		break;
+
+	default:
+		m_tPlayerSetUpData.wstrBodyMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/body/SK_Priest0001_Body_A00_10.fbx";
+		break;
+	}
+}
+void CPlayerInfo::Set_CustomWeapon_Priest(eCUSTOM_WEAPON eWeaponEnum)
+{
+	switch (eWeaponEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eDEFAULT:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Staff/SK_Priest_Staff_30.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Staff/SK_Priest_Staff_30.fbx";
+		break;
+
+	default:
+		break;
+	}
+}
+
+void CPlayerInfo::Set_CustomHead_Lancer(eCUSTOM_HEAD eHeadEnum)
+{
+	switch (eHeadEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eDEFAULT:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0001_Helm_A00_20.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0001_Helm_A00_20.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0001_Helm_A00_20.fbx";
+		break;
+	default:
+		m_tPlayerSetUpData.wstrHelmetMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0001_Helm_A00_20.fbx";
+		break;
+	}
+}
+void CPlayerInfo::Set_CustomBody_Lancer(eCUSTOM_BODY eBodyEnum)
+{
+	switch (eBodyEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
+		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/SK_Lancer0001_Body_A00_10.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
+		//m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0004_Body_A00_50.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/SK_Lancer0001_Body_A00_10.fbx";
+		break;
+
+	default:
+		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/SK_Lancer0001_Body_A00_10.fbx";
+		break;
+	}
+}
+void CPlayerInfo::Set_CustomWeapon_Lancer(eCUSTOM_WEAPON eWeaponEnum)
+{
+	switch (eWeaponEnum)
+	{
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eDEFAULT:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[LANCER] = L"../bin/resources/meshes/weapons/Lance/Lance.fbx";
+		break;
+	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
+		m_tPlayerSetUpData.wstrWeaponMeshPath[LANCER] = L"../bin/resources/meshes/weapons/Lance/Lance.fbx";
 		break;
 
 	default:

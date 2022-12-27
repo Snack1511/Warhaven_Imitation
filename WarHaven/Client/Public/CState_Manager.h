@@ -31,9 +31,12 @@ private:
 	void WarHammer_State();
 	void Archer_State();
 	void Paladin_State();
+	void Priest_State();
 
 	void Valkyrie_State();
-	
+	void Qanda_State();
+	void Lancer_State();
+
 	void Warrior_SandBagState();
 	
 	
@@ -42,6 +45,9 @@ private:
 	void Valkyrie_State_AI();
 	void Paladin_State_AI();
 	void Archer_State_AI();
+	void Qanda_State_AI();
+	void Priest_State_AI();
+	void Lancer_State_AI();
 
 	void Spear_State();
 
