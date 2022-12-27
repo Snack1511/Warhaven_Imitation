@@ -486,7 +486,10 @@ void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
 	*((_float4*)&m_matHitOffset.m[1]) = ((_float4*)&m_matHitOffset.m[1])->Normalize();
 	*((_float4*)&m_matHitOffset.m[2]) = ((_float4*)&m_matHitOffset.m[2])->Normalize();*/
 
-	 
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Hit", vHitPos);
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Blood", vHitPos);
+
+
 }
 
 void CProjectile::Set_ColliderType(eTEAM_TYPE eTeamType)

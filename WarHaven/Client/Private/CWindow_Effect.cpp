@@ -28,6 +28,7 @@
 #include "CUser.h"
 
 #include "CRectEffects.h"
+#include "CGameSystem.h"
 
 CWindow_Effect::CWindow_Effect()
 {
@@ -955,6 +956,8 @@ void CWindow_Effect::Show_ParticleTab()
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_FLARE;
 			if (ImGui::Selectable("COLORPOWERDECREASE", &bSelect[VTXRECTINSTANCE_PASS_COLORPOWERDECREASE]))
 				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_COLORPOWERDECREASE;
+			if (ImGui::Selectable("ANIMATION_ZFALSE", &bSelect[VTXRECTINSTANCE_PASS_ANIMATIONZFALSE]))
+				pCurEffect->m_iPassType = VTXRECTINSTANCE_PASS_ANIMATIONZFALSE;
 			
 			
 			pRenderer->Set_Pass(pCurEffect->m_iPassType);
@@ -1372,8 +1375,8 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_SPIRAL;
 			if (ImGui::Selectable("CHARGE", &bCurveSelect[CURVE_CHARGE]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CHARGE;
-			if (ImGui::Selectable("CIRCLE", &bCurveSelect[CURVE_CIRCLE]))
-				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CIRCLE;
+			if (ImGui::Selectable("CANNON_BONE", &bCurveSelect[CANNON_BONE]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CANNON_BONE;
 
 
 			
@@ -1443,6 +1446,12 @@ void CWindow_Effect::Show_ParticleTab()
 						CModel)->Find_HierarchyNode(m_szRefBoneName);
 					
 					if (!pNode)
+					{
+						static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget = CGameSystem::Get_Instance()->Get_Cannon();
+						pNode = GET_COMPONENT_FROM(static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget,
+							CModel)->Find_HierarchyNode(m_szRefBoneName);
+					}
+					if(!pNode)
 						return;
 
 					static_cast<CRectEffects*>(pCurEffect)->m_pRefBone = pNode;
@@ -1534,7 +1543,8 @@ void CWindow_Effect::Save_CurEffect()
 			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONDISSOLVE 
 			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONALPHACOLOR
 			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVTEXTURESELECT
-			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVCOLORSELECT)
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_UVCOLORSELECT
+			|| pCurEffect->m_iPassType == VTXRECTINSTANCE_PASS_ANIMATIONZFALSE)
 			m_vecEffects[m_iCurrentIdx].iEffectType = 2;
 		else
 			m_vecEffects[m_iCurrentIdx].iEffectType = 1;

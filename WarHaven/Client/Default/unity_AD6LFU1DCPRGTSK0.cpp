@@ -1,4 +1,10 @@
 
+#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Sprint_Warrior_End.cpp"
+
+
+#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Sprint_Warrior_Loop.cpp"
+
+
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_PathNavigation_Sprint.cpp"
 
 
@@ -51,10 +57,4 @@
 
 
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_GuardDash_Warrior.cpp"
-
-
-#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_GuardEnd_Warrior.cpp"
-
-
-#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CState_Combat_GuardLoop_Warrior.cpp"
 

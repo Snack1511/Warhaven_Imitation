@@ -196,7 +196,13 @@ void CCannon::Shoot_Cannon()
 	_float4 vFirePos = BoneMatrix.XMLoad().r[3];
 	_float4 vBoneLook = BoneMatrix.XMLoad().r[0];
 	vFirePos += vBoneLook * 500.f;
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Shoot", vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Shoot", vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_0"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_1"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_2"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_3"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cannon_Shoot_4"), vFirePos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Smoke", this, m_pTransform->Get_World(WORLD_POS));
 
 	m_pCannonBall->Shoot_Cannon(m_pCurOwnerPlayer, vFirePos, vBoneLook);
 

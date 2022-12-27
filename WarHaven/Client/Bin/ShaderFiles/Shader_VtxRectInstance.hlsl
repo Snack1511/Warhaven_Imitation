@@ -718,5 +718,14 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_COLORPOWER_DECREASE();
 	}
 
-	
+	pass ANIMATION_ZFALSE
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_None);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_ANIMATION_ALPHACOLOR_MAIN();
+	}
 }

@@ -64,6 +64,8 @@ HRESULT CSprint_End_Archer::Initialize()
 	m_fMaxSpeed = 10.f;
 	m_fMyAccel = 10.f;
 
+    Add_KeyFrame(18, 111);
+    Add_KeyFrame(28, 222);
 
     return S_OK;
 }
@@ -116,4 +118,19 @@ STATE_TYPE CSprint_End_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
         return STATE_SPRINT_END_ARCHER;
 
     return STATE_END;
+}
+
+void CSprint_End_Archer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 111:
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_R_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    case 222:
+        CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SoilParticle_L_Foot", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
+        break;
+    default:
+        break;
+    }
 }

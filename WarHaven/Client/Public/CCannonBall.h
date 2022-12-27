@@ -52,6 +52,8 @@ private:
 	CCannonBoom* m_pCannonBoom = nullptr;
 
 private:
+	void Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _float fRandomRange,
+		_float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse, _bool bLoop);
 	void	On_Boom();
 };
 

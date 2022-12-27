@@ -19,6 +19,7 @@ class CTable_Conditions;
 class CBehavior;
 class CPath;
 class CAIController;
+class CCannon;
 
 class CGameSystem
 {
@@ -98,6 +99,13 @@ public:
 	CPlayerInfo* Find_PlayerInfo(_hashcode hcCode);
 	vector<wstring>* GetPtr_PlayerInfoNames() { return &m_vecPlayerInfoNames; }
 	eSTAGE_TYPE m_eCurStageType = eSTAGE_TYPE::eSTAGE_CNT;
+
+public:
+	CGameObject* Get_Cannon() { return m_pCannon; }
+
+private:
+	CGameObject* m_pCannon = nullptr;
+
 private:
 	CPositionTable* m_pPositionTable = nullptr;
 	CTable_Conditions* m_pConditionTable = nullptr;

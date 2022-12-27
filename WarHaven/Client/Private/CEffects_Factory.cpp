@@ -692,6 +692,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cannon_Shoot"), "Cannon_Shoot")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cannon_Smoke"), "Cannon_Smoke")))
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cannon_Ground"), "Cannon_Ground")))
 		return E_FAIL;
 
@@ -741,7 +743,12 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Addiction"), "Addiction")))
 		return E_FAIL;
-	
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Poison_End"), "Poison_End")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Arrow_Hit"), "Arrow_Hit")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Arrow_Blood"), "Arrow_Blood")))
+		return E_FAIL;
 
 	/*Transform*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"HenshinFlare"), "HenshinFlare")))

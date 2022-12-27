@@ -1,4 +1,10 @@
 
+#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Aiming_Sniping.cpp"
+
+
+#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Aiming.cpp"
+
+
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CArcher_Swap.cpp"
 
 
@@ -51,10 +57,4 @@
 
 
 #include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CGameSystem.cpp"
-
-
-#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBounce_Valkyrie.cpp"
-
-
-#include "C:\Users\Slave\Documents\GitHub\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBounce_Valkyrie_L.cpp"
 
