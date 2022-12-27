@@ -47,7 +47,7 @@ CProjectile::~CProjectile()
 
 void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-	if (COL_PROJECTILECATCH == eOtherColType)
+	if (COL_REDPROJECTILECATCH == eOtherColType)
 	{
 		////COL_PROJECTILECATCH
 		//if()
@@ -75,6 +75,10 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		//{
 		//	Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
 		//}
+	}
+	else if (COL_BLUEPROJECTILECATCH == eOtherColType)
+	{
+
 	}
 	else
 	{

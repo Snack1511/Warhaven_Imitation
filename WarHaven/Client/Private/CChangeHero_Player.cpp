@@ -119,16 +119,16 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 			m_eChangeClassType = QANDA;
 			return m_eStateType;
 		}
-		/*else if (KEY(NUM3, TAP))
-		{
-			m_eChangeClassType = HOEDT;
-			return m_eStateType;
-		}
+		//else if (KEY(NUM3, TAP))
+		//{
+		//	m_eChangeClassType = HOEDT;
+		//	return m_eStateType;
+		//}
 		else if (KEY(NUM4, TAP))
 		{
 			m_eChangeClassType = LANCER;
 			return m_eStateType;
-		}*/
+		}
 
 
 	}

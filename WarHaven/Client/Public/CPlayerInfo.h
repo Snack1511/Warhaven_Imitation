@@ -29,10 +29,12 @@ return pInstance;\
 // Warrior, Engineer 는 지휘관 급에서 사용하기 때문에 만약 Define 을 주석건다면 PlayerInfo_Leader 에서 #else 나 #ifndef 로 처리해주세요
 #define WARRIOR_TH
 #define ARCHER_TH
-//#define FIONA_TH
-//#define PALADIN_TH
+#define FIONA_TH
+#define PALADIN_TH
 #define ENGINEER_TH 
-#define Qanda_TH
+#define QANDA_TH
+#define PRIEST_TH
+#define LANCER_TH
 
 BEGIN(Client)
 
@@ -168,6 +170,14 @@ private:
 	void	Set_CustomHead_Qanda(eCUSTOM_HEAD eHeadEnum);
 	void	Set_CustomBody_Qanda(eCUSTOM_BODY eBodyEnum);
 	void	Set_CustomWeapon_Qanda(eCUSTOM_WEAPON eWeaponEnum);
+
+	void	Set_CustomHead_Priest(eCUSTOM_HEAD eHeadEnum);
+	void	Set_CustomBody_Priest(eCUSTOM_BODY eBodyEnum);
+	void	Set_CustomWeapon_Priest(eCUSTOM_WEAPON eWeaponEnum);
+
+	void	Set_CustomHead_Lancer(eCUSTOM_HEAD eHeadEnum);
+	void	Set_CustomBody_Lancer(eCUSTOM_BODY eBodyEnum);
+	void	Set_CustomWeapon_Lancer(eCUSTOM_WEAPON eWeaponEnum);
 
 };
 

@@ -113,6 +113,12 @@ void CState_Hit::Fly_State()
         m_eAnimType = ANIM_HIT;
         m_iAnimIndex = m_iFlyHitIndex;
     }
+    else
+    {
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iHitIndex[HIT_STATE_N];
+    }
+        
 }
 
 void CState_Hit::Hit_State(CUnit* pOwner)

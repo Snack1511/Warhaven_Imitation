@@ -809,6 +809,8 @@
     <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Fiona_L.h" />
     <ClInclude Include="..\Public\CState_Combat_Attack_HorizontalUp_Fiona_R.h" />
     <ClInclude Include="..\Public\CState_Combat_Attack_VerticalCut_Fiona.h" />
+    <ClInclude Include="..\Public\CUnit_Priest.h" />
+    <ClInclude Include="..\Public\CUnit_Lancer.h" />
     <ClInclude Include="..\Public\CValkyrie_Counter.h" />
     <ClInclude Include="..\Public\CState_Combat_SkillE_ShieldAttack_Fiona.h" />
     <ClInclude Include="..\Public\CValkyrie_ShieldAttack.h" />
@@ -1680,6 +1682,8 @@
     <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Fiona_L.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalUp_Fiona_R.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Attack_VerticalCut_Fiona.cpp" />
+    <ClCompile Include="..\Private\CUnit_Priest.cpp" />
+    <ClCompile Include="..\Private\CUnit_Lancer.cpp" />
     <ClCompile Include="..\Private\CValkyrie_Counter.cpp" />
     <ClCompile Include="..\Private\CState_Combat_SkillE_ShieldAttack_Fiona.cpp" />
     <ClCompile Include="..\Private\CValkyrie_ShieldAttack.cpp" />

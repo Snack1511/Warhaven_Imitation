@@ -46,6 +46,8 @@
 #include "CUnit_Paladin.h"
 #include "CUnit_Archer.h"
 #include "CUnit_Qanda.h"
+#include "CUnit_Priest.h"
+#include "CUnit_Lancer.h"
 
 #include "CUser.h"
 
@@ -117,12 +119,12 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		L"",
 		L"../bin/resources/meshes/characters/Archer/Archer.fbx",
 		L"../bin/resources/meshes/characters/Paladin/Paladin.fbx",
-		L"",
+		L"../bin/resources/meshes/Characters/Priest/Priest.fbx",
 		L"../bin/resources/meshes/Characters/WarHammer/WarHammer.fbx",
 		L"../bin/resources/meshes/Characters/Valkyrie/Valkyrie.fbx",
 		L"../bin/resources/meshes/Characters/Qanda/Qanda.fbx",
 		L"",
-		L"",
+		L"../bin/resources/meshes/Characters/Lancer/Lancer.fbx",
 	};
 
 	wstring wstrModeFace[CLASS_END] =
@@ -131,12 +133,12 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		L"",
 		L"../bin/resources/meshes/characters/Archer/Head/SK_Archer001_Face_A00_50.fbx",
 		L"../bin/resources/meshes/characters/Paladin/Head/SK_Paladin0001_Face_A00_50.fbx",
-		L"",
+		L"../bin/resources/meshes/Characters/Priest/Head/SK_Priest0000_Face_A00_30.fbx",
 		L"../bin/resources/meshes/Characters/WarHammer/Head/SK_Engineer0001_Face_A00_50.fbx",
 		L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx",
 		L"../bin/resources/meshes/Characters/Qanda/Head/SK_Qanda0001_Face_A00_50.fbx",
 		L"",
-		L"",
+		L"../bin/resources/meshes/Characters/Lancer/Head/SK_Lancer0000_Face_A00_20.fbx",
 	};
 
 	//L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
@@ -218,11 +220,22 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_pAllUnitClass[PALADIN] = CUnit_Paladin::Create(tModelData[PALADIN]);
 #endif	
 
+#ifdef FIONA_TH
 	m_pAllUnitClass[FIONA] = CUnit_Valkyrie::Create(tModelData[FIONA]);
-	m_pAllUnitClass[QANDA] = CUnit_Qanda::Create(tModelData[QANDA]);
-	//m_pAllUnitClass[CLASS_DEFAULT_SPEAR] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_SPEAR]);
+#endif	
 
-	//m_pAllUnitClass[CLASS_DEFAULT_PRIEST] = CUnit_Warrior::Create(tModelData[CLASS_DEFAULT_PRIEST]);
+#ifdef QANDA_TH
+	m_pAllUnitClass[QANDA] = CUnit_Qanda::Create(tModelData[QANDA]);
+#endif	
+
+
+#ifdef PRIEST_TH
+	m_pAllUnitClass[PRIEST] = CUnit_Priest::Create(tModelData[PRIEST]);
+#endif	
+
+#ifdef LANCER_TH
+	m_pAllUnitClass[LANCER] = CUnit_Lancer::Create(tModelData[LANCER]);
+#endif	
 
 
 	for (int i = 0; i < CLASS_END; ++i)
@@ -263,6 +276,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_iChangeHeroAnimIndex[PALADIN] = 41;
 	m_iChangeHeroAnimIndex[ARCHER] = 53;
 	m_iChangeHeroAnimIndex[ENGINEER] = 62;
+	m_iChangeHeroAnimIndex[PRIEST] = 62;
 }
 
 void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
@@ -506,6 +520,8 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
 		m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
 		m_iReserveStateDefault[QANDA] = STATE_IDLE_QANDA;
+		m_iReserveStateDefault[LANCER] = STATE_IDLE_PLAYER_R;
+		m_iReserveStateDefault[PRIEST] = STATE_IDLE_PLAYER_R;
 		break;
 
 	case CUnit::UNIT_TYPE::eAI_Default:

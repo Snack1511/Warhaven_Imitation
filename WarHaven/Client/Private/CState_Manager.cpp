@@ -1322,6 +1322,11 @@ void CState_Manager::Paladin_State()
 
 }
 
+void CState_Manager::Priest_State()
+{
+
+}
+
 void CState_Manager::Valkyrie_State()
 {
 	/* Idle */
@@ -1470,6 +1475,12 @@ void CState_Manager::Qanda_State()
 	m_arrStates[STATE_FLYHIT_QANDA] = CHit_FlyHit_Qanda::Create();
 
 	/* Base_R */
+
+}
+
+
+void CState_Manager::Lancer_State()
+{
 
 }
 
@@ -1946,6 +1957,22 @@ void CState_Manager::Archer_State_AI()
 
 
 }
+
+void CState_Manager::Qanda_State_AI()
+{
+
+}
+
+void CState_Manager::Priest_State_AI()
+{
+
+}
+
+void CState_Manager::Lancer_State_AI()
+{
+
+}
+
 
 
 void CState_Manager::Spear_State()

@@ -83,7 +83,8 @@ namespace Client
 		COL_BLUEGROGGYATTACK, // 가드 브레이크 or 가드 안했을 시 그로기 상태 
 		COL_BLUEFLYATTACK, // 공중에 뜨는 공격 -> 방어 가능(블레이드 Q)
 		COL_BLUEFLYATTACKGUARDBREAK, // 공중에 뜨는 공격-> 방어 불가(워해머 Q)
-		
+		COL_BLUEPROJECTILECATCH, // 스모크 전용 투사체 잡기 컬라이더.
+
 
 		COL_REDTEAM,
 
@@ -96,9 +97,9 @@ namespace Client
 		COL_REDGROGGYATTACK,
 		COL_REDFLYATTACK,
 		COL_REDFLYATTACKGUARDBREAK,
+		COL_REDPROJECTILECATCH, // 스모크 전용 투사체 잡기 컬라이더.
 		COL_REDTHROW,
 
-		COL_PROJECTILECATCH, // 스모크 전용 투사체 잡기 컬라이더.
 
 		COL_WALL,
 		COL_CANNON,

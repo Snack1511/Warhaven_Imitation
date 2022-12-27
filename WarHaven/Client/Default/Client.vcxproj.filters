@@ -1174,9 +1174,6 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit">
       <UniqueIdentifier>{5ace4eb0-2e8b-4956-9a87-e813c988962b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
-      <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Instances\02. GameObject\02. Unit\Spearman">
       <UniqueIdentifier>{587217d8-7c7c-428a-90b4-4e365c31490e}</UniqueIdentifier>
     </Filter>
@@ -3276,6 +3273,54 @@
     </Filter>
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\05. QandaMeteor">
       <UniqueIdentifier>{8227b85d-a44b-421c-a57f-68d977a8081c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Priest">
+      <UniqueIdentifier>{03ce8bf5-880f-4448-88d5-324620460ae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Lancer">
+      <UniqueIdentifier>{6cb73202-ad3f-4d23-8bd8-9e6527f2dd7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Warrior">
+      <UniqueIdentifier>{abd8fd76-6aa3-4e98-a8ba-8bba737a652d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest">
+      <UniqueIdentifier>{e5c7b5d0-afb3-4680-bb9a-1706a40f5614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer">
+      <UniqueIdentifier>{19370e65-5fae-4176-ac7f-9c32a84b1094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\01. Idle">
+      <UniqueIdentifier>{bbde19fc-5db7-43aa-ae69-616d7d15b423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\02. Walk">
+      <UniqueIdentifier>{29f4d695-ef42-42ce-a4d0-0e7ec429f808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\03. Run">
+      <UniqueIdentifier>{69896755-b741-4eaf-944a-cdc944587ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack">
+      <UniqueIdentifier>{f5162428-0941-484c-a17d-6a48be6f76b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump">
+      <UniqueIdentifier>{27f61c32-a017-40d4-8610-b6111ee92760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\06. Sliding">
+      <UniqueIdentifier>{48b9f733-800d-400c-8696-be947806462f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\07. Sprint">
+      <UniqueIdentifier>{ad0caabc-d088-4f2d-af8b-c70475c957f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\08. Guard">
+      <UniqueIdentifier>{63ff2688-2ee3-4e39-a0bc-b2327b623fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\09. Hit">
+      <UniqueIdentifier>{9a7021db-97b2-461a-b2b2-f76dbab8c863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\10. Stop">
+      <UniqueIdentifier>{b105f378-65c5-43f5-8dcc-ac19fc898258}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\11. Bounce">
+      <UniqueIdentifier>{cd78a4ed-ac55-4c24-9644-41286be314d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -5895,6 +5940,12 @@
     <ClInclude Include="..\Public\CQanda_Attack_Cancel.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\04. Cancel</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Priest.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Lancer.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Lancer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8493,6 +8544,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CQanda_Attack_Cancel.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\07. Qanda\04. Attack\04. Cancel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Priest.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Lancer.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Lancer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
