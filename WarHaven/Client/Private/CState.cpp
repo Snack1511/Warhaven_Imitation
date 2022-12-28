@@ -90,7 +90,7 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
     if (pAnimator->Get_CurAnimFrame() < m_iStateChangeKeyFrame)
         return eType;
 
-    for (auto& elem : m_vecAdjState)
+     for (auto& elem : m_vecAdjState)
     {
         eType = CState_Manager::Get_Instance()->Get_State(elem)->Check_Condition(pOwner, pAnimator);
 
@@ -142,6 +142,16 @@ void CState::Init_CommonState_Hero_AI()
 {
 
 }
+
+void CState::Init_AttackState_Priest()
+{
+	m_vecAdjState.push_back(STATE_PROJECTILECATCH_BEGIN_PRIEST);
+	m_vecAdjState.push_back(STATE_WINDATTACK_PRIEST);
+	m_vecAdjState.push_back(STATE_CURE_BEGIN_PRIEST);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PRIEST);
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PRIEST);
+}
+
 
 void CState::Hit_GroundEffect(CUnit* pOwner)
 {

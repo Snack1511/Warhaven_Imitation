@@ -464,6 +464,42 @@
 
 #pragma endregion 
 
+#pragma region Priest
+
+#include "CIdle_Priest.h"
+#include "CWalk_Priest.h"
+#include "CRun_Priest.h"
+#include "CJump_Priest.h"
+#include "CJump_Priest_Fall.h"
+#include "CJump_Priest_Land.h"
+#include "CStop_Priest.h"
+#include "CBounce_Priest.h"
+
+#include "CSprint_Begin_Priest.h"
+#include "CSprint_Loop_Priest.h"
+#include "CSprint_End_Priest.h"
+
+#include "CSprint_Jump_Priest.h"
+#include "CSprint_Jump_Fall_Priest.h"
+#include "CSprintAttack_Priest_Begin.h"
+#include "CSprintAttack_Priest.h"
+
+#include "CPriest_Attack_Sting.h"
+#include "CPriest_WindAttack.h"
+#include "CAirDash_Priest.h"
+
+#include "CPriest_Cure_Begin.h"
+#include "CPriest_Cure_Loop.h"
+#include "CPriest_Cure_End.h"
+
+#include "CHit_Priest.h"
+#include "CHit_GuardHit_Priest.h"
+#include "CHit_Groggy_Priest.h"
+#include "CHit_Sting_Priest.h"
+#include "CHit_Fly_Priest.h"
+
+
+#pragma endregion 
 
 #pragma region AI_TG
 
@@ -533,7 +569,6 @@
 #include "CAI_TG_Groggy.h"
 
 #pragma endregion 
-
 
 
 #pragma region Patrol
@@ -869,10 +904,12 @@ HRESULT CState_Manager::Initialize()
 	WarHammer_State();
 	Archer_State();
 	Paladin_State();
+	Priest_State();
 
 	// 영웅
 	Valkyrie_State();
 	Qanda_State();
+	Lancer_State();
 
 	// AI 기본
 	Warrior_SandBagState();
@@ -882,7 +919,8 @@ HRESULT CState_Manager::Initialize()
 	Valkyrie_State_AI();
 	Paladin_State_AI();
 	Archer_State_AI();
-
+	Priest_State_AI();
+	Lancer_State_AI();
 
 	for (_uint i = 0; i < STATE_END; ++i)
 	{
@@ -1311,9 +1349,6 @@ void CState_Manager::Paladin_State()
 
 
 
-
-
-
 	m_arrStates[STATE_HIT_PALADIN] = CHit_Paladin::Create();
 	m_arrStates[STATE_GUARDHIT_PALADIN] = CHit_GuardHit_Paladin::Create();
 	m_arrStates[STATE_GROGGYHIT_PALADIN] = CHit_Groggy_Paladin::Create();
@@ -1324,6 +1359,78 @@ void CState_Manager::Paladin_State()
 
 void CState_Manager::Priest_State()
 {
+	/*
+		CIdle_Priest
+		CWalk_Priest
+		CRun_Priest
+		CJump_Priest
+		CJump_Priest_Fall
+		CJump_Priest_Land 
+		CStop_Priest
+		CBounce_Priest
+		CSprint_Begin_Priest
+		CSprint_Loop_Priest
+		CSprint_End_Priest
+		CSprint_Jump_Fall_Priest
+		CSprint_Jump_Priest
+		CSprintAttack_Priest_Begin
+		CSprintAttack_Priest
+	*/
+
+	m_arrStates[STATE_IDLE_PRIEST] = CIdle_Priest::Create();
+	m_arrStates[STATE_WALK_PRIEST] = CWalk_Priest::Create();
+	m_arrStates[STATE_RUN_PRIEST] = CRun_Priest::Create();
+
+
+	m_arrStates[STATE_JUMP_PRIEST] = CJump_Priest::Create();
+	m_arrStates[STATE_JUMPFALL_PRIEST] = CJump_Priest_Fall::Create();
+	m_arrStates[STATE_JUMP_LAND_PRIEST] = CJump_Priest_Land::Create();
+
+	m_arrStates[STATE_STOP_PRIEST] = CStop_Priest::Create();
+
+
+	m_arrStates[STATE_BOUNCE_PRIEST] = CBounce_Priest::Create();
+
+
+	/* Sprint */
+	m_arrStates[STATE_SPRINT_BEGIN_PRIEST] = CSprint_Begin_Priest::Create();
+	m_arrStates[STATE_SPRINT_LOOP_PRIEST] = CSprint_Loop_Priest::Create();
+	m_arrStates[STATE_SPRINT_END_PRIEST] = CSprint_End_Priest::Create();
+
+
+	m_arrStates[STATE_SPRINT_JUMPFALL_PRIEST] = CSprint_Jump_Fall_Priest::Create();
+
+	m_arrStates[STATE_SPRINT_JUMP_PRIEST] = CSprint_Jump_Priest::Create();
+
+	m_arrStates[STATE_SPRINTATTACK_BEGIN_PRIEST] = CSprintAttack_Priest_Begin::Create();
+	m_arrStates[STATE_SPRINTATTACK_PRIEST] = CSprintAttack_Priest::Create();
+
+
+	m_arrStates[STATE_CURE_BEGIN_PRIEST] = CPriest_Cure_Begin::Create();
+	m_arrStates[STATE_CURE_LOOP_PRIEST] = CPriest_Cure_Loop::Create();
+	m_arrStates[STATE_CURE_END_PRIEST] = CPriest_Cure_End::Create();
+
+	
+	m_arrStates[STATE_WINDATTACK_PRIEST] = CPriest_WindAttack::Create();
+	m_arrStates[STATE_ATTACK_STING_PRIEST] = CPriest_Attack_Sting::Create();
+	m_arrStates[STATE_AIRDASH_PRIEST] = CAirDash_Priest::Create();
+
+	// 수정
+	m_arrStates[STATE_PROJECTILECATCH_BEGIN_PRIEST] = CAI_TG_Hit::Create();
+	m_arrStates[STATE_PROJECTILECATCH_LOOP_PRIEST] = CAI_TG_Hit::Create();
+	m_arrStates[STATE_PROJECTILECATCH_HIT_PRIEST] = CAI_TG_Hit::Create();
+	m_arrStates[STATE_PROJECTILECATCH_SHOOT_PRIEST] = CAI_TG_Hit::Create();
+	//
+
+	m_arrStates[STATE_HIT_PRIEST] = CHit_Priest::Create();
+	m_arrStates[STATE_GUARDHIT_PRIEST] = CHit_GuardHit_Priest::Create();
+	m_arrStates[STATE_GROGGYHIT_PRIEST] = CHit_Groggy_Priest::Create();
+	m_arrStates[STATE_STINGHIT_PRIEST] = CHit_Sting_Priest::Create();
+	m_arrStates[STATE_FLYHIT_PRIEST] = CHit_Fly_Priest::Create();
+
+
+
+
 
 }
 

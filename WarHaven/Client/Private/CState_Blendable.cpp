@@ -186,7 +186,7 @@ STATE_TYPE CState_Blendable::Update_Walk(CUnit* pOwner, CAnimator* pAnimator)
 		
 	}
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eWalkState;
 
 	if (pOwner->Is_Air())
@@ -233,7 +233,7 @@ STATE_TYPE CState_Blendable::Update_Run(CUnit* pOwner, CAnimator* pAnimator)
 		
 	}
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eRunState;
 
 	if (pOwner->Is_Air())
@@ -256,7 +256,7 @@ STATE_TYPE CState_Blendable::Update_Jump(CUnit* pOwner, CAnimator* pAnimator)
 	else if (pAnimator->Is_CurAnimFinished())
 		On_EnumChange(Enum::eFALL, pAnimator);
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eFallState;
 
 	return STATE_END;
@@ -274,7 +274,7 @@ STATE_TYPE CState_Blendable::Update_Fall(CUnit* pOwner, CAnimator* pAnimator)
 	if (!pOwner->Is_Air())
 		On_EnumChange(Enum::eLAND, pAnimator);
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eFallState;
 
 	return STATE_END;
@@ -289,7 +289,7 @@ STATE_TYPE CState_Blendable::Update_Land(CUnit* pOwner, CAnimator* pAnimator)
 	if (pAnimator->Is_CurAnimFinished())
 		On_EnumChange(Enum::eIDLE, pAnimator);
 
-	if (pAnimator->Is_ActionFinished())
+	if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 		return m_eIdleState;
 
 
@@ -318,7 +318,7 @@ STATE_TYPE CState_Blendable::Update_Idle(CUnit* pOwner, CAnimator* pAnimator)
 		On_EnumChange(Enum::eJUMP, pAnimator);
 	
 	else
-		if (pAnimator->Is_ActionFinished())
+		if (pAnimator->Is_ActionFinished() && !m_bLoopAction)
 			return m_eIdleState;
 
 

@@ -108,8 +108,8 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 	m_pOwnerUnit = static_cast<CUnit*>(pGameObject);
 
-	const char* pLeftBoneName = m_szMainBoneName.c_str();
-	const char* pRightBoneName = m_szSubBoneName.c_str();
+	const char* pRightBoneName = m_szMainBoneName.c_str();
+	const char* pLeftBoneName = m_szSubBoneName.c_str();
 
 	m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pLeftBoneName);
 	m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pRightBoneName);

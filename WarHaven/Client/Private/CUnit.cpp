@@ -55,6 +55,8 @@
 #include "CColorController.h"
 #include "CTeamConnector.h"
 
+#include "CUnit_Priest.h"
+
 #define PHYSX_ON
 
 
@@ -102,7 +104,27 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 			CUser::Get_Instance()->SetActive_InteractUI(true);
 		}
 	}
+	else if (eMyColType == COL_BLUECURE || eMyColType == COL_REDCURE)
+	{
+		if (pOtherObj)
+		{
+			m_CureObjects.push_back(pOtherObj);
 
+			//_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+
+
+			////양수면 앞임.
+			//if (vCurLook.Dot(vOtherDir) > 0.f)
+			//	tOtherHitInfo.bFace = true;
+			//else
+			//	tOtherHitInfo.bFace = false;
+
+		}
+		return;
+	}
+
+	else if (eOtherColType == COL_BLUECURE || eOtherColType == COL_REDCURE)
+		return;
 
 	if (!pOtherObj)
 	{
@@ -1108,6 +1130,9 @@ void CUnit::My_LateTick()
 			On_Die();
 		}
 	}
+
+	m_CureObjects.clear();
+	m_pNearCureObject = nullptr;
 }
 
 void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse,

@@ -284,15 +284,23 @@ public:
 public:
 	CPlayer* Get_RevivalPlayer() { return m_pAdjRevivalPlayer; }
 	CCannon* Get_AdjCannon() { return m_pAdjCannon; }
+	CGameObject* Get_CureObject() { return m_pNearCureObject; }
 
 public:
 	virtual void SetUp_ReserveState(UNIT_TYPE eUnitType) {};
+
 
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
 	CPlayer* m_pAdjRevivalPlayer = nullptr;
 
 	CCannon* m_pAdjCannon = nullptr;
+
+	list<CGameObject*>  m_pFrustumObjects;
+
+	list<CGameObject*>	m_CureObjects;
+	CGameObject* m_pNearCureObject = nullptr;
+	_float				m_fMaxDistance = 5.f;
 
 protected:
 	// ¾ê°¡ max

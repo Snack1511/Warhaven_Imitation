@@ -102,6 +102,10 @@ protected:
 	void Init_CommonState_AI();
 	void Init_CommonState_Hero_AI();
 
+	void Init_AttackState_Priest();
+
+
+
 protected:
 	virtual void Hit_GroundEffect(CUnit* pOwner);
 

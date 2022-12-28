@@ -106,6 +106,7 @@ _float4 CResource_Material::Check_FileName(string strName)
 
 	//}
 
+	/* Qanda */
 	else if (strName == "MI_Hair_Qanda")
 	{
 		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
