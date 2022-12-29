@@ -124,6 +124,14 @@ void CUI_HUD::SetActive_HUD(_bool value)
 			DISABLE_GAMEOBJECT(m_pHUD[i]);
 		}
 	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < Squard_End; ++j)
+		{
+			m_pArrSquardInfo[i][j]->SetActive(value);
+		}
+	}
 }
 
 void CUI_HUD::Create_HUD()
