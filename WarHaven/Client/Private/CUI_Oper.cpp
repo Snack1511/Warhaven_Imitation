@@ -170,7 +170,14 @@ void CUI_Oper::My_Tick()
 			_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
 			if (fHP <= 0.f)
 			{
-				m_pPlayerIcon[i]->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
+				if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+				{
+					m_pPlayerIcon[i]->Set_TextureIndex(i + 3);
+				}
+				else
+				{
+					m_pPlayerIcon[i]->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
+				}
 			}
 			else
 			{
@@ -180,13 +187,13 @@ void CUI_Oper::My_Tick()
 				}
 				else
 				{
-					if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					if (m_pPlayers[i]->Get_OutlineType() != CPlayer::eSQUADMEMBER)
 					{
-						m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
+						m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
 					}
 					else
 					{
-						m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+						m_pPlayerIcon[i]->Set_TextureIndex(i);
 					}
 				}
 			}
@@ -202,7 +209,7 @@ void CUI_Oper::My_LateTick()
 	{
 		for (int i = 0; i < 8; ++i)
 		{
-			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS)  * 4.f;
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 4.f;
 			m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
 
 			if (!m_pPlayerIcon[i]->Is_Valid())
@@ -265,6 +272,7 @@ void CUI_Oper::Set_Player(CPlayer* pPlayer)
 			if (m_iMainSquadIdx > m_iMainSquadMaxIdx)
 				return;
 
+			m_pPlayerIcon[m_iMainSquadIdx]->Set_TextureIndex(m_iMainSquadIdx);
 			m_pPlayers[m_iMainSquadIdx] = pPlayer;
 			m_pPlayerTransform[m_iMainSquadIdx] = pPlayer->Get_Transform();
 
@@ -275,6 +283,7 @@ void CUI_Oper::Set_Player(CPlayer* pPlayer)
 			if (m_iMainTeamIdx > m_iMainTeamMaxIdx)
 				return;
 
+			m_pPlayerIcon[m_iMainTeamIdx]->Set_TextureIndex(0);
 			m_pPlayers[m_iMainTeamIdx] = pPlayer;
 			m_pPlayerTransform[m_iMainTeamIdx] = pPlayer->Get_Transform();
 
@@ -1705,15 +1714,9 @@ void CUI_Oper::Create_PlayerIcon()
 
 		GET_COMPONENT_FROM(m_pPlayerIcon[i], CTexture)->Remove_Texture(0);
 		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "PlayerIcon");
+		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "DeadIcon");
 
-		if (i == 0)
-		{
-			m_pPlayerIcon[i]->Set_Scale(30.f);
-		}
-		else
-		{
-			m_pPlayerIcon[i]->Set_Scale(25.f);
-		}
+		m_pPlayerIcon[i]->Set_Scale(30.f);
 
 		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pPlayerIcon[i]);
