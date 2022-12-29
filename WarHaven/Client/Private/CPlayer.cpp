@@ -864,7 +864,7 @@ void CPlayer::On_Die()
 
 	if (m_bIsMainPlayer)
 	{
-
+		CUser::Get_Instance()->SetActive_HUD(false);
 	}
 }
 

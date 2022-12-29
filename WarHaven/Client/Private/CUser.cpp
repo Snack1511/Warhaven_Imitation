@@ -400,6 +400,12 @@ void CUser::Set_Respawn(_bool value)
 		m_pUI_Oper->Set_Respawn(value);
 }
 
+void CUser::Set_OperPointColor(_bool IsMainTeam, _uint iPoinIdx)
+{
+	if (m_pUI_Oper)
+		m_pUI_Oper->Set_PointColor(IsMainTeam, iPoinIdx);
+}
+
 void CUser::SetActive_OperUI(_bool value)
 {
 	if (m_pUI_Oper)

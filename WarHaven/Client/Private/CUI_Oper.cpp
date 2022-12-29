@@ -183,6 +183,17 @@ void CUI_Oper::OnDisable()
 	}
 }
 
+void CUI_Oper::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
+{
+	_float4 vColor;
+	vColor = IsMainTeam ? m_vColorBlue : m_vColorRed;
+
+	for (int i = 0; i < SP_TEXT; ++i)
+	{
+		m_pArrStrongHoldUI[i][iPoinIdx]->Set_Color(vColor);
+	}
+}
+
 void CUI_Oper::SetActive_BG(_bool value)
 {
 	m_pRealMap->SetActive(value);

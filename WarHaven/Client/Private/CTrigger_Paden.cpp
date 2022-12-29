@@ -249,12 +249,15 @@ void CTrigger_Paden::Update_Conquered()
 		{
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 0);
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 1);
+			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 1);
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 2);
+			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 2);
 			break;
 		}
 

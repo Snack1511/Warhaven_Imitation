@@ -32,6 +32,8 @@ public:
 public:
 	void Set_Respawn(_bool value) { m_bIsRespawn = value; }
 
+	void Set_PointColor(_bool IsMainTeam, _uint iPoinIdx);
+
 	void SetActive_BG(_bool value);
 	void SetActive_Profile(_bool value);
 	void SetActive_LeftIcon(_bool value);
