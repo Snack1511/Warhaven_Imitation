@@ -34,6 +34,7 @@ public:
 
 	void Set_PointColor(_bool IsMainTeam, _uint iPoinIdx);
 	void Set_Player(CPlayer* pPlayer);
+	void Set_BattlePlayer(_bool IsBattle);
 
 	void SetActive_BG(_bool value);
 	void SetActive_Profile(_bool value);
@@ -207,6 +208,9 @@ private:
 
 	_uint m_iMainTeamIdx = 4;
 	_uint m_iMainTeamMaxIdx = 8;
+
+	_bool m_bIsBattle = false;
+	_float m_fBattleTime = 0.f;
 
 private:
 	void Create_PlayerIcon();

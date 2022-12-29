@@ -164,40 +164,33 @@ void CUI_MiniMap::My_Tick()
 
 	for (int i = 0; i < 8; ++i)
 	{
-		if (m_bIsBattle)
+		_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
+		if (fHP <= 0.f)
 		{
-			m_fAccTime += fDT(0);
-			if (m_fAccTime > 5.f)
-			{
-				m_fAccTime = 0.f;
-				m_bIsBattle = false;
-			}
-
-			_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
-			if (fHP <= 0.f)
-			{
-				m_pPlayerIcon[i]->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
-			}
-			else
-			{
-				m_pPlayerIcon[i]->Set_Color(_float4(1.f, 0.2f, 0.f, 1.f));
-			}
+			m_pPlayerIcon[i]->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
 		}
 		else
 		{
-			if (m_pPlayers[i]->IsMainPlayer())
+			if (m_pPlayers[i]->IsBattle())
 			{
-				m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
+				m_pPlayerIcon[i]->Set_Color(_float4(1.f, 0.2f, 0.f, 1.f));
 			}
 			else
 			{
-				if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+				if (m_pPlayers[i]->IsMainPlayer())
 				{
-					m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
+					m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 				}
 				else
 				{
-					m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+					if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
+					}
+					else
+					{
+						m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+					}
 				}
 			}
 		}

@@ -1096,6 +1096,24 @@ void CPlayer::My_Tick()
 		}
 	}
 
+	if (m_bIsBattle)
+	{
+		m_fBattlAccTime += fDT(0);
+
+		cout << CFunctor::To_String(Get_PlayerName()) << " : " << "전투 중" << endl;;
+
+		cout << m_fBattlAccTime << endl;
+
+		if (m_fBattlAccTime > m_fMaxBattlTime)
+		{
+			m_fBattlAccTime = 0.f;
+			m_bIsBattle = false;
+		}
+	}
+	else
+	{
+		cout << CFunctor::To_String(Get_PlayerName()) << " : " << "전투 중 아님" << endl;;
+	}
 
 	//공통으로 업데이트 되어야 하는것
 

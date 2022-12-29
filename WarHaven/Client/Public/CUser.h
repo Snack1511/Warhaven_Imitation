@@ -138,7 +138,6 @@ public:		// ÆÄµ§
 	void Set_MiniMapGaugeColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_MiniMapPointColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_MiniMapPlayer(CPlayer* pPlayer);
-	void Set_MiniMapBattle(_bool IsBattle);
 
 	void Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam);
 

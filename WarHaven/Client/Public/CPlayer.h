@@ -315,6 +315,16 @@ private:
 	void Update_HeroGauge();
 	void Update_KDA();
 	void On_AbleHero();
+
+public:
+	_bool IsBattle() { return m_bIsBattle; }
+	void Set_IsBattle(_bool value) { m_bIsBattle = value; }
+
+private:
+	_bool m_bIsBattle = false;
+	_float m_fBattlAccTime = 0.f;
+	_float m_fMaxBattlTime = 0.3f;
+
 public: void On_FinishHero();
 
 private:

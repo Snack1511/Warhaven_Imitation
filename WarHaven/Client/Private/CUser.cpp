@@ -365,12 +365,6 @@ void CUser::Set_MiniMapPlayer(CPlayer* pPlayer)
 		m_pMiniMap->Set_Player(pPlayer);
 }
 
-void CUser::Set_MiniMapBattle(_bool IsBattle)
-{
-	if (m_pMiniMap)
-		m_pMiniMap->Set_BattleIcon(IsBattle);
-}
-
 void CUser::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 {
 	if (m_pUI_Paden)

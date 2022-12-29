@@ -181,19 +181,33 @@ void CUI_Oper::My_Tick()
 			}
 			else
 			{
-				if (m_pPlayers[i]->IsMainPlayer())
+				if (m_pPlayers[i]->IsBattle())
 				{
-					m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
-				}
-				else
-				{
-					if (m_pPlayers[i]->Get_OutlineType() != CPlayer::eSQUADMEMBER)
+					if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
 					{
-						m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+						m_pPlayerIcon[i]->Set_TextureIndex(i + 6);
 					}
 					else
 					{
-						m_pPlayerIcon[i]->Set_TextureIndex(i);
+						m_pPlayerIcon[i]->Set_Color(_float4(1.f, 0.2f, 0.f, 1.f));
+					}
+				}
+				else
+				{
+					if (m_pPlayers[i]->IsMainPlayer())
+					{
+						m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
+					}
+					else
+					{
+						if (m_pPlayers[i]->Get_OutlineType() != CPlayer::eSQUADMEMBER)
+						{
+							m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+						}
+						else
+						{
+							m_pPlayerIcon[i]->Set_TextureIndex(i);
+						}
 					}
 				}
 			}
@@ -292,6 +306,12 @@ void CUI_Oper::Set_Player(CPlayer* pPlayer)
 	}
 
 	cout << CFunctor::To_String(pPlayer->Get_PlayerName()) << endl;
+}
+
+void CUI_Oper::Set_BattlePlayer(_bool IsBattle)
+{
+	m_fBattleTime = 0.f;
+	m_bIsBattle = IsBattle;
 }
 
 void CUI_Oper::SetActive_BG(_bool value)
@@ -1715,6 +1735,7 @@ void CUI_Oper::Create_PlayerIcon()
 		GET_COMPONENT_FROM(m_pPlayerIcon[i], CTexture)->Remove_Texture(0);
 		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "PlayerIcon");
 		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "DeadIcon");
+		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "BattleIcon");
 
 		m_pPlayerIcon[i]->Set_Scale(30.f);
 
