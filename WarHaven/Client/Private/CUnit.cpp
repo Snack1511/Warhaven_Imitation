@@ -1324,6 +1324,8 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 		CUser::Get_Instance()->Turn_BloodOverLay(m_tUnitStatus.fHP / m_tUnitStatus.fMaxHP);
 	}
 
+	CUser::Get_Instance()->Set_MiniMapBattle(true);
+
 	if (!bDie)
 	{
 		// 부트캠프에선 안죽게

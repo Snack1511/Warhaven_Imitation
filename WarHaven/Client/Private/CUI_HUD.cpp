@@ -125,6 +125,8 @@ void CUI_HUD::SetActive_HUD(_bool value)
 		}
 	}
 
+	CUser::Get_Instance()->Turn_HeroGaugeFire(value);
+
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < Squard_End; ++j)

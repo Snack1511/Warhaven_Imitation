@@ -152,16 +152,36 @@ void CUI_MiniMap::Set_Player(CPlayer* pPlayer)
 	}
 }
 
+void CUI_MiniMap::Set_BattleIcon(_bool IsBattle)
+{
+	m_fAccTime = 0.f;
+	m_bIsBattle = IsBattle;
+}
+
 void CUI_MiniMap::My_Tick()
 {
 	__super::My_Tick();
 
 	for (int i = 0; i < 8; ++i)
 	{
-		_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
-		if (fHP <= 0.f)
+		if (m_bIsBattle)
 		{
-			m_pPlayerIcon[i]->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
+			m_fAccTime += fDT(0);
+			if (m_fAccTime > 5.f)
+			{
+				m_fAccTime = 0.f;
+				m_bIsBattle = false;
+			}
+
+			_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
+			if (fHP <= 0.f)
+			{
+				m_pPlayerIcon[i]->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
+			}
+			else
+			{
+				m_pPlayerIcon[i]->Set_Color(_float4(1.f, 0.2f, 0.f, 1.f));
+			}
 		}
 		else
 		{
