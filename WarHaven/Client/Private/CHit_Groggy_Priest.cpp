@@ -9,7 +9,7 @@
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "CColorController.h"
-
+#include "CProjectile.h"
 
 CHit_Groggy_Priest::CHit_Groggy_Priest()
 {
@@ -65,6 +65,12 @@ void CHit_Groggy_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Groggy_State(pOwner);
+
+    if (pOwner->Get_CatchProjectileObject())
+    {
+        pOwner->Get_CatchProjectileObject()->On_ShootProjectile();
+        pOwner->Catch_ProjectileObject(nullptr);
+    }
 
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

@@ -15,6 +15,7 @@
 #include "CTrailBuffer.h"
 
 #include "CAnimWeapon.h"
+#include "CProjectile.h"
 
 CUnit_Priest::CUnit_Priest()
 {
@@ -100,6 +101,7 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 		//Radius,	vOffsetPos.		eColType
 		{0.7f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxGuard },
 		{0.7f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
+
 	};
 
 //	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
@@ -127,11 +129,12 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 
-	tUnitColDesc[0].fRadius = m_fMaxDistance / 2.f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, m_fMaxDistance, 0.f);
-	tUnitColDesc[0].eColType = (_uint)eCure;
+	//tUnitColDesc[0].fRadius = 2.5f;
+	//tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 0.f, 0.f);
+	//tUnitColDesc[0].eColType = (_uint)eCatch;
 
-	SetUp_UnitCollider(CUnit::GUARD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true);
+
+	//SetUp_UnitCollider(CUnit::WEAPON_L, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true);
 
 	tUnitColDesc[0].fRadius = 1.5f;
 	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, tUnitColDesc[0].fRadius * tUnitColDesc[0].fRadius, 0.f);
@@ -139,11 +142,11 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 
 	SetUp_UnitCollider(CUnit::FLYATTACK, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
 
-	tUnitColDesc[0].fRadius = 0.8f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 0.f, 0.f);
-	tUnitColDesc[0].eColType = (_uint)eGuardBreakFlyAttack;
-
-	SetUp_UnitCollider(CUnit::WEAPON_L, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
+	tUnitColDesc[0].fRadius = 1.f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 1.f, 0.f);
+	tUnitColDesc[0].eColType = (_uint)eCatch;
+	
+	SetUp_UnitCollider(CUnit::GUARD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
 
 }
 
@@ -230,6 +233,8 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_PRIEST;
 		m_eSprintEndState = STATE_SPRINT_END_PRIEST;
+		m_eCureBeginType = STATE_CURE_BEGIN_PRIEST;
+		m_eCureLoopType = STATE_CURE_LOOP_PRIEST;
 
 		break;
 
@@ -396,6 +401,7 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 	m_tUnitStatus.eClass = PRIEST;
 
 	m_tUnitStatus.fDashAttackSpeed = 9.f;
+	m_fMaxDistance = 5.f;
 
 	//m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0004.fbx",
 	//	L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_R_WP1");
@@ -458,6 +464,7 @@ HRESULT CUnit_Priest::Start()
 
 void CUnit_Priest::OnEnable()
 {
+	
 	__super::OnEnable();
 }
 
@@ -470,18 +477,11 @@ void CUnit_Priest::My_Tick()
 {
 	__super::My_Tick();
 
-	_float fCureLength = m_fMaxDistance + 1.f;
+	if (m_eCureBeginType == m_eCurState || m_eCureLoopType == m_eCurState)
+		__super::Check_NearObject_IsInFrustum();
 
-	for (auto& elem : m_CureObjects)
-	{
-		_float fMyLength = (elem->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS)).Length();
-
-		if (fMyLength < m_fMaxDistance && fMyLength < fCureLength)
-		{
-			m_pNearCureObject = elem;
-			fCureLength = fMyLength;
-		}
-	}
+	else
+		m_pNearCureObject = nullptr;
 
 }
 void CUnit_Priest::My_LateTick()

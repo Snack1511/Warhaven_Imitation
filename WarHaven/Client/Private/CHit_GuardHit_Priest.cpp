@@ -9,7 +9,7 @@
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "CColorController.h"
-
+#include "CProjectile.h"
 
 CHit_GuardHit_Priest::CHit_GuardHit_Priest()
 {
@@ -70,6 +70,12 @@ void CHit_GuardHit_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Guard_State(pOwner);
+
+    if (pOwner->Get_CatchProjectileObject())
+    {
+        pOwner->Get_CatchProjectileObject()->On_ShootProjectile();
+        pOwner->Catch_ProjectileObject(nullptr);
+    }
 
     /* Owner¿« Animator Set Idle∑Œ */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

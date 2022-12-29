@@ -13,7 +13,7 @@
 #include "Animation.h"
 #include "Model.h"
 #include "CColorController.h"
-
+#include "CProjectile.h"
 #include "CUtility_Transform.h"
 
 CHit_Fly_Priest::CHit_Fly_Priest()
@@ -62,6 +62,12 @@ void CHit_Fly_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Fly_State();
+
+    if (pOwner->Get_CatchProjectileObject())
+    {
+        pOwner->Get_CatchProjectileObject()->On_ShootProjectile();
+        pOwner->Catch_ProjectileObject(nullptr);
+    }
 
     /* OwnerÀÇ Animator Set Idle·Î */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));

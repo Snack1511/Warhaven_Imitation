@@ -146,6 +146,7 @@ HRESULT CPriest_Cure_Begin::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
 	m_bSmootMoveLoop = true;
+	m_bLoopAction = true;
 
 	return __super::Initialize();
 }
@@ -159,8 +160,12 @@ void CPriest_Cure_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 STATE_TYPE CPriest_Cure_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	if (pAnimator->Is_CurAnimFinished())
-		return STATE_CURE_LOOP_PRIEST;
-
+	{
+		if (pOwner->Get_CureObject())
+			return STATE_CURE_LOOP_PRIEST;
+		else
+			return STATE_CURE_END_PRIEST;
+	}
     return __super::Tick(pOwner, pAnimator);
 }
 

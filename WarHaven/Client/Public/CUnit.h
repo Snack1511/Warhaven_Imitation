@@ -24,6 +24,7 @@ class CCamera_Follow;
 class CPlayer;
 class CAnimWeapon;
 class CCannon;
+class CProjectile;
 
 class CUnit abstract : public CGameObject
 {
@@ -245,7 +246,7 @@ protected:
 	CBoneCollider* m_pWeaponCollider_L = nullptr;
 
 	//우리가 알던 그 충돌체
-	CCollider_Sphere* m_pUnitCollider[UNITCOLLIDER_END] = {};
+	CCollider_Sphere* m_pUnitCollider[UNITCOLLIDER_END] = { nullptr };
 	//CCollider_Sphere* m_pUnitWeaponCollider[WEAPONCOLLIDER_END] = {};
 
 public:
@@ -289,6 +290,12 @@ public:
 public:
 	virtual void SetUp_ReserveState(UNIT_TYPE eUnitType) {};
 
+public:
+	void Catch_ProjectileObject(CProjectile* pProjectileObject) { m_pCatchObejct = pProjectileObject; }
+	CProjectile* Get_CatchProjectileObject() { return m_pCatchObejct; }
+
+protected:
+	void Check_NearObject_IsInFrustum();
 
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
@@ -296,11 +303,17 @@ protected:
 
 	CCannon* m_pAdjCannon = nullptr;
 
+
+protected:
+	CProjectile* m_pCatchObejct;
+
 	list<CGameObject*>  m_pFrustumObjects;
 
 	list<CGameObject*>	m_CureObjects;
 	CGameObject* m_pNearCureObject = nullptr;
 	_float				m_fMaxDistance = 5.f;
+
+	_bool				m_bForUseTeam = true;
 
 protected:
 	// 얘가 max

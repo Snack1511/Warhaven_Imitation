@@ -492,6 +492,11 @@
 #include "CPriest_Cure_Loop.h"
 #include "CPriest_Cure_End.h"
 
+#include "CPriest_Catch_Begin.h"
+#include "CPriest_Catch_Loop.h"
+#include "CPriest_Catching.h"
+#include "CPriest_Catch_Shoot.h"
+  
 #include "CHit_Priest.h"
 #include "CHit_GuardHit_Priest.h"
 #include "CHit_Groggy_Priest.h"
@@ -1416,10 +1421,10 @@ void CState_Manager::Priest_State()
 	m_arrStates[STATE_AIRDASH_PRIEST] = CAirDash_Priest::Create();
 
 	// ¼öÁ¤
-	m_arrStates[STATE_PROJECTILECATCH_BEGIN_PRIEST] = CAI_TG_Hit::Create();
-	m_arrStates[STATE_PROJECTILECATCH_LOOP_PRIEST] = CAI_TG_Hit::Create();
-	m_arrStates[STATE_PROJECTILECATCH_HIT_PRIEST] = CAI_TG_Hit::Create();
-	m_arrStates[STATE_PROJECTILECATCH_SHOOT_PRIEST] = CAI_TG_Hit::Create();
+	m_arrStates[STATE_PROJECTILECATCH_BEGIN_PRIEST] = CPriest_Catch_Begin::Create();
+	m_arrStates[STATE_PROJECTILECATCH_LOOP_PRIEST] = CPriest_Catch_Loop::Create();
+	m_arrStates[STATE_PROJECTILECATCH_HIT_PRIEST] = CPriest_Catching::Create();
+	m_arrStates[STATE_PROJECTILECATCH_SHOOT_PRIEST] = CPriest_Catch_Shoot::Create();
 	//
 
 	m_arrStates[STATE_HIT_PRIEST] = CHit_Priest::Create();

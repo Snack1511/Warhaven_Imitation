@@ -220,11 +220,20 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (!pOtherUnit)
 		return STATE_CURE_END_PRIEST;
 
-	else if (pOtherUnit->Get_Status().fHP >= pOtherUnit->Get_Status().fMaxHP)
+	_float fLength = (pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
+
+
+	if (fabs(fLength) > 5.f)
+		return STATE_CURE_END_PRIEST;
+
+
+	if (pOtherUnit->Get_Status().fHP >= pOtherUnit->Get_Status().fMaxHP)
 	{
 		pOtherUnit->Get_Status().fHP = pOtherUnit->Get_Status().fMaxHP;
 		return STATE_CURE_END_PRIEST;
 	}
+
+
 
 	m_fTimeAcc += fDT(0);
 

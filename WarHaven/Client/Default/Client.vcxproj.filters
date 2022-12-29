@@ -6129,6 +6129,18 @@
     <ClInclude Include="..\Public\CPriest_Cure_Loop.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\02. Loop</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Catch_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Catch_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Catching.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\03. Catching</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPriest_Catch_Shoot.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\04. Shoot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8817,6 +8829,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPriest_Cure_Loop.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Catch_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Catch_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Catching.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\03. Catching</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPriest_Catch_Shoot.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\04. Shoot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

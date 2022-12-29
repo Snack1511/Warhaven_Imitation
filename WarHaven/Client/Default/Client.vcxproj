@@ -192,6 +192,10 @@
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
     <ClInclude Include="..\public\CAnimWeapon.h" />
+    <ClInclude Include="..\Public\CPriest_Catch_Shoot.h" />
+    <ClInclude Include="..\Public\CPriest_Catch_Begin.h" />
+    <ClInclude Include="..\Public\CPriest_Catch_Loop.h" />
+    <ClInclude Include="..\Public\CPriest_Catching.h" />
     <ClInclude Include="..\Public\CPriest_Cure_Loop.h" />
     <ClInclude Include="..\Public\CBounce_Priest.h" />
     <ClInclude Include="..\Public\CHit_Fly_Priest.h" />
@@ -1096,6 +1100,10 @@
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
     <ClCompile Include="..\private\CAnimWeapon.cpp" />
+    <ClCompile Include="..\Private\CPriest_Catch_Shoot.cpp" />
+    <ClCompile Include="..\Private\CPriest_Catch_Begin.cpp" />
+    <ClCompile Include="..\Private\CPriest_Catch_Loop.cpp" />
+    <ClCompile Include="..\Private\CPriest_Catching.cpp" />
     <ClCompile Include="..\Private\CPriest_Cure_Loop.cpp" />
     <ClCompile Include="..\Private\CBounce_Priest.cpp" />
     <ClCompile Include="..\Private\CHit_Fly_Priest.cpp" />

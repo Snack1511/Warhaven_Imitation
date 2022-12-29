@@ -18,7 +18,6 @@
 
 #include "CTrailBuffer.h"
 
-
 CProjectile::CProjectile()
 {
 }
@@ -47,37 +46,66 @@ CProjectile::~CProjectile()
 
 void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
-	if (COL_REDPROJECTILECATCH == eOtherColType)
+	if (COL_REDPROJECTILECATCH == eOtherColType || COL_BLUEPROJECTILECATCH == eOtherColType)
 	{
-		////COL_PROJECTILECATCH
-		//if()
+		CUnit* pOtherUnit = dynamic_cast<CUnit*>(pOtherObj);
+		
+		if (m_pOwnerUnit == pOtherUnit && !pOtherUnit)
+			return;
 
-		//if (m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType() == eTEAM_TYPE::eRED)
-		//{
-		//	COL_GROUP_CLIENT eOtherColliderType = (COL_GROUP_CLIENT)eOtherColType;
+		m_pOwnerUnit = pOtherUnit;
 
-		//	switch ()
-		//	{
-		//	default:
-		//		break;
-		//	}
+		DISABLE_COMPONENT(m_pCollider);
+		pOtherUnit->Catch_ProjectileObject(this);
 
-		//	m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		const char* pRightBoneName = m_szMainBoneName.c_str();
+		const char* pLeftBoneName = m_szSubBoneName.c_str();
 
-		//	switch (switch_on)
-		//	{
-		//	default:
-		//		break;
-		//	}
-		//}
-		//	
-		//else
-		//{
-		//	Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
-		//}
-	}
-	else if (COL_BLUEPROJECTILECATCH == eOtherColType)
-	{
+		m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pLeftBoneName);
+		m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pRightBoneName);
+		On_ChangePhase(eLOOP);
+
+
+		COL_GROUP_CLIENT eColType = (COL_GROUP_CLIENT)m_pCollider->Get_ColIndex();
+
+		if (eColType == COL_REDATTACK)
+			m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		
+		else if (eColType == COL_BLUEATTACK)
+			m_pCollider->Set_ColIndex(COL_REDATTACK);
+
+
+
+		else if (eColType == COL_REDGUARDBREAK)
+			m_pCollider->Set_ColIndex(COL_BLUEGUARDBREAK);
+
+		else if (eColType == COL_BLUEGUARDBREAK)
+			m_pCollider->Set_ColIndex(COL_REDGUARDBREAK);
+
+
+
+		else if (eColType == COL_REDGROGGYATTACK)
+			m_pCollider->Set_ColIndex(COL_BLUEGROGGYATTACK);
+
+		else if (eColType == COL_BLUEGROGGYATTACK)
+			m_pCollider->Set_ColIndex(COL_REDGROGGYATTACK);
+
+
+
+		else if (eColType == COL_REDFLYATTACK)
+			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACK);
+
+		else if (eColType == COL_BLUEFLYATTACK)
+			m_pCollider->Set_ColIndex(COL_REDFLYATTACK);
+
+
+
+		else if (eColType == COL_REDFLYATTACKGUARDBREAK)
+			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+
+		else if (eColType == COL_BLUEFLYATTACKGUARDBREAK)
+			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
+
 
 	}
 	else

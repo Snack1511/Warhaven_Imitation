@@ -15,6 +15,9 @@ private:
 public:
 	static	CUnit_Priest* Create(const UNIT_MODEL_DATA& tUnitModelData);
 
+
+
+
 public:
 	virtual void On_Die() override;
 
@@ -36,6 +39,10 @@ public:
 	virtual void OnDisable() override;
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
+
+private:
+	STATE_TYPE m_eCureBeginType = STATE_END;
+	STATE_TYPE m_eCureLoopType = STATE_END;
 
 };
 
