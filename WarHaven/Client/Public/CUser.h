@@ -152,6 +152,7 @@ public:		// ÆÄµ§
 public:		// ºê¸®ÇÎ
 	void Set_Respawn(_bool value);
 	void Set_OperPointColor(_bool IsMainTeam, _uint iPoinIdx);
+	void Set_OperPlayer(CPlayer* pPlayer);
 	void SetActive_OperUI(_bool value);
 	_bool Get_SelectTargetPoint();
 

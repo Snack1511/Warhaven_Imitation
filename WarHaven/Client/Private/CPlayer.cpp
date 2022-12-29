@@ -737,6 +737,7 @@ HRESULT CPlayer::Start()
 
 	// 미니맵에 트랜스폼 할당
 	CUser::Get_Instance()->Set_MiniMapPlayer(this);
+	CUser::Get_Instance()->Set_OperPlayer(this);
 
 	if (m_pCurrentUnit)
 	{

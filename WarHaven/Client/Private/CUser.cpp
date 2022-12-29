@@ -406,6 +406,12 @@ void CUser::Set_OperPointColor(_bool IsMainTeam, _uint iPoinIdx)
 		m_pUI_Oper->Set_PointColor(IsMainTeam, iPoinIdx);
 }
 
+void CUser::Set_OperPlayer(CPlayer* pPlayer)
+{
+	if (m_pUI_Oper)
+		m_pUI_Oper->Set_Player(pPlayer);
+}
+
 void CUser::SetActive_OperUI(_bool value)
 {
 	if (m_pUI_Oper)

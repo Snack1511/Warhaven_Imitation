@@ -306,15 +306,6 @@ void CUI_MiniMap::Create_PlayerIcon()
 		else
 		{
 			m_pPlayerIcon[i]->Set_Scale(15.f);
-
-			if (i < 4)
-			{
-				m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
-			}
-			else
-			{
-				m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
-			}
 		}
 
 		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);

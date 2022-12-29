@@ -14,6 +14,9 @@
 #include "CSquad.h"
 
 #include "CUnit.h"
+#include "Transform.h"
+#include "Functor.h"
+
 CUI_Oper::CUI_Oper()
 {
 }
@@ -44,6 +47,8 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_BriefingUI();
 	Create_BlackImg();
 	Create_PointInfo();
+
+	Create_PlayerIcon();
 
 	return S_OK;
 }
@@ -157,6 +162,53 @@ void CUI_Oper::My_Tick()
 	}
 
 	Progress_Oper();
+
+	if (m_bIsRespawn)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float fHP = m_pPlayers[i]->Get_CurrentUnit()->Get_Status().fHP;
+			if (fHP <= 0.f)
+			{
+				m_pPlayerIcon[i]->Set_Color(_float4(0.5f, 0.5f, 0.5f, 1.f));
+			}
+			else
+			{
+				if (m_pPlayers[i]->IsMainPlayer())
+				{
+					m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
+				}
+				else
+				{
+					if (m_pPlayers[i]->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						m_pPlayerIcon[i]->Set_Color(m_vColorLightGreen);
+					}
+					else
+					{
+						m_pPlayerIcon[i]->Set_Color(m_vColorBlue);
+					}
+				}
+			}
+		}
+	}
+}
+
+void CUI_Oper::My_LateTick()
+{
+	__super::My_LateTick();
+
+	if (m_bIsRespawn)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS)  * 4.f;
+			m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+
+			if (!m_pPlayerIcon[i]->Is_Valid())
+				m_pPlayerIcon[i]->SetActive(true);
+		}
+	}
 }
 
 void CUI_Oper::OnEnable()
@@ -192,6 +244,45 @@ void CUI_Oper::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 	{
 		m_pArrStrongHoldUI[i][iPoinIdx]->Set_Color(vColor);
 	}
+}
+
+void CUI_Oper::Set_Player(CPlayer* pPlayer)
+{
+	_bool isMainTeam = pPlayer->Get_Team()->IsMainPlayerTeam();
+	if (!isMainTeam)
+		return;
+
+	_bool isMainPlayer = pPlayer->IsMainPlayer();
+	if (isMainPlayer)
+	{
+		m_pPlayers[0] = pPlayer;
+		m_pPlayerTransform[0] = pPlayer->Get_Transform();
+	}
+	else
+	{
+		if (pPlayer->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+		{
+			if (m_iMainSquadIdx > m_iMainSquadMaxIdx)
+				return;
+
+			m_pPlayers[m_iMainSquadIdx] = pPlayer;
+			m_pPlayerTransform[m_iMainSquadIdx] = pPlayer->Get_Transform();
+
+			m_iMainSquadIdx++;
+		}
+		else
+		{
+			if (m_iMainTeamIdx > m_iMainTeamMaxIdx)
+				return;
+
+			m_pPlayers[m_iMainTeamIdx] = pPlayer;
+			m_pPlayerTransform[m_iMainTeamIdx] = pPlayer->Get_Transform();
+
+			m_iMainTeamIdx++;
+		}
+	}
+
+	cout << CFunctor::To_String(pPlayer->Get_PlayerName()) << endl;
 }
 
 void CUI_Oper::SetActive_BG(_bool value)
@@ -276,11 +367,11 @@ void CUI_Oper::Progress_Oper()
 			_float4 vPos0 = m_pArrCharacterSideBG[0]->Get_Pos();
 			vPos0.x += 50.f;
 			m_pArrCharacterSideBG[0]->DoMove(vPos0, fDuration, 0);
-			
+
 			_float4 vPos1 = m_pArrCharacterSideBG[1]->Get_Pos();
 			vPos1.x -= 50.f;
 			m_pArrCharacterSideBG[1]->DoMove(vPos1, fDuration, 0);
-			
+
 			for (int i = 0; i < CP_End; ++i)
 			{
 				for (int j = 0; j < 6; ++j)
@@ -520,7 +611,7 @@ void CUI_Oper::Progress_Oper()
 				case Client::LEVEL_HWARA:
 					CGameSystem::Get_Instance()->On_StartGame();
 					break;
-				}				
+				}
 
 				CUser::Get_Instance()->SetActive_PadenUI(true);
 				CUser::Get_Instance()->SetActive_HUD(true);
@@ -1601,6 +1692,31 @@ void CUI_Oper::Create_TargetPoint()
 
 		CREATE_GAMEOBJECT(m_pArrTargetPoint[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pArrTargetPoint[i]);
+	}
+}
+
+void CUI_Oper::Create_PlayerIcon()
+{
+	for (int i = 0; i < 8; ++i)
+	{
+		m_pPlayerIcon[i] = CUI_Object::Create();
+
+		m_pPlayerIcon[i]->Set_Sort(0.4f);
+
+		GET_COMPONENT_FROM(m_pPlayerIcon[i], CTexture)->Remove_Texture(0);
+		Read_Texture(m_pPlayerIcon[i], "/MiniMap", "PlayerIcon");
+
+		if (i == 0)
+		{
+			m_pPlayerIcon[i]->Set_Scale(30.f);
+		}
+		else
+		{
+			m_pPlayerIcon[i]->Set_Scale(25.f);
+		}
+
+		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPlayerIcon[i]);
 	}
 }
 

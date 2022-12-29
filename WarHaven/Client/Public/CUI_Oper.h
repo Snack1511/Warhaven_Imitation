@@ -33,6 +33,7 @@ public:
 	void Set_Respawn(_bool value) { m_bIsRespawn = value; }
 
 	void Set_PointColor(_bool IsMainTeam, _uint iPoinIdx);
+	void Set_Player(CPlayer* pPlayer);
 
 	void SetActive_BG(_bool value);
 	void SetActive_Profile(_bool value);
@@ -40,6 +41,7 @@ public:
 
 private:
 	virtual void My_Tick() override;
+	virtual void My_LateTick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
@@ -129,6 +131,7 @@ private:
 
 	_float4 m_vColorBlue = _float4(0.f, 0.8f, 1.f, 1.f);
 	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.f, 1.f);
+	_float4 m_vColorLightGreen = _float4(0.6f, 0.85f, 0.3f, 1.f);
 
 private:
 	void Create_TeamIcon();
@@ -192,6 +195,21 @@ private:
 private:
 	enum BriefingUI { BU_BG, BU_Icon, BU_End };
 	CUI_Object* m_pBriefingUI[BU_End];
+
+private:
+	CUI_Object* m_pPlayerIcon[8];
+
+	CPlayer* m_pPlayers[8];
+	CTransform* m_pPlayerTransform[8];
+
+	_uint m_iMainSquadIdx = 1;
+	_uint m_iMainSquadMaxIdx = 3;
+
+	_uint m_iMainTeamIdx = 4;
+	_uint m_iMainTeamMaxIdx = 8;
+
+private:
+	void Create_PlayerIcon();
 
 private:
 	void Create_BriefingUI();
