@@ -48,7 +48,7 @@ HRESULT CState_Cannon_Player::Initialize()
     m_eStateType = STATE_CANNON_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-    //m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
+    m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
 
     m_tHitInfo.bFly = true;
     m_tHitInfo.iLandKeyFrame = 100;
@@ -84,7 +84,11 @@ void CState_Cannon_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CState_Cannon_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    if (KEY(F, TAP))
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
 
 
     return __super::Tick(pOwner, pAnimator);
