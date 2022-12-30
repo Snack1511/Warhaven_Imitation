@@ -48,7 +48,7 @@ HRESULT CState_Cannon_Player::Initialize()
     m_eStateType = STATE_CANNON_PLAYER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
-    m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
+    //m_vecAdjState.push_back(STATE_JUMP_PLAYER_R);
 
     m_tHitInfo.bFly = true;
     m_tHitInfo.iLandKeyFrame = 100;

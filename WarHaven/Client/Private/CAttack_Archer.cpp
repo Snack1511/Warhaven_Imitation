@@ -302,7 +302,7 @@ STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
 	_float4 vHitPos;
-	if (Check_ArrowRay(&vHitPos))
+	if (CAttack_Archer::Check_ArrowRay(&vHitPos))
 	{
 		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
 		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);

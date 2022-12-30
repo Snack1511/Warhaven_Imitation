@@ -458,6 +458,8 @@ HRESULT CUnit_Priest::Start()
 		20,
 		"0B_R_WP1"
 	);
+	
+	m_fMaxDistance = 8.f;
 
 	return S_OK;
 }
