@@ -150,7 +150,6 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		// 카메라가 바라보는 기준점 위치
 		vCamLook = vCamLook + vCamPos;
 
-
 		// 타겟 위치
 		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
 
