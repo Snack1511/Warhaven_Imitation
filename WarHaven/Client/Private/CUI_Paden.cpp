@@ -145,12 +145,18 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 
 		_float4 vCamPos = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_POS);
 
+		_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
+
+		// 카메라가 바라보는 기준점 위치
+		vCamLook = vCamLook + vCamPos;
+
+
 		// 타겟 위치
 		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
 
 		_float4 vTotalPos;
-		vTotalPos.x = vTargetPos.x - vCamPos.x;
-		vTotalPos.z = vTargetPos.z - vCamPos.z;
+		vTotalPos.x = vTargetPos.x - vCamLook.x;
+		vTotalPos.z = vTargetPos.z - vCamLook.z;
 
 		_float4 vDir = vTargetPos - vCamPos;
 		vDir.y = 0.f;
@@ -651,7 +657,7 @@ void CUI_Paden::Create_PointUI()
 		}
 		else if (i == PU_Gauge)
 		{
-			GET_COMPONENT_FROM(m_pPointUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
+			GET_COMPONENT_FROM(m_pPointUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_CircleGauge);
 
 			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pPointUI[i], "/Paden", "Gauge");

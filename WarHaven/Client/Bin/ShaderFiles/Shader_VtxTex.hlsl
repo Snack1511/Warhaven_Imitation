@@ -103,7 +103,7 @@ VS_TRAIL_OUT VS_TRAIL_MAIN(VS_IN In)
 
 VS_TRAIL_OUT VS_TRAIL_UI_MAIN(VS_IN In)
 {
-    VS_TRAIL_OUT Out = (VS_TRAIL_OUT)0;
+    VS_TRAIL_OUT Out = (VS_TRAIL_OUT) 0;
 
     matrix matWV, matWVP;
 
@@ -254,7 +254,7 @@ PS_OUT PS_COLOR(PS_IN In)
 
 PS_OUT PS_PROFILE(PS_IN In)
 {
-    PS_OUT Out = (PS_OUT)0;
+    PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
 
     // 새로 부여할 UV
@@ -335,10 +335,10 @@ PS_OUT PS_PROFILE(PS_IN In)
 
     if (TexUV.y > 0.7f)
     {
-        float fRatio = ((1.f -TexUV.y) / 0.3f);
+        float fRatio = ((1.f - TexUV.y) / 0.3f);
 
        // 0~1을 0.3~1로 바꾸야함
-         fRatio *= 0.7f;
+        fRatio *= 0.7f;
         fRatio += 0.3f;
         Out.vColor *= (fRatio);
 
@@ -590,7 +590,7 @@ PS_OUT PS_GLOWLINE(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
     
-    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vColor = vColor;
@@ -598,6 +598,27 @@ PS_OUT PS_GLOWLINE(PS_IN In)
     if (vColor.r < 0.01f)
         discard;
 
+    return Out;
+}
+
+PS_OUT PS_CIRCLEGAUGE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    float2 vPos = In.vTexUV - 0.5f;
+    float fAngle = degrees(atan2(vPos.x, vPos.y)) + 180.f;
+    float fa = radians(fAngle - g_fValue * 360.f);
+    
+    Out.vColor *= g_vColor;
+    Out.vColor.w *= g_fAlpha;
+    
+    fa = saturate(fa);
+    if (fa < g_fValue)
+        discard;
+    
     return Out;
 }
 
@@ -889,7 +910,7 @@ PS_EFFECT_OUT PS_TRAIL_MAIN(VS_TRAIL_OUT In)
 
 PS_EFFECT_OUT PS_TRAIL_UI_MAIN(VS_TRAIL_OUT In)
 {
-    PS_EFFECT_OUT Out = (PS_EFFECT_OUT)0;
+    PS_EFFECT_OUT Out = (PS_EFFECT_OUT) 0;
 
     In.vTexUV.x += g_fUVPlusX;
     In.vTexUV.x = 1.f - In.vTexUV.x;
@@ -1079,7 +1100,7 @@ PS_DISTORTION_OUT PS_MAIN_DISTORTION(VS_TRAIL_OUT In)
 
 PS_OUT PS_UVFIRE(PS_IN In)
 {
-    PS_OUT Out = (PS_OUT)0;
+    PS_OUT Out = (PS_OUT) 0;
 
     //mask
     vector vMtrlDiffuse = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
@@ -1271,6 +1292,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_GLOWLINE();
+    }
+
+    pass UI_CircleGauge
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_CIRCLEGAUGE();
     }
 
     pass ALPHA
