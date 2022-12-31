@@ -265,7 +265,7 @@ void CUI_MiniMap::Create_MiniMapPoint()
 
 		case MP_Gauge:
 
-			GET_COMPONENT_FROM(m_pMiniMapPoint[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
+			GET_COMPONENT_FROM(m_pMiniMapPoint[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_CircleGauge);
 
 			GET_COMPONENT_FROM(m_pMiniMapPoint[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pMiniMapPoint[i], "/Paden", "Gauge");
