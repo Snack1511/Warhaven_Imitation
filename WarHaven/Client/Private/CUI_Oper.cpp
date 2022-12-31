@@ -1739,6 +1739,8 @@ void CUI_Oper::Create_PlayerIcon()
 
 		m_pPlayerIcon[i]->Set_Scale(30.f);
 
+		m_pOperList.push_back(m_pPlayerIcon[i]);
+
 		CREATE_GAMEOBJECT(m_pPlayerIcon[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pPlayerIcon[i]);
 	}
