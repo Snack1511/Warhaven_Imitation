@@ -3421,6 +3421,51 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\05. Jump\04. AirDash">
       <UniqueIdentifier>{4673bb02-1693-4589-bbdf-8b6c91296306}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\01. Idle">
+      <UniqueIdentifier>{63213c13-1e2d-4739-9303-5936f90f0efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\02. Run">
+      <UniqueIdentifier>{2ef48feb-016b-421c-9008-081f51d73b8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack">
+      <UniqueIdentifier>{c0337f08-fb1b-47b1-ba73-c8935b45966a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump">
+      <UniqueIdentifier>{a021814e-587f-4c1a-9682-34624f055ab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit">
+      <UniqueIdentifier>{7ff41aee-81f7-43ec-a0e7-926ebbde2d54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\06. Stop">
+      <UniqueIdentifier>{af5abcc3-0a55-4526-95f9-dbac7f761a60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce">
+      <UniqueIdentifier>{1b14d01c-332b-4e5d-b6c1-1d589adc42d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\01. Default">
+      <UniqueIdentifier>{1ebfc2e4-2f1e-40bb-b743-0c3878592c31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\02. Sting">
+      <UniqueIdentifier>{0fb48f56-8120-4d1e-81d6-035827935ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze">
+      <UniqueIdentifier>{2416ae57-e8a6-40d7-bbd9-2f85a8c4d779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\01. Begin">
+      <UniqueIdentifier>{5c537f2f-11a4-4034-b585-4409fd592364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\02. Loop">
+      <UniqueIdentifier>{c5268b3e-9959-460f-ba50-fd963d72e293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\01. Begin">
+      <UniqueIdentifier>{1902b12f-c698-4d33-9f54-92c76cd2b949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\02. Fall">
+      <UniqueIdentifier>{83ca954e-3473-491a-9360-a1774ce661b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\03. Land">
+      <UniqueIdentifier>{48f0cf01-6189-4e18-b1f1-6b782ed98509}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6141,6 +6186,39 @@
     <ClInclude Include="..\Public\CPriest_Catch_Shoot.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\04. Shoot</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CIdle_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\01. Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStop_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\06. Stop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRun_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\02. Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLancer_Attack_Default.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\01. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLancer_Attack_Sting.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\02. Sting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLancer_Breeze_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLancer_Breeze_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Lancer_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CJump_Lancer_Land.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\03. Land</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounce_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8841,6 +8919,39 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPriest_Catch_Shoot.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\04. Catch\04. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIdle_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\01. Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStop_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\06. Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRun_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\02. Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancer_Attack_Default.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\01. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancer_Attack_Sting.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\02. Sting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancer_Breeze_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancer_Breeze_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\03. Attack\03. Breeze\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Lancer_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CJump_Lancer_Land.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\03. Land</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounce_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

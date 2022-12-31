@@ -193,7 +193,7 @@ STATE_TYPE CState_Blendable::Update_Walk(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		On_EnumChange(Enum::eFALL, pAnimator);
 	}
-	else if (KEY(SPACE, TAP))
+	else if (KEY(SPACE, TAP) && m_bUseJump)
 	{
 		On_EnumChange(Enum::eJUMP, pAnimator);
 	}
@@ -240,7 +240,7 @@ STATE_TYPE CState_Blendable::Update_Run(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		On_EnumChange(Enum::eFALL, pAnimator);
 	}
-	else if (KEY(SPACE, TAP))
+	else if (KEY(SPACE, TAP) && m_bUseJump)
 	{
 		On_EnumChange(Enum::eJUMP, pAnimator);
 	}
@@ -314,7 +314,7 @@ STATE_TYPE CState_Blendable::Update_Idle(CUnit* pOwner, CAnimator* pAnimator)
 			On_EnumChange(Enum::eRUN, pAnimator);
 		}
 	}
-	else if (KEY(SPACE, TAP))
+	else if (KEY(SPACE, TAP) && m_bUseJump)
 		On_EnumChange(Enum::eJUMP, pAnimator);
 	
 	else

@@ -336,7 +336,12 @@ _uint CState::DoMove(_uint iDirection, CUnit* pOwner)
 	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
 	_float4 vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
 
-	switch (iDirection)
+	_uint iStateDir = iDirection;
+
+	if (m_bStraight)
+		iStateDir = STATE_DIRECTION_N;
+
+	switch (iStateDir)
 	{
 	case STATE_DIRECTION_NW:
 		vDir = vCamRight * -1.f + vCamLook;

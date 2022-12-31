@@ -168,7 +168,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir.y = 0.f;
 	tOtherHitInfo.vDir.Normalize();
 	
-	//tOtherHitInfo.pOtherUnit = pOtherUnit;
+	tOtherHitInfo.pOtherUnit = pOtherUnit;
 
 	//상대 위치 계산
 	_float4 vOtherDir = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
@@ -1403,18 +1403,18 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 		}
 		else
 		{
-			//if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
-			//{
-			//	Enter_State(m_tHitType.eStingHitState, pHitInfo);
-			//}
-			//else
-			//{
-			//	On_DieBegin(pOtherUnit, vHitPos);
-			//	Enter_State(m_tHitType.eHitState, pHitInfo);
-			//}
+			if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
+			{
+				Enter_State(m_tHitType.eStingHitState, pHitInfo);
+			}
+			else
+			{
+				On_DieBegin(pOtherUnit, vHitPos);
+				Enter_State(m_tHitType.eHitState, pHitInfo);
+			}
 
-			On_DieBegin(pOtherUnit, vHitPos);
-			Enter_State(m_tHitType.eHitState, pHitInfo);
+			//On_DieBegin(pOtherUnit, vHitPos);
+			//Enter_State(m_tHitType.eHitState, pHitInfo);
 
 			return;
 

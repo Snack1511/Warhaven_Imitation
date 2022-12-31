@@ -520,7 +520,7 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
 		m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
 		m_iReserveStateDefault[QANDA] = STATE_IDLE_QANDA;
-		m_iReserveStateDefault[LANCER] = STATE_IDLE_PLAYER_R;
+		m_iReserveStateDefault[LANCER] = STATE_IDLE_LANCER;
 		m_iReserveStateDefault[PRIEST] = STATE_IDLE_PRIEST;
 		break;
 

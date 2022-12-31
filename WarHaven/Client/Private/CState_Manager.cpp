@@ -506,6 +506,28 @@
 
 #pragma endregion 
 
+#pragma region Priest
+
+#include "CIdle_Lancer.h"
+#include "CRun_Lancer.h"
+#include "CStop_Lancer.h"
+#include "CBounce_Lancer.h"
+
+
+#include "CJump_Lancer.h"
+#include "CJump_Lancer_Fall.h"
+#include "CJump_Lancer_Land.h"
+
+#include "CLancer_Attack_Default.h"
+#include "CLancer_Attack_Sting.h"
+#include "CLancer_Breeze_Begin.h"
+#include "CLancer_Breeze_Loop.h"
+
+
+
+#pragma endregion 
+
+
 #pragma region AI_TG
 
 #include "CAI_SandBack.h"
@@ -1593,9 +1615,33 @@ void CState_Manager::Qanda_State()
 
 void CState_Manager::Lancer_State()
 {
+	m_arrStates[STATE_IDLE_LANCER] = CIdle_Lancer::Create();
+	m_arrStates[STATE_RUN_LANCER] = CRun_Lancer::Create();
+
+	m_arrStates[STATE_JUMP_LANCER] = CJump_Lancer::Create();
+	m_arrStates[STATE_JUMPFALL_LANCER] = CJump_Lancer_Fall::Create();
+	m_arrStates[STATE_JUMP_LAND_LANCER] = CIdle_Lancer::Create();
+	//m_arrStates[STATE_JUMP_LAND_LANCER] = CJump_Lancer_Land::Create();
+
+	m_arrStates[STATE_STOP_LANCER] = CStop_Lancer::Create();
+	m_arrStates[STATE_BOUNCE_LANCER] = CBounce_Lancer::Create();
+	
+
+	m_arrStates[STATE_ATTACK_DEAFULT_LANCER] = CLancer_Attack_Default::Create();
+	m_arrStates[STATE_ATTACK_STING_LANCER] = CLancer_Attack_Sting::Create();
+
+	m_arrStates[STATE_ATTACK_BREEZE_BEGIN_LANCER] = CLancer_Breeze_Begin::Create();
+	m_arrStates[STATE_ATTACK_BREEZE_LOOP_LANCER] = CLancer_Breeze_Loop::Create();
+
+
+	// ¼öÁ¤ ¤¡¤¡
+	m_arrStates[STATE_HIT_LANCER] = CIdle_Lancer::Create();
+	m_arrStates[STATE_GUARDHIT_LANCER] = CRun_Lancer::Create();
+	m_arrStates[STATE_GROGGYHIT_LANCER] = CIdle_Lancer::Create();
+	m_arrStates[STATE_STINGHIT_LANCER] = CRun_Lancer::Create();
+	m_arrStates[STATE_FLYHIT_LANCER] = CStop_Lancer::Create();
 
 }
-
 
 void CState_Manager::Warrior_SandBagState()
 {

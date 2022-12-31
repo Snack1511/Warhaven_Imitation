@@ -90,6 +90,8 @@ protected:
 	
 	_bool	m_bLoopAction = false;
 
+	_bool	m_bUseJump = true; // 점프를 할 수 있음.
+
 
 protected:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);

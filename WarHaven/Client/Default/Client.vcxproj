@@ -192,6 +192,13 @@
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
     <ClInclude Include="..\public\CAnimWeapon.h" />
+    <ClInclude Include="..\Public\CBounce_Lancer.h" />
+    <ClInclude Include="..\Public\CIdle_Lancer.h" />
+    <ClInclude Include="..\Public\CJump_Lancer.h" />
+    <ClInclude Include="..\Public\CJump_Lancer_Fall.h" />
+    <ClInclude Include="..\Public\CJump_Lancer_Land.h" />
+    <ClInclude Include="..\Public\CLancer_Attack_Default.h" />
+    <ClInclude Include="..\Public\CLancer_Attack_Sting.h" />
     <ClInclude Include="..\Public\CPriest_Catch_Shoot.h" />
     <ClInclude Include="..\Public\CPriest_Catch_Begin.h" />
     <ClInclude Include="..\Public\CPriest_Catch_Loop.h" />
@@ -230,6 +237,7 @@
     <ClInclude Include="..\Public\CJump_Archer_Land_Qanda.h" />
     <ClInclude Include="..\Public\CJump_Qanda.h" />
     <ClInclude Include="..\Public\CQanda_ShadowStep.h" />
+    <ClInclude Include="..\Public\CRun_Lancer.h" />
     <ClInclude Include="..\Public\CRun_Priest.h" />
     <ClInclude Include="..\Public\CRun_Qanda.h" />
     <ClInclude Include="..\Public\CShootAttack_Qanda.h" />
@@ -750,6 +758,7 @@
     <ClInclude Include="..\Public\CState_Victory.h" />
     <ClInclude Include="..\Public\CStop_Archer.h" />
     <ClInclude Include="..\Public\CStop_Archer_L.h" />
+    <ClInclude Include="..\Public\CStop_Lancer.h" />
     <ClInclude Include="..\Public\CStop_Priest.h" />
     <ClInclude Include="..\Public\CStop_Qanda.h" />
     <ClInclude Include="..\Public\CStop_Archer_R.h" />
@@ -875,6 +884,7 @@
     <ClInclude Include="..\Public\CPaladin_ShieldWall_Begin.h" />
     <ClInclude Include="..\Public\CPaladin_Rush_Begin.h" />
     <ClInclude Include="..\Public\CQanda_Attack_Begin_Sniping.h" />
+    <ClInclude Include="..\Public\CLancer_Breeze_Begin.h" />
     <ClInclude Include="..\Public\CWarHammer_AirSpike_Begin.h" />
     <ClInclude Include="..\Public\CValkyrie_SpinAttack.h" />
     <ClInclude Include="..\Public\CState_Combat_SkillQ_AirSpike_End.h" />
@@ -885,6 +895,7 @@
     <ClInclude Include="..\Public\CPaladin_Rush_Loop.h" />
     <ClInclude Include="..\Public\CQanda_Shoot_Sniping.h" />
     <ClInclude Include="..\Public\CQanda_Aiming_Sniping.h" />
+    <ClInclude Include="..\Public\CLancer_Breeze_Loop.h" />
     <ClInclude Include="..\Public\CWarHammer_AirSpike_Loop.h" />
     <ClInclude Include="..\Public\CWarHammer_AirSpike_End.h" />
     <ClInclude Include="..\Public\CPaladin_Attack_HorizontalMiddle.h" />
@@ -1100,6 +1111,13 @@
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
     <ClCompile Include="..\private\CAnimWeapon.cpp" />
+    <ClCompile Include="..\Private\CBounce_Lancer.cpp" />
+    <ClCompile Include="..\Private\CIdle_Lancer.cpp" />
+    <ClCompile Include="..\Private\CJump_Lancer.cpp" />
+    <ClCompile Include="..\Private\CJump_Lancer_Fall.cpp" />
+    <ClCompile Include="..\Private\CJump_Lancer_Land.cpp" />
+    <ClCompile Include="..\Private\CLancer_Attack_Default.cpp" />
+    <ClCompile Include="..\Private\CLancer_Attack_Sting.cpp" />
     <ClCompile Include="..\Private\CPriest_Catch_Shoot.cpp" />
     <ClCompile Include="..\Private\CPriest_Catch_Begin.cpp" />
     <ClCompile Include="..\Private\CPriest_Catch_Loop.cpp" />
@@ -1140,6 +1158,7 @@
     <ClCompile Include="..\Private\CJump_Archer_Land_Qanda.cpp" />
     <ClCompile Include="..\Private\CJump_Qanda.cpp" />
     <ClCompile Include="..\Private\CQanda_ShadowStep.cpp" />
+    <ClCompile Include="..\Private\CRun_Lancer.cpp" />
     <ClCompile Include="..\Private\CRun_Priest.cpp" />
     <ClCompile Include="..\Private\CRun_Qanda.cpp" />
     <ClCompile Include="..\Private\CShootAttack_Qanda.cpp" />
@@ -1656,6 +1675,7 @@
     <ClCompile Include="..\Private\CState_Victory.cpp" />
     <ClCompile Include="..\Private\CStop_Archer.cpp" />
     <ClCompile Include="..\Private\CStop_Archer_L.cpp" />
+    <ClCompile Include="..\Private\CStop_Lancer.cpp" />
     <ClCompile Include="..\Private\CStop_Priest.cpp" />
     <ClCompile Include="..\Private\CStop_Qanda.cpp" />
     <ClCompile Include="..\Private\CStop_Archer_R.cpp" />
@@ -1780,6 +1800,7 @@
     <ClCompile Include="..\Private\CPaladin_ShieldWall_Begin.cpp" />
     <ClCompile Include="..\Private\CPaladin_Rush_Begin.cpp" />
     <ClCompile Include="..\Private\CQanda_Attack_Begin_Sniping.cpp" />
+    <ClCompile Include="..\Private\CLancer_Breeze_Begin.cpp" />
     <ClCompile Include="..\Private\CWarHammer_AirSpike_Begin.cpp" />
     <ClCompile Include="..\Private\CValkyrie_SpinAttack.cpp" />
     <ClCompile Include="..\Private\CState_Combat_SkillQ_AirSpike_End.cpp" />
@@ -1790,6 +1811,7 @@
     <ClCompile Include="..\Private\CPaladin_Rush_Loop.cpp" />
     <ClCompile Include="..\Private\CQanda_Shoot_Sniping.cpp" />
     <ClCompile Include="..\Private\CQanda_Aiming_Sniping.cpp" />
+    <ClCompile Include="..\Private\CLancer_Breeze_Loop.cpp" />
     <ClCompile Include="..\Private\CWarHammer_AirSpike_Loop.cpp" />
     <ClCompile Include="..\Private\CWarHammer_AirSpike_End.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Attack_HorizontalMiddle_Engineer.cpp" />

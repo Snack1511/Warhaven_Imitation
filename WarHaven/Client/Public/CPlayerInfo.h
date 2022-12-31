@@ -34,7 +34,7 @@ return pInstance;\
 #define ENGINEER_TH 
 //#define QANDA_TH
 //#define PRIEST_TH
-//#define LANCER_TH
+#define LANCER_TH
 
 BEGIN(Client)
 
