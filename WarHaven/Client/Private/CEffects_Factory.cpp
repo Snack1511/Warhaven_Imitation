@@ -780,6 +780,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		/*Quanda*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Charge"), "Crow_Charge")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_Test"), "Charge_Test")))
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Dodge"), "Dodge")))
 		return E_FAIL;
 
