@@ -104,77 +104,80 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 
 	if (strPadenPointKey == "Paden_Trigger_A")
 	{
+		cout << "메인 거점 : " << fConquestRatio << endl;
 		m_fConquestRatio[Point_A] = fConquestRatio;
 	}
 	else if (strPadenPointKey == "Paden_Trigger_R")
 	{
+		cout << "리스폰 : " << fConquestRatio << endl;
 		m_fConquestRatio[Point_R] = fConquestRatio;
 	}
 	else if (strPadenPointKey == "Paden_Trigger_C")
 	{
+		cout << "캐논 : " << fConquestRatio << endl;
 		m_fConquestRatio[Point_C] = fConquestRatio;
 	}
 }
 
 void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
+	if (m_bSetTargetPoint)
+		m_pArrTargetPoint[1]->SetActive(true);
+
 	if (isInFrustum)
 	{
 		_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
 		vNewPos.y += 5.f;
 
-		if (m_bSetTargetPoint)
-			m_pArrTargetPoint[1]->SetActive(isInFrustum);
-
 		for (int i = 0; i < PU_End; ++i)
 		{
-			m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
+			if (!m_pArrProjPointUI[iPointIdx][i]->Is_Valid())
+				m_pArrProjPointUI[iPointIdx][i]->SetActive(true);
+
 			m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vNewPos);
 		}
 	}
 	else
 	{
 		for (int i = 0; i < PU_End; ++i)
-			m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
-
-		if (m_pArrTargetPoint[1]->Is_Valid())
-			m_pArrTargetPoint[1]->SetActive(false);
+		{
+			if (m_pArrProjPointUI[iPointIdx][i]->Is_Valid())
+				m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
+		}
 
 		if (m_eTargetPoint == Point_End)
 			return;
 
-		_float4 vCamPos = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_POS);
+		_float fMaxPosX = 600.f;
+		_float fMaxPosY = 320.f;
 
-		_float4 vCamLook = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_LOOK);
-
-		// 카메라가 바라보는 기준점 위치
-		vCamLook = vCamLook + vCamPos;
-
-		// 타겟 위치
 		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
+		
+		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
+		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
+		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK);
 
-		_float4 vTotalPos;
-		vTotalPos.x = vTargetPos.x - vCamLook.x;
-		vTotalPos.z = vTargetPos.z - vCamLook.z;
+		_float4 vCamTarget = vTargetPos - vCamPos;
 
-		_float4 vDir = vTargetPos - vCamPos;
-		vDir.y = 0.f;
+		// 기준점
+		_float4 vOriginPos = vCamLook * vCamTarget.Dot(vCamLook) + vCamPos;
 
+		// 기준점으로부터 타겟의 방향
+		_float4 vDir = vTargetPos - vOriginPos;
 		vDir.Normalize();
 
-		vDir.x *= 600.f;
-		vDir.z *= 300.f;
+		_float fIndicatorPosX = vDir.x * fMaxPosX;
+		_float fIndicatorPosY = vDir.z * fMaxPosY;
 
 		if (m_bSetTargetPoint)
 		{
-			m_pArrTargetPoint[1]->Set_Pos(vDir.x, vDir.z);
-			m_pArrTargetPoint[1]->SetActive(true);
-		}
+			m_pArrTargetPoint[1]->Set_Pos(fIndicatorPosX, fIndicatorPosY);
 
-		for (int i = 0; i < PU_End; ++i)
-		{
-			m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(vDir.x, vDir.z);
-			m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
+			for (int i = 0; i < PU_End; ++i)
+			{
+				m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(fIndicatorPosX, fIndicatorPosY);
+				m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
+			}
 		}
 	}
 }
