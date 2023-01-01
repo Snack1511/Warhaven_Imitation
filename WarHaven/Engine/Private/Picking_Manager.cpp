@@ -418,6 +418,28 @@ _bool CPicking_Manager::Is_Picked_Mesh(CMesh* pRenderer, _uint3* pOutPickedIndex
 	return false;
 }
 
+_bool CPicking_Manager::Is_Picked_FixedHeight(_float fHeight, _float4* pOut)
+{
+	if (nullptr == pOut)
+		return false;
+	Compute_WorldRay();
+
+	if (fabsf(m_vRayDir.y) <= XMVectorGetX(g_XMEpsilon))
+		return false;
+
+	_float TargetY = fHeight;
+	_float MultiplyValue = (TargetY - m_vRayPos.y) / m_vRayDir.y;
+
+	if (0 > MultiplyValue)
+		return false;
+
+	_float4 RayPos = _float4(m_vRayPos.x, m_vRayPos.y, m_vRayPos.z, 1.f);
+	_float4 RayDir = _float4(m_vRayDir.x, m_vRayDir.y, m_vRayDir.z, 0.f);
+	*pOut = RayPos + (RayDir * (MultiplyValue));
+
+	return true;
+}
+
 HRESULT CPicking_Manager::Initialize(const GRAPHICDESC& tGraphicDesc)
 {
 	m_GraphicDesc = tGraphicDesc;

@@ -116,6 +116,11 @@ namespace Engine
 	{
 		XMFLOAT3		vPosition;
 	}VTXDEFAULT;
+	typedef struct ENGINE_DLL tagVertex_Default_Declaration
+	{
+		static const unsigned int		iNumElements = 1;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXDEFAULT_DECLARATION;
 
 	typedef struct tagVertexTri_Instance
 	{

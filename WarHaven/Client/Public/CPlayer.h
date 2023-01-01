@@ -29,6 +29,18 @@ class CAIController;
 class CBehavior;
 class CPath;
 
+
+/*
+길찾기 시 CNavigation필요
+Navigation에서 직접 이동 위치를 컨트롤 하는 것이 아니라, 이동할 위치리스트를 받아서 돌리는 식
+CNavigation의 Get_BestRoute(map<_float, CCellLayer*>&, _float4 vStart, _float4 vEnd)를 이용해 리스트를 받아서 저장한다.
+지금 당장은 불가능
+why?
+1. CellLayer가 제대로 만들어지지 않았다.
+2. CellLayer의 디버깅 렌더가 프래임 드랍이 심해 만들 수 없다 --> 인스턴싱쓰면 어케 될것 같음
+3. 위의 두가지 이유 때문에 길찾기 테스트를 시도 조차 못함 --> 대신 이론적으로는 마무리 지었음
+
+*/
 class CPlayer final : public CGameObject
 {
 	DECLARE_PROTOTYPE(CPlayer);

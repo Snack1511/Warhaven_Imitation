@@ -160,7 +160,14 @@ private:
 
 
 	HRESULT		SetUp_Cascade(_uint iShadowMapWidth, _uint iShadowMapHeight, _uint iArrayCount);
+#ifdef _DEBUG
+public:
+	CDelegate<> Callback_DebugRender;
+	list<CShader*> m_DebuggingShaders_OutCreate;
+#endif
 	
+
+
 };
 
 END

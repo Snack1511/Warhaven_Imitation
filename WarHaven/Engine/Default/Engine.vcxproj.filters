@@ -265,6 +265,15 @@
     <Filter Include="02. Singleton\02. Design\19. PhysX_Manager\Proj">
       <UniqueIdentifier>{48e5bf50-28d5-4f3d-bc40-6330dd212cb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Module\Utility_Cell">
+      <UniqueIdentifier>{62f4f7d6-53ae-4813-82a0-9a858a3c75d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\14. Navigation\CNode">
+      <UniqueIdentifier>{33c9ba70-ecb6-4107-b9ab-4d7ff400487e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\03. Component\14. Navigation\Cell\CellLayer">
+      <UniqueIdentifier>{a6ec8276-b215-4c64-99a9-3b283c22af1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Camera.cpp">
@@ -500,6 +509,15 @@
     </ClCompile>
     <ClCompile Include="..\private\CMesh_HDRRect.cpp">
       <Filter>03. Instances\03. Component\10. Mesh\Mesh_Rect\CMesh_HDRRect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUtility_Cell.cpp">
+      <Filter>04. Module\Utility_Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNode.cpp">
+      <Filter>03. Instances\03. Component\14. Navigation\CNode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCellLayer.cpp">
+      <Filter>03. Instances\03. Component\14. Navigation\Cell\CellLayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1322,6 +1340,15 @@
     <ClInclude Include="..\public\CMesh_HDRRect.h">
       <Filter>03. Instances\03. Component\10. Mesh\Mesh_Rect\CMesh_HDRRect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUtility_Cell.h">
+      <Filter>04. Module\Utility_Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CNode.h">
+      <Filter>03. Instances\03. Component\14. Navigation\CNode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCellLayer.h">
+      <Filter>03. Instances\03. Component\14. Navigation\Cell\CellLayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
@@ -1334,6 +1361,9 @@
       <Filter>05. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Shadow.hlsl">
+      <Filter>05. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Debugging.hlsl">
       <Filter>05. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

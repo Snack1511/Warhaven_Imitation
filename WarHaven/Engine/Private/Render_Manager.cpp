@@ -954,6 +954,14 @@ HRESULT CRender_Manager::Render()
 
 void CRender_Manager::Release()
 {
+
+#ifdef _DEBUG
+	for (auto& elem : m_DebuggingShaders_OutCreate)
+	{
+		SAFE_DELETE(elem);
+	}
+#endif
+
 	for (auto& elem : m_vecShader)
 		SAFE_DELETE(elem);
 	SAFE_DELETE(m_pMeshRect);
@@ -967,6 +975,9 @@ void CRender_Manager::Release()
 
 HRESULT CRender_Manager::Render_Debug()
 {
+	Callback_DebugRender();
+	Callback_DebugRender.Clear();
+
 	if (nullptr == m_pTarget_Manager)
 		return E_FAIL;
 

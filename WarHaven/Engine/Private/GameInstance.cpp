@@ -522,6 +522,11 @@ _bool CGameInstance::Is_Picked(CMesh* pRenderer, _float4 vStartPos, _float4 vRay
 	return m_pPickingManager->Is_Picked(pRenderer, vStartPos, vRayDir, pOut, pOutNormal);
 }
 
+_bool CGameInstance::Is_Picked_FixedHeight(_float fHeight, _float4* pOut)
+{
+	return m_pPickingManager->Is_Picked_FixedHeight(fHeight, pOut);
+}
+
 HRESULT CGameInstance::Create_Layers(_uint iNumTilesX, _uint iNumTilesZ, _float fTileSize, _uint iNumLayers)
 {
 	return m_pTileManager->Create_Layers(iNumTilesX, iNumTilesZ, fTileSize, iNumLayers);
