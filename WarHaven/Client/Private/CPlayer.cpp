@@ -520,8 +520,8 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[PALADIN] = STATE_IDLE_PALADIN_R;
 		m_iReserveStateDefault[FIONA] = STATE_IDLE_VALKYRIE_R;
 		m_iReserveStateDefault[QANDA] = STATE_IDLE_QANDA;
-		m_iReserveStateDefault[LANCER] = STATE_IDLE_PLAYER_R;
-		m_iReserveStateDefault[PRIEST] = STATE_IDLE_PLAYER_R;
+		m_iReserveStateDefault[LANCER] = STATE_IDLE_LANCER;
+		m_iReserveStateDefault[PRIEST] = STATE_IDLE_PRIEST;
 		break;
 
 	case CUnit::UNIT_TYPE::eAI_Default:
@@ -1130,10 +1130,10 @@ void CPlayer::My_LateTick()
 	//공통으로 업데이트 되어야 하는것
 
 
-	if (Get_Team()->IsMainPlayerTeam())
-	{
+	//if (Get_Team()->IsMainPlayerTeam())
+	//{
 
-	}
+	//}
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{

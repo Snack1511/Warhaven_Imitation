@@ -42,6 +42,7 @@ HRESULT CWarrior_Attack_Sting_R::Initialize()
 	m_tHitInfo.bSting = true;
 
 
+
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입

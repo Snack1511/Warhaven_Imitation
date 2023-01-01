@@ -90,7 +90,7 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
     if (pAnimator->Get_CurAnimFrame() < m_iStateChangeKeyFrame)
         return eType;
 
-    for (auto& elem : m_vecAdjState)
+     for (auto& elem : m_vecAdjState)
     {
         eType = CState_Manager::Get_Instance()->Get_State(elem)->Check_Condition(pOwner, pAnimator);
 
@@ -142,6 +142,16 @@ void CState::Init_CommonState_Hero_AI()
 {
 
 }
+
+void CState::Init_AttackState_Priest()
+{
+	m_vecAdjState.push_back(STATE_PROJECTILECATCH_BEGIN_PRIEST);
+	m_vecAdjState.push_back(STATE_WINDATTACK_PRIEST);
+	m_vecAdjState.push_back(STATE_CURE_BEGIN_PRIEST);
+	m_vecAdjState.push_back(STATE_ATTACK_STING_PRIEST);
+	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PRIEST);
+}
+
 
 void CState::Hit_GroundEffect(CUnit* pOwner)
 {
@@ -326,7 +336,12 @@ _uint CState::DoMove(_uint iDirection, CUnit* pOwner)
 	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
 	_float4 vLook = pOwner->Get_Transform()->Get_World(WORLD_LOOK);
 
-	switch (iDirection)
+	_uint iStateDir = iDirection;
+
+	if (m_bStraight)
+		iStateDir = STATE_DIRECTION_N;
+
+	switch (iStateDir)
 	{
 	case STATE_DIRECTION_NW:
 		vDir = vCamRight * -1.f + vCamLook;

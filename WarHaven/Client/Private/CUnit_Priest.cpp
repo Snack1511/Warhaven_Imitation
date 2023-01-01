@@ -14,6 +14,9 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CAnimWeapon.h"
+#include "CProjectile.h"
+
 CUnit_Priest::CUnit_Priest()
 {
 }
@@ -70,8 +73,9 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 	COL_GROUP_CLIENT	eHitBoxHead = (bPlayer) ? COL_BLUEHITBOX_HEAD : COL_REDHITBOX_HEAD;
 	COL_GROUP_CLIENT	eHitBoxGuard = (bPlayer) ? COL_BLUEGUARD : COL_REDGUARD;
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_BLUEATTACK : COL_REDATTACK;
-	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_BLUEGUARDBREAK : COL_REDGUARDBREAK;
-	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_BLUEFLYATTACK : COL_REDFLYATTACK;
+	COL_GROUP_CLIENT	eCure = (bPlayer) ? COL_BLUECURE : COL_REDCURE;
+	COL_GROUP_CLIENT	eCatch = (bPlayer) ? COL_BLUEPROJECTILECATCH  : COL_REDPROJECTILECATCH;
+	COL_GROUP_CLIENT	eGuardBreakFlyAttack = (bPlayer) ? COL_BLUEFLYATTACKGUARDBREAK : COL_REDFLYATTACKGUARDBREAK;
 
 
 
@@ -97,9 +101,10 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 		//Radius,	vOffsetPos.		eColType
 		{0.7f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxGuard },
 		{0.7f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
+
 	};
 
-	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
+//	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
 
 
 	tUnitColDesc[0].fRadius = 0.4f;
@@ -110,7 +115,7 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
 
 
-	const _uint iWeaponSphereNum = 6;
+	const _uint iWeaponSphereNum = 4;
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
 
@@ -124,21 +129,28 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 	SetUp_UnitCollider(CUnit::WEAPON_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
 
 
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = (_uint)eGuardBreak;
-
-	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = (_uint)eFlyAttack;
-
-	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
+	//tUnitColDesc[0].fRadius = 2.5f;
+	//tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 0.f, 0.f);
+	//tUnitColDesc[0].eColType = (_uint)eCatch;
 
 
+	//SetUp_UnitCollider(CUnit::WEAPON_L, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true);
+
+	tUnitColDesc[0].fRadius = 1.5f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, tUnitColDesc[0].fRadius * tUnitColDesc[0].fRadius, 0.f);
+	tUnitColDesc[0].eColType = (_uint)eGuardBreakFlyAttack;
+
+	SetUp_UnitCollider(CUnit::FLYATTACK, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
+
+	tUnitColDesc[0].fRadius = 1.f;
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 0.f, 1.f, 0.f);
+	tUnitColDesc[0].eColType = (_uint)eCatch;
+	
+	SetUp_UnitCollider(CUnit::GUARD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_L_WP1"));
 
 }
 
-void	CUnit_Priest::SetUp_HitStates(UNIT_TYPE eUnitType)
+void CUnit_Priest::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
 
 	/* 나중에 사망 후 부활 할 시 위치 저장할 때 사용해야 하므로 전체적으로 추가하도록 한다. */
@@ -147,14 +159,15 @@ void	CUnit_Priest::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 	switch (eUnitType)
 	{
+
 	case Client::CUnit::UNIT_TYPE::ePlayer:
-		m_tHitType.eHitState = STATE_HIT;
-		m_tHitType.eGuardState = STATE_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
-		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARRIOR;
-		m_tHitType.eStingHitState = STATE_STINGHIT_WARRIOR;
-		m_tHitType.eFlyState = STATE_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = STATE_BOUNCE_PLAYER_L;
+		m_tHitType.eHitState = STATE_HIT_PRIEST;
+		m_tHitType.eGuardState = STATE_GUARDHIT_PRIEST;
+		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER; // 가드 캔슬 없음
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_PRIEST;
+		m_tHitType.eStingHitState = STATE_STINGHIT_PRIEST;
+		m_tHitType.eFlyState = STATE_FLYHIT_PRIEST;
+		m_tHitType.eBounce = STATE_BOUNCE_PRIEST;
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_TG:
@@ -218,8 +231,10 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 
-		m_eDefaultState = STATE_IDLE_PLAYER_R;
-		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
+		m_eDefaultState = STATE_IDLE_PRIEST;
+		m_eSprintEndState = STATE_SPRINT_END_PRIEST;
+		m_eCureBeginType = STATE_CURE_BEGIN_PRIEST;
+		m_eCureLoopType = STATE_CURE_LOOP_PRIEST;
 
 		break;
 
@@ -309,49 +324,8 @@ void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 
 	switch (m_eCurState)
 	{
-	case STATE_ATTACK_HORIZONTALUP_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LU", vHitPos, matWorld);
-		break;
 
-	case STATE_ATTACK_HORIZONTALMIDDLE_L:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_L_AI_ENEMY:
-	case AI_STATE_ATTACK_HORIZONTALMIDDLE_L:
-	case AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Left", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_HORIZONTALDOWN_L:
-	case STATE_SPRINTATTACK_PLAYER:
-	case AI_STATE_COMBAT_GUARDBREAK_WARRIOR:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_LD", vHitPos, matWorld);
-		break;
-
-	case AI_STATE_COMBAT_OXEN_LOOPATTACK_WARRIOR:
-	case STATE_WARRIOR_OXEN_LOOPATTACK:
-	case STATE_ATTACK_HORIZONTALUP_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RU", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_HORIZONTALMIDDLE_R:
-	case STATE_HORIZONTALMIDDLEATTACK_WARRIOR_R_AI_ENEMY:
-	case AI_STATE_ATTACK_HORIZONTALMIDDLE_R:
-	case AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R:
-			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_Right", vHitPos, matWorld);
-			break;
-
-	case STATE_ATTACK_HORIZONTALDOWN_R:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_RD", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_VERTICALCUT:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HitSlash_D", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_STING_PLAYER_L:
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
-		break;
-
-	case STATE_ATTACK_STING_PLAYER_R:
+	case STATE_ATTACK_STING_PRIEST:
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
 		break;
 
@@ -403,7 +377,7 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// 칼 길이
-	tDesc.fHeight = 0.9f;
+	tDesc.fHeight = 0.6f;
 	// 칼 두께
 	tDesc.fRadius = 0.2f;
 	// 칼 붙일 뼈
@@ -417,16 +391,23 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 
 	m_fCoolTime[SKILL1] = 6.f;
 	m_fCoolTime[SKILL2] = 5.f;
-	m_fCoolTime[SKILL3] = 0.f;
+	m_fCoolTime[SKILL3] = 5.f;
 
 	m_fCoolAcc[SKILL1] = 0.f;
 	m_fCoolAcc[SKILL2] = 0.f; 
 	m_fCoolAcc[SKILL3] = 0.f;
 
 
-	m_tUnitStatus.eClass = WARRIOR;
+	m_tUnitStatus.eClass = PRIEST;
 
+	m_tUnitStatus.fDashAttackSpeed = 9.f;
+	m_fMaxDistance = 5.f;
 
+	//m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0004.fbx",
+	//	L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_R_WP1");
+
+	//m_pAnimWeapon->Initialize();
+	//m_pAnimWeapon->Set_AnimIndex(0, FLT_MAX, FLT_MIN);
 
 	return S_OK;
 }
@@ -477,12 +458,15 @@ HRESULT CUnit_Priest::Start()
 		20,
 		"0B_R_WP1"
 	);
+	
+	m_fMaxDistance = 8.f;
 
 	return S_OK;
 }
 
 void CUnit_Priest::OnEnable()
 {
+	
 	__super::OnEnable();
 }
 
@@ -491,9 +475,22 @@ void CUnit_Priest::OnDisable()
 	__super::OnDisable();
 }
 
+void CUnit_Priest::My_Tick()
+{
+	__super::My_Tick();
+
+	if (m_eCureBeginType == m_eCurState || m_eCureLoopType == m_eCurState)
+		__super::Check_NearObject_IsInFrustum();
+
+	else
+		m_pNearCureObject = nullptr;
+
+}
 void CUnit_Priest::My_LateTick()
 {
+
 	__super::My_LateTick();
+
 
 	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
 		return;

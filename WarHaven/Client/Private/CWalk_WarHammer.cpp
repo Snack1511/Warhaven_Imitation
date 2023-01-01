@@ -39,8 +39,6 @@ HRESULT CWalk_WarHammer::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
-    m_vecAdjState.push_back(STATE_SPRINT_BEGIN_PLAYER);
-
     Init_CommonState_Player();
 
 

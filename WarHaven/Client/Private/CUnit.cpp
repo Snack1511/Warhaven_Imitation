@@ -55,6 +55,8 @@
 #include "CColorController.h"
 #include "CTeamConnector.h"
 
+#include "CUnit_Priest.h"
+
 #define PHYSX_ON
 
 
@@ -102,7 +104,27 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 			CUser::Get_Instance()->SetActive_InteractUI(true);
 		}
 	}
+	//else if (eMyColType == COL_BLUECURE || eMyColType == COL_REDCURE)
+	//{
+	//	if (pOtherObj)
+	//	{
+	//		m_CureObjects.push_back(pOtherObj);
 
+	//		//_float4 vCurLook = Get_Transform()->Get_World(WORLD_LOOK).Normalize();
+
+
+	//		////양수면 앞임.
+	//		//if (vCurLook.Dot(vOtherDir) > 0.f)
+	//		//	tOtherHitInfo.bFace = true;
+	//		//else
+	//		//	tOtherHitInfo.bFace = false;
+
+	//	}
+	//	return;
+	//}
+
+	//else if (eOtherColType == COL_BLUECURE || eOtherColType == COL_REDCURE)
+	//	return;
 
 	if (!pOtherObj)
 	{
@@ -146,7 +168,7 @@ void CUnit::Unit_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColTy
 	tOtherHitInfo.vDir.y = 0.f;
 	tOtherHitInfo.vDir.Normalize();
 	
-	//tOtherHitInfo.pOtherUnit = pOtherUnit;
+	tOtherHitInfo.pOtherUnit = pOtherUnit;
 
 	//상대 위치 계산
 	_float4 vOtherDir = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
@@ -668,7 +690,6 @@ HRESULT CUnit::Start()
 	if (m_pUnitCollider[HEAD])
 		ENABLE_COMPONENT(m_pUnitCollider[HEAD]);
 
-
 	/* PASS */
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
@@ -779,11 +800,15 @@ void CUnit::Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable)
 	{
 		if (bEnable)
 		{
+			ENABLE_COMPONENT(m_pUnitCollider[ePartType]);
+
 			if (m_pWeaponCollider_L)
 				ENABLE_COMPONENT(m_pWeaponCollider_L);
 		}
 		else
 		{
+			DISABLE_COMPONENT(m_pUnitCollider[ePartType]);
+
 			if (m_pWeaponCollider_L)
 				DISABLE_COMPONENT(m_pWeaponCollider_L);
 		}
@@ -891,6 +916,49 @@ void CUnit::SetUp_HitStates(UNIT_TYPE eUnitType)
 {
 	if (eUnitType > UNIT_TYPE::eUNIT_TYPE_END)
 		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
+}
+
+void CUnit::Check_NearObject_IsInFrustum()
+{
+
+	_float fCureLength = m_fMaxDistance + 1.f;
+
+	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
+
+	for (auto& elem : listPlayers)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
+		if (!pPlayer)
+			continue;
+
+		if (!pPlayer->Is_Valid())
+			continue;
+
+		// 현재 테스트에서 사용하기 위해 잠시 꺼둠..
+		//if (m_bForUseTeam)
+		//	if (pPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
+		//		continue;
+	
+		//else
+		//	if (pPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
+		//		continue;
+
+
+		CUnit* pUnit = pPlayer->Get_CurrentUnit();
+
+		if (!pUnit->Is_Valid())
+			continue;
+
+
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
+			continue;
+
+		_float fMyLength = (elem->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS)).Length();
+
+		m_pNearCureObject = pUnit;
+		fCureLength = fMyLength;
+
+	}
 }
 
 void CUnit::On_ChangeToHero(_uint iIndex)
@@ -1108,6 +1176,8 @@ void CUnit::My_LateTick()
 			On_Die();
 		}
 	}
+
+	m_CureObjects.clear();
 }
 
 void CUnit::Create_Light(_float4 vPos, _float fRange, _float fRandomRange, _float fFadeInTime, _float fDuration, _float fFadeOutTime, _float4 Diffuse,
@@ -1335,18 +1405,18 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 		}
 		else
 		{
-			//if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
-			//{
-			//	Enter_State(m_tHitType.eStingHitState, pHitInfo);
-			//}
-			//else
-			//{
-			//	On_DieBegin(pOtherUnit, vHitPos);
-			//	Enter_State(m_tHitType.eHitState, pHitInfo);
-			//}
+			if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
+			{
+				Enter_State(m_tHitType.eStingHitState, pHitInfo);
+			}
+			else
+			{
+				On_DieBegin(pOtherUnit, vHitPos);
+				Enter_State(m_tHitType.eHitState, pHitInfo);
+			}
 
-			On_DieBegin(pOtherUnit, vHitPos);
-			Enter_State(m_tHitType.eHitState, pHitInfo);
+			//On_DieBegin(pOtherUnit, vHitPos);
+			//Enter_State(m_tHitType.eHitState, pHitInfo);
 
 			return;
 

@@ -42,6 +42,9 @@ public:
 	void		On_ShootProjectile();
 	void			On_ChangePhase(ePROJECTILE_PHASE eNextPhase);
 
+public:
+	void	Use_Collect(_bool bCollect) { m_bCollect = bCollect; }
+
 protected:
 	_hashcode	m_hcCode = 0;
 
@@ -71,6 +74,8 @@ protected:
 protected:
 	string m_szMainBoneName = "0B_R_WP1";
 	string m_szSubBoneName = "0B_L_WP1";
+
+	_bool  m_bCollect = true;
 
 protected:
 	ePROJECTILE_PHASE	m_eCurPhase = eSTART;

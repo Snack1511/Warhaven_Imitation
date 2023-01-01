@@ -68,56 +68,42 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 
 	COL_GROUP_CLIENT	eHitBoxBody = (bPlayer) ? COL_BLUEHITBOX_BODY : COL_REDHITBOX_BODY;
 	COL_GROUP_CLIENT	eHitBoxHead = (bPlayer) ? COL_BLUEHITBOX_HEAD : COL_REDHITBOX_HEAD;
-	COL_GROUP_CLIENT	eHitBoxGuard = (bPlayer) ? COL_BLUEGUARD : COL_REDGUARD;
 	COL_GROUP_CLIENT	eAttack = (bPlayer) ? COL_BLUEATTACK : COL_REDATTACK;
 	COL_GROUP_CLIENT	eGuardBreak = (bPlayer) ? COL_BLUEGUARDBREAK : COL_REDGUARDBREAK;
 	COL_GROUP_CLIENT	eFlyAttack = (bPlayer) ? COL_BLUEFLYATTACK : COL_REDFLYATTACK;
 
 
+	const _uint iBodySphereNum = 4;
 
-	//CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
-	//{
-	//	//Radius,	vOffsetPos.		eColType
-	//	{0.6f, _float4(0.f, 0.5f, 0.f),eHitBoxBody },
-	//	{0.6f, _float4(0.f, 1.f, 0.f),eHitBoxBody },
-	//};
-
-	CUnit::UNIT_COLLIDERDESC tUnitColDesc[2] =
+	CUnit::UNIT_COLLIDERDESC tUnitColDesc[iBodySphereNum] =
 	{
 		//Radius,	vOffsetPos.		eColType
-		{0.6f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxBody },
-		{0.6f, _float4(0.f, 1.f, 0.f), (_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.4f, -0.7f),(_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.4f, 0.f),(_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.4f, 0.7f),(_uint)eHitBoxBody },
+		{0.6f, _float4(0.f, 1.9f, 0.f),(_uint)eHitBoxBody },
+		//{0.6f, _float4(0.f, 1.5f, 0.f), (_uint)eHitBoxBody },
 	};
 
-	//SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_COM"));
-	SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, 2);
-
-	CUnit::UNIT_COLLIDERDESC tGuardColDesc[2] =
-	{
-		//Radius,	vOffsetPos.		eColType
-		{0.7f, _float4(0.f, 0.5f, 0.f),(_uint)eHitBoxGuard },
-		{0.7f, _float4(0.f, 1.2f, 0.f),(_uint)eHitBoxGuard },
-	};
-
-	SetUp_UnitCollider(CUnit::GUARD, tGuardColDesc, 2, DEFAULT_TRANS_MATRIX, false);
+	SetUp_UnitCollider(CUnit::BODY, tUnitColDesc, iBodySphereNum);
 
 
 	tUnitColDesc[0].fRadius = 0.4f;
-	tUnitColDesc[0].vOffsetPos = _float4(0.f, 1.5f, 0.f, 0.f);
+	tUnitColDesc[0].vOffsetPos = _float4(0.f, 2.5f, 0.f, 0.f);
 	tUnitColDesc[0].eColType = (_uint)eHitBoxHead;
 
 
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
 
 
-	const _uint iWeaponSphereNum = 6;
+	const _uint iWeaponSphereNum = 22;
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
 	{
 		tWeaponUnitColDesc[i].fRadius = 0.2f;
-		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
+		tWeaponUnitColDesc[i].vOffsetPos.z = -10.f * _float(i) - 10.f;
 		tWeaponUnitColDesc[i].eColType = (_uint)eAttack;
 	}
 
@@ -128,12 +114,6 @@ void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
 		tWeaponUnitColDesc[i].eColType = (_uint)eGuardBreak;
 
 	SetUp_UnitCollider(CUnit::GUARDBREAK_R, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-
-	for (_uint i = 0; i < iWeaponSphereNum; ++i)
-		tWeaponUnitColDesc[i].eColType = (_uint)eFlyAttack;
-
-	SetUp_UnitCollider(CUnit::FLYATTACK, tWeaponUnitColDesc, iWeaponSphereNum, DEFAULT_TRANS_MATRIX, false, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1"));
-
 
 
 }
@@ -218,7 +198,7 @@ void CUnit_Lancer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 
-		m_eDefaultState = STATE_IDLE_PLAYER_R;
+		m_eDefaultState = STATE_IDLE_LANCER;
 		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
 
 		break;
@@ -404,9 +384,9 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 0.9f;
+	tDesc.fHeight = 1.5f;
 	// Ä® µÎ²²
-	tDesc.fRadius = 0.2f;
+	tDesc.fRadius = 0.08f;
 	// Ä® ºÙÀÏ »À
 	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("0B_R_WP1");
 
@@ -424,8 +404,12 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 	m_fCoolAcc[SKILL2] = 0.f; 
 	m_fCoolAcc[SKILL3] = 0.f;
 
+	m_tUnitStatus.fRunSpeed = 6.f;
+	m_tUnitStatus.fSprintSpeed = 8.f;
 
-	m_tUnitStatus.eClass = WARRIOR;
+
+
+	m_tUnitStatus.eClass = LANCER;
 
 
 

@@ -106,12 +106,28 @@ _float4 CResource_Material::Check_FileName(string strName)
 
 	//}
 
+	/* Qanda */
 	else if (strName == "MI_Hair_Qanda")
 	{
 		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
 		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Qanda_Hair01_B.dds";
 
 	}
+
+	/* Lancer */
+	else if (strName == "MI_Lancer0001_Fur_Out_A00")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Lancer0001_Horse_A00.dds";
+
+	}
+	else if (strName == "MI_Lancer0001_Fur_A00")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Lancer0001_Horse_A00.dds";
+
+	}
+
 
 	/* Warrior */
 	else if (strName == "MI_Warrior0001_Beard02_A00")

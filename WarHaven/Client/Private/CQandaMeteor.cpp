@@ -108,6 +108,8 @@ void CQandaMeteor::OnEnable()
 }
 void CQandaMeteor::OnDisable()
 {
-	static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
+	if (m_bCollect)
+		static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
+	
 	__super::OnDisable();
 }

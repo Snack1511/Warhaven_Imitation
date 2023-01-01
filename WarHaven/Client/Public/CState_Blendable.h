@@ -88,6 +88,9 @@ protected:
 	_bool	m_bSmootMoveLoop = false;
 	STATE_DIRECTION m_ePreDirection;
 	
+	_bool	m_bLoopAction = false;
+
+	_bool	m_bUseJump = true; // 점프를 할 수 있음.
 
 
 protected:

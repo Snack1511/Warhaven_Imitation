@@ -286,7 +286,7 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
 	_float4 vHitPos;
-	if (Check_ArrowRay(&vHitPos))
+	if (CAttack_Qanda::Check_CrowRay(&vHitPos, pOwner))
 	{
 		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
 		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
@@ -633,9 +633,9 @@ void CAttack_Qanda::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 	}
 }
 
-_bool CAttack_Qanda::Check_ArrowRay(_float4* pOutPos)
+_bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 {
-	if (!static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow())
+	if (!static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow() && m_pOwner != pOwner)
 		return false;
 
 	_float4 vStartPos = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_ArrowHeadPos();

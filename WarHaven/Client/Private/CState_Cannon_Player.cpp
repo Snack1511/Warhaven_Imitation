@@ -84,7 +84,11 @@ void CState_Cannon_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CState_Cannon_Player::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+    if (KEY(F, TAP))
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_DefaultState();
+        return eDefaultState;
+    }
 
 
     return __super::Tick(pOwner, pAnimator);

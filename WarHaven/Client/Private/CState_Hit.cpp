@@ -69,19 +69,15 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
 
 STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    //if (m_tHitInfo.bSting && m_pStingBone)
-    //{
-    //    _float4x4		matBone = m_pStingBone->Get_BoneMatrix();
+    if (m_tHitInfo.bSting && m_pStingBone)
+    {
+        m_fTimeAcc += fDT(0);
 
-    //    pOwner->Get_Transform()->Get_Transform().matMyWorld = matBone;
-
-    //    pOwner->Get_Transform()->Make_WorldMatrix();
-
-    //    if (pAnimator->Is_CurAnimFinished())
-    //    {
-    //        pOwner->On_Die();
-    //    }
-    //}
+        if(m_fTimeAcc > 0.5f)
+            pOwner->On_Die();
+ 
+        pOwner->Get_Transform()->Get_Transform().matMyWorld = m_pStingBone->Get_BoneMatrix();// *matBone;
+    }
 
 
     return __super::Tick(pOwner, pAnimator);
@@ -123,6 +119,18 @@ void CState_Hit::Fly_State()
 
 void CState_Hit::Hit_State(CUnit* pOwner)
 {
+    //if (m_tHitInfo.bSting)
+    //{
+    //    if (pOwner->Get_Status().fHP <= 0.f)
+    //    { // strStingBoneName
+    //        m_pStingBone = GET_COMPONENT_FROM(m_tHitInfo.pOtherUnit, CModel)->Find_HierarchyNode("0B_R_WP1");
+    //        m_eAnimType = ANIM_HIT;
+    //        m_iAnimIndex = m_iHitStingIndex[HIT_STATE_N];
+    //        return;
+    //    }
+    //}
+    
+
 
     Face_Check(pOwner);
 
@@ -242,7 +250,12 @@ void CState_Hit::Sting_State(CUnit* pOwner)
  
     Face_Check(pOwner);
 
-   // m_pStingBone = GET_COMPONENT_FROM(m_tHitInfo.pOtherUnit, CModel)->Find_HierarchyNode("0B_R_WP1");;
+    if (pOwner->Get_Status().fHP <= 0.f)
+    {
+        m_pStingBone = GET_COMPONENT_FROM(m_tHitInfo.pOtherUnit, CModel)->Find_HierarchyNode(m_tHitInfo.strStingBoneName.c_str());
+        m_eAnimType = ANIM_HIT;
+        m_iAnimIndex = m_iHitStingIndex[HIT_STATE_N];
+    }
 
 
     ///* 그로기(기절) 처리 */
@@ -278,35 +291,35 @@ void CState_Hit::Sting_State(CUnit* pOwner)
     //}
 
     /* Hit 처리 */
-    switch (m_tHitInfo.eHitType)
-    {
-        /* 내가 기울어지는 방향대로 애니메이션 처리 */
-    case HIT_TYPE::eLEFT:
-        m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_W];
+    //switch (m_tHitInfo.eHitType)
+    //{
+    //    /* 내가 기울어지는 방향대로 애니메이션 처리 */
+    //case HIT_TYPE::eLEFT:
+    //    m_eAnimType = ANIM_HIT;
+    //    m_iAnimIndex = m_iHitIndex[HIT_STATE_W];
 
-        break;
+    //    break;
 
-    case HIT_TYPE::eRIGHT:
-        m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_E];
+    //case HIT_TYPE::eRIGHT:
+    //    m_eAnimType = ANIM_HIT;
+    //    m_iAnimIndex = m_iHitIndex[HIT_STATE_E];
 
-        break;
+    //    break;
 
-    case HIT_TYPE::eUP:
-        m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_N];
+    //case HIT_TYPE::eUP:
+    //    m_eAnimType = ANIM_HIT;
+    //    m_iAnimIndex = m_iHitIndex[HIT_STATE_N];
 
-        break;
+    //    break;
 
-    case HIT_TYPE::eDOWN:
-        m_eAnimType = ANIM_HIT;
-        m_iAnimIndex = m_iHitIndex[HIT_STATE_S];
+    //case HIT_TYPE::eDOWN:
+    //    m_eAnimType = ANIM_HIT;
+    //    m_iAnimIndex = m_iHitIndex[HIT_STATE_S];
 
-        break;
+    //    break;
 
-    default:
-        break;
-    }   
+    //default:
+    //    break;
+    //}   
 
 }

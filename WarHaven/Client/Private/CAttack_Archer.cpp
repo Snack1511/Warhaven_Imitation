@@ -301,8 +301,8 @@ STATE_TYPE CAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 
 	/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
-	_float4 vHitPos;
-	if (Check_ArrowRay(&vHitPos))
+	_float4 vHitPos; 
+	if (CAttack_Archer::Check_ArrowRay(&vHitPos, pOwner))
 	{
 		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
 		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
@@ -694,9 +694,9 @@ void CAttack_Archer::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 	}
 }
 
-_bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos)
+_bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos, CUnit* pOwner)
 {
-	if (!static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow())
+	if (!static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow() && m_pOwner != pOwner)
 		return false;
 
 	_float4 vStartPos = static_cast<CUnit_Archer*>(m_pOwner)->Get_CurArrow()->Get_ArrowHeadPos();
