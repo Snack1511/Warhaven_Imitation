@@ -104,17 +104,14 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 
 	if (strPadenPointKey == "Paden_Trigger_A")
 	{
-		cout << "메인 거점 : " << fConquestRatio << endl;
 		m_fConquestRatio[Point_A] = fConquestRatio;
 	}
 	else if (strPadenPointKey == "Paden_Trigger_R")
 	{
-		cout << "리스폰 : " << fConquestRatio << endl;
 		m_fConquestRatio[Point_R] = fConquestRatio;
 	}
 	else if (strPadenPointKey == "Paden_Trigger_C")
 	{
-		cout << "캐논 : " << fConquestRatio << endl;
 		m_fConquestRatio[Point_C] = fConquestRatio;
 	}
 }
@@ -151,16 +148,19 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		_float fMaxPosX = 600.f;
 		_float fMaxPosY = 320.f;
 
+		// 타겟의 위치
 		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
-		
+
 		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
 		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
+
+		_float4 vCamToTargetDir = vTargetPos - vCamPos;
+		_float fLookLength = vCamToTargetDir.Length();
+
 		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK);
+		vCamLook = vCamLook.Normalize() * fLookLength;
 
-		_float4 vCamTarget = vTargetPos - vCamPos;
-
-		// 기준점
-		_float4 vOriginPos = vCamLook * vCamTarget.Dot(vCamLook) + vCamPos;
+		_float4 vOriginPos = vCamPos + vCamLook;
 
 		// 기준점으로부터 타겟의 방향
 		_float4 vDir = vTargetPos - vOriginPos;
