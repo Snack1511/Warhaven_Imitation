@@ -1129,12 +1129,6 @@ void CPlayer::My_LateTick()
 {
 	//공통으로 업데이트 되어야 하는것
 
-
-	//if (Get_Team()->IsMainPlayerTeam())
-	//{
-
-	//}
-
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{
 		Frustum_UnitHUD();

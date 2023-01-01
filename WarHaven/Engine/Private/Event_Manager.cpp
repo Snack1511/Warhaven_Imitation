@@ -54,11 +54,22 @@ void CEvent_Manager::Tick()
 
 void CEvent_Manager::Delete_GameObject(CGameObject * pGameObject)
 {
+	if (!pGameObject)
+	{
+		assert(0);
+		return;
+	}
+
 	Add_Event(EVENT_DELETE_OBJECT, pGameObject);
 }
 
 void CEvent_Manager::Create_GameObject(CGameObject * pGameObject, const _uint& iGroupIdx)
 {
+	if (!pGameObject)
+	{
+		assert(0);
+		return;
+	}
 	Add_Event(EVENT_CREATE_OBJECT, pGameObject, (DWORD_PTR)iGroupIdx);
 }
 
@@ -74,11 +85,21 @@ void CEvent_Manager::Create_Component(CComponent* pComponent, CGameObject* pGame
 
 void CEvent_Manager::Enable_GameObject(CGameObject * pGameObject)
 {
+	if (!pGameObject)
+	{
+		assert(0);
+		return;
+	}
 	Add_Event(EVENT_ENABLE_OBJECT, pGameObject);
 }
 
 void CEvent_Manager::Disable_GameObject(CGameObject * pGameObject)
 {
+	if (!pGameObject)
+	{
+		assert(0);
+		return;
+	}
 	Add_Event(EVENT_DISABLE_OBJECT, pGameObject);
 }
 
@@ -94,6 +115,11 @@ void CEvent_Manager::Enable_Component(CComponent* pComponent)
 
 void CEvent_Manager::Create_StaticObject(CGameObject * pGameObject, _hashcode hcClassName)
 {
+	if (!pGameObject)
+	{
+		assert(0);
+		return;
+	}
 	Add_Event(EVENT_CREATE_STATIC, pGameObject, (DWORD_PTR)hcClassName);
 
 }

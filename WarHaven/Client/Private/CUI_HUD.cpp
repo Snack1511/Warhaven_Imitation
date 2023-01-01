@@ -131,7 +131,8 @@ void CUI_HUD::SetActive_HUD(_bool value)
 	{
 		for (int j = 0; j < Squard_End; ++j)
 		{
-			m_pArrSquardInfo[i][j]->SetActive(value);
+			if (m_pArrSquardInfo[i][j])
+				m_pArrSquardInfo[i][j]->SetActive(value);
 		}
 	}
 }
