@@ -17,7 +17,9 @@ void CComponent::Set_Enable(_bool bEnable)
 	if (m_bEnable == bEnable)
 		return;
 
-	(m_bEnable = bEnable) ? OnEnable() : OnDisable();
+	(m_bEnable = bEnable);
+	m_bEnable ? OnEnable() : OnDisable();
+
 }
 
 void CComponent::OnEnable()

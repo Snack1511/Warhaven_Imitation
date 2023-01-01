@@ -5,6 +5,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Physics.h"
+#include "CNode.h"
+#include "CCellLayer.h"
 
 CNavigation::CNavigation(_uint iGroupIdx)
 	: CComponent(iGroupIdx)
@@ -13,6 +15,8 @@ CNavigation::CNavigation(_uint iGroupIdx)
 
 CNavigation::~CNavigation()
 {
+	SAFE_DELETE(m_pStartNode);
+	SAFE_DELETE(m_pEndNode);
 }
 
 CNavigation* CNavigation::Create(_uint iGroupIdx, CCell* pStartCell, CPhysics* pPhysicsCom)
@@ -69,6 +73,119 @@ _float4 CNavigation::Get_CurWallNormal()
 		return _float4(0.f, 0.f, 1.f, 1.f);
 
 	return m_pCurWallCell->Get_CellNormal();
+}
+
+void CNavigation::Set_StartPosition(_float4 vPosition)
+{
+	if (m_pStartNode)
+		m_pStartNode->Set_NodePosition(vPosition);
+}
+
+void CNavigation::Set_EndPosition(_float4 vPosition)
+{
+	if (m_pEndNode)
+		m_pEndNode->Set_NodePosition(vPosition);
+}
+
+//골리스트 만들고
+//해당리스트가 빌때까지 길찾기 후 셀 위치 넣기
+//A. 연산량 주의
+list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
+{
+	//시작 위치의 셀레이어부터
+	//도착 위치의 셀레이어까지
+	//각 점의 최단거리의 계단 셀을 도착지리스트에 넣음       
+	list<pair<_float4, CCellLayer*>> GoalList;
+	CCellLayer* pStartLayer = nullptr;
+	CCellLayer* pEndLayer = nullptr;
+	for (auto& Layer : Layers)
+	{
+		_float vLayerKey = Layer.first;
+
+		if (vLayerKey <= vStart.y)
+		{
+			pStartLayer = Layer.second;
+		}
+		if (vLayerKey <= vEnd.y)
+		{
+			pEndLayer = Layer.second;
+		}
+	}
+
+	if (pStartLayer == pEndLayer)
+	{
+		GoalList.push_back(make_pair(vEnd, pEndLayer));
+		return GoalList;
+	}
+
+	_float pCurLayerKey = pStartLayer->Get_MinHeight();
+	auto CmpIter = Layers.find(pCurLayerKey);
+	_float4 vStartPos = _float4(vStart.x, pCurLayerKey, vStart.z, 1.f);
+	for (; CmpIter != Layers.end(); ++CmpIter)
+	{
+		if (CmpIter->second == pEndLayer)
+			break;
+
+		vStartPos.y = CmpIter->first;
+		//두 셀레이어의 Stair셀을 비교할 때 공유되는 지점이 있으면 두 레이어는 해당 계단으로 연결됨
+		list<CCell*> StairCellList;
+		for (auto Iter = CmpIter; Iter != Layers.end(); ++Iter)
+		{
+			//CmpIter와 연결된 모든 리스트 가져오기
+			list<CCell*> StairList = Iter->second->Get_StairCellList(CmpIter->first);
+			//기존 리스트에 병합
+			StairCellList.merge(StairList);
+		}
+		if (!StairCellList.empty()) 
+		{
+			//시작위치 가까운 순으로 정렬
+			StairCellList.sort([&vStartPos](auto& sour, auto& Dest)
+				{
+					_float SourLen = (sour->Get_Position() - vStartPos).Length();
+					_float DestLen = (Dest->Get_Position() - vStartPos).Length();
+					if (SourLen > DestLen)
+						return true;
+					else return false;
+				});
+			//가장 가까운 위치 삽입
+			GoalList.push_back(make_pair((*StairCellList.begin())->Get_Position(), CmpIter->second));
+		}
+		if (GoalList.empty())
+			break;
+		//CmpIter와 vStartPos변경
+		vStartPos = GoalList.back().first;
+	}
+ 
+	GoalList.push_back(make_pair(vEnd, pEndLayer));
+	return GoalList;
+}
+//A. 연산량 주의
+list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
+{
+	list<pair<_float4, CCellLayer*>>GoalList = Get_Goals(Layers, vStart, vEnd);
+	CCellLayer::CellList Routes;
+	m_pStartNode->Set_NodePosition(vStart);
+	_float4 vStartPos = vStart;
+	
+	for (auto value : GoalList)
+	{
+		m_pEndNode->Set_NodePosition(value.first);
+
+		CCellLayer::CellList List = value.second->Get_BestRoute(m_pStartNode, m_pEndNode);
+
+		Routes.merge(List);
+		m_pStartNode->Clear_Node();
+		m_pEndNode->Clear_Node();
+
+		m_pStartNode->Set_NodePosition(value.first);
+	}
+
+	list<_float4> Return;
+	for (auto Cell : Routes)
+	{
+		Return.push_back(Cell->Get_Position());
+	}
+	return Return;
 }
 
 //CNavigation::CELL_TYPE CNavigation::isMove(_vector vPosition, _float4* pOutPos)
@@ -303,6 +420,8 @@ void CNavigation::Exit_Wall()
 
 HRESULT CNavigation::Initialize_Prototype()
 {
+	m_pStartNode = CNode::Create(_float4());
+	m_pEndNode = CNode::Create(_float4());
 	return S_OK;
 }
 

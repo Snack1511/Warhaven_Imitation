@@ -14,6 +14,7 @@
 
 #include "CUtility_File.h"
 #include "CTileDebugger.h"
+#include "CCellLayer.h"
 
 CWindow_Tile::CWindow_Tile()
 {
@@ -22,6 +23,11 @@ CWindow_Tile::CWindow_Tile()
 CWindow_Tile::~CWindow_Tile()
 {
 	SAFE_DELETE_ARRAY(m_bRenderTile);
+	for (auto& value : m_pLayers)
+	{
+		SAFE_DELETE(value.second);
+	}
+	m_pLayers.clear();
 
 }
 
@@ -47,10 +53,11 @@ HRESULT CWindow_Tile::Initialize()
 	m_bEnable = false;
 	SetUp_ImGuiDESC(typeid(CWindow_Tile).name(), ImVec2(400.f, 300.f), window_flags);
 
-	SetUp_DataFiles(m_DataDirectory.c_str());
+	//SetUp_DataFiles(m_DataDirectory.c_str());
+	SetUp_DataFiles(m_CellDataDirectory.c_str());
 	return S_OK;
 }
-
+static _float4 debugPick;
 void CWindow_Tile::Tick()
 {
 	if (m_bHoverWindow)
@@ -103,6 +110,64 @@ void CWindow_Tile::Tick()
 			}
 		}
 	}
+
+	//¼¿ ¼±ÅÃ
+	if (KEY(I, HOLD))
+	{
+		if (KEY(LBUTTON, TAP))
+		{
+			if (m_pCurLayer)
+			{
+				_float4 vOutPos, vFinalPos = _float4(0.f, -999.f, 0.f);
+				_uint3 iIndex(1, 2, 3);
+				_uint iCurIndex = 0;
+
+				_uint iPlusIndex = 0;
+
+				if (GAMEINSTANCE->Is_Picked_FixedHeight(m_pCurLayer->Get_MinHeight(), &vOutPos))
+				{
+					if(m_bSelectNeighbor)
+					{
+						On_CellPick_Neighbor(iCurIndex, vOutPos);
+					}
+					else
+					{
+						debugPick = vOutPos;
+						On_CellPicking(iCurIndex, vOutPos);
+					}
+				}
+			}
+		}
+	}
+	//¼¿ ¼Ó¼º º¯°æ
+	if (KEY(O, HOLD))
+	{
+		if (KEY(LBUTTON, HOLD))
+		{
+			if (m_pCurLayer)
+			{
+				_float4 vOutPos, vFinalPos = _float4(0.f, -999.f, 0.f);
+				_uint3 iIndex(1, 2, 3);
+				_uint iCurIndex = 0;
+
+				_uint iPlusIndex = 0;
+
+				if (GAMEINSTANCE->Is_Picked_FixedHeight(m_pCurLayer->Get_MinHeight(), &vOutPos))
+				{
+					debugPick = vOutPos;
+					On_CellSetAttribute(iCurIndex, vOutPos);
+				}
+			}
+		}
+	}
+#ifdef _DEBUG
+
+
+	if (m_pCurLayer)
+	{
+		m_pCurLayer->DebugTick();
+	}
+#endif // _DEBUG
 }
 
 HRESULT CWindow_Tile::Render()
@@ -116,16 +181,48 @@ HRESULT CWindow_Tile::Render()
 		static _int iNumTilesZ = 1;
 		static _int iNumLayers = 1;
 		static _float fTileSize = 1.f;
+
+		static _float fMinHeight = 0.f;
+		static _float fMaxHeight = 1.f;
+		static _float4 vCenterPos = _float4(0.f, 0.f, 0.f, 1.f);
 		ImGui::InputInt("iNumTilesX", &iNumTilesX);
 		ImGui::InputInt("iNumTilesZ", &iNumTilesZ);
 		ImGui::InputInt("iNumLayers", &iNumLayers);
 		ImGui::InputFloat("fTileSize", &fTileSize);
 
+		ImGui::DragFloat("fHeightMin", &fMinHeight);
+		ImGui::DragFloat("fHeightMax", &fMaxHeight);
+		_float vCenter[3];
+		memcpy_s(vCenter, sizeof(_float3), &vCenterPos, sizeof(_float3));
+		if (ImGui::DragFloat3("vCenter", vCenter))
+		{
+			memcpy_s(&vCenterPos, sizeof(_float3), vCenter, sizeof(_float3));
+		}
+		vCenterPos.y = fMinHeight;
+
 		if (iNumTilesX <= 1) iNumTilesX = 1;
 		if (iNumTilesZ <= 1) iNumTilesZ = 1;
 		if (iNumLayers <= 1) iNumLayers = 1;
 		if (fTileSize <= 0.01f) fTileSize = 0.01f;
+		if (fMinHeight >= fMaxHeight) fMaxHeight = fMinHeight + 0.001f;
 
+		if (ImGui::Button("GENERATE_CELLLAYER")) 
+		{
+			vCenterPos.w = 1.f;
+			m_pCurLayer = CCellLayer::Create(iNumTilesX, iNumTilesZ, fTileSize, vCenterPos, fMinHeight, fMaxHeight);
+			m_iNumTilesX = iNumTilesX;
+			m_iNumTilesZ = iNumTilesZ;
+			m_fTileSize = fTileSize;
+			m_fTileHeightMinRange = fMinHeight;
+			m_fTileHeightMaxRange = fMaxHeight;
+			auto Iter = m_pLayers.find(m_fTileHeightMinRange);
+			if (Iter != m_pLayers.end())
+			{
+				SAFE_DELETE(Iter->second);
+				m_pLayers.erase(Iter);
+			}
+			m_pLayers.emplace(m_fTileHeightMinRange, m_pCurLayer);
+		}
 		if (ImGui::Button("GENERATE_TILE"))
 		{
 			for (auto& elem : m_vecTileDebugger)
@@ -165,15 +262,39 @@ HRESULT CWindow_Tile::Render()
 
 		}
 	}
-	
-
-
-	
-
 
 
 	if (ImGui::CollapsingHeader("SetUp_Layers")) 
 	{
+		if (m_pCurLayer)
+		{
+			m_fTileHeightMinRange = m_pCurLayer->Get_MinHeight();
+			_float Key = m_fTileHeightMinRange;
+			if (ImGui::DragFloat("ChangeHeight", &m_fTileHeightMinRange))
+			{
+				m_pLayers.erase(Key);
+				m_pCurLayer->Set_MinHeight(m_fTileHeightMinRange);
+				m_pLayers.emplace(m_fTileHeightMinRange, m_pCurLayer);
+			}
+		}
+
+		if (!m_pLayers.empty())
+		{
+			for (auto& Layers : m_pLayers)
+			{
+				_float Key = Layers.first;
+				if (ImGui::Button(to_string(Key).c_str()))
+				{
+					m_pCurLayer = Layers.second;
+					m_iNumTilesX = m_pCurLayer->Get_XTileNums();
+					m_iNumTilesZ = m_pCurLayer->Get_ZTileNums();
+					m_fTileSize = m_pCurLayer->Get_TileSize();
+					m_fTileHeightMinRange = m_pCurLayer->Get_MinHeight();
+					m_fTileHeightMaxRange = m_pCurLayer->Get_MaxHeight();
+				}
+			}
+		}
+
 		if (!m_vecTileDebugger.empty())
 		{
 			if (ImGui::Button("SHOOT_RAY"))
@@ -231,11 +352,11 @@ HRESULT CWindow_Tile::Render()
 
 			static _float	vPosition[3] = {};
 
-			memcpy(vPosition, &vWorldPos, sizeof(_float3));
+			memcpy_s(vPosition, sizeof(_float3), &vWorldPos, sizeof(_float4));
 
 			if (ImGui::DragFloat3("Position", vPosition, 0.1f, -999.f, 999.f, "%.1f"))
 			{
-				memcpy(&vWorldPos, vPosition, sizeof(_float3));
+				memcpy_s(&vWorldPos, sizeof(_float3), vPosition, sizeof(_float3));
 				GAMEINSTANCE->Set_Tile_WorldPos(vWorldPos);
 
 			}
@@ -251,15 +372,18 @@ HRESULT CWindow_Tile::Render()
 	}
 	if (ImGui::CollapsingHeader("Save/Load")) 
 	{
+		static string SaveName = "";
 		char szSaveInput[MAXCHAR] = "";
+		strcpy_s(szSaveInput, SaveName.c_str());
 		if (ImGui::InputText("##SavePathInput", szSaveInput, sizeof(char)*MAXCHAR))
 		{
-
+			SaveName = szSaveInput;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Save"))
 		{
-			SetUp_DataFiles(m_DataDirectory.c_str());
+			Save_AllLayer(SaveName);
+			SetUp_DataFiles(m_CellDataDirectory.c_str());
 		}
 		string PreviewData = (m_FileDatas.empty()) ? "" : get<SL_FileName>(m_FileDatas[m_iFileDataIndex]);
 		if (ImGui::BeginCombo("##SelectLoadData", PreviewData.c_str()))
@@ -281,6 +405,7 @@ HRESULT CWindow_Tile::Render()
 		ImGui::SameLine();
 		if(ImGui::Button("Load"))
 		{
+			Load_AllLayer(get<SL_FilePath>(m_FileDatas[m_iFileDataIndex]));
 		}
 	}
 
@@ -289,6 +414,12 @@ HRESULT CWindow_Tile::Render()
 		ImVec2 vPannelSize = ImVec2(300.f, 300.f);
 		ImVec2 vTileControlPos = ImVec2(vPannelSize.x, 0.f);
 		Create_SubWindow("Tile_Control", vTileControlPos, vPannelSize, bind(&CWindow_Tile::Control_SelectTile, this));
+	}
+	if (nullptr != m_pSelectCell)
+	{
+		ImVec2 vPannelSize = ImVec2(300.f, 300.f);
+		ImVec2 vTileControlPos = ImVec2(vPannelSize.x, 0.f);
+		Create_SubWindow("Cell_Control", vTileControlPos, vPannelSize, bind(&CWindow_Tile::Control_SelectCell, this));
 	}
 	
 
@@ -305,21 +436,30 @@ void CWindow_Tile::SetUp_DataFiles(const char* pPath)
 		FileIter != filesystem::end(FileIter); ++FileIter)
 	{
 		const filesystem::directory_entry& entry = *FileIter;
-
-		wstring wstrPath = entry.path().relative_path();
-		string strFullPath;
-		strFullPath.assign(wstrPath.begin(), wstrPath.end());
-
-		_int iFind = (_int)strFullPath.rfind("\\") + 1;
-		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
-
-		if (!entry.is_directory())
+		if (entry.is_directory())
 		{
-			_int iFindExt = (int)strFileName.rfind(".") + 1;
-			string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
-			strFileName = strFileName.substr(0, iFindExt);
+			wstring wstrPath = entry.path().relative_path();
+			string strFullPath;
+			strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+			_int iFind = (_int)strFullPath.rfind("\\") + 1;
+			string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+			m_FileDatas.push_back(make_tuple(strFileName, strFullPath));
 		}
-		m_FileDatas.push_back(make_tuple(strFileName, strFullPath));
+
+		//_int iFind = (_int)strFullPath.rfind("\\") + 1;
+		//string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+		//if (!entry.is_directory())
+		//{
+		//	_int iFindExt = (int)strFileName.rfind(".") + 1;
+		//	string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+		//	strFileName = strFileName.substr(0, iFindExt);
+		//}
+
+
+	
 
 	}
 }
@@ -664,6 +804,42 @@ void CWindow_Tile::Control_SelectTile()
 	}
 }
 
+void CWindow_Tile::Control_SelectCell()
+{
+	if (ImGui::CollapsingHeader("CellInfo"))
+	{
+		if (!m_pSelectCell)
+			return;
+		_int Index = m_pSelectCell->Get_Index();
+		_float4 PointA = m_pSelectCell->Get_Point(CCell::POINT_A);
+		_float4 PointB = m_pSelectCell->Get_Point(CCell::POINT_B);
+		_float4 PointC = m_pSelectCell->Get_Point(CCell::POINT_C);
+
+		_float center[3] = {};
+		_float A[3] = {};
+		_float B[3] = {};
+		_float C[3] = {};
+		_float Pick[3] = {};
+		memcpy_s(center, sizeof(_float3), &m_pSelectCell->Get_Position(), sizeof(_float3));
+		memcpy_s(A, sizeof(_float3), &PointA, sizeof(_float3));
+		memcpy_s(B, sizeof(_float3), &PointB, sizeof(_float3));
+		memcpy_s(C, sizeof(_float3), &PointC, sizeof(_float3));
+		memcpy_s(Pick, sizeof(_float3), &debugPick, sizeof(_float3));
+		_int PickIndex = ((_int(debugPick.z / m_fTileSize)) * m_iNumTilesX + _int(debugPick.x / m_fTileSize)) * 2;
+
+		ImGui::InputFloat3("Pick", Pick);
+		ImGui::InputInt("PickedIndex", &PickIndex);
+		ImGui::InputInt("Index", &Index);
+		ImGui::InputFloat3("Center", center);
+		ImGui::InputFloat3("A", A);
+		ImGui::InputFloat3("B", B);
+		ImGui::InputFloat3("C", C);
+
+
+
+	}
+}
+
 void CWindow_Tile::Create_SubWindow(const char* szWindowName, const ImVec2& Pos, const ImVec2& Size, function<void(CWindow_Tile&)> func)
 {
 	const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
@@ -1005,8 +1181,82 @@ void CWindow_Tile::Save_All(string strKey)
 	
 }
 
+void CWindow_Tile::Save_AllLayer(string strKey)
+{
+	if (strKey.empty())
+		return;
+
+	string strPath = m_CellDataDirectory;
+	strPath += "/";
+	strPath += strKey;
+	strPath += "/";
+	if (!filesystem::exists(strPath))
+	{
+		filesystem::create_directory(strPath);
+	}
+	
+	filesystem::directory_iterator FileIter(strPath);
+	const filesystem::directory_entry& entry = *FileIter;
+	_uint Index = 0;
+	for (auto& Layers : m_pLayers)
+	{
+		wstring strSavePath = CFunctor::To_Wstring(strPath);
+		//strSavePath += L"/";
+		strSavePath += CFunctor::To_Wstring(strKey);
+		strSavePath += L"_";
+		strSavePath += to_wstring(Index);
+		strSavePath += L".bin";
+
+		wstring Name = CFunctor::To_Wstring(strKey);
+		Name += L"_";
+		Name += to_wstring(Index);
+
+		Layers.second->Set_DebugName(Name);
+
+		Layers.second->Save(strSavePath);
+		Index++;
+	}
+}
+
 void CWindow_Tile::Load_All(string strKey)
 {
+}
+
+void CWindow_Tile::Load_AllLayer(string strKey)
+{
+	for (auto& Layer : m_pLayers)
+		SAFE_DELETE(Layer.second);
+	m_pLayers.clear();
+
+	for (filesystem::directory_iterator FileIter(strKey);
+		FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("\\") + 1;
+		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+		if (!entry.is_directory())
+		{
+			_int iFindExt = (int)strFileName.rfind(".") + 1;
+			string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			strFileName = strFileName.substr(0, iFindExt);
+
+			CCellLayer* pLayer = CCellLayer::Create(wstrPath);
+			pLayer->Set_DebugName(CFunctor::To_Wstring(strFileName));
+
+			m_pLayers.emplace(pLayer->Get_MinHeight(), pLayer);
+		}
+	}
+
+	for (auto& Layers : m_pLayers)
+	{
+		Layers.second->SetUp_Neighbor(m_pLayers);
+	}
 }
 
 void CWindow_Tile::On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos)
@@ -1019,4 +1269,36 @@ void CWindow_Tile::On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos)
 	m_pSelectTile->Set_Neighbor(m_iCurSelectNeighbor, pTile);
 
 	m_bSelectNeighbor = false;
+}
+
+void CWindow_Tile::On_CellPicking(_uint iLayerIndex, _float4 vPickedPos)
+{
+	if (m_pCurLayer)
+	{
+		m_pSelectCell = m_pCurLayer->Find_Cell(vPickedPos);
+	}
+}
+
+void CWindow_Tile::On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos)
+{
+	if (m_pCurLayer)
+	{
+		CCell* pCell = m_pCurLayer->Find_Cell(vPickedPos);
+		if (nullptr == pCell)
+			return;
+		pCell->Set_Flags(m_iCellAttribute);
+	}
+}
+
+void CWindow_Tile::On_CellPick_Neighbor(_uint iLayerIndex, _float4 vPickedPos)
+{
+	if (m_pCurLayer)
+	{
+		//if (nullptr == m_pSelectCell)
+		//	return;
+
+
+		//CCell* pNeighbor = m_pCurLayer->Find_Cell(vPickedPos);
+		//m_pSelectCell->Set_Neighbor(m_iNeighborLine, pNeighbor);
+	}
 }
