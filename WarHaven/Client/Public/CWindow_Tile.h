@@ -80,12 +80,13 @@ private:
 	CCellLayer* m_pCurLayer = nullptr;
 	_int m_iCellAttribute = 1;
 	_uint m_iAttrubuteIndex = 0;
+	_float m_fBrushSize = 1.f;
 	static pair<const char*, _int> m_iAttributeArray[3];
 private:
 	void		On_Picking(_uint iLayerIndex, _float4 vPickedPos);
 	void		On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos);
 	void		On_CellPicking(_uint iLayerIndex, _float4 vPickedPos);
-	void		On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos);
+	void		On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos, _float fRange);
 	void		On_CellPick_Neighbor(_uint iLayerIndex, _float4 vPickedPos);
 	
 private:

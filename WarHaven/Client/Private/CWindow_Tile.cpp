@@ -162,7 +162,7 @@ void CWindow_Tile::Tick()
 				if (GAMEINSTANCE->Is_Picked_FixedHeight(m_pCurLayer->Get_MinHeight(), &vOutPos))
 				{
 					debugPick = vOutPos;
-					On_CellSetAttribute(iCurIndex, vOutPos);
+					On_CellSetAttribute(iCurIndex, vOutPos, m_fBrushSize);
 				}
 			}
 		}
@@ -300,7 +300,7 @@ HRESULT CWindow_Tile::Render()
 					m_fTileHeightMaxRange = m_pCurLayer->Get_MaxHeight();
 				}
 			}
-			
+			ImGui::DragFloat("fBrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.2f");
 			if (ImGui::BeginCombo("Attribute", m_iAttributeArray[m_iAttrubuteIndex].first))
 			{
 				for (_uint i = 0; i < 3; ++i)
@@ -1303,14 +1303,17 @@ void CWindow_Tile::On_CellPicking(_uint iLayerIndex, _float4 vPickedPos)
 	}
 }
 
-void CWindow_Tile::On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos)
+void CWindow_Tile::On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos, _float fRange)
 {
 	if (m_pCurLayer)
 	{
-		CCell* pCell = m_pCurLayer->Find_Cell(vPickedPos);
-		if (nullptr == pCell)
+		list<CCell*> pCellList = m_pCurLayer->Find_Cell_InRange(vPickedPos, fRange);
+		if (pCellList.empty())
 			return;
-		pCell->Set_Flags(m_iAttributeArray[m_iAttrubuteIndex].second);
+		for (auto& Value : pCellList) 
+		{
+			Value->Set_Flags(m_iAttributeArray[m_iAttrubuteIndex].second);
+		}
 	}
 }
 

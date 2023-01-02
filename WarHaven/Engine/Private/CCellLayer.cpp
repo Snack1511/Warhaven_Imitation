@@ -21,7 +21,7 @@ CCellLayer::~CCellLayer()
 #ifdef _DEBUG
 	_ulong dwCnt = m_pIB.Reset();
 	dwCnt = m_pVB.Reset();
-	Safe_Release(m_pVBInstance);
+	m_pVBInstance.Reset();
 #endif // _DEBUG
 
 }
@@ -48,6 +48,11 @@ CCellLayer* CCellLayer::Create(_uint XNums, _uint ZNums, _float fTileSize, _floa
 		Call_MsgBox(L"Failed to SetUp_Instancing : CCellLayer");
 		SAFE_DELETE(pInstance);
 	}	
+	if (FAILED(pInstance->SetUp_Index()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Index : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
 	if (FAILED(pInstance->SetUp_Shader()))
 	{
 		Call_MsgBox(L"Failed to SetUp_Shader : CCellLayer");
@@ -294,8 +299,8 @@ HRESULT CCellLayer::SetUp_Cells(wstring strFilePath)
 
 	_uint TotalNums = m_iZNums * m_iXNums * 2;
 	_byte* ArrAttribute = new _byte[TotalNums];
-	m_NeighborLayerKeys = new _float[TotalNums];
-	m_NeighborIndex = new _int[TotalNums];
+	m_NeighborLayerKeys = new _float[TotalNums*3];
+	m_NeighborIndex = new _int[TotalNums*3];
 
 
 	readFile.read((char*)ArrAttribute, sizeof(_byte) * TotalNums);
@@ -451,6 +456,8 @@ HRESULT CCellLayer::SetUp_Neighbor(map<_float, CCellLayer*>& Layers)
 			if (iter != Layers.end()) 
 			{
 				CCell* pNeighborCell = iter->second->Get_Cell(Indies[i]);
+				if (nullptr == pNeighborCell)
+					continue;
 				if (pNeighborCell->Check_Attribute(CELL_STAIR))
 				{
 					_float Key = iter->first;
@@ -735,6 +742,24 @@ HRESULT CCellLayer::Create_IndexBuffer()
 
 void CCellLayer::DebugTick()
 {
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	/* D3D11_MAP_WRITE_NO_OVERWRITE : SubResource구조체가 받아온 pData에 유요한 값이 담겨잇는 형태로 얻어오낟. */
+	/* D3D11_MAP_WRITE_DISCARD : SubResource구조체가 받아온 pData에 값이 초기화된 형태로 얻어오낟. */
+	DEVICE_CONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	for (_uint i = 0; i < m_iNumInstance; ++i)
+	{
+		// *(((VTXINSTANCE*)SubResource.pData) + i)
+		((VTXTRIINSTANCE*)SubResource.pData)[i].vPosition[0].y = m_fLayerHeightMin;
+		((VTXTRIINSTANCE*)SubResource.pData)[i].vPosition[1].y = m_fLayerHeightMin;
+		((VTXTRIINSTANCE*)SubResource.pData)[i].vPosition[2].y = m_fLayerHeightMin;
+		((VTXTRIINSTANCE*)SubResource.pData)[i].vColor = Get_Color(m_Cells[i]);
+	}
+
+	DEVICE_CONTEXT->Unmap(m_pVBInstance.Get(), 0);
+
 	CRender_Manager::Get_Instance()->Callback_DebugRender
 		+= bind(&CCellLayer::DebugRendering, this);
 }
@@ -754,17 +779,44 @@ void CCellLayer::DebugRendering()
 	matView = matView.Transpose();
 	matProj = matProj.Transpose();
 	matWorld = matWorld.Transpose();
-	for (auto& Cell : m_Cells)
-	{
-		_float4 vColor = Get_Color(Cell);
 
-		m_pDebugShader->Set_RawValue("g_ViewMatrix", &matView, sizeof(_float4x4));
-		m_pDebugShader->Set_RawValue("g_ProjMatrix", &matProj, sizeof(_float4x4));
-		m_pDebugShader->Set_RawValue("g_WorldMatrix", &matWorld, sizeof(_float4x4));
-		m_pDebugShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
-		m_pDebugShader->Begin(0);
-		Cell->DebugRendering();
-	}
+	m_pDebugShader->Set_RawValue("g_ViewMatrix", &matView, sizeof(_float4x4));
+	m_pDebugShader->Set_RawValue("g_ProjMatrix", &matProj, sizeof(_float4x4));
+	m_pDebugShader->Set_RawValue("g_WorldMatrix", &matWorld, sizeof(_float4x4));
+	m_pDebugShader->Begin(1);
+
+	ID3D11Buffer* pVertexBuffers[] = {
+		m_pVB.Get(),
+		m_pVBInstance.Get()
+	};
+
+	_uint		iStrides[] = {
+		m_iStride,
+		m_iInstanceStride
+	};
+
+	_uint		iOffsets[] = {
+		0,
+		0
+	};
+
+	DEVICE_CONTEXT->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
+	DEVICE_CONTEXT->IASetIndexBuffer(m_pIB.Get(), m_eIndexFormat, 0);
+	DEVICE_CONTEXT->IASetPrimitiveTopology(m_eToplogy);
+
+	DEVICE_CONTEXT->DrawIndexedInstanced(1, m_iNumInstance, 0, 0, 0);
+
+	//for (auto& Cell : m_Cells)
+	//{
+	//	_float4 vColor = Get_Color(Cell);
+
+	//	m_pDebugShader->Set_RawValue("g_ViewMatrix", &matView, sizeof(_float4x4));
+	//	m_pDebugShader->Set_RawValue("g_ProjMatrix", &matProj, sizeof(_float4x4));
+	//	m_pDebugShader->Set_RawValue("g_WorldMatrix", &matWorld, sizeof(_float4x4));
+	//	m_pDebugShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+	//	m_pDebugShader->Begin(0);
+	//	Cell->DebugRendering();
+	//}
 }
 _float4 CCellLayer::Get_Color(CCell* pCell)
 {
@@ -1278,6 +1330,57 @@ CCell* CCellLayer::Get_Cell(_int Index)
 	if (Index < 0 || Index >= _int(m_Cells.size()))
 		return nullptr;
 	return m_Cells[Index];
+}
+list<CCell*> CCellLayer::Find_Cell_InRange(_float4 vPosition, _float fRange)
+{
+	list<CCell*> Return;
+
+	if (fRange <= 1.f)
+	{
+		CCell* pCell = Find_Cell(vPosition);
+		Return.push_back(pCell);
+		return Return;
+	}
+
+	_float4 vFindingPos = _float4(vPosition.x, vPosition.y, vPosition.z);
+	_float4 vHalfCenter = _float4(m_vCenterPosition.x * 0.5f, 0.f, m_vCenterPosition.z * 0.5f, 1.f);
+	vFindingPos += vHalfCenter;
+	vFindingPos /= m_fTileSize;
+
+	_int iHalfRange = roundf((fRange - 1.f) * 0.5f);
+	_int iLimits[4] = { 0 };
+	iLimits[0] = (_int(vFindingPos.x) - iHalfRange >= 0) ? _int(vFindingPos.x) - iHalfRange : 0;//L
+	iLimits[1] = (_int(vFindingPos.z) + iHalfRange < m_iZNums) ? _int(vFindingPos.z) + iHalfRange : m_iZNums - 1;//T
+	iLimits[2] = (_int(vFindingPos.x) + iHalfRange < m_iXNums) ? _int(vFindingPos.x) + iHalfRange : m_iXNums - 1;//R
+	iLimits[3] = (_int(vFindingPos.z) - iHalfRange >= 0) ? _int(vFindingPos.z) - iHalfRange : 0;//B
+
+	_int CenterIndex = ((_int(vFindingPos.z)) * m_iXNums + _int(vFindingPos.x));
+
+	_int StartIndex = CenterIndex - iLimits[0] - (iLimits[3] * m_iXNums);
+	_int EndIndex = CenterIndex + iLimits[2] + (iLimits[1] * m_iXNums);
+
+	for (_uint i = StartIndex; i <= EndIndex; ++i)
+	{
+		_bool bLeft = false;
+		_bool bRight = false;
+		_bool bTop = false;
+		_bool bBottom = false;
+		if (i % m_iXNums < iLimits[0])
+			bLeft = true;
+		if (i / m_iXNums > iLimits[1])
+			bTop = true;
+		if (i % m_iXNums > iLimits[2])
+			bRight = true;
+		if (i / m_iXNums < iLimits[3])
+			bBottom = true;
+		if (!bLeft && !bTop && !bRight && !bBottom)
+		{
+			Return.push_back(m_Cells[i * 2]);
+			Return.push_back(m_Cells[(i * 2) + 1]);
+		}
+	}
+
+	return Return;
 }
 void CCellLayer::Set_MinHeight(_float Height) 
 {
