@@ -541,7 +541,7 @@ void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Blood", vHitPos);
 
 
-}
+} 
 
 void CProjectile::Set_ColliderType(eTEAM_TYPE eTeamType)
 {

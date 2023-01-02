@@ -204,6 +204,7 @@ void CPriest_WindAttack::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, c
 	case 0:
 		m_bAttackTrigger = true;
 		pOwner->Enable_UnitCollider(CUnit::FLYATTACK, true);
+		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ShieldWall_0"), pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
 		break;
 
 	case 1:

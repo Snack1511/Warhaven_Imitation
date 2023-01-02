@@ -17,6 +17,8 @@
 #include "CAnimWeapon.h"
 #include "CProjectile.h"
 
+#include "CCure_Effect.h"
+
 CUnit_Priest::CUnit_Priest()
 {
 }
@@ -309,6 +311,27 @@ void CUnit_Priest::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		
 }
 
+void CUnit_Priest::SetUp_CureEffect()
+{
+	if(!m_pCureEffect)
+		m_pCureEffect = CCure_Effect::Create(this);
+
+	CREATE_GAMEOBJECT(m_pCureEffect, GROUP_EFFECT);
+
+	DISABLE_GAMEOBJECT(m_pCureEffect);
+}
+
+void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
+{
+	if (!m_pCureEffect)
+		return;
+
+	if (bOnOff)
+		ENABLE_GAMEOBJECT(m_pCureEffect);
+	else
+		DISABLE_GAMEOBJECT(m_pCureEffect);
+}
+
 void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	__super::Effect_Hit(pOtherUnit, vHitPos);
@@ -401,7 +424,7 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 	m_tUnitStatus.eClass = PRIEST;
 
 	m_tUnitStatus.fDashAttackSpeed = 9.f;
-	m_fMaxDistance = 5.f;
+	m_fMaxDistance = 15.f;
 
 	//m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0004.fbx",
 	//	L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_R_WP1");
@@ -459,6 +482,8 @@ HRESULT CUnit_Priest::Start()
 		"0B_R_WP1"
 	);
 	
+	SetUp_CureEffect();
+		
 	m_fMaxDistance = 8.f;
 
 	return S_OK;

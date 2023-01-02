@@ -193,6 +193,7 @@
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
     <ClInclude Include="..\public\CAnimWeapon.h" />
     <ClInclude Include="..\Public\CBounce_Lancer.h" />
+    <ClInclude Include="..\Public\CCure_Effect.h" />
     <ClInclude Include="..\Public\CIdle_Lancer.h" />
     <ClInclude Include="..\Public\CJump_Lancer.h" />
     <ClInclude Include="..\Public\CJump_Lancer_Fall.h" />
@@ -1112,6 +1113,7 @@
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
     <ClCompile Include="..\private\CAnimWeapon.cpp" />
     <ClCompile Include="..\Private\CBounce_Lancer.cpp" />
+    <ClCompile Include="..\Private\CCure_Effect.cpp" />
     <ClCompile Include="..\Private\CIdle_Lancer.cpp" />
     <ClCompile Include="..\Private\CJump_Lancer.cpp" />
     <ClCompile Include="..\Private\CJump_Lancer_Fall.cpp" />

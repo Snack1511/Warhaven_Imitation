@@ -950,7 +950,7 @@ void CUnit::Check_NearObject_IsInFrustum()
 			continue;
 
 
-		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 50.f))
 			continue;
 
 		_float fMyLength = (elem->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS)).Length();

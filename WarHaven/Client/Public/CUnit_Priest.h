@@ -27,6 +27,10 @@ public:
 	virtual void	SetUp_ReserveState(UNIT_TYPE eUnitType);
 	virtual void	On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
 
+public:
+	void SetUp_CureEffect();
+	void TurnOn_CureEffect(_bool bOnOff);
+
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
@@ -43,6 +47,9 @@ public:
 private:
 	STATE_TYPE m_eCureBeginType = STATE_END;
 	STATE_TYPE m_eCureLoopType = STATE_END;
+
+private:
+	CGameObject* m_pCureEffect = nullptr;
 
 };
 

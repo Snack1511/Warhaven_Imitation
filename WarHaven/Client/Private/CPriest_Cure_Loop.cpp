@@ -6,7 +6,7 @@
 
 #include "CSword_Effect.h"
 #include "CColorController.h"
-#include "CUnit_Archer.h"
+#include "CUnit_Priest.h"
 
 #include "HIerarchyNode.h"
 #include "CAnimWeapon.h"
@@ -193,13 +193,15 @@ HRESULT CPriest_Cure_Loop::Initialize()
 	m_fMyAccel = 20.f;
 	m_fMyMaxLerp = 0.1f;
 
-	m_fMaxTime = 0.05;
+	m_fMaxTime = 1.05f;
 
 	return S_OK;
 }
 
 void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
+	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
+
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
@@ -208,6 +210,8 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
@@ -223,7 +227,7 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	_float fLength = (pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
 
 
-	if (fabs(fLength) > 5.f)
+	if (fabs(fLength) > 15.f)
 		return STATE_CURE_END_PRIEST;
 
 
