@@ -918,12 +918,15 @@ void CUnit::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
 }
 
-void CUnit::Check_NearObject_IsInFrustum()
+void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 {
 
-	_float fCureLength = m_fMaxDistance + 1.f;
+	_float fPreLength = m_fMaxDistance + 1.f;
 
+	// 모든 플레이어 가져오기.
 	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
+
+	*pNearObject = nullptr;
 
 	for (auto& elem : listPlayers)
 	{
@@ -934,14 +937,20 @@ void CUnit::Check_NearObject_IsInFrustum()
 		if (!pPlayer->Is_Valid())
 			continue;
 
-		// 현재 테스트에서 사용하기 위해 잠시 꺼둠..
-		//if (m_bForUseTeam)
-		//	if (pPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
-		//		continue;
-	
-		//else
-		//	if (pPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
-		//		continue;
+		// 테스트 레벨이 아니라면
+		if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
+		{
+			// 팀을 위해 사용할 것인가
+			if (m_bForUseTeam)
+				// 만약 발견한 플레이어가 다른 팀이라면
+				if (pPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
+					continue;
+			else
+				// 만약 발견한 플레이어가 같은 팀이라면 
+				if (pPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
+					continue;
+
+		}
 
 
 		CUnit* pUnit = pPlayer->Get_CurrentUnit();
@@ -949,14 +958,21 @@ void CUnit::Check_NearObject_IsInFrustum()
 		if (!pUnit->Is_Valid())
 			continue;
 
+		if (pUnit == this)
+			continue;
 
+		// 절두체에 안들어왔다면
 		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
 			continue;
 
 		_float fMyLength = (elem->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS)).Length();
 
-		m_pNearCureObject = pUnit;
-		fCureLength = fMyLength;
+		// 이전에 찾은 오브젝트보다 거리가 멀면
+		if (fPreLength < fMyLength)
+			continue;
+
+		*pNearObject = pUnit;
+		fPreLength = fMyLength;
 
 	}
 }

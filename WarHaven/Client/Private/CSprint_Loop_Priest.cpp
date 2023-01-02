@@ -40,7 +40,7 @@ HRESULT CSprint_Loop_Priest::Initialize()
     m_fInterPolationTime = 0.f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.15f;
+    m_fAnimSpeed = 2.3f;
 
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 200.f;

@@ -24,7 +24,8 @@ protected:
 	virtual ~CAnimWeapon();
 
 public:
-	static CAnimWeapon* Create(wstring wstrModelFilePath, wstring wstrAnimFilePath, CUnit* pOwnerUnit, string strBoneName);
+	static CAnimWeapon* Create(wstring wstrModelFilePath, wstring wstrAnimFilePath, CUnit* pOwnerUnit, string strBoneName, 
+		_float fRadianX = 270.f, _float fRadianY = 0.f, _float fRadianZ = 270.f);
 
 public:
 	enum eAnimState {eIDLE, eATTACKBEGIN, eATTACKLOOP, eATTACKCANCEL, eATTACKLAUNCH, eCNT};
@@ -50,7 +51,8 @@ private:
 	_float4x4	m_OwnerBoneOffsetMatrix;
 
 private:
-	HRESULT		SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFilePath, string strBoneName);
+	HRESULT		SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFilePath, string strBoneName, 
+		_float fRadianX = 270.f, _float fRadianY = 0.f, _float fRadianZ = 270.f);
 
 private:
 	virtual void	Late_Tick() override;

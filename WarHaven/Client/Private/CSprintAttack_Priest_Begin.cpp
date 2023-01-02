@@ -32,7 +32,7 @@ CSprintAttack_Priest_Begin* CSprintAttack_Priest_Begin::Create()
 }
 HRESULT CSprintAttack_Priest_Begin::Initialize()
 {
-    m_eAnimType = ANIM_ATTACK;          // 애니메이션의 메쉬타입
+    m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
     m_iAnimIndex = 41;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_SPRINTATTACK_BEGIN_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 

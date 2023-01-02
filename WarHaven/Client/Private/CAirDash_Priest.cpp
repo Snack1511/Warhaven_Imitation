@@ -144,6 +144,9 @@ void CAirDash_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 
 STATE_TYPE CAirDash_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (!pOwner->Is_Air())
+        return STATE_SPRINT_END_PRIEST;
+
     CTransform* pMyTransform = pOwner->Get_Transform();
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 

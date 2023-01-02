@@ -159,7 +159,9 @@ void CPriest_Cure_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 STATE_TYPE CPriest_Cure_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if (pAnimator->Is_CurAnimFinished())
+	m_fTimeAcc += fDT(0);
+
+	if (pAnimator->Is_CurAnimFinished() || m_fTimeAcc > 0.5f)
 	{
 		if (pOwner->Get_CureObject())
 			return STATE_CURE_LOOP_PRIEST;
@@ -176,7 +178,11 @@ void CPriest_Cure_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_Cure_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-   
+	CUnit* pOtherUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
+
+	if (!pOtherUnit)
+		return STATE_END;
+
     if (KEY(RBUTTON, TAP))
         return m_eStateType;
 

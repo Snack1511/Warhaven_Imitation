@@ -191,6 +191,9 @@ void CPriest_Catch_Shoot::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 	switch (iSequence)
 	{
 	case 0:
+		pOwner->Get_CatchProjectileObject()->Get_Transform()->Set_Right(pOwner->Get_FollowCamLook());
+		pOwner->Get_CatchProjectileObject()->Get_Transform()->Make_WorldMatrix();
+
 		pOwner->Get_CatchProjectileObject()->On_ShootProjectile();
 		pOwner->Catch_ProjectileObject(nullptr);
 		break;

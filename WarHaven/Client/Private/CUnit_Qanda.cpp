@@ -504,13 +504,21 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
 		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_C_Hat_02");
 
-	//m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/longbow/SK_WP_LongBow0005_A00_30.fbx",
-	//	L"../bin/resources/meshes/weapons/longbow/LongBow_Anim2.fbx", this, "0B_L_WP1");
+	_float3 vRadian = _float3(90.f, 180.f, 180.f);
+
+	m_pCane = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Cane/Cane_50.fbx",
+		L"", this, "0B_R_WP1", vRadian.x, vRadian.y, vRadian.z);
+
 
 	if (!m_pAnimWeapon)
 		return E_FAIL;
 
+	if (!m_pCane)
+		return E_FAIL;
+
 	m_pAnimWeapon->Initialize();
+	m_pCane->Initialize();
+
 	m_tUnitStatus.fRunSpeed *= 0.95f;
 	
 
@@ -542,6 +550,9 @@ HRESULT CUnit_Qanda::Initialize()
 
 	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimWeapon);
+	
+	CREATE_GAMEOBJECT(m_pCane, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pCane);
 
 	return S_OK;
 }
@@ -551,6 +562,7 @@ HRESULT CUnit_Qanda::Start()
 	__super::Start();
 
 	ENABLE_GAMEOBJECT(m_pAnimWeapon);
+	ENABLE_GAMEOBJECT(m_pCane);
 
 	//if (m_pUI_Trail)
 	//{

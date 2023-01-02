@@ -536,10 +536,10 @@ void CPlayerInfo::Set_CustomWeapon_Qanda(eCUSTOM_WEAPON eWeaponEnum)
 	switch (eWeaponEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eDEFAULT:
-		m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Cane/SK_Priest_Staff_30.fbx";
+		//m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Cane/SK_Priest_Staff_30.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
-		m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Cane/SK_Priest_Staff_30.fbx";
+		//m_tPlayerSetUpData.wstrWeaponMeshPath[QANDA] = L"../bin/resources/meshes/weapons/Cane/SK_Priest_Staff_30.fbx";
 		break;
 
 	default:
@@ -590,13 +590,13 @@ void CPlayerInfo::Set_CustomWeapon_Priest(eCUSTOM_WEAPON eWeaponEnum)
 	switch (eWeaponEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eDEFAULT:
-		m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Lance/Lance.fbx";
+		//m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Lance/Lance.fbx";
 		//m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0008_A00.fbx";
 		//m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0004.fbx";
 		//m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0001_A00.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_WEAPON::eWEAPON1:
-		m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Lance/Lance.fbx";
+		//m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Lance/Lance.fbx";
 		//m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0008_A00.fbx";
 		//m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0004.fbx";
 		//m_tPlayerSetUpData.wstrWeaponMeshPath[PRIEST] = L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0001_A00.fbx";

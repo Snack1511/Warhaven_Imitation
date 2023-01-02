@@ -149,6 +149,8 @@ HRESULT CPriest_Catch_Loop::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+	m_bSmootMoveLoop = true;
+	m_bLoopAction = false;
 
 	return __super::Initialize();
 }

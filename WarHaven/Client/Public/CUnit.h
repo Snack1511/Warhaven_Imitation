@@ -287,6 +287,8 @@ public:
 	CCannon* Get_AdjCannon() { return m_pAdjCannon; }
 	CGameObject* Get_CureObject() { return m_pNearCureObject; }
 
+	const _float& Get_MaxDistance() const { return m_fMaxDistance; }
+
 public:
 	virtual void SetUp_ReserveState(UNIT_TYPE eUnitType) {};
 
@@ -295,7 +297,7 @@ public:
 	CProjectile* Get_CatchProjectileObject() { return m_pCatchObejct; }
 
 protected:
-	void Check_NearObject_IsInFrustum();
+	void Check_NearObject_IsInFrustum(CGameObject** pNearObject); // 절두체를 비교해 가까운 것이 있는지 확인하는 함수
 
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
@@ -417,6 +419,7 @@ public:
 	virtual void On_FinishGame(_bool bWin);
 
 protected:
+	CAnimWeapon* m_pCane = nullptr;
 	CAnimWeapon* m_pAnimWeapon = nullptr;
 
 public:

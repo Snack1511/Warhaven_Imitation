@@ -32,7 +32,7 @@ CSprintAttack_Priest* CSprintAttack_Priest::Create()
 }
 HRESULT CSprintAttack_Priest::Initialize()
 {
-	m_eAnimType = ANIM_ATTACK;          // 애니메이션의 메쉬타입
+	m_eAnimType = ANIM_BASE_R;          // 애니메이션의 메쉬타입
 	m_iAnimIndex = 42;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_SPRINTATTACK_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
@@ -141,7 +141,7 @@ void	CSprintAttack_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 		pMyPhysicsCom->Set_MaxSpeed(pOwner->Get_Status().fRunSpeed);
 		pMyPhysicsCom->Set_SpeedasMax();
 
-		pOwner->Shake_Camera(pOwner->Get_Status().fCamPower, pOwner->Get_Status().fCamTime);
+		//pOwner->Shake_Camera(pOwner->Get_Status().fCamPower * 0.1f, pOwner->Get_Status().fCamTime * 0.05f);
 
 
 		cout << "Attack End " << endl;

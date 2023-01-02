@@ -193,7 +193,7 @@ HRESULT CPriest_Cure_Loop::Initialize()
 	m_fMyAccel = 20.f;
 	m_fMyMaxLerp = 0.1f;
 
-	m_fMaxTime = 0.05;
+	m_fMaxTime = 0.5f;
 
 	return S_OK;
 }
@@ -223,23 +223,24 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	_float fLength = (pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
 
 
-	if (fabs(fLength) > 5.f)
+	if (fabs(fLength) > pOwner->Get_MaxDistance())
 		return STATE_CURE_END_PRIEST;
-
-
-	if (pOtherUnit->Get_Status().fHP >= pOtherUnit->Get_Status().fMaxHP)
-	{
-		pOtherUnit->Get_Status().fHP = pOtherUnit->Get_Status().fMaxHP;
-		return STATE_CURE_END_PRIEST;
-	}
-
-
 
 	m_fTimeAcc += fDT(0);
 
 	if (m_fTimeAcc > m_fMaxTime)
 	{
-		++pOtherUnit->Get_Status().fHP;
+		// 풀피가 아니면
+		if (pOtherUnit->Get_Status().fHP < pOtherUnit->Get_Status().fMaxHP)
+		{
+			pOtherUnit->Get_Status().fHP += 20.f;
+
+			// 풀피를 넘어서면
+			if (pOtherUnit->Get_Status().fHP > pOtherUnit->Get_Status().fMaxHP)
+				pOtherUnit->Get_Status().fHP = pOtherUnit->Get_Status().fMaxHP;
+
+		}
+		
 		m_fTimeAcc = 0.f;
 	}
 	
@@ -405,11 +406,12 @@ STATE_TYPE CPriest_Cure_Loop::Update_Fall(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_Cure_Loop::Update_Land(CUnit* pOwner, CAnimator* pAnimator)
 {
+	On_EnumChange(Enum::eIDLE, pAnimator);
+
 	//Move(Get_Direction(), pOwner);
 
-
-	if (m_bLandMove || pAnimator->Is_CurAnimFinished())
-		On_EnumChange(Enum::eIDLE, pAnimator);
+	//if (m_bLandMove || pAnimator->Is_CurAnimFinished())
+	//	On_EnumChange(Enum::eIDLE, pAnimator);
 
 	if (pAnimator->Is_ActionFinished())
 		return m_eIdleState;
@@ -600,7 +602,12 @@ void CPriest_Cure_Loop::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 		break;
 
 	case Client::CPriest_Cure_Loop::Enum::eIDLE:
-		pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
+		if (KEY(W, HOLD) && KEY(A, HOLD) && KEY(S, HOLD) && KEY(D, HOLD))
+			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
+
+		else
+			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
+		
 		break;
 	default:
 		break;

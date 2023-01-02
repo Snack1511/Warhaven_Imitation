@@ -199,6 +199,7 @@ STATE_TYPE CShootAttack_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CShootAttack_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Get_SkillTrigger().bSkillQTrigger = false;
 	pOwner->Get_SkillTrigger().bSkillETrigger = false;
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eIDLE, m_fInterPolationTime, m_fAnimSpeed);
 
