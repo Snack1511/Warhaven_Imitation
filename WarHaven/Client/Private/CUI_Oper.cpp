@@ -49,6 +49,7 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_PointInfo();
 
 	Create_SelectEffect();
+	Create_ConquestBlur();
 
 	Create_PlayerIcon();
 
@@ -68,6 +69,7 @@ HRESULT CUI_Oper::Start()
 	Init_StrongHoldEffect();
 	Init_PointInfo();
 	Init_SelectEffect();
+	Init_ConquestBlur();
 
 	SetActive_BG(true);
 
@@ -276,6 +278,11 @@ void CUI_Oper::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 	{
 		m_pArrStrongHoldUI[i][iPoinIdx]->Set_Color(vColor);
 	}
+
+	m_pArrConquestBlur[iPoinIdx]->Set_Color(vColor);
+
+	if (!m_pArrConquestBlur[iPoinIdx]->Is_Valid())
+		Enable_Fade(m_pArrConquestBlur[iPoinIdx], 0.3f);
 }
 
 void CUI_Oper::Set_Player(CPlayer* pPlayer)
@@ -1914,4 +1921,46 @@ void CUI_Oper::Bind_Btn()
 	}
 
 	m_pRespawnBtn->CallBack_PointDown += bind(&CUI_Oper::On_PointDown_RespawnBtn, this, 0);
+}
+
+void CUI_Oper::Create_ConquestBlur()
+{
+	m_pConquestBlur = CUI_Object::Create();
+
+	GET_COMPONENT_FROM(m_pConquestBlur, CTexture)->Remove_Texture(0);
+	Read_Texture(m_pConquestBlur, "/Oper/Effect", "Blur");
+
+	m_pConquestBlur->Set_FadeDesc(0.3f);
+	m_pConquestBlur->Set_Sort(0.5f);
+
+	CREATE_GAMEOBJECT(m_pConquestBlur, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pConquestBlur);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pArrConquestBlur[i] = m_pConquestBlur->Clone();
+
+		if (i == 0)
+		{
+			m_pArrConquestBlur[i]->Set_TextureIndex(0);
+			m_pArrConquestBlur[i]->Set_Scale(100.f);
+		}
+		else
+		{
+			m_pArrConquestBlur[i]->Set_TextureIndex(1);
+			m_pArrConquestBlur[i]->Set_Scale(150.f);
+		}
+
+		m_pOperList.push_back(m_pArrConquestBlur[i]);
+
+		CREATE_GAMEOBJECT(m_pArrConquestBlur[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pArrConquestBlur[i]);
+	}
+}
+
+void CUI_Oper::Init_ConquestBlur()
+{
+	m_pArrConquestBlur[0]->Set_PosY(-4.f);
+	m_pArrConquestBlur[1]->Set_PosY(-195.f);
+	m_pArrConquestBlur[2]->Set_PosY(220.f);
 }

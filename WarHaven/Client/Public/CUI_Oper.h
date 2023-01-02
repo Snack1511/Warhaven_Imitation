@@ -156,7 +156,7 @@ private:	// 작전회의 타이머
 	enum TimerUI { TU_BG, TU_Bar, TU_End };
 	CUI_Object* m_pTimer[TU_End];
 
-	_float m_fMaxOperTime = 500.f;
+	_float m_fMaxOperTime = 5000.f;
 	_float m_fOperTime = 0.f;
 	_float m_fTimerRatio = 1.f;
 
@@ -224,9 +224,14 @@ private:
 
 	_float m_fSelectEffect_RotValue = 0.f;
 
+	CUI_Object* m_pConquestBlur = nullptr;
+	CUI_Object* m_pArrConquestBlur[3];
+
 private:
 	void Create_SelectEffect();
 	void Init_SelectEffect();
+	void Create_ConquestBlur();
+	void Init_ConquestBlur();
 
 private:
 	void Bind_Shader();
