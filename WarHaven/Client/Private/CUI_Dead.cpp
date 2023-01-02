@@ -90,7 +90,6 @@ void CUI_Dead::SetActive_DeadUI(_bool value)
 
 void CUI_Dead::SetActive_RevivalUI(_bool value)
 {
-	m_vGaugeColor = ;
 	m_pRevivalUI[RU_Bar]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 
 	for (int i = 0; i < RU_End; ++i)
@@ -118,8 +117,6 @@ void CUI_Dead::My_Tick()
 			PLAYER->Get_FollowCam()->Set_FollowTarget(PLAYER);
 		}
 	}
-
-
 
 	if (m_pRevivalUI[RU_Bar]->Is_Valid())
 	{

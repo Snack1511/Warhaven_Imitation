@@ -97,6 +97,9 @@ void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
 	for (int i = 0; i < CP_End; ++i)
 	{
 		m_pArrCharacterPort[i][m_iPrvSelectEventNum]->DoScale(-10.f, 0.1f);
+		Fade_Out(m_pArrCharacterPort[CP_SelectBG][m_iPrvSelectEventNum]);
+
+		Fade_In(m_pArrCharacterPort[CP_SelectBG][iEventNum]);
 		m_pArrCharacterPort[i][iEventNum]->DoScale(10.f, 0.1f);
 	}
 
@@ -550,10 +553,19 @@ void CUI_Oper::Progress_Oper()
 				{
 					for (int j = 0; j < 6; ++j)
 					{
-						Enable_Fade(m_pArrCharacterPort[i][j], fDuration);
+						m_pArrCharacterPort[i][j]->SetActive(true);
+
 						_float4 vPos = m_pArrCharacterPort[i][j]->Get_Pos();
 						vPos.x += 50.f;
 						m_pArrCharacterPort[i][j]->DoMove(vPos, fDuration, 0);
+
+						if (j > 0)
+						{
+							if (i == CP_SelectBG)
+								continue;
+						}
+
+						Fade_In(m_pArrCharacterPort[i][j]);
 					}
 				}
 
@@ -568,6 +580,11 @@ void CUI_Oper::Progress_Oper()
 						}
 
 						Enable_Fade(m_pArrLeftUI[i][j], fDuration);
+
+						if (i > 0)
+						{
+							m_pArrLeftUI[i][Left_SelectBG]->SetActive(false);
+						}
 
 						_float4 vPos = m_pArrLeftUI[i][j]->Get_Pos();
 						vPos.x -= 50.f;
@@ -1043,7 +1060,7 @@ void CUI_Oper::Create_CharacterSelect()
 	{
 		m_pCharacterPort[i] = CUI_Object::Create();
 
-		m_pCharacterPort[i]->Set_FadeDesc(0.3f);
+		m_pCharacterPort[i]->Set_FadeDesc(0.3f, (_uint)0);
 
 		switch (i)
 		{
