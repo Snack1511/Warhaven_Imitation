@@ -1006,6 +1006,17 @@ void CFunc_ObjectControl::Tick_Function()
     //    Control_Object();
     Control_Object();
     Update_Data();
+
+
+    if (KEY(L, TAP))
+    {
+        Func_DeleteOBject();
+    }
+
+    if (m_bGroupControl)
+    {
+        Update_Group();
+    }
 }
 
 _bool CFunc_ObjectControl::Is_CurSelectObject()
@@ -1731,6 +1742,8 @@ void CFunc_ObjectControl::Func_DeleteOBject()
     Delete_Object(ObjectMapIter->second, m_iCurSelectObjectIndex);
     Delete_Data(DataMapIter->second, m_iCurSelectObjectIndex);
     m_iCurSelectObjectIndex = 0;
+
+    SetUp_CurSelectObject();
 }
 
 
@@ -1955,6 +1968,8 @@ void CFunc_ObjectControl::Delete_ObjectNamingMap(string strSearchObejctName, lis
 
 void CFunc_ObjectControl::Scaling_Object()
 {
+    if (nullptr == m_pCurSelectData)
+        return;
     if (nullptr == m_pObjTransform)
         return;
     _float4 ScaleValue = m_pObjTransform->Get_Scale();
@@ -1989,6 +2004,8 @@ void CFunc_ObjectControl::Scaling_Object()
     }
 
     m_pCurSelectGameObject->Get_Transform()->Set_Scale(ScaleValue);
+    Update_Data();
+
 }
 
 void CFunc_ObjectControl::Rotate_Object()
@@ -2036,6 +2053,7 @@ void CFunc_ObjectControl::Rotate_Object()
 
         CUtility_Transform::Turn_ByAngle(m_pObjTransform, Look, m_fTickPerRotSpeed * fDT(0));
     }
+    Update_Data();
 }
 
 void CFunc_ObjectControl::Delete_Object(map<size_t, vector<CGameObject*>>::iterator& ObjectIter, list<_int> IndexList)
@@ -2246,6 +2264,7 @@ void CFunc_ObjectControl::Position_Object()
     }
 
     m_pCurSelectGameObject->Get_Transform()->Set_World(WORLD_POS, PosValue);
+    Update_Data();
 }
 
 void CFunc_ObjectControl::Place_Object()
@@ -2254,6 +2273,7 @@ void CFunc_ObjectControl::Place_Object()
         return;
     _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
     m_pObjTransform->Set_World(WORLD_POS, OutPos);
+    Update_Data();
 }
 
 void CFunc_ObjectControl::Change_Object_UpDir()
@@ -2288,16 +2308,6 @@ void CFunc_ObjectControl::Update_Data()
     {
         m_pCurSelectData->vScale = m_pCurSelectGameObject->Get_Transform()->Get_Scale();
         m_pCurSelectData->ObjectStateMatrix = m_pCurSelectGameObject->Get_Transform()->Get_WorldMatrix();
-    }
-
-    if (KEY(L, TAP))
-    {
-        Func_DeleteOBject();
-    }
-
-    if (m_bGroupControl)
-    {
-        Update_Group();
     }
 }
 
