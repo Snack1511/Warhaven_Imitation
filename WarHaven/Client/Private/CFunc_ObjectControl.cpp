@@ -1157,6 +1157,48 @@ void CFunc_ObjectControl::Delete_ObjectGroup(char* pObjectGroupName)
     }
     Confirm_Data();
 }
+
+void CFunc_ObjectControl::CleanUp_ObjectGroup(ObjectMap::iterator& ObjectMapIter, DataMap::iterator& DataMapIter)
+{
+    _uint LoopCnt = 0;
+    _bool AllClear = false;
+    if(m_DataNamingGroupMap.end() == DataMapIter)
+        return;
+    if (m_ObjectNamingGroupMap.end() == ObjectMapIter)
+        return;
+    if (!DataMapIter->second.empty()&&_uint(DataMapIter->second.size()) <= m_iCurSelectObjectIndex)
+    {
+        m_iCurSelectObjectIndex = _uint(DataMapIter->second.size())-1;
+    }
+    while (DataMapIter->second[m_iCurSelectObjectIndex].bIgnoreFlag)
+    {
+        if (LoopCnt >= _uint(DataMapIter->second.size()))
+        {
+            AllClear = true;
+            break;
+        }//모든 데이터가 Ignore상태라면 break
+        m_iCurSelectObjectIndex++;
+        LoopCnt++;
+        if (_uint(DataMapIter->second.size()) <= m_iCurSelectObjectIndex)
+        {
+            m_iCurSelectObjectIndex = 0;
+        }
+    }
+
+    if (AllClear)
+    {
+        DataMapIter->second.clear();
+        for (auto& Value : ObjectMapIter->second)
+        {
+            if(Value)
+                DELETE_GAMEOBJECT(Value);
+        }
+        ObjectMapIter->second.clear();
+        m_ObjectNamingGroupMap.erase(ObjectMapIter);
+        m_DataNamingGroupMap.erase(DataMapIter);
+    }
+}
+
 CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, string Meshpath, string ObjectName)
 {
     size_t HashNum = 0;
@@ -1213,10 +1255,12 @@ CStructure* CFunc_ObjectControl::Add_ObjectNamingMap(string GroupName, string Me
     CStructure* pStructure = Add_Object(ObjectName, ObjMapIter->second, Meshpath);
     Add_Data(ObjectName, DataMapIter->second, Meshpath);
 
-    pIndexList->push_back(_int(ObjMapIter->second.size()) - 1);
+    _int ObjectIndex = (_int(ObjMapIter->second.size()) <= 1) ? 0 : _int(ObjMapIter->second.size()) - 1;
+
+    pIndexList->push_back(ObjectIndex);
     
     m_pCurSelectObjectGroup = &ObjMapIter->second;
-    m_iCurSelectObjectIndex = (_int(ObjMapIter->second.size()) <= 1) ? 0 : _int(ObjMapIter->second.size()) - 1;
+    m_iCurSelectObjectIndex = ObjectIndex;
     SetUp_CurSelectObject();
 
 
@@ -1741,7 +1785,8 @@ void CFunc_ObjectControl::Func_DeleteOBject()
 
     Delete_Object(ObjectMapIter->second, m_iCurSelectObjectIndex);
     Delete_Data(DataMapIter->second, m_iCurSelectObjectIndex);
-    m_iCurSelectObjectIndex = 0;
+
+    CleanUp_ObjectGroup(ObjectMapIter, DataMapIter);
 
     SetUp_CurSelectObject();
 }
@@ -1967,6 +2012,7 @@ void CFunc_ObjectControl::Delete_ObjectNamingMap(string strSearchObejctName, lis
 
     Delete_Object(ObjectMapIter, IndexList);
     Delete_Data(DataMapIter, IndexList);
+    //CleanUp_ObjectGroup(ObjectMapIter, DataMapIter);
     //Delete_Collision(CollisionMapIter);
 }
 
@@ -3145,7 +3191,8 @@ void CFunc_ObjectControl::Place_Clone()
 
     _float4 OutPos = get<CWindow_Map::PICK_OUTPOS>(m_pMapTool->Get_PickData());
     MTO_DATA tData = (*m_pCurSelectData);
-    Clone_Object(OutPos, m_vCompDir, tData);
+    if (!tData.bIgnoreFlag)
+        Clone_Object(OutPos, m_vCompDir, tData);
     //_matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
     //WorldMat.r[3] = OutPos.XMLoad();
     //tData.ObjectStateMatrix = WorldMat;
@@ -3163,7 +3210,8 @@ void CFunc_ObjectControl::Clone_SamePosition()
     }
     _float4 ObjectPosition = m_pObjTransform->Get_World(WORLD_POS);
     MTO_DATA tData = (*m_pCurSelectData);
-    Clone_Object(ObjectPosition, _float4(0.f, 1.f, 0.f, 0.f), tData);
+    if(!tData.bIgnoreFlag)
+        Clone_Object(ObjectPosition, _float4(0.f, 1.f, 0.f, 0.f), tData);
     //_matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
     //WorldMat.r[3] = ObjectPosition.XMLoad();
     //tData.ObjectStateMatrix = WorldMat;

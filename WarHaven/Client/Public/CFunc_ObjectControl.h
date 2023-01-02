@@ -122,6 +122,7 @@ public:
 public:
 	void Add_ObjectGroup(char* pMeshGroupName);
 	void Delete_ObjectGroup(char* pMeshGroupName);
+	void CleanUp_ObjectGroup(ObjectMap::iterator& ObjectMapIter, DataMap::iterator& DataMapIter);
 
 	CStructure* Add_ObjectNamingMap(string GroupName, string Meshpath, string ObjectName);
 	CStructure* Add_ObjectNamingMap(string GroupName, MTO_DATA& tData);
