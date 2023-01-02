@@ -145,8 +145,8 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		if (m_eTargetPoint == Point_End)
 			return;
 
-		_float fMaxPosX = 600.f;
-		_float fMaxPosY = 320.f;
+		_float fMaxPosX = 100.f;
+		_float fMaxPosY = 100.f;
 
 		// 타겟의 위치
 		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
@@ -155,20 +155,30 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
 
 		_float4 vCamToTargetDir = vTargetPos - vCamPos;
+		vCamToTargetDir.Normalize();
+		vCamToTargetDir.y = 0.f;
 
 		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK);
-		_float fLookLength = vCamToTargetDir.Dot(vCamLook);
+		vCamLook.Normalize();
+		vCamLook.y = 0.f;
 
-		vCamLook = vCamLook.Normalize() * fLookLength;
+		_float fDot = vCamToTargetDir.Dot(vCamLook);
+		_float fAngle = acosf(fDot);
 
-		_float4 vOriginPos = vCamPos + vCamLook;
+		_float fPosX = cosf(fAngle);
+		_float fPosY = sinf(fAngle);
 
+		//_float4 vOriginPos = vCamPos + vCamLook;
 		// 기준점으로부터 타겟의 방향
-		_float4 vDir = vTargetPos - vOriginPos;
-		vDir.Normalize();
+		// _float4 vDir = vTargetPos - vOriginPos;
+		// vDir.y = 0.f;
+		// vDir.Normalize();
 
-		_float fIndicatorPosX = vDir.x * fMaxPosX;
-		_float fIndicatorPosY = vDir.z * fMaxPosY;
+		//_float fIndicatorPosX = vDir.x * fMaxPosX;
+		//_float fIndicatorPosY = vDir.z * fMaxPosY;
+
+		_float fIndicatorPosX = fPosX * fMaxPosX;
+		_float fIndicatorPosY = fPosY * fMaxPosY;
 
 		if (m_bSetTargetPoint)
 		{
