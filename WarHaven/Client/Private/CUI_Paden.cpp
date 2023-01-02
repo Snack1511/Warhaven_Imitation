@@ -165,6 +165,8 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		_float fDot = vCamToTargetDir.Dot(vCamLook);
 		_float fAngle = acosf(fDot);
 
+		// fAngle이 0보다 크면 앞에, 작으면 뒤에
+
 		_float fPosX = cosf(fAngle);
 		_float fPosY = sinf(fAngle);
 
