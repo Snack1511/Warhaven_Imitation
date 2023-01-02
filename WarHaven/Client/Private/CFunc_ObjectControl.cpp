@@ -1821,6 +1821,7 @@ void CFunc_ObjectControl::Select_DataControlFlag()
 
 void CFunc_ObjectControl::Control_Object()
 {
+
     switch (m_eControlType)
     {
     case CONTROL_SCALING:
@@ -1833,6 +1834,9 @@ void CFunc_ObjectControl::Control_Object()
         Position_Object();
         break;
     }
+
+    Position_Object_Mouse();
+
 }
 
 //void CFunc_ObjectControl::Scaling_Group()
@@ -2228,6 +2232,16 @@ void CFunc_ObjectControl::Position_Object()
         PosValue.z -= m_fTickPerMoveSpeed * fDT(0);
     }
 
+    m_pCurSelectGameObject->Get_Transform()->Set_World(WORLD_POS, PosValue);
+    Update_Data();
+}
+
+void CFunc_ObjectControl::Position_Object_Mouse()
+{
+    if (nullptr == m_pObjTransform)
+        return;
+
+    _float4 PosValue = m_pObjTransform->Get_World(WORLD_POS);
     if (KEY(LBUTTON, HOLD) && KEY(R, HOLD))
     {
         _float fMouseX = MOUSE_MOVE(MOUSEMOVE::MMS_X);
