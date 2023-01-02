@@ -13,6 +13,8 @@
 #include "CStructure_Instance.h"
 #include "ImGui_Manager.h"
 
+#include "Camera.h"
+
 CFunc_ObjectControl::CFunc_ObjectControl()
 {
 }
@@ -2206,6 +2208,41 @@ void CFunc_ObjectControl::Position_Object()
     if (KEY(PAGEDOWN, HOLD))
     {
         PosValue.z -= m_fTickPerMoveSpeed * fDT(0);
+    }
+
+    if (KEY(LBUTTON, HOLD) && KEY(R, HOLD))
+    {
+        _float fMouseX = MOUSE_MOVE(MOUSEMOVE::MMS_X);
+        _float fMouseY = MOUSE_MOVE(MOUSEMOVE::MMS_Y) * -1.f;
+
+        _float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+        vDir.y = 0.f;
+        vDir.Normalize();
+
+        PosValue += vDir * fMouseX * fDT(0);
+
+
+        vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_UP);
+
+        if (vDir.y > 0.9f)
+            vDir = _float4(0.f, 1.f, 0.f, 0.f);
+        else
+            vDir.y = 0.f;
+
+        vDir.Normalize();
+
+        PosValue += vDir * fMouseY * fDT(0);
+    }
+
+    if (KEY(LBUTTON, HOLD) && KEY(T, HOLD))
+    {
+        _float fMouseY = MOUSE_MOVE(MOUSEMOVE::MMS_Y) * -1.f;
+
+        _float4 vDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+        vDir.Normalize();
+
+        PosValue += vDir * fMouseY * fDT(0);
     }
 
     m_pCurSelectGameObject->Get_Transform()->Set_World(WORLD_POS, PosValue);

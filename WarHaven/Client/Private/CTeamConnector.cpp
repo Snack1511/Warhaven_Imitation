@@ -126,7 +126,7 @@ void CTeamConnector::Erase_Trigger(string strTriggerKey)
 
             if (eType != CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART)
             {
-                m_bHasTrigger[(_uint)eType - 1] = true;
+                m_bHasTrigger[(_uint)eType - 1] = false;
             }
 
             iter = m_OurTriggers.erase(iter);
