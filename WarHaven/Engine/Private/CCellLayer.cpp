@@ -626,9 +626,13 @@ void CCellLayer::DebugRendering()
 		{
 			vColor = _float4(1.f, 0.f, 0.f, 1.f);
 		}
-		else
+		else if(Cell->Check_Attribute(CELL_GROUND))
 		{
 			vColor = _float4(0.f, 1.f, 0.f, 1.f);
+		}
+		else if (Cell->Check_Attribute(CELL_STAIR))
+		{
+			vColor = _float4(1.f, 0.f, 1.f, 1.f);
 		}
 		m_pDebugShader->Set_RawValue("g_ViewMatrix", &matView, sizeof(_float4x4));
 		m_pDebugShader->Set_RawValue("g_ProjMatrix", &matProj, sizeof(_float4x4));

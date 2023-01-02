@@ -16,6 +16,13 @@
 #include "CTileDebugger.h"
 #include "CCellLayer.h"
 
+pair<const char*, _int> CWindow_Tile::m_iAttributeArray[] =
+{
+	make_pair("Blocked", (_int)CELL_BLOCKED),
+	make_pair("Ground", (_int)CELL_GROUND),
+	make_pair("Stair", (_int)CELL_STAIR),
+};
+
 CWindow_Tile::CWindow_Tile()
 {
 }
@@ -292,6 +299,23 @@ HRESULT CWindow_Tile::Render()
 					m_fTileHeightMinRange = m_pCurLayer->Get_MinHeight();
 					m_fTileHeightMaxRange = m_pCurLayer->Get_MaxHeight();
 				}
+			}
+			
+			if (ImGui::BeginCombo("Attribute", m_iAttributeArray[m_iAttrubuteIndex].first))
+			{
+				for (_uint i = 0; i < 3; ++i)
+				{
+					_bool bSelect = false;
+					if (m_iAttrubuteIndex == i)
+					{
+						bSelect = true;
+					}
+					if (ImGui::Selectable(m_iAttributeArray[i].first, bSelect))
+					{
+						m_iAttrubuteIndex = i;
+					}
+				}
+				ImGui::EndCombo();
 			}
 		}
 
@@ -1286,7 +1310,7 @@ void CWindow_Tile::On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos)
 		CCell* pCell = m_pCurLayer->Find_Cell(vPickedPos);
 		if (nullptr == pCell)
 			return;
-		pCell->Set_Flags(m_iCellAttribute);
+		pCell->Set_Flags(m_iAttributeArray[m_iAttrubuteIndex].second);
 	}
 }
 

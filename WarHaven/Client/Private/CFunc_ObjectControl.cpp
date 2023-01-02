@@ -2543,6 +2543,8 @@ void CFunc_ObjectControl::Save_ObjectMerge(string BasePath, string SaveName)
             }
             Index++;
         }
+        if (ValidList.empty())
+            continue;
         string strName = CFunctor::To_String(DataArrValue.second[ValidList.front()].strObejctName);
         _int NameLength = _int(strName.length()) + 1;
         char ObjectName[MAXCHAR] = "";
@@ -3144,6 +3146,8 @@ void CFunc_ObjectControl::Add_HLOD()
 
 void CFunc_ObjectControl::Load_Data(string FilePath)
 {
+    Confirm_Data();
+
     if(bTest)
         Load_ObjectGroup_Temp(FilePath);
     else
@@ -3179,13 +3183,29 @@ void CFunc_ObjectControl::Load_Data(string FilePath)
 
     for (auto& elem : Padding)
     {
-        vector<CGameObject*>& ObjArr = m_ObjectNamingGroupMap[elem.first];
-        vector<MTO_DATA>& DataArr = m_DataNamingGroupMap[elem.first];
+        ObjectMap::iterator ObjIter = m_ObjectNamingGroupMap.find(elem.first);
+        DataMap::iterator DataIter = m_DataNamingGroupMap.find(elem.first);
+        if (ObjIter == m_ObjectNamingGroupMap.end())
+            continue;
+        if (DataIter == m_DataNamingGroupMap.end())
+            continue;
+        ObjectArr& ObjArr = ObjIter->second;
+        DataArr& DataArr = DataIter->second;
 
-        vector<CGameObject*>::iterator ObjArrIter = m_ObjectNamingGroupMap[elem.first].begin();
-        vector<MTO_DATA>::iterator DataArrIter = m_DataNamingGroupMap[elem.first].begin();
+        ObjectArr::iterator ObjArrIter = ObjArr.begin();
+        DataArr::iterator DataArrIter = DataArr.begin();
+        
+        if (ObjArrIter == ObjArr.end())
+            continue;
+        if (DataArrIter == DataArr.end())
+            continue;
+        
         _int Index = 0;
         _bool bInsert = false;
+
+        if (elem.second.empty())
+            continue;
+
         for (list<_int>::iterator iter = elem.second.begin(); iter != elem.second.end(); ++iter)
         {
             if(bInsert)
