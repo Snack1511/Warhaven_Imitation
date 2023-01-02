@@ -281,8 +281,13 @@ void CUI_Oper::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 
 	m_pArrConquestBlur[iPoinIdx]->Set_Color(vColor);
 
-	if (!m_pArrConquestBlur[iPoinIdx]->Is_Valid())
-		Enable_Fade(m_pArrConquestBlur[iPoinIdx], 0.3f);
+	if (m_pOperBG[OB_BG]->Is_Valid())
+	{
+		if (!m_pArrConquestBlur[iPoinIdx]->Is_Valid())
+		{
+			Enable_Fade(m_pArrConquestBlur[iPoinIdx], 0.3f);
+		}
+	}
 }
 
 void CUI_Oper::Set_Player(CPlayer* pPlayer)
@@ -739,6 +744,12 @@ void CUI_Oper::Enable_StrongHoldUI()
 		m_pArrStrongHoldUI[SP_Outline][i]->Set_Scale(120.f);
 		m_pArrStrongHoldUI[SP_Icon][i]->Set_Scale(115.f);
 		m_pArrStrongHoldUI[SP_TEXT][i]->Set_Scale(140.f);
+
+		_float4 vColor = m_pArrStrongHoldUI[SP_BG][i]->Get_Color();
+		if (vColor == m_vColorRed || vColor == m_vColorBlue)
+		{
+			Enable_Fade(m_pArrConquestBlur[i], 0.3f);
+		}
 	}
 
 	for (int i = 0; i < SP_End; ++i)
@@ -1930,6 +1941,8 @@ void CUI_Oper::Create_ConquestBlur()
 	GET_COMPONENT_FROM(m_pConquestBlur, CTexture)->Remove_Texture(0);
 	Read_Texture(m_pConquestBlur, "/Oper/Effect", "Blur");
 
+	m_pConquestBlur->Set_UIShaderFlag(SH_UI_BLOOM);
+
 	m_pConquestBlur->Set_FadeDesc(0.3f);
 	m_pConquestBlur->Set_Sort(0.5f);
 
@@ -1943,7 +1956,7 @@ void CUI_Oper::Create_ConquestBlur()
 		if (i == 0)
 		{
 			m_pArrConquestBlur[i]->Set_TextureIndex(0);
-			m_pArrConquestBlur[i]->Set_Scale(100.f);
+			m_pArrConquestBlur[i]->Set_Scale(80.f);
 		}
 		else
 		{

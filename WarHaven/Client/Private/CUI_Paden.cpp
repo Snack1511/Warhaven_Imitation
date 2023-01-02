@@ -155,9 +155,10 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
 
 		_float4 vCamToTargetDir = vTargetPos - vCamPos;
-		_float fLookLength = vCamToTargetDir.Length();
 
 		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK);
+		_float fLookLength = vCamToTargetDir.Dot(vCamLook);
+
 		vCamLook = vCamLook.Normalize() * fLookLength;
 
 		_float4 vOriginPos = vCamPos + vCamLook;
