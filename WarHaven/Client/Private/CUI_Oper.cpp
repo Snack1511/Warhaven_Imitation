@@ -48,6 +48,8 @@ HRESULT CUI_Oper::Initialize_Prototype()
 	Create_BlackImg();
 	Create_PointInfo();
 
+	Create_SelectEffect();
+
 	Create_PlayerIcon();
 
 	return S_OK;
@@ -102,6 +104,9 @@ void CUI_Oper::On_PointDown_SelectBG(const _uint& iEventNum)
 		Fade_In(m_pArrCharacterPort[CP_SelectBG][iEventNum]);
 		m_pArrCharacterPort[i][iEventNum]->DoScale(10.f, 0.1f);
 	}
+
+	_float4 vEffectPos = m_pArrCharacterPort[CP_PortBG][iEventNum]->Get_Pos();
+	m_pSelectEffect[0]->Set_Pos(vEffectPos);
 
 	CUser::Get_Instance()->Get_MainPlayerInfo()->Set_ChosenClass((CLASS_TYPE)iEventNum);
 }
@@ -614,6 +619,19 @@ void CUI_Oper::Progress_Oper()
 				{
 					Enable_Fade(m_pBriefingUI[i], fDuration);
 				}
+
+				for (int i = 0; i < 2; ++i)
+				{
+					Enable_Fade(m_pSelectEffect[i], fDuration);
+				}
+
+				_float4 vEffectPos0 = m_pSelectEffect[0]->Get_Pos();
+				vEffectPos0.x += 50.f;
+				m_pSelectEffect[0]->DoMove(vEffectPos0, fDuration, 0);
+
+				_float4 vEffectPos1 = m_pSelectEffect[1]->Get_Pos();
+				vEffectPos1.x -= 50.f;
+				m_pSelectEffect[1]->DoMove(vEffectPos1, fDuration, 0);
 			}
 		}
 		else if (m_iOperProgress == 8)
@@ -684,6 +702,15 @@ void CUI_Oper::Progress_Oper()
 				CUser::Get_Instance()->Set_FixCursor(true);
 				CUser::Get_Instance()->SetActive_Cursor(false);
 			}
+		}
+	}
+
+	for (int i = 0; i < 2; ++i)
+	{
+		if (m_pSelectEffect[i]->Is_Valid())
+		{
+			m_fSelectEffect_RotValue += fDT(0);
+			m_pSelectEffect[i]->Set_RotationZ(m_fSelectEffect_RotValue);
 		}
 	}
 }
@@ -1199,7 +1226,7 @@ void CUI_Oper::Create_LeftIcon()
 			m_pArrLeftUI[i][Left_Icon]->Set_Scale(32.f);
 
 			m_pArrLeftUI[i][Left_Icon]->Set_FontText(TEXT("지도"));
-			m_pArrLeftUI[i][Left_Icon]->Set_FontOffset(-75.f, 3.f);
+			m_pArrLeftUI[i][Left_Icon]->Set_FontOffset(-65.f, 3.f);
 
 			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_BG], CTexture)->Set_CurTextureIndex(0);
 			GET_COMPONENT_FROM(m_pArrLeftUI[i][Left_Icon], CTexture)->Set_CurTextureIndex(0);
@@ -1796,6 +1823,46 @@ void CUI_Oper::Create_BriefingUI()
 	m_pBriefingUI[BU_Icon]->Set_FontColor(_float4(_float4(0.6f, 0.6f, 0.6f, 1.f)));
 	m_pBriefingUI[BU_Icon]->Set_FontText(TEXT("공격 목표 없음"));
 
+}
+
+void CUI_Oper::Create_SelectEffect()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		m_pSelectEffect[i] = CUI_Object::Create();
+
+		m_pSelectEffect[i]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+
+		m_pSelectEffect[i]->Set_FadeDesc(0.3f);
+
+		GET_COMPONENT_FROM(m_pSelectEffect[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_SelectEffect);
+
+		m_pSelectEffect[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_256CircleOutline4px.dds"));
+		m_pSelectEffect[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Oper/Effect/T_Pattern_54.dds"));
+
+		m_pSelectEffect[i]->Set_Sort(0.45f);
+
+		switch (i)
+		{
+		case 0:
+			m_pSelectEffect[i]->Set_Scale(80.f);
+			break;
+
+		case 1:
+			m_pSelectEffect[i]->Set_Scale(75.f);
+			break;
+		}
+
+		m_pSelectEffect[i]->Set_Color(_float4(0.6f, 0.55f, 0.4f, 0.5f));
+
+		m_pOperList.push_back(m_pSelectEffect[i]);
+
+		CREATE_GAMEOBJECT(m_pSelectEffect[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSelectEffect[i]);
+	}
+
+	m_pSelectEffect[0]->Set_Pos(-555.f, 250.f);
+	m_pSelectEffect[1]->Set_Pos(590.f, 150.f);
 }
 
 void CUI_Oper::Bind_Shader()
