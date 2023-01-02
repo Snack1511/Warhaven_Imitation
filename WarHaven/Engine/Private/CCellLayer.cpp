@@ -20,18 +20,28 @@ CCellLayer::~CCellLayer()
 
 }
 
-CCellLayer* CCellLayer::Create(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _float fHeightMin, _float fHeightMax)
+CCellLayer* CCellLayer::Create(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _float fHeightMin, _float fHeightMax, _int BaseCellAttribute)
 {
 	CCellLayer* pInstance = new CCellLayer();
 	pInstance->m_fLayerHeightMin = fHeightMin;
 	pInstance->m_fLayerHeightMax = fHeightMax;
 
-	if (FAILED(pInstance->SetUp_Cells(XNums, ZNums, fTileSize, vCenterPosition)))
+	if (FAILED(pInstance->SetUp_Cells(XNums, ZNums, fTileSize, vCenterPosition, BaseCellAttribute)))
 	{
 		Call_MsgBox(L"Failed to SetUp_Cells : CCellLayer");
 		SAFE_DELETE(pInstance);
 	}
 #ifdef _DEBUG
+	if (FAILED(pInstance->SetUp_Vertex()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Vertex : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+	if (FAILED(pInstance->SetUp_Instancing()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Instancing : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}	
 	if (FAILED(pInstance->SetUp_Shader()))
 	{
 		Call_MsgBox(L"Failed to SetUp_Shader : CCellLayer");
@@ -70,6 +80,16 @@ CCellLayer* CCellLayer::Create(wstring strFilePath)
 		SAFE_DELETE(pInstance);
 	}
 #ifdef _DEBUG
+	if (FAILED(pInstance->SetUp_Vertex()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Vertex : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+	if (FAILED(pInstance->SetUp_Instancing()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Instancing : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
 	if (FAILED(pInstance->SetUp_Shader()))
 	{
 		Call_MsgBox(L"Failed to SetUp_Shader : CCellLayer");
@@ -147,7 +167,7 @@ void CCellLayer::Save(wstring strPath)
 }
 
 //로컬 기준 0, 0 이 좌하단
-HRESULT CCellLayer::SetUp_Cells(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition)
+HRESULT CCellLayer::SetUp_Cells(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _int iAttribute)
 {
 	m_vCenterPosition = vCenterPosition;
 	m_iXNums = XNums;
@@ -188,6 +208,9 @@ HRESULT CCellLayer::SetUp_Cells(_uint XNums, _uint ZNums, _float fTileSize, _flo
 
 			pLeftTri = CCell::Create(LeftPositions, iIndex, m_fLayerHeightMin);
 			pRightTri = CCell::Create(RightPositions, iIndex + 1, m_fLayerHeightMin);
+
+			pLeftTri->Set_Flags(iAttribute);
+			pRightTri->Set_Flags(iAttribute);
 
 			m_Cells.push_back(pLeftTri);
 			m_Cells.push_back(pRightTri);
@@ -590,6 +613,74 @@ HRESULT CCellLayer::SetUp_Visibility()
 }
 #ifdef _DEBUG
 
+HRESULT CCellLayer::SetUp_Vertex()
+{
+	/*m_iStride = sizeof(VTXDEFAULT);
+	m_iNumVertices = 1;
+	m_iNumVertexBuffers = 2;
+
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_BufferDesc.ByteWidth = m_iStride * m_iNumVertices;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride = m_iStride;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+
+	VTXDEFAULT* pVertices = new VTXDEFAULT;
+
+	pVertices->vPosition = _float3(0.f, 0.f, 0.f);
+
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pVertices;
+
+	if (FAILED(Create_VertexBuffer()))
+		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);*/
+	return S_OK;
+}
+
+HRESULT CCellLayer::SetUp_Instancing()
+{
+	/*m_iInstanceStride = sizeof(VTXTRIINSTANCE);
+	m_iNumInstance = m_iXNums* m_iZNums * 2;
+
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_BufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstance;
+	m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride = m_iInstanceStride;
+	m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	m_BufferDesc.MiscFlags = 0;
+
+	VTXTRIINSTANCE* pInstance = new VTXTRIINSTANCE[m_iNumInstance];
+
+	for (_uint i = 0; i < m_iNumInstance; ++i)
+	{
+		memcpy_s(pInstance[i].vPosition, sizeof(_float3), &m_Cells[i]->Get_Point(CCell::POINT_A), sizeof(_float3));
+		memcpy_s(pInstance[i].vPosition+1, sizeof(_float3), &m_Cells[i]->Get_Point(CCell::POINT_B), sizeof(_float3));
+		memcpy_s(pInstance[i].vPosition+2, sizeof(_float3), &m_Cells[i]->Get_Point(CCell::POINT_C), sizeof(_float3));
+		pInstance[i].vColor = Get_Color(m_Cells[i]);
+	}
+
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pInstance;
+
+	if (FAILED(m_pDevice->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pVBInstance)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pInstance);*/
+
+	return S_OK;
+}
+
+HRESULT CCellLayer::SetUp_Index()
+{
+	//m_iIndicesStride = = sizeof(_ushort);
+	return S_OK;
+}
+
 HRESULT CCellLayer::SetUp_Shader()
 {
 	m_pDebugShader = CShader::Create(TEXT("../Bin/Shaderfiles/Shader_Debugging.hlsl"), VTXDEFAULT_DECLARATION::Element, VTXDEFAULT_DECLARATION::iNumElements);
@@ -621,19 +712,8 @@ void CCellLayer::DebugRendering()
 	matWorld = matWorld.Transpose();
 	for (auto& Cell : m_Cells)
 	{
-		_float4 vColor;
-		if (Cell->Check_Attribute(CELL_BLOCKED)) 
-		{
-			vColor = _float4(1.f, 0.f, 0.f, 1.f);
-		}
-		else if(Cell->Check_Attribute(CELL_GROUND))
-		{
-			vColor = _float4(0.f, 1.f, 0.f, 1.f);
-		}
-		else if (Cell->Check_Attribute(CELL_STAIR))
-		{
-			vColor = _float4(1.f, 0.f, 1.f, 1.f);
-		}
+		_float4 vColor = Get_Color(Cell);
+
 		m_pDebugShader->Set_RawValue("g_ViewMatrix", &matView, sizeof(_float4x4));
 		m_pDebugShader->Set_RawValue("g_ProjMatrix", &matProj, sizeof(_float4x4));
 		m_pDebugShader->Set_RawValue("g_WorldMatrix", &matWorld, sizeof(_float4x4));
@@ -641,6 +721,23 @@ void CCellLayer::DebugRendering()
 		m_pDebugShader->Begin(0);
 		Cell->DebugRendering();
 	}
+}
+_float4 CCellLayer::Get_Color(CCell* pCell)
+{
+	_float4 vColor;
+	if (pCell->Check_Attribute(CELL_BLOCKED))
+	{
+		vColor = _float4(1.f, 0.f, 0.f, 1.f);
+	}
+	else if (pCell->Check_Attribute(CELL_GROUND))
+	{
+		vColor = _float4(0.f, 1.f, 0.f, 1.f);
+	}
+	else if (pCell->Check_Attribute(CELL_STAIR))
+	{
+		vColor = _float4(1.f, 0.f, 1.f, 1.f);
+	}
+	return vColor;
 }
 #endif // _DEBUG
 

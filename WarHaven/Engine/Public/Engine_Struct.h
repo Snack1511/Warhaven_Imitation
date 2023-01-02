@@ -110,7 +110,19 @@ namespace Engine
 		XMFLOAT4			vLook;
 		XMFLOAT4			vTranslation;
 		XMFLOAT4			vColor;
-	}VTXRECTINSTANCE;
+	}VTXRECTINSTANCE;	
+
+	typedef struct tagVertexDefault_Instance
+	{
+		XMFLOAT4			vTranslation;
+		XMFLOAT4			vColor;
+	}VTXDEFAULTINSTANCE;
+
+	typedef struct ENGINE_DLL tagVertex_Default_Instance_Declaration
+	{
+		static const unsigned int		iNumElements = 1;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXDEFAULT_INSTANCE_DECLARATION;
 
 	typedef struct tagVertex_Default
 	{

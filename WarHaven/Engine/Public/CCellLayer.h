@@ -16,13 +16,13 @@ public:
 	CCellLayer();
 	virtual ~CCellLayer();
 public:
-	static CCellLayer* Create(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _float fHeightMin, _float fHeightMax);
+	static CCellLayer* Create(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _float fHeightMin, _float fHeightMax, _int BaseCellAttribute = 4);
 	static CCellLayer* Create(wstring strFilePath);
 public:
 	void Save(wstring strPath);
 public:
 	//¼¿ ¹× ³ëµå ¼³Á¤
-	HRESULT SetUp_Cells(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition);
+	HRESULT SetUp_Cells(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _int iAttribute);
 	HRESULT SetUp_Cells(wstring strFilePath);
 
 	//ÀÌ¿ô ¼³Á¤
@@ -35,9 +35,13 @@ public:
 	void Set_DebugName(wstring strName) { m_strDebugName = strName; }
 #ifdef _DEBUG
 public:
+	HRESULT SetUp_Vertex();
+	HRESULT SetUp_Instancing();
+	HRESULT SetUp_Index();
 	HRESULT SetUp_Shader();
 	void DebugTick();
 	void DebugRendering();
+	_float4 Get_Color(CCell* pCell);
 private:
 	CShader* m_pDebugShader = nullptr;
 
