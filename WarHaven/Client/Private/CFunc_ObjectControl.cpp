@@ -123,9 +123,17 @@ void CFunc_ObjectControl::Func_FBXList()
 
 void CFunc_ObjectControl::Func_ObjectList()
 {
+   
 
     if (ImGui::CollapsingHeader(u8"그룹핑된 리스트", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow))
     {
+        if (m_pCurSelectGroupingNameArr && ((_uint)m_pCurSelectGroupingNameArr->size() > 10000))
+        {
+            m_pCurSelectGroupingNameArr = nullptr;
+            return;
+        }
+
+
         //해당 이름을 가진 탭
         if (ImGui::BeginTabBar("##AddObject TabBar"))
         {
@@ -185,8 +193,14 @@ void CFunc_ObjectControl::Func_ObjectList()
 
             ImGui::EndTabBar();
         }
+
+       
+
         if (nullptr != m_pCurSelectGroupingNameArr)
         {
+            
+
+
             if (!(*m_pCurSelectGroupingNameArr).empty())
             {
                 if((*m_pCurSelectGroupingNameArr).size() <= m_iCurSelectObjecNametIndex)
@@ -220,17 +234,8 @@ void CFunc_ObjectControl::Func_ObjectList()
         }
 
     }
-    //ImGui::SameLine();
-    //if (ImGui::Button("Clear MeshGroup"))
-    //{
-    //    m_pCurSelectObjectGroup = nullptr;
-    //    m_pCurSelectDataGroup = nullptr;
-    //    Clear_ObjectGroup(get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]));
-    //    m_iCurSelectObjecNametIndex = 0;
-    //    m_SelectObjectGroupIndex = 0;
-    //    Confirm_Data();
-    //}//그룹 삭제
-    //ImGui::Spacing();
+
+
 
     if (ImGui::CollapsingHeader(u8"그룹단위 복사"))
     {
@@ -518,6 +523,12 @@ void CFunc_ObjectControl::Func_SelectedObject_NameBase()
         {
             if (nullptr != m_pCurSelectObjectGroup)
             {
+                if (_uint(m_pCurSelectObjectGroup->size()) > 10000)
+                {
+                    m_pCurSelectObjectGroup = nullptr;
+                    return;
+                }
+
                 for (_uint i = 0; i < _uint(m_pCurSelectObjectGroup->size()); ++i)
                 {
                     if ((*m_pCurSelectObjectGroup)[i] != nullptr && (*m_pCurSelectObjectGroup)[i]->Is_Valid())
@@ -1436,6 +1447,13 @@ void CFunc_ObjectControl::Merge_All()
         }
 
         CStructure_Instance* pInstanceStructure = CStructure_Instance::Create(strMeshPath, InstanceCount, pInstance);
+
+        if (!pInstanceStructure)
+        {
+            Safe_Delete_Array(pInstance);
+            continue;
+        }
+
         pInstanceStructure->Initialize();
         CREATE_GAMEOBJECT(pInstanceStructure, GROUP_DECORATION);
         m_MergeMap.emplace(elem.first, pInstanceStructure);
@@ -2025,7 +2043,10 @@ void CFunc_ObjectControl::Delete_Object(map<size_t, vector<CGameObject*>>::itera
         for(list<_int>::value_type& Value : IndexList)
         {
             CGameObject* pGameObject = ObjectIter->second[Value];
-            DELETE_GAMEOBJECT(pGameObject);
+
+            if (pGameObject)
+                DELETE_GAMEOBJECT(pGameObject);
+
             ObjectIter->second[Value] = nullptr;
 
         }
@@ -2423,6 +2444,11 @@ void CFunc_ObjectControl::Save_ObjectSplit(string BasePath, string SaveName)
             }
             Index++;
         }
+
+        if (ValidList.empty())
+            continue;
+
+
         string strName = CFunctor::To_String(DataArrValue.second[ValidList.front()].strObejctName);
         _int NameLength = _int(strName.length()) + 1;
         char ObjectName[MAXCHAR] = "";

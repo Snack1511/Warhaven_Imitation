@@ -1006,10 +1006,10 @@ HRESULT CRender_Manager::Render_Debug()
 }
 void CRender_Manager::Tick_Debug()
 {
-	if (KEY(F7, TAP))
+	/*if (KEY(F7, TAP))
 	{
 		m_bDebugRender = !m_bDebugRender;
-	}
+	}*/
 }
 #endif // _DEBUG
 

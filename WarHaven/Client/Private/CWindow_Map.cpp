@@ -752,6 +752,11 @@ void CWindow_Map::Save_MapData(string BasePath, string SaveName)
 {
     MAPDATA     tMapData;
     ofstream	writeFile;
+
+    static _uint g_iIndex = 0;
+
+    SaveName += to_string(g_iIndex++);
+
     if (FAILED(tMapData.SaveData(writeFile, BasePath, SaveName)))
     {
         Call_MsgBox(L"SSave ½ÇÆÐ ??!?!");
