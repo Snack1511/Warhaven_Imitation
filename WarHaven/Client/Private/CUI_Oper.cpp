@@ -1941,8 +1941,6 @@ void CUI_Oper::Create_ConquestBlur()
 	GET_COMPONENT_FROM(m_pConquestBlur, CTexture)->Remove_Texture(0);
 	Read_Texture(m_pConquestBlur, "/Oper/Effect", "Blur");
 
-	m_pConquestBlur->Set_UIShaderFlag(SH_UI_BLOOM);
-
 	m_pConquestBlur->Set_FadeDesc(0.3f);
 	m_pConquestBlur->Set_Sort(0.5f);
 
