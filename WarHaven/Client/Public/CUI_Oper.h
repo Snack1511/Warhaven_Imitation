@@ -219,12 +219,14 @@ private:
 	void Create_BriefingUI();
 
 private:
-	CUI_Object* m_pSelectEffect[2];
+	CUI_Object* m_pSelectEffect = nullptr;
+	CUI_Object* m_pArrSelectEffect[7];
 
 	_float m_fSelectEffect_RotValue = 0.f;
 
 private:
 	void Create_SelectEffect();
+	void Init_SelectEffect();
 
 private:
 	void Bind_Shader();

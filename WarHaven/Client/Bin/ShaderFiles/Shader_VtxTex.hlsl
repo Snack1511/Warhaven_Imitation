@@ -630,17 +630,21 @@ PS_OUT PS_SELECTEFFECT(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
     
-    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vColor = vColor;
     
-    if(Out.vColor.a<0.1f)
+    if (Out.vColor.a < 0.1f)
         discard;
     
     Out.vColor.a = vNoise.r;
         
     Out.vColor *= g_vColor;
+    Out.vColor.a *= g_fAlpha;
+        
+    if (Out.vColor.a < 0.1f)
+        discard;
     
     return Out;
 }
