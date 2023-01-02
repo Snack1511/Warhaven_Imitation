@@ -696,6 +696,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"ShieldWall"), "ShieldWall")))
 		return E_FAIL;
 
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Wind_Attack"), "Wind_Attack")))
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cure_Smoke"), "Cure_Smoke")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Cure_Particle"), "Cure_Particle")))

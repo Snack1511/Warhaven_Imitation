@@ -193,7 +193,7 @@ HRESULT CPriest_Cure_Loop::Initialize()
 	m_fMyAccel = 20.f;
 	m_fMyMaxLerp = 0.1f;
 
-	m_fMaxTime = 1.05f;
+	m_fMaxTime = 0.02f;
 
 	return S_OK;
 }

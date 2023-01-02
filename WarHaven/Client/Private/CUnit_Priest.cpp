@@ -334,8 +334,7 @@ void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
 
 void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
-	__super::Effect_Hit(pOtherUnit, vHitPos);
-
+	
 	/*_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
 	_float fHitDist = m_pTransform->Get_World(WORLD_POS)*/
 
@@ -349,6 +348,7 @@ void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	{
 
 	case STATE_ATTACK_STING_PRIEST:
+		__super::Effect_Hit(pOtherUnit, vHitPos);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
 		break;
 
@@ -356,6 +356,7 @@ void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		break;
 
 	}
+
 }
 
 HRESULT CUnit_Priest::Initialize_Prototype()
