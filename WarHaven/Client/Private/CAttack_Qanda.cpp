@@ -157,8 +157,8 @@ void CAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevS
 	if (!m_pCoreBone)
 		assert(0);
 
-	if (!static_cast<CUnit_Qanda*>(pOwner)->Get_Crow())
-		static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
+	//if (!static_cast<CUnit_Qanda*>(pOwner)->Get_Crow())
+	//	static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
 
 	//DISABLE_COMPONENT(GET_COMPONENT_FROM(static_cast<CUnit_Qanda*>(pOwner)->Get_Crow(), CModel));
 
@@ -284,15 +284,15 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	/* =================================== */
 
 
-	/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
-	_float4 vHitPos;
-	if (CAttack_Qanda::Check_CrowRay(&vHitPos, pOwner))
-	{
-		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
-		CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
-		static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vHitPos);
+	///* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
+	//_float4 vHitPos;
+	//if (CAttack_Qanda::Check_CrowRay(&vHitPos, pOwner))
+	//{
+	//	_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
+	//	CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
+	//	static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vHitPos);
 
-	}
+	//}
 
 	if (pAnimator->Get_CurAnimFrame() >= 160)
 	{

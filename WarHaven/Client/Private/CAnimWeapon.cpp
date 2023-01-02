@@ -105,7 +105,7 @@ HRESULT CAnimWeapon::SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFile
 		matIdentity.Identity();
 
 		CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_ANIM, wstrModelFilePath,
-			XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(270.0f)) * XMMatrixRotationX(XMConvertToRadians(270.0f))
+			XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(fRadianZ)) * XMMatrixRotationY(XMConvertToRadians(fRadianY)) * XMMatrixRotationX(XMConvertToRadians(fRadianX))
 		);
 		pModel->Add_Model(wstrModelFilePath, 1);
 		pModel->Initialize();
@@ -126,7 +126,7 @@ HRESULT CAnimWeapon::SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFile
 void CAnimWeapon::Late_Tick()
 {
 	_float4x4		matBone = m_pOwnerBone->Get_BoneMatrix();
-	
+
 	m_pTransform->Get_Transform().matMyWorld = matBone * m_OwnerBoneOffsetMatrix;
 
 	m_pTransform->Make_WorldMatrix();

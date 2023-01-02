@@ -50,6 +50,8 @@ private:
 private:
 	_float4x4	m_OwnerBoneOffsetMatrix;
 
+	_float		m_fTimeAcc = 0.f;
+
 private:
 	HRESULT		SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFilePath, string strBoneName, 
 		_float fRadianX = 270.f, _float fRadianY = 0.f, _float fRadianZ = 270.f);

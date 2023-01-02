@@ -55,7 +55,7 @@ HRESULT CShootAttack_Qanda::Initialize()
 	m_iStopIndex = 0;
 	m_iAttackEndIndex = 0;
 
-	Add_KeyFrame(32, 1);
+	//Add_KeyFrame(32, 1);
 
 	//Vertical은 전부 Land로 맞춤
 	/* Setting for Blendable */
@@ -167,13 +167,15 @@ void CShootAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 		ePrevType == STATE_ATTACK_BEGIN_QANDA)
 		m_fDamagePumping = 0.7f;
 
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLAUNCH, m_fInterPolationTime, m_fAnimSpeed);
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed * 0.7f;
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed * 0.7f;
 
 	//static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
-	static_cast<CUnit_Qanda*>(pOwner)->Shoot_Crow();
+	//static_cast<CUnit_Qanda*>(pOwner)->Shoot_Crow();
 	//static_cast<CUnit_Qanda*>(pOwner)->Enable_AnimWeapon(false);
 
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
@@ -194,8 +196,8 @@ void CShootAttack_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->Get_SkillTrigger().bSkillETrigger = false;
 	pOwner->Set_AnimWeaponIndex(0, m_fInterPolationTime, m_fAnimSpeed);
 
-	if (!m_bAttackTrigger)
-		static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
+	//if (!m_bAttackTrigger)
+	//	static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();
 
 	static_cast<CUnit_Qanda*>(pOwner)->Enable_AnimWeapon(true);
 

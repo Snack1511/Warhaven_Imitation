@@ -62,7 +62,7 @@ public:
 		_float fJumpPower = 4.5f;
 		_float fStoreSpeed = 4.f; // 저장할 스피트 값 입력
 
-
+		_float	fDamageMultiplier = 1.f;
 		_float	fAttackDamage = 50.f;
 	};
 	struct UNIT_MODEL_DATA

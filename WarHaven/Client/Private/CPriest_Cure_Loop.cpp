@@ -46,7 +46,7 @@ HRESULT CPriest_Cure_Loop::Initialize()
 
 
 	m_fInterPolationTime = 0.f;
-	m_fAnimSpeed = FLT_MIN;
+	m_fAnimSpeed = 1.f;
 
 	//enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
 	m_iStateChangeKeyFrame = 0;
@@ -184,6 +184,7 @@ HRESULT CPriest_Cure_Loop::Initialize()
 
 
 	/* Blend Stop Event*/
+	Add_KeyFrame(79, 0);
 	Add_KeyFrame(m_iStopIndex, 998);
 	Add_KeyFrame(m_iAttackEndIndex, 999);
 	Add_KeyFrame((m_iStopIndex + m_iAttackEndIndex) / 1.8f, 1000); // war 시작, 끝 사이
@@ -200,6 +201,9 @@ HRESULT CPriest_Cure_Loop::Initialize()
 
 void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
+	if (m_eStateType == ePrevStateType)
+		m_fInterPolationTime = 0.f;
+
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
@@ -215,29 +219,33 @@ void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	CUnit* pOtherUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
+	CUnit* pTargetUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
 
-	if (!pOtherUnit)
+	if (!pTargetUnit)
 		return STATE_CURE_END_PRIEST;
 
-	_float fLength = (pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
+	_float fLength = (pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
 
 
 	if (fabs(fLength) > pOwner->Get_MaxDistance())
 		return STATE_CURE_END_PRIEST;
 
 	m_fTimeAcc += fDT(0);
+	
 
 	if (m_fTimeAcc > m_fMaxTime)
 	{
 		// 풀피가 아니면
-		if (pOtherUnit->Get_Status().fHP < pOtherUnit->Get_Status().fMaxHP)
+		if (pTargetUnit->Get_Status().fHP < pTargetUnit->Get_Status().fMaxHP)
 		{
-			pOtherUnit->Get_Status().fHP += 20.f;
+			_float fPlusHp = 15.f;
+
+			// UI 표시
+			pTargetUnit->Get_Status().fHP += fPlusHp; // fPlusHp
 
 			// 풀피를 넘어서면
-			if (pOtherUnit->Get_Status().fHP > pOtherUnit->Get_Status().fMaxHP)
-				pOtherUnit->Get_Status().fHP = pOtherUnit->Get_Status().fMaxHP;
+			if (pTargetUnit->Get_Status().fHP > pTargetUnit->Get_Status().fMaxHP)
+				pTargetUnit->Get_Status().fHP = pTargetUnit->Get_Status().fMaxHP;
 
 		}
 		
@@ -498,45 +506,11 @@ void CPriest_Cure_Loop::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, co
 {
 	switch (iSequence)
 	{
-		//case 998:
-
-		//	m_bAfterEffect = true;
-		//	m_bHitEffect = true;
-		//	pOwner->TurnOn_TrailEffect(true);
-
-		//	/* dash Front */
-		//	if (!pOwner->Is_Air())
-		//	{
-		//		pOwner->Set_DirAsLook();
-		//		pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed);
-		//		pOwner->Get_PhysicsCom()->Set_SpeedasMax();
-		//		pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
-		//		
-		//	}
-
-		//	
-
-		//	m_bBlendable = false;
-		//	if (m_eEnum == Enum::eWALK || m_eEnum == Enum::eRUN)
-		//	pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
-
-		//	break;
-
-		//case 999:
-
-		//	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
-		//	m_bAfterEffect = false;
-		//	m_bBlood = false;
-		//	pOwner->TurnOn_TrailEffect(false);
-
-		//	//m_bBlendable = true;
-		//	if (m_eAnimLeftorRight == ANIM_BASE_L)
-		//		m_eAnimLeftorRight = ANIM_BASE_R;
-		//	else
-		//		m_eAnimLeftorRight = ANIM_BASE_L;
-
-
-		//	break;
+	case 0:
+		pAnimator->Set_InterpolationTime(ANIM_ATTACK, 6, FLT_MAX);
+		pAnimator->Set_AnimSpeed(ANIM_ATTACK, 6, FLT_MIN);
+	
+		break;
 
 	case 1000:
 		/*effect*/

@@ -501,12 +501,16 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 
 	m_tUnitStatus.eClass = QANDA;
 
+	_float3 vRadian = _float3(90.f, 90.f, 270.f);
+
 	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
-		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_C_Hat_02");
+		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_Head", vRadian.x, vRadian.y, vRadian.z);
 
-	_float3 vRadian = _float3(90.f, 180.f, 180.f);
 
-	m_pCane = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Cane/Cane_50.fbx",
+
+	vRadian = _float3(90.f, 180.f, 180.f);
+
+	m_pCane = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Cane/Cane_60.fbx",
 		L"", this, "0B_R_WP1", vRadian.x, vRadian.y, vRadian.z);
 
 
@@ -518,6 +522,11 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 
 	m_pAnimWeapon->Initialize();
 	m_pCane->Initialize();
+
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	m_pAnimWeapon->Use_OwnerBoneOffset()._41 = -0.3f;
+	m_pAnimWeapon->Use_OwnerBoneOffset()._42 = 0.1f;
+	m_pAnimWeapon->Use_OwnerBoneOffset()._43 = 1.f;
 
 	m_tUnitStatus.fRunSpeed *= 0.95f;
 	
