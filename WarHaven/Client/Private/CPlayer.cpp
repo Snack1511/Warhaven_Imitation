@@ -946,6 +946,7 @@ void CPlayer::On_Reborn()
 
 	if (m_bIsMainPlayer)
 	{
+		CUser::Get_Instance()->Toggle_DeadUI(false, false);
 		CUser::Get_Instance()->SetActive_HUD(true);
 		CUser::Get_Instance()->SetActive_SquardInfo(true);
 	}

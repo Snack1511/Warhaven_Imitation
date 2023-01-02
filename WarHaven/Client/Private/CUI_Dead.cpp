@@ -21,11 +21,6 @@ HRESULT CUI_Dead::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CUI_Dead::Initialize()
-{
-	return S_OK;
-}
-
 HRESULT CUI_Dead::Start()
 {
 	__super::Start();
@@ -95,8 +90,8 @@ void CUI_Dead::SetActive_DeadUI(_bool value)
 
 void CUI_Dead::SetActive_RevivalUI(_bool value)
 {
-	m_vGaugeColor = _float4(1.f, 1.f, 1.f, 1.f);
-	m_pRevivalUI[RU_Bar]->Set_Color(m_vGaugeColor);
+	m_vGaugeColor = ;
+	m_pRevivalUI[RU_Bar]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 
 	for (int i = 0; i < RU_End; ++i)
 	{

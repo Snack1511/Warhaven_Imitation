@@ -12,7 +12,6 @@ class CUI_Dead : public CUI_Wrapper
 
 public:
 	virtual	HRESULT	Initialize_Prototype();
-	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
