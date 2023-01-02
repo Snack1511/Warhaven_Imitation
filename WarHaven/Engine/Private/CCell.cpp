@@ -77,7 +77,7 @@ CCell::LinePair CCell::Get_LinePoints(LINE eLine)
 
 _bool CCell::Check_Attribute(_uint iAttribute)
 {
-	if (m_bCellFlag & iAttribute)
+	if ((m_bCellFlag & iAttribute) == iAttribute)
 		return true;
 
 	return false;

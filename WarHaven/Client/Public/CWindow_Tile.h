@@ -79,6 +79,8 @@ private:
 	map<_float, CCellLayer*> m_pLayers;
 	CCellLayer* m_pCurLayer = nullptr;
 	_int m_iCellAttribute = 1;
+	_uint m_iAttrubuteIndex = 0;
+	static pair<const char*, _int> m_iAttributeArray[3];
 private:
 	void		On_Picking(_uint iLayerIndex, _float4 vPickedPos);
 	void		On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos);
