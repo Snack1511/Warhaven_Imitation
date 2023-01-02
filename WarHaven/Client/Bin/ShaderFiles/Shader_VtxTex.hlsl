@@ -610,13 +610,16 @@ PS_OUT PS_CIRCLEGAUGE(PS_IN In)
     
     float2 vPos = In.vTexUV - 0.5f;
     float fAngle = degrees(atan2(vPos.x, vPos.y)) + 180.f;
-    float fa = radians(fAngle - g_fValue * 360.f);
+    
+    float fRadius = length(vPos.xy);
+    
+    float fa = radians(fAngle - g_fValue * 360.f) * fRadius + 1.f;
     
     Out.vColor *= g_vColor;
     Out.vColor.w *= g_fAlpha;
     
     fa = saturate(fa);
-    if (fa < g_fValue)
+    if (fa < 1.f)
         discard;
     
     return Out;
