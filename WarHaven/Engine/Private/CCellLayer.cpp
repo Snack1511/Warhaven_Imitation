@@ -18,6 +18,12 @@ CCellLayer::~CCellLayer()
 	for (auto& Node : m_Nodes)
 		SAFE_DELETE(Node);
 
+#ifdef _DEBUG
+	_ulong dwCnt = m_pIB.Reset();
+	dwCnt = m_pVB.Reset();
+	Safe_Release(m_pVBInstance);
+#endif // _DEBUG
+
 }
 
 CCellLayer* CCellLayer::Create(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _float fHeightMin, _float fHeightMax, _int BaseCellAttribute)
@@ -86,6 +92,11 @@ CCellLayer* CCellLayer::Create(wstring strFilePath)
 		SAFE_DELETE(pInstance);
 	}
 	if (FAILED(pInstance->SetUp_Instancing()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Instancing : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+	if (FAILED(pInstance->SetUp_Index()))
 	{
 		Call_MsgBox(L"Failed to SetUp_Instancing : CCellLayer");
 		SAFE_DELETE(pInstance);
@@ -615,7 +626,7 @@ HRESULT CCellLayer::SetUp_Visibility()
 
 HRESULT CCellLayer::SetUp_Vertex()
 {
-	/*m_iStride = sizeof(VTXDEFAULT);
+	m_iStride = sizeof(VTXDEFAULT);
 	m_iNumVertices = 1;
 	m_iNumVertexBuffers = 2;
 
@@ -637,13 +648,13 @@ HRESULT CCellLayer::SetUp_Vertex()
 	if (FAILED(Create_VertexBuffer()))
 		return E_FAIL;
 
-	Safe_Delete_Array(pVertices);*/
+	Safe_Delete_Array(pVertices);
 	return S_OK;
 }
 
 HRESULT CCellLayer::SetUp_Instancing()
 {
-	/*m_iInstanceStride = sizeof(VTXTRIINSTANCE);
+	m_iInstanceStride = sizeof(VTXTRIINSTANCE);
 	m_iNumInstance = m_iXNums* m_iZNums * 2;
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
@@ -667,26 +678,59 @@ HRESULT CCellLayer::SetUp_Instancing()
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = pInstance;
 
-	if (FAILED(m_pDevice->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pVBInstance)))
+	if (FAILED(DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pVBInstance)))
 		return E_FAIL;
 
-	Safe_Delete_Array(pInstance);*/
+	Safe_Delete_Array(pInstance);
 
 	return S_OK;
 }
 
 HRESULT CCellLayer::SetUp_Index()
 {
-	//m_iIndicesStride = = sizeof(_ushort);
+	m_iIndicesStride = sizeof(_ushort);
+	m_iNumPrimitive = m_iNumInstance;
+	m_iNumIndices = m_iNumInstance;
+	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
+	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_BufferDesc.ByteWidth = m_iIndicesStride * m_iNumPrimitive;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	m_BufferDesc.StructureByteStride = 0;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+
+	_ushort* pIndices = new _ushort[m_iNumPrimitive];
+	ZeroMemory(pIndices, sizeof(_ushort) * m_iNumPrimitive);
+
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pIndices;
+
+	if (FAILED(Create_IndexBuffer()))
+		return E_FAIL;
+
+	Safe_Delete_Array(pIndices);
 	return S_OK;
 }
 
 HRESULT CCellLayer::SetUp_Shader()
 {
-	m_pDebugShader = CShader::Create(TEXT("../Bin/Shaderfiles/Shader_Debugging.hlsl"), VTXDEFAULT_DECLARATION::Element, VTXDEFAULT_DECLARATION::iNumElements);
+	m_pDebugShader = CShader::Create(TEXT("../Bin/Shaderfiles/Shader_Debugging.hlsl"), VTXDEFAULT_TRI_INSTANCE_DECLARATION::Element, VTXDEFAULT_TRI_INSTANCE_DECLARATION::iNumElements);
 
 	CRender_Manager::Get_Instance()->m_DebuggingShaders_OutCreate.push_back(m_pDebugShader);
 	return S_OK;
+}
+
+HRESULT CCellLayer::Create_VertexBuffer()
+{
+	return (DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, m_pVB.GetAddressOf()));
+}
+
+HRESULT CCellLayer::Create_IndexBuffer()
+{
+	return (DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, m_pIB.GetAddressOf()));
 }
 
 void CCellLayer::DebugTick()

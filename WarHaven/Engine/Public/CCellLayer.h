@@ -39,12 +39,33 @@ public:
 	HRESULT SetUp_Instancing();
 	HRESULT SetUp_Index();
 	HRESULT SetUp_Shader();
+
+	HRESULT Create_VertexBuffer();
+	HRESULT Create_IndexBuffer();
+
 	void DebugTick();
 	void DebugRendering();
 	_float4 Get_Color(CCell* pCell);
 private:
 	CShader* m_pDebugShader = nullptr;
-
+private:
+	D3D11_BUFFER_DESC m_BufferDesc;
+	D3D11_SUBRESOURCE_DATA m_SubResourceData;
+private:
+	ComPtr<ID3D11Buffer> m_pVB = nullptr;
+	ComPtr<ID3D11Buffer> m_pIB = nullptr;
+private:
+	_uint						m_iStride = 0;
+	_uint						m_iNumVertices = 0;
+	_uint						m_iNumVertexBuffers = 0;
+	ID3D11Buffer*				m_pVBInstance = nullptr;
+	_uint						m_iInstanceStride = 0;
+	_uint						m_iNumInstance = 0;
+	_uint						m_iIndicesStride = 0;
+	_uint						m_iNumPrimitive = 0;
+	_uint						m_iNumIndices = 0;
+	_uint						m_eIndexFormat = 0;
+	_uint						m_eToplogy = 0;
 #endif
 public:
 	_bool Check_BlockedVisibility(_float2 v2LinkStart, _float2 v2LinkEnd, _float2 v2CheckStart, _float2 v2CheckEnd);
