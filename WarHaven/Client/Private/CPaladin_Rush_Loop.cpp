@@ -109,7 +109,7 @@ void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	m_RushEffects = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"ShieldCharge",
 		pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
 
-	pOwner->Create_Light(m_RushEffects.front(), _float4(0.f, 0.f, 0.f), 3.f, 0.f, 0.07f, 0.f, 0.07f, RGB(80, 80, 80), true);
+	pOwner->Create_Light(m_RushEffects.front(), _float4(0.f, 0.f, 0.f), 3.f, 0.f, 0.05f, 0.f, 0.05f, RGB(100, 100, 100), true);
 
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -141,7 +141,7 @@ void CPaladin_Rush_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	for (auto& elem : m_RushEffects)
 	{
-		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.05f);
 	}
 	m_RushEffects.clear();
 	

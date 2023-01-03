@@ -165,6 +165,8 @@ void CCure_Effect::OnEnable()
 
 	m_Smoke = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cure_Smoke", m_pOther, ZERO_VECTOR);
 	m_pParticle = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cure_Particle_0"), m_pOwner, ZERO_VECTOR);
+
+	static_cast<CUnit*>(m_pOwner)->Create_Light(m_pParticle, ZERO_VECTOR, 3.f, 0.f, 0.1f, 10.f, 0.1f, RGB(245,245,200), false);
 }
 
 void CCure_Effect::OnDisable()

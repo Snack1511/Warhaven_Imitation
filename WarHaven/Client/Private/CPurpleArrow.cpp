@@ -143,11 +143,9 @@ void CPurpleArrow::My_Tick()
 
 	if (m_bPoison)
 	{
-		if (m_Test.empty())
-		{
-			m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest",
-				this, m_pTransform->Get_World(WORLD_POS)); //OnEnable 에서 생성시 마지막 위치에 이펙트가 보임
-		}
+		m_Test.clear();
+		m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"PoisonTest",
+			this, m_pTransform->Get_World(WORLD_POS)); //OnEnable 에서 생성시 마지막 위치에 이펙트가 보임
 		m_bPoison = false;
 	}
 	
@@ -163,7 +161,7 @@ void CPurpleArrow::My_Tick()
 			if (m_iTickCnt == m_iMaxTickCnt)
 			{
 				CState::HIT_INFO tHitInfo;
-				ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
+				//ZeroMemory(&tHitInfo, sizeof(CState::HIT_INFO));
 
 				tHitInfo.eHitType = CState::HIT_TYPE::eUP;
 				tHitInfo.fKnockBackPower = 3.f;
@@ -238,10 +236,4 @@ void CPurpleArrow::Clear_Addiction()
 		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
 	}
 	m_Addiction.clear();
-
-	for (auto& elem : m_Test)
-	{
-		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
-	}
-	m_Test.clear();
 }

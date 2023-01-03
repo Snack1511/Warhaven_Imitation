@@ -950,7 +950,7 @@ void CUnit::Check_NearObject_IsInFrustum()
 			continue;
 
 
-		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 50.f))
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
 			continue;
 
 		_float fMyLength = (elem->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS)).Length();
@@ -1212,6 +1212,7 @@ void CUnit::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _f
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.eFadeType = tagLightDesc::FADEIN;
 
 	LightDesc.pOwner = pOwner;
 	LightDesc.vOffset = vOffset;
@@ -1226,6 +1227,8 @@ void CUnit::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _f
 	LightDesc.vTargetAmbient = _float4(0.2f, 0.2f, 0.2f);
 	LightDesc.vTargetSpecular = _float4(1.f, 1.f, 1.f);
 
+	LightDesc.eInEasingType = tagLightDesc::EAS_Linear;
+	LightDesc.eOutEasingType = tagLightDesc::EAS_Linear;
 	LightDesc.bLoop = bLoop;
 
 	GAMEINSTANCE->Add_Light(LightDesc);

@@ -195,7 +195,7 @@ void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 	__super::Set_ShaderResource(pShader, pConstantName);
 }
 
-void CRectEffects::Set_AllFadeOut()
+void CRectEffects::Set_AllFadeOut(_float fFadeTime)
 {
 	m_bLoopControl = false;
 
@@ -203,7 +203,7 @@ void CRectEffects::Set_AllFadeOut()
 	{
 		//m_pDatas[i].InstancingData.fFadeOutStartTime = 0.f;
 		m_pDatas[i].InstancingData.eCurFadeType = INSTANCING_DATA::FADEOUT;
-		m_pDatas[i].InstancingData.fFadeOutTime = 0.2f;
+		m_pDatas[i].InstancingData.fFadeOutTime = fFadeTime;
 
 	}
 }
