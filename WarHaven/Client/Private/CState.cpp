@@ -72,7 +72,6 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			{
 				pOwner->Create_Light(vHitPos, 2.5f, 0.f, 0.f, 0.f, 0.05f, RGB(255, 255, 255));
 
-
 				CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BigSparkParticle", pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"SmallSparkParticle_0"), pOwner->Get_HitMatrix());
 				CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"HitSmokeParticle_0"), pOwner->Get_HitMatrix());

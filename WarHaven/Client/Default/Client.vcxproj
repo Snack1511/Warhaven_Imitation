@@ -194,6 +194,7 @@
     <ClInclude Include="..\Public\CAnimWeapon_Crow.h" />
     <ClInclude Include="..\public\CAnimWeapon.h" />
     <ClInclude Include="..\Public\CBounce_Lancer.h" />
+    <ClInclude Include="..\Public\CCure_Effect.h" />
     <ClInclude Include="..\Public\CCrowBoom.h" />
     <ClInclude Include="..\Public\CIdle_Lancer.h" />
     <ClInclude Include="..\Public\CJump_Lancer.h" />
@@ -1115,6 +1116,7 @@
     <ClCompile Include="..\Private\CAnimWeapon_Crow.cpp" />
     <ClCompile Include="..\private\CAnimWeapon.cpp" />
     <ClCompile Include="..\Private\CBounce_Lancer.cpp" />
+    <ClCompile Include="..\Private\CCure_Effect.cpp" />
     <ClCompile Include="..\Private\CCrowBoom.cpp" />
     <ClCompile Include="..\Private\CIdle_Lancer.cpp" />
     <ClCompile Include="..\Private\CJump_Lancer.cpp" />

@@ -36,7 +36,7 @@ public:
 
 public:
 	void		Set_LoopControlfalse() { m_bLoopControl = false; }
-	void		Set_AllFadeOut();
+	void		Set_AllFadeOut(_float fFadeTime = 0.2f);
 
 
 public:

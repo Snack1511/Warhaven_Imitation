@@ -1241,6 +1241,7 @@ void CUnit::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _f
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.eFadeType = tagLightDesc::FADEIN;
 
 	LightDesc.pOwner = pOwner;
 	LightDesc.vOffset = vOffset;
@@ -1255,6 +1256,8 @@ void CUnit::Create_Light(CGameObject* pOwner, _float4 vOffset, _float fRange, _f
 	LightDesc.vTargetAmbient = _float4(0.2f, 0.2f, 0.2f);
 	LightDesc.vTargetSpecular = _float4(1.f, 1.f, 1.f);
 
+	LightDesc.eInEasingType = tagLightDesc::EAS_Linear;
+	LightDesc.eOutEasingType = tagLightDesc::EAS_Linear;
 	LightDesc.bLoop = bLoop;
 
 	GAMEINSTANCE->Add_Light(LightDesc);

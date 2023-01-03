@@ -195,7 +195,7 @@ void CRectEffects::Set_ShaderResource(CShader* pShader, const char* pConstantNam
 	__super::Set_ShaderResource(pShader, pConstantName);
 }
 
-void CRectEffects::Set_AllFadeOut()
+void CRectEffects::Set_AllFadeOut(_float fFadeTime)
 {
 	m_bLoopControl = false;
 
@@ -203,7 +203,7 @@ void CRectEffects::Set_AllFadeOut()
 	{
 		//m_pDatas[i].InstancingData.fFadeOutStartTime = 0.f;
 		m_pDatas[i].InstancingData.eCurFadeType = INSTANCING_DATA::FADEOUT;
-		m_pDatas[i].InstancingData.fFadeOutTime = 0.2f;
+		m_pDatas[i].InstancingData.fFadeOutTime = fFadeTime;
 
 	}
 }
@@ -1012,14 +1012,19 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 	m_pDatas[iIndex].InstancingData.vDir = vStartDir;
 	m_pDatas[iIndex].InstancingData.vRight = vStartRight;
 
-
-	if ((CURVE_CHARGE == m_eCurveType) && m_pFollowTarget)
+	if ((CURVE_CHARGE == m_eCurveType))
 	{
-		_float4 vTargetPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
-
-		m_pDatas[iIndex].RectInstance.vTranslation = vTargetPos + vStartPos;
+		if (m_pRefBone)
+		{
+			_float4 vTargetPos = m_pRefBone->Get_BoneMatrix().XMLoad().r[3];
+			m_pDatas[iIndex].RectInstance.vTranslation = vTargetPos + vStartPos;
+		}
+		else if (m_pFollowTarget)
+		{
+			_float4 vTargetPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+			m_pDatas[iIndex].RectInstance.vTranslation = vTargetPos + vStartPos;
+		}
 	}
-
 
 	//회전시켜놓기
 
@@ -1273,7 +1278,7 @@ void CRectEffects::Bone_Controll()
 	{
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
-	else if(CANNON_BONE == m_eCurveType)
+	else if((CANNON_BONE == m_eCurveType) || CURVE_CHARGE == m_eCurveType)
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	else
 		Stick_RefBone();
@@ -1283,6 +1288,8 @@ void CRectEffects::Bone_Controll()
 void CRectEffects::Stick_RefBone()
 {
 	if (!m_pRefBone)
+		return;
+	if (CURVE_CHARGE == m_eCurveType)
 		return;
 
 	_float4 vPos = m_vOffsetPos;
@@ -1430,7 +1437,15 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 
 		break;
 	case Client::CURVE_CHARGE:
-		if (m_pFollowTarget)
+		if (m_pRefBone)
+		{
+			_float4x4 MatBone = m_pRefBone->Get_BoneMatrix();
+			_float4 vBone = MatBone.XMLoad().r[3];
+
+			_float4 vTarget = vBone - vPos;
+			m_pDatas[iIdx].InstancingData.vDir = vTarget;
+		}
+		else if (m_pFollowTarget)
 		{
 			//vPos = CEasing_Utillity::Linear(vPos, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS), m_pDatas[iIdx].InstancingData.fMovingAcc,
 			//	m_pDatas[iIdx].InstancingData.fFadeInTime + m_pDatas[iIdx].InstancingData.fFadeOutStartTime + m_pDatas[iIdx].InstancingData.fFadeOutTime);

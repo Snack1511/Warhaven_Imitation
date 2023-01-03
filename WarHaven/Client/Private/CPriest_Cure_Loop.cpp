@@ -6,7 +6,7 @@
 
 #include "CSword_Effect.h"
 #include "CColorController.h"
-#include "CUnit_Archer.h"
+#include "CUnit_Priest.h"
 
 #include "HIerarchyNode.h"
 #include "CAnimWeapon.h"
@@ -204,6 +204,8 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 	if (m_eStateType == ePrevStateType)
 		m_fInterPolationTime = 0.f;
 
+	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
+
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
@@ -212,6 +214,8 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;

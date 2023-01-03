@@ -17,6 +17,8 @@
 #include "CAnimWeapon.h"
 #include "CProjectile.h"
 
+#include "CCure_Effect.h"
+
 CUnit_Priest::CUnit_Priest()
 {
 }
@@ -309,10 +311,30 @@ void CUnit_Priest::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		
 }
 
+void CUnit_Priest::SetUp_CureEffect()
+{
+	if(!m_pCureEffect)
+		m_pCureEffect = CCure_Effect::Create(this);
+
+	CREATE_GAMEOBJECT(m_pCureEffect, GROUP_EFFECT);
+
+	DISABLE_GAMEOBJECT(m_pCureEffect);
+}
+
+void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
+{
+	if (!m_pCureEffect)
+		return;
+
+	if (bOnOff)
+		ENABLE_GAMEOBJECT(m_pCureEffect);
+	else
+		DISABLE_GAMEOBJECT(m_pCureEffect);
+}
+
 void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
-	__super::Effect_Hit(pOtherUnit, vHitPos);
-
+	
 	/*_float fUnitDist = pUnit->Get_Transform()->Get_World(WORLD_POS)
 	_float fHitDist = m_pTransform->Get_World(WORLD_POS)*/
 
@@ -326,6 +348,7 @@ void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	{
 
 	case STATE_ATTACK_STING_PRIEST:
+		__super::Effect_Hit(pOtherUnit, vHitPos);
 		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"StingBlood", vHitPos, matWorld);
 		break;
 
@@ -333,6 +356,7 @@ void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 		break;
 
 	}
+
 }
 
 HRESULT CUnit_Priest::Initialize_Prototype()
@@ -470,6 +494,9 @@ HRESULT CUnit_Priest::Start()
 		"0B_R_WP1"
 	);
 	
+	SetUp_CureEffect();
+		
+
 	return S_OK;
 }
 

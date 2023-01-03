@@ -3466,6 +3466,9 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\03. Land">
       <UniqueIdentifier>{48f0cf01-6189-4e18-b1f1-6b782ed98509}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\CureEffect">
+      <UniqueIdentifier>{0c0b2568-ad56-4136-9aa2-96ed764c1fc1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon">
       <UniqueIdentifier>{07b11a8d-ecbe-411b-a965-e4fcbd8da96d}</UniqueIdentifier>
     </Filter>
@@ -6228,6 +6231,9 @@
     <ClInclude Include="..\Public\CBounce_Lancer.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CCure_Effect.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\CureEffect</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CAnimWeapon_Crow.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow</Filter>
     </ClInclude>
@@ -8967,6 +8973,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_Lancer.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCure_Effect.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\08. Priest\04. Attack\03. Cure\CureEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CAnimWeapon_Crow.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow</Filter>
