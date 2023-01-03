@@ -170,6 +170,8 @@ STATE_TYPE CPriest_Catch_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			return STATE_RUN_PRIEST;
 		else
 			return STATE_IDLE_PRIEST;
+
+		pOwner->On_Use(CUnit::SKILL3);
 	}
 
 	if (pOwner->Get_CatchProjectileObject())

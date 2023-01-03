@@ -20,6 +20,8 @@
 #include "CQandaCrow.h"
 #include "CQandaMeteor.h"
 
+#include "CAnimWeapon_Crow.h"
+
 #include "CCollider_Sphere.h"
 #include "CColorController.h"
 
@@ -309,6 +311,24 @@ void CUnit_Qanda::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 }
 
+void CUnit_Qanda::Set_CrowAnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed)
+{
+	m_pAnimCrow->Set_AnimIndex(iAnimIndex, fInterpolateTime, fAnimSpeed);
+}
+
+void CUnit_Qanda::On_ChangePhase(_uint eCurPhase)
+{
+	m_pAnimCrow->On_ChangePhase(CAnimWeapon_Crow::ePhyxState(eCurPhase));
+}
+
+void CUnit_Qanda::Shoot_AnimCrow()
+{
+	_float4 vShootPos = m_pAnimCrow->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vShootDir = Get_FollowCamLook();
+
+	m_pAnimCrow->Shoot_Crow(vShootPos, vShootDir);
+}
+
 void CUnit_Qanda::Enable_Crow(_bool bEnable)
 {
 	if (bEnable)
@@ -327,14 +347,6 @@ void CUnit_Qanda::Enable_Trail(_bool bEnable)
 	else
 		DISABLE_GAMEOBJECT(m_pUI_Trail);
 }
-void CUnit_Qanda::Enable_AnimWeapon(_bool bEnable)
-{
-	if (bEnable)
-		ENABLE_GAMEOBJECT(m_pAnimWeapon);
-	else
-		DISABLE_GAMEOBJECT(m_pAnimWeapon);
-}
-
 
 void CUnit_Qanda::ReMap_Trail(_float4 vTargetPos)
 {
@@ -370,31 +382,31 @@ void CUnit_Qanda::Set_ColorController(_uint iMeshPartType)
 	GET_COMPONENT_FROM(m_pCrow, CColorController)->Add_ColorControll(tColorDesc);
 }
 
-void CUnit_Qanda::Create_Crow()
-{
-	if (m_pCrow) 
-		DISABLE_GAMEOBJECT(m_pCrow);
-
-	CGameObject* pGameObject = nullptr;
-
-	if (m_mapProjectilePool[HASHCODE(CQandaCrow)].empty())
-	{
-		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaCrow));
-		//없으면 새로 집어넣음
-		pGameObject->Initialize();
-		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
-		static_cast<CProjectile*>(pGameObject)->Reset(this);
-	}
-	else
-	{
-		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaCrow)].front();
-		pEffect->Reset(this);
-		m_mapProjectilePool[HASHCODE(CQandaCrow)].pop_front();
-		pGameObject = pEffect;
-	}
-
-	m_pCrow = static_cast<CProjectile*>(pGameObject);
-}
+//void CUnit_Qanda::Create_Crow()
+//{
+//	if (m_pCrow) 
+//		DISABLE_GAMEOBJECT(m_pCrow);
+//
+//	CGameObject* pGameObject = nullptr;
+//
+//	if (m_mapProjectilePool[HASHCODE(CQandaCrow)].empty())
+//	{
+//		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaCrow));
+//		//없으면 새로 집어넣음
+//		pGameObject->Initialize();
+//		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+//		static_cast<CProjectile*>(pGameObject)->Reset(this);
+//	}
+//	else
+//	{
+//		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaCrow)].front();
+//		pEffect->Reset(this);
+//		m_mapProjectilePool[HASHCODE(CQandaCrow)].pop_front();
+//		pGameObject = pEffect;
+//	}
+//
+//	m_pCrow = static_cast<CProjectile*>(pGameObject);
+//}
 
 void CUnit_Qanda::Create_Meteor()
 {
@@ -501,32 +513,36 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 
 	m_tUnitStatus.eClass = QANDA;
 
-	_float3 vRadian = _float3(90.f, 90.f, 270.f);
-
-	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
-		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_Head", vRadian.x, vRadian.y, vRadian.z);
+	_float3 vRadian = _float3(90.f, 180.f, 180.f);
 
 
 
-	vRadian = _float3(90.f, 180.f, 180.f);
+	//m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Cane/Cane_60.fbx",
+	//	L"", this, "0B_R_WP1", vRadian.x, vRadian.y, vRadian.z);
 
-	m_pCane = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Cane/Cane_60.fbx",
-		L"", this, "0B_R_WP1", vRadian.x, vRadian.y, vRadian.z);
+	//vRadian = _float3(90.f, 90.f, 270.f);
+	//
+
+	//m_pAnimCrow = CAnimWeapon_Crow::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
+	//	L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_Head", vRadian.x, vRadian.y, vRadian.z);
+	//	
+	//	
 
 
-	if (!m_pAnimWeapon)
-		return E_FAIL;
 
-	if (!m_pCane)
-		return E_FAIL;
+	//if (!m_pAnimWeapon)
+	//	return E_FAIL;
 
-	m_pAnimWeapon->Initialize();
-	m_pCane->Initialize();
+	//if (!m_pAnimCrow)
+	//	return E_FAIL;
 
-	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-	m_pAnimWeapon->Use_OwnerBoneOffset()._41 = -0.3f;
-	m_pAnimWeapon->Use_OwnerBoneOffset()._42 = 0.1f;
-	m_pAnimWeapon->Use_OwnerBoneOffset()._43 = 1.f;
+	//m_pAnimWeapon->Initialize();
+	//m_pAnimCrow->Initialize();
+
+	//_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	//m_pAnimCrow->Use_OwnerBoneOffset()._41 = -0.3f;
+	//m_pAnimCrow->Use_OwnerBoneOffset()._42 = 0.1f;
+	//m_pAnimCrow->Use_OwnerBoneOffset()._43 = 1.f;
 
 	m_tUnitStatus.fRunSpeed *= 0.95f;
 	
@@ -544,24 +560,24 @@ HRESULT CUnit_Qanda::Initialize()
 	//Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
 
 	/* UI_TRAIL */
-	if (m_pOwnerPlayer->IsMainPlayer())
-	{
-		//CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
-		//	L"../bin/resources/textures/effects/warhaven/texture/T_CrowUI_01_FX.dds",
-		//	L"../bin/resources/textures/White.png"
-		//);
+	//if (m_pOwnerPlayer->IsMainPlayer())
+	//{
+	//	CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
+	//		L"../bin/resources/textures/effects/warhaven/texture/T_CrowUI_01_FX.dds",
+	//		L"../bin/resources/textures/White.png"
+	//	);
 
-		//if (!pUI_Trail)
-		//	return E_FAIL;
+	//	if (!pUI_Trail)
+	//		return E_FAIL;
 
-		//m_pUI_Trail = pUI_Trail;
-	}
+	//	m_pUI_Trail = pUI_Trail;
+	//}
 
-	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
-	DISABLE_GAMEOBJECT(m_pAnimWeapon);
-	
-	CREATE_GAMEOBJECT(m_pCane, GROUP_PLAYER);
-	DISABLE_GAMEOBJECT(m_pCane);
+	//CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+	//DISABLE_GAMEOBJECT(m_pAnimWeapon);
+	//
+	//CREATE_GAMEOBJECT(m_pAnimCrow, GROUP_PLAYER);
+	//DISABLE_GAMEOBJECT(m_pAnimCrow);
 
 	return S_OK;
 }
@@ -570,14 +586,14 @@ HRESULT CUnit_Qanda::Start()
 {
 	__super::Start();
 
-	ENABLE_GAMEOBJECT(m_pAnimWeapon);
-	ENABLE_GAMEOBJECT(m_pCane);
+	//ENABLE_GAMEOBJECT(m_pAnimWeapon);
+	//ENABLE_GAMEOBJECT(m_pAnimCrow);
 
-	//if (m_pUI_Trail)
-	//{
-	//	CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
-	//	DISABLE_GAMEOBJECT(m_pUI_Trail);
-	//}
+	if (m_pUI_Trail)
+	{
+		CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
+	}
 	
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);

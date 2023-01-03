@@ -70,9 +70,6 @@ STATE_TYPE CState_Combat_SkillQ_Paladin_Rush_Begin::Tick(CUnit* pOwner, CAnimato
 	_float4 vLook = pUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
 	pMyTransform->Set_LerpLook(vLook, m_fMyMaxLerp);
 
-	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-	pMyPhysicsCom->Set_Accel(m_fMyAccel);
-
 	return __super::Tick(pOwner, pAnimator);
 }
 

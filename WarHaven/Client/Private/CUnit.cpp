@@ -942,13 +942,20 @@ void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 		{
 			// 팀을 위해 사용할 것인가
 			if (m_bForUseTeam)
+			{
+
 				// 만약 발견한 플레이어가 다른 팀이라면
 				if (pPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
 					continue;
+
+			}
 			else
+			{
 				// 만약 발견한 플레이어가 같은 팀이라면 
 				if (pPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
 					continue;
+
+			}
 
 		}
 
@@ -1385,15 +1392,15 @@ void CUnit::Set_AnimWeaponFrame(_uint iChangeFrame)
 	GET_COMPONENT_FROM(m_pAnimWeapon, CAnimator)->Set_CurFrame(iChangeFrame);
 }
 
-_float4x4& CUnit::Use_OwnerBoneOffset()
-{
-	_float4x4 vMatrix = XMMatrixIdentity();
-
-	if (!m_pAnimWeapon)
-		return vMatrix;
-
-	return m_pAnimWeapon->Use_OwnerBoneOffset();
-}
+//_float4x4& CUnit::Use_OwnerBoneOffset()
+//{
+//	_float4x4 vMatrix = XMMatrixIdentity();
+//
+//	if (!m_pAnimWeapon)
+//		return vMatrix;
+//
+//	return m_pAnimWeapon->Use_OwnerBoneOffset();
+//}
 
 
 

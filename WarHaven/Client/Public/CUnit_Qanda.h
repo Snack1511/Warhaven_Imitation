@@ -6,6 +6,7 @@ BEGIN(Client)
 class CAnimWeapon;
 class CProjectile;
 class CUI_Trail;
+class CAnimWeapon_Crow;
 
 class CUnit_Qanda
 	: public CUnit
@@ -33,9 +34,14 @@ protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
 public:
+	void Set_CrowAnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
+	void On_ChangePhase(_uint eCurPhase);
+	void Shoot_AnimCrow();
+
+public:
 	void			Enable_Crow(_bool bEnable);
 	void			Enable_Trail(_bool bEnable);
-	void			Enable_AnimWeapon(_bool bEnable);
+	//void			Enable_AnimWeapon(_bool bEnable);
 	void			ReMap_Trail(_float4 vTargetPos);
 public:
 	void			Set_ColorController(_uint iMeshPartType);
@@ -43,7 +49,7 @@ public:
 	_float4x4& Get_CoreMat() { return m_CoreMat; }
 
 public:
-	void			Create_Crow();
+	//void			Create_Crow();
 	void			Create_Meteor();
 	void			Change_CrowPhase(_uint iPhase);
 	void			Shoot_Crow();
@@ -63,6 +69,8 @@ public:
 	virtual void My_LateTick() override;
 
 private:
+	CAnimWeapon_Crow* m_pAnimCrow = nullptr;
+
 	map<_hashcode, list<CProjectile*>>	m_mapProjectilePool;
 	CProjectile* m_pCrow = nullptr;
 	list<CProjectile*> m_pMeteor = { nullptr };

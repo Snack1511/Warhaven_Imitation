@@ -64,10 +64,6 @@ HRESULT CAnimWeapon::Initialize_Prototype()
 
 HRESULT CAnimWeapon::Initialize()
 {
-	XMStoreFloat4x4(&m_OwnerBoneOffsetMatrix, XMMatrixIdentity());
-
-	//__super::Initialize();
-
     return S_OK;
 }
 
@@ -127,7 +123,7 @@ void CAnimWeapon::Late_Tick()
 {
 	_float4x4		matBone = m_pOwnerBone->Get_BoneMatrix();
 
-	m_pTransform->Get_Transform().matMyWorld = matBone * m_OwnerBoneOffsetMatrix;
+	m_pTransform->Get_Transform().matMyWorld = matBone;
 
 	m_pTransform->Make_WorldMatrix();
 }

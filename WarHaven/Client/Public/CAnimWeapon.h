@@ -34,9 +34,6 @@ public:
 	void	Set_AnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 
 public:
-	_float4x4& Use_OwnerBoneOffset() { return m_OwnerBoneOffsetMatrix; }
-
-public:
 	virtual HRESULT	Initialize_Prototype();
 	virtual HRESULT	Initialize();
 	virtual HRESULT	Start();
@@ -46,11 +43,6 @@ private:
 	CAnimator* m_pAnimator = nullptr;
 	CHierarchyNode* m_pOwnerBone = nullptr;
 	eAnimState	m_eCurState = eIDLE;
-
-private:
-	_float4x4	m_OwnerBoneOffsetMatrix;
-
-	_float		m_fTimeAcc = 0.f;
 
 private:
 	HRESULT		SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFilePath, string strBoneName, 

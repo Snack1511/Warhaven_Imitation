@@ -276,7 +276,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 	m_iChangeHeroAnimIndex[PALADIN] = 41;
 	m_iChangeHeroAnimIndex[ARCHER] = 53;
 	m_iChangeHeroAnimIndex[ENGINEER] = 62;
-	m_iChangeHeroAnimIndex[PRIEST] = 62;
+	m_iChangeHeroAnimIndex[PRIEST] = 49;
 }
 
 void CPlayer::Player_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)

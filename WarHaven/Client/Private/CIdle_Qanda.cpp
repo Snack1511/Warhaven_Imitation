@@ -13,6 +13,7 @@
 #include "CColorController.h"
 
 #include "UsefulHeaders.h"
+#include "CUnit_Qanda.h"
 
 
 CIdle_Qanda::CIdle_Qanda()
@@ -74,7 +75,7 @@ HRESULT CIdle_Qanda::Initialize()
 void CIdle_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     /* OwnerÀÇ Animator Set Idle·Î */
-    pOwner->Set_AnimWeaponIndex(10, m_fInterPolationTime, m_fAnimSpeed);
+    //static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(10, m_fInterPolationTime, m_fAnimSpeed);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

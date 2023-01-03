@@ -162,7 +162,7 @@ HRESULT CQanda_Attack_Cancel::Initialize()
 void CQanda_Attack_Cancel::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_DEFAULT);
-	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKCANCEL, m_fInterPolationTime, m_fAnimSpeed);
+	static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(10, m_fInterPolationTime, m_fAnimSpeed);
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed;

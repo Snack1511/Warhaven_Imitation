@@ -168,6 +168,8 @@ HRESULT CPriest_WindAttack::Initialize()
 
 void CPriest_WindAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->On_Use(CUnit::SKILL2);
+
 	CColorController::COLORDESC tColorDesc;
 	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
@@ -221,7 +223,9 @@ void CPriest_WindAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_WindAttack::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-   
+	/*if (!pOwner->Can_Use(CUnit::SKILL2))
+		return STATE_END;*/
+
     if (KEY(E, TAP))
         return m_eStateType;
 

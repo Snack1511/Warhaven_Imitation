@@ -377,7 +377,7 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 0.6f;
+	tDesc.fHeight = 1.f;
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.2f;
 	// Ä® ºÙÀÏ »À

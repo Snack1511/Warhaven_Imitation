@@ -90,7 +90,7 @@ void CQanda_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	//Prevent_Oneframe(pOwner);
 	//Prevent_Oneframe(pOwner);
-	pOwner->Set_AnimWeaponIndex(16, 0.f, m_fAnimSpeed);
+	static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(16, 0.f, m_fAnimSpeed);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
 	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Qanda*>(pOwner)->Get_CoreMat());
 
