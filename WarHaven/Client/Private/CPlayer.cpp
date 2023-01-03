@@ -69,6 +69,9 @@
 
 #include "CUI_Trail.h"
 
+#include "CUI_HUD.h"
+#include "CUI_Skill.h"
+
 #pragma region AI 추가용
 #include "CAIController.h"
 #include "CAIPersonality.h"
@@ -373,9 +376,6 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 			CUser::Get_Instance()->Set_HeroPort(1);
 		}
 	}
-
-
-
 
 	return S_OK;
 }
