@@ -172,6 +172,8 @@ public:
 
 
 public:
+
+	CAnimWeapon* Get_AnimWeapon() { return m_pAnimWeapon; }
 	class CPath* Get_CurPath();
 
 	UNIT_STATUS& Get_Status() { return m_tUnitStatus; }
@@ -230,6 +232,9 @@ public:
 	//기준 : 같은 유닛이어도 각기 다른 설정이 필요한 건 다 여기서
 	//ex) 1. 모델 파츠별 조명 여부, 2. 충돌체 설정, 3. 시작 상태
 	HRESULT	MakeUp_Unit(const UNIT_DESC& tUnitDesc);
+
+public:
+	void		On_ChangeClass();
 
 
 public:

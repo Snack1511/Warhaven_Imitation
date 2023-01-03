@@ -431,7 +431,7 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 	m_tUnitStatus.fWalkSpeed *= 0.9f;
 	m_tUnitStatus.fRunBeginSpeed *= 0.9f;
 	m_tUnitStatus.fJumpPower *= 0.95f;
-	m_fMaxDistance = 5.f;
+	m_fMaxDistance = 10.f;
 
 	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0004.fbx",
 		L"", this, "0B_R_WP1", 90.f, 180.f, 180.f);

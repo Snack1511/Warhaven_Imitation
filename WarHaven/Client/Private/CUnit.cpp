@@ -595,6 +595,15 @@ HRESULT CUnit::MakeUp_Unit(const UNIT_DESC& tUnitDesc)
 	return S_OK;
 }
 
+void CUnit::On_ChangeClass()
+{
+	if (m_pCurState)
+	{
+		m_pCurState->Exit(this, m_pAnimator);
+		SAFE_DELETE(m_pCurState);
+	}
+}
+
 HRESULT CUnit::Initialize_Prototype()
 {
 	CShader* pShader = CShader::Create(CP_BEFORE_RENDERER, SHADER_VTXANIMMODEL,
@@ -926,7 +935,6 @@ void CUnit::SetUp_HitStates(UNIT_TYPE eUnitType)
 
 void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 {
-
 	_float fPreLength = m_fMaxDistance + 1.f;
 
 	// 모든 플레이어 가져오기.
@@ -949,22 +957,20 @@ void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 			// 팀을 위해 사용할 것인가
 			if (m_bForUseTeam)
 			{
-
 				// 만약 발견한 플레이어가 다른 팀이라면
-				if (pPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
 					continue;
 
 			}
 			else
 			{
 				// 만약 발견한 플레이어가 같은 팀이라면 
-				if (pPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
 					continue;
 
 			}
 
 		}
-
 
 		CUnit* pUnit = pPlayer->Get_CurrentUnit();
 

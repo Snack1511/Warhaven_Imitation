@@ -10,7 +10,12 @@
 #include "Model.h"
 
 #include "CUser.h"
+#include "Renderer.h"
 #include "CColorController.h"
+
+#include "CEffects_Factory.h"
+#include "CRectEffects.h"
+#include "CAnimWeapon.h"
 
 CQanda_ShadowStep::CQanda_ShadowStep()
 {
@@ -96,15 +101,13 @@ HRESULT CQanda_ShadowStep::Initialize()
 
 void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-    CModel* pModel = GET_COMPONENT_FROM(pOwner, CModel);
-
-    for(_int i = 0; i < MODEL_PART_WEAPON + 1; ++i)
-        pModel->Enable_ModelParts(i, false);
-
-    //DISABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CModel));
+   
+    DISABLE_COMPONENT(GET_COMPONENT_FROM(pOwner->Get_AnimWeapon(), CRenderer));
+    DISABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CRenderer));
     
     pOwner->Enable_HitBoxColliders(false);
 
+    m_EffectsList = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Dodge", pOwner, ZERO_VECTOR);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
@@ -175,14 +178,15 @@ STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_ShadowStep::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    CModel* pModel = GET_COMPONENT_FROM(pOwner, CModel);
+   pOwner->Enable_HitBoxColliders(true);
+   ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CRenderer));
+   ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner->Get_AnimWeapon(), CRenderer));
 
-    for (_int i = 0; i < MODEL_PART_WEAPON + 1; ++i)
-        pModel->Enable_ModelParts(i, true);
-    
-    pOwner->Enable_HitBoxColliders(true);
-
-   //ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CModel));
+   for (auto& elem : m_EffectsList)
+   {
+       static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+   }
+   
 }
 
 STATE_TYPE CQanda_ShadowStep::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
