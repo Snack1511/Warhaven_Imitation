@@ -113,6 +113,16 @@ void CUI_Wrapper::OnDisable()
 		DISABLE_GAMEOBJECT(m_pUI);
 }
 
+void CUI_Wrapper::Fade_In(CUI_Object* m_pUI)
+{
+	GET_COMPONENT_FROM(m_pUI, CFader)->Re_FadeIn();
+}
+
+void CUI_Wrapper::Fade_Out(CUI_Object* m_pUI)
+{
+	GET_COMPONENT_FROM(m_pUI, CFader)->Re_FadeOut();
+}
+
 void CUI_Wrapper::Enable_Fade(CUI_Object* m_pUI, _float fDuration)
 {
 	ENABLE_GAMEOBJECT(m_pUI);

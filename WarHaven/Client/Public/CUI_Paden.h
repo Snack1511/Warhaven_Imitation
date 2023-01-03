@@ -55,7 +55,10 @@ private:
 	virtual void OnDisable() override;
 
 private:
-	void Update_Indicator();
+	_bool m_bIsVector = true;
+
+	void Update_IndicatorVector(CTransform* pTargetTransform);
+	void Update_IndicatorAngle(CTransform* pTargetTransform);
 
 private:
 	CTransform* m_pTargetTransform = nullptr;

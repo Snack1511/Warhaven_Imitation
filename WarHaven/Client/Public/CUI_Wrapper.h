@@ -45,6 +45,9 @@ protected:
 	virtual void OnDisable() override;
 
 protected:
+	void Fade_In(CUI_Object* m_pUI);
+	void Fade_Out(CUI_Object* m_pUI);
+		
 	void Enable_Fade(CUI_Object* m_pUI, _float fDuration);
 	void Disable_Fade(CUI_Object* m_pUI, _float fDuration);
 

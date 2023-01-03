@@ -610,13 +610,40 @@ PS_OUT PS_CIRCLEGAUGE(PS_IN In)
     
     float2 vPos = In.vTexUV - 0.5f;
     float fAngle = degrees(atan2(vPos.x, vPos.y)) + 180.f;
-    float fa = radians(fAngle - g_fValue * 360.f);
+    
+    float fRadius = length(vPos.xy);
+    
+    float fa = radians(fAngle - g_fValue * 360.f) * fRadius + 1.f;
     
     Out.vColor *= g_vColor;
     Out.vColor.w *= g_fAlpha;
     
     fa = saturate(fa);
-    if (fa < g_fValue)
+    if (fa < 1.f)
+        discard;
+    
+    return Out;
+}
+
+PS_OUT PS_SELECTEFFECT(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor = vColor;
+    
+    if (Out.vColor.a < 0.1f)
+        discard;
+    
+    Out.vColor.a = vNoise.r;
+        
+    Out.vColor *= g_vColor;
+    Out.vColor.a *= g_fAlpha;
+        
+    if (Out.vColor.a < 0.1f)
         discard;
     
     return Out;
@@ -1303,6 +1330,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_CIRCLEGAUGE();
+    }
+
+    pass UI_SelectEffect
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SELECTEFFECT();
     }
 
     pass ALPHA

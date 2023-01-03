@@ -219,6 +219,21 @@ private:
 	void Create_BriefingUI();
 
 private:
+	CUI_Object* m_pSelectEffect = nullptr;
+	CUI_Object* m_pArrSelectEffect[7];
+
+	_float m_fSelectEffect_RotValue = 0.f;
+
+	CUI_Object* m_pConquestBlur = nullptr;
+	CUI_Object* m_pArrConquestBlur[3];
+
+private:
+	void Create_SelectEffect();
+	void Init_SelectEffect();
+	void Create_ConquestBlur();
+	void Init_ConquestBlur();
+
+private:
 	void Bind_Shader();
 	void Bind_Btn();
 };

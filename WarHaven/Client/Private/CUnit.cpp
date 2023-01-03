@@ -56,6 +56,7 @@
 #include "CTeamConnector.h"
 
 #include "CUnit_Priest.h"
+#include "CUI_UnitHUD.h"
 
 #define PHYSX_ON
 
@@ -579,6 +580,11 @@ _float4 CUnit::Get_HitPos()
 _float4x4 CUnit::Get_HitMatrix()
 {
 	return  m_pWeaponCollider_R->Get_HitMatrix();
+}
+
+CUI_UnitHUD* CUnit::Get_OwnerHUD()
+{
+	return m_pOwnerPlayer->Get_UnitHUD();
 }
 
 

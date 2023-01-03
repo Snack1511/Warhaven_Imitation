@@ -11,6 +11,7 @@ END
 BEGIN(Client)
 
 class CUnit;
+class CUI_UnitHP;
 class CUI_Revive;
 
 class CUI_UnitHUD : public CUI_Wrapper
@@ -30,6 +31,7 @@ public:
 	virtual void My_LateTick() override;
 
 public:
+	CUI_UnitHP* Get_UnitHP();
 	CUI_Revive* Get_ReviveUI(); 
 
 	void Set_ProjPos(CTransform* pTransform);

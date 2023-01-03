@@ -94,6 +94,9 @@ void CUI_Revive::OnDisable()
 
 void CUI_Revive::Update_Pos()
 {
+	if (!m_pReviveUnitTransform)
+		return;
+
 	_float4 vReviveUnitPos = CUtility_Transform::Get_ProjPos(m_pReviveUnitTransform);
 
 	for (int i = 0; i < Class_End; ++i)
