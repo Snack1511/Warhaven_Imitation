@@ -115,14 +115,14 @@ void CUnit_Priest::SetUp_Colliders(_bool bPlayer)
 	SetUp_UnitCollider(CUnit::HEAD, tUnitColDesc, 1, DEFAULT_TRANS_MATRIX, true, GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"));
 
 
-	const _uint iWeaponSphereNum = 4;
+	const _uint iWeaponSphereNum = 5;
 
 	CUnit::UNIT_COLLIDERDESC tWeaponUnitColDesc[iWeaponSphereNum];
 
 	for (_uint i = 0; i < iWeaponSphereNum; ++i)
 	{
 		tWeaponUnitColDesc[i].fRadius = 0.2f;
-		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) - 40.f;
+		tWeaponUnitColDesc[i].vOffsetPos.z = -25.f * _float(i) + 2.f;
 		tWeaponUnitColDesc[i].eColType = (_uint)eAttack;
 	}
 
@@ -377,7 +377,7 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 
 	CBoneCollider::BONECOLLIDERDESC tDesc;
 	// Ä® ±æÀÌ
-	tDesc.fHeight = 0.6f;
+	tDesc.fHeight = 1.f;
 	// Ä® µÎ²²
 	tDesc.fRadius = 0.2f;
 	// Ä® ºÙÀÏ »À
@@ -399,15 +399,21 @@ HRESULT CUnit_Priest::Initialize_Prototype()
 
 
 	m_tUnitStatus.eClass = PRIEST;
-
 	m_tUnitStatus.fDashAttackSpeed = 9.f;
+	m_tUnitStatus.fSprintAttackSpeed *= 0.95f;
+	m_tUnitStatus.fSprintJumpSpeed *= 0.9f;
+	m_tUnitStatus.fSprintSpeed *= 0.9f;
+	m_tUnitStatus.fRunSpeed *= 0.9f;
+	m_tUnitStatus.fWalkSpeed *= 0.9f;
+	m_tUnitStatus.fRunBeginSpeed *= 0.9f;
+	m_tUnitStatus.fJumpPower *= 0.95f;
 	m_fMaxDistance = 5.f;
 
-	//m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0004.fbx",
-	//	L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_R_WP1");
+	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Staff/SK_WP_Staff0004.fbx",
+		L"", this, "0B_R_WP1", 90.f, 180.f, 180.f);
 
-	//m_pAnimWeapon->Initialize();
-	//m_pAnimWeapon->Set_AnimIndex(0, FLT_MAX, FLT_MIN);
+	m_pAnimWeapon->Initialize();
+
 
 	return S_OK;
 }
@@ -422,12 +428,17 @@ HRESULT CUnit_Priest::Initialize()
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
+	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pAnimWeapon);
+
 	return S_OK;
 }
 
 HRESULT CUnit_Priest::Start()
 {
 	__super::Start();
+
+	ENABLE_GAMEOBJECT(m_pAnimWeapon);
 
 	SetUp_TrailEffect(
 		_float4(0.f, 0.f, -165.f, 1.f),	//Weapon Low
@@ -459,8 +470,6 @@ HRESULT CUnit_Priest::Start()
 		"0B_R_WP1"
 	);
 	
-	m_fMaxDistance = 8.f;
-
 	return S_OK;
 }
 
@@ -478,13 +487,7 @@ void CUnit_Priest::OnDisable()
 void CUnit_Priest::My_Tick()
 {
 	__super::My_Tick();
-
-	if (m_eCureBeginType == m_eCurState || m_eCureLoopType == m_eCurState)
-		__super::Check_NearObject_IsInFrustum();
-
-	else
-		m_pNearCureObject = nullptr;
-
+	__super::Check_NearObject_IsInFrustum(&m_pNearCureObject);
 }
 void CUnit_Priest::My_LateTick()
 {

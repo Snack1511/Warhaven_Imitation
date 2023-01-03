@@ -40,7 +40,7 @@ public:
 public:
 	enum ePROJECTILE_PHASE { eSTART, eLOOP, eSHOOT, eHIT, eSTICK, eEND };
 	void		On_ShootProjectile();
-	void			On_ChangePhase(ePROJECTILE_PHASE eNextPhase);
+	void		On_ChangePhase(ePROJECTILE_PHASE eNextPhase);
 
 public:
 	void	Use_Collect(_bool bCollect) { m_bCollect = bCollect; }
@@ -76,6 +76,9 @@ protected:
 	string m_szSubBoneName = "0B_L_WP1";
 
 	_bool  m_bCollect = true;
+
+protected:
+	_bool  m_bUseOwnerUnitLook = false;
 
 protected:
 	ePROJECTILE_PHASE	m_eCurPhase = eSTART;

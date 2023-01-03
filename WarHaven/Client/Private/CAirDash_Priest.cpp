@@ -66,6 +66,8 @@ HRESULT CAirDash_Priest::Initialize()
 
 void CAirDash_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    pOwner->On_Use(CUnit::SKILL1);
+
     m_fMaxSpeed = pOwner->Get_Status().fDashAttackSpeed;
 
 
@@ -144,6 +146,9 @@ void CAirDash_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 
 STATE_TYPE CAirDash_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (!pOwner->Is_Air())
+        return STATE_SPRINT_END_PRIEST;
+
     CTransform* pMyTransform = pOwner->Get_Transform();
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
 
@@ -164,13 +169,14 @@ void CAirDash_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CAirDash_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    if (pOwner->Can_Use(CUnit::SKILL1))
+    /*if (!pOwner->Can_Use(CUnit::SKILL1))
+        return STATE_END;*/
+   
+    if (KEY(LSHIFT, TAP))
     {
-        if (KEY(LSHIFT, TAP))
-        {
-            return m_eStateType;
-        }
+        return m_eStateType;
     }
+    
 
     return STATE_END;
 

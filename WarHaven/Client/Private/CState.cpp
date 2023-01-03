@@ -83,6 +83,13 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		}
 	}
 
+	if (pOwner->Get_Status().fDamageMultiplier != 1.f ||
+		pOwner->Get_Status().fDamageMultiplier < 0.99f ||
+		pOwner->Get_Status().fDamageMultiplier > 1.01f)
+	{
+		m_fDamagePumping = pOwner->Get_Status().fDamageMultiplier;
+	}
+
     Check_KeyFrameEvent(pOwner, pAnimator);
 
     STATE_TYPE eType = STATE_END;

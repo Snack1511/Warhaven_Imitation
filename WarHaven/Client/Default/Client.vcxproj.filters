@@ -3466,6 +3466,15 @@
     <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\04. Jump\03. Land">
       <UniqueIdentifier>{48f0cf01-6189-4e18-b1f1-6b782ed98509}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon">
+      <UniqueIdentifier>{07b11a8d-ecbe-411b-a965-e4fcbd8da96d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow">
+      <UniqueIdentifier>{c8e5813b-e1e8-42e0-9387-e361c6290ff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom">
+      <UniqueIdentifier>{06cf185f-90a0-4612-a070-f43f5fcce5f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6219,6 +6228,12 @@
     <ClInclude Include="..\Public\CBounce_Lancer.h">
       <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAnimWeapon_Crow.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCrowBoom.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8952,6 +8967,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CBounce_Lancer.cpp">
       <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\07. Bounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAnimWeapon_Crow.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCrowBoom.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

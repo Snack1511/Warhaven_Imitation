@@ -47,7 +47,7 @@ HRESULT CState_Combat_SkillQ_Paladin_Rush_End::Initialize()
 	m_iStateChangeKeyFrame = 40;
 
 	m_fInterPolationTime = 0.f;
-	m_fAnimSpeed = 2.5f;
+	m_fAnimSpeed = 2.f;
 
 	return S_OK;
 }

@@ -191,8 +191,10 @@
     <ClInclude Include="..\Public\CAIPersonality.h" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
+    <ClInclude Include="..\Public\CAnimWeapon_Crow.h" />
     <ClInclude Include="..\public\CAnimWeapon.h" />
     <ClInclude Include="..\Public\CBounce_Lancer.h" />
+    <ClInclude Include="..\Public\CCrowBoom.h" />
     <ClInclude Include="..\Public\CIdle_Lancer.h" />
     <ClInclude Include="..\Public\CJump_Lancer.h" />
     <ClInclude Include="..\Public\CJump_Lancer_Fall.h" />
@@ -1110,8 +1112,10 @@
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
+    <ClCompile Include="..\Private\CAnimWeapon_Crow.cpp" />
     <ClCompile Include="..\private\CAnimWeapon.cpp" />
     <ClCompile Include="..\Private\CBounce_Lancer.cpp" />
+    <ClCompile Include="..\Private\CCrowBoom.cpp" />
     <ClCompile Include="..\Private\CIdle_Lancer.cpp" />
     <ClCompile Include="..\Private\CJump_Lancer.cpp" />
     <ClCompile Include="..\Private\CJump_Lancer_Fall.cpp" />

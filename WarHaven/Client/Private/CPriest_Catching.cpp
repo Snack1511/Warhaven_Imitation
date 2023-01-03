@@ -191,7 +191,7 @@ HRESULT CPriest_Catching::Initialize()
 	m_fMyAccel = 20.f;
 	m_fMyMaxLerp = 0.1f;
 
-	m_fMaxTime = 0.05;
+	m_fMaxTime = 0.05f;
 
 	return S_OK;
 }
@@ -206,6 +206,7 @@ void CPriest_Catching::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 void CPriest_Catching::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->On_Use(CUnit::SKILL3);
 	pOwner->Get_CatchProjectileObject()->Use_Collect(false);
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();

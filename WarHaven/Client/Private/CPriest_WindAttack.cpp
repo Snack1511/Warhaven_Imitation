@@ -168,6 +168,43 @@ HRESULT CPriest_WindAttack::Initialize()
 
 void CPriest_WindAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->On_Use(CUnit::SKILL2);
+
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 1.f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = _float4((230.f / 255.f), (150.f / 255.f), (40.f / 255.f), 0.1f);
+	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+	tColorDesc.iStartKeyFrame = 2;
+	tColorDesc.iEndKeyFrame = 45; // 프레임 맞춰놓음
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
+
+	/* ColorControl*/
+	tColorDesc;
+
+	tColorDesc.eFadeStyle = CColorController::KEYFRAME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.2f;
+	tColorDesc.fFadeOutStartTime = 0.f;
+	tColorDesc.fFadeOutTime = 0.2f;
+	tColorDesc.vTargetColor = _float4(1.f, 1.f, 1.f, 0.5f);
+
+	tColorDesc.iMeshPartType = MODEL_PART_BODY;
+	tColorDesc.iStartKeyFrame = 2;
+	tColorDesc.iEndKeyFrame = 45; // 프레임 맞춰놓음
+
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
+	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
+	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -186,7 +223,9 @@ void CPriest_WindAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_WindAttack::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-   
+	/*if (!pOwner->Can_Use(CUnit::SKILL2))
+		return STATE_END;*/
+
     if (KEY(E, TAP))
         return m_eStateType;
 

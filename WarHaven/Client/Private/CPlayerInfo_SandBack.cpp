@@ -45,8 +45,8 @@ HRESULT CPlayerInfo_SandBack::Initialize()
 	else
 	{
 		//m_vecPrefClassType.push_back(PALADIN);
-		m_vecPrefClassType.push_back(ARCHER);
-		//m_vecPrefClassType.push_back(WARRIOR);
+		//m_vecPrefClassType.push_back(ARCHER);
+		m_vecPrefClassType.push_back(WARRIOR);
 	}
 
 	//m_iUnitType = ((_uint)CUnit::UNIT_TYPE::eSandbag);

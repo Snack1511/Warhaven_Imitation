@@ -149,6 +149,8 @@ HRESULT CPriest_Catch_Loop::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+	m_bSmootMoveLoop = true;
+	m_bLoopAction = false;
 
 	return __super::Initialize();
 }
@@ -168,6 +170,8 @@ STATE_TYPE CPriest_Catch_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			return STATE_RUN_PRIEST;
 		else
 			return STATE_IDLE_PRIEST;
+
+		pOwner->On_Use(CUnit::SKILL3);
 	}
 
 	if (pOwner->Get_CatchProjectileObject())

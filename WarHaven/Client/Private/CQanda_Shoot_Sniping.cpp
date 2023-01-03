@@ -58,12 +58,16 @@ HRESULT CQanda_Shoot_Sniping::Initialize()
 	m_vecAdjState.push_back(STATE_GUARD_QANDA);
 	m_vecAdjState.push_back(STATE_SPRINT_BEGIN_QANDA);
 
+	m_fDamagePumping = 7.f;
+
 	// return __super::Initialize();
 	return S_OK;
 }
 
 void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
+
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
 
 	m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;

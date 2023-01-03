@@ -63,7 +63,7 @@ public:
 		_float fJumpPower = 4.5f;
 		_float fStoreSpeed = 4.f; // 저장할 스피트 값 입력
 
-
+		_float	fDamageMultiplier = 1.f;
 		_float	fAttackDamage = 50.f;
 	};
 	struct UNIT_MODEL_DATA
@@ -290,6 +290,8 @@ public:
 	CCannon* Get_AdjCannon() { return m_pAdjCannon; }
 	CGameObject* Get_CureObject() { return m_pNearCureObject; }
 
+	const _float& Get_MaxDistance() const { return m_fMaxDistance; }
+
 public:
 	virtual void SetUp_ReserveState(UNIT_TYPE eUnitType) {};
 
@@ -298,7 +300,7 @@ public:
 	CProjectile* Get_CatchProjectileObject() { return m_pCatchObejct; }
 
 protected:
-	void Check_NearObject_IsInFrustum();
+	void Check_NearObject_IsInFrustum(CGameObject** pNearObject); // 절두체를 비교해 가까운 것이 있는지 확인하는 함수
 
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
@@ -426,7 +428,7 @@ public:
 	void	Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 	void	Set_AnimWeaponFrame(_uint iChangeFrame);
 
-	_float4x4& Use_OwnerBoneOffset();
+	//_float4x4& Use_OwnerBoneOffset();
 
 
 	/* 상태 체크 함수 */

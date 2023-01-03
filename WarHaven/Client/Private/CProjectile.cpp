@@ -54,6 +54,7 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 			return;
 
 		m_pOwnerUnit = pOtherUnit;
+		m_bUseOwnerUnitLook = true;
 
 		DISABLE_COMPONENT(m_pCollider);
 		pOtherUnit->Catch_ProjectileObject(this);
@@ -64,7 +65,6 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		m_pLeftHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pLeftBoneName);
 		m_pRightHandBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(pRightBoneName);
 		On_ChangePhase(eLOOP);
-
 
 		COL_GROUP_CLIENT eColType = (COL_GROUP_CLIENT)m_pCollider->Get_ColIndex();
 
@@ -153,7 +153,8 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		//m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		m_pCollider->Set_ColIndex(COL_REDATTACK);
 	else
 	{
 		Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
@@ -249,7 +250,10 @@ void CProjectile::On_ShootProjectile()
 
 	PxRigidDynamic* pActor = nullptr;
 	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 1.5f);
-	_float4 vDir = m_pTransform->Get_World(WORLD_RIGHT);
+
+	_float4 vDir = ZERO_VECTOR;
+	
+	vDir = m_pTransform->Get_World(WORLD_RIGHT);
 	vDir *= m_fMaxSpeed;
 	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
 	m_pActor = pActor;
@@ -507,6 +511,7 @@ void CProjectile::OnDisable()
 
 	Safe_release(m_pActor);
 	m_fLoopTimeAcc = 0.f;
+	m_bUseOwnerUnitLook = false;
 	if (m_pTrailEffect)
 	{
 		m_pTrailEffect->TurnOn_TrailEffect(false);

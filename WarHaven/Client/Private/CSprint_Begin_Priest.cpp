@@ -66,10 +66,9 @@ HRESULT CSprint_Begin_Priest::Initialize()
 
 void CSprint_Begin_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	Physics_Setting(pOwner->Get_Status().fSprintSpeed * 0.8f, pOwner, false);
+    Physics_Setting(pOwner->Get_Status().fRunSpeed * 0.5f, pOwner, false);
 
-
-	if (ePrevType == STATE_RUN_PRIEST || ePrevType == STATE_RUN_PRIEST)
+	if (ePrevType == STATE_RUN_PRIEST)
 	{
 		m_fInterPolationTime = 0.f;
 	}
@@ -77,10 +76,6 @@ void CSprint_Begin_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	{
 		m_fInterPolationTime = 0.1f;
 	}
-
-
-
-
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -189,14 +184,7 @@ void CSprint_Begin_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	{
 	case 0:
 	{
-
-		//CTransform* pMyTransform = pOwner->Get_Transform();
-		//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-
-
-		//m_fMyAccel = 10.f;
-		//pMyPhysicsCom->Set_Accel(m_fMyAccel);
-
+        Physics_Setting(pOwner->Get_Status().fSprintSpeed * 0.8f, pOwner, false);
 	}
 
 
