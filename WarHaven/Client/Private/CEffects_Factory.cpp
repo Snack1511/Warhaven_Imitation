@@ -791,7 +791,9 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Dodge"), "Dodge")))
 		return E_FAIL;
-
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Feathers"), "Crow_Feathers")))
+		return E_FAIL;
+	
 	/*environment*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"TrainigRoomSmoke"), "TrainigRoomSmoke")))
 		return E_FAIL;

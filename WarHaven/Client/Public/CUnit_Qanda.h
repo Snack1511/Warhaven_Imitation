@@ -37,6 +37,7 @@ public:
 	void Set_CrowAnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 	void On_ChangePhase(_uint eCurPhase);
 	void Shoot_AnimCrow();
+	CAnimWeapon_Crow* Get_Crow() { return m_pAnimCrow; }
 
 public:
 	void			Enable_Trail(_bool bEnable);

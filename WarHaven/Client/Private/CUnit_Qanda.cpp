@@ -481,6 +481,8 @@ HRESULT CUnit_Qanda::Start()
 void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
+
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Feathers", m_pAnimCrow, ZERO_VECTOR);
 }
 
 void CUnit_Qanda::OnDisable()
