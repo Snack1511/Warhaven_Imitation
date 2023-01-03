@@ -340,8 +340,8 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 
 	if (m_pCurrentUnit)
 	{
-		DISABLE_GAMEOBJECT(m_pCurrentUnit);
 		//m_pCurrentUnit->On_ChangeClass();
+		DISABLE_GAMEOBJECT(m_pCurrentUnit);
 	}
 
 	if (m_eCurrentClass >= FIONA)

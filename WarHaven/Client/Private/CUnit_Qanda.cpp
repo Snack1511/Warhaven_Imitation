@@ -461,7 +461,8 @@ HRESULT CUnit_Qanda::Start()
 	__super::Start();
 
 	if (m_pAnimWeapon)
-	ENABLE_GAMEOBJECT(m_pAnimWeapon);
+		ENABLE_GAMEOBJECT(m_pAnimWeapon);
+
 	if (m_pAnimCrow)
 		ENABLE_GAMEOBJECT(m_pAnimCrow);
 
@@ -488,6 +489,12 @@ void CUnit_Qanda::OnEnable()
 void CUnit_Qanda::OnDisable()
 {
 	__super::OnDisable();
+
+	if (m_pAnimCrow)
+		DISABLE_GAMEOBJECT(m_pAnimCrow);
+
+	if (m_pUI_Trail)
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
 }
 
 void CUnit_Qanda::My_Tick()

@@ -600,7 +600,7 @@ void CUnit::On_ChangeClass()
 	if (m_pCurState)
 	{
 		m_pCurState->Exit(this, m_pAnimator);
-		SAFE_DELETE(m_pCurState);
+		//SAFE_DELETE(m_pCurState);
 	}
 }
 

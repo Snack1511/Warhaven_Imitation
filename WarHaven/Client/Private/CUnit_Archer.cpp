@@ -611,6 +611,9 @@ void CUnit_Archer::OnDisable()
 	__super::OnDisable();
 	if (m_pCurArrow)
 		DISABLE_GAMEOBJECT(m_pCurArrow);
+
+	if (m_pUI_Trail)
+		DISABLE_GAMEOBJECT(m_pUI_Trail);
 }
 
 void CUnit_Archer::My_Tick()

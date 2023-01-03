@@ -169,7 +169,7 @@ HRESULT CRender_Manager::Initialize()
 	D3D11_TEXTURE2D_DESC	TextureDesc;
 	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
 
-	TextureDesc.Width = 1280;
+	TextureDesc.Width = 4000;
 	//TextureDesc.Width = 1280;
 	_float fRatio = (_float)TextureDesc.Width / 1280.f;
 	TextureDesc.Height = (_uint)(ViewPortDesc.Height * fRatio);
