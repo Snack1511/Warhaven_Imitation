@@ -299,30 +299,34 @@ void CUnit_Qanda::ReMap_Trail(_float4 vTargetPos)
 
 }
 
-void CUnit_Qanda::Create_Meteor()
+CGameObject* CUnit_Qanda::Create_Meteor()
 {
-	//if (m_pMeteor)
-	//	DISABLE_GAMEOBJECT(m_pMeteor);
+	/*if (m_pMeteor)
+		DISABLE_GAMEOBJECT(m_pMeteor);*/
 
-	//CGameObject* pGameObject = nullptr;
+	CGameObject* pGameObject = nullptr;
 
-	//if (m_mapProjectilePool[HASHCODE(CQandaMeteor)].empty())
-	//{
-	//	pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaMeteor));
-	//	//없으면 새로 집어넣음
-	//	pGameObject->Initialize();
-	//	CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
-	//	static_cast<CProjectile*>(pGameObject)->Reset(this);
-	//}
-	//else
-	//{
-	//	CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaMeteor)].front();
-	//	pEffect->Reset(this);
-	//	m_mapProjectilePool[HASHCODE(CQandaMeteor)].pop_front();
-	//	pGameObject = pEffect;
-	//}
+	if (m_mapProjectilePool[HASHCODE(CQandaMeteor)].empty())
+	{
+		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaMeteor));
+		//없으면 새로 집어넣음
+		pGameObject->Initialize();
+		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+		static_cast<CProjectile*>(pGameObject)->Reset(this);
+		static_cast<CProjectile*>(pGameObject)->On_ChangePhase(CProjectile::eRANDOM);
+	}
+	else
+	{
+		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaMeteor)].front();
+		pEffect->Reset(this);
+		pEffect->On_ChangePhase(CProjectile::eRANDOM);
+		m_mapProjectilePool[HASHCODE(CQandaMeteor)].pop_front();
+		pGameObject = pEffect;
+	}
 
-	//m_pMeteor = static_cast<CProjectile*>(pGameObject);
+	return pGameObject;
+
+//	m_pMeteor = static_cast<CProjectile*>(pGameObject);
 }
 
 
@@ -441,6 +445,8 @@ HRESULT CUnit_Qanda::Initialize()
 	CREATE_GAMEOBJECT(m_pAnimCrow, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimCrow);
 
+	m_bForUseTeam = false;
+
 	return S_OK;
 }
 
@@ -490,6 +496,21 @@ void CUnit_Qanda::OnDisable()
 
 void CUnit_Qanda::My_Tick()
 {
+	if (m_eCurState == STATE_ATTACK_BEGIN_SNIPING_QANDA ||
+		m_eCurState == STATE_ATTACK_AIMING_SNIPING_QANDA)
+	{
+
+		__super::Check_MultipleObject_IsInFrustum();
+
+	}
+	else
+	{
+
+		if(!m_MultipleFrustumObject.empty())
+			m_MultipleFrustumObject.clear();
+
+	}
+
 	__super::My_Tick();
 }
 

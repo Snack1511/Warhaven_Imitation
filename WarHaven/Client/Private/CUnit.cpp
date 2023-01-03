@@ -1016,6 +1016,69 @@ void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 	}
 }
 
+void CUnit::Check_MultipleObject_IsInFrustum()
+{
+
+	// 모든 플레이어 가져오기.
+	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
+
+	for (auto& elem : listPlayers)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
+		if (!pPlayer)
+			continue;
+
+		if (!pPlayer->Is_Valid())
+			continue;
+
+		if (m_bForUseTeam == false)
+			int a = 0;
+
+		// 테스트 레벨이 아니라면
+		if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
+		{
+			// 팀을 위해 사용할 것인가
+			if (m_bForUseTeam)
+			{
+				// 만약 발견한 플레이어가 다른 팀이라면
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
+					continue;
+
+			}
+			else
+			{
+				// 만약 발견한 플레이어가 같은 팀이라면 
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
+					continue;
+
+			}
+
+		}
+
+		CUnit* pUnit = pPlayer->Get_CurrentUnit();
+
+		if (!pUnit->Is_Valid())
+			continue;
+
+		if (pUnit == this)
+			continue;
+
+		// 절두체에 안들어왔다면
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
+			continue;
+
+		for (auto& FrustumObj : m_MultipleFrustumObject)
+		{
+			if (FrustumObj == pUnit)
+				return;
+		}
+
+		m_MultipleFrustumObject.push_back(pUnit);
+	}
+
+	
+}
+
 void CUnit::On_ChangeToHero(_uint iIndex)
 {
 	m_pOwnerPlayer->Change_UnitClass((CLASS_TYPE)iIndex);

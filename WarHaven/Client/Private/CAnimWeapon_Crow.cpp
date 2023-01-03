@@ -318,8 +318,9 @@ void CAnimWeapon_Crow::Late_Tick()
 		m_pPhysics->Set_Dir(m_vChaseLook);
 		m_pPhysics->Set_Accel(100.f);
 		m_pTransform->Set_Right(m_vChaseRight);
-
-		if(KEY(A, TAP)) // TEST ¿ë
+		
+		m_fLoopTimeAcc += fDT(0);
+		if(m_fLoopTimeAcc > m_fMaxShootTime) // TEST ¿ë
 		//if (fPower < 25.f || fLength > m_fMaxDistance)
 		{
 			m_pCrowBoom->Boom(m_pOwnerUnit->Get_OwnerPlayer(), m_pTransform->Get_World(WORLD_POS));

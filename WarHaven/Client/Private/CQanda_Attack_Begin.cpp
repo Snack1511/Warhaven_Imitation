@@ -70,13 +70,6 @@ void CQanda_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_Test", pAnimCrow
 		, ZERO_VECTOR);
 
-	m_AnimWeaponOffsetMatrix = pAnimCrow->Use_OwnerBoneOffset();
-
-	m_fOffSetLerp = _float3(1.f, 1.5f, 1.f);
-
-	pAnimCrow->Use_OwnerBoneOffset().m[3][0] = 0.f;
-	pAnimCrow->Use_OwnerBoneOffset().m[3][1] = 0.5f;
-	pAnimCrow->Use_OwnerBoneOffset().m[3][2] = 0.f;
 }
 
 STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -133,10 +126,6 @@ STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
-
-	pAnimCrow->Use_OwnerBoneOffset() = m_AnimWeaponOffsetMatrix;
-
 	static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(16, 0.f, m_fAnimSpeed);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
 	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Qanda*>(pOwner)->Get_CoreMat());

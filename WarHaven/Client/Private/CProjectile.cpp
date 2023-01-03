@@ -276,9 +276,17 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		m_pCurStickBone = m_pLeftHandBone;
 		break;
 	case Client::CProjectile::eSHOOT:
+	case Client::CProjectile::eChase:
 		ENABLE_COMPONENT(m_pCollider);
 		m_pCurStickBone = nullptr;
 		break;
+
+	case Client::CProjectile::eRANDOM:
+		m_vRandLook = _float4(frandom(0.1f, 0.4f), frandom(0.1f, 0.4f), frandom(0.1f, 0.4f));
+		m_fRandomPhaseMaxTime = frandom(0.3f, 0.7f);
+		m_pCurStickBone = nullptr;
+		break;
+
 	case Client::CProjectile::eHIT:
 		DISABLE_COMPONENT(m_pCollider);
 		if (m_pTrailEffect)
@@ -441,6 +449,47 @@ void CProjectile::My_LateTick()
 			m_pTransform->Make_WorldMatrix();
 		}
 		break;
+	case Client::CProjectile::eRANDOM:
+	{
+		m_fRandomPhaseCurTime += fDT(0);
+
+		if (m_fRandomPhaseCurTime > m_fRandomPhaseMaxTime)
+			On_ChangePhase(eChase);
+
+		_float4x4 MyMatrix = m_pTransform->Get_Transform().matMyWorld;
+
+		MyMatrix.m[3][0] += m_vRandLook.x;
+		MyMatrix.m[3][1] += m_vRandLook.y;
+		MyMatrix.m[3][2] += m_vRandLook.z;
+
+		m_pTransform->Get_Transform().matMyWorld = MyMatrix;
+
+		m_pTransform->Make_WorldMatrix();
+	}
+
+		break;
+	case Client::CProjectile::eChase:
+	{
+		if (!m_pTargetUnit)
+			assert(0);
+
+		_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
+		vLook.Normalize();
+
+		_float4x4 MyMatrix = m_pTransform->Get_Transform().matMyWorld;
+
+		MyMatrix.m[3][0] += vLook.x;
+		MyMatrix.m[3][1] += vLook.y;
+		MyMatrix.m[3][2] += vLook.z;
+
+		m_pTransform->Get_Transform().matMyWorld = MyMatrix;
+
+		m_pTransform->Make_WorldMatrix();
+
+
+	}
+		break;
+
 	case Client::CProjectile::eSHOOT:
 	{
 		/* PhysX 따라가기 */

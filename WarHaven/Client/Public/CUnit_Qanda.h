@@ -46,8 +46,8 @@ public:
 	_float4x4& Get_CoreMat() { return m_CoreMat; }
 
 public:
-	void			Create_Meteor();
-	void			Change_CrowPhase(_uint iPhase);
+	CGameObject*	Create_Meteor();
+	//void			Change_CrowPhase(_uint iPhase);
 
 public:
 	void	Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect);
@@ -66,10 +66,12 @@ private:
 	CAnimWeapon_Crow* m_pAnimCrow = nullptr;
 
 	map<_hashcode, list<CProjectile*>>	m_mapProjectilePool;
-	list<CProjectile*> m_pMeteor = { nullptr };
+	CProjectile* m_pMeteor =  nullptr ;
 
 	_float4x4	m_CoreMat;
 	CUI_Trail* m_pUI_Trail = nullptr;
+
+
 
 };
 

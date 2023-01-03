@@ -38,7 +38,7 @@ public:
 
 
 public:
-	enum ePROJECTILE_PHASE { eSTART, eLOOP, eSHOOT, eHIT, eSTICK, eEND };
+	enum ePROJECTILE_PHASE { eSTART, eLOOP, eRANDOM, eChase,eSHOOT, eHIT, eSTICK, eEND };
 	void		On_ShootProjectile();
 	void		On_ChangePhase(ePROJECTILE_PHASE eNextPhase);
 
@@ -63,6 +63,12 @@ protected:
 
 	// 100
 	_bool		m_bFrontPhysX = false;
+
+
+	_float	m_fRandomPhaseCurTime = 0.f;
+	_float	m_fRandomPhaseMaxTime = 0.f;
+	_float4 m_vRandLook = ZERO_VECTOR;
+
 
 protected:
 	_float	m_fMaxSpeed = 50.f;

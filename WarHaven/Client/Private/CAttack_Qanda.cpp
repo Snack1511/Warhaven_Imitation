@@ -13,6 +13,7 @@
 #include "CPhysXCharacter.h"
 
 #include "CProjectile.h"
+#include "CAnimWeapon_Crow.h"
 
 CAttack_Qanda::CAttack_Qanda()
 {
@@ -150,6 +151,16 @@ void	CAttack_Qanda::OnCollisionStay(CGameObject* pOtherObject, const _uint& iOth
 
 void CAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
+	CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+
+	m_AnimWeaponOffsetMatrix = pAnimCrow->Use_OwnerBoneOffset();
+
+	m_fOffSetLerp = _float3(1.f, 1.5f, 1.f);
+
+	pAnimCrow->Use_OwnerBoneOffset().m[3][0] = 0.f;
+	pAnimCrow->Use_OwnerBoneOffset().m[3][1] = 0.5f;
+	pAnimCrow->Use_OwnerBoneOffset().m[3][2] = 0.f;
+
 	m_fMaxTime = 3.f;
 
 	m_pCoreBone = GET_COMPONENT_FROM(pOwner, CModel)->Find_HierarchyNode("0B_Spine");
@@ -170,6 +181,10 @@ void CAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevS
 
 void CAttack_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+
+	pAnimCrow->Use_OwnerBoneOffset() = m_AnimWeaponOffsetMatrix;
+
 	pOwner->Get_PreAnimIndex() = pAnimator->Get_CurAnimFrame();
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;

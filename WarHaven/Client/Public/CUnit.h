@@ -310,8 +310,11 @@ public:
 	void Catch_ProjectileObject(CProjectile* pProjectileObject) { m_pCatchObejct = pProjectileObject; }
 	CProjectile* Get_CatchProjectileObject() { return m_pCatchObejct; }
 
+	list<CGameObject*> Get_MultipleFrustumObject() const { return m_MultipleFrustumObject; }
+
 protected:
 	void Check_NearObject_IsInFrustum(CGameObject** pNearObject); // 절두체를 비교해 가까운 것이 있는지 확인하는 함수
+	void Check_MultipleObject_IsInFrustum();
 
 protected:
 	CPlayer* m_pOwnerPlayer = nullptr;
@@ -323,7 +326,7 @@ protected:
 protected:
 	CProjectile* m_pCatchObejct;
 
-	list<CGameObject*>  m_pFrustumObjects;
+	list<CGameObject*>  m_MultipleFrustumObject;
 
 	list<CGameObject*>	m_CureObjects;
 	CGameObject* m_pNearCureObject = nullptr;

@@ -73,6 +73,7 @@ private:
 
 	_float		m_fLoopTimeAcc = 0.f;
 	_float		m_fMaxLoopTime = 0.5f;
+	_float		m_fMaxShootTime = 5.f;
 	_float		m_fMaxDistance = 50.f;
 
 private:
