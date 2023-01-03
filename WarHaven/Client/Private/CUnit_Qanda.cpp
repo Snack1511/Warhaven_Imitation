@@ -406,17 +406,17 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 
 	m_pAnimWeapon->Initialize();
 
-	//m_pAnimCrow = CAnimWeapon_Crow::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
-	//	L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_Head", vRadian.x, vRadian.y, vRadian.z);
-	//if (!m_pAnimCrow)
-	//	return E_FAIL;
+	m_pAnimCrow = CAnimWeapon_Crow::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
+		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_Head", vRadian.x, vRadian.y, vRadian.z);
+	if (!m_pAnimCrow)
+		return E_FAIL;
 
-	//m_pAnimCrow->Initialize();
+	m_pAnimCrow->Initialize();
 
-	//_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-	//m_pAnimCrow->Use_OwnerBoneOffset()._41 = -0.3f;
-	//m_pAnimCrow->Use_OwnerBoneOffset()._42 = 0.1f;
-	//m_pAnimCrow->Use_OwnerBoneOffset()._43 = 1.f;
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	m_pAnimCrow->Use_OwnerBoneOffset()._41 = -0.3f;
+	m_pAnimCrow->Use_OwnerBoneOffset()._42 = 0.1f;
+	m_pAnimCrow->Use_OwnerBoneOffset()._43 = 1.f;
 
 	m_tUnitStatus.fRunSpeed *= 0.95f;
 	
@@ -450,8 +450,8 @@ HRESULT CUnit_Qanda::Initialize()
 	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimWeapon);
 	
-	//CREATE_GAMEOBJECT(m_pAnimCrow, GROUP_PLAYER);
-	//DISABLE_GAMEOBJECT(m_pAnimCrow);
+	CREATE_GAMEOBJECT(m_pAnimCrow, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pAnimCrow);
 
 	return S_OK;
 }
@@ -460,8 +460,10 @@ HRESULT CUnit_Qanda::Start()
 {
 	__super::Start();
 
+	if (m_pAnimWeapon)
 	ENABLE_GAMEOBJECT(m_pAnimWeapon);
-	//ENABLE_GAMEOBJECT(m_pAnimCrow);
+	if (m_pAnimCrow)
+		ENABLE_GAMEOBJECT(m_pAnimCrow);
 
 	if (m_pUI_Trail)
 	{

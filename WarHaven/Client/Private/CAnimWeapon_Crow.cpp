@@ -116,11 +116,11 @@ HRESULT CAnimWeapon_Crow::Start()
 {
 	__super::Start();
 
-	//if (m_pCrowBoom)
-	//{
-	//	CREATE_GAMEOBJECT(m_pCrowBoom, GROUP_EFFECT);
-	//	DISABLE_GAMEOBJECT(m_pCrowBoom);
-	//}
+	if (m_pCrowBoom)
+	{
+		CREATE_GAMEOBJECT(m_pCrowBoom, GROUP_EFFECT);
+		DISABLE_GAMEOBJECT(m_pCrowBoom);
+	}
 
 	Set_AnimIndex(10, 0.1f, 1.f);
 
