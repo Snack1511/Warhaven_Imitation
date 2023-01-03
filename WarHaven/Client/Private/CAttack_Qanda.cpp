@@ -633,62 +633,62 @@ void CAttack_Qanda::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 	}
 }
 
-_bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
-{
-	if (!static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow() && m_pOwner != pOwner)
-		return false;
-
-	_float4 vStartPos = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_ArrowHeadPos();
-	_float4 vDir = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_Transform()->Get_World(WORLD_RIGHT);
-	_float fMaxDistance = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_MaxDistance();
-
-	_float fMinDist;
-	_float4 vFinalHitPos;
-
-	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
-		*pOutPos = vFinalHitPos;
-
-	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
-	list<PxController*> listPxControllers;
-	for (auto& elem : listPlayers)
-	{
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
-		if (!pPlayer)
-			continue;
-
-		if (!pPlayer->Is_Valid())
-			continue;
-
-		CUnit* pUnit = pPlayer->Get_CurrentUnit();
-
-		if (!pUnit->Is_Valid())
-			continue;
-
-		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 1.5f))
-			continue;
-
-		CPhysXCharacter* pPhysXCom = GET_COMPONENT_FROM(pUnit, CPhysXCharacter);
-
-		PxController* pController = pPhysXCom->Get_PxController(); 
-
-		if (!pController)
-			continue;
-
-		listPxControllers.push_back(pController);
-	}
-
-	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
-	{
-		if (*pOutPos != vFinalHitPos)
-		{
-			CUser::Get_Instance()->Set_ArcherPoint(true);
-		}
-		else
-		{
-			CUser::Get_Instance()->Set_ArcherPoint(false);
-		}
-
-		*pOutPos = vFinalHitPos;
-	}
-	return true;
-}
+//_bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
+//{
+//	if (!static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow() && m_pOwner != pOwner)
+//		return false;
+//
+//	_float4 vStartPos = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_ArrowHeadPos();
+//	_float4 vDir = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_Transform()->Get_World(WORLD_RIGHT);
+//	_float fMaxDistance = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow()->Get_MaxDistance();
+//
+//	_float fMinDist;
+//	_float4 vFinalHitPos;
+//
+//	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
+//		*pOutPos = vFinalHitPos;
+//
+//	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
+//	list<PxController*> listPxControllers;
+//	for (auto& elem : listPlayers)
+//	{
+//		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
+//		if (!pPlayer)
+//			continue;
+//
+//		if (!pPlayer->Is_Valid())
+//			continue;
+//
+//		CUnit* pUnit = pPlayer->Get_CurrentUnit();
+//
+//		if (!pUnit->Is_Valid())
+//			continue;
+//
+//		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 1.5f))
+//			continue;
+//
+//		CPhysXCharacter* pPhysXCom = GET_COMPONENT_FROM(pUnit, CPhysXCharacter);
+//
+//		PxController* pController = pPhysXCom->Get_PxController(); 
+//
+//		if (!pController)
+//			continue;
+//
+//		listPxControllers.push_back(pController);
+//	}
+//
+//	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
+//	{
+//		if (*pOutPos != vFinalHitPos)
+//		{
+//			CUser::Get_Instance()->Set_ArcherPoint(true);
+//		}
+//		else
+//		{
+//			CUser::Get_Instance()->Set_ArcherPoint(false);
+//		}
+//
+//		*pOutPos = vFinalHitPos;
+//	}
+//	return true;
+//}

@@ -131,7 +131,7 @@ private:
 	STATE_TYPE	Update_Idle(CUnit* pOwner, CAnimator* pAnimator);
 
 private:
-	_bool Check_CrowRay(_float4* pOutPos, CUnit* pOwner);
+	//_bool Check_CrowRay(_float4* pOutPos, CUnit* pOwner);
 
 
 };
