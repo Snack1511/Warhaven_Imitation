@@ -9,7 +9,7 @@ class CUI_Damage : public CUI_Wrapper
 	DECLARE_GAMEOBJECT(CUI_Damage);
 
 public:
-	enum DamageIcon { Head, Guard, Default, IconEnd };
+	enum DamageIcon { Head, Guard, Default, Heal, IconEnd };
 
 private:
 	CUI_Damage();
@@ -35,6 +35,7 @@ private:
 	_float4 m_vColorWhite = _float4(1.f, 1.f, 1.f, 1.f);
 	_float4 m_vColorGray = _float4(0.8f, 0.8f, 0.8f, 1.f);
 	_float4 m_vColorRed = _float4(0.8f, 0.2f, 0.2f, 1.f);
+	_float4 m_vColorGreen = _float4(0.2f, 0.5f, 0.2f, 1.f);
 
 	_float2 m_vFontScale = _float2(60.f, 71.f);
 	_float m_vHeadShotScale = 70.f;

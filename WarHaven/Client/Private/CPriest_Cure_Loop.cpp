@@ -14,6 +14,8 @@
 #include "CPhysXCharacter.h"
 
 #include "CProjectile.h"
+#include "CUI_UnitHUD.h"
+#include "CUI_UnitHP.h"
 
 CPriest_Cure_Loop::CPriest_Cure_Loop()
 {
@@ -214,6 +216,7 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
@@ -227,6 +230,9 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	if (!pTargetUnit)
 		return STATE_CURE_END_PRIEST;
+
+	// 타겟 유닛이 힐을 받고 있는 대상
+	pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
 
 	_float fLength = (pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
 
@@ -246,6 +252,7 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 			// UI 표시
 			pTargetUnit->Get_Status().fHP += fPlusHp; // fPlusHp
+			CUser::Get_Instance()->Enable_DamageFont(3, fPlusHp);
 
 			// 풀피를 넘어서면
 			if (pTargetUnit->Get_Status().fHP > pTargetUnit->Get_Status().fMaxHP)

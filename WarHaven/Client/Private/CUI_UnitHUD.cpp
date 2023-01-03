@@ -245,7 +245,7 @@ void CUI_UnitHUD::Set_RevivalIcon(_uint iIconIdx)
 	static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive])->Set_ReviveIcon(iIconIdx);
 }
 
-void CUI_UnitHUD::Create_UnitHUD()
+void CUI_UnitHUD::Create_UnitHUD() 
 {
 	m_pUnitNameText = CUI_Object::Create();
 
@@ -315,6 +315,7 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 					dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
 				}
 			}
+
 			ENABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
 		}
 	}

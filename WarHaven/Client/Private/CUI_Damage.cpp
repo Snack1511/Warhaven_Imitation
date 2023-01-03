@@ -111,9 +111,13 @@ void CUI_Damage::OnEnable()
 			{
 				m_pArrDmgNum[i]->Set_Color(m_vColorRed);
 			}
-			else
+			else if(m_eDamageIcon == Guard)
 			{
 				m_pArrDmgNum[i]->Set_Color(m_vColorGray);
+			}
+			else if (m_eDamageIcon == Heal)
+			{
+				m_pArrDmgNum[i]->Set_Color(m_vColorGreen);
 			}
 		}
 

@@ -50,8 +50,8 @@ private:
 	CUI_Object* m_pSkillUI[SU_End];
 	CUI_Object* m_pArrSkillUI[SU_End][3];
 
-	_uint m_iPrvIndex = 0;
-	_uint m_iCurIndex = 0;
+	_uint m_iPrvIndex = 2;
+	_uint m_iCurIndex = 2;
 	_uint m_iIndex = 0;
 
 	_uint m_iSkillNum = 0;

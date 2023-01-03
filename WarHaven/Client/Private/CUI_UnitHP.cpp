@@ -32,10 +32,9 @@ HRESULT CUI_UnitHP::Initialize_Prototype()
 	m_pHealBlur = CUI_Object::Create();
 
 	m_pHealBlur->Set_FadeDesc(0.3f);
-	m_pHealBlur->Set_UIShaderFlag(SH_UI_HARDBLOOM);
 	m_pHealBlur->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HealTarget.dds"));
-	m_pHealBlur->Set_Scale(80.f, 8.f);
-	m_pHealBlur->Set_Sort(0.58f);
+	m_pHealBlur->Set_Scale(108.f, 48.f);
+	m_pHealBlur->Set_Sort(0.57f);
 
 	return S_OK;
 }
@@ -74,6 +73,9 @@ void CUI_UnitHP::OnEnable()
 	{
 		ENABLE_GAMEOBJECT(m_pUnitHP[i]);
 	}
+
+	ENABLE_GAMEOBJECT(m_pHealBlur);
+	SetActive_HealBlur(true);
 }
 
 void CUI_UnitHP::OnDisable()
@@ -86,6 +88,7 @@ void CUI_UnitHP::OnDisable()
 	}
 
 	DISABLE_GAMEOBJECT(m_pHealBlur);
+	SetActive_HealBlur(false);
 }
 
 void CUI_UnitHP::My_Tick()
@@ -134,11 +137,17 @@ void CUI_UnitHP::SetActive_HealBlur(_bool value)
 {
 	if (value == true)
 	{
-		Enable_Fade(m_pHealBlur, 0.3f);
+		if (!m_pHealBlur->Is_Valid())
+		{
+			Enable_Fade(m_pHealBlur, 0.3f);
+		}
 	}
 	else
 	{
-		Disable_Fade(m_pHealBlur, 0.3f);
+		if (m_pHealBlur->Is_Valid())
+		{
+			Disable_Fade(m_pHealBlur, 0.3f);
+		}
 	}
 }
 
