@@ -145,63 +145,18 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		if (m_eTargetPoint == Point_End)
 			return;
 
-		_float fMaxPosX = 100.f;
-		_float fMaxPosY = 100.f;
+		if (KEY(Z, TAP))
+			m_bIsVector = !m_bIsVector;
 
-		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
-
-		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
-		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
-
-		_float4 vCamToTargetDir = vTargetPos - vCamPos;
-		vCamToTargetDir.Normalize();
-		vCamToTargetDir.y = 0.f;
-
-		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK);
-		vCamLook.Normalize();
-		vCamLook.y = 0.f;
-
-		_float fDot = vCamToTargetDir.Dot(vCamLook);
-		_float fRadian = acosf(fDot);
-		_float fAngle = XMConvertToDegrees(acosf(fDot));
-
-		cout << "각도 : " << fAngle << endl;
-
-		// fAngle이 0보다 크면 앞에, 작으면 뒤에
-		// 
-		// 	(-cos, sin)	ㅣ(cos, sin)
-		//	ㅡㅡㅡㅡㅡㅡㅣㅡㅡㅡㅡㅡㅡ
-		// 	(-cos, -sin)ㅣ(cos, -sin)
-
-		_float fPosX = cosf(fRadian);
-
-		cout << "PosX : " << fPosX << endl;
-
-		_float fPosY = fPosX > 0.f ? sinf(fRadian) : -sinf(fRadian);
-
-		cout << "PosY : " << fPosY << endl;
-
-		//_float4 vOriginPos = vCamPos + vCamLook;
-		// 기준점으로부터 타겟의 방향
-		// _float4 vDir = vTargetPos - vOriginPos;
-		// vDir.y = 0.f;
-		// vDir.Normalize();
-
-		//_float fIndicatorPosX = vDir.x * fMaxPosX;
-		//_float fIndicatorPosY = vDir.z * fMaxPosY;
-
-		_float fIndicatorPosX = fPosX * fMaxPosX;
-		_float fIndicatorPosY = fPosY * fMaxPosY;
-
-		if (m_bSetTargetPoint)
+		if (m_bIsVector)
 		{
-			m_pArrTargetPoint[1]->Set_Pos(fIndicatorPosX, fIndicatorPosY);
-
-			for (int i = 0; i < PU_End; ++i)
-			{
-				m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(fIndicatorPosX, fIndicatorPosY);
-				m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
-			}
+			cout << "벡터" << endl;
+			Update_IndicatorVector(pTransform);
+		}
+		else
+		{
+			cout << "각도" << endl;
+			Update_IndicatorAngle(pTransform);
 		}
 	}
 }
@@ -447,6 +402,96 @@ void CUI_Paden::OnDisable()
 	SetActive_ScoreGauge(false);
 	SetActive_ScoreNum(false);
 	SetActive_PointUI(false);
+}
+
+void CUI_Paden::Update_IndicatorVector(CTransform* pTargetTransform)
+{
+	_float fMaxPosX = 100.f;
+	_float fMaxPosY = 100.f;
+
+	_float4 vTargetPos = pTargetTransform->Get_World(WORLD_POS);
+	vTargetPos.y = 0.f;
+
+	CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
+	_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
+	vCamPos.y = 0.f;
+
+	_float4 vCamToTargetDir = vTargetPos - vCamPos;
+
+	_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK);
+	vCamLook.y = 0.f;
+
+	_float fLookLength = vCamToTargetDir.Dot(vCamLook);
+
+	vCamLook = vCamLook.Normalize() * fLookLength;
+
+	_float4 vLookPos = vCamPos + vCamLook;
+
+	_float4 vDir = vTargetPos - vLookPos;
+	vDir.y = 0.f;
+	vDir.Normalize();
+
+	_float fIndicatorPosX = vDir.x * fMaxPosX;
+	_float fIndicatorPosY = vDir.z * fMaxPosY;
+
+	if (m_bSetTargetPoint)
+	{
+		m_pArrTargetPoint[1]->Set_Pos(fIndicatorPosX, fIndicatorPosY);
+
+		for (int i = 0; i < PU_End; ++i)
+		{
+			m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(fIndicatorPosX, fIndicatorPosY);
+			m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
+		}
+	}
+}
+
+void CUI_Paden::Update_IndicatorAngle(CTransform* pTargetTransform)
+{
+	_float fMaxPosX = 100.f;
+	_float fMaxPosY = 100.f;
+
+	_float4 vTargetPos = pTargetTransform->Get_World(WORLD_POS);
+	vTargetPos.y = 0.f;
+
+	CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
+	_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
+	vCamPos.y = 0.f;
+
+	_float4 vCamToTargetDir = vTargetPos - vCamPos;
+	vCamToTargetDir.Normalize();
+	vCamToTargetDir.y = 0.f;
+
+	_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK);
+	vCamLook.Normalize();
+	vCamLook.y = 0.f;
+
+	_float fDot = vCamToTargetDir.Dot(vCamLook);
+	_float fRadian = acosf(fDot);
+	_float fAngle = XMConvertToDegrees(acosf(fDot));
+
+	// fAngle이 0보다 크면 앞에, 작으면 뒤에
+	// 
+	// 	(-cos, sin)	ㅣ(cos, sin)
+	//	ㅡㅡㅡㅡㅡㅡㅣㅡㅡㅡㅡㅡㅡ
+	// 	(-cos, -sin)ㅣ(cos, -sin)
+
+	_float fPosX = cosf(fRadian);
+	_float fPosY = fPosX > 0.f ? sinf(fRadian) : -sinf(fRadian);
+
+	_float fIndicatorPosX = fPosX * fMaxPosX;
+	_float fIndicatorPosY = fPosY * fMaxPosY;
+
+	if (m_bSetTargetPoint)
+	{
+		m_pArrTargetPoint[1]->Set_Pos(fIndicatorPosX, fIndicatorPosY);
+
+		for (int i = 0; i < PU_End; ++i)
+		{
+			m_pArrProjPointUI[m_eTargetPoint][i]->Set_Pos(fIndicatorPosX, fIndicatorPosY);
+			m_pArrProjPointUI[m_eTargetPoint][i]->SetActive(true);
+		}
+	}
 }
 
 void CUI_Paden::Create_InGameTimer()
