@@ -84,7 +84,7 @@ void CUI_Damage::OnEnable()
 		m_iDamageValue /= 10;
 	}
 
-	sort(m_vecDigitDmg.begin(), m_vecDigitDmg.end(), greater<_uint>());
+	reverse(m_vecDigitDmg.begin(), m_vecDigitDmg.end());
 
 	_float fRandPosX = (_float)random(0, 300);
 	_float fRandPosY = (_float)random(-300, 300);
@@ -111,7 +111,7 @@ void CUI_Damage::OnEnable()
 			{
 				m_pArrDmgNum[i]->Set_Color(m_vColorRed);
 			}
-			else if(m_eDamageIcon == Guard)
+			else if (m_eDamageIcon == Guard)
 			{
 				m_pArrDmgNum[i]->Set_Color(m_vColorGray);
 			}
@@ -125,7 +125,8 @@ void CUI_Damage::OnEnable()
 		m_pDmgIcon->Set_Scale(m_vHeadShotScale);
 		m_pDmgIcon->DoScale(m_fScaleValue, m_fScaleUpTime);
 
-		GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Set_CurTextureIndex(m_eDamageIcon);
+		if (m_eDamageIcon < 2)
+			GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Set_CurTextureIndex(m_eDamageIcon);
 
 		Enable_Fade(m_pDmgIcon, m_fFadeInTime);
 	}
@@ -138,7 +139,7 @@ void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
 	if (eIcon > Default)
 		return;
 
-	m_iDamageValue = (_uint)(fDmg * -1.f);
+	m_iDamageValue = eIcon == 2 ? (_uint)(fDmg) : (_uint)(fDmg * -1.f);
 	m_eDamageIcon = (DamageIcon)eIcon;
 
 	ENABLE_GAMEOBJECT(this);
@@ -161,7 +162,7 @@ void CUI_Damage::Init_DmgNum()
 {
 	Read_Texture(m_pDmgNum, "/Number", "Num");
 
-	m_pDmgNum->Set_Scale(m_vFontScale); 
+	m_pDmgNum->Set_Scale(m_vFontScale);
 
 	Set_FadeDesc(m_pDmgNum);
 

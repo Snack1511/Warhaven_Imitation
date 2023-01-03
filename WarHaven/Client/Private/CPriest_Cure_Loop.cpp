@@ -252,7 +252,7 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 			// UI 표시
 			pTargetUnit->Get_Status().fHP += fPlusHp; // fPlusHp
-			CUser::Get_Instance()->Enable_DamageFont(3, fPlusHp);
+			CUser::Get_Instance()->Enable_DamageFont(2, fPlusHp);
 
 			// 풀피를 넘어서면
 			if (pTargetUnit->Get_Status().fHP > pTargetUnit->Get_Status().fMaxHP)
