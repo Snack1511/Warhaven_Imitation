@@ -3,6 +3,7 @@
 
 #include "CUnit.h"
 #include "CUI_UnitHP.h"
+#include "CUI_Revive.h"
 
 #include "GameInstance.h"
 #include "CUtility_Transform.h"
@@ -12,7 +13,6 @@
 #include "CUser.h"
 #include "CPlayer.h"
 #include "CTeamConnector.h"
-#include "CUI_Revive.h"
 #include "Functor.h"
 
 HRESULT CUI_UnitHUD::Initialize_Prototype()
@@ -30,11 +30,6 @@ HRESULT CUI_UnitHUD::Initialize()
 HRESULT CUI_UnitHUD::Start()
 {
 	Init_UnitNameText();
-
-	for (int i = 0; i < UI_End; ++i)
-	{
-		CREATE_GAMEOBJECT(m_pUnitUI[i], GROUP_UI);
-	}
 
 	__super::Start();
 
@@ -205,6 +200,11 @@ void CUI_UnitHUD::My_LateTick()
 	__super::My_LateTick();
 }
 
+CUI_UnitHP* CUI_UnitHUD::Get_UnitHP()
+{
+	return static_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp]);;
+}
+
 CUI_Revive* CUI_UnitHUD::Get_ReviveUI()
 {
 	return static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
@@ -243,8 +243,16 @@ void CUI_UnitHUD::Set_RevivalIcon(_uint iIconIdx)
 void CUI_UnitHUD::Create_UnitHUD()
 {
 	m_pUnitNameText = CUI_Object::Create();
+
 	m_pUnitUI[UI_Hp] = CUI_UnitHP::Create();
 	m_pUnitUI[UI_Revive] = CUI_Revive::Create();
+
+	CREATE_GAMEOBJECT(m_pUnitNameText, GROUP_UI);
+
+	for (int i = 0; i < UI_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pUnitUI[i], GROUP_UI);
+	}
 }
 
 void CUI_UnitHUD::Init_UnitNameText()
@@ -283,8 +291,6 @@ void CUI_UnitHUD::Init_UnitNameText()
 
 	wstring wstrUnitName = m_pOwner->Get_PlayerName();
 	m_pUnitNameText->Set_FontText(wstrUnitName);
-
-	CREATE_GAMEOBJECT(m_pUnitNameText, GROUP_UI);
 }
 
 void CUI_UnitHUD::SetActive_UnitHP(_bool value)

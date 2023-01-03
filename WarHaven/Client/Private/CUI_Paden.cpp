@@ -148,7 +148,6 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		_float fMaxPosX = 100.f;
 		_float fMaxPosY = 100.f;
 
-		// 타겟의 위치
 		_float4 vTargetPos = pTransform->Get_World(WORLD_POS);
 
 		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
@@ -163,7 +162,10 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		vCamLook.y = 0.f;
 
 		_float fDot = vCamToTargetDir.Dot(vCamLook);
-		_float fAngle = acosf(fDot);
+		_float fRadian = acosf(fDot);
+		_float fAngle = XMConvertToDegrees(acosf(fDot));
+
+		cout << "각도 : " << fAngle << endl;
 
 		// fAngle이 0보다 크면 앞에, 작으면 뒤에
 		// 
@@ -171,8 +173,13 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		//	ㅡㅡㅡㅡㅡㅡㅣㅡㅡㅡㅡㅡㅡ
 		// 	(-cos, -sin)ㅣ(cos, -sin)
 
-		_float fPosX = cosf(fAngle);
-		_float fPosY = fPosX > 0.f ? sinf(fAngle) : -sinf(fAngle);
+		_float fPosX = cosf(fRadian);
+
+		cout << "PosX : " << fPosX << endl;
+
+		_float fPosY = fPosX > 0.f ? sinf(fRadian) : -sinf(fRadian);
+
+		cout << "PosY : " << fPosY << endl;
 
 		//_float4 vOriginPos = vCamPos + vCamLook;
 		// 기준점으로부터 타겟의 방향

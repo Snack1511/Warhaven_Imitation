@@ -23,12 +23,19 @@ HRESULT CUI_UnitHP::Initialize_Prototype()
 	m_pUnitHP[BackGauge]->Set_Color(_float4(0.5f, 0.5f, 0.5f));
 	m_pUnitHP[BackGauge]->Set_Sort(0.59f);
 	m_pUnitHP[BackGauge]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HPBarGrey.dds"));
+	GET_COMPONENT_FROM(m_pUnitHP[BackGauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HealthGauge);
 
 	m_pUnitHP[Gauge]->Set_Sort(0.58f);
 	m_pUnitHP[Gauge]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HPBarGrey.dds"));
-
 	GET_COMPONENT_FROM(m_pUnitHP[Gauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HealthGauge);
-	GET_COMPONENT_FROM(m_pUnitHP[BackGauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HealthGauge);
+
+	m_pHealBlur = CUI_Object::Create();
+
+	m_pHealBlur->Set_FadeDesc(0.3f);
+	m_pHealBlur->Set_UIShaderFlag(SH_UI_HARDBLOOM);
+	m_pHealBlur->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HealTarget.dds"));
+	m_pHealBlur->Set_Scale(80.f, 8.f);
+	m_pHealBlur->Set_Sort(0.58f);
 
 	return S_OK;
 }
@@ -44,6 +51,9 @@ HRESULT CUI_UnitHP::Start()
 	{
 		CREATE_GAMEOBJECT(m_pUnitHP[i], GROUP_ENEMY);
 	}
+
+	CREATE_GAMEOBJECT(m_pHealBlur, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pHealBlur);
 
 	__super::Start();
 
@@ -74,6 +84,8 @@ void CUI_UnitHP::OnDisable()
 	{
 		DISABLE_GAMEOBJECT(m_pUnitHP[i]);
 	}
+
+	DISABLE_GAMEOBJECT(m_pHealBlur);
 }
 
 void CUI_UnitHP::My_Tick()
@@ -102,20 +114,31 @@ void CUI_UnitHP::Set_ProjPos(CTransform* pTransform)
 		m_pUnitHP[i]->Set_Pos(vNewPos);
 		m_pUnitHP[i]->Get_Transform()->Make_WorldMatrix();
 	}
+
+	if (m_pHealBlur->Is_Valid())
+	{
+		m_pHealBlur->Set_Pos(vNewPos);
+		m_pHealBlur->Get_Transform()->Make_WorldMatrix();
+	}
 }
 
 void CUI_UnitHP::SetActive_UnitHP(_bool value)
 {
 	for (int i = 0; i < IT_END; ++i)
 	{
-		if (value)
-		{
-			ENABLE_GAMEOBJECT(m_pUnitHP[i]);
-		}
-		else
-		{
-			DISABLE_GAMEOBJECT(m_pUnitHP[i]);
-		}
+		m_pUnitHP[i]->SetActive(value);
+	}
+}
+
+void CUI_UnitHP::SetActive_HealBlur(_bool value)
+{
+	if (value == true)
+	{
+		Enable_Fade(m_pHealBlur, 0.3f);
+	}
+	else
+	{
+		Disable_Fade(m_pHealBlur, 0.3f);
 	}
 }
 

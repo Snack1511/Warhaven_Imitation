@@ -25,6 +25,7 @@ class CPlayer;
 class CAnimWeapon;
 class CCannon;
 class CProjectile;
+class CUI_UnitHUD;
 
 class CUnit abstract : public CGameObject
 {
@@ -184,8 +185,8 @@ public:
 	const STATE_TYPE& Get_DefaultState() { return m_eDefaultState; }
 	const STATE_TYPE& Get_SprintEndState() { return m_eSprintEndState; }
 
-	SKILL_TRIGGER& Get_SkillTrigger() { 
-		return m_tSkillTrigger; 
+	SKILL_TRIGGER& Get_SkillTrigger() {
+		return m_tSkillTrigger;
 	}
 
 	const STATE_HIT_TYPE& Get_HitType() { return m_tHitType; }
@@ -218,6 +219,8 @@ public:
 
 	void	Set_Controlable() { m_bControlable = !m_bControlable; }
 
+public:
+	CUI_UnitHUD* Get_OwnerHUD();
 
 public:
 	struct UNIT_DESC
@@ -335,7 +338,7 @@ protected:
 	CPhysics* m_pPhysics = nullptr;
 
 	UNIT_STATUS		m_tUnitStatus;
-	
+
 	STATE_TYPE		m_eCurState = STATE_END;
 	STATE_TYPE		m_eReserveState = STATE_END;
 
@@ -370,9 +373,9 @@ protected:
 
 protected:
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
-			_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	void SetUp_DistortionTrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
-	_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 	virtual	HRESULT	SetUp_Model(const UNIT_MODEL_DATA& tData);
 	virtual	HRESULT	SetUp_Navigation(CCell* pStartCell);
 
