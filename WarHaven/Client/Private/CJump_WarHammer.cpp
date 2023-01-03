@@ -22,6 +22,7 @@ HRESULT CJump_WarHammer::Initialize()
 	m_fMyAccel = 20.f;
 
 	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_GLIDING);
 
     return S_OK;
 }

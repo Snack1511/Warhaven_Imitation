@@ -196,8 +196,6 @@ STATE_TYPE CShootAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CShootAttack_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Get_SkillTrigger().bSkillETrigger = false;
-	static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(0, m_fInterPolationTime, m_fAnimSpeed);
 
 	//if (!m_bAttackTrigger)
 	//	static_cast<CUnit_Qanda*>(pOwner)->Create_Crow();

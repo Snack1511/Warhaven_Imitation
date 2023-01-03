@@ -149,8 +149,6 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = STATE_FLYHIT_WARHAMMER;
 		m_tHitType.eBounce = STATE_BOUNCE_WARHAMMER_L;
 
-		m_eSprintEndState = STATE_SPRINT_END_WARHAMMER;
-
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_TG:
@@ -174,9 +172,6 @@ void CUnit_WarHammer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_ENGINEER;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_ENGINEER_L;
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
-		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
-
 		break;
 
 	default:
@@ -192,6 +187,7 @@ void CUnit_WarHammer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_WARHAMMER_R;
 		m_eSprintEndState = STATE_SPRINT_END_WARHAMMER;
+		m_eLandState = STATE_JUMP_LAND_WARHAMMER_R;
 
 		break;
 
@@ -199,6 +195,7 @@ void CUnit_WarHammer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
+		m_eLandState = AI_STATE_COMMON_LAND_ENGINEER_R;
 
 		break;
 

@@ -7,6 +7,7 @@ class CShader;
 class CModel;
 class CAnimator;
 class CHierarchyNode;
+class CPhysics;
 END
 
 
@@ -32,6 +33,11 @@ public:
 	enum ePhyxState {eIDLE, eSHOOT, eATTACKLOOP, eHIT, eATTACKLAUNCH, eEND};
 
 public:
+	void	Crow_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
+	void	Crow_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
+	void	Crow_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
+
+public:
 	void On_ChangePhase(ePhyxState eNextPhase);
 	void Shoot_Crow(_float4 vShootPos, _float4 vShootDir);
 public:
@@ -51,12 +57,17 @@ private:
 	CAnimator* m_pAnimator = nullptr;
 	CHierarchyNode* m_pOwnerBone = nullptr;
 	
+	CPhysics* m_pPhysics = nullptr;
 	//PxConvexMesh* m_pConvexMesh = nullptr;
 	//PxRigidDynamic* m_pActor = nullptr;
+
+	_uint m_iMyColType = 0;
 
 private:
 	ePhyxState	m_eCurPhase = eIDLE;
 	_float4		m_vStartPosition = ZERO_VECTOR;
+	_float4		m_vChaseLook = ZERO_VECTOR;
+	_float4		m_vChaseRight = ZERO_VECTOR;
 
 	_float		m_fMaxSpeed = 1000.f;
 

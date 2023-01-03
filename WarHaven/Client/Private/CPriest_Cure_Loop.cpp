@@ -246,6 +246,7 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 			// UI 표시
 			pTargetUnit->Get_Status().fHP += fPlusHp; // fPlusHp
+			pOwner->Get_OwnerPlayer()->Get_Gauge() += 3.f;
 
 			// 풀피를 넘어서면
 			if (pTargetUnit->Get_Status().fHP > pTargetUnit->Get_Status().fMaxHP)

@@ -235,6 +235,8 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_PRIEST;
 		m_eSprintEndState = STATE_SPRINT_END_PRIEST;
+		m_eLandState = STATE_JUMP_LAND_PRIEST;
+
 		m_eCureBeginType = STATE_CURE_BEGIN_PRIEST;
 		m_eCureLoopType = STATE_CURE_LOOP_PRIEST;
 
@@ -244,6 +246,7 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eLandState = STATE_JUMP_LAND_PRIEST;
 
 		break;
 
@@ -251,6 +254,7 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eLandState = STATE_JUMP_LAND_PRIEST; // ¼öÁ¤
 
 		break;
 

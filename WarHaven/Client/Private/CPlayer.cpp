@@ -1222,8 +1222,13 @@ void CPlayer::Update_HeroGauge()
 		_float fGaugeSpeed = fDT(0) * 0.1f;
 
 		if (m_bIsMainPlayer)
-			fGaugeSpeed *= 200.f;
+		{
+			if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
+				fGaugeSpeed *= 200.f;
+			else
+				fGaugeSpeed *= 5.f;
 
+		}
 		if (!m_bIsHero) //CChangeHero_Player
 		{
 			if (m_bAlive)

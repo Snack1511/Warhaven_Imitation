@@ -58,6 +58,8 @@
 #include "CUnit_Priest.h"
 #include "CUI_UnitHUD.h"
 
+#include "CGlider.h"
+
 #define PHYSX_ON
 
 
@@ -661,7 +663,11 @@ HRESULT CUnit::Initialize()
 	if (FAILED(m_pModelCom->SetUp_AnimModel_LOD()))
 		return E_FAIL;
 
+	m_pGlider = CGlider::Create(L"../bin/resources/meshes/Riding/Glider_10.fbx",
+		L"../bin/resources/Animations/Common/A_Gliding_01.fbx", this, "0B_Spine1", 270.f, 180.f, 90.f);
 
+	CREATE_GAMEOBJECT(m_pGlider, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pGlider);
 
 
 	return S_OK;
@@ -892,6 +898,20 @@ void CUnit::Enable_GroggyCollider(_bool bEnable)
 		DISABLE_COMPONENT(m_pWeaponCollider_R);
 	}
 }
+
+void CUnit::Enable_Glider(_bool bEnable)
+{
+	if (bEnable)
+		ENABLE_GAMEOBJECT(m_pGlider);
+	else
+		DISABLE_GAMEOBJECT(m_pGlider);
+}
+
+void CUnit::Set_GliderAnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed)
+{
+	m_pGlider->Set_AnimIndex(iAnimIndex, fInterpolateTime, fAnimSpeed);
+}
+
 
 void CUnit::SetUp_Colliders(_bool bBlueTeam)
 {

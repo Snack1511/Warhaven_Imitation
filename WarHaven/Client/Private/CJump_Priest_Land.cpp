@@ -54,9 +54,11 @@ HRESULT CJump_Priest_Land::Initialize()
 
 void CJump_Priest_Land::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
+    pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
-    Physics_Setting(m_fMaxSpeed, pOwner);
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

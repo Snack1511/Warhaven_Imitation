@@ -24,6 +24,7 @@ HRESULT CJump_Archer::Initialize()
 	fOxenJumpPower = 1.3f;
 
 	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
+	m_vecAdjState.push_back(STATE_GLIDING_ARCHER);
 
 	m_vecAdjState.push_back(STATE_ATTACK_BEGIN_ARCHER);
 	m_vecAdjState.push_back(STATE_ATTACK_BEGIN_SNIPING_ARCHER);

@@ -6,6 +6,7 @@
 
 #include "HIerarchyNode.h"
 #include "CColorController.h"
+#include "CCollider_Sphere.h"
 
 #include "CCrowBoom.h"
 
@@ -41,9 +42,66 @@ CAnimWeapon_Crow* CAnimWeapon_Crow::Create(wstring wstrModelFilePath, wstring ws
 	return pInstance;
 }
 
+void CAnimWeapon_Crow::Crow_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
+{
+	if (m_eCurPhase == eSHOOT)
+	{
+
+
+		switch (eMyColType)
+		{
+		case COL_BLUEFLYATTACKGUARDBREAK:
+
+			if (eOtherColType != COL_REDHITBOX_BODY)
+				return;
+
+			On_ChangePhase(eHIT);
+			m_pCrowBoom->Boom(m_pOwnerUnit->Get_OwnerPlayer(), m_pTransform->Get_World(WORLD_POS));
+
+			break;
+
+		case COL_REDFLYATTACKGUARDBREAK:
+
+			if (eOtherColType != COL_BLUEHITBOX_BODY)
+				return;
+
+			On_ChangePhase(eHIT);
+			m_pCrowBoom->Boom(m_pOwnerUnit->Get_OwnerPlayer(), m_pTransform->Get_World(WORLD_POS));
+
+			break;
+
+		default:
+			break;
+		}
+
+		
+		
+		
+	}
+
+
+}
+void CAnimWeapon_Crow::Crow_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
+{
+	m_pOwnerUnit->CallBack_CollisionStay(pOtherObj, eOtherColType, eMyColType);
+	pOtherObj->CallBack_CollisionStay(m_pOwnerUnit, eMyColType, eOtherColType);
+}
+void CAnimWeapon_Crow::Crow_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
+{
+	CUnit* pOtherUnit = nullptr;
+	pOtherUnit = dynamic_cast<CUnit*>(pOtherObj);
+
+	if (!pOtherUnit)
+		return;
+
+	pOtherUnit->CallBack_CollisionExit(pOtherObj, eOtherColType, eMyColType);
+	pOtherObj->CallBack_CollisionExit(pOtherUnit, eMyColType, eOtherColType);
+}
+
 
 void CAnimWeapon_Crow::On_ChangePhase(ePhyxState eNextPhase)
 {
+	m_fLoopTimeAcc = 0.f;
 	m_eCurPhase = eNextPhase;
 }
 
@@ -69,6 +127,10 @@ void CAnimWeapon_Crow::Shoot_Crow(_float4 vShootPos, _float4 vShootDir)
 
 	m_eCurPhase = eSHOOT;
 	m_vStartPosition = vCurPos;
+	m_vChaseLook = m_pOwnerUnit->Get_FollowCamLook();
+	m_vChaseRight = m_pOwnerUnit->Get_FollowCamRight();
+
+
 
 }
 
@@ -92,10 +154,29 @@ HRESULT CAnimWeapon_Crow::Initialize_Prototype()
 	pRenderer->Initialize();
 	Add_Component<CRenderer>(pRenderer);
 
+	Add_Component(CPhysics::Create(0));
+
 	m_pCrowBoom = CCrowBoom::Create();
 	if (!m_pCrowBoom)
 		return E_FAIL;
 	m_pCrowBoom->Initialize();
+
+	_float fRadius = 1.f;
+	_float4 vOffsetPos = ZERO_VECTOR;
+	//vOffsetPos.z += fRadius;
+	//vOffsetPos.z += fRadius;
+	//vOffsetPos.z += fRadius;
+	
+	// 팀 지정 필요
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_BLUEFLYATTACKGUARDBREAK, vOffsetPos, DEFAULT_TRANS_MATRIX);
+	vOffsetPos.x += fRadius;
+
+	Add_Component(pCollider);
+
+	m_pCollider = pCollider;
+
+	if (!m_pCollider)
+		return E_FAIL;
 
 
     return S_OK;
@@ -104,9 +185,17 @@ HRESULT CAnimWeapon_Crow::Initialize_Prototype()
 HRESULT CAnimWeapon_Crow::Initialize()
 {
 	XMStoreFloat4x4(&m_OwnerBoneOffsetMatrix, XMMatrixIdentity());
-	m_OwnerBoneOffsetMatrix.XMLoad().r[3].m128_f32[0] -= 0.5f;
-	m_OwnerBoneOffsetMatrix.XMLoad().r[3].m128_f32[1] += 0.1f;
-	m_OwnerBoneOffsetMatrix.XMLoad().r[3].m128_f32[2] += 0.5f;
+	m_OwnerBoneOffsetMatrix.m[3][0] = -0.5f;
+	m_OwnerBoneOffsetMatrix.m[3][1] = 0.1f;
+	m_OwnerBoneOffsetMatrix.m[3][2] = 0.5f;
+
+	m_pPhysics = GET_COMPONENT(CPhysics);
+	
+	if (!m_pPhysics)
+		return E_FAIL;
+
+	m_pPhysics->Set_MaxSpeed(8.f);
+
 	//__super::Initialize();
 
     return S_OK;
@@ -121,6 +210,10 @@ HRESULT CAnimWeapon_Crow::Start()
 		CREATE_GAMEOBJECT(m_pCrowBoom, GROUP_EFFECT);
 		DISABLE_GAMEOBJECT(m_pCrowBoom);
 	}
+
+	CallBack_CollisionEnter += bind(&CAnimWeapon_Crow::Crow_CollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
+	CallBack_CollisionStay += bind(&CAnimWeapon_Crow::Crow_CollisionStay, this, placeholders::_1, placeholders::_2, placeholders::_3);
+	CallBack_CollisionExit += bind(&CAnimWeapon_Crow::Crow_CollisionExit, this, placeholders::_1, placeholders::_2, placeholders::_3);
 
 	Set_AnimIndex(10, 0.1f, 1.f);
 
@@ -220,12 +313,22 @@ void CAnimWeapon_Crow::Late_Tick()
 	//	_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
 	//	_float fLength = (m_vStartPosition - m_pTransform->Get_World(WORLD_POS)).Length();
 
+
+		m_pTransform->Set_LerpLook(m_vChaseLook, 0.01f);
+		m_pPhysics->Set_Dir(m_vChaseLook);
+		m_pPhysics->Set_Accel(100.f);
+		m_pTransform->Set_Right(m_vChaseRight);
+
+		if(KEY(A, TAP)) // TEST 용
 		//if (fPower < 25.f || fLength > m_fMaxDistance)
 		{
 			m_pCrowBoom->Boom(m_pOwnerUnit->Get_OwnerPlayer(), m_pTransform->Get_World(WORLD_POS));
 			On_ChangePhase(eHIT);
+			DISABLE_COMPONENT(GET_COMPONENT(CRenderer));
 		}
-			
+		
+		
+
 	}
 	break;
 	case Client::CAnimWeapon_Crow::eHIT:
@@ -241,9 +344,10 @@ void CAnimWeapon_Crow::Late_Tick()
 		m_fLoopTimeAcc += fDT(0);
 		if (m_fLoopTimeAcc >= m_fMaxLoopTime)
 		{
-			m_fLoopTimeAcc = 0.f;
-			//Safe_release(m_pActor);
+			ENABLE_COMPONENT(GET_COMPONENT(CRenderer));
+			Set_AnimIndex(10, 0.1f, 1.f);
 			On_ChangePhase(eIDLE);
+			m_fLoopTimeAcc = 0.f;
 		}
 	}
 	break;

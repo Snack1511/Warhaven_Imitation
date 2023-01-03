@@ -46,7 +46,7 @@ HRESULT CJump_Archer_Fall_L::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.5f;
 
-
+    m_vecAdjState.push_back(STATE_GLIDING_ARCHER);
     m_vecAdjState.push_back(STATE_JUMP_LAND_ARCHER_L);
     m_vecAdjState.push_back(STATE_ATTACK_BEGIN_ARCHER);
 

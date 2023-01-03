@@ -45,7 +45,7 @@ HRESULT CJump_Priest::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.f;
 
-
+    m_vecAdjState.push_back(STATE_GLIDING);
     m_vecAdjState.push_back(STATE_JUMPFALL_PRIEST);
     m_vecAdjState.push_back(STATE_JUMP_LAND_PRIEST);
     m_vecAdjState.push_back(STATE_AIRDASH_PRIEST);

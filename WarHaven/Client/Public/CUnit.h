@@ -26,6 +26,7 @@ class CAnimWeapon;
 class CCannon;
 class CProjectile;
 class CUI_UnitHUD;
+class CGlider;
 
 class CUnit abstract : public CGameObject
 {
@@ -186,6 +187,7 @@ public:
 
 	const STATE_TYPE& Get_DefaultState() { return m_eDefaultState; }
 	const STATE_TYPE& Get_SprintEndState() { return m_eSprintEndState; }
+	const STATE_TYPE& Get_LandState() { return m_eLandState; }
 
 	SKILL_TRIGGER& Get_SkillTrigger() {
 		return m_tSkillTrigger;
@@ -264,6 +266,10 @@ public:
 	void	Enable_GroggyCollider(_bool bEnable);
 	void	Enable_GuardBreakCollider(UNITCOLLIDER ePartType, _bool bEnable);
 	void	Enable_FlyAttackCollider(_bool bEnable);
+
+public:
+	void 	Enable_Glider(_bool bEnable);
+	void Set_GliderAnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 
 
 	struct UNIT_COLLIDERDESC
@@ -351,6 +357,7 @@ protected:
 
 	STATE_TYPE		m_eDefaultState = STATE_END;
 	STATE_TYPE		m_eSprintEndState = STATE_END;
+	STATE_TYPE		m_eLandState = STATE_END;
 
 	CState* m_pCurState = nullptr;
 
@@ -428,6 +435,7 @@ public:
 
 protected:
 	CAnimWeapon* m_pAnimWeapon = nullptr;
+	CGlider* m_pGlider = nullptr;
 
 public:
 	void	Set_AnimWeaponIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);

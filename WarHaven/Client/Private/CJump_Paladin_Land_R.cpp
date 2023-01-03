@@ -67,6 +67,9 @@ void CJump_Paladin_Land_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 {
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.5f;
 
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
+
 
     switch (ePrevType)
     {

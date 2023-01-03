@@ -184,6 +184,7 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_QANDA;
 		m_eSprintEndState = STATE_SPRINT_END_QANDA;
+		m_eLandState = STATE_JUMP_LAND_QANDA;
 
 		break;
 
@@ -391,32 +392,19 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 		L"", this, "0B_R_WP1", vRadian.x, vRadian.y, vRadian.z);
 
 	vRadian = _float3(90.f, 90.f, 270.f);
-	
-
-	
-		
-		
-
 
 
 	if (!m_pAnimWeapon)
 		return E_FAIL;
 
-
-
 	m_pAnimWeapon->Initialize();
 
-	m_pAnimCrow = CAnimWeapon_Crow::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
+	m_pAnimCrow = CAnimWeapon_Crow::Create(L"../bin/resources/meshes/weapons/Crow/Crow_40.fbx",
 		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_Head", vRadian.x, vRadian.y, vRadian.z);
 	if (!m_pAnimCrow)
 		return E_FAIL;
 
 	m_pAnimCrow->Initialize();
-
-	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-	m_pAnimCrow->Use_OwnerBoneOffset()._41 = -0.3f;
-	m_pAnimCrow->Use_OwnerBoneOffset()._42 = 0.1f;
-	m_pAnimCrow->Use_OwnerBoneOffset()._43 = 1.f;
 
 	m_tUnitStatus.fRunSpeed *= 0.95f;
 	
@@ -482,6 +470,9 @@ HRESULT CUnit_Qanda::Start()
 void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
+
+	if (m_pAnimCrow)
+		ENABLE_GAMEOBJECT(m_pAnimCrow);
 
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Feathers", m_pAnimCrow, ZERO_VECTOR);
 }
