@@ -9,7 +9,7 @@ class CUI_Damage : public CUI_Wrapper
 	DECLARE_GAMEOBJECT(CUI_Damage);
 
 public:
-	enum DamageIcon { Head, Guard, Default, IconEnd };
+	enum DamageIcon { Head, Guard, Heal, Default, IconEnd };
 
 private:
 	CUI_Damage();

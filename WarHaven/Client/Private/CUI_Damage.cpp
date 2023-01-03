@@ -111,9 +111,13 @@ void CUI_Damage::OnEnable()
 			{
 				m_pArrDmgNum[i]->Set_Color(m_vColorRed);
 			}
-			else
+			else if (m_eDamageIcon == Guard)
 			{
 				m_pArrDmgNum[i]->Set_Color(m_vColorGray);
+			}
+			else if (m_eDamageIcon == Heal)
+			{
+				m_pArrDmgNum[i]->Set_Color(RGB(0, 255, 0));
 			}
 		}
 
@@ -134,7 +138,7 @@ void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
 	if (eIcon > Default)
 		return;
 
-	m_iDamageValue = (_uint)(fDmg * -1.f);
+	m_iDamageValue = eIcon == 2 ? (_uint)fDmg : (_uint)(fDmg * -1.f);
 	m_eDamageIcon = (DamageIcon)eIcon;
 
 	ENABLE_GAMEOBJECT(this);
@@ -157,7 +161,7 @@ void CUI_Damage::Init_DmgNum()
 {
 	Read_Texture(m_pDmgNum, "/Number", "Num");
 
-	m_pDmgNum->Set_Scale(m_vFontScale); 
+	m_pDmgNum->Set_Scale(m_vFontScale);
 
 	Set_FadeDesc(m_pDmgNum);
 

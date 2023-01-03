@@ -19,7 +19,7 @@ void CCrowBoom::Boom(CPlayer* pOwnerPlayer, _float4 vPos)
 	m_pTransform->Set_World(WORLD_POS, vPos);
 	m_pTransform->Make_WorldMatrix();
 	m_pOwnerPlayer = pOwnerPlayer;
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Ground", vPos);
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cannon_Ground", vPos);
 
 	if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
 	{

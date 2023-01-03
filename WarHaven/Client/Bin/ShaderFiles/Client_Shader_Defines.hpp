@@ -58,6 +58,8 @@ BlendState BS_EffectAlphaBlending
 	SrcBlend = src_alpha;
 	DestBlend = inv_src_alpha;
 	BlendOp = add;
+	SrcBlendAlpha = one;
+	DestBlendAlpha = zero;
 	BlendOpAlpha = max;
 	
 };

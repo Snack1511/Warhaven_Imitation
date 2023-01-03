@@ -687,7 +687,7 @@ technique11 DefaultTechnique
 
 	pass FLARE
 	{
-		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetBlendState(BS_EffectAlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
 		SetRasterizerState(RS_None);
 

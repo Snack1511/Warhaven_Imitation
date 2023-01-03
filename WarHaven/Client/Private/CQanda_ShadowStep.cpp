@@ -110,7 +110,7 @@ void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
     m_EffectsList = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Dodge", pOwner, ZERO_VECTOR);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
-
+    //D3D11_RENDER_TARGET_BLEND_DESC
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

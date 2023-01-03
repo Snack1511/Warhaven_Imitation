@@ -483,6 +483,8 @@ void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
 
+	if (m_pAnimCrow)
+		ENABLE_GAMEOBJECT(m_pAnimCrow);
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Feathers", m_pAnimCrow, ZERO_VECTOR);
 }
 

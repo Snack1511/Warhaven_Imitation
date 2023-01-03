@@ -204,7 +204,6 @@ void CAnimWeapon_Crow::Late_Tick()
 			_float4x4		matBone = m_pOwnerBone->Get_BoneMatrix();
 
 			m_pTransform->Get_Transform().matMyWorld = matBone * m_OwnerBoneOffsetMatrix;
-
 			m_pTransform->Make_WorldMatrix();
 		}
 		break;
@@ -219,7 +218,7 @@ void CAnimWeapon_Crow::Late_Tick()
 
 	//	_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
 	//	_float fLength = (m_vStartPosition - m_pTransform->Get_World(WORLD_POS)).Length();
-
+		
 		//if (fPower < 25.f || fLength > m_fMaxDistance)
 		{
 			m_pCrowBoom->Boom(m_pOwnerUnit->Get_OwnerPlayer(), m_pTransform->Get_World(WORLD_POS));
