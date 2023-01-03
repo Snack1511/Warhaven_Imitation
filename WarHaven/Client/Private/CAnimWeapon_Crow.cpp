@@ -131,8 +131,10 @@ HRESULT CAnimWeapon_Crow::SetUp_Model(wstring wstrModelFilePath, wstring wstrAni
 {
 	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, wstrAnimFilePath.c_str());
 	pAnimator->Initialize();
+
 	if (!pAnimator)
 		return E_FAIL;
+
 	Add_Component(pAnimator);
 	m_pAnimator = pAnimator;
 
