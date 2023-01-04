@@ -35,6 +35,12 @@ void CUI_ScoreInfo::My_Tick()
 {
 	__super::My_Tick();
 
+	m_iKillCnt = pOwnerPlayer->Get_KDA().iTotalKillCount;
+
+	_tchar  szTemp[MAX_STR] = {};
+	swprintf_s(szTemp, TEXT("%0d"), m_iKillCnt);
+	m_pInfo[Info_Kill]->Set_FontText(szTemp);
+
 	_float fInfoPosY = 170.f - ((m_iRank - 1) * 20.f);
 	for (int i = 0; i < Info_End; ++i)
 	{
@@ -173,12 +179,6 @@ void CUI_ScoreInfo::Set_Player(CPlayer* pPlayer)
 
 	m_pInfo[Info_ClassName]->Set_TextureIndex(iClassNum);
 	m_pInfo[Info_ClassName]->Set_FontText(wstrPlayerName);
-
-	m_iKillCnt = pOwnerPlayer->Get_KDA().iTotalKillCount;
-
-	_tchar  szTemp[MAX_STR] = {};
-	swprintf_s(szTemp, TEXT("%0d"), m_iKillCnt);
-	m_pInfo[Info_Kill]->Set_FontText(szTemp);
 }
 
 void CUI_ScoreInfo::Set_Rank(_uint iRank)
