@@ -132,6 +132,23 @@ _float CFunctor::Lerp(_float fDest, _float fSour, _float fRatio)
 	return fDest + (fSour - fDest) * fRatio;
 }
 
+string CFunctor::Get_FileName(string strFilePath)
+{
+	_int iFind = 0;
+
+	if ((_int)strFilePath.rfind("\\") > 0)
+		iFind = (_int)strFilePath.rfind("\\") + 1;
+	else
+		iFind = (_int)strFilePath.rfind("/") + 1;
+
+	string strFileName = strFilePath.substr(iFind, strFilePath.length() - iFind);
+
+	iFind = strFileName.rfind(".");
+	strFileName = strFileName.substr(0, iFind);
+
+	return strFileName;
+}
+
 //void	CFunctor::Play_Sound(wstring wstrFileName, _uint iGroupIndex, _float4 vPosition, _float fVolume)
 //{
 //#define SOUND_MAX_RANGE	30.f

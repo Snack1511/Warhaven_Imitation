@@ -183,6 +183,10 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeSkel[i];
 
 		tModelData[i].strModelPaths[MODEL_PART_BODY] = wstrModeBody[i];
+
+		if (i == LANCER)
+			tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeBody[i];
+
 		tModelData[i].strModelPaths[MODEL_PART_FACE] = wstrModeFace[i];
 		tModelData[i].strModelPaths[MODEL_PART_HEAD] = wstrModeHead[i];
 

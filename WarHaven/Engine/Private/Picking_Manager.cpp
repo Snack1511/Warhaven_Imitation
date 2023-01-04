@@ -99,6 +99,61 @@ _bool CPicking_Manager::Is_Picked(list<CGameObject*>& GameObjectList, _float4* p
 	return false;
 }
 
+_bool CPicking_Manager::Is_Picked(list<CGameObject*>& GameObjectList, CGameObject** ppOut)
+{
+	Compute_WorldRay();
+
+	//
+	_float4 vViewPos = CGameInstance::Get_Instance()->Get_ViewPos();
+	_float4 vPickedPos, vPickedNormal;
+	_float fDist, fMin = 9999.f;
+	_float4 vFinalPickedPos, vFinalPickedNormal;
+
+	CGameObject* pPickGameObject = nullptr;
+
+	for (auto& pGameObject : GameObjectList)
+	{
+		if (nullptr == pGameObject)
+			continue;
+
+		vector<pair<_uint, CMeshContainer*>>& vecMeshContainers = GET_COMPONENT_FROM(pGameObject, CModel)->Get_MeshContainers();
+
+		for (auto& pMesh : vecMeshContainers)
+		{
+			if (!pMesh.second->Is_Valid())
+				continue;
+
+			if (Is_Picked(pMesh.second, &vPickedPos, &vPickedNormal))
+			{
+				//Local Point -> World Point
+				_float4x4 WorldMat = pGameObject->Get_Transform()->Get_WorldMatrix();
+				_float4 WorldPickPos = vPickedPos;
+
+				fDist = (WorldPickPos - vViewPos).Length();
+				if (fMin > fDist)
+				{
+					fMin = fDist;
+					vFinalPickedPos = WorldPickPos;
+					vFinalPickedNormal = vPickedNormal;
+					*ppOut = pGameObject;
+				}
+				pPickGameObject = pGameObject;
+			}
+		}
+	}
+
+
+	if (fMin != 9999.f)
+	{
+
+		return true;
+	}
+
+
+
+	return false;
+}
+
 _bool CPicking_Manager::Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _float4* pOut, _uint* pOutIndex, _float4* pOutNormal)
 {
 	Compute_WorldRay();

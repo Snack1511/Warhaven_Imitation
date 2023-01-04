@@ -221,6 +221,8 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
 		/* -1 ~ 1 */
 		vPixelNormal = normalize(vPixelNormal * 2.f - 1.f) * 1.f;
+		if (vPixelNormal.b < 0.1f)
+			vPixelNormal *= -1.f;
 
 		float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
 

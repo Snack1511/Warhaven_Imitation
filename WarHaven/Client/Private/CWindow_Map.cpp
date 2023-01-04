@@ -2053,50 +2053,50 @@ _bool CWindow_Map::Calculate_Pick()
     }
 
 
-    //if (KEY(LBUTTON, HOLD))
-    //{
-    //    m_fDelayTimeAcc += fDT(0);
-    //    if (m_fDelayTimeAcc < m_fTimeDelay)
-    //        return false;
-    //    else
-    //    {
-    //        m_fDelayTimeAcc = 0.f;
+    if (KEY(LBUTTON, HOLD))
+    {
+        m_fDelayTimeAcc += fDT(0);
+        if (m_fDelayTimeAcc < m_fTimeDelay)
+            return false;
+        else
+        {
+            m_fDelayTimeAcc = 0.f;
 
-    //    }
+        }
 
 
-    //    _float4 OutPos;
-    //    _float4 OutNorm;
-    //    if (PICK_NONE == m_ePickingType)
-    //        return bPicked;
-    //    if (GAMEINSTANCE->Is_Picked_Mesh(m_PickTargetMesh, &m_i3PickedIndex, &OutPos, &OutNorm))
-    //    {
-    //        _float4 OutLocalPos = OutPos.MultiplyCoord(OwnerMat.Inverse());
-    //        m_OutDatas = make_tuple(OutPos, OutLocalPos, OutNorm);
-    //        bPicked = true;
-    //        switch (m_ePickingType)
-    //        {
-    //        case PICK_OBJECT:
-    //        case PICK_ANCHOR:
-    //            //Place_Object();
-    //            //Change_Object_UpDir();
-    //            m_pObjectController->Func_Picking();
-    //            break;
-    //            if (m_bTerrainPick) {
-    //            case PICK_TERRAINVERT:
-    //                Increase_Height();
-    //                break;
-    //            case PICK_TERRAINTEX:
-    //                Change_TileTexture();
-    //                break;
-    //            case PICK_INSTANCEOBJECT:
-    //                Make_InstanceObject();
-    //                break;
-    //            }
-    //        }
+        _float4 OutPos;
+        _float4 OutNorm;
+        if (PICK_NONE == m_ePickingType)
+            return bPicked;
+        if (GAMEINSTANCE->Is_Picked_Mesh(m_PickTargetMesh, &m_i3PickedIndex, &OutPos, &OutNorm))
+        {
+            _float4 OutLocalPos = OutPos.MultiplyCoord(OwnerMat.Inverse());
+            m_OutDatas = make_tuple(OutPos, OutLocalPos, OutNorm);
+            bPicked = true;
+            switch (m_ePickingType)
+            {
+            case PICK_OBJECT:
+            case PICK_ANCHOR:
+                //Place_Object();
+                //Change_Object_UpDir();
+                m_pObjectController->Func_Picking();
+                break;
+                if (m_bTerrainPick) {
+                case PICK_TERRAINVERT:
+                    Increase_Height();
+                    break;
+                case PICK_TERRAINTEX:
+                    Change_TileTexture();
+                    break;
+                case PICK_INSTANCEOBJECT:
+                    Make_InstanceObject();
+                    break;
+                }
+            }
 
-    //    }
-    //}
+        }
+    }
 
     if (KEY(LBUTTON, AWAY))
     {

@@ -2284,6 +2284,87 @@ void CFunc_ObjectControl::Position_Object()
 
 void CFunc_ObjectControl::Position_Object_Mouse()
 {
+    if (KEY(Q, HOLD) && KEY(LBUTTON, TAP))
+    {
+        list<CGameObject*> GameObjectList = GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION);
+
+        _float4 vPickedPos, vPickedNormal;
+
+        CGameObject* pPickedObject = nullptr;
+        if (GAMEINSTANCE->Is_Picked(GameObjectList, &pPickedObject))
+        {
+            if (!pPickedObject)
+                return;
+
+            m_strCurSelectObjectName = CFunctor::To_String(GET_COMPONENT_FROM(pPickedObject, CModel)->Get_ModelFilePath());
+            m_strCurSelectObjectName = CFunctor::Get_FileName(m_strCurSelectObjectName);
+
+            ObjectMap::iterator ObjectMapIter;
+            DataMap::iterator DataMapIter;
+            Find_ObjectDatas(m_strCurSelectObjectName, ObjectMapIter, DataMapIter);
+            if (m_ObjectNamingGroupMap.end() != ObjectMapIter)
+                m_pCurSelectObjectGroup = &(ObjectMapIter->second);
+            else
+                m_pCurSelectObjectGroup = nullptr;
+
+            if (m_DataNamingGroupMap.end() != DataMapIter)
+                m_pCurSelectDataGroup = &(DataMapIter->second);
+            else
+                m_pCurSelectDataGroup = nullptr;
+
+            //인덱스를 찾아야함
+            _hashcode hcCode = Convert_ToHash(m_strCurSelectObjectName);
+            _uint iIndex = 0;
+            _bool bFind = false;
+            for (auto& elem : m_ObjectNamingGroupMap[hcCode])
+            {
+                if (elem == pPickedObject)
+                {
+                    bFind = true;
+                    break;
+                }
+                else
+                    ++iIndex;
+            }
+
+            if (bFind)
+            {
+                m_iCurSelectObjectIndex = iIndex;
+
+                if (nullptr != m_pCurSelectDataGroup
+                    && _uint(m_pCurSelectDataGroup->size()) > m_iCurSelectObjectIndex)
+                    m_pCurSelectData = &((*m_pCurSelectDataGroup)[m_iCurSelectObjectIndex]);
+                else
+                    m_pCurSelectData = nullptr;
+            }
+            else
+            {
+                Confirm_Data();
+                return;
+            }
+
+
+
+            if (nullptr != m_pCurSelectGameObject) {
+                GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_RimLightFlag(_float4(1, 0, 0, 0));
+                GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_OutlineFlag(_float4(1, 0, 0, 0));
+            }
+            m_pCurSelectGameObject = pPickedObject;
+
+            if (nullptr != m_pCurSelectGameObject) {
+                GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_RimLightFlag(_float4(1, 0.2f, 0.2f, 0.5f));
+                GET_COMPONENT_FROM(m_pCurSelectGameObject, CModel)->Set_OutlineFlag(_float4(1, 0.1f, 0, 1));
+            }
+
+            m_pObjTransform = m_pCurSelectGameObject->Get_Transform();
+        }
+
+
+
+
+    }
+
+
     if (nullptr == m_pObjTransform)
         return;
 
@@ -3210,8 +3291,14 @@ void CFunc_ObjectControl::Clone_SamePosition()
     }
     _float4 ObjectPosition = m_pObjTransform->Get_World(WORLD_POS);
     MTO_DATA tData = (*m_pCurSelectData);
+
     if(!tData.bIgnoreFlag)
         Clone_Object(ObjectPosition, _float4(0.f, 1.f, 0.f, 0.f), tData);
+    else
+    {
+        int i = 0;
+    }
+
     //_matrix WorldMat = tData.ObjectStateMatrix.XMLoad();
     //WorldMat.r[3] = ObjectPosition.XMLoad();
     //tData.ObjectStateMatrix = WorldMat;
