@@ -5,6 +5,7 @@
 #include "Physics.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
 #include "CPlayer.h"
 
 #include "Model.h"
@@ -108,6 +109,7 @@ void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
     pOwner->Enable_HitBoxColliders(false);
 
     m_EffectsList = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Dodge", pOwner, ZERO_VECTOR);
+    static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(false);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
     //D3D11_RENDER_TARGET_BLEND_DESC
@@ -187,6 +189,7 @@ void CQanda_ShadowStep::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
    
    TurnOff_DodgeEffect(pOwner);
+   static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(true);
 }
 
 STATE_TYPE CQanda_ShadowStep::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
