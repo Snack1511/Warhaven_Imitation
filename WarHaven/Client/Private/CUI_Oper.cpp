@@ -16,6 +16,7 @@
 #include "CUnit.h"
 #include "Transform.h"
 #include "Functor.h"
+#include "CSquad.h"
 
 CUI_Oper::CUI_Oper()
 {
@@ -207,11 +208,7 @@ void CUI_Oper::My_Tick()
 				}
 				else
 				{
-					if (m_pPlayers[i]->IsMainPlayer())
-					{
-						m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
-					}
-					else
+					if (!m_pPlayers[i]->IsMainPlayer())
 					{
 						if (m_pPlayers[i]->Get_OutlineType() != CPlayer::eSQUADMEMBER)
 						{
@@ -327,8 +324,6 @@ void CUI_Oper::Set_Player(CPlayer* pPlayer)
 			m_iMainTeamIdx++;
 		}
 	}
-
-	cout << CFunctor::To_String(pPlayer->Get_PlayerName()) << endl;
 }
 
 void CUI_Oper::Set_BattlePlayer(_bool IsBattle)

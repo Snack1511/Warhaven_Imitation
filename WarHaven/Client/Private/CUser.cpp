@@ -47,6 +47,7 @@
 #include "CUI_UnitHUD.h"
 #include "CUI_Interact.h"
 #include "CUI_MiniMap.h"
+#include "CUI_ScoreBoard.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -394,6 +395,14 @@ void CUser::SetActive_PadenUI(_bool value)
 		m_pUI_Paden->SetActive(value);
 }
 
+void CUser::SetActive_ScoreBoard(_bool value)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->SetActive(value);
+	}
+}
+
 void CUser::Set_Respawn(_bool value)
 {
 	if (m_pUI_Oper)
@@ -544,6 +553,14 @@ void CUser::On_EnterStageLevel()
 
 			CREATE_GAMEOBJECT(m_pMiniMap, GROUP_UI);
 			// DISABLE_GAMEOBJECT(m_pMiniMap);
+		}
+
+		if (!m_pScoreBoard)
+		{
+			m_pScoreBoard = CUI_ScoreBoard::Create();
+
+			CREATE_GAMEOBJECT(m_pScoreBoard, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pScoreBoard);
 		}
 	}
 

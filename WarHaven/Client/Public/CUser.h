@@ -36,6 +36,7 @@ class CUI_Paden;
 class CUI_Revive;
 class CUI_Interact;
 class CUI_MiniMap;
+class CUI_ScoreBoard;
 
 class CTeamConnector;
 
@@ -148,6 +149,7 @@ public:		// ÆÄµ§
 	void Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam);
 
 	void SetActive_PadenUI(_bool value);
+	void SetActive_ScoreBoard(_bool value);
 
 public:		// ºê¸®ÇÎ
 	void Set_Respawn(_bool value);
@@ -227,6 +229,7 @@ private:
 	CUI_Dead* m_pUI_Dead = nullptr;
 
 	CUI_MiniMap* m_pMiniMap = nullptr;
+	CUI_ScoreBoard* m_pScoreBoard = nullptr;
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;

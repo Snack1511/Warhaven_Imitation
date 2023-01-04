@@ -3478,6 +3478,9 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom">
       <UniqueIdentifier>{06cf185f-90a0-4612-a070-f43f5fcce5f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard">
+      <UniqueIdentifier>{06810f3a-0c22-4462-9375-2cff6fe32d14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6240,6 +6243,9 @@
     <ClInclude Include="..\Public\CCrowBoom.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_ScoreBoard.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8982,6 +8988,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CCrowBoom.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_ScoreBoard.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
