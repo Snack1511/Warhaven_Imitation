@@ -97,25 +97,25 @@ public:
 	_bool Check_CrossLines(_float4 LineStart, _float4 LineEnd);
 
 #ifdef _DEBUG
-public:
-	void DebugRendering();
-private:
-	HRESULT Create_VertexBuffer();
-	HRESULT Create_IndexBuffer();
-	HRESULT SetUp_Vertices();
-private:
-	D3D11_BUFFER_DESC				m_BufferDesc;
-	D3D11_SUBRESOURCE_DATA			m_SubResourceData;
-	ComPtr<ID3D11Buffer> m_pVB = nullptr;
-	ComPtr<ID3D11Buffer> m_pIB = nullptr;
-	_uint							m_iStride = 0;
-	_uint							m_iNumVertices = 0;
-	_uint							m_iNumPrimitive = 0;
-	_uint							m_iIndicesStride = 0;
-	_uint							m_iNumIndices = 0;
-	_uint							m_iNumVertexBuffers = 0;
-	DXGI_FORMAT						m_eIndexFormat;
-	D3D11_PRIMITIVE_TOPOLOGY		m_eToplogy;
+//public:
+//	void DebugRendering();
+//private:
+//	HRESULT Create_VertexBuffer();
+//	HRESULT Create_IndexBuffer();
+//	HRESULT SetUp_Vertices();
+//private:
+//	D3D11_BUFFER_DESC				m_BufferDesc;
+//	D3D11_SUBRESOURCE_DATA			m_SubResourceData;
+//	ComPtr<ID3D11Buffer> m_pVB = nullptr;
+//	ComPtr<ID3D11Buffer> m_pIB = nullptr;
+//	_uint							m_iStride = 0;
+//	_uint							m_iNumVertices = 0;
+//	_uint							m_iNumPrimitive = 0;
+//	_uint							m_iIndicesStride = 0;
+//	_uint							m_iNumIndices = 0;
+//	_uint							m_iNumVertexBuffers = 0;
+//	DXGI_FORMAT						m_eIndexFormat;
+//	D3D11_PRIMITIVE_TOPOLOGY		m_eToplogy;
 #endif // _DEBUG
 
 private:

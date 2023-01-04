@@ -168,12 +168,14 @@ void CWindow_Tile::Tick()
 		}
 	}
 #ifdef _DEBUG
+#ifdef DEBUGRENDER
 
 
 	if (m_pCurLayer)
 	{
 		m_pCurLayer->DebugTick();
 	}
+#endif // _DEBUG
 #endif // _DEBUG
 }
 
@@ -316,6 +318,47 @@ HRESULT CWindow_Tile::Render()
 					}
 				}
 				ImGui::EndCombo();
+			}
+			if (ImGui::CollapsingHeader("For_Create"))
+			{
+				if (ImGui::Button("ResetNeighbor"))
+				{
+					if (m_pCurLayer)
+					{
+						m_pCurLayer->Reset_Neighbor();
+					}
+				}
+				if (ImGui::Button("SetUp_CellList"))
+				{
+					if (m_pCurLayer)
+					{
+						m_pCurLayer->SetUp_CellList();
+					}
+				}
+			}
+			if (ImGui::CollapsingHeader("For_Load")) 
+			{
+				if (ImGui::Button("SetUp_Neighvor"))
+				{
+					if (m_pCurLayer)
+					{
+						m_pCurLayer->SetUp_Neighbor(m_pLayers);
+					}
+				}
+			}
+			if (ImGui::Button("SetUp_Node"))
+			{
+				if (m_pCurLayer)
+				{
+					m_pCurLayer->SetUp_Nodes();
+				}
+			}
+			if (ImGui::Button("SetUp_Visiblity"))
+			{
+				if (m_pCurLayer)
+				{
+					m_pCurLayer->SetUp_Visibility();
+				}
 			}
 		}
 
@@ -1229,7 +1272,7 @@ void CWindow_Tile::Save_AllLayer(string strKey)
 		strSavePath += CFunctor::To_Wstring(strKey);
 		strSavePath += L"_";
 		strSavePath += to_wstring(Index);
-		strSavePath += L".bin";
+		strSavePath += L"/";
 
 		wstring Name = CFunctor::To_Wstring(strKey);
 		Name += L"_";
@@ -1237,7 +1280,7 @@ void CWindow_Tile::Save_AllLayer(string strKey)
 
 		Layers.second->Set_DebugName(Name);
 
-		Layers.second->Save(strSavePath);
+		Layers.second->Save(strSavePath, Name);
 		Index++;
 	}
 }
@@ -1248,9 +1291,20 @@ void CWindow_Tile::Load_All(string strKey)
 
 void CWindow_Tile::Load_AllLayer(string strKey)
 {
+	/*string strPath = m_CellDataDirectory;
+	strPath += "/";
+	strPath += strKey;
+	strPath += "/";*/
+	string strPath = strKey;//CellData/Map_Paden
+	if (!filesystem::exists(strPath))
+	{
+		return;
+	}
+
 	for (auto& Layer : m_pLayers)
 		SAFE_DELETE(Layer.second);
 	m_pLayers.clear();
+
 
 	for (filesystem::directory_iterator FileIter(strKey);
 		FileIter != filesystem::end(FileIter); ++FileIter)
@@ -1258,29 +1312,33 @@ void CWindow_Tile::Load_AllLayer(string strKey)
 		const filesystem::directory_entry& entry = *FileIter;
 
 		wstring wstrPath = entry.path().relative_path();
+		//CellData/Map_Paden/Map_Paden_0
 		string strFullPath;
 		strFullPath.assign(wstrPath.begin(), wstrPath.end());
 
-		_int iFind = (_int)strFullPath.rfind("\\") + 1;
-		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
-
-		if (!entry.is_directory())
+		_int iFind = (_int)strFullPath.rfind("\\");
+		string strFileName = strFullPath.substr(iFind + 1, strFullPath.length());
+		if (entry.is_directory())
 		{
-			_int iFindExt = (int)strFileName.rfind(".") + 1;
-			string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
-			strFileName = strFileName.substr(0, iFindExt);
-
-			CCellLayer* pLayer = CCellLayer::Create(wstrPath);
-			pLayer->Set_DebugName(CFunctor::To_Wstring(strFileName));
+			//_int iFindExt = (int)strFileName.rfind(".") + 1;
+			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			//strFileName = strFileName.substr(0, iFindExt);
+			
+			CCellLayer* pLayer = CCellLayer::Create(wstrPath, CFunctor::To_Wstring(strFileName));
+			//pLayer->Set_DebugName(CFunctor::To_Wstring(strFileName));
 
 			m_pLayers.emplace(pLayer->Get_MinHeight(), pLayer);
 		}
 	}
 
-	for (auto& Layers : m_pLayers)
-	{
-		Layers.second->SetUp_Neighbor(m_pLayers);
-	}
+	//for (auto& Layers : m_pLayers)
+	//{
+	//	Layers.second->SetUp_Neighbor(m_pLayers);
+	//	//노드 설정
+	//	Layers.second->SetUp_Nodes();
+	//	//가시성 설정
+	//	Layers.second->SetUp_Visibility();
+	//}
 }
 
 void CWindow_Tile::On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos)
@@ -1312,7 +1370,8 @@ void CWindow_Tile::On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos, _f
 			return;
 		for (auto& Value : pCellList) 
 		{
-			Value->Set_Flags(m_iAttributeArray[m_iAttrubuteIndex].second);
+			if(Value)
+				Value->Set_Flags(m_iAttributeArray[m_iAttrubuteIndex].second);
 		}
 	}
 }

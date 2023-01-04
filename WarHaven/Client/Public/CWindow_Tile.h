@@ -63,7 +63,8 @@ private:
 private:	/*세이브 로드 관련 변수..*/
 	//D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Data\MapData\TileData
 	string m_DataDirectory = "../Bin/Data/MapData/TileData";
-	string m_CellDataDirectory = "../Bin/Data/MapData/CellData";
+	string m_CellDataDirectory = "../Bin/Data/GameSystem/CellData";
+	string m_TempCellDataDirectory = "../Bin/Data/MapData/CellData";
 	vector<tuple<string, string>> m_FileDatas;
 	_uint m_iFileDataIndex = 0;
 	

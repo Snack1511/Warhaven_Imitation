@@ -309,7 +309,11 @@ private:
 
 private:
 	class CUI_Trail* m_pUI_Trail = nullptr;
-
+public:
+	void Make_BestRoute(_float4 vPosition);
+	list<_float4>& Get_CurRoute() { return m_CurRoute; }
+private:
+	list<_float4> m_CurRoute;
 
 private:
 	virtual void My_Tick() override;

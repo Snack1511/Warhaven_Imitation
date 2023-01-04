@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine_Defines.h"
+#define DEBUGRENDER
 BEGIN(Engine)
 class CCell;
 class CNode;
@@ -17,13 +18,23 @@ public:
 	virtual ~CCellLayer();
 public:
 	static CCellLayer* Create(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _float fHeightMin, _float fHeightMax, _int BaseCellAttribute = 4);
-	static CCellLayer* Create(wstring strFilePath);
+	static CCellLayer* Create(wstring strFolderPath, wstring strFolderName);
 public:
-	void Save(wstring strPath);
+	void Save(wstring strForlderPath, wstring strPath);
+	void Save_Info(wstring strInfoPath);
+	void Save_Attribute(wstring strAttributePath);
+	void Save_NeighborIndices(wstring strNeighborIndicesPath);
+	void Save_NeighborKeys(wstring strNeighborKeysPath);
+
 public:
+	void Reset_Neighbor();
 	//셀 및 노드 설정
 	HRESULT SetUp_Cells(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _int iAttribute);
 	HRESULT SetUp_Cells(wstring strFilePath);
+	HRESULT Load_LayerInfo(wstring strFilePath);
+	HRESULT Load_LayerAttribute(wstring strFilePath);
+	HRESULT Load_LayerNeighborKeys(wstring strFilePath);
+	HRESULT Load_LayerNeighborIndices(wstring strFilePath);
 
 	//이웃 설정
 	HRESULT SetUp_Neighbor();
@@ -32,8 +43,12 @@ public:
 	HRESULT SetUp_Nodes();
 	//가시성 설정
 	HRESULT SetUp_Visibility();
+	void Compare_Link(list<pair<CNode*, CNode*>>& LinkList, list<pair<CNode*, CNode*>>::iterator CmpIter);
 	void Set_DebugName(wstring strName) { m_strDebugName = strName; }
+	HRESULT Make_Cells(_byte* ArrAttribute);
+	HRESULT SetUp_CellList();
 #ifdef _DEBUG
+#ifdef DEBUGRENDER
 public:
 	HRESULT SetUp_Vertex();
 	HRESULT SetUp_Instancing();
@@ -67,8 +82,10 @@ private:
 	DXGI_FORMAT					m_eIndexFormat;
 	D3D_PRIMITIVE_TOPOLOGY		m_eToplogy;
 #endif
+#endif
 public:
 	_bool Check_BlockedVisibility(_float2 v2LinkStart, _float2 v2LinkEnd, _float2 v2CheckStart, _float2 v2CheckEnd);
+	_bool Check_NearPoint(_float4 vLineStart, _float4 vLineEnd, _float4 vPosition);
 	CellList Get_BestRoute(CNode* pStartNode, CNode* pEndNode);
 	void Add_Link(CNode* pStart, CNode* pEnd);
 	void Add_SearchLink(CNode* pStart, CNode* pEnd);

@@ -1051,6 +1051,7 @@ void CPlayer::Change_NearPath()
 	if (nullptr == pPath)
 		return;
 	Set_NewPath(pPath->Clone());
+	Make_BestRoute(m_pCurPath->Get_vecPositions()[0]);
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
@@ -1263,6 +1264,14 @@ void CPlayer::Update_KDA()
 			m_tKdaStat.iKillStreak = 0;
 		}
 	}
+}
+
+void CPlayer::Make_BestRoute(_float4 vPosition)
+{	
+	m_CurRoute.clear();
+	m_CurRoute = m_pCurrentUnit->Get_NaviCom()->
+		Get_BestRoute(CGameSystem::Get_Instance()->Get_CellLayer(),
+			Get_WorldPos(), vPosition);
 }
 
 void CPlayer::On_AbleHero()

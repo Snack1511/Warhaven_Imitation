@@ -73,6 +73,7 @@ private:
 private:
     void Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController);
     void Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController);
+    void Callback_Tick_MakeRoute(CPlayer* pPlayer, CAIController* pAIController);
 private:
     _bool RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter);
 private:

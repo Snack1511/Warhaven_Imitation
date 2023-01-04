@@ -169,6 +169,8 @@ list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _floa
 	
 	for (auto value : GoalList)
 	{
+		if (nullptr == value.second)
+			continue;
 		m_pEndNode->Set_NodePosition(value.first);
 
 		CCellLayer::CellList List = value.second->Get_BestRoute(m_pStartNode, m_pEndNode);
@@ -433,14 +435,18 @@ HRESULT CNavigation::Initialize()
 void CNavigation::Start()
 {
 	__super::Start();
-	m_pPhysicsCom = GET_COMPONENT_FROM(m_pOwner, CPhysics);
+	//m_pPhysicsCom = GET_COMPONENT_FROM(m_pOwner, CPhysics);
 
-	if (!m_pPhysicsCom)
-		Call_MsgBox(L"No Physics In Navi");
+	//if (!m_pPhysicsCom)
+	//	Call_MsgBox(L"No Physics In Navi");
 }
 
 void CNavigation::Tick()
 {
+	if (nullptr == m_pPhysicsCom)
+		return;
+	if (nullptr == m_pCurCell)
+		return;
 	m_bOrigin = false;
 	_float fSpeed = m_pPhysicsCom->Calculate_Speed();
 	_float fFallPower = m_pPhysicsCom->Calculate_FreeFall();
@@ -511,6 +517,8 @@ void CNavigation::Tick()
 
 void CNavigation::Late_Tick()
 {
+	if (nullptr == m_pPhysicsCom)
+		return;
 	m_pPhysicsCom->Late_Tick();
 }
 

@@ -69,9 +69,13 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 
 #endif
 
+
 	m_fLoadingFinish = 0.5f;
 
 	/* GameSystem */
+	if (FAILED(CGameSystem::Get_Instance()->SetUp_CellLayer(wstring(TEXT("Map_Paden")))))
+		return E_FAIL;
+
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyPaden(m_vecGameObjects)))
 		return E_FAIL;
 

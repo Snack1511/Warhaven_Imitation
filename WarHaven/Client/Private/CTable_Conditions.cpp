@@ -102,6 +102,7 @@ HRESULT CTable_Conditions::SetUp_BehaviorTick()
     Add_BehaviorTick(wstring(L"EmptyBehaviorTick"), EmptyBehaviorTick);
     Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"), Callback_Tick_UpdatePatrol);
     Add_BehaviorTick(wstring(L"Callback_Tick_Check_NaviTime"), Callback_Tick_Check_NaviTime);
+    Add_BehaviorTick(wstring(L"Callback_Tick_MakeRoute"), Callback_Tick_MakeRoute);
 
     return S_OK;
 }
@@ -594,6 +595,27 @@ void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIContro
         pPersonality->Init_RemainTime(eBehaviorType::ePathNavigation);
     }
 
+}
+
+void CTable_Conditions::Callback_Tick_MakeRoute(CPlayer* pPlayer, CAIController* pAIController)
+{
+    if (!pPlayer->Get_CurRoute().empty())
+        return;
+
+    eBehaviorType eType = pAIController->Get_CurBehavior()->Get_BehaviorType();
+    _float4 vPosition;
+    switch (eType)
+    {
+        case eBehaviorType::ePathNavigation:
+            vPosition = pPlayer->Get_CurPath()->Get_vecPositions()[0];
+            break;
+        case eBehaviorType::eAttack:
+        case eBehaviorType::eResurrect:
+        case eBehaviorType::eFollow:
+            vPosition = pPlayer->Get_TargetPlayer()->Get_WorldPos();
+    }
+
+    pPlayer->Make_BestRoute(vPosition);
 }
 
 _bool CTable_Conditions::RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter)
