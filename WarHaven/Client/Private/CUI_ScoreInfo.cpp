@@ -55,13 +55,25 @@ void CUI_ScoreInfo::OnEnable()
 	{
 		m_pInfo[i]->SetActive(true);
 	}
+
+	if (pOwnerPlayer->IsMainPlayer())
+	{
+		m_pInfo[Info_Num]->SetActive(true);
+	}
+	else if (pOwnerPlayer->Get_Team()->IsMainPlayerTeam())
+	{
+		if (pOwnerPlayer->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+		{
+			m_pInfo[Info_Num]->SetActive(true);
+		}
+	}
 }
 
 void CUI_ScoreInfo::OnDisable()
 {
 	__super::OnDisable();
 
-	for (int i = 0; i < Info_Num; ++i)
+	for (int i = 0; i < Info_End; ++i)
 	{
 		m_pInfo[i]->SetActive(false);
 	}
@@ -136,7 +148,9 @@ void CUI_ScoreInfo::Init_Info()
 
 void CUI_ScoreInfo::Set_Player(CPlayer* pPlayer)
 {
-	if (pPlayer->IsMainPlayer())
+	pOwnerPlayer = pPlayer;
+
+	if (pOwnerPlayer->IsMainPlayer())
 	{
 		m_pInfo[Info_BG]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 		m_pInfo[Info_ClassName]->Set_Color(_float4(0.f, 0.f, 0.f, 1.f));
@@ -144,16 +158,15 @@ void CUI_ScoreInfo::Set_Player(CPlayer* pPlayer)
 		m_pInfo[Info_Rank]->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
 		m_pInfo[Info_Kill]->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
 	}
-
-	if (pPlayer->Get_Team()->IsMainPlayerTeam())
+	else if (pOwnerPlayer->Get_Team()->IsMainPlayerTeam())
 	{
-		if (pPlayer->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+		if (pOwnerPlayer->Get_OutlineType() == CPlayer::eSQUADMEMBER)
 		{
 			m_pInfo[Info_BG]->Set_Color(_float4(0.2f, 0.5f, 0.2f, 1.f));
 		}
 	}
 
-	CPlayerInfo* pPlayerInfo = pPlayer->Get_PlayerInfo();
+	CPlayerInfo* pPlayerInfo = pOwnerPlayer->Get_PlayerInfo();
 
 	_uint iClassNum = pPlayerInfo->Choose_Character();
 	wstring wstrPlayerName = pPlayerInfo->Get_PlayerName();
@@ -161,7 +174,7 @@ void CUI_ScoreInfo::Set_Player(CPlayer* pPlayer)
 	m_pInfo[Info_ClassName]->Set_TextureIndex(iClassNum);
 	m_pInfo[Info_ClassName]->Set_FontText(wstrPlayerName);
 
-	m_iKillCnt = pPlayer->Get_KDA().iTotalKillCount;
+	m_iKillCnt = pOwnerPlayer->Get_KDA().iTotalKillCount;
 
 	_tchar  szTemp[MAX_STR] = {};
 	swprintf_s(szTemp, TEXT("%0d"), m_iKillCnt);
