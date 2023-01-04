@@ -44,6 +44,8 @@ private:
 	CUI_Object* m_pSquard[Squad_End];
 	CUI_Object* m_pArrSquard[4][Squad_End];
 
+	// 점수 사망 추가
+
 private:
 	map<Team, list<CUI_ScoreInfo*>> m_pScoreInfoMap;
 

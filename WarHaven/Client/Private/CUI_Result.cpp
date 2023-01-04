@@ -143,6 +143,133 @@ void CUI_Result::OnDisable()
 	SetActive_Result(false);
 }
 
+void CUI_Result::Create_ResultScoreBG()
+{
+	for (int i = 0; i < Score_End; ++i)
+	{
+		m_pResultScoreBG[i] = CUI_Object::Create();
+
+		m_pResultScoreBG[i]->Set_Sort(0.19f);
+
+		// 원 추가
+
+		switch (i)
+		{
+		case Score_BG:
+			m_pResultScoreBG[i]->Set_Sort(0.2f);
+			m_pResultScoreBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_ScoreBoardBg.dds"));
+			m_pResultScoreBG[i]->Set_Scale(1280.f, 720.f);
+			m_pResultScoreBG[i]->Set_Color(_float4(0.3f, 0.3f, 0.3f, 1.f));
+			break;
+
+		case Score_Result:
+			m_pResultScoreBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text0_Win.png"));
+			GET_COMPONENT_FROM(m_pResultScoreBG[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text1_Lose.png"));
+			m_pResultScoreBG[i]->Set_Scale(222.f, 130.f);
+			m_pResultScoreBG[i]->Set_PosY(300.f);
+			m_pResultScoreBG[i]->Set_Color(m_vColorGold);
+			break;
+
+		case Score_Text:
+			m_pResultScoreBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+			m_pResultScoreBG[i]->Set_Scale(1280.f, 720.f);
+			m_pResultScoreBG[i]->Set_PosY(265.f);
+
+			m_pResultScoreBG[i]->Set_FontRender(true);
+			m_pResultScoreBG[i]->Set_FontStyle(true);
+			m_pResultScoreBG[i]->Set_FontCenter(true);
+			m_pResultScoreBG[i]->Set_FontOffset(3.f, 3.f);
+			m_pResultScoreBG[i]->Set_FontScale(0.3f);
+			m_pResultScoreBG[i]->Set_FontColor(m_vColorGold);
+			break;
+		}
+	}
+}
+
+void CUI_Result::Create_ResultMVP()
+{
+	// 디졸브로 원래 이미지 지우고 뒤에 이미지 등장
+	// 뒤에 글로우 확대 
+
+	for (int i = 0; i < MVP_End; ++i)
+	{
+		m_pResultMVP[i] = CUI_Object::Create();
+
+		m_pResultMVP[i]->Set_Sort(0.19f);
+		m_pResultMVP[i]->Set_PosX(-450.f);
+
+		switch (i)
+		{
+		case MVP_Text:
+			m_pResultScoreBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+			m_pResultMVP[i]->Set_PosY(-225.f);
+
+			m_pResultMVP[i]->Set_FontRender(true);
+			m_pResultMVP[i]->Set_FontStyle(true);
+			m_pResultMVP[i]->Set_FontCenter(true);
+			m_pResultMVP[i]->Set_FontScale(0.5f);
+			m_pResultMVP[i]->Set_FontText(TEXT("최고의 플레이어"));
+			break;
+
+		case MVP_Player:
+			m_pResultMVP[i]->Set_Scale(178.f, 400.f);
+
+			m_pResultMVP[i]->Set_FontRender(true);
+			m_pResultMVP[i]->Set_FontStyle(true);
+			m_pResultMVP[i]->Set_FontCenter(true);
+			m_pResultMVP[i]->Set_FontScale(0.5f);
+			m_pResultScoreBG[i]->Set_FontOffset(0.f, 230.f);
+			break;
+		}
+	}
+}
+
+void CUI_Result::Create_ResultScoreList()
+{
+	for (int i = 0; i < List_Dead; ++i)
+	{
+		m_pResultScoreList[i] = CUI_Object::Create();
+
+		m_pResultScoreList[i]->Set_Sort(0.19f);
+		// Blue		100
+		// Team		-285
+		// Score	-50
+		// Kill		25
+		// Dead		85
+		// Red		350
+
+		m_pResultScoreList[i]->Set_Scale(40.f);
+
+		// 라인 추가
+
+		switch (i)
+		{
+		case List_BG:
+			m_pResultScoreList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_GradientSmall3.dds"));
+			m_pResultScoreList[i]->Set_Scale(400.f);
+			m_pResultScoreList[i]->Set_IsSlice(true);
+			m_pResultScoreList[i]->Set_SliceRatio(_float4(0.f, 0.f, 0.f, 0.9f));
+			break;
+
+		case List_Team:
+			m_pResultScoreList[i]->Set_FontRender(true);
+			m_pResultScoreList[i]->Set_FontStyle(true);
+			m_pResultScoreList[i]->Set_FontScale(0.4f);
+			m_pResultScoreList[i]->Set_FontOffset(35.f, -20.f);
+			break;
+
+		case List_Score:
+			break;
+
+		case List_Kill:
+			break;
+
+		case List_Dead:
+			break;
+		}
+	}
+}
+
 void CUI_Result::Create_ResultUI()
 {
 	for (int i = 0; i < Result_End; ++i)

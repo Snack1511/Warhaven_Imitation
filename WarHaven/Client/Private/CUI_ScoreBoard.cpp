@@ -209,9 +209,11 @@ void CUI_ScoreBoard::Create_ScorePlayerList()
 			break;
 
 		case List_BG:
-			m_pSocrePlayerList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_GradientSmall3.png"));
+			m_pSocrePlayerList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_GradientSmall3.dds"));
 			m_pSocrePlayerList[i]->Set_PosY(0.f);
 			m_pSocrePlayerList[i]->Set_Scale(200.f, 375.f);
+			m_pSquard[i]->Set_IsSlice(true);
+			m_pSquard[i]->Set_SliceRatio(_float4(0.f, 0.f, 0.f, 0.9f));
 			break;
 		}
 	}
