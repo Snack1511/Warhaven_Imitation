@@ -37,6 +37,10 @@ private:
 	CUI_Object* m_pSocrePlayerList[List_End];
 	CUI_Object* m_pArrSocrePlayerList[Team_End][List_End];
 
+	enum Squad { Squad_BG, Squad_Port, Squad_Num, Squad_End };
+	CUI_Object* m_pSquard[Squad_End];
+	CUI_Object* m_pArrSquard[4][Squad_End];
+
 	//enum Score_PlayerInfo { Info_BG, Info_Rank, Info_ClassName, Info_Kill, Info_End };
 	//CUI_Object* m_pPlayerInfo[Info_End];
 
@@ -53,9 +57,13 @@ private:
 private:
 	void Create_ScoreMiniMap();
 	void Create_ScorePlayerList();
+	void Create_Squad();
 
 	void Init_ScoreMiniMap();
 	void Init_ScorePlayerList();
+	void Init_Squad();
+
+	void Set_Squad();
 };
 
 END

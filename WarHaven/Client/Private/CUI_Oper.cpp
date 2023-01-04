@@ -16,7 +16,6 @@
 #include "CUnit.h"
 #include "Transform.h"
 #include "Functor.h"
-#include "CSquad.h"
 
 CUI_Oper::CUI_Oper()
 {

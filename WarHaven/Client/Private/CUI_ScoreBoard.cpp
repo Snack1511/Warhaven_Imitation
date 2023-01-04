@@ -2,6 +2,11 @@
 #include "CUI_Object.h"
 #include "GameInstance.h"
 #include "Loading_Manager.h"
+#include "Texture.h"
+#include "CPlayer.h"
+#include "CSquad.h"
+#include "CUnit.h"
+#include "CUser.h"
 
 CUI_ScoreBoard::CUI_ScoreBoard()
 {
@@ -15,6 +20,7 @@ HRESULT CUI_ScoreBoard::Initialize_Prototype()
 {
 	Create_ScoreMiniMap();
 	Create_ScorePlayerList();
+	Create_Squad();
 
 	return S_OK;
 }
@@ -27,6 +33,9 @@ HRESULT CUI_ScoreBoard::Start()
 
 	Init_ScoreMiniMap();
 	Init_ScorePlayerList();
+	Init_Squad();
+
+	Set_Squad();
 
 	return S_OK;
 }
@@ -135,16 +144,58 @@ void CUI_ScoreBoard::Create_ScorePlayerList()
 
 		case List_LineGlow:
 			m_pSocrePlayerList[i]->Set_UIShaderFlag(SH_UI_HARDBLOOM);
-			m_pSocrePlayerList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_PopupBlur.dds"));
 			m_pSocrePlayerList[i]->Set_Color(m_vColorGold);
-			m_pSocrePlayerList[i]->Set_PosY(185.f);
-			m_pSocrePlayerList[i]->Set_Scale(150.f, 10.f);
+			m_pSocrePlayerList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_PopupBlur.dds"));
+			m_pSocrePlayerList[i]->Set_PosY(184.f);
+			m_pSocrePlayerList[i]->Set_Sort(0.35f);
+			m_pSocrePlayerList[i]->Set_Scale(150.f, 15.f);
 			break;
 
 		case List_BG:
 			m_pSocrePlayerList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_GradientSmall3.png"));
 			m_pSocrePlayerList[i]->Set_PosY(0.f);
 			m_pSocrePlayerList[i]->Set_Scale(200.f, 375.f);
+			break;
+		}
+	}
+}
+
+void CUI_ScoreBoard::Create_Squad()
+{
+	for (int i = 0; i < Squad_End; ++i)
+	{
+		m_pSquard[i] = CUI_Object::Create();
+
+		m_pSquard[i]->Set_PosY(-250.f);
+
+		switch (i)
+		{
+		case Squad_BG:
+			m_pSquard[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Portrait/T_RoundPortraitBGSmall.dds"));
+			m_pSquard[i]->Set_Sort(0.35f);
+			m_pSquard[i]->Set_Scale(55.f);
+			break;
+
+		case Squad_Port:
+			GET_COMPONENT_FROM(m_pSquard[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pSquard[i], "/HUD/Portrait", "Class");
+
+			m_pSquard[i]->Set_Sort(0.34f);
+			m_pSquard[i]->Set_Scale(55.f);
+
+			m_pSquard[i]->Set_FontRender(true);
+			m_pSquard[i]->Set_FontCenter(true);
+			m_pSquard[i]->Set_FontOffset(5.f, 50.f);
+			m_pSquard[i]->Set_FontScale(0.2f);
+			break;
+
+		case Squad_Num:
+			GET_COMPONENT_FROM(m_pSquard[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pSquard[i], "/Oper", "Num");
+
+			m_pSquard[i]->Set_Sort(0.33f);
+			m_pSquard[i]->Set_Scale(16.f);
+			m_pSquard[i]->Set_PosY(-265.f);
 			break;
 		}
 	}
@@ -220,4 +271,52 @@ void CUI_ScoreBoard::Init_ScorePlayerList()
 	m_pArrSocrePlayerList[Team_Red][List_TeamIcon]->Set_FontText(TEXT("Àû±º"));
 
 	m_pArrSocrePlayerList[Team_Red][List_KillIcon]->Set_PosX(fRedPosX + 85.f);
+}
+
+void CUI_ScoreBoard::Init_Squad()
+{
+	for (int i = 0; i < Squad_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pSquard[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSquard[i]);
+
+		for (int j = 0; j < 4; ++j)
+		{
+			m_pArrSquard[j][i] = m_pSquard[i]->Clone();
+
+			_float fPosX = -550.f + (j * 115.f);
+			m_pArrSquard[j][i]->Set_PosX(fPosX);
+
+			switch (i)
+			{
+			case Squad_Num:
+				m_pArrSquard[j][i]->Set_PosX(fPosX - 20.f);
+				break;
+			}
+
+			CREATE_GAMEOBJECT(m_pArrSquard[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrSquard[j][i]);
+
+			m_pScoreList.push_back(m_pArrSquard[j][i]);
+		}
+	}
+}
+
+void CUI_ScoreBoard::Set_Squad()
+{
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+
+	auto iter = mapPlayers.begin();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		_uint iTextureNum = iter->second->Get_PlayerInfo()->Choose_Character();
+		wstring wstrPlayerName = iter->second->Get_PlayerName();
+
+		m_pArrSquard[i][Squad_Num]->Set_TextureIndex(i);
+		m_pArrSquard[i][Squad_Port]->Set_TextureIndex(iTextureNum);
+		m_pArrSquard[i][Squad_Port]->Set_FontText(wstrPlayerName);
+
+		++iter;
+	}
 }

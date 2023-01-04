@@ -558,7 +558,7 @@ void CUI_MainPlay::Create_LockImg()
 		CREATE_GAMEOBJECT(m_pLockBtn[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pLockBtn[i]);
 
-		m_pLockBtn[i]->Set_Sort(0.8f);
+		m_pLockBtn[i]->Set_Sort(0.3f);
 	}
 
 	m_pLockBtn[0]->Set_Pos(m_pStageSelectBtn[1]->Get_PosX(), m_pStageSelectBtn[1]->Get_PosY());
