@@ -1379,6 +1379,8 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CHARGE;
 			if (ImGui::Selectable("CANNON_BONE", &bCurveSelect[CANNON_BONE]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CANNON_BONE;
+			if (ImGui::Selectable("SHADOWSTEP", &bCurveSelect[SHADOWSTEP]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = SHADOWSTEP;
 
 
 			

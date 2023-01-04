@@ -1377,6 +1377,7 @@ namespace Client
 		CURVE_CHARGE,
 		CURVE_CIRCLE,
 		CANNON_BONE,
+		SHADOWSTEP,
 		CURVE_END,
 	};
 	enum class eBehaviorType

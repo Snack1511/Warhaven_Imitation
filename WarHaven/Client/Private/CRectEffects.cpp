@@ -1292,14 +1292,33 @@ void CRectEffects::Stick_RefBone()
 	if (CURVE_CHARGE == m_eCurveType)
 		return;
 
-	_float4 vPos = m_vOffsetPos;
+	_float4 vPos;
+	if (SHADOWSTEP == m_eCurveType)
+	{
+		vPos = ZERO_VECTOR;
+	}
+	else
+	{
+		vPos = m_vOffsetPos;
+	}
+	 
 	_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
-
 
 	vPos = vPos.MultiplyCoord(matBone);
 	m_pTransform->Set_World(WORLD_POS, vPos);
 
 	m_pTransform->Make_WorldMatrix(); 
+
+	if (SHADOWSTEP == m_eCurveType)
+	{
+		vPos = m_pTransform->Get_World(WORLD_POS);
+
+		_float4 vCam = GAMEINSTANCE->Get_CurCamLook();
+		vPos += vCam * m_vOffsetPos;
+		m_pTransform->Set_World(WORLD_POS, vPos);
+
+		m_pTransform->Make_WorldMatrix();
+	}
 }
 
 
