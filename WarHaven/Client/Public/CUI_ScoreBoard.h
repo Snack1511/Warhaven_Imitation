@@ -16,6 +16,9 @@ public:
 	virtual	HRESULT	Initialize_Prototype();
 	virtual HRESULT	Start();
 
+public:
+	void Get_ScoreInfo(CPlayer* pPlayer);
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -41,14 +44,10 @@ private:
 	CUI_Object* m_pSquard[Squad_End];
 	CUI_Object* m_pArrSquard[4][Squad_End];
 
-	//enum Score_PlayerInfo { Info_BG, Info_Rank, Info_ClassName, Info_Kill, Info_End };
-	//CUI_Object* m_pPlayerInfo[Info_End];
+private:
+	map<Team, list<CUI_ScoreInfo*>> m_pScoreInfoMap;
 
-	// BG : pos : (200, 20)
-	// Rank : scale : 0.2, offset : (3,3), bold, center, pos : (x - 85, 170)
-	// ClassName : scale : 0.2 offset : (15, -12), bold, pos : (x - 65), 170), scale : 16
-	// Kill Score : scale : 0.2, offset : (5, 3), bold, center, pos : (x + 85, 170)
-
+private:
 	_float4 m_vColorCircle = _float4(1.f, 1.f, 1.f, 0.1f);
 	_float4 m_vColorGold = _float4(0.773f, 0.714f, 0.596f, 1.f);
 	_float4 m_vColorBlue = _float4(0.f, 0.8f, 1.f, 0.1f);

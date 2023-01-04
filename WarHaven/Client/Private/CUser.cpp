@@ -48,6 +48,7 @@
 #include "CUI_Interact.h"
 #include "CUI_MiniMap.h"
 #include "CUI_ScoreBoard.h"
+#include "CUI_ScoreInfo.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -751,6 +752,14 @@ void CUser::Set_InteractText(wstring wstrText)
 void CUser::Set_InteractTarget(CGameObject* pInteractTarget)
 {
 	m_pInteractUI->Set_InteractTarget(pInteractTarget);
+}
+
+void CUser::Get_ScoreInfo(CPlayer* pPlayer)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Get_ScoreInfo(pPlayer);
+	}
 }
 
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)

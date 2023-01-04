@@ -7,6 +7,8 @@
 #include "CSquad.h"
 #include "CUnit.h"
 #include "CUser.h"
+#include "CTeamConnector.h"
+#include "CUI_ScoreInfo.h"
 
 CUI_ScoreBoard::CUI_ScoreBoard()
 {
@@ -37,12 +39,51 @@ HRESULT CUI_ScoreBoard::Start()
 
 	Set_Squad();
 
+	CTeamConnector* pTeam = CUser::Get_Instance()->Get_PlayerObejects()->Get_Team();
+	_bool IsMainTeam = pTeam->IsMainPlayerTeam();
+
+	pTeam->Get_SquadList();
+
 	return S_OK;
+}
+
+void CUI_ScoreBoard::Get_ScoreInfo(CPlayer* pPlayer)
+{
+	CUI_ScoreInfo* pScoreInfo = pPlayer->Get_ScoreInfo();
+
+	_bool IsMainTeam = pPlayer->Get_Team()->IsMainPlayerTeam();
+
+	_float fPosX = IsMainTeam ? 250.f : 475.f;
+	pScoreInfo->Set_PosX(fPosX);
+
+	Team eTeam = IsMainTeam ? Team_Blue : Team_Red;
+	auto pair = m_pScoreInfoMap.find(eTeam);
+	if (pair == m_pScoreInfoMap.end())
+	{
+		list<CUI_ScoreInfo*> pScoreInfoList;
+		pScoreInfoList.push_back(pScoreInfo);
+		m_pScoreInfoMap.emplace(eTeam, pScoreInfoList);
+	}
+	else
+	{
+		pair->second.push_back(pScoreInfo);
+	}
 }
 
 void CUI_ScoreBoard::My_Tick()
 {
 	__super::My_Tick();
+
+	for (auto& pair : m_pScoreInfoMap)
+	{
+		auto iter = pair.second.begin();
+		for (int i = 0; i < pair.second.size(); ++i)
+		{
+			(*iter)->Set_Rank(i);
+
+			++iter;
+		}
+	}
 }
 
 void CUI_ScoreBoard::My_LateTick()
@@ -56,6 +97,14 @@ void CUI_ScoreBoard::OnEnable()
 
 	for (auto& iter : m_pScoreList)
 		iter->SetActive(true);
+
+	for (auto& pair : m_pScoreInfoMap)
+	{
+		for (auto& iter : pair.second)
+		{
+			iter->SetActive(true);
+		}
+	}
 }
 
 void CUI_ScoreBoard::OnDisable()
@@ -64,6 +113,14 @@ void CUI_ScoreBoard::OnDisable()
 
 	for (auto& iter : m_pScoreList)
 		iter->SetActive(false);
+
+	for (auto& pair : m_pScoreInfoMap)
+	{
+		for (auto& iter : pair.second)
+		{
+			iter->SetActive(false);
+		}
+	}
 }
 
 void CUI_ScoreBoard::Create_ScoreMiniMap()
@@ -290,7 +347,7 @@ void CUI_ScoreBoard::Init_Squad()
 			switch (i)
 			{
 			case Squad_Num:
-				m_pArrSquard[j][i]->Set_PosX(fPosX - 20.f);
+				m_pArrSquard[j][i]->Set_PosX(fPosX + 20.f);
 				break;
 			}
 

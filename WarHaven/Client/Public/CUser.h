@@ -37,6 +37,7 @@ class CUI_Revive;
 class CUI_Interact;
 class CUI_MiniMap;
 class CUI_ScoreBoard;
+class CUI_ScoreInfo;
 
 class CTeamConnector;
 
@@ -199,6 +200,9 @@ public:	// 상호작용
 	void Set_InteractText(wstring wstrText);
 	void Set_InteractTarget(CGameObject* pInteractTarget);
 
+public: // 플레이어 KDA
+	void Get_ScoreInfo(CPlayer* pPlayer);
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -243,7 +247,6 @@ private:
 	list<CUI_KillName*> m_pKillNameList;
 	CUI_KillName* m_pKillName[5];
 	_uint m_iKillNameIdx = 0;
-
 
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;

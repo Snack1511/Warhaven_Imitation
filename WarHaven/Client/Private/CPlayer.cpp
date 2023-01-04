@@ -71,6 +71,7 @@
 
 #include "CUI_HUD.h"
 #include "CUI_Skill.h"
+#include "CUI_ScoreInfo.h"
 
 #pragma region AI 추가용
 #include "CAIController.h"
@@ -739,6 +740,17 @@ HRESULT CPlayer::Start()
 	// 미니맵에 트랜스폼 할당
 	CUser::Get_Instance()->Set_MiniMapPlayer(this);
 	CUser::Get_Instance()->Set_OperPlayer(this);
+
+	if (!m_pScoreInfo)
+	{
+		m_pScoreInfo = CUI_ScoreInfo::Create();
+		m_pScoreInfo->Set_Player(this);
+
+		CUser::Get_Instance()->Get_ScoreInfo(this);
+
+		CREATE_GAMEOBJECT(m_pScoreInfo, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pScoreInfo);
+	}
 
 	if (m_pCurrentUnit)
 	{
