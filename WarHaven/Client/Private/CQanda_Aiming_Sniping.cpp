@@ -44,20 +44,13 @@ HRESULT CQanda_Aiming_Sniping::Initialize()
 
 	m_vecAdjState.push_back(STATE_ATTACK_SHOOT_SNIPING_QANDA);
 
+
+
 	return S_OK;
 }
 
 void CQanda_Aiming_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	list<CGameObject*> TargetObjectList = pOwner->Get_MultipleFrustumObject();
-
-	for (auto& elem : TargetObjectList)
-	{
-		CGameObject* pProjectile = static_cast<CUnit_Qanda*>(pOwner)->Create_Meteor();
-		static_cast<CProjectile*>(pProjectile)->Set_TargetUnit(static_cast<CUnit*>(elem));
-	}
-		
-
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
@@ -82,8 +75,7 @@ STATE_TYPE CQanda_Aiming_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_Aiming_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	if(!m_SnipingTarget.empty())
-		m_SnipingTarget.clear();
+
 }
 
 STATE_TYPE CQanda_Aiming_Sniping::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -98,3 +90,7 @@ STATE_TYPE CQanda_Aiming_Sniping::Check_Condition(CUnit* pOwner, CAnimator* pAni
 
 	return STATE_END;
 }
+
+
+
+

@@ -156,18 +156,18 @@ HRESULT CShootAttack_Qanda::Initialize()
 void CShootAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
 	if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP1)
-		m_fDamagePumping = 1.f;
+		m_fDamagePumping = 1.3f;
 	else if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP2)
-		m_fDamagePumping = 1.2f;
+		m_fDamagePumping = 1.6f;
 	else if (pOwner->Get_Status().eChargeType == CUnit::UNIT_CHARGESTEP3)
 	{
-		m_fDamagePumping = 1.5f;
+		m_fDamagePumping =	2.f;
 		m_iAnimIndex = 8;
 	}
 
 	if (ePrevType == STATE_ATTACK_BEGIN_SNIPING_QANDA ||
 		ePrevType == STATE_ATTACK_BEGIN_QANDA)
-		m_fDamagePumping = 0.7f;
+		m_fDamagePumping = 1.f;
 
 	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 

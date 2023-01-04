@@ -29,10 +29,10 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-	
+
 private:
 	_float				m_fCreateProjectileTime = 0.f;
-	list<CGameObject*>	m_SnipingTarget;
+
 };
 
 END

@@ -4,11 +4,14 @@
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "CColorController.h"
+#include "CProjectile.h"
+
 
 
 CQanda_Shoot_Sniping::CQanda_Shoot_Sniping()
@@ -60,12 +63,25 @@ HRESULT CQanda_Shoot_Sniping::Initialize()
 
 	m_fDamagePumping = 7.f;
 
+	Add_KeyFrame(30, 0);
+
 	// return __super::Initialize();
 	return S_OK;
 }
 
 void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	list<CGameObject*> TargetObjectList = pOwner->Get_MultipleFrustumObject();
+
+	m_SnipingTarget = TargetObjectList;
+
+	for (auto& elem : m_SnipingTarget)
+	{
+		CGameObject* pProjectile = static_cast<CUnit_Qanda*>(pOwner)->Create_Meteor();
+		static_cast<CProjectile*>(pProjectile)->Set_TargetUnit(static_cast<CUnit*>(elem));
+		m_Mateors.push_back(pProjectile);
+	}
+
 	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
@@ -79,6 +95,9 @@ void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 STATE_TYPE CQanda_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_IDLE_QANDA;
+
 	if (pAnimator->Get_CurAnimFrame() > 50)
 		m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
 
@@ -92,7 +111,19 @@ STATE_TYPE CQanda_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_Shoot_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Enable_FlyAttackCollider(false);
+
+	if (!m_bAttackTrigger)
+	{
+		for (auto& elem : m_Mateors)
+			static_cast<CProjectile*>(elem)->On_ChangePhase(CProjectile::eChase);
+	}
+
+	if (!m_SnipingTarget.empty())
+		m_SnipingTarget.clear();
+
+	if (!m_Mateors.empty())
+		m_Mateors.clear();
+
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
 
@@ -112,22 +143,15 @@ void CQanda_Shoot_Sniping::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	switch (iSequence)
 	{
 	case 0:
-		pOwner->Shake_Camera(pOwner->Get_Status().fCamPower , pOwner->Get_Status().fCamTime);
+
+		for (auto& elem : m_Mateors)
+			static_cast<CProjectile*>(elem)->On_ChangePhase(CProjectile::eChase);
+
 		m_bAttackTrigger = true;
-		pOwner->Enable_FlyAttackCollider(true);
-		break;
 
-	case 1:
-		m_bAttackTrigger = false;
-		m_bKeyInputable = true;
-		pOwner->Enable_FlyAttackCollider(false);
 		break;
 
 
-
-	case 2:
-		
-		break;
 
 	default:
 		break;

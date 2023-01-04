@@ -33,7 +33,9 @@ private:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
 
-
+private:
+	list<CGameObject*>	m_SnipingTarget;
+	list<CGameObject*>	m_Mateors;
 };
 
 END

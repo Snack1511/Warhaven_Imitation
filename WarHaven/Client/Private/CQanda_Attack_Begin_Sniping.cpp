@@ -40,7 +40,7 @@ HRESULT CQanda_Attack_Begin_Sniping::Initialize()
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 3.5f;
 
-	m_vecAdjState.push_back(STATE_ATTACK_AIMING_SNIPING_QANDA);
+	m_vecAdjState.push_back(STATE_ATTACK_SHOOT_SNIPING_QANDA);
 
 
 	return S_OK;
