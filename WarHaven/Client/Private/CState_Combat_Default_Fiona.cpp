@@ -43,7 +43,7 @@ void CState_Combat_Default_Fiona::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 	m_vAIRandLook = _float4(frandom(0.f, 1.f), frandom(0.f, 1.f), frandom(0.f, 1.f));
 
-	m_iStateChangeKeyFrame = 15;
+	m_iStateChangeKeyFrame = 25;
 
 	m_fAIMyLength = 2.5f;
 

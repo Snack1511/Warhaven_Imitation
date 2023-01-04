@@ -114,10 +114,7 @@ STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		if (pAnimator->Get_CurAnimFrame() > m_iMinCancelAnimIndex)
 		{
-			if (!m_bKeyInputable || m_bAttackTrigger)
-				return STATE_ATTACK_SHOOT_QANDA;
-			else
-				return STATE_ATTACK_CANCEL_QANDA;
+			return STATE_ATTACK_SHOOT_QANDA;
 		}
 	}
 
@@ -137,7 +134,19 @@ STATE_TYPE CQanda_Attack_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 {
 
 	if (KEY(LBUTTON, TAP))
+	{
+		CAnimWeapon_Crow::ePhyxState eAnimWeaponState = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Get_Phase();
+
+		if (eAnimWeaponState == CAnimWeapon_Crow::ePhyxState::eSHOOT)
+			static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Boom_Crow();
+
+		if (eAnimWeaponState != CAnimWeapon_Crow::ePhyxState::eIDLE)
+			return STATE_END;
+
+
 		return m_eStateType;
+	}
+		
 
     return STATE_END;
 }

@@ -395,7 +395,7 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Cane/Cane_60.fbx",
 		L"", this, "0B_R_WP1", vRadian.x, vRadian.y, vRadian.z);
 
-	vRadian = _float3(90.f, 90.f, 270.f);
+	vRadian = _float3(90.f, 180.f, 180.f);
 
 
 	if (!m_pAnimWeapon)
@@ -429,7 +429,7 @@ HRESULT CUnit_Qanda::Initialize()
 	if (m_pOwnerPlayer->IsMainPlayer())
 	{
 		CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
-			L"../bin/resources/textures/effects/warhaven/texture/T_CrowUI_01_FX.dds",
+			L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
 			L"../bin/resources/textures/White.png"
 		);
 

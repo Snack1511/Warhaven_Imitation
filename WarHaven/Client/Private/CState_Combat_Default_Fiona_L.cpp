@@ -47,9 +47,9 @@ HRESULT CState_Combat_Default_Fiona_L::Initialize()
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 19;
     m_iDirectionAnimIndex[STATE_DIRECTION_NE] = 20;
     m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 21;
-    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 34;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 35;
-    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 36;
+    m_iDirectionAnimIndex[STATE_DIRECTION_S] = 33;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SE] = 34;
+    m_iDirectionAnimIndex[STATE_DIRECTION_SW] = 35;
     m_iDirectionAnimIndex[STATE_DIRECTION_W] = 22;
 
     m_iAINextState = AI_STATE_COMBAT_HORIZONTALMIDDLE_FIONA_L;

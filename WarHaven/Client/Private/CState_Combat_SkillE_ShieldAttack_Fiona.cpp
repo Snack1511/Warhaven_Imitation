@@ -60,7 +60,7 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pA
 {
 	pOwner->CallBack_CollisionEnter += bind(&CState_Combat_SkillE_ShieldAttack_Fiona::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
-	pOwner->On_Use(CUnit::SKILL2);
+	pOwner->On_Use(CUnit::SKILL3);
 
 	pOwner->Get_OwnerPlayer()->Get_Gauge() -= 15.f;
 

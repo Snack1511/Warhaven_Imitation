@@ -38,7 +38,7 @@ HRESULT CQanda_Attack_Begin_Sniping::Initialize()
 	m_eStateType = STATE_ATTACK_BEGIN_SNIPING_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 	m_fInterPolationTime = 0.1f;
-	m_fAnimSpeed = 3.5f;
+	m_fAnimSpeed = 2.f;
 
 	m_vecAdjState.push_back(STATE_ATTACK_SHOOT_SNIPING_QANDA);
 

@@ -2,6 +2,7 @@
 #include "CShootAttack_Qanda.h"
 
 #include "UsefulHeaders.h"
+#include "CPhysXCharacter.h"
 
 #include "CAnimator.h"
 #include "CUnit.h"

@@ -58,7 +58,8 @@ void CState_Gliding::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
         m_iAnimIndex = 18;
 
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 0.01f;
-    pOwner->Get_PhysicsCom()->Get_Physics().fGravity = 5.f;
+    //pOwner->Get_PhysicsCom()->Get_Physics().fGravity = 5.f;
+    pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 0.5f;
     pOwner->Enable_Glider(true);
     pOwner->Set_GliderAnimIndex(0, 0.1f, 2.f);
 
@@ -93,7 +94,8 @@ void CState_Gliding::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 1.f;
     pOwner->Get_PhysicsCom()->Get_Physics().fGravity = 9.8f;
-    
+    pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 1.f;
+
     if(!m_bReturn)
         pOwner->Enable_Glider(false);
 

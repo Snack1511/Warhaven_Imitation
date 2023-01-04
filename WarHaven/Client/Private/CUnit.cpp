@@ -1000,6 +1000,9 @@ void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 		if (pUnit == this)
 			continue;
 
+		if (pUnit->Get_Status().fHP <= 0.f)
+			continue;
+
 		// 절두체에 안들어왔다면
 		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
 			continue;
