@@ -141,7 +141,10 @@ STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
         m_fCurGuageMinusTime = 0.f;
     }
 
-
+    if (0.f >= pOwner->Get_OwnerPlayer()->Get_Gauge())
+    {
+        TurnOff_DodgeEffect(pOwner);
+    }
 
 
     //_uint iDirection = Move_Direction_Loop(pOwner, pAnimator, 0.05f);
@@ -182,11 +185,8 @@ void CQanda_ShadowStep::Exit(CUnit* pOwner, CAnimator* pAnimator)
    ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CRenderer));
    ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner->Get_AnimWeapon(), CRenderer));
 
-   for (auto& elem : m_EffectsList)
-   {
-       static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
-   }
    
+   TurnOff_DodgeEffect(pOwner);
 }
 
 STATE_TYPE CQanda_ShadowStep::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -195,4 +195,13 @@ STATE_TYPE CQanda_ShadowStep::Check_Condition(CUnit* pOwner, CAnimator* pAnimato
         return m_eStateType;
 
     return STATE_END;
+}
+
+void CQanda_ShadowStep::TurnOff_DodgeEffect(CUnit* pOwner)
+{
+    for (auto& elem : m_EffectsList)
+    {
+        static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.3f);
+    }
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Dodge_0"), pOwner, ZERO_VECTOR);
 }

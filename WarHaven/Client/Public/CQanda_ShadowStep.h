@@ -30,6 +30,9 @@ private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
 
 private:
+	void TurnOff_DodgeEffect(CUnit* pOwner);
+
+private:
 	_uint m_iCurDirection = 0;
 	_float m_fCurGuageMinusTime = 0.f;
 	_float m_fMaxGuageMinusTime = 0.1f;
