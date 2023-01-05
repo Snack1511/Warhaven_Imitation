@@ -18,6 +18,7 @@ public:
 
 public:
 	void Get_ScoreInfo(CPlayer* pPlayer);
+	void Sort_ScoreInfo();
 
 private:
 	virtual void My_Tick() override;
@@ -46,6 +47,9 @@ private:
 
 	// 점수 사망 추가
 
+public:
+	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();
+
 private:
 	map<Team, list<CUI_ScoreInfo*>> m_pScoreInfoMap;
 
@@ -65,8 +69,6 @@ private:
 	void Init_Squad();
 
 	void Set_Squad();
-
-	void Sort_ScoreInfo(list<CUI_ScoreInfo*>& pScoreInfoList);
 };
 
 END

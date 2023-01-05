@@ -71,7 +71,7 @@ void CUI_ScoreBoard::My_Tick()
 
 	for (auto& pair : m_pScoreInfoMap)
 	{
-		Sort_ScoreInfo(pair.second);
+		// Sort_ScoreInfo(pair.second);
 
 		auto iter = pair.second.begin();
 		for (int i = 0; i < pair.second.size(); ++i)
@@ -118,6 +118,25 @@ void CUI_ScoreBoard::OnDisable()
 			iter->SetActive(false);
 		}
 	}
+}
+
+map<_uint, list<CUI_ScoreInfo*>> CUI_ScoreBoard::Get_ScoreInfoMap()
+{
+	map<_uint, list<CUI_ScoreInfo*>> pScoreInfoMap;
+
+	for (auto& pair : m_pScoreInfoMap)
+	{
+		if (pair.first == Team_Blue)
+		{
+			pScoreInfoMap.emplace(0, pair.second);
+		}
+		else
+		{
+			pScoreInfoMap.emplace(1, pair.second);
+		}
+	}
+
+	return pScoreInfoMap;
 }
 
 void CUI_ScoreBoard::Create_ScoreMiniMap()
@@ -377,10 +396,13 @@ void CUI_ScoreBoard::Set_Squad()
 	}
 }
 
-void CUI_ScoreBoard::Sort_ScoreInfo(list<CUI_ScoreInfo*>& pScoreInfoList)
+void CUI_ScoreBoard::Sort_ScoreInfo()
 {
-	pScoreInfoList.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
-		{
-			return p1->Get_KillCnt() > p2->Get_KillCnt();
-		});
+	for (auto& pair : m_pScoreInfoMap)
+	{
+		pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
+			{
+				return p1->Get_KillCnt() > p2->Get_KillCnt();
+			});
+	}
 }

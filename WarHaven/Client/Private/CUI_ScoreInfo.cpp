@@ -32,17 +32,23 @@ HRESULT CUI_ScoreInfo::Start()
 	return S_OK;
 }
 
+void CUI_ScoreInfo::Set_Type(_uint iType)
+{
+	m_iType = iType;
+}
+
 void CUI_ScoreInfo::My_Tick()
 {
 	__super::My_Tick();
-
-	m_iKillCnt = pOwnerPlayer->Get_KDA().iTotalKillCount;
 
 	_tchar  szTemp[MAX_STR] = {};
 	swprintf_s(szTemp, TEXT("%0d"), m_iKillCnt);
 	m_pInfo[Info_Kill]->Set_FontText(szTemp);
 
-	_float fInfoPosY = 170.f - ((m_iRank - 1) * 20.f);
+	_float fTapPosY = 170.f - ((m_iRank - 1) * 20.f);
+	_float fResultPosY = 190.f - ((m_iRank - 1) * 20.f);
+
+	_float fInfoPosY = m_iType == 0 ? fTapPosY : fResultPosY;
 	for (int i = 0; i < Info_End; ++i)
 	{
 		m_pInfo[i]->Set_PosY(fInfoPosY);
@@ -132,7 +138,7 @@ void CUI_ScoreInfo::Create_Info()
 			GET_COMPONENT_FROM(m_pInfo[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pInfo[i], "/Oper", "Num");
 			m_pInfo[i]->Set_Scale(16.f);
-			m_pInfo[i]->Set_PosX(135.f);
+			// m_pInfo[i]->Set_PosX(135.f);
 			break;
 		}
 	}

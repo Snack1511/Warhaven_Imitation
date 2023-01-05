@@ -1030,6 +1030,9 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 	m_tKdaStat.iKillStreak++;
 	m_tKdaStat.iTotalKillCount++;
 
+	m_pScoreInfo->Update_KillCnt();
+	CUser::Get_Instance()->Sort_ScoreInfo();
+
 	if (m_bIsMainPlayer)
 	{
 		if (pOtherPlayer->Get_PlayerName() == L"Jusin_Burger")

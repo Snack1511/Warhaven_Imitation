@@ -98,9 +98,9 @@ void CUI_Damage::OnEnable()
 
 		Enable_Fade(m_pArrDmgNum[i], m_fFadeInTime);
 
+		m_pArrDmgNum[i]->Set_Color(m_vColorWhite);
 		m_pArrDmgNum[i]->Set_Scale(m_vFontScale);
 		m_pArrDmgNum[i]->DoScale(m_fScaleValue, m_fScaleUpTime);
-		m_pArrDmgNum[i]->Set_Color(m_vColorWhite);
 	}
 
 	if (m_eDamageIcon != Default)
@@ -125,7 +125,7 @@ void CUI_Damage::OnEnable()
 		m_pDmgIcon->Set_Scale(m_vHeadShotScale);
 		m_pDmgIcon->DoScale(m_fScaleValue, m_fScaleUpTime);
 
-		if (m_eDamageIcon < 2)
+		if (m_eDamageIcon < Default)
 			GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Set_CurTextureIndex(m_eDamageIcon);
 
 		Enable_Fade(m_pDmgIcon, m_fFadeInTime);
@@ -152,6 +152,7 @@ void CUI_Damage::Init_HeadShot()
 {
 	m_pDmgIcon->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeadshotIcon.dds"));
 	GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_IconGuardShield.dds"));
+	GET_COMPONENT_FROM(m_pDmgIcon, CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/T_HeartIcon.png"));
 
 	m_pDmgIcon->Set_Scale(100.f);
 

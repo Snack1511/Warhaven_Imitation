@@ -4,6 +4,9 @@
 #include "Texture.h"
 #include "Easing_Utillity.h"
 #include "CUser.h"
+#include "CUI_ScoreInfo.h"
+#include "CPlayer.h"
+#include "CPlayerInfo.h"
 
 CUI_Result::CUI_Result()
 {
@@ -140,6 +143,8 @@ void CUI_Result::My_Tick()
 			Enable_Fade(m_pFade, 0.3f);
 
 			m_fScoreTime = 0.f;
+
+			m_pScoreInfoMap = CUser::Get_Instance()->Get_ScoreInfoMap();
 		}
 	}
 	else
@@ -177,6 +182,35 @@ void CUI_Result::My_Tick()
 						m_pArrResultScoreList[i][j]->SetActive(true);
 					}
 				}
+
+				for (auto& pair : m_pScoreInfoMap)
+				{
+					pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
+						{
+							return p1->Get_KillCnt() > p2->Get_KillCnt();
+						});
+				}
+
+				for (auto& pair : m_pScoreInfoMap)
+				{
+					for (auto& iter : pair.second)
+					{
+						iter->Set_Type(1);
+						iter->SetActive(true);
+					}
+				}
+
+				_uint iBlueKill = m_pScoreInfoMap[0].front()->Get_KillCnt();
+				_uint iRedKill = m_pScoreInfoMap[1].front()->Get_KillCnt();
+
+				_uint iTeam = iBlueKill > iRedKill ? 0 : 1;
+				CPlayer* pMVP = m_pScoreInfoMap[iTeam].front()->Get_OwnerPlayer();
+
+				wstring wstrPlayerName = pMVP->Get_PlayerInfo()->Get_PlayerName();
+				_uint iClassNum = pMVP->Get_PlayerInfo()->Choose_Character();
+
+				m_pResultMVP[MVP_Player]->Set_FontText(wstrPlayerName);
+				m_pResultMVP[MVP_Player]->Set_TextureIndex(iClassNum);
 
 				m_bResultDisable = true;
 			}
@@ -290,6 +324,16 @@ void CUI_Result::Create_ResultMVP()
 			break;
 
 		case MVP_Player:
+			m_pResultMVP[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Profile/T_ProfileBg0010.dds")); 
+			m_pResultMVP[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Result/T_Pattern_06.dds"));
+
+			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultWarrior.dds");
+			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultSpearman.dds");
+			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultArcher.dds");
+			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultPaladin.dds");
+			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultPriest.dds");
+			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultEngineer.dds");
+
 			m_pResultMVP[i]->Set_Scale(178.f, 400.f);
 
 			m_pResultMVP[i]->Set_FontRender(true);
@@ -313,7 +357,6 @@ void CUI_Result::Create_ResultScoreList()
 		m_pResultScoreList[i]->Set_Scale(40.f);
 		m_pResultScoreList[i]->Set_PosY(220.f);
 		m_pResultScoreList[i]->Set_Color(m_vColorGold);
-		// 라인 추가
 
 		switch (i)
 		{
@@ -327,7 +370,7 @@ void CUI_Result::Create_ResultScoreList()
 
 		case List_Line:
 			m_pResultScoreList[i]->Set_Color(m_vColorGold);
-			m_pResultScoreList[i]->Set_PosY(195.f);
+			m_pResultScoreList[i]->Set_PosY(200.f);
 			m_pResultScoreList[i]->Set_Scale(400.f, 1.f);
 			break;
 
@@ -494,6 +537,7 @@ void CUI_Result::Create_Fade()
 
 	m_pFade->Set_FadeDesc(0.3f, 0.3f, 1.f, true);
 
+	m_pFade->Set_Sort(0.f);
 	m_pFade->Set_Scale(1280.f, 720.f);
 	m_pFade->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/Black.png"));
 

@@ -202,6 +202,8 @@ public:	// 상호작용
 
 public: // 플레이어 KDA
 	void Get_ScoreInfo(CPlayer* pPlayer);
+	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();
+	void Sort_ScoreInfo();
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;

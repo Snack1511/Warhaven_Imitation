@@ -765,6 +765,19 @@ void CUser::Get_ScoreInfo(CPlayer* pPlayer)
 	}
 }
 
+map<_uint, list<CUI_ScoreInfo*>> CUser::Get_ScoreInfoMap()
+{
+	return m_pScoreBoard->Get_ScoreInfoMap();
+}
+
+void CUser::Sort_ScoreInfo()
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Sort_ScoreInfo();
+	}
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);

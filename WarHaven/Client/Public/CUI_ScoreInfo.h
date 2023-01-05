@@ -24,6 +24,12 @@ public:
 	void Set_PosX(_float fPosX);
 
 	_uint Get_KillCnt() { return m_iKillCnt; }
+	CPlayer* Get_OwnerPlayer() { return pOwnerPlayer; }
+
+	void Update_KillCnt() { m_iKillCnt++; }
+
+	// 0 ÅÇÅ°, 1 °á°ú
+	void Set_Type(_uint iType = 0);
 
 private:
 	virtual void My_Tick() override;
@@ -34,12 +40,14 @@ private:
 private:
 	enum Info { Info_BG, Info_Rank, Info_ClassName, Info_Kill, Info_Num, Info_End };
 	CUI_Object* m_pInfo[Info_End];
-	
+
 	CPlayer* pOwnerPlayer = nullptr;
 
 	static _uint m_iSquadIdx;
 	_uint m_iRank = 0;
 	_uint m_iKillCnt = 0;
+
+	_uint m_iType = 0;
 
 private:
 	void Create_Info();
