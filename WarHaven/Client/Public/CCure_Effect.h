@@ -43,7 +43,7 @@ private:
 	CGameObject* m_pOther = nullptr;
 
 	list<CGameObject*> m_Smoke;
-	CGameObject* m_pParticle = nullptr;
+	list<CGameObject*> m_Particle;
 
 	wstring m_wstrPath;
 

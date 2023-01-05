@@ -19,6 +19,9 @@
 #include "CProjectile.h"
 #include "CUnit_QANDA.h"
 
+#include "CRectEffects.h"
+#include "CAnimWeapon_Crow.h"
+
 CQanda_Aiming::CQanda_Aiming()
 {
 }
@@ -50,6 +53,7 @@ HRESULT CQanda_Aiming::Initialize()
     m_fAnimSpeed = 1.5f;
     m_iStateChangeKeyFrame = 999;
 
+    m_CrowSteam.clear();
 
     return __super::Initialize();
 }
@@ -59,6 +63,8 @@ void CQanda_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevT
 	__super::Enter_Aiming(pOwner, pAnimator, ePrevType, CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_ZOOM);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 
+    CAnimWeapon_Crow* pCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+    m_CrowSteam = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Steam", pCrow, ZERO_VECTOR);
 }
 
 STATE_TYPE CQanda_Aiming::Tick(CUnit* pOwner, CAnimator* pAnimator)
@@ -77,6 +83,15 @@ void CQanda_Aiming::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {	
 	__super::Exit_Aiming(pOwner, pAnimator);
 	__super::Exit(pOwner, pAnimator);
+
+    if (!m_CrowSteam.empty())
+    {
+        for (auto& elem : m_CrowSteam)
+        {
+            static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+        }
+        m_CrowSteam.clear();
+    }
 }
 
 STATE_TYPE CQanda_Aiming::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

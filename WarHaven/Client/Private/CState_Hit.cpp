@@ -3,7 +3,7 @@
 
 #include "UsefulHeaders.h"
 #include "HIerarchyNode.h"
-
+#include "CUnit_Priest.h"
 CState_Hit::CState_Hit()
 {
 }
@@ -62,8 +62,11 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
         pOwner->Get_PhysicsCom()->Set_Speed(m_tHitInfo.fKnockBackPower);
 
 
-
-
+    if (PRIEST == pOwner->Get_OwnerPlayer()->Get_CurClass())
+    {
+        static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+    }
+    
     __super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 
