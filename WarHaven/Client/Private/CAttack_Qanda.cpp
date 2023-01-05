@@ -658,7 +658,7 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 	if (!pAnimCrow && m_pOwner != pOwner)
 		return false;
 
-	_float4 vStartPos = pAnimCrow->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vStartPos = pAnimCrow->Get_Transform()->Get_World(WORLD_POS);// pAnimCrow->Get_Transform()->Get_World(WORLD_POS);
 	_float4 vDir = pAnimCrow->Get_Transform()->Get_World(WORLD_LOOK);
 	_float fMaxDistance = pAnimCrow->Get_MaxDistance();
 
@@ -685,6 +685,9 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 		if (!pUnit->Is_Valid())
 			continue;
 
+		if (pUnit == pOwner)
+			continue;
+
 		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 1.5f))
 			continue;
 
@@ -700,16 +703,16 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 
 	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
 	{
-		if (*pOutPos != vFinalHitPos)
-		{
-			CUser::Get_Instance()->Set_ArcherPoint(true);
-		}
-		else
-		{
-			CUser::Get_Instance()->Set_ArcherPoint(false);
-		}
+		//if (*pOutPos != vFinalHitPos)
+		//{
+		//	CUser::Get_Instance()->Set_ArcherPoint(true);
+		//}
+		//else
+		//{
+		//	CUser::Get_Instance()->Set_ArcherPoint(false);
+		//}
 
-		//*pOutPos = vFinalHitPos;
+		*pOutPos = vFinalHitPos;
 	}
 
 	return true;

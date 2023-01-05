@@ -1290,6 +1290,11 @@ void CPlayer::On_FinishHero()
 {
 	m_fGauge = 0.f;
 	m_bIsHero = false;
+	
+	STATE_TYPE eCurState = m_pCurrentUnit->Get_CurState();
+
+	if (m_pCurrentUnit->Get_CurState() != STATE_END)
+		m_pCurrentUnit->Get_CurStateP()->Exit(m_pCurrentUnit, GET_COMPONENT_FROM(m_pCurrentUnit, CAnimator));
 
 	Change_UnitClass(m_ePrevClass);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", m_pCurrentUnit, m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));

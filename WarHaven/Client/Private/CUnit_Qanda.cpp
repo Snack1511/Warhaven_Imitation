@@ -292,7 +292,8 @@ void CUnit_Qanda::ReMap_Trail(_float4 vTargetPos)
 
 	m_pUI_Trail->Clear_Nodes();
 
-	_float4 vHandPos = m_pModelCom->Get_BoneMatrix("0B_R_WP1").XMLoad().r[3];
+	_float4 vHandPos = m_pAnimCrow->Get_Transform()->Get_World(WORLD_POS);//m_pModelCom->Get_BoneMatrix("0B_R_WP1").XMLoad().r[3];
+	vHandPos.y += 0.05f;
 	m_pUI_Trail->Add_Node(vHandPos);
 	m_pUI_Trail->Add_Node(vTargetPos);
 	m_pUI_Trail->ReMap_TrailBuffers();
@@ -429,7 +430,7 @@ HRESULT CUnit_Qanda::Initialize()
 	if (m_pOwnerPlayer->IsMainPlayer())
 	{
 		CUI_Trail* pUI_Trail = CUI_Trail::Create(CP_BEFORE_RENDERER, 2, 0.1f, -0.1f, 10.f, ZERO_VECTOR, _float4(1.f, 1.f, 1.f, 1.f),
-			L"../bin/resources/textures/effects/warhaven/texture/T_ArrowUI_01_FX.dds",
+			L"../bin/resources/textures/effects/warhaven/texture/T_CrowUI_01_FX.dds",
 			L"../bin/resources/textures/White.png"
 		);
 
