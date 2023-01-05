@@ -190,6 +190,13 @@ HRESULT CAnimWeapon_Crow::Initialize_Prototype()
 	if (!m_pCollider)
 		return E_FAIL;
 
+	CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
+
+	if (!pCController)
+		return E_FAIL;
+
+	Add_Component(pCController);
+
 
     return S_OK;
 }
