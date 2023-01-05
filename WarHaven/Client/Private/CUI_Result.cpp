@@ -76,11 +76,9 @@ void CUI_Result::My_Tick()
 
 	if (!m_bIsEnd)
 	{
+		m_fScoreTime += fDT(0);
 		if (m_fScoreTime < 5.f)
 		{
-			m_fScoreTime += fDT(0);
-			m_fAccTime += fDT(0);
-
 			if (m_pResultUI[Result_TextBG0]->Is_Valid())
 				m_pResultUI[Result_TextBG0]->Set_RotationZ(m_fAccTime);
 
@@ -141,40 +139,46 @@ void CUI_Result::My_Tick()
 
 			Enable_Fade(m_pFade, 0.3f);
 
-			m_fAccTime = 0.f;
 			m_fScoreTime = 0.f;
-
-			if (!m_bResultDisable)
+		}
+	}
+	else
+	{
+		if (!m_bResultDisable)
+		{
+			m_fScoreTime += fDT(0);
+			if (m_fScoreTime > 0.5f)
 			{
-				m_fAccTime += fDT(0);
-				if (m_fAccTime > 0.5f)
+				m_fScoreTime = 0.f;
+
+				for (int i = 0; i < Result_End; ++i)
 				{
-					m_fAccTime = 0.f;
-
-					SetActive_Result(false);
-					m_bResultDisable = true;
+					Disable_Fade(m_pResultUI[i], 0.3f);
 				}
-			}
 
-			for (int i = 0; i < Score_End; ++i)
-			{
-				m_pResultScoreBG[i]->SetActive(true);
-			}
 
-			for (int i = 0; i < MVP_End; ++i)
-			{
-				m_pResultMVP[i]->SetActive(true);
-			}
-
-			for (int i = 0; i < Team_End; ++i)
-			{
-				for (int j = 0; j < Score_End; ++j)
+				for (int i = 0; i < Score_End; ++i)
 				{
-					m_pArrResultScoreList[i][j]->SetActive(true);
+					m_pResultScoreBG[i]->SetActive(true);
 				}
+
+				for (int i = 0; i < MVP_End; ++i)
+				{
+					m_pResultMVP[i]->SetActive(true);
+				}
+
+				for (int i = 0; i < Team_End; ++i)
+				{
+					for (int j = 0; j < Score_End; ++j)
+					{
+						m_pArrResultScoreList[i][j]->SetActive(true);
+					}
+				}
+
+				m_bResultDisable = true;
 			}
 		}
-	}	
+	}
 }
 
 void CUI_Result::OnEnable()
@@ -460,10 +464,10 @@ void CUI_Result::Create_Fade()
 {
 	m_pFade = CUI_Object::Create();
 
-	m_pFade->Set_FadeDesc(0.5f, 0.5f, true);
+	m_pFade->Set_FadeDesc(0.3f, 0.3f, 1.f, true);
 
 	m_pFade->Set_Scale(1280.f, 720.f);
-	m_pFade->Set_Texture(TEXT(".../Bin/Resources/Textures/UI/Rect/Black.png"));
+	m_pFade->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/Black.png"));
 
 	CREATE_GAMEOBJECT(m_pFade, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pFade);
