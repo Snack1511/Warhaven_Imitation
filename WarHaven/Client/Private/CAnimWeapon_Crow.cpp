@@ -396,9 +396,7 @@ void CAnimWeapon_Crow::Late_Tick()
 		m_pTransform->Set_LerpLook(m_pOwnerUnit->Get_FollowCamLook(), 0.1f);
 		m_pPhysics->Set_Dir(vLook);
 
-			m_pTransform->Get_Transform().matMyWorld = matBone * m_OwnerBoneOffsetMatrix;
-			m_pTransform->Make_WorldMatrix();
-		}
+		
 		if (fabs(vLook.Length()) < 0.1f)
 		{
 			m_pTransform->Set_World(WORLD_POS, vOwnerPos);

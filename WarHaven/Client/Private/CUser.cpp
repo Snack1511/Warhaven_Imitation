@@ -618,6 +618,7 @@ void CUser::On_ExitStageLevel()
 	m_pFire = nullptr;
 	m_pUI_Popup = nullptr;
 	m_pUI_Result = nullptr;
+	m_pScoreBoard = nullptr;
 }
 
 void CUser::Set_HUD(CLASS_TYPE eClass)
