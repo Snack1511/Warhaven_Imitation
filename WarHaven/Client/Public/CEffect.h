@@ -178,7 +178,8 @@ protected:
 	_float m_fAngle = 0.f;
 
 public:
-	void	Set_FadeOut() { m_eCurFadeType = FADEOUTREADY; m_fFadeTimeAcc = 999999.f; }
+	void	Set_FadeOut();
+	void	Set_TypeFadeOut() { m_eCurFadeType = FADEOUT; }
 
 protected:
 	virtual void My_Tick() override;

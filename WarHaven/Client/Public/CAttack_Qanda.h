@@ -136,6 +136,7 @@ private:
 private:
 	_float4x4 m_AnimWeaponOffsetMatrix;
 	_float3 m_fOffSetLerp = _float3(0.f, 0.f, 0.f);
+	_bool m_bCharge = true;
 
 };
 

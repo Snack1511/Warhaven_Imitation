@@ -9,6 +9,7 @@
 #include "CCollider_Sphere.h"
 
 #include "CCrowBoom.h"
+#include "CUnit_Qanda.h"
 
 CAnimWeapon_Crow::CAnimWeapon_Crow()
 {
@@ -101,6 +102,11 @@ void CAnimWeapon_Crow::Boom_Crow()
 	m_pCrowBoom->Boom(m_pOwnerUnit->Get_OwnerPlayer(), m_pTransform->Get_World(WORLD_POS));
 	DISABLE_COMPONENT(GET_COMPONENT(CRenderer));
 	On_ChangePhase(eHIT);
+
+	CUnit_Qanda* pQuanda = static_cast<CUnit_Qanda*>(m_pOwnerUnit);
+
+	pQuanda->Turn_SteamEffect(false);
+	pQuanda->Turn_FeatherEffect(true);
 }
 
 

@@ -3,8 +3,7 @@
 
 #include "UsefulHeaders.h"
 
-
-#include "CSword_Effect.h"
+#include "CEffects_Factory.h"
 #include "CUnit_Qanda.h"
 
 #include "HIerarchyNode.h"
@@ -176,6 +175,7 @@ void CAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevS
 
 	static_cast<CUnit_Qanda*>(pOwner)->Enable_Trail(true);
 	static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->On_ChangePhase(CAnimWeapon_Crow::eATTACKLOOP);
+	m_bCharge = true;
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 }
@@ -203,7 +203,20 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			m_fTimeAcc += fDT(0);
 
 			if (m_fTimeAcc > m_fMaxTime / 3.f)
+			{
+				if (m_bCharge)
+				{
+					CUnit_Qanda* pQanda = static_cast<CUnit_Qanda*>(m_pOwner);
+
+					CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_End",
+						pQanda->Get_Crow(), ZERO_VECTOR);
+
+					pQanda->Turn_ChargeEffect(false);
+
+					m_bCharge = false;
+				}
 				pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP1;
+			}
 
 			else if (m_fTimeAcc > m_fMaxTime / 1.5f)
 				pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP2;

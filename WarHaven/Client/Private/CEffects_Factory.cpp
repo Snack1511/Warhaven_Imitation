@@ -789,6 +789,10 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_Test"), "Charge_Test")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_Particle"), "Charge_Particle")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_End"), "Charge_End")))
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Feathers"), "Crow_Feathers")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Steam"), "Crow_Steam")))

@@ -143,12 +143,6 @@ STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
         m_fCurGuageMinusTime = 0.f;
     }
 
-    if (0.f >= pOwner->Get_OwnerPlayer()->Get_Gauge())
-    {
-        TurnOff_DodgeEffect(pOwner);
-    }
-
-
     //_uint iDirection = Move_Direction_Loop(pOwner, pAnimator, 0.05f);
 
     if (iDirection < 8)

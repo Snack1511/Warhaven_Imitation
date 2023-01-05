@@ -27,6 +27,7 @@
 
 #include "CUI_Trail.h"
 #include "CRectEffects.h"
+#include "CEffect.h"
 
 #include "CState.h"
 
@@ -332,9 +333,9 @@ CGameObject* CUnit_Qanda::Create_Meteor()
 }
 
 
-void CUnit_Qanda::Turn_TransformParticle(_bool bOnoff)
+void CUnit_Qanda::Turn_TransformParticle(_bool bOnOff)
 {
-	if (bOnoff)
+	if (bOnOff)
 	{
 		if (m_TransformParticles.empty())
 			m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
@@ -348,6 +349,71 @@ void CUnit_Qanda::Turn_TransformParticle(_bool bOnoff)
 		}
 
 		m_TransformParticles.clear();
+	}
+}
+
+void CUnit_Qanda::Turn_ChargeEffect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_ChargeEffect.empty())
+			m_ChargeEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_Test", m_pAnimCrow, ZERO_VECTOR);
+
+		if (!m_pChargeParticle)
+			m_pChargeParticle = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Charge_Particle_0"),
+				m_pAnimCrow, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_ChargeEffect.empty())
+		{
+			for (auto& elem : m_ChargeEffect)
+				static_cast<CEffect*>(elem)->Set_FadeOut();
+			m_ChargeEffect.clear();
+		}
+		if (m_pChargeParticle)
+		{
+			static_cast<CRectEffects*>(m_pChargeParticle)->Set_AllFadeOut();
+			m_pChargeParticle = nullptr;
+		}
+	}
+}
+
+void CUnit_Qanda::Turn_FeatherEffect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (!m_pFeathers)
+			m_pFeathers = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Crow_Feathers_0"),
+			m_pAnimCrow, ZERO_VECTOR);
+	}
+	else
+	{
+		if (m_pFeathers)
+		{
+			static_cast<CRectEffects*>(m_pFeathers)->Set_AllFadeOut();
+			m_pFeathers = nullptr;
+		}
+	}
+	
+}
+
+void CUnit_Qanda::Turn_SteamEffect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_SteamEffect.empty())
+			m_SteamEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Steam", m_pAnimCrow, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_SteamEffect.empty())
+		{
+			for (auto& elem : m_SteamEffect)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+
+		m_SteamEffect.clear();
 	}
 }
 
@@ -512,8 +578,7 @@ void CUnit_Qanda::OnEnable()
 	if (m_pAnimCrow)
 	{
 		ENABLE_GAMEOBJECT(m_pAnimCrow);
-		m_pFeathers = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Crow_Feathers_0"),
-			m_pAnimCrow, ZERO_VECTOR);
+		Turn_FeatherEffect(true);
 	}
 	//
 }
@@ -534,11 +599,7 @@ void CUnit_Qanda::OnDisable()
 	if (m_pAnimCrow)
 	{
 		DISABLE_GAMEOBJECT(m_pAnimCrow);
-		if (m_pFeathers)
-		{
-			static_cast<CRectEffects*>(m_pFeathers)->Set_AllFadeOut();
-			m_pFeathers = nullptr;
-		}
+		Turn_FeatherEffect(false);
 	}
 
 	if (m_pUI_Trail)

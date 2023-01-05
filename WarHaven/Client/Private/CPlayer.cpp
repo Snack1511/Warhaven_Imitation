@@ -1263,7 +1263,7 @@ void CPlayer::Update_HeroGauge()
 		}
 		else //변신 중일때 
 		{
-			m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
+			m_fGauge -= fDT(0) * 0.f; // 인게임속도2.f 
 
 			if (m_bIsMainPlayer)
 			{
@@ -1327,7 +1327,7 @@ void CPlayer::On_FinishHero()
 
 void CPlayer::On_FinishHero_KeyInput()
 {
-	//if(KEY(CTRL, HOLD)) //1번 자주눌러서 막음
+	if(KEY(CTRL, HOLD)) //1번 자주눌러서 막음
 	if (KEY(NUM1, TAP))
 	{
 		On_FinishHero();
