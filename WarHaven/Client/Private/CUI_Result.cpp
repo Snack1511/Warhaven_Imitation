@@ -7,6 +7,7 @@
 #include "CUI_ScoreInfo.h"
 #include "CPlayer.h"
 #include "CPlayerInfo.h"
+#include "CUI_Renderer.h"
 
 CUI_Result::CUI_Result()
 {
@@ -284,6 +285,9 @@ void CUI_Result::Create_ResultMVP()
 			m_pResultMVP[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Result/T_Pattern_06.dds"));
 			m_pResultMVP[i]->Set_Scale(456.f);
 			m_pResultMVP[i]->Set_Sort(0.18f);
+
+			GET_COMPONENT_FROM(m_pResultMVP[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Dissolve);
+
 			break;
 
 		case MVP_Player:
@@ -301,7 +305,7 @@ void CUI_Result::Create_ResultMVP()
 			m_pResultMVP[i]->Set_FontStyle(true);
 			m_pResultMVP[i]->Set_FontCenter(true);
 			m_pResultMVP[i]->Set_FontScale(0.5f);
-			m_pResultMVP[i]->Set_FontOffset(0.f, 230.f);
+			m_pResultMVP[i]->Set_FontOffset(0.f, 150.f);
 			break;
 		}
 	}

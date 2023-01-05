@@ -281,6 +281,7 @@ namespace Client
 		VTXTEX_PASS_UI_GlowLine,
 		VTXTEX_PASS_UI_CircleGauge,
 		VTXTEX_PASS_UI_SelectEffect,
+		VTXTEX_PASS_UI_Dissolve,
 
 		VTXTEX_PASS_ALPHA,
 		VTXTEX_PASS_TRAIL,
