@@ -491,18 +491,6 @@ void CUI_Result::Progress_Result()
 		wstring wstText = m_iResult == 0 ? TEXT("군사력 우세") : TEXT("군사력 열세");
 		m_pResultScoreBG[Score_Text]->Set_FontText(wstText);
 
-		for (int i = 0; i < Score_End; ++i)
-			m_pResultScoreBG[i]->SetActive(true);
-
-		for (int i = 0; i < MVP_End; ++i)
-			m_pResultMVP[i]->SetActive(true);
-
-		for (int i = 0; i < Team_End; ++i)
-		{
-			for (int j = 0; j < List_End; ++j)
-				m_pArrResultScoreList[i][j]->SetActive(true);
-		}
-
 		for (auto& pair : m_pScoreInfoMap)
 		{
 			pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
@@ -520,6 +508,18 @@ void CUI_Result::Progress_Result()
 	}
 	else if (m_iResultProgressCnt == 3)
 	{
+		for (int i = 0; i < Score_End; ++i)
+			m_pResultScoreBG[i]->SetActive(true);
+
+		for (int i = 0; i < MVP_End; ++i)
+			m_pResultMVP[i]->SetActive(true);
+
+		for (int i = 0; i < Team_End; ++i)
+		{
+			for (int j = 0; j < List_End; ++j)
+				m_pArrResultScoreList[i][j]->SetActive(true);
+		}
+
 		for (auto& pair : m_pScoreInfoMap)
 		{
 			for (auto& iter : pair.second)
