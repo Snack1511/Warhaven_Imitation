@@ -156,7 +156,10 @@ void CUI_Result::My_Tick()
 					Disable_Fade(m_pResultUI[i], 0.3f);
 				}
 
+				m_pResultScoreBG[Score_Result]->Set_TextureIndex(m_iResult);
 
+				wstring wstText = m_iResult == 0 ? TEXT("군사력 우세") : TEXT("군사력 열세");
+				m_pResultScoreBG[Score_Text]->Set_FontText(wstText);
 				for (int i = 0; i < Score_End; ++i)
 				{
 					m_pResultScoreBG[i]->SetActive(true);
@@ -303,15 +306,10 @@ void CUI_Result::Create_ResultScoreList()
 		m_pResultScoreList[i] = CUI_Object::Create();
 
 		m_pResultScoreList[i]->Set_Sort(0.19f);
-		// Blue		100
-		// Team		-285
-		// Score	-50
-		// Kill		25
-		// Dead		85
-		// Red		350
 
 		m_pResultScoreList[i]->Set_Scale(40.f);
-
+		m_pResultScoreList[i]->Set_PosY(220.f);
+		m_pResultScoreList[i]->Set_Color(m_vColorGold);
 		// 라인 추가
 
 		switch (i)
@@ -319,8 +317,15 @@ void CUI_Result::Create_ResultScoreList()
 		case List_BG:
 			m_pResultScoreList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_GradientSmall3.dds"));
 			m_pResultScoreList[i]->Set_Scale(400.f);
+			m_pResultScoreList[i]->Set_PosY(0.f);
 			m_pResultScoreList[i]->Set_IsSlice(true);
 			m_pResultScoreList[i]->Set_SliceRatio(_float4(0.f, 0.f, 0.f, 0.9f));
+			break;
+
+		case List_Line:
+			m_pResultScoreList[i]->Set_Color(m_vColorGold);
+			m_pResultScoreList[i]->Set_PosY(185.f);
+			m_pResultScoreList[i]->Set_Scale(400.f, 1.f);
 			break;
 
 		case List_Team:
@@ -330,13 +335,12 @@ void CUI_Result::Create_ResultScoreList()
 			m_pResultScoreList[i]->Set_FontOffset(35.f, -20.f);
 			break;
 
-		case List_Score:
-			break;
-
 		case List_Kill:
+			m_pResultScoreList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_ScoreBoardIconKill.dds"));
 			break;
 
 		case List_Dead:
+			m_pResultScoreList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_ScoreIconDeath.dds"));
 			break;
 		}
 
@@ -378,6 +382,26 @@ void CUI_Result::Init_ResultScoreList()
 			DISABLE_GAMEOBJECT(m_pArrResultScoreList[j][i]);
 		}
 	}
+
+	m_pArrResultScoreList[Team_Blue][List_Team]->Set_FontText(TEXT("아군"));
+	m_pArrResultScoreList[Team_Blue][List_Team]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_64MaraSymbolIcon.dds"));
+	m_pArrResultScoreList[Team_Blue][List_BG]->Set_Color(m_vColorBlue);
+	_float fBluePosX = -100.f;
+	m_pArrResultScoreList[Team_Blue][List_BG]->Set_PosX(fBluePosX);
+	m_pArrResultScoreList[Team_Blue][List_Line]->Set_PosX(fBluePosX);
+	m_pArrResultScoreList[Team_Blue][List_Team]->Set_PosX(fBluePosX - 185.f);
+	m_pArrResultScoreList[Team_Blue][List_Kill]->Set_PosX(fBluePosX + 125.f);
+	m_pArrResultScoreList[Team_Blue][List_Dead]->Set_PosX(fBluePosX + 185.f);
+
+	m_pArrResultScoreList[Team_Red][List_Team]->Set_FontText(TEXT("적군"));
+	m_pArrResultScoreList[Team_Red][List_Team]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_64UnionSymbolIcon.png"));
+	m_pArrResultScoreList[Team_Red][List_BG]->Set_Color(m_vColorRed);
+	_float fRedPosX = 350.f;
+	m_pArrResultScoreList[Team_Red][List_BG]->Set_PosX(fRedPosX);
+	m_pArrResultScoreList[Team_Red][List_Line]->Set_PosX(fRedPosX);
+	m_pArrResultScoreList[Team_Red][List_Team]->Set_PosX(fRedPosX - 185.f);
+	m_pArrResultScoreList[Team_Red][List_Kill]->Set_PosX(fRedPosX + 125.f);
+	m_pArrResultScoreList[Team_Red][List_Dead]->Set_PosX(fRedPosX + 185.f);
 }
 
 void CUI_Result::Create_ResultUI()

@@ -59,11 +59,13 @@ private:
 
 	// 리스트 라인 추가해야하ㅣㅁ
 	enum Team { Team_Blue, Team_Red, Team_End };
-	enum ResultScoreList { List_BG, List_Team, List_Score, List_Kill, List_Dead, List_End };
+	enum ResultScoreList { List_BG, List_Line, List_Team, List_Kill, List_Dead, List_End };
 	CUI_Object* m_pResultScoreList[List_End];
 	CUI_Object* m_pArrResultScoreList[Team_End][List_End];
 
 	_float4 m_vColorGold = _float4(0.773f, 0.714f, 0.596f, 1.f);
+	_float4 m_vColorBlue = _float4(0.f, 0.8f, 1.f, 0.1f);
+	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.f, 0.1f);
 
 private:
 	void Create_ResultScoreBG();
