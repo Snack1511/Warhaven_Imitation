@@ -537,7 +537,7 @@ void CUser::On_EnterStageLevel()
 			m_pUI_Result = CUI_Result::Create();
 
 			CREATE_GAMEOBJECT(m_pUI_Result, GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pUI_Result);
+			// DISABLE_GAMEOBJECT(m_pUI_Result);
 		}
 
 		if (!m_pInteractUI)

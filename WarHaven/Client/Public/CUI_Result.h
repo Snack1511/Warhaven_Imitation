@@ -42,7 +42,9 @@ private:
 	_bool m_bLerpText0 = false;
 	_bool m_bLerpText1 = false;
 
-private:
+	_uint m_iResult = 0;
+	_float m_fScoreTime = 0.f;
+
 	// 원 추가해야함
 	enum ResultScoreBG { Score_BG, Score_Result, Score_Text, Score_End };
 	CUI_Object* m_pResultScoreBG[Score_End];
@@ -62,6 +64,10 @@ private:
 	void Create_ResultScoreBG();
 	void Create_ResultMVP();
 	void Create_ResultScoreList();
+
+	void Init_ResultScoreBG();
+	void Init_ResultMVP();
+	void Init_ResultScoreList();
 
 private:
 	void Create_ResultUI();

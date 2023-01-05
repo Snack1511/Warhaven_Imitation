@@ -16,6 +16,9 @@ CUI_Result::~CUI_Result()
 HRESULT CUI_Result::Initialize_Prototype()
 {
 	Create_ResultUI();
+	Create_ResultScoreBG();
+	Create_ResultMVP();
+	Create_ResultScoreList();
 
 	return S_OK;
 }
@@ -24,11 +27,17 @@ HRESULT CUI_Result::Start()
 {
 	__super::Start();
 
+	Init_ResultScoreBG();
+	Init_ResultMVP();
+	Init_ResultScoreList();
+
 	return S_OK;
 }
 
 void CUI_Result::SetActive_Result(_uint iResult, _bool value)
 {
+	m_iResult = iResult;
+
 	CUser::Get_Instance()->SetActive_PadenUI(false);
 
 	GET_COMPONENT_FROM(m_pResultUI[Result_BG], CTexture)->Set_CurTextureIndex(iResult);
@@ -64,63 +73,81 @@ void CUI_Result::My_Tick()
 {
 	__super::My_Tick();
 
-	m_fAccTime += fDT(0);
-	if (m_pResultUI[Result_TextBG0]->Is_Valid())
+	m_fScoreTime += fDT(0);
+	if (m_fScoreTime < 3.f)
 	{
-		m_pResultUI[Result_TextBG0]->Set_RotationZ(m_fAccTime);
-	}
+		m_fAccTime += fDT(0);
+		if (m_pResultUI[Result_TextBG0]->Is_Valid())
+			m_pResultUI[Result_TextBG0]->Set_RotationZ(m_fAccTime);
 
-	if (m_pResultUI[Result_TextBG1]->Is_Valid())
-	{
-		m_pResultUI[Result_TextBG1]->Set_RotationZ(m_fAccTime);
-	}
+		if (m_pResultUI[Result_TextBG1]->Is_Valid())
+			m_pResultUI[Result_TextBG1]->Set_RotationZ(m_fAccTime);
 
-	if (m_pResultUI[Result_Line]->Is_Valid())
-	{
-		if (!m_bLerpLine)
+		if (m_pResultUI[Result_Line]->Is_Valid())
 		{
-			m_bLerpLine = true;
-
-			m_pResultUI[Result_Line]->Lerp_ScaleX(0.f, 500.f, 1.f);
-		}
-	}
-
-	if (m_pResultUI[Result_Text0]->Is_Valid())
-	{
-		if (!m_bLerpText0)
-		{
-			m_fAccTime += fDT(0);
-			if (m_fAccTime > 1.f)
+			if (!m_bLerpLine)
 			{
-				m_fAccTime = 0.f;
-				m_bLerpText0 = true;
-
-				Enable_Fade(m_pResultUI[Result_Text1], 0.3f);
+				m_bLerpLine = true;
+				m_pResultUI[Result_Line]->Lerp_ScaleX(0.f, 500.f, 1.f);
 			}
-
-			_float4 vOrigin = _float4(720.f, 422.f, 0.f);
-			_float4 vTarget = _float4(360.f, 211.f, 0.f);
-			_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fAccTime, 1.f);
-
-			m_pResultUI[Result_Text0]->Set_Scale(vResult.x, vResult.y);
 		}
-		else
+
+		if (m_pResultUI[Result_Text0]->Is_Valid())
 		{
-			if (!m_bLerpText1)
+			if (!m_bLerpText0)
 			{
 				m_fAccTime += fDT(0);
 				if (m_fAccTime > 1.f)
 				{
 					m_fAccTime = 0.f;
-					m_bLerpText1 = true;
+					m_bLerpText0 = true;
+
+					Enable_Fade(m_pResultUI[Result_Text1], 0.3f);
 				}
 
-				_float4 vOrigin = _float4(360.f, 211.f, 0.f);
-				_float4 vTarget = _float4(720.f, 422.f, 0.f);
+				_float4 vOrigin = _float4(720.f, 422.f, 0.f);
+				_float4 vTarget = _float4(360.f, 211.f, 0.f);
 				_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fAccTime, 1.f);
 
-				m_pResultUI[Result_Text1]->Set_Scale(vResult.x, vResult.y);
+				m_pResultUI[Result_Text0]->Set_Scale(vResult.x, vResult.y);
 			}
+			else
+			{
+				if (!m_bLerpText1)
+				{
+					m_fAccTime += fDT(0);
+					if (m_fAccTime > 1.f)
+					{
+						m_fAccTime = 0.f;
+						m_bLerpText1 = true;
+					}
+
+					_float4 vOrigin = _float4(360.f, 211.f, 0.f);
+					_float4 vTarget = _float4(720.f, 422.f, 0.f);
+					_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fAccTime, 1.f);
+
+					m_pResultUI[Result_Text1]->Set_Scale(vResult.x, vResult.y);
+				}
+			}
+		}
+	}
+	else
+	{
+		SetActive_Result(m_iResult, false);
+
+		for (int i = 0; i < Score_End; ++i)
+		{
+			m_pResultScoreBG[i]->SetActive(true);
+		}
+
+		for (int i = 0; i < MVP_End; ++i)
+		{
+			m_pResultScoreBG[i]->SetActive(true);
+		}
+
+		for (int j = 0; j < Score_End; ++j)
+		{
+			m_pResultScoreBG[j]->SetActive(true);
 		}
 	}
 }
@@ -129,7 +156,7 @@ void CUI_Result::OnEnable()
 {
 	__super::OnEnable();
 
-	SetActive_Result(true);
+	// SetActive_Result(true);
 }
 
 void CUI_Result::OnDisable()
@@ -140,7 +167,7 @@ void CUI_Result::OnDisable()
 	m_bLerpText0 = false;
 	m_bLerpText1 = false;
 
-	SetActive_Result(false);
+	SetActive_Result(0, false);
 }
 
 void CUI_Result::Create_ResultScoreBG()
@@ -226,7 +253,7 @@ void CUI_Result::Create_ResultMVP()
 
 void CUI_Result::Create_ResultScoreList()
 {
-	for (int i = 0; i < List_Dead; ++i)
+	for (int i = 0; i < List_End; ++i)
 	{
 		m_pResultScoreList[i] = CUI_Object::Create();
 
@@ -266,6 +293,44 @@ void CUI_Result::Create_ResultScoreList()
 
 		case List_Dead:
 			break;
+		}
+
+		for (int j = 0; j < Team_End; ++j)
+		{
+			m_pArrResultScoreList[j][i] = m_pResultScoreList[i]->Clone();
+		}
+	}
+}
+
+void CUI_Result::Init_ResultScoreBG()
+{
+	for (int i = 0; i < Score_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pResultScoreBG[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pResultScoreBG[i]);
+	}
+}
+
+void CUI_Result::Init_ResultMVP()
+{
+	for (int i = 0; i < MVP_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pResultMVP[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pResultMVP[i]);
+	}
+}
+
+void CUI_Result::Init_ResultScoreList()
+{
+	for (int i = 0; i < List_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pResultScoreList[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pResultScoreList[i]);
+
+		for (int j = 0; j < Team_End; ++j)
+		{
+			CREATE_GAMEOBJECT(m_pArrResultScoreList[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrResultScoreList[j][i]);
 		}
 	}
 }
