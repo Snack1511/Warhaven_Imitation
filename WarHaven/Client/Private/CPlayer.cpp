@@ -22,6 +22,7 @@
 #include "CCell.h"
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
+#include "Loading_Manager.h"
 
 #include "CTeamConnector.h"
 #include "CUI_Popup.h"
@@ -743,13 +744,17 @@ HRESULT CPlayer::Start()
 
 	if (!m_pScoreInfo)
 	{
-		m_pScoreInfo = CUI_ScoreInfo::Create();
-		m_pScoreInfo->Set_Player(this);
+		LEVEL_TYPE_CLIENT eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+		if (eLoadLevel >= LEVEL_PADEN)
+		{
+			m_pScoreInfo = CUI_ScoreInfo::Create();
+			m_pScoreInfo->Set_Player(this);
 
-		CUser::Get_Instance()->Get_ScoreInfo(this);
+			CUser::Get_Instance()->Get_ScoreInfo(this);
 
-		CREATE_GAMEOBJECT(m_pScoreInfo, GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pScoreInfo);
+			CREATE_GAMEOBJECT(m_pScoreInfo, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pScoreInfo);
+		}
 	}
 
 	if (m_pCurrentUnit)

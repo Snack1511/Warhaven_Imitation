@@ -76,6 +76,8 @@ void CUI_ScoreBoard::My_Tick()
 
 	for (auto& pair : m_pScoreInfoMap)
 	{
+		Sort_ScoreInfo(pair.second);
+
 		auto iter = pair.second.begin();
 		for (int i = 0; i < pair.second.size(); ++i)
 		{
@@ -378,4 +380,12 @@ void CUI_ScoreBoard::Set_Squad()
 
 		++iter;
 	}
+}
+
+void CUI_ScoreBoard::Sort_ScoreInfo(list<CUI_ScoreInfo*>& pScoreInfoList)
+{
+	pScoreInfoList.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
+		{
+			return p1->Get_KillCnt() > p2->Get_KillCnt();
+		});
 }

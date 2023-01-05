@@ -140,6 +140,9 @@ void CUI_Damage::Enable_Damage(_uint eIcon, _float fDmg)
 		return;
 
 	m_iDamageValue = eIcon == 2 ? (_uint)(fDmg) : (_uint)(fDmg * -1.f);
+	if (m_iDamageValue > 999)
+		m_iDamageValue = 999;
+
 	m_eDamageIcon = (DamageIcon)eIcon;
 
 	ENABLE_GAMEOBJECT(this);

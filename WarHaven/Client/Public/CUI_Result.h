@@ -44,6 +44,9 @@ private:
 	_bool m_bLerpText0 = false;
 	_bool m_bLerpText1 = false;
 
+	_bool m_bIsEnd = false;
+	_bool m_bResultDisable = false;
+
 	_uint m_iResult = 0;
 	_float m_fScoreTime = 0.f;
 
@@ -73,6 +76,10 @@ private:
 
 private:
 	void Create_ResultUI();
+
+private:
+	CUI_Object* m_pFade = nullptr;
+	void Create_Fade();
 };
 
 END

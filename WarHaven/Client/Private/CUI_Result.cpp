@@ -19,6 +19,7 @@ HRESULT CUI_Result::Initialize_Prototype()
 	Create_ResultScoreBG();
 	Create_ResultMVP();
 	Create_ResultScoreList();
+	Create_Fade();
 
 	return S_OK;
 }
@@ -73,89 +74,107 @@ void CUI_Result::My_Tick()
 {
 	__super::My_Tick();
 
-	if (m_fScoreTime < 5.f)
+	if (!m_bIsEnd)
 	{
-		m_fScoreTime += fDT(0);
-		m_fAccTime += fDT(0);
-
-		if (m_pResultUI[Result_TextBG0]->Is_Valid())
-			m_pResultUI[Result_TextBG0]->Set_RotationZ(m_fAccTime);
-
-		if (m_pResultUI[Result_TextBG1]->Is_Valid())
-			m_pResultUI[Result_TextBG1]->Set_RotationZ(m_fAccTime);
-
-		if (m_pResultUI[Result_Line]->Is_Valid())
+		if (m_fScoreTime < 5.f)
 		{
-			if (!m_bLerpLine)
-			{
-				m_bLerpLine = true;
-				m_pResultUI[Result_Line]->Lerp_ScaleX(0.f, 500.f, 2.f);
-			}
-		}
+			m_fScoreTime += fDT(0);
+			m_fAccTime += fDT(0);
 
-		if (m_pResultUI[Result_Text0]->Is_Valid())
-		{
-			if (!m_bLerpText0)
+			if (m_pResultUI[Result_TextBG0]->Is_Valid())
+				m_pResultUI[Result_TextBG0]->Set_RotationZ(m_fAccTime);
+
+			if (m_pResultUI[Result_TextBG1]->Is_Valid())
+				m_pResultUI[Result_TextBG1]->Set_RotationZ(m_fAccTime);
+
+			if (m_pResultUI[Result_Line]->Is_Valid())
 			{
-				m_fAccTime += fDT(0);
-				if (m_fAccTime > 1.f)
+				if (!m_bLerpLine)
 				{
-					m_fAccTime = 0.f;
-					m_bLerpText0 = true;
-
-					Enable_Fade(m_pResultUI[Result_Text1], 0.3f);
+					m_bLerpLine = true;
+					m_pResultUI[Result_Line]->Lerp_ScaleX(0.f, 500.f, 2.f);
 				}
-
-				_float4 vOrigin = _float4(720.f, 422.f, 0.f);
-				_float4 vTarget = _float4(360.f, 211.f, 0.f);
-				_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fAccTime, 1.f);
-
-				m_pResultUI[Result_Text0]->Set_Scale(vResult.x, vResult.y);
 			}
-			else
+
+			if (m_pResultUI[Result_Text0]->Is_Valid())
 			{
-				if (!m_bLerpText1)
+				if (!m_bLerpText0)
 				{
 					m_fAccTime += fDT(0);
 					if (m_fAccTime > 1.f)
 					{
 						m_fAccTime = 0.f;
-						m_bLerpText1 = true;
+						m_bLerpText0 = true;
+
+						Enable_Fade(m_pResultUI[Result_Text1], 0.3f);
 					}
 
-					_float4 vOrigin = _float4(360.f, 211.f, 0.f);
-					_float4 vTarget = _float4(720.f, 422.f, 0.f);
+					_float4 vOrigin = _float4(720.f, 422.f, 0.f);
+					_float4 vTarget = _float4(360.f, 211.f, 0.f);
 					_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fAccTime, 1.f);
 
-					m_pResultUI[Result_Text1]->Set_Scale(vResult.x, vResult.y);
+					m_pResultUI[Result_Text0]->Set_Scale(vResult.x, vResult.y);
+				}
+				else
+				{
+					if (!m_bLerpText1)
+					{
+						m_fAccTime += fDT(0);
+						if (m_fAccTime > 1.f)
+						{
+							m_fAccTime = 0.f;
+							m_bLerpText1 = true;
+						}
+
+						_float4 vOrigin = _float4(360.f, 211.f, 0.f);
+						_float4 vTarget = _float4(720.f, 422.f, 0.f);
+						_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fAccTime, 1.f);
+
+						m_pResultUI[Result_Text1]->Set_Scale(vResult.x, vResult.y);
+					}
 				}
 			}
 		}
-	}
-	else
-	{
-		m_fScoreTime = 0.f;
-
-		SetActive_Result(false);
-
-		for (int i = 0; i < Score_End; ++i)
+		else
 		{
-			m_pResultScoreBG[i]->SetActive(true);
-		}
+			m_bIsEnd = true;
 
-		for (int i = 0; i < MVP_End; ++i)
-		{
-			m_pResultScoreBG[i]->SetActive(true);
-		}
+			Enable_Fade(m_pFade, 0.3f);
 
-		for (int i = 0; i < Team_End; ++i)
-		{
-			for (int j = 0; j < Score_End; ++j)
+			m_fAccTime = 0.f;
+			m_fScoreTime = 0.f;
+
+			if (!m_bResultDisable)
 			{
-				m_pArrResultScoreList[i][j]->SetActive(true);
+				m_fAccTime += fDT(0);
+				if (m_fAccTime > 0.5f)
+				{
+					m_fAccTime = 0.f;
+
+					SetActive_Result(false);
+					m_bResultDisable = true;
+				}
+			}
+
+			for (int i = 0; i < Score_End; ++i)
+			{
+				m_pResultScoreBG[i]->SetActive(true);
+			}
+
+			for (int i = 0; i < MVP_End; ++i)
+			{
+				m_pResultMVP[i]->SetActive(true);
+			}
+
+			for (int i = 0; i < Team_End; ++i)
+			{
+				for (int j = 0; j < Score_End; ++j)
+				{
+					m_pArrResultScoreList[i][j]->SetActive(true);
+				}
 			}
 		}
-	}
+	}	
 }
 
 void CUI_Result::OnEnable()
@@ -207,12 +226,13 @@ void CUI_Result::Create_ResultScoreBG()
 			m_pResultScoreBG[i]->Set_Sort(0.2f);
 			m_pResultScoreBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_ScoreBoardBg.dds"));
 			m_pResultScoreBG[i]->Set_Scale(1280.f, 720.f);
-			m_pResultScoreBG[i]->Set_Color(_float4(0.3f, 0.3f, 0.3f, 1.f));
+			m_pResultScoreBG[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 			break;
 
 		case Score_Result:
 			m_pResultScoreBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text0_Win.png"));
 			GET_COMPONENT_FROM(m_pResultScoreBG[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text1_Lose.png"));
+
 			m_pResultScoreBG[i]->Set_Scale(222.f, 130.f);
 			m_pResultScoreBG[i]->Set_PosY(300.f);
 			m_pResultScoreBG[i]->Set_Color(m_vColorGold);
@@ -249,8 +269,8 @@ void CUI_Result::Create_ResultMVP()
 		switch (i)
 		{
 		case MVP_Text:
-			m_pResultScoreBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
-			m_pResultMVP[i]->Set_PosY(-225.f);
+			m_pResultMVP[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+			m_pResultMVP[i]->Set_PosY(225.f);
 
 			m_pResultMVP[i]->Set_FontRender(true);
 			m_pResultMVP[i]->Set_FontStyle(true);
@@ -266,7 +286,7 @@ void CUI_Result::Create_ResultMVP()
 			m_pResultMVP[i]->Set_FontStyle(true);
 			m_pResultMVP[i]->Set_FontCenter(true);
 			m_pResultMVP[i]->Set_FontScale(0.5f);
-			m_pResultScoreBG[i]->Set_FontOffset(0.f, 230.f);
+			m_pResultMVP[i]->Set_FontOffset(0.f, 230.f);
 			break;
 		}
 	}
@@ -367,7 +387,6 @@ void CUI_Result::Create_ResultUI()
 		switch (i)
 		{
 		case Result_BG:
-
 			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_ResultWinBG.dds"));
 			GET_COMPONENT_FROM(m_pResultUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_ResultLoseBG.dds"));
 
@@ -414,7 +433,6 @@ void CUI_Result::Create_ResultUI()
 			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text0_Win.png"));
 			GET_COMPONENT_FROM(m_pResultUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text1_Lose.png"));
 
-
 			m_pResultUI[i]->Set_FadeDesc(0.3f, 0.3f, 0.f, true);
 
 			m_pResultUI[i]->Set_PosY(200.f);
@@ -436,4 +454,17 @@ void CUI_Result::Create_ResultUI()
 		CREATE_GAMEOBJECT(m_pResultUI[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pResultUI[i]);
 	}
+}
+
+void CUI_Result::Create_Fade()
+{
+	m_pFade = CUI_Object::Create();
+
+	m_pFade->Set_FadeDesc(0.5f, 0.5f, true);
+
+	m_pFade->Set_Scale(1280.f, 720.f);
+	m_pFade->Set_Texture(TEXT(".../Bin/Resources/Textures/UI/Rect/Black.png"));
+
+	CREATE_GAMEOBJECT(m_pFade, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pFade);
 }
