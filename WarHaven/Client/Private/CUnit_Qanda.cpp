@@ -26,6 +26,7 @@
 #include "CColorController.h"
 
 #include "CUI_Trail.h"
+#include "CRectEffects.h"
 
 #include "CState.h"
 
@@ -331,6 +332,25 @@ CGameObject* CUnit_Qanda::Create_Meteor()
 }
 
 
+void CUnit_Qanda::Turn_TransformParticle(_bool bOnoff)
+{
+	if (bOnoff)
+	{
+		if (m_TransformParticles.empty())
+			m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_TransformParticles.empty())
+		{
+			for (auto& elem : m_TransformParticles)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+
+		m_TransformParticles.clear();
+	}
+}
+
 void CUnit_Qanda::Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect)
 {
 	m_mapProjectilePool[_hcCode].push_back(pEffect);
@@ -470,6 +490,7 @@ HRESULT CUnit_Qanda::Start()
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
+	m_TransformParticles.clear();
 
 	return S_OK;
 }
@@ -478,18 +499,47 @@ void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
 
-	if (m_pAnimCrow)
-		ENABLE_GAMEOBJECT(m_pAnimCrow);
+	Turn_TransformParticle(true);
+	
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
 
-	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Feathers", m_pAnimCrow, ZERO_VECTOR);
+	Create_Light(vPos, 5.f, 0.f, 0.f, 0.f, 1.5f, RGB(255, 140, 40),
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn,
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
+
+	if (m_pAnimCrow)
+	{
+		ENABLE_GAMEOBJECT(m_pAnimCrow);
+		m_pFeathers = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Crow_Feathers_0"),
+			m_pAnimCrow, ZERO_VECTOR);
+	}
+	//
 }
 
 void CUnit_Qanda::OnDisable()
 {
 	__super::OnDisable();
 
+	Turn_TransformParticle(false);
+
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
+	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255),
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn,
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
+
 	if (m_pAnimCrow)
+	{
 		DISABLE_GAMEOBJECT(m_pAnimCrow);
+		if (m_pFeathers)
+		{
+			static_cast<CRectEffects*>(m_pFeathers)->Set_AllFadeOut();
+			m_pFeathers = nullptr;
+		}
+	}
 
 	if (m_pUI_Trail)
 		DISABLE_GAMEOBJECT(m_pUI_Trail);

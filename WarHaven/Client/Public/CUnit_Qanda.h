@@ -50,6 +50,9 @@ public:
 	//void			Change_CrowPhase(_uint iPhase);
 
 public:
+	void			Turn_TransformParticle(_bool bOnoff);
+
+public:
 	void	Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect);
 
 public:
@@ -64,6 +67,8 @@ public:
 
 private:
 	CAnimWeapon_Crow* m_pAnimCrow = nullptr;
+	list<CGameObject*> m_TransformParticles;
+	CGameObject* m_pFeathers = nullptr;
 
 	map<_hashcode, list<CProjectile*>>	m_mapProjectilePool;
 	CProjectile* m_pMeteor =  nullptr ;

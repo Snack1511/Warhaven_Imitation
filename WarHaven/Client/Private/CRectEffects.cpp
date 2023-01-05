@@ -201,7 +201,7 @@ void CRectEffects::Set_AllFadeOut(_float fFadeTime)
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
 	{
-		//m_pDatas[i].InstancingData.fFadeOutStartTime = 0.f;
+		//m_pDatas[i].InstancingData.fFadeInStartTime = 0.f;
 		m_pDatas[i].InstancingData.eCurFadeType = INSTANCING_DATA::FADEOUT;
 		m_pDatas[i].InstancingData.fFadeOutTime = fFadeTime;
 
@@ -1292,14 +1292,33 @@ void CRectEffects::Stick_RefBone()
 	if (CURVE_CHARGE == m_eCurveType)
 		return;
 
-	_float4 vPos = m_vOffsetPos;
+	_float4 vPos;
+	if (SHADOWSTEP == m_eCurveType)
+	{
+		vPos = ZERO_VECTOR;
+	}
+	else
+	{
+		vPos = m_vOffsetPos;
+	}
+	 
 	_float4x4 matBone = m_pRefBone->Get_BoneMatrix();
-
 
 	vPos = vPos.MultiplyCoord(matBone);
 	m_pTransform->Set_World(WORLD_POS, vPos);
 
 	m_pTransform->Make_WorldMatrix(); 
+
+	if (SHADOWSTEP == m_eCurveType)
+	{
+		vPos = m_pTransform->Get_World(WORLD_POS);
+
+		_float4 vCam = GAMEINSTANCE->Get_CurCamLook();
+		vPos += vCam * m_vOffsetPos;
+		m_pTransform->Set_World(WORLD_POS, vPos);
+
+		m_pTransform->Make_WorldMatrix();
+	}
 }
 
 

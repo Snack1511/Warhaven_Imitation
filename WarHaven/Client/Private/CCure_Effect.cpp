@@ -113,6 +113,7 @@ HRESULT CCure_Effect::Start()
 	GET_COMPONENT(CShader)->CallBack_SetRawValues += bind(&CCure_Effect::Set_ShaderResource, this, placeholders::_1, placeholders::_2);
 
 	m_Smoke.clear();
+	m_Particle.clear();
 
 	return S_OK;
 }
@@ -164,9 +165,9 @@ void CCure_Effect::OnEnable()
 		return;
 
 	m_Smoke = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cure_Smoke", m_pOther, ZERO_VECTOR);
-	m_pParticle = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Cure_Particle_0"), m_pOwner, ZERO_VECTOR);
+	m_Particle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cure_Particle", m_pOwner, ZERO_VECTOR);
 
-	static_cast<CUnit*>(m_pOwner)->Create_Light(m_pParticle, ZERO_VECTOR, 3.f, 0.f, 0.1f, 10.f, 0.1f, RGB(245,245,200), false);
+	static_cast<CUnit*>(m_pOwner)->Create_Light(m_Particle.back(), _float4(0.f, 0.f, 0.f), 2.f, 0.f, 0.1f, 10.f, 0.1f, RGB(245, 245, 100), false);
 }
 
 void CCure_Effect::OnDisable()
@@ -182,10 +183,13 @@ void CCure_Effect::OnDisable()
 		m_Smoke.clear();
 	} 
 
-	if (m_pParticle)
+	if (!m_Particle.empty())
 	{
-		static_cast<CRectEffects*>(m_pParticle)->Set_AllFadeOut();
-		m_pParticle = nullptr;
+		for (auto& elem : m_Particle)
+		{
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+		m_Particle.clear();
 	}
 
 }

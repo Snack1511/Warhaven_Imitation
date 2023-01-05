@@ -255,6 +255,8 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			CUser::Get_Instance()->Enable_DamageFont(2, fPlusHp);
 			pOwner->Get_OwnerPlayer()->Get_Gauge() += 3.f;
 
+			CUser::Get_Instance()->Enable_DamageFont(2, fPlusHp);
+
 			// 풀피를 넘어서면
 			if (pTargetUnit->Get_Status().fHP > pTargetUnit->Get_Status().fMaxHP)
 				pTargetUnit->Get_Status().fHP = pTargetUnit->Get_Status().fMaxHP;

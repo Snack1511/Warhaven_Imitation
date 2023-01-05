@@ -30,6 +30,8 @@
 #include "CRectEffects.h"
 #include "CGameSystem.h"
 
+#include "CUnit_Qanda.h"
+
 CWindow_Effect::CWindow_Effect()
 {
 }
@@ -1377,6 +1379,8 @@ void CWindow_Effect::Show_ParticleTab()
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CURVE_CHARGE;
 			if (ImGui::Selectable("CANNON_BONE", &bCurveSelect[CANNON_BONE]))
 				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = CANNON_BONE;
+			if (ImGui::Selectable("SHADOWSTEP", &bCurveSelect[SHADOWSTEP]))
+				static_cast<CRectEffects*>(pCurEffect)->m_eCurveType = SHADOWSTEP;
 
 
 			
@@ -1445,13 +1449,19 @@ void CWindow_Effect::Show_ParticleTab()
 					CHierarchyNode* pNode = GET_COMPONENT_FROM(static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget,
 						CModel)->Find_HierarchyNode(m_szRefBoneName);
 					
+					//if (!pNode)
+					//{
+					//	static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget = CGameSystem::Get_Instance()->Get_Cannon();
+					//	pNode = GET_COMPONENT_FROM(static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget,
+					//		CModel)->Find_HierarchyNode(m_szRefBoneName);
+					//}
 					if (!pNode)
 					{
-						static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget = CGameSystem::Get_Instance()->Get_Cannon();
+						static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget = (CGameObject*)static_cast<CUnit_Qanda*>(PLAYER)->Get_Crow();
 						pNode = GET_COMPONENT_FROM(static_cast<CRectEffects*>(pCurEffect)->m_pFollowTarget,
 							CModel)->Find_HierarchyNode(m_szRefBoneName);
 					}
-					if(!pNode)
+					if (!pNode)
 						return;
 
 					static_cast<CRectEffects*>(pCurEffect)->m_pRefBone = pNode;

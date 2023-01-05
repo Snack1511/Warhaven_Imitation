@@ -1510,7 +1510,7 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	CState::HIT_INFO tInfo = *(CState::HIT_INFO*)(pHitInfo);
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, false);
 
-	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 2);
+	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 3);
 
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)

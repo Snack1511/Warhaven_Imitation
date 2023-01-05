@@ -37,16 +37,15 @@ HRESULT CStop_Qanda::Initialize()
 	m_iAnimIndex = 14;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
 	m_eStateType = STATE_STOP_QANDA;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
+	m_fAnimSpeed = 2.f;
 
 	m_vecAdjState.push_back(STATE_IDLE_QANDA);
 	m_vecAdjState.push_back(STATE_WALK_QANDA);
 	m_vecAdjState.push_back(STATE_RUN_QANDA);
 	m_vecAdjState.push_back(STATE_GUARD_QANDA);
 
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALDOWN_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_R);
-	//m_vecAdjState.push_back(STATE_ATTACK_STING_QANDA);
+	m_vecAdjState.push_back(STATE_ATTACK_BEGIN_QANDA);
+	m_vecAdjState.push_back(STATE_ATTACK_BEGIN_SNIPING_QANDA);
 
 	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
 

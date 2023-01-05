@@ -5,6 +5,7 @@
 #include "Physics.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
 #include "CPlayer.h"
 
 #include "Model.h"
@@ -108,9 +109,10 @@ void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
     pOwner->Enable_HitBoxColliders(false);
 
     m_EffectsList = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Dodge", pOwner, ZERO_VECTOR);
+    static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(false);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
-
+    //D3D11_RENDER_TARGET_BLEND_DESC
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -141,7 +143,10 @@ STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
         m_fCurGuageMinusTime = 0.f;
     }
 
-
+    if (0.f >= pOwner->Get_OwnerPlayer()->Get_Gauge())
+    {
+        TurnOff_DodgeEffect(pOwner);
+    }
 
 
     //_uint iDirection = Move_Direction_Loop(pOwner, pAnimator, 0.05f);
@@ -182,11 +187,9 @@ void CQanda_ShadowStep::Exit(CUnit* pOwner, CAnimator* pAnimator)
    ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CRenderer));
    ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner->Get_AnimWeapon(), CRenderer));
 
-   for (auto& elem : m_EffectsList)
-   {
-       static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
-   }
    
+   TurnOff_DodgeEffect(pOwner);
+   static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(true);
 }
 
 STATE_TYPE CQanda_ShadowStep::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -195,4 +198,13 @@ STATE_TYPE CQanda_ShadowStep::Check_Condition(CUnit* pOwner, CAnimator* pAnimato
         return m_eStateType;
 
     return STATE_END;
+}
+
+void CQanda_ShadowStep::TurnOff_DodgeEffect(CUnit* pOwner)
+{
+    for (auto& elem : m_EffectsList)
+    {
+        static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.3f);
+    }
+    CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Dodge_0"), pOwner, ZERO_VECTOR);
 }
