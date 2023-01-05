@@ -836,6 +836,8 @@
     <ClInclude Include="..\Public\CUI_Popup.h" />
     <ClInclude Include="..\Public\CUI_Result.h" />
     <ClInclude Include="..\Public\CUI_Revive.h" />
+    <ClInclude Include="..\Public\CUI_ScoreBoard.h" />
+    <ClInclude Include="..\Public\CUI_ScoreInfo.h" />
     <ClInclude Include="..\public\CUI_Trail.h" />
     <ClInclude Include="..\Public\CUI_UnitHP.h" />
     <ClInclude Include="..\Public\CUI_Training.h" />
@@ -1758,6 +1760,8 @@
     <ClCompile Include="..\Private\CUI_Popup.cpp" />
     <ClCompile Include="..\Private\CUI_Result.cpp" />
     <ClCompile Include="..\Private\CUI_Revive.cpp" />
+    <ClCompile Include="..\Private\CUI_ScoreBoard.cpp" />
+    <ClCompile Include="..\Private\CUI_ScoreInfo.cpp" />
     <ClCompile Include="..\private\CUI_Trail.cpp" />
     <ClCompile Include="..\Private\CUI_UnitHP.cpp" />
     <ClCompile Include="..\Private\CUI_Training.cpp" />

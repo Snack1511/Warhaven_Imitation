@@ -112,6 +112,9 @@ private:
 	void Bind_Shader();
 
 	void Update_HeorTransformGauge();
+
+private:
+	_bool m_bActivationKDA = false;
 };
 
 END

@@ -22,6 +22,7 @@
 #include "CCell.h"
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
+#include "Loading_Manager.h"
 
 #include "CTeamConnector.h"
 #include "CUI_Popup.h"
@@ -68,6 +69,10 @@
 #include "CPath.h"
 
 #include "CUI_Trail.h"
+
+#include "CUI_HUD.h"
+#include "CUI_Skill.h"
+#include "CUI_ScoreInfo.h"
 
 #pragma region AI 추가용
 #include "CAIController.h"
@@ -377,9 +382,6 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 			CUser::Get_Instance()->Set_HeroPort(1);
 		}
 	}
-
-
-
 
 	return S_OK;
 }
@@ -743,6 +745,21 @@ HRESULT CPlayer::Start()
 	// 미니맵에 트랜스폼 할당
 	CUser::Get_Instance()->Set_MiniMapPlayer(this);
 	CUser::Get_Instance()->Set_OperPlayer(this);
+
+	if (!m_pScoreInfo)
+	{
+		LEVEL_TYPE_CLIENT eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+		if (eLoadLevel >= LEVEL_PADEN)
+		{
+			m_pScoreInfo = CUI_ScoreInfo::Create();
+			m_pScoreInfo->Set_Player(this);
+
+			CUser::Get_Instance()->Get_ScoreInfo(this);
+
+			CREATE_GAMEOBJECT(m_pScoreInfo, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pScoreInfo);
+		}
+	}
 
 	if (m_pCurrentUnit)
 	{

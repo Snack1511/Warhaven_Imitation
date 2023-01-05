@@ -36,6 +36,8 @@ class CUI_Paden;
 class CUI_Revive;
 class CUI_Interact;
 class CUI_MiniMap;
+class CUI_ScoreBoard;
+class CUI_ScoreInfo;
 
 class CTeamConnector;
 
@@ -148,6 +150,7 @@ public:		// 파덴
 	void Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam);
 
 	void SetActive_PadenUI(_bool value);
+	void SetActive_ScoreBoard(_bool value);
 
 public:		// 브리핑
 	void Set_Respawn(_bool value);
@@ -197,6 +200,9 @@ public:	// 상호작용
 	void Set_InteractText(wstring wstrText);
 	void Set_InteractTarget(CGameObject* pInteractTarget);
 
+public: // 플레이어 KDA
+	void Get_ScoreInfo(CPlayer* pPlayer);
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -227,6 +233,7 @@ private:
 	CUI_Dead* m_pUI_Dead = nullptr;
 
 	CUI_MiniMap* m_pMiniMap = nullptr;
+	CUI_ScoreBoard* m_pScoreBoard = nullptr;
 
 	CUI_Damage* m_pUI_Damage[5];
 	_uint m_iDamageFontIdx = 0;
@@ -240,7 +247,6 @@ private:
 	list<CUI_KillName*> m_pKillNameList;
 	CUI_KillName* m_pKillName[5];
 	_uint m_iKillNameIdx = 0;
-
 
 private:
 	LEVEL_TYPE_CLIENT m_eLoadLevel = LEVEL_TYPE_CLIENT::LEVEL_END;

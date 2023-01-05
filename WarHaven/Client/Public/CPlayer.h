@@ -28,6 +28,7 @@ class CUI_UnitHUD;
 class CAIController;
 class CBehavior;
 class CPath;
+class CUI_ScoreInfo;
 
 
 /*
@@ -212,9 +213,16 @@ private:
 	_bool	m_bEnableOnStart = false;
 	_bool	m_bisDeadByHeadshot = false;
 
+public:
+	KDA_STAT Get_KDA() { return m_tKdaStat; }
+	CUI_ScoreInfo* Get_ScoreInfo() { return m_pScoreInfo; }
+
 private: /* 킬뎃과 플레이어 정보 */
 	KDA_STAT	m_tKdaStat;
 	CPlayerInfo* m_pMyPlayerInfo = nullptr;
+
+	CUI_ScoreInfo* m_pScoreInfo = nullptr;
+
 	CSquad* m_pMySquad = nullptr;
 	CTeamConnector* m_pMyTeam = nullptr;
 	_bool m_bIsMainPlayer = false;

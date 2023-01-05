@@ -207,11 +207,7 @@ void CUI_Oper::My_Tick()
 				}
 				else
 				{
-					if (m_pPlayers[i]->IsMainPlayer())
-					{
-						m_pPlayerIcon[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
-					}
-					else
+					if (!m_pPlayers[i]->IsMainPlayer())
 					{
 						if (m_pPlayers[i]->Get_OutlineType() != CPlayer::eSQUADMEMBER)
 						{
@@ -327,8 +323,6 @@ void CUI_Oper::Set_Player(CPlayer* pPlayer)
 			m_iMainTeamIdx++;
 		}
 	}
-
-	cout << CFunctor::To_String(pPlayer->Get_PlayerName()) << endl;
 }
 
 void CUI_Oper::Set_BattlePlayer(_bool IsBattle)
@@ -1133,7 +1127,7 @@ void CUI_Oper::Create_CharacterSelect()
 
 		case CP_SelectBG:
 			m_pCharacterPort[CP_SelectBG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SelectedBG.png"));
-			m_pCharacterPort[CP_SelectBG]->Set_Scale(213.f, 65.f);
+			m_pCharacterPort[CP_SelectBG]->Set_Scale(256.f, 65.f);
 			m_pCharacterPort[CP_SelectBG]->Set_Sort(0.49f);
 			m_pCharacterPort[CP_SelectBG]->Set_MouseTarget(true);
 			break;
@@ -1272,9 +1266,9 @@ void CUI_Oper::Init_CharacterSelect()
 	_float fMidPosY = 150.f;
 	_float fBotPosY = 50.f;
 
-	_float fTopPosXSelectBG = -480.f;
-	_float fMidPosXSelectBG = -515.f;
-	_float fBotPosXSelectBG = -530.f;
+	_float fTopPosXSelectBG = -465.f;
+	_float fMidPosXSelectBG = -500.f;
+	_float fBotPosXSelectBG = -515.f;
 
 	m_pArrCharacterPort[CP_SelectBG][0]->Set_Pos(fTopPosXSelectBG, fTopPosY);
 	m_pArrCharacterPort[CP_SelectBG][1]->Set_Pos(fMidPosXSelectBG, fMidPosY);
@@ -1301,9 +1295,9 @@ void CUI_Oper::Init_CharacterSelect()
 	m_pArrCharacterPort[CP_Port][4]->Set_Pos(fMidPosCharX, -fMidPosY);
 	m_pArrCharacterPort[CP_Port][5]->Set_Pos(fTopPosCharX, -fTopPosY);
 
-	_float fTopPosIconX = -505.f;
-	_float fMidPosIconX = -540.f;
-	_float fBotPosIconX = -555.f;
+	_float fTopPosIconX = -490.f;
+	_float fMidPosIconX = -525.f;
+	_float fBotPosIconX = -540.f;
 
 	m_pArrCharacterPort[CP_Class][0]->Set_FontText(TEXT("블레이드"));
 	m_pArrCharacterPort[CP_Class][0]->Set_Pos(fTopPosIconX, fTopPosY);
@@ -1866,7 +1860,7 @@ void CUI_Oper::Create_SelectEffect()
 
 	m_pSelectEffect->Set_Sort(0.45f);
 
-	m_pSelectEffect->Set_Color(_float4(0.6f, 0.55f, 0.4f, 1.f));
+	m_pSelectEffect->Set_Color(_float4(0.6f, 0.55f, 0.4f, 0.3f));
 
 	CREATE_GAMEOBJECT(m_pSelectEffect, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pSelectEffect);

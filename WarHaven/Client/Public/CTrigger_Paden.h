@@ -60,7 +60,8 @@ private:
 	CTeamConnector*		m_pConqueredTeam = nullptr;
 
 	_float				m_fConqueredTimeAcc = 0.f;
-	_float				m_fConqueredTime = 5.f;
+	// _float				m_fConqueredTime = 5.f;
+	_float				m_fConqueredTime = 1.f;
 	CDominion_Effect*	m_pDominionEffect = nullptr;
 
 private:

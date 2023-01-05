@@ -155,6 +155,8 @@ void CUI_Crosshair::Create_Crosshair()
 	{
 		m_pCrosshair[i] = CUI_Object::Create();
 
+		m_pCrosshair[i]->Set_Sort(0.5f);
+
 		if (i == CU_Point)
 		{
 			m_pCrosshair[i]->Set_Scale(6.f);

@@ -104,6 +104,12 @@ void CUI_HUD::My_Tick()
 			m_pUI_EscMenu->SetActive(false);
 		}
 	}
+
+	if (KEY(TAB, TAP))
+	{
+		m_bActivationKDA = !m_bActivationKDA;
+		CUser::Get_Instance()->SetActive_ScoreBoard(m_bActivationKDA);
+	}
 }
 
 CUI_Wrapper* CUI_HUD::Get_HUD(_uint eHUD)

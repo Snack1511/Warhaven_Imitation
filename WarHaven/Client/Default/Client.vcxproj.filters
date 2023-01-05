@@ -3478,6 +3478,12 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom">
       <UniqueIdentifier>{06cf185f-90a0-4612-a070-f43f5fcce5f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard">
+      <UniqueIdentifier>{06810f3a-0c22-4462-9375-2cff6fe32d14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo">
+      <UniqueIdentifier>{f7b25645-598a-4122-998c-1b97e853e29f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\05. ETC\Gliding">
       <UniqueIdentifier>{d7b57bc2-d8ce-465a-9d27-78cf453fc326}</UniqueIdentifier>
     </Filter>
@@ -6252,6 +6258,12 @@
     <ClInclude Include="..\Public\CCrowBoom.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_ScoreBoard.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_ScoreInfo.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CGlider.h">
       <Filter>03. Instances\02. GameObject\13. Glider</Filter>
     </ClInclude>
@@ -9003,6 +9015,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CCrowBoom.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_ScoreBoard.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_ScoreInfo.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGlider.cpp">
       <Filter>03. Instances\02. GameObject\13. Glider</Filter>
