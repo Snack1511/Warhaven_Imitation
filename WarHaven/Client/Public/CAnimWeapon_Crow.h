@@ -7,6 +7,7 @@ class CShader;
 class CModel;
 class CAnimator;
 class CHierarchyNode;
+class CBoneCollider;
 class CPhysics;
 END
 
@@ -77,10 +78,13 @@ private:
 	CHierarchyNode* m_pOwnerBone = nullptr;
 	
 	CPhysics* m_pPhysics = nullptr;
+	CBoneCollider* m_pBoneColider = nullptr;
 	PxConvexMesh* m_pConvexMesh = nullptr;
 	PxRigidDynamic* m_pActor = nullptr;
 
 	_uint m_iMyColType = 0;
+
+
 
 private:
 	ePhyxState	m_eCurPhase = eIDLE;
@@ -92,7 +96,7 @@ private:
 
 	_float		m_fLoopTimeAcc = 0.f;
 	_float		m_fMaxLoopTime = 0.5f;
-	_float		m_fMaxShootTime = 4.f;
+	_float		m_fMaxShootTime = 2.2f;
 	_float		m_fMaxDistance = 50.f;
 
 

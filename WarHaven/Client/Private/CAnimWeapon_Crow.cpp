@@ -10,6 +10,7 @@
 
 #include "CCrowBoom.h"
 #include "CColorController.h"
+#include "CBoneCollider.h"
 
 CAnimWeapon_Crow::CAnimWeapon_Crow()
 {
@@ -159,29 +160,53 @@ void CAnimWeapon_Crow::On_ChangePhase(ePhyxState eNextPhase)
 
 void CAnimWeapon_Crow::Shoot_Crow(_float4 vShootPos, _float4 vShootDir)
 {
-	
+
+	_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
+
+
 	/* PhysX */
-	PxTransform tTransform;
-	ZeroMemory(&tTransform, sizeof(PxTransform));
+	//PxTransform tTransform;
+	//ZeroMemory(&tTransform, sizeof(PxTransform));
 
-	_float4 vCurPos = vShootPos;
 
-	tTransform.p = CUtility_PhysX::To_PxVec3(vCurPos);
-	tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
+	//tTransform.p = CUtility_PhysX::To_PxVec3(vCurPos);
+	//tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
 
-	PxRigidDynamic* pActor = nullptr;
-	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 0.001f);
-	_float4 vDir = vShootDir.Normalize();
-	vDir *= 1.f;
-	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
-	//pActor->addTorque(CUtility_PhysX::To_PxVec3(vDir));
-	m_pActor = pActor;
+	//PxRigidDynamic* pActor = nullptr;
+	//pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 1.5f);
+
+	//_float4 vDir = ZERO_VECTOR;
+
+	//vDir = m_pTransform->Get_World(WORLD_RIGHT);
+	//vDir *= m_fMaxSpeed;
+	//pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
+	//m_pActor = pActor;
+
+	///* PhysX */
+	//PxTransform tTransform;
+	//ZeroMemory(&tTransform, sizeof(PxTransform));
+
+	//_float4 vCurPos = vShootPos;
+	//vCurPos += m_pTransform->Get_World(WORLD_LOOK) * 2.5f;
+
+	//tTransform.p = CUtility_PhysX::To_PxVec3(vCurPos);
+	//tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
+
+	//PxRigidDynamic* pActor = nullptr;
+	//pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 10.f);
+	//_float4 vDir = vShootDir.Normalize();
+	//vDir *= 1.f;
+	//pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
+	////pActor->addTorque(CUtility_PhysX::To_PxVec3(vDir));
+	//m_pActor = pActor;
+
+	ENABLE_COMPONENT(m_pBoneColider);
 
 	m_eCurPhase = eSHOOT;
 	m_vStartPosition = vCurPos;
 	Set_AnimIndex(19, 0.1f, 2.f);
 
-	m_pPhysics->Set_MaxSpeed(10.f);
+	m_pPhysics->Set_MaxSpeed(20.f);
 	m_vChaseLook = m_pOwnerUnit->Get_FollowCamLook();
 	m_vChaseRight = m_pOwnerUnit->Get_FollowCamRight();
 
@@ -244,6 +269,20 @@ HRESULT CAnimWeapon_Crow::Initialize_Prototype()
 
 	Add_Component(pCController);
 
+	CBoneCollider::BONECOLLIDERDESC tDesc;
+	// Ä® ±æÀÌ
+	tDesc.fHeight = 0.3f;
+	// Ä® µÎ²²
+	tDesc.fRadius = 0.3f;
+	// Ä® ºÙÀÏ »À
+	tDesc.pRefBone = GET_COMPONENT(CModel)->Find_HierarchyNode("1B_COM");
+
+	//Ä® ¿ÀÇÁ¼Â(·ÎÄÃ)
+	tDesc.vOffset = _float4(0.f, 0.f, 0.f);
+
+	m_pBoneColider = CBoneCollider::Create(CP_RIGHTBEFORE_RENDERER, tDesc);
+	Add_Component(m_pBoneColider);
+
 
     return S_OK;
 }
@@ -296,6 +335,7 @@ void CAnimWeapon_Crow::OnEnable()
 void CAnimWeapon_Crow::OnDisable()
 {
 	__super::OnDisable();
+	DISABLE_COMPONENT(m_pBoneColider);
 	Safe_release(m_pActor);
 }
 
@@ -328,7 +368,7 @@ HRESULT CAnimWeapon_Crow::SetUp_Model(wstring wstrModelFilePath, wstring wstrAni
 		return E_FAIL;
 
 	/* PhysX */
-	CMeshContainer* pMesh = (pModel->Get_MeshContainers().back().second);
+	CMeshContainer* pMesh = (pModel->Get_MeshContainers().front().second);
 
 	FACEINDICES32* pIndices = pMesh->CMesh::Get_Indices();
 	_uint iNumPrimitive = pMesh->Get_NumPrimitive();
@@ -391,19 +431,6 @@ void CAnimWeapon_Crow::Late_Tick()
 			if (fSpeed > 6.f)
 				fSpeed = 6.f;
 
-			//_float4x4		matBone = m_pOwnerBone->Get_BoneMatrix();
-			
-			//matBone.m[3][0] += -0.5f;
-			//matBone.m[3][1] += 0.1f;
-			//matBone.m[3][2] += 0.5f;
-
-			//_float4 vOwnerPos = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS);
-			//vOwnerPos.x += -0.5f;
-			//vOwnerPos.y += 1.5f;
-
-			//_float4 vDir = vOwnerPos - m_pTransform->Get_World(WORLD_POS);
-
-			
 			
 			if (fabs(vDir.Length()) < 0.15f)
 			{
@@ -447,46 +474,21 @@ void CAnimWeapon_Crow::Late_Tick()
 		break;
 	case Client::CAnimWeapon_Crow::eSHOOT:
 	{
-		/* PhysX µû¶ó°¡±â */
+		m_pPhysics->Set_Dir(m_vChaseLook);
+		m_pPhysics->Set_Accel(100.f);
 
-		PxTransform tTransform = m_pActor->getGlobalPose();
-		_float4x4 matPhysX = CUtility_PhysX::To_Matrix(tTransform);
-		m_pTransform->Get_Transform().matMyWorld = matPhysX;
-		m_pTransform->Make_WorldMatrix();
-
-		//m_pPhysics->Set_Dir(m_vChaseLook);
-		//m_pPhysics->Set_Accel(100.f);
-
-		//PxTransform tTransform;
-		//ZeroMemory(&tTransform, sizeof(PxTransform));
-
-		//_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
-
-		//tTransform.p = CUtility_PhysX::To_PxVec3(vCurPos);
-		//tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
-
-		//_float4x4 matPhysX = CUtility_PhysX::To_Matrix(tTransform);
-
-		//m_pActor->setGlobalPose(tTransform);
-
-		//m_pTransform->Get_Transform().matMyWorld = matPhysX;
-		//m_pTransform->Make_WorldMatrix();
-
-		_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
-		_float fLength = (m_vStartPosition - m_pTransform->Get_World(WORLD_POS)).Length();
-		
 		m_fLoopTimeAcc += fDT(0);
 
-		if( m_fLoopTimeAcc > m_fMaxShootTime || 
-			fPower < 0.5f || 
-			fLength > m_fMaxDistance)
+
+
+		if (m_fLoopTimeAcc > m_fMaxShootTime ||
+			m_pBoneColider->Is_Collision())
 		{
 			Safe_release(m_pActor);
 			Boom_Crow();
-			
+
 		}
-		
-		
+
 
 	}
 	break;
@@ -504,6 +506,7 @@ void CAnimWeapon_Crow::Late_Tick()
 		if (m_fLoopTimeAcc >= m_fMaxLoopTime)
 		{
 
+			DISABLE_COMPONENT(m_pBoneColider);
 			ENABLE_COMPONENT(GET_COMPONENT(CRenderer));
 			Set_AnimIndex(13, 0.f, 2.f);
 			On_ChangePhase(eIDLE);
@@ -514,6 +517,8 @@ void CAnimWeapon_Crow::Late_Tick()
 			vPos.y += 1.5f;
 
 			m_pTransform->Set_World(WORLD_POS, vPos);
+			m_pTransform->Make_WorldMatrix();
+
 			m_fLoopTimeAcc = 0.f;
 		}
 	}
