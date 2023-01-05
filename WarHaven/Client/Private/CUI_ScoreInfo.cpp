@@ -187,7 +187,7 @@ void CUI_ScoreInfo::Set_Player(CPlayer* pPlayer)
 
 	CPlayerInfo* pPlayerInfo = pOwnerPlayer->Get_PlayerInfo();
 
-	_uint iClassNum = pPlayerInfo->Choose_Character();
+	_uint iClassNum = pPlayerInfo->Get_PlayerClass();
 	wstring wstrPlayerName = pPlayerInfo->Get_PlayerName();
 
 	m_pInfo[Info_ClassName]->Set_TextureIndex(iClassNum);

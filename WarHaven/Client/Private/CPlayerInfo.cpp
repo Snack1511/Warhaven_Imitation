@@ -162,7 +162,7 @@ CLASS_TYPE CPlayerInfo::Choose_Character()
 
 	_uint iRand = random(0, iSize - 1);
 
-	
+	m_iRandClass = iRand;
 
 	return m_eCurChosenClass = m_vecPrefClassType[iRand];
 }

@@ -77,145 +77,7 @@ void CUI_Result::My_Tick()
 {
 	__super::My_Tick();
 
-	if (!m_bIsEnd)
-	{
-		m_fScoreTime += fDT(0);
-		if (m_fScoreTime < 5.f)
-		{
-			if (m_pResultUI[Result_TextBG0]->Is_Valid())
-				m_pResultUI[Result_TextBG0]->Set_RotationZ(m_fAccTime);
-
-			if (m_pResultUI[Result_TextBG1]->Is_Valid())
-				m_pResultUI[Result_TextBG1]->Set_RotationZ(m_fAccTime);
-
-			if (m_pResultUI[Result_Line]->Is_Valid())
-			{
-				if (!m_bLerpLine)
-				{
-					m_bLerpLine = true;
-					m_pResultUI[Result_Line]->Lerp_ScaleX(0.f, 500.f, 2.f);
-				}
-			}
-
-			if (m_pResultUI[Result_Text0]->Is_Valid())
-			{
-				if (!m_bLerpText0)
-				{
-					m_fAccTime += fDT(0);
-					if (m_fAccTime > 1.f)
-					{
-						m_fAccTime = 0.f;
-						m_bLerpText0 = true;
-
-						Enable_Fade(m_pResultUI[Result_Text1], 0.3f);
-					}
-
-					_float4 vOrigin = _float4(720.f, 422.f, 0.f);
-					_float4 vTarget = _float4(360.f, 211.f, 0.f);
-					_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fAccTime, 1.f);
-
-					m_pResultUI[Result_Text0]->Set_Scale(vResult.x, vResult.y);
-				}
-				else
-				{
-					if (!m_bLerpText1)
-					{
-						m_fAccTime += fDT(0);
-						if (m_fAccTime > 1.f)
-						{
-							m_fAccTime = 0.f;
-							m_bLerpText1 = true;
-						}
-
-						_float4 vOrigin = _float4(360.f, 211.f, 0.f);
-						_float4 vTarget = _float4(720.f, 422.f, 0.f);
-						_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fAccTime, 1.f);
-
-						m_pResultUI[Result_Text1]->Set_Scale(vResult.x, vResult.y);
-					}
-				}
-			}
-		}
-		else
-		{
-			m_bIsEnd = true;
-
-			Enable_Fade(m_pFade, 0.3f);
-
-			m_fScoreTime = 0.f;
-
-			m_pScoreInfoMap = CUser::Get_Instance()->Get_ScoreInfoMap();
-		}
-	}
-	else
-	{
-		if (!m_bResultDisable)
-		{
-			m_fScoreTime += fDT(0);
-			if (m_fScoreTime > 0.5f)
-			{
-				m_fScoreTime = 0.f;
-
-				for (int i = 0; i < Result_End; ++i)
-				{
-					Disable_Fade(m_pResultUI[i], 0.3f);
-				}
-
-				m_pResultScoreBG[Score_Result]->Set_TextureIndex(m_iResult);
-
-				wstring wstText = m_iResult == 0 ? TEXT("군사력 우세") : TEXT("군사력 열세");
-				m_pResultScoreBG[Score_Text]->Set_FontText(wstText);
-				for (int i = 0; i < Score_End; ++i)
-				{
-					m_pResultScoreBG[i]->SetActive(true);
-				}
-
-				for (int i = 0; i < MVP_End; ++i)
-				{
-					m_pResultMVP[i]->SetActive(true);
-				}
-
-				for (int i = 0; i < Team_End; ++i)
-				{
-					for (int j = 0; j < List_End; ++j)
-					{
-						m_pArrResultScoreList[i][j]->SetActive(true);
-					}
-				}
-
-				for (auto& pair : m_pScoreInfoMap)
-				{
-					pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
-						{
-							return p1->Get_KillCnt() > p2->Get_KillCnt();
-						});
-				}
-
-				for (auto& pair : m_pScoreInfoMap)
-				{
-					for (auto& iter : pair.second)
-					{
-						iter->Set_Type(1);
-						iter->SetActive(true);
-					}
-				}
-
-				_uint iBlueKill = m_pScoreInfoMap[0].front()->Get_KillCnt();
-				_uint iRedKill = m_pScoreInfoMap[1].front()->Get_KillCnt();
-
-				_uint iTeam = iBlueKill > iRedKill ? 0 : 1;
-				CPlayer* pMVP = m_pScoreInfoMap[iTeam].front()->Get_OwnerPlayer();
-
-				wstring wstrPlayerName = pMVP->Get_PlayerInfo()->Get_PlayerName();
-				_uint iClassNum = pMVP->Get_PlayerInfo()->Choose_Character();
-
-				m_pResultMVP[MVP_Player]->Set_FontText(wstrPlayerName);
-				m_pResultMVP[MVP_Player]->Set_TextureIndex(iClassNum);
-
-				m_bResultDisable = true;
-			}
-		}
-	}
+	Progress_Result();
 }
 
 void CUI_Result::OnEnable()
@@ -251,6 +113,100 @@ void CUI_Result::OnDisable()
 		{
 			m_pArrResultScoreList[i][j]->SetActive(false);
 		}
+	}
+}
+
+void CUI_Result::Create_Fade()
+{
+	m_pFade = CUI_Object::Create();
+
+	m_pFade->Set_FadeDesc(0.3f, 0.3f, 1.f, true);
+
+	m_pFade->Set_Sort(0.f);
+	m_pFade->Set_Scale(1280.f, 720.f);
+	m_pFade->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/Black.png"));
+
+	CREATE_GAMEOBJECT(m_pFade, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pFade);
+}
+
+void CUI_Result::Create_ResultUI()
+{
+	for (int i = 0; i < Result_End; ++i)
+	{
+		m_pResultUI[i] = CUI_Object::Create();
+
+		m_pResultUI[i]->Set_FadeDesc(0.3f);
+
+		switch (i)
+		{
+		case Result_BG:
+			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_ResultWinBG.dds"));
+			GET_COMPONENT_FROM(m_pResultUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_ResultLoseBG.dds"));
+
+			m_pResultUI[i]->Set_Scale(1280.f, 720.f);
+			m_pResultUI[i]->Set_Sort(0.2f);
+
+			break;
+
+		case Result_TextBG0:
+
+			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_BgHero2.dds"));
+			m_pResultUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
+
+			m_pResultUI[i]->Set_PosY(350.f);
+			m_pResultUI[i]->Set_Scale(750.f);
+			m_pResultUI[i]->Set_Sort(0.19f);
+
+			break;
+
+		case Result_TextBG1:
+
+			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_BgHero3.dds"));
+			m_pResultUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
+
+			m_pResultUI[i]->Set_PosY(350.f);
+			m_pResultUI[i]->Set_Scale(750.f);
+			m_pResultUI[i]->Set_Sort(0.19f);
+
+			break;
+
+		case Result_Text0:
+
+			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text0_Win.png"));
+			GET_COMPONENT_FROM(m_pResultUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text1_Lose.png"));
+
+			m_pResultUI[i]->Set_PosY(200.f);
+			m_pResultUI[i]->Set_Scale(360.f, 211.f);
+			m_pResultUI[i]->Set_Sort(0.15f);
+
+			break;
+
+		case Result_Text1:
+
+			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text0_Win.png"));
+			GET_COMPONENT_FROM(m_pResultUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text1_Lose.png"));
+
+			m_pResultUI[i]->Set_FadeDesc(0.3f, 0.3f, 0.f, true);
+
+			m_pResultUI[i]->Set_PosY(200.f);
+			m_pResultUI[i]->Set_Scale(360.f, 211.f);
+			m_pResultUI[i]->Set_Sort(0.15f);
+
+			break;
+
+		case Result_Line:
+
+			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_GlowLineThin.png"));
+			m_pResultUI[i]->Set_PosY(100.f);
+			m_pResultUI[i]->Set_Scale(500.f, 70.f);
+			m_pResultUI[i]->Set_Sort(0.15f);
+
+			break;
+		}
+
+		CREATE_GAMEOBJECT(m_pResultUI[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pResultUI[i]);
 	}
 }
 
@@ -323,11 +279,16 @@ void CUI_Result::Create_ResultMVP()
 			m_pResultMVP[i]->Set_FontText(TEXT("최고의 플레이어"));
 			break;
 
-		case MVP_Player:
-			m_pResultMVP[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Profile/T_ProfileBg0010.dds")); 
+		case MVP_Blind:
+			m_pResultMVP[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Profile/T_ProfileBg0010.dds"));
 			m_pResultMVP[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Result/T_Pattern_06.dds"));
+			m_pResultMVP[i]->Set_Scale(456.f);
+			m_pResultMVP[i]->Set_Sort(0.18f);
+			break;
 
-			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultWarrior.dds");
+		case MVP_Player:
+
+			m_pResultMVP[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultWarrior.dds"));
 			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultSpearman.dds");
 			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultArcher.dds");
 			GET_COMPONENT_FROM(m_pResultMVP[i], CTexture)->Add_Texture(L"../Bin/Resources/Textures/UI/Profile/T_ProfileCardDefaultPaladin.dds");
@@ -451,96 +412,134 @@ void CUI_Result::Init_ResultScoreList()
 	m_pArrResultScoreList[Team_Red][List_Dead]->Set_PosX(fRedPosX + 185.f);
 }
 
-void CUI_Result::Create_ResultUI()
+void CUI_Result::Progress_Result()
 {
-	for (int i = 0; i < Result_End; ++i)
+	if (m_iResultProgressCnt == 0)
 	{
-		m_pResultUI[i] = CUI_Object::Create();
+		for (int i = Result_TextBG0; i < Result_Text0; ++i)
+			m_pResultUI[i]->Set_RotationZ(m_fRotValue);
 
-		m_pResultUI[i]->Set_FadeDesc(0.3f);
-
-		switch (i)
+		if (!m_bLerpLine)
 		{
-		case Result_BG:
-			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_ResultWinBG.dds"));
-			GET_COMPONENT_FROM(m_pResultUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_ResultLoseBG.dds"));
-
-			m_pResultUI[i]->Set_Scale(1280.f, 720.f);
-			m_pResultUI[i]->Set_Sort(0.2f);
-
-			break;
-
-		case Result_TextBG0:
-
-			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_BgHero2.dds"));
-			m_pResultUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
-
-			m_pResultUI[i]->Set_PosY(350.f);
-			m_pResultUI[i]->Set_Scale(750.f);
-			m_pResultUI[i]->Set_Sort(0.19f);
-
-			break;
-
-		case Result_TextBG1:
-
-			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_BgHero3.dds"));
-			m_pResultUI[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
-
-			m_pResultUI[i]->Set_PosY(350.f);
-			m_pResultUI[i]->Set_Scale(750.f);
-			m_pResultUI[i]->Set_Sort(0.19f);
-
-			break;
-
-		case Result_Text0:
-
-			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text0_Win.png"));
-			GET_COMPONENT_FROM(m_pResultUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text1_Lose.png"));
-
-			m_pResultUI[i]->Set_PosY(200.f);
-			m_pResultUI[i]->Set_Scale(360.f, 211.f);
-			m_pResultUI[i]->Set_Sort(0.15f);
-
-			break;
-
-		case Result_Text1:
-
-			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text0_Win.png"));
-			GET_COMPONENT_FROM(m_pResultUI[i], CTexture)->Add_Texture(TEXT("../Bin/Resources/Textures/UI/Result/Text1_Lose.png"));
-
-			m_pResultUI[i]->Set_FadeDesc(0.3f, 0.3f, 0.f, true);
-
-			m_pResultUI[i]->Set_PosY(200.f);
-			m_pResultUI[i]->Set_Scale(360.f, 211.f);
-			m_pResultUI[i]->Set_Sort(0.15f);
-
-			break;
-
-		case Result_Line:
-
-			m_pResultUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Result/T_GlowLineThin.png"));
-			m_pResultUI[i]->Set_PosY(100.f);
-			m_pResultUI[i]->Set_Scale(500.f, 70.f);
-			m_pResultUI[i]->Set_Sort(0.15f);
-
-			break;
+			m_bLerpLine = true;
+			m_pResultUI[Result_Line]->Lerp_ScaleX(0.f, 550.f, 1.f);
 		}
 
-		CREATE_GAMEOBJECT(m_pResultUI[i], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pResultUI[i]);
+		if (!m_bLerpText0)
+		{
+			m_fTextLerpRatio += fDT(0);
+			if (m_fTextLerpRatio > 1.f)
+			{
+				m_fTextLerpRatio = 0.f;
+				m_bLerpText0 = true;
+
+				Enable_Fade(m_pResultUI[Result_Text1], 0.3f);
+			}
+
+			_float4 vOrigin = _float4(720.f, 422.f, 0.f);
+			_float4 vTarget = _float4(360.f, 211.f, 0.f);
+			_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fTextLerpRatio, 1.f);
+			m_pResultUI[Result_Text0]->Set_Scale(vResult.x, vResult.y);
+		}
+		else
+		{
+			if (!m_bLerpText1)
+			{
+				m_fTextLerpRatio += fDT(0);
+				if (m_fTextLerpRatio > 1.f)
+				{
+					m_fTextLerpRatio = 0.f;
+					m_bLerpText1 = true;
+				}
+
+				_float4 vOrigin = _float4(360.f, 211.f, 0.f);
+				_float4 vTarget = _float4(720.f, 422.f, 0.f);
+				_float4 vResult = CEasing_Utillity::Linear(vOrigin, vTarget, m_fTextLerpRatio, 1.f);
+
+				m_pResultUI[Result_Text1]->Set_Scale(vResult.x, vResult.y);
+			}
+			else
+			{
+				m_fAccTime += fDT(0);
+				if (m_fAccTime > 3.f)
+				{
+					m_fAccTime = 0.f;
+					m_iResultProgressCnt++;
+				}
+			}
+		}
 	}
-}
+	else if (m_iResultProgressCnt == 1)
+	{
+		Enable_Fade(m_pFade, 0.3f);
+		m_pScoreInfoMap = CUser::Get_Instance()->Get_ScoreInfoMap();
 
-void CUI_Result::Create_Fade()
-{
-	m_pFade = CUI_Object::Create();
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > 0.5f)
+		{
+			m_fAccTime = 0.f;
+			m_iResultProgressCnt++;
+		}
+	}
+	else if (m_iResultProgressCnt == 2)
+	{
+		for (int i = 0; i < Result_End; ++i)
+			Disable_Fade(m_pResultUI[i], 0.3f);
 
-	m_pFade->Set_FadeDesc(0.3f, 0.3f, 1.f, true);
+		m_pResultScoreBG[Score_Result]->Set_TextureIndex(m_iResult);
 
-	m_pFade->Set_Sort(0.f);
-	m_pFade->Set_Scale(1280.f, 720.f);
-	m_pFade->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/Black.png"));
+		wstring wstText = m_iResult == 0 ? TEXT("군사력 우세") : TEXT("군사력 열세");
+		m_pResultScoreBG[Score_Text]->Set_FontText(wstText);
 
-	CREATE_GAMEOBJECT(m_pFade, GROUP_UI);
-	DISABLE_GAMEOBJECT(m_pFade);
+		for (int i = 0; i < Score_End; ++i)
+			m_pResultScoreBG[i]->SetActive(true);
+
+		for (int i = 0; i < MVP_End; ++i)
+			m_pResultMVP[i]->SetActive(true);
+
+		for (int i = 0; i < Team_End; ++i)
+		{
+			for (int j = 0; j < List_End; ++j)
+				m_pArrResultScoreList[i][j]->SetActive(true);
+		}
+
+		for (auto& pair : m_pScoreInfoMap)
+		{
+			pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
+				{
+					return p1->Get_KillCnt() > p2->Get_KillCnt();
+				});
+		}
+
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > 0.5f)
+		{
+			m_fAccTime = 0.f;
+			m_iResultProgressCnt++;
+		}
+	}
+	else if (m_iResultProgressCnt == 3)
+	{
+		for (auto& pair : m_pScoreInfoMap)
+		{
+			for (auto& iter : pair.second)
+			{
+				iter->Set_Type(1);
+				iter->SetActive(true);
+			}
+		}
+
+		_uint iBlueKill = m_pScoreInfoMap[0].front()->Get_KillCnt();
+		_uint iRedKill = m_pScoreInfoMap[1].front()->Get_KillCnt();
+
+		_uint iTeam = iBlueKill > iRedKill ? 0 : 1;
+
+		CPlayer* pMVP = m_pScoreInfoMap[iTeam].front()->Get_OwnerPlayer();
+
+		wstring wstrPlayerName = pMVP->Get_PlayerInfo()->Get_PlayerName();
+		_uint iClassNum = pMVP->Get_PlayerInfo()->Get_PlayerClass();
+
+		m_pResultMVP[MVP_Player]->Set_FontText(wstrPlayerName);
+		m_pResultMVP[MVP_Player]->Set_TextureIndex(iClassNum);
+	}
 }
