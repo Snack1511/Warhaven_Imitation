@@ -130,10 +130,6 @@ protected:
 	_bool	m_bIsMainPlayer = false;
 
 	_uint	m_iUnitType = 0;
-	_uint	m_iRandClass = 0;
-
-public:
-	_uint Get_PlayerClass() { return m_iRandClass; }
 
 protected:
 	/* 이 안에 있는 클래스중 하나를 랜덤으로 선택해서 플레이 한다. */

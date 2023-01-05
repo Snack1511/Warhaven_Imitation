@@ -293,7 +293,7 @@ void CUI_Result::Create_ResultMVP()
 			m_pResultMVP[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Result/T_Pattern_06.dds"));
 			m_pResultMVP[i]->Set_Scale(456.f);
 			m_pResultMVP[i]->Set_Sort(0.18f);
-
+			m_pResultMVP[i]->Set_UIShaderFlag(SH_UI_BLOOM);
 			GET_COMPONENT_FROM(m_pResultMVP[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_Dissolve);
 
 			break;
@@ -312,7 +312,7 @@ void CUI_Result::Create_ResultMVP()
 			m_pResultMVP[i]->Set_FontStyle(true);
 			m_pResultMVP[i]->Set_FontCenter(true);
 			m_pResultMVP[i]->Set_FontScale(0.5f);
-			m_pResultMVP[i]->Set_FontOffset(0.f, 250.f);
+			m_pResultMVP[i]->Set_FontOffset(0.f, 230.f);
 			break;
 		}
 	}
@@ -461,6 +461,8 @@ void CUI_Result::Progress_Result()
 				{
 					m_fTextLerpRatio = 0.f;
 					m_bLerpText1 = true;
+
+					Disable_Fade(m_pResultUI[Result_Text1], 0.3f);
 				}
 
 				_float4 vOrigin = _float4(360.f, 211.f, 0.f);
@@ -548,7 +550,7 @@ void CUI_Result::Progress_Result()
 		CPlayer* pMVP = m_pScoreInfoMap[iTeam].front()->Get_OwnerPlayer();
 
 		wstring wstrPlayerName = pMVP->Get_PlayerInfo()->Get_PlayerName();
-		_uint iClassNum = pMVP->Get_PlayerInfo()->Get_PlayerClass();
+		_uint iClassNum = pMVP->Get_PlayerInfo()->Get_ChonsenClass();
 
 		m_pResultMVP[MVP_Player]->Set_FontText(wstrPlayerName);
 		m_pResultMVP[MVP_Player]->Set_TextureIndex(iClassNum);
@@ -562,7 +564,7 @@ void CUI_Result::Progress_Result()
 	}
 	else if (m_iResultProgressCnt == 4)
 	{
-		m_fDissolveValue -= fDT(0) * 0.5f;
+		m_fDissolveValue -= fDT(0) * 0.1f;
 		if (m_fDissolveValue < 0.f)
 		{
 			m_fDissolveValue = 0.f;

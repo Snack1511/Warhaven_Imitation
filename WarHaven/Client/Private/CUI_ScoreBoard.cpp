@@ -385,7 +385,7 @@ void CUI_ScoreBoard::Set_Squad()
 
 	for (int i = 0; i < 4; ++i)
 	{
-		_uint iTextureNum = iter->second->Get_PlayerInfo()->Get_PlayerClass();
+		_uint iTextureNum = iter->second->Get_PlayerInfo()->Get_ChonsenClass();
 		wstring wstrPlayerName = iter->second->Get_PlayerName();
 
 		m_pArrSquard[i][Squad_Num]->Set_TextureIndex(i);
