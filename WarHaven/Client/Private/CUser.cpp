@@ -290,7 +290,10 @@ void CUser::SetActive_SquardInfo(_bool value)
 
 void CUser::SetActive_Result(_uint iResult, _bool value)
 {
-	m_pUI_Result->SetActive_Result(iResult, value);
+	m_pUI_Result->Set_Result(iResult);
+	m_pUI_Result->SetActive(true);
+	/*if (m_pUI_Result->Is_Valid())
+		m_pUI_Result->SetActive_Result(iResult, value);*/
 }
 
 void CUser::SetActive_HUD(_bool value)
@@ -537,7 +540,7 @@ void CUser::On_EnterStageLevel()
 			m_pUI_Result = CUI_Result::Create();
 
 			CREATE_GAMEOBJECT(m_pUI_Result, GROUP_UI);
-			// DISABLE_GAMEOBJECT(m_pUI_Result);
+			DISABLE_GAMEOBJECT(m_pUI_Result);
 		}
 
 		if (!m_pInteractUI)

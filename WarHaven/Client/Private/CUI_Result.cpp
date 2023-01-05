@@ -73,10 +73,11 @@ void CUI_Result::My_Tick()
 {
 	__super::My_Tick();
 
-	m_fScoreTime += fDT(0);
-	if (m_fScoreTime < 3.f)
+	if (m_fScoreTime < 5.f)
 	{
+		m_fScoreTime += fDT(0);
 		m_fAccTime += fDT(0);
+
 		if (m_pResultUI[Result_TextBG0]->Is_Valid())
 			m_pResultUI[Result_TextBG0]->Set_RotationZ(m_fAccTime);
 
@@ -88,7 +89,7 @@ void CUI_Result::My_Tick()
 			if (!m_bLerpLine)
 			{
 				m_bLerpLine = true;
-				m_pResultUI[Result_Line]->Lerp_ScaleX(0.f, 500.f, 1.f);
+				m_pResultUI[Result_Line]->Lerp_ScaleX(0.f, 500.f, 2.f);
 			}
 		}
 
@@ -133,7 +134,9 @@ void CUI_Result::My_Tick()
 	}
 	else
 	{
-		SetActive_Result(m_iResult, false);
+		m_fScoreTime = 0.f;
+
+		SetActive_Result(false);
 
 		for (int i = 0; i < Score_End; ++i)
 		{
@@ -145,9 +148,12 @@ void CUI_Result::My_Tick()
 			m_pResultScoreBG[i]->SetActive(true);
 		}
 
-		for (int j = 0; j < Score_End; ++j)
+		for (int i = 0; i < Team_End; ++i)
 		{
-			m_pResultScoreBG[j]->SetActive(true);
+			for (int j = 0; j < Score_End; ++j)
+			{
+				m_pArrResultScoreList[i][j]->SetActive(true);
+			}
 		}
 	}
 }
@@ -156,7 +162,7 @@ void CUI_Result::OnEnable()
 {
 	__super::OnEnable();
 
-	// SetActive_Result(true);
+	SetActive_Result(m_iResult, true);
 }
 
 void CUI_Result::OnDisable()
@@ -167,7 +173,22 @@ void CUI_Result::OnDisable()
 	m_bLerpText0 = false;
 	m_bLerpText1 = false;
 
-	SetActive_Result(0, false);
+	SetActive_Result(m_iResult, false);
+
+	for (int i = 0; i < Score_End; ++i)
+	{
+		m_pResultScoreBG[i]->SetActive(false);
+	}
+
+	for (int i = 0; i < MVP_End; ++i)
+	{
+		m_pResultScoreBG[i]->SetActive(false);
+	}
+
+	for (int j = 0; j < Score_End; ++j)
+	{
+		m_pResultScoreBG[j]->SetActive(false);
+	}
 }
 
 void CUI_Result::Create_ResultScoreBG()

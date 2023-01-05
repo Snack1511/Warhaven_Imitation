@@ -37,7 +37,7 @@ private:
 	
 	CPlayer* pOwnerPlayer = nullptr;
 
-	_uint m_iSquadIdx = 1;
+	static _uint m_iSquadIdx;
 	_uint m_iRank = 0;
 	_uint m_iKillCnt = 0;
 

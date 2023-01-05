@@ -21,6 +21,8 @@ public:
 	void SetActive_Result(_uint iResult, _bool value);
 	void SetActive_Result(_bool value);
 
+	void Set_Result(_uint iResult) { m_iResult = iResult; }
+
 private:
 	virtual void My_Tick() override;
 	virtual void OnEnable() override;

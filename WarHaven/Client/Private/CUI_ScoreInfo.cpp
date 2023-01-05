@@ -7,6 +7,7 @@
 #include "Functor.h"
 #include "CTeamConnector.h"
 
+_uint CUI_ScoreInfo::m_iSquadIdx = 0;
 CUI_ScoreInfo::CUI_ScoreInfo()
 {
 }
@@ -163,12 +164,18 @@ void CUI_ScoreInfo::Set_Player(CPlayer* pPlayer)
 		m_pInfo[Info_ClassName]->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
 		m_pInfo[Info_Rank]->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
 		m_pInfo[Info_Kill]->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
+		m_pInfo[Info_Num]->Set_TextureIndex(m_iSquadIdx);
+
+		m_iSquadIdx++;
 	}
 	else if (pOwnerPlayer->Get_Team()->IsMainPlayerTeam())
 	{
 		if (pOwnerPlayer->Get_OutlineType() == CPlayer::eSQUADMEMBER)
 		{
 			m_pInfo[Info_BG]->Set_Color(_float4(0.2f, 0.5f, 0.2f, 1.f));
+			m_pInfo[Info_Num]->Set_TextureIndex(m_iSquadIdx);
+
+			m_iSquadIdx++;
 		}
 	}
 
