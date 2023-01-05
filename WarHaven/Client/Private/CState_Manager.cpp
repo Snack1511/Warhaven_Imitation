@@ -403,6 +403,8 @@
 #include "CPaladin_Attack_ShieldSlam.h"
 
 #include "CState_Cannon_Player.h"
+#include "CState_Gliding.h"
+#include "CState_Gliding_Archer.h"
 
 #include "CGuard_Begin_Paladin.h"
 #include "CGuard_Loop_Paladin.h"
@@ -914,6 +916,8 @@ HRESULT CState_Manager::Initialize()
 	m_arrStates[STATE_VICTORY] = CState_Victory::Create();
 	m_arrStates[STATE_DEFEAT] = CState_Defeat::Create();
 	m_arrStates[STATE_CANNON_PLAYER] = CState_Cannon_Player::Create();
+	m_arrStates[STATE_GLIDING] = CState_Gliding::Create();
+	m_arrStates[STATE_GLIDING_ARCHER] = CState_Gliding_Archer::Create();
 	m_arrStates[STATE_TRANSFORM] = CState_Victory::Create();
 
 

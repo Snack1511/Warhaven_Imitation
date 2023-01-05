@@ -48,6 +48,7 @@ HRESULT CJump_Player_Fall_L::Initialize()
 
 
     m_vecAdjState.push_back(STATE_JUMP_LAND_PLAYER_L);
+    m_vecAdjState.push_back(STATE_GLIDING);
 
     m_vecAdjState.push_back(STATE_ATTACK_STING_PLAYER_L);
     m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALUP_L);

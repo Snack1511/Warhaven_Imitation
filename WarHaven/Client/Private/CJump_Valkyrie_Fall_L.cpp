@@ -48,7 +48,7 @@ HRESULT CJump_Valkyrie_Fall_L::Initialize()
 
 
     m_vecAdjState.push_back(STATE_JUMP_LAND_VALKYRIE_L);
-
+    m_vecAdjState.push_back(STATE_GLIDING);
 
     //m_vecAdjState.push_back(STATE_ATTACK_HORIZONTALMIDDLE_VALKYRIE_L);
     //m_vecAdjState.push_back(STATE_VERTICALATTACK_VALKYRIE_L);

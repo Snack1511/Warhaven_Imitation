@@ -55,11 +55,13 @@ HRESULT CJump_Archer_Land_Qanda::Initialize()
 
 void CJump_Archer_Land_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    m_fMaxSpeed = pOwner->Get_Status().fWalkSpeed;
-    Physics_Setting(m_fMaxSpeed, pOwner);
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
-    pAnimator->Set_CurFrame(20);
+
+    if (ePrevType != STATE_GLIDING)
+        pAnimator->Set_CurFrame(20);
 }
 
 STATE_TYPE CJump_Archer_Land_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)

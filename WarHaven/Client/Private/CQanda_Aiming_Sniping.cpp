@@ -10,6 +10,8 @@
 #include "CSword_Effect.h"
 #include "CColorController.h"
 
+#include "CUnit_Qanda.h"
+#include "CProjectile.h"
 
 CQanda_Aiming_Sniping::CQanda_Aiming_Sniping()
 {
@@ -40,9 +42,9 @@ HRESULT CQanda_Aiming_Sniping::Initialize()
 	m_fInterPolationTime = 0.f;
 	m_fAnimSpeed = 2.f;
 
-	m_fMaxDistance = 50.f;
-
 	m_vecAdjState.push_back(STATE_ATTACK_SHOOT_SNIPING_QANDA);
+
+
 
 	return S_OK;
 }
@@ -59,6 +61,7 @@ void CQanda_Aiming_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
 
 STATE_TYPE CQanda_Aiming_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
 	//// 절두체 검사 
 	//// 최대거리 < 나와의거리
 	//// 겹치기 않게 설정.
@@ -72,8 +75,7 @@ STATE_TYPE CQanda_Aiming_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_Aiming_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	// 쏘기
-	m_SnipingTarget;
+
 }
 
 STATE_TYPE CQanda_Aiming_Sniping::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -88,3 +90,7 @@ STATE_TYPE CQanda_Aiming_Sniping::Check_Condition(CUnit* pOwner, CAnimator* pAni
 
 	return STATE_END;
 }
+
+
+
+

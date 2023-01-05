@@ -184,6 +184,7 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_QANDA;
 		m_eSprintEndState = STATE_SPRINT_END_QANDA;
+		m_eLandState = STATE_JUMP_LAND_QANDA;
 
 		break;
 
@@ -291,37 +292,42 @@ void CUnit_Qanda::ReMap_Trail(_float4 vTargetPos)
 
 	m_pUI_Trail->Clear_Nodes();
 
-	_float4 vHandPos = m_pModelCom->Get_BoneMatrix("0B_R_WP1").XMLoad().r[3];
+	_float4 vHandPos = m_pAnimCrow->Get_Transform()->Get_World(WORLD_POS);//m_pModelCom->Get_BoneMatrix("0B_R_WP1").XMLoad().r[3];
+	vHandPos.y += 0.05f;
 	m_pUI_Trail->Add_Node(vHandPos);
 	m_pUI_Trail->Add_Node(vTargetPos);
 	m_pUI_Trail->ReMap_TrailBuffers();
 
 }
 
-void CUnit_Qanda::Create_Meteor()
+CGameObject* CUnit_Qanda::Create_Meteor()
 {
-	//if (m_pMeteor)
-	//	DISABLE_GAMEOBJECT(m_pMeteor);
+	/*if (m_pMeteor)
+		DISABLE_GAMEOBJECT(m_pMeteor);*/
 
-	//CGameObject* pGameObject = nullptr;
+	CGameObject* pGameObject = nullptr;
 
-	//if (m_mapProjectilePool[HASHCODE(CQandaMeteor)].empty())
-	//{
-	//	pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaMeteor));
-	//	//없으면 새로 집어넣음
-	//	pGameObject->Initialize();
-	//	CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
-	//	static_cast<CProjectile*>(pGameObject)->Reset(this);
-	//}
-	//else
-	//{
-	//	CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaMeteor)].front();
-	//	pEffect->Reset(this);
-	//	m_mapProjectilePool[HASHCODE(CQandaMeteor)].pop_front();
-	//	pGameObject = pEffect;
-	//}
+	if (m_mapProjectilePool[HASHCODE(CQandaMeteor)].empty())
+	{
+		pGameObject = GAMEINSTANCE->Clone_GameObject(HASHCODE(CQandaMeteor));
+		//없으면 새로 집어넣음
+		pGameObject->Initialize();
+		CREATE_GAMEOBJECT(pGameObject, GROUP_EFFECT);
+		static_cast<CProjectile*>(pGameObject)->Reset(this);
+		static_cast<CProjectile*>(pGameObject)->On_ChangePhase(CProjectile::eRANDOM);
+	}
+	else
+	{
+		CProjectile* pEffect = m_mapProjectilePool[HASHCODE(CQandaMeteor)].front();
+		pEffect->Reset(this);
+		pEffect->On_ChangePhase(CProjectile::eRANDOM);
+		m_mapProjectilePool[HASHCODE(CQandaMeteor)].pop_front();
+		pGameObject = pEffect;
+	}
 
-	//m_pMeteor = static_cast<CProjectile*>(pGameObject);
+	return pGameObject;
+
+//	m_pMeteor = static_cast<CProjectile*>(pGameObject);
 }
 
 
@@ -390,33 +396,20 @@ HRESULT CUnit_Qanda::Initialize_Prototype()
 	m_pAnimWeapon = CAnimWeapon::Create(L"../bin/resources/meshes/weapons/Cane/Cane_60.fbx",
 		L"", this, "0B_R_WP1", vRadian.x, vRadian.y, vRadian.z);
 
-	vRadian = _float3(90.f, 90.f, 270.f);
-	
-
-	
-		
-		
-
+	vRadian = _float3(90.f, 180.f, 180.f);
 
 
 	if (!m_pAnimWeapon)
 		return E_FAIL;
 
-
-
 	m_pAnimWeapon->Initialize();
 
-	m_pAnimCrow = CAnimWeapon_Crow::Create(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx",
+	m_pAnimCrow = CAnimWeapon_Crow::Create(L"../bin/resources/meshes/weapons/Crow/Crow_40.fbx",
 		L"../bin/resources/meshes/weapons/Crow/Crow_Anim.fbx", this, "0B_Head", vRadian.x, vRadian.y, vRadian.z);
 	if (!m_pAnimCrow)
 		return E_FAIL;
 
 	m_pAnimCrow->Initialize();
-
-	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-	m_pAnimCrow->Use_OwnerBoneOffset()._41 = -0.3f;
-	m_pAnimCrow->Use_OwnerBoneOffset()._42 = 0.1f;
-	m_pAnimCrow->Use_OwnerBoneOffset()._43 = 1.f;
 
 	m_tUnitStatus.fRunSpeed *= 0.95f;
 	
@@ -453,6 +446,8 @@ HRESULT CUnit_Qanda::Initialize()
 	CREATE_GAMEOBJECT(m_pAnimCrow, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimCrow);
 
+	m_bForUseTeam = false;
+
 	return S_OK;
 }
 
@@ -483,6 +478,9 @@ void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
 
+	if (m_pAnimCrow)
+		ENABLE_GAMEOBJECT(m_pAnimCrow);
+
 	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Feathers", m_pAnimCrow, ZERO_VECTOR);
 }
 
@@ -499,6 +497,21 @@ void CUnit_Qanda::OnDisable()
 
 void CUnit_Qanda::My_Tick()
 {
+	if (m_eCurState == STATE_ATTACK_BEGIN_SNIPING_QANDA ||
+		m_eCurState == STATE_ATTACK_AIMING_SNIPING_QANDA)
+	{
+
+		__super::Check_MultipleObject_IsInFrustum();
+
+	}
+	else
+	{
+
+		if(!m_MultipleFrustumObject.empty())
+			m_MultipleFrustumObject.clear();
+
+	}
+
 	__super::My_Tick();
 }
 

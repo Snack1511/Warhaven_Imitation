@@ -45,7 +45,7 @@ HRESULT CSprint_Jump_Paladin::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
 
-
+    m_vecAdjState.push_back(STATE_GLIDING);
     m_vecAdjState.push_back(STATE_SPRINT_JUMPFALL_PALADIN);
     m_vecAdjState.push_back(STATE_JUMP_LAND_PALADIN_R);
 

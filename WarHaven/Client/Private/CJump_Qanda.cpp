@@ -57,7 +57,7 @@ HRESULT CJump_Qanda::Initialize()
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
     //m_vecAdjState.push_back(STATE_WALK);
-
+    m_vecAdjState.push_back(STATE_GLIDING);
     m_vecAdjState.push_back(STATE_JUMPFALL_QANDA);
     m_vecAdjState.push_back(STATE_JUMP_LAND_QANDA);
     m_vecAdjState.push_back(STATE_ATTACK_BEGIN_QANDA);

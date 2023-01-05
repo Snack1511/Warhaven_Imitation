@@ -3,6 +3,8 @@
 
 #include "UsefulHeaders.h"
 
+#include "CAnimWeapon_Crow.h"
+
 #include "CAnimator.h"
 #include "CUnit.h"
 
@@ -65,12 +67,43 @@ void CQanda_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	
 	CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_Test", (CGameObject*)pAnimCrow
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_Test", pAnimCrow
 		, ZERO_VECTOR);
+
 }
 
 STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+	//CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+
+	//_float3 OwnerBoneOffSetPos = _float3(
+	//	pAnimCrow->Use_OwnerBoneOffset().m[3][0], 
+	//	pAnimCrow->Use_OwnerBoneOffset().m[3][1], 
+	//	pAnimCrow->Use_OwnerBoneOffset().m[3][2]);
+
+	//if (m_fOffSetLerp.x > OwnerBoneOffSetPos.x)
+	//	pAnimCrow->Use_OwnerBoneOffset().m[3][0] += fDT(0) * 2.f;
+	//	
+	//if (m_fOffSetLerp.x < OwnerBoneOffSetPos.x)
+	//	pAnimCrow->Use_OwnerBoneOffset().m[3][0] -= fDT(0) * 2.f;
+
+	//if (m_fOffSetLerp.y > OwnerBoneOffSetPos.y)
+	//	pAnimCrow->Use_OwnerBoneOffset().m[3][1] += fDT(0) * 2.f;
+
+	//if (m_fOffSetLerp.y < OwnerBoneOffSetPos.y)
+	//	pAnimCrow->Use_OwnerBoneOffset().m[3][1] -= fDT(0) * 2.f;
+
+	//if (m_fOffSetLerp.z > OwnerBoneOffSetPos.z)
+	//	pAnimCrow->Use_OwnerBoneOffset().m[3][2] += fDT(0) * 2.f;
+
+	//if (m_fOffSetLerp.z < OwnerBoneOffSetPos.z)
+	//	pAnimCrow->Use_OwnerBoneOffset().m[3][2] -= fDT(0) * 2.f;
+
+	//pAnimCrow->Use_OwnerBoneOffset().m[3][0] = 0.f;
+	//pAnimCrow->Use_OwnerBoneOffset().m[3][1] = 0.5f;
+	//pAnimCrow->Use_OwnerBoneOffset().m[3][2] = 0.f;
+
 	if (KEY(LBUTTON, AWAY))
 		m_bKeyInputable = true;
 
@@ -81,10 +114,7 @@ STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		if (pAnimator->Get_CurAnimFrame() > m_iMinCancelAnimIndex)
 		{
-			if (!m_bKeyInputable || m_bAttackTrigger)
-				return STATE_ATTACK_SHOOT_QANDA;
-			else
-				return STATE_ATTACK_CANCEL_QANDA;
+			return STATE_ATTACK_SHOOT_QANDA;
 		}
 	}
 
@@ -93,8 +123,6 @@ STATE_TYPE CQanda_Attack_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//Prevent_Oneframe(pOwner);
-	//Prevent_Oneframe(pOwner);
 	static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(16, 0.f, m_fAnimSpeed);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
 	m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Qanda*>(pOwner)->Get_CoreMat());
@@ -106,7 +134,19 @@ STATE_TYPE CQanda_Attack_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnima
 {
 
 	if (KEY(LBUTTON, TAP))
+	{
+		CAnimWeapon_Crow::ePhyxState eAnimWeaponState = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Get_Phase();
+
+		if (eAnimWeaponState == CAnimWeapon_Crow::ePhyxState::eSHOOT)
+			static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Boom_Crow();
+
+		if (eAnimWeaponState != CAnimWeapon_Crow::ePhyxState::eIDLE)
+			return STATE_END;
+
+
 		return m_eStateType;
+	}
+		
 
     return STATE_END;
 }

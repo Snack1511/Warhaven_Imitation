@@ -36,7 +36,7 @@ HRESULT CJump_Archer_Fall_Qanda::Initialize()
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     //m_vecAdjState.push_back(STATE_IDLE_ARCHER);
-
+    m_vecAdjState.push_back(STATE_GLIDING);
     m_vecAdjState.push_back(STATE_JUMP_LAND_QANDA);
     m_vecAdjState.push_back(STATE_ATTACK_BEGIN_QANDA);
 

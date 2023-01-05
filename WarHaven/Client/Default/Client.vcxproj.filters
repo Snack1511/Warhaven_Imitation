@@ -3478,6 +3478,18 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom">
       <UniqueIdentifier>{06cf185f-90a0-4612-a070-f43f5fcce5f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Gliding">
+      <UniqueIdentifier>{d7b57bc2-d8ce-465a-9d27-78cf453fc326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\13. Glider">
+      <UniqueIdentifier>{cf2b3421-90ea-487e-aee1-83a4483b4050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Gliding\01. Archer">
+      <UniqueIdentifier>{5bba9895-468e-4acf-9c52-5460df32af9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\05. ETC\Gliding\99. Other">
+      <UniqueIdentifier>{5c357b09-0f15-48a8-8be0-144813452331}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6240,6 +6252,15 @@
     <ClInclude Include="..\Public\CCrowBoom.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGlider.h">
+      <Filter>03. Instances\02. GameObject\13. Glider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Gliding_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Gliding\01. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Gliding.h">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Gliding\99. Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -8982,6 +9003,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CCrowBoom.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Summon\01. Crow\CrowBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGlider.cpp">
+      <Filter>03. Instances\02. GameObject\13. Glider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Gliding_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Gliding\01. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Gliding.cpp">
+      <Filter>02. Design\06. State_Manager\States\05. ETC\Gliding\99. Other</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -131,8 +131,11 @@ private:
 	STATE_TYPE	Update_Idle(CUnit* pOwner, CAnimator* pAnimator);
 
 private:
-	//_bool Check_CrowRay(_float4* pOutPos, CUnit* pOwner);
+	_bool Check_CrowRay(_float4* pOutPos, CUnit* pOwner);
 
+private:
+	_float4x4 m_AnimWeaponOffsetMatrix;
+	_float3 m_fOffSetLerp = _float3(0.f, 0.f, 0.f);
 
 };
 

@@ -1226,8 +1226,13 @@ void CPlayer::Update_HeroGauge()
 		_float fGaugeSpeed = fDT(0) * 0.1f;
 
 		if (m_bIsMainPlayer)
-			fGaugeSpeed *= 200.f;
+		{
+			if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
+				fGaugeSpeed *= 200.f;
+			else
+				fGaugeSpeed *= 5.f;
 
+		}
 		if (!m_bIsHero) //CChangeHero_Player
 		{
 			if (m_bAlive)
@@ -1289,6 +1294,11 @@ void CPlayer::On_FinishHero()
 {
 	m_fGauge = 0.f;
 	m_bIsHero = false;
+	
+	STATE_TYPE eCurState = m_pCurrentUnit->Get_CurState();
+
+	if (m_pCurrentUnit->Get_CurState() != STATE_END)
+		m_pCurrentUnit->Get_CurStateP()->Exit(m_pCurrentUnit, GET_COMPONENT_FROM(m_pCurrentUnit, CAnimator));
 
 	Change_UnitClass(m_ePrevClass);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"UnHenshin", m_pCurrentUnit, m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS));

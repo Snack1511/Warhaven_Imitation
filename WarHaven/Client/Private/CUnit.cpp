@@ -58,6 +58,8 @@
 #include "CUnit_Priest.h"
 #include "CUI_UnitHUD.h"
 
+#include "CGlider.h"
+
 #define PHYSX_ON
 
 
@@ -661,7 +663,11 @@ HRESULT CUnit::Initialize()
 	if (FAILED(m_pModelCom->SetUp_AnimModel_LOD()))
 		return E_FAIL;
 
+	m_pGlider = CGlider::Create(L"../bin/resources/meshes/Riding/Glider_10.fbx",
+		L"../bin/resources/Animations/Common/A_Gliding_01.fbx", this, "0B_Spine1", 270.f, 180.f, 90.f);
 
+	CREATE_GAMEOBJECT(m_pGlider, GROUP_PLAYER);
+	DISABLE_GAMEOBJECT(m_pGlider);
 
 
 	return S_OK;
@@ -893,6 +899,20 @@ void CUnit::Enable_GroggyCollider(_bool bEnable)
 	}
 }
 
+void CUnit::Enable_Glider(_bool bEnable)
+{
+	if (bEnable)
+		ENABLE_GAMEOBJECT(m_pGlider);
+	else
+		DISABLE_GAMEOBJECT(m_pGlider);
+}
+
+void CUnit::Set_GliderAnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed)
+{
+	m_pGlider->Set_AnimIndex(iAnimIndex, fInterpolateTime, fAnimSpeed);
+}
+
+
 void CUnit::SetUp_Colliders(_bool bBlueTeam)
 {
 	COL_GROUP_CLIENT	eTeam = (bBlueTeam) ? COL_BLUETEAM : COL_REDTEAM;
@@ -980,6 +1000,9 @@ void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 		if (pUnit == this)
 			continue;
 
+		if (pUnit->Get_Status().fHP <= 0.f)
+			continue;
+
 		// 절두체에 안들어왔다면
 		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
 			continue;
@@ -994,6 +1017,69 @@ void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 		fPreLength = fMyLength;
 
 	}
+}
+
+void CUnit::Check_MultipleObject_IsInFrustum()
+{
+
+	// 모든 플레이어 가져오기.
+	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
+
+	for (auto& elem : listPlayers)
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
+		if (!pPlayer)
+			continue;
+
+		if (!pPlayer->Is_Valid())
+			continue;
+
+		if (m_bForUseTeam == false)
+			int a = 0;
+
+		// 테스트 레벨이 아니라면
+		if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
+		{
+			// 팀을 위해 사용할 것인가
+			if (m_bForUseTeam)
+			{
+				// 만약 발견한 플레이어가 다른 팀이라면
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() != pPlayer->Get_Team()->Get_TeamType())
+					continue;
+
+			}
+			else
+			{
+				// 만약 발견한 플레이어가 같은 팀이라면 
+				if (m_pOwnerPlayer->Get_Team()->Get_TeamType() == pPlayer->Get_Team()->Get_TeamType())
+					continue;
+
+			}
+
+		}
+
+		CUnit* pUnit = pPlayer->Get_CurrentUnit();
+
+		if (!pUnit->Is_Valid())
+			continue;
+
+		if (pUnit == this)
+			continue;
+
+		// 절두체에 안들어왔다면
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
+			continue;
+
+		for (auto& FrustumObj : m_MultipleFrustumObject)
+		{
+			if (FrustumObj == pUnit)
+				return;
+		}
+
+		m_MultipleFrustumObject.push_back(pUnit);
+	}
+
+	
 }
 
 void CUnit::On_ChangeToHero(_uint iIndex)

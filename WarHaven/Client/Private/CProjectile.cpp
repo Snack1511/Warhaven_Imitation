@@ -102,7 +102,7 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 
 		else if (eColType == COL_REDFLYATTACKGUARDBREAK)
 			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
-
+			
 		else if (eColType == COL_BLUEFLYATTACKGUARDBREAK)
 			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
 
@@ -153,8 +153,8 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		//m_pCollider->Set_ColIndex(COL_BLUEATTACK);
-		m_pCollider->Set_ColIndex(COL_REDATTACK);
+		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		//m_pCollider->Set_ColIndex(COL_REDATTACK);
 	else
 	{
 		Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
@@ -276,9 +276,19 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		m_pCurStickBone = m_pLeftHandBone;
 		break;
 	case Client::CProjectile::eSHOOT:
+	case Client::CProjectile::eChase:
 		ENABLE_COMPONENT(m_pCollider);
 		m_pCurStickBone = nullptr;
 		break;
+
+	case Client::CProjectile::eRANDOM:
+		m_vRandLook = _float4(frandom(-0.3f, 0.3f), frandom(0.2f, 0.5f), frandom(-0.3f, 0.3f));
+		m_vRandLook *= fDT(0) * m_fMaxSpeed * 2.f;
+		m_pTransform->Set_World(WORLD_POS, m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS));
+		m_fRandomPhaseMaxTime = frandom(0.3f, 0.7f);
+		m_pCurStickBone = nullptr;
+		break;
+
 	case Client::CProjectile::eHIT:
 		DISABLE_COMPONENT(m_pCollider);
 		if (m_pTrailEffect)
@@ -441,6 +451,48 @@ void CProjectile::My_LateTick()
 			m_pTransform->Make_WorldMatrix();
 		}
 		break;
+	case Client::CProjectile::eRANDOM:
+	{
+		m_fRandomPhaseCurTime += fDT(0);
+
+		//if (m_fRandomPhaseCurTime > m_fRandomPhaseMaxTime)
+		//	On_ChangePhase(eChase);
+
+		_float4x4 MyMatrix = m_pTransform->Get_Transform().matMyWorld;
+
+		MyMatrix.m[3][0] += m_vRandLook.x;
+		MyMatrix.m[3][1] += m_vRandLook.y;
+		MyMatrix.m[3][2] += m_vRandLook.z;
+
+		m_pTransform->Get_Transform().matMyWorld = MyMatrix;
+
+		m_pTransform->Make_WorldMatrix();
+	}
+
+		break;
+	case Client::CProjectile::eChase:
+	{
+		if (!m_pTargetUnit)
+			assert(0);
+
+		_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
+		vLook.Normalize();
+		vLook *= fDT(0) * m_fMaxSpeed;
+
+		_float4x4 MyMatrix = m_pTransform->Get_Transform().matMyWorld;
+
+		MyMatrix.m[3][0] += vLook.x;
+		MyMatrix.m[3][1] += vLook.y;
+		MyMatrix.m[3][2] += vLook.z;
+
+		m_pTransform->Get_Transform().matMyWorld = MyMatrix;
+
+		m_pTransform->Make_WorldMatrix();
+
+
+	}
+		break;
+
 	case Client::CProjectile::eSHOOT:
 	{
 		/* PhysX 따라가기 */

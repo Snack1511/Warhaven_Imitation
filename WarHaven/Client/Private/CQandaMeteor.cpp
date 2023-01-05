@@ -60,7 +60,7 @@ HRESULT CQandaMeteor::Initialize_Prototype()
     //if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx")))
     //    return E_FAIL;
 
-	if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/longbow/SM_Bolt.fbx")))
+	if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/longbow/SM_Bolt_Poison.fbx")))
 		return E_FAIL;
 
 #ifdef TESTLEVEL_AI_PROJECTILE
@@ -80,6 +80,7 @@ HRESULT CQandaMeteor::Initialize_Prototype()
 
 
 	m_hcCode = HASHCODE(CQandaMeteor);
+	m_fMaxSpeed = 30.f;
 
 
     return CProjectile::Initialize_Prototype();
@@ -89,13 +90,16 @@ void CQandaMeteor::My_Tick()
 {
 	__super::My_Tick();
 
-	if (!m_Shoot)
-	{
-		_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS);
+	if (m_eCurPhase == eSTICK)
+		DISABLE_GAMEOBJECT(this);
 
-		Get_Transform()->Set_World(WORLD_LOOK, vLook);
-		m_Shoot = true;
-	}
+	//if (!m_Shoot)
+	//{
+	//	_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS);
+
+	//	Get_Transform()->Set_World(WORLD_LOOK, vLook);
+	//	m_Shoot = true;
+	//}
 
 
 }
@@ -104,7 +108,7 @@ void CQandaMeteor::OnEnable()
 {
 	__super::OnEnable();
 
-	m_Shoot = false;
+//	m_Shoot = false;
 }
 void CQandaMeteor::OnDisable()
 {

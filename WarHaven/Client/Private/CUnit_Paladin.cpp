@@ -188,8 +188,6 @@ void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eFlyState = STATE_FLYHIT_PALADIN;
 		m_tHitType.eBounce = STATE_BOUNCE_PALADIN_L;
 
-		m_eSprintEndState = STATE_SPRINT_END_PALADIN; 
-
 		break;
 
 	
@@ -204,8 +202,6 @@ void CUnit_Paladin::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_PALADIN;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_PALADIN_L;
 		
-
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 
 
 		break;
@@ -228,6 +224,7 @@ void CUnit_Paladin::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_PALADIN_R;
 		m_eSprintEndState = STATE_SPRINT_END_PALADIN;
+		m_eLandState = STATE_JUMP_LAND_PALADIN_R;
 
 		break;
 
@@ -235,6 +232,7 @@ void CUnit_Paladin::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN;
+		m_eLandState = AI_STATE_COMMON_LAND_PALADIN_R;
 
 		break;
 

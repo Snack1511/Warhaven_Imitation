@@ -5,8 +5,12 @@
 
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Qanda.h"
+
+#include "CAnimWeapon_Crow.h"
 
 #include "CUser.h"
+
 
 CSprint_Loop_Qanda::CSprint_Loop_Qanda()
 {
@@ -63,6 +67,16 @@ void CSprint_Loop_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
         m_fInterPolationTime = 0.1f;
 
 
+    m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
+
+    CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+   
+    if (pAnimCrow->Get_Phase() == CAnimWeapon_Crow::ePhyxState::eIDLE)
+    {
+        static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(5, 0.f, m_fAnimSpeed);
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Set_PhiysicsSpeed(m_fMaxSpeed);
+
+    }
 
 	CTransform* pMyTransform = pOwner->Get_Transform();
 	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -145,9 +159,17 @@ STATE_TYPE CSprint_Loop_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CSprint_Loop_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-	pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
-    /* 할거없음 */
+    CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
+    pMyPhysicsCom->Get_PhysicsDetail().fFrictionRatio = 1.f;
+
+    CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
+
+    if (pAnimCrow->Get_Phase() == CAnimWeapon_Crow::ePhyxState::eIDLE)
+    {
+        static_cast<CUnit_Qanda*>(pOwner)->Set_CrowAnimIndex(10, 0.1f, m_fAnimSpeed);
+        static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Set_PhiysicsSpeed(4.f);
+
+    }
 }
 
 STATE_TYPE CSprint_Loop_Qanda::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

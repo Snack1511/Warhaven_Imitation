@@ -191,6 +191,7 @@
     <ClInclude Include="..\Public\CAIPersonality.h" />
     <ClInclude Include="..\public\CAI_SandBack.h" />
     <ClInclude Include="..\Public\CAI_SandBack_WarHammer.h" />
+    <ClInclude Include="..\Public\CGlider.h" />
     <ClInclude Include="..\Public\CAnimWeapon_Crow.h" />
     <ClInclude Include="..\public\CAnimWeapon.h" />
     <ClInclude Include="..\Public\CBounce_Lancer.h" />
@@ -393,6 +394,8 @@
     <ClInclude Include="..\Public\CState_Common_Sting_Paladin.h" />
     <ClInclude Include="..\Public\CState_Common_Sting_Engineer.h" />
     <ClInclude Include="..\Public\CState_Common_Sting_Fiona.h" />
+    <ClInclude Include="..\Public\CState_Gliding_Archer.h" />
+    <ClInclude Include="..\Public\CState_Gliding.h" />
     <ClInclude Include="..\Public\CState_Defeat.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Default_Paladin.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Default_Paladin_L.h" />
@@ -1113,6 +1116,7 @@
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CAI_SandBack_WarHammer.cpp" />
+    <ClCompile Include="..\Private\CGlider.cpp" />
     <ClCompile Include="..\Private\CAnimWeapon_Crow.cpp" />
     <ClCompile Include="..\private\CAnimWeapon.cpp" />
     <ClCompile Include="..\Private\CBounce_Lancer.cpp" />
@@ -1312,6 +1316,8 @@
     <ClCompile Include="..\Private\CState_Common_Sting_Paladin.cpp" />
     <ClCompile Include="..\Private\CState_Common_Sting_Engineer.cpp" />
     <ClCompile Include="..\Private\CState_Common_Sting_Fiona.cpp" />
+    <ClCompile Include="..\Private\CState_Gliding_Archer.cpp" />
+    <ClCompile Include="..\Private\CState_Gliding.cpp" />
     <ClCompile Include="..\Private\CState_Defeat.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Default_Paladin.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Default_Paladin_L.cpp" />

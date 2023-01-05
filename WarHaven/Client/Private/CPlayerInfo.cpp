@@ -409,7 +409,6 @@ void CPlayerInfo::Set_CustomBody_Engineer(eCUSTOM_BODY eBodyEnum)
 		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0001_Body_A00_50.fbx";
 		break;
 
-	default:
 		m_tPlayerSetUpData.wstrBodyMeshPath[ENGINEER] = L"../bin/resources/meshes/characters/WarHammer/body/SK_Engineer0004_Body_A00_30.fbx";
 		break;
 	}

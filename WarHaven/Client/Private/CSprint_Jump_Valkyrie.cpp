@@ -51,7 +51,7 @@ HRESULT CSprint_Jump_Valkyrie::Initialize()
     //m_vecAdjState.push_back(STATE_SILDING);
     //m_vecAdjState.push_back(STATE_RUN);
     //m_vecAdjState.push_back(STATE_DASH);
-    //m_vecAdjState.push_back(STATE_WALK);
+    m_vecAdjState.push_back(STATE_GLIDING); 
     m_vecAdjState.push_back(STATE_SPRINT_JUMPFALL_VALKYRIE);
     m_vecAdjState.push_back(STATE_JUMP_LAND_VALKYRIE_R);
 

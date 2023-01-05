@@ -196,8 +196,8 @@ void	CUnit_Warrior::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGroggyState = AI_STATE_COMMON_HIT_WARRIOR;
 		m_tHitType.eFlyState = AI_STATE_COMMON_HIT_WARRIOR;
 		m_tHitType.eBounce = AI_STATE_COMMON_HIT_WARRIOR;
-		/*m_tUnitStatus.fMaxHP = 100000.f;
-		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;*/
+		m_tUnitStatus.fMaxHP = 100000.f;
+		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 		break;
 
 		
@@ -220,6 +220,7 @@ void CUnit_Warrior::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_PLAYER_R;
 		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
+		m_eLandState = STATE_JUMP_LAND_PLAYER_R;
 
 		break;
 
@@ -227,6 +228,7 @@ void CUnit_Warrior::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		m_eLandState = AI_STATE_COMMON_LAND_WARRIOR_R;
 
 		break;
 
