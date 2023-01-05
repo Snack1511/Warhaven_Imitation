@@ -44,11 +44,6 @@ HRESULT CStop_Qanda::Initialize()
 	m_vecAdjState.push_back(STATE_RUN_QANDA);
 	m_vecAdjState.push_back(STATE_GUARD_QANDA);
 
-	m_vecAdjState.push_back(STATE_ATTACK_BEGIN_QANDA);
-	m_vecAdjState.push_back(STATE_ATTACK_BEGIN_SNIPING_QANDA);
-
-	//m_vecAdjState.push_back(STATE_ATTACK_VERTICALCUT);
-
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 13;
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_NW] = 14;

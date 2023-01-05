@@ -28,21 +28,29 @@ public:
 		_float fRadianX = 270.f, _float fRadianY = 0.f, _float fRadianZ = 270.f);
 
 public:
-	enum eAnimState {eIDLE, eATTACKBEGIN, eATTACKLOOP, eATTACKCANCEL, eATTACKLAUNCH, eCNT};
+	enum eGliderState {eOpen, eLoop, eClose, eCNT};
 
 public:
 	void	Set_AnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
+
+	void	Set_GliderState(eGliderState eGilderState) { m_eCurState = eGilderState; }
 
 public:
 	virtual HRESULT	Initialize_Prototype();
 	virtual HRESULT	Initialize();
 	virtual HRESULT	Start();
 
+	virtual void	OnEnable() override;
+	virtual void	OnDisable() override;
+
 private:
 	CUnit* m_pOwnerUnit = nullptr;
 	CAnimator* m_pAnimator = nullptr;
 	CHierarchyNode* m_pOwnerBone = nullptr;
-	eAnimState	m_eCurState = eIDLE;
+	eGliderState	m_eCurState = eOpen;
+
+	_float		m_fScaleLoopTime = 0.f;
+	_float4		m_vScale = ZERO_VECTOR;
 
 private:
 	HRESULT		SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFilePath, string strBoneName, 

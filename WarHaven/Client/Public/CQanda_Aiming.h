@@ -33,6 +33,8 @@ private:
 
 private:
 	list<CGameObject*> m_CrowSteam;
+
+	_bool				m_bShoot = false;
 };
 
 END

@@ -1,4 +1,10 @@
 
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUnit_Paladin.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUnit_Valkyrie.cpp"
+
+
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CUnit_WarHammer.cpp"
 
 
@@ -51,10 +57,4 @@
 
 
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWalk_AI_TG_Warrior_L.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWalk_AI_TG_Warrior_R.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWalk_Archer.cpp"
 

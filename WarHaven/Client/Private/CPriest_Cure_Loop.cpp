@@ -216,8 +216,8 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+	static_cast<CUnit*>(m_pTargetObject)->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();
@@ -231,8 +231,15 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (!pTargetUnit)
 		return STATE_CURE_END_PRIEST;
 
+	
+
+	if(!pOwner->Get_SameNearObejct())
+		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
+
+
 	// Å¸°Ù À¯´ÖÀÌ ÈúÀ» ¹Þ°í ÀÖ´Â ´ë»ó
 	pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
+	m_pTargetObject = pTargetUnit;
 
 	_float fLength = (pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
 

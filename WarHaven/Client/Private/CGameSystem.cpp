@@ -1076,8 +1076,8 @@ HRESULT CGameSystem::On_Update_Paden()
 		{
 			m_fScoreAcc = 0.f;
 
-			if (!pMinusScoreTeam->Minus_Score())
-				On_FinishGame(pMinusScoreTeam);
+			//if (!pMinusScoreTeam->Minus_Score())
+				//On_FinishGame(pMinusScoreTeam);
 
 		}
 	}

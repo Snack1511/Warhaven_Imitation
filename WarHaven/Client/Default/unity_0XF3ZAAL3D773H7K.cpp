@@ -1,4 +1,10 @@
 
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CWindow_Level.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWindow_Map.cpp"
+
+
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CWindow_Path.cpp"
 
 

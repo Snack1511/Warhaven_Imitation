@@ -317,6 +317,7 @@ void CUnit::On_Respawn()
 	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	m_bRespawn = true;
 
+
 	CColorController::COLORDESC tColorDesc;
 	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
@@ -960,6 +961,8 @@ void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 	// 모든 플레이어 가져오기.
 	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
 
+	CGameObject* pPreObject = *pNearObject;
+
 	*pNearObject = nullptr;
 
 	for (auto& elem : listPlayers)
@@ -1004,7 +1007,7 @@ void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 			continue;
 
 		// 절두체에 안들어왔다면
-		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance / 5.f))
 			continue;
 
 		_float fMyLength = (elem->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS)).Length();
@@ -1017,6 +1020,13 @@ void CUnit::Check_NearObject_IsInFrustum(CGameObject** pNearObject)
 		fPreLength = fMyLength;
 
 	}
+
+
+	if (pPreObject == *pNearObject)
+		m_bSameNearObject = true;
+	else
+		m_bSameNearObject = false;
+
 }
 
 void CUnit::Check_MultipleObject_IsInFrustum()
@@ -1246,6 +1256,12 @@ void CUnit::My_Tick()
 		m_fAttackDelay -= fDT(0);
 	else
 		m_fAttackDelay = 0.f;
+	
+	if (m_fGlidingTime > 0.f)
+		m_fGlidingTime -= fDT(0);
+	else
+		m_fGlidingTime = 0.f;
+
 
 	if (!m_pCurState)
 	{

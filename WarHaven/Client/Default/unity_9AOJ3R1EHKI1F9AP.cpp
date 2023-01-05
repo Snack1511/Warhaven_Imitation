@@ -1,4 +1,10 @@
 
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWalk_SpearMan.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWalk_SpearMan_L.cpp"
+
+
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWalk_SpearMan_R.cpp"
 
 
@@ -51,10 +57,4 @@
 
 
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CLancer_Breeze_Loop.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWarHammer_AirSpike_Loop.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CWarHammer_AirSpike_End.cpp"
 

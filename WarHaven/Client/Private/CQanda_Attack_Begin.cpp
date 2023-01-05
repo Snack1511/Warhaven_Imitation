@@ -133,7 +133,7 @@ void CQanda_Attack_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CQanda_Attack_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-	if (KEY(LBUTTON, TAP))
+	if (KEY(LBUTTON, HOLD))
 	{
 		CAnimWeapon_Crow::ePhyxState eAnimWeaponState = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->Get_Phase();
 

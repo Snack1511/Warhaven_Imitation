@@ -41,8 +41,14 @@ public:
 	const ePhyxState& Get_Phase() { return m_eCurPhase; }
 	const _float& Get_MaxDistance() { return m_fMaxDistance; }
 
+
+
 public:
 	void Boom_Crow();
+	
+	void ChangeColor_Charge();
+	void ChangeColor_Shoot();
+	void ChangeColor_End();
 
 public:
 	void On_ChangePhase(ePhyxState eNextPhase);

@@ -1,4 +1,10 @@
 
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CCamera_FixedAngle.cpp"
+
+
+#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CCamera_Follow.cpp"
+
+
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\private\CCamera_Free.cpp"
 
 
@@ -51,10 +57,4 @@
 
 
 #include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CInstancingEffects.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CBounce_Player.cpp"
-
-
-#include "E:\Team_Project\Team\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CJump_Player_Fall_R.cpp"
 

@@ -121,6 +121,10 @@ private:
 	STATE_TYPE	Update_Land(CUnit* pOwner, CAnimator* pAnimator);
 	STATE_TYPE	Update_Idle(CUnit* pOwner, CAnimator* pAnimator);
 
+private:
+	CGameObject* m_pTargetObject = nullptr;
+
+
 
 };
 

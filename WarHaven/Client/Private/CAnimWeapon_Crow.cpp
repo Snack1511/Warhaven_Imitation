@@ -9,6 +9,7 @@
 #include "CCollider_Sphere.h"
 
 #include "CCrowBoom.h"
+#include "CColorController.h"
 
 CAnimWeapon_Crow::CAnimWeapon_Crow()
 {
@@ -101,6 +102,52 @@ void CAnimWeapon_Crow::Boom_Crow()
 	m_pCrowBoom->Boom(m_pOwnerUnit->Get_OwnerPlayer(), m_pTransform->Get_World(WORLD_POS));
 	DISABLE_COMPONENT(GET_COMPONENT(CRenderer));
 	On_ChangePhase(eHIT);
+	ChangeColor_End();
+}
+
+
+void CAnimWeapon_Crow::ChangeColor_Charge()
+{
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 9999.f;
+	tColorDesc.fFadeOutTime = 3.f;
+	tColorDesc.vTargetColor = RGBA(196, 13, 0, 1);
+	tColorDesc.iMeshPartType = 1;
+	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
+}
+
+void CAnimWeapon_Crow::ChangeColor_Shoot()
+{
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
+	tColorDesc.fFadeOutStartTime = 9999.f;
+	tColorDesc.fFadeOutTime = 0.1f;
+	tColorDesc.vTargetColor = RGBA(255, 13, 0, 1);
+	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
+}
+
+void CAnimWeapon_Crow::ChangeColor_End()
+{
+	CColorController::COLORDESC tColorDesc;
+	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	tColorDesc.eFadeStyle = CColorController::TIME;
+	tColorDesc.fFadeInStartTime = 0.f;
+	tColorDesc.fFadeInTime = 0.0f;
+	tColorDesc.fFadeOutStartTime = 0.f;
+	tColorDesc.fFadeOutTime = 0.01f;
+	tColorDesc.vTargetColor = RGB(0, 0, 0);
+	tColorDesc.iMeshPartType = 1;
+	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 }
 
 
@@ -123,9 +170,9 @@ void CAnimWeapon_Crow::Shoot_Crow(_float4 vShootPos, _float4 vShootDir)
 	tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
 
 	PxRigidDynamic* pActor = nullptr;
-	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 1.f);
+	pActor = GAMEINSTANCE->Create_DynamicActor(tTransform, PxConvexMeshGeometry(m_pConvexMesh), CPhysX_Manager::SCENE_CURRENT, 0.001f);
 	_float4 vDir = vShootDir.Normalize();
-	vDir *= 10000.f;
+	vDir *= 1.f;
 	pActor->addForce(CUtility_PhysX::To_PxVec3(vDir));
 	//pActor->addTorque(CUtility_PhysX::To_PxVec3(vDir));
 	m_pActor = pActor;
@@ -242,6 +289,7 @@ HRESULT CAnimWeapon_Crow::Start()
 void CAnimWeapon_Crow::OnEnable()
 {
 	__super::OnEnable();
+	m_eCurPhase = eIDLE;
 	m_pTransform->Set_World(WORLD_POS, m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS));
 }
 
@@ -297,14 +345,6 @@ HRESULT CAnimWeapon_Crow::SetUp_Model(wstring wstrModelFilePath, wstring wstrAni
 
 	if (!m_pConvexMesh)
 		return E_FAIL;
-
-	CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
-
-	if (!pCController)
-		return E_FAIL;
-
-	Add_Component(pCController);
-
 
 	return S_OK;
 }
@@ -393,12 +433,9 @@ void CAnimWeapon_Crow::Late_Tick()
 
 		_float4 vLook = vOwnerPos - m_pTransform->Get_World(WORLD_POS);
 
-		m_pTransform->Set_LerpLook(m_pOwnerUnit->Get_FollowCamLook(), 0.1f);
+		m_pTransform->Set_LerpLook(m_pOwnerUnit->Get_FollowCamLook() * -1.f, 0.1f);
 		m_pPhysics->Set_Dir(vLook);
 
-			m_pTransform->Get_Transform().matMyWorld = matBone * m_OwnerBoneOffsetMatrix;
-			m_pTransform->Make_WorldMatrix();
-		}
 		if (fabs(vLook.Length()) < 0.1f)
 		{
 			m_pTransform->Set_World(WORLD_POS, vOwnerPos);
@@ -412,23 +449,37 @@ void CAnimWeapon_Crow::Late_Tick()
 	{
 		/* PhysX 따라가기 */
 
-	/*	PxTransform tTransform = m_pActor->getGlobalPose();
+		PxTransform tTransform = m_pActor->getGlobalPose();
 		_float4x4 matPhysX = CUtility_PhysX::To_Matrix(tTransform);
 		m_pTransform->Get_Transform().matMyWorld = matPhysX;
+		m_pTransform->Make_WorldMatrix();
 
-		m_pTransform->Make_WorldMatrix();*/
+		//m_pPhysics->Set_Dir(m_vChaseLook);
+		//m_pPhysics->Set_Accel(100.f);
 
-		//_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
-		//_float fLength = (m_vStartPosition - m_pTransform->Get_World(WORLD_POS)).Length();
+		//PxTransform tTransform;
+		//ZeroMemory(&tTransform, sizeof(PxTransform));
 
-		m_pPhysics->Set_Dir(m_vChaseLook);
-		m_pPhysics->Set_Accel(100.f);
+		//_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
+
+		//tTransform.p = CUtility_PhysX::To_PxVec3(vCurPos);
+		//tTransform.q = CUtility_PhysX::To_PxQuat(m_pTransform->Get_Quaternion());
+
+		//_float4x4 matPhysX = CUtility_PhysX::To_Matrix(tTransform);
+
+		//m_pActor->setGlobalPose(tTransform);
+
+		//m_pTransform->Get_Transform().matMyWorld = matPhysX;
+		//m_pTransform->Make_WorldMatrix();
+
+		_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
+		_float fLength = (m_vStartPosition - m_pTransform->Get_World(WORLD_POS)).Length();
 		
 		m_fLoopTimeAcc += fDT(0);
 
-		if( m_fLoopTimeAcc > m_fMaxShootTime) //|| 
-			//fPower < 25.f || 
-			//fLength > m_fMaxDistance)
+		if( m_fLoopTimeAcc > m_fMaxShootTime || 
+			fPower < 0.5f || 
+			fLength > m_fMaxDistance)
 		{
 			Safe_release(m_pActor);
 			Boom_Crow();

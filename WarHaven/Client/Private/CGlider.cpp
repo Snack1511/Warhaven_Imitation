@@ -75,6 +75,19 @@ HRESULT CGlider::Start()
     return S_OK;
 }
 
+void CGlider::OnEnable()
+{
+	__super::OnEnable();
+	m_pTransform->Set_Scale(_float4(0.f, 0.f, 0.f));
+		
+}
+
+void CGlider::OnDisable()
+{
+	__super::OnDisable();
+}
+
+
 HRESULT CGlider::SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFilePath, string strBoneName, _float fRadianX, _float fRadianY, _float fRadianZ)
 {
 	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, wstrAnimFilePath.c_str());
@@ -106,12 +119,51 @@ HRESULT CGlider::SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFilePath
 
 void CGlider::Late_Tick()
 {
-	//if (m_pAnimator->Get_CurAnimIndex() == 0 && m_pAnimator->Is_CurAnimFinished())
-	//	Set_AnimIndex(1, 0.f, 2.f);
+	if (m_pAnimator->Get_CurAnimIndex() == 0 && m_pAnimator->Is_CurAnimFinished())
+		Set_AnimIndex(1, 0.f, 2.f);
+
+	switch (m_eCurState)
+	{
+	case Client::CGlider::eOpen:
+
+
+		m_vScale += fDT(0) * 10.f;
+
+		if (m_vScale.x >= 1.f)
+		{
+			m_eCurState = eLoop;
+			m_pTransform->Set_Scale(_float4(1.f, 1.f, 1.f));
+		}
+		else
+		{
+			m_pTransform->Set_Scale(m_vScale);
+		}
+			
+
+
+		break;
+
+	case Client::CGlider::eClose:
+
+		m_vScale -= fDT(0) * 10.f;
+
+		m_pTransform->Set_Scale(m_vScale);
+		
+		if (m_vScale.x <= 0.f)
+			DISABLE_GAMEOBJECT(this);
+
+		break;
+
+	default:
+		break;
+	}
+
+	
 
 	_float4x4		matBone = m_pOwnerBone->Get_BoneMatrix();
 
 	m_pTransform->Get_Transform().matMyWorld = matBone;
 
 	m_pTransform->Make_WorldMatrix();
+
 }

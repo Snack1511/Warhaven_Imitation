@@ -659,7 +659,7 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 		return false;
 
 	_float4 vStartPos = pAnimCrow->Get_Transform()->Get_World(WORLD_POS);// pAnimCrow->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vDir = pAnimCrow->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vDir = pAnimCrow->Get_Transform()->Get_World(WORLD_LOOK) * -1.f;
 	_float fMaxDistance = pAnimCrow->Get_MaxDistance();
 
 	_float fMinDist;

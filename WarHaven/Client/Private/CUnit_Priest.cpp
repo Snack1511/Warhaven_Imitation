@@ -19,6 +19,9 @@
 
 #include "CCure_Effect.h"
 
+#include "CUI_UnitHUD.h"
+#include "CUI_UnitHP.h"
+
 CUnit_Priest::CUnit_Priest()
 {
 }
@@ -235,10 +238,11 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_PRIEST;
 		m_eSprintEndState = STATE_SPRINT_END_PRIEST;
-		m_eLandState = STATE_JUMP_LAND_PRIEST;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_PRIEST;
 
 		m_eCureBeginType = STATE_CURE_BEGIN_PRIEST;
 		m_eCureLoopType = STATE_CURE_LOOP_PRIEST;
+
 
 		break;
 
@@ -246,7 +250,7 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
-		m_eLandState = STATE_JUMP_LAND_PRIEST;
+		//m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER;
 
 		break;
 
@@ -254,7 +258,7 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
-		m_eLandState = STATE_JUMP_LAND_PRIEST; // 수정
+		//m_eSprintFallState = STATE_JUMP_LAND_PRIEST; // 수정
 
 		break;
 
@@ -517,8 +521,20 @@ void CUnit_Priest::OnDisable()
 
 void CUnit_Priest::My_Tick()
 {
+	if (m_pNearCureObject)
+	{
+		Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
+	}
+
 	__super::My_Tick();
 	__super::Check_NearObject_IsInFrustum(&m_pNearCureObject);
+
+	if (!m_bSameNearObject)
+	{
+		
+		TurnOn_CureEffect(false);
+	}
+
 }
 void CUnit_Priest::My_LateTick()
 {

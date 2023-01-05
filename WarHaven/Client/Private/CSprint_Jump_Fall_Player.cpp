@@ -52,6 +52,8 @@ HRESULT CSprint_Jump_Fall_Player::Initialize()
 
 void CSprint_Jump_Fall_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    if (ePrevType == STATE_GLIDING)
+        m_fInterPolationTime = 0.2f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
