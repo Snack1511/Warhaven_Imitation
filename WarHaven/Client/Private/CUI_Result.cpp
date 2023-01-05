@@ -564,7 +564,7 @@ void CUI_Result::Progress_Result()
 	}
 	else if (m_iResultProgressCnt == 4)
 	{
-		m_fDissolveValue -= fDT(0) * 0.1f;
+		m_fDissolveValue -= fDT(0) * 0.3f;
 		if (m_fDissolveValue < 0.f)
 		{
 			m_fDissolveValue = 0.f;

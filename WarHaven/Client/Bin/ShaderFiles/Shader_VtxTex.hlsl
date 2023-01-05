@@ -654,19 +654,17 @@ PS_OUT PS_DISSOLVE(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
     
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
         
-    Out.vColor.a = vNoise.r;
+    Out.vColor = vColor;
+    vColor.a = vNoise.r;
             
-    if (Out.vColor.a > g_fValue)
-    {
+    if (vColor.a >= g_fValue)
         discard;
-    //    // Out.vColor.rgb = 1.f;
-        
-    //    //if (vColor.a > g_fValue + 0.01f)
-    //    //    discard;
-    }
+    
+    if (vColor.a >= g_fValue - 0.1f)
+        Out.vColor.rgb = 1.f;
     
     return Out;
 }
