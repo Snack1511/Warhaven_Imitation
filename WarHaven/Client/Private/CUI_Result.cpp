@@ -8,6 +8,7 @@
 #include "CPlayer.h"
 #include "CPlayerInfo.h"
 #include "CUI_Renderer.h"
+#include "CShader.h"
 
 CUI_Result::CUI_Result()
 {
@@ -36,7 +37,14 @@ HRESULT CUI_Result::Start()
 	Init_ResultMVP();
 	Init_ResultScoreList();
 
+	GET_COMPONENT_FROM(m_pResultMVP[MVP_Blind], CShader)->CallBack_SetRawValues += bind(&CUI_Result::Set_Shader_MVP, this, placeholders::_1, "g_fValue");
+
 	return S_OK;
+}
+
+void CUI_Result::Set_Shader_MVP(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fDissolveValue, sizeof(_float));
 }
 
 void CUI_Result::SetActive_Result(_uint iResult, _bool value)
@@ -301,11 +309,10 @@ void CUI_Result::Create_ResultMVP()
 
 			m_pResultMVP[i]->Set_Scale(178.f, 400.f);
 
-			m_pResultMVP[i]->Set_FontRender(true);
 			m_pResultMVP[i]->Set_FontStyle(true);
 			m_pResultMVP[i]->Set_FontCenter(true);
 			m_pResultMVP[i]->Set_FontScale(0.5f);
-			m_pResultMVP[i]->Set_FontOffset(0.f, 150.f);
+			m_pResultMVP[i]->Set_FontOffset(0.f, 250.f);
 			break;
 		}
 	}
@@ -545,5 +552,21 @@ void CUI_Result::Progress_Result()
 
 		m_pResultMVP[MVP_Player]->Set_FontText(wstrPlayerName);
 		m_pResultMVP[MVP_Player]->Set_TextureIndex(iClassNum);
+
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > 1.5f)
+		{
+			m_fAccTime = 0.f;
+			m_iResultProgressCnt++;
+		}
+	}
+	else if (m_iResultProgressCnt == 4)
+	{
+		m_fDissolveValue -= fDT(0) * 0.5f;
+		if (m_fDissolveValue < 0.f)
+		{
+			m_fDissolveValue = 0.f;
+			m_pResultMVP[MVP_Player]->Set_FontRender(true);
+		}
 	}
 }

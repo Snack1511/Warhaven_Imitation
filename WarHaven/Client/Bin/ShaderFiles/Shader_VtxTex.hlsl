@@ -657,12 +657,17 @@ PS_OUT PS_DISSOLVE(PS_IN In)
     vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     
-    Out.vColor = vColor;
-    
+    Out.vColor = vColor;    
     vColor.a = vNoise.r;
     
     if (vColor.a > g_fValue)
         discard;
+        
+    if (vColor.a <= g_fValue - 0.02f)
+        vColor.r = 0.f;
+        
+    if (vColor.a <= g_fValue - 0.01f)
+        vColor.rgb = 0.9f;
     
     return Out;
 }
