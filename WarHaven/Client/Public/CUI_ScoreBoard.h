@@ -49,8 +49,6 @@ private:
 private:
 	map<Team, list<CUI_ScoreInfo*>> m_pScoreInfoMap;
 
-	
-
 private:
 	_float4 m_vColorCircle = _float4(1.f, 1.f, 1.f, 0.1f);
 	_float4 m_vColorGold = _float4(0.773f, 0.714f, 0.596f, 1.f);

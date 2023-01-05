@@ -39,11 +39,6 @@ HRESULT CUI_ScoreBoard::Start()
 
 	Set_Squad();
 
-	CTeamConnector* pTeam = CUser::Get_Instance()->Get_PlayerObejects()->Get_Team();
-	_bool IsMainTeam = pTeam->IsMainPlayerTeam();
-
-	pTeam->Get_SquadList();
-
 	return S_OK;
 }
 

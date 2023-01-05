@@ -172,7 +172,7 @@ void CUI_Result::My_Tick()
 
 				for (int i = 0; i < Team_End; ++i)
 				{
-					for (int j = 0; j < Score_End; ++j)
+					for (int j = 0; j < List_End; ++j)
 					{
 						m_pArrResultScoreList[i][j]->SetActive(true);
 					}
@@ -208,12 +208,15 @@ void CUI_Result::OnDisable()
 
 	for (int i = 0; i < MVP_End; ++i)
 	{
-		m_pResultScoreBG[i]->SetActive(false);
+		m_pResultMVP[i]->SetActive(false);
 	}
 
-	for (int j = 0; j < Score_End; ++j)
+	for (int i = 0; i < Team_End; ++i)
 	{
-		m_pResultScoreBG[j]->SetActive(false);
+		for (int j = 0; j < Score_End; ++j)
+		{
+			m_pArrResultScoreList[i][j]->SetActive(false);
+		}
 	}
 }
 
@@ -324,7 +327,7 @@ void CUI_Result::Create_ResultScoreList()
 
 		case List_Line:
 			m_pResultScoreList[i]->Set_Color(m_vColorGold);
-			m_pResultScoreList[i]->Set_PosY(185.f);
+			m_pResultScoreList[i]->Set_PosY(195.f);
 			m_pResultScoreList[i]->Set_Scale(400.f, 1.f);
 			break;
 
@@ -332,6 +335,7 @@ void CUI_Result::Create_ResultScoreList()
 			m_pResultScoreList[i]->Set_FontRender(true);
 			m_pResultScoreList[i]->Set_FontStyle(true);
 			m_pResultScoreList[i]->Set_FontScale(0.4f);
+			m_pResultScoreList[i]->Set_FontColor(m_vColorGold);
 			m_pResultScoreList[i]->Set_FontOffset(35.f, -20.f);
 			break;
 
