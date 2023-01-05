@@ -506,7 +506,7 @@ void CUI_Paden::Create_InGameTimer()
 	m_pInGameTimer->Set_FontStyle(true);
 	m_pInGameTimer->Set_FontCenter(true);
 	m_pInGameTimer->Set_FontOffset(5.5f, 0.f);
-	m_pInGameTimer->Set_FontScale(0.3);
+	m_pInGameTimer->Set_FontScale(0.3f);
 
 	CREATE_GAMEOBJECT(m_pInGameTimer, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pInGameTimer);

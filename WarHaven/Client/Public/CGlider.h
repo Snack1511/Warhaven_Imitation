@@ -12,6 +12,7 @@ END
 
 BEGIN(Client)
 
+class CTrailEffect;
 class CUnit;
 
 class CGlider
@@ -34,11 +35,18 @@ public:
 	void	Set_AnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fAnimSpeed);
 
 public:
+	void SetUp_GliderTrail();
+	void TurnOn_Trail(_bool bOn);
+
+public:
 	virtual HRESULT	Initialize_Prototype();
 	virtual HRESULT	Initialize();
 	virtual HRESULT	Start();
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 private:
+	CModel* m_pModelCom = nullptr;
 	CUnit* m_pOwnerUnit = nullptr;
 	CAnimator* m_pAnimator = nullptr;
 	CHierarchyNode* m_pOwnerBone = nullptr;
@@ -47,9 +55,17 @@ private:
 private:
 	HRESULT		SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFilePath, string strBoneName, 
 		_float fRadianX = 270.f, _float fRadianY = 0.f, _float fRadianZ = 270.f);
+	void SetUp_RTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount);
+	void SetUp_LTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount);
 
 private:
 	virtual void	Late_Tick() override;
+
+private:
+	CTrailEffect* m_pRWing = nullptr;
+	CTrailEffect* m_pLWing = nullptr;
 };
 
 END

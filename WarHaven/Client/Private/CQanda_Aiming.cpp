@@ -58,7 +58,7 @@ HRESULT CQanda_Aiming::Initialize()
 
 void CQanda_Aiming::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
-	__super::Enter_Aiming(pOwner, pAnimator, ePrevType, CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_ZOOM);
+	__super::Enter_Aiming(pOwner, pAnimator, ePrevType, CScript_FollowCam::CAMERA_LERP_TYPE::CAMERA_LERP_QANDA);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 
     static_cast<CUnit_Qanda*>(pOwner)->Turn_FeatherEffect(false);

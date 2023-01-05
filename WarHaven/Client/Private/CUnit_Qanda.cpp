@@ -391,7 +391,7 @@ void CUnit_Qanda::Turn_FeatherEffect(_bool bOnOff)
 	{
 		if (m_pFeathers)
 		{
-			static_cast<CRectEffects*>(m_pFeathers)->Set_AllFadeOut();
+			static_cast<CRectEffects*>(m_pFeathers)->Set_AllFadeOut(0.5f);
 			m_pFeathers = nullptr;
 		}
 	}
@@ -403,14 +403,17 @@ void CUnit_Qanda::Turn_SteamEffect(_bool bOnOff)
 	if (bOnOff)
 	{
 		if (m_SteamEffect.empty())
+		{
 			m_SteamEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Steam", m_pAnimCrow, ZERO_VECTOR);
+			//Create_Light(m_SteamEffect.back(), ZERO_VECTOR, 2.f, 0.f, 0.1f, 9999.f, 0.1f, RGB(255, 0, 0), false);
+		}
 	}
 	else
 	{
 		if (!m_SteamEffect.empty())
 		{
 			for (auto& elem : m_SteamEffect)
-				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.5f);
 		}
 
 		m_SteamEffect.clear();

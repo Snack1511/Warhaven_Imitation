@@ -587,7 +587,7 @@ void CAttack_Qanda::Enter_Attack_Begin(CUnit* pOwner)
 
 	m_iMinCancelAnimIndex = 30;
 
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOM);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_QANDA);
 
 }
 

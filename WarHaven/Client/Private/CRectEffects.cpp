@@ -203,6 +203,7 @@ void CRectEffects::Set_AllFadeOut(_float fFadeTime)
 	{
 		//m_pDatas[i].InstancingData.fFadeInStartTime = 0.f;
 		m_pDatas[i].InstancingData.eCurFadeType = INSTANCING_DATA::FADEOUT;
+		m_pDatas[i].InstancingData.fTimeAcc = 0.f;
 		m_pDatas[i].InstancingData.fFadeOutTime = fFadeTime;
 
 	}
