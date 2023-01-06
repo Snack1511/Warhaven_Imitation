@@ -38,15 +38,22 @@ private:
 	_float m_fTargetPosY = -240.f;
 
 private:
-	enum CharacterPort { Port_BG, Port_Char, Port_Class, Port_Highlight, Port_Outline, Port_Underline, Port_End };
-	CUI_Object* m_pCharacterPort[Port_End];
-	CUI_Object* m_pArrCharacterPort[CLASS_END][Port_End];
+	enum ClassPort { Port_BG, Port_Char, Port_Class, Port_Highlight, Port_Outline, Port_Underline, Port_End };
+	CUI_Object* m_pClassPort[Port_End];
+	CUI_Object* m_pArrClassPort[CLASS_END][Port_End];
+
+	enum ClassInfo { Info_BG, Info_Class, Info_End };
+	CUI_Object* m_pClassInfo[Info_End];
 
 private:
-	void Create_CharacterPort();
+	void Create_ClassPort();
+	void Create_ClassInfo();
 
-	void Init_CharacterPort();
+	void Init_ClassPort();
+	void Init_ClassInfo();
 
 	void Bind_Btn();
+
+	void Set_ClassInfoText(_uint iEventNum);
 };
 
