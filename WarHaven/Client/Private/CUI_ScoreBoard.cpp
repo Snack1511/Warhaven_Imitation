@@ -23,6 +23,7 @@ HRESULT CUI_ScoreBoard::Initialize_Prototype()
 	Create_ScoreMiniMap();
 	Create_ScorePlayerList();
 	Create_Squad();
+	Create_PointUI();
 
 	return S_OK;
 }
@@ -36,6 +37,7 @@ HRESULT CUI_ScoreBoard::Start()
 	Init_ScoreMiniMap();
 	Init_ScorePlayerList();
 	Init_Squad();
+	Init_PointUI();
 
 	Set_Squad();
 
@@ -289,6 +291,33 @@ void CUI_ScoreBoard::Create_Squad()
 	}
 }
 
+void CUI_ScoreBoard::Create_PointUI()
+{
+	for (int i = 0; i < PU_End; ++i)
+	{
+		m_pPointUI[i] = CUI_Object::Create();
+
+		m_pPointUI[i]->Set_Sort(0.35f);
+
+		switch (i)
+		{
+		case PU_Outline:
+			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pPointUI[i], "/Oper", "Outline");
+
+			m_pPointUI[i]->Set_Scale(24.f);
+			break;
+
+		case PU_Text:
+			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pPointUI[i], "/Oper", "Text");
+
+			m_pPointUI[i]->Set_Scale(32.f);
+			break;
+		}
+	}
+}
+
 void CUI_ScoreBoard::Init_ScoreMiniMap()
 {
 	switch (m_eLoadLevel)
@@ -389,6 +418,57 @@ void CUI_ScoreBoard::Init_Squad()
 
 			m_pScoreList.push_back(m_pArrSquard[j][i]);
 		}
+	}
+}
+
+void CUI_ScoreBoard::Init_PointUI()
+{
+	for (int i = 0; i < PU_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pPointUI[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pPointUI[i]);
+
+		for (int j = 0; j < Point_End; ++j)
+		{
+			m_pArrPointUI[j][i] = m_pPointUI[i]->Clone();
+
+			CREATE_GAMEOBJECT(m_pArrPointUI[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrPointUI[j][i]);
+
+			m_pScoreList.push_back(m_pArrPointUI[j][i]);
+		}
+	}
+
+	switch (m_eLoadLevel)
+	{
+	case Client::LEVEL_PADEN:
+
+		for (int i = 0; i < Point_End; ++i)
+		{
+			for (int j = 0; j < PU_End; ++j)
+			{
+				m_pArrPointUI[i][j]->Set_PosX(-375.f);
+			}
+		}
+
+		m_pArrPointUI[Point_A][PU_Outline]->Set_TextureIndex(0);
+		m_pArrPointUI[Point_A][PU_Text]->Set_TextureIndex(0);
+		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-17.f);
+		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(-19.f);
+
+		m_pArrPointUI[Point_R][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_R][PU_Text]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(75.f);
+		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(73.f);
+
+		m_pArrPointUI[Point_C][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_C][PU_Text]->Set_TextureIndex(2);
+		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-85.f);
+		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(-87.f);
+
+		break;
+	case Client::LEVEL_HWARA:
+		break;
 	}
 }
 

@@ -45,7 +45,10 @@ private:
 	CUI_Object* m_pSquard[Squad_End];
 	CUI_Object* m_pArrSquard[4][Squad_End];
 
-	// 점수 사망 추가
+	enum Point { Point_A, Point_R, Point_C, Point_End };
+	enum PointUI { PU_Outline, PU_Text, PU_End };
+	CUI_Object* m_pPointUI[PU_End];
+	CUI_Object* m_pArrPointUI[Point_End][PU_End];
 
 public:
 	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();
@@ -63,10 +66,12 @@ private:
 	void Create_ScoreMiniMap();
 	void Create_ScorePlayerList();
 	void Create_Squad();
+	void Create_PointUI();
 
 	void Init_ScoreMiniMap();
 	void Init_ScorePlayerList();
 	void Init_Squad();
+	void Init_PointUI();
 
 	void Set_Squad();
 };

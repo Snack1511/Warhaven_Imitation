@@ -43,7 +43,7 @@ HRESULT CUI_MainPlay::Start()
 	__super::Start();
 
 	Bind_Shader();
-	Bind_Btn();
+	// Bind_Btn();
 
 	Set_FadeModeWindow();
 
