@@ -190,6 +190,7 @@ public:
 	void On_FinishGame(CTeamConnector* pLoseTeam);
 
 	void On_ScoreKDA_Kill(CPlayer* pOtherPlayer);
+	void On_ScoreKDA_Death();
 
 
 public:

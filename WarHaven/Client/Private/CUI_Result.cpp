@@ -129,7 +129,7 @@ void CUI_Result::Create_Fade()
 {
 	m_pFade = CUI_Object::Create();
 
-	m_pFade->Set_FadeDesc(0.3f, 0.3f, 1.f, true);
+	m_pFade->Set_FadeDesc(0.1f, 0.1f, 0.8f, true);
 
 	m_pFade->Set_Sort(0.f);
 	m_pFade->Set_Scale(1280.f, 720.f);
@@ -265,7 +265,6 @@ void CUI_Result::Create_ResultScoreBG()
 
 void CUI_Result::Create_ResultMVP()
 {
-	// 디졸브로 원래 이미지 지우고 뒤에 이미지 등장
 	// 뒤에 글로우 확대 
 
 	for (int i = 0; i < MVP_End; ++i)
@@ -510,6 +509,11 @@ void CUI_Result::Progress_Result()
 				{
 					return p1->Get_KillCnt() > p2->Get_KillCnt();
 				});
+
+			pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
+				{
+					return p1->Get_DeathCnt() < p2->Get_DeathCnt();
+				});
 		}
 
 		m_fAccTime += fDT(0);
@@ -538,6 +542,7 @@ void CUI_Result::Progress_Result()
 			for (auto& iter : pair.second)
 			{
 				iter->Set_Type(1);
+				iter->Set_ScaleX(400.f);
 				iter->SetActive(true);
 			}
 		}

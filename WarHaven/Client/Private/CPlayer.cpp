@@ -1030,7 +1030,7 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 	m_tKdaStat.iKillStreak++;
 	m_tKdaStat.iTotalKillCount++;
 
-	m_pScoreInfo->Update_KillCnt();
+	m_pScoreInfo->Update_KillCnt(m_tKdaStat.iTotalKillCount);
 	CUser::Get_Instance()->Sort_ScoreInfo();
 
 	if (m_bIsMainPlayer)
@@ -1064,6 +1064,14 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL4);
 		}
 	}
+}
+
+void CPlayer::On_ScoreKDA_Death()
+{
+	m_tKdaStat.iDeathCount++;
+
+	m_pScoreInfo->Update_DeathCont(m_tKdaStat.iDeathCount);
+	CUser::Get_Instance()->Sort_ScoreInfo();
 }
 
 void CPlayer::Change_NearPath()

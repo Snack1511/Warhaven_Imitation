@@ -48,7 +48,7 @@ void CUI_ScoreBoard::Get_ScoreInfo(CPlayer* pPlayer)
 
 	_bool IsMainTeam = pPlayer->Get_Team()->IsMainPlayerTeam();
 
-	_float fPosX = IsMainTeam ? 250.f : 475.f;
+	_float fPosX = IsMainTeam ? 180.f : 450.f;
 	pScoreInfo->Set_PosX(fPosX);
 
 	Team eTeam = IsMainTeam ? Team_Blue : Team_Red;
@@ -71,8 +71,6 @@ void CUI_ScoreBoard::My_Tick()
 
 	for (auto& pair : m_pScoreInfoMap)
 	{
-		// Sort_ScoreInfo(pair.second);
-
 		auto iter = pair.second.begin();
 		for (int i = 0; i < pair.second.size(); ++i)
 		{
@@ -99,6 +97,7 @@ void CUI_ScoreBoard::OnEnable()
 	{
 		for (auto& iter : pair.second)
 		{
+			iter->Set_ScaleX(250.f);
 			iter->SetActive(true);
 		}
 	}
@@ -129,10 +128,20 @@ map<_uint, list<CUI_ScoreInfo*>> CUI_ScoreBoard::Get_ScoreInfoMap()
 		if (pair.first == Team_Blue)
 		{
 			pScoreInfoMap.emplace(0, pair.second);
+
+			for (auto& iter : pair.second)
+			{
+				iter->Set_PosX(-100.f);
+			}
 		}
 		else
 		{
 			pScoreInfoMap.emplace(1, pair.second);
+
+			for (auto& iter : pair.second)
+			{
+				iter->Set_PosX(350.f);
+			}
 		}
 	}
 
@@ -194,7 +203,7 @@ void CUI_ScoreBoard::Create_ScorePlayerList()
 
 		switch (i)
 		{
-		case List_TeamIcon:
+		case List_Team:
 			m_pSocrePlayerList[i]->Set_Color(m_vColorGold);
 
 			m_pSocrePlayerList[i]->Set_FontRender(true);
@@ -204,15 +213,19 @@ void CUI_ScoreBoard::Create_ScorePlayerList()
 			m_pSocrePlayerList[i]->Set_FontColor(m_vColorGold);
 			break;
 
-		case List_KillIcon:
+		case List_Kill:
 			m_pSocrePlayerList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_ScoreBoardIconKill.dds"));
+			break;
+
+		case List_Death:
+			m_pSocrePlayerList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_ScoreIconDeath.dds"));
 			break;
 
 		case List_Line:
 			m_pSocrePlayerList[i]->Set_Color(m_vColorGold);
 			m_pSocrePlayerList[i]->Set_PosY(185.f);
 			m_pSocrePlayerList[i]->Set_Sort(0.34f);
-			m_pSocrePlayerList[i]->Set_Scale(200.f, 1.f);
+			m_pSocrePlayerList[i]->Set_Scale(250.f, 1.f);
 			break;
 
 		case List_LineGlow:
@@ -221,13 +234,13 @@ void CUI_ScoreBoard::Create_ScorePlayerList()
 			m_pSocrePlayerList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_PopupBlur.dds"));
 			m_pSocrePlayerList[i]->Set_PosY(184.f);
 			m_pSocrePlayerList[i]->Set_Sort(0.35f);
-			m_pSocrePlayerList[i]->Set_Scale(150.f, 15.f);
+			m_pSocrePlayerList[i]->Set_Scale(150.f, 16.f);
 			break;
 
 		case List_BG:
 			m_pSocrePlayerList[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_GradientSmall3.dds"));
 			m_pSocrePlayerList[i]->Set_PosY(0.f);
-			m_pSocrePlayerList[i]->Set_Scale(200.f, 375.f);
+			m_pSocrePlayerList[i]->Set_Scale(250.f, 375.f);
 			m_pSocrePlayerList[i]->Set_IsSlice(true);
 			m_pSocrePlayerList[i]->Set_SliceRatio(_float4(0.f, 0.f, 0.f, 0.9f));
 			break;
@@ -322,30 +335,32 @@ void CUI_ScoreBoard::Init_ScorePlayerList()
 	}
 
 	m_pArrSocrePlayerList[Team_Blue][List_BG]->Set_Color(m_vColorBlue);
-	m_pArrSocrePlayerList[Team_Blue][List_BG]->Set_PosX(250.f);
+	m_pArrSocrePlayerList[Team_Blue][List_BG]->Set_PosX(180.f);
 	_float fBluePosX = m_pArrSocrePlayerList[Team_Blue][List_BG]->Get_PosX();
 
 	m_pArrSocrePlayerList[Team_Blue][List_Line]->Set_PosX(fBluePosX);
 	m_pArrSocrePlayerList[Team_Blue][List_LineGlow]->Set_PosX(fBluePosX - 30.f);
 
-	m_pArrSocrePlayerList[Team_Blue][List_TeamIcon]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_64MaraSymbolIcon.dds"));
-	m_pArrSocrePlayerList[Team_Blue][List_TeamIcon]->Set_PosX(fBluePosX - 85.f);
-	m_pArrSocrePlayerList[Team_Blue][List_TeamIcon]->Set_FontText(TEXT("아군"));
+	m_pArrSocrePlayerList[Team_Blue][List_Team]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_64MaraSymbolIcon.dds"));
+	m_pArrSocrePlayerList[Team_Blue][List_Team]->Set_PosX(fBluePosX - 110.f);
+	m_pArrSocrePlayerList[Team_Blue][List_Team]->Set_FontText(TEXT("아군"));
 
-	m_pArrSocrePlayerList[Team_Blue][List_KillIcon]->Set_PosX(fBluePosX + 85.f);
+	m_pArrSocrePlayerList[Team_Blue][List_Kill]->Set_PosX(fBluePosX + 80.f);
+	m_pArrSocrePlayerList[Team_Blue][List_Death]->Set_PosX(fBluePosX + 110.f);
 
 	m_pArrSocrePlayerList[Team_Red][List_BG]->Set_Color(m_vColorRed);
-	m_pArrSocrePlayerList[Team_Red][List_BG]->Set_PosX(475.f);
+	m_pArrSocrePlayerList[Team_Red][List_BG]->Set_PosX(450.f);
 	_float fRedPosX = m_pArrSocrePlayerList[Team_Red][List_BG]->Get_PosX();
 
 	m_pArrSocrePlayerList[Team_Red][List_Line]->Set_PosX(fRedPosX);
 	m_pArrSocrePlayerList[Team_Red][List_LineGlow]->Set_PosX(fRedPosX - 30.f);
 
-	m_pArrSocrePlayerList[Team_Red][List_TeamIcon]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_64UnionSymbolIcon.png"));
-	m_pArrSocrePlayerList[Team_Red][List_TeamIcon]->Set_PosX(fRedPosX - 85.f);
-	m_pArrSocrePlayerList[Team_Red][List_TeamIcon]->Set_FontText(TEXT("적군"));
+	m_pArrSocrePlayerList[Team_Red][List_Team]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_64UnionSymbolIcon.png"));
+	m_pArrSocrePlayerList[Team_Red][List_Team]->Set_PosX(fRedPosX - 110.f);
+	m_pArrSocrePlayerList[Team_Red][List_Team]->Set_FontText(TEXT("적군"));
 
-	m_pArrSocrePlayerList[Team_Red][List_KillIcon]->Set_PosX(fRedPosX + 85.f);
+	m_pArrSocrePlayerList[Team_Red][List_Kill]->Set_PosX(fRedPosX + 80.f);
+	m_pArrSocrePlayerList[Team_Red][List_Death]->Set_PosX(fRedPosX + 110.f);
 }
 
 void CUI_ScoreBoard::Init_Squad()
@@ -403,6 +418,11 @@ void CUI_ScoreBoard::Sort_ScoreInfo()
 		pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
 			{
 				return p1->Get_KillCnt() > p2->Get_KillCnt();
+			});
+
+		pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
+			{
+				return p1->Get_DeathCnt() < p2->Get_DeathCnt();
 			});
 	}
 }

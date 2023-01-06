@@ -41,9 +41,13 @@ void CUI_ScoreInfo::My_Tick()
 {
 	__super::My_Tick();
 
-	_tchar  szTemp[MAX_STR] = {};
-	swprintf_s(szTemp, TEXT("%0d"), m_iKillCnt);
-	m_pInfo[Info_Kill]->Set_FontText(szTemp);
+	_tchar  szKill[MAX_STR] = {};
+	swprintf_s(szKill, TEXT("%0d"), m_iKillCnt);
+	m_pInfo[Info_Kill]->Set_FontText(szKill);
+
+	_tchar  szDeath[MAX_STR] = {};
+	swprintf_s(szDeath, TEXT("%0d"), m_iDeathCnt);
+	m_pInfo[Info_Death]->Set_FontText(szDeath);
 
 	_float fTapPosY = 170.f - ((m_iRank - 1) * 20.f);
 	_float fResultPosY = 190.f - ((m_iRank - 1) * 20.f);
@@ -63,6 +67,27 @@ void CUI_ScoreInfo::My_LateTick()
 void CUI_ScoreInfo::OnEnable()
 {
 	__super::OnEnable();
+
+	_float fPosX = m_pInfo[Info_BG]->Get_PosX();
+
+	switch (m_iType)
+	{
+	case 0:
+		m_pInfo[Info_Rank]->Set_PosX(fPosX - 110.f);
+		m_pInfo[Info_ClassName]->Set_PosX(fPosX - 95.f);
+		m_pInfo[Info_Kill]->Set_PosX(fPosX + 80.f);
+		m_pInfo[Info_Death]->Set_PosX(fPosX + 110.f);
+		m_pInfo[Info_Num]->Set_PosX(fPosX - 140.f);
+		break;
+
+	case 1:
+		m_pInfo[Info_Rank]->Set_PosX(fPosX - 180.f);
+		m_pInfo[Info_ClassName]->Set_PosX(fPosX - 165.f);
+		m_pInfo[Info_Kill]->Set_PosX(fPosX + 125.f);
+		m_pInfo[Info_Death]->Set_PosX(fPosX + 185.f);
+		m_pInfo[Info_Num]->Set_PosX(fPosX - 210.f);
+		break;
+	}
 
 	for (int i = 0; i < Info_Num; ++i)
 	{
@@ -98,15 +123,15 @@ void CUI_ScoreInfo::Create_Info()
 	{
 		m_pInfo[i] = CUI_Object::Create();
 
+		m_pInfo[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.f));
+
 		switch (i)
 		{
 		case Info_BG:
-			m_pInfo[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.f));
 			m_pInfo[i]->Set_Scale(200.f, 20.f);
 			break;
 
 		case Info_Rank:
-			m_pInfo[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.f));
 			m_pInfo[i]->Set_FontRender(true);
 			m_pInfo[i]->Set_FontStyle(true);
 			m_pInfo[i]->Set_FontCenter(true);
@@ -115,6 +140,7 @@ void CUI_ScoreInfo::Create_Info()
 			break;
 
 		case Info_ClassName:
+			m_pInfo[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 			GET_COMPONENT_FROM(m_pInfo[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pInfo[i], "/Oper", "Class");
 			m_pInfo[i]->Set_Scale(16.f);
@@ -126,7 +152,14 @@ void CUI_ScoreInfo::Create_Info()
 			break;
 
 		case Info_Kill:
-			m_pInfo[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.f));
+			m_pInfo[i]->Set_FontRender(true);
+			m_pInfo[i]->Set_FontStyle(true);
+			m_pInfo[i]->Set_FontCenter(true);
+			m_pInfo[i]->Set_FontScale(0.2f);
+			m_pInfo[i]->Set_FontOffset(5.f, 3.f);
+			break;
+
+		case Info_Death:
 			m_pInfo[i]->Set_FontRender(true);
 			m_pInfo[i]->Set_FontStyle(true);
 			m_pInfo[i]->Set_FontCenter(true);
@@ -135,10 +168,10 @@ void CUI_ScoreInfo::Create_Info()
 			break;
 
 		case Info_Num:
+			m_pInfo[i]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 			GET_COMPONENT_FROM(m_pInfo[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pInfo[i], "/Oper", "Num");
 			m_pInfo[i]->Set_Scale(16.f);
-			// m_pInfo[i]->Set_PosX(135.f);
 			break;
 		}
 	}
@@ -151,12 +184,6 @@ void CUI_ScoreInfo::Init_Info()
 		CREATE_GAMEOBJECT(m_pInfo[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pInfo[i]);
 	}
-
-	_float fPosX = m_pInfo[Info_BG]->Get_PosX();
-
-	m_pInfo[Info_Rank]->Set_PosX(fPosX - 85.f);
-	m_pInfo[Info_ClassName]->Set_PosX(fPosX - 65.f);
-	m_pInfo[Info_Kill]->Set_PosX(fPosX + 85.f);
 }
 
 void CUI_ScoreInfo::Set_Player(CPlayer* pPlayer)
@@ -170,6 +197,7 @@ void CUI_ScoreInfo::Set_Player(CPlayer* pPlayer)
 		m_pInfo[Info_ClassName]->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
 		m_pInfo[Info_Rank]->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
 		m_pInfo[Info_Kill]->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
+		m_pInfo[Info_Death]->Set_FontColor(_float4(0.f, 0.f, 0.f, 1.f));
 		m_pInfo[Info_Num]->Set_TextureIndex(m_iSquadIdx);
 
 		m_iSquadIdx++;
@@ -206,4 +234,9 @@ void CUI_ScoreInfo::Set_Rank(_uint iRank)
 void CUI_ScoreInfo::Set_PosX(_float fPosX)
 {
 	m_pInfo[Info_BG]->Set_PosX(fPosX);
+}
+
+void CUI_ScoreInfo::Set_ScaleX(_float fScaleX)
+{
+	m_pInfo[Info_BG]->Set_ScaleX(fScaleX);
 }

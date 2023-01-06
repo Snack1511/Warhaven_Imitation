@@ -37,7 +37,7 @@ private:
 	CUI_Object* m_pScoreMiniMap[Map_End];
 
 	enum Team { Team_Blue, Team_Red, Team_End };
-	enum Score_PlayerList { List_TeamIcon, List_KillIcon, List_Line, List_LineGlow, List_BG, List_End };
+	enum Score_PlayerList { List_Team, List_Kill, List_Death, List_Line, List_LineGlow, List_BG, List_End };
 	CUI_Object* m_pSocrePlayerList[List_End];
 	CUI_Object* m_pArrSocrePlayerList[Team_End][List_End];
 
