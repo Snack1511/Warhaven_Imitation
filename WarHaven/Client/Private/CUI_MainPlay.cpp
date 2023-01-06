@@ -87,10 +87,7 @@ void CUI_MainPlay::OnEnable()
 	__super::OnEnable();
 
 	for (auto& iter : m_pUIList)
-	{
-		//iter->SetActive(true);
 		Enable_Fade(iter, 0.3f);
-	}
 }
 
 void CUI_MainPlay::OnDisable()
@@ -98,10 +95,7 @@ void CUI_MainPlay::OnDisable()
 	__super::OnDisable();
 
 	for (auto& iter : m_pUIList)
-	{
-		//iter->SetActive(false);
 		Disable_Fade(iter, 0.3f);
-	}
 }
 
 void CUI_MainPlay::Set_Shader_StageHighlight(CShader* pShader, const char* pConstName)
