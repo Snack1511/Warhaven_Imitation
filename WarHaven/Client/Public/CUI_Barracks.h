@@ -29,6 +29,9 @@ private:
 
 	_float4 m_vColorGold = _float4(0.773f, 0.714f, 0.596f, 1.f);
 
+	_float4 m_vColorBG = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	_float4 m_vColorOutline = _float4(0.2f, 0.2f, 0.2f, 1.f);
+
 	int m_iPrvEventNum = -1;
 	int m_iCurEventNum = -1;
 
@@ -45,12 +48,18 @@ private:
 	enum ClassInfo { Info_BG, Info_Class, Info_End };
 	CUI_Object* m_pClassInfo[Info_End];
 
+	enum ClassBtn { Btn_BG, Btn_Outline, Btn_Deco, Btn_Text, Btn_LockText, Btn_Lock, Btn_End };
+	CUI_Object* m_pClassBtn[Btn_End];
+	CUI_Object* m_pArrClassBtn[3][Btn_End];
+
 private:
 	void Create_ClassPort();
 	void Create_ClassInfo();
+	void Create_ClassBtn();
 
 	void Init_ClassPort();
 	void Init_ClassInfo();
+	void Init_ClassBtn();
 
 	void Bind_Btn();
 

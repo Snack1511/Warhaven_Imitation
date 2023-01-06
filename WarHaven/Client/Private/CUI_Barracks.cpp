@@ -15,6 +15,7 @@ HRESULT CUI_Barracks::Initialize_Prototype()
 {
 	Create_ClassPort();
 	Create_ClassInfo();
+	Create_ClassBtn();
 
 	return S_OK;
 }
@@ -25,6 +26,7 @@ HRESULT CUI_Barracks::Start()
 
 	Init_ClassPort();
 	Init_ClassInfo();
+	Init_ClassBtn();
 
 	Bind_Btn();
 
@@ -94,6 +96,20 @@ void CUI_Barracks::OnEnable()
 		for (int j = 0; j < Port_Highlight; ++j)
 		{
 			Enable_Fade(m_pArrClassPort[i][j], m_fDuration);
+		}
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < Btn_End; ++j)
+		{
+			if (i == 0)
+			{
+				if (j == Btn_Lock)
+					continue;
+			}
+
+			Enable_Fade(m_pArrClassBtn[i][j], m_fDuration);
 		}
 	}
 
@@ -217,6 +233,72 @@ void CUI_Barracks::Create_ClassInfo()
 	}
 }
 
+void CUI_Barracks::Create_ClassBtn()
+{
+	for (int i = 0; i < Btn_End; ++i)
+	{
+		m_pClassBtn[i] = CUI_Object::Create();
+
+		m_pClassBtn[i]->Set_Sort(0.49f);
+
+		m_pClassBtn[i]->Set_PosX(-490.f);
+
+		switch (i)
+		{
+		case Btn_BG:
+			m_pClassBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/White.png"));
+			m_pClassBtn[i]->Set_Scale(200.f, 50.f);
+			m_pClassBtn[i]->Set_Sort(0.5f);
+			m_pClassBtn[i]->Set_Color(m_vColorBG);
+			m_pClassBtn[i]->Set_MouseTarget(true);
+			break;
+
+		case Btn_Outline:
+			m_pClassBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_2pxStrokeBox.png"));
+			m_pClassBtn[i]->Set_Scale(202.f, 52.f);
+			m_pClassBtn[i]->Set_Color(m_vColorOutline);
+
+			m_pClassBtn[i]->Set_IsSlice(true);
+			m_pClassBtn[i]->Set_TextureSzie(_float2(32.f, 32.f));
+			m_pClassBtn[i]->Set_SliceRatio(_float4(0.5f, 0.5f, 0.5f, 0.5f));
+			break;
+
+		case Btn_Deco:
+			m_pClassBtn[i]->Set_PosX(-585.f);
+			m_pClassBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_DecoLam01.dds"));
+			m_pClassBtn[i]->Set_Scale(7.f, 48.f);
+			m_pClassBtn[i]->Set_Color(m_vColorOutline);
+			break;
+
+		case Btn_Text:
+			m_pClassBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+
+			m_pClassBtn[i]->Set_FontRender(true);
+			m_pClassBtn[i]->Set_FontStyle(true);
+			m_pClassBtn[i]->Set_FontOffset(-26.f, -15.f);
+			m_pClassBtn[i]->Set_FontScale(0.23f);
+			m_pClassBtn[i]->Set_FontColor(m_vColorGold);
+			break;
+
+		case Btn_LockText:
+			m_pClassBtn[i]->Set_PosX(-555.f);
+			m_pClassBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+
+			m_pClassBtn[i]->Set_FontRender(true);
+			m_pClassBtn[i]->Set_FontStyle(true);
+			m_pClassBtn[i]->Set_FontOffset(-26.f, -15.f);
+			m_pClassBtn[i]->Set_FontScale(0.2f);
+			break;
+
+		case Btn_Lock:
+			m_pClassBtn[i]->Set_PosX(-572.f);
+			m_pClassBtn[i]->Set_Scale(20.f);
+			m_pClassBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_Lock.dds"));
+			break;
+		}
+	}
+}
+
 void CUI_Barracks::Init_ClassPort()
 {
 	for (int i = 0; i < Port_End; ++i)
@@ -280,6 +362,64 @@ void CUI_Barracks::Init_ClassInfo()
 	}
 }
 
+void CUI_Barracks::Init_ClassBtn()
+{
+	for (int i = 0; i < Btn_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pClassBtn[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pClassBtn[i]);
+
+		for (int j = 0; j < 3; ++j)
+		{
+			m_pArrClassBtn[j][i] = m_pClassBtn[i]->Clone();
+
+			CREATE_GAMEOBJECT(m_pArrClassBtn[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrClassBtn[j][i]);
+
+			m_pUIList.push_back(m_pArrClassBtn[j][i]);
+
+			_float fPosY = 100.f - (60.f * j);
+			m_pArrClassBtn[j][i]->Set_PosY(fPosY);
+
+			switch (i)
+			{
+			case Btn_Text:
+			{
+				_float fTextPosY = fPosY + 5.f;
+				m_pArrClassBtn[j][i]->Set_PosY(fTextPosY);
+			}
+			break;
+
+			case Btn_LockText:
+			{
+				_float fLockTextPosY = fPosY - 15.f;
+				m_pArrClassBtn[j][i]->Set_PosY(fLockTextPosY);
+			}
+			break;
+
+			case Btn_Lock:
+			{
+				_float fLockPosY = fPosY + 9.f;
+				m_pArrClassBtn[j][i]->Set_PosY(fLockPosY);
+			}
+			break;
+			}
+		}
+	}
+
+	m_pArrClassBtn[0][Btn_Text]->Set_PosX(-555.f);
+	m_pArrClassBtn[0][Btn_Text]->Set_FontText(TEXT("스킨"));
+	m_pArrClassBtn[0][Btn_LockText]->Set_FontText(TEXT("스킨"));
+
+	m_pArrClassBtn[1][Btn_Text]->Set_PosX(-540.f);
+	m_pArrClassBtn[1][Btn_Text]->Set_FontText(TEXT("특성"));
+	m_pArrClassBtn[1][Btn_LockText]->Set_FontText(TEXT("잠김"));
+
+	m_pArrClassBtn[2][Btn_Text]->Set_PosX(-540.f);
+	m_pArrClassBtn[2][Btn_Text]->Set_FontText(TEXT("의사소통"));
+	m_pArrClassBtn[2][Btn_LockText]->Set_FontText(TEXT("잠김"));
+}
+
 void CUI_Barracks::Bind_Btn()
 {
 	for (int i = 0; i < CLASS_END; ++i)
@@ -332,4 +472,5 @@ void CUI_Barracks::Set_ClassInfoText(_uint iEventNum)
 	}
 
 	m_pClassInfo[Info_Class]->Set_FontText(wstrClassText);
+	m_pClassInfo[Info_Class]->Set_TextureIndex(iEventNum);
 }
