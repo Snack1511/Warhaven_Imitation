@@ -29,7 +29,10 @@ public:
 
 public:
 	void SetUp_CureEffect();
+	void Turn_CatchEffet(_bool bOnOff);
+	void Turn_CatchingEffect(_bool bOnOff);
 	void TurnOn_CureEffect(_bool bOnOff);
+	void TurnOff_AllEffect();
 
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
@@ -50,6 +53,9 @@ private:
 
 private:
 	CGameObject* m_pCureEffect = nullptr;
+	CGameObject* m_pCatchEffect = nullptr;
+	CGameObject* m_pCatchMeshEffect = nullptr;
+	CGameObject* m_pCatching = nullptr;
 
 };
 

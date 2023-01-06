@@ -65,7 +65,9 @@ private:
 
 private:
 	CTrailEffect* m_pRWing = nullptr;
+	CTrailEffect* m_pRWing2 = nullptr;
 	CTrailEffect* m_pLWing = nullptr;
+	CTrailEffect* m_pLWing2 = nullptr;
 };
 
 END

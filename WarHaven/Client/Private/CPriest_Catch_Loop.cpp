@@ -11,6 +11,7 @@
 #include "CSword_Effect.h"
 #include "Transform.h"
 #include "CColorController.h"
+#include "CUnit_Priest.h"
 
 
 CPriest_Catch_Loop::CPriest_Catch_Loop()
@@ -159,6 +160,8 @@ void CPriest_Catch_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 {
     /* OwnerÀÇ Animator Set Idle·Î */
 	pOwner->Enable_GuardCollider(true);
+
+	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(true);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -182,6 +185,8 @@ STATE_TYPE CPriest_Catch_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CPriest_Catch_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(false);
+
 	pOwner->Enable_GuardCollider(false);
 	__super::Exit(pOwner, pAnimator);
 }

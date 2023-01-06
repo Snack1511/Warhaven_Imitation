@@ -54,6 +54,7 @@ public:
 	void			Turn_ChargeEffect(_bool bOnOff);
 	void			Turn_FeatherEffect(_bool bOnOff);
 	void			Turn_SteamEffect(_bool bOnOff);
+	void			TurnOff_AllEffect();
 
 public:
 	void	Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect);

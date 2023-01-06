@@ -63,6 +63,8 @@ CUnit_Qanda* CUnit_Qanda::Create(const UNIT_MODEL_DATA& tUnitModelData)
 void CUnit_Qanda::On_Die()
 {
 	__super::On_Die();
+	TurnOff_AllEffect();
+
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 
 	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
@@ -420,6 +422,14 @@ void CUnit_Qanda::Turn_SteamEffect(_bool bOnOff)
 	}
 }
 
+void CUnit_Qanda::TurnOff_AllEffect()
+{
+	Turn_TransformParticle(false);
+	Turn_ChargeEffect(false);
+	Turn_FeatherEffect(false);
+	Turn_SteamEffect(false);
+}
+
 void CUnit_Qanda::Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect)
 {
 	m_mapProjectilePool[_hcCode].push_back(pEffect);
@@ -591,6 +601,8 @@ void CUnit_Qanda::OnDisable()
 	__super::OnDisable();
 
 	Turn_TransformParticle(false);
+	Turn_ChargeEffect(false);
+	Turn_SteamEffect(false);
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;

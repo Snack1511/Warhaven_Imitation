@@ -6,14 +6,16 @@
 
 #include "CSword_Effect.h"
 #include "CColorController.h"
-#include "CUnit_Archer.h"
+#include "CUnit_Priest.h"
 
 #include "HIerarchyNode.h"
 #include "CAnimWeapon.h"
 
 #include "CPhysXCharacter.h"
+#include "CScript_FollowCam.h"
 
 #include "CProjectile.h"
+#include "Easing_Utillity.h"
 
 CPriest_Catching::CPriest_Catching()
 {
@@ -198,6 +200,12 @@ HRESULT CPriest_Catching::Initialize()
 
 void CPriest_Catching::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStateType, void* pData)
 {
+	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(true);
+	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchingEffect(true);
+	GAMEINSTANCE->Start_RadialBlur(0.017f);
+	GAMEINSTANCE->Start_ChromaticAberration(5.f);
+	pOwner->Lerp_Camera(5);
+
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
@@ -206,6 +214,12 @@ void CPriest_Catching::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 void CPriest_Catching::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(false);
+	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchingEffect(false);
+	GAMEINSTANCE->Stop_RadialBlur();
+	GAMEINSTANCE->Stop_ChromaticAberration();
+	pOwner->Lerp_Camera(0);
+
 	pOwner->On_Use(CUnit::SKILL3);
 	pOwner->Get_CatchProjectileObject()->Use_Collect(false);
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
@@ -215,7 +229,8 @@ void CPriest_Catching::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_Catching::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//CProjectile* pProjectile = pOwner->Get_CatchProjectileObject();
+	pOwner->Shake_Camera(0.2f, 0.1f);
+
 	//if (!pProjectile)
 	//	return STATE_IDLE_PRIEST;
 	//else

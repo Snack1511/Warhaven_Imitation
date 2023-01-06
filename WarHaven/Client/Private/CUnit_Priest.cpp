@@ -17,6 +17,8 @@
 #include "CAnimWeapon.h"
 #include "CProjectile.h"
 
+#include "CEffect.h"
+#include "CRectEffects.h"
 #include "CCure_Effect.h"
 
 CUnit_Priest::CUnit_Priest()
@@ -51,6 +53,9 @@ CUnit_Priest* CUnit_Priest::Create(const UNIT_MODEL_DATA& tUnitModelData)
 void CUnit_Priest::On_Die()
 {
 	__super::On_Die();
+
+	TurnOff_AllEffect();
+
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 
 	//_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
@@ -325,6 +330,51 @@ void CUnit_Priest::SetUp_CureEffect()
 	DISABLE_GAMEOBJECT(m_pCureEffect);
 }
 
+void CUnit_Priest::Turn_CatchEffet(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (!m_pCatchEffect)
+			m_pCatchEffect = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Catch_Particle_0"), this, ZERO_VECTOR);
+
+	}
+	else
+	{
+		if (m_pCatchEffect)
+		{
+			static_cast<CRectEffects*>(m_pCatchEffect)->Set_AllFadeOut();
+			m_pCatchEffect = nullptr;
+		}
+		
+	}
+}
+
+void CUnit_Priest::Turn_CatchingEffect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (!m_pCatching)
+			m_pCatching = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Catching_0"), this, ZERO_VECTOR);
+
+		if (!m_pCatchMeshEffect)
+			m_pCatchMeshEffect = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Catch_Mesh_0"), this, ZERO_VECTOR);
+	}
+	else
+	{
+		if (m_pCatching)
+		{
+			static_cast<CRectEffects*>(m_pCatching)->Set_AllFadeOut();
+			m_pCatching = nullptr;
+		}
+
+		if (m_pCatchMeshEffect)
+		{
+			static_cast<CEffect*>(m_pCatchMeshEffect)->Set_FadeOut();
+			m_pCatchMeshEffect = nullptr;
+		}
+	}
+}
+
 void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
 {
 	if (!m_pCureEffect)
@@ -334,6 +384,13 @@ void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
 		ENABLE_GAMEOBJECT(m_pCureEffect);
 	else
 		DISABLE_GAMEOBJECT(m_pCureEffect);
+}
+
+void CUnit_Priest::TurnOff_AllEffect()
+{
+	Turn_CatchEffet(false);
+	Turn_CatchingEffect(false);
+	TurnOn_CureEffect(false);
 }
 
 void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)

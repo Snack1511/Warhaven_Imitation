@@ -12,6 +12,8 @@
 #include "Transform.h"
 #include "CColorController.h"
 
+#include "CUnit_Priest.h"
+
 
 CPriest_Catch_Begin::CPriest_Catch_Begin()
 {

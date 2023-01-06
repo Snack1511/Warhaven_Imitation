@@ -65,6 +65,7 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
     if (PRIEST == pOwner->Get_OwnerPlayer()->Get_CurClass())
     {
         static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+        static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(false);
     }
     
     __super::Enter(pOwner, pAnimator, ePrevStateType);

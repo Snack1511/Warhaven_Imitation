@@ -106,6 +106,9 @@ void CAnimWeapon_Crow::Boom_Crow()
 	CUnit_Qanda* pQuanda = static_cast<CUnit_Qanda*>(m_pOwnerUnit);
 	//pQuanda->Turn_FeatherEffect(true);
 	pQuanda->Turn_SteamEffect(false);
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Boom", m_pTransform->Get_World(WORLD_POS),
+		GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE));
 }
 
 

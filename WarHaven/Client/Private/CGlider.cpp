@@ -50,30 +50,38 @@ void CGlider::Set_AnimIndex(_uint iAnimIndex, _float fInterpolateTime, _float fA
 
 void CGlider::SetUp_GliderTrail()
 {
+	_float fX = 180.f;
+	_float fZ = 70.f; //+第
+	_float fY = -50.f;
+
 	SetUp_RTrail(
-		_float4(80.f, 180.f, -30.f),	//Weapon R技肺
-		_float4(80.f, 180.f, -50.f),					//Weapon R
-		_float4(0.f, 0.f, 0.f),					 //Left	L
-		_float4(0.f, -0.f, 0.f),					//Right	L
+		_float4(fZ, fX, fY + 10.f),	//Weapon R技肺
+		_float4(fZ, fX, fY - 10.f),					//Weapon R
+		_float4(fZ, fX + 10.f, fY),					 //Left	L
+		_float4(fZ, fX - 10.f, fY),					//Right	L
 		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
-		RGBA(255, 0, 0, 1.f), //vColor
+		RGBA(245, 245, 200, 0.3f), //vColor
 		0.f,
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
-		100
+		120
 	);
 
+	fX = 250.f;
+	fZ = -320.f;
+	fY = 40.f;
+
 	SetUp_LTrail(
-		_float4(-250.f, 250.f, 30.f),	//Weapon R技肺
-		_float4(-250.f, 250.f, 50.f),					//Weapon R
-		_float4(0.f, 0.f, 0.f),					 //Left	L
-		_float4(0.f, -0.f, 0.f),					//Right	L
+		_float4(fZ, fX, fY + 10.f),	//Weapon R技肺
+		_float4(fZ, fX, fY - 10.f),					//Weapon R
+		_float4(fZ, fX + 10.f, fY),					 //Left	L
+		_float4(fZ, fX - 10.f, fY),					//Right	L
 		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
-		RGBA(255, 0, 0, 1.f), //vColor
+		RGBA(245, 245, 200, 0.3f), //vColor
 		0.f,
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
-		100
+		120
 	);
 
 
@@ -85,7 +93,10 @@ void CGlider::TurnOn_Trail(_bool bOn)
 		return;
 
 	m_pRWing->TurnOn_TrailEffect(bOn);
+	m_pRWing2->TurnOn_TrailEffect(bOn);
+
 	m_pLWing->TurnOn_TrailEffect(bOn);
+	m_pLWing2->TurnOn_TrailEffect(bOn);
 }
 
 
@@ -169,15 +180,24 @@ void CGlider::SetUp_RTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWea
 		m_pModelCom->Find_HierarchyNode("0B_RWing005"), m_pTransform, vGlowFlag, vColor,
 		wstrMaskMapPath, wstrColorMapPath); //
 
+	m_pRWing2 = CTrailEffect::Create(0, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode("0B_RWing005"), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath); //
+
 	if (!m_pRWing)
 		return;
 
 	CREATE_GAMEOBJECT(m_pRWing, GROUP_EFFECT);
 	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pRWing, CMesh))->Set_NoCurve();
 
+	CREATE_GAMEOBJECT(m_pRWing2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pRWing2, CMesh))->Set_NoCurve();
+
 	m_pRWing->Set_EffectFlag(SH_EFFECT_DEFAULT);
+	m_pRWing2->Set_EffectFlag(SH_EFFECT_DEFAULT);
 
 	m_pRWing->TurnOn_TrailEffect(false);
+	m_pRWing2->TurnOn_TrailEffect(false);
 
 }
 
@@ -187,15 +207,24 @@ void CGlider::SetUp_LTrail(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWea
 		m_pModelCom->Find_HierarchyNode("0B_LWing005"), m_pTransform, vGlowFlag, vColor,
 		wstrMaskMapPath, wstrColorMapPath); //
 
+	m_pLWing2 = CTrailEffect::Create(0, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode("0B_LWing005"), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath); //
+
 	if (!m_pLWing)
 		return;
 
 	CREATE_GAMEOBJECT(m_pLWing, GROUP_EFFECT);
 	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLWing, CMesh))->Set_NoCurve();
 
+	CREATE_GAMEOBJECT(m_pLWing2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLWing2, CMesh))->Set_NoCurve();
+
 	m_pLWing->Set_EffectFlag(SH_EFFECT_DEFAULT);
+	m_pLWing2->Set_EffectFlag(SH_EFFECT_DEFAULT);
 
 	m_pLWing->TurnOn_TrailEffect(false);
+	m_pLWing2->TurnOn_TrailEffect(false);
 }
 
 void CGlider::Late_Tick()
