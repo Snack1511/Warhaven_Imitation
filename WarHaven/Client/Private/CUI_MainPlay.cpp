@@ -87,7 +87,10 @@ void CUI_MainPlay::OnEnable()
 	__super::OnEnable();
 
 	for (auto& iter : m_pUIList)
-		iter->SetActive(true);
+	{
+		//iter->SetActive(true);
+		Enable_Fade(iter, 0.3f);
+	}
 }
 
 void CUI_MainPlay::OnDisable()
@@ -95,7 +98,10 @@ void CUI_MainPlay::OnDisable()
 	__super::OnDisable();
 
 	for (auto& iter : m_pUIList)
-		iter->SetActive(false);
+	{
+		//iter->SetActive(false);
+		Disable_Fade(iter, 0.3f);
+	}
 }
 
 void CUI_MainPlay::Set_Shader_StageHighlight(CShader* pShader, const char* pConstName)
@@ -415,8 +421,8 @@ void CUI_MainPlay::Create_PlayBtn()
 
 	m_pPlayBtnUI[0]->Set_Pos(-500.f, 180.f);
 
-	_float4 vOrigin0 = _float4(-500.f, 180.f,0.f);
-	_float4 vTarget0= _float4(-480.f, 180.f,0.f);
+	_float4 vOrigin0 = _float4(-500.f, 180.f, 0.f);
+	_float4 vTarget0 = _float4(-480.f, 180.f, 0.f);
 
 	m_pPlayBtnUI[0]->Set_LerpPos(vOrigin0, vTarget0);
 
