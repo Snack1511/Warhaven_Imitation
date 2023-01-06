@@ -778,6 +778,14 @@ void CUser::Sort_ScoreInfo()
 	}
 }
 
+void CUser::Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_PointColor(IsMainTeam, iPoinIdx);
+	}
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);

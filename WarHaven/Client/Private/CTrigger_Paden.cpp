@@ -198,12 +198,15 @@ void CTrigger_Paden::Update_Conquered()
 		{
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_ScoreBoardPointColor(bMainPlayerTeam, 0);
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 1);
+			CUser::Get_Instance()->Set_ScoreBoardPointColor(bMainPlayerTeam, 1);
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 2);
+			CUser::Get_Instance()->Set_ScoreBoardPointColor(bMainPlayerTeam, 2);
 			break;
 		}
 

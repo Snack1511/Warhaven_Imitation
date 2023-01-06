@@ -303,14 +303,14 @@ void CUI_ScoreBoard::Create_PointUI()
 		{
 		case PU_Outline:
 			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pPointUI[i], "/Oper", "Outline");
+			Read_Texture(m_pPointUI[i], "/Oper", "PointOutline");
 
 			m_pPointUI[i]->Set_Scale(24.f);
 			break;
 
 		case PU_Text:
 			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
-			Read_Texture(m_pPointUI[i], "/Oper", "Text");
+			Read_Texture(m_pPointUI[i], "/Oper", "PointText");
 
 			m_pPointUI[i]->Set_Scale(32.f);
 			break;
@@ -456,15 +456,15 @@ void CUI_ScoreBoard::Init_PointUI()
 		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-17.f);
 		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(-19.f);
 
-		m_pArrPointUI[Point_R][PU_Outline]->Set_TextureIndex(1);
-		m_pArrPointUI[Point_R][PU_Text]->Set_TextureIndex(1);
-		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(75.f);
-		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(73.f);
-
 		m_pArrPointUI[Point_C][PU_Outline]->Set_TextureIndex(1);
-		m_pArrPointUI[Point_C][PU_Text]->Set_TextureIndex(2);
-		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-85.f);
-		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(-87.f);
+		m_pArrPointUI[Point_C][PU_Text]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_C][PU_Outline]->Set_PosY(75.f);
+		m_pArrPointUI[Point_C][PU_Text]->Set_PosY(73.f);
+
+		m_pArrPointUI[Point_R][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_R][PU_Text]->Set_TextureIndex(2);
+		m_pArrPointUI[Point_R][PU_Outline]->Set_PosY(-85.f);
+		m_pArrPointUI[Point_R][PU_Text]->Set_PosY(-87.f);
 
 		break;
 	case Client::LEVEL_HWARA:
@@ -499,5 +499,16 @@ void CUI_ScoreBoard::Sort_ScoreInfo()
 			{
 				return p1->Get_KillCnt() > p2->Get_KillCnt();
 			});
+	}
+}
+
+void CUI_ScoreBoard::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
+{
+	_float4 vColor;
+	vColor = IsMainTeam ? m_vColorBlue : m_vColorRed;
+
+	for (int i = 0; i < PU_End; ++i)
+	{
+		m_pArrPointUI[iPoinIdx][i]->Set_Color(vColor);
 	}
 }

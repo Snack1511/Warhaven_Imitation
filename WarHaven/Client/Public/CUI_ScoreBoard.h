@@ -20,6 +20,8 @@ public:
 	void Get_ScoreInfo(CPlayer* pPlayer);
 	void Sort_ScoreInfo();
 
+	void Set_PointColor(_bool IsMainTeam, _uint iPoinIdx);
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;

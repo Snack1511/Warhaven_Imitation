@@ -204,6 +204,7 @@ public: // 플레이어 KDA
 	void Get_ScoreInfo(CPlayer* pPlayer);
 	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();
 	void Sort_ScoreInfo();
+	void Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
