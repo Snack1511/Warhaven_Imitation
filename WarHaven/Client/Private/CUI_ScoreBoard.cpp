@@ -419,10 +419,5 @@ void CUI_ScoreBoard::Sort_ScoreInfo()
 			{
 				return p1->Get_KillCnt() > p2->Get_KillCnt();
 			});
-
-		pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
-			{
-				return p1->Get_DeathCnt() < p2->Get_DeathCnt();
-			});
 	}
 }

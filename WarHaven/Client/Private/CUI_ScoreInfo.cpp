@@ -240,3 +240,11 @@ void CUI_ScoreInfo::Set_ScaleX(_float fScaleX)
 {
 	m_pInfo[Info_BG]->Set_ScaleX(fScaleX);
 }
+
+_float CUI_ScoreInfo::Get_TotalScore()
+{
+	if (m_iDeathCnt < 1)
+		m_iDeathCnt = 1;
+
+	return (_float)m_iKillCnt / (_float)m_iDeathCnt;
+}

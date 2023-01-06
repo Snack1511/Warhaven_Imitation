@@ -37,7 +37,7 @@ private:
 	enum ResultUI { Result_BG, Result_TextBG0, Result_TextBG1, Result_Text0, Result_Text1, Result_Line, Result_End };
 	CUI_Object* m_pResultUI[Result_End];
 
-	enum ResultScoreBG { Score_BG, Score_Result, Score_Text, Score_End };
+	enum ResultScoreBG { Score_BG, Score_Result, Score_Text, Score_Circle0, Score_Circle1, Score_End };
 	CUI_Object* m_pResultScoreBG[Score_End];
 
 	enum ResultMVP { MVP_Text, MVP_Blind, MVP_Player, MVP_End };
@@ -49,7 +49,7 @@ private:
 	CUI_Object* m_pArrResultScoreList[Team_End][List_End];
 
 	_uint m_iResultProgressCnt = 0;
-	
+
 	_float m_fRotValue = 0.f;
 	_float m_fTextLerpRatio = 0.f;
 

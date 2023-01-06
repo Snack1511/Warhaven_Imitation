@@ -27,6 +27,7 @@ public:
 
 	_uint Get_KillCnt() { return m_iKillCnt; }
 	_uint Get_DeathCnt() { return m_iDeathCnt; }
+	_float Get_TotalScore();
 	CPlayer* Get_OwnerPlayer() { return pOwnerPlayer; }
 
 	void Update_KillCnt(_uint iKillCnt) { m_iKillCnt = iKillCnt; }
@@ -51,6 +52,7 @@ private:
 	_uint m_iRank = 0;
 	_uint m_iKillCnt = 0;
 	_uint m_iDeathCnt = 0;
+	_uint m_iTotalScore = 0;
 
 	_uint m_iType = 0;
 

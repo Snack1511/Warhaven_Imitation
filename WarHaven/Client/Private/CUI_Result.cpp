@@ -129,7 +129,7 @@ void CUI_Result::Create_Fade()
 {
 	m_pFade = CUI_Object::Create();
 
-	m_pFade->Set_FadeDesc(0.1f, 0.1f, 0.8f, true);
+	m_pFade->Set_FadeDesc(0.3f, 0.3f, 0.4f, true);
 
 	m_pFade->Set_Sort(0.f);
 	m_pFade->Set_Scale(1280.f, 720.f);
@@ -258,6 +258,18 @@ void CUI_Result::Create_ResultScoreBG()
 			m_pResultScoreBG[i]->Set_FontOffset(3.f, 3.f);
 			m_pResultScoreBG[i]->Set_FontScale(0.3f);
 			m_pResultScoreBG[i]->Set_FontColor(m_vColorGold);
+			break;
+
+		case Score_Circle0:
+			m_pResultScoreBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_BgHero2.dds"));
+			m_pResultScoreBG[i]->Set_Scale(1024.f);
+			m_pResultScoreBG[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.1f));
+			break;
+
+		case Score_Circle1:
+			m_pResultScoreBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_BgHero3.dds"));
+			m_pResultScoreBG[i]->Set_Scale(1024.f);
+			m_pResultScoreBG[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.1f));
 			break;
 		}
 	}
@@ -508,11 +520,6 @@ void CUI_Result::Progress_Result()
 			pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
 				{
 					return p1->Get_KillCnt() > p2->Get_KillCnt();
-				});
-
-			pair.second.sort([](CUI_ScoreInfo* p1, CUI_ScoreInfo* p2)
-				{
-					return p1->Get_DeathCnt() < p2->Get_DeathCnt();
 				});
 		}
 
