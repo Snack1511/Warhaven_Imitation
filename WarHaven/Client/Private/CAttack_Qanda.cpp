@@ -176,6 +176,8 @@ void CAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevS
 
 	static_cast<CUnit_Qanda*>(pOwner)->Enable_Trail(true);
 	static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->On_ChangePhase(CAnimWeapon_Crow::eATTACKLOOP);
+	GAMEINSTANCE->Start_RadialBlur(0.01f);
+	
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 }
@@ -191,6 +193,7 @@ void CAttack_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	static_cast<CUnit_Qanda*>(pOwner)->Enable_Trail(false);
+	GAMEINSTANCE->Stop_RadialBlur();
 
 }
 

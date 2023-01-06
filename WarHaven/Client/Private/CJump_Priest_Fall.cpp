@@ -66,6 +66,9 @@ void CJump_Priest_Fall::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
     if (ePrevType == STATE_JUMP_PRIEST)
         m_fInterPolationTime = 0.05f;
 
+    if (ePrevType == STATE_AIRDASH_PRIEST)
+        m_fInterPolationTime = 0.f;
+
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

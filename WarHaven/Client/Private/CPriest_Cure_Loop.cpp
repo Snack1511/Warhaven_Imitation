@@ -260,7 +260,10 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			// UI Ç¥½Ã
 			pTargetUnit->Get_Status().fHP += fPlusHp; // fPlusHp
 			CUser::Get_Instance()->Enable_DamageFont(2, fPlusHp);
-			pOwner->Get_OwnerPlayer()->Get_Gauge() += 3.f;
+
+			if(pOwner->Get_OwnerPlayer()->Get_Gauge() < 100.f - 3.f)
+				pOwner->Get_OwnerPlayer()->Get_Gauge() += 3.f;
+
 
 			CUser::Get_Instance()->Enable_DamageFont(2, fPlusHp);
 

@@ -26,7 +26,7 @@ HRESULT CState_Common_Fall_Warrior_R::Initialize()
 
     m_iAINextState = AI_STATE_COMMON_LAND_WARRIOR_R;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 CState_Common_Fall_Warrior_R* CState_Common_Fall_Warrior_R::Create()

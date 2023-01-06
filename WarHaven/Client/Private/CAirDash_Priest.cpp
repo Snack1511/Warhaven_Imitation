@@ -41,9 +41,9 @@ HRESULT CAirDash_Priest::Initialize()
     m_fInterPolationTime = 0.05f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 3.f;
+    m_fAnimSpeed = 1.8f;
 
-    m_vecAdjState.push_back(STATE_SPRINT_JUMPFALL_PRIEST);
+    m_vecAdjState.push_back(STATE_GLIDING);
 
 	m_iDirectionAnimIndex[STATE_DIRECTION_E] = 0;
     m_iDirectionAnimIndex[STATE_DIRECTION_N] = 1;
@@ -60,6 +60,7 @@ HRESULT CAirDash_Priest::Initialize()
 
 	iPlaceJumpAnimIndex = 1;
 
+    Add_KeyFrame(7, 0);
 
     return S_OK;
 }
@@ -68,8 +69,10 @@ void CAirDash_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
 {
     pOwner->On_Use(CUnit::SKILL1);
 
-    m_fMaxSpeed = pOwner->Get_Status().fDashAttackSpeed;
+    m_fMaxSpeed = pOwner->Get_Status().fDashAttackSpeed * 1.2f;
 
+    pOwner->Get_PhysicsCom()->Set_Jump(2.f);
+    pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 0.92f;
 
     /* Owner의 Animator Set Idle로 */
 
@@ -140,7 +143,6 @@ void CAirDash_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePre
     //pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
     //pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 
-
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -148,6 +150,10 @@ STATE_TYPE CAirDash_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (!pOwner->Is_Air())
         return STATE_SPRINT_END_PRIEST;
+    
+    if(pAnimator->Is_CurAnimFinished())
+        return STATE_JUMPFALL_PRIEST;
+
 
     CTransform* pMyTransform = pOwner->Get_Transform();
     CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
@@ -164,13 +170,14 @@ STATE_TYPE CAirDash_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CAirDash_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+    pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 1.f;
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 1.f;
 }
 
 STATE_TYPE CAirDash_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /*if (!pOwner->Can_Use(CUnit::SKILL1))
-        return STATE_END;*/
+    if (!pOwner->Can_Use(CUnit::SKILL1))
+        return STATE_END;
    
     if (KEY(LSHIFT, TAP))
     {
@@ -180,4 +187,20 @@ STATE_TYPE CAirDash_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
     return STATE_END;
 
+}
+
+void CAirDash_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+
+        m_fMaxSpeed = pOwner->Get_Status().fDashAttackSpeed;
+        Physics_Setting(m_fMaxSpeed, pOwner);
+
+        break;
+
+    default:
+        break;
+    }
 }

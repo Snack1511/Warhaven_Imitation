@@ -637,7 +637,8 @@
 #include "CState_Patrol_Walk_Archer_L.h"
 #include "CState_Patrol_Walk_Archer_R.h"
 
-
+#include "CState_Patrol_Walk_Priest.h"
+#include "CState_Patrol_Default_Priest.h"
 
 
 #pragma endregion 
@@ -736,9 +737,13 @@
 #include "CState_Combat_Attack_Archer_Aiming_Sniping.h"
 #include "CState_Combat_Attack_Archer_Shoot_Sniping.h"
 
-
-
-
+#include "CState_Combat_Default_Priest.h"
+#include "CState_Combat_Cure_Begin_Priest.h"
+#include "CState_Combat_Cure_Loop_Priest.h"
+#include "CState_Combat_Cure_End_Priest.h"
+#include "CState_Combat_Attack_Sting_Priest.h"
+#include "CState_Combat_SkillR_AirDash_Priest.h"
+#include "CState_Combat_SkillE_Priest_WindAttack.h"
 
 
 #pragma endregion
@@ -794,6 +799,16 @@
 #include "CState_PathNavigation_Sprint_Paladin_Jump.h"
 #include "CState_PathNavigation_Jump_Paladin_L.h"
 #include "CState_PathNavigation_Jump_Paladin_R.h"
+
+
+#include "CState_PathNavigation_Default_Priest.h"
+#include "CState_PathNavigation_Sprint_Priest_Jump.h"
+#include "CState_PathNavigation_Sprint_Priest_Fall.h"
+#include "CState_PathNavigation_Sprint_Priest_Begin.h"
+#include "CState_PathNavigation_Sprint_Priest_Loop.h"
+#include "CState_PathNavigation_Sprint_Priest_End.h"
+#include "CState_PathNavigation_Jump_Priest.h"
+#include "CState_PathNavigation_Walk_Priest.h"
 
 
 #pragma endregion
@@ -866,15 +881,18 @@
 #include "CState_Common_Bounce_Archer.h"
 
 
+#include "CState_Common_Fall_Priest.h"
+#include "CState_Common_Land_Priest.h"
+#include "CState_Common_Bounce_Priest.h"
+#include "CState_Common_Hit_Priest.h"
+#include "CState_Common_Groggy_Priest.h"
+#include "CState_Common_Sting_Priest.h"
+#include "CState_Common_FlyHit_Priest.h"
 
 #pragma endregion
 
-#pragma region Error
 
 #include "CState_NoPattern.h"
-
-#pragma endregion
-
 
 #pragma region ETC
 
@@ -2125,9 +2143,66 @@ void CState_Manager::Qanda_State_AI()
 
 }
 
+
 void CState_Manager::Priest_State_AI()
 {
 
+
+
+#pragma region Patrol
+
+	m_arrStates[AI_STATE_PATROL_DEFAULT_PRIEST] = CState_Patrol_Default_Priest::Create();
+	m_arrStates[AI_STATE_PATROL_WALK_PRIEST] = CState_Patrol_Walk_Priest::Create();
+
+#pragma endregion
+
+#pragma region Combat
+
+	m_arrStates[AI_STATE_COMBAT_DEFAULT_PRIEST] = CState_Combat_Default_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_STINGATTACK_PRIEST] = CState_Combat_Attack_Sting_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_AIRDASH_PRIEST] = CState_Combat_SkillR_AirDash_Priest::Create();
+
+	m_arrStates[AI_STATE_COMBAT_CURE_BEGIN_PRIEST] = CState_Combat_Cure_Begin_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CURE_LOOP_PRIEST] = CState_Combat_Cure_Loop_Priest::Create();
+	m_arrStates[AI_STATE_COMBAT_CURE_END_PRIEST] = CState_Combat_Cure_End_Priest::Create();
+
+	m_arrStates[AI_STATE_COMBAT_WINDATTACK_PRIEST] = CState_Combat_SkillE_Priest_WindAttack::Create();
+
+
+#pragma endregion
+
+
+
+#pragma region PathNavigation
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_PRIEST] = CState_PathNavigation_Default_Priest::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_PRIEST] = CState_PathNavigation_Walk_Priest::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PRIEST] = CState_PathNavigation_Sprint_Priest_Begin::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_PRIEST] = CState_PathNavigation_Sprint_Priest_Loop::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_PRIEST] = CState_PathNavigation_Sprint_Priest_End::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_PRIEST] = CState_PathNavigation_Sprint_Priest_Jump::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PRIEST] = CState_PathNavigation_Sprint_Priest_Fall::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_PRIEST] = CState_PathNavigation_Jump_Priest::Create();
+
+#pragma endregion
+
+#pragma region Common
+
+	m_arrStates[AI_STATE_COMMON_FALL_PRIEST] = CState_Common_Fall_Priest::Create();
+	m_arrStates[AI_STATE_COMMON_LAND_PRIEST] = CState_Common_Land_Priest::Create();
+
+	m_arrStates[AI_STATE_COMMON_BOUNCE_PRIEST] = CState_Common_Bounce_Priest::Create();
+
+
+	m_arrStates[AI_STATE_COMMON_HIT_PRIEST] = CState_Common_Hit_Priest::Create();
+	m_arrStates[AI_STATE_COMMON_GROGGYHIT_PRIEST] = CState_Common_Groggy_Priest::Create();
+	m_arrStates[AI_STATE_COMMON_STINGHIT_PRIEST] = CState_Common_Sting_Priest::Create();
+	m_arrStates[AI_STATE_COMMON_FLYHIT_PRIEST] = CState_Common_FlyHit_Priest::Create();
+
+#pragma endregion
 }
 
 void CState_Manager::Lancer_State_AI()

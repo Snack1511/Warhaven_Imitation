@@ -223,8 +223,8 @@ void CPriest_WindAttack::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_WindAttack::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-	/*if (!pOwner->Can_Use(CUnit::SKILL2))
-		return STATE_END;*/
+	if (!pOwner->Can_Use(CUnit::SKILL2))
+		return STATE_END;
 
     if (KEY(E, TAP))
         return m_eStateType;

@@ -24,7 +24,7 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Paladin::Initialize()
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
 
-	m_fAnimSpeed = 1.5f;
+	m_fAnimSpeed = 2.5f;
 
 	m_iStateChangeKeyFrame = 76;
 

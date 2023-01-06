@@ -538,6 +538,7 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
 		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEFAULT_FIONA_R;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
+		m_iReserveStateDefault[PRIEST] = AI_STATE_PATROL_DEFAULT_PRIEST;
 
 		break;
 
@@ -548,6 +549,7 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[FIONA] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_COMMON_HIT_WARRIOR;
+		m_iReserveStateDefault[PRIEST] = AI_STATE_COMMON_HIT_WARRIOR;
 
 		break;
 

@@ -43,21 +43,15 @@ HRESULT CSprint_Jump_Fall_Priest::Initialize()
     m_fAnimSpeed = 2.f;
 
     m_vecAdjState.push_back(STATE_GLIDING);
-    m_vecAdjState.push_back(STATE_JUMP_LAND_PRIEST);
-    m_vecAdjState.push_back(STATE_PROJECTILECATCH_BEGIN_PRIEST);
     m_vecAdjState.push_back(STATE_AIRDASH_PRIEST);
-    m_vecAdjState.push_back(STATE_WINDATTACK_PRIEST);
-    m_vecAdjState.push_back(STATE_CURE_BEGIN_PRIEST);
-    m_vecAdjState.push_back(STATE_ATTACK_STING_PRIEST);
-
+    
     return S_OK;
 }
 
 void CSprint_Jump_Fall_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-    if (ePrevType == STATE_GLIDING)
+    if (ePrevType == STATE_GLIDING || ePrevType == STATE_SPRINT_JUMPFALL_PRIEST)
         m_fInterPolationTime = 0.2f;
-
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 
@@ -70,6 +64,9 @@ STATE_TYPE CSprint_Jump_Fall_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
         STATE_TYPE eSprintEndState = pOwner->Get_SprintEndState();
         return eSprintEndState;
     }
+
+    if (pAnimator->Is_CurAnimFinished())
+        return m_eStateType;
 
 
     Follow_MouseLook(pOwner);

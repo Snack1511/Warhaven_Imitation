@@ -174,8 +174,8 @@ void CPriest_Catch_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_Catch_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-	//if (pOwner->Can_Use(CUnit::SKILL3))
-	//	return STATE_END;
+	if (pOwner->Can_Use(CUnit::SKILL3))
+		return STATE_END;
 
     if (KEY(Q, HOLD))
         return m_eStateType;
