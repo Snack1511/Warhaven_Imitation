@@ -778,11 +778,35 @@ void CUser::Sort_ScoreInfo()
 	}
 }
 
+void CUser::Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_ConquestTime(iPointIdx, fConquestTime, fMaxConquestTime);
+	}
+}
+
+void CUser::Set_ScoreBoardGaugeColor(_bool IsMainTeam, _uint iPointIdx)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_GaugeColor(IsMainTeam, iPointIdx);
+	}
+}
+
 void CUser::Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx)
 {
 	if (m_pScoreBoard)
 	{
 		m_pScoreBoard->Set_PointColor(IsMainTeam, iPoinIdx);
+	}
+}
+
+void CUser::Set_ScoreBoardPlayer(CPlayer* pPlayer)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_Player(pPlayer);
 	}
 }
 

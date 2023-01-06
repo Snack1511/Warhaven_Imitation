@@ -17,10 +17,19 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	virtual void Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName);
+
+public:
 	void Get_ScoreInfo(CPlayer* pPlayer);
 	void Sort_ScoreInfo();
 
+	void Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
+	void Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_PointColor(_bool IsMainTeam, _uint iPoinIdx);
+
+	void Set_Player(CPlayer* pPlayer);
 
 private:
 	virtual void My_Tick() override;
@@ -48,9 +57,15 @@ private:
 	CUI_Object* m_pArrSquard[4][Squad_End];
 
 	enum Point { Point_A, Point_R, Point_C, Point_End };
-	enum PointUI { PU_Outline, PU_Text, PU_End };
+	enum PointUI { PU_Outline, PU_Gauge, PU_Text, PU_End };
 	CUI_Object* m_pPointUI[PU_End];
 	CUI_Object* m_pArrPointUI[Point_End][PU_End];
+
+	_float m_fConquestRatio[Point_End];
+
+	CUI_Object* m_pPlayerUI = nullptr;
+	CPlayer* m_pPlayer = nullptr;
+	CTransform* m_pPlayerTransform = nullptr;
 
 public:
 	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();

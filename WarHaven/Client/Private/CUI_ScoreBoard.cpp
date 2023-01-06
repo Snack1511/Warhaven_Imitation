@@ -9,6 +9,9 @@
 #include "CUser.h"
 #include "CTeamConnector.h"
 #include "CUI_ScoreInfo.h"
+#include "CShader.h"
+#include "Transform.h"
+#include "CUI_Renderer.h"
 
 CUI_ScoreBoard::CUI_ScoreBoard()
 {
@@ -41,7 +44,26 @@ HRESULT CUI_ScoreBoard::Start()
 
 	Set_Squad();
 
+	GET_COMPONENT_FROM(m_pArrPointUI[Point_A][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_ScoreBoard::Set_Shader_Guage_PointA, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrPointUI[Point_R][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_ScoreBoard::Set_Shader_Guage_PointR, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_ScoreBoard::Set_Shader_Guage_PointC, this, placeholders::_1, "g_fValue");
+
 	return S_OK;
+}
+
+void CUI_ScoreBoard::Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));
+}
+
+void CUI_ScoreBoard::Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));
+}
+
+void CUI_ScoreBoard::Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));
 }
 
 void CUI_ScoreBoard::Get_ScoreInfo(CPlayer* pPlayer)
@@ -86,6 +108,13 @@ void CUI_ScoreBoard::My_Tick()
 void CUI_ScoreBoard::My_LateTick()
 {
 	__super::My_LateTick();
+
+	if (m_pPlayer)
+	{
+		_float4 vPos = m_pPlayerTransform->Get_World(WORLD_POS);
+		vPos.x += -375.f;
+		m_pPlayerUI->Set_Pos(vPos);
+	}
 }
 
 void CUI_ScoreBoard::OnEnable()
@@ -158,6 +187,12 @@ void CUI_ScoreBoard::Create_ScoreMiniMap()
 	m_pScoreBG->Set_Scale(1280.f, 720.f);
 	m_pScoreBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_ScoreBoardBg.dds"));
 	m_pScoreBG->Set_Sort(0.4f);
+
+	m_pPlayerUI = CUI_Object::Create();
+
+	m_pPlayerUI->Set_Texture(TEXT("../Bin/Resources/Textures/UI/MiniMap/PlayerIcon0.dds"));
+	m_pPlayerUI->Set_Scale(15.f);
+	m_pPlayerUI->Set_Sort(0.3f);
 
 	for (int i = 0; i < Map_End; ++i)
 	{
@@ -297,21 +332,29 @@ void CUI_ScoreBoard::Create_PointUI()
 	{
 		m_pPointUI[i] = CUI_Object::Create();
 
-		m_pPointUI[i]->Set_Sort(0.35f);
-
 		switch (i)
 		{
 		case PU_Outline:
 			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pPointUI[i], "/Oper", "PointOutline");
 
+			m_pPointUI[i]->Set_Sort(0.35f);
 			m_pPointUI[i]->Set_Scale(24.f);
+			break;
+
+		case PU_Gauge:
+			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pPointUI[i], "/Oper", "PointGauge");
+
+			m_pPointUI[i]->Set_Sort(0.34f);
+			GET_COMPONENT_FROM(m_pPointUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_CircleGauge);
 			break;
 
 		case PU_Text:
 			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pPointUI[i], "/Oper", "PointText");
 
+			m_pPointUI[i]->Set_Sort(0.33f);
 			m_pPointUI[i]->Set_Scale(32.f);
 			break;
 		}
@@ -334,7 +377,11 @@ void CUI_ScoreBoard::Init_ScoreMiniMap()
 	CREATE_GAMEOBJECT(m_pScoreBG, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pScoreBG);
 
+	CREATE_GAMEOBJECT(m_pPlayerUI, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pPlayerUI);
+
 	m_pScoreList.push_back(m_pScoreBG);
+	m_pScoreList.push_back(m_pPlayerUI);
 
 	for (int i = 0; i < Map_End; ++i)
 	{
@@ -452,18 +499,24 @@ void CUI_ScoreBoard::Init_PointUI()
 		}
 
 		m_pArrPointUI[Point_A][PU_Outline]->Set_TextureIndex(0);
+		m_pArrPointUI[Point_A][PU_Gauge]->Set_TextureIndex(0);
 		m_pArrPointUI[Point_A][PU_Text]->Set_TextureIndex(0);
 		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-17.f);
+		m_pArrPointUI[Point_A][PU_Gauge]->Set_PosY(-17.f);
 		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(-19.f);
 
 		m_pArrPointUI[Point_C][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_C][PU_Gauge]->Set_TextureIndex(1);
 		m_pArrPointUI[Point_C][PU_Text]->Set_TextureIndex(1);
 		m_pArrPointUI[Point_C][PU_Outline]->Set_PosY(75.f);
+		m_pArrPointUI[Point_C][PU_Gauge]->Set_PosY(75.f);
 		m_pArrPointUI[Point_C][PU_Text]->Set_PosY(73.f);
 
 		m_pArrPointUI[Point_R][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_R][PU_Gauge]->Set_TextureIndex(1);
 		m_pArrPointUI[Point_R][PU_Text]->Set_TextureIndex(2);
 		m_pArrPointUI[Point_R][PU_Outline]->Set_PosY(-85.f);
+		m_pArrPointUI[Point_R][PU_Gauge]->Set_PosY(-85.f);
 		m_pArrPointUI[Point_R][PU_Text]->Set_PosY(-87.f);
 
 		break;
@@ -502,6 +555,36 @@ void CUI_ScoreBoard::Sort_ScoreInfo()
 	}
 }
 
+void CUI_ScoreBoard::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime)
+{
+	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+
+	switch (iPointIdx)
+	{
+	case 0:
+		m_fConquestRatio[Point_A] = fConquestRatio;
+		break;
+	case 1:
+		m_fConquestRatio[Point_R] = fConquestRatio;
+		break;
+	case 2:
+		m_fConquestRatio[Point_C] = fConquestRatio;
+		break;
+	}
+}
+
+void CUI_ScoreBoard::Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx)
+{
+	if (IsMainTeam)
+	{
+		m_pArrPointUI[iPointIdx][PU_Gauge]->Set_Color(m_vColorBlue);
+	}
+	else
+	{
+		m_pArrPointUI[iPointIdx][PU_Gauge]->Set_Color(m_vColorRed);
+	}
+}
+
 void CUI_ScoreBoard::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 {
 	_float4 vColor;
@@ -511,4 +594,10 @@ void CUI_ScoreBoard::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 	{
 		m_pArrPointUI[iPoinIdx][i]->Set_Color(vColor);
 	}
+}
+
+void CUI_ScoreBoard::Set_Player(CPlayer* pPlayer)
+{
+	m_pPlayer = pPlayer;
+	m_pPlayerTransform = pPlayer->Get_Transform();
 }

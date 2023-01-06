@@ -742,6 +742,11 @@ HRESULT CPlayer::Start()
 	CUser::Get_Instance()->Set_MiniMapPlayer(this);
 	CUser::Get_Instance()->Set_OperPlayer(this);
 
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Set_ScoreBoardPlayer(this);
+	}
+
 	if (!m_pScoreInfo)
 	{
 		LEVEL_TYPE_CLIENT eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
