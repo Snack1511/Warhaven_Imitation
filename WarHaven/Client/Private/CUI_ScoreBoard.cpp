@@ -111,9 +111,10 @@ void CUI_ScoreBoard::My_LateTick()
 
 	if (m_pPlayer)
 	{
-		_float4 vPos = m_pPlayerTransform->Get_World(WORLD_POS);
-		vPos.x += -375.f;
-		m_pPlayerUI->Set_Pos(vPos);
+		_float4 vPos = m_pPlayerTransform->Get_World(WORLD_POS) * 1.5f;
+		vPos.z += -375.f;
+		vPos.x += 15.f;
+		m_pPlayerUI->Set_Pos(vPos.z, -vPos.x);
 	}
 }
 
@@ -344,9 +345,10 @@ void CUI_ScoreBoard::Create_PointUI()
 
 		case PU_Gauge:
 			GET_COMPONENT_FROM(m_pPointUI[i], CTexture)->Remove_Texture(0);
+			m_pPointUI[i]->Set_Scale(22.f);
 			Read_Texture(m_pPointUI[i], "/Oper", "PointGauge");
 
-			m_pPointUI[i]->Set_Sort(0.34f);
+			m_pPointUI[i]->Set_Sort(0.36f);
 			GET_COMPONENT_FROM(m_pPointUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_CircleGauge);
 			break;
 
@@ -577,18 +579,18 @@ void CUI_ScoreBoard::Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx)
 {
 	if (IsMainTeam)
 	{
-		m_pArrPointUI[iPointIdx][PU_Gauge]->Set_Color(m_vColorBlue);
+		m_pArrPointUI[iPointIdx][PU_Gauge]->Set_Color(_float4(0.f, 0.8f, 1.f, 1.f));
 	}
 	else
 	{
-		m_pArrPointUI[iPointIdx][PU_Gauge]->Set_Color(m_vColorRed);
+		m_pArrPointUI[iPointIdx][PU_Gauge]->Set_Color(_float4(1.f, 0.2f, 0.f, 1.f));
 	}
 }
 
 void CUI_ScoreBoard::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 {
 	_float4 vColor;
-	vColor = IsMainTeam ? m_vColorBlue : m_vColorRed;
+	vColor = IsMainTeam ? _float4(0.f, 0.8f, 1.f, 1.f) : _float4(1.f, 0.2f, 0.f, 1.f);
 
 	for (int i = 0; i < PU_End; ++i)
 	{
