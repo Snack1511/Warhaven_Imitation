@@ -51,27 +51,6 @@ HRESULT CUI_Main::Start()
 	return S_OK;
 }
 
-void CUI_Main::My_Tick()
-{
-	if (m_pMainWindow[MW_Play]->Is_Valid())
-	{
-		cout << "플레이 활성화" << endl;
-	}
-	else
-	{
-		cout << "플레이 비활성화" << endl;
-	}
-
-	if (m_pMainWindow[MW_Barracks]->Is_Valid())
-	{
-		cout << "병영 활성화" << endl;
-	}
-	else
-	{
-		cout << "병영 비활성화" << endl;
-	}
-}
-
 void CUI_Main::On_PointEnter_TopBtn(const _uint& iEventNum)
 {
 	m_pArrTopBtn[iEventNum]->Set_FontColor(m_vColorWhite);

@@ -17,9 +17,6 @@ public:
 	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
-private:
-	virtual void My_Tick() override;
-
 public:
 	virtual void On_PointEnter_TopBtn(const _uint& iEventNum);
 	virtual void On_PointExit_TopBtn(const _uint& iEventNum);
