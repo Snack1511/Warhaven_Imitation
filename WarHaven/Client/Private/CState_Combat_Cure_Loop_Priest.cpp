@@ -63,8 +63,6 @@ void CState_Combat_Cure_Loop_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, 
 
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
 
-	GAMEINSTANCE->Start_RadialBlur(0.01f);
-
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
@@ -73,7 +71,6 @@ void CState_Combat_Cure_Loop_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, 
 
 void CState_Combat_Cure_Loop_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	GAMEINSTANCE->Stop_RadialBlur();
 
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
 	
@@ -114,7 +111,10 @@ STATE_TYPE CState_Combat_Cure_Loop_Priest::Tick(CUnit* pOwner, CAnimator* pAnima
 	m_fTimeAcc += fDT(0);
 	
 
-	pOwner->Get_Transform()->Set_LerpLook(pTargetUnit->Get_Transform()->Get_World(WORLD_LOOK), 0.4f);
+	_float4 vTargetLook = pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+	vTargetLook.y = 0.f;
+
+	pOwner->Get_Transform()->Set_LerpLook(vTargetLook, 0.4f);
 
 	if (m_fTimeAcc > m_fMaxTime)
 	{
@@ -125,13 +125,9 @@ STATE_TYPE CState_Combat_Cure_Loop_Priest::Tick(CUnit* pOwner, CAnimator* pAnima
 
 			// UI 표시
 			pTargetUnit->Get_Status().fHP += fPlusHp; // fPlusHp
-			CUser::Get_Instance()->Enable_DamageFont(2, fPlusHp);
 
 			if(pOwner->Get_OwnerPlayer()->Get_Gauge() < 100.f - 3.f)
 				pOwner->Get_OwnerPlayer()->Get_Gauge() += 3.f;
-
-
-			CUser::Get_Instance()->Enable_DamageFont(2, fPlusHp);
 
 			// 풀피를 넘어서면
 			if (pTargetUnit->Get_Status().fHP > pTargetUnit->Get_Status().fMaxHP)

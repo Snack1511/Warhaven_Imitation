@@ -53,7 +53,7 @@ HRESULT CState_Combat_SkillE_Priest_WindAttack::Initialize()
     m_fAnimSpeed = 2.4f;
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 99;
+    m_iStateChangeKeyFrame = 65;
 
 	m_iAttackStartAnimIndex = 30;
 	m_iAttackEndAnimIndex = 43;
@@ -109,6 +109,9 @@ void CState_Combat_SkillE_Priest_WindAttack::Enter(CUnit* pOwner, CAnimator* pAn
 
 STATE_TYPE CState_Combat_SkillE_Priest_WindAttack::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
+		return AI_STATE_COMBAT_DEFAULT_PRIEST;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

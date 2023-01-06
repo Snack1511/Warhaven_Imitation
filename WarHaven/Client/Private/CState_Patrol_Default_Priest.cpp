@@ -64,6 +64,15 @@ void CState_Patrol_Default_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CState_Patrol_Default_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    CUnit* pCurObject = static_cast<CUnit*>(pOwner->Get_CureObject());
+
+    if (pCurObject)
+    {
+        if(pCurObject->Get_Status().fHP < pCurObject->Get_Status().fMaxHP)
+            return AI_STATE_PATROL_CURE_BEGIN_PRIEST;
+    }
+        
+
     if (m_iRand != 0)
     {
         if (pAnimator->Get_CurAnimFrame() > m_iIdleDelay)

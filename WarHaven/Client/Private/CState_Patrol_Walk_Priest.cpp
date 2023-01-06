@@ -80,6 +80,14 @@ void CState_Patrol_Walk_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE
 
 STATE_TYPE CState_Patrol_Walk_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    CUnit* pCurObject = static_cast<CUnit*>(pOwner->Get_CureObject());
+
+    if (pCurObject)
+    {
+        if (pCurObject->Get_Status().fHP < pCurObject->Get_Status().fMaxHP)
+            return AI_STATE_PATROL_CURE_BEGIN_PRIEST;
+    }
+
     if (pAnimator->Is_CurAnimFinished())
     {
         if (m_iRand == 0)

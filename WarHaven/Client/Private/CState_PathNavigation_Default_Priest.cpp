@@ -64,7 +64,7 @@ void CState_PathNavigation_Default_Priest::Enter(CUnit* pOwner, CAnimator* pAnim
 
     m_iStateChangeKeyFrame = 25;
 
-    m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PALADIN;
+    m_eSprintBeginState = AI_STATE_PATHNAVIGATION_SPRINTBEGIN_PRIEST;
 
     m_fRand = frandom(0.2f, 0.5f);
     m_iRand = random(0, 5);

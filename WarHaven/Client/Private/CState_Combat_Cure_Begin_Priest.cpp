@@ -61,15 +61,26 @@ void CState_Combat_Cure_Begin_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator,
 
 STATE_TYPE CState_Combat_Cure_Begin_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    CGameObject* pCureObject = pOwner->Get_CureObject();
+
+    if (!pCureObject)
+        return AI_STATE_COMBAT_CURE_END_PRIEST;
+
+    _float4 vTargetLook = pCureObject->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+    vTargetLook.y = 0.f;
+
+    pOwner->Get_Transform()->Set_LerpLook(vTargetLook, 0.4f);
+
 	m_fTimeAcc += fDT(0);
 
 	if (pAnimator->Is_CurAnimFinished() || m_fTimeAcc > 0.5f)
 	{
-		if (pOwner->Get_CureObject())
+		if (pCureObject)
 			return AI_STATE_COMBAT_CURE_LOOP_PRIEST;
 		else
 			return AI_STATE_COMBAT_CURE_END_PRIEST;
 	}
+
 
     return __super::Tick(pOwner, pAnimator);
 }

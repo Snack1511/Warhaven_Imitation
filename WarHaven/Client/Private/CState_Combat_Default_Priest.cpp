@@ -76,13 +76,20 @@ void CState_Combat_Default_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
     m_iRand = random(0, 7);
     m_iDirectionRand = random(0, 7);
 
-    Set_Direction_Back_AI(m_iDirectionRand);
+    if(Get_TargetLook_Length(pOwner) < 4.f)
+        Set_Direction_Front_AI(m_iDirectionRand);
+        
+    else 
+        Set_Direction_Back_AI(m_iDirectionRand);
+
+
+    
     m_fMaxSpeed = pOwner->Get_Status().fRunSpeed;
     m_iAnimIndex = m_iDirectionAnimIndex[m_iDirectionRand];
 
     m_iStateChangeKeyFrame = 25;
 
-    m_fAIMyLength = 2.2f;
+    m_fAIMyLength = 2.5f;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -121,7 +128,7 @@ STATE_TYPE CState_Combat_Default_Priest::Tick(CUnit* pOwner, CAnimator* pAnimato
 
     case 7:
 
-        if (pOwner->Can_Use(CUnit::SKILL3))
+        if (pOwner->Can_Use(CUnit::SKILL3) && pOwner->Get_CureObject())
             return AI_STATE_COMBAT_CURE_BEGIN_PRIEST;
 
         else if (pAnimator->Get_CurAnimFrame() > m_iStateChangeKeyFrame)
@@ -161,6 +168,10 @@ STATE_TYPE CState_Combat_Default_Priest::Random_State(CUnit* pOwner, CAnimator* 
 
             if (pOwner->Can_Use(CUnit::SKILL1))
                 return AI_STATE_COMBAT_AIRDASH_PRIEST;
+           
+            else if(pOwner->Can_Use(CUnit::SKILL2))
+                return AI_STATE_COMBAT_WINDATTACK_PRIEST;
+            
             else
                 return AI_STATE_COMBAT_STINGATTACK_PRIEST;
 
@@ -171,7 +182,11 @@ STATE_TYPE CState_Combat_Default_Priest::Random_State(CUnit* pOwner, CAnimator* 
         case 7:
 
             if (pOwner->Can_Use(CUnit::SKILL2))
+                return AI_STATE_COMBAT_WINDATTACK_PRIEST;
+
+            else if (pOwner->Can_Use(CUnit::SKILL1))
                 return AI_STATE_COMBAT_AIRDASH_PRIEST;
+
             else
                 return AI_STATE_COMBAT_STINGATTACK_PRIEST;
 

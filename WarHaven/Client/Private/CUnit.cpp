@@ -1545,18 +1545,18 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 		}
 		else
 		{
-			if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
-			{
-				Enter_State(m_tHitType.eStingHitState, pHitInfo);
-			}
-			else
-			{
-				On_DieBegin(pOtherUnit, vHitPos);
-				Enter_State(m_tHitType.eHitState, pHitInfo);
-			}
+			//if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
+			//{
+			//	Enter_State(m_tHitType.eStingHitState, pHitInfo);
+			//}
+			//else
+			//{
+			//	On_DieBegin(pOtherUnit, vHitPos);
+			//	Enter_State(m_tHitType.eHitState, pHitInfo);
+			//}
 
-			//On_DieBegin(pOtherUnit, vHitPos);
-			//Enter_State(m_tHitType.eHitState, pHitInfo);
+			On_DieBegin(pOtherUnit, vHitPos);
+			Enter_State(m_tHitType.eHitState, pHitInfo);
 
 			return;
 

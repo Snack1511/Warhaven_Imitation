@@ -118,8 +118,8 @@ void CState_Gliding::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Gliding::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /*if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_HWARA && CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
-        return STATE_END;*/
+    if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_HWARA && CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
+        return STATE_END;
 
     if (pOwner->Get_GlidingTime() > 0.f)
         return STATE_END;

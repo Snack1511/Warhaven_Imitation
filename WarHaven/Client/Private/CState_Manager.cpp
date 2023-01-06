@@ -639,6 +639,9 @@
 
 #include "CState_Patrol_Walk_Priest.h"
 #include "CState_Patrol_Default_Priest.h"
+#include "CState_Patrol_Cure_Begin_Priest.h"
+#include "CState_Patrol_Cure_Loop_Priest.h"
+#include "CState_Patrol_Cure_End_Priest.h"
 
 
 #pragma endregion 
@@ -2153,6 +2156,11 @@ void CState_Manager::Priest_State_AI()
 
 	m_arrStates[AI_STATE_PATROL_DEFAULT_PRIEST] = CState_Patrol_Default_Priest::Create();
 	m_arrStates[AI_STATE_PATROL_WALK_PRIEST] = CState_Patrol_Walk_Priest::Create();
+
+	m_arrStates[AI_STATE_PATROL_CURE_BEGIN_PRIEST] = CState_Patrol_Cure_Begin_Priest::Create();
+	m_arrStates[AI_STATE_PATROL_CURE_LOOP_PRIEST] = CState_Patrol_Cure_Loop_Priest::Create();
+	m_arrStates[AI_STATE_PATROL_CURE_END_PRIEST] = CState_Patrol_Cure_End_Priest::Create();
+
 
 #pragma endregion
 

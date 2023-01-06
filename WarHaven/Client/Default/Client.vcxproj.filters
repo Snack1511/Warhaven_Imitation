@@ -3583,6 +3583,21 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\06. Priest">
       <UniqueIdentifier>{a4fb9c16-a27e-401d-bfa4-b7a41caa1f8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others">
+      <UniqueIdentifier>{e748c390-141a-421f-af9e-9c49f6211288}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest">
+      <UniqueIdentifier>{0699f766-cc12-4628-906f-e338c7dd16dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\01. Begin">
+      <UniqueIdentifier>{25b45287-0752-478a-be5a-96e80920a24d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\02. Loop">
+      <UniqueIdentifier>{352092d3-ed3c-4c9c-a4e2-fe230a7f501a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\03. End">
+      <UniqueIdentifier>{19595b89-dc5d-4264-9813-72b3e5b2b004}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6435,6 +6450,15 @@
     <ClInclude Include="..\Public\CState_Combat_Default_Priest.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\06. Priest</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Cure_End_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Cure_Begin_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_Patrol_Cure_Loop_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\02. Loop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9267,6 +9291,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Combat_Default_Priest.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Combat\01. Default\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Cure_End_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Cure_Begin_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_Patrol_Cure_Loop_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\02. Loop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

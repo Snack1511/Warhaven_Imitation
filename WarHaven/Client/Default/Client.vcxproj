@@ -190,6 +190,9 @@
     <ClInclude Include="..\Public\CAIController.h" />
     <ClInclude Include="..\Public\CAIPersonality.h" />
     <ClInclude Include="..\Public\CState_Combat_Attack_Sting_Priest.h" />
+    <ClInclude Include="..\Public\CState_Patrol_Cure_Begin_Priest.h" />
+    <ClInclude Include="..\Public\CState_Patrol_Cure_End_Priest.h" />
+    <ClInclude Include="..\Public\CState_Patrol_Cure_Loop_Priest.h" />
     <ClInclude Include="..\Public\CState_Combat_Default_Priest.h" />
     <ClInclude Include="..\Public\CState_Combat_SkillE_Priest_WindAttack.h" />
     <ClInclude Include="..\Public\CState_Combat_SkillR_AirDash_Priest.h" />
@@ -1143,6 +1146,9 @@
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Attack_Sting_Priest.cpp" />
+    <ClCompile Include="..\Private\CState_Patrol_Cure_Begin_Priest.cpp" />
+    <ClCompile Include="..\Private\CState_Patrol_Cure_End_Priest.cpp" />
+    <ClCompile Include="..\Private\CState_Patrol_Cure_Loop_Priest.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Default_Priest.cpp" />
     <ClCompile Include="..\Private\CState_Combat_SkillE_Priest_WindAttack.cpp" />
     <ClCompile Include="..\Private\CState_Combat_SkillR_AirDash_Priest.cpp" />

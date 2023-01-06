@@ -40,7 +40,7 @@ HRESULT CState_Combat_Attack_Sting_Priest::Initialize()
 	m_tHitInfo.fJumpPower = 0.f;
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 14;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 4;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_COMBAT_STINGATTACK_PRIEST;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     // 선형 보간 시간
@@ -56,7 +56,7 @@ HRESULT CState_Combat_Attack_Sting_Priest::Initialize()
 	Add_KeyFrame(30, 999);
 	Add_KeyFrame(35, 998);
 
-	m_eBounceState = AI_STATE_COMMON_BOUNCE_PALADIN_R;
+	m_eBounceState = AI_STATE_COMMON_BOUNCE_PRIEST;
 
     return __super::Initialize();
 }
@@ -73,7 +73,7 @@ STATE_TYPE CState_Combat_Attack_Sting_Priest::Tick(CUnit* pOwner, CAnimator* pAn
     if (pAnimator->Is_CurAnimFinished())
         return AI_STATE_COMBAT_DEFAULT_PRIEST;
 
-
+    
 
 
     return __super::Tick(pOwner, pAnimator);
