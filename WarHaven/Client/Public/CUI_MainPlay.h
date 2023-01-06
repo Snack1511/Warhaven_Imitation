@@ -17,6 +17,8 @@ public:
 	virtual HRESULT	Start();
 
 	virtual void My_Tick() override;
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 public:
 	virtual void Set_Shader_StageHighlight(CShader* pShader, const char* pConstName);
@@ -40,6 +42,8 @@ public:
 
 private:
 	_bool m_bIsMouseEvent = false;
+
+	list<CUI_Object*> m_pUIList;
 
 private:
 	CUI_Object* m_pPlayBtnUI[2];

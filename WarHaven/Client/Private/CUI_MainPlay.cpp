@@ -43,7 +43,7 @@ HRESULT CUI_MainPlay::Start()
 	__super::Start();
 
 	Bind_Shader();
-	// Bind_Btn();
+	Bind_Btn();
 
 	Set_FadeModeWindow();
 
@@ -80,6 +80,22 @@ void CUI_MainPlay::My_Tick()
 			DISABLE_GAMEOBJECT(m_pPlayBtnMouseEnterLineArr[1]);
 		}
 	}
+}
+
+void CUI_MainPlay::OnEnable()
+{
+	__super::OnEnable();
+
+	for (auto& iter : m_pUIList)
+		iter->SetActive(true);
+}
+
+void CUI_MainPlay::OnDisable()
+{
+	__super::OnDisable();
+
+	for (auto& iter : m_pUIList)
+		iter->SetActive(false);
 }
 
 void CUI_MainPlay::Set_Shader_StageHighlight(CShader* pShader, const char* pConstName)
@@ -393,6 +409,8 @@ void CUI_MainPlay::Create_PlayBtn()
 
 		GET_COMPONENT_FROM(m_pPlayBtnUI[i], CTexture)->Remove_Texture(0);
 		CREATE_GAMEOBJECT(m_pPlayBtnUI[i], GROUP_UI);
+
+		m_pUIList.push_back(m_pPlayBtnUI[i]);
 	}
 
 	m_pPlayBtnUI[0]->Set_Pos(-500.f, 180.f);
@@ -638,6 +656,8 @@ void CUI_MainPlay::Create_StageNameRect()
 	m_pStageNameRect->Set_FontText(m_wstrModeText);
 
 	CREATE_GAMEOBJECT(m_pStageNameRect, GROUP_UI);
+
+	m_pUIList.push_back(m_pStageNameRect);
 }
 
 void CUI_MainPlay::Crerate_PlayBtnMouseEnterLine()

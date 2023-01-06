@@ -7,6 +7,7 @@
 #include "CPlayerInfo_Main.h"
 
 #include "CUI_MainPlay.h"
+#include "CUI_Barracks.h"
 
 #include "CUI_Object.h"
 #include "CUser.h"
@@ -50,6 +51,27 @@ HRESULT CUI_Main::Start()
 	return S_OK;
 }
 
+void CUI_Main::My_Tick()
+{
+	if (m_pMainWindow[MW_Play]->Is_Valid())
+	{
+		cout << "플레이 활성화" << endl;
+	}
+	else
+	{
+		cout << "플레이 비활성화" << endl;
+	}
+
+	if (m_pMainWindow[MW_Barracks]->Is_Valid())
+	{
+		cout << "병영 활성화" << endl;
+	}
+	else
+	{
+		cout << "병영 비활성화" << endl;
+	}
+}
+
 void CUI_Main::On_PointEnter_TopBtn(const _uint& iEventNum)
 {
 	m_pArrTopBtn[iEventNum]->Set_FontColor(m_vColorWhite);
@@ -81,6 +103,8 @@ void CUI_Main::On_PointDown_TopBtn(const _uint& iEventNum)
 	m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
 
 	ENABLE_GAMEOBJECT(m_pTopBtnEffect);
+
+	SetActive_MainWindow((MainWindow)iEventNum);
 }
 
 void CUI_Main::Set_Shader_TopBtnEffect(CShader* pShader, const char* pConstName)
@@ -123,9 +147,9 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 {
 	m_eWindow = eWindow;
 
-	for (int i = 0; i < MW_End; ++i)
+	for (int i = 0; i < MW_Profile; ++i)
 	{
-		//DISABLE_GAMEOBJECT(m_pMainWindow[i]);
+		DISABLE_GAMEOBJECT(m_pMainWindow[i]);
 	}
 
 	ENABLE_GAMEOBJECT(m_pMainWindow[m_eWindow]);
@@ -138,6 +162,18 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 		m_pArrTopBtn[TB_Play]->Set_FontColor(m_vColorWhite);
 
 		_float4 vPos = m_pArrTopBtn[TB_Play]->Get_Pos();
+		m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
+
+		ENABLE_GAMEOBJECT(m_pTopBtnEffect);
+	}
+	break;
+
+	case MW_Barracks:
+	{
+		m_pArrTopBtn[TB_Barracks]->Set_IsClick(true);
+		m_pArrTopBtn[TB_Barracks]->Set_FontColor(m_vColorWhite);
+
+		_float4 vPos = m_pArrTopBtn[TB_Barracks]->Get_Pos();
 		m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
 
 		ENABLE_GAMEOBJECT(m_pTopBtnEffect);
@@ -245,9 +281,13 @@ void CUI_Main::Create_PlayerNameText()
 void CUI_Main::Create_MainWindow()
 {
 	m_pMainWindow[MW_Play] = CUI_MainPlay::Create();
+	m_pMainWindow[MW_Barracks] = CUI_Barracks::Create();
 
 	CREATE_GAMEOBJECT(m_pMainWindow[MW_Play], GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pMainWindow[MW_Play]);
+
+	CREATE_GAMEOBJECT(m_pMainWindow[MW_Barracks], GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pMainWindow[MW_Barracks]);
 }
 
 void CUI_Main::Bind_Btn()

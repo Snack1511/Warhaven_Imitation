@@ -3484,6 +3484,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo">
       <UniqueIdentifier>{f7b25645-598a-4122-998c-1b97e853e29f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Barracks">
+      <UniqueIdentifier>{6ae9b4f4-12a6-498c-b1a6-86079b0cf583}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6252,6 +6255,9 @@
     <ClInclude Include="..\Public\CUI_ScoreInfo.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Barracks.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Barracks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9000,6 +9006,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_ScoreInfo.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Barracks.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Barracks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
