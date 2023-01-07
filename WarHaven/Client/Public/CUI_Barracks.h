@@ -34,6 +34,7 @@ private:
 private:
 	list<CUI_Object*> m_pUIList;
 
+	_float4 m_vColorWhite = _float4(1.f, 1.f, 1.f, 1.f);
 	_float4 m_vColorGold = _float4(0.773f, 0.714f, 0.596f, 1.f);
 
 	_float4 m_vColorBG = _float4(0.1f, 0.1f, 0.1f, 1.f);

@@ -124,6 +124,8 @@ void CUI_Barracks::On_PointerDown_Btn(const _uint& iEventNum)
 	for (auto& iter : m_pUIList)
 		Disable_Fade(iter, m_fDuration);
 
+	m_pTopBtn[0]->Set_FontColor(m_vColorWhite);
+
 	m_bIsSkinEnable = true;
 }
 
@@ -134,6 +136,12 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 
 	if (m_iPrvSelectSkin == iEventNum)
 		return;
+
+	m_pTopBtn[m_iPrvSelectSkin]->Set_IsClick(false);
+	m_pTopBtn[m_iPrvSelectSkin]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+
+	m_pTopBtn[m_iCurSelectSkin]->Set_IsClick(true);
+	m_pTopBtn[m_iCurSelectSkin]->Set_FontColor(m_vColorWhite);
 
 	m_bTickDisable = true;
 }
