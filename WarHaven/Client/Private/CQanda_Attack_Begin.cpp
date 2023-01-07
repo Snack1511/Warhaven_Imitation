@@ -65,10 +65,7 @@ void CQanda_Attack_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	__super::Enter_Attack_Begin(pOwner);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 	
-	CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(pOwner)->Get_Crow();
-
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_Test", pAnimCrow
-		, ZERO_VECTOR);
+	static_cast<CUnit_Qanda*>(pOwner)->Turn_ChargeEffect(true);
 
 }
 

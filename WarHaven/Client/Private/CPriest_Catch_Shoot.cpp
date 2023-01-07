@@ -155,6 +155,8 @@ HRESULT CPriest_Catch_Shoot::Initialize()
 	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.f;
 	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.f;
 
+	Add_KeyFrame(11, 111);
+
 	return __super::Initialize();
 }
 
@@ -198,6 +200,8 @@ void CPriest_Catch_Shoot::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, 
 		pOwner->Catch_ProjectileObject(nullptr);
 		break;
 
+	case 111:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Catch_Shoot", pOwner, ZERO_VECTOR);
 	default:
 		break;
 	}

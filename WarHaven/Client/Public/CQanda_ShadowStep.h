@@ -36,6 +36,7 @@ private:
 	_uint m_iCurDirection = 0;
 	_float m_fCurGuageMinusTime = 0.f;
 	_float m_fMaxGuageMinusTime = 0.1f;
+	_float m_fWalkSpeed = 0.f;
 
 	list<CGameObject*>	m_EffectsList;
 	

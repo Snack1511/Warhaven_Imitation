@@ -173,7 +173,13 @@ HRESULT CScript_FollowCam::Initialize()
 	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraDistanceLerpTime *= 0.1f;
 	m_arrLerpDesc[CAMERA_LERP_CANNON].fCameraOffsetLerpTime *= 0.1f;
 
+	m_arrLerpDesc[CAMERA_LERP_QANDA].fTargetDistance *= 0.6f;
+	m_arrLerpDesc[CAMERA_LERP_QANDA].fMaxDistance *= 0.4f;
+	m_arrLerpDesc[CAMERA_LERP_QANDA].fCameraDistanceLerpTime *= 0.5f;
 
+	m_arrLerpDesc[CAMERA_LERP_ZOOMOUT].fTargetDistance *= 1.2f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOMOUT].fMaxDistance *= 1.2f;
+	m_arrLerpDesc[CAMERA_LERP_ZOOMOUT].fCameraDistanceLerpTime *= 0.5f;
 
 	return S_OK;
 }

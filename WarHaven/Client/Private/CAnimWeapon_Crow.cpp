@@ -9,6 +9,7 @@
 #include "CCollider_Sphere.h"
 
 #include "CCrowBoom.h"
+#include "CUnit_Qanda.h"
 
 CAnimWeapon_Crow::CAnimWeapon_Crow()
 {
@@ -101,6 +102,13 @@ void CAnimWeapon_Crow::Boom_Crow()
 	m_pCrowBoom->Boom(m_pOwnerUnit->Get_OwnerPlayer(), m_pTransform->Get_World(WORLD_POS));
 	DISABLE_COMPONENT(GET_COMPONENT(CRenderer));
 	On_ChangePhase(eHIT);
+
+	CUnit_Qanda* pQuanda = static_cast<CUnit_Qanda*>(m_pOwnerUnit);
+	//pQuanda->Turn_FeatherEffect(true);
+	pQuanda->Turn_SteamEffect(false);
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Boom", m_pTransform->Get_World(WORLD_POS),
+		GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE));
 }
 
 
@@ -309,6 +317,59 @@ HRESULT CAnimWeapon_Crow::SetUp_Model(wstring wstrModelFilePath, wstring wstrAni
 	return S_OK;
 }
 
+void CAnimWeapon_Crow::Follow_Owner()
+{
+	if (m_pOwnerBone)
+	{
+		_float4 vPos = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS);
+		_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
+		vCurPos.x += 0.5f;
+		vCurPos.y -= 1.5f;
+
+		_float4 vDir = vPos - vCurPos;
+
+		//실제 차이나는 거리
+		_float fRealDistance = vDir.Length();
+
+		_float fRatio = (fRealDistance / m_fMaxDistance * 3.f);
+		fRatio = powf(fRatio, 2.f);
+
+		_float fSpeed = m_fMaxSpeed * fRatio;
+
+
+		//최대 거리 제한
+		if (fSpeed > 6.f)
+			fSpeed = 6.f;
+
+		//_float4x4		matBone = m_pOwnerBone->Get_BoneMatrix();
+
+		//matBone.m[3][0] += -0.5f;
+		//matBone.m[3][1] += 0.1f;
+		//matBone.m[3][2] += 0.5f;
+
+		//_float4 vOwnerPos = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS);
+		//vOwnerPos.x += -0.5f;
+		//vOwnerPos.y += 1.5f;
+
+		//_float4 vDir = vOwnerPos - m_pTransform->Get_World(WORLD_POS);
+
+
+
+		if (fabs(vDir.Length()) < 0.15f)
+		{
+			m_pTransform->Set_LerpLook(m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK), 0.4f);
+			return;
+		}
+		else
+			m_pTransform->Set_LerpLook(vDir * -1.f, 0.4f);
+
+
+
+		m_pPhysics->Set_Dir(vDir);
+		m_pPhysics->Set_Accel(fSpeed);
+	}
+}
+
 void CAnimWeapon_Crow::Late_Tick()
 {
 
@@ -325,59 +386,10 @@ void CAnimWeapon_Crow::Late_Tick()
 		//	m_pTransform->Make_WorldMatrix();
 		//}
 
-
 		if (m_pAnimator->Get_CurAnimIndex() == 13 && m_pAnimator->Is_CurAnimFinished())
 			Set_AnimIndex(10, 0.05f, 2.f);
 
-		if (m_pOwnerBone)
-		{
-			_float4 vPos = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS);
-			_float4 vCurPos = m_pTransform->Get_World(WORLD_POS);
-			vCurPos.x += 0.5f;
-			vCurPos.y -= 1.5f;
-
-			_float4 vDir = vPos - vCurPos;
-
-			//실제 차이나는 거리
-			_float fRealDistance = vDir.Length();
-
-			_float fRatio = (fRealDistance / m_fMaxDistance * 3.f);
-			fRatio = powf(fRatio, 2.f);
-
-			_float fSpeed = m_fMaxSpeed * fRatio;
-
-
-			//최대 거리 제한
-			if (fSpeed > 6.f)
-				fSpeed = 6.f;
-
-			//_float4x4		matBone = m_pOwnerBone->Get_BoneMatrix();
-			
-			//matBone.m[3][0] += -0.5f;
-			//matBone.m[3][1] += 0.1f;
-			//matBone.m[3][2] += 0.5f;
-
-			//_float4 vOwnerPos = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS);
-			//vOwnerPos.x += -0.5f;
-			//vOwnerPos.y += 1.5f;
-
-			//_float4 vDir = vOwnerPos - m_pTransform->Get_World(WORLD_POS);
-
-			
-			
-			if (fabs(vDir.Length()) < 0.15f)
-			{
-				m_pTransform->Set_LerpLook(m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK), 0.4f);
-				break;
-			}
-			else
-				m_pTransform->Set_LerpLook(vDir * -1.f, 0.4f);
-				
-			
-			
-			m_pPhysics->Set_Dir(vDir);
-			m_pPhysics->Set_Accel(fSpeed);
-		}
+		Follow_Owner();
 
 		
 
@@ -453,7 +465,7 @@ void CAnimWeapon_Crow::Late_Tick()
 
 			ENABLE_COMPONENT(GET_COMPONENT(CRenderer));
 			Set_AnimIndex(13, 0.f, 2.f);
-			On_ChangePhase(eIDLE);
+			On_ChangePhase(eSPAWN);
 			m_pPhysics->Set_MaxSpeed(10.f);
 
 			_float4 vPos = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS);
@@ -462,9 +474,24 @@ void CAnimWeapon_Crow::Late_Tick()
 
 			m_pTransform->Set_World(WORLD_POS, vPos);
 			m_fLoopTimeAcc = 0.f;
+
+
 		}
 	}
-	break;
+		break;
+
+	case Client::CAnimWeapon_Crow::eSPAWN:
+
+		
+		static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Turn_FeatherEffect(true);
+		Follow_Owner();
+
+		if (m_pAnimator->Is_CurAnimFinished())
+		{
+			Set_AnimIndex(10, 0.f, 2.f);
+			On_ChangePhase(eIDLE);
+		}
+		break;
 
 	case Client::CAnimWeapon_Crow::eEND:
 		break;

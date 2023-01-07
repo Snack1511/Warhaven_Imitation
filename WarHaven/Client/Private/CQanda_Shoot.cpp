@@ -17,6 +17,8 @@
 #include "CAnimWeapon.h"
 #include "CProjectile.h"
 
+#include "CUnit_Qanda.h"
+
 
 
 
@@ -53,6 +55,8 @@ HRESULT CQanda_Shoot::Initialize()
 void CQanda_Shoot::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
     __super::Enter(pOwner, pAnimator, ePrevType, pData);	
+
+    static_cast<CUnit_Qanda*>(pOwner)->Turn_ChargeEffect(false);
 }
 
 STATE_TYPE CQanda_Shoot::Tick(CUnit* pOwner, CAnimator* pAnimator)

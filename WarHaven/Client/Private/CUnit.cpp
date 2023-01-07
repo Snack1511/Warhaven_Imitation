@@ -715,6 +715,8 @@ HRESULT CUnit::Start()
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
 
+	if(m_pGlider)
+		m_pGlider->SetUp_GliderTrail();	
 
 	return S_OK;
 }

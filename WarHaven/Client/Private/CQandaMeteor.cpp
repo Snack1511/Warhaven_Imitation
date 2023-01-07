@@ -110,6 +110,7 @@ void CQandaMeteor::OnEnable()
 
 //	m_Shoot = false;
 }
+
 void CQandaMeteor::OnDisable()
 {
 	if (m_bCollect)

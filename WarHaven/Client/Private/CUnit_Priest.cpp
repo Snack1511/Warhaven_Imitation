@@ -17,6 +17,8 @@
 #include "CAnimWeapon.h"
 #include "CProjectile.h"
 
+#include "CEffect.h"
+#include "CRectEffects.h"
 #include "CCure_Effect.h"
 
 CUnit_Priest::CUnit_Priest()
@@ -51,6 +53,9 @@ CUnit_Priest* CUnit_Priest::Create(const UNIT_MODEL_DATA& tUnitModelData)
 void CUnit_Priest::On_Die()
 {
 	__super::On_Die();
+
+	TurnOff_AllEffect();
+
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 
 	//_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
@@ -325,6 +330,40 @@ void CUnit_Priest::SetUp_CureEffect()
 	DISABLE_GAMEOBJECT(m_pCureEffect);
 }
 
+void CUnit_Priest::Turn_CatchEffet(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_CatchEffect.empty())
+			m_CatchEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Catch_Particle", this, ZERO_VECTOR);
+
+		if (m_CatchMeshEffect.empty())
+			m_CatchMeshEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Catch_Mesh", this, ZERO_VECTOR);
+
+	}
+	else
+	{
+		if (!m_CatchEffect.empty())
+		{
+			for (auto& elem : m_CatchEffect)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_CatchEffect.clear();
+		}
+
+		if (!m_CatchMeshEffect.empty())
+		{
+			for (auto& elem : m_CatchMeshEffect)
+			{
+				static_cast<CEffect*>(elem)->Set_FadeOut();
+			}
+			m_CatchMeshEffect.clear();
+		}
+		
+	}
+}
+
 void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
 {
 	if (!m_pCureEffect)
@@ -334,6 +373,12 @@ void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
 		ENABLE_GAMEOBJECT(m_pCureEffect);
 	else
 		DISABLE_GAMEOBJECT(m_pCureEffect);
+}
+
+void CUnit_Priest::TurnOff_AllEffect()
+{
+	Turn_CatchEffet(false);
+	TurnOn_CureEffect(false);
 }
 
 void CUnit_Priest::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
@@ -456,6 +501,8 @@ HRESULT CUnit_Priest::Initialize()
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
+	m_CatchEffect.clear();
+
 	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimWeapon);
 
@@ -513,6 +560,8 @@ void CUnit_Priest::OnEnable()
 void CUnit_Priest::OnDisable()
 {
 	__super::OnDisable();
+
+	TurnOff_AllEffect();
 }
 
 void CUnit_Priest::My_Tick()

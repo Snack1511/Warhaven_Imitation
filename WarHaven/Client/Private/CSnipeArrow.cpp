@@ -62,6 +62,8 @@ HRESULT CSnipeArrow::Start()
 		100
 	);
 
+	m_Test.clear();
+
 	return S_OK;
 }
 
@@ -94,10 +96,40 @@ HRESULT CSnipeArrow::Initialize_Prototype()
     return CProjectile::Initialize_Prototype();
 }
 
+void CSnipeArrow::OnEnable()
+{
+	__super::OnEnable();
+	Turn_Effect(true);
+}
+
 void CSnipeArrow::OnDisable()
 {
 	if (m_bCollect)
 		static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
 	
+	Turn_Effect(false);
+
 	__super::OnDisable();
+}
+
+void CSnipeArrow::Turn_Effect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_Test.empty())
+		{
+			m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Qanda_Sniping", this, ZERO_VECTOR);
+		}
+	}
+	else
+	{
+		if (!m_Test.empty())
+		{
+			for (auto& elem : m_Test)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_Test.clear();
+		}
+	}
 }

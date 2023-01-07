@@ -785,16 +785,32 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"FionaParring"), Convert_ToHash(L"FionaParring_Mesh_0"))))
 		return E_FAIL;
 		/*Quanda*/
-	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Charge"), "Crow_Charge")))
-		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_Test"), "Charge_Test")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_Particle"), "Charge_Particle")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Charge_End"), "Charge_End")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Feathers"), "Crow_Feathers")))
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Steam"), "Crow_Steam")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Boom"), "Crow_Boom")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Qanda_Sniping"), "Qanda_Sniping")))
+		return E_FAIL;
 	/*Dodge*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Dodge"), "Dodge")))
+		return E_FAIL;
+
+	/*priest*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catch_Particle"), "Catch_Particle")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catch_Mesh"), "Catch_Mesh")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catching"), "Catching")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catch_Shoot"), "Catch_Shoot")))
 		return E_FAIL;
 	
 	

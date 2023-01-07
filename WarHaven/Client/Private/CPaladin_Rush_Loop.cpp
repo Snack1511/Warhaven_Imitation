@@ -4,6 +4,7 @@
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Paladin.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
@@ -104,14 +105,9 @@ void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	Physics_Setting(m_fMaxSpeed, pOwner);
 
-	m_RushEffects.clear();
-
-	m_RushEffects = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"ShieldCharge",
-		pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));
-
-	pOwner->Create_Light(m_RushEffects.front(), _float4(0.f, 0.f, 0.f), 3.f, 0.f, 0.05f, 0.f, 0.05f, RGB(100, 100, 100), true);
-
-
+	static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(true);
+	GAMEINSTANCE->Start_RadialBlur(0.01f);
+	pOwner->Lerp_Camera(6);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 } 
 
@@ -131,20 +127,24 @@ STATE_TYPE CPaladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	pOwner->Set_DirAsLook();
 
 
-
-
+	if (pOwner->Is_Air())
+	{
+		static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
+	}
+	else
+	{
+		static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(true);
+	}
+	//pOwner->Shake_Camera(0.3f, 0.1f);
 
 	return __super::Tick(pOwner, pAnimator);
 }
 
 void CPaladin_Rush_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	for (auto& elem : m_RushEffects)
-	{
-		static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.05f);
-	}
-	m_RushEffects.clear();
-	
+	static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
+	pOwner->Lerp_Camera(0);
+	GAMEINSTANCE->Stop_RadialBlur();
 
 	pOwner->Enable_GuardCollider(false);
 	pOwner->Enable_GroggyCollider(false);

@@ -27,6 +27,7 @@
 
 #include "CUI_Trail.h"
 #include "CRectEffects.h"
+#include "CEffect.h"
 
 #include "CState.h"
 
@@ -62,6 +63,8 @@ CUnit_Qanda* CUnit_Qanda::Create(const UNIT_MODEL_DATA& tUnitModelData)
 void CUnit_Qanda::On_Die()
 {
 	__super::On_Die();
+	TurnOff_AllEffect();
+
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 
 	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
@@ -332,9 +335,9 @@ CGameObject* CUnit_Qanda::Create_Meteor()
 }
 
 
-void CUnit_Qanda::Turn_TransformParticle(_bool bOnoff)
+void CUnit_Qanda::Turn_TransformParticle(_bool bOnOff)
 {
-	if (bOnoff)
+	if (bOnOff)
 	{
 		if (m_TransformParticles.empty())
 			m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
@@ -349,6 +352,82 @@ void CUnit_Qanda::Turn_TransformParticle(_bool bOnoff)
 
 		m_TransformParticles.clear();
 	}
+}
+
+void CUnit_Qanda::Turn_ChargeEffect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_ChargeEffect.empty())
+			m_ChargeEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Charge_Test", m_pAnimCrow, ZERO_VECTOR);
+
+		if (!m_pChargeParticle)
+			m_pChargeParticle = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Charge_Particle_0"),
+				m_pAnimCrow, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_ChargeEffect.empty())
+		{
+			for (auto& elem : m_ChargeEffect)
+				static_cast<CEffect*>(elem)->Set_FadeOut();
+			m_ChargeEffect.clear();
+		}
+		if (m_pChargeParticle)
+		{
+			static_cast<CRectEffects*>(m_pChargeParticle)->Set_AllFadeOut();
+			m_pChargeParticle = nullptr;
+		}
+	}
+}
+
+void CUnit_Qanda::Turn_FeatherEffect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (!m_pFeathers)
+			m_pFeathers = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Crow_Feathers_0"),
+			m_pAnimCrow, ZERO_VECTOR);
+	}
+	else
+	{
+		if (m_pFeathers)
+		{
+			static_cast<CRectEffects*>(m_pFeathers)->Set_AllFadeOut(0.5f);
+			m_pFeathers = nullptr;
+		}
+	}
+	
+}
+
+void CUnit_Qanda::Turn_SteamEffect(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_SteamEffect.empty())
+		{
+			m_SteamEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Crow_Steam", m_pAnimCrow, ZERO_VECTOR);
+			//Create_Light(m_SteamEffect.back(), ZERO_VECTOR, 2.f, 0.f, 0.1f, 9999.f, 0.1f, RGB(255, 0, 0), false);
+		}
+	}
+	else
+	{
+		if (!m_SteamEffect.empty())
+		{
+			for (auto& elem : m_SteamEffect)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.5f);
+		}
+
+		m_SteamEffect.clear();
+	}
+}
+
+void CUnit_Qanda::TurnOff_AllEffect()
+{
+	Turn_TransformParticle(false);
+	Turn_ChargeEffect(false);
+	Turn_FeatherEffect(false);
+	Turn_SteamEffect(false);
 }
 
 void CUnit_Qanda::Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect)
@@ -499,6 +578,8 @@ void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
 
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
+
 	Turn_TransformParticle(true);
 	
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
@@ -512,8 +593,7 @@ void CUnit_Qanda::OnEnable()
 	if (m_pAnimCrow)
 	{
 		ENABLE_GAMEOBJECT(m_pAnimCrow);
-		m_pFeathers = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Crow_Feathers_0"),
-			m_pAnimCrow, ZERO_VECTOR);
+		Turn_FeatherEffect(true);
 	}
 	//
 }
@@ -523,6 +603,8 @@ void CUnit_Qanda::OnDisable()
 	__super::OnDisable();
 
 	Turn_TransformParticle(false);
+	Turn_ChargeEffect(false);
+	Turn_SteamEffect(false);
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;
@@ -534,11 +616,7 @@ void CUnit_Qanda::OnDisable()
 	if (m_pAnimCrow)
 	{
 		DISABLE_GAMEOBJECT(m_pAnimCrow);
-		if (m_pFeathers)
-		{
-			static_cast<CRectEffects*>(m_pFeathers)->Set_AllFadeOut();
-			m_pFeathers = nullptr;
-		}
+		Turn_FeatherEffect(false);
 	}
 
 	if (m_pUI_Trail)

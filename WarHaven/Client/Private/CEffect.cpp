@@ -421,6 +421,12 @@ void CEffect::Stick_RefBone()
 	m_pTransform->Make_WorldMatrix();
 }
 
+void CEffect::Set_FadeOut()
+{
+	m_eCurFadeType = FADEOUTREADY;
+	m_fFadeTimeAcc = 999999.f;
+}
+
 void CEffect::My_Tick()
 {
 	if (m_bColliderOn)

@@ -106,7 +106,7 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		else if (eColType == COL_BLUEFLYATTACKGUARDBREAK)
 			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
 
-
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Hit", vHitPos);
 	}
 	else
 	{
@@ -153,8 +153,8 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
-		//m_pCollider->Set_ColIndex(COL_REDATTACK);
+		m_pCollider->Set_ColIndex(COL_REDATTACK);
+		//m_pCollider->Set_ColIndex(COL_BLUEATTACK);
 	else
 	{
 		Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
@@ -594,7 +594,6 @@ void CProjectile::Hit_Unit(CGameObject* pHitUnit, _float4 vHitPos)
 	*((_float4*)&m_matHitOffset.m[1]) = ((_float4*)&m_matHitOffset.m[1])->Normalize();
 	*((_float4*)&m_matHitOffset.m[2]) = ((_float4*)&m_matHitOffset.m[2])->Normalize();*/
 
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Hit", vHitPos);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Blood", vHitPos);
 
 
