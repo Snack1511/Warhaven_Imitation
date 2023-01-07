@@ -1199,6 +1199,72 @@ void CGameSystem::On_FinishGame(CTeamConnector* pTeamConnector)
 	}
 }
 
+HRESULT CGameSystem::On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+	m_eCurStageType = eSTAGE_HWARA;
+
+	_float4 vPlayerPos = _float4(10.f, -5.f, 10.f);
+
+	CPlayer* pUserPlayer = nullptr;
+
+
+	//pUserPlayer->Get_DefaultReserveStateIndex
+	pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
+	pUserPlayer->Set_Postion(vPlayerPos);
+	pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
+	pUserPlayer->SetUp_UnitColliders(true);
+	pUserPlayer->Enable_OnStart();
+	CUser::Get_Instance()->Set_Player(pUserPlayer);
+	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
+
+
+	/* 플레이어 모두 생성해서 분류까지 완료 */
+//	if (FAILED(On_ReadyPlayers_Stage(vecReadyObjects)))
+//		return E_FAIL;
+//
+//
+//#ifdef _DEBUG
+//	cout << "플레이어 생성 후 팀 분류 완료." << endl;
+//#endif // _DEBUG
+//
+//	/* 플레이어 모두 생성해서 분류까지 완료 */
+//	if (FAILED(On_ReadyTirggers_Hwara(vecReadyObjects)))
+//		return E_FAIL;
+//
+//#ifdef _DEBUG
+//	cout << "트리거 생성 완료." << endl;
+//#endif // _DEBUG
+//
+//	if (FAILED(On_ReadyDestructible_Hwara(vecReadyObjects)))
+//		return E_FAIL;
+
+
+
+	SetUp_DefaultLight_Hwara();
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CGameSystem::On_ReadyDestructible_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CGameSystem::On_Update_Hwara()
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CGameSystem::Hwara_EnvironmentEffect()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CGameSystem::Load_Position(string strFileKey)
 {
 	return m_pPositionTable->Load_Position(strFileKey);
@@ -1505,6 +1571,24 @@ HRESULT CGameSystem::SetUp_DefaultLight_Paden()
 	LightDesc.vDiffuse = _float4(0.7f, 0.4f, 0.2f, 1.f);
 	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 0.7f, 0.7f, 1.f);
+
+	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::SetUp_DefaultLight_Hwara()
+{
+	/* Default Light */
+	LIGHTDESC			LightDesc;
+
+	LightDesc.eType = tagLightDesc::TYPE_POINT;
+	LightDesc.vPosition = _float4(100.f, 200.f, 100.f, 1.f);
+	LightDesc.fRange = 1500.f;
+	LightDesc.vDiffuse = _float4(0.48f, 0.4f, 0.4f, 1.f);
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
 		return E_FAIL;

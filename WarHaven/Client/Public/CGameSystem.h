@@ -24,7 +24,7 @@ class CCannon;
 class CGameSystem
 {
 public:
-	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_CNT};
+	enum eSTAGE_TYPE {eSTAGE_PADEN, eSTAGE_HWARA, eSTAGE_CNT};
 	DECLARE_SINGLETON(CGameSystem)
 
 private:
@@ -76,6 +76,14 @@ public:	// Paden
 	void					On_FinishGame(CTeamConnector* pTeamConnector);
 
 	CTeamConnector* Get_Team(eTEAM_TYPE eEnum) { return m_pTeamConnector[(_uint)eEnum]; }
+
+public: /* Hwara */
+	HRESULT					On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_ReadyDestructible_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects);
+	HRESULT					On_Update_Hwara();
+	HRESULT					Hwara_EnvironmentEffect();
+
 
 public: /* Position Table */
 	HRESULT					Load_Position(string strFileKey);
@@ -137,6 +145,7 @@ private:
 	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();
 	HRESULT					SetUp_DefaultLight_Paden();
+	HRESULT					SetUp_DefaultLight_Hwara();
 
 private:
 

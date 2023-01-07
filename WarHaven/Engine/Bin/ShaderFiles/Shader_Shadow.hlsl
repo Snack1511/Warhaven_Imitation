@@ -130,6 +130,11 @@ PS_OUT PS_MAIN_SHADOWING(PS_IN In)
 
 
 
+
+
+
+
+
 BlendState BS_Default
 {
 	BlendEnable[0] = false;

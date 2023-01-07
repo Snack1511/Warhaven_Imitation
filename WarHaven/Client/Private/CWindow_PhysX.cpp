@@ -11,7 +11,7 @@
 
 #include "UsefulHeaders.h"
 #include "CMesh_Terrain.h"
-
+#include "CUtility_PhysX.h"
 CWindow_PhysX::CWindow_PhysX()
 {
 }
@@ -61,9 +61,10 @@ void CWindow_PhysX::Tick()
 			Update_CreateMode();
 		else
 			Update_SelectMode();
-
-
-
+	}
+	else
+	{
+		Update_ObjectControl(m_iCurSelectedIndex);
 	}
 }
 
@@ -72,21 +73,14 @@ HRESULT CWindow_PhysX::Render()
 	if (FAILED(__super::Begin()))
 		return E_FAIL;
 
-	//벽 설치하는 툴임
-
-	if (ImGui::CollapsingHeader("Test"))
+	if (ImGui::Button("DISABLE_ALL"))
 	{
-		if (ImGui::Button("Create TestObject"))
+		for (auto& elem : m_pDebugBoxes)
 		{
-			Create_TestObject();
-		}
-
-		ImGui::SameLine();
-
-		if (ImGui::Button("Create TestObject * 100"))
-		{
-			for (_uint i = 0; i < 100; ++i)
-				Create_TestObject();
+			if (elem->Is_Valid())
+				DISABLE_GAMEOBJECT(elem);
+			else
+				ENABLE_GAMEOBJECT(elem);
 		}
 	}
 
@@ -172,6 +166,37 @@ HRESULT CWindow_PhysX::Render()
 	if (ImGui::RadioButton("Select_Mode(V)", !m_bCreateMode))
 	{
 		m_bCreateMode = !m_bCreateMode;
+	}
+
+	if (ImGui::Button("CLONE(G)") || KEY(G, TAP))
+	{
+		if (m_iCurSelectedIndex != 99999)
+		{
+			
+
+
+
+			PxTransform tTransform = m_StaticBoxes[m_iCurSelectedIndex]->getGlobalPose();
+
+			CDebugObject* pNewBox = CDebugObject::Create(tTransform, m_pDebugBoxes[m_iCurSelectedIndex]->Get_Transform()->Get_Scale());
+			pNewBox->Initialize();
+			CREATE_GAMEOBJECT(pNewBox, GROUP_PHYSX);
+			m_pDebugBoxes.push_back(pNewBox);
+
+
+			m_StaticBoxes.push_back(
+				Create_StaticBox(tTransform, m_pDebugBoxes[m_iCurSelectedIndex]->Get_Transform()->Get_Scale()));
+
+
+			m_pDebugBoxes[m_iCurSelectedIndex]->m_vFontColor = _float4(0.f, 1.f, 0.f, 1.f);
+
+
+			m_iCurSelectedIndex = m_pDebugBoxes.size() - 1;
+
+
+			m_pDebugBoxes[m_iCurSelectedIndex]->m_vFontColor = _float4(1.f, 0.f, 0.f, 1.f);
+
+		}
 	}
 
 
@@ -380,6 +405,152 @@ void CWindow_PhysX::Update_SelectMode()
 
 		}
 
+	}
+
+}
+
+void CWindow_PhysX::Update_ObjectControl(_uint iCurIndex)
+{
+	if (iCurIndex == 99999)
+		return;
+
+	PxRigidStatic* pCurRigidStatic = m_StaticBoxes[iCurIndex];
+	CDebugObject* pCurObj = m_pDebugBoxes[iCurIndex];
+
+	PxTransform tTransform = pCurRigidStatic->getGlobalPose();
+	_float4 PosValue = pCurObj->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vCurScale = pCurObj->Get_Transform()->Get_Scale();
+
+	if (KEY(LBUTTON, HOLD) || (MOUSE_MOVE(MOUSEMOVE::MMS_WHEEL) != 0.f))
+	{
+		if (KEY(R, HOLD))
+		{
+			_float fMouseX = MOUSE_MOVE(MOUSEMOVE::MMS_X);
+				_float fMouseY = MOUSE_MOVE(MOUSEMOVE::MMS_Y) * -1.f;
+
+				_float4 vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_RIGHT);
+				vDir.y = 0.f;
+				vDir.Normalize();
+
+				PosValue += vDir * fMouseX * fDT(0);
+
+			vDir = GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_World(WORLD_UP);
+
+			if (vDir.y > 0.99f)
+				vDir = _float4(0.f, 1.f, 0.f, 0.f);
+			else
+				vDir.y = 0.f;
+
+			vDir.Normalize();
+
+			PosValue += vDir * fMouseY * fDT(0);
+		}
+
+		if (KEY(LBUTTON, HOLD) && KEY(T, HOLD))
+		{
+			_float fMouseY = MOUSE_MOVE(MOUSEMOVE::MMS_Y) * -1.f;
+
+			_float4 vDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+			vDir.Normalize();
+
+			PosValue += vDir * fMouseY * fDT(0);
+		}
+
+
+		/* Scale */
+		else if (KEY(C, HOLD))
+		{
+			_float4 vCamLook = GAMEINSTANCE->Get_CurCamLook();
+
+			_float fMouseWheel = MOUSE_MOVE(MOUSEMOVE::MMS_WHEEL) * fDT(0);
+			vCurScale.y += fMouseWheel;
+
+			_float fMouseX = MOUSE_MOVE(MOUSEMOVE::MMS_X);
+			_float fMouseY = MOUSE_MOVE(MOUSEMOVE::MMS_Y) * -1.f;
+
+			//look이 0 0 1 일 때 x 양의 방향으로
+
+			vCurScale.x += fMouseX * fDT(0);
+
+
+			vCurScale.z += fMouseY * fDT(0);
+		}
+
+		/* Rotate */
+		else if (KEY(X, HOLD))
+		{
+			_float fMouseWheel = MOUSE_MOVE(MOUSEMOVE::MMS_WHEEL) * fDT(0) * 10.f;
+			pCurObj->m_vAngles.x += fMouseWheel;
+
+			_float fMouseX = MOUSE_MOVE(MOUSEMOVE::MMS_X);
+			_float fMouseY = MOUSE_MOVE(MOUSEMOVE::MMS_Y) * -1.f;
+
+			//look이 0 0 1 일 때 x 양의 방향으로
+
+			pCurObj->m_vAngles.z += fMouseY * fDT(0) * 10.f;
+
+			if (pCurObj->m_vAngles.x >= 360.f)
+				pCurObj->m_vAngles.x -= 360.f;
+			if (pCurObj->m_vAngles.y >= 360.f)
+				pCurObj->m_vAngles.y -= 360.f;
+			if (pCurObj->m_vAngles.z >= 360.f)
+				pCurObj->m_vAngles.z -= 360.f;
+
+
+			_float4 vAngles = _float4(
+				ToRadian(pCurObj->m_vAngles.x),
+				ToRadian(pCurObj->m_vAngles.y),
+				ToRadian(pCurObj->m_vAngles.z)
+			);
+
+			_float4 vQuat =
+				XMQuaternionRotationRollPitchYawFromVector(vAngles.XMLoad());
+
+			memcpy(&tTransform.q, &vQuat, sizeof(_float4));
+		}
+
+		else if (KEY(Z, HOLD))
+		{
+			_float fMouseWheel = MOUSE_MOVE(MOUSEMOVE::MMS_WHEEL) * fDT(0) * 10.f;
+			pCurObj->m_vAngles.x += fMouseWheel;
+
+			_float fMouseX = MOUSE_MOVE(MOUSEMOVE::MMS_X);
+			_float fMouseY = MOUSE_MOVE(MOUSEMOVE::MMS_Y) * -1.f;
+
+			//look이 0 0 1 일 때 x 양의 방향으로
+
+			pCurObj->m_vAngles.y += fMouseX * fDT(0) * 10.f;
+
+			if (pCurObj->m_vAngles.x >= 360.f)
+				pCurObj->m_vAngles.x -= 360.f;
+			if (pCurObj->m_vAngles.y >= 360.f)
+				pCurObj->m_vAngles.y -= 360.f;
+			if (pCurObj->m_vAngles.z >= 360.f)
+				pCurObj->m_vAngles.z -= 360.f;
+
+
+			_float4 vAngles = _float4(
+				ToRadian(pCurObj->m_vAngles.x),
+				ToRadian(pCurObj->m_vAngles.y),
+				ToRadian(pCurObj->m_vAngles.z)
+			);
+
+			_float4 vQuat =
+				XMQuaternionRotationRollPitchYawFromVector(vAngles.XMLoad());
+
+			memcpy(&tTransform.q, &vQuat, sizeof(_float4));
+		}
+
+		tTransform.p = CUtility_PhysX::To_PxVec3(PosValue);
+
+
+		pCurRigidStatic->release();
+		pCurRigidStatic = Create_StaticBox(tTransform, vCurScale);
+		m_StaticBoxes[m_iCurSelectedIndex] = pCurRigidStatic;
+		pCurObj->Synchronize_Box(tTransform);
+		pCurObj->Get_Transform()->Set_Scale(vCurScale);
+		pCurObj->Get_Transform()->Make_WorldMatrix();
 	}
 
 }

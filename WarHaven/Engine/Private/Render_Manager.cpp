@@ -52,6 +52,14 @@ HRESULT CRender_Manager::Add_Renderer(RENDER_GROUP eGroup, CRenderer* pRenderer)
 	return S_OK;
 }
 
+void CRender_Manager::Set_SunUV(_float2 vSunUV)
+{
+	if (KEY(LBUTTON, HOLD))
+	{
+		m_vSunUV = vSunUV;
+	}
+}
+
 CShader* CRender_Manager::Get_DeferredShader()
 {
 	return m_vecShader[SHADER_DEFERRED];
@@ -128,6 +136,9 @@ void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 v
 	vPos.w = 1.f;
 
 	*((_float4*)&m_ShadowViewMatrix.m[3]) = vPos;
+	//m_vSunWorldPos = vCenterPos + (vLook * -1.f * 500.f);
+	m_vSunWorldPos = vPos;
+	m_vSunWorldPos.w = 1.f;
 	m_ShadowViewMatrix.Inverse();
 	m_ShadowViewMatrix.Transpose();
 
@@ -152,6 +163,8 @@ void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 v
 
 HRESULT CRender_Manager::Initialize()
 {
+	m_pNoiseTexture = CTexture::Create(0, L"../bin/resources/textures/effects/noise/T_EFF_PixelNoise.dds", 1);
+
 	m_pTarget_Manager = CTarget_Manager::Get_Instance();
 	m_pLight_Manager = CLight_Manager::Get_Instance();
 
@@ -276,6 +289,8 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_ShadowBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_ChromaticAberration"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_LensFlare"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 
 	
@@ -438,7 +453,10 @@ HRESULT CRender_Manager::Initialize()
 	/*For RimLight*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_RimLightAcc"), TEXT("Target_RimLight"))))
 		return E_FAIL;
+
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ChromaticAberrationAcc"), TEXT("Target_ChromaticAberration"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_LensFlareAcc"), TEXT("Target_LensFlare"))))
 		return E_FAIL;
 
 	/*For Shadow*/
@@ -778,6 +796,24 @@ void CRender_Manager::Update()
 	}
 	
 
+
+	/* LENS FLARE */
+	/*_float4 vPos = m_vSunWorldPos;
+
+	if (!CFrustum_Manager::Get_Instance()->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
+	{
+		m_bLensFlare = false;
+		return;
+	}
+	else
+		m_bLensFlare = true;*/
+
+	//_float4x4 matVP = GAMEINSTANCE->Get_CurViewMatrix() * GAMEINSTANCE->Get_CurProjMatrix();
+	//vPos = vPos.MultiplyCoord(matVP);
+	//m_vSunUV.x = vPos.x;
+	//m_vSunUV.y = vPos.y;
+
+
 }
 
 HRESULT CRender_Manager::Render()
@@ -822,7 +858,6 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(CCamera_Manager::Get_Instance()->SetUp_ShaderResources(true)))
 		return E_FAIL;
 
-
 	if (FAILED(Render_Lights()))
 		return E_FAIL;
 
@@ -838,7 +873,6 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_ForwardBlend()))
 		return E_FAIL;
 
-	
 
 	if (FAILED(Render_ForwardBloom()))
 		return E_FAIL;
@@ -898,6 +932,14 @@ HRESULT CRender_Manager::Render()
 		return E_FAIL;
 
 	wstring wstrRenderTargetName = L"Target_PostEffect";
+
+	if (m_bLensFlare)
+	{
+		if (FAILED(Render_LensFlare(wstrRenderTargetName.c_str())))
+			return E_FAIL;
+
+		wstrRenderTargetName = L"Target_LensFlare";
+	}
 
 	if (m_bMotionBlur)
 	{
@@ -966,6 +1008,7 @@ void CRender_Manager::Release()
 		SAFE_DELETE(elem);
 	SAFE_DELETE(m_pMeshRect);
 	SAFE_DELETE(m_pBlackTexture);
+	SAFE_DELETE(m_pNoiseTexture);
 
 	m_pShadowDSV.Reset();
 
@@ -1914,6 +1957,32 @@ HRESULT CRender_Manager::Render_FinalBlend()
 		return E_FAIL;
 
 	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_LensFlare(const _tchar* pRenderTargetName)
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_LensFlareAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(pRenderTargetName))))
+		return E_FAIL;
+
+	
+
+	m_vecShader[SHADER_BLUR]->SetUp_ShaderResources(m_pNoiseTexture, "g_NoiseTexture");
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_vSunPos", &m_vSunUV, sizeof(_float2));
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(9)))
+		return E_FAIL;
+
 	m_pMeshRect->Render();
 
 	if (FAILED(m_pTarget_Manager->End_MRT()))

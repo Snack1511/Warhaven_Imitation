@@ -52,6 +52,8 @@
 #include "CUI_EscMenu.h"
 #include "CUI_Result.h"
 
+#include "CTestObject.h"
+
 CLevel_Test::CLevel_Test()
 {
 }
@@ -106,6 +108,9 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	/* GameSystem */
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyTest(m_vecGameObjects)))
 		return E_FAIL;
+
+
+	//Ready_GameObject(CTestObject::Create(), GROUP_DEFAULT);
 
 	m_fLoadingFinish = 1.f;
 

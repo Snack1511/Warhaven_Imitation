@@ -143,7 +143,7 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx",
 		L"../bin/resources/meshes/Characters/Qanda/Head/SK_Qanda0001_Face_A00_50.fbx",
 		L"",
-		L"../bin/resources/meshes/Characters/Lancer/Head/SK_Lancer0000_Face_A00_20.fbx",
+		//L"../bin/resources/meshes/Characters/Lancer/Head/SK_Lancer0000_Face_A00_20.fbx",
 	};
 
 	//L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
@@ -189,8 +189,6 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 
 		tModelData[i].strModelPaths[MODEL_PART_BODY] = wstrModeBody[i];
 
-		if (i == LANCER)
-			tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeBody[i];
 
 		tModelData[i].strModelPaths[MODEL_PART_FACE] = wstrModeFace[i];
 		tModelData[i].strModelPaths[MODEL_PART_HEAD] = wstrModeHead[i];
@@ -1151,6 +1149,36 @@ void CPlayer::My_Tick()
 void CPlayer::My_LateTick()
 {
 	//공통으로 업데이트 되어야 하는것
+
+	POINT m_ptMouse;
+	GetCursorPos(&m_ptMouse);
+	ScreenToClient(g_hWnd, &m_ptMouse);
+
+	_float fFixPosX = 11.f;
+	_float fFixPosY = 13.f;
+
+	_float4 vPos = CFunctor::To_Descartes(_float4(m_ptMouse.x + fFixPosX, m_ptMouse.y + fFixPosY, 0.f));
+
+	_float2 vSunUV;
+	vSunUV.x = vPos.x;
+	vSunUV.y = vPos.y * -1.f;
+	GAMEINSTANCE->Set_SunUV(vSunUV);
+
+	// 마우스용 코드
+
+	vSunUV.x /= 1280.f;
+	vSunUV.y /= 720.f;
+
+	_float fUVx = vSunUV.x + 0.5f;
+	_float fUVy = vSunUV.y + 0.5f;
+	fUVy = 1.f - fUVy;
+
+	fUVy = 1.f - fUVy;
+
+	fUVx -= 0.5f;
+	fUVy -= 0.5f;
+
+	cout << "x : " << fUVx << " y : " << fUVy << endl;
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{

@@ -137,6 +137,9 @@ public:	/* For. Render_Manager */
 
 	void	Start_MotionBlur(_float fTime);
 
+	void	Set_SunUV(_float2 vSunUV) { m_pRenderManager->Set_SunUV(vSunUV); }
+
+
 
 public:	/* For. Object_Manager */
 	template <typename T>

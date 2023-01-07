@@ -23,6 +23,9 @@ public:
 	HRESULT		Add_Renderer(RENDER_GROUP eGroup, CRenderer* pRenderer);
 
 public:
+	void	Set_SunUV(_float2 vSunUV);
+
+public:
 	class CShader* Get_DeferredShader();
 
 public:
@@ -50,6 +53,8 @@ public:
 	void		Release();
 
 	
+private:
+	CTexture* m_pNoiseTexture = nullptr;
 
 private:
 	list<CRenderer*>							m_Renderers[RENDER_END];
@@ -101,6 +106,11 @@ private:
 	_bool	m_bMotionBlur = false;
 	_float	m_fMotionBlurAcc = 0.f;
 
+private:
+	_bool	m_bLensFlare = true;
+	_float4 m_vSunWorldPos;
+	_float2 m_vSunUV = _float2(0.f, 0.f);
+
 #ifdef _DEBUG
 private:
 	_bool	m_bDebugRender = false;
@@ -139,6 +149,8 @@ private:
 	HRESULT	Render_PostEffect();
 	HRESULT	Render_SSD();
 	HRESULT	Render_FinalBlend();
+
+	HRESULT Render_LensFlare(const _tchar* pRenderTargetName);
 	HRESULT Render_MotionBlur(const _tchar* pRenderTargetName);
 	HRESULT	Render_RadialBlur(const _tchar* pRenderTargetName);
 	HRESULT	Render_ChromaticAberration(const _tchar* pRenderTargetName);

@@ -303,16 +303,14 @@ void CPhysX_Manager::Create_CapsuleController(_float fRadius, _float fHeight, Px
 
 	PxCapsuleControllerDesc	tCCT;
 
-	
-
 	tCCT.radius = fRadius;
 	tCCT.height = fHeight;
 	tCCT.material = m_pMaterial;
 	tCCT.position = PxExtendedVec3(0.f, 0.f, 0.f);
 
 	//어느 높이까지 올라갈 수 있는지
-	tCCT.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
-	tCCT.stepOffset = 0.1f;
+	tCCT.climbingMode = PxCapsuleClimbingMode::eEASY;
+	tCCT.stepOffset = 0.15f;
 	tCCT.contactOffset = 0.1f;
 
 	//경사진 슬로프만나면 어떻게 할 지

@@ -360,7 +360,7 @@ PS_OUT PS_MAIN_BLOOMBLEND(PS_IN In)
 
 			Out.vColor = Out.vColor * (1.f - fRatio) + vBlurDesc * fRatio;
 
-			//Out.vColor.xyz += (fRatio * 0.3f);
+			Out.vColor.xyz += (fRatio * 0.2f);
 		}
 
 	}

@@ -25,6 +25,7 @@ vector		g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 texture2D	g_ShaderTexture;
 texture2D	g_FlagTexture;
 texture2D	g_DepthTexture;
+texture2D	g_NoiseTexture;
 
 
 float		g_fWinCX = 1280.f;
@@ -35,6 +36,10 @@ float		g_fTimeDelta = 0.f;
 float		g_fShaderPower = 0.f;
 
 bool		g_bMotionBlur = false;
+
+float		g_vSunPos;
+
+float2		g_vResolution = float2(1280.f, 720.f);
 
 
 sampler DefaultSampler = sampler_state
@@ -167,12 +172,221 @@ PS_OUT	PS_GRAYSCALE_MAIN(PS_DOWNSCALE_IN In)
 	PS_OUT		Out = (PS_OUT)0;
 	Out.vColor = g_ShaderTexture.Sample(MotionBlurSampler, In.vTexUV);
 
-	vector GrayScaleColor = dot(Out.vColor, float3(0.2126f, 0.7152f, 0.0722f));
+	vector GrayScaleColor = dot(Out.vColor.xyz, float3(0.2126f, 0.7152f, 0.0722f));
 	//float fShaderPower = g_fShaderPower;
 
 	
 
 	Out.vColor = Out.vColor * (1.f - g_fShaderPower) + GrayScaleColor * g_fShaderPower;
+
+	return Out;
+}
+
+float rnd(float2 p)
+{
+	float f = frac(sin(dot(p, float2(12.1234, 72.8392)) * 45123.2));
+	return f;
+}
+
+float rnd(float w)
+{
+	float f = frac(sin(w) * 1000.);
+	return f;
+}
+
+float regShape(float2 p, int N)
+{
+	float f;
+
+
+	float a = atan2(p.x, p.y) + .2;
+	float b = 6.28319 / float(N);
+	f = smoothstep(.5, .51, cos(floor(.5 + a / b) * b - a) * length(p.xy));
+
+
+	return f;
+}
+float3 circle(float2 p, float size, float decay, float3 color, float3 color2, float dist, float2 mouse)
+{
+	//l is used for making rings.I get the length and pass it through a sinwave
+	//but I also use a pow function. pow function + sin function , from 0 and up, = a pulse, at least
+	//if you return the max of that and 0.0.
+
+	float l = length(p + mouse * (dist * 4.)) + size / 2.;
+
+	//l2 is used in the rings as well...somehow...
+	float l2 = length(p + mouse * (dist * 4.)) + size / 3.;
+
+	///these are circles, big, rings, and  tiny respectively
+	float c = max(00.01 - pow(length(p + mouse * dist), size * 1.4), 0.0) * 50.;
+	float c1 = max(0.001 - pow(l - 0.3, 1. / 40.) + sin(l * 30.), 0.0) * 3.;
+	float c2 = max(0.04 / pow(length(p - mouse * dist / 2. + 0.09) * 1., 1.), 0.0) / 20.;
+	float s = max(00.01 - pow(regShape(p * 5. + mouse * dist * 5. + 0.9, 6), 1.), 0.0) * 5.;
+
+	color = 0.5 + 0.5 * sin(color);
+	color = cos(float3(0.44, .24, .2) * 8. + dist * 4.) * 0.5 + .5;
+	float3 f = c * color;
+	f += c1 * color;
+
+	f += c2 * color;
+	f += s * color;
+	return f - 0.01;
+}
+
+float sun(float2 p, float2 mouse)
+{
+	float f;
+
+	float2 sunp = p + mouse;
+	float sun = 1.0 - length(sunp) * 8.;
+	return f;
+}
+
+
+float noise(float t)
+{
+	return g_NoiseTexture.Sample(DefaultSampler, float2(t, .0) / g_vResolution).x;
+}
+float noise(float2 t)
+{
+	return g_NoiseTexture.Sample(DefaultSampler, t / g_vResolution).x;
+}
+
+float3 lensflare(float2 uv, float2 pos)
+{
+	float2 main = uv - pos;
+	float2 uvd = uv * (length(uv));
+
+	float ang = atan2(main.x, main.y);
+	float dist = length(main); dist = pow(dist, .1);
+	float n = noise(float2(ang * 16.0, dist * 32.0));
+
+	float f0 = 1.0 / (length(uv - pos) * 16.0 + 1.0);
+
+	f0 = f0 + f0 * (sin(noise(sin(ang * 2. + pos.x) * 4.0 - cos(ang * 3. + pos.y)) * 16.) * .1 + dist * .1 + .8);
+
+	float f1 = max(0.01 - pow(length(uv + 1.2 * pos), 1.9), .0) * 7.0;
+
+	float f2 = max(1.0 / (1.0 + 32.0 * pow(length(uvd + 0.8 * pos), 2.0)), .0) * 00.25;
+	float f22 = max(1.0 / (1.0 + 32.0 * pow(length(uvd + 0.85 * pos), 2.0)), .0) * 00.23;
+	float f23 = max(1.0 / (1.0 + 32.0 * pow(length(uvd + 0.9 * pos), 2.0)), .0) * 00.21;
+
+	float2 uvx = lerp(uv, uvd, -0.5);
+
+	float f4 = max(0.01 - pow(length(uvx + 0.4 * pos), 2.4), .0) * 6.0;
+	float f42 = max(0.01 - pow(length(uvx + 0.45 * pos), 2.4), .0) * 5.0;
+	float f43 = max(0.01 - pow(length(uvx + 0.5 * pos), 2.4), .0) * 3.0;
+
+	uvx = lerp(uv, uvd, -.4);
+
+	float f5 = max(0.01 - pow(length(uvx + 0.2 * pos), 5.5), .0) * 2.0;
+	float f52 = max(0.01 - pow(length(uvx + 0.4 * pos), 5.5), .0) * 2.0;
+	float f53 = max(0.01 - pow(length(uvx + 0.6 * pos), 5.5), .0) * 2.0;
+
+	uvx = lerp(uv, uvd, -0.5);
+
+	float f6 = max(0.01 - pow(length(uvx - 0.3 * pos), 1.6), .0) * 6.0;
+	float f62 = max(0.01 - pow(length(uvx - 0.325 * pos), 1.6), .0) * 3.0;
+	float f63 = max(0.01 - pow(length(uvx - 0.35 * pos), 1.6), .0) * 5.0;
+
+	float3 c = 0;
+
+	c.r += f2 + f4 + f5 + f6; c.g += f22 + f42 + f52 + f62; c.b += f23 + f43 + f53 + f63;
+	c = c * 1.3 - length(uvd) * .05;
+	c += f0;
+
+	return c;
+}
+
+float3 cc(float3 color, float factor, float factor2) // color modifier
+{
+	float w = color.x + color.y + color.z;
+	return lerp(color, w * factor, w * factor2);
+}
+
+PS_OUT PS_MAIN_LENSFLARE(PS_DOWNSCALE_IN In)
+{
+	float2 vResolution = float2(1280.f, 720.f);
+
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
+
+	//0~1 값을
+	//-0.5 ~ 0.5 값으로 만든건가?
+	float2 uv = In.vTexUV;
+
+
+	//1. 일단 y좌표계 반전
+	uv.y = 1.f - uv.y;
+
+	//2. 변환
+	uv -= 0.5f;
+
+	uv.x *= vResolution.x / vResolution.y; // aspect
+
+	// 현재 태양의 투영 좌표 (해상도 포함)
+	// mm = -1 ~ 1 사이의 태양 위치 (오른쪽 위가 1, 1)
+	float2 mm = g_vSunPos;
+
+	// 마우스용 코드
+	mm = g_vSunPos / (vResolution);
+
+	//mm *= 0.5f;
+	mm.x *= vResolution.x / vResolution.y; // aspect
+
+	float fLength = length(uv - mm);
+
+	if (fLength < 0.01f)
+	{
+		Out.vColor = 0;
+		return Out;
+	}
+
+	/*float fTemp = mm.x;
+	mm.x = mm.y;
+	mm.y = fTemp;*/
+
+
+	//내 0,0 = 왼쪽위
+	//쉐이더 토이의 0,0 = 중앙
+
+	float3 circColor = float3(0.9, 0.2, 0.1);
+	float3 circColor2 = float3(0.3, 0.1, 0.9);
+
+	//now to make the sky not black
+	float3 color = 0;//lerp(float3(0.3, 0.2, 0.02) / 0.9, float3(0.2, 0.5, 0.8), uv.y) * 3. - 0.52;//*sin(iTime);
+
+	//this calls the function which adds three circle types every time through the loop based on parameters I
+	//got by trying things out. rnd i*2000. and rnd i*20 are just to help randomize things more
+	for (float i = 0.; i < 10.; i++) {
+		color += circle(uv, pow(rnd(i * 2000.) * 1.8, 2.) + 1.41, 0.0, circColor + i, circColor2 + i, rnd(i * 20.) * 3. + 0.2 - .5, mm);
+	}
+	//get angle and length of the sun (uv - mouse)
+	float a = atan2(uv.x - mm.x,uv.y - mm.y);
+	float l = max(1.0 - fLength - 0.84, 0.0);
+
+	float bright = 0.1;//+0.1/abs(sin(iTime/3.))/3.;//add brightness based on how the sun moves so that it is brightest
+	//when it is lined up with the center
+
+	//add the sun with the frill things
+	//color += max(0.1 / pow(length(uv - mm) * 5., 5.), 0.0) * abs(sin(a * 5. + cos(a * 9.))) / 20.;
+	color += max(0.1 / pow(fLength * 10., 1. / 20.), .0) + abs(sin(a * 3. + cos(a * 9.))) / 8. * (abs(sin(a * 9.))) / 1.;
+	//add another sun in the middle (to make it brighter)  with the20color I want, and bright as the numerator.
+	color += (max(bright / pow(fLength * 4., 1. / 2.), 0.0) * 4.) * float3(0.2, 0.21, 0.3) * 4.;
+	// * (0.5+.5*sin(float3(0.4, 0.2, 0.1) + float3(a*2., 00., a*3.)+1.3));
+
+ //multiply by the exponetial e^x ? of 1.0-length which kind of masks the brightness more so that
+ //there is a sharper roll of of the light decay from the sun. 
+	color *= exp(1.0 - fLength) / 5.;
+
+
+
+
+	/*float3 color = float3(1.4, 1.2, 1.0) * lensflare(uv, mm);
+	color = cc(color, .5, .1);*/
+
+	Out.vColor.xyz += color;
 
 	return Out;
 }
@@ -653,6 +867,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_GRAYSCALE_MAIN();
+	}
+
+	pass LENSFLARE
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_LENSFLARE();
 	}
 
 }
