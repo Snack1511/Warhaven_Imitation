@@ -24,6 +24,9 @@ public:
 	virtual void	SetUp_ReserveState(UNIT_TYPE eUnitType);
 	virtual void	On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
 
+public:
+	void Turn_RushEffect(_bool bOnOff);
+
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
@@ -35,6 +38,9 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void My_LateTick();
+
+private:
+	list<CGameObject*> m_RushEffects;
 };
 
 END

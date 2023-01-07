@@ -4,6 +4,7 @@
 #include "UsefulHeaders.h"
 #include "HIerarchyNode.h"
 #include "CUnit_Priest.h"
+#include "CUnit_Paladin.h"
 CState_Hit::CState_Hit()
 {
 }
@@ -64,8 +65,11 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
 
     if (PRIEST == pOwner->Get_OwnerPlayer()->Get_CurClass())
     {
-        static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
-        static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(false);
+        static_cast<CUnit_Priest*>(pOwner)->TurnOff_AllEffect();
+    }
+    else if (PALADIN == pOwner->Get_OwnerPlayer()->Get_CurClass())
+    {
+        static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
     }
     
     __super::Enter(pOwner, pAnimator, ePrevStateType);
