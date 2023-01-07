@@ -3484,6 +3484,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo">
       <UniqueIdentifier>{f7b25645-598a-4122-998c-1b97e853e29f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Barracks">
+      <UniqueIdentifier>{6ae9b4f4-12a6-498c-b1a6-86079b0cf583}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. Design\06. State_Manager\States\05. ETC\Gliding">
       <UniqueIdentifier>{d7b57bc2-d8ce-465a-9d27-78cf453fc326}</UniqueIdentifier>
     </Filter>
@@ -6264,6 +6267,9 @@
     <ClInclude Include="..\Public\CUI_ScoreInfo.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Barracks.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Barracks</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CGlider.h">
       <Filter>03. Instances\02. GameObject\13. Glider</Filter>
     </ClInclude>
@@ -9021,6 +9027,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_ScoreInfo.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\ScoreBoard\PlayerInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Barracks.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Main\Main_Barracks</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGlider.cpp">
       <Filter>03. Instances\02. GameObject\13. Glider</Filter>

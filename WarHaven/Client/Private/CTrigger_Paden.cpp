@@ -138,16 +138,19 @@ void CTrigger_Paden::My_Tick()
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
+		CUser::Get_Instance()->Set_ScoreBoardConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(1, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(1, m_fConqueredTimeAcc, m_fConqueredTime);
+		CUser::Get_Instance()->Set_ScoreBoardConquestTime(1, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 
 	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
+		CUser::Get_Instance()->Set_ScoreBoardConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 	}
 
@@ -198,19 +201,19 @@ void CTrigger_Paden::Update_Conquered()
 		{
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 1);
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 1);
+			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 1);
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 2);
+			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 2);
 			break;
 		}
 
 	}
-
-
-
 
 	_float fConquerSpeed = max(m_iTeamCnt[(_uint)eTEAM_TYPE::eBLUE], m_iTeamCnt[(_uint)eTEAM_TYPE::eRED]) * 0.5f;
 	m_fConqueredTimeAcc += fDT(0) * fConquerSpeed;
@@ -250,14 +253,17 @@ void CTrigger_Paden::Update_Conquered()
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 0);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 0);
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 1);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 1);
+			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 1);
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 2);
+			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 2);
 			break;
 		}
 

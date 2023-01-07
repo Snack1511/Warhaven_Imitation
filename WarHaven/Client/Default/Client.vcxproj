@@ -819,6 +819,7 @@
     <ClInclude Include="..\public\CTileDebugger.h" />
     <ClInclude Include="..\public\CTrigger_Paden.h" />
     <ClInclude Include="..\Public\CUI_AbleHeroFire.h" />
+    <ClInclude Include="..\Public\CUI_Barracks.h" />
     <ClInclude Include="..\Public\CUI_CharacterWindow.h" />
     <ClInclude Include="..\Public\CUI_Damage.h" />
     <ClInclude Include="..\public\CTable.h" />
@@ -1743,6 +1744,7 @@
     <ClCompile Include="..\private\CTileDebugger.cpp" />
     <ClCompile Include="..\private\CTrigger_Paden.cpp" />
     <ClCompile Include="..\Private\CUI_AbleHeroFire.cpp" />
+    <ClCompile Include="..\Private\CUI_Barracks.cpp" />
     <ClCompile Include="..\Private\CUI_CharacterWindow.cpp" />
     <ClCompile Include="..\Private\CUI_Damage.cpp" />
     <ClCompile Include="..\private\CTable.cpp" />

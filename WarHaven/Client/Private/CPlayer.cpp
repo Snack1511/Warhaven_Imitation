@@ -744,6 +744,11 @@ HRESULT CPlayer::Start()
 	CUser::Get_Instance()->Set_MiniMapPlayer(this);
 	CUser::Get_Instance()->Set_OperPlayer(this);
 
+	if (m_bIsMainPlayer)
+	{
+		CUser::Get_Instance()->Set_ScoreBoardPlayer(this);
+	}
+
 	if (!m_pScoreInfo)
 	{
 		LEVEL_TYPE_CLIENT eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
@@ -1032,6 +1037,9 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 	m_tKdaStat.iKillStreak++;
 	m_tKdaStat.iTotalKillCount++;
 
+	m_pScoreInfo->Update_KillCnt(m_tKdaStat.iTotalKillCount);
+	CUser::Get_Instance()->Sort_ScoreInfo();
+
 	if (m_bIsMainPlayer)
 	{
 		if (pOtherPlayer->Get_PlayerName() == L"Jusin_Burger")
@@ -1063,6 +1071,14 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 			CUser::Get_Instance()->Enable_Popup(CUI_Popup::eKILL4);
 		}
 	}
+}
+
+void CPlayer::On_ScoreKDA_Death()
+{
+	m_tKdaStat.iDeathCount++;
+
+	m_pScoreInfo->Update_DeathCont(m_tKdaStat.iDeathCount);
+	CUser::Get_Instance()->Sort_ScoreInfo();
 }
 
 void CPlayer::Change_NearPath()

@@ -131,10 +131,6 @@ void CLevel_Main::Tick()
 
 #endif // !_DEBUG
 #endif
-
-	if (true == CLoading_Manager::Get_Instance()->IsFinished())
-	{
-	}
 }
 
 void CLevel_Main::Late_Tick()

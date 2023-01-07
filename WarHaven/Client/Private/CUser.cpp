@@ -766,6 +766,51 @@ void CUser::Get_ScoreInfo(CPlayer* pPlayer)
 	}
 }
 
+map<_uint, list<CUI_ScoreInfo*>> CUser::Get_ScoreInfoMap()
+{
+	return m_pScoreBoard->Get_ScoreInfoMap();
+}
+
+void CUser::Sort_ScoreInfo()
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Sort_ScoreInfo();
+	}
+}
+
+void CUser::Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_ConquestTime(iPointIdx, fConquestTime, fMaxConquestTime);
+	}
+}
+
+void CUser::Set_ScoreBoardGaugeColor(_bool IsMainTeam, _uint iPointIdx)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_GaugeColor(IsMainTeam, iPointIdx);
+	}
+}
+
+void CUser::Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_PointColor(IsMainTeam, iPoinIdx);
+	}
+}
+
+void CUser::Set_ScoreBoardPlayer(CPlayer* pPlayer)
+{
+	if (m_pScoreBoard)
+	{
+		m_pScoreBoard->Set_Player(pPlayer);
+	}
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);

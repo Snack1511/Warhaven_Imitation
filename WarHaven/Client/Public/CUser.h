@@ -202,6 +202,12 @@ public:	// 상호작용
 
 public: // 플레이어 KDA
 	void Get_ScoreInfo(CPlayer* pPlayer);
+	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();
+	void Sort_ScoreInfo();
+	void Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
+	void Set_ScoreBoardGaugeColor(_bool IsMainTeam, _uint iPointIdx);
+	void Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx);
+	void Set_ScoreBoardPlayer(CPlayer* pPlayer);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;

@@ -191,14 +191,18 @@ void CUI_UnitHUD::My_Tick()
 			m_pUnitNameText->Set_FontRender(true);
 			m_pUnitNameText->Set_Color(vColorAlpha);
 		}
+	}
 
-		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
-		if (fHpGaugeRatio < 1.f)
-		{
-			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
+	_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
+	if (fHpGaugeRatio < 1.f)
+	{
+		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
 
-			SetActive_UnitHP(true);
-		}
+		SetActive_UnitHP(true);
+	}
+	else
+	{
+		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->SetActive_HealBlur(false);
 	}
 }
 

@@ -1671,6 +1671,7 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 
 	// 데드에 넘겨주기	
 	pOtherUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(m_pOwnerPlayer);
+	Get_OwnerPlayer()->On_ScoreKDA_Death();
 
 	CUser::Get_Instance()->Add_KillLog(pOtherUnit->Get_OwnerPlayer(), m_pOwnerPlayer);
 

@@ -17,7 +17,19 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	virtual void Set_Shader_Guage_PointA(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName);
+
+public:
 	void Get_ScoreInfo(CPlayer* pPlayer);
+	void Sort_ScoreInfo();
+
+	void Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
+	void Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx);
+	void Set_PointColor(_bool IsMainTeam, _uint iPoinIdx);
+
+	void Set_Player(CPlayer* pPlayer);
 
 private:
 	virtual void My_Tick() override;
@@ -36,7 +48,7 @@ private:
 	CUI_Object* m_pScoreMiniMap[Map_End];
 
 	enum Team { Team_Blue, Team_Red, Team_End };
-	enum Score_PlayerList { List_TeamIcon, List_KillIcon, List_Line, List_LineGlow, List_BG, List_End };
+	enum Score_PlayerList { List_Team, List_Kill, List_Death, List_Line, List_LineGlow, List_BG, List_End };
 	CUI_Object* m_pSocrePlayerList[List_End];
 	CUI_Object* m_pArrSocrePlayerList[Team_End][List_End];
 
@@ -44,7 +56,19 @@ private:
 	CUI_Object* m_pSquard[Squad_End];
 	CUI_Object* m_pArrSquard[4][Squad_End];
 
-	// 점수 사망 추가
+	enum Point { Point_A, Point_R, Point_C, Point_End };
+	enum PointUI { PU_Outline, PU_Gauge, PU_Text, PU_End };
+	CUI_Object* m_pPointUI[PU_End];
+	CUI_Object* m_pArrPointUI[Point_End][PU_End];
+
+	_float m_fConquestRatio[Point_End];
+
+	CUI_Object* m_pPlayerUI = nullptr;
+	CPlayer* m_pPlayer = nullptr;
+	CTransform* m_pPlayerTransform = nullptr;
+
+public:
+	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();
 
 private:
 	map<Team, list<CUI_ScoreInfo*>> m_pScoreInfoMap;
@@ -59,14 +83,14 @@ private:
 	void Create_ScoreMiniMap();
 	void Create_ScorePlayerList();
 	void Create_Squad();
+	void Create_PointUI();
 
 	void Init_ScoreMiniMap();
 	void Init_ScorePlayerList();
 	void Init_Squad();
+	void Init_PointUI();
 
 	void Set_Squad();
-
-	void Sort_ScoreInfo(list<CUI_ScoreInfo*>& pScoreInfoList);
 };
 
 END

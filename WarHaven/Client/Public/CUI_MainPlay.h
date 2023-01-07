@@ -17,6 +17,8 @@ public:
 	virtual HRESULT	Start();
 
 	virtual void My_Tick() override;
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 public:
 	virtual void Set_Shader_StageHighlight(CShader* pShader, const char* pConstName);
@@ -40,6 +42,8 @@ public:
 
 private:
 	_bool m_bIsMouseEvent = false;
+
+	list<CUI_Object*> m_pUIList;
 
 private:
 	CUI_Object* m_pPlayBtnUI[2];
@@ -100,4 +104,10 @@ private:
 	void Create_StageNameRect();
 	void Crerate_PlayBtnMouseEnterLine();
 	void Create_SelectTextRect();
+
+private:
+	_bool m_bIsEnable = false;
+	_float m_fEnableTime = 0.f;
+	_float m_fEnableMaxTime = 0.1f;
+	void Late_Enable();
 };

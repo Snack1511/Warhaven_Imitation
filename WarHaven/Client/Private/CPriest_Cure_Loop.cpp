@@ -216,8 +216,8 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	pOwner->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+	pOwner->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();

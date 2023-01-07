@@ -422,11 +422,31 @@ void CUI_Oper::Progress_Oper()
 			{
 				for (int j = 0; j < 6; ++j)
 				{
-					Enable_Fade(m_pArrCharacterPort[i][j], fDuration);
+					m_pArrCharacterPort[i][j]->SetActive(true);
+
 					_float4 vPos = m_pArrCharacterPort[i][j]->Get_Pos();
 					vPos.x += 50.f;
 					m_pArrCharacterPort[i][j]->DoMove(vPos, fDuration, 0);
+
+					if (j > 0)
+					{
+						if (i == CP_SelectBG)
+							continue;
+					}
+
+					Fade_In(m_pArrCharacterPort[m_iCurSelectEventNum][j]);
 				}
+			}
+
+			for (int i = 0; i < 6; ++i)
+			{
+				Fade_Out(m_pArrSelectEffect[i]);
+
+				Enable_Fade(m_pArrSelectEffect[m_iCurSelectEventNum], 0.1f);
+
+				/*_float4 vEffectPos0 = m_pArrSelectEffect[i]->Get_Pos();
+				vEffectPos0.x += 50.f;
+				m_pArrSelectEffect[i]->DoMove(vEffectPos0, fDuration, 0);*/
 			}
 		}
 	}
@@ -1127,7 +1147,7 @@ void CUI_Oper::Create_CharacterSelect()
 
 		case CP_SelectBG:
 			m_pCharacterPort[CP_SelectBG]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Oper/T_SelectedBG.png"));
-			m_pCharacterPort[CP_SelectBG]->Set_Scale(256.f, 65.f);
+			m_pCharacterPort[CP_SelectBG]->Set_Scale(213.f, 65.f);
 			m_pCharacterPort[CP_SelectBG]->Set_Sort(0.49f);
 			m_pCharacterPort[CP_SelectBG]->Set_MouseTarget(true);
 			break;
