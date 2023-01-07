@@ -364,18 +364,6 @@ void CUnit_Priest::Turn_CatchEffet(_bool bOnOff)
 	}
 }
 
-void CUnit_Priest::Turn_CatchingEffect(_bool bOnOff)
-{
-	if (bOnOff)
-	{
-		
-	}
-	else
-	{
-		
-	}
-}
-
 void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
 {
 	if (!m_pCureEffect)
@@ -390,7 +378,6 @@ void CUnit_Priest::TurnOn_CureEffect(_bool bOnOff)
 void CUnit_Priest::TurnOff_AllEffect()
 {
 	Turn_CatchEffet(false);
-	Turn_CatchingEffect(false);
 	TurnOn_CureEffect(false);
 }
 

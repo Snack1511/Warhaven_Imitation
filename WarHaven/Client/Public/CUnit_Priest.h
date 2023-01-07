@@ -30,7 +30,6 @@ public:
 public:
 	void SetUp_CureEffect();
 	void Turn_CatchEffet(_bool bOnOff);
-	void Turn_CatchingEffect(_bool bOnOff);
 	void TurnOn_CureEffect(_bool bOnOff);
 	void TurnOff_AllEffect();
 
