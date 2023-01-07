@@ -112,10 +112,10 @@ void CLevel_Stage::Tick()
 			}
 
 			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, m_vCenterPos, m_fDistance);
-			_float4 vLook = _float4(-1.f, -2.f, -1.f, 0.f).Normalize();
+			/*_float4 vLook = _float4(-1.f, -2.f, -1.f, 0.f).Normalize();
 
 			_float4 vSunPos = m_vCenterPos + (vLook * -1.f * 500.f);
-			CREATE_GAMEOBJECT(CDebugObject::Create(vSunPos, _float4(10.f, 10.f, 10.f)), GROUP_DEBUG);
+			CREATE_GAMEOBJECT(CDebugObject::Create(vSunPos, _float4(10.f, 10.f, 10.f)), GROUP_DEBUG);*/
 
 			m_bStaticShadowBake = true;
 			GAMEINSTANCE->Save_Memory();

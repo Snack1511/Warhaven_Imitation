@@ -798,7 +798,7 @@ void CRender_Manager::Update()
 
 
 	/* LENS FLARE */
-	/*_float4 vPos = m_vSunWorldPos;
+	_float4 vPos = m_vSunWorldPos;
 
 	if (!CFrustum_Manager::Get_Instance()->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
 	{
@@ -806,12 +806,12 @@ void CRender_Manager::Update()
 		return;
 	}
 	else
-		m_bLensFlare = true;*/
+		m_bLensFlare = true;
 
-	//_float4x4 matVP = GAMEINSTANCE->Get_CurViewMatrix() * GAMEINSTANCE->Get_CurProjMatrix();
-	//vPos = vPos.MultiplyCoord(matVP);
-	//m_vSunUV.x = vPos.x;
-	//m_vSunUV.y = vPos.y;
+	_float4x4 matVP = GAMEINSTANCE->Get_CurViewMatrix() * GAMEINSTANCE->Get_CurProjMatrix();
+	vPos = vPos.MultiplyCoord(matVP);
+	m_vSunUV.x = vPos.x;
+	m_vSunUV.y = vPos.y;
 
 
 }
@@ -1962,7 +1962,6 @@ HRESULT CRender_Manager::Render_FinalBlend()
 	if (FAILED(m_pTarget_Manager->End_MRT()))
 		return E_FAIL;
 
-
 	return S_OK;
 }
 
@@ -1975,9 +1974,6 @@ HRESULT CRender_Manager::Render_LensFlare(const _tchar* pRenderTargetName)
 		return E_FAIL;
 
 	
-
-	m_vecShader[SHADER_BLUR]->SetUp_ShaderResources(m_pNoiseTexture, "g_NoiseTexture");
-
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_vSunPos", &m_vSunUV, sizeof(_float2));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(9)))

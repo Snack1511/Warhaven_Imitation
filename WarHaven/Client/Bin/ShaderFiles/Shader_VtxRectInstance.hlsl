@@ -26,6 +26,10 @@ vector		g_vPlusColor;
 float		g_fColorPower;
 float		g_fColorPowerControl;
 
+float g_fAlpha;
+float g_fUVPlusX;
+float g_fUVPlusY;
+
 struct VS_IN
 {
 	float3		vPosition : POSITION;

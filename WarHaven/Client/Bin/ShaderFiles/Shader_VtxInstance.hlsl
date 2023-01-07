@@ -11,6 +11,8 @@ vector		g_vCamPosition;
 texture2D	g_DiffuseTexture, g_NoiseTexture, g_NormalTexture;
 texture2D	g_StaticShadowTexture;
 
+float g_fUVPlusX;
+float g_fUVPlusY;
 
 
 struct VS_IN

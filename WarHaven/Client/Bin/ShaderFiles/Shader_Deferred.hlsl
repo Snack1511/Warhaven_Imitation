@@ -50,6 +50,9 @@ float		g_fWinCX = 1280.f;
 float		g_fWinCY = 720.f;
 float		g_fCoord[3] = { -1.f, 0.f, 1.f };
 
+float g_fUVPlusX;
+float g_fUVPlusY;
+
 
 float		g_fDarkScreen = 0.f;
 
@@ -72,8 +75,6 @@ sampler ShadowSampler = sampler_state
 	AddressV = clamp;
 };
 
-float g_fUVPlusX = 0.f;
-float g_fUVPlusY = 0.f;
 
 struct VS_IN
 {

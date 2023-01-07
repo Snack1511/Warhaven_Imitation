@@ -37,7 +37,7 @@ float		g_fShaderPower = 0.f;
 
 bool		g_bMotionBlur = false;
 
-float		g_vSunPos;
+float2		g_vSunPos;
 
 float2		g_vResolution = float2(1280.f, 720.f);
 
@@ -316,7 +316,6 @@ PS_OUT PS_MAIN_LENSFLARE(PS_DOWNSCALE_IN In)
 	//-0.5 ~ 0.5 값으로 만든건가?
 	float2 uv = In.vTexUV;
 
-
 	//1. 일단 y좌표계 반전
 	uv.y = 1.f - uv.y;
 
@@ -329,19 +328,12 @@ PS_OUT PS_MAIN_LENSFLARE(PS_DOWNSCALE_IN In)
 	// mm = -1 ~ 1 사이의 태양 위치 (오른쪽 위가 1, 1)
 	float2 mm = g_vSunPos;
 
-	// 마우스용 코드
-	mm = g_vSunPos / (vResolution);
 
-	//mm *= 0.5f;
+	mm *= 0.5f;
 	mm.x *= vResolution.x / vResolution.y; // aspect
 
 	float fLength = length(uv - mm);
 
-	if (fLength < 0.01f)
-	{
-		Out.vColor = 0;
-		return Out;
-	}
 
 	/*float fTemp = mm.x;
 	mm.x = mm.y;
