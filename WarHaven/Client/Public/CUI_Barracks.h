@@ -52,6 +52,8 @@ private:
 	int m_iPrvSelectSkin = -1;
 	int m_iCurSelectSkin = 0;
 
+	_bool m_bIsSkinWindow = false;
+
 private:
 	enum ClassPort { Port_BG, Port_Char, Port_Class, Port_Highlight, Port_Outline, Port_Underline, Port_End };
 	CUI_Object* m_pClassPort[Port_End];

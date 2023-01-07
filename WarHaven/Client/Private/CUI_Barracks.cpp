@@ -156,6 +156,34 @@ void CUI_Barracks::My_Tick()
 
 	Late_Enable();
 	Late_SkinEnable();
+
+	if (m_bIsSkinWindow)
+	{
+		if (KEY(ESC, TAP))
+		{
+			m_bIsEnable = true;
+
+			m_iCurSelectSkin = Skin::Clothes;
+
+			for (int i = 0; i < 4; ++i)
+				Disable_Fade(m_pTopBtn[i], m_fDuration);
+
+			for (int i = 0; i < Skin_End; ++i)
+				Disable_Fade(m_pSkinInfo[i], m_fDuration);
+
+			for (int i = 0; i < 3; ++i)
+			{
+				for (int j = 0; j < SB_End; ++j)
+					Disable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
+			}
+
+			for (int i = 0; i < 3; ++i)
+			{
+				for (int j = 0; j < Skin::End; ++j)
+					Disable_Fade(m_pArrSkin[i][j], m_fDuration);
+			}
+		}
+	}
 }
 
 void CUI_Barracks::My_LateTick()
@@ -849,6 +877,8 @@ void CUI_Barracks::Late_SkinEnable()
 
 			for (int i = 0; i < 3; ++i)
 				Enable_Fade(m_pArrSkin[i][m_iCurSelectSkin], m_fDuration);
+
+			m_bIsSkinWindow = true;
 		}
 	}
 }
@@ -865,8 +895,6 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 			{
 				iNum = (m_iSelectClass * 3) + i;
 				m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(iNum);
-
-				cout << iNum << endl;
 			}
 			else
 			{
@@ -893,67 +921,6 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 		else
 		{
 			m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(i);
-
-			cout << i << endl;
-		}
-	}
-
-	for (int i = 0; i < 3; ++i)
-	{
-		if (m_iSelectClass < FIONA)
-		{
-			switch (m_iSelectClass)
-			{
-			case Client::WARRIOR:iNum = 0;		break;
-			case Client::ARCHER:iNum = 3;		break;
-			case Client::PALADIN:iNum = 6;		break;
-			case Client::PRIEST:iNum = 9;		break;
-			case Client::ENGINEER:iNum = 12;	break;
-			}
-
-			m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(iNum + i);
-		}
-		else
-		{
-			switch (m_iCurSelectSkin)
-			{
-			case CUI_Barracks::Clothes:
-
-				switch (m_iSelectClass)
-				{
-				case Client::FIONA:iNum = 0;
-					break;
-				case Client::QANDA:iNum = 3;
-					break;
-				case Client::HOEDT:iNum = 6;
-					break;
-				case Client::LANCER:iNum = 9;
-					break;
-
-					break;
-
-				case CUI_Barracks::Weapon:
-
-					switch (m_iSelectClass)
-					{
-					case Client::FIONA:iNum = 0;
-						break;
-					case Client::QANDA:iNum = 3;
-						break;
-					case Client::HOEDT:iNum = 6;
-						break;
-					case Client::LANCER:iNum = 9;
-						break;
-					}
-					break;
-
-				case CUI_Barracks::Hat:
-					break;
-
-				case CUI_Barracks::Glider:
-					break;
-				}
-			}
 		}
 	}
 }
