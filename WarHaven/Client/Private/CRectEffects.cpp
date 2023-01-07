@@ -1493,6 +1493,10 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 
 	case Client::CURVE_CIRCLE:
 
+		if(m_pFollowTarget)
+		{
+			m_pDatas[iIdx].RectInstance.vTranslation = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+		}
 		//if (m_pFollowTarget)
 		//{
 		//	fX = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).x + m_pDatas[iIdx].InstancingData.fCurvePower *
