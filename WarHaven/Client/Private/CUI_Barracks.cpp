@@ -135,19 +135,7 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 	if (m_iPrvSelectSkin == iEventNum)
 		return;
 
-	for (int i = 0; i < 3; ++i)
-	{
-		if (m_pArrSkin[i][m_iPrvSelectSkin]->Is_Valid())
-			Disable_Fade(m_pArrSkin[i][m_iPrvSelectSkin], m_fDuration);
-	}
-
-	for (int i = 0; i < 3; ++i)
-	{
-		if (!m_pArrSkin[i][m_iCurSelectSkin]->Is_Valid())
-			Enable_Fade(m_pArrSkin[i][m_iCurSelectSkin], m_fDuration);
-	}
-
-	Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
+	m_bTickDisable = true;
 }
 
 void CUI_Barracks::My_Tick()
@@ -157,38 +145,34 @@ void CUI_Barracks::My_Tick()
 	Late_Enable();
 	Late_SkinEnable();
 
-	if (m_bIsSkinWindow)
+	Disable_SkinWindow();
+
+	if (m_bTickDisable)
 	{
-		if (KEY(ESC, TAP))
+		for (int i = 0; i < 3; ++i)
 		{
-			m_bIsEnable = true;
+			for (int j = SB_Outline; j < SB_End; ++j)
+				Disable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
 
-			m_iCurSelectSkin = Skin::Clothes;
-
-			for (int i = 0; i < 4; ++i)
-				Disable_Fade(m_pTopBtn[i], m_fDuration);
-
-			for (int i = 0; i < Skin_End; ++i)
-				Disable_Fade(m_pSkinInfo[i], m_fDuration);
-
-			for (int i = 0; i < 3; ++i)
-			{
-				for (int j = 0; j < SB_End; ++j)
-					Disable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
-			}
-
-			for (int i = 0; i < 3; ++i)
-			{
-				for (int j = 0; j < Skin::End; ++j)
-					Disable_Fade(m_pArrSkin[i][j], m_fDuration);
-			}
+			for (int j = 0; j < Skin::End; ++j)
+				Disable_Fade(m_pArrSkin[i][j], m_fDuration);
 		}
+
+		m_bTickDisable = false;
+		m_bLateTickEnable = true;
 	}
 }
 
 void CUI_Barracks::My_LateTick()
 {
 	__super::My_LateTick();
+
+	if (m_bLateTickEnable)
+	{
+		Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
+
+		m_bLateTickEnable = false;
+	}
 }
 
 void CUI_Barracks::OnEnable()
@@ -388,7 +372,7 @@ void CUI_Barracks::Create_TopBtn()
 		m_pTopBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
 		_float fPosX = -560.f + (i * 95.f);
-		m_pTopBtn[i]->Set_Pos(fPosX, 260.f);
+		m_pTopBtn[i]->Set_Pos(fPosX, 200.f);
 		m_pTopBtn[i]->Set_Scale(75.f, 35.f);
 		m_pTopBtn[i]->Set_Sort(0.5f);
 
@@ -864,106 +848,102 @@ void CUI_Barracks::Late_SkinEnable()
 			for (int i = 0; i < 4; ++i)
 				Enable_Fade(m_pTopBtn[i], m_fDuration);
 
-			for (int i = 0; i < Skin_End; ++i)
-				Enable_Fade(m_pSkinInfo[i], m_fDuration);
-
-			for (int i = 0; i < 3; ++i)
-			{
-				Enable_Fade(m_pArrSkin[i][Skin::Clothes], m_fDuration);
-
-				for (int j = 0; j < SB_End; ++j)
-					Enable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
-			}
-
-			Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
+			// Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
 
 			m_bIsSkinWindow = true;
 		}
 	}
 }
 
+void CUI_Barracks::Disable_SkinWindow()
+{
+	if (KEY(ESC, TAP))
+	{
+		if (m_bIsSkinWindow)
+		{
+			m_bIsEnable = true;
+
+			m_iCurSelectSkin = Skin::Clothes;
+
+			for (int i = 0; i < 4; ++i)
+				Disable_Fade(m_pTopBtn[i], m_fDuration);
+
+			for (int i = 0; i < Skin_End; ++i)
+				Disable_Fade(m_pSkinInfo[i], m_fDuration);
+
+			for (int i = 0; i < 3; ++i)
+			{
+				for (int j = 0; j < SB_End; ++j)
+					Disable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
+			}
+
+			for (int i = 0; i < 3; ++i)
+			{
+				for (int j = 0; j < Skin::End; ++j)
+					Disable_Fade(m_pArrSkin[i][j], m_fDuration);
+			}
+		}
+	}
+}
+
 void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 {
-	_uint iNum = 0;
-
 	for (int i = 0; i < 3; ++i)
 	{
-		if (m_iCurSelectSkin < Skin::Hat)
+		for (int j = 0; j < SB_End; ++j)
+			Enable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
+
+		m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(i);
+		Enable_Fade(m_pArrSkin[i][m_iCurSelectSkin], m_fDuration);
+	}
+
+	if (m_iCurSelectSkin == Skin::Clothes)
+	{
+		if (m_iSelectClass < QANDA)
 		{
-			if (m_iSelectClass < FIONA)
+			m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
+			m_pArrSkinBtn[0][SB_Blind]->SetActive(false);
+
+			for (int i = 1; i < 3; ++i)
 			{
-				iNum = (m_iSelectClass * 3) + i;
-				m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(iNum);
-			}
-			else
-			{
-				if (m_iCurSelectSkin == Skin::Clothes)
-				{
-					switch (m_iSelectClass)
-					{
-					case FIONA:
-						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(18 + i);
-						break;
-
-					case QANDA:
-						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(21);
-						break;
-
-					case HOEDT:
-						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(22);
-						break;
-
-					case LANCER:
-						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(23);
-						break;
-					}
-				}
-				else if (m_iCurSelectSkin == Skin::Weapon)
-				{
-					for (int i = 0; i < 2; ++i)
-					{
-						m_pArrSkin[i][m_iCurSelectSkin]->SetActive(false);
-
-						for (int j = 0; j < SB_End; ++j)
-							m_pArrSkinBtn[i][j]->SetActive(false);
-					}
-
-					switch (m_iSelectClass)
-					{
-					case FIONA:
-						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(18);
-						break;
-
-					case QANDA:
-						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(19);
-						break;
-
-					case HOEDT:
-						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(20);
-						break;
-
-					case LANCER:
-						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(21);
-						break;
-					}
-				}
+				m_pArrSkinBtn[i][SB_Outline]->SetActive(false);
+				m_pArrSkinBtn[i][SB_Select]->SetActive(false);
 			}
 		}
 		else
 		{
-			for (int i = 0; i < 2; ++i)
+			
+		}
+	}
+
+	if (m_iCurSelectSkin >= Skin::Weapon)
+	{
+		if (m_iSelectClass < FIONA)
+		{
+			m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
+			m_pArrSkinBtn[0][SB_Blind]->SetActive(false);
+
+			for (int i = 1; i < 3; ++i)
 			{
-				if (!m_pArrSkin[i][m_iCurSelectSkin]->Is_Valid())
-					m_pArrSkin[i][m_iCurSelectSkin]->SetActive(true);
-
-				for (int j = 0; j < SB_End; ++j)
-				{
-					if (!m_pArrSkinBtn[i][j]->Is_Valid())
-						m_pArrSkinBtn[i][j]->SetActive(true);
-				}
+				m_pArrSkinBtn[i][SB_Outline]->SetActive(false);
+				m_pArrSkinBtn[i][SB_Select]->SetActive(false);
 			}
+		}
+		else
+		{
 
-			m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(i);
+		}
+	}
+
+	if (m_iCurSelectSkin >= Skin::Hat)
+	{
+		m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
+		m_pArrSkinBtn[0][SB_Blind]->SetActive(false);
+
+		for (int i = 1; i < 3; ++i)
+		{
+			m_pArrSkinBtn[i][SB_Outline]->SetActive(false);
+			m_pArrSkinBtn[i][SB_Select]->SetActive(false);
 		}
 	}
 }

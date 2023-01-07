@@ -116,8 +116,10 @@ private:
 
 	void Late_Enable();
 	void Late_SkinEnable();
+	void Disable_SkinWindow();
 
+
+	_bool m_bTickDisable = false;
+	_bool m_bLateTickEnable = false;
 	void Set_SkinIdx(CLASS_TYPE eClass);
-	void SetActive_SkinBtn(_uint iIdx, _bool value);
 };
-
