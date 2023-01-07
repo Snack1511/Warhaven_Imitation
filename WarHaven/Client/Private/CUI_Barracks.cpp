@@ -897,12 +897,30 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 		Enable_Fade(m_pArrSkin[i][m_iCurSelectSkin], m_fDuration);
 	}
 
+	_uint iNum = 0;
+	switch (m_iSelectClass)
+	{
+	case WARRIOR:	iNum = 0;	break;
+	case SPEAR:		iNum = 3;	break;
+	case ARCHER:	iNum = 6;	break;
+	case PALADIN:	iNum = 9;	break;
+	case PRIEST:	iNum = 12;	break;
+	case ENGINEER:	iNum = 15;	break;
+	case FIONA:		iNum = 18;	break;
+	case QANDA:		iNum = 19;	break;
+	case HOEDT:		iNum = 20;	break;
+	case LANCER:	iNum = 21;	break;
+	}
+
 	if (m_iCurSelectSkin == Skin::Clothes)
 	{
 		if (m_iSelectClass < QANDA)
 		{
 			m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
 			m_pArrSkinBtn[0][SB_Blind]->SetActive(false);
+
+			for (int i = 0; i < 3; ++i)
+				m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(iNum + i);
 
 			for (int i = 1; i < 3; ++i)
 			{
@@ -912,6 +930,8 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 		}
 		else
 		{
+			m_pArrSkin[2][m_iCurSelectSkin]->Set_TextureIndex(iNum);
+
 			for (int i = 0; i < 2; ++i)
 			{
 				m_pArrSkin[i][m_iCurSelectSkin]->SetActive(false);
@@ -932,6 +952,9 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 			m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
 			m_pArrSkinBtn[0][SB_Blind]->SetActive(false);
 
+			for (int i = 0; i < 3; ++i)
+				m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(iNum + i);
+
 			for (int i = 1; i < 3; ++i)
 			{
 				m_pArrSkinBtn[i][SB_Outline]->SetActive(false);
@@ -940,10 +963,12 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 		}
 		else
 		{
+			m_pArrSkin[2][m_iCurSelectSkin]->Set_TextureIndex(iNum);
+
 			for (int i = 0; i < 2; ++i)
 			{
 				m_pArrSkin[i][m_iCurSelectSkin]->SetActive(false);
-				
+
 				for (int j = 0; j < SB_End; ++j)
 					m_pArrSkinBtn[i][j]->SetActive(false);
 			}
