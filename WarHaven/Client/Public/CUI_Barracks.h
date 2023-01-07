@@ -18,6 +18,9 @@ public:
 	virtual void On_PointerExit_Port(const _uint& iEventNum);
 	virtual void On_PointerDown_Port(const _uint& iEventNum);
 
+	virtual void On_PointerEnter_Btn(const _uint& iEventNum);
+	virtual void On_PointerExit_Btn(const _uint& iEventNum);
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -39,6 +42,13 @@ private:
 
 	_float m_fOriginPosY = -250.f;
 	_float m_fTargetPosY = -240.f;
+
+	_bool m_bColorLerp = false;
+	_float m_fColorLerpTime = 0.f;
+
+	_float4 m_vLerpStartColor;
+	_float4 m_vLerpEndColor;
+	CUI_Object* m_pLerpTargetUI = nullptr;
 
 private:
 	enum ClassPort { Port_BG, Port_Char, Port_Class, Port_Highlight, Port_Outline, Port_Underline, Port_End };
@@ -64,5 +74,8 @@ private:
 	void Bind_Btn();
 
 	void Set_ClassInfoText(_uint iEventNum);
+
+	void Lerp_Color(CUI_Object* pUI, _float4 vColor);
+	void Update_Color();
 };
 

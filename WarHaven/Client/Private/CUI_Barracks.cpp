@@ -2,6 +2,7 @@
 #include "CUI_Object.h"
 #include "Texture.h"
 #include "GameInstance.h"
+#include "Easing_Utillity.h"
 
 CUI_Barracks::CUI_Barracks()
 {
@@ -75,6 +76,18 @@ void CUI_Barracks::On_PointerDown_Port(const _uint& iEventNum)
 	Enable_Fade(m_pArrClassPort[m_iCurEventNum][Port_Outline], 0.3f);
 
 	Set_ClassInfoText(m_iCurEventNum);
+}
+
+void CUI_Barracks::On_PointerEnter_Btn(const _uint& iEventNum)
+{
+	m_pArrClassBtn[iEventNum][Btn_Outline]->Set_Color(m_vColorGold);
+	m_pArrClassBtn[iEventNum][Btn_Deco]->Set_Color(m_vColorGold);
+}
+
+void CUI_Barracks::On_PointerExit_Btn(const _uint& iEventNum)
+{
+	m_pArrClassBtn[iEventNum][Btn_Outline]->Set_Color(m_vColorOutline);
+	m_pArrClassBtn[iEventNum][Btn_Deco]->Set_Color(m_vColorOutline);
 }
 
 void CUI_Barracks::My_Tick()
@@ -373,10 +386,10 @@ void CUI_Barracks::Init_ClassBtn()
 		{
 			m_pArrClassBtn[j][i] = m_pClassBtn[i]->Clone();
 
+			m_pUIList.push_back(m_pArrClassBtn[j][i]);
+
 			CREATE_GAMEOBJECT(m_pArrClassBtn[j][i], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrClassBtn[j][i]);
-
-			m_pUIList.push_back(m_pArrClassBtn[j][i]);
 
 			_float fPosY = 100.f - (60.f * j);
 			m_pArrClassBtn[j][i]->Set_PosY(fPosY);
@@ -428,6 +441,12 @@ void CUI_Barracks::Bind_Btn()
 		m_pArrClassPort[i][Port_BG]->CallBack_PointExit += bind(&CUI_Barracks::On_PointerExit_Port, this, i);
 		m_pArrClassPort[i][Port_BG]->CallBack_PointDown += bind(&CUI_Barracks::On_PointerDown_Port, this, i);
 	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pArrClassBtn[i][Btn_BG]->CallBack_PointEnter += bind(&CUI_Barracks::On_PointerEnter_Btn, this, i);
+		m_pArrClassBtn[i][Btn_BG]->CallBack_PointExit += bind(&CUI_Barracks::On_PointerExit_Btn, this, i);
+	}
 }
 
 void CUI_Barracks::Set_ClassInfoText(_uint iEventNum)
@@ -473,4 +492,31 @@ void CUI_Barracks::Set_ClassInfoText(_uint iEventNum)
 
 	m_pClassInfo[Info_Class]->Set_FontText(wstrClassText);
 	m_pClassInfo[Info_Class]->Set_TextureIndex(iEventNum);
+}
+
+void CUI_Barracks::Lerp_Color(CUI_Object* pUI, _float4 vColor)
+{
+	m_pLerpTargetUI = pUI;
+	m_vLerpStartColor = pUI->Get_Color();
+	m_vLerpEndColor = vColor;
+}
+
+void CUI_Barracks::Update_Color()
+{
+	if (m_bColorLerp)
+	{
+		m_fColorLerpTime += fDT(0);
+		if (m_fColorLerpTime > m_fDuration)
+		{
+			m_fColorLerpTime = 0.f;
+			m_bColorLerp = false;
+
+			m_pLerpTargetUI->Set_Color(m_vLerpEndColor);
+
+			return;
+		}
+
+		_float4 vLerpColor = CEasing_Utillity::Linear(m_vLerpStartColor, m_vLerpEndColor, m_fColorLerpTime, m_fDuration);
+		m_pLerpTargetUI->Set_Color(vLerpColor);
+	}
 }
