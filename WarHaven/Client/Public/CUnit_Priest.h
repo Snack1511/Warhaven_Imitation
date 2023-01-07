@@ -52,10 +52,9 @@ private:
 	STATE_TYPE m_eCureLoopType = STATE_END;
 
 private:
+	list<CGameObject*> m_CatchEffect;
 	CGameObject* m_pCureEffect = nullptr;
-	CGameObject* m_pCatchEffect = nullptr;
 	CGameObject* m_pCatchMeshEffect = nullptr;
-	CGameObject* m_pCatching = nullptr;
 
 };
 

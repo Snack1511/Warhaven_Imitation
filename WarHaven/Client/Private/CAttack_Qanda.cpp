@@ -677,6 +677,13 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 
 	_float fMinDist;
 	_float4 vFinalHitPos;
+	
+	
+	//for (auto& elem : GAMEINSTANCE->Get_AllStaticActors())
+	//{
+
+	//}
+
 
 	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
 		*pOutPos = vFinalHitPos;

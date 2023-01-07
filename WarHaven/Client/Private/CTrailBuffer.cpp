@@ -308,7 +308,7 @@ void CTrailBuffer::Update_Curve()
 	else
 	{
 		//꺼져있으면 점점사라지게
-		if (m_iVtxCount > 0)
+		if (0 < m_iVtxCount)
 		{
 			_uint	iRemoveCount = m_iVtxCount / 8;
 
@@ -424,6 +424,51 @@ void CTrailBuffer::Update_NonCurve()
 		}
 		else
 		{
+			if (0 < m_iVtxCount)
+			{
+				//버텍스사이즈 초과함
+				_uint	iRemoveCount = 2;
+
+				if (iRemoveCount % 2 > 0)
+				{
+					iRemoveCount -= 1;
+				}
+
+				if (iRemoveCount < 2)
+					iRemoveCount = 2;
+
+				if (m_iVtxCount >= 2)
+					m_iVtxCount -= iRemoveCount;
+
+
+				D3D11_MAPPED_SUBRESOURCE		SubResource;
+				DEVICE_CONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+				if (m_iVtxCount <= m_iNumVertices / 4)
+				{
+					for (_uint i = 2; i < m_iNumVertices; i += 2)
+					{
+						((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[0].vPosition;
+						((VTXTEX*)SubResource.pData)[i + 1].vPosition = ((VTXTEX*)SubResource.pData)[1].vPosition;
+					}
+					m_iVtxCount = 0;
+
+				}
+
+
+				for (_uint i = 0; i < m_iVtxCount; i += 2)
+				{
+					((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[iRemoveCount + i].vPosition;
+					((VTXTEX*)SubResource.pData)[i + 1].vPosition = ((VTXTEX*)SubResource.pData)[iRemoveCount + i + 1].vPosition;
+				}
+				DEVICE_CONTEXT->Unmap(m_pVB.Get(), 0);
+			}
+		}
+	}
+	else
+	{
+		if (0 < m_iVtxCount)
+		{
 			//버텍스사이즈 초과함
 			_uint	iRemoveCount = 2;
 
@@ -461,45 +506,6 @@ void CTrailBuffer::Update_NonCurve()
 			}
 			DEVICE_CONTEXT->Unmap(m_pVB.Get(), 0);
 		}
-	}
-	else
-	{
-		//버텍스사이즈 초과함
-		_uint	iRemoveCount = 2;
-
-		if (iRemoveCount % 2 > 0)
-		{
-			iRemoveCount -= 1;
-		}
-
-		if (iRemoveCount < 2)
-			iRemoveCount = 2;
-
-		if (m_iVtxCount >= 2)
-			m_iVtxCount -= iRemoveCount;
-
-
-		D3D11_MAPPED_SUBRESOURCE		SubResource;
-		DEVICE_CONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-
-		if (m_iVtxCount <= m_iNumVertices / 4)
-		{
-			for (_uint i = 2; i < m_iNumVertices; i += 2)
-			{
-				((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[0].vPosition;
-				((VTXTEX*)SubResource.pData)[i + 1].vPosition = ((VTXTEX*)SubResource.pData)[1].vPosition;
-			}
-			m_iVtxCount = 0;
-
-		}
-
-
-		for (_uint i = 0; i < m_iVtxCount; i += 2)
-		{
-			((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[iRemoveCount + i].vPosition;
-			((VTXTEX*)SubResource.pData)[i + 1].vPosition = ((VTXTEX*)SubResource.pData)[iRemoveCount + i + 1].vPosition;
-		}
-		DEVICE_CONTEXT->Unmap(m_pVB.Get(), 0);
 	}
 
 

@@ -334,16 +334,19 @@ void CUnit_Priest::Turn_CatchEffet(_bool bOnOff)
 {
 	if (bOnOff)
 	{
-		if (!m_pCatchEffect)
-			m_pCatchEffect = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Catch_Particle_0"), this, ZERO_VECTOR);
+		if (m_CatchEffect.empty())
+			m_CatchEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Catch_Particle", this, ZERO_VECTOR);
 
 	}
 	else
 	{
-		if (m_pCatchEffect)
+		if (!m_CatchEffect.empty())
 		{
-			static_cast<CRectEffects*>(m_pCatchEffect)->Set_AllFadeOut();
-			m_pCatchEffect = nullptr;
+			for (auto& elem : m_CatchEffect)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+			}
+			m_CatchEffect.clear();
 		}
 		
 	}
@@ -353,20 +356,11 @@ void CUnit_Priest::Turn_CatchingEffect(_bool bOnOff)
 {
 	if (bOnOff)
 	{
-		if (!m_pCatching)
-			m_pCatching = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Catching_0"), this, ZERO_VECTOR);
-
 		if (!m_pCatchMeshEffect)
 			m_pCatchMeshEffect = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Catch_Mesh_0"), this, ZERO_VECTOR);
 	}
 	else
 	{
-		if (m_pCatching)
-		{
-			static_cast<CRectEffects*>(m_pCatching)->Set_AllFadeOut();
-			m_pCatching = nullptr;
-		}
-
 		if (m_pCatchMeshEffect)
 		{
 			static_cast<CEffect*>(m_pCatchMeshEffect)->Set_FadeOut();
@@ -513,6 +507,8 @@ HRESULT CUnit_Priest::Initialize()
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
+	m_CatchEffect.clear();
+
 	CREATE_GAMEOBJECT(m_pAnimWeapon, GROUP_PLAYER);
 	DISABLE_GAMEOBJECT(m_pAnimWeapon);
 
@@ -570,6 +566,8 @@ void CUnit_Priest::OnEnable()
 void CUnit_Priest::OnDisable()
 {
 	__super::OnDisable();
+
+	TurnOff_AllEffect();
 }
 
 void CUnit_Priest::My_Tick()

@@ -202,8 +202,8 @@ void CPriest_Catching::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 {
 	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(true);
 	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchingEffect(true);
-	GAMEINSTANCE->Start_RadialBlur(0.017f);
-	GAMEINSTANCE->Start_ChromaticAberration(5.f);
+	//GAMEINSTANCE->Start_RadialBlur(0.017f);
+	GAMEINSTANCE->Start_ChromaticAberration(15.f);
 	pOwner->Lerp_Camera(5);
 
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
@@ -216,7 +216,7 @@ void CPriest_Catching::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchEffet(false);
 	static_cast<CUnit_Priest*>(pOwner)->Turn_CatchingEffect(false);
-	GAMEINSTANCE->Stop_RadialBlur();
+	//GAMEINSTANCE->Stop_RadialBlur();
 	GAMEINSTANCE->Stop_ChromaticAberration();
 	pOwner->Lerp_Camera(0);
 

@@ -64,7 +64,7 @@ void CGlider::SetUp_GliderTrail()
 		0.f,
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
-		120
+		100
 	);
 
 	fX = 250.f;
@@ -81,7 +81,7 @@ void CGlider::SetUp_GliderTrail()
 		0.f,
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
-		120
+		100
 	);
 
 
@@ -163,7 +163,7 @@ HRESULT CGlider::SetUp_Model(wstring wstrModelFilePath, wstring wstrAnimFilePath
 	Add_Component(pModel);
 	pModel->Set_ShaderFlag(SH_LIGHT_BLOOM);
 	pModel->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
-	m_pModelCom = pModel;
+	m_pModelCom = GET_COMPONENT(CModel);
 
 
 	m_pOwnerBone = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode(strBoneName.c_str());

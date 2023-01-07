@@ -808,6 +808,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catching"), "Catching")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catch_Shoot"), "Catch_Shoot")))
+		return E_FAIL;
 	
 	
 	/*environment*/
