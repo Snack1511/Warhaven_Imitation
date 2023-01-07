@@ -337,6 +337,9 @@ void CUnit_Priest::Turn_CatchEffet(_bool bOnOff)
 		if (m_CatchEffect.empty())
 			m_CatchEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Catch_Particle", this, ZERO_VECTOR);
 
+		if (m_CatchMeshEffect.empty())
+			m_CatchMeshEffect = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Catch_Mesh", this, ZERO_VECTOR);
+
 	}
 	else
 	{
@@ -348,6 +351,15 @@ void CUnit_Priest::Turn_CatchEffet(_bool bOnOff)
 			}
 			m_CatchEffect.clear();
 		}
+
+		if (!m_CatchMeshEffect.empty())
+		{
+			for (auto& elem : m_CatchMeshEffect)
+			{
+				static_cast<CEffect*>(elem)->Set_FadeOut();
+			}
+			m_CatchMeshEffect.clear();
+		}
 		
 	}
 }
@@ -356,16 +368,11 @@ void CUnit_Priest::Turn_CatchingEffect(_bool bOnOff)
 {
 	if (bOnOff)
 	{
-		if (!m_pCatchMeshEffect)
-			m_pCatchMeshEffect = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Catch_Mesh_0"), this, ZERO_VECTOR);
+		
 	}
 	else
 	{
-		if (m_pCatchMeshEffect)
-		{
-			static_cast<CEffect*>(m_pCatchMeshEffect)->Set_FadeOut();
-			m_pCatchMeshEffect = nullptr;
-		}
+		
 	}
 }
 

@@ -53,8 +53,8 @@ private:
 
 private:
 	list<CGameObject*> m_CatchEffect;
+	list<CGameObject*> m_CatchMeshEffect;
 	CGameObject* m_pCureEffect = nullptr;
-	CGameObject* m_pCatchMeshEffect = nullptr;
 
 };
 
