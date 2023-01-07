@@ -118,5 +118,6 @@ private:
 	void Late_SkinEnable();
 
 	void Set_SkinIdx(CLASS_TYPE eClass);
+	void SetActive_SkinBtn(_uint iIdx, _bool value);
 };
 

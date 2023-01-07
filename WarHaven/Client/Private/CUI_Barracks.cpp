@@ -135,8 +135,6 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 	if (m_iPrvSelectSkin == iEventNum)
 		return;
 
-	Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
-
 	for (int i = 0; i < 3; ++i)
 	{
 		if (m_pArrSkin[i][m_iPrvSelectSkin]->Is_Valid())
@@ -148,6 +146,8 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 		if (!m_pArrSkin[i][m_iCurSelectSkin]->Is_Valid())
 			Enable_Fade(m_pArrSkin[i][m_iCurSelectSkin], m_fDuration);
 	}
+
+	Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
 }
 
 void CUI_Barracks::My_Tick()
@@ -869,14 +869,13 @@ void CUI_Barracks::Late_SkinEnable()
 
 			for (int i = 0; i < 3; ++i)
 			{
+				Enable_Fade(m_pArrSkin[i][Skin::Clothes], m_fDuration);
+
 				for (int j = 0; j < SB_End; ++j)
 					Enable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
 			}
 
 			Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
-
-			for (int i = 0; i < 3; ++i)
-				Enable_Fade(m_pArrSkin[i][m_iCurSelectSkin], m_fDuration);
 
 			m_bIsSkinWindow = true;
 		}
@@ -898,28 +897,72 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 			}
 			else
 			{
-				switch (m_iSelectClass)
+				if (m_iCurSelectSkin == Skin::Clothes)
 				{
-				case FIONA:
-					m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(18);
-					break;
+					switch (m_iSelectClass)
+					{
+					case FIONA:
+						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(18 + i);
+						break;
 
-				case QANDA:
-					m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(19);
-					break;
+					case QANDA:
+						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(21);
+						break;
 
-				case HOEDT:
-					m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(20);
-					break;
+					case HOEDT:
+						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(22);
+						break;
 
-				case LANCER:
-					m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(21);
-					break;
+					case LANCER:
+						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(23);
+						break;
+					}
+				}
+				else if (m_iCurSelectSkin == Skin::Weapon)
+				{
+					for (int i = 0; i < 2; ++i)
+					{
+						m_pArrSkin[i][m_iCurSelectSkin]->SetActive(false);
+
+						for (int j = 0; j < SB_End; ++j)
+							m_pArrSkinBtn[i][j]->SetActive(false);
+					}
+
+					switch (m_iSelectClass)
+					{
+					case FIONA:
+						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(18);
+						break;
+
+					case QANDA:
+						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(19);
+						break;
+
+					case HOEDT:
+						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(20);
+						break;
+
+					case LANCER:
+						m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(21);
+						break;
+					}
 				}
 			}
 		}
 		else
 		{
+			for (int i = 0; i < 2; ++i)
+			{
+				if (!m_pArrSkin[i][m_iCurSelectSkin]->Is_Valid())
+					m_pArrSkin[i][m_iCurSelectSkin]->SetActive(true);
+
+				for (int j = 0; j < SB_End; ++j)
+				{
+					if (!m_pArrSkinBtn[i][j]->Is_Valid())
+						m_pArrSkinBtn[i][j]->SetActive(true);
+				}
+			}
+
 			m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(i);
 		}
 	}
