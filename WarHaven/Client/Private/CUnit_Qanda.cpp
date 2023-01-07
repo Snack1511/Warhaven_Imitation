@@ -578,6 +578,8 @@ void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
 
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
+
 	Turn_TransformParticle(true);
 	
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);

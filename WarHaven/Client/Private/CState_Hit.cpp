@@ -71,7 +71,11 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
     {
         static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
     }
-    
+
+    pOwner->Lerp_Camera(0);
+    GAMEINSTANCE->Stop_RadialBlur();
+    GAMEINSTANCE->Stop_ChromaticAberration();
+
     __super::Enter(pOwner, pAnimator, ePrevStateType);
 }
 

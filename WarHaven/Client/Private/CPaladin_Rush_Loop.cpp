@@ -106,7 +106,8 @@ void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	Physics_Setting(m_fMaxSpeed, pOwner);
 
 	static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(true);
-
+	GAMEINSTANCE->Start_RadialBlur(0.01f);
+	pOwner->Lerp_Camera(6);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 } 
 
@@ -134,7 +135,7 @@ STATE_TYPE CPaladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	{
 		static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(true);
 	}
-
+	//pOwner->Shake_Camera(0.3f, 0.1f);
 
 	return __super::Tick(pOwner, pAnimator);
 }
@@ -142,6 +143,8 @@ STATE_TYPE CPaladin_Rush_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CPaladin_Rush_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
+	pOwner->Lerp_Camera(0);
+	GAMEINSTANCE->Stop_RadialBlur();
 
 	pOwner->Enable_GuardCollider(false);
 	pOwner->Enable_GroggyCollider(false);
