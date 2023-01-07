@@ -225,7 +225,7 @@ void CUnit_Paladin::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_PALADIN_R;
 		m_eSprintEndState = STATE_SPRINT_END_PALADIN;
-		m_eLandState = STATE_JUMP_LAND_PALADIN_R;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_PALADIN;
 
 		break;
 
@@ -233,7 +233,7 @@ void CUnit_Paladin::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PALADIN_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_PALADIN;
-		m_eLandState = AI_STATE_COMMON_LAND_PALADIN_R;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PALADIN;
 
 		break;
 

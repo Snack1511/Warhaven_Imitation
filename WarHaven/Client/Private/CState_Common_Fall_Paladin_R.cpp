@@ -26,7 +26,7 @@ HRESULT CState_Common_Fall_Paladin_R::Initialize()
 
     m_iAINextState = AI_STATE_COMMON_LAND_PALADIN_R;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 CState_Common_Fall_Paladin_R* CState_Common_Fall_Paladin_R::Create()

@@ -21,11 +21,8 @@ HRESULT CState_Common_Fall_Paladin::Initialize()
 {
     __super::Initialize();
 
-    m_iStateChangeKeyFrame = 0;
+    m_iStateChangeKeyFrame = 99;
 
-    m_fInterPolationTime = 0.15f;
-
-    m_fAnimSpeed = 2.5f;
 
     return S_OK;
 }

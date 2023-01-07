@@ -74,6 +74,10 @@ HRESULT CIdle_Archer_R::Initialize()
 
 void CIdle_Archer_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    if (ePrevType == STATE_GLIDING_ARCHER)
+        m_fInterPolationTime = 0.2f;
+
+
     /* OwnerÀÇ Animator Set Idle·Î */
     pOwner->Set_AnimWeaponIndex(0, m_fInterPolationTime, m_fAnimSpeed);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

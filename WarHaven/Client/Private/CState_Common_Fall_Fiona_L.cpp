@@ -37,7 +37,7 @@ HRESULT CState_Common_Fall_Fiona_L::Initialize()
 
     m_iAINextState = AI_STATE_COMMON_LAND_FIONA_L;
 
-    return S_OK;
+    return __super::Initialize();
 }
 
 void CState_Common_Fall_Fiona_L::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )

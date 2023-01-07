@@ -148,7 +148,8 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			break;
 		}
 
-		Follow_MouseLook_Turn(pOwner);
+		if(m_bUseJump)
+			Follow_MouseLook_Turn(pOwner);
 	}
 
 

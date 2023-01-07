@@ -11,6 +11,7 @@
 #include "CEffects_Factory.h"
 #include "CSword_Effect.h"
 #include "CColorController.h"
+#include "CPlayerInfo.h"
 
 
 CChangeHero_Player::CChangeHero_Player()
@@ -111,13 +112,22 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 	{
 		if (KEY(NUM1, TAP))
 		{
+
+#ifdef FIONA_TH
 			m_eChangeClassType = FIONA;
 			return m_eStateType;
+#endif // FIONA_TH
+
+		
 		}
 		else if (KEY(NUM2, TAP))
 		{
+
+#ifdef QANDA_TH
 			m_eChangeClassType = QANDA;
 			return m_eStateType;
+#endif // QANDA_TH
+
 		}
 		//else if (KEY(NUM3, TAP))
 		//{
@@ -126,8 +136,12 @@ STATE_TYPE CChangeHero_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimat
 		//}
 		else if (KEY(NUM4, TAP))
 		{
+
+#ifdef LANCER_TH
 			m_eChangeClassType = LANCER;
 			return m_eStateType;
+#endif // LANCER_TH
+
 		}
 
 

@@ -73,8 +73,6 @@ HRESULT CSprint_Begin_WarHammer::Initialize()
 
 void CSprint_Begin_WarHammer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	Physics_Setting(pOwner->Get_Status().fSprintSpeed * 0.8f, pOwner, false);
-
 
 	if (ePrevType == STATE_RUNBEGIN_WARHAMMER_L || ePrevType == STATE_RUNBEGIN_WARHAMMER_R)
 	{
@@ -189,13 +187,7 @@ void CSprint_Begin_WarHammer::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimat
 	case 0:
 	{
 
-		//CTransform* pMyTransform = pOwner->Get_Transform();
-		//CPhysics* pMyPhysicsCom = pOwner->Get_PhysicsCom();
-
-
-		//m_fMyAccel = 10.f;
-		//pMyPhysicsCom->Set_Accel(m_fMyAccel);
-
+        Physics_Setting(pOwner->Get_Status().fSprintSpeed, pOwner, false);
 	}
 
 

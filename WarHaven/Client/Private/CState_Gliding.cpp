@@ -14,6 +14,7 @@
 #include "Animation.h"
 #include "Model.h"
 #include "CColorController.h"
+#include "CGlider.h"
 
 CState_Gliding::CState_Gliding()
 {
@@ -62,6 +63,9 @@ void CState_Gliding::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
     pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 0.5f;
     pOwner->Enable_Glider(true);
     pOwner->Set_GliderAnimIndex(0, 0.1f, 2.f);
+    pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eOpen);
+
+    GAMEINSTANCE->Start_RadialBlur(0.009f);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
@@ -74,10 +78,17 @@ STATE_TYPE CState_Gliding::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (!pOwner->Is_Air())
     {
-        STATE_TYPE eLandEndState = pOwner->Get_LandState();
-        pOwner->Enable_Glider(false);
+        STATE_TYPE eLandEndState = pOwner->Get_SprintEndState();
         m_bReturn = true;
         return eLandEndState;
+    }
+
+    if (KEY(SPACE, TAP))
+    {
+        STATE_TYPE eDefaultState = pOwner->Get_SprintFallState();
+        pOwner->Reset_GlidingTime();
+        m_bReturn = true;
+        return  eDefaultState;
     }
 
     _float4 vLook = pOwner->Get_FollowCamLook();
@@ -99,6 +110,10 @@ void CState_Gliding::Exit(CUnit* pOwner, CAnimator* pAnimator)
     if(!m_bReturn)
         pOwner->Enable_Glider(false);
 
+    GAMEINSTANCE->Stop_RadialBlur();
+
+    pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eClose);
+
 }
 
 STATE_TYPE CState_Gliding::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -106,10 +121,15 @@ STATE_TYPE CState_Gliding::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_HWARA && CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
         return STATE_END;
 
+    if (pOwner->Get_GlidingTime() > 0.f)
+        return STATE_END;
+
     if (pOwner->Is_Air())
     {
-        if(KEY(SPACE, TAP))
+        if (KEY(SPACE, TAP))
+        {
             return m_eStateType;
+        }
     }
         
 

@@ -141,6 +141,27 @@ _float4 CResource_Material::Check_FileName(string strName)
 		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Lancer0001_Horse_A00.dds";
 
 	}
+	else if (strName == "MI_Lance0000_Eye_A00")
+	{
+		vReturnColor = _float4(0.2f, 0.9f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Archer0001_eye_A00_B.dds";
+
+	}
+	else if (strName == "MI_Lance0000_Eyebrows_A00")
+	{
+		vReturnColor = _float4(0.1f, 1.f, 0.11f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Lance0000_Eyebrows_A00_M.dds";
+	}
+
+	else if (strName == "MI_Lance0000_Eyelash_A00")
+	{
+		//vReturnColor = _float4(0.8f, 0.3f, 0.15f, 1.f);
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Warrior0001_Eyelashes_A00.dds";
+
+	}
+
+
+	
 
 
 	/* Warrior */

@@ -91,9 +91,7 @@ void CIdle_Valkyrie_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
         ePrevType == STATE_SPRINT_END_VALKYRIE
         )
         m_fInterPolationTime = 0.f;
-    
-
-
+  
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 

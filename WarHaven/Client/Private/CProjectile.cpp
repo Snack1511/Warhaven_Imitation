@@ -282,7 +282,7 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		break;
 
 	case Client::CProjectile::eRANDOM:
-		m_vRandLook = _float4(frandom(-0.3f, 0.3f), frandom(0.2f, 0.5f), frandom(-0.3f, 0.3f));
+		m_vRandLook = _float4(frandom(-0.05f, 0.05f), frandom(0.05f, 0.2f), frandom(0.05f, 0.3f));
 		m_vRandLook *= fDT(0) * m_fMaxSpeed * 2.f;
 		m_pTransform->Set_World(WORLD_POS, m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS));
 		m_fRandomPhaseMaxTime = frandom(0.3f, 0.7f);
@@ -472,6 +472,8 @@ void CProjectile::My_LateTick()
 		break;
 	case Client::CProjectile::eChase:
 	{
+
+
 		if (!m_pTargetUnit)
 			assert(0);
 
@@ -481,9 +483,58 @@ void CProjectile::My_LateTick()
 
 		_float4x4 MyMatrix = m_pTransform->Get_Transform().matMyWorld;
 
-		MyMatrix.m[3][0] += vLook.x;
-		MyMatrix.m[3][1] += vLook.y;
-		MyMatrix.m[3][2] += vLook.z;
+
+		_float4 vMyLook = m_pTransform->Get_World(WORLD_LOOK);
+		vMyLook.Normalize();
+
+		_float h0 = vLook.y - vLook.x;
+		_float h1 = vLook.z - vLook.y;
+		_float A = (vMyLook.z - vMyLook.y) / h1 - (vMyLook.y - vMyLook.x) / h0;
+		_float B = (vMyLook.y - vMyLook.x) / h0;
+		_float C = vMyLook.y;
+		_float D = (A * h1 - B * h0) / (h1 - h0);
+		_float E = B - A;
+		
+		//_float Spline = A * pow(vMyLook.x - vLook.y, 3) + B * pow(vMyLook.y - vLook.y, 2) +
+		//	C * (vMyLook.z - vLook.y) + D * (vMyLook.x - vLook.x) + E * (vMyLook.x - vLook.z);
+
+		m_fLoopTimeAcc += fDT(0);
+
+		if (m_fLoopTimeAcc > 0.5f)
+		{
+			MyMatrix.m[3][0] += vLook.x;
+			MyMatrix.m[3][1] += vLook.y;
+			MyMatrix.m[3][2] += vLook.z;
+		}
+		else
+		{
+
+			_float SplineX = A * pow(vMyLook.x - vLook.y, 3) + B * pow(vMyLook.x - vLook.y, 2) +
+				C * (vMyLook.x - vLook.y) + D * (vMyLook.x - vLook.x) + E * (vMyLook.x - vLook.z);
+
+			_float SplineZ = A * pow(vMyLook.z - vLook.y, 3) + B * pow(vMyLook.z - vLook.y, 2) +
+				C * (vMyLook.z - vLook.y) + D * (vMyLook.z - vLook.x) + E * (vMyLook.z - vLook.z);
+
+			_float4 vSpeed = _float4(SplineX, fDT(0), SplineZ);
+
+			if (fabs(vMyLook.x - vLook.x) >= 0.2f)
+				MyMatrix.m[3][0] += vLook.x;
+
+			else
+				MyMatrix.m[3][0] += vSpeed.x * fDT(0);
+
+			if(fabs(vMyLook.z - vLook.z) >= 0.2f)
+				MyMatrix.m[3][0] += vLook.z;
+
+			else
+				MyMatrix.m[3][0] += vSpeed.z * fDT(0);
+
+			MyMatrix.m[3][0] += vLook.y;
+
+		}
+
+
+
 
 		m_pTransform->Get_Transform().matMyWorld = MyMatrix;
 

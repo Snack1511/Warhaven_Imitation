@@ -187,7 +187,7 @@ public:
 
 	const STATE_TYPE& Get_DefaultState() { return m_eDefaultState; }
 	const STATE_TYPE& Get_SprintEndState() { return m_eSprintEndState; }
-	const STATE_TYPE& Get_LandState() { return m_eLandState; }
+	const STATE_TYPE& Get_SprintFallState() { return m_eSprintFallState; }
 
 	SKILL_TRIGGER& Get_SkillTrigger() {
 		return m_tSkillTrigger;
@@ -297,9 +297,14 @@ public:
 	virtual void SetUp_HitStates(UNIT_TYPE eUnitType);
 
 public:
+	void Reset_GlidingTime() { m_fGlidingTime = 0.5f; }
+	_float Get_GlidingTime() { return m_fGlidingTime; }
+
+public:
 	CPlayer* Get_RevivalPlayer() { return m_pAdjRevivalPlayer; }
 	CCannon* Get_AdjCannon() { return m_pAdjCannon; }
 	CGameObject* Get_CureObject() { return m_pNearCureObject; }
+	_bool		Get_SameNearObejct() { return m_bSameNearObject; }
 
 	const _float& Get_MaxDistance() const { return m_fMaxDistance; }
 
@@ -333,6 +338,7 @@ protected:
 	_float				m_fMaxDistance = 5.f;
 
 	_bool				m_bForUseTeam = true;
+	_bool				m_bSameNearObject = false;
 
 protected:
 	// 얘가 max
@@ -341,6 +347,7 @@ protected:
 	_float	m_fCoolAcc[COOL_END] = {};
 
 	_float	m_fAttackDelay = 0.f;
+	_float	m_fGlidingTime = 0.f;
 
 protected:
 	UNIT_MODEL_DATA	m_tModelData;
@@ -360,7 +367,7 @@ protected:
 
 	STATE_TYPE		m_eDefaultState = STATE_END;
 	STATE_TYPE		m_eSprintEndState = STATE_END;
-	STATE_TYPE		m_eLandState = STATE_END;
+	STATE_TYPE		m_eSprintFallState = STATE_END;
 
 	CState* m_pCurState = nullptr;
 
@@ -435,6 +442,10 @@ public:
 	//AI가 Behavior를 변경할 때 호출
 	virtual void On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
 	virtual void On_FinishGame(_bool bWin);
+
+public:
+	CGlider* Get_Glider() { return m_pGlider; }
+
 
 protected:
 	CAnimWeapon* m_pAnimWeapon = nullptr;

@@ -56,7 +56,7 @@ void CCrowBoom::Boom_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherCo
 
 HRESULT CCrowBoom::Initialize_Prototype()
 {
-	m_pColliderCom = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 3.f, COL_BLUEGUARDBREAK, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
+	m_pColliderCom = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, 2.f, COL_BLUEGUARDBREAK, ZERO_VECTOR, DEFAULT_TRANS_MATRIX);
 	m_pColliderCom->Initialize();
 	Add_Component(m_pColliderCom);
 	return S_OK;

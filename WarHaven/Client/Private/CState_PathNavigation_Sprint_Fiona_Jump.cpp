@@ -63,7 +63,7 @@ STATE_TYPE CState_PathNavigation_Sprint_Fiona_Jump::Tick(CUnit* pOwner, CAnimato
        if (!pOwner->Is_Air())
            return AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
 
-    return CState::Tick(pOwner, pAnimator);
+    return __super::Tick(pOwner, pAnimator);
 }
 
 void CState_PathNavigation_Sprint_Fiona_Jump::Exit(CUnit* pOwner, CAnimator* pAnimator)

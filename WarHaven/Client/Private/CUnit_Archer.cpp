@@ -181,7 +181,8 @@ void CUnit_Archer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_ARCHER_R;
 		m_eSprintEndState = STATE_SPRINT_END_ARCHER;
-		m_eLandState = STATE_JUMP_LAND_ARCHER_R;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_ARCHER;
+
 
 		break;
 
@@ -189,7 +190,7 @@ void CUnit_Archer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
 		m_eSprintEndState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
-		m_eLandState = AI_STATE_COMMON_LAND_ARCHER_R;
+	//	m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_AR;
 
 		break;
 

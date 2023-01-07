@@ -188,7 +188,8 @@ void CUnit_Qanda::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_QANDA;
 		m_eSprintEndState = STATE_SPRINT_END_QANDA;
-		m_eLandState = STATE_JUMP_LAND_QANDA;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_QANDA;
+
 
 		break;
 

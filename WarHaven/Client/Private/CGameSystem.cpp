@@ -171,8 +171,14 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_idiot);
 
 		// ±Ã¼ö Å×½ºÆ®
-		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_ARCHER_R);
-		
+		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_ARCHER_R);
+		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
+
+		// Èú·¯ Å×½ºÆ®
+		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_PRIEST);
+		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
+
+
 
 		READY_GAMEOBJECT(pEnemy, GROUP_PLAYER);
 	}
@@ -1076,8 +1082,8 @@ HRESULT CGameSystem::On_Update_Paden()
 		{
 			m_fScoreAcc = 0.f;
 
-			if (!pMinusScoreTeam->Minus_Score())
-				On_FinishGame(pMinusScoreTeam);
+			//if (!pMinusScoreTeam->Minus_Score())
+			//	On_FinishGame(pMinusScoreTeam);
 
 		}
 	}

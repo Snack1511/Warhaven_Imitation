@@ -166,15 +166,15 @@ void CUnit_Valkyrie::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_VALKYRIE_R;
 		m_eSprintEndState = STATE_SPRINT_END_VALKYRIE;
-		m_eLandState = STATE_JUMP_LAND_VALKYRIE_R;
-
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_VALKYRIE;
+		
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
-		m_eLandState = AI_STATE_COMMON_LAND_FIONA_R;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_FIONA;
 
 		break;
 

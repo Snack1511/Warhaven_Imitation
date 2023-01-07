@@ -14,6 +14,7 @@
 #include "Animation.h"
 #include "Model.h"
 #include "CColorController.h"
+#include "CGlider.h"
 
 #include "CUnit_Archer.h"
 
@@ -58,6 +59,10 @@ void CState_Gliding_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYP
     pOwner->Enable_Glider(true);
     static_cast<CUnit_Archer*>(pOwner)->Enable_Arrow(false);
     pOwner->Set_GliderAnimIndex(0, 0.1f, 2.f);
+    pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eOpen);
+
+    GAMEINSTANCE->Start_RadialBlur(0.015f);
+    GAMEINSTANCE->Start_ChromaticAberration(30.f);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
@@ -70,10 +75,17 @@ STATE_TYPE CState_Gliding_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (!pOwner->Is_Air())
     {
-        pOwner->Enable_Glider(false);
         m_bReturn = true;
-        STATE_TYPE eLandEndState = pOwner->Get_LandState();
+        STATE_TYPE eLandEndState = pOwner->Get_SprintEndState();
         return eLandEndState;
+    }
+
+    if (KEY(SPACE, TAP))
+    {
+        STATE_TYPE eLandState = pOwner->Get_SprintFallState();
+        pOwner->Reset_GlidingTime();
+        m_bReturn = true;
+        return  eLandState;
     }
 
     _float4 vLook = pOwner->Get_FollowCamLook();
@@ -94,6 +106,11 @@ void CState_Gliding_Archer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
     if (!m_bReturn)
         pOwner->Enable_Glider(false);
+
+    GAMEINSTANCE->Stop_RadialBlur();
+    GAMEINSTANCE->Stop_ChromaticAberration();
+
+    pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eClose);
 }
 
 STATE_TYPE CState_Gliding_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
@@ -101,10 +118,17 @@ STATE_TYPE CState_Gliding_Archer::Check_Condition(CUnit* pOwner, CAnimator* pAni
     if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_HWARA && CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
         return STATE_END;
 
+    if (pOwner->Get_GlidingTime() > 0.f)
+        return STATE_END;
+
+
     if (pOwner->Is_Air())
     {
-        if(KEY(SPACE, TAP))
+        if (KEY(SPACE, TAP))
+        {
             return m_eStateType;
+        }
+            
     }
         
 

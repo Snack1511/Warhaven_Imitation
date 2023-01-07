@@ -60,7 +60,7 @@ HRESULT CQandaMeteor::Initialize_Prototype()
     //if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx")))
     //    return E_FAIL;
 
-	if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/longbow/SM_Bolt_Poison.fbx")))
+	if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/ball/CannonBall.fbx")))
 		return E_FAIL;
 
 #ifdef TESTLEVEL_AI_PROJECTILE

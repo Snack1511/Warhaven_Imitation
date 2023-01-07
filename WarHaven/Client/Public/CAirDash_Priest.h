@@ -24,9 +24,11 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
+	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
 private:
 	_uint iPlaceJumpAnimIndex = 0;
+	_bool m_bLoop = false;
 
 	_float4 m_vDir = ZERO_VECTOR;
 };

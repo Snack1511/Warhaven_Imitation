@@ -83,8 +83,8 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	}
 
 	if (pOwner->Get_Status().fDamageMultiplier != 1.f ||
-		pOwner->Get_Status().fDamageMultiplier < 0.99f ||
-		pOwner->Get_Status().fDamageMultiplier > 1.01f)
+		pOwner->Get_Status().fDamageMultiplier < 1.f  - FLT_MIN||
+		pOwner->Get_Status().fDamageMultiplier > 1.f + FLT_MIN)
 	{
 		m_fDamagePumping = pOwner->Get_Status().fDamageMultiplier;
 	}

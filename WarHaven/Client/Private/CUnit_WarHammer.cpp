@@ -187,7 +187,7 @@ void CUnit_WarHammer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_WARHAMMER_R;
 		m_eSprintEndState = STATE_SPRINT_END_WARHAMMER;
-		m_eLandState = STATE_JUMP_LAND_WARHAMMER_R;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_WARHAMMER;
 
 		break;
 
@@ -195,7 +195,7 @@ void CUnit_WarHammer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ENGINEER_R;
 		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
-		m_eLandState = AI_STATE_COMMON_LAND_ENGINEER_R;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ENGINEER;
 
 		break;
 

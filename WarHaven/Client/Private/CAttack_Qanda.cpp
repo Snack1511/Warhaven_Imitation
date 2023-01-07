@@ -175,6 +175,9 @@ void CAttack_Qanda::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevS
 
 	static_cast<CUnit_Qanda*>(pOwner)->Enable_Trail(true);
 	static_cast<CUnit_Qanda*>(pOwner)->Get_Crow()->On_ChangePhase(CAnimWeapon_Crow::eATTACKLOOP);
+	GAMEINSTANCE->Start_RadialBlur(0.01f);
+	
+
 	m_bCharge = true;
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
@@ -191,6 +194,7 @@ void CAttack_Qanda::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	pAnimator->Stop_ActionAnim();
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 	static_cast<CUnit_Qanda*>(pOwner)->Enable_Trail(false);
+	GAMEINSTANCE->Stop_RadialBlur();
 
 }
 
@@ -675,7 +679,7 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 		return false;
 
 	_float4 vStartPos = pAnimCrow->Get_Transform()->Get_World(WORLD_POS);// pAnimCrow->Get_Transform()->Get_World(WORLD_POS);
-	_float4 vDir = pAnimCrow->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vDir = pAnimCrow->Get_Transform()->Get_World(WORLD_LOOK) * -1.f;
 	_float fMaxDistance = pAnimCrow->Get_MaxDistance();
 
 	_float fMinDist;

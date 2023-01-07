@@ -33,10 +33,10 @@ HRESULT CState_Combat_Attack_HorizontalMiddle_Fiona::Initialize()
 	m_iStopIndex = 50;
 
 	Add_KeyFrame(30, 1);
-	Add_KeyFrame(40, 999);
-
 	Add_KeyFrame(m_iStopIndex, 2);
-	Add_KeyFrame(m_iStopIndex, 998);
+	
+	Add_KeyFrame(34, 999);
+	Add_KeyFrame(40, 998);
 
 
 	return S_OK;

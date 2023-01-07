@@ -21,6 +21,9 @@
 #include "CRectEffects.h"
 #include "CCure_Effect.h"
 
+#include "CUI_UnitHUD.h"
+#include "CUI_UnitHP.h"
+
 CUnit_Priest::CUnit_Priest()
 {
 }
@@ -177,47 +180,28 @@ void CUnit_Priest::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eBounce = STATE_BOUNCE_PRIEST;
 		break;
 
-	case Client::CUnit::UNIT_TYPE::eAI_TG:
-		m_tHitType.eHitState = AI_STATE_TG_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_TG_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_GUARD_CANCEL_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_TG_STINGHIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_TG_GROGGYHIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_TG_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_BOUNE_WARRIOR_L;
-		break;
-
-	case Client::CUnit::UNIT_TYPE::eSandbag:
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
-		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_COMMON_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_COMBAT_GUARDCANCEL_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eGuardState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eGuardBreakState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_PRIEST;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_PRIEST;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_PRIEST;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_PRIEST;
 		break;
 
 
 	case Client::CUnit::UNIT_TYPE::eAI_idiot:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_COMMON_HIT_WARRIOR;
-		/*m_tUnitStatus.fMaxHP = 100000.f;
-		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;*/
+		m_tHitType.eHitState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eGuardState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eGuardBreakState = AI_STATE_COMMON_HIT_PRIEST;
+		m_tHitType.eStingHitState = AI_STATE_COMMON_STINGHIT_PRIEST;
+		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_PRIEST;
+		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_PRIEST;
+		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_PRIEST;
+		m_tUnitStatus.fMaxHP = 100000.f;
+		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 		break;
 
 		
@@ -240,26 +224,27 @@ void CUnit_Priest::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_PRIEST;
 		m_eSprintEndState = STATE_SPRINT_END_PRIEST;
-		m_eLandState = STATE_JUMP_LAND_PRIEST;
+		m_eSprintFallState = STATE_SPRINT_JUMPFALL_PRIEST;
 
 		m_eCureBeginType = STATE_CURE_BEGIN_PRIEST;
 		m_eCureLoopType = STATE_CURE_LOOP_PRIEST;
+
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
-		m_eLandState = STATE_JUMP_LAND_PRIEST;
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PRIEST;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_PRIEST;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PRIEST;
 
 		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_idiot:
 
-		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_WARRIOR_R;
-		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
-		m_eLandState = STATE_JUMP_LAND_PRIEST; // 수정
+		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_PRIEST;
+		//m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+		//m_eSprintFallState = STATE_JUMP_LAND_PRIEST; // 수정
 
 		break;
 
@@ -286,19 +271,19 @@ void CUnit_Priest::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 	{
 	case eBehaviorType::ePatrol:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
+		eNewState = AI_STATE_PATROL_DEFAULT_PRIEST;
 		break;
 	case eBehaviorType::eFollow:
 		//상태변경
 		break;
 	case eBehaviorType::eAttack:
 		//상태변경
-		eNewState = AI_STATE_COMBAT_DEFAULT_WARRIOR_L;
+		eNewState = AI_STATE_COMBAT_DEFAULT_PRIEST;
 
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경
-		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_WARRIOR_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_PRIEST;
 		break;
 
 	case eBehaviorType::eResurrect:
@@ -566,27 +551,24 @@ void CUnit_Priest::OnDisable()
 
 void CUnit_Priest::My_Tick()
 {
+	if (m_pNearCureObject)
+	{
+		Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
+	}
+
 	__super::My_Tick();
 	__super::Check_NearObject_IsInFrustum(&m_pNearCureObject);
+
+	if (!m_bSameNearObject)
+	{
+		
+		TurnOn_CureEffect(false);
+	}
+
 }
 void CUnit_Priest::My_LateTick()
 {
 
 	__super::My_LateTick();
 
-
-	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
-		return;
-
-	if (KEY(NUM8, TAP))
-	{
-		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 0.f, 0.f));
-		m_pTransform->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
-	}
-		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
-
-	/*if (KEY(SPACE, TAP))
-	{
-		m_pPhysics->Set_Jump(7.f);
-	}*/
 }

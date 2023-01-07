@@ -14,6 +14,8 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CUnit_Lancer_Head.h"
+
 CUnit_Lancer::CUnit_Lancer()
 {
 }
@@ -137,25 +139,6 @@ void	CUnit_Lancer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eBounce = STATE_BOUNCE_PLAYER_L;
 		break;
 
-	case Client::CUnit::UNIT_TYPE::eAI_TG:
-		m_tHitType.eHitState = AI_STATE_TG_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_TG_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_GUARD_CANCEL_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_TG_STINGHIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_TG_GROGGYHIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_TG_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_BOUNE_WARRIOR_L;
-		break;
-
-	case Client::CUnit::UNIT_TYPE::eSandbag:
-		m_tHitType.eHitState = STATE_HIT_TEST_ENEMY;
-		m_tHitType.eGuardState = STATE_GUARDHIT_ENEMY;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_WARRIOR_AI_ENEMY;
-		m_tHitType.eStingHitState = STATE_STINGHIT_ENEMY;
-		m_tHitType.eGroggyState = STATE_GROGGY_ENEMY;
-		m_tHitType.eFlyState = STATE_FLYHIT_ENEMY;
-		m_tHitType.eBounce = STATE_BOUNCE_WARRIOR_L_AI_ENEMY;
-		break;
 
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
@@ -165,19 +148,6 @@ void	CUnit_Lancer::SetUp_HitStates(UNIT_TYPE eUnitType)
 		m_tHitType.eGroggyState = AI_STATE_COMMON_GROGGYHIT_WARRIOR;
 		m_tHitType.eFlyState = AI_STATE_COMMON_FLYHIT_WARRIOR;
 		m_tHitType.eBounce = AI_STATE_COMMON_BOUNCE_WARRIOR_L;
-		break;
-
-
-	case Client::CUnit::UNIT_TYPE::eAI_idiot:
-		m_tHitType.eHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGuardBreakState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eStingHitState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eGroggyState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eFlyState = AI_STATE_COMMON_HIT_WARRIOR;
-		m_tHitType.eBounce = AI_STATE_COMMON_HIT_WARRIOR;
-		/*m_tUnitStatus.fMaxHP = 100000.f;
-		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;*/
 		break;
 
 		
@@ -199,7 +169,7 @@ void CUnit_Lancer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 	case Client::CUnit::UNIT_TYPE::ePlayer:
 
 		m_eDefaultState = STATE_IDLE_LANCER;
-		m_eSprintEndState = STATE_SPRINT_END_PLAYER;
+		m_eSprintEndState = NO_PATTERN;
 
 		break;
 
@@ -411,7 +381,13 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 
 	m_tUnitStatus.eClass = LANCER;
 
+	m_pMyHead = CUnit_Lancer_Head::Create(L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0000_Face_A00_20.fbx",
+		GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"), this);
 
+	if (!m_pMyHead)
+		return E_FAIL;
+
+	m_pMyHead->Initialize();
 
 	return S_OK;
 }
@@ -422,16 +398,22 @@ HRESULT CUnit_Lancer::Initialize()
 
 	m_pModelCom->Set_ShaderFlag(SH_LIGHT_BLOOM);
 
-	Set_ShaderNoSpec(L"SK_Warrior_Helmet_Rabbit_50");
-
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
+	
 	return S_OK;
 }
 
 HRESULT CUnit_Lancer::Start()
 {
 	__super::Start();
+
+	if (m_pMyHead)
+	{
+		CREATE_GAMEOBJECT(m_pMyHead, GROUP_PLAYER);
+		//ENABLE_GAMEOBJECT(m_pMyHead);
+	}
+		
 
 	SetUp_TrailEffect(
 		_float4(0.f, 0.f, -165.f, 1.f),	//Weapon Low
@@ -469,11 +451,13 @@ HRESULT CUnit_Lancer::Start()
 void CUnit_Lancer::OnEnable()
 {
 	__super::OnEnable();
+	ENABLE_GAMEOBJECT(m_pMyHead);
 }
 
 void CUnit_Lancer::OnDisable()
 {
 	__super::OnDisable();
+	DISABLE_GAMEOBJECT(m_pMyHead);
 }
 
 void CUnit_Lancer::My_LateTick()
