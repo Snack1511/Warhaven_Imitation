@@ -19,6 +19,7 @@ public:
 	virtual void On_PointerDown_Port(const _uint& iEventNum);
 
 	virtual void On_PointerEnter_Btn(const _uint& iEventNum);
+	virtual void On_PointerStay_Btn(const _uint& iEventNum);
 	virtual void On_PointerExit_Btn(const _uint& iEventNum);
 
 private:
