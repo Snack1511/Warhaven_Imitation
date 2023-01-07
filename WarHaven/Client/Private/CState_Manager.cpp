@@ -764,7 +764,8 @@
 #include "CState_PathNavigation_Sprint_Warrior_Jump.h"
 #include "CState_PathNavigation_Jump_Warrior_L.h"
 #include "CState_PathNavigation_Jump_Warrior_R.h"
-
+#include "CState_PathNavigation_Fall_Warrior_L.h"
+#include "CState_PathNavigation_Fall_Warrior_R.h"
 
 #include "CState_PathNavigation_Run_Engineer_L.h"
 #include "CState_PathNavigation_Run_Engineer_R.h"
@@ -777,6 +778,8 @@
 #include "CState_PathNavigation_Sprint_Engineer_Jump.h"
 #include "CState_PathNavigation_Jump_Engineer_L.h"
 #include "CState_PathNavigation_Jump_Engineer_R.h"
+#include "CState_PathNavigation_Fall_Engineer_L.h"
+#include "CState_PathNavigation_Fall_Engineer_R.h"
 
 
 #include "CState_PathNavigation_Default_Fiona_L.h"
@@ -790,6 +793,8 @@
 #include "CState_PathNavigation_Sprint_Fiona_Jump.h"
 #include "CState_PathNavigation_Jump_Fiona_L.h"
 #include "CState_PathNavigation_Jump_Fiona_R.h"
+#include "CState_PathNavigation_Fall_Fiona_L.h"
+#include "CState_PathNavigation_Fall_Fiona_R.h"
 
 #include "CState_PathNavigation_Default_Paladin_L.h"
 #include "CState_PathNavigation_Default_Paladin_R.h"
@@ -802,6 +807,8 @@
 #include "CState_PathNavigation_Sprint_Paladin_Jump.h"
 #include "CState_PathNavigation_Jump_Paladin_L.h"
 #include "CState_PathNavigation_Jump_Paladin_R.h"
+#include "CState_PathNavigation_Fall_Paladin_L.h"
+#include "CState_PathNavigation_Fall_Paladin_R.h"
 
 
 #include "CState_PathNavigation_Default_Priest.h"
@@ -812,6 +819,7 @@
 #include "CState_PathNavigation_Sprint_Priest_End.h"
 #include "CState_PathNavigation_Jump_Priest.h"
 #include "CState_PathNavigation_Walk_Priest.h"
+#include "CState_PathNavigation_Fall_Priest.h"
 
 
 #pragma endregion
@@ -1765,6 +1773,12 @@ void CState_Manager::Warrior_State_AI()
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_L] = CState_PathNavigation_Jump_Warrior_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_WARRIOR_R] = CState_PathNavigation_Jump_Warrior_R::Create();
 
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_WARRIOR_L] = CState_PathNavigation_Fall_Warrior_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_WARRIOR_R] = CState_PathNavigation_Fall_Warrior_R::Create();
+
+
+
 #pragma endregion
 
 #pragma region Combat
@@ -1853,6 +1867,10 @@ void CState_Manager::WarHammer_State_AI()
 
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ENGINEER_L] = CState_PathNavigation_Jump_Engineer_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ENGINEER_R] = CState_PathNavigation_Jump_Engineer_R::Create();
+	
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_ENGINEER_L] = CState_PathNavigation_Fall_Engineer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_ENGINEER_R] = CState_PathNavigation_Fall_Engineer_R::Create();
+
 
 #pragma endregion
 
@@ -1943,6 +1961,10 @@ void CState_Manager::Valkyrie_State_AI()
 
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_FIONA_L] = CState_PathNavigation_Jump_Fiona_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_FIONA_R] = CState_PathNavigation_Jump_Fiona_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_FIONA_L] = CState_PathNavigation_Fall_Fiona_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_FIONA_R] = CState_PathNavigation_Fall_Fiona_R::Create();
+
 
 #pragma endregion
 
@@ -2058,6 +2080,10 @@ void CState_Manager::Paladin_State_AI()
 
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_PALADIN_L] = CState_PathNavigation_Jump_Paladin_L::Create();
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_PALADIN_R] = CState_PathNavigation_Jump_Paladin_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_PALADIN_L] = CState_PathNavigation_Fall_Paladin_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_PALADIN_R] = CState_PathNavigation_Fall_Paladin_R::Create();
+
 
 #pragma endregion
 
@@ -2176,7 +2202,6 @@ void CState_Manager::Priest_State_AI()
 
 	m_arrStates[AI_STATE_COMBAT_WINDATTACK_PRIEST] = CState_Combat_SkillE_Priest_WindAttack::Create();
 
-
 #pragma endregion
 
 
@@ -2194,6 +2219,7 @@ void CState_Manager::Priest_State_AI()
 	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_PRIEST] = CState_PathNavigation_Sprint_Priest_Fall::Create();
 
 	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_PRIEST] = CState_PathNavigation_Jump_Priest::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_PRIEST] = CState_PathNavigation_Fall_Priest::Create();
 
 #pragma endregion
 

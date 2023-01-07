@@ -3,6 +3,8 @@
 
 BEGIN(Client)
 
+class CUnit_Lancer_Head;
+
 class CUnit_Lancer
 	: public CUnit
 {
@@ -35,6 +37,9 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 	virtual void My_LateTick();
+
+private:
+	CUnit_Lancer_Head* m_pMyHead = nullptr; // 새로 붙인 머리
 };
 
 END

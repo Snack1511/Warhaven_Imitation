@@ -76,6 +76,8 @@ HRESULT CWarHammer_AirSpike_End::Initialize()
 
 void CWarHammer_AirSpike_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+	GAMEINSTANCE->Start_RadialBlur(0.07f);
+
 	pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
@@ -120,6 +122,8 @@ STATE_TYPE CWarHammer_AirSpike_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarHammer_AirSpike_End::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	GAMEINSTANCE->Stop_RadialBlur();
+
 	pOwner->CallBack_CollisionEnter -= bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 	pOwner->Enable_FlyAttackCollider(false);

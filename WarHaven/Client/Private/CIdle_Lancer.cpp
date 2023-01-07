@@ -74,7 +74,6 @@ void CIdle_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 STATE_TYPE CIdle_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
     return __super::Tick(pOwner, pAnimator);
 }
 

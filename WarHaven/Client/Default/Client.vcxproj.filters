@@ -3598,6 +3598,60 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\03. End">
       <UniqueIdentifier>{19595b89-dc5d-4264-9813-72b3e5b2b004}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall">
+      <UniqueIdentifier>{0e8e9dfb-03ac-4b6c-bbe6-a6f17b8e3824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior">
+      <UniqueIdentifier>{c4b9e591-c398-4bae-b701-7bd592a35277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer">
+      <UniqueIdentifier>{4967f6c6-018b-471c-8b15-ce74e2747c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona">
+      <UniqueIdentifier>{4916ff45-1e7d-470e-bd5e-6e909262350f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin">
+      <UniqueIdentifier>{7468b46a-0c11-4983-b700-feda9c13fc38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\06. Priest">
+      <UniqueIdentifier>{1e65e452-cb7f-4350-8f5b-61ee56619cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\01. Right">
+      <UniqueIdentifier>{c11fc316-cc3b-4e36-adbb-27f774b86da8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\01. Right">
+      <UniqueIdentifier>{281f2126-3412-47f2-af6f-be59235a62f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\01. Right">
+      <UniqueIdentifier>{584cd39f-f084-41ab-93cc-c99a17774216}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\01. Right">
+      <UniqueIdentifier>{0b35bafb-ee2f-4fed-9dba-37af651a9327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\02. Left">
+      <UniqueIdentifier>{25635de8-6cd7-4044-923f-15bcd5ba5736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\02. Left">
+      <UniqueIdentifier>{57e0b3c6-504b-4467-a430-55b36f2e55c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\02. Left">
+      <UniqueIdentifier>{08b9425f-6296-4a8a-8e85-80c1e75efe7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\02. Left">
+      <UniqueIdentifier>{034fc999-bea5-427e-82d2-cf416263f167}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer">
+      <UniqueIdentifier>{a1c1650f-4ed4-49ae-8c46-93e9a43df033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\01. Right">
+      <UniqueIdentifier>{7023c2dd-902c-4f62-b1ff-54a58acfc02b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\02. Left">
+      <UniqueIdentifier>{0a664f11-a3a8-4573-93f5-0aec34c6ee3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\Lancer\Head">
+      <UniqueIdentifier>{fcdc61bc-4277-4e08-b60f-5ad85bdc3be3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6459,6 +6513,60 @@
     <ClInclude Include="..\Public\CState_Patrol_Cure_Loop_Priest.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\02. Loop</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Warrior.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Engineer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Fiona.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Paladin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Priest.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\06. Priest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Warrior_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Warrior_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Engineer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Engineer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Fiona_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Fiona_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Paladin_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Paladin_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Fall_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUnit_Lancer_Head.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\Lancer\Head</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9300,6 +9408,60 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_Patrol_Cure_Loop_Priest.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_Patrol\04. Others\06. Priest\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Warrior.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Engineer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Fiona.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Paladin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Priest.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\06. Priest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Warrior_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Warrior_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\01. Warrior\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Engineer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Engineer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\02. Engineer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Fiona_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Fiona_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\03. Fiona\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Paladin_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Paladin_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\04. Paladin\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Fall_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\05. Fall\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUnit_Lancer_Head.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\Lancer\Head</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

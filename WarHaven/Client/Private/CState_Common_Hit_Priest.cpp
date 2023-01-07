@@ -55,6 +55,8 @@ HRESULT CState_Common_Hit_Priest::Initialize()
 
     m_iStateChangeKeyFrame = 20;
 
+    Add_KeyFrame(m_iStateChangeKeyFrame * 2, 0);
+
     m_fAnimSpeed = 2.f;
     
     return S_OK;
@@ -76,6 +78,8 @@ void CState_Common_Hit_Priest::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 
 STATE_TYPE CState_Common_Hit_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_bAttackTrigger)
+        return AI_STATE_COMBAT_STINGATTACK_PRIEST;
 
     if (pAnimator->Is_CurAnimFinished())
     {
@@ -89,16 +93,26 @@ STATE_TYPE CState_Common_Hit_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
         {
         case 0:
 
-            // return AI_STATE_COMBAT_GUARDDASH_WARRIOR;
+            if (pOwner->Get_TargetUnit())
+            {
+                if (pOwner->Can_Use(CUnit::SKILL1))
+                    return AI_STATE_COMBAT_AIRDASH_PRIEST;
+            }
 
+
+            break;
+            
         case 1:
 
-            // return AI_STATE_COMBAT_HORIZONTALMIDDLE_WARRIOR_R;
-
+            if (pOwner->Get_TargetUnit())
+            {
+                if (pOwner->Can_Use(CUnit::SKILL2))
+                    return AI_STATE_COMBAT_WINDATTACK_PRIEST;
+            }
 
         case 2:
-
-            // return AI_STATE_COMBAT_GUARDBEGIN_WARRIOR;
+            m_bAttackTrigger = true;
+            break;
 
 
         default:
@@ -119,4 +133,16 @@ void CState_Common_Hit_Priest::Exit(CUnit* pOwner, CAnimator* pAnimator)
 STATE_TYPE CState_Common_Hit_Priest::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
     return STATE_END;
+}
+void CState_Common_Hit_Priest::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
+{
+    switch (iSequence)
+    {
+    case 0:
+        m_bAttackTrigger = true;
+        break;
+
+    default:
+        break;
+    }
 }

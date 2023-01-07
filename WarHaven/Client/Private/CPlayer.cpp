@@ -143,7 +143,8 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 		L"../bin/resources/meshes/Characters/Valkyrie/Head/SK_Fiona0001_Face_A00_50.fbx",
 		L"../bin/resources/meshes/Characters/Qanda/Head/SK_Qanda0001_Face_A00_50.fbx",
 		L"",
-		L"../bin/resources/meshes/Characters/Lancer/Head/SK_Lancer0000_Face_A00_20.fbx",
+		L"",
+		//L"../bin/resources/meshes/Characters/Lancer/Head/SK_Lancer0000_Face_A00_20.fbx",
 	};
 
 	//L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00_50.fbx", // WARRIOR
@@ -189,12 +190,8 @@ void CPlayer::Create_Class(CPlayerInfo::PLAYER_SETUP_DATA tSetUpData)
 
 		tModelData[i].strModelPaths[MODEL_PART_BODY] = wstrModeBody[i];
 
-		if (i == LANCER)
-			tModelData[i].strModelPaths[MODEL_PART_SKEL] = wstrModeBody[i];
-
 		tModelData[i].strModelPaths[MODEL_PART_FACE] = wstrModeFace[i];
 		tModelData[i].strModelPaths[MODEL_PART_HEAD] = wstrModeHead[i];
-
 
 		if (wstrModeWeapon_R[i] != L"")
 		{
@@ -1265,7 +1262,7 @@ void CPlayer::Update_HeroGauge()
 		}
 		else //변신 중일때 
 		{
-			m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
+			//m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
 
 			if (m_bIsMainPlayer)
 			{

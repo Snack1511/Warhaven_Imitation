@@ -512,13 +512,10 @@ void CProjectile::My_LateTick()
 			_float SplineX = A * pow(vMyLook.x - vLook.y, 3) + B * pow(vMyLook.x - vLook.y, 2) +
 				C * (vMyLook.x - vLook.y) + D * (vMyLook.x - vLook.x) + E * (vMyLook.x - vLook.z);
 
-			_float SplineY = A * pow(vMyLook.y - vLook.y, 3) + B * pow(vMyLook.y - vLook.y, 2) +
-				C * (vMyLook.y - vLook.y) + D * (vMyLook.y - vLook.x) + E * (vMyLook.y - vLook.z);
-
 			_float SplineZ = A * pow(vMyLook.z - vLook.y, 3) + B * pow(vMyLook.z - vLook.y, 2) +
 				C * (vMyLook.z - vLook.y) + D * (vMyLook.z - vLook.x) + E * (vMyLook.z - vLook.z);
 
-			_float4 vSpeed = _float4(SplineX, SplineY, SplineZ);
+			_float4 vSpeed = _float4(SplineX, fDT(0), SplineZ);
 
 			if (fabs(vMyLook.x - vLook.x) >= 0.2f)
 				MyMatrix.m[3][0] += vLook.x;
@@ -532,11 +529,7 @@ void CProjectile::My_LateTick()
 			else
 				MyMatrix.m[3][0] += vSpeed.z * fDT(0);
 
-			if (fabs(vMyLook.y - vLook.y) >= 0.2f)
-				MyMatrix.m[3][0] += vLook.y;
-
-			else
-				MyMatrix.m[3][0] += vSpeed.y * fDT(0);
+			MyMatrix.m[3][0] += vLook.y;
 
 		}
 
