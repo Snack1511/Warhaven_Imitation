@@ -665,16 +665,22 @@ float4x4 saturationMatrix(float saturation)
 float brightness = 0.15;
 float contrast = 1.2;
 float saturation = 1.5;
+bool g_bHDR = true;
 
 PS_OUT PS_MAIN_HDR(PS_DOWNSCALE_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
 
+	if (!g_bHDR)
+		return Out;
+
 	float4x4 matBrightnessContrast = mul(brightnessMatrix(brightness), contrastMatrix(contrast));
 	float4x4 matBrightnessContrastSaturation = mul(matBrightnessContrast, saturationMatrix(saturation));
 
 	Out.vColor = mul(Out.vColor, matBrightnessContrastSaturation);
+
+	return Out;
 }
 
 
@@ -1090,6 +1096,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_SSAO();
+	}
+
+	pass HDR
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_HDR();
 	}
 
 }

@@ -1254,7 +1254,27 @@ HRESULT CRender_Manager::Render_RimLight()
 }
 HRESULT CRender_Manager::Render_SSAO()
 {
-	//1. 모션블러 텍스쳐 굽기
+	//HDR
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HDRAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+		return E_FAIL;
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	static _bool g_bHDR = true;
+	if (KEY(N, TAP))
+		g_bHDR = !g_bHDR;
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_bHDR", &g_bHDR, sizeof(_bool));
+	m_vecShader[SHADER_BLUR]->Begin(11);
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	//SSAO
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_SSAOAcc"))))
 		return E_FAIL;
 
@@ -1263,7 +1283,7 @@ HRESULT CRender_Manager::Render_SSAO()
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_NormalTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Normal")))))
 		return E_FAIL;
 
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(L"Target_Forward"))))
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(L"Target_HDR"))))
 		return E_FAIL;
 
 	_float4x4		ViewMatrixInv, ProjMatrixInv;
@@ -1276,7 +1296,7 @@ HRESULT CRender_Manager::Render_SSAO()
 
 
 	static _bool g_bSSAO = true;
-	if (KEY(U, TAP))
+	if (KEY(M, TAP))
 	{
 		g_bSSAO = !g_bSSAO;
 	}
@@ -1903,11 +1923,8 @@ HRESULT CRender_Manager::Render_EffectBlur()
 
 HRESULT CRender_Manager::Render_PostEffect()
 {
-	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HDRAcc"))))
-		return E_FAIL;
+	
 
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_FinalBlend")))))
-		return E_FAIL;
 
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_PostEffectAcc"))))
 		return E_FAIL;
@@ -1939,7 +1956,6 @@ HRESULT CRender_Manager::Render_PostEffect()
 
 
 
-	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 
 

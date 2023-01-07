@@ -129,7 +129,7 @@ HRESULT CLight_Manager::Load_Lights(wstring wstrPath)
 
 void CLight_Manager::Update_Lights()
 {
-	/*if (KEY(Y, TAP))
+	if (KEY(Y, TAP))
 		m_Lights.back()->m_LightDesc.vDiffuse.x += 0.05f;
 	if (KEY(H, TAP))
 		m_Lights.back()->m_LightDesc.vDiffuse.x -= 0.05f;
@@ -151,7 +151,7 @@ void CLight_Manager::Update_Lights()
 		wstrTemp += to_wstring(m_Lights.back()->m_LightDesc.vDiffuse.z);
 		MessageBox(0, wstrTemp.c_str(), TEXT("DIFFUSE"), MB_OK);
 
-	}*/
+	}
 
 	/*if (KEY(Y, HOLD))
 		m_Lights.back()->m_LightDesc.vPosition.x += 0.05f;
