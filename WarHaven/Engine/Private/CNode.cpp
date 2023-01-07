@@ -20,7 +20,8 @@ void CNode::Clear_Node()
 	m_iHCost = 0;
 
 	m_pParentNode = nullptr;
-	m_pSearchingChildList.clear();
+
+	//m_pSearchingChildList.clear();
 }
 
 void CNode::Set_CurGCost(CNode* pPrevNode)
@@ -88,4 +89,14 @@ void CNode::Ready_SearchingChild()
 void CNode::Unique_ChildList()
 {
 	m_pChildList.unique();
+}
+
+void CNode::Remove_Child(CNode* pNode)
+{
+	m_pChildList.remove(pNode);
+}
+
+void CNode::Clear_ChildList()
+{
+	m_pChildList.clear();
 }

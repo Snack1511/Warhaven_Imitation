@@ -87,6 +87,17 @@ private:
 	wstring m_strCurSelectWhatCondition = L"";
 	DraggingData m_CurSelectIncludeCondition;
 	DraggingData m_CurSelectExcludeCondition;
+public:
+	void Set_DebugDestination(_float4 vPosition);
+	void Set_DebugRoute(list<_float4> vPosList);
+	void Set_DebugNode(list<_float4> vPosList);
+	void Clear_DebugDestination();
+	void Clear_DebugRoute();
+	void Clear_DebugNode();
+private:
+	CDebugObject* m_pDebugDestination = nullptr;
+	list<CDebugObject*> m_listRouteDebug;
+	list<CDebugObject*> m_listNodeDebug;
 };
 
 END

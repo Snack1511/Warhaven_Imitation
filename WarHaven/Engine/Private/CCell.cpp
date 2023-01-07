@@ -82,7 +82,16 @@ _bool CCell::Check_Attribute(_uint iAttribute)
 
 	return false;
 }
+void CCell::Set_LayerKey(_float Height)
+{
+	m_fLayerKey = Height;
 
+	m_vPoints[POINT_A].y = Height;
+	m_vPoints[POINT_B].y = Height;
+	m_vPoints[POINT_C].y = Height;
+
+	m_vCenter.y = Height;
+}
 HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex, _float fMinHeight)
 {
 	m_iMyIndex = iIndex;
@@ -209,20 +218,35 @@ _bool CCell::isIn(_vector vPosition, CCell** pOutNeighborCell, LINE* pOutLine)
 
 	return true;
 }
-_bool CCell::Check_CrossLines(_float4 LineStart, _float4 LineEnd)
+_bool CCell::Check_InCell(_float4 vPosition)
+{
+	/* 이 쎌의 세변에 대해서 나갔는지 안낙ㅆ다ㅣ;ㅓ 판단한다. */
+	for (_uint i = 0; i < LINE_END; ++i)
+	{
+		_vector	vDir = vPosition.XMLoad() - XMLoadFloat3(&m_vPoints[i]);
+
+		/* 바깥으로 나갔으면 갱신 */
+		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMVector3Normalize(XMLoadFloat3(&m_vNormal[i])))))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+_bool CCell::Check_CrossLines(_float4 LineStart, _float4 LineEnd, _bool bCheckSamePoint)
 {
 	_float2 PA = _float2(m_vPoints[POINT_A].x, m_vPoints[POINT_A].z);
 	_float2 PB = _float2(m_vPoints[POINT_B].x, m_vPoints[POINT_B].z);
 	_float2 PC = _float2(m_vPoints[POINT_C].x, m_vPoints[POINT_C].z);
 	_float2 v2LineStart = _float2(LineStart.x, LineStart.z);
 	_float2 v2LineEnd = _float2(LineEnd.x, LineEnd.z);
-	if (CUtility_Cell::Is_Cross(PA, PB, v2LineStart, v2LineEnd))
+	if (CUtility_Cell::Is_Cross(PA, PB, v2LineStart, v2LineEnd, bCheckSamePoint))
 		return true;
 
-	if (CUtility_Cell::Is_Cross(PB, PC, v2LineStart, v2LineEnd))
+	if (CUtility_Cell::Is_Cross(PB, PC, v2LineStart, v2LineEnd, bCheckSamePoint))
 		return true;
 
-	if (CUtility_Cell::Is_Cross(PC, PA, v2LineStart, v2LineEnd))
+	if (CUtility_Cell::Is_Cross(PC, PA, v2LineStart, v2LineEnd, bCheckSamePoint))
 		return true;
 
 	return false;

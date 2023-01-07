@@ -82,7 +82,7 @@ private:
 	_int m_iCellAttribute = 1;
 	_uint m_iAttrubuteIndex = 0;
 	_float m_fBrushSize = 1.f;
-	static pair<const char*, _int> m_iAttributeArray[3];
+	static pair<const char*, _int> m_iAttributeArray[5];
 private:
 	void		On_Picking(_uint iLayerIndex, _float4 vPickedPos);
 	void		On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos);
@@ -90,6 +90,12 @@ private:
 	void		On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos, _float fRange);
 	void		On_CellPick_Neighbor(_uint iLayerIndex, _float4 vPickedPos);
 	
+	void		On_Replace_PickedAttribute(_float4 vPickedPos);
+
+	void		Create_DebugObject();
+	void		Clear_DebugObject();
+	list<CDebugObject*> m_listDebug;
+	list<CDebugObject*> m_listDebugLine;
 private:
 	void		On_ShootRay();
 	HRESULT		ShootRay_FirstFloor();

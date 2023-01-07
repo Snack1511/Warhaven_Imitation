@@ -20,6 +20,8 @@ pair<const char*, _int> CWindow_Tile::m_iAttributeArray[] =
 {
 	make_pair("Blocked", (_int)CELL_BLOCKED),
 	make_pair("Ground", (_int)CELL_GROUND),
+	make_pair("Wall", (_int)CELL_WALL),
+	make_pair("Grass", (_int)CELL_GRASS),
 	make_pair("Stair", (_int)CELL_STAIR),
 };
 
@@ -167,6 +169,26 @@ void CWindow_Tile::Tick()
 			}
 		}
 	}
+	if (KEY(P, HOLD))
+	{
+		if (KEY(LBUTTON, HOLD))
+		{
+			if (m_pCurLayer)
+			{
+				_float4 vOutPos, vFinalPos = _float4(0.f, -999.f, 0.f);
+				_uint3 iIndex(1, 2, 3);
+				_uint iCurIndex = 0;
+
+				_uint iPlusIndex = 0;
+
+				if (GAMEINSTANCE->Is_Picked_FixedHeight(m_pCurLayer->Get_MinHeight(), &vOutPos))
+				{
+					debugPick = vOutPos;
+					On_Replace_PickedAttribute(vOutPos);
+				}
+			}
+		}
+	}
 #ifdef _DEBUG
 #ifdef DEBUGRENDER
 
@@ -230,6 +252,7 @@ HRESULT CWindow_Tile::Render()
 				SAFE_DELETE(Iter->second);
 				m_pLayers.erase(Iter);
 			}
+			m_pCurLayer->Reset_Neighbor();
 			m_pLayers.emplace(m_fTileHeightMinRange, m_pCurLayer);
 		}
 		if (ImGui::Button("GENERATE_TILE"))
@@ -284,82 +307,134 @@ HRESULT CWindow_Tile::Render()
 				m_pLayers.erase(Key);
 				m_pCurLayer->Set_MinHeight(m_fTileHeightMinRange);
 				m_pLayers.emplace(m_fTileHeightMinRange, m_pCurLayer);
+
 			}
 		}
 
 		if (!m_pLayers.empty())
 		{
-			for (auto& Layers : m_pLayers)
+			if (ImGui::CollapsingHeader("Select Layer"))
 			{
-				_float Key = Layers.first;
-				if (ImGui::Button(to_string(Key).c_str()))
+				for (auto& Layers : m_pLayers)
 				{
-					m_pCurLayer = Layers.second;
-					m_iNumTilesX = m_pCurLayer->Get_XTileNums();
-					m_iNumTilesZ = m_pCurLayer->Get_ZTileNums();
-					m_fTileSize = m_pCurLayer->Get_TileSize();
-					m_fTileHeightMinRange = m_pCurLayer->Get_MinHeight();
-					m_fTileHeightMaxRange = m_pCurLayer->Get_MaxHeight();
-				}
-			}
-			ImGui::DragFloat("fBrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.2f");
-			if (ImGui::BeginCombo("Attribute", m_iAttributeArray[m_iAttrubuteIndex].first))
-			{
-				for (_uint i = 0; i < 3; ++i)
-				{
-					_bool bSelect = false;
-					if (m_iAttrubuteIndex == i)
+					_float Key = Layers.first;
+					if (ImGui::Button(to_string(Key).c_str()))
 					{
-						bSelect = true;
-					}
-					if (ImGui::Selectable(m_iAttributeArray[i].first, bSelect))
-					{
-						m_iAttrubuteIndex = i;
+						m_pCurLayer = Layers.second;
+						m_iNumTilesX = m_pCurLayer->Get_XTileNums();
+						m_iNumTilesZ = m_pCurLayer->Get_ZTileNums();
+						m_fTileSize = m_pCurLayer->Get_TileSize();
+						m_fTileHeightMinRange = m_pCurLayer->Get_MinHeight();
+						m_fTileHeightMaxRange = m_pCurLayer->Get_MaxHeight();
 					}
 				}
-				ImGui::EndCombo();
 			}
-			if (ImGui::CollapsingHeader("For_Create"))
+			if (ImGui::CollapsingHeader("Attributes")) 
 			{
-				if (ImGui::Button("ResetNeighbor"))
+				ImGui::DragFloat("fBrushSize", &m_fBrushSize, 0.01f, 0.f, 100.f, "%.2f");
+				if (ImGui::BeginCombo("SelectAttribute", m_iAttributeArray[m_iAttrubuteIndex].first))
+				{
+					for (_uint i = 0; i < 5; ++i)
+					{
+						_bool bSelect = false;
+						if (m_iAttrubuteIndex == i)
+						{
+							bSelect = true;
+						}
+						if (ImGui::Selectable(m_iAttributeArray[i].first, bSelect))
+						{
+							m_iAttrubuteIndex = i;
+						}
+					}
+					ImGui::EndCombo();
+				}
+			}
+			if (ImGui::CollapsingHeader("Layer Copy"))
+			{
+				if (ImGui::Button("Clone_CurLayer"))
+				{
+					CCellLayer* pLayer = m_pCurLayer->Clone_Layer(m_pCurLayer->Get_MinHeight() + 1.f);
+					
+					m_pLayers.emplace(pLayer->Get_MinHeight(), pLayer);
+					m_pCurLayer = pLayer;
+					
+				}
+			}
+			if (ImGui::CollapsingHeader("Visibility"))
+			{
+				if (m_listDebug.empty()) 
+				{
+					if (ImGui::Button("Show_BlockedPos"))
+					{
+						Create_DebugObject();
+					}
+				}
+				else
+				{
+					if (ImGui::Button("Hide_BlockedPos"))
+					{
+						Clear_DebugObject();
+					}
+				}
+				if (ImGui::Button("Create_Visibility"))
 				{
 					if (m_pCurLayer)
 					{
-						m_pCurLayer->Reset_Neighbor();
+						m_pCurLayer->SetUp_Nodes();
+						m_pCurLayer->SetUp_Visibility();
+						//Bin\Data\GameSystem\CellData\Map_Paden\Map_Paden_0
+						//
+						string strSavePath = m_CellDataDirectory;
+						string strDebugName = CFunctor::To_String(m_pCurLayer->Get_DebugName());
+						_int iFind = strDebugName.rfind("_");
+						string strFolderName = strDebugName.substr(0, iFind);
+						strSavePath += "/";
+						strSavePath += strFolderName;
+						strSavePath += "/";
+						strSavePath += strDebugName;
+						strSavePath += "/";
+						strSavePath += strDebugName;
+						strSavePath += "_Visibility.bin";
+						m_pCurLayer->Save_Visiblity(CFunctor::To_Wstring(strSavePath));
 					}
+					
 				}
-				if (ImGui::Button("SetUp_CellList"))
+				if (ImGui::Button("Load_Visibility"))
 				{
 					if (m_pCurLayer)
 					{
-						m_pCurLayer->SetUp_CellList();
+						m_pCurLayer->SetUp_Nodes();
+
+						string strLoadPath = m_CellDataDirectory;
+						string strDebugName = CFunctor::To_String(m_pCurLayer->Get_DebugName());
+						_int iFind = strDebugName.rfind("_");
+						string strFolderName = strDebugName.substr(0, iFind);
+						strLoadPath += "/";
+						strLoadPath += strFolderName;
+						strLoadPath += "/";
+						strLoadPath += strDebugName;
+						strLoadPath += "/";
+						strLoadPath += strDebugName;
+						strLoadPath += "_Visibility.bin";
+						m_pCurLayer->Load_Visibility(CFunctor::To_Wstring(strLoadPath));
 					}
 				}
 			}
-			if (ImGui::CollapsingHeader("For_Load")) 
+			if (ImGui::CollapsingHeader("LayerRoute"))
 			{
-				if (ImGui::Button("SetUp_Neighvor"))
+				if (ImGui::Button("SetUp_LayerRoute"))
 				{
-					if (m_pCurLayer)
+					for (auto Layer : m_pLayers)
 					{
-						m_pCurLayer->SetUp_Neighbor(m_pLayers);
+						Layer.second->SetUp_StairList(m_pLayers);
+					}
+					for (auto Layer : m_pLayers)
+					{
+						Layer.second->SetUp_LayerRoute(m_pLayers);
 					}
 				}
 			}
-			if (ImGui::Button("SetUp_Node"))
-			{
-				if (m_pCurLayer)
-				{
-					m_pCurLayer->SetUp_Nodes();
-				}
-			}
-			if (ImGui::Button("SetUp_Visiblity"))
-			{
-				if (m_pCurLayer)
-				{
-					m_pCurLayer->SetUp_Visibility();
-				}
-			}
+
 		}
 
 		if (!m_vecTileDebugger.empty())
@@ -454,6 +529,7 @@ HRESULT CWindow_Tile::Render()
 		}
 		string PreviewData = (m_FileDatas.empty()) ? "" : get<SL_FileName>(m_FileDatas[m_iFileDataIndex]);
 		if (ImGui::BeginCombo("##SelectLoadData", PreviewData.c_str()))
+		//if (ImGui::BeginListBox("##SelectLoadData"))
 		{
 			for(_uint i = 0; i < _uint(m_FileDatas.size()); ++i)
 			{
@@ -462,11 +538,12 @@ HRESULT CWindow_Tile::Render()
 				{
 					bSelect = true;
 				}
-				if (ImGui::Selectable(get<SL_FileName>(m_FileDatas[i]).c_str()), bSelect)
+				if (ImGui::Selectable(get<SL_FileName>(m_FileDatas[i]).c_str(), bSelect))
 				{
 					m_iFileDataIndex = i;
 				}
 			}
+			//ImGui::EndListBox();
 			ImGui::EndCombo();
 		}
 		ImGui::SameLine();
@@ -1331,14 +1408,14 @@ void CWindow_Tile::Load_AllLayer(string strKey)
 		}
 	}
 
-	//for (auto& Layers : m_pLayers)
-	//{
-	//	Layers.second->SetUp_Neighbor(m_pLayers);
-	//	//노드 설정
-	//	Layers.second->SetUp_Nodes();
-	//	//가시성 설정
-	//	Layers.second->SetUp_Visibility();
-	//}
+	for (auto& Layers : m_pLayers)
+	{
+		Layers.second->SetUp_Neighbor(m_pLayers);
+		////노드 설정
+		//Layers.second->SetUp_Nodes();
+		////가시성 설정
+		//Layers.second->SetUp_Visibility();
+	}
 }
 
 void CWindow_Tile::On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos)
@@ -1376,6 +1453,17 @@ void CWindow_Tile::On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos, _f
 	}
 }
 
+void CWindow_Tile::On_Replace_PickedAttribute(_float4 vPickedPos)
+{
+	if (m_pCurLayer)
+	{
+		CCell* pCell = m_pCurLayer->Find_Cell(vPickedPos);
+		_byte PickedAttribute = pCell->Get_Attribute();
+
+		m_pCurLayer->Replace_Attribute(PickedAttribute, m_iAttributeArray[m_iAttrubuteIndex].second);
+	}
+}
+
 void CWindow_Tile::On_CellPick_Neighbor(_uint iLayerIndex, _float4 vPickedPos)
 {
 	if (m_pCurLayer)
@@ -1387,4 +1475,56 @@ void CWindow_Tile::On_CellPick_Neighbor(_uint iLayerIndex, _float4 vPickedPos)
 		//CCell* pNeighbor = m_pCurLayer->Find_Cell(vPickedPos);
 		//m_pSelectCell->Set_Neighbor(m_iNeighborLine, pNeighbor);
 	}
+}
+
+void CWindow_Tile::Create_DebugObject()
+{
+	if (m_pCurLayer)
+	{
+		for (auto Pos : m_pCurLayer->Get_BlockedPositionList())
+		{
+			PxTransform tTransform;
+			ZeroMemory(&tTransform, sizeof(PxTransform));
+			tTransform.p.x = Pos.x;
+			tTransform.p.y = Pos.y;
+			tTransform.p.z = Pos.z;
+			m_listDebug.push_back(
+				CDebugObject::Create(tTransform)
+			);
+			CREATE_GAMEOBJECT(m_listDebug.back(), GROUP_PHYSX);
+		}
+
+		for (auto Link : m_pCurLayer->Get_LinkList())
+		{
+			_float4 vDir = (Link.second - Link.first);
+			_float fLength = vDir.Length();
+			_float4 vLinePos = (Link.second + Link.first) * 0.5f;
+
+			_float4 vScale = _float4(0.2f, 0.2f, fLength);
+
+			CDebugObject* pDebugLine = CDebugObject::Create(vLinePos, vScale);
+			pDebugLine->Initialize();
+			pDebugLine->Set_Blue();
+			pDebugLine->Get_Transform()->Set_Look(vDir);
+			CREATE_GAMEOBJECT(pDebugLine, GROUP_PROP);
+			m_listDebugLine.push_back(pDebugLine);
+		}
+
+
+	}
+}
+
+void CWindow_Tile::Clear_DebugObject()
+{
+	for (auto& Debug : m_listDebug)
+	{
+		DELETE_GAMEOBJECT(Debug);
+	}
+	m_listDebug.clear();
+
+	for (auto& Debug : m_listDebugLine)
+	{
+		DELETE_GAMEOBJECT(Debug);
+	}
+	m_listDebugLine.clear();
 }

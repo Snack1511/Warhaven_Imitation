@@ -28,6 +28,7 @@ class CUI_UnitHUD;
 class CAIController;
 class CBehavior;
 class CPath;
+class CDebugObject;
 
 
 /*
@@ -312,8 +313,17 @@ private:
 public:
 	void Make_BestRoute(_float4 vPosition);
 	list<_float4>& Get_CurRoute() { return m_CurRoute; }
+	list<_float4>& Get_CurNodeList() { return m_CurNodeList; }
+#ifdef _DEBUG
+	void Add_DebugObject(_float4 vPosition);
+	void Clear_DebugObject();
+#endif
 private:
 	list<_float4> m_CurRoute;
+	list<_float4> m_CurNodeList;
+#ifdef _DEBUG
+	list<CDebugObject*> m_pRouteDebug;
+#endif
 
 private:
 	virtual void My_Tick() override;
@@ -349,5 +359,7 @@ private:
 private:
 	void	Update_DieDelay();
 	void	Check_AbleRevival();
+
+
 };
 END

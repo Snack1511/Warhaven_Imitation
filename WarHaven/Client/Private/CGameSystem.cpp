@@ -1510,7 +1510,7 @@ HRESULT CGameSystem::SetUp_DefaultLight_Paden()
 
 HRESULT CGameSystem::SetUp_CellLayer(wstring strFolderName)
 {
-	wstring strPath = L"../Bin/Data/MapData/CellData";
+	wstring strPath = L"../Bin/Data/GameSystem/CellData";
 	strPath += L"/";
 	strPath += strFolderName;
 	strPath += L"/";
@@ -1521,20 +1521,20 @@ HRESULT CGameSystem::SetUp_CellLayer(wstring strFolderName)
 		const filesystem::directory_entry& entry = *FileIter;
 
 		wstring wstrPath = entry.path().relative_path();
+		//CellData/Map_Paden/Map_Paden_0
 		string strFullPath;
 		strFullPath.assign(wstrPath.begin(), wstrPath.end());
 
-		_int iFind = (_int)strFullPath.rfind("\\") + 1;
-		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
-
-		if (!entry.is_directory())
+		_int iFind = (_int)strFullPath.rfind("/");
+		string strFileName = strFullPath.substr(iFind + 1, strFullPath.length());
+		if (entry.is_directory())
 		{
-			_int iFindExt = (int)strFileName.rfind(".") + 1;
-			string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
-			strFileName = strFileName.substr(0, iFindExt);
+			//_int iFindExt = (int)strFileName.rfind(".") + 1;
+			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			//strFileName = strFileName.substr(0, iFindExt);
 
-			CCellLayer* pLayer = CCellLayer::Create(wstrPath, wstring(L""));
-			pLayer->Set_DebugName(CFunctor::To_Wstring(strFileName));
+			CCellLayer* pLayer = CCellLayer::Create(wstrPath, CFunctor::To_Wstring(strFileName));
+			//pLayer->Set_DebugName(CFunctor::To_Wstring(strFileName));
 
 			m_CellLayer.emplace(pLayer->Get_MinHeight(), pLayer);
 		}
@@ -1543,10 +1543,20 @@ HRESULT CGameSystem::SetUp_CellLayer(wstring strFolderName)
 	for (auto& Layers : m_CellLayer)
 	{
 		Layers.second->SetUp_Neighbor(m_CellLayer);
+		//StairCellList따로 설정
+		Layers.second->SetUp_StairList(m_CellLayer);
+
+	}	
+	for (auto& Layers : m_CellLayer)
+	{
+		//위의 CellList기반으로 LayerRoute설정
+		Layers.second->SetUp_LayerRoute(m_CellLayer);
 		//노드 설정
 		Layers.second->SetUp_Nodes();
 		//가시성 설정
-		Layers.second->SetUp_Visibility();
+		//Layers.second->SetUp_Visibility();
+		Layers.second->Load_Visibility();
+
 	}
 
 	return S_OK;

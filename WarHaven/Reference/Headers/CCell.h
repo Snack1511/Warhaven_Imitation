@@ -1,11 +1,12 @@
 #pragma once
 #include "Engine_Defines.h"
 
-#define CELL_BLOCKED	0x01// 0000 0000 0000 0001
+#define CELL_GROUND		0x01// 0000 0000 0000 0001
 #define CELL_WALL		0x02// 0000 0000 0000 0010
-#define CELL_GROUND		0x04// 0000 0000 0000 0100
-#define CELL_GRASS		0x08// 0000 0000 0000 1000
-#define CELL_STAIR		0x10// 0000 0000 0001 0000
+#define CELL_GRASS		0x04// 0000 0000 0000 0100
+#define CELL_STAIR		0x08// 0000 0000 0000 1000
+#define CELL_BLOCKED	0x10// 0000 0000 0000 0000
+
 
 BEGIN(Engine)
 
@@ -87,14 +88,16 @@ public:
 
 	_bool Check_Attribute(_uint iAttribute);
 	_byte Get_Attribute() { return m_bCellFlag; }
-	void Set_LayerKey(_float Height) { m_fLayerKey = Height; };
+	void Set_LayerKey(_float Height);
 public:
 	// CComponent을(를) 통해 상속됨
 	HRESULT Initialize(const _float3* pPoints, _int iIndex, _float fMinHeight);
 	void	Make_Matrix();
 	_bool Compare_Points(_vector vSourPoint, _vector vDestPoint);
 	_bool isIn(_vector vPosition, CCell** pOutNeighborCell, LINE* pOutLine);
-	_bool Check_CrossLines(_float4 LineStart, _float4 LineEnd);
+
+	_bool Check_InCell(_float4 vPosition);
+	_bool Check_CrossLines(_float4 LineStart, _float4 LineEnd, _bool bCheckSamePoint = false);
 
 #ifdef _DEBUG
 //public:

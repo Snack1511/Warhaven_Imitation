@@ -65,11 +65,15 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (!pOwner->Get_CurRoute().empty()) 
 	{
 		_float4 vDestination = pOwner->Get_CurRoute().front();
+		vDestination.y = vCurPos.y;
 		_float4 vDiffPositon = (vDestination - vCurPos);
 		if (vDiffPositon.Length() 
 			<= m_pOwner->Get_PhysicsCom()->Get_Physics().fSpeed * fDT(0))
 		{
 			pOwner->Get_CurRoute().pop_front();
+#ifdef _DEBUG
+			pOwner->Get_OwnerPlayer()->Add_DebugObject(vDestination);
+#endif
 		}
 		vDir = vDiffPositon.Normalize();
 	}
@@ -80,6 +84,12 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		pCurPath->Update_CurrentIndex(vCurPos);
 		
 	}
+	CCell* pCurCell = pOwner->Get_NaviCom()->Get_CurCell(vCurPos, CGameSystem::Get_Instance()->Get_CellLayer());
+	if (pCurCell->Check_Attribute(CELL_STAIR))
+	{
+		m_iRand = 3;
+	}
+
 	pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
 	pOwner->Get_PhysicsCom()->Set_Dir(vDir);
 	pOwner->Get_PhysicsCom()->Set_Accel(100.f);

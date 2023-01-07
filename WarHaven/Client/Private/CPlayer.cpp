@@ -74,7 +74,7 @@
 #include "CAIPersonality.h"
 #include "CBehavior.h"
 #pragma endregion AI 추가용
-
+#include "CDebugObject.h"
 
 
 
@@ -86,6 +86,9 @@ CPlayer::~CPlayer()
 {
 	m_DeadLights.clear();
 	SAFE_DELETE(m_pCurPath);
+#ifdef _DEBUG
+	Clear_DebugObject();
+#endif
 }
 
 CPlayer* CPlayer::Create(CPlayerInfo* pPlayerInfo)
@@ -1051,7 +1054,9 @@ void CPlayer::Change_NearPath()
 	if (nullptr == pPath)
 		return;
 	Set_NewPath(pPath->Clone());
+
 	Make_BestRoute(m_pCurPath->Get_vecPositions()[0]);
+	
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
@@ -1266,12 +1271,39 @@ void CPlayer::Update_KDA()
 	}
 }
 
+void CPlayer::Add_DebugObject(_float4 vPosition)
+{
+	PxTransform tTransform;
+	ZeroMemory(&tTransform, sizeof(PxTransform));
+	tTransform.p.x = vPosition.x;
+	tTransform.p.y = vPosition.y;
+	tTransform.p.z = vPosition.z;
+	m_pRouteDebug.push_back(
+		CDebugObject::Create(tTransform)
+	);
+	CREATE_GAMEOBJECT(m_pRouteDebug.back(), GROUP_PHYSX);
+}
+
+void CPlayer::Clear_DebugObject()
+{
+	for (auto& Debug : m_pRouteDebug)
+	{
+		DELETE_GAMEOBJECT(Debug);
+	}
+	m_pRouteDebug.clear();
+}
+
 void CPlayer::Make_BestRoute(_float4 vPosition)
 {	
+#ifdef _DEBUG
+	Clear_DebugObject();
+#endif
 	m_CurRoute.clear();
 	m_CurRoute = m_pCurrentUnit->Get_NaviCom()->
 		Get_BestRoute(CGameSystem::Get_Instance()->Get_CellLayer(),
 			Get_WorldPos(), vPosition);
+
+	m_CurNodeList = m_pCurrentUnit->Get_NaviCom()->m_DebugRouteNode;
 }
 
 void CPlayer::On_AbleHero()

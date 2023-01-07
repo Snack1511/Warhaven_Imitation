@@ -104,6 +104,142 @@ list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>
 
 		if (vLayerKey <= vStart.y)
 		{
+			_float4 vPosition = _float4(vStart.x, vLayerKey, vStart.z);
+			CCell* pCell = Layer.second->Find_Cell(vPosition);
+
+			if(pCell && !pCell->Check_Attribute(CELL_BLOCKED))
+				pStartLayer = Layer.second;
+		}
+		else
+		{
+			//지형을 뚫고 내려가 있는 녀석들의 경우..
+			if (Layer.first == Layers.begin()->first)
+			{
+				_float4 vPosition = _float4(vStart.x, vLayerKey, vStart.z);
+				CCell* pCell = Layer.second->Find_Cell(vPosition);
+
+				if (pCell && !pCell->Check_Attribute(CELL_BLOCKED))
+					pStartLayer = Layer.second;
+			}
+		}
+
+		if (vLayerKey <= vEnd.y)
+		{
+			_float4 vPosition = _float4(vEnd.x, vLayerKey, vEnd.z);
+			CCell* pCell = Layer.second->Find_Cell(vPosition);
+
+			if (pCell && !pCell->Check_Attribute(CELL_BLOCKED))
+				pEndLayer = Layer.second;
+		}
+		else
+		{
+			//지형을 뚫고 내려가 있는 녀석들의 경우..
+			if (Layer.first == Layers.begin()->first)
+			{
+				_float4 vPosition = _float4(vEnd.x, vLayerKey, vEnd.z);
+				CCell* pCell = Layer.second->Find_Cell(vPosition);
+
+				if (pCell && !pCell->Check_Attribute(CELL_BLOCKED))
+					pEndLayer = Layer.second;
+			}
+		}
+	}
+
+	if (pStartLayer == nullptr || pEndLayer == nullptr)
+		return GoalList;
+
+	if (pStartLayer == pEndLayer)
+	{
+		GoalList.push_back(make_pair(vEnd, pEndLayer));
+		return GoalList;
+	}
+
+	if (pStartLayer->Is_Access(pEndLayer->Get_MinHeight()))
+	{
+		list<_float> LayerRoute = pStartLayer->Get_LayerRoute(pEndLayer->Get_MinHeight());
+		_float PrevKey = pStartLayer->Get_MinHeight();
+		_float4 vStartPos = vStart;
+		for (auto Key : LayerRoute)
+		{
+			if (Key == PrevKey)
+				continue;
+			auto LayerIter = Layers.find(Key);
+			list<CCell*> StairList = LayerIter->second->Get_StairCellList(PrevKey);
+			StairList.sort([&vStartPos](auto Sour, auto Dest) {
+				_float SourLength = (vStartPos - Sour->Get_Position()).Length();
+				_float DestLength = (vStartPos - Dest->Get_Position()).Length();
+				if (SourLength > DestLength)
+					return true;
+				else return false;
+				});
+
+			_float4 vGoal = StairList.front()->Get_Position();
+			GoalList.push_back(make_pair(vGoal, LayerIter->second));
+
+			PrevKey = Key;
+			vStartPos = vGoal;
+		}
+	}
+
+	return GoalList;
+
+	//_float pCurLayerKey = pStartLayer->Get_MinHeight();
+	//_bool bUnderToOver = (pStartLayer->Get_MinHeight() < pEndLayer->Get_MinHeight());
+	//auto CmpIter = Layers.find(pCurLayerKey);
+	//_float4 vStartPos = _float4(vStart.x, pCurLayerKey, vStart.z, 1.f);
+	//for (; CmpIter != Layers.end(); ++CmpIter)
+	//{
+	//	if (CmpIter->second == pEndLayer)
+	//		break;
+
+	//	vStartPos.y = CmpIter->first;
+	//	//두 셀레이어의 Stair셀을 비교할 때 공유되는 지점이 있으면 두 레이어는 해당 계단으로 연결됨
+	//	list<CCell*> StairCellList;
+	//	for (auto Iter = CmpIter; Iter != Layers.end(); ++Iter)
+	//	{
+	//		//다른 레이어들중..CmpIter와 연결된 모든 리스트 가져오기
+	//		list<CCell*> StairList = Iter->second->Get_StairCellList(CmpIter->first);
+	//		//기존 리스트에 병합
+	//		StairCellList.merge(StairList);
+	//	}
+	//	if (!StairCellList.empty()) 
+	//	{
+	//		//시작위치 가까운 순으로 정렬
+	//		StairCellList.sort([&vStartPos](auto& sour, auto& Dest)
+	//			{
+	//				_float SourLen = (sour->Get_Position() - vStartPos).Length();
+	//				_float DestLen = (Dest->Get_Position() - vStartPos).Length();
+	//				if (SourLen > DestLen)
+	//					return true;
+	//				else return false;
+	//			});
+	//		//가장 가까운 위치 삽입
+	//		GoalList.push_back(make_pair((*StairCellList.begin())->Get_Position(), CmpIter->second));
+	//	}
+	//	if (GoalList.empty())
+	//		break;
+	//	//CmpIter와 vStartPos변경
+	//	vStartPos = GoalList.back().first;
+	//}
+ //
+	//GoalList.push_back(make_pair(vEnd, pEndLayer));
+	return GoalList;
+}
+
+/*
+
+//시작 위치의 셀레이어부터
+	//도착 위치의 셀레이어까지
+	//각 점의 최단거리의 계단 셀을 도착지리스트에 넣음
+	list<pair<_float4, CCellLayer*>> GoalList;
+	CCellLayer* pStartLayer = nullptr;
+	CCellLayer* pEndLayer = nullptr;
+	for (auto& Layer : Layers)
+	{
+		_float vLayerKey = Layer.first;
+
+		if (vLayerKey <= vStart.y)
+		{
 			pStartLayer = Layer.second;
 		}
 		if (vLayerKey <= vEnd.y)
@@ -111,6 +247,9 @@ list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>
 			pEndLayer = Layer.second;
 		}
 	}
+
+	if (pStartLayer == nullptr || pEndLayer == nullptr)
+		return GoalList;
 
 	if (pStartLayer == pEndLayer)
 	{
@@ -121,47 +260,101 @@ list<pair<_float4, CCellLayer*>> CNavigation::Get_Goals(map<_float, CCellLayer*>
 	_float pCurLayerKey = pStartLayer->Get_MinHeight();
 	auto CmpIter = Layers.find(pCurLayerKey);
 	_float4 vStartPos = _float4(vStart.x, pCurLayerKey, vStart.z, 1.f);
-	for (; CmpIter != Layers.end(); ++CmpIter)
-	{
-		if (CmpIter->second == pEndLayer)
-			break;
 
-		vStartPos.y = CmpIter->first;
-		//두 셀레이어의 Stair셀을 비교할 때 공유되는 지점이 있으면 두 레이어는 해당 계단으로 연결됨
-		list<CCell*> StairCellList;
-		for (auto Iter = CmpIter; Iter != Layers.end(); ++Iter)
+	
+	* EndLayer부터 시작 가장 처음 레이어까지 반복
+	* CmpLayer = EndLayer--
+	* EndLayer의 Stair --> 얘가 공유되면 연결된 레이어
+	*		Stair가져와서 해당 셀의 인덱스와 일치하는 인덱스가 계단인 레이어와 위치 기억
+	*		기억된 모든 위치를 CmpPosition과 비교해 짧은순으로 정렬
+	*		가장 가까운 위치의 레이어 가져오기
+				--> StartLayer에 도달할 때까지 반복
+	* 연결된 레이어가 없다면? --> 어떤 레이어와도 연결되지 않은 레이어
+	
+_float4 vTargetPosition = vEnd;
+auto EndLayerIter = Layers.find(pEndLayer->Get_MinHeight());
+if (EndLayerIter == Layers.end() || EndLayerIter == Layers.begin())
+assert(0);
+//일단 무식하게 찾아
+for (auto TargetLayerIter = EndLayerIter; TargetLayerIter->second != pStartLayer;)
+{
+	//계단 리스트 가져와
+	list<pair<_float4, CCellLayer*>> LayerList;
+	list<CCell*> StairList = TargetLayerIter->second->Get_StairCellList();
+	//리스트 돌면서
+	for (auto Cell : StairList)
+	{
+		_int CellIndex = Cell->Get_Index();
+		//모든 셀레이어들을 검사해
+		for (auto Layer : Layers)//n
 		{
-			//CmpIter와 연결된 모든 리스트 가져오기
-			list<CCell*> StairList = Iter->second->Get_StairCellList(CmpIter->first);
-			//기존 리스트에 병합
-			StairCellList.merge(StairList);
-		}
-		if (!StairCellList.empty()) 
-		{
-			//시작위치 가까운 순으로 정렬
-			StairCellList.sort([&vStartPos](auto& sour, auto& Dest)
+			//같은 레이어냐?
+			if (TargetLayerIter->second == Layer.second)
+			{
+				//제껴
+				continue;
+			}
+			CCell* pCell = Layer.second->Get_Cell(CellIndex);
+			//연결되 있냐?
+			if (nullptr != pCell && pCell->Check_Attribute(CELL_STAIR))
+			{
+				_float4 vCellPosition = pCell->Get_Position();
+				//그럼 기억해
+				//근대 시작레이어랑 연결되있냐?
+				if (Layer.second == pStartLayer)
 				{
-					_float SourLen = (sour->Get_Position() - vStartPos).Length();
-					_float DestLen = (Dest->Get_Position() - vStartPos).Length();
-					if (SourLen > DestLen)
-						return true;
-					else return false;
-				});
-			//가장 가까운 위치 삽입
-			GoalList.push_back(make_pair((*StairCellList.begin())->Get_Position(), CmpIter->second));
+					//그럼 이때까지 기록한거 다 날리고 이거만 기억하고 나가
+					LayerList.clear();
+					LayerList.push_back(make_pair(vCellPosition, Layer.second));
+					break;
+				}
+				LayerList.push_back(make_pair(vCellPosition, Layer.second));
+
+			}
 		}
-		if (GoalList.empty())
-			break;
-		//CmpIter와 vStartPos변경
-		vStartPos = GoalList.back().first;
 	}
- 
-	GoalList.push_back(make_pair(vEnd, pEndLayer));
-	return GoalList;
+
+	//vTargetPosition와의 거리기준으로 정렬해
+	LayerList.sort([&vTargetPosition](auto Sour, auto Dest)
+		{
+			Sour.first.y = vTargetPosition.y;
+			Dest.first.y = vTargetPosition.y;
+			_float SourLength = (vTargetPosition - Sour.first).Length();
+			_float DestLength = (vTargetPosition - Dest.first).Length();
+			if (SourLength > DestLength)
+				return true;
+			else return false;
+		});
+
+	//front따로 저장해
+	GoalList.push_back(LayerList.front());
+
+	//만약 StartLayer가 맞으면
+	if (LayerList.front().second == pStartLayer)
+	{
+		//나가
+		break;
+
+	}
+	else//아니라면
+	{
+		//기준 값 업데이트 하고 반복해
+		vTargetPosition = LayerList.front().first;
+		TargetLayerIter = Layers.find(LayerList.front().second->Get_MinHeight());
+	}
 }
+
+//거꾸로 되있는거 돌려
+GoalList.reverse();
+
+return GoalList;
+
+*/
+
 //A. 연산량 주의
 list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
 {
+	m_DebugRouteNode.clear();
 	list<pair<_float4, CCellLayer*>>GoalList = Get_Goals(Layers, vStart, vEnd);
 	CCellLayer::CellList Routes;
 	m_pStartNode->Set_NodePosition(vStart);
@@ -173,21 +366,62 @@ list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _floa
 			continue;
 		m_pEndNode->Set_NodePosition(value.first);
 
-		CCellLayer::CellList List = value.second->Get_BestRoute(m_pStartNode, m_pEndNode);
+		_bool bFind = false;
+		CCellLayer::CellList List = value.second->Get_BestRoute(m_pStartNode, m_pEndNode, bFind, m_DebugRouteNode);
 
-		Routes.merge(List);
+		if (Routes.empty())
+		{
+			Routes.swap(List);
+		}
+		else
+		{
+			Routes.merge(List);
+		}
 		m_pStartNode->Clear_Node();
 		m_pEndNode->Clear_Node();
 
 		m_pStartNode->Set_NodePosition(value.first);
 	}
-
+	if (!Routes.empty()) 
+	{
+		Routes.pop_front();
+		if(!Routes.empty())
+			Routes.pop_back();
+	}
 	list<_float4> Return;
+	Return.push_back(vStart);
 	for (auto Cell : Routes)
 	{
 		Return.push_back(Cell->Get_Position());
 	}
+	Return.push_back(vEnd);
 	return Return;
+}
+
+CCell* CNavigation::Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers)
+{
+	CCell* pReturn = nullptr;
+	for (auto& Layer : Layers)
+	{
+		_float vLayerKey = Layer.first;
+
+		if (vLayerKey <= vPosition.y)
+		{
+			_float4 vTargetPosition = _float4(vPosition.x, vLayerKey, vPosition.z);
+			pReturn = Layer.second->Find_Cell(vTargetPosition);
+		}
+		else
+		{
+			//지형을 뚫고 내려가 있는 녀석들의 경우..
+			if (Layer.first == Layers.begin()->first)
+			{
+				_float4 vTargetPosition = _float4(vPosition.x, vLayerKey, vPosition.z);
+				pReturn = Layer.second->Find_Cell(vTargetPosition);
+			}
+		}
+
+	}
+	return pReturn;
 }
 
 //CNavigation::CELL_TYPE CNavigation::isMove(_vector vPosition, _float4* pOutPos)
