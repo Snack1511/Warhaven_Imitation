@@ -215,11 +215,14 @@ void CPurpleArrow::AddictionEffect(CUnit* pUnit)
 
 	if (m_bAddiction)
 	{
-		for (auto& elem : m_Test)
+		if (!m_Test.empty())
 		{
-			static_cast<CRectEffects*>(elem)->Set_AllFadeOut(); //기존 독이펙트 제거 후
+			for (auto& elem : m_Test)
+			{
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut(); //기존 독이펙트 제거 후
+			}
+			m_Test.clear();
 		}
-		m_Test.clear();
 	
 
 		m_Addiction = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Addiction",
@@ -231,9 +234,21 @@ void CPurpleArrow::AddictionEffect(CUnit* pUnit)
 
 void CPurpleArrow::Clear_Addiction()
 {
-	for (auto& elem : m_Addiction)
+	if (!m_Addiction.empty())
 	{
-		static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		for (auto& elem : m_Addiction)
+		{
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+		m_Addiction.clear();
 	}
-	m_Addiction.clear();
+
+	if (!m_Test.empty())
+	{
+		for (auto& elem : m_Test)
+		{
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut(); //기존 독이펙트 제거 후
+		}
+		m_Test.clear();
+	}
 }

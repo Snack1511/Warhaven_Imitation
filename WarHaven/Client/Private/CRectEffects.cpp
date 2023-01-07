@@ -203,8 +203,8 @@ void CRectEffects::Set_AllFadeOut(_float fFadeTime)
 	{
 		//m_pDatas[i].InstancingData.fFadeInStartTime = 0.f;
 		m_pDatas[i].InstancingData.eCurFadeType = INSTANCING_DATA::FADEOUT;
-		m_pDatas[i].InstancingData.fTimeAcc = 0.f;
-		m_pDatas[i].InstancingData.fFadeOutTime = fFadeTime;
+		m_pDatas[i].InstancingData.fTimeAcc = m_pDatas[i].InstancingData.fFadeOutTime - fFadeTime;
+		//m_pDatas[i].InstancingData.fFadeOutTime = fFadeTime;
 
 	}
 }
@@ -1002,6 +1002,12 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 		{
 			m_pFollowTarget->
 		}*/
+
+	if (!m_pRefBone)
+	{
+		if(m_pFollowTarget)
+			m_matTrans = m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+	}
 
 	vStartPos = vStartPos.MultiplyCoord(m_matTrans);
 	vStartDir = vStartDir.MultiplyNormal(m_matTrans).Normalize();

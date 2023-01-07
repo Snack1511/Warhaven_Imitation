@@ -487,6 +487,8 @@ HRESULT CUnit_Warrior::Start()
 void CUnit_Warrior::OnEnable()
 {
 	__super::OnEnable();
+
+	//CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Qanda_Sniping", this, ZERO_VECTOR);
 }
 
 void CUnit_Warrior::OnDisable()

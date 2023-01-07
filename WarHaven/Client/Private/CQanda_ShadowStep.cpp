@@ -112,6 +112,9 @@ void CQanda_ShadowStep::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
     static_cast<CUnit_Qanda*>(pOwner)->Turn_TransformParticle(false);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
+
+    m_fWalkSpeed = pOwner->Get_Status().fWalkSpeed; //기존 걷는 속도
+    pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fSprintSpeed;
     //D3D11_RENDER_TARGET_BLEND_DESC
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -177,6 +180,8 @@ STATE_TYPE CQanda_ShadowStep::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CQanda_ShadowStep::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+   pOwner->Get_Status().fWalkSpeed = m_fWalkSpeed;
+
    pOwner->Enable_HitBoxColliders(true);
    ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner, CRenderer));
    ENABLE_COMPONENT(GET_COMPONENT_FROM(pOwner->Get_AnimWeapon(), CRenderer));

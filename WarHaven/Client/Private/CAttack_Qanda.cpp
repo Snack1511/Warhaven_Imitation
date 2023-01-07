@@ -316,10 +316,13 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 		/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
 	_float4 vHitPos;
-	if (CAttack_Qanda::Check_CrowRay(&vHitPos, pOwner))
+	if (pAnimator->Get_CurAnimFrame() >= 1)
 	{
-		_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
-		static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vHitPos);
+		if (CAttack_Qanda::Check_CrowRay(&vHitPos, pOwner))
+		{
+			_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
+			static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vHitPos);
+		}
 	}
 
 	if (pAnimator->Get_CurAnimFrame() >= 160)
