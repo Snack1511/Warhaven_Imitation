@@ -848,7 +848,7 @@ void CUI_Barracks::Late_SkinEnable()
 			for (int i = 0; i < 4; ++i)
 				Enable_Fade(m_pTopBtn[i], m_fDuration);
 
-			// Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
+			Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
 
 			m_bIsSkinWindow = true;
 		}
@@ -930,6 +930,13 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 		}
 		else
 		{
+			switch (m_iSelectClass)
+			{
+			case QANDA:		iNum = 21;	break;
+			case HOEDT:		iNum = 22;	break;
+			case LANCER:	iNum = 23;	break;
+			}
+
 			m_pArrSkin[2][m_iCurSelectSkin]->Set_TextureIndex(iNum);
 
 			for (int i = 0; i < 2; ++i)
