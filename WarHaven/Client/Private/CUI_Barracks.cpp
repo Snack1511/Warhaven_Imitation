@@ -5,6 +5,7 @@
 #include "Easing_Utillity.h"
 #include "CUser.h"
 #include "CUI_Cursor.h"
+#include "CUI_Main.h"
 
 CUI_Barracks::CUI_Barracks()
 {
@@ -23,6 +24,7 @@ HRESULT CUI_Barracks::Initialize_Prototype()
 	Create_TopBtn();
 	Create_SkinInfo();
 	Create_SkinBtn();
+	Crate_Skin();
 
 	return S_OK;
 }
@@ -38,6 +40,7 @@ HRESULT CUI_Barracks::Start()
 	Init_TopBtn();
 	Init_SkinInfo();
 	Init_SkinBtn();
+	Init_Skin();
 
 	Bind_Btn();
 
@@ -122,6 +125,29 @@ void CUI_Barracks::On_PointerDown_Btn(const _uint& iEventNum)
 		Disable_Fade(iter, m_fDuration);
 
 	m_bIsSkinEnable = true;
+}
+
+void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
+{
+	m_iPrvSelectSkin = m_iCurSelectSkin;
+	m_iCurSelectSkin = iEventNum;
+
+	if (m_iPrvSelectSkin == iEventNum)
+		return;
+
+	Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if (m_pArrSkin[i][m_iPrvSelectSkin]->Is_Valid())
+			Disable_Fade(m_pArrSkin[i][m_iPrvSelectSkin], m_fDuration);
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if (!m_pArrSkin[i][m_iCurSelectSkin]->Is_Valid())
+			Enable_Fade(m_pArrSkin[i][m_iCurSelectSkin], m_fDuration);
+	}
 }
 
 void CUI_Barracks::My_Tick()
@@ -333,8 +359,8 @@ void CUI_Barracks::Create_TopBtn()
 
 		m_pTopBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
-		_float fPosX = -550.f + (i * 95.f);
-		m_pTopBtn[i]->Set_Pos(fPosX, 300.f);
+		_float fPosX = -560.f + (i * 95.f);
+		m_pTopBtn[i]->Set_Pos(fPosX, 260.f);
 		m_pTopBtn[i]->Set_Scale(75.f, 35.f);
 		m_pTopBtn[i]->Set_Sort(0.5f);
 
@@ -362,6 +388,40 @@ void CUI_Barracks::Create_TopBtn()
 
 		case 3:
 			m_pTopBtn[i]->Set_FontText(TEXT("글라이더"));
+			break;
+		}
+	}
+}
+
+void CUI_Barracks::Crate_Skin()
+{
+	for (int i = 0; i < Skin::End; ++i)
+	{
+		m_pSkin[i] = CUI_Object::Create();
+
+		m_pSkin[i]->Set_Sort(0.49f);
+		m_pSkin[i]->Set_FadeDesc(0.3f);
+		m_pSkin[i]->Set_Scale(125.f);
+		m_pSkin[i]->Set_PosY(175.f);
+
+		GET_COMPONENT_FROM(m_pSkin[i], CTexture)->Remove_Texture(0);
+
+		switch (i)
+		{
+		case CUI_Barracks::Clothes:
+			Read_Texture(m_pSkin[i], "/Lobby/Barracks/Skin/Clothes", "Clothes");
+			break;
+
+		case CUI_Barracks::Weapon:
+			Read_Texture(m_pSkin[i], "/Lobby/Barracks/Skin/Weapon", "Weapon");
+			break;
+
+		case CUI_Barracks::Hat:
+			Read_Texture(m_pSkin[i], "/Lobby/Barracks/Skin/Hat", "Hat");
+			break;
+
+		case CUI_Barracks::Glider:
+			Read_Texture(m_pSkin[i], "/Lobby/Barracks/Skin/Glider", "Glider");
 			break;
 		}
 	}
@@ -416,15 +476,6 @@ void CUI_Barracks::Create_SkinBtn()
 			m_pSkinBtn[i]->Set_Sort(0.5f);
 			break;
 
-		case SB_Item:
-			// 아이템 이미지
-
-			// 해당 클래스
-			// 스킨 클릭 시 마다 호출 하는 걸로 하장
-
-			m_pSkinBtn[i]->Set_Sort(0.49f);
-			break;
-
 		case SB_Outline:
 			m_pSkinBtn[i]->Set_Color(m_vColorGold);
 			m_pSkinBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_2pxStrokeBox.png"));
@@ -451,9 +502,13 @@ void CUI_Barracks::Create_SkinBtn()
 
 		case SB_Blind:
 			m_pSkinBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_GradientSmall3.dds"));
-			m_pSkinBtn[i]->Set_PosY(150.f);
 			m_pSkinBtn[i]->Set_Sort(0.48f);
-			m_pSkinBtn[i]->Set_Scale(125.f, 175.f);
+			m_pSkinBtn[i]->Set_Scale(125.f);
+			m_pSkinBtn[i]->Set_Color(_float4(0.f, 0.f, 0.f, 1.f));
+
+			m_pSkinBtn[i]->Set_IsSlice(true);
+			m_pSkinBtn[i]->Set_TextureSzie(_float2(80.f, 80.f));
+			m_pSkinBtn[i]->Set_SliceRatio(_float4(0.5f, 0.5f, 0.5f, 0.5f));
 			break;
 		}
 	}
@@ -600,6 +655,28 @@ void CUI_Barracks::Init_SkinInfo()
 	}
 }
 
+void CUI_Barracks::Init_Skin()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pSkin[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSkin[i]);
+
+		for (int j = 0; j < Skin::End; ++j)
+		{
+			m_pArrSkin[i][j] = m_pSkin[j]->Clone();
+
+			CREATE_GAMEOBJECT(m_pArrSkin[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrSkin[i][j]);
+
+			m_pUIList.push_back(m_pArrSkin[i][j]);
+
+			_float fPosX = 235.f + (i * 140.f);
+			m_pArrSkin[i][j]->Set_PosX(fPosX);
+		}
+	}
+}
+
 void CUI_Barracks::Init_SkinBtn()
 {
 	for (int i = 0; i < 3; ++i)
@@ -623,14 +700,14 @@ void CUI_Barracks::Init_SkinBtn()
 				_float fSelectPosX = fPosX + 45.f;
 				m_pArrSkinBtn[i][j]->Set_PosX(fSelectPosX);
 			}
-				break;
+			break;
 
 			case SB_Lock:
 			{
 				_float fLockPosX = fPosX + 45.f;
 				m_pArrSkinBtn[i][j]->Set_PosX(fLockPosX);
 			}
-				break;
+			break;
 			}
 		}
 	}
@@ -651,6 +728,11 @@ void CUI_Barracks::Bind_Btn()
 		m_pArrClassBtn[i][Btn_BG]->CallBack_PointStay += bind(&CUI_Barracks::On_PointerStay_Btn, this, i);
 		m_pArrClassBtn[i][Btn_BG]->CallBack_PointExit += bind(&CUI_Barracks::On_PointerExit_Btn, this, i);
 		m_pArrClassBtn[i][Btn_BG]->CallBack_PointDown += bind(&CUI_Barracks::On_PointerDown_Btn, this, i);
+	}
+
+	for (int i = 0; i < 4; ++i)
+	{
+		m_pTopBtn[i]->CallBack_PointDown += bind(&CUI_Barracks::On_PointerDown_TopBtn, this, i);
 	}
 }
 
@@ -761,6 +843,116 @@ void CUI_Barracks::Late_SkinEnable()
 			{
 				for (int j = 0; j < SB_End; ++j)
 					Enable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
+			}
+
+			Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
+
+			for (int i = 0; i < 3; ++i)
+				Enable_Fade(m_pArrSkin[i][m_iCurSelectSkin], m_fDuration);
+		}
+	}
+}
+
+void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
+{
+	_uint iNum = 0;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if (m_iCurSelectSkin < Skin::Hat)
+		{
+			if (m_iSelectClass < FIONA)
+			{
+				iNum = (m_iSelectClass * 3) + i;
+				m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(iNum);
+
+				cout << iNum << endl;
+			}
+			else
+			{
+				switch (m_iSelectClass)
+				{
+				case FIONA:
+					m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(18);
+					break;
+
+				case QANDA:
+					m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(19);
+					break;
+
+				case HOEDT:
+					m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(20);
+					break;
+
+				case LANCER:
+					m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(21);
+					break;
+				}
+			}
+		}
+		else
+		{
+			m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(i);
+
+			cout << i << endl;
+		}
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if (m_iSelectClass < FIONA)
+		{
+			switch (m_iSelectClass)
+			{
+			case Client::WARRIOR:iNum = 0;		break;
+			case Client::ARCHER:iNum = 3;		break;
+			case Client::PALADIN:iNum = 6;		break;
+			case Client::PRIEST:iNum = 9;		break;
+			case Client::ENGINEER:iNum = 12;	break;
+			}
+
+			m_pArrSkin[i][m_iCurSelectSkin]->Set_TextureIndex(iNum + i);
+		}
+		else
+		{
+			switch (m_iCurSelectSkin)
+			{
+			case CUI_Barracks::Clothes:
+
+				switch (m_iSelectClass)
+				{
+				case Client::FIONA:iNum = 0;
+					break;
+				case Client::QANDA:iNum = 3;
+					break;
+				case Client::HOEDT:iNum = 6;
+					break;
+				case Client::LANCER:iNum = 9;
+					break;
+
+					break;
+
+				case CUI_Barracks::Weapon:
+
+					switch (m_iSelectClass)
+					{
+					case Client::FIONA:iNum = 0;
+						break;
+					case Client::QANDA:iNum = 3;
+						break;
+					case Client::HOEDT:iNum = 6;
+						break;
+					case Client::LANCER:iNum = 9;
+						break;
+					}
+					break;
+
+				case CUI_Barracks::Hat:
+					break;
+
+				case CUI_Barracks::Glider:
+					break;
+				}
 			}
 		}
 	}

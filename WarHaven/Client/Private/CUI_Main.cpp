@@ -32,11 +32,6 @@ HRESULT CUI_Main::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CUI_Main::Initialize()
-{
-	return S_OK;
-}
-
 HRESULT CUI_Main::Start()
 {
 	__super::Start();

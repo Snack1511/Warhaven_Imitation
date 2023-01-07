@@ -23,6 +23,8 @@ public:
 	virtual void On_PointerExit_Btn(const _uint& iEventNum);
 	virtual void On_PointerDown_Btn(const _uint& iEventNum);
 
+	virtual void On_PointerDown_TopBtn(const _uint& iEventNum);
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -47,6 +49,9 @@ private:
 
 	_uint m_iSelectClass = 0;
 
+	int m_iPrvSelectSkin = -1;
+	int m_iCurSelectSkin = 0;
+
 private:
 	enum ClassPort { Port_BG, Port_Char, Port_Class, Port_Highlight, Port_Outline, Port_Underline, Port_End };
 	CUI_Object* m_pClassPort[Port_End];
@@ -60,16 +65,20 @@ private:
 	CUI_Object* m_pArrClassBtn[3][Btn_End];
 
 private:
+	CUI_Object* m_pTopBtn[4];
+
 	// 왼쪽 아이템 설명
 	enum Skin_Info { Skin_Name, Skin_Tier, Skin_End };
 	CUI_Object* m_pSkinInfo[Skin_End];
 
 	// 오른쪽 아이템 창
-	enum SkinBtn { SB_BG, SB_Item, SB_Outline, SB_Select, SB_Lock, SB_Blind, SB_End };
+	enum SkinBtn { SB_BG, SB_Outline, SB_Select, SB_Lock, SB_Blind, SB_End };
 	CUI_Object* m_pSkinBtn[SB_End];
 	CUI_Object* m_pArrSkinBtn[3][SB_End];
 
-	CUI_Object* m_pTopBtn[4];
+	enum Skin { Clothes, Weapon, Hat, Glider, End };
+	CUI_Object* m_pSkin[Skin::End];
+	CUI_Object* m_pArrSkin[3][Skin::End];
 
 private:
 	void Create_ClassPort();
@@ -79,6 +88,7 @@ private:
 	void Create_TopBtn();
 	void Create_SkinInfo();
 	void Create_SkinBtn();
+	void Crate_Skin();
 
 	void Init_ClassPort();
 	void Init_ClassInfo();
@@ -87,6 +97,7 @@ private:
 	void Init_TopBtn();
 	void Init_SkinInfo();
 	void Init_SkinBtn();
+	void Init_Skin();
 
 	void Bind_Btn();
 
@@ -103,5 +114,7 @@ private:
 
 	void Late_Enable();
 	void Late_SkinEnable();
+
+	void Set_SkinIdx(CLASS_TYPE eClass);
 };
 

@@ -2,11 +2,11 @@
 #include "CUI_Wrapper.h"
 class CUI_Main : public CUI_Wrapper
 {
-private:
-	enum MainWindow { MW_Play, MW_Barracks, MW_Profile, MW_End };
-
 	DECLARE_PROTOTYPE(CUI_Main);
 	DECLARE_GAMEOBJECT(CUI_Main);
+
+private:
+	enum MainWindow { MW_Play, MW_Barracks, MW_Profile, MW_End };
 
 private:
 	CUI_Main();
@@ -14,7 +14,6 @@ private:
 
 public:
 	virtual	HRESULT	Initialize_Prototype();
-	virtual	HRESULT	Initialize();
 	virtual HRESULT	Start();
 
 public:
@@ -23,6 +22,8 @@ public:
 	virtual void On_PointDown_TopBtn(const _uint& iEventNum);
 
 	void Set_Shader_TopBtnEffect(CShader* pShader, const char* pConstName);
+
+
 
 public:
 	void SetActive_TopBtn(_bool value);
