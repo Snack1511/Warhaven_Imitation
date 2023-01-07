@@ -328,7 +328,6 @@ PS_OUT PS_MAIN_LENSFLARE(PS_DOWNSCALE_IN In)
 	// mm = -1 ~ 1 사이의 태양 위치 (오른쪽 위가 1, 1)
 	float2 mm = g_vSunPos;
 
-	
 
 	mm *= 0.5f;
 	mm.x *= vResolution.x / vResolution.y; // aspect

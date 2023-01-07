@@ -421,20 +421,21 @@ void CAnimWeapon_Crow::Follow_Owner()
 		if (fSpeed > 6.f)
 			fSpeed = 6.f;
 
-			
-			if (fabs(vDir.Length()) < 0.15f)
-			{
-				m_pTransform->Set_LerpLook(m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK), 0.4f);
-				break;
-			}
-			else
-				m_pTransform->Set_LerpLook(vDir * -1.f, 0.4f);
-				
-			
-			
-			m_pPhysics->Set_Dir(vDir);
-			m_pPhysics->Set_Accel(fSpeed);
+
+		if (fabs(vDir.Length()) < 0.15f)
+		{
+			m_pTransform->Set_LerpLook(m_pOwnerUnit->Get_Transform()->Get_World(WORLD_LOOK), 0.4f);
+			return;
 		}
+		else
+			m_pTransform->Set_LerpLook(vDir * -1.f, 0.4f);
+
+
+
+		m_pPhysics->Set_Dir(vDir);
+		m_pPhysics->Set_Accel(fSpeed);
+	}
+}
 
 void CAnimWeapon_Crow::Late_Tick()
 {

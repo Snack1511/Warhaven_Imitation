@@ -131,6 +131,7 @@ HRESULT CGlider::Start()
 void CGlider::OnEnable()
 {
 	__super::OnEnable();
+	m_pTransform->Set_Scale(_float4(0.01f, 0.01f, 0.01f));
 
 	TurnOn_Trail(true);
 }
@@ -141,18 +142,6 @@ void CGlider::OnDisable()
 
 	TurnOn_Trail(false);
 
-}
-
-void CGlider::OnEnable()
-{
-	__super::OnEnable();
-	m_pTransform->Set_Scale(_float4(0.f, 0.f, 0.f));
-		
-}
-
-void CGlider::OnDisable()
-{
-	__super::OnDisable();
 }
 
 

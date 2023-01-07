@@ -47,8 +47,6 @@ public:
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
-	virtual void	OnEnable() override;
-	virtual void	OnDisable() override;
 
 private:
 	CModel* m_pModelCom = nullptr;
