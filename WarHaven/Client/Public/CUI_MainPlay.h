@@ -104,4 +104,10 @@ private:
 	void Create_StageNameRect();
 	void Crerate_PlayBtnMouseEnterLine();
 	void Create_SelectTextRect();
+
+private:
+	_bool m_bIsEnable = false;
+	_float m_fEnableTime = 0.f;
+	_float m_fEnableMaxTime = 0.1f;
+	void Late_Enable();
 };

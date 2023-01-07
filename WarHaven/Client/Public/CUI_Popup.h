@@ -48,8 +48,20 @@ private:
 	_float m_fEnableTime = 2.f;
 
 private:
+	enum SkinPopup
+	{
+		Skin_PopupBG, Skin_Out, Skin_BG, Skin_Item,
+		Skin_Line0, Skin_Line1, Skin_Deco,
+		Skin_Text0, Skin_Text1, Skin_Esc,
+		Skin_End
+	};
+
+	CUI_Object* m_pSKinPopup[Skin_End];
+
+private:
 	void Create_ConquestPopup();
 	void Create_KillPopup();
+	void Create_SkinPopup();
 };
 
 END

@@ -54,6 +54,8 @@ void CUI_MainPlay::My_Tick()
 {
 	__super::My_Tick();
 
+	Late_Enable();
+
 	if (m_pBG->Is_Valid())
 	{
 		if (KEY(ESC, TAP))
@@ -86,8 +88,7 @@ void CUI_MainPlay::OnEnable()
 {
 	__super::OnEnable();
 
-	for (auto& iter : m_pUIList)
-		Enable_Fade(iter, 0.3f);
+	m_bIsEnable = true;
 }
 
 void CUI_MainPlay::OnDisable()
@@ -706,4 +707,20 @@ void CUI_MainPlay::Create_SelectTextRect()
 
 	CREATE_GAMEOBJECT(m_pSelectTextRect, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pSelectTextRect);
+}
+
+void CUI_MainPlay::Late_Enable()
+{
+	if (m_bIsEnable)
+	{
+		m_fEnableTime += fDT(0);
+		if (m_fEnableTime > m_fEnableMaxTime)
+		{
+			m_fEnableTime = 0.f;
+			m_bIsEnable = false;
+
+			for (auto& iter : m_pUIList)
+				Enable_Fade(iter, 0.3f);
+		}
+	}
 }

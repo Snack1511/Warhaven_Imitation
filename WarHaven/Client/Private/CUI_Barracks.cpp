@@ -20,6 +20,10 @@ HRESULT CUI_Barracks::Initialize_Prototype()
 	Create_ClassInfo();
 	Create_ClassBtn();
 
+	Create_TopBtn();
+	Create_SkinInfo();
+	Create_SkinBtn();
+
 	return S_OK;
 }
 
@@ -30,6 +34,10 @@ HRESULT CUI_Barracks::Start()
 	Init_ClassPort();
 	Init_ClassInfo();
 	Init_ClassBtn();
+
+	Init_TopBtn();
+	Init_SkinInfo();
+	Init_SkinBtn();
 
 	Bind_Btn();
 
@@ -77,7 +85,8 @@ void CUI_Barracks::On_PointerDown_Port(const _uint& iEventNum)
 	Disable_Fade(m_pArrClassPort[m_iPrvEventNum][Port_Outline], 0.3f);
 	Enable_Fade(m_pArrClassPort[m_iCurEventNum][Port_Outline], 0.3f);
 
-	Set_ClassInfoText(m_iCurEventNum);
+	m_iSelectClass = m_iCurEventNum;
+	Set_ClassInfoText(m_iSelectClass);
 }
 
 void CUI_Barracks::On_PointerEnter_Btn(const _uint& iEventNum)
@@ -104,9 +113,23 @@ void CUI_Barracks::On_PointerExit_Btn(const _uint& iEventNum)
 	m_pArrClassBtn[iEventNum][Btn_Deco]->Set_Color(m_vColorOutline);
 }
 
+void CUI_Barracks::On_PointerDown_Btn(const _uint& iEventNum)
+{
+	if (iEventNum > 0)
+		return;
+
+	for (auto& iter : m_pUIList)
+		Disable_Fade(iter, m_fDuration);
+
+	m_bIsSkinEnable = true;
+}
+
 void CUI_Barracks::My_Tick()
 {
 	__super::My_Tick();
+
+	Late_Enable();
+	Late_SkinEnable();
 }
 
 void CUI_Barracks::My_LateTick()
@@ -118,32 +141,7 @@ void CUI_Barracks::OnEnable()
 {
 	__super::OnEnable();
 
-	for (int i = 0; i < CLASS_END; ++i)
-	{
-		for (int j = 0; j < Port_Highlight; ++j)
-		{
-			Enable_Fade(m_pArrClassPort[i][j], m_fDuration);
-		}
-	}
-
-	for (int i = 0; i < 3; ++i)
-	{
-		for (int j = 0; j < Btn_End; ++j)
-		{
-			if (i == 0)
-			{
-				if (j == Btn_Lock)
-					continue;
-			}
-
-			Enable_Fade(m_pArrClassBtn[i][j], m_fDuration);
-		}
-	}
-
-	for (int i = 0; i < Info_End; ++i)
-	{
-		Enable_Fade(m_pClassInfo[i], m_fDuration);
-	}
+	m_bIsEnable = true;
 }
 
 void CUI_Barracks::OnDisable()
@@ -312,7 +310,6 @@ void CUI_Barracks::Create_ClassBtn()
 			m_pClassBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
 			m_pClassBtn[i]->Set_FontRender(true);
-			m_pClassBtn[i]->Set_FontStyle(true);
 			m_pClassBtn[i]->Set_FontOffset(-26.f, -15.f);
 			m_pClassBtn[i]->Set_FontScale(0.2f);
 			break;
@@ -321,6 +318,142 @@ void CUI_Barracks::Create_ClassBtn()
 			m_pClassBtn[i]->Set_PosX(-572.f);
 			m_pClassBtn[i]->Set_Scale(20.f);
 			m_pClassBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_Lock.dds"));
+			break;
+		}
+	}
+}
+
+void CUI_Barracks::Create_TopBtn()
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		m_pTopBtn[i] = CUI_Object::Create();
+
+		m_pTopBtn[i]->Set_FadeDesc(0.3f);
+
+		m_pTopBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+
+		_float fPosX = -550.f + (i * 95.f);
+		m_pTopBtn[i]->Set_Pos(fPosX, 300.f);
+		m_pTopBtn[i]->Set_Scale(75.f, 35.f);
+		m_pTopBtn[i]->Set_Sort(0.5f);
+
+		m_pTopBtn[i]->Set_MouseTarget(true);
+
+		m_pTopBtn[i]->Set_FontRender(true);
+		m_pTopBtn[i]->Set_FontStyle(true);
+		m_pTopBtn[i]->Set_FontCenter(true);
+		m_pTopBtn[i]->Set_FontScale(0.4f);
+		m_pTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+
+		switch (i)
+		{
+		case 0:
+			m_pTopBtn[i]->Set_FontText(TEXT("의상"));
+			break;
+
+		case 1:
+			m_pTopBtn[i]->Set_FontText(TEXT("무기"));
+			break;
+
+		case 2:
+			m_pTopBtn[i]->Set_FontText(TEXT("모자"));
+			break;
+
+		case 3:
+			m_pTopBtn[i]->Set_FontText(TEXT("글라이더"));
+			break;
+		}
+	}
+}
+
+void CUI_Barracks::Create_SkinInfo()
+{
+	for (int i = 0; i < Skin_End; ++i)
+	{
+		m_pSkinInfo[i] = CUI_Object::Create();
+
+		m_pSkinInfo[i]->Set_PosX(-575.f);
+		m_pSkinInfo[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
+
+		m_pSkinInfo[i]->Set_FontRender(true);
+		m_pSkinInfo[i]->Set_FontText(TEXT("테스트"));
+		m_pSkinInfo[i]->Set_Sort(0.5f);
+
+		switch (i)
+		{
+		case Skin_Name:
+			m_pSkinInfo[i]->Set_PosY(225.f);
+			m_pSkinInfo[i]->Set_FontStyle(true);
+			m_pSkinInfo[i]->Set_FontOffset(-20.f, -25.f);
+			m_pSkinInfo[i]->Set_FontScale(0.5f);
+			break;
+
+		case Skin_Tier:
+			m_pSkinInfo[i]->Set_PosY(195.f);
+			m_pSkinInfo[i]->Set_FontOffset(-17.f, -15.f);
+			m_pSkinInfo[i]->Set_FontScale(0.3f);
+			break;
+		}
+	}
+}
+
+void CUI_Barracks::Create_SkinBtn()
+{
+	for (int i = 0; i < SB_End; ++i)
+	{
+		m_pSkinBtn[i] = CUI_Object::Create();
+
+		m_pSkinBtn[i]->Set_FadeDesc(0.3f);
+		m_pSkinBtn[i]->Set_Scale(125.f);
+		m_pSkinBtn[i]->Set_PosY(175.f);
+
+		switch (i)
+		{
+		case SB_BG:
+			GET_COMPONENT_FROM(m_pSkinBtn[i], CTexture)->Remove_Texture(0);
+			Read_Texture(m_pSkinBtn[i], "/Lobby/Barracks/Skin", "T_ItemBG");
+			m_pSkinBtn[i]->Set_Sort(0.5f);
+			break;
+
+		case SB_Item:
+			// 아이템 이미지
+
+			// 해당 클래스
+			// 스킨 클릭 시 마다 호출 하는 걸로 하장
+
+			m_pSkinBtn[i]->Set_Sort(0.49f);
+			break;
+
+		case SB_Outline:
+			m_pSkinBtn[i]->Set_Color(m_vColorGold);
+			m_pSkinBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_2pxStrokeBox.png"));
+			m_pSkinBtn[i]->Set_IsSlice(true);
+			m_pSkinBtn[i]->Set_TextureSzie(_float2(32.f, 32.f));
+			m_pSkinBtn[i]->Set_SliceRatio(_float4(0.5f, 0.5f, 0.5f, 0.5f));
+			m_pSkinBtn[i]->Set_Sort(0.49f);
+			m_pSkinBtn[i]->Set_Scale(136.f);
+			break;
+
+		case SB_Select:
+			m_pSkinBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_Check2.dds"));
+			m_pSkinBtn[i]->Set_PosY(220.f);
+			m_pSkinBtn[i]->Set_Sort(0.47f);
+			m_pSkinBtn[i]->Set_Scale(24.f);
+			break;
+
+		case SB_Lock:
+			m_pSkinBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_Lock.dds"));
+			m_pSkinBtn[i]->Set_PosY(220.f);
+			m_pSkinBtn[i]->Set_Sort(0.47f);
+			m_pSkinBtn[i]->Set_Scale(24.f);
+			break;
+
+		case SB_Blind:
+			m_pSkinBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/T_GradientSmall3.dds"));
+			m_pSkinBtn[i]->Set_PosY(150.f);
+			m_pSkinBtn[i]->Set_Sort(0.48f);
+			m_pSkinBtn[i]->Set_Scale(125.f, 175.f);
 			break;
 		}
 	}
@@ -436,7 +569,7 @@ void CUI_Barracks::Init_ClassBtn()
 
 	m_pArrClassBtn[0][Btn_Text]->Set_PosX(-555.f);
 	m_pArrClassBtn[0][Btn_Text]->Set_FontText(TEXT("스킨"));
-	m_pArrClassBtn[0][Btn_LockText]->Set_FontText(TEXT("스킨"));
+	m_pArrClassBtn[0][Btn_LockText]->Set_FontText(TEXT("의상·무기·모자·글라이더"));
 
 	m_pArrClassBtn[1][Btn_Text]->Set_PosX(-540.f);
 	m_pArrClassBtn[1][Btn_Text]->Set_FontText(TEXT("특성"));
@@ -445,6 +578,62 @@ void CUI_Barracks::Init_ClassBtn()
 	m_pArrClassBtn[2][Btn_Text]->Set_PosX(-540.f);
 	m_pArrClassBtn[2][Btn_Text]->Set_FontText(TEXT("의사소통"));
 	m_pArrClassBtn[2][Btn_LockText]->Set_FontText(TEXT("잠김"));
+}
+
+void CUI_Barracks::Init_TopBtn()
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pTopBtn[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pTopBtn[i]);
+	}
+}
+
+void CUI_Barracks::Init_SkinInfo()
+{
+	for (int i = 0; i < Skin_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pSkinInfo[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSkinInfo[i]);
+
+		m_pUIList.push_back(m_pSkinInfo[i]);
+	}
+}
+
+void CUI_Barracks::Init_SkinBtn()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < SB_End; ++j)
+		{
+			m_pArrSkinBtn[i][j] = m_pSkinBtn[j]->Clone();
+
+			CREATE_GAMEOBJECT(m_pArrSkinBtn[i][j], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrSkinBtn[i][j]);
+
+			m_pUIList.push_back(m_pArrSkinBtn[i][j]);
+
+			_float fPosX = 235.f + (i * 140.f);
+			m_pArrSkinBtn[i][j]->Set_PosX(fPosX);
+
+			switch (j)
+			{
+			case SB_Select:
+			{
+				_float fSelectPosX = fPosX + 45.f;
+				m_pArrSkinBtn[i][j]->Set_PosX(fSelectPosX);
+			}
+				break;
+
+			case SB_Lock:
+			{
+				_float fLockPosX = fPosX + 45.f;
+				m_pArrSkinBtn[i][j]->Set_PosX(fLockPosX);
+			}
+				break;
+			}
+		}
+	}
 }
 
 void CUI_Barracks::Bind_Btn()
@@ -461,6 +650,7 @@ void CUI_Barracks::Bind_Btn()
 		m_pArrClassBtn[i][Btn_BG]->CallBack_PointEnter += bind(&CUI_Barracks::On_PointerEnter_Btn, this, i);
 		m_pArrClassBtn[i][Btn_BG]->CallBack_PointStay += bind(&CUI_Barracks::On_PointerStay_Btn, this, i);
 		m_pArrClassBtn[i][Btn_BG]->CallBack_PointExit += bind(&CUI_Barracks::On_PointerExit_Btn, this, i);
+		m_pArrClassBtn[i][Btn_BG]->CallBack_PointDown += bind(&CUI_Barracks::On_PointerDown_Btn, this, i);
 	}
 }
 
@@ -509,29 +699,69 @@ void CUI_Barracks::Set_ClassInfoText(_uint iEventNum)
 	m_pClassInfo[Info_Class]->Set_TextureIndex(iEventNum);
 }
 
-void CUI_Barracks::Lerp_Color(CUI_Object* pUI, _float4 vColor)
+void CUI_Barracks::Late_Enable()
 {
-	m_pLerpTargetUI = pUI;
-	m_vLerpStartColor = pUI->Get_Color();
-	m_vLerpEndColor = vColor;
+	if (m_bIsEnable)
+	{
+		m_fEnableTime += fDT(0);
+		if (m_fEnableTime > m_fEnableMaxTime)
+		{
+			m_fEnableTime = 0.f;
+			m_bIsEnable = false;
+
+			Set_ClassInfoText(m_iSelectClass);
+
+			for (int i = 0; i < CLASS_END; ++i)
+			{
+				for (int j = 0; j < Port_Highlight; ++j)
+				{
+					Enable_Fade(m_pArrClassPort[i][j], m_fDuration);
+				}
+			}
+
+			for (int i = 0; i < 3; ++i)
+			{
+				for (int j = 0; j < Btn_End; ++j)
+				{
+					if (i == 0)
+					{
+						if (j == Btn_Lock)
+							continue;
+					}
+
+					Enable_Fade(m_pArrClassBtn[i][j], m_fDuration);
+				}
+			}
+
+			for (int i = 0; i < Info_End; ++i)
+			{
+				Enable_Fade(m_pClassInfo[i], m_fDuration);
+			}
+		}
+	}
 }
 
-void CUI_Barracks::Update_Color()
+void CUI_Barracks::Late_SkinEnable()
 {
-	if (m_bColorLerp)
+	if (m_bIsSkinEnable)
 	{
-		m_fColorLerpTime += fDT(0);
-		if (m_fColorLerpTime > m_fDuration)
+		m_fSkinEnableTime += fDT(0);
+		if (m_fSkinEnableTime > m_fSkinEnableMaxTime)
 		{
-			m_fColorLerpTime = 0.f;
-			m_bColorLerp = false;
+			m_fSkinEnableTime = 0.f;
+			m_bIsSkinEnable = false;
 
-			m_pLerpTargetUI->Set_Color(m_vLerpEndColor);
+			for (int i = 0; i < 4; ++i)
+				Enable_Fade(m_pTopBtn[i], m_fDuration);
 
-			return;
+			for (int i = 0; i < Skin_End; ++i)
+				Enable_Fade(m_pSkinInfo[i], m_fDuration);
+
+			for (int i = 0; i < 3; ++i)
+			{
+				for (int j = 0; j < SB_End; ++j)
+					Enable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
+			}
 		}
-
-		_float4 vLerpColor = CEasing_Utillity::Linear(m_vLerpStartColor, m_vLerpEndColor, m_fColorLerpTime, m_fDuration);
-		m_pLerpTargetUI->Set_Color(vLerpColor);
 	}
 }

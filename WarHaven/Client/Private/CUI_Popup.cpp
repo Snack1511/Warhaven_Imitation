@@ -233,3 +233,62 @@ void CUI_Popup::Create_KillPopup()
 		DISABLE_GAMEOBJECT(m_pKillPopup[i]);
 	}
 }
+
+void CUI_Popup::Create_SkinPopup()
+{
+	for (int i = 0; i < Skin_End; ++i)
+	{
+		m_pSKinPopup[i] = CUI_Object::Create();
+
+		switch (i)
+		{
+		case Skin_PopupBG:
+			// 나인슬라이스 사이즈 50 비율 0.5
+			// 크기 550 300
+			break;
+		case Skin_Out:
+			// Y 65
+			// 사이즈 130
+			// 색 골드
+			break;
+		case Skin_BG:
+			// Y 65
+			// 사이즈 100
+			break;
+		case Skin_Item:
+			// Y 65
+			// 사이즈 100
+			break;
+		case Skin_Line0:
+			// 사이즈 435 1
+			// Y 20
+			break;
+		case Skin_Line1:
+			// 사이즈 435 1
+			// Y -100
+			break;
+		case Skin_Deco:
+			// 사이즈 70 10
+			// Y -25
+			break;
+		case Skin_Text0:
+			// 위치 -50
+			// 중앙정렬
+			// 폰트 오프셋 3 3
+			// 폰트 크기 0.3
+			break;
+		case Skin_Text1:
+			// 위치 -80
+			// 중앙정렬
+			// 폰트 오프셋 3 3
+			// 폰트 크기 0.3
+			break;
+		case Skin_Esc:
+			// 위치 -41 -125
+			// 크기 24
+			// 폰트 오프셋 15 -15
+			// 폰트 크기 0.3
+			break;
+		}
+	}
+}
