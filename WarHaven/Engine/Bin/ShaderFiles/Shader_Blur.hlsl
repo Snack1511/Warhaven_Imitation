@@ -25,6 +25,7 @@ vector		g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 texture2D	g_ShaderTexture;
 texture2D	g_FlagTexture;
 texture2D	g_DepthTexture;
+texture2D	g_NormalTexture;
 texture2D	g_NoiseTexture;
 
 
@@ -36,6 +37,7 @@ float		g_fTimeDelta = 0.f;
 float		g_fShaderPower = 0.f;
 
 bool		g_bMotionBlur = false;
+bool		g_bSSAO = false;
 
 float2		g_vSunPos;
 
@@ -383,6 +385,158 @@ PS_OUT PS_MAIN_LENSFLARE(PS_DOWNSCALE_IN In)
 	return Out;
 }
 
+#define SAMPLES 16
+#define INTENSITY 1.
+#define SCALE 2.5
+#define BIAS 0.05
+#define SAMPLE_RAD 0.02
+#define MAX_DISTANCE 0.07
+
+#define MOD3 float3(.1031,.11369,.13787)
+
+float hash12(float2 p)
+{
+	float3 p3 = frac(p.xyx * MOD3);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return frac((p3.x + p3.y) * p3.z);
+}
+
+float2 hash22(float2 p)
+{
+	float3 p3 = frac(p.xyx * MOD3);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return frac(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
+}
+
+float3 getPosition(float2 uv) {
+
+	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, uv);
+
+	//Shadow
+	vector			vWorldPos;
+
+	vWorldPos.x = uv.x * 2.f - 1.f;
+	vWorldPos.y = uv.y * -2.f + 1.f;
+	vWorldPos.z = vDepthDesc.x;
+	vWorldPos.w = 1.0f;
+
+	float			fViewZ = vDepthDesc.y * 1500.f;
+	vWorldPos *= fViewZ;
+
+	vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+	return vWorldPos.xyz;
+
+	/*float fl = g_DepthTexture.Sample(DefaultSampler, float2(0.f, 0.f)).x;
+	float d = g_DepthTexture.Sample(DefaultSampler, uv).y;
+
+	float2 p = uv * 2. - 1.;
+	float3x3 ca = float3x3(1., 0., 0., 0., 1., 0., 0., 0., -1. / 1.5);
+	ca = transpose(ca);
+	float3 vTemp = mul(float3(p.x, p.y, fl), ca);
+	float3 rd = normalize(vTemp);
+
+	float3 pos = rd * d;
+
+	return pos;*/
+
+}
+
+float3 getNormal(float2 uv) {
+	vector			vNormalDesc = g_NormalTexture.Sample(DefaultSampler, uv);
+	return (vNormalDesc.xyz * 2.f - 1.f);
+}
+
+float2 getRandom(float2 uv) {
+	return normalize(hash22(uv * 126.1231) * 2. - 1.);
+}
+
+
+float doAmbientOcclusion(in float2 tcoord, in float2 uv, in float3 p, in float3 cnorm)
+{
+	float3 diff = getPosition(tcoord + uv) - p;
+	float l = length(diff);
+	float3 v = diff / l;
+	float d = l * SCALE;
+	float ao = max(0.0, dot(cnorm, v) - BIAS) * (1.0 / (1.0 + d));
+	ao *= smoothstep(MAX_DISTANCE, MAX_DISTANCE * 0.5, l);
+	return ao;
+
+}
+
+float spiralAO(float2 uv, float3 p, float3 n, float rad)
+{
+	float goldenAngle = 2.4;
+	float ao = 0.;
+	float inv = 1. / float(SAMPLES);
+	float radius = 0.;
+
+	float rotatePhase = hash12(uv * 100.) * 6.28;
+	float rStep = inv * rad;
+	float2 spiralUV;
+
+	for (int i = 0; i < SAMPLES; i++) {
+		spiralUV.x = sin(rotatePhase);
+		spiralUV.y = cos(rotatePhase);
+		radius += rStep;
+		ao += doAmbientOcclusion(uv, spiralUV * radius, p, n);
+		rotatePhase += goldenAngle;
+	}
+	ao *= inv;
+	return ao;
+}
+
+
+PS_OUT PS_MAIN_SSAO(PS_DOWNSCALE_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
+
+
+	if (!g_bSSAO)
+		return Out;
+
+	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (vDepthDesc.y > 0.5f)
+		return Out;
+
+
+	//Shadow
+	/*vector			vWorldPos;
+
+	vWorldPos.x = uv.x * 2.f - 1.f;
+	vWorldPos.y = uv.y * -2.f + 1.f;
+	vWorldPos.z = vDepthDesc.x;
+	vWorldPos.w = 1.0f;
+
+	float			fViewZ = vDepthDesc.y * 1500.f;
+	vWorldPos *= fViewZ;
+
+	vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+
+	vWorldPos.xyz;*/
+
+	float3 p = getPosition(In.vTexUV);
+	float3 n = getNormal(In.vTexUV);
+
+	float ao = 0.;
+	float rad = SAMPLE_RAD / p.z;
+
+	ao = spiralAO(In.vTexUV, p, n, rad);
+
+	ao = 1.f - ao * INTENSITY;
+
+	//fragColor = vec4(ao, ao, ao, 1.);
+
+	Out.vColor.xyz *= pow(ao, 2.f);
+
+	return Out;
+}
+
+
 PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
@@ -466,6 +620,61 @@ PS_OUT PS_MOTIONBLUR_MAIN(PS_DOWNSCALE_IN In)
 
 
 	return Out;
+}
+
+float4x4 brightnessMatrix(float brightness)
+{
+	return float4x4(1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		brightness, brightness, brightness, 1);
+}
+
+float4x4 contrastMatrix(float contrast)
+{
+	float t = (1.0 - contrast) / 2.0;
+
+	return float4x4(contrast, 0, 0, 0,
+		0, contrast, 0, 0,
+		0, 0, contrast, 0,
+		t, t, t, 1);
+
+}
+
+float4x4 saturationMatrix(float saturation)
+{
+	float3 luminance = float3(0.3086, 0.6094, 0.0820);
+
+	float oneMinusSat = 1.0 - saturation;
+
+	float3 red = luminance.x * oneMinusSat;
+	red += float3(saturation, 0, 0);
+
+	float3 green = luminance.y * oneMinusSat;
+	green += float3(0, saturation, 0);
+
+	float3 blue = luminance.z * oneMinusSat;
+	blue += float3(0, 0, saturation);
+
+	return float4x4(red, 0,
+		green, 0,
+		blue, 0,
+		0, 0, 0, 1);
+}
+
+float brightness = 0.15;
+float contrast = 1.2;
+float saturation = 1.5;
+
+PS_OUT PS_MAIN_HDR(PS_DOWNSCALE_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float4x4 matBrightnessContrast = mul(brightnessMatrix(brightness), contrastMatrix(contrast));
+	float4x4 matBrightnessContrastSaturation = mul(matBrightnessContrast, saturationMatrix(saturation));
+
+	Out.vColor = mul(Out.vColor, matBrightnessContrastSaturation);
 }
 
 
@@ -870,6 +1079,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_LENSFLARE();
+	}
+
+	pass SSAO
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_SSAO();
 	}
 
 }

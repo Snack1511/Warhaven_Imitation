@@ -6,7 +6,7 @@ class CUI_Main : public CUI_Wrapper
 	DECLARE_GAMEOBJECT(CUI_Main);
 
 private:
-	enum MainWindow { MW_Play, MW_Barracks, MW_Profile, MW_End };
+	enum MainWindow { MW_Play,/* MW_Barracks,*/ MW_Profile, MW_End };
 
 private:
 	CUI_Main();

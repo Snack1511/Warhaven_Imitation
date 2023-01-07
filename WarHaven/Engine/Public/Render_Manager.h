@@ -132,6 +132,8 @@ private:
 	HRESULT	Render_RimLight();
 
 
+	HRESULT	Render_SSAO();
+
 	HRESULT	Render_ForwardBloom();
 	HRESULT	Render_ForwardBlend();
 	HRESULT	Render_BloomBlend();

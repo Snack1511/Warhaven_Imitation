@@ -386,9 +386,13 @@ HRESULT CRender_Manager::Initialize()
 	/* BLURS */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_MotionBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_SSAO"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_RadialBlur"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_GrayScale"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_HDR"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* SkyBox */
@@ -468,6 +472,8 @@ HRESULT CRender_Manager::Initialize()
 	/*For Forward*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_ForwardAcc"), TEXT("Target_Forward"))))
 		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_HDRAcc"), TEXT("Target_HDR"))))
+		return E_FAIL;
 
 	/*For Bloom*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_BloomAcc"), TEXT("Target_Bloom"))))
@@ -502,6 +508,9 @@ HRESULT CRender_Manager::Initialize()
 
 	/*For MotionBlur*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_MotionBlurAcc"), TEXT("Target_MotionBlur"))))
+		return E_FAIL;
+	
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_SSAOAcc"), TEXT("Target_SSAO"))))
 		return E_FAIL;
 
 	/*For Decal*/
@@ -873,6 +882,8 @@ HRESULT CRender_Manager::Render()
 	if (FAILED(Render_ForwardBlend()))
 		return E_FAIL;
 
+	if (FAILED(Render_SSAO()))
+		return E_FAIL;
 
 	if (FAILED(Render_ForwardBloom()))
 		return E_FAIL;
@@ -932,6 +943,8 @@ HRESULT CRender_Manager::Render()
 		return E_FAIL;
 
 	wstring wstrRenderTargetName = L"Target_PostEffect";
+
+
 
 	if (m_bLensFlare)
 	{
@@ -1239,13 +1252,54 @@ HRESULT CRender_Manager::Render_RimLight()
 
 	return S_OK;
 }
+HRESULT CRender_Manager::Render_SSAO()
+{
+	//1. 모션블러 텍스쳐 굽기
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_SSAOAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
+		return E_FAIL;
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_NormalTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Normal")))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(L"Target_Forward"))))
+		return E_FAIL;
+
+	_float4x4		ViewMatrixInv, ProjMatrixInv;
+
+	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(GAMEINSTANCE->Get_CurViewMatrix().Inverse().XMLoad()));
+	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(GAMEINSTANCE->Get_CurProjMatrix().Inverse().XMLoad()));
+
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
+
+
+	static _bool g_bSSAO = true;
+	if (KEY(U, TAP))
+	{
+		g_bSSAO = !g_bSSAO;
+	}
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_bSSAO", &g_bSSAO, sizeof(_bool));
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(10)))
+		return E_FAIL;
+
+	m_pMeshRect->Render();
+
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
+
+
+	return S_OK;
+}
 HRESULT CRender_Manager::Render_ForwardBloom()
 {
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ForwardBloomAcc"))))
 		return E_FAIL;
 
 	//1. Bloom 대상 찾기
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_SSAO")))))
 		return E_FAIL;
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Flag")))))
 		return E_FAIL;
@@ -1402,7 +1456,7 @@ HRESULT CRender_Manager::Render_BloomBlend()
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_BloomBlendAcc"))))
 		return E_FAIL;
 
-	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_SSAO")))))
 		return E_FAIL;
 
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_BloomTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_ForwardBloomBlur")))))
@@ -1514,7 +1568,7 @@ HRESULT CRender_Manager::Render_DOF()
 		return E_FAIL;
 
 	//1. 다운 샘플링
-	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Forward")))))
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_SSAO")))))
 		return E_FAIL;
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_DownScaleWorldMatrix, sizeof(_float4x4));
@@ -1849,6 +1903,12 @@ HRESULT CRender_Manager::Render_EffectBlur()
 
 HRESULT CRender_Manager::Render_PostEffect()
 {
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HDRAcc"))))
+		return E_FAIL;
+
+	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_FinalBlend")))))
+		return E_FAIL;
+
 	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_PostEffectAcc"))))
 		return E_FAIL;
 
