@@ -912,11 +912,20 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 		}
 		else
 		{
-			
+			for (int i = 0; i < 2; ++i)
+			{
+				m_pArrSkin[i][m_iCurSelectSkin]->SetActive(false);
+
+				for (int j = 0; j < SB_End; ++j)
+					m_pArrSkinBtn[i][j]->SetActive(false);
+			}
+
+			m_pArrSkinBtn[2][SB_Lock]->SetActive(false);
+			m_pArrSkinBtn[2][SB_Blind]->SetActive(false);
 		}
 	}
 
-	if (m_iCurSelectSkin >= Skin::Weapon)
+	if (m_iCurSelectSkin == Skin::Weapon)
 	{
 		if (m_iSelectClass < FIONA)
 		{
@@ -931,7 +940,16 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 		}
 		else
 		{
+			for (int i = 0; i < 2; ++i)
+			{
+				m_pArrSkin[i][m_iCurSelectSkin]->SetActive(false);
+				
+				for (int j = 0; j < SB_End; ++j)
+					m_pArrSkinBtn[i][j]->SetActive(false);
+			}
 
+			m_pArrSkinBtn[2][SB_Lock]->SetActive(false);
+			m_pArrSkinBtn[2][SB_Blind]->SetActive(false);
 		}
 	}
 
