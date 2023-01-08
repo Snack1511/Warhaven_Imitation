@@ -26,6 +26,12 @@ HRESULT CUI_Popup::Start()
 {
 	__super::Start();
 
+	for (int i = 0; i < Skin_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pSKinPopup[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSKinPopup[i]);
+	}
+
 	return S_OK;
 }
 
@@ -129,14 +135,14 @@ void CUI_Popup::My_Tick()
 
 	if (m_bFadePopup)
 	{
-		CUser::Get_Instance()->SetActive_SkinPopup(true);
+		SetActive_SkinPopup(true);
 
 		if (KEY(SPACE, TAP))
 		{
 			m_bFadePopup = false;
 
-			CUser::Get_Instance()->Unlock_RabbitHat();
-			CUser::Get_Instance()->SetActive_SkinPopup(false);
+			CUser::Get_Instance()->Unlock_RabbitHat(); 
+			SetActive_SkinPopup(false);
 			DISABLE_GAMEOBJECT(this);
 		}
 	}
@@ -289,9 +295,6 @@ void CUI_Popup::Create_SkinPopup()
 		m_pSKinPopup[i] = CUI_Object::Create();
 
 		m_pSKinPopup[i]->Set_FadeDesc(m_fFadeTime, m_fFadeTime);
-
-		CREATE_GAMEOBJECT(m_pSKinPopup[i], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pSKinPopup[i]);
 
 		switch (i)
 		{
