@@ -13,9 +13,14 @@ private:
 
 public:
 	virtual HRESULT	Initialize();
-	
+
 public:
 	wstring MainPlayerName();
+
+	_bool Unlock_RabbitHat() { return m_bIsGetRabbitHat; }
+
+private:
+	_bool m_bIsGetRabbitHat = false;
 };
 
 END

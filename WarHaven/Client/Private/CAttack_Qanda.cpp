@@ -730,15 +730,6 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 
 	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
 	{
-		//if (*pOutPos != vFinalHitPos)
-		//{
-		//	CUser::Get_Instance()->Set_ArcherPoint(true);
-		//}
-		//else
-		//{
-		//	CUser::Get_Instance()->Set_ArcherPoint(false);
-		//}
-
 		*pOutPos = vFinalHitPos;
 	}
 

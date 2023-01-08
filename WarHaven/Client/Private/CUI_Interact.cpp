@@ -56,7 +56,7 @@ void CUI_Interact::My_Tick()
 		return;
 
 	m_fAccTime += fDT(0);
-	if (m_fAccTime > 0.1f)
+	if (m_fAccTime > 0.2f)
 	{
 		m_fAccTime = 0.f;
 
@@ -136,7 +136,7 @@ void CUI_Interact::Create_CircleEffect()
 		m_pCircleEffect[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_64CircleStroke3px.dds"));
 		m_pCircleEffect[i]->Set_Scale(1.f);
 		m_pCircleEffect[i]->Set_Color(RGB(255, 255, 255));
-		m_pCircleEffect[i]->Set_FadeDesc(0.f, 0.3f, true);
+		m_pCircleEffect[i]->Set_FadeDesc(0.f, 0.2f, 0.1f, true);
 
 		CREATE_GAMEOBJECT(m_pCircleEffect[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pCircleEffect[i]);

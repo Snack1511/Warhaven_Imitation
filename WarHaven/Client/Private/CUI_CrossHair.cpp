@@ -262,7 +262,7 @@ void CUI_Crosshair::Set_ArrowUI()
 
 void CUI_Crosshair::Charge_Arrow()
 {
-	if (m_iClassIndex != ARCHER)
+	if (m_iClassIndex != ARCHER )
 		return;
 
 	_float fChargeWaitTime = 0.3f;
