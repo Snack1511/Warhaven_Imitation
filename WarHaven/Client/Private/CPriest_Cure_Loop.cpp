@@ -182,7 +182,7 @@ HRESULT CPriest_Cure_Loop::Initialize()
 			return E_FAIL;
 	}
 
-	
+
 
 
 	/* Blend Stop Event*/
@@ -226,56 +226,72 @@ void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	CUnit* pTargetUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
+	m_pPreUnit = m_pTargetUnit;
+	m_pTargetUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
 
-	if (!pTargetUnit)
+	if (m_pPreUnit)
+	{
+		m_pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
+		m_pPreUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
+
+		cout << CFunctor::To_String(m_pTargetUnit->Get_OwnerPlayer()->Get_PlayerName()) << endl;
+		cout << CFunctor::To_String(m_pPreUnit->Get_OwnerPlayer()->Get_PlayerName()) << endl;
+	}
+
+
+	if (!m_pTargetUnit)
 		return STATE_CURE_END_PRIEST;
 
-	
-
-	if(!pOwner->Get_SameNearObejct())
+	if (pOwner->Get_SameNearObejct())
+	{
 		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
+		m_pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
+	}
+	else
+	{
+		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
+		m_pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
+	}
 
 
 	// 타겟 유닛이 힐을 받고 있는 대상
-	pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
-	m_pTargetObject = pTargetUnit;
+	m_pTargetObject = m_pTargetUnit;
 
-	_float fLength = (pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
+	_float fLength = (m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
 
 
 	if (fabs(fLength) > pOwner->Get_MaxDistance())
 		return STATE_CURE_END_PRIEST;
 
 	m_fTimeAcc += fDT(0);
-	
+
 
 	if (m_fTimeAcc > m_fMaxTime)
 	{
 		// 풀피가 아니면
-		if (pTargetUnit->Get_Status().fHP < pTargetUnit->Get_Status().fMaxHP)
+		if (m_pTargetUnit->Get_Status().fHP < m_pTargetUnit->Get_Status().fMaxHP)
 		{
 			_float fPlusHp = 15.f;
 
 			// UI 표시
-			pTargetUnit->Get_Status().fHP += fPlusHp; // fPlusHp
+			m_pTargetUnit->Get_Status().fHP += fPlusHp; // fPlusHp
 			CUser::Get_Instance()->Enable_DamageFont(2, fPlusHp);
 
-			if(pOwner->Get_OwnerPlayer()->Get_Gauge() < 100.f - 3.f)
+			if (pOwner->Get_OwnerPlayer()->Get_Gauge() < 100.f - 3.f)
 				pOwner->Get_OwnerPlayer()->Get_Gauge() += 3.f;
 
 
 			CUser::Get_Instance()->Enable_DamageFont(2, fPlusHp);
 
 			// 풀피를 넘어서면
-			if (pTargetUnit->Get_Status().fHP > pTargetUnit->Get_Status().fMaxHP)
-				pTargetUnit->Get_Status().fHP = pTargetUnit->Get_Status().fMaxHP;
+			if (m_pTargetUnit->Get_Status().fHP > m_pTargetUnit->Get_Status().fMaxHP)
+				m_pTargetUnit->Get_Status().fHP = m_pTargetUnit->Get_Status().fMaxHP;
 
 		}
-		
+
 		m_fTimeAcc = 0.f;
 	}
-	
+
 
 	if (pOwner->Is_MainPlayer())
 	{
@@ -317,6 +333,7 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	return __super::Tick(pOwner, pAnimator);
 }
+
 
 STATE_TYPE CPriest_Cure_Loop::Update_Walk(CUnit* pOwner, CAnimator* pAnimator)
 {
@@ -533,7 +550,7 @@ void CPriest_Cure_Loop::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, co
 	case 0:
 		pAnimator->Set_InterpolationTime(ANIM_ATTACK, 6, FLT_MAX);
 		pAnimator->Set_AnimSpeed(ANIM_ATTACK, 6, FLT_MIN);
-	
+
 		break;
 
 	case 1000:
@@ -605,11 +622,11 @@ void CPriest_Cure_Loop::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 
 		else
 			pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
-		
+
 		break;
 	default:
 		break;
 	}
 
-	
+
 }

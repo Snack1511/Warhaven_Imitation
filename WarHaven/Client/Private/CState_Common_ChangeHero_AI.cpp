@@ -4,6 +4,7 @@
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Priest.h"
 
 #include "CPlayer.h"
 
@@ -59,6 +60,7 @@ void CState_Common_ChangeHero_AI::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 	/* 히트박스 끄기 */
 	pOwner->Enable_HitBoxColliders(false);
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinFlare", pOwner, pOwner->Get_Transform()->Get_World(WORLD_POS));//henshin flare
+
 
 	/* Owner의 Animator Set Idle로 */
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

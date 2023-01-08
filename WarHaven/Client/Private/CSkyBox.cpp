@@ -28,7 +28,7 @@ HRESULT CSkyBox::Initialize_Prototype()
     Add_Component(pRenderer);
     
     CTexture* pTexture = CTexture::Create(CP_AFTER_TRANSFORM,
-        L"../bin/resources/textures/skybox/MySkyBox_%d.dds", 7);
+        L"../bin/resources/textures/skybox/MySkyBox_%d.dds", 8);
     pTexture->Initialize();
 
     Add_Component(pTexture);
