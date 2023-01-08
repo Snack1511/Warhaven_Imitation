@@ -20,7 +20,6 @@ HRESULT CUI_Barracks::Initialize_Prototype()
 	Create_ClassPort();
 	Create_ClassInfo();
 	Create_ClassBtn();
-
 	Create_TopBtn();
 	Create_SkinInfo();
 	Create_SkinBtn();
@@ -36,7 +35,6 @@ HRESULT CUI_Barracks::Start()
 	Init_ClassPort();
 	Init_ClassInfo();
 	Init_ClassBtn();
-
 	Init_TopBtn();
 	Init_SkinInfo();
 	Init_SkinBtn();
@@ -677,10 +675,14 @@ void CUI_Barracks::Init_SkinInfo()
 
 void CUI_Barracks::Init_Skin()
 {
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < Skin::End; ++i)
 	{
 		CREATE_GAMEOBJECT(m_pSkin[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pSkin[i]);
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
 
 		for (int j = 0; j < Skin::End; ++j)
 		{
@@ -699,6 +701,12 @@ void CUI_Barracks::Init_Skin()
 
 void CUI_Barracks::Init_SkinBtn()
 {
+	for (int i = 0; i < SB_End; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pSkinBtn[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSkinBtn[i]);
+	}
+
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < SB_End; ++j)
@@ -816,9 +824,9 @@ void CUI_Barracks::Late_Enable()
 			for (int i = 0; i < CLASS_END; ++i)
 			{
 				for (int j = 0; j < Port_Highlight; ++j)
-				{
 					Enable_Fade(m_pArrClassPort[i][j], m_fDuration);
-				}
+
+				// m_pArrClassPort[m_iSelectClass][j]
 			}
 
 			for (int i = 0; i < 3; ++i)
@@ -836,9 +844,7 @@ void CUI_Barracks::Late_Enable()
 			}
 
 			for (int i = 0; i < Info_End; ++i)
-			{
 				Enable_Fade(m_pClassInfo[i], m_fDuration);
-			}
 		}
 	}
 }
@@ -867,31 +873,28 @@ void CUI_Barracks::Disable_SkinWindow()
 {
 	if (KEY(ESC, TAP))
 	{
-		if (m_bIsSkinWindow)
+		if (!m_bIsSkinWindow)
+			return;
+
+		m_bIsSkinWindow = false;
+		m_bIsEnable = true;
+
+		m_pTopBtn[m_iCurSelectSkin]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+		m_iCurSelectSkin = Skin::Clothes;
+
+		for (int i = 0; i < 4; ++i)
+			Disable_Fade(m_pTopBtn[i], m_fDuration);
+
+		for (int i = 0; i < Skin_End; ++i)
+			Disable_Fade(m_pSkinInfo[i], m_fDuration);
+
+		for (int i = 0; i < 3; ++i)
 		{
-			m_bIsEnable = true;
+			for (int j = 0; j < SB_End; ++j)
+				Disable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
 
-			m_pTopBtn[m_iCurSelectSkin]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
-
-			m_iCurSelectSkin = Skin::Clothes;
-
-			for (int i = 0; i < 4; ++i)
-				Disable_Fade(m_pTopBtn[i], m_fDuration);
-
-			for (int i = 0; i < Skin_End; ++i)
-				Disable_Fade(m_pSkinInfo[i], m_fDuration);
-
-			for (int i = 0; i < 3; ++i)
-			{
-				for (int j = 0; j < SB_End; ++j)
-					Disable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
-			}
-
-			for (int i = 0; i < 3; ++i)
-			{
-				for (int j = 0; j < Skin::End; ++j)
-					Disable_Fade(m_pArrSkin[i][j], m_fDuration);
-			}
+			for (int j = 0; j < Skin::End; ++j)
+				Disable_Fade(m_pArrSkin[i][j], m_fDuration);
 		}
 	}
 }
