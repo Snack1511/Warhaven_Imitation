@@ -531,7 +531,11 @@ PS_OUT PS_MAIN_SSAO(PS_DOWNSCALE_IN In)
 
 	//fragColor = vec4(ao, ao, ao, 1.);
 
-	Out.vColor.xyz *= pow(ao, 2.f);
+	float fPower = 1.6f;
+	if (vDepthDesc.w > 0.99f)
+		fPower = 1.f;
+
+	Out.vColor.xyz *= pow(ao, fPower);
 
 	return Out;
 }
@@ -984,7 +988,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_DOWNSCALE_MAIN();
 	}
 
@@ -995,7 +999,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_VERTICAL_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_VERTICAL_MAIN();
 	}
 
@@ -1006,7 +1010,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_HORIZONTAL_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_VERTICAL_MAIN();
 	}
 
@@ -1017,7 +1021,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_BLOOM_MAIN();
 	}
 
@@ -1028,7 +1032,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_BLOOMHARD_MAIN();
 	}
 
@@ -1039,7 +1043,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MOTIONBLUR_MAIN();
 	}
 
@@ -1050,7 +1054,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_RADIALBLUR_MAIN();
 	}
 
@@ -1061,7 +1065,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_CHROMATIC_ABERRATION_MAIN();
 	}
 
@@ -1072,7 +1076,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_GRAYSCALE_MAIN();
 	}
 
@@ -1083,7 +1087,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_LENSFLARE();
 	}
 
@@ -1094,7 +1098,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_SSAO();
 	}
 
@@ -1105,7 +1109,7 @@ technique11 DefaultTechnique
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
-		GeometryShader = NULL;
+		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_HDR();
 	}
 

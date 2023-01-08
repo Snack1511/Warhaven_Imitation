@@ -28,7 +28,10 @@ CLevel_Hwara* CLevel_Hwara::Create()
 HRESULT CLevel_Hwara::Initialize()
 {
 	m_vCenterPos = ZERO_VECTOR;
+	m_vCenterPos.y -= 10.f;
 	m_fDistance = 500.f;
+	m_vSunLook = _float4(1.f, -2.f, 1.f);
+
     return S_OK;
 }
 

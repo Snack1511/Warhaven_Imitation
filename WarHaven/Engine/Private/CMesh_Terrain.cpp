@@ -265,7 +265,8 @@ HRESULT CMesh_Terrain::SetUp_HeightMap(const _tchar* pHeightMapFilePath)
 	m_iNumPrimitive = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
 	m_iNumIndices = 3 * m_iNumPrimitive;
 	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
-	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	//m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST;
 
 
 	FACEINDICES32* pIndices = new FACEINDICES32[m_iNumPrimitive];
@@ -399,7 +400,8 @@ HRESULT CMesh_Terrain::SetUp_Terrain(_uint iNumVerticesX, _uint iNumVerticesZ)
 	m_iNumPrimitive = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
 	m_iNumIndices = 3 * m_iNumPrimitive;
 	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
-	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	//m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST;
 
 	m_pIndices = new FACEINDICES32[m_iNumPrimitive];
 	FACEINDICES32* pIndices = new FACEINDICES32[m_iNumPrimitive];

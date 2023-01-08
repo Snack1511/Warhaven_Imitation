@@ -27,11 +27,14 @@ public:
 
 protected:
 	_float4 m_vCenterPos;
+	_float4 m_vSunLook;
 	_float	m_fDistance = 400.f;
 
+	_bool	m_bLensFlare = true;
 	_bool	m_bStaticShadowBake = false;
 	_float	m_fDealyAcc = 0.f;
 	_float	m_fDelayTime = 0.1f;
+	
 };
 
 END

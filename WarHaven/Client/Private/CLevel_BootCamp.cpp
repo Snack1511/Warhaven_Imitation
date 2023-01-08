@@ -66,7 +66,8 @@ CLevel_BootCamp* CLevel_BootCamp::Create()
 HRESULT CLevel_BootCamp::Initialize()
 {
 	m_vCenterPos = _float4(0.f, 0.f, -50.f);
-
+	m_vSunLook = _float4(-1.f, -2.f, -1.f);
+	m_bLensFlare = false;
 	return S_OK;
 }
 

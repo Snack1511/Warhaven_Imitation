@@ -40,6 +40,8 @@ HRESULT CLevel_Paden::Initialize()
 {
 	m_vCenterPos = ZERO_VECTOR;
 	m_fDistance = 600.f;
+	m_vSunLook = _float4(-0.5f, -1.5f, 2.f);
+
 	return S_OK;
 }
 
@@ -53,11 +55,6 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 		return E_FAIL;
 
 	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
-	//_float4x4 mat;
-	//mat.Identity();
-	//CDrawable_Terrain* pDrawableTerrain = CDrawable_Terrain::Create(100, 100);
-	//pDrawableTerrain->Initialize();
-	//Ready_GameObject(pDrawableTerrain, GROUP_DEFAULT);
 
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Paden::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 

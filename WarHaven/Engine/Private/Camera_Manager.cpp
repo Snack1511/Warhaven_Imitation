@@ -45,6 +45,9 @@ _float4x4 CCamera_Manager::Get_BillBoard()
 
 _float4 CCamera_Manager::Get_ViewPos()
 {
+	if (!m_pCurCam)
+		return ZERO_VECTOR;
+
 	return m_pCurCam->Get_Transform()->Get_World(WORLD_POS);
 }
 

@@ -103,7 +103,7 @@ HRESULT CDrawable_Terrain::Initialize_Prototype()
     //Add_Component(pRenderer);
     //m_pRenderer = pRenderer;
 
-    CTerrain_Renderer* pRenderer = CTerrain_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TERRAIN);
+    CTerrain_Renderer* pRenderer = CTerrain_Renderer::Create(CP_RENDERER, RENDER_NONALPHA, VTXNOR_PASS_TESS);
     Add_Component<CRenderer>(pRenderer);
     m_pRenderer = pRenderer;
 
@@ -119,7 +119,7 @@ HRESULT CDrawable_Terrain::Initialize_Prototype()
     //pTexture = CTexture::Create(0, strTestSecondTexturePath.c_str(), 1);
     //Add_Component(pTexture);
 
-    Change_ShaderPass(2);
+    Change_ShaderPass(VTXNOR_PASS_TESS);
     return S_OK;
 }
 

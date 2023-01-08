@@ -146,7 +146,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 2; ++i)
+	for (_uint i = 0; i < 0; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
@@ -1572,7 +1572,7 @@ HRESULT CGameSystem::SetUp_DefaultLight_Paden()
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = _float4(100.f, 200.f, 100.f, 1.f);
+	LightDesc.vPosition = _float4(100.f, 300.f, 200.f, 1.f);
 	LightDesc.fRange = 1500.f;
 	LightDesc.vDiffuse = _float4(0.5f, 0.3f, 0.2f, 1.f);
 	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
@@ -1590,7 +1590,7 @@ HRESULT CGameSystem::SetUp_DefaultLight_Hwara()
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = _float4(100.f, 200.f, 100.f, 1.f);
+	LightDesc.vPosition = _float4(-100.f, 200.f, -100.f, 1.f);
 	LightDesc.fRange = 1500.f;
 	LightDesc.vDiffuse = _float4(0.38f, 0.35f, 0.35f, 1.f);
 	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);

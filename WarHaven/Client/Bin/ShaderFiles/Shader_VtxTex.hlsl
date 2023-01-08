@@ -1183,7 +1183,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
@@ -1194,7 +1194,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_COLOR();
     }
 
@@ -1205,7 +1205,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_LOADINGICON();
     }
 
@@ -1216,7 +1216,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_HealthGauge();
     }
 
@@ -1227,7 +1227,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_HPBAR();
     }
 
@@ -1238,7 +1238,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_HEROGAUGE();
     }
 
@@ -1249,7 +1249,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_RELIC();
     }
 
@@ -1260,7 +1260,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_PORTEFFECT();
     }
 
@@ -1271,7 +1271,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_PORTEFFECT();
     }
 
@@ -1282,7 +1282,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAINEFFECT();
     }
 
@@ -1293,7 +1293,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_LOBBYEFFECT();
     }
 
@@ -1304,7 +1304,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_VerticalGauge();
     }
 
@@ -1315,7 +1315,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_HorizontalGauge();
     }
 
@@ -1326,7 +1326,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_OPERSMOKE();
     }
 
@@ -1337,7 +1337,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_GLOWLINE();
     }
 
@@ -1348,7 +1348,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_CIRCLEGAUGE();
     }
 
@@ -1359,7 +1359,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_SELECTEFFECT();
     }
 
@@ -1370,7 +1370,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_DISSOLVE();
     }
 
@@ -1381,7 +1381,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_UIColor_MAIN();
     }
 
@@ -1393,7 +1393,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_None);
 
         VertexShader = compile vs_5_0 VS_TRAIL_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_TRAIL_MAIN();
     }
 
@@ -1404,7 +1404,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_None);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_BLOODOVERLAY();
     }
 
@@ -1415,7 +1415,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_None);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_DEBUG();
     }
 
@@ -1426,7 +1426,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_None);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_UIFIRE();
     }
 
@@ -1437,7 +1437,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_None);
 
         VertexShader = compile vs_5_0 VS_TRAIL_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_DISTORTION();
     }
 
@@ -1448,7 +1448,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_None);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_UVFIRE();
     }
 
@@ -1459,7 +1459,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_None);
 
         VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_PROFILE();
     }
 
@@ -1470,7 +1470,7 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_None);
 
         VertexShader = compile vs_5_0 VS_TRAIL_UI_MAIN();
-        GeometryShader = NULL;
+        GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_TRAIL_UI_MAIN();
     }
     

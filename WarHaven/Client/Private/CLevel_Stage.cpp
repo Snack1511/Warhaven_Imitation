@@ -110,8 +110,9 @@ void CLevel_Stage::Tick()
 				m_StaticShadowObjects.push_back(elem);
 
 			}
+			m_vSunLook.w = 0.f;
 
-			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, m_vCenterPos, m_fDistance);
+			GAMEINSTANCE->Bake_StaticShadow(m_StaticShadowObjects, m_vCenterPos, m_fDistance, m_vSunLook, m_bLensFlare);
 			/*_float4 vLook = _float4(-1.f, -2.f, -1.f, 0.f).Normalize();
 
 			_float4 vSunPos = m_vCenterPos + (vLook * -1.f * 500.f);

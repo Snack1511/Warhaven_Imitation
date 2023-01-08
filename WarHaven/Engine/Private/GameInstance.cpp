@@ -414,9 +414,9 @@ void CGameInstance::End_PhysScene()
 	return m_pPhysXManager->End_PhysScene();
 }
 
-void CGameInstance::Bake_StaticShadow(vector<CGameObject*>& MapList, _float4 vCenterPos, _float fDistance)
+void CGameInstance::Bake_StaticShadow(vector<CGameObject*>& MapList, _float4 vCenterPos, _float fDistance, _float4 vSunLook, _bool bLensFlare)
 {
-	m_pRenderManager->Bake_StaticShadow(MapList, vCenterPos, fDistance);
+	m_pRenderManager->Bake_StaticShadow(MapList, vCenterPos, fDistance, vSunLook, bLensFlare);
 }
 
 void CGameInstance::Start_RadialBlur(_float fTargetPower)

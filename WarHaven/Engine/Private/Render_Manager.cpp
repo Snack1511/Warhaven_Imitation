@@ -119,10 +119,10 @@ void CRender_Manager::Start_MotionBlur(_float fTime)
 	m_fMotionBlurAcc = fTime;
 }
 
-void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance)
+void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance, _float4 vSunLook, _bool bLensFlare)
 {
 	m_ShadowViewMatrix.Identity();
-	_float4 vLook = _float4(-1.f, -2.f, -1.f, 0.f).Normalize();
+	_float4 vLook = vSunLook.Normalize();
 
 	*((_float4*)&m_ShadowViewMatrix.m[2]) = vLook;
 
@@ -137,8 +137,18 @@ void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 v
 
 	*((_float4*)&m_ShadowViewMatrix.m[3]) = vPos;
 	//m_vSunWorldPos = vCenterPos + (vLook * -1.f * 500.f);
-	m_vSunWorldPos = vPos;
+
+	_float4 vSunDir = vSunLook;
+	vSunDir.y *= 0.3f;
+	vSunDir.Normalize();
+
+
+	m_vSunWorldPos = vCenterPos + vSunDir * 500.f * -1.f;
 	m_vSunWorldPos.w = 1.f;
+
+	if (!bLensFlare)
+		m_vSunWorldPos.y = -9000.f;
+
 	m_ShadowViewMatrix.Inverse();
 	m_ShadowViewMatrix.Transpose();
 
@@ -806,6 +816,7 @@ void CRender_Manager::Update()
 	
 
 
+
 	/* LENS FLARE */
 	_float4 vPos = m_vSunWorldPos;
 
@@ -816,6 +827,20 @@ void CRender_Manager::Update()
 	}
 	else
 		m_bLensFlare = true;
+
+	/* ray ½î±â */
+	_float4 vOutPos;
+	_float fMinDist;
+	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+	_float4 vDir = vPos - vCamPos;
+	if (CPhysX_Manager::Get_Instance()->Shoot_RaytoStaticActors(&vOutPos, &fMinDist,
+		vCamPos, vDir.Normalize(), 1500.f
+	))
+	{
+		m_bLensFlare = false;
+		return;
+	}
+	
 
 	_float4x4 matVP = GAMEINSTANCE->Get_CurViewMatrix() * GAMEINSTANCE->Get_CurProjMatrix();
 	vPos = vPos.MultiplyCoord(matVP);
@@ -2051,6 +2076,7 @@ HRESULT CRender_Manager::Render_LensFlare(const _tchar* pRenderTargetName)
 
 	
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_vSunPos", &m_vSunUV, sizeof(_float2));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(9)))
 		return E_FAIL;
@@ -2128,6 +2154,7 @@ HRESULT CRender_Manager::Render_RadialBlur(const _tchar* pRenderTargetName)
 		return E_FAIL;
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fRadialPower, sizeof(_float));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(6)))
 		return E_FAIL;
@@ -2150,6 +2177,7 @@ HRESULT CRender_Manager::Render_ChromaticAberration(const _tchar* pRenderTargetN
 		return E_FAIL;
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fChromaticAberrationPower, sizeof(_float));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(7)))
 		return E_FAIL;
@@ -2172,6 +2200,7 @@ HRESULT CRender_Manager::Render_GrayScale(const _tchar* pRenderTargetName)
 		return E_FAIL;
 
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_fShaderPower", &m_fGrayScalePower, sizeof(_float));
+	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Begin(8)))
