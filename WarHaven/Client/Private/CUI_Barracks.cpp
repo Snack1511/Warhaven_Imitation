@@ -205,7 +205,7 @@ void CUI_Barracks::OnEnable()
 	{
 		m_pArrClassPort[0][i]->Set_PosY(-240.f);
 
-		if(i == Port_Class)
+		if (i == Port_Class)
 			m_pArrClassPort[0][i]->Set_PosY(-185.f);
 	}
 
@@ -415,6 +415,7 @@ void CUI_Barracks::Create_TopBtn()
 		m_pTopBtn[i]->Set_FontStyle(true);
 		m_pTopBtn[i]->Set_FontCenter(true);
 		m_pTopBtn[i]->Set_FontScale(0.4f);
+		m_pTopBtn[i]->Set_FontOffset(5.f, 5.f);
 		m_pTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
 		switch (i)
@@ -432,7 +433,7 @@ void CUI_Barracks::Create_TopBtn()
 			break;
 
 		case 3:
-			m_pTopBtn[i]->Set_FontText(TEXT("글라이더"));
+			m_pTopBtn[i]->Set_FontText(TEXT("날틀"));
 			break;
 		}
 	}
@@ -669,7 +670,7 @@ void CUI_Barracks::Init_ClassBtn()
 
 	m_pArrClassBtn[0][Btn_Text]->Set_PosX(-555.f);
 	m_pArrClassBtn[0][Btn_Text]->Set_FontText(TEXT("스킨"));
-	m_pArrClassBtn[0][Btn_LockText]->Set_FontText(TEXT("의상·무기·모자·글라이더"));
+	m_pArrClassBtn[0][Btn_LockText]->Set_FontText(TEXT("의상·무기·모자·날틀"));
 
 	m_pArrClassBtn[1][Btn_Text]->Set_PosX(-540.f);
 	m_pArrClassBtn[1][Btn_Text]->Set_FontText(TEXT("특성"));
@@ -889,6 +890,9 @@ void CUI_Barracks::Late_SkinEnable()
 			for (int i = 0; i < 4; ++i)
 				Enable_Fade(m_pTopBtn[i], m_fDuration);
 
+			for (int i = 0; i < Skin_End; ++i)
+				Enable_Fade(m_pSkinInfo[i], m_fDuration);
+
 			Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
 
 			m_bIsSkinWindow = true;
@@ -936,6 +940,9 @@ void CUI_Barracks::Disable_SkinWindow()
 
 void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 {
+	if (!m_pSkinInfo[Skin_Tier]->Get_FontRender())
+		m_pSkinInfo[Skin_Tier]->Set_FontRender(true);
+
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < SB_End; ++j)
@@ -962,6 +969,37 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 
 	if (m_iCurSelectSkin == Skin::Clothes)
 	{
+		if (m_iSelectClass < FIONA)
+		{
+			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련복"));
+			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+		}
+		else
+		{
+			switch (m_iSelectClass)
+			{
+			case FIONA:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("피오나 일반복"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case QANDA:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("콴다 일반복"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case HOEDT:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("호에트 일반복"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case LANCER:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("랜서 일반복"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			}
+		}
+
 		if (m_iSelectClass < QANDA)
 		{
 			m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
@@ -1004,6 +1042,34 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 	{
 		if (m_iSelectClass < FIONA)
 		{
+			switch (m_iSelectClass)
+			{
+			case Client::WARRIOR:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 검"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::SPEAR:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 창"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::ARCHER:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 활"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::PALADIN:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 메이스"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::PRIEST:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 지팡이"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::ENGINEER:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 해머"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			}
+
 			m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
 			m_pArrSkinBtn[0][SB_Blind]->SetActive(false);
 
@@ -1018,6 +1084,29 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 		}
 		else
 		{
+			switch (m_iSelectClass)
+			{
+			case FIONA:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("피오나의 검"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case QANDA:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("콴다의 지팡이"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case HOEDT:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("호에트의 지팡이"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case LANCER:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("랜서의 창"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			}
+
 			m_pArrSkin[2][m_iCurSelectSkin]->Set_TextureIndex(iNum);
 
 			for (int i = 0; i < 2; ++i)
@@ -1035,6 +1124,17 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 
 	if (m_iCurSelectSkin >= Skin::Hat)
 	{
+		if (m_iCurSelectSkin == Skin::Hat)
+		{
+			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("미착용"));
+			m_pSkinInfo[Skin_Tier]->Set_FontRender(false);
+		}
+		else
+		{
+			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 날틀"));
+			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+		}
+
 		m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
 		m_pArrSkinBtn[0][SB_Blind]->SetActive(false);
 

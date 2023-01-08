@@ -93,11 +93,13 @@ void CUI_Main::SetActive_TopBtn(_bool value)
 	{
 		if (value == true)
 		{
-			ENABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			//ENABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			Enable_Fade(m_pArrTopBtn[i], 0.3f);
 		}
 		else
 		{
-			DISABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			//DISABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			Disable_Fade(m_pArrTopBtn[i], 0.3f);
 		}
 	}
 }
@@ -180,6 +182,7 @@ void CUI_Main::Create_TopBtn()
 		m_pArrTopBtn[i]->Set_FontStyle(true);
 		m_pArrTopBtn[i]->Set_FontCenter(true);
 		m_pArrTopBtn[i]->Set_FontScale(0.4f);
+		m_pArrTopBtn[i]->Set_FontOffset(4.f, 4.f);
 		m_pArrTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
 		if (i == TB_Play)
@@ -235,7 +238,6 @@ void CUI_Main::Create_PlayerNameText()
 			m_pPlayerInfo[i]->Set_FontStyle(true);
 			m_pPlayerInfo[i]->Set_FontCenter(true);
 			m_pPlayerInfo[i]->Set_FontScale(0.25f);
-			m_pPlayerInfo[i]->Set_FontOffset(5.f, 5.f);
 
 			m_pPlayerInfo[i]->Set_FontText(TEXT("1"));
 		}
