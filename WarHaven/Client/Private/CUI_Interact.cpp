@@ -78,13 +78,14 @@ void CUI_Interact::My_LateTick()
 	{
 		_float4 vTargetPos = CUtility_Transform::Get_ProjPos(m_pTargetTransform);
 		vTargetPos.x -= 15.f;
+		vTargetPos.y += 200.f;
 
 		m_pInteractUI->Set_Pos(vTargetPos);
 	}
 	else
 	{
 		_float fPosX = m_pInteractUI->Get_FontSizeX() * 0.5f;
-		m_pInteractUI->Set_Pos(-fPosX, -50.f);
+		m_pInteractUI->Set_Pos(-fPosX, -70.f);
 	}
 }
 

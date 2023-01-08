@@ -38,6 +38,7 @@ class CUI_Interact;
 class CUI_MiniMap;
 class CUI_ScoreBoard;
 class CUI_ScoreInfo;
+class CUI_Cannon;
 
 class CTeamConnector;
 
@@ -199,10 +200,14 @@ public:	// 상호작용
 	void Set_InteractKey(_uint iKeyIndex);
 	void Set_InteractText(wstring wstrText);
 	void Set_InteractTarget(CGameObject* pInteractTarget);
+	void SetActive_CannonUI(_bool value);
+	void Set_CannonCoolTime(_float fTime, _float fMaxTime);
+	void SetActive_CannonCoolTime(_bool value);
 
 public: // 플레이어 KDA
 	void Get_ScoreInfo(CPlayer* pPlayer);
 	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();
+
 	void Sort_ScoreInfo();
 	void Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
 	void Set_ScoreBoardGaugeColor(_bool IsMainTeam, _uint iPointIdx);
@@ -226,6 +231,7 @@ private:	// 소생
 
 private:	// 상호작용
 	CUI_Interact* m_pInteractUI = nullptr;
+	CUI_Cannon* m_pCannonUI = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

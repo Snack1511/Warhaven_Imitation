@@ -6,6 +6,7 @@
 #include "CUser.h"
 #include "CUI_Cursor.h"
 #include "CUI_Main.h"
+#include "CPlayerInfo_Main.h"
 
 CUI_Barracks::CUI_Barracks()
 {
@@ -134,6 +135,11 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 
 	if (m_iPrvSelectSkin == iEventNum)
 		return;
+
+	if (m_iCurSelectSkin == Skin::Hat)
+	{
+
+	}
 
 	m_pTopBtn[m_iPrvSelectSkin]->Set_IsClick(false);
 	m_pTopBtn[m_iPrvSelectSkin]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
@@ -691,7 +697,6 @@ void CUI_Barracks::Init_Skin()
 
 	for (int i = 0; i < 3; ++i)
 	{
-
 		for (int j = 0; j < Skin::End; ++j)
 		{
 			m_pArrSkin[i][j] = m_pSkin[j]->Clone();

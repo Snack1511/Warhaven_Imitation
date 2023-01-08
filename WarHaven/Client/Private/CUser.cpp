@@ -49,6 +49,7 @@
 #include "CUI_MiniMap.h"
 #include "CUI_ScoreBoard.h"
 #include "CUI_ScoreInfo.h"
+#include "CUI_Cannon.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -566,6 +567,14 @@ void CUser::On_EnterStageLevel()
 			CREATE_GAMEOBJECT(m_pScoreBoard, GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pScoreBoard);
 		}
+
+		if (!m_pCannonUI)
+		{
+			m_pCannonUI = CUI_Cannon::Create();
+
+			CREATE_GAMEOBJECT(m_pCannonUI, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pCannonUI);
+		}
 	}
 
 	SetUp_BloodOverlay();
@@ -613,6 +622,9 @@ void CUser::On_ExitStageLevel()
 
 	if (m_pMiniMap)
 		m_pMiniMap = nullptr;
+
+	if (m_pCannonUI)
+		m_pCannonUI = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -756,6 +768,24 @@ void CUser::Set_InteractText(wstring wstrText)
 void CUser::Set_InteractTarget(CGameObject* pInteractTarget)
 {
 	m_pInteractUI->Set_InteractTarget(pInteractTarget);
+}
+
+void CUser::SetActive_CannonUI(_bool value)
+{
+	if (m_pCannonUI)
+		m_pCannonUI->SetActive(value);
+}
+
+void CUser::Set_CannonCoolTime(_float fTime, _float fMaxTime)
+{
+	if (m_pCannonUI)
+		m_pCannonUI->Set_CoolTime(fTime, fMaxTime);
+}
+
+void CUser::SetActive_CannonCoolTime(_bool value)
+{
+	if (m_pCannonUI)
+		m_pCannonUI->SetActive_CoolTime(value);
 }
 
 void CUser::Get_ScoreInfo(CPlayer* pPlayer)

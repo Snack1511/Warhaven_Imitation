@@ -201,7 +201,7 @@ void CTrigger_Paden::Update_Conquered()
 		{
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 0);
-			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 1);
+			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 0);
 			break;
 		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 1);

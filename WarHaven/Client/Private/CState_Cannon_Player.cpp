@@ -40,8 +40,7 @@ HRESULT CState_Cannon_Player::Initialize()
 {
     // 상하체 분리.
     // 
-
-  //  __super::Initialize();
+    // __super::Initialize();
 
     m_eAnimType = ANIM_ETC;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
@@ -111,8 +110,7 @@ STATE_TYPE CState_Cannon_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnim
             {
                 return m_eStateType;
             }
-        }
-       
+        }       
     }
 
     return STATE_END;
