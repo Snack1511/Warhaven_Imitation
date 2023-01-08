@@ -466,6 +466,14 @@ void CUser::On_EnterStageLevel()
 		m_pUI_Crosshair = static_cast<CUI_Crosshair*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Crosshair));
 	}
 
+	if (!m_pInteractUI)
+	{
+		m_pInteractUI = CUI_Interact::Create();
+
+		CREATE_GAMEOBJECT(m_pInteractUI, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pInteractUI);
+	}
+
 	if (!m_pUI_Damage[0])
 	{
 		for (int i = 0; i < 5; ++i)
@@ -541,14 +549,6 @@ void CUser::On_EnterStageLevel()
 
 			CREATE_GAMEOBJECT(m_pUI_Result, GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pUI_Result);
-		}
-
-		if (!m_pInteractUI)
-		{
-			m_pInteractUI = CUI_Interact::Create();
-
-			CREATE_GAMEOBJECT(m_pInteractUI, GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pInteractUI);
 		}
 
 		if (!m_pMiniMap)
