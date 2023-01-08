@@ -114,6 +114,8 @@ void CUI_Popup::Enable_SkinPopup(_uint iSkin)
 		break;
 	}
 
+	SetActive_SkinPopup(true);
+
 	m_bEnableSkinPopup = true;
 }
 
@@ -135,7 +137,6 @@ void CUI_Popup::My_Tick()
 
 	if (m_bFadePopup)
 	{
-		SetActive_SkinPopup(true);
 
 		if (KEY(SPACE, TAP))
 		{
