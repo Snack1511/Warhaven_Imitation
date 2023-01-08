@@ -106,7 +106,6 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		else if (eColType == COL_BLUEFLYATTACKGUARDBREAK)
 			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
 
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Hit", vHitPos);
 	}
 	else
 	{
@@ -290,6 +289,7 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		break;
 
 	case Client::CProjectile::eHIT:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Hit", Get_ArrowHeadPos());
 		DISABLE_COMPONENT(m_pCollider);
 		if (m_pTrailEffect)
 		{

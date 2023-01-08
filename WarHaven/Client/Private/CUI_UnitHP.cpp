@@ -32,7 +32,7 @@ HRESULT CUI_UnitHP::Initialize_Prototype()
 	m_pHealBlur = CUI_Object::Create();
 
 	m_pHealBlur->Set_UIShaderFlag(SH_UI_HARDBLOOM);
-	m_pHealBlur->Set_FadeDesc(0.3f);
+	m_pHealBlur->Set_FadeDesc(0.2f);
 	m_pHealBlur->Set_Texture(TEXT("../Bin/Resources/Textures/UI/UnitHUD/T_HealTarget.dds"));
 	m_pHealBlur->Set_Scale(107.f, 48.f);
 	m_pHealBlur->Set_Sort(0.61f);
@@ -139,14 +139,14 @@ void CUI_UnitHP::SetActive_HealBlur(_bool value)
 	{
 		if (!m_pHealBlur->Is_Valid())
 		{
-			Enable_Fade(m_pHealBlur, 0.3f);
+			Enable_Fade(m_pHealBlur, 0.2f);
 		}
 	}
 	else
 	{
 		if (m_pHealBlur->Is_Valid())
 		{
-			Disable_Fade(m_pHealBlur, 0.3f);
+			Disable_Fade(m_pHealBlur, 0.2f);
 		}
 	}
 }
