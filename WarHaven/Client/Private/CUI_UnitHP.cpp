@@ -75,8 +75,6 @@ void CUI_UnitHP::OnEnable()
 	{
 		ENABLE_GAMEOBJECT(m_pUnitHP[i]);
 	}
-
-	ENABLE_GAMEOBJECT(m_pHealBlur);
 }
 
 void CUI_UnitHP::OnDisable()
