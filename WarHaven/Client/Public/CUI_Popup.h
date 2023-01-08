@@ -63,6 +63,7 @@ private:
 	CUI_Object* m_pSKinPopup[Skin_End];
 
 	_bool m_bEnableSkinPopup = false;
+	_bool m_bFadePopup = false;
 
 private:
 	void Create_ConquestPopup();

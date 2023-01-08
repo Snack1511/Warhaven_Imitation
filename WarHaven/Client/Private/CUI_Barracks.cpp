@@ -158,6 +158,80 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 	m_bTickDisable = true;
 }
 
+void CUI_Barracks::On_PointerStay_SkinBG(const _uint& iEventNum)
+{
+	if (m_iCurSelectSkin == Skin::Hat)
+	{
+		if (m_bIsUnlock_RabbitHat)
+		{
+			if (iEventNum > 1)
+				CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+		}
+		else
+		{
+			if (iEventNum > 0)
+				CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+		}
+	}
+	else
+	{
+		if (iEventNum > 0)
+			CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+	}
+}
+
+void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
+{
+	if (m_iCurSelectSkin == Skin::Hat)
+	{
+		if (m_bIsUnlock_RabbitHat)
+		{
+			for (int j = 0; j < 2; ++j)
+			{
+				for (int i = SB_Outline; i < SB_Lock; ++i)
+					Disable_Fade(m_pArrSkinBtn[j][i], m_fDuration);
+			}
+
+			switch (iEventNum)
+			{
+			case 0:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("¹ÌÂø¿ë"));
+				m_pSkinInfo[Skin_Tier]->Set_FontRender(false);
+
+				for (int i = SB_Outline; i < SB_Lock; ++i)
+					Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+
+				break;
+			case 1:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("Åä³¢Å»"));
+				m_pSkinInfo[Skin_Tier]->Set_FontRender(true);
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("°í±Þ"));
+				m_pSkinInfo[Skin_Tier]->Set_FontColor(RGB(60, 100, 200));
+
+				for (int i = SB_Outline; i < SB_Lock; ++i)
+					Enable_Fade(m_pArrSkinBtn[1][i], m_fDuration);
+
+				break;
+			}
+		}
+		else
+		{
+			if (iEventNum > 0)
+				return;
+		}
+	}
+	else
+	{
+		if (iEventNum > 0)
+			return;
+	}
+}
+
+void CUI_Barracks::Unlock_RabbitHat()
+{
+	m_bIsUnlock_RabbitHat = true;
+}
+
 void CUI_Barracks::My_Tick()
 {
 	__super::My_Tick();
@@ -520,6 +594,7 @@ void CUI_Barracks::Create_SkinBtn()
 			GET_COMPONENT_FROM(m_pSkinBtn[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pSkinBtn[i], "/Lobby/Barracks/Skin", "T_ItemBG");
 			m_pSkinBtn[i]->Set_Sort(0.5f);
+			m_pSkinBtn[i]->Set_MouseTarget(true);
 			break;
 
 		case SB_Outline:
@@ -750,6 +825,10 @@ void CUI_Barracks::Init_SkinBtn()
 
 			switch (j)
 			{
+			case SB_BG:
+				m_pArrSkinBtn[i][j]->Set_TextureIndex(i);
+				break;
+
 			case SB_Select:
 			{
 				_float fSelectPosX = fPosX + 45.f;
@@ -788,6 +867,12 @@ void CUI_Barracks::Bind_Btn()
 	for (int i = 0; i < 4; ++i)
 	{
 		m_pTopBtn[i]->CallBack_PointDown += bind(&CUI_Barracks::On_PointerDown_TopBtn, this, i);
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pArrSkinBtn[i][SB_BG]->CallBack_PointStay += bind(&CUI_Barracks::On_PointerStay_SkinBG, this, i);
+		m_pArrSkinBtn[i][SB_BG]->CallBack_PointDown += bind(&CUI_Barracks::On_PointerDown_SkinBG, this, i);
 	}
 }
 
@@ -942,6 +1027,8 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 {
 	if (!m_pSkinInfo[Skin_Tier]->Get_FontRender())
 		m_pSkinInfo[Skin_Tier]->Set_FontRender(true);
+
+	m_pSkinInfo[Skin_Tier]->Set_FontColor(RGB(255, 255, 255));
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -1126,6 +1213,12 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 	{
 		if (m_iCurSelectSkin == Skin::Hat)
 		{
+			if (m_bIsUnlock_RabbitHat)
+			{
+				for (int i = SB_Lock; i < SB_End; ++i)
+					m_pArrSkinBtn[1][i]->SetActive(false);
+			}
+
 			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("¹ÌÂø¿ë"));
 			m_pSkinInfo[Skin_Tier]->Set_FontRender(false);
 		}

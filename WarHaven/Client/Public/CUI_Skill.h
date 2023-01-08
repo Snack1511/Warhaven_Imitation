@@ -52,7 +52,7 @@ private:
 
 	_uint m_iPrvIndex = 2;
 	_uint m_iCurIndex = 2;
-	_uint m_iIndex = 0;
+	_uint m_iIndex = 3;
 
 	_uint m_iSkillNum = 0;
 

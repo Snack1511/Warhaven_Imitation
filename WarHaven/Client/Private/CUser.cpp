@@ -453,6 +453,14 @@ void CUser::On_EnterLevel()
 
 			CREATE_GAMEOBJECT(m_pMainUI, GROUP_UI);
 		}
+
+		if (!m_pBarracks)
+		{
+			m_pBarracks = CUI_Barracks::Create();
+
+			CREATE_GAMEOBJECT(m_pBarracks, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pBarracks);
+		}
 	}
 
 	DISABLE_GAMEOBJECT(m_pCursor);
@@ -467,6 +475,7 @@ void CUser::On_ExitLevel()
 void CUser::On_EnterStageLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+
 
 	if (!m_pUI_HUD)
 	{
@@ -638,6 +647,12 @@ void CUser::On_ExitStageLevel()
 
 	if (m_pCannonUI)
 		m_pCannonUI = nullptr;
+
+	if (m_pMainUI)
+		m_pMainUI = nullptr;
+
+	if (m_pBarracks)
+		m_pBarracks = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -864,6 +879,18 @@ void CUser::Set_TopBtnEffectPosX(_float fPosX)
 {
 	if (m_pMainUI)
 		m_pMainUI->Set_TopBtnEffectPosX(fPosX);
+}
+
+void CUser::SetActive_Barracks(_bool value)
+{
+	if (m_pBarracks)
+		m_pBarracks->SetActive(value);
+}
+
+void CUser::Unlock_RabbitHat()
+{
+	if (m_pBarracks)
+		m_pBarracks->Unlock_RabbitHat();
 }
 
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)

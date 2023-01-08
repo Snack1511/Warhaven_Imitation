@@ -28,6 +28,12 @@ public:
 
 	virtual void On_PointerDown_TopBtn(const _uint& iEventNum);
 
+	virtual void On_PointerStay_SkinBG(const _uint& iEventNum);
+	virtual void On_PointerDown_SkinBG(const _uint& iEventNum);
+
+public:
+	void Unlock_RabbitHat();
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -57,6 +63,8 @@ private:
 	int m_iCurSelectSkin = 0;
 
 	_bool m_bIsSkinWindow = false;
+
+	_bool m_bIsUnlock_RabbitHat = false;
 
 private:
 	enum ClassPort { Port_BG, Port_Char, Port_Class, Port_Highlight, Port_Outline, Port_Underline, Port_End };

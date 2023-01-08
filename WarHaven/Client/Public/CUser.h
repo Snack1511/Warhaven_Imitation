@@ -221,6 +221,9 @@ public:	// 메인메뉴
 	void SetActive_MainTopBtn(_bool value);
 	void Set_TopBtnEffectPosX(_float fPosX);
 
+	void SetActive_Barracks(_bool value);
+	void Unlock_RabbitHat();
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;

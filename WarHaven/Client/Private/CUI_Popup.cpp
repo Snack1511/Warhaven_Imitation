@@ -3,6 +3,7 @@
 #include "CUI_Object.h"
 #include "Texture.h"
 #include "CFader.h"
+#include "CUser.h"
 
 CUI_Popup::CUI_Popup()
 {
@@ -98,9 +99,6 @@ void CUI_Popup::Enable_KillPopup(wstring Text, _uint iIconIndex)
 
 void CUI_Popup::Enable_SkinPopup(_uint iSkin)
 {
-	for (int i = 0; i < Skin_End; ++i)
-		Enable_Fade(m_pSKinPopup[i], m_fFadeTime);
-
 	switch (iSkin)
 	{
 	case 0:
@@ -119,14 +117,28 @@ void CUI_Popup::My_Tick()
 
 	if (m_bEnableSkinPopup)
 	{
-		if (KEY(SPACE, TAP))
+		m_fAccTime += fDT(0);
+
+		if (m_fAccTime > 1.5f)
+			m_bFadePopup = true;
+
+		if (m_bFadePopup)
 		{
 			for (int i = 0; i < Skin_End; ++i)
-				Disable_Fade(m_pSKinPopup[i], m_fFadeTime);
+				Enable_Fade(m_pSKinPopup[i], m_fFadeTime);
 
-			m_bEnableSkinPopup = false;
+			if (KEY(SPACE, TAP))
+			{
+				for (int i = 0; i < Skin_End; ++i)
+					Disable_Fade(m_pSKinPopup[i], m_fFadeTime);
 
-			DISABLE_GAMEOBJECT(this);
+				m_bEnableSkinPopup = false;
+				m_fAccTime = 0.f;
+
+				CUser::Get_Instance()->Unlock_RabbitHat();
+
+				DISABLE_GAMEOBJECT(this);
+			}
 		}
 	}
 }

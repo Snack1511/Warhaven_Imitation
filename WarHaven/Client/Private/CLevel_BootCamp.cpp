@@ -105,7 +105,6 @@ HRESULT CLevel_BootCamp::Enter()
 	//CUser::Get_Instance()->Start_FadeDark(0.f, 0.1f, 0.3f);
 
 	GAMEINSTANCE->Stop_DarkScreen(1.5f);
-
 	return S_OK;
 }
 

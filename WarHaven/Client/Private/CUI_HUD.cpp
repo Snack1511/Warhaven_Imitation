@@ -32,6 +32,7 @@
 #include "CSquad.h"
 
 
+
 CUI_HUD::CUI_HUD()
 {
 }
@@ -69,10 +70,10 @@ HRESULT CUI_HUD::Start()
 {
 	Bind_Shader();
 
-	if (m_eLoadLevel >= LEVEL_BOOTCAMP)
+	SetActive_HUD(true);
+		
+	if (m_eLoadLevel <= LEVEL_BOOTCAMP)
 	{
-		SetActive_HUD(true);
-
 		if (m_pClassChangeText)
 			m_pClassChangeText->SetActive(true);
 	}
@@ -131,7 +132,7 @@ void CUI_HUD::SetActive_HUD(_bool value)
 		}
 	}
 
-	CUser::Get_Instance()->Turn_HeroGaugeFire(value);
+	// CUser::Get_Instance()->Turn_HeroGaugeFire(value);
 
 	for (int i = 0; i < 3; ++i)
 	{
