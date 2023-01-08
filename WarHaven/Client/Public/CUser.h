@@ -223,6 +223,7 @@ public:	// 메인메뉴
 
 	void SetActive_Barracks(_bool value);
 	void Unlock_RabbitHat();
+	void SetActive_SkinPopup(_bool value);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;

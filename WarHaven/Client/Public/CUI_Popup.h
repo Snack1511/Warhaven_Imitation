@@ -35,6 +35,8 @@ public:
 	// 0 �䳢Ż
 	void Enable_SkinPopup(_uint iSkin);
 
+	void SetActive_SkinPopup(_bool value);
+
 private:
 	virtual void My_Tick() override;
 	virtual void OnEnable() override;

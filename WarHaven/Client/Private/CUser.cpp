@@ -893,6 +893,12 @@ void CUser::Unlock_RabbitHat()
 		m_pBarracks->Unlock_RabbitHat();
 }
 
+void CUser::SetActive_SkinPopup(_bool value)
+{
+	if (m_pUI_Popup)
+		m_pUI_Popup->SetActive_SkinPopup(value);
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);

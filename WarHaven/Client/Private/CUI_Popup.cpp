@@ -118,27 +118,26 @@ void CUI_Popup::My_Tick()
 	if (m_bEnableSkinPopup)
 	{
 		m_fAccTime += fDT(0);
-
-		if (m_fAccTime > 1.5f)
-			m_bFadePopup = true;
-
-		if (m_bFadePopup)
+		if (m_fAccTime > 1.f)
 		{
-			for (int i = 0; i < Skin_End; ++i)
-				Enable_Fade(m_pSKinPopup[i], m_fFadeTime);
+			m_fAccTime = 0.f;
 
-			if (KEY(SPACE, TAP))
-			{
-				for (int i = 0; i < Skin_End; ++i)
-					Disable_Fade(m_pSKinPopup[i], m_fFadeTime);
+			m_bEnableSkinPopup = false;
+			m_bFadePopup = true;
+		}
+	}
 
-				m_bEnableSkinPopup = false;
-				m_fAccTime = 0.f;
+	if (m_bFadePopup)
+	{
+		CUser::Get_Instance()->SetActive_SkinPopup(true);
 
-				CUser::Get_Instance()->Unlock_RabbitHat();
+		if (KEY(SPACE, TAP))
+		{
+			m_bFadePopup = false;
 
-				DISABLE_GAMEOBJECT(this);
-			}
+			CUser::Get_Instance()->Unlock_RabbitHat();
+			CUser::Get_Instance()->SetActive_SkinPopup(false);
+			DISABLE_GAMEOBJECT(this);
 		}
 	}
 }
@@ -360,5 +359,19 @@ void CUI_Popup::Create_SkinPopup()
 			m_pSKinPopup[i]->Set_FontText(TEXT("Ã¢ ´Ý±â"));
 			break;
 		}
+	}
+}
+
+void CUI_Popup::SetActive_SkinPopup(_bool value)
+{
+	if (value == true)
+	{
+		for (int i = 0; i < Skin_End; ++i)
+			Enable_Fade(m_pSKinPopup[i], m_fFadeTime);
+	}
+	else
+	{
+		for (int i = 0; i < Skin_End; ++i)
+			Disable_Fade(m_pSKinPopup[i], m_fFadeTime);
 	}
 }
