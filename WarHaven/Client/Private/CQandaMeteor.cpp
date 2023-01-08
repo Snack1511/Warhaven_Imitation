@@ -39,16 +39,16 @@ HRESULT CQandaMeteor::Start()
 	__super::Start();
 
 	SetUp_TrailEffect(
-		_float4(0.f, -0.15f, 0.f, 1.f),	//Weapon Low
-		_float4(0.f, 0.15f, 0.f, 1.f),	//Weapon High
-		_float4(-0.15f, 0.f, 0.f, 1.f), //Left
-		_float4(0.15f, 0.f, 0.f, 1.f), //Right
+		_float4(0.f, -0.05f, 0.f, 1.f),	//Weapon Low
+		_float4(0.f, 0.05f, 0.f, 1.f),	//Weapon High
+		_float4(-0.05f, 0.f, 0.f, 1.f), //Left
+		_float4(0.05f, 0.f, 0.f, 1.f), //Right
 		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
-		_float4(1.f, 0.1f, 0.1f, 0.4f), //vColor
+		_float4(0.8f, 0.3f, 0.3f, 0.2f), //vColor
 		0.f,
-		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
-		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
-		40
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
+		120
 	);
 
 	m_EffectTest.clear();
@@ -93,6 +93,8 @@ void CQandaMeteor::My_Tick()
 
 	if (m_bShoot)
 	{
+		Turn_Trail(true);
+
 		if (m_EffectTest.empty())
 		{
 			m_EffectTest = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Qanda_Sniping", this, ZERO_VECTOR);
@@ -126,6 +128,8 @@ void CQandaMeteor::OnEnable()
 
 void CQandaMeteor::OnDisable()
 {
+	Turn_Trail(false);
+
 	if (m_bCollect)
 		static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
 	

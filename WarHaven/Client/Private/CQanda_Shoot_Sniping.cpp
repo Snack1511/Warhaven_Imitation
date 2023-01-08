@@ -64,7 +64,7 @@ HRESULT CQanda_Shoot_Sniping::Initialize()
 	m_fDamagePumping = 7.f;
 
 	Add_KeyFrame(30, 0);
-	Add_KeyFrame(89, 1);
+	Add_KeyFrame(50, 1);
 
 	// return __super::Initialize();
 	return S_OK;
@@ -72,16 +72,7 @@ HRESULT CQanda_Shoot_Sniping::Initialize()
 
 void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	list<CGameObject*> TargetObjectList = pOwner->Get_MultipleFrustumObject();
-
-	m_SnipingTarget = TargetObjectList;
-
-	for (auto& elem : m_SnipingTarget)
-	{
-		CGameObject* pProjectile = static_cast<CUnit_Qanda*>(pOwner)->Create_Meteor();
-		static_cast<CProjectile*>(pProjectile)->Set_TargetUnit(static_cast<CUnit*>(elem));
-		m_Mateors.push_back(pProjectile);
-	}
+	m_SnipingTarget = pOwner->Get_MultipleFrustumObject();
 
 	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 
@@ -125,6 +116,7 @@ void CQanda_Shoot_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	if (!m_Mateors.empty())
 		m_Mateors.clear();
 
+
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
 
@@ -141,21 +133,31 @@ STATE_TYPE CQanda_Shoot_Sniping::Check_Condition(CUnit* pOwner, CAnimator* pAnim
 
 void CQanda_Shoot_Sniping::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
+	
+
 	switch (iSequence)
 	{
 	case 0:
-
-		
-
 		m_bAttackTrigger = true;
-
 		break;
-	/*case 1:
-		for (auto& elem : m_Mateors)
-			static_cast<CProjectile*>(elem)->On_ChangePhase(CProjectile::eChase);
-		break;*/
+	case 1:
+		Make_Meteo(pOwner);
+		break;
 	default:
 		break;
 	}
 
+}
+
+void CQanda_Shoot_Sniping::Make_Meteo(CUnit* pOwner)
+{
+	for (auto& elem : m_SnipingTarget)
+	{
+		if (static_cast<CUnit*>(elem)->Is_Valid())
+		{
+			CGameObject*  pProjectile = static_cast<CUnit_Qanda*>(pOwner)->Create_Meteor();
+			static_cast<CProjectile*>(pProjectile)->Set_TargetUnit(static_cast<CUnit*>(elem));
+			m_Mateors.push_back(pProjectile);
+		}
+	}
 }

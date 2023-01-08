@@ -264,8 +264,6 @@ void CProjectile::On_ShootProjectile()
 
 void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 {
-
-	_float fRandom;
 	_float4x4 matOwner;
 	_float4 vOffset;
 
@@ -293,22 +291,22 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		////m_pTransform->Set_World(WORLD_POS, m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS));
 		//m_fRandomPhaseMaxTime = frandom(0.3f, 0.7f);
 
-
-		fRandom = frandom(-2.f, 2.f);
 		matOwner = m_pOwnerUnit->Get_Transform()->Get_WorldMatrix();
-		vOffset = _float4(fRandom, 1.f, -1.f);
+		vOffset = _float4(0.f, 1.5f, 0.f);
 
 		vOffset = vOffset.MultiplyCoord(matOwner);
 		m_pTransform->Set_World(WORLD_POS, vOffset);
 
 
-		m_vTargetPos = _float4(0.f, 5.f, 2.f);
+		m_vTargetPos = _float4(0.f, 15.f, 2.f);
 		m_vTargetPos = m_vTargetPos.MultiplyCoord(matOwner);
 
 		m_vRight = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_RIGHT).Normalize();
 
-		m_fRandFrequency = random(-10, 10);
-		m_fRandPower = random(-10, 10);
+		m_fRandSpeed = frandom(3.f, 5.f);
+		m_fRandFrequency = random(1.f, 5.f);
+		m_fRandPower = random(3, 6);
+
 		break;
 
 	case Client::CProjectile::eHIT:
@@ -358,6 +356,15 @@ void CProjectile::SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _fl
 
 	m_pTrailEffect->TurnOn_TrailEffect(false);
 	m_pTrailEffect2->TurnOn_TrailEffect(false);
+}
+
+void CProjectile::Turn_Trail(_bool bOnOff)
+{
+	if (m_pTrailEffect)
+	{
+		m_pTrailEffect->TurnOn_TrailEffect(bOnOff);
+		m_pTrailEffect2->TurnOn_TrailEffect(bOnOff);
+	}
 }
 
 HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
@@ -462,7 +469,9 @@ void CProjectile::My_LateTick()
 {
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	_float4 vLook;
-	_float fY;
+	_float fY, fX;
+	_float fSpeed;
+	_float fTimeDelta = fDT(0);
 
 	switch (m_eCurPhase)
 	{
@@ -479,35 +488,47 @@ void CProjectile::My_LateTick()
 		break;
 	case Client::CProjectile::eRANDOM:
 	{
-		m_fRandomPhaseCurTime += fDT(0);
-		m_fTimeAcc += fDT(0);
+		m_fRandomPhaseCurTime += fTimeDelta;
+		m_fTimeAcc += fTimeDelta;
 
 		vLook = m_vTargetPos - vPos;
+		vLook.Normalize();
 
-		vPos += vLook * 0.5f * fDT(0);
+		m_pTransform->Set_LerpLook(vLook, 0.2f);
+		
+		vPos += vLook * m_fRandSpeed * fTimeDelta;
 
-		fY = m_fRandPower * sinf(m_fRandFrequency * m_fTimeAcc); // a sin(bx)
+		fSpeed = m_fRandFrequency * m_fTimeAcc;
 
-		vPos.x += fY * m_vRight.x * fDT(0);
-		vPos.y += fY * m_vRight.y * fDT(0);
-		vPos.z += fY * m_vRight.z * fDT(0);
+		fX = m_fRandPower * sinf(fSpeed * PI * 0.5f);
+
+		fY = m_fRandPower * cosf(-1.f * fSpeed * PI * 0.5f);
+			
+		vPos.x += fX * vLook.x * fTimeDelta;
+		vPos.y += fX * vLook.y * fTimeDelta;
+		vPos.z += fX * vLook.z * fTimeDelta;
+
+		vPos.x += fY * m_vRight.x * fTimeDelta;
+		vPos.y += fY * m_vRight.y * fTimeDelta;
+		vPos.z += fY * m_vRight.z * fTimeDelta;
 		
 		m_pTransform->Set_World(WORLD_POS, vPos);
 
-		if (2 < m_fTimeAcc)
+		if (1.5f < m_fTimeAcc)
 		{
 			On_ChangePhase(eChase);
 			m_fTimeAcc = 0.f;
+
+			m_fRandSpeed = frandom(3.f, 5.f);
+			m_fRandFrequency = random(-10.f, 10.f);
+			m_fRandPower = random(20, 30);
 		}
 		
 	}
 		break;
 	case Client::CProjectile::eChase:
 	{
-		m_fTimeAcc = 0.f;
-		m_fRandomPhaseCurTime = 0.f;
-
-		m_fLoopTimeAcc += fDT(0);
+		m_fLoopTimeAcc += fTimeDelta;
 
 		if (!m_pTargetUnit)
 			assert(0);
@@ -517,73 +538,26 @@ void CProjectile::My_LateTick()
 
 		m_pTransform->Set_LerpLook(vLook, 0.2f);
 
-		m_vOwnerPos = m_pTransform->Get_World(WORLD_POS);
+		m_fRandSpeed = CEasing_Utillity::SinIn(m_fRandSpeed, 20.f, m_fLoopTimeAcc, 1.f);
+		//m_fPower = CEasing_Utillity::SinIn(m_fSpeed, 50.f, m_fLoopTimeAcc, 10.f);
 
-		m_vOwnerPos = CEasing_Utillity::CircularIn(m_vOwnerPos, m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS), m_fLoopTimeAcc, 1.f);
+		vPos += vLook * m_fRandSpeed * fTimeDelta;
 
-		m_pTransform->Set_World(WORLD_POS, m_vOwnerPos);
-		/*vLook *= fDT(0) * m_fMaxSpeed;
+		fSpeed = m_fRandFrequency * m_fLoopTimeAcc;
 
-		_float4x4 MyMatrix = m_pTransform->Get_Transform().matMyWorld;
+		fX = m_fRandPower * sinf(fSpeed * PI * 0.5f);
 
+		fY = m_fRandPower * cosf(-1.f * fSpeed * PI * 0.5f);
 
-		_float4 vMyLook = m_pTransform->Get_World(WORLD_LOOK);
-		vMyLook.Normalize();*/
+		vPos.x += fX * vLook.x * fTimeDelta;
+		vPos.y += fX * vLook.y * fTimeDelta;
+		vPos.z += fX * vLook.z * fTimeDelta;
 
-		//_float h0 = vLook.y - vLook.x;
-		//_float h1 = vLook.z - vLook.y;
-		//_float A = (vMyLook.z - vMyLook.y) / h1 - (vMyLook.y - vMyLook.x) / h0;
-		//_float B = (vMyLook.y - vMyLook.x) / h0;
-		//_float C = vMyLook.y;
-		//_float D = (A * h1 - B * h0) / (h1 - h0);
-		//_float E = B - A;
-		//
-		////_float Spline = A * pow(vMyLook.x - vLook.y, 3) + B * pow(vMyLook.y - vLook.y, 2) +
-		////	C * (vMyLook.z - vLook.y) + D * (vMyLook.x - vLook.x) + E * (vMyLook.x - vLook.z);
+		vPos.x += fY * m_vRight.x * fTimeDelta;
+		vPos.y += fY * m_vRight.y * fTimeDelta;
+		vPos.z += fY * m_vRight.z * fTimeDelta;
 
-		//m_fLoopTimeAcc += fDT(0);
-
-		//if (m_fLoopTimeAcc > 0.5f)
-		//{
-		//	MyMatrix.m[3][0] += vLook.x;
-		//	MyMatrix.m[3][1] += vLook.y;
-		//	MyMatrix.m[3][2] += vLook.z;
-		//}
-		//else
-		//{
-
-		//	_float SplineX = A * pow(vMyLook.x - vLook.y, 3) + B * pow(vMyLook.x - vLook.y, 2) +
-		//		C * (vMyLook.x - vLook.y) + D * (vMyLook.x - vLook.x) + E * (vMyLook.x - vLook.z);
-
-		//	_float SplineZ = A * pow(vMyLook.z - vLook.y, 3) + B * pow(vMyLook.z - vLook.y, 2) +
-		//		C * (vMyLook.z - vLook.y) + D * (vMyLook.z - vLook.x) + E * (vMyLook.z - vLook.z);
-
-		//	_float4 vSpeed = _float4(SplineX, fDT(0), SplineZ);
-
-		//	if (fabs(vMyLook.x - vLook.x) >= 0.2f)
-		//		MyMatrix.m[3][0] += vLook.x;
-
-		//	else
-		//		MyMatrix.m[3][0] += vSpeed.x * fDT(0);
-
-		//	if(fabs(vMyLook.z - vLook.z) >= 0.2f)
-		//		MyMatrix.m[3][0] += vLook.z;
-
-		//	else
-		//		MyMatrix.m[3][0] += vSpeed.z * fDT(0);
-
-		//	MyMatrix.m[3][0] += vLook.y;
-
-		//}
-
-
-
-
-		/*m_pTransform->Get_Transform().matMyWorld = MyMatrix;
-
-		m_pTransform->Make_WorldMatrix();*/
-
-
+		m_pTransform->Set_World(WORLD_POS, vPos);
 	}
 		break;
 
