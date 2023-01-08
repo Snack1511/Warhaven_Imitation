@@ -131,28 +131,6 @@ void CUnit_Lancer_Head::My_LateTick()
 
 		matBone = matOffset * matBone;
 
-
-		if (KEY(Z, HOLD))
-			m_vPos.x -= 1.f;
-
-		if (KEY(V, HOLD))
-			m_vPos.x += 1.f;
-
-	
-		if (KEY(X, HOLD))
-			m_vPos.y -= 1.f;
-
-		if (KEY(B, HOLD))
-			m_vPos.y += 1.f;
-
-		if (KEY(C, HOLD))
-			m_vPos.z -= 0.2f;
-
-
-		if (KEY(N, HOLD))
-			m_vPos.z += 0.2f;
-
-
 		_float4 vPos = m_vPos;
 
 		////matBone.m[3][0] = vPos.x;

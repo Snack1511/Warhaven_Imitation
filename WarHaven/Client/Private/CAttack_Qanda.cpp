@@ -319,13 +319,15 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 
 		/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
-	_float4 vHitPos;
+	_float4 vTrailPos;
+	_float4 vAimPos;
 	if (pAnimator->Get_CurAnimFrame() >= 1)
 	{
-		if (CAttack_Qanda::Check_CrowRay(&vHitPos, pOwner))
+		if (CAttack_Qanda::Check_CrowRay(&vTrailPos, &vAimPos, pOwner))
 		{
-			_float4 vProjPos = CUtility_Transform::Get_ProjPos(vHitPos);
-			static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vHitPos);
+			_float4 vProjPos = CUtility_Transform::Get_ProjPos(vAimPos);
+			CUser::Get_Instance()->Set_CrossHairPos(vProjPos);
+			static_cast<CUnit_Qanda*>(pOwner)->ReMap_Trail(vTrailPos);
 		}
 	}
 
@@ -671,7 +673,7 @@ void CAttack_Qanda::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 }
 
 
-_bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
+_bool CAttack_Qanda::Check_CrowRay(_float4* pTraillPos, _float4* pAimPos, CUnit* pOwner)
 {
 	CAnimWeapon_Crow* pAnimCrow = static_cast<CUnit_Qanda*>(m_pOwner)->Get_Crow();
 
@@ -693,7 +695,7 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 
 
 	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
-		*pOutPos = vFinalHitPos;
+		*pTraillPos = vFinalHitPos;
 
 	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
 	list<PxController*> listPxControllers;
@@ -730,16 +732,16 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pOutPos, CUnit* pOwner)
 
 	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
 	{
-		//if (*pOutPos != vFinalHitPos)
-		//{
-		//	CUser::Get_Instance()->Set_ArcherPoint(true);
-		//}
-		//else
-		//{
-		//	CUser::Get_Instance()->Set_ArcherPoint(false);
-		//}
+		if (*pTraillPos != vFinalHitPos)
+		{
+			CUser::Get_Instance()->Set_ArcherPoint(true);
+		}
+		else
+		{
+			CUser::Get_Instance()->Set_ArcherPoint(false);
+		}
 
-		*pOutPos = vFinalHitPos;
+		*pAimPos = vFinalHitPos;
 	}
 
 	return true;

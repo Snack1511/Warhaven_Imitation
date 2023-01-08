@@ -148,7 +148,7 @@ STATE_TYPE CState_Blendable::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			break;
 		}
 
-		if(m_bUseJump)
+		if(m_bCam)
 			Follow_MouseLook_Turn(pOwner);
 	}
 
@@ -243,7 +243,7 @@ STATE_TYPE CState_Blendable::Update_Run(CUnit* pOwner, CAnimator* pAnimator)
 	}
 	else if (KEY(SPACE, TAP) && m_bUseJump)
 	{
-		On_EnumChange(Enum::eJUMP, pAnimator);
+		On_EnumChange(Enum::eJUMP, pAnimator);	
 	}
 
 
@@ -409,7 +409,7 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 		/* dash Front */
 		if (!pOwner->Is_Air())
 		{
-			pOwner->Set_DirAsLook();
+			pOwner->Set_DirAsLook();	
 			pOwner->Get_PhysicsCom()->Set_MaxSpeed(pOwner->Get_Status().fShortDashSpeed);
 			pOwner->Get_PhysicsCom()->Set_SpeedasMax();
 			pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.7f;
@@ -420,7 +420,11 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 
 		m_bBlendable = false;
 		if (m_eEnum == Enum::eWALK || m_eEnum == Enum::eRUN)
-		pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
+		{
+			if(m_bUseJump)
+				pAnimator->Set_CurAnimIndex(m_eAnimLeftorRight, m_iIdle_Index);
+		}
+		
 
 		break;
 
@@ -432,10 +436,15 @@ void CState_Blendable::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, con
 		pOwner->TurnOn_TrailEffect(false);
 
 		//m_bBlendable = true;
-		if (m_eAnimLeftorRight == ANIM_BASE_L)
-			m_eAnimLeftorRight = ANIM_BASE_R;
-		else
-			m_eAnimLeftorRight = ANIM_BASE_L;
+
+		if (m_bOnlyAnimBase_R)
+		{
+			if (m_eAnimLeftorRight == ANIM_BASE_L)
+				m_eAnimLeftorRight = ANIM_BASE_R;
+			else
+				m_eAnimLeftorRight = ANIM_BASE_L;
+		}
+
 
 
 		break;
@@ -502,6 +511,7 @@ void	CState_Blendable::BlendableTick_Loop(CUnit* pOwner, CAnimator* pAnimator, _
 void CState_Blendable::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 {
 	m_eEnum = eEnum;
+	m_iAnimIndex = m_iIdle_Index;
 	switch (eEnum)
 	{
 	case Client::CState_Blendable::Enum::eWALK:

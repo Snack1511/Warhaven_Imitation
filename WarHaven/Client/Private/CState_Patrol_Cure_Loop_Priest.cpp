@@ -97,10 +97,11 @@ STATE_TYPE CState_Patrol_Cure_Loop_Priest::Tick(CUnit* pOwner, CAnimator* pAnima
 	if(!pOwner->Get_SameNearObejct())
 		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
 
+	m_pTargetObject = pTargetUnit;
 
 	// Å¸°Ù À¯´ÖÀÌ ÈúÀ» ¹Þ°í ÀÖ´Â ´ë»ó
 	pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
-	m_pTargetObject = pTargetUnit;
+	
 
 	_float fLength = (pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length();
 

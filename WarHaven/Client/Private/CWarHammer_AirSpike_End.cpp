@@ -76,8 +76,6 @@ HRESULT CWarHammer_AirSpike_End::Initialize()
 
 void CWarHammer_AirSpike_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	GAMEINSTANCE->Start_RadialBlur(0.07f);
-
 	pOwner->CallBack_CollisionEnter += bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 0.1f;
@@ -89,11 +87,8 @@ void CWarHammer_AirSpike_End::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_T
 
 STATE_TYPE CWarHammer_AirSpike_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	/*if (pOwner->Is_Weapon_R_Collision() && !m_bSkillR_Trigger)
-	{
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"SmashSoilParticle", pOwner->Get_HitPos());
-		m_bSkillR_Trigger = true;
-	}*/ 
+	if (pAnimator->Is_CurAnimFinished())
+		return STATE_IDLE_WARHAMMER_R;
 
 
 	if (m_bKeyInputable)
@@ -122,8 +117,7 @@ STATE_TYPE CWarHammer_AirSpike_End::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarHammer_AirSpike_End::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-	GAMEINSTANCE->Stop_RadialBlur();
-
+	
 	pOwner->CallBack_CollisionEnter -= bind(&CState::OnCollisionEnter, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4);
 
 	pOwner->Enable_FlyAttackCollider(false);

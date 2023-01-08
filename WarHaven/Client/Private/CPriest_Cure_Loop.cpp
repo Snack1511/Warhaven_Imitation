@@ -48,7 +48,7 @@ HRESULT CPriest_Cure_Loop::Initialize()
 
 
 	m_fInterPolationTime = 0.f;
-	m_fAnimSpeed = 1.f;
+	m_fAnimSpeed = 2.f;
 
 	//enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
 	m_iStateChangeKeyFrame = 0;
@@ -77,14 +77,23 @@ HRESULT CPriest_Cure_Loop::Initialize()
 	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 99;
 	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 99;
 
-	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 17;
-	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 18;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 19;
-	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 20;
-	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 34;
-	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 35;
-	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 36;
-	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 24;
+	//m_iRunRightAnimIndex[STATE_DIRECTION_E] = 17;
+	//m_iRunRightAnimIndex[STATE_DIRECTION_N] = 18;
+	//m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 19;
+	//m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 20;
+	//m_iRunRightAnimIndex[STATE_DIRECTION_S] = 34;
+	//m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 35;
+	//m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 36;
+	//m_iRunRightAnimIndex[STATE_DIRECTION_W] = 24;
+
+	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 3;
+	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 4;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NE] = 5;
+	m_iRunRightAnimIndex[STATE_DIRECTION_NW] = 6;
+	m_iRunRightAnimIndex[STATE_DIRECTION_S] = 7;
+	m_iRunRightAnimIndex[STATE_DIRECTION_SE] = 8;
+	m_iRunRightAnimIndex[STATE_DIRECTION_SW] = 9;
+	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 10;
 
 
 	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 30;
@@ -137,14 +146,14 @@ HRESULT CPriest_Cure_Loop::Initialize()
 	m_eIdleState = STATE_IDLE_PRIEST;
 	m_eBounceState = STATE_BOUNCE_PRIEST;
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 1.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 2.f;
 
 	m_bLandMove = true;
 
@@ -206,10 +215,8 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 	if (m_eStateType == ePrevStateType)
 		m_fInterPolationTime = 0.f;
 
-	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
-
 	pOwner->Get_Status().fStoreSpeed = pOwner->Get_Status().fRunSpeed;
-	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
+	//pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fWalkSpeed;
 
 	__super::Enter(pOwner, pAnimator, ePrevStateType);
 }
@@ -312,7 +319,7 @@ STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 			break;
 		}
 
-		Follow_MouseLook_Turn(pOwner);
+		Follow_MouseLook(pOwner);
 	}
 
 	return __super::Tick(pOwner, pAnimator);
@@ -509,7 +516,7 @@ void CPriest_Cure_Loop::Move_Cycle(CAnimator* pAnimator, _uint* arrDirectionAnim
 
 		pAnimator->Set_CurAnimIndex(eAnimType, m_iAnimIndex, ANIM_DIVIDE::eBODYLOWER);
 		pAnimator->Set_AnimSpeed(eAnimType, m_iAnimIndex, m_fDirectionAnimSpeed[iDirection]);
-		pAnimator->Set_InterpolationTime(eAnimType, m_iAnimIndex, m_fInterPolationTime);
+		pAnimator->Set_InterpolationTime(eAnimType, m_iAnimIndex, 0.05f);
 	}
 
 
@@ -555,6 +562,7 @@ void CPriest_Cure_Loop::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, co
 void CPriest_Cure_Loop::On_EnumChange(Enum eEnum, CAnimator* pAnimator)
 {
 	m_fAnimSpeed = 1.f;
+	m_iAnimIndex = 0;
 
 	m_eEnum = eEnum;
 	switch (eEnum)

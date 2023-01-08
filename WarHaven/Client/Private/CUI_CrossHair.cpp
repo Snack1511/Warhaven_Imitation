@@ -49,6 +49,7 @@ void CUI_Crosshair::Set_Crosshair(_uint iClass)
 		break;
 
 	case ARCHER:
+	case QANDA:
 		Set_ArcherCrosshair();
 		break;
 
@@ -134,7 +135,7 @@ void CUI_Crosshair::Set_Position(_float4 vPos)
 
 void CUI_Crosshair::Set_ArcherPoint(_bool value)
 {
-	if (m_iClassIndex != ARCHER)
+	if (m_iClassIndex != ARCHER && m_iClassIndex != QANDA)
 		return;
 
 	if (value == true)
@@ -226,7 +227,7 @@ void CUI_Crosshair::Create_ArrowUI()
 
 void CUI_Crosshair::Set_ArrowUI()
 {
-	if (m_iClassIndex == SPEAR || m_iClassIndex == ARCHER)
+	if (m_iClassIndex == SPEAR || m_iClassIndex == ARCHER || m_iClassIndex == QANDA)
 	{
 		m_iArrowIndex = 3;
 
@@ -240,7 +241,7 @@ void CUI_Crosshair::Set_ArrowUI()
 		return;
 	}
 
-	for (int i = 0; i < AU_End; ++i)
+	for (int i = 0; i < AU_End; ++i)		
 	{
 		for (int j = 0; j < m_iArrowIndex; ++j)
 		{
@@ -262,7 +263,7 @@ void CUI_Crosshair::Set_ArrowUI()
 
 void CUI_Crosshair::Charge_Arrow()
 {
-	if (m_iClassIndex != ARCHER)
+	if (m_iClassIndex != ARCHER && m_iClassIndex != QANDA)
 		return;
 
 	_float fChargeWaitTime = 0.3f;

@@ -49,6 +49,8 @@ HRESULT CJump_Lancer::Initialize()
 
     Add_KeyFrame(iFallKeyFrame, 0);
 
+    m_vecAdjState.push_back(STATE_ATTACK_STING_LANCER);
+    m_vecAdjState.push_back(STATE_ATTACK_DEAFULT_LANCER);
     m_vecAdjState.push_back(STATE_JUMPFALL_LANCER);
     m_vecAdjState.push_back(STATE_JUMP_LAND_LANCER);
 

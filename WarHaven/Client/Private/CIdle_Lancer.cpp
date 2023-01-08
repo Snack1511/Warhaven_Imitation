@@ -13,6 +13,7 @@
 #include "CColorController.h"
 
 #include "UsefulHeaders.h"
+#include "CScript_FollowCam.h"
 
 CIdle_Lancer::CIdle_Lancer()
 {
@@ -69,6 +70,7 @@ HRESULT CIdle_Lancer::Initialize()
 
 void CIdle_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {    
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
