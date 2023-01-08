@@ -871,6 +871,8 @@ void CUI_Barracks::Disable_SkinWindow()
 		{
 			m_bIsEnable = true;
 
+			m_pTopBtn[m_iCurSelectSkin]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+
 			m_iCurSelectSkin = Skin::Clothes;
 
 			for (int i = 0; i < 4; ++i)
