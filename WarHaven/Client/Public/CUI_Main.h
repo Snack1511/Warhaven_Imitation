@@ -31,7 +31,7 @@ public:
 	void SetActive_MainWindow(MainWindow eWindow);
 
 private:
-	enum TopBtn { TB_Play, TB_Barracks, TB_Profile, TB_End };
+	enum TopBtn { TB_Play, /*TB_Barracks,*/ TB_Profile, TB_End };
 	CUI_Object* m_pArrTopBtn[TB_End];
 
 private:

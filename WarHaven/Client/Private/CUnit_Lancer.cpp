@@ -14,6 +14,7 @@
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
 
+#include "CLancerNeedle.h"
 #include "CUnit_Lancer_Head.h"
 
 CUnit_Lancer::CUnit_Lancer()
@@ -328,7 +329,7 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 
 	
 	//1. L_Base
-	pAnimator->Add_Animations(L"../bin/resources/animations/Lancer/SKEL_Lancer_Base_L.fbx");
+	pAnimator->Add_Animations(L"../bin/resources/animations/Lancer/SKEL_Lancer_Base_R.fbx");
 
 	//2. Attack
 	pAnimator->Add_Animations(L"../bin/resources/animations/Lancer/SKEL_Lancer_Attack.fbx");
@@ -374,8 +375,10 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 	m_fCoolAcc[SKILL2] = 0.f; 
 	m_fCoolAcc[SKILL3] = 0.f;
 
-	m_tUnitStatus.fRunSpeed = 6.f;
-	m_tUnitStatus.fSprintSpeed = 8.f;
+	m_tUnitStatus.fSprintSpeed = 10.f;
+	m_tUnitStatus.fRunSpeed = m_tUnitStatus.fSprintSpeed;
+	m_tUnitStatus.fWalkSpeed = m_tUnitStatus.fSprintSpeed;
+	
 
 
 
@@ -383,6 +386,25 @@ HRESULT CUnit_Lancer::Initialize_Prototype()
 
 	m_pMyHead = CUnit_Lancer_Head::Create(L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0000_Face_A00_20.fbx",
 		GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"), this);
+
+	for (_int i = 0; i < eNeedle_Max; ++i)
+	{
+		m_pNeedle[i] = CLancerNeedle::Create(L"../bin/resources/meshes/Weapons/Needle/SM_MagicLancer_04.fbx",
+		GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Spine"), this, i);
+
+		if (!m_pNeedle[i])
+			return E_FAIL;
+
+		m_pNeedle[i]->Initialize();
+		
+	}
+
+	//m_pMyHead = CLancerNeedle::Create(L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0000_Face_A00_20.fbx",
+	//	GET_COMPONENT(CModel)->Find_HierarchyNode("0B_Head"), this);
+
+	//CLancerNeedle::
+
+
 
 	if (!m_pMyHead)
 		return E_FAIL;
@@ -400,6 +422,7 @@ HRESULT CUnit_Lancer::Initialize()
 
 	m_tUnitStatus.eWeapon = WEAPON_LONGSWORD;
 
+
 	
 	return S_OK;
 }
@@ -413,7 +436,15 @@ HRESULT CUnit_Lancer::Start()
 		CREATE_GAMEOBJECT(m_pMyHead, GROUP_PLAYER);
 		//ENABLE_GAMEOBJECT(m_pMyHead);
 	}
-		
+	
+
+	for (_int i = 0; i < eNeedle_Max; ++i)
+	{
+		CREATE_GAMEOBJECT(m_pNeedle[i], GROUP_PLAYER);
+		DISABLE_GAMEOBJECT(m_pNeedle[i]);
+	}
+
+	
 
 	SetUp_TrailEffect(
 		_float4(0.f, 0.f, -165.f, 1.f),	//Weapon Low
@@ -464,18 +495,34 @@ void CUnit_Lancer::My_LateTick()
 {
 	__super::My_LateTick();
 
-	if (m_eCurState >= STATE_IDLE_WARRIOR_R_AI_ENEMY)
-		return;
+
+	if (m_iNeedleNums < eNeedle_Max)
+	{
+		m_fTimeAcc += fDT(0);
+
+		if (m_fTimeAcc > m_fNeedleCreateTime)
+		{
+			m_pNeedle[m_iNeedleNums]->Enable_Needle(true);
+			++m_iNeedleNums;
+			m_fTimeAcc = 0.f;
+		}
+
+		
+	}
+
+	if (KEY(Q, TAP))
+	{
+		for(_int i = 0 ; i < eNeedle_Max; ++i)
+			m_pNeedle[m_iNeedleNums]->Enable_Needle(true);
+
+		m_fTimeAcc = 0.f;
+		m_iNeedleNums = 0;
+	}
 
 	if (KEY(NUM8, TAP))
 	{
 		GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(0.f, 0.f, 0.f));
 		m_pTransform->Set_Look(_float4(0.f, 0.f, 1.f, 0.f));
 	}
-		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
 
-	/*if (KEY(SPACE, TAP))
-	{
-		m_pPhysics->Set_Jump(7.f);
-	}*/
 }

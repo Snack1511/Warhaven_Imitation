@@ -60,12 +60,12 @@ void CState_Gliding::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
 
     pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fAirFriction = 0.01f;
     //pOwner->Get_PhysicsCom()->Get_Physics().fGravity = 5.f;
-    pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 0.5f;
+    pOwner->Get_PhysicsCom()->Get_Physics().fPlusAcc = 0.3f;
     pOwner->Enable_Glider(true);
     pOwner->Set_GliderAnimIndex(0, 0.1f, 2.f);
     pOwner->Get_Glider()->Set_GliderState(CGlider::eGliderState::eOpen);
 
-    GAMEINSTANCE->Start_RadialBlur(0.009f);
+    GAMEINSTANCE->Start_RadialBlur(0.011f);
 
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
@@ -78,21 +78,26 @@ STATE_TYPE CState_Gliding::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (!pOwner->Is_Air())
     {
-        STATE_TYPE eLandEndState = pOwner->Get_SprintEndState();
+        //SprintEnd
+        STATE_TYPE eSprintEndState = pOwner->Get_SprintEndState();
         m_bReturn = true;
-        return eLandEndState;
+        return eSprintEndState;
     }
 
     if (KEY(SPACE, TAP))
     {
-        STATE_TYPE eDefaultState = pOwner->Get_SprintFallState();
+        STATE_TYPE eSprintFallState = pOwner->Get_SprintFallState();
         pOwner->Reset_GlidingTime();
         m_bReturn = true;
-        return  eDefaultState;
+        return  eSprintFallState;
     }
 
     _float4 vLook = pOwner->Get_FollowCamLook();
-    vLook.y = 0.f;
+    
+    if (vLook.y > -0.5f)
+        vLook.y = 0.f;
+    else
+        vLook.y += 0.5f - FLT_MIN;
 
     pOwner->Get_Transform()->Set_LerpLook(vLook, m_fMyMaxLerp);
     pOwner->Get_PhysicsCom()->Set_Dir(vLook);

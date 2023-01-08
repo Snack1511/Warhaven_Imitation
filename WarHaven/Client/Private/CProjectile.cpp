@@ -521,15 +521,15 @@ void CProjectile::My_LateTick()
 				MyMatrix.m[3][0] += vLook.x;
 
 			else
-				MyMatrix.m[3][0] += vSpeed.x * fDT(0);
+				MyMatrix.m[3][2] += vSpeed.x * fDT(0);
 
-			if(fabs(vMyLook.z - vLook.z) >= 0.2f)
-				MyMatrix.m[3][0] += vLook.z;
+			if (fabs(vMyLook.z - vLook.z) >= 0.2f)
+				MyMatrix.m[3][2] += vLook.z;
 
 			else
-				MyMatrix.m[3][0] += vSpeed.z * fDT(0);
+				MyMatrix.m[3][2] += vSpeed.z * fDT(0);
 
-			MyMatrix.m[3][0] += vLook.y;
+			MyMatrix.m[3][1] += vLook.y;
 
 		}
 

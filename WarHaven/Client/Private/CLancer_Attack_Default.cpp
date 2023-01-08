@@ -43,18 +43,18 @@ HRESULT CLancer_Attack_Default::Initialize()
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = 0;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = 1;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = STATE_ATTACK_DEAFULT_LANCER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     // 선형 보간 시간
-    m_fInterPolationTime = 0.1f;
+    m_fInterPolationTime = 0.f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.4f;
+    m_fAnimSpeed = 2.f;
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 70;
+    m_iStateChangeKeyFrame = 130;
 
 	m_vecAdjState.push_back(STATE_IDLE_LANCER);
 	m_vecAdjState.push_back(STATE_RUN_LANCER);
@@ -70,10 +70,10 @@ HRESULT CLancer_Attack_Default::Initialize()
 	m_eAnimLeftorRight = ANIM_BASE_R;
 
 	m_iIdle_Index = 9;
-	m_iLandRightIndex = 8;
-	m_iLandLeftIndex = 8;
-	m_iJumpFallRightIndex = 0;
-	m_iJumpFallLeftIndex = 0;
+	m_iLandRightIndex = 16;
+	m_iLandLeftIndex = 16;
+	m_iJumpFallRightIndex = 7;
+	m_iJumpFallLeftIndex = 7;
 
 
 	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 5;
@@ -145,42 +145,58 @@ HRESULT CLancer_Attack_Default::Initialize()
 	m_eIdleState = STATE_IDLE_LANCER;
 	m_eBounceState = STATE_BOUNCE_LANCER;
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 0.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 2.f;
 
 	m_bStraight = true;
 	m_bSmootMoveLoop = true;
-	m_bUseJump = false;
+	m_bCam = false;
+	m_bOnlyAnimBase_R = true;
 
 	return __super::Initialize();
 }
 
 void CLancer_Attack_Default::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-	m_iAnimIndex = 1;
+
+	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
 	pOwner->Set_BounceState(STATE_BOUNCE_LANCER);
 
     /* Owner의 Animator Set Idle로 */
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
+
 }
 
 STATE_TYPE CLancer_Attack_Default::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	//Follow_MouseLook(pOwner);
+	//pOwner->Set_DirAsLook();
+
+	// _uint iFrame = (pAnimator->Get_CurAnimFrame() + 1) % 27;
+
+	//if (iFrame == 1)
+	//{
+	//	m_bStraight = false;
+	//	DoMove(STATE_DIRECTION_S, pOwner);
+	//	m_bStraight = true;
+	//}
+
+	//if(pAnimator->Is_ActionFinished())
+	//	DoMove(STATE_DIRECTION_E, pOwner);
 
     return __super::Tick(pOwner, pAnimator);
 }
 
 void CLancer_Attack_Default::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
-	pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
+    pOwner->Enable_UnitCollider(CUnit::WEAPON_R, false);
 	__super::Exit(pOwner, pAnimator);
 }
 

@@ -182,10 +182,10 @@ void CUI_Main::Create_TopBtn()
 			m_pArrTopBtn[i]->Set_FontText(TEXT("플레이"));
 
 		}
-		else if (i == TB_Barracks)
-		{
-			m_pArrTopBtn[i]->Set_FontText(TEXT("병영"));
-		}
+		//else if (i == TB_Barracks)
+		//{
+		//	m_pArrTopBtn[i]->Set_FontText(TEXT("병영"));
+		//}
 		else if (i == TB_Profile)
 		{
 			m_pArrTopBtn[i]->Set_FontText(TEXT("프로필"));

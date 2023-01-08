@@ -64,22 +64,21 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 	tColorDesc.eFadeStyle = CColorController::TIME;
 	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.f;
+	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 9999.f;
-	tColorDesc.fFadeOutTime = 0.f;
+	tColorDesc.fFadeOutTime = 0.1f;
 	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
-	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
+	tColorDesc.iMeshPartType = MODEL_PART_WEAPON_L;
 
 	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
-	tColorDesc;
 
 	tColorDesc.eFadeStyle = CColorController::TIME;
 	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.f;
+	tColorDesc.fFadeInTime = 0.2f;
 	tColorDesc.fFadeOutStartTime = 9999.f;
-	tColorDesc.fFadeOutTime = 0.f;
+	tColorDesc.fFadeOutTime = 0.2f;
 	tColorDesc.vTargetColor = _float4(1.f, 1.f, 1.f, 0.5f);
 
 	tColorDesc.iMeshPartType = MODEL_PART_BODY;
@@ -89,8 +88,11 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
+	GAMEINSTANCE->Start_RadialBlur(0.02f);
+	GAMEINSTANCE->Start_ChromaticAberration(20.f);
+
 	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
-	//pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -101,7 +103,7 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	if(m_fTimeAcc > 5.f || KEY(RBUTTON, AWAY))
 		return STATE_STOP_LANCER;
-
+	
 	pOwner->Get_PhysicsCom()->Set_Accel(m_fMyAccel);
 	Follow_MouseLook(pOwner);
 	pOwner->Set_DirAsLook();
@@ -110,6 +112,12 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+
+	GAMEINSTANCE->Stop_RadialBlur();
+	GAMEINSTANCE->Stop_ChromaticAberration();
+
+
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
 	pOwner->On_Use(CUnit::SKILL1);
 	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 }

@@ -52,7 +52,7 @@ HRESULT CLancer_Attack_Sting::Initialize()
     m_fInterPolationTime = 0.1f;
 
     // 애니메이션의 전체 속도를 올려준다.
-    m_fAnimSpeed = 2.4f;
+    m_fAnimSpeed = 2.f;
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
     m_iStateChangeKeyFrame = 90;
@@ -73,8 +73,8 @@ HRESULT CLancer_Attack_Sting::Initialize()
 	m_iIdle_Index = 1;
 	m_iLandRightIndex = 16;
 	m_iLandLeftIndex = 16;
-	m_iJumpFallRightIndex = 0;
-	m_iJumpFallLeftIndex = 0;
+	m_iJumpFallRightIndex = 7;
+	m_iJumpFallLeftIndex = 7;
 
 
 	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 99;
@@ -146,18 +146,19 @@ HRESULT CLancer_Attack_Sting::Initialize()
 	m_eIdleState = STATE_IDLE_LANCER;
 	m_eBounceState = STATE_BOUNCE_LANCER;
 
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 0.8f;
-	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 0.8f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_NE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SW] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_SE] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_N] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_S] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 2.f;
+	m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 2.f;
 
 	m_bStraight = true;
 	m_bSmootMoveLoop = true;
-	m_bUseJump = false;
+	m_bCam = false;
+	m_bOnlyAnimBase_R = true;
 
 	return __super::Initialize();
 }

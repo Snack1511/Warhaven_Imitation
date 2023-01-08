@@ -873,6 +873,16 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_Archer"), Convert_ToHash(L"ArcherDead_Slice3"))))
 		return E_FAIL;
 
+
+	//if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_q"), Convert_ToHash(L"ArcherDead_Slice0"))))
+	//	return E_FAIL;
+	//if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_q"), Convert_ToHash(L"ArcherDead_Slice1"))))
+	//	return E_FAIL;
+	//if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_q"), Convert_ToHash(L"ArcherDead_Slice2"))))
+	//	return E_FAIL;
+	//if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeadBody_q"), Convert_ToHash(L"ArcherDead_Slice3"))))
+	//	return E_FAIL;
+
 	/* Stone */
 	if (FAILED(Add_MultiEffects(Convert_ToHash(L"DeathStoneParticle"), Convert_ToHash(L"DeathStoneParticle_0"))))
 		return E_FAIL;

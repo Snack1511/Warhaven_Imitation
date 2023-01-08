@@ -161,9 +161,18 @@ STATE_TYPE CPriest_Cure_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	m_fTimeAcc += fDT(0);
 
+	CUnit* pOtherUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
+
+	if (pOtherUnit)
+	{
+		_float4 vLook = pOtherUnit->Get_Transform()->Get_World(WORLD_POS) - pOwner->Get_Transform()->Get_World(WORLD_POS);
+		vLook.y = 0.f;
+		pOwner->Get_Transform()->Set_LerpLook(vLook, 0.4f);
+	}
+
 	if (pAnimator->Is_CurAnimFinished() || m_fTimeAcc > 0.5f)
 	{
-		if (pOwner->Get_CureObject())
+		if (pOtherUnit)
 			return STATE_CURE_LOOP_PRIEST;
 		else
 			return STATE_CURE_END_PRIEST;

@@ -58,35 +58,9 @@ void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
-	CColorController::COLORDESC tColorDesc;
-	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
-
-	tColorDesc.eFadeStyle = CColorController::TIME;
-	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.1f;
-	tColorDesc.fFadeOutStartTime = 9999.f;
-	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
-	//tColorDesc.vTargetColor *= 1.1f;
-	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
-
-	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
-
-	tColorDesc;
-
-	tColorDesc.eFadeStyle = CColorController::TIME;
-	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.2f;
-	tColorDesc.fFadeOutStartTime = 9999.f;
-	tColorDesc.fFadeOutTime = 0.2f;
-	tColorDesc.vTargetColor = _float4(1.f, 1.f, 1.f, 0.5f);
-
-	tColorDesc.iMeshPartType = MODEL_PART_BODY;
-
-	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
-
-	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
-	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
+	GAMEINSTANCE->Start_RadialBlur(0.02f);
+	GAMEINSTANCE->Start_ChromaticAberration(20.f);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -101,7 +75,9 @@ STATE_TYPE CLancer_Breeze_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Breeze_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+	GAMEINSTANCE->Stop_RadialBlur();
+	GAMEINSTANCE->Stop_ChromaticAberration();
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
 }
 
 STATE_TYPE CLancer_Breeze_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

@@ -4,6 +4,7 @@
 BEGIN(Client)
 
 class CUnit_Lancer_Head;
+class CLancerNeedle;
 
 class CUnit_Lancer
 	: public CUnit
@@ -40,6 +41,14 @@ public:
 
 private:
 	CUnit_Lancer_Head* m_pMyHead = nullptr; // 새로 붙인 머리
+	
+private:
+	enum eNeedle { eNeedle_Max = 4};
+	CLancerNeedle* m_pNeedle[eNeedle_Max] = { nullptr }; // 새로 붙인 머리
+
+	_float	m_fNeedleCreateTime = 0.2f;
+	_float	m_fTimeAcc = 0.f;
+	_uint	m_iNeedleNums = 0;
 };
 
 END

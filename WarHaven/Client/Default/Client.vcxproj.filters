@@ -3655,6 +3655,9 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\Lancer\Head">
       <UniqueIdentifier>{fcdc61bc-4277-4e08-b60f-5ad85bdc3be3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle">
+      <UniqueIdentifier>{8be6c9e5-7519-4d2a-8600-8229095e2024}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6573,6 +6576,9 @@
     <ClInclude Include="..\Public\CUnit_Lancer_Head.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Lancer\Head</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLancerNeedle.h">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9471,6 +9477,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUnit_Lancer_Head.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Lancer\Head</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLancerNeedle.cpp">
+      <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

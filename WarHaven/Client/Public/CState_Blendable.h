@@ -91,7 +91,8 @@ protected:
 	_bool	m_bLoopAction = false;
 
 	_bool	m_bUseJump = true; // 점프를 할 수 있음.
-
+	_bool	m_bOnlyAnimBase_R = false; // L,R 구분이 없음
+	_bool	m_bCam = true; // Cam_Turn 사용여부
 
 protected:
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);

@@ -62,6 +62,8 @@ void CWarHammer_AirSpike_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
+	GAMEINSTANCE->Start_RadialBlur(0.05f);
+
 	m_fMaxSpeed = pOwner->Get_Status().fSprintJumpSpeed;
 	Physics_Setting(m_fMaxSpeed, pOwner);
 
@@ -80,7 +82,7 @@ STATE_TYPE CWarHammer_AirSpike_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CWarHammer_AirSpike_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-
+	GAMEINSTANCE->Stop_RadialBlur();
 }
 
 STATE_TYPE CWarHammer_AirSpike_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
