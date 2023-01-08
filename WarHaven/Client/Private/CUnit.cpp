@@ -24,7 +24,7 @@
 #include "CCannon.h"
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
-
+#include "Loading_Manager.h"
 #include "CMesh_Particle.h"
 
 #include "CScript_FollowCam.h"
@@ -350,6 +350,9 @@ void CUnit::On_Die()
 
 	m_bDie = false;
 	m_fDeadTimeAcc = 0.f;
+
+	if (m_pOwnerPlayer->Get_PlayerName() == TEXT("EnemyFinal"))
+		CUser::Get_Instance()->Enable_SkinPopup(0);
 
 	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
 	vPos.y += 1.f;
@@ -1688,8 +1691,11 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hit_Particle", vHitPos, m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS));
 
 	// 데드에 넘겨주기	
-	pOtherUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(m_pOwnerPlayer);
-	Get_OwnerPlayer()->On_ScoreKDA_Death();
+	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() >= LEVEL_PADEN)
+	{
+		pOtherUnit->Get_OwnerPlayer()->On_ScoreKDA_Kill(m_pOwnerPlayer);
+		Get_OwnerPlayer()->On_ScoreKDA_Death();
+	}
 
 	CUser::Get_Instance()->Add_KillLog(pOtherUnit->Get_OwnerPlayer(), m_pOwnerPlayer);
 

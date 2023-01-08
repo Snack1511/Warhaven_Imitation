@@ -69,7 +69,7 @@ HRESULT CUI_HUD::Start()
 {
 	Bind_Shader();
 
-	if (m_eLoadLevel <= LEVEL_TYPE_CLIENT::LEVEL_BOOTCAMP)
+	if (m_eLoadLevel >= LEVEL_BOOTCAMP)
 	{
 		SetActive_HUD(true);
 

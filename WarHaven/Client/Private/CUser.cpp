@@ -870,6 +870,15 @@ void CUser::Enable_Popup(_uint iPopupType)
 		m_pUI_Popup->Enable_Popup((CUI_Popup::ePOPUP_TYPE)iPopupType);
 }
 
+void CUser::Enable_SkinPopup(_uint iSkin)
+{
+	if (m_pUI_Popup)
+	{
+		m_pUI_Popup->SetActive(true);
+		m_pUI_Popup->Enable_SkinPopup(iSkin);
+	}
+}
+
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)
 {
 	if (!m_pUI_Training)

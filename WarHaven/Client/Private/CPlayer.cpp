@@ -1038,8 +1038,11 @@ void CPlayer::On_ScoreKDA_Kill(CPlayer* pOtherPlayer)
 	m_tKdaStat.iKillStreak++;
 	m_tKdaStat.iTotalKillCount++;
 
-	m_pScoreInfo->Update_KillCnt(m_tKdaStat.iTotalKillCount);
-	CUser::Get_Instance()->Sort_ScoreInfo();
+	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() >= LEVEL_PADEN)
+	{
+		m_pScoreInfo->Update_KillCnt(m_tKdaStat.iTotalKillCount);
+		CUser::Get_Instance()->Sort_ScoreInfo();
+	}
 
 	if (m_bIsMainPlayer)
 	{

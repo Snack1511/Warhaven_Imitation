@@ -32,7 +32,11 @@ public:
 	void Enable_ConquestPopup(wstring Text, _uint iIconIndex);
 	void Enable_KillPopup(wstring Text, _uint iIconIndex);
 
+	// 0 �䳢Ż
+	void Enable_SkinPopup(_uint iSkin);
+
 private:
+	virtual void My_Tick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 
@@ -57,6 +61,8 @@ private:
 	};
 
 	CUI_Object* m_pSKinPopup[Skin_End];
+
+	_bool m_bEnableSkinPopup = false;
 
 private:
 	void Create_ConquestPopup();
