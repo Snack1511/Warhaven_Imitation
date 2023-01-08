@@ -65,7 +65,7 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
 		// CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
 #else
-		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
+		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
 
 #endif
 

@@ -1270,7 +1270,7 @@ void CPlayer::Update_KDA()
 		}
 	}
 }
-
+#ifdef _DEBUG
 void CPlayer::Add_DebugObject(_float4 vPosition)
 {
 	PxTransform tTransform;
@@ -1290,9 +1290,9 @@ void CPlayer::Clear_DebugObject()
 	{
 		DELETE_GAMEOBJECT(Debug);
 	}
-	m_pRouteDebug.clear();
+  	m_pRouteDebug.clear();
 }
-
+#endif
 void CPlayer::Make_BestRoute(_float4 vPosition)
 {	
 #ifdef _DEBUG
