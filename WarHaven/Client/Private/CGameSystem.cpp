@@ -70,6 +70,12 @@ HRESULT CGameSystem::Initialize()
 		return E_FAIL;
 	}
 
+	if (FAILED(m_pPositionTable->Load_Position("Position_Hwara")))
+	{
+		Call_MsgBox(L"Failed to Load_Position : CGameSystem");
+		return E_FAIL;
+	}
+
 	if (FAILED(SetUp_AllPlayerInfos()))
 	{
 		Call_MsgBox(L"Failed to SetUp_AllPlayerInfos : CGameSystem");
@@ -1209,40 +1215,28 @@ HRESULT CGameSystem::On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyOb
 {
 	m_eCurStageType = eSTAGE_HWARA;
 
-	_float4 vPlayerPos = _float4(10.f, -5.f, 10.f);
-
-	CPlayer* pUserPlayer = nullptr;
-
-
-	//pUserPlayer->Get_DefaultReserveStateIndex
-	pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
-	pUserPlayer->Set_Postion(vPlayerPos);
-	pUserPlayer->Reserve_State(STATE_IDLE_PLAYER_R);
-	pUserPlayer->SetUp_UnitColliders(true);
-	pUserPlayer->Enable_OnStart();
-	CUser::Get_Instance()->Set_Player(pUserPlayer);
-	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
+	
 
 
 	/* 플레이어 모두 생성해서 분류까지 완료 */
-//	if (FAILED(On_ReadyPlayers_Stage(vecReadyObjects)))
-//		return E_FAIL;
-//
-//
-//#ifdef _DEBUG
-//	cout << "플레이어 생성 후 팀 분류 완료." << endl;
-//#endif // _DEBUG
-//
-//	/* 플레이어 모두 생성해서 분류까지 완료 */
-//	if (FAILED(On_ReadyTirggers_Hwara(vecReadyObjects)))
-//		return E_FAIL;
-//
-//#ifdef _DEBUG
-//	cout << "트리거 생성 완료." << endl;
-//#endif // _DEBUG
-//
-//	if (FAILED(On_ReadyDestructible_Hwara(vecReadyObjects)))
-//		return E_FAIL;
+	if (FAILED(On_ReadyPlayers_Stage(vecReadyObjects)))
+		return E_FAIL;
+
+
+#ifdef _DEBUG
+	cout << "플레이어 생성 후 팀 분류 완료." << endl;
+#endif // _DEBUG
+
+	/* 플레이어 모두 생성해서 분류까지 완료 */
+	if (FAILED(On_ReadyTirggers_Hwara(vecReadyObjects)))
+		return E_FAIL;
+
+#ifdef _DEBUG
+	cout << "트리거 생성 완료." << endl;
+#endif // _DEBUG
+
+	if (FAILED(On_ReadyDestructible_Hwara(vecReadyObjects)))
+		return E_FAIL;
 
 
 
@@ -1253,22 +1247,42 @@ HRESULT CGameSystem::On_ReadyHwara(vector<pair<CGameObject*, _uint>>& vecReadyOb
 
 HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
-	return E_NOTIMPL;
+	//0. 양쪽 진영
+	CTrigger* pTrigger = nullptr;
+	string  strTriggerName;
+
+#define ADD_TRIGGER(name, radius, enumtype)   strTriggerName = name;\
+    pTrigger = CTrigger_Paden::Create(strTriggerName, radius, enumtype);\
+    if (!pTrigger)\
+        return E_FAIL;\
+    m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
+    READY_GAMEOBJECT(pTrigger, GROUP_TRIGGER);
+
+	_float fTriggerSize = 6.f;
+
+	ADD_TRIGGER("Hwara_RedTeam_Start", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
+	ADD_TRIGGER("Hwara_BlueTeam_Start", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
+
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_BlueTeam_StartTrigger")]);
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_RedTeam_StartTrigger")]);
+
+
+	return S_OK;
 }
 
 HRESULT CGameSystem::On_ReadyDestructible_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CGameSystem::On_Update_Hwara()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CGameSystem::Hwara_EnvironmentEffect()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CGameSystem::Load_Position(string strFileKey)
@@ -1520,6 +1534,13 @@ HRESULT CGameSystem::SetUp_AllPathes()
 
 			if (iFindKey >= 0)
 				eType = eSTAGE_PADEN;
+			else
+			{
+
+				iFindKey = HashKey.find("Hwara");
+				eType = eSTAGE_HWARA;
+
+			}
 
 			if (eType == eSTAGE_CNT)
 			{

@@ -418,10 +418,12 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 
 			if (m_bIsLeaderPlayer)
 			{
-				/*Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
-				m_strStartPath = m_pCurPath->m_strName;*/
+				Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
+				m_strStartPath = m_pCurPath->m_strName;
 
-				m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
+				/*무조건 중앙으로 모이게 하는 코드*/
+				//m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
+
 				Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_strStartPath, m_pAIController));
 
 			}
@@ -1239,20 +1241,39 @@ _float4 CPlayer::Get_LookDir()
 
 void CPlayer::Set_MainPlayerStartPath(_uint iTriggerType)
 {
-	switch (iTriggerType)
+	if (CGameSystem::Get_Instance()->m_eCurStageType == CGameSystem::eSTAGE_PADEN)
 	{
-	case 0:
-		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
-		break;
-	case 1:
-		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Respawn_1") : ("Paden_RedTeam_Respawn_1");
-		break;
-	case 2:
-		m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Cannon_0") : ("Paden_RedTeam_Cannon_0");
-		break;
-	default:
-		break;
+		switch (iTriggerType)
+		{
+		case 0:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
+			break;
+		case 1:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Respawn_1") : ("Paden_RedTeam_Respawn_1");
+			break;
+		case 2:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_Cannon_0") : ("Paden_RedTeam_Cannon_0");
+			break;
+		default:
+			break;
+		}
 	}
+	else // Hwara
+	{
+		switch (iTriggerType)
+		{
+		case 0:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_ToCenter_0") : ("Paden_RedTeam_ToCenter_0");
+			break;
+		case 1:
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_ToRespawn_0") : ("Paden_RedTeam_ToRespawn_0");
+			break;
+		default:
+			break;
+		}
+	}
+
+	
 
 }
 

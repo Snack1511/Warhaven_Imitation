@@ -82,8 +82,8 @@ HRESULT CLevel_Main::Enter()
 	LightDesc.vPosition.y += 16.8f;
 	LightDesc.vPosition.z += -4.4f;
 	LightDesc.fRange = 1000.f;
-	LightDesc.vDiffuse = _float4(0.2f, 0.2f, 0.2f, 1.f);
-	LightDesc.vAmbient = _float4(0.05f, 0.05f, 0.05f, 1.f);
+	LightDesc.vDiffuse = _float4(0.25f, 0.25f, 0.25f, 1.f);
+	LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
@@ -91,7 +91,7 @@ HRESULT CLevel_Main::Enter()
 
 	vector<CGameObject*> vecTemp;
 
-	GAMEINSTANCE->Bake_StaticShadow(vecTemp, _float4(-999.f, -999.f, -999.f), 10.f, _float4(1.f, -10.f, 1.f, 0.f));
+	GAMEINSTANCE->Bake_StaticShadow(vecTemp, _float4(-999.f, -999.f, -999.f), 10.f, _float4(1.f, -10.f, 1.f, 0.f), false);
 
 
 	/*LightDesc.eType = tagLightDesc::TYPE_POINT;

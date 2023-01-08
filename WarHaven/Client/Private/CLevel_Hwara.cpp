@@ -65,12 +65,10 @@ HRESULT CLevel_Hwara::Enter()
 	if (FAILED(__super::Enter()))
 		return E_FAIL;
 
-	CGameInstance::Get_Instance()->Change_Camera(L"PlayerCam");
-
-	/*CUser::Get_Instance()->SetActive_OperUI(true);
+	CUser::Get_Instance()->SetActive_OperUI(true);
 
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterStage()))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	return S_OK;
 }

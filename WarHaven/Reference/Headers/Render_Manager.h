@@ -44,7 +44,7 @@ public:
 	void	Start_MotionBlur(_float fTime);
 
 public:
-	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance, _float4 vSunLook);
+	void		Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 vCenterPos, _float fDistance, _float4 vSunLook, _bool bLensFlare);
 
 public:
 	HRESULT		Initialize();

@@ -517,7 +517,7 @@ void CUser::On_EnterStageLevel()
 		m_pKillLogList.clear();
 	}
 
-	if (m_eLoadLevel == LEVEL_PADEN)
+	if (m_eLoadLevel >= LEVEL_PADEN)
 	{
 		if (!m_pUI_Oper)
 		{
