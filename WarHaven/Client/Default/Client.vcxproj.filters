@@ -6573,7 +6573,9 @@
     <ClInclude Include="..\Public\CUnit_Lancer_Head.h">
       <Filter>03. Instances\02. GameObject\02. Unit\Lancer\Head</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_Cannon.h" />
+    <ClInclude Include="..\Public\CUI_Cannon.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9473,7 +9475,9 @@
     <ClCompile Include="..\Private\CUnit_Lancer_Head.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\Lancer\Head</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_Cannon.cpp" />
+    <ClCompile Include="..\Private\CUI_Cannon.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

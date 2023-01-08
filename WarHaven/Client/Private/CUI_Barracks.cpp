@@ -58,6 +58,8 @@ void CUI_Barracks::On_PointerExit_Port(const _uint& iEventNum)
 
 void CUI_Barracks::On_PointerDown_Port(const _uint& iEventNum)
 {
+	CUser::Get_Instance()->Enable_SkinPopup(0);
+
 	m_iPrvEventNum = m_iCurEventNum;
 	m_iCurEventNum = iEventNum;
 

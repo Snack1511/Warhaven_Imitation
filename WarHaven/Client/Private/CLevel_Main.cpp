@@ -50,8 +50,8 @@ HRESULT CLevel_Main::Enter()
 	CUI_LobbyBG* pUI_Lobby = CUI_LobbyBG::Create();
 	Ready_GameObject(pUI_Lobby, GROUP_UI);
 
-	CUI_Main* pUI_Main = CUI_Main::Create();
-	Ready_GameObject(pUI_Main, GROUP_UI);
+	//CUI_Main* pUI_Main = CUI_Main::Create();
+	//Ready_GameObject(pUI_Main, GROUP_UI);
 
 	CUser::Get_Instance()->On_EnterLevel();
 

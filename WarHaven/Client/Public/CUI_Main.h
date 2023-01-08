@@ -1,5 +1,8 @@
 #pragma once
 #include "CUI_Wrapper.h"
+
+BEGIN(Client)
+
 class CUI_Main : public CUI_Wrapper
 {
 	DECLARE_PROTOTYPE(CUI_Main);
@@ -69,3 +72,4 @@ private:
 	void Bind_Shader();
 };
 
+END

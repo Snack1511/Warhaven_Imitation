@@ -226,6 +226,8 @@ private:
 	CUI_Popup* m_pUI_Popup = nullptr;
 	CUI_Result* m_pUI_Result = nullptr;
 
+	class CUI_Main* m_pMainUI = nullptr;
+
 private:	// ¼Ò»ý
 	CUI_Revive* m_pReviveUI[7];
 	_uint m_iReviveIdx = 0;

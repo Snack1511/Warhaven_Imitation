@@ -50,6 +50,7 @@
 #include "CUI_ScoreBoard.h"
 #include "CUI_ScoreInfo.h"
 #include "CUI_Cannon.h"
+#include "CUI_Main.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -442,6 +443,17 @@ _bool CUser::Get_SelectTargetPoint()
 
 void CUser::On_EnterLevel()
 {
+	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+	if (m_eLoadLevel == LEVEL_MAINMENU)
+	{
+		if (!m_pMainUI)
+		{
+			m_pMainUI = CUI_Main::Create();
+
+			CREATE_GAMEOBJECT(m_pMainUI, GROUP_UI);
+		}
+	}
+
 	DISABLE_GAMEOBJECT(m_pCursor);
 	ENABLE_GAMEOBJECT(m_pCursor);
 }
