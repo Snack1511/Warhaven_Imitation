@@ -146,9 +146,9 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 0; ++i)
+	for (_uint i = 0; i < 2; ++i)
 	{
-		vPlayerPos.z += 10.f;
+		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
 
 		CPlayer* pEnemy = nullptr;
@@ -163,12 +163,12 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 		// 기본 코드
 		// AI_STATE_DEFAULT_IDLE_WARRIOR_R
 		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_WARRIOR_R);
-		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
+		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
 
 		// 테스트용 샌드백
 		//pEnemy->Reserve_State(STATE_IDLE_WARRIOR_L_AI_ENEMY);
 		// AI 바보만드는 코드 (체력 10만)
-		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_idiot);
+		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_idiot);
 
 		// 궁수 테스트
 		//pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_ARCHER_R);
@@ -176,7 +176,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
 		// 힐러 테스트
 		pEnemy->Reserve_State(AI_STATE_PATROL_DEFAULT_PRIEST);
-		pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
+		//pEnemy->Set_UnitType((_uint)CUnit::UNIT_TYPE::eAI_Default);
 
 
 

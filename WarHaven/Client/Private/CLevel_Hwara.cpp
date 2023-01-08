@@ -37,10 +37,11 @@ HRESULT CLevel_Hwara::SetUp_Prototypes()
 	if (FAILED(__super::SetUp_Prototypes()))
 		return E_FAIL;
 
-	CSkyBox* pSkyBox = CSkyBox::Create(6);
+	CSkyBox* pSkyBox = CSkyBox::Create(7);
 	if (FAILED(pSkyBox->Initialize()))
 		return E_FAIL;
 
+	Ready_GameObject(pSkyBox, GROUP_DEFAULT);
 	function<void(CGameObject*, _uint)> Ready_Object = bind(&CLevel_Hwara::Ready_GameObject, this, placeholders::_1, placeholders::_2);
 
 	CMap_Loader::Load_Data(wstring(TEXT("Map_Hwara")), Ready_Object);

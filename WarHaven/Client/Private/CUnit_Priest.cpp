@@ -551,24 +551,18 @@ void CUnit_Priest::OnDisable()
 
 void CUnit_Priest::My_Tick()
 {
-	if (m_pNearCureObject)
-	{
-		Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
-	}
+
+
+	
 
 	__super::My_Tick();
 	__super::Check_NearObject_IsInFrustum(&m_pNearCureObject);
 
-	if (!m_bSameNearObject)
-	{
-		
-		TurnOn_CureEffect(false);
-	}
-
 }
 void CUnit_Priest::My_LateTick()
 {
+	
+
 
 	__super::My_LateTick();
-
 }

@@ -14,6 +14,8 @@
 
 #include "HIerarchyNode.h"
 #include "CRectEffects.h"
+#include "CUI_UnitHUD.h"
+#include "CUI_UnitHp.h"
 
 CCure_Effect::CCure_Effect()
 {
@@ -99,6 +101,8 @@ HRESULT CCure_Effect::Initialize_Prototype()
 
 HRESULT CCure_Effect::Initialize()
 {
+
+
 	return S_OK;
 }
 
@@ -164,10 +168,15 @@ void CCure_Effect::OnEnable()
 	if (!m_pOther)
 		return;
 
-	m_Smoke = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cure_Smoke", m_pOther, ZERO_VECTOR);
-	m_Particle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cure_Particle", m_pOwner, ZERO_VECTOR);
+	if(m_Smoke.empty())
+		m_Smoke = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cure_Smoke", m_pOther, ZERO_VECTOR);
 
-	static_cast<CUnit*>(m_pOwner)->Create_Light(m_Particle.back(), _float4(0.f, 0.f, 0.f), 2.f, 0.f, 0.1f, 10.f, 0.1f, RGB(245, 245, 100), false);
+	if (m_Particle.empty())
+	{
+		m_Particle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cure_Particle", m_pOwner, ZERO_VECTOR);
+		static_cast<CUnit*>(m_pOwner)->Create_Light(m_Particle.back(), _float4(0.f, 0.f, 0.f), 2.f, 0.f, 0.1f, 10.f, 0.1f, RGB(245, 245, 100), false);
+	}
+	
 }
 
 void CCure_Effect::OnDisable()

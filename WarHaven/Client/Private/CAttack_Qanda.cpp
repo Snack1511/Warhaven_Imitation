@@ -320,7 +320,7 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 		/* 모든 스태틱 충돌체와 캐릭터에게 ray를 쏴서 충돌체크 */
 	_float4 vHitPos;
-	if (pAnimator->Get_CurAnimFrame() >= 1)
+	if (pAnimator->Get_CurAnimFrame() > 2)
 	{
 		if (CAttack_Qanda::Check_CrowRay(&vHitPos, pOwner))
 		{
