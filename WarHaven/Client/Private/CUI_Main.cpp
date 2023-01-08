@@ -156,6 +156,11 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 	}
 }
 
+void CUI_Main::Set_TopBtnEffectPosX(_float fPosX)
+{
+	m_pTopBtnEffect->Set_PosX(fPosX);
+}
+
 void CUI_Main::Create_TopBtn()
 {
 	for (int i = 0; i < TB_End; ++i)

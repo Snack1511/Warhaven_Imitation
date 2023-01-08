@@ -127,6 +127,9 @@ void CUI_Barracks::On_PointerDown_Btn(const _uint& iEventNum)
 
 	m_pTopBtn[0]->Set_FontColor(m_vColorWhite);
 
+	CUser::Get_Instance()->SetActive_MainTopBtn(false);
+	CUser::Get_Instance()->Set_TopBtnEffectPosX(-550.f);
+
 	m_bIsSkinEnable = true;
 }
 
@@ -137,6 +140,9 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 
 	if (m_iPrvSelectSkin == iEventNum)
 		return;
+
+	_float fPosX = -550.f + (iEventNum * 95.f);
+	CUser::Get_Instance()->Set_TopBtnEffectPosX(fPosX);
 
 	if (m_iCurSelectSkin == Skin::Hat)
 	{
@@ -196,7 +202,12 @@ void CUI_Barracks::OnEnable()
 	m_bIsEnable = true;
 
 	for (int i = 0; i < Port_Underline; ++i)
+	{
 		m_pArrClassPort[0][i]->Set_PosY(-240.f);
+
+		if(i == Port_Class)
+			m_pArrClassPort[0][i]->Set_PosY(-185.f);
+	}
 
 	Enable_Fade(m_pArrClassPort[0][Port_Outline], m_fDuration);
 	Enable_Fade(m_pArrClassPort[0][Port_Underline], m_fDuration);
@@ -394,7 +405,7 @@ void CUI_Barracks::Create_TopBtn()
 		m_pTopBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
 		_float fPosX = -560.f + (i * 95.f);
-		m_pTopBtn[i]->Set_Pos(fPosX, 200.f);
+		m_pTopBtn[i]->Set_Pos(fPosX, 300.f);
 		m_pTopBtn[i]->Set_Scale(75.f, 35.f);
 		m_pTopBtn[i]->Set_Sort(0.5f);
 
@@ -917,6 +928,9 @@ void CUI_Barracks::Disable_SkinWindow()
 			for (int j = 0; j < Skin::End; ++j)
 				Disable_Fade(m_pArrSkin[i][j], m_fDuration);
 		}
+
+		CUser::Get_Instance()->SetActive_MainTopBtn(true);
+		CUser::Get_Instance()->Set_TopBtnEffectPosX(-455.f);
 	}
 }
 

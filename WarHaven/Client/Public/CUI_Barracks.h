@@ -1,5 +1,8 @@
 #pragma once
 #include "CUI_Wrapper.h"
+
+BEGIN(Client)
+
 class CUI_Barracks : public CUI_Wrapper
 {
 	DECLARE_PROTOTYPE(CUI_Barracks);
@@ -124,3 +127,5 @@ private:
 	_bool m_bLateTickEnable = false;
 	void Set_SkinIdx(CLASS_TYPE eClass);
 };
+
+END

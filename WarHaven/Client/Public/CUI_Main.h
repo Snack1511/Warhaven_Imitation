@@ -33,6 +33,8 @@ public:
 	void SetActive_PlayerNameText(_bool value);
 	void SetActive_MainWindow(MainWindow eWindow);
 
+	void Set_TopBtnEffectPosX(_float fPosX);
+
 private:
 	enum TopBtn { TB_Play, TB_Barracks, TB_Profile, TB_End };
 	CUI_Object* m_pArrTopBtn[TB_End];

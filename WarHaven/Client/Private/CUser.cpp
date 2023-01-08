@@ -51,6 +51,7 @@
 #include "CUI_ScoreInfo.h"
 #include "CUI_Cannon.h"
 #include "CUI_Main.h"
+#include "CUI_Barracks.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -851,6 +852,18 @@ void CUser::Set_ScoreBoardPlayer(CPlayer* pPlayer)
 	{
 		m_pScoreBoard->Set_Player(pPlayer);
 	}
+}
+
+void CUser::SetActive_MainTopBtn(_bool value)
+{
+	if (m_pMainUI)
+		m_pMainUI->SetActive_TopBtn(value);
+}
+
+void CUser::Set_TopBtnEffectPosX(_float fPosX)
+{
+	if (m_pMainUI)
+		m_pMainUI->Set_TopBtnEffectPosX(fPosX);
 }
 
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)

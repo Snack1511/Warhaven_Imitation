@@ -39,6 +39,8 @@ class CUI_MiniMap;
 class CUI_ScoreBoard;
 class CUI_ScoreInfo;
 class CUI_Cannon;
+class CUI_Main;
+class CUI_Barracks;
 
 class CTeamConnector;
 
@@ -215,6 +217,10 @@ public: // 플레이어 KDA
 	void Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx);
 	void Set_ScoreBoardPlayer(CPlayer* pPlayer);
 
+public:	// 메인메뉴
+	void SetActive_MainTopBtn(_bool value);
+	void Set_TopBtnEffectPosX(_float fPosX);
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
@@ -226,7 +232,8 @@ private:
 	CUI_Popup* m_pUI_Popup = nullptr;
 	CUI_Result* m_pUI_Result = nullptr;
 
-	class CUI_Main* m_pMainUI = nullptr;
+	CUI_Main* m_pMainUI = nullptr;
+	CUI_Barracks* m_pBarracks = nullptr;
 
 private:	// 소생
 	CUI_Revive* m_pReviveUI[7];
