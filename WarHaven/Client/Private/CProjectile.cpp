@@ -302,12 +302,13 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		m_pTransform->Set_World(WORLD_POS, vOffset);
 
 
-		m_vTargetPos = _float4(0.f, 10.f, 1.f);
+		m_vTargetPos = _float4(0.f, 5.f, 2.f);
 		m_vTargetPos = m_vTargetPos.MultiplyCoord(matOwner);
 
 		m_vRight = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_RIGHT).Normalize();
 
 		m_fRandFrequency = random(-10, 10);
+		m_fRandPower = random(-10, 10);
 		break;
 
 	case Client::CProjectile::eHIT:
@@ -485,7 +486,7 @@ void CProjectile::My_LateTick()
 
 		vPos += vLook * 0.5f * fDT(0);
 
-		fY = m_fRandFrequency * sinf(m_fRandFrequency * m_fTimeAcc); // a sin(bx)
+		fY = m_fRandPower * sinf(m_fRandFrequency * m_fTimeAcc); // a sin(bx)
 
 		vPos.x += fY * m_vRight.x * fDT(0);
 		vPos.y += fY * m_vRight.y * fDT(0);

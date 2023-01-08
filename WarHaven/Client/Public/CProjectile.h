@@ -118,6 +118,7 @@ private:
 private:
 	_float m_fTimeAcc = 0.f;
 	_float m_fRandFrequency = 0.f;
+	_float m_fRandPower = 0.f;
 	_float4 m_vTargetPos;
 	_float4 m_vOwnerPos;
 	_float4 m_vRight;
