@@ -1079,7 +1079,7 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 			continue;
 
 		// 절두체에 안들어왔다면
-		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), m_fMaxDistance))
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 50.f))
 			continue;
 
 		for (auto& FrustumObj : m_MultipleFrustumObject)

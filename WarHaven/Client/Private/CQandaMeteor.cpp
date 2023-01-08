@@ -51,6 +51,7 @@ HRESULT CQandaMeteor::Start()
 		40
 	);
 
+	m_EffectTest.clear();
 
 	return S_OK;
 }
@@ -90,8 +91,19 @@ void CQandaMeteor::My_Tick()
 {
 	__super::My_Tick();
 
+	if (m_bShoot)
+	{
+		if (m_EffectTest.empty())
+		{
+			m_EffectTest = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Qanda_Sniping", this, ZERO_VECTOR);
+		}
+		m_bShoot = false;
+	}
+
 	if (m_eCurPhase == eSTICK)
 		DISABLE_GAMEOBJECT(this);
+
+	
 
 	//if (!m_Shoot)
 	//{
@@ -108,7 +120,8 @@ void CQandaMeteor::OnEnable()
 {
 	__super::OnEnable();
 
-//	m_Shoot = false;
+	m_bShoot = true;
+
 }
 
 void CQandaMeteor::OnDisable()
@@ -116,5 +129,13 @@ void CQandaMeteor::OnDisable()
 	if (m_bCollect)
 		static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
 	
+	if (!m_EffectTest.empty())
+	{
+		for (auto& elem : m_EffectTest)
+		{
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut(0.5f);
+		}
+		m_EffectTest.clear();
+	}
 	__super::OnDisable();
 }

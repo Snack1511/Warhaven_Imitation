@@ -116,6 +116,13 @@ private:
 	PxRigidDynamic* m_pActor = nullptr;
 
 private:
+	_float m_fTimeAcc = 0.f;
+	_float m_fRandFrequency = 0.f;
+	_float4 m_vTargetPos;
+	_float4 m_vOwnerPos;
+	_float4 m_vRight;
+
+private:
 	virtual void Set_ColliderType(eTEAM_TYPE eTeamType);
 };
 

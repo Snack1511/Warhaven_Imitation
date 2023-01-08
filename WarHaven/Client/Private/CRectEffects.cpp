@@ -805,6 +805,18 @@ void CRectEffects::My_LateTick()
 		m_pTransform->Make_WorldMatrix();
 	}
 
+
+	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
+	{
+		if (CURVE_CIRCLE == m_eCurveType)
+		{
+			if (m_pFollowTarget)
+			{
+				m_pDatas[i].RectInstance.vTranslation = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+			}
+		}
+	}
+
 	static_cast<CRect_Instance*>(GET_COMPONENT(CMesh))->ReMap_Instances(m_pFinalRectInstances, iFinalIndex);
 
 	
@@ -1493,10 +1505,7 @@ _float4 CRectEffects::Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDel
 
 	case Client::CURVE_CIRCLE:
 
-		if(m_pFollowTarget)
-		{
-			m_pDatas[iIdx].RectInstance.vTranslation = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
-		}
+		
 		//if (m_pFollowTarget)
 		//{
 		//	fX = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS).x + m_pDatas[iIdx].InstancingData.fCurvePower *

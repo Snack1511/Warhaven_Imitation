@@ -64,6 +64,7 @@ HRESULT CQanda_Shoot_Sniping::Initialize()
 	m_fDamagePumping = 7.f;
 
 	Add_KeyFrame(30, 0);
+	Add_KeyFrame(89, 1);
 
 	// return __super::Initialize();
 	return S_OK;
@@ -112,11 +113,11 @@ STATE_TYPE CQanda_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CQanda_Shoot_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 
-	if (!m_bAttackTrigger)
-	{
-		for (auto& elem : m_Mateors)
-			static_cast<CProjectile*>(elem)->On_ChangePhase(CProjectile::eChase);
-	}
+	//if (!m_bAttackTrigger)
+	//{
+	//	for (auto& elem : m_Mateors)
+	//		static_cast<CProjectile*>(elem)->On_ChangePhase(CProjectile::eChase);
+	//}
 
 	if (!m_SnipingTarget.empty())
 		m_SnipingTarget.clear();
@@ -144,15 +145,15 @@ void CQanda_Shoot_Sniping::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 	{
 	case 0:
 
-		for (auto& elem : m_Mateors)
-			static_cast<CProjectile*>(elem)->On_ChangePhase(CProjectile::eChase);
+		
 
 		m_bAttackTrigger = true;
 
 		break;
-
-
-
+	/*case 1:
+		for (auto& elem : m_Mateors)
+			static_cast<CProjectile*>(elem)->On_ChangePhase(CProjectile::eChase);
+		break;*/
 	default:
 		break;
 	}
