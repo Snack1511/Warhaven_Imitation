@@ -8,6 +8,8 @@
 #include "CUI_Main.h"
 #include "CPlayerInfo_Main.h"
 
+_bool CUI_Barracks::m_bIsUnlock_RabbitHat = false;
+
 CUI_Barracks::CUI_Barracks()
 {
 }
