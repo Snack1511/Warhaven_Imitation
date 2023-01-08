@@ -40,8 +40,8 @@ private:
 	_float4 m_vColorBG = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	_float4 m_vColorOutline = _float4(0.2f, 0.2f, 0.2f, 1.f);
 
-	int m_iPrvEventNum = -1;
-	int m_iCurEventNum = -1;
+	int m_iPrvEventNum = 0;
+	int m_iCurEventNum = 0;
 
 	_float m_fDuration = 0.3f;
 

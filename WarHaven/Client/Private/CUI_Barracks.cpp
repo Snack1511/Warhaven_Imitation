@@ -186,6 +186,14 @@ void CUI_Barracks::OnEnable()
 	__super::OnEnable();
 
 	m_bIsEnable = true;
+
+	for (int i = 0; i < Port_Underline; ++i)
+		m_pArrClassPort[0][i]->Set_PosY(-240.f);
+
+	Enable_Fade(m_pArrClassPort[0][Port_Outline], m_fDuration);
+	Enable_Fade(m_pArrClassPort[0][Port_Underline], m_fDuration);
+
+	m_pArrClassPort[0][Port_Underline]->Set_Scale(100.f, 2.f);
 }
 
 void CUI_Barracks::OnDisable()
@@ -825,9 +833,10 @@ void CUI_Barracks::Late_Enable()
 			{
 				for (int j = 0; j < Port_Highlight; ++j)
 					Enable_Fade(m_pArrClassPort[i][j], m_fDuration);
-
-				// m_pArrClassPort[m_iSelectClass][j]
 			}
+
+			for (int j = 0; j < Port_Highlight; ++j)
+				m_pArrClassPort[m_iSelectClass][j]->SetActive(true);
 
 			for (int i = 0; i < 3; ++i)
 			{
@@ -875,6 +884,11 @@ void CUI_Barracks::Disable_SkinWindow()
 	{
 		if (!m_bIsSkinWindow)
 			return;
+
+		Enable_Fade(m_pArrClassPort[m_iSelectClass][Port_Outline], m_fDuration);
+		Enable_Fade(m_pArrClassPort[m_iSelectClass][Port_Underline], m_fDuration);
+
+		m_pArrClassPort[m_iSelectClass][Port_Underline]->Set_Scale(100.f, 2.f);
 
 		m_bIsSkinWindow = false;
 		m_bIsEnable = true;
