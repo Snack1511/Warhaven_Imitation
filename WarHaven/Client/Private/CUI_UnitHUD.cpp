@@ -227,6 +227,9 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 
 	m_pUnitNameText->Set_Pos(vNewPos);
 
+	if (m_pOwner->Get_CurClass() == LANCER)
+		m_pUnitNameText->Set_PosY(275.f);
+
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_ProjPos(pTransform);
 }
 

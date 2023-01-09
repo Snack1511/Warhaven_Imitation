@@ -161,7 +161,7 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 
 		Set_KeyIcon(0, 59);
 
-		m_pHeroKeySkillIcon->SetActive(false);
+		m_pHeroKeySkillIcon->Set_PosX(30000.f);
 	}
 	break;
 	}
