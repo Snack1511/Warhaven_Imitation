@@ -788,6 +788,16 @@ void CUI_Oper::Enable_StrongHoldUI()
 			break;
 
 		case LEVEL_HWARA:
+
+			for (int j = 0; j < 2; ++j)
+			{
+				Enable_Fade(m_pArrStrongHoldUI[i][j], 0.3f);
+				m_pArrStrongHoldUI[i][j]->DoScale(-70.f, 0.3f);
+			}
+
+			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[SP_Icon][0]);
+			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[SP_Icon][2]);
+
 			break;
 		}
 	}
@@ -1871,7 +1881,6 @@ void CUI_Oper::Create_TargetPoint()
 
 	CREATE_GAMEOBJECT(m_pTargetPoint, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pTargetPoint);
-
 
 	for (int i = 0; i < 2; ++i)
 	{
