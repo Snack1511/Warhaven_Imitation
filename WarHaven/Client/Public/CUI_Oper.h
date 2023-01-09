@@ -156,7 +156,7 @@ private:	// 작전회의 타이머
 	enum TimerUI { TU_BG, TU_Bar, TU_End };
 	CUI_Object* m_pTimer[TU_End];
 
-	_float m_fMaxOperTime = 5.f;
+	_float m_fMaxOperTime = 50000000.f;
 	_float m_fOperTime = 0.f;
 	_float m_fTimerRatio = 1.f;
 
