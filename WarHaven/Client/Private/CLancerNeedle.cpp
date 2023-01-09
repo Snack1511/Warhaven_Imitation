@@ -206,7 +206,7 @@ HRESULT CLancerNeedle::Start()
 void CLancerNeedle::My_Tick()
 {
 	__super::My_Tick();
-	
+	/*
 	if(KEY(R, HOLD))
 	{
 		if (KEY(X, HOLD))
@@ -228,7 +228,7 @@ void CLancerNeedle::My_Tick()
 
 		if (KEY(Z, HOLD))
 			m_vStartPos.z -= 1.f;
-	}
+	}*/
 	
 }
 
@@ -290,7 +290,7 @@ void CLancerNeedle::My_LateTick()
 
 	// 1. 자전 
 
-		_float vNewAngle = CEasing_Utillity::sinfOut(0.f, 270.f, m_fCurAcc, m_fTotalTime);
+		_float vNewAngle = CEasing_Utillity::sinfOut(m_fAngleStartValue, m_fAngleTargetValue, m_fCurAcc, m_fTotalTime);
 		//먼저 회전행렬 만들어서 시작 (자전부터)
 		CUtility_Transform::Turn_ByAngle(matLocal, _float4(0.f, 0.f, 1.f, 0.f), vNewAngle);
 
@@ -298,9 +298,14 @@ void CLancerNeedle::My_LateTick()
 		_float4 vNewPos = CEasing_Utillity::QuadIn(m_vStartPos, m_vTargetPos, m_fCurAcc, m_fTotalTime);
 		memcpy(matLocal.m[3], &vNewPos, sizeof(_float4));
 
-		// 
 	// 3. 공전
-	// 
+		vNewAngle = CEasing_Utillity::sinfOut(m_fAngleStartValue, m_fAngleTargetValue, m_fCurAcc, m_fTotalTime);
+		//먼저 회전행렬 만들어서 시작 (자전부터)
+		_float4x4 matRot;
+
+		CUtility_Transform::Turn_ByAngle(matRot, _float4(-200.f, 0.f, 1.f, 0.f), vNewAngle);
+
+		matLocal = matLocal * matRot;
 	// 4. 부모
 			CHierarchyNode* pNode = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_Head");//("0B_Head");
 
@@ -311,7 +316,7 @@ void CLancerNeedle::My_LateTick()
 			_float4x4		matBone = pNode->Get_BoneMatrix();
 
 			/* 로컬행렬(크자이) * 부모행렬 = 최종행렬 */
-			_float4x4		matFinal = matLocal * matBone;
+			_float4x4		matFinal = matLocal  * matBone;
 			//_float4x4		mat
 			m_pTransform->Get_Transform().matMyWorld = matFinal;
 			m_pTransform->Make_WorldMatrix();
@@ -324,24 +329,26 @@ void CLancerNeedle::My_LateTick()
 		if (KEY(J, TAP))
 			m_eNeedleState = LANCERNEEDLE_ATTACKBEGIN;
 
+		_float4x4 matLocal;
+		matLocal.Identity();
+
+		_float vNewAngle = CEasing_Utillity::sinfOut(m_fAngleStartValue, m_fAngleTargetValue, m_fTotalTime, m_fTotalTime);
+		//먼저 회전행렬 만들어서 시작 (자전부터)
+		CUtility_Transform::Turn_ByAngle(matLocal, _float4(0.f, 0.f, 1.f, 0.f), vNewAngle);
+
+		// 2. 오프셋
+		_float4 vNewPos = CEasing_Utillity::QuadIn(m_vStartPos, m_vTargetPos, m_fTotalTime, m_fTotalTime);
+		memcpy(matLocal.m[3], &vNewPos, sizeof(_float4));
+
 		CHierarchyNode* pNode = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_Head");//("0B_Head");
 
-		if (pNode == nullptr)
-			return;
-
+		/* 부모 행렬*/
 		_float4x4		matBone = pNode->Get_BoneMatrix();
 
-		_float4x4 matWorldInv = pNode->Get_BoneMatrix().Inverse();
-		_float4x4 matOffset = pNode->Get_BoneMatrix() * matWorldInv;
-
-		matBone = matOffset * matBone;
-
-		_float4 vPos = m_vTargetPos.MultiplyCoord(matBone);
-
-
-
-		m_pTransform->Set_World(WORLD_POS, vPos);
-		CUtility_Transform::Turn_ByAngle(matBone, _float4(0.f, 1.f, 0.f, 0.f), 0.f);
+		/* 로컬행렬(크자이) * 부모행렬 = 최종행렬 */
+		_float4x4		matFinal = matLocal * matBone;
+		//_float4x4		mat
+		m_pTransform->Get_Transform().matMyWorld = matFinal;
 		m_pTransform->Make_WorldMatrix();
 
 	}

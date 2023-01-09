@@ -513,7 +513,7 @@ void CUnit_Lancer::My_LateTick()
 	if (KEY(Q, TAP))
 	{
 		for(_int i = 0 ; i < eNeedle_Max; ++i)
-			m_pNeedle[m_iNeedleNums]->Enable_Needle(true);
+			m_pNeedle[i]->Enable_Needle(true);
 
 		m_fTimeAcc = 0.f;
 		m_iNeedleNums = 0;
