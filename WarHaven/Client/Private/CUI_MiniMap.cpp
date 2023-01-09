@@ -410,7 +410,15 @@ void CUI_MiniMap::Init_MiniMapPoint()
 			{
 				m_pArrMiniMapPoint[j][i]->Set_PosX(-496);
 
-				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Outline], CTexture)->Set_CurTextureIndex(1);
+				if (j == Point_R)
+				{
+					GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Outline], CTexture)->Set_CurTextureIndex(1);
+				}
+				else
+				{
+					GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Outline], CTexture)->Set_CurTextureIndex(2);
+				}
+
 				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Gauge], CTexture)->Set_CurTextureIndex(1);
 				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Text], CTexture)->Set_CurTextureIndex(j);
 			}

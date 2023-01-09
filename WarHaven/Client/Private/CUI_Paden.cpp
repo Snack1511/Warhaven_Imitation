@@ -198,6 +198,9 @@ void CUI_Paden::SetActive_PointUI(_bool value)
 		{
 			m_pArrPointUI[i][j]->SetActive(value);
 			m_pArrProjPointUI[i][j]->SetActive(value);
+
+			if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_HWARA)
+				m_pArrProjPointUI[Point_C][j]->SetActive(false);
 		}
 	}
 }
@@ -771,20 +774,50 @@ void CUI_Paden::Init_PointUI()
 	{
 		for (int j = 0; j < PU_End; ++j)
 		{
-			if (i == Point_A)
+			if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_HWARA)
 			{
-				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
-				GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+				if (j == PU_Text)
+				{
+					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+				}
+				else
+				{
+					if (i == Point_R)
+					{
+						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+					}
+					else
+					{
+						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(2);
+						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(2);
+
+						if (j == PU_Gauge)
+						{
+							GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+							GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+						}
+					}
+				}
 			}
 			else
 			{
-				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
-				GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
-
-				if (j == PU_Gauge)
+				if (i == Point_A)
 				{
-					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
-					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+				}
+				else
+				{
+					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+
+					if (j == PU_Gauge)
+					{
+						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+					}
 				}
 			}
 		}
