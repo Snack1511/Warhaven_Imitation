@@ -62,6 +62,9 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 		for (int j = 0; j < MP_End; ++j)
 		{
 			m_pArrMiniMapPoint[i][j]->SetActive(value);
+
+			if (m_eLoadLevel == LEVEL_HWARA)
+				m_pArrMiniMapPoint[Point_C][j]->SetActive(false);
 		}
 	}
 
@@ -421,8 +424,6 @@ void CUI_MiniMap::Init_MiniMapPoint()
 
 			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
-
-			m_pArrMiniMapPoint[Point_C][i]->SetActive(false);
 		}
 		break;
 	}
