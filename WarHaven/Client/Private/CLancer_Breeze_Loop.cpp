@@ -90,10 +90,9 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
-	GAMEINSTANCE->Start_RadialBlur(0.02f);
-	GAMEINSTANCE->Start_ChromaticAberration(20.f);
+	GAMEINSTANCE->Start_RadialBlur(0.015f);
 
-	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
+	//pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_BREEZE);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
@@ -128,12 +127,11 @@ void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 
 	GAMEINSTANCE->Stop_RadialBlur();
-	GAMEINSTANCE->Stop_ChromaticAberration();
 
 
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_LANCER);
 	pOwner->On_Use(CUnit::SKILL1);
-	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
+	//pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 }
 
 STATE_TYPE CLancer_Breeze_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

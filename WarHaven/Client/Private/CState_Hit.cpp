@@ -72,9 +72,14 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
         static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
     }
 
-    pOwner->Lerp_Camera(0);
-    GAMEINSTANCE->Stop_RadialBlur();
-    GAMEINSTANCE->Stop_ChromaticAberration();
+
+    if (pOwner->Is_MainPlayer())
+    {
+        pOwner->Lerp_Camera(0);
+        GAMEINSTANCE->Stop_RadialBlur();
+        GAMEINSTANCE->Stop_ChromaticAberration();
+    }
+
 
     __super::Enter(pOwner, pAnimator, ePrevStateType);
 }
@@ -85,10 +90,9 @@ STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
     {
         m_fTimeAcc += fDT(0);
 
-        if(m_fTimeAcc > 0.5f)
+        if(m_fTimeAcc > 1.5f)
             pOwner->On_Die();
  
-        //pOwner->Get_Transform()->Get_Transform().matMyWorld = m_pStingBone->Get_BoneMatrix();// *matBone;
     }
 
 

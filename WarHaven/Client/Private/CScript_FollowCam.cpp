@@ -181,11 +181,17 @@ HRESULT CScript_FollowCam::Initialize()
 	m_arrLerpDesc[CAMERA_LERP_ZOOMOUT].fMaxDistance *= 1.2f;
 	m_arrLerpDesc[CAMERA_LERP_ZOOMOUT].fCameraDistanceLerpTime *= 0.5f;
 
-	m_arrLerpDesc[CAMERA_LERP_BREEZE].fTargetDistance *= 1.5f;
-	m_arrLerpDesc[CAMERA_LERP_BREEZE].fMaxDistance *= 1.5f;
-	m_arrLerpDesc[CAMERA_LERP_BREEZE].fCameraDistanceLerpTime *= 0.5f;
+	m_arrLerpDesc[CAMERA_LERP_LANCER].fTargetDistance *= 1.25f;
+	m_arrLerpDesc[CAMERA_LERP_LANCER].fMaxDistance *= 0.8f;
+	m_arrLerpDesc[CAMERA_LERP_LANCER].fCameraDistanceLerpTime *= 0.5f;
+	m_arrLerpDesc[CAMERA_LERP_LANCER].vTargetOffset.y += 0.4f;
 
-	
+
+	m_arrLerpDesc[CAMERA_LERP_BREEZE] = m_arrLerpDesc[CAMERA_LERP_LANCER];
+	m_arrLerpDesc[CAMERA_LERP_BREEZE].fTargetDistance *= 1.3f;
+	m_arrLerpDesc[CAMERA_LERP_BREEZE].vTargetOffset.y -= 0.2f;
+	m_arrLerpDesc[CAMERA_LERP_BREEZE].vTargetOffset.x = 0.f;
+
 
 	return S_OK;
 }

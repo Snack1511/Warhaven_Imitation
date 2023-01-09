@@ -67,9 +67,8 @@ void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
 
-	GAMEINSTANCE->Start_RadialBlur(0.02f);
-	GAMEINSTANCE->Start_ChromaticAberration(20.f);
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
+	GAMEINSTANCE->Start_RadialBlur(0.015f);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_BREEZE);
 
 	for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)
 	{
@@ -97,8 +96,7 @@ STATE_TYPE CLancer_Breeze_Begin::Tick(CUnit* pOwner, CAnimator* pAnimator)
 void CLancer_Breeze_Begin::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	GAMEINSTANCE->Stop_RadialBlur();
-	GAMEINSTANCE->Stop_ChromaticAberration();
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_LANCER);
 }
 
 STATE_TYPE CLancer_Breeze_Begin::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
