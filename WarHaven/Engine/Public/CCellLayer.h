@@ -47,6 +47,7 @@ public:
 	HRESULT SetUp_Nodes();
 	//가시성 설정
 	HRESULT SetUp_Visibility();
+	HRESULT SetUp_Visibility_UseThread();
 	void Compare_Link(list<pair<CNode*, CNode*>>& LinkList, list<pair<CNode*, CNode*>>::iterator CmpIter);
 	void Set_DebugName(wstring strName) { m_strDebugName = strName; }
 	HRESULT Make_Cells(_byte* ArrAttribute);
@@ -163,6 +164,10 @@ private:
 	_int* m_NeighborIndex = nullptr;
 	wstring m_strFolderPath = L"";
 
+public:
+	void Func_Compare_UseThread(list<pair<CNode*, CNode*>>* pList);
+private:
+	vector<shared_ptr<thread>> m_ThreadArr;
 
 };
 END

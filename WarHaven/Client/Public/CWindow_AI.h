@@ -85,6 +85,7 @@ private:
 	_uint m_iCurPlayerNameIndex = 0;
 	wstring m_strCurSelectWhenCondition = L"";
 	wstring m_strCurSelectWhatCondition = L"";
+	wstring m_strCurSelectBehaviorTick = L"";
 	DraggingData m_CurSelectIncludeCondition;
 	DraggingData m_CurSelectExcludeCondition;
 public:

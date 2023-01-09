@@ -27,7 +27,7 @@ CCellLayer::~CCellLayer()
 	m_pVBInstance.Reset();
 #endif
 #endif // _DEBUG
-
+	m_ThreadArr.clear();
 }
 
 CCellLayer* CCellLayer::Create(_uint XNums, _uint ZNums, _float fTileSize, _float4 vCenterPosition, _float fHeightMin, _float fHeightMax, _int BaseCellAttribute)
@@ -959,6 +959,76 @@ HRESULT CCellLayer::SetUp_Visibility()
 
 	//Save_Visiblity(L"../Bin/Data/GameSystem/TempVisibility.bin");
 
+	for (auto& value : m_LinkList)
+	{
+		Add_Link(value.first, value.second);
+	}
+
+	return S_OK;
+}
+HRESULT CCellLayer::SetUp_Visibility_UseThread()
+{
+	//Blocked매시의 정점들을 통해 가시성 검사
+//해당 정점들을 기준으로 노드 설정 및 이웃 설정
+//A*테스트..
+
+//정점을 연결하는 모든 순서쌍 생성
+	Make_Dump(string("StartTimeLog"), string("Start_VisiblityCheck"));
+	list<pair<CNode*, CNode*>> LinkList;
+	for (auto SourIter = m_Nodes.begin(); SourIter != m_Nodes.end(); ++SourIter)
+	{
+		for (auto DestIter = /*m_Nodes.begin()*/SourIter; DestIter != m_Nodes.end(); ++DestIter)
+		{
+			if (*SourIter == *DestIter)
+				continue;
+			std::pair<CNode*, CNode*> link = std::make_pair(*SourIter, *DestIter);
+			LinkList.push_back(link);
+		}
+	}
+
+
+	_uint iUsableThreadCount = thread::hardware_concurrency();
+	_uint LinkNums = ceil(_float(LinkList.size()) / iUsableThreadCount);
+	
+	vector<list<pair<CNode*, CNode*>>>SeperateLinkArr;
+	//list<pair<CNode*, CNode*>> SeperateLink;
+	SeperateLinkArr.push_back(list<pair<CNode*, CNode*>>());
+	for (auto Link : LinkList)
+	{
+		list<pair<CNode*, CNode*>>& SaperateList = SeperateLinkArr.back();
+		SaperateList.push_back(Link);
+		if (SaperateList.size() >= LinkNums)
+		{
+			SeperateLinkArr.push_back(list<pair<CNode*, CNode*>>());
+		}
+
+		
+	}
+
+
+	for (_uint Index = 0; Index < _uint(SeperateLinkArr.size()); ++Index)
+	{
+		m_ThreadArr.push_back(
+			make_shared<thread>(&CCellLayer::Func_Compare_UseThread, this, &SeperateLinkArr[Index])
+		);
+	}
+
+	for (auto& Thread : m_ThreadArr)
+	{
+		if (Thread.get()->joinable())
+			Thread.get()->join();
+	}
+
+	for (auto Link : SeperateLinkArr)
+	{
+		for (auto Pair : Link) 
+		{
+			m_LinkList.push_back(Pair);
+		}
+
+
+	}
+	Make_Dump(string("EndTimeLog"), string("End_VisiblityCheck"));
 	for (auto& value : m_LinkList)
 	{
 		Add_Link(value.first, value.second);
@@ -2182,4 +2252,9 @@ void CCellLayer::Add_CellList(_uint iCellAttribute, CCell* pCell)
 		}
 	}
 
+}
+
+void CCellLayer::Func_Compare_UseThread(list<pair<CNode*, CNode*>>* pList)
+{
+	Compare_Link((*pList), pList->begin());
 }

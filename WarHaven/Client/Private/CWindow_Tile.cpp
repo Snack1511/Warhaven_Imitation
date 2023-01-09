@@ -254,6 +254,7 @@ HRESULT CWindow_Tile::Render()
 			}
 			m_pCurLayer->Reset_Neighbor();
 			m_pLayers.emplace(m_fTileHeightMinRange, m_pCurLayer);
+			m_bLayerVisibilityBakerFlag.emplace(m_fTileHeightMinRange,false);
 		}
 		if (ImGui::Button("GENERATE_TILE"))
 		{
@@ -305,8 +306,10 @@ HRESULT CWindow_Tile::Render()
 			if (ImGui::DragFloat("ChangeHeight", &m_fTileHeightMinRange))
 			{
 				m_pLayers.erase(Key);
+				m_bLayerVisibilityBakerFlag.erase(Key);
 				m_pCurLayer->Set_MinHeight(m_fTileHeightMinRange);
 				m_pLayers.emplace(m_fTileHeightMinRange, m_pCurLayer);
+				m_bLayerVisibilityBakerFlag.emplace(m_fTileHeightMinRange, false);
 
 			}
 		}
@@ -378,25 +381,12 @@ HRESULT CWindow_Tile::Render()
 				}
 				if (ImGui::Button("Create_Visibility"))
 				{
-					if (m_pCurLayer)
-					{
-						m_pCurLayer->SetUp_Nodes();
-						m_pCurLayer->SetUp_Visibility();
-						//Bin\Data\GameSystem\CellData\Map_Paden\Map_Paden_0
-						//
-						string strSavePath = m_CellDataDirectory;
-						string strDebugName = CFunctor::To_String(m_pCurLayer->Get_DebugName());
-						_int iFind = strDebugName.rfind("_");
-						string strFolderName = strDebugName.substr(0, iFind);
-						strSavePath += "/";
-						strSavePath += strFolderName;
-						strSavePath += "/";
-						strSavePath += strDebugName;
-						strSavePath += "/";
-						strSavePath += strDebugName;
-						strSavePath += "_Visibility.bin";
-						m_pCurLayer->Save_Visiblity(CFunctor::To_Wstring(strSavePath));
-					}
+					On_Create_Visibility(m_pCurLayer);
+					
+				}				
+				if (ImGui::Button("Create_Visibility_Threading"))
+				{
+					On_Create_Visibility_Thread(m_pCurLayer);
 					
 				}
 				if (ImGui::Button("Load_Visibility"))
@@ -419,6 +409,26 @@ HRESULT CWindow_Tile::Render()
 						m_pCurLayer->Load_Visibility(CFunctor::To_Wstring(strLoadPath));
 					}
 				}
+			}
+			if (ImGui::CollapsingHeader("Visibility_Selected")) 
+			{
+				for (auto& Flag : m_bLayerVisibilityBakerFlag)
+				{
+					_float Key = Flag.first;
+					ImGui::Checkbox(to_string(Key).c_str(), &Flag.second);
+				}
+
+				if (ImGui::Button("Create_Select_Visibility"))
+				{
+					for (auto Layer : m_pLayers)
+					{
+						if (m_bLayerVisibilityBakerFlag[Layer.first])
+						{
+							On_Create_Visibility_Thread(Layer.second);
+						}
+					}
+				}
+
 			}
 			if (ImGui::CollapsingHeader("LayerRoute"))
 			{
@@ -1405,6 +1415,7 @@ void CWindow_Tile::Load_AllLayer(string strKey)
 			//pLayer->Set_DebugName(CFunctor::To_Wstring(strFileName));
 
 			m_pLayers.emplace(pLayer->Get_MinHeight(), pLayer);
+			m_bLayerVisibilityBakerFlag.emplace(pLayer->Get_MinHeight(), false);
 		}
 	}
 
@@ -1417,6 +1428,53 @@ void CWindow_Tile::Load_AllLayer(string strKey)
 		//Layers.second->SetUp_Visibility();
 	}
 }
+
+void CWindow_Tile::On_Create_Visibility(CCellLayer* pCellLayer)
+{
+	if (pCellLayer)
+	{
+		pCellLayer->SetUp_Nodes();
+		pCellLayer->SetUp_Visibility();
+		//Bin\Data\GameSystem\CellData\Map_Paden\Map_Paden_0
+		//
+		string strSavePath = m_CellDataDirectory;
+		string strDebugName = CFunctor::To_String(m_pCurLayer->Get_DebugName());
+		_int iFind = strDebugName.rfind("_");
+		string strFolderName = strDebugName.substr(0, iFind);
+		strSavePath += "/";
+		strSavePath += strFolderName;
+		strSavePath += "/";
+		strSavePath += strDebugName;
+		strSavePath += "/";
+		strSavePath += strDebugName;
+		strSavePath += "_Visibility.bin";
+		pCellLayer->Save_Visiblity(CFunctor::To_Wstring(strSavePath));
+	}
+}
+
+void CWindow_Tile::On_Create_Visibility_Thread(CCellLayer* pCellLayer)
+{
+	if (pCellLayer)
+	{
+		pCellLayer->SetUp_Nodes();
+		pCellLayer->SetUp_Visibility_UseThread();
+		//Bin\Data\GameSystem\CellData\Map_Paden\Map_Paden_0
+		//
+		string strSavePath = m_CellDataDirectory;
+		string strDebugName = CFunctor::To_String(pCellLayer->Get_DebugName());
+		_int iFind = strDebugName.rfind("_");
+		string strFolderName = strDebugName.substr(0, iFind);
+		strSavePath += "/";
+		strSavePath += strFolderName;
+		strSavePath += "/";
+		strSavePath += strDebugName;
+		strSavePath += "/";
+		strSavePath += strDebugName;
+		strSavePath += "_Visibility.bin";
+		pCellLayer->Save_Visiblity(CFunctor::To_Wstring(strSavePath));
+	}
+}
+
 
 void CWindow_Tile::On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos)
 {

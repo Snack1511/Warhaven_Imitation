@@ -218,6 +218,7 @@
     <ClCompile Include="..\private\CShader_Manager.cpp" />
     <ClCompile Include="..\private\CTarget_Manager.cpp" />
     <ClCompile Include="..\Private\CTerrain_Renderer.cpp" />
+    <ClCompile Include="..\Private\CThread_Manager.cpp" />
     <ClCompile Include="..\private\CTile.cpp" />
     <ClCompile Include="..\private\CTileLayer.cpp" />
     <ClCompile Include="..\private\CTile_Manager.cpp" />
@@ -301,6 +302,7 @@
     <ClInclude Include="..\public\CShader_Manager.h" />
     <ClInclude Include="..\public\CTarget_Manager.h" />
     <ClInclude Include="..\Public\CTerrain_Renderer.h" />
+    <ClInclude Include="..\Public\CThread_Manager.h" />
     <ClInclude Include="..\public\CTile.h" />
     <ClInclude Include="..\public\CTileLayer.h" />
     <ClInclude Include="..\public\CTile_Manager.h" />

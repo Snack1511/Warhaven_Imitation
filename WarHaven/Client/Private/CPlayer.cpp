@@ -326,43 +326,45 @@ HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
 
 HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 {
-	if (eClassType >= CLASS_END)
-		return E_FAIL;
-
-	if (eClassType >= CT_DEFAULT_END)
-		m_bIsHero = true;
-
-
-	m_ePrevClass = m_eCurrentClass;
-
-	m_eCurrentClass = eClassType;
-
-	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
-	_float4	vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
-
-
-	if (m_pCurrentUnit)
+	CUnit* pUnit = m_pAllUnitClass[eClassType];
+	if (nullptr != pUnit)
 	{
-		DISABLE_GAMEOBJECT(m_pCurrentUnit);
+		if (eClassType >= CLASS_END)
+			return E_FAIL;
+
+		if (eClassType >= CT_DEFAULT_END)
+			m_bIsHero = true;
+
+
+		m_ePrevClass = m_eCurrentClass;
+
+		m_eCurrentClass = eClassType;
+
+		_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+		_float4	vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
+
+
+		if (m_pCurrentUnit)
+		{
+			DISABLE_GAMEOBJECT(m_pCurrentUnit);
+		}
+
+		if (m_eCurrentClass >= FIONA)
+		{
+			m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
+		}
+
+		ENABLE_GAMEOBJECT(pUnit);
+
+		m_pFollowCam->Set_FollowTarget(pUnit);
+		Set_Postion(vPos);
+		pUnit->Get_Transform()->Set_Look(vLook);
+		pUnit->Get_Transform()->Make_WorldMatrix();
+
+
+		pUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
+		m_pCurrentUnit = pUnit;
 	}
-
-	if (m_eCurrentClass >= FIONA)
-	{
-		m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
-	}
-
-	m_pCurrentUnit = m_pAllUnitClass[eClassType];
-	ENABLE_GAMEOBJECT(m_pCurrentUnit);
-
-	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
-	Set_Postion(vPos);
-	m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
-	m_pCurrentUnit->Get_Transform()->Make_WorldMatrix();
-
-
-	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
-
-
 	if (m_bIsMainPlayer)
 	{
 		GAMEINSTANCE->Stop_GrayScale();
@@ -1304,6 +1306,7 @@ void CPlayer::Make_BestRoute(_float4 vPosition)
 			Get_WorldPos(), vPosition);
 
 	m_CurNodeList = m_pCurrentUnit->Get_NaviCom()->m_DebugRouteNode;
+	
 }
 
 void CPlayer::On_AbleHero()

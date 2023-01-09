@@ -78,6 +78,7 @@ private:
 	_bool m_bSelectNeighbor = false;
 
 	map<_float, CCellLayer*> m_pLayers;
+	map<_float, _bool> m_bLayerVisibilityBakerFlag;
 	CCellLayer* m_pCurLayer = nullptr;
 	_int m_iCellAttribute = 1;
 	_uint m_iAttrubuteIndex = 0;
@@ -114,5 +115,8 @@ private:
 	void		Load_All(string strKey);
 	void		Load_AllLayer(string strKey);
 
+private:
+	void On_Create_Visibility(CCellLayer* pCellLayer);
+	void On_Create_Visibility_Thread(CCellLayer* pCellLayer);
 };
 END

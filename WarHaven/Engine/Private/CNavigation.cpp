@@ -355,10 +355,10 @@ return GoalList;
 list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd)
 {
 	m_DebugRouteNode.clear();
-	list<pair<_float4, CCellLayer*>>GoalList = Get_Goals(Layers, vStart, vEnd);
+	_float4 vStartPos = vStart;
+	list<pair<_float4, CCellLayer*>>GoalList = Get_Goals(Layers, vStartPos, vEnd);
 	CCellLayer::CellList Routes;
 	m_pStartNode->Set_NodePosition(vStart);
-	_float4 vStartPos = vStart;
 	
 	for (auto value : GoalList)
 	{
