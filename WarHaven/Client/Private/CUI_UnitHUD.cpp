@@ -235,6 +235,9 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 
 void CUI_UnitHUD::Enable_RevivalUI()
 {
+	if (!this->Is_Valid())
+		return;
+
 	CUI_Revive* pRevivalUI = static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive]);
 
 	pRevivalUI->Set_ReviveUnitTransform(m_pOwner->Get_Transform());
