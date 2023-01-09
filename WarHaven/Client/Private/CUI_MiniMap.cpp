@@ -400,6 +400,30 @@ void CUI_MiniMap::Init_MiniMapPoint()
 		break;
 
 	case Client::LEVEL_HWARA:
+
+		for (int i = 0; i < MP_End; ++i)
+		{
+			for (int j = 0; j < Point_End; ++j)
+			{
+				m_pArrMiniMapPoint[j][i]->Set_PosX(-496);
+
+				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Outline], CTexture)->Set_CurTextureIndex(1);
+				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Gauge], CTexture)->Set_CurTextureIndex(1);
+				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Text], CTexture)->Set_CurTextureIndex(j);
+			}
+
+			if (i == MP_Text)
+			{
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
+				continue;
+			}
+
+			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
+			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
+
+			m_pArrMiniMapPoint[Point_C][i]->SetActive(false);
+		}
 		break;
 	}
 }
