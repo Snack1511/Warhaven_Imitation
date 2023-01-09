@@ -930,7 +930,6 @@ void CUI_Oper::Create_OperBG()
 				break;
 
 			case Client::LEVEL_HWARA:
-				m_pOperBG[i]->Set_PosY(205.f);
 				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapHwara.dds"));
 				break;
 			}

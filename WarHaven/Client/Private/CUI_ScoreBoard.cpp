@@ -372,7 +372,7 @@ void CUI_ScoreBoard::Init_ScoreMiniMap()
 		break;
 
 	case Client::LEVEL_HWARA:
-		m_pScoreMiniMap[Map_Map]->Set_Texture(TEXT(""));
+		m_pScoreMiniMap[Map_Map]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapHwara.dds"));
 		break;
 	}
 

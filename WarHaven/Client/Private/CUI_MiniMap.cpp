@@ -338,6 +338,9 @@ void CUI_MiniMap::Init_MiniMap()
 
 		break;
 	case Client::LEVEL_HWARA:
+		m_pMiniMap->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/MiniMap/T_MinimapDragonTempleConvoyBlack.dds"));
+		m_pMiniMap->Set_Pos(-500.f, 250.f);
+		m_pMiniMap->Set_Scale(250.f);
 		break;
 	}
 }
