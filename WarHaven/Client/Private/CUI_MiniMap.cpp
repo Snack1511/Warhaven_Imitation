@@ -201,12 +201,33 @@ void CUI_MiniMap::My_LateTick()
 {
 	__super::My_LateTick();
 
-	for (int i = 0; i < 8; ++i)
+	switch (m_eLoadLevel)
 	{
-		_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
-		vPos.x += m_fIconOffsetX;
-		vPos.z += m_fIconOffsetY;
-		m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+	case Client::LEVEL_PADEN:
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
+			vPos.x += m_fIconOffsetX;
+			vPos.z += m_fIconOffsetY;
+			m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+		}
+	}
+	break;
+	case Client::LEVEL_HWARA:
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
+			vPos.x += 500.f;
+			vPos.z += 240.f;
+			m_pPlayerIcon[i]->Set_Pos(-vPos.x, vPos.z);
+
+			cout << m_pPlayerIcon[0]->Get_Pos().x << ", ";
+			cout << m_pPlayerIcon[0]->Get_Pos().y << endl;
+		}
+	}
+	break;
 	}
 }
 
