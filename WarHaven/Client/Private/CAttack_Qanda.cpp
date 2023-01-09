@@ -206,6 +206,7 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		{
 			m_fTimeAcc += fDT(0);
 
+			// 첫번째
 			if (m_fTimeAcc > m_fMaxTime / 3.f)
 			{
 				if (m_bCharge)
@@ -221,10 +222,11 @@ STATE_TYPE CAttack_Qanda::Tick(CUnit* pOwner, CAnimator* pAnimator)
 				}
 				pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP1;
 			}
-
+			// 두번째
 			else if (m_fTimeAcc > m_fMaxTime / 1.5f)
 				pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP2;
 		}
+		// 세번째
 		else
 			pOwner->Get_Status().eChargeType = CUnit::UNIT_CHARGESTEP3;
 

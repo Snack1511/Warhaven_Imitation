@@ -241,7 +241,7 @@ void CUI_Crosshair::Set_ArrowUI()
 		return;
 	}
 
-	for (int i = 0; i < AU_End; ++i)		
+	for (int i = 0; i < AU_End; ++i)
 	{
 		for (int j = 0; j < m_iArrowIndex; ++j)
 		{
@@ -266,7 +266,7 @@ void CUI_Crosshair::Charge_Arrow()
 	if (m_iClassIndex != ARCHER && m_iClassIndex != QANDA)
 		return;
 
-	_float fChargeWaitTime = 0.3f;
+	_float fChargeWaitTime = m_iClassIndex == QANDA ? 0.75f : 0.3f;
 	_float fRotateTime = fChargeWaitTime / (_float)m_iArrowIndex;
 	_float fScaleTime = 0.1f;
 	_float fAngle = 360.f / (_float)m_iArrowIndex;
