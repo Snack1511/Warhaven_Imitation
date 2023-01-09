@@ -1145,7 +1145,6 @@ void CGameSystem::On_StartGame()
 		if (!elem.second->m_bIsMainPlayer)
 			elem.second->Choose_Character();
 
-
 		/* 자기 진영에서 포지션 가져오기 */
 		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
 		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
