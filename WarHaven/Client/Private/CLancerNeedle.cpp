@@ -54,7 +54,7 @@ void	CLancerNeedle::Needle_CollisionEnter(CGameObject* pOtherObj, const _uint& e
 
 	if (pOtherUnit->Get_Status().fHP >= 0.f)
 	{
-		m_pStinedUnit = pOtherUnit;
+		m_pStinedUnit.push_back(pOtherUnit);
 	}
 
 
@@ -361,13 +361,8 @@ void CLancerNeedle::My_LateTick()
 {
 	__super::My_LateTick();
 
-	if (m_pStinedUnit)
-	{
-		_float4 vPos = m_pTransform->Get_World(WORLD_POS);
-		vPos.y -= 0.5f;
-
-		m_pStinedUnit->Get_Transform()->Set_World(WORLD_POS, vPos);
-	}
+	_float4x4		matFinal;
+	matFinal.Identity();
 
 	switch (m_eNeedleState)
 	{
@@ -436,7 +431,7 @@ void CLancerNeedle::My_LateTick()
 			
 
 			/* 로컬행렬(크자이) * 부모행렬 = 최종행렬 */
-			_float4x4		matFinal = matLocal * matBone;// *matOffset;
+			matFinal = matLocal * matBone;// *matOffset;
 
 			//_float4x4		mat
 			m_pTransform->Get_Transform().matMyWorld = matFinal;
@@ -495,6 +490,44 @@ void CLancerNeedle::My_LateTick()
 		break;
 	}
 
+	for (auto& elem : m_pStinedUnit)
+	{
+		if (!elem)
+			continue;
+
+		if (!elem->Is_Valid())
+			continue;
+
+		_float4 vStartPos = m_vStartPos;
+		vStartPos.y -= 20.f;
+
+		_float4x4 matLocal;
+		matLocal.Identity();
+
+		_float4 vNewPos = CEasing_Utillity::QuadIn(vStartPos, m_vTargetPos, m_fTotalTime, m_fTotalTime);
+		memcpy(matLocal.m[3], &vNewPos, sizeof(_float4));
+
+		CHierarchyNode* pNode = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_Head");//("0B_Head");
+
+		_float4x4		matBone = pNode->Get_BoneMatrix();
+
+		CTransform* pOtherTransform = elem->Get_Transform();
+		matBone = matLocal * matBone;
+
+		_float4 vRight = m_pTransform->Get_World(WORLD_RIGHT);
+		_float4 vLook = m_pTransform->Get_World(WORLD_LOOK);
+
+
+		pOtherTransform->Get_Transform().matMyWorld = matBone;
+		CUtility_Transform::Rotation(pOtherTransform, _float4(0.f, 1.f, 0.f, 0.f), 270.f);
+		
+		_float4 vOtherPos = m_pTransform->Get_World(WORLD_POS);
+		vOtherPos.y -= 0.55f;
+		pOtherTransform->Set_World(WORLD_POS, vOtherPos);
+		pOtherTransform->Make_WorldMatrix();
+
+
+	}
 
 }
 
@@ -512,8 +545,22 @@ void CLancerNeedle::OnDisable()
 	__super::OnDisable();
 	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 	m_vScale = _float4(FLT_MIN, FLT_MIN, FLT_MIN);
-	m_pStinedUnit = nullptr;
+	
 
+	for (auto& elem : m_pStinedUnit)
+	{
+		if (elem)
+			continue;
+
+		if (!elem->Is_Valid())
+			continue;
+
+		(elem)->On_Die();
+
+	}
+
+	m_pStinedUnit.clear();
+	
 }
 
 void CLancerNeedle::Chase_OwnerBoneMatrix()

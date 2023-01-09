@@ -59,7 +59,7 @@ protected:
 	CUnit*			m_pOwnerUnit = nullptr;
 	_uint			m_iNeedleIndex = 0;
 
-	CUnit* m_pStinedUnit = nullptr; // Âñ¸° À¯´Ö
+	list<CUnit*> m_pStinedUnit; // Âñ¸° À¯´Ö
 
 protected:
 	virtual void My_Tick() override;
