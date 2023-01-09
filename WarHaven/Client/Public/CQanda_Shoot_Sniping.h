@@ -32,6 +32,8 @@ private:
 
 	virtual void		On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence);
 
+private:
+	void Make_Meteo(CUnit* pOwner);
 
 private:
 	list<CGameObject*>	m_SnipingTarget;

@@ -551,13 +551,9 @@ void CUnit_Priest::OnDisable()
 
 void CUnit_Priest::My_Tick()
 {
-
-
-	
-
 	__super::My_Tick();
-	__super::Check_NearObject_IsInFrustum(&m_pNearCureObject);
 
+	__super::Check_NearObject_IsInFrustum(&m_pNearCureObject);
 }
 void CUnit_Priest::My_LateTick()
 {

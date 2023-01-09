@@ -96,6 +96,7 @@ protected:
 protected:
 	void SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
 		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount);
+	void Turn_Trail(_bool bOnOff);
 	HRESULT	SetUp_Projectile(wstring wstrModelFilePath);
 	HRESULT	SetUp_Colliders(COL_GROUP_CLIENT eColType); 
 	HRESULT	SetUp_Collider(COL_GROUP_CLIENT eColType, _float fRadian);
@@ -114,6 +115,15 @@ private:
 	_bool	m_bCloned = false;
 	PxConvexMesh* m_pConvexMesh = nullptr;
 	PxRigidDynamic* m_pActor = nullptr;
+
+private:
+	_float m_fTimeAcc = 0.f;
+	_float m_fRandSpeed = 0.f;
+	_float m_fRandFrequency = 0.f;
+	_float m_fRandPower = 0.f;
+	_float4 m_vTargetPos;
+	_float4 m_vRight;
+	_float4 m_vLook;
 
 private:
 	virtual void Set_ColliderType(eTEAM_TYPE eTeamType);

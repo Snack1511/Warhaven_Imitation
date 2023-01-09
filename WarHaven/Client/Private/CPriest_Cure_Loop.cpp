@@ -224,7 +224,6 @@ void CPriest_Cure_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
 	static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
-	static_cast<CUnit*>(m_pTargetObject)->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed;
 	pAnimator->Stop_ActionAnim();
@@ -233,31 +232,18 @@ void CPriest_Cure_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CPriest_Cure_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	m_pPreUnit = m_pTargetUnit;
 	m_pTargetUnit = static_cast<CUnit*>(pOwner->Get_CureObject());
-
-	if (m_pPreUnit)
-	{
-		m_pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
-		m_pPreUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
-
-		cout << CFunctor::To_String(m_pTargetUnit->Get_OwnerPlayer()->Get_PlayerName()) << endl;
-		cout << CFunctor::To_String(m_pPreUnit->Get_OwnerPlayer()->Get_PlayerName()) << endl;
-	}
-
 
 	if (!m_pTargetUnit)
 		return STATE_CURE_END_PRIEST;
 
 	if (pOwner->Get_SameNearObejct())
 	{
-		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);
-		m_pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
+		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(true);	
 	}
 	else
 	{
 		static_cast<CUnit_Priest*>(pOwner)->TurnOn_CureEffect(false);
-		m_pTargetUnit->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 	}
 
 

@@ -17,6 +17,7 @@
 #include "CTrailEffect.h"
 
 #include "CTrailBuffer.h"
+#include "Easing_Utillity.h"
 
 CProjectile::CProjectile()
 {
@@ -106,7 +107,6 @@ void CProjectile::Projectile_CollisionEnter(CGameObject* pOtherObj, const _uint&
 		else if (eColType == COL_BLUEFLYATTACKGUARDBREAK)
 			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
 
-		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Hit", vHitPos);
 	}
 	else
 	{
@@ -153,8 +153,8 @@ void CProjectile::Reset(CGameObject* pGameObject)
 
 
 	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
-		m_pCollider->Set_ColIndex(COL_REDATTACK);
-		//m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		m_pCollider->Set_ColIndex(COL_BLUEATTACK);
+		//m_pCollider->Set_ColIndex(COL_REDATTACK);
 	else
 	{
 		Set_ColliderType(m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType());
@@ -264,6 +264,9 @@ void CProjectile::On_ShootProjectile()
 
 void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 {
+	_float4x4 matOwner;
+	_float4 vOffset;
+
 	if (eNextPhase >= eEND)
 		return;
 
@@ -282,14 +285,32 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		break;
 
 	case Client::CProjectile::eRANDOM:
-		m_vRandLook = _float4(frandom(-0.05f, 0.05f), frandom(0.05f, 0.2f), frandom(0.05f, 0.3f));
-		m_vRandLook *= fDT(0) * m_fMaxSpeed * 2.f;
-		m_pTransform->Set_World(WORLD_POS, m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS));
-		m_fRandomPhaseMaxTime = frandom(0.3f, 0.7f);
 		m_pCurStickBone = nullptr;
+		//m_vRandLook = _float4(frandom(-0.05f, 0.05f), frandom(0.05f, 0.2f), frandom(0.05f, 0.3f));
+		//m_vRandLook *= fDT(0) * m_fMaxSpeed * 2.f;
+		////m_pTransform->Set_World(WORLD_POS, m_pOwnerUnit->Get_Transform()->Get_World(WORLD_POS));
+		//m_fRandomPhaseMaxTime = frandom(0.3f, 0.7f);
+
+		matOwner = m_pOwnerUnit->Get_Transform()->Get_WorldMatrix();
+		vOffset = _float4(0.f, 1.5f, 0.f);
+
+		vOffset = vOffset.MultiplyCoord(matOwner);
+		m_pTransform->Set_World(WORLD_POS, vOffset);
+
+
+		m_vTargetPos = _float4(0.f, 15.f, 2.f);
+		m_vTargetPos = m_vTargetPos.MultiplyCoord(matOwner);
+
+		m_vRight = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_RIGHT).Normalize();
+
+		m_fRandSpeed = frandom(3.f, 5.f);
+		m_fRandFrequency = random(1.f, 5.f);
+		m_fRandPower = random(3, 6);
+
 		break;
 
 	case Client::CProjectile::eHIT:
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Arrow_Hit", Get_ArrowHeadPos());
 		DISABLE_COMPONENT(m_pCollider);
 		if (m_pTrailEffect)
 		{
@@ -337,6 +358,15 @@ void CProjectile::SetUp_TrailEffect(_float4 vWeaponLow, _float4 vWeaponHigh, _fl
 	m_pTrailEffect2->TurnOn_TrailEffect(false);
 }
 
+void CProjectile::Turn_Trail(_bool bOnOff)
+{
+	if (m_pTrailEffect)
+	{
+		m_pTrailEffect->TurnOn_TrailEffect(bOnOff);
+		m_pTrailEffect2->TurnOn_TrailEffect(bOnOff);
+	}
+}
+
 HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 {
 	_float4x4 matIdentity;
@@ -344,7 +374,7 @@ HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 
 	// 회전각 인자 만들어주기.
 	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, wstrModelFilePath,
-		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(270.f)) * XMMatrixRotationX(XMConvertToRadians(90.0f))
+		XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationZ(XMConvertToRadians(270.f)) * XMMatrixRotationX(XMConvertToRadians(90.0f))
 	);
 
 	if (!pModel)
@@ -437,6 +467,11 @@ void CProjectile::My_Tick()
 
 void CProjectile::My_LateTick()
 {
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	_float4 vLook;
+	_float fY, fX;
+	_float fSpeed;
+	_float fTimeDelta = fDT(0);
 
 	switch (m_eCurPhase)
 	{
@@ -453,94 +488,76 @@ void CProjectile::My_LateTick()
 		break;
 	case Client::CProjectile::eRANDOM:
 	{
-		m_fRandomPhaseCurTime += fDT(0);
+		m_fRandomPhaseCurTime += fTimeDelta;
+		m_fTimeAcc += fTimeDelta;
 
-		//if (m_fRandomPhaseCurTime > m_fRandomPhaseMaxTime)
-		//	On_ChangePhase(eChase);
+		vLook = m_vTargetPos - vPos;
+		vLook.Normalize();
 
-		_float4x4 MyMatrix = m_pTransform->Get_Transform().matMyWorld;
+		m_pTransform->Set_LerpLook(vLook, 0.2f);
+		
+		vPos += vLook * m_fRandSpeed * fTimeDelta;
 
-		MyMatrix.m[3][0] += m_vRandLook.x;
-		MyMatrix.m[3][1] += m_vRandLook.y;
-		MyMatrix.m[3][2] += m_vRandLook.z;
+		fSpeed = m_fRandFrequency * m_fTimeAcc;
 
-		m_pTransform->Get_Transform().matMyWorld = MyMatrix;
+		fX = m_fRandPower * sinf(fSpeed * PI * 0.5f);
 
-		m_pTransform->Make_WorldMatrix();
+		fY = m_fRandPower * cosf(-1.f * fSpeed * PI * 0.5f);
+			
+		vPos.x += fX * vLook.x * fTimeDelta;
+		vPos.y += fX * vLook.y * fTimeDelta;
+		vPos.z += fX * vLook.z * fTimeDelta;
+
+		vPos.x += fY * m_vRight.x * fTimeDelta;
+		vPos.y += fY * m_vRight.y * fTimeDelta;
+		vPos.z += fY * m_vRight.z * fTimeDelta;
+		
+		m_pTransform->Set_World(WORLD_POS, vPos);
+
+		if (1.5f < m_fTimeAcc)
+		{
+			On_ChangePhase(eChase);
+			m_fTimeAcc = 0.f;
+
+			m_fRandSpeed = frandom(3.f, 5.f);
+			m_fRandFrequency = random(-10.f, 10.f);
+			m_fRandPower = random(20, 30);
+		}
+		
 	}
-
 		break;
 	case Client::CProjectile::eChase:
 	{
-
+		m_fLoopTimeAcc += fTimeDelta;
 
 		if (!m_pTargetUnit)
 			assert(0);
 
 		_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
 		vLook.Normalize();
-		vLook *= fDT(0) * m_fMaxSpeed;
 
-		_float4x4 MyMatrix = m_pTransform->Get_Transform().matMyWorld;
+		m_pTransform->Set_LerpLook(vLook, 0.2f);
 
+		m_fRandSpeed = CEasing_Utillity::SinIn(m_fRandSpeed, 20.f, m_fLoopTimeAcc, 1.f);
+		//m_fPower = CEasing_Utillity::SinIn(m_fSpeed, 50.f, m_fLoopTimeAcc, 10.f);
 
-		_float4 vMyLook = m_pTransform->Get_World(WORLD_LOOK);
-		vMyLook.Normalize();
+		vPos += vLook * m_fRandSpeed * fTimeDelta;
 
-		_float h0 = vLook.y - vLook.x;
-		_float h1 = vLook.z - vLook.y;
-		_float A = (vMyLook.z - vMyLook.y) / h1 - (vMyLook.y - vMyLook.x) / h0;
-		_float B = (vMyLook.y - vMyLook.x) / h0;
-		_float C = vMyLook.y;
-		_float D = (A * h1 - B * h0) / (h1 - h0);
-		_float E = B - A;
-		
-		//_float Spline = A * pow(vMyLook.x - vLook.y, 3) + B * pow(vMyLook.y - vLook.y, 2) +
-		//	C * (vMyLook.z - vLook.y) + D * (vMyLook.x - vLook.x) + E * (vMyLook.x - vLook.z);
+		fSpeed = m_fRandFrequency * m_fLoopTimeAcc;
 
-		m_fLoopTimeAcc += fDT(0);
+		fX = m_fRandPower * sinf(fSpeed * PI * 0.5f);
 
-		if (m_fLoopTimeAcc > 0.5f)
-		{
-			MyMatrix.m[3][0] += vLook.x;
-			MyMatrix.m[3][1] += vLook.y;
-			MyMatrix.m[3][2] += vLook.z;
-		}
-		else
-		{
+		fY = m_fRandPower * cosf(-1.f * fSpeed * PI * 0.5f);
 
-			_float SplineX = A * pow(vMyLook.x - vLook.y, 3) + B * pow(vMyLook.x - vLook.y, 2) +
-				C * (vMyLook.x - vLook.y) + D * (vMyLook.x - vLook.x) + E * (vMyLook.x - vLook.z);
+		vPos.x += fX * vLook.x * fTimeDelta;
+		vPos.y += fX * vLook.y * fTimeDelta;
+		vPos.z += fX * vLook.z * fTimeDelta;
 
-			_float SplineZ = A * pow(vMyLook.z - vLook.y, 3) + B * pow(vMyLook.z - vLook.y, 2) +
-				C * (vMyLook.z - vLook.y) + D * (vMyLook.z - vLook.x) + E * (vMyLook.z - vLook.z);
+		vPos.x += fY * m_vRight.x * fTimeDelta;
+		vPos.y += fY * m_vRight.y * fTimeDelta;
+		vPos.z += fY * m_vRight.z * fTimeDelta;
 
-			_float4 vSpeed = _float4(SplineX, fDT(0), SplineZ);
-
-			if (fabs(vMyLook.x - vLook.x) >= 0.2f)
-				MyMatrix.m[3][0] += vLook.x;
-
-			else
-				MyMatrix.m[3][2] += vSpeed.x * fDT(0);
-
-			if (fabs(vMyLook.z - vLook.z) >= 0.2f)
-				MyMatrix.m[3][2] += vLook.z;
-
-			else
-				MyMatrix.m[3][2] += vSpeed.z * fDT(0);
-
-			MyMatrix.m[3][1] += vLook.y;
-
-		}
-
-
-
-
-		m_pTransform->Get_Transform().matMyWorld = MyMatrix;
-
-		m_pTransform->Make_WorldMatrix();
-
-
+		m_pTransform->Set_World(WORLD_POS, vPos);
 	}
 		break;
 

@@ -677,11 +677,14 @@ void CUI_Barracks::Init_SkinInfo()
 
 void CUI_Barracks::Init_Skin()
 {
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; Skin::End; ++i)
 	{
 		CREATE_GAMEOBJECT(m_pSkin[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pSkin[i]);
+	}
 
+	for (int i = 0; i < 3; ++i)
+	{
 		for (int j = 0; j < Skin::End; ++j)
 		{
 			m_pArrSkin[i][j] = m_pSkin[j]->Clone();
@@ -699,6 +702,12 @@ void CUI_Barracks::Init_Skin()
 
 void CUI_Barracks::Init_SkinBtn()
 {
+	for (int j = 0; j < SB_End; ++j)
+	{
+		CREATE_GAMEOBJECT(m_pSkinBtn[j], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSkinBtn[j]);
+	}
+
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < SB_End; ++j)

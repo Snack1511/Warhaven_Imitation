@@ -200,10 +200,10 @@ void CUI_UnitHUD::My_Tick()
 
 		SetActive_UnitHP(true);
 	}
-	else
+	/*else
 	{
 		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->SetActive_HealBlur(false);
-	}
+	}*/
 }
 
 void CUI_UnitHUD::My_LateTick()

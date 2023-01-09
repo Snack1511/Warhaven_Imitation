@@ -124,6 +124,7 @@ HRESULT CCure_Effect::Start()
 
 void CCure_Effect::My_Tick()
 {
+	
 
 	_float4x4 OwnerMatrix = GET_COMPONENT_FROM(m_pOwner, CModel)->Find_HierarchyNode("0B_L_WP1")->Get_BoneMatrix();
 	_float4 vPos = OwnerMatrix.XMLoad().r[3];
@@ -165,6 +166,7 @@ void CCure_Effect::OnEnable()
 	__super::OnEnable();
 
 	m_pOther = static_cast<CUnit*>(m_pOwner)->Get_CureObject();
+
 	if (!m_pOther)
 		return;
 
@@ -174,14 +176,16 @@ void CCure_Effect::OnEnable()
 	if (m_Particle.empty())
 	{
 		m_Particle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cure_Particle", m_pOwner, ZERO_VECTOR);
-		static_cast<CUnit*>(m_pOwner)->Create_Light(m_Particle.back(), _float4(0.f, 0.f, 0.f), 2.f, 0.f, 0.1f, 10.f, 0.1f, RGB(245, 245, 100), false);
+		static_cast<CUnit*>(m_pOwner)->Create_Light(m_Particle.back(), _float4(0.f, 0.f, 0.f), 2.f, 0.f, 0.1f, 100.f, 0.1f, RGB(245, 245, 100), false);
+		static_cast<CUnit*>(m_pOther)->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
 	}
-	
+
 }
 
 void CCure_Effect::OnDisable()
 {
 	__super::OnDisable();
+		
 
 	if (!m_Smoke.empty())
 	{
@@ -199,6 +203,7 @@ void CCure_Effect::OnDisable()
 			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
 		}
 		m_Particle.clear();
+		static_cast<CUnit*>(m_pOther)->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 	}
 
 }
