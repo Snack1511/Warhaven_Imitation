@@ -9,7 +9,7 @@ class CUI_Main : public CUI_Wrapper
 	DECLARE_GAMEOBJECT(CUI_Main);
 
 private:
-	enum MainWindow { MW_Play,/* MW_Barracks,*/ MW_Profile, MW_End };
+	enum MainWindow { MW_Play, MW_Barracks, MW_Profile, MW_End };
 
 private:
 	CUI_Main();
@@ -36,7 +36,7 @@ public:
 	void Set_TopBtnEffectPosX(_float fPosX);
 
 private:
-	enum TopBtn { TB_Play, /*TB_Barracks,*/ TB_Profile, TB_End };
+	enum TopBtn { TB_Play, TB_Barracks, TB_Profile, TB_End };
 	CUI_Object* m_pArrTopBtn[TB_End];
 
 private:

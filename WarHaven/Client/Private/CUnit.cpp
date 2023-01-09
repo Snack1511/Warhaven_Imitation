@@ -1049,8 +1049,7 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 		if (!pPlayer->Is_Valid())
 			continue;
 
-		if (m_bForUseTeam == false)
-			int a = 0;
+		
 
 		// 테스트 레벨이 아니라면
 		if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
@@ -1080,6 +1079,15 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 
 		if (pUnit == this)
 			continue;
+
+		_float fMyLength = (pUnit->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS)).Length();
+
+		_float fMaxDistance = 20.f;
+		if (fMyLength > fMaxDistance)
+			continue;
+
+		if (m_bForUseTeam == false)
+			int a = 0;
 
 		// 절두체에 안들어왔다면
 		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 50.f))

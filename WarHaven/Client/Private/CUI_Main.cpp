@@ -152,17 +152,17 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 	}
 	break;
 
-	/*case MW_Barracks:
+	case MW_Barracks:
 	{
 		m_pArrTopBtn[TB_Barracks]->Set_IsClick(true);
 		m_pArrTopBtn[TB_Barracks]->Set_FontColor(m_vColorWhite);
 
-	//	_float4 vPos = m_pArrTopBtn[TB_Barracks]->Get_Pos();
-	//	m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
+		_float4 vPos = m_pArrTopBtn[TB_Barracks]->Get_Pos();
+		m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
 
 		ENABLE_GAMEOBJECT(m_pTopBtnEffect);
 	}
-	break;*/
+	break;
 	}
 }
 
@@ -198,10 +198,10 @@ void CUI_Main::Create_TopBtn()
 			m_pArrTopBtn[i]->Set_FontText(TEXT("플레이"));
 
 		}
-		//else if (i == TB_Barracks)
-		//{
-		//	m_pArrTopBtn[i]->Set_FontText(TEXT("병영"));
-		//}
+		else if (i == TB_Barracks)
+		{
+			m_pArrTopBtn[i]->Set_FontText(TEXT("병영"));
+		}
 		else if (i == TB_Profile)
 		{
 			m_pArrTopBtn[i]->Set_FontText(TEXT("프로필"));
@@ -270,13 +270,13 @@ void CUI_Main::Create_PlayerNameText()
 void CUI_Main::Create_MainWindow()
 {
 	m_pMainWindow[MW_Play] = CUI_MainPlay::Create();
-	//m_pMainWindow[MW_Barracks] = CUI_Barracks::Create();
+	m_pMainWindow[MW_Barracks] = CUI_Barracks::Create();
 
 	CREATE_GAMEOBJECT(m_pMainWindow[MW_Play], GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pMainWindow[MW_Play]);
 
-	//CREATE_GAMEOBJECT(m_pMainWindow[MW_Barracks], GROUP_UI);
-	//DISABLE_GAMEOBJECT(m_pMainWindow[MW_Barracks]);
+	CREATE_GAMEOBJECT(m_pMainWindow[MW_Barracks], GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pMainWindow[MW_Barracks]);
 }
 
 void CUI_Main::Bind_Btn()
