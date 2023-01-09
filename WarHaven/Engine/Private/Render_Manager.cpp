@@ -799,7 +799,6 @@ void CRender_Manager::Update()
 			m_fDarkScreenAcc -= fDT(0);
 		else
 			m_fDarkScreenAcc = 0.f;
-
 	}
 
 	if (m_bMotionBlur)
