@@ -218,13 +218,10 @@ void CUI_MiniMap::My_LateTick()
 	{
 		for (int i = 0; i < 8; ++i)
 		{
-			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
-			vPos.x += 500.f;
-			vPos.z += 240.f;
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 0.8f;
+			vPos.x += m_fHwaraOffSetX;
+			vPos.z += m_fHwaraOffSetY;
 			m_pPlayerIcon[i]->Set_Pos(-vPos.x, vPos.z);
-
-			cout << m_pPlayerIcon[0]->Get_Pos().x << ", ";
-			cout << m_pPlayerIcon[0]->Get_Pos().y << endl;
 		}
 	}
 	break;

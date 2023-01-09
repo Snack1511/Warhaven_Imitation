@@ -64,6 +64,9 @@ private:
 	_float m_fIconOffsetX = -240.f;
 	_float m_fIconOffsetY = -500.f;
 
+	_float m_fHwaraOffSetX = 500.f;
+	_float m_fHwaraOffSetY = 230.f;
+
 	_bool m_bIsBattle = false;
 
 private:
