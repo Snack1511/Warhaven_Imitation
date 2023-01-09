@@ -41,6 +41,10 @@ HRESULT CUI_Crosshair::Start()
 void CUI_Crosshair::Set_Crosshair(_uint iClass)
 {
 	m_iClassIndex = iClass;
+	if (m_iClassIndex < LANCER)
+	{
+		SetActive_LancerUI(false);
+	}
 
 	switch (m_iClassIndex)
 	{
@@ -55,6 +59,10 @@ void CUI_Crosshair::Set_Crosshair(_uint iClass)
 
 	case ENGINEER:
 		Set_DefaultCrosshair();
+		break;
+
+	case LANCER:
+		SetActive_LancerUI(true);
 		break;
 	}
 
@@ -111,7 +119,8 @@ void CUI_Crosshair::SetActive_LancerUI(_bool value)
 		{
 			for (int j = 0; j < 4; ++j)
 			{
-				DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
+				if (m_pArrLancerUI[i][j]->Is_Valid())
+					DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
 			}
 		}
 	}
@@ -230,7 +239,6 @@ void CUI_Crosshair::Set_ArrowUI()
 	if (m_iClassIndex == SPEAR || m_iClassIndex == ARCHER || m_iClassIndex == QANDA)
 	{
 		m_iArrowIndex = 3;
-
 	}
 	else if (m_iClassIndex == PRIEST || m_iClassIndex == ENGINEER)
 	{
