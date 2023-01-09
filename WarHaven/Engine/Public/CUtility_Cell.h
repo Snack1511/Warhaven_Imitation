@@ -17,6 +17,9 @@ public:
 	static _bool Is_SamePoint(_float2 a, _float2 b);
 	// 선분 uv와 선분 ab가 겹치는가? (단, 겹치는 점이 u 또는 v인 경우는 제외)
 	static bool Is_Cross(_float2 u, _float2 v, _float2 a, _float2 b, _bool bSameCheck = false);
+	static bool Is_NearPoint(_float2 u, _float2 v, _float2 a, _float fRange = 1.f);
+
+	static _float Length(_float2 Point);
 };
 END
 

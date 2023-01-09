@@ -79,7 +79,7 @@
 #include "CAIPersonality.h"
 #include "CBehavior.h"
 #pragma endregion AI 추가용
-
+#include "CDebugObject.h"
 
 
 
@@ -91,6 +91,9 @@ CPlayer::~CPlayer()
 {
 	m_DeadLights.clear();
 	SAFE_DELETE(m_pCurPath);
+#ifdef _DEBUG
+	Clear_DebugObject();
+#endif
 }
 
 CPlayer* CPlayer::Create(CPlayerInfo* pPlayerInfo)
@@ -329,19 +332,22 @@ HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
 
 HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 {
-	if (eClassType >= CLASS_END)
-		return E_FAIL;
+	CUnit* pUnit = m_pAllUnitClass[eClassType];
+	if (nullptr != pUnit)
+	{
+		if (eClassType >= CLASS_END)
+			return E_FAIL;
 
-	if (eClassType >= CT_DEFAULT_END)
-		m_bIsHero = true;
+		if (eClassType >= CT_DEFAULT_END)
+			m_bIsHero = true;
 
 
-	m_ePrevClass = m_eCurrentClass;
+		m_ePrevClass = m_eCurrentClass;
 
-	m_eCurrentClass = eClassType;
+		m_eCurrentClass = eClassType;
 
-	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
-	_float4	vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
+		_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+		_float4	vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
 
 
 	if (m_pCurrentUnit)
@@ -350,23 +356,22 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		DISABLE_GAMEOBJECT(m_pCurrentUnit);
 	}
 
-	if (m_eCurrentClass >= FIONA)
-	{
-		m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
+		if (m_eCurrentClass >= FIONA)
+		{
+			m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
+		}
+
+		ENABLE_GAMEOBJECT(pUnit);
+
+		m_pFollowCam->Set_FollowTarget(pUnit);
+		Set_Postion(vPos);
+		pUnit->Get_Transform()->Set_Look(vLook);
+		pUnit->Get_Transform()->Make_WorldMatrix();
+
+
+		pUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
+		m_pCurrentUnit = pUnit;
 	}
-
-	m_pCurrentUnit = m_pAllUnitClass[eClassType];
-	ENABLE_GAMEOBJECT(m_pCurrentUnit);
-
-	m_pFollowCam->Set_FollowTarget(m_pCurrentUnit);
-	Set_Postion(vPos);
-	m_pCurrentUnit->Get_Transform()->Set_Look(vLook);
-	m_pCurrentUnit->Get_Transform()->Make_WorldMatrix();
-
-
-	m_pCurrentUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
-
-
 	if (m_bIsMainPlayer)
 	{
 		GAMEINSTANCE->Stop_GrayScale();
@@ -1114,6 +1119,9 @@ void CPlayer::Change_NearPath()
 	if (nullptr == pPath)
 		return;
 	Set_NewPath(pPath->Clone());
+
+	Make_BestRoute(m_pCurPath->Get_vecPositions()[0]);
+	
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
@@ -1378,6 +1386,42 @@ void CPlayer::Update_KDA()
 			m_tKdaStat.iKillStreak = 0;
 		}
 	}
+}
+#ifdef _DEBUG
+void CPlayer::Add_DebugObject(_float4 vPosition)
+{
+	PxTransform tTransform;
+	ZeroMemory(&tTransform, sizeof(PxTransform));
+	tTransform.p.x = vPosition.x;
+	tTransform.p.y = vPosition.y;
+	tTransform.p.z = vPosition.z;
+	m_pRouteDebug.push_back(
+		CDebugObject::Create(tTransform)
+	);
+	CREATE_GAMEOBJECT(m_pRouteDebug.back(), GROUP_PHYSX);
+}
+
+void CPlayer::Clear_DebugObject()
+{
+	for (auto& Debug : m_pRouteDebug)
+	{
+		DELETE_GAMEOBJECT(Debug);
+	}
+  	m_pRouteDebug.clear();
+}
+#endif
+void CPlayer::Make_BestRoute(_float4 vPosition)
+{	
+#ifdef _DEBUG
+	Clear_DebugObject();
+#endif
+	m_CurRoute.clear();
+	m_CurRoute = m_pCurrentUnit->Get_NaviCom()->
+		Get_BestRoute(CGameSystem::Get_Instance()->Get_CellLayer(),
+			Get_WorldPos(), vPosition);
+
+	m_CurNodeList = m_pCurrentUnit->Get_NaviCom()->m_DebugRouteNode;
+	
 }
 
 void CPlayer::On_AbleHero()

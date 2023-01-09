@@ -625,6 +625,9 @@ HRESULT CUnit::Initialize_Prototype()
 
 	Add_Component(CPhysics::Create(0));
 
+	CNavigation* pNavigation = CNavigation::Create(CP_AFTER_TRANSFORM, nullptr, nullptr);
+	Add_Component<CNavigation>(pNavigation);
+
 #ifdef PHYSX_ON
 
 	//PhysX캐릭터 : 캐릭터 본체
@@ -646,7 +649,7 @@ HRESULT CUnit::Initialize()
 	m_pModelCom = GET_COMPONENT(CModel);
 	m_pAnimator = GET_COMPONENT(CAnimator);
 	m_pPhysics = GET_COMPONENT(CPhysics);
-
+	m_pNavigation = GET_COMPONENT(CNavigation);
 #ifdef PHYSX_ON
 	m_pPhysXCharacter = GET_COMPONENT(CPhysXCharacter);
 	if (!m_pPhysXCharacter)
@@ -663,6 +666,8 @@ HRESULT CUnit::Initialize()
 	if (!m_pPhysics)
 		return E_FAIL;
 
+	if (!m_pNavigation)
+		return E_FAIL;
 
 	if (FAILED(m_pModelCom->SetUp_AnimModel_LOD()))
 		return E_FAIL;
@@ -1133,6 +1138,11 @@ _float4 CUnit::Get_FollowCamRight()
 	return m_pFollowCam->Get_Transform()->Get_World(WORLD_RIGHT);
 }
 
+
+list<_float4>& CUnit::Get_CurRoute()
+{
+	return m_pOwnerPlayer->Get_CurRoute();
+}
 
 void CUnit::TurnOn_TrailEffect(_bool bOn)
 {

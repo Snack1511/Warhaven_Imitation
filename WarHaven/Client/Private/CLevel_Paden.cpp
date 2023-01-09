@@ -62,13 +62,17 @@ HRESULT CLevel_Paden::SetUp_Prototypes()
 		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
 		// CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
 #else
-		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden")), Ready_Object);
+		CMap_Loader::Load_Data(wstring(TEXT("Map_Paden_TerrainOnly")), Ready_Object);
 
 #endif
+
 
 	m_fLoadingFinish = 0.5f;
 
 	/* GameSystem */
+	if (FAILED(CGameSystem::Get_Instance()->SetUp_CellLayer(wstring(TEXT("Map_Paden")))))
+		return E_FAIL;
+
 	if (FAILED(CGameSystem::Get_Instance()->On_ReadyPaden(m_vecGameObjects)))
 		return E_FAIL;
 

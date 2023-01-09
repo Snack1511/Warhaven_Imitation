@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CGameObject;
+class CCellLayer;
 END
 
 BEGIN(Client)
@@ -149,10 +150,14 @@ private:
 	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();
 	HRESULT					SetUp_DefaultLight_Paden();
+public:
+	HRESULT					SetUp_CellLayer(wstring strFolderName);
+	void					Clear_CellLayer();
+	map<_float, CCellLayer*>& Get_CellLayer() { return m_CellLayer; }
 	HRESULT					SetUp_DefaultLight_Hwara();
 
 private:
-
+	map<_float, CCellLayer*> m_CellLayer;
 
 
 };

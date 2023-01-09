@@ -33,6 +33,8 @@ public:
 	//중복된 자식노드 정리용
 	void Ready_SearchingChild();
 	void Unique_ChildList();
+	void Remove_Child(CNode* pNode);
+	void Clear_ChildList();
 public:
 	CNode* Get_Parent() { return m_pParentNode; }
 	void Set_Parent(CNode* pNode) { m_pParentNode = pNode; }

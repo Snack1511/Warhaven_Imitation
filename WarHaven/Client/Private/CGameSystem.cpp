@@ -35,6 +35,10 @@
 #include "CAIController.h"
 #pragma endregion AI 성향
 
+#pragma region 길찾기
+#include "CCellLayer.h"
+#pragma endregion 길찾기
+
 IMPLEMENT_SINGLETON(CGameSystem);
 
 
@@ -119,6 +123,8 @@ void CGameSystem::Release()
 		m_mapAllPathes[i].clear();
 	}
 
+	Clear_CellLayer();
+
 }
 
 HRESULT CGameSystem::On_ExitLevel()
@@ -132,7 +138,7 @@ HRESULT CGameSystem::On_ExitLevel()
 		SAFE_DELETE(m_pTeamConnector[i]);
 
 	m_mapAllTriggers.clear();
-
+	Clear_CellLayer();
 	return S_OK;
 }
 
@@ -1154,11 +1160,11 @@ void CGameSystem::On_StartGame()
 	/* Default 애덜 */
 #ifdef _DEBUG
 #else
-	for (auto& elem : m_mapAllPlayers)
-	{
-		/* Default가 아니면 건너 뛰기 */
-		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
-			continue;
+	//for (auto& elem : m_mapAllPlayers)
+	//{
+	//	/* Default가 아니면 건너 뛰기 */
+	//	if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
+	//		continue;
 
 		static _uint g_iIndex = 0;
 
@@ -1173,11 +1179,11 @@ void CGameSystem::On_StartGame()
 		/* ai들은 랜덤 선택 함수 호출 */
 		elem.second->Choose_Character();
 
-		/* 자기 진영에서 포지션 가져오기 */
-		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
-		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+	//	/* 자기 진영에서 포지션 가져오기 */
+	//	_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
+	//	elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
 
-	}
+	//}
 
 #endif // _DEBUG
 
@@ -1735,6 +1741,69 @@ HRESULT CGameSystem::SetUp_DefaultLight_Paden()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CGameSystem::SetUp_CellLayer(wstring strFolderName)
+{
+	wstring strPath = L"../Bin/Data/GameSystem/CellData";
+	strPath += L"/";
+	strPath += strFolderName;
+	strPath += L"/";
+
+	for (filesystem::directory_iterator FileIter(strPath);
+		FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		//CellData/Map_Paden/Map_Paden_0
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("/");
+		string strFileName = strFullPath.substr(iFind + 1, strFullPath.length());
+		if (entry.is_directory())
+		{
+			//_int iFindExt = (int)strFileName.rfind(".") + 1;
+			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			//strFileName = strFileName.substr(0, iFindExt);
+
+			CCellLayer* pLayer = CCellLayer::Create(wstrPath, CFunctor::To_Wstring(strFileName));
+			//pLayer->Set_DebugName(CFunctor::To_Wstring(strFileName));
+
+			m_CellLayer.emplace(pLayer->Get_MinHeight(), pLayer);
+		}
+	}
+
+	for (auto& Layers : m_CellLayer)
+	{
+		Layers.second->SetUp_Neighbor(m_CellLayer);
+		//StairCellList따로 설정
+		Layers.second->SetUp_StairList(m_CellLayer);
+
+	}	
+	for (auto& Layers : m_CellLayer)
+	{
+		//위의 CellList기반으로 LayerRoute설정
+		Layers.second->SetUp_LayerRoute(m_CellLayer);
+		//노드 설정
+		Layers.second->SetUp_Nodes();
+		//가시성 설정
+		//Layers.second->SetUp_Visibility();
+		Layers.second->Load_Visibility();
+
+	}
+
+	return S_OK;
+}
+
+void CGameSystem::Clear_CellLayer()
+{
+	for (auto& Layers : m_CellLayer)
+	{
+		SAFE_DELETE(Layers.second);
+	}
+	m_CellLayer.clear();
 }
 
 HRESULT CGameSystem::SetUp_DefaultLight_Hwara()

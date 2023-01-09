@@ -13,6 +13,7 @@ class CShader;
 class CBoneCollider;
 class CHierarchyNode;
 class CPhysXCharacter;
+class CNavigation;
 END
 
 BEGIN(Client)
@@ -184,6 +185,7 @@ public:
 
 	STATE_TYPE	Get_CurState() { return m_eCurState; }
 	CState* Get_CurStateP() { return m_pCurState; }
+	CNavigation* Get_NaviCom() { return m_pNavigation; }
 
 	const STATE_TYPE& Get_DefaultState() { return m_eDefaultState; }
 	const STATE_TYPE& Get_SprintEndState() { return m_eSprintEndState; }
@@ -207,7 +209,8 @@ public:
 	_float4	Get_FollowCamRight();
 
 	_uint& Get_PreAnimIndex() { return m_iPreAnimIndex; } // 상하체 애니메이션 튀는것을 위한 함수
-
+public:
+	list<_float4>& Get_CurRoute();
 public:
 	void TurnOn_TrailEffect(_bool bOn);
 
@@ -359,6 +362,7 @@ protected:
 	CModel* m_pModelCom = nullptr;
 	CAnimator* m_pAnimator = nullptr;
 	CPhysics* m_pPhysics = nullptr;
+	CNavigation* m_pNavigation = nullptr;
 
 	UNIT_STATUS		m_tUnitStatus;
 

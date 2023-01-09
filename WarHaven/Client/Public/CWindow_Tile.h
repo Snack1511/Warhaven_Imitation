@@ -63,7 +63,8 @@ private:
 private:	/*세이브 로드 관련 변수..*/
 	//D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Bin\Data\MapData\TileData
 	string m_DataDirectory = "../Bin/Data/MapData/TileData";
-	string m_CellDataDirectory = "../Bin/Data/MapData/CellData";
+	string m_CellDataDirectory = "../Bin/Data/GameSystem/CellData";
+	string m_TempCellDataDirectory = "../Bin/Data/MapData/CellData";
 	vector<tuple<string, string>> m_FileDatas;
 	_uint m_iFileDataIndex = 0;
 	
@@ -77,17 +78,25 @@ private:
 	_bool m_bSelectNeighbor = false;
 
 	map<_float, CCellLayer*> m_pLayers;
+	map<_float, _bool> m_bLayerVisibilityBakerFlag;
 	CCellLayer* m_pCurLayer = nullptr;
 	_int m_iCellAttribute = 1;
 	_uint m_iAttrubuteIndex = 0;
-	static pair<const char*, _int> m_iAttributeArray[3];
+	_float m_fBrushSize = 1.f;
+	static pair<const char*, _int> m_iAttributeArray[5];
 private:
 	void		On_Picking(_uint iLayerIndex, _float4 vPickedPos);
 	void		On_Pick_Neighbor(_uint iLayerIndex, _float4 vPickedPos);
 	void		On_CellPicking(_uint iLayerIndex, _float4 vPickedPos);
-	void		On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos);
+	void		On_CellSetAttribute(_uint iLayerIndex, _float4 vPickedPos, _float fRange);
 	void		On_CellPick_Neighbor(_uint iLayerIndex, _float4 vPickedPos);
 	
+	void		On_Replace_PickedAttribute(_float4 vPickedPos);
+
+	void		Create_DebugObject();
+	void		Clear_DebugObject();
+	list<CDebugObject*> m_listDebug;
+	list<CDebugObject*> m_listDebugLine;
 private:
 	void		On_ShootRay();
 	HRESULT		ShootRay_FirstFloor();
@@ -106,5 +115,8 @@ private:
 	void		Load_All(string strKey);
 	void		Load_AllLayer(string strKey);
 
+private:
+	void On_Create_Visibility(CCellLayer* pCellLayer);
+	void On_Create_Visibility_Thread(CCellLayer* pCellLayer);
 };
 END

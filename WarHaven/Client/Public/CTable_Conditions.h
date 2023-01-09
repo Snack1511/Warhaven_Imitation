@@ -69,10 +69,12 @@ private:
     void  Select_NearAllies(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_NearTrigger(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     void  Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
+    void  Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     //void  Select_LowHealthEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
 private:
     void Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController);
     void Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController);
+    void Callback_Tick_MakeRoute(CPlayer* pPlayer, CAIController* pAIController);
 private:
     _bool RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter);
 private:

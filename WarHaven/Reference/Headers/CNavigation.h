@@ -52,7 +52,7 @@ public:
 
 public:
 	void		Set_StartCell(CCell* pStartCell) { m_pCurCell = pStartCell; }
-	CCell* Get_CurCell() { return m_pCurCell; }
+	//CCell* Get_CurCell() { return m_pCurCell; }
 
 	void		Set_Epsilon(_float fEpsilon) { m_fEpsilon = fEpsilon; }
 	void		Set_ExamArena(_bool bEnable, _float4 vCenter) {
@@ -73,6 +73,7 @@ public:
 	//시작 점과 끝 점을 기반으로 각 레이어에서의 도착점 생성
 	list<pair<_float4, CCellLayer*>> Get_Goals(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
 	list<_float4> Get_BestRoute(map<_float, CCellLayer*>& Layers, _float4 vStart, _float4 vEnd);
+	CCell* Get_CurCell(_float4 vPosition, map<_float, CCellLayer*>& Layers);
 public:
 	//CELL_TYPE	isMove(_vector vPosition, _float4* pOutPos);
 	_float4		Enter_Wall();
@@ -119,7 +120,8 @@ protected:
 	_float4		Get_NewPosFromCell(CCell* pCell, _vector vPos);
 	_float4		Get_NewDirFromCellLine(CCell* pCell, _uint eOutLine, _vector vPos, _float4 _vDir, _float _fSpeed);
 	_float4		Get_NewPosFromWall(CCell* pCell, _float4 vRayPos, _float4 vRayDir);
-
+public:
+	list<_float4> m_DebugRouteNode;
 };
 
 

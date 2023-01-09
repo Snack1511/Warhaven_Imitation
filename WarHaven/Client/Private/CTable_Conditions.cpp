@@ -88,6 +88,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
     Add_WhatCondition(wstring(L"Select_NearEnemy"), Select_NearEnemy);
     Add_WhatCondition(wstring(L"Select_NearAllies"), Select_NearAllies);
     Add_WhatCondition(wstring(L"Select_NearRouteEnemy"), Select_NearEnemy);
+    Add_WhatCondition(wstring(L"Select_MainPlayer"), Select_MainPlayer);
     return S_OK;
 }
 
@@ -102,6 +103,7 @@ HRESULT CTable_Conditions::SetUp_BehaviorTick()
     Add_BehaviorTick(wstring(L"EmptyBehaviorTick"), EmptyBehaviorTick);
     Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"), Callback_Tick_UpdatePatrol);
     Add_BehaviorTick(wstring(L"Callback_Tick_Check_NaviTime"), Callback_Tick_Check_NaviTime);
+    Add_BehaviorTick(wstring(L"Callback_Tick_MakeRoute"), Callback_Tick_MakeRoute);
 
     return S_OK;
 }
@@ -532,6 +534,14 @@ void CTable_Conditions::Select_NearRouteEnemy(_bool& OutCondition, BEHAVIOR_DESC
     }
 }
 
+void CTable_Conditions::Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
+{
+    OutCondition = false;
+
+    OutCondition = true;
+    OutDesc->pAlliesPlayer = CUser::Get_Instance()->Get_MainPlayerInfo()->Get_Player();
+}
+
 //패트롤 틱..
 void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController)
 {
@@ -566,35 +576,57 @@ void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIControll
 //네비의 틱..
 void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController)
 {
-    CAIPersonality* pPersonality = pAIController->Get_Personality();
-    CPath* pPath = pPlayer->Get_CurPath();
+    //CAIPersonality* pPersonality = pAIController->Get_Personality();
+    //CPath* pPath = pPlayer->Get_CurPath();
 
-    if (nullptr == pPath)
-        return;
+    //if (nullptr == pPath)
+    //    return;
 
-    if (nullptr == pPersonality)
-        return;
+    //if (nullptr == pPersonality)
+    //    return;
 
-    pPersonality->Update_RemainTime(eBehaviorType::ePathNavigation);
+    //pPersonality->Update_RemainTime(eBehaviorType::ePathNavigation);
 
-    if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePathNavigation))
-    {
-        //누적량 체크
-        if (pPersonality->Check_LessMoveAcc(eBehaviorType::ePathNavigation, pPath->Get_MoveAcc()))
-        {
-            _float fLength = fabsf(pPlayer->Get_WorldPos().y - pPath->Get_CurY());
+    //if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePathNavigation))
+    //{
+    //    //누적량 체크
+    //    if (pPersonality->Check_LessMoveAcc(eBehaviorType::ePathNavigation, pPath->Get_MoveAcc()))
+    //    {
+    //        _float fLength = fabsf(pPlayer->Get_WorldPos().y - pPath->Get_CurY());
 
-            if (fLength > 1.5f)
-                pPath->Set_Arrived();
+    //        if (fLength > 1.5f)
+    //            pPath->Set_Arrived();
 
 
-        }
+    //    }
 
-        pPath->Init_MoveAcc();
-        pPersonality->Init_RemainTime(eBehaviorType::ePathNavigation);
-    }
+    //    pPath->Init_MoveAcc();
+    //    pPersonality->Init_RemainTime(eBehaviorType::ePathNavigation);
+    //}
 
 }
+
+void CTable_Conditions::Callback_Tick_MakeRoute(CPlayer* pPlayer, CAIController* pAIController)
+{
+    if (!pPlayer->Get_CurRoute().empty())
+        return;
+
+    eBehaviorType eType = pAIController->Get_CurBehavior()->Get_BehaviorType();
+    _float4 vPosition;
+    switch (eType)
+    {
+        case eBehaviorType::ePathNavigation:
+            vPosition = pPlayer->Get_CurPath()->Get_vecPositions()[0];
+            break;
+        case eBehaviorType::eAttack:
+        case eBehaviorType::eResurrect:
+        case eBehaviorType::eFollow:
+            vPosition = pPlayer->Get_TargetPlayer()->Get_WorldPos();
+    }
+
+    pPlayer->Make_BestRoute(vPosition);
+}
+
 
 _bool CTable_Conditions::RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter)
 {

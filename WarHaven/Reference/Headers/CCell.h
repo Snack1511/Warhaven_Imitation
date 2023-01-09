@@ -1,11 +1,12 @@
 #pragma once
 #include "Engine_Defines.h"
 
-#define CELL_BLOCKED	0x01// 0000 0000 0000 0001
+#define CELL_GROUND		0x01// 0000 0000 0000 0001
 #define CELL_WALL		0x02// 0000 0000 0000 0010
-#define CELL_GROUND		0x04// 0000 0000 0000 0100
-#define CELL_GRASS		0x08// 0000 0000 0000 1000
-#define CELL_STAIR		0x16// 0000 0000 0001 0000
+#define CELL_GRASS		0x04// 0000 0000 0000 0100
+#define CELL_STAIR		0x08// 0000 0000 0000 1000
+#define CELL_BLOCKED	0x10// 0000 0000 0000 0000
+
 
 BEGIN(Engine)
 
@@ -87,35 +88,37 @@ public:
 
 	_bool Check_Attribute(_uint iAttribute);
 	_byte Get_Attribute() { return m_bCellFlag; }
-	void Set_LayerKey(_float Height) { m_fLayerKey = Height; };
+	void Set_LayerKey(_float Height);
 public:
 	// CComponent을(를) 통해 상속됨
 	HRESULT Initialize(const _float3* pPoints, _int iIndex, _float fMinHeight);
 	void	Make_Matrix();
 	_bool Compare_Points(_vector vSourPoint, _vector vDestPoint);
 	_bool isIn(_vector vPosition, CCell** pOutNeighborCell, LINE* pOutLine);
-	_bool Check_CrossLines(_float4 LineStart, _float4 LineEnd);
+
+	_bool Check_InCell(_float4 vPosition);
+	_bool Check_CrossLines(_float4 LineStart, _float4 LineEnd, _bool bCheckSamePoint = false);
 
 #ifdef _DEBUG
-public:
-	void DebugRendering();
-private:
-	HRESULT Create_VertexBuffer();
-	HRESULT Create_IndexBuffer();
-	HRESULT SetUp_Vertices();
-private:
-	D3D11_BUFFER_DESC				m_BufferDesc;
-	D3D11_SUBRESOURCE_DATA			m_SubResourceData;
-	ComPtr<ID3D11Buffer> m_pVB = nullptr;
-	ComPtr<ID3D11Buffer> m_pIB = nullptr;
-	_uint							m_iStride = 0;
-	_uint							m_iNumVertices = 0;
-	_uint							m_iNumPrimitive = 0;
-	_uint							m_iIndicesStride = 0;
-	_uint							m_iNumIndices = 0;
-	_uint							m_iNumVertexBuffers = 0;
-	DXGI_FORMAT						m_eIndexFormat;
-	D3D11_PRIMITIVE_TOPOLOGY		m_eToplogy;
+//public:
+//	void DebugRendering();
+//private:
+//	HRESULT Create_VertexBuffer();
+//	HRESULT Create_IndexBuffer();
+//	HRESULT SetUp_Vertices();
+//private:
+//	D3D11_BUFFER_DESC				m_BufferDesc;
+//	D3D11_SUBRESOURCE_DATA			m_SubResourceData;
+//	ComPtr<ID3D11Buffer> m_pVB = nullptr;
+//	ComPtr<ID3D11Buffer> m_pIB = nullptr;
+//	_uint							m_iStride = 0;
+//	_uint							m_iNumVertices = 0;
+//	_uint							m_iNumPrimitive = 0;
+//	_uint							m_iIndicesStride = 0;
+//	_uint							m_iNumIndices = 0;
+//	_uint							m_iNumVertexBuffers = 0;
+//	DXGI_FORMAT						m_eIndexFormat;
+//	D3D11_PRIMITIVE_TOPOLOGY		m_eToplogy;
 #endif // _DEBUG
 
 private:

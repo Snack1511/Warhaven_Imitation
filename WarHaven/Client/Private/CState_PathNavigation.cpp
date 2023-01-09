@@ -49,6 +49,11 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		//	return m_eWalkState;
 	}
 
+
+	/* 따라가면 대 */
+	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+	_float4 vDir;
+
 	CPath* pCurPath = pOwner->Get_CurPath();
 
 	if (!pCurPath)
@@ -57,17 +62,39 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		return STATE_END;
 	}
 
-	/* 따라가면 대 */
-	_float4 vCurPos = pOwner->Get_Transform()->Get_World(WORLD_POS);
+	if (!pOwner->Get_CurRoute().empty()) 
+	{
+		_float4 vDestination = pOwner->Get_CurRoute().front();
+		vDestination.y = vCurPos.y;
+		_float4 vDiffPositon = (vDestination - vCurPos);
+		if (vDiffPositon.Length() 
+			<= m_pOwner->Get_PhysicsCom()->Get_Physics().fSpeed * fDT(0))
+		{
+			pOwner->Get_CurRoute().pop_front();
+#ifdef _DEBUG
+			pOwner->Get_OwnerPlayer()->Add_DebugObject(vDestination);
+#endif
+		}
+		vDir = vDiffPositon.Normalize();
+	}
+	else 
+	{
+		vDir = pCurPath->Get_CurDir(pOwner->Get_Transform()->Get_World(WORLD_POS));
 
-	_float4 vDir = pCurPath->Get_CurDir(pOwner->Get_Transform()->Get_World(WORLD_POS));
+		pCurPath->Update_CurrentIndex(vCurPos);
+		
+	}
+	CCell* pCurCell = pOwner->Get_NaviCom()->Get_CurCell(vCurPos, CGameSystem::Get_Instance()->Get_CellLayer());
+	if (pCurCell->Check_Attribute(CELL_STAIR))
+	{
+		m_iRand = 3;
+	}
 
 	pOwner->Get_Transform()->Set_LerpLook(vDir, 0.4f);
 	pOwner->Get_PhysicsCom()->Set_Dir(vDir);
 	pOwner->Get_PhysicsCom()->Set_Accel(100.f);
 
-
-	pCurPath->Update_CurrentIndex(vCurPos);
+	
 
     return __super::Tick(pOwner, pAnimator);
 }

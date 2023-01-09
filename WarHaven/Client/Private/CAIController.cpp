@@ -129,7 +129,6 @@ void CAIController::Early_Tick()
 			pBehaviorDesc->ePrevType = eBehaviorType::ePatrol;
 			*/
 
-
 #ifdef _DEBUG
 		cout << "CurUnitName - " << CFunctor::To_String(m_pOwnerPlayer->Get_PlayerName()).c_str() << endl;
 		cout << "CurBehavior - " << CFunctor::To_String(m_pCurrentBehavior->Get_BehaviorName()).c_str() << endl;
@@ -233,3 +232,5 @@ void CAIController::Set_BehaviorList(list<CBehavior*>& BehaviorList)
 {
 	m_BehaviorList = BehaviorList;
 }
+
+
