@@ -813,8 +813,6 @@ void CRender_Manager::Update()
 			m_bMotionBlur = false;
 		}
 	}
-	
-
 
 
 	/* LENS FLARE */

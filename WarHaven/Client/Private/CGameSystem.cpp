@@ -158,7 +158,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 2; ++i)
+	for (_uint i = 0; i < 0; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
@@ -1160,18 +1160,18 @@ void CGameSystem::On_StartGame()
 	/* Default 애덜 */
 #ifdef _DEBUG
 #else
-	//for (auto& elem : m_mapAllPlayers)
-	//{
-	//	/* Default가 아니면 건너 뛰기 */
-	//	if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
-	//		continue;
+	for (auto& elem : m_mapAllPlayers)
+	{
+		/* Default가 아니면 건너 뛰기 */
+		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
+			continue;
 
 		static _uint g_iIndex = 0;
 
 		if (g_iIndex == 0)
 		{
 			g_iIndex++;
-			//continue;
+			continue;
 		}
 
 		g_iIndex = 0;
@@ -1180,10 +1180,10 @@ void CGameSystem::On_StartGame()
 		elem.second->Choose_Character();
 
 	//	/* 자기 진영에서 포지션 가져오기 */
-	//	_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
-	//	elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
+		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
 
-	//}
+	}
 
 #endif // _DEBUG
 
