@@ -84,6 +84,32 @@ PS_OUT PS_MAIN_STATICSHADOW(PS_IN In)
 }
 
 
+//float shadowPCF(float3 px)
+//{
+//	// texture delta
+//	float2 delta = 1. / iChannelResolution[0].xy;
+//
+//	float factor = 0.;
+//	// filter size
+//	const int r = 3;
+//	for (int y = -r; y <= r; y++)
+//	{
+//		for (int x = -r; x <= r; x++)
+//		{
+//			float2 offset = delta * float2(x, y);
+//			// count the number of shadow hits
+//			factor += float(texture(iChannel0, px.xy + offset).x > px.z - 0.002);
+//
+//		}
+//	}
+//	int size = 2 * r + 1;
+//
+//	int elements = size * size;
+//
+//	// average of shadow hits
+//	return factor / float(elements);
+//}
+
 
 
 PS_OUT PS_MAIN_SHADOWING(PS_IN In)
@@ -115,12 +141,45 @@ PS_OUT PS_MAIN_SHADOWING(PS_IN In)
 
 	vector			vShadowDesc = g_ShadowTexture.Sample(ShadowSampler, vNewUV);
 
-	if (vLightViewSpacePos.z - 0.5f > vShadowDesc.r * 1500.f)
+	float fLit = 1.f;
+
+	/*float fVariance = vShadowDesc.g - (vShadowDesc.r * vShadowDesc.r);
+	fVariance = max(fVariance, 0.005f);
+
+	float fragDepth = vLightViewSpacePos.z / 1500.f;
+
+	float mD = (fragDepth - vShadowDesc.x);
+	float mD_2 = mD * mD;
+	float p = (fVariance / (fVariance + mD_2));
+
+	*/
+
+	//¿øº»
+	/*if (vLightViewSpacePos.z - 0.5f > vShadowDesc.r * 1500.f)
 	{
-		{
-			Out.vColor.xyz = 0.3f;
-		}
+		fLit = p;
+		fLit = (1.f - fLit) + 0.3f;
+		if (fLit > 1.f)
+			fLit = 1.f;
+	}*/
+
+
+	//fLit = max(p, fragDepth <= vShadowDesc.x);
+
+	/*float fLit = max(p, fragDepth > vShadowDesc.x);
+	fLit = (1.f - fLit) + 0.3f;
+	if (fLit > 1.f)
+		fLit = 1.f;*/
+
+
+
+	if (vLightViewSpacePos.z - 0.3f > vShadowDesc.r * 1500.f)
+	{
+		fLit = 0.3f;
 	}
+
+
+	Out.vColor.xyz = fLit;
 
 	return Out;
 }

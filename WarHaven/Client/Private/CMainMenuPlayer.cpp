@@ -175,6 +175,9 @@ HRESULT CMainMenuPlayer::Start()
 {
 	for (int i = 0; i < CLASS_END; ++i)
 	{
+		if (!m_pMainMenuUnit[i])
+			continue;
+
 		CREATE_GAMEOBJECT(m_pMainMenuUnit[i], GROUP_PLAYER);
 
 		if (i == WARRIOR)

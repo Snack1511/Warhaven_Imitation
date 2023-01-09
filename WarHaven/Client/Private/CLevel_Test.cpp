@@ -73,7 +73,8 @@ CLevel_Test* CLevel_Test::Create()
 
 HRESULT CLevel_Test::Initialize()
 {
-	m_vSunLook = _float4(-1.f, -2.f, -1.f);
+	m_fDistance = 200.f;
+	m_vSunLook = _float4(-1.f, -1.f, -1.f);
 	return S_OK;
 }
 
