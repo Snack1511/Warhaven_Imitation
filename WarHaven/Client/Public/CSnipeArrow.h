@@ -18,6 +18,7 @@ public:
 public:
 	virtual HRESULT Start() override;
 	virtual HRESULT	Initialize_Prototype() override;
+	virtual void	My_Tick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
 

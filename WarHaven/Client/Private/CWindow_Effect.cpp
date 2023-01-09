@@ -437,12 +437,12 @@ void CWindow_Effect::Show_EffectTab()
 
 			if (ImGui::Selectable("DEFAULT", &bSelect[VTXEFFECT_PASS_DEFAULT]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DEFAULT;
-			if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
+			/*if (ImGui::Selectable("DISTORTION", &bSelect[VTXEFFECT_PASS_DISTORTION]))
 			{
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISTORTION;
 				GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
 				
-			}
+			}*/
 			if (ImGui::Selectable("DISSOLVE", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISSOLVE;
 			if (ImGui::Selectable("CLAMP", &bSelect[VTXEFFECT_PASS_CLAMP]))

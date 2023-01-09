@@ -267,6 +267,7 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 	_float4x4 matOwner;
 	_float4 vOffset;
 	_float fRandom;
+	_float fRandomZ;
 
 	if (eNextPhase >= eEND)
 		return;
@@ -293,7 +294,9 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		//m_fRandomPhaseMaxTime = frandom(0.3f, 0.7f);
 
 		matOwner = m_pOwnerUnit->Get_Transform()->Get_WorldMatrix();
-		vOffset = _float4(0.f, 1.5f, 0.f);
+		fRandom = frandom(-1.f, 1.f);
+		fRandomZ = frandom(-1.f, 1.f);
+		vOffset = _float4(fRandom, 1.5f, fRandomZ);
 
 		vOffset = vOffset.MultiplyCoord(matOwner);
 		m_pTransform->Set_World(WORLD_POS, vOffset);

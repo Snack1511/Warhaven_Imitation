@@ -67,14 +67,18 @@ void CState_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevStat
     {
         static_cast<CUnit_Priest*>(pOwner)->TurnOff_AllEffect();
     }
-    else if (PALADIN == pOwner->Get_OwnerPlayer()->Get_CurClass())
+    if (PALADIN == pOwner->Get_OwnerPlayer()->Get_CurClass())
     {
         static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(false);
     }
 
-    pOwner->Lerp_Camera(0);
-    GAMEINSTANCE->Stop_RadialBlur();
-    GAMEINSTANCE->Stop_ChromaticAberration();
+    if (pOwner->Is_MainPlayer())
+    {
+        pOwner->Lerp_Camera(0);
+        GAMEINSTANCE->Stop_RadialBlur();
+        GAMEINSTANCE->Stop_ChromaticAberration();
+    }
+    
 
     __super::Enter(pOwner, pAnimator, ePrevStateType);
 }

@@ -478,7 +478,10 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 
 	for (auto& elem : m_listAllStatics)
 	{
-		if (!elem || !elem->isReleasable())
+		if (!elem)
+			continue;
+
+		if(!elem->isReleasable())
 			continue;
 
 		//static이랑 닿으면 이녀석한테 ray 쏴서 위치 보정
