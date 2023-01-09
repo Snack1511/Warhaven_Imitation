@@ -39,7 +39,7 @@ HRESULT CLancer_Attack_Sting::Initialize()
 	m_tHitInfo.fKnockBackPower = 1.f;
 	m_tHitInfo.fJumpPower = 0.f;
 	m_tHitInfo.bFace = false;
-	m_tHitInfo.bSting = true;
+	//m_tHitInfo.bSting = true;
 
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;
 
@@ -70,21 +70,21 @@ HRESULT CLancer_Attack_Sting::Initialize()
 	/* Setting for Blendable */
 	m_eAnimLeftorRight = ANIM_BASE_R;
 
-	m_iIdle_Index = 1;
+	m_iIdle_Index = 9;
 	m_iLandRightIndex = 16;
 	m_iLandLeftIndex = 16;
 	m_iJumpFallRightIndex = 7;
 	m_iJumpFallLeftIndex = 7;
 
 
-	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 99;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 99;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 99;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 99;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 99;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 99;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 99;
-	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 99;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_E] = 5;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_N] = 5;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NE] = 5;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_NW] = 5;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_S] = 5;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SE] = 5;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_SW] = 5;
+	m_iRunLeftAnimIndex[STATE_DIRECTION_W] = 5;
 
 	m_iRunRightAnimIndex[STATE_DIRECTION_E] = 5;
 	m_iRunRightAnimIndex[STATE_DIRECTION_N] = 5;
@@ -96,47 +96,47 @@ HRESULT CLancer_Attack_Sting::Initialize()
 	m_iRunRightAnimIndex[STATE_DIRECTION_W] = 5;
 
 
-	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 30;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 31;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_NE] = 32;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_NW] = 33;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_S] = 34;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_SE] = 35;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_SW] = 36;
-	m_iWalkRightAnimIndex[STATE_DIRECTION_W] = 37;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_E] = 5;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_N] = 5;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_NE] = 5;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_NW] = 5;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_S] = 5;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_SE] = 5;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_SW] = 5;
+	m_iWalkRightAnimIndex[STATE_DIRECTION_W] = 5;
 
 
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_NW] = 99;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_NE] = 99;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_N] = 99;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_SW] = 99;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_SE] = 99;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_S] = 99;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_W] = 99;
-	m_iWalkLeftAnimIndex[STATE_DIRECTION_E] = 99;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NW] = 5;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_NE] = 5;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_N] = 5;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SW] = 5;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_SE] = 5;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_S] = 5;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_W] = 5;
+	m_iWalkLeftAnimIndex[STATE_DIRECTION_E] = 5;
 
 
 
-	m_iJumpRightAnimIndex[STATE_DIRECTION_E] = 12;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_N] = 13;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_S] = 14;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_W] = 15;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_NW] = 11; // 제자리
-	m_iJumpRightAnimIndex[STATE_DIRECTION_NE] = 99; // 의미없는값 채우기 (0이면 터지게 해놔서)
-	m_iJumpRightAnimIndex[STATE_DIRECTION_SW] = 99;
-	m_iJumpRightAnimIndex[STATE_DIRECTION_SE] = 99;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_E] = 7;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_N] = 7;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_S] = 7;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_W] = 7;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_NW] = 7; // 제자리
+	m_iJumpRightAnimIndex[STATE_DIRECTION_NE] = 7; // 의미없는값 채우기 (0이면 터지게 해놔서)
+	m_iJumpRightAnimIndex[STATE_DIRECTION_SW] = 7;
+	m_iJumpRightAnimIndex[STATE_DIRECTION_SE] = 7;
 
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_N] = 99;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_S] = 99;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_W] = 99;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_E] = 99;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_NE] = 99;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_NW] = 99;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 99;
-	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 99;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_N] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_S] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_W] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_E] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NW] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_NE] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SE] = 7;
+	m_iJumpLeftAnimIndex[STATE_DIRECTION_SW] = 7;
 
 
-	
+
 
 	m_eWalkState = STATE_RUN_LANCER;
 	m_eJumpState = STATE_JUMP_LANCER;

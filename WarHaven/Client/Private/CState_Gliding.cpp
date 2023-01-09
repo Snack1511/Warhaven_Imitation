@@ -44,7 +44,7 @@ HRESULT CState_Gliding::Initialize()
 
 
     m_fMyAccel = 10.f;
-    m_fMyMaxLerp = 10.f;
+    m_fMyMaxLerp = 0.4f;
     m_fAnimSpeed = 2.f;
 
     return S_OK;
@@ -125,6 +125,9 @@ void CState_Gliding::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 STATE_TYPE CState_Gliding::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 {
+    if (m_ePreStateType == STATE_WARRIOR_OXEN_LOOPATTACK)
+        return STATE_END;
+
     if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_HWARA && CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
         return STATE_END;
 

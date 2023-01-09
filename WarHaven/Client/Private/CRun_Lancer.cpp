@@ -81,7 +81,7 @@ void CRun_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 {
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
-    Physics_Setting(m_fMaxSpeed, pOwner, false);
+    Physics_Setting(m_fMaxSpeed, pOwner);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

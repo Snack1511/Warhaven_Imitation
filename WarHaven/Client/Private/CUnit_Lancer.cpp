@@ -131,13 +131,13 @@ void	CUnit_Lancer::SetUp_HitStates(UNIT_TYPE eUnitType)
 	switch (eUnitType)
 	{
 	case Client::CUnit::UNIT_TYPE::ePlayer:
-		m_tHitType.eHitState = STATE_HIT;
-		m_tHitType.eGuardState = STATE_GUARDHIT_WARRIOR;
-		m_tHitType.eGuardBreakState = STATE_GUARD_CANCEL_PLAYER;
-		m_tHitType.eGroggyState = STATE_GROGGYHIT_WARRIOR;
-		m_tHitType.eStingHitState = STATE_STINGHIT_WARRIOR;
-		m_tHitType.eFlyState = STATE_FLYHIT_WARRIOR;
-		m_tHitType.eBounce = STATE_BOUNCE_PLAYER_L;
+		m_tHitType.eHitState = STATE_HIT_LANCER;
+		m_tHitType.eGuardState = STATE_BOUNCE_LANCER;
+		m_tHitType.eGuardBreakState = STATE_BOUNCE_LANCER;
+		m_tHitType.eGroggyState = STATE_GROGGYHIT_LANCER;
+		m_tHitType.eStingHitState = STATE_GROGGYHIT_LANCER;
+		m_tHitType.eFlyState = STATE_FLYHIT_LANCER;
+		m_tHitType.eBounce = STATE_BOUNCE_LANCER;
 		break;
 
 
@@ -171,6 +171,8 @@ void CUnit_Lancer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 
 		m_eDefaultState = STATE_IDLE_LANCER;
 		m_eSprintEndState = NO_PATTERN;
+		m_eBreezeBegin = STATE_ATTACK_BREEZE_BEGIN_LANCER;
+		m_eBreezeLoop = STATE_ATTACK_BREEZE_LOOP_LANCER;
 
 		break;
 
@@ -483,11 +485,19 @@ void CUnit_Lancer::OnEnable()
 {
 	__super::OnEnable();
 	ENABLE_GAMEOBJECT(m_pMyHead);
+	m_iNeedleNums = 0;
+	m_fTimeAcc = 0.f;
 }
 
 void CUnit_Lancer::OnDisable()
 {
 	__super::OnDisable();
+	for (_int i = 0; i < eNeedle_Max; ++i)
+	{
+		if(m_pNeedle[i])
+			m_pNeedle[i]->Enable_Needle(false);
+	}
+
 	DISABLE_GAMEOBJECT(m_pMyHead);
 }
 
@@ -496,28 +506,40 @@ void CUnit_Lancer::My_LateTick()
 	__super::My_LateTick();
 
 
-	if (m_iNeedleNums < eNeedle_Max)
+	if (Get_CurState() != m_eBreezeBegin &&
+		Get_CurState() != m_eBreezeLoop)
 	{
-		m_fTimeAcc += fDT(0);
-
-		if (m_fTimeAcc > m_fNeedleCreateTime)
+		if (m_fCoolAcc[CUnit::SKILL1] <= 0.f)
 		{
-			m_pNeedle[m_iNeedleNums]->Enable_Needle(true);
-			++m_iNeedleNums;
-			m_fTimeAcc = 0.f;
+			if (m_iNeedleNums < eNeedle_Max)
+			{
+				m_fTimeAcc += fDT(0);
+
+				if (m_fTimeAcc > m_fNeedleCreateTime)
+				{
+					m_pNeedle[m_iNeedleNums]->Enable_Needle(true);
+					++m_iNeedleNums;
+					m_fTimeAcc = 0.f;
+				}
+
+
+			}
+
 		}
-
-		
 	}
-
-	if (KEY(Q, TAP))
+	else
 	{
-		for(_int i = 0 ; i < eNeedle_Max; ++i)
-			m_pNeedle[i]->Enable_Needle(true);
-
 		m_fTimeAcc = 0.f;
-		m_iNeedleNums = 0;
 	}
+
+	//if (KEY(Q, TAP))
+	//{
+	//	for(_int i = 0 ; i < eNeedle_Max; ++i)
+	//		m_pNeedle[i]->Enable_Needle(true);
+
+	//	m_fTimeAcc = 0.f;
+	//	m_iNeedleNums = 0;
+	//}
 
 	if (KEY(NUM8, TAP))
 	{

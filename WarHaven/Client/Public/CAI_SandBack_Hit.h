@@ -41,7 +41,7 @@ private:
 	_bool	bTestAttackVertical = false;  // 어택에서 맞고 Idle 로 가는 거 방지 : 테스트용
 	_bool	bWarHammerIdle = false;
 
-	_bool	m_HitRight = false;
+	_bool	m_HitLeft = false;
 
 };
 

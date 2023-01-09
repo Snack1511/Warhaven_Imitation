@@ -59,6 +59,8 @@ protected:
 	CUnit*			m_pOwnerUnit = nullptr;
 	_uint			m_iNeedleIndex = 0;
 
+	CUnit* m_pStinedUnit = nullptr; // Âñ¸° À¯´Ö
+
 protected:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -79,13 +81,16 @@ private:
 	_float4 m_vPrePos = ZERO_VECTOR;
 
 	_float4	m_vLandLook = ZERO_VECTOR;
-	_float m_fSinAngle = 0.f;
+	_float	m_fSinAngle = 0.f;
 
 	_float	m_fCurAcc = 0.f;
-	_float m_fTotalTime = 2.f;
+	_float	m_fTotalTime = 0.5f;
+
 
 	_float m_fAngleStartValue = 0.f;
-	_float m_fAngleTargetValue = 320.f;
+	_float m_fAngleTargetValue = 260.f;
+
+	_float4 m_vLerpPos = ZERO_VECTOR;
 
 	_float4x4 m_OwnerBoneOffsetMatrix;
 

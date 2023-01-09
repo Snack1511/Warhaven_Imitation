@@ -3658,6 +3658,18 @@
     <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle">
       <UniqueIdentifier>{8be6c9e5-7519-4d2a-8600-8229095e2024}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\00. Hit">
+      <UniqueIdentifier>{a96a00c2-8e4c-4b14-a063-03facb9af48a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\01. GuardHit">
+      <UniqueIdentifier>{8c0ae09b-7920-4f5d-95f3-b9f8f2f600db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\02. Groggy">
+      <UniqueIdentifier>{a44f6908-2bff-4644-98f7-44c8161bc2ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\03. Fly">
+      <UniqueIdentifier>{ee399bca-ba6a-4ce6-9e3a-dc2a74586b60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6582,6 +6594,18 @@
     <ClInclude Include="..\Public\CLancerNeedle.h">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CHit_Fly_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\03. Fly</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Groggy_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\02. Groggy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_GuardHit_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\01. GuardHit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHit_Lancer.h">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\00. Hit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9486,6 +9510,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLancerNeedle.cpp">
       <Filter>03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Fly_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\03. Fly</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Groggy_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\02. Groggy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_GuardHit_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\01. GuardHit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHit_Lancer.cpp">
+      <Filter>02. Design\06. State_Manager\States\01. Player\09. Lancer\05. Hit\00. Hit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

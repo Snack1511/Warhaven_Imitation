@@ -1557,18 +1557,18 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 		}
 		else
 		{
-			//if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
-			//{
-			//	Enter_State(m_tHitType.eStingHitState, pHitInfo);
-			//}
-			//else
-			//{
-			//	On_DieBegin(pOtherUnit, vHitPos);
-			//	Enter_State(m_tHitType.eHitState, pHitInfo);
-			//}
+			if (tInfo.bSting && m_tHitType.eHitState != m_tHitType.eStingHitState)
+			{
+				Enter_State(m_tHitType.eStingHitState, pHitInfo);
+			}
+			else
+			{
+				On_DieBegin(pOtherUnit, vHitPos);
+				Enter_State(m_tHitType.eHitState, pHitInfo);
+			}
 
-			On_DieBegin(pOtherUnit, vHitPos);
-			Enter_State(m_tHitType.eHitState, pHitInfo);
+			//On_DieBegin(pOtherUnit, vHitPos);
+			//Enter_State(m_tHitType.eHitState, pHitInfo);
 
 			return;
 
@@ -1729,6 +1729,8 @@ void CUnit::On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos)
 void CUnit::On_Bounce(void* pHitInfo)
 {
 	//Left인지 Right인지 판단
-	Enter_State(m_tHitType.eBounce, pHitInfo);
+
+	if(m_tHitType.eBounce != STATE_END)
+		Enter_State(m_tHitType.eBounce, pHitInfo);
 }
 

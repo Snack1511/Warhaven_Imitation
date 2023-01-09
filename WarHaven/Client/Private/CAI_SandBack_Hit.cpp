@@ -80,7 +80,7 @@ void CAI_SandBack_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
 
 
     if (m_iAnimIndex == m_iHitIndex[HIT_STATE_W])
-        m_HitRight = true;
+        m_HitLeft = true;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -89,10 +89,10 @@ STATE_TYPE CAI_SandBack_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
     if (pAnimator->Is_CurAnimFinished())
     {
-        if (m_HitRight)
-            return STATE_IDLE_WARRIOR_R_AI_ENEMY;
-        else
+        if (m_HitLeft)
             return STATE_IDLE_WARRIOR_L_AI_ENEMY;
+        else
+            return STATE_IDLE_WARRIOR_R_AI_ENEMY;
 
     }
 

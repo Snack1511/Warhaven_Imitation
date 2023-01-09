@@ -4,6 +4,8 @@
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Lancer.h"
+#include "CLancerNeedle.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
@@ -38,7 +40,7 @@ HRESULT CLancer_Breeze_Loop::Initialize()
 	m_tHitInfo.fJumpPower = 0.f;
 	m_tHitInfo.bSting = true;
 
-	m_fDamagePumping = 5.f;
+	m_fDamagePumping = 9.f;
 
 
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
@@ -92,7 +94,7 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	GAMEINSTANCE->Start_ChromaticAberration(20.f);
 
 	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_BREEZE);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -112,12 +114,24 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	static_cast<CUnit_Lancer*>(pOwner)->Reset_NeedleNums();
+
+	for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)
+	{
+		CLancerNeedle* pNeedle = static_cast<CUnit_Lancer*>(pOwner)->Get_Needle(i);
+
+		if (!pNeedle)
+			continue;
+
+		pNeedle->On_ChangePhase(CLancerNeedle::LANCERNEEDLE_STOP);
+	}
+
 
 	GAMEINSTANCE->Stop_RadialBlur();
 	GAMEINSTANCE->Stop_ChromaticAberration();
 
 
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
 	pOwner->On_Use(CUnit::SKILL1);
 	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 }

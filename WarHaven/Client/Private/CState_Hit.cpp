@@ -88,7 +88,7 @@ STATE_TYPE CState_Hit::Tick(CUnit* pOwner, CAnimator* pAnimator)
         if(m_fTimeAcc > 0.5f)
             pOwner->On_Die();
  
-        pOwner->Get_Transform()->Get_Transform().matMyWorld = m_pStingBone->Get_BoneMatrix();// *matBone;
+        //pOwner->Get_Transform()->Get_Transform().matMyWorld = m_pStingBone->Get_BoneMatrix();// *matBone;
     }
 
 
