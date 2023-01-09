@@ -84,9 +84,14 @@ private:
 	_float	m_fCurAcc = 0.f;
 	_float m_fTotalTime = 2.f;
 
+	_float m_fAngleStartValue = 0.f;
+	_float m_fAngleTargetValue = 320.f;
+
 	_float4x4 m_OwnerBoneOffsetMatrix;
 
-private:
+
+
+
 
 };
 
