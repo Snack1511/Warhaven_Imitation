@@ -1187,6 +1187,9 @@ void CGameSystem::On_StartGame()
 	{
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
 		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
+
+		TRIGGER_STAGE("Hwara_Final_Red")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]);
+		TRIGGER_STAGE("Hwara_Final_Blue")->Get_DominionEffect()->Set_DominionColor(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]);
 	}
 
 
@@ -1291,14 +1294,21 @@ HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& v
 	ADD_TRIGGER("Hwara_Final_Blue", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL);
 	CDominion_Effect* pDominionEffect_F = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), Find_Position("Hwara_Final_Blue"),
 		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+	
 	READY_GAMEOBJECT(pDominionEffect_F, GROUP_EFFECT);
 	TRIGGER_STAGE("Hwara_Final_Blue")->Set_DominionEffect(pDominionEffect_F);
 
 	ADD_TRIGGER("Hwara_Final_Red", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL);
 	pDominionEffect_F = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), Find_Position("Hwara_Final_Red"),
 		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+
 	READY_GAMEOBJECT(pDominionEffect_F, GROUP_EFFECT);
 	TRIGGER_STAGE("Hwara_Final_Red")->Set_DominionEffect(pDominionEffect_F);
+
+
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Blue")]);
+
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_Final_Red")]);
 
 	return S_OK;
 }
