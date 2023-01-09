@@ -102,11 +102,11 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 {
 	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
 
-	if (strPadenPointKey == "Paden_Trigger_A")
+	if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
 	{
 		m_fConquestRatio[Point_A] = fConquestRatio;
 	}
-	else if (strPadenPointKey == "Paden_Trigger_R")
+	else if (strPadenPointKey == "Paden_Trigger_R" || strPadenPointKey == "Hwara_Respawn")
 	{
 		m_fConquestRatio[Point_R] = fConquestRatio;
 	}
@@ -142,8 +142,7 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 				m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
 		}
 
-		if (m_eTargetPoint == Point_End)
-			return;
+		return;
 
 		if (KEY(Z, TAP))
 			m_bIsVector = !m_bIsVector;
@@ -226,12 +225,12 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 
 	for (int i = 0; i < PU_Text; ++i)
 	{
-		if (strPointName == "Paden_Trigger_A")
+		if (strPointName == "Paden_Trigger_A" || strPointName == "Hwara_Center")
 		{
 			m_pArrPointUI[Point_A][i]->Set_Color(vColor);
 			m_pArrProjPointUI[Point_A][i]->Set_Color(vColor);
 		}
-		else if (strPointName == "Paden_Trigger_R")
+		else if (strPointName == "Paden_Trigger_R" || strPointName == "Hwara_Respawn")
 		{
 			m_pArrPointUI[Point_R][i]->Set_Color(vColor);
 			m_pArrProjPointUI[Point_R][i]->Set_Color(vColor);
@@ -254,7 +253,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 		{
 		case TS_Enter:
 
-			if (strPadenPointKey == "Paden_Trigger_A")
+			if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
 			{
 				m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
 
@@ -263,7 +262,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				vPos.y = 200.f;
 				m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0.f);
 			}
-			else if (strPadenPointKey == "Paden_Trigger_R")
+			else if (strPadenPointKey == "Paden_Trigger_R" || strPadenPointKey == "Hwara_Respawn")
 			{
 				m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
 
@@ -286,7 +285,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 
 		case TS_Exit:
 
-			if (strPadenPointKey == "Paden_Trigger_A")
+			if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
 			{
 				m_pArrProjPointUI[Point_A][i]->SetActive(true);
 
@@ -298,7 +297,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0);
 
 			}
-			else if (strPadenPointKey == "Paden_Trigger_R")
+			else if (strPadenPointKey == "Paden_Trigger_R" || strPadenPointKey == "Hwara_Respawn")
 			{
 				m_pArrProjPointUI[Point_R][i]->SetActive(true);
 
@@ -339,11 +338,11 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKe
 
 	for (int i = 0; i < PU_End; ++i)
 	{
-		if (strPadenPointKey == "Paden_Trigger_A")
+		if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
 		{
 			Set_PointGauge_Color(bIsMainPlayerTeam, Point_A);
 		}
-		else if (strPadenPointKey == "Paden_Trigger_R")
+		else if (strPadenPointKey == "Paden_Trigger_R" || strPadenPointKey == "Hwara_Respawn")
 		{
 			Set_PointGauge_Color(bIsMainPlayerTeam, Point_R);
 		}
