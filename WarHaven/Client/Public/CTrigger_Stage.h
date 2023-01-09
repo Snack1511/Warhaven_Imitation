@@ -7,21 +7,21 @@ class CPlayer;
 class CTeamConnector;
 class CDominion_Effect;
 
-class CTrigger_Paden 
+class CTrigger_Stage 
 	: public CTrigger
 {
 	
-	DECLARE_PROTOTYPE(CTrigger_Paden);
+	DECLARE_PROTOTYPE(CTrigger_Stage);
 
 public:
-	enum class ePADEN_TRIGGER_TYPE {eSTART, eMAIN, eRESPAWN, eCANNON, eCNT};
+	enum class eSTAGE_TRIGGER_TYPE {eSTART, eMAIN, eRESPAWN, eCANNON, eHWARA_CENTER, eHWARA_FINAL, eCNT};
 
 protected:
-	CTrigger_Paden();
-	virtual ~CTrigger_Paden();
+	CTrigger_Stage();
+	virtual ~CTrigger_Stage();
 
 public:
-	static CTrigger_Paden* Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum);
+	static CTrigger_Stage* Create(string strPositionKey, _float fRadius, eSTAGE_TRIGGER_TYPE eEnum);
 
 public:
 	virtual void	Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
@@ -36,15 +36,15 @@ public:
 public:
 	_float4		Get_RespawnPosition();
 	string		Get_TriggerName() { return m_strTriggerName; }
-	ePADEN_TRIGGER_TYPE	Get_TriggerType() { return m_eTriggerType; }
-	void	Set_TriggerType(ePADEN_TRIGGER_TYPE eEnum) { m_eTriggerType = eEnum; }
+	eSTAGE_TRIGGER_TYPE	Get_TriggerType() { return m_eTriggerType; }
+	void	Set_TriggerType(eSTAGE_TRIGGER_TYPE eEnum) { m_eTriggerType = eEnum; }
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Start() override;
 
 private:
-	ePADEN_TRIGGER_TYPE	m_eTriggerType = ePADEN_TRIGGER_TYPE::eSTART;
+	eSTAGE_TRIGGER_TYPE	m_eTriggerType = eSTAGE_TRIGGER_TYPE::eSTART;
 	string				m_strTriggerName;
 
 	eTEAM_TYPE			m_eTeamType = eTEAM_TYPE::eCOUNT;

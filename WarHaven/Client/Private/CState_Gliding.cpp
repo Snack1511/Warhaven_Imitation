@@ -90,6 +90,7 @@ STATE_TYPE CState_Gliding::Tick(CUnit* pOwner, CAnimator* pAnimator)
     {
         STATE_TYPE eSprintFallState = pOwner->Get_SprintFallState();
         pOwner->Reset_GlidingTime();
+        pOwner->Get_PhysicsCom()->Set_Jump(0.f);
         m_bReturn = true;
         return  eSprintFallState;
     }

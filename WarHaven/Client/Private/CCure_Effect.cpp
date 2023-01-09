@@ -10,7 +10,7 @@
 #include "CEffects_Factory.h"
 
 #include "CTeamConnector.h"
-#include "CTrigger_Paden.h"
+#include "CTrigger_Stage.h"
 
 #include "HIerarchyNode.h"
 #include "CRectEffects.h"

@@ -865,7 +865,7 @@
     <ClInclude Include="..\Public\CSwitchRtoL_WarHammer.h" />
     <ClInclude Include="..\Public\CPlayer.h" />
     <ClInclude Include="..\public\CTileDebugger.h" />
-    <ClInclude Include="..\public\CTrigger_Paden.h" />
+    <ClInclude Include="..\public\CTrigger_Stage.h" />
     <ClInclude Include="..\Public\CUI_AbleHeroFire.h" />
     <ClInclude Include="..\Public\CUI_Barracks.h" />
     <ClInclude Include="..\Public\CUI_CharacterWindow.h" />
@@ -1838,7 +1838,7 @@
     <ClCompile Include="..\Private\CSwitchRtoL_WarHammer.cpp" />
     <ClCompile Include="..\Private\CPlayer.cpp" />
     <ClCompile Include="..\private\CTileDebugger.cpp" />
-    <ClCompile Include="..\private\CTrigger_Paden.cpp" />
+    <ClCompile Include="..\private\CTrigger_Stage.cpp" />
     <ClCompile Include="..\Private\CUI_AbleHeroFire.cpp" />
     <ClCompile Include="..\Private\CUI_Barracks.cpp" />
     <ClCompile Include="..\Private\CUI_CharacterWindow.cpp" />

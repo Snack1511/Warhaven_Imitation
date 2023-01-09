@@ -333,10 +333,13 @@ void CUI_Oper::Set_BattlePlayer(_bool IsBattle)
 
 void CUI_Oper::SetActive_BG(_bool value)
 {
-	m_pRealMap->SetActive(value);
+	if (m_pRealMap)
+		m_pRealMap->SetActive(value);
+
 	for (int i = 0; i < OB_End; ++i)
 	{
-		m_pOperBG[i]->SetActive(value);
+		if (m_pOperBG[i])
+			m_pOperBG[i]->SetActive(value);
 	}
 }
 
@@ -344,7 +347,8 @@ void CUI_Oper::SetActive_Profile(_bool value)
 {
 	for (int i = 0; i < 4; ++i)
 	{
-		m_pArrOperProfile[i]->SetActive(value);
+		if (m_pArrOperProfile[i])
+			m_pArrOperProfile[i]->SetActive(value);
 	}
 }
 

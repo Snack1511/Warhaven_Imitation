@@ -4794,7 +4794,7 @@
     <ClInclude Include="..\Public\CGame_Manager_HR.h">
       <Filter>02. Design\04. Game_Manager\HR</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CTrigger_Paden.h">
+    <ClInclude Include="..\public\CTrigger_Stage.h">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Animation.h">
@@ -7702,7 +7702,7 @@
     <ClCompile Include="..\Private\CGame_Manager_HR.cpp">
       <Filter>02. Design\04. Game_Manager\HR</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CTrigger_Paden.cpp">
+    <ClCompile Include="..\private\CTrigger_Stage.cpp">
       <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Animation.cpp">

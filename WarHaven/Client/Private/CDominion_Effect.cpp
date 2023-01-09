@@ -8,7 +8,7 @@
 #include "CEffect.h"
 
 #include "CTeamConnector.h"
-#include "CTrigger_Paden.h"
+#include "CTrigger_Stage.h"
 
 CDominion_Effect::CDominion_Effect()
 {
@@ -65,16 +65,20 @@ void CDominion_Effect::Set_DominionColor(CTeamConnector* pConqueredTeam)
 		}
 		m_Aura.clear();
 
-		switch ((CTrigger_Paden::ePADEN_TRIGGER_TYPE)m_iTriggerType)
+		switch ((CTrigger_Stage::eSTAGE_TRIGGER_TYPE)m_iTriggerType)
 		{
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_A", m_pTransform->Get_World(WORLD_POS));
 			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_R", m_pTransform->Get_World(WORLD_POS));
 			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_C", m_pTransform->Get_World(WORLD_POS));
+			break;
+
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
+			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"BlueAura_A", m_pTransform->Get_World(WORLD_POS));
 			break;
 		default:
 			break;
@@ -91,16 +95,20 @@ void CDominion_Effect::Set_DominionColor(CTeamConnector* pConqueredTeam)
 		}
 		m_Aura.clear();
 
-		switch ((CTrigger_Paden::ePADEN_TRIGGER_TYPE)m_iTriggerType)
+		switch ((CTrigger_Stage::eSTAGE_TRIGGER_TYPE)m_iTriggerType)
 		{
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"RedAura_A", m_pTransform->Get_World(WORLD_POS));
 			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"RedAura_R", m_pTransform->Get_World(WORLD_POS));
 			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON:
 			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"RedAura_C", m_pTransform->Get_World(WORLD_POS));
+			break;
+
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
+			m_Aura = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"RedAura_A", m_pTransform->Get_World(WORLD_POS));
 			break;
 		default:
 			break;

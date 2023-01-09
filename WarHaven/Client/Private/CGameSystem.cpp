@@ -5,7 +5,7 @@
 #include "CPositionTable.h"
 
 #include "CTrigger_BootCamp.h"
-#include "CTrigger_Paden.h"
+#include "CTrigger_Stage.h"
 
 #include "CPlayer.h"
 
@@ -40,7 +40,7 @@ IMPLEMENT_SINGLETON(CGameSystem);
 
 #define READY_GAMEOBJECT(instance, grouptype) vecReadyObjects.push_back(make_pair(instance, grouptype))
 
-#define TRIGGER_PADEN(mapkey) static_cast<CTrigger_Paden*>(m_mapAllTriggers[Convert_ToHash(mapkey)])
+#define TRIGGER_STAGE(mapkey) static_cast<CTrigger_Stage*>(m_mapAllTriggers[Convert_ToHash(mapkey)])
 
 CGameSystem::CGameSystem()
 {
@@ -799,7 +799,7 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 	string  strTriggerName;
 
 #define ADD_TRIGGER(name, radius, enumtype)   strTriggerName = name;\
-    pTrigger = CTrigger_Paden::Create(strTriggerName, radius, enumtype);\
+    pTrigger = CTrigger_Stage::Create(strTriggerName, radius, enumtype);\
     if (!pTrigger)\
         return E_FAIL;\
     m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
@@ -807,34 +807,34 @@ HRESULT CGameSystem::On_ReadyTirggers_Paden(vector<pair<CGameObject*, _uint>>& v
 
 	_float fTriggerSize = 6.f;
 
-	ADD_TRIGGER("Paden_RedTeam_StartTrigger", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
-	ADD_TRIGGER("Paden_BlueTeam_StartTrigger", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
+	ADD_TRIGGER("Paden_RedTeam_StartTrigger", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
+	ADD_TRIGGER("Paden_BlueTeam_StartTrigger", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
 
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Paden_BlueTeam_StartTrigger")]);
 	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Paden_RedTeam_StartTrigger")]);
 
 	/*map에서 찾아다가 static cast 하는 매크로*/
-	/*TRIGGER_PADEN("Paden_RedTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->IsMainPlayerTeam());
-	TRIGGER_PADEN("Paden_BlueTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->IsMainPlayerTeam());*/
+	/*TRIGGER_STAGE("Paden_RedTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->IsMainPlayerTeam());
+	TRIGGER_STAGE("Paden_BlueTeam_StartTrigger")->Set_StartTrigger(m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->IsMainPlayerTeam());*/
 
 	//1. 메인 거점
-	ADD_TRIGGER("Paden_Trigger_A", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
+	ADD_TRIGGER("Paden_Trigger_A", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN);
 	CDominion_Effect* pDominionEffect_A = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), _float4(-0.8f, 2.f, -0.3f),
-		(_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN);
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN);
 	READY_GAMEOBJECT(pDominionEffect_A, GROUP_EFFECT);
-	TRIGGER_PADEN("Paden_Trigger_A")->Set_DominionEffect(pDominionEffect_A);
+	TRIGGER_STAGE("Paden_Trigger_A")->Set_DominionEffect(pDominionEffect_A);
 
-	ADD_TRIGGER("Paden_Trigger_R", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
+	ADD_TRIGGER("Paden_Trigger_R", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN);
 	CDominion_Effect* pDominionEffect_R = CDominion_Effect::Create(_float4(0.8f, 0.8f, 0.8f), _float4(48.6f, 5.5f, -0.f),
-		(_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN);
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN);
 	READY_GAMEOBJECT(pDominionEffect_R, GROUP_EFFECT);
-	TRIGGER_PADEN("Paden_Trigger_R")->Set_DominionEffect(pDominionEffect_R);
+	TRIGGER_STAGE("Paden_Trigger_R")->Set_DominionEffect(pDominionEffect_R);
 
-	ADD_TRIGGER("Paden_Trigger_C", fTriggerSize, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
+	ADD_TRIGGER("Paden_Trigger_C", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON);
 	CDominion_Effect* pDominionEffect_C = CDominion_Effect::Create(_float4(1.f, 1.f, 1.f), _float4(-61.8f, 20.4f, 0.2f),
-		(_uint)CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON);
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON);
 	READY_GAMEOBJECT(pDominionEffect_C, GROUP_EFFECT);
-	TRIGGER_PADEN("Paden_Trigger_C")->Set_DominionEffect(pDominionEffect_C);
+	TRIGGER_STAGE("Paden_Trigger_C")->Set_DominionEffect(pDominionEffect_C);
 
 
 
@@ -1088,8 +1088,8 @@ HRESULT CGameSystem::On_Update_Paden()
 		{
 			m_fScoreAcc = 0.f;
 
-			//if (!pMinusScoreTeam->Minus_Score())
-			//	On_FinishGame(pMinusScoreTeam);
+			if (!pMinusScoreTeam->Minus_Score())
+				On_FinishGame(pMinusScoreTeam);
 
 		}
 	}
@@ -1183,6 +1183,11 @@ void CGameSystem::On_StartGame()
 #endif // _DEBUG
 
 
+	if (m_eCurStageType == eSTAGE_HWARA)
+	{
+		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
+		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
+	}
 
 
 }
@@ -1252,7 +1257,7 @@ HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& v
 	string  strTriggerName;
 
 #define ADD_TRIGGER(name, radius, enumtype)   strTriggerName = name;\
-    pTrigger = CTrigger_Paden::Create(strTriggerName, radius, enumtype);\
+    pTrigger = CTrigger_Stage::Create(strTriggerName, radius, enumtype);\
     if (!pTrigger)\
         return E_FAIL;\
     m_mapAllTriggers.emplace(Convert_ToHash(strTriggerName), pTrigger);\
@@ -1260,12 +1265,40 @@ HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& v
 
 	_float fTriggerSize = 6.f;
 
-	ADD_TRIGGER("Hwara_RedTeam_Start", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
-	ADD_TRIGGER("Hwara_BlueTeam_Start", 2.f, CTrigger_Paden::ePADEN_TRIGGER_TYPE::eSTART);
+	ADD_TRIGGER("Hwara_RedTeam_Start", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
+	ADD_TRIGGER("Hwara_BlueTeam_Start", 2.f, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eSTART);
 
-	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_BlueTeam_StartTrigger")]);
-	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_RedTeam_StartTrigger")]);
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eBLUE]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_BlueTeam_Start")]);
+	m_pTeamConnector[(_uint)eTEAM_TYPE::eRED]->Add_Trigger(m_mapAllTriggers[Convert_ToHash("Hwara_RedTeam_Start")]);
 
+
+	//1. 메인 거점
+	ADD_TRIGGER("Hwara_Center", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+	CDominion_Effect* pDominionEffect_A = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), Find_Position("Hwara_Center"),
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+	READY_GAMEOBJECT(pDominionEffect_A, GROUP_EFFECT);
+	TRIGGER_STAGE("Hwara_Center")->Set_DominionEffect(pDominionEffect_A);
+
+	ADD_TRIGGER("Hwara_Respawn", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN);
+	CDominion_Effect* pDominionEffect_R = CDominion_Effect::Create(_float4(0.8f, 0.8f, 0.8f), Find_Position("Hwara_Respawn"),
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN);
+	READY_GAMEOBJECT(pDominionEffect_R, GROUP_EFFECT);
+	TRIGGER_STAGE("Hwara_Respawn")->Set_DominionEffect(pDominionEffect_R);
+
+
+	//1. final 거점
+	//blue : 블루팀의 최종 타겟
+	ADD_TRIGGER("Hwara_Final_Blue", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL);
+	CDominion_Effect* pDominionEffect_F = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), Find_Position("Hwara_Final_Blue"),
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+	READY_GAMEOBJECT(pDominionEffect_F, GROUP_EFFECT);
+	TRIGGER_STAGE("Hwara_Final_Blue")->Set_DominionEffect(pDominionEffect_F);
+
+	ADD_TRIGGER("Hwara_Final_Red", fTriggerSize, CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL);
+	pDominionEffect_F = CDominion_Effect::Create(_float4(1.35f, 1.35f, 1.35f), Find_Position("Hwara_Final_Red"),
+		(_uint)CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER);
+	READY_GAMEOBJECT(pDominionEffect_F, GROUP_EFFECT);
+	TRIGGER_STAGE("Hwara_Final_Red")->Set_DominionEffect(pDominionEffect_F);
 
 	return S_OK;
 }
@@ -1387,6 +1420,81 @@ CPath* CGameSystem::Clone_RandomStartPath(CAIController* pOwnerController, eTEAM
 	return pClonePath;
 }
 
+CPath* CGameSystem::Clone_RandomRespawnPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType)
+{
+	if (!pOwnerController)
+		return nullptr;
+
+	string strPathName;
+
+
+	//1. paden이면 main으로 
+	if (m_eCurStageType == eSTAGE_PADEN)
+		strPathName = "Paden_RespawnToMain_0";
+
+	else 
+	{
+		//화라면 center 먹었는지 확인
+		if (m_pTeamConnector[(_uint)eTeamType]->Has_CenterTrigger())
+		{
+			switch (eTeamType)
+			{
+			case Client::eTEAM_TYPE::eRED:
+				strPathName = "Hwara_Respawn_ToBlue";
+				break;
+
+			case Client::eTEAM_TYPE::eBLUE:
+				strPathName = "Hwara_Respawn_ToRed";
+				break;
+
+			case Client::eTEAM_TYPE::eCOUNT:
+				break;
+			default:
+				break;
+			}
+
+		}
+		else
+			strPathName = "Hwara_Respawn_ToCenter";
+	}
+
+	CPath* pClonePath = Clone_Path(strPathName, pOwnerController);
+
+	pOwnerController->Set_NewPath(pClonePath);
+
+	return pClonePath;
+}
+
+CPath* CGameSystem::Clone_CenterPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType)
+{
+	if (!pOwnerController)
+		return nullptr;
+
+	string strPathName;
+
+	switch (eTeamType)
+	{
+	case Client::eTEAM_TYPE::eRED:
+		strPathName = "Hwara_Center_ToBlue_0";
+		break;
+
+	case Client::eTEAM_TYPE::eBLUE:
+		strPathName = "Hwara_Center_ToRed_0";
+		break;
+
+	case Client::eTEAM_TYPE::eCOUNT:
+		break;
+	default:
+		break;
+	}
+
+	CPath* pClonePath = Clone_Path(strPathName, pOwnerController);
+
+	pOwnerController->Set_NewPath(pClonePath);
+
+	return pClonePath;
+}
+
 CPath* CGameSystem::Get_NearPath(_float4 vPosition)
 {
 	CPath* pReturnPath = nullptr;
@@ -1423,6 +1531,21 @@ CTrigger* CGameSystem::Find_Trigger(string strTriggerKey)
 		return nullptr;
 
 	return iter->second;
+}
+
+void CGameSystem::Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType)
+{
+	if (eTeamType == eTEAM_TYPE::eBLUE)
+	{
+		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
+		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
+	}
+
+	else
+	{
+		DISABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Blue"));
+		ENABLE_GAMEOBJECT(Find_Trigger("Hwara_Final_Red"));
+	}
 }
 
 CPlayerInfo* CGameSystem::Find_PlayerInfo(_hashcode hcCode)

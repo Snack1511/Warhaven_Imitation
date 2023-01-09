@@ -8,6 +8,9 @@
 #include "CMap_Loader.h"
 #include "CUser.h"
 
+#include "CUnit.h"
+#include "CPlayer.h"
+
 CLevel_Hwara::CLevel_Hwara()
 {
 }
@@ -69,6 +72,15 @@ HRESULT CLevel_Hwara::Enter()
 
 	if (FAILED(CGameSystem::Get_Instance()->On_EnterStage()))
 		return E_FAIL;
+
+	PLAYER->Get_OwnerPlayer()->Set_MainPlayerStartPath(0);
+
+#ifdef _DEBUG
+#else
+	if (FAILED(CGameSystem::Get_Instance()->Hwara_EnvironmentEffect()))
+		return E_FAIL;
+
+#endif 
 
 	return S_OK;
 }

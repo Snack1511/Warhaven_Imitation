@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CTrigger_Paden.h"
+#include "CTrigger_Stage.h"
 
 #include "CGameSystem.h"
 
@@ -9,15 +9,15 @@
 
 #include "CDominion_Effect.h"
 #include "CUI_Popup.h"
-CTrigger_Paden::CTrigger_Paden()
+CTrigger_Stage::CTrigger_Stage()
 {
 }
 
-CTrigger_Paden::~CTrigger_Paden()
+CTrigger_Stage::~CTrigger_Stage()
 {
 }
 
-void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
+void CTrigger_Stage::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
 	m_eTeamType = (eTEAM_TYPE)eOtherColType;
 
@@ -42,11 +42,11 @@ void CTrigger_Paden::Trigger_CollisionEnter(CGameObject* pOtherObj, const _uint&
 
 }
 
-void CTrigger_Paden::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
+void CTrigger_Stage::Trigger_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
 }
 
-void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
+void CTrigger_Stage::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
 	//1. 충돌한 대상이 플레이어팀인지 체크
 	if (eOtherColType == COL_BLUETEAM)
@@ -67,9 +67,9 @@ void CTrigger_Paden::Trigger_CollisionExit(CGameObject* pOtherObj, const _uint& 
 	}
 }
 
-CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, ePADEN_TRIGGER_TYPE eEnum)
+CTrigger_Stage* CTrigger_Stage::Create(string strPositionKey, _float fRadius, eSTAGE_TRIGGER_TYPE eEnum)
 {
-	CTrigger_Paden* pInstance = new CTrigger_Paden;
+	CTrigger_Stage* pInstance = new CTrigger_Stage;
 
 	pInstance->m_eTriggerType = eEnum;
 	pInstance->m_strTriggerName = strPositionKey;
@@ -87,7 +87,7 @@ CTrigger_Paden* CTrigger_Paden::Create(string strPositionKey, _float fRadius, eP
 	return pInstance;
 }
 
-_float4 CTrigger_Paden::Get_RespawnPosition()
+_float4 CTrigger_Stage::Get_RespawnPosition()
 {
 	_float4 vPos = m_vRespawnPositions.front();
 	m_vRespawnPositions.pop_front();
@@ -95,7 +95,7 @@ _float4 CTrigger_Paden::Get_RespawnPosition()
 	return vPos;
 }
 
-HRESULT CTrigger_Paden::Initialize_Prototype()
+HRESULT CTrigger_Stage::Initialize_Prototype()
 {
 	m_eColGroup = COL_TRIGGER;
 
@@ -117,16 +117,16 @@ HRESULT CTrigger_Paden::Initialize_Prototype()
 	return __super::Initialize_Prototype();
 }
 
-HRESULT CTrigger_Paden::Start()
+HRESULT CTrigger_Stage::Start()
 {
 	__super::Start();
 
 	return S_OK;
 }
 
-void CTrigger_Paden::My_Tick()
+void CTrigger_Stage::My_Tick()
 {
-	if (m_eTriggerType == ePADEN_TRIGGER_TYPE::eSTART)
+	if (m_eTriggerType == eSTAGE_TRIGGER_TYPE::eSTART)
 		return;
 
 	CUser::Get_Instance()->Set_ConquestTime(m_strTriggerName, m_fConqueredTimeAcc, m_fConqueredTime);
@@ -135,19 +135,19 @@ void CTrigger_Paden::My_Tick()
 	_bool isIsFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
 	switch (m_eTriggerType)
 	{
-	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
 		CUser::Get_Instance()->Set_ScoreBoardConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 
-	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(1, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(1, m_fConqueredTimeAcc, m_fConqueredTime);
 		CUser::Get_Instance()->Set_ScoreBoardConquestTime(1, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 
-	case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
 		CUser::Get_Instance()->Set_ScoreBoardConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
@@ -174,7 +174,7 @@ void CTrigger_Paden::My_Tick()
 		m_fConqueredTimeAcc = 0.f;
 }
 
-void CTrigger_Paden::Update_Conquered()
+void CTrigger_Stage::Update_Conquered()
 {
 	//이미 점령당한 거점이면
 	if (m_pConqueredTeam)
@@ -199,15 +199,15 @@ void CTrigger_Paden::Update_Conquered()
 
 		switch (m_eTriggerType)
 		{
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 0);
 			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 0);
 			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 1);
 			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 1);
 			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 2);
 			break;
@@ -250,24 +250,45 @@ void CTrigger_Paden::Update_Conquered()
 
 		switch (m_eTriggerType)
 		{
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eMAIN:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 0);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 0);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 0);
 			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eRESPAWN:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 1);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 1);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 1);
 			break;
-		case Client::CTrigger_Paden::ePADEN_TRIGGER_TYPE::eCANNON:
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON:
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 2);
 			break;
+
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
+		
+			/* Center 점령 시 final 점령 가능하게 열림 */
+			CGameSystem::Get_Instance()->Enable_HwaraFinalTrigger(m_pConqueredTeam->Get_TeamType());
+
+			break;
+
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL:
+			/* Final 점령 시 게임 종료 */
+			if (m_pConqueredTeam == CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE))
+				CGameSystem::Get_Instance()->On_FinishGame(CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eRED));
+			else
+				CGameSystem::Get_Instance()->On_FinishGame(CGameSystem::Get_Instance()->Get_Team(eTEAM_TYPE::eBLUE));
+
+			break;
+
 		}
 
+
+
 		m_pConqueredTeam->Add_Trigger(this);
+
+
 
 #ifdef _DEBUG
 

@@ -45,6 +45,7 @@ public:
 	_bool	Has_MainTrigger() { return m_bHasTrigger[0]; }
 	_bool	Has_CannonTrigger() { return m_bHasTrigger[2]; }
 	_bool	Has_RespawnTrigger() { return m_bHasTrigger[1]; }
+	_bool	Has_CenterTrigger() { return m_bHasTrigger[3]; }
 	list<CSquad*>& Get_SquadList() { return m_SquadList; }
 
 public:

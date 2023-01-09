@@ -99,9 +99,13 @@ public: /* Pathes */
 	CPath*			Clone_Path(string strPathKey, CAIController* pOwnerController);
 
 	CPath*			Clone_RandomStartPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
+	CPath*			Clone_RandomRespawnPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
+	CPath*			Clone_CenterPath(CAIController* pOwnerController, eTEAM_TYPE eTeamType);
+
 	CPath* Get_NearPath(_float4 vPosition);
 public:	
 	CTrigger*					Find_Trigger(string strTriggerKey);
+	void						Enable_HwaraFinalTrigger(eTEAM_TYPE eTeamType);
 
 public:
 	CPlayerInfo* Find_PlayerInfo(_hashcode hcCode);

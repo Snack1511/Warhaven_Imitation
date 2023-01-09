@@ -418,18 +418,37 @@ void CPlayer::Respawn_Unit(_float4 vPos, CLASS_TYPE eClass)
 
 			if (m_bIsLeaderPlayer)
 			{
-				Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
+				CPath* pNewPath = nullptr;
+
+				// 1. respawn 거점 먹었으면 respawn에서
+				if (m_pMyTeam->Has_RespawnTrigger())
+				{
+					pNewPath = CGameSystem::Get_Instance()->Clone_RandomRespawnPath(m_pAIController, m_pMyTeam->Get_TeamType());
+				}
+				else if (m_pMyTeam->Has_CenterTrigger())
+				{
+					pNewPath = CGameSystem::Get_Instance()->Clone_CenterPath(m_pAIController, m_pMyTeam->Get_TeamType());
+				}
+				else
+				{
+					pNewPath = CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType());
+				}
+
+				Set_NewPath(pNewPath);
 				m_strStartPath = m_pCurPath->m_strName;
 
 				/*무조건 중앙으로 모이게 하는 코드*/
 				//m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_MainPath_0") : ("Paden_RedTeam_MainPath_0");
-
-				Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_strStartPath, m_pAIController));
+				//Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_strStartPath, m_pAIController));
 
 			}
 			else
 			{
-				Set_NewPath(CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController));
+
+				CPath* pNewPath = CGameSystem::Get_Instance()->Clone_Path(m_pMySquad->Get_LeaderPlayer()->m_strStartPath, m_pAIController);
+
+
+				Set_NewPath(pNewPath);
 			}
 		}
 	}
@@ -613,6 +632,7 @@ void CPlayer::Set_MainPlayer()
 		m_pAllUnitClass[i]->Set_MainPlayer();
 	}
 
+	m_pFollowCam->Set_MainCam();
 
 }
 
@@ -1266,10 +1286,10 @@ void CPlayer::Set_MainPlayerStartPath(_uint iTriggerType)
 		switch (iTriggerType)
 		{
 		case 0:
-			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_ToCenter_0") : ("Paden_RedTeam_ToCenter_0");
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Hwara_BlueTeam_ToCenter_0") : ("Hwara_RedTeam_ToCenter_0");
 			break;
 		case 1:
-			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Paden_BlueTeam_ToRespawn_0") : ("Paden_RedTeam_ToRespawn_0");
+			m_strStartPath = (m_pMyTeam->Get_TeamType() == eTEAM_TYPE::eBLUE) ? ("Hwara_BlueTeam_ToRespawn_0") : ("Hwara_RedTeam_ToRespawn_0");
 			break;
 		default:
 			break;
@@ -1450,7 +1470,22 @@ void CPlayer::Check_AbleRevival()
 			}*/
 			if (!m_bIsMainPlayer)
 			{
-				_float4 vStartPos = m_pMyTeam->Find_RespawnPosition_Start();
+				_float4 vStartPos;
+
+				// 1. respawn 거점 먹었으면 respawn에서
+				if (m_pMyTeam->Has_RespawnTrigger())
+				{
+					vStartPos = m_pMyTeam->Find_RespawnPosition("Hwara_Respawn");
+				}
+				else if (m_pMyTeam->Has_CenterTrigger())
+				{
+					vStartPos = m_pMyTeam->Find_RespawnPosition("Hwara_Center");
+				}
+				else
+				{
+					vStartPos = m_pMyTeam->Find_RespawnPosition_Start();
+				}
+
 				Respawn_Unit(vStartPos, m_eCurrentClass);
 			}
 
