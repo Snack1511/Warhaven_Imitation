@@ -109,12 +109,25 @@ void CUI_ScoreBoard::My_LateTick()
 {
 	__super::My_LateTick();
 
-	if (m_pPlayer)
+	if (m_eLoadLevel == LEVEL_PADEN)
 	{
-		_float4 vPos = m_pPlayerTransform->Get_World(WORLD_POS) * 1.5f;
-		vPos.z += -375.f;
-		vPos.x += 15.f;
-		m_pPlayerUI->Set_Pos(vPos.z, -vPos.x);
+		if (m_pPlayer)
+		{
+			_float4 vPos = m_pPlayerTransform->Get_World(WORLD_POS) * 1.5f;
+			vPos.z += -375.f;
+			vPos.x += 15.f;
+			m_pPlayerUI->Set_Pos(vPos.z, -vPos.x);
+		}
+	}
+	else
+	{
+		if (m_pPlayer)
+		{
+			_float4 vPos = m_pPlayerTransform->Get_World(WORLD_POS) * 1.2f;
+			vPos.z += -30.f;
+			vPos.x += 370.f;
+			m_pPlayerUI->Set_Pos(-vPos.x, vPos.z);
+		}
 	}
 }
 

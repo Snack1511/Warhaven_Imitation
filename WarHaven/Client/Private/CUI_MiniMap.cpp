@@ -221,7 +221,7 @@ void CUI_MiniMap::My_LateTick()
 	{
 		for (int i = 0; i < 8; ++i)
 		{
-			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 0.8f;
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 0.7f;
 			vPos.x += m_fHwaraOffSetX;
 			vPos.z += m_fHwaraOffSetY;
 			m_pPlayerIcon[i]->Set_Pos(-vPos.x, vPos.z);

@@ -546,7 +546,10 @@ void CUI_Oper::Progress_Oper()
 		{
 			m_iOperProgress++;
 
-			for (int i = 0; i < 3; ++i)
+			_uint iIndex;
+			iIndex = m_eLoadLevel == LEVEL_HWARA ? 2 : 3;
+
+			for (int i = 0; i < iIndex; ++i)
 			{
 				Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
 				m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
@@ -559,7 +562,10 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
-				for (int i = 3; i < 6; ++i)
+				_uint iIndex;
+				iIndex = m_eLoadLevel == LEVEL_HWARA ? 5 : 6;
+
+				for (int i = 3; i < iIndex; ++i)
 				{
 					Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
 					m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
@@ -1625,9 +1631,6 @@ void CUI_Oper::Init_StrongHoldEffect()
 		break;
 
 	case LEVEL_HWARA:
-		m_pArrStrongHoldEffect[2]->SetActive(false);
-		m_pArrStrongHoldEffect[5]->SetActive(false);
-
 		for (int i = 0; i < 6; ++i)
 			m_pArrStrongHoldEffect[i]->Set_PosX(23.f);
 
