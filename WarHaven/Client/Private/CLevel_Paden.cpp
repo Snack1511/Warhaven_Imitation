@@ -39,7 +39,7 @@ CLevel_Paden* CLevel_Paden::Create()
 HRESULT CLevel_Paden::Initialize()
 {
 	m_vCenterPos = ZERO_VECTOR;
-	m_fDistance = 600.f;
+	m_fDistance = 140.f;
 	m_vSunLook = _float4(-0.5f, -1.5f, 2.f);
 
 	return S_OK;

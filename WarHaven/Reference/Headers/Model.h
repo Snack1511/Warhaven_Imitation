@@ -22,6 +22,7 @@ public:
 	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, _float4x4 TransformMatrix);
 	static CModel* Create(_uint iGroupIdx, MODEL_TYPE eType, wstring wstrModelFilePath, _uint iNumInstance, VTXINSTANCE* pInstanceData, _float4x4 TransformMatrix);
 public:
+	_bool	Is_InFrustum() { return m_bFrustum; }
 	wstring	Get_ModelFilePath() { return m_wstrModelFilePath; }
 	wstring	Get_TextureFilePath(_uint iIndex);
 	wstring	Get_TextureFilePathFromParts(_uint iMeshPartType);
@@ -106,6 +107,7 @@ protected:
 	_bool						m_bCloned = false;
 	_bool						m_bCulling = false;
 	_bool						m_bInstancing = false;
+	_bool						m_bFrustum = true;
 
 protected:
 	_bool						m_bLOD = false;

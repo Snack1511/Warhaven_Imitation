@@ -1166,7 +1166,7 @@ void CGameSystem::On_StartGame()
 		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
 			continue;
 
-		static _uint g_iIndex = 0;
+		/*static _uint g_iIndex = 0;
 
 		if (g_iIndex == 0)
 		{
@@ -1174,7 +1174,7 @@ void CGameSystem::On_StartGame()
 			continue;
 		}
 
-		g_iIndex = 0;
+		g_iIndex = 0;*/
 
 		/* ai들은 랜덤 선택 함수 호출 */
 		elem.second->Choose_Character();

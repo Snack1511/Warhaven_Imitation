@@ -56,7 +56,7 @@ private:
 
 private:
 	_float		m_fCannonCoolAcc = 0.f;
-	_float		m_fCannonCoolTime = 3.f;
+	_float		m_fCannonCoolTime = 10.f;
 	CCannonBall* m_pCannonBall = nullptr;
 
 private:

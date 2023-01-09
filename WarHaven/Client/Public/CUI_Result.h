@@ -3,6 +3,8 @@
 
 BEGIN(Client)
 
+class CUI_ScoreInfo;
+
 class CUI_Result : public CUI_Wrapper
 {
 	DECLARE_PROTOTYPE(CUI_Result);

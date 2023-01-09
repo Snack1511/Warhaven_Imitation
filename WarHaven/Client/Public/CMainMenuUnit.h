@@ -13,7 +13,7 @@ private:
 	virtual ~CMainMenuUnit();
 
 public:
-	static	CMainMenuUnit* Create(const UNIT_MODEL_DATA& tUnitModelData);
+	static	CMainMenuUnit* Create(const UNIT_MODEL_DATA& tUnitModelData, CLASS_TYPE eClassType);
 
 public:
 	virtual void On_Die() override;
@@ -31,6 +31,9 @@ public:
 	virtual void OnDisable() override;
 	virtual void My_Tick() override;
 	virtual void My_LateTick()override;
+
+private:
+	CLASS_TYPE	m_eClassType = CLASS_END;
 };
 
 END

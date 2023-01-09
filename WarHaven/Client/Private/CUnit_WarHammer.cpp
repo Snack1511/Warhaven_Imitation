@@ -382,7 +382,7 @@ HRESULT CUnit_WarHammer::Initialize_Prototype()
 	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_Attack.fbx");
 
 	//3. hit
-	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_HIT.fbx");
+	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_Hit.fbx");
 
 	//4. ETCK
 	pAnimator->Add_Animations(L"../bin/resources/animations/WarHammer/SKEL_Engineer_ETC.fbx");

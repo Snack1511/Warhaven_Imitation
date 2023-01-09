@@ -124,6 +124,7 @@ PS_SHADOW_OUT PS_SHADOW_MAIN(PS_IN In)
 		);
 
 	Out.vLightDepth.rgb = In.vProjPos.w / 1500.f;
+	Out.vLightDepth.b = Out.vLightDepth.r * Out.vLightDepth.r;
 
 	vector vStaticDesc = g_StaticShadowTexture.Sample(ShadowSampler, staticUV);
 

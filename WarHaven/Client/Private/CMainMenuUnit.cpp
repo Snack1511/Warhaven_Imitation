@@ -22,9 +22,11 @@ CMainMenuUnit::~CMainMenuUnit()
 {
 }
 
-CMainMenuUnit* CMainMenuUnit::Create(const UNIT_MODEL_DATA& tUnitModelData)
+CMainMenuUnit* CMainMenuUnit::Create(const UNIT_MODEL_DATA& tUnitModelData, CLASS_TYPE eClassType)
 {
 	CMainMenuUnit* pInstance = new CMainMenuUnit;
+
+	pInstance->m_eClassType = eClassType;
 
 	if (FAILED(pInstance->SetUp_Model(tUnitModelData)))
 	{
@@ -74,29 +76,87 @@ HRESULT CMainMenuUnit::Initialize_Prototype()
 
 	Add_Component<CRenderer>(pRenderer);
 
-
-
 	//추가적으로 Animator 만들어야댐.
 
 	//  attack, hit, etc, parkour, L_Base, R_Base 를 기본적으로 fbx에 추가합니다.
 	//  기본적으로 L_Base 가 없는 Unit Mesh 가 있으면 L_Base 를 제거하고 Add_Animation 을 수행하자.
+	
+	wstring wstrAnimPath;
 
-	//0. R_Base
-	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, L"../bin/resources/animations/warrior/SKEL_Warrior_Base_R.fbx");
+	switch (m_eClassType)
+	{
+	case Client::WARRIOR:
+		wstrAnimPath = L"../bin/resources/animations/warrior/SKEL_Warrior";
+		break;
+	case Client::SPEAR:
+		return E_FAIL;
+		break;
+	case Client::ARCHER:
+		wstrAnimPath = L"../bin/resources/animations/archer/SKEL_Archer";
+		break;
+	case Client::PALADIN:
+		wstrAnimPath = L"../bin/resources/animations/paladin/SKEL_Paladin";
+		break;
+	case Client::PRIEST:
+		wstrAnimPath = L"../bin/resources/animations/priest/SKEL_Priest";
+		break;
+	case Client::ENGINEER:
+		wstrAnimPath = L"../bin/resources/animations/WarHammer/SKEL_Engineer";
+		break;
+	case Client::FIONA:
+		wstrAnimPath = L"../bin/resources/animations/Valkyrie/SKEL_Fiona";
+		break;
+	case Client::QANDA:
+		wstrAnimPath = L"../bin/resources/animations/qanda/SKEL_Qanda";
+		break;
+	case Client::HOEDT:
+		return E_FAIL;
+		break;
+	case Client::LANCER:
+		wstrAnimPath = L"../bin/resources/animations/lancer/SKEL_Lancer";
+		break;
+	case Client::CLASS_END:
+		return E_FAIL;
+		break;
+	default:
+		break;
+	}
+
+	wstring wstrTemp = wstrAnimPath + L"_Base_R.fbx";
+	CAnimator* pAnimator = CAnimator::Create(CP_BEFORE_RENDERER, wstrTemp);
 	if (!pAnimator)
 		return E_FAIL;
 
 	//1. L_Base
-	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Base_L.fbx");
+	if (m_eClassType == PRIEST)
+	{
+		pAnimator->Add_Animations(L"../bin/resources/animations/Priest/A_LobbyIdle_Priest_01.fbx");
+
+	}
+	else if (m_eClassType == QANDA)
+	{
+		pAnimator->Add_Animations(L"../bin/resources/animations/qanda/SKEL_Qanda_Attack.fbx");
+
+	}
+
+	else
+	{
+		wstrTemp = wstrAnimPath + L"_Base_L.fbx";
+		pAnimator->Add_Animations(wstrTemp);
+	}
+	
 
 	//2. Attack
-	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Attack.fbx");
+	wstrTemp = wstrAnimPath + L"_Attack.fbx";
+	pAnimator->Add_Animations(wstrTemp);
 
 	//3. hit
-	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_Hit.fbx");
+	wstrTemp = wstrAnimPath + L"_Hit.fbx";
+	pAnimator->Add_Animations(wstrTemp);
 
 	//4. ETC
-	pAnimator->Add_Animations(L"../bin/resources/animations/warrior/SKEL_Warrior_ETC.fbx");
+	wstrTemp = wstrAnimPath + L"_ETC.fbx";
+	pAnimator->Add_Animations(wstrTemp);
 
 
 	Add_Component(pAnimator);
@@ -126,10 +186,40 @@ HRESULT CMainMenuUnit::Start()
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
 
-	/* Warrior Idle */
-	m_pAnimator->Set_CurAnimIndex(ANIM_BASE_R, 11, ANIM_DIVIDE::eDEFAULT);
-	m_pAnimator->Set_InterpolationTime(ANIM_BASE_R, 11, 0.1f);
-	m_pAnimator->Set_AnimSpeed(ANIM_BASE_R, 11, 1.f);
+	ANIM_TYPE	eAnimType = ANIM_BASE_R;
+	_uint		iAnimIndex = 11;
+
+	switch (m_eClassType)
+	{
+	case Client::WARRIOR:
+		break;
+	case Client::SPEAR:
+		break;
+	case Client::ARCHER:
+		break;
+	case Client::PALADIN:
+		break;
+	case Client::PRIEST:
+		break;
+	case Client::ENGINEER:
+		break;
+	case Client::FIONA:
+		break;
+	case Client::QANDA:
+		break;
+	case Client::HOEDT:
+		break;
+	case Client::LANCER:
+		break;
+	case Client::CLASS_END:
+		break;
+	default:
+		break;
+	}
+
+	m_pAnimator->Set_CurAnimIndex(eAnimType, iAnimIndex, ANIM_DIVIDE::eDEFAULT);
+	m_pAnimator->Set_InterpolationTime(eAnimType, iAnimIndex, 0.1f);
+	m_pAnimator->Set_AnimSpeed(eAnimType, iAnimIndex, 1.f);
 
 	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
 	_float4 vMyPos = vCamPos + GAMEINSTANCE->Get_CurCamLook() * 0.8f;
@@ -145,6 +235,9 @@ HRESULT CMainMenuUnit::Start()
 void CMainMenuUnit::OnEnable()
 {
 	CGameObject::OnEnable();
+
+	
+
 }
 
 void CMainMenuUnit::OnDisable()

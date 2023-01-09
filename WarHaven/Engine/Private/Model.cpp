@@ -660,9 +660,11 @@ void CModel::Final_Tick()
 			{
 				m_MeshContainers[i].second->Set_Enable(false);
 			}
+			m_bFrustum = false;
 		}
 		else
 		{
+			m_bFrustum = true;
 			//d있으면 LOD 체크
 			if (m_bLOD)
 			{
@@ -941,6 +943,31 @@ HRESULT CModel::Bake_Shadow(_uint iMeshContainerIndex, CShader* pShader, _uint i
 {
 	if (iMeshContainerIndex >= m_iNumMeshContainers)
 		return E_FAIL;
+
+	if (m_bLOD)
+	{
+		if (m_eMODEL_TYPE == TYPE_NONANIM)
+		{
+			//무조건 원본으루
+			if (m_MeshContainers[iMeshContainerIndex].first != 0)
+				return S_OK;
+		}
+		else
+		{
+			//무조건 LOD3 으루
+			//4 5 6 이 아닌 상태에서 30보다 작으면 걸러
+			if (!(m_MeshContainers[iMeshContainerIndex].first >= 4 && m_MeshContainers[iMeshContainerIndex].first <= 6))
+			{
+				if (m_MeshContainers[iMeshContainerIndex].first < 30)
+					return S_OK;
+			}
+		}
+	}
+	else
+	{
+		if (!m_MeshContainers[iMeshContainerIndex].second->Is_Valid())
+			return S_OK;
+	}
 
 	//m_MeshContainers[iMeshContainerIndex].second->Set_ShaderResourceFlag(pShader, "g_vFlag");
 

@@ -28,13 +28,14 @@ return pInstance;\
 
 // Warrior, Engineer 는 지휘관 급에서 사용하기 때문에 만약 Define 을 주석건다면 PlayerInfo_Leader 에서 #else 나 #ifndef 로 처리해주세요
 #define WARRIOR_TH
+#define ARCHER_TH
 #define ENGINEER_TH 
 #define FIONA_TH
 //#define PALADIN_TH
 #define ENGINEER_TH 
 #define QANDA_TH
 //#define PRIEST_TH
-#define LANCER_TH
+//#define LANCER_TH
 
 BEGIN(Client)
 
@@ -86,6 +87,9 @@ public:
 
 	wstring Get_PlayerName() { return m_tPlayerInfo.wstrName; }
 	wstring Get_LookAtCamName() { return m_tPlayerInfo.wstrCamName; }
+
+	PLAYER_SETUP_DATA	Get_SetUpData() { return m_tPlayerSetUpData; }
+
 public:
 	/* 커스텀 추가될 때마다 여기 enum 추가해서 넣어놓기 */
 	enum class eCUSTOM_HEAD { eDEFAULT, eHEAD1, eHEAD2, eRABBIT };
@@ -104,12 +108,14 @@ public:
 public:
 	virtual HRESULT	Initialize() PURE;
 	virtual void Release();
+
 public:
 	/* 
 		외부에서 AI설정을 변경하는 용도	
 		AI툴에서 사용하기 위해 생성 
 	*/
 	void Set_Personality(CAIPersonality* pPersonality);
+
 protected:
 	/* GameObject들 포인터 */
 	CPlayer* m_pMyPlayer = nullptr;

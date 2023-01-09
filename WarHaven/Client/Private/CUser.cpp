@@ -139,7 +139,7 @@ void CUser::KeyInput_FPSSetter()
 
 		if (dCurFPSLimit <= 0.)
 		{
-			dCurFPSLimit = 1. / 120.;
+			dCurFPSLimit = 1. / 90.;
 		}
 		else
 		{

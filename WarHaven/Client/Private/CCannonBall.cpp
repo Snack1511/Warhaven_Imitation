@@ -150,9 +150,9 @@ void CCannonBall::My_LateTick()
 
 	m_pTransform->Make_WorldMatrix();
 
-	_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
+	_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length() * fDT(0);
 
-	if (fPower < 15.f)
+	if (fPower < 15.f * fDT(0))
 		On_Boom();
 }
 

@@ -192,7 +192,7 @@ HRESULT CRender_Manager::Initialize()
 	D3D11_TEXTURE2D_DESC	TextureDesc;
 	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
 
-	TextureDesc.Width = 1280;
+	TextureDesc.Width = 8000;
 	//TextureDesc.Width = 1280;
 	_float fRatio = (_float)TextureDesc.Width / 1280.f;
 	TextureDesc.Height = (_uint)(ViewPortDesc.Height * fRatio);
@@ -1201,7 +1201,7 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 			return E_FAIL;
 
 		/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
-		m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+		m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_DownScaleWorldMatrix, sizeof(_float4x4));
 
 		m_vecShader[SHADER_BLUR]->Begin(2);
 
@@ -1216,7 +1216,7 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 			return E_FAIL;
 		if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_HorizonBlur")))))
 			return E_FAIL;
-		m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+		m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_UpScaleWorldMatrix, sizeof(_float4x4));
 
 		m_vecShader[SHADER_BLUR]->Begin(1);
 

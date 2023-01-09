@@ -457,7 +457,7 @@ HRESULT CUnit_Valkyrie::Initialize_Prototype()
 	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_Attack.fbx");
 
 	//3. hit
-	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_HIT.fbx");
+	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_Hit.fbx");
 
 	//4. ETC
 	pAnimator->Add_Animations(L"../bin/resources/animations/Valkyrie/SKEL_Fiona_ETC.fbx");

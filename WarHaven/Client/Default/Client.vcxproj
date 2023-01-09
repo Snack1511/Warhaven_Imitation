@@ -189,6 +189,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\Public\CAIController.h" />
     <ClInclude Include="..\Public\CAIPersonality.h" />
+    <ClInclude Include="..\public\CMainMenuPlayer.h" />
     <ClInclude Include="..\Public\CUI_Cannon.h" />
     <ClInclude Include="..\Public\CLancerNeedle.h" />
     <ClInclude Include="..\Public\CUnit_Lancer_Head.h" />
@@ -1166,6 +1167,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
+    <ClCompile Include="..\private\CMainMenuPlayer.cpp" />
     <ClCompile Include="..\Private\CUI_Cannon.cpp" />
     <ClCompile Include="..\Private\CLancerNeedle.cpp" />
     <ClCompile Include="..\Private\CUnit_Lancer_Head.cpp" />

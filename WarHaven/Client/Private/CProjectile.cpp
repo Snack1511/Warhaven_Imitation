@@ -590,9 +590,9 @@ void CProjectile::My_LateTick()
 
 		m_pTransform->Make_WorldMatrix();
 
-		_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length();
+		_float fPower = CUtility_PhysX::To_Vector(m_pActor->getLinearVelocity()).Length() * fDT(0);
 
-		if (fPower < 25.f)
+		if (fPower < 25.f * fDT(0))
 			On_ChangePhase(eHIT);
 
 		_float fLength = (m_vStartPosition - m_pTransform->Get_World(WORLD_POS)).Length();

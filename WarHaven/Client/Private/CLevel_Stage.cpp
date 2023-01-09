@@ -59,7 +59,6 @@ CLevel_Stage::~CLevel_Stage()
 
 HRESULT CLevel_Stage::Initialize()
 {
-
 	return S_OK;
 }
 

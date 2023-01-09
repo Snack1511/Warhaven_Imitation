@@ -9,6 +9,7 @@
 #include "ImGui_Manager.h"
 #include "CUser.h"
 
+#include "CMainMenuPlayer.h"
 #include "CMainMenuUnit.h"
 
 #include "CEffects_Factory.h"
@@ -56,23 +57,9 @@ HRESULT CLevel_Main::Enter()
 	CUser::Get_Instance()->On_EnterLevel();
 
 
-	CUnit::UNIT_MODEL_DATA tData =
-	{
-		L"../bin/resources/meshes/characters/Warrior/Warrior.fbx",
-		L"../bin/resources/meshes/characters/Warrior/Body/SK_Warrior0001_Body_A00.fbx",
-		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0001_Face_A00.fbx",
-		L"../bin/resources/meshes/characters/Warrior/Head/SK_Warrior0002_Helmet_A00_Main.fbx",
-		L"../bin/resources/meshes/weapons/longsword/SM_WP_LongSword0001_A00.fbx"
-
-	};
-
-	tData.strRefBoneName[MODEL_PART_WEAPON] = "0B_R_WP1";
-
-	CMainMenuUnit* pMainMenuUnit = CMainMenuUnit::Create(tData);
-	if (!pMainMenuUnit)
-		return E_FAIL;
-	pMainMenuUnit->Initialize();
-	Ready_GameObject(pMainMenuUnit, GROUP_PLAYER);
+	CMainMenuPlayer* pMain = CMainMenuPlayer::Create(CUser::Get_Instance()->Get_MainPlayerInfo());
+	pMain->Initialize();
+	Ready_GameObject(pMain, GROUP_PLAYER);
 
 	LIGHTDESC			LightDesc;
 
@@ -83,7 +70,7 @@ HRESULT CLevel_Main::Enter()
 	LightDesc.vPosition.z += -4.4f;
 	LightDesc.fRange = 1000.f;
 	LightDesc.vDiffuse = _float4(0.25f, 0.25f, 0.25f, 1.f);
-	LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
 	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
@@ -93,26 +80,9 @@ HRESULT CLevel_Main::Enter()
 
 	GAMEINSTANCE->Bake_StaticShadow(vecTemp, _float4(-999.f, -999.f, -999.f), 10.f, _float4(1.f, -10.f, 1.f, 0.f), false);
 
-
-	/*LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = _float4(-999.f, -999.f, -999.f);
-	LightDesc.vPosition.y += 1.f;
-	LightDesc.vPosition.z -= 1.f;
-	LightDesc.vPosition.x += 1.f;
-	LightDesc.fRange = 30.f;
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
-
-	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
-		return E_FAIL;*/
-
-
-
 	__super::Enter();
 
 	GAMEINSTANCE->Save_Memory();
-
 
 	return S_OK;
 }

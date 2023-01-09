@@ -106,6 +106,9 @@ void CModel_Renderer::Late_Tick()
 
 HRESULT CModel_Renderer::Render()
 {
+	if (!m_pModelCom->Is_InFrustum())
+		return S_OK;
+
 	m_pShaderCom->CallBack_SetRawValues(m_pShaderCom, "");
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
@@ -135,6 +138,9 @@ HRESULT CModel_Renderer::Render()
 
 HRESULT CModel_Renderer::Bake_Shadow(_float4x4 ViewMatrix)
 {
+	if (!m_pModelCom->Is_InFrustum())
+		return S_OK;
+
 	m_pOwner->Get_Transform()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
 
 	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
