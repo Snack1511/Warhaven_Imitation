@@ -469,7 +469,5 @@ private:
 	void		On_DieBegin(CUnit* pOtherUnit, _float4 vHitPos);
 	void		On_Bounce(void* pHitInfo);
 
-
-
 };
 END

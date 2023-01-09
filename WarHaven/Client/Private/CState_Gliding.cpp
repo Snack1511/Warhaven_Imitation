@@ -52,6 +52,8 @@ HRESULT CState_Gliding::Initialize()
 
 void CState_Gliding::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    CUser::Get_Instance()->SetActive_InteractUI(false);
+
     if (ePrevType != m_ePreStateType && pOwner->Get_OwnerPlayer()->Get_CurClass() >= FIONA)
         m_iAnimIndex = 11;
 
@@ -131,13 +133,21 @@ STATE_TYPE CState_Gliding::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
 
     if (pOwner->Is_Air())
     {
+        CUser::Get_Instance()->Set_InteractKey(50);
+        CUser::Get_Instance()->Set_InteractText(TEXT("È°°ø"));
+        CUser::Get_Instance()->SetActive_InteractUI(true);
+
         if (KEY(SPACE, TAP))
         {
             return m_eStateType;
         }
     }
-        
+    else
+    {
+        CUser::Get_Instance()->SetActive_InteractUI(false);
 
+    }
+        
 
     return STATE_END;
 }

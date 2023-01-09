@@ -6,6 +6,9 @@
 #include "CUser.h"
 #include "CUI_Cursor.h"
 #include "CUI_Main.h"
+#include "CPlayerInfo_Main.h"
+
+_bool CUI_Barracks::m_bIsUnlock_RabbitHat = false;
 
 CUI_Barracks::CUI_Barracks()
 {
@@ -20,7 +23,6 @@ HRESULT CUI_Barracks::Initialize_Prototype()
 	Create_ClassPort();
 	Create_ClassInfo();
 	Create_ClassBtn();
-
 	Create_TopBtn();
 	Create_SkinInfo();
 	Create_SkinBtn();
@@ -36,7 +38,6 @@ HRESULT CUI_Barracks::Start()
 	Init_ClassPort();
 	Init_ClassInfo();
 	Init_ClassBtn();
-
 	Init_TopBtn();
 	Init_SkinInfo();
 	Init_SkinBtn();
@@ -59,6 +60,8 @@ void CUI_Barracks::On_PointerExit_Port(const _uint& iEventNum)
 
 void CUI_Barracks::On_PointerDown_Port(const _uint& iEventNum)
 {
+	CUser::Get_Instance()->Enable_SkinPopup(0);
+
 	m_iPrvEventNum = m_iCurEventNum;
 	m_iCurEventNum = iEventNum;
 
@@ -126,6 +129,9 @@ void CUI_Barracks::On_PointerDown_Btn(const _uint& iEventNum)
 
 	m_pTopBtn[0]->Set_FontColor(m_vColorWhite);
 
+	CUser::Get_Instance()->SetActive_MainTopBtn(false);
+	CUser::Get_Instance()->Set_TopBtnEffectPosX(-550.f);
+
 	m_bIsSkinEnable = true;
 }
 
@@ -137,6 +143,14 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 	if (m_iPrvSelectSkin == iEventNum)
 		return;
 
+	_float fPosX = -550.f + (iEventNum * 95.f);
+	CUser::Get_Instance()->Set_TopBtnEffectPosX(fPosX);
+
+	if (m_iCurSelectSkin == Skin::Hat)
+	{
+
+	}
+
 	m_pTopBtn[m_iPrvSelectSkin]->Set_IsClick(false);
 	m_pTopBtn[m_iPrvSelectSkin]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
@@ -144,6 +158,80 @@ void CUI_Barracks::On_PointerDown_TopBtn(const _uint& iEventNum)
 	m_pTopBtn[m_iCurSelectSkin]->Set_FontColor(m_vColorWhite);
 
 	m_bTickDisable = true;
+}
+
+void CUI_Barracks::On_PointerStay_SkinBG(const _uint& iEventNum)
+{
+	if (m_iCurSelectSkin == Skin::Hat)
+	{
+		if (m_bIsUnlock_RabbitHat)
+		{
+			if (iEventNum > 1)
+				CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+		}
+		else
+		{
+			if (iEventNum > 0)
+				CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+		}
+	}
+	else
+	{
+		if (iEventNum > 0)
+			CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+	}
+}
+
+void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
+{
+	if (m_iCurSelectSkin == Skin::Hat)
+	{
+		if (m_bIsUnlock_RabbitHat)
+		{
+			for (int j = 0; j < 2; ++j)
+			{
+				for (int i = SB_Outline; i < SB_Lock; ++i)
+					Disable_Fade(m_pArrSkinBtn[j][i], m_fDuration);
+			}
+
+			switch (iEventNum)
+			{
+			case 0:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("미착용"));
+				m_pSkinInfo[Skin_Tier]->Set_FontRender(false);
+
+				for (int i = SB_Outline; i < SB_Lock; ++i)
+					Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+
+				break;
+			case 1:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("토끼탈"));
+				m_pSkinInfo[Skin_Tier]->Set_FontRender(true);
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("고급"));
+				m_pSkinInfo[Skin_Tier]->Set_FontColor(RGB(60, 100, 200));
+
+				for (int i = SB_Outline; i < SB_Lock; ++i)
+					Enable_Fade(m_pArrSkinBtn[1][i], m_fDuration);
+
+				break;
+			}
+		}
+		else
+		{
+			if (iEventNum > 0)
+				return;
+		}
+	}
+	else
+	{
+		if (iEventNum > 0)
+			return;
+	}
+}
+
+void CUI_Barracks::Unlock_RabbitHat()
+{
+	m_bIsUnlock_RabbitHat = true;
 }
 
 void CUI_Barracks::My_Tick()
@@ -188,6 +276,19 @@ void CUI_Barracks::OnEnable()
 	__super::OnEnable();
 
 	m_bIsEnable = true;
+
+	for (int i = 0; i < Port_Underline; ++i)
+	{
+		m_pArrClassPort[0][i]->Set_PosY(-240.f);
+
+		if (i == Port_Class)
+			m_pArrClassPort[0][i]->Set_PosY(-185.f);
+	}
+
+	Enable_Fade(m_pArrClassPort[0][Port_Outline], m_fDuration);
+	Enable_Fade(m_pArrClassPort[0][Port_Underline], m_fDuration);
+
+	m_pArrClassPort[0][Port_Underline]->Set_Scale(100.f, 2.f);
 }
 
 void CUI_Barracks::OnDisable()
@@ -380,7 +481,7 @@ void CUI_Barracks::Create_TopBtn()
 		m_pTopBtn[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 
 		_float fPosX = -560.f + (i * 95.f);
-		m_pTopBtn[i]->Set_Pos(fPosX, 200.f);
+		m_pTopBtn[i]->Set_Pos(fPosX, 300.f);
 		m_pTopBtn[i]->Set_Scale(75.f, 35.f);
 		m_pTopBtn[i]->Set_Sort(0.5f);
 
@@ -390,6 +491,7 @@ void CUI_Barracks::Create_TopBtn()
 		m_pTopBtn[i]->Set_FontStyle(true);
 		m_pTopBtn[i]->Set_FontCenter(true);
 		m_pTopBtn[i]->Set_FontScale(0.4f);
+		m_pTopBtn[i]->Set_FontOffset(5.f, 5.f);
 		m_pTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
 		switch (i)
@@ -407,7 +509,7 @@ void CUI_Barracks::Create_TopBtn()
 			break;
 
 		case 3:
-			m_pTopBtn[i]->Set_FontText(TEXT("글라이더"));
+			m_pTopBtn[i]->Set_FontText(TEXT("날틀"));
 			break;
 		}
 	}
@@ -494,6 +596,7 @@ void CUI_Barracks::Create_SkinBtn()
 			GET_COMPONENT_FROM(m_pSkinBtn[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pSkinBtn[i], "/Lobby/Barracks/Skin", "T_ItemBG");
 			m_pSkinBtn[i]->Set_Sort(0.5f);
+			m_pSkinBtn[i]->Set_MouseTarget(true);
 			break;
 
 		case SB_Outline:
@@ -644,7 +747,7 @@ void CUI_Barracks::Init_ClassBtn()
 
 	m_pArrClassBtn[0][Btn_Text]->Set_PosX(-555.f);
 	m_pArrClassBtn[0][Btn_Text]->Set_FontText(TEXT("스킨"));
-	m_pArrClassBtn[0][Btn_LockText]->Set_FontText(TEXT("의상·무기·모자·글라이더"));
+	m_pArrClassBtn[0][Btn_LockText]->Set_FontText(TEXT("의상·무기·모자·날틀"));
 
 	m_pArrClassBtn[1][Btn_Text]->Set_PosX(-540.f);
 	m_pArrClassBtn[1][Btn_Text]->Set_FontText(TEXT("특성"));
@@ -677,7 +780,7 @@ void CUI_Barracks::Init_SkinInfo()
 
 void CUI_Barracks::Init_Skin()
 {
-	for (int i = 0; Skin::End; ++i)
+	for (int i = 0; i < Skin::End; ++i)
 	{
 		CREATE_GAMEOBJECT(m_pSkin[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pSkin[i]);
@@ -702,10 +805,10 @@ void CUI_Barracks::Init_Skin()
 
 void CUI_Barracks::Init_SkinBtn()
 {
-	for (int j = 0; j < SB_End; ++j)
+	for (int i = 0; i < SB_End; ++i)
 	{
-		CREATE_GAMEOBJECT(m_pSkinBtn[j], GROUP_UI);
-		DISABLE_GAMEOBJECT(m_pSkinBtn[j]);
+		CREATE_GAMEOBJECT(m_pSkinBtn[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pSkinBtn[i]);
 	}
 
 	for (int i = 0; i < 3; ++i)
@@ -724,6 +827,10 @@ void CUI_Barracks::Init_SkinBtn()
 
 			switch (j)
 			{
+			case SB_BG:
+				m_pArrSkinBtn[i][j]->Set_TextureIndex(i);
+				break;
+
 			case SB_Select:
 			{
 				_float fSelectPosX = fPosX + 45.f;
@@ -762,6 +869,12 @@ void CUI_Barracks::Bind_Btn()
 	for (int i = 0; i < 4; ++i)
 	{
 		m_pTopBtn[i]->CallBack_PointDown += bind(&CUI_Barracks::On_PointerDown_TopBtn, this, i);
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		m_pArrSkinBtn[i][SB_BG]->CallBack_PointStay += bind(&CUI_Barracks::On_PointerStay_SkinBG, this, i);
+		m_pArrSkinBtn[i][SB_BG]->CallBack_PointDown += bind(&CUI_Barracks::On_PointerDown_SkinBG, this, i);
 	}
 }
 
@@ -825,10 +938,11 @@ void CUI_Barracks::Late_Enable()
 			for (int i = 0; i < CLASS_END; ++i)
 			{
 				for (int j = 0; j < Port_Highlight; ++j)
-				{
 					Enable_Fade(m_pArrClassPort[i][j], m_fDuration);
-				}
 			}
+
+			for (int j = 0; j < Port_Highlight; ++j)
+				m_pArrClassPort[m_iSelectClass][j]->SetActive(true);
 
 			for (int i = 0; i < 3; ++i)
 			{
@@ -845,9 +959,7 @@ void CUI_Barracks::Late_Enable()
 			}
 
 			for (int i = 0; i < Info_End; ++i)
-			{
 				Enable_Fade(m_pClassInfo[i], m_fDuration);
-			}
 		}
 	}
 }
@@ -865,6 +977,9 @@ void CUI_Barracks::Late_SkinEnable()
 			for (int i = 0; i < 4; ++i)
 				Enable_Fade(m_pTopBtn[i], m_fDuration);
 
+			for (int i = 0; i < Skin_End; ++i)
+				Enable_Fade(m_pSkinInfo[i], m_fDuration);
+
 			Set_SkinIdx((CLASS_TYPE)m_iSelectClass);
 
 			m_bIsSkinWindow = true;
@@ -876,35 +991,47 @@ void CUI_Barracks::Disable_SkinWindow()
 {
 	if (KEY(ESC, TAP))
 	{
-		if (m_bIsSkinWindow)
+		if (!m_bIsSkinWindow)
+			return;
+
+		Enable_Fade(m_pArrClassPort[m_iSelectClass][Port_Outline], m_fDuration);
+		Enable_Fade(m_pArrClassPort[m_iSelectClass][Port_Underline], m_fDuration);
+
+		m_pArrClassPort[m_iSelectClass][Port_Underline]->Set_Scale(100.f, 2.f);
+
+		m_bIsSkinWindow = false;
+		m_bIsEnable = true;
+
+		m_pTopBtn[m_iCurSelectSkin]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
+		m_iCurSelectSkin = Skin::Clothes;
+
+		for (int i = 0; i < 4; ++i)
+			Disable_Fade(m_pTopBtn[i], m_fDuration);
+
+		for (int i = 0; i < Skin_End; ++i)
+			Disable_Fade(m_pSkinInfo[i], m_fDuration);
+
+		for (int i = 0; i < 3; ++i)
 		{
-			m_bIsEnable = true;
+			for (int j = 0; j < SB_End; ++j)
+				Disable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
 
-			m_iCurSelectSkin = Skin::Clothes;
-
-			for (int i = 0; i < 4; ++i)
-				Disable_Fade(m_pTopBtn[i], m_fDuration);
-
-			for (int i = 0; i < Skin_End; ++i)
-				Disable_Fade(m_pSkinInfo[i], m_fDuration);
-
-			for (int i = 0; i < 3; ++i)
-			{
-				for (int j = 0; j < SB_End; ++j)
-					Disable_Fade(m_pArrSkinBtn[i][j], m_fDuration);
-			}
-
-			for (int i = 0; i < 3; ++i)
-			{
-				for (int j = 0; j < Skin::End; ++j)
-					Disable_Fade(m_pArrSkin[i][j], m_fDuration);
-			}
+			for (int j = 0; j < Skin::End; ++j)
+				Disable_Fade(m_pArrSkin[i][j], m_fDuration);
 		}
+
+		CUser::Get_Instance()->SetActive_MainTopBtn(true);
+		CUser::Get_Instance()->Set_TopBtnEffectPosX(-455.f);
 	}
 }
 
 void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 {
+	if (!m_pSkinInfo[Skin_Tier]->Get_FontRender())
+		m_pSkinInfo[Skin_Tier]->Set_FontRender(true);
+
+	m_pSkinInfo[Skin_Tier]->Set_FontColor(RGB(255, 255, 255));
+
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < SB_End; ++j)
@@ -931,6 +1058,37 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 
 	if (m_iCurSelectSkin == Skin::Clothes)
 	{
+		if (m_iSelectClass < FIONA)
+		{
+			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련복"));
+			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+		}
+		else
+		{
+			switch (m_iSelectClass)
+			{
+			case FIONA:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("피오나 일반복"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case QANDA:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("콴다 일반복"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case HOEDT:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("호에트 일반복"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case LANCER:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("랜서 일반복"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			}
+		}
+
 		if (m_iSelectClass < QANDA)
 		{
 			m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
@@ -973,6 +1131,34 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 	{
 		if (m_iSelectClass < FIONA)
 		{
+			switch (m_iSelectClass)
+			{
+			case Client::WARRIOR:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 검"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::SPEAR:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 창"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::ARCHER:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 활"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::PALADIN:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 메이스"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::PRIEST:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 지팡이"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			case Client::ENGINEER:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 해머"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			}
+
 			m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
 			m_pArrSkinBtn[0][SB_Blind]->SetActive(false);
 
@@ -987,6 +1173,29 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 		}
 		else
 		{
+			switch (m_iSelectClass)
+			{
+			case FIONA:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("피오나의 검"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case QANDA:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("콴다의 지팡이"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case HOEDT:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("호에트의 지팡이"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+
+			case LANCER:
+				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("랜서의 창"));
+				m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+				break;
+			}
+
 			m_pArrSkin[2][m_iCurSelectSkin]->Set_TextureIndex(iNum);
 
 			for (int i = 0; i < 2; ++i)
@@ -1004,6 +1213,23 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 
 	if (m_iCurSelectSkin >= Skin::Hat)
 	{
+		if (m_iCurSelectSkin == Skin::Hat)
+		{
+			if (m_bIsUnlock_RabbitHat)
+			{
+				for (int i = SB_Lock; i < SB_End; ++i)
+					m_pArrSkinBtn[1][i]->SetActive(false);
+			}
+
+			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("미착용"));
+			m_pSkinInfo[Skin_Tier]->Set_FontRender(false);
+		}
+		else
+		{
+			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("훈련용 날틀"));
+			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("일반"));
+		}
+
 		m_pArrSkinBtn[0][SB_Lock]->SetActive(false);
 		m_pArrSkinBtn[0][SB_Blind]->SetActive(false);
 

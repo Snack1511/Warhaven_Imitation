@@ -38,6 +38,9 @@ class CUI_Interact;
 class CUI_MiniMap;
 class CUI_ScoreBoard;
 class CUI_ScoreInfo;
+class CUI_Cannon;
+class CUI_Main;
+class CUI_Barracks;
 
 class CTeamConnector;
 
@@ -183,6 +186,7 @@ public:
 
 public:
 	void Enable_Popup(_uint iPopupType);
+	void Enable_SkinPopup(_uint iSkin);
 
 public:	// 킬로그
 	void Add_KillLog(CPlayer* attacker, CPlayer* victim);
@@ -199,15 +203,27 @@ public:	// 상호작용
 	void Set_InteractKey(_uint iKeyIndex);
 	void Set_InteractText(wstring wstrText);
 	void Set_InteractTarget(CGameObject* pInteractTarget);
+	void SetActive_CannonUI(_bool value);
+	void Set_CannonCoolTime(_float fTime, _float fMaxTime);
+	void SetActive_CannonCoolTime(_bool value);
 
 public: // 플레이어 KDA
 	void Get_ScoreInfo(CPlayer* pPlayer);
 	map<_uint, list<CUI_ScoreInfo*>> Get_ScoreInfoMap();
+
 	void Sort_ScoreInfo();
 	void Set_ScoreBoardConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime);
 	void Set_ScoreBoardGaugeColor(_bool IsMainTeam, _uint iPointIdx);
 	void Set_ScoreBoardPointColor(_bool IsMainTeam, _uint iPoinIdx);
 	void Set_ScoreBoardPlayer(CPlayer* pPlayer);
+
+public:	// 메인메뉴
+	void SetActive_MainTopBtn(_bool value);
+	void Set_TopBtnEffectPosX(_float fPosX);
+
+	void SetActive_Barracks(_bool value);
+	void Unlock_RabbitHat();
+	void SetActive_SkinPopup(_bool value);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
@@ -220,12 +236,16 @@ private:
 	CUI_Popup* m_pUI_Popup = nullptr;
 	CUI_Result* m_pUI_Result = nullptr;
 
+	CUI_Main* m_pMainUI = nullptr;
+	CUI_Barracks* m_pBarracks = nullptr;
+
 private:	// 소생
 	CUI_Revive* m_pReviveUI[7];
 	_uint m_iReviveIdx = 0;
 
 private:	// 상호작용
 	CUI_Interact* m_pInteractUI = nullptr;
+	CUI_Cannon* m_pCannonUI = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

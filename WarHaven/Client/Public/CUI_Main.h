@@ -1,5 +1,8 @@
 #pragma once
 #include "CUI_Wrapper.h"
+
+BEGIN(Client)
+
 class CUI_Main : public CUI_Wrapper
 {
 	DECLARE_PROTOTYPE(CUI_Main);
@@ -29,6 +32,8 @@ public:
 	void SetActive_TopBtn(_bool value);
 	void SetActive_PlayerNameText(_bool value);
 	void SetActive_MainWindow(MainWindow eWindow);
+
+	void Set_TopBtnEffectPosX(_float fPosX);
 
 private:
 	enum TopBtn { TB_Play, /*TB_Barracks,*/ TB_Profile, TB_End };
@@ -69,3 +74,4 @@ private:
 	void Bind_Shader();
 };
 
+END

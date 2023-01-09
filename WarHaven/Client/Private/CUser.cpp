@@ -49,6 +49,9 @@
 #include "CUI_MiniMap.h"
 #include "CUI_ScoreBoard.h"
 #include "CUI_ScoreInfo.h"
+#include "CUI_Cannon.h"
+#include "CUI_Main.h"
+#include "CUI_Barracks.h"
 
 #include "CUI_Cursor.h"
 #include "CUI_Animation.h"
@@ -441,6 +444,25 @@ _bool CUser::Get_SelectTargetPoint()
 
 void CUser::On_EnterLevel()
 {
+	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
+	if (m_eLoadLevel == LEVEL_MAINMENU)
+	{
+		if (!m_pMainUI)
+		{
+			m_pMainUI = CUI_Main::Create();
+
+			CREATE_GAMEOBJECT(m_pMainUI, GROUP_UI);
+		}
+
+		if (!m_pBarracks)
+		{
+			m_pBarracks = CUI_Barracks::Create();
+
+			CREATE_GAMEOBJECT(m_pBarracks, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pBarracks);
+		}
+	}
+
 	DISABLE_GAMEOBJECT(m_pCursor);
 	ENABLE_GAMEOBJECT(m_pCursor);
 }
@@ -454,6 +476,7 @@ void CUser::On_EnterStageLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
 
+
 	if (!m_pUI_HUD)
 	{
 		m_pUI_HUD = CUI_HUD::Create();
@@ -464,6 +487,14 @@ void CUser::On_EnterStageLevel()
 		m_pUI_HeroGauge = static_cast<CUI_HeroGauge*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_HeroGauge));
 		m_pUI_Skill = static_cast<CUI_Skill*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Skill));
 		m_pUI_Crosshair = static_cast<CUI_Crosshair*>(CUser::Get_Instance()->Get_HUD(CUI_HUD::HUD_Crosshair));
+	}
+
+	if (!m_pInteractUI)
+	{
+		m_pInteractUI = CUI_Interact::Create();
+
+		CREATE_GAMEOBJECT(m_pInteractUI, GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pInteractUI);
 	}
 
 	if (!m_pUI_Damage[0])
@@ -543,14 +574,6 @@ void CUser::On_EnterStageLevel()
 			DISABLE_GAMEOBJECT(m_pUI_Result);
 		}
 
-		if (!m_pInteractUI)
-		{
-			m_pInteractUI = CUI_Interact::Create();
-
-			CREATE_GAMEOBJECT(m_pInteractUI, GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pInteractUI);
-		}
-
 		if (!m_pMiniMap)
 		{
 			m_pMiniMap = CUI_MiniMap::Create();
@@ -565,6 +588,14 @@ void CUser::On_EnterStageLevel()
 
 			CREATE_GAMEOBJECT(m_pScoreBoard, GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pScoreBoard);
+		}
+
+		if (!m_pCannonUI)
+		{
+			m_pCannonUI = CUI_Cannon::Create();
+
+			CREATE_GAMEOBJECT(m_pCannonUI, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pCannonUI);
 		}
 	}
 
@@ -613,6 +644,15 @@ void CUser::On_ExitStageLevel()
 
 	if (m_pMiniMap)
 		m_pMiniMap = nullptr;
+
+	if (m_pCannonUI)
+		m_pCannonUI = nullptr;
+
+	if (m_pMainUI)
+		m_pMainUI = nullptr;
+
+	if (m_pBarracks)
+		m_pBarracks = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -758,6 +798,24 @@ void CUser::Set_InteractTarget(CGameObject* pInteractTarget)
 	m_pInteractUI->Set_InteractTarget(pInteractTarget);
 }
 
+void CUser::SetActive_CannonUI(_bool value)
+{
+	if (m_pCannonUI)
+		m_pCannonUI->SetActive(value);
+}
+
+void CUser::Set_CannonCoolTime(_float fTime, _float fMaxTime)
+{
+	if (m_pCannonUI)
+		m_pCannonUI->Set_CoolTime(fTime, fMaxTime);
+}
+
+void CUser::SetActive_CannonCoolTime(_bool value)
+{
+	if (m_pCannonUI)
+		m_pCannonUI->SetActive_CoolTime(value);
+}
+
 void CUser::Get_ScoreInfo(CPlayer* pPlayer)
 {
 	if (m_pScoreBoard)
@@ -811,6 +869,36 @@ void CUser::Set_ScoreBoardPlayer(CPlayer* pPlayer)
 	}
 }
 
+void CUser::SetActive_MainTopBtn(_bool value)
+{
+	if (m_pMainUI)
+		m_pMainUI->SetActive_TopBtn(value);
+}
+
+void CUser::Set_TopBtnEffectPosX(_float fPosX)
+{
+	if (m_pMainUI)
+		m_pMainUI->Set_TopBtnEffectPosX(fPosX);
+}
+
+void CUser::SetActive_Barracks(_bool value)
+{
+	if (m_pBarracks)
+		m_pBarracks->SetActive(value);
+}
+
+void CUser::Unlock_RabbitHat()
+{
+	if (m_pBarracks)
+		m_pBarracks->Unlock_RabbitHat();
+}
+
+void CUser::SetActive_SkinPopup(_bool value)
+{
+	if (m_pUI_Popup)
+		m_pUI_Popup->SetActive_SkinPopup(value);
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);
@@ -838,6 +926,15 @@ void CUser::Enable_Popup(_uint iPopupType)
 {
 	if (m_pUI_Popup)
 		m_pUI_Popup->Enable_Popup((CUI_Popup::ePOPUP_TYPE)iPopupType);
+}
+
+void CUser::Enable_SkinPopup(_uint iSkin)
+{
+	if (m_pUI_Popup)
+	{
+		m_pUI_Popup->SetActive(true);
+		m_pUI_Popup->Enable_SkinPopup(iSkin);
+	}
 }
 
 void CUser::SetActive_TrainingPopup(_bool value, _uint iIndex)

@@ -93,11 +93,13 @@ void CUI_Main::SetActive_TopBtn(_bool value)
 	{
 		if (value == true)
 		{
-			ENABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			//ENABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			Enable_Fade(m_pArrTopBtn[i], 0.3f);
 		}
 		else
 		{
-			DISABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			//DISABLE_GAMEOBJECT(m_pArrTopBtn[i]);
+			Disable_Fade(m_pArrTopBtn[i], 0.3f);
 		}
 	}
 }
@@ -121,12 +123,20 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 {
 	m_eWindow = eWindow;
 
-	for (int i = 0; i < MW_Profile; ++i)
+	for (int i = 0; i < MW_Barracks; ++i)
 	{
 		DISABLE_GAMEOBJECT(m_pMainWindow[i]);
+		CUser::Get_Instance()->SetActive_Barracks(false);
 	}
 
-	ENABLE_GAMEOBJECT(m_pMainWindow[m_eWindow]);
+	if (m_eWindow == MW_Play)
+	{
+		ENABLE_GAMEOBJECT(m_pMainWindow[m_eWindow]);
+	}
+	else
+	{
+		CUser::Get_Instance()->SetActive_Barracks(true);
+	}
 
 	switch (m_eWindow)
 	{
@@ -142,18 +152,23 @@ void CUI_Main::SetActive_MainWindow(MainWindow eWindow)
 	}
 	break;
 
-	//case MW_Barracks:
-	//{
-	//	m_pArrTopBtn[TB_Barracks]->Set_IsClick(true);
-	//	m_pArrTopBtn[TB_Barracks]->Set_FontColor(m_vColorWhite);
+	/*case MW_Barracks:
+	{
+		m_pArrTopBtn[TB_Barracks]->Set_IsClick(true);
+		m_pArrTopBtn[TB_Barracks]->Set_FontColor(m_vColorWhite);
 
 	//	_float4 vPos = m_pArrTopBtn[TB_Barracks]->Get_Pos();
 	//	m_pTopBtnEffect->Set_Pos(vPos.x, vPos.y);
 
-	//	ENABLE_GAMEOBJECT(m_pTopBtnEffect);
-	//}
-	break;
+		ENABLE_GAMEOBJECT(m_pTopBtnEffect);
 	}
+	break;*/
+	}
+}
+
+void CUI_Main::Set_TopBtnEffectPosX(_float fPosX)
+{
+	m_pTopBtnEffect->Set_PosX(fPosX);
 }
 
 void CUI_Main::Create_TopBtn()
@@ -175,6 +190,7 @@ void CUI_Main::Create_TopBtn()
 		m_pArrTopBtn[i]->Set_FontStyle(true);
 		m_pArrTopBtn[i]->Set_FontCenter(true);
 		m_pArrTopBtn[i]->Set_FontScale(0.4f);
+		m_pArrTopBtn[i]->Set_FontOffset(4.f, 4.f);
 		m_pArrTopBtn[i]->Set_FontColor(_float4(0.5f, 0.5f, 0.5f, 1.f));
 
 		if (i == TB_Play)
@@ -230,7 +246,6 @@ void CUI_Main::Create_PlayerNameText()
 			m_pPlayerInfo[i]->Set_FontStyle(true);
 			m_pPlayerInfo[i]->Set_FontCenter(true);
 			m_pPlayerInfo[i]->Set_FontScale(0.25f);
-			m_pPlayerInfo[i]->Set_FontOffset(5.f, 5.f);
 
 			m_pPlayerInfo[i]->Set_FontText(TEXT("1"));
 		}

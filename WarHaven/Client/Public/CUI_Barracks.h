@@ -1,5 +1,8 @@
 #pragma once
 #include "CUI_Wrapper.h"
+
+BEGIN(Client)
+
 class CUI_Barracks : public CUI_Wrapper
 {
 	DECLARE_PROTOTYPE(CUI_Barracks);
@@ -25,6 +28,12 @@ public:
 
 	virtual void On_PointerDown_TopBtn(const _uint& iEventNum);
 
+	virtual void On_PointerStay_SkinBG(const _uint& iEventNum);
+	virtual void On_PointerDown_SkinBG(const _uint& iEventNum);
+
+public:
+	void Unlock_RabbitHat();
+
 private:
 	virtual void My_Tick() override;
 	virtual void My_LateTick() override;
@@ -40,8 +49,8 @@ private:
 	_float4 m_vColorBG = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	_float4 m_vColorOutline = _float4(0.2f, 0.2f, 0.2f, 1.f);
 
-	int m_iPrvEventNum = -1;
-	int m_iCurEventNum = -1;
+	int m_iPrvEventNum = 0;
+	int m_iCurEventNum = 0;
 
 	_float m_fDuration = 0.3f;
 
@@ -54,6 +63,8 @@ private:
 	int m_iCurSelectSkin = 0;
 
 	_bool m_bIsSkinWindow = false;
+
+	static _bool m_bIsUnlock_RabbitHat;
 
 private:
 	enum ClassPort { Port_BG, Port_Char, Port_Class, Port_Highlight, Port_Outline, Port_Underline, Port_End };
@@ -124,3 +135,5 @@ private:
 	_bool m_bLateTickEnable = false;
 	void Set_SkinIdx(CLASS_TYPE eClass);
 };
+
+END
