@@ -106,8 +106,8 @@ void CUI_Cannon::Create_CoolTime()
 	m_pCoolTime[Cool_BG]->Set_FontRender(true);
 	m_pCoolTime[Cool_BG]->Set_FontStyle(true);
 	m_pCoolTime[Cool_BG]->Set_FontCenter(true);
-	m_pCoolTime[Cool_BG]->Set_FontOffset(70.f, 3.f);
-	m_pCoolTime[Cool_BG]->Set_FontScale(0.2f);
+	m_pCoolTime[Cool_BG]->Set_FontOffset(100.f, 3.f);
+	m_pCoolTime[Cool_BG]->Set_FontScale(0.4f);
 
 	m_pCoolTime[Cool_Gauge]->Set_Sort(0.49f);
 	GET_COMPONENT_FROM(m_pCoolTime[Cool_Gauge], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
