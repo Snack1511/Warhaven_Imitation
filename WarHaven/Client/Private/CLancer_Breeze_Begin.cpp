@@ -52,7 +52,6 @@ HRESULT CLancer_Breeze_Begin::Initialize()
 
 void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
-
 	m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed * 1.5f;
 
 	m_fMyMaxLerp = 0.4f;

@@ -111,25 +111,11 @@ void CUI_Crosshair::SetActive_ArrowUI(_bool value)
 
 void CUI_Crosshair::SetActive_LancerUI(_bool value)
 {
-	if (value == true)
+	for (int i = 0; i < LU_End; ++i)
 	{
-		for (int i = 0; i < LU_End; ++i)
+		for (int j = 0; j < 4; ++j)
 		{
-			for (int j = 0; j < 4; ++j)
-			{
-				ENABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
-			}
-		}
-	}
-	else
-	{
-		for (int i = 0; i < LU_End; ++i)
-		{
-			for (int j = 0; j < 4; ++j)
-			{
-				if (m_pArrLancerUI[i][j]->Is_Valid())
-					DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
-			}
+			m_pArrLancerUI[j][i]->SetActive(value);
 		}
 	}
 }
@@ -165,6 +151,21 @@ void CUI_Crosshair::Set_ArcherPoint(_bool value)
 		m_pCrosshair[CU_Point]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 		GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(0);
 	}
+}
+
+void CUI_Crosshair::Set_BreezeTime(_float fCurTime, _float fMaxTime)
+{
+	m_fGaugeRatio = fCurTime / fMaxTime;
+
+	_tchar  szTemp[MAX_STR] = {};
+	swprintf_s(szTemp, TEXT("%.1f"), -(fCurTime - 5.f));
+	m_pGaugeUI[Gauge_BG]->Set_FontText(szTemp);
+}
+
+void CUI_Crosshair::SetActive_Gauge(_bool value)
+{
+	for (int i = 0; i < Gauge_End; ++i)
+		m_pGaugeUI[i]->SetActive(value);
 }
 
 void CUI_Crosshair::Create_Crosshair()
@@ -378,7 +379,6 @@ void CUI_Crosshair::Create_LancerUI()
 		{
 		case LU_BG:
 			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowBG.png"));
-
 			break;
 
 		case LU_Gauge:
@@ -412,8 +412,8 @@ void CUI_Crosshair::Create_GaugeUI()
 	{
 		m_pGaugeUI[i] = CUI_Object::Create();
 
-		m_pGaugeUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Charging_Gauge.dds"));
-		m_pGaugeUI[i]->Set_RotationZ(180.f);
+		m_pGaugeUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Cannon/T_128HalfCircleOutline4px.png"));
+		// m_pGaugeUI[i]->Set_RotationZ(180.f);
 
 		switch (i)
 		{
@@ -444,21 +444,6 @@ void CUI_Crosshair::My_Tick()
 	__super::My_Tick();
 
 	Charge_Arrow();
-
-	if (m_iClassIndex != LANCER)
-		return;
-
-	if (KEY(RBUTTON, TAP))
-	{
-		for (int i = 0; i < Gauge_End; ++i)
-			m_pGaugeUI[i]->SetActive(true);
-
-		for (int i = 0; i < 4; ++i)
-		{
-			for (int j = LU_Gauge; j < LU_End; ++j)
-				m_pArrLancerUI[i][j]->SetActive(false);
-		}
-	}
 }
 
 void CUI_Crosshair::OnEnable()

@@ -31,6 +31,9 @@ public:
 
 	void Set_ArcherPoint(_bool value);
 
+	void Set_BreezeTime(_float fCurTime, _float fMaxTime);
+	void SetActive_Gauge(_bool value);
+
 private:
 	_uint m_iClassIndex = 0;
 
@@ -76,7 +79,11 @@ private:
 	enum GaugeUI { Gauge_BG, Gauge_Bar, Gauge_End };
 	CUI_Object* m_pGaugeUI[Gauge_End];
 
+	_float m_fCurBreezeTime = 0.f;
+	_float m_fMaxBreezeTime = 5.f;
 	_float m_fGaugeRatio = 0.f;
+
+	_bool m_bIsBreeze = false;
 
 private:
 	void Create_GaugeUI();
