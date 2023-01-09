@@ -266,6 +266,7 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 {
 	_float4x4 matOwner;
 	_float4 vOffset;
+	_float fRandom;
 
 	if (eNextPhase >= eEND)
 		return;
@@ -298,14 +299,18 @@ void CProjectile::On_ChangePhase(ePROJECTILE_PHASE eNextPhase)
 		m_pTransform->Set_World(WORLD_POS, vOffset);
 
 
-		m_vTargetPos = _float4(0.f, 15.f, 2.f);
+		m_vTargetPos = _float4(0.f, 5.f, 3.f);
 		m_vTargetPos = m_vTargetPos.MultiplyCoord(matOwner);
 
 		m_vRight = m_pOwnerUnit->Get_Transform()->Get_World(WORLD_RIGHT).Normalize();
 
-		m_fRandSpeed = frandom(3.f, 5.f);
-		m_fRandFrequency = random(1.f, 5.f);
-		m_fRandPower = random(3, 6);
+		fRandom = random(0, 1);
+		m_fRandSpeed = frandom(2.f, 3.f);
+		m_fRandFrequency = frandom(1.f, 5.f);
+		m_fRandPower = frandom(3.f, 6.f);
+
+		if (0.5f > fRandom)
+			m_fRandFrequency *= -1.f;
 
 		break;
 
@@ -374,7 +379,7 @@ HRESULT CProjectile::SetUp_Projectile(wstring wstrModelFilePath)
 
 	// 회전각 인자 만들어주기.
 	CModel* pModel = CModel::Create(CP_BEFORE_RENDERER, TYPE_NONANIM, wstrModelFilePath,
-		XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationZ(XMConvertToRadians(270.f)) * XMMatrixRotationX(XMConvertToRadians(90.0f))
+		XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationZ(XMConvertToRadians(270.f)) * XMMatrixRotationX(XMConvertToRadians(90.0f))
 	);
 
 	if (!pModel)
@@ -472,6 +477,7 @@ void CProjectile::My_LateTick()
 	_float fY, fX;
 	_float fSpeed;
 	_float fTimeDelta = fDT(0);
+	_float fRandom;
 
 	switch (m_eCurPhase)
 	{
@@ -519,9 +525,13 @@ void CProjectile::My_LateTick()
 			On_ChangePhase(eChase);
 			m_fTimeAcc = 0.f;
 
+			fRandom = random(0, 1);
 			m_fRandSpeed = frandom(3.f, 5.f);
-			m_fRandFrequency = random(-10.f, 10.f);
-			m_fRandPower = random(20, 30);
+			m_fRandFrequency = random(1, 10);
+			m_fRandPower = frandom(20.f, 30.f);
+
+			if (0.5f > fRandom)
+				m_fRandFrequency *= -1.f;
 		}
 		
 	}
@@ -534,11 +544,18 @@ void CProjectile::My_LateTick()
 			assert(0);
 
 		_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - m_pTransform->Get_World(WORLD_POS);
+
+		if (0.f >= m_pTargetUnit->Get_Status().fHP)
+		{
+			if(0.5f > vLook.Length())
+				DISABLE_GAMEOBJECT(this);
+		}
+
 		vLook.Normalize();
 
 		m_pTransform->Set_LerpLook(vLook, 0.2f);
 
-		m_fRandSpeed = CEasing_Utillity::SinIn(m_fRandSpeed, 20.f, m_fLoopTimeAcc, 1.f);
+		m_fRandSpeed = CEasing_Utillity::SinIn(m_fRandSpeed, 30.f, m_fLoopTimeAcc, 1.f);
 		//m_fPower = CEasing_Utillity::SinIn(m_fSpeed, 50.f, m_fLoopTimeAcc, 10.f);
 
 		vPos += vLook * m_fRandSpeed * fTimeDelta;
@@ -559,6 +576,9 @@ void CProjectile::My_LateTick()
 
 		m_pTransform->Set_World(WORLD_POS, vPos);
 	}
+
+	
+
 		break;
 
 	case Client::CProjectile::eSHOOT:

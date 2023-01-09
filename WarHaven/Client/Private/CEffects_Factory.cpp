@@ -797,6 +797,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Crow_Boom"), "Crow_Boom")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Meteo_Boom"), "Meteo_Boom")))
+		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Qanda_Sniping"), "Qanda_Sniping")))
 		return E_FAIL;
 	/*Dodge*/

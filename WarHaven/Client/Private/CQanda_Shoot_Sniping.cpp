@@ -151,6 +151,8 @@ void CQanda_Shoot_Sniping::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 
 void CQanda_Shoot_Sniping::Make_Meteo(CUnit* pOwner)
 {
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinParticle", pOwner->Get_Transform()->Get_World(WORLD_POS));
+
 	for (auto& elem : m_SnipingTarget)
 	{
 		if (static_cast<CUnit*>(elem)->Is_Valid())
