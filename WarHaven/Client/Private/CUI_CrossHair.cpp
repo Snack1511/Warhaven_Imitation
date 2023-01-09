@@ -22,6 +22,7 @@ HRESULT CUI_Crosshair::Initialize_Prototype()
 	Create_Crosshair();
 	Create_ArrowUI();
 	Create_LancerUI();
+	Create_GaugeUI();
 
 	return S_OK;
 }
@@ -35,12 +36,23 @@ HRESULT CUI_Crosshair::Start()
 {
 	__super::Start();
 
+	Bind_Shader();
+
 	return S_OK;
+}
+
+void CUI_Crosshair::Set_Shader_Gauge(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fGaugeRatio, sizeof(_float));
 }
 
 void CUI_Crosshair::Set_Crosshair(_uint iClass)
 {
 	m_iClassIndex = iClass;
+	if (m_iClassIndex < LANCER)
+	{
+		SetActive_LancerUI(false);
+	}
 
 	switch (m_iClassIndex)
 	{
@@ -55,6 +67,10 @@ void CUI_Crosshair::Set_Crosshair(_uint iClass)
 
 	case ENGINEER:
 		Set_DefaultCrosshair();
+		break;
+
+	case LANCER:
+		SetActive_LancerUI(true);
 		break;
 	}
 
@@ -111,7 +127,8 @@ void CUI_Crosshair::SetActive_LancerUI(_bool value)
 		{
 			for (int j = 0; j < 4; ++j)
 			{
-				DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
+				if (m_pArrLancerUI[i][j]->Is_Valid())
+					DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
 			}
 		}
 	}
@@ -230,7 +247,6 @@ void CUI_Crosshair::Set_ArrowUI()
 	if (m_iClassIndex == SPEAR || m_iClassIndex == ARCHER || m_iClassIndex == QANDA)
 	{
 		m_iArrowIndex = 3;
-
 	}
 	else if (m_iClassIndex == PRIEST || m_iClassIndex == ENGINEER)
 	{
@@ -241,7 +257,7 @@ void CUI_Crosshair::Set_ArrowUI()
 		return;
 	}
 
-	for (int i = 0; i < AU_End; ++i)		
+	for (int i = 0; i < AU_End; ++i)
 	{
 		for (int j = 0; j < m_iArrowIndex; ++j)
 		{
@@ -266,7 +282,7 @@ void CUI_Crosshair::Charge_Arrow()
 	if (m_iClassIndex != ARCHER && m_iClassIndex != QANDA)
 		return;
 
-	_float fChargeWaitTime = 0.3f;
+	_float fChargeWaitTime = m_iClassIndex == QANDA ? 0.75f : 0.3f;
 	_float fRotateTime = fChargeWaitTime / (_float)m_iArrowIndex;
 	_float fScaleTime = 0.1f;
 	_float fAngle = 360.f / (_float)m_iArrowIndex;
@@ -358,17 +374,20 @@ void CUI_Crosshair::Create_LancerUI()
 		m_pLancerUI[i]->Set_PosY(-100.f);
 		m_pLancerUI[i]->Set_Scale(35.f, 85.f);
 
-		if (i == LU_BG)
+		switch (i)
 		{
+		case LU_BG:
 			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowBG.png"));
-		}
-		else if (i == LU_Gauge)
-		{
+
+			break;
+
+		case LU_Gauge:
 			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowGauge.png"));
-		}
-		else if (i == LU_Full)
-		{
+			break;
+
+		case LU_Full:
 			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowFull.png"));
+			break;
 		}
 
 		CREATE_GAMEOBJECT(m_pLancerUI[i], GROUP_UI);
@@ -376,14 +395,47 @@ void CUI_Crosshair::Create_LancerUI()
 
 		for (int j = 0; j < 4; ++j)
 		{
-			m_pArrLancerUI[i][j] = m_pLancerUI[i]->Clone();
+			m_pArrLancerUI[j][i] = m_pLancerUI[i]->Clone();
 
 			_float fPosX = -45.f + (j * 30.f);
-			m_pArrLancerUI[i][j]->Set_PosX(fPosX);
+			m_pArrLancerUI[j][i]->Set_PosX(fPosX);
 
-			CREATE_GAMEOBJECT(m_pArrLancerUI[i][j], GROUP_UI);
-			DISABLE_GAMEOBJECT(m_pArrLancerUI[i][j]);
+			CREATE_GAMEOBJECT(m_pArrLancerUI[j][i], GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pArrLancerUI[j][i]);
 		}
+	}
+}
+
+void CUI_Crosshair::Create_GaugeUI()
+{
+	for (int i = 0; i < Gauge_End; ++i)
+	{
+		m_pGaugeUI[i] = CUI_Object::Create();
+
+		m_pGaugeUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Charging_Gauge.dds"));
+		m_pGaugeUI[i]->Set_RotationZ(180.f);
+
+		switch (i)
+		{
+		case Gauge_BG:
+			m_pGaugeUI[i]->Set_Sort(0.5f);
+			m_pGaugeUI[i]->Set_Color(RGB(0, 0, 0));
+
+			m_pGaugeUI[i]->Set_FontRender(true);
+			m_pGaugeUI[i]->Set_FontStyle(true);
+			m_pGaugeUI[i]->Set_FontCenter(true);
+			m_pGaugeUI[i]->Set_FontOffset(100.f, 3.f);
+			m_pGaugeUI[i]->Set_FontScale(0.4f);
+			break;
+
+		case Gauge_Bar:
+			m_pGaugeUI[i]->Set_Sort(0.49f);
+			GET_COMPONENT_FROM(m_pGaugeUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
+			break;
+		}
+
+		CREATE_GAMEOBJECT(m_pGaugeUI[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pGaugeUI[i]);
 	}
 }
 
@@ -392,6 +444,21 @@ void CUI_Crosshair::My_Tick()
 	__super::My_Tick();
 
 	Charge_Arrow();
+
+	if (m_iClassIndex != LANCER)
+		return;
+
+	if (KEY(RBUTTON, TAP))
+	{
+		for (int i = 0; i < Gauge_End; ++i)
+			m_pGaugeUI[i]->SetActive(true);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			for (int j = LU_Gauge; j < LU_End; ++j)
+				m_pArrLancerUI[i][j]->SetActive(false);
+		}
+	}
 }
 
 void CUI_Crosshair::OnEnable()
@@ -399,6 +466,9 @@ void CUI_Crosshair::OnEnable()
 	__super::OnEnable();
 
 	SetActive_Crosshair(true);
+
+	if (m_iClassIndex == LANCER)
+		SetActive_LancerUI(true);
 }
 
 void CUI_Crosshair::OnDisable()
@@ -408,4 +478,9 @@ void CUI_Crosshair::OnDisable()
 	SetActive_Crosshair(false);
 	SetActive_ArrowUI(false);
 	SetActive_LancerUI(false);
+}
+
+void CUI_Crosshair::Bind_Shader()
+{
+	GET_COMPONENT_FROM(m_pGaugeUI[Gauge_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_Shader_Gauge, this, placeholders::_1, "g_fValue");
 }

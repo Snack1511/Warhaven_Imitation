@@ -18,12 +18,15 @@ public:
 	virtual HRESULT	Start();
 
 public:
+	virtual void Set_Shader_Gauge(CShader* pShader, const char* pConstName);
+
+public:
 	void Set_Crosshair(_uint iClass);
 
 	void SetActive_Crosshair(_bool value);
 	void SetActive_ArrowUI(_bool value);
 	void SetActive_LancerUI(_bool value);
-	
+
 	void Set_Position(_float4 vPos);
 
 	void Set_ArcherPoint(_bool value);
@@ -64,18 +67,26 @@ private:
 private:
 	enum LancerUI { LU_BG, LU_Gauge, LU_Full, LU_End };
 	CUI_Object* m_pLancerUI[LU_End];
-	CUI_Object* m_pArrLancerUI[LU_End][4];
+	CUI_Object* m_pArrLancerUI[4][LU_End];
 
 private:
 	void Create_LancerUI();
 
 private:
+	enum GaugeUI { Gauge_BG, Gauge_Bar, Gauge_End };
+	CUI_Object* m_pGaugeUI[Gauge_End];
+
+	_float m_fGaugeRatio = 0.f;
+
+private:
+	void Create_GaugeUI();
+
+private:
 	virtual void My_Tick() override;
 	virtual void OnEnable() override;
 	virtual void OnDisable() override;
+
+	void Bind_Shader();
 };
 
 END
-
-// 레이븐 기본 화살 세개
-// 스킬 쓸 때 특수 크로스헤어
