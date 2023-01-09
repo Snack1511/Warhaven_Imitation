@@ -92,6 +92,11 @@ HRESULT CGameSystem::Initialize()
 		return E_FAIL;
 	}
 
+	if (FAILED(SetUp_AllPersonality()))
+	{
+		Call_MsgBox(L"Failed to SetUp_AllPersonality : CGameSystem");
+		return E_FAIL;
+	}
 	return S_OK;
 }
 
@@ -124,6 +129,8 @@ void CGameSystem::Release()
 	}
 
 	Clear_CellLayer();
+
+	Clear_AllPersonality();
 
 }
 
@@ -686,7 +693,20 @@ HRESULT CGameSystem::On_ReadyPlayers_Stage(vector<pair<CGameObject*, _uint>>& ve
 		if (dynamic_cast<CPlayerInfo_SandBack*>(pInfo.second))
 			continue;
 
-		CPlayer* pPlayer = pInfo.second->Make_Player();
+		CPlayerInfo* pPlayerInfo = pInfo.second;
+
+		if (nullptr == pPlayerInfo)
+			continue;
+
+		if (m_mapPersonality.empty())
+			pPlayerInfo->Set_Personality(CAIPersonality::Create(L"Empty_Personality", m_pConditionTable));
+		else
+		{
+			//Personality 랜덤 할당
+			//Leader의 경우 특징적인 Personality할당
+		}
+
+		CPlayer* pPlayer = pPlayerInfo->Make_Player();
 		if (!pPlayer)
 			return E_FAIL;
 
@@ -1141,10 +1161,23 @@ void CGameSystem::On_StartGame()
 	_bool   bTemp = false;
 
 	/* 리더 먼저 */
+	_uint Index = 0;
 	for (auto& elem : m_mapAllPlayers)
 	{
 		/* Leader가 아니면 건너 뛰기 */
 		if (!dynamic_cast<CPlayerInfo_Leader*>(elem.second) && !dynamic_cast<CPlayerInfo_Main*>(elem.second))
+			continue;
+
+		if (elem.second->m_bIsMainPlayer)
+		{
+			_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
+			elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+
+			continue;
+		}
+
+		//Test_ AI는 한명만 생기게..
+		if (Index > 1)
 			continue;
 
 		/* ai들은 랜덤 선택 함수 호출 */
@@ -1155,37 +1188,38 @@ void CGameSystem::On_StartGame()
 		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
 		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
 
+		Index++;
 	}
-
+	//여기..
 	/* Default 애덜 */
-#ifdef _DEBUG
-#else
-	for (auto& elem : m_mapAllPlayers)
-	{
-		/* Default가 아니면 건너 뛰기 */
-		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
-			continue;
-
-		static _uint g_iIndex = 0;
-
-		if (g_iIndex == 0)
-		{
-			g_iIndex++;
-			continue;
-		}
-
-		g_iIndex = 0;
-
-		/* ai들은 랜덤 선택 함수 호출 */
-		elem.second->Choose_Character();
-
-	//	/* 자기 진영에서 포지션 가져오기 */
-		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
-		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
-
-	}
-
-#endif // _DEBUG
+//#ifdef _DEBUG
+//#else
+//	for (auto& elem : m_mapAllPlayers)
+//	{
+//		/* Default가 아니면 건너 뛰기 */
+//		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
+//			continue;
+//
+//		static _uint g_iIndex = 0;
+//
+//		if (g_iIndex == 0)
+//		{
+//			g_iIndex++;
+//			continue;
+//		}
+//
+//		g_iIndex = 0;
+//
+//		/* ai들은 랜덤 선택 함수 호출 */
+//		elem.second->Choose_Character();
+//
+//	//	/* 자기 진영에서 포지션 가져오기 */
+//		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
+//		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+//
+//	}
+//
+//#endif // _DEBUG
 
 
 	if (m_eCurStageType == eSTAGE_HWARA)
@@ -1694,6 +1728,120 @@ HRESULT CGameSystem::SetUp_AllPathes()
 
 	}
 	return S_OK;
+}
+
+HRESULT CGameSystem::SetUp_AllPersonality()
+{
+	for (filesystem::directory_iterator FileIter("../Bin/Data/GameSystem/Perosnality/");
+		FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("/") + 1;
+		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+
+		if (!entry.is_directory())
+		{
+			_int iFindExt = (int)strFileName.rfind(".");// +1;
+			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			string HashKey = strFileName.substr(0, iFindExt);
+
+			if (HashKey.find("Test") != -1)
+				continue;
+
+			//CPath* pPath = CPath::Create(HashKey);
+			CAIPersonality* pPersonality = nullptr;
+			pPersonality = Add_Personality(HashKey, wstrPath);
+
+			if (nullptr == pPersonality)
+				return E_FAIL;
+		}
+
+	}
+
+	//m_mapAllPlayers.emplace("Empty", CAIPersonality::Create(L"Empty_Personality", m_pConditionTable));
+
+	return S_OK;
+}
+
+HRESULT CGameSystem::Reload_AllPersonality()
+{
+	Clear_AllPersonality();
+	for (filesystem::directory_iterator FileIter("../Bin/Data/GameSystem/Perosnality/");
+		FileIter != filesystem::end(FileIter); ++FileIter)
+	{
+		const filesystem::directory_entry& entry = *FileIter;
+
+		wstring wstrPath = entry.path().relative_path();
+		string strFullPath;
+		strFullPath.assign(wstrPath.begin(), wstrPath.end());
+
+		_int iFind = (_int)strFullPath.rfind("/") + 1;
+		string strFileName = strFullPath.substr(iFind, strFullPath.length() - iFind);
+
+
+		if (!entry.is_directory())
+		{
+			_int iFindExt = (int)strFileName.rfind(".");// +1;
+			//string strExtName = strFileName.substr(iFindExt, strFileName.length() - iFindExt);
+			string HashKey = strFileName.substr(0, iFindExt);
+
+			if (HashKey.find("Test"))
+				continue;
+
+			//CPath* pPath = CPath::Create(HashKey);
+			CAIPersonality* pPersonality = nullptr;
+			pPersonality = Add_Personality(HashKey, wstrPath);
+
+			if (nullptr == pPersonality)
+				return E_FAIL;
+		}
+
+	}
+	return S_OK;
+}
+
+CAIPersonality* CGameSystem::Add_Personality(string strHashKey, wstring wstrPath)
+{
+	size_t HashCode = Convert_ToHash(strHashKey);
+	CAIPersonality* pPersonality = nullptr;
+	auto Iter = m_mapPersonality.find(HashCode);
+
+	if (m_mapPersonality.end() == Iter)
+	{
+		pPersonality = CAIPersonality::Create(wstrPath, m_pConditionTable);
+		m_mapPersonality.emplace(HashCode, pPersonality);
+	}
+	else
+	{
+		pPersonality = Iter->second;
+	}
+
+
+	return pPersonality;
+}
+
+CAIPersonality* CGameSystem::Find_Personality(string strHashKey)
+{
+	size_t HashCode = Convert_ToHash(strHashKey);
+	auto Iter = m_mapPersonality.find(HashCode);
+	if (m_mapPersonality.end() == Iter)
+		return nullptr;
+	else return Iter->second;
+}
+
+void CGameSystem::Clear_AllPersonality()
+{
+	for (auto Personality : m_mapPersonality)
+	{
+		SAFE_DELETE(Personality.second);
+	}
+	m_mapPersonality.clear();
 }
 
 

@@ -48,6 +48,7 @@ public:
 	void	Init_MoveAcc() { m_fMoveAcc = 0.f; }
 
 	vector<_float4>& Get_vecPositions() { return m_vecPositions; }
+	_float4 Get_FirstPos() { return m_vecPositions[0]; }
 
 private:
 	CAIController* m_pOwnerController = nullptr;

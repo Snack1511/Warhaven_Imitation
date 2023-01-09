@@ -107,12 +107,15 @@ void CAIController::Early_Tick()
 	}
 
 	/* For문 끝 */
-
-	if (nullptr == pNextBehavior)
+	CBehavior* pPatrolBehavior = m_pPersonality->Get_Patrol();
+	if (nullptr == pNextBehavior && nullptr != pPatrolBehavior)
 	{
 		pNextBehavior = m_pPersonality->Get_Patrol();
 		pBehaviorDescTemp = pNextBehavior->Get_BehaviorDesc();
 	}
+
+	if (nullptr == pBehaviorDescTemp)
+		return;
 
 	/* 무지성 CHange */
 	pBehaviorDescTemp->eCurType = pNextBehavior->Get_BehaviorType();

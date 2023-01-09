@@ -142,14 +142,28 @@ private:
 	/* Path들 map으로 들고 있기. */
 	map<_hashcode, CPath*>	m_mapAllPathes[eSTAGE_CNT];
 
+
 private:
 	HRESULT					SetUp_AllPlayerInfos();
 	HRESULT					SetUp_AllPathes();
+
+#pragma region Personality Functions
+private:
+	HRESULT					SetUp_AllPersonality();
+	HRESULT					Reload_AllPersonality();
+private:
+	CAIPersonality* Add_Personality(string strHashKey, wstring wstrPath);
+	CAIPersonality* Find_Personality(string strHashKey);
+	void			Clear_AllPersonality();
+	map<_hashcode, CAIPersonality*> m_mapPersonality;
+#pragma endregion Personality Functions
 
 private:
 	CPlayer*				SetUp_Player(_hashcode hcPlayerInfo);
 	HRESULT					SetUp_DefaultLight_BootCamp();
 	HRESULT					SetUp_DefaultLight_Paden();
+
+#pragma region CellLayer Functions
 public:
 	HRESULT					SetUp_CellLayer(wstring strFolderName);
 	void					Clear_CellLayer();
@@ -158,7 +172,7 @@ public:
 
 private:
 	map<_float, CCellLayer*> m_CellLayer;
-
+#pragma endregion CellLayer Functions
 
 };
 
