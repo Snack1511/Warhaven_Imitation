@@ -24,6 +24,8 @@ CQandaMeteor* CQandaMeteor::Create()
 {
 	CQandaMeteor* pInstance = new CQandaMeteor;
 
+	pInstance->m_pTransform->Set_Scale(_float4(0.01f, 0.01f, 0.01f));
+
 	if (FAILED(pInstance->CQandaMeteor::Initialize_Prototype()))
 	{
 		SAFE_DELETE(pInstance);
@@ -39,16 +41,16 @@ HRESULT CQandaMeteor::Start()
 	__super::Start();
 
 	SetUp_TrailEffect(
-		_float4(0.f, -0.05f, 0.f, 1.f),	//Weapon Low
-		_float4(0.f, 0.05f, 0.f, 1.f),	//Weapon High
-		_float4(-0.05f, 0.f, 0.f, 1.f), //Left
-		_float4(0.05f, 0.f, 0.f, 1.f), //Right
-		_float4(1.f, 0.f, 0.f, 0.05f), // GlowFlow
-		_float4(0.8f, 0.3f, 0.3f, 0.2f), //vColor
+		_float4(0.f, -5.f, 0.f, 1.f),	//Weapon Low
+		_float4(0.f, 5.f, 0.f, 1.f),	//Weapon High
+		_float4(-5.f, 0.f, 0.f, 1.f), //Left
+		_float4(5.f, 0.f, 0.f, 1.f), //Right
+		_float4(1.f, 0.f, 0.f, 1.f), // GlowFlow
+		_float4(0.8f, 0.3f, 0.3f, 0.7f), //vColor
 		0.f,
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",
-		120
+		100
 	);
 
 	m_EffectTest.clear();
@@ -141,5 +143,9 @@ void CQandaMeteor::OnDisable()
 		}
 		m_EffectTest.clear();
 	}
+
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Meteo_Boom", m_pTransform->Get_World(WORLD_POS),
+		GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE));
+
 	__super::OnDisable();
 }
