@@ -1099,13 +1099,14 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 			continue;
 
 		// ray쏴서 장애물 판별
-		/*_float4 vOutPos;
+		_float4 vOutPos;
 		_float fOutDist;
 		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
 		_float4 vRayDir = pUnit->Get_Transform()->Get_World(WORLD_POS) - vCamPos;
+		_float fLength = vRayDir.Length();
 
-		if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vCamPos, vRayDir.Normalize(), fMaxDistance * 1.5f))
-			continue;*/
+		if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vCamPos, vRayDir.Normalize(), fLength))
+			continue;
 
 		for (auto& FrustumObj : m_MultipleFrustumObject)
 		{

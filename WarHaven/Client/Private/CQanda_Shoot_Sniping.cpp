@@ -74,25 +74,8 @@ void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 {
 	m_SnipingTarget = pOwner->Get_MultipleFrustumObject();
 
-	/* ColorControl*/
-	CColorController::COLORDESC tColorDesc;
-	ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinParticle", pOwner->Get_Transform()->Get_World(WORLD_POS));
 
-	tColorDesc.eFadeStyle = CColorController::KEYFRAME;
-	tColorDesc.fFadeInStartTime = 0.f;
-	tColorDesc.fFadeInTime = 0.2f;
-	tColorDesc.fFadeOutStartTime = 0.f;
-	tColorDesc.fFadeOutTime = 0.2f;
-	tColorDesc.vTargetColor = _float4(1.f, 1.f, 1.f, 0.5f);
-
-	tColorDesc.iMeshPartType = MODEL_PART_BODY;
-	tColorDesc.iStartKeyFrame = 2;
-	tColorDesc.iEndKeyFrame = 45; // 프레임 맞춰놓음
-
-	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
-
-	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
-	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
 	pOwner->Get_Status().fDamageMultiplier = m_fDamagePumping;
 
@@ -171,7 +154,6 @@ void CQanda_Shoot_Sniping::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator,
 
 void CQanda_Shoot_Sniping::Make_Meteo(CUnit* pOwner)
 {
-	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"HenshinParticle", pOwner->Get_Transform()->Get_World(WORLD_POS));
 
 	for (auto& elem : m_SnipingTarget)
 	{

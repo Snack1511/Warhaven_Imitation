@@ -481,6 +481,9 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 		if (!elem)
 			continue;
 
+		if (elem == 0)
+			continue;
+
 		if(!elem->isReleasable())
 			continue;
 

@@ -360,6 +360,8 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 			m_pCurrentUnit->Get_Status().fHP = m_pCurrentUnit->Get_Status().fMaxHP;
 		}
 
+
+		m_pCurrentUnit = pUnit;
 		ENABLE_GAMEOBJECT(pUnit);
 
 		m_pFollowCam->Set_FollowTarget(pUnit);
@@ -367,9 +369,9 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		pUnit->Get_Transform()->Set_Look(vLook);
 		pUnit->Get_Transform()->Make_WorldMatrix();
 
-
 		pUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
-		m_pCurrentUnit = pUnit;
+
+
 
 	}
 	if (m_bIsMainPlayer)

@@ -529,7 +529,7 @@ PS_OUT PS_MAIN_SSAO(PS_DOWNSCALE_IN In)
 
 	ao = 1.f - ao * INTENSITY;
 
-	//fragColor = vec4(ao, ao, ao, 1.);
+	//fragColor = vector(ao, ao, ao, 1.);
 
 	float fPower = 1.6f;
 	if (vDepthDesc.w > 0.99f)
@@ -944,6 +944,43 @@ PS_OUT	PS_HORIZONTAL_MAIN(PS_IN input)
 
 
 
+PS_OUT	PS_MAIN_FASTBLUR(PS_DOWNSCALE_IN input)
+{
+	PS_OUT	Output = (PS_OUT)1;
+
+
+	float Pi = 6.28318530718; // Pi*2
+
+   // GAUSSIAN BLUR SETTINGS {{{
+	float Directions = 16.0; // BLUR DIRECTIONS (Default 16.0 - More is better but slower)
+	float Quality = 3.0; // BLUR QUALITY (Default 4.0 - More is better but slower)
+	float Size = 8.0; // BLUR SIZE (Radius)
+	// GAUSSIAN BLUR SETTINGS }}}
+
+	float2 Radius = Size / g_vResolution;
+
+	// Normalized pixel coordinates (from 0 to 1)
+	float2 uv = input.vTexUV;
+	// Pixel colour
+	vector Color = g_ShaderTexture.Sample(DefaultSampler, uv);
+
+	// Blur calculations
+	for (float d = 0.0; d < Pi; d += Pi / Directions)
+	{
+		for (float i = 1.0 / Quality; i <= 1.0; i += 1.0 / Quality)
+		{
+			Color += g_ShaderTexture.Sample(DefaultSampler, uv + float2(cos(d), sin(d)) * Radius * i);
+		}
+	}
+
+	// Output to screen
+	Color /= Quality * Directions - 15.0;
+	Output.vColor = Color;
+	return Output;
+}
+
+
+
 BlendState BS_Default
 {
 	BlendEnable[0] = false;
@@ -1111,6 +1148,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
 		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_HDR();
+	}
+
+	pass FASTBLUR
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_DOWNSCALE_MAIN();
+		GeometryShader = NULL; HullShader = NULL; DomainShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_FASTBLUR();
 	}
 
 }
