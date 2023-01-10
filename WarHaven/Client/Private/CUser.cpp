@@ -1013,6 +1013,7 @@ void CUser::SetActive_MiniMap(_bool value)
 void CUser::SetActive_InfoUI(_bool value)
 {
 	if (m_pInfoUI)
-		m_pInfoUI->SetActive_Info(value);
+		m_pInfoUI->SetActive(value);
 }
+
 
