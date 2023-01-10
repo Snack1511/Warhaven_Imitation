@@ -341,6 +341,8 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 
 	Out.vColor = vDiffuse * vShade;
 
+	/* 색 보정 */
+	Out.vColor *= 2.2f;
 
 	//Shadow
 #ifdef SHADOW_ON
@@ -360,8 +362,6 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	}
 #endif
 
-	/* 색 보정 */
-	Out.vColor *= 2.2f;
 
 
 	//RimLight

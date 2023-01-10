@@ -200,6 +200,18 @@ PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform
 	return pStatic;
 }
 
+void CPhysX_Manager::Erase_Static(PxRigidStatic* pStatic)
+{
+	for (auto iter = m_listAllStatics.begin(); iter != m_listAllStatics.end(); ++iter)
+	{
+		if ((*iter) == pStatic)
+		{
+			iter = m_listAllStatics.erase(iter);
+			return;
+		}
+	}
+}
+
 
 void CPhysX_Manager::Create_ConvexMesh(_float3* pVerticesPos, _uint iNumVertices, void* pIndices, _uint iNumPrimitive, PxConvexMesh ** ppOut)
 {
@@ -479,12 +491,6 @@ _bool CPhysX_Manager::Shoot_RaytoStaticActors(_float4* pOutPos, _float* pMinDist
 	for (auto& elem : m_listAllStatics)
 	{
 		if (!elem)
-			continue;
-
-		if (elem == 0)
-			continue;
-
-		if(!elem->isReleasable())
 			continue;
 
 		//static이랑 닿으면 이녀석한테 ray 쏴서 위치 보정
