@@ -235,6 +235,8 @@ public:	// 메인메뉴
 
 	void Set_BreezeTime(_float fCurTime, _float fMaxTime);
 	void SetActive_Gauge(_bool value);
+	void Disable_LancerGauge();
+	void Set_LancerGauge(_uint iGaugeIdx, _float fCurTime, _float fMaxTime);
 
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;

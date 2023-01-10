@@ -951,6 +951,18 @@ void CUser::SetActive_Gauge(_bool value)
 	m_pUI_Crosshair->SetActive_Gauge(value);
 }
 
+void CUser::Disable_LancerGauge()
+{
+	if (m_pUI_Crosshair)
+		m_pUI_Crosshair->Disable_LacnerGauge();
+}
+
+void CUser::Set_LancerGauge(_uint iGaugeIdx, _float fCurTime, _float fMaxTime)
+{
+	if (m_pUI_Crosshair)
+		m_pUI_Crosshair->Set_LancerGauge(iGaugeIdx, fCurTime, fMaxTime);
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);

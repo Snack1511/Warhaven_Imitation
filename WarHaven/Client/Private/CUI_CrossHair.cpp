@@ -46,6 +46,26 @@ void CUI_Crosshair::Set_Shader_Gauge(CShader* pShader, const char* pConstName)
 	pShader->Set_RawValue("g_fValue", &m_fGaugeRatio, sizeof(_float));
 }
 
+void CUI_Crosshair::Set_Shader_LancerGauge0(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fLancerRatio[0], sizeof(_float));
+}
+
+void CUI_Crosshair::Set_Shader_LancerGauge1(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fLancerRatio[1], sizeof(_float));
+}
+
+void CUI_Crosshair::Set_Shader_LancerGauge2(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fLancerRatio[2], sizeof(_float));
+}
+
+void CUI_Crosshair::Set_Shader_LancerGauge3(CShader* pShader, const char* pConstName)
+{
+	pShader->Set_RawValue("g_fValue", &m_fLancerRatio[3], sizeof(_float));
+}
+
 void CUI_Crosshair::Set_Crosshair(_uint iClass)
 {
 	m_iClassIndex = iClass;
@@ -187,6 +207,17 @@ void CUI_Crosshair::Set_ArcherPoint(_bool value)
 		m_pCrosshair[CU_Point]->Set_Color(_float4(1.f, 1.f, 1.f, 1.f));
 		GET_COMPONENT_FROM(m_pCrosshair[CU_Point], CTexture)->Set_CurTextureIndex(0);
 	}
+}
+
+void CUI_Crosshair::Set_LancerGauge(_uint iGaugeIdx, _float fCurTime, _float fMaxTime)
+{
+	m_fLancerRatio[iGaugeIdx] = 1 - (fCurTime / fMaxTime);
+}
+
+void CUI_Crosshair::Disable_LacnerGauge()
+{
+	for (int j = 0; j < 4; ++j)
+		m_pArrLancerUI[j][LU_Full]->SetActive(false);
 }
 
 void CUI_Crosshair::Set_BreezeTime(_float fCurTime, _float fMaxTime)
@@ -418,6 +449,7 @@ void CUI_Crosshair::Create_LancerUI()
 			break;
 
 		case LU_Gauge:
+			GET_COMPONENT_FROM(m_pLancerUI[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_VerticalGauge);
 			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowGauge.png"));
 			break;
 
@@ -504,4 +536,9 @@ void CUI_Crosshair::OnDisable()
 void CUI_Crosshair::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pGaugeUI[Gauge_Bar], CShader)->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_Shader_Gauge, this, placeholders::_1, "g_fValue");
+
+	GET_COMPONENT_FROM(m_pArrLancerUI[0][LU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_Shader_LancerGauge0, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrLancerUI[1][LU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_Shader_LancerGauge1, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrLancerUI[2][LU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_Shader_LancerGauge2, this, placeholders::_1, "g_fValue");
+	GET_COMPONENT_FROM(m_pArrLancerUI[3][LU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Crosshair::Set_Shader_LancerGauge3, this, placeholders::_1, "g_fValue");
 }

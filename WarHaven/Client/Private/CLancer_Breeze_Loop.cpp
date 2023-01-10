@@ -95,6 +95,7 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	//pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_BREEZE);
 
+	CUser::Get_Instance()->Disable_LancerGauge();
 	CUser::Get_Instance()->SetActive_Gauge(true);
 
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
