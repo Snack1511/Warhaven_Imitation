@@ -6615,7 +6615,9 @@
     <ClInclude Include="..\public\CMainMenuPlayer.h">
       <Filter>03. Instances\02. GameObject\14. MainPlayer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUI_Info.h" />
+    <ClInclude Include="..\Public\CUI_Info.h">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9536,7 +9538,9 @@
     <ClCompile Include="..\private\CMainMenuPlayer.cpp">
       <Filter>03. Instances\02. GameObject\14. MainPlayer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUI_Info.cpp" />
+    <ClCompile Include="..\Private\CUI_Info.cpp">
+      <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

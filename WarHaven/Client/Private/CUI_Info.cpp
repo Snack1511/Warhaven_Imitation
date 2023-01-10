@@ -179,6 +179,7 @@ void CUI_Info::Init_InfoText()
 		m_pInfoText[Text_2]->Set_Scale(183.f, 30.f);
 		m_pInfoText[Text_2]->Set_PosX(fPosX - 35.f);
 		m_pInfoText[Text_2]->Set_PosY(-52.f);
+		m_pInfoText[Text_0]->Set_Color(m_vColorGold);
 
 		break;
 

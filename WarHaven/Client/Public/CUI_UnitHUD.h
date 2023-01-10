@@ -32,7 +32,7 @@ public:
 
 public:
 	CUI_UnitHP* Get_UnitHP();
-	CUI_Revive* Get_ReviveUI(); 
+	CUI_Revive* Get_ReviveUI();
 
 	void Set_ProjPos(CTransform* pTransform);
 	void Set_UnitStatus(CUnit::UNIT_STATUS tStatus) { m_tStatus = tStatus; }
@@ -44,6 +44,8 @@ public:
 	void Disable_RevivalUI();
 
 	void Set_RevivalIcon(_uint iIconIdx);
+
+	void SetActive_TargetUI(_bool value);
 
 private:
 	CUI_Wrapper* m_pUnitUI[UI_End];
@@ -64,12 +66,16 @@ private:
 
 	CUI_Object* m_pUnitNameText = nullptr;
 
+	enum TargetUI { Target_Point, Target_Blink, Target_End };
+	CUI_Object* m_pTargetUI[Target_End];
+
 	_float4 m_vOffset;
 
 	_float m_fUnitDis = 0.f;
 
 private:
 	void Create_UnitHUD();
+	void Create_TargetUI();
 
 	void Init_UnitNameText();
 
