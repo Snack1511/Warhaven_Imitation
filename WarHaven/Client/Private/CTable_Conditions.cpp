@@ -89,12 +89,10 @@ HRESULT CTable_Conditions::SetUp_Conditions()
     Add_WhyCondition(wstring(L"Check_DeadAllies"), Check_DeadAllies);
     Add_WhyCondition(wstring(L"Check_CombatBehavior"), Check_CombatBehavior);
     Add_WhyCondition(wstring(L"Check_FollowBehavior"), Check_FollowBehavior);
-    Add_WhyCondition(wstring(L"Check_InteractBehavior"), Check_InteractBehavior);
     Add_WhyCondition(wstring(L"Check_ChangeBehavior"), Check_ChangeBehavior);
     Add_WhyCondition(wstring(L"Check_ResurrectBehavior"), Check_ResurrectBehavior);
     Add_WhyCondition(wstring(L"Check_AbleHero"), Check_AbleHero);
     Add_WhyCondition(wstring(L"Check_EnemyInRay"), Check_EnemyInRay);
-    Add_WhyCondition(wstring(L"Check_AvailableTarget"), Check_AvailableTarget);
 
     Add_WhatCondition(wstring(L"EmptyWhatCondition"), EmptyWhatCondition);
     Add_WhatCondition(wstring(L"Select_Leader"), Select_Leader);
@@ -116,8 +114,8 @@ m_vecBehaviorTickName.push_back(strBehaviorTickName);
 HRESULT CTable_Conditions::SetUp_BehaviorTick()
 {
     Add_BehaviorTick(wstring(L"EmptyBehaviorTick"), EmptyBehaviorTick);
-    //Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"), Callback_Tick_UpdatePatrol);
-    //Add_BehaviorTick(wstring(L"Callback_Tick_Check_NaviTime"), Callback_Tick_Check_NaviTime);
+    Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"), Callback_Tick_UpdatePatrol);
+    Add_BehaviorTick(wstring(L"Callback_Tick_Check_NaviTime"), Callback_Tick_Check_NaviTime);
     Add_BehaviorTick(wstring(L"Callback_Tick_MakeRoute"), Callback_Tick_MakeRoute);
 
     return S_OK;
@@ -133,16 +131,15 @@ HRESULT CTable_Conditions::SetUp_Behaviors()
 {
     CBehavior* pBehavior = nullptr; 
     Add_Behavior(pBehavior, wstring(L"Patrol"), eBehaviorType::ePatrol);
-    Add_Behavior(pBehavior, wstring(L"Search"), eBehaviorType::eSearch);
+
     Add_Behavior(pBehavior, wstring(L"Follow"), eBehaviorType::eFollow);
-    Add_Behavior(pBehavior, wstring(L"Interact"), eBehaviorType::eInteract);
-    Add_Behavior(pBehavior, wstring(L"Combat"), eBehaviorType::eCombat);
+    Add_Behavior(pBehavior, wstring(L"Attack"), eBehaviorType::eAttack);
     Add_Behavior(pBehavior, wstring(L"Resurrect"), eBehaviorType::eResurrect);
     Add_Behavior(pBehavior, wstring(L"Change"), eBehaviorType::eChange);
 
     //Add_Behavior(pBehavior, wstring(L"Patrol"), eBehaviorType::ePatrol);
     //Add_Behavior(pBehavior, wstring(L"Attack"), eBehaviorType::eCombat);
-    //Add_Behavior(pBehavior, wstring(L"PathNavigation"), eBehaviorType::ePathNavigation);
+    Add_Behavior(pBehavior, wstring(L"PathNavigation"), eBehaviorType::ePathNavigation);
 
     return S_OK;
 }
@@ -415,7 +412,7 @@ void CTable_Conditions::Check_CombatBehavior(_bool& OutCondition, CPlayer* pPlay
 
     OutCondition = false;
     CBehavior* pBehavior = pAIController->Get_CurBehavior();
-    if (Check_Behavior(pBehavior, eBehaviorType::eCombat))
+    if (Check_Behavior(pBehavior, eBehaviorType::eAttack))
         OutCondition = true;
 }
 
@@ -449,15 +446,6 @@ void CTable_Conditions::Check_ChangeBehavior(_bool& OutCondition, CPlayer* pPlay
         OutCondition = true;
 }
 
-void CTable_Conditions::Check_InteractBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
-{
-    CHECKFALSEOUTCONDITION(OutCondition);
-
-    OutCondition = false;
-    CBehavior* pBehavior = pAIController->Get_CurBehavior();
-    if (Check_Behavior(pBehavior, eBehaviorType::eInteract))
-        OutCondition = true;
-}
 
 
 void CTable_Conditions::Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
@@ -487,17 +475,6 @@ void CTable_Conditions::Check_EnemyInRay(_bool& OutCondition, CPlayer* pPlayer, 
     vDir.Normalize();
 
     OutCondition = GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vMyPos, vDir, fLength);
-
-}
-
-void CTable_Conditions::Check_AvailableTarget(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
-{
-    CHECKFALSEOUTCONDITION(OutCondition);
-    if (pPlayer->Get_CurRoute().empty())
-    {
-        OutCondition = false;
-    }
-    else OutCondition = true;
 
 }
 
@@ -659,68 +636,68 @@ void CTable_Conditions::Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& O
 }
 
 //패트롤 틱..
-//void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController)
-//{
-//    CAIPersonality* pPersonality = pAIController->Get_Personality();
-//
-//    //패트롤에 머무른 시간 확인 --> 초기 설정치보다 넘은 경우
-//    CPath* pPath = pPlayer->Get_CurPath();
-//    //pPath가 nullptr --> 패스 할당 못받음 --> 맨처음 시작단계..
-//    if (nullptr == pPath) 
-//        return;   
-//    if (nullptr == pPersonality)
-//        return;
-//
-//    if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePatrol))
-//    {
-//        pPath->Set_Arrived(); // 강제로 마지막 인덱스로..
-//        if (pPath->Is_Arrived())//도착 여부 확인..
-//        {
-//            //경로 업데이트 구문 호출..
-//            pAIController->Change_NearPath();
-//            //patrolRemainTime초기화..
-//            pPersonality->Init_RemainTime(eBehaviorType::ePatrol);
-//        }
-//    }
-//    else
-//    {
-//        //아닐경우 PatrolRemainTime 계산..
-//        pPersonality->Update_RemainTime(eBehaviorType::ePatrol);
-//    }
-//}
+void CTable_Conditions::Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController)
+{
+    CAIPersonality* pPersonality = pAIController->Get_Personality();
+
+    //패트롤에 머무른 시간 확인 --> 초기 설정치보다 넘은 경우
+    CPath* pPath = pPlayer->Get_CurPath();
+    //pPath가 nullptr --> 패스 할당 못받음 --> 맨처음 시작단계..
+    if (nullptr == pPath) 
+        return;   
+    if (nullptr == pPersonality)
+        return;
+
+    if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePatrol))
+    {
+        pPath->Set_Arrived(); // 강제로 마지막 인덱스로..
+        if (pPath->Is_Arrived())//도착 여부 확인..
+        {
+            //경로 업데이트 구문 호출..
+            pAIController->Change_NearPath();
+            //patrolRemainTime초기화..
+            pPersonality->Init_RemainTime(eBehaviorType::ePatrol);
+        }
+    }
+    else
+    {
+        //아닐경우 PatrolRemainTime 계산..
+        pPersonality->Update_RemainTime(eBehaviorType::ePatrol);
+    }
+}
 
 //네비의 틱..
-//void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController)
-//{
-//    CAIPersonality* pPersonality = pAIController->Get_Personality();
-//    CPath* pPath = pPlayer->Get_CurPath();
-//
-//    if (nullptr == pPath)
-//        return;
-//
-//    if (nullptr == pPersonality)
-//        return;
-//
-//    pPersonality->Update_RemainTime(eBehaviorType::ePathNavigation);
-//
-//    if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePathNavigation))
-//    {
-//        //누적량 체크
-//        if (pPersonality->Check_LessMoveAcc(eBehaviorType::ePathNavigation, pPath->Get_MoveAcc()))
-//        {
-//            _float fLength = fabsf(pPlayer->Get_WorldPos().y - pPath->Get_CurY());
-//
-//            if (fLength > 1.5f)
-//                pPath->Set_Arrived();
-//
-//
-//        }
-//
-//        pPath->Init_MoveAcc();
-//        pPersonality->Init_RemainTime(eBehaviorType::ePathNavigation);
-//    }
-//
-//}
+void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController)
+{
+    CAIPersonality* pPersonality = pAIController->Get_Personality();
+    CPath* pPath = pPlayer->Get_CurPath();
+
+    if (nullptr == pPath)
+        return;
+
+    if (nullptr == pPersonality)
+        return;
+
+    pPersonality->Update_RemainTime(eBehaviorType::ePathNavigation);
+
+    if (pPersonality->Is_LongTimeRemain(eBehaviorType::ePathNavigation))
+    {
+        //누적량 체크
+        if (pPersonality->Check_LessMoveAcc(eBehaviorType::ePathNavigation, pPath->Get_MoveAcc()))
+        {
+            _float fLength = fabsf(pPlayer->Get_WorldPos().y - pPath->Get_CurY());
+
+            if (fLength > 1.5f)
+                pPath->Set_Arrived();
+
+
+        }
+
+        pPath->Init_MoveAcc();
+        pPersonality->Init_RemainTime(eBehaviorType::ePathNavigation);
+    }
+
+}
 
 //길찾기
 void CTable_Conditions::Callback_Tick_MakeRoute(CPlayer* pPlayer, CAIController* pAIController)
@@ -741,9 +718,9 @@ void CTable_Conditions::Callback_Tick_InRayTarget(CPlayer* pPlayer, CAIControlle
     
    if (nullptr == pPersonality)
        return;
-    pPersonality->Update_RemainTime(eBehaviorType::eCombat);
+    pPersonality->Update_RemainTime(eBehaviorType::eAttack);
     
-    if (pPersonality->Is_LongTimeRemain(eBehaviorType::eCombat))
+    if (pPersonality->Is_LongTimeRemain(eBehaviorType::eAttack))
     {
         //누적량 체크
 
@@ -758,9 +735,9 @@ void CTable_Conditions::Callback_Tick_InRayTarget(CPlayer* pPlayer, CAIControlle
         _float fLength = vDir.Length();
         vDir.Normalize();
 
-        pPlayer->Set_InRayTarget(GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vMyPos, vDir, fLength));
+        //pPlayer->Set_InRayTarget(GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vMyPos, vDir, fLength));
     
-        pPersonality->Init_RemainTime(eBehaviorType::eCombat);
+        pPersonality->Init_RemainTime(eBehaviorType::eAttack);
     }
 
 }
@@ -772,9 +749,7 @@ void CTable_Conditions::Callback_Tick_AvailableTarget(CPlayer* pPlayer, CAIContr
 
     switch (eType)
     {
-    case eBehaviorType::eCombat: 
-        break;
-    case eBehaviorType::eResurrect:
+    case eBehaviorType::eAttack: 
         break;
     case eBehaviorType::eResurrect:
         break;

@@ -67,7 +67,6 @@ private:
     void Check_FollowBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_ResurrectBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_ChangeBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_InteractBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_PatrolBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 
     void Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
@@ -91,8 +90,8 @@ private:
     void  Select_MainPlayer(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
     //void  Select_LowHealthEnemy(BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController);
 private:
-    //void Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController);
-    //void Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController);
+    void Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController);
+    void Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController);
     void Callback_Tick_MakeRoute(CPlayer* pPlayer, CAIController* pAIController);
     void Callback_Tick_InRayTarget(CPlayer* pPlayer, CAIController* pAIController);
     void Callback_Tick_AvailableTarget(CPlayer* pPlayer, CAIController* pAIController);
