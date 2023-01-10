@@ -126,10 +126,17 @@ HRESULT CModel_Renderer::Render()
 			return E_FAIL;
 		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_MaskTexture", i, aiTextureType_REFLECTION)))
 			return E_FAIL;
-		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_PBRTexture", i, aiTextureType_METALNESS)))
-			return E_FAIL;
+		
 		/*if (FAILED(m_pShaderCom->Begin(m_iCurPass)))
 			return E_FAIL;*/
+
+		_bool bPBR = m_pModelCom->Has_PBR();
+		if (bPBR)
+		{
+			if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_PBRTexture", i, aiTextureType_METALNESS)))
+				return E_FAIL;
+		}
+		m_pShaderCom->Set_RawValue("g_bPBR", &bPBR, sizeof(_bool));
 
 		if (FAILED(m_pModelCom->Render(i, m_pShaderCom, m_iCurPass, "g_Bones")))
 			return E_FAIL;

@@ -43,8 +43,10 @@ texture2D	g_BloomOriginTexture;
 texture2D	g_DistortionTexture;
 texture2D	g_FogTexture;
 texture2D	g_RimLightTexture;
+texture2D	g_PBRTexture;
 
 bool		g_bBilateral;
+bool		g_bPBR;
 
 float		g_fWinCX = 1280.f;
 float		g_fWinCY = 720.f;
@@ -187,14 +189,47 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 	return Out;
 }
 
+
+// GGX code from https://www.shadertoy.com/view/MlB3DV
+float G1V(float dotNV, float k) {
+	return 1.0 / (dotNV * (1.0 - k) + k);
+}
+float GGX(float3 N, float3 V, float3 L, float roughness, float F0) {
+	float alpha = roughness * roughness;
+	float3 H = normalize(V + L);
+
+	float dotNL = clamp(dot(N, L), 0.0, 1.0);
+	float dotNV = clamp(dot(N, V), 0.0, 1.0);
+	float dotNH = clamp(dot(N, H), 0.0, 1.0);
+	float dotLH = clamp(dot(L, H), 0.0, 1.0);
+
+	float D, vis;
+	float F;
+
+	// NDF : GGX
+	float alphaSqr = alpha * alpha;
+	float pi = 3.1415926535;
+	float denom = dotNH * dotNH * (alphaSqr - 1.0) + 1.0;
+	D = alphaSqr / (pi * denom * denom);
+
+	// Fresnel (Schlick)
+	float dotLH5 = pow(1.0 - dotLH, 5.0);
+	F = F0 + (1.0 - F0) * (dotLH5);
+
+	// Visibility term (G) : Smith with Schlick's approximation
+	float k = alpha / 2.0;
+	vis = G1V(dotNL, k) * G1V(dotNV, k);
+
+	return /*dotNL */ D * F * vis;
+}
+
 PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 {
 	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
-	vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
+	//vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (vFlagDesc.r > 0.f)
+	//if (vFlagDesc.r > 0.f)
 	{
-
 		vector			vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 		vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
 		float			fViewZ = vDepthDesc.y * 1500.f;
@@ -223,20 +258,61 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
 		Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
 
-		//점조명이구, 최대거리보다 작은 범위내에 있으면
-		/*if (g_fRange < 100.f && g_fRange > fDistance)
-		{
-			Out.vShade.a = 0.95f;
-		}
-		else*/
 		Out.vShade.a = 1.f;
 
-		if (vFlagDesc.r > 0.99f)
+		//if (vFlagDesc.r > 0.99f)
 		{
-			vector			vReflect = reflect(normalize(vLightDir), vNormal);
-			vector			vLook = normalize(vWorldPos - g_vCamPosition);
+			if (g_bPBR)
+			{
+				vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
 
-			Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 30.f) * fAtt;
+				float metalness = vPBRDesc.x;
+				float roughness = vPBRDesc.y;
+
+				vector			vLook = normalize(vWorldPos - g_vCamPosition);
+
+				float power = 1.0 / max(roughness * 0.4, 0.01);
+				//vec3 spec = light_color * phong(light,ray,normal,power);
+
+
+				// Specular
+				float3 normal = vNormal.xyz;
+				float3 light = normalize(vLightDir).xyz;
+				float3 cameraToVertex = vLook.xyz;
+				float3 view = g_vCamLook.xyz;
+				//float3 view = cameraToVertex;
+				float3 halfway = normalize(light + view);
+
+				// Microfacet normal distribution function (Beckmann Distribution)
+				float ndoth = dot(normal, halfway);
+				float alpha = roughness * roughness;
+				float d = exp((ndoth * ndoth - 1) / (alpha * ndoth * ndoth)) / (3.14159265358979323846 * alpha * ndoth * ndoth * ndoth * ndoth);
+
+				// Microfacet fresnel reflectance (Schlick's Approximation)
+				float f0 = 0.02;
+				float fresnel = f0 + (1 - f0) * pow(1 - dot(view, halfway), 5);
+
+				// Microfacet visibility (Smith's GGX)
+				float g1 = (2 * ndoth * dot(view, normal)) / dot(view, halfway);
+				float g2 = (2 * ndoth * dot(light, normal)) / dot(view, halfway);
+				float visibility = 1 / (g1 + g2 - 1 + 0.00001);
+
+				// Specular
+				float3 specular = fresnel * d * visibility * (g_vLightSpecular * g_vMtrlSpecular).xyz;
+
+				// Final color
+				Out.vSpecular.xyz = specular * fAtt;
+
+			}
+			else
+			{
+				vector			vReflect = reflect(normalize(vLightDir), vNormal);
+				vector			vLook = normalize(vWorldPos - g_vCamPosition);
+
+				Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 30.f) * fAtt;
+
+			}
+
 		}
 	}
 
@@ -248,43 +324,50 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
 
 
+
 PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 {
 	PS_OUT			Out = (PS_OUT)Out;
-	vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
+	//vector			vFlagDesc = g_FlagTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
 
+	float metalness = vPBRDesc.x;
 
 	vector			vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+
 
 	Out.vColor = vDiffuse * vShade;
-
 
 
 	//Shadow
 #ifdef SHADOW_ON
 	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
 	Out.vColor *= vShadowDesc;
+
+	if (vShadowDesc.x > 0.4f)
+	{
+		/* Specular */
+		vector vSpecColor;
+		if (g_bPBR)
+			vSpecColor = (vSpecular * metalness + (1 - metalness) * vSpecular * Out.vColor);
+		else
+			vSpecColor = vSpecular;
+
+		Out.vColor.xyz += vSpecColor.xyz;
+	}
 #endif
 
+	/* 색 보정 */
 	Out.vColor *= 2.2f;
+
 
 	//RimLight
 	vector			vRimLightDesc = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
 	//if (vRimLightDesc.a > 0.1f)
 	Out.vColor.xyz += vRimLightDesc.xyz;
-
-
-
-	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-	if (vSpecular.r < 1.f)
-	{
-		if (dot((vDiffuse.xyz * vShadowDesc.xyz), float3(0.333f, 0.333f, 0.333f)) > 0.5f)
-			Out.vColor += vSpecular;
-
-	}
-
 
 
 	if (Out.vColor.a <= 0.f)
@@ -295,30 +378,6 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	}
 	
 	Out.vColor.a = 1.f;
-
-	//
-
-	////white
-	//Out.vColor.xyz += vFlagDesc.g;
-
-	
-
-	////Forward Fog
-	//In.vTexUV.x += g_fUVPlusX;
-	//In.vTexUV.y += g_fUVPlusY;
-
-	//vector			vFogColor = g_FogTexture.Sample(DefaultSampler, In.vTexUV * 0.3f);
-
-	//if (vFogColor.x < 0.2f)
-	//	return Out;
-
-	//vFogColor.xyz = float3(1.1f, 0.f, 0.f) * (vFogColor.x);
-
-	//float fDepthRatio = saturate(vDepthDesc.y / 0.01f);
-
-	////0~1을 0.5~1로 바꿔야함
-	//fDepthRatio = (fDepthRatio + 1.f) * 0.5f * g_fFogAlpha;
-	//Out.vColor.xyz = Out.vColor.xyz * (1.f - fDepthRatio) + vFogColor * fDepthRatio;
 
 	
 

@@ -1891,9 +1891,9 @@ HRESULT CGameSystem::SetUp_DefaultLight_Paden()
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(100.f, 300.f, 200.f, 1.f);
 	LightDesc.fRange = 1500.f;
-	LightDesc.vDiffuse = _float4(0.5f, 0.3f, 0.2f, 1.f);
+	LightDesc.vDiffuse = _float4(0.6f, 0.4f, 0.25f, 1.f);
 	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular = _float4(0.7f, 0.35f, 0.35f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
 		return E_FAIL;

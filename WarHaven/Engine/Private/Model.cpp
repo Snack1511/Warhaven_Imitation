@@ -1556,7 +1556,10 @@ HRESULT CModel::Create_Material(CResource_Material* pResource, _uint iMeshPartTy
 				Material.pTextures[j] = nullptr;
 			}
 			else
+			{
 				Material.pTextures[j] = pTexCom;
+				m_bPBR = true;
+			}
 
 			continue;
 		}

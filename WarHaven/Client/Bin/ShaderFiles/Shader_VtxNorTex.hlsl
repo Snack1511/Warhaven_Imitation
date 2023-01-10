@@ -106,6 +106,8 @@ struct PS_LIGHTOUT
 	vector		vFlag : SV_TARGET3;
 	vector		vOutlineFlag : SV_TARGET4;
 	vector		vRimLightFlag : SV_TARGET5;
+	vector	vPBR : SV_TARGET6;
+
 };
 
 struct PS_NAVI_OUT

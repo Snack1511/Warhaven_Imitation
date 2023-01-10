@@ -9,6 +9,9 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D	g_DiffuseTexture, g_BlendTexture, g_FilterTexture , g_NoiseTexture, g_NormalTexture;
 texture2D	g_StaticShadowTexture;
 
+texture2D	g_PBRTexture;
+bool		g_bPBR;
+
 
 vector		g_vCamPosition;
 float		g_fNoiseScale = 0.1f;
@@ -106,6 +109,7 @@ struct PS_OUT
 	vector	vFlag : SV_TARGET3;
 	vector	vOutLineFlag : SV_TARGET4;
 	vector	vRimLightFlag : SV_TARGET5;
+	vector	vPBR : SV_TARGET6;
 };
 
 struct PS_SHADOW_OUT
@@ -164,7 +168,7 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vFlag = g_vFlag;
 	Out.vOutLineFlag = g_vOutLineFlag;
 	Out.vRimLightFlag = g_vRimLightFlag;
-
+	
 
 
 	return Out;	
@@ -349,6 +353,11 @@ PS_OUT PS_NORMAL_MAIN(PS_IN_NORMAL In)
 	Out.vOutLineFlag = g_vOutLineFlag;
 	Out.vRimLightFlag = g_vRimLightFlag;
 
+	if (g_bPBR)
+	{
+		Out.vPBR = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
+		Out.vPBR.a = 1.f;
+	}
 
 
 	return Out;
@@ -392,6 +401,11 @@ PS_OUT PS_NORMAL_MAIN_FACE(PS_IN_NORMAL In)
 	Out.vOutLineFlag = g_vOutLineFlag;
 	Out.vRimLightFlag = g_vRimLightFlag;
 
+	if (g_bPBR)
+	{
+		Out.vPBR = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
+		Out.vPBR.a = 1.f;
+	}
 
 
 	return Out;

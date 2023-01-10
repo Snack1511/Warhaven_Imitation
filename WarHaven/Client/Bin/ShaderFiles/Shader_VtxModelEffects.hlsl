@@ -5,6 +5,8 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix, g_ViewMatrixInv, g_ProjMatrixI
 
 texture2D	g_DiffuseTexture, g_BlendTexture, g_FilterTexture, g_NormalTexture, g_NoiseTexture, g_StaticShadowTexture, g_MaskTexture;
 texture2D	g_DepthTexture;
+texture2D	g_PBRTexture;
+bool		g_bPBR;
 
 float		g_fRange = 1.f;
 

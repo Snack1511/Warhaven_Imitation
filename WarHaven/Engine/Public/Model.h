@@ -41,6 +41,7 @@ public:
 
 	MODEL_TYPE	Get_ModelType() { return m_eMODEL_TYPE; }
 
+	_bool	Has_PBR() { return m_bPBR; }
 public:
 	HRESULT	SetUp_AnimModel_LOD();
 
@@ -110,6 +111,7 @@ protected:
 	_bool						m_bFrustum = true;
 
 protected:
+	_bool						m_bPBR = false;
 	_bool						m_bLOD = false;
 	_bool						m_bHardLOD = false;
 

@@ -68,8 +68,8 @@ HRESULT CLevel_Main::Enter()
 	LightDesc.vPosition.x += 15.2f;
 	LightDesc.vPosition.y += 16.8f;
 	LightDesc.vPosition.z += -4.4f;
-	LightDesc.fRange = 1000.f;
-	LightDesc.vDiffuse = _float4(0.25f, 0.25f, 0.25f, 1.f);
+	LightDesc.fRange = 100.f;
+	LightDesc.vDiffuse = _float4(0.3f, 0.3f, 0.3f, 1.f);
 	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
 	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 

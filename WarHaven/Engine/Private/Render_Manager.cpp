@@ -264,6 +264,10 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_Diffuse"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.5f, 0.5f, 0.5f, 0.f))))
 		return E_FAIL;
 
+	/* For.Target_PBR */
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_PBR"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
 	/* For.Target_Diffuse */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(TEXT("Target_SkyBox"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.5f, 0.9f, 1.f, 0.f))))
 		return E_FAIL;
@@ -422,6 +426,8 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_OutlineFlag"))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_RimLightFlag"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PBR"))))
 		return E_FAIL;
 
 	/* For.MRT_Effect */
@@ -1105,7 +1111,8 @@ HRESULT CRender_Manager::Render_Lights()
 		return E_FAIL;
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_FlagTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Flag")))))
 		return E_FAIL;
-
+	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_PBRTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_PBR")))))
+		return E_FAIL;
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
 
@@ -1118,7 +1125,14 @@ HRESULT CRender_Manager::Render_Lights()
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 
 	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+	_float4 vCamLook = GAMEINSTANCE->Get_CurCamLook();
 	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4));
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_vCamLook", &vCamLook, sizeof(_float4));
+
+	static _bool	bPBR = false;
+	if (KEY(B, TAP))
+		bPBR = !bPBR;
+	m_vecShader[SHADER_DEFERRED]->Set_RawValue("g_bPBR", &bPBR, sizeof(_bool));
 
 	m_pLight_Manager->Render_Lights(m_vecShader[SHADER_DEFERRED], m_pMeshRect);
 
@@ -1478,6 +1492,8 @@ HRESULT CRender_Manager::Render_ForwardBlend()
 
 	if (FAILED(m_vecShader[SHADER_DEFERRED]->Set_ShaderResourceView("g_RimLightTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_RimLight")))))
 		return E_FAIL;
+
+	
 
 	
 
