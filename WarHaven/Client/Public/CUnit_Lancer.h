@@ -11,12 +11,19 @@ class CUnit_Lancer
 {
 	DECLARE_PROTOTYPE(CUnit_Lancer);
 
+	enum eNeedle { eNeedle_Max = 4 };
+
 private:
 	CUnit_Lancer();
 	virtual ~CUnit_Lancer();
 
 public:
 	static	CUnit_Lancer* Create(const UNIT_MODEL_DATA& tUnitModelData);
+
+public:
+	CLancerNeedle* Get_Needle(_int iIndex) { return m_pNeedle[iIndex]; }
+	void Reset_NeedleNums() { m_iNeedleNums = 0; }
+
 
 public:
 	virtual void On_Die() override;
@@ -43,12 +50,14 @@ private:
 	CUnit_Lancer_Head* m_pMyHead = nullptr; // 새로 붙인 머리
 	
 private:
-	enum eNeedle { eNeedle_Max = 4};
 	CLancerNeedle* m_pNeedle[eNeedle_Max] = { nullptr }; // 새로 붙인 머리
 
-	_float	m_fNeedleCreateTime = 0.2f;
+	_float	m_fNeedleCreateTime = 1.f;
 	_float	m_fTimeAcc = 0.f;
 	_uint	m_iNeedleNums = 0;
+
+	STATE_TYPE m_eBreezeBegin = STATE_END;
+	STATE_TYPE m_eBreezeLoop = STATE_END;
 };
 
 END

@@ -4,6 +4,8 @@
 #include "UsefulHeaders.h"
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Lancer.h"
+#include "CLancerNeedle.h"
 
 #include "CUser.h"
 #include "CEffects_Factory.h"
@@ -38,7 +40,7 @@ HRESULT CLancer_Breeze_Loop::Initialize()
 	m_tHitInfo.fJumpPower = 0.f;
 	m_tHitInfo.bSting = true;
 
-	m_fDamagePumping = 5.f;
+	m_fDamagePumping = 9.f;
 
 
 	m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
@@ -88,11 +90,10 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;
 	GET_COMPONENT_FROM(pOwner, CColorController)->Add_ColorControll(tColorDesc);
 
-	GAMEINSTANCE->Start_RadialBlur(0.02f);
-	GAMEINSTANCE->Start_ChromaticAberration(20.f);
+	GAMEINSTANCE->Start_RadialBlur(0.015f);
 
-	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
+	//pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_BREEZE);
 
 	CUser::Get_Instance()->SetActive_Gauge(true);
 
@@ -116,15 +117,26 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	static_cast<CUnit_Lancer*>(pOwner)->Reset_NeedleNums();
+
+	for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)
+	{
+		CLancerNeedle* pNeedle = static_cast<CUnit_Lancer*>(pOwner)->Get_Needle(i);
+
+		if (!pNeedle)
+			continue;
+
+		pNeedle->On_ChangePhase(CLancerNeedle::LANCERNEEDLE_STOP);
+	}
 	CUser::Get_Instance()->SetActive_Gauge(false);
 
+
 	GAMEINSTANCE->Stop_RadialBlur();
-	GAMEINSTANCE->Stop_ChromaticAberration();
 
 
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_LANCER);
 	pOwner->On_Use(CUnit::SKILL1);
-	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
+	//pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 }
 
 STATE_TYPE CLancer_Breeze_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

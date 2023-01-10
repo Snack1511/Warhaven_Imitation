@@ -1,22 +1,20 @@
 #pragma once
 #include "CState_Hit.h"
 
-BEGIN(Engine)
-END
-
-
 BEGIN(Client)
-class CHit_Fly_Priest
+class CColorController;
+
+class CHit_Groggy_Lancer
 	: public CState_Hit
 {
-	DECLARE_STATE(CHit_Fly_Priest);
+	DECLARE_STATE(CHit_Groggy_Lancer);
 
 private:
-	CHit_Fly_Priest();
-	virtual ~CHit_Fly_Priest();
+	CHit_Groggy_Lancer();
+	virtual ~CHit_Groggy_Lancer();
 
 public:
-	static CHit_Fly_Priest* Create();
+	static CHit_Groggy_Lancer* Create();
 
 public:
 	// CState을(를) 통해 상속됨
@@ -27,9 +25,6 @@ public:
 
 private:
 	virtual STATE_TYPE Check_Condition(CUnit* pOwner, CAnimator* pAnimator) override;
-
-private:
-	_bool	bTest = false; 
 
 };
 

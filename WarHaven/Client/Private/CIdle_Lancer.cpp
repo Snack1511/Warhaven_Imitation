@@ -70,7 +70,7 @@ HRESULT CIdle_Lancer::Initialize()
 
 void CIdle_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {    
-    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
+    pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_LANCER);
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -81,7 +81,7 @@ STATE_TYPE CIdle_Lancer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CIdle_Lancer::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
-    /* 할거없음 */
+    
 }
 
 STATE_TYPE CIdle_Lancer::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

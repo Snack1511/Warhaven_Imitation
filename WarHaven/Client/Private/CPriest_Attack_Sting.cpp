@@ -39,7 +39,7 @@ HRESULT CPriest_Attack_Sting::Initialize()
 	m_tHitInfo.fKnockBackPower = 3.f;
 	m_tHitInfo.fJumpPower = 0.f;
 	m_tHitInfo.bFace = false;
-	m_tHitInfo.bSting = true;
+	//m_tHitInfo.bSting = true;
 
 
 	m_eAnimDivide = ANIM_DIVIDE::eBODYUPPER;

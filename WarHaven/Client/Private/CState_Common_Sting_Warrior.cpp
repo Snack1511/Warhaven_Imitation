@@ -51,7 +51,7 @@ HRESULT CState_Common_Sting_Warrior::Initialize()
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
-
+    m_bSting = true;
     
     return S_OK;
 }
@@ -69,6 +69,7 @@ void CState_Common_Sting_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 STATE_TYPE CState_Common_Sting_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    //if(eStingHitState
 
 
     return __super::Tick(pOwner, pAnimator);

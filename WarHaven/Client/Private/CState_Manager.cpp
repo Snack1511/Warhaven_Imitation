@@ -525,6 +525,10 @@
 #include "CLancer_Breeze_Begin.h"
 #include "CLancer_Breeze_Loop.h"
 
+#include "CHit_Lancer.h"
+#include "CHit_Groggy_Lancer.h"
+#include "CHit_Fly_Lancer.h"
+
 
 
 #pragma endregion 
@@ -1668,11 +1672,13 @@ void CState_Manager::Lancer_State()
 
 
 	// 수정 ㄱㄱ
-	m_arrStates[STATE_HIT_LANCER] = CIdle_Lancer::Create();
+	m_arrStates[STATE_HIT_LANCER] = CHit_Lancer::Create();
+	m_arrStates[STATE_FLYHIT_LANCER] = CHit_Fly_Lancer::Create();
+	m_arrStates[STATE_GROGGYHIT_LANCER] = CHit_Groggy_Lancer::Create();
+	
+	/* 안 쓴다. */
 	m_arrStates[STATE_GUARDHIT_LANCER] = CRun_Lancer::Create();
-	m_arrStates[STATE_GROGGYHIT_LANCER] = CIdle_Lancer::Create();
 	m_arrStates[STATE_STINGHIT_LANCER] = CRun_Lancer::Create();
-	m_arrStates[STATE_FLYHIT_LANCER] = CStop_Lancer::Create();
 
 }
 

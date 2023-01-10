@@ -4,17 +4,17 @@
 BEGIN(Client)
 class CColorController;
 
-class CHit_Priest
+class CHit_Lancer
 	: public CState_Hit
 {
-	DECLARE_STATE(CHit_Priest);
+	DECLARE_STATE(CHit_Lancer);
 
 private:
-	CHit_Priest();
-	virtual ~CHit_Priest();
+	CHit_Lancer();
+	virtual ~CHit_Lancer();
 
 public:
-	static CHit_Priest* Create();
+	static CHit_Lancer* Create();
 
 public:
 	// CState을(를) 통해 상속됨

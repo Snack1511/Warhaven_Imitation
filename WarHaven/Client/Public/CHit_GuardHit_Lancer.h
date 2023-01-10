@@ -4,17 +4,17 @@
 BEGIN(Client)
 class CColorController;
 
-class CHit_GuardHit_Priest
+class CHit_GuardHit_Lancer
 	: public CState_Hit
 {
-	DECLARE_STATE(CHit_GuardHit_Priest);
+	DECLARE_STATE(CHit_GuardHit_Lancer);
 
 private:
-	CHit_GuardHit_Priest();
-	virtual ~CHit_GuardHit_Priest();
+	CHit_GuardHit_Lancer();
+	virtual ~CHit_GuardHit_Lancer();
 
 public:
-	static CHit_GuardHit_Priest* Create();
+	static CHit_GuardHit_Lancer* Create();
 
 public:
 	// CState을(를) 통해 상속됨

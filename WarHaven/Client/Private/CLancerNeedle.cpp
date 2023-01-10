@@ -44,15 +44,38 @@ CLancerNeedle* CLancerNeedle::Create(wstring wstrModelFilePath, CHierarchyNode* 
 
 void	CLancerNeedle::Needle_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos)
 {
+	m_pOwnerUnit->CallBack_CollisionEnter(pOtherObj, eOtherColType, eMyColType, vHitPos);
+	pOtherObj->CallBack_CollisionEnter(m_pOwnerUnit, eMyColType, eOtherColType, vHitPos);
 
+	CUnit* pOtherUnit = dynamic_cast<CUnit*>(pOtherObj);
+
+	if (m_pOwnerUnit == pOtherUnit && !pOtherUnit)
+		return;
+
+	if (pOtherUnit->Get_Status().fHP >= 0.f)
+	{
+		m_pStinedUnit.push_back(pOtherUnit);
+	}
+
+
+
+	/*m_pStingBone = GET_COMPONENT_FROM(m_tHitInfo.pOtherUnit, CModel)->Find_HierarchyNode(m_tHitInfo.strStingBoneName.c_str());
+	m_eAnimType = ANIM_HIT;
+	m_iAnimIndex = m_iHitStingIndex[HIT_STATE_N];
+	*/	
+	
+
+	
 }
 void	CLancerNeedle::Needle_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
-
+	m_pOwnerUnit->CallBack_CollisionStay(pOtherObj, eOtherColType, eMyColType);
+	pOtherObj->CallBack_CollisionStay(m_pOwnerUnit, eMyColType, eOtherColType);
 }
 void	CLancerNeedle::Needle_CollisionExit(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType)
 {
-
+	m_pOwnerUnit->CallBack_CollisionExit(pOtherObj, eOtherColType, eMyColType);
+	pOtherObj->CallBack_CollisionExit(m_pOwnerUnit, eMyColType, eOtherColType);
 }
 
 void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
@@ -60,6 +83,14 @@ void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
 	// 이펙트 생성시점
 
 	m_eNeedleState = eNeedleState;
+	m_fCurAcc = 0.f;
+	//m_fCurAcc = 0.f;
+
+	_float4 vStartPos = m_vStartPos;
+
+	_float fOffsetX = 40.f;
+	_float fOffsetDown = 30.f;
+	_float fOffsetZ = 40.f;
 
 	switch (m_eNeedleState)
 	{
@@ -72,21 +103,79 @@ void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
 		break;
 
 	case Client::CLancerNeedle::LANCERNEEDLE_ATTACKBEGIN:
+		m_pTransform->Set_Scale(_float4(1.f, 1.f, 1.f));
+		ENABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 
+		switch (m_iNeedleIndex)
+		{
+		case 0:
+			m_vStartPos = _float4(-41.f, -134.f, -60.f);
+			m_vTargetPos = m_vStartPos;
+			m_vTargetPos.x -= fOffsetDown + fOffsetX * 2.f;
+			m_vTargetPos.z -= fOffsetZ;
+
+
+
+			break;
+
+		case 1:
+			m_vStartPos = _float4(-41.f, -134.f, -20.f);
+			m_vTargetPos = m_vStartPos;
+			m_vTargetPos.x -= fOffsetDown + fOffsetX + (fOffsetX / 2.f);
+			m_vTargetPos.z -= fOffsetZ;
+
+			break;
+
+
+		case 2:
+			m_vStartPos = _float4(-41.f, -134.f, 20.f);
+			m_vTargetPos = m_vStartPos;
+			m_vTargetPos.x -= fOffsetDown + fOffsetX + (fOffsetX / 5.f - 5.f);
+			m_vTargetPos.z += fOffsetZ;
+
+
+			break;
+
+		case 3:
+			m_vStartPos = _float4(-41.f, -134.f, 60.f);
+			m_vTargetPos = m_vStartPos;
+			m_vTargetPos.x -= fOffsetDown + fOffsetX + (fOffsetX / 2.f + -10.f);
+			m_vTargetPos.z += fOffsetZ;
+
+			break;
+
+
+		default:
+			break;
+		}
 
 		break;
 
 	case Client::CLancerNeedle::LANCERNEEDLE_ATTACK:
 
+
+		if (m_iNeedleIndex == 0)
+			m_vTargetPos.x -= fOffsetX;
+
+		else if (m_iNeedleIndex == 1)
+			m_vTargetPos.x -= fOffsetX / 2.f;
+
+		else if (m_iNeedleIndex == 2)
+			m_vTargetPos.x -= fOffsetX / 5.f - 5.f;
+
+		else if (m_iNeedleIndex == 3)
+			m_vTargetPos.x += fOffsetX / 2.f + -10.f;
+
 		break;
 
 	case Client::CLancerNeedle::LANCERNEEDLE_STOP:
-		
+		//DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 		break;
 
-	default:
-		break;
+		
 	}
+
+
 
 }
 void CLancerNeedle::Enable_Needle(_bool bEnable)
@@ -99,7 +188,9 @@ void CLancerNeedle::Enable_Needle(_bool bEnable)
 		DISABLE_GAMEOBJECT(this);
 		return;
 	}
-	_float fOffsetZ = 20.f;
+
+	_float fOffsetX = 50.f;
+	_float fOffsetZ = 30.f;
 
 
 	switch (m_iNeedleIndex)
@@ -107,27 +198,35 @@ void CLancerNeedle::Enable_Needle(_bool bEnable)
 	case 0:
 		m_vStartPos = _float4(-41.f, -134.f, -60.2f);
 		m_vTargetPos = m_vStartPos;
+		m_vTargetPos.y = -164.f;
 		m_vTargetPos.z -= fOffsetZ;
+		
+
 
 		break;
 
 	case 1:
 		m_vStartPos = _float4(-41.f, -134.f, -20.5f);
 		m_vTargetPos = m_vStartPos;
+		m_vTargetPos.y = -164.f;
 		m_vTargetPos.z -= fOffsetZ;
+
 		break;
 
 
 	case 2:
 		m_vStartPos = _float4(-41.f, -134.f, 20.f);
 		m_vTargetPos = m_vStartPos;
+		m_vTargetPos.y = -164.f;
 		m_vTargetPos.z += fOffsetZ;
+
 
 		break;
 
 	case 3:
 		m_vStartPos = _float4(-41.f, -134.f, 60.f);
 		m_vTargetPos = m_vStartPos;
+		m_vTargetPos.y = -164.f;
 		m_vTargetPos.z += fOffsetZ;
 
 		break;
@@ -170,6 +269,55 @@ HRESULT CLancerNeedle::SetUp_Model(wstring wstrModelFilePath, CHierarchyNode* pO
 	pRenderer->Initialize();
 	Add_Component<CRenderer>(pRenderer);
 
+	//CColorController* pCController = CColorController::Create(CP_BEFORE_RENDERER);
+
+	//if (!pCController)
+	//	return E_FAIL;
+
+	//Add_Component(pCController);
+
+	_float fRadius = 0.25f;
+	_float4 vOffsetPos = ZERO_VECTOR;
+	//vOffsetPos.z += fRadius;
+	//vOffsetPos.z += fRadius;
+	//vOffsetPos.z += fRadius;
+
+	CCollider_Sphere* pCollider = CCollider_Sphere::Create(CP_AFTER_TRANSFORM, fRadius, COL_BLUEFLYATTACKGUARDBREAK, vOffsetPos, DEFAULT_TRANS_MATRIX);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x += fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+
+
+	vOffsetPos = ZERO_VECTOR;
+
+	vOffsetPos.x -= fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x -= fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x -= fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x -= fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x -= fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+	vOffsetPos.x -= fRadius;
+	pCollider->Add_Collider(fRadius, vOffsetPos);
+
+	Add_Component(pCollider);
+
+	m_pCollider = pCollider;
+
+	if (!m_pCollider)
+		return E_FAIL;
+
+	//if (FAILED(SetUp_Colliders(COL_BLUEATTACK)))
+	//	return E_FAIL;
+
 	m_pOwnerBone = pOwnerHierarcyNode;
 	m_pOwnerUnit = pOwnerUnit;
 
@@ -206,35 +354,15 @@ HRESULT CLancerNeedle::Start()
 void CLancerNeedle::My_Tick()
 {
 	__super::My_Tick();
-	/*
-	if(KEY(R, HOLD))
-	{
-		if (KEY(X, HOLD))
-			m_vStartPos.x += 1.f;
 
-		if (KEY(Y, HOLD))
-			m_vStartPos.y += 1.f;
-
-		if (KEY(Z, HOLD))
-			m_vStartPos.z += 1.f;
-	}
-	else
-	{
-		if (KEY(X, HOLD))
-			m_vStartPos.x -= 1.f;
-
-		if (KEY(Y, HOLD))
-			m_vStartPos.y -= 1.f;
-
-		if (KEY(Z, HOLD))
-			m_vStartPos.z -= 1.f;
-	}*/
-	
 }
 
 void CLancerNeedle::My_LateTick()
 {
 	__super::My_LateTick();
+
+	_float4x4		matFinal;
+	matFinal.Identity();
 
 	switch (m_eNeedleState)
 	{
@@ -243,22 +371,10 @@ void CLancerNeedle::My_LateTick()
 
 		Chase_OwnerBoneMatrix();
 
-		m_vScale.x = 1.f;
-		m_vScale.y += fDT(0) * 2.f;
-		m_vScale.z = 1.f;
+		m_vScale += fDT(0) * 10.f;
 
-		if (m_vScale.y >= 1.f)
+		if (m_vScale.x >= 1.f)
 		{
-			XMStoreFloat4x4(&m_OwnerBoneOffsetMatrix, XMMatrixIdentity());
-			
-			
-			m_OwnerBoneOffsetMatrix.m[3][0] = frandom(-0.5f * (_float)m_iNeedleIndex, -0.5f * (_float)m_iNeedleIndex);
-			m_OwnerBoneOffsetMatrix.m[3][1] = frandom(-0.2f, -0.2f);
-			m_OwnerBoneOffsetMatrix.m[3][2] = frandom(-0.5f * (_float)m_iNeedleIndex, -0.5f * (_float)m_iNeedleIndex);
-
-			if (KEY(J, TAP))
-				m_eNeedleState = LANCERNEEDLE_ATTACKBEGIN;
-
 			m_pTransform->Set_Scale(_float4(1.f, 1.f, 1.f));
 		}
 		else
@@ -267,22 +383,25 @@ void CLancerNeedle::My_LateTick()
 		}
 
 
+
 		break;
 
 	
 	case Client::CLancerNeedle::LANCERNEEDLE_ATTACKBEGIN:
 	{
+
 		if (!m_pOwnerBone)
 			return;
-
+		
 		m_fCurAcc += fDT(0);
 
 		if (m_fCurAcc > m_fTotalTime)
 		{
-			m_eNeedleState = LANCERNEEDLE_ATTACK;
-			m_fCurAcc = 0.f;
-			break;
+			m_fCurAcc = m_fTotalTime;
+
 		}
+
+			
 
 		/* 부모 행렬(뼈행렬)을 곱하기 전에 크, 자, 이 하는 과정 */
 		_float4x4 matLocal;
@@ -295,17 +414,11 @@ void CLancerNeedle::My_LateTick()
 		CUtility_Transform::Turn_ByAngle(matLocal, _float4(0.f, 0.f, 1.f, 0.f), vNewAngle);
 
 	// 2. 오프셋
+		
 		_float4 vNewPos = CEasing_Utillity::QuadIn(m_vStartPos, m_vTargetPos, m_fCurAcc, m_fTotalTime);
 		memcpy(matLocal.m[3], &vNewPos, sizeof(_float4));
 
-	// 3. 공전
-		vNewAngle = CEasing_Utillity::sinfOut(m_fAngleStartValue, m_fAngleTargetValue, m_fCurAcc, m_fTotalTime);
-		//먼저 회전행렬 만들어서 시작 (자전부터)
-		_float4x4 matRot;
 
-		CUtility_Transform::Turn_ByAngle(matRot, _float4(-200.f, 0.f, 1.f, 0.f), vNewAngle);
-
-		matLocal = matLocal * matRot;
 	// 4. 부모
 			CHierarchyNode* pNode = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_Head");//("0B_Head");
 
@@ -315,8 +428,11 @@ void CLancerNeedle::My_LateTick()
 			/* 부모 행렬*/
 			_float4x4		matBone = pNode->Get_BoneMatrix();
 
+			
+
 			/* 로컬행렬(크자이) * 부모행렬 = 최종행렬 */
-			_float4x4		matFinal = matLocal  * matBone;
+			matFinal = matLocal * matBone;// *matOffset;
+
 			//_float4x4		mat
 			m_pTransform->Get_Transform().matMyWorld = matFinal;
 			m_pTransform->Make_WorldMatrix();
@@ -326,30 +442,35 @@ void CLancerNeedle::My_LateTick()
 	
 	case Client::CLancerNeedle::LANCERNEEDLE_ATTACK:
 	{
-		if (KEY(J, TAP))
-			m_eNeedleState = LANCERNEEDLE_ATTACKBEGIN;
+		//if (m_fCurAcc < m_fTotalTime)
+		//	m_fCurAcc += fDT(0);
+		//else
+		//	m_fCurAcc = m_fTotalTime;
 
-		_float4x4 matLocal;
-		matLocal.Identity();
+		//if (KEY(J, TAP))
+		//	On_ChangePhase(LANCERNEEDLE_ATTACKBEGIN);
 
-		_float vNewAngle = CEasing_Utillity::sinfOut(m_fAngleStartValue, m_fAngleTargetValue, m_fTotalTime, m_fTotalTime);
-		//먼저 회전행렬 만들어서 시작 (자전부터)
-		CUtility_Transform::Turn_ByAngle(matLocal, _float4(0.f, 0.f, 1.f, 0.f), vNewAngle);
+		//_float4x4 matLocal;
+		//matLocal.Identity();
 
-		// 2. 오프셋
-		_float4 vNewPos = CEasing_Utillity::QuadIn(m_vStartPos, m_vTargetPos, m_fTotalTime, m_fTotalTime);
-		memcpy(matLocal.m[3], &vNewPos, sizeof(_float4));
+		//_float vNewAngle = CEasing_Utillity::sinfOut(m_fAngleStartValue, m_fAngleTargetValue, m_fCurAcc, m_fTotalTime);
+		////먼저 회전행렬 만들어서 시작 (자전부터)
+		//CUtility_Transform::Turn_ByAngle(matLocal, _float4(0.f, 0.f, 1.f, 0.f), vNewAngle);
 
-		CHierarchyNode* pNode = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_Head");//("0B_Head");
+		//// 2. 오프셋
+		//_float4 vNewPos = CEasing_Utillity::QuadIn(m_vLerpPos, m_vTargetPos, m_fCurAcc, m_fTotalTime);
+		//memcpy(matLocal.m[3], &vNewPos, sizeof(_float4));
 
-		/* 부모 행렬*/
-		_float4x4		matBone = pNode->Get_BoneMatrix();
+		//CHierarchyNode* pNode = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_Head");//("0B_Head");
 
-		/* 로컬행렬(크자이) * 부모행렬 = 최종행렬 */
-		_float4x4		matFinal = matLocal * matBone;
-		//_float4x4		mat
-		m_pTransform->Get_Transform().matMyWorld = matFinal;
-		m_pTransform->Make_WorldMatrix();
+		///* 부모 행렬*/
+		//_float4x4		matBone = pNode->Get_BoneMatrix();
+
+		///* 로컬행렬(크자이) * 부모행렬 = 최종행렬 */
+		//_float4x4		matFinal = matLocal * matBone;
+		////_float4x4		mat
+		//m_pTransform->Get_Transform().matMyWorld = matFinal;
+		//m_pTransform->Make_WorldMatrix();
 
 	}
 		break;
@@ -369,20 +490,77 @@ void CLancerNeedle::My_LateTick()
 		break;
 	}
 
+	for (auto& elem : m_pStinedUnit)
+	{
+		if (!elem)
+			continue;
+
+		if (!elem->Is_Valid())
+			continue;
+
+		_float4 vStartPos = m_vStartPos;
+		vStartPos.y -= 20.f;
+
+		_float4x4 matLocal;
+		matLocal.Identity();
+
+		_float4 vNewPos = CEasing_Utillity::QuadIn(vStartPos, m_vTargetPos, m_fTotalTime, m_fTotalTime);
+		memcpy(matLocal.m[3], &vNewPos, sizeof(_float4));
+
+		CHierarchyNode* pNode = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_Head");//("0B_Head");
+
+		_float4x4		matBone = pNode->Get_BoneMatrix();
+
+		CTransform* pOtherTransform = elem->Get_Transform();
+		matBone = matLocal * matBone;
+
+		_float4 vRight = m_pTransform->Get_World(WORLD_RIGHT);
+		_float4 vLook = m_pTransform->Get_World(WORLD_LOOK);
+
+
+		pOtherTransform->Get_Transform().matMyWorld = matBone;
+		CUtility_Transform::Rotation(pOtherTransform, _float4(0.f, 1.f, 0.f, 0.f), 270.f);
+		
+		_float4 vOtherPos = m_pTransform->Get_World(WORLD_POS);
+		vOtherPos.y -= 0.55f;
+		pOtherTransform->Set_World(WORLD_POS, vOtherPos);
+		pOtherTransform->Make_WorldMatrix();
+
+
+	}
 
 }
 
 void CLancerNeedle::OnEnable()
 {
 	__super::OnEnable();
+	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
+	m_vScale = _float4(FLT_MIN, FLT_MIN, FLT_MIN);
 	m_eNeedleState = LANCERNEEDLE_START;
-	m_pTransform->Set_Scale(_float4(FLT_MIN, FLT_MIN, FLT_MIN));
+	m_pTransform->Set_Scale(m_vScale);
 }
 
 void CLancerNeedle::OnDisable()
 {
 	__super::OnDisable();
+	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
+	m_vScale = _float4(FLT_MIN, FLT_MIN, FLT_MIN);
+	
 
+	for (auto& elem : m_pStinedUnit)
+	{
+		if (elem)
+			continue;
+
+		if (!elem->Is_Valid())
+			continue;
+
+		(elem)->On_Die();
+
+	}
+
+	m_pStinedUnit.clear();
+	
 }
 
 void CLancerNeedle::Chase_OwnerBoneMatrix()

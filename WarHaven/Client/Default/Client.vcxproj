@@ -189,6 +189,10 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\Public\CAIController.h" />
     <ClInclude Include="..\Public\CAIPersonality.h" />
+    <ClInclude Include="..\Public\CHit_Fly_Lancer.h" />
+    <ClInclude Include="..\Public\CHit_Groggy_Lancer.h" />
+    <ClInclude Include="..\Public\CHit_GuardHit_Lancer.h" />
+    <ClInclude Include="..\Public\CHit_Lancer.h" />
     <ClInclude Include="..\public\CMainMenuPlayer.h" />
     <ClInclude Include="..\Public\CUI_Cannon.h" />
     <ClInclude Include="..\Public\CLancerNeedle.h" />
@@ -1167,6 +1171,10 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
+    <ClCompile Include="..\Private\CHit_Fly_Lancer.cpp" />
+    <ClCompile Include="..\Private\CHit_Groggy_Lancer.cpp" />
+    <ClCompile Include="..\Private\CHit_GuardHit_Lancer.cpp" />
+    <ClCompile Include="..\Private\CHit_Lancer.cpp" />
     <ClCompile Include="..\private\CMainMenuPlayer.cpp" />
     <ClCompile Include="..\Private\CUI_Cannon.cpp" />
     <ClCompile Include="..\Private\CLancerNeedle.cpp" />
