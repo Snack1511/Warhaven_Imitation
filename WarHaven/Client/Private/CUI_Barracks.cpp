@@ -202,6 +202,9 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 				for (int i = SB_Outline; i < SB_Lock; ++i)
 					Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
 
+				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eDEFAULT);
+				CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_HEAD);
+
 				break;
 			case 1:
 				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("�䳢Ż"));
@@ -281,16 +284,16 @@ void CUI_Barracks::OnEnable()
 
 	for (int i = 0; i < Port_Underline; ++i)
 	{
-		m_pArrClassPort[0][i]->Set_PosY(-240.f);
+		m_pArrClassPort[m_iSelectClass][i]->Set_PosY(-240.f);
 
 		if (i == Port_Class)
-			m_pArrClassPort[0][i]->Set_PosY(-185.f);
+			m_pArrClassPort[m_iSelectClass][i]->Set_PosY(-185.f);
 	}
 
-	Enable_Fade(m_pArrClassPort[0][Port_Outline], m_fDuration);
-	Enable_Fade(m_pArrClassPort[0][Port_Underline], m_fDuration);
+	Enable_Fade(m_pArrClassPort[m_iSelectClass][Port_Outline], m_fDuration);
+	Enable_Fade(m_pArrClassPort[m_iSelectClass][Port_Underline], m_fDuration);
 
-	m_pArrClassPort[0][Port_Underline]->Set_Scale(100.f, 2.f);
+	m_pArrClassPort[m_iSelectClass][Port_Underline]->Set_Scale(100.f, 2.f);
 }
 
 void CUI_Barracks::OnDisable()
