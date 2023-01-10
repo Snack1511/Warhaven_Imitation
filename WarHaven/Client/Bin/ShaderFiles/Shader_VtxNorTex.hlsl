@@ -194,6 +194,7 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 1.f);
+	//Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, 1.f, 0.f, 1.f);
 
 	Out.vFlag = g_vFlag;
 
@@ -206,7 +207,7 @@ struct PS_SHADOW_OUT
 	vector		vLightDepth : SV_TARGET0;
 };
 
-PS_SHADOW_OUT PS_SHADOW_MAIN(VS_OUT_LIGHT In)
+PS_SHADOW_OUT PS_SHADOW_MAIN(PS_IN_LIGHT In)
 {
 	PS_SHADOW_OUT		Out = (PS_SHADOW_OUT)0;
 
@@ -216,6 +217,7 @@ PS_SHADOW_OUT PS_SHADOW_MAIN(VS_OUT_LIGHT In)
 		);
 
 	Out.vLightDepth.rgb = In.vProjPos.w / 1500.f;
+	Out.vLightDepth.g = Out.vLightDepth.r * Out.vLightDepth.r;
 
 	vector vStaticDesc = g_StaticShadowTexture.Sample(ShadowSampler, staticUV);
 
@@ -229,11 +231,12 @@ PS_SHADOW_OUT PS_SHADOW_MAIN(VS_OUT_LIGHT In)
 }
 
 
-PS_SHADOW_OUT PS_STATICSHADOW_MAIN(VS_OUT_LIGHT In)
+PS_SHADOW_OUT PS_STATICSHADOW_MAIN(PS_IN_LIGHT In)
 {
 	PS_SHADOW_OUT		Out = (PS_SHADOW_OUT)0;
 
 	Out.vLightDepth.rgb = In.vProjPos.w / 1500.f;
+	//Out.vLightDepth.g = Out.vLightDepth.r * Out.vLightDepth.r;
 
 	Out.vLightDepth.a = 1.f;
 
@@ -466,12 +469,14 @@ technique11 DefaultTechnique
 
 	pass StaticShadow
 	{
-		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_Default);
 
-		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
-		GeometryShader = NULL;HullShader = NULL;DomainShader = NULL;
+		VertexShader = compile vs_5_0 VS_MAIN_TESS();
+		GeometryShader = NULL;
+		HullShader = compile hs_5_0 HS_MAIN();
+		DomainShader = compile ds_5_0 DS_MAIN();
 		PixelShader = compile ps_5_0 PS_STATICSHADOW_MAIN();
 	}
 

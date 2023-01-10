@@ -87,7 +87,7 @@ PS_OUT PS_MAIN_STATICSHADOW(PS_IN In)
 //float shadowPCF(float3 px)
 //{
 //	// texture delta
-//	float2 delta = 1. / iChannelResolution[0].xy;
+//	float2 delta = 1. / g_vResolution;
 //
 //	float factor = 0.;
 //	// filter size
@@ -98,7 +98,7 @@ PS_OUT PS_MAIN_STATICSHADOW(PS_IN In)
 //		{
 //			float2 offset = delta * float2(x, y);
 //			// count the number of shadow hits
-//			factor += float(texture(iChannel0, px.xy + offset).x > px.z - 0.002);
+//			factor += float(g_ShaderTexture.Sample(DefaultSampler, px.xy + offset).x > px.z - 0.0005f);
 //
 //		}
 //	}
@@ -143,25 +143,27 @@ PS_OUT PS_MAIN_SHADOWING(PS_IN In)
 
 	float fLit = 1.f;
 
-	/*float fVariance = vShadowDesc.g - (vShadowDesc.r * vShadowDesc.r);
-	fVariance = max(fVariance, 0.005f);
+	//float fVariance = vShadowDesc.g - (vShadowDesc.r * vShadowDesc.r);
+	//fVariance = max(fVariance, 0.005f);
 
-	float fragDepth = vLightViewSpacePos.z / 1500.f;
+	//float fragDepth = vLightViewSpacePos.z / 1500.f;
 
-	float mD = (fragDepth - vShadowDesc.x);
-	float mD_2 = mD * mD;
-	float p = (fVariance / (fVariance + mD_2));
+	//float mD = (fragDepth - vShadowDesc.x);
+	//float mD_2 = mD * mD;
+	//float p = (fVariance / (fVariance + mD_2));
 
-	*/
+	//
 
-	//원본
-	/*if (vLightViewSpacePos.z - 0.5f > vShadowDesc.r * 1500.f)
-	{
-		fLit = p;
-		fLit = (1.f - fLit) + 0.3f;
-		if (fLit > 1.f)
-			fLit = 1.f;
-	}*/
+	////원본
+	//if (vLightViewSpacePos.z - 0.5f > vShadowDesc.r * 1500.f)
+	//{
+	//	//fLit = max(p, fragDepth <= vShadowDesc.x);
+	//	//fLit = max(p, fragDepth > vShadowDesc.x);
+	//	fLit = p;
+	//	fLit = (1.f - fLit) + 0.3f;
+	//	if (fLit > 1.f)
+	//		fLit = 1.f;
+	//}
 
 
 	//fLit = max(p, fragDepth <= vShadowDesc.x);
@@ -176,6 +178,8 @@ PS_OUT PS_MAIN_SHADOWING(PS_IN In)
 	if (vLightViewSpacePos.z - 0.3f > vShadowDesc.r * 1500.f)
 	{
 		fLit = 0.3f;
+		//float3 px = float3(In.vT)
+		//fLit = shadowPCF(vLightViewSpacePos.xyz);
 	}
 
 

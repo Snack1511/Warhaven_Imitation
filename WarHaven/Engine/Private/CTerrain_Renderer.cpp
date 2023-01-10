@@ -144,6 +144,8 @@ void CTerrain_Renderer::Update_BackGround(_int BGIndex)
 
 HRESULT CTerrain_Renderer::Bake_Shadow(_float4x4 ViewMatrix)
 {
+	return S_OK;
+
 	m_pOwner->Get_Transform()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
 
 	m_pShaderCom->Set_RawValue("g_ViewMatrix", &ViewMatrix, sizeof(_float4x4));

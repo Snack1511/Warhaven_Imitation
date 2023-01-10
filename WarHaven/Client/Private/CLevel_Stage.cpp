@@ -106,6 +106,9 @@ void CLevel_Stage::Tick()
 
 			for (auto& elem : ObjList)
 			{
+				/*if (dynamic_cast<CDrawable_Terrain*>(elem))
+					continue;*/
+
 				m_StaticShadowObjects.push_back(elem);
 
 			}

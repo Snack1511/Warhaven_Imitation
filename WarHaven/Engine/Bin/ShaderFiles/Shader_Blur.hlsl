@@ -948,21 +948,22 @@ PS_OUT	PS_MAIN_FASTBLUR(PS_DOWNSCALE_IN input)
 {
 	PS_OUT	Output = (PS_OUT)1;
 
+	// Normalized pixel coordinates (from 0 to 1)
+	float2 uv = input.vTexUV;
+	// Pixel colour
+	vector Color = g_ShaderTexture.Sample(DefaultSampler, uv);
 
 	float Pi = 6.28318530718; // Pi*2
 
    // GAUSSIAN BLUR SETTINGS {{{
 	float Directions = 16.0; // BLUR DIRECTIONS (Default 16.0 - More is better but slower)
-	float Quality = 3.0; // BLUR QUALITY (Default 4.0 - More is better but slower)
-	float Size = 8.0; // BLUR SIZE (Radius)
+	float Quality = 4.0; // BLUR QUALITY (Default 4.0 - More is better but slower)
+	float Size = 20.0; // BLUR SIZE (Radius)
 	// GAUSSIAN BLUR SETTINGS }}}
 
 	float2 Radius = Size / g_vResolution;
 
-	// Normalized pixel coordinates (from 0 to 1)
-	float2 uv = input.vTexUV;
-	// Pixel colour
-	vector Color = g_ShaderTexture.Sample(DefaultSampler, uv);
+
 
 	// Blur calculations
 	for (float d = 0.0; d < Pi; d += Pi / Directions)

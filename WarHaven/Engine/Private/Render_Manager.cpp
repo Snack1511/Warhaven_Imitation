@@ -1158,7 +1158,7 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 		return E_FAIL;
 
 	//블러
-	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_HorizonBlurAcc"))))
+	if (FAILED(m_pTarget_Manager->Begin_MRT(TEXT("MRT_ShadowBlurAcc"))))
 		return E_FAIL;
 
 	if (FAILED(m_vecShader[SHADER_BLUR]->Set_ShaderResourceView("g_ShaderTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_DownScale")))))
@@ -1167,10 +1167,11 @@ HRESULT CRender_Manager::Render_ShadowBlur()
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_vecShader[SHADER_BLUR]->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 
-	m_vecShader[SHADER_BLUR]->Begin(2);
+	m_vecShader[SHADER_BLUR]->Begin(12);
 
 	m_pMeshRect->Render();
-
+	if (FAILED(m_pTarget_Manager->End_MRT()))
+		return E_FAIL;
 
 	////3. 수직
 	//if (FAILED(m_pTarget_Manager->End_MRT()))
