@@ -53,7 +53,7 @@ HRESULT CLancer_Breeze_Loop::Initialize()
 	return S_OK;
 }
 
-void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 10.f;
@@ -98,6 +98,9 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	CUser::Get_Instance()->Disable_LancerGauge();
 	CUser::Get_Instance()->SetActive_Gauge(true);
 
+	for (int i = 0; i < 4; ++i)
+		CUser::Get_Instance()->Set_LancerGauge(i, 0.f, 1.f);
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
@@ -107,9 +110,9 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	CUser::Get_Instance()->Set_BreezeTime(m_fTimeAcc, 5.f);
 
-	if(m_fTimeAcc > 5.f || KEY(RBUTTON, AWAY))
+	if (m_fTimeAcc > 5.f || KEY(RBUTTON, AWAY))
 		return STATE_STOP_LANCER;
-	
+
 	pOwner->Get_PhysicsCom()->Set_Accel(m_fMyAccel);
 	Follow_MouseLook(pOwner);
 	pOwner->Set_DirAsLook();

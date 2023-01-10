@@ -77,7 +77,8 @@ void CRevive_Player::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrev
         _float4 vDir = vPos - vMyPos;
         pOwner->Get_Transform()->Set_LerpLook(vDir.Normalize(), 0.4f);
     }
-   
+
+    CUser::Get_Instance()->SetActive_HUD_RevivalUI(true);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
@@ -151,8 +152,6 @@ STATE_TYPE CRevive_Player::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
     {
         if (KEY(F, TAP))
         {
-            CUser::Get_Instance()->SetActive_HUD_RevivalUI(true);
-
             return m_eStateType;
         }
     }

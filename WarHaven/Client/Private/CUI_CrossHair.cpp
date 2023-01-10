@@ -167,7 +167,10 @@ void CUI_Crosshair::SetActive_ArrowUI(_bool value)
 
 void CUI_Crosshair::SetActive_LancerUI(_bool value)
 {
-	for (int i = 0; i < LU_End; ++i)
+	for (int i = 0; i < 4; ++i)
+		m_fLancerRatio[i] = 1.f;
+
+	for (int i = 0; i < LU_Full; ++i)
 	{
 		for (int j = 0; j < 4; ++j)
 		{
@@ -211,7 +214,13 @@ void CUI_Crosshair::Set_ArcherPoint(_bool value)
 
 void CUI_Crosshair::Set_LancerGauge(_uint iGaugeIdx, _float fCurTime, _float fMaxTime)
 {
-	m_fLancerRatio[iGaugeIdx] = 1 - (fCurTime / fMaxTime);
+	m_fLancerRatio[iGaugeIdx] = 1.f - (fCurTime / fMaxTime);
+	if (m_fLancerRatio[iGaugeIdx] <= 0.1f)
+	{
+		m_pArrLancerUI[iGaugeIdx][LU_Full]->SetActive(true);
+		m_pArrLancerUI[iGaugeIdx][LU_Full]->Set_Scale(45.f, 95.f);
+		m_pArrLancerUI[iGaugeIdx][LU_Full]->DoScale(-10.f, 0.2f);
+	}
 }
 
 void CUI_Crosshair::Disable_LacnerGauge()
@@ -454,6 +463,7 @@ void CUI_Crosshair::Create_LancerUI()
 			break;
 
 		case LU_Full:
+			m_pLancerUI[i]->Set_Scale(45.f, 95.f);
 			m_pLancerUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Lancer_ArrowFull.png"));
 			break;
 		}

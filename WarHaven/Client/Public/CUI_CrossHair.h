@@ -90,7 +90,7 @@ private:
 
 	_float m_fGaugeRatio = 0.f;
 
-	_float m_fLancerRatio[4] = { 1.f };
+	_float m_fLancerRatio[4];
 
 	_bool m_bIsBreeze = false;
 
