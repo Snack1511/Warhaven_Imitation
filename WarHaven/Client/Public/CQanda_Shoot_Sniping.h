@@ -43,7 +43,6 @@ private:
 	list<CGameObject*>	m_Mateors;
 
 	_float m_fSearchTargetTime = 0.f;
-	_uint m_iMaxTarget = 0;
 };
 
 END

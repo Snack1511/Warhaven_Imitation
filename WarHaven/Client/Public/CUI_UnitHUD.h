@@ -45,7 +45,7 @@ public:
 
 	void Set_RevivalIcon(_uint iIconIdx);
 
-	void SetActive_TargetUI(_bool value);
+	void SetActive_TargetUI(_uint iIdx, _bool value);
 
 private:
 	CUI_Wrapper* m_pUnitUI[UI_End];
@@ -72,6 +72,12 @@ private:
 	_float4 m_vOffset;
 
 	_float m_fUnitDis = 0.f;
+
+	_bool m_bEnableTargetUI = false;
+	_float m_fEanbleTargetUITime = 0.f;
+	_float m_fMaxEanbleTargetUITime = 0.2f;
+	_float m_fTargetRotValue = 0.f;
+	_float m_fBlinkTime = 0.f;
 
 private:
 	void Create_UnitHUD();

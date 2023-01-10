@@ -157,8 +157,6 @@ STATE_TYPE CQanda_Shoot_Sniping::Check_Condition(CUnit* pOwner, CAnimator* pAnim
 
 void CQanda_Shoot_Sniping::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
-
-
 	switch (iSequence)
 	{
 	case 0:
@@ -190,29 +188,16 @@ void CQanda_Shoot_Sniping::Make_Meteo(CUnit* pOwner)
 
 void CQanda_Shoot_Sniping::Enable_TargetUI()
 {
+	if (m_SnipingTarget.empty())
+		return;
+
 	auto iter = m_SnipingTarget.begin();
-	CUnit* m_pTargetUnit = static_cast<CUnit*>(*iter);
-	m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(true);
-
-	return;
-
-	if (m_pTargetUnit->Is_Valid())
+	for (int i = 0; i < m_SnipingTarget.size(); ++i)
 	{
-		m_fSearchTargetTime += fDT(0);
-		if (m_fSearchTargetTime > 0.15f)
-		{
-			m_fSearchTargetTime = 0.f;
+		CUnit* m_pTargetUnit = static_cast<CUnit*>(*iter);
+		m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(i, true);
 
-			m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(true);
-			
-			cout << CFunctor::To_String(m_pTargetUnit->Get_OwnerPlayer()->Get_PlayerName()) << endl;;
-
-			iter++;
-			m_iMaxTarget++;
-
-			if (m_iMaxTarget >= m_SnipingTarget.size())
-				return;
-		}
+		iter++;
 	}	
 }
 
@@ -221,6 +206,6 @@ void CQanda_Shoot_Sniping::Disable_TargetUI()
 	for (auto& iter : m_SnipingTarget)
 	{
 		CUnit* m_pTargetUnit = static_cast<CUnit*>(iter);
-		m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(false);
+		m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(0, false);
 	}
 }
