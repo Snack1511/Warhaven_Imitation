@@ -82,9 +82,9 @@ struct VS_OUT_LIGHT
 	float4		vPosition : SV_POSITION;
 	float4		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
-	float4		vWorldPos : TEXCOORD1;
-	float4		vProjPos : TEXCOORD2;
-	float4		vTileFlag : TEXCOORD3;
+	float4		vTileFlag : TEXCOORD1;
+	float4		vWorldPos : TEXCOORD2;
+	float4		vProjPos : TEXCOORD3;
 };
 
 struct PS_IN_LIGHT
@@ -183,23 +183,21 @@ PS_LIGHTOUT PS_MAIN_NORMAL(PS_IN_LIGHT In)
 
 	int iTileFlag = (int)(round(In.vTileFlag.r + 1.f));
 	
-
 	Out.vDiffuse 
 		= (TextureDesc[iTileFlag] * In.vTileFlag.b)
 		+ (TextureDesc[0] * (1.f - In.vTileFlag.b));
-
 
 	Out.vDiffuse.a = 1.f;
 
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 
-	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 0.f, 1.f);
-	//Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, 1.f, 0.f, 1.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1500.0f, 1.f, 0.f);
 
 	Out.vFlag = g_vFlag;
 
 	return Out;
 }
+
 
 
 struct PS_SHADOW_OUT
@@ -479,6 +477,20 @@ technique11 DefaultTechnique
 		DomainShader = compile ds_5_0 DS_MAIN();
 		PixelShader = compile ps_5_0 PS_STATICSHADOW_MAIN();
 	}
+
+
+	/*pass StaticShadow
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+		GeometryShader = NULL;
+		HullShader = NULL;
+		DomainShader = NULL;
+		PixelShader = compile ps_5_0 PS_STATICSHADOW_MAIN();
+	}*/
 
 	pass TerrainTess
 	{

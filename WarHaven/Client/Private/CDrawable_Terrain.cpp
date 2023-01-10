@@ -277,6 +277,7 @@ HRESULT CDrawable_Terrain::SetUp_TerrainInfo(ifstream& readFile, CMesh_Terrain* 
 {
     if (nullptr == pTerrain)
         assert(0);
+
     _uint iNumVertices = pTerrain->Get_NumVertices();
     _float3* pVerticesPos = pTerrain->Get_VerticesPos();
     _float4* pVerticesColor = pTerrain->Get_VerticesColor();

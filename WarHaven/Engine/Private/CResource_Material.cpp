@@ -38,6 +38,11 @@ HRESULT CResource_Material::Initialize(ifstream* pReadFile, string strName)
 	m_tMatDesc.vMixColor = Check_FileName(m_strName);
 	
 
+	_int iFindExt = (_int)m_tMatDesc.TexturePaths[1].rfind("_") + 1;
+	string strFileName = m_tMatDesc.TexturePaths[1].substr(iFindExt, m_tMatDesc.TexturePaths[1].length() - iFindExt);
+	strFileName += "_MRH.dds";
+	m_tMatDesc.TexturePaths[aiTextureType_METALNESS] = strFileName;
+
 	return S_OK;
 }
 

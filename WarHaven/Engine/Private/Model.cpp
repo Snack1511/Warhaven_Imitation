@@ -949,7 +949,7 @@ HRESULT CModel::Bake_Shadow(_uint iMeshContainerIndex, CShader* pShader, _uint i
 		if (m_eMODEL_TYPE == TYPE_NONANIM)
 		{
 			//무조건 원본으루
-			if (m_MeshContainers[iMeshContainerIndex].first != 0)
+			if (m_MeshContainers[iMeshContainerIndex].first != 1)
 				return S_OK;
 		}
 		else
@@ -1539,6 +1539,25 @@ HRESULT CModel::Create_Material(CResource_Material* pResource, _uint iMeshPartTy
 		if (tMatDesc.TexturePaths[j].empty())
 		{
 			Material.pTextures[j] = nullptr;
+			continue;
+		}
+
+		if (j == aiTextureType_METALNESS)
+		{
+			CTexture* pTexCom = CTexture::Create(0, wstring(tMatDesc.TexturePaths[j].begin(), tMatDesc.TexturePaths[j].end()).c_str(), 1);
+
+			if (!pTexCom)
+				return E_FAIL;
+
+			//white = 없었다
+			if (pTexCom->Get_vecTexture().front().pSRV == CResource_Manager::Get_Instance()->Get_Texture(L"../bin/resources/textures/white/png"))
+			{
+				SAFE_DELETE(pTexCom);
+				Material.pTextures[j] = nullptr;
+			}
+			else
+				Material.pTextures[j] = pTexCom;
+
 			continue;
 		}
 

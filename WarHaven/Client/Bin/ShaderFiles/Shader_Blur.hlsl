@@ -532,7 +532,7 @@ PS_OUT PS_MAIN_SSAO(PS_DOWNSCALE_IN In)
 	//fragColor = vector(ao, ao, ao, 1.);
 
 	float fPower = 1.6f;
-	if (vDepthDesc.w > 0.99f)
+	if (vDepthDesc.z > 0.99f)
 		fPower = 1.f;
 
 	Out.vColor.xyz *= pow(ao, fPower);

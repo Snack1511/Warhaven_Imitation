@@ -65,7 +65,7 @@ CLevel_BootCamp* CLevel_BootCamp::Create()
 
 HRESULT CLevel_BootCamp::Initialize()
 {
-	m_fDistance = 250.f;
+	m_fDistance = 350.f;
 	m_vCenterPos = _float4(0.f, 0.f, -50.f);
 	m_vSunLook = _float4(-1.f, -1.7f, -1.f);
 	m_bLensFlare = false;
