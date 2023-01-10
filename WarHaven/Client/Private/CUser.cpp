@@ -785,7 +785,8 @@ void CUser::Set_ArcherPoint(_bool value)
 
 void CUser::SetActive_InteractUI(_bool value)
 {
-	m_pInteractUI->SetActive(value);
+	if (m_pInteractUI->Is_Valid() == !value)
+		m_pInteractUI->SetActive(value);
 }
 
 void CUser::Set_InteractKey(_uint iKeyIndex)
