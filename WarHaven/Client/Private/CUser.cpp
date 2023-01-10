@@ -899,6 +899,16 @@ void CUser::SetActive_SkinPopup(_bool value)
 		m_pUI_Popup->SetActive_SkinPopup(value);
 }
 
+void CUser::Set_BreezeTime(_float fCurTime, _float fMaxTime)
+{
+	static_cast<CUI_Crosshair*>(Get_HUD(0))->Set_BreezeTime(fCurTime, fMaxTime);
+}
+
+void CUser::SetActive_Gauge(_bool value)
+{
+	static_cast<CUI_Crosshair*>(Get_HUD(0))->SetActive_Gauge(value);
+}
+
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
 {
 	m_pUI_Dead->Set_TargetInfo(pTargetInfo);

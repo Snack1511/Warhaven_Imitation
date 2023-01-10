@@ -62,6 +62,9 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 		for (int j = 0; j < MP_End; ++j)
 		{
 			m_pArrMiniMapPoint[i][j]->SetActive(value);
+
+			if (m_eLoadLevel == LEVEL_HWARA)
+				m_pArrMiniMapPoint[Point_C][j]->SetActive(false);
 		}
 	}
 
@@ -201,12 +204,30 @@ void CUI_MiniMap::My_LateTick()
 {
 	__super::My_LateTick();
 
-	for (int i = 0; i < 8; ++i)
+	switch (m_eLoadLevel)
 	{
-		_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
-		vPos.x += m_fIconOffsetX;
-		vPos.z += m_fIconOffsetY;
-		m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+	case Client::LEVEL_PADEN:
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS);
+			vPos.x += m_fIconOffsetX;
+			vPos.z += m_fIconOffsetY;
+			m_pPlayerIcon[i]->Set_Pos(vPos.z, -vPos.x);
+		}
+	}
+	break;
+	case Client::LEVEL_HWARA:
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 0.7f;
+			vPos.x += m_fHwaraOffSetX;
+			vPos.z += m_fHwaraOffSetY;
+			m_pPlayerIcon[i]->Set_Pos(-vPos.x, vPos.z);
+		}
+	}
+	break;
 	}
 }
 
@@ -338,6 +359,9 @@ void CUI_MiniMap::Init_MiniMap()
 
 		break;
 	case Client::LEVEL_HWARA:
+		m_pMiniMap->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/MiniMap/T_MinimapDragonTempleConvoyBlack.dds"));
+		m_pMiniMap->Set_Pos(-500.f, 250.f);
+		m_pMiniMap->Set_Scale(250.f);
 		break;
 	}
 }
@@ -379,6 +403,36 @@ void CUI_MiniMap::Init_MiniMapPoint()
 		break;
 
 	case Client::LEVEL_HWARA:
+
+		for (int i = 0; i < MP_End; ++i)
+		{
+			for (int j = 0; j < Point_End; ++j)
+			{
+				m_pArrMiniMapPoint[j][i]->Set_PosX(-496);
+
+				if (j == Point_R)
+				{
+					GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Outline], CTexture)->Set_CurTextureIndex(1);
+				}
+				else
+				{
+					GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Outline], CTexture)->Set_CurTextureIndex(2);
+				}
+
+				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Gauge], CTexture)->Set_CurTextureIndex(1);
+				GET_COMPONENT_FROM(m_pArrMiniMapPoint[j][MP_Text], CTexture)->Set_CurTextureIndex(j);
+			}
+
+			if (i == MP_Text)
+			{
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosY(245.f);
+				m_pArrMiniMapPoint[Point_R][i]->Set_PosY(277.f);
+				continue;
+			}
+
+			m_pArrMiniMapPoint[Point_A][i]->Set_PosY(246.f);
+			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
+		}
 		break;
 	}
 }

@@ -94,12 +94,16 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_ZOOMOUT);
 
+	CUser::Get_Instance()->SetActive_Gauge(true);
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	m_fTimeAcc += fDT(0);
+
+	CUser::Get_Instance()->Set_BreezeTime(m_fTimeAcc, 5.f);
 
 	if(m_fTimeAcc > 5.f || KEY(RBUTTON, AWAY))
 		return STATE_STOP_LANCER;
@@ -112,6 +116,7 @@ STATE_TYPE CLancer_Breeze_Loop::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	CUser::Get_Instance()->SetActive_Gauge(false);
 
 	GAMEINSTANCE->Stop_RadialBlur();
 	GAMEINSTANCE->Stop_ChromaticAberration();

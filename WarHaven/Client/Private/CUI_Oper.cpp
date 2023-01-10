@@ -546,7 +546,10 @@ void CUI_Oper::Progress_Oper()
 		{
 			m_iOperProgress++;
 
-			for (int i = 0; i < 3; ++i)
+			_uint iIndex;
+			iIndex = m_eLoadLevel == LEVEL_HWARA ? 2 : 3;
+
+			for (int i = 0; i < iIndex; ++i)
 			{
 				Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
 				m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
@@ -559,7 +562,10 @@ void CUI_Oper::Progress_Oper()
 				m_fAccTime = 0.f;
 				m_iOperProgress++;
 
-				for (int i = 3; i < 6; ++i)
+				_uint iIndex;
+				iIndex = m_eLoadLevel == LEVEL_HWARA ? 5 : 6;
+
+				for (int i = 3; i < iIndex; ++i)
 				{
 					Enable_Fade(m_pArrStrongHoldEffect[i], 1.f);
 					m_pArrStrongHoldEffect[i]->DoScale(70.f, 1.f);
@@ -788,6 +794,16 @@ void CUI_Oper::Enable_StrongHoldUI()
 			break;
 
 		case LEVEL_HWARA:
+
+			for (int j = 0; j < 2; ++j)
+			{
+				Enable_Fade(m_pArrStrongHoldUI[i][j], 0.3f);
+				m_pArrStrongHoldUI[i][j]->DoScale(-70.f, 0.3f);
+			}
+
+			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[SP_Icon][0]);
+			DISABLE_GAMEOBJECT(m_pArrStrongHoldUI[SP_Icon][2]);
+
 			break;
 		}
 	}
@@ -930,7 +946,6 @@ void CUI_Oper::Create_OperBG()
 				break;
 
 			case Client::LEVEL_HWARA:
-				m_pOperBG[i]->Set_PosY(205.f);
 				m_pOperBG[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapHwara.dds"));
 				break;
 			}
@@ -1438,6 +1453,12 @@ void CUI_Oper::Init_TeamIcon()
 
 			break;
 		case Client::LEVEL_HWARA:
+			GET_COMPONENT_FROM(m_pArrTeamIcon[i][0], CTexture)->Set_CurTextureIndex(1);
+			m_pArrTeamIcon[i][0]->Set_Pos(-325.f, -27.f);
+
+			GET_COMPONENT_FROM(m_pArrTeamIcon[i][1], CTexture)->Set_CurTextureIndex(0);
+			m_pArrTeamIcon[i][1]->Set_Pos(325.f, -27.f);
+
 			break;
 		}
 	}
@@ -1513,7 +1534,7 @@ void CUI_Oper::Create_StrongHoldEffect()
 	m_pStrongHoldEffect->Set_Sort(0.495f);
 	m_pStrongHoldEffect->Set_Color(_float4(1.f, 1.f, 1.f, 0.4f));
 
-	CREATE_GAMEOBJECT(m_pStrongHoldEffect, RENDER_UI);
+	CREATE_GAMEOBJECT(m_pStrongHoldEffect, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pStrongHoldEffect);
 
 	for (int i = 0; i < 6; ++i)
@@ -1522,7 +1543,7 @@ void CUI_Oper::Create_StrongHoldEffect()
 
 		m_pOperList.push_back(m_pArrStrongHoldEffect[i]);
 
-		CREATE_GAMEOBJECT(m_pArrStrongHoldEffect[i], RENDER_UI);
+		CREATE_GAMEOBJECT(m_pArrStrongHoldEffect[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pArrStrongHoldEffect[i]);
 	}
 }
@@ -1558,6 +1579,39 @@ void CUI_Oper::Init_StrongHoldUI()
 		break;
 
 	case LEVEL_HWARA:
+
+		for (int i = 0; i < SP_End; ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+			{
+				m_pArrStrongHoldUI[i][j]->Set_PosX(23.f);
+
+				if (j == 1)
+				{
+					GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(1);
+				}
+				else
+				{
+					if (i == SP_TEXT)
+					{
+						GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(0);
+						continue;
+					}
+
+					GET_COMPONENT_FROM(m_pArrStrongHoldUI[i][j], CTexture)->Set_CurTextureIndex(2);
+				}
+			}
+		}
+
+		m_pArrStrongHoldUI[SP_BG][0]->Set_PosY(-22.f);
+		m_pArrStrongHoldUI[SP_Outline][0]->Set_PosY(-23.f);
+		m_pArrStrongHoldUI[SP_TEXT][0]->Set_PosY(-26.f);
+
+		m_pArrStrongHoldUI[SP_BG][1]->Set_PosY(155.f);
+		m_pArrStrongHoldUI[SP_Outline][1]->Set_PosY(155.f);
+		m_pArrStrongHoldUI[SP_Icon][1]->Set_PosY(155.f);
+		m_pArrStrongHoldUI[SP_TEXT][1]->Set_PosY(150.f);
+
 		break;
 	}
 }
@@ -1577,6 +1631,14 @@ void CUI_Oper::Init_StrongHoldEffect()
 		break;
 
 	case LEVEL_HWARA:
+		for (int i = 0; i < 6; ++i)
+			m_pArrStrongHoldEffect[i]->Set_PosX(23.f);
+
+		m_pArrStrongHoldEffect[0]->Set_PosY(-22.f);
+		m_pArrStrongHoldEffect[1]->Set_PosY(155.f);
+		m_pArrStrongHoldEffect[3]->Set_PosY(-22.f);
+		m_pArrStrongHoldEffect[4]->Set_PosY(155.f);
+
 		break;
 	}
 }
@@ -1639,7 +1701,7 @@ void CUI_Oper::Create_OperTimer()
 
 		m_pOperList.push_back(m_pTimer[i]);
 
-		CREATE_GAMEOBJECT(m_pTimer[i], RENDER_UI);
+		CREATE_GAMEOBJECT(m_pTimer[i], GROUP_UI);
 		DISABLE_GAMEOBJECT(m_pTimer[i]);
 	}
 }
@@ -1718,6 +1780,31 @@ void CUI_Oper::Init_PointInfo()
 
 	_float fInfoBGMag = 1.8f;
 
+
+
+	if (m_eLoadLevel == LEVEL_HWARA)
+	{
+		for (int i = 0; i < Info_End; ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+				m_pArrPointInfo[j][i]->Set_PosX(23.f);
+
+			m_pArrPointInfo[0][i]->Set_PosY(-22.f - 40.f);
+			m_pArrPointInfo[1][i]->Set_PosY(155.f - 40.f);
+
+			m_pArrPointInfo[2][i]->Set_PosY(2200.f - 40.f);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < Info_End; ++i)
+		{
+			m_pArrPointInfo[0][i]->Set_PosY(-4.f - 40.f);
+			m_pArrPointInfo[1][i]->Set_PosY(-195.f - 40.f);
+			m_pArrPointInfo[2][i]->Set_PosY(220.f - 40.f);
+		}
+	}
+
 	for (int i = 0; i < 3; ++i)
 	{
 		GET_COMPONENT_FROM(m_pArrPointInfo[i][Info_Icon], CTexture)->Set_CurTextureIndex(i);
@@ -1725,7 +1812,14 @@ void CUI_Oper::Init_PointInfo()
 		switch (i)
 		{
 		case 0:
-			m_pArrPointInfo[i][Info_Icon]->Set_FontText(TEXT("적 군사력 감소"));
+			if (m_eLoadLevel == LEVEL_HWARA)
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_FontText(TEXT("적 거점 공격 가능"));
+			}
+			else
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_FontText(TEXT("적 군사력 감소"));
+			}
 			m_pArrPointInfo[i][Info_Icon]->Set_FontOffset(fOffsetX, fOffsetY);
 
 			fFontScaleX = m_pArrPointInfo[i][Info_Icon]->Get_Scale().x;
@@ -1733,7 +1827,14 @@ void CUI_Oper::Init_PointInfo()
 			fInfoBGSizeX = fFontSizeX + fFontScaleX + fOffsetX;
 
 			m_pArrPointInfo[i][Info_BG]->Set_ScaleX(fFontSizeX * fInfoBGMag);
-			m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			if (m_eLoadLevel == LEVEL_HWARA)
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_PosX(23.f + -fFontSizeX * 0.5f);
+			}
+			else
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			}
 
 			break;
 
@@ -1746,7 +1847,14 @@ void CUI_Oper::Init_PointInfo()
 			fInfoBGSizeX = fFontSizeX + fFontScaleX + fOffsetX;
 
 			m_pArrPointInfo[i][Info_BG]->Set_ScaleX(fFontSizeX * fInfoBGMag);
-			m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			if (m_eLoadLevel == LEVEL_HWARA)
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_PosX(23.f + -fFontSizeX * 0.5f);
+			}
+			else
+			{
+				m_pArrPointInfo[i][Info_Icon]->Set_PosX(-fFontSizeX * 0.5f);
+			}
 			break;
 
 		case 2:
@@ -1762,13 +1870,6 @@ void CUI_Oper::Init_PointInfo()
 			break;
 		}
 	}
-
-	for (int i = 0; i < Info_End; ++i)
-	{
-		m_pArrPointInfo[0][i]->Set_PosY(-4.f - 40.f);
-		m_pArrPointInfo[1][i]->Set_PosY(-195.f - 40.f);
-		m_pArrPointInfo[2][i]->Set_PosY(220.f - 40.f);
-	}
 }
 
 void CUI_Oper::Create_TargetPoint()
@@ -1783,7 +1884,6 @@ void CUI_Oper::Create_TargetPoint()
 
 	CREATE_GAMEOBJECT(m_pTargetPoint, GROUP_UI);
 	DELETE_GAMEOBJECT(m_pTargetPoint);
-
 
 	for (int i = 0; i < 2; ++i)
 	{

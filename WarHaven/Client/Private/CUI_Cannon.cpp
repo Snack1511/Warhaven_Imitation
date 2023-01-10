@@ -56,8 +56,7 @@ void CUI_Cannon::Set_Shader_CoolTime(CShader* pShader, const char* pConstName)
 
 void CUI_Cannon::Set_CoolTime(_float fTime, _float fMaxTime)
 {
-	_float fRatio = fTime / fMaxTime;
-	m_fCoolTimeRatio = 1 - fRatio;
+	m_fCoolTimeRatio = fTime / fMaxTime;
 
 	_tchar  szTemp[MAX_STR] = {};
 	swprintf_s(szTemp, TEXT("%.1f"), fTime);
@@ -97,7 +96,7 @@ void CUI_Cannon::Create_CoolTime()
 	{
 		m_pCoolTime[i] = CUI_Object::Create();
 
-		m_pCoolTime[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Charging_Gauge.dds"));
+		m_pCoolTime[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Charging_Gauge.png"));
 		m_pCoolTime[i]->Set_RotationZ(180.f);
 	}
 

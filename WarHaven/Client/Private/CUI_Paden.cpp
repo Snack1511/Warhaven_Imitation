@@ -102,11 +102,11 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 {
 	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
 
-	if (strPadenPointKey == "Paden_Trigger_A")
+	if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
 	{
 		m_fConquestRatio[Point_A] = fConquestRatio;
 	}
-	else if (strPadenPointKey == "Paden_Trigger_R")
+	else if (strPadenPointKey == "Paden_Trigger_R" || strPadenPointKey == "Hwara_Respawn")
 	{
 		m_fConquestRatio[Point_R] = fConquestRatio;
 	}
@@ -118,8 +118,20 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 
 void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum)
 {
+	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
+	vNewPos.y += 5.f;
+
 	if (m_bSetTargetPoint)
-		m_pArrTargetPoint[1]->SetActive(true);
+		m_pArrTargetPoint[1]->SetActive(isInFrustum);
+
+	for (int i = 0; i < PU_End; ++i)
+	{
+		m_pArrProjPointUI[iPointIdx][i]->SetActive(isInFrustum);
+
+		m_pArrProjPointUI[iPointIdx][i]->Set_Pos(vNewPos);
+	}
+
+	return;
 
 	if (isInFrustum)
 	{
@@ -142,8 +154,7 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 				m_pArrProjPointUI[iPointIdx][i]->SetActive(false);
 		}
 
-		if (m_eTargetPoint == Point_End)
-			return;
+		return;
 
 		if (KEY(Z, TAP))
 			m_bIsVector = !m_bIsVector;
@@ -199,6 +210,9 @@ void CUI_Paden::SetActive_PointUI(_bool value)
 		{
 			m_pArrPointUI[i][j]->SetActive(value);
 			m_pArrProjPointUI[i][j]->SetActive(value);
+
+			if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_HWARA)
+				m_pArrProjPointUI[Point_C][j]->SetActive(false);
 		}
 	}
 }
@@ -226,12 +240,12 @@ void CUI_Paden::Conquest_PointUI(string strPointName, _bool bIsMainPlayerTeam)
 
 	for (int i = 0; i < PU_Text; ++i)
 	{
-		if (strPointName == "Paden_Trigger_A")
+		if (strPointName == "Paden_Trigger_A" || strPointName == "Hwara_Center")
 		{
 			m_pArrPointUI[Point_A][i]->Set_Color(vColor);
 			m_pArrProjPointUI[Point_A][i]->Set_Color(vColor);
 		}
-		else if (strPointName == "Paden_Trigger_R")
+		else if (strPointName == "Paden_Trigger_R" || strPointName == "Hwara_Respawn")
 		{
 			m_pArrPointUI[Point_R][i]->Set_Color(vColor);
 			m_pArrProjPointUI[Point_R][i]->Set_Color(vColor);
@@ -254,7 +268,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 		{
 		case TS_Enter:
 
-			if (strPadenPointKey == "Paden_Trigger_A")
+			if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
 			{
 				m_pArrPointUI[Point_A][i]->DoScale(10.f, fDuration);
 
@@ -263,7 +277,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				vPos.y = 200.f;
 				m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0.f);
 			}
-			else if (strPadenPointKey == "Paden_Trigger_R")
+			else if (strPadenPointKey == "Paden_Trigger_R" || strPadenPointKey == "Hwara_Respawn")
 			{
 				m_pArrPointUI[Point_R][i]->DoScale(10.f, fDuration);
 
@@ -286,7 +300,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 
 		case TS_Exit:
 
-			if (strPadenPointKey == "Paden_Trigger_A")
+			if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
 			{
 				m_pArrProjPointUI[Point_A][i]->SetActive(true);
 
@@ -298,7 +312,7 @@ void CUI_Paden::Move_PointUI(string strPadenPointKey, _uint iTriggerState)
 				m_pArrPointUI[Point_A][i]->DoMove(vPos, fDuration, 0);
 
 			}
-			else if (strPadenPointKey == "Paden_Trigger_R")
+			else if (strPadenPointKey == "Paden_Trigger_R" || strPadenPointKey == "Hwara_Respawn")
 			{
 				m_pArrProjPointUI[Point_R][i]->SetActive(true);
 
@@ -339,11 +353,11 @@ void CUI_Paden::Interact_PointUI(_bool bIsMainPlayerTeam, string strPadenPointKe
 
 	for (int i = 0; i < PU_End; ++i)
 	{
-		if (strPadenPointKey == "Paden_Trigger_A")
+		if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
 		{
 			Set_PointGauge_Color(bIsMainPlayerTeam, Point_A);
 		}
-		else if (strPadenPointKey == "Paden_Trigger_R")
+		else if (strPadenPointKey == "Paden_Trigger_R" || strPadenPointKey == "Hwara_Respawn")
 		{
 			Set_PointGauge_Color(bIsMainPlayerTeam, Point_R);
 		}
@@ -772,20 +786,50 @@ void CUI_Paden::Init_PointUI()
 	{
 		for (int j = 0; j < PU_End; ++j)
 		{
-			if (i == Point_A)
+			if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_HWARA)
 			{
-				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
-				GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+				if (j == PU_Text)
+				{
+					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+				}
+				else
+				{
+					if (i == Point_R)
+					{
+						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+					}
+					else
+					{
+						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(2);
+						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(2);
+
+						if (j == PU_Gauge)
+						{
+							GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+							GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+						}
+					}
+				}
 			}
 			else
 			{
-				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
-				GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
-
-				if (j == PU_Gauge)
+				if (i == Point_A)
 				{
-					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
-					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+				}
+				else
+				{
+					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+
+					if (j == PU_Gauge)
+					{
+						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+					}
 				}
 			}
 		}

@@ -152,6 +152,12 @@ void CTrigger_Stage::My_Tick()
 		CUser::Get_Instance()->Set_MiniMapConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
 		CUser::Get_Instance()->Set_ScoreBoardConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
+
+	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
+		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
+		CUser::Get_Instance()->Set_ScoreBoardConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
+		break;
 	}
 
 	//1. 둘 중 한쪽만 0일 때
@@ -210,6 +216,11 @@ void CTrigger_Stage::Update_Conquered()
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eCANNON:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 2);
 			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 2);
+			break;
+
+		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
+			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 0);
 			break;
 		}
 
@@ -270,6 +281,10 @@ void CTrigger_Stage::Update_Conquered()
 		
 			/* Center 점령 시 final 점령 가능하게 열림 */
 			CGameSystem::Get_Instance()->Enable_HwaraFinalTrigger(m_pConqueredTeam->Get_TeamType());
+
+			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 0);
 
 			break;
 

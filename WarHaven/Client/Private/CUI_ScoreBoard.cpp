@@ -109,12 +109,25 @@ void CUI_ScoreBoard::My_LateTick()
 {
 	__super::My_LateTick();
 
-	if (m_pPlayer)
+	if (m_eLoadLevel == LEVEL_PADEN)
 	{
-		_float4 vPos = m_pPlayerTransform->Get_World(WORLD_POS) * 1.5f;
-		vPos.z += -375.f;
-		vPos.x += 15.f;
-		m_pPlayerUI->Set_Pos(vPos.z, -vPos.x);
+		if (m_pPlayer)
+		{
+			_float4 vPos = m_pPlayerTransform->Get_World(WORLD_POS) * 1.5f;
+			vPos.z += -375.f;
+			vPos.x += 15.f;
+			m_pPlayerUI->Set_Pos(vPos.z, -vPos.x);
+		}
+	}
+	else
+	{
+		if (m_pPlayer)
+		{
+			_float4 vPos = m_pPlayerTransform->Get_World(WORLD_POS) * 1.2f;
+			vPos.z += -30.f;
+			vPos.x += 370.f;
+			m_pPlayerUI->Set_Pos(-vPos.x, vPos.z);
+		}
 	}
 }
 
@@ -132,6 +145,12 @@ void CUI_ScoreBoard::OnEnable()
 			iter->Set_ScaleX(250.f);
 			iter->SetActive(true);
 		}
+	}
+
+	if (m_eLoadLevel == LEVEL_HWARA)
+	{
+		for (int i = 0; i < PU_End; ++i)
+			m_pArrPointUI[Point_C][i]->SetActive(false);
 	}
 }
 
@@ -372,7 +391,7 @@ void CUI_ScoreBoard::Init_ScoreMiniMap()
 		break;
 
 	case Client::LEVEL_HWARA:
-		m_pScoreMiniMap[Map_Map]->Set_Texture(TEXT(""));
+		m_pScoreMiniMap[Map_Map]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Map/T_MinimapHwara.dds"));
 		break;
 	}
 
@@ -523,6 +542,29 @@ void CUI_ScoreBoard::Init_PointUI()
 
 		break;
 	case Client::LEVEL_HWARA:
+
+		for (int i = 0; i < Point_End; ++i)
+		{
+			for (int j = 0; j < PU_End; ++j)
+			{
+				m_pArrPointUI[i][j]->Set_PosX(-370.f);
+			}
+		}
+
+		m_pArrPointUI[Point_A][PU_Outline]->Set_TextureIndex(2);
+		m_pArrPointUI[Point_A][PU_Gauge]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_A][PU_Text]->Set_TextureIndex(0);
+		m_pArrPointUI[Point_A][PU_Outline]->Set_PosY(-15.f);
+		m_pArrPointUI[Point_A][PU_Gauge]->Set_PosY(-15.f);
+		m_pArrPointUI[Point_A][PU_Text]->Set_PosY(-17.f);
+
+		m_pArrPointUI[Point_R][PU_Outline]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_R][PU_Gauge]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_R][PU_Text]->Set_TextureIndex(1);
+		m_pArrPointUI[Point_R][PU_Outline]->Set_PosY(35);
+		m_pArrPointUI[Point_R][PU_Gauge]->Set_PosY(35);
+		m_pArrPointUI[Point_R][PU_Text]->Set_PosY(33.f);
+
 		break;
 	}
 }

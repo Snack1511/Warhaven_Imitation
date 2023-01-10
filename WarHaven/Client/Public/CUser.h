@@ -225,6 +225,9 @@ public:	// 메인메뉴
 	void Unlock_RabbitHat();
 	void SetActive_SkinPopup(_bool value);
 
+	void Set_BreezeTime(_float fCurTime, _float fMaxTime);
+	void SetActive_Gauge(_bool value);
+
 private:
 	CUI_HUD* m_pUI_HUD = nullptr;
 	CUI_Portrait* m_pUI_Portrait = nullptr;
