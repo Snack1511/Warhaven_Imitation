@@ -689,6 +689,11 @@ void CUser::Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSk
 	m_pUI_Skill->Set_SkillCoolTime(iSkillIdx, fSkillCoolTime, fSkillMaxCoolTime);
 }
 
+void CUser::SetActive_CannonCrosshair(_bool value)
+{
+	m_pUI_Crosshair->SetActive_CannonCrosshair(value);
+}
+
 void CUser::SetActive_Cursor(_bool value)
 {
 	static_cast<CUI_Cursor*> (m_pCursor)->SetActive_Mouse(value);
@@ -901,12 +906,12 @@ void CUser::SetActive_SkinPopup(_bool value)
 
 void CUser::Set_BreezeTime(_float fCurTime, _float fMaxTime)
 {
-	static_cast<CUI_Crosshair*>(Get_HUD(0))->Set_BreezeTime(fCurTime, fMaxTime);
+	m_pUI_Crosshair->Set_BreezeTime(fCurTime, fMaxTime);
 }
 
 void CUser::SetActive_Gauge(_bool value)
 {
-	static_cast<CUI_Crosshair*>(Get_HUD(0))->SetActive_Gauge(value);
+	m_pUI_Crosshair->SetActive_Gauge(value);
 }
 
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)

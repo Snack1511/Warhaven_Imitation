@@ -100,7 +100,6 @@ void CUI_Cannon::Create_CoolTime()
 		m_pCoolTime[i] = CUI_Object::Create();
 
 		m_pCoolTime[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Cannon/T_128HalfCircleOutline4px.png"));
-		m_pCoolTime[i]->Set_RotationZ(180.f);
 	}
 
 	m_pCoolTime[Cool_BG]->Set_Sort(0.5f);

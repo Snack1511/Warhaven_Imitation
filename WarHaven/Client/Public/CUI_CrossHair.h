@@ -23,6 +23,8 @@ public:
 public:
 	void Set_Crosshair(_uint iClass);
 
+	void SetActive_CannonCrosshair(_bool value);
+
 	void SetActive_Crosshair(_bool value);
 	void SetActive_ArrowUI(_bool value);
 	void SetActive_LancerUI(_bool value);

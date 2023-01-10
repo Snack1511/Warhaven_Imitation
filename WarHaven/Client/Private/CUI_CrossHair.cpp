@@ -77,6 +77,42 @@ void CUI_Crosshair::Set_Crosshair(_uint iClass)
 	Set_ArrowUI();
 }
 
+void CUI_Crosshair::SetActive_CannonCrosshair(_bool value)
+{
+	SetActive_LancerUI(false);
+
+	if (value == true)
+	{
+		m_pCrosshair[CU_Point]->Set_TextureIndex(1);
+		m_pCrosshair[CU_Point]->Set_Scale(32.f);
+		m_pCrosshair[CU_Outline]->Set_TextureIndex(1);
+	}
+	else
+	{
+		m_pCrosshair[CU_Point]->Set_Scale(6.f);
+
+		switch (m_iClassIndex)
+		{
+		case WARRIOR:
+			Set_DefaultCrosshair();
+			break;
+
+		case ARCHER:
+		case QANDA:
+			Set_ArcherCrosshair();
+			break;
+
+		case ENGINEER:
+			Set_DefaultCrosshair();
+			break;
+
+		case LANCER:
+			SetActive_LancerUI(true);
+			break;
+		}
+	}
+}
+
 void CUI_Crosshair::SetActive_Crosshair(_bool value)
 {
 	if (value == true)
