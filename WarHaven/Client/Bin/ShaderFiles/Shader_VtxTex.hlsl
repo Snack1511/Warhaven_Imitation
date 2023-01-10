@@ -435,7 +435,7 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
     In.vTexUV.x -= g_fValue;
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     
-    Out.vColor.a *= vNoise.r;
+   //  Out.vColor.a *= vNoise.r;
     
     if (In.vTexUV.y < g_fHeroGaugeRatio)
         discard;

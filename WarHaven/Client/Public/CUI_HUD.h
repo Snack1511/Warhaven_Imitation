@@ -35,6 +35,7 @@ public:
 	void SetActive_HeroTransformGauge(_bool value);
 
 	void SetActive_SquardInfo(_bool value);
+	void SetActive_RevivalUI(_bool value);
 
 	void Set_Crosshair_Pos(_float4 vPosition);
 
@@ -101,12 +102,15 @@ private:	// 변신 게이지
 	enum HeroTransformUI { HT_BG, HT_Bar, HT_End };
 	CUI_Object* m_pHeroTransformUI[HT_End];
 
+	CUI_Object* m_pRevivalUI = nullptr;
+
 	_float m_fMaxHeroTransformValue = 1.44272f;
 	_float m_fHeroTransformValue = 0.f;
 	_float m_fHeroTransformGaugeRatio = 0.f;
 
 private:
 	void Create_HeroTransformUI();
+	void Create_RevivalUI();
 
 private:
 	void Bind_Shader();

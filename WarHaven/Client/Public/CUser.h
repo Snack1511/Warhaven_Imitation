@@ -124,7 +124,7 @@ public:
 	void Set_HP(_float fCurValue, _float fMaxValue);
 	void Set_HeroGauge(_float fCurValue, _float fMaxValue);
 	void Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSkillMaxCoolTime);
-
+	void SetActive_HUD_RevivalUI(_bool value);
 	void SetActive_CannonCrosshair(_bool value);
 
 	void SetActive_Cursor(_bool value);

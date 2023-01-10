@@ -725,6 +725,11 @@ void CUser::Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSk
 	m_pUI_Skill->Set_SkillCoolTime(iSkillIdx, fSkillCoolTime, fSkillMaxCoolTime);
 }
 
+void CUser::SetActive_HUD_RevivalUI(_bool value)
+{
+	m_pUI_HUD->SetActive_RevivalUI(value);
+}
+
 void CUser::SetActive_CannonCrosshair(_bool value)
 {
 	m_pUI_Crosshair->SetActive_CannonCrosshair(value);

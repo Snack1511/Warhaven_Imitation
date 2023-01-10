@@ -103,12 +103,13 @@ void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 	Physics_Setting(pOwner->Get_Status().fRunSpeed, pOwner, false);
 
+	Enable_TargetUI();
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CQanda_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-	Enable_TargetUI();
 
 	if (pAnimator->Is_CurAnimFinished())
 		return STATE_IDLE_QANDA;

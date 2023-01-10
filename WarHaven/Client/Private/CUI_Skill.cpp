@@ -146,8 +146,8 @@ void CUI_Skill::Set_SkillUI(_uint iClass)
 		m_iCurIndex = 2;
 		m_iSkillNum = 20;
 
-		Set_KeyIcon(0, 0);
-		Set_KeyIcon(1, 17);
+		Set_KeyIcon(0, 17);
+		Set_KeyIcon(1, 29);
 
 		_float fPosX = m_pArrSkillUI[SU_BG][0]->Get_PosX();
 		m_pHeroKeySkillIcon->Set_PosX(fPosX - 10.f);
