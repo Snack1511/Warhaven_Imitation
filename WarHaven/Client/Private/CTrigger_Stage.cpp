@@ -156,6 +156,7 @@ void CTrigger_Stage::My_Tick()
 	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
+		CUser::Get_Instance()->Set_ScoreBoardConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
 		break;
 	}
 
@@ -219,6 +220,7 @@ void CTrigger_Stage::Update_Conquered()
 
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
 			CUser::Get_Instance()->Set_MiniMapGaugeColor(bMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_ScoreBoardGaugeColor(bMainPlayerTeam, 0);
 			break;
 		}
 
@@ -281,6 +283,8 @@ void CTrigger_Stage::Update_Conquered()
 			CGameSystem::Get_Instance()->Enable_HwaraFinalTrigger(m_pConqueredTeam->Get_TeamType());
 
 			CUser::Get_Instance()->Set_MiniMapPointColor(IsMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_OperPointColor(IsMainPlayerTeam, 0);
+			CUser::Get_Instance()->Set_ScoreBoardPointColor(IsMainPlayerTeam, 0);
 
 			break;
 
