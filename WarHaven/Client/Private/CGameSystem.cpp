@@ -1176,9 +1176,6 @@ void CGameSystem::On_StartGame()
 			continue;
 		}
 
-		//Test_ AI는 한명만 생기게..
-		if (Index > 1)
-			continue;
 
 		/*static _uint g_iIndex = 0;
 
@@ -1202,34 +1199,34 @@ void CGameSystem::On_StartGame()
 	}
 	//여기..
 	/* Default 애덜 */
-//#ifdef _DEBUG
-//#else
-//	for (auto& elem : m_mapAllPlayers)
-//	{
-//		/* Default가 아니면 건너 뛰기 */
-//		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
-//			continue;
-//
-//		static _uint g_iIndex = 0;
-//
-//		if (g_iIndex == 0)
-//		{
-//			g_iIndex++;
-//			continue;
-//		}
-//
-//		g_iIndex = 0;
-//
-//		/* ai들은 랜덤 선택 함수 호출 */
-//		elem.second->Choose_Character();
-//
-//	//	/* 자기 진영에서 포지션 가져오기 */
-//		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
-//		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
-//
-//	}
-//
-//#endif // _DEBUG
+#ifdef _DEBUG
+#else
+	for (auto& elem : m_mapAllPlayers)
+	{
+		/* Default가 아니면 건너 뛰기 */
+		if (!dynamic_cast<CPlayerInfo_Default*>(elem.second))
+			continue;
+
+		/*static _uint g_iIndex = 0;
+
+		if (g_iIndex == 0)
+		{
+			g_iIndex++;
+			continue;
+		}
+
+		g_iIndex = 0;*/
+
+		/* ai들은 랜덤 선택 함수 호출 */
+		elem.second->Choose_Character();
+
+	//	/* 자기 진영에서 포지션 가져오기 */
+		_float4 vStartPos = m_pTeamConnector[(_uint)(elem.second->m_pMyTeam->m_eTeamType)]->Find_RespawnPosition_Start();
+		elem.second->m_pMyPlayer->Respawn_Unit(vStartPos, elem.second->m_eCurChosenClass);
+
+	}
+
+#endif // _DEBUG
 
 
 	if (m_eCurStageType == eSTAGE_HWARA)

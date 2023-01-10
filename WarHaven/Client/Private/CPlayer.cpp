@@ -331,6 +331,7 @@ HRESULT CPlayer::Set_FollowCam(wstring wstrCamKey)
 HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 {
 	CUnit* pUnit = m_pAllUnitClass[eClassType];
+
 	if (nullptr != pUnit)
 	{
 		if (eClassType >= CLASS_END)
@@ -348,11 +349,11 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		_float4	vLook = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_LOOK);
 
 
-	if (m_pCurrentUnit)
-	{
-		//m_pCurrentUnit->On_ChangeClass();
-		DISABLE_GAMEOBJECT(m_pCurrentUnit);
-	}
+		if (m_pCurrentUnit)
+		{
+			//m_pCurrentUnit->On_ChangeClass();
+			DISABLE_GAMEOBJECT(m_pCurrentUnit);
+		}
 
 		if (m_eCurrentClass >= FIONA)
 		{
@@ -369,6 +370,7 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 
 		pUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
 		m_pCurrentUnit = pUnit;
+
 	}
 	if (m_bIsMainPlayer)
 	{
@@ -1119,7 +1121,7 @@ void CPlayer::Change_NearPath()
 	Set_NewPath(pPath->Clone());
 
 	Make_BestRoute(m_pCurPath->Get_vecPositions()[0]);
-	
+
 }
 
 void CPlayer::Set_TeamType(eTEAM_TYPE eTeamType)
@@ -1302,7 +1304,7 @@ void CPlayer::Set_MainPlayerStartPath(_uint iTriggerType)
 		}
 	}
 
-	
+
 
 }
 
@@ -1340,7 +1342,7 @@ void CPlayer::Update_HeroGauge()
 		if (m_bIsMainPlayer)
 		{
 			//if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TEST)
-				fGaugeSpeed *= 200.f;
+			fGaugeSpeed *= 200.f;
 
 		}
 		if (!m_bIsHero) //CChangeHero_Player
@@ -1405,11 +1407,11 @@ void CPlayer::Clear_DebugObject()
 	{
 		DELETE_GAMEOBJECT(Debug);
 	}
-  	m_pRouteDebug.clear();
+	m_pRouteDebug.clear();
 }
 #endif
 void CPlayer::Make_BestRoute(_float4 vPosition)
-{	
+{
 #ifdef _DEBUG
 	Clear_DebugObject();
 #endif
@@ -1419,7 +1421,7 @@ void CPlayer::Make_BestRoute(_float4 vPosition)
 			Get_WorldPos(), vPosition);
 
 	m_CurNodeList = m_pCurrentUnit->Get_NaviCom()->m_DebugRouteNode;
-	
+
 }
 
 void CPlayer::On_AbleHero()
@@ -1440,7 +1442,7 @@ void CPlayer::On_FinishHero()
 {
 	m_fGauge = 0.f;
 	m_bIsHero = false;
-	
+
 	STATE_TYPE eCurState = m_pCurrentUnit->Get_CurState();
 
 	if (m_pCurrentUnit->Get_CurState() != STATE_END)
