@@ -3673,6 +3673,9 @@
     <Filter Include="03. Instances\02. GameObject\14. MainPlayer">
       <UniqueIdentifier>{8f056594-e323-4bed-9828-3dc51c47aefd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info">
+      <UniqueIdentifier>{71372463-90c0-4ea4-a618-8c09be897d4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6612,6 +6615,7 @@
     <ClInclude Include="..\public\CMainMenuPlayer.h">
       <Filter>03. Instances\02. GameObject\14. MainPlayer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Info.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9532,6 +9536,7 @@
     <ClCompile Include="..\private\CMainMenuPlayer.cpp">
       <Filter>03. Instances\02. GameObject\14. MainPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CUI_Info.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

@@ -196,6 +196,7 @@
     <ClInclude Include="..\public\CMainMenuPlayer.h" />
     <ClInclude Include="..\Public\CUI_Cannon.h" />
     <ClInclude Include="..\Public\CLancerNeedle.h" />
+    <ClInclude Include="..\Public\CUI_Info.h" />
     <ClInclude Include="..\Public\CUnit_Lancer_Head.h" />
     <ClInclude Include="..\Public\CState_Combat_Attack_Sting_Priest.h" />
     <ClInclude Include="..\Public\CState_PathNavigation_Fall_Archer.h" />
@@ -1178,6 +1179,7 @@
     <ClCompile Include="..\private\CMainMenuPlayer.cpp" />
     <ClCompile Include="..\Private\CUI_Cannon.cpp" />
     <ClCompile Include="..\Private\CLancerNeedle.cpp" />
+    <ClCompile Include="..\Private\CUI_Info.cpp" />
     <ClCompile Include="..\Private\CUnit_Lancer_Head.cpp" />
     <ClCompile Include="..\Private\CState_Combat_Attack_Sting_Priest.cpp" />
     <ClCompile Include="..\Private\CState_PathNavigation_Fall_Archer.cpp" />

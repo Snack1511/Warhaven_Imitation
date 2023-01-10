@@ -746,6 +746,7 @@ void CUI_Oper::Progress_Oper()
 
 				CUser::Get_Instance()->Set_FixCursor(true);
 				CUser::Get_Instance()->SetActive_Cursor(false);
+
 			}
 		}
 	}

@@ -62,6 +62,7 @@
 
 #include "CGameSystem.h"
 #include "CUI_Result.h"
+#include "CUI_Info.h"
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -571,6 +572,14 @@ void CUser::On_EnterStageLevel()
 
 	if (m_eLoadLevel >= LEVEL_PADEN)
 	{
+		if (!m_pInfoUI)
+		{
+			m_pInfoUI = CUI_Info::Create();
+
+			CREATE_GAMEOBJECT(m_pInfoUI, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pInfoUI);
+		}
+
 		if (!m_pUI_Oper)
 		{
 			m_pUI_Oper = CUI_Oper::Create();
@@ -677,6 +686,9 @@ void CUser::On_ExitStageLevel()
 
 	if (m_pBarracks)
 		m_pBarracks = nullptr;
+
+	if (m_pInfoUI)
+		m_pInfoUI = nullptr;
 
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
@@ -996,5 +1008,11 @@ void CUser::SetActive_MiniMap(_bool value)
 {
 	if (m_pMiniMap)
 		m_pMiniMap->SetActive_MiniMap(value);
+}
+
+void CUser::SetActive_InfoUI(_bool value)
+{
+	if (m_pInfoUI)
+		m_pInfoUI->SetActive_Info(value);
 }
 

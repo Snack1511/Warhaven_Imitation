@@ -137,6 +137,7 @@ private:
 	CUI_Object* m_pPopupUI = nullptr;
 
 	_bool m_bShowStartPopup = false;
+	_bool m_bShowInfoUI = false;
 
 private:
 	void Create_Popup();

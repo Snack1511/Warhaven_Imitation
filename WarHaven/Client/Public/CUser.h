@@ -27,6 +27,7 @@ class CUI_HeroGauge;
 class CUI_Crosshair;
 class CUI_Skill;
 
+class CUI_Info;
 class CUI_KillName;
 class CUI_KillLog;
 class CUI_Result;
@@ -185,6 +186,7 @@ public:
 	void SetActive_TrainingPopup(_bool value, _uint iIndex);
 
 	void SetActive_MiniMap(_bool value);
+	void SetActive_InfoUI(_bool value);
 
 	void Set_TargetInfo(CPlayerInfo* pTargetInfo);
 	void Toggle_DeadUI(_bool value, _bool isFall = false);
@@ -257,6 +259,8 @@ private:	// 소생
 private:	// 상호작용
 	CUI_Interact* m_pInteractUI = nullptr;
 	CUI_Cannon* m_pCannonUI = nullptr;
+
+	CUI_Info* m_pInfoUI = nullptr;
 
 private:
 	CBloodOverlay* m_pBloodOverlay = nullptr;

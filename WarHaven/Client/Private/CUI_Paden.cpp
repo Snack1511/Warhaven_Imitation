@@ -545,6 +545,15 @@ void CUI_Paden::Update_InGameTimer()
 
 		if (iMin >= 29)
 		{
+			if (iSec < 59)
+			{
+				if (!m_bShowInfoUI)
+				{
+					m_bShowInfoUI = true;
+					CUser::Get_Instance()->SetActive_InfoUI(true);
+				}
+			}
+
 			if (iSec < 57)
 			{
 				if (!m_bShowStartPopup)
