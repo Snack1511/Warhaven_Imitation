@@ -105,7 +105,7 @@ void CPaladin_Rush_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 
 	Physics_Setting(m_fMaxSpeed, pOwner);
 
-	static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(true);
+	//static_cast<CUnit_Paladin*>(pOwner)->Turn_RushEffect(true);
 	GAMEINSTANCE->Start_RadialBlur(0.01f);
 	pOwner->Lerp_Camera(6);
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);

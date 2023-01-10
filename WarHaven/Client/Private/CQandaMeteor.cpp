@@ -45,7 +45,7 @@ HRESULT CQandaMeteor::Start()
 		_float4(0.f, 5.f, 0.f, 1.f),	//Weapon High
 		_float4(-5.f, 0.f, 0.f, 1.f), //Left
 		_float4(5.f, 0.f, 0.f, 1.f), //Right
-		_float4(1.f, 0.f, 0.f, 1.f), // GlowFlow
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
 		_float4(0.8f, 0.3f, 0.3f, 0.7f), //vColor
 		0.f,
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_01.dds",

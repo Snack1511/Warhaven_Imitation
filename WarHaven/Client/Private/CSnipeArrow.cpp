@@ -62,8 +62,6 @@ HRESULT CSnipeArrow::Start()
 		100
 	);
 
-	m_Test.clear();
-
 	return S_OK;
 }
 
@@ -96,10 +94,17 @@ HRESULT CSnipeArrow::Initialize_Prototype()
     return CProjectile::Initialize_Prototype();
 }
 
+void CSnipeArrow::My_Tick()
+{
+	__super::My_Tick();
+
+}
+
 void CSnipeArrow::OnEnable()
 {
 	__super::OnEnable();
-	Turn_Effect(true);
+
+	//Turn_Effect(true);
 }
 
 void CSnipeArrow::OnDisable()
@@ -107,7 +112,7 @@ void CSnipeArrow::OnDisable()
 	if (m_bCollect)
 		static_cast<CUnit_Archer*>(m_pOwnerUnit)->Collect_Arrow(m_hcCode, this);
 	
-	Turn_Effect(false);
+	//Turn_Effect(false);
 
 	__super::OnDisable();
 }
@@ -118,7 +123,7 @@ void CSnipeArrow::Turn_Effect(_bool bOnOff)
 	{
 		if (m_Test.empty())
 		{
-			m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Qanda_Sniping", this, ZERO_VECTOR);
+			m_Test = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Qanda_Sniping", this, ZERO_VECTOR); //스나이핑 이펙트 추가할것
 		}
 	}
 	else

@@ -835,6 +835,8 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"ash"), "ash")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Hwara_Pillar"), "Hwara_Pillar")))
+		return E_FAIL;
 		
 
 	/* Dead Body */

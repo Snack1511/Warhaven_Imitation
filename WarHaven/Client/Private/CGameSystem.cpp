@@ -158,7 +158,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 1; ++i)
+	for (_uint i = 0; i < 0; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
@@ -1330,6 +1330,9 @@ HRESULT CGameSystem::On_Update_Hwara()
 
 HRESULT CGameSystem::Hwara_EnvironmentEffect()
 {
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hwara_Pillar", _float4(0.f, 0.f, 0.f));
+
+
 	return S_OK;
 }
 
