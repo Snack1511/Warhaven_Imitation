@@ -73,8 +73,8 @@ private:
 private:
 	//3. 남은 점수 표기
 	_uint			m_iScore = 0;
-	 _uint			m_iMaxScore = 50;
-	//_uint			m_iMaxScore = 3;
+	// _uint			m_iMaxScore = 50;
+	_uint			m_iMaxScore = -1;
 };
 
 END

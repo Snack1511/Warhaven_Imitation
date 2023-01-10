@@ -24,7 +24,7 @@ public:
 public:
 	void Add_AdjTriggers(CTrigger* pTrigger) { m_vecAdjTriggers.push_back(pTrigger); }
 	void	Reserve_DisableOnStart() { m_bStartDisable = true; }
-
+	_float4 Get_Position() { return m_vPosition; }
 public:
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT	Initialize() override;

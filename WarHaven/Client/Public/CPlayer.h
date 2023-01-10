@@ -369,6 +369,11 @@ private:
 	void	Update_DieDelay();
 	void	Check_AbleRevival();
 
+public:
+	_float4 Get_TargetPos() { return m_vTargetPos; }
+	void Set_TargetPos(_float4 vPos) { m_vTargetPos = vPos; }
+private:
+	_float4 m_vTargetPos;
 
 };
 END
