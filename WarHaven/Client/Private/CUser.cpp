@@ -450,6 +450,11 @@ void CUser::Set_MainMenuUnit(_uint iUnitIdx)
 	m_pMainMenuPlayer->Set_CurClassType((CLASS_TYPE)iUnitIdx);
 }
 
+void CUser::Change_ModelParts(_uint iClassType, MODEL_PART_TYPE eModelPartType)
+{
+	m_pMainMenuPlayer->Change_ModelParts((CLASS_TYPE)iClassType, eModelPartType);
+}
+
 void CUser::On_EnterLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();

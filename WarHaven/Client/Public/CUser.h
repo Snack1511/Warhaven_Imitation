@@ -166,6 +166,7 @@ public:		// ºê¸®ÇÎ
 	_bool Get_SelectTargetPoint();
 
 	void Set_MainMenuUnit(_uint iUnitIdx);
+	void Change_ModelParts(_uint iClassType, MODEL_PART_TYPE eModelPartType);
 
 public:
 	void On_EnterLevel();
