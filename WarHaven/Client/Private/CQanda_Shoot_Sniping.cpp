@@ -192,6 +192,9 @@ void CQanda_Shoot_Sniping::Enable_TargetUI()
 {
 	auto iter = m_SnipingTarget.begin();
 	CUnit* m_pTargetUnit = static_cast<CUnit*>(*iter);
+	m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(true);
+
+	return;
 
 	if (m_pTargetUnit->Is_Valid())
 	{
