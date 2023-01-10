@@ -7,6 +7,8 @@
 #include "CUI_Cursor.h"
 #include "CUI_Main.h"
 #include "CPlayerInfo_Main.h"
+#include "CPlayerInfo.h"
+#include "CMainMenuPlayer.h"
 
 _bool CUI_Barracks::m_bIsUnlock_RabbitHat = false;
 
@@ -93,6 +95,8 @@ void CUI_Barracks::On_PointerDown_Port(const _uint& iEventNum)
 
 	m_iSelectClass = m_iCurEventNum;
 	Set_ClassInfoText(m_iSelectClass);
+
+	CUser::Get_Instance()->Set_MainMenuUnit(m_iSelectClass);
 }
 
 void CUI_Barracks::On_PointerEnter_Btn(const _uint& iEventNum)

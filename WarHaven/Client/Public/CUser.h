@@ -45,6 +45,7 @@ class CUI_Barracks;
 class CTeamConnector;
 
 class CFadeDark;
+class CMainMenuPlayer;
 
 class CUser
 {
@@ -164,6 +165,8 @@ public:		// 브리핑
 	void SetActive_OperUI(_bool value);
 	_bool Get_SelectTargetPoint();
 
+	void Set_MainMenuUnit(_uint iUnitIdx);
+
 public:
 	void On_EnterLevel();
 	void On_ExitLevel();
@@ -243,6 +246,8 @@ private:
 
 	CUI_Main* m_pMainUI = nullptr;
 	CUI_Barracks* m_pBarracks = nullptr;
+
+	CMainMenuPlayer* m_pMainMenuPlayer = nullptr;
 
 private:	// 소생
 	CUI_Revive* m_pReviveUI[7];

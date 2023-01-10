@@ -25,6 +25,7 @@
 #include "CCell.h"
 
 #include "CCamera_Free.h"
+#include "CPlayerInfo_Main.h"
 
 #include "CUI_HUD.h"
 #include "CUI_Portrait.h"
@@ -33,6 +34,8 @@
 #include "CUI_Skill.h"
 #include "CUI_CrossHair.h"
 
+
+#include "CMainMenuPlayer.h"
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
 #include "CUI_Training.h"
@@ -442,6 +445,11 @@ _bool CUser::Get_SelectTargetPoint()
 	return false;
 }
 
+void CUser::Set_MainMenuUnit(_uint iUnitIdx)
+{
+	m_pMainMenuPlayer->Set_CurClassType((CLASS_TYPE)iUnitIdx);
+}
+
 void CUser::On_EnterLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
@@ -460,6 +468,14 @@ void CUser::On_EnterLevel()
 
 			CREATE_GAMEOBJECT(m_pBarracks, GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pBarracks);
+		}
+
+		if (!m_pMainMenuPlayer)
+		{
+			m_pMainMenuPlayer = CMainMenuPlayer::Create(CGameSystem::Get_Instance()->Find_PlayerInfo(HASHCODE(CPlayerInfo_Main)));
+
+			CREATE_GAMEOBJECT(m_pMainMenuPlayer, GROUP_UI);
+			// DISABLE_GAMEOBJECT(m_pMainMenuPlayer);
 		}
 	}
 
@@ -606,6 +622,9 @@ void CUser::On_EnterStageLevel()
 void CUser::On_ExitStageLevel()
 {
 	m_pBloodOverlay = nullptr;
+
+	if (m_pMainMenuPlayer)
+		m_pMainMenuPlayer = nullptr;
 
 	if (m_pUI_HUD)
 		m_pUI_HUD = nullptr;
