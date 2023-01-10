@@ -1760,7 +1760,7 @@ void CWindow_Effect::Load_SelectedPreset()
 	tItem.strName = strFileKey;
 
 	CREATE_GAMEOBJECT(pNewEffect, GROUP_EFFECT);
-	pNewEffect->m_pFollowTarget = PLAYER;
+	pNewEffect->m_pFollowTarget = nullptr;
 	m_vecEffects.push_back(tItem);
 }
 

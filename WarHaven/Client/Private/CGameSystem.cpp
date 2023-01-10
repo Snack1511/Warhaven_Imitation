@@ -1327,6 +1327,7 @@ HRESULT CGameSystem::Hwara_EnvironmentEffect()
 {
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hwara_Pillar", _float4(0.f, 0.f, 0.f));
 
+	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Hwara_Fire", _float4(0.f, 0.f, 0.f));
 
 	return S_OK;
 }
