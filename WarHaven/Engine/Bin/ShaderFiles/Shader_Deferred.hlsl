@@ -281,7 +281,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 		//	float num = a2;
 		//	float den = (ndoth2 * (a2 - 1) + 1);
 		//	float D = num / (3.14159265358979323846 * den * den);
-		//	float F = metalness;// +(hardness)*metalness;
+		//	float F = metalness;
 		//	float k = metalness;
 		//	float G = min(1.0, min(2.0 * NdotL * NdotV / LdotH, 2.0 * NdotL * NdotV / VdotH));
 		//	float3 diffuse = (g_vLightDiffuse.xyz * (1 - F) * (1 - k)) * (NdotL * G / (NdotV + 0.0001));
