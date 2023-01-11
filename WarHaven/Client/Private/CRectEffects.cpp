@@ -233,7 +233,7 @@ HRESULT CRectEffects::Initialize_Prototype()
 
 	CRenderer* pRenderer = CRenderer::Create(CP_RENDERER, RENDER_ALPHA, VTXRECTINSTANCE_PASS_DEFAULT
 		, _float4(0.f, 0.f, 0.f, 1.f));
-
+	pRenderer->Set_RectEffects();
 	Add_Component<CRenderer>(pRenderer);
 
 	Add_Component<CMesh>(CRect_Instance::Create(m_tCreateData.iNumInstance));
@@ -818,7 +818,13 @@ void CRectEffects::My_LateTick()
 
 	static_cast<CRect_Instance*>(GET_COMPONENT(CMesh))->ReMap_Instances(m_pFinalRectInstances, iFinalIndex);
 
-	
+	_float4 vFinalPos = XMLoadFloat4(&((m_pFinalRectInstances + (iFinalIndex-1))->vTranslation));
+	vFinalPos = vFinalPos.MultiplyCoord(m_pTransform->Get_WorldMatrix());
+
+	if (vFinalPos.Is_Zero())
+		MessageBox(0, L"¶Ç 0", TEXT("System Error"), MB_OK);
+
+	GET_COMPONENT(CRenderer)->Set_FinalPos(vFinalPos);
 
 }
 
@@ -1314,6 +1320,8 @@ void CRectEffects::Sort_Particle(_uint iFinalNumInstance)
 
 			return fDist1 > fDist2;
 		});
+
+	
 }
 
 void CRectEffects::Bone_Controll()

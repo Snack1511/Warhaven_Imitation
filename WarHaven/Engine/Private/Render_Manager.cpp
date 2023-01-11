@@ -1706,12 +1706,16 @@ void CRender_Manager::Sort_AlphaList()
 
 		_float4 vMyPos = elem.second->Get_WorldPosition();
 
-		//카메라위치에서 내위치 뺸 벡터를
-		_float4 vVector;
-		vVector = (XMLoadFloat4(&vMyPos) - vCamPos.XMLoad());
 
-		//내적
-		_float fDist1 = vCamLook.Dot(vVector);
+		_float fDist1 = (vMyPos - vCamPos).Length();
+
+
+		//카메라위치에서 내위치 뺸 벡터를
+		//_float4 vVector;
+		//vVector = (XMLoadFloat4(&vMyPos) - vCamPos.XMLoad());
+
+		////내적
+		//_float fDist1 = vCamLook.Dot(vVector);
 
 		elem.first = fDist1;
 	}

@@ -34,7 +34,6 @@ private:
 public:
 	static	CLancerNeedle* Create(wstring wstrModelFilePath, CHierarchyNode* pOwnerHierarcyNode, CUnit* pOwnerUnit, _uint iNeedleIndex);
 
-
 public:
 	virtual void	Needle_CollisionEnter(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType, _float4 vHitPos);
 	virtual void	Needle_CollisionStay(CGameObject* pOtherObj, const _uint& eOtherColType, const _uint& eMyColType);
@@ -46,8 +45,6 @@ public:
 
 public:
 	HRESULT	 SetUp_Model(wstring wstrModelFilePath, CHierarchyNode* pOwnerHierarcyNode, CUnit* pOwnerUnit);
-
-
 
 public:
 	virtual HRESULT	Initialize_Prototype() override;
