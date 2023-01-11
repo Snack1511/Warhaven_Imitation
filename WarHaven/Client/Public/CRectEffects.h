@@ -109,6 +109,7 @@ private:
 private:
 	void			Reset_Instance(_uint iIndex);
 	virtual void	Stick_RefBone() override;
+	void			Stick_FollowTarget();
 
 private:
 	_float4		Switch_CurveType(_float4 vPos, _uint iIdx, _float fTimeDelta);

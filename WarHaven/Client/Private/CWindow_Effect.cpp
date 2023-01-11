@@ -474,7 +474,7 @@ void CWindow_Effect::Show_EffectTab()
 		}
 		if (ImGui::CollapsingHeader(" - EFFECT TYPE FLAG -"))
 		{
-			const static _uint iFlagCnt = 4;
+			const static _uint iFlagCnt = 5;
 			_bool	bFlagSelect[iFlagCnt] = {};
 
 			if (pCurEffect->m_bEffectFlag & EFFECT_FOLLOWTARGET)
@@ -485,6 +485,8 @@ void CWindow_Effect::Show_EffectTab()
 				bFlagSelect[2] = true;
 			if (pCurEffect->m_bEffectFlag & EFFECT_BILLBOARD)
 				bFlagSelect[3] = true;
+			if (pCurEffect->m_bEffectFlag & EFFECT_FOLLOWMATRIX)
+				bFlagSelect[4] = true;
 
 			if (ImGui::Selectable("FOLLOW_TARGET", &bFlagSelect[0]))
 			{
@@ -531,6 +533,18 @@ void CWindow_Effect::Show_EffectTab()
 				else
 				{
 					pCurEffect->m_bEffectFlag |= EFFECT_BILLBOARD;
+				}
+			}
+
+			if (ImGui::Selectable("FOLLOWMATRIX", &bFlagSelect[4]))
+			{
+				if (pCurEffect->m_bEffectFlag & EFFECT_FOLLOWMATRIX)
+				{
+					pCurEffect->m_bEffectFlag &= ~EFFECT_FOLLOWMATRIX;
+				}
+				else
+				{
+					pCurEffect->m_bEffectFlag |= EFFECT_FOLLOWMATRIX;
 				}
 			}
 
@@ -1430,6 +1444,23 @@ void CWindow_Effect::Show_ParticleTab()
 				{
 					static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag |= EFFECT_REFBONE;
 					bStickBone = true;
+				}
+			}
+
+			_bool bStickFollow = false;
+			if (static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag & EFFECT_FOLLOWTARGET)
+				bStickFollow = true;
+			if (ImGui::RadioButton("Stick Follow", bStickFollow))
+			{
+				if (static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag & EFFECT_FOLLOWTARGET)
+				{
+					static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag &= ~EFFECT_FOLLOWTARGET;
+					bStickFollow = false;
+				}
+				else
+				{
+					static_cast<CRectEffects*>(pCurEffect)->m_bEffectFlag |= EFFECT_FOLLOWTARGET;
+					bStickFollow = true;
 				}
 			}
 

@@ -34,6 +34,9 @@ public:
 	virtual void	SetUp_ReserveState(UNIT_TYPE eUnitType);
 	virtual void	On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc);
 
+public:
+	void			Turn_TransformParticle(_bool bOnOff);
+
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
 
@@ -50,6 +53,7 @@ private:
 	CUnit_Lancer_Head* m_pMyHead = nullptr; // 새로 붙인 머리
 	
 private:
+	list<CGameObject*> m_TransformParticles;
 	CLancerNeedle* m_pNeedle[eNeedle_Max] = { nullptr }; // 새로 붙인 머리
 
 	_float	m_fNeedleCreateTime = 1.f;

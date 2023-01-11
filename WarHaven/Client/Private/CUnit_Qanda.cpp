@@ -4,8 +4,6 @@
 #include "UsefulHeaders.h"
 
 #include "CAnimator.h"
-#include "CColorController.h"
-
 #include "Camera.h"
 
 #include "CBoneCollider.h"
@@ -568,8 +566,6 @@ HRESULT CUnit_Qanda::Start()
 void CUnit_Qanda::OnEnable()
 {
 	__super::OnEnable();
-
-	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 
 	Turn_TransformParticle(true);
 	

@@ -515,6 +515,7 @@ void CUnit_Warrior::My_LateTick()
 			DISABLE_COMPONENT(GET_COMPONENT(CPhysXCharacter));
 		}
 	}
+
 		//GET_COMPONENT(CPhysXCharacter)->Set_Position(_float4(50.f, 50.f, 50.f));
 
 	/*if (KEY(SPACE, TAP))

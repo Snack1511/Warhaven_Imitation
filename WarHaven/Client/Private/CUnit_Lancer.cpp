@@ -238,6 +238,25 @@ void CUnit_Lancer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		
 }
 
+void CUnit_Lancer::Turn_TransformParticle(_bool bOnOff)
+{
+	if (bOnOff)
+	{
+		if (m_TransformParticles.empty())
+			m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
+	}
+	else
+	{
+		if (!m_TransformParticles.empty())
+		{
+			for (auto& elem : m_TransformParticles)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+
+		m_TransformParticles.clear();
+	}
+}
+
 void CUnit_Lancer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 {
 	__super::Effect_Hit(pOtherUnit, vHitPos);
@@ -469,12 +488,25 @@ HRESULT CUnit_Lancer::Start()
 		"0B_R_WP1"
 	);
 
+	m_TransformParticles.clear();
+
 	return S_OK;
 }
 
 void CUnit_Lancer::OnEnable()
 {
 	__super::OnEnable();
+
+	Turn_TransformParticle(true);
+
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
+
+	Create_Light(vPos, 5.f, 0.f, 0.f, 0.f, 1.5f, RGB(255, 140, 40),
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn,
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
+
 	ENABLE_GAMEOBJECT(m_pMyHead);
 	m_iNeedleNums = 0;
 	m_fTimeAcc = 0.f;
@@ -483,6 +515,15 @@ void CUnit_Lancer::OnEnable()
 void CUnit_Lancer::OnDisable()
 {
 	__super::OnDisable();
+
+	Turn_TransformParticle(false);
+
+	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
+	vPos.y += 0.5f;
+	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255),
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseIn,
+		LIGHTDESC::EASING_TYPE::EAS_BounceEaseOut);
+
 	for (_int i = 0; i < eNeedle_Max; ++i)
 	{
 		if(m_pNeedle[i])

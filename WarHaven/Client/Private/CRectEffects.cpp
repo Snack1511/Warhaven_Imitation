@@ -154,6 +154,8 @@ void CRectEffects::Self_Reset(CGameObject* pGameObject, _float4 vStartPos)
 		}
 	}
 
+
+
 	//if (m_bBillBoard)
 	//{
 	//	m_matTrans = pGameObject->Get_Transform()->Get_WorldMatrix(MATRIX_NOSCALE | MARTIX_NOTRANS);
@@ -513,6 +515,7 @@ HRESULT CRectEffects::Initialize()
 		m_pTransform->Set_World(WORLD_POS, ZERO_VECTOR);
 	}
 	
+	Stick_FollowTarget();
 
 
 	return S_OK;
@@ -799,11 +802,7 @@ void CRectEffects::My_LateTick()
 		}
 	}
 
-	if (m_bEffectFlag & EFFECT_FOLLOWTARGET)
-	{
-		m_pTransform->Set_World(WORLD_POS, m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS));
-		m_pTransform->Make_WorldMatrix();
-	}
+	Stick_FollowTarget();
 
 
 	for (_uint i = 0; i < m_tCreateData.iNumInstance; ++i)
@@ -835,6 +834,10 @@ void CRectEffects::OnEnable()
 	//시작위치
 
 	Bone_Controll();
+
+	Stick_FollowTarget();
+
+
 
 	if (!m_pRefBone && m_bLoopControl && (0.f >= m_fLoopTime) && m_pFollowTarget)
 	{
@@ -1025,11 +1028,21 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 			m_pFollowTarget->
 		}*/
 
-	if (!m_pRefBone)
+	if (m_bEffectFlag & EFFECT_FOLLOWTARGET)
 	{
 		if (m_pFollowTarget)
 		{
-			m_matTrans = m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+			m_matTrans.Identity();
+		}
+	}
+	else
+	{
+		if (!m_pRefBone)
+		{
+			if (m_pFollowTarget)
+			{
+				m_matTrans = m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+			}
 		}
 	}
 
@@ -1349,6 +1362,24 @@ void CRectEffects::Stick_RefBone()
 		m_pTransform->Set_World(WORLD_POS, vPos);
 
 		m_pTransform->Make_WorldMatrix();
+	}
+}
+
+void CRectEffects::Stick_FollowTarget()
+{
+	if (m_bEffectFlag & EFFECT_FOLLOWTARGET)
+	{
+		if (m_pFollowTarget)
+		{
+			_float4 vPos = m_vOffsetPos;
+
+			_float4x4 matFollow = m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MATRIX_NOSCALE);
+
+			vPos = vPos.MultiplyCoord(matFollow);
+			m_pTransform->Set_World(WORLD_POS, vPos);
+
+			m_pTransform->Make_WorldMatrix();
+		}
 	}
 }
 
