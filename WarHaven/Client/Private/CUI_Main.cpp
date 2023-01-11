@@ -246,6 +246,7 @@ void CUI_Main::Create_PlayerNameText()
 			m_pPlayerInfo[i]->Set_FontStyle(true);
 			m_pPlayerInfo[i]->Set_FontCenter(true);
 			m_pPlayerInfo[i]->Set_FontScale(0.25f);
+			m_pPlayerInfo[i]->Set_FontOffset(5.f, 5.f);
 
 			m_pPlayerInfo[i]->Set_FontText(TEXT("1"));
 		}
