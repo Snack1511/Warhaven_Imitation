@@ -1027,8 +1027,10 @@ void CRectEffects::Set_NewStartPos(_uint iIndex)
 
 	if (!m_pRefBone)
 	{
-		if(m_pFollowTarget)
+		if (m_pFollowTarget)
+		{
 			m_matTrans = m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE);
+		}
 	}
 
 	vStartPos = vStartPos.MultiplyCoord(m_matTrans);

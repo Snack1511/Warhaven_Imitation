@@ -62,20 +62,16 @@ CUnit_Qanda* CUnit_Qanda::Create(const UNIT_MODEL_DATA& tUnitModelData)
 
 void CUnit_Qanda::On_Die()
 {
-	__super::On_Die();
-	TurnOff_AllEffect();
+	m_pOwnerPlayer->On_FinishHero();
+	m_pOwnerPlayer->Get_CurrentUnit()->On_Die();
+	m_bDie = false;
+	m_fDeadTimeAcc = 0.f;
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 
-	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
+	DISABLE_GAMEOBJECT(this);
 
-	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
-
-	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_L_WP1")->Get_BoneMatrix();
-	_float4 vBonePos = matWeapon.XMLoad().r[3];
-	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
-
-
-	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_QANDA", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
-	vPos.y += 1.f;
+	/*CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_QANDA", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
+	vPos.y += 1.f;*/
 	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"QANDADead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 
 }

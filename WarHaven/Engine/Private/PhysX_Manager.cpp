@@ -57,7 +57,7 @@ HRESULT CPhysX_Manager::Initialize()
 		m_pScenes[i] = nullptr;
 	}
 
-
+	m_listAllStatics.clear();
 
 	return S_OK;
 }
