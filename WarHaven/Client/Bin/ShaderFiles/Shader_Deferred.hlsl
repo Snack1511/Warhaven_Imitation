@@ -1,4 +1,4 @@
-#define SHADOW_ON
+//#define SHADOW_ON
 
 matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 matrix		g_ProjMatrixInv, g_ViewMatrixInv, g_LightViewMatrix, g_LightVeiwProjMatrix;
@@ -223,6 +223,33 @@ float GGX(float3 N, float3 V, float3 L, float roughness, float F0) {
 	return /*dotNL */ D * F * vis;
 }
 
+//float3 BRDF_Specular(float3 n, float3 l, float3 v, float roughness, float3 cspec, float3 clight)
+//{
+//	float3 BRDFSpec;
+//
+//	float3 h = normalize(l + v);
+//	float dot_n_h = max(abs(dot(n, h)), 0.001);
+//	float dot_n_v = max(abs(dot(n, v)), 0.001);
+//	float dot_n_l = max(abs(dot(n, l)), 0.001);
+//	float dot_h_v = max(abs(dot(h, v)), 0.001); // dot_h_v == dot_h_l
+//
+//
+//	float g = 2.0 * dot_n_h / dot_h_v;
+//	float G = min(min(dot_n_v, dot_n_l) * g, 1.0);
+//
+//
+//	float sq_nh = dot_n_h * dot_n_h;
+//	float sq_nh_m = sq_nh * (roughness * roughness);
+//	float D = exp((sq_nh - 1.0) / sq_nh_m) / (sq_nh * sq_nh_m);
+//
+//
+//	float3 Fspec = cspec + (1.0 - cspec) * pow(1.0 - dot_h_v, 5.0);
+//
+//	BRDFSpec = Fspec * D * G / (dot_n_v * dot_n_l * 4.0);
+//
+//	return BRDFSpec ;
+//}
+
 PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 {
 	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
@@ -350,8 +377,8 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 				float fresnel = ((f0 + (1 - f0) * pow(1 - dot(view, halfway), 5)));
 
 				// Microfacet visibility (Smith's GGX)
-				float g1 = (4 * ndoth * dot(view, normal)) / dot(view, halfway);
-				float g2 = (4 * ndoth * dot(light, normal)) / dot(view, halfway);
+				float g1 = (2 * ndoth * dot(view, normal)) / dot(view, halfway);
+				float g2 = (2 * ndoth * dot(light, normal)) / dot(view, halfway);
 				float visibility = 1 / (g1 + g2 - 1 + 0.00001);
 
 				// Specular

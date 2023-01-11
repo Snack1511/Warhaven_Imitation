@@ -75,6 +75,7 @@ HRESULT CLevel_Test::Initialize()
 {
 	m_fDistance = 200.f;
 	m_vSunLook = _float4(-1.f, -1.f, -1.f);
+	m_bLensFlare = false;
 	return S_OK;
 }
 

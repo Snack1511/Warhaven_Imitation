@@ -29,11 +29,11 @@ return pInstance;\
 // Warrior, Engineer 는 지휘관 급에서 사용하기 때문에 만약 Define 을 주석건다면 PlayerInfo_Leader 에서 #else 나 #ifndef 로 처리해주세요
 
 #define WARRIOR_TH
-#define ARCHER_TH
-#define FIONA_TH
+//#define ARCHER_TH
+//#define FIONA_TH
 //#define PALADIN_TH
-#define ENGINEER_TH
-#define PRIEST_TH
+//#define ENGINEER_TH
+//#define PRIEST_TH
 //#define LANCER_TH
 //#define QANDA_TH
 
