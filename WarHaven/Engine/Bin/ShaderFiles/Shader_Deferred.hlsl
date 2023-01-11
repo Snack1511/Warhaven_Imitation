@@ -1,4 +1,5 @@
 #define SHADOW_ON
+#define MATH_PI 3.141592
 
 matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 matrix		g_ProjMatrixInv, g_ViewMatrixInv, g_LightViewMatrix, g_LightVeiwProjMatrix;
@@ -265,6 +266,66 @@ float VisibilitySmithJointGGX(float NdotV, float NdotL, float roughness)
 	return visibility * visibility;
 }
 
+float VisibilityTerm(float roughness, float ndotv, float ndotl)
+{
+	float a2 = roughness * roughness;
+	float G_V = ndotv + sqrt((ndotv - ndotv * a2) * ndotv + a2);
+	float G_L = ndotl + sqrt((ndotl - ndotl * a2) * ndotl + a2);
+	return rcp(G_V * G_L);
+}
+
+float DistributionTerm(float roughness, float ndoth)
+{
+	float r2 = roughness * roughness;
+	float d = (ndoth * r2 - ndoth) * ndoth + 1.0;
+	return r2 / (d * d * MATH_PI);
+}
+
+float3 FresnelTerm(float3 specularColor, float vdoth)
+{
+	float3 fresnel = specularColor + (1. - specularColor) * pow((1. - vdoth), 5.);
+	return fresnel;
+}
+
+
+void PBRShading(out float3 vShade, out float3 vSpecular, in float3 lightDir, float3 MRH, float3 pos, float3 normal, float3 viewDir, float3 refl)
+{
+	float metalness = MRH.r;
+	float roughness = MRH.g;
+
+	float3 lightColor = g_vLightDiffuse.xyz;
+
+	float3 baseColor = 1;
+	float3 diffuseColor = 1;
+	float3 specularColor = g_vLightSpecular.xyz;
+	float roughnessE = roughness * roughness;
+	float roughnessL = max(.01, roughnessE);
+
+
+	float3 diffuse = (0.);
+	float3 specular = (0.);
+
+	float3 halfVec = normalize(viewDir + lightDir);
+	float vdoth = saturate(dot(viewDir, halfVec));
+	float ndoth = saturate(dot(normal, halfVec));
+	float ndotv = saturate(dot(normal, viewDir));
+	float ndotl = saturate(dot(normal, lightDir));
+
+	diffuse += diffuseColor * lightColor * saturate(dot(normal, lightDir));
+
+	float3 lightF = FresnelTerm(specularColor, vdoth);
+	float lightD = DistributionTerm(roughnessL, ndoth);
+	float lightV = VisibilityTerm(roughnessL, ndotv, ndotl);
+
+	specular = specularColor * (lightF * lightD * lightV  / (4 * ndotl * ndotv));
+
+	//specular *= saturate(pow(ndotv, roughnessE) - 1.);
+
+	vShade = diffuse;
+	vSpecular = specular;
+}
+
+
 PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 {
 	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
@@ -320,38 +381,40 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
 				vector			vReflect = reflect(-normalize(vLightDir), vNormal);
 
-			
+				{
+					// Specular term
+					float3 R = normalize(vReflect.xyz);
+					float3 V = normalize(vLook.xyz);
+					float3 L = normalize(vLightDir.xyz);
+					float3 N = normalize(vNormal.xyz);
 
-				// Specular term
-				float3 R = normalize(vReflect.xyz);
-				float3 V = normalize(vLook.xyz);
-				float3 L = normalize(vLightDir.xyz);
-				float3 N = normalize(vNormal.xyz);
+					float3 H = normalize(V + L);
+					float NdotV = max(dot(N, V), 0);
+					float NdotL = max(dot(N, L), 0);
+					float NdotH = max(dot(N, H), 0);
 
-				float3 H = normalize(V + L);
-				float NdotV = max(dot(N, V), 0);
-				float NdotL = max(dot(N, L), 0);
-				float NdotH = max(dot(N, H), 0);
+					// Fresnel term
+					float F0 = 1 - metalness;
+					F0 = pow(F0, 5);
+					float fresnel = F0 + (1 - F0) * pow(1 - NdotV, 5);
 
-				// Fresnel term
-				float F0 = 1 - metalness;
-				F0 = pow(F0, 5);
-				float fresnel = F0 + (1 - F0) * pow(1 - NdotV, 5);
+					/*fShade = (1 - fresnel) * (1 - metalness);
+					Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
 
-				/*fShade = (1 - fresnel) * (1 - metalness);
-				Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
-
-				Out.vShade.a = 1.f;*/
-
-
-				float D = DistributionGGX(NdotH, roughness);
-				float Vis = VisibilitySmithJointGGX(NdotV, NdotL, roughness);
-				float specular = fresnel * D * Vis;
+					Out.vShade.a = 1.f;*/
 
 
+					float D = DistributionGGX(NdotH, roughness);
+					float Vis = VisibilitySmithJointGGX(NdotV, NdotL, roughness);
+					float specular = fresnel * D * Vis;
 
-				float3 specularColor = specular * (g_vLightSpecular * g_vMtrlSpecular);
-				Out.vSpecular.xyz = specularColor * fAtt;
+
+
+					float3 specularColor = specular * (g_vLightSpecular * g_vMtrlSpecular);
+					Out.vSpecular.xyz = specularColor * fAtt;
+				}
+
+				
 			}
 			else
 			{
@@ -385,8 +448,13 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	vector			vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 
+	float4 diffuse = vDiffuse;
 
-	Out.vColor = vDiffuse * vShade;
+	
+
+	Out.vColor = diffuse * vShade;
+
+	
 
 	/* 색 보정 */
 	//Out.vColor *= 2.2f;
@@ -403,7 +471,11 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 		vector vSpecColor;
 		vSpecColor = vSpecular;
 
+		
 		Out.vColor.xyz += vSpecColor.xyz;
+
+
+
 	}
 	
 #endif
@@ -414,7 +486,6 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	vector			vRimLightDesc = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
 	//if (vRimLightDesc.a > 0.1f)
 	Out.vColor.xyz += vRimLightDesc.xyz;
-
 
 	if (Out.vColor.a <= 0.f)
 	{

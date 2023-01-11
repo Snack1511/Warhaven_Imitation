@@ -675,6 +675,10 @@ PS_OUT PS_MAIN_HDR(PS_DOWNSCALE_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 	Out.vColor = g_ShaderTexture.Sample(DefaultSampler, In.vTexUV);
+	vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (vDepthDesc.y > 0.8f)
+		return Out;
 
 	if (!g_bHDR)
 		return Out;

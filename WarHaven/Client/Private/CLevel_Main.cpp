@@ -64,10 +64,7 @@ HRESULT CLevel_Main::Enter()
 	LIGHTDESC			LightDesc;
 
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = _float4(-999.f, -999.f, -999.f);
-	LightDesc.vPosition.x += 15.2f;
-	LightDesc.vPosition.y += 16.8f;
-	LightDesc.vPosition.z += -4.4f;
+	LightDesc.vPosition = _float4(-1000.8f, -996.54f, -1009.94f);
 	LightDesc.fRange = 100.f;
 	LightDesc.vDiffuse = _float4(0.3f, 0.3f, 0.3f, 1.f);
 	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);

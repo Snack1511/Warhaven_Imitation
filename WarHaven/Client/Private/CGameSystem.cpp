@@ -216,6 +216,13 @@ HRESULT CGameSystem::On_EnterTest()
 HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
 	/* Player */
+
+	if (FAILED(SetUp_DefaultLight_BootCamp()))
+	{
+		Call_MsgBox(L"Failed to SetUp_DefaultLight_BootCamp : CGameSystem");
+		return E_FAIL;
+	}
+
 	if (FAILED(On_ReadyPlayers_BootCamp(vecReadyObjects)))
 	{
 		Call_MsgBox(L"Failed to On_ReadyPlayers_BootCamp : CGameSystem");
@@ -240,11 +247,6 @@ HRESULT CGameSystem::On_ReadyBootCamp(vector<pair<CGameObject*, _uint>>& vecRead
 		return E_FAIL;
 	}
 
-	if (FAILED(SetUp_DefaultLight_BootCamp()))
-	{
-		Call_MsgBox(L"Failed to SetUp_DefaultLight_BootCamp : CGameSystem");
-		return E_FAIL;
-	}
 
 	return S_OK;
 }
@@ -1873,7 +1875,7 @@ HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(100.f, 200.f, 50.f, 1.f);
 	LightDesc.fRange = 9999.f;
-	LightDesc.vDiffuse = _float4(0.45f, 0.45f, 0.45f, 1.f);
+	LightDesc.vDiffuse = _float4(0.38f, 0.38f, 0.38f, 1.f);
 	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
@@ -1891,9 +1893,9 @@ HRESULT CGameSystem::SetUp_DefaultLight_Paden()
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(100.f, 300.f, 200.f, 1.f);
 	LightDesc.fRange = 9999.f;
-	LightDesc.vDiffuse = _float4(0.6f, 0.4f, 0.25f, 1.f);
+	LightDesc.vDiffuse = _float4(0.35f, 0.25f, 0.2f, 1.f);
 	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
-	LightDesc.vSpecular = _float4(0.7f, 0.6f, 0.6f, 1.f);
+	LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))
 		return E_FAIL;
@@ -1972,7 +1974,7 @@ HRESULT CGameSystem::SetUp_DefaultLight_Hwara()
 	LightDesc.eType = tagLightDesc::TYPE_POINT;
 	LightDesc.vPosition = _float4(-100.f, 200.f, -100.f, 1.f);
 	LightDesc.fRange = 9999.f;
-	LightDesc.vDiffuse = _float4(0.35f, 0.35f, 0.35f, 1.f);
+	LightDesc.vDiffuse = _float4(0.25f, 0.25f, 0.25f, 1.f);
 	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
 	LightDesc.vSpecular = _float4(0.8f, 0.8f, 0.8f, 1.f);
 
