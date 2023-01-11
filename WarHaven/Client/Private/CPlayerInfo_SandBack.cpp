@@ -38,16 +38,20 @@ HRESULT CPlayerInfo_SandBack::Initialize()
 	m_tPlayerInfo.wstrName += to_wstring(g_SandBackCnt++);
 
 
-#define ON_WARRIOR
-//#define ON_PALADIN
-//#define ON_ARCHER
-//#define ON_PRIEST
+
 
 
 	if(g_SandBackCnt < 3 && g_SandBackCnt % 2 == 0)
 		m_vecPrefClassType.push_back(ENGINEER);
 	else
 	{
+
+
+//#define ON_WARRIOR
+#define ON_ENGINEER
+//#define ON_PALADIN
+//#define ON_ARCHER
+//#define ON_PRIEST
 
 #ifdef ON_PALADIN
 		m_vecPrefClassType.push_back(PALADIN);
@@ -64,6 +68,10 @@ HRESULT CPlayerInfo_SandBack::Initialize()
 #ifdef ON_WARRIOR
 		m_vecPrefClassType.push_back(WARRIOR);
 #endif // ON_WARRIOR
+
+#ifdef ON_ENGINEER
+		m_vecPrefClassType.push_back(ENGINEER);
+#endif // ON_ENGINEER
 
 	}
 

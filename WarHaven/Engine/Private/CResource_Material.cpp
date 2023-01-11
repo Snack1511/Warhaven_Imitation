@@ -125,6 +125,12 @@ _float4 CResource_Material::Check_FileName(string strName)
 		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Cane0001_A00_A00_B.dds";
 
 	}
+	else if (strName == "MI_EyeOcclusion_Qanda")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_Eyes_Qanda.dds";
+		
+	}
+	
 
 	//ML_Cane0001_A00
 
@@ -161,6 +167,10 @@ _float4 CResource_Material::Check_FileName(string strName)
 	}
 
 
+	else if (strName == "MI_Engineer0001_Eye_A00")
+	{
+	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_EyeIris_DarkBrown_B.dds";
+	}
 	
 
 

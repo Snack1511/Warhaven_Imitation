@@ -48,7 +48,7 @@ HRESULT CHit_GuardHit_Valkyrie::Initialize()
     // Idle -> 상태(Jump, RUn 등등) -> L, R 비교 -> 상태에서 할 수 있는 거 비교(Attack -> Move) -> 반복
 
     //enum 에 Idle 에서 마인드맵해서 갈 수 있는 State 를 지정해준다.
-    m_iStateChangeKeyFrame = 20;
+    m_iStateChangeKeyFrame = 5;
 
   
     m_vecAdjState.push_back(STATE_IDLE_VALKYRIE_R);

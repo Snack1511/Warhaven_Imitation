@@ -80,6 +80,9 @@ STATE_TYPE CHit_Fly_Priest::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	if (pAnimator->Get_CurAnimFrame() > m_tHitInfo.iLandKeyFrame)
 		return STATE_JUMPFALL_PRIEST;
 
+    if (!pOwner->Is_Air())
+        return STATE_JUMP_LAND_PRIEST;
+
     return __super::Tick(pOwner, pAnimator);
 }
 

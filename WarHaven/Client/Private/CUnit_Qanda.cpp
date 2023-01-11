@@ -73,6 +73,10 @@ void CUnit_Qanda::On_Die()
 	_float4 vBonePos = matWeapon.XMLoad().r[3];
 	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
 
+	m_pOwnerPlayer->Get_CurrentUnit()->On_Die();
+
+	Chnage_UnitCalss();
+
 
 	CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_QANDA", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
 	vPos.y += 1.f;

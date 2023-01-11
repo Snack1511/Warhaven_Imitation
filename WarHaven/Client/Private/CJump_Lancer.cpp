@@ -85,6 +85,8 @@ void CJump_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 
 
     DoMove(STATE_DIRECTION_N, pOwner);
+    Follow_MouseLook(pOwner);
+    pOwner->Set_DirAsLook();
 
     pOwner->Get_PhysicsCom()->Set_MaxSpeed(m_fMaxSpeed);
     pOwner->Get_PhysicsCom()->Set_SpeedasMax();

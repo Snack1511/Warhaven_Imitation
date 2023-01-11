@@ -65,6 +65,9 @@ void CJump_Lancer_Fall::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 STATE_TYPE CJump_Lancer_Fall::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    Follow_MouseLook(pOwner);
+    pOwner->Set_DirAsLook();
+
     //// ¶¥¿¡ ´ê¾ÒÀ» ½Ã 
     //if (!pOwner->Get_PhysicsCom()->Get_Physics().bAir)
     //    return STATE_JUMP_LAND_LANCER;
