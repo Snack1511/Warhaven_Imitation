@@ -60,12 +60,8 @@ void CUI_UnitHUD::OnDisable()
 	for (int i = 0; i < Target_End; ++i)
 		m_pTargetUI[i]->SetActive(false);
 
-	Disable_RevivalUI();
-
 	for (int i = 0; i < UI_End; ++i)
-	{
 		DISABLE_GAMEOBJECT(m_pUnitUI[i]);
-	}
 }
 
 void CUI_UnitHUD::My_Tick()
@@ -384,6 +380,9 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 
 void CUI_UnitHUD::Tick_UnitHP()
 {
+	if (m_pOwner->IsMainPlayer())
+		return;
+
 	if (m_pUnitUI[UI_Hp]->Is_Valid())
 	{
 		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;

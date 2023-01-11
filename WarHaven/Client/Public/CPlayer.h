@@ -375,5 +375,6 @@ public:
 private:
 	_float4 m_vTargetPos;
 
+	_bool m_bIsInFrustum = false;
 };
 END
