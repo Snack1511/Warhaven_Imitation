@@ -155,7 +155,6 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 
 	CPlayer* pUserPlayer = nullptr;
 
-
 	//pUserPlayer->Get_DefaultReserveStateIndex
 	pUserPlayer = SetUp_Player(HASHCODE(CPlayerInfo_Main));
 	pUserPlayer->Set_Postion(vPlayerPos);
@@ -165,7 +164,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 1; ++i)
+	for (_uint i = 0; i < 0; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
@@ -1875,7 +1874,7 @@ HRESULT CGameSystem::SetUp_DefaultLight_BootCamp()
 	LightDesc.vPosition = _float4(100.f, 200.f, 50.f, 1.f);
 	LightDesc.fRange = 9999.f;
 	LightDesc.vDiffuse = _float4(0.45f, 0.45f, 0.45f, 1.f);
-	LightDesc.vAmbient = _float4(0.15f, 0.15f, 0.15f, 1.f);
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
 	LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
 	if (FAILED(GAMEINSTANCE->Add_Light(LightDesc)))

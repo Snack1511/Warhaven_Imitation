@@ -223,6 +223,33 @@ float GGX(float3 N, float3 V, float3 L, float roughness, float F0) {
 	return /*dotNL */ D * F * vis;
 }
 
+float3 BRDF_Specular(float3 n, float3 l, float3 v, float roughness, float3 cspec)
+{
+	float3 BRDFSpec;
+
+	float3 h = normalize(l + v);
+	float dot_n_h = max(abs(dot(n, h)), 0.001);
+	float dot_n_v = max(abs(dot(n, v)), 0.001);
+	float dot_n_l = max(abs(dot(n, l)), 0.001);
+	float dot_h_v = max(abs(dot(h, v)), 0.001); // dot_h_v == dot_h_l
+
+
+	float g = 2.0 * dot_n_h / dot_h_v;
+	float G = min(min(dot_n_v, dot_n_l) * g, 1.0);
+
+
+	float sq_nh = dot_n_h * dot_n_h;
+	float sq_nh_m = sq_nh * (roughness * roughness);
+	float D = exp((sq_nh - 1.0) / sq_nh_m) / (sq_nh * sq_nh_m);
+
+
+	float3 Fspec = cspec + (1.0 - cspec) * pow(1.0 - dot_h_v, 5.0);
+
+	BRDFSpec = Fspec * D * G / (dot_n_v * dot_n_l * 4.0);
+
+	return BRDFSpec;
+}
+
 PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 {
 	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
@@ -255,40 +282,52 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 		/* PBR */
 
 		// Calculate the diffuse color
-		//if (g_bPBR)
-		//{
-		//	fAtt = 1.f;
+		if (g_bPBR)
+		{
+			vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
 
-		//	vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
-		//	float metalness = vPBRDesc.x;
-		//	float roughness = vPBRDesc.y;
-		//	float hardness = vPBRDesc.b;
+			if (vPBRDesc.a < 0.1f)
+			{
+				float		fShade = saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)));
 
-		//	float3 N = normalize(vNormal.xyz);
-		//	float3 L = normalize(vLightDir.xyz);
-		//	float3 V = normalize(vLook.xyz);
-		//	float3 H = normalize(L + V);
-		//	float NdotL = max(dot(N, L), 0.0);
-		//	float NdotV = max(dot(N, V), 0.0);
-		//	float NdotH = max(dot(N, H), 0.0);
-		//	float LdotH = max(dot(L, H), 0.0);
-		//	float VdotH = max(dot(V, H), 0.0);
-		//	float roughness2 = roughness * roughness;
-		//	float a = roughness2;
-		//	float a2 = a * a;
-		//	float ndoth = NdotH;
-		//	float ndoth2 = ndoth * ndoth;
-		//	float num = a2;
-		//	float den = (ndoth2 * (a2 - 1) + 1);
-		//	float D = num / (3.14159265358979323846 * den * den);
-		//	float F = metalness;
-		//	float k = metalness;
-		//	float G = min(1.0, min(2.0 * NdotL * NdotV / LdotH, 2.0 * NdotL * NdotV / VdotH));
-		//	float3 diffuse = (g_vLightDiffuse.xyz * (1 - F) * (1 - k)) * (NdotL * G / (NdotV + 0.0001));
-		//	Out.vShade.xyz = diffuse * fAtt + ((g_vLightAmbient * g_vMtrlAmbient) * fAtt);
-		//	Out.vShade.a = 1.f;
-		//}
-		//else
+				Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
+
+				Out.vShade.a = 1.f;
+			}
+			else
+			{
+				float metalness = vPBRDesc.x;
+				float roughness = vPBRDesc.y;
+				float hardness = vPBRDesc.b;
+
+				float3 N = normalize(vNormal.xyz);
+				float3 L = normalize(vLightDir.xyz);
+				float3 V = normalize(vLook.xyz);
+				float3 H = normalize(L + V);
+				float NdotL = max(dot(N, L), 0.0);
+				float NdotV = max(dot(N, V), 0.0);
+				float NdotH = max(dot(N, H), 0.0);
+				float LdotH = max(dot(L, H), 0.0);
+				float VdotH = max(dot(V, H), 0.0);
+				float roughness2 = roughness * roughness;
+				float a = roughness2;
+				float a2 = a * a;
+				float ndoth = NdotH;
+				float ndoth2 = ndoth * ndoth;
+				float num = a2;
+				float den = (ndoth2 * (a2 - 1) + 1);
+				float D = num / (3.14159265358979323846 * den * den);
+				float F = metalness;
+				float k = metalness;
+				float G = min(1.0, min(2.0 * NdotL * NdotV / LdotH, 2.0 * NdotL * NdotV / VdotH));
+				float3 diffuse = (g_vLightDiffuse.xyz * (1 - F) * (1 - k)) * (NdotL * G / (NdotV + 0.0001));
+				Out.vShade.xyz = diffuse * fAtt + ((g_vLightAmbient * g_vMtrlAmbient) * fAtt);
+				Out.vShade.a = 1.f;
+			}
+
+		
+		}
+		else
 		{
 			float		fShade = saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)));
 
@@ -335,7 +374,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 				// Microfacet fresnel reflectance (Schlick's Approximation)
 				float f0 = 0.02;
 				//float fresnel = f0 + (1 - f0) * pow(1 - dot(view, halfway), 5);
-				float fresnel = saturate((f0 + (1 - f0) * pow(1 - dot(view, halfway), 5)) * hardness);
+				float fresnel = ((f0 + (1 - f0) * pow(1 - dot(view, halfway), 5)));
 
 				// Microfacet visibility (Smith's GGX)
 				float g1 = (2 * ndoth * dot(view, normal)) / dot(view, halfway);
