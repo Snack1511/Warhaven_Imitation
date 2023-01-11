@@ -3676,6 +3676,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info">
       <UniqueIdentifier>{71372463-90c0-4ea4-a618-8c09be897d4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\02. Unit\01. Weapon\Projectile\06. LancerNeedle\NewFilter1">
+      <UniqueIdentifier>{3356f16e-71d1-4f9d-89e0-0b61154934d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

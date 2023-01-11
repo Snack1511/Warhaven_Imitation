@@ -159,11 +159,11 @@ void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
 			break;
 		}
 
-		if (m_pNiddleMesh)
+		/*if (m_pNiddleMesh)
 		{
 			static_cast<CEffect*>(m_pNiddleMesh)->Set_FadeOut();
 			m_pNiddleMesh = nullptr;
-		}
+		}*/
 
 		break;
 

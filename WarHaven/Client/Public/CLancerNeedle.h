@@ -89,7 +89,7 @@ private:
 
 
 	_float m_fAngleStartValue = 0.f;
-	_float m_fAngleTargetValue = 260.f;
+	_float m_fAngleTargetValue = 80.f;
 
 	_float4 m_vLerpPos = ZERO_VECTOR;
 

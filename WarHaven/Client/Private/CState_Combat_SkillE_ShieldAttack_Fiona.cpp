@@ -74,7 +74,7 @@ void CState_Combat_SkillE_ShieldAttack_Fiona::Enter(CUnit* pOwner, CAnimator* pA
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 1.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((150.f / 255.f), (0.f / 255.f), (0.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(80, 0, 0, 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_WEAPON_L;
 	tColorDesc.iStartKeyFrame = 2;

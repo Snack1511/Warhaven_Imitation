@@ -558,6 +558,8 @@ HRESULT CUnit_Qanda::Start()
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
+	m_pModelCom->Set_RimLightFlag(RGB(50, 30, 0));
+
 	m_TransformParticles.clear();
 
 	return S_OK;

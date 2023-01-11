@@ -178,7 +178,7 @@ void CPriest_WindAttack::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE e
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 1.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((230.f / 255.f), (150.f / 255.f), (40.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(50, 30, 0, 0.1f);
 	tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
 	tColorDesc.iStartKeyFrame = 2;
 	tColorDesc.iEndKeyFrame = 45; // 프레임 맞춰놓음

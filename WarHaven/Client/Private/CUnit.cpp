@@ -326,7 +326,7 @@ void CUnit::On_Respawn()
 	tColorDesc.fFadeInTime = 0.3f;
 	tColorDesc.fFadeOutStartTime = 1.f;
 	tColorDesc.fFadeOutTime = 3.f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(50, 30, 0, 0.1f);
 	tColorDesc.iMeshPartType = MODEL_PART_BODY;
 	GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 	tColorDesc.iMeshPartType = MODEL_PART_HEAD;

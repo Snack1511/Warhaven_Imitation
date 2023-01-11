@@ -78,6 +78,9 @@ HRESULT CCamera_Manager::SetUp_ShaderResources(_bool Ortho)
 
 			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(9, "g_vCamPosition", &vCamPos, sizeof(_float4))))
 				return E_FAIL;
+
+			if (FAILED(CShader_Manager::Get_Instance()->Set_RawValue(12, "g_vCamPosition", &vCamPos, sizeof(_float4))))
+				return E_FAIL;
 		}
 		
 	}

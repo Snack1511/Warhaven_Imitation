@@ -24,6 +24,7 @@
 #include "CCollider_Sphere.h"
 #include "CRectEffects.h"
 #include "CUtility_Transform.h"
+#include "Easing_Utillity.h"
 
 
 
@@ -283,6 +284,7 @@ void CEffect::Set_ShaderResource(CShader* pShader, const char* pConstantName)
 	pShader->Set_RawValue("g_fColorPower", &m_fColorPower, sizeof(_float));
 	pShader->Set_RawValue("g_vPlusColor", &m_vPlusColor, sizeof(_float4));
 	pShader->Set_RawValue("g_fDissolvePower", &m_fDissolvePower, sizeof(_float));
+	pShader->Set_RawValue("g_fRimlightPower", &m_fRimlightPower, sizeof(_float));
 }
 
 void CEffect::Set_ColliderOn(_float fRadius, COL_GROUP_CLIENT eColType)
@@ -462,6 +464,17 @@ void CEffect::My_Tick()
 	{
 		On_Target();
 	}
+
+	if (0 < m_fRimlightPower)
+	{
+		m_fRimlightPower -= 2.f * fDT(0);
+
+	}
+	else
+	{
+		m_fRimlightPower = 0.f;
+	}
+
 }
 
 void CEffect::My_LateTick()
@@ -517,6 +530,7 @@ void CEffect::OnDisable()
 	m_fCurUVPlusY = 0.f;
 	m_fFadeTimeAcc = 0.f;
 	m_fTurnAngle = 0.f;
+	m_fRimlightPower = 2.f;
 
 	if (m_eDisableType == FADE)
 		m_fAlpha = 0.f;
