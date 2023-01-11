@@ -223,32 +223,32 @@ float GGX(float3 N, float3 V, float3 L, float roughness, float F0) {
 	return /*dotNL */ D * F * vis;
 }
 
-float3 BRDF_Specular(float3 n, float3 l, float3 v, float roughness, float3 cspec)
-{
-	float3 BRDFSpec;
-
-	float3 h = normalize(l + v);
-	float dot_n_h = max(abs(dot(n, h)), 0.001);
-	float dot_n_v = max(abs(dot(n, v)), 0.001);
-	float dot_n_l = max(abs(dot(n, l)), 0.001);
-	float dot_h_v = max(abs(dot(h, v)), 0.001); // dot_h_v == dot_h_l
-
-
-	float g = 2.0 * dot_n_h / dot_h_v;
-	float G = min(min(dot_n_v, dot_n_l) * g, 1.0);
-
-
-	float sq_nh = dot_n_h * dot_n_h;
-	float sq_nh_m = sq_nh * (roughness * roughness);
-	float D = exp((sq_nh - 1.0) / sq_nh_m) / (sq_nh * sq_nh_m);
-
-
-	float3 Fspec = cspec + (1.0 - cspec) * pow(1.0 - dot_h_v, 5.0);
-
-	BRDFSpec = Fspec * D * G / (dot_n_v * dot_n_l * 4.0);
-
-	return BRDFSpec;
-}
+//float3 BRDF_Specular(float3 n, float3 l, float3 v, float roughness, float3 cspec, float3 clight)
+//{
+//	float3 BRDFSpec;
+//
+//	float3 h = normalize(l + v);
+//	float dot_n_h = max(abs(dot(n, h)), 0.001);
+//	float dot_n_v = max(abs(dot(n, v)), 0.001);
+//	float dot_n_l = max(abs(dot(n, l)), 0.001);
+//	float dot_h_v = max(abs(dot(h, v)), 0.001); // dot_h_v == dot_h_l
+//
+//
+//	float g = 2.0 * dot_n_h / dot_h_v;
+//	float G = min(min(dot_n_v, dot_n_l) * g, 1.0);
+//
+//
+//	float sq_nh = dot_n_h * dot_n_h;
+//	float sq_nh_m = sq_nh * (roughness * roughness);
+//	float D = exp((sq_nh - 1.0) / sq_nh_m) / (sq_nh * sq_nh_m);
+//
+//
+//	float3 Fspec = cspec + (1.0 - cspec) * pow(1.0 - dot_h_v, 5.0);
+//
+//	BRDFSpec = Fspec * D * G / (dot_n_v * dot_n_l * 4.0);
+//
+//	return BRDFSpec ;
+//}
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 {
