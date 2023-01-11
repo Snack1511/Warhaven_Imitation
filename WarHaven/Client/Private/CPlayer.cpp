@@ -1249,22 +1249,8 @@ void CPlayer::My_LateTick()
 		{
 			if (m_bAbleRevival)
 				m_pUnitHUD->Enable_RevivalUI();
-		}
+		}                           
 	}
-
-	/*if (!IsMainPlayer())
-	{
-		CTransform* pCamTransform = GAMEINSTANCE->Get_CurCam()->Get_Transform();
-		_float4 vCamPos = pCamTransform->Get_World(WORLD_POS);
-		_float4 vUnitPos = m_pTransform->Get_World(WORLD_POS);
-		_float4 vDir = vUnitPos - vCamPos;
-		_float4 vCamLook = pCamTransform->Get_World(WORLD_LOOK);
-		_float fResult = vDir.Dot(vCamLook);
-		_float cosfResult = cosf(fResult);
-
-		cout << "float : " << fResult << endl;
-		cout << "ciosf : " << cosfResult << endl;
-	}*/
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{

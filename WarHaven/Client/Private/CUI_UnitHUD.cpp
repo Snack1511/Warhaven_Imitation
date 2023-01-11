@@ -236,7 +236,9 @@ void CUI_UnitHUD::Enable_RevivalUI()
 
 	pRevivalUI->Set_ReviveUnitTransform(m_pOwner->Get_Transform());
 	pRevivalUI->Set_ClassIcon(m_pOwner);
-	pRevivalUI->SetActive(true);
+
+	if (!pRevivalUI->Is_Valid())
+		pRevivalUI->SetActive(true);
 }
 
 void CUI_UnitHUD::Disable_RevivalUI()
