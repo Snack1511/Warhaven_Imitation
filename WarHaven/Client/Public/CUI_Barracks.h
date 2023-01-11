@@ -65,6 +65,7 @@ private:
 	_bool m_bIsSkinWindow = false;
 
 	static _bool m_bIsUnlock_RabbitHat;
+	static _bool m_bIsUnlock_EpicWarriorClothes;
 
 private:
 	enum ClassPort { Port_BG, Port_Char, Port_Class, Port_Highlight, Port_Outline, Port_Underline, Port_End };
