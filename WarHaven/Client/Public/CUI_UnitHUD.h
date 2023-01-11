@@ -94,7 +94,7 @@ private:
 	void Init_UnitNameText();
 
 private:
-
+	void Tick_UnitHP();
 	void Tick_TargetUI();
 };
 

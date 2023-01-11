@@ -198,20 +198,9 @@ void CUI_UnitHUD::My_Tick()
 			m_pUnitNameText->Set_Color(vColorAlpha);
 		}
 	}
-			
-	if (m_pUnitUI[UI_Hp]->Is_Valid())
-	{
-		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
-		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
 
-		m_fEnableHpTime += fDT(0);
-		if (m_fEnableHpTime > m_fDisableHpTime)
-		{
-			m_fEnableHpTime = 0.f;
-			SetActive_UnitHP(false);
-		}
-	}
 
+	Tick_UnitHP();
 	Tick_TargetUI();
 }
 
@@ -363,24 +352,24 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 	{
 		if (!m_pUnitUI[UI_Hp]->Is_Valid())
 		{
-			// if (m_pOwner->Get_Team())
-			// {
-			// 	if (m_pOwner->Get_Team()->IsMainPlayerTeam())
-			// 	{
-			// 		if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
-			// 		{
-			// 			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorLightGreen);
-			// 		}
-			// 		else
-			// 		{
-			// 			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorBlue);
-			// 		}
-			// 	}
-			// 	else
-			// 	{
-			// 		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
-			// 	}
-			// }
+			if (m_pOwner->Get_Team())
+			{
+				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+				{
+					if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+					{
+						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorLightGreen);
+					}
+					else
+					{
+						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorBlue);
+					}
+				}
+				else
+				{
+					dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
+				}
+			}
 
 			ENABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
 		}
@@ -390,6 +379,22 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 		if (m_pUnitUI[UI_Hp]->Is_Valid())
 		{
 			DISABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
+		}
+	}
+}
+
+void CUI_UnitHUD::Tick_UnitHP()
+{
+	if (m_pUnitUI[UI_Hp]->Is_Valid())
+	{
+		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
+		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
+
+		m_fEnableHpTime += fDT(0);
+		if (m_fEnableHpTime > m_fDisableHpTime)
+		{
+			m_fEnableHpTime = 0.f;
+			SetActive_UnitHP(false);
 		}
 	}
 }
