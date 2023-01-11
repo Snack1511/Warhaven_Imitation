@@ -669,6 +669,24 @@ PS_OUT PS_DISSOLVE(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_HWARAGAUGE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+   
+    // In.vTexUV.x *= 10.f;
+    vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+        
+    Out.vColor = vNoise;
+    Out.vColor.a += vNoise.r;
+    Out.vColor.a = vNormal.r;
+    
+    return Out;
+}
+
 PS_OUT PS_UIColor_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -1408,6 +1426,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_DISSOLVE();
+    }
+
+    pass UI_HwaraGauge
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_HWARAGAUGE();
     }
 
     pass ALPHA

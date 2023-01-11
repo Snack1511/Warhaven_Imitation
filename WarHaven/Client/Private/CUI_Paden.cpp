@@ -19,6 +19,7 @@ HRESULT CUI_Paden::Initialize_Prototype()
 
 	Create_ScoreNum();
 	Create_ScoreGauge();
+	Create_HwaraGauge();
 
 	Create_PointUI();
 	Init_PointUI();
@@ -33,6 +34,8 @@ HRESULT CUI_Paden::Initialize_Prototype()
 HRESULT CUI_Paden::Start()
 {
 	__super::Start();
+
+	Init_HwaraGauge();
 
 	Bind_Shader();
 
@@ -182,22 +185,33 @@ void CUI_Paden::Set_TargetTransform(CTransform* pTargetTransform)
 
 void CUI_Paden::SetActive_ScoreGauge(_bool value)
 {
-	for (int i = 0; i < Gauge_End; ++i)
+	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_PADEN)
 	{
-		for (int j = 0; j < Team_End; ++j)
+		for (int i = 0; i < Gauge_End; ++i)
 		{
-			m_pArrScoreGauge[i][j]->SetActive(value);
+			for (int j = 0; j < Team_End; ++j)
+			{
+				m_pArrScoreGauge[i][j]->SetActive(value);
+			}
 		}
+	}
+	else 
+	{
+		for (int i = 0; i < Team_End; ++i)
+			m_pHwaraGauge[i]->SetActive(value);
 	}
 }
 
 void CUI_Paden::SetActive_ScoreNum(_bool value)
 {
-	for (int i = 0; i < Team_End; ++i)
+	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_PADEN)
 	{
-		for (int j = 0; j < Num_End; ++j)
+		for (int i = 0; i < Team_End; ++i)
 		{
-			m_pArrScoreNum[i][j]->SetActive(value);
+			for (int j = 0; j < Num_End; ++j)
+			{
+				m_pArrScoreNum[i][j]->SetActive(value);
+			}
 		}
 	}
 }
@@ -386,6 +400,9 @@ void CUI_Paden::My_Tick()
 {
 	__super::My_Tick();
 
+	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_TEST)
+		return;
+
 	Update_InGameTimer();
 	Update_Score();
 }
@@ -393,6 +410,9 @@ void CUI_Paden::My_Tick()
 void CUI_Paden::My_LateTick()
 {
 	__super::My_LateTick();
+
+	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_TEST)
+		return;
 
 	Set_PointTextPosY();
 	Update_TargetPointPos();
@@ -918,11 +938,30 @@ void CUI_Paden::Create_HwaraGauge()
 	{
 		m_pHwaraGauge[i] = CUI_Object::Create();
 
-		switch (i)
-		{
-		default:
-			break;
-		}
+		GET_COMPONENT_FROM(m_pHwaraGauge[i], CTexture)->Remove_Texture(0);
+		Read_Texture(m_pHwaraGauge[i], "/Paden/TopGauge", "Bar");
+
+		m_pHwaraGauge[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Paden/T_ArrowStroke.dds"));
+		m_pHwaraGauge[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Paden/TopGauge/T_Pattern_53.dds"));
+
+		m_pHwaraGauge[i]->Set_Sort(0.5f);
+	}
+}
+
+void CUI_Paden::Init_HwaraGauge()
+{
+	for (int i = 0; i < Team_End; ++i)
+	{
+		GET_COMPONENT_FROM(m_pHwaraGauge[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HwaraGauge);
+
+		m_pHwaraGauge[i]->Set_TextureIndex(i);
+		m_pHwaraGauge[i]->Set_Scale(350.f, 30.f);
+
+		_float fPosX = -350.f + (i * 700.f);
+		m_pHwaraGauge[i]->Set_Pos(fPosX, 250.f);
+
+		CREATE_GAMEOBJECT(m_pHwaraGauge[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pHwaraGauge[i]);
 	}
 }
 
