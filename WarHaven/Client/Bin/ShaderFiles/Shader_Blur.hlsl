@@ -666,9 +666,9 @@ float4x4 saturationMatrix(float saturation)
 		0, 0, 0, 1);
 }
 
-float brightness = 0.15;
-float contrast = 1.2;
-float saturation = 1.5;
+float brightness = 0.37;
+float contrast = 3.;
+float saturation = 2.;
 bool g_bHDR = true;
 
 PS_OUT PS_MAIN_HDR(PS_DOWNSCALE_IN In)

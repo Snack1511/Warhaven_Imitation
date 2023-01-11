@@ -180,6 +180,7 @@ PS_OUT PS_MAIN_SHADOWING(PS_IN In)
 		fLit = 0.3f;
 		//float3 px = float3(In.vT)
 		//fLit = shadowPCF(vLightViewSpacePos.xyz);
+		Out.vColor.a = 0.f;
 	}
 
 

@@ -279,75 +279,13 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 		float			fAtt = saturate((g_fRange - fDistance) / g_fRange);
 		vector			vLook = normalize(vWorldPos - g_vCamPosition);
 
-		/* PBR */
-
-		// Calculate the diffuse color
-		//if (g_bPBR)
-		//{
-		//	vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
-
-		//	if (vPBRDesc.a < 0.1f)
-		//	{
-		//		float		fShade = saturate(saturate(dot(normalize(vLightDir), vNormal)));
-
-		//		Out.vShade = (g_vLightDiffuse * fShade * fAtt) + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
-		//		Out.vShade.a = 1.f;
-		//	}
-		//	else
-		//	{
-		//		float metalness = vPBRDesc.x;
-		//		if (metalness < 0.1f)
-		//		{
-		//			float		fShade = saturate(saturate(dot(normalize(vLightDir), vNormal)));
-
-		//			Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
-
-		//			Out.vShade.a = 1.f;
-		//		}
-		//		else
-		//		{
-		//			float roughness = vPBRDesc.y;
-		//			float hardness = vPBRDesc.b;
-
-		//			vector			vReflect = reflect(normalize(vLightDir), vNormal);
-
-		//			// Normalize vectors
-		//			float3 normal = normalize(vNormal.xyz);
-		//			float3 viewDir = normalize(vLook.xyz);
-		//			float3 reflDir = normalize(vReflect.xyz);
-
-		//			float3 L = normalize(vLightDir.xyz);
-
-		//			// Calculate diffuse term using the Oren-Nayar reflectance model
-		//			float NdotL = max(dot(normal, reflDir), 0);
-		//			float s = dot(viewDir, reflDir);
-		//			float t = dot(viewDir, normal);
-		//			float maxST = max(s, t);
-		//			float minST = min(s, t);
-		//			float a = 1 - metalness;
-		//			float b = (a * a) + roughness * roughness;
-		//			float diffuse = saturate(NdotL * (a + (1 - a) * (minST / maxST)) / (3.14159265 * b));
-		//			Out.vShade.xyz = g_vLightDiffuse * diffuse * fAtt + ((g_vLightAmbient * g_vMtrlAmbient) * fAtt);
-		//		}
-		//		
-		//	}
-
-		//
-		//}
-		//else
-		{
-			float		fShade = saturate(saturate(dot(normalize(vLightDir), vNormal)));
-
-			Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
-
-			Out.vShade.a = 1.f;
-		}
 		
+		float		fShade = saturate(saturate(dot(normalize(vLightDir), vNormal)));
 
+		Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
 
-
-
-
+		Out.vShade.a = 1.f;
+		
 		
 
 		//if (vFlagDesc.r > 0.99f)
@@ -355,49 +293,25 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 			if (g_bPBR)
 			{
 				vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
+
+				float metalness = vPBRDesc.r;
+				float fRoughness = vPBRDesc.g;
+
 				if (vPBRDesc.a < 0.1f)
 				{
 					Out.vSpecular = 0;
 					return Out;
 				}
 
-				float metalness = vPBRDesc.x;
-				float roughness = vPBRDesc.y;
-				float hardness = vPBRDesc.b;
+				vector			vReflect = reflect(normalize(vLightDir), vNormal);
+				vector			vLook = normalize(vWorldPos - g_vCamPosition);
 
-				
-
-				float power = 1.0 / max(roughness * 0.4, 0.01);
-				//vec3 spec = light_color * phong(light,ray,normal,power);
-
-				// Specular
-				float3 normal = vNormal.xyz;
-				float3 light = normalize(vLightDir).xyz;
-				float3 cameraToVertex = vLook.xyz;
-				//float3 view = g_vCamLook.xyz;
-				float3 view = cameraToVertex;
-				float3 halfway = normalize(light + view);
-
-				// Microfacet normal distribution function (Beckmann Distribution)
-				float ndoth = dot(normal, halfway);
-				float alpha = roughness * roughness;
-				float d = exp((ndoth * ndoth - 1) / (alpha * ndoth * ndoth)) / (3.14159265358979323846 * alpha * ndoth * ndoth * ndoth * ndoth);
-
-				// Microfacet fresnel reflectance (Schlick's Approximation)
-				float f0 = 0.02;
-				//float fresnel = f0 + (1 - f0) * pow(1 - dot(view, halfway), 5);
-				float fresnel = ((f0 + (1 - f0) * pow(1 - dot(view, halfway), 5)));
-
-				// Microfacet visibility (Smith's GGX)
-				float g1 = (2 * ndoth * dot(view, normal)) / dot(view, halfway);
-				float g2 = (2 * ndoth * dot(light, normal)) / dot(view, halfway);
-				float visibility = 1 / (g1 + g2 - 1 + 0.00001);
-
-				// Specular
-				float3 specular = fresnel * d * visibility * (g_vLightSpecular * g_vMtrlSpecular).xyz;
+				Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect), vLook)), 30.f) * fAtt;
 
 				// Final color
-				Out.vSpecular.xyz = specular * fAtt;
+				float a = metalness * (1.f - fRoughness);
+
+				Out.vSpecular *= a;
 
 			}
 			else
@@ -406,13 +320,11 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 				vector			vLook = normalize(vWorldPos - g_vCamPosition);
 
 				Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect), vLook)), 30.f) * fAtt;
-
 			}
 
 		}
 	}
 
-	//Out.vShade.xyz = 0.f;
 	Out.vSpecular.a = 0.f;
 
 	return Out;
@@ -438,14 +350,11 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	Out.vColor = vDiffuse * vShade;
 
 	/* 색 보정 */
-	Out.vColor *= 2.2f;
+	//Out.vColor *= 2.2f;
 
 	//Shadow
 #ifdef SHADOW_ON
-	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor *= vShadowDesc;
-
-	if (vShadowDesc.x > 0.4f)
+	//if (vShadowDesc.x > 0.4f)
 	{
 		/* Specular */
 		vector vSpecColor;
@@ -453,6 +362,11 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 
 		Out.vColor.xyz += vSpecColor.xyz;
 	}
+
+	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vColor.xyz *= vShadowDesc.xyz;
+
+	
 #endif
 
 
