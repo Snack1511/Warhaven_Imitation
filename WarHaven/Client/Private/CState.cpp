@@ -125,7 +125,7 @@ void CState::Init_CommonState_Player()
 	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
 	m_vecAdjState.push_back(STATE_CHANGE_PLAYER);
 	m_vecAdjState.push_back(STATE_CANNON_PLAYER);
-	m_vecAdjState.push_back(STATE_GLIDING);
+	//m_vecAdjState.push_back(STATE_GLIDING);
 	//m_vecAdjState.push_back(STATE_TRANSFORM);
 }
 
@@ -133,7 +133,7 @@ void CState::Init_CommonState_Hero_Player()
 {
 	m_vecAdjState.push_back(STATE_REVIVE_PLAYER);
 	m_vecAdjState.push_back(STATE_CANNON_PLAYER);
-	m_vecAdjState.push_back(STATE_GLIDING);
+	//m_vecAdjState.push_back(STATE_GLIDING);
 	//m_vecAdjState.push_back(STATE_TRANSFORM);
 }
 

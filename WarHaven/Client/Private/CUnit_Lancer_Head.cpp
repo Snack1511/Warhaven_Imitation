@@ -151,6 +151,11 @@ void CUnit_Lancer_Head::My_LateTick()
 		m_pTransform->Make_WorldMatrix();
 
 	}
+	else
+	{
+		// 메인메뉴 유닛의 머리 위치.
+
+	}
 }
 
 void CUnit_Lancer_Head::OnEnable()

@@ -45,34 +45,11 @@ HRESULT CPlayerInfo_SandBack::Initialize()
 		m_vecPrefClassType.push_back(ENGINEER);
 	else
 	{
-
-
-//#define ON_WARRIOR
-#define ON_ENGINEER
-//#define ON_PALADIN
-//#define ON_ARCHER
-//#define ON_PRIEST
-
-#ifdef ON_PALADIN
-		m_vecPrefClassType.push_back(PALADIN);
-#endif // ON_PALADIN
-
-#ifdef ON_ARCHER
+		//m_vecPrefClassType.push_back(PALADIN);
 		m_vecPrefClassType.push_back(ARCHER);
-#endif // ON_ARCHER
-
-#ifdef ON_PRIEST
-		m_vecPrefClassType.push_back(PRIEST);
-#endif // ON_PRIEST
-
-#ifdef ON_WARRIOR
-		m_vecPrefClassType.push_back(WARRIOR);
-#endif // ON_WARRIOR
-
-#ifdef ON_ENGINEER
-		m_vecPrefClassType.push_back(ENGINEER);
-#endif // ON_ENGINEER
-
+		//m_vecPrefClassType.push_back(PRIEST);
+		//m_vecPrefClassType.push_back(WARRIOR);
+		//m_vecPrefClassType.push_back(ENGINEER);
 	}
 
 	//m_iUnitType = ((_uint)CUnit::UNIT_TYPE::eSandbag);

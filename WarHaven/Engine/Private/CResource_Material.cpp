@@ -277,14 +277,22 @@ _float4 CResource_Material::Check_FileName(string strName)
 	{
 		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
 	}
-	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Engineer0001_EyeOcc_A00")
+
+	//else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Engineer0001_EyeOcc_A00")
+	//{
+	//	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	//}
+	//else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Engineer0000_Eyeocc_A00")
+	//{
+	//	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	//}
+
+
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Priest0001_Eye_Occlusion_A00")
 	{
-		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
+	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/T_Eyes_Priest.dds";
 	}
-	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Engineer0000_Eyeocc_A00")
-	{
-		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
-	}
+
 	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_EyeOcclusion_Fiona")
 	{
 	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
@@ -297,9 +305,14 @@ _float4 CResource_Material::Check_FileName(string strName)
 	{
 	m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/eye_sclera_right_clr.dds";
 	}
+
 	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Engineer0001_EyeOcc_A00")
 	{
-		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/AnimModelTextures/T_EyeIrIis_Brown_B.dds";
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/T_Eyes_Priest.dds";
+	}
+	else if (m_tMatDesc.TexturePaths[1] == "../bin/resources/textures/AnimModelTextures/MI_Engineer0000_Eyeocc_A00")
+	{
+		m_tMatDesc.TexturePaths[1] = "../bin/resources/textures/ModelTextures/T_Eyes_Priest.dds";
 	}
 
 	

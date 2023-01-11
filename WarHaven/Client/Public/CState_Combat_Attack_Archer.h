@@ -49,7 +49,7 @@ protected:
 private:
 	_bool				m_bHitEffect = false;
 
-
+	CHierarchyNode* m_pCoreBone = nullptr;
 
 private:
 	_bool		m_bAfterEffect = false;

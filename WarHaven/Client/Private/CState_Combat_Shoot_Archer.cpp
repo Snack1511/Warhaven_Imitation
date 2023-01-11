@@ -90,7 +90,12 @@ void CState_Combat_Shoot_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 	pOwner->Get_Status().fRunSpeed = pOwner->Get_Status().fStoreSpeed * 0.7f;
 	pOwner->Get_Status().fWalkSpeed = pOwner->Get_Status().fBackStepSpeed * 0.7f;
 
+	_float4 vRight = pOwner->Get_Transform()->Get_World(WORLD_RIGHT);
+
+	//pOwner->Get_Transform()->Set_Right(pOwner->Get_FollowCamLook());
+	//pOwner->Get_Transform()->Make_WorldMatrix();
 	static_cast<CUnit_Archer*>(pOwner)->Shoot_Arrow();
+	//pOwner->Get_Transform()->Set_Right(vRight);
 
 	//_float4x4 matOffset;
 	//matOffset.Identity();
@@ -162,8 +167,52 @@ void CState_Combat_Shoot_Archer::On_KeyFrameEvent(CUnit * pOwner, CAnimator * pA
 	{
 
 	case 1:
-		static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
+
+		Choice_Arrow(pOwner);
 		m_bAttackTrigger = true;
+
+		break;
+
+	default:
+		break;
+	}
+
+}
+
+void CState_Combat_Shoot_Archer::Choice_Arrow(CUnit* pOwner)
+{
+	switch (m_iRand)
+	{
+	case 0:
+		static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
+		break;
+
+	case 1:
+
+		if (pOwner->Can_Use(CUnit::SKILL2))
+		{
+			static_cast<CUnit_Archer*>(pOwner)->Create_PurpleArrow();
+			pOwner->On_Use(CUnit::SKILL2);
+		}
+			
+
+		else
+			static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
+
+		break;
+
+	case 2:
+
+		if (pOwner->Can_Use(CUnit::SKILL3))
+		{
+			static_cast<CUnit_Archer*>(pOwner)->Create_SnipeArrow();
+			pOwner->On_Use(CUnit::SKILL3);
+		}
+			
+		else
+			static_cast<CUnit_Archer*>(pOwner)->Create_DefaultArrow();
+
+
 		break;
 
 	default:

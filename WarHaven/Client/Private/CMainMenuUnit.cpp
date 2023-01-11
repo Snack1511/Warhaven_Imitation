@@ -320,40 +320,7 @@ void CMainMenuUnit::My_Tick()
 
 	}
 
-	//static _float4	vTest = ZERO_VECTOR;
 
-	//if (KEY(X, HOLD))
-	//	vTest.x += fDT(0);
-
-	//if (KEY(Y, HOLD))
-	//	vTest.y += fDT(0);
-
-
-	//if (KEY(Z, HOLD))
-	//	vTest.z += fDT(0);
-
-	if (m_pMyLancerHead)
-	{
-		CTransform* HeadTransform = m_pMyLancerHead->Get_Transform();
-		// -998.799988
-		_float4 vMyPos = m_pTransform->Get_World(WORLD_POS);
-		//vMyPos.x += 1000.f + vTest.x;
-		//vMyPos.y += 1002.4f + vTest.y;
-		//vMyPos.z += 1000.f + vTest.z;
-
-		//vMyPos.x += 1000.f ;
-		vMyPos.y += 1.2f;
-		//vMyPos.z += 1000.f ;
-
-
-
-
-
-		HeadTransform->Set_World(WORLD_POS, vMyPos);
-		//HeadTransform->Set_World(WORLD_POS, vMyPos);
-		//HeadTransform->Get_Transform().matMyWorld = myMat;
-		HeadTransform->Make_WorldMatrix();
-	}
 	
 }
 
