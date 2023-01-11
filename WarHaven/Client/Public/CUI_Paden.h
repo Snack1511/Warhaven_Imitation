@@ -26,6 +26,8 @@ public:
 	virtual void Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstName);
 
+	virtual void Set_Shader_HwaraArrow_Blue(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_HwaraArrow_Red(CShader* pShader, const char* pConstName);
 public:
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
@@ -162,8 +164,12 @@ private:
 	_float m_fPointUIPosY = 260.f;
 
 private:	// Hwara
+	enum HwaraGauge { Hwara_BG, Hwara_Arrow, Hwara_Glow, Hwara_End };
+	CUI_Object* m_pHwaraGauge[Hwara_End];
+	CUI_Object* m_pArrHwaraGauge[Team_End][Hwara_End];
 
-	CUI_Object* m_pHwaraGauge[Team_End];
+	_float m_fUVTexY[Team_End];
+
 
 private:
 	void Create_HwaraGauge();
