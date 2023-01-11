@@ -355,16 +355,17 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 			if (g_bPBR)
 			{
 				vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
-
+				if (vPBRDesc.a < 0.1f)
+				{
+					Out.vSpecular = 0;
+					return Out;
+				}
 
 				float metalness = vPBRDesc.x;
 				float roughness = vPBRDesc.y;
 				float hardness = vPBRDesc.b;
 
-				if (vPBRDesc.a < 0.1f)
-				{
-					roughness = 1;
-				}
+				
 
 				float power = 1.0 / max(roughness * 0.4, 0.01);
 				//vec3 spec = light_color * phong(light,ray,normal,power);
@@ -448,10 +449,7 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	{
 		/* Specular */
 		vector vSpecColor;
-		if (g_bPBR)
-			vSpecColor = (vSpecular * metalness + (1 - metalness) * vSpecular * Out.vColor);
-		else
-			vSpecColor = vSpecular;
+		vSpecColor = vSpecular;
 
 		Out.vColor.xyz += vSpecColor.xyz;
 	}

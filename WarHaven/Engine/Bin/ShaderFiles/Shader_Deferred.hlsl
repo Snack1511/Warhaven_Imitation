@@ -358,7 +358,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 				if (vPBRDesc.a < 0.1f)
 				{
 					Out.vSpecular = 0;
-					return;
+					return Out;
 				}
 
 				float metalness = vPBRDesc.x;
@@ -449,10 +449,7 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 	{
 		/* Specular */
 		vector vSpecColor;
-		if (g_bPBR)
-			vSpecColor = (vSpecular * metalness + (1 - metalness) * vSpecular * Out.vColor);
-		else
-			vSpecColor = vSpecular;
+		vSpecColor = vSpecular;
 
 		Out.vColor.xyz += vSpecColor.xyz;
 	}
