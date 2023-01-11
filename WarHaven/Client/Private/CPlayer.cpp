@@ -1479,6 +1479,8 @@ void CPlayer::Update_DieDelay()
 	if (m_bDieDelay)
 	{
 		m_fDieDelayAcc += fDT(0);
+
+
 		if (m_fDieDelayAcc >= m_fDieCoolTime)
 		{
 			On_RealDie();
@@ -1496,8 +1498,10 @@ void CPlayer::Check_AbleRevival()
 	if (m_bAbleRevival)
 	{
 		m_fRevivalAcc += fDT(0);
+		m_pUnitHUD->Set_RevivalGauge(m_fRevivalAcc, m_fMaxRevivalTime);
 		if (m_fRevivalAcc >= m_fMaxRevivalTime)
 		{
+
 			/*if (m_bIsLeaderPlayer)
 				Set_NewPath(CGameSystem::Get_Instance()->Clone_RandomStartPath(m_pAIController, m_pMyTeam->Get_TeamType()));
 			else

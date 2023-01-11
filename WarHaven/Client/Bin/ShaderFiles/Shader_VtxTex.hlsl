@@ -435,7 +435,7 @@ PS_OUT PS_HEROGAUGE(PS_IN In)
     In.vTexUV.x -= g_fValue;
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     
-    Out.vColor.a *= vNoise.r;
+   //  Out.vColor.a *= vNoise.r;
     
     if (In.vTexUV.y < g_fHeroGaugeRatio)
         discard;
@@ -665,6 +665,20 @@ PS_OUT PS_DISSOLVE(PS_IN In)
     
     if (vColor.a >= g_fValue - 0.1f)
         Out.vColor.rgb = 1.f;
+    
+    return Out;
+}
+
+PS_OUT PS_HWARA_ARROW(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+    
+    In.vTexUV.x *= g_bAppear+g_fUVPlusY;
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);   
+    
+    Out.vColor = vColor;
+    vColor.a = g_fAlpha;
     
     return Out;
 }
@@ -1408,6 +1422,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_DISSOLVE();
+    }
+
+    pass UI_HwaraArrow
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_HWARA_ARROW();
     }
 
     pass ALPHA

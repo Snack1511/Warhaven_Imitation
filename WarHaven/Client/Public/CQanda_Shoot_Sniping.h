@@ -35,9 +35,14 @@ private:
 private:
 	void Make_Meteo(CUnit* pOwner);
 
+	void Enable_TargetUI();
+	void Disable_TargetUI();
+
 private:
 	list<CGameObject*>	m_SnipingTarget;
 	list<CGameObject*>	m_Mateors;
+
+	_float m_fSearchTargetTime = 0.f;
 };
 
 END

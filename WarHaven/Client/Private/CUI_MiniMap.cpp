@@ -77,19 +77,7 @@ void CUI_MiniMap::SetActive_MiniMap(_bool value)
 void CUI_MiniMap::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime)
 {
 	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
-
-	switch (iPointIdx)
-	{
-	case 0:
-		m_fConquestRatio[Point_A] = fConquestRatio;
-		break;
-	case 1:
-		m_fConquestRatio[Point_R] = fConquestRatio;
-		break;
-	case 2:
-		m_fConquestRatio[Point_C] = fConquestRatio;
-		break;
-	}
+	m_fConquestRatio[iPointIdx] = fConquestRatio;
 }
 
 void CUI_MiniMap::Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx)
@@ -221,7 +209,7 @@ void CUI_MiniMap::My_LateTick()
 	{
 		for (int i = 0; i < 8; ++i)
 		{
-			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 0.7f;
+			_float4 vPos = m_pPlayerTransform[i]->Get_World(WORLD_POS) * 0.8f;
 			vPos.x += m_fHwaraOffSetX;
 			vPos.z += m_fHwaraOffSetY;
 			m_pPlayerIcon[i]->Set_Pos(-vPos.x, vPos.z);

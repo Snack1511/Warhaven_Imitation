@@ -159,6 +159,7 @@ void CCannon::Control_Cannon(CPlayer* pPlayer)
 	}
 
 	CUser::Get_Instance()->SetActive_CannonUI(true);
+	CUser::Get_Instance()->SetActive_CannonCrosshair(true);
 
 	ENABLE_GAMEOBJECT(m_pUI_Trail);
 }
@@ -166,6 +167,7 @@ void CCannon::Control_Cannon(CPlayer* pPlayer)
 void CCannon::Exit_Cannon()
 {
 	CUser::Get_Instance()->SetActive_CannonUI(false);
+	CUser::Get_Instance()->SetActive_CannonCrosshair(false);
 
 	if (m_pCurOwnerPlayer->IsMainPlayer())
 	{

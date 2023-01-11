@@ -47,6 +47,9 @@ void CUI_Cannon::OnDisable()
 
 	for (int i = 0; i < 2; ++i)
 		mPArrCannonUI[i]->SetActive(false);
+
+	for (int i = 0; i < Cool_End; ++i)
+		m_pCoolTime[i]->SetActive(false);
 }
 
 void CUI_Cannon::Set_Shader_CoolTime(CShader* pShader, const char* pConstName)
@@ -96,8 +99,7 @@ void CUI_Cannon::Create_CoolTime()
 	{
 		m_pCoolTime[i] = CUI_Object::Create();
 
-		m_pCoolTime[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Charging_Gauge.png"));
-		m_pCoolTime[i]->Set_RotationZ(180.f);
+		m_pCoolTime[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Cannon/T_128HalfCircleOutline4px.png"));
 	}
 
 	m_pCoolTime[Cool_BG]->Set_Sort(0.5f);

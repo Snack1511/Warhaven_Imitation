@@ -11,6 +11,7 @@
 #include "CSword_Effect.h"
 #include "CColorController.h"
 #include "CProjectile.h"
+#include "CUI_UnitHUD.h"
 
 
 
@@ -70,7 +71,7 @@ HRESULT CQanda_Shoot_Sniping::Initialize()
 	return S_OK;
 }
 
-void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
+void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData)
 {
 	m_SnipingTarget = pOwner->Get_MultipleFrustumObject();
 
@@ -85,11 +86,14 @@ void CQanda_Shoot_Sniping::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 
 	Physics_Setting(pOwner->Get_Status().fRunSpeed, pOwner, false);
 
+	Enable_TargetUI();
+
 	__super::Enter(pOwner, pAnimator, ePrevType, pData);
 }
 
 STATE_TYPE CQanda_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+
 	if (pAnimator->Is_CurAnimFinished())
 		return STATE_IDLE_QANDA;
 
@@ -98,7 +102,7 @@ STATE_TYPE CQanda_Shoot_Sniping::Tick(CUnit* pOwner, CAnimator* pAnimator)
 
 	_uint iDirection = Get_Direction();
 
-	if(iDirection != STATE_DIRECTION_END)
+	if (iDirection != STATE_DIRECTION_END)
 		DoMove(iDirection, pOwner);
 
 	return __super::Tick(pOwner, pAnimator);
@@ -119,6 +123,7 @@ void CQanda_Shoot_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 	if (!m_Mateors.empty())
 		m_Mateors.clear();
 
+	Disable_TargetUI();
 
 	pOwner->Get_PhysicsCom()->Get_PhysicsDetail().fFrictionRatio = 1.f;
 }
@@ -136,8 +141,6 @@ STATE_TYPE CQanda_Shoot_Sniping::Check_Condition(CUnit* pOwner, CAnimator* pAnim
 
 void CQanda_Shoot_Sniping::On_KeyFrameEvent(CUnit* pOwner, CAnimator* pAnimator, const KEYFRAME_EVENT& tKeyFrameEvent, _uint iSequence)
 {
-	
-
 	switch (iSequence)
 	{
 	case 0:
@@ -159,9 +162,33 @@ void CQanda_Shoot_Sniping::Make_Meteo(CUnit* pOwner)
 	{
 		if (static_cast<CUnit*>(elem)->Is_Valid())
 		{
-			CGameObject*  pProjectile = static_cast<CUnit_Qanda*>(pOwner)->Create_Meteor();
+			CGameObject* pProjectile = static_cast<CUnit_Qanda*>(pOwner)->Create_Meteor();
 			static_cast<CProjectile*>(pProjectile)->Set_TargetUnit(static_cast<CUnit*>(elem));
 			m_Mateors.push_back(pProjectile);
 		}
+	}
+}
+
+void CQanda_Shoot_Sniping::Enable_TargetUI()
+{
+	if (m_SnipingTarget.empty())
+		return;
+
+	auto iter = m_SnipingTarget.begin();
+	for (int i = 0; i < m_SnipingTarget.size(); ++i)
+	{
+		CUnit* m_pTargetUnit = static_cast<CUnit*>(*iter);
+		m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(i, true);
+
+		iter++;
+	}	
+}
+
+void CQanda_Shoot_Sniping::Disable_TargetUI()
+{
+	for (auto& iter : m_SnipingTarget)
+	{
+		CUnit* m_pTargetUnit = static_cast<CUnit*>(iter);
+		m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(0, false);
 	}
 }

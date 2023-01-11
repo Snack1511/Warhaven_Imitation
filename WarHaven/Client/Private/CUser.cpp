@@ -25,6 +25,7 @@
 #include "CCell.h"
 
 #include "CCamera_Free.h"
+#include "CPlayerInfo_Main.h"
 
 #include "CUI_HUD.h"
 #include "CUI_Portrait.h"
@@ -33,6 +34,8 @@
 #include "CUI_Skill.h"
 #include "CUI_CrossHair.h"
 
+
+#include "CMainMenuPlayer.h"
 #include "CBloodOverlay.h"
 #include "CUI_Damage.h"
 #include "CUI_Training.h"
@@ -59,6 +62,7 @@
 
 #include "CGameSystem.h"
 #include "CUI_Result.h"
+#include "CUI_Info.h"
 
 IMPLEMENT_SINGLETON(CUser);
 
@@ -442,6 +446,16 @@ _bool CUser::Get_SelectTargetPoint()
 	return false;
 }
 
+void CUser::Set_MainMenuUnit(_uint iUnitIdx)
+{
+	m_pMainMenuPlayer->Set_CurClassType((CLASS_TYPE)iUnitIdx);
+}
+
+void CUser::Change_ModelParts(_uint iClassType, MODEL_PART_TYPE eModelPartType)
+{
+	m_pMainMenuPlayer->Change_ModelParts((CLASS_TYPE)iClassType, eModelPartType);
+}
+
 void CUser::On_EnterLevel()
 {
 	m_eLoadLevel = CLoading_Manager::Get_Instance()->Get_LoadLevel();
@@ -460,6 +474,14 @@ void CUser::On_EnterLevel()
 
 			CREATE_GAMEOBJECT(m_pBarracks, GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pBarracks);
+		}
+
+		if (!m_pMainMenuPlayer)
+		{
+			m_pMainMenuPlayer = CMainMenuPlayer::Create(CGameSystem::Get_Instance()->Find_PlayerInfo(HASHCODE(CPlayerInfo_Main)));
+
+			CREATE_GAMEOBJECT(m_pMainMenuPlayer, GROUP_UI);
+			// DISABLE_GAMEOBJECT(m_pMainMenuPlayer);
 		}
 	}
 
@@ -550,6 +572,14 @@ void CUser::On_EnterStageLevel()
 
 	if (m_eLoadLevel >= LEVEL_PADEN)
 	{
+		if (!m_pInfoUI)
+		{
+			m_pInfoUI = CUI_Info::Create();
+
+			CREATE_GAMEOBJECT(m_pInfoUI, GROUP_UI);
+			DISABLE_GAMEOBJECT(m_pInfoUI);
+		}
+
 		if (!m_pUI_Oper)
 		{
 			m_pUI_Oper = CUI_Oper::Create();
@@ -607,6 +637,9 @@ void CUser::On_ExitStageLevel()
 {
 	m_pBloodOverlay = nullptr;
 
+	if (m_pMainMenuPlayer)
+		m_pMainMenuPlayer = nullptr;
+
 	if (m_pUI_HUD)
 		m_pUI_HUD = nullptr;
 
@@ -654,6 +687,9 @@ void CUser::On_ExitStageLevel()
 	if (m_pBarracks)
 		m_pBarracks = nullptr;
 
+	if (m_pInfoUI)
+		m_pInfoUI = nullptr;
+
 	m_pPlayer = nullptr;
 	m_pFire = nullptr;
 	m_pUI_Popup = nullptr;
@@ -687,6 +723,16 @@ void CUser::Set_SkillCoolTime(_uint iSkillIdx, _float fSkillCoolTime, _float fSk
 		return;
 
 	m_pUI_Skill->Set_SkillCoolTime(iSkillIdx, fSkillCoolTime, fSkillMaxCoolTime);
+}
+
+void CUser::SetActive_HUD_RevivalUI(_bool value)
+{
+	m_pUI_HUD->SetActive_RevivalUI(value);
+}
+
+void CUser::SetActive_CannonCrosshair(_bool value)
+{
+	m_pUI_Crosshair->SetActive_CannonCrosshair(value);
 }
 
 void CUser::SetActive_Cursor(_bool value)
@@ -780,7 +826,8 @@ void CUser::Set_ArcherPoint(_bool value)
 
 void CUser::SetActive_InteractUI(_bool value)
 {
-	m_pInteractUI->SetActive(value);
+	if (m_pInteractUI->Is_Valid() == !value)
+		m_pInteractUI->SetActive(value);
 }
 
 void CUser::Set_InteractKey(_uint iKeyIndex)
@@ -901,12 +948,24 @@ void CUser::SetActive_SkinPopup(_bool value)
 
 void CUser::Set_BreezeTime(_float fCurTime, _float fMaxTime)
 {
-	static_cast<CUI_Crosshair*>(Get_HUD(0))->Set_BreezeTime(fCurTime, fMaxTime);
+	m_pUI_Crosshair->Set_BreezeTime(fCurTime, fMaxTime);
 }
 
 void CUser::SetActive_Gauge(_bool value)
 {
-	static_cast<CUI_Crosshair*>(Get_HUD(0))->SetActive_Gauge(value);
+	m_pUI_Crosshair->SetActive_Gauge(value);
+}
+
+void CUser::Disable_LancerGauge()
+{
+	if (m_pUI_Crosshair)
+		m_pUI_Crosshair->Disable_LacnerGauge();
+}
+
+void CUser::Set_LancerGauge(_uint iGaugeIdx, _float fCurTime, _float fMaxTime)
+{
+	if (m_pUI_Crosshair)
+		m_pUI_Crosshair->Set_LancerGauge(iGaugeIdx, fCurTime, fMaxTime);
 }
 
 void CUser::Set_TargetInfo(CPlayerInfo* pTargetInfo)
@@ -967,4 +1026,11 @@ void CUser::SetActive_MiniMap(_bool value)
 	if (m_pMiniMap)
 		m_pMiniMap->SetActive_MiniMap(value);
 }
+
+void CUser::SetActive_InfoUI(_bool value)
+{
+	if (m_pInfoUI)
+		m_pInfoUI->SetActive(value);
+}
+
 

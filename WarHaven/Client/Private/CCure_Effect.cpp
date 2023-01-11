@@ -203,6 +203,7 @@ void CCure_Effect::OnDisable()
 			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
 		}
 		m_Particle.clear();
+
 		static_cast<CUnit*>(m_pOther)->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 	}
 

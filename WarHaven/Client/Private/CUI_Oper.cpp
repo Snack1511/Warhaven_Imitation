@@ -746,6 +746,7 @@ void CUI_Oper::Progress_Oper()
 
 				CUser::Get_Instance()->Set_FixCursor(true);
 				CUser::Get_Instance()->SetActive_Cursor(false);
+
 			}
 		}
 	}
@@ -2089,7 +2090,27 @@ void CUI_Oper::Create_ConquestBlur()
 
 void CUI_Oper::Init_ConquestBlur()
 {
-	m_pArrConquestBlur[0]->Set_PosY(-4.f);
-	m_pArrConquestBlur[1]->Set_PosY(-195.f);
-	m_pArrConquestBlur[2]->Set_PosY(220.f);
+	switch (m_eLoadLevel)
+	{
+	case Client::LEVEL_PADEN:
+
+		for (int i = 0; i < 3; ++i)
+			m_pArrConquestBlur[i]->Set_PosX(0);
+
+		m_pArrConquestBlur[0]->Set_PosY(-4.f);
+		m_pArrConquestBlur[1]->Set_PosY(-195.f);
+		m_pArrConquestBlur[2]->Set_PosY(220.f);
+
+		break;
+	case Client::LEVEL_HWARA:
+
+		for (int i = 0; i < 3; ++i)
+			m_pArrConquestBlur[i]->Set_PosX(23.f);
+
+		m_pArrConquestBlur[0]->Set_PosY(-22.f);
+		m_pArrConquestBlur[1]->Set_PosY(155.f);
+
+		break;
+	}
+
 }

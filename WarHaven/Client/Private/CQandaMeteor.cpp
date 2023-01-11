@@ -11,6 +11,7 @@
 #include "Transform.h"
 
 #include "CUnit_Qanda.h"
+#include "CUI_UnitHUD.h"
 
 CQandaMeteor::CQandaMeteor()
 {
@@ -60,8 +61,8 @@ HRESULT CQandaMeteor::Start()
 
 HRESULT CQandaMeteor::Initialize_Prototype()
 {
-    //if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx")))
-    //    return E_FAIL;
+	//if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/Crow/SKEL_Crow_A00_15.fbx")))
+	//    return E_FAIL;
 
 	if (FAILED(SetUp_Projectile(L"../bin/resources/meshes/weapons/ball/CannonBall.fbx")))
 		return E_FAIL;
@@ -86,7 +87,7 @@ HRESULT CQandaMeteor::Initialize_Prototype()
 	m_fMaxSpeed = 30.f;
 
 
-    return CProjectile::Initialize_Prototype();
+	return CProjectile::Initialize_Prototype();
 }
 
 void CQandaMeteor::My_Tick()
@@ -107,7 +108,7 @@ void CQandaMeteor::My_Tick()
 	if (m_eCurPhase == eSTICK)
 		DISABLE_GAMEOBJECT(this);
 
-	
+
 
 	//if (!m_Shoot)
 	//{
@@ -134,7 +135,7 @@ void CQandaMeteor::OnDisable()
 
 	if (m_bCollect)
 		static_cast<CUnit_Qanda*>(m_pOwnerUnit)->Collect_QandaProjectile(m_hcCode, this);
-	
+
 	if (!m_EffectTest.empty())
 	{
 		for (auto& elem : m_EffectTest)
@@ -146,6 +147,9 @@ void CQandaMeteor::OnDisable()
 
 	CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Meteo_Boom", m_pTransform->Get_World(WORLD_POS),
 		GAMEINSTANCE->Get_CurCam()->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS | MATRIX_NOSCALE));
+
+	if (m_pTargetUnit)
+		m_pTargetUnit->Get_OwnerHUD()->SetActive_TargetUI(0, false);
 
 	__super::OnDisable();
 }

@@ -20,8 +20,15 @@ public:
 public:
 	virtual void Set_Shader_Gauge(CShader* pShader, const char* pConstName);
 
+	virtual void Set_Shader_LancerGauge0(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_LancerGauge1(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_LancerGauge2(CShader* pShader, const char* pConstName);
+	virtual void Set_Shader_LancerGauge3(CShader* pShader, const char* pConstName);
+
 public:
 	void Set_Crosshair(_uint iClass);
+
+	void SetActive_CannonCrosshair(_bool value);
 
 	void SetActive_Crosshair(_bool value);
 	void SetActive_ArrowUI(_bool value);
@@ -31,6 +38,8 @@ public:
 
 	void Set_ArcherPoint(_bool value);
 
+	void Set_LancerGauge(_uint iGaugeIdx, _float fCurTime, _float fMaxTime);
+	void Disable_LacnerGauge();
 	void Set_BreezeTime(_float fCurTime, _float fMaxTime);
 	void SetActive_Gauge(_bool value);
 
@@ -79,9 +88,9 @@ private:
 	enum GaugeUI { Gauge_BG, Gauge_Bar, Gauge_End };
 	CUI_Object* m_pGaugeUI[Gauge_End];
 
-	_float m_fCurBreezeTime = 0.f;
-	_float m_fMaxBreezeTime = 5.f;
 	_float m_fGaugeRatio = 0.f;
+
+	_float m_fLancerRatio[4];
 
 	_bool m_bIsBreeze = false;
 

@@ -57,9 +57,9 @@ HRESULT CLevel_Main::Enter()
 	CUser::Get_Instance()->On_EnterLevel();
 
 
-	CMainMenuPlayer* pMain = CMainMenuPlayer::Create(CUser::Get_Instance()->Get_MainPlayerInfo());
-	pMain->Initialize();
-	Ready_GameObject(pMain, GROUP_PLAYER);
+	// CMainMenuPlayer* pMain = CMainMenuPlayer::Create(CUser::Get_Instance()->Get_MainPlayerInfo());
+	// pMain->Initialize();
+	// Ready_GameObject(pMain, GROUP_PLAYER);
 
 	LIGHTDESC			LightDesc;
 

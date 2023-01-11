@@ -58,12 +58,12 @@ void CUI_ScoreBoard::Set_Shader_Guage_PointA(CShader* pShader, const char* pCons
 
 void CUI_ScoreBoard::Set_Shader_Guage_PointR(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_R], sizeof(_float));
 }
 
 void CUI_ScoreBoard::Set_Shader_Guage_PointC(CShader* pShader, const char* pConstName)
 {
-	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_A], sizeof(_float));
+	pShader->Set_RawValue("g_fValue", &m_fConquestRatio[Point_C], sizeof(_float));
 }
 
 void CUI_ScoreBoard::Get_ScoreInfo(CPlayer* pPlayer)
@@ -602,19 +602,7 @@ void CUI_ScoreBoard::Sort_ScoreInfo()
 void CUI_ScoreBoard::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _float fMaxConquestTime)
 {
 	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
-
-	switch (iPointIdx)
-	{
-	case 0:
-		m_fConquestRatio[Point_A] = fConquestRatio;
-		break;
-	case 1:
-		m_fConquestRatio[Point_R] = fConquestRatio;
-		break;
-	case 2:
-		m_fConquestRatio[Point_C] = fConquestRatio;
-		break;
-	}
+	m_fConquestRatio[iPointIdx] = fConquestRatio;
 }
 
 void CUI_ScoreBoard::Set_GaugeColor(_bool IsMainTeam, _uint iPointIdx)
@@ -635,9 +623,7 @@ void CUI_ScoreBoard::Set_PointColor(_bool IsMainTeam, _uint iPoinIdx)
 	vColor = IsMainTeam ? _float4(0.f, 0.8f, 1.f, 1.f) : _float4(1.f, 0.2f, 0.f, 1.f);
 
 	for (int i = 0; i < PU_End; ++i)
-	{
 		m_pArrPointUI[iPoinIdx][i]->Set_Color(vColor);
-	}
 }
 
 void CUI_ScoreBoard::Set_Player(CPlayer* pPlayer)

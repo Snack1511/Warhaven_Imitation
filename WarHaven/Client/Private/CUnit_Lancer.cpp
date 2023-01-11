@@ -513,6 +513,7 @@ void CUnit_Lancer::My_LateTick()
 		{
 			if (m_iNeedleNums < eNeedle_Max)
 			{
+				CUser::Get_Instance()->Set_LancerGauge(m_iNeedleNums, m_fTimeAcc, m_fNeedleCreateTime);
 				m_fTimeAcc += fDT(0);
 
 				if (m_fTimeAcc > m_fNeedleCreateTime)
@@ -520,10 +521,11 @@ void CUnit_Lancer::My_LateTick()
 					m_pNeedle[m_iNeedleNums]->Enable_Needle(true);
 					++m_iNeedleNums;
 					m_fTimeAcc = 0.f;
+
 				}
-
-
 			}
+
+			
 
 		}
 	}

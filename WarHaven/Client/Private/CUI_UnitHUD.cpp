@@ -18,6 +18,7 @@
 HRESULT CUI_UnitHUD::Initialize_Prototype()
 {
 	Create_UnitHUD();
+	Create_TargetUI();
 
 	return S_OK;
 }
@@ -55,6 +56,11 @@ void CUI_UnitHUD::OnDisable()
 	__super::OnDisable();
 
 	DISABLE_GAMEOBJECT(m_pUnitNameText);
+
+	for (int i = 0; i < Target_End; ++i)
+		m_pTargetUI[i]->SetActive(false);
+
+	Disable_RevivalUI();
 
 	for (int i = 0; i < UI_End; ++i)
 	{
@@ -199,11 +205,46 @@ void CUI_UnitHUD::My_Tick()
 		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
 
 		SetActive_UnitHP(true);
+
+		if (m_tStatus.fHP <= 0.f)
+		{
+			for (int i = 0; i < Target_End; ++i)
+			{
+				if (m_pTargetUI[i]->Is_Valid())
+					m_pTargetUI[i]->SetActive(false);
+			}
+		}
 	}
 	/*else
 	{
 		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->SetActive_HealBlur(false);
 	}*/
+
+
+	if (m_bEnableTargetUI)
+	{
+		m_fEanbleTargetUITime += fDT(0);
+		if (m_fEanbleTargetUITime > m_fMaxEanbleTargetUITime)
+		{
+			m_fEanbleTargetUITime = 0.f;
+			m_bEnableTargetUI = false;
+
+			m_pTargetUI[Target_Point]->SetActive(true);
+			m_pTargetUI[Target_Point]->Lerp_Scale(70.f, 30.f, 0.3f);
+		}
+	}
+
+	if (m_pTargetUI[Target_Point]->Is_Valid())
+	{
+		m_fTargetRotValue += fDT(0) * 10.f;
+		m_pTargetUI[Target_Point]->Set_RotationZ(m_fTargetRotValue);
+
+		if (!m_pTargetUI[Target_Blink]->Is_Valid())
+		{
+			Enable_Fade(m_pTargetUI[Target_Blink], 0.3f);
+			m_pTargetUI[Target_Blink]->Lerp_Scale(1.f, 30.f, 0.7f);
+		}
+	}
 }
 
 void CUI_UnitHUD::My_LateTick()
@@ -231,6 +272,11 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 		m_pUnitNameText->Set_PosY(300.f);
 
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_ProjPos(pTransform);
+
+
+	vNewPos.y -= 30.f;
+	for (int i = 0; i < Target_End; ++i)
+		m_pTargetUI[i]->Set_Pos(vNewPos);
 }
 
 void CUI_UnitHUD::Enable_RevivalUI()
@@ -247,17 +293,63 @@ void CUI_UnitHUD::Disable_RevivalUI()
 	m_pUnitUI[UI_Revive]->SetActive(false);
 }
 
+void CUI_UnitHUD::Set_RevivalGauge(_float fCurTime, _float fMaxTime)
+{
+	static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive])->Set_GaugeRatio(fCurTime, fMaxTime);
+}
+
 void CUI_UnitHUD::Set_RevivalIcon(_uint iIconIdx)
 {
 	static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive])->Set_ReviveIcon(iIconIdx);
 }
 
-void CUI_UnitHUD::Create_UnitHUD() 
+void CUI_UnitHUD::SetActive_TargetUI(_uint iIdx, _bool value)
+{
+	if (value == false)
+	{
+		for (int i = 0; i < Target_End; ++i)
+			m_pTargetUI[i]->SetActive(false);
+	}
+	else
+	{
+		m_fMaxEanbleTargetUITime = 0.1f * (iIdx + 1.f);
+		m_bEnableTargetUI = value;
+	}
+}
+
+void CUI_UnitHUD::Create_UnitHUD()
 {
 	m_pUnitNameText = CUI_Object::Create();
 
 	m_pUnitUI[UI_Hp] = CUI_UnitHP::Create();
 	m_pUnitUI[UI_Revive] = CUI_Revive::Create();
+}
+
+void CUI_UnitHUD::Create_TargetUI()
+{
+	for (int i = 0; i < Target_End; ++i)
+	{
+		m_pTargetUI[i] = CUI_Object::Create();
+
+		m_pTargetUI[i]->Set_Sort(0.5f);
+		m_pTargetUI[i]->Set_Color(RGB(255, 0, 0));
+		switch (i)
+		{
+		case Target_Point:
+			m_pTargetUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/HUD/Crosshair/Point2.dds"));
+			m_pTargetUI[i]->Set_Scale(30.f);
+			break;
+
+		case Target_Blink:
+			m_pTargetUI[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Circle/T_32Circle.dds"));
+			m_pTargetUI[i]->Set_Scale(1.f);
+			m_pTargetUI[i]->Set_FadeDesc(0.f, 0.7f, true);
+			break;
+		}
+
+		CREATE_GAMEOBJECT(m_pTargetUI[i], GROUP_UI);
+		DISABLE_GAMEOBJECT(m_pTargetUI[i]);
+	}
 }
 
 void CUI_UnitHUD::Init_UnitNameText()

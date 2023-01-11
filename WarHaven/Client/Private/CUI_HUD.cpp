@@ -60,6 +60,7 @@ HRESULT CUI_HUD::Initialize_Prototype()
 	}
 	else
 	{
+		Create_RevivalUI();
 		Create_SquardInfo();
 	}
 
@@ -71,7 +72,7 @@ HRESULT CUI_HUD::Start()
 	Bind_Shader();
 
 	SetActive_HUD(true);
-		
+
 	if (m_eLoadLevel <= LEVEL_BOOTCAMP)
 	{
 		if (m_pClassChangeText)
@@ -271,6 +272,11 @@ void CUI_HUD::SetActive_SquardInfo(_bool value)
 			m_pArrSquardInfo[iIdx][j]->SetActive(value);
 		}
 	}
+}
+
+void CUI_HUD::SetActive_RevivalUI(_bool value)
+{
+	m_pRevivalUI->SetActive(value);
 }
 
 void CUI_HUD::Set_Crosshair_Pos(_float4 vPosition)
@@ -491,6 +497,26 @@ void CUI_HUD::Create_HeroTransformUI()
 	m_pHeroTransformUI[HT_Bar]->Set_Sort(0.49f);
 
 	GET_COMPONENT_FROM(m_pHeroTransformUI[HT_Bar], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HorizontalGauge);
+}
+
+void CUI_HUD::Create_RevivalUI()
+{
+	m_pRevivalUI = CUI_Object::Create();
+
+	m_pRevivalUI->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Revive/T_ReviveDeco.dds"));
+	m_pRevivalUI->Set_Sort(0.5f);
+	m_pRevivalUI->Set_PosY(-150.f);
+	m_pRevivalUI->Set_Scale(148.f);
+
+	m_pRevivalUI->Set_FontRender(true);
+	m_pRevivalUI->Set_FontStyle(true);
+	m_pRevivalUI->Set_FontCenter(true);
+	m_pRevivalUI->Set_FontOffset(5.f, 5.f);
+	m_pRevivalUI->Set_FontScale(0.4f);
+	m_pRevivalUI->Set_FontText(TEXT("¼Ò»ý Áß"));
+
+	CREATE_GAMEOBJECT(m_pRevivalUI, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pRevivalUI);
 }
 
 void CUI_HUD::Update_HeorTransformGauge()

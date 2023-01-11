@@ -101,8 +101,8 @@ HRESULT CLevel_Test::SetUp_Prototypes()
 	//CUI_Oper* pUI_Oper = CUI_Oper::Create();
 	//Ready_GameObject(pUI_Oper, GROUP_UI);
 
-	//CUI_Paden* pUI_Paden = CUI_Paden::Create();
-	//Ready_GameObject(pUI_Paden, GROUP_UI);
+	CUI_Paden* pUI_Paden = CUI_Paden::Create();
+	Ready_GameObject(pUI_Paden, GROUP_UI);
 
 	// CUI_Result* pUI_Result = CUI_Result::Create();
 	// Ready_GameObject(pUI_Result, GROUP_UI);

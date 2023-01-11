@@ -146,11 +146,6 @@ STATE_TYPE CState_Gliding::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)
             return m_eStateType;
         }
     }
-    else
-    {
-        CUser::Get_Instance()->SetActive_InteractUI(false);
-
-    }
         
 
     return STATE_END;
