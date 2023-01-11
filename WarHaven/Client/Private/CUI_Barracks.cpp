@@ -10,7 +10,8 @@
 #include "CPlayerInfo.h"
 #include "CMainMenuPlayer.h"
 
-_bool CUI_Barracks::m_bIsUnlock_RabbitHat = true;
+_bool CUI_Barracks::m_bIsUnlock_RabbitHat = false;
+_bool CUI_Barracks::m_bIsUnlock_EpicWarriorClothes = false;
 
 CUI_Barracks::CUI_Barracks()
 {
@@ -176,14 +177,62 @@ void CUI_Barracks::On_PointerStay_SkinBG(const _uint& iEventNum)
 	}
 	else
 	{
-		if (iEventNum > 0)
-			CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+		if (m_bIsUnlock_EpicWarriorClothes)
+		{
+			if (iEventNum == 1)
+				CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+		}
+		else
+		{
+			if (iEventNum > 0)
+				CUser::Get_Instance()->Get_Cursor()->Set_Mouse(CUI_Cursor::Disable);
+		}
 	}
 }
 
 void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 {
-	if (m_iCurSelectSkin == Skin::Hat)
+	if (m_iCurSelectSkin == Skin::Clothes)
+	{
+		if (m_iSelectClass != WARRIOR)
+			return;
+
+		if (!m_bIsUnlock_EpicWarriorClothes)
+			return;
+
+		for (int j = 0; j < 2; ++j)
+		{
+			for (int i = SB_Outline; i < SB_Lock; ++i)
+				Disable_Fade(m_pArrSkinBtn[j][i], m_fDuration);
+		}
+
+		switch (iEventNum)
+		{
+		case 0:
+			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("»∆∑√∫π"));
+			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("¿œπ›"));
+
+			for (int i = SB_Outline; i < SB_Lock; ++i)
+				Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+
+			CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomBody((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_BODY::eDEFAULT);
+			CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_BODY);
+			break;
+
+		case 2:
+			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("øµøı¿« ∞©ø "));
+			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("øµøı"));
+			m_pSkinInfo[Skin_Tier]->Set_FontColor(RGB(90, 60, 130));
+
+			for (int i = SB_Outline; i < SB_Lock; ++i)
+				Enable_Fade(m_pArrSkinBtn[0][i], m_fDuration);
+
+			CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomBody((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_BODY::eBODY2);
+			CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_BODY);
+			break;
+		}
+	}
+	else if (m_iCurSelectSkin == Skin::Hat)
 	{
 		if (m_bIsUnlock_RabbitHat)
 		{
@@ -204,8 +253,8 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 
 				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eDEFAULT);
 				CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_HEAD);
-
 				break;
+
 			case 1:
 				m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("≈‰≥¢≈ª"));
 				m_pSkinInfo[Skin_Tier]->Set_FontRender(true);
@@ -217,7 +266,6 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 
 				CUser::Get_Instance()->Get_MainPlayerInfo()->Set_CustomHead((CLASS_TYPE)m_iSelectClass, CPlayerInfo::eCUSTOM_HEAD::eRABBIT);
 				CUser::Get_Instance()->Change_ModelParts(m_iSelectClass, MODEL_PART_HEAD);
-
 				break;
 			}
 		}
@@ -237,6 +285,11 @@ void CUI_Barracks::On_PointerDown_SkinBG(const _uint& iEventNum)
 void CUI_Barracks::Unlock_RabbitHat()
 {
 	m_bIsUnlock_RabbitHat = true;
+}
+
+void CUI_Barracks::Unlock_EpicWarriorClothes()
+{
+	m_bIsUnlock_EpicWarriorClothes = true;
 }
 
 void CUI_Barracks::My_Tick()
@@ -1065,6 +1118,17 @@ void CUI_Barracks::Set_SkinIdx(CLASS_TYPE eClass)
 	{
 		if (m_iSelectClass < FIONA)
 		{
+			switch (m_iSelectClass)
+			{
+			case WARRIOR:
+				if (m_bIsUnlock_EpicWarriorClothes)
+				{
+					for (int i = SB_Lock; i < SB_End; ++i)
+						m_pArrSkinBtn[2][i]->SetActive(false);
+				}
+				break;
+			}
+
 			m_pSkinInfo[Skin_Name]->Set_FontText(TEXT("»∆∑√∫π"));
 			m_pSkinInfo[Skin_Tier]->Set_FontText(TEXT("¿œπ›"));
 		}

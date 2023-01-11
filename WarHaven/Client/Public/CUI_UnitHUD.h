@@ -45,6 +45,7 @@ public:
 	void Set_RevivalGauge(_float fCurTime, _float fMaxTime);
 
 	void Set_RevivalIcon(_uint iIconIdx);
+	void SetActive_UnitHP(_bool value);
 
 	void SetActive_TargetUI(_uint iIdx, _bool value);
 
@@ -80,6 +81,12 @@ private:
 	_float m_fTargetRotValue = 0.f;
 	_float m_fBlinkTime = 0.f;
 
+	_uint m_fPrvRatio = 0.f;
+	_uint m_fCurRatio = 0.f;
+
+	_float m_fEnableHpTime = 0.f;
+	_float m_fDisableHpTime = 5.f;
+
 private:
 	void Create_UnitHUD();
 	void Create_TargetUI();
@@ -87,8 +94,8 @@ private:
 	void Init_UnitNameText();
 
 private:
-	void SetActive_UnitHP(_bool value);
-
+	void Tick_UnitHP();
+	void Tick_TargetUI();
 };
 
 END

@@ -368,10 +368,10 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		Set_Postion(vPos);
 		pUnit->Get_Transform()->Set_Look(vLook);
 		pUnit->Get_Transform()->Make_WorldMatrix();
-		
-		if(m_bIsMainPlayer)
+
+		if (m_bIsMainPlayer)
 			m_pCurrentUnit->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
-		
+
 		pUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
 
 
@@ -959,9 +959,7 @@ void CPlayer::On_RealDie()
 			return;
 
 		if (Get_Team()->IsMainPlayerTeam())
-		{
 			m_pUnitHUD->Enable_RevivalUI();
-		}
 	}
 
 	m_bDieDelay = false;
@@ -1234,6 +1232,25 @@ void CPlayer::My_LateTick()
 	//fUVy -= 0.5f;
 
 	//cout << "x : " << fUVx << " y : " << fUVy << endl;
+
+	_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+	vPos.y += 2.f;
+	m_bIsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
+	if (!m_bIsInFrustum)
+	{
+		m_pUnitHUD->Disable_RevivalUI();
+	}
+	else
+	{
+		if (!Get_Team())
+			return;
+
+		if (Get_Team()->IsMainPlayerTeam())
+		{
+			if (m_bAbleRevival)
+				m_pUnitHUD->Enable_RevivalUI();
+		}                           
+	}
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
 	{
@@ -1584,29 +1601,23 @@ void CPlayer::Enable_UnitHUD()
 void CPlayer::Frustum_UnitHUD()
 {
 	if (!m_pCurrentUnit->Is_Valid())
-		return;
+		return;	
 
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 	if (fDis < m_fEnable_UnitHUDis)
 	{
 		m_pUnitHUD->Set_UnitDis(fDis);
 
-		_float4 vPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
-		vPos.y += 2.f;
 
-		if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f))
+		if (m_bIsInFrustum)
 		{
 			if (!m_pUnitHUD->Is_Valid())
-			{
 				ENABLE_GAMEOBJECT(m_pUnitHUD);
-			}
 		}
 		else
 		{
 			if (m_pUnitHUD->Is_Valid())
-			{
 				DISABLE_GAMEOBJECT(m_pUnitHUD);
-			}
 		}
 	}
 	else

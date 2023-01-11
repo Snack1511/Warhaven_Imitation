@@ -19,7 +19,7 @@ HRESULT CUI_Paden::Initialize_Prototype()
 
 	Create_ScoreNum();
 	Create_ScoreGauge();
-	//Create_HwaraGauge();
+	Create_HwaraGauge();
 
 	Create_PointUI();
 	Init_PointUI();
@@ -35,19 +35,22 @@ HRESULT CUI_Paden::Start()
 {
 	__super::Start();
 
-	//Init_HwaraGauge();
+	Init_HwaraGauge();
 
 	Bind_Shader();
 
-	for (int i = 0; i < Team_End; ++i)
+	if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_PADEN)
 	{
-		GET_COMPONENT_FROM(m_pArrScoreNum[i][0], CTexture)->Set_CurTextureIndex(1);
-		GET_COMPONENT_FROM(m_pArrScoreNum[i][1], CTexture)->Set_CurTextureIndex(0);
-		GET_COMPONENT_FROM(m_pArrScoreNum[i][2], CTexture)->Set_CurTextureIndex(0);
-
-		for (int j = 0; j < Num_End; ++j)
+		for (int i = 0; i < Team_End; ++i)
 		{
-			Enable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
+			GET_COMPONENT_FROM(m_pArrScoreNum[i][0], CTexture)->Set_CurTextureIndex(1);
+			GET_COMPONENT_FROM(m_pArrScoreNum[i][1], CTexture)->Set_CurTextureIndex(0);
+			GET_COMPONENT_FROM(m_pArrScoreNum[i][2], CTexture)->Set_CurTextureIndex(0);
+
+			for (int j = 0; j < Num_End; ++j)
+			{
+				Enable_Fade(m_pArrScoreNum[i][j], m_fScoreFadeSpeed);
+			}
 		}
 	}
 
@@ -73,7 +76,7 @@ void CUI_Paden::Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName
 
 void CUI_Paden::Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName)
 {
-	m_fScoreRatio[Team_Red] = 1 - m_fScoreRatio[Team_Red];
+	//m_fScoreRatio[Team_Red] = 1 - m_fScoreRatio[Team_Red];
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Red], sizeof(_float));
 
 	_bool bFlip = true;
@@ -82,6 +85,7 @@ void CUI_Paden::Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstNa
 
 void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstName)
 {
+	//m_fScoreRatio[Team_Blue] = 1 - m_fScoreRatio[Team_Blue];
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Blue], sizeof(_float));
 
 	_bool bFlip = false;
@@ -91,13 +95,19 @@ void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstN
 void CUI_Paden::Set_Shader_HwaraArrow_Blue(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fUVPlusY", &m_fUVTexY[Team_Blue], sizeof(_float));
+	pShader->Set_RawValue("g_fValue", &m_fUVMoveX[Team_Blue], sizeof(_float));
 
-	cout << m_fUVTexY[Team_Blue] << endl;
+	_bool bIsFlip = true;
+	pShader->Set_RawValue("g_bFlip", &bIsFlip, sizeof(_bool));
 }
 
 void CUI_Paden::Set_Shader_HwaraArrow_Red(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fUVPlusY", &m_fUVTexY[Team_Red], sizeof(_float));
+	pShader->Set_RawValue("g_fValue", &m_fUVMoveX[Team_Red], sizeof(_float));
+
+	_bool bIsFlip = false;
+	pShader->Set_RawValue("g_bFlip", &bIsFlip, sizeof(_bool));
 }
 
 void CUI_Paden::Set_Team(CTeamConnector* pAllyTeam, CTeamConnector* pEnemyTeam)
@@ -176,12 +186,10 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 
 		if (m_bIsVector)
 		{
-			cout << "º¤ÅÍ" << endl;
 			Update_IndicatorVector(pTransform);
 		}
 		else
 		{
-			cout << "°¢µµ" << endl;
 			Update_IndicatorAngle(pTransform);
 		}
 	}
@@ -418,11 +426,14 @@ void CUI_Paden::My_Tick()
 {
 	__super::My_Tick();
 
-	/*for (int i = 0; i < Team_End; ++i)
+	for (int i = 0; i < Team_End; ++i)
 	{
 		_float fScaleX = m_pArrHwaraGauge[i][Hwara_Arrow]->Get_Scale().x;
-		m_fUVTexY[i] = (fScaleX * 0.01f) * 3.f;
-	}*/
+		m_fUVTexY[i] = (fScaleX * 0.01f) * 5.f;
+	}
+
+	m_fUVMoveX[Team_Blue] += fDT(0);
+	m_fUVMoveX[Team_Red] -= fDT(0);
 
 	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_TEST)
 		return;
@@ -938,8 +949,8 @@ void CUI_Paden::Bind_Shader()
 	GET_COMPONENT_FROM(m_pArrPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 
-	//GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Blue][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Blue, this, placeholders::_1, "g_fUVPlusY");
-	//GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Red][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Red, this, placeholders::_1, "g_fUVPlusY");
+	GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Blue][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Blue, this, placeholders::_1, "g_fUVPlusY");
+	GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Red][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Red, this, placeholders::_1, "g_fUVPlusY");
 }
 
 void CUI_Paden::Create_Popup()
@@ -965,8 +976,8 @@ void CUI_Paden::Create_HwaraGauge()
 		m_pHwaraGauge[i] = CUI_Object::Create();
 
 		m_pHwaraGauge[i]->Set_Sort(0.49f);
-		m_pHwaraGauge[i]->Set_PosY(250.f);
-		m_pHwaraGauge[i]->Set_Scale(350.f, 30.f);
+		m_pHwaraGauge[i]->Set_PosY(260.f);
+		m_pHwaraGauge[i]->Set_ScaleX(150.f);
 
 		switch (i)
 		{
@@ -974,14 +985,18 @@ void CUI_Paden::Create_HwaraGauge()
 			GET_COMPONENT_FROM(m_pHwaraGauge[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pHwaraGauge[i], "/Paden/TopGauge", "Bar");
 			m_pHwaraGauge[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.5f));
+			m_pHwaraGauge[i]->Set_ScaleY(30.f);
 			break;
 
 		case Hwara_Arrow:
+			GET_COMPONENT_FROM(m_pHwaraGauge[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HwaraArrow);
 			m_pHwaraGauge[i]->Set_Sort(0.5f);
 			m_pHwaraGauge[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Paden/T_ArrowStroke.dds"));
+			m_pHwaraGauge[i]->Set_ScaleY(25.f);
 			break;
 
 		case Hwara_Glow:
+			GET_COMPONENT_FROM(m_pHwaraGauge[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HwaraGlowLine);
 			m_pHwaraGauge[i]->Set_Scale(120.f, 40.f);
 			m_pHwaraGauge[i]->Set_RotationZ(90.f);
 			m_pHwaraGauge[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Paden/T_AdditiveGlow.dds"));
@@ -1010,17 +1025,16 @@ void CUI_Paden::Init_HwaraGauge()
 	{
 		for (int j = 0; j < Hwara_End; ++j)
 		{
-			_float fPosX = -350.f + (i * 700.f);
+			_float fPosX = -150.f + (i * 300.f);
 			m_pArrHwaraGauge[i][j]->Set_PosX(fPosX);
 
 			switch (j)
 			{
-			case Hwara_BG:				
+			case Hwara_BG:
 				m_pArrHwaraGauge[i][j]->Set_TextureIndex(i);
 				break;
 
 			case Hwara_Arrow:
-				GET_COMPONENT_FROM(m_pArrHwaraGauge[i][j], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HwaraArrow);
 				break;
 			}
 		}

@@ -67,6 +67,8 @@ private:
 	_bool m_bEnableSkinPopup = false;
 	_bool m_bFadePopup = false;
 
+	_uint m_iSkinIdx = 0;
+
 private:
 	void Create_ConquestPopup();
 	void Create_KillPopup();

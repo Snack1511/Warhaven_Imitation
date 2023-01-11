@@ -377,5 +377,6 @@ private:
 public:
 	_bool Is_CurCellBlocked();
 
+	_bool m_bIsInFrustum = false;
 };
 END

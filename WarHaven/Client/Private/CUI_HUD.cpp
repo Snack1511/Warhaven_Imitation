@@ -107,11 +107,8 @@ void CUI_HUD::My_Tick()
 		}
 	}
 
-	if (KEY(TAB, TAP))
-	{
-		m_bActivationKDA = !m_bActivationKDA;
-		CUser::Get_Instance()->SetActive_ScoreBoard(m_bActivationKDA);
-	}
+	m_bActivationKDA = KEY(TAB, HOLD) ? true : false;
+	CUser::Get_Instance()->SetActive_ScoreBoard(m_bActivationKDA);
 }
 
 CUI_Wrapper* CUI_HUD::Get_HUD(_uint eHUD)
@@ -526,7 +523,7 @@ void CUI_HUD::Update_HeorTransformGauge()
 		if (m_pHeroTransformUI[HT_Bar]->Is_Valid())
 		{
 			m_fHeroTransformValue += fDT(0);
-			m_fHeroTransformGaugeRatio = m_fHeroTransformValue / m_fMaxHeroTransformValue;
+			m_fHeroTransformGaugeRatio = (m_fHeroTransformValue / m_fMaxHeroTransformValue);
 
 			if (m_fHeroTransformValue > m_fMaxHeroTransformValue)
 			{

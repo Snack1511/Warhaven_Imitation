@@ -135,8 +135,20 @@ void CUI_Result::Create_Fade()
 	m_pFade->Set_Scale(1280.f, 720.f);
 	m_pFade->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/Black.png"));
 
+	m_pBG = CUI_Object::Create();
+
+	m_pBG->Set_FadeDesc(1.f);
+
+	m_pBG->Set_Sort(0.15f);
+	m_pBG->Set_Scale(1280.f, 720.f);
+	m_pBG->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Rect/White.png"));
+	m_pBG->Set_Color(_float4(0.f, 0.f, 0.f, 0.8f));
+
 	CREATE_GAMEOBJECT(m_pFade, GROUP_UI);
 	DISABLE_GAMEOBJECT(m_pFade);
+
+	CREATE_GAMEOBJECT(m_pBG, GROUP_UI);
+	DISABLE_GAMEOBJECT(m_pBG);
 }
 
 void CUI_Result::Create_ResultUI()
@@ -580,7 +592,31 @@ void CUI_Result::Progress_Result()
 		if (m_fDissolveValue < 0.f)
 		{
 			m_fDissolveValue = 0.f;
+			m_iResultProgressCnt++;
+
 			m_pResultMVP[MVP_Player]->Set_FontRender(true);
+		}
+	}
+	else if (m_iResultProgressCnt == 5)
+	{
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > 1.f)
+		{
+			m_fAccTime = 0.f;
+			m_iResultProgressCnt++;
+
+			Enable_Fade(m_pBG, 0.3f);
+		}
+	}
+	else if (m_iResultProgressCnt == 6)
+	{
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > 1.f)
+		{
+			m_fAccTime = 0.f;
+			m_iResultProgressCnt++;
+
+			CUser::Get_Instance()->Enable_SkinPopup(1);
 		}
 	}
 }

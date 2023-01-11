@@ -60,12 +60,8 @@ void CUI_UnitHUD::OnDisable()
 	for (int i = 0; i < Target_End; ++i)
 		m_pTargetUI[i]->SetActive(false);
 
-	Disable_RevivalUI();
-
 	for (int i = 0; i < UI_End; ++i)
-	{
 		DISABLE_GAMEOBJECT(m_pUnitUI[i]);
-	}
 }
 
 void CUI_UnitHUD::My_Tick()
@@ -199,52 +195,8 @@ void CUI_UnitHUD::My_Tick()
 		}
 	}
 
-	_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
-	if (fHpGaugeRatio < 1.f)
-	{
-		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
-
-		SetActive_UnitHP(true);
-
-		if (m_tStatus.fHP <= 0.f)
-		{
-			for (int i = 0; i < Target_End; ++i)
-			{
-				if (m_pTargetUI[i]->Is_Valid())
-					m_pTargetUI[i]->SetActive(false);
-			}
-		}
-	}
-	/*else
-	{
-		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->SetActive_HealBlur(false);
-	}*/
-
-
-	if (m_bEnableTargetUI)
-	{
-		m_fEanbleTargetUITime += fDT(0);
-		if (m_fEanbleTargetUITime > m_fMaxEanbleTargetUITime)
-		{
-			m_fEanbleTargetUITime = 0.f;
-			m_bEnableTargetUI = false;
-
-			m_pTargetUI[Target_Point]->SetActive(true);
-			m_pTargetUI[Target_Point]->Lerp_Scale(70.f, 30.f, 0.3f);
-		}
-	}
-
-	if (m_pTargetUI[Target_Point]->Is_Valid())
-	{
-		m_fTargetRotValue += fDT(0) * 10.f;
-		m_pTargetUI[Target_Point]->Set_RotationZ(m_fTargetRotValue);
-
-		if (!m_pTargetUI[Target_Blink]->Is_Valid())
-		{
-			Enable_Fade(m_pTargetUI[Target_Blink], 0.3f);
-			m_pTargetUI[Target_Blink]->Lerp_Scale(1.f, 30.f, 0.7f);
-		}
-	}
+	Tick_UnitHP();
+	Tick_TargetUI();
 }
 
 void CUI_UnitHUD::My_LateTick()
@@ -273,7 +225,6 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_ProjPos(pTransform);
 
-
 	vNewPos.y -= 30.f;
 	for (int i = 0; i < Target_End; ++i)
 		m_pTargetUI[i]->Set_Pos(vNewPos);
@@ -285,7 +236,9 @@ void CUI_UnitHUD::Enable_RevivalUI()
 
 	pRevivalUI->Set_ReviveUnitTransform(m_pOwner->Get_Transform());
 	pRevivalUI->Set_ClassIcon(m_pOwner);
-	pRevivalUI->SetActive(true);
+
+	if (!pRevivalUI->Is_Valid())
+		pRevivalUI->SetActive(true);
 }
 
 void CUI_UnitHUD::Disable_RevivalUI()
@@ -423,6 +376,66 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 		if (m_pUnitUI[UI_Hp]->Is_Valid())
 		{
 			DISABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
+		}
+	}
+}
+
+void CUI_UnitHUD::Tick_UnitHP()
+{
+	if (m_pOwner->IsMainPlayer())
+		return;
+
+	if (m_pUnitUI[UI_Hp]->Is_Valid())
+	{
+		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
+		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
+
+		m_fEnableHpTime += fDT(0);
+		if (m_fEnableHpTime > m_fDisableHpTime)
+		{
+			m_fEnableHpTime = 0.f;
+			SetActive_UnitHP(false);
+		}
+		else if (fHpGaugeRatio <= 0.f)
+		{
+			SetActive_UnitHP(false);
+		}
+	}
+}
+
+void CUI_UnitHUD::Tick_TargetUI()
+{
+	if (m_tStatus.fHP <= 0.f)
+	{
+		for (int i = 0; i < Target_End; ++i)
+		{
+			if (m_pTargetUI[i]->Is_Valid())
+				m_pTargetUI[i]->SetActive(false);
+		}
+	}
+
+	if (m_bEnableTargetUI)
+	{
+		m_fEanbleTargetUITime += fDT(0);
+		if (m_fEanbleTargetUITime > m_fMaxEanbleTargetUITime)
+		{
+			m_fEanbleTargetUITime = 0.f;
+			m_bEnableTargetUI = false;
+
+			m_pTargetUI[Target_Point]->SetActive(true);
+			m_pTargetUI[Target_Point]->Lerp_Scale(70.f, 30.f, 0.3f);
+		}
+	}
+
+	if (m_pTargetUI[Target_Point]->Is_Valid())
+	{
+		m_fTargetRotValue += fDT(0) * 10.f;
+		m_pTargetUI[Target_Point]->Set_RotationZ(m_fTargetRotValue);
+
+		if (!m_pTargetUI[Target_Blink]->Is_Valid())
+		{
+			Enable_Fade(m_pTargetUI[Target_Blink], 0.3f);
+			m_pTargetUI[Target_Blink]->Lerp_Scale(1.f, 30.f, 0.7f);
 		}
 	}
 }

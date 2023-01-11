@@ -136,6 +136,9 @@ void CUI_UnitHP::SetActive_UnitHP(_bool value)
 
 void CUI_UnitHP::SetActive_HealBlur(_bool value)
 {
+	if (!this->Is_Valid())
+		return;
+
 	if (value == true)
 	{
 		if (!m_pHealBlur->Is_Valid())

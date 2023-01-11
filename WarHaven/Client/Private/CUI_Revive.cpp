@@ -88,8 +88,6 @@ void CUI_Revive::OnEnable()
 {
 	__super::OnEnable();
 
-	m_fAccTime = 0.f;
-
 	m_pReviveIcon->SetActive(true);
 
 	for (int i = 0; i < Class_End; ++i)
