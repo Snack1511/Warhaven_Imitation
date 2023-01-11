@@ -242,8 +242,6 @@ void CUnit_Valkyrie::On_Die()
 	m_bDie = false;
 	m_fDeadTimeAcc = 0.f;
 	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
-
-	DISABLE_GAMEOBJECT(this);
 }
 
 void CUnit_Valkyrie::TurnOn_ValkyrieTrail(_bool bOn)
