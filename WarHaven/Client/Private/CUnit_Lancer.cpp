@@ -17,6 +17,8 @@
 #include "CLancerNeedle.h"
 #include "CUnit_Lancer_Head.h"
 
+#include "CRectEffects.h"
+
 CUnit_Lancer::CUnit_Lancer()
 {
 }

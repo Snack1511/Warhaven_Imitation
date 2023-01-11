@@ -271,7 +271,6 @@ void	CPlayerInfo::Set_CustomHead_Paladin(eCUSTOM_HEAD eHeadEnum)
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
 		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin0001_Helmet_A00_50.fbx";
-		//m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin_Helm_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
 		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin_Helm_50.fbx";
@@ -286,12 +285,14 @@ void	CPlayerInfo::Set_CustomBody_Paladin(eCUSTOM_BODY eBodyEnum)
 	switch (eBodyEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
-		//m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladin0001_Body_A00_50.fbx";
 		m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladin0011_Body_A00_20.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
 		m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladin0001_Body_A00_50.fbx";
-		//m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/SK_Paladin0011_Body_A00_20.fbx";
+		break;
+
+	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY2:
+		m_tPlayerSetUpData.wstrBodyMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/body/Paladin_Body_006.fbx";
 		break;
 
 	default:
@@ -324,7 +325,7 @@ void	CPlayerInfo::Set_CustomHead_Arhcer(eCUSTOM_HEAD eHeadEnum)
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
 		//m_tPlayerSetUpData.wstrHelmetMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/head/SK_Archer0001_Helmet_A00_50.fbx"; // 기본 
-		m_tPlayerSetUpData.wstrHelmetMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/head/SK_Archer0010_Helmet_A00_50.fbx"; // 누더기 
+		m_tPlayerSetUpData.wstrHelmetMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/head/Archer_Helm_002.fbx"; // 누더기 
 		
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
@@ -345,7 +346,7 @@ void	CPlayerInfo::Set_CustomBody_Arhcer(eCUSTOM_BODY eBodyEnum)
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
 		//m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0001_Body_A00_50.fbx"; // 기본
-		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/SK_Archer0010_Body_A00_20.fbx"; // 누더기
+		m_tPlayerSetUpData.wstrBodyMeshPath[ARCHER] = L"../bin/resources/meshes/characters/Archer/body/Archer_Body_002.fbx"; // 누더기
 		
 		break;
 
@@ -552,6 +553,7 @@ void CPlayerInfo::Set_CustomHead_Priest(eCUSTOM_HEAD eHeadEnum)
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
 		//m_tPlayerSetUpData.wstrHelmetMeshPath[FIONA] = L"../bin/resources/meshes/characters/Priest/head/SK_Priest0010_Helm_A00_20.fbx";
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/head/Priest_Helm_003.fbx";
 		m_tPlayerSetUpData.wstrHelmetMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/head/SK_Priest0001_Helm_A00_40.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
@@ -573,6 +575,7 @@ void CPlayerInfo::Set_CustomBody_Priest(eCUSTOM_BODY eBodyEnum)
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
 		//m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/Priest/body/SK_Priest0010_Body_A00_20.fbx";
+		//m_tPlayerSetUpData.wstrBodyMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/body/Priest_Body_003.fbx";
 		m_tPlayerSetUpData.wstrBodyMeshPath[PRIEST] = L"../bin/resources/meshes/characters/Priest/body/SK_Priest0001_Body_A00_10.fbx";
 		break;
 
