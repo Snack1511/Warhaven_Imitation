@@ -250,6 +250,21 @@ float GGX(float3 N, float3 V, float3 L, float roughness, float F0) {
 //	return BRDFSpec ;
 //}
 
+float DistributionGGX(float NdotH, float roughness)
+{
+	float a2 = roughness * roughness;
+	float NdotH2 = NdotH * NdotH;
+	float denom = NdotH2 * (a2 - 1) + 1;
+	return a2 / (3.141592 * denom * denom);
+}
+
+float VisibilitySmithJointGGX(float NdotV, float NdotL, float roughness)
+{
+	float a2 = roughness * roughness;
+	float visibility = NdotL / (NdotL + sqrt(NdotV * NdotV + a2 * (1 - NdotV * NdotV)));
+	return visibility * visibility;
+}
+
 PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 {
 	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
@@ -295,7 +310,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 				vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
 
 				float metalness = vPBRDesc.r;
-				float fRoughness = vPBRDesc.g;
+				float roughness = vPBRDesc.g;
 
 				if (vPBRDesc.a < 0.1f)
 				{
@@ -303,16 +318,40 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 					return Out;
 				}
 
-				vector			vReflect = reflect(normalize(vLightDir), vNormal);
-				vector			vLook = normalize(vWorldPos - g_vCamPosition);
+				vector			vReflect = reflect(-normalize(vLightDir), vNormal);
 
-				Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect), vLook)), 30.f) * fAtt;
+			
 
-				// Final color
-				float a = metalness * (1.f - fRoughness);
+				// Specular term
+				float3 R = normalize(vReflect.xyz);
+				float3 V = normalize(vLook.xyz);
+				float3 L = normalize(vLightDir.xyz);
+				float3 N = normalize(vNormal.xyz);
 
-				Out.vSpecular *= a;
+				float3 H = normalize(V + L);
+				float NdotV = max(dot(N, V), 0);
+				float NdotL = max(dot(N, L), 0);
+				float NdotH = max(dot(N, H), 0);
 
+				// Fresnel term
+				float F0 = 1 - metalness;
+				F0 = pow(F0, 5);
+				float fresnel = F0 + (1 - F0) * pow(1 - NdotV, 5);
+
+				/*fShade = (1 - fresnel) * (1 - metalness);
+				Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
+
+				Out.vShade.a = 1.f;*/
+
+
+				float D = DistributionGGX(NdotH, roughness);
+				float Vis = VisibilitySmithJointGGX(NdotV, NdotL, roughness);
+				float specular = fresnel * D * Vis;
+
+
+
+				float3 specularColor = specular * (g_vLightSpecular * g_vMtrlSpecular);
+				Out.vSpecular.xyz = specularColor * fAtt;
 			}
 			else
 			{
@@ -354,7 +393,11 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 
 	//Shadow
 #ifdef SHADOW_ON
-	//if (vShadowDesc.x > 0.4f)
+
+
+	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vColor.xyz *= vShadowDesc.xyz;
+	if (vShadowDesc.x > 0.7f)
 	{
 		/* Specular */
 		vector vSpecColor;
@@ -362,10 +405,6 @@ PS_OUT PS_MAIN_FORWARDBLEND(PS_IN In)
 
 		Out.vColor.xyz += vSpecColor.xyz;
 	}
-
-	vector			vShadowDesc = g_ShadowTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor.xyz *= vShadowDesc.xyz;
-
 	
 #endif
 
