@@ -161,6 +161,12 @@ private:
 
 	_float m_fPointUIPosY = 260.f;
 
+private:	// Hwara
+	CUI_Object* m_pHwaraGauge[Team_End];
+
+private:
+	void Create_HwaraGauge();
+
 private:
 	void Bind_Shader();
 };

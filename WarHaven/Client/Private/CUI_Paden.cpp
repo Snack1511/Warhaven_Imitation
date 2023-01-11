@@ -912,6 +912,20 @@ void CUI_Paden::Create_Popup()
 	DISABLE_GAMEOBJECT(m_pPopupUI);
 }
 
+void CUI_Paden::Create_HwaraGauge()
+{
+	for (int i = 0; i < Team_End; ++i)
+	{
+		m_pHwaraGauge[i] = CUI_Object::Create();
+
+		switch (i)
+		{
+		default:
+			break;
+		}
+	}
+}
+
 void CUI_Paden::Update_TargetPointPos()
 {
 	if (m_bSetTargetPoint)
