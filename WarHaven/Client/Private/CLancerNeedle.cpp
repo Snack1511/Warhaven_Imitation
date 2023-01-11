@@ -8,6 +8,8 @@
 #include "CUnit.h"
 #include "Easing_Utillity.h"
 #include "CUtility_Transform.h"
+#include "CColorController.h"
+#include "CEffect.h"
 
 CLancerNeedle::CLancerNeedle()
 {
@@ -102,6 +104,7 @@ void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
 	switch (m_eNeedleState)
 	{
 	case Client::CLancerNeedle::LANCERNEEDLE_START:
+		
 
 		break;
 
@@ -154,6 +157,12 @@ void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
 
 		default:
 			break;
+		}
+
+		if (m_pNiddleMesh)
+		{
+			static_cast<CEffect*>(m_pNiddleMesh)->Set_FadeOut();
+			m_pNiddleMesh = nullptr;
 		}
 
 		break;
@@ -334,8 +343,6 @@ HRESULT CLancerNeedle::SetUp_Model(wstring wstrModelFilePath, CHierarchyNode* pO
 HRESULT CLancerNeedle::Initialize_Prototype()
 {
 
-	
-
 	return S_OK;
 }
 
@@ -355,13 +362,16 @@ HRESULT CLancerNeedle::Start()
 	m_eNeedleState = LANCERNEEDLE_START;
 	m_pTransform->Set_Scale(_float4(FLT_MIN, FLT_MIN, FLT_MIN));
 
+	m_pNiddleMesh = nullptr;
+
 	return S_OK;
 }
 
 void CLancerNeedle::My_Tick()
 {
 	__super::My_Tick();
-
+	
+	
 }
 
 void CLancerNeedle::My_LateTick()
@@ -374,15 +384,28 @@ void CLancerNeedle::My_LateTick()
 	switch (m_eNeedleState)
 	{
 	case Client::CLancerNeedle::LANCERNEEDLE_START:
-		
 
 		Chase_OwnerBoneMatrix();
 
-		m_vScale += fDT(0) * 10.f;
+		if (m_bStartNeedle)
+		{
+			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Turn_Needle", this, ZERO_VECTOR);
+
+			if(!m_pNiddleMesh)
+				m_pNiddleMesh = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Needle_Mesh_0"), this, ZERO_VECTOR);
+
+			m_bStartNeedle = false;
+		}
+
+
+		m_fCurAcc += fDT(0);
+
+		m_vScale = CEasing_Utillity::SinIn(m_vScale, _float4(1.f, 1.f, 1.f), m_fCurAcc, 0.3f);
 
 		if (m_vScale.x >= 1.f)
 		{
 			m_pTransform->Set_Scale(_float4(1.f, 1.f, 1.f));
+			On_ChangePhase(LANCERNEEDLE_LOOP);
 		}
 		else
 		{
@@ -390,9 +413,15 @@ void CLancerNeedle::My_LateTick()
 		}
 
 
+		break;
+	case Client::CLancerNeedle::LANCERNEEDLE_LOOP:
+
+		Chase_OwnerBoneMatrix();
+
+		if (KEY(C, TAP))
+			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Turn_Needle", this, ZERO_VECTOR);
 
 		break;
-
 	
 	case Client::CLancerNeedle::LANCERNEEDLE_ATTACKBEGIN:
 	{
@@ -405,7 +434,7 @@ void CLancerNeedle::My_LateTick()
 		if (m_fCurAcc > m_fTotalTime)
 		{
 			m_fCurAcc = m_fTotalTime;
-
+			//ÀÌÆåÆ®
 		}
 
 			
@@ -521,6 +550,20 @@ void CLancerNeedle::OnEnable()
 	m_eNeedleState = LANCERNEEDLE_START;
 	m_pTransform->Set_Scale(m_vScale);
 	m_pStinedUnit = nullptr;
+
+
+	//CColorController::COLORDESC tColorDesc;
+	//ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
+
+	//tColorDesc.eFadeStyle = CColorController::TIME;
+	//tColorDesc.fFadeInStartTime = 0.f;
+	//tColorDesc.fFadeInTime = 0.2f;
+	//tColorDesc.fFadeOutStartTime = 10.f;
+	//tColorDesc.fFadeOutTime = 0.2f;
+	//tColorDesc.vTargetColor = _float4(1.f, 0.5f, 0.f, 1.f);
+
+	//tColorDesc.iMeshPartType = 0;
+	//GET_COMPONENT(CColorController)->Add_ColorControll(tColorDesc);
 }
 
 void CLancerNeedle::OnDisable()
@@ -538,6 +581,13 @@ void CLancerNeedle::OnDisable()
 		}
 	}
 	
+	m_bStartNeedle = true;
+
+	if(m_pNiddleMesh)
+	{
+		static_cast<CEffect*>(m_pNiddleMesh)->Set_FadeOut();
+		m_pNiddleMesh = nullptr;
+	}
 }
 
 void CLancerNeedle::Chase_OwnerBoneMatrix()

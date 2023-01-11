@@ -7,6 +7,7 @@
 #define		EFFECT_REFBONE 0x004
 #define		EFFECT_COLLIDER 0x008
 #define		EFFECT_BILLBOARD 0x010
+#define		EFFECT_FOLLOWMATRIX 0x040
 #define		EFFECT_TEMP 0x020
 
 BEGIN(Engine)
@@ -134,6 +135,7 @@ protected:
 	CGameObject* m_pFollowTarget = nullptr;
 	_float4		m_vOffsetPos;
 	void	Update_FollowTarget();
+	void	Update_FollowMatrix();
 
 protected:
 	_float		m_fMoveSpeed = 0.f;

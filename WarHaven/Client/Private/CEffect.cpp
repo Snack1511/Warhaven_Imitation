@@ -386,6 +386,24 @@ void CEffect::Update_FollowTarget()
 	m_pTransform->Make_WorldMatrix();
 }
 
+void CEffect::Update_FollowMatrix()
+{
+	//_float4 vLook = m_pFollowTarget->Get_Transform()->Get_World(WORLD_LOOK);
+	_float4 vPos = m_pFollowTarget->Get_Transform()->Get_World(WORLD_POS);
+
+	_float4 vOffsetPos = m_vOffsetPos.MultiplyCoord(m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS));
+	vPos += vOffsetPos;
+
+	m_pTransform->Set_MyMatrix(m_pFollowTarget->Get_Transform()->Get_WorldMatrix(MARTIX_NOTRANS));
+	m_pTransform->Set_World(WORLD_POS, vPos);
+
+	/*if (m_fTurnAngle > 0.f)
+	{
+		CUtility_Transform::Turn_ByAngle(m_pTransform, vLook, m_fTurnAngle);
+	}*/
+	m_pTransform->Make_WorldMatrix();
+}
+
 void CEffect::Update_TargetPos()
 {
 	On_Target();
@@ -462,6 +480,12 @@ void CEffect::My_LateTick()
 	{
 		Update_FollowTarget();
 	}
+
+	else if (m_bEffectFlag & EFFECT_FOLLOWMATRIX)
+	{
+		Update_FollowMatrix();
+	}
+
 
 	//UV
 	m_fCurUVPlusY += m_fUVSpeedY * fDT(0);

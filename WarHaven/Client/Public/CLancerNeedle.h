@@ -95,6 +95,10 @@ private:
 
 	_float4x4 m_OwnerBoneOffsetMatrix;
 
+private:
+	CGameObject* m_pNiddleMesh = nullptr;
+	_bool m_bStartNeedle = true;
+
 
 
 

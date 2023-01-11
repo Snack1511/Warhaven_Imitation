@@ -804,6 +804,11 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 	/*Dodge*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Dodge"), "Dodge")))
 		return E_FAIL;
+	/*Lancer*/
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Turn_Needle"), "Turn_Needle")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Needle_Mesh"), "Needle_Mesh")))
+		return E_FAIL;
 
 	/*priest*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catch_Particle"), "Catch_Particle")))
