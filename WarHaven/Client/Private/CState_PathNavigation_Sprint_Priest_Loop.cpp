@@ -71,12 +71,12 @@ STATE_TYPE CState_PathNavigation_Sprint_Priest_Loop::Tick(CUnit* pOwner, CAnimat
 
         case 3:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTEND_PRIEST;
 
+            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_PRIEST;
 
         case 4:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_PRIEST;
+            return AI_STATE_PATHNAVIGATION_SPRINTEND_PRIEST;
 
         default:
 

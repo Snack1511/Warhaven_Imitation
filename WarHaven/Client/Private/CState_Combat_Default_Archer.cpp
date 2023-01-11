@@ -160,11 +160,15 @@ STATE_TYPE CState_Combat_Default_Archer::Near_Enemy(CUnit* pOwner, _bool bUseAdj
 	if (Get_TargetLook_Length(pOwner) < m_fAIMyLength / 2.2f)
 	{
 
-		if (pOwner->Can_Use(CUnit::SKILL1))
-			return AI_STATE_COMBAT_ATTACK_SWING_ARCHER;
+		//if (pOwner->Can_Use(CUnit::SKILL1))
+		//	return AI_STATE_COMBAT_ATTACK_SWING_ARCHER;
 
-		else if (m_iRand >= 3)
-			return AI_STATE_COMBAT_GUARDLOOP_ARCHER;
+		//else if (m_iRand >= 3)
+		//	return AI_STATE_COMBAT_GUARDLOOP_ARCHER;
+
+		// 다 완료 되면 이 위치 주석 m_iRand >= 3
+				if (m_iRand >= 3)
+			return m_eStateType;
 
 		else if (m_iRand >= 6)
 			return m_eStateType;
@@ -199,77 +203,4 @@ STATE_TYPE CState_Combat_Default_Archer::Near_Enemy(CUnit* pOwner, _bool bUseAdj
 	}
 
 	return STATE_END;
-}
-
-_bool CState_Combat_Default_Archer::Check_ArrowRay(_float4* pOutPos, CUnit* pOwner)
-{
-
-	_float4 vStartPos = static_cast<CUnit_Archer*>(pOwner)->Get_CurArrow()->Get_ArrowHeadPos();
-	_float4 vDir = static_cast<CUnit_Archer*>(pOwner)->Get_CurArrow()->Get_Transform()->Get_World(WORLD_RIGHT);
-	_float fMaxDistance = static_cast<CUnit_Archer*>(pOwner)->Get_CurArrow()->Get_MaxDistance();
-
-	_float fMinDist;
-	_float4 vFinalHitPos;
-
-	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
-		*pOutPos = vFinalHitPos;
-
-	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
-	list<PxController*> listPxControllers;
-	for (auto& elem : listPlayers)
-	{
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(elem);
-		if (!pPlayer)
-			continue;
-
-		if (!pPlayer->Is_Valid())
-			continue;
-
-		CUnit* pUnit = pPlayer->Get_CurrentUnit();
-
-		if (!pUnit->Is_Valid())
-			continue;
-
-		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pUnit->Get_Transform()->Get_World(WORLD_POS).XMLoad(), 1.5f))
-			continue;
-
-		CPhysXCharacter* pPhysXCom = GET_COMPONENT_FROM(pUnit, CPhysXCharacter);
-
-		PxController* pController = pPhysXCom->Get_PxController();
-
-		if (!pController)
-			continue;
-
-		listPxControllers.push_back(pController);
-	}
-
-	if (GAMEINSTANCE->Shoot_RaytoControllers(listPxControllers, fMinDist, &vFinalHitPos, vStartPos, vDir, fMaxDistance))
-	{
-		if (*pOutPos != vFinalHitPos)
-		{
-
-		}
-		else
-		{
-			if (vFinalHitPos.x <= FLT_MIN &&
-				vFinalHitPos.x >= -FLT_MIN)
-				return false;
-		}
-
-		*pOutPos = vFinalHitPos;
-	}
-
-	
-	if (!pOwner->Get_TargetUnit())
-		return false;
-
-
-	_float fStaticObjectLength = fabs((vFinalHitPos - pOwner->Get_Transform()->Get_World(WORLD_POS)).Length());
-	_float fTargetObjectLength = fabs((pOwner->Get_TargetUnit()->Get_Transform()->Get_World(WORLD_POS)
-		- pOwner->Get_Transform()->Get_World(WORLD_POS)).Length());
-
-	if(fStaticObjectLength < fTargetObjectLength)
-		return false;
-
-	return true;
 }

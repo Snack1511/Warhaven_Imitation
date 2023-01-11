@@ -69,12 +69,12 @@ STATE_TYPE CState_PathNavigation_Sprint_Fiona_Loop::Tick(CUnit* pOwner, CAnimato
 
         case 3:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
 
+            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_FIONA;
 
         case 4:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_FIONA;
+            return AI_STATE_PATHNAVIGATION_SPRINTEND_FIONA;
 
         default:
 

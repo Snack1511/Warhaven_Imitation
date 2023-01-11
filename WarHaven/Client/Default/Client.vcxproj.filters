@@ -3676,6 +3676,48 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info">
       <UniqueIdentifier>{71372463-90c0-4ea4-a618-8c09be897d4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer">
+      <UniqueIdentifier>{d45566ec-687f-4822-b257-35ed28622dbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\01. Right">
+      <UniqueIdentifier>{36d31b51-96b0-4f9a-90c6-f7bc5dc0e5c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\02. Left">
+      <UniqueIdentifier>{330d8735-e52c-4fa9-9909-cc3f547cd80c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer">
+      <UniqueIdentifier>{30ed35b1-ed94-471f-8749-cf239d2a50a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump">
+      <UniqueIdentifier>{47936565-6e38-49e3-a214-90803603bdd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run">
+      <UniqueIdentifier>{2da6e8ac-f27c-428e-92c0-ad8042ab4a83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\03. End">
+      <UniqueIdentifier>{6870057d-f5b1-4d29-a674-739f7ef479ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\01. Jump">
+      <UniqueIdentifier>{98ddf8dd-0422-44aa-a11d-855d5381a141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\02. Fall">
+      <UniqueIdentifier>{6cbefc06-a554-42a4-8e1e-4e2e7fb8748c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\01. Begin">
+      <UniqueIdentifier>{77c379da-3e66-4a17-92cb-8181ce1db7f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\02. Loop">
+      <UniqueIdentifier>{ddba663c-6f6a-43a2-85a5-5a48df9cb9ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer">
+      <UniqueIdentifier>{f9f115ec-3532-4fca-be16-648fd69807e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right">
+      <UniqueIdentifier>{2b61d658-0abd-42d2-be89-159c29aa9c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\02. Left">
+      <UniqueIdentifier>{d3b4416d-ad0e-40fa-9f09-7b73c4bea6c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6618,6 +6660,42 @@
     <ClInclude Include="..\Public\CUI_Info.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Run_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\01. Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Begin.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\01. Begin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_End.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\03. End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Fall.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\02. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Loop.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Sprint_Archer_Jump.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\01. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_L.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\02. Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_R.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9540,6 +9618,42 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Info.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Run_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\01. Run\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Begin.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\01. Begin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_End.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\03. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Fall.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\02. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Loop.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\02. Run\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Sprint_Archer_Jump.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\02. Sprint\05. Archer\01. Jump\01. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_L.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\02. Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_R.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

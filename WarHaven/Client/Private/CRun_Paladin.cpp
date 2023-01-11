@@ -65,6 +65,11 @@ void CRun_Paladin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTy
 	else
 		m_fInterPolationTime = 0.1f;
 
+	if (ePrevType == STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_R || ePrevType == STATE_ATTACK_HORIZONTALMIDDLE_PALADIN_L)
+	{
+		m_fInterPolationTime = 0.3f;
+	}
+
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

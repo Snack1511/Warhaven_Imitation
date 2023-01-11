@@ -63,7 +63,7 @@ HRESULT CPaladin_Attack_ShieldSlam::Initialize()
 
 	m_fInterPolationTime = 0.1f;
 	m_fAnimSpeed = 2.5f;
-	m_iStateChangeKeyFrame = 72;
+	m_iStateChangeKeyFrame = 999;
 
 
 	m_fMyAccel = 10.f;
@@ -203,6 +203,15 @@ void CPaladin_Attack_ShieldSlam::Enter(CUnit* pOwner, CAnimator* pAnimator, STAT
 
 STATE_TYPE CPaladin_Attack_ShieldSlam::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {		
+	if (pAnimator->Is_CurAnimFinished())
+	{
+		if (KEY(W, HOLD) || KEY(A, HOLD) || KEY(S, HOLD) || KEY(D, HOLD))
+			return STATE_RUNBEGIN_PALADIN_L;
+
+		else
+			return STATE_IDLE_PALADIN_L;
+	}
+
 	return __super::Tick(pOwner, pAnimator);
 }
 

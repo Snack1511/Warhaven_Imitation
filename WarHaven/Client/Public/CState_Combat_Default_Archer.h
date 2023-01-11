@@ -24,7 +24,6 @@ protected:
 
 private:
 	STATE_TYPE	Near_Enemy(CUnit* pOwner, _bool bUseAdjSkill);
-	_bool Check_ArrowRay(_float4* pOutPos, CUnit* pOwner);
 
 
 };

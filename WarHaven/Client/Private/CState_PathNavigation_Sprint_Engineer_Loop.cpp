@@ -73,12 +73,12 @@ STATE_TYPE CState_PathNavigation_Sprint_Engineer_Loop::Tick(CUnit* pOwner, CAnim
 
         case 3:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
 
+            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_ENGINEER;
 
         case 4:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_ENGINEER;
+            return AI_STATE_PATHNAVIGATION_SPRINTEND_ENGINEER;
 
         default:
 

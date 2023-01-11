@@ -800,6 +800,21 @@
 #include "CState_PathNavigation_Fall_Fiona_L.h"
 #include "CState_PathNavigation_Fall_Fiona_R.h"
 
+
+#include "CState_PathNavigation_Run_Archer_L.h"
+#include "CState_PathNavigation_Run_Archer_R.h"
+
+#include "CState_PathNavigation_Sprint_Archer_Begin.h"
+#include "CState_PathNavigation_Sprint_Archer_Loop.h"
+#include "CState_PathNavigation_Sprint_Archer_End.h"
+#include "CState_PathNavigation_Sprint_Archer_Jump.h"
+#include "CState_PathNavigation_Sprint_Archer_Fall.h"
+#include "CState_PathNavigation_Jump_Archer_L.h"
+#include "CState_PathNavigation_Jump_Archer_R.h"
+#include "CState_PathNavigation_Fall_Archer_L.h"
+#include "CState_PathNavigation_Fall_Archer_R.h"
+
+
 #include "CState_PathNavigation_Default_Paladin_L.h"
 #include "CState_PathNavigation_Default_Paladin_R.h"
 #include "CState_PathNavigation_Walk_Paladin_L.h"
@@ -2127,6 +2142,26 @@ void CState_Manager::Archer_State_AI()
 	m_arrStates[AI_STATE_PATROL_WALK_ARCHER_R] = CState_Patrol_Walk_Archer_R::Create();
 
 #pragma endregion
+
+
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
+
+	// ¼öÁ¤ ¤¡¤¡
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_WALK_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTBEGIN_ARCHER] = CState_PathNavigation_Sprint_Archer_Begin::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTLOOP_ARCHER] = CState_PathNavigation_Sprint_Archer_Loop::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTEND_ARCHER] = CState_PathNavigation_Sprint_Archer_End::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMP_ARCHER] = CState_PathNavigation_Sprint_Archer_Jump::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ARCHER] = CState_PathNavigation_Sprint_Archer_Fall::Create();
+
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ARCHER_L] = CState_PathNavigation_Jump_Archer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_JUMP_ARCHER_R] = CState_PathNavigation_Jump_Archer_R::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_ARCHER_L] = CState_PathNavigation_Run_Archer_L::Create();
+	m_arrStates[AI_STATE_PATHNAVIGATION_FALL_ARCHER_R] = CState_PathNavigation_Run_Archer_R::Create();
 
 #pragma region Combat
 

@@ -75,12 +75,12 @@ STATE_TYPE CState_PathNavigation_Sprint_Warrior_Loop::Tick(CUnit* pOwner, CAnima
 
         case 3:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
+            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR;
 
 
         case 4:
 
-            return AI_STATE_PATHNAVIGATION_SPRINTJUMP_WARRIOR;
+            return AI_STATE_PATHNAVIGATION_SPRINTEND_WARRIOR;
 
         default:
 

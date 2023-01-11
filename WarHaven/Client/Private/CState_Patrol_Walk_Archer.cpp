@@ -59,20 +59,8 @@ STATE_TYPE CState_Patrol_Walk_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
 	_uint iFrame = pAnimator->Get_CurAnimFrame() + 1;
 
-	if (m_iDirectionRand % 3 == 0)
-	{
-		if (iFrame == m_iWalkDelay)
-		{
-			return m_eStateType;
-		}
-	}
-	else if(m_iDirectionRand % 2 == 0)
-	{
-		if (iFrame == m_iWalkDelay * 2)
-		{
-			return m_eStateType;
-		}
-	}
+	if (pAnimator->Is_CurAnimFinished())
+		return m_eStateType;
 
 
 	DoMove_AI_NoTarget(pOwner, pAnimator);

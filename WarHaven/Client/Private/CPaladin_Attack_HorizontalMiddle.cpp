@@ -34,7 +34,7 @@ HRESULT CPaladin_Attack_HorizontalMiddle::Initialize()
 
 	m_fAnimSpeed = 2.5f;
 
-	m_iStateChangeKeyFrame = 70;
+	m_iStateChangeKeyFrame = 9999;
 
 
 	m_fMyAccel = 10.f;

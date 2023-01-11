@@ -189,8 +189,8 @@ void CUnit_Archer::SetUp_ReserveState(UNIT_TYPE eUnitType)
 	case Client::CUnit::UNIT_TYPE::eAI_Default:
 
 		m_eDefaultState = AI_STATE_COMBAT_DEFAULT_ARCHER_R;
-		m_eSprintEndState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
-	//	m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_AR;
+		m_eSprintEndState = AI_STATE_PATHNAVIGATION_SPRINTEND_ARCHER;
+		m_eSprintFallState = AI_STATE_PATHNAVIGATION_SPRINTJUMPFALL_ARCHER;
 
 		break;
 
@@ -229,7 +229,7 @@ void CUnit_Archer::On_ChangeBehavior(BEHAVIOR_DESC* pBehaviorDesc)
 		break;
 	case eBehaviorType::ePathNavigation:
 		//상태변경
-		eNewState = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		eNewState = AI_STATE_PATHNAVIGATION_DEFAULT_ARCHER_R;
 		break;
 
 	case eBehaviorType::eResurrect:
