@@ -56,8 +56,7 @@ HRESULT CState_Cannon_Player::Initialize()
 
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 1.5f;
-    m_fDamagePumping = 2.f;
-
+    m_fDamagePumping = 7.f;
 
     return S_OK;
 }

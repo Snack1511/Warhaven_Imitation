@@ -619,19 +619,19 @@ void CLancerNeedle::Dragging_Unit()
 			break;
 
 		case Client::SPEAR:
-
+			vOtherPos.y -= 0.55f;
 			break;
 
 		case Client::ARCHER:
-
+			vOtherPos.y -= 0.55f;
 			break;
 
 		case Client::PALADIN:
-
+			vOtherPos.y -= 0.55f;
 			break;
 
 		case Client::PRIEST:
-
+			vOtherPos.y -= 0.55f;
 			break;
 
 		case Client::ENGINEER:
@@ -643,7 +643,7 @@ void CLancerNeedle::Dragging_Unit()
 			break;
 
 		case Client::QANDA:
-
+			vOtherPos.y -= 0.55f;
 			break;
 
 		case Client::HOEDT:

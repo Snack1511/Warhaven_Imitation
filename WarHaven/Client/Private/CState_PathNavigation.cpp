@@ -84,6 +84,7 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 		pCurPath->Update_CurrentIndex(vCurPos);
 		
 	}
+
 	CCell* pCurCell = pOwner->Get_NaviCom()->Get_CurCell(vCurPos, CGameSystem::Get_Instance()->Get_CellLayer());
 
 

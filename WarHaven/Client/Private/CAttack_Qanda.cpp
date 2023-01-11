@@ -740,6 +740,10 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pTraillPos, _float4* pAimPos, CUnit*
 		}
 		else
 		{
+			if (vFinalHitPos.x <= FLT_MIN &&
+				vFinalHitPos.x >= -FLT_MIN)
+				return false;
+
 			CUser::Get_Instance()->Set_ArcherPoint(false);
 		}
 

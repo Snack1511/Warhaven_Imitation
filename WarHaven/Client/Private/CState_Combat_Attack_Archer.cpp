@@ -313,5 +313,6 @@ _bool CState_Combat_Attack_Archer::Check_ArrowRay(_float4* pOutPos)
 
 		*pOutPos = vFinalHitPos;
 	}
+
 	return true;
 }

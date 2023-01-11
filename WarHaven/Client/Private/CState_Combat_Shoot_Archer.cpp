@@ -192,6 +192,7 @@ void CState_Combat_Shoot_Archer::Choice_Arrow(CUnit* pOwner)
 		if (pOwner->Can_Use(CUnit::SKILL2))
 		{
 			static_cast<CUnit_Archer*>(pOwner)->Create_PurpleArrow();
+			pOwner->Get_SkillTrigger().bSkillETrigger = true;
 			pOwner->On_Use(CUnit::SKILL2);
 		}
 			
@@ -206,6 +207,7 @@ void CState_Combat_Shoot_Archer::Choice_Arrow(CUnit* pOwner)
 		if (pOwner->Can_Use(CUnit::SKILL3))
 		{
 			static_cast<CUnit_Archer*>(pOwner)->Create_SnipeArrow();
+			pOwner->Get_SkillTrigger().bSkillQTrigger = true;
 			pOwner->On_Use(CUnit::SKILL3);
 		}
 			

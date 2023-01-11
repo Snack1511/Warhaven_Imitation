@@ -1319,7 +1319,7 @@ void CUnit::My_Tick()
 
 		}
 
-	}
+	}	
 
 	STATE_TYPE eNewState = STATE_END;
 	eNewState = m_pCurState->Tick(this, m_pAnimator);

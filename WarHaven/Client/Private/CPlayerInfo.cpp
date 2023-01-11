@@ -270,8 +270,8 @@ void	CPlayerInfo::Set_CustomHead_Paladin(eCUSTOM_HEAD eHeadEnum)
 		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin0001_Helmet_A00_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eHEAD1:
-		//m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin0001_Helmet_A00_50.fbx";
-		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin_Helm_50.fbx";
+		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin0001_Helmet_A00_50.fbx";
+		//m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin_Helm_50.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_HEAD::eRABBIT:
 		m_tPlayerSetUpData.wstrHelmetMeshPath[PALADIN] = L"../bin/resources/meshes/characters/Paladin/head/SK_Paladin_Helm_50.fbx";
@@ -626,15 +626,15 @@ void CPlayerInfo::Set_CustomBody_Lancer(eCUSTOM_BODY eBodyEnum)
 	switch (eBodyEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
-		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/SK_Lancer0001_Body_A00_10.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/Test_Lancer2_100.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
 		//m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0004_Body_A00_50.fbx";
-		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/SK_Lancer0001_Body_A00_10.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/Test_Lancer2_100.fbx";
 		break;
 
 	default:
-		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/SK_Lancer0001_Body_A00_10.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/Test_Lancer2_100.fbx";
 		break;
 	}
 }

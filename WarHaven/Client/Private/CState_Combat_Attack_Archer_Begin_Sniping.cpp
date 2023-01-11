@@ -85,6 +85,7 @@ STATE_TYPE CState_Combat_Attack_Archer_Begin_Sniping::Tick(CUnit* pOwner, CAnima
 
 void CState_Combat_Attack_Archer_Begin_Sniping::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Get_SkillTrigger().bSkillQTrigger = false;
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
 	//m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
 

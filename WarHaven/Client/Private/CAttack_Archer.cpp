@@ -746,10 +746,17 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos, CUnit* pOwner)
 		}
 		else
 		{
+			if(vFinalHitPos.x <= FLT_MIN &&
+				vFinalHitPos.x >= -FLT_MIN)
+				return false;
+
 			CUser::Get_Instance()->Set_ArcherPoint(false);
 		}
 
 		*pOutPos = vFinalHitPos;
 	}
+	else
+		return false;
+
 	return true;
 }
