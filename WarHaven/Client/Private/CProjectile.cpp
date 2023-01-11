@@ -18,6 +18,7 @@
 
 #include "CTrailBuffer.h"
 #include "Easing_Utillity.h"
+#include "CUI_UnitHUD.h"
 
 CProjectile::CProjectile()
 {
@@ -550,8 +551,8 @@ void CProjectile::My_LateTick()
 
 		if (0.f >= m_pTargetUnit->Get_Status().fHP)
 		{
-			if(0.5f > vLook.Length())
-				DISABLE_GAMEOBJECT(this);
+			if (0.5f > vLook.Length())
+				DISABLE_GAMEOBJECT(this);		
 		}
 
 		vLook.Normalize();

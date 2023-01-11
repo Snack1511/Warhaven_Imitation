@@ -273,6 +273,8 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_ProjPos(pTransform);
 
+
+	vNewPos.y -= 30.f;
 	for (int i = 0; i < Target_End; ++i)
 		m_pTargetUI[i]->Set_Pos(vNewPos);
 }
@@ -303,8 +305,16 @@ void CUI_UnitHUD::Set_RevivalIcon(_uint iIconIdx)
 
 void CUI_UnitHUD::SetActive_TargetUI(_uint iIdx, _bool value)
 {
-	m_fMaxEanbleTargetUITime = 0.2f * (iIdx + 1.f);
-	m_bEnableTargetUI = value;
+	if (value == false)
+	{
+		for (int i = 0; i < Target_End; ++i)
+			m_pTargetUI[i]->SetActive(false);
+	}
+	else
+	{
+		m_fMaxEanbleTargetUITime = 0.1f * (iIdx + 1.f);
+		m_bEnableTargetUI = value;
+	}
 }
 
 void CUI_UnitHUD::Create_UnitHUD()
