@@ -938,8 +938,8 @@ void CUI_Paden::Create_HwaraGauge()
 	{
 		m_pHwaraGauge[i] = CUI_Object::Create();
 
-		GET_COMPONENT_FROM(m_pHwaraGauge[i], CTexture)->Remove_Texture(0);
-		Read_Texture(m_pHwaraGauge[i], "/Paden/TopGauge", "Bar");
+		 GET_COMPONENT_FROM(m_pHwaraGauge[i], CTexture)->Remove_Texture(0);
+		 Read_Texture(m_pHwaraGauge[i], "/Paden/TopGauge", "Bar");
 
 		m_pHwaraGauge[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Paden/T_ArrowStroke.dds"));
 		m_pHwaraGauge[i]->SetTexture(TEXT("../Bin/Resources/Textures/UI/Paden/TopGauge/T_Pattern_53.dds"));

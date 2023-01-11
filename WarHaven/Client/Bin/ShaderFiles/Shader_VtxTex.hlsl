@@ -676,13 +676,17 @@ PS_OUT PS_HWARAGAUGE(PS_IN In)
     
     vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
    
-    // In.vTexUV.x *= 10.f;
+    In.vTexUV.x *= 10.f;
+    
     vector vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
         
-    Out.vColor = vNoise;
-    Out.vColor.a += vNoise.r;
-    Out.vColor.a = vNormal.r;
+    Out.vColor = vColor;
+    Out.vColor += vNoise;
+    // Out.vColor.a = vNormal.r;
+    
+    if (Out.vColor.a < 0.1f)
+        discard;
     
     return Out;
 }
