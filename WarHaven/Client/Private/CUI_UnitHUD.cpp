@@ -198,53 +198,21 @@ void CUI_UnitHUD::My_Tick()
 			m_pUnitNameText->Set_Color(vColorAlpha);
 		}
 	}
-
-	_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
-	if (fHpGaugeRatio < 1.f)
+			
+	if (m_pUnitUI[UI_Hp]->Is_Valid())
 	{
+		_float fHpGaugeRatio = m_tStatus.fHP / m_tStatus.fMaxHP;
 		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_GaugeRatio(fHpGaugeRatio);
 
-		SetActive_UnitHP(true);
-
-		if (m_tStatus.fHP <= 0.f)
+		m_fEnableHpTime += fDT(0);
+		if (m_fEnableHpTime > m_fDisableHpTime)
 		{
-			for (int i = 0; i < Target_End; ++i)
-			{
-				if (m_pTargetUI[i]->Is_Valid())
-					m_pTargetUI[i]->SetActive(false);
-			}
-		}
-	}
-	/*else
-	{
-		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->SetActive_HealBlur(false);
-	}*/
-
-
-	if (m_bEnableTargetUI)
-	{
-		m_fEanbleTargetUITime += fDT(0);
-		if (m_fEanbleTargetUITime > m_fMaxEanbleTargetUITime)
-		{
-			m_fEanbleTargetUITime = 0.f;
-			m_bEnableTargetUI = false;
-
-			m_pTargetUI[Target_Point]->SetActive(true);
-			m_pTargetUI[Target_Point]->Lerp_Scale(70.f, 30.f, 0.3f);
+			m_fEnableHpTime = 0.f;
+			SetActive_UnitHP(false);
 		}
 	}
 
-	if (m_pTargetUI[Target_Point]->Is_Valid())
-	{
-		m_fTargetRotValue += fDT(0) * 10.f;
-		m_pTargetUI[Target_Point]->Set_RotationZ(m_fTargetRotValue);
-
-		if (!m_pTargetUI[Target_Blink]->Is_Valid())
-		{
-			Enable_Fade(m_pTargetUI[Target_Blink], 0.3f);
-			m_pTargetUI[Target_Blink]->Lerp_Scale(1.f, 30.f, 0.7f);
-		}
-	}
+	Tick_TargetUI();
 }
 
 void CUI_UnitHUD::My_LateTick()
@@ -272,7 +240,6 @@ void CUI_UnitHUD::Set_ProjPos(CTransform* pTransform)
 		m_pUnitNameText->Set_PosY(300.f);
 
 	dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_ProjPos(pTransform);
-
 
 	vNewPos.y -= 30.f;
 	for (int i = 0; i < Target_End; ++i)
@@ -396,24 +363,24 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 	{
 		if (!m_pUnitUI[UI_Hp]->Is_Valid())
 		{
-			if (m_pOwner->Get_Team())
-			{
-				if (m_pOwner->Get_Team()->IsMainPlayerTeam())
-				{
-					if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
-					{
-						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorLightGreen);
-					}
-					else
-					{
-						dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorBlue);
-					}
-				}
-				else
-				{
-					dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
-				}
-			}
+			// if (m_pOwner->Get_Team())
+			// {
+			// 	if (m_pOwner->Get_Team()->IsMainPlayerTeam())
+			// 	{
+			// 		if (m_pOwner->Get_OutlineType() == CPlayer::eSQUADMEMBER)
+			// 		{
+			// 			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorLightGreen);
+			// 		}
+			// 		else
+			// 		{
+			// 			dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorBlue);
+			// 		}
+			// 	}
+			// 	else
+			// 	{
+			// 		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->Set_UnitHPColor(m_vColorRed);
+			// 	}
+			// }
 
 			ENABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
 		}
@@ -423,6 +390,43 @@ void CUI_UnitHUD::SetActive_UnitHP(_bool value)
 		if (m_pUnitUI[UI_Hp]->Is_Valid())
 		{
 			DISABLE_GAMEOBJECT(m_pUnitUI[UI_Hp]);
+		}
+	}
+}
+
+void CUI_UnitHUD::Tick_TargetUI()
+{
+	if (m_tStatus.fHP <= 0.f)
+	{
+		for (int i = 0; i < Target_End; ++i)
+		{
+			if (m_pTargetUI[i]->Is_Valid())
+				m_pTargetUI[i]->SetActive(false);
+		}
+	}
+
+	if (m_bEnableTargetUI)
+	{
+		m_fEanbleTargetUITime += fDT(0);
+		if (m_fEanbleTargetUITime > m_fMaxEanbleTargetUITime)
+		{
+			m_fEanbleTargetUITime = 0.f;
+			m_bEnableTargetUI = false;
+
+			m_pTargetUI[Target_Point]->SetActive(true);
+			m_pTargetUI[Target_Point]->Lerp_Scale(70.f, 30.f, 0.3f);
+		}
+	}
+
+	if (m_pTargetUI[Target_Point]->Is_Valid())
+	{
+		m_fTargetRotValue += fDT(0) * 10.f;
+		m_pTargetUI[Target_Point]->Set_RotationZ(m_fTargetRotValue);
+
+		if (!m_pTargetUI[Target_Blink]->Is_Valid())
+		{
+			Enable_Fade(m_pTargetUI[Target_Blink], 0.3f);
+			m_pTargetUI[Target_Blink]->Lerp_Scale(1.f, 30.f, 0.7f);
 		}
 	}
 }

@@ -166,18 +166,18 @@ void CUI_Info::Init_InfoText()
 
 		m_pInfoText[Text_0]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Paden_MapInfo0.png"));
 		m_pInfoText[Text_0]->Set_Scale(129.f, 30.f);
-		m_pInfoText[Text_0]->Set_PosX(fPosX - 62.f);
+		m_pInfoText[Text_0]->Set_PosX(fPosX - 65.f);
 		m_pInfoText[Text_0]->Set_PosY(-25.f);
 		m_pInfoText[Text_0]->Set_Color(m_vColorGold);
 
 		m_pInfoText[Text_1]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Paden_MapInfo1.png"));
 		m_pInfoText[Text_1]->Set_Scale(145.f, 30.f);
-		m_pInfoText[Text_1]->Set_PosX(fPosX + 52.f);
+		m_pInfoText[Text_1]->Set_PosX(fPosX + 55.f);
 		m_pInfoText[Text_1]->Set_PosY(-25.f);
 
 		m_pInfoText[Text_2]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Text/Paden_MapInfo2.png"));
 		m_pInfoText[Text_2]->Set_Scale(183.f, 30.f);
-		m_pInfoText[Text_2]->Set_PosX(fPosX - 35.f);
+		m_pInfoText[Text_2]->Set_PosX(fPosX - 37.f);
 		m_pInfoText[Text_2]->Set_PosY(-52.f);
 		m_pInfoText[Text_2]->Set_Color(m_vColorGold);
 

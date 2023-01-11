@@ -18,7 +18,7 @@ vector g_vFlag;
 vector g_vGlowFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 float g_fValue;
-bool bFlip;
+bool g_bFlip;
 
 float g_fHpRatio;
 float g_fHeroGaugeRatio;
@@ -555,7 +555,7 @@ PS_OUT PS_HorizontalGauge(PS_IN In)
     Out.vColor *= g_vColor;
     Out.vColor.w *= g_fAlpha;
     
-    if (bFlip)
+    if (g_bFlip)
     {
         if (In.vTexUV.x < g_fValue)
             discard;
@@ -675,10 +675,31 @@ PS_OUT PS_HWARA_ARROW(PS_IN In)
     Out.vFlag = g_vFlag;
     
     In.vTexUV.x *= g_fUVPlusY;
+    In.vTexUV.x += g_fValue;
+        
+    if (g_bFlip)
+        In.vTexUV.x *= -1.f;
+    
     vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vColor = vColor;
     vColor.a = g_fAlpha;
+    
+    return Out;
+}
+
+PS_OUT PS_HWARA_GLOWLINE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vFlag = g_vFlag;
+            
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    Out.vColor = vColor;
+    vColor.a = g_fAlpha;
+    
+    if (vColor.r < 0.1f)
+        discard;
     
     return Out;
 }
@@ -1435,6 +1456,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_HWARA_ARROW();
+    }
+
+    pass UI_HwaraGlowLine
+    {
+        SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_HWARA_GLOWLINE();
     }
 
     pass ALPHA

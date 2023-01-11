@@ -169,6 +169,7 @@ private:	// Hwara
 	CUI_Object* m_pArrHwaraGauge[Team_End][Hwara_End];
 
 	_float m_fUVTexY[Team_End];
+	_float m_fUVMoveX[Team_End];
 
 
 private:

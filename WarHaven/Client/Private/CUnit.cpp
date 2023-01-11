@@ -498,6 +498,7 @@ void CUnit::On_Sliding(_float4 vHitNormal)
 
 }
 
+
 void CUnit::On_Attack(CState* pState)
 {
 	_int iKeyFrame = pState->Get_StateChangeKeyFrame();
@@ -1561,6 +1562,8 @@ void CUnit::On_Hit(CUnit* pOtherUnit, _uint iOtherColType, _float4 vHitPos, void
 	_float fDamage = pOtherUnit->Calculate_Damage(tInfo.bHeadShot, false);
 
 	_bool bDie = On_PlusHp(fDamage, pOtherUnit, tInfo.bHeadShot, 3);
+
+	Get_OwnerHUD()->SetActive_UnitHP(true);
 
 	/*블러드 오버레이*/
 	if (m_bIsMainPlayer)
