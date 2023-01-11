@@ -580,7 +580,20 @@ void CUI_Result::Progress_Result()
 		if (m_fDissolveValue < 0.f)
 		{
 			m_fDissolveValue = 0.f;
+			m_iResultProgressCnt++;
+
 			m_pResultMVP[MVP_Player]->Set_FontRender(true);
+		}
+	}
+	else if (m_iResultProgressCnt == 5)
+	{
+		m_fAccTime += fDT(0);
+		if (m_fAccTime > 1.f)
+		{
+			m_fAccTime = 0.f;
+			m_iResultProgressCnt++;
+
+			CUser::Get_Instance()->Enable_SkinPopup(1);
 		}
 	}
 }

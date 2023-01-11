@@ -940,6 +940,12 @@ void CUser::Unlock_RabbitHat()
 		m_pBarracks->Unlock_RabbitHat();
 }
 
+void CUser::Unlock_EpicWarriorClothes()
+{
+	if (m_pBarracks)
+		m_pBarracks->Unlock_EpicWarriorClothes();
+}
+
 void CUser::SetActive_SkinPopup(_bool value)
 {
 	if (m_pUI_Popup)

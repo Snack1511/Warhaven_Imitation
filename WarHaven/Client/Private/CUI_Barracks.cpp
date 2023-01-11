@@ -287,6 +287,11 @@ void CUI_Barracks::Unlock_RabbitHat()
 	m_bIsUnlock_RabbitHat = true;
 }
 
+void CUI_Barracks::Unlock_EpicWarriorClothes()
+{
+	m_bIsUnlock_EpicWarriorClothes = true;
+}
+
 void CUI_Barracks::My_Tick()
 {
 	__super::My_Tick();

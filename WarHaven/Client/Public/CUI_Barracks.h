@@ -33,6 +33,7 @@ public:
 
 public:
 	void Unlock_RabbitHat();
+	void Unlock_EpicWarriorClothes();
 
 private:
 	virtual void My_Tick() override;

@@ -231,6 +231,7 @@ public:	// 메인메뉴
 
 	void SetActive_Barracks(_bool value);
 	void Unlock_RabbitHat();
+	void Unlock_EpicWarriorClothes();
 	void SetActive_SkinPopup(_bool value);
 
 	void Set_BreezeTime(_float fCurTime, _float fMaxTime);
