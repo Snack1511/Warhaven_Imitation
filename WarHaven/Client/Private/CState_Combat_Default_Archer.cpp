@@ -6,6 +6,7 @@
 
 #include "CAnimator.h"
 #include "CUnit.h"
+#include "CUnit_Archer.h"
 
 #include "CUser.h"
 
@@ -52,6 +53,14 @@ void CState_Combat_Default_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CState_Combat_Default_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	//_float4 vHitPos;
+
+	//if (!Check_ArrowRay(&vHitPos, pOwner))
+	//{
+	//	DoMove_AI(pOwner, pAnimator);
+	//	return __super::Tick(pOwner, pAnimator);
+	//}
+
 	STATE_TYPE eAttackType = Near_Enemy(pOwner, false);
 
 	if (eAttackType != STATE_END)
@@ -151,11 +160,15 @@ STATE_TYPE CState_Combat_Default_Archer::Near_Enemy(CUnit* pOwner, _bool bUseAdj
 	if (Get_TargetLook_Length(pOwner) < m_fAIMyLength / 2.2f)
 	{
 
-		if (pOwner->Can_Use(CUnit::SKILL1))
-			return AI_STATE_COMBAT_ATTACK_SWING_ARCHER;
+		//if (pOwner->Can_Use(CUnit::SKILL1))
+		//	return AI_STATE_COMBAT_ATTACK_SWING_ARCHER;
 
-		else if (m_iRand >= 3)
-			return AI_STATE_COMBAT_GUARDLOOP_ARCHER;
+		//else if (m_iRand >= 3)
+		//	return AI_STATE_COMBAT_GUARDLOOP_ARCHER;
+
+		// 다 완료 되면 이 위치 주석 m_iRand >= 3
+				if (m_iRand >= 3)
+			return m_eStateType;
 
 		else if (m_iRand >= 6)
 			return m_eStateType;
@@ -191,4 +204,3 @@ STATE_TYPE CState_Combat_Default_Archer::Near_Enemy(CUnit* pOwner, _bool bUseAdj
 
 	return STATE_END;
 }
-

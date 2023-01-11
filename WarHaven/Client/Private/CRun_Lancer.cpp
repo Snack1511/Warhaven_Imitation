@@ -45,7 +45,7 @@ HRESULT CRun_Lancer::Initialize()
     // 애니메이션의 전체 속도를 올려준다.
     m_fAnimSpeed = 2.f;
     m_fMyMaxLerp = 0.4f;
-    m_fMyAccel = 10.f;
+    m_fMyAccel = 30.f;
 
     m_vecAdjState.push_back(STATE_STOP_LANCER);
     m_vecAdjState.push_back(STATE_JUMP_LANCER);
@@ -81,7 +81,7 @@ void CRun_Lancer::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevTyp
 {
     m_fMaxSpeed = pOwner->Get_Status().fSprintSpeed;
 
-    Physics_Setting(m_fMaxSpeed, pOwner);
+    Physics_Setting(m_fMaxSpeed, pOwner, false);
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);
 }

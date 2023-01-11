@@ -21,7 +21,7 @@ HRESULT CState_PathNavigation_Fall_Archer::Initialize()
 {
     __super::Initialize();
 
-    m_iStateChangeKeyFrame = 0;
+    m_iStateChangeKeyFrame = 99;
 
     m_fInterPolationTime = 0.15f;
 

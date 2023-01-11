@@ -61,10 +61,6 @@ STATE_TYPE CState_Patrol_Default_Archer_R::Tick(CUnit* pOwner, CAnimator* pAnima
             return AI_STATE_PATROL_WALK_ARCHER_R;
         }
     }
-    else
-    {
-        return m_eStateType;
-    }
 
 
     return __super::Tick(pOwner, pAnimator);

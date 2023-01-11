@@ -26,7 +26,6 @@ private:
 	STATE_TYPE	Near_Enemy(CUnit* pOwner, _bool bUseAdjSkill);
 
 
-
 };
 
 END

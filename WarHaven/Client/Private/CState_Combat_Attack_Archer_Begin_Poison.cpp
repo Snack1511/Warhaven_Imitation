@@ -84,6 +84,7 @@ STATE_TYPE CState_Combat_Attack_Archer_Begin_Poison::Tick(CUnit* pOwner, CAnimat
 
 void CState_Combat_Attack_Archer_Begin_Poison::Exit(CUnit* pOwner, CAnimator* pAnimator)
 {
+	pOwner->Get_SkillTrigger().bSkillETrigger = false;
 	pOwner->Set_AnimWeaponIndex(CAnimWeapon::eATTACKLOOP, FLT_MAX, FLT_MIN);
 	//m_pCoreBone->Set_PrevMatrix(static_cast<CUnit_Archer*>(pOwner)->Get_CoreMat());
 
@@ -115,3 +116,4 @@ void CState_Combat_Attack_Archer_Begin_Poison::On_KeyFrameEvent(CUnit * pOwner, 
 	}
 
 }
+

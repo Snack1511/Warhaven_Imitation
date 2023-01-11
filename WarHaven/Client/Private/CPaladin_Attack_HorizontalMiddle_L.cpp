@@ -60,7 +60,7 @@ HRESULT CPaladin_Attack_HorizontalMiddle_L::Initialize()
 	m_eJumpState = STATE_JUMP_PALADIN_R;
 	m_eLandState = STATE_JUMP_LAND_PALADIN_R;
 	m_eFallState = STATE_JUMPFALL_PALADIN_R;
-	m_eRunState = STATE_RUNBEGIN_PALADIN_R;
+	m_eRunState = STATE_RUN_PALADIN_R;
 	m_eIdleState = STATE_IDLE_PALADIN_R;
 	m_eBounceState = STATE_BOUNCE_PALADIN_L;
 
@@ -88,7 +88,6 @@ void CPaladin_Attack_HorizontalMiddle_L::Enter(CUnit* pOwner, CAnimator* pAnimat
 
 STATE_TYPE CPaladin_Attack_HorizontalMiddle_L::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-
 	return __super::Tick(pOwner, pAnimator);
 }
 

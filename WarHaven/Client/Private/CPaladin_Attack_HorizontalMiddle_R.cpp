@@ -64,7 +64,7 @@ HRESULT CPaladin_Attack_HorizontalMiddle_R::Initialize()
 	m_eJumpState = STATE_JUMP_PALADIN_L;
 	m_eLandState = STATE_JUMP_LAND_PALADIN_L;
 	m_eFallState = STATE_JUMPFALL_PALADIN_L;
-	m_eRunState = STATE_RUNBEGIN_PALADIN_L;
+	m_eRunState = STATE_RUN_PALADIN_L;
 	m_eIdleState = STATE_IDLE_PALADIN_L;
 	m_eBounceState = STATE_BOUNCE_PALADIN_R;
 	
