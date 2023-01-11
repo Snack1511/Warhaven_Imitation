@@ -19,7 +19,7 @@ HRESULT CUI_Paden::Initialize_Prototype()
 
 	Create_ScoreNum();
 	Create_ScoreGauge();
-	//Create_HwaraGauge();
+	Create_HwaraGauge();
 
 	Create_PointUI();
 	Init_PointUI();
@@ -35,7 +35,7 @@ HRESULT CUI_Paden::Start()
 {
 	__super::Start();
 
-	//Init_HwaraGauge();
+	Init_HwaraGauge();
 
 	Bind_Shader();
 
@@ -418,11 +418,11 @@ void CUI_Paden::My_Tick()
 {
 	__super::My_Tick();
 
-	/*for (int i = 0; i < Team_End; ++i)
+	for (int i = 0; i < Team_End; ++i)
 	{
 		_float fScaleX = m_pArrHwaraGauge[i][Hwara_Arrow]->Get_Scale().x;
 		m_fUVTexY[i] = (fScaleX * 0.01f) * 3.f;
-	}*/
+	}
 
 	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_TEST)
 		return;
@@ -938,8 +938,8 @@ void CUI_Paden::Bind_Shader()
 	GET_COMPONENT_FROM(m_pArrPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 
-	//GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Blue][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Blue, this, placeholders::_1, "g_fUVPlusY");
-	//GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Red][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Red, this, placeholders::_1, "g_fUVPlusY");
+	GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Blue][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Blue, this, placeholders::_1, "g_fUVPlusY");
+	GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Red][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Red, this, placeholders::_1, "g_fUVPlusY");
 }
 
 void CUI_Paden::Create_Popup()

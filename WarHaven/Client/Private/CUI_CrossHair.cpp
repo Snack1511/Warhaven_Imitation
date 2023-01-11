@@ -170,6 +170,12 @@ void CUI_Crosshair::SetActive_LancerUI(_bool value)
 	for (int i = 0; i < 4; ++i)
 		m_fLancerRatio[i] = 1.f;
 
+	if (value == false)
+	{
+		for (int i = 0; i < 4; ++i)
+			m_pArrLancerUI[i][LU_Full]->SetActive(false);
+	}
+
 	for (int i = 0; i < LU_Full; ++i)
 	{
 		for (int j = 0; j < 4; ++j)
