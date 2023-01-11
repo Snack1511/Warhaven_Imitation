@@ -368,7 +368,10 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		Set_Postion(vPos);
 		pUnit->Get_Transform()->Set_Look(vLook);
 		pUnit->Get_Transform()->Make_WorldMatrix();
-
+		
+		if(m_bIsMainPlayer)
+			m_pCurrentUnit->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_DEFAULT);
+		
 		pUnit->Enter_State((STATE_TYPE)m_iReserveStateDefault[eClassType]);
 
 
@@ -561,7 +564,7 @@ void CPlayer::SetUp_ReserveState()
 		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
 		//	m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
-		m_iReserveStateDefault[FIONA] = AI_STATE_PATROL_DEFAULT_FIONA_R;
+		m_iReserveStateDefault[FIONA] = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
 		m_iReserveStateDefault[PRIEST] = AI_STATE_PATROL_DEFAULT_PRIEST;
 
@@ -1362,13 +1365,13 @@ void CPlayer::Update_HeroGauge()
 		}
 		else //변신 중일때 
 		{
-			//m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
+			m_fGauge -= fDT(0) * 2.f; // 인게임속도2.f 
 
 			if (m_bIsMainPlayer)
 			{
 				On_FinishHero_KeyInput();
 			}
-			else if (0 >= m_fGauge)
+			else if (0.f >= m_fGauge)
 			{
 				On_FinishHero();
 			}

@@ -271,6 +271,42 @@ void CState_Hit::Sting_State(CUnit* pOwner)
         m_pStingBone = GET_COMPONENT_FROM(m_tHitInfo.pOtherUnit, CModel)->Find_HierarchyNode(m_tHitInfo.strStingBoneName.c_str());
         m_eAnimType = ANIM_HIT;
         m_iAnimIndex = m_iHitStingIndex[HIT_STATE_N];
+
+        switch (m_tHitInfo.eHitType)
+        {
+            /* 내가 기울어지는 방향대로 애니메이션 처리 */
+        case HIT_TYPE::eLEFT:
+            m_eAnimType = ANIM_HIT;
+            m_iAnimIndex = m_iHitStingIndex[HIT_STATE_W];
+
+            break;
+
+        case HIT_TYPE::eRIGHT:
+            m_eAnimType = ANIM_HIT;
+            m_iAnimIndex = m_iHitStingIndex[HIT_STATE_E];
+
+            break;
+
+        case HIT_TYPE::eUP:
+            m_eAnimType = ANIM_HIT;
+            m_iAnimIndex = m_iHitStingIndex[HIT_STATE_N];
+
+            break;
+
+        case HIT_TYPE::eDOWN:
+            m_eAnimType = ANIM_HIT;
+            m_iAnimIndex = m_iHitStingIndex[HIT_STATE_S];
+
+            break;
+
+        default:
+            break;
+        }
+
+    }
+    else
+    {
+        Groggy_State(pOwner);
     }
 
 

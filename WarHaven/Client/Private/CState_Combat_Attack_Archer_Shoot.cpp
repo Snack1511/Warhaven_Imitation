@@ -46,7 +46,7 @@ HRESULT CState_Combat_Attack_Archer_Shoot::Initialize()
 {
     m_eAnimType = ANIM_ATTACK;            // 애니메이션의 메쉬타입
     m_iAnimIndex = 3;                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
-    m_eStateType = STATE_ATTACK_SHOOT_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
+    m_eStateType = AI_STATE_COMBAT_ATTACK_SHOOT_ARCHER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
 
     return __super::Initialize();

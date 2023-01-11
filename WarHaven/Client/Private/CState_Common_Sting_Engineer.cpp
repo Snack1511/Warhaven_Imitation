@@ -43,7 +43,7 @@ HRESULT CState_Common_Sting_Engineer::Initialize()
     __super::Initialize();
 
     m_eAnimType = ANIM_HIT;            // 애니메이션의 메쉬타입
-    m_iAnimIndex = m_iHitStingIndex[0];                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
+    m_iAnimIndex = m_iGroggyIndex[0];                   // 현재 내가 사용하고 있는 애니메이션 순서(0 : IDLE, 1 : Run)
     m_eStateType = AI_STATE_COMMON_STINGHIT_ENGINEER;   // 나의 행동 타입(Init 이면 내가 시작할 타입)
 
     // 선형 보간 시간
@@ -62,6 +62,7 @@ void CState_Common_Sting_Engineer::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
     /* 날 때린놈의 hit info를 받았다. */
     m_tHitInfo = *((HIT_INFO*)(pData));
     __super::Sting_State(pOwner);
+    m_iAnimIndex = m_iFlyHitIndex;
 
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

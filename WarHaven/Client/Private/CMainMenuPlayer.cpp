@@ -197,6 +197,10 @@ void CMainMenuPlayer::My_Tick()
 		if (iTemp == 9)
 			return;
 		iTemp++;
+
+		if(iTemp == SPEAR || iTemp == HOEDT)
+			iTemp++;
+
 		Set_CurClassType((CLASS_TYPE)iTemp);
 
 	}
@@ -205,7 +209,12 @@ void CMainMenuPlayer::My_Tick()
 		_uint iTemp = m_eCurClassType;
 		if (iTemp == 0)
 			return;
+
 		iTemp--;
+
+		if (iTemp == SPEAR || iTemp == HOEDT)
+			iTemp--;
+
 		Set_CurClassType((CLASS_TYPE)iTemp);
 
 	}

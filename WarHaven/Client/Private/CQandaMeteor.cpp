@@ -105,18 +105,18 @@ void CQandaMeteor::My_Tick()
 		m_bShoot = false;
 	}
 
+
+
 	if (m_eCurPhase == eSTICK)
+	{
+		if (m_pOwnerUnit->Is_MainPlayer())
+		{
+			CUnit::UNIT_STATUS eStatus = m_pOwnerUnit->Get_Status();
+			m_pOwnerUnit->Shake_Camera(eStatus.fCamPower * 1.2f, eStatus.fCamTime * 1.2f);
+		}
+
 		DISABLE_GAMEOBJECT(this);
-
-
-
-	//if (!m_Shoot)
-	//{
-	//	_float4 vLook = m_pTargetUnit->Get_Transform()->Get_World(WORLD_POS) - Get_Transform()->Get_World(WORLD_POS);
-
-	//	Get_Transform()->Set_World(WORLD_LOOK, vLook);
-	//	m_Shoot = true;
-	//}
+	}
 
 
 }

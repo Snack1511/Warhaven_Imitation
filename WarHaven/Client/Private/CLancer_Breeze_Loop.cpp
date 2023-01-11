@@ -92,7 +92,7 @@ void CLancer_Breeze_Loop::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE 
 
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
 
-	//pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
+	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, true);
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_BREEZE);
 
 	CUser::Get_Instance()->Disable_LancerGauge();
@@ -140,7 +140,7 @@ void CLancer_Breeze_Loop::Exit(CUnit* pOwner, CAnimator* pAnimator)
 
 	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_LANCER);
 	pOwner->On_Use(CUnit::SKILL1);
-	//pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
+	pOwner->Enable_GuardBreakCollider(CUnit::GUARDBREAK_R, false);
 }
 
 STATE_TYPE CLancer_Breeze_Loop::Check_Condition(CUnit* pOwner, CAnimator* pAnimator)

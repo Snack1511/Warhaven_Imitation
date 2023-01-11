@@ -47,23 +47,30 @@ void	CLancerNeedle::Needle_CollisionEnter(CGameObject* pOtherObj, const _uint& e
 	m_pOwnerUnit->CallBack_CollisionEnter(pOtherObj, eOtherColType, eMyColType, vHitPos);
 	pOtherObj->CallBack_CollisionEnter(m_pOwnerUnit, eMyColType, eOtherColType, vHitPos);
 
-	CUnit* pOtherUnit = dynamic_cast<CUnit*>(pOtherObj);
+	CUnit* pOtherUnit = nullptr;
+	pOtherUnit = dynamic_cast<CUnit*>(pOtherObj);
 
-	if (m_pOwnerUnit == pOtherUnit && !pOtherUnit)
+	if (!pOtherUnit)
+		return;
+
+	if (m_pOwnerUnit == pOtherUnit)
 		return;
 
 	if (pOtherUnit->Get_Status().fHP >= 0.f)
 	{
-		m_pStinedUnit.push_back(pOtherUnit);
+		if (m_pStinedUnit == pOtherUnit)
+			return;
+
+		m_pStinedUnit = pOtherUnit;
+		//DISABLE_COMPONENT(GET_COMPONENT_FROM(m_pStinedUnit, CCollider_Sphere));
+
+		if (m_pOwnerUnit->Is_MainPlayer())
+		{
+			CUnit::UNIT_STATUS eStatus = m_pOwnerUnit->Get_Status();
+			m_pOwnerUnit->Shake_Camera(eStatus.fCamPower * 1.2f, eStatus.fCamTime * 1.2f);
+		}
 	}
-
-
-
-	/*m_pStingBone = GET_COMPONENT_FROM(m_tHitInfo.pOtherUnit, CModel)->Find_HierarchyNode(m_tHitInfo.strStingBoneName.c_str());
-	m_eAnimType = ANIM_HIT;
-	m_iAnimIndex = m_iHitStingIndex[HIT_STATE_N];
-	*/	
-	
+		
 
 	
 }
@@ -490,54 +497,30 @@ void CLancerNeedle::My_LateTick()
 		break;
 	}
 
-	for (auto& elem : m_pStinedUnit)
-	{
-		if (!elem)
-			continue;
-
-		if (!elem->Is_Valid())
-			continue;
-
-		_float4 vStartPos = m_vStartPos;
-		vStartPos.y -= 20.f;
-
-		_float4x4 matLocal;
-		matLocal.Identity();
-
-		_float4 vNewPos = CEasing_Utillity::QuadIn(vStartPos, m_vTargetPos, m_fTotalTime, m_fTotalTime);
-		memcpy(matLocal.m[3], &vNewPos, sizeof(_float4));
-
-		CHierarchyNode* pNode = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_Head");//("0B_Head");
-
-		_float4x4		matBone = pNode->Get_BoneMatrix();
-
-		CTransform* pOtherTransform = elem->Get_Transform();
-		matBone = matLocal * matBone;
-
-		_float4 vRight = m_pTransform->Get_World(WORLD_RIGHT);
-		_float4 vLook = m_pTransform->Get_World(WORLD_LOOK);
-
-
-		pOtherTransform->Get_Transform().matMyWorld = matBone;
-		CUtility_Transform::Rotation(pOtherTransform, _float4(0.f, 1.f, 0.f, 0.f), 270.f);
-		
-		_float4 vOtherPos = m_pTransform->Get_World(WORLD_POS);
-		vOtherPos.y -= 0.55f;
-		pOtherTransform->Set_World(WORLD_POS, vOtherPos);
-		pOtherTransform->Make_WorldMatrix();
-
-
-	}
-
+	Dragging_Unit();
 }
 
 void CLancerNeedle::OnEnable()
 {
 	__super::OnEnable();
+
+	if (!m_pOwnerUnit->Get_OwnerPlayer()->Get_Team())
+		m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+	else
+	{
+		eTEAM_TYPE eTeamType = m_pOwnerUnit->Get_OwnerPlayer()->Get_Team()->Get_TeamType();
+
+		if (eTeamType == eTEAM_TYPE::eBLUE)
+			m_pCollider->Set_ColIndex(COL_BLUEFLYATTACKGUARDBREAK);
+		else
+			m_pCollider->Set_ColIndex(COL_REDFLYATTACKGUARDBREAK);
+	}
+
 	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 	m_vScale = _float4(FLT_MIN, FLT_MIN, FLT_MIN);
 	m_eNeedleState = LANCERNEEDLE_START;
 	m_pTransform->Set_Scale(m_vScale);
+	m_pStinedUnit = nullptr;
 }
 
 void CLancerNeedle::OnDisable()
@@ -546,20 +529,14 @@ void CLancerNeedle::OnDisable()
 	DISABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 	m_vScale = _float4(FLT_MIN, FLT_MIN, FLT_MIN);
 	
-
-	for (auto& elem : m_pStinedUnit)
+	if (m_pStinedUnit)
 	{
-		if (elem)
-			continue;
-
-		if (!elem->Is_Valid())
-			continue;
-
-		(elem)->On_Die();
-
+		if (!m_pStinedUnit->Is_Valid())
+		{
+			m_pStinedUnit->On_Die();
+			m_pStinedUnit = nullptr;
+		}
 	}
-
-	m_pStinedUnit.clear();
 	
 }
 
@@ -593,5 +570,97 @@ void CLancerNeedle::Chase_OwnerBoneMatrix()
 
 		m_pTransform->Make_WorldMatrix();
 
+	}
+}
+
+void CLancerNeedle::Dragging_Unit()
+{
+	if (m_pStinedUnit)
+	{
+		if (!m_pStinedUnit->Is_Valid())
+		{
+			m_pStinedUnit = nullptr;
+			return;
+		}
+
+
+
+		_float4 vStartPos = m_vStartPos;
+		vStartPos.y -= 20.f;
+
+		_float4x4 matLocal;
+		matLocal.Identity();
+
+		_float4 vNewPos = CEasing_Utillity::QuadIn(vStartPos, m_vTargetPos, m_fTotalTime, m_fTotalTime);
+		memcpy(matLocal.m[3], &vNewPos, sizeof(_float4));
+
+		CHierarchyNode* pNode = GET_COMPONENT_FROM(m_pOwnerUnit, CModel)->Find_HierarchyNode("0B_Head");//("0B_Head");
+
+		_float4x4		matBone = pNode->Get_BoneMatrix();
+
+		CTransform* pOtherTransform = m_pStinedUnit->Get_Transform();
+		matBone = matLocal * matBone;
+
+		_float4 vRight = m_pTransform->Get_World(WORLD_RIGHT);
+		_float4 vLook = m_pTransform->Get_World(WORLD_LOOK);
+
+
+		pOtherTransform->Get_Transform().matMyWorld = matBone;
+		CUtility_Transform::Rotation(pOtherTransform, _float4(0.f, 1.f, 0.f, 0.f), 270.f);
+
+		_float4 vOtherPos = m_pTransform->Get_World(WORLD_POS);
+		
+		CLASS_TYPE eClass = m_pStinedUnit->Get_OwnerPlayer()->Get_CurClass();
+
+		switch (eClass)
+		{
+		case Client::WARRIOR:
+			vOtherPos.y -= 0.55f;
+			break;
+
+		case Client::SPEAR:
+
+			break;
+
+		case Client::ARCHER:
+
+			break;
+
+		case Client::PALADIN:
+
+			break;
+
+		case Client::PRIEST:
+
+			break;
+
+		case Client::ENGINEER:
+			vOtherPos.y -= 0.8f;
+			break;
+
+		case Client::FIONA:
+
+			break;
+
+		case Client::QANDA:
+
+			break;
+
+		case Client::HOEDT:
+
+			break;
+
+		case Client::LANCER:
+
+			break;
+
+		default:
+			vOtherPos.y -= 0.55f;
+			break;
+
+		}
+		
+		pOtherTransform->Set_World(WORLD_POS, vOtherPos);
+		pOtherTransform->Make_WorldMatrix();
 	}
 }

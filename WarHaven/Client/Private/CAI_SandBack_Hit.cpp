@@ -79,7 +79,8 @@ void CAI_SandBack_Hit::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePr
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
 
 
-    if (m_iAnimIndex == m_iHitIndex[HIT_STATE_W])
+    if (m_iAnimIndex == m_iHitIndex[HIT_STATE_W] ||
+        m_iAnimIndex == m_iHitIndex[HIT_STATE_N])
         m_HitLeft = true;
 
     __super::Enter(pOwner, pAnimator, ePrevType, pData);

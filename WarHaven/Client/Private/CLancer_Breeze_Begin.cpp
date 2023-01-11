@@ -67,7 +67,7 @@ void CLancer_Breeze_Begin::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE
 	m_fMyAccel = 10.f;
 
 	GAMEINSTANCE->Start_RadialBlur(0.015f);
-	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_BREEZE);
+	pOwner->Lerp_Camera(CScript_FollowCam::CAMERA_LERP_RUSH);
 
 	for (_int i = 0; i < CUnit_Lancer::eNeedle::eNeedle_Max; ++i)
 	{

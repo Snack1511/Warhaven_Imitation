@@ -58,6 +58,9 @@ void CJump_Lancer_Land::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE eP
 
 STATE_TYPE CJump_Lancer_Land::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+    Follow_MouseLook(pOwner);
+    pOwner->Set_DirAsLook();
+
     if (pAnimator->Is_CurAnimFinished())
         return STATE_IDLE_LANCER;
 

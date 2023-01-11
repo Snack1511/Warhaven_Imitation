@@ -10,6 +10,7 @@
 
 #include "CBoneCollider.h"
 #include "HIerarchyNode.h"
+#include "CUnit_Lancer_Head.h"
 
 #include "CTrailEffect.h"
 #include "CTrailBuffer.h"
@@ -83,6 +84,8 @@ HRESULT CMainMenuUnit::Initialize_Prototype()
 	
 	wstring wstrAnimPath;
 
+	
+
 	switch (m_eClassType)
 	{
 	case Client::WARRIOR:
@@ -113,6 +116,10 @@ HRESULT CMainMenuUnit::Initialize_Prototype()
 		return E_FAIL;
 		break;
 	case Client::LANCER:
+
+		m_pMyLancerHead = CUnit_Lancer_Head::Create(L"../bin/resources/meshes/characters/Lancer/head/SK_Lancer0000_Face_A00_20.fbx",
+			nullptr, this);
+
 		wstrAnimPath = L"../bin/resources/animations/lancer/SKEL_Lancer";
 		break;
 	case Client::CLASS_END:
@@ -183,11 +190,27 @@ HRESULT CMainMenuUnit::Start()
 {
 	CGameObject::Start();
 
+	if (m_pMyLancerHead)
+	{
+		CREATE_GAMEOBJECT(m_pMyLancerHead, GROUP_PLAYER);
+		DISABLE_GAMEOBJECT(m_pMyLancerHead);
+	}
+
+
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 	m_pModelCom->Set_ShaderPass(MODEL_PART_FACE, VTXANIM_PASS_FACE);
+	
+	m_iAnimIndex = 11;
+	m_fAnimSpeed = 1.f;
+	m_eBaseType = ANIM_BASE_R;
 
-	ANIM_TYPE	eAnimType = ANIM_BASE_R;
-	_uint		iAnimIndex = 11;
+	_float		finterPoleTime = 0.1f;
+
+	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
+	_float4 vMyPos = vCamPos + GAMEINSTANCE->Get_CurCamLook() * 0.8f;
+
+	vMyPos.x += 0.2f;
+	vMyPos.y -= 1.4f;
 
 	switch (m_eClassType)
 	{
@@ -196,20 +219,39 @@ HRESULT CMainMenuUnit::Start()
 	case Client::SPEAR:
 		break;
 	case Client::ARCHER:
+		m_iAnimIndex = 4;
 		break;
 	case Client::PALADIN:
+		m_eBaseType = ANIM_ATTACK;
+		m_pModelCom->Set_TransformMatrix(MODEL_PART_WEAPON_L, XMMatrixRotationZ(XMConvertToRadians(270.f)));
+		vMyPos.z += 0.35f;
+		m_iAnimIndex = 18;
+		m_fAnimSpeed = 2.f;
 		break;
 	case Client::PRIEST:
+		vMyPos.y += 0.2f;
+		vMyPos.z -= 0.1f;
+		m_iAnimIndex = 1;
 		break;
 	case Client::ENGINEER:
+		m_iAnimIndex = 5;
 		break;
 	case Client::FIONA:
+		m_eBaseType = ANIM_BASE_L;
+		vMyPos.y += 0.15f;
+		m_iAnimIndex = 3;
 		break;
 	case Client::QANDA:
+		vMyPos.y += 0.25f;
+		vMyPos.z -= 0.1f;
+		m_iAnimIndex = 31;
 		break;
 	case Client::HOEDT:
 		break;
 	case Client::LANCER:
+		vMyPos.y -= 1.f;
+		//vMyPos.z += 0.25f;
+		m_iAnimIndex = 10;
 		break;
 	case Client::CLASS_END:
 		break;
@@ -217,15 +259,13 @@ HRESULT CMainMenuUnit::Start()
 		break;
 	}
 
-	m_pAnimator->Set_CurAnimIndex(eAnimType, iAnimIndex, ANIM_DIVIDE::eDEFAULT);
-	m_pAnimator->Set_InterpolationTime(eAnimType, iAnimIndex, 0.1f);
-	m_pAnimator->Set_AnimSpeed(eAnimType, iAnimIndex, 1.f);
+	m_pAnimator->Set_CurAnimIndex(m_eBaseType, m_iAnimIndex, ANIM_DIVIDE::eDEFAULT);
+	m_pAnimator->Set_InterpolationTime(m_eBaseType, m_iAnimIndex, finterPoleTime);
+	m_pAnimator->Set_AnimSpeed(m_eBaseType, m_iAnimIndex, m_fAnimSpeed);
 
-	_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
-	_float4 vMyPos = vCamPos + GAMEINSTANCE->Get_CurCamLook() * 0.8f;
+	
 	//_float4 vMyPos = vCamPos + GAMEINSTANCE->Get_CurCamLook() * 3.f;
-	vMyPos.x += 0.2f;
-	vMyPos.y -= 1.4f;
+	
 	m_pTransform->Set_World(WORLD_POS, vMyPos);
 	m_pTransform->Set_Look(GAMEINSTANCE->Get_CurCamLook() * -1.f);
 
@@ -236,20 +276,62 @@ void CMainMenuUnit::OnEnable()
 {
 	CGameObject::OnEnable();
 
-	
-
+	if(m_pMyLancerHead)
+		ENABLE_GAMEOBJECT(m_pMyLancerHead);
 }
 
 void CMainMenuUnit::OnDisable()
 {
 	CGameObject::OnDisable();
+
+	if (m_pMyLancerHead)
+		DISABLE_GAMEOBJECT(m_pMyLancerHead);
 }
 
 void CMainMenuUnit::My_Tick()
 {
+	_uint		iFrame = 0;
+
+	if (m_eClassType == PALADIN)
+	{
+		if (m_pAnimator->Is_CurAnimFinished() && m_pAnimator->Get_CurAnimIndex() != 3)
+		{
+			
+			ANIM_TYPE	eAnimType = ANIM_ATTACK;
+
+			if (m_pAnimator->Get_CurAnimIndex() == 18)
+				iFrame = 19;
+
+			//else if (m_pAnimator->Get_CurAnimIndex() == 21)
+			//	iFrame = 19;
+
+			else if (m_pAnimator->Get_CurAnimIndex() == 19)
+			{
+				eAnimType = ANIM_BASE_R;
+				iFrame = 3;
+			}
+				
+
+			m_pAnimator->Set_CurAnimIndex(eAnimType, iFrame, ANIM_DIVIDE::eDEFAULT);
+			m_pAnimator->Set_InterpolationTime(eAnimType, iFrame, 0.f);
+			m_pAnimator->Set_AnimSpeed(eAnimType, iFrame, 1.f);
+
+		}
+
+	}
+
+
 	
 }
 
 void CMainMenuUnit::My_LateTick()
 {
+
+}
+
+void CMainMenuUnit::ReFresh_Animation()
+{
+	m_pAnimator->Set_CurAnimIndex(m_eBaseType, m_iAnimIndex, ANIM_DIVIDE::eDEFAULT);
+	m_pAnimator->Set_InterpolationTime(m_eBaseType, m_iAnimIndex, 0.f);
+	m_pAnimator->Set_AnimSpeed(m_eBaseType, m_iAnimIndex, m_fAnimSpeed);
 }

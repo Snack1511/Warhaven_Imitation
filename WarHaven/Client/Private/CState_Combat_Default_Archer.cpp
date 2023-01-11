@@ -75,19 +75,6 @@ STATE_TYPE CState_Combat_Default_Archer::Tick(CUnit* pOwner, CAnimator* pAnimato
 			case 0:
 			case 1:
 
-				if (pOwner->Can_Use(CUnit::SKILL3))
-				{
-					pOwner->Get_SkillTrigger().bSkillQTrigger = true;
-					pOwner->Get_SkillTrigger().bSkillETrigger = false;
-					return AI_STATE_COMBAT_STATE_SWAP_ARCHER;
-				}
-				else if (pOwner->Can_Use(CUnit::SKILL2))
-				{
-					pOwner->Get_SkillTrigger().bSkillQTrigger = false;
-					pOwner->Get_SkillTrigger().bSkillETrigger = true;
-					return AI_STATE_COMBAT_STATE_SWAP_ARCHER;
-				}
-				else
 					return m_eStateType;
 
 				break;

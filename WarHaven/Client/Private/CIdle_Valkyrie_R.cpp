@@ -84,6 +84,8 @@ HRESULT CIdle_Valkyrie_R::Initialize()
 
 void CIdle_Valkyrie_R::Enter(CUnit* pOwner, CAnimator* pAnimator, STATE_TYPE ePrevType, void* pData )
 {
+    pOwner->Get_Status().fDamageMultiplier = 2.f;
+
     /* OwnerÀÇ Animator Set Idle·Î */
     //GET_COMPONENT_FROM(pOwner, CModel)->Set_ShaderColor(MODEL_PART_WEAPON, _float4(1, 0.3, 0, 0));
 

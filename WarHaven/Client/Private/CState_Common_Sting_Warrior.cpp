@@ -69,9 +69,6 @@ void CState_Common_Sting_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator, STA
 
 STATE_TYPE CState_Common_Sting_Warrior::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
-    //if(eStingHitState
-
-
     return __super::Tick(pOwner, pAnimator);
 }
 

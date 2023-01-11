@@ -91,6 +91,8 @@ HRESULT CRun_Qanda::Initialize()
    m_fDirectionAnimSpeed[STATE_DIRECTION_W] = 1.8f;
    m_fDirectionAnimSpeed[STATE_DIRECTION_E] = 1.8f;
 
+   Init_CommonState_Hero_Player();
+
     return S_OK;
 }
 
