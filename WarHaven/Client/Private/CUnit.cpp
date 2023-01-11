@@ -443,6 +443,8 @@ void CUnit::On_FallDamage(_float fFallPower)
 	/*ÂøÁö ÀÌÆåÆ®*/
 	Effect_Fall(fFallPower);
 
+	if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_TYPE_CLIENT::LEVEL_HWARA)
+		CUser::Get_Instance()->SetActive_InteractUI(false);
 
 
 	//-0.6~ -3ÀÇ fFallPower
@@ -1100,7 +1102,9 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 		_float4 vOutPos;
 		_float fOutDist;
 		_float4 vCamPos = GAMEINSTANCE->Get_ViewPos();
-		_float4 vRayDir = pUnit->Get_Transform()->Get_World(WORLD_POS) - vCamPos;
+		_float4 vOtherPos = pUnit->Get_Transform()->Get_World(WORLD_POS);
+		vOtherPos.y += 0.8f;
+		_float4 vRayDir = vOtherPos - vCamPos;
 		_float fLength = vRayDir.Length();
 
 		if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vCamPos, vRayDir.Normalize(), fLength))

@@ -21,6 +21,8 @@ HRESULT CState_Common_Hit::Initialize()
 {
     __super::Initialize();
 
+    m_iStateChangeKeyFrame = 99;
+
     return S_OK;
 }
 

@@ -48,20 +48,11 @@ CUnit_Lancer* CUnit_Lancer::Create(const UNIT_MODEL_DATA& tUnitModelData)
 
 void CUnit_Lancer::On_Die()
 {
-	__super::On_Die();
-	_float4 vPos = Get_Transform()->Get_World(WORLD_POS);
-
-	//_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MATRIX_IDENTITY);
-	_float4x4 matWorld = m_pTransform->Get_WorldMatrix(MARTIX_NOTRANS);
-
-	_float4x4 matWeapon = m_pModelCom->Find_HierarchyNode("0B_R_WP1")->Get_BoneMatrix();
-	_float4 vBonePos = matWeapon.XMLoad().r[3];
-	ZeroMemory(&matWeapon.m[3], sizeof(_float4));
-
-
-	Add_DeathStones(CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle_Death(L"DeadBody_Warrior", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
-
-	m_DeathStones.push_back(CEffects_Factory::Get_Instance()->Create_MeshParticle_Death(L"WarriorDead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld));
+	m_pOwnerPlayer->On_FinishHero();
+	m_pOwnerPlayer->Get_CurrentUnit()->On_Die();
+	m_bDie = false;
+	m_fDeadTimeAcc = 0.f;
+	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 
 }
 

@@ -54,8 +54,8 @@ STATE_TYPE CState::Tick(CUnit* pOwner, CAnimator* pAnimator)
     //    }
     //}
 
-	if (!pOwner->Is_Air())
-		CUser::Get_Instance()->SetActive_InteractUI(false);
+	/*if (!pOwner->Is_Air())
+		CUser::Get_Instance()->SetActive_InteractUI(false);*/
 
 	if (m_bAttackTrigger)
 	{

@@ -938,8 +938,8 @@ void CUI_Paden::Bind_Shader()
 	GET_COMPONENT_FROM(m_pArrPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 	GET_COMPONENT_FROM(m_pArrProjPointUI[Point_C][PU_Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_PointGauge_C, this, placeholders::_1, "g_fValue");
 
-	GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Blue][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Blue, this, placeholders::_1, "g_fUVPlusY");
-	GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Red][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Red, this, placeholders::_1, "g_fUVPlusY");
+	//GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Blue][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Blue, this, placeholders::_1, "g_fUVPlusY");
+	//GET_COMPONENT_FROM(m_pArrHwaraGauge[Team_Red][Hwara_Arrow], CShader)->CallBack_SetRawValues += bind(&CUI_Paden::Set_Shader_HwaraArrow_Red, this, placeholders::_1, "g_fUVPlusY");
 }
 
 void CUI_Paden::Create_Popup()

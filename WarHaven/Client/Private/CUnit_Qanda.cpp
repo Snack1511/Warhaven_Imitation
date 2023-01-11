@@ -68,12 +68,6 @@ void CUnit_Qanda::On_Die()
 	m_fDeadTimeAcc = 0.f;
 	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 
-	DISABLE_GAMEOBJECT(this);
-
-	/*CEffects_Factory::Get_Instance()->Create_Multi_MeshParticle(L"DeadBody_QANDA", vPos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
-	vPos.y += 1.f;*/
-	//CEffects_Factory::Get_Instance()->Create_MeshParticle(L"QANDADead_Weapon", vBonePos, _float4(0.f, 1.f, 0.f, 0.f), 1.f, matWorld);
-
 }
 
 void CUnit_Qanda::SetUp_Colliders(_bool bPlayer)
