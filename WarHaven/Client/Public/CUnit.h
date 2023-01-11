@@ -209,8 +209,10 @@ public:
 	_float4	Get_FollowCamRight();
 
 	_uint& Get_PreAnimIndex() { return m_iPreAnimIndex; } // 상하체 애니메이션 튀는것을 위한 함수
+
 public:
 	list<_float4>& Get_CurRoute();
+
 public:
 	void TurnOn_TrailEffect(_bool bOn);
 

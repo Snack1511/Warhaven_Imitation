@@ -1054,8 +1054,6 @@ void CUnit::Check_MultipleObject_IsInFrustum()
 		if (!pPlayer->Is_Valid())
 			continue;
 
-		
-
 		// 테스트 레벨이 아니라면
 		if (CUser::Get_Instance()->Get_CurLevel() != LEVEL_TEST)
 		{

@@ -146,6 +146,9 @@ void CRender_Manager::Bake_StaticShadow(vector<CGameObject*>& vecObjs, _float4 v
 	m_vSunWorldPos = vCenterPos + vSunDir * 500.f * -1.f;
 	m_vSunWorldPos.w = 1.f;
 
+	if (CLight_Manager::Get_Instance()->Get_FirstLight())
+		CLight_Manager::Get_Instance()->Get_FirstLight()->Get_LightDesc_Modify().vPosition = m_vSunWorldPos;
+
 	if (!bLensFlare)
 		m_vSunWorldPos.y = -9000.f;
 

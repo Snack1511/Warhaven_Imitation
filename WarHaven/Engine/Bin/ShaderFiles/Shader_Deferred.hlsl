@@ -248,17 +248,61 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 		vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
 		vector			vLightDir = vWorldPos - g_vLightPos;
-
 		float			fDistance = length(vLightDir);
-
 		float			fAtt = saturate((g_fRange - fDistance) / g_fRange);
+		vector			vLook = normalize(vWorldPos - g_vCamPosition);
+
+		/* PBR */
+
+		// Calculate the diffuse color
+		//if (g_bPBR)
+		//{
+		//	fAtt = 1.f;
+
+		//	vector			vPBRDesc = g_PBRTexture.Sample(DefaultSampler, In.vTexUV);
+		//	float metalness = vPBRDesc.x;
+		//	float roughness = vPBRDesc.y;
+		//	float hardness = vPBRDesc.b;
+
+		//	float3 N = normalize(vNormal.xyz);
+		//	float3 L = normalize(vLightDir.xyz);
+		//	float3 V = normalize(vLook.xyz);
+		//	float3 H = normalize(L + V);
+		//	float NdotL = max(dot(N, L), 0.0);
+		//	float NdotV = max(dot(N, V), 0.0);
+		//	float NdotH = max(dot(N, H), 0.0);
+		//	float LdotH = max(dot(L, H), 0.0);
+		//	float VdotH = max(dot(V, H), 0.0);
+		//	float roughness2 = roughness * roughness;
+		//	float a = roughness2;
+		//	float a2 = a * a;
+		//	float ndoth = NdotH;
+		//	float ndoth2 = ndoth * ndoth;
+		//	float num = a2;
+		//	float den = (ndoth2 * (a2 - 1) + 1);
+		//	float D = num / (3.14159265358979323846 * den * den);
+		//	float F = metalness;// +(hardness)*metalness;
+		//	float k = metalness;
+		//	float G = min(1.0, min(2.0 * NdotL * NdotV / LdotH, 2.0 * NdotL * NdotV / VdotH));
+		//	float3 diffuse = (g_vLightDiffuse.xyz * (1 - F) * (1 - k)) * (NdotL * G / (NdotV + 0.0001));
+		//	Out.vShade.xyz = diffuse * fAtt + ((g_vLightAmbient * g_vMtrlAmbient) * fAtt);
+		//	Out.vShade.a = 1.f;
+		//}
+		//else
+		{
+			float		fShade = saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)));
+
+			Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
+
+			Out.vShade.a = 1.f;
+		}
+		
 
 
-		float		fShade = saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)));
 
-		Out.vShade = g_vLightDiffuse * fShade * fAtt + (g_vLightAmbient * g_vMtrlAmbient) * fAtt;
 
-		Out.vShade.a = 1.f;
+
+		
 
 		//if (vFlagDesc.r > 0.99f)
 		{
@@ -268,8 +312,8 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
 				float metalness = vPBRDesc.x;
 				float roughness = vPBRDesc.y;
+				float hardness = vPBRDesc.b;
 
-				vector			vLook = normalize(vWorldPos - g_vCamPosition);
 
 				float power = 1.0 / max(roughness * 0.4, 0.01);
 				//vec3 spec = light_color * phong(light,ray,normal,power);
@@ -279,8 +323,8 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 				float3 normal = vNormal.xyz;
 				float3 light = normalize(vLightDir).xyz;
 				float3 cameraToVertex = vLook.xyz;
-				float3 view = g_vCamLook.xyz;
-				//float3 view = cameraToVertex;
+				//float3 view = g_vCamLook.xyz;
+				float3 view = cameraToVertex;
 				float3 halfway = normalize(light + view);
 
 				// Microfacet normal distribution function (Beckmann Distribution)
@@ -290,7 +334,8 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
 				// Microfacet fresnel reflectance (Schlick's Approximation)
 				float f0 = 0.02;
-				float fresnel = f0 + (1 - f0) * pow(1 - dot(view, halfway), 5);
+				//float fresnel = f0 + (1 - f0) * pow(1 - dot(view, halfway), 5);
+				float fresnel = saturate((f0 + (1 - f0) * pow(1 - dot(view, halfway), 5)) * hardness);
 
 				// Microfacet visibility (Smith's GGX)
 				float g1 = (2 * ndoth * dot(view, normal)) / dot(view, halfway);
@@ -624,7 +669,7 @@ PS_OUT PS_MAIN_POSTEFFECT(PS_IN In)
 
 	
 		 
-	if (g_bBilateral)
+	//if (g_bBilateral)
 	{
 		/*const float A = 2.51, B = 0.03, C = 2.43, D = 0.59, E = 0.14;
 		Out.vColor = saturate((Out.vColor * (A * Out.vColor + B)) / (Out.vColor * (C * Out.vColor + D) + E));
