@@ -91,6 +91,8 @@ void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstN
 void CUI_Paden::Set_Shader_HwaraArrow_Blue(CShader* pShader, const char* pConstName)
 {
 	pShader->Set_RawValue("g_fUVPlusY", &m_fUVTexY[Team_Blue], sizeof(_float));
+
+	cout << m_fUVTexY[Team_Blue] << endl;
 }
 
 void CUI_Paden::Set_Shader_HwaraArrow_Red(CShader* pShader, const char* pConstName)
@@ -419,7 +421,7 @@ void CUI_Paden::My_Tick()
 	for (int i = 0; i < Team_End; ++i)
 	{
 		_float fScaleX = m_pArrHwaraGauge[i][Hwara_Arrow]->Get_Scale().x;
-		m_fUVTexY[i] = (fScaleX * 0.1f) * 2.f;
+		m_fUVTexY[i] = (fScaleX * 0.01f) * 3.f;
 	}
 
 	if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_TEST)
@@ -971,11 +973,10 @@ void CUI_Paden::Create_HwaraGauge()
 		case Hwara_BG:
 			GET_COMPONENT_FROM(m_pHwaraGauge[i], CTexture)->Remove_Texture(0);
 			Read_Texture(m_pHwaraGauge[i], "/Paden/TopGauge", "Bar");
-			m_pHwaraGauge[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.3f));
+			m_pHwaraGauge[i]->Set_Color(_float4(1.f, 1.f, 1.f, 0.5f));
 			break;
 
 		case Hwara_Arrow:
-			GET_COMPONENT_FROM(m_pHwaraGauge[i], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HwaraArrow);
 			m_pHwaraGauge[i]->Set_Sort(0.5f);
 			m_pHwaraGauge[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Paden/T_ArrowStroke.dds"));
 			break;
@@ -1011,6 +1012,17 @@ void CUI_Paden::Init_HwaraGauge()
 		{
 			_float fPosX = -350.f + (i * 700.f);
 			m_pArrHwaraGauge[i][j]->Set_PosX(fPosX);
+
+			switch (j)
+			{
+			case Hwara_BG:				
+				m_pArrHwaraGauge[i][j]->Set_TextureIndex(i);
+				break;
+
+			case Hwara_Arrow:
+				GET_COMPONENT_FROM(m_pArrHwaraGauge[i][j], CUI_Renderer)->Set_Pass(VTXTEX_PASS_UI_HwaraArrow);
+				break;
+			}
 		}
 	}
 

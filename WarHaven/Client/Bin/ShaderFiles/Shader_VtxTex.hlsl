@@ -674,11 +674,11 @@ PS_OUT PS_HWARA_ARROW(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
     Out.vFlag = g_vFlag;
     
-    In.vTexUV.x *= g_fUVPlusY;
-    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    In.vTexUV.x *= g_bAppear+g_fUVPlusY;
+    vector vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);   
     
-    if (Out.vColor.a < 0.1f)
-        discard;
+    Out.vColor = vColor;
+    vColor.a = g_fAlpha;
     
     return Out;
 }
