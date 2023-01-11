@@ -6,7 +6,7 @@
 #define ENGINE_DLL _declspec(dllimport)
 #endif
 
-#define	MEMORY_SAVE
+//#define	MEMORY_SAVE
 
 
 
@@ -121,6 +121,7 @@ return;\
 static_cast<CShader*>(pShdaerlist.front())->CallBack_SetRawValues -=\
 bind(&classname::Set_ShaderResource, this, placeholders::_1, variablename);\
 
+#define IS_VALIEDCOMPONENT(instance, classname) !(instance->Get_Component<classname>().empty())
 #define GET_COMPONENT_FROM(instance, classname) static_cast<classname*>(instance->Get_Component<classname>().front())
 #define GET_COMPONENT(classname) static_cast<classname*>(Get_Component<classname>().front())
 

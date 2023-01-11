@@ -24,6 +24,7 @@ public:
 
 public:
 	_bool	Is_Picked(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal = nullptr);
+	_bool	Is_Picked_OutObject(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal, CGameObject** ppOut);
 	_bool	Is_Picked(list<CGameObject*>& GameObjectList, CGameObject** ppOut);
 
 	_bool	Is_Picked_Cubes(vector<CGameObject*>& GameObjectList, _float4* pOut, _uint* pOutIndex, _float4* pOutNormal = nullptr);

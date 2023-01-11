@@ -478,6 +478,16 @@ void CTable_Conditions::Check_EnemyInRay(_bool& OutCondition, CPlayer* pPlayer, 
 
 }
 
+void CTable_Conditions::Check_CurCellBlocked(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    CHECKFALSEOUTCONDITION(OutCondition);
+
+    if (pPlayer->Is_CurCellBlocked())
+        OutCondition = false;
+    else
+        OutCondition = true;
+}
+
 
 void CTable_Conditions::Select_Leader(_bool& OutCondition, BEHAVIOR_DESC*& OutDesc, CPlayer* pPlayer, CAIController* pAIController)
 {

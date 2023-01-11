@@ -1732,6 +1732,8 @@ void CFunc_ObjectControl::Func_AddObject()
 
 void CFunc_ObjectControl::Func_DeleteOBject()
 {
+    if (m_GroupingInfo.empty())
+        return;
     string strGroupName = get<Tuple_GroupName>(m_GroupingInfo[m_SelectObjectGroupIndex]);
     size_t HashNum = Convert_ToHash( strGroupName);
     //그룹정보에서 제거

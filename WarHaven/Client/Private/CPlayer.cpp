@@ -1411,7 +1411,28 @@ void CPlayer::Clear_DebugObject()
 	}
 	m_pRouteDebug.clear();
 }
+
 #endif
+_bool CPlayer::Is_CurCellBlocked()
+{
+	if (nullptr == m_pCurrentUnit)
+		return true;
+	CNavigation* pNaviComponent = m_pCurrentUnit->Get_NaviCom();
+	if (nullptr == pNaviComponent)
+		return true;
+
+	_float4 vUnitPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
+
+	CCell* pCell = pNaviComponent->Get_CurCell(vUnitPos, CGameSystem::Get_Instance()->Get_CellLayer());
+
+	if (nullptr == pCell)
+		return true;
+
+	if (pCell->Check_Attribute(CELL_BLOCKED))
+		return true;
+
+	return false;
+}
 void CPlayer::Make_BestRoute(_float4 vPosition)
 {
 #ifdef _DEBUG

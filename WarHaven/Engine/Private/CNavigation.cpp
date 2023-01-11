@@ -382,19 +382,21 @@ list<_float4> CNavigation::Get_BestRoute(map<_float, CCellLayer*>& Layers, _floa
 
 		m_pStartNode->Set_NodePosition(value.first);
 	}
+	list<_float4> Return;
 	if (!Routes.empty()) 
 	{
 		Routes.pop_front();
 		if(!Routes.empty())
 			Routes.pop_back();
+
+		Return.push_back(vStart);
+		for (auto Cell : Routes)
+		{
+			Return.push_back(Cell->Get_Position());
+		}
+		Return.push_back(vEnd);
 	}
-	list<_float4> Return;
-	Return.push_back(vStart);
-	for (auto Cell : Routes)
-	{
-		Return.push_back(Cell->Get_Position());
-	}
-	Return.push_back(vEnd);
+
 	return Return;
 }
 

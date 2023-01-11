@@ -61,6 +61,25 @@ HRESULT CWindow_AI::Initialize()
 
 void CWindow_AI::Tick()
 {
+    if (KEY(I, HOLD))
+    {
+        if (KEY(LBUTTON, TAP))
+        {
+            if (m_pCurSelectPlayer)
+            {
+                _float4 vPickPos;
+                _float4 vPickNorm;
+                CGameObject* pGameObject;
+
+                //충돌체 피킹 위치 물어보기
+                if (GAMEINSTANCE->Is_Picked_OutObject(GAMEINSTANCE->Get_ObjGroup(GROUP_DECORATION), &vPickPos, &vPickNorm, &pGameObject))
+                {
+                    m_pCurSelectPlayer->Make_BestRoute(vPickPos);
+                    Set_DebugRoute(m_pCurSelectPlayer->Get_CurRoute());
+                }
+            }
+        }
+    }
 }
 
 HRESULT CWindow_AI::Render()
