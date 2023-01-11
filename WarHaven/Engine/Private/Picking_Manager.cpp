@@ -54,7 +54,15 @@ _bool CPicking_Manager::Is_Picked(list<CGameObject*>& GameObjectList, _float4* p
 		if (nullptr == pGameObject)
 			continue;
 
-		vector<pair<_uint, CMeshContainer*>>& vecMeshContainers = GET_COMPONENT_FROM(pGameObject, CModel)->Get_MeshContainers();
+		if (!IS_VALIEDCOMPONENT(pGameObject, CModel))
+			continue;
+
+		CModel* pModel = GET_COMPONENT_FROM(pGameObject, CModel);
+
+		if (nullptr == pModel)
+			continue;
+
+		vector<pair<_uint, CMeshContainer*>>& vecMeshContainers = pModel->Get_MeshContainers();
 
 		for (auto& pMesh : vecMeshContainers)
 		{
@@ -66,6 +74,74 @@ _bool CPicking_Manager::Is_Picked(list<CGameObject*>& GameObjectList, _float4* p
 				//Local Point -> World Point
 				_float4x4 WorldMat = pGameObject->Get_Transform()->Get_WorldMatrix();
 				_float4 WorldPickPos = vPickedPos;
+
+				fDist = (WorldPickPos - vViewPos).Length();
+				if (fMin > fDist)
+				{
+					fMin = fDist;
+					vFinalPickedPos = WorldPickPos;
+					vFinalPickedNormal = vPickedNormal;
+				}
+				pPickGameObject = pGameObject;
+			}
+		}
+	}
+
+
+	if (fMin != 9999.f)
+	{
+		//if (nullptr == pPickGameObject)
+		//	assert(0);//NULLÀÌ ¶ß¸é ¾ÈµÊ
+		//_float4x4 WorldMat = pPickGameObject->Get_Transform()->Get_WorldMatrix();
+		//*pOut = vFinalPickedPos.MultiplyCoord(WorldMat);
+
+		*pOut = vFinalPickedPos;
+		if (pOutNormal)
+			*pOutNormal = vPickedNormal;
+
+		return true;
+	}
+
+
+
+	return false;
+}
+
+_bool CPicking_Manager::Is_Picked_OutObject(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal, CGameObject** ppOut)
+{
+	Compute_WorldRay();
+
+	//
+	_float4 vViewPos = CGameInstance::Get_Instance()->Get_ViewPos();
+	_float4 vPickedPos, vPickedNormal;
+	_float fDist, fMin = 9999.f;
+	_float4 vFinalPickedPos, vFinalPickedNormal;
+	CGameObject* pPickGameObject = nullptr;
+	for (auto& pGameObject : GameObjectList)
+	{
+		if (nullptr == pGameObject)
+			continue;
+
+		if (!IS_VALIEDCOMPONENT(pGameObject, CModel))
+			continue;
+
+		CModel* pModel = GET_COMPONENT_FROM(pGameObject, CModel);
+
+		if (nullptr == pModel)
+			continue;
+
+		vector<pair<_uint, CMeshContainer*>>& vecMeshContainers = pModel->Get_MeshContainers();
+
+		for (auto& pMesh : vecMeshContainers)
+		{
+			if (!pMesh.second->Is_Valid())
+				continue;
+
+			if (Is_Picked(pMesh.second, &vPickedPos, &vPickedNormal))
+			{
+				//Local Point -> World Point
+				_float4x4 WorldMat = pGameObject->Get_Transform()->Get_WorldMatrix();
+				_float4 WorldPickPos = vPickedPos.MultiplyCoord(WorldMat);
 
 				fDist = (WorldPickPos - vViewPos).Length();
 				if (fMin > fDist)

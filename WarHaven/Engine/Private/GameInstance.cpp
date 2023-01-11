@@ -492,6 +492,11 @@ void CGameInstance::Regist_Mesh(CMesh* pMesh, _float fDistanceToPlayer)
 
 }
 
+_bool CGameInstance::Is_Picked_OutObject(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal, CGameObject** ppOut)
+{
+	return m_pPickingManager->Is_Picked_OutObject(GameObjectList, pOut, pOutNormal, ppOut);
+}
+
 _bool CGameInstance::Is_Picked(list<CGameObject*>& GameObjectList, _float4* pOut, _float4* pOutNormal)
 {
 	return m_pPickingManager->Is_Picked(GameObjectList, pOut, pOutNormal);

@@ -72,6 +72,7 @@ private:
 
     void Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_EnemyInRay(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_CurCellBlocked(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 
     //void Check_Winning(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     //void Check_EmptyEnemyInTerritory(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);

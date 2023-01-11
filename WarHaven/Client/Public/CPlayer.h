@@ -374,6 +374,8 @@ public:
 	void Set_TargetPos(_float4 vPos) { m_vTargetPos = vPos; }
 private:
 	_float4 m_vTargetPos;
+public:
+	_bool Is_CurCellBlocked();
 
 };
 END
