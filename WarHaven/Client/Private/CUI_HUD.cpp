@@ -512,7 +512,7 @@ void CUI_HUD::Create_RevivalUI()
 	m_pRevivalUI->Set_FontStyle(true);
 	m_pRevivalUI->Set_FontCenter(true);
 	m_pRevivalUI->Set_FontOffset(5.f, 5.f);
-	m_pRevivalUI->Set_FontScale(0.5f);
+	m_pRevivalUI->Set_FontScale(0.4f);
 	m_pRevivalUI->Set_FontText(TEXT("¼Ò»ý Áß"));
 
 	CREATE_GAMEOBJECT(m_pRevivalUI, GROUP_UI);

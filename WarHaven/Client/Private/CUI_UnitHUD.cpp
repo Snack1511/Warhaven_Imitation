@@ -220,6 +220,7 @@ void CUI_UnitHUD::My_Tick()
 		dynamic_cast<CUI_UnitHP*>(m_pUnitUI[UI_Hp])->SetActive_HealBlur(false);
 	}*/
 
+
 	if (m_bEnableTargetUI)
 	{
 		m_fEanbleTargetUITime += fDT(0);
@@ -288,6 +289,11 @@ void CUI_UnitHUD::Enable_RevivalUI()
 void CUI_UnitHUD::Disable_RevivalUI()
 {
 	m_pUnitUI[UI_Revive]->SetActive(false);
+}
+
+void CUI_UnitHUD::Set_RevivalGauge(_float fCurTime, _float fMaxTime)
+{
+	static_cast<CUI_Revive*>(m_pUnitUI[UI_Revive])->Set_GaugeRatio(fCurTime, fMaxTime);
 }
 
 void CUI_UnitHUD::Set_RevivalIcon(_uint iIconIdx)

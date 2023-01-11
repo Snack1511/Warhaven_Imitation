@@ -92,6 +92,9 @@ void CUI_UnitHP::OnDisable()
 void CUI_UnitHP::My_Tick()
 {
 	__super::My_Tick();
+
+	if (m_pHealBlur->Is_Valid())
+		Disable_Fade(m_pHealBlur, 0.3f);
 }
 
 void CUI_UnitHP::My_LateTick()

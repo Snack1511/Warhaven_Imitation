@@ -42,6 +42,7 @@ public:
 
 	void Enable_RevivalUI();
 	void Disable_RevivalUI();
+	void Set_RevivalGauge(_float fCurTime, _float fMaxTime);
 
 	void Set_RevivalIcon(_uint iIconIdx);
 
@@ -87,6 +88,7 @@ private:
 
 private:
 	void SetActive_UnitHP(_bool value);
+
 };
 
 END
