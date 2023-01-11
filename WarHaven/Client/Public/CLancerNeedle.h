@@ -97,6 +97,8 @@ private:
 
 private:
 	CGameObject* m_pNiddleMesh = nullptr;
+	list<CGameObject*> m_NiddleMesh;
+	list<CGameObject*> m_NiddleBegin;
 	_bool m_bStartNeedle = true;
 
 
