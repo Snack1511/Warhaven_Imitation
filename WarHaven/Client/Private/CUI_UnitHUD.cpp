@@ -199,7 +199,6 @@ void CUI_UnitHUD::My_Tick()
 		}
 	}
 
-
 	Tick_UnitHP();
 	Tick_TargetUI();
 }
@@ -394,6 +393,10 @@ void CUI_UnitHUD::Tick_UnitHP()
 		if (m_fEnableHpTime > m_fDisableHpTime)
 		{
 			m_fEnableHpTime = 0.f;
+			SetActive_UnitHP(false);
+		}
+		else if (fHpGaugeRatio <= 0.f)
+		{
 			SetActive_UnitHP(false);
 		}
 	}
