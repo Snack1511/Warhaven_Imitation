@@ -125,9 +125,12 @@ void CUI_ScoreInfo::Create_Info()
 
 		m_pInfo[i]->Set_Color(_float4(0.f, 0.f, 0.f, 0.f));
 
+		m_pInfo[i]->Set_Sort(0.17f);
+
 		switch (i)
 		{
 		case Info_BG:
+			m_pInfo[i]->Set_Sort(0.18f);
 			m_pInfo[i]->Set_Scale(200.f, 20.f);
 			break;
 

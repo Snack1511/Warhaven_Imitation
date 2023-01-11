@@ -28,6 +28,7 @@ public:
 
 	virtual void Set_Shader_HwaraArrow_Blue(CShader* pShader, const char* pConstName);
 	virtual void Set_Shader_HwaraArrow_Red(CShader* pShader, const char* pConstName);
+
 public:
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);

@@ -317,7 +317,7 @@ void CUI_Popup::Create_SkinPopup()
 		switch (i)
 		{
 		case Skin_PopupBG:
-			m_pSKinPopup[i]->Set_Sort(0.15f);
+			m_pSKinPopup[i]->Set_Sort(0.14f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_DecoBox.png"));
 			m_pSKinPopup[i]->Set_IsSlice(true);
 			m_pSKinPopup[i]->Set_SliceRatio(_float4(0.5f, 0.5f, 0.5f, 0.5f));
@@ -325,20 +325,20 @@ void CUI_Popup::Create_SkinPopup()
 			m_pSKinPopup[i]->Set_Scale(550.f, 300.f);
 			break;
 		case Skin_Out:
-			m_pSKinPopup[i]->Set_Sort(0.14f);
+			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KDA/T_MinimapFrame.dds"));
 			m_pSKinPopup[i]->Set_PosY(65.f);
 			m_pSKinPopup[i]->Set_Scale(130.f);
 			m_pSKinPopup[i]->Set_Color(RGB(0.5f, 0.5f, 0.5f));
 			break;
 		case Skin_BG:
-			m_pSKinPopup[i]->Set_Sort(0.14f);
+			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/T_ItemBG4.dds"));
 			m_pSKinPopup[i]->Set_PosY(65.f);
 			m_pSKinPopup[i]->Set_Scale(100.f);
 			break;
 		case Skin_Item:
-			m_pSKinPopup[i]->Set_Sort(0.13f);
+			m_pSKinPopup[i]->Set_Sort(0.12f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/Hat/T_SkinHatCommon1002.dds"));
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Lobby/Barracks/Skin/Clothes/Clothes02.dds"));
 
@@ -346,23 +346,23 @@ void CUI_Popup::Create_SkinPopup()
 			m_pSKinPopup[i]->Set_Scale(100.f);
 			break;
 		case Skin_Line0:
-			m_pSKinPopup[i]->Set_Sort(0.14f);
+			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Scale(435.f, 1.f);
 			m_pSKinPopup[i]->Set_PosY(-20.f);
 			break;
 		case Skin_Line1:
-			m_pSKinPopup[i]->Set_Sort(0.14f);
+			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Scale(435.f, 1.f);
 			m_pSKinPopup[i]->Set_PosY(-100.f);
 			break;
 		case Skin_Deco:
-			m_pSKinPopup[i]->Set_Sort(0.14f);
+			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Popup/T_DecoLam03.png"));
 			m_pSKinPopup[i]->Set_Scale(70.f, 10.f);
 			m_pSKinPopup[i]->Set_PosY(-25.f);
 			break;
 		case Skin_Text0:
-			m_pSKinPopup[i]->Set_Sort(0.14f);
+			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 			m_pSKinPopup[i]->Set_PosY(-50.f);
 			m_pSKinPopup[i]->Set_FontRender(true);
@@ -372,7 +372,7 @@ void CUI_Popup::Create_SkinPopup()
 			m_pSKinPopup[i]->Set_FontScale(0.3f);
 			break;
 		case Skin_Text1:
-			m_pSKinPopup[i]->Set_Sort(0.14f);
+			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/Alpha0.png"));
 			m_pSKinPopup[i]->Set_PosY(-80.f);
 			m_pSKinPopup[i]->Set_FontRender(true);
@@ -381,7 +381,7 @@ void CUI_Popup::Create_SkinPopup()
 			m_pSKinPopup[i]->Set_FontScale(0.3f);
 			break;
 		case Skin_Esc:
-			m_pSKinPopup[i]->Set_Sort(0.14f);
+			m_pSKinPopup[i]->Set_Sort(0.13f);
 			m_pSKinPopup[i]->Set_Texture(TEXT("../Bin/Resources/Textures/UI/KeyIcon/Keyboard/White/T_WhiteSpaceKeyIcon.png"));
 			m_pSKinPopup[i]->Set_Pos(-41.f, -125.f);
 			m_pSKinPopup[i]->Set_Scale(24.f);

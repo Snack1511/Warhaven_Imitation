@@ -76,7 +76,7 @@ void CUI_Paden::Set_Shader_PointGauge_C(CShader* pShader, const char* pConstName
 
 void CUI_Paden::Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstName)
 {
-	m_fScoreRatio[Team_Red] = 1 - m_fScoreRatio[Team_Red];
+	//m_fScoreRatio[Team_Red] = 1 - m_fScoreRatio[Team_Red];
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Red], sizeof(_float));
 
 	_bool bFlip = true;
@@ -85,6 +85,7 @@ void CUI_Paden::Set_Shader_SocreGauge_Red(CShader* pShader, const char* pConstNa
 
 void CUI_Paden::Set_Shader_SocreGauge_Blue(CShader* pShader, const char* pConstName)
 {
+	//m_fScoreRatio[Team_Blue] = 1 - m_fScoreRatio[Team_Blue];
 	pShader->Set_RawValue("g_fValue", &m_fScoreRatio[Team_Blue], sizeof(_float));
 
 	_bool bFlip = false;

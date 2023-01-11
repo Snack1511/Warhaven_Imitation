@@ -35,6 +35,7 @@ private:
 
 private:
 	CUI_Object* m_pFade = nullptr;
+	CUI_Object* m_pBG = nullptr;
 
 	enum ResultUI { Result_BG, Result_TextBG0, Result_TextBG1, Result_Text0, Result_Text1, Result_Line, Result_End };
 	CUI_Object* m_pResultUI[Result_End];
