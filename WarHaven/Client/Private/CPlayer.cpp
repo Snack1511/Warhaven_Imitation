@@ -1238,7 +1238,8 @@ void CPlayer::My_LateTick()
 	m_bIsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
 	if (!m_bIsInFrustum)
 	{
-		m_pUnitHUD->Disable_RevivalUI();
+		// m_pUnitHUD->Disable_RevivalUI();
+		m_pUnitHUD->SetActive(false);
 	}
 	else
 	{

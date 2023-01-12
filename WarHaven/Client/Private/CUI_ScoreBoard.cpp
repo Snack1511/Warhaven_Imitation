@@ -641,15 +641,34 @@ void CUI_ScoreBoard::Set_ConquestTime(_uint iPointIdx, _float fConquestTime, _fl
 
 void CUI_ScoreBoard::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime)
 {
-	if (strPadenPointKey == "Hwara_Final_Blue")
+	map<_hashcode, CPlayer*> mapPlayers = PLAYER->Get_OwnerPlayer()->Get_Squad()->Get_AllPlayers();
+	auto iter = mapPlayers.begin();
+	eTEAM_TYPE eTeam = iter->second->Get_Team()->Get_TeamType();
+	if (eTeam == eTEAM_TYPE::eBLUE)
 	{
-		_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
-		m_fConquestRatio[Point_A] = fConquestRatio;
+		if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_A] = fConquestRatio;
+		}
+		else
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_E] = fConquestRatio;
+		}
 	}
 	else
 	{
-		_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
-		m_fConquestRatio[Point_E] = fConquestRatio;
+		if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_E] = fConquestRatio;
+		}
+		else
+		{
+			_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
+			m_fConquestRatio[Point_A] = fConquestRatio;
+		}
 	}
 }
 

@@ -164,7 +164,12 @@ private:
 	_float4 m_vColorBlue = _float4(0.1f, 0.6f, 1.f, 0.9f);
 	_float4 m_vColorRed = _float4(1.f, 0.2f, 0.1f, 0.9f);
 
+	_float4 m_vGaugeColorBlue = _float4(0.1f, 0.6f, 1.f, 0.5f);
+	_float4 m_vGaugeColorRed = _float4(1.f, 0.2f, 0.1f, 0.5f);
+
 	_float m_fPointUIPosY = 260.f;
+
+	eTEAM_TYPE m_eTeam = eTEAM_TYPE::eCOUNT;
 
 private:	// Hwara
 	enum HwaraGauge { Hwara_BG, Hwara_Arrow, Hwara_Glow, Hwara_End };
