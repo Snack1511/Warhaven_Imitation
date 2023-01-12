@@ -77,6 +77,12 @@ public:
 		eEnd
 	};
 
+	enum eTargetPlayerType
+	{
+		eEnemy,
+		eAllies,
+		eCNT
+	};
 public:
 
 private:
@@ -169,7 +175,7 @@ public:
 
 public:
 	void	Set_TargetPlayer(CPlayer* pTargetPlayer) { m_pTargetPlayer = pTargetPlayer; }
-	CPlayer* Get_TargetPlayer() { return m_pTargetPlayer; }
+	CPlayer* Get_TargetPlayer(eTargetPlayerType eType = eEnemy);
 
 public:
 	_bool& AbleHero() { return m_bAbleHero; }
@@ -323,6 +329,8 @@ public:
 	void Make_BestRoute(_float4 vPosition);
 	list<_float4>& Get_CurRoute() { return m_CurRoute; }
 	list<_float4>& Get_CurNodeList() { return m_CurNodeList; }
+	void Set_IsFindRoute(_bool flag) { m_bFindRoute = flag; }
+	_bool Is_FindRoute() { return m_bFindRoute; }
 #ifdef _DEBUG
 	void Add_DebugObject(_float4 vPosition);
 	void Clear_DebugObject();
@@ -330,6 +338,7 @@ public:
 private:
 	list<_float4> m_CurRoute;
 	list<_float4> m_CurNodeList;
+	_bool m_bFindRoute = false;
 #ifdef _DEBUG
 	list<CDebugObject*> m_pRouteDebug;
 #endif
@@ -375,7 +384,7 @@ public:
 private:
 	_float4 m_vTargetPos;
 public:
-	_bool Is_CurCellBlocked();
+	_bool Is_OpenCell();
 
 	_bool m_bIsInFrustum = false;
 };

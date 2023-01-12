@@ -52,9 +52,9 @@ private:
 private:
     void Check_NoTarget(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_FindTarget(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_RayFlag(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_ReadyRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_ArriveRoute(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
+    void Check_InRayTarget(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     
 
     void Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
@@ -71,7 +71,6 @@ private:
     void Check_PatrolBehavior(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 
     void Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
-    void Check_EnemyInRay(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
     void Check_CurCellBlocked(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
 
     //void Check_Winning(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController);
@@ -95,9 +94,9 @@ private:
 private:
     void Callback_Tick_UpdatePatrol(CPlayer* pPlayer, CAIController* pAIController);
     void Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIController* pAIController);
-    void Callback_Tick_MakeRoute(CPlayer* pPlayer, CAIController* pAIController);
+    void Callback_Tick_PatiFind(CPlayer* pPlayer, CAIController* pAIController);
     void Callback_Tick_InRayTarget(CPlayer* pPlayer, CAIController* pAIController);
-    void Callback_Tick_AvailableTarget(CPlayer* pPlayer, CAIController* pAIController);
+    void Callback_Tick_FollowTarget(CPlayer* pPlayer, CAIController* pAIController);
 
 private:
     _bool RemovePlayer(_bool bFlag, list<CPlayer*>& PlayerList, list<CPlayer*>::iterator& rhsIter);

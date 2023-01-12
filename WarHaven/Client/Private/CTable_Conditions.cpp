@@ -13,7 +13,7 @@
 #include "CUser.h"
 #include "CPath.h"
 #include "CPlayer.h"
-
+#include "CNavigation.h"
 #define CHECKFALSEOUTCONDITION(OutCondition)\
 if (OutCondition == false)\
 {\
@@ -92,7 +92,7 @@ HRESULT CTable_Conditions::SetUp_Conditions()
     Add_WhyCondition(wstring(L"Check_ChangeBehavior"), Check_ChangeBehavior);
     Add_WhyCondition(wstring(L"Check_ResurrectBehavior"), Check_ResurrectBehavior);
     Add_WhyCondition(wstring(L"Check_AbleHero"), Check_AbleHero);
-    Add_WhyCondition(wstring(L"Check_EnemyInRay"), Check_EnemyInRay);
+    Add_WhyCondition(wstring(L"Check_InRayTarget"), Check_InRayTarget);
 
     Add_WhatCondition(wstring(L"EmptyWhatCondition"), EmptyWhatCondition);
     Add_WhatCondition(wstring(L"Select_Leader"), Select_Leader);
@@ -116,7 +116,8 @@ HRESULT CTable_Conditions::SetUp_BehaviorTick()
     Add_BehaviorTick(wstring(L"EmptyBehaviorTick"), EmptyBehaviorTick);
     Add_BehaviorTick(wstring(L"Callback_Tick_UpdatePatrol"), Callback_Tick_UpdatePatrol);
     Add_BehaviorTick(wstring(L"Callback_Tick_Check_NaviTime"), Callback_Tick_Check_NaviTime);
-    Add_BehaviorTick(wstring(L"Callback_Tick_MakeRoute"), Callback_Tick_MakeRoute);
+    Add_BehaviorTick(wstring(L"Callback_Tick_PatiFind"), Callback_Tick_PatiFind);
+    Add_BehaviorTick(wstring(L"Callback_Tick_FollowTarget"), Callback_Tick_FollowTarget);
 
     return S_OK;
 }
@@ -240,6 +241,24 @@ vector<wstring>& CTable_Conditions::Get_BehaviorNames()
     return m_vecBehaviorName;
 }
 #define CHECK_EMPTY(listname) if (listname.empty()) {OutCondition = false; return;}
+
+void CTable_Conditions::Check_InRayTarget(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
+{
+    CHECKFALSEOUTCONDITION(OutCondition);
+    /* 타겟플레이어가 계산된 이후에 쓰셈 */
+    _float4 vOutPos;
+    _float fOutDist;
+
+
+    _float4 vTargetPos = pPlayer->Get_TargetPos();
+    _float4 vMyPos = pPlayer->Get_WorldPos();
+
+    _float4 vDir = vTargetPos - vMyPos;
+    _float fLength = vDir.Length();
+    vDir.Normalize();
+
+    OutCondition = GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vMyPos, vDir, fLength);
+}
 
 void CTable_Conditions::Check_FarAwayLeader(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
@@ -459,30 +478,12 @@ void CTable_Conditions::Check_AbleHero(_bool& OutCondition, CPlayer* pPlayer, CA
 
 }
 
-void CTable_Conditions::Check_EnemyInRay(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
-{
-    CHECKFALSEOUTCONDITION(OutCondition);
-    /* 타겟플레이어가 계산된 이후에 쓰셈 */
-    _float4 vOutPos;
-    _float fOutDist;
-
-    
-    _float4 vTargetPos = pPlayer->Get_TargetPos();
-    _float4 vMyPos = pPlayer->Get_WorldPos();
-
-    _float4 vDir = vTargetPos - vMyPos;
-    _float fLength = vDir.Length();
-    vDir.Normalize();
-
-    OutCondition = GAMEINSTANCE->Shoot_RaytoStaticActors(&vOutPos, &fOutDist, vMyPos, vDir, fLength);
-
-}
 
 void CTable_Conditions::Check_CurCellBlocked(_bool& OutCondition, CPlayer* pPlayer, CAIController* pAIController)
 {
     CHECKFALSEOUTCONDITION(OutCondition);
 
-    if (pPlayer->Is_CurCellBlocked())
+    if (pPlayer->Is_OpenCell())
         OutCondition = false;
     else
         OutCondition = true;
@@ -710,14 +711,19 @@ void CTable_Conditions::Callback_Tick_Check_NaviTime(CPlayer* pPlayer, CAIContro
 }
 
 //길찾기
-void CTable_Conditions::Callback_Tick_MakeRoute(CPlayer* pPlayer, CAIController* pAIController)
+void CTable_Conditions::Callback_Tick_PatiFind(CPlayer* pPlayer, CAIController* pAIController)
 {
-    if (!pPlayer->Get_CurRoute().empty())
+//    if (!pPlayer->Get_CurRoute().empty())
+//        return;
+
+    //eBehaviorType eType = pAIController->Get_CurBehavior()->Get_BehaviorType();
+    pPlayer->Set_IsFindRoute(false);
+    CPath* pPath = pPlayer->Get_CurPath();
+    if (nullptr == pPath)
         return;
 
-    eBehaviorType eType = pAIController->Get_CurBehavior()->Get_BehaviorType();
     _float4 vPosition;
-    vPosition = pPlayer->Get_TargetPos();
+    vPosition = pPath->Get_LastPos();
 
     pPlayer->Make_BestRoute(vPosition);
 }
@@ -752,18 +758,34 @@ void CTable_Conditions::Callback_Tick_InRayTarget(CPlayer* pPlayer, CAIControlle
 
 }
 
-void CTable_Conditions::Callback_Tick_AvailableTarget(CPlayer* pPlayer, CAIController* pAIController)
+void CTable_Conditions::Callback_Tick_FollowTarget(CPlayer* pPlayer, CAIController* pAIController)
 {
-
+    pPlayer->Set_IsFindRoute(false);
     eBehaviorType eType = pAIController->Get_CurBehavior()->Get_BehaviorType();
-
+    CPlayer::eTargetPlayerType ePlayerType;
     switch (eType)
     {
-    case eBehaviorType::eAttack: 
+    case eBehaviorType::eAttack:
+        ePlayerType = CPlayer::eTargetPlayerType::eEnemy;
         break;
     case eBehaviorType::eResurrect:
+        ePlayerType = CPlayer::eTargetPlayerType::eAllies;
         break;
+    default:
+        ePlayerType = CPlayer::eTargetPlayerType::eEnemy;
+        break;
+
     }
+
+    CPlayer* pTargetPlayer = nullptr;
+    pTargetPlayer = pPlayer->Get_TargetPlayer(ePlayerType);
+    if (nullptr == pTargetPlayer)
+        return;
+    
+    if (!pTargetPlayer->Is_OpenCell())
+        return;
+
+    pPlayer->Make_BestRoute(pTargetPlayer->Get_WorldPos());    
 }
 
 

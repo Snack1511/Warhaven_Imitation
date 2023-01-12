@@ -3721,6 +3721,9 @@
     <Filter Include="03. Instances\02. GameObject\11. Trigger\02. Trigger_Stage">
       <UniqueIdentifier>{2d4e93d5-37bd-48d8-bf80-110ac1e1105b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility">
+      <UniqueIdentifier>{379a1bc2-1d0a-4b86-8054-aeb34be9c677}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6699,6 +6702,9 @@
     <ClInclude Include="..\Public\CState_PathNavigation_Jump_Archer_R.h">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAI_MoveStateUtility.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9657,6 +9663,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CState_PathNavigation_Jump_Archer_R.cpp">
       <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\01. Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAI_MoveStateUtility.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

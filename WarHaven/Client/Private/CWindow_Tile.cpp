@@ -198,6 +198,15 @@ void CWindow_Tile::Tick()
 		m_pCurLayer->DebugTick();
 	}
 #endif // _DEBUG
+#else
+#ifdef TmpRender
+
+
+	if (m_pCurLayer)
+	{
+		m_pCurLayer->DebugTick();
+	}
+#endif // _DEBUG
 #endif // _DEBUG
 }
 

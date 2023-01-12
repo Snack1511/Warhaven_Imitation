@@ -189,6 +189,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\Public\CAIController.h" />
     <ClInclude Include="..\Public\CAIPersonality.h" />
+    <ClInclude Include="..\Public\CAI_MoveStateUtility.h" />
     <ClInclude Include="..\Public\CHit_Fly_Lancer.h" />
     <ClInclude Include="..\Public\CHit_Groggy_Lancer.h" />
     <ClInclude Include="..\Public\CHit_GuardHit_Lancer.h" />
@@ -1184,6 +1185,7 @@
     <ClCompile Include="..\..\Reference\Headers\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\CAIController.cpp" />
     <ClCompile Include="..\Private\CAIPersonality.cpp" />
+    <ClCompile Include="..\Private\CAI_MoveStateUtility.cpp" />
     <ClCompile Include="..\Private\CHit_Fly_Lancer.cpp" />
     <ClCompile Include="..\Private\CHit_Groggy_Lancer.cpp" />
     <ClCompile Include="..\Private\CHit_GuardHit_Lancer.cpp" />

@@ -6,6 +6,12 @@
 	#include "GameInstance.h"
 	#include "Render_Manager.h"
 	#include "CShader.h"
+#else
+#ifdef TmpRender
+	#include "GameInstance.h"
+	#include "Render_Manager.h"
+	#include "CShader.h"
+#endif
 #endif
 #include <thread>
 CCellLayer::CCellLayer()
@@ -22,6 +28,12 @@ CCellLayer::~CCellLayer()
 	SAFE_DELETE_ARRAY(m_NeighborIndex);
 #ifdef _DEBUG
 #ifdef DEBUGRENDER
+	_ulong dwCnt = m_pIB.Reset();
+	dwCnt = m_pVB.Reset();
+	m_pVBInstance.Reset();
+#endif
+#else
+#ifdef TmpRender
 	_ulong dwCnt = m_pIB.Reset();
 	dwCnt = m_pVB.Reset();
 	m_pVBInstance.Reset();
@@ -53,6 +65,29 @@ CCellLayer* CCellLayer::Create(_uint XNums, _uint ZNums, _float fTileSize, _floa
 		Call_MsgBox(L"Failed to SetUp_Instancing : CCellLayer");
 		SAFE_DELETE(pInstance);
 	}	
+	if (FAILED(pInstance->SetUp_Index()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Index : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+	if (FAILED(pInstance->SetUp_Shader()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Shader : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+#endif
+#else
+#ifdef TmpRender
+	if (FAILED(pInstance->SetUp_Vertex()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Vertex : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+	if (FAILED(pInstance->SetUp_Instancing()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Instancing : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
 	if (FAILED(pInstance->SetUp_Index()))
 	{
 		Call_MsgBox(L"Failed to SetUp_Index : CCellLayer");
@@ -99,6 +134,29 @@ CCellLayer* CCellLayer::Create(wstring strFolderPath, wstring strFolderName)
 	//}
 #ifdef _DEBUG
 #ifdef DEBUGRENDER
+	if (FAILED(pInstance->SetUp_Vertex()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Vertex : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+	if (FAILED(pInstance->SetUp_Instancing()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Instancing : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+	if (FAILED(pInstance->SetUp_Index()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Index : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+	if (FAILED(pInstance->SetUp_Shader()))
+	{
+		Call_MsgBox(L"Failed to SetUp_Shader : CCellLayer");
+		SAFE_DELETE(pInstance);
+	}
+#endif
+#else
+#ifdef TmpRender
 	if (FAILED(pInstance->SetUp_Vertex()))
 	{
 		Call_MsgBox(L"Failed to SetUp_Vertex : CCellLayer");
@@ -1353,6 +1411,222 @@ void CCellLayer::DebugTick()
 	DEVICE_CONTEXT->Unmap(m_pVBInstance.Get(), 0);
 
 	CRender_Manager::Get_Instance()->Callback_DebugRender
+		+= bind(&CCellLayer::DebugRendering, this);
+}
+
+void CCellLayer::DebugRendering()
+{
+	//쉐이더 비긴
+	if (nullptr == m_pDebugShader)
+		return;
+
+	_float4x4 matProj = CCamera_Manager::Get_Instance()->Get_Proj();
+	_float4x4 matView = CCamera_Manager::Get_Instance()->Get_View();
+	_float4x4 matWorld;
+	matWorld.Identity();
+	//memcpy_s(&matWorld._41, sizeof(_float4), &m_vCenterPosition, sizeof(_float4));
+	matWorld._42 = m_fLayerHeightMin;
+	matView = matView.Transpose();
+	matProj = matProj.Transpose();
+	matWorld = matWorld.Transpose();
+
+	m_pDebugShader->Set_RawValue("g_ViewMatrix", &matView, sizeof(_float4x4));
+	m_pDebugShader->Set_RawValue("g_ProjMatrix", &matProj, sizeof(_float4x4));
+	m_pDebugShader->Set_RawValue("g_WorldMatrix", &matWorld, sizeof(_float4x4));
+	m_pDebugShader->Begin(1);
+
+	ID3D11Buffer* pVertexBuffers[] = {
+		m_pVB.Get(),
+		m_pVBInstance.Get()
+	};
+
+	_uint		iStrides[] = {
+		m_iStride,
+		m_iInstanceStride
+	};
+
+	_uint		iOffsets[] = {
+		0,
+		0
+	};
+
+	DEVICE_CONTEXT->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
+	DEVICE_CONTEXT->IASetIndexBuffer(m_pIB.Get(), m_eIndexFormat, 0);
+	DEVICE_CONTEXT->IASetPrimitiveTopology(m_eToplogy);
+
+	DEVICE_CONTEXT->DrawIndexedInstanced(1, m_iNumInstance, 0, 0, 0);
+
+	//for (auto& Cell : m_Cells)
+	//{
+	//	_float4 vColor = Get_Color(Cell);
+
+	//	m_pDebugShader->Set_RawValue("g_ViewMatrix", &matView, sizeof(_float4x4));
+	//	m_pDebugShader->Set_RawValue("g_ProjMatrix", &matProj, sizeof(_float4x4));
+	//	m_pDebugShader->Set_RawValue("g_WorldMatrix", &matWorld, sizeof(_float4x4));
+	//	m_pDebugShader->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
+	//	m_pDebugShader->Begin(0);
+	//	Cell->DebugRendering();
+	//}
+}
+_float4 CCellLayer::Get_Color(CCell* pCell)
+{
+	_float4 vColor;
+
+	if (pCell->Check_Attribute(CELL_GROUND))
+	{
+		vColor = _float4(0.f, 1.f, 0.f, 1.f);
+	}
+	else if (pCell->Check_Attribute(CELL_WALL))
+	{
+		vColor = _float4(0.f, 0.f, 1.f, 1.f);
+	}
+	else if (pCell->Check_Attribute(CELL_GRASS))
+	{
+		vColor = _float4(1.f, 1.f, 0.f, 1.f);
+	}
+	else if (pCell->Check_Attribute(CELL_STAIR))
+	{
+		vColor = _float4(1.f, 0.f, 1.f, 1.f);
+	}
+	else if (pCell->Check_Attribute(CELL_BLOCKED))
+	{
+		vColor = _float4(1.f, 0.f, 0.f, 1.f);
+	}
+	return vColor;
+}
+#endif
+#else
+#ifdef TmpRender
+HRESULT CCellLayer::SetUp_Vertex()
+{
+	m_iStride = sizeof(VTXDEFAULT);
+	m_iNumVertices = 1;
+	m_iNumVertexBuffers = 2;
+
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_BufferDesc.ByteWidth = m_iStride * m_iNumVertices;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride = m_iStride;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+
+	VTXDEFAULT* pVertices = new VTXDEFAULT;
+
+	pVertices->vPosition = _float3(0.f, 0.f, 0.f);
+
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pVertices;
+
+	if (FAILED(Create_VertexBuffer()))
+		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);
+	return S_OK;
+}
+
+HRESULT CCellLayer::SetUp_Instancing()
+{
+	m_iInstanceStride = sizeof(VTXTRIINSTANCE);
+	m_iNumInstance = m_iXNums * m_iZNums * 2;
+
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_BufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstance;
+	m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride = m_iInstanceStride;
+	m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	m_BufferDesc.MiscFlags = 0;
+
+	VTXTRIINSTANCE* pInstance = new VTXTRIINSTANCE[m_iNumInstance];
+
+	for (_uint i = 0; i < m_iNumInstance; ++i)
+	{
+		memcpy_s(pInstance[i].vPosition, sizeof(_float3), &m_Cells[i]->Get_Point(CCell::POINT_A), sizeof(_float3));
+		memcpy_s(pInstance[i].vPosition + 1, sizeof(_float3), &m_Cells[i]->Get_Point(CCell::POINT_B), sizeof(_float3));
+		memcpy_s(pInstance[i].vPosition + 2, sizeof(_float3), &m_Cells[i]->Get_Point(CCell::POINT_C), sizeof(_float3));
+		pInstance[i].vColor = Get_Color(m_Cells[i]);
+	}
+
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pInstance;
+
+	if (FAILED(DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pVBInstance)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pInstance);
+
+	return S_OK;
+}
+
+HRESULT CCellLayer::SetUp_Index()
+{
+	m_iIndicesStride = sizeof(_ushort);
+	m_iNumPrimitive = m_iNumInstance;
+	m_iNumIndices = m_iNumInstance;
+	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
+	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_BufferDesc.ByteWidth = m_iIndicesStride * m_iNumPrimitive;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	m_BufferDesc.StructureByteStride = 0;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+
+	_ushort* pIndices = new _ushort[m_iNumPrimitive];
+	ZeroMemory(pIndices, sizeof(_ushort) * m_iNumPrimitive);
+
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pIndices;
+
+	if (FAILED(Create_IndexBuffer()))
+		return E_FAIL;
+
+	Safe_Delete_Array(pIndices);
+	return S_OK;
+}
+
+HRESULT CCellLayer::SetUp_Shader()
+{
+	m_pDebugShader = CShader::Create(TEXT("../Bin/Shaderfiles/Shader_Debugging.hlsl"), VTXDEFAULT_TRI_INSTANCE_DECLARATION::Element, VTXDEFAULT_TRI_INSTANCE_DECLARATION::iNumElements);
+
+	CRender_Manager::Get_Instance()->m_TmpRnderShaders_OutCreate.push_back(m_pDebugShader);
+	return S_OK;
+}
+
+HRESULT CCellLayer::Create_VertexBuffer()
+{
+	return (DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, m_pVB.GetAddressOf()));
+}
+
+HRESULT CCellLayer::Create_IndexBuffer()
+{
+	return (DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, m_pIB.GetAddressOf()));
+}
+
+void CCellLayer::DebugTick()
+{
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	/* D3D11_MAP_WRITE_NO_OVERWRITE : SubResource구조체가 받아온 pData에 유요한 값이 담겨잇는 형태로 얻어오낟. */
+	/* D3D11_MAP_WRITE_DISCARD : SubResource구조체가 받아온 pData에 값이 초기화된 형태로 얻어오낟. */
+	DEVICE_CONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	for (_uint i = 0; i < m_iNumInstance; ++i)
+	{
+		// *(((VTXINSTANCE*)SubResource.pData) + i)
+		((VTXTRIINSTANCE*)SubResource.pData)[i].vPosition[0].y = m_fLayerHeightMin;
+		((VTXTRIINSTANCE*)SubResource.pData)[i].vPosition[1].y = m_fLayerHeightMin;
+		((VTXTRIINSTANCE*)SubResource.pData)[i].vPosition[2].y = m_fLayerHeightMin;
+		((VTXTRIINSTANCE*)SubResource.pData)[i].vColor = Get_Color(m_Cells[i]);
+	}
+
+	DEVICE_CONTEXT->Unmap(m_pVBInstance.Get(), 0);
+
+	CRender_Manager::Get_Instance()->Callback_TmpRender
 		+= bind(&CCellLayer::DebugRendering, this);
 }
 

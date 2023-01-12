@@ -1,6 +1,6 @@
 #pragma once
 #include "CImGui_Window.h"
-
+#define TmpRender
 /*
 	레이어 이름으로 저장기능
 	레이어 범위 설정 기능

@@ -942,6 +942,19 @@ _bool CPlayer::Is_AbleRevival()
 	return m_bAbleRevival;
 }
 
+CPlayer* CPlayer::Get_TargetPlayer(eTargetPlayerType eType) 
+{
+	if (nullptr == m_pCurBehaviorDesc)
+		return nullptr;
+	switch (eType)
+	{
+	case eTargetPlayerType::eEnemy:
+		return m_pCurBehaviorDesc->pEnemyPlayer;
+	case eTargetPlayerType::eAllies:
+		return m_pCurBehaviorDesc->pAlliesPlayer;
+	}
+}
+
 void CPlayer::On_RealDie()
 {
 	/* 이 함수가 소생 이펙트 켜지는 곳임 */
@@ -1044,6 +1057,9 @@ void CPlayer::On_RealChangeBehavior()
 	{
 	case eBehaviorType::eAttack:
 		m_pTargetPlayer = m_pCurBehaviorDesc->pEnemyPlayer;
+		break;
+	case eBehaviorType::eResurrect:
+		m_pTargetPlayer = m_pCurBehaviorDesc->pAlliesPlayer;
 		break;
 	default:
 		break;
@@ -1433,25 +1449,25 @@ void CPlayer::Clear_DebugObject()
 }
 
 #endif
-_bool CPlayer::Is_CurCellBlocked()
+_bool CPlayer::Is_OpenCell()
 {
 	if (nullptr == m_pCurrentUnit)
-		return true;
+		return false;
 	CNavigation* pNaviComponent = m_pCurrentUnit->Get_NaviCom();
 	if (nullptr == pNaviComponent)
-		return true;
+		return false;
 
 	_float4 vUnitPos = m_pCurrentUnit->Get_Transform()->Get_World(WORLD_POS);
 
 	CCell* pCell = pNaviComponent->Get_CurCell(vUnitPos, CGameSystem::Get_Instance()->Get_CellLayer());
 
 	if (nullptr == pCell)
-		return true;
+		return false;
 
 	if (pCell->Check_Attribute(CELL_BLOCKED))
-		return true;
+		return false;
 
-	return false;
+	return true;
 }
 void CPlayer::Make_BestRoute(_float4 vPosition)
 {
@@ -1465,6 +1481,10 @@ void CPlayer::Make_BestRoute(_float4 vPosition)
 
 	m_CurNodeList = m_pCurrentUnit->Get_NaviCom()->m_DebugRouteNode;
 
+	if (m_CurRoute.empty())
+		Set_IsFindRoute(false);
+	else
+		Set_IsFindRoute(true);
 }
 
 void CPlayer::On_AbleHero()

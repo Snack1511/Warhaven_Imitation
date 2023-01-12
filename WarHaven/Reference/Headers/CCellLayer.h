@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine_Defines.h"
 #define DEBUGRENDER
+#define TmpRender
 BEGIN(Engine)
 class CCell;
 class CNode;
@@ -55,6 +56,41 @@ public:
 	wstring Get_DebugName() { return m_strDebugName; }
 #ifdef _DEBUG
 #ifdef DEBUGRENDER
+public:
+	HRESULT SetUp_Vertex();
+	HRESULT SetUp_Instancing();
+	HRESULT SetUp_Index();
+	HRESULT SetUp_Shader();
+
+	HRESULT Create_VertexBuffer();
+	HRESULT Create_IndexBuffer();
+
+	void DebugTick();
+	void DebugRendering();
+	_float4 Get_Color(CCell* pCell);
+private:
+	CShader* m_pDebugShader = nullptr;
+private:
+	D3D11_BUFFER_DESC m_BufferDesc;
+	D3D11_SUBRESOURCE_DATA m_SubResourceData;
+private:
+	ComPtr<ID3D11Buffer> m_pVB = nullptr;
+	ComPtr<ID3D11Buffer> m_pIB = nullptr;
+private:
+	_uint						m_iStride = 0;
+	_uint						m_iNumVertices = 0;
+	_uint						m_iNumVertexBuffers = 0;
+	ComPtr<ID3D11Buffer>		m_pVBInstance = nullptr;
+	_uint						m_iInstanceStride = 0;
+	_uint						m_iNumInstance = 0;
+	_uint						m_iIndicesStride = 0;
+	_uint						m_iNumPrimitive = 0;
+	_uint						m_iNumIndices = 0;
+	DXGI_FORMAT					m_eIndexFormat;
+	D3D_PRIMITIVE_TOPOLOGY		m_eToplogy;
+#endif
+#else
+#ifdef TmpRender
 public:
 	HRESULT SetUp_Vertex();
 	HRESULT SetUp_Instancing();
