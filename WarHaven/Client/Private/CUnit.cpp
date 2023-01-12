@@ -750,7 +750,7 @@ void CUnit::OnEnable()
 	{
 		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));
 		Create_Light(this, _float4(0.f, 0.5f, 0.f), 5.f, 0.f, 1.f, 1.f, 1.f, RGB(255, 160, 50), false);
-		m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
+		//m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 	}
 
 	m_bRespawn = false;

@@ -354,6 +354,7 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 			//m_pCurrentUnit->On_ChangeClass();
 			DISABLE_GAMEOBJECT(m_pCurrentUnit);
 		}
+		m_pCurrentUnit = pUnit;
 
 		if (m_eCurrentClass >= FIONA)
 		{
@@ -361,7 +362,6 @@ HRESULT CPlayer::Change_UnitClass(CLASS_TYPE eClassType)
 		}
 
 
-		m_pCurrentUnit = pUnit;
 		ENABLE_GAMEOBJECT(pUnit);
 
 		m_pFollowCam->Set_FollowTarget(pUnit);

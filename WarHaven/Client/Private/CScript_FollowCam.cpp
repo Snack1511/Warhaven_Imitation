@@ -195,7 +195,7 @@ HRESULT CScript_FollowCam::Initialize()
 	m_arrLerpDesc[CAMERA_LERP_RUSH].vTargetOffset.y -= 0.2f;
 
 	m_arrLerpDesc[CAMERA_LERP_BREEZE] = m_arrLerpDesc[CAMERA_LERP_LANCER];
-	m_arrLerpDesc[CAMERA_LERP_BREEZE].fTargetDistance = 0.65f;
+	m_arrLerpDesc[CAMERA_LERP_BREEZE].fTargetDistance *= 1.f;
 	m_arrLerpDesc[CAMERA_LERP_BREEZE].fMaxDistance *= 2.5f;
 	m_arrLerpDesc[CAMERA_LERP_BREEZE].vTargetOffset.x -= 0.2f;
 
