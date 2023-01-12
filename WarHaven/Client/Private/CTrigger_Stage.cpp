@@ -133,12 +133,17 @@ void CTrigger_Stage::My_Tick()
 
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	_bool isIsFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
+
+	CUser::Get_Instance()->Set_PointUI_ProjectionTransform(m_strTriggerName, m_pTransform, isIsFrustum);
+
 	switch (m_eTriggerType)
 	{
 	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eMAIN:
+
 		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
 		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
 		CUser::Get_Instance()->Set_ScoreBoardConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
+
 		break;
 
 	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eRESPAWN:
@@ -154,9 +159,13 @@ void CTrigger_Stage::My_Tick()
 		break;
 
 	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
-		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(0, m_pTransform, isIsFrustum);
-		CUser::Get_Instance()->Set_MiniMapConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
-		CUser::Get_Instance()->Set_ScoreBoardConquestTime(0, m_fConqueredTimeAcc, m_fConqueredTime);
+		CUser::Get_Instance()->Set_PointUI_ProjectionTransform(2, m_pTransform, isIsFrustum);
+		CUser::Get_Instance()->Set_MiniMapConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
+		CUser::Get_Instance()->Set_ScoreBoardConquestTime(2, m_fConqueredTimeAcc, m_fConqueredTime);
+		break;
+
+	case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_FINAL:
+
 		break;
 	}
 
@@ -278,7 +287,7 @@ void CTrigger_Stage::Update_Conquered()
 			break;
 
 		case Client::CTrigger_Stage::eSTAGE_TRIGGER_TYPE::eHWARA_CENTER:
-		
+
 			/* Center 점령 시 final 점령 가능하게 열림 */
 			CGameSystem::Get_Instance()->Enable_HwaraFinalTrigger(m_pConqueredTeam->Get_TeamType());
 
@@ -321,6 +330,6 @@ void CTrigger_Stage::Update_Conquered()
 #endif // _DEBUG
 
 		m_fConqueredTimeAcc = 0.f;
-	}
+		}
 
-}
+	}

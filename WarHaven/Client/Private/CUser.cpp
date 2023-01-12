@@ -353,6 +353,12 @@ void CUser::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransf
 		m_pUI_Paden->Set_PointUI_ProjectionTransform(iPointIdx, pTransform, isInFrustum);
 }
 
+void CUser::Set_PointUI_ProjectionTransform(string strPadenPointKey, CTransform* pTransform, _bool isInFrustum)
+{
+	if (m_pUI_Paden)
+		m_pUI_Paden->Set_PointUI_ProjectionTransform(strPadenPointKey, pTransform, isInFrustum);
+}
+
 void CUser::Set_MiniMapConquestTime(_uint iPoinIdx, _float fConquestTime, _float fMaxConquestTime)
 {
 	if (m_pMiniMap)

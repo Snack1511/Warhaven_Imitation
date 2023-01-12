@@ -28,6 +28,7 @@ public:
 public:
 	void Set_ProjPos(CTransform* pTransform);
 	void Set_GaugeRatio(_float fRatio) { m_fGaugeRatio = fRatio; }
+	void Set_UnitHP(_float fCurHP, _float fMaxHP);
 	void Set_UnitHPColor(_float4 vColor) { m_vHpColor = vColor; }
 
 	void SetActive_UnitHP(_bool value);

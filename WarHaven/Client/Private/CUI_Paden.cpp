@@ -127,7 +127,7 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 {
 	_float fConquestRatio = 1.f - (fConquestTime / fMaxConquestTime);
 
-	if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Center")
+	if (strPadenPointKey == "Paden_Trigger_A" || strPadenPointKey == "Hwara_Final_Blue")
 	{
 		m_fConquestRatio[Point_A] = fConquestRatio;
 	}
@@ -135,9 +135,13 @@ void CUI_Paden::Set_ConquestTime(string strPadenPointKey, _float fConquestTime, 
 	{
 		m_fConquestRatio[Point_R] = fConquestRatio;
 	}
-	else if (strPadenPointKey == "Paden_Trigger_C")
+	else if (strPadenPointKey == "Paden_Trigger_C" || strPadenPointKey == "Hwara_Center")
 	{
 		m_fConquestRatio[Point_C] = fConquestRatio;
+	}
+	else if (strPadenPointKey == "Hwara_Final_Red")
+	{
+		m_fConquestRatio[Point_E] = fConquestRatio;
 	}
 }
 
@@ -191,6 +195,26 @@ void CUI_Paden::Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTr
 		else
 		{
 			Update_IndicatorAngle(pTransform);
+		}
+	}
+}
+
+void CUI_Paden::Set_PointUI_ProjectionTransform(string strPadenPointKey, CTransform* pTransform, _bool isInFrustum)
+{
+	_float4 vNewPos = CUtility_Transform::Get_ProjPos(pTransform);
+	vNewPos.y += 5.f;
+
+	for (int i = 0; i < PU_End; ++i)
+	{
+		if (strPadenPointKey == "Hwara_Final_Blue")
+		{
+			m_pArrProjPointUI[Point_E][i]->SetActive(isInFrustum);
+			m_pArrProjPointUI[Point_E][i]->Set_Pos(vNewPos);
+		}
+		else if(strPadenPointKey == "Hwara_Final_Red")
+		{
+			m_pArrProjPointUI[Point_A][i]->SetActive(isInFrustum);
+			m_pArrProjPointUI[Point_A][i]->Set_Pos(vNewPos);
 		}
 	}
 }
@@ -252,7 +276,7 @@ void CUI_Paden::SetActive_PointUI(_bool value)
 			m_pArrProjPointUI[i][j]->SetActive(value);
 
 			if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_HWARA)
-				m_pArrProjPointUI[Point_C][j]->SetActive(false);
+				m_pArrPointUI[Point_R][j]->SetActive(false);
 		}
 	}
 }
@@ -832,9 +856,6 @@ void CUI_Paden::Create_PointUI()
 			m_pArrPointUI[j][i] = m_pPointUI[i]->Clone();
 			m_pArrProjPointUI[j][i] = m_pPointUI[i]->Clone();
 
-			_float fPosX = -50.f + (j * 50.f);
-			m_pArrPointUI[j][i]->Set_PosX(fPosX);
-
 			CREATE_GAMEOBJECT(m_pArrPointUI[j][i], GROUP_UI);
 			DISABLE_GAMEOBJECT(m_pArrPointUI[j][i]);
 
@@ -846,39 +867,15 @@ void CUI_Paden::Create_PointUI()
 
 void CUI_Paden::Init_PointUI()
 {
-	for (int i = 0; i < Point_End; ++i)
+	if (CUser::Get_Instance()->Get_CurLevel() == LEVEL_PADEN)
 	{
-		for (int j = 0; j < PU_End; ++j)
+		for (int i = 0; i < Point_End; ++i)
 		{
-			if (CLoading_Manager::Get_Instance()->Get_LoadLevel() == LEVEL_HWARA)
+			for (int j = 0; j < PU_End; ++j)
 			{
-				if (j == PU_Text)
-				{
-					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
-					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
-				}
-				else
-				{
-					if (i == Point_R)
-					{
-						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
-						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
-					}
-					else
-					{
-						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(2);
-						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(2);
+				_float fPosX = -50.f + (j * 50.f);
+				m_pArrPointUI[i][j]->Set_PosX(fPosX);
 
-						if (j == PU_Gauge)
-						{
-							GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
-							GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
-						}
-					}
-				}
-			}
-			else
-			{
 				if (i == Point_A)
 				{
 					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
@@ -894,6 +891,36 @@ void CUI_Paden::Init_PointUI()
 						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
 						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
 					}
+				}
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < Point_End; ++i)
+		{
+			for (int j = 0; j < PU_End; ++j)
+			{
+				m_pArrPointUI[Point_A][j]->Set_PosX(-50.f);
+				m_pArrPointUI[Point_C][j]->Set_PosX(0.f);
+				m_pArrPointUI[Point_E][j]->Set_PosX(50.f);
+
+				GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+				GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(i);
+
+				if (i != Point_R)
+				{
+					if (j == PU_Text)
+						continue;
+
+					if (j == PU_Gauge)
+					{
+						GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+						GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(1);
+					}
+
+					GET_COMPONENT_FROM(m_pArrPointUI[i][j], CTexture)->Set_CurTextureIndex(2);
+					GET_COMPONENT_FROM(m_pArrProjPointUI[i][j], CTexture)->Set_CurTextureIndex(2);
 				}
 			}
 		}

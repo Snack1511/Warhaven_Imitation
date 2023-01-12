@@ -1587,7 +1587,6 @@ void CPlayer::Frustum_UnitHUD()
 	{
 		m_pUnitHUD->Set_UnitDis(fDis);
 
-
 		if (m_bIsInFrustum)
 		{
 			if (!m_pUnitHUD->Is_Valid())

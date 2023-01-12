@@ -82,11 +82,9 @@ void CUI_UnitHP::OnDisable()
 	__super::OnDisable();
 
 	for (int i = 0; i < IT_END; ++i)
-	{
-		DISABLE_GAMEOBJECT(m_pUnitHP[i]);
-	}
+		m_pUnitHP[i]->SetActive(false);
 
-	DISABLE_GAMEOBJECT(m_pHealBlur);
+	m_pHealBlur->SetActive(false);
 }
 
 void CUI_UnitHP::My_Tick()
@@ -124,6 +122,11 @@ void CUI_UnitHP::Set_ProjPos(CTransform* pTransform)
 		m_pHealBlur->Set_Pos(vNewPos);
 		m_pHealBlur->Get_Transform()->Make_WorldMatrix();
 	}
+}
+
+void CUI_UnitHP::Set_UnitHP(_float fCurHP, _float fMaxHP)
+{
+	m_fGaugeRatio = fCurHP / fMaxHP;
 }
 
 void CUI_UnitHP::SetActive_UnitHP(_bool value)

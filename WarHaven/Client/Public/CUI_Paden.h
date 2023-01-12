@@ -32,6 +32,7 @@ public:
 public:
 	void Set_ConquestTime(string strPadenPointKey, _float fConquestTime, _float fMaxConquestTime);
 	void Set_PointUI_ProjectionTransform(_uint iPointIdx, CTransform* pTransform, _bool isInFrustum);
+	void Set_PointUI_ProjectionTransform(string strPadenPointKey, CTransform* pTransform, _bool isInFrustum);
 
 	void Set_TargetTransform(CTransform* pTargetTransform);
 
@@ -113,7 +114,7 @@ private:
 
 private:
 	enum PointUI { PU_Point, PU_Gauge, PU_Text, PU_End };
-	enum PointName { Point_A, Point_R, Point_C, Point_End };
+	enum PointName { Point_A, Point_R, Point_C, Point_E, Point_End };
 
 	PointName m_ePoint = Point_End;
 
