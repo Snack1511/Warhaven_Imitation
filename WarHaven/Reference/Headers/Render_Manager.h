@@ -3,7 +3,7 @@
 
 /* This Manager has all Renderer Instances and execute all*/
 #define CUR_ENGINESHADER		4
-
+#define TmpRender
 
 BEGIN(Engine)
 
@@ -178,8 +178,14 @@ private:
 public:
 	CDelegate<> Callback_DebugRender;
 	list<CShader*> m_DebuggingShaders_OutCreate;
+#else
+#ifdef TmpRender
+public:
+	CDelegate<> Callback_TmpRender;
+	list<class CShader*> m_TmpRnderShaders_OutCreate;
 #endif
-	
+#endif
+
 
 
 };

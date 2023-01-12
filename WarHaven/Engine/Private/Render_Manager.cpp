@@ -1033,19 +1033,35 @@ HRESULT CRender_Manager::Render()
 #ifdef _DEBUG
 	if (FAILED(Render_Debug()))
 		return E_FAIL;
+#else
+#ifdef TmpRender
+	Callback_TmpRender();
+	Callback_TmpRender.Clear();
+
+#endif
 #endif // _DEBUG
+
+
 
 	return S_OK;
 }
 
 void CRender_Manager::Release()
 {
-
 #ifdef _DEBUG
 	for (auto& elem : m_DebuggingShaders_OutCreate)
 	{
 		SAFE_DELETE(elem);
 	}
+#else
+#ifdef TmpRender
+	for (auto& elem : m_TmpRnderShaders_OutCreate)
+	{
+		SAFE_DELETE(elem);
+	}
+	Callback_TmpRender.Clear();
+	
+#endif
 #endif
 
 	for (auto& elem : m_vecShader)
