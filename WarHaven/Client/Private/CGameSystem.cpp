@@ -164,7 +164,7 @@ HRESULT CGameSystem::On_ReadyTest(vector<pair<CGameObject*, _uint>>& vecReadyObj
 	CUser::Get_Instance()->Set_Player(pUserPlayer);
 	READY_GAMEOBJECT(pUserPlayer, GROUP_PLAYER);
 
-	for (_uint i = 0; i < 5; ++i)
+	for (_uint i = 0; i < 0; ++i)
 	{
 		vPlayerPos.z += 3.f;
 		vPlayerPos.x += 1.f;
@@ -1362,6 +1362,24 @@ HRESULT CGameSystem::On_ReadyTirggers_Hwara(vector<pair<CGameObject*, _uint>>& v
 
 HRESULT CGameSystem::On_ReadyDestructible_Hwara(vector<pair<CGameObject*, _uint>>& vecReadyObjects)
 {
+	for (_uint i = 0; i < 8; ++i)
+	{
+		string strPosition = "Hwara_Destructible_";
+		strPosition += to_string(i);
+
+		CDestructible* pDestructible = CDestructible::Create(
+			L"../bin/resources/meshes/map/environments/Prop/Storage/SM_Prop_Storage_Barrel09a_Lod1.fbx",
+			L"FishBarrelParticle",
+			L"WoodenHitParticle",
+			1
+		);
+		_float4 vPos = Find_Position(strPosition);
+		pDestructible->Set_Position(vPos);
+		pDestructible->Set_Look(_float4(1.f, 0.f, 0.f, 0.f));
+		vecReadyObjects.push_back(make_pair(pDestructible, GROUP_PROP));
+	}
+	
+
 	return S_OK;
 }
 

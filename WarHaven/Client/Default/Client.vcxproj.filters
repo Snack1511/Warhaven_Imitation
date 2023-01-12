@@ -1165,9 +1165,6 @@
     <Filter Include="03. Instances\01. Level\04. Level_Stage\Paden">
       <UniqueIdentifier>{405c7fdf-7fb1-4b1e-bccd-455538fd7865}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden">
-      <UniqueIdentifier>{2d4e93d5-37bd-48d8-bf80-110ac1e1105b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Design\04. Game_Manager\HR">
       <UniqueIdentifier>{a6848b0f-39e3-42b0-a12d-ebf732b59733}</UniqueIdentifier>
     </Filter>
@@ -3718,6 +3715,9 @@
     <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_PathNavigation\03. Jump\05. Archer\02. Left">
       <UniqueIdentifier>{d3b4416d-ad0e-40fa-9f09-7b73c4bea6c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Instances\02. GameObject\11. Trigger\02. Trigger_Stage">
+      <UniqueIdentifier>{2d4e93d5-37bd-48d8-bf80-110ac1e1105b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -4855,7 +4855,7 @@
       <Filter>02. Design\04. Game_Manager\HR</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CTrigger_Stage.h">
-      <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
+      <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI_Animation.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire</Filter>
@@ -7817,7 +7817,7 @@
       <Filter>02. Design\04. Game_Manager\HR</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CTrigger_Stage.cpp">
-      <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Paden</Filter>
+      <Filter>03. Instances\02. GameObject\11. Trigger\02. Trigger_Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Animation.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\03.HUD\Fire</Filter>

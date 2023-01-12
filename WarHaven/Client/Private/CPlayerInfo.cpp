@@ -629,15 +629,15 @@ void CPlayerInfo::Set_CustomBody_Lancer(eCUSTOM_BODY eBodyEnum)
 	switch (eBodyEnum)
 	{
 	case Client::CPlayerInfo::eCUSTOM_BODY::eDEFAULT:
-		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/Test_Lancer2_100.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/Lancer_Body.fbx";
 		break;
 	case Client::CPlayerInfo::eCUSTOM_BODY::eBODY1:
 		//m_tPlayerSetUpData.wstrBodyMeshPath[FIONA] = L"../bin/resources/meshes/characters/valkyrie/body/SK_Fiona0004_Body_A00_50.fbx";
-		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/Test_Lancer2_100.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/Lancer_Body.fbx";
 		break;
 
 	default:
-		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/Test_Lancer2_100.fbx";
+		m_tPlayerSetUpData.wstrBodyMeshPath[LANCER] = L"../bin/resources/meshes/characters/Lancer/body/Lancer_Body.fbx";
 		break;
 	}
 }
