@@ -24,6 +24,8 @@ HRESULT CState_Patrol_Default_Archer::Initialize()
 	m_fMyMaxLerp = 0.4f;
 	m_fMyAccel = 100.f;
 
+	m_iRand = random(0, 2);
+
 	// 선형 보간 시간
 	m_fInterPolationTime = 0.1f;
 
@@ -44,6 +46,9 @@ void CState_Patrol_Default_Archer::Enter(CUnit* pOwner, CAnimator* pAnimator, ST
 
 STATE_TYPE CState_Patrol_Default_Archer::Tick(CUnit* pOwner, CAnimator* pAnimator)
 {
+	if (pAnimator->Is_CurAnimFinished())
+		m_iRand = random(0, 2);
+
     return __super::Tick(pOwner, pAnimator);
 }
 

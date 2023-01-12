@@ -562,7 +562,7 @@ void CPlayer::SetUp_ReserveState()
 	case CUnit::UNIT_TYPE::eAI_Default:
 
 		m_iReserveStateDefault[WARRIOR] = AI_STATE_PATROL_DEFAULT_WARRIOR_R;
-		//	m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_PATROL_DEFAULT_ENGINEER_R;
 		m_iReserveStateDefault[FIONA] = AI_STATE_COMBAT_DEFAULT_FIONA_R;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_PATROL_DEFAULT_PALADIN_R;
@@ -573,7 +573,7 @@ void CPlayer::SetUp_ReserveState()
 	case CUnit::UNIT_TYPE::eAI_idiot:
 
 		m_iReserveStateDefault[WARRIOR] = AI_STATE_COMMON_HIT_WARRIOR;
-		//	m_iReserveStateDefault[ARCHER] = AI_STATE_PATROL_DEFAULT_ARCHER_R;
+		m_iReserveStateDefault[ARCHER] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[ENGINEER] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[FIONA] = AI_STATE_COMMON_HIT_WARRIOR;
 		m_iReserveStateDefault[PALADIN] = AI_STATE_COMMON_HIT_WARRIOR;

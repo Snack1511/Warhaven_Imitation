@@ -821,8 +821,8 @@ void CRectEffects::My_LateTick()
 	_float4 vFinalPos = XMLoadFloat4(&((m_pFinalRectInstances + (iFinalIndex-1))->vTranslation));
 	vFinalPos = vFinalPos.MultiplyCoord(m_pTransform->Get_WorldMatrix());
 
-	if (vFinalPos.Is_Zero())
-		MessageBox(0, L"¶Ç 0", TEXT("System Error"), MB_OK);
+	//if (vFinalPos.Is_Zero())
+	//	MessageBox(0, L"¶Ç 0", TEXT("System Error"), MB_OK);
 
 	GET_COMPONENT(CRenderer)->Set_FinalPos(vFinalPos);
 
