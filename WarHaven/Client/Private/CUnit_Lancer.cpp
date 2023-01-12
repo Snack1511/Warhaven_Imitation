@@ -16,6 +16,7 @@
 
 #include "CLancerNeedle.h"
 #include "CUnit_Lancer_Head.h"
+#include "CRectEffects.h"
 
 CUnit_Lancer::CUnit_Lancer()
 {
@@ -54,6 +55,33 @@ void CUnit_Lancer::On_Die()
 	m_fDeadTimeAcc = 0.f;
 	m_tUnitStatus.fHP = m_tUnitStatus.fMaxHP;
 
+}
+
+void CUnit_Lancer::TurnOn_Trail(_bool bOn)
+{
+	if (!m_pTrail_R)
+		return;
+
+	m_pTrail_R->TurnOn_TrailEffect(bOn);
+	m_pTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pTrail_L->TurnOn_TrailEffect(bOn);
+	m_pTrail_L2->TurnOn_TrailEffect(bOn);
+
+
+	m_pLowerTrail_R->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_L->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_L2->TurnOn_TrailEffect(bOn);
+
+	m_pHorseTrail_R->TurnOn_TrailEffect(bOn);
+	m_pHorseTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pHorseTrail_L->TurnOn_TrailEffect(bOn);
+	m_pHorseTrail_L2->TurnOn_TrailEffect(bOn);
+
+	m_pEyeTrail_R->TurnOn_TrailEffect(bOn);
+	m_pEyeTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pEyeTrail_L->TurnOn_TrailEffect(bOn);
+	m_pEyeTrail_L2->TurnOn_TrailEffect(bOn);
 }
 
 void CUnit_Lancer::SetUp_Colliders(_bool bPlayer)
@@ -324,6 +352,214 @@ void CUnit_Lancer::Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos)
 	}
 }
 
+void CUnit_Lancer::SetUp_Trail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pTrail_R->TurnOn_TrailEffect(false);
+	m_pTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_Trail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pTrail_L->TurnOn_TrailEffect(false);
+	m_pTrail_L2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_LowerTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pLowerTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pLowerTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pLowerTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pLowerTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pLowerTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pLowerTrail_R->TurnOn_TrailEffect(false);
+	m_pLowerTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_LowerTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pLowerTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pLowerTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pLowerTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pLowerTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pLowerTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pLowerTrail_L->TurnOn_TrailEffect(false);
+	m_pLowerTrail_L2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_HorseTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pHorseTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pHorseTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pHorseTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pHorseTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pHorseTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pHorseTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pHorseTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pHorseTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pHorseTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pHorseTrail_R->TurnOn_TrailEffect(false);
+	m_pHorseTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_HorseTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pHorseTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pHorseTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pHorseTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pHorseTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pHorseTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pHorseTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pHorseTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pHorseTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pHorseTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pHorseTrail_L->TurnOn_TrailEffect(false);
+	m_pHorseTrail_L2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_EyeTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pEyeTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pEyeTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pEyeTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pEyeTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pEyeTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pEyeTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pEyeTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pEyeTrail_R->TurnOn_TrailEffect(false);
+	m_pEyeTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Lancer::SetUp_EyeTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pEyeTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pEyeTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pEyeTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pEyeTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pEyeTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pEyeTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pEyeTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pEyeTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pEyeTrail_L->TurnOn_TrailEffect(false);
+	m_pEyeTrail_L2->TurnOn_TrailEffect(false);
+}
+
 HRESULT CUnit_Lancer::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -468,7 +704,7 @@ HRESULT CUnit_Lancer::Start()
 		0.f,
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds",
 		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
-		20,
+		60,
 		"0B_R_WP1"
 	);
 	
@@ -484,8 +720,124 @@ HRESULT CUnit_Lancer::Start()
 		0.f,
 		L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_09_M.dds",
 		L"../bin/resources/Textures/Effects/GradientMap/T_EFF_Blur_09_M.dds",
-		20,
+		60,
 		"0B_R_WP1"
+	);
+
+	m_vTrailShader = SH_EFFECT_NONE;
+	wstring strMask = L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds";
+	_float fAlpha = 0.5f;
+	_float fUpperSize = 10.f;
+
+	SetUp_Trail_R(
+		_float4(0.f, 0.f, fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"0B_R_ShoulderP1_01"
+	);
+
+	SetUp_Trail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"0B_L_ShoulderP1_01"
+	);
+	//lower
+	fUpperSize *= 0.5f;
+
+	SetUp_LowerTrail_R(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"0B_R_Knee_02"
+	);
+	SetUp_LowerTrail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"0B_L_Knee_02"
+	);
+
+	SetUp_HorseTrail_R(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"1B_R_Thigh2"
+	);
+	SetUp_HorseTrail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		60,
+		"1B_L_Thigh2"
+	);
+
+	SetUp_EyeTrail_R(
+		_float4(10.f, -10.f, 25.f, 1.f),					//Weapon R
+		_float4(10.f, -10.f, 5.f, 1.f),					//Weapon R
+		_float4(-fUpperSize + 10.f, -10.f, 25.f, 1.f),					 //Left	L
+		_float4(fUpperSize + 10.f, -10.f, 5.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.f, 0.f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"1B_Jaw"
+	);
+	SetUp_EyeTrail_L(
+		_float4(10.f, -10.f, -25.f, 1.f),					//Weapon R
+		_float4(10.f, -10.f, -5.f, 1.f),					//Weapon R
+		_float4(-fUpperSize + 10.f, -10.f, -25.f, 1.f),					 //Left	L
+		_float4(fUpperSize + 10.f, -10.f, -5.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.f, 0.f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"1B_Jaw"
 	);
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
@@ -501,7 +853,7 @@ void CUnit_Lancer::OnEnable()
 	__super::OnEnable();
 
 	Turn_TransformParticle(true);
-
+	TurnOn_Trail(true);
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;
 
@@ -520,7 +872,7 @@ void CUnit_Lancer::OnDisable()
 	__super::OnDisable();
 
 	Turn_TransformParticle(false);
-
+	TurnOn_Trail(false);
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;
 	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255),

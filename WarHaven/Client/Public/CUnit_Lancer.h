@@ -29,6 +29,9 @@ public:
 	virtual void On_Die() override;
 
 public:
+	void TurnOn_Trail(_bool bOn);
+
+public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
 	virtual void	SetUp_HitStates(UNIT_TYPE eUnitType);
 	virtual void	SetUp_ReserveState(UNIT_TYPE eUnitType);
@@ -39,6 +42,24 @@ public:
 
 protected:
 	virtual void	Effect_Hit(CUnit* pOtherUnit, _float4 vHitPos) override;
+
+protected:
+	void SetUp_Trail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_Trail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_LowerTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_LowerTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_HorseTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_HorseTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_EyeTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_EyeTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
 
 public:
 	// CGameObject을(를) 통해 상속됨
@@ -62,6 +83,29 @@ private:
 
 	STATE_TYPE m_eBreezeBegin = STATE_END;
 	STATE_TYPE m_eBreezeLoop = STATE_END;
+
+private:
+	_float4 m_vTrailShader;
+
+	CTrailEffect* m_pTrail_R = nullptr;
+	CTrailEffect* m_pTrail_R2 = nullptr;
+	CTrailEffect* m_pTrail_L = nullptr;
+	CTrailEffect* m_pTrail_L2 = nullptr;
+
+	CTrailEffect* m_pLowerTrail_R = nullptr;
+	CTrailEffect* m_pLowerTrail_R2 = nullptr;
+	CTrailEffect* m_pLowerTrail_L = nullptr;
+	CTrailEffect* m_pLowerTrail_L2 = nullptr;
+
+	CTrailEffect* m_pHorseTrail_R = nullptr;
+	CTrailEffect* m_pHorseTrail_R2 = nullptr;
+	CTrailEffect* m_pHorseTrail_L = nullptr;
+	CTrailEffect* m_pHorseTrail_L2 = nullptr;
+
+	CTrailEffect* m_pEyeTrail_R = nullptr;
+	CTrailEffect* m_pEyeTrail_R2 = nullptr;
+	CTrailEffect* m_pEyeTrail_L = nullptr;
+	CTrailEffect* m_pEyeTrail_L2 = nullptr;
 };
 
 END

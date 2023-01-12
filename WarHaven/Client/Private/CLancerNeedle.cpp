@@ -174,14 +174,14 @@ void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
 			m_pNiddleMesh = nullptr;
 		}*/
 
-		if (!m_NiddleMesh.empty())
+		/*if (!m_NiddleMesh.empty())
 		{
 			for (auto& elem : m_NiddleMesh)
 			{
 				static_cast<CEffect*>(elem)->Set_FadeOut();
 			}
 			m_NiddleMesh.clear();
-		}
+		}*/
 
 		break;
 
@@ -379,8 +379,6 @@ HRESULT CLancerNeedle::Start()
 
 	m_eNeedleState = LANCERNEEDLE_START;
 	m_pTransform->Set_Scale(_float4(FLT_MIN, FLT_MIN, FLT_MIN));
-
-	m_pNiddleMesh = nullptr;
 
 	m_NiddleMesh.clear();
 	return S_OK;
