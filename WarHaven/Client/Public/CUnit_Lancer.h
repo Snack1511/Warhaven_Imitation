@@ -75,6 +75,7 @@ private:
 	
 private:
 	list<CGameObject*> m_TransformParticles;
+	list<CGameObject*> m_EyeFlares;
 	CLancerNeedle* m_pNeedle[eNeedle_Max] = { nullptr }; // 새로 붙인 머리
 
 	_float	m_fNeedleCreateTime = 1.f;

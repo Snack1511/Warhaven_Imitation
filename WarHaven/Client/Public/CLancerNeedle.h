@@ -99,6 +99,7 @@ private:
 	list<CGameObject*> m_NiddleMesh;
 	list<CGameObject*> m_NiddleBegin;
 	_bool m_bStartNeedle = true;
+	_bool m_bBeginNeedle = true;
 
 
 

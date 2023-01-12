@@ -272,6 +272,9 @@ void CUnit_Lancer::Turn_TransformParticle(_bool bOnOff)
 	{
 		if (m_TransformParticles.empty())
 			m_TransformParticles = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Transform_Particle", this, ZERO_VECTOR);
+
+		if (m_EyeFlares.empty())
+			m_EyeFlares = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Eye_Flare", this, ZERO_VECTOR);
 	}
 	else
 	{
@@ -280,8 +283,14 @@ void CUnit_Lancer::Turn_TransformParticle(_bool bOnOff)
 			for (auto& elem : m_TransformParticles)
 				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
 		}
-
 		m_TransformParticles.clear();
+
+		if (!m_EyeFlares.empty())
+		{
+			for (auto& elem : m_EyeFlares)
+				static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+		m_EyeFlares.clear();
 	}
 }
 
