@@ -25,6 +25,9 @@ public:
 	virtual void On_Die() override;
 
 public:
+	void TurnOn_Trail(_bool bOn);
+
+public:
 	virtual void	SetUp_Colliders(_bool bPlayer);
 	virtual void	SetUp_HitStates(UNIT_TYPE eUnitType);
 	virtual void	SetUp_ReserveState(UNIT_TYPE eUnitType);
@@ -59,6 +62,16 @@ public:
 public:
 	void	Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect);
 
+protected:
+	void SetUp_Trail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_Trail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_LowerTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+	void SetUp_LowerTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag,
+		_float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName);
+
 public:
 	// CGameObject을(를) 통해 상속됨
 	virtual HRESULT Initialize_Prototype() override;
@@ -82,6 +95,17 @@ private:
 
 	_float4x4	m_CoreMat;
 	CUI_Trail* m_pUI_Trail = nullptr;
+
+	_float4 m_vTrailShader;
+	CTrailEffect* m_pTrail_R = nullptr;
+	CTrailEffect* m_pTrail_R2 = nullptr;
+	CTrailEffect* m_pTrail_L = nullptr;
+	CTrailEffect* m_pTrail_L2 = nullptr;
+
+	CTrailEffect* m_pLowerTrail_R = nullptr;
+	CTrailEffect* m_pLowerTrail_R2 = nullptr;
+	CTrailEffect* m_pLowerTrail_L = nullptr;
+	CTrailEffect* m_pLowerTrail_L2 = nullptr;
 
 
 

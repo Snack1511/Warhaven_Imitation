@@ -68,6 +68,23 @@ void CUnit_Qanda::On_Die()
 
 }
 
+void CUnit_Qanda::TurnOn_Trail(_bool bOn)
+{
+	if (!m_pTrail_R)
+		return;
+
+	m_pTrail_R->TurnOn_TrailEffect(bOn);
+	m_pTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pTrail_L->TurnOn_TrailEffect(bOn);
+	m_pTrail_L2->TurnOn_TrailEffect(bOn);
+
+
+	m_pLowerTrail_R->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_R2->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_L->TurnOn_TrailEffect(bOn);
+	m_pLowerTrail_L2->TurnOn_TrailEffect(bOn);
+}
+
 void CUnit_Qanda::SetUp_Colliders(_bool bPlayer)
 {
 	__super::SetUp_Colliders(bPlayer);
@@ -417,11 +434,116 @@ void CUnit_Qanda::TurnOff_AllEffect()
 	Turn_ChargeEffect(false);
 	Turn_FeatherEffect(false);
 	Turn_SteamEffect(false);
+	TurnOn_Trail(false);
 }
 
 void CUnit_Qanda::Collect_QandaProjectile(_hashcode _hcCode, CProjectile* pEffect)
 {
 	m_mapProjectilePool[_hcCode].push_back(pEffect);
+}
+
+void CUnit_Qanda::SetUp_Trail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pTrail_R->TurnOn_TrailEffect(false);
+	m_pTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Qanda::SetUp_Trail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pTrail_L->TurnOn_TrailEffect(false);
+	m_pTrail_L2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Qanda::SetUp_LowerTrail_R(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pLowerTrail_R = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pLowerTrail_R2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pLowerTrail_R)
+		return;
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_R, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_R, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_R2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_R2, CMesh))->Set_NoCurve();
+
+	m_pLowerTrail_R->Set_EffectFlag(m_vTrailShader);
+	m_pLowerTrail_R2->Set_EffectFlag(m_vTrailShader);
+
+	m_pLowerTrail_R->TurnOn_TrailEffect(false);
+	m_pLowerTrail_R2->TurnOn_TrailEffect(false);
+}
+
+void CUnit_Qanda::SetUp_LowerTrail_L(_float4 vWeaponLow, _float4 vWeaponHigh, _float4 vWeaponLeft, _float4 vWeaponRight, _float4 vGlowFlag, _float4 vColor, _float fWeaponCenter, wstring wstrMaskMapPath, wstring wstrColorMapPath, _uint iTrailCount, string strBoneName)
+{
+	m_pLowerTrail_L = CTrailEffect::Create(1, iTrailCount, vWeaponLow, vWeaponHigh,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	m_pLowerTrail_L2 = CTrailEffect::Create(1, iTrailCount, vWeaponLeft, vWeaponRight,
+		m_pModelCom->Find_HierarchyNode(strBoneName.c_str()), m_pTransform, vGlowFlag, vColor,
+		wstrMaskMapPath, wstrColorMapPath);
+
+	if (!m_pLowerTrail_L)
+		return;
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_L, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_L, CMesh))->Set_NoCurve();
+
+	CREATE_GAMEOBJECT(m_pLowerTrail_L2, GROUP_EFFECT);
+	static_cast<CTrailBuffer*>(GET_COMPONENT_FROM(m_pLowerTrail_L2, CMesh))->Set_NoCurve();
+
+	m_pLowerTrail_L->Set_EffectFlag(m_vTrailShader);
+	m_pLowerTrail_L2->Set_EffectFlag(m_vTrailShader);
+
+	m_pLowerTrail_L->TurnOn_TrailEffect(false);
+	m_pLowerTrail_L2->TurnOn_TrailEffect(false);
 }
 
 HRESULT CUnit_Qanda::Initialize_Prototype()
@@ -554,7 +676,68 @@ HRESULT CUnit_Qanda::Start()
 		CREATE_GAMEOBJECT(m_pUI_Trail, GROUP_EFFECT);
 		DISABLE_GAMEOBJECT(m_pUI_Trail);
 	}
+
+	m_vTrailShader = SH_EFFECT_NONE;
+	wstring strMask = L"../bin/resources/Textures/Effects/WarHaven/Texture/T_Glow_04.dds";
+	_float fAlpha = 0.5f;
+	_float fUpperSize = 10.f;
 	
+	SetUp_Trail_R(
+		_float4(0.f, 0.f, fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		20,
+		"0B_R_Hat_02"
+	);
+
+	SetUp_Trail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),	//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f), // GlowFlow
+		_float4(1.f, 0.8f, 0.5f, fAlpha), //vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		18,
+		"0B_L_Hat_02"
+	);
+	//lower
+	fUpperSize *= 0.5f;
+
+	SetUp_LowerTrail_R(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		12,
+		"0B_R_Skirt2_01"
+	);
+	SetUp_LowerTrail_L(
+		_float4(0.f, 0.f, -fUpperSize, 1.f),					//Weapon R
+		_float4(-0.f, 0.f, fUpperSize, 1.f),					//Weapon R
+		_float4(-fUpperSize, 0.f, 0.f, 1.f),					 //Left	L
+		_float4(fUpperSize, 0.f, 0.f, 1.f),					//Right	L
+		_float4(1.f, 0.f, 0.f, 0.f),					// GlowFlag
+		_float4(1.f, 0.8f, 0.5f, fAlpha),					//vColor
+		0.f,
+		strMask,
+		L"../bin/resources/Textures/Effects/WarHaven/Texture/T_SmokeShadow_01.dds",
+		14,
+		"0B_L_Skirt2_01"
+	);
 
 	m_pModelCom->Set_ShaderPassToAll(VTXANIM_PASS_NORMAL);
 
@@ -570,7 +753,7 @@ void CUnit_Qanda::OnEnable()
 	__super::OnEnable();
 
 	Turn_TransformParticle(true);
-	
+	TurnOn_Trail(true);
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;
 
@@ -594,7 +777,7 @@ void CUnit_Qanda::OnDisable()
 	Turn_TransformParticle(false);
 	Turn_ChargeEffect(false);
 	Turn_SteamEffect(false);
-
+	TurnOn_Trail(false);
 	_float4 vPos = m_pTransform->Get_World(WORLD_POS);
 	vPos.y += 0.5f;
 	Create_Light(vPos, 4.f, 0.f, 0.f, 0.f, 0.3f, RGB(255, 255, 255),
