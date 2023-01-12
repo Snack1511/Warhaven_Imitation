@@ -426,8 +426,16 @@ void CUI_MiniMap::Init_MiniMapPoint()
 			m_pArrMiniMapPoint[Point_E][i]->Set_PosY(246.f);
 			m_pArrMiniMapPoint[Point_R][i]->Set_PosY(278.f);
 
-			m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-565.f);
-			m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-433.f);
+			if (CUser::Get_Instance()->Get_PlayerObejects()->Get_Team()->Get_TeamType() == eTEAM_TYPE::eBLUE)
+			{
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-565.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-433.f);
+			}
+			else
+			{
+				m_pArrMiniMapPoint[Point_A][i]->Set_PosX(-433.f);
+				m_pArrMiniMapPoint[Point_E][i]->Set_PosX(-565.f);
+			}
 		}
 		break;
 	}

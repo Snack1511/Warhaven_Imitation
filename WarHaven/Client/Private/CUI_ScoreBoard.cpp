@@ -517,8 +517,16 @@ void CUI_ScoreBoard::Init_PointUI()
 			{
 				m_pArrPointUI[i][j]->Set_PosX(-375.f);
 
-				m_pArrPointUI[Point_A][j]->Set_PosX(-465.f);
-				m_pArrPointUI[Point_E][j]->Set_PosX(-275.f);
+				if (CUser::Get_Instance()->Get_PlayerObejects()->Get_Team()->Get_TeamType() == eTEAM_TYPE::eBLUE)
+				{
+					m_pArrPointUI[Point_A][j]->Set_PosX(-465.f);
+					m_pArrPointUI[Point_E][j]->Set_PosX(-275.f);
+				}
+				else
+				{
+					m_pArrPointUI[Point_A][j]->Set_PosX(-275.f);
+					m_pArrPointUI[Point_E][j]->Set_PosX(-465.f);
+				}
 			}
 		}
 
