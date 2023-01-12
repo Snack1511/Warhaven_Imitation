@@ -14,8 +14,6 @@
 #include "CPhysXCharacter.h"
 
 #include "CProjectile.h"
-#include "CUI_UnitHUD.h"
-#include "CUI_UnitHP.h"
 
 CPriest_Cure_Loop::CPriest_Cure_Loop()
 {

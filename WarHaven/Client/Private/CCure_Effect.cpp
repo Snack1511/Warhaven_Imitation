@@ -177,7 +177,6 @@ void CCure_Effect::OnEnable()
 	{
 		m_Particle = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Cure_Particle", m_pOwner, ZERO_VECTOR);
 		static_cast<CUnit*>(m_pOwner)->Create_Light(m_Particle.back(), _float4(0.f, 0.f, 0.f), 2.f, 0.f, 0.1f, 100.f, 0.1f, RGB(245, 245, 100), false);
-		static_cast<CUnit*>(m_pOther)->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(true);
 	}
 
 }
@@ -204,7 +203,6 @@ void CCure_Effect::OnDisable()
 		}
 		m_Particle.clear();
 
-		static_cast<CUnit*>(m_pOther)->Get_OwnerHUD()->Get_UnitHP()->SetActive_HealBlur(false);
 	}
 
 }

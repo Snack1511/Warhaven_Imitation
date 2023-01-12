@@ -29,7 +29,7 @@
 #include "CScript_FollowCam.h"
 
 #include "MeshContainer.h"
-
+#include "CUI_UnitHP.h"
 #include "CState.h"
 #include "CState_Manager.h"
 
@@ -1238,8 +1238,8 @@ void CPlayer::My_LateTick()
 	m_bIsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(vPos.XMLoad(), 0.1f);
 	if (!m_bIsInFrustum)
 	{
-		// m_pUnitHUD->Disable_RevivalUI();
-		m_pUnitHUD->SetActive(false);
+		m_pUnitHUD->Disable_RevivalUI();
+		m_pUnitHUD->Get_UnitHP()->SetActive(false);
 	}
 	else
 	{
@@ -1250,7 +1250,7 @@ void CPlayer::My_LateTick()
 		{
 			if (m_bAbleRevival)
 				m_pUnitHUD->Enable_RevivalUI();
-		}                           
+		}
 	}
 
 	if (m_pCurrentUnit->Get_Status().fHP > 0.f)
@@ -1581,7 +1581,7 @@ void CPlayer::Enable_UnitHUD()
 void CPlayer::Frustum_UnitHUD()
 {
 	if (!m_pCurrentUnit->Is_Valid())
-		return;	
+		return;
 
 	_float fDis = CUtility_Transform::Get_FromCameraDistance(m_pCurrentUnit);
 	if (fDis < m_fEnable_UnitHUDis)

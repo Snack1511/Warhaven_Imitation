@@ -139,27 +139,6 @@ void CUI_UnitHP::SetActive_UnitHP(_bool value)
 	}
 }
 
-void CUI_UnitHP::SetActive_HealBlur(_bool value)
-{
-	if (!this->Is_Valid())
-		return;
-
-	if (value == true)
-	{
-		if (!m_pHealBlur->Is_Valid())
-		{
-			Enable_Fade(m_pHealBlur, 0.2f);
-		}
-	}
-	else
-	{
-		if (m_pHealBlur->Is_Valid())
-		{
-			Disable_Fade(m_pHealBlur, 0.2f);
-		}
-	}
-}
-
 void CUI_UnitHP::Bind_Shader()
 {
 	GET_COMPONENT_FROM(m_pUnitHP[Gauge], CShader)->CallBack_SetRawValues += bind(&CUI_UnitHP::Set_Shader_HpGauge, this, placeholders::_1, "g_fHealthGauge");

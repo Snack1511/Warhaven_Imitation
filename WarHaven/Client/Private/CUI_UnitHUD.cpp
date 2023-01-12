@@ -155,8 +155,6 @@ void CUI_UnitHUD::My_Tick()
 					m_pUnitNameText->Set_Color(m_vColorRed);
 				}
 			}
-
-			SetActive_UnitHP(false);
 		}
 	}
 	else
