@@ -3676,6 +3676,9 @@
     <Filter Include="03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info">
       <UniqueIdentifier>{71372463-90c0-4ea4-a618-8c09be897d4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility">
+      <UniqueIdentifier>{379a1bc2-1d0a-4b86-8054-aeb34be9c677}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -6618,6 +6621,9 @@
     <ClInclude Include="..\Public\CUI_Info.h">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAI_MoveStateUtility.h">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -9540,6 +9546,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Info.cpp">
       <Filter>03. Instances\02. GameObject\01. UI\02.Wrapper\Play\Info</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAI_MoveStateUtility.cpp">
+      <Filter>02. Design\06. State_Manager\States\06. AI\Behavior\AI_MoveStateUtility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

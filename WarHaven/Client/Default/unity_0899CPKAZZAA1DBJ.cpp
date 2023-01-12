@@ -1,4 +1,7 @@
 
+#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStop_Paladin.cpp"
+
+
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CStop_Paladin_L.cpp"
 
 
@@ -54,7 +57,4 @@
 
 
 #include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSprint_End_Valkyrie.cpp"
-
-
-#include "D:\PersonalData\MyProject\jusin128thFinalTeamPotpolio\WarHaven\Client\Private\CSprint_End_WarHammer.cpp"
 

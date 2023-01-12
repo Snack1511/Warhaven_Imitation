@@ -10,6 +10,7 @@
 #include "CUser.h"
 
 #include "CPath.h"
+#include "CAI_MoveStateUtility.h"
 
 CState_PathNavigation::CState_PathNavigation()
 {
@@ -79,14 +80,14 @@ STATE_TYPE CState_PathNavigation::Tick(CUnit* pOwner, CAnimator* pAnimator)
 	}
 	else 
 	{
-		vDir = pCurPath->Get_CurDir(pOwner->Get_Transform()->Get_World(WORLD_POS));
+		//vDir = pCurPath->Get_CurDir(pOwner->Get_Transform()->Get_World(WORLD_POS));
 
-		pCurPath->Update_CurrentIndex(vCurPos);
+		//pCurPath->Update_CurrentIndex(vCurPos);
 		
 	}
+
+
 	CCell* pCurCell = pOwner->Get_NaviCom()->Get_CurCell(vCurPos, CGameSystem::Get_Instance()->Get_CellLayer());
-
-
 	if (pCurCell && pCurCell->Check_Attribute(CELL_STAIR))
 	{
 		m_iRand = 3;
