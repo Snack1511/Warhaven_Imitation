@@ -75,7 +75,7 @@ void CState_Combat_GuardBreak_Warrior::Enter(CUnit* pOwner, CAnimator* pAnimator
     tColorDesc.fFadeInTime = 0.1f;
     tColorDesc.fFadeOutStartTime = 1.f;
     tColorDesc.fFadeOutTime = 0.1f;
-    tColorDesc.vTargetColor = _float4((150.f / 255.f), (0.f / 255.f), (0.f / 255.f), 0.1f);
+    tColorDesc.vTargetColor = _float4((80.f / 255.f), (0.f / 255.f), (0.f / 255.f), 0.1f);
     //tColorDesc.vTargetColor *= 1.1f;
     tColorDesc.iMeshPartType = MODEL_PART_WEAPON;
     tColorDesc.iStartKeyFrame = 2;

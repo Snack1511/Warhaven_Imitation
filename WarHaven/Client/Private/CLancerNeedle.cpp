@@ -10,6 +10,7 @@
 #include "CUtility_Transform.h"
 #include "CColorController.h"
 #include "CEffect.h"
+#include "CRectEffects.h"
 
 CLancerNeedle::CLancerNeedle()
 {
@@ -105,7 +106,6 @@ void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
 	{
 	case Client::CLancerNeedle::LANCERNEEDLE_START:
 		
-
 		break;
 
 	case Client::CLancerNeedle::LANCERNEEDLE_LOOP:
@@ -113,6 +113,9 @@ void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
 		break;
 
 	case Client::CLancerNeedle::LANCERNEEDLE_ATTACKBEGIN:
+
+		GET_COMPONENT(CModel)->Set_RimLightFlag(RGBA(255, 40, 0, 1.f));
+
 		m_pTransform->Set_Scale(_float4(1.f, 1.f, 1.f));
 		ENABLE_COMPONENT(GET_COMPONENT(CCollider_Sphere));
 
@@ -159,11 +162,20 @@ void CLancerNeedle::On_ChangePhase(LANCERNEEDLE eNeedleState)
 			break;
 		}
 
-		if (m_pNiddleMesh)
+		/*if (m_pNiddleMesh)
 		{
 			static_cast<CEffect*>(m_pNiddleMesh)->Set_FadeOut();
 			m_pNiddleMesh = nullptr;
-		}
+		}*/
+
+		/*if (!m_NiddleMesh.empty())
+		{
+			for (auto& elem : m_NiddleMesh)
+			{
+				static_cast<CEffect*>(elem)->Set_FadeOut();
+			}
+			m_NiddleMesh.clear();
+		}*/
 
 		break;
 
@@ -362,8 +374,7 @@ HRESULT CLancerNeedle::Start()
 	m_eNeedleState = LANCERNEEDLE_START;
 	m_pTransform->Set_Scale(_float4(FLT_MIN, FLT_MIN, FLT_MIN));
 
-	m_pNiddleMesh = nullptr;
-
+	m_NiddleMesh.clear();
 	return S_OK;
 }
 
@@ -391,8 +402,13 @@ void CLancerNeedle::My_LateTick()
 		{
 			CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Turn_Needle", this, ZERO_VECTOR);
 
-			if(!m_pNiddleMesh)
-				m_pNiddleMesh = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Needle_Mesh_0"), this, ZERO_VECTOR);
+			/*if(!m_pNiddleMesh)
+				m_pNiddleMesh = CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"Needle_Mesh_0"), this, ZERO_VECTOR);*/
+
+			if (m_NiddleMesh.empty())
+			{
+				m_NiddleMesh = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Needle_Mesh", this, ZERO_VECTOR);
+			}
 
 			m_bStartNeedle = false;
 		}
@@ -437,7 +453,14 @@ void CLancerNeedle::My_LateTick()
 			//이펙트
 		}
 
-			
+		if (m_bBeginNeedle)
+		{
+			if (m_NiddleBegin.empty())
+			{
+				m_NiddleBegin = CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Needle_Begin", this, ZERO_VECTOR);
+			}
+			m_bBeginNeedle = false;
+		}
 
 		/* 부모 행렬(뼈행렬)을 곱하기 전에 크, 자, 이 하는 과정 */
 		_float4x4 matLocal;
@@ -513,6 +536,7 @@ void CLancerNeedle::My_LateTick()
 	
 	case Client::CLancerNeedle::LANCERNEEDLE_STOP:
 
+		CEffects_Factory::Get_Instance()->Create_MultiEffects(L"Needle_End", this, ZERO_VECTOR);
 		// 끝나면 Disable
 		m_fCurAcc += fDT(0);
 
@@ -551,7 +575,7 @@ void CLancerNeedle::OnEnable()
 	m_pTransform->Set_Scale(m_vScale);
 	m_pStinedUnit = nullptr;
 
-
+	GET_COMPONENT(CModel)->Set_RimLightFlag(RGBA(255, 40, 0, 0.f));
 	//CColorController::COLORDESC tColorDesc;
 	//ZeroMemory(&tColorDesc, sizeof(CColorController::COLORDESC));
 
@@ -582,11 +606,29 @@ void CLancerNeedle::OnDisable()
 	}
 	
 	m_bStartNeedle = true;
-
-	if(m_pNiddleMesh)
+	m_bBeginNeedle = true;
+	/*if(m_pNiddleMesh)
 	{
 		static_cast<CEffect*>(m_pNiddleMesh)->Set_FadeOut();
 		m_pNiddleMesh = nullptr;
+	}*/
+
+	if (!m_NiddleMesh.empty())
+	{
+		for (auto& elem : m_NiddleMesh)
+		{
+			static_cast<CEffect*>(elem)->Set_FadeOut();
+		}
+		m_NiddleMesh.clear();
+	}
+
+	if (!m_NiddleBegin.empty())
+	{
+		for (auto& elem : m_NiddleBegin)
+		{
+			static_cast<CRectEffects*>(elem)->Set_AllFadeOut();
+		}
+		m_NiddleBegin.clear();
 	}
 }
 

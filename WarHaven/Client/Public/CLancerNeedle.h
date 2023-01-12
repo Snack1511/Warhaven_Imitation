@@ -86,15 +86,17 @@ private:
 
 
 	_float m_fAngleStartValue = 0.f;
-	_float m_fAngleTargetValue = 260.f;
+	_float m_fAngleTargetValue = 80.f;
 
 	_float4 m_vLerpPos = ZERO_VECTOR;
 
 	_float4x4 m_OwnerBoneOffsetMatrix;
 
 private:
-	CGameObject* m_pNiddleMesh = nullptr;
+	list<CGameObject*> m_NiddleMesh;
+	list<CGameObject*> m_NiddleBegin;
 	_bool m_bStartNeedle = true;
+	_bool m_bBeginNeedle = true;
 
 
 

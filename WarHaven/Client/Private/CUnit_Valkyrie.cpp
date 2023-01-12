@@ -634,7 +634,7 @@ HRESULT CUnit_Valkyrie::Start()
 		"0B_L_Chain02"
 	);
 
-	m_pModelCom->Set_RimLightFlag(RGB(255, 140, 42));
+	m_pModelCom->Set_RimLightFlag(RGB(50, 30, 0));
 
 
 

@@ -783,5 +783,6 @@ _bool CTable_Conditions::Check_Behavior(CBehavior* pBehavior, eBehaviorType eTyp
         if (pBehavior->Get_BehaviorType() == eType)
             return true;
     }
-    else return false;
+    
+    return false;
 }

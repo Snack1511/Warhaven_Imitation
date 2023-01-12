@@ -809,6 +809,12 @@ HRESULT CEffects_Factory::SetUp_MultiEffects()
 		return E_FAIL;
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Needle_Mesh"), "Needle_Mesh")))
 		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Needle_Begin"), "Needle_Begin")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Needle_End"), "Needle_End")))
+		return E_FAIL;
+	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Eye_Flare"), "Eye_Flare")))
+		return E_FAIL;
 
 	/*priest*/
 	if (FAILED(Combine_EffectsGroup(listTemp, Convert_ToHash(L"Catch_Particle"), "Catch_Particle")))

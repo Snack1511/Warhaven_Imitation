@@ -443,7 +443,7 @@ void CWindow_Effect::Show_EffectTab()
 				GET_COMPONENT_FROM(pCurEffect, CRenderer)->Set_RenderGroup(RENDER_DISTORTION);
 				
 			}*/
-			if (ImGui::Selectable("DISSOLVE", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
+			if (ImGui::Selectable("+RIM", &bSelect[VTXEFFECT_PASS_DISSOLVE]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_DISSOLVE;
 			if (ImGui::Selectable("CLAMP", &bSelect[VTXEFFECT_PASS_CLAMP]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_CLAMP;
@@ -453,6 +453,8 @@ void CWindow_Effect::Show_EffectTab()
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_LIGHTNING;
 			if (ImGui::Selectable("AURA", &bSelect[VTXEFFECT_PASS_AURA]))
 				pCurEffect->m_iPassType = VTXEFFECT_PASS_AURA;
+			if (ImGui::Selectable("RIMINV", &bSelect[VTXEFFECT_PASS_INV]))
+				pCurEffect->m_iPassType = VTXEFFECT_PASS_INV;
 
 			pModelCom->Set_ShaderPassToAll(pCurEffect->m_iPassType);
 

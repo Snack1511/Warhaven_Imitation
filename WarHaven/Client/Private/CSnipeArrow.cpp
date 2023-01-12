@@ -42,7 +42,7 @@ HRESULT CSnipeArrow::Start()
 	tColorDesc.fFadeInTime = 0.1f;
 	tColorDesc.fFadeOutStartTime = 9999.f;
 	tColorDesc.fFadeOutTime = 0.1f;
-	tColorDesc.vTargetColor = _float4((255.f / 255.f), (140.f / 255.f), (42.f / 255.f), 0.1f);
+	tColorDesc.vTargetColor = RGBA(50, 30, 0, 0.1f);
 	//tColorDesc.vTargetColor *= 1.1f;
 	tColorDesc.iMeshPartType = MODEL_PART_SKEL;
 

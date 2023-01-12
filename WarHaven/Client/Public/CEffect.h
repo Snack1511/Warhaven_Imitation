@@ -178,6 +178,7 @@ protected:
 	_bool m_bRotation = false;
 	_float4 m_vRotationDir = _float4(1.f, 0.f, 0.f, 0.f);
 	_float m_fAngle = 0.f;
+	_float m_fRimlightPower = 2.f;
 
 public:
 	void	Set_FadeOut();
