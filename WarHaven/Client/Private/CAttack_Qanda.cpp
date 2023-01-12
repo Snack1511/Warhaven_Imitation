@@ -698,6 +698,8 @@ _bool CAttack_Qanda::Check_CrowRay(_float4* pTraillPos, _float4* pAimPos, CUnit*
 
 	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
 		*pTraillPos = vFinalHitPos;
+	else
+		return false;
 
 	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
 	list<PxController*> listPxControllers;

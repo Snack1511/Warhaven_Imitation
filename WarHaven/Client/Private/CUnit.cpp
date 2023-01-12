@@ -743,6 +743,9 @@ void CUnit::OnEnable()
 
 	On_InitSetting();
 
+	for (_int i = 0; i < COOL_END; ++i)
+		m_fCoolAcc[i] = 0.f;
+
 	if (m_bRespawn)
 	{
 		CEffects_Factory::Get_Instance()->Create_Effects(Convert_ToHash(L"ReSpawnLight_0"), this, m_pTransform->Get_World(WORLD_POS));

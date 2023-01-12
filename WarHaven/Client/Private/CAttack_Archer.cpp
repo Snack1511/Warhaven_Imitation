@@ -708,6 +708,8 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos, CUnit* pOwner)
 
 	if (GAMEINSTANCE->Shoot_RaytoStaticActors(&vFinalHitPos, &fMinDist, vStartPos, vDir, fMaxDistance))
 		*pOutPos = vFinalHitPos;
+	else
+		return false;
 
 	list<CGameObject*>& listPlayers = GAMEINSTANCE->Get_ObjGroup(GROUP_PLAYER);
 	list<PxController*> listPxControllers;
@@ -746,9 +748,6 @@ _bool CAttack_Archer::Check_ArrowRay(_float4* pOutPos, CUnit* pOwner)
 		}
 		else
 		{
-			if(vFinalHitPos.x <= FLT_MIN &&
-				vFinalHitPos.x >= -FLT_MIN)
-				return false;
 
 			CUser::Get_Instance()->Set_ArcherPoint(false);
 		}
